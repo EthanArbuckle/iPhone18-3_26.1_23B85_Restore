@@ -1,14 +1,14 @@
 @interface _UIObjectReferenceCounter
-- (void)decrementReferenceForObject:(id)a3 invalidationHandler:(id)a4;
-- (void)incrementReferenceForObject:(id)a3;
+- (void)decrementReferenceForObject:(id)object invalidationHandler:(id)handler;
+- (void)incrementReferenceForObject:(id)object;
 @end
 
 @implementation _UIObjectReferenceCounter
 
-- (void)incrementReferenceForObject:(id)a3
+- (void)incrementReferenceForObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objectReferences = self->_objectReferences;
   if (!objectReferences)
   {
@@ -19,7 +19,7 @@
     objectReferences = self->_objectReferences;
   }
 
-  v8 = [(NSCountedSet *)objectReferences countForObject:v4];
+  v8 = [(NSCountedSet *)objectReferences countForObject:objectCopy];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("BackgroundTask", &qword_1ED49E208);
   if (*CategoryCachedImpl)
   {
@@ -29,7 +29,7 @@
       v13 = 136315650;
       v14 = "[_UIObjectReferenceCounter incrementReferenceForObject:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = objectCopy;
       v17 = 2048;
       v18 = v8;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "%s: reference map for object %@: existing entry is %ld", &v13, 0x20u);
@@ -45,26 +45,26 @@
       v13 = 136315650;
       v14 = "[_UIObjectReferenceCounter incrementReferenceForObject:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = objectCopy;
       v17 = 2048;
       v18 = v8 + 1;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "%s: Updating reference map for object %@ with count %ld", &v13, 0x20u);
     }
   }
 
-  [(NSCountedSet *)self->_objectReferences addObject:v4];
+  [(NSCountedSet *)self->_objectReferences addObject:objectCopy];
 }
 
-- (void)decrementReferenceForObject:(id)a3 invalidationHandler:(id)a4
+- (void)decrementReferenceForObject:(id)object invalidationHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NSCountedSet *)self->_objectReferences countForObject:v7];
+  objectCopy = object;
+  handlerCopy = handler;
+  v9 = [(NSCountedSet *)self->_objectReferences countForObject:objectCopy];
   if (!v9)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIApplication_BackgroundTasks.m" lineNumber:52 description:{@"Object passed to %s is not in reference map: object %@", "-[_UIObjectReferenceCounter decrementReferenceForObject:invalidationHandler:]", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIApplication_BackgroundTasks.m" lineNumber:52 description:{@"Object passed to %s is not in reference map: object %@", "-[_UIObjectReferenceCounter decrementReferenceForObject:invalidationHandler:]", objectCopy}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("BackgroundTask", &qword_1ED49E218);
@@ -76,14 +76,14 @@
       *buf = 136315650;
       v19 = "[_UIObjectReferenceCounter decrementReferenceForObject:invalidationHandler:]";
       v20 = 2112;
-      v21 = v7;
+      v21 = objectCopy;
       v22 = 2048;
       v23 = v9;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "%s: reference map for object %@: existing count is %ld", buf, 0x20u);
     }
   }
 
-  [(NSCountedSet *)self->_objectReferences removeObject:v7];
+  [(NSCountedSet *)self->_objectReferences removeObject:objectCopy];
   v11 = v9 - 1;
   if (v11)
   {
@@ -116,9 +116,9 @@
       }
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
     }
   }
 }

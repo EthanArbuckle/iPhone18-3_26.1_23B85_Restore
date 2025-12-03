@@ -1,17 +1,17 @@
 @interface NEHelperSourceAppInfo
-- (NEHelperSourceAppInfo)initWithFirstMessage:(id)a3;
+- (NEHelperSourceAppInfo)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperSourceAppInfo
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   memset(dst, 0, sizeof(dst));
-  uint64 = xpc_dictionary_get_uint64(v3, "pid");
-  string = xpc_dictionary_get_string(v3, "app-identifier");
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "pid");
+  string = xpc_dictionary_get_string(messageCopy, "app-identifier");
   v6 = string;
   if (uint64)
   {
@@ -112,7 +112,7 @@ LABEL_18:
 
   else if (!string || !*string)
   {
-    sub_10000BA0C(NEHelperServer, v3, 22, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
     goto LABEL_53;
   }
 
@@ -136,19 +136,19 @@ LABEL_19:
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 shortVersionString];
-      v21 = [v19 teamID];
-      v22 = [v21 length];
+      shortVersionString = [v18 shortVersionString];
+      teamID = [v19 teamID];
+      v22 = [teamID length];
 
-      v23 = [v19 teamID];
-      v24 = [v23 compare:@"0000000000"];
+      teamID2 = [v19 teamID];
+      v24 = [teamID2 compare:@"0000000000"];
 
       v25 = [NSString alloc];
       v26 = v25;
       if (v24 && v22)
       {
-        v27 = [v19 teamID];
-        v28 = [v26 initWithFormat:@"%@.%@", v27, v6];
+        teamID3 = [v19 teamID];
+        v28 = [v26 initWithFormat:@"%@.%@", teamID3, v6];
       }
 
       else
@@ -160,7 +160,7 @@ LABEL_19:
     else
     {
       v28 = [[NSString alloc] initWithFormat:@".%@", v6];
-      v20 = 0;
+      shortVersionString = 0;
     }
 
     v29 = xpc_dictionary_create(0, 0, 0);
@@ -169,9 +169,9 @@ LABEL_19:
       xpc_dictionary_set_string(v29, "app-identifier", [v28 UTF8String]);
     }
 
-    if (v20 && [v20 length])
+    if (shortVersionString && [shortVersionString length])
     {
-      xpc_dictionary_set_string(v29, "version-string", [v20 UTF8String]);
+      xpc_dictionary_set_string(v29, "version-string", [shortVersionString UTF8String]);
     }
 
     goto LABEL_40;
@@ -180,7 +180,7 @@ LABEL_19:
 LABEL_26:
   v29 = xpc_dictionary_create(0, 0, 0);
   v28 = 0;
-  v20 = 0;
+  shortVersionString = 0;
 LABEL_40:
   if (v11 && [v11 length])
   {
@@ -196,7 +196,7 @@ LABEL_40:
     v36[3] = &unk_10003D878;
     v37 = v6;
     v38 = v29;
-    v39 = v3;
+    v39 = messageCopy;
     v32 = v37;
     v34 = v36;
     if (v31)
@@ -221,7 +221,7 @@ LABEL_40:
       xpc_dictionary_set_uuid(v29, "app-euuid", dst);
     }
 
-    sub_10000BA0C(NEHelperServer, v3, 0, v29);
+    sub_10000BA0C(NEHelperServer, messageCopy, 0, v29);
   }
 
 LABEL_53:
@@ -238,9 +238,9 @@ LABEL_53:
   return self;
 }
 
-- (NEHelperSourceAppInfo)initWithFirstMessage:(id)a3
+- (NEHelperSourceAppInfo)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v26.receiver = self;
   v26.super_class = NEHelperSourceAppInfo;
   v5 = [(NEHelperSourceAppInfo *)&v26 init];
@@ -249,7 +249,7 @@ LABEL_53:
     goto LABEL_10;
   }
 
-  v6 = xpc_dictionary_get_remote_connection(v4);
+  v6 = xpc_dictionary_get_remote_connection(messageCopy);
   v7 = xpc_connection_copy_entitlement_value();
   v8 = xpc_connection_copy_entitlement_value();
   if (v7 && xpc_get_type(v7) == &_xpc_type_BOOL)

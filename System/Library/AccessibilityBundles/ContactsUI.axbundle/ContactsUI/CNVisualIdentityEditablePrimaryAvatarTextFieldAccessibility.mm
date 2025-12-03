@@ -9,9 +9,9 @@
 {
   if ([(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self _axIsTextEditable])
   {
-    v3 = [(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self _axIsEmoji];
+    _axIsEmoji = [(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self _axIsEmoji];
     v4 = MEMORY[0x29EDBA0F8];
-    if (v3)
+    if (_axIsEmoji)
     {
       v5 = @"emoji.description.button";
     }
@@ -23,8 +23,8 @@
 
     v7 = accessibilityLocalizedString(v5);
     v8 = [(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self safeStringForKey:@"text"];
-    v9 = [(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self _axColorName];
-    v6 = [v4 stringWithFormat:v7, v8, v9];
+    _axColorName = [(CNVisualIdentityEditablePrimaryAvatarTextFieldAccessibility *)self _axColorName];
+    v6 = [v4 stringWithFormat:v7, v8, _axColorName];
   }
 
   else

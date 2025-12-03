@@ -1,8 +1,8 @@
 @interface MUContactSharedLocationSectionController
-- (MUContactSharedLocationSectionController)initWithPlaceItem:(id)a3 availability:(id)a4;
+- (MUContactSharedLocationSectionController)initWithPlaceItem:(id)item availability:(id)availability;
 - (MUContactSharedLocationSectionControllerDelegate)contactSharedLocationSectionDelegate;
 - (NSArray)sectionViews;
-- (id)_loadPlaceInfoAddress:(id)a3 contact:(id)a4;
+- (id)_loadPlaceInfoAddress:(id)address contact:(id)contact;
 - (id)draggableContent;
 - (id)mapItemCoordinateViewModel;
 - (void)_buildSections;
@@ -22,15 +22,15 @@
   if ([(MUPlaceDataAvailability *)self->_availability supportsShowingCoordinates])
   {
     v3 = [MUCoordinateViewModel alloc];
-    v4 = [(MUPlaceSectionController *)self mapItem];
-    v5 = [(MUCoordinateViewModel *)v3 initWithMapItem:v4 isUserLocation:[(_MKPlaceItem *)self->_placeItem options]& 1];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    v5 = [(MUCoordinateViewModel *)v3 initWithMapItem:mapItem isUserLocation:[(_MKPlaceItem *)self->_placeItem options]& 1];
 
     v6 = objc_alloc_init(MULabeledValueActionViewModel);
-    v7 = [(MUCoordinateViewModel *)v5 titleString];
-    [(MULabeledValueActionViewModel *)v6 setTitleString:v7];
+    titleString = [(MUCoordinateViewModel *)v5 titleString];
+    [(MULabeledValueActionViewModel *)v6 setTitleString:titleString];
 
-    v8 = [(MUCoordinateViewModel *)v5 valueString];
-    [(MULabeledValueActionViewModel *)v6 setValueString:v8];
+    valueString = [(MUCoordinateViewModel *)v5 valueString];
+    [(MULabeledValueActionViewModel *)v6 setValueString:valueString];
   }
 
   else
@@ -41,19 +41,19 @@
   return v6;
 }
 
-- (id)_loadPlaceInfoAddress:(id)a3 contact:(id)a4
+- (id)_loadPlaceInfoAddress:(id)address contact:(id)contact
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  contactCopy = contact;
   v8 = MUGetPlaceCardLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 identifier];
+    identifier = [addressCopy identifier];
     *buf = 138412546;
-    v33 = v9;
+    v33 = identifier;
     v34 = 2112;
-    v35 = v7;
+    v35 = contactCopy;
     _os_log_impl(&dword_1C5620000, v8, OS_LOG_TYPE_DEBUG, "Building section view for address: %@, contact: %@", buf, 0x16u);
   }
 
@@ -65,16 +65,16 @@
   v11 = v10;
   v31 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(MUContactsViewModelGenerator *)self->_contactViewModelGenerator viewModelForAddress:v6];
+  v13 = [(MUContactsViewModelGenerator *)self->_contactViewModelGenerator viewModelForAddress:addressCopy];
   objc_initWeak(buf, self);
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __74__MUContactSharedLocationSectionController__loadPlaceInfoAddress_contact___block_invoke_2;
   v26 = &unk_1E821A358;
   objc_copyWeak(&v29, buf);
-  v14 = v6;
+  v14 = addressCopy;
   v27 = v14;
-  v15 = v7;
+  v15 = contactCopy;
   v28 = v15;
   v12[2](v12, v13, &v23);
   v16 = [(MUContactSharedLocationSectionController *)self mapItemCoordinateViewModel:v23];
@@ -133,23 +133,23 @@ void __74__MUContactSharedLocationSectionController__loadPlaceInfoAddress_contac
   sectionStackViews = self->_sectionStackViews;
   self->_sectionStackViews = v5;
 
-  v7 = [(_MKPlaceItem *)self->_placeItem contact];
-  if (v7 && MapsFeature_IsEnabled_MapsWally() && [(_MKPlaceItem *)self->_placeItem representsPerson])
+  contact = [(_MKPlaceItem *)self->_placeItem contact];
+  if (contact && MapsFeature_IsEnabled_MapsWally() && [(_MKPlaceItem *)self->_placeItem representsPerson])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [v7 postalAddresses];
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    postalAddresses = [contact postalAddresses];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __58__MUContactSharedLocationSectionController__buildSections__block_invoke;
     v21 = &unk_1E821A2B8;
     v22 = v8;
-    v23 = self;
-    v24 = v7;
+    selfCopy = self;
+    v24 = contact;
     v25 = v10;
     v11 = v10;
     v12 = v8;
-    [v9 enumerateObjectsUsingBlock:&v18];
+    [postalAddresses enumerateObjectsUsingBlock:&v18];
     v13 = [(MUContactsViewModelGenerator *)self->_contactViewModelGenerator sectionViewsFromContentViews:v12 headerLabels:v11, v18, v19, v20, v21];
     v14 = [v12 copy];
     v15 = self->_sectionStackViews;
@@ -182,8 +182,8 @@ void __58__MUContactSharedLocationSectionController__buildSections__block_invoke
 
 - (id)draggableContent
 {
-  v3 = [(NSArray *)self->_sectionViews firstObject];
-  v4 = MUIdiomInTraitEnvironment(v3);
+  firstObject = [(NSArray *)self->_sectionViews firstObject];
+  v4 = MUIdiomInTraitEnvironment(firstObject);
 
   if (v4 == 5)
   {
@@ -228,14 +228,14 @@ uint64_t __60__MUContactSharedLocationSectionController_draggableContent__block_
   return v2;
 }
 
-- (MUContactSharedLocationSectionController)initWithPlaceItem:(id)a3 availability:(id)a4
+- (MUContactSharedLocationSectionController)initWithPlaceItem:(id)item availability:(id)availability
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mapItem];
+  itemCopy = item;
+  availabilityCopy = availability;
+  mapItem = [itemCopy mapItem];
   v20.receiver = self;
   v20.super_class = MUContactSharedLocationSectionController;
-  v10 = [(MUPlaceSectionController *)&v20 initWithMapItem:v9];
+  v10 = [(MUPlaceSectionController *)&v20 initWithMapItem:mapItem];
 
   if (v10)
   {
@@ -246,15 +246,15 @@ uint64_t __60__MUContactSharedLocationSectionController_draggableContent__block_
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUContactSharedLocationSectionController", "", v19, 2u);
     }
 
-    objc_storeStrong(&v10->_placeItem, a3);
-    objc_storeStrong(&v10->_availability, a4);
-    v12 = [(_MKPlaceItem *)v10->_placeItem contact];
+    objc_storeStrong(&v10->_placeItem, item);
+    objc_storeStrong(&v10->_availability, availability);
+    contact = [(_MKPlaceItem *)v10->_placeItem contact];
 
-    if (v12)
+    if (contact)
     {
       v13 = [MUContactsViewModelGenerator alloc];
-      v14 = [(_MKPlaceItem *)v10->_placeItem contact];
-      v15 = [(MUContactsViewModelGenerator *)v13 initWithContact:v14];
+      contact2 = [(_MKPlaceItem *)v10->_placeItem contact];
+      v15 = [(MUContactsViewModelGenerator *)v13 initWithContact:contact2];
       contactViewModelGenerator = v10->_contactViewModelGenerator;
       v10->_contactViewModelGenerator = v15;
     }

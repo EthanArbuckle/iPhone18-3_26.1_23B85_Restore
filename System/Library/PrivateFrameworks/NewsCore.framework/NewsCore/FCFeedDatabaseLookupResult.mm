@@ -7,12 +7,12 @@
 - (id)description
 {
   v3 = [FCDescription descriptionWithObject:self];
-  v4 = [(FCFeedDatabaseLookupResult *)self feedItems];
-  [v3 addField:@"feedItems" format:{@"%lu", objc_msgSend(v4, "count")}];
+  feedItems = [(FCFeedDatabaseLookupResult *)self feedItems];
+  [v3 addField:@"feedItems" format:{@"%lu", objc_msgSend(feedItems, "count")}];
 
-  v5 = [(FCFeedDatabaseLookupResult *)self feedRange];
-  v6 = [v5 dateRange];
-  [v3 addField:@"feedRange" format:{@"%@", v6}];
+  feedRange = [(FCFeedDatabaseLookupResult *)self feedRange];
+  dateRange = [feedRange dateRange];
+  [v3 addField:@"feedRange" format:{@"%@", dateRange}];
 
   if ([(FCFeedDatabaseLookupResult *)self exhaustedRange])
   {
@@ -38,9 +38,9 @@
   }
 
   [v3 addField:@"insertionToken" value:v8];
-  v9 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v9;
+  return descriptionString;
 }
 
 @end

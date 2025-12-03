@@ -1,20 +1,20 @@
 @interface FMDAccountStoreFMIP
 - (FMDAccountStoreFMIP)init;
-- (id)_accountFromBackedUpDictionary:(id)a3 andNotBackedUpDictionary:(id)a4;
-- (id)_backedUpDictionaryFromAccount:(id)a3;
-- (id)_notBackedUpDictionaryFromAccount:(id)a3;
-- (id)_stateChangeCriteriaForAccount:(id)a3;
+- (id)_accountFromBackedUpDictionary:(id)dictionary andNotBackedUpDictionary:(id)upDictionary;
+- (id)_backedUpDictionaryFromAccount:(id)account;
+- (id)_notBackedUpDictionaryFromAccount:(id)account;
+- (id)_stateChangeCriteriaForAccount:(id)account;
 - (id)accountsFileURL;
 - (id)accountsNotBackedUpFileURL;
 - (id)deprecatedAccountsFileURL;
 - (id)deprecatedAccountsNotBackedUpFileURL;
 - (id)loadAccount;
-- (void)_checkOSVersionHistoryUsingBackedUpVersion:(id)a3 nonBackedUpVersion:(id)a4;
+- (void)_checkOSVersionHistoryUsingBackedUpVersion:(id)version nonBackedUpVersion:(id)upVersion;
 - (void)_loadTestAccount;
 - (void)_saveChanges;
-- (void)_saveDictionaryForAccount:(id)a3;
+- (void)_saveDictionaryForAccount:(id)account;
 - (void)migrateAccountsFiles;
-- (void)saveAccount:(id)a3;
+- (void)saveAccount:(id)account;
 @end
 
 @implementation FMDAccountStoreFMIP
@@ -27,38 +27,38 @@
   if (v2)
   {
     v3 = [FMDataArchiver alloc];
-    v4 = [(FMDAccountStoreFMIP *)v2 accountsFileURL];
-    v5 = [v3 initWithFileURL:v4];
+    accountsFileURL = [(FMDAccountStoreFMIP *)v2 accountsFileURL];
+    v5 = [v3 initWithFileURL:accountsFileURL];
     [(FMDAccountStoreFMIP *)v2 setBackedUpDataArchiver:v5];
 
-    v6 = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
-    [v6 setDataProtectionClass:4];
+    backedUpDataArchiver = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
+    [backedUpDataArchiver setDataProtectionClass:4];
 
-    v7 = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
-    [v7 setBackedUp:1];
+    backedUpDataArchiver2 = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
+    [backedUpDataArchiver2 setBackedUp:1];
 
-    v8 = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
-    [v8 setCreateDirectories:1];
+    backedUpDataArchiver3 = [(FMDAccountStoreFMIP *)v2 backedUpDataArchiver];
+    [backedUpDataArchiver3 setCreateDirectories:1];
 
     v9 = [FMDataArchiver alloc];
-    v10 = [(FMDAccountStoreFMIP *)v2 accountsNotBackedUpFileURL];
-    v11 = [v9 initWithFileURL:v10];
+    accountsNotBackedUpFileURL = [(FMDAccountStoreFMIP *)v2 accountsNotBackedUpFileURL];
+    v11 = [v9 initWithFileURL:accountsNotBackedUpFileURL];
     [(FMDAccountStoreFMIP *)v2 setNotBackedUpDataArchiver:v11];
 
-    v12 = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
-    [v12 setDataProtectionClass:4];
+    notBackedUpDataArchiver = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
+    [notBackedUpDataArchiver setDataProtectionClass:4];
 
-    v13 = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
-    [v13 setBackedUp:0];
+    notBackedUpDataArchiver2 = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
+    [notBackedUpDataArchiver2 setBackedUp:0];
 
-    v14 = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
-    [v14 setCreateDirectories:1];
+    notBackedUpDataArchiver3 = [(FMDAccountStoreFMIP *)v2 notBackedUpDataArchiver];
+    [notBackedUpDataArchiver3 setCreateDirectories:1];
 
     v15 = objc_alloc_init(FMStateCapture);
     [(FMDAccountStoreFMIP *)v2 setStateCapture:v15];
 
-    v16 = [(FMDAccountStoreFMIP *)v2 stateCapture];
-    [v16 setStateCaptureBlock:&stru_1002CF3D8];
+    stateCapture = [(FMDAccountStoreFMIP *)v2 stateCapture];
+    [stateCapture setStateCaptureBlock:&stru_1002CF3D8];
   }
 
   return v2;
@@ -81,10 +81,10 @@
       sub_100229B24();
     }
 
-    v5 = [(FMDAccountStoreFMIP *)self backedUpDataArchiver];
+    backedUpDataArchiver = [(FMDAccountStoreFMIP *)self backedUpDataArchiver];
     v6 = [NSSet setWithObject:objc_opt_class()];
     v40 = 0;
-    v3 = [v5 readDictionaryAndClasses:v6 error:&v40];
+    v3 = [backedUpDataArchiver readDictionaryAndClasses:v6 error:&v40];
     v7 = v40;
 
     if (!v3 || v7)
@@ -109,10 +109,10 @@
       sub_100229BC0();
     }
 
-    v12 = [(FMDAccountStoreFMIP *)self notBackedUpDataArchiver];
+    notBackedUpDataArchiver = [(FMDAccountStoreFMIP *)self notBackedUpDataArchiver];
     v13 = [NSSet setWithObject:objc_opt_class()];
     v39 = 0;
-    v10 = [v12 readDictionaryAndClasses:v13 error:&v39];
+    v10 = [notBackedUpDataArchiver readDictionaryAndClasses:v13 error:&v39];
     v14 = v39;
 
     if (!v10 || v14)
@@ -131,9 +131,9 @@
   v17 = [(FMDAccountStoreFMIP *)self _accountFromBackedUpDictionary:v3 andNotBackedUpDictionary:v10];
   [(FMDAccountStoreFMIP *)self setAccount:v17];
 
-  v18 = [(FMDAccountStoreFMIP *)self account];
+  account = [(FMDAccountStoreFMIP *)self account];
 
-  if (v18)
+  if (account)
   {
     v19 = [v3 objectForKeyedSubscript:off_100312DD0];
     v20 = [v10 objectForKeyedSubscript:off_100312DD0];
@@ -153,13 +153,13 @@
   if (!v23)
   {
 LABEL_26:
-    v24 = [(FMDAccountStoreFMIP *)self account];
+    account2 = [(FMDAccountStoreFMIP *)self account];
 
-    if (v24)
+    if (account2)
     {
       v25 = +[FMDAppleAccountManager sharedInstance];
-      v26 = [(FMDAccountStoreFMIP *)self account];
-      v27 = [v25 populateiCloudAccountInfoIntoAccount:v26];
+      account3 = [(FMDAccountStoreFMIP *)self account];
+      v27 = [v25 populateiCloudAccountInfoIntoAccount:account3];
 
       if ((v27 & 1) == 0)
       {
@@ -179,40 +179,40 @@ LABEL_26:
 
   [(FMDAccountStoreFMIP *)self _loadTestAccount];
 LABEL_31:
-  v29 = [(FMDAccountStoreFMIP *)self account];
-  v30 = [(FMDAccountStoreFMIP *)self _stateChangeCriteriaForAccount:v29];
+  account4 = [(FMDAccountStoreFMIP *)self account];
+  v30 = [(FMDAccountStoreFMIP *)self _stateChangeCriteriaForAccount:account4];
   [(FMDAccountStoreFMIP *)self setFmipStateChangeCriteria:v30];
 
-  v31 = [(FMDAccountStoreFMIP *)self account];
-  -[FMDAccountStoreFMIP setOldLowBatteryState:](self, "setOldLowBatteryState:", [v31 lowBatteryLocateEnabled]);
+  account5 = [(FMDAccountStoreFMIP *)self account];
+  -[FMDAccountStoreFMIP setOldLowBatteryState:](self, "setOldLowBatteryState:", [account5 lowBatteryLocateEnabled]);
 
   v32 = sub_100002880();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(FMDAccountStoreFMIP *)self account];
-    v34 = [v33 username];
+    account6 = [(FMDAccountStoreFMIP *)self account];
+    username = [account6 username];
     *buf = 138412290;
-    v42 = v34;
+    v42 = username;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Loaded FMIP account for user %@ from the store", buf, 0xCu);
   }
 
   [(FMDAccountStoreFMIP *)self setInitialized:1];
   v35 = +[FMDFMIPSharedStateManager sharedInstance];
-  v36 = [(FMDAccountStoreFMIP *)self account];
-  [v35 setFMiPActive:v36 != 0];
+  account7 = [(FMDAccountStoreFMIP *)self account];
+  [v35 setFMiPActive:account7 != 0];
 
 LABEL_34:
-  v37 = [(FMDAccountStoreFMIP *)self account];
+  account8 = [(FMDAccountStoreFMIP *)self account];
 
-  return v37;
+  return account8;
 }
 
-- (void)saveAccount:(id)a3
+- (void)saveAccount:(id)account
 {
-  v5 = a3;
-  if (v5 || ([(FMDAccountStoreFMIP *)self account], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  accountCopy = account;
+  if (accountCopy || ([(FMDAccountStoreFMIP *)self account], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    [(FMDAccountStoreFMIP *)self setAccount:v5];
+    [(FMDAccountStoreFMIP *)self setAccount:accountCopy];
     [(FMDAccountStoreFMIP *)self _saveChanges];
   }
 
@@ -229,54 +229,54 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Using test account info from %@", &v22, 0xCu);
   }
 
-  v4 = [(FMDAccountStoreFMIP *)self account];
+  account = [(FMDAccountStoreFMIP *)self account];
 
-  if (!v4)
+  if (!account)
   {
     v5 = objc_alloc_init(FMDFMIPAccount);
     [(FMDAccountStoreFMIP *)self setAccount:v5];
 
     v6 = +[NSDate date];
-    v7 = [(FMDAccountStoreFMIP *)self account];
-    [v7 setAccountAddTime:v6];
+    account2 = [(FMDAccountStoreFMIP *)self account];
+    [account2 setAccountAddTime:v6];
   }
 
   v8 = [NSDictionary dictionaryWithContentsOfFile:@"/var/tmp/fmipAccountInfo.plist"];
   v9 = [v8 objectForKeyedSubscript:off_100313398];
-  v10 = [(FMDAccountStoreFMIP *)self account];
-  [v10 setUsername:v9];
+  account3 = [(FMDAccountStoreFMIP *)self account];
+  [account3 setUsername:v9];
 
   v11 = [v8 objectForKeyedSubscript:off_1003133A0];
-  v12 = [(FMDAccountStoreFMIP *)self account];
-  [v12 setDsid:v11];
+  account4 = [(FMDAccountStoreFMIP *)self account];
+  [account4 setDsid:v11];
 
   v13 = [v8 objectForKeyedSubscript:off_1003133B0];
-  v14 = [(FMDAccountStoreFMIP *)self account];
-  [v14 setFmipAuthToken:v13];
+  account5 = [(FMDAccountStoreFMIP *)self account];
+  [account5 setFmipAuthToken:v13];
 
   v15 = [v8 objectForKeyedSubscript:off_1003133C8];
-  v16 = [(FMDAccountStoreFMIP *)self account];
-  [v16 setServerHost:v15];
+  account6 = [(FMDAccountStoreFMIP *)self account];
+  [account6 setServerHost:v15];
 
   v17 = [v8 objectForKeyedSubscript:off_1003133D0];
-  v18 = [(FMDAccountStoreFMIP *)self account];
-  [v18 setServerProtocolScheme:v17];
+  account7 = [(FMDAccountStoreFMIP *)self account];
+  [account7 setServerProtocolScheme:v17];
 
   v19 = [v8 objectForKeyedSubscript:off_1003133D8];
-  v20 = [(FMDAccountStoreFMIP *)self account];
-  [v20 setApsEnvironment:v19];
+  account8 = [(FMDAccountStoreFMIP *)self account];
+  [account8 setApsEnvironment:v19];
 
-  v21 = [(FMDAccountStoreFMIP *)self account];
-  [v21 setFmipEnableContext:2];
+  account9 = [(FMDAccountStoreFMIP *)self account];
+  [account9 setFmipEnableContext:2];
 
   [(FMDAccountStoreFMIP *)self _saveChanges];
 }
 
 - (void)_saveChanges
 {
-  v3 = [(FMDAccountStoreFMIP *)self account];
+  account = [(FMDAccountStoreFMIP *)self account];
 
-  if (!v3)
+  if (!account)
   {
     v4 = +[NSFileManager defaultManager];
     v5 = [v4 fileExistsAtPath:@"/var/mobile/Library/Preferences/com.apple.icloud.findmydeviced.FMIPAccounts.plist"];
@@ -331,9 +331,9 @@ LABEL_34:
     }
 
     v16 = +[NSFileManager defaultManager];
-    v17 = [(FMDAccountStoreFMIP *)self accountsFileURL];
+    accountsFileURL = [(FMDAccountStoreFMIP *)self accountsFileURL];
     v46 = 0;
-    [v16 removeItemAtURL:v17 error:&v46];
+    [v16 removeItemAtURL:accountsFileURL error:&v46];
     v18 = v46;
 
     if (v18 && ([v18 fm_isFileNotFoundError] & 1) == 0)
@@ -346,9 +346,9 @@ LABEL_34:
     }
 
     v20 = +[NSFileManager defaultManager];
-    v21 = [(FMDAccountStoreFMIP *)self accountsNotBackedUpFileURL];
+    accountsNotBackedUpFileURL = [(FMDAccountStoreFMIP *)self accountsNotBackedUpFileURL];
     v45 = v18;
-    [v20 removeItemAtURL:v21 error:&v45];
+    [v20 removeItemAtURL:accountsNotBackedUpFileURL error:&v45];
     v22 = v45;
 
     if (v22 && ([v22 fm_isFileNotFoundError] & 1) == 0)
@@ -361,23 +361,23 @@ LABEL_34:
     }
   }
 
-  v24 = [(FMDAccountStoreFMIP *)self account];
+  account2 = [(FMDAccountStoreFMIP *)self account];
 
-  if (v24)
+  if (account2)
   {
-    v25 = [(FMDAccountStoreFMIP *)self account];
-    [(FMDAccountStoreFMIP *)self _saveDictionaryForAccount:v25];
+    account3 = [(FMDAccountStoreFMIP *)self account];
+    [(FMDAccountStoreFMIP *)self _saveDictionaryForAccount:account3];
   }
 
   v26 = +[FMDFMIPSharedStateManager sharedInstance];
-  v27 = [(FMDAccountStoreFMIP *)self account];
-  [v26 setFMiPActive:v27 != 0];
+  account4 = [(FMDAccountStoreFMIP *)self account];
+  [v26 setFMiPActive:account4 != 0];
 
   v28 = +[FMDAppleAccountManager sharedInstance];
   [v28 setFMIPDataclass:0];
 
-  v29 = [(FMDAccountStoreFMIP *)self account];
-  v30 = [(FMDAccountStoreFMIP *)self _stateChangeCriteriaForAccount:v29];
+  account5 = [(FMDAccountStoreFMIP *)self account];
+  v30 = [(FMDAccountStoreFMIP *)self _stateChangeCriteriaForAccount:account5];
 
   v31 = sub_100002880();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -385,8 +385,8 @@ LABEL_34:
     sub_100229F10(self);
   }
 
-  v32 = [(FMDAccountStoreFMIP *)self fmipStateChangeCriteria];
-  v33 = [v30 isEqualToDictionary:v32];
+  fmipStateChangeCriteria = [(FMDAccountStoreFMIP *)self fmipStateChangeCriteria];
+  v33 = [v30 isEqualToDictionary:fmipStateChangeCriteria];
 
   if ((v33 & 1) == 0)
   {
@@ -404,11 +404,11 @@ LABEL_34:
   }
 
   [(FMDAccountStoreFMIP *)self setFmipStateChangeCriteria:v30];
-  v37 = [(FMDAccountStoreFMIP *)self oldLowBatteryState];
-  v38 = [(FMDAccountStoreFMIP *)self account];
-  v39 = [v38 lowBatteryLocateEnabled];
+  oldLowBatteryState = [(FMDAccountStoreFMIP *)self oldLowBatteryState];
+  account6 = [(FMDAccountStoreFMIP *)self account];
+  lowBatteryLocateEnabled = [account6 lowBatteryLocateEnabled];
 
-  if (v37 != v39)
+  if (oldLowBatteryState != lowBatteryLocateEnabled)
   {
     v40 = sub_100002880();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -422,26 +422,26 @@ LABEL_34:
 
     v42 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(v42, kFMIPLowBatteryLocateStateDidChangeNotification, 0, 0, 1u);
-    v43 = [(FMDAccountStoreFMIP *)self account];
-    -[FMDAccountStoreFMIP setOldLowBatteryState:](self, "setOldLowBatteryState:", [v43 lowBatteryLocateEnabled]);
+    account7 = [(FMDAccountStoreFMIP *)self account];
+    -[FMDAccountStoreFMIP setOldLowBatteryState:](self, "setOldLowBatteryState:", [account7 lowBatteryLocateEnabled]);
   }
 }
 
-- (void)_checkOSVersionHistoryUsingBackedUpVersion:(id)a3 nonBackedUpVersion:(id)a4
+- (void)_checkOSVersionHistoryUsingBackedUpVersion:(id)version nonBackedUpVersion:(id)upVersion
 {
-  v6 = a3;
+  versionCopy = version;
   v7 = +[FMDSystemConfig sharedInstance];
-  v8 = [v7 productVersion];
+  productVersion = [v7 productVersion];
 
-  if (v6)
+  if (versionCopy)
   {
-    if ([v6 isEqualToString:v8])
+    if ([versionCopy isEqualToString:productVersion])
     {
       goto LABEL_16;
     }
 
-    v9 = a4 ? @"u" : @"b";
-    v10 = [(__CFString *)v9 stringByAppendingString:v6];
+    v9 = upVersion ? @"u" : @"b";
+    v10 = [(__CFString *)v9 stringByAppendingString:versionCopy];
     if (!v10)
     {
       goto LABEL_16;
@@ -453,13 +453,13 @@ LABEL_34:
     v10 = @"old";
   }
 
-  v11 = [(FMDAccountStoreFMIP *)self account];
-  v12 = [v11 versionHistory];
+  account = [(FMDAccountStoreFMIP *)self account];
+  versionHistory = [account versionHistory];
 
-  if ([v12 count])
+  if ([versionHistory count])
   {
-    v13 = [v12 lastObject];
-    v14 = [(__CFString *)v10 isEqualToString:v13];
+    lastObject = [versionHistory lastObject];
+    v14 = [(__CFString *)v10 isEqualToString:lastObject];
 
     if (v14)
     {
@@ -468,7 +468,7 @@ LABEL_34:
 
     else
     {
-      v15 = [v12 arrayByAddingObject:v10];
+      v15 = [versionHistory arrayByAddingObject:v10];
       if ([v15 count] >= 0x15)
       {
         v16 = [v15 subarrayWithRange:{1, objc_msgSend(v15, "count") - 1}];
@@ -484,18 +484,18 @@ LABEL_34:
     v15 = [NSArray arrayWithObjects:&v18 count:1];
   }
 
-  v17 = [(FMDAccountStoreFMIP *)self account];
-  [v17 setVersionHistory:v15];
+  account2 = [(FMDAccountStoreFMIP *)self account];
+  [account2 setVersionHistory:v15];
 
   [(FMDAccountStoreFMIP *)self _saveChanges];
 LABEL_16:
 }
 
-- (void)_saveDictionaryForAccount:(id)a3
+- (void)_saveDictionaryForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(FMDAccountStoreFMIP *)self _backedUpDictionaryFromAccount:v4];
-  v6 = [(FMDAccountStoreFMIP *)self _notBackedUpDictionaryFromAccount:v4];
+  accountCopy = account;
+  v5 = [(FMDAccountStoreFMIP *)self _backedUpDictionaryFromAccount:accountCopy];
+  v6 = [(FMDAccountStoreFMIP *)self _notBackedUpDictionaryFromAccount:accountCopy];
 
   v7 = sub_100002880();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -505,8 +505,8 @@ LABEL_16:
 
   v8 = [NSPropertyListSerialization dataWithPropertyList:v5 format:200 options:0 error:0];
   [v8 writeToFile:@"/var/mobile/Library/Preferences/com.apple.icloud.findmydeviced.FMIPAccounts.plist" atomically:1];
-  v9 = [(FMDAccountStoreFMIP *)self backedUpDataArchiver];
-  v10 = [v9 saveDictionary:v5];
+  backedUpDataArchiver = [(FMDAccountStoreFMIP *)self backedUpDataArchiver];
+  v10 = [backedUpDataArchiver saveDictionary:v5];
 
   if (v10)
   {
@@ -525,8 +525,8 @@ LABEL_16:
 
   v13 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:0];
   [v13 writeToFile:@"/var/mobile/Library/Preferences/com.apple.icloud.findmydeviced.FMIPAccounts.notbackedup.plist" atomically:1];
-  v14 = [(FMDAccountStoreFMIP *)self notBackedUpDataArchiver];
-  v15 = [v14 saveDictionary:v6];
+  notBackedUpDataArchiver = [(FMDAccountStoreFMIP *)self notBackedUpDataArchiver];
+  v15 = [notBackedUpDataArchiver saveDictionary:v6];
 
   if (v15)
   {
@@ -538,28 +538,28 @@ LABEL_16:
   }
 }
 
-- (id)_accountFromBackedUpDictionary:(id)a3 andNotBackedUpDictionary:(id)a4
+- (id)_accountFromBackedUpDictionary:(id)dictionary andNotBackedUpDictionary:(id)upDictionary
 {
-  v5 = a4;
-  if (a3)
+  upDictionaryCopy = upDictionary;
+  if (dictionary)
   {
-    v6 = a3;
-    a3 = objc_alloc_init(FMDFMIPAccount);
-    v7 = [v6 objectForKeyedSubscript:off_100312DA0];
-    [a3 setDsid:v7];
-    v8 = [v6 objectForKeyedSubscript:off_100312DB8];
-    [a3 setFmipEnableContext:{objc_msgSend(v8, "unsignedIntValue")}];
+    dictionaryCopy = dictionary;
+    dictionary = objc_alloc_init(FMDFMIPAccount);
+    v7 = [dictionaryCopy objectForKeyedSubscript:off_100312DA0];
+    [dictionary setDsid:v7];
+    v8 = [dictionaryCopy objectForKeyedSubscript:off_100312DB8];
+    [dictionary setFmipEnableContext:{objc_msgSend(v8, "unsignedIntValue")}];
 
-    v9 = [v6 objectForKeyedSubscript:off_100312DD8];
-    [a3 setVersionHistory:v9];
+    v9 = [dictionaryCopy objectForKeyedSubscript:off_100312DD8];
+    [dictionary setVersionHistory:v9];
 
-    v10 = [v6 objectForKeyedSubscript:off_100312DE0];
-    [a3 setLastLoggedInDsid:v10];
+    v10 = [dictionaryCopy objectForKeyedSubscript:off_100312DE0];
+    [dictionary setLastLoggedInDsid:v10];
 
-    v11 = [v6 objectForKeyedSubscript:off_100312DF0];
-    [a3 setLowBatteryLocateEnabled:{objc_msgSend(v11, "BOOLValue")}];
+    v11 = [dictionaryCopy objectForKeyedSubscript:off_100312DF0];
+    [dictionary setLowBatteryLocateEnabled:{objc_msgSend(v11, "BOOLValue")}];
 
-    v12 = [v6 objectForKeyedSubscript:off_100312DE8];
+    v12 = [dictionaryCopy objectForKeyedSubscript:off_100312DE8];
 
     [v12 doubleValue];
     v14 = v13;
@@ -567,51 +567,51 @@ LABEL_16:
     if (v14 > 0.0)
     {
       v15 = [NSDate dateWithTimeIntervalSince1970:v14];
-      [a3 setAccountAddTime:v15];
+      [dictionary setAccountAddTime:v15];
     }
 
-    v16 = [v5 objectForKeyedSubscript:off_100312DA0];
+    v16 = [upDictionaryCopy objectForKeyedSubscript:off_100312DA0];
     if ([v16 isEqualToString:v7])
     {
-      v17 = [v5 objectForKeyedSubscript:off_100312DA8];
-      [a3 setLastIdentityTime:v17];
+      v17 = [upDictionaryCopy objectForKeyedSubscript:off_100312DA8];
+      [dictionary setLastIdentityTime:v17];
 
-      v18 = [v5 objectForKeyedSubscript:off_100312DB0];
-      [a3 setUnregisterState:{objc_msgSend(v18, "unsignedIntValue")}];
+      v18 = [upDictionaryCopy objectForKeyedSubscript:off_100312DB0];
+      [dictionary setUnregisterState:{objc_msgSend(v18, "unsignedIntValue")}];
 
-      v19 = [v5 objectForKeyedSubscript:off_100312DC0];
-      [a3 setFmipDisableContext:{objc_msgSend(v19, "unsignedIntValue")}];
+      v19 = [upDictionaryCopy objectForKeyedSubscript:off_100312DC0];
+      [dictionary setFmipDisableContext:{objc_msgSend(v19, "unsignedIntValue")}];
 
-      v20 = [v5 objectForKeyedSubscript:off_100312DC8];
-      [a3 setLastUnregisterFailedTime:v20];
+      v20 = [upDictionaryCopy objectForKeyedSubscript:off_100312DC8];
+      [dictionary setLastUnregisterFailedTime:v20];
     }
   }
 
-  return a3;
+  return dictionary;
 }
 
-- (id)_backedUpDictionaryFromAccount:(id)a3
+- (id)_backedUpDictionaryFromAccount:(id)account
 {
-  v3 = a3;
-  if (v3)
+  accountCopy = account;
+  if (accountCopy)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = off_100312DA0;
-    v6 = [v3 dsid];
-    [v4 fm_safelyMapKey:v5 toObject:v6];
+    dsid = [accountCopy dsid];
+    [v4 fm_safelyMapKey:v5 toObject:dsid];
 
-    if ([v3 fmipEnableContext])
+    if ([accountCopy fmipEnableContext])
     {
-      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 fmipEnableContext]);
+      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [accountCopy fmipEnableContext]);
       [v4 setObject:v7 forKeyedSubscript:off_100312DB8];
     }
 
     v8 = +[FMDSystemConfig sharedInstance];
-    v9 = [v8 productVersion];
-    v10 = v9;
-    if (v9)
+    productVersion = [v8 productVersion];
+    v10 = productVersion;
+    if (productVersion)
     {
-      v11 = v9;
+      v11 = productVersion;
     }
 
     else
@@ -621,31 +621,31 @@ LABEL_16:
 
     [v4 setObject:v11 forKeyedSubscript:off_100312DD0];
 
-    v12 = [v3 lastLoggedInDsid];
+    lastLoggedInDsid = [accountCopy lastLoggedInDsid];
 
-    if (v12)
+    if (lastLoggedInDsid)
     {
-      v13 = [v3 lastLoggedInDsid];
-      [v4 setObject:v13 forKeyedSubscript:off_100312DE0];
+      lastLoggedInDsid2 = [accountCopy lastLoggedInDsid];
+      [v4 setObject:lastLoggedInDsid2 forKeyedSubscript:off_100312DE0];
     }
 
-    v14 = [v3 versionHistory];
+    versionHistory = [accountCopy versionHistory];
 
-    if (v14)
+    if (versionHistory)
     {
-      v15 = [v3 versionHistory];
-      [v4 setObject:v15 forKeyedSubscript:off_100312DD8];
+      versionHistory2 = [accountCopy versionHistory];
+      [v4 setObject:versionHistory2 forKeyedSubscript:off_100312DD8];
     }
 
-    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 lowBatteryLocateEnabled]);
+    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy lowBatteryLocateEnabled]);
     [v4 setObject:v16 forKeyedSubscript:off_100312DF0];
 
-    v17 = [v3 accountAddTime];
+    accountAddTime = [accountCopy accountAddTime];
 
-    if (v17)
+    if (accountAddTime)
     {
-      v18 = [v3 accountAddTime];
-      [v18 timeIntervalSince1970];
+      accountAddTime2 = [accountCopy accountAddTime];
+      [accountAddTime2 timeIntervalSince1970];
       v19 = [NSNumber numberWithDouble:?];
       [v4 setObject:v19 forKeyedSubscript:off_100312DE8];
     }
@@ -659,39 +659,39 @@ LABEL_16:
   return v4;
 }
 
-- (id)_notBackedUpDictionaryFromAccount:(id)a3
+- (id)_notBackedUpDictionaryFromAccount:(id)account
 {
-  v3 = a3;
-  if (v3)
+  accountCopy = account;
+  if (accountCopy)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = off_100312DA0;
-    v6 = [v3 dsid];
-    [v4 fm_safelyMapKey:v5 toObject:v6];
+    dsid = [accountCopy dsid];
+    [v4 fm_safelyMapKey:v5 toObject:dsid];
 
     v7 = off_100312DA8;
-    v8 = [v3 lastIdentityTime];
-    [v4 fm_safelyMapKey:v7 toObject:v8];
+    lastIdentityTime = [accountCopy lastIdentityTime];
+    [v4 fm_safelyMapKey:v7 toObject:lastIdentityTime];
 
     v9 = off_100312DC8;
-    v10 = [v3 lastUnregisterFailedTime];
-    [v4 fm_safelyMapKey:v9 toObject:v10];
+    lastUnregisterFailedTime = [accountCopy lastUnregisterFailedTime];
+    [v4 fm_safelyMapKey:v9 toObject:lastUnregisterFailedTime];
 
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 unregisterState]);
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [accountCopy unregisterState]);
     [v4 setObject:v11 forKeyedSubscript:off_100312DB0];
 
-    if ([v3 fmipDisableContext])
+    if ([accountCopy fmipDisableContext])
     {
-      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 fmipDisableContext]);
+      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [accountCopy fmipDisableContext]);
       [v4 setObject:v12 forKeyedSubscript:off_100312DC0];
     }
 
     v13 = +[FMDSystemConfig sharedInstance];
-    v14 = [v13 productVersion];
-    v15 = v14;
-    if (v14)
+    productVersion = [v13 productVersion];
+    v15 = productVersion;
+    if (productVersion)
     {
-      v16 = v14;
+      v16 = productVersion;
     }
 
     else
@@ -710,15 +710,15 @@ LABEL_16:
   return v4;
 }
 
-- (id)_stateChangeCriteriaForAccount:(id)a3
+- (id)_stateChangeCriteriaForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 dsid];
-  [v4 fm_safelyMapKey:@"dsid" toObject:v5];
+  dsid = [accountCopy dsid];
+  [v4 fm_safelyMapKey:@"dsid" toObject:dsid];
 
-  v6 = [v3 unregisterState];
-  v7 = [NSNumber numberWithUnsignedInteger:v6];
+  unregisterState = [accountCopy unregisterState];
+  v7 = [NSNumber numberWithUnsignedInteger:unregisterState];
   [v4 setObject:v7 forKeyedSubscript:@"unregisterState"];
 
   return v4;
@@ -744,17 +744,17 @@ LABEL_16:
 
 - (void)migrateAccountsFiles
 {
-  v3 = [(FMDAccountStoreFMIP *)self deprecatedAccountsFileURL];
-  v4 = [(FMDAccountStoreFMIP *)self accountsFileURL];
+  deprecatedAccountsFileURL = [(FMDAccountStoreFMIP *)self deprecatedAccountsFileURL];
+  accountsFileURL = [(FMDAccountStoreFMIP *)self accountsFileURL];
   v5 = +[NSFileManager defaultManager];
-  [v5 fm_migrateFileFromURL:v3 toURL:v4];
+  [v5 fm_migrateFileFromURL:deprecatedAccountsFileURL toURL:accountsFileURL];
 
-  v8 = [(FMDAccountStoreFMIP *)self deprecatedAccountsNotBackedUpFileURL];
+  deprecatedAccountsNotBackedUpFileURL = [(FMDAccountStoreFMIP *)self deprecatedAccountsNotBackedUpFileURL];
 
-  v6 = [(FMDAccountStoreFMIP *)self accountsNotBackedUpFileURL];
+  accountsNotBackedUpFileURL = [(FMDAccountStoreFMIP *)self accountsNotBackedUpFileURL];
 
   v7 = +[NSFileManager defaultManager];
-  [v7 fm_migrateFileFromURL:v8 toURL:v6];
+  [v7 fm_migrateFileFromURL:deprecatedAccountsNotBackedUpFileURL toURL:accountsNotBackedUpFileURL];
 }
 
 - (id)deprecatedAccountsFileURL

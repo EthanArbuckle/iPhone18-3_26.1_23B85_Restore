@@ -1,21 +1,21 @@
 @interface HKHealthWrapCodablePayloadHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKeyValuePairs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeyValuePairs:(id)pairs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKHealthWrapCodablePayloadHeader
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addKeyValuePairs:(id)a3
+- (void)addKeyValuePairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   keyValuePairs = self->_keyValuePairs;
-  v8 = v4;
+  v8 = pairsCopy;
   if (!keyValuePairs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_keyValuePairs;
     self->_keyValuePairs = v6;
 
-    v4 = v8;
+    pairsCopy = v8;
     keyValuePairs = self->_keyValuePairs;
   }
 
-  [(NSMutableArray *)keyValuePairs addObject:v4];
+  [(NSMutableArray *)keyValuePairs addObject:pairsCopy];
 }
 
 - (id)description
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = HKHealthWrapCodablePayloadHeader;
   v4 = [(HKHealthWrapCodablePayloadHeader *)&v8 description];
-  v5 = [(HKHealthWrapCodablePayloadHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKHealthWrapCodablePayloadHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,12 +61,12 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   channel = self->_channel;
   if (channel)
   {
-    [v3 setObject:channel forKey:@"channel"];
+    [dictionary setObject:channel forKey:@"channel"];
   }
 
   payloadType = self->_payloadType;
@@ -130,8 +130,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -148,10 +148,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_channel)
   {
     PBDataWriterWriteStringField();
@@ -223,40 +223,40 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_channel)
   {
-    [v4 setChannel:?];
-    v4 = v10;
+    [toCopy setChannel:?];
+    toCopy = v10;
   }
 
   if (self->_payloadType)
   {
     [v10 setPayloadType:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_subjectUUID)
   {
     [v10 setSubjectUUID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_startDate;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 2) = self->_startDate;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_endDate;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_endDate;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_payloadIdentifier)
@@ -272,10 +272,10 @@
   if ([(HKHealthWrapCodablePayloadHeader *)self keyValuePairsCount])
   {
     [v10 clearKeyValuePairs];
-    v6 = [(HKHealthWrapCodablePayloadHeader *)self keyValuePairsCount];
-    if (v6)
+    keyValuePairsCount = [(HKHealthWrapCodablePayloadHeader *)self keyValuePairsCount];
+    if (keyValuePairsCount)
     {
-      v7 = v6;
+      v7 = keyValuePairsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HKHealthWrapCodablePayloadHeader *)self keyValuePairsAtIndex:i];
@@ -285,19 +285,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_channel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_channel copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_payloadType copyWithZone:a3];
+  v8 = [(NSString *)self->_payloadType copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSData *)self->_subjectUUID copyWithZone:a3];
+  v10 = [(NSData *)self->_subjectUUID copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
@@ -315,11 +315,11 @@
     *(v5 + 72) |= 1u;
   }
 
-  v13 = [(NSString *)self->_payloadIdentifier copyWithZone:a3];
+  v13 = [(NSString *)self->_payloadIdentifier copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
-  v15 = [(NSData *)self->_applicationData copyWithZone:a3];
+  v15 = [(NSData *)self->_applicationData copyWithZone:zone];
   v16 = *(v5 + 24);
   *(v5 + 24) = v15;
 
@@ -342,7 +342,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{a3, v25}];
+        v22 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{zone, v25}];
         [v5 addKeyValuePairs:v22];
       }
 
@@ -356,16 +356,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   channel = self->_channel;
-  if (channel | *(v4 + 4))
+  if (channel | *(equalCopy + 4))
   {
     if (![(NSString *)channel isEqual:?])
     {
@@ -374,7 +374,7 @@
   }
 
   payloadType = self->_payloadType;
-  if (payloadType | *(v4 + 7))
+  if (payloadType | *(equalCopy + 7))
   {
     if (![(NSString *)payloadType isEqual:?])
     {
@@ -383,7 +383,7 @@
   }
 
   subjectUUID = self->_subjectUUID;
-  if (subjectUUID | *(v4 + 8))
+  if (subjectUUID | *(equalCopy + 8))
   {
     if (![(NSData *)subjectUUID isEqual:?])
     {
@@ -391,16 +391,16 @@
     }
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_24:
     v12 = 0;
@@ -409,25 +409,25 @@ LABEL_24:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
 
   payloadIdentifier = self->_payloadIdentifier;
-  if (payloadIdentifier | *(v4 + 6) && ![(NSString *)payloadIdentifier isEqual:?])
+  if (payloadIdentifier | *(equalCopy + 6) && ![(NSString *)payloadIdentifier isEqual:?])
   {
     goto LABEL_24;
   }
 
   applicationData = self->_applicationData;
-  if (applicationData | *(v4 + 3))
+  if (applicationData | *(equalCopy + 3))
   {
     if (![(NSData *)applicationData isEqual:?])
     {
@@ -436,7 +436,7 @@ LABEL_24:
   }
 
   keyValuePairs = self->_keyValuePairs;
-  if (keyValuePairs | *(v4 + 5))
+  if (keyValuePairs | *(equalCopy + 5))
   {
     v12 = [(NSMutableArray *)keyValuePairs isEqual:?];
   }
@@ -484,45 +484,45 @@ LABEL_6:
   return v10 ^ [(NSMutableArray *)self->_keyValuePairs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(HKHealthWrapCodablePayloadHeader *)self setChannel:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HKHealthWrapCodablePayloadHeader *)self setPayloadType:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HKHealthWrapCodablePayloadHeader *)self setSubjectUUID:?];
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 2) != 0)
   {
-    self->_startDate = *(v4 + 2);
+    self->_startDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
   }
 
   if (v5)
   {
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HKHealthWrapCodablePayloadHeader *)self setPayloadIdentifier:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HKHealthWrapCodablePayloadHeader *)self setApplicationData:?];
   }
@@ -531,7 +531,7 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

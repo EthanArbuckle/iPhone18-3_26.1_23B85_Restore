@@ -1,18 +1,18 @@
 @interface CSFVoiceTriggerEventInfoSelfLoggerDarwin
 - (CSFVoiceTriggerEventInfoSelfLoggerDarwin)init;
-- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)a3;
-- (void)logCancelledEventWithMHUUID:(id)a3;
-- (void)logRejectEventWithVTEI:(id)a3 withMHUUID:(id)a4 withSecondPassResult:(unint64_t)a5;
-- (void)logStartEventWithFirstPassStartedInfo:(id)a3 withMHUUID:(id)a4;
+- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)completion;
+- (void)logCancelledEventWithMHUUID:(id)d;
+- (void)logRejectEventWithVTEI:(id)i withMHUUID:(id)d withSecondPassResult:(unint64_t)result;
+- (void)logStartEventWithFirstPassStartedInfo:(id)info withMHUUID:(id)d;
 @end
 
 @implementation CSFVoiceTriggerEventInfoSelfLoggerDarwin
 
-- (void)logCancelledEventWithMHUUID:(id)a3
+- (void)logCancelledEventWithMHUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -20,7 +20,7 @@
     v7[2] = __72__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logCancelledEventWithMHUUID___block_invoke;
     v7[3] = &unk_1E865C970;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -32,21 +32,21 @@ void __72__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logCancelledEventWithMHUUID_
   [v3 addEventToCacheBuffer:v2];
 }
 
-- (void)logRejectEventWithVTEI:(id)a3 withMHUUID:(id)a4 withSecondPassResult:(unint64_t)a5
+- (void)logRejectEventWithVTEI:(id)i withMHUUID:(id)d withSecondPassResult:(unint64_t)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  iCopy = i;
+  dCopy = d;
+  v10 = dCopy;
+  if (iCopy && dCopy)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __99__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logRejectEventWithVTEI_withMHUUID_withSecondPassResult___block_invoke;
     v12[3] = &unk_1E865C7A8;
-    v13 = v8;
-    v15 = self;
-    v16 = a5;
+    v13 = iCopy;
+    selfCopy = self;
+    resultCopy = result;
     v14 = v10;
     dispatch_async(queue, v12);
   }
@@ -65,21 +65,21 @@ void __99__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logRejectEventWithVTEI_withM
   [v4 addEventToCacheBuffer:v5];
 }
 
-- (void)logStartEventWithFirstPassStartedInfo:(id)a3 withMHUUID:(id)a4
+- (void)logStartEventWithFirstPassStartedInfo:(id)info withMHUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  infoCopy = info;
+  dCopy = d;
+  v8 = dCopy;
+  if (infoCopy && dCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __93__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logStartEventWithFirstPassStartedInfo_withMHUUID___block_invoke;
     block[3] = &unk_1E865C778;
-    v11 = v6;
+    v11 = infoCopy;
     v12 = v8;
-    v13 = self;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 }
@@ -94,17 +94,17 @@ void __93__CSFVoiceTriggerEventInfoSelfLoggerDarwin_logStartEventWithFirstPassSt
   [v3 addEventToCacheBuffer:v4];
 }
 
-- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)a3
+- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __96__CSFVoiceTriggerEventInfoSelfLoggerDarwin_fetchAndClearCachedVoiceTriggerEventsWithCompletion___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -160,15 +160,15 @@ void __96__CSFVoiceTriggerEventInfoSelfLoggerDarwin_fetchAndClearCachedVoiceTrig
     }
 
     self = v3;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

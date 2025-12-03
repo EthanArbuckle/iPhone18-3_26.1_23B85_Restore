@@ -1,7 +1,7 @@
 @interface AXPerformanceTestReportingServer
 + (id)server;
 - (void)assistiveTouchDidLaunch;
-- (void)voiceOverDidSpeak:(id)a3;
+- (void)voiceOverDidSpeak:(id)speak;
 - (void)voiceOverTouchDidLaunch;
 @end
 
@@ -46,14 +46,14 @@ uint64_t __42__AXPerformanceTestReportingServer_server__block_invoke()
   [(AXServer *)self sendSimpleMessage:v3];
 }
 
-- (void)voiceOverDidSpeak:(id)a3
+- (void)voiceOverDidSpeak:(id)speak
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  speakCopy = speak;
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v8 = @"string";
-  v9[0] = v4;
+  v9[0] = speakCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v7 = [(AXIPCMessage *)v5 initWithKey:8002 payload:v6];

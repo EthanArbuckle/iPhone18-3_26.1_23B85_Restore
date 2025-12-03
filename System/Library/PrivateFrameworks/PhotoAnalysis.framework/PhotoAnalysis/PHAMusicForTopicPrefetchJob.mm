@@ -1,15 +1,15 @@
 @interface PHAMusicForTopicPrefetchJob
-- (BOOL)shouldRunForLibrary:(id)a3 graphManager:(id)a4;
+- (BOOL)shouldRunForLibrary:(id)library graphManager:(id)manager;
 - (PHAMusicForTopicPrefetchJob)init;
-- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5;
+- (void)runWithGraphManager:(id)manager progressBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation PHAMusicForTopicPrefetchJob
 
-- (BOOL)shouldRunForLibrary:(id)a3 graphManager:(id)a4
+- (BOOL)shouldRunForLibrary:(id)library graphManager:(id)manager
 {
-  v4 = a4;
-  if ([MEMORY[0x277D3BAE8] requiresGraph] && (objc_msgSend(v4, "isReady") & 1) == 0)
+  managerCopy = manager;
+  if ([MEMORY[0x277D3BAE8] requiresGraph] && (objc_msgSend(managerCopy, "isReady") & 1) == 0)
   {
     if (__PXLog_genericOnceToken != -1)
     {
@@ -41,19 +41,19 @@ uint64_t __64__PHAMusicForTopicPrefetchJob_shouldRunForLibrary_graphManager___bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5
+- (void)runWithGraphManager:(id)manager progressBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
   runQueue = self->_runQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__PHAMusicForTopicPrefetchJob_runWithGraphManager_progressBlock_completionHandler___block_invoke;
   v12[3] = &unk_2788B2790;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = blockCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = blockCopy;
   dispatch_async(runQueue, v12);
 }
 

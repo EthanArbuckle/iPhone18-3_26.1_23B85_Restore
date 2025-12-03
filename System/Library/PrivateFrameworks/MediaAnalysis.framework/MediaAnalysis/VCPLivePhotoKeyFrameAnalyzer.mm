@@ -1,20 +1,20 @@
 @interface VCPLivePhotoKeyFrameAnalyzer
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)selectKeyFrameRangeWithMotion:(SEL)a3 stillTimestamp:(id)a4 isMetaMotion:(float)a5;
-- (VCPLivePhotoKeyFrameAnalyzer)initWithWidth:(int)a3 height:(int)a4;
-- (float)computeOverallFaceQualityScore:(id)a3;
-- (float)computeScoreForPhoto:(float)a3 withRefKeyFrame:(id)a4;
-- (float)getFaceHeat:(CGRect)a3;
-- (int)analyzeLivePhotoKeyFrame:(id)a3 irisPhotoOffsetSec:(float)a4 originalIrisPhotoOffsetSec:(float)a5 photoTextureScore:(float)a6 hadFlash:(BOOL)a7 cancel:(id)a8;
-- (int)reportLivePhotoKeyFrameAnalysisResults:(BOOL)a3 selectedKeyFrame:(id)a4 originalStillKeyFrame:(id)a5 stillScore:(float)a6 stillFQScore:(float)a7 stillTimestamp:(float)a8 useSemanticOnly:(BOOL)a9 isKeyFrameSuggested:(BOOL)a10;
-- (void)createFaceHeatMap:(id)a3 imageFaces:(id)a4;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)selectKeyFrameRangeWithMotion:(SEL)motion stillTimestamp:(id)timestamp isMetaMotion:(float)metaMotion;
+- (VCPLivePhotoKeyFrameAnalyzer)initWithWidth:(int)width height:(int)height;
+- (float)computeOverallFaceQualityScore:(id)score;
+- (float)computeScoreForPhoto:(float)photo withRefKeyFrame:(id)frame;
+- (float)getFaceHeat:(CGRect)heat;
+- (int)analyzeLivePhotoKeyFrame:(id)frame irisPhotoOffsetSec:(float)sec originalIrisPhotoOffsetSec:(float)offsetSec photoTextureScore:(float)score hadFlash:(BOOL)flash cancel:(id)cancel;
+- (int)reportLivePhotoKeyFrameAnalysisResults:(BOOL)results selectedKeyFrame:(id)frame originalStillKeyFrame:(id)keyFrame stillScore:(float)score stillFQScore:(float)qScore stillTimestamp:(float)timestamp useSemanticOnly:(BOOL)only isKeyFrameSuggested:(BOOL)self0;
+- (void)createFaceHeatMap:(id)map imageFaces:(id)faces;
 - (void)dealloc;
-- (void)fetchAndComputeScoreForKeyFrame:(id)a3 withResult:(id)a4;
-- (void)updateFaceHeatMap:(id)a3;
+- (void)fetchAndComputeScoreForKeyFrame:(id)frame withResult:(id)result;
+- (void)updateFaceHeatMap:(id)map;
 @end
 
 @implementation VCPLivePhotoKeyFrameAnalyzer
 
-- (VCPLivePhotoKeyFrameAnalyzer)initWithWidth:(int)a3 height:(int)a4
+- (VCPLivePhotoKeyFrameAnalyzer)initWithWidth:(int)width height:(int)height
 {
   v13.receiver = self;
   v13.super_class = VCPLivePhotoKeyFrameAnalyzer;
@@ -28,11 +28,11 @@ LABEL_6:
   }
 
   v6->_photoSharpnessReliable = 1;
-  v6->_width = a3;
-  v6->_height = a4;
+  v6->_width = width;
+  v6->_height = height;
   v6->_numOfFrames = 0;
   *&v6->_petsDominant = 256;
-  v8 = operator new[](a4 * a3, MEMORY[0x1E69E5398]);
+  v8 = operator new[](height * width, MEMORY[0x1E69E5398]);
   v7->_faceHeatMap = v8;
   v9 = v7;
   if (!v8)
@@ -65,12 +65,12 @@ LABEL_7:
   [(VCPLivePhotoKeyFrameAnalyzer *)&v4 dealloc];
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)selectKeyFrameRangeWithMotion:(SEL)a3 stillTimestamp:(id)a4 isMetaMotion:(float)a5
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)selectKeyFrameRangeWithMotion:(SEL)motion stillTimestamp:(id)timestamp isMetaMotion:(float)metaMotion
 {
   v6 = a6;
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
+  timestampCopy = timestamp;
+  v10 = timestampCopy;
   if (v6)
   {
     v11 = 100.0;
@@ -83,8 +83,8 @@ LABEL_7:
 
   start = **&MEMORY[0x1E6960CC0];
   memset(&v42, 0, sizeof(v42));
-  v12 = [v9 lastObject];
-  CMTimeRangeMakeFromDictionary(&range, v12);
+  lastObject = [timestampCopy lastObject];
+  CMTimeRangeMakeFromDictionary(&range, lastObject);
   CMTimeRangeGetEnd(&v42, &range);
 
   v39 = 0u;
@@ -96,7 +96,7 @@ LABEL_7:
   if (v14)
   {
     v15 = *v38;
-    v16 = a5;
+    metaMotionCopy = metaMotion;
     v17 = 0.0;
     while (2)
     {
@@ -116,13 +116,13 @@ LABEL_7:
 
         *&time.start.value = *&range.start.value;
         time.start.epoch = range.start.epoch;
-        if (CMTimeGetSeconds(&time.start) <= v16)
+        if (CMTimeGetSeconds(&time.start) <= metaMotionCopy)
         {
           time.start = range.duration;
           Seconds = CMTimeGetSeconds(&time.start);
           *&time.start.value = *&range.start.value;
           time.start.epoch = range.start.epoch;
-          v25 = v16 - CMTimeGetSeconds(&time.start);
+          v25 = metaMotionCopy - CMTimeGetSeconds(&time.start);
           if (v25 >= Seconds)
           {
             v25 = Seconds;
@@ -154,11 +154,11 @@ LABEL_7:
 
           time = range;
           CMTimeRangeGetEnd(&rhs, &time);
-          if (CMTimeGetSeconds(&rhs) >= v16)
+          if (CMTimeGetSeconds(&rhs) >= metaMotionCopy)
           {
             time = range;
             CMTimeRangeGetEnd(&rhs, &time);
-            v28 = CMTimeGetSeconds(&rhs) - v16;
+            v28 = CMTimeGetSeconds(&rhs) - metaMotionCopy;
             v17 = v22 * v28;
             if ((v22 * v28) >= v11)
             {
@@ -225,23 +225,23 @@ LABEL_26:
   return result;
 }
 
-- (int)analyzeLivePhotoKeyFrame:(id)a3 irisPhotoOffsetSec:(float)a4 originalIrisPhotoOffsetSec:(float)a5 photoTextureScore:(float)a6 hadFlash:(BOOL)a7 cancel:(id)a8
+- (int)analyzeLivePhotoKeyFrame:(id)frame irisPhotoOffsetSec:(float)sec originalIrisPhotoOffsetSec:(float)offsetSec photoTextureScore:(float)score hadFlash:(BOOL)flash cancel:(id)cancel
 {
-  v216 = a7;
+  flashCopy = flash;
   v266[4] = *MEMORY[0x1E69E9840];
-  v209 = a3;
-  v13 = a8;
-  v198 = v13;
+  frameCopy = frame;
+  cancelCopy = cancel;
+  v198 = cancelCopy;
   v202 = objc_alloc_init(VCPVideoKeyFrame);
   v208 = objc_alloc_init(VCPVideoKeyFrame);
-  v197 = vabds_f32(a4, a5);
+  v197 = vabds_f32(sec, offsetSec);
   if (v197 > 0.03 && (v220 = objc_alloc_init(VCPVideoKeyFrame)) != 0)
   {
-    CMTimeMakeWithSeconds(&v250, a5, 600);
+    CMTimeMakeWithSeconds(&v250, offsetSec, 600);
     v241.start = v250;
     [(VCPVideoKeyFrame *)v220 setTimestamp:&v241];
     v218 = 0;
-    if (!v13)
+    if (!cancelCopy)
     {
       goto LABEL_8;
     }
@@ -251,25 +251,25 @@ LABEL_26:
   {
     v220 = 0;
     v218 = 1;
-    if (!v13)
+    if (!cancelCopy)
     {
       goto LABEL_8;
     }
   }
 
-  if ((*(v13 + 2))(v13))
+  if ((*(cancelCopy + 2))(cancelCopy))
   {
     v14 = -128;
     goto LABEL_165;
   }
 
 LABEL_8:
-  v212 = [v209 vcp_results];
-  v15 = [v212 objectForKeyedSubscript:?];
-  v16 = [v212 objectForKeyedSubscript:@"FaceResults"];
+  vcp_results = [frameCopy vcp_results];
+  v15 = [vcp_results objectForKeyedSubscript:?];
+  v16 = [vcp_results objectForKeyedSubscript:@"FaceResults"];
   [(VCPLivePhotoKeyFrameAnalyzer *)self createFaceHeatMap:v15 imageFaces:v16];
 
-  v17 = [v212 objectForKeyedSubscript:@"KeyFrameBlurResults"];
+  v17 = [vcp_results objectForKeyedSubscript:@"KeyFrameBlurResults"];
   v189 = v17;
   if (![v17 count])
   {
@@ -284,20 +284,20 @@ LABEL_8:
   [v19 floatValue];
   self->_photoSharpness = v20;
 
-  self->_photoSharpnessReliable = a6 >= 0.2;
+  self->_photoSharpnessReliable = score >= 0.2;
   v265[0] = @"sharpness";
   *&v21 = self->_photoSharpness;
   v22 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
   v266[0] = v22;
   v265[1] = @"texture";
-  *&v23 = a6;
+  *&v23 = score;
   v24 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
   v266[1] = v24;
   v265[2] = @"flashFired";
-  v25 = [MEMORY[0x1E696AD98] numberWithBool:v216];
+  v25 = [MEMORY[0x1E696AD98] numberWithBool:flashCopy];
   v266[2] = v25;
   v265[3] = @"stillTime";
-  *&v26 = a4;
+  *&v26 = sec;
   v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
   v266[3] = v27;
   v188 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v266 forKeys:v265 count:4];
@@ -307,14 +307,14 @@ LABEL_8:
   v264 = v188;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v264 forKeys:&v263 count:1];
   v30 = [v28 arrayWithObject:v29];
-  [v209 vcp_setResult:v30 forKey:@"KeyFrameStillResults"];
+  [frameCopy vcp_setResult:v30 forKey:@"KeyFrameStillResults"];
 
-  v31 = [v212 objectForKeyedSubscript:@"FaceResults"];
+  v31 = [vcp_results objectForKeyedSubscript:@"FaceResults"];
   [(VCPLivePhotoKeyFrameAnalyzer *)self computeOverallFaceQualityScore:v31];
   v214 = v32;
 
   self->_petsDominant = 0;
-  v33 = [v212 objectForKeyedSubscript:@"PetsResults"];
+  v33 = [vcp_results objectForKeyedSubscript:@"PetsResults"];
   v34 = v33 == 0;
 
   if (!v34)
@@ -323,7 +323,7 @@ LABEL_8:
     v249 = 0u;
     v246 = 0u;
     v247 = 0u;
-    v35 = [v212 objectForKeyedSubscript:@"PetsResults"];
+    v35 = [vcp_results objectForKeyedSubscript:@"PetsResults"];
     v36 = [v35 countByEnumeratingWithState:&v246 objects:v262 count:16];
     if (v36)
     {
@@ -362,14 +362,14 @@ LABEL_8:
     self->_petsDominant = v44;
   }
 
-  v45 = [v212 objectForKeyedSubscript:@"ExposureResults"];
+  v45 = [vcp_results objectForKeyedSubscript:@"ExposureResults"];
   v46 = [v45 objectAtIndexedSubscript:0];
   v47 = [v46 objectForKeyedSubscript:@"attributes"];
   v48 = [v47 objectForKeyedSubscript:@"underExpose"];
   [v48 floatValue];
   v50 = v49;
 
-  v51 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+  v51 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
   v244 = 0u;
   v245 = 0u;
   v242 = 0u;
@@ -379,7 +379,7 @@ LABEL_8:
   if (v52)
   {
     v53 = *v243;
-    v54 = a4;
+    secCopy = sec;
     while (2)
     {
       for (j = 0; j != v52; ++j)
@@ -394,11 +394,11 @@ LABEL_8:
         CMTimeRangeMakeFromDictionary(&v241, v56);
         *&time.start.value = *&v241.start.value;
         time.start.epoch = v241.start.epoch;
-        if (CMTimeGetSeconds(&time.start) <= v54)
+        if (CMTimeGetSeconds(&time.start) <= secCopy)
         {
           time = v241;
           CMTimeRangeGetEnd(&time2.start, &time);
-          if (CMTimeGetSeconds(&time2.start) > v54)
+          if (CMTimeGetSeconds(&time2.start) > secCopy)
           {
             v58 = [(__CFDictionary *)v56 objectForKeyedSubscript:@"quality"];
             [v58 floatValue];
@@ -423,20 +423,20 @@ LABEL_8:
   v57 = 1;
 LABEL_32:
 
-  v61 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+  v61 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
   if (v61)
   {
-    v62 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+    v62 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
     v63 = [v62 objectAtIndexedSubscript:0];
     CMTimeRangeMakeFromDictionary(&time, v63);
     if (time.start.flags)
     {
-      v227 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+      v227 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
       v64 = [v227 objectAtIndexedSubscript:0];
       CMTimeRangeMakeFromDictionary(&time2, v64);
       if (time2.duration.flags)
       {
-        v223 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+        v223 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
         v210 = [v223 objectAtIndexedSubscript:0];
         CMTimeRangeMakeFromDictionary(&range, v210);
         if (range.duration.epoch)
@@ -445,15 +445,15 @@ LABEL_32:
 
         else
         {
-          v207 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
+          v207 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
           v180 = [v207 objectAtIndexedSubscript:0];
           CMTimeRangeMakeFromDictionary(&v260, v180);
           value = v260.duration.value;
 
           if (value >= 0)
           {
-            v181 = [v212 objectForKeyedSubscript:@"MetaMotionResults"];
-            *&v182 = a4;
+            v181 = [vcp_results objectForKeyedSubscript:@"MetaMotionResults"];
+            *&v182 = sec;
             [(VCPLivePhotoKeyFrameAnalyzer *)self selectKeyFrameRangeWithMotion:v181 stillTimestamp:1 isMetaMotion:v182];
             v241 = time;
 
@@ -472,13 +472,13 @@ LABEL_32:
     }
   }
 
-  v65 = [v212 objectForKeyedSubscript:@"CameraMotionResults"];
-  *&v66 = a4;
+  v65 = [vcp_results objectForKeyedSubscript:@"CameraMotionResults"];
+  *&v66 = sec;
   [(VCPLivePhotoKeyFrameAnalyzer *)self selectKeyFrameRangeWithMotion:v65 stillTimestamp:0 isMetaMotion:v66];
   v241 = time;
 
 LABEL_40:
-  v185 = [v212 objectForKeyedSubscript:@"MetaFocusResults"];
+  v185 = [vcp_results objectForKeyedSubscript:@"MetaFocusResults"];
   v258 = *MEMORY[0x1E6960C98];
   flags = *(MEMORY[0x1E6960C98] + 12);
   timescale = *(MEMORY[0x1E6960C98] + 8);
@@ -508,7 +508,7 @@ LABEL_40:
   }
 
   v228 = *v235;
-  v71 = a4;
+  secCopy2 = sec;
   while (2)
   {
     for (k = 0; k != v70; ++k)
@@ -527,13 +527,13 @@ LABEL_40:
 
       *&time2.start.value = *&time.start.value;
       time2.start.epoch = time.start.epoch;
-      if (CMTimeGetSeconds(&time2.start) > v71 || (time2 = time, CMTimeRangeGetEnd(&range.start, &time2), CMTimeGetSeconds(&range.start) <= v71))
+      if (CMTimeGetSeconds(&time2.start) > secCopy2 || (time2 = time, CMTimeRangeGetEnd(&range.start, &time2), CMTimeGetSeconds(&range.start) <= secCopy2))
       {
         *&time2.start.value = *&time.start.value;
         time2.start.epoch = time.start.epoch;
-        if (CMTimeGetSeconds(&time2.start) > v71)
+        if (CMTimeGetSeconds(&time2.start) > secCopy2)
         {
-          CMTimeMakeWithSeconds(&start, a4, v68);
+          CMTimeMakeWithSeconds(&start, sec, v68);
           range = time;
           CMTimeRangeGetEnd(&end, &range);
           CMTimeRangeFromTimeToTime(&time2, &start, &end);
@@ -562,15 +562,15 @@ LABEL_58:
         time2 = time;
         CMTimeRangeGetEnd(&range.start, &time2);
         v78 = CMTimeGetSeconds(&range.start);
-        v79 = v71 - v77;
-        *&v78 = v78 - v71;
+        v79 = secCopy2 - v77;
+        *&v78 = v78 - secCopy2;
         if (v79 < *&v78)
         {
           range.start.value = v67;
           *&range.start.flags = v260.start.value;
           range.start.timescale = v68;
           HIDWORD(range.start.epoch) = v260.start.timescale;
-          CMTimeMakeWithSeconds(&start, a4, v68);
+          CMTimeMakeWithSeconds(&start, sec, v68);
           CMTimeRangeFromTimeToTime(&time2, &range.start, &start);
 LABEL_57:
           v258 = time2.start.value;
@@ -602,7 +602,7 @@ LABEL_57:
 LABEL_59:
 
 LABEL_60:
-  v81 = [v212 objectForKeyedSubscript:@"KeyFrameResults"];
+  v81 = [vcp_results objectForKeyedSubscript:@"KeyFrameResults"];
   v196 = *MEMORY[0x1E6960C70];
   v221 = *(MEMORY[0x1E6960C70] + 8);
   v82 = *(MEMORY[0x1E6960C70] + 16);
@@ -610,11 +610,11 @@ LABEL_60:
   v84 = objc_alloc_init(VCPVideoKeyFrame);
   v85 = 0;
   LODWORD(v183) = 1036831949;
-  v200 = fminf(a6 + 0.1, 0.2);
-  seconds = a5;
-  v211 = a4;
+  v200 = fminf(score + 0.1, 0.2);
+  seconds = offsetSec;
+  secCopy3 = sec;
   v86 = (flags & 1) == 0;
-  v87 = v216;
+  v87 = flashCopy;
   if (v50 >= 0.5)
   {
     v87 = 1;
@@ -648,7 +648,7 @@ LABEL_60:
   v184 = -1.0;
   v203 = -1.0;
   v190 = v221;
-  v215 = a5;
+  offsetSecCopy = offsetSec;
   while (v85 < [v81 count])
   {
     v90 = [v81 objectAtIndexedSubscript:v85];
@@ -672,11 +672,11 @@ LABEL_60:
     v229 = *&v94;
     if ((v218 & 1) == 0)
     {
-      *&v94 = v215;
-      if (v225 >= v215 || (*&v93 = v229, v229 < v215))
+      *&v94 = offsetSecCopy;
+      if (v225 >= offsetSecCopy || (*&v93 = v229, v229 < offsetSecCopy))
       {
         *&v93 = v229;
-        if (v229 < v215 && v85 + 1 == [v81 count])
+        if (v229 < offsetSecCopy && v85 + 1 == [v81 count])
         {
           [(VCPVideoKeyFrame *)v92 copyFrom:v83];
           CMTimeMakeWithSeconds(&v231, seconds, 600);
@@ -690,33 +690,33 @@ LABEL_60:
         [(VCPVideoKeyFrame *)v84 score:v94];
         v96 = v95;
         [(VCPVideoKeyFrame *)v83 score];
-        v98 = (v215 - v225) + (v229 - v215);
-        *&v99 = (((v215 - v225) * v97) + (v96 * (v229 - v215))) / v98;
+        v98 = (offsetSecCopy - v225) + (v229 - offsetSecCopy);
+        *&v99 = (((offsetSecCopy - v225) * v97) + (v96 * (v229 - offsetSecCopy))) / v98;
         [(VCPVideoKeyFrame *)v92 setScore:v99];
         [(VCPVideoKeyFrame *)v84 sharpness];
         v101 = v100;
         [(VCPVideoKeyFrame *)v83 sharpness];
-        *&v103 = (((v215 - v225) * v102) + (v101 * (v229 - v215))) / v98;
+        *&v103 = (((offsetSecCopy - v225) * v102) + (v101 * (v229 - offsetSecCopy))) / v98;
         [(VCPVideoKeyFrame *)v92 setSharpness:v103];
         [(VCPVideoKeyFrame *)v84 overallFaceQualityScore];
         v105 = v104;
         [(VCPVideoKeyFrame *)v83 overallFaceQualityScore];
-        *&v107 = (((v215 - v225) * v106) + (v105 * (v229 - v215))) / v98;
+        *&v107 = (((offsetSecCopy - v225) * v106) + (v105 * (v229 - offsetSecCopy))) / v98;
         [(VCPVideoKeyFrame *)v92 setOverallFaceQualityScore:v107];
         [(VCPVideoKeyFrame *)v84 contentScore];
         v109 = v108;
         [(VCPVideoKeyFrame *)v83 contentScore];
-        *&v111 = (((v215 - v225) * v110) + (v109 * (v229 - v215))) / v98;
+        *&v111 = (((offsetSecCopy - v225) * v110) + (v109 * (v229 - offsetSecCopy))) / v98;
         [(VCPVideoKeyFrame *)v92 setContentScore:v111];
         [(VCPVideoKeyFrame *)v84 semanticScore];
         v113 = v112;
         [(VCPVideoKeyFrame *)v83 semanticScore];
-        *&v115 = (((v215 - v225) * v114) + (v113 * (v229 - v215))) / v98;
+        *&v115 = (((offsetSecCopy - v225) * v114) + (v113 * (v229 - offsetSecCopy))) / v98;
         [(VCPVideoKeyFrame *)v92 setSemanticScore:v115];
       }
     }
 
-    if (v225 >= a4 || (*&v94 = v229, v229 < a4))
+    if (v225 >= sec || (*&v94 = v229, v229 < sec))
     {
       if (v88 == -1.0 && v85 + 1 == [v81 count])
       {
@@ -878,9 +878,9 @@ LABEL_183:
       [(VCPVideoKeyFrame *)v84 sharpness:v94];
       v117 = v116;
       [(VCPVideoKeyFrame *)v83 sharpness];
-      v118 = (v229 - a4) * 100.0;
-      v119 = a4;
-      v120 = (a4 - v225) * 100.0;
+      v118 = (v229 - sec) * 100.0;
+      secCopy4 = sec;
+      v120 = (sec - v225) * 100.0;
       v122 = v120 + v118;
       photoSharpness = ((v120 * v121) + (v117 * v118)) / (v120 + v118);
       if (self->_photoSharpness >= photoSharpness)
@@ -925,8 +925,8 @@ LABEL_183:
       time.start.epoch = v82;
       if (CMTimeGetSeconds(&time.start) == v225)
       {
-        CMTimeMakeWithSeconds(&time.start, v211, SLODWORD(v221));
-        a4 = v119;
+        CMTimeMakeWithSeconds(&time.start, secCopy3, SLODWORD(v221));
+        sec = secCopy4;
         v217 = time.start.value;
         v221 = *&time.start.timescale;
         v89 = v88;
@@ -935,7 +935,7 @@ LABEL_183:
 
       else
       {
-        a4 = v119;
+        sec = secCopy4;
       }
     }
 
@@ -951,7 +951,7 @@ LABEL_183:
   time.start.value = v217;
   *&time.start.timescale = v221;
   time.start.epoch = v82;
-  if (vabdd_f64(CMTimeGetSeconds(&time.start), v211) < 0.200000003)
+  if (vabdd_f64(CMTimeGetSeconds(&time.start), secCopy3) < 0.200000003)
   {
 LABEL_130:
     v152 = 0;
@@ -1024,7 +1024,7 @@ LABEL_131:
   }
 
   v219 = v152;
-  v155 = [v212 objectForKeyedSubscript:{v153, v154}];
+  v155 = [vcp_results objectForKeyedSubscript:{v153, v154}];
   v230 = [v155 objectAtIndexedSubscript:0];
 
   HIDWORD(v158) = HIDWORD(v221);
@@ -1084,7 +1084,7 @@ LABEL_131:
     }
 
     v173 = [MEMORY[0x1E695DEC8] arrayWithObject:{v169, v172}];
-    [v209 vcp_setResult:v173 forKey:@"MovieSummaryResults"];
+    [frameCopy vcp_setResult:v173 forKey:@"MovieSummaryResults"];
 
 LABEL_159:
     v163 = v220;
@@ -1115,7 +1115,7 @@ LABEL_159:
       v230 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v252 forKeys:v251 count:5];
 
       v169 = [MEMORY[0x1E695DEC8] arrayWithObject:v230];
-      [v209 vcp_setResult:v169 forKey:@"MovieSummaryResults"];
+      [frameCopy vcp_setResult:v169 forKey:@"MovieSummaryResults"];
       goto LABEL_159;
     }
   }
@@ -1132,7 +1132,7 @@ LABEL_159:
 
   *&v158 = v88;
   *&v156 = v214;
-  *&v157 = a4;
+  *&v157 = sec;
   [VCPLivePhotoKeyFrameAnalyzer reportLivePhotoKeyFrameAnalysisResults:"reportLivePhotoKeyFrameAnalysisResults:selectedKeyFrame:originalStillKeyFrame:stillScore:stillFQScore:stillTimestamp:useSemanticOnly:isKeyFrameSuggested:" selectedKeyFrame:v197 > 0.03 originalStillKeyFrame:v177 stillScore:v163 stillFQScore:v158 stillTimestamp:v156 useSemanticOnly:v157 isKeyFrameSuggested:?];
 
   v14 = 0;
@@ -1142,37 +1142,37 @@ LABEL_165:
   return v14;
 }
 
-- (int)reportLivePhotoKeyFrameAnalysisResults:(BOOL)a3 selectedKeyFrame:(id)a4 originalStillKeyFrame:(id)a5 stillScore:(float)a6 stillFQScore:(float)a7 stillTimestamp:(float)a8 useSemanticOnly:(BOOL)a9 isKeyFrameSuggested:(BOOL)a10
+- (int)reportLivePhotoKeyFrameAnalysisResults:(BOOL)results selectedKeyFrame:(id)frame originalStillKeyFrame:(id)keyFrame stillScore:(float)score stillFQScore:(float)qScore stillTimestamp:(float)timestamp useSemanticOnly:(BOOL)only isKeyFrameSuggested:(BOOL)self0
 {
-  v10 = a10;
-  v11 = a9;
-  v16 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v21 = v20;
-  if (v20)
+  suggestedCopy = suggested;
+  onlyCopy = only;
+  resultsCopy = results;
+  frameCopy = frame;
+  keyFrameCopy = keyFrame;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v21 = dictionary;
+  if (dictionary)
   {
-    if (v10)
+    if (suggestedCopy)
     {
-      if (v11)
+      if (onlyCopy)
       {
-        [v18 semanticScore];
+        [frameCopy semanticScore];
       }
 
       else
       {
-        [v18 score];
+        [frameCopy score];
       }
 
       v24 = v22;
-      [v18 overallFaceQualityScore];
-      v26 = (v25 - a7) >= 0.15;
-      [v18 overallFaceQualityScore];
-      if ((v24 - v27) >= ((a6 - a7) + 0.2) || ([v18 overallFaceQualityScore], a6 <= 0.7) && (v24 - v28) >= ((a6 - a7) + 0.1))
+      [frameCopy overallFaceQualityScore];
+      v26 = (v25 - qScore) >= 0.15;
+      [frameCopy overallFaceQualityScore];
+      if ((v24 - v27) >= ((score - qScore) + 0.2) || ([frameCopy overallFaceQualityScore], score <= 0.7) && (v24 - v28) >= ((score - qScore) + 0.1))
       {
-        [v18 sharpness];
-        if ((v29 - self->_photoSharpness) <= 0.35 || v11)
+        [frameCopy sharpness];
+        if ((v29 - self->_photoSharpness) <= 0.35 || onlyCopy)
         {
           v31 = 4;
         }
@@ -1185,7 +1185,7 @@ LABEL_165:
         v26 |= v31;
       }
 
-      if (v16)
+      if (resultsCopy)
       {
         v32 = @"UserAlgo";
       }
@@ -1196,14 +1196,14 @@ LABEL_165:
       }
 
       [v21 setObject:v32 forKeyedSubscript:@"KeyFrameIsSuggested"];
-      *&v33 = v24 - a6;
+      *&v33 = v24 - score;
       v34 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
       [v21 setObject:v34 forKeyedSubscript:@"KeyFrameScoreDifference"];
 
       v35 = MEMORY[0x1E696AD98];
-      if (v18)
+      if (frameCopy)
       {
-        [v18 timestamp];
+        [frameCopy timestamp];
       }
 
       else
@@ -1211,8 +1211,8 @@ LABEL_165:
         memset(&time, 0, sizeof(time));
       }
 
-      v36 = [v35 numberWithDouble:CMTimeGetSeconds(&time) - a8];
-      [v21 setObject:v36 forKeyedSubscript:@"KeyFrameTimestampOffset"];
+      timestamp = [v35 numberWithDouble:CMTimeGetSeconds(&time) - timestamp];
+      [v21 setObject:timestamp forKeyedSubscript:@"KeyFrameTimestampOffset"];
 
       v37 = [MEMORY[0x1E696AD98] numberWithInt:v26 & 1];
       [v21 setObject:v37 forKeyedSubscript:@"KeyFrameIsFaceQualityDominant"];
@@ -1226,25 +1226,25 @@ LABEL_165:
 
     else
     {
-      [v20 setObject:@"NoAlgo" forKeyedSubscript:@"KeyFrameIsSuggested"];
+      [dictionary setObject:@"NoAlgo" forKeyedSubscript:@"KeyFrameIsSuggested"];
     }
 
-    if (v16)
+    if (resultsCopy)
     {
       [v21 setObject:@"UserOrig" forKeyedSubscript:@"KeyFrameIsSuggestedEdit"];
-      if (v11 || !self->_photoSharpnessReliable)
+      if (onlyCopy || !self->_photoSharpnessReliable)
       {
-        [v19 semanticScore];
+        [keyFrameCopy semanticScore];
         v41 = 1;
       }
 
       else
       {
-        [v19 score];
+        [keyFrameCopy score];
         v41 = 0;
       }
 
-      v42 = a6 - v40;
+      v42 = score - v40;
       if (v42 < 0.0)
       {
         v43 = -1.0;
@@ -1255,11 +1255,11 @@ LABEL_165:
         v43 = 1.0;
       }
 
-      [v19 overallFaceQualityScore];
-      v45 = ((a7 - *&v44) * v43) >= 0.15;
+      [keyFrameCopy overallFaceQualityScore];
+      v45 = ((qScore - *&v44) * v43) >= 0.15;
       if ((v41 & 1) == 0)
       {
-        [v19 sharpness];
+        [keyFrameCopy sharpness];
         if ((v43 * (*&v44 - self->_photoSharpness)) > 0.35)
         {
           v45 |= 2u;
@@ -1283,9 +1283,9 @@ LABEL_165:
       [v21 setObject:v49 forKeyedSubscript:@"KeyFrameScoreDifferenceEdit"];
 
       v50 = MEMORY[0x1E696AD98];
-      if (v19)
+      if (keyFrameCopy)
       {
-        [v19 timestamp];
+        [keyFrameCopy timestamp];
       }
 
       else
@@ -1293,7 +1293,7 @@ LABEL_165:
         memset(&time, 0, sizeof(time));
       }
 
-      v51 = [v50 numberWithDouble:a8 - CMTimeGetSeconds(&time)];
+      v51 = [v50 numberWithDouble:timestamp - CMTimeGetSeconds(&time)];
       [v21 setObject:v51 forKeyedSubscript:@"KeyFrameTimestampOffsetEdit"];
 
       if (v48)
@@ -1335,87 +1335,87 @@ LABEL_165:
   return v23;
 }
 
-- (void)fetchAndComputeScoreForKeyFrame:(id)a3 withResult:(id)a4
+- (void)fetchAndComputeScoreForKeyFrame:(id)frame withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"frameQualityScore"];
+  frameCopy = frame;
+  resultCopy = result;
+  v8 = [resultCopy objectForKeyedSubscript:@"frameQualityScore"];
   [v8 floatValue];
-  [v6 setQualityScoreForLivePhoto:?];
+  [frameCopy setQualityScoreForLivePhoto:?];
 
-  v9 = [v7 objectForKeyedSubscript:@"visualPleasingScore"];
+  v9 = [resultCopy objectForKeyedSubscript:@"visualPleasingScore"];
   [v9 floatValue];
-  [v6 setVisualPleasingScore:?];
+  [frameCopy setVisualPleasingScore:?];
 
-  v10 = [v7 objectForKeyedSubscript:@"exposureScore"];
+  v10 = [resultCopy objectForKeyedSubscript:@"exposureScore"];
   [v10 floatValue];
-  [v6 setExposureScore:?];
+  [frameCopy setExposureScore:?];
 
-  v11 = [v7 objectForKeyedSubscript:@"penaltyScore"];
+  v11 = [resultCopy objectForKeyedSubscript:@"penaltyScore"];
   [v11 floatValue];
-  [v6 setPenaltyScore:?];
+  [frameCopy setPenaltyScore:?];
 
-  v12 = [v7 objectForKeyedSubscript:@"textureScore"];
+  v12 = [resultCopy objectForKeyedSubscript:@"textureScore"];
   [v12 floatValue];
-  [v6 setTextureScore:?];
+  [frameCopy setTextureScore:?];
 
-  v13 = [v7 objectForKeyedSubscript:@"sharpnessScore"];
+  v13 = [resultCopy objectForKeyedSubscript:@"sharpnessScore"];
   [v13 floatValue];
-  [v6 setSharpness:?];
+  [frameCopy setSharpness:?];
 
-  v14 = [v7 objectForKeyedSubscript:@"timestamp"];
+  v14 = [resultCopy objectForKeyedSubscript:@"timestamp"];
   [v14 floatValue];
   CMTimeMakeWithSeconds(&v37, v15, 600);
   v36 = v37;
-  [v6 setTimestamp:&v36];
+  [frameCopy setTimestamp:&v36];
 
-  v16 = [v7 objectForKeyedSubscript:@"FaceResults"];
+  v16 = [resultCopy objectForKeyedSubscript:@"FaceResults"];
   [(VCPLivePhotoKeyFrameAnalyzer *)self computeOverallFaceQualityScore:v16];
-  [v6 setOverallFaceQualityScore:?];
+  [frameCopy setOverallFaceQualityScore:?];
 
   if (self->_petsDominant)
   {
-    [v6 sharpness];
+    [frameCopy sharpness];
     if (v17 <= 0.7)
     {
-      [v6 sharpness];
+      [frameCopy sharpness];
       if (v18 > self->_photoSharpness)
       {
-        [v6 setSharpness:?];
-        [v6 qualityScoreForLivePhoto];
+        [frameCopy setSharpness:?];
+        [frameCopy qualityScoreForLivePhoto];
         if (self->_photoSharpness < *&v19)
         {
           *&v19 = self->_photoSharpness;
         }
 
-        [v6 setQualityScoreForLivePhoto:v19];
+        [frameCopy setQualityScoreForLivePhoto:v19];
       }
     }
   }
 
-  [v6 qualityScoreForLivePhoto];
+  [frameCopy qualityScoreForLivePhoto];
   v20 = 0.0;
   v21 = 0.0;
   if (v22 > 0.0)
   {
-    [v6 qualityScoreForLivePhoto];
+    [frameCopy qualityScoreForLivePhoto];
     if (v23 >= 0.3)
     {
-      [v6 qualityScoreForLivePhoto];
+      [frameCopy qualityScoreForLivePhoto];
       v25 = v24;
-      [v6 visualPleasingScore];
+      [frameCopy visualPleasingScore];
       v27 = v26;
-      [v6 penaltyScore];
+      [frameCopy penaltyScore];
       v20 = ((((v25 * 0.1) + 0.0) + (v27 * 0.25)) / 0.35) * v28;
     }
 
-    [v6 penaltyScore];
+    [frameCopy penaltyScore];
     v30 = v29;
-    [v6 visualPleasingScore];
+    [frameCopy visualPleasingScore];
     v21 = v30 * v31;
   }
 
-  [v6 overallFaceQualityScore];
+  [frameCopy overallFaceQualityScore];
   v33 = 1.0;
   if (v20 < 1.0)
   {
@@ -1428,8 +1428,8 @@ LABEL_165:
   }
 
   *&v32 = *&v32 + v33;
-  [v6 setScore:v32];
-  [v6 overallFaceQualityScore];
+  [frameCopy setScore:v32];
+  [frameCopy overallFaceQualityScore];
   v35 = 1.0;
   if (v21 < 1.0)
   {
@@ -1442,27 +1442,27 @@ LABEL_165:
   }
 
   *&v34 = v35 + *&v34;
-  [v6 setSemanticScore:v34];
+  [frameCopy setSemanticScore:v34];
 }
 
-- (float)computeScoreForPhoto:(float)a3 withRefKeyFrame:(id)a4
+- (float)computeScoreForPhoto:(float)photo withRefKeyFrame:(id)frame
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = 0.0;
-  if (a3 >= 0.0)
+  frameCopy = frame;
+  v7 = frameCopy;
+  photoCopy = 0.0;
+  if (photo >= 0.0)
   {
-    v8 = a3;
+    photoCopy = photo;
   }
 
-  if (a3 >= 1.0)
+  if (photo >= 1.0)
   {
-    v8 = 1.0;
+    photoCopy = 1.0;
   }
 
   if (self->_photoSharpnessReliable)
   {
-    v9 = v8;
+    v9 = photoCopy;
   }
 
   else
@@ -1470,7 +1470,7 @@ LABEL_165:
     v9 = 1.0;
   }
 
-  [v6 sharpness];
+  [frameCopy sharpness];
   if (v10 <= 0.0)
   {
     v13 = 0.0;
@@ -1521,18 +1521,18 @@ LABEL_16:
   return v16;
 }
 
-- (float)computeOverallFaceQualityScore:(id)a3
+- (float)computeOverallFaceQualityScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   v5 = 0.0;
   if (!self->_ignoreFace)
   {
     v6 = 0;
     v7 = 0.0;
     v8 = 0.0;
-    while (v6 < [v4 count])
+    while (v6 < [scoreCopy count])
     {
-      v9 = [v4 objectAtIndexedSubscript:v6];
+      v9 = [scoreCopy objectAtIndexedSubscript:v6];
       v10 = [v9 objectForKey:@"attributes"];
       v11 = [v10 objectForKey:@"faceBounds"];
       v24 = NSRectFromString(v11);
@@ -1577,12 +1577,12 @@ LABEL_16:
   return v5;
 }
 
-- (void)createFaceHeatMap:(id)a3 imageFaces:(id)a4
+- (void)createFaceHeatMap:(id)map imageFaces:(id)faces
 {
-  v13 = a3;
-  v6 = a4;
+  mapCopy = map;
+  facesCopy = faces;
   bzero(self->_faceHeatMap, self->_height * self->_width);
-  v7 = [v13 count];
+  v7 = [mapCopy count];
   self->_numOfFrames = v7 + 1;
   if (v7 >= 255)
   {
@@ -1596,9 +1596,9 @@ LABEL_16:
 
   v9 = 0;
   self->_numOfFrames = 0;
-  while (v9 < [v13 count])
+  while (v9 < [mapCopy count])
   {
-    v10 = [v13 objectAtIndexedSubscript:v9];
+    v10 = [mapCopy objectAtIndexedSubscript:v9];
     v11 = [v10 objectForKeyedSubscript:@"attributes"];
     v12 = [v11 objectForKeyedSubscript:@"FaceResults"];
 
@@ -1608,19 +1608,19 @@ LABEL_16:
     v9 += v8;
   }
 
-  [(VCPLivePhotoKeyFrameAnalyzer *)self updateFaceHeatMap:v6];
+  [(VCPLivePhotoKeyFrameAnalyzer *)self updateFaceHeatMap:facesCopy];
   ++self->_numOfFrames;
 }
 
-- (void)updateFaceHeatMap:(id)a3
+- (void)updateFaceHeatMap:(id)map
 {
   v29 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  mapCopy = map;
+  v5 = [mapCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = *v25;
@@ -1630,7 +1630,7 @@ LABEL_16:
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mapCopy);
         }
 
         v8 = [*(*(&v24 + 1) + 8 * i) objectForKey:{@"attributes", v24}];
@@ -1708,18 +1708,18 @@ LABEL_16:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [mapCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v5);
   }
 }
 
-- (float)getFaceHeat:(CGRect)a3
+- (float)getFaceHeat:(CGRect)heat
 {
-  if (a3.origin.y < 1.0)
+  if (heat.origin.y < 1.0)
   {
-    y = a3.origin.y;
+    y = heat.origin.y;
   }
 
   else
@@ -1727,14 +1727,14 @@ LABEL_16:
     y = 1.0;
   }
 
-  if (a3.origin.y <= 0.0)
+  if (heat.origin.y <= 0.0)
   {
     y = 0.0;
   }
 
   height = self->_height;
   v5 = (y * height);
-  v6 = a3.origin.y + a3.size.height;
+  v6 = heat.origin.y + heat.size.height;
   if (v6 < 1.0)
   {
     v7 = v6;
@@ -1760,7 +1760,7 @@ LABEL_16:
   if (v5 < v9)
   {
     v11 = 0;
-    v12 = a3.origin.x + a3.size.width;
+    v12 = heat.origin.x + heat.size.width;
     if (v12 < 1.0)
     {
       v13 = v12;
@@ -1783,9 +1783,9 @@ LABEL_16:
 
     width = self->_width;
     v16 = (v14 * width);
-    if (a3.origin.x < 1.0)
+    if (heat.origin.x < 1.0)
     {
-      x = a3.origin.x;
+      x = heat.origin.x;
     }
 
     else
@@ -1793,7 +1793,7 @@ LABEL_16:
       x = 1.0;
     }
 
-    if (a3.origin.x <= 0.0)
+    if (heat.origin.x <= 0.0)
     {
       v18 = 0.0;
     }

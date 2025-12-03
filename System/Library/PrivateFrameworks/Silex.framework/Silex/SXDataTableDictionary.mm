@@ -1,30 +1,30 @@
 @interface SXDataTableDictionary
-+ (SXDataTableDictionary)dataTableDictionaryWithRows:(unint64_t)a3 andColumns:(unint64_t)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathForIndex:(unint64_t)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathOfObject:(id)a3;
-- (SXDataTableDictionary)initWithRows:(unint64_t)a3 andColumns:(unint64_t)a4;
-- (id)arrayWithObject:(id)a3 forCount:(unint64_t)a4;
++ (SXDataTableDictionary)dataTableDictionaryWithRows:(unint64_t)rows andColumns:(unint64_t)columns;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathForIndex:(unint64_t)index;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathOfObject:(id)object;
+- (SXDataTableDictionary)initWithRows:(unint64_t)rows andColumns:(unint64_t)columns;
+- (id)arrayWithObject:(id)object forCount:(unint64_t)count;
 - (id)description;
-- (id)objectForIndexPath:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexForIndexPath:(id)a3;
+- (id)objectForIndexPath:(id)path;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexForIndexPath:(id)path;
 - (void)removeAllObjects;
-- (void)removeObjectForIndexPath:(id)a3;
-- (void)setObject:(id)a3 forIndexPath:(id)a4;
+- (void)removeObjectForIndexPath:(id)path;
+- (void)setObject:(id)object forIndexPath:(id)path;
 @end
 
 @implementation SXDataTableDictionary
 
-+ (SXDataTableDictionary)dataTableDictionaryWithRows:(unint64_t)a3 andColumns:(unint64_t)a4
++ (SXDataTableDictionary)dataTableDictionaryWithRows:(unint64_t)rows andColumns:(unint64_t)columns
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithRows:a3 andColumns:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithRows:rows andColumns:columns];
 
   return v4;
 }
 
-- (SXDataTableDictionary)initWithRows:(unint64_t)a3 andColumns:(unint64_t)a4
+- (SXDataTableDictionary)initWithRows:(unint64_t)rows andColumns:(unint64_t)columns
 {
-  if (a3 == -1 || a4 == -1)
+  if (rows == -1 || columns == -1)
   {
 
     return 0;
@@ -38,27 +38,27 @@
     v7 = v6;
     if (v6)
     {
-      v6->_numberOfRows = a3;
-      v6->_numberOfColumns = a4;
-      v8 = [MEMORY[0x1E695DFB0] null];
-      v9 = [(SXDataTableDictionary *)v7 arrayWithObject:v8 forCount:a4 * a3];
+      v6->_numberOfRows = rows;
+      v6->_numberOfColumns = columns;
+      null = [MEMORY[0x1E695DFB0] null];
+      rows = [(SXDataTableDictionary *)v7 arrayWithObject:null forCount:columns * rows];
       storage = v7->_storage;
-      v7->_storage = v9;
+      v7->_storage = rows;
 
-      v11 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       indexes = v7->_indexes;
-      v7->_indexes = v11;
+      v7->_indexes = indexSet;
     }
   }
 
   return v7;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathOfObject:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(SXDataTableDictionary *)self storage];
-  v6 = [v5 indexOfObject:v4];
+  objectCopy = object;
+  storage = [(SXDataTableDictionary *)self storage];
+  v6 = [storage indexOfObject:objectCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (id)objectForIndexPath:(id)a3
+- (id)objectForIndexPath:(id)path
 {
-  v4 = [(SXDataTableDictionary *)self indexForIndexPath:a3.var0, a3.var1];
+  v4 = [(SXDataTableDictionary *)self indexForIndexPath:path.var0, path.var1];
   if (v4 == -1)
   {
     v7 = 0;
@@ -87,12 +87,12 @@
   else
   {
     v5 = v4;
-    v6 = [(SXDataTableDictionary *)self storage];
-    v7 = [v6 objectAtIndex:v5];
+    storage = [(SXDataTableDictionary *)self storage];
+    v7 = [storage objectAtIndex:v5];
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
-  if (v7 == v8)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v7 == null)
   {
     v9 = 0;
   }
@@ -107,22 +107,22 @@
   return v9;
 }
 
-- (void)setObject:(id)a3 forIndexPath:(id)a4
+- (void)setObject:(id)object forIndexPath:(id)path
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v11 = a3;
-  v7 = [(SXDataTableDictionary *)self indexForIndexPath:var0, var1];
-  if (v7 != -1)
+  var1 = path.var1;
+  var0 = path.var0;
+  objectCopy = object;
+  var1 = [(SXDataTableDictionary *)self indexForIndexPath:var0, var1];
+  if (var1 != -1)
   {
-    v8 = v7;
-    if (v11)
+    v8 = var1;
+    if (objectCopy)
     {
-      v9 = [(SXDataTableDictionary *)self indexes];
-      [v9 addIndex:v8];
+      indexes = [(SXDataTableDictionary *)self indexes];
+      [indexes addIndex:v8];
 
-      v10 = [(SXDataTableDictionary *)self storage];
-      [v10 replaceObjectAtIndex:v8 withObject:v11];
+      storage = [(SXDataTableDictionary *)self storage];
+      [storage replaceObjectAtIndex:v8 withObject:objectCopy];
     }
 
     else
@@ -132,30 +132,30 @@
   }
 }
 
-- (void)removeObjectForIndexPath:(id)a3
+- (void)removeObjectForIndexPath:(id)path
 {
-  v4 = [(SXDataTableDictionary *)self indexForIndexPath:a3.var0, a3.var1];
+  v4 = [(SXDataTableDictionary *)self indexForIndexPath:path.var0, path.var1];
   if (v4 != -1)
   {
     v5 = v4;
-    v6 = [(SXDataTableDictionary *)self indexes];
-    [v6 removeIndex:v5];
+    indexes = [(SXDataTableDictionary *)self indexes];
+    [indexes removeIndex:v5];
 
-    v8 = [(SXDataTableDictionary *)self storage];
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [v8 replaceObjectAtIndex:v5 withObject:v7];
+    storage = [(SXDataTableDictionary *)self storage];
+    null = [MEMORY[0x1E695DFB0] null];
+    [storage replaceObjectAtIndex:v5 withObject:null];
   }
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(SXDataTableDictionary *)self indexes];
+  indexes = [(SXDataTableDictionary *)self indexes];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __41__SXDataTableDictionary_removeAllObjects__block_invoke;
   v4[3] = &unk_1E8500E10;
   v4[4] = self;
-  [v3 enumerateIndexesUsingBlock:v4];
+  [indexes enumerateIndexesUsingBlock:v4];
 }
 
 uint64_t __41__SXDataTableDictionary_removeAllObjects__block_invoke(uint64_t a1, uint64_t a2)
@@ -166,46 +166,46 @@ uint64_t __41__SXDataTableDictionary_removeAllObjects__block_invoke(uint64_t a1,
   return [v2 removeObjectForIndexPath:{v4, v3}];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = a3->var3;
+    state->var2 = state->var3;
   }
 
-  v10 = [(SXDataTableDictionary *)self indexes];
-  v11 = [v10 count];
+  indexes = [(SXDataTableDictionary *)self indexes];
+  v11 = [indexes count];
 
   if (var0 < v11)
   {
-    a3->var1 = a4;
+    state->var1 = objects;
     v17[0] = 0;
     v17[1] = v17;
     v17[2] = 0x2020000000;
     v17[3] = 0;
-    v12 = [(SXDataTableDictionary *)self indexes];
+    indexes2 = [(SXDataTableDictionary *)self indexes];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__SXDataTableDictionary_countByEnumeratingWithState_objects_count___block_invoke;
     v16[3] = &unk_1E8500E38;
     v16[6] = &v18;
     v16[7] = var0;
-    v16[8] = a5;
-    v16[9] = a4;
+    v16[8] = count;
+    v16[9] = objects;
     v16[4] = self;
     v16[5] = v17;
-    [v12 enumerateIndexesUsingBlock:v16];
+    [indexes2 enumerateIndexesUsingBlock:v16];
 
     _Block_object_dispose(v17, 8);
   }
 
   v13 = v19;
-  a3->var0 = v19[3] + var0;
+  state->var0 = v19[3] + var0;
   v14 = v13[3];
   _Block_object_dispose(&v18, 8);
   return v14;
@@ -233,11 +233,11 @@ void *__67__SXDataTableDictionary_countByEnumeratingWithState_objects_count___bl
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathForIndex:(unint64_t)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPathForIndex:(unint64_t)index
 {
-  v5 = [(SXDataTableDictionary *)self numberOfColumns];
-  v6 = a3 / v5 * v5;
-  v7 = a3 % v5;
+  numberOfColumns = [(SXDataTableDictionary *)self numberOfColumns];
+  v6 = index / numberOfColumns * numberOfColumns;
+  v7 = index % numberOfColumns;
   v8 = v6 / [(SXDataTableDictionary *)self numberOfColumns];
   v9 = v7;
   result.var1 = v9;
@@ -245,11 +245,11 @@ void *__67__SXDataTableDictionary_countByEnumeratingWithState_objects_count___bl
   return result;
 }
 
-- (unint64_t)indexForIndexPath:(id)a3
+- (unint64_t)indexForIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (a3.var0 >= [(SXDataTableDictionary *)self numberOfRows]|| var1 >= [(SXDataTableDictionary *)self numberOfColumns])
+  var1 = path.var1;
+  var0 = path.var0;
+  if (path.var0 >= [(SXDataTableDictionary *)self numberOfRows]|| var1 >= [(SXDataTableDictionary *)self numberOfColumns])
   {
     return -1;
   }
@@ -260,12 +260,12 @@ void *__67__SXDataTableDictionary_countByEnumeratingWithState_objects_count___bl
   }
 }
 
-- (id)arrayWithObject:(id)a3 forCount:(unint64_t)a4
+- (id)arrayWithObject:(id)object forCount:(unint64_t)count
 {
-  v5 = a3;
+  objectCopy = object;
   for (i = [MEMORY[0x1E695DF70] array];
   {
-    [i addObject:v5];
+    [i addObject:objectCopy];
   }
 
   return i;

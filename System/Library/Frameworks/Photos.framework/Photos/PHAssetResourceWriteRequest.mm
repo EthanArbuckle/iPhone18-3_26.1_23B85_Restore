@@ -1,13 +1,13 @@
 @interface PHAssetResourceWriteRequest
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4;
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error;
 - (NSString)taskIdentifier;
 - (PHAssetResourceRequestDelegate)delegate;
-- (PHAssetResourceWriteRequest)initWithAssetResource:(id)a3 destinationFileURL:(id)a4 options:(id)a5 requestID:(int)a6 managerID:(unint64_t)a7 delegate:(id)a8 completionHandler:(id)a9;
+- (PHAssetResourceWriteRequest)initWithAssetResource:(id)resource destinationFileURL:(id)l options:(id)options requestID:(int)d managerID:(unint64_t)iD delegate:(id)delegate completionHandler:(id)handler;
 - (id)_lazyDataRequest;
-- (void)_handleDidFindFileURL:(id)a3;
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4;
-- (void)configureWithError:(id)a3;
-- (void)setErrorIfNone:(id)a3;
+- (void)_handleDidFindFileURL:(id)l;
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error;
+- (void)configureWithError:(id)error;
+- (void)setErrorIfNone:(id)none;
 - (void)startRequest;
 @end
 
@@ -20,18 +20,18 @@
   return WeakRetained;
 }
 
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained retryAssetResourceRequest:self afterFailureWithError:v5];
+  LOBYTE(self) = [WeakRetained retryAssetResourceRequest:self afterFailureWithError:errorCopy];
 
   return self;
 }
 
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error
 {
-  [(PHAssetResourceWriteRequest *)self setErrorIfNone:a4];
+  [(PHAssetResourceWriteRequest *)self setErrorIfNone:error];
   os_unfair_lock_lock(&self->_completionHandlerLock);
   v8 = _Block_copy(self->_completionHandler);
   completionHandler = self->_completionHandler;
@@ -64,17 +64,17 @@
   return v3;
 }
 
-- (void)configureWithError:(id)a3
+- (void)configureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PHAssetResourceWriteRequest *)self _lazyDataRequest];
-  [v5 configureWithError:v4];
+  errorCopy = error;
+  _lazyDataRequest = [(PHAssetResourceWriteRequest *)self _lazyDataRequest];
+  [_lazyDataRequest configureWithError:errorCopy];
 }
 
 - (void)startRequest
 {
-  v2 = [(PHAssetResourceWriteRequest *)self _lazyDataRequest];
-  [v2 startRequest];
+  _lazyDataRequest = [(PHAssetResourceWriteRequest *)self _lazyDataRequest];
+  [_lazyDataRequest startRequest];
 }
 
 - (id)_lazyDataRequest
@@ -113,15 +113,15 @@ void __47__PHAssetResourceWriteRequest__lazyDataRequest__block_invoke(uint64_t a
   [WeakRetained _handleDidFindFileURL:v3];
 }
 
-- (void)_handleDidFindFileURL:(id)a3
+- (void)_handleDidFindFileURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if (![(PHAssetResourceWriteRequest *)self isCancelled])
   {
     destinationFileURL = self->_destinationFileURL;
     v15 = 0;
-    v6 = [MEMORY[0x1E69BF238] copyItemAtURL:v4 toURL:destinationFileURL error:&v15];
+    v6 = [MEMORY[0x1E69BF238] copyItemAtURL:lCopy toURL:destinationFileURL error:&v15];
     v7 = v15;
     if (v6)
     {
@@ -152,30 +152,30 @@ void __47__PHAssetResourceWriteRequest__lazyDataRequest__block_invoke(uint64_t a
   }
 }
 
-- (void)setErrorIfNone:(id)a3
+- (void)setErrorIfNone:(id)none
 {
-  v5 = a3;
+  noneCopy = none;
   error = self->_error;
   p_error = &self->_error;
   if (!error)
   {
-    v8 = v5;
-    objc_storeStrong(p_error, a3);
-    v5 = v8;
+    v8 = noneCopy;
+    objc_storeStrong(p_error, none);
+    noneCopy = v8;
   }
 }
 
-- (PHAssetResourceWriteRequest)initWithAssetResource:(id)a3 destinationFileURL:(id)a4 options:(id)a5 requestID:(int)a6 managerID:(unint64_t)a7 delegate:(id)a8 completionHandler:(id)a9
+- (PHAssetResourceWriteRequest)initWithAssetResource:(id)resource destinationFileURL:(id)l options:(id)options requestID:(int)d managerID:(unint64_t)iD delegate:(id)delegate completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  if (!v15)
+  resourceCopy = resource;
+  lCopy = l;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (!resourceCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PHAssetResourceWriteRequest.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceWriteRequest.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
   }
 
   v28.receiver = self;
@@ -184,14 +184,14 @@ void __47__PHAssetResourceWriteRequest__lazyDataRequest__block_invoke(uint64_t a
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_assetResource, a3);
-    objc_storeStrong(&v21->_destinationFileURL, a4);
-    objc_storeStrong(&v21->_options, a5);
-    v21->_requestID = a6;
-    v21->_managerID = a7;
-    objc_storeWeak(&v21->_delegate, v18);
+    objc_storeStrong(&v20->_assetResource, resource);
+    objc_storeStrong(&v21->_destinationFileURL, l);
+    objc_storeStrong(&v21->_options, options);
+    v21->_requestID = d;
+    v21->_managerID = iD;
+    objc_storeWeak(&v21->_delegate, delegateCopy);
     v21->_completionHandlerLock._os_unfair_lock_opaque = 0;
-    v22 = [v19 copy];
+    v22 = [handlerCopy copy];
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v22;
   }

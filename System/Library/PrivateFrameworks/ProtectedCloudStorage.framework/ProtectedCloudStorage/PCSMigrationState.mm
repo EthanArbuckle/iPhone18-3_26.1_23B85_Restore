@@ -1,5 +1,5 @@
 @interface PCSMigrationState
-- (BOOL)BOOLOption:(__CFString *)a3;
+- (BOOL)BOOLOption:(__CFString *)option;
 - (void)clearMetadata;
 - (void)clearOldRegistry;
 - (void)clearSet;
@@ -169,12 +169,12 @@
   [(PCSMigrationState *)&v8 dealloc];
 }
 
-- (BOOL)BOOLOption:(__CFString *)a3
+- (BOOL)BOOLOption:(__CFString *)option
 {
-  v3 = [(__CFDictionary *)[(PCSMigrationState *)self options] objectForKeyedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(__CFDictionary *)[(PCSMigrationState *)self options] objectForKeyedSubscript:option];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

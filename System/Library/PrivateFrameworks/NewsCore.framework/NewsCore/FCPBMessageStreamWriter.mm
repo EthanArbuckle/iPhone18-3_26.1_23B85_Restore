@@ -1,8 +1,8 @@
 @interface FCPBMessageStreamWriter
-- (BOOL)_writeMessage:(id)a3 range:(_NSRange *)a4 error:(id *)a5;
-- (BOOL)close:(id *)a3;
-- (FCPBMessageStreamWriter)initWithURL:(id)a3;
-- (_NSRange)writeMessage:(id)a3;
+- (BOOL)_writeMessage:(id)message range:(_NSRange *)range error:(id *)error;
+- (BOOL)close:(id *)close;
+- (FCPBMessageStreamWriter)initWithURL:(id)l;
+- (_NSRange)writeMessage:(id)message;
 - (void)_open;
 - (void)_openIfNeeded;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation FCPBMessageStreamWriter
 
-- (FCPBMessageStreamWriter)initWithURL:(id)a3
+- (FCPBMessageStreamWriter)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = FCPBMessageStreamWriter;
   v6 = [(FCPBMessageStreamWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
   }
 
   return v7;
@@ -44,11 +44,11 @@
   [(FCPBMessageStreamWriter *)&v4 dealloc];
 }
 
-- (_NSRange)writeMessage:(id)a3
+- (_NSRange)writeMessage:(id)message
 {
   v5 = 0;
   v6 = 0;
-  [(FCPBMessageStreamWriter *)self _writeMessage:a3 range:&v5 error:0];
+  [(FCPBMessageStreamWriter *)self _writeMessage:message range:&v5 error:0];
   v3 = v5;
   v4 = v6;
   result.length = v4;
@@ -56,43 +56,43 @@
   return result;
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
-  v5 = [(FCPBMessageStreamWriter *)self outputStream];
-  [v5 close];
+  outputStream = [(FCPBMessageStreamWriter *)self outputStream];
+  [outputStream close];
 
-  v6 = [(FCPBMessageStreamWriter *)self error];
+  error = [(FCPBMessageStreamWriter *)self error];
 
-  if (!v6)
+  if (!error)
   {
-    v7 = [(FCPBMessageStreamWriter *)self outputStream];
-    v8 = [v7 streamError];
-    [(FCPBMessageStreamWriter *)self setError:v8];
+    outputStream2 = [(FCPBMessageStreamWriter *)self outputStream];
+    streamError = [outputStream2 streamError];
+    [(FCPBMessageStreamWriter *)self setError:streamError];
   }
 
-  if (a3)
+  if (close)
   {
-    *a3 = [(FCPBMessageStreamWriter *)self error];
+    *close = [(FCPBMessageStreamWriter *)self error];
   }
 
-  v9 = [(FCPBMessageStreamWriter *)self error];
-  v10 = v9 == 0;
+  error2 = [(FCPBMessageStreamWriter *)self error];
+  v10 = error2 == 0;
 
   return v10;
 }
 
 - (void)_openIfNeeded
 {
-  v3 = [(FCPBMessageStreamWriter *)self outputStream];
-  if (v3)
+  outputStream = [(FCPBMessageStreamWriter *)self outputStream];
+  if (outputStream)
   {
   }
 
   else
   {
-    v4 = [(FCPBMessageStreamWriter *)self error];
+    error = [(FCPBMessageStreamWriter *)self error];
 
-    if (!v4)
+    if (!error)
     {
 
       [(FCPBMessageStreamWriter *)self _open];
@@ -132,47 +132,47 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_writeMessage:(id)a3 range:(_NSRange *)a4 error:(id *)a5
+- (BOOL)_writeMessage:(id)message range:(_NSRange *)range error:(id *)error
 {
-  v8 = a3;
+  messageCopy = message;
   [(FCPBMessageStreamWriter *)self _openIfNeeded];
-  v9 = [(FCPBMessageStreamWriter *)self error];
+  error = [(FCPBMessageStreamWriter *)self error];
 
-  if (!v9)
+  if (!error)
   {
-    v11 = [(FCPBMessageStreamWriter *)self dataWriter];
-    [v8 writeTo:v11];
+    dataWriter = [(FCPBMessageStreamWriter *)self dataWriter];
+    [messageCopy writeTo:dataWriter];
 
-    v12 = [(FCPBMessageStreamWriter *)self dataWriter];
-    v13 = [v12 data];
+    dataWriter2 = [(FCPBMessageStreamWriter *)self dataWriter];
+    data = [dataWriter2 data];
 
-    v14 = [v13 length];
+    v14 = [data length];
     if (v14)
     {
       v15 = v14;
       [(FCPBMessageStreamWriter *)self varIntBuffer];
       v16 = PBDataWriterWriteBareVarint();
-      v17 = [(FCPBMessageStreamWriter *)self outputStream];
-      v18 = [v17 write:-[FCPBMessageStreamWriter varIntBuffer](self maxLength:{"varIntBuffer"), v16}];
+      outputStream = [(FCPBMessageStreamWriter *)self outputStream];
+      v18 = [outputStream write:-[FCPBMessageStreamWriter varIntBuffer](self maxLength:{"varIntBuffer"), v16}];
 
       if (v18 == v16)
       {
-        v19 = [(FCPBMessageStreamWriter *)self outputStream];
-        v20 = [v19 write:objc_msgSend(v13 maxLength:{"bytes"), v15}];
+        outputStream2 = [(FCPBMessageStreamWriter *)self outputStream];
+        v20 = [outputStream2 write:objc_msgSend(data maxLength:{"bytes"), v15}];
 
         if (v20 == v15)
         {
-          v21 = [(FCPBMessageStreamWriter *)self dataWriter];
-          v22 = [v21 data];
-          [v22 setLength:0];
+          dataWriter3 = [(FCPBMessageStreamWriter *)self dataWriter];
+          data2 = [dataWriter3 data];
+          [data2 setLength:0];
 
-          v23 = [(FCPBMessageStreamWriter *)self currentOffset];
+          currentOffset = [(FCPBMessageStreamWriter *)self currentOffset];
           [(FCPBMessageStreamWriter *)self setCurrentOffset:[(FCPBMessageStreamWriter *)self currentOffset]+ v16];
           [(FCPBMessageStreamWriter *)self setCurrentOffset:[(FCPBMessageStreamWriter *)self currentOffset]+ v15];
-          if (a4)
+          if (range)
           {
-            a4->location = v23 + v16;
-            a4->length = v15;
+            range->location = currentOffset + v16;
+            range->length = v15;
           }
 
           v10 = 1;
@@ -184,7 +184,7 @@
         v25[2] = __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_4;
         v25[3] = &unk_1E7C3A6D8;
         v25[4] = self;
-        v25[5] = a5;
+        v25[5] = error;
         __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_4(v25);
       }
 
@@ -195,7 +195,7 @@
         v26[2] = __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_3;
         v26[3] = &unk_1E7C3A6D8;
         v26[4] = self;
-        v26[5] = a5;
+        v26[5] = error;
         __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_3(v26);
       }
     }
@@ -206,7 +206,7 @@
       v27[1] = 3221225472;
       v27[2] = __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_2;
       v27[3] = &__block_descriptor_40_e5_B8__0l;
-      v27[4] = a5;
+      v27[4] = error;
       __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke_2(v27);
     }
 
@@ -221,7 +221,7 @@ LABEL_13:
   v28[2] = __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke;
   v28[3] = &unk_1E7C3A6D8;
   v28[4] = self;
-  v28[5] = a5;
+  v28[5] = error;
   __53__FCPBMessageStreamWriter__writeMessage_range_error___block_invoke(v28);
   v10 = 0;
 LABEL_14:

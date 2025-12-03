@@ -1,18 +1,18 @@
 @interface CSEventListenerConfig
-- (BOOL)supportsBundleID:(id)a3;
-- (BOOL)supportsContentType:(id)a3;
+- (BOOL)supportsBundleID:(id)d;
+- (BOOL)supportsContentType:(id)type;
 @end
 
 @implementation CSEventListenerConfig
 
-- (BOOL)supportsBundleID:(id)a3
+- (BOOL)supportsBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSEventListenerConfig *)self includeBundleIDs];
-  if ([v5 count])
+  dCopy = d;
+  includeBundleIDs = [(CSEventListenerConfig *)self includeBundleIDs];
+  if ([includeBundleIDs count])
   {
-    v6 = [(CSEventListenerConfig *)self includeBundleIDs];
-    v7 = [v6 containsObject:v4];
+    includeBundleIDs2 = [(CSEventListenerConfig *)self includeBundleIDs];
+    v7 = [includeBundleIDs2 containsObject:dCopy];
 
     if (!v7)
     {
@@ -25,11 +25,11 @@
   {
   }
 
-  v9 = [(CSEventListenerConfig *)self excludeBundleIDs];
-  if ([v9 count])
+  excludeBundleIDs = [(CSEventListenerConfig *)self excludeBundleIDs];
+  if ([excludeBundleIDs count])
   {
-    v10 = [(CSEventListenerConfig *)self excludeBundleIDs];
-    v11 = [v10 containsObject:v4];
+    excludeBundleIDs2 = [(CSEventListenerConfig *)self excludeBundleIDs];
+    v11 = [excludeBundleIDs2 containsObject:dCopy];
 
     v8 = v11 ^ 1;
   }
@@ -45,38 +45,38 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (BOOL)supportsContentType:(id)a3
+- (BOOL)supportsContentType:(id)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSEventListenerConfig *)self includeContentTypes];
-  if ([v5 count])
+  typeCopy = type;
+  includeContentTypes = [(CSEventListenerConfig *)self includeContentTypes];
+  if ([includeContentTypes count])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(CSEventListenerConfig *)self excludeContentTypes];
-    v6 = [v7 count] == 0;
+    excludeContentTypes = [(CSEventListenerConfig *)self excludeContentTypes];
+    v6 = [excludeContentTypes count] == 0;
   }
 
   v8 = 1;
-  if (v4)
+  if (typeCopy)
   {
     if (!v6)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSMutableSet *)self->_positiveSet containsObject:v4]& 1) == 0)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSMutableSet *)self->_positiveSet containsObject:typeCopy]& 1) == 0)
       {
-        if (([(NSMutableSet *)self->_negativeSet containsObject:v4]& 1) == 0)
+        if (([(NSMutableSet *)self->_negativeSet containsObject:typeCopy]& 1) == 0)
         {
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v9 = [(CSEventListenerConfig *)self includeContentTypes];
-          v10 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+          includeContentTypes2 = [(CSEventListenerConfig *)self includeContentTypes];
+          v10 = [includeContentTypes2 countByEnumeratingWithState:&v31 objects:v36 count:16];
           if (v10)
           {
             v11 = v10;
@@ -87,10 +87,10 @@ LABEL_8:
               {
                 if (*v32 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(includeContentTypes2);
                 }
 
-                if (UTTypeConformsTo(v4, *(*(&v31 + 1) + 8 * i)))
+                if (UTTypeConformsTo(typeCopy, *(*(&v31 + 1) + 8 * i)))
                 {
                   positiveSet = self->_positiveSet;
                   if (!positiveSet)
@@ -102,14 +102,14 @@ LABEL_8:
                     positiveSet = self->_positiveSet;
                   }
 
-                  [(NSMutableSet *)positiveSet addObject:v4];
+                  [(NSMutableSet *)positiveSet addObject:typeCopy];
 
                   v8 = 1;
                   goto LABEL_30;
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+              v11 = [includeContentTypes2 countByEnumeratingWithState:&v31 objects:v36 count:16];
               if (v11)
               {
                 continue;
@@ -123,8 +123,8 @@ LABEL_8:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v14 = [(CSEventListenerConfig *)self excludeContentTypes];
-          v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          excludeContentTypes2 = [(CSEventListenerConfig *)self excludeContentTypes];
+          v15 = [excludeContentTypes2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v15)
           {
             v16 = v15;
@@ -135,10 +135,10 @@ LABEL_8:
               {
                 if (*v28 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(excludeContentTypes2);
                 }
 
-                if (UTTypeConformsTo(v4, *(*(&v27 + 1) + 8 * j)))
+                if (UTTypeConformsTo(typeCopy, *(*(&v27 + 1) + 8 * j)))
                 {
                   negativeSet = self->_negativeSet;
                   if (!negativeSet)
@@ -150,13 +150,13 @@ LABEL_8:
                     negativeSet = self->_negativeSet;
                   }
 
-                  [(NSMutableSet *)negativeSet addObject:v4];
+                  [(NSMutableSet *)negativeSet addObject:typeCopy];
 
                   goto LABEL_9;
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v16 = [excludeContentTypes2 countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v16)
               {
                 continue;
@@ -166,7 +166,7 @@ LABEL_8:
             }
           }
 
-          [(NSMutableSet *)self->_negativeSet addObject:v4];
+          [(NSMutableSet *)self->_negativeSet addObject:typeCopy];
         }
 
 LABEL_9:

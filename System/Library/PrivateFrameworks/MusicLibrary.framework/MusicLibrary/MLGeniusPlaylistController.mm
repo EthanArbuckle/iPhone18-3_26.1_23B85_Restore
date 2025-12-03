@@ -1,27 +1,27 @@
 @interface MLGeniusPlaylistController
 + (BOOL)hasGeniusDataAvailable;
 + (BOOL)hasGeniusFeatureEnabled;
-+ (id)geniusTracksForSeedTrack:(id)a3 error:(id *)a4;
-+ (id)playlistControllerWithSeedTracks:(id)a3 error:(id *)a4;
++ (id)geniusTracksForSeedTrack:(id)track error:(id *)error;
++ (id)playlistControllerWithSeedTracks:(id)tracks error:(id *)error;
 + (unint64_t)defaultMinTrackCount;
 + (unint64_t)defaultTrackCount;
 + (void)ignoreUnusedWarnings;
-+ (void)populateContainer:(id)a3 withSeedTrack:(id)a4 completionBlock:(id)a5;
-- (BOOL)_canIncludeTrackInGeniusContainer:(id)a3;
-- (BOOL)_createClusterPlaylistWithSeedTracks:(id)a3 error:(id *)a4;
-- (BOOL)_onBackgroundQueue_fakePopulateContainer:(id)a3 withSeedTrack:(id)a4 error:(id *)a5;
-- (BOOL)_onBackgroundQueue_populateContainer:(id)a3 seedTrack:(id)a4 error:(id *)a5;
++ (void)populateContainer:(id)container withSeedTrack:(id)track completionBlock:(id)block;
+- (BOOL)_canIncludeTrackInGeniusContainer:(id)container;
+- (BOOL)_createClusterPlaylistWithSeedTracks:(id)tracks error:(id *)error;
+- (BOOL)_onBackgroundQueue_fakePopulateContainer:(id)container withSeedTrack:(id)track error:(id *)error;
+- (BOOL)_onBackgroundQueue_populateContainer:(id)container seedTrack:(id)track error:(id *)error;
 - (MLGeniusPlaylistController)init;
-- (id)_debugGetTracksStartingAtTrackWithPersistentID:(unint64_t)a3 maxTracks:(unint64_t)a4 stride:(int)a5;
-- (id)_onBackgroundQueue_tracksFromClusterForPlaylistItemMax:(unint64_t)a3 error:(id *)a4;
+- (id)_debugGetTracksStartingAtTrackWithPersistentID:(unint64_t)d maxTracks:(unint64_t)tracks stride:(int)stride;
+- (id)_onBackgroundQueue_tracksFromClusterForPlaylistItemMax:(unint64_t)max error:(id *)error;
 - (id)_sharedBlobMutableData;
-- (id)tracksFromClusterForCount:(unint64_t)a3 error:(id *)a4;
+- (id)tracksFromClusterForCount:(unint64_t)count error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MLGeniusPlaylistController
 
-- (id)_onBackgroundQueue_tracksFromClusterForPlaylistItemMax:(unint64_t)a3 error:(id *)a4
+- (id)_onBackgroundQueue_tracksFromClusterForPlaylistItemMax:(unint64_t)max error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
   if (self->_echo_cluster_playlist)
@@ -31,7 +31,7 @@
     v19 = v7;
     do
     {
-      if ([v6 count] >= a3)
+      if ([v6 count] >= max)
       {
         break;
       }
@@ -77,10 +77,10 @@
       _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "ERROR: Could not generate playlist tracks, no active cluster playlist.", buf, 2u);
     }
 
-    if (a4 && !*a4)
+    if (error && !*error)
     {
       MLCreateError_TooFewItemsReason(0);
-      *a4 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -99,9 +99,9 @@
   return v6;
 }
 
-- (BOOL)_createClusterPlaylistWithSeedTracks:(id)a3 error:(id *)a4
+- (BOOL)_createClusterPlaylistWithSeedTracks:(id)tracks error:(id *)error
 {
-  v6 = a3;
+  tracksCopy = tracks;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -113,15 +113,15 @@
   v12[1] = 3221225472;
   v12[2] = __73__MLGeniusPlaylistController__createClusterPlaylistWithSeedTracks_error___block_invoke;
   v12[3] = &unk_278763398;
-  v8 = v6;
+  v8 = tracksCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   [v7 performGeniusDatabaseReadWithBlock:v12];
 
-  if (a4 && !*a4)
+  if (error && !*error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   sharedBlobMutableData = self->_sharedBlobMutableData;
@@ -209,29 +209,29 @@ void __73__MLGeniusPlaylistController__createClusterPlaylistWithSeedTracks_error
   }
 }
 
-- (BOOL)_onBackgroundQueue_populateContainer:(id)a3 seedTrack:(id)a4 error:(id *)a5
+- (BOOL)_onBackgroundQueue_populateContainer:(id)container seedTrack:(id)track error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v9 = a4;
+  containerCopy = container;
+  trackCopy = track;
   v10 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v11 = [v10 defaultMinTrackCount];
+  defaultMinTrackCount = [v10 defaultMinTrackCount];
 
   v12 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v13 = [v12 defaultTrackCount];
+  defaultTrackCount = [v12 defaultTrackCount];
 
-  v14 = [v9 valueForProperty:@"item_extra.genius_id"];
-  v15 = [v14 unsignedLongLongValue];
+  v14 = [trackCopy valueForProperty:@"item_extra.genius_id"];
+  unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-  if (v15)
+  if (unsignedLongLongValue)
   {
-    v16 = [v29 library];
-    v17 = [v9 library];
+    library = [containerCopy library];
+    library2 = [trackCopy library];
 
-    if (v16 != v17)
+    if (library != library2)
     {
-      v28 = [MEMORY[0x277CCA890] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"MLGeniusPlaylistController.m" lineNumber:571 description:&stru_28408B690];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MLGeniusPlaylistController.m" lineNumber:571 description:&stru_28408B690];
     }
 
     v45 = 0;
@@ -253,32 +253,32 @@ void __73__MLGeniusPlaylistController__createClusterPlaylistWithSeedTracks_error
     v35 = &v45;
     v33[4] = self;
     v36 = v39;
-    v37 = v15;
+    v37 = unsignedLongLongValue;
     v20 = v18;
     v34 = v20;
-    v38 = v13;
+    v38 = defaultTrackCount;
     [v19 performGeniusDatabaseReadWithBlock:v33];
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
-      *a5 = *(v40 + 5);
+      *error = *(v40 + 5);
     }
 
     if (v46[3])
     {
       v21 = [v20 count];
-      if (v21 && ([v20 replaceObjectAtIndex:0 withObject:v9], v21 >= v11))
+      if (v21 && ([v20 replaceObjectAtIndex:0 withObject:trackCopy], v21 >= defaultMinTrackCount))
       {
-        v25 = [v9 valueForProperty:@"ROWID"];
-        [v29 setValue:v25 forProperty:@"container_seed.item_pid"];
+        v25 = [trackCopy valueForProperty:@"ROWID"];
+        [containerCopy setValue:v25 forProperty:@"container_seed.item_pid"];
 
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __83__MLGeniusPlaylistController__onBackgroundQueue_populateContainer_seedTrack_error___block_invoke_105;
         v30[3] = &unk_278764E80;
-        v31 = v29;
+        v31 = containerCopy;
         v32 = v20;
-        [v16 performDatabaseTransactionWithBlock:v30];
+        [library performDatabaseTransactionWithBlock:v30];
 
         v22 = 1;
       }
@@ -286,20 +286,20 @@ void __73__MLGeniusPlaylistController__createClusterPlaylistWithSeedTracks_error
       else
       {
         v22 = 0;
-        if (a5 && !*a5 && v21 < v11)
+        if (error && !*error && v21 < defaultMinTrackCount)
         {
           v23 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218240;
-            v50 = v11;
+            v50 = defaultMinTrackCount;
             v51 = 2048;
             v52 = v21;
             _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_DEFAULT, "NOTE: Could not create playlist, too few results (min=%ld, found=%ld)", buf, 0x16u);
           }
 
           MLCreateError_TooFewItemsReason(v21);
-          *a5 = v22 = 0;
+          *error = v22 = 0;
         }
       }
 
@@ -327,10 +327,10 @@ void __73__MLGeniusPlaylistController__createClusterPlaylistWithSeedTracks_error
       _os_log_impl(&dword_22D2FA000, v24, OS_LOG_TYPE_DEFAULT, "NOTE: Could not create playlist, seedTrackGlobalID == 0.", v39, 2u);
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
       MLCreateError_TooFewItemsReason(0);
-      *a5 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -458,18 +458,18 @@ uint64_t __83__MLGeniusPlaylistController__onBackgroundQueue_populateContainer_s
   return 1;
 }
 
-- (BOOL)_onBackgroundQueue_fakePopulateContainer:(id)a3 withSeedTrack:(id)a4 error:(id *)a5
+- (BOOL)_onBackgroundQueue_fakePopulateContainer:(id)container withSeedTrack:(id)track error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  trackCopy = track;
   v10 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v11 = [v10 defaultMinTrackCount];
+  defaultMinTrackCount = [v10 defaultMinTrackCount];
 
   v12 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v13 = [v12 defaultTrackCount];
+  defaultTrackCount = [v12 defaultTrackCount];
 
   v14 = _onBackgroundQueue_fakePopulateContainer_withSeedTrack_error__gStride;
-  v15 = [v9 persistentID];
+  persistentID = [trackCopy persistentID];
   v16 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -479,22 +479,22 @@ uint64_t __83__MLGeniusPlaylistController__onBackgroundQueue_populateContainer_s
 
   v17 = v14 & 1;
 
-  v18 = [v8 library];
-  v19 = [v9 library];
+  library = [containerCopy library];
+  library2 = [trackCopy library];
 
-  if (v18 != v19)
+  if (library != library2)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MLGeniusPlaylistController.m" lineNumber:521 description:&stru_28408B690];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MLGeniusPlaylistController.m" lineNumber:521 description:&stru_28408B690];
   }
 
-  v20 = [(MLGeniusPlaylistController *)self _debugGetTracksStartingAtTrackWithPersistentID:v15 maxTracks:v13 stride:(v17 + 1)];
+  v20 = [(MLGeniusPlaylistController *)self _debugGetTracksStartingAtTrackWithPersistentID:persistentID maxTracks:defaultTrackCount stride:(v17 + 1)];
   v21 = [v20 mutableCopy];
 
   v22 = [v21 count];
   if (v22)
   {
-    v23 = v22 >= v11;
+    v23 = v22 >= defaultMinTrackCount;
   }
 
   else
@@ -505,21 +505,21 @@ uint64_t __83__MLGeniusPlaylistController__onBackgroundQueue_populateContainer_s
   v24 = !v23;
   if (v23)
   {
-    v25 = [v9 valueForProperty:@"ROWID"];
-    [v8 setValue:v25 forProperty:@"container_seed.item_pid"];
+    v25 = [trackCopy valueForProperty:@"ROWID"];
+    [containerCopy setValue:v25 forProperty:@"container_seed.item_pid"];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __91__MLGeniusPlaylistController__onBackgroundQueue_fakePopulateContainer_withSeedTrack_error___block_invoke;
     v29[3] = &unk_278764E80;
-    v30 = v8;
+    v30 = containerCopy;
     v31 = v21;
-    [v18 performDatabaseTransactionWithBlock:v29];
+    [library performDatabaseTransactionWithBlock:v29];
   }
 
-  else if (a5 && !*a5 && v22 < v11)
+  else if (error && !*error && v22 < defaultMinTrackCount)
   {
-    *a5 = MLCreateError_TooFewItemsReason(v22);
+    *error = MLCreateError_TooFewItemsReason(v22);
   }
 
   ++_onBackgroundQueue_fakePopulateContainer_withSeedTrack_error__gStride;
@@ -569,25 +569,25 @@ uint64_t __91__MLGeniusPlaylistController__onBackgroundQueue_fakePopulateContain
   return 1;
 }
 
-- (id)_debugGetTracksStartingAtTrackWithPersistentID:(unint64_t)a3 maxTracks:(unint64_t)a4 stride:(int)a5
+- (id)_debugGetTracksStartingAtTrackWithPersistentID:(unint64_t)d maxTracks:(unint64_t)tracks stride:(int)stride
 {
-  if (a4)
+  if (tracks)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v32[0] = 0;
     v32[1] = v32;
     v32[2] = 0x2020000000;
-    if (a5 <= 1)
+    if (stride <= 1)
     {
-      v9 = 1;
+      strideCopy = 1;
     }
 
     else
     {
-      v9 = a5;
+      strideCopy = stride;
     }
 
-    v33 = v9;
+    v33 = strideCopy;
     v30[0] = 0;
     v30[1] = v30;
     v30[2] = 0x2020000000;
@@ -597,28 +597,28 @@ uint64_t __91__MLGeniusPlaylistController__onBackgroundQueue_fakePopulateContain
     v28[2] = 0x2020000000;
     v29 = 0;
     v10 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-    v11 = [v10 musicLibrary];
+    musicLibrary = [v10 musicLibrary];
 
     v12 = [ML3BitMaskPredicate predicateWithProperty:@"media_type" mask:8 value:8];
     v13 = +[ML3Track defaultOrderingTerms];
-    v14 = [(ML3Entity *)ML3Track queryWithLibrary:v11 predicate:v12 orderingTerms:v13];
+    v14 = [(ML3Entity *)ML3Track queryWithLibrary:musicLibrary predicate:v12 orderingTerms:v13];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersistentID_maxTracks_stride___block_invoke;
     v20[3] = &unk_278763348;
-    v15 = v11;
+    v15 = musicLibrary;
     v21 = v15;
     v23 = v30;
     v24 = v28;
     v25 = v32;
-    v26 = a3;
-    v16 = v8;
+    dCopy = d;
+    v16 = array;
     v22 = v16;
-    v27 = a4;
+    tracksCopy = tracks;
     [v14 enumeratePersistentIDsUsingBlock:v20];
     v17 = v22;
-    v18 = v16;
+    array2 = v16;
 
     _Block_object_dispose(v28, 8);
     _Block_object_dispose(v30, 8);
@@ -627,10 +627,10 @@ uint64_t __91__MLGeniusPlaylistController__onBackgroundQueue_fakePopulateContain
 
   else
   {
-    v18 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
-  return v18;
+  return array2;
 }
 
 void __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersistentID_maxTracks_stride___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -658,15 +658,15 @@ void __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersiste
   }
 }
 
-- (BOOL)_canIncludeTrackInGeniusContainer:(id)a3
+- (BOOL)_canIncludeTrackInGeniusContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 valueForProperty:@"item_video.is_rental"];
+  containerCopy = container;
+  v4 = [containerCopy valueForProperty:@"item_video.is_rental"];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:0];
   LOBYTE(v6) = 0;
   if ([v4 isEqual:v5])
   {
-    v7 = [v3 valueForProperty:@"item_stats.hidden"];
+    v7 = [containerCopy valueForProperty:@"item_stats.hidden"];
     if ([v7 BOOLValue])
     {
       LOBYTE(v6) = 0;
@@ -674,7 +674,7 @@ void __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersiste
 
     else
     {
-      v8 = [v3 valueForProperty:{@"ML3IsCurrentlyRestrictedMedia(item.media_type, item_extra.content_rating, item_extra.content_rating_level, (SELECT value FROM _MLDatabaseProperties WHERE key='MPExplicitContentAllowedBoolean'))"}];
+      v8 = [containerCopy valueForProperty:{@"ML3IsCurrentlyRestrictedMedia(item.media_type, item_extra.content_rating, item_extra.content_rating_level, (SELECT value FROM _MLDatabaseProperties WHERE key='MPExplicitContentAllowedBoolean'))"}];
       v6 = [v8 BOOLValue] ^ 1;
     }
   }
@@ -697,7 +697,7 @@ void __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersiste
   return sharedBlobMutableData;
 }
 
-- (id)tracksFromClusterForCount:(unint64_t)a3 error:(id *)a4
+- (id)tracksFromClusterForCount:(unint64_t)count error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -720,15 +720,15 @@ void __94__MLGeniusPlaylistController__debugGetTracksStartingAtTrackWithPersiste
   v14 = &v17;
   v15 = &v23;
   block[4] = self;
-  v16 = a3;
+  countCopy = count;
   v9 = v7;
   v13 = v9;
   dispatch_async(v8, block);
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   v10 = v18[5];
@@ -870,14 +870,14 @@ LABEL_19:
   return 0;
 }
 
-+ (id)geniusTracksForSeedTrack:(id)a3 error:(id *)a4
++ (id)geniusTracksForSeedTrack:(id)track error:(id *)error
 {
-  v5 = a3;
+  trackCopy = track;
   v6 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v7 = [v6 defaultTrackCount];
+  defaultTrackCount = [v6 defaultTrackCount];
 
-  v8 = [v5 valueForProperty:@"item_extra.genius_id"];
-  v9 = [v8 unsignedLongLongValue];
+  v8 = [trackCopy valueForProperty:@"item_extra.genius_id"];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -897,15 +897,15 @@ LABEL_19:
   v14[3] = &unk_2787633C0;
   v16 = v26;
   v17 = &v20;
-  v18 = v9;
+  v18 = unsignedLongLongValue;
   v12 = v10;
   v15 = v12;
-  v19 = v7;
+  v19 = defaultTrackCount;
   [v11 performGeniusDatabaseReadWithBlock:v14];
 
-  if (a4 && !*a4)
+  if (error && !*error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -989,13 +989,13 @@ void __61__MLGeniusPlaylistController_geniusTracksForSeedTrack_error___block_inv
 LABEL_18:
 }
 
-+ (id)playlistControllerWithSeedTracks:(id)a3 error:(id *)a4
++ (id)playlistControllerWithSeedTracks:(id)tracks error:(id *)error
 {
-  v5 = a3;
+  tracksCopy = tracks;
   v6 = objc_alloc_init(MLGeniusPlaylistController);
-  LOBYTE(a4) = [(MLGeniusPlaylistController *)v6 _createClusterPlaylistWithSeedTracks:v5 error:a4];
+  LOBYTE(error) = [(MLGeniusPlaylistController *)v6 _createClusterPlaylistWithSeedTracks:tracksCopy error:error];
 
-  if ((a4 & 1) == 0)
+  if ((error & 1) == 0)
   {
 
     v6 = 0;
@@ -1004,27 +1004,27 @@ LABEL_18:
   return v6;
 }
 
-+ (void)populateContainer:(id)a3 withSeedTrack:(id)a4 completionBlock:(id)a5
++ (void)populateContainer:(id)container withSeedTrack:(id)track completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  containerCopy = container;
+  trackCopy = track;
+  blockCopy = block;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__MLGeniusPlaylistController_populateContainer_withSeedTrack_completionBlock___block_invoke;
   v19[3] = &unk_2787632F0;
-  v10 = v9;
+  v10 = blockCopy;
   v20 = v10;
   v11 = MEMORY[0x2318CDB10](v19);
-  if (v8 && (v12 = [v8 persistentID], v7) && v12)
+  if (trackCopy && (v12 = [trackCopy persistentID], containerCopy) && v12)
   {
     v13 = dispatch_get_global_queue(0, 0);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __78__MLGeniusPlaylistController_populateContainer_withSeedTrack_completionBlock___block_invoke_2;
     v15[3] = &unk_278765798;
-    v16 = v7;
-    v17 = v8;
+    v16 = containerCopy;
+    v17 = trackCopy;
     v18 = v11;
     dispatch_async(v13, v15);
 
@@ -1082,17 +1082,17 @@ void __78__MLGeniusPlaylistController_populateContainer_withSeedTrack_completion
 + (unint64_t)defaultMinTrackCount
 {
   v2 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v3 = [v2 defaultMinTrackCount];
+  defaultMinTrackCount = [v2 defaultMinTrackCount];
 
-  return v3;
+  return defaultMinTrackCount;
 }
 
 + (unint64_t)defaultTrackCount
 {
   v2 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
-  v3 = [v2 defaultTrackCount];
+  defaultTrackCount = [v2 defaultTrackCount];
 
-  return v3;
+  return defaultTrackCount;
 }
 
 + (BOOL)hasGeniusDataAvailable
@@ -1100,15 +1100,15 @@ void __78__MLGeniusPlaylistController_populateContainer_withSeedTrack_completion
   v3 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
   if ([v3 hasGeniusDataAvailable])
   {
-    v4 = 1;
+    useFakeGeniusData = 1;
   }
 
   else
   {
-    v4 = [a1 useFakeGeniusData];
+    useFakeGeniusData = [self useFakeGeniusData];
   }
 
-  return v4;
+  return useFakeGeniusData;
 }
 
 + (BOOL)hasGeniusFeatureEnabled
@@ -1116,15 +1116,15 @@ void __78__MLGeniusPlaylistController_populateContainer_withSeedTrack_completion
   v3 = +[MLITDBGeniusDatabase sharedGeniusDatabase];
   if ([v3 hasGeniusFeatureEnabled])
   {
-    v4 = 1;
+    useFakeGeniusData = 1;
   }
 
   else
   {
-    v4 = [a1 useFakeGeniusData];
+    useFakeGeniusData = [self useFakeGeniusData];
   }
 
-  return v4;
+  return useFakeGeniusData;
 }
 
 + (void)ignoreUnusedWarnings

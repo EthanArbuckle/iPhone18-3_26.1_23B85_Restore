@@ -20,21 +20,21 @@
     [(QLPHVideoScrubberView *)self->_photosScrubber setInteractionDelegate:self];
     [(QLVideoScrubberView *)self addSubview:self->_photosScrubber];
     [(QLPHVideoScrubberView *)self->_photosScrubber setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(QLVideoScrubberView *)self leftAnchor];
-    v18 = [(QLPHVideoScrubberView *)self->_photosScrubber leftAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18];
+    leftAnchor = [(QLVideoScrubberView *)self leftAnchor];
+    leftAnchor2 = [(QLPHVideoScrubberView *)self->_photosScrubber leftAnchor];
+    v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v20[0] = v17;
-    v16 = [(QLVideoScrubberView *)self rightAnchor];
-    v6 = [(QLPHVideoScrubberView *)self->_photosScrubber rightAnchor];
-    v7 = [v16 constraintEqualToAnchor:v6];
+    rightAnchor = [(QLVideoScrubberView *)self rightAnchor];
+    rightAnchor2 = [(QLPHVideoScrubberView *)self->_photosScrubber rightAnchor];
+    v7 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v20[1] = v7;
-    v8 = [(QLVideoScrubberView *)self topAnchor];
-    v9 = [(QLPHVideoScrubberView *)self->_photosScrubber topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:-2.0];
+    topAnchor = [(QLVideoScrubberView *)self topAnchor];
+    topAnchor2 = [(QLPHVideoScrubberView *)self->_photosScrubber topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-2.0];
     v20[2] = v10;
-    v11 = [(QLVideoScrubberView *)self bottomAnchor];
-    v12 = [(QLPHVideoScrubberView *)self->_photosScrubber bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:2.0];
+    bottomAnchor = [(QLVideoScrubberView *)self bottomAnchor];
+    bottomAnchor2 = [(QLPHVideoScrubberView *)self->_photosScrubber bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
     v20[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
     [(QLVideoScrubberView *)self addConstraints:v14];
@@ -65,16 +65,16 @@
 
   else
   {
-    v4 = [(QLVideoScrubberView *)self scrollView];
-    if ([v4 isDragging])
+    scrollView = [(QLVideoScrubberView *)self scrollView];
+    if ([scrollView isDragging])
     {
       [(QLVideoScrubberView *)self setUserInteractingWithScrubber:1];
     }
 
     else
     {
-      v3 = [(QLVideoScrubberView *)self scrollView];
-      -[QLVideoScrubberView setUserInteractingWithScrubber:](self, "setUserInteractingWithScrubber:", [v3 isDecelerating]);
+      scrollView2 = [(QLVideoScrubberView *)self scrollView];
+      -[QLVideoScrubberView setUserInteractingWithScrubber:](self, "setUserInteractingWithScrubber:", [scrollView2 isDecelerating]);
     }
   }
 }

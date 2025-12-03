@@ -1,22 +1,22 @@
 @interface IMUserNotificationCenter
 + (id)sharedInstance;
-- (id)_dequeueBlockForIdentifier:(id)a3;
-- (id)_dequeueListenerForIdentifier:(id)a3;
-- (id)_dequeueUserNotificationForIdentifier:(id)a3;
-- (id)_frontBlockForIdentifier:(id)a3;
-- (id)_frontListenerForIdentifier:(id)a3;
-- (id)_frontUserNotificationForIdentifier:(id)a3;
-- (unint64_t)countForIdentifier:(id)a3;
-- (void)_cancelActiveUserNotificationForIdentifier:(id)a3;
-- (void)_displayNextUserNotificationForIdentifier:(id)a3;
-- (void)_enqueueBlock:(id)a3 forIdentifier:(id)a4;
-- (void)_enqueueListener:(id)a3 forIdentifier:(id)a4;
-- (void)_enqueueUserNotification:(id)a3 forIdentifier:(id)a4;
-- (void)_handleUserNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)addUserNotification:(id)a3 listener:(id)a4 completionHandler:(id)a5;
+- (id)_dequeueBlockForIdentifier:(id)identifier;
+- (id)_dequeueListenerForIdentifier:(id)identifier;
+- (id)_dequeueUserNotificationForIdentifier:(id)identifier;
+- (id)_frontBlockForIdentifier:(id)identifier;
+- (id)_frontListenerForIdentifier:(id)identifier;
+- (id)_frontUserNotificationForIdentifier:(id)identifier;
+- (unint64_t)countForIdentifier:(id)identifier;
+- (void)_cancelActiveUserNotificationForIdentifier:(id)identifier;
+- (void)_displayNextUserNotificationForIdentifier:(id)identifier;
+- (void)_enqueueBlock:(id)block forIdentifier:(id)identifier;
+- (void)_enqueueListener:(id)listener forIdentifier:(id)identifier;
+- (void)_enqueueUserNotification:(id)notification forIdentifier:(id)identifier;
+- (void)_handleUserNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags;
+- (void)addUserNotification:(id)notification listener:(id)listener completionHandler:(id)handler;
 - (void)removeAllListeners;
-- (void)removeListener:(id)a3;
-- (void)removeNotificationsForServiceIdentifier:(id)a3;
+- (void)removeListener:(id)listener;
+- (void)removeNotificationsForServiceIdentifier:(id)identifier;
 @end
 
 @implementation IMUserNotificationCenter
@@ -33,11 +33,11 @@
   return v3;
 }
 
-- (id)_frontUserNotificationForIdentifier:(id)a3
+- (id)_frontUserNotificationForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, a2, a3);
+    v3 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, a2, identifier);
     v6 = objc_msgSend___imFirstObject(v3, v4, v5);
   }
 
@@ -49,11 +49,11 @@
   return v6;
 }
 
-- (id)_frontListenerForIdentifier:(id)a3
+- (id)_frontListenerForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, a2, a3);
+    v3 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, a2, identifier);
     v6 = objc_msgSend___imFirstObject(v3, v4, v5);
   }
 
@@ -65,11 +65,11 @@
   return v6;
 }
 
-- (id)_frontBlockForIdentifier:(id)a3
+- (id)_frontBlockForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, a2, a3);
+    v3 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, a2, identifier);
     v6 = objc_msgSend___imFirstObject(v3, v4, v5);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -93,12 +93,12 @@
   return v8;
 }
 
-- (id)_dequeueUserNotificationForIdentifier:(id)a3
+- (id)_dequeueUserNotificationForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, v4, v5);
+    v6 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, v4, identifierCopy);
     v11 = objc_msgSend___imFirstObject(v6, v7, v8);
     if (v11)
     {
@@ -107,7 +107,7 @@
 
     if (!objc_msgSend_count(v6, v9, v10))
     {
-      objc_msgSend_removeObjectForKey_(self->_identifierToIMUserNotificationQueueMap, v12, v5);
+      objc_msgSend_removeObjectForKey_(self->_identifierToIMUserNotificationQueueMap, v12, identifierCopy);
     }
 
     if (!objc_msgSend_count(self->_identifierToIMUserNotificationQueueMap, v12, v13))
@@ -125,12 +125,12 @@
   return v11;
 }
 
-- (id)_dequeueListenerForIdentifier:(id)a3
+- (id)_dequeueListenerForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, v4, v5);
+    v6 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, v4, identifierCopy);
     v11 = objc_msgSend___imFirstObject(v6, v7, v8);
     if (v11)
     {
@@ -139,7 +139,7 @@
 
     if (!objc_msgSend_count(v6, v9, v10))
     {
-      objc_msgSend_removeObjectForKey_(self->_identifierToListenerQueueMap, v12, v5);
+      objc_msgSend_removeObjectForKey_(self->_identifierToListenerQueueMap, v12, identifierCopy);
     }
 
     if (!objc_msgSend_count(self->_identifierToListenerQueueMap, v12, v13))
@@ -157,12 +157,12 @@
   return v11;
 }
 
-- (id)_dequeueBlockForIdentifier:(id)a3
+- (id)_dequeueBlockForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, v4, v5);
+    v6 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, v4, identifierCopy);
     if (objc_msgSend_count(v6, v7, v8))
     {
       v10 = objc_msgSend_objectAtIndex_(v6, v9, 0);
@@ -192,7 +192,7 @@
 
     if (!objc_msgSend_count(v6, v13, v14))
     {
-      objc_msgSend_removeObjectForKey_(self->_identifierToBlockQueueMap, v16, v5);
+      objc_msgSend_removeObjectForKey_(self->_identifierToBlockQueueMap, v16, identifierCopy);
     }
 
     if (!objc_msgSend_count(self->_identifierToBlockQueueMap, v16, v17))
@@ -212,13 +212,13 @@
   return v11;
 }
 
-- (void)_enqueueUserNotification:(id)a3 forIdentifier:(id)a4
+- (void)_enqueueUserNotification:(id)notification forIdentifier:(id)identifier
 {
-  v14 = a3;
-  v7 = a4;
-  if (v7)
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v9 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, v6, v7);
+    v9 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, v6, identifierCopy);
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -232,20 +232,20 @@
         identifierToIMUserNotificationQueueMap = self->_identifierToIMUserNotificationQueueMap;
       }
 
-      objc_msgSend_setObject_forKey_(identifierToIMUserNotificationQueueMap, v10, v9, v7);
+      objc_msgSend_setObject_forKey_(identifierToIMUserNotificationQueueMap, v10, v9, identifierCopy);
     }
 
-    objc_msgSend_addObject_(v9, v8, v14);
+    objc_msgSend_addObject_(v9, v8, notificationCopy);
   }
 }
 
-- (void)_enqueueListener:(id)a3 forIdentifier:(id)a4
+- (void)_enqueueListener:(id)listener forIdentifier:(id)identifier
 {
-  v17 = a3;
-  v7 = a4;
-  if (v7)
+  listenerCopy = listener;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v10 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, v6, v7);
+    v10 = objc_msgSend_objectForKey_(self->_identifierToListenerQueueMap, v6, identifierCopy);
     if (!v10)
     {
       v10 = objc_msgSend_nonRetainingArray(MEMORY[0x1E695DF70], v8, v9);
@@ -259,12 +259,12 @@
         identifierToListenerQueueMap = self->_identifierToListenerQueueMap;
       }
 
-      objc_msgSend_setObject_forKey_(identifierToListenerQueueMap, v11, v10, v7);
+      objc_msgSend_setObject_forKey_(identifierToListenerQueueMap, v11, v10, identifierCopy);
     }
 
-    if (v17)
+    if (listenerCopy)
     {
-      objc_msgSend_addObject_(v10, v8, v17);
+      objc_msgSend_addObject_(v10, v8, listenerCopy);
     }
 
     else
@@ -275,13 +275,13 @@
   }
 }
 
-- (void)_enqueueBlock:(id)a3 forIdentifier:(id)a4
+- (void)_enqueueBlock:(id)block forIdentifier:(id)identifier
 {
-  v18 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v10 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, v6, v7);
+    v10 = objc_msgSend_objectForKey_(self->_identifierToBlockQueueMap, v6, identifierCopy);
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -295,12 +295,12 @@
         identifierToBlockQueueMap = self->_identifierToBlockQueueMap;
       }
 
-      objc_msgSend_setObject_forKey_(identifierToBlockQueueMap, v11, v10, v7);
+      objc_msgSend_setObject_forKey_(identifierToBlockQueueMap, v11, v10, identifierCopy);
     }
 
-    if (v18)
+    if (blockCopy)
     {
-      v15 = objc_msgSend_copy(v18, v8, v9);
+      v15 = objc_msgSend_copy(blockCopy, v8, v9);
     }
 
     else
@@ -313,11 +313,11 @@
   }
 }
 
-- (void)_cancelActiveUserNotificationForIdentifier:(id)a3
+- (void)_cancelActiveUserNotificationForIdentifier:(id)identifier
 {
-  v22 = a3;
-  v5 = objc_msgSend_objectForKey_(self->_identifierToCFUserNotificationMap, v4, v22);
-  v8 = objc_msgSend_objectForKey_(self->_identifierToRunLoopSourcesMap, v6, v22);
+  identifierCopy = identifier;
+  v5 = objc_msgSend_objectForKey_(self->_identifierToCFUserNotificationMap, v4, identifierCopy);
+  v8 = objc_msgSend_objectForKey_(self->_identifierToRunLoopSourcesMap, v6, identifierCopy);
   if (v5)
   {
     CFUserNotificationCancel(v5);
@@ -328,11 +328,11 @@
     CFRunLoopSourceInvalidate(v8);
   }
 
-  v9 = objc_msgSend__dequeueUserNotificationForIdentifier_(self, v7, v22);
-  v11 = objc_msgSend__dequeueListenerForIdentifier_(self, v10, v22);
-  v13 = objc_msgSend__dequeueBlockForIdentifier_(self, v12, v22);
-  objc_msgSend_removeObjectForKey_(self->_identifierToCFUserNotificationMap, v14, v22);
-  objc_msgSend_removeObjectForKey_(self->_identifierToRunLoopSourcesMap, v15, v22);
+  v9 = objc_msgSend__dequeueUserNotificationForIdentifier_(self, v7, identifierCopy);
+  v11 = objc_msgSend__dequeueListenerForIdentifier_(self, v10, identifierCopy);
+  v13 = objc_msgSend__dequeueBlockForIdentifier_(self, v12, identifierCopy);
+  objc_msgSend_removeObjectForKey_(self->_identifierToCFUserNotificationMap, v14, identifierCopy);
+  objc_msgSend_removeObjectForKey_(self->_identifierToRunLoopSourcesMap, v15, identifierCopy);
   if (!objc_msgSend_count(self->_identifierToCFUserNotificationMap, v16, v17))
   {
     identifierToCFUserNotificationMap = self->_identifierToCFUserNotificationMap;
@@ -346,11 +346,11 @@
   }
 }
 
-- (void)_displayNextUserNotificationForIdentifier:(id)a3
+- (void)_displayNextUserNotificationForIdentifier:(id)identifier
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = objc_msgSend__frontUserNotificationForIdentifier_(self, v5, v4);
+  identifierCopy = identifier;
+  v6 = objc_msgSend__frontUserNotificationForIdentifier_(self, v5, identifierCopy);
   v9 = v6;
   if (v6)
   {
@@ -388,7 +388,7 @@
 
     if (v32)
     {
-      objc_msgSend_setObject_forKey_(self->_identifierToCFUserNotificationMap, v31, v32, v4);
+      objc_msgSend_setObject_forKey_(self->_identifierToCFUserNotificationMap, v31, v32, identifierCopy);
       RunLoopSource = CFUserNotificationCreateRunLoopSource(v30, v32, sub_1959B1300, 0);
       if (!self->_identifierToRunLoopSourcesMap)
       {
@@ -399,7 +399,7 @@
 
       if (RunLoopSource)
       {
-        objc_msgSend_setObject_forKey_(self->_identifierToRunLoopSourcesMap, v35, RunLoopSource, v4);
+        objc_msgSend_setObject_forKey_(self->_identifierToRunLoopSourcesMap, v35, RunLoopSource, identifierCopy);
         Main = CFRunLoopGetMain();
         CFRunLoopAddSource(Main, RunLoopSource, *MEMORY[0x1E695E8D0]);
         CFRelease(RunLoopSource);
@@ -412,9 +412,9 @@
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleUserNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_handleUserNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags
 {
-  v7 = objc_msgSend_allKeysForObject_(self->_identifierToCFUserNotificationMap, a2, a3);
+  v7 = objc_msgSend_allKeysForObject_(self->_identifierToCFUserNotificationMap, a2, notification);
   v37 = objc_msgSend_lastObject(v7, v8, v9);
 
   v11 = objc_msgSend__dequeueUserNotificationForIdentifier_(self, v10, v37);
@@ -440,8 +440,8 @@
   v24 = objc_msgSend_objectForKey_(self->_identifierToRunLoopSourcesMap, v23, v37);
   CFRunLoopSourceInvalidate(v24);
 
-  ResponseDictionary = CFUserNotificationGetResponseDictionary(a3);
-  objc_msgSend__setResponseFlags_responseInformation_(v11, v26, a4, ResponseDictionary);
+  ResponseDictionary = CFUserNotificationGetResponseDictionary(notification);
+  objc_msgSend__setResponseFlags_responseInformation_(v11, v26, flags, ResponseDictionary);
   objc_msgSend_userNotificationDidFinish_(v13, v27, v11);
   if (v15)
   {
@@ -465,48 +465,48 @@
   objc_msgSend__displayNextUserNotificationForIdentifier_(self, v35, v37);
 }
 
-- (void)addUserNotification:(id)a3 listener:(id)a4 completionHandler:(id)a5
+- (void)addUserNotification:(id)notification listener:(id)listener completionHandler:(id)handler
 {
-  v22 = a3;
-  v8 = a5;
-  v9 = a4;
-  v12 = objc_msgSend_identifier(v22, v10, v11);
-  objc_msgSend__enqueueUserNotification_forIdentifier_(self, v13, v22, v12);
-  objc_msgSend__enqueueListener_forIdentifier_(self, v14, v9, v12);
+  notificationCopy = notification;
+  handlerCopy = handler;
+  listenerCopy = listener;
+  v12 = objc_msgSend_identifier(notificationCopy, v10, v11);
+  objc_msgSend__enqueueUserNotification_forIdentifier_(self, v13, notificationCopy, v12);
+  objc_msgSend__enqueueListener_forIdentifier_(self, v14, listenerCopy, v12);
 
-  objc_msgSend__enqueueBlock_forIdentifier_(self, v15, v8, v12);
+  objc_msgSend__enqueueBlock_forIdentifier_(self, v15, handlerCopy, v12);
   v17 = objc_msgSend_objectForKey_(self->_identifierToCFUserNotificationMap, v16, v12);
-  if (!v17 || (v20 = v17, v21 = objc_msgSend_usesNotificationCenter(v22, v18, v19), v20, v21))
+  if (!v17 || (v20 = v17, v21 = objc_msgSend_usesNotificationCenter(notificationCopy, v18, v19), v20, v21))
   {
     objc_msgSend__displayNextUserNotificationForIdentifier_(self, v18, v12);
   }
 }
 
-- (unint64_t)countForIdentifier:(id)a3
+- (unint64_t)countForIdentifier:(id)identifier
 {
-  v3 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_identifierToIMUserNotificationQueueMap, a2, identifier);
   v6 = objc_msgSend_count(v3, v4, v5);
 
   return v6;
 }
 
-- (void)removeNotificationsForServiceIdentifier:(id)a3
+- (void)removeNotificationsForServiceIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    objc_msgSend__cancelActiveUserNotificationForIdentifier_(self, a2, a3);
+    objc_msgSend__cancelActiveUserNotificationForIdentifier_(self, a2, identifier);
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  listenerCopy = listener;
+  if (listenerCopy)
   {
     v7 = objc_msgSend_null(MEMORY[0x1E695DFB0], v4, v5);
 
-    if (v7 != v6)
+    if (v7 != listenerCopy)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v63 = 0u;
@@ -531,7 +531,7 @@
             v18 = *(*(&v63 + 1) + 8 * i);
             v19 = objc_msgSend__frontListenerForIdentifier_(self, v14, v18);
 
-            if (v19 == v6)
+            if (v19 == listenerCopy)
             {
               objc_msgSend_addObject_(v8, v14, v18);
               objc_msgSend__cancelActiveUserNotificationForIdentifier_(self, v20, v18);
@@ -575,7 +575,7 @@
               do
               {
                 v40 = objc_msgSend_objectAtIndex_(v30, v37, v38);
-                if (v40 == v6)
+                if (v40 == listenerCopy)
                 {
                   objc_msgSend_removeObjectAtIndex_(v30, v39, v38);
                   objc_msgSend_removeObjectAtIndex_(v32, v41, v38);

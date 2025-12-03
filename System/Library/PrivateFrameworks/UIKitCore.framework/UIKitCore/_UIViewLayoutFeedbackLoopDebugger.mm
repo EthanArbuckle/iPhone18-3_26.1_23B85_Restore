@@ -7,24 +7,24 @@
 - (id)turningPointViewsCreateIfNecessary;
 - (id)viewsWithChangingGeometryCreateIfNecessary;
 - (id)viewsWithVariableChangesTriggeringLayoutCreateIfNecessary;
-- (void)_recordSetNeedsLayoutToLayerOfView:(id)a3;
-- (void)didEnterLayoutSublayersOfLayerForView:(id)a3;
-- (void)didSendLayoutSubviewsToView:(id)a3;
-- (void)didSendViewDidLayoutSubviewsToViewControllerOfView:(id)a3;
-- (void)didSendViewWillLayoutSubviewsToViewControllerOfView:(id)a3;
-- (void)didUpdateLayoutMargins:(UIEdgeInsets)a3 ofView:(id)a4;
-- (void)didUpdateSafeAreaInsets:(UIEdgeInsets)a3 ofView:(id)a4;
-- (void)dumpInfoWithInfoCollectionSuccess:(BOOL)a3;
-- (void)willChangeGeometryForLayerOfView:(id)a3;
-- (void)willExitLayoutSublayersOfLayerForView:(id)a3;
-- (void)willSendLayoutSubviewsToView:(id)a3;
-- (void)willSendSetAnchorPoint:(CGPoint)a3 toLayerOfView:(id)a4;
-- (void)willSendSetBounds:(CGRect)a3 toLayerOfView:(id)a4;
-- (void)willSendSetFrame:(CGRect)a3 toLayerOfView:(id)a4;
-- (void)willSendSetNeedsLayoutToView:(id)a3 becauseOfChangeInVariable:(id)a4 inLayoutEngine:(id)a5;
-- (void)willSendSetPosition:(CGPoint)a3 toLayerOfView:(id)a4;
-- (void)willSendViewDidLayoutSubviewsToViewControllerOfView:(id)a3;
-- (void)willSendViewWillLayoutSubviewsToViewControllerOfView:(id)a3;
+- (void)_recordSetNeedsLayoutToLayerOfView:(id)view;
+- (void)didEnterLayoutSublayersOfLayerForView:(id)view;
+- (void)didSendLayoutSubviewsToView:(id)view;
+- (void)didSendViewDidLayoutSubviewsToViewControllerOfView:(id)view;
+- (void)didSendViewWillLayoutSubviewsToViewControllerOfView:(id)view;
+- (void)didUpdateLayoutMargins:(UIEdgeInsets)margins ofView:(id)view;
+- (void)didUpdateSafeAreaInsets:(UIEdgeInsets)insets ofView:(id)view;
+- (void)dumpInfoWithInfoCollectionSuccess:(BOOL)success;
+- (void)willChangeGeometryForLayerOfView:(id)view;
+- (void)willExitLayoutSublayersOfLayerForView:(id)view;
+- (void)willSendLayoutSubviewsToView:(id)view;
+- (void)willSendSetAnchorPoint:(CGPoint)point toLayerOfView:(id)view;
+- (void)willSendSetBounds:(CGRect)bounds toLayerOfView:(id)view;
+- (void)willSendSetFrame:(CGRect)frame toLayerOfView:(id)view;
+- (void)willSendSetNeedsLayoutToView:(id)view becauseOfChangeInVariable:(id)variable inLayoutEngine:(id)engine;
+- (void)willSendSetPosition:(CGPoint)position toLayerOfView:(id)view;
+- (void)willSendViewDidLayoutSubviewsToViewControllerOfView:(id)view;
+- (void)willSendViewWillLayoutSubviewsToViewControllerOfView:(id)view;
 @end
 
 @implementation _UIViewLayoutFeedbackLoopDebugger
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __63___UIViewLayoutFeedbackLoopDebugger_layoutFeedbackLoopDebugger__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C180 != -1)
   {
     dispatch_once(&qword_1ED49C180, block);
@@ -46,39 +46,39 @@
   return v2;
 }
 
-- (void)didEnterLayoutSublayersOfLayerForView:(id)a3
+- (void)didEnterLayoutSublayersOfLayerForView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (self->_debuggingState >= 2)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentLayoutView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_currentLayoutView, view);
     [v6 _lfld_pushCurrentLayoutMethodName:@"layoutSublayersOfLayer:"];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)willExitLayoutSublayersOfLayerForView:(id)a3
+- (void)willExitLayoutSublayersOfLayerForView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
     currentLayoutView = self->_currentLayoutView;
     self->_currentLayoutView = 0;
-    v5 = a3;
+    viewCopy = view;
 
-    [v5 _lfld_discardLastCurrentLayoutMethodName];
+    [viewCopy _lfld_discardLastCurrentLayoutMethodName];
   }
 }
 
-- (void)willSendLayoutSubviewsToView:(id)a3
+- (void)willSendLayoutSubviewsToView:(id)view
 {
   v70 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [(UIView *)v5 _lfld_incrementCount];
-  [(UIView *)v5 _lfld_prepareToResetCountIfNecessary];
-  v6 = [(UIView *)v5 _lfld_count];
+  viewCopy = view;
+  [(UIView *)viewCopy _lfld_incrementCount];
+  [(UIView *)viewCopy _lfld_prepareToResetCountIfNecessary];
+  _lfld_count = [(UIView *)viewCopy _lfld_count];
   v7 = qword_1ED49C1A0;
-  if (v6 > qword_1ED49C1A0)
+  if (_lfld_count > qword_1ED49C1A0)
   {
     self->_debuggingState = 3;
     goto LABEL_19;
@@ -89,7 +89,7 @@
   {
     if (debuggingState == 2)
     {
-      if (self->_rootView == v5)
+      if (self->_rootView == viewCopy)
       {
         rootViewLayoutCount = self->_rootViewLayoutCount;
         self->_rootViewLayoutCount = rootViewLayoutCount + 1;
@@ -99,19 +99,19 @@
         }
       }
 
-      [(UIView *)v5 _lfld_pushCurrentLayoutMethodName:@"layoutSubviews"];
+      [(UIView *)viewCopy _lfld_pushCurrentLayoutMethodName:@"layoutSubviews"];
       v24 = *(__UILogGetCategoryCachedImpl("LayoutLoop", &qword_1ED49C1B0) + 8);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = v24;
-        v26 = [(UIView *)v5 _lfld_minimalDescription];
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
+        _lfld_minimalDescription = [(UIView *)viewCopy _lfld_minimalDescription];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138412802;
         v63 = @"layoutSubviews";
         v64 = 2112;
-        v65 = v26;
+        v65 = _lfld_minimalDescription;
         v66 = 2112;
-        v67 = v27;
+        v67 = callStackSymbols;
         _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "About to send -%@ to %@. \n%@", buf, 0x20u);
       }
 
@@ -124,7 +124,7 @@
     }
 
 LABEL_19:
-    [(_UIViewLayoutFeedbackLoopDebugger *)self dumpInfoWithInfoCollectionSuccess:v6 <= v7];
+    [(_UIViewLayoutFeedbackLoopDebugger *)self dumpInfoWithInfoCollectionSuccess:_lfld_count <= v7];
     goto LABEL_20;
   }
 
@@ -132,13 +132,13 @@ LABEL_19:
   {
     if (debuggingState == 1)
     {
-      [(NSMutableArray *)self->_layoutList addObject:v5];
-      [(NSMutableSet *)self->_involvedViews addObject:v5];
+      [(NSMutableArray *)self->_layoutList addObject:viewCopy];
+      [(NSMutableSet *)self->_involvedViews addObject:viewCopy];
       p_rootView = &self->_rootView;
       rootView = self->_rootView;
-      if (rootView != v5 && [(UIView *)rootView isDescendantOfView:v5])
+      if (rootView != viewCopy && [(UIView *)rootView isDescendantOfView:viewCopy])
       {
-        objc_storeStrong(&self->_rootView, a3);
+        objc_storeStrong(&self->_rootView, view);
       }
 
       v11 = [(NSMutableArray *)self->_layoutList count];
@@ -232,7 +232,7 @@ LABEL_66:
           goto LABEL_67;
         }
 
-        v35 = [v28 firstObject];
+        firstObject = [v28 firstObject];
         self->_feedbackLoopConfirmed = 1;
         v54 = 0u;
         v55 = 0u;
@@ -253,7 +253,7 @@ LABEL_66:
                 objc_enumerationMutation(v36);
               }
 
-              if (([*(*(&v54 + 1) + 8 * j) isEqualToArray:v35] & 1) == 0)
+              if (([*(*(&v54 + 1) + 8 * j) isEqualToArray:firstObject] & 1) == 0)
               {
                 self->_feedbackLoopConfirmed = 0;
                 goto LABEL_52;
@@ -274,7 +274,7 @@ LABEL_52:
 
         if (self->_feedbackLoopConfirmed)
         {
-          v41 = v35;
+          v41 = firstObject;
           reducedLayoutList = self->_reducedLayoutList;
           self->_reducedLayoutList = v41;
         }
@@ -300,9 +300,9 @@ LABEL_61:
           }
 
           self->_feedbackLoopConfirmed = 1;
-          v43 = [v36 firstObject];
+          firstObject2 = [v36 firstObject];
           v44 = [v36 objectAtIndexedSubscript:1];
-          obj = [v43 arrayByAddingObjectsFromArray:v44];
+          obj = [firstObject2 arrayByAddingObjectsFromArray:v44];
 
           if (([v36 count] - 4) <= 0xFFFFFFFFFFFFFFFCLL)
           {
@@ -344,15 +344,15 @@ LABEL_69:
 
   else
   {
-    v17 = [(UIView *)v5 _lfld_count];
-    if (v17 == qword_1ED49C188)
+    _lfld_count2 = [(UIView *)viewCopy _lfld_count];
+    if (_lfld_count2 == qword_1ED49C188)
     {
-      objc_storeStrong(&self->_rootView, a3);
+      objc_storeStrong(&self->_rootView, view);
       v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
       layoutList = self->_layoutList;
       self->_layoutList = v18;
 
-      v20 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v5, 0}];
+      v20 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{viewCopy, 0}];
       involvedViews = self->_involvedViews;
       self->_involvedViews = v20;
 
@@ -365,43 +365,43 @@ LABEL_67:
 LABEL_20:
 }
 
-- (void)didSendLayoutSubviewsToView:(id)a3
+- (void)didSendLayoutSubviewsToView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    [a3 _lfld_discardLastCurrentLayoutMethodName];
+    [view _lfld_discardLastCurrentLayoutMethodName];
   }
 }
 
-- (void)willSendViewWillLayoutSubviewsToViewControllerOfView:(id)a3
+- (void)willSendViewWillLayoutSubviewsToViewControllerOfView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    [a3 _lfld_pushCurrentLayoutMethodName:@"viewWillLayoutSubviews"];
+    [view _lfld_pushCurrentLayoutMethodName:@"viewWillLayoutSubviews"];
   }
 }
 
-- (void)didSendViewWillLayoutSubviewsToViewControllerOfView:(id)a3
+- (void)didSendViewWillLayoutSubviewsToViewControllerOfView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    [a3 _lfld_discardLastCurrentLayoutMethodName];
+    [view _lfld_discardLastCurrentLayoutMethodName];
   }
 }
 
-- (void)willSendViewDidLayoutSubviewsToViewControllerOfView:(id)a3
+- (void)willSendViewDidLayoutSubviewsToViewControllerOfView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    [a3 _lfld_pushCurrentLayoutMethodName:@"viewDidLayoutSubviews"];
+    [view _lfld_pushCurrentLayoutMethodName:@"viewDidLayoutSubviews"];
   }
 }
 
-- (void)didSendViewDidLayoutSubviewsToViewControllerOfView:(id)a3
+- (void)didSendViewDidLayoutSubviewsToViewControllerOfView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    [a3 _lfld_discardLastCurrentLayoutMethodName];
+    [view _lfld_discardLastCurrentLayoutMethodName];
   }
 }
 
@@ -420,16 +420,16 @@ LABEL_20:
   return viewsWithVariableChangesTriggeringLayout;
 }
 
-- (void)willSendSetNeedsLayoutToView:(id)a3 becauseOfChangeInVariable:(id)a4 inLayoutEngine:(id)a5
+- (void)willSendSetNeedsLayoutToView:(id)view becauseOfChangeInVariable:(id)variable inLayoutEngine:(id)engine
 {
   if (self->_debuggingState >= 2)
   {
-    v8 = a5;
-    v9 = a4;
-    v11 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithVariableChangesTriggeringLayoutCreateIfNecessary];
-    v10 = [v9 delegate];
-    [v11 addObject:v10];
-    [v10 _lfld_addVariableChangeRecordForVariable:v9 inLayoutEngine:v8];
+    engineCopy = engine;
+    variableCopy = variable;
+    viewsWithVariableChangesTriggeringLayoutCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithVariableChangesTriggeringLayoutCreateIfNecessary];
+    delegate = [variableCopy delegate];
+    [viewsWithVariableChangesTriggeringLayoutCreateIfNecessary addObject:delegate];
+    [delegate _lfld_addVariableChangeRecordForVariable:variableCopy inLayoutEngine:engineCopy];
   }
 }
 
@@ -448,16 +448,16 @@ LABEL_20:
   return turningPointViews;
 }
 
-- (void)_recordSetNeedsLayoutToLayerOfView:(id)a3
+- (void)_recordSetNeedsLayoutToLayerOfView:(id)view
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if (self->_debuggingState >= 2)
   {
     currentLayoutView = self->_currentLayoutView;
     if (!currentLayoutView)
     {
-      if (self->_rootView != v4)
+      if (self->_rootView != viewCopy)
       {
         goto LABEL_13;
       }
@@ -468,24 +468,24 @@ LABEL_20:
         goto LABEL_11;
       }
 
-      v14 = v16;
-      v17 = [(UIView *)v4 _lfld_minimalDescription];
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
+      turningPointViewsCreateIfNecessary = v16;
+      _lfld_minimalDescription = [(UIView *)viewCopy _lfld_minimalDescription];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v19 = 138412546;
-      v20 = v17;
+      v20 = _lfld_minimalDescription;
       v21 = 2112;
-      v22 = v18;
-      _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "About to send -setNeedsLayout to layer for %@ \n%@", &v19, 0x16u);
+      v22 = callStackSymbols;
+      _os_log_impl(&dword_188A29000, turningPointViewsCreateIfNecessary, OS_LOG_TYPE_ERROR, "About to send -setNeedsLayout to layer for %@ \n%@", &v19, 0x16u);
 
 LABEL_10:
 LABEL_11:
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      [(UIView *)v4 _lfld_addSetNeedsLayoutCallStack:v15];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      [(UIView *)viewCopy _lfld_addSetNeedsLayoutCallStack:callStackSymbols2];
 
       goto LABEL_13;
     }
 
-    v6 = [(UIView *)currentLayoutView isDescendantOfView:v4];
+    v6 = [(UIView *)currentLayoutView isDescendantOfView:viewCopy];
     v7 = *(__UILogGetCategoryCachedImpl("LayoutLoop", &qword_1ED49C1B8) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -500,27 +500,27 @@ LABEL_11:
       }
 
       v9 = v7;
-      v10 = [(UIView *)v4 _lfld_minimalDescription];
-      v11 = [(UIView *)self->_currentLayoutView _lfld_currentLayoutMethodName];
-      v12 = [(UIView *)self->_currentLayoutView _lfld_minimalDescription];
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
+      _lfld_minimalDescription2 = [(UIView *)viewCopy _lfld_minimalDescription];
+      _lfld_currentLayoutMethodName = [(UIView *)self->_currentLayoutView _lfld_currentLayoutMethodName];
+      _lfld_minimalDescription3 = [(UIView *)self->_currentLayoutView _lfld_minimalDescription];
+      callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
       v19 = 138413314;
       v20 = v8;
       v21 = 2112;
-      v22 = v10;
+      v22 = _lfld_minimalDescription2;
       v23 = 2112;
-      v24 = v11;
+      v24 = _lfld_currentLayoutMethodName;
       v25 = 2112;
-      v26 = v12;
+      v26 = _lfld_minimalDescription3;
       v27 = 2112;
-      v28 = v13;
+      v28 = callStackSymbols3;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "%@About to send -setNeedsLayout to layer for %@ under -%@ for %@ \n%@", &v19, 0x34u);
     }
 
     if (v6)
     {
-      v14 = [(_UIViewLayoutFeedbackLoopDebugger *)self turningPointViewsCreateIfNecessary];
-      [v14 addObject:v4];
+      turningPointViewsCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self turningPointViewsCreateIfNecessary];
+      [turningPointViewsCreateIfNecessary addObject:viewCopy];
       goto LABEL_10;
     }
   }
@@ -543,129 +543,129 @@ LABEL_13:
   return viewsWithChangingGeometry;
 }
 
-- (void)willChangeGeometryForLayerOfView:(id)a3
+- (void)willChangeGeometryForLayerOfView:(id)view
 {
-  v11 = a3;
-  v4 = [v11 layer];
-  v5 = [v4 needsLayoutOnGeometryChange];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  needsLayoutOnGeometryChange = [layer needsLayoutOnGeometryChange];
 
-  v6 = v11;
-  if (v5)
+  v6 = viewCopy;
+  if (needsLayoutOnGeometryChange)
   {
-    [(_UIViewLayoutFeedbackLoopDebugger *)self willSendSetNeedsLayoutToLayerOfView:v11];
-    v7 = [v11 superview];
-    v8 = v7;
-    if (v7)
+    [(_UIViewLayoutFeedbackLoopDebugger *)self willSendSetNeedsLayoutToLayerOfView:viewCopy];
+    superview = [viewCopy superview];
+    v8 = superview;
+    if (superview)
     {
-      v9 = [v7 layer];
-      v10 = [v9 layoutIsActive];
+      layer2 = [superview layer];
+      layoutIsActive = [layer2 layoutIsActive];
 
-      if ((v10 & 1) == 0)
+      if ((layoutIsActive & 1) == 0)
       {
         [(_UIViewLayoutFeedbackLoopDebugger *)self willSendSetNeedsLayoutToLayerOfView:v8];
       }
     }
 
-    v6 = v11;
+    v6 = viewCopy;
   }
 }
 
-- (void)willSendSetBounds:(CGRect)a3 toLayerOfView:(id)a4
+- (void)willSendSetBounds:(CGRect)bounds toLayerOfView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
   [(_UIViewLayoutFeedbackLoopDebugger *)self willChangeGeometryForLayerOfView:?];
   if (self->_debuggingState >= 2)
   {
-    v9 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v9 addObject:v11];
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-    [v11 _lfld_addGeometryChangeRecordWithPropertyName:@"bounds" value:v10];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"bounds" value:v10];
   }
 }
 
-- (void)willSendSetPosition:(CGPoint)a3 toLayerOfView:(id)a4
+- (void)willSendSetPosition:(CGPoint)position toLayerOfView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    y = a3.y;
-    x = a3.x;
-    v8 = a4;
-    v10 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v10 addObject:v8];
+    y = position.y;
+    x = position.x;
+    viewCopy = view;
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v9 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
-    [v8 _lfld_addGeometryChangeRecordWithPropertyName:@"center" value:v9];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"center" value:v9];
   }
 }
 
-- (void)willSendSetFrame:(CGRect)a3 toLayerOfView:(id)a4
+- (void)willSendSetFrame:(CGRect)frame toLayerOfView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   [(_UIViewLayoutFeedbackLoopDebugger *)self willChangeGeometryForLayerOfView:?];
   if (self->_debuggingState >= 2)
   {
-    v9 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v9 addObject:v11];
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-    [v11 _lfld_addGeometryChangeRecordWithPropertyName:@"frame" value:v10];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"frame" value:v10];
   }
 }
 
-- (void)willSendSetAnchorPoint:(CGPoint)a3 toLayerOfView:(id)a4
+- (void)willSendSetAnchorPoint:(CGPoint)point toLayerOfView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   [(_UIViewLayoutFeedbackLoopDebugger *)self willChangeGeometryForLayerOfView:?];
   if (self->_debuggingState >= 2)
   {
-    v7 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v7 addObject:v9];
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v8 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
-    [v9 _lfld_addGeometryChangeRecordWithPropertyName:@"anchorPoint" value:v8];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"anchorPoint" value:v8];
   }
 }
 
-- (void)didUpdateSafeAreaInsets:(UIEdgeInsets)a3 ofView:(id)a4
+- (void)didUpdateSafeAreaInsets:(UIEdgeInsets)insets ofView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    right = a3.right;
-    bottom = a3.bottom;
-    left = a3.left;
-    top = a3.top;
-    v10 = a4;
-    v12 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v12 addObject:v10];
+    right = insets.right;
+    bottom = insets.bottom;
+    left = insets.left;
+    top = insets.top;
+    viewCopy = view;
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v11 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{top, left, bottom, right}];
-    [v10 _lfld_addGeometryChangeRecordWithPropertyName:@"safeAreaInsets" value:v11];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"safeAreaInsets" value:v11];
   }
 }
 
-- (void)didUpdateLayoutMargins:(UIEdgeInsets)a3 ofView:(id)a4
+- (void)didUpdateLayoutMargins:(UIEdgeInsets)margins ofView:(id)view
 {
   if (self->_debuggingState >= 2)
   {
-    right = a3.right;
-    bottom = a3.bottom;
-    left = a3.left;
-    top = a3.top;
-    v10 = a4;
-    v12 = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
-    [v12 addObject:v10];
+    right = margins.right;
+    bottom = margins.bottom;
+    left = margins.left;
+    top = margins.top;
+    viewCopy = view;
+    viewsWithChangingGeometryCreateIfNecessary = [(_UIViewLayoutFeedbackLoopDebugger *)self viewsWithChangingGeometryCreateIfNecessary];
+    [viewsWithChangingGeometryCreateIfNecessary addObject:viewCopy];
     v11 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{top, left, bottom, right}];
-    [v10 _lfld_addGeometryChangeRecordWithPropertyName:@"layoutMargins" value:v11];
+    [viewCopy _lfld_addGeometryChangeRecordWithPropertyName:@"layoutMargins" value:v11];
   }
 }
 
-- (void)dumpInfoWithInfoCollectionSuccess:(BOOL)a3
+- (void)dumpInfoWithInfoCollectionSuccess:(BOOL)success
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = [@"Degenerate layout!" mutableCopy];
@@ -675,22 +675,22 @@ LABEL_13:
     [v4 appendString:@" Layout feedback loop detected"];
     if (self->_rootViewConfirmed)
     {
-      v6 = [(UIView *)self->_rootView _lfld_description];
-      [v5 appendFormat:@" in subtree of %@. ", v6];
+      _lfld_description = [(UIView *)self->_rootView _lfld_description];
+      [v5 appendFormat:@" in subtree of %@. ", _lfld_description];
     }
 
     else
     {
-      v6 = [(NSMutableSet *)self->_involvedViews allObjects];
-      v7 = _UIViewLFLDDescriptionForArray(v6);
+      _lfld_description = [(NSMutableSet *)self->_involvedViews allObjects];
+      v7 = _UIViewLFLDDescriptionForArray(_lfld_description);
       [v5 appendFormat:@" involving\n%@\n", v7];
     }
   }
 
   else
   {
-    v6 = [(UIView *)self->_rootView _lfld_description];
-    [v5 appendFormat:@" Layout feedback loop suspected in subtree of %@, but the information is incomplete. ", v6];
+    _lfld_description = [(UIView *)self->_rootView _lfld_description];
+    [v5 appendFormat:@" Layout feedback loop suspected in subtree of %@, but the information is incomplete. ", _lfld_description];
   }
 
   v8 = *(__UILogGetCategoryCachedImpl("LayoutLoop", &dumpInfoWithInfoCollectionSuccess____s_category) + 8);
@@ -699,7 +699,7 @@ LABEL_13:
     *buf = 138412546;
     v11 = v5;
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "%@\n%@", buf, 0x16u);
   }
 
@@ -722,22 +722,22 @@ LABEL_13:
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The loop trigger threshold is %ld and may be too low. Use the -%s launch argument to try a higher threshold, up to %ld.", qword_1ED49C188, "UIViewLayoutFeedbackLoopDebuggingThreshold", 10000];
-      [v4 appendFormat:@"Unable to confirm the layout feedback loop. %@\n", v5];
+      10000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The loop trigger threshold is %ld and may be too low. Use the -%s launch argument to try a higher threshold, up to %ld.", qword_1ED49C188, "UIViewLayoutFeedbackLoopDebuggingThreshold", 10000];
+      [v4 appendFormat:@"Unable to confirm the layout feedback loop. %@\n", 10000];
     }
   }
 
   rootView = self->_rootView;
   if (rootView)
   {
-    v7 = [(UIView *)rootView _lfld_description];
-    [v4 appendFormat:@"Top-level view = %@\n\n", v7];
+    _lfld_description = [(UIView *)rootView _lfld_description];
+    [v4 appendFormat:@"Top-level view = %@\n\n", _lfld_description];
   }
 
   if ([(NSMutableSet *)self->_involvedViews count]>= 2)
   {
-    v8 = [(_UIViewLayoutFeedbackLoopDebugger *)self topLevelViewHierarchyTrace];
-    [v4 appendFormat:@"Views caught in loop: %@\n\n", v8];
+    topLevelViewHierarchyTrace = [(_UIViewLayoutFeedbackLoopDebugger *)self topLevelViewHierarchyTrace];
+    [v4 appendFormat:@"Views caught in loop: %@\n\n", topLevelViewHierarchyTrace];
   }
 
   if ([(NSArray *)self->_reducedLayoutList count])
@@ -773,18 +773,18 @@ LABEL_13:
 
           v64 = v12;
           v13 = *(*(&v88 + 1) + 8 * v12);
-          v14 = [v13 _lfld_minimalDescription];
-          v15 = [v13 _lfld_variableChangeRecords];
-          [v4 appendFormat:@"\nVariable change records for %@:\n%@\n", v14, v15];
+          _lfld_minimalDescription = [v13 _lfld_minimalDescription];
+          _lfld_variableChangeRecords = [v13 _lfld_variableChangeRecords];
+          [v4 appendFormat:@"\nVariable change records for %@:\n%@\n", _lfld_minimalDescription, _lfld_variableChangeRecords];
 
-          v62 = [v13 hasAmbiguousLayout];
+          hasAmbiguousLayout = [v13 hasAmbiguousLayout];
           v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
           v87 = 0u;
-          v68 = [v13 _lfld_variableChangeRecords];
-          v17 = [v68 countByEnumeratingWithState:&v84 objects:v95 count:16];
+          _lfld_variableChangeRecords2 = [v13 _lfld_variableChangeRecords];
+          v17 = [_lfld_variableChangeRecords2 countByEnumeratingWithState:&v84 objects:v95 count:16];
           if (v17)
           {
             v18 = v17;
@@ -799,35 +799,35 @@ LABEL_13:
               {
                 if (*v85 != v19)
                 {
-                  objc_enumerationMutation(v68);
+                  objc_enumerationMutation(_lfld_variableChangeRecords2);
                 }
 
-                v21 = [*(*(&v84 + 1) + 8 * v20) variable];
-                if (([v16 containsObject:v21] & 1) == 0)
+                variable = [*(*(&v84 + 1) + 8 * v20) variable];
+                if (([v16 containsObject:variable] & 1) == 0)
                 {
-                  [v16 addObject:v21];
-                  v22 = [v21 delegate];
-                  if (([v22 conformsToProtocol:&unk_1EFE3FA08] & 1) == 0)
+                  [v16 addObject:variable];
+                  delegate = [variable delegate];
+                  if (([delegate conformsToProtocol:&unk_1EFE3FA08] & 1) == 0)
                   {
 
-                    v22 = 0;
+                    delegate = 0;
                   }
 
-                  v23 = [v22 _referenceView];
-                  if (v23)
+                  _referenceView = [delegate _referenceView];
+                  if (_referenceView)
                   {
-                    v70 = v22;
+                    v70 = delegate;
                     v71 = v20;
-                    v69 = v23;
-                    v24 = [v23 _lfld_constraintsAffectingVariableValueChanges];
-                    v25 = [v24 objectForKey:v21];
+                    v69 = _referenceView;
+                    _lfld_constraintsAffectingVariableValueChanges = [_referenceView _lfld_constraintsAffectingVariableValueChanges];
+                    v25 = [_lfld_constraintsAffectingVariableValueChanges objectForKey:variable];
 
                     v82 = 0u;
                     v83 = 0u;
                     v80 = 0u;
                     v81 = 0u;
-                    v26 = [v25 keyEnumerator];
-                    v27 = [v26 countByEnumeratingWithState:&v80 objects:v94 count:16];
+                    keyEnumerator = [v25 keyEnumerator];
+                    v27 = [keyEnumerator countByEnumeratingWithState:&v80 objects:v94 count:16];
                     if (v27)
                     {
                       v28 = v27;
@@ -838,15 +838,15 @@ LABEL_13:
                         {
                           if (*v81 != v29)
                           {
-                            objc_enumerationMutation(v26);
+                            objc_enumerationMutation(keyEnumerator);
                           }
 
                           v31 = *(*(&v80 + 1) + 8 * i);
                           v32 = [v25 objectForKey:v31];
-                          [v4 appendFormat:@"\nConstraints contributing to value of %@ for %@\n %@\n", v31, v21, v32];
+                          [v4 appendFormat:@"\nConstraints contributing to value of %@ for %@\n %@\n", v31, variable, v32];
                         }
 
-                        v28 = [v26 countByEnumeratingWithState:&v80 objects:v94 count:16];
+                        v28 = [keyEnumerator countByEnumeratingWithState:&v80 objects:v94 count:16];
                       }
 
                       while (v28);
@@ -855,9 +855,9 @@ LABEL_13:
                     v19 = v65;
                     v16 = v66;
                     v18 = v67;
-                    v22 = v70;
+                    delegate = v70;
                     v20 = v71;
-                    v23 = v69;
+                    _referenceView = v69;
                   }
                 }
 
@@ -865,7 +865,7 @@ LABEL_13:
               }
 
               while (v20 != v18);
-              v18 = [v68 countByEnumeratingWithState:&v84 objects:v95 count:16];
+              v18 = [_lfld_variableChangeRecords2 countByEnumeratingWithState:&v84 objects:v95 count:16];
             }
 
             while (v18);
@@ -883,7 +883,7 @@ LABEL_13:
     }
 
 LABEL_48:
-    v62 = 0;
+    hasAmbiguousLayout = 0;
 LABEL_49:
 
     goto LABEL_50;
@@ -912,9 +912,9 @@ LABEL_49:
           }
 
           v37 = *(*(&v76 + 1) + 8 * j);
-          v38 = [v37 _lfld_minimalDescription];
-          v39 = [v37 _lfld_geometryChangeRecords];
-          [v4 appendFormat:@"Geometry change records for %@:\n%@\n", v38, v39];
+          _lfld_minimalDescription2 = [v37 _lfld_minimalDescription];
+          _lfld_geometryChangeRecords = [v37 _lfld_geometryChangeRecords];
+          [v4 appendFormat:@"Geometry change records for %@:\n%@\n", _lfld_minimalDescription2, _lfld_geometryChangeRecords];
         }
 
         v34 = [(NSMutableSet *)obj countByEnumeratingWithState:&v76 objects:v93 count:16];
@@ -926,24 +926,24 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  v62 = 0;
+  hasAmbiguousLayout = 0;
 LABEL_50:
-  v40 = [(UIView *)self->_rootView _lfld_setNeedsLayoutCallStacks];
-  v41 = [v40 count];
+  _lfld_setNeedsLayoutCallStacks = [(UIView *)self->_rootView _lfld_setNeedsLayoutCallStacks];
+  v41 = [_lfld_setNeedsLayoutCallStacks count];
 
   if (v41)
   {
-    v42 = [(UIView *)self->_rootView _lfld_setNeedsLayoutCallStacks];
-    v43 = v42;
+    _lfld_setNeedsLayoutCallStacks2 = [(UIView *)self->_rootView _lfld_setNeedsLayoutCallStacks];
+    v43 = _lfld_setNeedsLayoutCallStacks2;
     if (v59)
     {
-      v44 = [v42 anyObject];
-      [v4 appendFormat:@"\n*** Representative call stack where -setNeedsLayout is sent to the top-level view ***\n%@\n", v44];
+      anyObject = [_lfld_setNeedsLayoutCallStacks2 anyObject];
+      [v4 appendFormat:@"\n*** Representative call stack where -setNeedsLayout is sent to the top-level view ***\n%@\n", anyObject];
     }
 
     else
     {
-      [v4 appendFormat:@"\n*** Call stacks where -setNeedsLayout is sent to the top-level view ***\n%@\n", v42];
+      [v4 appendFormat:@"\n*** Call stacks where -setNeedsLayout is sent to the top-level view ***\n%@\n", _lfld_setNeedsLayoutCallStacks2];
     }
   }
 
@@ -954,7 +954,7 @@ LABEL_50:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v47 = self;
+    selfCopy = self;
     v48 = self->_turningPointViews;
     v49 = [(NSMutableSet *)v48 countByEnumeratingWithState:&v72 objects:v92 count:16];
     if (v49)
@@ -971,11 +971,11 @@ LABEL_50:
           }
 
           v53 = *(*(&v72 + 1) + 8 * k);
-          if (v53 != v47->_rootView)
+          if (v53 != selfCopy->_rootView)
           {
-            v54 = [*(*(&v72 + 1) + 8 * k) _lfld_minimalDescription];
-            v55 = [(UIView *)v53 _lfld_setNeedsLayoutCallStacks];
-            [v4 appendFormat:@"\n\t>>> Call stacks where -setNeedsLayout is sent upstream to %@\n%@\n", v54, v55];
+            _lfld_minimalDescription3 = [*(*(&v72 + 1) + 8 * k) _lfld_minimalDescription];
+            _lfld_setNeedsLayoutCallStacks3 = [(UIView *)v53 _lfld_setNeedsLayoutCallStacks];
+            [v4 appendFormat:@"\n\t>>> Call stacks where -setNeedsLayout is sent upstream to %@\n%@\n", _lfld_minimalDescription3, _lfld_setNeedsLayoutCallStacks3];
           }
         }
 
@@ -986,7 +986,7 @@ LABEL_50:
     }
   }
 
-  if (v62)
+  if (hasAmbiguousLayout)
   {
     v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Ambiguous layout suspected as a cause of this layout feedback loop.%@", v4];
   }
@@ -1032,7 +1032,7 @@ LABEL_50:
     qword_1ED49C188 = 100;
     qword_1ED49C198 = 100;
     qword_1ED49C1A0 = 1000;
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     v4 = qword_1ED49C178;
     qword_1ED49C178 = v3;
   }

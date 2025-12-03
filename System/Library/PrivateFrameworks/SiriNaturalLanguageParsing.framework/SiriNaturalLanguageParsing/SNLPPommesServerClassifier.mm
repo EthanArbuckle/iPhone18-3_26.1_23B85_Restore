@@ -1,6 +1,6 @@
 @interface SNLPPommesServerClassifier
-+ (id)classifierWithPathURL:(id)a3 error:(id *)a4;
-- (id)responseForRequest:(id)a3 error:(id *)a4;
++ (id)classifierWithPathURL:(id)l error:(id *)error;
+- (id)responseForRequest:(id)request error:(id *)error;
 @end
 
 @implementation SNLPPommesServerClassifier
@@ -23,12 +23,12 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
   getAssetDirectoryNCV(v10);
 }
 
-- (id)responseForRequest:(id)a3 error:(id *)a4
+- (id)responseForRequest:(id)request error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = SNLPPommesServerClassifier;
-  v5 = [(SNLPITFMClassifier *)&v26 responseForRequest:a3 error:a4];
+  v5 = [(SNLPITFMClassifier *)&v26 responseForRequest:request error:error];
   v6 = v5;
   if (v5)
   {
@@ -36,8 +36,8 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [v5 hypotheses];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v37 count:16];
+    hypotheses = [v5 hypotheses];
+    v8 = [hypotheses countByEnumeratingWithState:&v22 objects:v37 count:16];
     if (v8)
     {
       v9 = *v23;
@@ -47,7 +47,7 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(hypotheses);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
@@ -61,7 +61,7 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
               v15 = SNLPOSLoggerForCategory(2);
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
               {
-                v16 = [v11 stringLabel];
+                stringLabel = [v11 stringLabel];
                 [v11 probability];
                 v18 = v17;
                 [(SNLPPommesServerClassifier *)self confidenceThreshold];
@@ -70,7 +70,7 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
                 v29 = 2080;
                 v30 = "[insights-snlp-psc]: ";
                 v31 = 2112;
-                v32 = v16;
+                v32 = stringLabel;
                 v33 = 2048;
                 v34 = v18;
                 v35 = 2048;
@@ -86,7 +86,7 @@ void __50__SNLPPommesServerClassifier__initializationBlock__block_invoke(void *a
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v37 count:16];
+        v8 = [hypotheses countByEnumeratingWithState:&v22 objects:v37 count:16];
         if (v8)
         {
           continue;
@@ -104,43 +104,43 @@ LABEL_15:
   return v6;
 }
 
-+ (id)classifierWithPathURL:(id)a3 error:(id *)a4
++ (id)classifierWithPathURL:(id)l error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
   v65 = 0;
-  v62 = a3;
-  v61 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v62 path];
-  v6 = [v61 fileExistsAtPath:v5 isDirectory:&v65];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v65];
 
   if (!v6 || v65 != 1)
   {
-    if (a4)
+    if (error)
     {
-      v33 = [MEMORY[0x277CCA8D8] mainBundle];
-      v34 = [v33 localizedStringForKey:@"An error occured when attempting to read the LVC model bundle at: %@" value:&stru_2835E9330 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v34 = [mainBundle localizedStringForKey:@"An error occured when attempting to read the LVC model bundle at: %@" value:&stru_2835E9330 table:0];
 
-      v35 = [MEMORY[0x277CCA8D8] mainBundle];
-      v36 = [v35 localizedStringForKey:@"Check that the path contains a valid model bundle: %@" value:&stru_2835E9330 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v36 = [mainBundle2 localizedStringForKey:@"Check that the path contains a valid model bundle: %@" value:&stru_2835E9330 table:0];
 
       v37 = MEMORY[0x277CCA9B8];
       v66[0] = *MEMORY[0x277CCA450];
       v38 = MEMORY[0x277CCACA8];
-      v39 = [v62 path];
-      v40 = [v38 stringWithFormat:v34, v39];
+      path2 = [lCopy path];
+      v40 = [v38 stringWithFormat:v34, path2];
       v67[0] = v40;
       v66[1] = *MEMORY[0x277CCA470];
       v41 = MEMORY[0x277CCACA8];
-      v42 = [v62 path];
-      v43 = [v41 stringWithFormat:v34, v42];
+      path3 = [lCopy path];
+      v43 = [v41 stringWithFormat:v34, path3];
       v67[1] = v43;
       v66[2] = *MEMORY[0x277CCA498];
       v44 = MEMORY[0x277CCACA8];
-      v45 = [v62 path];
-      v46 = [v44 stringWithFormat:v36, v45];
+      path4 = [lCopy path];
+      v46 = [v44 stringWithFormat:v36, path4];
       v67[2] = v46;
       v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:3];
-      *a4 = [v37 errorWithDomain:@"SNLPPommesServerClassifierErrorDomain" code:1 userInfo:v47];
+      *error = [v37 errorWithDomain:@"SNLPPommesServerClassifierErrorDomain" code:1 userInfo:v47];
     }
 
     v21 = 0;
@@ -160,18 +160,18 @@ LABEL_15:
   }
 
   v9 = [v7 stringWithUTF8String:v8];
-  v59 = [v62 URLByAppendingPathComponent:v9];
+  v59 = [lCopy URLByAppendingPathComponent:v9];
 
   if (v71 < 0)
   {
     operator delete(*buf);
   }
 
-  v55 = [v62 URLByAppendingPathComponent:@"PSC/PSC.mlmodelc"];
-  v56 = [v62 URLByAppendingPathComponent:@"PSC/spans_pad.txt"];
-  v57 = [v62 URLByAppendingPathComponent:@"PSC/span_label_mapping.txt"];
-  v58 = [v62 URLByAppendingPathComponent:@"PSC/context_pad.txt"];
-  v10 = [v62 URLByAppendingPathComponent:@"PSC/targets.txt"];
+  v55 = [lCopy URLByAppendingPathComponent:@"PSC/PSC.mlmodelc"];
+  v56 = [lCopy URLByAppendingPathComponent:@"PSC/spans_pad.txt"];
+  v57 = [lCopy URLByAppendingPathComponent:@"PSC/span_label_mapping.txt"];
+  v58 = [lCopy URLByAppendingPathComponent:@"PSC/context_pad.txt"];
+  v10 = [lCopy URLByAppendingPathComponent:@"PSC/targets.txt"];
   v11 = MEMORY[0x277CCACA8];
   std::string::basic_string[abi:ne200100]<0>(buf, "version.yaml");
   if (v71 >= 0)
@@ -185,15 +185,15 @@ LABEL_15:
   }
 
   v13 = [v11 stringWithUTF8String:v12];
-  v54 = [v62 URLByAppendingPathComponent:v13];
+  v54 = [lCopy URLByAppendingPathComponent:v13];
 
   if (v71 < 0)
   {
     operator delete(*buf);
   }
 
-  v14 = [v10 path];
-  v15 = [v61 isReadableFileAtPath:v14];
+  path5 = [v10 path];
+  v15 = [defaultManager isReadableFileAtPath:path5];
 
   if ((v15 & 1) == 0)
   {
@@ -208,10 +208,10 @@ LABEL_15:
   if (v16)
   {
     v53 = [[SNLPITFMModelInfo alloc] initWithType:2 loggingComponent:4 errorDomain:@"SNLPPommesServerClassifierErrorDomain"];
-    v19 = [a1 alloc];
-    v20 = [a1 _initializationBlock];
+    v19 = [self alloc];
+    _initializationBlock = [self _initializationBlock];
     v63 = 0;
-    v21 = [v19 initWithModelBundle:v16 modelInfo:v53 initializationBlock:v20 error:&v63];
+    v21 = [v19 initWithModelBundle:v16 modelInfo:v53 initializationBlock:_initializationBlock error:&v63];
     v22 = v63;
 
     v23 = v21 != 0;
@@ -219,8 +219,8 @@ LABEL_15:
     {
       v24 = MEMORY[0x277CCAAA0];
       v25 = MEMORY[0x277CBEA90];
-      v26 = [v16 configURL];
-      v27 = [v25 dataWithContentsOfURL:v26];
+      configURL = [v16 configURL];
+      v27 = [v25 dataWithContentsOfURL:configURL];
       v28 = [v24 JSONObjectWithData:v27 options:0 error:0];
 
       v29 = [v28 objectForKey:@"confidence_threshold"];
@@ -243,19 +243,19 @@ LABEL_15:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v52 = v22;
-      *a4 = v22;
+      *error = v22;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v51 = v17;
     v23 = 0;
     v21 = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
   else

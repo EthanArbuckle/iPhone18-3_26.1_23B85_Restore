@@ -1,52 +1,52 @@
 @interface ATXTimelineRelevancePBTimelineRelevanceSuggestion
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAbuseControlOutcome:(id)a3;
-- (void)addTimelineRelevanceScoreEntry:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAbuseControlOutcome:(id)outcome;
+- (void)addTimelineRelevanceScoreEntry:(id)entry;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXTimelineRelevancePBTimelineRelevanceSuggestion
 
-- (void)addAbuseControlOutcome:(id)a3
+- (void)addAbuseControlOutcome:(id)outcome
 {
-  v4 = a3;
+  outcomeCopy = outcome;
   abuseControlOutcomes = self->_abuseControlOutcomes;
-  v8 = v4;
+  v8 = outcomeCopy;
   if (!abuseControlOutcomes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_abuseControlOutcomes;
     self->_abuseControlOutcomes = v6;
 
-    v4 = v8;
+    outcomeCopy = v8;
     abuseControlOutcomes = self->_abuseControlOutcomes;
   }
 
-  [(NSMutableArray *)abuseControlOutcomes addObject:v4];
+  [(NSMutableArray *)abuseControlOutcomes addObject:outcomeCopy];
 }
 
-- (void)addTimelineRelevanceScoreEntry:(id)a3
+- (void)addTimelineRelevanceScoreEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   timelineRelevanceScoreEntrys = self->_timelineRelevanceScoreEntrys;
-  v8 = v4;
+  v8 = entryCopy;
   if (!timelineRelevanceScoreEntrys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_timelineRelevanceScoreEntrys;
     self->_timelineRelevanceScoreEntrys = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     timelineRelevanceScoreEntrys = self->_timelineRelevanceScoreEntrys;
   }
 
-  [(NSMutableArray *)timelineRelevanceScoreEntrys addObject:v4];
+  [(NSMutableArray *)timelineRelevanceScoreEntrys addObject:entryCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = ATXTimelineRelevancePBTimelineRelevanceSuggestion;
   v4 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)&v8 description];
-  v5 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,12 +64,12 @@
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   suggestionID = self->_suggestionID;
   if (suggestionID)
   {
-    [v3 setObject:suggestionID forKey:@"suggestionID"];
+    [dictionary setObject:suggestionID forKey:@"suggestionID"];
   }
 
   if ([(NSMutableArray *)self->_abuseControlOutcomes count])
@@ -94,8 +94,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -129,8 +129,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -147,10 +147,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_suggestionID)
   {
     PBDataWriterWriteStringField();
@@ -223,50 +223,50 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_suggestionID)
   {
-    [v12 setSuggestionID:?];
+    [toCopy setSuggestionID:?];
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self abuseControlOutcomesCount])
   {
-    [v12 clearAbuseControlOutcomes];
-    v4 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self abuseControlOutcomesCount];
-    if (v4)
+    [toCopy clearAbuseControlOutcomes];
+    abuseControlOutcomesCount = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self abuseControlOutcomesCount];
+    if (abuseControlOutcomesCount)
     {
-      v5 = v4;
+      v5 = abuseControlOutcomesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self abuseControlOutcomeAtIndex:i];
-        [v12 addAbuseControlOutcome:v7];
+        [toCopy addAbuseControlOutcome:v7];
       }
     }
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self timelineRelevanceScoreEntrysCount])
   {
-    [v12 clearTimelineRelevanceScoreEntrys];
-    v8 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self timelineRelevanceScoreEntrysCount];
-    if (v8)
+    [toCopy clearTimelineRelevanceScoreEntrys];
+    timelineRelevanceScoreEntrysCount = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self timelineRelevanceScoreEntrysCount];
+    if (timelineRelevanceScoreEntrysCount)
     {
-      v9 = v8;
+      v9 = timelineRelevanceScoreEntrysCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self timelineRelevanceScoreEntryAtIndex:j];
-        [v12 addTimelineRelevanceScoreEntry:v11];
+        [toCopy addTimelineRelevanceScoreEntry:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_suggestionID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_suggestionID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addAbuseControlOutcome:v13];
 
         ++v12;
@@ -323,7 +323,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addTimelineRelevanceScoreEntry:v19];
 
         ++v18;
@@ -340,13 +340,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((suggestionID = self->_suggestionID, !(suggestionID | v4[2])) || -[NSString isEqual:](suggestionID, "isEqual:")) && ((abuseControlOutcomes = self->_abuseControlOutcomes, !(abuseControlOutcomes | v4[1])) || -[NSMutableArray isEqual:](abuseControlOutcomes, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((suggestionID = self->_suggestionID, !(suggestionID | equalCopy[2])) || -[NSString isEqual:](suggestionID, "isEqual:")) && ((abuseControlOutcomes = self->_abuseControlOutcomes, !(abuseControlOutcomes | equalCopy[1])) || -[NSMutableArray isEqual:](abuseControlOutcomes, "isEqual:")))
   {
     timelineRelevanceScoreEntrys = self->_timelineRelevanceScoreEntrys;
-    if (timelineRelevanceScoreEntrys | v4[3])
+    if (timelineRelevanceScoreEntrys | equalCopy[3])
     {
       v8 = [(NSMutableArray *)timelineRelevanceScoreEntrys isEqual:?];
     }
@@ -372,11 +372,11 @@
   return v4 ^ [(NSMutableArray *)self->_timelineRelevanceScoreEntrys hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(ATXTimelineRelevancePBTimelineRelevanceSuggestion *)self setSuggestionID:?];
   }
@@ -385,7 +385,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -413,7 +413,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

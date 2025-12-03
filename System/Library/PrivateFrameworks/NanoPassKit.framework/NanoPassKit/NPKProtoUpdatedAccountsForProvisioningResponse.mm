@@ -1,12 +1,12 @@
 @interface NPKProtoUpdatedAccountsForProvisioningResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoUpdatedAccountsForProvisioningResponse
@@ -17,86 +17,86 @@
   v8.receiver = self;
   v8.super_class = NPKProtoUpdatedAccountsForProvisioningResponse;
   v4 = [(NPKProtoUpdatedAccountsForProvisioningResponse *)&v8 description];
-  v5 = [(NPKProtoUpdatedAccountsForProvisioningResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoUpdatedAccountsForProvisioningResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v4 forKey:@"pending"];
+    [dictionary setObject:v4 forKey:@"pending"];
   }
 
   accountsRequiringProvisioningData = self->_accountsRequiringProvisioningData;
   if (accountsRequiringProvisioningData)
   {
-    [v3 setObject:accountsRequiringProvisioningData forKey:@"accountsRequiringProvisioningData"];
+    [dictionary setObject:accountsRequiringProvisioningData forKey:@"accountsRequiringProvisioningData"];
   }
 
   accountsOnDeviceData = self->_accountsOnDeviceData;
   if (accountsOnDeviceData)
   {
-    [v3 setObject:accountsOnDeviceData forKey:@"accountsOnDeviceData"];
+    [dictionary setObject:accountsOnDeviceData forKey:@"accountsOnDeviceData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_accountsRequiringProvisioningData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_accountsOnDeviceData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_pending;
-    v4[28] |= 1u;
+    toCopy[24] = self->_pending;
+    toCopy[28] |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_accountsRequiringProvisioningData)
   {
-    [v4 setAccountsRequiringProvisioningData:?];
-    v4 = v5;
+    [toCopy setAccountsRequiringProvisioningData:?];
+    toCopy = v5;
   }
 
   if (self->_accountsOnDeviceData)
   {
     [v5 setAccountsOnDeviceData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -104,37 +104,37 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSData *)self->_accountsRequiringProvisioningData copyWithZone:a3];
+  v7 = [(NSData *)self->_accountsRequiringProvisioningData copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSData *)self->_accountsOnDeviceData copyWithZone:a3];
+  v9 = [(NSData *)self->_accountsOnDeviceData copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_pending)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -152,13 +152,13 @@ LABEL_9:
 
 LABEL_4:
   accountsRequiringProvisioningData = self->_accountsRequiringProvisioningData;
-  if (accountsRequiringProvisioningData | *(v4 + 2) && ![(NSData *)accountsRequiringProvisioningData isEqual:?])
+  if (accountsRequiringProvisioningData | *(equalCopy + 2) && ![(NSData *)accountsRequiringProvisioningData isEqual:?])
   {
     goto LABEL_9;
   }
 
   accountsOnDeviceData = self->_accountsOnDeviceData;
-  if (accountsOnDeviceData | *(v4 + 1))
+  if (accountsOnDeviceData | *(equalCopy + 1))
   {
     v8 = [(NSData *)accountsOnDeviceData isEqual:?];
   }
@@ -189,26 +189,26 @@ LABEL_10:
   return v4 ^ [(NSData *)self->_accountsOnDeviceData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[28])
+  fromCopy = from;
+  if (fromCopy[28])
   {
-    self->_pending = v4[24];
+    self->_pending = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoUpdatedAccountsForProvisioningResponse *)self setAccountsRequiringProvisioningData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoUpdatedAccountsForProvisioningResponse *)self setAccountsOnDeviceData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

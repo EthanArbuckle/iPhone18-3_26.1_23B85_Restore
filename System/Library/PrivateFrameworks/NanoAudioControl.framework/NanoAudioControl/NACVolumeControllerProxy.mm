@@ -1,17 +1,17 @@
 @interface NACVolumeControllerProxy
 - (NACVolumeControllerDelegate)delegate;
-- (NACVolumeControllerProxy)initWithVolumeControlTarget:(id)a3;
-- (id)_scheduleTimeoutWithBlock:(id)a3;
+- (NACVolumeControllerProxy)initWithVolumeControlTarget:(id)target;
+- (id)_scheduleTimeoutWithBlock:(id)block;
 - (void)_EUVolumeLimitDidChange;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_applicationWillResignActiveNotification:(id)a3;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_applicationWillResignActiveNotification:(id)notification;
 - (void)_availableListeningModesDidChange;
 - (void)_cancelSetHapticStateTimer;
 - (void)_cancelSetHapticTimer;
 - (void)_cancelSetProminentHapticTimer;
 - (void)_cancelSetVolumeTimer;
 - (void)_currentListeningModeDidChange;
-- (void)_handleFailedToSetCurrentListeningModeNotification:(id)a3;
+- (void)_handleFailedToSetCurrentListeningModeNotification:(id)notification;
 - (void)_hapticIntensityDidChange;
 - (void)_hapticStateDidChange;
 - (void)_hapticStateTimeout;
@@ -24,8 +24,8 @@
 - (void)_notifyDelegateVolumeChanged;
 - (void)_prominentHapticStateDidChange;
 - (void)_prominentHapticTimeout;
-- (void)_setHapticIntensity:(id)a3;
-- (void)_setVolumeValue:(id)a3;
+- (void)_setHapticIntensity:(id)intensity;
+- (void)_setVolumeValue:(id)value;
 - (void)_systemMutedStateDidChange;
 - (void)_volumeControlAvailabilityDidChange;
 - (void)_volumeValueDidChange;
@@ -35,26 +35,26 @@
 - (void)dealloc;
 - (void)endObservingListeningModes;
 - (void)endObservingVolume;
-- (void)setCurrentListeningMode:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHapticIntensity:(float)a3;
-- (void)setHapticState:(int64_t)a3;
-- (void)setProminentHapticEnabled:(BOOL)a3;
-- (void)setVolumeValue:(float)a3;
+- (void)setCurrentListeningMode:(id)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setHapticIntensity:(float)intensity;
+- (void)setHapticState:(int64_t)state;
+- (void)setProminentHapticEnabled:(BOOL)enabled;
+- (void)setVolumeValue:(float)value;
 @end
 
 @implementation NACVolumeControllerProxy
 
-- (NACVolumeControllerProxy)initWithVolumeControlTarget:(id)a3
+- (NACVolumeControllerProxy)initWithVolumeControlTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v23.receiver = self;
   v23.super_class = NACVolumeControllerProxy;
   v6 = [(NACVolumeControllerProxy *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_target, a3);
+    objc_storeStrong(&v6->_target, target);
     v8 = +[NACXPCClient sharedClient];
     xpcClient = v7->_xpcClient;
     v7->_xpcClient = v8;
@@ -84,9 +84,9 @@
     v18[3] = &unk_27992B890;
     objc_copyWeak(&v19, &location);
     [(NACEventThrottler *)v15 setEventBlock:v18];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v7 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
-    [v16 addObserver:v7 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:v7 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
@@ -115,17 +115,17 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   [(NACVolumeControllerProxy *)self setDelegate:0];
   [(NACVolumeControllerProxy *)self endObservingVolume];
   [(NACVolumeControllerProxy *)self endObservingListeningModes];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NACVolumeControllerProxy;
   [(NACVolumeControllerProxy *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (!obj || WeakRetained)
@@ -151,8 +151,8 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
     CFNotificationCenterAddObserver(v5, self, _NACHapticStateDidChangeNotification, @"NACHapticStateDidChangeNotification", 0, 0);
     CFNotificationCenterAddObserver(v5, self, _NACAvailableListeningModesDidChangeNotification, @"NACAvailableListeningModesDidChangeNotification", 0, 0);
     CFNotificationCenterAddObserver(v5, self, _NACCurrentListeningModeDidChangeNotification, @"NACCurrentListeningModeDidChangeNotification", 0, 0);
-    v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v6 addObserver:self selector:sel__handleFailedToSetCurrentListeningModeNotification_ name:@"NACFailedToSetCurrentListeningModeNotification" object:0 suspensionBehavior:4];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleFailedToSetCurrentListeningModeNotification_ name:@"NACFailedToSetCurrentListeningModeNotification" object:0 suspensionBehavior:4];
 
     [(NACVolumeControllerProxy *)self _volumeControlAvailabilityDidChange];
     [(NACVolumeControllerProxy *)self _volumeValueDidChange];
@@ -175,10 +175,10 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   v10 = *MEMORY[0x277D85DE8];
   if (!self->_observingVolume)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v4)
+    if (!applicationState)
     {
       v5 = NMLogForCategory(4);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -203,10 +203,10 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   v10 = *MEMORY[0x277D85DE8];
   if (self->_observingVolume)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v4)
+    if (!applicationState)
     {
       v5 = NMLogForCategory(4);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -231,10 +231,10 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   v10 = *MEMORY[0x277D85DE8];
   if (!self->_observingListeningModes)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v4)
+    if (!applicationState)
     {
       v5 = NMLogForCategory(4);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -259,10 +259,10 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   v10 = *MEMORY[0x277D85DE8];
   if (self->_observingListeningModes)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v4)
+    if (!applicationState)
     {
       v5 = NMLogForCategory(4);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -282,7 +282,7 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVolumeValue:(float)a3
+- (void)setVolumeValue:(float)value
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   volumeValue = self->_volumeValue;
@@ -294,11 +294,11 @@ void __56__NACVolumeControllerProxy_initWithVolumeControlTarget___block_invoke_2
   [(NACEventThrottler *)volumeThrottler setValue:v7];
 }
 
-- (void)_setVolumeValue:(id)a3
+- (void)_setVolumeValue:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 floatValue];
+  valueCopy = value;
+  [valueCopy floatValue];
   v6 = v5;
   v7 = NMLogForCategory(4);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -336,7 +336,7 @@ void __44__NACVolumeControllerProxy__setVolumeValue___block_invoke(uint64_t a1)
   [WeakRetained _volumeTimout];
 }
 
-- (void)setHapticIntensity:(float)a3
+- (void)setHapticIntensity:(float)intensity
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   hapticIntensity = self->_hapticIntensity;
@@ -348,9 +348,9 @@ void __44__NACVolumeControllerProxy__setVolumeValue___block_invoke(uint64_t a1)
   [(NACEventThrottler *)hapticThrottler setValue:v7];
 }
 
-- (void)setProminentHapticEnabled:(BOOL)a3
+- (void)setProminentHapticEnabled:(BOOL)enabled
 {
-  self->_prominentHapticEnabled = a3;
+  self->_prominentHapticEnabled = enabled;
   [(NACXPCClient *)self->_xpcClient setProminentHapticEnabled:?];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -384,10 +384,10 @@ void __54__NACVolumeControllerProxy_setProminentHapticEnabled___block_invoke(uin
   [(NACVolumeControllerProxy *)self _cancelSetProminentHapticTimer];
 }
 
-- (void)_setHapticIntensity:(id)a3
+- (void)_setHapticIntensity:(id)intensity
 {
-  v4 = a3;
-  [v4 floatValue];
+  intensityCopy = intensity;
+  [intensityCopy floatValue];
   [(NACXPCClient *)self->_xpcClient setHapticIntensity:?];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -424,11 +424,11 @@ void __48__NACVolumeControllerProxy__setHapticIntensity___block_invoke(uint64_t 
   [(NACVolumeControllerProxy *)self _cancelSetHapticTimer];
 }
 
-- (void)setHapticState:(int64_t)a3
+- (void)setHapticState:(int64_t)state
 {
-  if (self->_hapticState != a3)
+  if (self->_hapticState != state)
   {
-    self->_hapticState = a3;
+    self->_hapticState = state;
     [(NACXPCClient *)self->_xpcClient setHapticState:?];
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
@@ -463,13 +463,13 @@ void __43__NACVolumeControllerProxy_setHapticState___block_invoke(uint64_t a1)
   [(NACVolumeControllerProxy *)self _cancelSetHapticStateTimer];
 }
 
-- (void)setCurrentListeningMode:(id)a3
+- (void)setCurrentListeningMode:(id)mode
 {
-  v4 = a3;
-  if (self->_currentListeningMode != v4)
+  modeCopy = mode;
+  if (self->_currentListeningMode != modeCopy)
   {
-    v5 = v4;
-    if (([(NSString *)v4 isEqual:?]& 1) == 0)
+    v5 = modeCopy;
+    if (([(NSString *)modeCopy isEqual:?]& 1) == 0)
     {
       [(NACXPCClient *)self->_xpcClient setCurrentListeningMode:v5 forTarget:self->_target];
     }
@@ -1030,15 +1030,15 @@ void __58__NACVolumeControllerProxy__currentListeningModeDidChange__block_invoke
   }
 }
 
-- (void)_handleFailedToSetCurrentListeningModeNotification:(id)a3
+- (void)_handleFailedToSetCurrentListeningModeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"errorDomain"];
-  v8 = [v5 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"errorDomain"];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"errorCode"];
+  v9 = [userInfo2 objectForKeyedSubscript:@"errorCode"];
   v12 = [v4 errorWithDomain:v7 code:objc_msgSend(v9 userInfo:{"integerValue"), 0}];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1161,13 +1161,13 @@ void __61__NACVolumeControllerProxy__notifyDelegateHapticStateChanged__block_inv
   }
 }
 
-- (id)_scheduleTimeoutWithBlock:(id)a3
+- (id)_scheduleTimeoutWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   v5 = dispatch_time(0, 5000000000);
   dispatch_source_set_timer(v4, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
-  dispatch_source_set_event_handler(v4, v3);
+  dispatch_source_set_event_handler(v4, blockCopy);
 
   dispatch_resume(v4);
 
@@ -1218,10 +1218,10 @@ void __61__NACVolumeControllerProxy__notifyDelegateHapticStateChanged__block_inv
   }
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (self->_observingVolume)
   {
     v5 = NMLogForCategory(4);
@@ -1253,10 +1253,10 @@ void __61__NACVolumeControllerProxy__notifyDelegateHapticStateChanged__block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationWillResignActiveNotification:(id)a3
+- (void)_applicationWillResignActiveNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (self->_observingVolume)
   {
     v5 = NMLogForCategory(4);

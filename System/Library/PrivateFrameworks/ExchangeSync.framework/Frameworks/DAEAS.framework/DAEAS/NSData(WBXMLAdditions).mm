@@ -19,7 +19,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64D60];
+    v1 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_86 = v1;
     acceptsTopLevelLeaves___haveChecked_85 = 1;
   }
@@ -36,7 +36,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5E660];
+    v1 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_88 = v1;
     parsingLeafNode___haveChecked_87 = 1;
   }
@@ -53,7 +53,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64A10];
+    v1 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_90 = v1;
     parsingWithSubItems___haveChecked_89 = 1;
   }
@@ -70,7 +70,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v1 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_92 = v1;
     frontingBasicTypes___haveChecked_91 = 1;
   }
@@ -87,7 +87,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v1 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_94 = v1;
     notifyOfUnknownTokens___haveChecked_93 = 1;
   }
@@ -99,7 +99,7 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v10 = a3;
-  v11 = [v10 currentByte];
+  currentByte = [v10 currentByte];
   [v10 advanceOffsetByAmount:1];
   if ([v10 currentByte] != 195)
   {
@@ -110,7 +110,7 @@
     if (os_log_type_enabled(v17, v18))
     {
       *buf = 134217984;
-      v28 = [v10 curOffset];
+      curOffset = [v10 curOffset];
       _os_log_impl(&dword_24A0AC000, v17, v18, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -121,7 +121,7 @@
     }
 
     *buf = 138412290;
-    v28 = v15;
+    curOffset = v15;
     goto LABEL_16;
   }
 
@@ -129,15 +129,15 @@
   LODWORD(v12) = a8 - 1;
   do
   {
-    v13 = [v10 currentByte];
+    currentByte2 = [v10 currentByte];
     [v10 advanceOffsetByAmount:1];
     v12 = (v12 - 1);
   }
 
-  while (v13 < 0);
+  while (currentByte2 < 0);
   v26 = 0;
   v14 = [v10 bufferForLength:v12 shouldFree:&v26];
-  a1 = [a1 initWithBytes:v14 length:v12];
+  self = [self initWithBytes:v14 length:v12];
   if (v26 == 1)
   {
     free(v14);
@@ -150,15 +150,15 @@
     goto LABEL_18;
   }
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected END_TOKEN after the data for token %x, but had %x", v11, objc_msgSend(v10, "currentByte")];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected END_TOKEN after the data for token %x, but had %x", currentByte, objc_msgSend(v10, "currentByte")];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/Utilities/WBXMLAdditions.m", 171, objc_msgSend(v10, "curOffset")];
   v20 = DALoggingwithCategory();
   v18 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v20, v18))
   {
-    v21 = [v10 curOffset];
+    curOffset2 = [v10 curOffset];
     *buf = 134217984;
-    v28 = v21;
+    curOffset = curOffset2;
     _os_log_impl(&dword_24A0AC000, v20, v18, "Failure at index %lld:", buf, 0xCu);
   }
 
@@ -166,7 +166,7 @@
   if (os_log_type_enabled(v19, v18))
   {
     *buf = 138412290;
-    v28 = v15;
+    curOffset = v15;
 LABEL_16:
     _os_log_impl(&dword_24A0AC000, v19, v18, "failure reason was %@", buf, 0xCu);
   }
@@ -175,20 +175,20 @@ LABEL_17:
 
   [v10 setParseErrorReason:v16];
 LABEL_18:
-  v22 = [v10 parseErrorReason];
+  parseErrorReason = [v10 parseErrorReason];
 
-  if (v22)
+  if (parseErrorReason)
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v23 = a1;
+    selfCopy = self;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
 - (uint64_t)initForLengthTokenOfLength:()WBXMLAdditions
@@ -211,7 +211,7 @@ LABEL_18:
     while (v7);
   }
 
-  v8 = [a1 initWithBytes:? length:?];
+  v8 = [self initWithBytes:? length:?];
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v9, v10))

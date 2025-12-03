@@ -1,9 +1,9 @@
 @interface ABAssistantSyncHandler
 - (CNContactStore)contactStore;
-- (id)syncSnapshotForKey:(id)a3;
-- (id)syncVerificationKeyForKey:(id)a3;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (id)syncSnapshotForKey:(id)key;
+- (id)syncVerificationKeyForKey:(id)key;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
@@ -24,40 +24,40 @@
   return contactStore;
 }
 
-- (id)syncSnapshotForKey:(id)a3
+- (id)syncSnapshotForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_syncWorker(self, v5, v6);
-  v9 = objc_msgSend_syncSnapshotForKey_(v7, v8, v4);
+  v9 = objc_msgSend_syncSnapshotForKey_(v7, v8, keyCopy);
 
   return v9;
 }
 
-- (id)syncVerificationKeyForKey:(id)a3
+- (id)syncVerificationKeyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_syncWorker(self, v5, v6);
-  v9 = objc_msgSend_syncVerificationKeyForKey_(v7, v8, v4);
+  v9 = objc_msgSend_syncVerificationKeyForKey_(v7, v8, keyCopy);
 
   return v9;
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  infoCopy = info;
+  keyCopy = key;
+  validityCopy = validity;
+  anchorCopy = anchor;
   v17 = objc_msgSend_syncWorker(self, v14, v15);
-  objc_msgSend_beginSyncWithAnchor_validity_forKey_beginInfo_(v17, v16, v13, v12, v11, v10);
+  objc_msgSend_beginSyncWithAnchor_validity_forKey_beginInfo_(v17, v16, anchorCopy, validityCopy, keyCopy, infoCopy);
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  anchorCopy = anchor;
   v11 = objc_msgSend_syncWorker(self, v8, v9);
-  objc_msgSend_getChangeAfterAnchor_changeInfo_(v11, v10, v7, v6);
+  objc_msgSend_getChangeAfterAnchor_changeInfo_(v11, v10, anchorCopy, infoCopy);
 }
 
 - (void)syncDidEnd

@@ -4,9 +4,9 @@
 - (SDNetworkQualityInquiry)init;
 - (unint64_t)getNetworkQuality;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
 @end
 
 @implementation SDNetworkQualityInquiry
@@ -88,43 +88,43 @@ LABEL_6:
 
 - (BOOL)areKnownNetworksReady
 {
-  v3 = [(SDNetworkQualityInquiry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDNetworkQualityInquiry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDNetworkQualityInquiry *)self knownNetworks];
-  LOBYTE(v3) = [v4 count] == 3;
+  knownNetworks = [(SDNetworkQualityInquiry *)self knownNetworks];
+  LOBYTE(queue) = [knownNetworks count] == 3;
 
-  return v3;
+  return queue;
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
-  v5 = [(SDNetworkQualityInquiry *)self knownNetworks];
-  [v5 addObject:v4];
+  iCopy = i;
+  knownNetworks = [(SDNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks addObject:iCopy];
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
-  v4 = a3;
-  v5 = [(SDNetworkQualityInquiry *)self knownNetworks];
-  [v5 removeObject:v4];
+  iCopy = i;
+  knownNetworks = [(SDNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks removeObject:iCopy];
 
-  v7 = [(SDNetworkQualityInquiry *)self manager];
-  v6 = [v4 interface];
+  manager = [(SDNetworkQualityInquiry *)self manager];
+  interface = [iCopy interface];
 
-  [v7 trackNOIAnyForInterfaceType:v6 options:0];
+  [manager trackNOIAnyForInterfaceType:interface options:0];
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  isCopy = is;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [isCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -136,14 +136,14 @@ LABEL_6:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(isCopy);
         }
 
         [(SDNetworkQualityInquiry *)self didStopTrackingNOI:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [isCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

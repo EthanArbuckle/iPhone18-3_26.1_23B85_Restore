@@ -1,27 +1,27 @@
 @interface CRPreflightUtils
-+ (BOOL)_hasSameKey:(id)a3 this:(id)a4 other:(id)a5;
-+ (id)_mergeActivationLocks:(id)a3;
-+ (id)activationResults:(id)a3;
-+ (id)parseChallengeObject:(id)a3 withHandler:(id)a4;
-+ (id)spcResults:(id)a3;
++ (BOOL)_hasSameKey:(id)key this:(id)this other:(id)other;
++ (id)_mergeActivationLocks:(id)locks;
++ (id)activationResults:(id)results;
++ (id)parseChallengeObject:(id)object withHandler:(id)handler;
++ (id)spcResults:(id)results;
 @end
 
 @implementation CRPreflightUtils
 
-+ (id)spcResults:(id)a3
++ (id)spcResults:(id)results
 {
   v160 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  resultsCopy = results;
+  if (resultsCopy)
   {
     v4 = +[CRFDRDeviceController sharedSingleton];
-    v5 = [v4 getHandlerForDevice];
+    getHandlerForDevice = [v4 getHandlerForDevice];
 
-    if (v5)
+    if (getHandlerForDevice)
     {
       v6 = MEMORY[0x1E695DFA8];
-      [v3 objectForKeyedSubscript:@"passComponents"];
-      v8 = v7 = v3;
+      [resultsCopy objectForKeyedSubscript:@"passComponents"];
+      v8 = v7 = resultsCopy;
       v9 = [v6 setWithArray:v8];
 
       v10 = MEMORY[0x1E695DFA8];
@@ -71,9 +71,9 @@
             }
 
             v29 = *(*(&v149 + 1) + 8 * i);
-            v30 = [v29 dataKey];
-            v31 = [v29 dataIdentifier];
-            v32 = [v5 spcWithComponent:v30 withIdentifier:v31];
+            dataKey = [v29 dataKey];
+            dataIdentifier = [v29 dataIdentifier];
+            v32 = [getHandlerForDevice spcWithComponent:dataKey withIdentifier:dataIdentifier];
 
             if (v32)
             {
@@ -108,9 +108,9 @@
             }
 
             v38 = *(*(&v145 + 1) + 8 * j);
-            v39 = [v38 dataKey];
-            v40 = [v38 dataIdentifier];
-            v41 = [v5 spcWithComponent:v39 withIdentifier:v40];
+            dataKey2 = [v38 dataKey];
+            dataIdentifier2 = [v38 dataIdentifier];
+            v41 = [getHandlerForDevice spcWithComponent:dataKey2 withIdentifier:dataIdentifier2];
 
             if (v41)
             {
@@ -145,9 +145,9 @@
             }
 
             v46 = *(*(&v141 + 1) + 8 * k);
-            v47 = [v46 dataKey];
-            v48 = [v46 dataIdentifier];
-            v49 = [v5 spcWithComponent:v47 withIdentifier:v48];
+            dataKey3 = [v46 dataKey];
+            dataIdentifier3 = [v46 dataIdentifier];
+            v49 = [getHandlerForDevice spcWithComponent:dataKey3 withIdentifier:dataIdentifier3];
 
             if (v49)
             {
@@ -182,9 +182,9 @@
             }
 
             v55 = *(*(&v137 + 1) + 8 * m);
-            v56 = [v55 dataKey];
-            v57 = [v55 dataIdentifier];
-            v58 = [v5 spcWithComponent:v56 withIdentifier:v57];
+            dataKey4 = [v55 dataKey];
+            dataIdentifier4 = [v55 dataIdentifier];
+            v58 = [getHandlerForDevice spcWithComponent:dataKey4 withIdentifier:dataIdentifier4];
 
             if (v58)
             {
@@ -219,9 +219,9 @@
             }
 
             v63 = *(*(&v133 + 1) + 8 * n);
-            v64 = [v63 dataKey];
-            v65 = [v63 dataIdentifier];
-            v66 = [v5 spcWithComponent:v64 withIdentifier:v65];
+            dataKey5 = [v63 dataKey];
+            dataIdentifier5 = [v63 dataIdentifier];
+            v66 = [getHandlerForDevice spcWithComponent:dataKey5 withIdentifier:dataIdentifier5];
 
             if (v66)
             {
@@ -258,9 +258,9 @@
             }
 
             v72 = *(*(&v129 + 1) + 8 * ii);
-            v73 = [v72 dataKey];
-            v74 = [v72 dataIdentifier];
-            v75 = [v5 spcWithComponent:v73 withIdentifier:v74];
+            dataKey6 = [v72 dataKey];
+            dataIdentifier6 = [v72 dataIdentifier];
+            v75 = [getHandlerForDevice spcWithComponent:dataKey6 withIdentifier:dataIdentifier6];
 
             if (v75)
             {
@@ -298,24 +298,24 @@
             }
 
             v80 = *(*(&v125 + 1) + 8 * jj);
-            v81 = [v80 dataKey];
-            v82 = [v81 isEqual:@"MSRk"];
+            dataKey7 = [v80 dataKey];
+            v82 = [dataKey7 isEqual:@"MSRk"];
 
             if (!v82)
             {
               goto LABEL_66;
             }
 
-            v83 = [v80 dataKey];
-            v84 = [CRFDRUtils findUnsealedDataWithKey:v83 error:0];
+            dataKey8 = [v80 dataKey];
+            v84 = [CRFDRUtils findUnsealedDataWithKey:dataKey8 error:0];
 
             if (v84 && [v84 count])
             {
 
 LABEL_66:
-              v85 = [v80 dataKey];
-              v86 = [v80 dataIdentifier];
-              v84 = [v5 spcWithComponent:v85 withIdentifier:v86];
+              dataKey9 = [v80 dataKey];
+              dataIdentifier7 = [v80 dataIdentifier];
+              v84 = [getHandlerForDevice spcWithComponent:dataKey9 withIdentifier:dataIdentifier7];
 
               if (v84)
               {
@@ -325,9 +325,9 @@ LABEL_66:
               goto LABEL_71;
             }
 
-            v87 = [v80 dataKey];
-            v88 = [v80 dataIdentifier];
-            v89 = [v5 spcWithComponent:v87 withIdentifier:v88];
+            dataKey10 = [v80 dataKey];
+            dataIdentifier8 = [v80 dataIdentifier];
+            v89 = [getHandlerForDevice spcWithComponent:dataKey10 withIdentifier:dataIdentifier8];
 
             if (v89)
             {
@@ -371,7 +371,7 @@ LABEL_71:
       }
 
       v91 = handleForCategory(0);
-      v3 = v109;
+      resultsCopy = v109;
       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
       {
         +[CRPreflightUtils spcResults:];
@@ -408,26 +408,26 @@ LABEL_71:
       }
 
       v97 = objc_opt_new();
-      v98 = [v111 allObjects];
-      [v97 setObject:v98 forKeyedSubscript:@"sealed"];
+      allObjects = [v111 allObjects];
+      [v97 setObject:allObjects forKeyedSubscript:@"sealed"];
 
-      v99 = [v123 allObjects];
-      [v97 setObject:v99 forKeyedSubscript:@"pass"];
+      allObjects2 = [v123 allObjects];
+      [v97 setObject:allObjects2 forKeyedSubscript:@"pass"];
 
-      v100 = [v122 allObjects];
-      [v97 setObject:v100 forKeyedSubscript:@"lock"];
+      allObjects3 = [v122 allObjects];
+      [v97 setObject:allObjects3 forKeyedSubscript:@"lock"];
 
-      v101 = [v107 allObjects];
-      [v97 setObject:v101 forKeyedSubscript:@"unauth"];
+      allObjects4 = [v107 allObjects];
+      [v97 setObject:allObjects4 forKeyedSubscript:@"unauth"];
 
-      v102 = [v124 allObjects];
-      [v97 setObject:v102 forKeyedSubscript:@"fail"];
+      allObjects5 = [v124 allObjects];
+      [v97 setObject:allObjects5 forKeyedSubscript:@"fail"];
 
-      v103 = [v121 allObjects];
-      [v97 setObject:v103 forKeyedSubscript:@"lost"];
+      allObjects6 = [v121 allObjects];
+      [v97 setObject:allObjects6 forKeyedSubscript:@"lost"];
 
-      v104 = [v110 allObjects];
-      [v97 setObject:v104 forKeyedSubscript:@"denied"];
+      allObjects7 = [v110 allObjects];
+      [v97 setObject:allObjects7 forKeyedSubscript:@"denied"];
     }
 
     else
@@ -446,20 +446,20 @@ LABEL_71:
   return v97;
 }
 
-+ (id)activationResults:(id)a3
++ (id)activationResults:(id)results
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (results)
   {
-    v4 = [a3 objectForKeyedSubscript:@"Challenges"];
+    v4 = [results objectForKeyedSubscript:@"Challenges"];
     if (v4)
     {
       v5 = +[CRFDRDeviceController sharedSingleton];
-      v6 = [v5 getHandlerForDevice];
+      getHandlerForDevice = [v5 getHandlerForDevice];
 
-      if (v6)
+      if (getHandlerForDevice)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -481,10 +481,10 @@ LABEL_71:
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [a1 parseChallengeObject:*(*(&v21 + 1) + 8 * v12) withHandler:v6];
+              v13 = [self parseChallengeObject:*(*(&v21 + 1) + 8 * v12) withHandler:getHandlerForDevice];
               if (v13)
               {
-                [v7 addObject:v13];
+                [array addObject:v13];
               }
 
               else
@@ -506,14 +506,14 @@ LABEL_71:
           while (v10);
         }
 
-        v15 = [a1 _mergeActivationLocks:v7];
+        v15 = [self _mergeActivationLocks:array];
         v4 = v18;
       }
 
       else
       {
-        v7 = handleForCategory(0);
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        array = handleForCategory(0);
+        if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
         {
           +[CRPreflightUtils activationResults:];
         }
@@ -524,8 +524,8 @@ LABEL_71:
 
     else
     {
-      v6 = handleForCategory(0);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      getHandlerForDevice = handleForCategory(0);
+      if (os_log_type_enabled(getHandlerForDevice, OS_LOG_TYPE_ERROR))
       {
         +[CRPreflightUtils activationResults:];
       }
@@ -550,11 +550,11 @@ LABEL_71:
   return v15;
 }
 
-+ (id)parseChallengeObject:(id)a3 withHandler:(id)a4
++ (id)parseChallengeObject:(id)object withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"Type"];
+  objectCopy = object;
+  handlerCopy = handler;
+  v7 = [objectCopy objectForKeyedSubscript:@"Type"];
 
   if (!v7)
   {
@@ -567,7 +567,7 @@ LABEL_71:
     goto LABEL_17;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"Properties"];
+  v8 = [objectCopy objectForKeyedSubscript:@"Properties"];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_17:
@@ -582,8 +582,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = [v5 objectForKeyedSubscript:@"Type"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v11 = [objectCopy objectForKeyedSubscript:@"Type"];
   v12 = [v9 objectForKeyedSubscript:@"status"];
   v13 = [v9 objectForKeyedSubscript:@"fmipUrl"];
   v14 = [v9 objectForKeyedSubscript:@"activationToken"];
@@ -591,26 +591,26 @@ LABEL_17:
   if (v12)
   {
     v15 = v14;
-    [v10 setObject:v12 forKey:@"status"];
+    [dictionary setObject:v12 forKey:@"status"];
     if (v11)
     {
-      [v10 setObject:v11 forKey:@"type"];
-      v16 = [v6 spcWithComponent:v11 withIdentifier:0];
+      [dictionary setObject:v11 forKey:@"type"];
+      v16 = [handlerCopy spcWithComponent:v11 withIdentifier:0];
       if (v16)
       {
-        [v10 setObject:v16 forKey:@"spc"];
+        [dictionary setObject:v16 forKey:@"spc"];
         if (v15)
         {
-          [v10 setObject:v15 forKey:@"token"];
+          [dictionary setObject:v15 forKey:@"token"];
         }
 
         if (v13)
         {
-          [v10 setObject:v13 forKey:@"endpoint"];
+          [dictionary setObject:v13 forKey:@"endpoint"];
         }
 
         v17 = v13;
-        v18 = v10;
+        v18 = dictionary;
         goto LABEL_29;
       }
 
@@ -651,19 +651,19 @@ LABEL_18:
   return v18;
 }
 
-+ (BOOL)_hasSameKey:(id)a3 this:(id)a4 other:(id)a5
++ (BOOL)_hasSameKey:(id)key this:(id)this other:(id)other
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  thisCopy = this;
+  otherCopy = other;
+  v10 = [thisCopy objectForKeyedSubscript:keyCopy];
   if (v10)
   {
   }
 
   else
   {
-    v11 = [v9 objectForKeyedSubscript:v7];
+    v11 = [otherCopy objectForKeyedSubscript:keyCopy];
 
     if (!v11)
     {
@@ -672,15 +672,15 @@ LABEL_18:
     }
   }
 
-  v12 = [v8 objectForKeyedSubscript:v7];
+  v12 = [thisCopy objectForKeyedSubscript:keyCopy];
   if (v12)
   {
-    v13 = [v9 objectForKeyedSubscript:v7];
+    v13 = [otherCopy objectForKeyedSubscript:keyCopy];
 
     if (v13)
     {
-      v14 = [v8 objectForKeyedSubscript:v7];
-      v15 = [v9 objectForKeyedSubscript:v7];
+      v14 = [thisCopy objectForKeyedSubscript:keyCopy];
+      v15 = [otherCopy objectForKeyedSubscript:keyCopy];
       LOBYTE(v12) = [v14 isEqualToString:v15];
     }
 
@@ -695,16 +695,16 @@ LABEL_9:
   return v12;
 }
 
-+ (id)_mergeActivationLocks:(id)a3
++ (id)_mergeActivationLocks:(id)locks
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locksCopy = locks;
   v30 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v4;
+  obj = locksCopy;
   v31 = [obj countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v31)
   {
@@ -741,7 +741,7 @@ LABEL_9:
               }
 
               v12 = *(*(&v33 + 1) + 8 * i);
-              if ([a1 _hasSameKey:@"token" this:v12 other:v6] && objc_msgSend(a1, "_hasSameKey:this:other:", @"status", v12, v6) && objc_msgSend(a1, "_hasSameKey:this:other:", @"endpoint", v12, v6))
+              if ([self _hasSameKey:@"token" this:v12 other:v6] && objc_msgSend(self, "_hasSameKey:this:other:", @"status", v12, v6) && objc_msgSend(self, "_hasSameKey:this:other:", @"endpoint", v12, v6))
               {
                 v20 = [v12 objectForKeyedSubscript:@"spc"];
                 v21 = [v6 objectForKeyedSubscript:@"spc"];

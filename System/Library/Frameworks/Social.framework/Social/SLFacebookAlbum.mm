@@ -1,60 +1,60 @@
 @interface SLFacebookAlbum
-+ (id)albumWithDataDictionary:(id)a3;
-+ (id)albumsWithAlbumDataDictionaries:(id)a3;
-- (SLFacebookAlbum)initWithCoder:(id)a3;
++ (id)albumWithDataDictionary:(id)dictionary;
++ (id)albumsWithAlbumDataDictionaries:(id)dictionaries;
+- (SLFacebookAlbum)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLFacebookAlbum
 
-- (SLFacebookAlbum)initWithCoder:(id)a3
+- (SLFacebookAlbum)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SLFacebookAlbum;
   v5 = [(SLFacebookAlbum *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(SLFacebookAlbum *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(SLFacebookAlbum *)v5 setName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coverPhotoIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coverPhotoIdentifier"];
     [(SLFacebookAlbum *)v5 setCoverPhotoIdentifier:v8];
 
-    -[SLFacebookAlbum setCount:](v5, "setCount:", [v4 decodeIntegerForKey:@"count"]);
-    -[SLFacebookAlbum setCanUpload:](v5, "setCanUpload:", [v4 decodeBoolForKey:@"canUpload"]);
-    -[SLFacebookAlbum setIsDefaultAlbum:](v5, "setIsDefaultAlbum:", [v4 decodeBoolForKey:@"isDefaultAlbum"]);
+    -[SLFacebookAlbum setCount:](v5, "setCount:", [coderCopy decodeIntegerForKey:@"count"]);
+    -[SLFacebookAlbum setCanUpload:](v5, "setCanUpload:", [coderCopy decodeBoolForKey:@"canUpload"]);
+    -[SLFacebookAlbum setIsDefaultAlbum:](v5, "setIsDefaultAlbum:", [coderCopy decodeBoolForKey:@"isDefaultAlbum"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(SLFacebookAlbum *)self identifier];
-  [v7 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SLFacebookAlbum *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(SLFacebookAlbum *)self name];
-  [v7 encodeObject:v5 forKey:@"name"];
+  name = [(SLFacebookAlbum *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(SLFacebookAlbum *)self coverPhotoIdentifier];
-  [v7 encodeObject:v6 forKey:@"coverPhotoIdentifier"];
+  coverPhotoIdentifier = [(SLFacebookAlbum *)self coverPhotoIdentifier];
+  [coderCopy encodeObject:coverPhotoIdentifier forKey:@"coverPhotoIdentifier"];
 
-  [v7 encodeInteger:-[SLFacebookAlbum count](self forKey:{"count"), @"count"}];
-  [v7 encodeBool:-[SLFacebookAlbum canUpload](self forKey:{"canUpload"), @"canUpload"}];
-  [v7 encodeBool:-[SLFacebookAlbum isDefaultAlbum](self forKey:{"isDefaultAlbum"), @"isDefaultAlbum"}];
+  [coderCopy encodeInteger:-[SLFacebookAlbum count](self forKey:{"count"), @"count"}];
+  [coderCopy encodeBool:-[SLFacebookAlbum canUpload](self forKey:{"canUpload"), @"canUpload"}];
+  [coderCopy encodeBool:-[SLFacebookAlbum isDefaultAlbum](self forKey:{"isDefaultAlbum"), @"isDefaultAlbum"}];
 }
 
-+ (id)albumWithDataDictionary:(id)a3
++ (id)albumWithDataDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 objectForKeyedSubscript:@"id"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy && ([dictionaryCopy objectForKeyedSubscript:@"id"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     _SLLog(v3, 6, @"Creating album with dict %@");
     v7 = objc_alloc_init(SLFacebookAlbum);
@@ -96,16 +96,16 @@
   return v7;
 }
 
-+ (id)albumsWithAlbumDataDictionaries:(id)a3
++ (id)albumsWithAlbumDataDictionaries:(id)dictionaries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -139,16 +139,16 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SLFacebookAlbum *)self identifier];
-  v5 = [(SLFacebookAlbum *)self name];
-  v6 = [(SLFacebookAlbum *)self isDefaultAlbum];
+  identifier = [(SLFacebookAlbum *)self identifier];
+  name = [(SLFacebookAlbum *)self name];
+  isDefaultAlbum = [(SLFacebookAlbum *)self isDefaultAlbum];
   v7 = @"NO";
-  if (v6)
+  if (isDefaultAlbum)
   {
     v7 = @"YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<SLFacebookAlbum: identifier=%@ name=%@ isDefaultAlbum=%@", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<SLFacebookAlbum: identifier=%@ name=%@ isDefaultAlbum=%@", identifier, name, v7];
 
   return v8;
 }

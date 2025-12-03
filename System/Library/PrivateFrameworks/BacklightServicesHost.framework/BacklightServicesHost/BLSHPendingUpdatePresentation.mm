@@ -1,25 +1,25 @@
 @interface BLSHPendingUpdatePresentation
-- (BLSHPendingUpdatePresentation)initWithPresentation:(id)a3;
+- (BLSHPendingUpdatePresentation)initWithPresentation:(id)presentation;
 - (NSString)description;
 @end
 
 @implementation BLSHPendingUpdatePresentation
 
-- (BLSHPendingUpdatePresentation)initWithPresentation:(id)a3
+- (BLSHPendingUpdatePresentation)initWithPresentation:(id)presentation
 {
-  v6 = a3;
+  presentationCopy = presentation;
   v10.receiver = self;
   v10.super_class = BLSHPendingUpdatePresentation;
   v7 = [(BLSHPendingUpdatePresentation *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!presentationCopy)
     {
       [(BLSHPendingUpdatePresentation *)a2 initWithPresentation:v7];
     }
 
-    objc_storeStrong(&v7->_presentation, a3);
+    objc_storeStrong(&v7->_presentation, presentation);
   }
 
   return v8;
@@ -35,9 +35,9 @@
   v7 = [v3 appendObject:v6 withName:@"target"];
 
   v8 = [v3 appendObject:self->_presentation withName:@"presentation"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (void)initWithPresentation:(const char *)a1 .cold.1(const char *a1, uint64_t a2)

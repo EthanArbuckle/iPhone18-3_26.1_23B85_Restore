@@ -1,23 +1,23 @@
 @interface NDFeedItemPoolFetchOptions
 - (NDFeedItemPoolFetchOptions)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDFeedItemPoolFetchOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___NDFeedItemPoolFetchOptions_name);
   v5 = *&self->name[OBJC_IVAR___NDFeedItemPoolFetchOptions_name];
-  v6 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v8 = sub_25BE4BA3C();
   v9 = sub_25BE4BA3C();
-  [v6 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
-  v10 = *(&v7->super.isa + OBJC_IVAR___NDFeedItemPoolFetchOptions_maxAge);
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR___NDFeedItemPoolFetchOptions_maxAge);
   v11 = sub_25BE4BA3C();
-  [v6 encodeDouble:v11 forKey:v10];
+  [coderCopy encodeDouble:v11 forKey:v10];
 }
 
 - (NDFeedItemPoolFetchOptions)init

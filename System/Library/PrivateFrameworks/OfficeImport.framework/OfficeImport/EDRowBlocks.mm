@@ -1,23 +1,23 @@
 @interface EDRowBlocks
-- (BOOL)spaceForRowNumber:(unsigned int)a3 rowBlock:(id)a4;
-- (Class)classForFormulaType:(unsigned __int8)a3;
-- (EDCellHeader)cellWithRowNumber:(unsigned int)a3 columnNumber:(int)a4;
-- (EDRowBlocks)initWithWorksheet:(id)a3;
+- (BOOL)spaceForRowNumber:(unsigned int)number rowBlock:(id)block;
+- (Class)classForFormulaType:(unsigned __int8)type;
+- (EDCellHeader)cellWithRowNumber:(unsigned int)number columnNumber:(int)columnNumber;
+- (EDRowBlocks)initWithWorksheet:(id)worksheet;
 - (NSString)description;
 - (id)fileNameForPersistingRowBlocks;
-- (id)fileNameForPersistingRowBlocksWithIndex:(unint64_t)a3;
-- (id)rowBlockAtIndex:(unint64_t)a3;
-- (id)rowBlockForRowNumber:(unsigned int)a3 currentRowBlock:(id)a4;
-- (id)rowBlockForRowNumber:(unsigned int)a3 currentRowBlock:(id)a4 createIfNil:(BOOL)a5;
-- (unint64_t)expectedIndexOfRowBlockForRowNumber:(unsigned int)a3;
-- (unint64_t)indexOfRowBlockForRowNumber:(unsigned int)a3;
-- (unsigned)formulaTypeForFormula:(id)a3;
+- (id)fileNameForPersistingRowBlocksWithIndex:(unint64_t)index;
+- (id)rowBlockAtIndex:(unint64_t)index;
+- (id)rowBlockForRowNumber:(unsigned int)number currentRowBlock:(id)block;
+- (id)rowBlockForRowNumber:(unsigned int)number currentRowBlock:(id)block createIfNil:(BOOL)nil;
+- (unint64_t)expectedIndexOfRowBlockForRowNumber:(unsigned int)number;
+- (unint64_t)indexOfRowBlockForRowNumber:(unsigned int)number;
+- (unsigned)formulaTypeForFormula:(id)formula;
 - (void)dealloc;
 - (void)load;
 - (void)lock;
 - (void)save;
 - (void)unlock;
-- (void)updateMaxPopulatedRow:(unsigned int)a3 column:(unsigned int)a4;
+- (void)updateMaxPopulatedRow:(unsigned int)row column:(unsigned int)column;
 @end
 
 @implementation EDRowBlocks
@@ -153,16 +153,16 @@
   [(EDRowBlocks *)&v4 dealloc];
 }
 
-- (EDRowBlocks)initWithWorksheet:(id)a3
+- (EDRowBlocks)initWithWorksheet:(id)worksheet
 {
-  v5 = a3;
+  worksheetCopy = worksheet;
   v16.receiver = self;
   v16.super_class = EDRowBlocks;
   v6 = [(EDRowBlocks *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mWorksheet, a3);
+    objc_storeStrong(&v6->mWorksheet, worksheet);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mRowBlocks = v7->mRowBlocks;
     v7->mRowBlocks = v8;
@@ -177,31 +177,31 @@
 
     *&v7->mMaxPopulatedRow = 0;
     v7->mLockCount = 0;
-    v14 = [v5 processors];
-    [v14 markObject:v7 processor:objc_opt_class()];
+    processors = [worksheetCopy processors];
+    [processors markObject:v7 processor:objc_opt_class()];
   }
 
   return v7;
 }
 
-- (id)rowBlockAtIndex:(unint64_t)a3
+- (id)rowBlockAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mRowBlocks count]<= a3)
+  if ([(NSMutableArray *)self->mRowBlocks count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mRowBlocks objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mRowBlocks objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (unint64_t)expectedIndexOfRowBlockForRowNumber:(unsigned int)a3
+- (unint64_t)expectedIndexOfRowBlockForRowNumber:(unsigned int)number
 {
-  v3 = *&a3;
+  v3 = *&number;
   if (![(EDRowBlocks *)self rowBlockCount])
   {
     return 0;
@@ -219,14 +219,14 @@
     v7 = v6 + v5;
     v8 = (v6 + v5) >> 1;
     v9 = [(EDRowBlocks *)self rowBlockAtIndex:v8];
-    v10 = [v9 minRowNumber];
-    v11 = [v9 maxRowNumber];
-    if (v10 <= v3 && v11 >= v3)
+    minRowNumber = [v9 minRowNumber];
+    maxRowNumber = [v9 maxRowNumber];
+    if (minRowNumber <= v3 && maxRowNumber >= v3)
     {
       break;
     }
 
-    if (v10 <= v3)
+    if (minRowNumber <= v3)
     {
       v6 = v8 + 1;
     }
@@ -262,9 +262,9 @@ LABEL_14:
   return v13;
 }
 
-- (unint64_t)indexOfRowBlockForRowNumber:(unsigned int)a3
+- (unint64_t)indexOfRowBlockForRowNumber:(unsigned int)number
 {
-  v4 = [(EDRowBlocks *)self expectedIndexOfRowBlockForRowNumber:*&a3];
+  v4 = [(EDRowBlocks *)self expectedIndexOfRowBlockForRowNumber:*&number];
   v5 = [(EDRowBlocks *)self rowBlockAtIndex:v4];
   if (v5)
   {
@@ -279,20 +279,20 @@ LABEL_14:
   return v6;
 }
 
-- (id)rowBlockForRowNumber:(unsigned int)a3 currentRowBlock:(id)a4
+- (id)rowBlockForRowNumber:(unsigned int)number currentRowBlock:(id)block
 {
-  v4 = [(EDRowBlocks *)self rowBlockForRowNumber:*&a3 currentRowBlock:a4 createIfNil:0];
+  v4 = [(EDRowBlocks *)self rowBlockForRowNumber:*&number currentRowBlock:block createIfNil:0];
 
   return v4;
 }
 
-- (id)rowBlockForRowNumber:(unsigned int)a3 currentRowBlock:(id)a4 createIfNil:(BOOL)a5
+- (id)rowBlockForRowNumber:(unsigned int)number currentRowBlock:(id)block createIfNil:(BOOL)nil
 {
-  v5 = a5;
-  v6 = *&a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && [v8 minRowNumber] <= v6)
+  nilCopy = nil;
+  v6 = *&number;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy && [blockCopy minRowNumber] <= v6)
   {
     if ([(EDRowBlocks *)self spaceForRowNumber:v6 rowBlock:v9])
     {
@@ -320,7 +320,7 @@ LABEL_14:
   v11 = [(EDRowBlocks *)self rowBlockAtIndex:v10];
   if (!v11)
   {
-    if (v5)
+    if (nilCopy)
     {
 LABEL_13:
       v14 = [(NSMutableArray *)self->mRowBlocks count];
@@ -353,7 +353,7 @@ LABEL_19:
 
   if (![(EDRowBlocks *)self spaceForRowNumber:v6 rowBlock:v11])
   {
-    if (v5)
+    if (nilCopy)
     {
       if ([v11 maxRowNumber] < v6)
       {
@@ -379,11 +379,11 @@ LABEL_21:
   return v13;
 }
 
-- (EDCellHeader)cellWithRowNumber:(unsigned int)a3 columnNumber:(int)a4
+- (EDCellHeader)cellWithRowNumber:(unsigned int)number columnNumber:(int)columnNumber
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [(EDRowBlocks *)self rowBlockForRowNumber:*&a3 currentRowBlock:0];
+  v4 = *&columnNumber;
+  v5 = *&number;
+  v6 = [(EDRowBlocks *)self rowBlockForRowNumber:*&number currentRowBlock:0];
   v7 = [v6 rowInfoWithRowNumber:v5];
   if (v7)
   {
@@ -407,24 +407,24 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)spaceForRowNumber:(unsigned int)a3 rowBlock:(id)a4
+- (BOOL)spaceForRowNumber:(unsigned int)number rowBlock:(id)block
 {
-  v5 = a4;
-  v6 = v5;
-  v7 = v5 && [v5 minRowNumber] <= a3 && objc_msgSend(v6, "maxRowNumber") >= a3;
+  blockCopy = block;
+  v6 = blockCopy;
+  v7 = blockCopy && [blockCopy minRowNumber] <= number && objc_msgSend(v6, "maxRowNumber") >= number;
 
   return v7;
 }
 
-- (id)fileNameForPersistingRowBlocksWithIndex:(unint64_t)a3
+- (id)fileNameForPersistingRowBlocksWithIndex:(unint64_t)index
 {
-  v5 = [(EDSheet *)self->mWorksheet workbook];
-  v6 = [v5 fileName];
+  workbook = [(EDSheet *)self->mWorksheet workbook];
+  fileName = [workbook fileName];
 
-  if ([v6 length])
+  if ([fileName length])
   {
-    v7 = [v6 lastPathComponent];
-    v8 = [@"_" stringByAppendingFormat:@"%@_", v7];
+    lastPathComponent = [fileName lastPathComponent];
+    v8 = [@"_" stringByAppendingFormat:@"%@_", lastPathComponent];
   }
 
   else
@@ -432,8 +432,8 @@ LABEL_21:
     v8 = @"_";
   }
 
-  v9 = [(EDSheet *)self->mWorksheet workbook];
-  v10 = [v9 indexOfSheet:self->mWorksheet];
+  workbook2 = [(EDSheet *)self->mWorksheet workbook];
+  v10 = [workbook2 indexOfSheet:self->mWorksheet];
 
   if (v10 != -1)
   {
@@ -442,14 +442,14 @@ LABEL_21:
     v8 = v11;
   }
 
-  v12 = [(EDSheet *)self->mWorksheet name];
-  v13 = [v12 string];
-  v14 = [(__CFString *)v8 stringByAppendingString:v13];
+  name = [(EDSheet *)self->mWorksheet name];
+  string = [name string];
+  v14 = [(__CFString *)v8 stringByAppendingString:string];
 
-  v15 = [(EDSheet *)self->mWorksheet workbook];
-  v16 = [v15 temporaryDirectory];
-  v17 = [v14 stringByAppendingFormat:@"_%lu", a3];
-  v18 = [v16 stringByAppendingPathComponent:v17];
+  workbook3 = [(EDSheet *)self->mWorksheet workbook];
+  temporaryDirectory = [workbook3 temporaryDirectory];
+  index = [v14 stringByAppendingFormat:@"_%lu", index];
+  v18 = [temporaryDirectory stringByAppendingPathComponent:index];
 
   v19 = [v18 stringByAppendingPathExtension:@"ed"];
 
@@ -458,7 +458,7 @@ LABEL_21:
 
 - (id)fileNameForPersistingRowBlocks
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   for (i = [(EDRowBlocks *)self fileNameForPersistingRowBlocksWithIndex:[EDRowBlocks(Private) fileNameForPersistingRowBlocks]::index];
   {
     ++[EDRowBlocks(Private) fileNameForPersistingRowBlocks]::index;
@@ -479,9 +479,9 @@ LABEL_21:
 
   else
   {
-    v6 = [(EDRowBlocks *)self fileNameForPersistingRowBlocks];
+    fileNameForPersistingRowBlocks = [(EDRowBlocks *)self fileNameForPersistingRowBlocks];
     mFileName = self->mFileName;
-    self->mFileName = v6;
+    self->mFileName = fileNameForPersistingRowBlocks;
 
     v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
     while ([(EDRowBlocks *)self rowBlockCount])
@@ -509,14 +509,14 @@ LABEL_21:
   [(NSRecursiveLock *)self->mSaveLoadLock unlock];
   if ((v4 & 1) == 0)
   {
-    v5 = [(EDSheet *)self->mWorksheet workbook];
-    [v5 outOfMemoryDetected];
+    workbook = [(EDSheet *)self->mWorksheet workbook];
+    [workbook outOfMemoryDetected];
   }
 }
 
-- (unsigned)formulaTypeForFormula:(id)a3
+- (unsigned)formulaTypeForFormula:(id)formula
 {
-  v3 = a3;
+  formulaCopy = formula;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -532,23 +532,23 @@ LABEL_21:
   return v4;
 }
 
-- (Class)classForFormulaType:(unsigned __int8)a3
+- (Class)classForFormulaType:(unsigned __int8)type
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (void)updateMaxPopulatedRow:(unsigned int)a3 column:(unsigned int)a4
+- (void)updateMaxPopulatedRow:(unsigned int)row column:(unsigned int)column
 {
-  if (self->mMaxPopulatedRow < a3)
+  if (self->mMaxPopulatedRow < row)
   {
-    self->mMaxPopulatedRow = a3;
+    self->mMaxPopulatedRow = row;
   }
 
-  if (self->mMaxPopulatedColumn < a4)
+  if (self->mMaxPopulatedColumn < column)
   {
-    self->mMaxPopulatedColumn = a4;
+    self->mMaxPopulatedColumn = column;
   }
 }
 

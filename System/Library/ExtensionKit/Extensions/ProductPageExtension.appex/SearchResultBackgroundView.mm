@@ -1,23 +1,23 @@
 @interface SearchResultBackgroundView
-- (_TtC20ProductPageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC20ProductPageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation SearchResultBackgroundView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_100389ED4(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100389ED4(attributesCopy);
 }
 
-- (_TtC20ProductPageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension26SearchResultBackgroundView_borderColor) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension26SearchResultBackgroundView_backgroundGradientColors) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension26SearchResultBackgroundView_gradientLayer) = 0;

@@ -1,11 +1,11 @@
 @interface GCDevicePhysicalInputSwitchElementDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCDevicePhysicalInputSwitchElementDescription)init;
-- (GCDevicePhysicalInputSwitchElementDescription)initWithCoder:(id)a3;
+- (GCDevicePhysicalInputSwitchElementDescription)initWithCoder:(id)coder;
 - (_NSRange)positionRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDevicePhysicalInputSwitchElementDescription
@@ -23,50 +23,50 @@
   return result;
 }
 
-- (GCDevicePhysicalInputSwitchElementDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputSwitchElementDescription)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = GCDevicePhysicalInputSwitchElementDescription;
-  v3 = a3;
-  v4 = [(GCDevicePhysicalInputElementDescription *)&v12 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(GCDevicePhysicalInputElementDescription *)&v12 initWithCoder:coderCopy];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v12.receiver, v12.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"sources"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sources"];
   sources = v4->_sources;
   v4->_sources = v8;
 
-  v4->_sequential = [v3 decodeBoolForKey:@"sequential"];
-  v4->_canWrap = [v3 decodeBoolForKey:@"canWrap"];
-  v4->_positionRange.location = [v3 decodeIntegerForKey:@"positionStart"];
-  v4->_positionRange.length = [v3 decodeIntegerForKey:@"positionLength"];
-  v10 = [v3 decodeIntegerForKey:@"eventPositionField"];
+  v4->_sequential = [coderCopy decodeBoolForKey:@"sequential"];
+  v4->_canWrap = [coderCopy decodeBoolForKey:@"canWrap"];
+  v4->_positionRange.location = [coderCopy decodeIntegerForKey:@"positionStart"];
+  v4->_positionRange.length = [coderCopy decodeIntegerForKey:@"positionLength"];
+  v10 = [coderCopy decodeIntegerForKey:@"eventPositionField"];
 
   v4->_eventPositionField = v10;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GCDevicePhysicalInputSwitchElementDescription;
-  v4 = a3;
-  [(GCDevicePhysicalInputElementDescription *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sources forKey:{@"sources", v7.receiver, v7.super_class}];
-  [v4 encodeBool:self->_sequential forKey:@"sequential"];
+  coderCopy = coder;
+  [(GCDevicePhysicalInputElementDescription *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sources forKey:{@"sources", v7.receiver, v7.super_class}];
+  [coderCopy encodeBool:self->_sequential forKey:@"sequential"];
   LOBYTE(v5) = self->_canWrap;
   *&v6 = v5;
-  [v4 encodeFloat:@"canWrap" forKey:v6];
-  [v4 encodeInteger:self->_positionRange.location forKey:@"positionStart"];
-  [v4 encodeInteger:self->_positionRange.length forKey:@"positionLength"];
-  [v4 encodeInteger:self->_eventPositionField forKey:@"eventPositionField"];
+  [coderCopy encodeFloat:@"canWrap" forKey:v6];
+  [coderCopy encodeInteger:self->_positionRange.location forKey:@"positionStart"];
+  [coderCopy encodeInteger:self->_positionRange.length forKey:@"positionLength"];
+  [coderCopy encodeInteger:self->_eventPositionField forKey:@"eventPositionField"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = GCDevicePhysicalInputSwitchElementDescription;
-  v4 = [(GCDevicePhysicalInputElementDescription *)&v6 copyWithZone:a3];
+  v4 = [(GCDevicePhysicalInputElementDescription *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 7, self->_sources);
   v4[48] = self->_sequential;
   v4[49] = self->_canWrap;
@@ -75,11 +75,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = GCDevicePhysicalInputSwitchElementDescription, [(GCDevicePhysicalInputElementDescription *)&v8 isEqual:v4]) && ((sources = self->_sources, sources == v4[7]) || [(NSArray *)sources isEqual:?]) && self->_sequential == *(v4 + 48) && self->_canWrap == *(v4 + 49) && self->_positionRange.location == v4[9] && self->_positionRange.length == v4[10] && self->_eventPositionField == v4[8];
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = GCDevicePhysicalInputSwitchElementDescription, [(GCDevicePhysicalInputElementDescription *)&v8 isEqual:equalCopy]) && ((sources = self->_sources, sources == equalCopy[7]) || [(NSArray *)sources isEqual:?]) && self->_sequential == *(equalCopy + 48) && self->_canWrap == *(equalCopy + 49) && self->_positionRange.location == equalCopy[9] && self->_positionRange.length == equalCopy[10] && self->_eventPositionField == equalCopy[8];
 
   return v6;
 }

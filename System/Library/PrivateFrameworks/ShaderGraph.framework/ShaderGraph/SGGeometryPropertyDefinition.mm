@@ -1,5 +1,5 @@
 @interface SGGeometryPropertyDefinition
-+ (id)geometryPropertyWithName:(id)a3 mappingTo:(id)a4;
++ (id)geometryPropertyWithName:(id)name mappingTo:(id)to;
 - (NSString)description;
 - (NSString)name;
 - (SGGeometryPropertyDefinition)init;
@@ -17,18 +17,18 @@
   return v4;
 }
 
-+ (id)geometryPropertyWithName:(id)a3 mappingTo:(id)a4
++ (id)geometryPropertyWithName:(id)name mappingTo:(id)to
 {
-  v4 = a4;
-  if (a3)
+  toCopy = to;
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
-    if (v4)
+    if (toCopy)
     {
 LABEL_3:
       v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-      v4 = v9;
+      toCopy = v9;
       goto LABEL_6;
     }
   }
@@ -37,7 +37,7 @@ LABEL_3:
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (to)
     {
       goto LABEL_3;
     }
@@ -46,7 +46,7 @@ LABEL_3:
   v8 = 0;
 LABEL_6:
   swift_getObjCClassMetadata();
-  v10 = static SGGeometryPropertyDefinition.create(name:mappingTo:)(v5, v7, v8, v4);
+  v10 = static SGGeometryPropertyDefinition.create(name:mappingTo:)(v5, v7, v8, toCopy);
 
   return v10;
 }
@@ -60,7 +60,7 @@ LABEL_6:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGGeometryPropertyDefinition.description.getter();
   v5 = v4;
 

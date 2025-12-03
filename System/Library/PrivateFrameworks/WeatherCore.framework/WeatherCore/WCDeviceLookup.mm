@@ -1,6 +1,6 @@
 @interface WCDeviceLookup
 - (WCDeviceLookup)init;
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6;
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler;
 @end
 
 @implementation WCDeviceLookup
@@ -20,27 +20,27 @@
   return v2;
 }
 
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3.var1;
-  v9 = a3.var0;
+  var1 = sVersion.var1;
+  var0 = sVersion.var0;
+  v8 = version.var1;
+  v9 = version.var0;
   v32[1] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = [(WCDeviceLookup *)self accountStore];
+  handlerCopy = handler;
+  accountStore = [(WCDeviceLookup *)self accountStore];
   v32[0] = *MEMORY[0x1E69597F8];
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v30 = 0;
-  v14 = [v12 accountsWithAccountTypeIdentifiers:v13 error:&v30];
+  v14 = [accountStore accountsWithAccountTypeIdentifiers:v13 error:&v30];
   v15 = v30;
-  v16 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
-  if (v16)
+  if (firstObject)
   {
     v17 = objc_alloc_init(MEMORY[0x1E698DD68]);
-    v18 = [v16 aa_altDSID];
-    [v17 setAltDSID:v18];
+    aa_altDSID = [firstObject aa_altDSID];
+    [v17 setAltDSID:aa_altDSID];
 
     [v17 setIncludeUntrustedDevices:1];
     v31 = *MEMORY[0x1E698DC58];
@@ -54,8 +54,8 @@
     v22[2] = __115__WCDeviceLookup_checkAllDevicesRunningMinimumiOSVersion_macOSVersion_orInactiveForTimeInterval_completionHandler___block_invoke;
     v22[3] = &unk_1E8340A50;
     v23 = v15;
-    v24 = v11;
-    v25 = a5;
+    v24 = handlerCopy;
+    intervalCopy = interval;
     v26 = v9;
     v27 = v8;
     v28 = var0;
@@ -65,7 +65,7 @@
 
   else
   {
-    (*(v11 + 2))(v11, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 

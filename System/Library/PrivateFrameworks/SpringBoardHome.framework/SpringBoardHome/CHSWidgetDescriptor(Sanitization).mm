@@ -6,12 +6,12 @@
 
 - (SBHSpecialWidgetDescriptor)sanitizedDescriptor
 {
-  v2 = [a1 extensionBundleIdentifier];
-  if ([v2 length])
+  extensionBundleIdentifier = [self extensionBundleIdentifier];
+  if ([extensionBundleIdentifier length])
   {
 
 LABEL_4:
-    v4 = a1;
+    selfCopy = self;
     goto LABEL_5;
   }
 
@@ -23,13 +23,13 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v6 = [a1 kind];
-  v7 = SBHSpecialWidgetDescriptorTypeForKind(v6);
+  kind = [self kind];
+  v7 = SBHSpecialWidgetDescriptorTypeForKind(kind);
 
-  v4 = [[SBHSpecialWidgetDescriptor alloc] initWithType:v7];
+  selfCopy = [[SBHSpecialWidgetDescriptor alloc] initWithType:v7];
 LABEL_5:
 
-  return v4;
+  return selfCopy;
 }
 
 @end

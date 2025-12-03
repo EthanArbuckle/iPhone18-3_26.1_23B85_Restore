@@ -1,7 +1,7 @@
 @interface WFSystemShortcutPickerViewControllerCoordinator
 - (WFSystemShortcutPickerViewControllerCoordinatorDelegate)delegate;
-- (id)createViewControllerWithEditingContext:(int64_t)a3;
-- (void)smartShortcutPickerViewControllerDidFinishWithSystemActionWithSystemAction:(id)a3 error:(id)a4;
+- (id)createViewControllerWithEditingContext:(int64_t)context;
+- (void)smartShortcutPickerViewControllerDidFinishWithSystemActionWithSystemAction:(id)action error:(id)error;
 @end
 
 @implementation WFSystemShortcutPickerViewControllerCoordinator
@@ -13,15 +13,15 @@
   return WeakRetained;
 }
 
-- (void)smartShortcutPickerViewControllerDidFinishWithSystemActionWithSystemAction:(id)a3 error:(id)a4
+- (void)smartShortcutPickerViewControllerDidFinishWithSystemActionWithSystemAction:(id)action error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFSystemShortcutPickerViewControllerCoordinator *)self delegate];
-  [v8 smartShortcutPickerViewControllerDidFinishWithSystemAction:v7 error:v6];
+  errorCopy = error;
+  actionCopy = action;
+  delegate = [(WFSystemShortcutPickerViewControllerCoordinator *)self delegate];
+  [delegate smartShortcutPickerViewControllerDidFinishWithSystemAction:actionCopy error:errorCopy];
 }
 
-- (id)createViewControllerWithEditingContext:(int64_t)a3
+- (id)createViewControllerWithEditingContext:(int64_t)context
 {
   v14 = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -48,9 +48,9 @@
 
   else
   {
-    a3 = [MEMORY[0x277CCA890] currentHandler];
+    context = [MEMORY[0x277CCA890] currentHandler];
     self = [MEMORY[0x277CCACA8] stringWithUTF8String:"void *WorkflowUILibrary(void)"];
-    [a3 handleFailureInFunction:self file:@"WFSystemShortcutPickerViewControllerCoordinator.m" lineNumber:14 description:{@"%s", v11[0]}];
+    [context handleFailureInFunction:self file:@"WFSystemShortcutPickerViewControllerCoordinator.m" lineNumber:14 description:{@"%s", v11[0]}];
 
     __break(1u);
   }
@@ -66,7 +66,7 @@ LABEL_5:
   v7 = NSSelectorFromString(&cfstr_Makeviewcontro.isa);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:context];
     v9 = [v6 performSelector:v7 withObject:v8];
   }
 

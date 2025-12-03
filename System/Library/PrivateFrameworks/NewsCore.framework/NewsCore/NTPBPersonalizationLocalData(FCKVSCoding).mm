@@ -8,7 +8,7 @@
 {
   v4 = a3;
   [v4 setValueType:11];
-  [v4 setPersonalizationLocalData:a1];
+  [v4 setPersonalizationLocalData:self];
 }
 
 @end

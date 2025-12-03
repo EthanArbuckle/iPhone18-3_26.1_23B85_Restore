@@ -1,41 +1,41 @@
 @interface TFFeedbackFormPresenter
-- (TFFeedbackFormPresenter)initWithForm:(id)a3 dataContainer:(id)a4 session:(id)a5;
+- (TFFeedbackFormPresenter)initWithForm:(id)form dataContainer:(id)container session:(id)session;
 - (TFFeedbackFormPresenterView)presenterView;
-- (id)_indexPathsOfVisibleEntriesWithIdentifiers:(id)a3;
-- (id)_indicesOfGroupsWithIdentifiers:(id)a3;
-- (id)footerTextForGroupAtIndex:(int64_t)a3;
-- (id)footerTextLinkMapForGroupAtIndex:(int64_t)a3;
-- (id)headerTextForGroupAtIndex:(int64_t)a3;
-- (id)headerTextLinkMapForGroupAtIndex:(int64_t)a3;
-- (id)visibleEntryAtGroupIndex:(int64_t)a3 entryIndex:(int64_t)a4;
+- (id)_indexPathsOfVisibleEntriesWithIdentifiers:(id)identifiers;
+- (id)_indicesOfGroupsWithIdentifiers:(id)identifiers;
+- (id)footerTextForGroupAtIndex:(int64_t)index;
+- (id)footerTextLinkMapForGroupAtIndex:(int64_t)index;
+- (id)headerTextForGroupAtIndex:(int64_t)index;
+- (id)headerTextLinkMapForGroupAtIndex:(int64_t)index;
+- (id)visibleEntryAtGroupIndex:(int64_t)index entryIndex:(int64_t)entryIndex;
 - (unint64_t)numberOfEntryGroupsInForm;
-- (unint64_t)numberOfVisibleItemsInGroupAtIndex:(int64_t)a3;
-- (void)didUpdateEntry:(id)a3 toGroupInclusionBool:(BOOL)a4;
-- (void)didUpdateEntry:(id)a3 toString:(id)a4 editInProgress:(BOOL)a5;
-- (void)feedbackDataContainer:(id)a3 didUpdateValuesForGroupIdentifiers:(id)a4 entryIdentifiers:(id)a5;
+- (unint64_t)numberOfVisibleItemsInGroupAtIndex:(int64_t)index;
+- (void)didUpdateEntry:(id)entry toGroupInclusionBool:(BOOL)bool;
+- (void)didUpdateEntry:(id)entry toString:(id)string editInProgress:(BOOL)progress;
+- (void)feedbackDataContainer:(id)container didUpdateValuesForGroupIdentifiers:(id)identifiers entryIdentifiers:(id)entryIdentifiers;
 - (void)prepareViewForForm;
-- (void)presenterViewDidCancelFeedbackSubmission:(id)a3;
-- (void)presenterViewDidInitiateFeedbackSubmission:(id)a3;
-- (void)showSubmissionFailureWithMessage:(id)a3;
+- (void)presenterViewDidCancelFeedbackSubmission:(id)submission;
+- (void)presenterViewDidInitiateFeedbackSubmission:(id)submission;
+- (void)showSubmissionFailureWithMessage:(id)message;
 @end
 
 @implementation TFFeedbackFormPresenter
 
-- (TFFeedbackFormPresenter)initWithForm:(id)a3 dataContainer:(id)a4 session:(id)a5
+- (TFFeedbackFormPresenter)initWithForm:(id)form dataContainer:(id)container session:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  formCopy = form;
+  containerCopy = container;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = TFFeedbackFormPresenter;
   v12 = [(TFFeedbackFormPresenter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_form, a3);
-    objc_storeStrong(&v13->_dataContainer, a4);
+    objc_storeStrong(&v12->_form, form);
+    objc_storeStrong(&v13->_dataContainer, container);
     [(TFFeedbackDataContainer *)v13->_dataContainer setObserver:v13];
-    objc_storeStrong(&v13->_session, a5);
+    objc_storeStrong(&v13->_session, session);
   }
 
   return v13;
@@ -44,22 +44,22 @@
 - (void)prepareViewForForm
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(TFFeedbackFormPresenter *)self presenterView];
-  v4 = [(TFFeedbackFormPresenter *)self form];
-  v5 = [v4 title];
-  [v3 setNavigationItemTitle:v5];
+  presenterView = [(TFFeedbackFormPresenter *)self presenterView];
+  form = [(TFFeedbackFormPresenter *)self form];
+  title = [form title];
+  [presenterView setNavigationItemTitle:title];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v30 = self;
-  v7 = [(TFFeedbackFormPresenter *)self form];
-  v8 = [v7 entryGroups];
+  selfCopy = self;
+  form2 = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form2 entryGroups];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  obj = entryGroups;
+  v9 = [entryGroups countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v9)
   {
     v10 = v9;
@@ -78,8 +78,8 @@
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v13 = [v12 entries];
-        v14 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        entries = [v12 entries];
+        v14 = [entries countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v14)
         {
           v15 = v14;
@@ -90,14 +90,14 @@
             {
               if (*v38 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(entries);
               }
 
               v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(*(&v37 + 1) + 8 * j), "type")}];
               [v6 addObject:v18];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+            v15 = [entries countByEnumeratingWithState:&v37 objects:v46 count:16];
           }
 
           while (v15);
@@ -105,13 +105,13 @@
 
         if ([v12 isToggleable])
         {
-          v19 = [v12 groupToggleEntry];
+          groupToggleEntry = [v12 groupToggleEntry];
 
-          if (v19)
+          if (groupToggleEntry)
           {
             v20 = MEMORY[0x277CCABB0];
-            v21 = [v12 groupToggleEntry];
-            v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(v21, "type")}];
+            groupToggleEntry2 = [v12 groupToggleEntry];
+            v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(groupToggleEntry2, "type")}];
             [v6 addObject:v22];
           }
         }
@@ -142,9 +142,9 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v33 + 1) + 8 * k) unsignedIntegerValue];
-        v29 = [(TFFeedbackFormPresenter *)v30 presenterView];
-        [v29 prepareForEntryType:v28];
+        unsignedIntegerValue = [*(*(&v33 + 1) + 8 * k) unsignedIntegerValue];
+        presenterView2 = [(TFFeedbackFormPresenter *)selfCopy presenterView];
+        [presenterView2 prepareForEntryType:unsignedIntegerValue];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -156,94 +156,94 @@
 
 - (unint64_t)numberOfEntryGroupsInForm
 {
-  v2 = [(TFFeedbackFormPresenter *)self form];
-  v3 = [v2 entryGroups];
-  v4 = [v3 count];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v4 = [entryGroups count];
 
   return v4;
 }
 
-- (unint64_t)numberOfVisibleItemsInGroupAtIndex:(int64_t)a3
+- (unint64_t)numberOfVisibleItemsInGroupAtIndex:(int64_t)index
 {
-  v5 = [(TFFeedbackFormPresenter *)self form];
-  v6 = [v5 entryGroups];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v7 = [entryGroups objectAtIndexedSubscript:index];
 
-  v8 = [(TFFeedbackFormPresenter *)self dataContainer];
-  v9 = [v7 identifier];
-  v10 = [v8 isGroupWithIdentifierIncluded:v9];
+  dataContainer = [(TFFeedbackFormPresenter *)self dataContainer];
+  identifier = [v7 identifier];
+  v10 = [dataContainer isGroupWithIdentifierIncluded:identifier];
 
   v11 = [v7 numberOfVisibleItemsForIncludeState:v10];
   return v11;
 }
 
-- (id)visibleEntryAtGroupIndex:(int64_t)a3 entryIndex:(int64_t)a4
+- (id)visibleEntryAtGroupIndex:(int64_t)index entryIndex:(int64_t)entryIndex
 {
-  v6 = [(TFFeedbackFormPresenter *)self form];
-  v7 = [v6 entryGroups];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v8 = [entryGroups objectAtIndexedSubscript:index];
 
-  v9 = [v8 visibleEntryForIndex:a4];
+  v9 = [v8 visibleEntryForIndex:entryIndex];
 
   return v9;
 }
 
-- (id)headerTextForGroupAtIndex:(int64_t)a3
+- (id)headerTextForGroupAtIndex:(int64_t)index
 {
-  v4 = [(TFFeedbackFormPresenter *)self form];
-  v5 = [v4 entryGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v6 = [entryGroups objectAtIndexedSubscript:index];
 
-  v7 = [v6 headerText];
+  headerText = [v6 headerText];
 
-  return v7;
+  return headerText;
 }
 
-- (id)headerTextLinkMapForGroupAtIndex:(int64_t)a3
+- (id)headerTextLinkMapForGroupAtIndex:(int64_t)index
 {
-  v4 = [(TFFeedbackFormPresenter *)self form];
-  v5 = [v4 entryGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v6 = [entryGroups objectAtIndexedSubscript:index];
 
-  v7 = [v6 headerTextLinkMap];
+  headerTextLinkMap = [v6 headerTextLinkMap];
 
-  return v7;
+  return headerTextLinkMap;
 }
 
-- (id)footerTextForGroupAtIndex:(int64_t)a3
+- (id)footerTextForGroupAtIndex:(int64_t)index
 {
-  v4 = [(TFFeedbackFormPresenter *)self form];
-  v5 = [v4 entryGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v6 = [entryGroups objectAtIndexedSubscript:index];
 
-  v7 = [v6 footerText];
+  footerText = [v6 footerText];
 
-  return v7;
+  return footerText;
 }
 
-- (id)footerTextLinkMapForGroupAtIndex:(int64_t)a3
+- (id)footerTextLinkMapForGroupAtIndex:(int64_t)index
 {
-  v4 = [(TFFeedbackFormPresenter *)self form];
-  v5 = [v4 entryGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
+  v6 = [entryGroups objectAtIndexedSubscript:index];
 
-  v7 = [v6 footerTextLinkMap];
+  footerTextLinkMap = [v6 footerTextLinkMap];
 
-  return v7;
+  return footerTextLinkMap;
 }
 
-- (id)_indicesOfGroupsWithIdentifiers:(id)a3
+- (id)_indicesOfGroupsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(TFFeedbackFormPresenter *)self form];
-  v6 = [v5 entryGroups];
+  identifiersCopy = identifiers;
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__TFFeedbackFormPresenter__indicesOfGroupsWithIdentifiers___block_invoke;
   v10[3] = &unk_279D98308;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 indexesOfObjectsPassingTest:v10];
+  v11 = identifiersCopy;
+  v7 = identifiersCopy;
+  v8 = [entryGroups indexesOfObjectsPassingTest:v10];
 
   return v8;
 }
@@ -257,22 +257,22 @@ uint64_t __59__TFFeedbackFormPresenter__indicesOfGroupsWithIdentifiers___block_i
   return v4;
 }
 
-- (id)_indexPathsOfVisibleEntriesWithIdentifiers:(id)a3
+- (id)_indexPathsOfVisibleEntriesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(TFFeedbackFormPresenter *)self form];
-  v7 = [v6 entryGroups];
+  form = [(TFFeedbackFormPresenter *)self form];
+  entryGroups = [form entryGroups];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__TFFeedbackFormPresenter__indexPathsOfVisibleEntriesWithIdentifiers___block_invoke;
   v13[3] = &unk_279D98330;
   v13[4] = self;
-  v14 = v4;
+  v14 = identifiersCopy;
   v8 = v5;
   v15 = v8;
-  v9 = v4;
-  [v7 enumerateObjectsUsingBlock:v13];
+  v9 = identifiersCopy;
+  [entryGroups enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -307,31 +307,31 @@ void __70__TFFeedbackFormPresenter__indexPathsOfVisibleEntriesWithIdentifiers___
   }
 }
 
-- (void)feedbackDataContainer:(id)a3 didUpdateValuesForGroupIdentifiers:(id)a4 entryIdentifiers:(id)a5
+- (void)feedbackDataContainer:(id)container didUpdateValuesForGroupIdentifiers:(id)identifiers entryIdentifiers:(id)entryIdentifiers
 {
-  v7 = a4;
-  v11 = [(TFFeedbackFormPresenter *)self _indexPathsOfVisibleEntriesWithIdentifiers:a5];
-  v8 = [(TFFeedbackFormPresenter *)self presenterView];
-  [v8 reloadEntriesAtIndexPaths:v11];
+  identifiersCopy = identifiers;
+  v11 = [(TFFeedbackFormPresenter *)self _indexPathsOfVisibleEntriesWithIdentifiers:entryIdentifiers];
+  presenterView = [(TFFeedbackFormPresenter *)self presenterView];
+  [presenterView reloadEntriesAtIndexPaths:v11];
 
-  v9 = [(TFFeedbackFormPresenter *)self _indicesOfGroupsWithIdentifiers:v7];
+  v9 = [(TFFeedbackFormPresenter *)self _indicesOfGroupsWithIdentifiers:identifiersCopy];
 
-  v10 = [(TFFeedbackFormPresenter *)self presenterView];
-  [v10 reloadEntryGroupsAtIndices:v9];
+  presenterView2 = [(TFFeedbackFormPresenter *)self presenterView];
+  [presenterView2 reloadEntryGroupsAtIndices:v9];
 }
 
-- (void)didUpdateEntry:(id)a3 toGroupInclusionBool:(BOOL)a4
+- (void)didUpdateEntry:(id)entry toGroupInclusionBool:(BOOL)bool
 {
-  v6 = a3;
-  v7 = [(TFFeedbackFormPresenter *)self dataContainer];
+  entryCopy = entry;
+  dataContainer = [(TFFeedbackFormPresenter *)self dataContainer];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__TFFeedbackFormPresenter_didUpdateEntry_toGroupInclusionBool___block_invoke;
   v9[3] = &unk_279D98358;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  [v7 performBatchUpdates:v9];
+  v10 = entryCopy;
+  boolCopy = bool;
+  v8 = entryCopy;
+  [dataContainer performBatchUpdates:v9];
 }
 
 void __63__TFFeedbackFormPresenter_didUpdateEntry_toGroupInclusionBool___block_invoke(uint64_t a1, void *a2)
@@ -342,21 +342,21 @@ void __63__TFFeedbackFormPresenter_didUpdateEntry_toGroupInclusionBool___block_i
   [v4 setGroupInclusionForIdentifier:v5 toValue:*(a1 + 40)];
 }
 
-- (void)didUpdateEntry:(id)a3 toString:(id)a4 editInProgress:(BOOL)a5
+- (void)didUpdateEntry:(id)entry toString:(id)string editInProgress:(BOOL)progress
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(TFFeedbackFormPresenter *)self dataContainer];
+  progressCopy = progress;
+  entryCopy = entry;
+  stringCopy = string;
+  dataContainer = [(TFFeedbackFormPresenter *)self dataContainer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__TFFeedbackFormPresenter_didUpdateEntry_toString_editInProgress___block_invoke;
   v13[3] = &unk_279D98158;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [v10 performBatchUpdates:v13 suppressingNotifications:v5];
+  v14 = entryCopy;
+  v15 = stringCopy;
+  v11 = stringCopy;
+  v12 = entryCopy;
+  [dataContainer performBatchUpdates:v13 suppressingNotifications:progressCopy];
 }
 
 void __66__TFFeedbackFormPresenter_didUpdateEntry_toString_editInProgress___block_invoke(uint64_t a1, void *a2)
@@ -367,30 +367,30 @@ void __66__TFFeedbackFormPresenter_didUpdateEntry_toString_editInProgress___bloc
   [v4 setStringForIdentifier:v5 toValue:*(a1 + 40)];
 }
 
-- (void)presenterViewDidInitiateFeedbackSubmission:(id)a3
+- (void)presenterViewDidInitiateFeedbackSubmission:(id)submission
 {
-  v4 = [(TFFeedbackFormPresenter *)self presenterView];
-  [v4 showSubmitButtonForSubmissionPendingState:1];
+  presenterView = [(TFFeedbackFormPresenter *)self presenterView];
+  [presenterView showSubmitButtonForSubmissionPendingState:1];
 
-  v5 = [(TFFeedbackFormPresenter *)self session];
-  [v5 submitFeedbackForActiveFormViewController];
+  session = [(TFFeedbackFormPresenter *)self session];
+  [session submitFeedbackForActiveFormViewController];
 }
 
-- (void)presenterViewDidCancelFeedbackSubmission:(id)a3
+- (void)presenterViewDidCancelFeedbackSubmission:(id)submission
 {
-  v3 = [(TFFeedbackFormPresenter *)self session];
-  [v3 cancelFeedbackForActiveFormViewController];
+  session = [(TFFeedbackFormPresenter *)self session];
+  [session cancelFeedbackForActiveFormViewController];
 }
 
-- (void)showSubmissionFailureWithMessage:(id)a3
+- (void)showSubmissionFailureWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(TFFeedbackFormPresenter *)self presenterView];
-  [v5 showSubmitButtonForSubmissionPendingState:0];
+  messageCopy = message;
+  presenterView = [(TFFeedbackFormPresenter *)self presenterView];
+  [presenterView showSubmitButtonForSubmissionPendingState:0];
 
-  v7 = [(TFFeedbackFormPresenter *)self presenterView];
+  presenterView2 = [(TFFeedbackFormPresenter *)self presenterView];
   v6 = TFLocalizedString(@"ALERT_SUBMIT_FAILURE_TITLE");
-  [v7 showErrorAlertWithTitle:v6 message:v4];
+  [presenterView2 showErrorAlertWithTitle:v6 message:messageCopy];
 }
 
 - (TFFeedbackFormPresenterView)presenterView

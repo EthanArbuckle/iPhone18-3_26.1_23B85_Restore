@@ -1,6 +1,6 @@
 @interface PUTilingScrollInfo
-+ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)a3;
-+ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)a3 enabledPagingWithInterpageSpacing:(CGSize)a4 pagingSpringPullAdjustment:(double)a5 pagingFrictionAdjustment:(double)a6;
++ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)directions;
++ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)directions enabledPagingWithInterpageSpacing:(CGSize)spacing pagingSpringPullAdjustment:(double)adjustment pagingFrictionAdjustment:(double)frictionAdjustment;
 - (CGSize)interpageSpacing;
 @end
 
@@ -15,24 +15,24 @@
   return result;
 }
 
-+ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)a3 enabledPagingWithInterpageSpacing:(CGSize)a4 pagingSpringPullAdjustment:(double)a5 pagingFrictionAdjustment:(double)a6
++ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)directions enabledPagingWithInterpageSpacing:(CGSize)spacing pagingSpringPullAdjustment:(double)adjustment pagingFrictionAdjustment:(double)frictionAdjustment
 {
-  height = a4.height;
-  width = a4.width;
+  height = spacing.height;
+  width = spacing.width;
   v11 = objc_alloc_init(PUTilingScrollInfo);
-  [(PUTilingScrollInfo *)v11 _setScrollDirections:a3];
+  [(PUTilingScrollInfo *)v11 _setScrollDirections:directions];
   [(PUTilingScrollInfo *)v11 _setShouldEnablePaging:1];
   [(PUTilingScrollInfo *)v11 _setInterpageSpacing:width, height];
-  [(PUTilingScrollInfo *)v11 _setPagingSpringPullAdjustment:a5];
-  [(PUTilingScrollInfo *)v11 _setPagingFrictionAdjustment:a6];
+  [(PUTilingScrollInfo *)v11 _setPagingSpringPullAdjustment:adjustment];
+  [(PUTilingScrollInfo *)v11 _setPagingFrictionAdjustment:frictionAdjustment];
 
   return v11;
 }
 
-+ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)a3
++ (PUTilingScrollInfo)scrollInfoWithScrollDirections:(int64_t)directions
 {
   v4 = objc_alloc_init(PUTilingScrollInfo);
-  [(PUTilingScrollInfo *)v4 _setScrollDirections:a3];
+  [(PUTilingScrollInfo *)v4 _setScrollDirections:directions];
 
   return v4;
 }

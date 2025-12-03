@@ -1,16 +1,16 @@
 @interface HangSubtitleCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HangSubtitleCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = HangSubtitleCell;
-  [(HangSubtitleCell *)&v5 refreshCellContentsWithSpecifier:a3];
-  v4 = [(HangSubtitleCell *)self textLabel];
-  [v4 setLineBreakMode:5];
+  [(HangSubtitleCell *)&v5 refreshCellContentsWithSpecifier:specifier];
+  textLabel = [(HangSubtitleCell *)self textLabel];
+  [textLabel setLineBreakMode:5];
 }
 
 @end

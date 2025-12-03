@@ -1,18 +1,18 @@
 @interface PPConnectionsDonationStore
 + (id)defaultStore;
-- (id)recentLocationDonationsSinceDate:(id)a3 error:(id *)a4;
+- (id)recentLocationDonationsSinceDate:(id)date error:(id *)error;
 @end
 
 @implementation PPConnectionsDonationStore
 
-- (id)recentLocationDonationsSinceDate:(id)a3 error:(id *)a4
+- (id)recentLocationDonationsSinceDate:(id)date error:(id *)error
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[PPConnectionsDuetSource sharedInstance];
   v6 = [objc_alloc(MEMORY[0x277D3A340]) initWithLocationField:1 bundleIdentifier:0];
   v7 = objc_opt_new();
   LOWORD(v10) = 1;
-  v8 = [v5 locationItemsWithCriteria:v6 earliest:v4 latest:v7 limit:0x7FFFFFFFFFFFFFFFLL duetLimit:0x7FFFFFFFFFFFFFFFLL consumer:0 richLocationItems:v10 resolveEKLocations:0 explanationSet:?];
+  v8 = [v5 locationItemsWithCriteria:v6 earliest:dateCopy latest:v7 limit:0x7FFFFFFFFFFFFFFFLL duetLimit:0x7FFFFFFFFFFFFFFFLL consumer:0 richLocationItems:v10 resolveEKLocations:0 explanationSet:?];
 
   return v8;
 }

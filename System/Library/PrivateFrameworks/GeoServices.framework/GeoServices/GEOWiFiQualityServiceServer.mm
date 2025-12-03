@@ -1,24 +1,24 @@
 @interface GEOWiFiQualityServiceServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (void)cancelWithMessage:(id)a3;
-- (void)submitWithMessage:(id)a3;
-- (void)tileWithMessage:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (void)cancelWithMessage:(id)message;
+- (void)submitWithMessage:(id)message;
+- (void)tileWithMessage:(id)message;
 @end
 
 @implementation GEOWiFiQualityServiceServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = sub_100001334(a3);
+  objectCopy = object;
+  peerCopy = peer;
+  v12 = sub_100001334(message);
   if (v12 == 430)
   {
-    v16 = [[GEOMessage alloc] initWithXPCMessage:v10 peer:v11];
+    v16 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
     v14 = v16;
     if (v16)
     {
-      [v16 setSignpostId:a6];
+      [v16 setSignpostId:id];
       [(GEOWiFiQualityServiceServer *)self tileWithMessage:v14];
       goto LABEL_10;
     }
@@ -28,11 +28,11 @@
 
   if (v12 == 614)
   {
-    v15 = [[GEOMessage alloc] initWithXPCMessage:v10 peer:v11];
+    v15 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
     v14 = v15;
     if (v15)
     {
-      [v15 setSignpostId:a6];
+      [v15 setSignpostId:id];
       [(GEOWiFiQualityServiceServer *)self cancelWithMessage:v14];
       goto LABEL_10;
     }
@@ -48,14 +48,14 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v13 = [[GEOMessage alloc] initWithXPCMessage:v10 peer:v11];
+  v13 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
   v14 = v13;
   if (!v13)
   {
     goto LABEL_14;
   }
 
-  [v13 setSignpostId:a6];
+  [v13 setSignpostId:id];
   [(GEOWiFiQualityServiceServer *)self submitWithMessage:v14];
 LABEL_10:
   v17 = 1;
@@ -65,62 +65,62 @@ LABEL_13:
   return v17;
 }
 
-- (void)cancelWithMessage:(id)a3
+- (void)cancelWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v6 = [v4 objectForKeyedSubscript:@"wifireqid"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"wifireqid"];
 
   v5 = +[GEOWiFiQualityServiceManager sharedManager];
   [v5 cancelRequestId:v6];
 
-  [v3 sendReply:0];
+  [messageCopy sendReply:0];
 }
 
-- (void)tileWithMessage:(id)a3
+- (void)tileWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"wifitk"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"wifitk"];
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"wifiet"];
+  userInfo2 = [messageCopy userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:@"wifiet"];
 
-  v8 = [v3 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"wifireqid"];
+  userInfo3 = [messageCopy userInfo];
+  v9 = [userInfo3 objectForKeyedSubscript:@"wifireqid"];
 
   v10 = +[GEOWiFiQualityServiceManager sharedManager];
-  v11 = [v3 preferredAuditToken];
+  preferredAuditToken = [messageCopy preferredAuditToken];
   v12 = +[GEOXPCConnection defaultXPCServerConnectionQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100038FFC;
   v14[3] = &unk_100082C78;
-  v15 = v3;
-  v13 = v3;
-  [v10 submitWiFiQualityTileLoadForKey:v5 eTag:v7 requestId:v9 auditToken:v11 completionQueue:v12 completion:v14];
+  v15 = messageCopy;
+  v13 = messageCopy;
+  [v10 submitWiFiQualityTileLoadForKey:v5 eTag:v7 requestId:v9 auditToken:preferredAuditToken completionQueue:v12 completion:v14];
 }
 
-- (void)submitWithMessage:(id)a3
+- (void)submitWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"wifireq"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"wifireq"];
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"wifireqid"];
+  userInfo2 = [messageCopy userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:@"wifireqid"];
 
   v8 = [[GEOWiFiQualityServiceRequest alloc] initWithData:v5];
   v9 = +[GEOWiFiQualityServiceManager sharedManager];
-  v10 = [v3 preferredAuditToken];
+  preferredAuditToken = [messageCopy preferredAuditToken];
   v11 = +[GEOXPCConnection defaultXPCServerConnectionQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003929C;
   v13[3] = &unk_100082C50;
-  v14 = v3;
-  v12 = v3;
-  [v9 submitWiFiQualityServiceRequest:v8 requestId:v7 auditToken:v10 completionQueue:v11 completion:v13];
+  v14 = messageCopy;
+  v12 = messageCopy;
+  [v9 submitWiFiQualityServiceRequest:v8 requestId:v7 auditToken:preferredAuditToken completionQueue:v11 completion:v13];
 }
 
 @end

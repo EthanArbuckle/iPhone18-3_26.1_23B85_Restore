@@ -1,22 +1,22 @@
 @interface CRLContainerItem
-- (BOOL)beforeInsertionAddNewItems:(id)a3 atIndex:(int64_t)a4 board:(id)a5 error:(id *)a6;
-- (BOOL)beforeInsertionAddNewItems:(id)a3 board:(id)a4 error:(id *)a5;
-- (BOOL)containsChild:(id)a3;
-- (BOOL)isItemAllowed:(id)a3;
+- (BOOL)beforeInsertionAddNewItems:(id)items atIndex:(int64_t)index board:(id)board error:(id *)error;
+- (BOOL)beforeInsertionAddNewItems:(id)items board:(id)board error:(id *)error;
+- (BOOL)containsChild:(id)child;
+- (BOOL)isItemAllowed:(id)allowed;
 - (NSArray)allNestedChildrenItemsIncludingContainers;
 - (NSArray)childInfos;
 - (NSDictionary)items;
 - (NSSet)unorderedItemUUIDs;
-- (_TtC8Freeform16CRLContainerItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5;
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5;
+- (_TtC8Freeform16CRLContainerItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry;
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error;
 - (id)childEnumerator;
-- (id)childEnumeratorForUserFlags:(unint64_t)a3;
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3;
-- (void)_setParentItemUUIDWithItem:(id)a3 parent:(id)a4;
+- (id)childEnumeratorForUserFlags:(unint64_t)flags;
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children;
+- (void)_setParentItemUUIDWithItem:(id)item parent:(id)parent;
 - (void)clearChildItemsCache;
-- (void)fixUpWithInsertedChild:(id)a3 expectTransactionContext:(BOOL)a4;
-- (void)fixUpWithRemovedChild:(id)a3 expectTransactionContext:(BOOL)a4;
-- (void)setItems:(id)a3;
+- (void)fixUpWithInsertedChild:(id)child expectTransactionContext:(BOOL)context;
+- (void)fixUpWithRemovedChild:(id)child expectTransactionContext:(BOOL)context;
+- (void)setItems:(id)items;
 @end
 
 @implementation CRLContainerItem
@@ -32,19 +32,19 @@
   return v2.super.isa;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   type metadata accessor for UUID();
   type metadata accessor for CRLBoardItem(0);
   sub_10097AF90(&qword_1019FB870, &type metadata accessor for UUID);
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10096C5C8(v4);
 }
 
 - (NSArray)allNestedChildrenItemsIncludingContainers
 {
-  v2 = self;
+  selfCopy = self;
   sub_10096C644();
 
   type metadata accessor for CRLBoardItem(0);
@@ -56,7 +56,7 @@
 - (NSSet)unorderedItemUUIDs
 {
   v2 = *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedUnorderedItemUUIDs);
-  v3 = self;
+  selfCopy = self;
   if (!v2)
   {
     sub_10096C7D4();
@@ -72,18 +72,18 @@
 - (void)clearChildItemsCache
 {
   *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems) = 0;
-  v2 = self;
+  selfCopy = self;
 
-  *(v2 + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItemUUIDs) = 0;
+  *(selfCopy + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItemUUIDs) = 0;
 
-  *(v2 + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedUnorderedItemUUIDs) = 0;
+  *(selfCopy + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedUnorderedItemUUIDs) = 0;
 }
 
 - (NSArray)childInfos
 {
   v3 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
   v4 = *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems);
-  v5 = self;
+  selfCopy = self;
   if (!v4)
   {
     sub_10096C7D4();
@@ -108,15 +108,15 @@
   return v7.super.isa;
 }
 
-- (void)fixUpWithInsertedChild:(id)a3 expectTransactionContext:(BOOL)a4
+- (void)fixUpWithInsertedChild:(id)child expectTransactionContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_10096E1AC(v6, v4);
+  contextCopy = context;
+  childCopy = child;
+  selfCopy = self;
+  sub_10096E1AC(childCopy, contextCopy);
 }
 
-- (BOOL)containsChild:(id)a3
+- (BOOL)containsChild:(id)child
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -125,7 +125,7 @@
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItemUUIDs;
   v9 = *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItemUUIDs);
-  v10 = self;
+  selfCopy = self;
   if (!v9)
   {
     sub_10096C7D4();
@@ -148,22 +148,22 @@
   return v12;
 }
 
-- (void)fixUpWithRemovedChild:(id)a3 expectTransactionContext:(BOOL)a4
+- (void)fixUpWithRemovedChild:(id)child expectTransactionContext:(BOOL)context
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
-  sub_10096F3C0(v9, a4);
+  selfCopy = self;
+  sub_10096F3C0(v9, context);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)isItemAllowed:(id)a3
+- (BOOL)isItemAllowed:(id)allowed
 {
-  v3 = (*((swift_isaMask & *a3) + 0xC8))(self, a2);
+  v3 = (*((swift_isaMask & *allowed) + 0xC8))(self, a2);
   if ((v5 & 0x100) == 0)
   {
     return 1;
@@ -221,29 +221,29 @@
   return !v5 && v23;
 }
 
-- (BOOL)beforeInsertionAddNewItems:(id)a3 board:(id)a4 error:(id *)a5
+- (BOOL)beforeInsertionAddNewItems:(id)items board:(id)board error:(id *)error
 {
   type metadata accessor for CRLBoardItem(0);
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a4;
-  v9 = self;
+  boardCopy = board;
+  selfCopy = self;
   sub_10097A374(v7);
 
   return 1;
 }
 
-- (BOOL)beforeInsertionAddNewItems:(id)a3 atIndex:(int64_t)a4 board:(id)a5 error:(id *)a6
+- (BOOL)beforeInsertionAddNewItems:(id)items atIndex:(int64_t)index board:(id)board error:(id *)error
 {
   type metadata accessor for CRLBoardItem(0);
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a5;
-  v11 = self;
-  sub_10097A674(v9, a4);
+  boardCopy = board;
+  selfCopy = self;
+  sub_10097A674(v9, index);
 
   return 1;
 }
 
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -252,7 +252,7 @@
   v12 = sub_1005B981C(&qword_1019F6990);
   __chkstk_darwin(v12 - 8);
   v14 = &v19[-v13];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v9 + 32))(v14, v11, v8);
@@ -264,18 +264,18 @@
     (*(v9 + 56))(v14, 1, 1, v8);
   }
 
-  v15 = a4;
-  v16 = self;
-  v17 = sub_100972F14(v14, v15);
+  helperCopy = helper;
+  selfCopy = self;
+  v17 = sub_100972F14(v14, helperCopy);
   sub_10000CAAC(v14, &qword_1019F6990);
 
   return v17;
 }
 
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children
 {
-  v4 = self;
-  sub_10096C300(a3);
+  selfCopy = self;
+  sub_10096C300(children);
 
   type metadata accessor for UUID();
   sub_10097AF90(&qword_1019FB870, &type metadata accessor for UUID);
@@ -288,7 +288,7 @@
 {
   v3 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
   v4 = *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems);
-  v5 = self;
+  selfCopy = self;
   if (!v4)
   {
     sub_10096C7D4();
@@ -312,16 +312,16 @@
 
   v9 = [v7 initWithArray:isa];
 
-  v10 = [v9 objectEnumerator];
+  objectEnumerator = [v9 objectEnumerator];
 
-  return v10;
+  return objectEnumerator;
 }
 
-- (id)childEnumeratorForUserFlags:(unint64_t)a3
+- (id)childEnumeratorForUserFlags:(unint64_t)flags
 {
   v4 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
   v5 = *(self + OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems);
-  v6 = self;
+  selfCopy = self;
   if (!v5)
   {
     sub_10096C7D4();
@@ -345,28 +345,28 @@
 
   v10 = [v8 initWithArray:isa];
 
-  v11 = [v10 objectEnumerator];
+  objectEnumerator = [v10 objectEnumerator];
 
-  return v11;
+  return objectEnumerator;
 }
 
-- (_TtC8Freeform16CRLContainerItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5
+- (_TtC8Freeform16CRLContainerItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry
 {
   v7 = type metadata accessor for UUID();
   __chkstk_darwin(v7 - 8);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = a5;
-  return sub_100975D90(v10, v9, a5);
+  storeCopy = store;
+  geometryCopy = geometry;
+  return sub_100975D90(storeCopy, v9, geometry);
 }
 
-- (void)_setParentItemUUIDWithItem:(id)a3 parent:(id)a4
+- (void)_setParentItemUUIDWithItem:(id)item parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1009C2CBC(v6, v7);
+  itemCopy = item;
+  parentCopy = parent;
+  selfCopy = self;
+  sub_1009C2CBC(itemCopy, parentCopy);
 }
 
 @end

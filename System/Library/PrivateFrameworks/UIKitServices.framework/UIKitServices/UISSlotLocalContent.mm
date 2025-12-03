@@ -1,80 +1,80 @@
 @interface UISSlotLocalContent
-+ (id)contentWithDrawing:(id)a3 scale:(unsigned __int8)a4 range:(unint64_t)a5;
-+ (id)contentWithDrawing:(id)a3 style:(id)a4;
-+ (id)contentWithImage:(CGImage *)a3 scale:(unsigned __int8)a4;
++ (id)contentWithDrawing:(id)drawing scale:(unsigned __int8)scale range:(unint64_t)range;
++ (id)contentWithDrawing:(id)drawing style:(id)style;
++ (id)contentWithImage:(CGImage *)image scale:(unsigned __int8)scale;
 - (CGSize)contentSize;
-- (UISSlotLocalContent)initWithDrawing:(id)a3 scale:(unsigned __int8)a4 range:(unint64_t)a5;
-- (UISSlotLocalContent)initWithImage:(CGImage *)a3 scale:(unsigned __int8)a4;
+- (UISSlotLocalContent)initWithDrawing:(id)drawing scale:(unsigned __int8)scale range:(unint64_t)range;
+- (UISSlotLocalContent)initWithImage:(CGImage *)image scale:(unsigned __int8)scale;
 - (void)dealloc;
 @end
 
 @implementation UISSlotLocalContent
 
-- (UISSlotLocalContent)initWithDrawing:(id)a3 scale:(unsigned __int8)a4 range:(unint64_t)a5
+- (UISSlotLocalContent)initWithDrawing:(id)drawing scale:(unsigned __int8)scale range:(unint64_t)range
 {
-  v6 = a4;
-  v8 = a3;
+  scaleCopy = scale;
+  drawingCopy = drawing;
   v14.receiver = self;
   v14.super_class = UISSlotLocalContent;
   v9 = [(UISSlotLocalContent *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_contentScale = v6;
-    [v8 drawingSize];
+    v9->_contentScale = scaleCopy;
+    [drawingCopy drawingSize];
     v10->_contentSize.width = v11;
     v10->_contentSize.height = v12;
-    v10->_localImage = UISCreateImageFromDrawing(v8, a5, v6);
+    v10->_localImage = UISCreateImageFromDrawing(drawingCopy, range, scaleCopy);
   }
 
   return v10;
 }
 
-- (UISSlotLocalContent)initWithImage:(CGImage *)a3 scale:(unsigned __int8)a4
+- (UISSlotLocalContent)initWithImage:(CGImage *)image scale:(unsigned __int8)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   v11.receiver = self;
   v11.super_class = UISSlotLocalContent;
   v6 = [(UISSlotLocalContent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    v6->_contentScale = v4;
-    v8 = (CGImageGetWidth(a3) / v4);
-    Height = CGImageGetHeight(a3);
+    v6->_contentScale = scaleCopy;
+    v8 = (CGImageGetWidth(image) / scaleCopy);
+    Height = CGImageGetHeight(image);
     v7->_contentSize.width = v8;
-    v7->_contentSize.height = (Height / v4);
-    v7->_localImage = CGImageRetain(a3);
+    v7->_contentSize.height = (Height / scaleCopy);
+    v7->_localImage = CGImageRetain(image);
   }
 
   return v7;
 }
 
-+ (id)contentWithDrawing:(id)a3 scale:(unsigned __int8)a4 range:(unint64_t)a5
++ (id)contentWithDrawing:(id)drawing scale:(unsigned __int8)scale range:(unint64_t)range
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UISSlotLocalContent alloc] initWithDrawing:v7 scale:v6 range:a5];
+  scaleCopy = scale;
+  drawingCopy = drawing;
+  v8 = [[UISSlotLocalContent alloc] initWithDrawing:drawingCopy scale:scaleCopy range:range];
 
   return v8;
 }
 
-+ (id)contentWithDrawing:(id)a3 style:(id)a4
++ (id)contentWithDrawing:(id)drawing style:(id)style
 {
-  v5 = a4;
-  v6 = a3;
+  styleCopy = style;
+  drawingCopy = drawing;
   v7 = [UISSlotLocalContent alloc];
-  v8 = [v5 displayScale];
-  v9 = [v5 displayRange];
+  displayScale = [styleCopy displayScale];
+  displayRange = [styleCopy displayRange];
 
-  v10 = [(UISSlotLocalContent *)v7 initWithDrawing:v6 scale:v8 range:v9];
+  v10 = [(UISSlotLocalContent *)v7 initWithDrawing:drawingCopy scale:displayScale range:displayRange];
 
   return v10;
 }
 
-+ (id)contentWithImage:(CGImage *)a3 scale:(unsigned __int8)a4
++ (id)contentWithImage:(CGImage *)image scale:(unsigned __int8)scale
 {
-  v4 = [[UISSlotLocalContent alloc] initWithImage:a3 scale:a4];
+  v4 = [[UISSlotLocalContent alloc] initWithImage:image scale:scale];
 
   return v4;
 }

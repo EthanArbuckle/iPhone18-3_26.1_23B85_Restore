@@ -3,18 +3,18 @@
 - (SKSetupBase)skSetupObject;
 - (SKStepWiFiSetupServerLegacy)init;
 - (void)_activate;
-- (void)_completeWithError:(id)a3;
-- (void)_handleRequestBonjourTestDone:(id)a3 responseHandler:(id)a4;
-- (void)_handleRequestBonjourTestStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleRequestWiFiSetup:(id)a3 responseHandler:(id)a4;
+- (void)_completeWithError:(id)error;
+- (void)_handleRequestBonjourTestDone:(id)done responseHandler:(id)handler;
+- (void)_handleRequestBonjourTestStart:(id)start responseHandler:(id)handler;
+- (void)_handleRequestWiFiSetup:(id)setup responseHandler:(id)handler;
 - (void)_invalidated;
 - (void)_run;
 - (void)_runInternetReachabilityStart;
-- (void)_runScanResults:(id)a3 error:(id)a4 channel:(int)a5;
+- (void)_runScanResults:(id)results error:(id)error channel:(int)channel;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SKStepWiFiSetupServerLegacy
@@ -254,12 +254,12 @@ LABEL_12:
   return [v12 _run];
 }
 
-- (void)_runScanResults:(id)a3 error:(id)a4 channel:(int)a5
+- (void)_runScanResults:(id)results error:(id)error channel:(int)channel
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = [v19 firstObject];
-  if (!v7)
+  resultsCopy = results;
+  errorCopy = error;
+  firstObject = [resultsCopy firstObject];
+  if (!errorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -278,20 +278,20 @@ LABEL_12:
           v18 = self->_ucat;
         }
 
-        [v19 count];
+        [resultsCopy count];
         LogPrintF();
       }
 
 LABEL_13:
-      v16 = v8;
-      v7 = 0;
+      v16 = firstObject;
+      errorCopy = 0;
       scanResult = self->_scanResult;
       self->_scanResult = v16;
       goto LABEL_14;
     }
 
     v10 = *MEMORY[0x277CCA590];
-    v7 = NSErrorF_safe();
+    errorCopy = NSErrorF_safe();
   }
 
   v11 = self->_ucat->var0;
@@ -318,7 +318,7 @@ LABEL_14:
 LABEL_15:
   self->_stepDone = 1;
   stepError = self->_stepError;
-  self->_stepError = v7;
+  self->_stepError = errorCopy;
 
   [(SKStepWiFiSetupServerLegacy *)self _run];
 }
@@ -419,18 +419,18 @@ void __45__SKStepWiFiSetupServerLegacy__runScanStart___block_invoke_101(uint64_t
             stepError = self->_stepError;
           }
 
-          v10 = self;
+          selfCopy2 = self;
           goto LABEL_22;
         case 4:
-          v10 = self;
+          selfCopy2 = self;
           stepError = 0;
 LABEL_22:
-          [(SKStepWiFiSetupServerLegacy *)v10 _completeWithError:stepError, v27, v28];
+          [(SKStepWiFiSetupServerLegacy *)selfCopy2 _completeWithError:stepError, v27, v28];
           goto LABEL_46;
         case 11:
           self->_runState = 12;
           wifiChannel = self->_wifiChannel;
-          v9 = self;
+          selfCopy5 = self;
           goto LABEL_27;
         case 12:
           if (self->_scanResult)
@@ -460,7 +460,7 @@ LABEL_22:
         case 13:
           self->_runState = 14;
           v6 = self->_wifiChannel;
-          v7 = self;
+          selfCopy6 = self;
           goto LABEL_29;
         case 14:
           if (self->_stepDone)
@@ -490,10 +490,10 @@ LABEL_42:
           goto LABEL_72;
         case 15:
           self->_runState = 16;
-          v9 = self;
+          selfCopy5 = self;
           wifiChannel = 0;
 LABEL_27:
-          [(SKStepWiFiSetupServerLegacy *)v9 _runScanStart:wifiChannel, v27];
+          [(SKStepWiFiSetupServerLegacy *)selfCopy5 _runScanStart:wifiChannel, v27];
           goto LABEL_46;
         case 16:
           if (self->_scanResult)
@@ -522,10 +522,10 @@ LABEL_27:
           goto LABEL_70;
         case 17:
           self->_runState = 18;
-          v7 = self;
+          selfCopy6 = self;
           v6 = 0;
 LABEL_29:
-          [(SKStepWiFiSetupServerLegacy *)v7 _runJoinStart:v6, v27];
+          [(SKStepWiFiSetupServerLegacy *)selfCopy6 _runJoinStart:v6, v27];
           goto LABEL_46;
         case 18:
           if (self->_stepDone)
@@ -689,10 +689,10 @@ LABEL_49:
   }
 }
 
-- (void)_handleRequestWiFiSetup:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestWiFiSetup:(id)setup responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  setupCopy = setup;
+  handlerCopy = handler;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -705,7 +705,7 @@ LABEL_49:
   v33[3] = &unk_279BB8500;
   v35 = &v36;
   v33[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v34 = v8;
   v9 = MEMORY[0x26676A4C0](v33);
   if (self->_runState)
@@ -715,11 +715,11 @@ LABEL_49:
 
   self->_wifiChannel = CFDictionaryGetInt64Ranged();
   self->_wifiDirected = CFDictionaryGetInt64() != 0;
-  v10 = [v6 objectForKeyedSubscript:@"_wiEC"];
+  v10 = [setupCopy objectForKeyedSubscript:@"_wiEC"];
   wifiEAPConfig = self->_wifiEAPConfig;
   self->_wifiEAPConfig = v10;
 
-  v12 = [v6 objectForKeyedSubscript:@"_wiET"];
+  v12 = [setupCopy objectForKeyedSubscript:@"_wiET"];
   wifiEAPTrustExceptions = self->_wifiEAPTrustExceptions;
   self->_wifiEAPTrustExceptions = v12;
 
@@ -829,10 +829,10 @@ LABEL_7:
   return v7();
 }
 
-- (void)_handleRequestBonjourTestDone:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestBonjourTestDone:(id)done responseHandler:(id)handler
 {
-  v15 = a3;
-  v6 = a4;
+  doneCopy = done;
+  handlerCopy = handler;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -867,14 +867,14 @@ LABEL_5:
     self->_bonjourTimeoutTimer = 0;
   }
 
-  (*(v6 + 2))(v6, MEMORY[0x277CBEC10], 0, 0, &__block_literal_global_50_1827);
+  (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC10], 0, 0, &__block_literal_global_50_1827);
 }
 
-- (void)_handleRequestBonjourTestStart:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestBonjourTestStart:(id)start responseHandler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  handlerCopy = handler;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -920,7 +920,7 @@ LABEL_5:
     }
 
 LABEL_13:
-    (*(v7 + 2))(v7, 0, 0, v11, &__block_literal_global_34_1833);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11, &__block_literal_global_34_1833);
     goto LABEL_14;
   }
 
@@ -964,7 +964,7 @@ LABEL_13:
   dispatch_source_set_event_handler(v19, handler);
   CUDispatchTimerSet();
   dispatch_activate(v19);
-  (*(v7 + 2))(v7, MEMORY[0x277CBEC10], 0, 0, &__block_literal_global_47_1838);
+  (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC10], 0, 0, &__block_literal_global_47_1838);
 
 LABEL_14:
   v22 = *MEMORY[0x277D85DE8];
@@ -1019,16 +1019,16 @@ LABEL_8:
   *(v14 + 16) = 0;
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   self->_runState = 0;
   mach_absolute_time();
   startTicks = self->_startTicks;
   UpTicksToSecondsF();
   self->_metricTotalSeconds = v6;
   var0 = self->_ucat->var0;
-  if (!v4)
+  if (!errorCopy)
   {
     if (var0 > 30)
     {
@@ -1078,7 +1078,7 @@ LABEL_11:
 
   if (v12)
   {
-    if (v4)
+    if (errorCopy)
     {
       v14 = 0;
     }
@@ -1093,7 +1093,7 @@ LABEL_11:
     v18[2] = __50__SKStepWiFiSetupServerLegacy__completeWithError___block_invoke;
     v18[3] = &unk_279BB8838;
     v18[4] = self;
-    v19 = v4;
+    v19 = errorCopy;
     (v12)[2](v12, v14, 0, v19, v18);
   }
 }
@@ -1415,12 +1415,12 @@ LABEL_5:
   return [v2 _activate];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 

@@ -1,20 +1,20 @@
 @interface EMDrawableMapper
-+ (BOOL)isAnchorRelative:(id)a3;
-- (CGPoint)anchorMarkerToPosition:(EDCellAnchorMarker)a3 rowGrid:(double *)a4 columnGrid:(double *)a5 start:(BOOL)a6 relative:(BOOL)a7;
++ (BOOL)isAnchorRelative:(id)relative;
+- (CGPoint)anchorMarkerToPosition:(EDCellAnchorMarker)position rowGrid:(double *)grid columnGrid:(double *)columnGrid start:(BOOL)start relative:(BOOL)relative;
 - (CGRect)getImageRect;
-- (CGRect)mapAnchorToRect:(id)a3 rowGrid:(double *)a4 columnGrid:(double *)a5;
-- (EMDrawableMapper)initWithChartDrawable:(id)a3 box:(CGRect)a4 parent:(id)a5;
-- (EMDrawableMapper)initWithOADDrawable:(id)a3 parent:(id)a4;
-- (EMDrawableMapper)initWithOADDrawable:(id)a3 rowGrid:(double *)a4 columnGrid:(double *)a5;
+- (CGRect)mapAnchorToRect:(id)rect rowGrid:(double *)grid columnGrid:(double *)columnGrid;
+- (EMDrawableMapper)initWithChartDrawable:(id)drawable box:(CGRect)box parent:(id)parent;
+- (EMDrawableMapper)initWithOADDrawable:(id)drawable parent:(id)parent;
+- (EMDrawableMapper)initWithOADDrawable:(id)drawable rowGrid:(double *)grid columnGrid:(double *)columnGrid;
 - (id)getImageBounds;
 - (id)worksheetMapper;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (void)mapAt:(id)at withState:(id)state;
 - (void)mapBounds;
-- (void)mapChartAt:(id)a3 withState:(id)a4;
-- (void)mapDiagramAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4;
-- (void)mapTextBoxAt:(id)a3 withState:(id)a4;
+- (void)mapChartAt:(id)at withState:(id)state;
+- (void)mapDiagramAt:(id)at withState:(id)state;
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state;
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state;
+- (void)mapTextBoxAt:(id)at withState:(id)state;
 - (void)setBoundingBox;
 @end
 
@@ -33,12 +33,12 @@
         break;
       }
 
-      v3 = [WeakRetained parent];
+      parent = [WeakRetained parent];
 
-      WeakRetained = v3;
+      WeakRetained = parent;
     }
 
-    while (v3);
+    while (parent);
   }
 
   return WeakRetained;
@@ -48,9 +48,9 @@
 {
   if (!self->super.mOrientedBounds)
   {
-    v3 = [(EMDrawableMapper *)self getImageBounds];
+    getImageBounds = [(EMDrawableMapper *)self getImageBounds];
     mOrientedBounds = self->super.mOrientedBounds;
-    self->super.mOrientedBounds = v3;
+    self->super.mOrientedBounds = getImageBounds;
 
     v5 = self->super.mOrientedBounds;
     if (v5)
@@ -73,11 +73,11 @@
 
 - (CGRect)getImageRect
 {
-  v2 = [(EMDrawableMapper *)self getImageBounds];
-  v3 = v2;
-  if (v2)
+  getImageBounds = [(EMDrawableMapper *)self getImageBounds];
+  v3 = getImageBounds;
+  if (getImageBounds)
   {
-    [v2 bounds];
+    [getImageBounds bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -103,37 +103,37 @@
   return result;
 }
 
-- (EMDrawableMapper)initWithOADDrawable:(id)a3 parent:(id)a4
+- (EMDrawableMapper)initWithOADDrawable:(id)drawable parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  drawableCopy = drawable;
+  parentCopy = parent;
   v13.receiver = self;
   v13.super_class = EMDrawableMapper;
-  v8 = [(CMDrawableMapper *)&v13 initWithOadDrawable:v6 parent:v7];
+  v8 = [(CMDrawableMapper *)&v13 initWithOadDrawable:drawableCopy parent:parentCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(EMDrawableMapper *)v8 worksheetMapper];
-    v9->mRowGrid = [v10 rowGrid];
+    worksheetMapper = [(EMDrawableMapper *)v8 worksheetMapper];
+    v9->mRowGrid = [worksheetMapper rowGrid];
 
-    v11 = [(EMDrawableMapper *)v9 worksheetMapper];
-    v9->mColumnGrid = [v11 columnGrid];
+    worksheetMapper2 = [(EMDrawableMapper *)v9 worksheetMapper];
+    v9->mColumnGrid = [worksheetMapper2 columnGrid];
   }
 
   return v9;
 }
 
-- (EMDrawableMapper)initWithChartDrawable:(id)a3 box:(CGRect)a4 parent:(id)a5
+- (EMDrawableMapper)initWithChartDrawable:(id)drawable box:(CGRect)box parent:(id)parent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  drawableCopy = drawable;
+  parentCopy = parent;
   v18.receiver = self;
   v18.super_class = EMDrawableMapper;
-  v13 = [(CMDrawableMapper *)&v18 initWithOadDrawable:v11 parent:v12];
+  v13 = [(CMDrawableMapper *)&v18 initWithOadDrawable:drawableCopy parent:parentCopy];
   v14 = v13;
   if (v13)
   {
@@ -143,32 +143,32 @@
     v13->super.mBox.origin.y = y;
     v13->super.mBox.size.width = width;
     v13->super.mBox.size.height = height;
-    v15 = [OADOrientedBounds orientedBoundsWithBounds:x, y, width, height];
+    height = [OADOrientedBounds orientedBoundsWithBounds:x, y, width, height];
     mOrientedBounds = v14->super.mOrientedBounds;
-    v14->super.mOrientedBounds = v15;
+    v14->super.mOrientedBounds = height;
   }
 
   return v14;
 }
 
-- (EMDrawableMapper)initWithOADDrawable:(id)a3 rowGrid:(double *)a4 columnGrid:(double *)a5
+- (EMDrawableMapper)initWithOADDrawable:(id)drawable rowGrid:(double *)grid columnGrid:(double *)columnGrid
 {
   v8.receiver = self;
   v8.super_class = EMDrawableMapper;
-  result = [(CMDrawableMapper *)&v8 initWithOadDrawable:a3 parent:0];
+  result = [(CMDrawableMapper *)&v8 initWithOadDrawable:drawable parent:0];
   if (result)
   {
-    result->mRowGrid = a4;
-    result->mColumnGrid = a5;
+    result->mRowGrid = grid;
+    result->mColumnGrid = columnGrid;
   }
 
   return result;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   if (![(OADDrawable *)self->super.mDrawable hidden])
   {
     [(EMDrawableMapper *)self mapBounds];
@@ -181,7 +181,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EMDrawableMapper *)self mapOfficeArtShapeAt:v6 withState:v7];
+      [(EMDrawableMapper *)self mapOfficeArtShapeAt:atCopy withState:stateCopy];
     }
 
     else
@@ -189,7 +189,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(EMDrawableMapper *)self mapOfficeArtGroupAt:v6 withState:v7];
+        [(EMDrawableMapper *)self mapOfficeArtGroupAt:atCopy withState:stateCopy];
       }
 
       else
@@ -197,7 +197,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(EMDrawableMapper *)self mapChartAt:v6 withState:v7];
+          [(EMDrawableMapper *)self mapChartAt:atCopy withState:stateCopy];
         }
 
         else
@@ -231,7 +231,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(EMDrawableMapper *)self mapDiagramAt:v6 withState:v7];
+              [(EMDrawableMapper *)self mapDiagramAt:atCopy withState:stateCopy];
               goto LABEL_18;
             }
 
@@ -241,9 +241,9 @@
 
           if (v14)
           {
-            [v6 addChild:v14];
-            v15 = [(CMStyle *)self->super.mStyle cssStyleString];
-            [(CMMapper *)self addAttribute:0x286EEA590 toNode:v14 value:v15];
+            [atCopy addChild:v14];
+            cssStyleString = [(CMStyle *)self->super.mStyle cssStyleString];
+            [(CMMapper *)self addAttribute:0x286EEA590 toNode:v14 value:cssStyleString];
           }
         }
       }
@@ -264,34 +264,34 @@ LABEL_18:
 
 - (id)getImageBounds
 {
-  v3 = [(OADDrawable *)self->super.mDrawable clientData];
-  if ([v3 hasBounds])
+  clientData = [(OADDrawable *)self->super.mDrawable clientData];
+  if ([clientData hasBounds])
   {
-    [v3 bounds];
+    [clientData bounds];
     v4 = [OADOrientedBounds orientedBoundsWithBounds:?];
     goto LABEL_8;
   }
 
-  v5 = [(OADDrawable *)self->super.mDrawable drawableProperties];
-  v6 = [v5 hasOrientedBounds];
+  drawableProperties = [(OADDrawable *)self->super.mDrawable drawableProperties];
+  hasOrientedBounds = [drawableProperties hasOrientedBounds];
 
-  if (v6)
+  if (hasOrientedBounds)
   {
-    v7 = [(OADDrawable *)self->super.mDrawable drawableProperties];
-    v8 = [v7 orientedBounds];
+    drawableProperties2 = [(OADDrawable *)self->super.mDrawable drawableProperties];
+    orientedBounds = [drawableProperties2 orientedBounds];
 LABEL_7:
-    v4 = v8;
+    v4 = orientedBounds;
 
     goto LABEL_8;
   }
 
-  v9 = [v3 anchor];
+  anchor = [clientData anchor];
 
-  if (v9)
+  if (anchor)
   {
-    v7 = [v3 anchor];
-    [(EMDrawableMapper *)self mapAnchorToRect:v7 rowGrid:self->mRowGrid columnGrid:self->mColumnGrid];
-    v8 = [OADOrientedBounds orientedBoundsWithBounds:?];
+    drawableProperties2 = [clientData anchor];
+    [(EMDrawableMapper *)self mapAnchorToRect:drawableProperties2 rowGrid:self->mRowGrid columnGrid:self->mColumnGrid];
+    orientedBounds = [OADOrientedBounds orientedBoundsWithBounds:?];
     goto LABEL_7;
   }
 
@@ -301,31 +301,31 @@ LABEL_8:
   return v4;
 }
 
-- (CGPoint)anchorMarkerToPosition:(EDCellAnchorMarker)a3 rowGrid:(double *)a4 columnGrid:(double *)a5 start:(BOOL)a6 relative:(BOOL)a7
+- (CGPoint)anchorMarkerToPosition:(EDCellAnchorMarker)position rowGrid:(double *)grid columnGrid:(double *)columnGrid start:(BOOL)start relative:(BOOL)relative
 {
-  v7 = a7;
-  v10 = *&a3.rowIndex;
-  v11 = *&a3.columnIndex;
-  v13 = [(EMDrawableMapper *)self worksheetMapper:*&a3.columnIndex];
-  v14 = [v13 columnCount];
+  relativeCopy = relative;
+  v10 = *&position.rowIndex;
+  v11 = *&position.columnIndex;
+  v13 = [(EMDrawableMapper *)self worksheetMapper:*&position.columnIndex];
+  columnCount = [v13 columnCount];
 
-  v15 = [(EMDrawableMapper *)self worksheetMapper];
-  v16 = [v15 maxRowNumber];
+  worksheetMapper = [(EMDrawableMapper *)self worksheetMapper];
+  maxRowNumber = [worksheetMapper maxRowNumber];
 
   v17 = 0;
   v18 = 0.0;
-  while (v14 != v17)
+  while (columnCount != v17)
   {
-    if (a5)
+    if (columnGrid)
     {
-      v19 = a5[v17];
+      v19 = columnGrid[v17];
       v18 = v18 + v19;
     }
 
     else
     {
-      v20 = [(EMDrawableMapper *)self worksheetMapper];
-      [v20 defaultColumnWidth];
+      worksheetMapper2 = [(EMDrawableMapper *)self worksheetMapper];
+      [worksheetMapper2 defaultColumnWidth];
       v19 = v21;
     }
 
@@ -335,18 +335,18 @@ LABEL_8:
     }
   }
 
-  v22 = [(EMDrawableMapper *)self worksheetMapper];
-  [v22 defaultColumnWidth];
+  worksheetMapper3 = [(EMDrawableMapper *)self worksheetMapper];
+  [worksheetMapper3 defaultColumnWidth];
   v24 = v23;
 
-  v25 = [(EMDrawableMapper *)self worksheetMapper];
-  [v25 defaultColumnWidth];
+  worksheetMapper4 = [(EMDrawableMapper *)self worksheetMapper];
+  [worksheetMapper4 defaultColumnWidth];
   v19 = v26;
-  v18 = v18 + (v11 - v14 + 1) * v24;
+  v18 = v18 + (v11 - columnCount + 1) * v24;
 
 LABEL_9:
   v27 = 0;
-  if (v7)
+  if (relativeCopy)
   {
     v28 = v18 + v19 * (*(&v11 + 1) + -1.0);
   }
@@ -357,9 +357,9 @@ LABEL_9:
   }
 
   v29 = 0.0;
-  while (v27 <= v16)
+  while (v27 <= maxRowNumber)
   {
-    v30 = a4[v27] / 20.0;
+    v30 = grid[v27] / 20.0;
     v29 = v29 + v30;
     if (++v27 > v10)
     {
@@ -367,18 +367,18 @@ LABEL_9:
     }
   }
 
-  v31 = [(EMDrawableMapper *)self worksheetMapper];
-  [v31 defaultRowHeight];
+  worksheetMapper5 = [(EMDrawableMapper *)self worksheetMapper];
+  [worksheetMapper5 defaultRowHeight];
   v33 = v32;
 
-  v34 = [(EMDrawableMapper *)self worksheetMapper];
-  [v34 defaultRowHeight];
-  v29 = v29 + v33 * (v10 - v16) / 20.0;
+  worksheetMapper6 = [(EMDrawableMapper *)self worksheetMapper];
+  [worksheetMapper6 defaultRowHeight];
+  v29 = v29 + v33 * (v10 - maxRowNumber) / 20.0;
   v30 = v35 / 20.0;
 
 LABEL_17:
   v36 = v29 + v30 * (*(&v10 + 1) + -1.0);
-  if (!v7)
+  if (!relativeCopy)
   {
     v36 = v29 + *(&v10 + 1) - v30;
   }
@@ -390,15 +390,15 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)mapAnchorToRect:(id)a3 rowGrid:(double *)a4 columnGrid:(double *)a5
+- (CGRect)mapAnchorToRect:(id)rect rowGrid:(double *)grid columnGrid:(double *)columnGrid
 {
-  v9 = a3;
+  rectCopy = rect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 position];
+    [rectCopy position];
     v11 = v10;
-    [v9 size];
+    [rectCopy size];
     v13 = v12;
     v15 = v14;
     v16 = 0.0;
@@ -409,11 +409,11 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v9 from];
-      -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", v17, v18, a4, a5, 1, [v9 isRelative]);
+      from = [rectCopy from];
+      -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", from, v18, grid, columnGrid, 1, [rectCopy isRelative]);
       v16 = v19;
       v11 = v20;
-      [v9 size];
+      [rectCopy size];
       v13 = v21;
       v15 = v22;
     }
@@ -423,20 +423,20 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v9 from];
-        -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", v23, v24, a4, a5, 1, [v9 isRelative]);
+        from2 = [rectCopy from];
+        -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", from2, v24, grid, columnGrid, 1, [rectCopy isRelative]);
         v16 = v25;
         v11 = v26;
-        v27 = [v9 to];
-        -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", v27, v28, a4, a5, 0, [v9 isRelative]);
+        v27 = [rectCopy to];
+        -[EMDrawableMapper anchorMarkerToPosition:rowGrid:columnGrid:start:relative:](self, "anchorMarkerToPosition:rowGrid:columnGrid:start:relative:", v27, v28, grid, columnGrid, 0, [rectCopy isRelative]);
         v13 = v29 - v16;
         v15 = v30 - v11;
       }
 
       else
       {
-        v31 = [MEMORY[0x277CCA890] currentHandler];
-        [v31 handleFailureInMethod:a2 object:self file:@"EMDrawableMapper.mm" lineNumber:274 description:{@"Unknown class %@", v9}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EMDrawableMapper.mm" lineNumber:274 description:{@"Unknown class %@", rectCopy}];
 
         v16 = *MEMORY[0x277CBF348];
         v11 = *(MEMORY[0x277CBF348] + 8);
@@ -457,85 +457,85 @@ LABEL_17:
   return result;
 }
 
-- (void)mapTextBoxAt:(id)a3 withState:(id)a4
+- (void)mapTextBoxAt:(id)at withState:(id)state
 {
-  v13 = a3;
-  v5 = [(OADDrawable *)self->super.mDrawable clientData];
-  v6 = [v5 comment];
-  if (!v6 || ([v5 comment], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "visible"), v7, v6, (v8 & 1) != 0))
+  atCopy = at;
+  clientData = [(OADDrawable *)self->super.mDrawable clientData];
+  comment = [clientData comment];
+  if (!comment || ([clientData comment], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "visible"), v7, comment, (v8 & 1) != 0))
   {
-    if ([v5 hasText])
+    if ([clientData hasText])
     {
-      v9 = [v5 textBox];
+      textBox = [clientData textBox];
       v10 = [EMCellTextMapper alloc];
-      v11 = [v9 text];
-      v12 = [(EMCellTextMapper *)v10 initWithEDString:v11 style:0 parent:self];
+      text = [textBox text];
+      v12 = [(EMCellTextMapper *)v10 initWithEDString:text style:0 parent:self];
 
-      [(EMCellTextMapper *)v12 mapTextRunsAt:v13];
+      [(EMCellTextMapper *)v12 mapTextRunsAt:atCopy];
     }
   }
 }
 
-+ (BOOL)isAnchorRelative:(id)a3
++ (BOOL)isAnchorRelative:(id)relative
 {
-  v3 = a3;
+  relativeCopy = relative;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 isRelative];
+    isRelative = [relativeCopy isRelative];
   }
 
   else
   {
-    v4 = 0;
+    isRelative = 0;
   }
 
-  return v4;
+  return isRelative;
 }
 
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state
 {
-  v39 = a3;
-  v40 = a4;
-  v6 = [(OADDrawable *)self->super.mDrawable clientData];
-  v7 = [v6 comment];
-  if (!v7 || ([v6 comment], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "visible"), v8, v7, (v9 & 1) != 0))
+  atCopy = at;
+  stateCopy = state;
+  clientData = [(OADDrawable *)self->super.mDrawable clientData];
+  comment = [clientData comment];
+  if (!comment || ([clientData comment], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "visible"), v8, comment, (v9 & 1) != 0))
   {
     v37 = self->super.mDrawable;
-    v10 = [(OADDrawable *)v37 type];
-    v11 = [(OADDrawable *)v37 shapeProperties];
-    v12 = [v11 fill];
-    v13 = v12;
-    v38 = v12;
-    if (v12)
+    type = [(OADDrawable *)v37 type];
+    shapeProperties = [(OADDrawable *)v37 shapeProperties];
+    fill = [shapeProperties fill];
+    v13 = fill;
+    v38 = fill;
+    if (fill)
     {
       objc_opt_class();
       v13 = objc_opt_isKindOfClass() ^ 1;
     }
 
-    v14 = [v11 stroke];
-    v15 = [CMBordersProperty isStroked:v14];
+    stroke = [shapeProperties stroke];
+    v15 = [CMBordersProperty isStroked:stroke];
 
-    v16 = [v11 isTextBox];
+    isTextBox = [shapeProperties isTextBox];
     v17 = [OIXMLElement elementWithType:3];
-    if (v10 == 1 || v10 == 75 || v10 == 202)
+    if (type == 1 || type == 75 || type == 202)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = v16;
+      v20 = isTextBox;
     }
 
     if ((v20 & 1) != 0 || ((v13 | v15) & 1) == 0)
     {
-      [(EMDrawableMapper *)self mapTextBoxAt:v17 withState:v40];
+      [(EMDrawableMapper *)self mapTextBoxAt:v17 withState:stateCopy];
       if (v15)
       {
         v31 = [CMBordersProperty alloc];
-        v32 = [v11 stroke];
-        v33 = [(CMBordersProperty *)v31 initWithOADStroke:v32];
+        stroke2 = [shapeProperties stroke];
+        v33 = [(CMBordersProperty *)v31 initWithOADStroke:stroke2];
 
         [(CMStyle *)self->super.mStyle addProperty:v33 forKey:0x286F07E30];
       }
@@ -546,14 +546,14 @@ LABEL_17:
         if (objc_opt_isKindOfClass())
         {
           mStyle = self->super.mStyle;
-          v35 = [v38 color];
-          v36 = [CMColorProperty cssStringFromOADColor:v35];
+          color = [v38 color];
+          v36 = [CMColorProperty cssStringFromOADColor:color];
           [(CMStyle *)mStyle appendPropertyForName:0x286F07DF0 stringWithColons:v36];
         }
       }
 
       [(CMMapper *)self addStyleUsingGlobalCacheTo:v17 style:self->super.mStyle];
-      [v39 addChild:v17];
+      [atCopy addChild:v17];
     }
 
     else
@@ -561,12 +561,12 @@ LABEL_17:
       [(CMMapper *)self addStyleUsingGlobalCacheTo:v17 style:self->super.mStyle];
       v42.receiver = self;
       v42.super_class = EMDrawableMapper;
-      [(CMDrawableMapper *)&v42 mapShapeGraphicsAt:v17 withState:v40];
-      [v39 addChild:v17];
-      if ([v6 hasText])
+      [(CMDrawableMapper *)&v42 mapShapeGraphicsAt:v17 withState:stateCopy];
+      [atCopy addChild:v17];
+      if ([clientData hasText])
       {
         v21 = [OIXMLElement elementWithType:3];
-        [(EMDrawableMapper *)self mapTextBoxAt:v21 withState:v40];
+        [(EMDrawableMapper *)self mapTextBoxAt:v21 withState:stateCopy];
         v41.receiver = self;
         v41.super_class = EMDrawableMapper;
         [(CMDrawableMapper *)&v41 shapeTextBoxRect];
@@ -584,13 +584,13 @@ LABEL_17:
   }
 }
 
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state
 {
-  v13 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = self->super.mDrawable;
-  v8 = [(OADDrawable *)v7 childCount];
-  if (v8)
+  childCount = [(OADDrawable *)v7 childCount];
+  if (childCount)
   {
     v9 = 0;
     v10 = 0;
@@ -599,23 +599,23 @@ LABEL_17:
       v11 = [(OADDrawable *)v7 childAtIndex:v9];
 
       v12 = [[EMDrawableMapper alloc] initWithOADDrawable:v11 parent:self];
-      [(EMDrawableMapper *)v12 mapAt:v13 withState:v6];
+      [(EMDrawableMapper *)v12 mapAt:atCopy withState:stateCopy];
 
       ++v9;
       v10 = v11;
     }
 
-    while (v8 != v9);
+    while (childCount != v9);
   }
 }
 
-- (void)mapChartAt:(id)a3 withState:(id)a4
+- (void)mapChartAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = [[EMChartMapper alloc] initWithChart:self->super.mDrawable parent:self];
   [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
-  v11 = [(EMChartMapper *)v8 copyPdfWithState:v7 withSize:v9, v10];
+  v11 = [(EMChartMapper *)v8 copyPdfWithState:stateCopy withSize:v9, v10];
   v12 = [OIXMLElement elementWithType:9];
   if (v11)
   {
@@ -630,33 +630,33 @@ LABEL_17:
     [(CMStyle *)self->super.mStyle appendPropertyForName:0x286F07E30 stringWithColons:@": 1px solid black;"];
   }
 
-  [v6 addChild:v12];
+  [atCopy addChild:v12];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v12 style:self->super.mStyle];
 }
 
-- (void)mapDiagramAt:(id)a3 withState:(id)a4
+- (void)mapDiagramAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = [OIXMLElement elementWithType:3];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v8 style:self->super.mStyle];
-  [v6 addChild:v8];
+  [atCopy addChild:v8];
   v17 = v8;
 
   Width = CGRectGetWidth(self->super.mBox);
   Height = CGRectGetHeight(self->super.mBox);
-  v11 = [[CMDrawingContext alloc] initWithFrame:0.0, 0.0, Width, Height];
-  v12 = [OADOrientedBounds orientedBoundsWithBounds:0.0, 0.0, Width, Height];
+  height = [[CMDrawingContext alloc] initWithFrame:0.0, 0.0, Width, Height];
+  height2 = [OADOrientedBounds orientedBoundsWithBounds:0.0, 0.0, Width, Height];
   mOrientedBounds = self->super.mOrientedBounds;
-  self->super.mOrientedBounds = v12;
+  self->super.mOrientedBounds = height2;
 
   v14 = [OIXMLElement elementWithType:3];
   v15 = objc_alloc_init(CMDrawableStyle);
   [(CMStyle *)v15 appendPropertyForName:0x286EF5C90 stringWithColons:@":absolute;"];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v14 style:v15];
-  v16 = [[CMDiagramMapper alloc] initWithOddDiagram:self->super.mDrawable drawingContext:v11 orientedBounds:self->super.mOrientedBounds parent:self];
-  [(CMDiagramMapper *)v16 mapAt:v14 withState:v7];
-  [(CMDrawableMapper *)self mapDrawingContext:v11 at:v17 relative:0 withState:v7];
+  v16 = [[CMDiagramMapper alloc] initWithOddDiagram:self->super.mDrawable drawingContext:height orientedBounds:self->super.mOrientedBounds parent:self];
+  [(CMDiagramMapper *)v16 mapAt:v14 withState:stateCopy];
+  [(CMDrawableMapper *)self mapDrawingContext:height at:v17 relative:0 withState:stateCopy];
   [v17 addChild:v14];
 }
 

@@ -5,7 +5,7 @@
 - (BOOL)connectToAWDServer;
 - (BOOL)initAWDInterface;
 - (PLAWDMetricsService)init;
-- (void)auxClassWrapper:(id)a3 withAction:(int64_t)a4;
+- (void)auxClassWrapper:(id)wrapper withAction:(int64_t)action;
 - (void)initOperatorDependancies;
 @end
 
@@ -13,16 +13,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAWDMetricsService;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (BOOL)connectToAWDServer
 {
-  v3 = [(PLAWDMetricsService *)self awdServerConn];
+  awdServerConn = [(PLAWDMetricsService *)self awdServerConn];
 
-  if (v3)
+  if (awdServerConn)
   {
     return 1;
   }
@@ -31,9 +31,9 @@
   v5 = [objc_alloc(MEMORY[0x277D7BC58]) initWithComponentId:31 andBlockOnConfiguration:1];
   [(PLAWDMetricsService *)self setAwdServerConn:v5];
 
-  v6 = [(PLAWDMetricsService *)self awdServerConn];
+  awdServerConn2 = [(PLAWDMetricsService *)self awdServerConn];
 
-  if (!v6)
+  if (!awdServerConn2)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -53,9 +53,9 @@
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Connection to awd server failed!", @"*******PLAWDMetricsService*******", block, v16, v17, v18, v19];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAWDMetricsService.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDMetricsService connectToAWDServer]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:49];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:49];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -142,7 +142,7 @@ uint64_t __41__PLAWDMetricsService_connectToAWDServer__block_invoke(uint64_t a1)
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -170,9 +170,9 @@ uint64_t __41__PLAWDMetricsService_connectToAWDServer__block_invoke(uint64_t a1)
           v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : init", @"*******PLAWDMetricsService*******", block, v14, v15, v16, v17];
           v7 = MEMORY[0x277D3F178];
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAWDMetricsService.m"];
-          v9 = [v8 lastPathComponent];
+          lastPathComponent = [v8 lastPathComponent];
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDMetricsService init]"];
-          [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:95];
+          [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:95];
 
           v11 = PLLogCommon();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -186,10 +186,10 @@ uint64_t __41__PLAWDMetricsService_connectToAWDServer__block_invoke(uint64_t a1)
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __27__PLAWDMetricsService_init__block_invoke(uint64_t a1)
@@ -219,9 +219,9 @@ uint64_t __27__PLAWDMetricsService_init__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: initAWDInterface Failed!", @"*******PLAWDMetricsService*******", block, v11, v12, v13, v14];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAWDMetricsService.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDMetricsService initOperatorDependancies]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:109];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:109];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -241,42 +241,42 @@ uint64_t __47__PLAWDMetricsService_initOperatorDependancies__block_invoke(uint64
   return result;
 }
 
-- (void)auxClassWrapper:(id)a3 withAction:(int64_t)a4
+- (void)auxClassWrapper:(id)wrapper withAction:(int64_t)action
 {
-  v10 = a3;
-  if (a4 == 2)
+  wrapperCopy = wrapper;
+  if (action == 2)
   {
     if (![(PLAWDMetricsService *)self connectToAWDServer])
     {
       goto LABEL_9;
     }
 
-    v6 = [(PLAWDMetricsService *)self classDictionary];
-    v7 = [v6 objectForKey:v10];
+    classDictionary = [(PLAWDMetricsService *)self classDictionary];
+    v7 = [classDictionary objectForKey:wrapperCopy];
     v8 = [v7 getSharedObjWithOperator:self];
-    v9 = [(PLAWDMetricsService *)self awdServerConn];
-    [v8 submitDataToAWDServer:v10 withAwdConn:v9];
+    awdServerConn = [(PLAWDMetricsService *)self awdServerConn];
+    [v8 submitDataToAWDServer:wrapperCopy withAwdConn:awdServerConn];
   }
 
-  else if (a4 == 1)
+  else if (action == 1)
   {
-    v6 = [(PLAWDMetricsService *)self classDictionary];
-    v7 = [v6 objectForKey:v10];
+    classDictionary = [(PLAWDMetricsService *)self classDictionary];
+    v7 = [classDictionary objectForKey:wrapperCopy];
     v8 = [v7 getSharedObjWithOperator:self];
-    [v8 stopMetricCollection:v10];
+    [v8 stopMetricCollection:wrapperCopy];
   }
 
   else
   {
-    if (a4)
+    if (action)
     {
       goto LABEL_9;
     }
 
-    v6 = [(PLAWDMetricsService *)self classDictionary];
-    v7 = [v6 objectForKey:v10];
+    classDictionary = [(PLAWDMetricsService *)self classDictionary];
+    v7 = [classDictionary objectForKey:wrapperCopy];
     v8 = [v7 getSharedObjWithOperator:self];
-    [v8 startMetricCollection:v10];
+    [v8 startMetricCollection:wrapperCopy];
   }
 
 LABEL_9:
@@ -297,65 +297,65 @@ LABEL_9:
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(PLAWDMetricsService *)self setClassDictionary:v5];
 
-  v6 = [(PLAWDMetricsService *)self classDictionary];
-  [v6 setObject:objc_opt_class() forKey:&unk_2870FEFF8];
+  classDictionary = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary setObject:objc_opt_class() forKey:&unk_2870FEFF8];
 
-  v7 = [(PLAWDMetricsService *)self classDictionary];
-  [v7 setObject:objc_opt_class() forKey:&unk_2870FF010];
+  classDictionary2 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary2 setObject:objc_opt_class() forKey:&unk_2870FF010];
 
-  v8 = [(PLAWDMetricsService *)self classDictionary];
-  [v8 setObject:objc_opt_class() forKey:&unk_2870FF028];
+  classDictionary3 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary3 setObject:objc_opt_class() forKey:&unk_2870FF028];
 
-  v9 = [(PLAWDMetricsService *)self classDictionary];
-  [v9 setObject:objc_opt_class() forKey:&unk_2870FF040];
+  classDictionary4 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary4 setObject:objc_opt_class() forKey:&unk_2870FF040];
 
-  v10 = [(PLAWDMetricsService *)self classDictionary];
-  [v10 setObject:objc_opt_class() forKey:&unk_2870FF058];
+  classDictionary5 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary5 setObject:objc_opt_class() forKey:&unk_2870FF058];
 
-  v11 = [(PLAWDMetricsService *)self classDictionary];
-  [v11 setObject:objc_opt_class() forKey:&unk_2870FF070];
+  classDictionary6 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary6 setObject:objc_opt_class() forKey:&unk_2870FF070];
 
-  v12 = [(PLAWDMetricsService *)self classDictionary];
-  [v12 setObject:objc_opt_class() forKey:&unk_2870FF088];
+  classDictionary7 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary7 setObject:objc_opt_class() forKey:&unk_2870FF088];
 
-  v13 = [(PLAWDMetricsService *)self classDictionary];
-  [v13 setObject:objc_opt_class() forKey:&unk_2870FF0A0];
+  classDictionary8 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary8 setObject:objc_opt_class() forKey:&unk_2870FF0A0];
 
-  v14 = [(PLAWDMetricsService *)self classDictionary];
-  [v14 setObject:objc_opt_class() forKey:&unk_2870FF0B8];
+  classDictionary9 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary9 setObject:objc_opt_class() forKey:&unk_2870FF0B8];
 
-  v15 = [(PLAWDMetricsService *)self classDictionary];
-  [v15 setObject:objc_opt_class() forKey:&unk_2870FF0D0];
+  classDictionary10 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary10 setObject:objc_opt_class() forKey:&unk_2870FF0D0];
 
-  v16 = [(PLAWDMetricsService *)self classDictionary];
-  [v16 setObject:objc_opt_class() forKey:&unk_2870FF0E8];
+  classDictionary11 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary11 setObject:objc_opt_class() forKey:&unk_2870FF0E8];
 
-  v17 = [(PLAWDMetricsService *)self classDictionary];
-  [v17 setObject:objc_opt_class() forKey:&unk_2870FF100];
+  classDictionary12 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary12 setObject:objc_opt_class() forKey:&unk_2870FF100];
 
-  v18 = [(PLAWDMetricsService *)self classDictionary];
-  [v18 setObject:objc_opt_class() forKey:&unk_2870FF118];
+  classDictionary13 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary13 setObject:objc_opt_class() forKey:&unk_2870FF118];
 
-  v19 = [(PLAWDMetricsService *)self classDictionary];
-  [v19 setObject:objc_opt_class() forKey:&unk_2870FF130];
+  classDictionary14 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary14 setObject:objc_opt_class() forKey:&unk_2870FF130];
 
-  v20 = [(PLAWDMetricsService *)self classDictionary];
-  [v20 setObject:objc_opt_class() forKey:&unk_2870FF148];
+  classDictionary15 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary15 setObject:objc_opt_class() forKey:&unk_2870FF148];
 
-  v21 = [(PLAWDMetricsService *)self classDictionary];
-  [v21 setObject:objc_opt_class() forKey:&unk_2870FF160];
+  classDictionary16 = [(PLAWDMetricsService *)self classDictionary];
+  [classDictionary16 setObject:objc_opt_class() forKey:&unk_2870FF160];
 
-  v22 = [(PLAWDMetricsService *)self connectToAWDServer];
-  if (v22)
+  connectToAWDServer = [(PLAWDMetricsService *)self connectToAWDServer];
+  if (connectToAWDServer)
   {
-    v23 = [(PLAWDMetricsService *)self classDictionary];
-    v24 = [v23 allKeys];
+    classDictionary17 = [(PLAWDMetricsService *)self classDictionary];
+    allKeys = [classDictionary17 allKeys];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v25 = v24;
+    v25 = allKeys;
     v26 = [v25 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v26)
     {
@@ -372,8 +372,8 @@ LABEL_9:
           }
 
           v30 = *(*(&v36 + 1) + 8 * v29);
-          v31 = [(PLAWDMetricsService *)self awdServerConn];
-          [v31 registerQueriableMetricCallback:v3 forIdentifier:{objc_msgSend(v30, "unsignedIntValue")}];
+          awdServerConn = [(PLAWDMetricsService *)self awdServerConn];
+          [awdServerConn registerQueriableMetricCallback:v3 forIdentifier:{objc_msgSend(v30, "unsignedIntValue")}];
 
           ++v29;
         }
@@ -385,17 +385,17 @@ LABEL_9:
       while (v27);
     }
 
-    v32 = [(PLAWDMetricsService *)self awdServerConn];
+    awdServerConn2 = [(PLAWDMetricsService *)self awdServerConn];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __39__PLAWDMetricsService_initAWDInterface__block_invoke_77;
     v35[3] = &unk_279A59158;
     v35[4] = self;
-    [v32 registerConfigChangeCallback:v35];
+    [awdServerConn2 registerConfigChangeCallback:v35];
   }
 
   v33 = *MEMORY[0x277D85DE8];
-  return v22;
+  return connectToAWDServer;
 }
 
 void __39__PLAWDMetricsService_initAWDInterface__block_invoke(uint64_t a1, uint64_t a2)

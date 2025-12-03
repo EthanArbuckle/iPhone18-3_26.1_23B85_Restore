@@ -1,18 +1,18 @@
 @interface IMDRecoverableMessageStore
 - (IMDRecoverableMessageStore)init;
-- (id)batchOfRecordIDsToDeleteWithLimit:(int64_t)a3 error:(id *)a4;
-- (id)batchOfRecordsToWriteWithFilter:(unint64_t)a3 limit:(int64_t)a4 error:(id *)a5;
-- (void)clearTombstonesForRecordIDs:(id)a3;
-- (void)recordUpdateFailedWithID:(id)a3 localGUID:(id)a4 error:(id)a5;
-- (void)recordUpdateSucceededWithRecord:(id)a3;
+- (id)batchOfRecordIDsToDeleteWithLimit:(int64_t)limit error:(id *)error;
+- (id)batchOfRecordsToWriteWithFilter:(unint64_t)filter limit:(int64_t)limit error:(id *)error;
+- (void)clearTombstonesForRecordIDs:(id)ds;
+- (void)recordUpdateFailedWithID:(id)d localGUID:(id)iD error:(id)error;
+- (void)recordUpdateSucceededWithRecord:(id)record;
 @end
 
 @implementation IMDRecoverableMessageStore
 
-- (id)batchOfRecordsToWriteWithFilter:(unint64_t)a3 limit:(int64_t)a4 error:(id *)a5
+- (id)batchOfRecordsToWriteWithFilter:(unint64_t)filter limit:(int64_t)limit error:(id *)error
 {
-  v7 = self;
-  RecoverableMessageStore.batchOfRecordsToWrite(filter:limit:)(a3, a4);
+  selfCopy = self;
+  RecoverableMessageStore.batchOfRecordsToWrite(filter:limit:)(filter, limit);
 
   sub_22B4D01A0(0, &qword_28141EFE8, 0x277CBC5A0);
   v8 = sub_22B7DB568();
@@ -20,25 +20,25 @@
   return v8;
 }
 
-- (void)recordUpdateSucceededWithRecord:(id)a3
+- (void)recordUpdateSucceededWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = self;
-  RecoverableMessageStore.recordUpdateSucceeded(forRecord:)(v4);
+  recordCopy = record;
+  selfCopy = self;
+  RecoverableMessageStore.recordUpdateSucceeded(forRecord:)(recordCopy);
 }
 
-- (void)recordUpdateFailedWithID:(id)a3 localGUID:(id)a4 error:(id)a5
+- (void)recordUpdateFailedWithID:(id)d localGUID:(id)iD error:(id)error
 {
-  v7 = a3;
-  v9 = a5;
-  v8 = self;
-  sub_22B7A53C0(v7, v9);
+  dCopy = d;
+  errorCopy = error;
+  selfCopy = self;
+  sub_22B7A53C0(dCopy, errorCopy);
 }
 
-- (id)batchOfRecordIDsToDeleteWithLimit:(int64_t)a3 error:(id *)a4
+- (id)batchOfRecordIDsToDeleteWithLimit:(int64_t)limit error:(id *)error
 {
-  v5 = self;
-  RecoverableMessageStore.batchOfRecordIDsToDelete(limit:)(a3);
+  selfCopy = self;
+  RecoverableMessageStore.batchOfRecordIDsToDelete(limit:)(limit);
 
   sub_22B4D01A0(0, &qword_28141F2A8, 0x277CBC5D0);
   sub_22B71EF0C();
@@ -47,11 +47,11 @@
   return v6;
 }
 
-- (void)clearTombstonesForRecordIDs:(id)a3
+- (void)clearTombstonesForRecordIDs:(id)ds
 {
   sub_22B4D01A0(0, &qword_28141F2A8, 0x277CBC5D0);
   v4 = sub_22B7DB918();
-  v5 = self;
+  selfCopy = self;
   _s12IMDaemonCore23RecoverableMessageStoreC15clearTombstones12forRecordIDsySaySo10CKRecordIDCG_tF_0(v4);
 }
 

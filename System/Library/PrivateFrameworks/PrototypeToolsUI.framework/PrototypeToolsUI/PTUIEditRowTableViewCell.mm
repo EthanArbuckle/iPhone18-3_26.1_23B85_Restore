@@ -1,29 +1,29 @@
 @interface PTUIEditRowTableViewCell
-- (PTUIEditRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)numericKeypadDidUpdateValue:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (PTUIEditRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)numericKeypadDidUpdateValue:(id)value;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateDisplayedValue;
 @end
 
 @implementation PTUIEditRowTableViewCell
 
-- (PTUIEditRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PTUIEditRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = PTUIEditRowTableViewCell;
-  v4 = [(PTUIEditRowTableViewCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PTUIEditRowTableViewCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PTUIEditRowTableViewCell *)v4 editableTextField];
-    [v6 setTextAlignment:2];
+    editableTextField = [(PTUIEditRowTableViewCell *)v4 editableTextField];
+    [editableTextField setTextAlignment:2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
-      v8 = v7;
+      editableTextField2 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
+      v8 = editableTextField2;
       v9 = 1;
     }
 
@@ -31,23 +31,23 @@
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v7 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
-      v8 = v7;
+      editableTextField2 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
+      v8 = editableTextField2;
       if (isKindOfClass)
       {
-        [v7 setKeyboardType:8];
+        [editableTextField2 setKeyboardType:8];
 
-        v7 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
-        v8 = v7;
+        editableTextField2 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
+        v8 = editableTextField2;
       }
 
       v9 = 0;
     }
 
-    [v7 setClearButtonMode:v9];
+    [editableTextField2 setClearButtonMode:v9];
 
-    v11 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
-    [v11 setDelegate:v5];
+    editableTextField3 = [(PTUIEditRowTableViewCell *)v5 editableTextField];
+    [editableTextField3 setDelegate:v5];
   }
 
   return v5;
@@ -56,36 +56,36 @@
 - (void)updateDisplayedValue
 {
   v3 = [(PTUIRowTableViewCell *)self row];
-  v6 = [v3 value];
+  value = [v3 value];
 
-  v4 = [(PTUIEditRowTableViewCell *)self editableTextField];
-  v5 = [(PTUIEditRowTableViewCell *)self textForValue:v6];
-  [v4 setText:v5];
+  editableTextField = [(PTUIEditRowTableViewCell *)self editableTextField];
+  v5 = [(PTUIEditRowTableViewCell *)self textForValue:value];
+  [editableTextField setText:v5];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v7 = a3;
+  editingCopy = editing;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && PTUINumericKeypadIsNeeded())
   {
     v4 = +[PTUINumericKeypad sharedKeypad];
-    v5 = [v7 text];
-    [v4 setStringValue:v5];
+    text = [editingCopy text];
+    [v4 setStringValue:text];
 
     v6 = +[PTUINumericKeypad sharedKeypad];
     [v6 showAnimated:1 forDelegate:self];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  [a3 setTextAlignment:2];
-  v4 = [(PTUIEditRowTableViewCell *)self editableTextField];
-  v8 = [v4 text];
+  [editing setTextAlignment:2];
+  editableTextField = [(PTUIEditRowTableViewCell *)self editableTextField];
+  text = [editableTextField text];
 
   v5 = [(PTUIRowTableViewCell *)self row];
-  v6 = [(PTUIEditRowTableViewCell *)self valueForText:v8];
+  v6 = [(PTUIEditRowTableViewCell *)self valueForText:text];
   [v5 setValue:v6];
 
   objc_opt_class();
@@ -96,10 +96,10 @@
   }
 }
 
-- (void)numericKeypadDidUpdateValue:(id)a3
+- (void)numericKeypadDidUpdateValue:(id)value
 {
-  v4 = a3;
-  v3 = v4;
+  valueCopy = value;
+  v3 = valueCopy;
   BSDispatchMain();
 }
 

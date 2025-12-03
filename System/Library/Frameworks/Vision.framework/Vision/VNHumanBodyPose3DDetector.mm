@@ -1,11 +1,11 @@
 @interface VNHumanBodyPose3DDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (int64_t)_abpkOrientationFromExifOrientation:(int)a3;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (int64_t)_abpkOrientationFromExifOrientation:(int)orientation;
 @end
 
 @implementation VNHumanBodyPose3DDetector
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNHumanBodyPose3DDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNHumanBodyPose3DDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -40,7 +40,7 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
   +[VNHumanBodyPose3DDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if (AltruisticBodyPoseKitLibraryCore(0))
@@ -64,7 +64,7 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
   return v6;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v4 = [[VNSupportedImageSize alloc] initWithIdealFormat:1111970369 width:288 height:192 orientation:1 aspectRatioHandling:1 orientationAgnostic:0];
@@ -74,11 +74,11 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
   return v5;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v13 = a5;
-  v14 = a7;
-  v41 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   v44 = 0;
   v45 = &v44;
@@ -101,23 +101,23 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
   v17 = objc_alloc_init(v15);
   if (v17)
   {
-    v18 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNHumanBodyPose3DDetectorProcessOption_ABPKPipeline" inOptions:v13 error:a8];
-    v19 = [v18 bodyPosePipeline];
-    if (v19)
+    v18 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNHumanBodyPose3DDetectorProcessOption_ABPKPipeline" inOptions:optionsCopy error:error];
+    bodyPosePipeline = [v18 bodyPosePipeline];
+    if (bodyPosePipeline)
     {
-      v20 = [VNValidationUtilities requiredObjectOfClass:getABPKInputClass() forKey:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKInput" inOptions:v13 error:a8];
-      [v19 runABPKAlgorithmWithInputData:v20 andGetOutput:v17];
+      v20 = [VNValidationUtilities requiredObjectOfClass:getABPKInputClass() forKey:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKInput" inOptions:optionsCopy error:error];
+      [bodyPosePipeline runABPKAlgorithmWithInputData:v20 andGetOutput:v17];
       CVPixelBufferRelease([v20 depthConfidenceBuffer]);
       [v20 setDepthConfidenceBuffer:0];
-      v21 = [v17 algorithmReturnCode];
-      if (v21)
+      algorithmReturnCode = [v17 algorithmReturnCode];
+      if (algorithmReturnCode)
       {
-        if (v21 == -6660)
+        if (algorithmReturnCode == -6660)
         {
-          if (a8)
+          if (error)
           {
             [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to run HumanBodyPose3D pipeline"];
-            *a8 = v22 = 0;
+            *error = v22 = 0;
           }
 
           else
@@ -131,38 +131,38 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
           v22 = v42;
         }
 
-        v23 = v41;
+        v23 = handlerCopy;
       }
 
       else
       {
-        v24 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+        v24 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
         if (v24)
         {
           v40 = v24;
-          v36 = [VNValidationUtilities requiredObjectOfClass:getABPKCameraParamsClass() forKey:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKCameraParams" inOptions:v13 error:a8];
+          v36 = [VNValidationUtilities requiredObjectOfClass:getABPKCameraParamsClass() forKey:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKCameraParams" inOptions:optionsCopy error:error];
           v37 = [VNHumanBody3DOutput alloc];
-          v39 = [v17 liftingSkeletonABPK];
-          v25 = [v17 cameraParams];
-          [v25 intrinsics];
+          liftingSkeletonABPK = [v17 liftingSkeletonABPK];
+          cameraParams = [v17 cameraParams];
+          [cameraParams intrinsics];
           v34 = v27;
           v35 = v26;
           v33 = v28;
           [v36 inputRes];
-          v38 = [(VNHumanBody3DOutput *)v37 initWithSkeleton:v39 intrinsics:v35 inputSize:v34, v33, v29, v30];
+          v38 = [(VNHumanBody3DOutput *)v37 initWithSkeleton:liftingSkeletonABPK intrinsics:v35 inputSize:v34, v33, v29, v30];
 
           v31 = [(VNRecognizedPoints3DObservation *)[VNHumanBodyPose3DObservation alloc] initWithOriginatingRequestSpecifier:v40 keypointsReturningObject:v38];
           if (v31)
           {
-            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v13 toObservation:v31];
+            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:v31];
             [v42 addObject:v31];
             v22 = v42;
           }
 
-          else if (a8)
+          else if (error)
           {
             [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create observation"];
-            *a8 = v22 = 0;
+            *error = v22 = 0;
           }
 
           else
@@ -171,13 +171,13 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
           }
 
           v24 = v40;
-          v23 = v41;
+          v23 = handlerCopy;
         }
 
         else
         {
           v22 = 0;
-          v23 = v41;
+          v23 = handlerCopy;
         }
       }
     }
@@ -185,16 +185,16 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
     else
     {
       v22 = 0;
-      v23 = v41;
+      v23 = handlerCopy;
     }
   }
 
   else
   {
-    if (a8)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create HumanBodyPose3D output "];
-      *a8 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -202,39 +202,39 @@ void __66__VNHumanBodyPose3DDetector_configurationOptionKeysForDetectorKey__bloc
       v22 = 0;
     }
 
-    v23 = v41;
+    v23 = handlerCopy;
   }
 
   return v22;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 width];
-    v20 = [v18 height];
-    v60.origin.x = x * v19;
-    v60.size.width = width * v19;
-    v60.origin.y = y * v20;
-    v60.size.height = height * v20;
+    width = [v17 width];
+    height = [v18 height];
+    v60.origin.x = x * width;
+    v60.size.width = width * width;
+    v60.origin.y = y * height;
+    v60.size.height = height * height;
     v61 = CGRectIntegral(v60);
     v21 = v61.origin.x;
     v22 = v61.origin.y;
     v23 = v61.size.width;
     v24 = v61.size.height;
-    [v16 setObject:MEMORY[0x1E695E118] forKey:@"VNImageBufferOption_RequiresDepth"];
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKey:@"VNImageBufferOption_RequiresDepth"];
     v59[0] = 0;
-    v25 = [v18 createCroppedBufferWithMaxSideLengthOf:580 cropRect:1111970369 pixelFormat:v16 options:a8 error:v59 pixelBufferRepsCacheKey:v21, v22, v23, v24];
+    v25 = [v18 createCroppedBufferWithMaxSideLengthOf:580 cropRect:1111970369 pixelFormat:optionsCopy options:error error:v59 pixelBufferRepsCacheKey:v21, v22, v23, v24];
     v26 = v59[0];
-    *a7 = v25;
+    *buffer = v25;
     if (!v25)
     {
       v36 = 0;
@@ -288,7 +288,7 @@ LABEL_28:
       [v41 setVioPose:{*v39, v39[2], v39[4], v39[6]}];
       [v41 setIsVioPoseValid:1];
       [v41 setCameraParams:v40];
-      [v41 setImage:*a7];
+      [v41 setImage:*buffer];
       if (v54 && [v54 absoluteAccuracy])
       {
         [v41 setDepthMap:{objc_msgSend(v54, "depthBuffer")}];
@@ -297,9 +297,9 @@ LABEL_28:
         pixelBuffer = 0;
         if (VNCVPixelBufferCreateUsingIOSurface(v42, v43, 0x66646570u, 0, &pixelBuffer))
         {
-          if (a8)
+          if (error)
           {
-            *a8 = [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create depth confidence buffer "];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create depth confidence buffer "];
           }
 
           goto LABEL_19;
@@ -338,17 +338,17 @@ LABEL_28:
         v40 = v53;
       }
 
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v16 cacheKey:v26 imageBuffer:v18];
-      [v16 setObject:v40 forKeyedSubscript:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKCameraParams"];
-      [v16 setObject:v41 forKeyedSubscript:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKInput"];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v26 imageBuffer:v18];
+      [optionsCopy setObject:v40 forKeyedSubscript:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKCameraParams"];
+      [optionsCopy setObject:v41 forKeyedSubscript:@"VNHumanBodyPose3DDetectorInternalProcessOption_ABPKInput"];
       v36 = 1;
       goto LABEL_27;
     }
 
-    if (a8)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create HumanBodyPose3D pipeline input "];
-      *a8 = v36 = 0;
+      *error = v36 = 0;
 LABEL_27:
 
       goto LABEL_28;
@@ -365,35 +365,35 @@ LABEL_30:
   return v36;
 }
 
-- (int64_t)_abpkOrientationFromExifOrientation:(int)a3
+- (int64_t)_abpkOrientationFromExifOrientation:(int)orientation
 {
-  if ((a3 - 1) > 7)
+  if ((orientation - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A603B3B8[a3 - 1];
+    return qword_1A603B3B8[orientation - 1];
   }
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = VNHumanBodyPose3DDetector;
-  if (![(VNDetector *)&v9 completeInitializationForSession:v6 error:a4])
+  if (![(VNDetector *)&v9 completeInitializationForSession:sessionCopy error:error])
   {
     goto LABEL_6;
   }
 
   if (!AltruisticBodyPoseKitLibraryCore(0))
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"VNDetectHumanBodyPose3DRequest is unavailable on this device."];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_7;
     }
 

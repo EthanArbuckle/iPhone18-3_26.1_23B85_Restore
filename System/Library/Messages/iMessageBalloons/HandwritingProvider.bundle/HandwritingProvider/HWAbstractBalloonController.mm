@@ -1,6 +1,6 @@
 @interface HWAbstractBalloonController
 + (id)_sharedRenderQueue;
-+ (void)_writeThumbnailOfHandwriting:(id)a3 atSize:(CGSize)a4 useHighFidelityInk:(BOOL)a5 darkModeOverride:(id)a6 toDiskWithCompletionHandler:(id)a7;
++ (void)_writeThumbnailOfHandwriting:(id)handwriting atSize:(CGSize)size useHighFidelityInk:(BOOL)ink darkModeOverride:(id)override toDiskWithCompletionHandler:(id)handler;
 @end
 
 @implementation HWAbstractBalloonController
@@ -17,13 +17,13 @@
   return v3;
 }
 
-+ (void)_writeThumbnailOfHandwriting:(id)a3 atSize:(CGSize)a4 useHighFidelityInk:(BOOL)a5 darkModeOverride:(id)a6 toDiskWithCompletionHandler:(id)a7
++ (void)_writeThumbnailOfHandwriting:(id)handwriting atSize:(CGSize)size useHighFidelityInk:(BOOL)ink darkModeOverride:(id)override toDiskWithCompletionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  height = size.height;
+  width = size.width;
+  handwritingCopy = handwriting;
+  overrideCopy = override;
+  handlerCopy = handler;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -31,34 +31,34 @@
   v57 = sub_11F74;
   v58 = 0;
   v15 = DKIsDarkMode();
-  if (v13)
+  if (overrideCopy)
   {
-    v16 = [v13 BOOLValue];
-    [UIColor forcedInkColor:v16];
+    bOOLValue = [overrideCopy BOOLValue];
+    [UIColor forcedInkColor:bOOLValue];
   }
 
   else
   {
-    LODWORD(v16) = v15;
+    LODWORD(bOOLValue) = v15;
     +[UIColor inkColor];
   }
   v17 = ;
-  v18 = [v12 uuid];
-  v19 = [v18 UUIDString];
-  v20 = [v19 length];
+  uuid = [handwritingCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v20 = [uUIDString length];
 
   if (v20)
   {
-    v21 = [v12 uuid];
-    v22 = [v21 UUIDString];
-    v23 = v22;
+    uuid2 = [handwritingCopy uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    v23 = uUIDString2;
     v24 = @"light";
-    if (v16)
+    if (bOOLValue)
     {
       v24 = @"dark";
     }
 
-    v25 = [NSString stringWithFormat:@"hw_%@_%d_%d_%@.png", v22, width, height, v24];
+    v25 = [NSString stringWithFormat:@"hw_%@_%d_%d_%@.png", uUIDString2, width, height, v24];
 
     v26 = NSTemporaryDirectory();
     v27 = [v26 stringByAppendingPathComponent:v25];
@@ -73,7 +73,7 @@
     if ([v28 fileExistsAtPath:v27])
     {
       objc_storeStrong(v54 + 5, v48[5]);
-      if (!v14)
+      if (!handlerCopy)
       {
 LABEL_13:
 
@@ -85,7 +85,7 @@ LABEL_13:
       block[1] = 3221225472;
       block[2] = sub_11F7C;
       block[3] = &unk_28A38;
-      v45 = v14;
+      v45 = handlerCopy;
       v46 = &v53;
       dispatch_async(&_dispatch_main_q, block);
       v29 = v45;
@@ -98,16 +98,16 @@ LABEL_13:
       v33[1] = 3221225472;
       v33[2] = sub_11F98;
       v33[3] = &unk_28A60;
-      v34 = v12;
+      v34 = handwritingCopy;
       v35 = v27;
-      v42 = v16;
+      v42 = bOOLValue;
       v40 = width;
       v41 = height;
-      v43 = a5;
+      inkCopy = ink;
       v36 = v17;
       v38 = &v47;
       v39 = &v53;
-      v37 = v14;
+      v37 = handlerCopy;
       [v29 addOperationWithBlock:v33];
     }
 
@@ -118,7 +118,7 @@ LABEL_13:
   v30[1] = 3221225472;
   v30[2] = sub_12178;
   v30[3] = &unk_28A38;
-  v31 = v14;
+  v31 = handlerCopy;
   v32 = &v53;
   dispatch_async(&_dispatch_main_q, v30);
   v25 = v31;

@@ -1,30 +1,30 @@
 @interface PGFeatureExtractorAssetBurstSelectionType
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetBurstSelectionType
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v5 = MEMORY[0x277D22C68];
-  v6 = a3;
+  entityCopy = entity;
   v7 = [v5 zerosOfCount:{-[PGFeatureExtractorAssetBurstSelectionType featureLength](self, "featureLength")}];
-  v8 = [v6 burstSelectionTypes];
+  burstSelectionTypes = [entityCopy burstSelectionTypes];
 
-  if (!v8)
+  if (!burstSelectionTypes)
   {
     v10 = 0;
     goto LABEL_7;
   }
 
-  if (v8)
+  if (burstSelectionTypes)
   {
     LODWORD(v9) = 1.0;
     [v7 setFloat:1 atIndex:v9];
   }
 
-  if ((v8 & 2) != 0)
+  if ((burstSelectionTypes & 2) != 0)
   {
     v10 = 2;
 LABEL_7:

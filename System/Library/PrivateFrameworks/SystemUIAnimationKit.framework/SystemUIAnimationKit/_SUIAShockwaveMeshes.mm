@@ -1,22 +1,22 @@
 @interface _SUIAShockwaveMeshes
 + (id)captureButtonMesh;
-+ (id)identityMeshTransformRows:(unsigned int)a3 columns:(unsigned int)a4 sharpness:(float)a5 normalization:(id)a6 replicatesEdges:(BOOL)a7;
++ (id)identityMeshTransformRows:(unsigned int)rows columns:(unsigned int)columns sharpness:(float)sharpness normalization:(id)normalization replicatesEdges:(BOOL)edges;
 + (id)siriButtonAndEdgeMesh;
 + (id)stingMesh;
 @end
 
 @implementation _SUIAShockwaveMeshes
 
-+ (id)identityMeshTransformRows:(unsigned int)a3 columns:(unsigned int)a4 sharpness:(float)a5 normalization:(id)a6 replicatesEdges:(BOOL)a7
++ (id)identityMeshTransformRows:(unsigned int)rows columns:(unsigned int)columns sharpness:(float)sharpness normalization:(id)normalization replicatesEdges:(BOOL)edges
 {
-  v7 = a7;
-  v25 = *&a5;
-  v10 = a6;
+  edgesCopy = edges;
+  v25 = *&sharpness;
+  normalizationCopy = normalization;
   v11 = objc_alloc_init(MEMORY[0x277CD9F18]);
-  [v11 setDepthNormalization:v10];
-  [v11 setReplicatesEdges:v7];
-  v12 = a3 - 1;
-  if (!a3)
+  [v11 setDepthNormalization:normalizationCopy];
+  [v11 setReplicatesEdges:edgesCopy];
+  v12 = rows - 1;
+  if (!rows)
   {
     goto LABEL_13;
   }
@@ -34,12 +34,12 @@
       v14 = 0.0;
     }
 
-    if (a4)
+    if (columns)
     {
       v15 = 0;
       do
       {
-        v16 = ((1.0 / (a4 - 1)) * v15);
+        v16 = ((1.0 / (columns - 1)) * v15);
         if (!v15)
         {
           v16 = 0.0;
@@ -54,14 +54,14 @@
         ++v15;
       }
 
-      while (a4 != v15);
+      while (columns != v15);
     }
 
     ++v13;
   }
 
-  while (v13 != a3);
-  if (a3 != 1)
+  while (v13 != rows);
+  if (rows != 1)
   {
 LABEL_13:
     v17 = 0;
@@ -69,16 +69,16 @@ LABEL_13:
     v26 = v18;
     do
     {
-      if (a4 == 1)
+      if (columns == 1)
       {
         ++v17;
       }
 
       else
       {
-        v19 = v17 * a4;
-        v20 = ++v17 * a4;
-        v21 = a4 - 1;
+        v19 = v17 * columns;
+        v20 = ++v17 * columns;
+        v21 = columns - 1;
         do
         {
           v22 = v19 + 1;

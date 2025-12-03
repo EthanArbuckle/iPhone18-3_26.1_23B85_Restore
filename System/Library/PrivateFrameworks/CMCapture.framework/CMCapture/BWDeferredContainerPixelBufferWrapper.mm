@@ -1,6 +1,6 @@
 @interface BWDeferredContainerPixelBufferWrapper
 - (void)dealloc;
-- (void)initWithPixelBuffer:(void *)a3 owner:;
+- (void)initWithPixelBuffer:(void *)buffer owner:;
 @end
 
 @implementation BWDeferredContainerPixelBufferWrapper
@@ -25,19 +25,19 @@
   [(BWDeferredContainerPixelBufferWrapper *)&v4 dealloc];
 }
 
-- (void)initWithPixelBuffer:(void *)a3 owner:
+- (void)initWithPixelBuffer:(void *)buffer owner:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = BWDeferredContainerPixelBufferWrapper;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
-    v5[1] = a3;
+    v5[1] = buffer;
     objc_setAssociatedObject(a2, @"pixelBufferWrapper", v5, 0x301);
   }
 

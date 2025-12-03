@@ -11,18 +11,18 @@
     return 0;
   }
 
-  v2 = [a1 defaultIntentReference];
-  if (v2 && ([a1 isRelevanceBacked] & 1) == 0)
+  defaultIntentReference = [self defaultIntentReference];
+  if (defaultIntentReference && ([self isRelevanceBacked] & 1) == 0)
   {
-    v4 = [a1 intentRecommendations];
-    if ([v4 count])
+    intentRecommendations = [self intentRecommendations];
+    if ([intentRecommendations count])
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = [a1 isLinkedOnOrAfter:2];
+      v3 = [self isLinkedOnOrAfter:2];
     }
   }
 

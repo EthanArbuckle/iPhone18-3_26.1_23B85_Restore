@@ -1,25 +1,25 @@
 @interface _UIStatusBarDataAggregator
 + (void)initialize;
 - (NSSet)coalescedEntryKeys;
-- (_UIStatusBarDataAggregator)initWithUpdateBlock:(id)a3;
-- (id)_updatedDataFromData:(id)a3 delayedKeys:(id)a4;
-- (void)_coalescedUpdateForEntryKeys:(id)a3;
-- (void)_updateForCoalescedKeysWithData:(id)a3;
-- (void)_updateForDelayedKeysWithData:(id)a3;
-- (void)_updateForOverlayWithData:(id)a3;
-- (void)_updateFromPendingUpdatesForKeys:(id)a3 block:(id)a4;
-- (void)beginCoalescingUpdatesForEntryKeys:(id)a3 delay:(double)a4;
-- (void)beginDelayingUpdatesForEntryKeys:(id)a3;
-- (void)endCoalescingUpdatesForEntryKeys:(id)a3;
-- (void)endDelayingUpdatesForEntryKeys:(id)a3;
-- (void)updateWithData:(id)a3;
+- (_UIStatusBarDataAggregator)initWithUpdateBlock:(id)block;
+- (id)_updatedDataFromData:(id)data delayedKeys:(id)keys;
+- (void)_coalescedUpdateForEntryKeys:(id)keys;
+- (void)_updateForCoalescedKeysWithData:(id)data;
+- (void)_updateForDelayedKeysWithData:(id)data;
+- (void)_updateForOverlayWithData:(id)data;
+- (void)_updateFromPendingUpdatesForKeys:(id)keys block:(id)block;
+- (void)beginCoalescingUpdatesForEntryKeys:(id)keys delay:(double)delay;
+- (void)beginDelayingUpdatesForEntryKeys:(id)keys;
+- (void)endCoalescingUpdatesForEntryKeys:(id)keys;
+- (void)endDelayingUpdatesForEntryKeys:(id)keys;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation _UIStatusBarDataAggregator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E696AB50]);
     v3 = _statusBarDelayedDataEntryKeys;
@@ -27,13 +27,13 @@
   }
 }
 
-- (_UIStatusBarDataAggregator)initWithUpdateBlock:(id)a3
+- (_UIStatusBarDataAggregator)initWithUpdateBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = _UIStatusBarDataAggregator;
-  v3 = a3;
+  blockCopy = block;
   v4 = [(_UIStatusBarDataAggregator *)&v10 init];
-  [(_UIStatusBarDataAggregator *)v4 setUpdateBlock:v3, v10.receiver, v10.super_class];
+  [(_UIStatusBarDataAggregator *)v4 setUpdateBlock:blockCopy, v10.receiver, v10.super_class];
 
   v5 = objc_alloc_init(MEMORY[0x1E696AB50]);
   [(_UIStatusBarDataAggregator *)v4 setDelayedKeys:v5];
@@ -50,30 +50,30 @@
   return v4;
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v4 = a3;
-  v7 = v4;
+  dataCopy = data;
+  v7 = dataCopy;
   if (!self->_dataClass)
   {
     v5 = objc_opt_class();
     dataClass = self->_dataClass;
     self->_dataClass = v5;
 
-    v4 = v7;
+    dataCopy = v7;
   }
 
-  [(_UIStatusBarDataAggregator *)self _updateForOverlayWithData:v4];
+  [(_UIStatusBarDataAggregator *)self _updateForOverlayWithData:dataCopy];
 }
 
-- (id)_updatedDataFromData:(id)a3 delayedKeys:(id)a4
+- (id)_updatedDataFromData:(id)data delayedKeys:(id)keys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 count])
+  dataCopy = data;
+  keysCopy = keys;
+  if (![keysCopy count])
   {
-    v17 = v6;
+    v17 = dataCopy;
     goto LABEL_21;
   }
 
@@ -81,12 +81,12 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v7;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = v7;
+    v19 = keysCopy;
     v11 = 0;
     v12 = *v21;
     do
@@ -99,12 +99,12 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v6 valueForKey:v14];
+        v15 = [dataCopy valueForKey:v14];
         if (v15)
         {
           if (!v11)
           {
-            v11 = [v6 copy];
+            v11 = [dataCopy copy];
           }
 
           [v11 setValue:0 forKey:v14];
@@ -118,7 +118,7 @@
 
     while (v10);
 
-    v7 = v19;
+    keysCopy = v19;
     if (v11)
     {
       if ([v11 isEmpty])
@@ -140,7 +140,7 @@
   {
   }
 
-  v17 = v6;
+  v17 = dataCopy;
   v11 = 0;
 LABEL_20:
 
@@ -149,21 +149,21 @@ LABEL_21:
   return v17;
 }
 
-- (void)_updateFromPendingUpdatesForKeys:(id)a3 block:(id)a4
+- (void)_updateFromPendingUpdatesForKeys:(id)keys block:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  blockCopy = block;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = keysCopy;
+  v8 = [keysCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
-    v22 = v7;
+    v22 = blockCopy;
     v10 = 0;
     v11 = 0;
     v12 = *v28;
@@ -181,8 +181,8 @@ LABEL_21:
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 animated];
-          if (v17)
+          animated = [v15 animated];
+          if (animated)
           {
             v18 = v10;
           }
@@ -194,7 +194,7 @@ LABEL_21:
 
           if (!v18)
           {
-            v19 = v17;
+            v19 = animated;
             v20 = objc_alloc_init(self->_dataClass);
             v18 = v20;
             if (v19)
@@ -208,8 +208,8 @@ LABEL_21:
             }
           }
 
-          v21 = [v16 entry];
-          [v18 setValue:v21 forKey:v14];
+          entry = [v16 entry];
+          [v18 setValue:entry forKey:v14];
 
           [(NSMutableDictionary *)self->_pendingUpdates setObject:0 forKeyedSubscript:v14];
         }
@@ -219,7 +219,7 @@ LABEL_21:
     }
 
     while (v9);
-    v7 = v22;
+    blockCopy = v22;
     if (v11)
     {
       v24[0] = MEMORY[0x1E69E9820];
@@ -244,19 +244,19 @@ LABEL_21:
   }
 }
 
-- (void)_updateForOverlayWithData:(id)a3
+- (void)_updateForOverlayWithData:(id)data
 {
-  v4 = [a3 dataByApplyingOverlay:self->_overlayData];
+  v4 = [data dataByApplyingOverlay:self->_overlayData];
   [(_UIStatusBarDataAggregator *)self _updateForDelayedKeysWithData:v4];
 }
 
-- (void)_updateForDelayedKeysWithData:(id)a3
+- (void)_updateForDelayedKeysWithData:(id)data
 {
   delayedKeys = self->_delayedKeys;
-  v7 = a3;
+  dataCopy = data;
   if ([(NSCountedSet *)delayedKeys count])
   {
-    v5 = [(_UIStatusBarDataAggregator *)self _updatedDataFromData:v7 delayedKeys:self->_delayedKeys];
+    v5 = [(_UIStatusBarDataAggregator *)self _updatedDataFromData:dataCopy delayedKeys:self->_delayedKeys];
 
     if (v5)
     {
@@ -272,20 +272,20 @@ LABEL_21:
 
   else
   {
-    [(_UIStatusBarDataAggregator *)self _updateForCoalescedKeysWithData:v7];
-    v6 = v7;
+    [(_UIStatusBarDataAggregator *)self _updateForCoalescedKeysWithData:dataCopy];
+    v6 = dataCopy;
   }
 }
 
-- (void)beginDelayingUpdatesForEntryKeys:(id)a3
+- (void)beginDelayingUpdatesForEntryKeys:(id)keys
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -296,7 +296,7 @@ LABEL_21:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -304,23 +304,23 @@ LABEL_21:
         [_statusBarDelayedDataEntryKeys addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)endDelayingUpdatesForEntryKeys:(id)a3
+- (void)endDelayingUpdatesForEntryKeys:(id)keys
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keysCopy = keys;
   v6 = [MEMORY[0x1E695DFA8] setWithSet:self->_delayedKeys];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = keysCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -339,8 +339,8 @@ LABEL_21:
         v13 = *(*(&v16 + 1) + 8 * i);
         if (![(NSCountedSet *)self->_delayedKeys countForObject:v13])
         {
-          v14 = [*(v11 + 2728) currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDataAggregator.m" lineNumber:187 description:{@"Ending delayed updates for non-delayed key %@", v13}];
+          currentHandler = [*(v11 + 2728) currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDataAggregator.m" lineNumber:187 description:{@"Ending delayed updates for non-delayed key %@", v13}];
 
           v11 = 0x1E696A000;
         }
@@ -364,21 +364,21 @@ LABEL_21:
   [(_UIStatusBarDataAggregator *)self _updateFromPendingUpdatesForKeys:v6 block:v15];
 }
 
-- (void)_updateForCoalescedKeysWithData:(id)a3
+- (void)_updateForCoalescedKeysWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(NSMutableDictionary *)self->_coalescedKeys count])
   {
-    v5 = [(_UIStatusBarDataAggregator *)self coalescedEntryKeys];
-    v6 = [(_UIStatusBarDataAggregator *)self _updatedDataFromData:v4 delayedKeys:v5];
+    coalescedEntryKeys = [(_UIStatusBarDataAggregator *)self coalescedEntryKeys];
+    v6 = [(_UIStatusBarDataAggregator *)self _updatedDataFromData:dataCopy delayedKeys:coalescedEntryKeys];
 
     coalescedKeys = self->_coalescedKeys;
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __62___UIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_invoke;
     v13 = &unk_1E7121F48;
-    v14 = v4;
-    v15 = self;
+    v14 = dataCopy;
+    selfCopy = self;
     [(NSMutableDictionary *)coalescedKeys enumerateKeysAndObjectsUsingBlock:&v10];
     if (v6)
     {
@@ -389,23 +389,23 @@ LABEL_21:
 
   else
   {
-    v9 = [(_UIStatusBarDataAggregator *)self updateBlock];
-    (v9)[2](v9, v4);
+    updateBlock = [(_UIStatusBarDataAggregator *)self updateBlock];
+    (updateBlock)[2](updateBlock, dataCopy);
   }
 }
 
-- (void)_coalescedUpdateForEntryKeys:(id)a3
+- (void)_coalescedUpdateForEntryKeys:(id)keys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIStatusBarDataAggregator *)self updateBlock];
-  [(_UIStatusBarDataAggregator *)self _updateFromPendingUpdatesForKeys:v4 block:v5];
+  keysCopy = keys;
+  updateBlock = [(_UIStatusBarDataAggregator *)self updateBlock];
+  [(_UIStatusBarDataAggregator *)self _updateFromPendingUpdatesForKeys:keysCopy block:updateBlock];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -434,15 +434,15 @@ LABEL_21:
   }
 }
 
-- (void)beginCoalescingUpdatesForEntryKeys:(id)a3 delay:(double)a4
+- (void)beginCoalescingUpdatesForEntryKeys:(id)keys delay:(double)delay
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keysCopy = keys;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -453,7 +453,7 @@ LABEL_21:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keysCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -461,35 +461,35 @@ LABEL_21:
 
         if (!v12)
         {
-          v13 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+          v13 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
           [(NSMutableDictionary *)self->_coalescedKeys setObject:v13 forKeyedSubscript:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)endCoalescingUpdatesForEntryKeys:(id)a3
+- (void)endCoalescingUpdatesForEntryKeys:(id)keys
 {
-  v4 = a3;
-  v7 = [v4 mutableCopy];
+  keysCopy = keys;
+  v7 = [keysCopy mutableCopy];
   [v7 minusSet:self->_delayedKeys];
   [(_UIStatusBarDataAggregator *)self _coalescedUpdateForEntryKeys:v7];
   coalescedKeys = self->_coalescedKeys;
-  v6 = [v4 allObjects];
+  allObjects = [keysCopy allObjects];
 
-  [(NSMutableDictionary *)coalescedKeys removeObjectsForKeys:v6];
+  [(NSMutableDictionary *)coalescedKeys removeObjectsForKeys:allObjects];
 }
 
 - (NSSet)coalescedEntryKeys
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_coalescedKeys allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_coalescedKeys allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }

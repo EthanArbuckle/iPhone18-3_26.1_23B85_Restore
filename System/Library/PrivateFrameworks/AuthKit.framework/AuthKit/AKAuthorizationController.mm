@@ -1,38 +1,38 @@
 @interface AKAuthorizationController
-+ (BOOL)_matchURLProcessingSet:(id)a3 url:(id)a4;
-+ (BOOL)isURL:(id)a3 matchingAppleOwnedDomains:(id)a4;
-+ (BOOL)isURLFromAllowListDomainsForSharingKey:(id)a3;
-+ (BOOL)isURLFromAppleOwnedDomain:(id)a3;
-+ (BOOL)shouldProcessURL:(id)a3;
++ (BOOL)_matchURLProcessingSet:(id)set url:(id)url;
++ (BOOL)isURL:(id)l matchingAppleOwnedDomains:(id)domains;
++ (BOOL)isURLFromAllowListDomainsForSharingKey:(id)key;
++ (BOOL)isURLFromAppleOwnedDomain:(id)domain;
++ (BOOL)shouldProcessURL:(id)l;
 + (id)appleOwnedDomains;
 + (id)sharedController;
-+ (unint64_t)appSSORequestTypeForURL:(id)a3;
-+ (void)shouldProcessURL:(id)a3 completion:(id)a4;
++ (unint64_t)appSSORequestTypeForURL:(id)l;
++ (void)shouldProcessURL:(id)l completion:(id)completion;
 - (AKAuthorizationController)init;
-- (AKAuthorizationController)initWithDaemonXPCEndpoint:(id)a3;
-- (BOOL)_shouldOverrideProxiedBundleIDForContext:(id)a3;
+- (AKAuthorizationController)initWithDaemonXPCEndpoint:(id)endpoint;
+- (BOOL)_shouldOverrideProxiedBundleIDForContext:(id)context;
 - (id)_allowListDomainsForSharingKey;
 - (id)_appleOwnedDomains;
 - (id)_nativeTakeoverURLs;
 - (id)_sharedKeyInfo;
-- (id)primaryApplicationInformationForWebServiceWithInfo:(id)a3 error:(id *)a4;
-- (void)_nativeTakeoverEndpointsWithCompletionHandler:(id)a3;
-- (void)beginAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)cancelAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)continueAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)continueFetchingIconForRequestContext:(id)a3 completion:(id)a4;
+- (id)primaryApplicationInformationForWebServiceWithInfo:(id)info error:(id *)error;
+- (void)_nativeTakeoverEndpointsWithCompletionHandler:(id)handler;
+- (void)beginAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)cancelAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)continueAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)continueFetchingIconForRequestContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)establishConnectionWithNotificationHandlerEndpoint:(id)a3 completion:(id)a4;
-- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)a3 completion:(id)a4;
-- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)a3;
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4;
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4;
-- (void)getPresentationContextForRequestContext:(id)a3 completion:(id)a4;
-- (void)performAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)performAuthorizationWithContext:(id)a3 withUserProvidedInformation:(id)a4 completion:(id)a5;
-- (void)revokeAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)setUiProvider:(id)a3;
-- (void)storeAuthorization:(id)a3 forProxiedRequest:(id)a4 completion:(id)a5;
+- (void)establishConnectionWithNotificationHandlerEndpoint:(id)endpoint completion:(id)completion;
+- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)endpoint completion:(id)completion;
+- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)completion;
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion;
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion;
+- (void)getPresentationContextForRequestContext:(id)context completion:(id)completion;
+- (void)performAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)performAuthorizationWithContext:(id)context withUserProvidedInformation:(id)information completion:(id)completion;
+- (void)revokeAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)setUiProvider:(id)provider;
+- (void)storeAuthorization:(id)authorization forProxiedRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AKAuthorizationController
@@ -46,80 +46,80 @@
   return v3;
 }
 
-- (AKAuthorizationController)initWithDaemonXPCEndpoint:(id)a3
+- (AKAuthorizationController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, endpoint);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKAuthorizationController;
-  v13 = [(AKAuthorizationController *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKAuthorizationController *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = objc_alloc_init(AKAuthorizationClientImpl);
-    clientImpl = v13->_clientImpl;
-    v13->_clientImpl = v4;
+    clientImpl = selfCopy->_clientImpl;
+    selfCopy->_clientImpl = v4;
     MEMORY[0x1E69E5920](clientImpl);
     v6 = [AKAuthorizationDaemonConnection alloc];
-    v7 = [(AKAuthorizationDaemonConnection *)v6 initWithListenerEndpoint:location[0] exportedInterface:v13->_clientImpl];
-    daemonConnection = v13->_daemonConnection;
-    v13->_daemonConnection = v7;
+    v7 = [(AKAuthorizationDaemonConnection *)v6 initWithListenerEndpoint:location[0] exportedInterface:selfCopy->_clientImpl];
+    daemonConnection = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v7;
     MEMORY[0x1E69E5920](daemonConnection);
   }
 
-  v10 = MEMORY[0x1E69E5928](v13);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSiwa();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v6, v5);
+    __os_log_helper_16_2_1_8_64(v6, selfCopy);
     _os_log_debug_impl(&dword_193225000, oslog[0], type, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  if (v5->_daemonConnection)
+  if (selfCopy->_daemonConnection)
   {
-    objc_storeStrong(&v5->_daemonConnection, 0);
+    objc_storeStrong(&selfCopy->_daemonConnection, 0);
   }
 
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKAuthorizationController;
   [(AKAuthorizationController *)&v2 dealloc];
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setUiProvider:(id)a3
+- (void)setUiProvider:(id)provider
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAuthorizationClientImpl *)v4->_clientImpl setUiProvider:location[0]];
+  objc_storeStrong(location, provider);
+  [(AKAuthorizationClientImpl *)selfCopy->_clientImpl setUiProvider:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)performAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)performAuthorizationWithContext:(id)context completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, completion);
   v32 = _os_activity_create(&dword_193225000, "authkit/authorize", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v33 = v32;
   state.opaque[0] = 0;
@@ -142,7 +142,7 @@
   v24 = 48;
   v25 = __Block_byref_object_copy__17;
   v26 = __Block_byref_object_dispose__17;
-  v27 = MEMORY[0x1E69E5928](v36);
+  v27 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
@@ -151,7 +151,7 @@
   v20[1] = v22;
   v20[0] = MEMORY[0x1E69E5928](v34);
   v21 = MEMORY[0x193B165F0](&v15);
-  daemonConnection = v36->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
@@ -222,15 +222,15 @@ void __72__AKAuthorizationController_performAuthorizationWithContext_completion_
   objc_storeStrong(location, 0);
 }
 
-- (void)beginAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)beginAuthorizationWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "authkit/begin-authorize", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -270,7 +270,7 @@ void __72__AKAuthorizationController_performAuthorizationWithContext_completion_
   v28 = 48;
   v29 = __Block_byref_object_copy__17;
   v30 = __Block_byref_object_dispose__17;
-  v31 = MEMORY[0x1E69E5928](v45);
+  v31 = MEMORY[0x1E69E5928](selfCopy);
   v18 = MEMORY[0x1E69E9820];
   v19 = -1073741824;
   v20 = 0;
@@ -280,7 +280,7 @@ void __72__AKAuthorizationController_performAuthorizationWithContext_completion_
   v23[1] = v26;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -372,15 +372,15 @@ void __70__AKAuthorizationController_beginAuthorizationWithContext_completion___
   objc_storeStrong(location, 0);
 }
 
-- (void)continueAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)continueAuthorizationWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "authkit/continue-authorize", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -420,7 +420,7 @@ void __70__AKAuthorizationController_beginAuthorizationWithContext_completion___
   v28 = 48;
   v29 = __Block_byref_object_copy__17;
   v30 = __Block_byref_object_dispose__17;
-  v31 = MEMORY[0x1E69E5928](v45);
+  v31 = MEMORY[0x1E69E5928](selfCopy);
   v18 = MEMORY[0x1E69E9820];
   v19 = -1073741824;
   v20 = 0;
@@ -430,7 +430,7 @@ void __70__AKAuthorizationController_beginAuthorizationWithContext_completion___
   v23[1] = v26;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -522,15 +522,15 @@ void __73__AKAuthorizationController_continueAuthorizationWithContext_completion
   objc_storeStrong(location, 0);
 }
 
-- (void)cancelAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)cancelAuthorizationWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "authkit/cancel-authorize", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -570,7 +570,7 @@ void __73__AKAuthorizationController_continueAuthorizationWithContext_completion
   v28 = 48;
   v29 = __Block_byref_object_copy__17;
   v30 = __Block_byref_object_dispose__17;
-  v31 = MEMORY[0x1E69E5928](v45);
+  v31 = MEMORY[0x1E69E5928](selfCopy);
   v18 = MEMORY[0x1E69E9820];
   v19 = -1073741824;
   v20 = 0;
@@ -580,7 +580,7 @@ void __73__AKAuthorizationController_continueAuthorizationWithContext_completion
   v23[1] = v26;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -672,14 +672,14 @@ void __71__AKAuthorizationController_cancelAuthorizationWithContext_completion__
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationWithContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "authkit/revokeUpgrade", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -691,7 +691,7 @@ void __71__AKAuthorizationController_cancelAuthorizationWithContext_completion__
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -700,7 +700,7 @@ void __71__AKAuthorizationController_cancelAuthorizationWithContext_completion__
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v31->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -771,14 +771,14 @@ void __71__AKAuthorizationController_revokeAuthorizationWithContext_completion__
   objc_storeStrong(location, 0);
 }
 
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "authkit/credentialState", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -790,7 +790,7 @@ void __71__AKAuthorizationController_revokeAuthorizationWithContext_completion__
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -799,7 +799,7 @@ void __71__AKAuthorizationController_revokeAuthorizationWithContext_completion__
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v31->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -866,14 +866,14 @@ void __69__AKAuthorizationController_getCredentialStateForRequest_completion___b
   objc_storeStrong(location, 0);
 }
 
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "authkit/credentialStateForClientID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -885,7 +885,7 @@ void __69__AKAuthorizationController_getCredentialStateForRequest_completion___b
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -894,7 +894,7 @@ void __69__AKAuthorizationController_getCredentialStateForRequest_completion___b
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v31->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -961,14 +961,14 @@ void __70__AKAuthorizationController_getCredentialStateForClientID_completion___
   objc_storeStrong(location, 0);
 }
 
-- (void)getPresentationContextForRequestContext:(id)a3 completion:(id)a4
+- (void)getPresentationContextForRequestContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "authkit/presentationContext", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -980,7 +980,7 @@ void __70__AKAuthorizationController_getCredentialStateForClientID_completion___
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -989,7 +989,7 @@ void __70__AKAuthorizationController_getCredentialStateForClientID_completion___
   v18[0] = MEMORY[0x1E69E5928](v29);
   v18[1] = v20;
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v31->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1060,58 +1060,58 @@ void __80__AKAuthorizationController_getPresentationContextForRequestContext_com
   objc_storeStrong(location, 0);
 }
 
-- (void)performAuthorizationWithContext:(id)a3 withUserProvidedInformation:(id)a4 completion:(id)a5
+- (void)performAuthorizationWithContext:(id)context withUserProvidedInformation:(id)information completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, information);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, completion);
   v37 = _os_activity_create(&dword_193225000, "authkit/performRequestWithSelection", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v38 = v37;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v37, &state);
-  if ([(AKAuthorizationController *)v42 _shouldOverrideProxiedBundleIDForContext:location[0]])
+  if ([(AKAuthorizationController *)selfCopy _shouldOverrideProxiedBundleIDForContext:location[0]])
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v35 = [v10 bundleIdentifier];
-    MEMORY[0x1E69E5920](v10);
-    [location[0] set_proxiedClientBundleID:v35];
-    objc_storeStrong(&v35, 0);
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    MEMORY[0x1E69E5920](mainBundle);
+    [location[0] set_proxiedClientBundleID:bundleIdentifier];
+    objc_storeStrong(&bundleIdentifier, 0);
   }
 
-  v9 = [location[0] authorizationRequest];
-  v8 = [location[0] requestIdentifier];
-  [v9 setRequestIdentifier:?];
-  MEMORY[0x1E69E5920](v8);
-  MEMORY[0x1E69E5920](v9);
-  v7 = [location[0] passwordRequest];
-  v6 = [location[0] requestIdentifier];
-  [v7 setRequestIdentifier:?];
-  MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
+  authorizationRequest = [location[0] authorizationRequest];
+  requestIdentifier = [location[0] requestIdentifier];
+  [authorizationRequest setRequestIdentifier:?];
+  MEMORY[0x1E69E5920](requestIdentifier);
+  MEMORY[0x1E69E5920](authorizationRequest);
+  passwordRequest = [location[0] passwordRequest];
+  requestIdentifier2 = [location[0] requestIdentifier];
+  [passwordRequest setRequestIdentifier:?];
+  MEMORY[0x1E69E5920](requestIdentifier2);
+  MEMORY[0x1E69E5920](passwordRequest);
   v29[0] = 0;
   v29[1] = v29;
   v30 = 838860800;
   v31 = 48;
   v32 = __Block_byref_object_copy__17;
   v33 = __Block_byref_object_dispose__17;
-  v34 = MEMORY[0x1E69E5928](v42);
+  v34 = MEMORY[0x1E69E5928](selfCopy);
   v21 = MEMORY[0x1E69E9820];
   v22 = -1073741824;
   v23 = 0;
   v24 = __100__AKAuthorizationController_performAuthorizationWithContext_withUserProvidedInformation_completion___block_invoke;
   v25 = &unk_1E73D9958;
-  v26 = MEMORY[0x1E69E5928](v42);
+  v26 = MEMORY[0x1E69E5928](selfCopy);
   v27[0] = MEMORY[0x1E69E5928](v39);
   v27[1] = v29;
   v28 = MEMORY[0x193B165F0](&v21);
-  daemonConnection = v42->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
@@ -1196,7 +1196,7 @@ void __100__AKAuthorizationController_performAuthorizationWithContext_withUserPr
 - (id)_nativeTakeoverURLs
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogNto();
   v21 = OS_LOG_TYPE_DEFAULT;
@@ -1216,7 +1216,7 @@ void __100__AKAuthorizationController_performAuthorizationWithContext_withUserPr
   v17 = __Block_byref_object_copy__17;
   v18 = __Block_byref_object_dispose__17;
   v19 = 0;
-  v12 = [(AKAuthorizationDaemonConnection *)v23->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_59];
+  v12 = [(AKAuthorizationDaemonConnection *)selfCopy->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_59];
   oslog[1] = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1302,12 +1302,12 @@ void __48__AKAuthorizationController__nativeTakeoverURLs__block_invoke_20(void *
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_nativeTakeoverEndpointsWithCompletionHandler:(id)a3
+- (void)_nativeTakeoverEndpointsWithCompletionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v22 = _AKLogNto();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1319,7 +1319,7 @@ void __48__AKAuthorizationController__nativeTakeoverURLs__block_invoke_20(void *
   }
 
   objc_storeStrong(&v22, 0);
-  daemonConnection = v24->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -1412,7 +1412,7 @@ void __75__AKAuthorizationController__nativeTakeoverEndpointsWithCompletionHandl
 - (id)_appleOwnedDomains
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogNto();
   v21 = OS_LOG_TYPE_DEFAULT;
@@ -1432,7 +1432,7 @@ void __75__AKAuthorizationController__nativeTakeoverEndpointsWithCompletionHandl
   v17 = __Block_byref_object_copy__17;
   v18 = __Block_byref_object_dispose__17;
   v19 = 0;
-  v12 = [(AKAuthorizationDaemonConnection *)v23->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24];
+  v12 = [(AKAuthorizationDaemonConnection *)selfCopy->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24];
   oslog[1] = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1521,7 +1521,7 @@ void __47__AKAuthorizationController__appleOwnedDomains__block_invoke_25(void *a
 - (id)_allowListDomainsForSharingKey
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSiwa();
   v21 = OS_LOG_TYPE_DEFAULT;
@@ -1541,7 +1541,7 @@ void __47__AKAuthorizationController__appleOwnedDomains__block_invoke_25(void *a
   v17 = __Block_byref_object_copy__17;
   v18 = __Block_byref_object_dispose__17;
   v19 = 0;
-  v12 = [(AKAuthorizationDaemonConnection *)v23->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+  v12 = [(AKAuthorizationDaemonConnection *)selfCopy->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
   oslog[1] = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1627,19 +1627,19 @@ void __59__AKAuthorizationController__allowListDomainsForSharingKey__block_invok
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)a3
+- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v18[0] = 0;
   v18[1] = v18;
   v19 = 838860800;
   v20 = 48;
   v21 = __Block_byref_object_copy__17;
   v22 = __Block_byref_object_dispose__17;
-  v23 = MEMORY[0x1E69E5928](v25);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -1648,7 +1648,7 @@ void __59__AKAuthorizationController__allowListDomainsForSharingKey__block_invok
   v16[1] = v18;
   v16[0] = MEMORY[0x1E69E5928](location[0]);
   v17 = MEMORY[0x193B165F0](&v11);
-  daemonConnection = v25->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -1718,21 +1718,21 @@ void __85__AKAuthorizationController_fetchAppleIDAuthorizeHTMLResponseTemplateWi
   objc_storeStrong(location, 0);
 }
 
-- (void)continueFetchingIconForRequestContext:(id)a3 completion:(id)a4
+- (void)continueFetchingIconForRequestContext:(id)context completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, completion);
   v20[0] = 0;
   v20[1] = v20;
   v21 = 838860800;
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v28);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -1741,7 +1741,7 @@ void __85__AKAuthorizationController_fetchAppleIDAuthorizeHTMLResponseTemplateWi
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v26);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v28->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1812,14 +1812,14 @@ void __78__AKAuthorizationController_continueFetchingIconForRequestContext_compl
   objc_storeStrong(location, 0);
 }
 
-- (id)primaryApplicationInformationForWebServiceWithInfo:(id)a3 error:(id *)a4
+- (id)primaryApplicationInformationForWebServiceWithInfo:(id)info error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = a4;
+  objc_storeStrong(location, info);
+  errorCopy = error;
   v33 = _os_activity_create(&dword_193225000, "authkit/fetch-primary-bundleid", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v34 = v33;
   state.opaque[0] = 0;
@@ -1839,7 +1839,7 @@ void __78__AKAuthorizationController_continueFetchingIconForRequestContext_compl
   v22 = __Block_byref_object_copy__17;
   v23 = __Block_byref_object_dispose__17;
   v24 = 0;
-  daemonConnection = v37->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   oslog[3] = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -1858,11 +1858,11 @@ void __78__AKAuthorizationController_continueFetchingIconForRequestContext_compl
 
   objc_storeStrong(oslog, 0);
   [v17 fetchPrimaryApplicationInformationForWebServiceWithInfo:location[0] completion:?];
-  if (v35)
+  if (errorCopy)
   {
     v8 = v19[5];
     v5 = v8;
-    *v35 = v8;
+    *errorCopy = v8;
   }
 
   v7 = MEMORY[0x1E69E5928](v26[5]);
@@ -1923,16 +1923,16 @@ void __86__AKAuthorizationController_primaryApplicationInformationForWebServiceW
   *MEMORY[0x1E69E9840];
 }
 
-- (void)storeAuthorization:(id)a3 forProxiedRequest:(id)a4 completion:(id)a5
+- (void)storeAuthorization:(id)authorization forProxiedRequest:(id)request completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, request);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, completion);
   v29 = _os_activity_create(&dword_193225000, "authkit/store-proxied-authorization", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v30 = v29;
   state.opaque[0] = 0;
@@ -1944,7 +1944,7 @@ void __86__AKAuthorizationController_primaryApplicationInformationForWebServiceW
   v24 = 48;
   v25 = __Block_byref_object_copy__17;
   v26 = __Block_byref_object_dispose__17;
-  v27 = MEMORY[0x1E69E5928](v34);
+  v27 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
@@ -1953,7 +1953,7 @@ void __86__AKAuthorizationController_primaryApplicationInformationForWebServiceW
   v20[1] = v22;
   v20[0] = MEMORY[0x1E69E5928](v31);
   v21 = MEMORY[0x193B165F0](&v15);
-  daemonConnection = v34->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
@@ -2049,15 +2049,15 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-+ (BOOL)_matchURLProcessingSet:(id)a3 url:(id)a4
++ (BOOL)_matchURLProcessingSet:(id)set url:(id)url
 {
   v65 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   v60 = 0;
-  objc_storeStrong(&v60, a4);
+  objc_storeStrong(&v60, url);
   v59 = _AKLogNto();
   v58 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -2091,9 +2091,9 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
         v15 = [MEMORY[0x1E695DFF8] URLWithString:v52];
         v50 = [v14 componentsWithURL:? resolvingAgainstBaseURL:?];
         MEMORY[0x1E69E5920](v15);
-        v16 = [v50 scheme];
-        v17 = [v53 scheme];
-        v4 = [v16 caseInsensitiveCompare:?];
+        scheme = [v50 scheme];
+        scheme2 = [v53 scheme];
+        v4 = [scheme caseInsensitiveCompare:?];
         v48 = 0;
         v46 = 0;
         v44 = 0;
@@ -2105,36 +2105,36 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
         v18 = 0;
         if (!v4)
         {
-          v13 = [v50 host];
-          v49 = v13;
+          host = [v50 host];
+          v49 = host;
           v48 = 1;
-          v47 = [v53 host];
+          host2 = [v53 host];
           v46 = 1;
           v18 = 0;
-          if (![v13 caseInsensitiveCompare:?])
+          if (![host caseInsensitiveCompare:?])
           {
-            v12 = [v50 path];
-            v45 = v12;
+            path = [v50 path];
+            v45 = path;
             v44 = 1;
-            v43 = [v53 path];
+            path2 = [v53 path];
             v42 = 1;
             v18 = 0;
-            if (![v12 caseInsensitiveCompare:?])
+            if (![path caseInsensitiveCompare:?])
             {
-              v11 = [v50 password];
-              v41 = v11;
+              password = [v50 password];
+              v41 = password;
               v40 = 1;
-              v39 = [v53 password];
+              password2 = [v53 password];
               v38 = 1;
               v18 = 0;
-              if (![v11 caseInsensitiveCompare:?])
+              if (![password caseInsensitiveCompare:?])
               {
-                v10 = [v50 port];
-                v37 = v10;
+                port = [v50 port];
+                v37 = port;
                 v36 = 1;
-                v35 = [v53 port];
+                port2 = [v53 port];
                 v34 = 1;
-                v18 = [v10 compare:?] == 0;
+                v18 = [port compare:?] == 0;
               }
             }
           }
@@ -2142,7 +2142,7 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
 
         if (v34)
         {
-          MEMORY[0x1E69E5920](v35);
+          MEMORY[0x1E69E5920](port2);
         }
 
         if (v36)
@@ -2152,7 +2152,7 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
 
         if (v38)
         {
-          MEMORY[0x1E69E5920](v39);
+          MEMORY[0x1E69E5920](password2);
         }
 
         if (v40)
@@ -2162,7 +2162,7 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
 
         if (v42)
         {
-          MEMORY[0x1E69E5920](v43);
+          MEMORY[0x1E69E5920](path2);
         }
 
         if (v44)
@@ -2172,7 +2172,7 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
 
         if (v46)
         {
-          MEMORY[0x1E69E5920](v47);
+          MEMORY[0x1E69E5920](host2);
         }
 
         if (v48)
@@ -2180,8 +2180,8 @@ uint64_t __45__AKAuthorizationController_sharedController__block_invoke()
           MEMORY[0x1E69E5920](v49);
         }
 
-        MEMORY[0x1E69E5920](v17);
-        MEMORY[0x1E69E5920](v16);
+        MEMORY[0x1E69E5920](scheme2);
+        MEMORY[0x1E69E5920](scheme);
         if (v18)
         {
           oslog = _AKLogNto();
@@ -2273,12 +2273,12 @@ LABEL_40:
   return v62 & 1;
 }
 
-+ (BOOL)shouldProcessURL:(id)a3
++ (BOOL)shouldProcessURL:(id)l
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v11 = _AKLogNto();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2290,34 +2290,34 @@ LABEL_40:
   }
 
   objc_storeStrong(&v11, 0);
-  v4 = [v13 sharedController];
-  v8 = [v4 _nativeTakeoverURLs];
-  MEMORY[0x1E69E5920](v4);
-  v5 = [v13 _matchURLProcessingSet:v8 url:location[0]];
-  objc_storeStrong(&v8, 0);
+  sharedController = [selfCopy sharedController];
+  _nativeTakeoverURLs = [sharedController _nativeTakeoverURLs];
+  MEMORY[0x1E69E5920](sharedController);
+  v5 = [selfCopy _matchURLProcessingSet:_nativeTakeoverURLs url:location[0]];
+  objc_storeStrong(&_nativeTakeoverURLs, 0);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-+ (void)shouldProcessURL:(id)a3 completion:(id)a4
++ (void)shouldProcessURL:(id)l completion:(id)completion
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v5 = [v15 sharedController];
+  objc_storeStrong(&v13, completion);
+  sharedController = [selfCopy sharedController];
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke;
   v10 = &unk_1E73D9A20;
-  v12[1] = v15;
+  v12[1] = selfCopy;
   v11 = MEMORY[0x1E69E5928](location[0]);
   v12[0] = MEMORY[0x1E69E5928](v13);
-  [v5 _nativeTakeoverEndpointsWithCompletionHandler:?];
-  MEMORY[0x1E69E5920](v5);
+  [sharedController _nativeTakeoverEndpointsWithCompletionHandler:?];
+  MEMORY[0x1E69E5920](sharedController);
   objc_storeStrong(v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v13, 0);
@@ -2351,19 +2351,19 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
 
 + (id)appleOwnedDomains
 {
-  v3 = [a1 sharedController];
-  v4 = [v3 _appleOwnedDomains];
-  MEMORY[0x1E69E5920](v3);
+  sharedController = [self sharedController];
+  _appleOwnedDomains = [sharedController _appleOwnedDomains];
+  MEMORY[0x1E69E5920](sharedController);
 
-  return v4;
+  return _appleOwnedDomains;
 }
 
-+ (BOOL)isURLFromAppleOwnedDomain:(id)a3
++ (BOOL)isURLFromAppleOwnedDomain:(id)domain
 {
-  v23 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v21 = _AKLogNto();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2375,12 +2375,12 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
   }
 
   objc_storeStrong(&v21, 0);
-  v8 = [v23 sharedController];
-  v18 = [v8 _appleOwnedDomains];
-  MEMORY[0x1E69E5920](v8);
-  if ([v18 count])
+  sharedController = [selfCopy sharedController];
+  _appleOwnedDomains = [sharedController _appleOwnedDomains];
+  MEMORY[0x1E69E5920](sharedController);
+  if ([_appleOwnedDomains count])
   {
-    if ([v23 isURL:location[0] matchingAppleOwnedDomains:v18])
+    if ([selfCopy isURL:location[0] matchingAppleOwnedDomains:_appleOwnedDomains])
     {
       v24 = 1;
       v14 = 1;
@@ -2421,17 +2421,17 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
     v14 = 1;
   }
 
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&_appleOwnedDomains, 0);
   objc_storeStrong(location, 0);
   return v24 & 1;
 }
 
-+ (BOOL)isURLFromAllowListDomainsForSharingKey:(id)a3
++ (BOOL)isURLFromAllowListDomainsForSharingKey:(id)key
 {
-  v23 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v21 = _AKLogNto();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2443,12 +2443,12 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
   }
 
   objc_storeStrong(&v21, 0);
-  v8 = [v23 sharedController];
-  v18 = [v8 _allowListDomainsForSharingKey];
-  MEMORY[0x1E69E5920](v8);
-  if ([v18 count])
+  sharedController = [selfCopy sharedController];
+  _allowListDomainsForSharingKey = [sharedController _allowListDomainsForSharingKey];
+  MEMORY[0x1E69E5920](sharedController);
+  if ([_allowListDomainsForSharingKey count])
   {
-    if ([v23 isURL:location[0] matchingAppleOwnedDomains:v18])
+    if ([selfCopy isURL:location[0] matchingAppleOwnedDomains:_allowListDomainsForSharingKey])
     {
       v24 = 1;
       v14 = 1;
@@ -2489,21 +2489,21 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
     v14 = 1;
   }
 
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&_allowListDomainsForSharingKey, 0);
   objc_storeStrong(location, 0);
   return v24 & 1;
 }
 
-+ (BOOL)isURL:(id)a3 matchingAppleOwnedDomains:(id)a4
++ (BOOL)isURL:(id)l matchingAppleOwnedDomains:(id)domains
 {
   v29 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = [location[0] host];
+  objc_storeStrong(&v21, domains);
+  host = [location[0] host];
   memset(__b, 0, sizeof(__b));
   v15 = MEMORY[0x1E69E5928](v21);
   v16 = [v15 countByEnumeratingWithState:__b objects:v28 count:16];
@@ -2521,19 +2521,19 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
       }
 
       v19 = *(__b[1] + 8 * v12);
-      v9 = [v20 length];
+      v9 = [host length];
       if (v9 >= [v19 length])
       {
-        v7 = [v20 length];
+        v7 = [host length];
         v8 = v7 - [v19 length];
         v4 = [v19 length];
         v25 = v8;
         v24 = v4;
         v26 = v8;
         v27 = v4;
-        if (![v20 compare:v19 options:1 range:{v8, v4}])
+        if (![host compare:v19 options:1 range:{v8, v4}])
         {
-          v6 = [v20 length];
+          v6 = [host length];
           if (v6 == [v19 length])
           {
             v23 = 1;
@@ -2541,7 +2541,7 @@ void __57__AKAuthorizationController_shouldProcessURL_completion___block_invoke(
             goto LABEL_14;
           }
 
-          if ([v20 characterAtIndex:v8 - 1] == 46)
+          if ([host characterAtIndex:v8 - 1] == 46)
           {
             break;
           }
@@ -2577,20 +2577,20 @@ LABEL_14:
     v23 = 0;
   }
 
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&host, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v23 & 1;
 }
 
-+ (unint64_t)appSSORequestTypeForURL:(id)a3
++ (unint64_t)appSSORequestTypeForURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v21 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v19 = _AKLogSiwa();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2603,21 +2603,21 @@ LABEL_14:
 
   objc_storeStrong(&v19, 0);
   v9 = +[AKFeatureManager sharedManager];
-  v10 = [v9 isForgotPasswordNativeTakeoverEnabled];
+  isForgotPasswordNativeTakeoverEnabled = [v9 isForgotPasswordNativeTakeoverEnabled];
   MEMORY[0x1E69E5920](v9);
-  if ((v10 & 1) == 0)
+  if ((isForgotPasswordNativeTakeoverEnabled & 1) == 0)
   {
     goto LABEL_8;
   }
 
   v5 = +[AKURLBag sharedBag];
-  v16 = [v5 iForgotWebURLToIntercept];
+  iForgotWebURLToIntercept = [v5 iForgotWebURLToIntercept];
   MEMORY[0x1E69E5920](v5);
-  v7 = [v16 host];
-  v6 = [location[0] host];
-  v8 = [v7 isEqualToString:?];
-  MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
+  host = [iForgotWebURLToIntercept host];
+  host2 = [location[0] host];
+  v8 = [host isEqualToString:?];
+  MEMORY[0x1E69E5920](host2);
+  MEMORY[0x1E69E5920](host);
   if (v8)
   {
     v22 = 2;
@@ -2629,11 +2629,11 @@ LABEL_14:
     v15 = 0;
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&iForgotWebURLToIntercept, 0);
   if (!v15)
   {
 LABEL_8:
-    v14 = [v21 isURLFromAppleOwnedDomain:location[0]];
+    v14 = [selfCopy isURLFromAppleOwnedDomain:location[0]];
     v13 = _AKLogSiwa();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2664,7 +2664,7 @@ LABEL_8:
 - (id)_sharedKeyInfo
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSiwa();
   v21 = OS_LOG_TYPE_DEFAULT;
@@ -2684,7 +2684,7 @@ LABEL_8:
   v17 = __Block_byref_object_copy__17;
   v18 = __Block_byref_object_dispose__17;
   v19 = 0;
-  v12 = [(AKAuthorizationDaemonConnection *)v23->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_52];
+  v12 = [(AKAuthorizationDaemonConnection *)selfCopy->_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_52];
   oslog[1] = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -2770,21 +2770,21 @@ void __43__AKAuthorizationController__sharedKeyInfo__block_invoke_53(void *a1, v
   *MEMORY[0x1E69E9840];
 }
 
-- (void)establishConnectionWithNotificationHandlerEndpoint:(id)a3 completion:(id)a4
+- (void)establishConnectionWithNotificationHandlerEndpoint:(id)endpoint completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, endpoint);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, completion);
   v20[0] = 0;
   v20[1] = v20;
   v21 = 838860800;
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v28);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -2793,7 +2793,7 @@ void __43__AKAuthorizationController__sharedKeyInfo__block_invoke_53(void *a1, v
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v26);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v28->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -2866,21 +2866,21 @@ void __91__AKAuthorizationController_establishConnectionWithNotificationHandlerE
   objc_storeStrong(location, 0);
 }
 
-- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)a3 completion:(id)a4
+- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)endpoint completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, endpoint);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, completion);
   v20[0] = 0;
   v20[1] = v20;
   v21 = 838860800;
   v22 = 48;
   v23 = __Block_byref_object_copy__17;
   v24 = __Block_byref_object_dispose__17;
-  v25 = MEMORY[0x1E69E5928](v28);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -2889,7 +2889,7 @@ void __91__AKAuthorizationController_establishConnectionWithNotificationHandlerE
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v26);
   v19 = MEMORY[0x193B165F0](&v13);
-  daemonConnection = v28->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -2962,12 +2962,12 @@ void __93__AKAuthorizationController_establishConnectionWithStateBroadcastHandle
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldOverrideProxiedBundleIDForContext:(id)a3
+- (BOOL)_shouldOverrideProxiedBundleIDForContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = 0;
   if (![location[0] _isWebLogin] || !objc_msgSend(location[0], "_isEligibleForUpgradeFromPassword") || (v4 = 0, objc_msgSend(location[0], "_isEligibleForUpgradeFromPassword") == 1) && (v6 = objc_msgSend(location[0], "_proxiedClientBundleID"), v5 = 1, v4 = 0, !v6))
   {

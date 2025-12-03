@@ -1,6 +1,6 @@
 @interface DMCEnrollmentConsentViewController
-- (BOOL)isEqual:(id)a3;
-- (DMCEnrollmentConsentViewController)initWithDelegate:(id)a3 username:(id)a4 profile:(id)a5 enrollmentType:(unint64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (DMCEnrollmentConsentViewController)initWithDelegate:(id)delegate username:(id)username profile:(id)profile enrollmentType:(unint64_t)type;
 - (DMCEnrollmentConsentViewControllerDelegate)delegate;
 - (id)_cellDataForESSOBYODDisclosure;
 - (id)_cellDataForESSODeviceDisclosure;
@@ -8,71 +8,71 @@
 - (id)_commonCellDataForRegularBYODDisclosure;
 - (id)_platterCellDataForRegularADDEDisclosure;
 - (id)_platterCellDataForRegularADUEDisclosure;
-- (id)_platterCellDataWithImage:(id)a3 text:(id)a4;
+- (id)_platterCellDataWithImage:(id)image text:(id)text;
 - (id)_requiredAppCellData;
-- (id)_serverURLWithoutHTTP:(id)a3;
+- (id)_serverURLWithoutHTTP:(id)p;
 - (void)_requiredAppCellData;
-- (void)_setupManagementDetailsLinkTextForCell:(id)a3;
+- (void)_setupManagementDetailsLinkTextForCell:(id)cell;
 - (void)loadView;
 - (void)updateContinueButtonStatus;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentConsentViewController
 
-- (DMCEnrollmentConsentViewController)initWithDelegate:(id)a3 username:(id)a4 profile:(id)a5 enrollmentType:(unint64_t)a6
+- (DMCEnrollmentConsentViewController)initWithDelegate:(id)delegate username:(id)username profile:(id)profile enrollmentType:(unint64_t)type
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  usernameCopy = username;
+  profileCopy = profile;
   v13 = DMCLocalizedString();
   v35.receiver = self;
   v35.super_class = DMCEnrollmentConsentViewController;
   v14 = [(DMCEnrollmentTemplateTableViewController *)&v35 initWithIconName:@"gear" title:v13 subTitle:0];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [usernameCopy copy];
     username = v14->_username;
     v14->_username = v15;
 
-    objc_storeStrong(&v14->_profile, a5);
-    objc_storeWeak(&v14->_delegate, v10);
-    v17 = [v12 hasRequiredAppIDForMDM];
+    objc_storeStrong(&v14->_profile, profile);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    hasRequiredAppIDForMDM = [profileCopy hasRequiredAppIDForMDM];
     requiredAppID = v14->_requiredAppID;
-    v14->_requiredAppID = v17;
+    v14->_requiredAppID = hasRequiredAppIDForMDM;
 
-    if (v12)
+    if (profileCopy)
     {
-      v19 = [v12 payloadsWithClass:objc_opt_class()];
-      v20 = [v19 firstObject];
+      v19 = [profileCopy payloadsWithClass:objc_opt_class()];
+      firstObject = [v19 firstObject];
 
-      v21 = [v12 organization];
-      v22 = [v21 copy];
+      organization = [profileCopy organization];
+      v22 = [organization copy];
       orgName = v14->_orgName;
       v14->_orgName = v22;
 
-      v24 = [v20 serverURLString];
-      v25 = [(DMCEnrollmentConsentViewController *)v14 _serverURLWithoutHTTP:v24];
+      serverURLString = [firstObject serverURLString];
+      v25 = [(DMCEnrollmentConsentViewController *)v14 _serverURLWithoutHTTP:serverURLString];
       serverURL = v14->_serverURL;
       v14->_serverURL = v25;
 
-      v27 = [(DMCEnrollmentConsentViewController *)v14 _commonCellDataForRegularBYODDisclosure];
-      [(DMCEnrollmentTemplateTableViewController *)v14 addCellData:v27 animated:0];
-      v28 = [v20 enrollmentMode];
-      v29 = [v28 isEqualToString:*MEMORY[0x277D247C8]];
+      _commonCellDataForRegularBYODDisclosure = [(DMCEnrollmentConsentViewController *)v14 _commonCellDataForRegularBYODDisclosure];
+      [(DMCEnrollmentTemplateTableViewController *)v14 addCellData:_commonCellDataForRegularBYODDisclosure animated:0];
+      enrollmentMode = [firstObject enrollmentMode];
+      v29 = [enrollmentMode isEqualToString:*MEMORY[0x277D247C8]];
 
       if (v29)
       {
-        v30 = [(DMCEnrollmentConsentViewController *)v14 _platterCellDataForRegularADDEDisclosure];
-        v37[0] = v30;
+        _platterCellDataForRegularADDEDisclosure = [(DMCEnrollmentConsentViewController *)v14 _platterCellDataForRegularADDEDisclosure];
+        v37[0] = _platterCellDataForRegularADDEDisclosure;
         v31 = v37;
       }
 
       else
       {
-        v30 = [(DMCEnrollmentConsentViewController *)v14 _platterCellDataForRegularADUEDisclosure];
-        v36 = v30;
+        _platterCellDataForRegularADDEDisclosure = [(DMCEnrollmentConsentViewController *)v14 _platterCellDataForRegularADUEDisclosure];
+        v36 = _platterCellDataForRegularADDEDisclosure;
         v31 = &v36;
       }
 
@@ -82,7 +82,7 @@
 
     else
     {
-      if (a6 == 4)
+      if (type == 4)
       {
         [(DMCEnrollmentConsentViewController *)v14 _cellDataForESSOBYODDisclosure];
       }
@@ -91,11 +91,11 @@
       {
         [(DMCEnrollmentConsentViewController *)v14 _cellDataForESSODeviceDisclosure];
       }
-      v20 = ;
-      v33 = [(DMCEnrollmentConsentViewController *)v14 _cellDataForLearnMoreButton];
-      [v20 addObject:v33];
+      firstObject = ;
+      _cellDataForLearnMoreButton = [(DMCEnrollmentConsentViewController *)v14 _cellDataForLearnMoreButton];
+      [firstObject addObject:_cellDataForLearnMoreButton];
 
-      [(DMCEnrollmentTemplateTableViewController *)v14 addCellData:v20 animated:0];
+      [(DMCEnrollmentTemplateTableViewController *)v14 addCellData:firstObject animated:0];
     }
   }
 
@@ -157,21 +157,21 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DMCEnrollmentConsentViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v5 viewWillAppear:a3];
-  v4 = [(DMCEnrollmentConsentViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  [(DMCEnrollmentTemplateTableViewController *)&v5 viewWillAppear:appear];
+  navigationItem = [(DMCEnrollmentConsentViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(DMCEnrollmentConsentViewController *)self setModalInPresentation:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -181,14 +181,14 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DMCEnrollmentConsentViewController *)self username];
-      v7 = [(DMCEnrollmentConsentViewController *)v5 username];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      username = [(DMCEnrollmentConsentViewController *)self username];
+      username2 = [(DMCEnrollmentConsentViewController *)v5 username];
+      if ([username isEqualToString:username2])
       {
-        v8 = [(DMCEnrollmentConsentViewController *)self orgName];
-        v9 = [(DMCEnrollmentConsentViewController *)v5 orgName];
-        v10 = [v8 isEqualToString:v9];
+        orgName = [(DMCEnrollmentConsentViewController *)self orgName];
+        orgName2 = [(DMCEnrollmentConsentViewController *)v5 orgName];
+        v10 = [orgName isEqualToString:orgName2];
       }
 
       else
@@ -208,9 +208,9 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
 
 - (void)updateContinueButtonStatus
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
-  v4 = [(DMCEnrollmentConsentViewController *)self confirmationView];
-  [v4 setInProgress:v3];
+  inProgress = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
+  confirmationView = [(DMCEnrollmentConsentViewController *)self confirmationView];
+  [confirmationView setInProgress:inProgress];
 }
 
 - (id)_commonCellDataForRegularBYODDisclosure
@@ -222,9 +222,9 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   [v3 addObject:v6];
 
   v7 = [DMCEnrollmentTableViewTextCell alloc];
-  v8 = [(DMCEnrollmentConsentViewController *)self orgName];
-  v9 = [(DMCEnrollmentConsentViewController *)self serverURL];
-  v10 = [(DMCEnrollmentTableViewTextCell *)v7 initWithText:v8 bold:1 subText:v9 layoutStyle:0];
+  orgName = [(DMCEnrollmentConsentViewController *)self orgName];
+  serverURL = [(DMCEnrollmentConsentViewController *)self serverURL];
+  v10 = [(DMCEnrollmentTableViewTextCell *)v7 initWithText:orgName bold:1 subText:serverURL layoutStyle:0];
   [v3 addObject:v10];
 
   return v3;
@@ -244,10 +244,10 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
   v4 = MEMORY[0x277D755D0];
-  v5 = [MEMORY[0x277D75348] systemWhiteColor];
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D75348] systemOrangeColor];
-  v13[1] = v6;
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v13[0] = systemWhiteColor;
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v13[1] = systemOrangeColor;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v8 = [v4 configurationWithPaletteColors:v7];
 
@@ -259,14 +259,14 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   return v11;
 }
 
-- (id)_platterCellDataWithImage:(id)a3 text:(id)a4
+- (id)_platterCellDataWithImage:(id)image text:(id)text
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconImage:v7 layoutStyle:1];
+  textCopy = text;
+  imageCopy = image;
+  v8 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconImage:imageCopy layoutStyle:1];
 
-  v9 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:v6 bold:0 subText:0 layoutStyle:1];
+  v9 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:textCopy bold:0 subText:0 layoutStyle:1];
   v10 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:&stru_2859FB650 bold:0 subText:0 layoutStyle:1];
   [(DMCEnrollmentConsentViewController *)self _setupManagementDetailsLinkTextForCell:v10];
   v20[0] = v8;
@@ -274,25 +274,25 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v12 = [v11 mutableCopy];
 
-  v13 = [(DMCEnrollmentConsentViewController *)self _requiredAppCellData];
-  if (v13)
+  _requiredAppCellData = [(DMCEnrollmentConsentViewController *)self _requiredAppCellData];
+  if (_requiredAppCellData)
   {
-    [v12 insertObject:v13 atIndex:1];
+    [v12 insertObject:_requiredAppCellData atIndex:1];
   }
 
   [v12 addObject:v10];
   v14 = [DMCEnrollmentTableViewPlatterCell alloc];
   v19 = v12;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-  v16 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  v17 = [(DMCEnrollmentTableViewPlatterCell *)v14 initWithCellData:v15 parentTableView:v16 useShadow:1];
+  tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  v17 = [(DMCEnrollmentTableViewPlatterCell *)v14 initWithCellData:v15 parentTableView:tableView useShadow:1];
 
   return v17;
 }
 
-- (void)_setupManagementDetailsLinkTextForCell:(id)a3
+- (void)_setupManagementDetailsLinkTextForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_initWeak(&location, self);
   v5 = DMCLocalizedString();
   v6[0] = MEMORY[0x277D85DD0];
@@ -300,7 +300,7 @@ void __46__DMCEnrollmentConsentViewController_loadView__block_invoke_2(uint64_t 
   v6[2] = __77__DMCEnrollmentConsentViewController__setupManagementDetailsLinkTextForCell___block_invoke;
   v6[3] = &unk_278EE7880;
   objc_copyWeak(&v7, &location);
-  [v4 configureLinkText:v5 forceLineBreak:0 linkAction:v6];
+  [cellCopy configureLinkText:v5 forceLineBreak:0 linkAction:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -532,10 +532,10 @@ void __65__DMCEnrollmentConsentViewController__cellDataForLearnMoreButton__block
   return v2;
 }
 
-- (id)_serverURLWithoutHTTP:(id)a3
+- (id)_serverURLWithoutHTTP:(id)p
 {
-  v3 = a3;
-  v4 = [v3 dmc_substringWithPattern:@".*:\\/\\/(.*)"];
+  pCopy = p;
+  v4 = [pCopy dmc_substringWithPattern:@".*:\\/\\/(.*)"];
   v5 = v4;
   if (v4)
   {
@@ -544,7 +544,7 @@ void __65__DMCEnrollmentConsentViewController__cellDataForLearnMoreButton__block
 
   else
   {
-    v6 = v3;
+    v6 = pCopy;
   }
 
   v7 = v6;

@@ -1,22 +1,22 @@
 @interface NRDUpdateDaemonClientImpl
-- (BOOL)resendOnError:(id)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (BOOL)resendOnError:(id)error;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (void)_invalidateConnection;
-- (void)acquireNRDUpdateBrain:(id)a3 reply:(id)a4;
+- (void)acquireNRDUpdateBrain:(id)brain reply:(id)reply;
 - (void)connectToServerIfNecessary;
-- (void)getNRDUpdateBrainEndpoint:(id)a3;
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5;
-- (void)update:(id)a3;
-- (void)update:(id)a3 reply:(id)a4;
+- (void)getNRDUpdateBrainEndpoint:(id)endpoint;
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler;
+- (void)update:(id)update;
+- (void)update:(id)update reply:(id)reply;
 @end
 
 @implementation NRDUpdateDaemonClientImpl
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(NRDUpdateDaemonClientImpl *)self connectToServerIfNecessary];
-  v5 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v5;
 }
@@ -55,7 +55,7 @@
     v11[2] = 0x3032000000;
     v11[3] = __Block_byref_object_copy__6;
     v11[4] = __Block_byref_object_dispose__6;
-    v12 = self;
+    selfCopy = self;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __55__NRDUpdateDaemonClientImpl_connectToServerIfNecessary__block_invoke;
@@ -99,31 +99,31 @@ id __55__NRDUpdateDaemonClientImpl_connectToServerIfNecessary__block_invoke_7(ui
   return [*(*(*(a1 + 32) + 8) + 40) noteConnectionDropped];
 }
 
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     v10 = nrdSharedLogger();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-    if (a4)
+    if (method)
     {
       if (v11)
       {
-        [NRDUpdateDaemonClientImpl handleConnectionError:a4 method:v8 handler:v10];
+        [NRDUpdateDaemonClientImpl handleConnectionError:method method:errorCopy handler:v10];
       }
     }
 
     else if (v11)
     {
-      [(NRDUpdateDaemonClientImpl *)v8 handleConnectionError:v10 method:v12 handler:v13, v14, v15, v16, v17];
+      [(NRDUpdateDaemonClientImpl *)errorCopy handleConnectionError:v10 method:v12 handler:v13, v14, v15, v16, v17];
     }
 
-    v18 = [v8 domain];
-    if ([v18 isEqualToString:NSCocoaErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      if ([v8 code] == 4097)
+      if ([errorCopy code] == 4097)
       {
 
 LABEL_12:
@@ -131,9 +131,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v19 = [v8 code];
+      code = [errorCopy code];
 
-      if (v19 == 4099)
+      if (code == 4099)
       {
         goto LABEL_12;
       }
@@ -144,20 +144,20 @@ LABEL_12:
     }
 
 LABEL_13:
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)getNRDUpdateBrainEndpoint:(id)a3
+- (void)getNRDUpdateBrainEndpoint:(id)endpoint
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __55__NRDUpdateDaemonClientImpl_getNRDUpdateBrainEndpoint___block_invoke;
   v6[3] = &unk_100049F88;
-  v7 = a3;
+  endpointCopy = endpoint;
   v8 = "[NRDUpdateDaemonClientImpl getNRDUpdateBrainEndpoint:]";
   v6[4] = self;
-  v4 = v7;
+  v4 = endpointCopy;
   v5 = [(NRDUpdateDaemonClientImpl *)self _remoteInterfaceWithErrorHandler:v6];
   [v5 getNRDUpdateBrainEndpoint:v4];
 }
@@ -178,19 +178,19 @@ void __55__NRDUpdateDaemonClientImpl_getNRDUpdateBrainEndpoint___block_invoke(ui
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)acquireNRDUpdateBrain:(id)a3 reply:(id)a4
+- (void)acquireNRDUpdateBrain:(id)brain reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  brainCopy = brain;
+  replyCopy = reply;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __57__NRDUpdateDaemonClientImpl_acquireNRDUpdateBrain_reply___block_invoke;
   v15[3] = &unk_100049FD8;
   v15[4] = self;
-  v8 = v6;
+  v8 = brainCopy;
   v16 = v8;
-  v17 = v7;
-  v9 = v7;
+  v17 = replyCopy;
+  v9 = replyCopy;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __57__NRDUpdateDaemonClientImpl_acquireNRDUpdateBrain_reply___block_invoke_2;
@@ -329,16 +329,16 @@ void __57__NRDUpdateDaemonClientImpl_acquireNRDUpdateBrain_reply___block_invoke_
   }
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __36__NRDUpdateDaemonClientImpl_update___block_invoke;
   v6[3] = &unk_100049F88;
-  v7 = a3;
+  updateCopy = update;
   v8 = "[NRDUpdateDaemonClientImpl update:]";
   v6[4] = self;
-  v4 = v7;
+  v4 = updateCopy;
   v5 = [(NRDUpdateDaemonClientImpl *)self _remoteInterfaceWithErrorHandler:v6];
   [v5 update:v4];
 }
@@ -359,17 +359,17 @@ void __36__NRDUpdateDaemonClientImpl_update___block_invoke(uint64_t a1, void *a2
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)update:(id)a3 reply:(id)a4
+- (void)update:(id)update reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  updateCopy = update;
+  replyCopy = reply;
+  if (updateCopy)
   {
     v8 = nrdSharedLogger();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v6;
+      v15 = updateCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Warning: NRDUpdated options are not supported on this platform. options=%{public}@", buf, 0xCu);
     }
   }
@@ -378,10 +378,10 @@ void __36__NRDUpdateDaemonClientImpl_update___block_invoke(uint64_t a1, void *a2
   v11[1] = 3221225472;
   v11[2] = __42__NRDUpdateDaemonClientImpl_update_reply___block_invoke;
   v11[3] = &unk_100049F88;
-  v12 = v7;
+  v12 = replyCopy;
   v13 = "[NRDUpdateDaemonClientImpl update:reply:]";
   v11[4] = self;
-  v9 = v7;
+  v9 = replyCopy;
   v10 = [(NRDUpdateDaemonClientImpl *)self _remoteInterfaceWithErrorHandler:v11];
   [v10 update:v9];
 }
@@ -402,27 +402,27 @@ void __42__NRDUpdateDaemonClientImpl_update_reply___block_invoke(uint64_t a1, vo
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (BOOL)resendOnError:(id)a3
+- (BOOL)resendOnError:(id)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!errorCopy)
   {
     v17 = 0;
     goto LABEL_22;
   }
 
-  v19 = v7;
-  v9 = v7;
+  v19 = errorCopy;
+  v9 = errorCopy;
   while (1)
   {
-    v10 = [v9 userInfo];
+    userInfo = [v9 userInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v3 = [v9 userInfo];
-      v5 = [v3 objectForKeyedSubscript:@"com.apple.NRD-Resend"];
+      userInfo2 = [v9 userInfo];
+      v5 = [userInfo2 objectForKeyedSubscript:@"com.apple.NRD-Resend"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -432,8 +432,8 @@ void __42__NRDUpdateDaemonClientImpl_update_reply___block_invoke(uint64_t a1, vo
 
     v12 = 0;
 LABEL_8:
-    v13 = [v9 domain];
-    if ([v13 isEqualToString:@"NRDUpdateErrorDomain"])
+    domain = [v9 domain];
+    if ([domain isEqualToString:@"NRDUpdateErrorDomain"])
     {
       v14 = [v9 code] == 112;
     }
@@ -456,8 +456,8 @@ LABEL_8:
       goto LABEL_20;
     }
 
-    v15 = [v9 userInfo];
-    v16 = [v15 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo3 = [v9 userInfo];
+    v16 = [userInfo3 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     v9 = v16;
     if (!v16)
@@ -467,8 +467,8 @@ LABEL_8:
     }
   }
 
-  v4 = [v9 userInfo];
-  v6 = [v4 objectForKeyedSubscript:@"com.apple.NRD-Resend"];
+  userInfo4 = [v9 userInfo];
+  v6 = [userInfo4 objectForKeyedSubscript:@"com.apple.NRD-Resend"];
   if (![v6 BOOLValue])
   {
     v12 = 1;

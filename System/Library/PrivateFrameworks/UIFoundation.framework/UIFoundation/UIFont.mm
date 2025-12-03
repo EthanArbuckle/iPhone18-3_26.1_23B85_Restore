@@ -1,79 +1,79 @@
 @interface UIFont
-+ (BOOL)_isSupportedDynamicFontTextStyle:(id)a3;
++ (BOOL)_isSupportedDynamicFontTextStyle:(id)style;
 + (NSArray)familyNames;
 + (NSArray)fontNamesForFamilyName:(NSString *)familyName;
-+ (UIFont)fontWithMarkupDescription:(id)a3;
-+ (UIFont)fontWithName:(id)a3 size:(double)a4 traits:(int)a5;
++ (UIFont)fontWithMarkupDescription:(id)description;
++ (UIFont)fontWithName:(id)name size:(double)size traits:(int)traits;
 + (UIFont)monospacedDigitSystemFontOfSize:(CGFloat)fontSize weight:(UIFontWeight)weight;
 + (UIFont)monospacedSystemFontOfSize:(CGFloat)fontSize weight:(UIFontWeight)weight;
 + (UIFont)preferredFontForTextStyle:(UIFontTextStyle)style compatibleWithTraitCollection:(UITraitCollection *)traitCollection;
 + (UIFont)systemFontOfSize:(CGFloat)fontSize weight:(UIFontWeight)weight;
 + (UIFont)systemFontOfSize:(CGFloat)fontSize weight:(UIFontWeight)weight width:(UIFontWidth)width;
-+ (double)_pointSize:(double)a3 scaledLikeTextStyle:(id)a4 maximumPointSize:(double)a5 compatibleWithTraitCollection:(id)a6 roundSize:(BOOL)a7;
++ (double)_pointSize:(double)size scaledLikeTextStyle:(id)style maximumPointSize:(double)pointSize compatibleWithTraitCollection:(id)collection roundSize:(BOOL)roundSize;
 + (double)_readableWidth;
-+ (id)_fontWithDescriptor:(id)a3 size:(double)a4 textStyleForScaling:(id)a5 pointSizeForScaling:(double)a6 maximumPointSizeAfterScaling:(double)a7 forIB:(BOOL)a8 legibilityWeight:(int64_t)a9;
-+ (id)_fontWithName:(id)a3 size:(double)a4;
-+ (id)_lightSystemFontOfSize:(double)a3;
-+ (id)_opticalBoldSystemFontOfSize:(double)a3;
-+ (id)_opticalSystemFontOfSize:(double)a3;
-+ (id)_preferredFontForTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 design:(id)a5 weight:(double)a6;
-+ (id)_preferredFontForTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 weight:(double)a5;
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 variant:(int64_t)a5 weight:(double)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8;
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 variant:(int64_t)a5 weight:(id)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8 pointSize:(double)a9 pointSizeForScaling:(double)a10;
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(double)a5;
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(double)a5 maximumContentSizeCategory:(id)a6 compatibleWithTraitCollection:(id)a7;
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(id)a5 symbolicTraits:(unsigned int)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8 pointSize:(double)a9 pointSizeForScaling:(double)a10;
-+ (id)_preferredFontForTextStyle:(id)a3 maximumContentSizeCategory:(id)a4 compatibleWithTraitCollection:(id)a5;
-+ (id)_preferredFontForTextStyle:(id)a3 maximumPointSize:(double)a4 compatibleWithTraitCollection:(id)a5;
-+ (id)_preferredFontForTextStyle:(id)a3 weight:(double)a4;
++ (id)_fontWithDescriptor:(id)descriptor size:(double)size textStyleForScaling:(id)scaling pointSizeForScaling:(double)forScaling maximumPointSizeAfterScaling:(double)afterScaling forIB:(BOOL)b legibilityWeight:(int64_t)weight;
++ (id)_fontWithName:(id)name size:(double)size;
++ (id)_lightSystemFontOfSize:(double)size;
++ (id)_opticalBoldSystemFontOfSize:(double)size;
++ (id)_opticalSystemFontOfSize:(double)size;
++ (id)_preferredFontForTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits design:(id)design weight:(double)weight;
++ (id)_preferredFontForTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits weight:(double)weight;
++ (id)_preferredFontForTextStyle:(id)style design:(id)design variant:(int64_t)variant weight:(double)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontForTextStyle:(id)style design:(id)design variant:(int64_t)variant weight:(id)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection pointSize:(double)size pointSizeForScaling:(double)self0;
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(double)weight;
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(double)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(id)weight symbolicTraits:(unsigned int)traits maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection pointSize:(double)size pointSizeForScaling:(double)self0;
++ (id)_preferredFontForTextStyle:(id)style maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontForTextStyle:(id)style maximumPointSize:(double)size compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontForTextStyle:(id)style weight:(double)weight;
 + (id)_sharedFontCache;
 + (id)_sharedZeroPointFont;
 + (id)_supportedDynamicFontStyles;
-+ (id)_systemFontOfSize:(double)a3 width:(id)a4 traits:(int)a5;
-+ (id)_systemFontsOfSize:(double)a3 traits:(int)a4;
-+ (id)_thinSystemFontOfSize:(double)a3;
-+ (id)_ultraLightSystemFontOfSize:(double)a3;
-+ (id)ib_preferredFontForTextStyle:(id)a3;
-+ (id)systemFontOfSize:(double)a3 traits:(int)a4;
-+ (id)systemFontOfSize:(double)a3 weight:(double)a4 design:(id)a5;
-- (CGAffineTransform)_textMatrixTransformForContext:(SEL)a3;
++ (id)_systemFontOfSize:(double)size width:(id)width traits:(int)traits;
++ (id)_systemFontsOfSize:(double)size traits:(int)traits;
++ (id)_thinSystemFontOfSize:(double)size;
++ (id)_ultraLightSystemFontOfSize:(double)size;
++ (id)ib_preferredFontForTextStyle:(id)style;
++ (id)systemFontOfSize:(double)size traits:(int)traits;
++ (id)systemFontOfSize:(double)size weight:(double)weight design:(id)design;
+- (CGAffineTransform)_textMatrixTransformForContext:(SEL)context;
 - (CGFloat)leading;
 - (CGFont)_backingCGSFont;
-- (CGSize)advancementForGlyph:(unsigned __int16)a3;
+- (CGSize)advancementForGlyph:(unsigned __int16)glyph;
 - (NSString)familyName;
 - (NSString)fontName;
 - (UIFont)fontWithSize:(CGFloat)fontSize;
 - (UIFont)init;
-- (UIFont)initWithCoder:(id)a3;
-- (UIFont)initWithFamilyName:(id)a3 traits:(int)a4 size:(double)a5;
-- (UIFont)initWithMarkupDescription:(id)a3;
-- (UIFont)initWithName:(id)a3 size:(double)a4;
+- (UIFont)initWithCoder:(id)coder;
+- (UIFont)initWithFamilyName:(id)name traits:(int)traits size:(double)size;
+- (UIFont)initWithMarkupDescription:(id)description;
+- (UIFont)initWithName:(id)name size:(double)size;
 - (UIFontDescriptor)fontDescriptor;
-- (double)_baseLineHeightForFont:(BOOL)a3;
-- (double)_scaledValueForValue:(double)a3 useLanguageAwareScaling:(BOOL)a4;
+- (double)_baseLineHeightForFont:(BOOL)font;
+- (double)_scaledValueForValue:(double)value useLanguageAwareScaling:(BOOL)scaling;
 - (double)readableWidth;
 - (double)underlinePosition;
 - (id)_alternateSystemFonts;
-- (id)_fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:(id)a3;
-- (id)_fontScaledByScaleFactor:(double)a3;
-- (id)_fontScaledLikeTextStyle:(id)a3 maximumPointSize:(double)a4 compatibleWithTraitCollection:(id)a5 forIB:(BOOL)a6;
-- (id)bestMatchingFontForCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4 attributes:(id)a5 actualCoveredLength:(unint64_t *)a6;
+- (id)_fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:(id)collection;
+- (id)_fontScaledByScaleFactor:(double)factor;
+- (id)_fontScaledLikeTextStyle:(id)style maximumPointSize:(double)size compatibleWithTraitCollection:(id)collection forIB:(BOOL)b;
+- (id)bestMatchingFontForCharacters:(const unsigned __int16 *)characters length:(unint64_t)length attributes:(id)attributes actualCoveredLength:(unint64_t *)coveredLength;
 - (id)coveredCharacterSet;
 - (id)description;
-- (id)familyNameForCSSFontFamilyValueForWebKit:(BOOL)a3;
-- (id)htmlMarkupDescriptionForWebKit:(BOOL)a3;
+- (id)familyNameForCSSFontFamilyValueForWebKit:(BOOL)kit;
+- (id)htmlMarkupDescriptionForWebKit:(BOOL)kit;
 - (id)lastResortFont;
 - (id)markupDescription;
-- (id)markupDescriptionForWebKit:(BOOL)a3 pointSize:(float)a4 sizeUnit:(id)a5;
+- (id)markupDescriptionForWebKit:(BOOL)kit pointSize:(float)size sizeUnit:(id)unit;
 - (int)traits;
-- (unint64_t)getCaretPositions:(double *)a3 forGlyph:(unsigned int)a4 maximumLength:(unint64_t)a5;
+- (unint64_t)getCaretPositions:(double *)positions forGlyph:(unsigned int)glyph maximumLength:(unint64_t)length;
 - (unint64_t)mostCompatibleStringEncoding;
-- (unsigned)_defaultGlyphForChar:(unsigned __int16)a3;
-- (unsigned)hyphenGlyphForLocale:(id)a3;
-- (void)applyToGraphicsContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getVerticalOriginTranslations:(CGSize *)a3 forCGGlyphs:(const unsigned __int16 *)a4 count:(unint64_t)a5;
-- (void)setInContext:(CGContext *)a3;
+- (unsigned)_defaultGlyphForChar:(unsigned __int16)char;
+- (unsigned)hyphenGlyphForLocale:(id)locale;
+- (void)applyToGraphicsContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)getVerticalOriginTranslations:(CGSize *)translations forCGGlyphs:(const unsigned __int16 *)glyphs count:(unint64_t)count;
+- (void)setInContext:(CGContext *)context;
 @end
 
 @implementation UIFont
@@ -125,14 +125,14 @@ _UICache *__26__UIFont__sharedFontCache__block_invoke()
     v5 = 3221225472;
     v6 = __24__UIFont__readableWidth__block_invoke;
     v7 = &unk_1E7267F40;
-    v8 = a1;
+    selfCopy = self;
     v9 = a2;
     if (_readableWidth_onceToken != -1)
     {
       dispatch_once(&_readableWidth_onceToken, &v4);
     }
 
-    [objc_msgSend(a1 preferredFontForTextStyle:{*MEMORY[0x1E6965AB0], v4, v5, v6, v7, v8, v9), "readableWidth"}];
+    [objc_msgSend(self preferredFontForTextStyle:{*MEMORY[0x1E6965AB0], v4, v5, v6, v7, selfCopy, v9), "readableWidth"}];
     _readableWidth_cachedReadableWidth = *&result;
   }
 
@@ -180,8 +180,8 @@ uint64_t __24__UIFont__readableWidth__block_invoke_2(uint64_t a1, uint64_t a2)
     v5 = [MEMORY[0x1E696AEC0] stringWithCharacters:__b length:62];
     v6 = objc_alloc(MEMORY[0x1E696AAB0]);
     v10 = @"NSFont";
-    v11 = self;
-    v7 = CTLineCreateWithAttributedString([v6 initWithString:v5 attributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v11, &v10, 1)}]);
+    selfCopy = self;
+    v7 = CTLineCreateWithAttributedString([v6 initWithString:v5 attributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &selfCopy, &v10, 1)}]);
     if (!v7)
     {
       return 0.0;
@@ -322,9 +322,9 @@ void __30__UIFont__sharedZeroPointFont__block_invoke()
   return [(UIFont *)&v3 init];
 }
 
-+ (UIFont)fontWithMarkupDescription:(id)a3
++ (UIFont)fontWithMarkupDescription:(id)description
 {
-  v3 = [[UIFont alloc] initWithMarkupDescription:a3];
+  v3 = [[UIFont alloc] initWithMarkupDescription:description];
 
   return v3;
 }
@@ -359,39 +359,39 @@ void __30__UIFont__sharedZeroPointFont__block_invoke()
   return v5;
 }
 
-+ (id)_fontWithDescriptor:(id)a3 size:(double)a4 textStyleForScaling:(id)a5 pointSizeForScaling:(double)a6 maximumPointSizeAfterScaling:(double)a7 forIB:(BOOL)a8 legibilityWeight:(int64_t)a9
++ (id)_fontWithDescriptor:(id)descriptor size:(double)size textStyleForScaling:(id)scaling pointSizeForScaling:(double)forScaling maximumPointSizeAfterScaling:(double)afterScaling forIB:(BOOL)b legibilityWeight:(int64_t)weight
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!descriptor)
   {
     return 0;
   }
 
-  v10 = a8;
-  v15 = a3;
-  if (a8)
+  bCopy = b;
+  descriptorCopy = descriptor;
+  if (b)
   {
     v16 = 0;
 LABEL_9:
-    if (a9 != -1)
+    if (weight != -1)
     {
       v20 = *MEMORY[0x1E69657F0];
-      v21 = [v15 objectForKey:*MEMORY[0x1E69657F0]];
-      if (!v21 || [v21 unsignedIntegerValue] != a9)
+      v21 = [descriptorCopy objectForKey:*MEMORY[0x1E69657F0]];
+      if (!v21 || [v21 unsignedIntegerValue] != weight)
       {
         v26 = v20;
-        v27[0] = [MEMORY[0x1E696AD98] numberWithLong:a9];
-        v15 = [v15 fontDescriptorByAddingAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v27, &v26, 1)}];
-        if (!v15)
+        v27[0] = [MEMORY[0x1E696AD98] numberWithLong:weight];
+        descriptorCopy = [descriptorCopy fontDescriptorByAddingAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v27, &v26, 1)}];
+        if (!descriptorCopy)
         {
           +[UIFont _fontWithDescriptor:size:textStyleForScaling:pointSizeForScaling:maximumPointSizeAfterScaling:forIB:legibilityWeight:];
         }
       }
     }
 
-    v22 = CTFontCreateWithFontDescriptor(v15, a4, 0);
+    v22 = CTFontCreateWithFontDescriptor(descriptorCopy, size, 0);
     v19 = v22;
-    if (!v10 && v22)
+    if (!bCopy && v22)
     {
       [+[UIFont _sharedFontCache](UIFont "_sharedFontCache")];
     }
@@ -399,17 +399,17 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (a9 == -1)
+  if (weight == -1)
   {
     v18 = _AXSEnhanceTextLegibilityEnabled() != 0;
   }
 
   else
   {
-    v18 = a9 == 1;
+    v18 = weight == 1;
   }
 
-  v16 = [_UIFontCacheKey newFontCacheKeyWithFontDescriptor:v15 pointSize:a5 textStyleForScaling:v18 pointSizeForScaling:a4 maximumPointSizeAfterScaling:a6 textLegibility:a7];
+  v16 = [_UIFontCacheKey newFontCacheKeyWithFontDescriptor:descriptorCopy pointSize:scaling textStyleForScaling:v18 pointSizeForScaling:size maximumPointSizeAfterScaling:forScaling textLegibility:afterScaling];
   v19 = [+[UIFont _sharedFontCache](UIFont "_sharedFontCache")];
   if (!v19)
   {
@@ -418,12 +418,12 @@ LABEL_9:
 
 LABEL_17:
 
-  v23 = [a5 copy];
+  v23 = [scaling copy];
   *(__CTFontGetExtraData(v19) + 32) = v23;
-  *(__CTFontGetExtraData(v19) + 40) = a6;
-  *(__CTFontGetExtraData(v19) + 48) = a7;
+  *(__CTFontGetExtraData(v19) + 40) = forScaling;
+  *(__CTFontGetExtraData(v19) + 48) = afterScaling;
   ExtraData = __CTFontGetExtraData(v19);
-  if (v10)
+  if (bCopy)
   {
     v25 = 2;
   }
@@ -437,11 +437,11 @@ LABEL_17:
   return v19;
 }
 
-+ (id)_systemFontsOfSize:(double)a3 traits:(int)a4
++ (id)_systemFontsOfSize:(double)size traits:(int)traits
 {
-  v4 = *&a4;
+  v4 = *&traits;
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [UIFont fontWithName:@"Helvetica" size:v4 traits:a3];
+  v7 = [UIFont fontWithName:@"Helvetica" size:v4 traits:size];
   if (v7)
   {
     [v6 addObject:v7];
@@ -469,107 +469,107 @@ LABEL_17:
 
 + (UIFont)preferredFontForTextStyle:(UIFontTextStyle)style compatibleWithTraitCollection:(UITraitCollection *)traitCollection
 {
-  v6 = [(UITraitCollection *)traitCollection preferredContentSizeCategory];
-  v7 = [(UITraitCollection *)traitCollection legibilityWeight];
+  preferredContentSizeCategory = [(UITraitCollection *)traitCollection preferredContentSizeCategory];
+  legibilityWeight = [(UITraitCollection *)traitCollection legibilityWeight];
 
-  return __UIFontForTextStyle(style, v6, v7, 0, 0);
+  return __UIFontForTextStyle(style, preferredContentSizeCategory, legibilityWeight, 0, 0);
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 maximumContentSizeCategory:(id)a4 compatibleWithTraitCollection:(id)a5
++ (id)_preferredFontForTextStyle:(id)style maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection
 {
-  if (!a4 || getUIContentSizeCategoryUnspecified() == a4)
+  if (!category || getUIContentSizeCategoryUnspecified() == category)
   {
 
-    return [a1 preferredFontForTextStyle:a3 compatibleWithTraitCollection:a5];
+    return [self preferredFontForTextStyle:style compatibleWithTraitCollection:collection];
   }
 
   else
   {
     CTFontDescriptorGetTextStyleSize();
 
-    return [a1 _preferredFontForTextStyle:a3 maximumPointSize:a5 compatibleWithTraitCollection:?];
+    return [self _preferredFontForTextStyle:style maximumPointSize:collection compatibleWithTraitCollection:?];
   }
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 variant:(int64_t)a5 weight:(double)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8
++ (id)_preferredFontForTextStyle:(id)style design:(id)design variant:(int64_t)variant weight:(double)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection
 {
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:a4 variant:a5 weight:v14 maximumContentSizeCategory:a7 compatibleWithTraitCollection:a8 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:design variant:variant weight:v14 maximumContentSizeCategory:category compatibleWithTraitCollection:collection pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 variant:(int64_t)a5 weight:(id)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8 pointSize:(double)a9 pointSizeForScaling:(double)a10
++ (id)_preferredFontForTextStyle:(id)style design:(id)design variant:(int64_t)variant weight:(id)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection pointSize:(double)size pointSizeForScaling:(double)self0
 {
-  v10 = (a5 << 7) & 0x10000;
-  if ((a5 & 0x100) != 0)
+  v10 = (variant << 7) & 0x10000;
+  if ((variant & 0x100) != 0)
   {
     v10 = 0x8000;
   }
 
-  if (!a4)
+  if (!design)
   {
-    a4 = (@"NSCTFontUIFontDesignRounded" & (a5 << 47 >> 63));
+    design = (@"NSCTFontUIFontDesignRounded" & (variant << 47 >> 63));
   }
 
-  return [a1 _preferredFontForTextStyle:a3 design:a4 weight:a6 symbolicTraits:(a5 >> 9) & 2 | v10 maximumContentSizeCategory:a7 compatibleWithTraitCollection:a8 pointSize:a9 pointSizeForScaling:a10];
+  return [self _preferredFontForTextStyle:style design:design weight:weight symbolicTraits:(variant >> 9) & 2 | v10 maximumContentSizeCategory:category compatibleWithTraitCollection:collection pointSize:size pointSizeForScaling:scaling];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 weight:(double)a4
++ (id)_preferredFontForTextStyle:(id)style weight:(double)weight
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:0 weight:v6 symbolicTraits:0 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:0 weight:v6 symbolicTraits:0 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(double)a5
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(double)weight
 {
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:a4 weight:v8 symbolicTraits:0 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:design weight:v8 symbolicTraits:0 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 weight:(double)a5
++ (id)_preferredFontForTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits weight:(double)weight
 {
-  v5 = *&a4;
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v5 = *&traits;
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:0 weight:v8 symbolicTraits:v5 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:0 weight:v8 symbolicTraits:v5 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 design:(id)a5 weight:(double)a6
++ (id)_preferredFontForTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits design:(id)design weight:(double)weight
 {
-  v7 = *&a4;
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+  v7 = *&traits;
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:a5 weight:v10 symbolicTraits:v7 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:design weight:v10 symbolicTraits:v7 maximumContentSizeCategory:0 compatibleWithTraitCollection:0 pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(double)a5 maximumContentSizeCategory:(id)a6 compatibleWithTraitCollection:(id)a7
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(double)weight maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection
 {
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return [a1 _preferredFontForTextStyle:a3 design:a4 weight:v12 symbolicTraits:0 maximumContentSizeCategory:a6 compatibleWithTraitCollection:a7 pointSize:0.0 pointSizeForScaling:0.0];
+  return [self _preferredFontForTextStyle:style design:design weight:v12 symbolicTraits:0 maximumContentSizeCategory:category compatibleWithTraitCollection:collection pointSize:0.0 pointSizeForScaling:0.0];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 design:(id)a4 weight:(id)a5 symbolicTraits:(unsigned int)a6 maximumContentSizeCategory:(id)a7 compatibleWithTraitCollection:(id)a8 pointSize:(double)a9 pointSizeForScaling:(double)a10
++ (id)_preferredFontForTextStyle:(id)style design:(id)design weight:(id)weight symbolicTraits:(unsigned int)traits maximumContentSizeCategory:(id)category compatibleWithTraitCollection:(id)collection pointSize:(double)size pointSizeForScaling:(double)self0
 {
-  v14 = *&a6;
-  if (a8)
+  v14 = *&traits;
+  if (collection)
   {
-    v19 = [a8 legibilityWeight];
+    legibilityWeight = [collection legibilityWeight];
   }
 
   else
   {
-    v19 = -1;
+    legibilityWeight = -1;
   }
 
-  v20 = __UIFontDescriptorWithTextStyle(a3, [a8 preferredContentSizeCategory], 0, v14, a4, a5, v19);
-  if (a7)
+  v20 = __UIFontDescriptorWithTextStyle(style, [collection preferredContentSizeCategory], 0, v14, design, weight, legibilityWeight);
+  if (category)
   {
-    if (([a7 isEqualToString:getUIContentSizeCategoryUnspecified()] & 1) == 0)
+    if (([category isEqualToString:getUIContentSizeCategoryUnspecified()] & 1) == 0)
     {
-      v21 = __UIFontDescriptorWithTextStyle(a3, a7, 0, 0, 0, 0, v19);
+      v21 = __UIFontDescriptorWithTextStyle(style, category, 0, 0, 0, 0, legibilityWeight);
       [v21 pointSize];
       v23 = v22;
       [v20 pointSize];
@@ -581,10 +581,10 @@ LABEL_17:
     }
   }
 
-  return [a1 _fontWithDescriptor:v20 size:0 textStyleForScaling:0 pointSizeForScaling:v19 maximumPointSizeAfterScaling:a9 forIB:a10 legibilityWeight:0.0];
+  return [self _fontWithDescriptor:v20 size:0 textStyleForScaling:0 pointSizeForScaling:legibilityWeight maximumPointSizeAfterScaling:size forIB:scaling legibilityWeight:0.0];
 }
 
-+ (BOOL)_isSupportedDynamicFontTextStyle:(id)a3
++ (BOOL)_isSupportedDynamicFontTextStyle:(id)style
 {
   if (dyld_program_sdk_at_least())
   {
@@ -594,9 +594,9 @@ LABEL_17:
 
   else
   {
-    v6 = [a1 _supportedDynamicFontStyles];
+    _supportedDynamicFontStyles = [self _supportedDynamicFontStyles];
 
-    return [v6 containsObject:a3];
+    return [_supportedDynamicFontStyles containsObject:style];
   }
 }
 
@@ -617,71 +617,71 @@ uint64_t __37__UIFont__supportedDynamicFontStyles__block_invoke()
   return result;
 }
 
-- (id)_fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:(id)a3
+- (id)_fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:(id)collection
 {
-  v5 = [(UIFont *)self fontDescriptor];
-  if (a3)
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  if (collection)
   {
-    v6 = [a3 legibilityWeight];
+    legibilityWeight = [collection legibilityWeight];
   }
 
   else
   {
-    v6 = -1;
+    legibilityWeight = -1;
   }
 
-  v7 = [(UIFont *)self textStyleForScaling];
-  if (!v7)
+  textStyleForScaling = [(UIFont *)self textStyleForScaling];
+  if (!textStyleForScaling)
   {
     if (![(UIFont *)self _isTextStyleFont])
     {
 LABEL_13:
-      v12 = 0;
+      isIBTextStyleFont = 0;
 LABEL_16:
-      v7 = 0;
+      textStyleForScaling = 0;
       goto LABEL_18;
     }
 
 LABEL_10:
     [(UIFont *)self _textStyle];
     v14 = *MEMORY[0x1E6965850];
-    [(UIFontDescriptor *)v5 objectForKey:*MEMORY[0x1E6965850]];
+    [(UIFontDescriptor *)fontDescriptor objectForKey:*MEMORY[0x1E6965850]];
     CTFontDescriptorGetTextStyleSize();
     v16 = v15;
     [(UIFont *)self pointSize];
     if (v17 == v16)
     {
-      v18 = [(UIFontDescriptor *)v5 objectForKey:@"NSCTFontOpticalSizeAttribute"];
-      if (!v7 && v18)
+      v18 = [(UIFontDescriptor *)fontDescriptor objectForKey:@"NSCTFontOpticalSizeAttribute"];
+      if (!textStyleForScaling && v18)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v7)
+    else if (!textStyleForScaling)
     {
       goto LABEL_17;
     }
 
-    v12 = [(UIFont *)self isIBTextStyleFont];
-    +[UIFont _normalizedContentSizeCategory:default:](UIFont, "_normalizedContentSizeCategory:default:", [a3 preferredContentSizeCategory], 0);
+    isIBTextStyleFont = [(UIFont *)self isIBTextStyleFont];
+    +[UIFont _normalizedContentSizeCategory:default:](UIFont, "_normalizedContentSizeCategory:default:", [collection preferredContentSizeCategory], 0);
     ContentSizeCategoryIndex = CTFontDescriptorGetContentSizeCategoryIndex();
     if (CTFontDescriptorGetContentSizeCategoryIndex() != ContentSizeCategoryIndex)
     {
       [MEMORY[0x1E696AD98] numberWithUnsignedInt:ContentSizeCategoryIndex];
       CTFontDescriptorGetTextStyleSize();
       v25 = v24;
-      v26 = [(NSDictionary *)[(UIFontDescriptor *)v5 fontAttributes] mutableCopy];
+      v26 = [(NSDictionary *)[(UIFontDescriptor *)fontDescriptor fontAttributes] mutableCopy];
       [v26 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", ContentSizeCategoryIndex), v14}];
       [v26 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", v25), @"NSFontSizeAttribute"}];
       [v26 removeObjectForKey:*MEMORY[0x1E69657F0]];
-      v5 = [UIFontDescriptor fontDescriptorWithFontAttributes:v26];
+      fontDescriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:v26];
 
       [(UIFont *)self pointSizeForScaling];
       v9 = v27;
       [(UIFont *)self maximumPointSizeAfterScaling];
       v11 = v28;
-      v7 = 0;
+      textStyleForScaling = 0;
 LABEL_24:
       v13 = 0.0;
       goto LABEL_25;
@@ -695,12 +695,12 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  if (![objc_opt_class() _isSupportedDynamicFontTextStyle:v7])
+  if (![objc_opt_class() _isSupportedDynamicFontTextStyle:textStyleForScaling])
   {
 LABEL_17:
-    v12 = 0;
+    isIBTextStyleFont = 0;
 LABEL_18:
-    if (v6 == -1)
+    if (legibilityWeight == -1)
     {
       return self;
     }
@@ -710,8 +710,8 @@ LABEL_18:
       return self;
     }
 
-    v20 = [(UIFontDescriptor *)v5 objectForKey:*MEMORY[0x1E69657F0]];
-    if ([v20 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", v6)}])
+    v20 = [(UIFontDescriptor *)fontDescriptor objectForKey:*MEMORY[0x1E69657F0]];
+    if ([v20 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", legibilityWeight)}])
     {
       return self;
     }
@@ -727,61 +727,61 @@ LABEL_18:
   v9 = v8;
   [(UIFont *)self maximumPointSizeAfterScaling];
   v11 = v10;
-  v12 = [(UIFont *)self isIBFontMetricsScaledFont];
-  [objc_opt_class() _pointSize:v7 scaledLikeTextStyle:a3 maximumPointSize:v9 compatibleWithTraitCollection:v11];
+  isIBTextStyleFont = [(UIFont *)self isIBFontMetricsScaledFont];
+  [objc_opt_class() _pointSize:textStyleForScaling scaledLikeTextStyle:collection maximumPointSize:v9 compatibleWithTraitCollection:v11];
 LABEL_25:
 
-  return [UIFont _fontWithDescriptor:v5 size:v7 textStyleForScaling:v12 pointSizeForScaling:v6 maximumPointSizeAfterScaling:v13 forIB:v9 legibilityWeight:v11];
+  return [UIFont _fontWithDescriptor:fontDescriptor size:textStyleForScaling textStyleForScaling:isIBTextStyleFont pointSizeForScaling:legibilityWeight maximumPointSizeAfterScaling:v13 forIB:v9 legibilityWeight:v11];
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 maximumPointSize:(double)a4 compatibleWithTraitCollection:(id)a5
++ (id)_preferredFontForTextStyle:(id)style maximumPointSize:(double)size compatibleWithTraitCollection:(id)collection
 {
-  if (a4 <= 0.0)
+  if (size <= 0.0)
   {
 
-    return [UIFont preferredFontForTextStyle:a3 compatibleWithTraitCollection:?];
+    return [UIFont preferredFontForTextStyle:style compatibleWithTraitCollection:?];
   }
 
   else
   {
-    v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 compatibleWithTraitCollection:a5];
+    v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style compatibleWithTraitCollection:collection];
     [(UIFontDescriptor *)v7 pointSize];
-    if (v8 >= a4)
+    if (v8 >= size)
     {
-      v9 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v9 = v8;
+      sizeCopy = v8;
     }
 
-    if (a5)
+    if (collection)
     {
-      v10 = [a5 legibilityWeight];
+      legibilityWeight = [collection legibilityWeight];
     }
 
     else
     {
-      v10 = -1;
+      legibilityWeight = -1;
     }
 
-    return [UIFont _fontWithDescriptor:v7 size:0 textStyleForScaling:0 pointSizeForScaling:v10 maximumPointSizeAfterScaling:v9 forIB:0.0 legibilityWeight:a4];
+    return [UIFont _fontWithDescriptor:v7 size:0 textStyleForScaling:0 pointSizeForScaling:legibilityWeight maximumPointSizeAfterScaling:sizeCopy forIB:0.0 legibilityWeight:size];
   }
 }
 
-- (id)_fontScaledLikeTextStyle:(id)a3 maximumPointSize:(double)a4 compatibleWithTraitCollection:(id)a5 forIB:(BOOL)a6
+- (id)_fontScaledLikeTextStyle:(id)style maximumPointSize:(double)size compatibleWithTraitCollection:(id)collection forIB:(BOOL)b
 {
-  v6 = a6;
+  bCopy = b;
   if ((dyld_program_sdk_at_least() & 1) == 0 && [(UIFont *)self _isTextStyleFont])
   {
     [(UIFont *)self maximumPointSizeAfterScaling];
     if (v11 <= 0.0)
     {
       v12 = objc_opt_class();
-      v13 = [(UIFont *)self _textStyle];
+      _textStyle = [(UIFont *)self _textStyle];
 
-      return [v12 _preferredFontForTextStyle:v13 maximumPointSize:a5 compatibleWithTraitCollection:a4];
+      return [v12 _preferredFontForTextStyle:_textStyle maximumPointSize:collection compatibleWithTraitCollection:size];
     }
 
 LABEL_8:
@@ -794,63 +794,63 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v15 = [(UIFont *)self fontDescriptor];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
   v16 = objc_opt_class();
   [(UIFont *)self pointSize];
-  [v16 _pointSize:a3 scaledLikeTextStyle:a5 maximumPointSize:? compatibleWithTraitCollection:?];
+  [v16 _pointSize:style scaledLikeTextStyle:collection maximumPointSize:? compatibleWithTraitCollection:?];
   v18 = v17;
   [(UIFont *)self pointSize];
   v20 = v19;
-  if (a5)
+  if (collection)
   {
-    v21 = [a5 legibilityWeight];
+    legibilityWeight = [collection legibilityWeight];
   }
 
   else
   {
-    v21 = -1;
+    legibilityWeight = -1;
   }
 
-  return [UIFont _fontWithDescriptor:v15 size:a3 textStyleForScaling:v6 pointSizeForScaling:v21 maximumPointSizeAfterScaling:v18 forIB:v20 legibilityWeight:a4];
+  return [UIFont _fontWithDescriptor:fontDescriptor size:style textStyleForScaling:bCopy pointSizeForScaling:legibilityWeight maximumPointSizeAfterScaling:v18 forIB:v20 legibilityWeight:size];
 }
 
-+ (double)_pointSize:(double)a3 scaledLikeTextStyle:(id)a4 maximumPointSize:(double)a5 compatibleWithTraitCollection:(id)a6 roundSize:(BOOL)a7
++ (double)_pointSize:(double)size scaledLikeTextStyle:(id)style maximumPointSize:(double)pointSize compatibleWithTraitCollection:(id)collection roundSize:(BOOL)roundSize
 {
-  v7 = a7;
-  [[UIFont preferredFontForTextStyle:a6 compatibleWithTraitCollection:?], "_scaledValueForValue:", a3];
+  roundSizeCopy = roundSize;
+  [[UIFont preferredFontForTextStyle:collection compatibleWithTraitCollection:?], "_scaledValueForValue:", size];
   v10 = round(result);
-  if (v7)
+  if (roundSizeCopy)
   {
     result = v10;
   }
 
-  if (result >= a5)
+  if (result >= pointSize)
   {
-    v11 = a5;
+    pointSizeCopy = pointSize;
   }
 
   else
   {
-    v11 = result;
+    pointSizeCopy = result;
   }
 
-  if (a5 > 0.0)
+  if (pointSize > 0.0)
   {
-    return v11;
+    return pointSizeCopy;
   }
 
   return result;
 }
 
-+ (id)ib_preferredFontForTextStyle:(id)a3
++ (id)ib_preferredFontForTextStyle:(id)style
 {
-  if (!a3)
+  if (!style)
   {
     return 0;
   }
 
   +[UIFont _sharedFontCache];
-  v4 = __UIFontDescriptorWithTextStyle(a3, 0, 0, 0, 0, 0, -1);
+  v4 = __UIFontDescriptorWithTextStyle(style, 0, 0, 0, 0, 0, -1);
   if (v4)
   {
     v5 = CTFontCreateWithFontDescriptor(v4, 0.0, 0);
@@ -867,13 +867,13 @@ LABEL_8:
   return v5;
 }
 
-- (double)_scaledValueForValue:(double)a3 useLanguageAwareScaling:(BOOL)a4
+- (double)_scaledValueForValue:(double)value useLanguageAwareScaling:(BOOL)scaling
 {
-  v4 = a4;
-  v7 = [(UIFont *)self _textStyle];
-  if (v7)
+  scalingCopy = scaling;
+  _textStyle = [(UIFont *)self _textStyle];
+  if (_textStyle)
   {
-    v8 = v7;
+    v8 = _textStyle;
     if (_scaledValueForValue_useLanguageAwareScaling__onceToken != -1)
     {
       [UIFont _scaledValueForValue:useLanguageAwareScaling:];
@@ -883,7 +883,7 @@ LABEL_8:
     v17 = 0.0;
     HasExuberatedLineHeight = CTFontHasExuberatedLineHeight();
     v10 = &_scaledValueForValue_useLanguageAwareScaling____textStyleLanguageAwareBodyLeadingCache;
-    if ((v4 & HasExuberatedLineHeight) == 0)
+    if ((scalingCopy & HasExuberatedLineHeight) == 0)
     {
       v10 = &_scaledValueForValue_useLanguageAwareScaling____textStyleBodyLeadingCache;
     }
@@ -898,7 +898,7 @@ LABEL_8:
 
     else
     {
-      if ([(UIFont *)self _isTextStyleFont]&& ((v4 | HasExuberatedLineHeight ^ 1) & 1) != 0)
+      if ([(UIFont *)self _isTextStyleFont]&& ((scalingCopy | HasExuberatedLineHeight ^ 1) & 1) != 0)
       {
         CTFontDescriptorGetTextStyleSize();
         v14 = 0.0;
@@ -917,11 +917,11 @@ LABEL_8:
     if (v17 != 0.0)
     {
       [(UIFont *)self _bodyLeading];
-      return v15 * a3 / v17;
+      return v15 * value / v17;
     }
   }
 
-  return a3;
+  return value;
 }
 
 id __55__UIFont__scaledValueForValue_useLanguageAwareScaling___block_invoke()
@@ -933,36 +933,36 @@ id __55__UIFont__scaledValueForValue_useLanguageAwareScaling___block_invoke()
   return result;
 }
 
-- (UIFont)initWithName:(id)a3 size:(double)a4
+- (UIFont)initWithName:(id)name size:(double)size
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v5 = [objc_opt_class() fontWithName:a3 size:0 traits:a4];
+  v5 = [objc_opt_class() fontWithName:name size:0 traits:size];
 
   return v5;
 }
 
-- (UIFont)initWithFamilyName:(id)a3 traits:(int)a4 size:(double)a5
+- (UIFont)initWithFamilyName:(id)name traits:(int)traits size:(double)size
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v6 = [objc_opt_class() fontWithName:a3 size:*&a4 traits:a5];
+  v6 = [objc_opt_class() fontWithName:name size:*&traits traits:size];
 
   return v6;
 }
 
-- (UIFont)initWithMarkupDescription:(id)a3
+- (UIFont)initWithMarkupDescription:(id)description
 {
-  v19 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   v20 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v4 = [a3 componentsSeparatedByString:@";"];
+  v4 = [description componentsSeparatedByString:@";"];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -984,7 +984,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v12 = [*(*(&v21 + 1) + 8 * v11) componentsSeparatedByString:{@":", v19}];
+      v12 = [*(*(&v21 + 1) + 8 * v11) componentsSeparatedByString:{@":", selfCopy}];
       if ([v12 count] != 2)
       {
         break;
@@ -1061,7 +1061,7 @@ LABEL_3:
 
   else
   {
-    v16 = [(UIFont *)v19 initWithFamilyName:v8 traits:v7 size:v10];
+    v16 = [(UIFont *)selfCopy initWithFamilyName:v8 traits:v7 size:v10];
   }
 
   v17 = v16;
@@ -1069,62 +1069,62 @@ LABEL_3:
   return v17;
 }
 
-- (id)familyNameForCSSFontFamilyValueForWebKit:(BOOL)a3
+- (id)familyNameForCSSFontFamilyValueForWebKit:(BOOL)kit
 {
-  v3 = a3;
-  v5 = [(UIFont *)self _textStyle];
-  if (v5)
+  kitCopy = kit;
+  _textStyle = [(UIFont *)self _textStyle];
+  if (_textStyle)
   {
-    v6 = v5;
+    fontName = _textStyle;
     if ([(UIFont *)self _isTextStyleFont])
     {
-      return v6;
+      return fontName;
     }
   }
 
-  v6 = [(UIFont *)self fontName];
-  if ([(NSString *)v6 hasPrefix:@"."])
+  fontName = [(UIFont *)self fontName];
+  if ([(NSString *)fontName hasPrefix:@"."])
   {
-    if (v3)
+    if (kitCopy)
     {
       return @"system-ui";
     }
 
-    return v6;
+    return fontName;
   }
 
-  v8 = [(NSString *)v6 componentsSeparatedByString:@"-"];
+  v8 = [(NSString *)fontName componentsSeparatedByString:@"-"];
   if ([(NSArray *)v8 count]> 1)
   {
-    v9 = [(NSArray *)v8 lastObject];
-    if (([v9 isEqualToString:@"Bold"] & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", @"Italic"))
+    lastObject = [(NSArray *)v8 lastObject];
+    if (([lastObject isEqualToString:@"Bold"] & 1) == 0 && !objc_msgSend(lastObject, "isEqualToString:", @"Italic"))
     {
-      return v6;
+      return fontName;
     }
   }
 
   return [(UIFont *)self familyName];
 }
 
-- (id)markupDescriptionForWebKit:(BOOL)a3 pointSize:(float)a4 sizeUnit:(id)a5
+- (id)markupDescriptionForWebKit:(BOOL)kit pointSize:(float)size sizeUnit:(id)unit
 {
-  v7 = a3;
-  v9 = [(UIFont *)self traits];
+  kitCopy = kit;
+  traits = [(UIFont *)self traits];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(UIFont *)self familyNameForCSSFontFamilyValueForWebKit:v7];
+  v11 = [(UIFont *)self familyNameForCSSFontFamilyValueForWebKit:kitCopy];
   v12 = @"bold";
   v13 = @"normal";
-  if ((v9 & 2) == 0)
+  if ((traits & 2) == 0)
   {
     v12 = @"normal";
   }
 
-  if (v9)
+  if (traits)
   {
     v13 = @"italic";
   }
 
-  return [v10 stringWithFormat:@"font-family: %@; font-weight: %@; font-style: %@; font-size: %.2f%@", v11, v12, v13, a4, a5];
+  return [v10 stringWithFormat:@"font-family: %@; font-weight: %@; font-style: %@; font-size: %.2f%@", v11, v12, v13, size, unit];
 }
 
 - (id)markupDescription
@@ -1135,15 +1135,15 @@ LABEL_3:
   return [(UIFont *)self markupDescriptionForWebKit:1 pointSize:@"pt" sizeUnit:v3];
 }
 
-- (id)htmlMarkupDescriptionForWebKit:(BOOL)a3
+- (id)htmlMarkupDescriptionForWebKit:(BOOL)kit
 {
-  v3 = a3;
+  kitCopy = kit;
   if (dyld_program_sdk_at_least())
   {
     [(UIFont *)self pointSize];
     *&v5 = v5;
 
-    return [(UIFont *)self markupDescriptionForWebKit:v3 pointSize:@"px" sizeUnit:v5];
+    return [(UIFont *)self markupDescriptionForWebKit:kitCopy pointSize:@"px" sizeUnit:v5];
   }
 
   else
@@ -1153,67 +1153,67 @@ LABEL_3:
   }
 }
 
-- (id)_fontScaledByScaleFactor:(double)a3
+- (id)_fontScaledByScaleFactor:(double)factor
 {
   [(UIFont *)self pointSize];
-  v6 = round(v5 * a3 * 4.0) * 0.25;
-  v7 = [(UIFont *)self fontDescriptor];
+  v6 = round(v5 * factor * 4.0) * 0.25;
+  fontDescriptor = [(UIFont *)self fontDescriptor];
 
-  return [UIFont fontWithDescriptor:v7 size:v6];
+  return [UIFont fontWithDescriptor:fontDescriptor size:v6];
 }
 
-+ (UIFont)fontWithName:(id)a3 size:(double)a4 traits:(int)a5
++ (UIFont)fontWithName:(id)name size:(double)size traits:(int)traits
 {
-  v5 = UINewFont(a3, *&a5, 0, 0, 0, 0, a4, 0.0);
+  v5 = UINewFont(name, *&traits, 0, 0, 0, 0, size, 0.0);
 
   return v5;
 }
 
-+ (id)systemFontOfSize:(double)a3 traits:(int)a4
++ (id)systemFontOfSize:(double)size traits:(int)traits
 {
-  v4 = UINewFont(0, *&a4, 0, 0, 1, 0, a3, 0.0);
+  v4 = UINewFont(0, *&traits, 0, 0, 1, 0, size, 0.0);
 
   return v4;
 }
 
-+ (id)_systemFontOfSize:(double)a3 width:(id)a4 traits:(int)a5
++ (id)_systemFontOfSize:(double)size width:(id)width traits:(int)traits
 {
-  v5 = UINewFont(0, *&a5, 0, a4, 1, 0, a3, 0.0);
+  v5 = UINewFont(0, *&traits, 0, width, 1, 0, size, 0.0);
 
   return v5;
 }
 
-+ (id)_opticalSystemFontOfSize:(double)a3
++ (id)_opticalSystemFontOfSize:(double)size
 {
-  v3 = UINewFont(0, 0, 0, 0, 1, 0, a3, 0.0);
+  v3 = UINewFont(0, 0, 0, 0, 1, 0, size, 0.0);
 
   return v3;
 }
 
-+ (id)_opticalBoldSystemFontOfSize:(double)a3
++ (id)_opticalBoldSystemFontOfSize:(double)size
 {
-  v3 = UINewFont(0, 2, 0, 0, 1, 0, a3, 0.0);
+  v3 = UINewFont(0, 2, 0, 0, 1, 0, size, 0.0);
 
   return v3;
 }
 
-+ (id)_thinSystemFontOfSize:(double)a3
++ (id)_thinSystemFontOfSize:(double)size
 {
-  v3 = UINewFont(0, 4, 0, 0, 1, 0, a3, 0.0);
+  v3 = UINewFont(0, 4, 0, 0, 1, 0, size, 0.0);
 
   return v3;
 }
 
-+ (id)_lightSystemFontOfSize:(double)a3
++ (id)_lightSystemFontOfSize:(double)size
 {
-  v3 = UINewFont(0, 8, 0, 0, 1, 0, a3, 0.0);
+  v3 = UINewFont(0, 8, 0, 0, 1, 0, size, 0.0);
 
   return v3;
 }
 
-+ (id)_ultraLightSystemFontOfSize:(double)a3
++ (id)_ultraLightSystemFontOfSize:(double)size
 {
-  v3 = UINewFont(0, 16, 0, 0, 1, 0, a3, 0.0);
+  v3 = UINewFont(0, 16, 0, 0, 1, 0, size, 0.0);
 
   return v3;
 }
@@ -1242,9 +1242,9 @@ LABEL_3:
   return v8;
 }
 
-+ (id)systemFontOfSize:(double)a3 weight:(double)a4 design:(id)a5
++ (id)systemFontOfSize:(double)size weight:(double)weight design:(id)design
 {
-  v5 = UINewFont(0, 0, a5, 0, 1, 0, a3, a4);
+  v5 = UINewFont(0, 0, design, 0, 1, 0, size, weight);
 
   return v5;
 }
@@ -1263,26 +1263,26 @@ LABEL_3:
   return v4;
 }
 
-- (UIFont)initWithCoder:(id)a3
+- (UIFont)initWithCoder:(id)coder
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  [a3 decodeDoubleForKey:@"UIFontPointSize"];
+  [coder decodeDoubleForKey:@"UIFontPointSize"];
   v6 = v5;
-  v7 = [a3 decodeIntegerForKey:@"UIFontTraits"];
-  v8 = [a3 decodeBoolForKey:@"UIIBFontMetricsScaledFont"];
+  v7 = [coder decodeIntegerForKey:@"UIFontTraits"];
+  v8 = [coder decodeBoolForKey:@"UIIBFontMetricsScaledFont"];
   v9 = objc_opt_class();
   v28.receiver = self;
   v28.super_class = UIFont;
 
-  if ([a3 containsValueForKey:@"UIIBTextStyle"])
+  if ([coder containsValueForKey:@"UIIBTextStyle"])
   {
-    v10 = +[UIFont ib_preferredFontForTextStyle:](UIFont, "ib_preferredFontForTextStyle:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UIIBTextStyle"]);
+    v10 = +[UIFont ib_preferredFontForTextStyle:](UIFont, "ib_preferredFontForTextStyle:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"UIIBTextStyle"]);
     return v10;
   }
 
-  if ([a3 containsValueForKey:@"UIFontDescriptor"])
+  if ([coder containsValueForKey:@"UIFontDescriptor"])
   {
-    result = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UIFontDescriptor"];
+    result = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UIFontDescriptor"];
     if (result)
     {
       v12 = result;
@@ -1293,7 +1293,7 @@ LABEL_3:
         v19 = *MEMORY[0x1E695E628];
         v29 = *MEMORY[0x1E696A578];
         v30[0] = v18;
-        [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", v19, 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v30, &v29, 1))}];
+        [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", v19, 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v30, &v29, 1))}];
         return 0;
       }
 
@@ -1328,10 +1328,10 @@ LABEL_15:
         }
       }
 
-      v22 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UIFontTextStyleForScaling"];
-      [a3 decodeDoubleForKey:@"UIFontPointSizeForScaling"];
+      v22 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UIFontTextStyleForScaling"];
+      [coder decodeDoubleForKey:@"UIFontPointSizeForScaling"];
       v24 = v23;
-      [a3 decodeDoubleForKey:@"UIFontMaximumPointSizeAfterScaling"];
+      [coder decodeDoubleForKey:@"UIFontMaximumPointSizeAfterScaling"];
       v26 = v25;
       if (v8)
       {
@@ -1346,7 +1346,7 @@ LABEL_15:
 
   else
   {
-    if ([a3 decodeBoolForKey:@"UISystemFont"])
+    if ([coder decodeBoolForKey:@"UISystemFont"])
     {
       if (v6 != 0.0)
       {
@@ -1357,11 +1357,11 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v17 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UIFontName"];
+    v17 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UIFontName"];
     result = [v17 length];
     if (result)
     {
-      if ([a3 containsValueForKey:@"UIFontTraits"])
+      if ([coder containsValueForKey:@"UIFontTraits"])
       {
         v10 = [UIFont fontWithName:v17 size:v7 traits:v6];
       }
@@ -1378,46 +1378,46 @@ LABEL_15:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[UIFont fontName](self forKey:{"fontName"), @"UIFontName"}];
-  v6 = [(UIFont *)self isIBTextStyleFont];
-  v7 = [(UIFont *)self fontDescriptor];
-  if (v6)
+  [coder encodeObject:-[UIFont fontName](self forKey:{"fontName"), @"UIFontName"}];
+  isIBTextStyleFont = [(UIFont *)self isIBTextStyleFont];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  if (isIBTextStyleFont)
   {
-    v8 = [(UIFontDescriptor *)v7 objectForKey:@"NSCTFontUIUsageAttribute"];
+    v8 = [(UIFontDescriptor *)fontDescriptor objectForKey:@"NSCTFontUIUsageAttribute"];
     if (!v8)
     {
       [(UIFont *)a2 encodeWithCoder:?];
     }
 
-    [a3 encodeObject:v8 forKey:@"UIIBTextStyle"];
+    [coder encodeObject:v8 forKey:@"UIIBTextStyle"];
     v9 = 0.0;
   }
 
   else
   {
-    [a3 encodeObject:v7 forKey:@"UIFontDescriptor"];
+    [coder encodeObject:fontDescriptor forKey:@"UIFontDescriptor"];
     [(UIFont *)self pointSize];
   }
 
-  [a3 encodeDouble:@"UIFontPointSize" forKey:v9];
-  [a3 encodeObject:-[UIFont textStyleForScaling](self forKey:{"textStyleForScaling"), @"UIFontTextStyleForScaling"}];
+  [coder encodeDouble:@"UIFontPointSize" forKey:v9];
+  [coder encodeObject:-[UIFont textStyleForScaling](self forKey:{"textStyleForScaling"), @"UIFontTextStyleForScaling"}];
   [(UIFont *)self pointSizeForScaling];
-  [a3 encodeDouble:@"UIFontPointSizeForScaling" forKey:?];
+  [coder encodeDouble:@"UIFontPointSizeForScaling" forKey:?];
   [(UIFont *)self maximumPointSizeAfterScaling];
-  [a3 encodeDouble:@"UIFontMaximumPointSizeAfterScaling" forKey:?];
+  [coder encodeDouble:@"UIFontMaximumPointSizeAfterScaling" forKey:?];
   if ([(UIFont *)self isIBFontMetricsScaledFont])
   {
-    [a3 encodeBool:1 forKey:@"UIIBFontMetricsScaledFont"];
+    [coder encodeBool:1 forKey:@"UIIBFontMetricsScaledFont"];
   }
 
-  [a3 encodeInteger:-[UIFont traits](self forKey:{"traits"), @"UIFontTraits"}];
-  [a3 encodeBool:-[UIFont __isSystemFont](self forKey:{"__isSystemFont"), @"UISystemFont"}];
-  [a3 encodeObject:-[UIFont fontName](self forKey:{"fontName"), @"NSName"}];
+  [coder encodeInteger:-[UIFont traits](self forKey:{"traits"), @"UIFontTraits"}];
+  [coder encodeBool:-[UIFont __isSystemFont](self forKey:{"__isSystemFont"), @"UISystemFont"}];
+  [coder encodeObject:-[UIFont fontName](self forKey:{"fontName"), @"NSName"}];
   [(UIFont *)self pointSize];
 
-  [a3 encodeDouble:@"NSSize" forKey:?];
+  [coder encodeDouble:@"NSSize" forKey:?];
 }
 
 - (UIFont)fontWithSize:(CGFloat)fontSize
@@ -1425,44 +1425,44 @@ LABEL_15:
   if (dyld_program_sdk_at_least())
   {
     v5 = objc_opt_class();
-    v6 = [(UIFont *)self fontDescriptor];
+    fontDescriptor = [(UIFont *)self fontDescriptor];
 
-    return [v5 fontWithDescriptor:v6 size:fontSize];
+    return [v5 fontWithDescriptor:fontDescriptor size:fontSize];
   }
 
   else
   {
-    v8 = [(UIFont *)self __isSystemFont];
+    __isSystemFont = [(UIFont *)self __isSystemFont];
     v9 = objc_opt_class();
-    if (v8)
+    if (__isSystemFont)
     {
-      v10 = [(UIFont *)self traits];
+      traits = [(UIFont *)self traits];
 
-      return [v9 systemFontOfSize:v10 traits:fontSize];
+      return [v9 systemFontOfSize:traits traits:fontSize];
     }
 
     else
     {
-      v11 = [(UIFont *)self fontName];
-      v12 = [(UIFont *)self traits];
+      fontName = [(UIFont *)self fontName];
+      traits2 = [(UIFont *)self traits];
 
-      return [v9 fontWithName:v11 size:v12 traits:fontSize];
+      return [v9 fontWithName:fontName size:traits2 traits:fontSize];
     }
   }
 }
 
-+ (id)_fontWithName:(id)a3 size:(double)a4
++ (id)_fontWithName:(id)name size:(double)size
 {
-  if ([a3 hasPrefix:@"."])
+  if ([name hasPrefix:@"."])
   {
 
-    return [a1 fontWithName:a3 size:4096 traits:a4];
+    return [self fontWithName:name size:4096 traits:size];
   }
 
   else
   {
 
-    return [a1 fontWithName:a3 size:a4];
+    return [self fontWithName:name size:size];
   }
 }
 
@@ -1477,13 +1477,13 @@ LABEL_15:
   return CFStringConvertEncodingToNSStringEncoding(StringEncoding);
 }
 
-- (double)_baseLineHeightForFont:(BOOL)a3
+- (double)_baseLineHeightForFont:(BOOL)font
 {
-  v3 = a3;
+  fontCopy = font;
   [(UIFont *)self _defaultLineHeightForUILayout];
   v6 = v5;
   v7 = 0.0;
-  if (v3)
+  if (fontCopy)
   {
     [(UIFont *)self _leading];
   }
@@ -1502,7 +1502,7 @@ LABEL_15:
   return [v3 stringWithFormat:@"%@ %@", v4, -[UIFont markupDescriptionForWebKit:pointSize:sizeUnit:](self, "markupDescriptionForWebKit:pointSize:sizeUnit:", 0, @"pt", v5)];
 }
 
-- (CGAffineTransform)_textMatrixTransformForContext:(SEL)a3
+- (CGAffineTransform)_textMatrixTransformForContext:(SEL)context
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
@@ -1528,9 +1528,9 @@ LABEL_15:
   return result;
 }
 
-- (void)applyToGraphicsContext:(id)a3
+- (void)applyToGraphicsContext:(id)context
 {
-  v4 = [a3 CGContext];
+  cGContext = [context CGContext];
   if (self)
   {
     [(UIFont *)self _textMatrixTransformForContext:0];
@@ -1541,15 +1541,15 @@ LABEL_15:
     memset(&v8, 0, sizeof(v8));
   }
 
-  CGContextSetTextMatrix(v4, &v8);
+  CGContextSetTextMatrix(cGContext, &v8);
   v5 = CTFontCopyGraphicsFont(self, 0);
   if (v5)
   {
     v6 = v5;
-    CGContextSetFont(v4, v5);
+    CGContextSetFont(cGContext, v5);
     CFRelease(v6);
     [(UIFont *)self pointSize];
-    CGContextSetFontSize(v4, v7);
+    CGContextSetFontSize(cGContext, v7);
     CGContextSetFontRenderingStyle();
   }
 
@@ -1559,14 +1559,14 @@ LABEL_15:
   }
 }
 
-- (void)setInContext:(CGContext *)a3
+- (void)setInContext:(CGContext *)context
 {
-  v4 = [(objc_class *)+[NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:a3], "graphicsContextForApplicationFrameworkContext:", 1];
+  v4 = [(objc_class *)+[NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:context], "graphicsContextForApplicationFrameworkContext:", 1];
 
   [(UIFont *)self applyToGraphicsContext:v4];
 }
 
-- (void)getVerticalOriginTranslations:(CGSize *)a3 forCGGlyphs:(const unsigned __int16 *)a4 count:(unint64_t)a5
+- (void)getVerticalOriginTranslations:(CGSize *)translations forCGGlyphs:(const unsigned __int16 *)glyphs count:(unint64_t)count
 {
   v8 = CTFontCopyGraphicsFont(self, 0);
   memset(&v16, 0, sizeof(v16));
@@ -1582,24 +1582,24 @@ LABEL_15:
   v16 = v15;
   if (CGFontGetGlyphVerticalOffsets())
   {
-    if (a5 >= 1)
+    if (count >= 1)
     {
-      v10 = &a3[a5];
+      v10 = &translations[count];
       v11 = *&v16.a;
       v12 = *&v16.c;
       do
       {
-        *a3 = vmlaq_n_f64(vmulq_n_f64(v12, a3->height), v11, a3->width);
-        ++a3;
+        *translations = vmlaq_n_f64(vmulq_n_f64(v12, translations->height), v11, translations->width);
+        ++translations;
       }
 
-      while (a3 < v10);
+      while (translations < v10);
     }
   }
 
   else
   {
-    bzero(a3, 16 * a5);
+    bzero(translations, 16 * count);
   }
 
   CFRelease(v8);
@@ -1639,9 +1639,9 @@ LABEL_15:
   return UnderlinePosition;
 }
 
-- (CGSize)advancementForGlyph:(unsigned __int16)a3
+- (CGSize)advancementForGlyph:(unsigned __int16)glyph
 {
-  if ([(UIFont *)self numberOfGlyphs]<= a3)
+  if ([(UIFont *)self numberOfGlyphs]<= glyph)
   {
     v3 = *MEMORY[0x1E695F060];
     v4 = *(MEMORY[0x1E695F060] + 8);
@@ -1658,7 +1658,7 @@ LABEL_15:
   return result;
 }
 
-- (unsigned)hyphenGlyphForLocale:(id)a3
+- (unsigned)hyphenGlyphForLocale:(id)locale
 {
   characters = 8208;
   glyphs = 0;
@@ -1674,20 +1674,20 @@ LABEL_15:
   return glyphs;
 }
 
-- (unint64_t)getCaretPositions:(double *)a3 forGlyph:(unsigned int)a4 maximumLength:(unint64_t)a5
+- (unint64_t)getCaretPositions:(double *)positions forGlyph:(unsigned int)glyph maximumLength:(unint64_t)length
 {
-  v9 = [(UIFont *)self numberOfGlyphs];
-  if (!a4 || v9 <= a4)
+  numberOfGlyphs = [(UIFont *)self numberOfGlyphs];
+  if (!glyph || numberOfGlyphs <= glyph)
   {
     return 0;
   }
 
-  return CTFontGetLigatureCaretPositions(self, a4, a3, a5);
+  return CTFontGetLigatureCaretPositions(self, glyph, positions, length);
 }
 
-- (unsigned)_defaultGlyphForChar:(unsigned __int16)a3
+- (unsigned)_defaultGlyphForChar:(unsigned __int16)char
 {
-  characters = a3;
+  characters = char;
   glyphs = 0;
   if (CTFontGetGlyphsForCharacters(self, &characters, &glyphs, 1))
   {
@@ -1700,14 +1700,14 @@ LABEL_15:
   }
 }
 
-- (id)bestMatchingFontForCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4 attributes:(id)a5 actualCoveredLength:(unint64_t *)a6
+- (id)bestMatchingFontForCharacters:(const unsigned __int16 *)characters length:(unint64_t)length attributes:(id)attributes actualCoveredLength:(unint64_t *)coveredLength
 {
-  v7 = self;
+  selfCopy = self;
   v8 = MEMORY[0x193AD39E0](self, a2, 0.0);
-  [a5 objectForKey:NSLanguageAttributeName];
+  [attributes objectForKey:NSLanguageAttributeName];
   v9 = CTFontCreateForCharactersWithLanguage();
   MEMORY[0x193AD39E0](v8);
-  if (v9 == v7)
+  if (v9 == selfCopy)
   {
     CFRelease(v9);
   }
@@ -1718,7 +1718,7 @@ LABEL_15:
     return v9;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)lastResortFont

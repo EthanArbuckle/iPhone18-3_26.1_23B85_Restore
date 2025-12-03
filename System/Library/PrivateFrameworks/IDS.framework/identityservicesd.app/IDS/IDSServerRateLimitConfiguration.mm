@@ -1,5 +1,5 @@
 @interface IDSServerRateLimitConfiguration
-- (int64_t)rateLimitActionWithOptions:(id)a3;
+- (int64_t)rateLimitActionWithOptions:(id)options;
 - (void)dealloc;
 @end
 
@@ -15,20 +15,20 @@
   v9[3] = v5;
   v9[0] = self;
   v6 = *(v4 + 16);
-  v7 = self;
+  selfCopy = self;
   v6(v9, v3, v4);
   sub_100012970(v9);
   sub_100012970(v10);
-  v8.receiver = v7;
+  v8.receiver = selfCopy;
   v8.super_class = v5;
   [(IDSServerRateLimitConfiguration *)&v8 dealloc];
 }
 
-- (int64_t)rateLimitActionWithOptions:(id)a3
+- (int64_t)rateLimitActionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1007E15D4(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  v6 = sub_1007E15D4(optionsCopy);
 
   return v6;
 }

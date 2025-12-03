@@ -10,7 +10,7 @@
   v3[1] = 3221225472;
   v3[2] = __37__PTDrillDownRow_UI__defaultUIAction__block_invoke;
   v3[3] = &unk_279ACAD00;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = [PTUIPushViewControllerRowAction actionWithViewControllerCreator:v3];
 
   return v1;

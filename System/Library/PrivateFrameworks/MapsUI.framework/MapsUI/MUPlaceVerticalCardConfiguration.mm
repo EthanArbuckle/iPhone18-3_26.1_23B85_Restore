@@ -8,10 +8,10 @@
 
 + (id)developerPlaceCardConfiguration
 {
-  v2 = [a1 plainConfiguration];
-  [v2 setDeveloperPlaceCard:1];
+  plainConfiguration = [self plainConfiguration];
+  [plainConfiguration setDeveloperPlaceCard:1];
 
-  return v2;
+  return plainConfiguration;
 }
 
 + (id)separatorConfiguration

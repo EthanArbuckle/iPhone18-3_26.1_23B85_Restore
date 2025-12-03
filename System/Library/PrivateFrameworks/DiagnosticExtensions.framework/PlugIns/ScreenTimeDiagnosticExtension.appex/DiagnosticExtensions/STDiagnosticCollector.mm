@@ -1,22 +1,22 @@
 @interface STDiagnosticCollector
-- (BOOL)collectScreenTimeDatabaseAndReturnError:(id *)a3;
+- (BOOL)collectScreenTimeDatabaseAndReturnError:(id *)error;
 @end
 
 @implementation STDiagnosticCollector
 
-- (BOOL)collectScreenTimeDatabaseAndReturnError:(id *)a3
+- (BOOL)collectScreenTimeDatabaseAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   STDiagnosticCollector.collectScreenTimeDatabase()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = sub_100002FA4();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else

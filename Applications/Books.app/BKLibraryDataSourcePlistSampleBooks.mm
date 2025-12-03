@@ -1,39 +1,39 @@
 @interface BKLibraryDataSourcePlistSampleBooks
-- (BOOL)wantsPlistEntry:(id)a3;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
+- (BOOL)wantsPlistEntry:(id)entry;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourcePlistSampleBooks
 
-- (BOOL)wantsPlistEntry:(id)a3
+- (BOOL)wantsPlistEntry:(id)entry
 {
-  v3 = [IMLibraryPlist isSampleFromPlistEntry:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [IMLibraryPlist isSampleFromPlistEntry:entry];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000A7220;
   v5[3] = &unk_100A05E68;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  completionCopy = completion;
+  v4.receiver = selfCopy;
   v4.super_class = BKLibraryDataSourcePlistSampleBooks;
-  v3 = v7;
+  v3 = completionCopy;
   [(BKLibraryDataSourcePlist *)&v4 fetchAssetIDsWithCompletion:v5];
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v12 = a3;
-  v5 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v6 = +[NSMutableArray array];
-  v7 = [v12 count];
+  v7 = [dsCopy count];
   if (v7)
   {
     v8 = v7;
@@ -48,7 +48,7 @@
     while (v8);
   }
 
-  v10 = objc_retainBlock(v5);
+  v10 = objc_retainBlock(completionCopy);
   v11 = v10;
   if (v10)
   {

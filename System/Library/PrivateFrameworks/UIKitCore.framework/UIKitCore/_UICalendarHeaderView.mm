@@ -1,9 +1,9 @@
 @interface _UICalendarHeaderView
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (_UICalendarHeaderView)initWithDataModel:(id)a3 delegate:(id)a4;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (_UICalendarHeaderView)initWithDataModel:(id)model delegate:(id)delegate;
 - (_UICalendarHeaderViewDelegate)delegate;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_adjustMonth:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_adjustMonth:(id)month;
 - (void)_setupDateFormatter;
 - (void)_setupViewHierarchy;
 - (void)_updateFont;
@@ -16,25 +16,25 @@
 - (void)didUpdateTimeZone;
 - (void)didUpdateVisibleMonth;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UICalendarHeaderView
 
-- (_UICalendarHeaderView)initWithDataModel:(id)a3 delegate:(id)a4
+- (_UICalendarHeaderView)initWithDataModel:(id)model delegate:(id)delegate
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = _UICalendarHeaderView;
   v9 = [(UIView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_dataModel, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_dataModel, model);
     [(UIView *)v10 setLayoutMargins:0.0, 0.0, 0.0, 0.0];
     [(UIView *)v10 setPreservesSuperviewLayoutMargins:1];
     [(_UICalendarHeaderView *)v10 _setupDateFormatter];
@@ -51,14 +51,14 @@
 
 - (void)_setupDateFormatter
 {
-  v11 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v3 = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
-  v4 = [(_UICalendarDataModel *)self->_dataModel effectiveTimeZone];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  effectiveLocale = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
+  effectiveTimeZone = [(_UICalendarDataModel *)self->_dataModel effectiveTimeZone];
   v5 = objc_opt_new();
   [(NSDateFormatter *)v5 setFormattingContext:2];
-  [(NSDateFormatter *)v5 setCalendar:v11];
-  [(NSDateFormatter *)v5 setLocale:v3];
-  [(NSDateFormatter *)v5 setTimeZone:v4];
+  [(NSDateFormatter *)v5 setCalendar:effectiveCalendar];
+  [(NSDateFormatter *)v5 setLocale:effectiveLocale];
+  [(NSDateFormatter *)v5 setTimeZone:effectiveTimeZone];
   [(NSDateFormatter *)v5 setLocalizedDateFormatFromTemplate:@"MMMMy"];
   longFormatter = self->_longFormatter;
   self->_longFormatter = v5;
@@ -66,10 +66,10 @@
 
   v8 = objc_opt_new();
   [(NSDateFormatter *)v8 setFormattingContext:2];
-  [(NSDateFormatter *)v8 setCalendar:v11];
-  [(NSDateFormatter *)v8 setLocale:v3];
-  v9 = [v11 timeZone];
-  [(NSDateFormatter *)v8 setTimeZone:v9];
+  [(NSDateFormatter *)v8 setCalendar:effectiveCalendar];
+  [(NSDateFormatter *)v8 setLocale:effectiveLocale];
+  timeZone = [effectiveCalendar timeZone];
+  [(NSDateFormatter *)v8 setTimeZone:timeZone];
 
   [(NSDateFormatter *)v8 setLocalizedDateFormatFromTemplate:@"MMMy"];
   shortFormatter = self->_shortFormatter;
@@ -78,12 +78,12 @@
 
 - (void)_setupViewHierarchy
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UICalendarViewGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 nextPreviousMonthButtonConfiguration];
-  v6 = [(UIView *)self traitCollection];
-  v7 = (v5)[2](v5, v6);
+  nextPreviousMonthButtonConfiguration = [v4 nextPreviousMonthButtonConfiguration];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = (nextPreviousMonthButtonConfiguration)[2](nextPreviousMonthButtonConfiguration, traitCollection2);
 
   v8 = [UIImage systemImageNamed:@"chevron.backward"];
   [v7 setImage:v8];
@@ -99,13 +99,13 @@
   [v11 addTarget:self action:sel__adjustMonth_ forControlEvents:0x2000];
   [(UIView *)self addSubview:v11];
   objc_storeStrong(&self->_nextMonthButton, v11);
-  v12 = [v4 monthYearButtonConfiguration];
-  v13 = [(UIView *)self traitCollection];
-  v14 = (v12)[2](v12, v13);
+  monthYearButtonConfiguration = [v4 monthYearButtonConfiguration];
+  traitCollection3 = [(UIView *)self traitCollection];
+  v14 = (monthYearButtonConfiguration)[2](monthYearButtonConfiguration, traitCollection3);
 
   v15 = [(UIButton *)_UICalendarHeaderTitleButton buttonWithConfiguration:v14 primaryAction:0];
-  v16 = [(UIView *)self traitCollection];
-  [v15 setEnabled:{objc_msgSend(v16, "userInterfaceIdiom") != 5}];
+  traitCollection4 = [(UIView *)self traitCollection];
+  [v15 setEnabled:{objc_msgSend(traitCollection4, "userInterfaceIdiom") != 5}];
 
   [(UIView *)self addSubview:v15];
   objc_storeStrong(&self->_monthYearButton, v15);
@@ -162,9 +162,9 @@
   v4.receiver = self;
   v4.super_class = _UICalendarHeaderView;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(UIView *)self setNeedsLayout];
   }
@@ -186,14 +186,14 @@
   v13[2] = *MEMORY[0x1E69E9840];
   monthYearButton = self->_monthYearButton;
   longFormatter = self->_longFormatter;
-  v5 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v6 = [v5 date];
-  v7 = [(NSDateFormatter *)longFormatter stringFromDate:v6];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  date = [visibleMonth date];
+  v7 = [(NSDateFormatter *)longFormatter stringFromDate:date];
   v13[0] = v7;
   shortFormatter = self->_shortFormatter;
-  v9 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v10 = [v9 date];
-  v11 = [(NSDateFormatter *)shortFormatter stringFromDate:v10];
+  visibleMonth2 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  date2 = [visibleMonth2 date];
+  v11 = [(NSDateFormatter *)shortFormatter stringFromDate:date2];
   v13[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   [(_UICalendarHeaderTitleButton *)monthYearButton updateTitles:v12 isExpanded:self->_expanded];
@@ -203,8 +203,8 @@
 
 - (void)_updateFont
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel fontDesign];
-  [(_UICalendarHeaderTitleButton *)self->_monthYearButton setFontDesign:v3];
+  fontDesign = [(_UICalendarDataModel *)self->_dataModel fontDesign];
+  [(_UICalendarHeaderTitleButton *)self->_monthYearButton setFontDesign:fontDesign];
 
   [(UIView *)self invalidateIntrinsicContentSize];
 
@@ -219,13 +219,13 @@
   [(UIView *)self bounds];
   if (v3 != 0.0)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = _UICalendarViewGetPlatformMetrics([v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-    v6 = [(UIView *)self _shouldReverseLayoutDirection];
-    v7 = [v5 headerViewInsetsForLayoutMargins];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    headerViewInsetsForLayoutMargins = [v5 headerViewInsetsForLayoutMargins];
     [(UIView *)self directionalLayoutMargins];
-    v8 = v7[2](v7);
+    v8 = headerViewInsetsForLayoutMargins[2](headerViewInsetsForLayoutMargins);
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -234,7 +234,7 @@
     slice.origin = *MEMORY[0x1E695F058];
     slice.size = v15;
     [(UIView *)self bounds];
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v20 = v14;
     }
@@ -252,7 +252,7 @@
     v44.origin.y = v8 + v17;
     v44.size.width = v23;
     v44.size.height = v24;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v25 = CGRectMinXEdge;
     }
@@ -290,7 +290,7 @@
     [(UIButton *)self->_previousMonthButton setFrame:v49.origin.x, v49.origin.y, v49.size.width, v49.size.height];
     [(_UICalendarHeaderTitleButton *)self->_monthYearButton sizeThatFits:v44.size.width, v44.size.height];
     v42 = v41;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       x = CGRectGetMaxX(v44) - v41;
     }
@@ -304,22 +304,22 @@
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self traitCollection];
-  v7 = _UICalendarViewGetPlatformMetrics([v6 userInterfaceIdiom]);
+  height = size.height;
+  width = size.width;
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v8 = [v7 headerViewIntrinsicLayoutMarginsForProposedLayoutMargins];
+  headerViewIntrinsicLayoutMarginsForProposedLayoutMargins = [v7 headerViewIntrinsicLayoutMarginsForProposedLayoutMargins];
   [(UIView *)self layoutMargins];
-  v9 = v8[2](v8);
+  v9 = headerViewIntrinsicLayoutMarginsForProposedLayoutMargins[2](headerViewIntrinsicLayoutMarginsForProposedLayoutMargins);
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIButton *)self->_nextMonthButton configuration];
-  [v16 contentInsets];
+  configuration = [(UIButton *)self->_nextMonthButton configuration];
+  [configuration contentInsets];
   v18 = v11 + v15 - v17;
 
   v19 = v9 + v13;
@@ -340,35 +340,35 @@
   return result;
 }
 
-- (void)_adjustMonth:(id)a3
+- (void)_adjustMonth:(id)month
 {
   nextMonthButton = self->_nextMonthButton;
-  v6 = [(_UICalendarHeaderView *)self delegate];
-  v7 = v6;
-  if (nextMonthButton == a3)
+  delegate = [(_UICalendarHeaderView *)self delegate];
+  v7 = delegate;
+  if (nextMonthButton == month)
   {
-    [v6 headerViewDidStepForward:self];
+    [delegate headerViewDidStepForward:self];
   }
 
   else
   {
-    [v6 headerViewDidStepBackward:self];
+    [delegate headerViewDidStepBackward:self];
   }
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(_UICalendarHeaderView *)self isExpanded]!= a3 && [(UIControl *)self->_monthYearButton isEnabled])
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  if ([(_UICalendarHeaderView *)self isExpanded]!= expanded && [(UIControl *)self->_monthYearButton isEnabled])
   {
-    self->_expanded = v5;
-    v7 = [(UIView *)self _shouldReverseLayoutDirection];
+    self->_expanded = expandedCopy;
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
     memset(&v15, 0, sizeof(v15));
-    if (v5)
+    if (expandedCopy)
     {
       v8 = 1.57079633;
-      if (v7)
+      if (_shouldReverseLayoutDirection)
       {
         v8 = -1.57079633;
       }
@@ -390,10 +390,10 @@
     v12[2] = __46___UICalendarHeaderView_setExpanded_animated___block_invoke;
     v12[3] = &unk_1E71016A8;
     v12[4] = self;
-    v14 = v5;
+    v14 = expandedCopy;
     v10 = _Block_copy(v12);
     v11 = v10;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:0 delay:v10 options:0 animations:0.25 completion:0.0];
     }
@@ -405,15 +405,15 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [_UIPointerSettingsDomain rootSettings:a3];
-  v6 = [v5 navigationAndToolbarSettings];
+  v5 = [_UIPointerSettingsDomain rootSettings:interaction];
+  navigationAndToolbarSettings = [v5 navigationAndToolbarSettings];
 
   v7 = self->_monthYearButton;
   [(UIView *)v7 bounds];
   Height = CGRectGetHeight(v26);
-  [v6 buttonMinimumHeight];
+  [navigationAndToolbarSettings buttonMinimumHeight];
   v10 = v9 - Height;
   [(UIView *)v7 frame];
   v15 = -0.0;
@@ -438,15 +438,15 @@
 
 - (void)_updateMonthButtonEnablement
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v4 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v5 = [v4 previousMonth];
-  v6 = [v3 _ui_containsMonth:v5];
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  previousMonth = [visibleMonth previousMonth];
+  v6 = [availableDateRange _ui_containsMonth:previousMonth];
 
-  v7 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v8 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v9 = [v8 nextMonth];
-  v10 = [v7 _ui_containsMonth:v9];
+  availableDateRange2 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  visibleMonth2 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  nextMonth = [visibleMonth2 nextMonth];
+  v10 = [availableDateRange2 _ui_containsMonth:nextMonth];
 
   [(UIButton *)self->_previousMonthButton setEnabled:v6];
   nextMonthButton = self->_nextMonthButton;

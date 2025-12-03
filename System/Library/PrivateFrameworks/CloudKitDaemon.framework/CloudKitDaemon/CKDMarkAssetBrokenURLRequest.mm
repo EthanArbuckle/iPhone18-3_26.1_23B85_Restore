@@ -1,54 +1,54 @@
 @interface CKDMarkAssetBrokenURLRequest
-- (CKDMarkAssetBrokenURLRequest)initWithOperation:(id)a3 assetOrPackageMetadata:(id)a4 writeRepairRecord:(BOOL)a5;
+- (CKDMarkAssetBrokenURLRequest)initWithOperation:(id)operation assetOrPackageMetadata:(id)metadata writeRepairRecord:(BOOL)record;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDMarkAssetBrokenURLRequest
 
-- (CKDMarkAssetBrokenURLRequest)initWithOperation:(id)a3 assetOrPackageMetadata:(id)a4 writeRepairRecord:(BOOL)a5
+- (CKDMarkAssetBrokenURLRequest)initWithOperation:(id)operation assetOrPackageMetadata:(id)metadata writeRepairRecord:(BOOL)record
 {
-  v9 = a4;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = CKDMarkAssetBrokenURLRequest;
-  v10 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v10 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_metadata, a4);
-    v11->_writeRepairRecord = a5;
+    objc_storeStrong(&v10->_metadata, metadata);
+    v11->_writeRepairRecord = record;
   }
 
   return v11;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v9.receiver = self;
   v9.super_class = CKDMarkAssetBrokenURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_metadata(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"metadata");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"metadata");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_metadata(self, v5, v6);
   v10 = objc_msgSend_recordID(v7, v8, v9);
   v16[0] = v10;
   v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v16, 1);
-  objc_msgSend_setModifyRecordIDs_(v4, v13, v12);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v13, v12);
 
   v15.receiver = self;
   v15.super_class = CKDMarkAssetBrokenURLRequest;
-  [(CKDURLRequest *)&v15 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v15 fillOutRequestProperties:propertiesCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -142,13 +142,13 @@ LABEL_6:
   return v81;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
-  if (objc_msgSend_hasMarkAssetBrokenResponse(v4, v5, v6) && (objc_msgSend_markAssetBrokenResponse(v4, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), hasMissingAssetStatusRecord = objc_msgSend_hasMissingAssetStatusRecord(v9, v10, v11), v9, hasMissingAssetStatusRecord))
+  objectCopy = object;
+  if (objc_msgSend_hasMarkAssetBrokenResponse(objectCopy, v5, v6) && (objc_msgSend_markAssetBrokenResponse(objectCopy, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), hasMissingAssetStatusRecord = objc_msgSend_hasMissingAssetStatusRecord(v9, v10, v11), v9, hasMissingAssetStatusRecord))
   {
     v13 = objc_msgSend_translator(self, v7, v8);
-    v16 = objc_msgSend_markAssetBrokenResponse(v4, v14, v15);
+    v16 = objc_msgSend_markAssetBrokenResponse(objectCopy, v14, v15);
     v19 = objc_msgSend_missingAssetStatusRecord(v16, v17, v18);
     v31 = 0;
     v21 = objc_msgSend_recordIDFromPRecordIdentifier_error_(v13, v20, v19, &v31);
@@ -171,22 +171,22 @@ LABEL_6:
   if (v23)
   {
     v26 = objc_msgSend_assetBrokenBlock(self, v24, v25);
-    v29 = objc_msgSend_result(v4, v27, v28);
+    v29 = objc_msgSend_result(objectCopy, v27, v28);
     (v26)[2](v26, v21, v29);
   }
 
   return v22;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v13 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_assetBrokenBlock(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_assetBrokenBlock(self, v7, v8);
-    v12 = objc_msgSend_result(v13, v10, v11);
+    v12 = objc_msgSend_result(failureCopy, v10, v11);
     (v9)[2](v9, 0, v12);
   }
 }

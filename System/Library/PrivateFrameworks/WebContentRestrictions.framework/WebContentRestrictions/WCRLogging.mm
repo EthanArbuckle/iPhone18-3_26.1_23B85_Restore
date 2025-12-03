@@ -1,20 +1,20 @@
 @interface WCRLogging
-+ (void)log:(id)a3 withType:(unint64_t)a4;
++ (void)log:(id)log withType:(unint64_t)type;
 @end
 
 @implementation WCRLogging
 
-+ (void)log:(id)a3 withType:(unint64_t)a4
++ (void)log:(id)log withType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  logCopy = log;
   v6 = __WCRDefaultLog();
   v7 = v6;
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
@@ -22,7 +22,7 @@
         }
 
         v11 = 138543362;
-        v12 = v5;
+        v12 = logCopy;
         v8 = v7;
         v9 = OS_LOG_TYPE_INFO;
 LABEL_19:
@@ -37,7 +37,7 @@ LABEL_17:
       }
 
       v11 = 138543362;
-      v12 = v5;
+      v12 = logCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_19;
@@ -51,7 +51,7 @@ LABEL_17:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 3uLL:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))

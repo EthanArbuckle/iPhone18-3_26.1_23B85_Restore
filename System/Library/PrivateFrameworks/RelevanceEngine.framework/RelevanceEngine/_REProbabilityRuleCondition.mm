@@ -1,30 +1,30 @@
 @interface _REProbabilityRuleCondition
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (_REProbabilityRuleCondition)initWithProbability:(id)a3 relation:(int64_t)a4 feature:(id)a5 threshold:(float)a6;
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation;
+- (BOOL)isEqual:(id)equal;
+- (_REProbabilityRuleCondition)initWithProbability:(id)probability relation:(int64_t)relation feature:(id)feature threshold:(float)threshold;
 - (id)_dependentFeatures;
 - (id)_inflectionFeatureValuePairs;
 - (id)_notCondition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation _REProbabilityRuleCondition
 
-- (_REProbabilityRuleCondition)initWithProbability:(id)a3 relation:(int64_t)a4 feature:(id)a5 threshold:(float)a6
+- (_REProbabilityRuleCondition)initWithProbability:(id)probability relation:(int64_t)relation feature:(id)feature threshold:(float)threshold
 {
-  v11 = a3;
-  v12 = a5;
+  probabilityCopy = probability;
+  featureCopy = feature;
   v16.receiver = self;
   v16.super_class = _REProbabilityRuleCondition;
   v13 = [(_REProbabilityRuleCondition *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_interaction, a3);
-    v14->_relation = a4;
-    objc_storeStrong(&v14->_feature, a5);
-    v14->_threshold = a6;
+    objc_storeStrong(&v13->_interaction, probability);
+    v14->_relation = relation;
+    objc_storeStrong(&v14->_feature, feature);
+    v14->_threshold = threshold;
   }
 
   return v14;
@@ -57,32 +57,32 @@
   return v7;
 }
 
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  mapCopy = map;
+  setCopy = set;
+  v10 = setCopy;
   if (self->_interaction)
   {
-    [v9 predictionForKey:?];
+    [setCopy predictionForKey:?];
   }
 
   else
   {
-    [v9 prediction];
+    [setCopy prediction];
   }
   v11 = ;
   [v11 probability];
 
   if (self->_feature)
   {
-    if (![v8 hasValueForFeature:?])
+    if (![mapCopy hasValueForFeature:?])
     {
       v23 = 0;
       goto LABEL_27;
     }
 
-    v12 = [v8 valueForFeature:self->_feature];
+    v12 = [mapCopy valueForFeature:self->_feature];
     RERetainFeatureValueTaggedPointer(v12);
   }
 
@@ -143,9 +143,9 @@
 
   REReleaseFeatureValueTaggedPointer(v12);
   REReleaseFeatureValueTaggedPointer(v14);
-  if (a5 && (v23 & 1) != 0)
+  if (explanation && (v23 & 1) != 0)
   {
-    *a5 = [REMLExplanation explanationForCondition:self];
+    *explanation = [REMLExplanation explanationForCondition:self];
     v23 = 1;
   }
 
@@ -182,10 +182,10 @@ LABEL_27:
   return v4 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -195,7 +195,7 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       interaction = v5->_interaction;
       v7 = self->_interaction;
       v8 = v7;
@@ -251,9 +251,9 @@ LABEL_17:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   interaction = self->_interaction;
   relation = self->_relation;
   feature = self->_feature;

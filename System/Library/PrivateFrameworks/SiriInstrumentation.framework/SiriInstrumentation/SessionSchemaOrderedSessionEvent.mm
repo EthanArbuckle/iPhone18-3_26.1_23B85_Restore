@@ -1,33 +1,33 @@
 @interface SessionSchemaOrderedSessionEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SessionSchemaOrderedSessionEvent)initWithDictionary:(id)a3;
-- (SessionSchemaOrderedSessionEvent)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SessionSchemaOrderedSessionEvent)initWithDictionary:(id)dictionary;
+- (SessionSchemaOrderedSessionEvent)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SessionSchemaOrderedSessionEvent
 
-- (SessionSchemaOrderedSessionEvent)initWithDictionary:(id)a3
+- (SessionSchemaOrderedSessionEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SessionSchemaOrderedSessionEvent;
   v5 = [(SessionSchemaOrderedSessionEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"logicalEventTimestampInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"logicalEventTimestampInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SessionSchemaOrderedSessionEvent setLogicalEventTimestampInNs:](v5, "setLogicalEventTimestampInNs:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"event"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"event"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SessionSchemaOrderedSessionEvent *)v5 setEvent:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"metadata"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SessionSchemaOrderedSessionEvent)initWithJSON:(id)a3
+- (SessionSchemaOrderedSessionEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SessionSchemaOrderedSessionEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SessionSchemaOrderedSessionEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SessionSchemaOrderedSessionEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_event)
   {
-    v4 = [(SessionSchemaOrderedSessionEvent *)self event];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    event = [(SessionSchemaOrderedSessionEvent *)self event];
+    dictionaryRepresentation = [event dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"event"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"event"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"event"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"event"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SessionSchemaOrderedSessionEvent logicalEventTimestampInNs](self, "logicalEventTimestampInNs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"logicalEventTimestampInNs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"logicalEventTimestampInNs"];
   }
 
   if (self->_metadata)
   {
-    v8 = [(SessionSchemaOrderedSessionEvent *)self metadata];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    metadata = [(SessionSchemaOrderedSessionEvent *)self metadata];
+    dictionaryRepresentation2 = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"metadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"metadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,15 +145,15 @@
   return v4 ^ [(SISchemaCommonEventMetadata *)self->_metadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -161,26 +161,26 @@
   if (*&self->_has)
   {
     logicalEventTimestampInNs = self->_logicalEventTimestampInNs;
-    if (logicalEventTimestampInNs != [v4 logicalEventTimestampInNs])
+    if (logicalEventTimestampInNs != [equalCopy logicalEventTimestampInNs])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SessionSchemaOrderedSessionEvent *)self event];
-  v7 = [v4 event];
-  if ((v6 != 0) == (v7 == 0))
+  event = [(SessionSchemaOrderedSessionEvent *)self event];
+  event2 = [equalCopy event];
+  if ((event != 0) == (event2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(SessionSchemaOrderedSessionEvent *)self event];
-  if (v8)
+  event3 = [(SessionSchemaOrderedSessionEvent *)self event];
+  if (event3)
   {
-    v9 = v8;
-    v10 = [(SessionSchemaOrderedSessionEvent *)self event];
-    v11 = [v4 event];
-    v12 = [v10 isEqual:v11];
+    v9 = event3;
+    event4 = [(SessionSchemaOrderedSessionEvent *)self event];
+    event5 = [equalCopy event];
+    v12 = [event4 isEqual:event5];
 
     if (!v12)
     {
@@ -192,12 +192,12 @@
   {
   }
 
-  v6 = [(SessionSchemaOrderedSessionEvent *)self metadata];
-  v7 = [v4 metadata];
-  if ((v6 != 0) != (v7 == 0))
+  event = [(SessionSchemaOrderedSessionEvent *)self metadata];
+  event2 = [equalCopy metadata];
+  if ((event != 0) != (event2 == 0))
   {
-    v13 = [(SessionSchemaOrderedSessionEvent *)self metadata];
-    if (!v13)
+    metadata = [(SessionSchemaOrderedSessionEvent *)self metadata];
+    if (!metadata)
     {
 
 LABEL_18:
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SessionSchemaOrderedSessionEvent *)self metadata];
-    v16 = [v4 metadata];
-    v17 = [v15 isEqual:v16];
+    v14 = metadata;
+    metadata2 = [(SessionSchemaOrderedSessionEvent *)self metadata];
+    metadata3 = [equalCopy metadata];
+    v17 = [metadata2 isEqual:metadata3];
 
     if (v17)
     {
@@ -228,54 +228,54 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
   }
 
-  v4 = [(SessionSchemaOrderedSessionEvent *)self event];
+  event = [(SessionSchemaOrderedSessionEvent *)self event];
 
-  if (v4)
+  if (event)
   {
-    v5 = [(SessionSchemaOrderedSessionEvent *)self event];
+    event2 = [(SessionSchemaOrderedSessionEvent *)self event];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SessionSchemaOrderedSessionEvent *)self metadata];
+  metadata = [(SessionSchemaOrderedSessionEvent *)self metadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (metadata)
   {
-    v8 = [(SessionSchemaOrderedSessionEvent *)self metadata];
+    metadata2 = [(SessionSchemaOrderedSessionEvent *)self metadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SessionSchemaOrderedSessionEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SessionSchemaOrderedSessionEvent *)self event];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  event = [(SessionSchemaOrderedSessionEvent *)self event];
+  v7 = [event applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SessionSchemaOrderedSessionEvent *)self deleteEvent];
   }
 
-  v9 = [(SessionSchemaOrderedSessionEvent *)self metadata];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  metadata = [(SessionSchemaOrderedSessionEvent *)self metadata];
+  v10 = [metadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SessionSchemaOrderedSessionEvent *)self deleteMetadata];
   }

@@ -1,14 +1,14 @@
 @interface JSAPackageProvisioner
 - (JSAPackageProvisioner)init;
-- (JSAPackageProvisioner)initWithLaunching:(BOOL)a3 processVariant:(int64_t)a4 overridePackageURLCachePath:(id)a5 on:(id)a6;
-- (void)provisionWithCompletionHandler:(id)a3;
+- (JSAPackageProvisioner)initWithLaunching:(BOOL)launching processVariant:(int64_t)variant overridePackageURLCachePath:(id)path on:(id)on;
+- (void)provisionWithCompletionHandler:(id)handler;
 @end
 
 @implementation JSAPackageProvisioner
 
-- (JSAPackageProvisioner)initWithLaunching:(BOOL)a3 processVariant:(int64_t)a4 overridePackageURLCachePath:(id)a5 on:(id)a6
+- (JSAPackageProvisioner)initWithLaunching:(BOOL)launching processVariant:(int64_t)variant overridePackageURLCachePath:(id)path on:(id)on
 {
-  if (a5)
+  if (path)
   {
     sub_843AC();
     v10 = v9;
@@ -19,13 +19,13 @@
     v10 = 0;
   }
 
-  v11 = a6;
-  return PackageProvisioner.init(launching:processVariant:overridePackageURLCachePath:on:)(a3, a4, v12, v10, v11);
+  onCopy = on;
+  return PackageProvisioner.init(launching:processVariant:overridePackageURLCachePath:on:)(launching, variant, v12, v10, onCopy);
 }
 
-- (void)provisionWithCompletionHandler:(id)a3
+- (void)provisionWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
 

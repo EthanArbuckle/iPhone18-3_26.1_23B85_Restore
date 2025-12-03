@@ -2,11 +2,11 @@
 + (id)checkIcon;
 + (id)spacerIcon;
 - (BOOL)canBeChecked;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PSUICarrierSpacePlanTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PSUICarrierSpacePlanTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)detailText;
 - (id)primaryText;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSUICarrierSpacePlanTableCell
@@ -36,11 +36,11 @@
   v3 = spacerIcon_spacer;
   if (!spacerIcon_spacer)
   {
-    v4 = [a1 checkIcon];
-    v5 = v4;
-    if (v4)
+    checkIcon = [self checkIcon];
+    v5 = checkIcon;
+    if (checkIcon)
     {
-      [v4 size];
+      [checkIcon size];
       UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
       v6 = UIGraphicsGetImageFromCurrentImageContext();
       v7 = spacerIcon_spacer;
@@ -55,93 +55,93 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6.receiver = self;
   v6.super_class = PSUICarrierSpacePlanTableCell;
-  [(PSUICarrierSpacePlanTableCell *)&v6 sizeThatFits:a3.width, a3.height];
+  [(PSUICarrierSpacePlanTableCell *)&v6 sizeThatFits:fits.width, fits.height];
   v5 = v4 + -12.0;
   result.height = v5;
   result.width = v3;
   return result;
 }
 
-- (PSUICarrierSpacePlanTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSUICarrierSpacePlanTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PSUICarrierSpacePlanTableCell;
-  return [(PSTableCell *)&v6 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  return [(PSTableCell *)&v6 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
 }
 
 - (BOOL)canBeChecked
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 propertyForKey:@"PSUICellularCellCanBeChecked"];
-  v4 = [v3 BOOLValue];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier propertyForKey:@"PSUICellularCellCanBeChecked"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)primaryText
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 propertyForKey:@"PSUICellularCellPrimaryText"];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier propertyForKey:@"PSUICellularCellPrimaryText"];
 
   return v3;
 }
 
 - (id)detailText
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 propertyForKey:@"PSUICellularCellDetailText"];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier propertyForKey:@"PSUICellularCellDetailText"];
 
   return v3;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v18.receiver = self;
   v18.super_class = PSUICarrierSpacePlanTableCell;
-  [(PSTableCell *)&v18 refreshCellContentsWithSpecifier:a3];
-  v4 = [(PSTableCell *)self specifier];
-  v5 = [v4 propertyForKey:@"PSUICellularCellIsChecked"];
+  [(PSTableCell *)&v18 refreshCellContentsWithSpecifier:specifier];
+  specifier = [(PSTableCell *)self specifier];
+  v5 = [specifier propertyForKey:@"PSUICellularCellIsChecked"];
 
   if (v5 && [v5 BOOLValue])
   {
-    v6 = [objc_opt_class() checkIcon];
+    checkIcon = [objc_opt_class() checkIcon];
     v7 = 1;
   }
 
   else
   {
-    v6 = [objc_opt_class() spacerIcon];
+    checkIcon = [objc_opt_class() spacerIcon];
     v7 = 0;
   }
 
-  [(PSTableCell *)self setIcon:v6];
+  [(PSTableCell *)self setIcon:checkIcon];
 
   [(PSUICarrierSpacePlanTableCell *)self setChecked:v7];
-  v8 = [(PSUICarrierSpacePlanTableCell *)self primaryText];
-  v9 = [(PSUICarrierSpacePlanTableCell *)self textLabel];
-  [v9 setText:v8];
+  primaryText = [(PSUICarrierSpacePlanTableCell *)self primaryText];
+  textLabel = [(PSUICarrierSpacePlanTableCell *)self textLabel];
+  [textLabel setText:primaryText];
 
-  v10 = [(PSUICarrierSpacePlanTableCell *)self detailText];
-  v11 = [(PSUICarrierSpacePlanTableCell *)self detailTextLabel];
-  [v11 setText:v10];
+  detailText = [(PSUICarrierSpacePlanTableCell *)self detailText];
+  detailTextLabel = [(PSUICarrierSpacePlanTableCell *)self detailTextLabel];
+  [detailTextLabel setText:detailText];
 
-  v12 = [(PSUICarrierSpacePlanTableCell *)self canBeChecked];
-  v13 = [(PSTableCell *)self titleLabel];
-  [v13 setEnabled:v12];
+  canBeChecked = [(PSUICarrierSpacePlanTableCell *)self canBeChecked];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setEnabled:canBeChecked];
 
-  v14 = [(PSUICarrierSpacePlanTableCell *)self detailTextLabel];
-  [v14 setEnabled:v12];
+  detailTextLabel2 = [(PSUICarrierSpacePlanTableCell *)self detailTextLabel];
+  [detailTextLabel2 setEnabled:canBeChecked];
 
-  v15 = [(PSUICarrierSpacePlanTableCell *)self accessoryText];
-  if ([v15 length])
+  accessoryText = [(PSUICarrierSpacePlanTableCell *)self accessoryText];
+  if ([accessoryText length])
   {
     v16 = objc_alloc(MEMORY[0x277D756B8]);
     v17 = [v16 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    [v17 setText:v15];
+    [v17 setText:accessoryText];
     [v17 sizeToFit];
     [(PSUICarrierSpacePlanTableCell *)self setAccessoryView:v17];
   }

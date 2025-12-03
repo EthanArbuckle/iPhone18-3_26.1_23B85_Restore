@@ -1,22 +1,22 @@
 @interface _BSUIMappedImageCacheCanary
-- (_BSUIMappedImageCacheCanary)initWithCacheManager:(id)a3 key:(id)a4;
+- (_BSUIMappedImageCacheCanary)initWithCacheManager:(id)manager key:(id)key;
 - (void)dealloc;
 @end
 
 @implementation _BSUIMappedImageCacheCanary
 
-- (_BSUIMappedImageCacheCanary)initWithCacheManager:(id)a3 key:(id)a4
+- (_BSUIMappedImageCacheCanary)initWithCacheManager:(id)manager key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = _BSUIMappedImageCacheCanary;
   v8 = [(_BSUIMappedImageCacheCanary *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_cacheManager, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_cacheManager, managerCopy);
+    v10 = [keyCopy copy];
     key = v9->_key;
     v9->_key = v10;
   }

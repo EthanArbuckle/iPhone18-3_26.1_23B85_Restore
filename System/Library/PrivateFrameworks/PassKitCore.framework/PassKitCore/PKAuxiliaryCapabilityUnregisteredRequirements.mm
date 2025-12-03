@@ -1,18 +1,18 @@
 @interface PKAuxiliaryCapabilityUnregisteredRequirements
-- (PKAuxiliaryCapabilityUnregisteredRequirements)initWithDictionary:(id)a3;
+- (PKAuxiliaryCapabilityUnregisteredRequirements)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKAuxiliaryCapabilityUnregisteredRequirements
 
-- (PKAuxiliaryCapabilityUnregisteredRequirements)initWithDictionary:(id)a3
+- (PKAuxiliaryCapabilityUnregisteredRequirements)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 PKStringForKey:@"dpanIdentifier"];
-    v6 = [v4 PKArrayContaining:objc_opt_class() forKey:@"requirementIdentifiers"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy PKStringForKey:@"dpanIdentifier"];
+    v6 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"requirementIdentifiers"];
 
-    v7 = 0;
+    selfCopy = 0;
     if (v5 && v6)
     {
       v11.receiver = self;
@@ -26,16 +26,16 @@
       }
 
       self = p_isa;
-      v7 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

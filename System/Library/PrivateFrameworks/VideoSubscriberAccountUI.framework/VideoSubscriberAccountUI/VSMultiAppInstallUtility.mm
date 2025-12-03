@@ -1,32 +1,32 @@
 @interface VSMultiAppInstallUtility
-+ (id)getDecidedNonChannelAppsForProvider:(id)a3 account:(id)a4 device:(id)a5;
-+ (void)determineMultiAppEnabledForProvider:(id)a3 completion:(id)a4;
-+ (void)determineMultiAppEnabledForProvider:(id)a3 withAccount:(id)a4 withBagLoadOperation:(id)a5 completion:(id)a6;
-+ (void)filterBundleIDsByPendingConsent:(id)a3 completionHandler:(id)a4;
-+ (void)getPendingConsentBundleIDsFromSelectedAppDescriptions:(id)a3 completionHandler:(id)a4;
-+ (void)isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:(id)a3 completion:(id)a4;
++ (id)getDecidedNonChannelAppsForProvider:(id)provider account:(id)account device:(id)device;
++ (void)determineMultiAppEnabledForProvider:(id)provider completion:(id)completion;
++ (void)determineMultiAppEnabledForProvider:(id)provider withAccount:(id)account withBagLoadOperation:(id)operation completion:(id)completion;
++ (void)filterBundleIDsByPendingConsent:(id)consent completionHandler:(id)handler;
++ (void)getPendingConsentBundleIDsFromSelectedAppDescriptions:(id)descriptions completionHandler:(id)handler;
++ (void)isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:(id)operation completion:(id)completion;
 @end
 
 @implementation VSMultiAppInstallUtility
 
-+ (void)determineMultiAppEnabledForProvider:(id)a3 completion:(id)a4
++ (void)determineMultiAppEnabledForProvider:(id)provider completion:(id)completion
 {
   v5 = MEMORY[0x277CE2198];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  [VSMultiAppInstallUtility determineMultiAppEnabledForProvider:v7 withAccount:v8 completion:v6];
+  completionCopy = completion;
+  providerCopy = provider;
+  sharedInstance = [v5 sharedInstance];
+  [VSMultiAppInstallUtility determineMultiAppEnabledForProvider:providerCopy withAccount:sharedInstance completion:completionCopy];
 }
 
-+ (void)determineMultiAppEnabledForProvider:(id)a3 withAccount:(id)a4 withBagLoadOperation:(id)a5 completion:(id)a6
++ (void)determineMultiAppEnabledForProvider:(id)provider withAccount:(id)account withBagLoadOperation:(id)operation completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 shouldShowChannelApps];
-  v14 = [v9 shouldShowSubscriptionApps];
-  if ((v13 & 1) == 0 && (v14 & 1) == 0)
+  providerCopy = provider;
+  accountCopy = account;
+  operationCopy = operation;
+  completionCopy = completion;
+  shouldShowChannelApps = [providerCopy shouldShowChannelApps];
+  shouldShowSubscriptionApps = [providerCopy shouldShowSubscriptionApps];
+  if ((shouldShowChannelApps & 1) == 0 && (shouldShowSubscriptionApps & 1) == 0)
   {
     v15 = VSDefaultLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -41,8 +41,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v17 = [v9 allPersonalizedAppDescriptions];
-  v18 = [v17 count];
+  allPersonalizedAppDescriptions = [providerCopy allPersonalizedAppDescriptions];
+  v18 = [allPersonalizedAppDescriptions count];
 
   if (!v18)
   {
@@ -56,13 +56,13 @@ LABEL_16:
 
 LABEL_17:
 
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_18;
   }
 
-  v19 = [v10 hasAccount];
-  v20 = [v10 freeAppPasswordPromptSetting];
-  if ((v19 & 1) == 0)
+  hasAccount = [accountCopy hasAccount];
+  freeAppPasswordPromptSetting = [accountCopy freeAppPasswordPromptSetting];
+  if ((hasAccount & 1) == 0)
   {
     v15 = VSDefaultLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((freeAppPasswordPromptSetting & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v21 = VSDefaultLogObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -84,7 +84,7 @@ LABEL_17:
       _os_log_impl(&dword_270DD4000, v21, OS_LOG_TYPE_DEFAULT, "User has selected Never or Require After 15Min. No need to Check for Skip Bag Key. MAI is enabled.", buf, 2u);
     }
 
-    v12[2](v12, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -93,9 +93,9 @@ LABEL_17:
     v22[1] = 3221225472;
     v22[2] = __108__VSMultiAppInstallUtility_determineMultiAppEnabledForProvider_withAccount_withBagLoadOperation_completion___block_invoke;
     v22[3] = &unk_279E19B60;
-    v24 = (v20 & 0xFFFFFFFFFFFFFFFELL) == 2;
-    v23 = v12;
-    [VSMultiAppInstallUtility isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:v11 completion:v22];
+    v24 = (freeAppPasswordPromptSetting & 0xFFFFFFFFFFFFFFFELL) == 2;
+    v23 = completionCopy;
+    [VSMultiAppInstallUtility isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:operationCopy completion:v22];
   }
 
 LABEL_18:
@@ -133,10 +133,10 @@ uint64_t __108__VSMultiAppInstallUtility_determineMultiAppEnabledForProvider_wit
   return (*(*(a1 + 32) + 16))();
 }
 
-+ (void)isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:(id)a3 completion:(id)a4
++ (void)isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation:(id)operation completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CE21A0]);
   [v7 setBagKey:*MEMORY[0x277CE2370]];
   objc_initWeak(&location, v7);
@@ -145,7 +145,7 @@ uint64_t __108__VSMultiAppInstallUtility_determineMultiAppEnabledForProvider_wit
   v9[2] = __116__VSMultiAppInstallUtility_isShowMultiAppInstallForCaseAlwaysRequirePasswordEnabledWithBagLoadOperation_completion___block_invoke;
   v9[3] = &unk_279E19B88;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
   [v7 setCompletionBlock:v9];
   VSEnqueueCompletionOperation();
@@ -176,17 +176,17 @@ void __116__VSMultiAppInstallUtility_isShowMultiAppInstallForCaseAlwaysRequirePa
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getPendingConsentBundleIDsFromSelectedAppDescriptions:(id)a3 completionHandler:(id)a4
++ (void)getPendingConsentBundleIDsFromSelectedAppDescriptions:(id)descriptions completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptionsCopy = descriptions;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = descriptionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -202,10 +202,10 @@ void __116__VSMultiAppInstallUtility_isShowMultiAppInstallForCaseAlwaysRequirePa
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) bundleID];
-        if (v14)
+        bundleID = [*(*(&v16 + 1) + 8 * v13) bundleID];
+        if (bundleID)
         {
-          [v8 addObject:v14];
+          [v8 addObject:bundleID];
         }
 
         ++v13;
@@ -218,52 +218,52 @@ void __116__VSMultiAppInstallUtility_isShowMultiAppInstallForCaseAlwaysRequirePa
     while (v11);
   }
 
-  [a1 filterBundleIDsByPendingConsent:v8 completionHandler:v7];
+  [self filterBundleIDsByPendingConsent:v8 completionHandler:handlerCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getDecidedNonChannelAppsForProvider:(id)a3 account:(id)a4 device:(id)a5
++ (id)getDecidedNonChannelAppsForProvider:(id)provider account:(id)account device:(id)device
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 nonChannelAppDescriptions];
+  providerCopy = provider;
+  deviceCopy = device;
+  accountCopy = account;
+  nonChannelAppDescriptions = [providerCopy nonChannelAppDescriptions];
 
-  if (!v10)
+  if (!nonChannelAppDescriptions)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [provider nonChannelAppDescriptions] parameter must not be nil."];
   }
 
-  v11 = [v7 nonChannelAppDescriptions];
-  v12 = [v9 preferredAppID];
+  nonChannelAppDescriptions2 = [providerCopy nonChannelAppDescriptions];
+  preferredAppID = [accountCopy preferredAppID];
 
   v13 = objc_alloc_init(VSNonChannelAppDecider);
-  [(VSNonChannelAppDecider *)v13 setAppDescriptions:v11];
-  [(VSNonChannelAppDecider *)v13 setPreferredAppBundleOrAdamID:v12];
-  v14 = [v8 stringForAMSDeviceFamilies];
+  [(VSNonChannelAppDecider *)v13 setAppDescriptions:nonChannelAppDescriptions2];
+  [(VSNonChannelAppDecider *)v13 setPreferredAppBundleOrAdamID:preferredAppID];
+  stringForAMSDeviceFamilies = [deviceCopy stringForAMSDeviceFamilies];
 
-  [(VSNonChannelAppDecider *)v13 setPreferredDeviceFamily:v14];
-  v15 = [(VSNonChannelAppDecider *)v13 decidedNonChannelApps];
+  [(VSNonChannelAppDecider *)v13 setPreferredDeviceFamily:stringForAMSDeviceFamilies];
+  decidedNonChannelApps = [(VSNonChannelAppDecider *)v13 decidedNonChannelApps];
 
-  return v15;
+  return decidedNonChannelApps;
 }
 
-+ (void)filterBundleIDsByPendingConsent:(id)a3 completionHandler:(id)a4
++ (void)filterBundleIDsByPendingConsent:(id)consent completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  consentCopy = consent;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = MEMORY[0x277D782F8];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__VSMultiAppInstallUtility_filterBundleIDsByPendingConsent_completionHandler___block_invoke;
   v12[3] = &unk_279E19BB0;
-  v13 = v5;
+  v13 = consentCopy;
   v14 = v7;
-  v15 = v6;
-  v9 = v6;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
-  v11 = v5;
+  v11 = consentCopy;
   [v8 resolveBundleIDs:v11 completionHandler:v12];
 }
 

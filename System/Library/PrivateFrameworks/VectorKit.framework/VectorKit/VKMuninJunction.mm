@@ -1,5 +1,5 @@
 @interface VKMuninJunction
-- (VKMuninJunction)initWithMuninJunction:(const void *)a3 localize:(BOOL)a4;
+- (VKMuninJunction)initWithMuninJunction:(const void *)junction localize:(BOOL)localize;
 - (id)description;
 @end
 
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (VKMuninJunction)initWithMuninJunction:(const void *)a3 localize:(BOOL)a4
+- (VKMuninJunction)initWithMuninJunction:(const void *)junction localize:(BOOL)localize
 {
-  v4 = a4;
+  localizeCopy = localize;
   v42 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = VKMuninJunction;
@@ -35,10 +35,10 @@
     roads = v6->_roads;
     v6->_roads = v7;
 
-    v9 = *(a3 + 5);
-    for (i = *(a3 + 6); v9 != i; ++v9)
+    v9 = *(junction + 5);
+    for (i = *(junction + 6); v9 != i; ++v9)
     {
-      md::MuninRoadEdge::localizedName(&v39, **v9, v4);
+      md::MuninRoadEdge::localizedName(&v39, **v9, localizeCopy);
       v12 = HIBYTE(v41);
       v13 = HIBYTE(v41);
       if (v41 < 0)
@@ -81,7 +81,7 @@
 
     v35 = 0uLL;
     v36 = 0;
-    v20 = *(a3 + 1);
+    v20 = *(junction + 1);
     if (v20)
     {
       v21 = *(v20 + 8);
@@ -90,7 +90,7 @@
         v39 = 0;
         v40 = 0;
         v41 = 0;
-        md::LabelFeature::textFromFeature(&v37, v21, v4, &v39, 0);
+        md::LabelFeature::textFromFeature(&v37, v21, localizeCopy, &v39, 0);
         v35 = v37;
         v36 = v38;
         if (SHIBYTE(v41) < 0)

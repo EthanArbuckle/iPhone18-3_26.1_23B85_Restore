@@ -1,16 +1,16 @@
 @interface NavigationTrackingTask
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)trackNavigationStarted:(BOOL)a3 purpose:(int)a4 originResolvedType:(int)a5 destinationResolvedType:(int)a6;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)trackNavigationStarted:(BOOL)started purpose:(int)purpose originResolvedType:(int)type destinationResolvedType:(int)resolvedType;
 @end
 
 @implementation NavigationTrackingTask
 
-- (void)trackNavigationStarted:(BOOL)a3 purpose:(int)a4 originResolvedType:(int)a5 destinationResolvedType:(int)a6
+- (void)trackNavigationStarted:(BOOL)started purpose:(int)purpose originResolvedType:(int)type destinationResolvedType:(int)resolvedType
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = a3;
+  v6 = *&resolvedType;
+  v7 = *&type;
+  v8 = *&purpose;
+  startedCopy = started;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -69,18 +69,18 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Sending Analytics [%@, %@]", &v16, 0x16u);
   }
 
-  v15 = [NSNumber numberWithBool:v9];
+  v15 = [NSNumber numberWithBool:startedCopy];
   [GEOAPPortal captureDirectionsRequestDetailsWithNavStarted:v15 purpose:v8 origin:v7 destination:v6];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   if ((+[GEOAPPortal directionsRequestDetailsAreDisabled]& 1) == 0)
   {
-    v11 = v9;
+    v11 = sessionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,27 +96,27 @@
 
     if (v13)
     {
-      v14 = v10;
+      v14 = toSessionCopy;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (!v14 || (isKindOfClass & 1) == 0)
       {
-        v55 = [v13 configuration];
-        v16 = [v55 originWaypointRequest];
-        v17 = [v16 waypointRequest];
-        [v17 coordinate];
+        configuration = [v13 configuration];
+        originWaypointRequest = [configuration originWaypointRequest];
+        waypointRequest = [originWaypointRequest waypointRequest];
+        [waypointRequest coordinate];
         v19 = v18;
         v21 = v20;
 
-        v22 = [v55 destinationWaypointRequest];
-        v23 = [v22 waypointRequest];
-        [v23 coordinate];
+        destinationWaypointRequest = [configuration destinationWaypointRequest];
+        waypointRequest2 = [destinationWaypointRequest waypointRequest];
+        [waypointRequest2 coordinate];
         v25 = v24;
         v27 = v26;
 
         v54 = MapsSuggestionsResourceDepotForMapsProcess();
-        v28 = [v54 oneUser];
+        oneUser = [v54 oneUser];
         v56[0] = _NSConcreteStackBlock;
         v56[1] = 3221225472;
         v56[2] = sub_100E8E3D4;
@@ -124,7 +124,7 @@
         v56[4] = self;
         v57 = v14;
         v58 = 4;
-        v29 = v28;
+        v29 = oneUser;
         v53 = v56;
         v30 = dispatch_group_create();
         v31 = GEOFindOrCreateLog();

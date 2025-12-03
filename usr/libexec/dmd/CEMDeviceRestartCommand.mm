@@ -1,10 +1,10 @@
 @interface CEMDeviceRestartCommand
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMDeviceRestartCommand
 
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error
 {
   v4 = objc_opt_new();
 

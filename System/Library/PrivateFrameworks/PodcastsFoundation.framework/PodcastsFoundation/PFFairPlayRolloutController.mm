@@ -1,7 +1,7 @@
 @interface PFFairPlayRolloutController
 + (PFFairPlayRolloutController)sharedInstance;
 - (PFFairPlayRolloutController)init;
-- (void)didRollbackStatusChangeWithCompletion:(id)a3;
+- (void)didRollbackStatusChangeWithCompletion:(id)completion;
 @end
 
 @implementation PFFairPlayRolloutController
@@ -27,12 +27,12 @@
   return [(PFFairPlayRolloutController *)&v5 init];
 }
 
-- (void)didRollbackStatusChangeWithCompletion:(id)a3
+- (void)didRollbackStatusChangeWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   FairPlayRolloutController.didRollbackStatusChange(completion:)(sub_1D8D998A4, v5);
 }
 

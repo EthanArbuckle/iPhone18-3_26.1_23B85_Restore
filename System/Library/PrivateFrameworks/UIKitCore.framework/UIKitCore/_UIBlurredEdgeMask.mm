@@ -1,9 +1,9 @@
 @interface _UIBlurredEdgeMask
-- (_TtC5UIKit18_UIBlurredEdgeMask)initWithCoder:(id)a3;
-- (_TtC5UIKit18_UIBlurredEdgeMask)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit18_UIBlurredEdgeMask)initWithCoder:(id)coder;
+- (_TtC5UIKit18_UIBlurredEdgeMask)initWithFrame:(CGRect)frame;
 - (void)_contentViewDidUpdate;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 @end
 
 @implementation _UIBlurredEdgeMask
@@ -11,33 +11,33 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for _UIBlurredEdgeMask();
   [(UIView *)&v6 dealloc];
 }
 
 - (void)_contentViewDidUpdate
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_188ECB4B4();
   [v2 removeAllObjects];
 
-  v3 = [(UIView *)v4 layer];
-  [(CALayer *)v3 setNeedsDisplay];
+  layer = [(UIView *)selfCopy layer];
+  [(CALayer *)layer setNeedsDisplay];
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
+  layerCopy = layer;
+  selfCopy = self;
   sub_188ECC8C8();
 }
 
-- (_TtC5UIKit18_UIBlurredEdgeMask)initWithCoder:(id)a3
+- (_TtC5UIKit18_UIBlurredEdgeMask)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit18_UIBlurredEdgeMask____lazy_storage___blurredPortal) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit18_UIBlurredEdgeMask____lazy_storage___punchPortal) = 0;
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (_TtC5UIKit18_UIBlurredEdgeMask)initWithFrame:(CGRect)a3
+- (_TtC5UIKit18_UIBlurredEdgeMask)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

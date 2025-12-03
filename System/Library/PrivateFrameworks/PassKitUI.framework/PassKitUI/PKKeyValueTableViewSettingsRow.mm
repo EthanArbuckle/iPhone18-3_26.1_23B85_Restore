@@ -1,48 +1,48 @@
 @interface PKKeyValueTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (PKKeyValueTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 value:(id)a5 sectionID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PKKeyValueTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title value:(id)value sectionID:(id)d;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 - (unint64_t)hash;
 @end
 
 @implementation PKKeyValueTableViewSettingsRow
 
-- (PKKeyValueTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 value:(id)a5 sectionID:(id)a6
+- (PKKeyValueTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title value:(id)value sectionID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  valueCopy = value;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = PKKeyValueTableViewSettingsRow;
   v14 = [(PKKeyValueTableViewSettingsRow *)&v28 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v17;
 
-    v19 = [v12 copy];
+    v19 = [valueCopy copy];
     value = v14->_value;
     v14->_value = v19;
 
-    v21 = [v13 copy];
+    v21 = [dCopy copy];
     sectionID = v14->_sectionID;
     v14->_sectionID = v21;
 
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     secondaryTextColor = v14->_secondaryTextColor;
-    v14->_secondaryTextColor = v23;
+    v14->_secondaryTextColor = secondaryLabelColor;
 
-    v25 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     primaryTextColor = v14->_primaryTextColor;
-    v14->_primaryTextColor = v25;
+    v14->_primaryTextColor = labelColor;
   }
 
   return v14;
@@ -60,18 +60,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -152,34 +152,34 @@ LABEL_22:
   return NSStringFromClass(v2);
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
-  v8 = [v7 defaultContentConfiguration];
-  [v8 setText:self->_title];
-  [v8 setSecondaryText:self->_value];
-  [v8 setPrefersSideBySideTextAndSecondaryText:1];
-  v9 = [v8 secondaryTextProperties];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  [defaultContentConfiguration setText:self->_title];
+  [defaultContentConfiguration setSecondaryText:self->_value];
+  [defaultContentConfiguration setPrefersSideBySideTextAndSecondaryText:1];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
   v10 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
-  [v9 setFont:v10];
+  [secondaryTextProperties setFont:v10];
 
-  [v9 setColor:self->_secondaryTextColor];
-  v11 = [v8 textProperties];
-  [v11 setColor:self->_primaryTextColor];
-  [v7 setContentConfiguration:v8];
-  v12 = [v7 textLabel];
-  [v12 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  [secondaryTextProperties setColor:self->_secondaryTextColor];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:self->_primaryTextColor];
+  [v7 setContentConfiguration:defaultContentConfiguration];
+  textLabel = [v7 textLabel];
+  [textLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
 
-  v13 = [v7 detailTextLabel];
-  [v13 setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
 
   [v7 setAccessibilityIdentifier:self->_identifier];
   [v7 pkui_setExcludedFromScreenCapture:self->_sensitive andBroadcasting:self->_sensitive];

@@ -1,30 +1,30 @@
 @interface PGMaterialView
-- (BOOL)PG_preferredVisibilityForView:(id)a3;
-- (PGMaterialView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4;
+- (BOOL)PG_preferredVisibilityForView:(id)view;
+- (PGMaterialView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background;
 - (UIView)contentView;
 - (double)_continuousCornerRadius;
 - (double)_cornerRadius;
 - (id)backgroundColor;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)addSubview:(id)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation PGMaterialView
 
-- (PGMaterialView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4
+- (PGMaterialView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background
 {
-  v4 = a4;
+  backgroundCopy = background;
   v14.receiver = self;
   v14.super_class = PGMaterialView;
-  v5 = [(PGLayoutContainerView *)&v14 initWithFrame:a3.origin.x wantsGlassBackground:a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PGLayoutContainerView *)&v14 initWithFrame:frame.origin.x wantsGlassBackground:frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_wantsGlassBackground = v4;
-    if (v4)
+    v5->_wantsGlassBackground = backgroundCopy;
+    if (backgroundCopy)
     {
       v7 = objc_alloc(MEMORY[0x1E69DD250]);
       [(PGMaterialView *)v6 bounds];
@@ -63,11 +63,11 @@
   [(UIView *)contentView setFrame:?];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_contentView != v5 && self->_backgroundMaterialView != v5)
+  subviewCopy = subview;
+  v6 = subviewCopy;
+  if (self->_contentView != subviewCopy && self->_backgroundMaterialView != subviewCopy)
   {
     [(PGMaterialView *)a2 addSubview:?];
   }
@@ -95,20 +95,20 @@
   return v4;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v8 = a3;
-  v4 = [(PGMaterialView *)self backgroundColor];
-  if ([v8 isEqual:v4])
+  colorCopy = color;
+  backgroundColor = [(PGMaterialView *)self backgroundColor];
+  if ([colorCopy isEqual:backgroundColor])
   {
   }
 
   else
   {
-    v5 = [(PGMaterialView *)self backgroundColor];
+    backgroundColor2 = [(PGMaterialView *)self backgroundColor];
 
-    v6 = v8;
-    if (v5 == v8)
+    v6 = colorCopy;
+    if (backgroundColor2 == colorCopy)
     {
       goto LABEL_8;
     }
@@ -116,16 +116,16 @@
     backgroundMaterialView = self->_backgroundMaterialView;
     if (self->_wantsGlassBackground)
     {
-      [(UIView *)backgroundMaterialView setBackgroundColor:v8];
+      [(UIView *)backgroundMaterialView setBackgroundColor:colorCopy];
     }
 
     else
     {
-      [(UIView *)backgroundMaterialView setCustomBackgroundColor:v8];
+      [(UIView *)backgroundMaterialView setCustomBackgroundColor:colorCopy];
     }
   }
 
-  v6 = v8;
+  v6 = colorCopy;
 LABEL_8:
 }
 
@@ -150,16 +150,16 @@ LABEL_8:
   return result;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   if (self->_wantsGlassBackground)
   {
     v5.receiver = self;
     v5.super_class = PGMaterialView;
-    [(PGMaterialView *)&v5 _setCornerRadius:a3];
+    [(PGMaterialView *)&v5 _setCornerRadius:radius];
   }
 
-  [(UIView *)self->_backgroundMaterialView _setCornerRadius:a3];
+  [(UIView *)self->_backgroundMaterialView _setCornerRadius:radius];
 }
 
 - (double)_continuousCornerRadius
@@ -183,16 +183,16 @@ LABEL_8:
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   if (self->_wantsGlassBackground)
   {
     v5.receiver = self;
     v5.super_class = PGMaterialView;
-    [(PGMaterialView *)&v5 _setContinuousCornerRadius:a3];
+    [(PGMaterialView *)&v5 _setContinuousCornerRadius:radius];
   }
 
-  [(UIView *)self->_backgroundMaterialView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_backgroundMaterialView _setContinuousCornerRadius:radius];
 }
 
 - (UIView)contentView
@@ -206,8 +206,8 @@ LABEL_8:
     self->_contentView = v4;
 
     v6 = self->_contentView;
-    v7 = [(PGMaterialView *)self subviews];
-    -[PGMaterialView insertSubview:atIndex:](self, "insertSubview:atIndex:", v6, [v7 count]);
+    subviews = [(PGMaterialView *)self subviews];
+    -[PGMaterialView insertSubview:atIndex:](self, "insertSubview:atIndex:", v6, [subviews count]);
 
     if (!self->_wantsGlassBackground)
     {
@@ -220,22 +220,22 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)PG_preferredVisibilityForView:(id)a3
+- (BOOL)PG_preferredVisibilityForView:(id)view
 {
-  v4 = a3;
-  v5 = [(PGMaterialView *)self superview];
-  v6 = v5;
-  if (self->_backgroundMaterialView == v4)
+  viewCopy = view;
+  superview = [(PGMaterialView *)self superview];
+  v6 = superview;
+  if (self->_backgroundMaterialView == viewCopy)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = v4;
+    selfCopy = viewCopy;
   }
 
-  v8 = [v5 PG_preferredVisibilityForView:v7];
+  v8 = [superview PG_preferredVisibilityForView:selfCopy];
 
   return v8;
 }

@@ -1,20 +1,20 @@
 @interface MPMusicPlayerPlayParametersQueueDescriptor
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerPlayParametersQueueDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerPlayParametersQueueDescriptor)initWithCoder:(id)coder;
 - (MPMusicPlayerPlayParametersQueueDescriptor)initWithPlayParametersQueue:(NSArray *)playParametersQueue;
 - (NSArray)playParametersQueue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContainerPlayParameters:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContainerPlayParameters:(id)parameters;
 - (void)setEndTime:(NSTimeInterval)endTime forItemWithPlayParameters:(MPMusicPlayerPlayParameters *)playParameters;
 - (void)setStartTime:(NSTimeInterval)startTime forItemWithPlayParameters:(MPMusicPlayerPlayParameters *)playParameters;
 @end
 
 @implementation MPMusicPlayerPlayParametersQueueDescriptor
 
-- (void)setContainerPlayParameters:(id)a3
+- (void)setContainerPlayParameters:(id)parameters
 {
-  v4 = [a3 copy];
+  v4 = [parameters copy];
   containerPlayParameters = self->_containerPlayParameters;
   self->_containerPlayParameters = v4;
 }
@@ -28,21 +28,21 @@
 
 - (void)setEndTime:(NSTimeInterval)endTime forItemWithPlayParameters:(MPMusicPlayerPlayParameters *)playParameters
 {
-  v6 = [(MPMusicPlayerPlayParameters *)playParameters identifiers];
-  [(MPMusicPlayerQueueDescriptor *)self _setEndTime:v6 forIdentifiers:endTime];
+  identifiers = [(MPMusicPlayerPlayParameters *)playParameters identifiers];
+  [(MPMusicPlayerQueueDescriptor *)self _setEndTime:identifiers forIdentifiers:endTime];
 }
 
 - (void)setStartTime:(NSTimeInterval)startTime forItemWithPlayParameters:(MPMusicPlayerPlayParameters *)playParameters
 {
-  v6 = [(MPMusicPlayerPlayParameters *)playParameters identifiers];
-  [(MPMusicPlayerQueueDescriptor *)self _setStartTime:v6 forIdentifiers:startTime];
+  identifiers = [(MPMusicPlayerPlayParameters *)playParameters identifiers];
+  [(MPMusicPlayerQueueDescriptor *)self _setStartTime:identifiers forIdentifiers:startTime];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = MPMusicPlayerPlayParametersQueueDescriptor;
-  v4 = [(MPMusicPlayerQueueDescriptor *)&v12 copyWithZone:a3];
+  v4 = [(MPMusicPlayerQueueDescriptor *)&v12 copyWithZone:zone];
   v5 = [(NSArray *)self->_playParametersQueue copy];
   v6 = v4[11];
   v4[11] = v5;
@@ -58,37 +58,37 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPMusicPlayerPlayParametersQueueDescriptor;
-  v4 = a3;
-  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_playParametersQueue forKey:{@"MPMusicPlayerPlayParametersQueueDescriptorPlayParameters", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_startItemPlayParameters forKey:@"MPMusicPlayerPlayParametersQueueDescriptorStartItemPlayParameters"];
-  [v4 encodeObject:self->_containerPlayParameters forKey:@"MPMusicPlayerPlayParametersQueueDescriptorContainerPlayParameters"];
+  coderCopy = coder;
+  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_playParametersQueue forKey:{@"MPMusicPlayerPlayParametersQueueDescriptorPlayParameters", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_startItemPlayParameters forKey:@"MPMusicPlayerPlayParametersQueueDescriptorStartItemPlayParameters"];
+  [coderCopy encodeObject:self->_containerPlayParameters forKey:@"MPMusicPlayerPlayParametersQueueDescriptorContainerPlayParameters"];
 }
 
-- (MPMusicPlayerPlayParametersQueueDescriptor)initWithCoder:(id)a3
+- (MPMusicPlayerPlayParametersQueueDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MPMusicPlayerPlayParametersQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v16 initWithCoder:v4];
+  v5 = [(MPMusicPlayerQueueDescriptor *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerPlayParametersQueueDescriptorPlayParameters"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerPlayParametersQueueDescriptorPlayParameters"];
     playParametersQueue = v5->_playParametersQueue;
     v5->_playParametersQueue = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersQueueDescriptorStartItemPlayParameters"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersQueueDescriptorStartItemPlayParameters"];
     startItemPlayParameters = v5->_startItemPlayParameters;
     v5->_startItemPlayParameters = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersQueueDescriptorContainerPlayParameters"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersQueueDescriptorContainerPlayParameters"];
     containerPlayParameters = v5->_containerPlayParameters;
     v5->_containerPlayParameters = v13;
   }
@@ -96,14 +96,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v20.receiver = self;
   v20.super_class = MPMusicPlayerPlayParametersQueueDescriptor;
-  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:v4])
+  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[11];
     v7 = self->_playParametersQueue;
     v8 = v7;
@@ -159,15 +159,15 @@
   v4 = playParametersQueue;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerPlayParametersQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
-  if (v5)
+  _init = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
+  if (_init)
   {
     v6 = [(NSArray *)v4 copy];
-    v7 = v5->_playParametersQueue;
-    v5->_playParametersQueue = v6;
+    v7 = _init->_playParametersQueue;
+    _init->_playParametersQueue = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

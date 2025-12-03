@@ -1,15 +1,15 @@
 @interface VSViewControllerFactory
 + (id)sharedFactory;
 - (VSViewControllerFactory)init;
-- (id)authenticationViewControllerForViewModel:(id)a3;
-- (id)identityProviderPickerViewControllerWithIdentityProviders:(id)a3;
+- (id)authenticationViewControllerForViewModel:(id)model;
+- (id)identityProviderPickerViewControllerWithIdentityProviders:(id)providers;
 - (id)loadingViewController;
-- (id)viewControllerForAppsSupportedByIdentityProvider:(id)a3 supportedApps:(id)a4 delegate:(id)a5;
-- (id)viewControllerForPlaybackActivityReportingFromAppsWithBundleIDs:(id)a3 grantingVouchers:(BOOL)a4 appleAccountName:(id)a5 identityProvider:(id)a6 completionHandler:(id)a7;
-- (id)viewControllerForUnsupportedProvider:(id)a3 withRequestingAppDisplayName:(id)a4 storage:(id)a5 acknowledgementHandler:(id)a6;
-- (id)viewControllerToConfirmAccountDeletionForAccount:(id)a3 preferredStyle:(int64_t)a4 confirmationHandler:(id)a5;
-- (id)viewControllerToConfirmDeveloperIdentityProviderDeletionWithConfirmationHandler:(id)a3;
-- (void)viewServiceRemoteViewControllerWithCompletion:(id)a3;
+- (id)viewControllerForAppsSupportedByIdentityProvider:(id)provider supportedApps:(id)apps delegate:(id)delegate;
+- (id)viewControllerForPlaybackActivityReportingFromAppsWithBundleIDs:(id)ds grantingVouchers:(BOOL)vouchers appleAccountName:(id)name identityProvider:(id)provider completionHandler:(id)handler;
+- (id)viewControllerForUnsupportedProvider:(id)provider withRequestingAppDisplayName:(id)name storage:(id)storage acknowledgementHandler:(id)handler;
+- (id)viewControllerToConfirmAccountDeletionForAccount:(id)account preferredStyle:(int64_t)style confirmationHandler:(id)handler;
+- (id)viewControllerToConfirmDeveloperIdentityProviderDeletionWithConfirmationHandler:(id)handler;
+- (void)viewServiceRemoteViewControllerWithCompletion:(id)completion;
 @end
 
 @implementation VSViewControllerFactory
@@ -51,10 +51,10 @@ uint64_t __40__VSViewControllerFactory_sharedFactory__block_invoke()
   return v2;
 }
 
-- (void)viewServiceRemoteViewControllerWithCompletion:(id)a3
+- (void)viewServiceRemoteViewControllerWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (!v3)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completion parameter must not be nil."];
   }
@@ -64,8 +64,8 @@ uint64_t __40__VSViewControllerFactory_sharedFactory__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __73__VSViewControllerFactory_viewServiceRemoteViewControllerWithCompletion___block_invoke;
   v7[3] = &unk_279E19FD8;
-  v8 = v3;
-  v5 = v3;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [v4 requestViewController:@"VSViewServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.VSViewService" connectionHandler:v7];
 }
 
@@ -98,20 +98,20 @@ void __73__VSViewControllerFactory_viewServiceRemoteViewControllerWithCompletion
   v9();
 }
 
-- (id)identityProviderPickerViewControllerWithIdentityProviders:(id)a3
+- (id)identityProviderPickerViewControllerWithIdentityProviders:(id)providers
 {
-  v3 = a3;
+  providersCopy = providers;
   v4 = objc_alloc_init(VSIdentityProviderPickerViewController_iOS);
-  [(VSIdentityProviderPickerViewController_iOS *)v4 setIdentityProviders:v3];
+  [(VSIdentityProviderPickerViewController_iOS *)v4 setIdentityProviders:providersCopy];
 
   v5 = [MEMORY[0x277CE2298] optionalWithObject:v4];
 
   return v5;
 }
 
-- (id)authenticationViewControllerForViewModel:(id)a3
+- (id)authenticationViewControllerForViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -127,7 +127,7 @@ void __73__VSViewControllerFactory_viewServiceRemoteViewControllerWithCompletion
 
     v8 = VSCredentialEntryViewController_iOS;
 LABEL_13:
-    v17 = v3;
+    v17 = modelCopy;
     v18 = objc_alloc_init(v8);
     [v18 setViewModel:v17];
 
@@ -181,7 +181,7 @@ LABEL_13:
       [v21 raise:v22 format:{@"Unexpectedly, viewModel was %@, instead of VSOnscreenCodeViewModel.", v24}];
     }
 
-    [0 setViewModel:v3];
+    [0 setViewModel:modelCopy];
   }
 
   else
@@ -219,40 +219,40 @@ LABEL_14:
   return v3;
 }
 
-- (id)viewControllerToConfirmAccountDeletionForAccount:(id)a3 preferredStyle:(int64_t)a4 confirmationHandler:(id)a5
+- (id)viewControllerToConfirmAccountDeletionForAccount:(id)account preferredStyle:(int64_t)style confirmationHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CCACA8];
   v9 = MEMORY[0x277CCA8D8];
-  v10 = a3;
-  v11 = [v9 vs_frameworkBundle];
-  v12 = [v11 localizedStringForKey:@"SIGN_OUT_CONFIRMATION_TITLE_FORMAT" value:0 table:0];
-  v13 = [v10 identityProviderDisplayName];
-  v14 = [v8 stringWithFormat:v12, v13];
+  accountCopy = account;
+  vs_frameworkBundle = [v9 vs_frameworkBundle];
+  v12 = [vs_frameworkBundle localizedStringForKey:@"SIGN_OUT_CONFIRMATION_TITLE_FORMAT" value:0 table:0];
+  identityProviderDisplayName = [accountCopy identityProviderDisplayName];
+  v14 = [v8 stringWithFormat:v12, identityProviderDisplayName];
 
-  LODWORD(v11) = [v10 isSynchronizable];
+  LODWORD(vs_frameworkBundle) = [accountCopy isSynchronizable];
   v15 = 0;
-  if (v11)
+  if (vs_frameworkBundle)
   {
-    v16 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v15 = [v16 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_GENERIC" value:0 table:0];
+    vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v15 = [vs_frameworkBundle2 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_GENERIC" value:0 table:0];
   }
 
-  v17 = [MEMORY[0x277D75110] alertControllerWithTitle:v14 message:v15 preferredStyle:a4];
-  v18 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v19 = [v18 localizedStringForKey:@"SIGN_OUT_BUTTON_TITLE" value:0 table:0];
+  v17 = [MEMORY[0x277D75110] alertControllerWithTitle:v14 message:v15 preferredStyle:style];
+  vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v19 = [vs_frameworkBundle3 localizedStringForKey:@"SIGN_OUT_BUTTON_TITLE" value:0 table:0];
 
   v20 = MEMORY[0x277D750F8];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __111__VSViewControllerFactory_viewControllerToConfirmAccountDeletionForAccount_preferredStyle_confirmationHandler___block_invoke;
   v27[3] = &unk_279E199B8;
-  v28 = v7;
-  v21 = v7;
+  v28 = handlerCopy;
+  v21 = handlerCopy;
   v22 = [v20 actionWithTitle:v19 style:2 handler:v27];
   [v17 addAction:v22];
-  v23 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v24 = [v23 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
+  vs_frameworkBundle4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v24 = [vs_frameworkBundle4 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
 
   v25 = [MEMORY[0x277D750F8] actionWithTitle:v24 style:1 handler:0];
   [v17 addAction:v25];
@@ -260,27 +260,27 @@ LABEL_14:
   return v17;
 }
 
-- (id)viewControllerToConfirmDeveloperIdentityProviderDeletionWithConfirmationHandler:(id)a3
+- (id)viewControllerToConfirmDeveloperIdentityProviderDeletionWithConfirmationHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE2238] currentDevice];
-  v5 = [v4 developerIdentityProviderDeletionConfirmationMessage];
+  handlerCopy = handler;
+  currentDevice = [MEMORY[0x277CE2238] currentDevice];
+  developerIdentityProviderDeletionConfirmationMessage = [currentDevice developerIdentityProviderDeletionConfirmationMessage];
 
-  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:v5 message:0 preferredStyle:0];
-  v7 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v8 = [v7 localizedStringForKey:@"DEVELOPER_DELETION_ACTION_TITLE" value:0 table:0];
+  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:developerIdentityProviderDeletionConfirmationMessage message:0 preferredStyle:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v8 = [vs_frameworkBundle localizedStringForKey:@"DEVELOPER_DELETION_ACTION_TITLE" value:0 table:0];
 
   v9 = MEMORY[0x277D750F8];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __107__VSViewControllerFactory_viewControllerToConfirmDeveloperIdentityProviderDeletionWithConfirmationHandler___block_invoke;
   v17[3] = &unk_279E199B8;
-  v18 = v3;
-  v10 = v3;
+  v18 = handlerCopy;
+  v10 = handlerCopy;
   v11 = [v9 actionWithTitle:v8 style:2 handler:v17];
   [v6 addAction:v11];
-  v12 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v13 = [v12 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
+  vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v13 = [vs_frameworkBundle2 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
 
   v14 = [MEMORY[0x277D750F8] actionWithTitle:v13 style:1 handler:0];
   [v6 addAction:v14];
@@ -289,79 +289,79 @@ LABEL_14:
   return v15;
 }
 
-- (id)viewControllerForUnsupportedProvider:(id)a3 withRequestingAppDisplayName:(id)a4 storage:(id)a5 acknowledgementHandler:(id)a6
+- (id)viewControllerForUnsupportedProvider:(id)provider withRequestingAppDisplayName:(id)name storage:(id)storage acknowledgementHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v44 = a6;
-  v13 = [v10 displayName];
-  v14 = [v13 forceUnwrapObject];
+  providerCopy = provider;
+  nameCopy = name;
+  storageCopy = storage;
+  handlerCopy = handler;
+  displayName = [providerCopy displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
 
-  v45 = v11;
-  v43 = v14;
-  if (v11)
+  v45 = nameCopy;
+  v43 = forceUnwrapObject;
+  if (nameCopy)
   {
-    v15 = v11;
-    v16 = [v10 isProhibitedByStore];
-    v17 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v18 = v17;
-    if (v16)
+    v15 = nameCopy;
+    isProhibitedByStore = [providerCopy isProhibitedByStore];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v18 = vs_frameworkBundle;
+    if (isProhibitedByStore)
     {
-      v19 = [v17 localizedStringForKey:@"UNSUPPORTED_PROVIDER_TITLE_FORMAT" value:0 table:0];
+      vs_frameworkBundle5 = [vs_frameworkBundle localizedStringForKey:@"UNSUPPORTED_PROVIDER_TITLE_FORMAT" value:0 table:0];
 
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v14];
-      v21 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v22 = [v21 localizedStringForKey:@"UNSUPPORTED_PROVIDER_MESSAGE_FORMAT" value:0 table:0];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:vs_frameworkBundle5, forceUnwrapObject];
+      vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v22 = [vs_frameworkBundle2 localizedStringForKey:@"UNSUPPORTED_PROVIDER_MESSAGE_FORMAT" value:0 table:0];
 
       [MEMORY[0x277CCACA8] stringWithFormat:v22, v15, v41];
     }
 
     else
     {
-      v19 = [v17 localizedStringForKey:@"UNSUPPORTED_APP_TITLE_FORMAT" value:0 table:0];
+      vs_frameworkBundle5 = [vs_frameworkBundle localizedStringForKey:@"UNSUPPORTED_APP_TITLE_FORMAT" value:0 table:0];
 
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v15, v14];
-      v25 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v22 = [v25 localizedStringForKey:@"UNSUPPORTED_APP_MESSAGE_FORMAT" value:0 table:0];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:vs_frameworkBundle5, v15, forceUnwrapObject];
+      vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v22 = [vs_frameworkBundle3 localizedStringForKey:@"UNSUPPORTED_APP_MESSAGE_FORMAT" value:0 table:0];
 
-      [MEMORY[0x277CCACA8] stringWithFormat:v22, v14, v15];
+      [MEMORY[0x277CCACA8] stringWithFormat:v22, forceUnwrapObject, v15];
     }
     v24 = ;
   }
 
   else
   {
-    v23 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v15 = [v23 localizedStringForKey:@"UNSUPPORTED_PROVIDER_TITLE_FORMAT" value:0 table:0];
+    vs_frameworkBundle4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v15 = [vs_frameworkBundle4 localizedStringForKey:@"UNSUPPORTED_PROVIDER_TITLE_FORMAT" value:0 table:0];
 
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:v15, v14];
-    v19 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v24 = [v19 localizedStringForKey:@"UNSUPPORTED_PROVIDER_SYSTEM_MESSAGE" value:0 table:0];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:v15, forceUnwrapObject];
+    vs_frameworkBundle5 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v24 = [vs_frameworkBundle5 localizedStringForKey:@"UNSUPPORTED_PROVIDER_SYSTEM_MESSAGE" value:0 table:0];
   }
 
   v42 = v20;
 
   v26 = [MEMORY[0x277D75110] alertControllerWithTitle:v20 message:v24 preferredStyle:1];
-  v27 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v28 = [v27 localizedStringForKey:@"ERROR_DISMISS_BUTTON_TITLE" value:0 table:0];
+  vs_frameworkBundle6 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v28 = [vs_frameworkBundle6 localizedStringForKey:@"ERROR_DISMISS_BUTTON_TITLE" value:0 table:0];
 
   v29 = MEMORY[0x277D750F8];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __124__VSViewControllerFactory_viewControllerForUnsupportedProvider_withRequestingAppDisplayName_storage_acknowledgementHandler___block_invoke;
   v48[3] = &unk_279E1A028;
-  v49 = v10;
-  v50 = v12;
-  v30 = v44;
-  v51 = self;
+  v49 = providerCopy;
+  v50 = storageCopy;
+  v30 = handlerCopy;
+  selfCopy = self;
   v52 = v30;
-  v31 = v12;
-  v32 = v10;
+  v31 = storageCopy;
+  v32 = providerCopy;
   v33 = [v29 actionWithTitle:v28 style:0 handler:v48];
   [v26 addAction:v33];
-  v34 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v35 = [v34 localizedStringForKey:@"CHOOSE_ANOTHER_PROVIDER_BUTTON_TITLE" value:0 table:0];
+  vs_frameworkBundle7 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v35 = [vs_frameworkBundle7 localizedStringForKey:@"CHOOSE_ANOTHER_PROVIDER_BUTTON_TITLE" value:0 table:0];
 
   v36 = MEMORY[0x277D750F8];
   v46[0] = MEMORY[0x277D85DD0];
@@ -436,26 +436,26 @@ void __124__VSViewControllerFactory_viewControllerForUnsupportedProvider_withReq
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)viewControllerForAppsSupportedByIdentityProvider:(id)a3 supportedApps:(id)a4 delegate:(id)a5
+- (id)viewControllerForAppsSupportedByIdentityProvider:(id)provider supportedApps:(id)apps delegate:(id)delegate
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  appsCopy = apps;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v10 = objc_alloc_init(VSSupportedAppsViewController);
-  [(VSSupportedAppsViewController *)v10 setDelegate:v8];
+  [(VSSupportedAppsViewController *)v10 setDelegate:delegateCopy];
 
-  v11 = [MEMORY[0x277CE2298] optionalWithObject:v9];
+  v11 = [MEMORY[0x277CE2298] optionalWithObject:providerCopy];
 
   [(VSSupportedAppsViewController *)v10 setIdentityProvider:v11];
-  if (v7)
+  if (appsCopy)
   {
-    [(VSSupportedAppsViewController *)v10 setSupportedApps:v7];
+    [(VSSupportedAppsViewController *)v10 setSupportedApps:appsCopy];
   }
 
   [(VSSupportedAppsViewController *)v10 beginLoadingImages];
-  v12 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v13 = [v12 localizedStringForKey:@"SUPPORTED_APPS_TITLE" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v13 = [vs_frameworkBundle localizedStringForKey:@"SUPPORTED_APPS_TITLE" value:0 table:0];
   [(VSSupportedAppsViewController *)v10 setTitle:v13];
 
   v14 = objc_alloc_init(MEMORY[0x277D757A0]);
@@ -471,41 +471,41 @@ void __124__VSViewControllerFactory_viewControllerForUnsupportedProvider_withReq
   return v16;
 }
 
-- (id)viewControllerForPlaybackActivityReportingFromAppsWithBundleIDs:(id)a3 grantingVouchers:(BOOL)a4 appleAccountName:(id)a5 identityProvider:(id)a6 completionHandler:(id)a7
+- (id)viewControllerForPlaybackActivityReportingFromAppsWithBundleIDs:(id)ds grantingVouchers:(BOOL)vouchers appleAccountName:(id)name identityProvider:(id)provider completionHandler:(id)handler
 {
-  v9 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  vouchersCopy = vouchers;
+  nameCopy = name;
+  providerCopy = provider;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a3;
+  dsCopy = ds;
   v16 = objc_alloc_init(v14);
-  v17 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v18 = [v17 localizedStringForKey:@"PLAYBACK_ACTIVITY_REPORTING_CONSENT_TITLE" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v18 = [vs_frameworkBundle localizedStringForKey:@"PLAYBACK_ACTIVITY_REPORTING_CONSENT_TITLE" value:0 table:0];
 
   v19 = 0x277CCA000;
-  v40 = v12;
-  if (v12)
+  v40 = providerCopy;
+  if (providerCopy)
   {
     v20 = MEMORY[0x277CCA8D8];
-    v21 = v12;
-    v22 = [v20 vs_frameworkBundle];
-    v23 = [v22 localizedStringForKey:@"PLAYBACK_ACTIVITY_REPORTING_CONSENT_TITLE_FORMAT" value:0 table:0];
+    v21 = providerCopy;
+    vs_frameworkBundle2 = [v20 vs_frameworkBundle];
+    v23 = [vs_frameworkBundle2 localizedStringForKey:@"PLAYBACK_ACTIVITY_REPORTING_CONSENT_TITLE_FORMAT" value:0 table:0];
 
-    v24 = [v21 displayName];
+    displayName = [v21 displayName];
 
-    v25 = [v24 forceUnwrapObject];
+    forceUnwrapObject = [displayName forceUnwrapObject];
 
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:v23, v25];
+    v26 = [MEMORY[0x277CCACA8] stringWithFormat:v23, forceUnwrapObject];
 
     v19 = 0x277CCA000uLL;
     v18 = v26;
   }
 
   [v16 setObject:v18 forKey:*MEMORY[0x277D78320]];
-  v27 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v28 = v27;
-  if (v9)
+  vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v28 = vs_frameworkBundle3;
+  if (vouchersCopy)
   {
     v29 = @"PLAYBACK_ACTIVITY_REPORTING_COMBINED_CONSENT_MESSAGE_FORMAT";
   }
@@ -515,14 +515,14 @@ void __124__VSViewControllerFactory_viewControllerForUnsupportedProvider_withReq
     v29 = @"PLAYBACK_ACTIVITY_REPORTING_CONSENT_MESSAGE_FORMAT";
   }
 
-  v30 = [v27 localizedStringForKey:v29 value:0 table:0];
+  v30 = [vs_frameworkBundle3 localizedStringForKey:v29 value:0 table:0];
 
-  v31 = [*(v19 + 3240) stringWithFormat:v30, v11];
+  nameCopy = [*(v19 + 3240) stringWithFormat:v30, nameCopy];
 
-  [v16 setObject:v31 forKey:*MEMORY[0x277D78318]];
-  if (v11)
+  [v16 setObject:nameCopy forKey:*MEMORY[0x277D78318]];
+  if (nameCopy)
   {
-    [v16 setObject:v11 forKey:*MEMORY[0x277D78310]];
+    [v16 setObject:nameCopy forKey:*MEMORY[0x277D78310]];
   }
 
   v32 = objc_alloc(MEMORY[0x277D782F8]);
@@ -530,18 +530,18 @@ void __124__VSViewControllerFactory_viewControllerForUnsupportedProvider_withReq
   v41[1] = 3221225472;
   v41[2] = __160__VSViewControllerFactory_viewControllerForPlaybackActivityReportingFromAppsWithBundleIDs_grantingVouchers_appleAccountName_identityProvider_completionHandler___block_invoke;
   v41[3] = &unk_279E1A078;
-  v42 = v13;
-  v33 = v13;
-  v34 = [v32 initWithBundleIDs:v15 options:v16 completionHandler:v41];
+  v42 = handlerCopy;
+  v33 = handlerCopy;
+  v34 = [v32 initWithBundleIDs:dsCopy options:v16 completionHandler:v41];
 
   v35 = objc_alloc_init(MEMORY[0x277D75D28]);
-  v36 = [v35 view];
+  view = [v35 view];
   [v35 addChildViewController:v34];
-  v37 = [v34 view];
-  [v36 bounds];
-  [v37 setFrame:?];
-  [v37 setAutoresizingMask:18];
-  [v36 addSubview:v37];
+  view2 = [v34 view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
   [v34 didMoveToParentViewController:v35];
   v38 = [MEMORY[0x277CE2298] optionalWithObject:v35];
 

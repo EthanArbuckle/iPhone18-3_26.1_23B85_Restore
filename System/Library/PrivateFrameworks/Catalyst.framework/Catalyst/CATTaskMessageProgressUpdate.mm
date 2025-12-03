@@ -1,20 +1,20 @@
 @interface CATTaskMessageProgressUpdate
-- (CATTaskMessageProgressUpdate)initWithCoder:(id)a3;
-- (CATTaskMessageProgressUpdate)initWithTaskUUID:(id)a3 progress:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CATTaskMessageProgressUpdate)initWithCoder:(id)coder;
+- (CATTaskMessageProgressUpdate)initWithTaskUUID:(id)d progress:(id)progress;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CATTaskMessageProgressUpdate
 
-- (CATTaskMessageProgressUpdate)initWithTaskUUID:(id)a3 progress:(id)a4
+- (CATTaskMessageProgressUpdate)initWithTaskUUID:(id)d progress:(id)progress
 {
-  v6 = a4;
+  progressCopy = progress;
   v11.receiver = self;
   v11.super_class = CATTaskMessageProgressUpdate;
-  v7 = [(CATTaskMessage *)&v11 initWithTaskUUID:a3];
+  v7 = [(CATTaskMessage *)&v11 initWithTaskUUID:d];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [progressCopy copy];
     progress = v7->_progress;
     v7->_progress = v8;
   }
@@ -22,16 +22,16 @@
   return v7;
 }
 
-- (CATTaskMessageProgressUpdate)initWithCoder:(id)a3
+- (CATTaskMessageProgressUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CATTaskMessageProgressUpdate;
-  v5 = [(CATTaskMessage *)&v10 initWithCoder:v4];
+  v5 = [(CATTaskMessage *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"progress"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"progress"];
     progress = v5->_progress;
     v5->_progress = v7;
   }
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CATTaskMessageProgressUpdate;
-  v4 = a3;
-  [(CATTaskMessage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskMessage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CATTaskMessageProgressUpdate *)self progress:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"progress"];
+  [coderCopy encodeObject:v5 forKey:@"progress"];
 }
 
 @end

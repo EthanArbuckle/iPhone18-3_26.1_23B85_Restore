@@ -1,13 +1,13 @@
 @interface SiriNotificationsSetupViewController
 + (id)defaultSubtitleFont;
-+ (id)locIntermediateStringForViewType:(int64_t)a3;
-+ (id)locTableForViewType:(int64_t)a3;
-+ (id)modelForUserInfo:(id)a3;
-+ (id)modelForUserInfo:(id)a3 siriControllerClass:(Class)a4;
-+ (id)viewModelForModel:(id)a3;
++ (id)locIntermediateStringForViewType:(int64_t)type;
++ (id)locTableForViewType:(int64_t)type;
++ (id)modelForUserInfo:(id)info;
++ (id)modelForUserInfo:(id)info siriControllerClass:(Class)class;
++ (id)viewModelForModel:(id)model;
 - (SiriNotificationsSetupProxPairingControllerProxy)mainController;
 - (SiriNotificationsSetupViewController)init;
-- (SiriNotificationsSetupViewController)initWithSiriControllerClass:(Class)a3;
+- (SiriNotificationsSetupViewController)initWithSiriControllerClass:(Class)class;
 - (id)deviceName;
 - (id)extendedUserInfo;
 - (void)announceCallsEnabledDonateTip;
@@ -23,10 +23,10 @@
 - (void)setUpTitle;
 - (void)transitionToNextCardIfNecessary;
 - (void)updateAnnounceCallsStateForUserOptedIn;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SiriNotificationsSetupViewController
@@ -41,18 +41,18 @@
 - (void)announceCallsEnabledDonateTip
 {
   v4 = +[BMStreams discoverabilitySignal];
-  v2 = [v4 source];
+  source = [v4 source];
   v3 = [[BMDiscoverabilitySignalEvent alloc] initWithIdentifier:@"com.apple.siri.announce-calls.enabled" bundleID:@"com.apple.sharingd" context:0];
-  [v2 sendEvent:v3];
+  [source sendEvent:v3];
 }
 
 - (void)transitionToNextCardIfNecessary
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
-  v3 = [(SiriNotificationsSetupViewController *)self model];
-  v4 = [v3 isUpsellFlow];
+  model = [(SiriNotificationsSetupViewController *)self model];
+  isUpsellFlow = [model isUpsellFlow];
 
-  if (v4)
+  if (isUpsellFlow)
   {
     [WeakRetained dismiss:9];
   }
@@ -72,10 +72,10 @@
 {
   if (SFIsAnnounceCallsEnabled())
   {
-    v3 = [(SiriNotificationsSetupViewController *)self model];
-    v4 = [v3 isSiriAllowedWhileLocked];
+    model = [(SiriNotificationsSetupViewController *)self model];
+    isSiriAllowedWhileLocked = [model isSiriAllowedWhileLocked];
 
-    if (v4)
+    if (isSiriAllowedWhileLocked)
     {
       if (![(objc_class *)[(SiriNotificationsSetupViewController *)self siriControllerClass] announceCallsState])
       {
@@ -94,20 +94,20 @@
     LogPrintF();
   }
 
-  v3 = [(SiriNotificationsSetupViewController *)self model];
-  v4 = [v3 viewType];
+  model = [(SiriNotificationsSetupViewController *)self model];
+  viewType = [model viewType];
 
-  if (v4 == 2)
+  if (viewType == 2)
   {
     goto LABEL_8;
   }
 
-  if (v4 == 1)
+  if (viewType == 1)
   {
     goto LABEL_9;
   }
 
-  if (v4)
+  if (viewType)
   {
     if (dword_1001BE658 <= 90 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
     {
@@ -129,9 +129,9 @@ LABEL_9:
 - (void)handleDoNotForMessages
 {
   [(objc_class *)[(SiriNotificationsSetupViewController *)self siriControllerClass] setAnnounceMessagesEnabled:0];
-  v4 = [(SiriNotificationsSetupViewController *)self mainController];
-  v3 = [v4 announceMessagesEvent];
-  [v3 setUserExplicitlyOptedOut:0];
+  mainController = [(SiriNotificationsSetupViewController *)self mainController];
+  announceMessagesEvent = [mainController announceMessagesEvent];
+  [announceMessagesEvent setUserExplicitlyOptedOut:0];
 }
 
 - (void)handleContinueButton
@@ -141,23 +141,23 @@ LABEL_9:
     LogPrintF();
   }
 
-  v3 = [(SiriNotificationsSetupViewController *)self model];
-  v4 = [v3 viewType];
+  model = [(SiriNotificationsSetupViewController *)self model];
+  viewType = [model viewType];
 
-  if (v4 == 2)
+  if (viewType == 2)
   {
     [(SiriNotificationsSetupViewController *)self handleContinueForMessages];
     goto LABEL_10;
   }
 
-  if (v4 == 1)
+  if (viewType == 1)
   {
 LABEL_10:
     [(SiriNotificationsSetupViewController *)self handleContinueForCalls];
     goto LABEL_11;
   }
 
-  if (v4)
+  if (viewType)
   {
     if (dword_1001BE658 <= 90 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
     {
@@ -178,9 +178,9 @@ LABEL_11:
 - (void)handleContinueForMessages
 {
   [(objc_class *)[(SiriNotificationsSetupViewController *)self siriControllerClass] setAnnounceMessagesEnabled:1];
-  v4 = [(SiriNotificationsSetupViewController *)self mainController];
-  v3 = [v4 announceMessagesEvent];
-  [v3 setUserExplicitlyOptedIn:1];
+  mainController = [(SiriNotificationsSetupViewController *)self mainController];
+  announceMessagesEvent = [mainController announceMessagesEvent];
+  [announceMessagesEvent setUserExplicitlyOptedIn:1];
 }
 
 - (void)handleDismissButton
@@ -191,27 +191,27 @@ LABEL_11:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
-  v3 = [(SiriNotificationsSetupViewController *)self model];
-  v4 = [v3 viewType];
+  model = [(SiriNotificationsSetupViewController *)self model];
+  viewType = [model viewType];
 
-  if (v4 == 2)
+  if (viewType == 2)
   {
     [(SiriNotificationsSetupViewController *)self handleDismissForMessages];
     goto LABEL_10;
   }
 
-  if (v4 == 1)
+  if (viewType == 1)
   {
 LABEL_10:
     [(SiriNotificationsSetupViewController *)self handleDismissForCalls];
     goto LABEL_11;
   }
 
-  if (v4)
+  if (viewType)
   {
     if (dword_1001BE658 <= 90 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
     {
-      v5 = v4;
+      v5 = viewType;
       LogPrintF();
     }
   }
@@ -229,8 +229,8 @@ LABEL_11:
 {
   [(SiriNotificationsSetupViewController *)self logDismissEventForAnnounceMessagesToDuet];
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
-  v3 = [WeakRetained announceMessagesEvent];
-  [v3 setUserExplicitlyOptedIn:1];
+  announceMessagesEvent = [WeakRetained announceMessagesEvent];
+  [announceMessagesEvent setUserExplicitlyOptedIn:1];
 }
 
 - (void)logDismissEventForAnnounceMessagesToDuet
@@ -264,58 +264,58 @@ LABEL_11:
 - (void)setUpActions
 {
   objc_initWeak(&location, self);
-  v3 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v4 = [v3 primaryActionTitle];
+  viewModel = [(SiriNotificationsSetupViewController *)self viewModel];
+  primaryActionTitle = [viewModel primaryActionTitle];
 
-  v5 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v6 = [v5 primaryActionStyle];
+  viewModel2 = [(SiriNotificationsSetupViewController *)self viewModel];
+  primaryActionStyle = [viewModel2 primaryActionStyle];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000EE570;
   v31[3] = &unk_1001958D8;
   objc_copyWeak(&v32, &location);
-  v7 = [PRXAction actionWithTitle:v4 style:v6 handler:v31];
-  v8 = [(SiriNotificationsSetupViewController *)self viewModel];
-  [v7 setUsesLegacyStyling:{objc_msgSend(v8, "primaryActionUsesLegacyStyling")}];
+  v7 = [PRXAction actionWithTitle:primaryActionTitle style:primaryActionStyle handler:v31];
+  viewModel3 = [(SiriNotificationsSetupViewController *)self viewModel];
+  [v7 setUsesLegacyStyling:{objc_msgSend(viewModel3, "primaryActionUsesLegacyStyling")}];
 
   v9 = [(SiriNotificationsSetupViewController *)self addAction:v7];
-  v10 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v11 = [v10 secondaryActionAvailable];
+  viewModel4 = [(SiriNotificationsSetupViewController *)self viewModel];
+  secondaryActionAvailable = [viewModel4 secondaryActionAvailable];
 
-  if (v11)
+  if (secondaryActionAvailable)
   {
-    v12 = [(SiriNotificationsSetupViewController *)self viewModel];
-    v13 = [v12 secondaryActionTitle];
+    viewModel5 = [(SiriNotificationsSetupViewController *)self viewModel];
+    secondaryActionTitle = [viewModel5 secondaryActionTitle];
 
-    v14 = [(SiriNotificationsSetupViewController *)self viewModel];
-    v15 = [v14 secondaryActionStyle];
+    viewModel6 = [(SiriNotificationsSetupViewController *)self viewModel];
+    secondaryActionStyle = [viewModel6 secondaryActionStyle];
 
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000EE5B0;
     v29[3] = &unk_1001958D8;
     objc_copyWeak(&v30, &location);
-    v16 = [PRXAction actionWithTitle:v13 style:v15 handler:v29];
-    v17 = [(SiriNotificationsSetupViewController *)self viewModel];
-    [v16 setUsesLegacyStyling:{objc_msgSend(v17, "secondaryActionUsesLegacyStyling")}];
+    v16 = [PRXAction actionWithTitle:secondaryActionTitle style:secondaryActionStyle handler:v29];
+    viewModel7 = [(SiriNotificationsSetupViewController *)self viewModel];
+    [v16 setUsesLegacyStyling:{objc_msgSend(viewModel7, "secondaryActionUsesLegacyStyling")}];
 
     v18 = [(SiriNotificationsSetupViewController *)self addAction:v16];
     objc_destroyWeak(&v30);
   }
 
-  v19 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v20 = [v19 dismissActionTitle];
+  viewModel8 = [(SiriNotificationsSetupViewController *)self viewModel];
+  dismissActionTitle = [viewModel8 dismissActionTitle];
 
-  v21 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v22 = [v21 dismissActionStyle];
+  viewModel9 = [(SiriNotificationsSetupViewController *)self viewModel];
+  dismissActionStyle = [viewModel9 dismissActionStyle];
 
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
   v26 = sub_1000EE5F0;
   v27 = &unk_1001958D8;
   objc_copyWeak(&v28, &location);
-  v23 = [PRXAction actionWithTitle:v20 style:v22 handler:&v24];
+  v23 = [PRXAction actionWithTitle:dismissActionTitle style:dismissActionStyle handler:&v24];
   [(SiriNotificationsSetupViewController *)self setDismissButtonAction:v23, v24, v25, v26, v27];
 
   objc_destroyWeak(&v28);
@@ -327,47 +327,47 @@ LABEL_11:
 - (void)setUpSubtitle
 {
   v8 = [PRXLabel labelWithStyle:1];
-  v3 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v4 = [v3 subtitleFont];
-  [v8 setFont:v4];
+  viewModel = [(SiriNotificationsSetupViewController *)self viewModel];
+  subtitleFont = [viewModel subtitleFont];
+  [v8 setFont:subtitleFont];
 
-  v5 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v6 = [v5 subtitleText];
-  [v8 setText:v6];
+  viewModel2 = [(SiriNotificationsSetupViewController *)self viewModel];
+  subtitleText = [viewModel2 subtitleText];
+  [v8 setText:subtitleText];
 
-  v7 = [(SiriNotificationsSetupViewController *)self contentView];
-  [v7 setSubtitleLabel:v8];
+  contentView = [(SiriNotificationsSetupViewController *)self contentView];
+  [contentView setSubtitleLabel:v8];
 }
 
 - (void)setUpTitle
 {
   v10 = [PRXTextView textViewWithStyle:0];
-  v3 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v4 = [v3 titleText];
-  [v10 setTitleText:v4];
+  viewModel = [(SiriNotificationsSetupViewController *)self viewModel];
+  titleText = [viewModel titleText];
+  [v10 setTitleText:titleText];
 
-  v5 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v6 = [v5 titleFont];
-  [v10 setFont:v6];
+  viewModel2 = [(SiriNotificationsSetupViewController *)self viewModel];
+  titleFont = [viewModel2 titleFont];
+  [v10 setFont:titleFont];
 
-  v7 = [(SiriNotificationsSetupViewController *)self viewModel];
-  v8 = [v7 titleColor];
-  [v10 setTextColor:v8];
+  viewModel3 = [(SiriNotificationsSetupViewController *)self viewModel];
+  titleColor = [viewModel3 titleColor];
+  [v10 setTextColor:titleColor];
 
-  v9 = [(SiriNotificationsSetupViewController *)self contentView];
-  [v9 setTitleView:v10];
+  contentView = [(SiriNotificationsSetupViewController *)self contentView];
+  [contentView setTitleView:v10];
 }
 
 - (id)extendedUserInfo
 {
-  v3 = [(SiriNotificationsSetupViewController *)self mainController];
-  v4 = [v3 userInfo];
-  v5 = [NSMutableDictionary dictionaryWithDictionary:v4];
+  mainController = [(SiriNotificationsSetupViewController *)self mainController];
+  userInfo = [mainController userInfo];
+  v5 = [NSMutableDictionary dictionaryWithDictionary:userInfo];
 
-  v6 = [(SiriNotificationsSetupViewController *)self deviceName];
-  [v5 setObject:v6 forKeyedSubscript:@"localizedDeviceName"];
+  deviceName = [(SiriNotificationsSetupViewController *)self deviceName];
+  [v5 setObject:deviceName forKeyedSubscript:@"localizedDeviceName"];
 
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 inEarDetection]);
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [mainController inEarDetection]);
   [v5 setObject:v7 forKeyedSubscript:@"inEarDetection"];
 
   v8 = [NSDictionary dictionaryWithDictionary:v5];
@@ -378,11 +378,11 @@ LABEL_11:
 - (id)deviceName
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
-  v3 = [WeakRetained localizedName];
+  localizedName = [WeakRetained localizedName];
 
-  if (!v3)
+  if (!localizedName)
   {
-    v4 = [WeakRetained userInfo];
+    userInfo = [WeakRetained userInfo];
     Int64Ranged = CFDictionaryGetInt64Ranged();
 
     v8 = 0;
@@ -390,14 +390,14 @@ LABEL_11:
     [WeakRetained setLocalizedName:v8];
   }
 
-  v6 = [WeakRetained localizedName];
+  localizedName2 = [WeakRetained localizedName];
 
-  return v6;
+  return localizedName2;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE658 <= 30 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -405,14 +405,14 @@ LABEL_11:
 
   v5.receiver = self;
   v5.super_class = SiriNotificationsSetupViewController;
-  [(SiriNotificationsSetupViewController *)&v5 viewDidDisappear:v3];
+  [(SiriNotificationsSetupViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SiriNotificationsSetupViewController;
-  [(SiriNotificationsSetupViewController *)&v10 viewDidAppear:a3];
+  [(SiriNotificationsSetupViewController *)&v10 viewDidAppear:appear];
   v4 = +[AFPreferences sharedPreferences];
   [v4 setSpokenNotificationsProxCardSeen];
 
@@ -422,24 +422,24 @@ LABEL_11:
   }
 
   v5 = SFIsAnnounceCallsEnabled();
-  v6 = [(SiriNotificationsSetupViewController *)self siriControllerClass];
+  siriControllerClass = [(SiriNotificationsSetupViewController *)self siriControllerClass];
   if (v5)
   {
-    [(objc_class *)v6 setHasUserSeenAnnounceCallsOptOutScreen:1];
+    [(objc_class *)siriControllerClass setHasUserSeenAnnounceCallsOptOutScreen:1];
   }
 
   else
   {
-    [(objc_class *)v6 setHasUserSeenAnnounceMessagesOptOutScreen:1];
+    [(objc_class *)siriControllerClass setHasUserSeenAnnounceMessagesOptOutScreen:1];
   }
 
-  v7 = [(SiriNotificationsSetupViewController *)self model];
-  if ([v7 isSiriAllowedWhileLocked])
+  model = [(SiriNotificationsSetupViewController *)self model];
+  if ([model isSiriAllowedWhileLocked])
   {
-    v8 = [(SiriNotificationsSetupViewController *)self model];
-    v9 = [v8 isUpsellFlow];
+    model2 = [(SiriNotificationsSetupViewController *)self model];
+    isUpsellFlow = [model2 isUpsellFlow];
 
-    if (v9)
+    if (isUpsellFlow)
     {
       [(objc_class *)[(SiriNotificationsSetupViewController *)self siriControllerClass] setAnnounceMessagesEnabled:1];
       [(SiriNotificationsSetupViewController *)self updateAnnounceCallsStateForUserOptedIn];
@@ -451,9 +451,9 @@ LABEL_11:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE658 <= 30 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -461,10 +461,10 @@ LABEL_11:
 
   v7.receiver = self;
   v7.super_class = SiriNotificationsSetupViewController;
-  [(SiriNotificationsSetupViewController *)&v7 viewWillAppear:v3];
-  v5 = [(SiriNotificationsSetupViewController *)self mainController];
-  v6 = [v5 announceMessagesEvent];
-  [v6 setPairingExitView:3];
+  [(SiriNotificationsSetupViewController *)&v7 viewWillAppear:appearCopy];
+  mainController = [(SiriNotificationsSetupViewController *)self mainController];
+  announceMessagesEvent = [mainController announceMessagesEvent];
+  [announceMessagesEvent setPairingExitView:3];
 }
 
 - (void)viewDidLoad
@@ -477,27 +477,27 @@ LABEL_11:
   v32.receiver = self;
   v32.super_class = SiriNotificationsSetupViewController;
   [(SiriNotificationsSetupViewController *)&v32 viewDidLoad];
-  v31 = [(SiriNotificationsSetupViewController *)self extendedUserInfo];
-  v3 = [objc_opt_class() modelForUserInfo:v31];
+  extendedUserInfo = [(SiriNotificationsSetupViewController *)self extendedUserInfo];
+  v3 = [objc_opt_class() modelForUserInfo:extendedUserInfo];
   [(SiriNotificationsSetupViewController *)self setModel:v3];
 
   v4 = objc_opt_class();
-  v5 = [(SiriNotificationsSetupViewController *)self model];
-  v6 = [v4 viewModelForModel:v5];
+  model = [(SiriNotificationsSetupViewController *)self model];
+  v6 = [v4 viewModelForModel:model];
   [(SiriNotificationsSetupViewController *)self setViewModel:v6];
 
   if (dword_1001BE658 <= 30 && (dword_1001BE658 != -1 || _LogCategory_Initialize()))
   {
-    v7 = [(SiriNotificationsSetupViewController *)self model];
-    v8 = [v7 viewType];
-    if (v8 > 2)
+    model2 = [(SiriNotificationsSetupViewController *)self model];
+    viewType = [model2 viewType];
+    if (viewType > 2)
     {
       v9 = @"?";
     }
 
     else
     {
-      v9 = off_100194D08[v8];
+      v9 = off_100194D08[viewType];
     }
 
     v24 = v9;
@@ -513,35 +513,35 @@ LABEL_11:
   v12 = [v10 initWithImage:v11];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(SiriNotificationsSetupViewController *)self contentView];
-  [v13 addSubview:v12];
+  contentView = [(SiriNotificationsSetupViewController *)self contentView];
+  [contentView addSubview:v12];
 
-  v14 = [(SiriNotificationsSetupViewController *)self contentView];
-  v15 = [v14 mainContentGuide];
+  contentView2 = [(SiriNotificationsSetupViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v30 = [v12 topAnchor];
-  v29 = [v15 topAnchor];
-  v28 = [v30 constraintGreaterThanOrEqualToAnchor:v29];
+  topAnchor = [v12 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v28 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v33[0] = v28;
-  v27 = [v12 centerXAnchor];
-  v26 = [v15 centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerXAnchor = [v12 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[1] = v25;
-  v16 = [v12 bottomAnchor];
-  v17 = [v15 bottomAnchor];
-  v18 = [v16 constraintLessThanOrEqualToAnchor:v17];
+  bottomAnchor = [v12 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v33[2] = v18;
-  v19 = [v12 heightAnchor];
-  v20 = [v19 constraintEqualToConstant:76.0];
+  heightAnchor = [v12 heightAnchor];
+  v20 = [heightAnchor constraintEqualToConstant:76.0];
   v33[3] = v20;
-  v21 = [v12 widthAnchor];
-  v22 = [v21 constraintEqualToConstant:76.0];
+  widthAnchor = [v12 widthAnchor];
+  v22 = [widthAnchor constraintEqualToConstant:76.0];
   v33[4] = v22;
   v23 = [NSArray arrayWithObjects:v33 count:5];
   [NSLayoutConstraint activateConstraints:v23];
 }
 
-- (SiriNotificationsSetupViewController)initWithSiriControllerClass:(Class)a3
+- (SiriNotificationsSetupViewController)initWithSiriControllerClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = SiriNotificationsSetupViewController;
@@ -549,7 +549,7 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_siriControllerClass, a3);
+    objc_storeStrong(&v4->_siriControllerClass, class);
   }
 
   return v5;
@@ -562,32 +562,32 @@ LABEL_11:
   return [(SiriNotificationsSetupViewController *)self initWithSiriControllerClass:v3];
 }
 
-+ (id)viewModelForModel:(id)a3
++ (id)viewModelForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_alloc_init(SiriNotificationsSetupViewModel);
-  v6 = [a1 locIntermediateStringForViewType:{objc_msgSend(v4, "viewType")}];
+  v6 = [self locIntermediateStringForViewType:{objc_msgSend(modelCopy, "viewType")}];
   v7 = &swift_allocBox_ptr;
   v8 = [NSString stringWithFormat:@"ANNOUNCE_%@", v6];
-  v9 = [a1 locTableForViewType:{objc_msgSend(v4, "viewType")}];
+  v9 = [self locTableForViewType:{objc_msgSend(modelCopy, "viewType")}];
   v10 = [NSString stringWithFormat:@"%@_TITLE", v8];
   v11 = sub_10012794C(v9, v10);
   [(SiriNotificationsSetupViewModel *)v5 setTitleText:v11];
 
-  v12 = [a1 defaultTitleFont];
-  [(SiriNotificationsSetupViewModel *)v5 setTitleFont:v12];
+  defaultTitleFont = [self defaultTitleFont];
+  [(SiriNotificationsSetupViewModel *)v5 setTitleFont:defaultTitleFont];
 
-  v13 = [a1 defaultTitleColor];
-  [(SiriNotificationsSetupViewModel *)v5 setTitleColor:v13];
+  defaultTitleColor = [self defaultTitleColor];
+  [(SiriNotificationsSetupViewModel *)v5 setTitleColor:defaultTitleColor];
 
-  v14 = [a1 defaultSubtitleFont];
-  [(SiriNotificationsSetupViewModel *)v5 setSubtitleFont:v14];
+  defaultSubtitleFont = [self defaultSubtitleFont];
+  [(SiriNotificationsSetupViewModel *)v5 setSubtitleFont:defaultSubtitleFont];
 
-  if ([v4 isSiriAllowedWhileLocked])
+  if ([modelCopy isSiriAllowedWhileLocked])
   {
     v15 = [NSString stringWithFormat:@"%@_SUBTITLE_FORMAT", v8];
-    v16 = [v4 localizedDeviceName];
-    v23 = sub_100127C0C(v9, v15, v17, v18, v19, v20, v21, v22, v16);
+    localizedDeviceName = [modelCopy localizedDeviceName];
+    v23 = sub_100127C0C(v9, v15, v17, v18, v19, v20, v21, v22, localizedDeviceName);
     [(SiriNotificationsSetupViewModel *)v5 setSubtitleText:v23];
 
     v7 = &swift_allocBox_ptr;
@@ -602,19 +602,19 @@ LABEL_11:
     v10 = v24;
   }
 
-  -[SiriNotificationsSetupViewModel setPrimaryActionStyle:](v5, "setPrimaryActionStyle:", [a1 defaultPrimaryActionStyle]);
+  -[SiriNotificationsSetupViewModel setPrimaryActionStyle:](v5, "setPrimaryActionStyle:", [self defaultPrimaryActionStyle]);
   [(SiriNotificationsSetupViewModel *)v5 setPrimaryActionUsesLegacyStyling:1];
-  v25 = [v4 isSiriAllowedWhileLocked];
-  v26 = [v4 isUpsellFlow];
+  isSiriAllowedWhileLocked = [modelCopy isSiriAllowedWhileLocked];
+  isUpsellFlow = [modelCopy isUpsellFlow];
   v27 = @"SET_UP_LATER";
   v28 = @"CONTINUE";
-  if (v26)
+  if (isUpsellFlow)
   {
     v27 = @"CONTINUE";
     v28 = @"OK_BUTTON_TITLE";
   }
 
-  if (v25)
+  if (isSiriAllowedWhileLocked)
   {
     v29 = v28;
   }
@@ -627,10 +627,10 @@ LABEL_11:
   v30 = sub_10012794C(@"Localizable", v29);
   [(SiriNotificationsSetupViewModel *)v5 setPrimaryActionTitle:v30];
 
-  if ([v4 isSiriAllowedWhileLocked])
+  if ([modelCopy isSiriAllowedWhileLocked])
   {
     [(SiriNotificationsSetupViewModel *)v5 setSecondaryActionAvailable:1];
-    -[SiriNotificationsSetupViewModel setSecondaryActionStyle:](v5, "setSecondaryActionStyle:", [a1 defaultSecondaryActionStyle]);
+    -[SiriNotificationsSetupViewModel setSecondaryActionStyle:](v5, "setSecondaryActionStyle:", [self defaultSecondaryActionStyle]);
     [(SiriNotificationsSetupViewModel *)v5 setSecondaryActionUsesLegacyStyling:1];
     v31 = [v7[394] stringWithFormat:@"%@_TURN_OFF", v8];
 
@@ -658,11 +658,11 @@ LABEL_11:
   return v5;
 }
 
-+ (id)locTableForViewType:(int64_t)a3
++ (id)locTableForViewType:(int64_t)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return off_100194CF0[a3];
+    return off_100194CF0[type];
   }
 
   v3 = @"Localizable-AnnounceTelephony";
@@ -674,11 +674,11 @@ LABEL_11:
   return v3;
 }
 
-+ (id)locIntermediateStringForViewType:(int64_t)a3
++ (id)locIntermediateStringForViewType:(int64_t)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return off_100194CD8[a3];
+    return off_100194CD8[type];
   }
 
   v3 = @"MESSAGES_AND_CALLS";
@@ -690,28 +690,28 @@ LABEL_11:
   return v3;
 }
 
-+ (id)modelForUserInfo:(id)a3
++ (id)modelForUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 modelForUserInfo:v4 siriControllerClass:objc_opt_class()];
+  infoCopy = info;
+  v5 = [self modelForUserInfo:infoCopy siriControllerClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)modelForUserInfo:(id)a3 siriControllerClass:(Class)a4
++ (id)modelForUserInfo:(id)info siriControllerClass:(Class)class
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(SiriNotificationsSetupModel);
-  if (v5)
+  if (infoCopy)
   {
     [(SiriNotificationsSetupModel *)v6 setDeviceProductID:CFDictionaryGetInt64Ranged()];
     [(SiriNotificationsSetupModel *)v6 setDeviceSupportsInEarDetection:CFDictionaryGetInt64() != 0];
-    [(SiriNotificationsSetupModel *)v6 setIsSiriAllowedWhileLocked:[(objc_class *)a4 isSiriAllowedWhileLocked]];
+    [(SiriNotificationsSetupModel *)v6 setIsSiriAllowedWhileLocked:[(objc_class *)class isSiriAllowedWhileLocked]];
     [(SiriNotificationsSetupModel *)v6 setIsUpsellFlow:CFDictionaryGetInt64() != 0];
     CFStringGetTypeID();
     [(SiriNotificationsSetupModel *)v6 setLocalizedDeviceName:CFDictionaryGetTypedValue()];
-    v7 = [(objc_class *)a4 shouldPromptForAnnounceMessagesForProductID:[(SiriNotificationsSetupModel *)v6 deviceProductID] isUpsellFlow:[(SiriNotificationsSetupModel *)v6 isUpsellFlow]];
-    v8 = [(objc_class *)a4 shouldPromptForAnnounceCallsForProductID:[(SiriNotificationsSetupModel *)v6 deviceProductID] supportsInEarDetection:[(SiriNotificationsSetupModel *)v6 deviceSupportsInEarDetection] isUpsellFlow:[(SiriNotificationsSetupModel *)v6 isUpsellFlow]];
+    v7 = [(objc_class *)class shouldPromptForAnnounceMessagesForProductID:[(SiriNotificationsSetupModel *)v6 deviceProductID] isUpsellFlow:[(SiriNotificationsSetupModel *)v6 isUpsellFlow]];
+    v8 = [(objc_class *)class shouldPromptForAnnounceCallsForProductID:[(SiriNotificationsSetupModel *)v6 deviceProductID] supportsInEarDetection:[(SiriNotificationsSetupModel *)v6 deviceSupportsInEarDetection] isUpsellFlow:[(SiriNotificationsSetupModel *)v6 isUpsellFlow]];
     if ((v7 & 1) != 0 || v8)
     {
       v9 = 2;

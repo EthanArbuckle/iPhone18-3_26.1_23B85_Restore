@@ -1,7 +1,7 @@
 @interface PDRetry
-- (BOOL)_shouldRetry:(id)a3;
+- (BOOL)_shouldRetry:(id)retry;
 - (void)_perform;
-- (void)_processBlockDoneStatus:(BOOL)a3 error:(id)a4 completionBlocks:(id)a5;
+- (void)_processBlockDoneStatus:(BOOL)status error:(id)error completionBlocks:(id)blocks;
 @end
 
 @implementation PDRetry
@@ -28,10 +28,10 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_shouldRetry:(id)a3
+- (BOOL)_shouldRetry:(id)retry
 {
-  v4 = a3;
-  v5 = v4;
+  retryCopy = retry;
+  v5 = retryCopy;
   if (self->_currentAttempt >= self->_maxAttempts)
   {
     CLSInitLog();
@@ -56,7 +56,7 @@ LABEL_7:
   }
 
   v6 = 1;
-  if (v4 && ([v4 cls_isRetryable:1] & 1) == 0)
+  if (retryCopy && ([retryCopy cls_isRetryable:1] & 1) == 0)
   {
     CLSInitLog();
     v7 = CLSLogOperations;
@@ -86,11 +86,11 @@ LABEL_8:
   return v6;
 }
 
-- (void)_processBlockDoneStatus:(BOOL)a3 error:(id)a4 completionBlocks:(id)a5
+- (void)_processBlockDoneStatus:(BOOL)status error:(id)error completionBlocks:(id)blocks
 {
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  errorCopy = error;
+  blocksCopy = blocks;
+  if (!status)
   {
     CLSInitLog();
     v10 = CLSLogOperations;
@@ -103,13 +103,13 @@ LABEL_8:
       v32 = 2048;
       v33 = currentAttempt;
       v34 = 2114;
-      v35 = v8;
+      v35 = errorCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "PDRetry task: %@ (%ld) failed; error: %{public}@;", buf, 0x20u);
     }
 
-    if ([(PDRetry *)self _shouldRetry:v8])
+    if ([(PDRetry *)self _shouldRetry:errorCopy])
     {
-      [(NSMutableArray *)self->_completionBlocks addObjectsFromArray:v9];
+      [(NSMutableArray *)self->_completionBlocks addObjectsFromArray:blocksCopy];
       v13 = (exp2f(self->_currentAttempt) + 2.0);
       CLSInitLog();
       v14 = CLSLogOperations;
@@ -158,9 +158,9 @@ LABEL_8:
     }
 
     self->_currentAttempt = 0;
-    if (!v8)
+    if (!errorCopy)
     {
-      v8 = [NSError cls_createErrorWithCode:6 format:@"perform %@ failed with max retries: %ld", self->_name, self->_maxAttempts];
+      errorCopy = [NSError cls_createErrorWithCode:6 format:@"perform %@ failed with max retries: %ld", self->_name, self->_maxAttempts];
     }
   }
 
@@ -175,10 +175,10 @@ LABEL_8:
   v24[1] = 3221225472;
   v24[2] = sub_100046FAC;
   v24[3] = &unk_100203028;
-  v25 = v9;
-  v27 = a3;
-  v8 = v8;
-  v26 = v8;
+  v25 = blocksCopy;
+  statusCopy = status;
+  errorCopy = errorCopy;
+  v26 = errorCopy;
   dispatch_async(v18, v24);
 
 LABEL_15:

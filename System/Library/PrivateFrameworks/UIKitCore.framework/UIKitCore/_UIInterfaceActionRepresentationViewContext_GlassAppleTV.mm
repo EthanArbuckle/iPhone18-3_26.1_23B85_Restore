@@ -1,7 +1,7 @@
 @interface _UIInterfaceActionRepresentationViewContext_GlassAppleTV
 - (BOOL)_useConcentricFocusIncrease;
 - (CGSize)asymmetricalFocusSizeIncrease;
-- (_UIInterfaceActionRepresentationViewContext_GlassAppleTV)initWithHighlightTransformTargetView:(id)a3;
+- (_UIInterfaceActionRepresentationViewContext_GlassAppleTV)initWithHighlightTransformTargetView:(id)view;
 - (id)__actionContentView;
 - (id)__backgroundHighlightView;
 - (id)_targetBackgroundView;
@@ -11,11 +11,11 @@
 
 @implementation _UIInterfaceActionRepresentationViewContext_GlassAppleTV
 
-- (_UIInterfaceActionRepresentationViewContext_GlassAppleTV)initWithHighlightTransformTargetView:(id)a3
+- (_UIInterfaceActionRepresentationViewContext_GlassAppleTV)initWithHighlightTransformTargetView:(id)view
 {
   v11.receiver = self;
   v11.super_class = _UIInterfaceActionRepresentationViewContext_GlassAppleTV;
-  v3 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)&v11 initWithHighlightTransformTargetView:a3];
+  v3 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)&v11 initWithHighlightTransformTargetView:view];
   v4 = v3;
   if (v3)
   {
@@ -45,9 +45,9 @@
 
     else
     {
-      v4 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlighted];
+      highlighted = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlighted];
       v5 = 0.2;
-      if (v4)
+      if (highlighted)
       {
         v5 = 0.1;
       }
@@ -66,84 +66,84 @@
 
 - (id)_targetBackgroundView
 {
-  v3 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
-  if (v3 && (v4 = v3, [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  __backgroundHighlightView = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
+  if (__backgroundHighlightView && (v4 = __backgroundHighlightView, [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
+    __backgroundHighlightView2 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
   }
 
   else
   {
-    v6 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
+    __backgroundHighlightView2 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
   }
 
-  return v6;
+  return __backgroundHighlightView2;
 }
 
 - (id)_targetContentView
 {
-  v3 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
-  if (v3)
+  __backgroundHighlightView = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __backgroundHighlightView];
+  if (__backgroundHighlightView)
   {
-    v4 = v3;
-    v5 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView];
+    v4 = __backgroundHighlightView;
+    __actionContentView = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView];
 
-    if (v5)
+    if (__actionContentView)
     {
-      v3 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView];
+      __backgroundHighlightView = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self __actionContentView];
     }
 
     else
     {
-      v3 = 0;
+      __backgroundHighlightView = 0;
     }
   }
 
-  return v3;
+  return __backgroundHighlightView;
 }
 
 - (id)__backgroundHighlightView
 {
-  v3 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
+  highlightTransformTargetView = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
-    v6 = [v5 backgroundHighlightView];
+    highlightTransformTargetView2 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
+    backgroundHighlightView = [highlightTransformTargetView2 backgroundHighlightView];
   }
 
   else
   {
-    v6 = 0;
+    backgroundHighlightView = 0;
   }
 
-  return v6;
+  return backgroundHighlightView;
 }
 
 - (id)__actionContentView
 {
-  v3 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
+  highlightTransformTargetView = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
-    v6 = [v5 _actionContentView];
+    highlightTransformTargetView2 = [(_UIInterfaceActionRepresentationViewContext_AppleTV *)self highlightTransformTargetView];
+    _actionContentView = [highlightTransformTargetView2 _actionContentView];
   }
 
   else
   {
-    v6 = 0;
+    _actionContentView = 0;
   }
 
-  return v6;
+  return _actionContentView;
 }
 
 - (BOOL)_useConcentricFocusIncrease
 {
-  v2 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self _targetContentView];
-  v3 = v2 != 0;
+  _targetContentView = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)self _targetContentView];
+  v3 = _targetContentView != 0;
 
   return v3;
 }

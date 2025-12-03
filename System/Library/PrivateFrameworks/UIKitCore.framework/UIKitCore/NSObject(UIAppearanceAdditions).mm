@@ -9,11 +9,11 @@
   v31 = *MEMORY[0x1E69E9840];
   v6 = UIAppearancePrefixedSelectorForSelectorString(a3);
   v7 = NSSelectorFromString(a3);
-  v8 = [a1 instanceMethodSignatureForSelector:v7];
-  v9 = [v8 numberOfArguments];
+  v8 = [self instanceMethodSignatureForSelector:v7];
+  numberOfArguments = [v8 numberOfArguments];
   if (os_variant_has_internal_diagnostics())
   {
-    if (v9 <= 2)
+    if (numberOfArguments <= 2)
     {
       v25 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -25,7 +25,7 @@
     }
   }
 
-  else if (v9 <= 2)
+  else if (numberOfArguments <= 2)
   {
     v26 = *(__UILogGetCategoryCachedImpl("Assert", &_installAppearanceSwizzlesForSetter____s_category) + 8);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -73,7 +73,7 @@ LABEL_16:
         goto LABEL_21;
       }
 
-      v13 = v9 == 3;
+      v13 = numberOfArguments == 3;
       v14 = TaggingAppearanceGeneralSetterIMP;
       v15 = TaggingAppearanceIntegerSetterIMP;
       goto LABEL_35;
@@ -85,7 +85,7 @@ LABEL_18:
       goto LABEL_21;
     }
 
-    v13 = v9 == 3;
+    v13 = numberOfArguments == 3;
     v14 = TaggingAppearanceGeneralSetterIMP;
     v15 = TaggingAppearanceIntSetterIMP;
     goto LABEL_35;
@@ -112,12 +112,12 @@ LABEL_18:
   }
 
   v14 = TaggingAppearanceGeneralSetterIMP;
-  if (v9 == 4)
+  if (numberOfArguments == 4)
   {
     v14 = TaggingAppearanceObjectSetter1IMP;
   }
 
-  v13 = v9 == 3;
+  v13 = numberOfArguments == 3;
   v15 = TaggingAppearanceObjectSetterIMP;
 LABEL_35:
   if (v13)
@@ -131,10 +131,10 @@ LABEL_35:
   }
 
 LABEL_38:
-  if (v9 >= 4)
+  if (numberOfArguments >= 4)
   {
     v17 = *MEMORY[0x1E695D940];
-    for (i = 3; v9 != i; ++i)
+    for (i = 3; numberOfArguments != i; ++i)
     {
       v19 = [v8 getArgumentTypeAtIndex:i];
       v20 = (((*v19 - 73) >> 3) | (32 * (*v19 - 73)));
@@ -160,10 +160,10 @@ LABEL_46:
     }
   }
 
-  InstanceMethod = class_getInstanceMethod(a1, v7);
+  InstanceMethod = class_getInstanceMethod(self, v7);
   TypeEncoding = method_getTypeEncoding(InstanceMethod);
-  v23 = class_replaceMethod(a1, v7, v16, TypeEncoding);
-  result = class_addMethod(a1, name, v23, TypeEncoding);
+  v23 = class_replaceMethod(self, v7, v16, TypeEncoding);
+  result = class_addMethod(self, name, v23, TypeEncoding);
   if ((result & 1) == 0)
   {
     return [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];

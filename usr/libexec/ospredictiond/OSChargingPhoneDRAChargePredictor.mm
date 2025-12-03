@@ -1,7 +1,7 @@
 @interface OSChargingPhoneDRAChargePredictor
 - (MLModel)durationOnPluginModel;
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
 @end
 
 @implementation OSChargingPhoneDRAChargePredictor
@@ -11,8 +11,8 @@
   durationOnPluginModel = self->_durationOnPluginModel;
   if (!durationOnPluginModel)
   {
-    v4 = [(OSChargingTwoStagePredictor *)self trialManager];
-    v5 = [v4 loadTrialDRAModelByDeletingExistingModel:0];
+    trialManager = [(OSChargingTwoStagePredictor *)self trialManager];
+    v5 = [trialManager loadTrialDRAModelByDeletingExistingModel:0];
     v6 = self->_durationOnPluginModel;
     self->_durationOnPluginModel = v5;
 
@@ -29,8 +29,8 @@
       self->_durationOnPluginModel = v15;
     }
 
-    v17 = [(OSChargingTwoStagePredictor *)self trialManager];
-    [v17 loadTrialDRAModelMinDuration];
+    trialManager2 = [(OSChargingTwoStagePredictor *)self trialManager];
+    [trialManager2 loadTrialDRAModelMinDuration];
     self->_modelMinDuration = v18;
 
     if (self->_modelMinDuration < 0.0)
@@ -41,9 +41,9 @@
         sub_10005C234(v19, v20, v21, v22, v23, v24, v25, v26);
       }
 
-      v27 = [(MLModel *)self->_durationOnPluginModel modelDescription];
-      v28 = [v27 metadata];
-      v29 = [v28 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+      modelDescription = [(MLModel *)self->_durationOnPluginModel modelDescription];
+      metadata = [modelDescription metadata];
+      v29 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
       v30 = [v29 objectForKeyedSubscript:@"min_duration"];
       [v30 doubleValue];
       self->_modelMinDuration = v31;
@@ -58,8 +58,8 @@
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "DRA model min duration is: %f", &v52, 0xCu);
     }
 
-    v34 = [(OSChargingTwoStagePredictor *)self trialManager];
-    [v34 loadTrialDRAModelLeeway];
+    trialManager3 = [(OSChargingTwoStagePredictor *)self trialManager];
+    [trialManager3 loadTrialDRAModelLeeway];
     self->_modelLeeway = v35;
 
     if (self->_modelLeeway < 0.0)
@@ -70,9 +70,9 @@
         sub_10005C26C(v36, v37, v38, v39, v40, v41, v42, v43);
       }
 
-      v44 = [(MLModel *)self->_durationOnPluginModel modelDescription];
-      v45 = [v44 metadata];
-      v46 = [v45 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+      modelDescription2 = [(MLModel *)self->_durationOnPluginModel modelDescription];
+      metadata2 = [modelDescription2 metadata];
+      v46 = [metadata2 objectForKeyedSubscript:MLModelCreatorDefinedKey];
       v47 = [v46 objectForKeyedSubscript:@"leeway"];
       [v47 doubleValue];
       self->_modelLeeway = v48;
@@ -93,23 +93,23 @@
   return durationOnPluginModel;
 }
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
-  v102 = a8;
-  v10 = a7;
-  v11 = a4;
-  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:1];
-  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:2];
-  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:4];
-  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:8];
-  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:16];
-  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:24];
+  logCopy = log;
+  dateCopy = date;
+  eventsCopy = events;
+  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:1];
+  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:2];
+  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:4];
+  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:8];
+  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:16];
+  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:24];
 
-  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:v10];
-  v19 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:v10];
-  v128 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:v10];
-  v127 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:v10];
-  v126 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:v10];
+  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:dateCopy];
+  v19 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:dateCopy];
+  v128 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:dateCopy];
+  v127 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:dateCopy];
+  v126 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:dateCopy];
 
   v129 = v12;
   v20 = [OSIntelligenceUtilities getDurationsFromEvents:v12 withUnit:3600.0 cappedAt:0.0];
@@ -169,12 +169,12 @@
   v103 = v28;
   [OSIntelligenceUtilities medianOf:v28];
   v54 = v53;
-  v55 = v102;
+  v55 = logCopy;
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [NSNumber numberWithUnsignedInteger:a5];
-    v57 = [NSNumber numberWithDouble:a3];
-    v58 = [NSNumber numberWithDouble:a6];
+    v56 = [NSNumber numberWithUnsignedInteger:level];
+    v57 = [NSNumber numberWithDouble:features];
+    v58 = [NSNumber numberWithDouble:plugin];
     *buf = 138412802;
     v131 = *&v56;
     v132 = 2112;
@@ -355,10 +355,10 @@
   }
 
   v71 = +[NSMutableDictionary dictionary];
-  v72 = [NSNumber numberWithUnsignedInteger:a5];
+  v72 = [NSNumber numberWithUnsignedInteger:level];
   [v71 setObject:v72 forKeyedSubscript:@"plugin_battery_level"];
 
-  v73 = [NSNumber numberWithDouble:a6];
+  v73 = [NSNumber numberWithDouble:plugin];
   [v71 setObject:v73 forKeyedSubscript:@"time_from_plugin"];
 
   v74 = [NSNumber numberWithDouble:v41];
@@ -438,11 +438,11 @@
   return v98;
 }
 
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
   v13 = a8;
-  v14 = a7;
-  v15 = a5;
+  logCopy = log;
+  levelCopy = level;
   v16 = os_transaction_create();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -450,12 +450,12 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Getting predictions with DRA on plugin model", &v30, 2u);
   }
 
-  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:v15 withPluginBatteryLevel:v14 forDate:v13 withLog:a6];
+  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v13 withLog:forDate];
 
   *&retstr->var0 = 0;
   *&retstr->var1 = vdupq_n_s64(0xC0F869F000000000);
-  v18 = [(OSChargingPhoneDRAChargePredictor *)self durationOnPluginModel];
-  v19 = [v18 predictionFromFeatures:v17 error:0];
+  durationOnPluginModel = [(OSChargingPhoneDRAChargePredictor *)self durationOnPluginModel];
+  v19 = [durationOnPluginModel predictionFromFeatures:v17 error:0];
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {

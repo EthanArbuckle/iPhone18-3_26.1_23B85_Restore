@@ -1,47 +1,47 @@
 @interface EQKitOffsetVBox
-- (BOOL)isEqual:(id)a3;
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 @end
 
 @implementation EQKitOffsetVBox
 
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset
 {
   v7.receiver = self;
   v7.super_class = EQKitOffsetVBox;
-  result = [(EQKitVBox *)&v7 initWithChildBoxes:a3 pivotIndex:a4];
+  result = [(EQKitVBox *)&v7 initWithChildBoxes:boxes pivotIndex:index];
   if (result)
   {
-    result->mOffset = a5;
+    result->mOffset = offset;
   }
 
   return result;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v8.receiver = self;
   v8.super_class = EQKitOffsetVBox;
-  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:a3 depth:a4 width:a5];
-  if (a3)
+  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:height depth:depth width:width];
+  if (height)
   {
-    *a3 = self->mOffset + *a3;
+    *height = self->mOffset + *height;
   }
 
-  if (a4)
+  if (depth)
   {
-    *a4 = *a4 - self->mOffset;
+    *depth = *depth - self->mOffset;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_childBoxes(self, v9, v10, v11);
   v16 = objc_msgSend_pivotIndex(self, v13, v14, v15);
   objc_msgSend_offset(self, v17, v18, v19);
@@ -49,24 +49,24 @@
   return objc_msgSend_initWithChildBoxes_pivotIndex_offset_(v8, v20, v12, v16);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        v12 = objc_msgSend_pivotIndex(v3, v9, v10, v11);
-        if (v12 == objc_msgSend_pivotIndex(a3, v13, v14, v15) && (objc_msgSend_offset(v3, v16, v17, v18), v20 = v19, objc_msgSend_offset(a3, v21, v22, v23), v20 == v27))
+        v12 = objc_msgSend_pivotIndex(selfCopy, v9, v10, v11);
+        if (v12 == objc_msgSend_pivotIndex(equal, v13, v14, v15) && (objc_msgSend_offset(selfCopy, v16, v17, v18), v20 = v19, objc_msgSend_offset(equal, v21, v22, v23), v20 == v27))
         {
-          v28 = objc_msgSend_childBoxes(v3, v24, v25, v26);
-          self = objc_msgSend_childBoxes(a3, v29, v30, v31);
+          v28 = objc_msgSend_childBoxes(selfCopy, v24, v25, v26);
+          self = objc_msgSend_childBoxes(equal, v29, v30, v31);
           if (v28 == self)
           {
             LOBYTE(self) = 1;
@@ -74,12 +74,12 @@
 
           else
           {
-            v34 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v28 && v34)
+            if (v28 && selfCopy2)
             {
 
-              LOBYTE(self) = objc_msgSend_isEqual_(v28, v32, v34, v33);
+              LOBYTE(self) = objc_msgSend_isEqual_(v28, v32, selfCopy2, v33);
             }
           }
         }

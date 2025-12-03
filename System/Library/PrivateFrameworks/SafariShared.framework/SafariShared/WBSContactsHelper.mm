@@ -1,20 +1,20 @@
 @interface WBSContactsHelper
-+ (id)CNContactKeyFromWBSABKey:(id)a3;
-+ (id)WBSABKeyFromCNContactKey:(id)a3;
++ (id)CNContactKeyFromWBSABKey:(id)key;
++ (id)WBSABKeyFromCNContactKey:(id)key;
 @end
 
 @implementation WBSContactsHelper
 
-+ (id)CNContactKeyFromWBSABKey:(id)a3
++ (id)CNContactKeyFromWBSABKey:(id)key
 {
   v3 = CNContactKeyFromWBSABKey__once;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[WBSContactsHelper CNContactKeyFromWBSABKey:];
   }
 
-  v5 = [CNContactKeyFromWBSABKey__map objectForKeyedSubscript:v4];
+  v5 = [CNContactKeyFromWBSABKey__map objectForKeyedSubscript:keyCopy];
   if ([v5 length])
   {
     v6 = v5;
@@ -22,7 +22,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = keyCopy;
   }
 
   v7 = v6;
@@ -128,16 +128,16 @@ void __46__WBSContactsHelper_CNContactKeyFromWBSABKey___block_invoke()
   CNContactKeyFromWBSABKey__map = v32;
 }
 
-+ (id)WBSABKeyFromCNContactKey:(id)a3
++ (id)WBSABKeyFromCNContactKey:(id)key
 {
   v3 = WBSABKeyFromCNContactKey__once;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[WBSContactsHelper WBSABKeyFromCNContactKey:];
   }
 
-  v5 = [WBSABKeyFromCNContactKey__map objectForKeyedSubscript:v4];
+  v5 = [WBSABKeyFromCNContactKey__map objectForKeyedSubscript:keyCopy];
   if ([v5 length])
   {
     v6 = v5;
@@ -145,7 +145,7 @@ void __46__WBSContactsHelper_CNContactKeyFromWBSABKey___block_invoke()
 
   else
   {
-    v6 = v4;
+    v6 = keyCopy;
   }
 
   v7 = v6;

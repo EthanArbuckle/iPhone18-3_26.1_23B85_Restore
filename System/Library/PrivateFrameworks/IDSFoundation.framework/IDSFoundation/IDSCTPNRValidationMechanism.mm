@@ -1,63 +1,63 @@
 @interface IDSCTPNRValidationMechanism
-+ (id)RCSTokenMechanismWithContext:(id)a3;
++ (id)RCSTokenMechanismWithContext:(id)context;
 + (id)SMSLessMechanism;
-+ (id)SMSMechanismWithContext:(id)a3;
-+ (id)mechanismStringForMechanism:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (IDSCTPNRValidationMechanism)initWithType:(int64_t)a3 context:(id)a4;
++ (id)SMSMechanismWithContext:(id)context;
++ (id)mechanismStringForMechanism:(int64_t)mechanism;
+- (BOOL)isEqual:(id)equal;
+- (IDSCTPNRValidationMechanism)initWithType:(int64_t)type context:(id)context;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSCTPNRValidationMechanism
 
-+ (id)SMSMechanismWithContext:(id)a3
++ (id)SMSMechanismWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:1 context:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithType:1 context:contextCopy];
 
   return v5;
 }
 
 + (id)SMSLessMechanism
 {
-  v2 = [[a1 alloc] initWithType:2 context:0];
+  v2 = [[self alloc] initWithType:2 context:0];
 
   return v2;
 }
 
-+ (id)RCSTokenMechanismWithContext:(id)a3
++ (id)RCSTokenMechanismWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:3 context:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithType:3 context:contextCopy];
 
   return v5;
 }
 
-+ (id)mechanismStringForMechanism:(int64_t)a3
++ (id)mechanismStringForMechanism:(int64_t)mechanism
 {
-  if ((a3 - 1) > 2)
+  if ((mechanism - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E77E2238[a3 - 1];
+    return off_1E77E2238[mechanism - 1];
   }
 }
 
-- (IDSCTPNRValidationMechanism)initWithType:(int64_t)a3 context:(id)a4
+- (IDSCTPNRValidationMechanism)initWithType:(int64_t)type context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = IDSCTPNRValidationMechanism;
   v7 = [(IDSCTPNRValidationMechanism *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [contextCopy copy];
     context = v8->_context;
     v8->_context = v9;
   }
@@ -65,30 +65,30 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSCTPNRValidationMechanism *)self type];
-    v7 = [v5 type];
-    v8 = [(IDSCTPNRValidationMechanism *)self context];
-    v9 = [v5 context];
-    if (v8 == v9)
+    v5 = equalCopy;
+    type = [(IDSCTPNRValidationMechanism *)self type];
+    type2 = [v5 type];
+    context = [(IDSCTPNRValidationMechanism *)self context];
+    context2 = [v5 context];
+    if (context == context2)
     {
       v12 = 1;
     }
 
     else
     {
-      v10 = [(IDSCTPNRValidationMechanism *)self context];
-      v11 = [v5 context];
-      v12 = [v10 isEqual:v11];
+      context3 = [(IDSCTPNRValidationMechanism *)self context];
+      context4 = [v5 context];
+      v12 = [context3 isEqual:context4];
     }
 
-    v13 = (v6 == v7) & v12;
+    v13 = (type == type2) & v12;
   }
 
   else
@@ -101,29 +101,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSCTPNRValidationMechanism *)self context];
-  v4 = [v3 hash];
-  v5 = [(IDSCTPNRValidationMechanism *)self type];
+  context = [(IDSCTPNRValidationMechanism *)self context];
+  v4 = [context hash];
+  type = [(IDSCTPNRValidationMechanism *)self type];
 
-  return v5 ^ v4;
+  return type ^ v4;
 }
 
 - (id)description
 {
-  v3 = [(IDSCTPNRValidationMechanism *)self type];
-  if (v3 > 3)
+  type = [(IDSCTPNRValidationMechanism *)self type];
+  if (type > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E77E2250[v3];
+    v4 = off_1E77E2250[type];
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(IDSCTPNRValidationMechanism *)self context];
-  v7 = [v5 stringWithFormat:@"IDSCTPRNValidationMechanism { Type: %@, Context: %@ }", v4, v6];
+  context = [(IDSCTPNRValidationMechanism *)self context];
+  v7 = [v5 stringWithFormat:@"IDSCTPRNValidationMechanism { Type: %@, Context: %@ }", v4, context];
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface ShapeView
 + (Class)layerClass;
-- (_TtC8StocksUI9ShapeView)initWithCoder:(id)a3;
-- (_TtC8StocksUI9ShapeView)initWithFrame:(CGRect)a3;
+- (_TtC8StocksUI9ShapeView)initWithCoder:(id)coder;
+- (_TtC8StocksUI9ShapeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ShapeView
@@ -13,25 +13,25 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC8StocksUI9ShapeView)initWithFrame:(CGRect)a3
+- (_TtC8StocksUI9ShapeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
-  v7 = [(ShapeView *)&v13 initWithFrame:x, y, width, height];
-  v8 = [(ShapeView *)v7 layer];
-  v9 = [objc_opt_self() mainScreen];
-  [v9 scale];
+  height = [(ShapeView *)&v13 initWithFrame:x, y, width, height];
+  layer = [(ShapeView *)height layer];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
-  [v8 setContentsScale_];
-  return v7;
+  [layer setContentsScale_];
+  return height;
 }
 
-- (_TtC8StocksUI9ShapeView)initWithCoder:(id)a3
+- (_TtC8StocksUI9ShapeView)initWithCoder:(id)coder
 {
   result = sub_22089267C();
   __break(1u);

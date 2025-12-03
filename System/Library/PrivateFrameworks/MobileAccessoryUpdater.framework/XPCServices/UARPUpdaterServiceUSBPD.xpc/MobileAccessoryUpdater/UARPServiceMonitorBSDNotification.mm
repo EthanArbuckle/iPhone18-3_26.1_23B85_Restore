@@ -1,5 +1,5 @@
 @interface UARPServiceMonitorBSDNotification
-- (UARPServiceMonitorBSDNotification)initWithBsdNotification:(id)a3 delegate:(id)a4;
+- (UARPServiceMonitorBSDNotification)initWithBsdNotification:(id)notification delegate:(id)delegate;
 - (void)bsdNotification;
 - (void)dealloc;
 - (void)start;
@@ -8,10 +8,10 @@
 
 @implementation UARPServiceMonitorBSDNotification
 
-- (UARPServiceMonitorBSDNotification)initWithBsdNotification:(id)a3 delegate:(id)a4
+- (UARPServiceMonitorBSDNotification)initWithBsdNotification:(id)notification delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = UARPServiceMonitorBSDNotification;
   v8 = [(UARPServiceMonitorBSDNotification *)&v18 init];
@@ -21,9 +21,9 @@
     log = v8->_log;
     v8->_log = v9;
 
-    objc_storeStrong(&v8->_delegate, a4);
+    objc_storeStrong(&v8->_delegate, delegate);
     v8->_token = -1;
-    v11 = [v6 copy];
+    v11 = [notificationCopy copy];
     bsdNotification = v8->_bsdNotification;
     v8->_bsdNotification = v11;
 
@@ -53,7 +53,7 @@
   if (self->_token == -1)
   {
     p_bsdNotification = &self->_bsdNotification;
-    v5 = [(NSString *)self->_bsdNotification UTF8String];
+    uTF8String = [(NSString *)self->_bsdNotification UTF8String];
     objc_initWeak(&location, self);
     notifyQueue = self->_notifyQueue;
     v9[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@
     v9[2] = sub_1000161BC;
     v9[3] = &unk_100040860;
     objc_copyWeak(&v10, &location);
-    v7 = notify_register_dispatch(v5, p_token, notifyQueue, v9);
+    v7 = notify_register_dispatch(uTF8String, p_token, notifyQueue, v9);
     if (v7)
     {
       log = self->_log;

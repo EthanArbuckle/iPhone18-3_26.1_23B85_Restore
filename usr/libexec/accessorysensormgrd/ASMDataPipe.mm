@@ -1,20 +1,20 @@
 @interface ASMDataPipe
 - (ASMDataPipe)init;
 - (ASMPeripheral)peripheral;
-- (unsigned)getOneSduFrom:(id)a3 AtPosition:(unint64_t *)a4 TotalLen:(unint64_t)a5;
-- (void)_activateWithPeripheral:(id)a3 completion:(id)a4;
+- (unsigned)getOneSduFrom:(id)from AtPosition:(unint64_t *)position TotalLen:(unint64_t)len;
+- (void)_activateWithPeripheral:(id)peripheral completion:(id)completion;
 - (void)_invalidate;
-- (void)_notifySubscribersWithData:(id)a3;
+- (void)_notifySubscribersWithData:(id)data;
 - (void)_unsubscribeFromImagePackets;
-- (void)activateWithPeripheral:(id)a3 completion:(id)a4;
-- (void)flush:(id)a3;
-- (void)handleDataRx:(id)a3 dataSize:(unint64_t)a4;
+- (void)activateWithPeripheral:(id)peripheral completion:(id)completion;
+- (void)flush:(id)flush;
+- (void)handleDataRx:(id)rx dataSize:(unint64_t)size;
 - (void)invalidate;
 - (void)resetAll;
-- (void)subscribeToDataType:(unsigned __int8)a3 forResourceCategory:(unsigned int)a4 delegate:(id)a5;
+- (void)subscribeToDataType:(unsigned __int8)type forResourceCategory:(unsigned int)category delegate:(id)delegate;
 - (void)subscribeToImagePackets;
-- (void)unsubscribeFromDataType:(unsigned __int8)a3 forResourceCategory:(unsigned int)a4 delegate:(id)a5;
-- (void)updateReassemblyWith:(id *)a3;
+- (void)unsubscribeFromDataType:(unsigned __int8)type forResourceCategory:(unsigned int)category delegate:(id)delegate;
+- (void)updateReassemblyWith:(id *)with;
 @end
 
 @implementation ASMDataPipe
@@ -42,32 +42,32 @@
   return v2;
 }
 
-- (void)activateWithPeripheral:(id)a3 completion:(id)a4
+- (void)activateWithPeripheral:(id)peripheral completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001620;
   block[3] = &unk_100014378;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = peripheralCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = peripheralCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithPeripheral:(id)a3 completion:(id)a4
+- (void)_activateWithPeripheral:(id)peripheral completion:(id)completion
 {
-  obj = a3;
-  v6 = a4;
-  v7 = v6;
+  obj = peripheral;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(completionCopy);
     activateCompletion = self->_activateCompletion;
     self->_activateCompletion = v8;
 
@@ -112,56 +112,56 @@
   [(ASMDataPipe *)self _unsubscribeFromImagePackets];
 }
 
-- (void)subscribeToDataType:(unsigned __int8)a3 forResourceCategory:(unsigned int)a4 delegate:(id)a5
+- (void)subscribeToDataType:(unsigned __int8)type forResourceCategory:(unsigned int)category delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000018C4;
   block[3] = &unk_1000143C8;
-  v13 = a4;
-  v14 = a3;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = delegateCopy;
+  v10 = delegateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)unsubscribeFromDataType:(unsigned __int8)a3 forResourceCategory:(unsigned int)a4 delegate:(id)a5
+- (void)unsubscribeFromDataType:(unsigned __int8)type forResourceCategory:(unsigned int)category delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001B68;
   block[3] = &unk_1000143C8;
-  v13 = a4;
-  v14 = a3;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = delegateCopy;
+  v10 = delegateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)updateReassemblyWith:(id *)a3
+- (void)updateReassemblyWith:(id *)with
 {
   v9 = [(ASMDataPipe *)self getKeyFrom:?];
   v5 = [(NSMutableDictionary *)self->_reassemblyInstances objectForKeyedSubscript:?];
   if (!v5)
   {
     v6 = [ASMSduReassemblyInstance alloc];
-    var0 = a3->var0.var0;
+    var0 = with->var0.var0;
     v8 = +[NSMutableData data];
-    v5 = [(ASMSduReassemblyInstance *)v6 initWithType:var0 flags:*(&a3->var0.var0 + 1) buffer:v8 nextExpectedSegIdx:0];
+    v5 = [(ASMSduReassemblyInstance *)v6 initWithType:var0 flags:*(&with->var0.var0 + 1) buffer:v8 nextExpectedSegIdx:0];
 
     [(NSMutableDictionary *)self->_reassemblyInstances setObject:v5 forKey:v9];
   }
 
-  if ([(ASMSduReassemblyInstance *)v5 processSegment:*(&a3->var0.var1.var0 + 1) & 0x7FFF])
+  if ([(ASMSduReassemblyInstance *)v5 processSegment:*(&with->var0.var1.var0 + 1) & 0x7FFF])
   {
-    [(ASMSduReassemblyInstance *)v5 appendToBuffer:*(&a3->var0 + 9)];
-    if ((*(&a3->var0.var1.var0 + 1) & 0x80000000) == 0)
+    [(ASMSduReassemblyInstance *)v5 appendToBuffer:*(&with->var0 + 9)];
+    if ((*(&with->var0.var1.var0 + 1) & 0x80000000) == 0)
     {
       goto LABEL_13;
     }
@@ -231,7 +231,7 @@ LABEL_13:
       sub_100008780();
     }
 
-    v3 = self;
+    selfCopy = self;
     btSession = self->_btSession;
     if (BTAccessoryManagerGetDefault())
     {
@@ -243,9 +243,9 @@ LABEL_13:
       return;
     }
 
-    v5 = objc_retainBlock(v3->_activateCompletion);
-    activateCompletion = v3->_activateCompletion;
-    v3->_activateCompletion = 0;
+    v5 = objc_retainBlock(selfCopy->_activateCompletion);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = 0;
 
     if (BTAccessoryManagerRegisterCustomMessageClient())
     {
@@ -288,21 +288,21 @@ LABEL_29:
     sub_100008764();
   }
 
-  v8 = self;
-  dispatchQueue = v8->_dispatchQueue;
+  selfCopy2 = self;
+  dispatchQueue = selfCopy2->_dispatchQueue;
   if (BTSessionAttachWithQueue())
   {
-    CFRelease(v8);
+    CFRelease(selfCopy2);
   }
 
   self->_btSessionAttaching = 1;
 }
 
-- (unsigned)getOneSduFrom:(id)a3 AtPosition:(unint64_t *)a4 TotalLen:(unint64_t)a5
+- (unsigned)getOneSduFrom:(id)from AtPosition:(unint64_t *)position TotalLen:(unint64_t)len
 {
-  v8 = a3;
-  v9 = v8;
-  if (*a4 + 9 > a5)
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*position + 9 > len)
   {
     if (dword_10001A198 <= 90)
     {
@@ -313,7 +313,7 @@ LABEL_29:
           goto LABEL_24;
         }
 
-        v19 = *a4;
+        v19 = *position;
       }
 
       goto LABEL_12;
@@ -325,14 +325,14 @@ LABEL_24:
   }
 
   v31 = 0;
-  v10 = [v8 bytes];
-  v11 = *a4;
-  v12 = &v10[*a4];
+  bytes = [fromCopy bytes];
+  v11 = *position;
+  v12 = &bytes[*position];
   v13 = *v12;
   v30[8] = v12[8];
   *v30 = v13;
   v14 = v11 + 9;
-  *a4 = v11 + 9;
+  *position = v11 + 9;
   v15 = *&v30[7];
   if (*&v30[7] >= 0xA0EuLL)
   {
@@ -344,7 +344,7 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  if (v14 + *&v30[7] > a5)
+  if (v14 + *&v30[7] > len)
   {
     if (dword_10001A198 > 90)
     {
@@ -358,7 +358,7 @@ LABEL_24:
         goto LABEL_24;
       }
 
-      v22 = *a4;
+      v22 = *position;
     }
 
 LABEL_12:
@@ -368,7 +368,7 @@ LABEL_12:
 
   v16 = [v9 subdataWithRange:{v14, *&v30[7]}];
   v31 = v16;
-  *a4 += *&v30[7];
+  *position += *&v30[7];
   if (dword_10001A198 <= 10 && (dword_10001A198 != -1 || _LogCategory_Initialize()))
   {
     v17 = "Left";
@@ -393,18 +393,18 @@ LABEL_12:
     v27 = v18;
     v24 = v14;
     v25 = v15;
-    v23 = a5;
+    lenCopy = len;
     LogPrintF();
   }
 
-  [(ASMDataPipe *)self updateReassemblyWith:v30, v23, v24, v25, v26, v27, v28, v29];
-  v20 = *a4 < a5;
+  [(ASMDataPipe *)self updateReassemblyWith:v30, lenCopy, v24, v25, v26, v27, v28, v29];
+  v20 = *position < len;
 
 LABEL_25:
   return v20;
 }
 
-- (void)handleDataRx:(id)a3 dataSize:(unint64_t)a4
+- (void)handleDataRx:(id)rx dataSize:(unint64_t)size
 {
   v7 = 0;
     ;
@@ -418,20 +418,20 @@ LABEL_25:
   return WeakRetained;
 }
 
-- (void)_notifySubscribersWithData:(id)a3
+- (void)_notifySubscribersWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 type];
+  dataCopy = data;
+  type = [dataCopy type];
   WeakRetained = objc_loadWeakRetained(&self->_peripheral);
-  v7 = [WeakRetained currentResourceCategory];
+  currentResourceCategory = [WeakRetained currentResourceCategory];
 
-  if (v7 == 1)
+  if (currentResourceCategory == 1)
   {
     v8 = self->_activeDelegatesMap;
     if (v8)
     {
       v9 = v8;
-      v10 = [NSNumber numberWithUnsignedChar:v5];
+      v10 = [NSNumber numberWithUnsignedChar:type];
       v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
 
       v21 = 0u;
@@ -457,7 +457,7 @@ LABEL_25:
             v17 = *(*(&v19 + 1) + 8 * v16);
             if (objc_opt_respondsToSelector())
             {
-              v18 = [v4 copy];
+              v18 = [dataCopy copy];
               [v17 reassembledDataReceived:v18];
             }
 
@@ -474,14 +474,14 @@ LABEL_25:
   }
 }
 
-- (void)flush:(id)a3
+- (void)flush:(id)flush
 {
   if (self->_debugOutputPath)
   {
-    v4 = [a3 buffer];
+    buffer = [flush buffer];
     debugOutputPath = self->_debugOutputPath;
     v9 = 0;
-    v6 = [v4 writeToFile:debugOutputPath options:1 error:&v9];
+    v6 = [buffer writeToFile:debugOutputPath options:1 error:&v9];
     v7 = v9;
     if (v6)
     {

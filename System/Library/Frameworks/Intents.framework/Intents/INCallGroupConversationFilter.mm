@@ -1,32 +1,32 @@
 @interface INCallGroupConversationFilter
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INCallGroupConversationFilter)initWithCaller:(id)a3 participants:(id)a4 matchCallerAndParticipantsExactly:(id)a5 callGroup:(id)a6;
-- (INCallGroupConversationFilter)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INCallGroupConversationFilter)initWithCaller:(id)caller participants:(id)participants matchCallerAndParticipantsExactly:(id)exactly callGroup:(id)group;
+- (INCallGroupConversationFilter)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCallGroupConversationFilter
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCallGroupConversationFilter *)self caller];
-  [v5 _intents_updateContainerWithCache:v4];
+  cacheCopy = cache;
+  caller = [(INCallGroupConversationFilter *)self caller];
+  [caller _intents_updateContainerWithCache:cacheCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(INCallGroupConversationFilter *)self participants];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  participants = [(INCallGroupConversationFilter *)self participants];
+  v7 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -38,14 +38,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(participants);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) _intents_updateContainerWithCache:v4];
+        [*(*(&v12 + 1) + 8 * v10++) _intents_updateContainerWithCache:cacheCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -58,16 +58,16 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INCallGroupConversationFilter *)self caller];
-  v5 = [v4 _intents_cacheableObjects];
-  [v3 unionSet:v5];
+  caller = [(INCallGroupConversationFilter *)self caller];
+  _intents_cacheableObjects = [caller _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(INCallGroupConversationFilter *)self participants];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  participants = [(INCallGroupConversationFilter *)self participants];
+  v7 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -79,17 +79,17 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(participants);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) _intents_cacheableObjects];
-        [v3 unionSet:v11];
+        _intents_cacheableObjects2 = [*(*(&v16 + 1) + 8 * v10) _intents_cacheableObjects];
+        [v3 unionSet:_intents_cacheableObjects2];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -116,40 +116,40 @@
   v15[4] = *MEMORY[0x1E69E9840];
   v14[0] = @"caller";
   caller = self->_caller;
-  v4 = caller;
+  null = caller;
   if (!caller)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"participants";
   participants = self->_participants;
-  v6 = participants;
+  null2 = participants;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"matchCallerAndParticipantsExactly";
   matchCallerAndParticipantsExactly = self->_matchCallerAndParticipantsExactly;
-  v8 = matchCallerAndParticipantsExactly;
+  null3 = matchCallerAndParticipantsExactly;
   if (!matchCallerAndParticipantsExactly)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v8;
+  v15[2] = null3;
   v14[3] = @"callGroup";
   callGroup = self->_callGroup;
-  v10 = callGroup;
+  null4 = callGroup;
   if (!callGroup)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (callGroup)
   {
@@ -200,74 +200,74 @@ LABEL_13:
   return v11;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCallGroupConversationFilter;
   v6 = [(INCallGroupConversationFilter *)&v11 description];
-  v7 = [(INCallGroupConversationFilter *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INCallGroupConversationFilter *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_caller];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"caller"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_caller];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"caller"];
 
-  v9 = [v6 encodeObject:self->_participants];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"participants"];
+  v9 = [encoderCopy encodeObject:self->_participants];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"participants"];
 
-  v10 = [v6 encodeObject:self->_matchCallerAndParticipantsExactly];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"matchCallerAndParticipantsExactly"];
+  v10 = [encoderCopy encodeObject:self->_matchCallerAndParticipantsExactly];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"matchCallerAndParticipantsExactly"];
 
-  v11 = [v6 encodeObject:self->_callGroup];
+  v11 = [encoderCopy encodeObject:self->_callGroup];
 
-  [v7 if_setObjectIfNonNil:v11 forKey:@"callGroup"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"callGroup"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   caller = self->_caller;
-  v5 = a3;
-  [v5 encodeObject:caller forKey:@"caller"];
-  [v5 encodeObject:self->_participants forKey:@"participants"];
-  [v5 encodeObject:self->_matchCallerAndParticipantsExactly forKey:@"matchCallerAndParticipantsExactly"];
-  [v5 encodeObject:self->_callGroup forKey:@"callGroup"];
+  coderCopy = coder;
+  [coderCopy encodeObject:caller forKey:@"caller"];
+  [coderCopy encodeObject:self->_participants forKey:@"participants"];
+  [coderCopy encodeObject:self->_matchCallerAndParticipantsExactly forKey:@"matchCallerAndParticipantsExactly"];
+  [coderCopy encodeObject:self->_callGroup forKey:@"callGroup"];
 }
 
-- (INCallGroupConversationFilter)initWithCoder:(id)a3
+- (INCallGroupConversationFilter)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caller"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caller"];
   v6 = MEMORY[0x1E695DFD8];
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"participants"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"participants"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchCallerAndParticipantsExactly"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callGroup"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchCallerAndParticipantsExactly"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callGroup"];
 
   v12 = [(INCallGroupConversationFilter *)self initWithCaller:v5 participants:v9 matchCallerAndParticipantsExactly:v10 callGroup:v11];
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -277,7 +277,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       caller = self->_caller;
       v10 = 0;
       if (caller == v5->_caller || [(INPerson *)caller isEqual:?])
@@ -315,30 +315,30 @@ LABEL_13:
   return v4 ^ v5 ^ [(INCallGroup *)self->_callGroup hash];
 }
 
-- (INCallGroupConversationFilter)initWithCaller:(id)a3 participants:(id)a4 matchCallerAndParticipantsExactly:(id)a5 callGroup:(id)a6
+- (INCallGroupConversationFilter)initWithCaller:(id)caller participants:(id)participants matchCallerAndParticipantsExactly:(id)exactly callGroup:(id)group
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  callerCopy = caller;
+  participantsCopy = participants;
+  exactlyCopy = exactly;
+  groupCopy = group;
   v24.receiver = self;
   v24.super_class = INCallGroupConversationFilter;
   v14 = [(INCallGroupConversationFilter *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [callerCopy copy];
     caller = v14->_caller;
     v14->_caller = v15;
 
-    v17 = [v11 copy];
+    v17 = [participantsCopy copy];
     participants = v14->_participants;
     v14->_participants = v17;
 
-    v19 = [v12 copy];
+    v19 = [exactlyCopy copy];
     matchCallerAndParticipantsExactly = v14->_matchCallerAndParticipantsExactly;
     v14->_matchCallerAndParticipantsExactly = v19;
 
-    v21 = [v13 copy];
+    v21 = [groupCopy copy];
     callGroup = v14->_callGroup;
     v14->_callGroup = v21;
   }
@@ -346,27 +346,27 @@ LABEL_13:
   return v14;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"caller"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"caller"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"participants"];
-    v14 = [v7 decodeObjectsOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"participants"];
+    v14 = [decoderCopy decodeObjectsOfClass:v12 from:v13];
 
-    v15 = [v8 objectForKeyedSubscript:@"matchCallerAndParticipantsExactly"];
+    v15 = [fromCopy objectForKeyedSubscript:@"matchCallerAndParticipantsExactly"];
     v16 = objc_opt_class();
-    v17 = [v8 objectForKeyedSubscript:@"callGroup"];
-    v18 = [v7 decodeObjectOfClass:v16 from:v17];
+    v17 = [fromCopy objectForKeyedSubscript:@"callGroup"];
+    v18 = [decoderCopy decodeObjectOfClass:v16 from:v17];
 
-    v19 = [[a1 alloc] initWithCaller:v11 participants:v14 matchCallerAndParticipantsExactly:v15 callGroup:v18];
+    v19 = [[self alloc] initWithCaller:v11 participants:v14 matchCallerAndParticipantsExactly:v15 callGroup:v18];
   }
 
   else

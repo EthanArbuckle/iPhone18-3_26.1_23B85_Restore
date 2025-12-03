@@ -1,25 +1,25 @@
 @interface PUIDPointerController
 - (BOOL)_detectShakeToFindGesture;
-- (BOOL)_performDecelerationAnimationWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4;
-- (BOOL)_updatePointerVelocityWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4;
+- (BOOL)_performDecelerationAnimationWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent;
+- (BOOL)_updatePointerVelocityWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent;
 - (BOOL)isActiveOnMainDisplay;
-- (CGPoint)_pointerPositionFromPointerEvent:(__IOHIDEvent *)a3;
-- (CGPoint)_transformVelocity:(CGPoint)a3 intoCoordinateSpaceForPointerClient:(id)a4;
-- (PUIDPointerController)initWithPointerEventStreamProvider:(id)a3 initialDisplay:(id)a4 pointerRenderingScene:(id)a5 systemPointerScene:(id)a6;
-- (PUIDPointerController)initWithPointerEventStreamProvider:(id)a3 initialDisplay:(id)a4 pointerRenderingScene:(id)a5 systemPointerScene:(id)a6 displayContextFactory:(id)a7 xpcClientController:(id)a8;
-- (double)_autohideDurationForEventSource:(int)a3 isFocusedOnItem:(BOOL)a4 settings:(id)a5;
+- (CGPoint)_pointerPositionFromPointerEvent:(__IOHIDEvent *)event;
+- (CGPoint)_transformVelocity:(CGPoint)velocity intoCoordinateSpaceForPointerClient:(id)client;
+- (PUIDPointerController)initWithPointerEventStreamProvider:(id)provider initialDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene;
+- (PUIDPointerController)initWithPointerEventStreamProvider:(id)provider initialDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene displayContextFactory:(id)factory xpcClientController:(id)controller;
+- (double)_autohideDurationForEventSource:(int)source isFocusedOnItem:(BOOL)item settings:(id)settings;
 - (double)_decelerationRate;
-- (double)_getShakeToFindPointerSizeMultiplierAtTime:(unint64_t)a3;
-- (id)_displayContextForPointerEventContextID:(unsigned int)a3;
-- (id)_displayContextForPointerRenderingContextID:(unsigned int)a3;
-- (id)_recenteringContextRelativePointerPositionForPointerClient:(id)a3;
+- (double)_getShakeToFindPointerSizeMultiplierAtTime:(unint64_t)time;
+- (id)_displayContextForPointerEventContextID:(unsigned int)d;
+- (id)_displayContextForPointerRenderingContextID:(unsigned int)d;
+- (id)_recenteringContextRelativePointerPositionForPointerClient:(id)client;
 - (id)_systemPointerClients;
-- (id)overridingHoverRegionClientsForDisplayContext:(id)a3;
-- (id)systemPointerInteractionContextForDisplayContext:(id)a3;
-- (id)xpcClientContextController:(id)a3 createContentMatchMoveSourceForDisplay:(id)a4 client:(id)a5 error:(id *)a6;
-- (id)xpcClientContextController:(id)a3 createPointerPortalSourceCollectionForDisplay:(id)a4 client:(id)a5 error:(id *)a6;
-- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)a3 liftOffPointerPosition:(CGPoint)a4 pointerVelocity:(CGPoint)a5 hitTestContext:(id)a6 locationInsideHitTestedContext:(CGPoint)a7 projectedDisplayContext:(id)a8 withLookupGenerationID:(unint64_t)a9 withCompletion:(id)a10;
-- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)a3 liftOffPointerPosition:(CGPoint)a4 pointerVelocity:(CGPoint)a5 hitTestContexts:(id)a6 locationsInsideHitTestContexts:(id)a7 projectedDisplayContext:(id)a8 withLookupGenerationID:(unint64_t)a9;
+- (id)overridingHoverRegionClientsForDisplayContext:(id)context;
+- (id)systemPointerInteractionContextForDisplayContext:(id)context;
+- (id)xpcClientContextController:(id)controller createContentMatchMoveSourceForDisplay:(id)display client:(id)client error:(id *)error;
+- (id)xpcClientContextController:(id)controller createPointerPortalSourceCollectionForDisplay:(id)display client:(id)client error:(id *)error;
+- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)position liftOffPointerPosition:(CGPoint)pointerPosition pointerVelocity:(CGPoint)velocity hitTestContext:(id)context locationInsideHitTestedContext:(CGPoint)testedContext projectedDisplayContext:(id)displayContext withLookupGenerationID:(unint64_t)d withCompletion:(id)self0;
+- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)position liftOffPointerPosition:(CGPoint)pointerPosition pointerVelocity:(CGPoint)velocity hitTestContexts:(id)contexts locationsInsideHitTestContexts:(id)testContexts projectedDisplayContext:(id)context withLookupGenerationID:(unint64_t)d;
 - (void)_beginPeriodicClientTransformRefreshTimer;
 - (void)_cancelActiveGestureResetTimer;
 - (void)_cancelAutohideTimer;
@@ -27,89 +27,89 @@
 - (void)_cancelDelayedUnhideTimer;
 - (void)_cancelOrientationChangeTimer;
 - (void)_cancelProvisionalPromotionTimer;
-- (void)_getTransformForHoverRegion:(id)a3 completion:(id)a4;
+- (void)_getTransformForHoverRegion:(id)region completion:(id)completion;
 - (void)_handleAccessibilityPointerSizePreferencesDidChange;
 - (void)_handlePeriodicRefreshTimerAction;
-- (void)_hidePointerForReason:(id)a3 withOptions:(unint64_t)a4;
-- (void)_invalidateEffectSourcesPassingTest:(id)a3 displayContext:(id)a4;
-- (void)_invalidateHoverRegionsForAllPointerClientsExcludingPointerClient:(id)a3 hoverRegion:(id)a4;
-- (void)_movePointerToDisplay:(id)a3;
+- (void)_hidePointerForReason:(id)reason withOptions:(unint64_t)options;
+- (void)_invalidateEffectSourcesPassingTest:(id)test displayContext:(id)context;
+- (void)_invalidateHoverRegionsForAllPointerClientsExcludingPointerClient:(id)client hoverRegion:(id)region;
+- (void)_movePointerToDisplay:(id)display;
 - (void)_performRecenteringForActiveFocusRegion;
-- (void)_performShakeToFindWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4;
-- (void)_refreshClientTransformWithReason:(unint64_t)a3;
-- (void)_removeOverridingHoverRegionClient:(id)a3 forDisplay:(id)a4;
+- (void)_performShakeToFindWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent;
+- (void)_refreshClientTransformWithReason:(unint64_t)reason;
+- (void)_removeOverridingHoverRegionClient:(id)client forDisplay:(id)display;
 - (void)_restartActiveGestureResetTimer;
 - (void)_restartAutohideTimer;
 - (void)_restartDelayedMouseRecenteringTimer;
-- (void)_restartOrientationChangeTimerWithDuration:(double)a3;
-- (void)_setShouldPeriodicallyRefreshClientTransform:(BOOL)a3;
+- (void)_restartOrientationChangeTimerWithDuration:(double)duration;
+- (void)_setShouldPeriodicallyRefreshClientTransform:(BOOL)transform;
 - (void)_startDelayedUnhideTimer;
 - (void)_startProvisionalPromotionTimer;
-- (void)_transformForLayer:(unint64_t)a3 inContext:(unsigned int)a4 queue:(id)a5 completion:(id)a6;
-- (void)_unhidePointerForReason:(id)a3;
-- (void)_updateActiveGestureMask:(__IOHIDEvent *)a3;
+- (void)_transformForLayer:(unint64_t)layer inContext:(unsigned int)context queue:(id)queue completion:(id)completion;
+- (void)_unhidePointerForReason:(id)reason;
+- (void)_updateActiveGestureMask:(__IOHIDEvent *)mask;
 - (void)_updatePointerHiddenByEntitledClients;
-- (void)_updatePointerHiddenStateForTouchUp:(BOOL)a3 fingerDown:(BOOL)a4 withEvent:(__IOHIDEvent *)a5 attributes:(id)a6 previousEvent:(__IOHIDEvent *)a7 previousPointerEventAttributes:(id)a8;
+- (void)_updatePointerHiddenStateForTouchUp:(BOOL)up fingerDown:(BOOL)down withEvent:(__IOHIDEvent *)event attributes:(id)attributes previousEvent:(__IOHIDEvent *)previousEvent previousPointerEventAttributes:(id)eventAttributes;
 - (void)_updatePointerVisibleByEntitledClients;
-- (void)_updatePointerWithOptions:(unint64_t)a3 updateHandlerCollection:(id)a4;
+- (void)_updatePointerWithOptions:(unint64_t)options updateHandlerCollection:(id)collection;
 - (void)_updateServiceKeepAlive;
 - (void)dealloc;
-- (void)displayAttached:(id)a3 pointerRenderingScene:(id)a4 systemPointerScene:(id)a5;
-- (void)displayDetached:(id)a3;
-- (void)mousePointerGlobalDevicePreferencesDidChange:(id)a3;
-- (void)pointerEventStreamProvider:(id)a3 didReceiveNonPointerEvent:(__IOHIDEvent *)a4;
-- (void)pointerEventStreamProvider:(id)a3 didReceivePointerEvent:(__IOHIDEvent *)a4;
-- (void)pointerOrientationDidChange:(id)a3 duration:(double)a4;
-- (void)pointerVisibilityDidChange:(id)a3;
-- (void)xpcClientContextController:(id)a3 autohidePointerForReason:(unint64_t)a4 forClient:(id)a5;
-- (void)xpcClientContextController:(id)a3 didRemovePointerClient:(id)a4;
-- (void)xpcClientContextController:(id)a3 didSetOverridesHoverRegions:(BOOL)a4 display:(id)a5 forClient:(id)a6;
-- (void)xpcClientContextController:(id)a3 didSetSystemPointerInteractionContextID:(unsigned int)a4 display:(id)a5 forClient:(id)a6;
-- (void)xpcClientContextController:(id)a3 didUpdateHoverRegion:(id)a4 forClient:(id)a5 transitionCompletion:(id)a6;
-- (void)xpcClientContextController:(id)a3 invalidateContentMatchMoveSource:(id)a4 forClient:(id)a5;
-- (void)xpcClientContextController:(id)a3 invalidatePointerPortalSourceCollection:(id)a4 forClient:(id)a5;
-- (void)xpcClientContextController:(id)a3 setPointerPersistentlyHiddenForReasons:(id)a4 forClient:(id)a5;
-- (void)xpcClientContextController:(id)a3 setPointerPersistentlyVisibleForReasons:(id)a4 forClient:(id)a5;
-- (void)xpcClientContextController:(id)a3 setWantsServiceKeepAlive:(BOOL)a4 forClient:(id)a5;
+- (void)displayAttached:(id)attached pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene;
+- (void)displayDetached:(id)detached;
+- (void)mousePointerGlobalDevicePreferencesDidChange:(id)change;
+- (void)pointerEventStreamProvider:(id)provider didReceiveNonPointerEvent:(__IOHIDEvent *)event;
+- (void)pointerEventStreamProvider:(id)provider didReceivePointerEvent:(__IOHIDEvent *)event;
+- (void)pointerOrientationDidChange:(id)change duration:(double)duration;
+- (void)pointerVisibilityDidChange:(id)change;
+- (void)xpcClientContextController:(id)controller autohidePointerForReason:(unint64_t)reason forClient:(id)client;
+- (void)xpcClientContextController:(id)controller didRemovePointerClient:(id)client;
+- (void)xpcClientContextController:(id)controller didSetOverridesHoverRegions:(BOOL)regions display:(id)display forClient:(id)client;
+- (void)xpcClientContextController:(id)controller didSetSystemPointerInteractionContextID:(unsigned int)d display:(id)display forClient:(id)client;
+- (void)xpcClientContextController:(id)controller didUpdateHoverRegion:(id)region forClient:(id)client transitionCompletion:(id)completion;
+- (void)xpcClientContextController:(id)controller invalidateContentMatchMoveSource:(id)source forClient:(id)client;
+- (void)xpcClientContextController:(id)controller invalidatePointerPortalSourceCollection:(id)collection forClient:(id)client;
+- (void)xpcClientContextController:(id)controller setPointerPersistentlyHiddenForReasons:(id)reasons forClient:(id)client;
+- (void)xpcClientContextController:(id)controller setPointerPersistentlyVisibleForReasons:(id)reasons forClient:(id)client;
+- (void)xpcClientContextController:(id)controller setWantsServiceKeepAlive:(BOOL)alive forClient:(id)client;
 @end
 
 @implementation PUIDPointerController
 
-- (PUIDPointerController)initWithPointerEventStreamProvider:(id)a3 initialDisplay:(id)a4 pointerRenderingScene:(id)a5 systemPointerScene:(id)a6
+- (PUIDPointerController)initWithPointerEventStreamProvider:(id)provider initialDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  pointerSceneCopy = pointerScene;
+  sceneCopy = scene;
+  displayCopy = display;
+  providerCopy = provider;
   v14 = objc_alloc_init(PUIDDisplayContextFactoryImpl);
   v15 = objc_alloc_init(PUIDXPCClientController);
-  v16 = [(PUIDPointerController *)self initWithPointerEventStreamProvider:v13 initialDisplay:v12 pointerRenderingScene:v11 systemPointerScene:v10 displayContextFactory:v14 xpcClientController:v15];
+  v16 = [(PUIDPointerController *)self initWithPointerEventStreamProvider:providerCopy initialDisplay:displayCopy pointerRenderingScene:sceneCopy systemPointerScene:pointerSceneCopy displayContextFactory:v14 xpcClientController:v15];
 
   return v16;
 }
 
-- (PUIDPointerController)initWithPointerEventStreamProvider:(id)a3 initialDisplay:(id)a4 pointerRenderingScene:(id)a5 systemPointerScene:(id)a6 displayContextFactory:(id)a7 xpcClientController:(id)a8
+- (PUIDPointerController)initWithPointerEventStreamProvider:(id)provider initialDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene displayContextFactory:(id)factory xpcClientController:(id)controller
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  providerCopy = provider;
+  displayCopy = display;
+  sceneCopy = scene;
+  pointerSceneCopy = pointerScene;
+  factoryCopy = factory;
+  controllerCopy = controller;
   v43.receiver = self;
   v43.super_class = PUIDPointerController;
   v21 = [(PUIDPointerController *)&v43 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_pointerEventStreamProvider, a3);
+    objc_storeStrong(&v21->_pointerEventStreamProvider, provider);
     [(PUIDPointerEventStreamProviding *)v22->_pointerEventStreamProvider addPointerEventStreamObserver:v22];
-    objc_storeStrong(&v22->_displayContextFactory, a7);
+    objc_storeStrong(&v22->_displayContextFactory, factory);
     v23 = +[PUIDPointerDomain rootSettings];
     settings = v22->_settings;
     v22->_settings = v23;
 
-    objc_storeStrong(&v22->_xpcClientContextController, a8);
+    objc_storeStrong(&v22->_xpcClientContextController, controller);
     [(PUIDXPCClientController *)v22->_xpcClientContextController setDelegate:v22];
     v25 = +[NSMutableDictionary dictionary];
     displayContextsByDisplay = v22->_displayContextsByDisplay;
@@ -131,16 +131,16 @@
     pointerClientToClientStateMap = v22->_pointerClientToClientStateMap;
     v22->_pointerClientToClientStateMap = v33;
 
-    [(PUIDPointerController *)v22 displayAttached:v16 pointerRenderingScene:v17 systemPointerScene:v18];
+    [(PUIDPointerController *)v22 displayAttached:displayCopy pointerRenderingScene:sceneCopy systemPointerScene:pointerSceneCopy];
     v35 = +[BKSMousePointerService sharedInstance];
     v36 = [v35 addPointerPreferencesObserver:v22];
     globalDevicePreferencesObservationAssertion = v22->_globalDevicePreferencesObservationAssertion;
     v22->_globalDevicePreferencesObservationAssertion = v36;
 
     v38 = +[BKSMousePointerService sharedInstance];
-    v39 = [v38 globalDevicePreferences];
+    globalDevicePreferences = [v38 globalDevicePreferences];
     globalDevicePreferences = v22->_globalDevicePreferences;
-    v22->_globalDevicePreferences = v39;
+    v22->_globalDevicePreferences = globalDevicePreferences;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v22, sub_100006C34, kAXSPointerSizeMultiplierPreferenceDidChangeNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -168,27 +168,27 @@
   [(PUIDPointerController *)&v5 dealloc];
 }
 
-- (void)displayAttached:(id)a3 pointerRenderingScene:(id)a4 systemPointerScene:(id)a5
+- (void)displayAttached:(id)attached pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v8];
+  attachedCopy = attached;
+  sceneCopy = scene;
+  pointerSceneCopy = pointerScene;
+  v11 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:attachedCopy];
 
   if (v11)
   {
     sub_1000270B8();
   }
 
-  v12 = [(PUIDDisplayContextFactory *)self->_displayContextFactory newDisplayContextForDisplay:v8 pointerRenderingScene:v9 systemPointerScene:v10];
+  v12 = [(PUIDDisplayContextFactory *)self->_displayContextFactory newDisplayContextForDisplay:attachedCopy pointerRenderingScene:sceneCopy systemPointerScene:pointerSceneCopy];
   sub_1000278BC(v12, self);
   v13 = sub_100027868(v12);
   [v13 setDelegate:self];
 
-  [(NSMutableDictionary *)self->_displayContextsByDisplay setObject:v12 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_displayContextsByDisplay setObject:v12 forKeyedSubscript:attachedCopy];
   v14 = sub_1000278B0(v12);
   v15 = objc_alloc_init(PSMutablePointerHoverRegion);
-  if (v10)
+  if (pointerSceneCopy)
   {
     v16 = sub_100027868(v12);
     v17 = [v16 createPointerPortalSourceCollectionForClient:v14];
@@ -207,7 +207,7 @@
   [v15 setPointerVisualIntensity:?];
   [v15 setShouldPointerUnderlayContent:0];
   v20 = objc_alloc_init(_PUIDPointerControllerSystemClientState);
-  [(_PUIDPointerControllerSystemClientState *)v20 setDisplay:v8];
+  [(_PUIDPointerControllerSystemClientState *)v20 setDisplay:attachedCopy];
   [(_PUIDPointerControllerSystemClientState *)v20 setActiveHoverRegion:v15];
   [(_PUIDPointerControllerClientState *)v20 setTransformFromClientContextToDisplay:buf, sub_1000103E4(v12, buf)];
   [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v20 forKey:v14];
@@ -228,14 +228,14 @@
 
   if (!self->_activeDisplayContext)
   {
-    [(PUIDPointerController *)self _movePointerToDisplay:v8, v25, v26, v27, v28, v29, v30];
+    [(PUIDPointerController *)self _movePointerToDisplay:attachedCopy, v25, v26, v27, v28, v29, v30];
   }
 
   v24 = PSLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v36 = v8;
+    v36 = attachedCopy;
     v37 = 2112;
     v38 = v12;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "<%{public}@> finished configuring pointer with final context: %@", buf, 0x16u);
@@ -247,39 +247,39 @@
   objc_destroyWeak(&location);
 }
 
-- (void)displayDetached:(id)a3
+- (void)displayDetached:(id)detached
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_displayContextsByDisplay setObject:0 forKeyedSubscript:v4];
+  detachedCopy = detached;
+  v5 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:detachedCopy];
+  [(NSMutableDictionary *)self->_displayContextsByDisplay setObject:0 forKeyedSubscript:detachedCopy];
   activeDisplayContext = self->_activeDisplayContext;
-  v7 = PSLogCommon();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  allKeys = PSLogCommon();
+  v8 = os_log_type_enabled(allKeys, OS_LOG_TYPE_DEFAULT);
   if (activeDisplayContext == v5)
   {
     if (v8)
     {
       v16 = 138543362;
-      v17 = v4;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@> detaching display was the active display", &v16, 0xCu);
+      v17 = detachedCopy;
+      _os_log_impl(&_mh_execute_header, allKeys, OS_LOG_TYPE_DEFAULT, "<%{public}@> detaching display was the active display", &v16, 0xCu);
     }
 
     v9 = self->_activeDisplayContext;
     self->_activeDisplayContext = 0;
 
-    v7 = [(NSMutableDictionary *)self->_displayContextsByDisplay allKeys];
-    if ([v7 count]== 1)
+    allKeys = [(NSMutableDictionary *)self->_displayContextsByDisplay allKeys];
+    if ([allKeys count]== 1)
     {
-      v10 = [v7 firstObject];
+      firstObject = [allKeys firstObject];
       v11 = PSLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
-        v17 = v10;
+        v17 = firstObject;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@> is the only one left, setting it as the new active display", &v16, 0xCu);
       }
 
-      v12 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v10];
+      v12 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:firstObject];
       v13 = self->_activeDisplayContext;
       self->_activeDisplayContext = v12;
     }
@@ -290,8 +290,8 @@
   else if (v8)
   {
     v16 = 138543362;
-    v17 = v4;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@> detaching display was NOT the active display", &v16, 0xCu);
+    v17 = detachedCopy;
+    _os_log_impl(&_mh_execute_header, allKeys, OS_LOG_TYPE_DEFAULT, "<%{public}@> detaching display was NOT the active display", &v16, 0xCu);
   }
 
   pointerClientToClientStateMap = self->_pointerClientToClientStateMap;
@@ -302,29 +302,29 @@
   [(PUIDDisplayContext *)v5 invalidate];
 }
 
-- (void)mousePointerGlobalDevicePreferencesDidChange:(id)a3
+- (void)mousePointerGlobalDevicePreferencesDidChange:(id)change
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100007440;
   v4[3] = &unk_100048A28;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  changeCopy = change;
+  v3 = changeCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)pointerEventStreamProvider:(id)a3 didReceivePointerEvent:(__IOHIDEvent *)a4
+- (void)pointerEventStreamProvider:(id)provider didReceivePointerEvent:(__IOHIDEvent *)event
 {
-  v6 = a3;
+  providerCopy = provider;
   lastPointerEvent = self->_lastPointerEvent;
-  if (lastPointerEvent == a4)
+  if (lastPointerEvent == event)
   {
     goto LABEL_74;
   }
 
   v8 = self->_lastPointerEventPointerAttributes;
-  if (a4)
+  if (event)
   {
     if (IOHIDEventGetIntegerValue())
     {
@@ -378,7 +378,7 @@
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!event)
   {
 LABEL_23:
     lockedContext = self->_lockedContext;
@@ -395,80 +395,80 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  v11 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
+  firstObject = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
   v12 = self->_lockedContext;
-  self->_lockedContext = v11;
+  self->_lockedContext = firstObject;
 
   v13 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:self->_previousPointerClient];
-  v14 = [v13 activeHoverRegion];
+  activeHoverRegion = [v13 activeHoverRegion];
 
-  if (v14 && [v14 isLatching])
+  if (activeHoverRegion && [activeHoverRegion isLatching])
   {
     self->_latchingState = 1;
   }
 
 LABEL_24:
   v16 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:self->_previousPointerClient];
-  v17 = [v16 activeHoverRegion];
+  activeHoverRegion2 = [v16 activeHoverRegion];
 
-  if (v17)
+  if (activeHoverRegion2)
   {
-    v18 = [v17 pointerShape];
-    v19 = [v18 shapeType];
+    pointerShape = [activeHoverRegion2 pointerShape];
+    shapeType = [pointerShape shapeType];
 
-    if (v19 == 5)
+    if (shapeType == 5)
     {
       [(PUIDPointerController *)self _refreshClientTransformWithReason:3];
     }
   }
 
-  CFRetain(a4);
-  self->_lastPointerEvent = a4;
+  CFRetain(event);
+  self->_lastPointerEvent = event;
   v20 = BKSHIDEventGetPointerAttributes();
   objc_storeStrong(&self->_lastPointerEventPointerAttributes, v20);
-  v21 = [v20 hitTestContexts];
+  hitTestContexts = [v20 hitTestContexts];
   lastPointerHitTestContexts = self->_lastPointerHitTestContexts;
-  self->_lastPointerHitTestContexts = v21;
+  self->_lastPointerHitTestContexts = hitTestContexts;
 
-  v23 = [(BKSHIDEventPointerAttributes *)v8 token];
-  v24 = [v23 _identifierOfCAContext];
+  token = [(BKSHIDEventPointerAttributes *)v8 token];
+  _identifierOfCAContext = [token _identifierOfCAContext];
 
-  v25 = [v20 token];
-  v26 = [v25 _identifierOfCAContext];
+  token2 = [v20 token];
+  _identifierOfCAContext2 = [token2 _identifierOfCAContext];
 
-  if (v8 && v24 != v26)
+  if (v8 && _identifierOfCAContext != _identifierOfCAContext2)
   {
     v54 = lastPointerEvent;
     v27 = v8;
-    v28 = v6;
-    v29 = [(PUIDPointerController *)self _displayContextForPointerEventContextID:v26];
+    v28 = providerCopy;
+    v29 = [(PUIDPointerController *)self _displayContextForPointerEventContextID:_identifierOfCAContext2];
     v30 = PSLogCommon();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       sub_100027838(v29);
-      v31 = v53 = v17;
+      v31 = v53 = activeHoverRegion2;
       *buf = 67109634;
-      v56 = v26;
+      v56 = _identifierOfCAContext2;
       v57 = 1024;
-      v58 = v24;
+      v58 = _identifierOfCAContext;
       v59 = 2114;
       v60 = v31;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Got a pointer event with contextID: 0x%x and the last event had contextID: 0x%x, moving pointer to display: %{public}@", buf, 0x18u);
 
-      v17 = v53;
+      activeHoverRegion2 = v53;
     }
 
     v32 = sub_100027838(v29);
     [(PUIDPointerController *)self _movePointerToDisplay:v32];
 
-    v6 = v28;
+    providerCopy = v28;
     v8 = v27;
     lastPointerEvent = v54;
   }
 
-  v33 = [v20 fingerDownCount];
-  v34 = v33;
-  v35 = v33 > 0;
+  fingerDownCount = [v20 fingerDownCount];
+  v34 = fingerDownCount;
+  v35 = fingerDownCount > 0;
   if (self->_isFingerDown == v35)
   {
     v36 = 0;
@@ -476,28 +476,28 @@ LABEL_24:
 
   else
   {
-    v36 = v33 < 1;
+    v36 = fingerDownCount < 1;
     self->_isFingerDown = v35;
   }
 
-  [(PUIDPointerController *)self _updateActiveGestureMask:a4];
-  if ([(PUIDPointerController *)self _eventSourceWantsDecelerationOrRecentering:sub_100007A98(a4, v20)])
+  [(PUIDPointerController *)self _updateActiveGestureMask:event];
+  if ([(PUIDPointerController *)self _eventSourceWantsDecelerationOrRecentering:sub_100007A98(event, v20)])
   {
     if (lastPointerEvent)
     {
-      v37 = [(BKSHIDEventPointerAttributes *)v8 fingerDownCount];
+      fingerDownCount2 = [(BKSHIDEventPointerAttributes *)v8 fingerDownCount];
     }
 
     else
     {
-      v37 = 0;
+      fingerDownCount2 = 0;
     }
 
-    if (v34 <= v37)
+    if (v34 <= fingerDownCount2)
     {
-      if (v34 < v37)
+      if (v34 < fingerDownCount2)
       {
-        v39 = [(PUIDPointerController *)self _performDecelerationAnimationWithPointerParentEvent:a4 previousEvent:lastPointerEvent];
+        v39 = [(PUIDPointerController *)self _performDecelerationAnimationWithPointerParentEvent:event previousEvent:lastPointerEvent];
         if (!v34 && (v39 & 1) == 0 && [(PUIDPointerSettings *)self->_settings shouldRecenterAfterLiftingFinger])
         {
           [(PUIDPointerController *)self _performRecenteringForActiveFocusRegion];
@@ -506,7 +506,7 @@ LABEL_24:
 
       else
       {
-        [(PUIDPointerController *)self _updatePointerVelocityWithPointerParentEvent:a4 previousEvent:lastPointerEvent];
+        [(PUIDPointerController *)self _updatePointerVelocityWithPointerParentEvent:event previousEvent:lastPointerEvent];
       }
     }
 
@@ -527,7 +527,7 @@ LABEL_40:
     goto LABEL_52;
   }
 
-  if (![(PUIDPointerController *)self _updatePointerVelocityWithPointerParentEvent:a4 previousEvent:lastPointerEvent])
+  if (![(PUIDPointerController *)self _updatePointerVelocityWithPointerParentEvent:event previousEvent:lastPointerEvent])
   {
     goto LABEL_50;
   }
@@ -541,10 +541,10 @@ LABEL_40:
 LABEL_51:
   v38 = ([(BKSHIDEventPointerAttributes *)v8 options]>> 11) & 1;
 LABEL_52:
-  v40 = [v20 options];
-  if ((v40 & 0x800) != 0 || v38)
+  options = [v20 options];
+  if ((options & 0x800) != 0 || v38)
   {
-    if (!v8 || (v40 & 0x800) != 0)
+    if (!v8 || (options & 0x800) != 0)
     {
       if ((v38 & 1) == 0)
       {
@@ -560,7 +560,7 @@ LABEL_52:
 
   else
   {
-    [(PUIDPointerController *)self _updatePointerHiddenStateForTouchUp:v36 fingerDown:self->_isFingerDown withEvent:a4 attributes:v20 previousEvent:lastPointerEvent previousPointerEventAttributes:v8];
+    [(PUIDPointerController *)self _updatePointerHiddenStateForTouchUp:v36 fingerDown:self->_isFingerDown withEvent:event attributes:v20 previousEvent:lastPointerEvent previousPointerEventAttributes:v8];
   }
 
   touchHistory = self->_touchHistory;
@@ -585,32 +585,32 @@ LABEL_52:
 
     else
     {
-      v46 = v17;
+      v46 = activeHoverRegion2;
       if (self->_previousPointerClient)
       {
-        v47 = [(PUIDPointerController *)self _systemPointerClients];
-        v48 = [v47 containsObject:self->_previousPointerClient];
+        _systemPointerClients = [(PUIDPointerController *)self _systemPointerClients];
+        v48 = [_systemPointerClients containsObject:self->_previousPointerClient];
 
         if ((v48 & 1) == 0)
         {
           v49 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:self->_previousPointerClient];
-          v50 = [v49 activeHoverRegion];
-          if (v50)
+          activeHoverRegion3 = [v49 activeHoverRegion];
+          if (activeHoverRegion3)
           {
             objc_storeStrong(&self->_highVelocityAllowedPointerClient, self->_previousPointerClient);
-            objc_storeStrong(&self->_highVelocityAllowedHoverRegion, v50);
+            objc_storeStrong(&self->_highVelocityAllowedHoverRegion, activeHoverRegion3);
           }
         }
       }
 
       [(PUIDPointerController *)self _invalidateHoverRegionsForAllPointerClientsExcludingPointerClient:self->_highVelocityAllowedPointerClient hoverRegion:self->_highVelocityAllowedHoverRegion];
-      v17 = v46;
+      activeHoverRegion2 = v46;
     }
   }
 
   if (_UIPlasmaEnabled())
   {
-    [(PUIDPointerController *)self _performShakeToFindWithPointerParentEvent:a4 previousEvent:lastPointerEvent];
+    [(PUIDPointerController *)self _performShakeToFindWithPointerParentEvent:event previousEvent:lastPointerEvent];
   }
 
   -[PUIDPointerController _updatePointerWithOptions:updateHandlerCollection:](self, "_updatePointerWithOptions:updateHandlerCollection:", ([v20 options] >> 4) & 1, 0);
@@ -622,7 +622,7 @@ LABEL_52:
 LABEL_74:
 }
 
-- (void)_updateActiveGestureMask:(__IOHIDEvent *)a3
+- (void)_updateActiveGestureMask:(__IOHIDEvent *)mask
 {
   Children = IOHIDEventGetChildren();
   if (Children)
@@ -658,9 +658,9 @@ LABEL_74:
   }
 }
 
-- (void)pointerEventStreamProvider:(id)a3 didReceiveNonPointerEvent:(__IOHIDEvent *)a4
+- (void)pointerEventStreamProvider:(id)provider didReceiveNonPointerEvent:(__IOHIDEvent *)event
 {
-  v5 = a3;
+  providerCopy = provider;
   if (self->_pointerIsAutohidden && !self->_delayedPointerUnhideTimer)
   {
     goto LABEL_12;
@@ -757,12 +757,12 @@ LABEL_12:
       v10 = PSLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v3 contextID];
+        contextID = [v3 contextID];
         [v3 point];
         v12 = BSStringFromCGPoint();
         previousPointerClient = self->_previousPointerClient;
         v18[0] = 67109890;
-        v18[1] = v11;
+        v18[1] = contextID;
         v19 = 2114;
         v20 = v12;
         v21 = 2112;
@@ -774,9 +774,9 @@ LABEL_12:
 
       v14 = +[BKSMousePointerService sharedInstance];
       v15 = sub_100027838(&self->_activeDisplayContext->super.isa);
-      v16 = [v15 hardwareIdentifier];
-      v17 = [v6 BSAnimationSettings];
-      [v14 setContextRelativePointerPosition:v3 onDisplay:v16 withAnimationParameters:v17 restrictingToPID:v7];
+      hardwareIdentifier = [v15 hardwareIdentifier];
+      bSAnimationSettings = [v6 BSAnimationSettings];
+      [v14 setContextRelativePointerPosition:v3 onDisplay:hardwareIdentifier withAnimationParameters:bSAnimationSettings restrictingToPID:v7];
     }
   }
 }
@@ -875,7 +875,7 @@ LABEL_12:
   return v47;
 }
 
-- (double)_getShakeToFindPointerSizeMultiplierAtTime:(unint64_t)a3
+- (double)_getShakeToFindPointerSizeMultiplierAtTime:(unint64_t)time
 {
   shakeToFindWiggles = self->_shakeToFindWiggles;
   BSMonotonicReferencedTimeFromMachTime();
@@ -944,9 +944,9 @@ LABEL_7:
   return v12;
 }
 
-- (void)_performShakeToFindWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4
+- (void)_performShakeToFindWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent
 {
-  if (!a3 || !a4 || IOHIDEventGetIntegerValue())
+  if (!event || !previousEvent || IOHIDEventGetIntegerValue())
   {
     return;
   }
@@ -988,7 +988,7 @@ LABEL_19:
         self->_shakeToFindPoints = v21;
       }
 
-      [(PUIDPointerController *)self _pointerPositionFromPointerEvent:a3];
+      [(PUIDPointerController *)self _pointerPositionFromPointerEvent:event];
       v23 = self->_shakeToFindPoints;
       v24 = [NSValue valueWithCGPoint:?];
       [(NSMutableArray *)v23 addObject:v24];
@@ -1023,7 +1023,7 @@ LABEL_20:
   }
 }
 
-- (BOOL)_performDecelerationAnimationWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4
+- (BOOL)_performDecelerationAnimationWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent
 {
   if ([(PUIDPointerSettings *)self->_settings isDecelerationEnabled])
   {
@@ -1049,14 +1049,14 @@ LABEL_20:
 
   v15 = x * v11;
   v16 = y * v13;
-  [(PUIDPointerController *)self _pointerPositionFromPointerEvent:a3];
+  [(PUIDPointerController *)self _pointerPositionFromPointerEvent:event];
   v18 = v17;
   v20 = v19;
   v21 = sub_100027714(&self->_activeDisplayContext->super.isa);
   v22 = sub_100027838(&self->_activeDisplayContext->super.isa);
-  v23 = [v22 hardwareIdentifier];
+  hardwareIdentifier = [v22 hardwareIdentifier];
 
-  if (a4)
+  if (previousEvent)
   {
     TimeStamp = IOHIDEventGetTimeStamp();
     if (TimeStamp != IOHIDEventGetTimeStamp())
@@ -1069,7 +1069,7 @@ LABEL_20:
       v20 = v20 + v28 * v16;
       v29 = [[BKSContextRelativePoint alloc] initWithPoint:v21 contextID:{v18, v20}];
       v30 = +[BKSMousePointerService sharedInstance];
-      [v30 setContextRelativePointerPosition:v29 onDisplay:v23 withAnimationParameters:0 restrictingToPID:0xFFFFFFFFLL];
+      [v30 setContextRelativePointerPosition:v29 onDisplay:hardwareIdentifier withAnimationParameters:0 restrictingToPID:0xFFFFFFFFLL];
     }
   }
 
@@ -1079,7 +1079,7 @@ LABEL_20:
   v34 = [[BKSContextRelativePoint alloc] initWithPoint:v21 contextID:{v18 + v15 / 1000.0 * v32 / (1.0 - v32), v33}];
   v35 = [[BKSContextRelativePoint alloc] initWithPoint:v21 contextID:{v15, v16}];
   v36 = +[BKSMousePointerService sharedInstance];
-  [v36 setContextRelativePointerPosition:v34 withInitialVelocity:v35 onDisplay:v23 withDecelerationRate:0xFFFFFFFFLL restrictingToPID:v32];
+  [v36 setContextRelativePointerPosition:v34 withInitialVelocity:v35 onDisplay:hardwareIdentifier withDecelerationRate:0xFFFFFFFFLL restrictingToPID:v32];
 
   if ([(PUIDPointerSettings *)self->_settings isDecelerationTargetLookupEnabled])
   {
@@ -1109,35 +1109,35 @@ LABEL_20:
     *&v42[9] = v15;
     *&v42[10] = v16;
     v42[11] = v37;
-    [v41 getHitTestContextsAtPoint:v34 withAdditionalContexts:v39 onDisplay:v23 withCompletion:v42];
+    [v41 getHitTestContextsAtPoint:v34 withAdditionalContexts:v39 onDisplay:hardwareIdentifier withCompletion:v42];
   }
 
   return 1;
 }
 
-- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)a3 liftOffPointerPosition:(CGPoint)a4 pointerVelocity:(CGPoint)a5 hitTestContexts:(id)a6 locationsInsideHitTestContexts:(id)a7 projectedDisplayContext:(id)a8 withLookupGenerationID:(unint64_t)a9
+- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)position liftOffPointerPosition:(CGPoint)pointerPosition pointerVelocity:(CGPoint)velocity hitTestContexts:(id)contexts locationsInsideHitTestContexts:(id)testContexts projectedDisplayContext:(id)context withLookupGenerationID:(unint64_t)d
 {
-  y = a5.y;
-  x = a5.x;
-  v14 = a4.y;
-  v15 = a4.x;
-  v16 = a3.y;
-  v17 = a3.x;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = v21;
-  if (!self->_isFingerDown && self->_decelerationLookupGenerationID == a9)
+  y = velocity.y;
+  x = velocity.x;
+  v14 = pointerPosition.y;
+  v15 = pointerPosition.x;
+  v16 = position.y;
+  v17 = position.x;
+  contextsCopy = contexts;
+  testContextsCopy = testContexts;
+  contextCopy = context;
+  v22 = contextCopy;
+  if (!self->_isFingerDown && self->_decelerationLookupGenerationID == d)
   {
-    v23 = sub_100027730(v21);
-    if (v23 && [v19 containsObject:v23])
+    v23 = sub_100027730(contextCopy);
+    if (v23 && [contextsCopy containsObject:v23])
     {
-      v24 = [v20 objectAtIndex:{objc_msgSend(v19, "indexOfObject:", v23)}];
-      v25 = [v19 mutableCopy];
+      firstObject = [testContextsCopy objectAtIndex:{objc_msgSend(contextsCopy, "indexOfObject:", v23)}];
+      v25 = [contextsCopy mutableCopy];
       [v25 removeObject:v23];
-      v26 = [v20 mutableCopy];
-      [v26 removeObject:v24];
-      [v24 CGPointValue];
+      v26 = [testContextsCopy mutableCopy];
+      [v26 removeObject:firstObject];
+      [firstObject CGPointValue];
       v28 = v27;
       v30 = v29;
       v37[0] = _NSConcreteStackBlock;
@@ -1152,54 +1152,54 @@ LABEL_20:
       v46 = y;
       v37[4] = self;
       v38 = v25;
-      v39 = v20;
+      v39 = testContextsCopy;
       v40 = v22;
-      v47 = a9;
+      dCopy = d;
       v31 = v25;
-      [(PUIDPointerController *)self _adjustDecelerationTargetForProjectedPosition:v23 liftOffPointerPosition:v40 pointerVelocity:a9 hitTestContext:v37 locationInsideHitTestedContext:v17 projectedDisplayContext:v16 withLookupGenerationID:v15 withCompletion:v14, x, y, v28, v30];
+      [(PUIDPointerController *)self _adjustDecelerationTargetForProjectedPosition:v23 liftOffPointerPosition:v40 pointerVelocity:d hitTestContext:v37 locationInsideHitTestedContext:v17 projectedDisplayContext:v16 withLookupGenerationID:v15 withCompletion:v14, x, y, v28, v30];
     }
 
     else
     {
-      v24 = [v19 firstObject];
-      v32 = [v20 firstObject];
-      [v32 CGPointValue];
+      firstObject = [contextsCopy firstObject];
+      firstObject2 = [testContextsCopy firstObject];
+      [firstObject2 CGPointValue];
       v34 = v33;
       v36 = v35;
 
-      [(PUIDPointerController *)self _adjustDecelerationTargetForProjectedPosition:v24 liftOffPointerPosition:v22 pointerVelocity:a9 hitTestContext:0 locationInsideHitTestedContext:v17 projectedDisplayContext:v16 withLookupGenerationID:v15 withCompletion:v14, x, y, v34, v36];
+      [(PUIDPointerController *)self _adjustDecelerationTargetForProjectedPosition:firstObject liftOffPointerPosition:v22 pointerVelocity:d hitTestContext:0 locationInsideHitTestedContext:v17 projectedDisplayContext:v16 withLookupGenerationID:v15 withCompletion:v14, x, y, v34, v36];
     }
   }
 }
 
-- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)a3 liftOffPointerPosition:(CGPoint)a4 pointerVelocity:(CGPoint)a5 hitTestContext:(id)a6 locationInsideHitTestedContext:(CGPoint)a7 projectedDisplayContext:(id)a8 withLookupGenerationID:(unint64_t)a9 withCompletion:(id)a10
+- (void)_adjustDecelerationTargetForProjectedPosition:(CGPoint)position liftOffPointerPosition:(CGPoint)pointerPosition pointerVelocity:(CGPoint)velocity hitTestContext:(id)context locationInsideHitTestedContext:(CGPoint)testedContext projectedDisplayContext:(id)displayContext withLookupGenerationID:(unint64_t)d withCompletion:(id)self0
 {
-  y = a7.y;
-  x = a7.x;
-  v15 = a5.y;
-  v16 = a5.x;
-  v18 = a6;
-  v19 = a8;
-  v20 = a10;
-  v21 = v20;
-  if (self->_isFingerDown || self->_decelerationLookupGenerationID != a9)
+  y = testedContext.y;
+  x = testedContext.x;
+  v15 = velocity.y;
+  v16 = velocity.x;
+  contextCopy = context;
+  displayContextCopy = displayContext;
+  completionCopy = completion;
+  v21 = completionCopy;
+  if (self->_isFingerDown || self->_decelerationLookupGenerationID != d)
   {
-    if (v20)
+    if (completionCopy)
     {
-      (*(v20 + 2))(v20, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
-    v60 = a9;
+    dCopy = d;
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v22 = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
-    v23 = [v22 allObjects];
-    v24 = [v23 copy];
+    keyEnumerator = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    v24 = [allObjects copy];
 
     v25 = [v24 countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (v25)
@@ -1216,7 +1216,7 @@ LABEL_5:
 
         v28 = *(*(&v68 + 1) + 8 * v27);
         v29 = [v28 pid];
-        if (v29 == [v18 pid])
+        if (v29 == [contextCopy pid])
         {
           break;
         }
@@ -1248,8 +1248,8 @@ LABEL_5:
       v54 = v33;
       [(PUIDPointerSettings *)self->_settings decelerationTargetLookupRadius];
       v57 = v34;
-      v35 = sub_100027730(v19);
-      v36 = v35 == v18;
+      v35 = sub_100027730(displayContextCopy);
+      v36 = v35 == contextCopy;
 
       if (v36)
       {
@@ -1266,7 +1266,7 @@ LABEL_5:
       v42 = v41;
       objc_initWeak(&location, self);
       xpcClientContextController = self->_xpcClientContextController;
-      v44 = [v18 contextID];
+      contextID = [contextCopy contextID];
       v45 = hypot(v59, v58);
       v46 = fabs(v16);
       v47 = fabs(v15);
@@ -1292,17 +1292,17 @@ LABEL_5:
       objc_copyWeak(v66, &location);
       v49 = v42 / v45;
       v50 = v58 * (v42 / v45);
-      v66[1] = v60;
+      v66[1] = dCopy;
       v51 = v59 * v49;
       v66[2] = *&x;
       v66[3] = *&y;
-      v62 = v18;
+      v62 = contextCopy;
       v52 = v30;
       v63 = v52;
-      v64 = v19;
+      v64 = displayContextCopy;
       v66[4] = v56;
       v65 = v21;
-      [(PUIDXPCClientController *)xpcClientContextController adjustedDecelerationTargetForPointerClient:v52 withTargetPointerPosition:v44 velocity:v61 inContextID:x cursorRegionLookupRadius:y cursorRegionLookupResolution:v51 lookupConeAngle:v50 completion:v48, v55, v54 * 3.14159265 / 180.0];
+      [(PUIDXPCClientController *)xpcClientContextController adjustedDecelerationTargetForPointerClient:v52 withTargetPointerPosition:contextID velocity:v61 inContextID:x cursorRegionLookupRadius:y cursorRegionLookupResolution:v51 lookupConeAngle:v50 completion:v48, v55, v54 * 3.14159265 / 180.0];
 
       objc_destroyWeak(v66);
       objc_destroyWeak(&location);
@@ -1321,19 +1321,19 @@ LABEL_24:
   }
 }
 
-- (BOOL)_updatePointerVelocityWithPointerParentEvent:(__IOHIDEvent *)a3 previousEvent:(__IOHIDEvent *)a4
+- (BOOL)_updatePointerVelocityWithPointerParentEvent:(__IOHIDEvent *)event previousEvent:(__IOHIDEvent *)previousEvent
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (event && previousEvent)
   {
     v8 = BKSHIDEventGetPointerAttributes();
     v9 = BKSHIDEventGetPointerAttributes();
-    v10 = [v8 token];
-    v11 = [v10 _identifierOfCAContext];
-    v12 = [v9 token];
-    v13 = [v12 _identifierOfCAContext];
+    token = [v8 token];
+    _identifierOfCAContext = [token _identifierOfCAContext];
+    token2 = [v9 token];
+    _identifierOfCAContext2 = [token2 _identifierOfCAContext];
 
-    if (v11 == v13 && ([(PUIDPointerController *)self _pointerPositionFromPointerEvent:a3], v15 = v14, v17 = v16, [(PUIDPointerController *)self _pointerPositionFromPointerEvent:a4], v19 = v18, v21 = v20, TimeStamp = IOHIDEventGetTimeStamp(), TimeStamp != IOHIDEventGetTimeStamp()))
+    if (_identifierOfCAContext == _identifierOfCAContext2 && ([(PUIDPointerController *)self _pointerPositionFromPointerEvent:event], v15 = v14, v17 = v16, [(PUIDPointerController *)self _pointerPositionFromPointerEvent:previousEvent], v19 = v18, v21 = v20, TimeStamp = IOHIDEventGetTimeStamp(), TimeStamp != IOHIDEventGetTimeStamp()))
     {
       BSMonotonicReferencedTimeFromMachTime();
       v24 = v23;
@@ -1364,12 +1364,12 @@ LABEL_24:
   return v4;
 }
 
-- (void)_updatePointerHiddenStateForTouchUp:(BOOL)a3 fingerDown:(BOOL)a4 withEvent:(__IOHIDEvent *)a5 attributes:(id)a6 previousEvent:(__IOHIDEvent *)a7 previousPointerEventAttributes:(id)a8
+- (void)_updatePointerHiddenStateForTouchUp:(BOOL)up fingerDown:(BOOL)down withEvent:(__IOHIDEvent *)event attributes:(id)attributes previousEvent:(__IOHIDEvent *)previousEvent previousPointerEventAttributes:(id)eventAttributes
 {
-  v12 = a3;
-  v14 = a6;
-  v15 = a8;
-  if (a5 && IOHIDEventGetIntegerValue())
+  upCopy = up;
+  attributesCopy = attributes;
+  eventAttributesCopy = eventAttributes;
+  if (event && IOHIDEventGetIntegerValue())
   {
     self->_isHiddenForActiveGesture = 0;
     [(PUIDPointerController *)self _cancelActiveGestureResetTimer];
@@ -1381,7 +1381,7 @@ LABEL_24:
     v16 = 0;
   }
 
-  v17 = sub_100007A98(a5, v14);
+  v17 = sub_100007A98(event, attributesCopy);
   v18 = [(PUIDPointerController *)self _shouldHideWhileGesturingForEventSource:v17];
   if (v18 && self->_isHiddenForActiveGesture)
   {
@@ -1390,7 +1390,7 @@ LABEL_24:
 
   else
   {
-    v19 = sub_100009920(a5, v14, a7);
+    v19 = sub_100009920(event, attributesCopy, previousEvent);
   }
 
   if (self->_activeGestureMask)
@@ -1409,7 +1409,7 @@ LABEL_24:
       goto LABEL_16;
     }
 
-    v20 = [v14 fingerDownCount] < 2;
+    v20 = [attributesCopy fingerDownCount] < 2;
     if (!v18)
     {
       goto LABEL_16;
@@ -1445,13 +1445,13 @@ LABEL_39:
     goto LABEL_45;
   }
 
-  if (v12)
+  if (upCopy)
   {
     self->_loggedRange = 0;
     if (v19)
     {
-      v21 = [v14 hitTestContexts];
-      v22 = [v21 count];
+      hitTestContexts = [attributesCopy hitTestContexts];
+      v22 = [hitTestContexts count];
 
       if (!v22)
       {
@@ -1473,13 +1473,13 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (a4 || ([v14 options] & 0x400) != 0)
+  if (down || ([attributesCopy options] & 0x400) != 0)
   {
     self->_loggedRange = 0;
     [(PUIDPointerController *)self _cancelAutohideTimer];
     if ((v18 | v19 ^ 1))
     {
-      if (self->_pointerIsAutohidden && !self->_isHiddenForActiveGesture && sub_100009A48(v14))
+      if (self->_pointerIsAutohidden && !self->_isHiddenForActiveGesture && sub_100009A48(attributesCopy))
       {
         [(PUIDPointerController *)self _startDelayedUnhideTimer];
       }
@@ -1544,8 +1544,8 @@ LABEL_39:
 LABEL_45:
   if ([(PUIDPointerSettings *)self->_settings shouldAutohideAfterHitTestContextLoss])
   {
-    v27 = [v14 hitTestContexts];
-    if (![v27 count])
+    hitTestContexts2 = [attributesCopy hitTestContexts];
+    if (![hitTestContexts2 count])
     {
       if (!self->_pointerIsAutohidden)
       {
@@ -1701,7 +1701,7 @@ LABEL_45:
   self->_activeGestureResetTimer = 0;
 }
 
-- (void)_restartOrientationChangeTimerWithDuration:(double)a3
+- (void)_restartOrientationChangeTimerWithDuration:(double)duration
 {
   [(PUIDPointerController *)self _cancelOrientationChangeTimer];
   objc_initWeak(&location, self);
@@ -1711,7 +1711,7 @@ LABEL_45:
   v7[3] = &unk_100048EB8;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  v5 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v7 block:a3];
+  v5 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v7 block:duration];
   orientationChangeTimer = self->_orientationChangeTimer;
   self->_orientationChangeTimer = v5;
 
@@ -1726,32 +1726,32 @@ LABEL_45:
   self->_orientationChangeTimer = 0;
 }
 
-- (double)_autohideDurationForEventSource:(int)a3 isFocusedOnItem:(BOOL)a4 settings:(id)a5
+- (double)_autohideDurationForEventSource:(int)source isFocusedOnItem:(BOOL)item settings:(id)settings
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (a3 == 12)
+  itemCopy = item;
+  settingsCopy = settings;
+  v8 = settingsCopy;
+  if (source == 12)
   {
-    if (v5)
+    if (itemCopy)
     {
-      [v7 autohideDurationForFocusedPointer];
+      [settingsCopy autohideDurationForFocusedPointer];
     }
 
     else
     {
-      [v7 autohideDurationForSystemPointer];
+      [settingsCopy autohideDurationForSystemPointer];
     }
   }
 
-  else if (v5)
+  else if (itemCopy)
   {
-    [v7 autohideDurationForFocusedPointerMouse];
+    [settingsCopy autohideDurationForFocusedPointerMouse];
   }
 
   else
   {
-    [v7 autohideDurationForSystemPointerMouse];
+    [settingsCopy autohideDurationForSystemPointerMouse];
   }
 
   v10 = v9;
@@ -1759,9 +1759,9 @@ LABEL_45:
   return v10;
 }
 
-- (void)_hidePointerForReason:(id)a3 withOptions:(unint64_t)a4
+- (void)_hidePointerForReason:(id)reason withOptions:(unint64_t)options
 {
-  v6 = a3;
+  reasonCopy = reason;
   self->_loggedRange = 0;
   [(PUIDPointerController *)self _cancelAutohideTimer];
   [(PUIDPointerController *)self _cancelDelayedUnhideTimer];
@@ -1778,7 +1778,7 @@ LABEL_45:
       if (v9)
       {
         *buf = 136446210;
-        v14 = [v6 UTF8String];
+        uTF8String = [reasonCopy UTF8String];
         v10 = "Hiding pointer <Suspended due to visible assertion>: %{public}s";
 LABEL_7:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0xCu);
@@ -1788,7 +1788,7 @@ LABEL_7:
     else if (v9)
     {
       *buf = 136446210;
-      v14 = [v6 UTF8String];
+      uTF8String = [reasonCopy UTF8String];
       v10 = "Hiding pointer: %{public}s";
       goto LABEL_7;
     }
@@ -1802,13 +1802,13 @@ LABEL_7:
     v12[3] = &unk_100048EE0;
     v12[4] = self;
     [(PUIDPointerStateUpdateHandlerCollection *)v11 setVisibilityTransitionCompletion:v12];
-    [(PUIDPointerController *)self _updatePointerWithOptions:a4 updateHandlerCollection:v11];
+    [(PUIDPointerController *)self _updatePointerWithOptions:options updateHandlerCollection:v11];
   }
 }
 
-- (void)_unhidePointerForReason:(id)a3
+- (void)_unhidePointerForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   self->_loggedRange = 0;
   [(PUIDPointerController *)self _cancelDelayedUnhideTimer];
   if (self->_pointerIsAutohidden)
@@ -1821,7 +1821,7 @@ LABEL_7:
       if (v7)
       {
         v9 = 136446210;
-        v10 = [v4 UTF8String];
+        uTF8String = [reasonCopy UTF8String];
         v8 = "Unhiding pointer <Already visible due to assertion>: %{public}s";
 LABEL_7:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v8, &v9, 0xCu);
@@ -1831,7 +1831,7 @@ LABEL_7:
     else if (v7)
     {
       v9 = 136446210;
-      v10 = [v4 UTF8String];
+      uTF8String = [reasonCopy UTF8String];
       v8 = "Unhiding pointer: %{public}s";
       goto LABEL_7;
     }
@@ -1851,30 +1851,30 @@ LABEL_7:
   return v4;
 }
 
-- (void)pointerVisibilityDidChange:(id)a3
+- (void)pointerVisibilityDidChange:(id)change
 {
-  v4 = [a3 pointerIsVisible];
+  pointerIsVisible = [change pointerIsVisible];
   xpcClientContextController = self->_xpcClientContextController;
 
-  [(PUIDXPCClientController *)xpcClientContextController setPointerVisibilityState:v4];
+  [(PUIDXPCClientController *)xpcClientContextController setPointerVisibilityState:pointerIsVisible];
 }
 
-- (void)pointerOrientationDidChange:(id)a3 duration:(double)a4
+- (void)pointerOrientationDidChange:(id)change duration:(double)duration
 {
   [(PUIDPointerController *)self _hidePointerForReason:@"Screen rotating"];
   self->_isHiddenForOrientationChange = 1;
 
-  [(PUIDPointerController *)self _restartOrientationChangeTimerWithDuration:a4];
+  [(PUIDPointerController *)self _restartOrientationChangeTimerWithDuration:duration];
 }
 
-- (void)xpcClientContextController:(id)a3 didRemovePointerClient:(id)a4
+- (void)xpcClientContextController:(id)controller didRemovePointerClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = PSLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = v5;
+    v33 = clientCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - is gone", buf, 0xCu);
   }
 
@@ -1882,8 +1882,8 @@ LABEL_7:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  allKeys = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1895,15 +1895,15 @@ LABEL_7:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
-        [(PUIDPointerController *)self _removeOverridingHoverRegionClient:v5 forDisplay:*(*(&v26 + 1) + 8 * v11)];
+        [(PUIDPointerController *)self _removeOverridingHoverRegionClient:clientCopy forDisplay:*(*(&v26 + 1) + 8 * v11)];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v9);
@@ -1913,8 +1913,8 @@ LABEL_7:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  allValues = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
+  v13 = [allValues countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1926,38 +1926,38 @@ LABEL_7:
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = sub_100027868(*(*(&v22 + 1) + 8 * v16));
-        [v17 invalidateEffectSourcesForPointerClient:v5];
+        [v17 invalidateEffectSourcesForPointerClient:clientCopy];
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v5];
+  v18 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:clientCopy];
   v19 = v18;
   if (v18)
   {
     [v18 invalidateAutomaticRegionExitTimer];
-    [(NSMapTable *)self->_pointerClientToClientStateMap removeObjectForKey:v5];
+    [(NSMapTable *)self->_pointerClientToClientStateMap removeObjectForKey:clientCopy];
     [(PUIDPointerController *)self _updatePointerHiddenByEntitledClients];
     [(PUIDPointerController *)self _updatePointerVisibleByEntitledClients];
   }
 
   [(PUIDPointerController *)self _updatePointerWithOptions:0 updateHandlerCollection:0];
-  v20 = [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap objectForKey:v5];
+  v20 = [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap objectForKey:clientCopy];
 
   if (v20)
   {
-    [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap removeObjectForKey:v5];
+    [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap removeObjectForKey:clientCopy];
     if (![(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap count])
     {
       pointerClientToWantsServiceKeepAliveMap = self->_pointerClientToWantsServiceKeepAliveMap;
@@ -1968,44 +1968,44 @@ LABEL_7:
   }
 }
 
-- (void)xpcClientContextController:(id)a3 didUpdateHoverRegion:(id)a4 forClient:(id)a5 transitionCompletion:(id)a6
+- (void)xpcClientContextController:(id)controller didUpdateHoverRegion:(id)region forClient:(id)client transitionCompletion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v10];
+  regionCopy = region;
+  clientCopy = client;
+  completionCopy = completion;
+  v12 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:clientCopy];
   lockedContext = self->_lockedContext;
   if (lockedContext)
   {
     v14 = [(BKSHIDEventHitTestClientContext *)lockedContext pid];
-    v15 = [v10 pid];
+    v15 = [clientCopy pid];
     v16 = sub_1000277B8(&self->_activeDisplayContext->super.isa);
-    v17 = [v16 firstObject];
-    v18 = [v17 isEqual:v10];
+    firstObject = [v16 firstObject];
+    v18 = [firstObject isEqual:clientCopy];
 
     if (v14 != v15 && (v18 & 1) == 0)
     {
       v19 = PSLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        sub_100027130(v10, v19);
+        sub_100027130(clientCopy, v19);
       }
 
       goto LABEL_15;
     }
 
-    if (v9)
+    if (regionCopy)
     {
-      v20 = [(_PUIDPointerControllerClientState *)v12 activeHoverRegion];
-      v21 = [v20 isLatching];
+      activeHoverRegion = [(_PUIDPointerControllerClientState *)v12 activeHoverRegion];
+      isLatching = [activeHoverRegion isLatching];
 
-      if (v21)
+      if (isLatching)
       {
         goto LABEL_15;
       }
     }
 
-    if ([v9 isLatching])
+    if ([regionCopy isLatching])
     {
       self->_latchingState = 1;
     }
@@ -2014,7 +2014,7 @@ LABEL_7:
   if (!v12)
   {
     v12 = objc_alloc_init(_PUIDPointerControllerClientState);
-    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v12 forKey:v10];
+    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v12 forKey:clientCopy];
   }
 
   v22 = [(_PUIDPointerControllerClientState *)v12 hoverRegionGenerationID]+ 1;
@@ -2026,23 +2026,23 @@ LABEL_7:
   v12 = v12;
   v24 = v12;
   v28 = v22;
-  v25 = v9;
-  v26 = self;
-  v27 = v11;
+  v25 = regionCopy;
+  selfCopy = self;
+  v27 = completionCopy;
   [(PUIDPointerController *)self _getTransformForHoverRegion:v25 completion:v23];
 
   v16 = v24;
 LABEL_15:
 }
 
-- (id)xpcClientContextController:(id)a3 createPointerPortalSourceCollectionForDisplay:(id)a4 client:(id)a5 error:(id *)a6
+- (id)xpcClientContextController:(id)controller createPointerPortalSourceCollectionForDisplay:(id)display client:(id)client error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  controllerCopy = controller;
+  displayCopy = display;
+  clientCopy = client;
+  if (displayCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v11];
+    v13 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:displayCopy];
     v14 = v13;
     if (v13)
     {
@@ -2054,16 +2054,16 @@ LABEL_15:
       }
 
       v16 = sub_100027868(v14);
-      v17 = [v16 createPointerPortalSourceCollectionForClient:v12];
+      v17 = [v16 createPointerPortalSourceCollectionForClient:clientCopy];
 
       [v17 setShouldBeInvalidatedIfPointerLeavesDisplay:0];
       v18 = PSLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138543874;
-        v24 = v12;
+        v24 = clientCopy;
         v25 = 2114;
-        v26 = v11;
+        v26 = displayCopy;
         v27 = 2114;
         v28 = v17;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - created source collection on display %{public}@: %{public}@", &v23, 0x20u);
@@ -2072,18 +2072,18 @@ LABEL_15:
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
+        *error = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
       }
 
       v18 = PSLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138543618;
-        v24 = v12;
+        v24 = clientCopy;
         v25 = 2114;
-        v26 = v11;
+        v26 = displayCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - requested source collection but we don't have a context for display %{public}@", &v23, 0x16u);
       }
 
@@ -2104,14 +2104,14 @@ LABEL_15:
       }
 
       v21 = sub_100027868(self->_activeDisplayContext);
-      v17 = [v21 createPointerPortalSourceCollectionForClient:v12];
+      v17 = [v21 createPointerPortalSourceCollectionForClient:clientCopy];
 
       [v17 setShouldBeInvalidatedIfPointerLeavesDisplay:1];
       v14 = PSLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138543618;
-        v24 = v12;
+        v24 = clientCopy;
         v25 = 2114;
         v26 = v17;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - created source collection on active display: %{public}@", &v23, 0x16u);
@@ -2120,16 +2120,16 @@ LABEL_15:
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
+        *error = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
       }
 
       v14 = PSLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138543362;
-        v24 = v12;
+        v24 = clientCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - requested source collection but we don't have an active display", &v23, 0xCu);
       }
 
@@ -2140,26 +2140,26 @@ LABEL_15:
   return v17;
 }
 
-- (void)xpcClientContextController:(id)a3 invalidatePointerPortalSourceCollection:(id)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller invalidatePointerPortalSourceCollection:(id)collection forClient:(id)client
 {
-  v7 = a4;
-  v8 = a5;
+  collectionCopy = collection;
+  clientCopy = client;
   v9 = PSLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = clientCopy;
     v15 = 2114;
-    v16 = v7;
+    v16 = collectionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - invalidated source collection: %{public}@", &v13, 0x16u);
   }
 
-  v10 = -[PUIDPointerController _displayContextForPointerRenderingContextID:](self, "_displayContextForPointerRenderingContextID:", [v7 sourceContextID]);
+  v10 = -[PUIDPointerController _displayContextForPointerRenderingContextID:](self, "_displayContextForPointerRenderingContextID:", [collectionCopy sourceContextID]);
   v11 = v10;
   if (v10)
   {
     v12 = sub_100027868(v10);
-    [v12 invalidatePointerPortalSourceCollection:v7 forClient:v8];
+    [v12 invalidatePointerPortalSourceCollection:collectionCopy forClient:clientCopy];
   }
 
   else
@@ -2168,22 +2168,22 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v8;
+      v14 = clientCopy;
       v15 = 2114;
-      v16 = v7;
+      v16 = collectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - failed to invalidate source collection: %{public}@ - couldn't find matching display context", &v13, 0x16u);
     }
   }
 }
 
-- (id)xpcClientContextController:(id)a3 createContentMatchMoveSourceForDisplay:(id)a4 client:(id)a5 error:(id *)a6
+- (id)xpcClientContextController:(id)controller createContentMatchMoveSourceForDisplay:(id)display client:(id)client error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  controllerCopy = controller;
+  displayCopy = display;
+  clientCopy = client;
+  if (displayCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v11];
+    v13 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:displayCopy];
     v14 = v13;
     if (v13)
     {
@@ -2195,25 +2195,25 @@ LABEL_15:
       }
 
       v16 = sub_100027868(v14);
-      v17 = [v16 createContentMatchMoveSourceForClient:v12];
+      v17 = [v16 createContentMatchMoveSourceForClient:clientCopy];
 
       [v17 setShouldBeInvalidatedIfPointerLeavesDisplay:0];
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
+        *error = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
       }
 
       v21 = PSLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138543618;
-        v25 = v12;
+        v25 = clientCopy;
         v26 = 2114;
-        v27 = v11;
+        v27 = displayCopy;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ - requested match move source but we don't have a context for display %{public}@", &v24, 0x16u);
       }
 
@@ -2234,23 +2234,23 @@ LABEL_15:
       }
 
       v20 = sub_100027868(self->_activeDisplayContext);
-      v17 = [v20 createContentMatchMoveSourceForClient:v12];
+      v17 = [v20 createContentMatchMoveSourceForClient:clientCopy];
 
       [v17 setShouldBeInvalidatedIfPointerLeavesDisplay:1];
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
+        *error = [NSError errorWithDomain:@"PUIDXPCClientControllerErrorDomain" code:-1004 userInfo:0];
       }
 
       v23 = PSLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138543362;
-        v25 = v12;
+        v25 = clientCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ - requested match move source but we don't have an active display", &v24, 0xCu);
       }
 
@@ -2261,16 +2261,16 @@ LABEL_15:
   return v17;
 }
 
-- (void)xpcClientContextController:(id)a3 invalidateContentMatchMoveSource:(id)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller invalidateContentMatchMoveSource:(id)source forClient:(id)client
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = -[PUIDPointerController _displayContextForPointerRenderingContextID:](self, "_displayContextForPointerRenderingContextID:", [v7 sourceContextID]);
+  sourceCopy = source;
+  clientCopy = client;
+  v9 = -[PUIDPointerController _displayContextForPointerRenderingContextID:](self, "_displayContextForPointerRenderingContextID:", [sourceCopy sourceContextID]);
   v10 = v9;
   if (v9)
   {
     v11 = sub_100027868(v9);
-    [v11 invalidateContentMatchMoveSource:v7 forClient:v8];
+    [v11 invalidateContentMatchMoveSource:sourceCopy forClient:clientCopy];
   }
 
   else
@@ -2279,29 +2279,29 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = v8;
+      v13 = clientCopy;
       v14 = 2114;
-      v15 = v7;
+      v15 = sourceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - failed to invalidate match move source: %{public}@ - couldn't find matching display context", &v12, 0x16u);
     }
   }
 }
 
-- (void)xpcClientContextController:(id)a3 setWantsServiceKeepAlive:(BOOL)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller setWantsServiceKeepAlive:(BOOL)alive forClient:(id)client
 {
-  v5 = a4;
-  v7 = a5;
+  aliveCopy = alive;
+  clientCopy = client;
   v8 = PSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v7;
+    v15 = clientCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - wants keep alive", &v14, 0xCu);
   }
 
-  v9 = [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap objectForKey:v7];
+  v9 = [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap objectForKey:clientCopy];
 
-  if (v5)
+  if (aliveCopy)
   {
     if (!v9)
     {
@@ -2315,7 +2315,7 @@ LABEL_15:
         pointerClientToWantsServiceKeepAliveMap = self->_pointerClientToWantsServiceKeepAliveMap;
       }
 
-      [(NSMapTable *)pointerClientToWantsServiceKeepAliveMap setObject:&__kCFBooleanTrue forKey:v7];
+      [(NSMapTable *)pointerClientToWantsServiceKeepAliveMap setObject:&__kCFBooleanTrue forKey:clientCopy];
 LABEL_11:
       [(PUIDPointerController *)self _updateServiceKeepAlive];
     }
@@ -2323,7 +2323,7 @@ LABEL_11:
 
   else if (v9)
   {
-    [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap removeObjectForKey:v7];
+    [(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap removeObjectForKey:clientCopy];
     if (![(NSMapTable *)self->_pointerClientToWantsServiceKeepAliveMap count])
     {
       v13 = self->_pointerClientToWantsServiceKeepAliveMap;
@@ -2334,34 +2334,34 @@ LABEL_11:
   }
 }
 
-- (void)xpcClientContextController:(id)a3 didSetSystemPointerInteractionContextID:(unsigned int)a4 display:(id)a5 forClient:(id)a6
+- (void)xpcClientContextController:(id)controller didSetSystemPointerInteractionContextID:(unsigned int)d display:(id)display forClient:(id)client
 {
-  v7 = *&a4;
-  v9 = a5;
-  v10 = a6;
+  v7 = *&d;
+  displayCopy = display;
+  clientCopy = client;
   v11 = PSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543874;
-    v17 = v10;
+    v17 = clientCopy;
     v18 = 1024;
     LODWORD(v19[0]) = v7;
     WORD2(v19[0]) = 2114;
-    *(v19 + 6) = v9;
+    *(v19 + 6) = displayCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - set system pointer interaction contextID: 0x%x display: %{public}@", &v16, 0x1Cu);
   }
 
   systemPointerInteractionContextByDisplay = self->_systemPointerInteractionContextByDisplay;
   if (v7)
   {
-    v13 = [(NSMutableDictionary *)systemPointerInteractionContextByDisplay objectForKeyedSubscript:v9];
+    v13 = [(NSMutableDictionary *)systemPointerInteractionContextByDisplay objectForKeyedSubscript:displayCopy];
     if (v13)
     {
       v14 = PSLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543618;
-        v17 = v10;
+        v17 = clientCopy;
         v18 = 2114;
         v19[0] = v13;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - was tracking %{public}@ systemPointerInteractionContext --> replacing it", &v16, 0x16u);
@@ -2369,58 +2369,58 @@ LABEL_11:
     }
 
     v15 = objc_alloc_init(BKSHIDEventHitTestClientContext);
-    [v15 setPid:{objc_msgSend(v10, "pid")}];
+    [v15 setPid:{objc_msgSend(clientCopy, "pid")}];
     [v15 setContextID:v7];
-    [(NSMutableDictionary *)self->_systemPointerInteractionContextByDisplay setObject:v15 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_systemPointerInteractionContextByDisplay setObject:v15 forKeyedSubscript:displayCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)systemPointerInteractionContextByDisplay removeObjectForKey:v9];
+    [(NSMutableDictionary *)systemPointerInteractionContextByDisplay removeObjectForKey:displayCopy];
   }
 }
 
-- (void)xpcClientContextController:(id)a3 didSetOverridesHoverRegions:(BOOL)a4 display:(id)a5 forClient:(id)a6
+- (void)xpcClientContextController:(id)controller didSetOverridesHoverRegions:(BOOL)regions display:(id)display forClient:(id)client
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
+  regionsCopy = regions;
+  displayCopy = display;
+  clientCopy = client;
   v11 = PSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543874;
-    v14 = v10;
+    v14 = clientCopy;
     v15 = 1024;
-    v16 = v7;
+    v16 = regionsCopy;
     v17 = 2114;
-    v18 = v9;
+    v18 = displayCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - set client overrides hit tested hover regions %{BOOL}u display: %{public}@", &v13, 0x1Cu);
   }
 
-  if (v7)
+  if (regionsCopy)
   {
-    v12 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay objectForKeyedSubscript:displayCopy];
     if (!v12)
     {
       v12 = +[NSMutableArray array];
-      [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay setObject:v12 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay setObject:v12 forKeyedSubscript:displayCopy];
     }
 
-    [v12 addObject:v10];
+    [v12 addObject:clientCopy];
   }
 
   else
   {
-    [(PUIDPointerController *)self _removeOverridingHoverRegionClient:v10 forDisplay:v9];
+    [(PUIDPointerController *)self _removeOverridingHoverRegionClient:clientCopy forDisplay:displayCopy];
   }
 }
 
-- (void)_removeOverridingHoverRegionClient:(id)a3 forDisplay:(id)a4
+- (void)_removeOverridingHoverRegionClient:(id)client forDisplay:(id)display
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay objectForKeyedSubscript:v7];
-  v9 = [v8 indexOfObject:v6];
+  clientCopy = client;
+  displayCopy = display;
+  v8 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay objectForKeyedSubscript:displayCopy];
+  v9 = [v8 indexOfObject:clientCopy];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = v9;
@@ -2430,32 +2430,32 @@ LABEL_11:
       v12 = 136315650;
       v13 = "[PUIDPointerController _removeOverridingHoverRegionClient:forDisplay:]";
       v14 = 2112;
-      v15 = v6;
+      v15 = clientCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = displayCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Removing client %@ for display %@", &v12, 0x20u);
     }
 
     [v8 removeObjectAtIndex:v10];
     if (![v8 count])
     {
-      [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay removeObjectForKey:displayCopy];
     }
   }
 }
 
-- (void)xpcClientContextController:(id)a3 autohidePointerForReason:(unint64_t)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller autohidePointerForReason:(unint64_t)reason forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 > 2)
+  controllerCopy = controller;
+  clientCopy = client;
+  v10 = clientCopy;
+  if (reason > 2)
   {
-    switch(a4)
+    switch(reason)
     {
       case 3uLL:
-        v22 = [v9 auditToken];
-        v23 = [v22 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
+        auditToken = [clientCopy auditToken];
+        v23 = [auditToken hasEntitlement:@"com.apple.pointerui.autohidePointer"];
 
         if (v23)
         {
@@ -2474,8 +2474,8 @@ LABEL_11:
         v19 = "Ignoring autohide pointer request for PSPointerAutohideReasonAccessibility because missing entitlement (%@)";
         break;
       case 4uLL:
-        v26 = [v9 auditToken];
-        v27 = [v26 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
+        auditToken2 = [clientCopy auditToken];
+        v27 = [auditToken2 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
 
         if (v27)
         {
@@ -2494,8 +2494,8 @@ LABEL_11:
 
         goto LABEL_37;
       case 5uLL:
-        v16 = [v9 auditToken];
-        v17 = [v16 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
+        auditToken3 = [clientCopy auditToken];
+        v17 = [auditToken3 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
 
         if (v17)
         {
@@ -2523,7 +2523,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!a4)
+  if (!reason)
   {
     v18 = PSLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -2540,10 +2540,10 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (a4 == 1)
+  if (reason == 1)
   {
-    v24 = [v9 auditToken];
-    v25 = [v24 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
+    auditToken4 = [clientCopy auditToken];
+    v25 = [auditToken4 hasEntitlement:@"com.apple.pointerui.autohidePointer"];
 
     if (v25)
     {
@@ -2565,17 +2565,17 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (a4 != 2)
+  if (reason != 2)
   {
     goto LABEL_38;
   }
 
-  v11 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
-  if (v11)
+  firstObject = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
+  if (firstObject)
   {
-    v12 = [v10 auditToken];
-    v13 = [v12 pid];
-    v14 = [(__CFString *)v11 pid];
+    auditToken5 = [v10 auditToken];
+    v13 = [auditToken5 pid];
+    v14 = [(__CFString *)firstObject pid];
 
     if (v13 == v14)
     {
@@ -2599,82 +2599,82 @@ LABEL_21:
   v30 = PSLogCommon();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(__CFString *)v11 pid];
-    v32 = [v10 auditToken];
-    v33 = [v10 auditToken];
+    v31 = [(__CFString *)firstObject pid];
+    auditToken6 = [v10 auditToken];
+    auditToken7 = [v10 auditToken];
     v34 = 138544130;
-    v35 = v11;
+    v35 = firstObject;
     v36 = 1024;
     v37 = v31;
     v38 = 2112;
-    v39 = v32;
+    v39 = auditToken6;
     v40 = 1024;
-    v41 = [v33 pid];
+    v41 = [auditToken7 pid];
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Ignoring autohide pointer request because clientContext (%{public}@) pid (%d) != auditToken (%@) pid (%d)", &v34, 0x22u);
   }
 
 LABEL_38:
 }
 
-- (void)xpcClientContextController:(id)a3 setPointerPersistentlyHiddenForReasons:(id)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller setPointerPersistentlyHiddenForReasons:(id)reasons forClient:(id)client
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v8];
+  reasonsCopy = reasons;
+  clientCopy = client;
+  v9 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:clientCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(_PUIDPointerControllerClientState);
-    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v9 forKey:v8];
+    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v9 forKey:clientCopy];
   }
 
-  v10 = [v7 bs_map:&stru_100048F70];
+  v10 = [reasonsCopy bs_map:&stru_100048F70];
   v11 = [v10 componentsJoinedByString:{@", "}];
   v12 = PSLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = clientCopy;
     v15 = 2114;
     v16 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Pointer Persistent Hiding Reasons list updated to: [%{public}@]", &v13, 0x16u);
   }
 
-  -[_PUIDPointerControllerClientState setAssertingPointerHidden:](v9, "setAssertingPointerHidden:", [v7 count] != 0);
+  -[_PUIDPointerControllerClientState setAssertingPointerHidden:](v9, "setAssertingPointerHidden:", [reasonsCopy count] != 0);
   [(PUIDPointerController *)self _updatePointerHiddenByEntitledClients];
   [(PUIDPointerController *)self _updatePointerWithOptions:0 updateHandlerCollection:0];
 }
 
-- (void)xpcClientContextController:(id)a3 setPointerPersistentlyVisibleForReasons:(id)a4 forClient:(id)a5
+- (void)xpcClientContextController:(id)controller setPointerPersistentlyVisibleForReasons:(id)reasons forClient:(id)client
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v8];
+  reasonsCopy = reasons;
+  clientCopy = client;
+  v9 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:clientCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(_PUIDPointerControllerClientState);
-    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v9 forKey:v8];
+    [(NSMapTable *)self->_pointerClientToClientStateMap setObject:v9 forKey:clientCopy];
   }
 
-  v10 = [v7 bs_map:&stru_100048F90];
+  v10 = [reasonsCopy bs_map:&stru_100048F90];
   v11 = [v10 componentsJoinedByString:{@", "}];
   v12 = PSLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = clientCopy;
     v15 = 2114;
     v16 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Pointer Persistent Visible Reasons list updated to: [%{public}@]", &v13, 0x16u);
   }
 
-  -[_PUIDPointerControllerClientState setAssertingPointerVisible:](v9, "setAssertingPointerVisible:", [v7 count] != 0);
+  -[_PUIDPointerControllerClientState setAssertingPointerVisible:](v9, "setAssertingPointerVisible:", [reasonsCopy count] != 0);
   [(PUIDPointerController *)self _updatePointerVisibleByEntitledClients];
   [(PUIDPointerController *)self _updatePointerWithOptions:0 updateHandlerCollection:0];
 }
 
-- (id)systemPointerInteractionContextForDisplayContext:(id)a3
+- (id)systemPointerInteractionContextForDisplayContext:(id)context
 {
-  v4 = sub_100027838(a3);
+  v4 = sub_100027838(context);
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_systemPointerInteractionContextByDisplay objectForKeyedSubscript:v4];
@@ -2696,9 +2696,9 @@ LABEL_38:
   return v5;
 }
 
-- (id)overridingHoverRegionClientsForDisplayContext:(id)a3
+- (id)overridingHoverRegionClientsForDisplayContext:(id)context
 {
-  v4 = sub_100027838(a3);
+  v4 = sub_100027838(context);
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_hoverRegionOverridingClientsByDisplay objectForKeyedSubscript:v4];
@@ -2713,20 +2713,20 @@ LABEL_38:
   return v6;
 }
 
-- (void)_movePointerToDisplay:(id)a3
+- (void)_movePointerToDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = PSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = displayCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Moving pointer to display: %{public}@", &v11, 0xCu);
   }
 
-  if (v4)
+  if (displayCopy)
   {
-    v6 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_displayContextsByDisplay objectForKeyedSubscript:displayCopy];
   }
 
   else
@@ -2746,14 +2746,14 @@ LABEL_38:
   [(PUIDPointerController *)self _invalidateEffectSourcesPassingTest:&stru_100048FB0 displayContext:v9];
 }
 
-- (id)_displayContextForPointerEventContextID:(unsigned int)a3
+- (id)_displayContextForPointerEventContextID:(unsigned int)d
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2764,18 +2764,18 @@ LABEL_38:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (sub_100027724(v9) == a3)
+        if (sub_100027724(v9) == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -2791,14 +2791,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)_displayContextForPointerRenderingContextID:(unsigned int)a3
+- (id)_displayContextForPointerRenderingContextID:(unsigned int)d
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2809,18 +2809,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (sub_100027714(v9) == a3)
+        if (sub_100027714(v9) == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -2843,8 +2843,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_displayContextsByDisplay allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2855,14 +2855,14 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = sub_1000278B0(*(*(&v11 + 1) + 8 * i));
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -2893,14 +2893,14 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_getTransformForHoverRegion:(id)a3 completion:(id)a4
+- (void)_getTransformForHoverRegion:(id)region completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 coordinateSpaceSourceContextID];
-  v10 = [v8 coordinateSpaceSourceLayerRenderID];
+  completionCopy = completion;
+  regionCopy = region;
+  coordinateSpaceSourceContextID = [regionCopy coordinateSpaceSourceContextID];
+  coordinateSpaceSourceLayerRenderID = [regionCopy coordinateSpaceSourceLayerRenderID];
 
-  if (v9 && v10)
+  if (coordinateSpaceSourceContextID && coordinateSpaceSourceLayerRenderID)
   {
     transformUpdateQueue = self->_transformUpdateQueue;
     if (!transformUpdateQueue)
@@ -2919,13 +2919,13 @@ LABEL_11:
     v21[3] = &unk_100049000;
     v23 = a2;
     v21[4] = self;
-    v22 = v7;
-    [(PUIDPointerController *)self _transformForLayer:v10 inContext:v9 queue:transformUpdateQueue completion:v21];
+    v22 = completionCopy;
+    [(PUIDPointerController *)self _transformForLayer:coordinateSpaceSourceLayerRenderID inContext:coordinateSpaceSourceContextID queue:transformUpdateQueue completion:v21];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v15 = v7[2];
+    v15 = completionCopy[2];
     v16 = *&CATransform3DIdentity.m33;
     v20[4] = *&CATransform3DIdentity.m31;
     v20[5] = v16;
@@ -2938,7 +2938,7 @@ LABEL_11:
     v19 = *&CATransform3DIdentity.m23;
     v20[2] = *&CATransform3DIdentity.m21;
     v20[3] = v19;
-    v15(v7, v20);
+    v15(completionCopy, v20);
   }
 }
 
@@ -2966,10 +2966,10 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMapTable *)self->_pointerClientToClientStateMap objectEnumerator];
-  v4 = [v3 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_pointerClientToClientStateMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2980,18 +2980,18 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allObjects);
       }
 
-      v9 = [*(*(&v14 + 1) + 8 * v8) isAssertingPointerHidden];
-      if (v9)
+      isAssertingPointerHidden = [*(*(&v14 + 1) + 8 * v8) isAssertingPointerHidden];
+      if (isAssertingPointerHidden)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -3001,7 +3001,7 @@ LABEL_3:
       }
     }
 
-    v12 = v9;
+    v12 = isAssertingPointerHidden;
 
     if (self->_pointerHiddenByEntitledClient == v12)
     {
@@ -3045,10 +3045,10 @@ LABEL_15:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMapTable *)self->_pointerClientToClientStateMap objectEnumerator];
-  v4 = [v3 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_pointerClientToClientStateMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3059,18 +3059,18 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allObjects);
       }
 
-      v9 = [*(*(&v14 + 1) + 8 * v8) isAssertingPointerVisible];
-      if (v9)
+      isAssertingPointerVisible = [*(*(&v14 + 1) + 8 * v8) isAssertingPointerVisible];
+      if (isAssertingPointerVisible)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -3080,7 +3080,7 @@ LABEL_3:
       }
     }
 
-    v12 = v9;
+    v12 = isAssertingPointerVisible;
 
     if (self->_pointerForcedVisibleByEntitledClient == v12)
     {
@@ -3142,41 +3142,41 @@ LABEL_15:
   }
 }
 
-- (void)_refreshClientTransformWithReason:(unint64_t)a3
+- (void)_refreshClientTransformWithReason:(unint64_t)reason
 {
   v5 = self->_previousPointerClient;
   v6 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v5];
-  v7 = [v6 activeHoverRegion];
+  activeHoverRegion = [v6 activeHoverRegion];
   objc_initWeak(&location, self);
-  v8 = [v6 hoverRegionGenerationID];
+  hoverRegionGenerationID = [v6 hoverRegionGenerationID];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000D7B0;
   v10[3] = &unk_100049028;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
+  v12[1] = reason;
   v9 = v6;
   v11 = v9;
-  v12[2] = v8;
-  [(PUIDPointerController *)self _getTransformForHoverRegion:v7 completion:v10];
+  v12[2] = hoverRegionGenerationID;
+  [(PUIDPointerController *)self _getTransformForHoverRegion:activeHoverRegion completion:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
 }
 
-- (void)_invalidateHoverRegionsForAllPointerClientsExcludingPointerClient:(id)a3 hoverRegion:(id)a4
+- (void)_invalidateHoverRegionsForAllPointerClientsExcludingPointerClient:(id)client hoverRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUIDPointerController *)self _systemPointerClients];
+  clientCopy = client;
+  regionCopy = region;
+  _systemPointerClients = [(PUIDPointerController *)self _systemPointerClients];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
-  v10 = [v9 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -3188,16 +3188,16 @@ LABEL_15:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        if (v15 != v6 && ([v8 containsObject:*(*(&v18 + 1) + 8 * v14)] & 1) == 0)
+        if (v15 != clientCopy && ([_systemPointerClients containsObject:*(*(&v18 + 1) + 8 * v14)] & 1) == 0)
         {
           v16 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v15];
-          v17 = [v16 activeHoverRegion];
+          activeHoverRegion = [v16 activeHoverRegion];
 
-          if (v17 != v7)
+          if (activeHoverRegion != regionCopy)
           {
             [v16 setActiveHoverRegion:0];
           }
@@ -3207,17 +3207,17 @@ LABEL_15:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_invalidateEffectSourcesPassingTest:(id)a3 displayContext:(id)a4
+- (void)_invalidateEffectSourcesPassingTest:(id)test displayContext:(id)context
 {
-  v29 = a3;
-  v5 = a4;
+  testCopy = test;
+  contextCopy = context;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -3230,29 +3230,29 @@ LABEL_15:
   v40 = sub_10000DF18;
   v41 = sub_10000DF28;
   v42 = +[NSMapTable strongToStrongObjectsMapTable];
-  v6 = sub_100027868(v5);
+  v6 = sub_100027868(contextCopy);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10000DF30;
   v36[3] = &unk_100049050;
   v36[4] = &v43;
-  [v6 invalidatePointerPortalSourceCollectionsPassingTest:v29 additionalInvalidation:v36];
+  [v6 invalidatePointerPortalSourceCollectionsPassingTest:testCopy additionalInvalidation:v36];
 
-  v7 = sub_100027868(v5);
+  v7 = sub_100027868(contextCopy);
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10000DFE8;
   v35[3] = &unk_100049078;
   v35[4] = &v37;
-  [v7 invalidateContentMatchMoveSourcesPassingTest:v29 additionalInvalidation:v35];
+  [v7 invalidateContentMatchMoveSourcesPassingTest:testCopy additionalInvalidation:v35];
 
-  v8 = [v44[5] keyEnumerator];
-  v9 = [v8 allObjects];
-  v10 = [NSMutableSet setWithArray:v9];
+  keyEnumerator = [v44[5] keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v10 = [NSMutableSet setWithArray:allObjects];
 
-  v11 = [v38[5] keyEnumerator];
-  v12 = [v11 allObjects];
-  [v10 addObjectsFromArray:v12];
+  keyEnumerator2 = [v38[5] keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
+  [v10 addObjectsFromArray:allObjects2];
 
   v33 = 0u;
   v34 = 0u;
@@ -3273,7 +3273,7 @@ LABEL_15:
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = sub_1000278B0(v5);
+        v18 = sub_1000278B0(contextCopy);
         v19 = v17 == v18;
 
         if (!v19)
@@ -3332,14 +3332,14 @@ LABEL_15:
   _Block_object_dispose(&v43, 8);
 }
 
-- (id)_recenteringContextRelativePointerPositionForPointerClient:(id)a3
+- (id)_recenteringContextRelativePointerPositionForPointerClient:(id)client
 {
-  v4 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:a3];
-  v5 = [v4 activeHoverRegion];
-  v6 = [v5 pointerRecenteringAxes];
-  if (v5)
+  v4 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:client];
+  activeHoverRegion = [v4 activeHoverRegion];
+  pointerRecenteringAxes = [activeHoverRegion pointerRecenteringAxes];
+  if (activeHoverRegion)
   {
-    v7 = (v6 & 3) == 0;
+    v7 = (pointerRecenteringAxes & 3) == 0;
   }
 
   else
@@ -3352,8 +3352,8 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v9 = v6;
-  [v5 contentBounds];
+  v9 = pointerRecenteringAxes;
+  [activeHoverRegion contentBounds];
   v10 = 0uLL;
   if (v4)
   {
@@ -3436,13 +3436,13 @@ LABEL_6:
   return v8;
 }
 
-- (void)_setShouldPeriodicallyRefreshClientTransform:(BOOL)a3
+- (void)_setShouldPeriodicallyRefreshClientTransform:(BOOL)transform
 {
-  if (self->_shouldPeriodicallyRefreshClientTransform != a3)
+  if (self->_shouldPeriodicallyRefreshClientTransform != transform)
   {
-    self->_shouldPeriodicallyRefreshClientTransform = a3;
+    self->_shouldPeriodicallyRefreshClientTransform = transform;
     periodicClientTransformRefreshTimer = self->_periodicClientTransformRefreshTimer;
-    if (a3)
+    if (transform)
     {
       if (!periodicClientTransformRefreshTimer && !self->_isPerformingPeriodicClientTransformRefresh)
       {
@@ -3460,11 +3460,11 @@ LABEL_6:
   }
 }
 
-- (CGPoint)_transformVelocity:(CGPoint)a3 intoCoordinateSpaceForPointerClient:(id)a4
+- (CGPoint)_transformVelocity:(CGPoint)velocity intoCoordinateSpaceForPointerClient:(id)client
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:a4];
+  y = velocity.y;
+  x = velocity.x;
+  v7 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:client];
   v8 = v7;
   v9 = 0uLL;
   if (v7)
@@ -3520,22 +3520,22 @@ LABEL_6:
   return result;
 }
 
-- (void)_updatePointerWithOptions:(unint64_t)a3 updateHandlerCollection:(id)a4
+- (void)_updatePointerWithOptions:(unint64_t)options updateHandlerCollection:(id)collection
 {
-  v6 = a4;
-  v7 = v6;
+  collectionCopy = collection;
+  v7 = collectionCopy;
   if (!self->_lastPointerEvent)
   {
-    [(PUIDPointerStateUpdateHandlerCollection *)v6 performAllHandlersWithFinished:1 retargeted:0];
+    [(PUIDPointerStateUpdateHandlerCollection *)collectionCopy performAllHandlersWithFinished:1 retargeted:0];
     goto LABEL_189;
   }
 
-  v155 = a3;
-  v160 = v6;
-  v8 = [(BKSHIDEventPointerAttributes *)self->_lastPointerEventPointerAttributes token];
-  v9 = [v8 _identifierOfCAContext];
+  optionsCopy = options;
+  v160 = collectionCopy;
+  token = [(BKSHIDEventPointerAttributes *)self->_lastPointerEventPointerAttributes token];
+  _identifierOfCAContext = [token _identifierOfCAContext];
 
-  v158 = [(PUIDPointerController *)self _displayContextForPointerEventContextID:v9];
+  v158 = [(PUIDPointerController *)self _displayContextForPointerEventContextID:_identifierOfCAContext];
   if (!v158)
   {
     v26 = PSLogCommon();
@@ -3575,10 +3575,10 @@ LABEL_19:
     v179 = 0u;
     v176 = 0u;
     v177 = 0u;
-    v16 = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
-    v17 = [v16 allObjects];
+    keyEnumerator = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
 
-    v18 = [v17 countByEnumeratingWithState:&v176 objects:v183 count:16];
+    v18 = [allObjects countByEnumeratingWithState:&v176 objects:v183 count:16];
     if (v18)
     {
       v19 = *v177;
@@ -3588,7 +3588,7 @@ LABEL_19:
         {
           if (*v177 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allObjects);
           }
 
           v21 = *(*(&v176 + 1) + 8 * i);
@@ -3596,8 +3596,8 @@ LABEL_19:
           if (v22 == [v161 pid])
           {
             v23 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v21];
-            v24 = [v23 activeHoverRegion];
-            v25 = v24 == 0;
+            activeHoverRegion = [v23 activeHoverRegion];
+            v25 = activeHoverRegion == 0;
 
             if (!v25)
             {
@@ -3614,7 +3614,7 @@ LABEL_19:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v176 objects:v183 count:16];
+        v18 = [allObjects countByEnumeratingWithState:&v176 objects:v183 count:16];
         if (v18)
         {
           continue;
@@ -3628,10 +3628,10 @@ LABEL_19:
 LABEL_24:
   if ([v151 count])
   {
-    v28 = [v151 firstObject];
-    v29 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v28];
-    v30 = [v29 activeHoverRegion];
-    v31 = v30 == 0;
+    firstObject = [v151 firstObject];
+    v29 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:firstObject];
+    activeHoverRegion2 = [v29 activeHoverRegion];
+    v31 = activeHoverRegion2 == 0;
 
     if (v31)
     {
@@ -3639,7 +3639,7 @@ LABEL_24:
 
     else
     {
-      v32 = v28;
+      v32 = firstObject;
 
       v11 = v32;
       if (v32)
@@ -3654,13 +3654,13 @@ LABEL_24:
     goto LABEL_56;
   }
 
-  v33 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
-  v34 = [v33 contextID];
+  firstObject2 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
+  contextID = [firstObject2 contextID];
 
-  v35 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
-  v36 = [v35 pid];
+  firstObject3 = [(NSArray *)self->_lastPointerHitTestContexts firstObject];
+  v36 = [firstObject3 pid];
 
-  if (!v34 || v36 == -1)
+  if (!contextID || v36 == -1)
   {
     goto LABEL_56;
   }
@@ -3669,10 +3669,10 @@ LABEL_24:
   v175 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v37 = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
-  v38 = [v37 allObjects];
+  keyEnumerator2 = [(NSMapTable *)self->_pointerClientToClientStateMap keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
 
-  v39 = [v38 countByEnumeratingWithState:&v172 objects:v182 count:16];
+  v39 = [allObjects2 countByEnumeratingWithState:&v172 objects:v182 count:16];
   if (!v39)
   {
     goto LABEL_54;
@@ -3685,7 +3685,7 @@ LABEL_34:
   {
     if (*v173 != v40)
     {
-      objc_enumerationMutation(v38);
+      objc_enumerationMutation(allObjects2);
     }
 
     v42 = *(*(&v172 + 1) + 8 * v41);
@@ -3698,11 +3698,11 @@ LABEL_34:
     }
 
     v45 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v42];
-    v46 = [v45 activeHoverRegion];
-    v47 = v46;
-    if (v46)
+    activeHoverRegion3 = [v45 activeHoverRegion];
+    v47 = activeHoverRegion3;
+    if (activeHoverRegion3)
     {
-      if ([v46 coordinateSpaceSourceContextID] == v34)
+      if ([activeHoverRegion3 coordinateSpaceSourceContextID] == contextID)
       {
         break;
       }
@@ -3711,7 +3711,7 @@ LABEL_34:
 LABEL_42:
     if (v39 == ++v41)
     {
-      v39 = [v38 countByEnumeratingWithState:&v172 objects:v182 count:16];
+      v39 = [allObjects2 countByEnumeratingWithState:&v172 objects:v182 count:16];
       if (v39)
       {
         goto LABEL_34;
@@ -3731,15 +3731,15 @@ LABEL_42:
 
 LABEL_46:
   v49 = v11;
-  v38 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:?];
-  v50 = [v38 activeHoverRegion];
-  if ((![(PUIDPointerSettings *)self->_settings isUnderlappingContentAllowed]|| ![(PUIDPointerController *)self _underlappingContentAllowedForPointerAttributes:self->_lastPointerEventPointerAttributes]) && [(PSPointerHoverRegion *)v50 shouldPointerUnderlayContent])
+  allObjects2 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:?];
+  activeHoverRegion4 = [allObjects2 activeHoverRegion];
+  if ((![(PUIDPointerSettings *)self->_settings isUnderlappingContentAllowed]|| ![(PUIDPointerController *)self _underlappingContentAllowedForPointerAttributes:self->_lastPointerEventPointerAttributes]) && [(PSPointerHoverRegion *)activeHoverRegion4 shouldPointerUnderlayContent])
   {
 
     v49 = 0;
   }
 
-  if (!self->_hasPointerVelocityCrossedHighThreshold || self->_highVelocityAllowedPointerClient == v49 && self->_highVelocityAllowedHoverRegion == v50)
+  if (!self->_hasPointerVelocityCrossedHighThreshold || self->_highVelocityAllowedPointerClient == v49 && self->_highVelocityAllowedHoverRegion == activeHoverRegion4)
   {
 
     v51 = v49;
@@ -3751,7 +3751,7 @@ LABEL_46:
 
   else
   {
-    [v38 setActiveHoverRegion:0];
+    [allObjects2 setActiveHoverRegion:0];
 
 LABEL_54:
 LABEL_56:
@@ -3777,11 +3777,11 @@ LABEL_56:
 
   obj = v51;
   v159 = [(NSMapTable *)self->_pointerClientToClientStateMap objectForKey:v51];
-  v58 = [v159 activeHoverRegion];
+  activeHoverRegion5 = [v159 activeHoverRegion];
   pointerClientToClientStateMap = self->_pointerClientToClientStateMap;
   v60 = sub_1000278B0(self->_activeDisplayContext);
   v61 = [(NSMapTable *)pointerClientToClientStateMap objectForKey:v60];
-  v153 = [v61 activeHoverRegion];
+  activeHoverRegion6 = [v61 activeHoverRegion];
 
   v62 = sub_1000278B0(self->_activeDisplayContext);
   LOBYTE(v60) = obj == v62;
@@ -3791,16 +3791,16 @@ LABEL_56:
     v68 = 1;
   }
 
-  else if (v58)
+  else if (activeHoverRegion5)
   {
-    [v58 hitTestBounds];
+    [activeHoverRegion5 hitTestBounds];
     x = v185.origin.x;
     y = v185.origin.y;
     width = v185.size.width;
     height = v185.size.height;
     if (CGRectIsEmpty(v185) || (v186.origin.x = x, v186.origin.y = y, v186.size.width = width, v186.size.height = height, CGRectIsNull(v186)))
     {
-      [v58 contentBounds];
+      [activeHoverRegion5 contentBounds];
     }
 
     memset(&buf, 0, sizeof(buf));
@@ -3849,9 +3849,9 @@ LABEL_67:
     v68 = 0;
   }
 
-  v69 = [v159 previousPointerEventActiveHoverRegionHitTestState];
+  previousPointerEventActiveHoverRegionHitTestState = [v159 previousPointerEventActiveHoverRegionHitTestState];
   [v159 setPreviousPointerEventActiveHoverRegionHitTestState:v68];
-  if (v68 == 2 && v69 == 1)
+  if (v68 == 2 && previousPointerEventActiveHoverRegionHitTestState == 1)
   {
     objc_initWeak(&buf, self);
     [(PUIDPointerSettings *)self->_settings automaticRegionExitDelayInterval];
@@ -3866,7 +3866,7 @@ LABEL_67:
     objc_destroyWeak(&buf);
   }
 
-  else if (v69 != 2)
+  else if (previousPointerEventActiveHoverRegionHitTestState != 2)
   {
     [v159 invalidateAutomaticRegionExitTimer];
   }
@@ -3891,15 +3891,15 @@ LABEL_67:
 
   v74 = objc_alloc_init(PUIDMutablePointerState);
   [(PUIDMutablePointerState *)v74 setModelPointerReferencePosition:v13, v15];
-  [v58 contentBounds];
+  [activeHoverRegion5 contentBounds];
   [(PUIDMutablePointerState *)v74 setContentBounds:?];
-  [v58 contentHoverInverseScale];
+  [activeHoverRegion5 contentHoverInverseScale];
   [(PUIDMutablePointerState *)v74 setContentHoverInverseScale:?];
-  v152 = [v58 pointerPortalSourceCollection];
-  v75 = [v58 shouldPointerUnderlayContent];
-  if (v152)
+  pointerPortalSourceCollection = [activeHoverRegion5 pointerPortalSourceCollection];
+  shouldPointerUnderlayContent = [activeHoverRegion5 shouldPointerUnderlayContent];
+  if (pointerPortalSourceCollection)
   {
-    v76 = v75;
+    v76 = shouldPointerUnderlayContent;
   }
 
   else
@@ -3907,13 +3907,13 @@ LABEL_67:
     v76 = 0;
   }
 
-  if (v76 == 1 && (sub_100027868(self->_activeDisplayContext), v77 = objc_claimAutoreleasedReturnValue(), v78 = [v77 isValidPointerPortalSourceCollection:v152 forClient:obj], v77, v78))
+  if (v76 == 1 && (sub_100027868(self->_activeDisplayContext), v77 = objc_claimAutoreleasedReturnValue(), v78 = [v77 isValidPointerPortalSourceCollection:pointerPortalSourceCollection forClient:obj], v77, v78))
   {
-    v79 = [v58 pointerPortalSourceCollection];
-    [(PUIDMutablePointerState *)v74 setPointerPortalSourceCollection:v79];
+    pointerPortalSourceCollection2 = [activeHoverRegion5 pointerPortalSourceCollection];
+    [(PUIDMutablePointerState *)v74 setPointerPortalSourceCollection:pointerPortalSourceCollection2];
 
-    v80 = [v58 contentMatchMoveSource];
-    [(PUIDMutablePointerState *)v74 setContentMatchMoveSource:v80];
+    contentMatchMoveSource = [activeHoverRegion5 contentMatchMoveSource];
+    [(PUIDMutablePointerState *)v74 setContentMatchMoveSource:contentMatchMoveSource];
 
     v81 = 1;
     self->_focusedOnItem = 1;
@@ -3921,11 +3921,11 @@ LABEL_67:
 
   else
   {
-    v82 = [v153 pointerPortalSourceCollection];
-    [(PUIDMutablePointerState *)v74 setPointerPortalSourceCollection:v82];
+    pointerPortalSourceCollection3 = [activeHoverRegion6 pointerPortalSourceCollection];
+    [(PUIDMutablePointerState *)v74 setPointerPortalSourceCollection:pointerPortalSourceCollection3];
 
-    v83 = [v153 contentMatchMoveSource];
-    [(PUIDMutablePointerState *)v74 setContentMatchMoveSource:v83];
+    contentMatchMoveSource2 = [activeHoverRegion6 contentMatchMoveSource];
+    [(PUIDMutablePointerState *)v74 setContentMatchMoveSource:contentMatchMoveSource2];
 
     self->_focusedOnItem = 0;
     if ([(PUIDPointerState *)self->_previousPointerState isPointerUnderlayingContent])
@@ -3942,7 +3942,7 @@ LABEL_67:
             sub_1000275A8(v84);
           }
 
-          v85 = [(PUIDPointerStateUpdateHandlerCollection *)v160 shapeTransitionCompletion];
+          shapeTransitionCompletion = [(PUIDPointerStateUpdateHandlerCollection *)v160 shapeTransitionCompletion];
           if (!v160)
           {
             v160 = objc_alloc_init(PUIDPointerStateUpdateHandlerCollection);
@@ -3953,7 +3953,7 @@ LABEL_67:
           v167[2] = sub_10000F9F0;
           v167[3] = &unk_100048AA0;
           v167[4] = self;
-          v86 = v85;
+          v86 = shapeTransitionCompletion;
           v168 = v86;
           v87 = objc_retainBlock(v167);
           [(PUIDPointerStateUpdateHandlerCollection *)v160 setShapeTransitionCompletion:v87];
@@ -3980,16 +3980,16 @@ LABEL_67:
   buf = *&v166[2];
   [(PUIDMutablePointerState *)v74 setClientCoordinateSpaceTransformToDisplay:&buf];
   [(PUIDMutablePointerState *)v74 setPointerAutoHidden:v72];
-  if (self->_deferMaterialChanges || ([v58 pointerVisualIntensity], BSFloatIsZero()))
+  if (self->_deferMaterialChanges || ([activeHoverRegion5 pointerVisualIntensity], BSFloatIsZero()))
   {
-    v88 = [(PUIDPointerState *)self->_previousPointerState pointerMaterialLuminance];
+    pointerMaterialLuminance = [(PUIDPointerState *)self->_previousPointerState pointerMaterialLuminance];
     v89 = 1;
   }
 
   else
   {
-    v88 = [v58 preferredPointerMaterialLuminance];
-    if (v88)
+    pointerMaterialLuminance = [activeHoverRegion5 preferredPointerMaterialLuminance];
+    if (pointerMaterialLuminance)
     {
       v90 = v81;
     }
@@ -4001,33 +4001,33 @@ LABEL_67:
 
     if ((v90 & 1) == 0)
     {
-      v88 = [v153 preferredPointerMaterialLuminance];
+      pointerMaterialLuminance = [activeHoverRegion6 preferredPointerMaterialLuminance];
     }
 
     v89 = v90 ^ 1;
   }
 
   v149 = v89;
-  [(PUIDMutablePointerState *)v74 setPointerMaterialLuminance:v88];
+  [(PUIDMutablePointerState *)v74 setPointerMaterialLuminance:pointerMaterialLuminance];
   if ([(PUIDPointerSettings *)self->_settings isPointerSlipEnabled])
   {
-    v154 = [v58 pointerSlipValue];
+    pointerSlipValue = [activeHoverRegion5 pointerSlipValue];
   }
 
   else
   {
-    v154 = 0;
+    pointerSlipValue = 0;
   }
 
-  v91 = [v58 contentSlipValue];
-  if (self->_latchingState && [v58 isLatching])
+  contentSlipValue = [activeHoverRegion5 contentSlipValue];
+  if (self->_latchingState && [activeHoverRegion5 isLatching])
   {
-    v92 = [v58 pointerLatchingAxes];
-    [v154 CGPointValue];
+    pointerLatchingAxes = [activeHoverRegion5 pointerLatchingAxes];
+    [pointerSlipValue CGPointValue];
     v94 = v93;
     v96 = v95;
-    [v91 CGPointValue];
-    if ((v92 & 2) != 0)
+    [contentSlipValue CGPointValue];
+    if ((pointerLatchingAxes & 2) != 0)
     {
       v99 = 1.0;
     }
@@ -4037,7 +4037,7 @@ LABEL_67:
       v99 = v96;
     }
 
-    if ((v92 & 2) != 0)
+    if ((pointerLatchingAxes & 2) != 0)
     {
       v100 = 0.0;
     }
@@ -4047,7 +4047,7 @@ LABEL_67:
       v100 = v98;
     }
 
-    if (v92)
+    if (pointerLatchingAxes)
     {
       v101 = 1.0;
     }
@@ -4057,7 +4057,7 @@ LABEL_67:
       v101 = v94;
     }
 
-    if (v92)
+    if (pointerLatchingAxes)
     {
       v102 = 0.0;
     }
@@ -4075,48 +4075,48 @@ LABEL_67:
     *&v165[1] = v100;
     v104 = [NSValue valueWithBytes:v165 objCType:"{CGPoint=dd}"];
 
-    v154 = v103;
-    v91 = v104;
+    pointerSlipValue = v103;
+    contentSlipValue = v104;
   }
 
-  v105 = [v58 pointerShape];
-  [(PUIDMutablePointerState *)v74 setPointerShape:v105];
+  pointerShape = [activeHoverRegion5 pointerShape];
+  [(PUIDMutablePointerState *)v74 setPointerShape:pointerShape];
 
   [(PUIDMutablePointerState *)v74 setShakeToFindPointerSizeMultiplier:self->_shakeToFindPointerSizeMultiplier];
-  [(PUIDMutablePointerState *)v74 setPointerSlipValue:v154];
-  [v58 pointerVisualIntensity];
+  [(PUIDMutablePointerState *)v74 setPointerSlipValue:pointerSlipValue];
+  [activeHoverRegion5 pointerVisualIntensity];
   [(PUIDMutablePointerState *)v74 setPointerVisualIntensity:?];
   if (v72)
   {
-    v106 = 0;
+    overlayEffectStyle = 0;
   }
 
   else
   {
-    v106 = [v58 overlayEffectStyle];
+    overlayEffectStyle = [activeHoverRegion5 overlayEffectStyle];
   }
 
-  [(PUIDMutablePointerState *)v74 setOverlayEffectStyle:v106];
-  [(PUIDMutablePointerState *)v74 setContentSlipValue:v91];
+  [(PUIDMutablePointerState *)v74 setOverlayEffectStyle:overlayEffectStyle];
+  [(PUIDMutablePointerState *)v74 setContentSlipValue:contentSlipValue];
   [(PUIDMutablePointerState *)v74 setPointerUnderlayingContent:v81];
-  -[PUIDMutablePointerState setSuppressPointerMirroring:](v74, "setSuppressPointerMirroring:", [v58 shouldPointerSuppressMirroring]);
-  v107 = [v58 accessories];
-  [(PUIDMutablePointerState *)v74 setAccessories:v107];
+  -[PUIDMutablePointerState setSuppressPointerMirroring:](v74, "setSuppressPointerMirroring:", [activeHoverRegion5 shouldPointerSuppressMirroring]);
+  accessories = [activeHoverRegion5 accessories];
+  [(PUIDMutablePointerState *)v74 setAccessories:accessories];
 
   v108 = sub_1000278B0(self->_activeDisplayContext);
-  LOBYTE(v107) = obj == v108;
+  LOBYTE(accessories) = obj == v108;
 
-  if (v107)
+  if (accessories)
   {
     v111 = @"System Pointer Client";
   }
 
   else
   {
-    v109 = [(PUIDPointerClient *)obj auditToken];
-    v110 = [v109 bundleID];
+    auditToken = [(PUIDPointerClient *)obj auditToken];
+    bundleID = [auditToken bundleID];
 
-    v111 = v110;
+    v111 = bundleID;
   }
 
   [(PUIDMutablePointerState *)v74 setDebugRequestingClientString:v111];
@@ -4168,15 +4168,15 @@ LABEL_67:
   self->_hasSetupPointerState = 1;
   if (previousPointerState)
   {
-    v121 = [(PUIDPointerState *)previousPointerState pointerMaterialLuminance];
-    if (v121 == 2)
+    pointerMaterialLuminance2 = [(PUIDPointerState *)previousPointerState pointerMaterialLuminance];
+    if (pointerMaterialLuminance2 == 2)
     {
       v122 = 2;
     }
 
     else
     {
-      v122 = v121 == 1;
+      v122 = pointerMaterialLuminance2 == 1;
     }
   }
 
@@ -4198,14 +4198,14 @@ LABEL_67:
 
   else
   {
-    v125 = [(PUIDPointerController *)self _systemPointerClients];
-    v126 = [v125 containsObject:self->_previousPointerClient];
+    _systemPointerClients = [(PUIDPointerController *)self _systemPointerClients];
+    v126 = [_systemPointerClients containsObject:self->_previousPointerClient];
 
     v124 = v126 ^ 1;
   }
 
   [(PUIDPointerController *)self _setShouldPeriodicallyRefreshClientTransform:v124];
-  if ((v155 & 2) == 0 && hasSetupPointerState)
+  if ((optionsCopy & 2) == 0 && hasSetupPointerState)
   {
     v127 = 3;
   }
@@ -4217,13 +4217,13 @@ LABEL_67:
 
   v128 = sub_100027868(self->_activeDisplayContext);
   v162 = 0;
-  v129 = [v128 setPointerState:v74 options:(2 * v155) & 8 | (4 * (v155 & 1)) | v127 updateHandlerCollection:v160 error:&v162];
+  v129 = [v128 setPointerState:v74 options:(2 * optionsCopy) & 8 | (4 * (optionsCopy & 1)) | v127 updateHandlerCollection:v160 error:&v162];
   v156 = v162;
 
   if ((v129 & 1) == 0)
   {
-    v130 = [v156 domain];
-    if ([v130 isEqual:@"PUIDPointerRenderingRootViewControllerErrorDomain"])
+    domain = [v156 domain];
+    if ([domain isEqual:@"PUIDPointerRenderingRootViewControllerErrorDomain"])
     {
       v131 = [v156 code] == -1002;
 
@@ -4263,8 +4263,8 @@ LABEL_67:
 
       v135 = [PUIDPointerRecenteringContext alloc];
       v136 = sub_100027838(&self->_activeDisplayContext->super.isa);
-      v137 = [v136 hardwareIdentifier];
-      v138 = [(PUIDPointerRecenteringContext *)v135 initWithContextRelativePointerPosition:v133 displayUUID:v137 restrictingToPID:v134];
+      hardwareIdentifier = [v136 hardwareIdentifier];
+      v138 = [(PUIDPointerRecenteringContext *)v135 initWithContextRelativePointerPosition:v133 displayUUID:hardwareIdentifier restrictingToPID:v134];
     }
 
     else
@@ -4298,21 +4298,21 @@ LABEL_67:
 
     if (v138)
     {
-      v141 = [(PUIDPointerRecenteringContext *)v138 restrictingToPID];
-      if (v141 == [v161 pid])
+      restrictingToPID = [(PUIDPointerRecenteringContext *)v138 restrictingToPID];
+      if (restrictingToPID == [v161 pid])
       {
         v142 = 0xFFFFFFFFLL;
       }
 
       else
       {
-        v142 = v141;
+        v142 = restrictingToPID;
       }
 
       v143 = +[BKSMousePointerService sharedInstance];
-      v144 = [(PUIDPointerRecenteringContext *)v138 contextRelativePointerPosition];
-      v145 = [(PUIDPointerRecenteringContext *)v138 displayUUID];
-      v146 = [v143 acquireButtonDownPointerRepositionAssertionForReason:@"com.apple.pointeruid.PUIDPointerController" contextRelativePointerPosition:v144 onDisplay:v145 restrictingToPID:v142];
+      contextRelativePointerPosition = [(PUIDPointerRecenteringContext *)v138 contextRelativePointerPosition];
+      displayUUID = [(PUIDPointerRecenteringContext *)v138 displayUUID];
+      v146 = [v143 acquireButtonDownPointerRepositionAssertionForReason:@"com.apple.pointeruid.PUIDPointerController" contextRelativePointerPosition:contextRelativePointerPosition onDisplay:displayUUID restrictingToPID:v142];
       v147 = self->_buttonDownRepositionAssertion;
       self->_buttonDownRepositionAssertion = v146;
     }
@@ -4354,20 +4354,20 @@ LABEL_189:
   }
 }
 
-- (void)_transformForLayer:(unint64_t)a3 inContext:(unsigned int)a4 queue:(id)a5 completion:(id)a6
+- (void)_transformForLayer:(unint64_t)layer inContext:(unsigned int)context queue:(id)queue completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000FCB8;
   block[3] = &unk_1000490C8;
-  v12 = a4;
-  v10 = a6;
-  v11 = a3;
-  v8 = v10;
-  dispatch_async(a5, block);
+  contextCopy = context;
+  completionCopy = completion;
+  layerCopy = layer;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
-- (CGPoint)_pointerPositionFromPointerEvent:(__IOHIDEvent *)a3
+- (CGPoint)_pointerPositionFromPointerEvent:(__IOHIDEvent *)event
 {
   IOHIDEventGetFloatMultiple();
   v3 = v5;

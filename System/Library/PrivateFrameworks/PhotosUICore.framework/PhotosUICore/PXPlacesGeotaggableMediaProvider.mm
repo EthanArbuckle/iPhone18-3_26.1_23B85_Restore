@@ -1,21 +1,21 @@
 @interface PXPlacesGeotaggableMediaProvider
-- (id)_fetchImageManagerAssetForPlacesAsset:(id)a3;
-- (void)_imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6;
-- (void)imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6;
+- (id)_fetchImageManagerAssetForPlacesAsset:(id)asset;
+- (void)_imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion;
+- (void)imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion;
 @end
 
 @implementation PXPlacesGeotaggableMediaProvider
 
-- (id)_fetchImageManagerAssetForPlacesAsset:(id)a3
+- (id)_fetchImageManagerAssetForPlacesAsset:(id)asset
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (asset)
   {
-    v3 = a3;
-    v4 = [v3 photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    assetCopy = asset;
+    photoLibrary = [assetCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v6 = [MEMORY[0x1E6978830] px_placesFetchOptionsWith:v5];
+    v6 = [MEMORY[0x1E6978830] px_placesFetchOptionsWith:librarySpecificFetchOptions];
 
     v7 = *MEMORY[0x1E6978C08];
     v16[0] = *MEMORY[0x1E6978C78];
@@ -24,40 +24,40 @@
     [v6 setFetchPropertySets:v8];
 
     v9 = MEMORY[0x1E6978630];
-    v10 = [v3 localIdentifier];
+    localIdentifier = [assetCopy localIdentifier];
 
-    v15 = v10;
+    v15 = localIdentifier;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     v12 = [v9 fetchAssetsWithLocalIdentifiers:v11 options:v6];
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
-- (void)_imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6
+- (void)_imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion
 {
-  v6 = a5;
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = [(PXPlacesGeotaggableMediaProvider *)self _fetchImageManagerAssetForPlacesAsset:a3];
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  v12 = [(PXPlacesGeotaggableMediaProvider *)self _fetchImageManagerAssetForPlacesAsset:geotaggable];
   v13 = v12;
   if (v12)
   {
     v14 = MEMORY[0x1E69BE520];
-    v15 = [v12 coarseLocationProperties];
-    [v15 gpsHorizontalAccuracy];
+    coarseLocationProperties = [v12 coarseLocationProperties];
+    [coarseLocationProperties gpsHorizontalAccuracy];
     v16 = [v14 horizontalAccuracyIsCoarse:?];
 
     v17 = objc_alloc_init(MEMORY[0x1E6978868]);
     [v17 setResizeMode:2];
-    [v17 setNetworkAccessAllowed:v6];
+    [v17 setNetworkAccessAllowed:allowedCopy];
     [v17 setDeliveryMode:1];
     if ([v13 mediaSubtypes])
     {
@@ -65,20 +65,20 @@
       width = width * 3.0;
     }
 
-    v18 = [MEMORY[0x1E6978860] defaultManager];
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __99__PXPlacesGeotaggableMediaProvider__imageForGeotaggable_ofSize_networkAccessAllowed_andCompletion___block_invoke;
     v19[3] = &unk_1E773EC38;
-    v21 = v11;
+    v21 = completionCopy;
     v22 = v16;
     v20 = v13;
-    [v18 requestImageForAsset:v20 targetSize:1 contentMode:v17 options:v19 resultHandler:{width, height}];
+    [defaultManager requestImageForAsset:v20 targetSize:1 contentMode:v17 options:v19 resultHandler:{width, height}];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 }
 
@@ -109,15 +109,15 @@ void __99__PXPlacesGeotaggableMediaProvider__imageForGeotaggable_ofSize_networkA
   }
 }
 
-- (void)imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6
+- (void)imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v11 = a6;
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  geotaggableCopy = geotaggable;
+  completionCopy = completion;
   v12 = objc_autoreleasePoolPush();
-  [(PXPlacesGeotaggableMediaProvider *)self _imageForGeotaggable:v13 ofSize:v7 networkAccessAllowed:v11 andCompletion:width, height];
+  [(PXPlacesGeotaggableMediaProvider *)self _imageForGeotaggable:geotaggableCopy ofSize:allowedCopy networkAccessAllowed:completionCopy andCompletion:width, height];
   objc_autoreleasePoolPop(v12);
 }
 

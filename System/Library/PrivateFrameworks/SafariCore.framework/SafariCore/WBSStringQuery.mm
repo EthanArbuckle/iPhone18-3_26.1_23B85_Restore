@@ -1,31 +1,31 @@
 @interface WBSStringQuery
 + (WBSStringQuery)queryThatMatchesEverything;
 - (NSString)matchingTypeDescriptionString;
-- (WBSStringQuery)initWithString:(id)a3 matchingType:(int64_t)a4;
+- (WBSStringQuery)initWithString:(id)string matchingType:(int64_t)type;
 @end
 
 @implementation WBSStringQuery
 
 + (WBSStringQuery)queryThatMatchesEverything
 {
-  v2 = [[a1 alloc] initWithString:&stru_1F3064D08 matchingType:0];
+  v2 = [[self alloc] initWithString:&stru_1F3064D08 matchingType:0];
 
   return v2;
 }
 
-- (WBSStringQuery)initWithString:(id)a3 matchingType:(int64_t)a4
+- (WBSStringQuery)initWithString:(id)string matchingType:(int64_t)type
 {
-  v6 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = WBSStringQuery;
   v7 = [(WBSStringQuery *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     string = v7->_string;
     v7->_string = v8;
 
-    v7->_matchingType = a4;
+    v7->_matchingType = type;
     v10 = v7;
   }
 

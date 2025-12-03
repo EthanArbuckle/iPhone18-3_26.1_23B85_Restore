@@ -1,7 +1,7 @@
 @interface IMBWebTitleView
 - (_TtC8Business15IMBWebTitleView)init;
-- (_TtC8Business15IMBWebTitleView)initWithCoder:(id)a3;
-- (_TtC8Business15IMBWebTitleView)initWithFrame:(CGRect)a3;
+- (_TtC8Business15IMBWebTitleView)initWithCoder:(id)coder;
+- (_TtC8Business15IMBWebTitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation IMBWebTitleView
@@ -19,7 +19,7 @@
   return v4;
 }
 
-- (_TtC8Business15IMBWebTitleView)initWithCoder:(id)a3
+- (_TtC8Business15IMBWebTitleView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8Business15IMBWebTitleView_titleLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UILabel) init];
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC8Business15IMBWebTitleView)initWithFrame:(CGRect)a3
+- (_TtC8Business15IMBWebTitleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

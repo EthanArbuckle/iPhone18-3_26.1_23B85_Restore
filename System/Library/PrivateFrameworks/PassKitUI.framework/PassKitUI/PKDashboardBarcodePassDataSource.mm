@@ -1,63 +1,63 @@
 @interface PKDashboardBarcodePassDataSource
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section;
 - (BOOL)hasContent;
-- (PKDashboardBarcodePassDataSource)initWithGroupView:(id)a3 context:(id)a4;
+- (PKDashboardBarcodePassDataSource)initWithGroupView:(id)view context:(id)context;
 - (PKDashboardPassGroupViewController)viewController;
-- (id)_createDescriptorForPass:(id)a3 passState:(id)a4;
+- (id)_createDescriptorForPass:(id)pass passState:(id)state;
 - (id)_messageForIssuerBinding;
 - (id)_relevancyPresentmentMessages;
-- (id)footerTextItemForSection:(unint64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)footerTextItemForSection:(unint64_t)section;
+- (id)itemAtIndexPath:(id)path;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
-- (void)_reloadMessagesWithReason:(id)a3;
-- (void)_reloadTiles:(id)a3 descriptorIdentifier:(id)a4;
+- (void)_reloadMessagesWithReason:(id)reason;
+- (void)_reloadTiles:(id)tiles descriptorIdentifier:(id)identifier;
 - (void)_reloadUpcomingPassInformationSections;
-- (void)_sendAnalyticsForIssuerBindingDidTapButton:(id)a3;
-- (void)_sendAnalyticsForIssuerBindingMessageType:(id)a3;
-- (void)_setPassStateProvider:(id)a3;
-- (void)_updateWithTiles:(id)a3;
-- (void)_updateWithUpcomingPassInformationSections:(id)a3;
+- (void)_sendAnalyticsForIssuerBindingDidTapButton:(id)button;
+- (void)_sendAnalyticsForIssuerBindingMessageType:(id)type;
+- (void)_setPassStateProvider:(id)provider;
+- (void)_updateWithTiles:(id)tiles;
+- (void)_updateWithUpcomingPassInformationSections:(id)sections;
 - (void)dealloc;
-- (void)executeAfterContentIsLoaded:(id)a3;
+- (void)executeAfterContentIsLoaded:(id)loaded;
 - (void)freezeContentLoaded;
-- (void)groupView:(id)a3 didUpdatePassView:(id)a4;
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
+- (void)groupView:(id)view didUpdatePassView:(id)passView;
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
 - (void)reloadData;
 - (void)reloadFrontmostPass;
-- (void)reloadMessagesWithReason:(id)a3;
+- (void)reloadMessagesWithReason:(id)reason;
 - (void)reloadTiles;
 - (void)reloadUpcomingPassInformationSections;
 - (void)sendContentIsLoadedIfNecessary;
-- (void)setDataSourceDelegate:(id)a3;
-- (void)tileFactory:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5 descriptorIdentifier:(id)a6;
+- (void)setDataSourceDelegate:(id)delegate;
+- (void)tileFactory:(id)factory didUpdateTiles:(id)tiles forContext:(int64_t)context descriptorIdentifier:(id)identifier;
 - (void)updateContentIsLoaded;
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4;
+- (void)updateWithBlock:(id)block andDiff:(id)diff;
 @end
 
 @implementation PKDashboardBarcodePassDataSource
 
-- (PKDashboardBarcodePassDataSource)initWithGroupView:(id)a3 context:(id)a4
+- (PKDashboardBarcodePassDataSource)initWithGroupView:(id)view context:(id)context
 {
-  v6 = a3;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = PKDashboardBarcodePassDataSource;
   v7 = [(PKDashboardBarcodePassDataSource *)&v21 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_groupView, a3);
-    [v6 addPassGroupViewObserver:v8];
-    v9 = [v6 frontmostPassView];
-    [(PKDashboardBarcodePassDataSource *)v8 _setPassStateProvider:v9];
+    objc_storeStrong(&v7->_groupView, view);
+    [viewCopy addPassGroupViewObserver:v8];
+    frontmostPassView = [viewCopy frontmostPassView];
+    [(PKDashboardBarcodePassDataSource *)v8 _setPassStateProvider:frontmostPassView];
 
-    v10 = [v6 group];
+    group = [viewCopy group];
     group = v8->_group;
-    v8->_group = v10;
+    v8->_group = group;
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     executionBlocksContentIsLoaded = v8->_executionBlocksContentIsLoaded;
@@ -119,8 +119,8 @@
   else
   {
     objc_storeStrong(&self->_pass, v3);
-    v4 = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
-    v5 = [(PKDashboardBarcodePassDataSource *)self _createDescriptorForPass:v3 passState:v4];
+    passState = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
+    v5 = [(PKDashboardBarcodePassDataSource *)self _createDescriptorForPass:v3 passState:passState];
     tileDescriptor = self->_tileDescriptor;
     self->_tileDescriptor = v5;
   }
@@ -134,18 +134,18 @@
   [(PKDashboardBarcodePassDataSource *)self reloadUpcomingPassInformationSections];
 }
 
-- (void)groupView:(id)a3 didUpdatePassView:(id)a4
+- (void)groupView:(id)view didUpdatePassView:(id)passView
 {
-  v5 = [a4 pass];
-  v6 = [v5 uniqueID];
+  pass = [passView pass];
+  uniqueID = [pass uniqueID];
 
-  [(PKPassSemanticTileFactory *)self->_tileFactory clearCacheOfDescriptorsWithPassUniqueIdentifier:v6];
-  v7 = [(PKPassGroupView *)self->_groupView frontmostPassView];
-  v8 = [v7 pass];
-  v9 = [v8 uniqueID];
+  [(PKPassSemanticTileFactory *)self->_tileFactory clearCacheOfDescriptorsWithPassUniqueIdentifier:uniqueID];
+  frontmostPassView = [(PKPassGroupView *)self->_groupView frontmostPassView];
+  pass2 = [frontmostPassView pass];
+  uniqueID2 = [pass2 uniqueID];
 
-  v10 = v9;
-  v11 = v6;
+  v10 = uniqueID2;
+  v11 = uniqueID;
   v13 = v11;
   if (v10 == v11)
   {
@@ -171,37 +171,37 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context
 {
-  [(PKDashboardBarcodePassDataSource *)self _setPassStateProvider:a4];
+  [(PKDashboardBarcodePassDataSource *)self _setPassStateProvider:change];
   [(PKDashboardBarcodePassDataSource *)self reloadFrontmostPass];
 
   [(PKDashboardBarcodePassDataSource *)self reloadData];
 }
 
-- (void)_setPassStateProvider:(id)a3
+- (void)_setPassStateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   passStateProvider = self->_passStateProvider;
-  if (passStateProvider != v5)
+  if (passStateProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(PKPassDynamicStateProviding *)passStateProvider removePassStateObserver:self];
-    objc_storeStrong(&self->_passStateProvider, a3);
+    objc_storeStrong(&self->_passStateProvider, provider);
     [(PKPassDynamicStateProviding *)self->_passStateProvider addPassStateObserver:self];
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
-  v15 = a4;
-  v6 = [a3 pass];
+  stateCopy = state;
+  pass = [provider pass];
   pass = self->_pass;
 
-  if (v6 == pass)
+  if (pass == pass)
   {
-    v8 = [(PKDashboardBarcodePassDataSource *)self _createDescriptorForPass:self->_pass passState:v15];
+    v8 = [(PKDashboardBarcodePassDataSource *)self _createDescriptorForPass:self->_pass passState:stateCopy];
     tileDescriptor = self->_tileDescriptor;
     self->_tileDescriptor = v8;
 
@@ -226,15 +226,15 @@ LABEL_9:
   MEMORY[0x1EEE66C30]();
 }
 
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v5 = 0;
-  for (i = 0; i != a3; ++i)
+  for (i = 0; i != identifier; ++i)
   {
     dynamicSections = self->_dynamicSections;
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
@@ -245,15 +245,15 @@ LABEL_9:
       v9 = &unk_1F3CC6FE0;
     }
 
-    v11 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v5 += v11;
+    v5 += unsignedIntegerValue;
   }
 
   return v5;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section
 {
   v6 = [MEMORY[0x1E696AC88] indexPathForItem:-1 inSection:a4];
   [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexPath:v6];
@@ -261,10 +261,10 @@ LABEL_9:
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path
 {
   v16 = a4;
-  v6 = [v16 section];
+  section = [v16 section];
   v7 = 0;
   v8 = -1;
   do
@@ -280,41 +280,41 @@ LABEL_9:
       v12 = &unk_1F3CC6FE0;
     }
 
-    v14 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    v7 = v14 + v9;
+    v7 = unsignedIntegerValue + v9;
   }
 
-  while (v14 + v9 <= v6);
+  while (unsignedIntegerValue + v9 <= section);
   retstr->var0 = v8;
-  retstr->var1 = v6 - v9;
+  retstr->var1 = section - v9;
   retstr->var2 = [v16 item];
 
   return result;
 }
 
-- (void)setDataSourceDelegate:(id)a3
+- (void)setDataSourceDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(PKDashboardBarcodePassDataSource *)self sendContentIsLoadedIfNecessary];
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexPath:v4];
+  pathCopy = path;
+  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexPath:pathCopy];
   v5 = [[PKDashboardPassGroupItem alloc] initWithGroupView:self->_groupView];
 
   return v5;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  result = [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  result = [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:section];
   v5 = 1;
   if (v9 <= 2)
   {
@@ -351,8 +351,8 @@ LABEL_9:
     }
 
     v7 = [(NSArray *)self->_upcomingPassInformationGroups objectAtIndexedSubscript:v10];
-    v8 = [v7 entries];
-    v5 = [v8 count];
+    entries = [v7 entries];
+    v5 = [entries count];
 
     return v5;
   }
@@ -403,16 +403,16 @@ uint64_t __52__PKDashboardBarcodePassDataSource_numberOfSections__block_invoke(u
   return result;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:section];
 
   return 0;
 }
 
-- (id)footerTextItemForSection:(unint64_t)a3
+- (id)footerTextItemForSection:(unint64_t)section
 {
-  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  [(PKDashboardBarcodePassDataSource *)self _dataSourceIndicesForIndexSection:section];
 
   return 0;
 }
@@ -506,21 +506,21 @@ uint64_t __52__PKDashboardBarcodePassDataSource_numberOfSections__block_invoke(u
   }
 }
 
-- (void)executeAfterContentIsLoaded:(id)a3
+- (void)executeAfterContentIsLoaded:(id)loaded
 {
-  v4 = a3;
-  if (v4)
+  loadedCopy = loaded;
+  if (loadedCopy)
   {
-    v7 = v4;
+    v7 = loadedCopy;
     if (self->_allContentIsLoaded || self->_contentLoadedFrozen)
     {
-      v4[2]();
+      loadedCopy[2]();
     }
 
     else
     {
       executionBlocksContentIsLoaded = self->_executionBlocksContentIsLoaded;
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(loadedCopy);
       [(NSMutableArray *)executionBlocksContentIsLoaded addObject:v6];
     }
   }
@@ -546,31 +546,31 @@ uint64_t __52__PKDashboardBarcodePassDataSource_numberOfSections__block_invoke(u
   return [(NSArray *)self->_upcomingPassInformationGroups count]!= 0;
 }
 
-- (id)_createDescriptorForPass:(id)a3 passState:(id)a4
+- (id)_createDescriptorForPass:(id)pass passState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  if (v7 == 10)
+  passCopy = pass;
+  stateCopy = state;
+  style = [passCopy style];
+  if (style == 10)
   {
-    v8 = [PKBoardingPassSemanticTileSupplier createSupplierForPass:v5 passState:v6];
+    v8 = [PKBoardingPassSemanticTileSupplier createSupplierForPass:passCopy passState:stateCopy];
   }
 
   else
   {
-    if (v7 != 9)
+    if (style != 9)
     {
       goto LABEL_7;
     }
 
-    v8 = [PKEventTicketSemanticTileSupplier createSupplierForPass:v5];
+    v8 = [PKEventTicketSemanticTileSupplier createSupplierForPass:passCopy];
   }
 
   v9 = v8;
   if (v8)
   {
-    v10 = [v5 allSemantics];
-    v11 = [PKPassSemanticTileDescriptor createWithPass:v5 semantics:v10 additionalTilesContentSupplier:v9];
+    allSemantics = [passCopy allSemantics];
+    v11 = [PKPassSemanticTileDescriptor createWithPass:passCopy semantics:allSemantics additionalTilesContentSupplier:v9];
 
     goto LABEL_8;
   }
@@ -584,7 +584,7 @@ LABEL_8:
 
 - (void)reloadTiles
 {
-  v3 = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
+  identifier = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
   objc_initWeak(&location, self);
   tileDescriptor = self->_tileDescriptor;
   tileFactory = self->_tileFactory;
@@ -593,7 +593,7 @@ LABEL_8:
   v6[2] = __47__PKDashboardBarcodePassDataSource_reloadTiles__block_invoke;
   v6[3] = &unk_1E8011850;
   objc_copyWeak(&v7, &location);
-  v6[4] = v3;
+  v6[4] = identifier;
   [(PKPassSemanticTileFactory *)tileFactory fetchTilesForDescriptor:tileDescriptor context:1 queueUpdates:1 completion:v6];
   [(PKPassSemanticTileFactory *)self->_tileFactory prewarmTileContentForDescriptor:self->_tileDescriptor context:2];
   objc_destroyWeak(&v7);
@@ -628,43 +628,43 @@ void __47__PKDashboardBarcodePassDataSource_reloadTiles__block_invoke_2(uint64_t
   }
 }
 
-- (void)_reloadTiles:(id)a3 descriptorIdentifier:(id)a4
+- (void)_reloadTiles:(id)tiles descriptorIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
-  v8 = v6;
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  identifier = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
+  v8 = identifierCopy;
   v9 = v8;
-  if (v7 == v8)
+  if (identifier == v8)
   {
 
     goto LABEL_7;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !identifier)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v7 isEqualToString:v8];
+  v10 = [identifier isEqualToString:v8];
 
   if (v10)
   {
 LABEL_7:
-    [(PKDashboardBarcodePassDataSource *)self _updateWithTiles:v11];
+    [(PKDashboardBarcodePassDataSource *)self _updateWithTiles:tilesCopy];
   }
 
 LABEL_9:
 }
 
-- (void)_updateWithTiles:(id)a3
+- (void)_updateWithTiles:(id)tiles
 {
-  v4 = a3;
+  tilesCopy = tiles;
   v5 = self->_tileGroups;
-  if ([v4 count])
+  if ([tilesCopy count])
   {
-    v6 = [v4 copy];
+    v6 = [tilesCopy copy];
   }
 
   else
@@ -736,11 +736,11 @@ id __53__PKDashboardBarcodePassDataSource__updateWithTiles___block_invoke_3(uint
   return v6;
 }
 
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4
+- (void)updateWithBlock:(id)block andDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  diffCopy = diff;
+  if (diffCopy)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -749,8 +749,8 @@ id __53__PKDashboardBarcodePassDataSource__updateWithTiles___block_invoke_3(uint
     v14[2] = __60__PKDashboardBarcodePassDataSource_updateWithBlock_andDiff___block_invoke;
     v14[3] = &unk_1E8011108;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
-    v9 = v7;
+    v16 = blockCopy;
+    v9 = diffCopy;
     v15 = v9;
     [WeakRetained performBatchUpdates:v14 completion:0];
 
@@ -870,11 +870,11 @@ void __60__PKDashboardBarcodePassDataSource_updateWithBlock_andDiff___block_invo
   }
 }
 
-- (void)tileFactory:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5 descriptorIdentifier:(id)a6
+- (void)tileFactory:(id)factory didUpdateTiles:(id)tiles forContext:(int64_t)context descriptorIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a6;
-  if (a5 == 1)
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  if (context == 1)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -882,8 +882,8 @@ void __60__PKDashboardBarcodePassDataSource_updateWithBlock_andDiff___block_invo
     v11[2] = __95__PKDashboardBarcodePassDataSource_tileFactory_didUpdateTiles_forContext_descriptorIdentifier___block_invoke;
     v11[3] = &unk_1E8011828;
     objc_copyWeak(&v14, &location);
-    v12 = v9;
-    v13 = v10;
+    v12 = tilesCopy;
+    v13 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
 
     objc_destroyWeak(&v14);
@@ -902,17 +902,17 @@ void __95__PKDashboardBarcodePassDataSource_tileFactory_didUpdateTiles_forContex
   }
 }
 
-- (void)reloadMessagesWithReason:(id)a3
+- (void)reloadMessagesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PKDashboardBarcodePassDataSource_reloadMessagesWithReason___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = reasonCopy;
+  v5 = reasonCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -925,26 +925,26 @@ void __61__PKDashboardBarcodePassDataSource_reloadMessagesWithReason___block_inv
   [WeakRetained _reloadMessagesWithReason:*(a1 + 32)];
 }
 
-- (void)_reloadMessagesWithReason:(id)a3
+- (void)_reloadMessagesWithReason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134218242;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): getting messages with reason: %@", &v14, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v7 = [(PKDashboardBarcodePassDataSource *)self _messageForIssuerBinding];
-  [v6 pk_safelyAddObject:v7];
+  _messageForIssuerBinding = [(PKDashboardBarcodePassDataSource *)self _messageForIssuerBinding];
+  [v6 pk_safelyAddObject:_messageForIssuerBinding];
 
-  v8 = [(PKDashboardBarcodePassDataSource *)self _relevancyPresentmentMessages];
-  [v6 addObjectsFromArray:v8];
+  _relevancyPresentmentMessages = [(PKDashboardBarcodePassDataSource *)self _relevancyPresentmentMessages];
+  [v6 addObjectsFromArray:_relevancyPresentmentMessages];
 
   v9 = [v6 copy];
   messages = self->_messages;
@@ -971,27 +971,27 @@ void __61__PKDashboardBarcodePassDataSource_reloadMessagesWithReason___block_inv
 - (id)_messageForIssuerBinding
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PKPass *)self->_pass nfcPayload];
-  v4 = [v3 payloadState];
+  nfcPayload = [(PKPass *)self->_pass nfcPayload];
+  payloadState = [nfcPayload payloadState];
 
-  v5 = [(PKPass *)self->_pass issuerBindingInformation];
-  v6 = [v5 objectForKey:@"learnMoreURL"];
+  issuerBindingInformation = [(PKPass *)self->_pass issuerBindingInformation];
+  v6 = [issuerBindingInformation objectForKey:@"learnMoreURL"];
 
   v7 = PKLocalizedPaymentString(&cfstr_IssuerDataDash.isa);
   v8 = 0;
-  if (v4 <= 1)
+  if (payloadState <= 1)
   {
-    if (!v4)
+    if (!payloadState)
     {
       v16 = 0;
       goto LABEL_16;
     }
 
-    if (v4 == 1)
+    if (payloadState == 1)
     {
       [(PKDashboardBarcodePassDataSource *)self _sendAnalyticsForIssuerBindingMessageType:*MEMORY[0x1E69BA750]];
-      v9 = [(PKPass *)self->_pass organizationName];
-      v8 = PKLocalizedPaymentString(&cfstr_IssuerDataDash_0.isa, &stru_1F3BD5BF0.isa, v9);
+      organizationName = [(PKPass *)self->_pass organizationName];
+      v8 = PKLocalizedPaymentString(&cfstr_IssuerDataDash_0.isa, &stru_1F3BD5BF0.isa, organizationName);
 
       if (!v6)
       {
@@ -1025,7 +1025,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v4 == 2)
+  if (payloadState == 2)
   {
     [(PKDashboardBarcodePassDataSource *)self _sendAnalyticsForIssuerBindingMessageType:*MEMORY[0x1E69BA758]];
     v17 = PKPassKitUIBundle();
@@ -1047,7 +1047,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v4 != 3)
+  if (payloadState != 3)
   {
     goto LABEL_9;
   }
@@ -1109,9 +1109,9 @@ void __60__PKDashboardBarcodePassDataSource__messageForIssuerBinding__block_invo
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if ([(PKPass *)self->_pass style]== 10)
   {
-    v3 = [(PKPass *)self->_pass uniqueID];
-    v4 = [MEMORY[0x1E69B8A58] sharedInstance];
-    if ([v4 stateOfRelevancyPresentmentOfType:1 containingPassUniqueIdentifier:v3] >= 2)
+    uniqueID = [(PKPass *)self->_pass uniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    if ([mEMORY[0x1E69B8A58] stateOfRelevancyPresentmentOfType:1 containingPassUniqueIdentifier:uniqueID] >= 2)
     {
       v6 = objc_alloc_init(PKDashboardPassMessage);
       [(PKDashboardPassMessage *)v6 setIdentifier:@"LaunchLiveActivity"];
@@ -1127,9 +1127,9 @@ void __60__PKDashboardBarcodePassDataSource__messageForIssuerBinding__block_invo
       v10 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC8] scale:1];
       v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"airplane.path.dotted" withConfiguration:v10];
       v12 = [PKDashboardPassMessageImageDescriptorImageAsset alloc];
-      v13 = [MEMORY[0x1E69DC888] whiteColor];
-      v14 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v15 = [(PKDashboardPassMessageImageDescriptorImageAsset *)v12 initWithImage:v11 tintColor:v13 backgroundColor:v14];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v15 = [(PKDashboardPassMessageImageDescriptorImageAsset *)v12 initWithImage:v11 tintColor:whiteColor backgroundColor:systemBlueColor];
 
       [(PKDashboardPassMessage *)v6 setImageDescriptor:v15];
       [(PKDashboardPassMessage *)v6 setImageContentMode:4];
@@ -1139,8 +1139,8 @@ void __60__PKDashboardBarcodePassDataSource__messageForIssuerBinding__block_invo
       v19 = __65__PKDashboardBarcodePassDataSource__relevancyPresentmentMessages__block_invoke;
       v20 = &unk_1E8015570;
       objc_copyWeak(&v23, &location);
-      v21 = v3;
-      v22 = v4;
+      v21 = uniqueID;
+      v22 = mEMORY[0x1E69B8A58];
       [(PKDashboardPassMessage *)v6 setActionOnButtonPress:&v17];
       v25[0] = v6;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:{1, v17, v18, v19, v20, v21}];
@@ -1238,29 +1238,29 @@ void __65__PKDashboardBarcodePassDataSource__relevancyPresentmentMessages__block
   }
 }
 
-- (void)_sendAnalyticsForIssuerBindingMessageType:(id)a3
+- (void)_sendAnalyticsForIssuerBindingMessageType:(id)type
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
   v5 = *MEMORY[0x1E69BB710];
-  v6 = a3;
+  typeCopy = type;
   [v4 beginSubjectReporting:v5];
   v7 = MEMORY[0x1E69B8540];
   v8 = *MEMORY[0x1E69BABE8];
   v16[0] = *MEMORY[0x1E69BA680];
   v16[1] = v8;
   v9 = *MEMORY[0x1E69BAC10];
-  v17[0] = v6;
+  v17[0] = typeCopy;
   v17[1] = v9;
   v16[2] = *MEMORY[0x1E69BB3E0];
-  v10 = [(PKPassGroupView *)self->_groupView frontmostPassView];
-  v11 = [v10 pass];
-  v12 = [v11 passTypeIdentifier];
-  v13 = v12;
+  frontmostPassView = [(PKPassGroupView *)self->_groupView frontmostPassView];
+  pass = [frontmostPassView pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v13 = passTypeIdentifier;
   v14 = *MEMORY[0x1E69BB3A8];
-  if (v12)
+  if (passTypeIdentifier)
   {
-    v14 = v12;
+    v14 = passTypeIdentifier;
   }
 
   v17[2] = v14;
@@ -1270,12 +1270,12 @@ void __65__PKDashboardBarcodePassDataSource__relevancyPresentmentMessages__block
   [MEMORY[0x1E69B8540] endSubjectReporting:v5];
 }
 
-- (void)_sendAnalyticsForIssuerBindingDidTapButton:(id)a3
+- (void)_sendAnalyticsForIssuerBindingDidTapButton:(id)button
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69B8540];
   v4 = *MEMORY[0x1E69BB710];
-  v5 = a3;
+  buttonCopy = button;
   [v3 beginSubjectReporting:v4];
   v6 = *MEMORY[0x1E69BABE8];
   v10[0] = *MEMORY[0x1E69BA680];
@@ -1285,7 +1285,7 @@ void __65__PKDashboardBarcodePassDataSource__relevancyPresentmentMessages__block
   v11[1] = v7;
   v8 = MEMORY[0x1E69B8540];
   v10[2] = *MEMORY[0x1E69BA440];
-  v11[2] = v5;
+  v11[2] = buttonCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
   [v8 subject:v4 sendEvent:v9];
 
@@ -1314,12 +1314,12 @@ void __73__PKDashboardBarcodePassDataSource_reloadUpcomingPassInformationSection
 - (void)_reloadUpcomingPassInformationSections
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PKPass *)self->_pass upcomingPassInformation];
-  v5 = v3;
-  if (v3)
+  upcomingPassInformation = [(PKPass *)self->_pass upcomingPassInformation];
+  v5 = upcomingPassInformation;
+  if (upcomingPassInformation)
   {
-    v4 = [v3 groups];
-    [(PKDashboardBarcodePassDataSource *)self _updateWithUpcomingPassInformationSections:v4];
+    groups = [upcomingPassInformation groups];
+    [(PKDashboardBarcodePassDataSource *)self _updateWithUpcomingPassInformationSections:groups];
   }
 
   else
@@ -1328,12 +1328,12 @@ void __73__PKDashboardBarcodePassDataSource_reloadUpcomingPassInformationSection
   }
 }
 
-- (void)_updateWithUpcomingPassInformationSections:(id)a3
+- (void)_updateWithUpcomingPassInformationSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = self->_upcomingPassInformationGroups;
-  v6 = [v4 copy];
+  v6 = [sectionsCopy copy];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;

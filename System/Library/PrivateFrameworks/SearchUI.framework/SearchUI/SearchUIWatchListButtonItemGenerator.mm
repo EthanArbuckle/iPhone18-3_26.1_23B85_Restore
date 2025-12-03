@@ -1,25 +1,25 @@
 @interface SearchUIWatchListButtonItemGenerator
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIWatchListButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 watchListItem];
-  v8 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [v7 type], objc_msgSend(v7, "isMediaContainer"));
-  v9 = [v7 watchListIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  watchListItem = [itemCopy watchListItem];
+  v8 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [watchListItem type], objc_msgSend(watchListItem, "isMediaContainer"));
+  watchListIdentifier = [watchListItem watchListIdentifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__SearchUIWatchListButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke;
   v12[3] = &unk_1E85B3078;
-  v13 = v5;
-  v14 = v6;
-  v10 = v6;
-  v11 = v5;
-  [SearchUIWatchListUtilities fetchWatchListStateForWatchListIdentifier:v9 type:v8 completion:v12];
+  v13 = itemCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = itemCopy;
+  [SearchUIWatchListUtilities fetchWatchListStateForWatchListIdentifier:watchListIdentifier type:v8 completion:v12];
 }
 
 void __95__SearchUIWatchListButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke(uint64_t a1, void *a2, void *a3)

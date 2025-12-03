@@ -1,55 +1,55 @@
 @interface SUUIProductPageReviewsViewController
 - (NSOperationQueue)operationQueue;
 - (SUUIProductPageChildViewControllerDelegate)delegate;
-- (SUUIProductPageReviewsViewController)initWithProductPage:(id)a3;
+- (SUUIProductPageReviewsViewController)initWithProductPage:(id)page;
 - (double)_defaultPageWidth;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_bottomBorderColorForScheme:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_bottomBorderColorForScheme:(id)scheme;
 - (id)_histogramViewController;
-- (id)_loadMoreCellForTableView:(id)a3 indexPath:(id)a4;
+- (id)_loadMoreCellForTableView:(id)view indexPath:(id)path;
 - (id)_reviewsHeaderView;
 - (id)_tableView;
-- (id)_textBoxCellForTableView:(id)a3 indexPath:(id)a4;
-- (id)_textLayoutRequestWithText:(id)a3;
-- (id)_urlStringWithPageNumber:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_textBoxCellForTableView:(id)view indexPath:(id)path;
+- (id)_textLayoutRequestWithText:(id)text;
+- (id)_urlStringWithPageNumber:(int64_t)number;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addHeaderView;
-- (void)_addReviewsFromResponse:(id)a3 error:(id)a4;
-- (void)_appSupportAction:(id)a3;
-- (void)_loadNextPageIfNecessaryForOffset:(CGPoint)a3;
+- (void)_addReviewsFromResponse:(id)response error:(id)error;
+- (void)_appSupportAction:(id)action;
+- (void)_loadNextPageIfNecessaryForOffset:(CGPoint)offset;
 - (void)_reloadData;
-- (void)_setReviewListWithResponse:(id)a3 error:(id)a4;
-- (void)_sortSelectionAction:(id)a3;
-- (void)_starRatingAction:(id)a3;
-- (void)_versionSelectionAction:(id)a3;
-- (void)_writeAReviewAction:(id)a3;
+- (void)_setReviewListWithResponse:(id)response error:(id)error;
+- (void)_sortSelectionAction:(id)action;
+- (void)_starRatingAction:(id)action;
+- (void)_versionSelectionAction:(id)action;
+- (void)_writeAReviewAction:(id)action;
 - (void)dealloc;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)loadView;
 - (void)reloadData;
-- (void)reviewComposeViewControllerDidFinish:(id)a3;
-- (void)reviewsFacebookViewControllerDidChange:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAskPermission:(BOOL)a3;
-- (void)setClientContext:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFacebookLikeStatus:(id)a3;
-- (void)setHeaderViewController:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)reviewComposeViewControllerDidFinish:(id)finish;
+- (void)reviewsFacebookViewControllerDidChange:(id)change;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAskPermission:(BOOL)permission;
+- (void)setClientContext:(id)context;
+- (void)setDelegate:(id)delegate;
+- (void)setFacebookLikeStatus:(id)status;
+- (void)setHeaderViewController:(id)controller;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUIProductPageReviewsViewController
 
-- (SUUIProductPageReviewsViewController)initWithProductPage:(id)a3
+- (SUUIProductPageReviewsViewController)initWithProductPage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v9.receiver = self;
   v9.super_class = SUUIProductPageReviewsViewController;
   v6 = [(SUUIProductPageReviewsViewController *)&v9 init];
@@ -57,7 +57,7 @@
   if (v6)
   {
     v6->_isPad = SUUIUserInterfaceIdiom(v6->_clientContext) == 1;
-    objc_storeStrong(&v7->_productPage, a3);
+    objc_storeStrong(&v7->_productPage, page);
     v7->_sortOrder = 1;
   }
 
@@ -67,24 +67,24 @@
 - (void)dealloc
 {
   [(SKComposeReviewViewController *)self->_composeViewController setDelegate:0];
-  v3 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  appSupportButton = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
+  [appSupportButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController segmentedControl];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  segmentedControl = [(SUUIReviewsHistogramViewController *)self->_histogramViewController segmentedControl];
+  [segmentedControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController starRatingControl];
-  [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  starRatingControl = [(SUUIReviewsHistogramViewController *)self->_histogramViewController starRatingControl];
+  [starRatingControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
-  [v6 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  writeAReviewButton = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
+  [writeAReviewButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
-  v7 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
-  [v7 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  appSupportButton2 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
+  [appSupportButton2 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v8 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
-  [v8 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  writeAReviewButton2 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
+  [writeAReviewButton2 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   v9.receiver = self;
   v9.super_class = SUUIProductPageReviewsViewController;
@@ -126,15 +126,15 @@
   }
 }
 
-- (void)setFacebookLikeStatus:(id)a3
+- (void)setFacebookLikeStatus:(id)status
 {
-  v18 = a3;
-  v4 = [(SUUIReviewsFacebookViewController *)self->_facebookViewController facebookLikeStatus];
+  statusCopy = status;
+  facebookLikeStatus = [(SUUIReviewsFacebookViewController *)self->_facebookViewController facebookLikeStatus];
 
-  if (v4 != v18)
+  if (facebookLikeStatus != statusCopy)
   {
     facebookViewController = self->_facebookViewController;
-    if (v18)
+    if (statusCopy)
     {
       if (!facebookViewController)
       {
@@ -144,24 +144,24 @@
 
         [(SUUIReviewsFacebookViewController *)self->_facebookViewController setClientContext:self->_clientContext];
         [(SUUIReviewsFacebookViewController *)self->_facebookViewController setDelegate:self];
-        v9 = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
-        v10 = [(SUUIProductPage *)self->_productPage uber];
-        v11 = [v10 colorScheme];
-        [v9 setColorScheme:v11];
+        view = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
+        uber = [(SUUIProductPage *)self->_productPage uber];
+        colorScheme = [uber colorScheme];
+        [view setColorScheme:colorScheme];
 
         [(SUUIProductPageReviewsViewController *)self addChildViewController:self->_facebookViewController];
         facebookViewController = self->_facebookViewController;
       }
 
       [(SUUIReviewsFacebookViewController *)facebookViewController setFacebookLikeStatus:?];
-      v12 = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
-      [v12 setAutoresizingMask:2];
+      view2 = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
+      [view2 setAutoresizingMask:2];
       v13 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
-      [v12 setBackgroundColor:v13];
+      [view2 setBackgroundColor:v13];
 
       [(SUUIProductPageReviewsViewController *)self _defaultPageWidth];
-      [v12 sizeThatFits:?];
-      [v12 setFrame:{0.0, 0.0, v14, v15}];
+      [view2 sizeThatFits:?];
+      [view2 setFrame:{0.0, 0.0, v14, v15}];
     }
 
     else
@@ -177,7 +177,7 @@ LABEL_9:
       }
 
       [(SUUIReviewsFacebookViewController *)facebookViewController removeFromParentViewController];
-      v12 = self->_facebookViewController;
+      view2 = self->_facebookViewController;
       self->_facebookViewController = 0;
     }
 
@@ -189,13 +189,13 @@ LABEL_10:
   MEMORY[0x2821F9730](v5);
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v14 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     self->_isPad = SUUIUserInterfaceIdiom(self->_clientContext) == 1;
     clientContext = self->_clientContext;
     if (clientContext)
@@ -210,66 +210,66 @@ LABEL_10:
     v7 = ;
     [(SUUIProductPageReviewsViewController *)self setTitle:v7];
 
-    v8 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
-    v9 = [(SUUIClientContext *)self->_clientContext clientInterface];
-    v10 = [v9 clientIdentifier];
-    [v8 setEnabled:v10 == 0];
+    writeAReviewButton = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
+    clientInterface = [(SUUIClientContext *)self->_clientContext clientInterface];
+    clientIdentifier = [clientInterface clientIdentifier];
+    [writeAReviewButton setEnabled:clientIdentifier == 0];
 
-    v11 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
-    v12 = [(SUUIClientContext *)self->_clientContext clientInterface];
-    v13 = [v12 clientIdentifier];
-    [v11 setEnabled:v13 == 0];
+    writeAReviewButton2 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
+    clientInterface2 = [(SUUIClientContext *)self->_clientContext clientInterface];
+    clientIdentifier2 = [clientInterface2 clientIdentifier];
+    [writeAReviewButton2 setEnabled:clientIdentifier2 == 0];
 
-    v5 = v14;
+    contextCopy = v14;
   }
 }
 
-- (void)setAskPermission:(BOOL)a3
+- (void)setAskPermission:(BOOL)permission
 {
-  if (self->_askPermission != a3)
+  if (self->_askPermission != permission)
   {
-    self->_askPermission = a3;
-    v4 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
-    [v4 setEnabled:!self->_askPermission];
+    self->_askPermission = permission;
+    appSupportButton = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
+    [appSupportButton setEnabled:!self->_askPermission];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(SUUIProductPageReviewsViewController *)self _tableView];
-  [(SUUIProductPageReviewsViewController *)self setView:v3];
+  _tableView = [(SUUIProductPageReviewsViewController *)self _tableView];
+  [(SUUIProductPageReviewsViewController *)self setView:_tableView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIProductPageTableView *)self->_tableView contentOffset];
   [(SUUIProductPageReviewsViewController *)self _loadNextPageIfNecessaryForOffset:?];
   v5.receiver = self;
   v5.super_class = SUUIProductPageReviewsViewController;
-  [(SUUIProductPageReviewsViewController *)&v5 viewDidAppear:v3];
+  [(SUUIProductPageReviewsViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIProductPageReviewsViewController *)self reloadData];
   v5.receiver = self;
   v5.super_class = SUUIProductPageReviewsViewController;
-  [(SUUIProductPageReviewsViewController *)&v5 viewWillAppear:v3];
+  [(SUUIProductPageReviewsViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)setHeaderViewController:(id)a3
+- (void)setHeaderViewController:(id)controller
 {
-  v6 = a3;
-  if (self->_headerViewController != v6)
+  controllerCopy = controller;
+  if (self->_headerViewController != controllerCopy)
   {
     [(SUUIProductPageTableView *)self->_tableView setProductPageHeaderView:0];
-    v5 = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
-    [v5 removeFromSuperview];
+    view = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
+    [view removeFromSuperview];
 
     [(SUUIProductPageHeaderViewController *)self->_headerViewController removeFromParentViewController];
-    objc_storeStrong(&self->_headerViewController, a3);
+    objc_storeStrong(&self->_headerViewController, controller);
     if (self->_headerViewController)
     {
       [(SUUIProductPageReviewsViewController *)self addChildViewController:?];
@@ -281,9 +281,9 @@ LABEL_10:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -301,13 +301,13 @@ LABEL_10:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained productPageChildViewControllerDidScroll:self];
 }
 
-- (void)reviewsFacebookViewControllerDidChange:(id)a3
+- (void)reviewsFacebookViewControllerDidChange:(id)change
 {
   [(SUUIProductPageTableView *)self->_tableView beginUpdates];
   tableView = self->_tableView;
@@ -315,7 +315,7 @@ LABEL_10:
   [(SUUIProductPageTableView *)tableView endUpdates];
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   [(SUUIProductPageTableView *)self->_tableView reloadData];
   [(SUUIProductPageTableView *)self->_tableView contentOffset];
@@ -323,10 +323,10 @@ LABEL_10:
   [(SUUIProductPageReviewsViewController *)self _loadNextPageIfNecessaryForOffset:?];
 }
 
-- (void)reviewComposeViewControllerDidFinish:(id)a3
+- (void)reviewComposeViewControllerDidFinish:(id)finish
 {
   composeViewController = self->_composeViewController;
-  if (composeViewController == a3)
+  if (composeViewController == finish)
   {
     [(SKComposeReviewViewController *)composeViewController setDelegate:0];
     [(SKComposeReviewViewController *)self->_composeViewController dismissViewControllerAnimated:1 completion:0];
@@ -335,20 +335,20 @@ LABEL_10:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == 3)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 3)
   {
-    v9 = [(SUUIProductPageReviewsViewController *)self _loadMoreCellForTableView:v6 indexPath:v7];
+    v9 = [(SUUIProductPageReviewsViewController *)self _loadMoreCellForTableView:viewCopy indexPath:pathCopy];
     goto LABEL_5;
   }
 
-  if (v8 == 2)
+  if (section == 2)
   {
-    v9 = [(SUUIProductPageReviewsViewController *)self _textBoxCellForTableView:v6 indexPath:v7];
+    v9 = [(SUUIProductPageReviewsViewController *)self _textBoxCellForTableView:viewCopy indexPath:pathCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -360,41 +360,41 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (section == 2)
   {
-    v8 = [(SUUIReviewList *)self->_reviewList reviews];
-    v7 = [v8 count];
+    reviews = [(SUUIReviewList *)self->_reviewList reviews];
+    _shouldShowLoadMoreCell = [reviews count];
   }
 
-  else if (a4 == 3)
+  else if (section == 3)
   {
-    v7 = [(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell];
+    _shouldShowLoadMoreCell = [(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell];
   }
 
   else
   {
-    v7 = 0;
+    _shouldShowLoadMoreCell = 0;
   }
 
-  return v7;
+  return _shouldShowLoadMoreCell;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if ([a5 section] == 3)
+  cellCopy = cell;
+  if ([path section] == 3)
   {
-    [v6 stopAnimating];
+    [cellCopy stopAnimating];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   expandedIndexSet = self->_expandedIndexSet;
   if (!expandedIndexSet)
   {
@@ -405,23 +405,23 @@ LABEL_7:
     expandedIndexSet = self->_expandedIndexSet;
   }
 
-  -[NSMutableIndexSet addIndex:](expandedIndexSet, "addIndex:", [v5 row]);
+  -[NSMutableIndexSet addIndex:](expandedIndexSet, "addIndex:", [pathCopy row]);
   tableView = self->_tableView;
-  v11[0] = v5;
+  v11[0] = pathCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   [(SUUIProductPageTableView *)tableView reloadRowsAtIndexPaths:v10 withRowAnimation:100];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (section == 2)
   {
-    v12 = [(SUUIProductPageReviewsViewController *)self _reviewsHeaderView];
-    v9 = v12;
-    if (v12)
+    _reviewsHeaderView = [(SUUIProductPageReviewsViewController *)self _reviewsHeaderView];
+    view = _reviewsHeaderView;
+    if (_reviewsHeaderView)
     {
-      [v12 frame];
+      [_reviewsHeaderView frame];
       v7 = v13;
     }
 
@@ -434,26 +434,26 @@ LABEL_7:
   }
 
   v7 = 0.0;
-  if (a4 == 1)
+  if (section == 1)
   {
     if (self->_reviewList)
     {
-      v10 = [(SUUIProductPageReviewsViewController *)self _histogramViewController];
-      v9 = [v10 view];
+      _histogramViewController = [(SUUIProductPageReviewsViewController *)self _histogramViewController];
+      view = [_histogramViewController view];
 
       goto LABEL_8;
     }
   }
 
-  else if (!a4)
+  else if (!section)
   {
     facebookViewController = self->_facebookViewController;
     if (facebookViewController)
     {
-      v9 = [(SUUIReviewsFacebookViewController *)facebookViewController view];
+      view = [(SUUIReviewsFacebookViewController *)facebookViewController view];
 LABEL_8:
       [(SUUIProductPageReviewsViewController *)self _defaultPageWidth];
-      [v9 sizeThatFits:?];
+      [view sizeThatFits:?];
       v7 = v11;
 LABEL_12:
     }
@@ -462,12 +462,12 @@ LABEL_12:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == 2)
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
-    v6 = [v5 row];
+    v6 = [pathCopy row];
     v7 = [(SUUILayoutCache *)self->_layoutCache layoutForIndex:v6];
     v8 = v7;
     if (v7)
@@ -530,15 +530,15 @@ LABEL_12:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [(SUUIProductPage *)self->_productPage uber];
-  v7 = [v6 colorScheme];
-  v8 = [v7 backgroundColor];
-  v9 = v8;
-  if (v8)
+  uber = [(SUUIProductPage *)self->_productPage uber];
+  colorScheme = [uber colorScheme];
+  backgroundColor = [colorScheme backgroundColor];
+  v9 = backgroundColor;
+  if (backgroundColor)
   {
-    v10 = v8;
+    v10 = backgroundColor;
   }
 
   else
@@ -548,18 +548,18 @@ LABEL_12:
 
   v11 = v10;
 
-  if (a4 == 2)
+  if (section == 2)
   {
-    v12 = [(SUUIProductPageReviewsViewController *)self _reviewsHeaderView];
+    _reviewsHeaderView = [(SUUIProductPageReviewsViewController *)self _reviewsHeaderView];
     goto LABEL_12;
   }
 
-  if (a4 == 1)
+  if (section == 1)
   {
     if (self->_reviewList)
     {
-      v13 = [(SUUIProductPageReviewsViewController *)self _histogramViewController];
-      v14 = [v13 view];
+      _histogramViewController = [(SUUIProductPageReviewsViewController *)self _histogramViewController];
+      view = [_histogramViewController view];
 
       goto LABEL_13;
     }
@@ -567,73 +567,73 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (section)
   {
 LABEL_10:
-    v14 = 0;
+    view = 0;
     goto LABEL_13;
   }
 
-  v12 = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
+  _reviewsHeaderView = [(SUUIReviewsFacebookViewController *)self->_facebookViewController view];
 LABEL_12:
-  v14 = v12;
+  view = _reviewsHeaderView;
 LABEL_13:
-  [v14 setBackgroundColor:v11];
+  [view setBackgroundColor:v11];
 
-  return v14;
+  return view;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v16 = a3;
-  v8 = a4;
+  viewCopy = view;
+  cellCopy = cell;
   productPage = self->_productPage;
-  v10 = a5;
-  v11 = [(SUUIProductPage *)productPage uber];
-  v12 = [v11 colorScheme];
-  v13 = [v12 backgroundColor];
-  if (v13)
+  pathCopy = path;
+  uber = [(SUUIProductPage *)productPage uber];
+  colorScheme = [uber colorScheme];
+  backgroundColor = [colorScheme backgroundColor];
+  if (backgroundColor)
   {
-    [v8 setBackgroundColor:v13];
+    [cellCopy setBackgroundColor:backgroundColor];
   }
 
   else
   {
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
-    [v8 setBackgroundColor:v14];
+    [cellCopy setBackgroundColor:v14];
   }
 
-  v15 = [v10 section];
-  if (v15 == 3)
+  section = [pathCopy section];
+  if (section == 3)
   {
-    [v8 startAnimating];
-    [v16 contentOffset];
+    [cellCopy startAnimating];
+    [viewCopy contentOffset];
     [(SUUIProductPageReviewsViewController *)self _loadNextPageIfNecessaryForOffset:?];
   }
 }
 
-- (void)_appSupportAction:(id)a3
+- (void)_appSupportAction:(id)action
 {
-  v3 = [(SUUIProductPage *)self->_productPage item];
-  v6 = [v3 supportURLString];
+  item = [(SUUIProductPage *)self->_productPage item];
+  supportURLString = [item supportURLString];
 
-  v4 = v6;
-  if (v6)
+  v4 = supportURLString;
+  if (supportURLString)
   {
-    v5 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+    v5 = [MEMORY[0x277CBEBC0] URLWithString:supportURLString];
     SUUIMetricsOpenURL(v5);
 
-    v4 = v6;
+    v4 = supportURLString;
   }
 }
 
-- (void)_sortSelectionAction:(id)a3
+- (void)_sortSelectionAction:(id)action
 {
   sortOrder = self->_sortOrder;
-  v5 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView selectedSortIndex];
-  if (v5 <= 3)
+  selectedSortIndex = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView selectedSortIndex];
+  if (selectedSortIndex <= 3)
   {
-    sortOrder = qword_259FCACB8[v5];
+    sortOrder = qword_259FCACB8[selectedSortIndex];
   }
 
   if (self->_sortOrder != sortOrder)
@@ -648,29 +648,29 @@ LABEL_13:
   }
 }
 
-- (void)_starRatingAction:(id)a3
+- (void)_starRatingAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController personalStarRating];
+  actionCopy = action;
+  personalStarRating = [(SUUIReviewsHistogramViewController *)self->_histogramViewController personalStarRating];
   if (!self->_starRatingQueue)
   {
     v6 = [SUUIStarRatingQueue alloc];
     clientContext = self->_clientContext;
-    v8 = [(SUUIProductPage *)self->_productPage reviewConfiguration];
-    v9 = [(SUUIStarRatingQueue *)v6 initWithClientContext:clientContext reviewConfiguration:v8];
+    reviewConfiguration = [(SUUIProductPage *)self->_productPage reviewConfiguration];
+    v9 = [(SUUIStarRatingQueue *)v6 initWithClientContext:clientContext reviewConfiguration:reviewConfiguration];
     starRatingQueue = self->_starRatingQueue;
     self->_starRatingQueue = v9;
 
     v11 = self->_starRatingQueue;
-    v12 = [(SUUIProductPageReviewsViewController *)self view];
-    v13 = [v12 window];
-    [(SUUIStarRatingQueue *)v11 setWindow:v13];
+    view = [(SUUIProductPageReviewsViewController *)self view];
+    window = [view window];
+    [(SUUIStarRatingQueue *)v11 setWindow:window];
   }
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(SUUIProductPage *)self->_productPage item];
-  v16 = [v14 stringWithFormat:@"%lld", objc_msgSend(v15, "itemIdentifier")];
+  item = [(SUUIProductPage *)self->_productPage item];
+  v16 = [v14 stringWithFormat:@"%lld", objc_msgSend(item, "itemIdentifier")];
 
   v17 = self->_starRatingQueue;
   v18[0] = MEMORY[0x277D85DD0];
@@ -678,7 +678,7 @@ LABEL_13:
   v18[2] = __58__SUUIProductPageReviewsViewController__starRatingAction___block_invoke;
   v18[3] = &unk_2798F6AF8;
   objc_copyWeak(&v19, &location);
-  [(SUUIStarRatingQueue *)v17 setRating:v5 forItemID:v16 completionBlock:v18];
+  [(SUUIStarRatingQueue *)v17 setRating:personalStarRating forItemID:v16 completionBlock:v18];
   objc_destroyWeak(&v19);
 
   objc_destroyWeak(&location);
@@ -704,7 +704,7 @@ void __58__SUUIProductPageReviewsViewController__starRatingAction___block_invoke
   [WeakRetained _resetPersonalStarRating];
 }
 
-- (void)_versionSelectionAction:(id)a3
+- (void)_versionSelectionAction:(id)action
 {
   v4 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController selectedSegmentIndex]== 1;
   if (self->_showAllVersions != v4)
@@ -719,14 +719,14 @@ void __58__SUUIProductPageReviewsViewController__starRatingAction___block_invoke
   }
 }
 
-- (void)_writeAReviewAction:(id)a3
+- (void)_writeAReviewAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!self->_composeViewController)
   {
     v5 = objc_alloc(MEMORY[0x277CDD350]);
-    v6 = [(SUUIReviewList *)self->_reviewList writeReviewURL];
-    v7 = [v5 initWithCompositionURL:v6];
+    writeReviewURL = [(SUUIReviewList *)self->_reviewList writeReviewURL];
+    v7 = [v5 initWithCompositionURL:writeReviewURL];
 
     [v7 setDelegate:self];
     objc_storeStrong(&self->_composeViewController, v7);
@@ -756,26 +756,26 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
 
 - (void)_addHeaderView
 {
-  v8 = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v8 setAutoresizingMask:2];
-  [v8 frame];
+  view = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view setAutoresizingMask:2];
+  [view frame];
   v4 = v3;
   [(SUUIProductPageTableView *)self->_tableView bounds];
-  [v8 setFrame:{0.0, v4}];
-  [(SUUIProductPageTableView *)self->_tableView _addContentSubview:v8 atBack:0];
-  v5 = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-  [v5 setAutoresizingMask:2];
-  [v5 frame];
+  [view setFrame:{0.0, v4}];
+  [(SUUIProductPageTableView *)self->_tableView _addContentSubview:view atBack:0];
+  floatingView = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+  [floatingView setAutoresizingMask:2];
+  [floatingView frame];
   v7 = v6;
   [(SUUIProductPageTableView *)self->_tableView bounds];
-  [v5 setFrame:{0.0, v7}];
-  [(SUUIProductPageTableView *)self->_tableView setProductPageHeaderView:v5];
+  [floatingView setFrame:{0.0, v7}];
+  [(SUUIProductPageTableView *)self->_tableView setProductPageHeaderView:floatingView];
 }
 
-- (void)_addReviewsFromResponse:(id)a3 error:(id)a4
+- (void)_addReviewsFromResponse:(id)response error:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
@@ -783,27 +783,27 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [[SUUIReviewList alloc] initWithReviewListDictionary:v5];
-    v8 = [(SUUIReviewList *)v7 reviews];
-    v9 = [v8 count];
+    v7 = [[SUUIReviewList alloc] initWithReviewListDictionary:responseCopy];
+    reviews = [(SUUIReviewList *)v7 reviews];
+    v9 = [reviews count];
     if (v9 > 0)
     {
       v28 = v9;
       v31 = v7;
-      v32 = v5;
-      v10 = [(SUUIReviewList *)self->_reviewList reviews];
-      v11 = [v10 count];
+      v32 = responseCopy;
+      reviews2 = [(SUUIReviewList *)self->_reviewList reviews];
+      v11 = [reviews2 count];
 
-      v29 = [(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell];
-      [(SUUIReviewList *)self->_reviewList addReviews:v8];
+      _shouldShowLoadMoreCell = [(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell];
+      [(SUUIReviewList *)self->_reviewList addReviews:reviews];
       ++self->_loadedPageCount;
       v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v30 = v8;
-      v13 = v8;
+      v30 = reviews;
+      v13 = reviews;
       v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v14)
       {
@@ -818,11 +818,11 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
               objc_enumerationMutation(v13);
             }
 
-            v18 = [*(*(&v33 + 1) + 8 * i) body];
-            v19 = v18;
-            if (v18)
+            body = [*(*(&v33 + 1) + 8 * i) body];
+            v19 = body;
+            if (body)
             {
-              v20 = v18;
+              v20 = body;
             }
 
             else
@@ -854,7 +854,7 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
 
       while (v11 < v23);
       [(SUUIProductPageTableView *)self->_tableView insertRowsAtIndexPaths:v22 withRowAnimation:5];
-      if (v29 && ![(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell])
+      if (_shouldShowLoadMoreCell && ![(SUUIProductPageReviewsViewController *)self _shouldShowLoadMoreCell])
       {
         tableView = self->_tableView;
         v26 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:3];
@@ -866,8 +866,8 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
       [(SUUIProductPageTableView *)self->_tableView endUpdates];
 
       v7 = v31;
-      v5 = v32;
-      v8 = v30;
+      responseCopy = v32;
+      reviews = v30;
     }
 
     [(SUUIProductPageTableView *)self->_tableView contentOffset];
@@ -875,13 +875,13 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
   }
 }
 
-- (id)_bottomBorderColorForScheme:(id)a3
+- (id)_bottomBorderColorForScheme:(id)scheme
 {
-  v3 = [a3 primaryTextColor];
-  v4 = v3;
-  if (v3)
+  primaryTextColor = [scheme primaryTextColor];
+  v4 = primaryTextColor;
+  if (primaryTextColor)
   {
-    v5 = v3;
+    v5 = primaryTextColor;
   }
 
   else
@@ -901,16 +901,16 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
     return 630.0;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 320.0;
   }
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v2 = v6;
 
   return v2;
@@ -928,10 +928,10 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
 
     [(SUUIReviewsHistogramViewController *)self->_histogramViewController setClientContext:self->_clientContext];
     [(SUUIReviewsHistogramViewController *)self->_histogramViewController setReviewList:self->_reviewList];
-    v6 = [(SUUIProductPage *)self->_productPage item];
-    v7 = [v6 itemKind];
+    item = [(SUUIProductPage *)self->_productPage item];
+    itemKind = [item itemKind];
 
-    if (v7 != 17)
+    if (itemKind != 17)
     {
       clientContext = self->_clientContext;
       if (clientContext)
@@ -974,37 +974,37 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
 
       else
       {
-        v17 = [(SUUIProductPage *)self->_productPage item];
-        v18 = [v17 versionString];
-        [(SUUIReviewsHistogramViewController *)v16 setVersionString:v18];
+        item2 = [(SUUIProductPage *)self->_productPage item];
+        versionString = [item2 versionString];
+        [(SUUIReviewsHistogramViewController *)v16 setVersionString:versionString];
       }
     }
 
-    v19 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController view];
-    [v19 setAutoresizingMask:2];
-    v20 = [(SUUIProductPage *)self->_productPage uber];
-    v21 = [v20 colorScheme];
-    [v19 setColorScheme:v21];
+    view = [(SUUIReviewsHistogramViewController *)self->_histogramViewController view];
+    [view setAutoresizingMask:2];
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [view setColorScheme:colorScheme];
 
-    v22 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
-    [v22 addTarget:self action:sel__appSupportAction_ forControlEvents:64];
+    appSupportButton = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
+    [appSupportButton addTarget:self action:sel__appSupportAction_ forControlEvents:64];
 
-    v23 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController segmentedControl];
-    [v23 addTarget:self action:sel__versionSelectionAction_ forControlEvents:4096];
+    segmentedControl = [(SUUIReviewsHistogramViewController *)self->_histogramViewController segmentedControl];
+    [segmentedControl addTarget:self action:sel__versionSelectionAction_ forControlEvents:4096];
 
-    v24 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController starRatingControl];
-    [v24 addTarget:self action:sel__starRatingAction_ forControlEvents:4096];
+    starRatingControl = [(SUUIReviewsHistogramViewController *)self->_histogramViewController starRatingControl];
+    [starRatingControl addTarget:self action:sel__starRatingAction_ forControlEvents:4096];
 
-    v25 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
-    [v25 addTarget:self action:sel__writeAReviewAction_ forControlEvents:64];
+    writeAReviewButton = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
+    [writeAReviewButton addTarget:self action:sel__writeAReviewAction_ forControlEvents:64];
 
-    v26 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
-    [v26 setEnabled:!self->_askPermission];
+    appSupportButton2 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController appSupportButton];
+    [appSupportButton2 setEnabled:!self->_askPermission];
 
-    v27 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
-    v28 = [(SUUIClientContext *)self->_clientContext clientInterface];
-    v29 = [v28 clientIdentifier];
-    [v27 setEnabled:v29 == 0];
+    writeAReviewButton2 = [(SUUIReviewsHistogramViewController *)self->_histogramViewController writeAReviewButton];
+    clientInterface = [(SUUIClientContext *)self->_clientContext clientInterface];
+    clientIdentifier = [clientInterface clientIdentifier];
+    [writeAReviewButton2 setEnabled:clientIdentifier == 0];
 
     [(SUUIProductPageReviewsViewController *)self addChildViewController:self->_histogramViewController];
     histogramViewController = self->_histogramViewController;
@@ -1013,9 +1013,9 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
   return histogramViewController;
 }
 
-- (id)_loadMoreCellForTableView:(id)a3 indexPath:(id)a4
+- (id)_loadMoreCellForTableView:(id)view indexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:{@"1", a4}];
+  v4 = [view dequeueReusableCellWithIdentifier:{@"1", path}];
   if (!v4)
   {
     v4 = [[SUUILoadMoreCell alloc] initWithStyle:0 reuseIdentifier:@"1"];
@@ -1024,22 +1024,22 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
   return v4;
 }
 
-- (void)_loadNextPageIfNecessaryForOffset:(CGPoint)a3
+- (void)_loadNextPageIfNecessaryForOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if ([(SUUIProductPageReviewsViewController *)self isViewLoaded])
   {
-    v27 = [(SUUIProductPageReviewsViewController *)self view];
-    if ([v27 isHidden])
+    view = [(SUUIProductPageReviewsViewController *)self view];
+    if ([view isHidden])
     {
     }
 
     else
     {
-      v6 = [v27 window];
+      window = [view window];
 
-      if (v6)
+      if (window)
       {
         if (!self->_loadOperation)
         {
@@ -1050,8 +1050,8 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
             v9 = [(SUUIProductPageTableView *)self->_tableView indexPathForRowAtPoint:x, y + v8];
             if (v9)
             {
-              v10 = [(SUUIReviewList *)self->_reviewList reviews];
-              v11 = [v10 count];
+              reviews = [(SUUIReviewList *)self->_reviewList reviews];
+              v11 = [reviews count];
 
               v12 = [v9 row];
               if (v11 > v12 && v11 - v12 <= 10)
@@ -1081,8 +1081,8 @@ void __60__SUUIProductPageReviewsViewController__writeAReviewAction___block_invo
                 v29 = v23;
                 v25 = v23;
                 [(SSVLoadURLOperation *)v24 setOutputBlock:v28];
-                v26 = [(SUUIProductPageReviewsViewController *)self operationQueue];
-                [v26 addOperation:self->_loadOperation];
+                operationQueue = [(SUUIProductPageReviewsViewController *)self operationQueue];
+                [operationQueue addOperation:self->_loadOperation];
               }
             }
           }
@@ -1140,8 +1140,8 @@ void __74__SUUIProductPageReviewsViewController__loadNextPageIfNecessaryForOffse
   v17 = v12;
   v14 = v12;
   [(SSVLoadURLOperation *)v13 setOutputBlock:v16];
-  v15 = [(SUUIProductPageReviewsViewController *)self operationQueue];
-  [v15 addOperation:self->_loadOperation];
+  operationQueue = [(SUUIProductPageReviewsViewController *)self operationQueue];
+  [operationQueue addOperation:self->_loadOperation];
 }
 
 void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1179,9 +1179,9 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
       self->_reviewsHeaderView = v4;
 
       v6 = self->_reviewsHeaderView;
-      v7 = [(SUUIProductPage *)self->_productPage uber];
-      v8 = [v7 colorScheme];
-      [(SUUIIPadCustomerReviewsHeaderView *)v6 setColorScheme:v8];
+      uber = [(SUUIProductPage *)self->_productPage uber];
+      colorScheme = [uber colorScheme];
+      [(SUUIIPadCustomerReviewsHeaderView *)v6 setColorScheme:colorScheme];
 
       [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView addTarget:self action:sel__sortSelectionAction_ forControlEvents:4096];
       [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView setAutoresizingMask:2];
@@ -1246,19 +1246,19 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
       [(SUUIIPadCustomerReviewsHeaderView *)v21 setSortTitles:v22];
 
       [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView sizeToFit];
-      v23 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
-      [v23 addTarget:self action:sel__appSupportAction_ forControlEvents:64];
+      appSupportButton = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
+      [appSupportButton addTarget:self action:sel__appSupportAction_ forControlEvents:64];
 
-      v24 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
-      [v24 addTarget:self action:sel__writeAReviewAction_ forControlEvents:64];
+      writeAReviewButton = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
+      [writeAReviewButton addTarget:self action:sel__writeAReviewAction_ forControlEvents:64];
 
-      v25 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
-      [v25 setEnabled:!self->_askPermission];
+      appSupportButton2 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView appSupportButton];
+      [appSupportButton2 setEnabled:!self->_askPermission];
 
-      v26 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
-      v27 = [(SUUIClientContext *)self->_clientContext clientInterface];
-      v28 = [v27 clientIdentifier];
-      [v26 setEnabled:v28 == 0];
+      writeAReviewButton2 = [(SUUIIPadCustomerReviewsHeaderView *)self->_reviewsHeaderView writeAReviewButton];
+      clientInterface = [(SUUIClientContext *)self->_clientContext clientInterface];
+      clientIdentifier = [clientInterface clientIdentifier];
+      [writeAReviewButton2 setEnabled:clientIdentifier == 0];
 
       reviewsHeaderView = self->_reviewsHeaderView;
     }
@@ -1272,10 +1272,10 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
   return reviewsHeaderView;
 }
 
-- (void)_setReviewListWithResponse:(id)a3 error:(id)a4
+- (void)_setReviewListWithResponse:(id)response error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
@@ -1283,8 +1283,8 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v5;
-    v7 = [[SUUIReviewList alloc] initWithReviewListDictionary:v5];
+    v25 = responseCopy;
+    v7 = [[SUUIReviewList alloc] initWithReviewListDictionary:responseCopy];
     reviewList = self->_reviewList;
     self->_reviewList = v7;
 
@@ -1303,8 +1303,8 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [(SUUIReviewList *)self->_reviewList reviews];
-    v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    reviews = [(SUUIReviewList *)self->_reviewList reviews];
+    v14 = [reviews countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1315,14 +1315,14 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(reviews);
           }
 
-          v18 = [*(*(&v26 + 1) + 8 * i) body];
-          v19 = v18;
-          if (v18)
+          body = [*(*(&v26 + 1) + 8 * i) body];
+          v19 = body;
+          if (body)
           {
-            v20 = v18;
+            v20 = body;
           }
 
           else
@@ -1334,7 +1334,7 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
           [v12 addObject:v21];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v15 = [reviews countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v15);
@@ -1350,12 +1350,12 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
 
     else
     {
-      v23 = [(SUUIProductPage *)self->_productPage item];
-      v24 = [v23 versionString];
-      [(SUUIReviewsHistogramViewController *)histogramViewController setVersionString:v24];
+      item = [(SUUIProductPage *)self->_productPage item];
+      versionString = [item versionString];
+      [(SUUIReviewsHistogramViewController *)histogramViewController setVersionString:versionString];
     }
 
-    v5 = v25;
+    responseCopy = v25;
     [(SUUIProductPageTableView *)self->_tableView reloadData];
   }
 }
@@ -1370,12 +1370,12 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
     self->_tableView = v4;
 
     v6 = self->_tableView;
-    v7 = [(SUUIProductPage *)self->_productPage uber];
-    v8 = [v7 colorScheme];
-    v9 = [v8 backgroundColor];
-    if (v9)
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    if (backgroundColor)
     {
-      [(SUUIProductPageTableView *)v6 setBackgroundColor:v9];
+      [(SUUIProductPageTableView *)v6 setBackgroundColor:backgroundColor];
     }
 
     else
@@ -1402,28 +1402,28 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
   return tableView;
 }
 
-- (id)_textBoxCellForTableView:(id)a3 indexPath:(id)a4
+- (id)_textBoxCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"0"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"0"];
   if (v7)
   {
     v8 = v7;
-    v9 = [(SUUITextBoxTableViewCell *)v7 textBoxView];
+    textBoxView = [(SUUITextBoxTableViewCell *)v7 textBoxView];
   }
 
   else
   {
     v8 = [[SUUITextBoxTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"0"];
     [(SUUITextBoxTableViewCell *)v8 setSelectionStyle:0];
-    v10 = [(SUUIProductPage *)self->_productPage uber];
-    v11 = [v10 colorScheme];
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
 
-    v12 = [(SUUIProductPageReviewsViewController *)self _bottomBorderColorForScheme:v11];
+    v12 = [(SUUIProductPageReviewsViewController *)self _bottomBorderColorForScheme:colorScheme];
     [(SUUITableViewCell *)v8 setBottomBorderColor:v12];
 
-    v9 = [(SUUITextBoxTableViewCell *)v8 textBoxView];
-    [v9 setColorScheme:v11];
+    textBoxView = [(SUUITextBoxTableViewCell *)v8 textBoxView];
+    [textBoxView setColorScheme:colorScheme];
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -1435,18 +1435,18 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
       [SUUIClientContext localizedStringForKey:@"MORE_BUTTON" inBundles:0];
     }
     v14 = ;
-    [v9 setMoreButtonTitle:v14];
+    [textBoxView setMoreButtonTitle:v14];
   }
 
-  v15 = [v6 row];
+  v15 = [pathCopy row];
 
   v16 = [(SUUILayoutCache *)self->_layoutCache layoutForIndex:v15];
   if (v16)
   {
-    v17 = [(SUUIReviewList *)self->_reviewList reviews];
-    v18 = [v17 objectAtIndex:v15];
+    reviews = [(SUUIReviewList *)self->_reviewList reviews];
+    v18 = [reviews objectAtIndex:v15];
 
-    [v9 setFixedWidthTextFrame:{objc_msgSend(v16, "textFrame")}];
+    [textBoxView setFixedWidthTextFrame:{objc_msgSend(v16, "textFrame")}];
     if ([(NSMutableIndexSet *)self->_expandedIndexSet containsIndex:v15])
     {
       v19 = 0;
@@ -1457,33 +1457,33 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
       v19 = 5;
     }
 
-    [v9 setNumberOfVisibleLines:v19];
+    [textBoxView setNumberOfVisibleLines:v19];
     [v18 rating];
-    [v9 setRating:(v20 / 5.0)];
+    [textBoxView setRating:(v20 / 5.0)];
     v21 = [v18 formattedBylineWithClientContext:self->_clientContext];
-    [v9 setRatingText:v21];
+    [textBoxView setRatingText:v21];
 
     v22 = MEMORY[0x277CCACA8];
     v23 = v15 + 1;
-    v24 = [v18 title];
-    v25 = [v22 stringWithFormat:@"%ld. %@", v23, v24];
-    [v9 setTitle:v25];
+    title = [v18 title];
+    v25 = [v22 stringWithFormat:@"%ld. %@", v23, title];
+    [textBoxView setTitle:v25];
   }
 
   else
   {
-    [v9 reset];
+    [textBoxView reset];
   }
 
   return v8;
 }
 
-- (id)_textLayoutRequestWithText:(id)a3
+- (id)_textLayoutRequestWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(SUUITextLayoutRequest);
   [(SUUITextLayoutRequest *)v5 setNumberOfLines:5];
-  [(SUUITextLayoutRequest *)v5 setText:v4];
+  [(SUUITextLayoutRequest *)v5 setText:textCopy];
 
   [(SUUIProductPageReviewsViewController *)self _defaultPageWidth];
   [(SUUITextLayoutRequest *)v5 setWidth:v6 + -30.0];
@@ -1491,30 +1491,30 @@ void __51__SUUIProductPageReviewsViewController__reloadData__block_invoke_2(uint
   return v5;
 }
 
-- (id)_urlStringWithPageNumber:(int64_t)a3
+- (id)_urlStringWithPageNumber:(int64_t)number
 {
-  v5 = [(SUUIProductPage *)self->_productPage reviewConfiguration];
-  v6 = v5;
-  if (v5)
+  reviewConfiguration = [(SUUIProductPage *)self->_productPage reviewConfiguration];
+  v6 = reviewConfiguration;
+  if (reviewConfiguration)
   {
     if (self->_showAllVersions)
     {
-      [v5 allVersionsURLString];
+      [reviewConfiguration allVersionsURLString];
     }
 
     else
     {
-      [v5 currentVersionURLString];
+      [reviewConfiguration currentVersionURLString];
     }
     v10 = ;
-    v13 = [v6 pageNumberQueryParameter];
-    v12 = v13;
-    if (a3)
+    pageNumberQueryParameter = [v6 pageNumberQueryParameter];
+    v12 = pageNumberQueryParameter;
+    if (number)
     {
-      if (v13)
+      if (pageNumberQueryParameter)
       {
 LABEL_12:
-        [v10 stringByAppendingFormat:@"&sort-key=%ld&%@=%ld", self->_sortOrder, v12, a3];
+        [v10 stringByAppendingFormat:@"&sort-key=%ld&%@=%ld", self->_sortOrder, v12, number];
         goto LABEL_14;
       }
 
@@ -1526,18 +1526,18 @@ LABEL_11:
 
   else
   {
-    v7 = [(SUUIProductPage *)self->_productPage item];
+    item = [(SUUIProductPage *)self->_productPage item];
     showAllVersions = self->_showAllVersions;
-    v9 = [v7 reviewsURLString];
-    v10 = v9;
+    reviewsURLString = [item reviewsURLString];
+    v10 = reviewsURLString;
     if (!showAllVersions)
     {
-      v11 = [v9 stringByAppendingString:@"&appVersion=current"];
+      v11 = [reviewsURLString stringByAppendingString:@"&appVersion=current"];
 
       v10 = v11;
     }
 
-    if (a3)
+    if (number)
     {
       goto LABEL_11;
     }

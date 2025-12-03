@@ -1,21 +1,21 @@
 @interface DMWrapperProcessWatchdogCoordinatorPluginState
-- (DMWrapperProcessWatchdogCoordinatorPluginState)initWithPlugin:(id)a3;
+- (DMWrapperProcessWatchdogCoordinatorPluginState)initWithPlugin:(id)plugin;
 @end
 
 @implementation DMWrapperProcessWatchdogCoordinatorPluginState
 
-- (DMWrapperProcessWatchdogCoordinatorPluginState)initWithPlugin:(id)a3
+- (DMWrapperProcessWatchdogCoordinatorPluginState)initWithPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   v11.receiver = self;
   v11.super_class = DMWrapperProcessWatchdogCoordinatorPluginState;
   v5 = [(DMWrapperProcessWatchdogCoordinatorPluginState *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(DMWrapperProcessWatchdogCoordinatorPluginState *)v5 setPlugin:v4];
-    v7 = [v4 identifier];
-    v8 = [NSString stringWithFormat:@"com.apple.datamigrator.watchdogCoordinator.plugin.%@", v7];
+    [(DMWrapperProcessWatchdogCoordinatorPluginState *)v5 setPlugin:pluginCopy];
+    identifier = [pluginCopy identifier];
+    v8 = [NSString stringWithFormat:@"com.apple.datamigrator.watchdogCoordinator.plugin.%@", identifier];
     v9 = dispatch_queue_create([v8 UTF8String], 0);
     [(DMWrapperProcessWatchdogCoordinatorPluginState *)v6 setQueue:v9];
 

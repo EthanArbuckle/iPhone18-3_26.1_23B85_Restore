@@ -1,33 +1,33 @@
 @interface ICIAMLogEventRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEventParameters:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEventParameters:(id)parameters;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMLogEventRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(ICIAMLogEventRequest *)self setApplicationMessageIdentifier:?];
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_dSID = *(v4 + 1);
+    self->_dSID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ICIAMLogEventRequest *)self setDeviceID:?];
   }
@@ -36,7 +36,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -79,16 +79,16 @@
   return v5 ^ v6 ^ [(NSMutableArray *)self->_eventParameters hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   applicationMessageIdentifier = self->_applicationMessageIdentifier;
-  if (applicationMessageIdentifier | *(v4 + 2))
+  if (applicationMessageIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)applicationMessageIdentifier isEqual:?])
     {
@@ -98,13 +98,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_dSID != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_dSID != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v8 = 0;
@@ -112,13 +112,13 @@ LABEL_13:
   }
 
   deviceID = self->_deviceID;
-  if (deviceID | *(v4 + 3) && ![(NSString *)deviceID isEqual:?])
+  if (deviceID | *(equalCopy + 3) && ![(NSString *)deviceID isEqual:?])
   {
     goto LABEL_13;
   }
 
   eventParameters = self->_eventParameters;
-  if (eventParameters | *(v4 + 4))
+  if (eventParameters | *(equalCopy + 4))
   {
     v8 = [(NSMutableArray *)eventParameters isEqual:?];
   }
@@ -133,11 +133,11 @@ LABEL_14:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_applicationMessageIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_applicationMessageIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -147,7 +147,7 @@ LABEL_14:
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_deviceID copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -171,7 +171,7 @@ LABEL_14:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{zone, v17}];
         [v5 addEventParameters:v15];
 
         ++v14;
@@ -187,20 +187,20 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_applicationMessageIdentifier)
   {
-    [v4 setApplicationMessageIdentifier:?];
-    v4 = v9;
+    [toCopy setApplicationMessageIdentifier:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_dSID;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_dSID;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_deviceID)
@@ -211,10 +211,10 @@ LABEL_14:
   if ([(ICIAMLogEventRequest *)self eventParametersCount])
   {
     [v9 clearEventParameters];
-    v5 = [(ICIAMLogEventRequest *)self eventParametersCount];
-    if (v5)
+    eventParametersCount = [(ICIAMLogEventRequest *)self eventParametersCount];
+    if (eventParametersCount)
     {
-      v6 = v5;
+      v6 = eventParametersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ICIAMLogEventRequest *)self eventParametersAtIndex:i];
@@ -224,10 +224,10 @@ LABEL_14:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_applicationMessageIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -278,12 +278,12 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   applicationMessageIdentifier = self->_applicationMessageIdentifier;
   if (applicationMessageIdentifier)
   {
-    [v3 setObject:applicationMessageIdentifier forKey:@"applicationMessageIdentifier"];
+    [dictionary setObject:applicationMessageIdentifier forKey:@"applicationMessageIdentifier"];
   }
 
   if (*&self->_has)
@@ -320,8 +320,8 @@ LABEL_14:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -342,28 +342,28 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = ICIAMLogEventRequest;
   v4 = [(ICIAMLogEventRequest *)&v8 description];
-  v5 = [(ICIAMLogEventRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMLogEventRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addEventParameters:(id)a3
+- (void)addEventParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   eventParameters = self->_eventParameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!eventParameters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_eventParameters;
     self->_eventParameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     eventParameters = self->_eventParameters;
   }
 
-  [(NSMutableArray *)eventParameters addObject:v4];
+  [(NSMutableArray *)eventParameters addObject:parametersCopy];
 }
 
 @end

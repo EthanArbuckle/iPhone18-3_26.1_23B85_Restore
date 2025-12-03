@@ -1,22 +1,22 @@
 @interface ATXContextualActionSuggestionRequest
-- (ATXContextualActionSuggestionRequest)initWithCoder:(id)a3;
-- (ATXContextualActionSuggestionRequest)initWithProto:(id)a3;
-- (ATXContextualActionSuggestionRequest)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (ATXContextualActionSuggestionRequest)initWithCoder:(id)coder;
+- (ATXContextualActionSuggestionRequest)initWithProto:(id)proto;
+- (ATXContextualActionSuggestionRequest)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)archivePredictionContext;
 - (id)encodeAsProto;
 - (id)proto;
 - (void)archivePredictionContext;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXContextualActionSuggestionRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -26,10 +26,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXSuggestionRequest *)self requestUUID];
-      v7 = [(ATXSuggestionRequest *)v5 requestUUID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      requestUUID = [(ATXSuggestionRequest *)self requestUUID];
+      requestUUID2 = [(ATXSuggestionRequest *)v5 requestUUID];
+      v8 = [requestUUID isEqual:requestUUID2];
 
       if (v8 && (-[ATXSuggestionRequest originatorId](self, "originatorId"), v9 = objc_claimAutoreleasedReturnValue(), -[ATXSuggestionRequest originatorId](v5, "originatorId"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqualToString:v10], v10, v9, v11))
       {
@@ -61,33 +61,33 @@
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -99,45 +99,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXContextualActionSuggestionRequest *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXContextualActionSuggestionRequest *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXContextualActionSuggestionRequest)initWithCoder:(id)a3
+- (ATXContextualActionSuggestionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXContextualActionSuggestionRequest *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXContextualActionSuggestionRequest)initWithProtoData:(id)a3
+- (ATXContextualActionSuggestionRequest)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBRequestForContextualActionSuggestions alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBRequestForContextualActionSuggestions alloc] initWithData:dataCopy];
 
     self = [(ATXContextualActionSuggestionRequest *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXContextualActionSuggestionRequest)initWithProto:(id)a3
+- (ATXContextualActionSuggestionRequest)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -148,17 +148,17 @@ LABEL_7:
         [(ATXSuggestionRequestResponse *)self initWithProto:v5];
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_25;
     }
 
-    v5 = v4;
-    v6 = [v5 consumerSubTypeString];
+    v5 = protoCopy;
+    consumerSubTypeString = [v5 consumerSubTypeString];
     v31 = 0;
-    v7 = [MEMORY[0x1E698B028] consumerSubtypeForString:v6 found:&v31];
+    v7 = [MEMORY[0x1E698B028] consumerSubtypeForString:consumerSubTypeString found:&v31];
     if (v31 != 1)
     {
-      v9 = 0;
+      selfCopy = 0;
 LABEL_24:
 
 LABEL_25:
@@ -166,41 +166,41 @@ LABEL_25:
     }
 
     v8 = v7;
-    v9 = 0;
+    selfCopy = 0;
     if (!v7 || v7 == 50)
     {
       goto LABEL_24;
     }
 
-    v10 = [v5 uuidString];
-    v11 = [v5 originatorId];
+    uuidString = [v5 uuidString];
+    originatorId = [v5 originatorId];
     if (![v5 hasCaxPredictionContext])
     {
       v19 = 0;
 LABEL_23:
-      v22 = [v5 maxSuggestions];
+      maxSuggestions = [v5 maxSuggestions];
       [v5 timeout];
       v24 = v23;
-      v25 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v10];
-      self = [(ATXContextualActionSuggestionRequest *)self initWithUUID:v25 originatorId:v11 consumerSubType:v8 caxPredictionContext:v19 maxSuggestions:v22 timeout:v24];
+      v25 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:uuidString];
+      self = [(ATXContextualActionSuggestionRequest *)self initWithUUID:v25 originatorId:originatorId consumerSubType:v8 caxPredictionContext:v19 maxSuggestions:maxSuggestions timeout:v24];
 
-      v9 = self;
+      selfCopy = self;
       goto LABEL_24;
     }
 
-    v29 = v10;
-    v12 = [v5 caxPredictionContext];
+    v29 = uuidString;
+    caxPredictionContext = [v5 caxPredictionContext];
     v13 = NSClassFromString(&cfstr_Caxpredictionc_0.isa);
     if (v13)
     {
       v14 = v13;
       context = objc_autoreleasePoolPush();
       v15 = MEMORY[0x1E696ACD0];
-      v28 = v12;
+      v28 = caxPredictionContext;
       v16 = objc_autoreleasePoolPush();
       v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v14, 0}];
       v18 = v16;
-      v12 = v28;
+      caxPredictionContext = v28;
       objc_autoreleasePoolPop(v18);
       v30 = 0;
       v19 = [v15 unarchivedObjectOfClasses:v17 fromData:v28 error:&v30];
@@ -211,7 +211,7 @@ LABEL_23:
       {
 LABEL_22:
 
-        v10 = v29;
+        uuidString = v29;
         goto LABEL_23;
       }
 
@@ -221,7 +221,7 @@ LABEL_22:
         [(ATXContextualActionSuggestionRequest *)v20 initWithProto:v21];
       }
 
-      v12 = v28;
+      caxPredictionContext = v28;
     }
 
     else
@@ -238,10 +238,10 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto
@@ -250,15 +250,15 @@ LABEL_26:
   v4 = [MEMORY[0x1E698B028] stringForConsumerSubtype:{-[ATXSuggestionRequest consumerSubType](self, "consumerSubType")}];
   [v3 setConsumerSubTypeString:v4];
 
-  v5 = [(ATXSuggestionRequest *)self originatorId];
-  [v3 setOriginatorId:v5];
+  originatorId = [(ATXSuggestionRequest *)self originatorId];
+  [v3 setOriginatorId:originatorId];
 
-  v6 = [(ATXSuggestionRequest *)self requestUUID];
-  v7 = [v6 UUIDString];
-  [v3 setUuidString:v7];
+  requestUUID = [(ATXSuggestionRequest *)self requestUUID];
+  uUIDString = [requestUUID UUIDString];
+  [v3 setUuidString:uUIDString];
 
-  v8 = [(ATXContextualActionSuggestionRequest *)self archivePredictionContext];
-  [v3 setCaxPredictionContext:v8];
+  archivePredictionContext = [(ATXContextualActionSuggestionRequest *)self archivePredictionContext];
+  [v3 setCaxPredictionContext:archivePredictionContext];
 
   [v3 setMaxSuggestions:LODWORD(self->_maxSuggestions)];
   [(ATXSuggestionRequest *)self timeout];
@@ -304,10 +304,10 @@ LABEL_26:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXContextualActionSuggestionRequest *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXContextualActionSuggestionRequest *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (void)initWithProto:(uint64_t)a1 .cold.2(uint64_t a1, NSObject *a2)
@@ -323,7 +323,7 @@ LABEL_26:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1DEFC4000, a2, OS_LOG_TYPE_FAULT, "Error when archiving caxPredictionContext in ATXContextualActionSuggestionRequest. Error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

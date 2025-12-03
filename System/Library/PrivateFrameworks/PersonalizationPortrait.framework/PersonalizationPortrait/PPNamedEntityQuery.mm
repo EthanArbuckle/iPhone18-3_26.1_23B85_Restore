@@ -1,17 +1,17 @@
 @interface PPNamedEntityQuery
-+ (id)_excludingAlgorithmsDescription:(id)a3;
-+ (id)_matchingCategoriesDescription:(id)a3;
-+ (id)locationQueryWithLimit:(unint64_t)a3 fromDate:(id)a4 consumerType:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedEntityQuery:(id)a3;
++ (id)_excludingAlgorithmsDescription:(id)description;
++ (id)_matchingCategoriesDescription:(id)description;
++ (id)locationQueryWithLimit:(unint64_t)limit fromDate:(id)date consumerType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedEntityQuery:(id)query;
 - (PPNamedEntityQuery)init;
-- (PPNamedEntityQuery)initWithCoder:(id)a3;
+- (PPNamedEntityQuery)initWithCoder:(id)coder;
 - (id)copyForMonitoring;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customizedDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPNamedEntityQuery
@@ -307,10 +307,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -318,44 +318,44 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntityQuery *)self isEqualToNamedEntityQuery:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntityQuery *)self isEqualToNamedEntityQuery:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNamedEntityQuery:(id)a3
+- (BOOL)isEqualToNamedEntityQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  queryCopy = query;
+  v5 = queryCopy;
+  if (queryCopy == self)
   {
     v28 = 1;
     goto LABEL_79;
   }
 
-  if (!v4)
+  if (!queryCopy)
   {
     goto LABEL_78;
   }
 
   limit = self->_limit;
-  if (limit != [(PPNamedEntityQuery *)v4 limit])
+  if (limit != [(PPNamedEntityQuery *)queryCopy limit])
   {
     goto LABEL_78;
   }
 
   v7 = self->_fromDate;
-  v8 = [(PPNamedEntityQuery *)v5 fromDate];
-  if (v7 | v8)
+  fromDate = [(PPNamedEntityQuery *)v5 fromDate];
+  if (v7 | fromDate)
   {
-    v29 = v8;
-    if (!v7 || !v8)
+    v29 = fromDate;
+    if (!v7 || !fromDate)
     {
       goto LABEL_77;
     }
 
-    v30 = [(NSSet *)v7 isEqualToDate:v8];
+    v30 = [(NSSet *)v7 isEqualToDate:fromDate];
 
     if (!v30)
     {
@@ -364,16 +364,16 @@
   }
 
   v7 = self->_toDate;
-  v9 = [(PPNamedEntityQuery *)v5 toDate];
-  if (v7 | v9)
+  toDate = [(PPNamedEntityQuery *)v5 toDate];
+  if (v7 | toDate)
   {
-    v29 = v9;
-    if (!v7 || !v9)
+    v29 = toDate;
+    if (!v7 || !toDate)
     {
       goto LABEL_77;
     }
 
-    v31 = [(NSSet *)v7 isEqualToDate:v9];
+    v31 = [(NSSet *)v7 isEqualToDate:toDate];
 
     if (!v31)
     {
@@ -382,16 +382,16 @@
   }
 
   v7 = self->_scoringDate;
-  v10 = [(PPNamedEntityQuery *)v5 scoringDate];
-  if (v7 | v10)
+  scoringDate = [(PPNamedEntityQuery *)v5 scoringDate];
+  if (v7 | scoringDate)
   {
-    v29 = v10;
-    if (!v7 || !v10)
+    v29 = scoringDate;
+    if (!v7 || !scoringDate)
     {
       goto LABEL_77;
     }
 
-    v32 = [(NSSet *)v7 isEqualToDate:v10];
+    v32 = [(NSSet *)v7 isEqualToDate:scoringDate];
 
     if (!v32)
     {
@@ -400,16 +400,16 @@
   }
 
   v7 = self->_matchingSourceBundleIds;
-  v11 = [(PPNamedEntityQuery *)v5 matchingSourceBundleIds];
-  if (v7 | v11)
+  matchingSourceBundleIds = [(PPNamedEntityQuery *)v5 matchingSourceBundleIds];
+  if (v7 | matchingSourceBundleIds)
   {
-    v29 = v11;
-    if (!v7 || !v11)
+    v29 = matchingSourceBundleIds;
+    if (!v7 || !matchingSourceBundleIds)
     {
       goto LABEL_77;
     }
 
-    v33 = [(NSSet *)v7 isEqualToSet:v11];
+    v33 = [(NSSet *)v7 isEqualToSet:matchingSourceBundleIds];
 
     if (!v33)
     {
@@ -418,16 +418,16 @@
   }
 
   v7 = self->_excludingSourceBundleIds;
-  v12 = [(PPNamedEntityQuery *)v5 excludingSourceBundleIds];
-  if (v7 | v12)
+  excludingSourceBundleIds = [(PPNamedEntityQuery *)v5 excludingSourceBundleIds];
+  if (v7 | excludingSourceBundleIds)
   {
-    v29 = v12;
-    if (!v7 || !v12)
+    v29 = excludingSourceBundleIds;
+    if (!v7 || !excludingSourceBundleIds)
     {
       goto LABEL_77;
     }
 
-    v34 = [(NSSet *)v7 isEqualToSet:v12];
+    v34 = [(NSSet *)v7 isEqualToSet:excludingSourceBundleIds];
 
     if (!v34)
     {
@@ -436,16 +436,16 @@
   }
 
   v7 = self->_matchingSourceGroupIds;
-  v13 = [(PPNamedEntityQuery *)v5 matchingSourceGroupIds];
-  if (v7 | v13)
+  matchingSourceGroupIds = [(PPNamedEntityQuery *)v5 matchingSourceGroupIds];
+  if (v7 | matchingSourceGroupIds)
   {
-    v29 = v13;
-    if (!v7 || !v13)
+    v29 = matchingSourceGroupIds;
+    if (!v7 || !matchingSourceGroupIds)
     {
       goto LABEL_77;
     }
 
-    v35 = [(NSSet *)v7 isEqualToSet:v13];
+    v35 = [(NSSet *)v7 isEqualToSet:matchingSourceGroupIds];
 
     if (!v35)
     {
@@ -460,16 +460,16 @@
   }
 
   v7 = self->_matchingName;
-  v15 = [(PPNamedEntityQuery *)v5 matchingName];
-  if (v7 | v15)
+  matchingName = [(PPNamedEntityQuery *)v5 matchingName];
+  if (v7 | matchingName)
   {
-    v29 = v15;
-    if (!v7 || !v15)
+    v29 = matchingName;
+    if (!v7 || !matchingName)
     {
       goto LABEL_77;
     }
 
-    v36 = [(NSSet *)v7 isEqualToString:v15];
+    v36 = [(NSSet *)v7 isEqualToString:matchingName];
 
     if (!v36)
     {
@@ -478,16 +478,16 @@
   }
 
   v7 = self->_matchingNames;
-  v16 = [(PPNamedEntityQuery *)v5 matchingNames];
-  if (v7 | v16)
+  matchingNames = [(PPNamedEntityQuery *)v5 matchingNames];
+  if (v7 | matchingNames)
   {
-    v29 = v16;
-    if (!v7 || !v16)
+    v29 = matchingNames;
+    if (!v7 || !matchingNames)
     {
       goto LABEL_77;
     }
 
-    v37 = [(NSSet *)v7 isEqualToSet:v16];
+    v37 = [(NSSet *)v7 isEqualToSet:matchingNames];
 
     if (!v37)
     {
@@ -496,16 +496,16 @@
   }
 
   v7 = self->_matchingContactHandle;
-  v17 = [(PPNamedEntityQuery *)v5 matchingContactHandle];
-  if (v7 | v17)
+  matchingContactHandle = [(PPNamedEntityQuery *)v5 matchingContactHandle];
+  if (v7 | matchingContactHandle)
   {
-    v29 = v17;
-    if (!v7 || !v17)
+    v29 = matchingContactHandle;
+    if (!v7 || !matchingContactHandle)
     {
       goto LABEL_77;
     }
 
-    v38 = [(NSSet *)v7 isEqualToString:v17];
+    v38 = [(NSSet *)v7 isEqualToString:matchingContactHandle];
 
     if (!v38)
     {
@@ -520,16 +520,16 @@
   }
 
   v7 = self->_matchingCategories;
-  v19 = [(PPNamedEntityQuery *)v5 matchingCategories];
-  if (v7 | v19)
+  matchingCategories = [(PPNamedEntityQuery *)v5 matchingCategories];
+  if (v7 | matchingCategories)
   {
-    v29 = v19;
-    if (!v7 || !v19)
+    v29 = matchingCategories;
+    if (!v7 || !matchingCategories)
     {
       goto LABEL_77;
     }
 
-    v39 = [(NSSet *)v7 isEqualToSet:v19];
+    v39 = [(NSSet *)v7 isEqualToSet:matchingCategories];
 
     if (!v39)
     {
@@ -538,16 +538,16 @@
   }
 
   v7 = self->_matchingEntityTrie;
-  v20 = [(PPNamedEntityQuery *)v5 matchingEntityTrie];
-  if (v7 | v20)
+  matchingEntityTrie = [(PPNamedEntityQuery *)v5 matchingEntityTrie];
+  if (v7 | matchingEntityTrie)
   {
-    v29 = v20;
-    if (!v7 || !v20)
+    v29 = matchingEntityTrie;
+    if (!v7 || !matchingEntityTrie)
     {
       goto LABEL_77;
     }
 
-    v40 = [(NSSet *)v7 isEqualToString:v20];
+    v40 = [(NSSet *)v7 isEqualToString:matchingEntityTrie];
 
     if (!v40)
     {
@@ -556,16 +556,16 @@
   }
 
   v7 = self->_excludingAlgorithms;
-  v21 = [(PPNamedEntityQuery *)v5 excludingAlgorithms];
-  if (v7 | v21)
+  excludingAlgorithms = [(PPNamedEntityQuery *)v5 excludingAlgorithms];
+  if (v7 | excludingAlgorithms)
   {
-    v29 = v21;
-    if (!v7 || !v21)
+    v29 = excludingAlgorithms;
+    if (!v7 || !excludingAlgorithms)
     {
       goto LABEL_77;
     }
 
-    v41 = [(NSSet *)v7 isEqualToSet:v21];
+    v41 = [(NSSet *)v7 isEqualToSet:excludingAlgorithms];
 
     if (!v41)
     {
@@ -574,13 +574,13 @@
   }
 
   v7 = self->_matchingSourceDocumentIds;
-  v22 = [(PPNamedEntityQuery *)v5 matchingSourceDocumentIds];
-  if (v7 | v22)
+  matchingSourceDocumentIds = [(PPNamedEntityQuery *)v5 matchingSourceDocumentIds];
+  if (v7 | matchingSourceDocumentIds)
   {
-    v29 = v22;
-    if (v7 && v22)
+    v29 = matchingSourceDocumentIds;
+    if (v7 && matchingSourceDocumentIds)
     {
-      v42 = [(NSSet *)v7 isEqualToSet:v22];
+      v42 = [(NSSet *)v7 isEqualToSet:matchingSourceDocumentIds];
 
       if (v42)
       {
@@ -646,9 +646,9 @@ LABEL_79:
   return v12 ^ v14 ^ [(NSSet *)self->_excludingAlgorithms hash]^ self->_excludeWithoutSentiment ^ self->_isForRecordMonitoring ^ self->_orderByName ^ self->_locationConsumer ^ self->_filterByRelevanceDate;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -678,36 +678,36 @@ LABEL_79:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   limit = self->_limit;
-  v5 = a3;
-  [v5 encodeInteger:limit forKey:@"lmt"];
-  [v5 encodeObject:self->_fromDate forKey:@"fdt"];
-  [v5 encodeObject:self->_toDate forKey:@"tdt"];
-  [v5 encodeObject:self->_scoringDate forKey:@"sdt"];
-  [v5 encodeObject:self->_matchingSourceBundleIds forKey:@"mbdl"];
-  [v5 encodeObject:self->_excludingSourceBundleIds forKey:@"ebdl"];
-  [v5 encodeObject:self->_matchingSourceGroupIds forKey:@"gid"];
-  [v5 encodeInt32:LODWORD(self->_deviceFilter) forKey:@"dflt"];
-  [v5 encodeObject:self->_matchingName forKey:@"mnam"];
-  [v5 encodeObject:self->_matchingNames forKey:@"mnams"];
-  [v5 encodeBool:self->_matchCategory forKey:@"bmcat"];
-  [v5 encodeObject:self->_matchingCategories forKey:@"mcats"];
-  [v5 encodeObject:self->_matchingEntityTrie forKey:@"trie"];
-  [v5 encodeObject:self->_excludingAlgorithms forKey:@"exalg"];
-  [v5 encodeBool:self->_excludeWithoutSentiment forKey:@"exnonsnt"];
-  [v5 encodeBool:self->_isForRecordMonitoring forKey:@"frm"];
-  [v5 encodeBool:self->_orderByName forKey:@"obn"];
-  [v5 encodeInt32:LODWORD(self->_locationConsumer) forKey:@"lcon"];
-  [v5 encodeObject:self->_matchingContactHandle forKey:@"mch"];
-  [v5 encodeObject:self->_matchingSourceDocumentIds forKey:@"msdi"];
-  [v5 encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:limit forKey:@"lmt"];
+  [coderCopy encodeObject:self->_fromDate forKey:@"fdt"];
+  [coderCopy encodeObject:self->_toDate forKey:@"tdt"];
+  [coderCopy encodeObject:self->_scoringDate forKey:@"sdt"];
+  [coderCopy encodeObject:self->_matchingSourceBundleIds forKey:@"mbdl"];
+  [coderCopy encodeObject:self->_excludingSourceBundleIds forKey:@"ebdl"];
+  [coderCopy encodeObject:self->_matchingSourceGroupIds forKey:@"gid"];
+  [coderCopy encodeInt32:LODWORD(self->_deviceFilter) forKey:@"dflt"];
+  [coderCopy encodeObject:self->_matchingName forKey:@"mnam"];
+  [coderCopy encodeObject:self->_matchingNames forKey:@"mnams"];
+  [coderCopy encodeBool:self->_matchCategory forKey:@"bmcat"];
+  [coderCopy encodeObject:self->_matchingCategories forKey:@"mcats"];
+  [coderCopy encodeObject:self->_matchingEntityTrie forKey:@"trie"];
+  [coderCopy encodeObject:self->_excludingAlgorithms forKey:@"exalg"];
+  [coderCopy encodeBool:self->_excludeWithoutSentiment forKey:@"exnonsnt"];
+  [coderCopy encodeBool:self->_isForRecordMonitoring forKey:@"frm"];
+  [coderCopy encodeBool:self->_orderByName forKey:@"obn"];
+  [coderCopy encodeInt32:LODWORD(self->_locationConsumer) forKey:@"lcon"];
+  [coderCopy encodeObject:self->_matchingContactHandle forKey:@"mch"];
+  [coderCopy encodeObject:self->_matchingSourceDocumentIds forKey:@"msdi"];
+  [coderCopy encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
 }
 
-- (PPNamedEntityQuery)initWithCoder:(id)a3
+- (PPNamedEntityQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = PPNamedEntityQuery;
   v5 = [(PPNamedEntityQuery *)&v40 init];
@@ -719,81 +719,81 @@ LABEL_79:
     v9 = objc_alloc(MEMORY[0x1E695DFD8]);
     v10 = objc_opt_class();
     v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
-    v5->_limit = [v4 decodeIntegerForKey:@"lmt"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"lmt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
     fromDate = v5->_fromDate;
     v5->_fromDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
     toDate = v5->_toDate;
     v5->_toDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
     scoringDate = v5->_scoringDate;
     v5->_scoringDate = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v8 forKey:@"mbdl"];
+    v18 = [coderCopy decodeObjectOfClasses:v8 forKey:@"mbdl"];
     matchingSourceBundleIds = v5->_matchingSourceBundleIds;
     v5->_matchingSourceBundleIds = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v8 forKey:@"ebdl"];
+    v20 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ebdl"];
     excludingSourceBundleIds = v5->_excludingSourceBundleIds;
     v5->_excludingSourceBundleIds = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v8 forKey:@"gid"];
+    v22 = [coderCopy decodeObjectOfClasses:v8 forKey:@"gid"];
     matchingSourceGroupIds = v5->_matchingSourceGroupIds;
     v5->_matchingSourceGroupIds = v22;
 
-    v5->_deviceFilter = [v4 decodeInt32ForKey:@"dflt"];
-    [v4 decodeDoubleForKey:@"dr"];
+    v5->_deviceFilter = [coderCopy decodeInt32ForKey:@"dflt"];
+    [coderCopy decodeDoubleForKey:@"dr"];
     v5->_decayRate = v24;
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mnam"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mnam"];
     matchingName = v5->_matchingName;
     v5->_matchingName = v25;
 
-    v27 = [v4 decodeObjectOfClasses:v8 forKey:@"mnams"];
+    v27 = [coderCopy decodeObjectOfClasses:v8 forKey:@"mnams"];
     matchingNames = v5->_matchingNames;
     v5->_matchingNames = v27;
 
-    v5->_matchCategory = [v4 decodeBoolForKey:@"bmcat"];
-    v29 = [v4 decodeObjectOfClasses:v11 forKey:@"mcats"];
+    v5->_matchCategory = [coderCopy decodeBoolForKey:@"bmcat"];
+    v29 = [coderCopy decodeObjectOfClasses:v11 forKey:@"mcats"];
     matchingCategories = v5->_matchingCategories;
     v5->_matchingCategories = v29;
 
-    v31 = [v4 decodeObjectOfClasses:v8 forKey:@"trie"];
+    v31 = [coderCopy decodeObjectOfClasses:v8 forKey:@"trie"];
     matchingEntityTrie = v5->_matchingEntityTrie;
     v5->_matchingEntityTrie = v31;
 
-    v33 = [v4 decodeObjectOfClasses:v11 forKey:@"exalg"];
+    v33 = [coderCopy decodeObjectOfClasses:v11 forKey:@"exalg"];
     excludingAlgorithms = v5->_excludingAlgorithms;
     v5->_excludingAlgorithms = v33;
 
-    v5->_excludeWithoutSentiment = [v4 decodeBoolForKey:@"exnonsnt"];
-    v5->_isForRecordMonitoring = [v4 decodeBoolForKey:@"frm"];
-    v5->_orderByName = [v4 decodeBoolForKey:@"obn"];
-    v5->_locationConsumer = [v4 decodeInt32ForKey:@"lcon"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
+    v5->_excludeWithoutSentiment = [coderCopy decodeBoolForKey:@"exnonsnt"];
+    v5->_isForRecordMonitoring = [coderCopy decodeBoolForKey:@"frm"];
+    v5->_orderByName = [coderCopy decodeBoolForKey:@"obn"];
+    v5->_locationConsumer = [coderCopy decodeInt32ForKey:@"lcon"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
     matchingContactHandle = v5->_matchingContactHandle;
     v5->_matchingContactHandle = v35;
 
-    v37 = [v4 decodeObjectOfClasses:v8 forKey:@"msdi"];
+    v37 = [coderCopy decodeObjectOfClasses:v8 forKey:@"msdi"];
     matchingSourceDocumentIds = v5->_matchingSourceDocumentIds;
     v5->_matchingSourceDocumentIds = v37;
 
-    v5->_filterByRelevanceDate = [v4 decodeBoolForKey:@"fbrd"];
+    v5->_filterByRelevanceDate = [coderCopy decodeBoolForKey:@"fbrd"];
   }
 
   return v5;
 }
 
-+ (id)locationQueryWithLimit:(unint64_t)a3 fromDate:(id)a4 consumerType:(unint64_t)a5
++ (id)locationQueryWithLimit:(unint64_t)limit fromDate:(id)date consumerType:(unint64_t)type
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dateCopy = date;
   v8 = objc_opt_new();
-  [v8 setLimit:a3];
+  [v8 setLimit:limit];
   [v8 setMatchCategory:1];
-  switch(a5)
+  switch(type)
   {
     case 3uLL:
       v9 = objc_autoreleasePoolPush();
@@ -812,15 +812,15 @@ LABEL_7:
       goto LABEL_9;
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSSet<NSNumber *> * _Nonnull locationCategoriesForMaps(PPLocationConsumer)"];
-  [v12 handleFailureInFunction:v13 file:@"PPNamedEntityStore.m" lineNumber:368 description:{@"Bad location consumer: %tu", a5}];
+  [currentHandler handleFailureInFunction:v13 file:@"PPNamedEntityStore.m" lineNumber:368 description:{@"Bad location consumer: %tu", type}];
 
   v11 = objc_opt_new();
 LABEL_9:
   [v8 setMatchingCategories:v11];
 
-  if (a5 == 3)
+  if (type == 3)
   {
     [v8 setExcludingAlgorithms:0];
   }
@@ -833,11 +833,11 @@ LABEL_9:
     [v8 setExcludingAlgorithms:v15];
   }
 
-  [v8 setFromDate:v7];
+  [v8 setFromDate:dateCopy];
   v16 = objc_autoreleasePoolPush();
   v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"com.apple.Maps", @"com.apple.CoreRoutine", @"com.apple.mobilecal", @"com.apple.iCal", @"com.apple.Passbook", 0}];
   objc_autoreleasePoolPop(v16);
-  if (a5 == 3)
+  if (type == 3)
   {
     [v8 setExcludingSourceBundleIds:v17];
   }
@@ -852,23 +852,23 @@ LABEL_9:
     [v8 setExcludingSourceBundleIds:v19];
   }
 
-  [v8 setLocationConsumer:a5];
+  [v8 setLocationConsumer:type];
 
   v20 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)_excludingAlgorithmsDescription:(id)a3
++ (id)_excludingAlgorithmsDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -912,16 +912,16 @@ LABEL_9:
   return v4;
 }
 
-+ (id)_matchingCategoriesDescription:(id)a3
++ (id)_matchingCategoriesDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

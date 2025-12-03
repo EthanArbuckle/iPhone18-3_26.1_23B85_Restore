@@ -1,11 +1,11 @@
 @interface WorkoutBuddyStatus
-+ (id)makeSummaryUIViewWithIsWorkoutConfiguredWithWorkoutBuddy:(BOOL)a3 isWorkoutBuddyMuted:(BOOL)a4 isWorkoutBuddyHeadphonesOff:(BOOL)a5;
++ (id)makeSummaryUIViewWithIsWorkoutConfiguredWithWorkoutBuddy:(BOOL)buddy isWorkoutBuddyMuted:(BOOL)muted isWorkoutBuddyHeadphonesOff:(BOOL)off;
 - (_TtC10FitnessApp18WorkoutBuddyStatus)init;
 @end
 
 @implementation WorkoutBuddyStatus
 
-+ (id)makeSummaryUIViewWithIsWorkoutConfiguredWithWorkoutBuddy:(BOOL)a3 isWorkoutBuddyMuted:(BOOL)a4 isWorkoutBuddyHeadphonesOff:(BOOL)a5
++ (id)makeSummaryUIViewWithIsWorkoutConfiguredWithWorkoutBuddy:(BOOL)buddy isWorkoutBuddyMuted:(BOOL)muted isWorkoutBuddyHeadphonesOff:(BOOL)off
 {
   v5 = type metadata accessor for WorkoutBuddySummaryTitleView();
   __chkstk_darwin(v5 - 8);

@@ -1,55 +1,55 @@
 @interface RMConfigurationSubscriberClient
-+ (int)runConfigurationSubscriberClientWithApplicators:(id)a3 publisherClass:(Class)a4 initializeSandbox:(BOOL)a5;
-+ (void)_currentLocaleDidChange:(id)a3;
++ (int)runConfigurationSubscriberClientWithApplicators:(id)applicators publisherClass:(Class)class initializeSandbox:(BOOL)sandbox;
++ (void)_currentLocaleDidChange:(id)change;
 + (void)_loadDynamicSchema;
-+ (void)_registerApplicatorModelClasses:(id)a3;
++ (void)_registerApplicatorModelClasses:(id)classes;
 + (void)_registerForLocaleChange;
-+ (void)_registerPublisherModelClasses:(id)a3;
-- (void)_buildSubscribedReferences:(id)a3 declarations:(id)a4 store:(id)a5;
-- (void)fetchConfigurationUIsWithTypes:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchConfigurationsWithTypes:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-- (void)sendStatusKeys:(id)a3 storeIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
++ (void)_registerPublisherModelClasses:(id)classes;
+- (void)_buildSubscribedReferences:(id)references declarations:(id)declarations store:(id)store;
+- (void)fetchConfigurationUIsWithTypes:(id)types scope:(int64_t)scope completionHandler:(id)handler;
+- (void)fetchConfigurationsWithTypes:(id)types scope:(int64_t)scope completionHandler:(id)handler;
+- (void)sendStatusKeys:(id)keys storeIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation RMConfigurationSubscriberClient
 
 + (void)_registerForLocaleChange
 {
-  v3 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  configurationSubscriberClient = [MEMORY[0x277D45F58] configurationSubscriberClient];
+  if (os_log_type_enabled(configurationSubscriberClient, OS_LOG_TYPE_INFO))
   {
     *v5 = 0;
-    _os_log_impl(&dword_261E36000, v3, OS_LOG_TYPE_INFO, "Subscribing to locale changes.", v5, 2u);
+    _os_log_impl(&dword_261E36000, configurationSubscriberClient, OS_LOG_TYPE_INFO, "Subscribing to locale changes.", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:a1 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
 }
 
 + (void)_loadDynamicSchema
 {
   v2 = MEMORY[0x277D45F50];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 resourceURL];
-  v14 = [v2 configurationSchemaDirectoryForXPCServiceResourceURL:v4];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  resourceURL = [mainBundle resourceURL];
+  v14 = [v2 configurationSchemaDirectoryForXPCServiceResourceURL:resourceURL];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v14 path];
-  LODWORD(v4) = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v14 path];
+  LODWORD(resourceURL) = [defaultManager fileExistsAtPath:path];
 
-  if (v4)
+  if (resourceURL)
   {
     [MEMORY[0x277D46010] loadDynamicSchemaFromDirectory:v14];
   }
 
   v7 = MEMORY[0x277D45F50];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 resourceURL];
-  v10 = [v7 statusSchemaDirectoryForXPCServiceResourceURL:v9];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  resourceURL2 = [mainBundle2 resourceURL];
+  v10 = [v7 statusSchemaDirectoryForXPCServiceResourceURL:resourceURL2];
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v10 path];
-  v13 = [v11 fileExistsAtPath:v12];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path2 = [v10 path];
+  v13 = [defaultManager2 fileExistsAtPath:path2];
 
   if (v13)
   {
@@ -57,71 +57,71 @@
   }
 }
 
-+ (int)runConfigurationSubscriberClientWithApplicators:(id)a3 publisherClass:(Class)a4 initializeSandbox:(BOOL)a5
++ (int)runConfigurationSubscriberClientWithApplicators:(id)applicators publisherClass:(Class)class initializeSandbox:(BOOL)sandbox
 {
-  v5 = a5;
+  sandboxCopy = sandbox;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  applicatorsCopy = applicators;
+  configurationSubscriberClient = [MEMORY[0x277D45F58] configurationSubscriberClient];
+  if (os_log_type_enabled(configurationSubscriberClient, OS_LOG_TYPE_DEBUG))
   {
-    [RMConfigurationSubscriberClient runConfigurationSubscriberClientWithApplicators:v9 publisherClass:? initializeSandbox:?];
+    [RMConfigurationSubscriberClient runConfigurationSubscriberClientWithApplicators:configurationSubscriberClient publisherClass:? initializeSandbox:?];
   }
 
-  v10 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  configurationSubscriberClient2 = [MEMORY[0x277D45F58] configurationSubscriberClient];
+  if (os_log_type_enabled(configurationSubscriberClient2, OS_LOG_TYPE_DEBUG))
   {
-    [RMConfigurationSubscriberClient runConfigurationSubscriberClientWithApplicators:v5 publisherClass:v10 initializeSandbox:?];
+    [RMConfigurationSubscriberClient runConfigurationSubscriberClientWithApplicators:sandboxCopy publisherClass:configurationSubscriberClient2 initializeSandbox:?];
   }
 
-  if (v5 && ![MEMORY[0x277D45F70] configureSandbox])
+  if (sandboxCopy && ![MEMORY[0x277D45F70] configureSandbox])
   {
     v20 = 78;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    configurationSubscriberClient3 = [MEMORY[0x277D45F58] configurationSubscriberClient];
+    if (os_log_type_enabled(configurationSubscriberClient3, OS_LOG_TYPE_INFO))
     {
       v12 = NSUserName();
       *buf = 138412290;
       v25 = v12;
-      _os_log_impl(&dword_261E36000, v11, OS_LOG_TYPE_INFO, "User: %@", buf, 0xCu);
+      _os_log_impl(&dword_261E36000, configurationSubscriberClient3, OS_LOG_TYPE_INFO, "User: %@", buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    configurationSubscriberClient4 = [MEMORY[0x277D45F58] configurationSubscriberClient];
+    if (os_log_type_enabled(configurationSubscriberClient4, OS_LOG_TYPE_INFO))
     {
       v14 = NSHomeDirectory();
       *buf = 138412290;
       v25 = v14;
-      _os_log_impl(&dword_261E36000, v13, OS_LOG_TYPE_INFO, "Home directory: %@", buf, 0xCu);
+      _os_log_impl(&dword_261E36000, configurationSubscriberClient4, OS_LOG_TYPE_INFO, "Home directory: %@", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    configurationSubscriberClient5 = [MEMORY[0x277D45F58] configurationSubscriberClient];
+    if (os_log_type_enabled(configurationSubscriberClient5, OS_LOG_TYPE_INFO))
     {
       v16 = NSTemporaryDirectory();
       *buf = 138412290;
       v25 = v16;
-      _os_log_impl(&dword_261E36000, v15, OS_LOG_TYPE_INFO, "Temp directory: %@", buf, 0xCu);
+      _os_log_impl(&dword_261E36000, configurationSubscriberClient5, OS_LOG_TYPE_INFO, "Temp directory: %@", buf, 0xCu);
     }
 
-    [a1 _registerForLocaleChange];
-    [a1 _loadDynamicSchema];
-    [a1 _registerApplicatorModelClasses:v8];
-    if (a4)
+    [self _registerForLocaleChange];
+    [self _loadDynamicSchema];
+    [self _registerApplicatorModelClasses:applicatorsCopy];
+    if (class)
     {
-      v23 = a4;
-      v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      [a1 _registerPublisherModelClasses:v17];
+      classCopy = class;
+      v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&classCopy count:1];
+      [self _registerPublisherModelClasses:v17];
     }
 
-    v18 = [[RMConfigurationSubscriberXPCListenerDelegate alloc] initWithApplicators:v8 publisherClass:a4];
-    v19 = [MEMORY[0x277CCAE98] serviceListener];
-    [v19 setDelegate:v18];
-    [v19 resume];
+    v18 = [[RMConfigurationSubscriberXPCListenerDelegate alloc] initWithApplicators:applicatorsCopy publisherClass:class];
+    serviceListener = [MEMORY[0x277CCAE98] serviceListener];
+    [serviceListener setDelegate:v18];
+    [serviceListener resume];
 
     v20 = 0;
   }
@@ -130,27 +130,27 @@
   return v20;
 }
 
-+ (void)_currentLocaleDidChange:(id)a3
++ (void)_currentLocaleDidChange:(id)change
 {
-  v3 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  configurationSubscriberClient = [MEMORY[0x277D45F58] configurationSubscriberClient];
+  if (os_log_type_enabled(configurationSubscriberClient, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_261E36000, v3, OS_LOG_TYPE_DEFAULT, "Notified of locale change. Exiting when clean.", v4, 2u);
+    _os_log_impl(&dword_261E36000, configurationSubscriberClient, OS_LOG_TYPE_DEFAULT, "Notified of locale change. Exiting when clean.", v4, 2u);
   }
 
   xpc_transaction_exit_clean();
 }
 
-+ (void)_registerApplicatorModelClasses:(id)a3
++ (void)_registerApplicatorModelClasses:(id)classes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  classesCopy = classes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [classesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -162,14 +162,14 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(classesCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 supportedConfigurationClassesArray];
-          [MEMORY[0x277D45FF8] ensureClassForDeclarations:v9];
+          supportedConfigurationClassesArray = [v8 supportedConfigurationClassesArray];
+          [MEMORY[0x277D45FF8] ensureClassForDeclarations:supportedConfigurationClassesArray];
         }
 
         else
@@ -179,10 +179,10 @@
             goto LABEL_11;
           }
 
-          v9 = [v8 supportedConfigurationClasses];
+          supportedConfigurationClassesArray = [v8 supportedConfigurationClasses];
           v10 = MEMORY[0x277D45FF8];
-          v11 = [v9 allObjects];
-          [v10 ensureClassForDeclarations:v11];
+          allObjects = [supportedConfigurationClassesArray allObjects];
+          [v10 ensureClassForDeclarations:allObjects];
         }
 
 LABEL_11:
@@ -190,7 +190,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [classesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -199,15 +199,15 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_registerPublisherModelClasses:(id)a3
++ (void)_registerPublisherModelClasses:(id)classes
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  classesCopy = classes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [classesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -219,21 +219,21 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(classesCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 supportedStatusClasses];
-          [MEMORY[0x277D45FF8] ensureClassForStatusItems:v9];
+          supportedStatusClasses = [v8 supportedStatusClasses];
+          [MEMORY[0x277D45FF8] ensureClassForStatusItems:supportedStatusClasses];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [classesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -242,21 +242,21 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchConfigurationsWithTypes:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchConfigurationsWithTypes:(id)types scope:(int64_t)scope completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__RMConfigurationSubscriberClient_fetchConfigurationsWithTypes_scope_completionHandler___block_invoke;
   v12[3] = &unk_279B05858;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
-  [RMSubscriberStore subscribedStoreDeclarationsWithScope:a4 configurationTypes:v11 completionHandler:v12];
+  v13 = typesCopy;
+  v14 = handlerCopy;
+  scopeCopy = scope;
+  v10 = handlerCopy;
+  v11 = typesCopy;
+  [RMSubscriberStore subscribedStoreDeclarationsWithScope:scope configurationTypes:v11 completionHandler:v12];
 }
 
 void __88__RMConfigurationSubscriberClient_fetchConfigurationsWithTypes_scope_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -371,21 +371,21 @@ void __88__RMConfigurationSubscriberClient_fetchConfigurationsWithTypes_scope_co
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchConfigurationUIsWithTypes:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchConfigurationUIsWithTypes:(id)types scope:(int64_t)scope completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__RMConfigurationSubscriberClient_fetchConfigurationUIsWithTypes_scope_completionHandler___block_invoke;
   v12[3] = &unk_279B05858;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
-  [RMSubscriberStore subscribedStoreConfigurationsVisibleUIWithScope:a4 configurationTypes:v11 completionHandler:v12];
+  v13 = typesCopy;
+  v14 = handlerCopy;
+  scopeCopy = scope;
+  v10 = handlerCopy;
+  v11 = typesCopy;
+  [RMSubscriberStore subscribedStoreConfigurationsVisibleUIWithScope:scope configurationTypes:v11 completionHandler:v12];
 }
 
 void __90__RMConfigurationSubscriberClient_fetchConfigurationUIsWithTypes_scope_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -500,23 +500,23 @@ void __90__RMConfigurationSubscriberClient_fetchConfigurationUIsWithTypes_scope_
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendStatusKeys:(id)a3 storeIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)sendStatusKeys:(id)keys storeIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_completionHandler___block_invoke;
   v16[3] = &unk_279B058A8;
-  v17 = v11;
-  v18 = self;
-  v19 = v10;
-  v20 = v12;
-  v13 = v10;
-  v14 = v12;
-  v15 = v11;
-  [RMSubscriberStore storeWithIdentifier:v15 scope:a5 completionHandler:v16];
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = keysCopy;
+  v20 = handlerCopy;
+  v13 = keysCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  [RMSubscriberStore storeWithIdentifier:v15 scope:scope completionHandler:v16];
 }
 
 void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -583,18 +583,18 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
   }
 }
 
-- (void)_buildSubscribedReferences:(id)a3 declarations:(id)a4 store:(id)a5
+- (void)_buildSubscribedReferences:(id)references declarations:(id)declarations store:(id)store
 {
   v62 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v7 = a4;
-  v41 = a5;
+  referencesCopy = references;
+  declarationsCopy = declarations;
+  storeCopy = store;
   v8 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v9 = v7;
+  v9 = declarationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v10)
   {
@@ -613,8 +613,8 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 declarationIdentifier];
-          [v8 setObject:v14 forKeyedSubscript:v15];
+          declarationIdentifier = [v14 declarationIdentifier];
+          [v8 setObject:v14 forKeyedSubscript:declarationIdentifier];
         }
       }
 
@@ -654,13 +654,13 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v22 assetReferences];
-          v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v24, "count")}];
+          assetReferences = [v22 assetReferences];
+          v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(assetReferences, "count")}];
           v45 = 0u;
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v26 = v24;
+          v26 = assetReferences;
           v27 = [v26 countByEnumeratingWithState:&v45 objects:v59 count:16];
           if (v27)
           {
@@ -675,8 +675,8 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
                   objc_enumerationMutation(v26);
                 }
 
-                v31 = [*(*(&v45 + 1) + 8 * j) identifier];
-                v32 = [v8 objectForKeyedSubscript:v31];
+                identifier = [*(*(&v45 + 1) + 8 * j) identifier];
+                v32 = [v8 objectForKeyedSubscript:identifier];
                 if (v32)
                 {
                   [v25 addObject:v32];
@@ -695,9 +695,9 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
             v25 = 0;
           }
 
-          v33 = [[RMSubscribedConfigurationReference alloc] initWithDeclaration:v22 subscriberStore:v41 assets:v25];
-          v34 = [v22 declarationType];
-          v35 = [v42 objectForKeyedSubscript:v34];
+          v33 = [[RMSubscribedConfigurationReference alloc] initWithDeclaration:v22 subscriberStore:storeCopy assets:v25];
+          declarationType = [v22 declarationType];
+          v35 = [referencesCopy objectForKeyedSubscript:declarationType];
           v36 = v35;
           v19 = v40;
           v20 = 0x277D46000;
@@ -708,12 +708,12 @@ void __90__RMConfigurationSubscriberClient_sendStatusKeys_storeIdentifier_scope_
 
           else
           {
-            v37 = [MEMORY[0x277D45F58] configurationSubscriberClient];
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+            configurationSubscriberClient = [MEMORY[0x277D45F58] configurationSubscriberClient];
+            if (os_log_type_enabled(configurationSubscriberClient, OS_LOG_TYPE_ERROR))
             {
               *buf = v39;
-              v58 = v34;
-              _os_log_error_impl(&dword_261E36000, v37, OS_LOG_TYPE_ERROR, "Store returned unexpected configuration type %{public}@ - ignoring", buf, 0xCu);
+              v58 = declarationType;
+              _os_log_error_impl(&dword_261E36000, configurationSubscriberClient, OS_LOG_TYPE_ERROR, "Store returned unexpected configuration type %{public}@ - ignoring", buf, 0xCu);
             }
           }
 

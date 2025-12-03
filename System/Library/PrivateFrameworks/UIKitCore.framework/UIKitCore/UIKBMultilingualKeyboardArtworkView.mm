@@ -1,71 +1,71 @@
 @interface UIKBMultilingualKeyboardArtworkView
 + (id)_memojiAssets1;
 + (id)_memojiAssets2;
-+ (id)memojiImageForLanguage:(id)a3 from:(id)a4;
-- (UIKBMultilingualKeyboardArtworkView)initWithLanguage1:(id)a3 andLanguage2:(id)a4;
-- (void)animateBubblesWithExample1:(id)a3 example2:(id)a4 altExample1:(id)a5 altExample2:(id)a6 showAltExample:(BOOL)a7;
++ (id)memojiImageForLanguage:(id)language from:(id)from;
+- (UIKBMultilingualKeyboardArtworkView)initWithLanguage1:(id)language1 andLanguage2:(id)language2;
+- (void)animateBubblesWithExample1:(id)example1 example2:(id)example2 altExample1:(id)altExample1 altExample2:(id)altExample2 showAltExample:(BOOL)example;
 @end
 
 @implementation UIKBMultilingualKeyboardArtworkView
 
-- (UIKBMultilingualKeyboardArtworkView)initWithLanguage1:(id)a3 andLanguage2:(id)a4
+- (UIKBMultilingualKeyboardArtworkView)initWithLanguage1:(id)language1 andLanguage2:(id)language2
 {
-  v7 = a3;
-  v8 = a4;
+  language1Copy = language1;
+  language2Copy = language2;
   v45.receiver = self;
   v45.super_class = UIKBMultilingualKeyboardArtworkView;
   v9 = [(UIView *)&v45 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_language1, a3);
-    objc_storeStrong(&v10->_language2, a4);
+    objc_storeStrong(&v9->_language1, language1);
+    objc_storeStrong(&v10->_language2, language2);
     v11 = objc_opt_new();
     [(UIKBMultilingualKeyboardArtworkView *)v10 setMemoji1:v11];
 
-    v12 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    memoji1 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
+    [memoji1 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
-    [v13 setAlpha:0.0];
+    memoji12 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
+    [memoji12 setAlpha:0.0];
 
     v14 = objc_opt_class();
-    v15 = [objc_opt_class() _memojiAssets1];
-    v16 = [v14 memojiImageForLanguage:v7 from:v15];
-    v17 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
-    [v17 setImage:v16];
+    _memojiAssets1 = [objc_opt_class() _memojiAssets1];
+    v16 = [v14 memojiImageForLanguage:language1Copy from:_memojiAssets1];
+    memoji13 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
+    [memoji13 setImage:v16];
 
-    v18 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
-    [(UIView *)v10 addSubview:v18];
+    memoji14 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji1];
+    [(UIView *)v10 addSubview:memoji14];
 
     v19 = objc_opt_new();
     [(UIKBMultilingualKeyboardArtworkView *)v10 setMemoji2:v19];
 
-    v20 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    memoji2 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
+    [memoji2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
-    [v21 setAlpha:0.0];
+    memoji22 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
+    [memoji22 setAlpha:0.0];
 
     v22 = objc_opt_class();
-    v23 = [objc_opt_class() _memojiAssets2];
-    v24 = [v22 memojiImageForLanguage:v8 from:v23];
-    v25 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
-    [v25 setImage:v24];
+    _memojiAssets2 = [objc_opt_class() _memojiAssets2];
+    v24 = [v22 memojiImageForLanguage:language2Copy from:_memojiAssets2];
+    memoji23 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
+    [memoji23 setImage:v24];
 
-    v26 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
-    [(UIView *)v10 addSubview:v26];
+    memoji24 = [(UIKBMultilingualKeyboardArtworkView *)v10 memoji2];
+    [(UIView *)v10 addSubview:memoji24];
 
     v27 = TIInputModeGetLanguage();
-    LODWORD(v23) = [v27 isEqualToString:@"en"];
+    LODWORD(_memojiAssets2) = [v27 isEqualToString:@"en"];
 
-    if (v23)
+    if (_memojiAssets2)
     {
-      v28 = GetExampleSentencesForLanguage(v8);
+      v28 = GetExampleSentencesForLanguage(language2Copy);
       v29 = [v28 objectAtIndexedSubscript:0];
 
-      v30 = v8;
-      v31 = v8;
+      v30 = language2Copy;
+      v31 = language2Copy;
     }
 
     else
@@ -73,20 +73,20 @@
       v32 = TIInputModeGetLanguage();
       v33 = [v32 isEqualToString:@"en"];
 
-      v34 = GetExampleSentencesForLanguage(v7);
+      v34 = GetExampleSentencesForLanguage(language1Copy);
       v29 = [v34 objectAtIndexedSubscript:0];
 
       if (v33)
       {
-        v30 = v7;
+        v30 = language1Copy;
       }
 
       else
       {
-        v30 = v8;
+        v30 = language2Copy;
       }
 
-      v31 = v7;
+      v31 = language1Copy;
     }
 
     v35 = GetExampleSentencesForLanguage(v30);
@@ -127,23 +127,23 @@
   return v10;
 }
 
-- (void)animateBubblesWithExample1:(id)a3 example2:(id)a4 altExample1:(id)a5 altExample2:(id)a6 showAltExample:(BOOL)a7
+- (void)animateBubblesWithExample1:(id)example1 example2:(id)example2 altExample1:(id)altExample1 altExample2:(id)altExample2 showAltExample:(BOOL)example
 {
-  v7 = a7;
+  exampleCopy = example;
   v121[16] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  [v16 removeFromSuperview];
+  example1Copy = example1;
+  example2Copy = example2;
+  altExample1Copy = altExample1;
+  altExample2Copy = altExample2;
+  bubble1 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  [bubble1 removeFromSuperview];
 
-  v17 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  [v17 removeFromSuperview];
+  bubble2 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  [bubble2 removeFromSuperview];
 
-  if ([v14 length])
+  if ([altExample1Copy length])
   {
-    v18 = [v15 length] != 0;
+    v18 = [altExample2Copy length] != 0;
   }
 
   else
@@ -153,133 +153,133 @@
 
   v107 = v18;
   v19 = [UIKBTutorialConversationBubble alloc];
-  if (v7 && v18)
+  if (exampleCopy && v18)
   {
-    v20 = v14;
+    v20 = altExample1Copy;
   }
 
   else
   {
-    v20 = v12;
+    v20 = example1Copy;
   }
 
-  if (v7 && v18)
+  if (exampleCopy && v18)
   {
-    v21 = v15;
+    v21 = altExample2Copy;
   }
 
   else
   {
-    v21 = v13;
+    v21 = example2Copy;
   }
 
-  v106 = v14;
+  v106 = altExample1Copy;
   v22 = [(UIKBTutorialConversationBubble *)v19 initWithText:v20 originationDirection:1];
   [(UIKBMultilingualKeyboardArtworkView *)self setBubble1:v22];
 
-  v23 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bubble12 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  [bubble12 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  [(UIView *)self addSubview:v24];
+  bubble13 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  [(UIView *)self addSubview:bubble13];
 
   v25 = [[UIKBTutorialConversationBubble alloc] initWithText:v21 originationDirection:0];
   [(UIKBMultilingualKeyboardArtworkView *)self setBubble2:v25];
 
-  v26 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bubble22 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  [bubble22 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v27 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  [(UIView *)self addSubview:v27];
+  bubble23 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  [(UIView *)self addSubview:bubble23];
 
   v76 = MEMORY[0x1E69977A0];
-  v105 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v104 = [v105 bottomAnchor];
-  v103 = [(UIView *)self centerYAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:-10.0];
+  memoji1 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  bottomAnchor = [memoji1 bottomAnchor];
+  centerYAnchor = [(UIView *)self centerYAnchor];
+  v102 = [bottomAnchor constraintEqualToAnchor:centerYAnchor constant:-10.0];
   v121[0] = v102;
-  v101 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v100 = [v101 trailingAnchor];
-  v98 = [(UIView *)self centerXAnchor];
-  v96 = [v100 constraintEqualToAnchor:v98];
+  memoji12 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  trailingAnchor = [memoji12 trailingAnchor];
+  centerXAnchor = [(UIView *)self centerXAnchor];
+  v96 = [trailingAnchor constraintEqualToAnchor:centerXAnchor];
   v121[1] = v96;
-  v95 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v94 = [v95 widthAnchor];
-  v93 = [v94 constraintEqualToConstant:50.0];
+  memoji13 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  widthAnchor = [memoji13 widthAnchor];
+  v93 = [widthAnchor constraintEqualToConstant:50.0];
   v121[2] = v93;
-  v91 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v89 = [v91 heightAnchor];
-  v88 = [v89 constraintEqualToConstant:50.0];
+  memoji14 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  heightAnchor = [memoji14 heightAnchor];
+  v88 = [heightAnchor constraintEqualToConstant:50.0];
   v121[3] = v88;
-  v87 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v86 = [v87 topAnchor];
-  v85 = [(UIView *)self centerYAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85 constant:10.0];
+  memoji2 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  topAnchor = [memoji2 topAnchor];
+  centerYAnchor2 = [(UIView *)self centerYAnchor];
+  v84 = [topAnchor constraintEqualToAnchor:centerYAnchor2 constant:10.0];
   v121[4] = v84;
-  v83 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v82 = [v83 leadingAnchor];
-  v81 = [(UIView *)self centerXAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81];
+  memoji22 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  leadingAnchor = [memoji22 leadingAnchor];
+  centerXAnchor2 = [(UIView *)self centerXAnchor];
+  v80 = [leadingAnchor constraintEqualToAnchor:centerXAnchor2];
   v121[5] = v80;
-  v79 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v78 = [v79 widthAnchor];
-  v77 = [v78 constraintEqualToConstant:50.0];
+  memoji23 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  widthAnchor2 = [memoji23 widthAnchor];
+  v77 = [widthAnchor2 constraintEqualToConstant:50.0];
   v121[6] = v77;
-  v75 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v74 = [v75 heightAnchor];
-  v73 = [v74 constraintEqualToConstant:50.0];
+  memoji24 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  heightAnchor2 = [memoji24 heightAnchor];
+  v73 = [heightAnchor2 constraintEqualToConstant:50.0];
   v121[7] = v73;
-  v72 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  v70 = [v72 leadingAnchor];
-  v71 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v69 = [v71 trailingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 constant:-10.0];
+  bubble14 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  leadingAnchor2 = [bubble14 leadingAnchor];
+  memoji15 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  trailingAnchor2 = [memoji15 trailingAnchor];
+  v68 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v121[8] = v68;
-  v67 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  v65 = [v67 topAnchor];
-  v66 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  v64 = [v66 topAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  bubble15 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  topAnchor2 = [bubble15 topAnchor];
+  memoji16 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  topAnchor3 = [memoji16 topAnchor];
+  v63 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v121[9] = v63;
-  v62 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  v61 = [v62 widthAnchor];
-  v60 = [v61 constraintEqualToConstant:148.0];
+  bubble16 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  widthAnchor3 = [bubble16 widthAnchor];
+  v60 = [widthAnchor3 constraintEqualToConstant:148.0];
   v121[10] = v60;
-  v59 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  v58 = [v59 trailingAnchor];
-  v57 = [(UIView *)self trailingAnchor];
-  v56 = [v58 constraintLessThanOrEqualToAnchor:v57];
+  bubble17 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  trailingAnchor3 = [bubble17 trailingAnchor];
+  trailingAnchor4 = [(UIView *)self trailingAnchor];
+  v56 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
   v121[11] = v56;
-  v55 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  v53 = [v55 trailingAnchor];
-  v54 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v52 = [v54 leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 constant:10.0];
+  bubble24 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  trailingAnchor5 = [bubble24 trailingAnchor];
+  memoji25 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  leadingAnchor3 = [memoji25 leadingAnchor];
+  v51 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor3 constant:10.0];
   v121[12] = v51;
-  v50 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  v48 = [v50 topAnchor];
-  v49 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  v47 = [v49 topAnchor];
-  [v48 constraintEqualToAnchor:v47];
-  v28 = v99 = v7;
+  bubble25 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  topAnchor4 = [bubble25 topAnchor];
+  memoji26 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  topAnchor5 = [memoji26 topAnchor];
+  [topAnchor4 constraintEqualToAnchor:topAnchor5];
+  v28 = v99 = exampleCopy;
   v121[13] = v28;
   [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  v29 = v97 = v15;
-  v30 = [v29 widthAnchor];
-  v31 = [v30 constraintEqualToConstant:148.0];
+  v29 = v97 = altExample2Copy;
+  widthAnchor4 = [v29 widthAnchor];
+  v31 = [widthAnchor4 constraintEqualToConstant:148.0];
   v121[14] = v31;
-  v32 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  v33 = [v32 leadingAnchor];
-  v34 = [(UIView *)self leadingAnchor];
-  [v33 constraintGreaterThanOrEqualToAnchor:v34];
-  v35 = v92 = v12;
+  bubble26 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  leadingAnchor4 = [bubble26 leadingAnchor];
+  leadingAnchor5 = [(UIView *)self leadingAnchor];
+  [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:leadingAnchor5];
+  v35 = v92 = example1Copy;
   v121[15] = v35;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:16];
-  v36 = v90 = v13;
+  v36 = v90 = example2Copy;
   [v76 activateConstraints:v36];
 
-  v37 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
-  [v37 setAlpha:0.0];
+  memoji17 = [(UIKBMultilingualKeyboardArtworkView *)self memoji1];
+  [memoji17 setAlpha:0.0];
 
   v120[0] = MEMORY[0x1E69E9820];
   v120[1] = 3221225472;
@@ -289,12 +289,12 @@
   [UIView animateWithDuration:4 delay:v120 options:&__block_literal_global_125 animations:0.8 completion:0.0];
   memset(&v119, 0, sizeof(v119));
   CGAffineTransformMakeScale(&v119, 0.1, 0.1);
-  v38 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
-  [v38 setAlpha:0.0];
+  bubble18 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  [bubble18 setAlpha:0.0];
 
-  v39 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
+  bubble19 = [(UIKBMultilingualKeyboardArtworkView *)self bubble1];
   v118 = v119;
-  [v39 setTransform:&v118];
+  [bubble19 setTransform:&v118];
 
   v117[0] = MEMORY[0x1E69E9820];
   v117[1] = 3221225472;
@@ -302,8 +302,8 @@
   v117[3] = &unk_1E70F3590;
   v117[4] = self;
   [UIView animateWithDuration:4 delay:v117 usingSpringWithDamping:&__block_literal_global_10_2 initialSpringVelocity:0.5 options:0.2 animations:0.75 completion:0.0];
-  v40 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
-  [v40 setAlpha:0.0];
+  memoji27 = [(UIKBMultilingualKeyboardArtworkView *)self memoji2];
+  [memoji27 setAlpha:0.0];
 
   v116[0] = MEMORY[0x1E69E9820];
   v116[1] = 3221225472;
@@ -311,12 +311,12 @@
   v116[3] = &unk_1E70F3590;
   v116[4] = self;
   [UIView animateWithDuration:4 delay:v116 options:&__block_literal_global_12_1 animations:0.8 completion:0.5];
-  v41 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
-  [v41 setAlpha:0.0];
+  bubble27 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  [bubble27 setAlpha:0.0];
 
-  v42 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
+  bubble28 = [(UIKBMultilingualKeyboardArtworkView *)self bubble2];
   v118 = v119;
-  [v42 setTransform:&v118];
+  [bubble28 setTransform:&v118];
 
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
@@ -416,12 +416,12 @@ void __114__UIKBMultilingualKeyboardArtworkView_animateBubblesWithExample1_examp
   [WeakRetained animateBubblesWithExample1:*(a1 + 32) example2:*(a1 + 40) altExample1:*(a1 + 48) altExample2:*(a1 + 56) showAltExample:(*(a1 + 72) & 1) == 0];
 }
 
-+ (id)memojiImageForLanguage:(id)a3 from:(id)a4
++ (id)memojiImageForLanguage:(id)language from:(id)from
 {
-  v4 = a4;
-  v5 = [v4 count];
+  fromCopy = from;
+  v5 = [fromCopy count];
   v6 = arc4random();
-  v7 = [v4 objectAtIndexedSubscript:vcvtmd_s64_f64(v6 / 4294967300.0 * v5 + (1.0 - v6 / 4294967300.0) * 0.0)];
+  v7 = [fromCopy objectAtIndexedSubscript:vcvtmd_s64_f64(v6 / 4294967300.0 * v5 + (1.0 - v6 / 4294967300.0) * 0.0)];
 
   v8 = [UIImage kitImageNamed:v7];
 

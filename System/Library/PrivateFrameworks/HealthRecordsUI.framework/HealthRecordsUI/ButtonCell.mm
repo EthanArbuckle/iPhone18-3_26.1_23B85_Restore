@@ -1,10 +1,10 @@
 @interface ButtonCell
-- (_TtC15HealthRecordsUI10ButtonCell)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI10ButtonCell)initWithCoder:(id)coder;
 @end
 
 @implementation ButtonCell
 
-- (_TtC15HealthRecordsUI10ButtonCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI10ButtonCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI10ButtonCell____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI10ButtonCell____lazy_storage___spinnerView) = 0;

@@ -2,7 +2,7 @@
 - (SOSKappaThirdPartySettingsController)init;
 - (id)specifiers;
 - (id)thirdPartyApp;
-- (void)disableKappaThirdPartyAppForSpecifier:(id)a3;
+- (void)disableKappaThirdPartyAppForSpecifier:(id)specifier;
 @end
 
 @implementation SOSKappaThirdPartySettingsController
@@ -27,8 +27,8 @@
   v3 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
-    v5 = [(SOSKappaThirdPartySettingsController *)self thirdPartyApp];
-    v6 = [SOSUtilities thirdPartySettingsSpecifiersWithTarget:self forApp:v5 disableAction:"disableKappaThirdPartyAppForSpecifier:"];
+    thirdPartyApp = [(SOSKappaThirdPartySettingsController *)self thirdPartyApp];
+    v6 = [SOSUtilities thirdPartySettingsSpecifiersWithTarget:self forApp:thirdPartyApp disableAction:"disableKappaThirdPartyAppForSpecifier:"];
     v7 = *&self->PSListController_opaque[v2];
     *&self->PSListController_opaque[v2] = v6;
 
@@ -40,10 +40,10 @@
   return v8;
 }
 
-- (void)disableKappaThirdPartyAppForSpecifier:(id)a3
+- (void)disableKappaThirdPartyAppForSpecifier:(id)specifier
 {
-  v4 = [(SOSKappaThirdPartySettingsController *)self thirdPartyApp];
-  [SOSUtilities setKappaThirdPartyActive:0 forApp:v4 forPairedDevice:0 presentConfirmationOnViewController:self completion:&stru_20DB8];
+  thirdPartyApp = [(SOSKappaThirdPartySettingsController *)self thirdPartyApp];
+  [SOSUtilities setKappaThirdPartyActive:0 forApp:thirdPartyApp forPairedDevice:0 presentConfirmationOnViewController:self completion:&stru_20DB8];
 }
 
 - (id)thirdPartyApp

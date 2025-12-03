@@ -1,29 +1,29 @@
 @interface CNAvatarCardControllerOrbTransition
 - (CGAffineTransform)endActionListTransform;
 - (CGAffineTransform)endHeaderTransform;
-- (CGRect)_sourceRectInContainerView:(id)a3;
+- (CGRect)_sourceRectInContainerView:(id)view;
 - (CGRect)sourceRect;
-- (CNAvatarCardControllerOrbTransition)initWithCardViewController:(id)a3 headerView:(id)a4 sourceView:(id)a5 highlightedView:(id)a6 sourceRect:(CGRect)a7 backgroundVisualEffectView:(id)a8 isDismissing:(BOOL)a9;
+- (CNAvatarCardControllerOrbTransition)initWithCardViewController:(id)controller headerView:(id)view sourceView:(id)sourceView highlightedView:(id)highlightedView sourceRect:(CGRect)rect backgroundVisualEffectView:(id)effectView isDismissing:(BOOL)dismissing;
 - (CNAvatarCardControllerOrbTransitionDelegate)delegate;
 - (CNAvatarCardViewController)cardViewController;
 - (CNContactOrbHeaderView)headerView;
 - (UIView)highlightedView;
 - (UIView)sourceView;
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)setEndActionListTransform:(CGAffineTransform *)a3;
-- (void)setEndHeaderTransform:(CGAffineTransform *)a3;
-- (void)setupTransitionFromView:(id)a3 toView:(id)a4 withContainerView:(id)a5;
-- (void)transitionDidEnd:(BOOL)a3;
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)setEndActionListTransform:(CGAffineTransform *)transform;
+- (void)setEndHeaderTransform:(CGAffineTransform *)transform;
+- (void)setupTransitionFromView:(id)view toView:(id)toView withContainerView:(id)containerView;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation CNAvatarCardControllerOrbTransition
 
-- (void)setEndActionListTransform:(CGAffineTransform *)a3
+- (void)setEndActionListTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_endActionListTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_endActionListTransform.tx = *&transform->tx;
   *&self->_endActionListTransform.c = v4;
   *&self->_endActionListTransform.a = v3;
 }
@@ -37,11 +37,11 @@
   return self;
 }
 
-- (void)setEndHeaderTransform:(CGAffineTransform *)a3
+- (void)setEndHeaderTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_endHeaderTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_endHeaderTransform.tx = *&transform->tx;
   *&self->_endHeaderTransform.c = v4;
   *&self->_endHeaderTransform.a = v3;
 }
@@ -103,14 +103,14 @@
   return WeakRetained;
 }
 
-- (CGRect)_sourceRectInContainerView:(id)a3
+- (CGRect)_sourceRectInContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CNAvatarCardControllerOrbTransition *)self sourceRect];
   if (CGRectIsEmpty(v65))
   {
-    v5 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-    [v5 bounds];
+    sourceView = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+    [sourceView bounds];
     x = v6;
     y = v8;
     width = v10;
@@ -126,12 +126,12 @@
     height = v17;
   }
 
-  v18 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-  if (v18)
+  sourceView2 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+  if (sourceView2)
   {
-    v19 = v18;
-    v20 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-    [v20 bounds];
+    v19 = sourceView2;
+    sourceView3 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+    [sourceView3 bounds];
     v71.origin.x = v21;
     v71.origin.y = v22;
     v71.size.width = v23;
@@ -142,23 +142,23 @@
     v66.size.height = height;
     if (CGRectEqualToRect(v66, v71))
     {
-      v25 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-      v26 = [v25 window];
+      sourceView4 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+      window = [sourceView4 window];
 
-      if (v26)
+      if (window)
       {
-        v27 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-        v28 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-        v29 = [v28 window];
-        v30 = [v29 safeAreaLayoutGuide];
-        [v30 layoutFrame];
+        sourceView5 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+        sourceView6 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+        window2 = [sourceView6 window];
+        safeAreaLayoutGuide = [window2 safeAreaLayoutGuide];
+        [safeAreaLayoutGuide layoutFrame];
         v32 = v31;
         v34 = v33;
         v36 = v35;
         v38 = v37;
-        v39 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-        v40 = [v39 window];
-        [v27 convertRect:v40 fromCoordinateSpace:{v32, v34, v36, v38}];
+        sourceView7 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+        window3 = [sourceView7 window];
+        [sourceView5 convertRect:window3 fromCoordinateSpace:{v32, v34, v36, v38}];
         v42 = v41;
         v44 = v43;
         v46 = v45;
@@ -198,11 +198,11 @@
     }
   }
 
-  v49 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+  sourceView8 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
 
-  if (!v49)
+  if (!sourceView8)
   {
-    [v4 bounds];
+    [viewCopy bounds];
     UIRectGetCenter();
     v52 = v59;
     v54 = v60;
@@ -212,8 +212,8 @@
   }
 
 LABEL_11:
-  v50 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
-  [v4 convertRect:v50 fromView:{x, y, width, height}];
+  sourceView9 = [(CNAvatarCardControllerOrbTransition *)self sourceView];
+  [viewCopy convertRect:sourceView9 fromView:{x, y, width, height}];
   v52 = v51;
   v54 = v53;
   v56 = v55;
@@ -231,7 +231,7 @@ LABEL_13:
   return result;
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   v8 = *MEMORY[0x1E695EFD0];
@@ -244,23 +244,23 @@ LABEL_13:
   v9 = v6;
   v10 = v5;
   [(CNAvatarCardControllerOrbTransition *)self setEndActionListTransform:&v8];
-  v4 = [(CNAvatarCardControllerOrbTransition *)self delegate];
-  [v4 orbTransitionDidEndTransition:self];
+  delegate = [(CNAvatarCardControllerOrbTransition *)self delegate];
+  [delegate orbTransitionDidEndTransition:self];
 }
 
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v10 = [v9 headerContainerView];
+  toViewCopy = toView;
+  viewCopy = view;
+  cardViewController = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  headerContainerView = [cardViewController headerContainerView];
   [(CNAvatarCardControllerOrbTransition *)self endHeaderTransform];
-  [v10 setTransform:v25];
+  [headerContainerView setTransform:v25];
 
-  v11 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v12 = [v11 actionsListView];
+  cardViewController2 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  actionsListView = [cardViewController2 actionsListView];
   [(CNAvatarCardControllerOrbTransition *)self endActionListTransform];
-  [v12 setTransform:v25];
+  [actionsListView setTransform:v25];
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
@@ -274,43 +274,43 @@ LABEL_13:
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
-    v14 = v7;
+    v14 = toViewCopy;
   }
 
   else
   {
-    v14 = v8;
+    v14 = viewCopy;
   }
 
   v15 = v14;
-  v16 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v17 = [v16 headerContainerView];
-  [v17 setAlpha:v13];
+  cardViewController3 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  headerContainerView2 = [cardViewController3 headerContainerView];
+  [headerContainerView2 setAlpha:v13];
 
-  v18 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v19 = [v18 actionsListView];
-  [v19 setAlpha:v13];
+  cardViewController4 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  actionsListView2 = [cardViewController4 actionsListView];
+  [actionsListView2 setAlpha:v13];
 
-  v20 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-  [v20 setAlpha:v13];
+  visualEffectView = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+  [visualEffectView setAlpha:v13];
 
   [(CNAvatarCardControllerOrbTransition *)self isDismissing];
   v21 = _UIClickPresentationBackgroundEffects();
-  v22 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-  [v22 setBackgroundEffects:v21];
+  visualEffectView2 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+  [visualEffectView2 setBackgroundEffects:v21];
 
   [(CNAvatarCardControllerOrbTransition *)self isDismissing];
   v23 = _UIClickPresentationBackgroundColor();
-  v24 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-  [v24 setBackgroundColor:v23];
+  visualEffectView3 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+  [visualEffectView3 setBackgroundColor:v23];
 
   [(CNAvatarCardControllerOrbTransition *)self highlightViewToAlpha];
   [v15 setAlpha:?];
 }
 
-- (void)setupTransitionFromView:(id)a3 toView:(id)a4 withContainerView:(id)a5
+- (void)setupTransitionFromView:(id)view toView:(id)toView withContainerView:(id)containerView
 {
-  v6 = [(CNAvatarCardControllerOrbTransition *)self cardViewController:a3];
+  v6 = [(CNAvatarCardControllerOrbTransition *)self cardViewController:view];
   if ([v6 headerOnTop])
   {
     v7 = -180.0;
@@ -327,9 +327,9 @@ LABEL_13:
   CGAffineTransformConcat(&v31, &t1, &t2);
   memset(&t1, 0, sizeof(t1));
   CGAffineTransformMakeScale(&t1, 0.5, 0.5);
-  v8 = [(CNAvatarCardControllerOrbTransition *)self isDismissing];
+  isDismissing = [(CNAvatarCardControllerOrbTransition *)self isDismissing];
   v9 = MEMORY[0x1E695EFD0];
-  if (v8)
+  if (isDismissing)
   {
     p_t1 = MEMORY[0x1E695EFD0];
   }
@@ -342,10 +342,10 @@ LABEL_13:
   *&v28.a = *&p_t1->a;
   *&v28.c = *&p_t1->c;
   *&v28.tx = *&p_t1->tx;
-  v11 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v12 = [v11 headerContainerView];
+  cardViewController = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  headerContainerView = [cardViewController headerContainerView];
   t2 = v28;
-  [v12 setTransform:&t2];
+  [headerContainerView setTransform:&t2];
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
@@ -357,9 +357,9 @@ LABEL_13:
     v13 = 0.0;
   }
 
-  v14 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v15 = [v14 headerContainerView];
-  [v15 setAlpha:v13];
+  cardViewController2 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  headerContainerView2 = [cardViewController2 headerContainerView];
+  [headerContainerView2 setAlpha:v13];
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
@@ -372,9 +372,9 @@ LABEL_13:
   }
 
   v17 = [(CNAvatarCardControllerOrbTransition *)self cardViewController:*&v16->a];
-  v18 = [v17 actionsListView];
+  actionsListView = [v17 actionsListView];
   t2 = v27;
-  [v18 setTransform:&t2];
+  [actionsListView setTransform:&t2];
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
@@ -386,9 +386,9 @@ LABEL_13:
     v19 = 0.0;
   }
 
-  v20 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-  v21 = [v20 actionsListView];
-  [v21 setAlpha:v19];
+  cardViewController3 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+  actionsListView2 = [cardViewController3 actionsListView];
+  [actionsListView2 setAlpha:v19];
 
   if ([(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
@@ -433,66 +433,66 @@ LABEL_13:
   [(CNAvatarCardControllerOrbTransition *)self setHighlightViewToAlpha:v26];
 }
 
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v64 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  toViewCopy = toView;
+  containerViewCopy = containerView;
   if (![(CNAvatarCardControllerOrbTransition *)self isDismissing])
   {
-    v10 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-    v11 = [v10 view];
-    [v11 layoutIfNeeded];
+    cardViewController = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+    view = [cardViewController view];
+    [view layoutIfNeeded];
 
-    v12 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-    [v12 setAutoresizingMask:18];
+    visualEffectView = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+    [visualEffectView setAutoresizingMask:18];
 
-    [v9 bounds];
+    [containerViewCopy bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-    [v21 setFrame:{v14, v16, v18, v20}];
+    visualEffectView2 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+    [visualEffectView2 setFrame:{v14, v16, v18, v20}];
 
-    v22 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
-    [v9 addSubview:v22];
+    visualEffectView3 = [(CNAvatarCardControllerOrbTransition *)self visualEffectView];
+    [containerViewCopy addSubview:visualEffectView3];
 
-    v23 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-    v24 = [v23 view];
-    [v9 addSubview:v24];
+    cardViewController2 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+    view2 = [cardViewController2 view];
+    [containerViewCopy addSubview:view2];
 
-    v25 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-    v26 = [v25 view];
-    [v26 frame];
+    cardViewController3 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+    view3 = [cardViewController3 view];
+    [view3 frame];
     v58 = v27;
     v60 = v28;
     v62 = v29;
 
-    v30 = [(CNAvatarCardControllerOrbTransition *)self headerView];
-    [v30 bounds];
+    headerView = [(CNAvatarCardControllerOrbTransition *)self headerView];
+    [headerView bounds];
     v32 = v31 * 0.5;
 
-    [(CNAvatarCardControllerOrbTransition *)self _sourceRectInContainerView:v9];
+    [(CNAvatarCardControllerOrbTransition *)self _sourceRectInContainerView:containerViewCopy];
     v34 = v33;
     v36 = v35;
-    v37 = [(CNAvatarCardControllerOrbTransition *)self headerView];
-    [v37 bounds];
+    headerView2 = [(CNAvatarCardControllerOrbTransition *)self headerView];
+    [headerView2 bounds];
     v39 = v38;
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    v46 = [(CNAvatarCardControllerOrbTransition *)self headerView];
-    [v9 convertRect:v46 fromView:{v39, v41, v43, v45}];
+    headerView3 = [(CNAvatarCardControllerOrbTransition *)self headerView];
+    [containerViewCopy convertRect:headerView3 fromView:{v39, v41, v43, v45}];
     v48 = v47;
 
-    v49 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
-    LODWORD(v46) = [v49 headerOnTop];
+    cardViewController4 = [(CNAvatarCardControllerOrbTransition *)self cardViewController];
+    LODWORD(headerView3) = [cardViewController4 headerOnTop];
 
     v50 = v34 + v36 * 0.5;
     v51 = v50 - (v32 + v48);
     v52 = v50 - v32;
-    if (!v46)
+    if (!headerView3)
     {
       v52 = v51;
     }
@@ -500,42 +500,42 @@ LABEL_13:
     v53 = v52;
     v54 = floorf(v53);
     v55 = [(CNAvatarCardControllerOrbTransition *)self cardViewController:v58];
-    v56 = [v55 view];
-    [v56 setFrame:{v59, v54, v63, v61}];
+    view4 = [v55 view];
+    [view4 setFrame:{v59, v54, v63, v61}];
   }
 
-  [(CNAvatarCardControllerOrbTransition *)self setupTransitionFromView:v64 toView:v8 withContainerView:v9];
-  v57 = [(CNAvatarCardControllerOrbTransition *)self delegate];
-  [v57 orbTransitionDidPrepareTransition:self withContainerView:v9];
+  [(CNAvatarCardControllerOrbTransition *)self setupTransitionFromView:viewCopy toView:toViewCopy withContainerView:containerViewCopy];
+  delegate = [(CNAvatarCardControllerOrbTransition *)self delegate];
+  [delegate orbTransitionDidPrepareTransition:self withContainerView:containerViewCopy];
 }
 
-- (CNAvatarCardControllerOrbTransition)initWithCardViewController:(id)a3 headerView:(id)a4 sourceView:(id)a5 highlightedView:(id)a6 sourceRect:(CGRect)a7 backgroundVisualEffectView:(id)a8 isDismissing:(BOOL)a9
+- (CNAvatarCardControllerOrbTransition)initWithCardViewController:(id)controller headerView:(id)view sourceView:(id)sourceView highlightedView:(id)highlightedView sourceRect:(CGRect)rect backgroundVisualEffectView:(id)effectView isDismissing:(BOOL)dismissing
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  sourceViewCopy = sourceView;
+  highlightedViewCopy = highlightedView;
+  effectViewCopy = effectView;
   v28.receiver = self;
   v28.super_class = CNAvatarCardControllerOrbTransition;
   v24 = [(CNAvatarCardControllerOrbTransition *)&v28 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeWeak(&v24->_cardViewController, v19);
-    objc_storeWeak(&v25->_headerView, v20);
-    objc_storeWeak(&v25->_sourceView, v21);
-    objc_storeWeak(&v25->_highlightedView, v22);
+    objc_storeWeak(&v24->_cardViewController, controllerCopy);
+    objc_storeWeak(&v25->_headerView, viewCopy);
+    objc_storeWeak(&v25->_sourceView, sourceViewCopy);
+    objc_storeWeak(&v25->_highlightedView, highlightedViewCopy);
     v25->_sourceRect.origin.x = x;
     v25->_sourceRect.origin.y = y;
     v25->_sourceRect.size.width = width;
     v25->_sourceRect.size.height = height;
-    v25->_isDismissing = a9;
-    objc_storeStrong(&v25->_visualEffectView, a8);
+    v25->_isDismissing = dismissing;
+    objc_storeStrong(&v25->_visualEffectView, effectView);
     v26 = v25;
   }
 

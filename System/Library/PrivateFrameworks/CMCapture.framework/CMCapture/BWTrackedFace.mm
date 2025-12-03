@@ -2,9 +2,9 @@
 - (CGRect)detectionRect;
 - (CGRect)trackingRect;
 - (void)dealloc;
-- (void)initWithDetectionID:(void *)a1;
-- (void)setDetectionRect:(CGRect)a3;
-- (void)setTrackingDistance:(float)a3;
+- (void)initWithDetectionID:(void *)d;
+- (void)setDetectionRect:(CGRect)rect;
+- (void)setTrackingDistance:(float)distance;
 @end
 
 @implementation BWTrackedFace
@@ -29,17 +29,17 @@
   return result;
 }
 
-- (void)setDetectionRect:(CGRect)a3
+- (void)setDetectionRect:(CGRect)rect
 {
-  self->_detectionRect = a3;
-  if (a3.size.width <= a3.size.height)
+  self->_detectionRect = rect;
+  if (rect.size.width <= rect.size.height)
   {
-    height = a3.size.height;
+    height = rect.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = rect.size.width;
   }
 
   v4 = height;
@@ -48,14 +48,14 @@
   self->_distance = v5;
 }
 
-- (void)setTrackingDistance:(float)a3
+- (void)setTrackingDistance:(float)distance
 {
-  self->_trackingDistance = a3;
-  self->_distance = a3;
+  self->_trackingDistance = distance;
+  self->_distance = distance;
   size = self->_size;
   if (size != 0.0)
   {
-    self->_sizeToDistanceMultiplier = size * a3;
+    self->_sizeToDistanceMultiplier = size * distance;
   }
 }
 
@@ -72,14 +72,14 @@
   return result;
 }
 
-- (void)initWithDetectionID:(void *)a1
+- (void)initWithDetectionID:(void *)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = d;
   v5.super_class = BWTrackedFace;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

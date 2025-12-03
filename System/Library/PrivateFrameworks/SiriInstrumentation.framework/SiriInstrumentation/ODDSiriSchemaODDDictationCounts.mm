@@ -1,25 +1,25 @@
 @interface ODDSiriSchemaODDDictationCounts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationCounts)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationCounts)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDictationCounts)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationCounts)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationCounts
 
-- (ODDSiriSchemaODDDictationCounts)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationCounts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ODDSiriSchemaODDDictationCounts;
   v5 = [(ODDSiriSchemaODDDictationCounts *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"turnCounts"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"turnCounts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationCounts)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationCounts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationCounts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationCounts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationCounts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_turnCounts)
   {
-    v4 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    turnCounts = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+    dictionaryRepresentation = [turnCounts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"turnCounts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"turnCounts"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"turnCounts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"turnCounts"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
-    v6 = [v4 turnCounts];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    turnCounts = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+    turnCounts2 = [equalCopy turnCounts];
+    v7 = turnCounts2;
+    if ((turnCounts != 0) != (turnCounts2 == 0))
     {
-      v8 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
-      if (!v8)
+      turnCounts3 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+      if (!turnCounts3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
-      v11 = [v4 turnCounts];
-      v12 = [v10 isEqual:v11];
+      v9 = turnCounts3;
+      turnCounts4 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+      turnCounts5 = [equalCopy turnCounts];
+      v12 = [turnCounts4 isEqual:turnCounts5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+  toCopy = to;
+  turnCounts = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
 
-  if (v4)
+  if (turnCounts)
   {
-    v5 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
+    turnCounts2 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDDictationCounts;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDDictationCounts *)self turnCounts:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDDictationCounts *)self deleteTurnCounts];
   }

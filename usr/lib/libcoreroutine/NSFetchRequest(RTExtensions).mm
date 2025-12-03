@@ -167,7 +167,7 @@
   {
     if (v9)
     {
-      if (a1 <= 0.0)
+      if (self <= 0.0)
       {
         v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -188,20 +188,20 @@
           [v9 longitude];
           RTCommonCalculateBoundingBox();
           v12 = MEMORY[0x277CBE428];
-          v13 = [v11 latitudePropertyPath];
-          v14 = [v12 formatStringForPropertyPath:v13];
+          latitudePropertyPath = [v11 latitudePropertyPath];
+          v14 = [v12 formatStringForPropertyPath:latitudePropertyPath];
 
           v15 = MEMORY[0x277CBE428];
-          v16 = [v11 longitudePropertyPath];
-          v17 = [v15 formatStringForPropertyPath:v16];
+          longitudePropertyPath = [v11 longitudePropertyPath];
+          v17 = [v15 formatStringForPropertyPath:longitudePropertyPath];
 
           if (v14 && v17)
           {
-            v18 = [v11 latitudePropertyPath];
-            v19 = [v18 copy];
+            latitudePropertyPath2 = [v11 latitudePropertyPath];
+            v19 = [latitudePropertyPath2 copy];
 
-            v20 = [v11 longitudePropertyPath];
-            v21 = [v20 copy];
+            longitudePropertyPath2 = [v11 longitudePropertyPath];
+            v21 = [longitudePropertyPath2 copy];
 
             v53 = MEMORY[0x277CBEB18];
             v58 = v17;
@@ -304,36 +304,36 @@ LABEL_21:
   if (a9)
   {
     v20 = objc_opt_class();
-    v21 = [a1 entityName];
-    v22 = [v20 locationPropertiesForEntityName:v21];
+    entityName = [self entityName];
+    v22 = [v20 locationPropertiesForEntityName:entityName];
 
     if (!v22)
     {
       v29 = MEMORY[0x277CCACA8];
-      v30 = [a1 entityName];
-      v31 = [v29 stringWithFormat:@"entityName, %@, not supported", v30];
+      entityName2 = [self entityName];
+      v31 = [v29 stringWithFormat:@"entityName, %@, not supported", entityName2];
 
       v32 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277D01448];
       v104 = *MEMORY[0x277CCA450];
       v105[0] = v31;
       v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:&v104 count:1];
-      v23 = [v32 errorWithDomain:v33 code:7 userInfo:v34];
+      array2 = [v32 errorWithDomain:v33 code:7 userInfo:v34];
 
-      v35 = v23;
+      v35 = array2;
       v28 = 0;
-      *a9 = v23;
+      *a9 = array2;
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v90 = [MEMORY[0x277CBEB18] array];
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     if (a5)
     {
-      v24 = [v22 referenceFramePropertyPath];
-      v25 = [v24 count];
+      referenceFramePropertyPath = [v22 referenceFramePropertyPath];
+      v25 = [referenceFramePropertyPath count];
 
       if (!v25)
       {
@@ -352,7 +352,7 @@ LABEL_29:
       if (!v17)
       {
         v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-        v31 = v90;
+        v31 = array;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
@@ -390,14 +390,14 @@ LABEL_29:
 
         v88 = v39;
         v49 = objc_opt_class();
-        v50 = [v22 referenceFramePropertyPath];
-        v51 = [v49 formatStringForPropertyPath:v50];
+        referenceFramePropertyPath2 = [v22 referenceFramePropertyPath];
+        v51 = [v49 formatStringForPropertyPath:referenceFramePropertyPath2];
 
-        v52 = [v22 referenceFramePropertyPath];
-        v87 = v52;
+        referenceFramePropertyPath3 = [v22 referenceFramePropertyPath];
+        v87 = referenceFramePropertyPath3;
         if (v51)
         {
-          v53 = v52;
+          v53 = referenceFramePropertyPath3;
           v84 = MEMORY[0x277CCAC30];
           v86 = v51;
           v81 = [v51 stringByAppendingString:@"!= %@"];
@@ -408,7 +408,7 @@ LABEL_29:
           {
             [v89 addObject:v85];
             v55 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v89];
-            [v23 addObject:v55];
+            [array2 addObject:v55];
 
             v92 = 0;
             v56 = [objc_opt_class() boundingBoxPredicatesForLocation:v88 distance:v22 locationProperties:&v92 error:a2];
@@ -426,7 +426,7 @@ LABEL_29:
                 v72 = v80;
                 [v80 addObject:v83];
                 v73 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v80];
-                [v23 addObject:v73];
+                [array2 addObject:v73];
                 v74 = v73;
                 v75 = v83;
               }
@@ -446,7 +446,7 @@ LABEL_29:
                 v75 = 0;
               }
 
-              v31 = v90;
+              v31 = array;
               if (!v75)
               {
                 v28 = 0;
@@ -501,9 +501,9 @@ LABEL_29:
 
     else
     {
-      v36 = [v16 referenceFrame];
+      referenceFrame = [v16 referenceFrame];
       v37 = objc_opt_class();
-      if (v36 == 2)
+      if (referenceFrame == 2)
       {
         v95 = 0;
         v26 = [v37 boundingBoxPredicatesForLocation:v16 distance:v22 locationProperties:&v95 error:a2 + 1000.0];
@@ -528,21 +528,21 @@ LABEL_17:
 LABEL_18:
       v28 = 0;
 LABEL_28:
-      v31 = v90;
+      v31 = array;
       goto LABEL_29;
     }
 
     v40 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v26];
-    [v23 addObject:v40];
+    [array2 addObject:v40];
 
-    v31 = v90;
+    v31 = array;
 LABEL_20:
     if (v18)
     {
-      [v23 addObjectsFromArray:v18];
+      [array2 addObjectsFromArray:v18];
     }
 
-    v41 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v23];
+    v41 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:array2];
     [v31 addObject:v41];
 
     if (v19)
@@ -551,7 +551,7 @@ LABEL_20:
     }
 
     v42 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v31];
-    [a1 setPredicate:v42];
+    [self setPredicate:v42];
 
     v28 = 1;
     goto LABEL_29;

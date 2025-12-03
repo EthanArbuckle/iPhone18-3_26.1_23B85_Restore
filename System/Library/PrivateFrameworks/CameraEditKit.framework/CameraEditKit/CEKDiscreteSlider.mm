@@ -7,92 +7,92 @@
 - (BOOL)highlightSelectedIndex;
 - (BOOL)useTickMarkLegibilityShadows;
 - (CEKContactObserver)contactObserver;
-- (CEKDiscreteSlider)initWithFrame:(CGRect)a3;
-- (CEKDiscreteSlider)initWithTickMarkStyle:(unint64_t)a3;
+- (CEKDiscreteSlider)initWithFrame:(CGRect)frame;
+- (CEKDiscreteSlider)initWithTickMarkStyle:(unint64_t)style;
 - (CEKDiscreteSliderDelegate)delegate;
 - (CEKFluidBehaviorSettings)_externalScrollSettings;
 - (CEKSliderPositionDriver)_sliderDriver;
 - (CEKTickMarksConfiguration)tickMarksConfiguration;
-- (CGPoint)_contentOffsetForIndex:(unint64_t)a3;
+- (CGPoint)_contentOffsetForIndex:(unint64_t)index;
 - (CGSize)intrinsicContentSize;
-- (double)_interpolatedIndexForContentOffset:(CGPoint)a3;
+- (double)_interpolatedIndexForContentOffset:(CGPoint)offset;
 - (id)_createLegibilityImage;
 - (id)_hidPassthroughDriver;
-- (int64_t)_externalScrollingAllowedIndexForIndex:(int64_t)a3;
+- (int64_t)_externalScrollingAllowedIndexForIndex:(int64_t)index;
 - (int64_t)selectionFeedbackProfile;
-- (unint64_t)_biasedIndexForContentOffset:(CGPoint)a3;
-- (unint64_t)_indexForContentOffset:(CGPoint)a3;
-- (unint64_t)_nearestIndexForContentOffset:(CGPoint)a3;
-- (unint64_t)indexForTickMarkAtPoint:(CGPoint)a3 in:(id)a4;
-- (void)_applyExternalTarget:(double)a3 mode:(int64_t)a4 completion:(id)a5;
+- (unint64_t)_biasedIndexForContentOffset:(CGPoint)offset;
+- (unint64_t)_indexForContentOffset:(CGPoint)offset;
+- (unint64_t)_nearestIndexForContentOffset:(CGPoint)offset;
+- (unint64_t)indexForTickMarkAtPoint:(CGPoint)point in:(id)in;
+- (void)_applyExternalTarget:(double)target mode:(int64_t)mode completion:(id)completion;
 - (void)_createExternalScrollAnimatorIfNeeded;
 - (void)_createGradientIfNeeded;
 - (void)_handleExternalScrollAnimated;
-- (void)_layoutSliderContentAtY:(double)a3 withHorizontalPadding:(double)a4;
-- (void)_layoutSubviewsWithLabelRotation:(double)a3;
+- (void)_layoutSliderContentAtY:(double)y withHorizontalPadding:(double)padding;
+- (void)_layoutSubviewsWithLabelRotation:(double)rotation;
 - (void)_layoutSubviewsWithNoRotation;
 - (void)_limitExternalScrollIndexesForCurrentSelectionIfNeeded;
-- (void)_setOverscrolling:(BOOL)a3;
-- (void)_setSelectedIndex:(unint64_t)a3 shouldDelegate:(BOOL)a4 wantsFeedbackEmitted:(BOOL)a5 shouldScroll:(BOOL)a6 scrollDuration:(double)a7 scrollCurve:(id)a8 scrollCompletion:(id)a9;
+- (void)_setOverscrolling:(BOOL)overscrolling;
+- (void)_setSelectedIndex:(unint64_t)index shouldDelegate:(BOOL)delegate wantsFeedbackEmitted:(BOOL)emitted shouldScroll:(BOOL)scroll scrollDuration:(double)duration scrollCurve:(id)curve scrollCompletion:(id)completion;
 - (void)_sliderDidEndScrolling;
 - (void)_updateAppearanceForActiveScrolling;
-- (void)_updateColorsAnimated:(BOOL)a3;
+- (void)_updateColorsAnimated:(BOOL)animated;
 - (void)_updateFonts;
-- (void)_updateMarkedIndexViewAnimated:(BOOL)a3;
+- (void)_updateMarkedIndexViewAnimated:(BOOL)animated;
 - (void)_updateScrollViewContentOffset;
 - (void)_updateTextLegibilityBackground;
 - (void)_updateTickMarkCount;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactEndedWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactEndedWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
 - (void)layoutSubviews;
 - (void)performWaveAnimation;
 - (void)removeGradients;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBounds:(CGRect)a3;
-- (void)setColorHighlight:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFontStyle:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGradientInsets:(id)a3;
-- (void)setHighlightSelectedIndex:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIndexCount:(unint64_t)a3;
-- (void)setLabelVerticalPadding:(double)a3;
-- (void)setLevelIndicatorHeight:(double)a3;
-- (void)setMagneticIndexes:(id)a3;
-- (void)setMarkedIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setOpaqueGradientsWithColor:(id)a3;
-- (void)setSelectedIndex:(unint64_t)a3 animatedDuration:(double)a4 animatedCurve:(id)a5 completion:(id)a6;
-- (void)setSelectionFeedbackProfile:(int64_t)a3;
-- (void)setSliderVerticalAlignment:(int64_t)a3;
-- (void)setSliderVerticalOffset:(double)a3;
-- (void)setTextOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setTickMarkCountBetweenIndexes:(unint64_t)a3;
-- (void)setTickMarksHeight:(double)a3 animated:(BOOL)a4;
-- (void)setTitleAlignment:(int64_t)a3;
-- (void)setTitleText:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBounds:(CGRect)bounds;
+- (void)setColorHighlight:(unint64_t)highlight animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFontStyle:(unint64_t)style;
+- (void)setFrame:(CGRect)frame;
+- (void)setGradientInsets:(id)insets;
+- (void)setHighlightSelectedIndex:(BOOL)index animated:(BOOL)animated;
+- (void)setIndexCount:(unint64_t)count;
+- (void)setLabelVerticalPadding:(double)padding;
+- (void)setLevelIndicatorHeight:(double)height;
+- (void)setMagneticIndexes:(id)indexes;
+- (void)setMarkedIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setOpaqueGradientsWithColor:(id)color;
+- (void)setSelectedIndex:(unint64_t)index animatedDuration:(double)duration animatedCurve:(id)curve completion:(id)completion;
+- (void)setSelectionFeedbackProfile:(int64_t)profile;
+- (void)setSliderVerticalAlignment:(int64_t)alignment;
+- (void)setSliderVerticalOffset:(double)offset;
+- (void)setTextOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setTickMarkCountBetweenIndexes:(unint64_t)indexes;
+- (void)setTickMarksHeight:(double)height animated:(BOOL)animated;
+- (void)setTitleAlignment:(int64_t)alignment;
+- (void)setTitleText:(id)text;
 - (void)setTransparentGradients;
-- (void)setUseTextLegibilityBackgrounds:(BOOL)a3;
-- (void)setUseTextLegibilityShadows:(BOOL)a3;
-- (void)setUseTickMarkLegibilityShadows:(BOOL)a3;
-- (void)tickMarksViewDidChangeWidthForTickMarkCount:(id)a3;
+- (void)setUseTextLegibilityBackgrounds:(BOOL)backgrounds;
+- (void)setUseTextLegibilityShadows:(BOOL)shadows;
+- (void)setUseTickMarkLegibilityShadows:(BOOL)shadows;
+- (void)tickMarksViewDidChangeWidthForTickMarkCount:(id)count;
 - (void)updateValueLabel;
 @end
 
 @implementation CEKDiscreteSlider
 
-- (CEKDiscreteSlider)initWithFrame:(CGRect)a3
+- (CEKDiscreteSlider)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(CEKDiscreteSlider *)self initWithTickMarkStyle:0];
   v8 = v7;
   if (v7)
@@ -103,15 +103,15 @@
   return v8;
 }
 
-- (CEKDiscreteSlider)initWithTickMarkStyle:(unint64_t)a3
+- (CEKDiscreteSlider)initWithTickMarkStyle:(unint64_t)style
 {
   v18.receiver = self;
   v18.super_class = CEKDiscreteSlider;
   v4 = [(CEKDiscreteSlider *)&v18 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CEKDiscreteSlider *)v4 setTintColor:v5];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CEKDiscreteSlider *)v4 setTintColor:systemYellowColor];
 
     v4->_textOrientation = 0;
     v4->_fontStyle = 0;
@@ -126,13 +126,13 @@
     [v6 setShowsVerticalScrollIndicator:0];
     [v6 setShowsHorizontalScrollIndicator:0];
     [v6 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-    v7 = [v6 panGestureRecognizer];
-    [v7 _wantsGESEvents:1];
+    panGestureRecognizer = [v6 panGestureRecognizer];
+    [panGestureRecognizer _wantsGESEvents:1];
 
     objc_storeStrong(&v4->__contentScrollView, v6);
-    if (a3)
+    if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         v8 = objc_alloc_init(CEKDynamicTickMarksView);
         dynamicTickMarksView = v4->__dynamicTickMarksView;
@@ -150,7 +150,7 @@
     }
 
     [(CEKTickMarksContainer *)v4->__tickMarksView setDelegate:v4];
-    v4->_ticksStyle = a3;
+    v4->_ticksStyle = style;
     [v6 addSubview:v4->__tickMarksView];
     [(CEKDiscreteSlider *)v4 addSubview:v6];
     if (!v4->__dynamicTickMarksView)
@@ -177,9 +177,9 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -199,8 +199,8 @@
   [(CEKDiscreteSlider *)self bounds];
   if (!CGRectIsEmpty(v7))
   {
-    v3 = [(CEKDiscreteSlider *)self textOrientation];
-    switch(v3)
+    textOrientation = [(CEKDiscreteSlider *)self textOrientation];
+    switch(textOrientation)
     {
       case 0:
         [(CEKDiscreteSlider *)self _layoutSubviewsWithNoRotation];
@@ -213,10 +213,10 @@
         break;
       default:
 LABEL_9:
-        v5 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+        _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
         [(CEKDiscreteSlider *)self bounds];
-        [(CEKDiscreteSlider *)self convertRect:v5 toView:?];
-        [v5 setVisibleBounds:?];
+        [(CEKDiscreteSlider *)self convertRect:_dynamicTickMarksView toView:?];
+        [_dynamicTickMarksView setVisibleBounds:?];
 
         return;
     }
@@ -228,8 +228,8 @@ LABEL_9:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v3 contentSize];
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView contentSize];
   v5 = v4;
 
   [(CEKDiscreteSlider *)self labelVerticalPadding];
@@ -255,65 +255,65 @@ LABEL_9:
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = CEKDiscreteSlider;
-  [(CEKDiscreteSlider *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CEKDiscreteSlider *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(CEKDiscreteSlider *)self _setNeedsUpdateContentOffset:1];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CEKDiscreteSlider;
-  [(CEKDiscreteSlider *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CEKDiscreteSlider *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CEKDiscreteSlider *)self _setNeedsUpdateContentOffset:1];
 }
 
-- (void)setUseTextLegibilityBackgrounds:(BOOL)a3
+- (void)setUseTextLegibilityBackgrounds:(BOOL)backgrounds
 {
-  if (self->_useTextLegibilityBackgrounds != a3)
+  if (self->_useTextLegibilityBackgrounds != backgrounds)
   {
-    self->_useTextLegibilityBackgrounds = a3;
+    self->_useTextLegibilityBackgrounds = backgrounds;
     [(CEKDiscreteSlider *)self _updateTextLegibilityBackground];
 
     [(CEKDiscreteSlider *)self _updateColorsAnimated:0];
   }
 }
 
-- (void)setUseTextLegibilityShadows:(BOOL)a3
+- (void)setUseTextLegibilityShadows:(BOOL)shadows
 {
-  if (self->_useTextLegibilityShadows != a3)
+  if (self->_useTextLegibilityShadows != shadows)
   {
-    self->_useTextLegibilityShadows = a3;
+    self->_useTextLegibilityShadows = shadows;
     [(CEKDiscreteSlider *)self _updateColorsAnimated:0];
   }
 }
 
-- (void)setUseTickMarkLegibilityShadows:(BOOL)a3
+- (void)setUseTickMarkLegibilityShadows:(BOOL)shadows
 {
-  v3 = a3;
-  v5 = [(CEKDiscreteSlider *)self _dotView];
-  [v5 setUseLegibilityShadow:v3];
+  shadowsCopy = shadows;
+  _dotView = [(CEKDiscreteSlider *)self _dotView];
+  [_dotView setUseLegibilityShadow:shadowsCopy];
 
-  v6 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  [v6 setUseTickMarkLegibilityShadows:v3];
+  tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration setUseTickMarkLegibilityShadows:shadowsCopy];
 }
 
 - (BOOL)useTickMarkLegibilityShadows
 {
-  v2 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  v3 = [v2 useTickMarkLegibilityShadows];
+  tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  useTickMarkLegibilityShadows = [tickMarksConfiguration useTickMarkLegibilityShadows];
 
-  return v3;
+  return useTickMarkLegibilityShadows;
 }
 
 - (void)_createGradientIfNeeded
 {
-  v3 = [(CEKDiscreteSlider *)self _edgeGradientView];
+  _edgeGradientView = [(CEKDiscreteSlider *)self _edgeGradientView];
 
-  if (!v3)
+  if (!_edgeGradientView)
   {
     v4 = objc_alloc_init(CEKEdgeGradientView);
     [(CEKDiscreteSlider *)self set_edgeGradientView:v4];
@@ -323,44 +323,44 @@ LABEL_9:
 - (void)setTransparentGradients
 {
   [(CEKDiscreteSlider *)self _createGradientIfNeeded];
-  v6 = [(CEKDiscreteSlider *)self _edgeGradientView];
-  [v6 setEdgeGradientStyleBlack];
+  _edgeGradientView = [(CEKDiscreteSlider *)self _edgeGradientView];
+  [_edgeGradientView setEdgeGradientStyleBlack];
   v3 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-  v4 = [v6 layer];
-  [v4 setCompositingFilter:v3];
+  layer = [_edgeGradientView layer];
+  [layer setCompositingFilter:v3];
 
-  v5 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [(CEKDiscreteSlider *)self insertSubview:v6 aboveSubview:v5];
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [(CEKDiscreteSlider *)self insertSubview:_edgeGradientView aboveSubview:_contentScrollView];
 }
 
-- (void)setOpaqueGradientsWithColor:(id)a3
+- (void)setOpaqueGradientsWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CEKDiscreteSlider *)self _createGradientIfNeeded];
-  v7 = [(CEKDiscreteSlider *)self _edgeGradientView];
-  [v7 setCustomEdgeGradientStyleWithColor:v4];
+  _edgeGradientView = [(CEKDiscreteSlider *)self _edgeGradientView];
+  [_edgeGradientView setCustomEdgeGradientStyleWithColor:colorCopy];
 
-  v5 = [v7 layer];
-  [v5 setCompositingFilter:0];
+  layer = [_edgeGradientView layer];
+  [layer setCompositingFilter:0];
 
-  v6 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [(CEKDiscreteSlider *)self insertSubview:v7 aboveSubview:v6];
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [(CEKDiscreteSlider *)self insertSubview:_edgeGradientView aboveSubview:_contentScrollView];
 }
 
 - (void)removeGradients
 {
-  v3 = [(CEKDiscreteSlider *)self _edgeGradientView];
-  [v3 removeFromSuperview];
+  _edgeGradientView = [(CEKDiscreteSlider *)self _edgeGradientView];
+  [_edgeGradientView removeFromSuperview];
 
   [(CEKDiscreteSlider *)self set_edgeGradientView:0];
 }
 
-- (void)setGradientInsets:(id)a3
+- (void)setGradientInsets:(id)insets
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = insets.var1;
+  var0 = insets.var0;
   p_gradientInsets = &self->_gradientInsets;
-  if (!CEKEdgeInsetsEqualToInsets(a3.var0, a3.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
+  if (!CEKEdgeInsetsEqualToInsets(insets.var0, insets.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
   {
     p_gradientInsets->startInset = var0;
     p_gradientInsets->endInset = var1;
@@ -369,71 +369,71 @@ LABEL_9:
   }
 }
 
-- (void)setTitleAlignment:(int64_t)a3
+- (void)setTitleAlignment:(int64_t)alignment
 {
-  self->_titleAlignment = a3;
-  v4 = [(CEKDiscreteSlider *)self _titleLabel];
-  [v4 setTextAlignment:a3];
+  self->_titleAlignment = alignment;
+  _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+  [_titleLabel setTextAlignment:alignment];
 }
 
-- (void)setSliderVerticalOffset:(double)a3
+- (void)setSliderVerticalOffset:(double)offset
 {
-  if (self->_sliderVerticalOffset != a3)
+  if (self->_sliderVerticalOffset != offset)
   {
-    self->_sliderVerticalOffset = a3;
+    self->_sliderVerticalOffset = offset;
     [(CEKDiscreteSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setLabelVerticalPadding:(double)a3
+- (void)setLabelVerticalPadding:(double)padding
 {
-  if (self->_labelVerticalPadding != a3)
+  if (self->_labelVerticalPadding != padding)
   {
-    self->_labelVerticalPadding = a3;
+    self->_labelVerticalPadding = padding;
     [(CEKDiscreteSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setSliderVerticalAlignment:(int64_t)a3
+- (void)setSliderVerticalAlignment:(int64_t)alignment
 {
-  if (self->_sliderVerticalAlignment != a3)
+  if (self->_sliderVerticalAlignment != alignment)
   {
-    self->_sliderVerticalAlignment = a3;
+    self->_sliderVerticalAlignment = alignment;
     [(CEKDiscreteSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setLevelIndicatorHeight:(double)a3
+- (void)setLevelIndicatorHeight:(double)height
 {
-  if (self->_levelIndicatorHeight != a3)
+  if (self->_levelIndicatorHeight != height)
   {
-    self->_levelIndicatorHeight = a3;
+    self->_levelIndicatorHeight = height;
     [(CEKDiscreteSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CEKDiscreteSlider *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(CEKDiscreteSlider *)self isEnabled];
   v10.receiver = self;
   v10.super_class = CEKDiscreteSlider;
-  [(CEKDiscreteSlider *)&v10 setEnabled:v3];
-  if (v5 != v3)
+  [(CEKDiscreteSlider *)&v10 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
     [(CEKDiscreteSlider *)self contactEndedWithAction:0];
-    v6 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [v6 setUserInteractionEnabled:v3];
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [_contentScrollView setUserInteractionEnabled:enabledCopy];
 
-    v7 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-    [v7 setEnabled:v3];
+    _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+    [_dynamicTickMarksView setEnabled:enabledCopy];
 
     v8 = 0.3;
     v9[1] = 3221225472;
     v9[0] = MEMORY[0x1E69E9820];
     v9[2] = __32__CEKDiscreteSlider_setEnabled___block_invoke;
     v9[3] = &unk_1E7CC6660;
-    if (v3)
+    if (enabledCopy)
     {
       v8 = 1.0;
     }
@@ -465,29 +465,29 @@ void __32__CEKDiscreteSlider_setEnabled___block_invoke(uint64_t a1)
 
 - (BOOL)highlightSelectedIndex
 {
-  v2 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-  v3 = [v2 highlightSelectedIndex];
+  _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+  highlightSelectedIndex = [_dynamicTickMarksView highlightSelectedIndex];
 
-  return v3;
+  return highlightSelectedIndex;
 }
 
-- (void)setHighlightSelectedIndex:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlightSelectedIndex:(BOOL)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-  [v6 setHighlightSelectedIndex:v5 animated:v4];
+  animatedCopy = animated;
+  indexCopy = index;
+  _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView setHighlightSelectedIndex:indexCopy animated:animatedCopy];
 }
 
-- (void)setMagneticIndexes:(id)a3
+- (void)setMagneticIndexes:(id)indexes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_magneticIndexes != v5 && ![(NSArray *)v5 isEqualToArray:?])
+  indexesCopy = indexes;
+  v6 = indexesCopy;
+  if (self->_magneticIndexes != indexesCopy && ![(NSArray *)indexesCopy isEqualToArray:?])
   {
-    objc_storeStrong(&self->_magneticIndexes, a3);
-    v7 = [MEMORY[0x1E696AD50] indexSet];
+    objc_storeStrong(&self->_magneticIndexes, indexes);
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -508,7 +508,7 @@ void __32__CEKDiscreteSlider_setEnabled___block_invoke(uint64_t a1)
             objc_enumerationMutation(v8);
           }
 
-          [v7 addIndex:{objc_msgSend(*(*(&v14 + 1) + 8 * v12++), "unsignedLongValue", v14)}];
+          [indexSet addIndex:{objc_msgSend(*(*(&v14 + 1) + 8 * v12++), "unsignedLongValue", v14)}];
         }
 
         while (v10 != v12);
@@ -518,47 +518,47 @@ void __32__CEKDiscreteSlider_setEnabled___block_invoke(uint64_t a1)
       while (v10);
     }
 
-    v13 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-    [v13 setMagneticTickMarkIndexes:v7];
+    _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+    [_dynamicTickMarksView setMagneticTickMarkIndexes:indexSet];
   }
 }
 
-- (void)setSelectedIndex:(unint64_t)a3 animatedDuration:(double)a4 animatedCurve:(id)a5 completion:(id)a6
+- (void)setSelectedIndex:(unint64_t)index animatedDuration:(double)duration animatedCurve:(id)curve completion:(id)completion
 {
-  v14 = a5;
-  v10 = a6;
-  v11 = [(CEKDiscreteSlider *)self indexCount];
-  if (!a3 || v11)
+  curveCopy = curve;
+  completionCopy = completion;
+  indexCount = [(CEKDiscreteSlider *)self indexCount];
+  if (!index || indexCount)
   {
-    v12 = [(CEKDiscreteSlider *)self indexCount];
-    if (v12 - 1 >= a3)
+    indexCount2 = [(CEKDiscreteSlider *)self indexCount];
+    if (indexCount2 - 1 >= index)
     {
-      v13 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v13 = v12 - 1;
+      indexCopy = indexCount2 - 1;
     }
 
-    [(CEKDiscreteSlider *)self _setSelectedIndex:v13 shouldDelegate:0 wantsFeedbackEmitted:0 shouldScroll:1 scrollDuration:v14 scrollCurve:v10 scrollCompletion:a4];
+    [(CEKDiscreteSlider *)self _setSelectedIndex:indexCopy shouldDelegate:0 wantsFeedbackEmitted:0 shouldScroll:1 scrollDuration:curveCopy scrollCurve:completionCopy scrollCompletion:duration];
   }
 }
 
-- (void)setIndexCount:(unint64_t)a3
+- (void)setIndexCount:(unint64_t)count
 {
-  if (self->_indexCount == a3)
+  if (self->_indexCount == count)
   {
     return;
   }
 
-  self->_indexCount = a3;
+  self->_indexCount = count;
   [(CEKDiscreteSlider *)self _updateTickMarkCount];
-  if (a3)
+  if (count)
   {
-    v6 = [(CEKDiscreteSlider *)self selectedIndex];
-    v7 = a3 - 1;
-    if (v6 <= a3 - 1)
+    selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
+    v7 = count - 1;
+    if (selectedIndex <= count - 1)
     {
       goto LABEL_7;
     }
@@ -576,56 +576,56 @@ LABEL_7:
   [(CEKDiscreteSlider *)self setNeedsLayout];
 }
 
-- (void)setMarkedIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setMarkedIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if (self->_markedIndex != a3)
+  if (self->_markedIndex != index)
   {
-    self->_markedIndex = a3;
-    [(CEKDiscreteSlider *)self _updateMarkedIndexViewAnimated:a4];
+    self->_markedIndex = index;
+    [(CEKDiscreteSlider *)self _updateMarkedIndexViewAnimated:animated];
 
     [(CEKDiscreteSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v11 = a3;
-  v4 = [v11 isEqualToString:self->_titleText];
-  v5 = v11;
+  textCopy = text;
+  v4 = [textCopy isEqualToString:self->_titleText];
+  v5 = textCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v11 copy];
+    v6 = [textCopy copy];
     titleText = self->_titleText;
     self->_titleText = v6;
 
-    v8 = [(CEKDiscreteSlider *)self _titleLabel];
-    if (!v8)
+    _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+    if (!_titleLabel)
     {
       if ([(NSString *)self->_titleText length])
       {
         v9 = objc_alloc(MEMORY[0x1E69DCC10]);
-        v8 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-        v10 = [MEMORY[0x1E69DC888] clearColor];
-        [v8 setBackgroundColor:v10];
+        _titleLabel = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [_titleLabel setBackgroundColor:clearColor];
 
-        [v8 setTextAlignment:{-[CEKDiscreteSlider titleAlignment](self, "titleAlignment")}];
-        [v8 setNumberOfLines:0];
-        [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [(CEKDiscreteSlider *)self addSubview:v8];
-        [(CEKDiscreteSlider *)self set_titleLabel:v8];
+        [_titleLabel setTextAlignment:{-[CEKDiscreteSlider titleAlignment](self, "titleAlignment")}];
+        [_titleLabel setNumberOfLines:0];
+        [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+        [(CEKDiscreteSlider *)self addSubview:_titleLabel];
+        [(CEKDiscreteSlider *)self set_titleLabel:_titleLabel];
         [(CEKDiscreteSlider *)self _updateColorsAnimated:0];
         [(CEKDiscreteSlider *)self _updateFonts];
       }
 
       else
       {
-        v8 = 0;
+        _titleLabel = 0;
       }
     }
 
-    [v8 setText:self->_titleText];
+    [_titleLabel setText:self->_titleText];
 
-    v5 = v11;
+    v5 = textCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
@@ -634,14 +634,14 @@ LABEL_7:
 - (void)updateValueLabel
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CEKDiscreteSlider *)self _valueLabel];
-  v4 = [(CEKDiscreteSlider *)self valueText];
-  v5 = [v4 length];
-  if (v3 || !v5)
+  _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+  valueText = [(CEKDiscreteSlider *)self valueText];
+  v5 = [valueText length];
+  if (_valueLabel || !v5)
   {
     if (!v5)
     {
-      [v3 setAttributedText:0];
+      [_valueLabel setAttributedText:0];
       goto LABEL_9;
     }
   }
@@ -649,24 +649,24 @@ LABEL_7:
   else
   {
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
-    v3 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [v3 setBackgroundColor:v7];
+    _valueLabel = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [_valueLabel setBackgroundColor:clearColor];
 
-    [v3 setTextAlignment:1];
-    [(CEKDiscreteSlider *)self addSubview:v3];
-    [(CEKDiscreteSlider *)self set_valueLabel:v3];
+    [_valueLabel setTextAlignment:1];
+    [(CEKDiscreteSlider *)self addSubview:_valueLabel];
+    [(CEKDiscreteSlider *)self set_valueLabel:_valueLabel];
     [(CEKDiscreteSlider *)self _updateColorsAnimated:0];
     [(CEKDiscreteSlider *)self _updateFonts];
   }
 
   v8 = CEKFrameworkBundle();
-  v9 = [v8 preferredLocalizations];
-  v10 = [v9 firstObject];
+  preferredLocalizations = [v8 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v10];
-  v12 = [v3 font];
-  [v12 pointSize];
+  v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
+  font = [_valueLabel font];
+  [font pointSize];
   v14 = v13;
 
   if (CEKIsCustomKerningSupportedForLocale(v11))
@@ -682,36 +682,36 @@ LABEL_7:
     v16 = 0;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v16];
-  [v3 setAttributedText:v17];
+  v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:valueText attributes:v16];
+  [_valueLabel setAttributedText:v17];
 
 LABEL_9:
 }
 
 - (CEKTickMarksConfiguration)tickMarksConfiguration
 {
-  v2 = [(CEKDiscreteSlider *)self _tickMarksView];
-  v3 = [v2 tickMarksModel];
+  _tickMarksView = [(CEKDiscreteSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
 
-  return v3;
+  return tickMarksModel;
 }
 
-- (void)setTickMarkCountBetweenIndexes:(unint64_t)a3
+- (void)setTickMarkCountBetweenIndexes:(unint64_t)indexes
 {
-  if (self->_tickMarkCountBetweenIndexes != a3)
+  if (self->_tickMarkCountBetweenIndexes != indexes)
   {
-    self->_tickMarkCountBetweenIndexes = a3;
+    self->_tickMarkCountBetweenIndexes = indexes;
     [(CEKDiscreteSlider *)self _updateTickMarkCount];
   }
 }
 
 - (void)_updateTickMarkCount
 {
-  v3 = [(CEKDiscreteSlider *)self indexCount];
-  v4 = [(CEKDiscreteSlider *)self tickMarkCountBetweenIndexes];
-  if (v3)
+  indexCount = [(CEKDiscreteSlider *)self indexCount];
+  tickMarkCountBetweenIndexes = [(CEKDiscreteSlider *)self tickMarkCountBetweenIndexes];
+  if (indexCount)
   {
-    v5 = v3 + (v3 - 1) * v4;
+    v5 = indexCount + (indexCount - 1) * tickMarkCountBetweenIndexes;
   }
 
   else
@@ -719,42 +719,42 @@ LABEL_9:
     v5 = 0;
   }
 
-  v7 = [(CEKDiscreteSlider *)self _tickMarksView];
-  v6 = [v7 tickMarksModel];
-  [v6 setTickMarksCount:v5];
+  _tickMarksView = [(CEKDiscreteSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel setTickMarksCount:v5];
 }
 
-- (void)setFontStyle:(unint64_t)a3
+- (void)setFontStyle:(unint64_t)style
 {
-  if (self->_fontStyle != a3)
+  if (self->_fontStyle != style)
   {
-    self->_fontStyle = a3;
+    self->_fontStyle = style;
     [(CEKDiscreteSlider *)self _updateFonts];
   }
 }
 
-- (void)setSelectionFeedbackProfile:(int64_t)a3
+- (void)setSelectionFeedbackProfile:(int64_t)profile
 {
-  v4 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-  [v4 setProfile:a3];
+  _feedbackGenerator = [(CEKDiscreteSlider *)self _feedbackGenerator];
+  [_feedbackGenerator setProfile:profile];
 }
 
 - (int64_t)selectionFeedbackProfile
 {
-  v2 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-  v3 = [v2 profile];
+  _feedbackGenerator = [(CEKDiscreteSlider *)self _feedbackGenerator];
+  profile = [_feedbackGenerator profile];
 
-  return v3;
+  return profile;
 }
 
-- (void)setTickMarksHeight:(double)a3 animated:(BOOL)a4
+- (void)setTickMarksHeight:(double)height animated:(BOOL)animated
 {
-  if (self->_tickMarksHeight != a3)
+  if (self->_tickMarksHeight != height)
   {
-    if (a4)
+    if (animated)
     {
       [(CEKDiscreteSlider *)self layoutIfNeeded];
-      self->_tickMarksHeight = a3;
+      self->_tickMarksHeight = height;
       [(CEKDiscreteSlider *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -766,19 +766,19 @@ LABEL_9:
 
     else
     {
-      self->_tickMarksHeight = a3;
+      self->_tickMarksHeight = height;
 
       [(CEKDiscreteSlider *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setColorHighlight:(unint64_t)a3 animated:(BOOL)a4
+- (void)setColorHighlight:(unint64_t)highlight animated:(BOOL)animated
 {
-  if (self->_colorHighlight != a3)
+  if (self->_colorHighlight != highlight)
   {
-    self->_colorHighlight = a3;
-    [(CEKDiscreteSlider *)self _updateColorsAnimated:a4];
+    self->_colorHighlight = highlight;
+    [(CEKDiscreteSlider *)self _updateColorsAnimated:animated];
   }
 }
 
@@ -789,14 +789,14 @@ LABEL_9:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CEKDiscreteSlider *)self sliderVerticalAlignment];
-  if (v11 == 2)
+  sliderVerticalAlignment = [(CEKDiscreteSlider *)self sliderVerticalAlignment];
+  if (sliderVerticalAlignment == 2)
   {
     [(CEKDiscreteSlider *)self sliderVerticalOffset];
     v12 = v18 + 33.0;
   }
 
-  else if (v11 == 1)
+  else if (sliderVerticalAlignment == 1)
   {
     v43.origin.x = v4;
     v43.origin.y = v6;
@@ -812,7 +812,7 @@ LABEL_9:
   else
   {
     v12 = 0.0;
-    if (!v11)
+    if (!sliderVerticalAlignment)
     {
       [(CEKDiscreteSlider *)self levelIndicatorHeight];
       v33 = 0;
@@ -822,41 +822,41 @@ LABEL_9:
   }
 
   [(CEKDiscreteSlider *)self _layoutSliderContentAtY:v12 withHorizontalPadding:0.0, v33];
-  v19 = [(CEKDiscreteSlider *)self _valueLabel];
-  v20 = [(CEKDiscreteSlider *)self _titleLabel];
+  _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+  _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
   v35 = *(MEMORY[0x1E695EFD0] + 16);
   v40 = *MEMORY[0x1E695EFD0];
   v36 = v40;
   v41 = v35;
   v42 = *(MEMORY[0x1E695EFD0] + 32);
   v34 = v42;
-  [v19 setTransform:&v40];
+  [_valueLabel setTransform:&v40];
   v40 = v36;
   v41 = v35;
   v42 = v34;
-  [v20 setTransform:&v40];
+  [_titleLabel setTransform:&v40];
   [(CEKDiscreteSlider *)self labelVerticalPadding];
   v22 = v21;
   [(CEKDiscreteSlider *)self horizontalValueLabelOffset];
   v24 = v23;
-  [v20 setFrame:{10.0, v22, v8 + -20.0, 18.0}];
-  [v19 setFrame:{v24, v22, v8, 18.0}];
-  [v19 setTextAlignment:1];
+  [_titleLabel setFrame:{10.0, v22, v8 + -20.0, 18.0}];
+  [_valueLabel setFrame:{v24, v22, v8, 18.0}];
+  [_valueLabel setTextAlignment:1];
   if ([(CEKDiscreteSlider *)self useTextLegibilityBackgrounds])
   {
-    v25 = [(CEKDiscreteSlider *)self _valueBackground];
+    _valueBackground = [(CEKDiscreteSlider *)self _valueBackground];
     v26 = *MEMORY[0x1E695F058];
     v27 = *(MEMORY[0x1E695F058] + 8);
-    v28 = [v25 image];
-    [v28 size];
+    image = [_valueBackground image];
+    [image size];
     v30 = v29;
 
-    [v25 setBounds:{v26, v27, 52.0, v30}];
-    [v19 center];
-    [v25 setCenter:v8 * 0.5];
-    if (v19)
+    [_valueBackground setBounds:{v26, v27, 52.0, v30}];
+    [_valueLabel center];
+    [_valueBackground setCenter:v8 * 0.5];
+    if (_valueLabel)
     {
-      [v19 transform];
+      [_valueLabel transform];
     }
 
     else
@@ -869,46 +869,46 @@ LABEL_9:
     v40 = v37;
     v41 = v38;
     v42 = v39;
-    [v25 setTransform:&v40];
-    v31 = [(CEKDiscreteSlider *)self _valueBackground];
-    [v31 setAlpha:1.0];
+    [_valueBackground setTransform:&v40];
+    _valueBackground2 = [(CEKDiscreteSlider *)self _valueBackground];
+    [_valueBackground2 setAlpha:1.0];
 
-    v32 = [(CEKDiscreteSlider *)self _titleBackground];
-    [v32 setAlpha:0.0];
+    _titleBackground = [(CEKDiscreteSlider *)self _titleBackground];
+    [_titleBackground setAlpha:0.0];
   }
 }
 
-- (void)_layoutSubviewsWithLabelRotation:(double)a3
+- (void)_layoutSubviewsWithLabelRotation:(double)rotation
 {
   v5 = 18.0;
   if ([(CEKDiscreteSlider *)self useTextLegibilityBackgrounds])
   {
-    v6 = [(CEKDiscreteSlider *)self _titleBackground];
-    v7 = [v6 image];
-    [v7 size];
+    _titleBackground = [(CEKDiscreteSlider *)self _titleBackground];
+    image = [_titleBackground image];
+    [image size];
     v5 = v8 * 0.5 + 10.0;
   }
 
   [(CEKDiscreteSlider *)self _layoutSliderContentAtY:55.0 withHorizontalPadding:v5];
-  v9 = [(CEKDiscreteSlider *)self _valueLabel];
-  v10 = [(CEKDiscreteSlider *)self _titleLabel];
-  [v10 intrinsicContentSize];
-  [v10 setBounds:{0.0, 0.0, v11, 18.0}];
-  [v9 setBounds:{0.0, 0.0, 40.0, 18.0}];
-  v12 = [(CEKDiscreteSlider *)self _levelIndicatorView];
-  v13 = [(CEKDiscreteSlider *)self _tickMarksView];
+  _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+  _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+  [_titleLabel intrinsicContentSize];
+  [_titleLabel setBounds:{0.0, 0.0, v11, 18.0}];
+  [_valueLabel setBounds:{0.0, 0.0, 40.0, 18.0}];
+  _levelIndicatorView = [(CEKDiscreteSlider *)self _levelIndicatorView];
+  _tickMarksView = [(CEKDiscreteSlider *)self _tickMarksView];
   v14 = 10.0;
-  if (a3 > 0.0)
+  if (rotation > 0.0)
   {
     [(CEKDiscreteSlider *)self bounds];
     v14 = v15 + -10.0;
   }
 
-  [v13 center];
-  [v10 setCenter:v14];
-  if (v12)
+  [_tickMarksView center];
+  [_titleLabel setCenter:v14];
+  if (_levelIndicatorView)
   {
-    [v12 center];
+    [_levelIndicatorView center];
   }
 
   else
@@ -917,32 +917,32 @@ LABEL_9:
     v16 = v17 * 0.5;
   }
 
-  [v9 setCenter:{v16, 21.0}];
+  [_valueLabel setCenter:{v16, 21.0}];
   memset(&v34, 0, sizeof(v34));
-  CGAffineTransformMakeRotation(&v34, a3);
+  CGAffineTransformMakeRotation(&v34, rotation);
   UIIntegralTransform();
   v34 = v33;
-  [v9 setTransform:&v33];
+  [_valueLabel setTransform:&v33];
   v33 = v34;
-  [v10 setTransform:&v33];
-  [v9 setTextAlignment:2 * (a3 > 0.0)];
-  v18 = [(CEKDiscreteSlider *)self _valueBackground];
-  v19 = [(CEKDiscreteSlider *)self _titleBackground];
+  [_titleLabel setTransform:&v33];
+  [_valueLabel setTextAlignment:2 * (rotation > 0.0)];
+  _valueBackground = [(CEKDiscreteSlider *)self _valueBackground];
+  _titleBackground2 = [(CEKDiscreteSlider *)self _titleBackground];
   if ([(CEKDiscreteSlider *)self useTextLegibilityBackgrounds])
   {
     v20 = *MEMORY[0x1E695F058];
     v21 = *(MEMORY[0x1E695F058] + 8);
-    v22 = [v19 image];
-    [v22 size];
+    image2 = [_titleBackground2 image];
+    [image2 size];
     v24 = v23;
 
-    [v10 bounds];
-    [v19 setBounds:{v20, v21, v25 + 20.0, v24}];
-    [v10 center];
-    [v19 setCenter:?];
-    if (v10)
+    [_titleLabel bounds];
+    [_titleBackground2 setBounds:{v20, v21, v25 + 20.0, v24}];
+    [_titleLabel center];
+    [_titleBackground2 setCenter:?];
+    if (_titleLabel)
     {
-      [v10 transform];
+      [_titleLabel transform];
     }
 
     else
@@ -951,18 +951,18 @@ LABEL_9:
     }
 
     v33 = v32[1];
-    [v19 setTransform:&v33];
-    v26 = [v18 image];
-    [v26 size];
+    [_titleBackground2 setTransform:&v33];
+    image3 = [_valueBackground image];
+    [image3 size];
     v28 = v27;
 
-    [v9 bounds];
-    [v18 setBounds:{v20, v21, v29 + 12.0, v28}];
-    [v9 center];
-    [v18 setCenter:?];
-    if (v9)
+    [_valueLabel bounds];
+    [_valueBackground setBounds:{v20, v21, v29 + 12.0, v28}];
+    [_valueLabel center];
+    [_valueBackground setCenter:?];
+    if (_valueLabel)
     {
-      [v9 transform];
+      [_valueLabel transform];
     }
 
     else
@@ -971,48 +971,48 @@ LABEL_9:
     }
 
     v33 = v32[0];
-    [v18 setTransform:{&v33, *&v32[0].a, *&v32[0].c, *&v32[0].tx}];
-    [v9 setTextAlignment:1];
-    v30 = [(CEKDiscreteSlider *)self _valueBackground];
-    [v30 setAlpha:1.0];
+    [_valueBackground setTransform:{&v33, *&v32[0].a, *&v32[0].c, *&v32[0].tx}];
+    [_valueLabel setTextAlignment:1];
+    _valueBackground2 = [(CEKDiscreteSlider *)self _valueBackground];
+    [_valueBackground2 setAlpha:1.0];
 
-    v31 = [(CEKDiscreteSlider *)self _titleBackground];
-    [v31 setAlpha:1.0];
+    _titleBackground3 = [(CEKDiscreteSlider *)self _titleBackground];
+    [_titleBackground3 setAlpha:1.0];
   }
 }
 
-- (void)_layoutSliderContentAtY:(double)a3 withHorizontalPadding:(double)a4
+- (void)_layoutSliderContentAtY:(double)y withHorizontalPadding:(double)padding
 {
   [(CEKDiscreteSlider *)self bounds];
   v62 = v7;
   v63 = v6;
   v9 = v8;
   v60 = v10;
-  v67 = [(CEKDiscreteSlider *)self _contentScrollView];
-  v11 = [(CEKDiscreteSlider *)self _levelIndicatorView];
-  v12 = [(CEKDiscreteSlider *)self _tickMarksView];
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  _levelIndicatorView = [(CEKDiscreteSlider *)self _levelIndicatorView];
+  _tickMarksView = [(CEKDiscreteSlider *)self _tickMarksView];
   [(CEKDiscreteSlider *)self levelIndicatorHeight];
   v14 = v13;
   v61 = v9;
   UIRoundToViewScale();
   v16 = v15;
-  [v11 setFrame:?];
+  [_levelIndicatorView setFrame:?];
   v17 = -CEKPixelWidthForView(self);
   v69.size.width = 1.0;
   v66 = v16;
   v69.origin.x = v16;
-  v69.origin.y = a3;
+  v69.origin.y = y;
   v69.size.height = v14;
   v70 = CGRectInset(v69, v17, v17);
   x = v70.origin.x;
   y = v70.origin.y;
   width = v70.size.width;
   height = v70.size.height;
-  v22 = [(CEKDiscreteSlider *)self _indicatorBackground];
-  [v22 setFrame:{x, y, width, height}];
+  _indicatorBackground = [(CEKDiscreteSlider *)self _indicatorBackground];
+  [_indicatorBackground setFrame:{x, y, width, height}];
 
   v65 = v14;
-  if (v11)
+  if (_levelIndicatorView)
   {
     [(CEKDiscreteSlider *)self tickMarksHeight];
     v24 = v23;
@@ -1023,20 +1023,20 @@ LABEL_9:
     v24 = v14;
   }
 
-  v25 = [v12 tickMarksModel];
-  [v25 requiredWidth];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel requiredWidth];
   v57 = v26;
 
   v27 = *MEMORY[0x1E695F058];
   v59 = *MEMORY[0x1E695F058];
   [(CEKDiscreteSlider *)self levelIndicatorHeight];
-  v58 = v28 - v24 + a3;
-  [v12 frameForAlignmentRect:v27];
-  [v12 setFrame:?];
-  [v12 frameForTickMarkAtIndex:{-[CEKDiscreteSlider markedIndex](self, "markedIndex")}];
-  [v12 convertRect:v67 toView:?];
-  v29 = [(CEKDiscreteSlider *)self traitCollection];
-  [v29 displayScale];
+  v58 = v28 - v24 + y;
+  [_tickMarksView frameForAlignmentRect:v27];
+  [_tickMarksView setFrame:?];
+  [_tickMarksView frameForTickMarkAtIndex:{-[CEKDiscreteSlider markedIndex](self, "markedIndex")}];
+  [_tickMarksView convertRect:_contentScrollView toView:?];
+  traitCollection = [(CEKDiscreteSlider *)self traitCollection];
+  [traitCollection displayScale];
   v56 = v30;
   UIRectCenteredXInRectScale();
   v32 = v31;
@@ -1044,21 +1044,21 @@ LABEL_9:
   v36 = v35;
   v38 = v37;
 
-  v39 = [(CEKDiscreteSlider *)self _dotView];
-  [v39 setFrame:{v32, v34, v36, v38}];
+  _dotView = [(CEKDiscreteSlider *)self _dotView];
+  [_dotView setFrame:{v32, v34, v36, v38}];
 
   v71.origin.y = v62;
   v71.origin.x = v63;
   v71.size.height = v60;
   v71.size.width = v61;
-  v72 = CGRectInset(v71, a4, 0.0);
+  v72 = CGRectInset(v71, padding, 0.0);
   v40 = v72.origin.x;
   v41 = v72.origin.y;
   v42 = v72.size.width;
   v43 = v72.size.height;
-  v44 = [(CEKDiscreteSlider *)self _edgeGradientView];
-  v45 = [(CEKDiscreteSlider *)self ticksStyle];
-  if (v45 == 1)
+  _edgeGradientView = [(CEKDiscreteSlider *)self _edgeGradientView];
+  ticksStyle = [(CEKDiscreteSlider *)self ticksStyle];
+  if (ticksStyle == 1)
   {
     v46 = 0.0;
   }
@@ -1068,31 +1068,31 @@ LABEL_9:
     v46 = v41;
   }
 
-  if (v45)
+  if (ticksStyle)
   {
-    v47 = v46;
+    yCopy = v46;
   }
 
   else
   {
-    v47 = a3;
+    yCopy = y;
   }
 
   v73.origin.y = v58;
   v73.origin.x = v59;
   v73.size.width = v57;
   v73.size.height = v24;
-  [v44 setFrame:{v40, v47, v42, CGRectGetMaxY(v73) - v47}];
+  [_edgeGradientView setFrame:{v40, yCopy, v42, CGRectGetMaxY(v73) - yCopy}];
   [(CEKDiscreteSlider *)self gradientInsets];
   v49 = v48;
   [(CEKDiscreteSlider *)self gradientInsets];
-  [v44 setGradientDimensions:{v49, v42 * 0.1, v42 * 0.1, v50}];
+  [_edgeGradientView setGradientDimensions:{v49, v42 * 0.1, v42 * 0.1, v50}];
   UIRoundToViewScale();
   v52 = v51;
-  [v67 setFrame:{v40, v41, v42, v43}];
-  [v67 setContentSize:{v57 + v52 * -2.0, v43}];
+  [_contentScrollView setFrame:{v40, v41, v42, v43}];
+  [_contentScrollView setContentSize:{v57 + v52 * -2.0, v43}];
   v74.size.width = 1.0;
-  v74.origin.y = a3;
+  v74.origin.y = y;
   v74.origin.x = v66;
   v74.size.height = v65;
   MinX = CGRectGetMinX(v74);
@@ -1108,9 +1108,9 @@ LABEL_9:
   MaxX = CGRectGetMaxX(v76);
   v77.size.width = 1.0;
   v77.origin.x = v66;
-  v77.origin.y = a3;
+  v77.origin.y = y;
   v77.size.height = v65;
-  [v67 setContentInset:{0.0, v54, 0.0, v52 + MaxX - CGRectGetMaxX(v77)}];
+  [_contentScrollView setContentInset:{0.0, v54, 0.0, v52 + MaxX - CGRectGetMaxX(v77)}];
   if ([(CEKDiscreteSlider *)self _needsUpdateContentOffset])
   {
     [(CEKDiscreteSlider *)self _setNeedsUpdateContentOffset:0];
@@ -1127,18 +1127,18 @@ LABEL_9:
 
 - (BOOL)_isScrollActive
 {
-  v3 = [(CEKDiscreteSlider *)self _contentScrollView];
-  v4 = ([v3 isTracking] & 1) != 0 || (objc_msgSend(v3, "isDecelerating") & 1) != 0 || -[CEKDiscreteSlider _isExternallyScrolling](self, "_isExternallyScrolling") || -[CEKDiscreteSlider _isScrollExternallyAnimating](self, "_isScrollExternallyAnimating");
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  v4 = ([_contentScrollView isTracking] & 1) != 0 || (objc_msgSend(_contentScrollView, "isDecelerating") & 1) != 0 || -[CEKDiscreteSlider _isExternallyScrolling](self, "_isExternallyScrolling") || -[CEKDiscreteSlider _isScrollExternallyAnimating](self, "_isScrollExternallyAnimating");
 
   return v4;
 }
 
 - (BOOL)_shouldUseHighlightColor
 {
-  v3 = [(CEKDiscreteSlider *)self colorHighlight];
-  if (v3 != 1)
+  colorHighlight = [(CEKDiscreteSlider *)self colorHighlight];
+  if (colorHighlight != 1)
   {
-    return v3 == 2;
+    return colorHighlight == 2;
   }
 
   if ([(CEKDiscreteSlider *)self _isScrollActive])
@@ -1146,21 +1146,21 @@ LABEL_9:
     return 1;
   }
 
-  v5 = [(CEKDiscreteSlider *)self _animationGenerator];
-  v6 = [v5 isAnimatingForIdentifier:@"CEKSelectionScrollingAnimationKey"];
+  _animationGenerator = [(CEKDiscreteSlider *)self _animationGenerator];
+  v6 = [_animationGenerator isAnimatingForIdentifier:@"CEKSelectionScrollingAnimationKey"];
 
   return v6;
 }
 
-- (void)_updateColorsAnimated:(BOOL)a3
+- (void)_updateColorsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v25 = [(CEKDiscreteSlider *)self _levelIndicatorView];
-  v5 = [(CEKDiscreteSlider *)self _valueLabel];
-  v6 = [(CEKDiscreteSlider *)self _titleLabel];
-  v7 = [(CEKDiscreteSlider *)self useTextLegibilityShadows];
-  v8 = [(CEKDiscreteSlider *)self _shouldUseHighlightColor];
-  if (v8)
+  animatedCopy = animated;
+  _levelIndicatorView = [(CEKDiscreteSlider *)self _levelIndicatorView];
+  _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+  _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+  useTextLegibilityShadows = [(CEKDiscreteSlider *)self useTextLegibilityShadows];
+  _shouldUseHighlightColor = [(CEKDiscreteSlider *)self _shouldUseHighlightColor];
+  if (_shouldUseHighlightColor)
   {
     [(CEKDiscreteSlider *)self tintColor];
   }
@@ -1170,31 +1170,31 @@ LABEL_9:
     [MEMORY[0x1E69DC888] labelColor];
   }
   v9 = ;
-  v10 = [(CEKDiscreteSlider *)self useTextLegibilityBackgrounds]|| v7;
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  v12 = v11;
+  v10 = [(CEKDiscreteSlider *)self useTextLegibilityBackgrounds]|| useTextLegibilityShadows;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v12 = labelColor;
   if ((v10 & 1) == 0)
   {
-    v13 = [v11 colorWithAlphaComponent:0.6];
+    v13 = [labelColor colorWithAlphaComponent:0.6];
 
     v12 = v13;
   }
 
-  if (v8)
+  if (_shouldUseHighlightColor)
   {
-    v14 = [(CEKDiscreteSlider *)self tintColor];
+    tintColor = [(CEKDiscreteSlider *)self tintColor];
   }
 
   else
   {
-    v14 = v12;
+    tintColor = v12;
   }
 
-  [v6 setTextColor:{v12, v14}];
-  if (v7)
+  [_titleLabel setTextColor:{v12, tintColor}];
+  if (useTextLegibilityShadows)
   {
-    v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v16 = [v15 colorWithAlphaComponent:0.15];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v16 = [systemBackgroundColor colorWithAlphaComponent:0.15];
 
     v17 = CEKPixelWidthForView(self);
     v18 = 0.0;
@@ -1207,39 +1207,39 @@ LABEL_9:
     v17 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  [v6 setShadowColor:v16];
-  [v5 setShadowColor:v16];
-  [v6 setShadowOffset:{v18, v17}];
-  [v5 setShadowOffset:{v18, v17}];
-  if (v3)
+  [_titleLabel setShadowColor:v16];
+  [_valueLabel setShadowColor:v16];
+  [_titleLabel setShadowOffset:{v18, v17}];
+  [_valueLabel setShadowOffset:{v18, v17}];
+  if (animatedCopy)
   {
     v19 = MEMORY[0x1E69DD250];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __43__CEKDiscreteSlider__updateColorsAnimated___block_invoke;
     v29[3] = &unk_1E7CC6688;
-    v20 = v25;
-    v30 = v25;
+    v20 = _levelIndicatorView;
+    v30 = _levelIndicatorView;
     v31 = v9;
     [v19 animateWithDuration:v29 animations:0.15];
     v21 = MEMORY[0x1E69DD250];
-    v22 = [(CEKDiscreteSlider *)self _valueLabel];
+    _valueLabel2 = [(CEKDiscreteSlider *)self _valueLabel];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __43__CEKDiscreteSlider__updateColorsAnimated___block_invoke_2;
     v26[3] = &unk_1E7CC6688;
-    v27 = v5;
+    v27 = _valueLabel;
     v23 = v24;
     v28 = v24;
-    [v21 transitionWithView:v22 duration:5242880 options:v26 animations:0 completion:0.15];
+    [v21 transitionWithView:_valueLabel2 duration:5242880 options:v26 animations:0 completion:0.15];
   }
 
   else
   {
-    v20 = v25;
-    [v25 setBackgroundColor:v9];
+    v20 = _levelIndicatorView;
+    [_levelIndicatorView setBackgroundColor:v9];
     v23 = v24;
-    [v5 setTextColor:v24];
+    [_valueLabel setTextColor:v24];
   }
 }
 
@@ -1248,33 +1248,33 @@ LABEL_9:
   [(CEKDiscreteSlider *)self _contentOffsetForIndex:[(CEKDiscreteSlider *)self selectedIndex]];
   v4 = v3;
   v6 = v5;
-  v7 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v7 setContentOffset:0 animated:{v4, v6}];
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView setContentOffset:0 animated:{v4, v6}];
 }
 
-- (void)_updateMarkedIndexViewAnimated:(BOOL)a3
+- (void)_updateMarkedIndexViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CEKDiscreteSlider *)self _dotView];
-  v6 = [(CEKDiscreteSlider *)self markedIndex];
-  v7 = [(CEKDiscreteSlider *)self ticksStyle];
-  v8 = [(CEKDiscreteSlider *)self markedIndex];
-  v9 = [(CEKDiscreteSlider *)self indexCount];
-  if (v7 == 1)
+  animatedCopy = animated;
+  _dotView = [(CEKDiscreteSlider *)self _dotView];
+  markedIndex = [(CEKDiscreteSlider *)self markedIndex];
+  ticksStyle = [(CEKDiscreteSlider *)self ticksStyle];
+  markedIndex2 = [(CEKDiscreteSlider *)self markedIndex];
+  indexCount = [(CEKDiscreteSlider *)self indexCount];
+  if (ticksStyle == 1)
   {
-    if (v8 < v9)
+    if (markedIndex2 < indexCount)
     {
 LABEL_8:
-      v11 = v6 != [(CEKDiscreteSlider *)self selectedIndex];
+      v11 = markedIndex != [(CEKDiscreteSlider *)self selectedIndex];
       goto LABEL_9;
     }
   }
 
-  else if (v8 < v9)
+  else if (markedIndex2 < indexCount)
   {
     if ([(CEKDiscreteSlider *)self _isScrollActive])
     {
-      v10 = v5 != 0;
+      v10 = _dotView != 0;
       v11 = 1;
       goto LABEL_11;
     }
@@ -1284,8 +1284,8 @@ LABEL_8:
 
   v11 = 0;
 LABEL_9:
-  v10 = v5 != 0;
-  if (v11 || v5)
+  v10 = _dotView != 0;
+  if (v11 || _dotView)
   {
 LABEL_11:
     if (!v11 || v10)
@@ -1300,7 +1300,7 @@ LABEL_11:
         v16 = 0.0;
       }
 
-      if (!v3)
+      if (!animatedCopy)
       {
         goto LABEL_24;
       }
@@ -1308,33 +1308,33 @@ LABEL_11:
 
     else
     {
-      v5 = objc_alloc_init(CEKSliderDotView);
-      v12 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-      -[CEKSliderDotView setUseLegibilityShadow:](v5, "setUseLegibilityShadow:", [v12 useTickMarkLegibilityShadows]);
+      _dotView = objc_alloc_init(CEKSliderDotView);
+      tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+      -[CEKSliderDotView setUseLegibilityShadow:](_dotView, "setUseLegibilityShadow:", [tickMarksConfiguration useTickMarkLegibilityShadows]);
 
       if ([(CEKDiscreteSlider *)self ticksStyle]== 1)
       {
-        v13 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-        v14 = [v13 secondaryTickMarkColor];
-        [(CEKSliderDotView *)v5 setDotColor:v14];
+        tickMarksConfiguration2 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+        secondaryTickMarkColor = [tickMarksConfiguration2 secondaryTickMarkColor];
+        [(CEKSliderDotView *)_dotView setDotColor:secondaryTickMarkColor];
       }
 
-      v15 = [(CEKDiscreteSlider *)self _contentScrollView];
-      [v15 addSubview:v5];
+      _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+      [_contentScrollView addSubview:_dotView];
 
-      [(CEKDiscreteSlider *)self set_dotView:v5];
+      [(CEKDiscreteSlider *)self set_dotView:_dotView];
       [(CEKDiscreteSlider *)self setNeedsLayout];
-      if (!v3)
+      if (!animatedCopy)
       {
         v16 = 1.0;
         goto LABEL_24;
       }
 
-      [(CEKSliderDotView *)v5 setAlpha:0.0];
+      [(CEKSliderDotView *)_dotView setAlpha:0.0];
       v16 = 1.0;
     }
 
-    [(CEKSliderDotView *)v5 alpha];
+    [(CEKSliderDotView *)_dotView alpha];
     if (v17 != v16)
     {
       v18 = MEMORY[0x1E69DD250];
@@ -1342,9 +1342,9 @@ LABEL_11:
       v19[1] = 3221225472;
       v19[2] = __52__CEKDiscreteSlider__updateMarkedIndexViewAnimated___block_invoke;
       v19[3] = &unk_1E7CC6660;
-      v20 = v5;
+      v20 = _dotView;
       v21 = v16;
-      v5 = v5;
+      _dotView = _dotView;
       [v18 animateWithDuration:v19 animations:0 completion:0.25];
 
 LABEL_25:
@@ -1352,27 +1352,27 @@ LABEL_25:
     }
 
 LABEL_24:
-    [(CEKSliderDotView *)v5 setAlpha:v16];
+    [(CEKSliderDotView *)_dotView setAlpha:v16];
     goto LABEL_25;
   }
 }
 
-- (void)_setOverscrolling:(BOOL)a3
+- (void)_setOverscrolling:(BOOL)overscrolling
 {
-  if (self->__overscrolling != a3)
+  if (self->__overscrolling != overscrolling)
   {
-    v3 = a3;
-    self->__overscrolling = a3;
-    v5 = [(CEKDiscreteSlider *)self feedbackScope];
-    if (v3)
+    overscrollingCopy = overscrolling;
+    self->__overscrolling = overscrolling;
+    feedbackScope = [(CEKDiscreteSlider *)self feedbackScope];
+    if (overscrollingCopy)
     {
-      if (v5)
+      if (feedbackScope)
       {
-        v6 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v6 playOverscrollTickSound];
+        _feedbackGenerator = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator playOverscrollTickSound];
 
-        v7 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v7 performFeedback];
+        _feedbackGenerator2 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator2 performFeedback];
       }
     }
   }
@@ -1380,48 +1380,48 @@ LABEL_24:
 
 - (void)_updateTextLegibilityBackground
 {
-  v3 = [(CEKDiscreteSlider *)self useTextLegibilityBackgrounds];
-  v15 = [(CEKDiscreteSlider *)self _valueBackground];
-  v4 = [(CEKDiscreteSlider *)self _titleBackground];
-  v5 = [(CEKDiscreteSlider *)self _indicatorBackground];
-  if (v3)
+  useTextLegibilityBackgrounds = [(CEKDiscreteSlider *)self useTextLegibilityBackgrounds];
+  _valueBackground = [(CEKDiscreteSlider *)self _valueBackground];
+  _titleBackground = [(CEKDiscreteSlider *)self _titleBackground];
+  _indicatorBackground = [(CEKDiscreteSlider *)self _indicatorBackground];
+  if (useTextLegibilityBackgrounds)
   {
-    v6 = v15;
-    if (!v15 && !v4)
+    v6 = _valueBackground;
+    if (!_valueBackground && !_titleBackground)
     {
-      v7 = [(CEKDiscreteSlider *)self _createLegibilityImage];
-      v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
-      v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
+      _createLegibilityImage = [(CEKDiscreteSlider *)self _createLegibilityImage];
+      v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_createLegibilityImage];
+      _titleBackground = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_createLegibilityImage];
       v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
 
-      v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      v10 = [v9 colorWithAlphaComponent:0.15];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      v10 = [systemBackgroundColor colorWithAlphaComponent:0.15];
       [v8 setBackgroundColor:v10];
 
-      v11 = [(CEKDiscreteSlider *)self _valueLabel];
-      [(CEKDiscreteSlider *)self insertSubview:v16 belowSubview:v11];
+      _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+      [(CEKDiscreteSlider *)self insertSubview:v16 belowSubview:_valueLabel];
 
-      v12 = [(CEKDiscreteSlider *)self _titleLabel];
-      [(CEKDiscreteSlider *)self insertSubview:v4 belowSubview:v12];
+      _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+      [(CEKDiscreteSlider *)self insertSubview:_titleBackground belowSubview:_titleLabel];
 
-      v13 = [(CEKDiscreteSlider *)self _levelIndicatorView];
-      [(CEKDiscreteSlider *)self insertSubview:v8 belowSubview:v13];
+      _levelIndicatorView = [(CEKDiscreteSlider *)self _levelIndicatorView];
+      [(CEKDiscreteSlider *)self insertSubview:v8 belowSubview:_levelIndicatorView];
 
       [(CEKDiscreteSlider *)self set_valueBackground:v16];
-      [(CEKDiscreteSlider *)self set_titleBackground:v4];
+      [(CEKDiscreteSlider *)self set_titleBackground:_titleBackground];
       [(CEKDiscreteSlider *)self set_indicatorBackground:v8];
 
       v6 = v16;
-      v5 = v8;
+      _indicatorBackground = v8;
     }
   }
 
   else
   {
-    v6 = v15;
+    v6 = _valueBackground;
   }
 
-  if (v3)
+  if (useTextLegibilityBackgrounds)
   {
     v14 = 1.0;
   }
@@ -1433,8 +1433,8 @@ LABEL_24:
 
   v17 = v6;
   [v6 setAlpha:v14];
-  [v4 setAlpha:v14];
-  [v5 setAlpha:v14];
+  [_titleBackground setAlpha:v14];
+  [_indicatorBackground setAlpha:v14];
   [(CEKDiscreteSlider *)self setNeedsLayout];
 }
 
@@ -1442,16 +1442,16 @@ LABEL_24:
 {
   v2 = *MEMORY[0x1E695EFF8];
   v3 = *(MEMORY[0x1E695EFF8] + 8);
-  v4 = [(CEKDiscreteSlider *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(CEKDiscreteSlider *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
   v14.width = 25.0;
   v14.height = 25.0;
   UIGraphicsBeginImageContextWithOptions(v14, 0, v6);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v9 = [v8 colorWithAlphaComponent:0.3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v9 = [systemBackgroundColor colorWithAlphaComponent:0.3];
   CGContextSetFillColorWithColor(CurrentContext, [v9 CGColor]);
 
   v15.size.width = 25.0;
@@ -1468,54 +1468,54 @@ LABEL_24:
 
 - (void)_updateFonts
 {
-  v3 = [(CEKDiscreteSlider *)self fontStyle];
-  v4 = CEKFontOfSizeAndStyle(v3, 14.0);
-  v5 = [(CEKDiscreteSlider *)self _titleLabel];
-  [v5 setFont:v4];
+  fontStyle = [(CEKDiscreteSlider *)self fontStyle];
+  v4 = CEKFontOfSizeAndStyle(fontStyle, 14.0);
+  _titleLabel = [(CEKDiscreteSlider *)self _titleLabel];
+  [_titleLabel setFont:v4];
 
-  v7 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle(v3, 14.0);
-  v6 = [(CEKDiscreteSlider *)self _valueLabel];
-  [v6 setFont:v7];
+  v7 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle(fontStyle, 14.0);
+  _valueLabel = [(CEKDiscreteSlider *)self _valueLabel];
+  [_valueLabel setFont:v7];
 }
 
 - (void)performWaveAnimation
 {
-  v2 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-  [v2 performWaveAnimation];
+  _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView performWaveAnimation];
 }
 
-- (void)_setSelectedIndex:(unint64_t)a3 shouldDelegate:(BOOL)a4 wantsFeedbackEmitted:(BOOL)a5 shouldScroll:(BOOL)a6 scrollDuration:(double)a7 scrollCurve:(id)a8 scrollCompletion:(id)a9
+- (void)_setSelectedIndex:(unint64_t)index shouldDelegate:(BOOL)delegate wantsFeedbackEmitted:(BOOL)emitted shouldScroll:(BOOL)scroll scrollDuration:(double)duration scrollCurve:(id)curve scrollCompletion:(id)completion
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v16 = a8;
-  v17 = a9;
-  if (self->_selectedIndex == a3)
+  scrollCopy = scroll;
+  emittedCopy = emitted;
+  delegateCopy = delegate;
+  curveCopy = curve;
+  completionCopy = completion;
+  if (self->_selectedIndex == index)
   {
     goto LABEL_24;
   }
 
-  self->_selectedIndex = a3;
+  self->_selectedIndex = index;
   [(CEKDiscreteSlider *)self updateValueLabel];
   [(CEKDiscreteSlider *)self _updateMarkedIndexViewAnimated:1];
-  v18 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
-  [v18 setSelectedTickMarkIndex:a3 animated:v13];
+  _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView setSelectedTickMarkIndex:index animated:delegateCopy];
 
-  if (v13)
+  if (delegateCopy)
   {
     [(CEKDiscreteSlider *)self sendActionsForControlEvents:4096];
   }
 
-  if (v12)
+  if (emittedCopy)
   {
-    v19 = [(CEKDiscreteSlider *)self feedbackScope];
-    if ((v19 - 1) <= 1)
+    feedbackScope = [(CEKDiscreteSlider *)self feedbackScope];
+    if ((feedbackScope - 1) <= 1)
     {
-      v20 = v19;
-      if (a3)
+      v20 = feedbackScope;
+      if (index)
       {
-        v21 = [(CEKDiscreteSlider *)self indexCount]- 1 == a3;
+        v21 = [(CEKDiscreteSlider *)self indexCount]- 1 == index;
       }
 
       else
@@ -1523,18 +1523,18 @@ LABEL_24:
         v21 = 1;
       }
 
-      v22 = [(CEKDiscreteSlider *)self _tickMarkIndexForIndex:a3];
-      v23 = [(CEKDiscreteSlider *)self _tickMarksView];
-      v24 = [v23 tickMarksModel];
-      v25 = [v24 isMainTickMarkAtIndex:v22];
+      v22 = [(CEKDiscreteSlider *)self _tickMarkIndexForIndex:index];
+      _tickMarksView = [(CEKDiscreteSlider *)self _tickMarksView];
+      tickMarksModel = [_tickMarksView tickMarksModel];
+      v25 = [tickMarksModel isMainTickMarkAtIndex:v22];
 
       if (v21)
       {
-        v26 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v26 performFeedback];
+        _feedbackGenerator = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator performFeedback];
 
-        v27 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v27 playEndTickSound];
+        _feedbackGenerator2 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator2 playEndTickSound];
 LABEL_15:
 
         goto LABEL_16;
@@ -1542,78 +1542,78 @@ LABEL_15:
 
       if (v25)
       {
-        v28 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v28 performFeedback];
+        _feedbackGenerator3 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator3 performFeedback];
 
-        v27 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v27 playMajorTickSound];
+        _feedbackGenerator2 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator2 playMajorTickSound];
         goto LABEL_15;
       }
 
       if (v20 == 2)
       {
-        v29 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v29 performFeedback];
+        _feedbackGenerator4 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator4 performFeedback];
 
-        v27 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-        [v27 playMinorTickSound];
+        _feedbackGenerator2 = [(CEKDiscreteSlider *)self _feedbackGenerator];
+        [_feedbackGenerator2 playMinorTickSound];
         goto LABEL_15;
       }
     }
   }
 
 LABEL_16:
-  if (a7 > 0.0 && v11)
+  if (duration > 0.0 && scrollCopy)
   {
-    v30 = [(CEKDiscreteSlider *)self _animationGenerator];
+    _animationGenerator = [(CEKDiscreteSlider *)self _animationGenerator];
 
-    if (!v30)
+    if (!_animationGenerator)
     {
       v31 = objc_alloc_init(CEKAnimationGenerator);
       [(CEKDiscreteSlider *)self _setAnimationGenerator:v31];
     }
 
-    v32 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [v32 contentOffset];
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     v34 = v33;
     v36 = v35;
-    [(CEKDiscreteSlider *)self _contentOffsetForIndex:a3];
+    [(CEKDiscreteSlider *)self _contentOffsetForIndex:index];
     v38 = v37;
     v40 = v39;
-    v41 = [(CEKDiscreteSlider *)self _animationGenerator];
+    _animationGenerator2 = [(CEKDiscreteSlider *)self _animationGenerator];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedbackEmitted_shouldScroll_scrollDuration_scrollCurve_scrollCompletion___block_invoke;
     v51[3] = &unk_1E7CC66B0;
-    v52 = v16;
+    v52 = curveCopy;
     v54 = v34;
     v55 = v36;
     v56 = v38;
     v57 = v40;
-    v53 = v32;
+    v53 = _contentScrollView;
     v44 = MEMORY[0x1E69E9820];
     v45 = 3221225472;
     v46 = __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedbackEmitted_shouldScroll_scrollDuration_scrollCurve_scrollCompletion___block_invoke_2;
     v47 = &unk_1E7CC66D8;
     v48 = v53;
-    v49 = self;
-    v50 = v17;
+    selfCopy = self;
+    v50 = completionCopy;
     v42 = v53;
-    [v41 startAnimationForIdentifier:@"CEKSelectionScrollingAnimationKey" duration:v51 updateHandler:&v44 completionHandler:a7];
+    [_animationGenerator2 startAnimationForIdentifier:@"CEKSelectionScrollingAnimationKey" duration:v51 updateHandler:&v44 completionHandler:duration];
 
     [v42 setScrollEnabled:{0, v44, v45, v46, v47}];
     [(CEKDiscreteSlider *)self _updateColorsAnimated:1];
   }
 
-  else if (v11)
+  else if (scrollCopy)
   {
-    v43 = [(CEKDiscreteSlider *)self _animationGenerator];
-    [v43 stopAnimationForIdentifier:@"CEKSelectionScrollingAnimationKey"];
+    _animationGenerator3 = [(CEKDiscreteSlider *)self _animationGenerator];
+    [_animationGenerator3 stopAnimationForIdentifier:@"CEKSelectionScrollingAnimationKey"];
 
     [(CEKDiscreteSlider *)self _updateScrollViewContentOffset];
-    if (v17)
+    if (completionCopy)
     {
-      (*(v17 + 2))(v17, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
@@ -1652,35 +1652,35 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
   return [v5 _updateColorsAnimated:1];
 }
 
-- (double)_interpolatedIndexForContentOffset:(CGPoint)a3
+- (double)_interpolatedIndexForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  if (![(CEKDiscreteSlider *)self indexCount:a3.x])
+  x = offset.x;
+  if (![(CEKDiscreteSlider *)self indexCount:offset.x])
   {
     return 0.0;
   }
 
-  v5 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v5 contentInset];
-  v7 = (x + v6) / CEKScrollableDistanceInScrollView(v5);
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView contentInset];
+  v7 = (x + v6) / CEKScrollableDistanceInScrollView(_contentScrollView);
   v8 = v7 * ([(CEKDiscreteSlider *)self indexCount]- 1);
 
   return v8;
 }
 
-- (unint64_t)_biasedIndexForContentOffset:(CGPoint)a3
+- (unint64_t)_biasedIndexForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   result = [(CEKDiscreteSlider *)self indexCount];
   if (result)
   {
     [(CEKDiscreteSlider *)self _interpolatedIndexForContentOffset:x, y];
     v8 = v7;
-    v9 = [(CEKDiscreteSlider *)self selectedIndex];
+    selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
     v10 = floor(v8);
     v11 = ceil(v8);
-    if (v8 <= v9)
+    if (v8 <= selectedIndex)
     {
       v12 = v11;
     }
@@ -1691,9 +1691,9 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
     }
 
     v13 = v12;
-    if (v9 == v12)
+    if (selectedIndex == v12)
     {
-      v14 = v9;
+      v14 = selectedIndex;
       v15 = vcvtad_u64_f64(v8);
       [(CEKDiscreteSlider *)self _contentOffsetForIndex:v15];
       if (vabdd_f64(v16, x) <= 1.0)
@@ -1713,10 +1713,10 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
   return result;
 }
 
-- (unint64_t)_nearestIndexForContentOffset:(CGPoint)a3
+- (unint64_t)_nearestIndexForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   result = [(CEKDiscreteSlider *)self indexCount];
   if (result)
   {
@@ -1727,10 +1727,10 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
   return result;
 }
 
-- (unint64_t)_indexForContentOffset:(CGPoint)a3
+- (unint64_t)_indexForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if ([(CEKDiscreteSlider *)self biasScrollingToCurrentSelection])
   {
 
@@ -1744,16 +1744,16 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
   }
 }
 
-- (CGPoint)_contentOffsetForIndex:(unint64_t)a3
+- (CGPoint)_contentOffsetForIndex:(unint64_t)index
 {
   if ([(CEKDiscreteSlider *)self indexCount])
   {
-    CEKProgress(a3, 0.0, ([(CEKDiscreteSlider *)self indexCount]- 1));
-    v5 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [v5 contentOffset];
+    CEKProgress(index, 0.0, ([(CEKDiscreteSlider *)self indexCount]- 1));
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     v7 = v6;
-    CEKScrollableDistanceInScrollView(v5);
-    [v5 contentInset];
+    CEKScrollableDistanceInScrollView(_contentScrollView);
+    [_contentScrollView contentInset];
     UIRoundToViewScale();
     v9 = v8;
   }
@@ -1771,49 +1771,49 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
   return result;
 }
 
-- (unint64_t)indexForTickMarkAtPoint:(CGPoint)a3 in:(id)a4
+- (unint64_t)indexForTickMarkAtPoint:(CGPoint)point in:(id)in
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v8 convertPoint:v7 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  inCopy = in;
+  _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView convertPoint:inCopy fromView:{x, y}];
   v10 = v9;
 
-  v11 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v11 contentInset];
+  _contentScrollView2 = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView2 contentInset];
   v13 = v10 - v12;
-  v14 = [(CEKDiscreteSlider *)self _contentScrollView];
-  [v14 contentOffset];
+  _contentScrollView3 = [(CEKDiscreteSlider *)self _contentScrollView];
+  [_contentScrollView3 contentOffset];
   v16 = v15;
 
   return [(CEKDiscreteSlider *)self _nearestIndexForContentOffset:v13, v16];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(CEKDiscreteSlider *)self _feedbackGenerator];
-  [v4 prepareFeedback];
+  _feedbackGenerator = [(CEKDiscreteSlider *)self _feedbackGenerator];
+  [_feedbackGenerator prepareFeedback];
 
   [(CEKDiscreteSlider *)self _updateAppearanceForActiveScrolling];
   if (self->_delegateFlags.respondsToWillBeginScrolling)
   {
-    v5 = [(CEKDiscreteSlider *)self delegate];
-    [v5 sliderWillBeginScrolling:self];
+    delegate = [(CEKDiscreteSlider *)self delegate];
+    [delegate sliderWillBeginScrolling:self];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   [(CEKDiscreteSlider *)self _updateAppearanceForActiveScrolling];
-  if (!a4)
+  if (!decelerate)
   {
 
     [(CEKDiscreteSlider *)self _sliderDidEndScrolling];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(CEKDiscreteSlider *)self _updateAppearanceForActiveScrolling];
 
@@ -1824,58 +1824,58 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
 {
   if (self->_delegateFlags.respondsToDidEndScrolling)
   {
-    v4 = [(CEKDiscreteSlider *)self delegate];
-    [v4 sliderDidEndScrolling:self];
+    delegate = [(CEKDiscreteSlider *)self delegate];
+    [delegate sliderDidEndScrolling:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v13 = a3;
-  v4 = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
+  scrollCopy = scroll;
+  _dynamicTickMarksView = [(CEKDiscreteSlider *)self _dynamicTickMarksView];
   [(CEKDiscreteSlider *)self bounds];
-  [(CEKDiscreteSlider *)self convertRect:v4 toView:?];
-  [v4 setVisibleBounds:?];
+  [(CEKDiscreteSlider *)self convertRect:_dynamicTickMarksView toView:?];
+  [_dynamicTickMarksView setVisibleBounds:?];
   if ([(CEKDiscreteSlider *)self _isScrollActive])
   {
-    v5 = [(CEKDiscreteSlider *)self _animationGenerator];
-    v6 = [v5 isAnimatingForIdentifier:@"CEKSelectionScrollingAnimationKey"];
+    _animationGenerator = [(CEKDiscreteSlider *)self _animationGenerator];
+    v6 = [_animationGenerator isAnimatingForIdentifier:@"CEKSelectionScrollingAnimationKey"];
 
     if ((v6 & 1) == 0)
     {
-      [v13 contentOffset];
+      [scrollCopy contentOffset];
       [(CEKDiscreteSlider *)self _setSelectedIndex:[(CEKDiscreteSlider *)self _indexForContentOffset:?] shouldDelegate:1 wantsFeedbackEmitted:1 shouldScroll:0 scrollDuration:0 scrollCurve:0 scrollCompletion:0.0];
-      [v13 contentOffset];
+      [scrollCopy contentOffset];
       v8 = v7;
-      [v13 contentInset];
+      [scrollCopy contentInset];
       v10 = v9;
-      v11 = v8 > CEKScrollableDistanceInScrollView(v13) - v9 + 20.0 || v8 < -20.0 - v10;
+      v11 = v8 > CEKScrollableDistanceInScrollView(scrollCopy) - v9 + 20.0 || v8 < -20.0 - v10;
       [(CEKDiscreteSlider *)self _setOverscrolling:v11];
     }
   }
 
-  if (([v13 isTracking] & 1) != 0 || objc_msgSend(v13, "isDecelerating"))
+  if (([scrollCopy isTracking] & 1) != 0 || objc_msgSend(scrollCopy, "isDecelerating"))
   {
-    v12 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-    [v12 invalidate];
+    _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator invalidate];
 
     [(CEKDiscreteSlider *)self _setExternalScrollOffsetAnimator:0];
     [(CEKDiscreteSlider *)self contactEndedWithAction:0];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  [(CEKDiscreteSlider *)self _contentOffsetForIndex:[(CEKDiscreteSlider *)self _nearestIndexForContentOffset:a3, a5->x, a5->y]];
-  a5->x = v6;
-  a5->y = v7;
+  [(CEKDiscreteSlider *)self _contentOffsetForIndex:[(CEKDiscreteSlider *)self _nearestIndexForContentOffset:dragging, offset->x, offset->y]];
+  offset->x = v6;
+  offset->y = v7;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(CEKDiscreteSlider *)self _sliderDidEndScrolling];
-  [v4 contentOffset];
+  [animationCopy contentOffset];
   v6 = v5;
   v8 = v7;
 
@@ -1901,11 +1901,11 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
 
 - (id)_hidPassthroughDriver
 {
-  v2 = [(CEKDiscreteSlider *)self _sliderDriver];
+  _sliderDriver = [(CEKDiscreteSlider *)self _sliderDriver];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _sliderDriver;
   }
 
   else
@@ -1918,8 +1918,8 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
 
 - (BOOL)_shouldUseStepwiseExternalScrolling
 {
-  v2 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  [v2 tickMarkSpacing];
+  tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration tickMarkSpacing];
   v4 = v3 > 25.0;
 
   return v4;
@@ -1929,152 +1929,152 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 134218240;
-  v5 = [a1 firstIndex];
+  firstIndex = [self firstIndex];
   v6 = 2048;
-  v7 = [a1 lastIndex];
+  lastIndex = [self lastIndex];
   _os_log_debug_impl(&dword_1B7E93000, a2, OS_LOG_TYPE_DEBUG, "ScrollDiagnostic: Limited range to [%lu-%lu]", &v4, 0x16u);
 }
 
-- (int64_t)_externalScrollingAllowedIndexForIndex:(int64_t)a3
+- (int64_t)_externalScrollingAllowedIndexForIndex:(int64_t)index
 {
-  v4 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
-  v5 = [v4 firstIndex];
-  v6 = [v4 lastIndex];
-  if (v6 >= a3)
+  _externalScrollAllowedIndexes = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
+  firstIndex = [_externalScrollAllowedIndexes firstIndex];
+  lastIndex = [_externalScrollAllowedIndexes lastIndex];
+  if (lastIndex >= index)
   {
-    v7 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v7 = v6;
+    indexCopy = lastIndex;
   }
 
-  if (v5 <= v7)
+  if (firstIndex <= indexCopy)
   {
-    v8 = v7;
+    v8 = indexCopy;
   }
 
   else
   {
-    v8 = v5;
+    v8 = firstIndex;
   }
 
   return v8;
 }
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
-  v25 = a3;
+  actionCopy = action;
   if (![(CEKDiscreteSlider *)self _isExternalScrollingAllowed]&& [(CEKDiscreteSlider *)self isEnabled])
   {
     [(CEKDiscreteSlider *)self _setExternalScrollingAllowed:1];
     [(CEKDiscreteSlider *)self _setExternalOverScroll:0.0];
-    v4 = [(CEKDiscreteSlider *)self selectedIndex];
-    v5 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-    v6 = v5;
-    if (v5)
+    selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
+    _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+    v6 = _externalScrollOffsetAnimator;
+    if (_externalScrollOffsetAnimator)
     {
-      [v5 value];
+      [_externalScrollOffsetAnimator value];
       v8 = v7;
       [v6 presentationValue];
       if (v8 != v9)
       {
         [v6 value];
-        v4 = [(CEKDiscreteSlider *)self _indexForContentOffset:?];
+        selectedIndex = [(CEKDiscreteSlider *)self _indexForContentOffset:?];
       }
     }
 
     if ([(CEKDiscreteSlider *)self _shouldUseStepwiseExternalScrolling])
     {
-      v10 = [MEMORY[0x1E696AD50] indexSetWithIndex:v4];
+      v10 = [MEMORY[0x1E696AD50] indexSetWithIndex:selectedIndex];
       [(CEKDiscreteSlider *)self _setExternalScrollAllowedIndexes:v10];
 
-      v11 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
-      v12 = v11;
-      if (v4 <= 1)
+      _externalScrollAllowedIndexes = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
+      v12 = _externalScrollAllowedIndexes;
+      if (selectedIndex <= 1)
       {
         v13 = 1;
       }
 
       else
       {
-        v13 = v4;
+        v13 = selectedIndex;
       }
 
-      [v11 addIndex:v13 - 1];
+      [_externalScrollAllowedIndexes addIndex:v13 - 1];
 
-      v14 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
-      v15 = [(CEKDiscreteSlider *)self indexCount];
-      if (v15 - 1 >= v4 + 1)
+      _externalScrollAllowedIndexes2 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
+      indexCount = [(CEKDiscreteSlider *)self indexCount];
+      if (indexCount - 1 >= selectedIndex + 1)
       {
-        v16 = v4 + 1;
+        v16 = selectedIndex + 1;
       }
 
       else
       {
-        v16 = v15 - 1;
+        v16 = indexCount - 1;
       }
 
-      [v14 addIndex:v16];
+      [_externalScrollAllowedIndexes2 addIndex:v16];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, -[CEKDiscreteSlider indexCount](self, "indexCount")}];
-      [(CEKDiscreteSlider *)self _setExternalScrollAllowedIndexes:v14];
+      _externalScrollAllowedIndexes2 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, -[CEKDiscreteSlider indexCount](self, "indexCount")}];
+      [(CEKDiscreteSlider *)self _setExternalScrollAllowedIndexes:_externalScrollAllowedIndexes2];
     }
 
-    v17 = [(CEKDiscreteSlider *)self _hidPassthroughDriver];
-    v18 = [(CEKDiscreteSlider *)self _shouldUseStepwiseExternalScrolling];
-    if (v18)
+    _hidPassthroughDriver = [(CEKDiscreteSlider *)self _hidPassthroughDriver];
+    _shouldUseStepwiseExternalScrolling = [(CEKDiscreteSlider *)self _shouldUseStepwiseExternalScrolling];
+    if (_shouldUseStepwiseExternalScrolling)
     {
       v19 = 1.2;
-      [v17 setScrollMultiplier:1.2];
+      [_hidPassthroughDriver setScrollMultiplier:1.2];
     }
 
     else
     {
       +[_TtC13CameraEditKit34HIDPassthroughSliderPositionDriver defaultScrollMultiplier];
-      [v17 setScrollMultiplier:?];
+      [_hidPassthroughDriver setScrollMultiplier:?];
       +[_TtC13CameraEditKit34HIDPassthroughSliderPositionDriver defaultVelocityMultiplier];
       v19 = v20;
     }
 
-    [v17 setVelocityMultiplier:v19];
-    [v17 setAcceptsLowConfidenceScrolling:!v18];
-    v21 = [(CEKDiscreteSlider *)self _sliderDriver];
-    [v21 contactBeganWithAction:v25];
+    [_hidPassthroughDriver setVelocityMultiplier:v19];
+    [_hidPassthroughDriver setAcceptsLowConfidenceScrolling:!_shouldUseStepwiseExternalScrolling];
+    _sliderDriver = [(CEKDiscreteSlider *)self _sliderDriver];
+    [_sliderDriver contactBeganWithAction:actionCopy];
 
-    v22 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [v22 contentOffset];
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     v24 = v23;
-    [v22 setContentOffset:0 animated:?];
+    [_contentScrollView setContentOffset:0 animated:?];
     [(CEKDiscreteSlider *)self _applyExternalTarget:2 mode:v24];
   }
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(CEKDiscreteSlider *)self _isExternalScrollingAllowed])
   {
-    v5 = [(CEKDiscreteSlider *)self _contentScrollView];
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
     if (![(CEKDiscreteSlider *)self _isExternallyScrolling])
     {
       [(CEKDiscreteSlider *)self _setExternallyScrolling:1];
-      [(CEKDiscreteSlider *)self scrollViewWillBeginDragging:v5];
+      [(CEKDiscreteSlider *)self scrollViewWillBeginDragging:_contentScrollView];
     }
 
     [(CEKDiscreteSlider *)self _createExternalScrollAnimatorIfNeeded];
-    v6 = [(CEKDiscreteSlider *)self _sliderDriver];
-    [v6 distanceTraveled];
+    _sliderDriver = [(CEKDiscreteSlider *)self _sliderDriver];
+    [_sliderDriver distanceTraveled];
     v8 = v7;
-    [v6 contactUpdatedWithAction:v4];
-    [v6 distanceTraveled];
+    [_sliderDriver contactUpdatedWithAction:actionCopy];
+    [_sliderDriver distanceTraveled];
     v10 = v9 - v8;
-    v11 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-    [v11 value];
+    _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator value];
     v13 = v12;
 
     v14 = v10 + v13;
@@ -2084,12 +2084,12 @@ uint64_t __132__CEKDiscreteSlider__setSelectedIndex_shouldDelegate_wantsFeedback
     }
 
     [(CEKDiscreteSlider *)self _limitExternalScrollIndexesForCurrentSelectionIfNeeded];
-    v15 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
-    v16 = [v15 firstIndex];
-    v17 = [v15 lastIndex];
-    [(CEKDiscreteSlider *)self _contentOffsetForIndex:v16];
+    _externalScrollAllowedIndexes = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
+    firstIndex = [_externalScrollAllowedIndexes firstIndex];
+    lastIndex = [_externalScrollAllowedIndexes lastIndex];
+    [(CEKDiscreteSlider *)self _contentOffsetForIndex:firstIndex];
     v19 = v18;
-    [(CEKDiscreteSlider *)self _contentOffsetForIndex:v17];
+    [(CEKDiscreteSlider *)self _contentOffsetForIndex:lastIndex];
     v21 = v20;
     [(CEKDiscreteSlider *)self _externalOverScroll];
     if (v14 <= v21)
@@ -2144,10 +2144,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)contactEndedWithAction:(id)a3
+- (void)contactEndedWithAction:(id)action
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   if (![(CEKDiscreteSlider *)self _isExternalScrollingAllowed])
   {
     goto LABEL_61;
@@ -2155,18 +2155,18 @@ LABEL_17:
 
   [(CEKDiscreteSlider *)self _setExternalScrollingAllowed:0];
   [(CEKDiscreteSlider *)self _setExternallyScrolling:0];
-  v5 = [(CEKDiscreteSlider *)self _sliderDriver];
-  [v5 contactEndedWithAction:v4];
-  [v5 velocity];
+  _sliderDriver = [(CEKDiscreteSlider *)self _sliderDriver];
+  [_sliderDriver contactEndedWithAction:actionCopy];
+  [_sliderDriver velocity];
   v7 = v6;
-  v8 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-  [v8 value];
+  _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+  [_externalScrollOffsetAnimator value];
   v10 = v9;
 
-  [v5 distanceToDecelerate];
+  [_sliderDriver distanceToDecelerate];
   v12 = [(CEKDiscreteSlider *)self _indexForContentOffset:v10 + v11, 0.0];
-  v13 = [(CEKDiscreteSlider *)self selectedIndex];
-  v14 = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
+  selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
+  _externalScrollAllowedIndexes = [(CEKDiscreteSlider *)self _externalScrollAllowedIndexes];
   [(CEKDiscreteSlider *)self _limitExternalScrollIndexesForCurrentSelectionIfNeeded];
   v15 = [(CEKDiscreteSlider *)self _externalScrollingAllowedIndexForIndex:v12];
   if (v15 == v12)
@@ -2185,35 +2185,35 @@ LABEL_17:
       v71 = 2048;
       v72 = v16;
       v73 = 2048;
-      v74 = [v14 firstIndex];
+      firstIndex = [_externalScrollAllowedIndexes firstIndex];
       v75 = 2048;
-      v76 = [v14 lastIndex];
+      lastIndex = [_externalScrollAllowedIndexes lastIndex];
       _os_log_debug_impl(&dword_1B7E93000, v17, OS_LOG_TYPE_DEBUG, "ScrollDiagnostic: Clamping targetOffset from %ld to %ld based on allowed range [%lu-%lu]", buf, 0x2Au);
     }
   }
 
   [(CEKDiscreteSlider *)self _contentOffsetForIndex:v16];
   v19 = v18;
-  v20 = [(CEKDiscreteSlider *)self magneticIndexes];
-  if (v20)
+  magneticIndexes = [(CEKDiscreteSlider *)self magneticIndexes];
+  if (magneticIndexes)
   {
-    v60 = v13;
-    v62 = v4;
-    v21 = v14;
+    v60 = selectedIndex;
+    v62 = actionCopy;
+    v21 = _externalScrollAllowedIndexes;
     [(CEKDiscreteSlider *)self _contentOffsetForIndex:0];
     v23 = v22;
     [(CEKDiscreteSlider *)self _contentOffsetForIndex:[(CEKDiscreteSlider *)self indexCount]- 1];
     v25 = v24;
-    v26 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-    [v26 value];
+    _externalScrollOffsetAnimator2 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator2 value];
     v28 = v27;
 
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v61 = v20;
-    v29 = v20;
+    v61 = magneticIndexes;
+    v29 = magneticIndexes;
     v30 = [v29 countByEnumeratingWithState:&v64 objects:v68 count:16];
     if (v30)
     {
@@ -2229,8 +2229,8 @@ LABEL_10:
           objc_enumerationMutation(v29);
         }
 
-        v35 = [*(*(&v64 + 1) + 8 * v34) unsignedIntegerValue];
-        [(CEKDiscreteSlider *)self _contentOffsetForIndex:v35];
+        unsignedIntegerValue = [*(*(&v64 + 1) + 8 * v34) unsignedIntegerValue];
+        [(CEKDiscreteSlider *)self _contentOffsetForIndex:unsignedIntegerValue];
         if (v36 >= v28)
         {
           if (v36 > v28)
@@ -2241,35 +2241,35 @@ LABEL_10:
               goto LABEL_26;
             }
 
-            v14 = v21;
-            if (v35 == 0x7FFFFFFFFFFFFFFFLL)
+            _externalScrollAllowedIndexes = v21;
+            if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
             {
               goto LABEL_27;
             }
 
-            [(CEKDiscreteSlider *)self _contentOffsetForIndex:v35];
-            v37 = [(CEKDiscreteSlider *)self traitCollection];
-            [v37 displayScale];
+            [(CEKDiscreteSlider *)self _contentOffsetForIndex:unsignedIntegerValue];
+            traitCollection = [(CEKDiscreteSlider *)self traitCollection];
+            [traitCollection displayScale];
             UIRoundToScale();
             v39 = v38;
 
             v19 = fmax(v23, fmin(v25, v39));
             v40 = os_log_create("com.apple.camera", "CameraEditKit");
-            v4 = v62;
+            actionCopy = v62;
             if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
-              v13 = v60;
-              v20 = v61;
+              selectedIndex = v60;
+              magneticIndexes = v61;
               goto LABEL_36;
             }
 
             *buf = 134218496;
             v70 = v60;
             v71 = 2048;
-            v72 = v35;
-            v13 = v60;
+            v72 = unsignedIntegerValue;
+            selectedIndex = v60;
             v73 = 2048;
-            v74 = *&v7;
+            firstIndex = *&v7;
 LABEL_64:
             _os_log_debug_impl(&dword_1B7E93000, v40, OS_LOG_TYPE_DEBUG, "ScrollDiagnostic: Decelerating from %ld to magnetic index %lu with velocity %.3f", buf, 0x20u);
             goto LABEL_30;
@@ -2278,7 +2278,7 @@ LABEL_64:
 
         else
         {
-          v33 = v35;
+          v33 = unsignedIntegerValue;
         }
 
         if (v31 == ++v34)
@@ -2298,17 +2298,17 @@ LABEL_64:
 LABEL_25:
 
 LABEL_26:
-    v14 = v21;
+    _externalScrollAllowedIndexes = v21;
 LABEL_27:
-    v4 = v62;
+    actionCopy = v62;
     if (v7 >= -20.0 || v33 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v40 = os_log_create("com.apple.camera", "CameraEditKit");
       v44 = os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG);
-      v13 = v60;
+      selectedIndex = v60;
       if (v19 == v10)
       {
-        v20 = v61;
+        magneticIndexes = v61;
         if (v44)
         {
           [(CEKDiscreteSlider *)v40 contactEndedWithAction:v45, v46, v47, v48, v49, v50, v51];
@@ -2317,7 +2317,7 @@ LABEL_27:
 
       else
       {
-        v20 = v61;
+        magneticIndexes = v61;
         if (v44)
         {
           *buf = 134218496;
@@ -2325,7 +2325,7 @@ LABEL_27:
           v71 = 2048;
           v72 = v16;
           v73 = 2048;
-          v74 = *&v7;
+          firstIndex = *&v7;
           _os_log_debug_impl(&dword_1B7E93000, v40, OS_LOG_TYPE_DEBUG, "ScrollDiagnostic: Decelerating without magnet from %ld to index %lu (velocity %.3f)", buf, 0x20u);
         }
       }
@@ -2334,14 +2334,14 @@ LABEL_27:
     else
     {
       [(CEKDiscreteSlider *)self _contentOffsetForIndex:v33];
-      v41 = [(CEKDiscreteSlider *)self traitCollection];
-      [v41 displayScale];
+      traitCollection2 = [(CEKDiscreteSlider *)self traitCollection];
+      [traitCollection2 displayScale];
       UIRoundToScale();
       v43 = v42;
 
       v19 = fmax(v23, fmin(v25, v43));
       v40 = os_log_create("com.apple.camera", "CameraEditKit");
-      v13 = v60;
+      selectedIndex = v60;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
@@ -2349,24 +2349,24 @@ LABEL_27:
         v71 = 2048;
         v72 = v33;
         v73 = 2048;
-        v74 = *&v7;
+        firstIndex = *&v7;
         goto LABEL_64;
       }
 
 LABEL_30:
-      v20 = v61;
+      magneticIndexes = v61;
     }
 
 LABEL_36:
   }
 
-  v52 = [(CEKDiscreteSlider *)self _hidPassthroughDriver];
-  if (([v52 liftoffDidFlickUp] & 1) == 0)
+  _hidPassthroughDriver = [(CEKDiscreteSlider *)self _hidPassthroughDriver];
+  if (([_hidPassthroughDriver liftoffDidFlickUp] & 1) == 0)
   {
-    v53 = [v52 liftoffDidFlickDown];
-    if (!v53 || v16 != v13)
+    liftoffDidFlickDown = [_hidPassthroughDriver liftoffDidFlickDown];
+    if (!liftoffDidFlickDown || v16 != selectedIndex)
     {
-      if (!v53)
+      if (!liftoffDidFlickDown)
       {
         v55 = os_log_create("com.apple.camera", "CameraEditKit");
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -2381,14 +2381,14 @@ LABEL_36:
     }
 
 LABEL_42:
-    if ([v52 liftoffDidFlickUp])
+    if ([_hidPassthroughDriver liftoffDidFlickUp])
     {
-      v54 = v13 + 1;
+      v54 = selectedIndex + 1;
     }
 
-    else if ([v52 liftoffDidFlickDown])
+    else if ([_hidPassthroughDriver liftoffDidFlickDown])
     {
-      v54 = v13 - 1;
+      v54 = selectedIndex - 1;
     }
 
     else
@@ -2401,7 +2401,7 @@ LABEL_42:
     v19 = v57;
     v55 = os_log_create("com.apple.camera", "CameraEditKit");
     v58 = os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG);
-    if (v56 == v13)
+    if (v56 == selectedIndex)
     {
       if (v58)
       {
@@ -2417,7 +2417,7 @@ LABEL_42:
     goto LABEL_57;
   }
 
-  if (v16 == v13)
+  if (v16 == selectedIndex)
   {
     goto LABEL_42;
   }
@@ -2438,8 +2438,8 @@ LABEL_57:
 
   else
   {
-    v59 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [(CEKDiscreteSlider *)self scrollViewDidEndDragging:v59 willDecelerate:1];
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [(CEKDiscreteSlider *)self scrollViewDidEndDragging:_contentScrollView willDecelerate:1];
 
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
@@ -2489,44 +2489,44 @@ uint64_t __44__CEKDiscreteSlider_contactEndedWithAction___block_invoke(uint64_t 
 
 - (BOOL)_isScrollExternallyAnimating
 {
-  v2 = self;
-  v3 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-  [v3 presentationValue];
-  [v3 value];
-  CEKPixelWidthForView(v2);
-  LOBYTE(v2) = BSFloatApproximatelyEqualToFloat();
+  selfCopy = self;
+  _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+  [_externalScrollOffsetAnimator presentationValue];
+  [_externalScrollOffsetAnimator value];
+  CEKPixelWidthForView(selfCopy);
+  LOBYTE(selfCopy) = BSFloatApproximatelyEqualToFloat();
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (void)_applyExternalTarget:(double)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)_applyExternalTarget:(double)target mode:(int64_t)mode completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+  completionCopy = completion;
+  _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
   UIRoundToViewScale();
   v10 = v9;
-  if (!v8 || ([v8 value], v10 != v11))
+  if (!_externalScrollOffsetAnimator || ([_externalScrollOffsetAnimator value], v10 != v11))
   {
     [(CEKDiscreteSlider *)self _createExternalScrollAnimatorIfNeeded];
-    v12 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-    [v12 value];
+    _externalScrollOffsetAnimator2 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator2 value];
     v14 = v10 - v13;
 
     if (v14 != 0.0)
     {
-      v15 = [(CEKDiscreteSlider *)self contactObserver];
-      [v15 observeContactRecognitionDelta:v14];
+      contactObserver = [(CEKDiscreteSlider *)self contactObserver];
+      [contactObserver observeContactRecognitionDelta:v14];
     }
 
     v16 = MEMORY[0x1E69DD250];
-    v17 = [(CEKDiscreteSlider *)self _externalScrollSettings];
+    _externalScrollSettings = [(CEKDiscreteSlider *)self _externalScrollSettings];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __58__CEKDiscreteSlider__applyExternalTarget_mode_completion___block_invoke;
     v18[3] = &unk_1E7CC6660;
     v18[4] = self;
     *&v18[5] = v10;
-    [v16 cek_animateWithSettings:v17 mode:a4 animations:v18 completion:v7];
+    [v16 cek_animateWithSettings:_externalScrollSettings mode:mode animations:v18 completion:completionCopy];
   }
 }
 
@@ -2540,9 +2540,9 @@ void __58__CEKDiscreteSlider__applyExternalTarget_mode_completion___block_invoke
 - (void)_createExternalScrollAnimatorIfNeeded
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+  _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
 
-  if (!v3)
+  if (!_externalScrollOffsetAnimator)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD268]);
     [(CEKDiscreteSlider *)self _setExternalScrollOffsetAnimator:v4];
@@ -2575,34 +2575,34 @@ void __58__CEKDiscreteSlider__createExternalScrollAnimatorIfNeeded__block_invoke
 
 - (void)_handleExternalScrollAnimated
 {
-  v3 = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
-  if (v3)
+  _externalScrollOffsetAnimator = [(CEKDiscreteSlider *)self _externalScrollOffsetAnimator];
+  if (_externalScrollOffsetAnimator)
   {
-    v5 = v3;
-    v4 = [(CEKDiscreteSlider *)self _contentScrollView];
-    [v4 contentOffset];
+    v5 = _externalScrollOffsetAnimator;
+    _contentScrollView = [(CEKDiscreteSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     [v5 presentationValue];
-    [v4 setContentOffset:?];
+    [_contentScrollView setContentOffset:?];
 
-    v3 = v5;
+    _externalScrollOffsetAnimator = v5;
   }
 }
 
-- (void)tickMarksViewDidChangeWidthForTickMarkCount:(id)a3
+- (void)tickMarksViewDidChangeWidthForTickMarkCount:(id)count
 {
   [(CEKDiscreteSlider *)self _setNeedsUpdateContentOffset:1];
 
   [(CEKDiscreteSlider *)self setNeedsLayout];
 }
 
-- (void)setTextOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setTextOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_textOrientation != a3)
+  if (self->_textOrientation != orientation)
   {
-    if (a4)
+    if (animated)
     {
       [(CEKDiscreteSlider *)self layoutIfNeeded];
-      self->_textOrientation = a3;
+      self->_textOrientation = orientation;
       [(CEKDiscreteSlider *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -2614,7 +2614,7 @@ void __58__CEKDiscreteSlider__createExternalScrollAnimatorIfNeeded__block_invoke
 
     else
     {
-      self->_textOrientation = a3;
+      self->_textOrientation = orientation;
 
       [(CEKDiscreteSlider *)self setNeedsLayout];
     }

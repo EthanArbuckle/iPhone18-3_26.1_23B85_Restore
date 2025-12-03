@@ -8,22 +8,22 @@
 
 - (void)_setupConstraints
 {
-  v17 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v16 = [(TrafficIncidentTitleView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:16.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(TrafficIncidentTitleView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v18[0] = v15;
-  v14 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v13 = [(TrafficIncidentTitleView *)self trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13 constant:-16.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor2 = [(TrafficIncidentTitleView *)self trailingAnchor];
+  v3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v18[1] = v3;
-  v4 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v5 = [(TrafficIncidentTitleView *)self topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor = [(TrafficIncidentTitleView *)self topAnchor];
+  v6 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   v7 = [DynamicTypeWizard autoscaledConstraint:v6 constant:&stru_10165D9E8 withFontProvider:37.0];
   v18[2] = v7;
-  v8 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v9 = [(TrafficIncidentTitleView *)self bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  bottomAnchor = [(TrafficIncidentTitleView *)self bottomAnchor];
+  v10 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor];
   v11 = [DynamicTypeWizard autoscaledConstraint:v10 constant:&stru_10165D9E8 withFontProvider:-22.0];
   v18[3] = v11;
   v12 = [NSArray arrayWithObjects:v18 count:4];

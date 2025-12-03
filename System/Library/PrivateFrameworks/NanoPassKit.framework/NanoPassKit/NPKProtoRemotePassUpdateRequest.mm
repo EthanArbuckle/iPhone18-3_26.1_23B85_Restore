@@ -1,21 +1,21 @@
 @interface NPKProtoRemotePassUpdateRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequestAuthorization:(BOOL)a3;
-- (void)setHasShouldNotifyUser:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequestAuthorization:(BOOL)authorization;
+- (void)setHasShouldNotifyUser:(BOOL)user;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemotePassUpdateRequest
 
-- (void)setHasRequestAuthorization:(BOOL)a3
+- (void)setHasRequestAuthorization:(BOOL)authorization
 {
-  if (a3)
+  if (authorization)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasShouldNotifyUser:(BOOL)a3
+- (void)setHasShouldNotifyUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemotePassUpdateRequest;
   v4 = [(NPKProtoRemotePassUpdateRequest *)&v8 description];
-  v5 = [(NPKProtoRemotePassUpdateRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemotePassUpdateRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passID = self->_passID;
   if (passID)
   {
-    [v3 setObject:passID forKey:@"passID"];
+    [dictionary setObject:passID forKey:@"passID"];
   }
 
   updateRequestData = self->_updateRequestData;
@@ -80,8 +80,8 @@
   pass = self->_pass;
   if (pass)
   {
-    v9 = [(NPKProtoPass *)pass dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"pass"];
+    dictionaryRepresentation = [(NPKProtoPass *)pass dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"pass"];
   }
 
   has = self->_has;
@@ -102,15 +102,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_passID)
   {
     [NPKProtoRemotePassUpdateRequest writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_updateRequestData)
   {
@@ -147,26 +147,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setPassID:self->_passID];
+  toCopy = to;
+  [toCopy setPassID:self->_passID];
   if (self->_updateRequestData)
   {
-    [v6 setUpdateRequestData:?];
+    [toCopy setUpdateRequestData:?];
   }
 
-  v4 = v6;
+  v4 = toCopy;
   if (*&self->_has)
   {
-    v6[32] = self->_cancelUpdate;
-    v6[36] |= 1u;
+    toCopy[32] = self->_cancelUpdate;
+    toCopy[36] |= 1u;
   }
 
   if (self->_pass)
   {
-    [v6 setPass:?];
-    v4 = v6;
+    [toCopy setPass:?];
+    v4 = toCopy;
   }
 
   has = self->_has;
@@ -184,14 +184,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passID copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSData *)self->_updateRequestData copyWithZone:a3];
+  v8 = [(NSData *)self->_updateRequestData copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -201,7 +201,7 @@
     *(v5 + 36) |= 1u;
   }
 
-  v10 = [(NPKProtoPass *)self->_pass copyWithZone:a3];
+  v10 = [(NPKProtoPass *)self->_pass copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -222,16 +222,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   passID = self->_passID;
-  if (passID | *(v4 + 2))
+  if (passID | *(equalCopy + 2))
   {
     if (![(NSString *)passID isEqual:?])
     {
@@ -240,7 +240,7 @@
   }
 
   updateRequestData = self->_updateRequestData;
-  if (updateRequestData | *(v4 + 3))
+  if (updateRequestData | *(equalCopy + 3))
   {
     if (![(NSData *)updateRequestData isEqual:?])
     {
@@ -249,21 +249,21 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 36);
+  v8 = *(equalCopy + 36);
   if ((has & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  if ((*(v4 + 36) & 1) == 0)
+  if ((*(equalCopy + 36) & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if (self->_cancelUpdate)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_23;
     }
@@ -279,7 +279,7 @@ LABEL_7:
   }
 
   pass = self->_pass;
-  if (pass | *(v4 + 1))
+  if (pass | *(equalCopy + 1))
   {
     if (![(NPKProtoPass *)pass isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_7:
 
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_13;
     }
@@ -301,40 +301,40 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_23;
   }
 
-  v12 = *(v4 + 33);
+  v12 = *(equalCopy + 33);
   if (self->_requestAuthorization)
   {
-    if ((*(v4 + 33) & 1) == 0)
+    if ((*(equalCopy + 33) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 33))
+  else if (*(equalCopy + 33))
   {
     goto LABEL_23;
   }
 
 LABEL_13:
-  v10 = (*(v4 + 36) & 4) == 0;
+  v10 = (*(equalCopy + 36) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) != 0)
+    if ((*(equalCopy + 36) & 4) != 0)
     {
       if (self->_shouldNotifyUser)
       {
-        if (*(v4 + 34))
+        if (*(equalCopy + 34))
         {
           goto LABEL_31;
         }
       }
 
-      else if (!*(v4 + 34))
+      else if (!*(equalCopy + 34))
       {
 LABEL_31:
         v10 = 1;
@@ -389,30 +389,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoRemotePassUpdateRequest *)self setPassID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoRemotePassUpdateRequest *)self setUpdateRequestData:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (v4[36])
+  if (fromCopy[36])
   {
-    self->_cancelUpdate = v4[32];
+    self->_cancelUpdate = fromCopy[32];
     *&self->_has |= 1u;
   }
 
   pass = self->_pass;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (pass)
   {
     if (!v6)
@@ -433,19 +433,19 @@ LABEL_6:
     [(NPKProtoRemotePassUpdateRequest *)self setPass:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
-  v7 = v4[36];
+  v7 = fromCopy[36];
   if ((v7 & 2) != 0)
   {
-    self->_requestAuthorization = v4[33];
+    self->_requestAuthorization = fromCopy[33];
     *&self->_has |= 2u;
-    v7 = v4[36];
+    v7 = fromCopy[36];
   }
 
   if ((v7 & 4) != 0)
   {
-    self->_shouldNotifyUser = v4[34];
+    self->_shouldNotifyUser = fromCopy[34];
     *&self->_has |= 4u;
   }
 }

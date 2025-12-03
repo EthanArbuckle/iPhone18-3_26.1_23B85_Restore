@@ -1,38 +1,38 @@
 @interface ENTestResultNetworkRequest
-- (ENTestResultNetworkRequest)initWithRequestURL:(id)a3 URLSession:(id)a4 queue:(id)a5;
+- (ENTestResultNetworkRequest)initWithRequestURL:(id)l URLSession:(id)session queue:(id)queue;
 - (NSDictionary)requestHeaders;
-- (id)_createURLRequestWithError:(id *)a3;
-- (id)_dictionaryFromData:(id)a3 response:(id)a4 error:(id *)a5;
-- (id)_errorForURLRequestError:(id)a3;
-- (id)errorForUnsuccessfulResponse:(id)a3 body:(id)a4;
-- (id)getPaddedBodyJSONAndReturnError:(id *)a3;
-- (unint64_t)retryCheck:(id)a3 retryAttempt:(int)a4 baseMultiplier:(int)a5;
-- (void)_completeWithError:(id)a3;
-- (void)_dataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)_performURLRequest:(id)a3 attempt:(int)a4;
-- (void)handleURLResponse:(id)a3 data:(id)a4 error:(id)a5;
+- (id)_createURLRequestWithError:(id *)error;
+- (id)_dictionaryFromData:(id)data response:(id)response error:(id *)error;
+- (id)_errorForURLRequestError:(id)error;
+- (id)errorForUnsuccessfulResponse:(id)response body:(id)body;
+- (id)getPaddedBodyJSONAndReturnError:(id *)error;
+- (unint64_t)retryCheck:(id)check retryAttempt:(int)attempt baseMultiplier:(int)multiplier;
+- (void)_completeWithError:(id)error;
+- (void)_dataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (void)_performURLRequest:(id)request attempt:(int)attempt;
+- (void)handleURLResponse:(id)response data:(id)data error:(id)error;
 - (void)invalidate;
-- (void)resumeWithCompletionHandler:(id)a3;
+- (void)resumeWithCompletionHandler:(id)handler;
 @end
 
 @implementation ENTestResultNetworkRequest
 
-- (ENTestResultNetworkRequest)initWithRequestURL:(id)a3 URLSession:(id)a4 queue:(id)a5
+- (ENTestResultNetworkRequest)initWithRequestURL:(id)l URLSession:(id)session queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  sessionCopy = session;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = ENTestResultNetworkRequest;
   v11 = [(ENTestResultNetworkRequest *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     requestURL = v11->_requestURL;
     v11->_requestURL = v12;
 
-    objc_storeStrong(&v11->_queue, a5);
-    objc_storeStrong(&v11->_URLSession, a4);
+    objc_storeStrong(&v11->_queue, queue);
+    objc_storeStrong(&v11->_URLSession, session);
   }
 
   return v11;
@@ -48,18 +48,18 @@
   self->_completionHandler = 0;
 }
 
-- (id)getPaddedBodyJSONAndReturnError:(id *)a3
+- (id)getPaddedBodyJSONAndReturnError:(id *)error
 {
-  v5 = [(ENTestResultNetworkRequest *)self bodyJSON];
-  v6 = [(ENTestResultNetworkRequest *)self paddedRequestSize];
-  if (v6)
+  bodyJSON = [(ENTestResultNetworkRequest *)self bodyJSON];
+  paddedRequestSize = [(ENTestResultNetworkRequest *)self paddedRequestSize];
+  if (paddedRequestSize)
   {
-    v7 = v6;
-    v8 = [v5 mutableCopy];
+    v7 = paddedRequestSize;
+    v8 = [bodyJSON mutableCopy];
     [v8 setObject:&stru_285D62BB0 forKeyedSubscript:@"padding"];
-    if ([MEMORY[0x277CCAA98] isValidJSONObject:v5])
+    if ([MEMORY[0x277CCAA98] isValidJSONObject:bodyJSON])
     {
-      v9 = [MEMORY[0x277CCAA98] dataWithJSONObject:v8 options:0 error:a3];
+      v9 = [MEMORY[0x277CCAA98] dataWithJSONObject:v8 options:0 error:error];
       v10 = v9;
       if (v9)
       {
@@ -67,21 +67,21 @@
         v20 = &v19;
         v21 = 0x2020000000;
         v22 = [v9 length];
-        v11 = [(ENTestResultNetworkRequest *)self requestHeaders];
+        requestHeaders = [(ENTestResultNetworkRequest *)self requestHeaders];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_invoke;
         v18[3] = &unk_278FD22D8;
         v18[4] = &v19;
-        [v11 enumerateKeysAndObjectsUsingBlock:v18];
+        [requestHeaders enumerateKeysAndObjectsUsingBlock:v18];
 
         if (v7 <= v20[3])
         {
-          if (a3)
+          if (error)
           {
             v17 = v20[3];
             ENErrorF();
-            *a3 = v15 = 0;
+            *error = v15 = 0;
           }
 
           else
@@ -117,10 +117,10 @@
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       ENErrorF();
-      *a3 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -131,7 +131,7 @@
 
   else
   {
-    v15 = v5;
+    v15 = bodyJSON;
   }
 
   return v15;
@@ -146,9 +146,9 @@ void __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_in
   *(*(*(a1 + 32) + 8) + 24) += v6;
 }
 
-- (void)resumeWithCompletionHandler:(id)a3
+- (void)resumeWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
@@ -166,29 +166,29 @@ void __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_in
   }
 }
 
-- (void)handleURLResponse:(id)a3 data:(id)a4 error:(id)a5
+- (void)handleURLResponse:(id)response data:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
   [(NSURLSessionTask *)self->_URLSessionTask cancel];
   URLSessionTask = self->_URLSessionTask;
   self->_URLSessionTask = 0;
 
-  v12 = v8;
+  v12 = responseCopy;
   v13 = [v12 URL];
-  v14 = [v13 absoluteString];
+  absoluteString = [v13 absoluteString];
 
-  v15 = [v12 statusCode];
+  statusCode = [v12 statusCode];
   if (v12)
   {
-    v16 = v15;
-    v34 = v14;
-    if (v9)
+    v16 = statusCode;
+    v34 = absoluteString;
+    if (dataCopy)
     {
       v35 = 0;
-      v17 = v9;
-      v18 = [(ENTestResultNetworkRequest *)self _dictionaryFromData:v9 response:v12 error:&v35];
+      v17 = dataCopy;
+      v18 = [(ENTestResultNetworkRequest *)self _dictionaryFromData:dataCopy response:v12 error:&v35];
       v19 = v35;
     }
 
@@ -200,9 +200,9 @@ void __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_in
     }
 
     v22 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v23 = [v22 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v22 isSensitiveLoggingAllowed];
 
-    if ((v23 & 1) != 0 && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+    if ((isSensitiveLoggingAllowed & 1) != 0 && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
     {
       v32 = [v17 length];
       v33 = v18;
@@ -212,14 +212,14 @@ void __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_in
     }
 
     v24 = [ENLoggingPrefs sharedENLoggingPrefs:v30];
-    v25 = [v24 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed2 = [v24 isSensitiveLoggingAllowed];
 
-    if (v25 && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed2 && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
     {
       [ENTestResultNetworkRequest handleURLResponse:v12 data:? error:?];
     }
 
-    v9 = v17;
+    dataCopy = v17;
     if (v16 != 200 && !v19)
     {
       if (v18)
@@ -235,7 +235,7 @@ void __62__ENTestResultNetworkRequest_getPaddedBodyJSONAndReturnError___block_in
       v19 = [(ENTestResultNetworkRequest *)self errorForUnsuccessfulResponse:v12 body:v26];
     }
 
-    v14 = v34;
+    absoluteString = v34;
     if (v18 && !v19)
     {
       CFStringGetTypeID();
@@ -268,14 +268,14 @@ LABEL_32:
   }
 
   v20 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v21 = [v20 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed3 = [v20 isSensitiveLoggingAllowed];
 
-  if (v21 && gLogCategory_ENTestResultNetworkRequest <= 90 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed3 && gLogCategory_ENTestResultNetworkRequest <= 90 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
   {
     [ENTestResultNetworkRequest handleURLResponse:data:error:];
   }
 
-  v19 = [(ENTestResultNetworkRequest *)self _errorForURLRequestError:v10];
+  v19 = [(ENTestResultNetworkRequest *)self _errorForURLRequestError:errorCopy];
   v18 = 0;
   if (!v19)
   {
@@ -286,17 +286,17 @@ LABEL_35:
   [(ENTestResultNetworkRequest *)self _completeWithError:v19, v30];
 }
 
-- (id)errorForUnsuccessfulResponse:(id)a3 body:(id)a4
+- (id)errorForUnsuccessfulResponse:(id)response body:(id)body
 {
-  v5 = a4;
-  v6 = a3;
+  bodyCopy = body;
+  responseCopy = response;
   CFStringGetTypeID();
   v7 = CFDictionaryGetTypedValue();
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
 
-  v9 = [v6 statusCode];
-  if (v9 == 429)
+  statusCode = [responseCopy statusCode];
+  if (statusCode == 429)
   {
     v10 = ENTestResultErrorF(7);
   }
@@ -307,44 +307,44 @@ LABEL_35:
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v13 = 6;
+      integerValue = 6;
     }
 
     [v7 length];
-    v10 = ENTestResultErrorF(v13);
+    v10 = ENTestResultErrorF(integerValue);
   }
 
   return v10;
 }
 
-- (id)_createURLRequestWithError:(id *)a3
+- (id)_createURLRequestWithError:(id *)error
 {
   v5 = objc_autoreleasePoolPush();
   v18 = 0;
-  v6 = [(ENTestResultNetworkRequest *)self getPaddedBodyJSONAndReturnError:&v18];
+  bodyJSON = [(ENTestResultNetworkRequest *)self getPaddedBodyJSONAndReturnError:&v18];
   v7 = v18;
-  if (!v6)
+  if (!bodyJSON)
   {
     v8 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v9 = [v8 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v8 isSensitiveLoggingAllowed];
 
-    if (v9 && gLogCategory_ENTestResultNetworkRequest <= 90 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultNetworkRequest <= 90 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
     {
       [ENTestResultNetworkRequest _createURLRequestWithError:];
     }
 
-    v6 = [(ENTestResultNetworkRequest *)self bodyJSON];
+    bodyJSON = [(ENTestResultNetworkRequest *)self bodyJSON];
   }
 
-  if ([MEMORY[0x277CCAA98] isValidJSONObject:v6])
+  if ([MEMORY[0x277CCAA98] isValidJSONObject:bodyJSON])
   {
     v17 = 0;
-    v10 = [MEMORY[0x277CCAA98] dataWithJSONObject:v6 options:0 error:&v17];
+    v10 = [MEMORY[0x277CCAA98] dataWithJSONObject:bodyJSON options:0 error:&v17];
     v11 = v17;
   }
 
@@ -358,20 +358,20 @@ LABEL_35:
   if (v10)
   {
     v12 = objc_alloc(MEMORY[0x277CBAB58]);
-    v13 = [(ENTestResultNetworkRequest *)self requestURL];
-    v14 = [v12 initWithURL:v13];
+    requestURL = [(ENTestResultNetworkRequest *)self requestURL];
+    v14 = [v12 initWithURL:requestURL];
 
-    v15 = [(ENTestResultNetworkRequest *)self requestHeaders];
-    [v14 setAllHTTPHeaderFields:v15];
+    requestHeaders = [(ENTestResultNetworkRequest *)self requestHeaders];
+    [v14 setAllHTTPHeaderFields:requestHeaders];
 
     [v14 setHTTPBody:v10];
     [v14 setHTTPMethod:@"POST"];
   }
 
-  else if (a3)
+  else if (error)
   {
     ENNestedTestResultErrorF(v11, 1);
-    *a3 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -387,35 +387,35 @@ LABEL_35:
   v3 = objc_alloc_init(MEMORY[0x277CBEB30]);
   [v3 setObject:self->_APIKey forKeyedSubscript:@"X-API-Key"];
   [v3 setObject:@"application/json" forKeyedSubscript:@"Content-Type"];
-  v4 = [(ENTestResultNetworkRequest *)self additionalRequestHeaders];
-  [v3 addEntriesFromDictionary:v4];
+  additionalRequestHeaders = [(ENTestResultNetworkRequest *)self additionalRequestHeaders];
+  [v3 addEntriesFromDictionary:additionalRequestHeaders];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (id)_errorForURLRequestError:(id)a3
+- (id)_errorForURLRequestError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCA740]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CCA740]];
 
-  if (!v5 || (v6 = [v3 code], v6 == -1002))
+  if (!v5 || (v6 = [errorCopy code], v6 == -1002))
   {
-    v7 = v3;
+    v7 = errorCopy;
     v8 = 1;
   }
 
   else if (v6 == -1001)
   {
-    v7 = v3;
+    v7 = errorCopy;
     v8 = 8;
   }
 
   else
   {
-    v7 = v3;
+    v7 = errorCopy;
     v8 = 11;
   }
 
@@ -424,9 +424,9 @@ LABEL_35:
   return v9;
 }
 
-- (void)_performURLRequest:(id)a3 attempt:(int)a4
+- (void)_performURLRequest:(id)request attempt:(int)attempt
 {
-  v7 = a3;
+  requestCopy = request;
   if (self->_URLSessionTask)
   {
     [ENTestResultNetworkRequest _performURLRequest:a2 attempt:self];
@@ -435,14 +435,14 @@ LABEL_35:
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
-  v13 = a4;
+  attemptCopy = attempt;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ENTestResultNetworkRequest__performURLRequest_attempt___block_invoke;
   v9[3] = &unk_278FD2300;
   v9[4] = self;
   v11 = v12;
-  v8 = v7;
+  v8 = requestCopy;
   v10 = v8;
   [(ENTestResultNetworkRequest *)self _dataTaskWithRequest:v8 completionHandler:v9];
 
@@ -503,46 +503,46 @@ void __57__ENTestResultNetworkRequest__performURLRequest_attempt___block_invoke(
   }
 }
 
-- (void)_dataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (void)_dataTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   URLSession = self->_URLSession;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__ENTestResultNetworkRequest__dataTaskWithRequest_completionHandler___block_invoke;
   v14[3] = &unk_278FD2328;
-  v9 = v7;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [(NSURLSession *)URLSession dataTaskWithRequest:v6 completionHandler:v14];
+  v10 = [(NSURLSession *)URLSession dataTaskWithRequest:requestCopy completionHandler:v14];
   URLSessionTask = self->_URLSessionTask;
   self->_URLSessionTask = v10;
 
   v12 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v13 = [v12 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v12 isSensitiveLoggingAllowed];
 
-  if (v13 && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultNetworkRequest <= 30 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
   {
-    [ENTestResultNetworkRequest _dataTaskWithRequest:v6 completionHandler:?];
+    [ENTestResultNetworkRequest _dataTaskWithRequest:requestCopy completionHandler:?];
   }
 
   [(NSURLSessionTask *)self->_URLSessionTask resume];
 }
 
-- (unint64_t)retryCheck:(id)a3 retryAttempt:(int)a4 baseMultiplier:(int)a5
+- (unint64_t)retryCheck:(id)check retryAttempt:(int)attempt baseMultiplier:(int)multiplier
 {
-  v9 = [a3 statusCode];
-  if (a4 < 0)
+  statusCode = [check statusCode];
+  if (attempt < 0)
   {
     v19 = 0;
   }
 
   else
   {
-    v10 = vdup_n_s32(a4);
-    v11 = vdup_n_s32(a5);
+    v10 = vdup_n_s32(attempt);
+    v11 = vdup_n_s32(multiplier);
     v12 = 0x100000000;
-    v13 = (a4 & 0x7FFFFFFE) + 2;
+    v13 = (attempt & 0x7FFFFFFE) + 2;
     v14 = 0uLL;
     do
     {
@@ -561,12 +561,12 @@ void __57__ENTestResultNetworkRequest__performURLRequest_attempt___block_invoke(
   }
 
   v20 = 0;
-  v22 = v9 != 429 && (v9 - 600) < 0xFFFFFFFFFFFFFF9CLL;
-  if (a3)
+  v22 = statusCode != 429 && (statusCode - 600) < 0xFFFFFFFFFFFFFF9CLL;
+  if (check)
   {
     if (!v22)
     {
-      v20 = 1 << (a5 * a4);
+      v20 = 1 << (multiplier * attempt);
       if (v19 >= self->_maxRetryTime)
       {
         return 0;
@@ -577,10 +577,10 @@ void __57__ENTestResultNetworkRequest__performURLRequest_attempt___block_invoke(
   return v20;
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v9 = a3;
-  v4 = [v9 copy];
+  errorCopy = error;
+  v4 = [errorCopy copy];
   error = self->_error;
   self->_error = v4;
 
@@ -588,21 +588,21 @@ void __57__ENTestResultNetworkRequest__performURLRequest_attempt___block_invoke(
   v7 = v6;
   if (v6)
   {
-    (*(v6 + 16))(v6, self, v9);
+    (*(v6 + 16))(v6, self, errorCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (id)_dictionaryFromData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)_dictionaryFromData:(id)data response:(id)response error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  dataCopy = data;
+  responseCopy = response;
+  if ([dataCopy length])
   {
-    v9 = [v8 MIMEType];
+    mIMEType = [responseCopy MIMEType];
     v22 = 0;
-    v10 = [MEMORY[0x277CCAA98] JSONObjectWithData:v7 options:0 error:&v22];
+    v10 = [MEMORY[0x277CCAA98] JSONObjectWithData:dataCopy options:0 error:&v22];
     v11 = v22;
     if (v10)
     {
@@ -615,7 +615,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if (a5)
+      if (error)
       {
 LABEL_32:
         v19 = ENTestResultErrorF(4);
@@ -627,31 +627,31 @@ LABEL_34:
       goto LABEL_20;
     }
 
-    if ([v9 isEqualToString:@"application/json"])
+    if ([mIMEType isEqualToString:@"application/json"])
     {
-      if (a5)
+      if (error)
       {
         v19 = ENNestedTestResultErrorF(v11, 4);
 LABEL_33:
         v12 = 0;
-        *a5 = v19;
+        *error = v19;
         goto LABEL_20;
       }
 
       goto LABEL_34;
     }
 
-    if ([v9 isEqualToString:@"text/plain"])
+    if ([mIMEType isEqualToString:@"text/plain"])
     {
-      if ([v7 length] <= 0x3FF)
+      if ([dataCopy length] <= 0x3FF)
       {
-        v13 = [objc_alloc(MEMORY[0x277CCACA0]) initWithData:v7 encoding:4];
+        v13 = [objc_alloc(MEMORY[0x277CCACA0]) initWithData:dataCopy encoding:4];
         v14 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v15 = [v14 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v14 isSensitiveLoggingAllowed];
 
-        if (v15 && gLogCategory_ENTestResultNetworkRequest <= 50 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed && gLogCategory_ENTestResultNetworkRequest <= 50 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
         {
-          v20 = [v8 URL];
+          v20 = [responseCopy URL];
           v21 = v13;
           LogPrintF_safe();
         }
@@ -660,25 +660,25 @@ LABEL_33:
       }
 
       v16 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v17 = [v16 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed2 = [v16 isSensitiveLoggingAllowed];
 
-      if (v17 && gLogCategory_ENTestResultNetworkRequest <= 50 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed2 && gLogCategory_ENTestResultNetworkRequest <= 50 && (gLogCategory_ENTestResultNetworkRequest != -1 || _LogCategory_Initialize()))
       {
-        v13 = [v8 URL];
+        v13 = [responseCopy URL];
         v20 = v13;
-        v21 = [v7 length];
+        v21 = [dataCopy length];
         LogPrintF_safe();
 LABEL_17:
       }
     }
 
-    if ([v8 statusCode] != 200)
+    if ([responseCopy statusCode] != 200)
     {
       v12 = MEMORY[0x277CBEC08];
       goto LABEL_20;
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_32;
     }

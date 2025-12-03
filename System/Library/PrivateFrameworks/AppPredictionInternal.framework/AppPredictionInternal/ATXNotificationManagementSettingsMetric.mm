@@ -24,29 +24,29 @@
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXNotificationManagementSettingsMetric hasSetupDigest](self, "hasSetupDigest")}];
   v16[4] = v7;
   v15[5] = @"areHighlightsEnabled";
-  v8 = [(ATXNotificationManagementSettingsMetric *)self areHighlightsEnabled];
-  v9 = v8;
-  if (!v8)
+  areHighlightsEnabled = [(ATXNotificationManagementSettingsMetric *)self areHighlightsEnabled];
+  null = areHighlightsEnabled;
+  if (!areHighlightsEnabled)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[5] = v9;
+  v16[5] = null;
   v15[6] = @"areSummariesEnabled";
-  v10 = [(ATXNotificationManagementSettingsMetric *)self areSummariesEnabled];
-  v11 = v10;
-  if (!v10)
+  areSummariesEnabled = [(ATXNotificationManagementSettingsMetric *)self areSummariesEnabled];
+  null2 = areSummariesEnabled;
+  if (!areSummariesEnabled)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[6] = v11;
+  v16[6] = null2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:7];
-  if (!v10)
+  if (!areSummariesEnabled)
   {
   }
 
-  if (!v8)
+  if (!areHighlightsEnabled)
   {
   }
 
@@ -58,16 +58,16 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXNotificationManagementSettingsMetric *)self numDailyDigests];
-  v5 = [(ATXNotificationManagementSettingsMetric *)self numDigestApps];
-  v6 = [(ATXNotificationManagementSettingsMetric *)self numConfiguredModes];
-  v7 = [(ATXNotificationManagementSettingsMetric *)self hasOfferedDigest];
-  v8 = [(ATXNotificationManagementSettingsMetric *)self hasSetupDigest];
-  v9 = [(ATXNotificationManagementSettingsMetric *)self areHighlightsEnabled];
-  v10 = v9;
-  if (v9)
+  numDailyDigests = [(ATXNotificationManagementSettingsMetric *)self numDailyDigests];
+  numDigestApps = [(ATXNotificationManagementSettingsMetric *)self numDigestApps];
+  numConfiguredModes = [(ATXNotificationManagementSettingsMetric *)self numConfiguredModes];
+  hasOfferedDigest = [(ATXNotificationManagementSettingsMetric *)self hasOfferedDigest];
+  hasSetupDigest = [(ATXNotificationManagementSettingsMetric *)self hasSetupDigest];
+  areHighlightsEnabled = [(ATXNotificationManagementSettingsMetric *)self areHighlightsEnabled];
+  v10 = areHighlightsEnabled;
+  if (areHighlightsEnabled)
   {
-    v11 = v9;
+    v11 = areHighlightsEnabled;
   }
 
   else
@@ -75,11 +75,11 @@
     v11 = @"nil";
   }
 
-  v12 = [(ATXNotificationManagementSettingsMetric *)self areSummariesEnabled];
-  v13 = v12;
-  if (v12)
+  areSummariesEnabled = [(ATXNotificationManagementSettingsMetric *)self areSummariesEnabled];
+  v13 = areSummariesEnabled;
+  if (areSummariesEnabled)
   {
-    v14 = v12;
+    v14 = areSummariesEnabled;
   }
 
   else
@@ -87,7 +87,7 @@
     v14 = @"nil";
   }
 
-  v15 = [v3 stringWithFormat:@"ATXNotificationManagementSettingsMetric numDailyDigests:%lu\nnumDigestApps:%lu\nnumConfiguredModes:%lu\nhasOfferedDigest:%d\nhasSetupDigest:%d\nareHighlightsEnabled:%@\nareSummariesEnabled:%@", v4, v5, v6, v7, v8, v11, v14];
+  v15 = [v3 stringWithFormat:@"ATXNotificationManagementSettingsMetric numDailyDigests:%lu\nnumDigestApps:%lu\nnumConfiguredModes:%lu\nhasOfferedDigest:%d\nhasSetupDigest:%d\nareHighlightsEnabled:%@\nareSummariesEnabled:%@", numDailyDigests, numDigestApps, numConfiguredModes, hasOfferedDigest, hasSetupDigest, v11, v14];
 
   return v15;
 }

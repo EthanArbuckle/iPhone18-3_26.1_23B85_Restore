@@ -15,72 +15,72 @@
 
 - (uint64_t)isPriority
 {
-  v1 = [a1 objectForKeyedSubscript:@"kMessageListCellConfigurationStatePriorityKey"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"kMessageListCellConfigurationStatePriorityKey"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)isParent
 {
-  v1 = [a1 objectForKeyedSubscript:@"kMessageListCellConfigurationStateThreadParentKey"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"kMessageListCellConfigurationStateThreadParentKey"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)isChild
 {
-  v1 = [a1 objectForKeyedSubscript:@"kMessageListCellConfigurationStateThreadChildKey"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"kMessageListCellConfigurationStateThreadChildKey"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIsChild:()MailExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateThreadChildKey"];
+  [self setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateThreadChildKey"];
 }
 
 - (void)setIsParent:()MailExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateThreadParentKey"];
+  [self setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateThreadParentKey"];
 }
 
 - (void)setIsPriority:()MailExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStatePriorityKey"];
+  [self setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStatePriorityKey"];
 }
 
 - (uint64_t)isFocusSystemActive
 {
-  v1 = [a1 objectForKeyedSubscript:@"kMessageListCellConfigurationStateFocusSystemActiveKey"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"kMessageListCellConfigurationStateFocusSystemActiveKey"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIsFocusSystemActive:()MailExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateFocusSystemActiveKey"];
+  [self setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateFocusSystemActiveKey"];
 }
 
 - (uint64_t)isFocusingOnMessageListCell
 {
-  v1 = [a1 objectForKeyedSubscript:@"kMessageListCellConfigurationStateFocusingOnMessageListCellKey"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"kMessageListCellConfigurationStateFocusingOnMessageListCellKey"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIsFocusingOnMessageListCell:()MailExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateFocusingOnMessageListCellKey"];
+  [self setObject:v2 forKeyedSubscript:@"kMessageListCellConfigurationStateFocusingOnMessageListCellKey"];
 }
 
 @end

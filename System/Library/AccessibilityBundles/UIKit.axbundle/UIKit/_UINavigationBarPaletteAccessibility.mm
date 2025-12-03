@@ -1,50 +1,50 @@
 @interface _UINavigationBarPaletteAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityNavigationBarShouldOverrideMinimumHeight;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setMinimumHeight:(double)a3;
+- (void)setMinimumHeight:(double)height;
 @end
 
 @implementation _UINavigationBarPaletteAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UINavigationBarPalette" hasInstanceMethod:@"setMinimumHeight:" withFullSignature:{"v", "d", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UINavigationBarPaletteAccessibility;
   [(_UINavigationBarPaletteAccessibility *)&v3 _accessibilityLoadAccessibilityInformation];
-  if ([(_UINavigationBarPaletteAccessibility *)v5 _accessibilityNavigationBarShouldOverrideMinimumHeight])
+  if ([(_UINavigationBarPaletteAccessibility *)selfCopy _accessibilityNavigationBarShouldOverrideMinimumHeight])
   {
-    v2 = MEMORY[0x29EDC9748](v5);
+    v2 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v2, 0);
   }
 }
 
-- (void)setMinimumHeight:(double)a3
+- (void)setMinimumHeight:(double)height
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  if ((UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning()) && [(_UINavigationBarPaletteAccessibility *)v11 _accessibilityNavigationBarShouldOverrideMinimumHeight])
+  heightCopy = height;
+  if ((UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning()) && [(_UINavigationBarPaletteAccessibility *)selfCopy _accessibilityNavigationBarShouldOverrideMinimumHeight])
   {
-    [(_UINavigationBarPaletteAccessibility *)v11 preferredHeight];
+    [(_UINavigationBarPaletteAccessibility *)selfCopy preferredHeight];
     v8 = v3;
-    v7 = v9;
-    if (v3 >= v9)
+    v7 = heightCopy;
+    if (v3 >= heightCopy)
     {
       v4 = v8;
     }
@@ -55,12 +55,12 @@
     }
 
     v6 = v4;
-    v9 = v4;
+    heightCopy = v4;
   }
 
-  v5.receiver = v11;
+  v5.receiver = selfCopy;
   v5.super_class = _UINavigationBarPaletteAccessibility;
-  [(_UINavigationBarPaletteAccessibility *)&v5 setMinimumHeight:v9, *&v4];
+  [(_UINavigationBarPaletteAccessibility *)&v5 setMinimumHeight:heightCopy, *&v4];
 }
 
 - (BOOL)_accessibilityNavigationBarShouldOverrideMinimumHeight

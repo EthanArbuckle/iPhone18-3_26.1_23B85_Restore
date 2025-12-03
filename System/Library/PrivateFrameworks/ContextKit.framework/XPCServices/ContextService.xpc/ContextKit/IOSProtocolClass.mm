@@ -1,8 +1,8 @@
 @interface IOSProtocolClass
-- (BOOL)isInstance:(id)a3;
+- (BOOL)isInstance:(id)instance;
 - (Class)objcClass;
-- (IOSProtocolClass)initWithProtocol:(id)a3;
-- (id)findMethodWithTranslatedName:(id)a3 checkSupertypes:(BOOL)a4;
+- (IOSProtocolClass)initWithProtocol:(id)protocol;
+- (id)findMethodWithTranslatedName:(id)name checkSupertypes:(BOOL)supertypes;
 - (id)getInterfacesInternal;
 - (id)getName;
 - (id)getSimpleName;
@@ -12,33 +12,33 @@
 
 @implementation IOSProtocolClass
 
-- (IOSProtocolClass)initWithProtocol:(id)a3
+- (IOSProtocolClass)initWithProtocol:(id)protocol
 {
   v6.receiver = self;
   v6.super_class = IOSProtocolClass;
   v4 = [(IOSProtocolClass *)&v6 init];
   if (v4)
   {
-    v4->protocol_ = a3;
+    v4->protocol_ = protocol;
   }
 
   return v4;
 }
 
-- (BOOL)isInstance:(id)a3
+- (BOOL)isInstance:(id)instance
 {
-  v4 = [a3 getClass];
+  getClass = [instance getClass];
 
-  return sub_10028CEF4(v4, self);
+  return sub_10028CEF4(getClass, self);
 }
 
 - (id)getName
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
 
-    return [v3 qualifiedName];
+    return [getMetadata qualifiedName];
   }
 
   else
@@ -51,12 +51,12 @@
 
 - (id)getSimpleName
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    v4 = [v3 typeName];
+    typeName = [getMetadata typeName];
 
-    return v4;
+    return typeName;
   }
 
   else
@@ -76,19 +76,19 @@
 
 - (int)getModifiers
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (!v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (!getMetadata)
   {
     return 1545;
   }
 
-  v3 = [v2 modifiers];
-  return (JavaLangReflectModifier_interfaceModifiers() | 0x200) & v3;
+  modifiers = [getMetadata modifiers];
+  return (JavaLangReflectModifier_interfaceModifiers() | 0x200) & modifiers;
 }
 
-- (id)findMethodWithTranslatedName:(id)a3 checkSupertypes:(BOOL)a4
+- (id)findMethodWithTranslatedName:(id)name checkSupertypes:(BOOL)supertypes
 {
-  v4 = a4;
+  supertypesCopy = supertypes;
   outCount = 0;
   v7 = protocol_copyMethodDescriptionList(self->protocol_, 1, 1, &outCount);
   v8 = v7;
@@ -102,7 +102,7 @@
   while (1)
   {
     v11 = *p_name;
-    if ([a3 isEqualToString:NSStringFromSelector(*p_name)])
+    if ([name isEqualToString:NSStringFromSelector(*p_name)])
     {
       break;
     }
@@ -134,7 +134,7 @@ LABEL_9:
 
   Name = protocol_getName(self->protocol_);
   Class = objc_getClass(Name);
-  if (Class && (ClassMethod = JreFindClassMethod(Class, [a3 UTF8String])) != 0)
+  if (Class && (ClassMethod = JreFindClassMethod(Class, [name UTF8String])) != 0)
   {
     v17 = ClassMethod;
     Description = method_getDescription(ClassMethod);
@@ -150,14 +150,14 @@ LABEL_9:
     v13 = 0;
   }
 
-  if (!v13 && v4)
+  if (!v13 && supertypesCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [(IOSProtocolClass *)self getInterfacesInternal];
-    v20 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    getInterfacesInternal = [(IOSProtocolClass *)self getInterfacesInternal];
+    v20 = [getInterfacesInternal countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v20)
     {
       v21 = v20;
@@ -168,13 +168,13 @@ LABEL_9:
         {
           if (*v28 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(getInterfacesInternal);
           }
 
           v24 = *(*(&v27 + 1) + 8 * i);
           if (v24 != self)
           {
-            v25 = [(IOSProtocolClass *)v24 findMethodWithTranslatedName:a3 checkSupertypes:1];
+            v25 = [(IOSProtocolClass *)v24 findMethodWithTranslatedName:name checkSupertypes:1];
             if (v25)
             {
               return v25;
@@ -182,7 +182,7 @@ LABEL_9:
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v21 = [getInterfacesInternal countByEnumeratingWithState:&v27 objects:v32 count:16];
         v13 = 0;
         if (v21)
         {

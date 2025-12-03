@@ -13,7 +13,7 @@
   v8[3] = &unk_1E7EE38A8;
   v9 = v6;
   v7 = v6;
-  [a1 loadItemForTypeIdentifier:a3 options:0 completionHandler:v8];
+  [self loadItemForTypeIdentifier:a3 options:0 completionHandler:v8];
 }
 
 @end

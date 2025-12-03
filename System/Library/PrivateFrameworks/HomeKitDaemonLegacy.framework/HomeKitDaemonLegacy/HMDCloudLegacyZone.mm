@@ -1,5 +1,5 @@
 @interface HMDCloudLegacyZone
-+ (void)createLegacyZoneWithName:(id)a3 owner:(id)a4 cacheZone:(id)a5 cloudCache:(id)a6 completion:(id)a7;
++ (void)createLegacyZoneWithName:(id)name owner:(id)owner cacheZone:(id)zone cloudCache:(id)cache completion:(id)completion;
 - (BOOL)isHomeDataRecordAvailable;
 - (BOOL)isHomeDataV3RecordAvailable;
 - (BOOL)isMetadataRecordAvailable;
@@ -9,18 +9,18 @@
 - (NSUUID)homeDataObjectID;
 - (NSUUID)homeDataV3ObjectID;
 - (NSUUID)metadataObjectID;
-- (id)createCloudRecordWithObjectID:(id)a3 recordName:(id)a4;
+- (id)createCloudRecordWithObjectID:(id)d recordName:(id)name;
 - (void)dropCachedRecords;
-- (void)setServerChangeToken:(id)a3;
+- (void)setServerChangeToken:(id)token;
 @end
 
 @implementation HMDCloudLegacyZone
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
   v4.receiver = self;
   v4.super_class = HMDCloudLegacyZone;
-  [(HMDCloudZone *)&v4 setServerChangeToken:a3];
+  [(HMDCloudZone *)&v4 setServerChangeToken:token];
   [(HMDCloudZone *)self updateCurrentServerChangeToken];
 }
 
@@ -35,28 +35,28 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createCloudRecordWithObjectID:(id)a3 recordName:(id)a4
+- (id)createCloudRecordWithObjectID:(id)d recordName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (dCopy)
   {
     v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"457C009B-1DA4-4B71-BD69-93D344A81A8B"];
-    v10 = [v6 isEqual:v9];
+    v10 = [dCopy isEqual:v9];
 
     if (v10)
     {
       v11 = [HMDCloudLegacyMetadataRecord alloc];
       v12 = @"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300";
 LABEL_11:
-      v20 = [(HMDCloudRecord *)v11 initWithObjectID:v6 recordName:v12 cloudZone:self];
+      v20 = [(HMDCloudRecord *)v11 initWithObjectID:dCopy recordName:v12 cloudZone:self];
       goto LABEL_24;
     }
 
     v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"ABE49D63-6AE9-4469-A7EF-AC020E0104B3"];
-    v17 = [v6 isEqual:v16];
+    v17 = [dCopy isEqual:v16];
 
     if (v17)
     {
@@ -66,7 +66,7 @@ LABEL_11:
     }
 
     v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"5E034157-5CED-4502-9C16-9428C798883A"];
-    v19 = [v6 isEqual:v18];
+    v19 = [dCopy isEqual:v18];
 
     if (v19)
     {
@@ -76,7 +76,7 @@ LABEL_11:
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -84,20 +84,20 @@ LABEL_11:
     }
 
     v24 = HMFGetLogIdentifier();
-    v28 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v31 = 138543618;
     v32 = v24;
     v33 = 2112;
-    v34 = v28;
+    v34 = uUIDString;
     _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Unknown legacy record objectID %@", &v31, 0x16u);
 
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -117,7 +117,7 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (![v7 isEqualToString:@"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300"])
+  if (![nameCopy isEqualToString:@"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300"])
   {
     if ([v8 isEqualToString:@"84968B22-8974-4102-AAA6-7B9C763A14B5"])
     {
@@ -136,7 +136,7 @@ LABEL_20:
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -172,8 +172,8 @@ LABEL_24:
 
 - (BOOL)isHomeDataV3RecordAvailable
 {
-  v3 = [(HMDCloudLegacyZone *)self homeDataV3ObjectID];
-  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:v3];
+  homeDataV3ObjectID = [(HMDCloudLegacyZone *)self homeDataV3ObjectID];
+  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:homeDataV3ObjectID];
 
   return v4 != 0;
 }
@@ -185,8 +185,8 @@ LABEL_24:
   {
     v4 = objc_alloc(MEMORY[0x277CBC5D0]);
     v5 = [(HMDCloudZone *)self zone];
-    v6 = [v5 zoneID];
-    v7 = [v4 initWithRecordName:@"BC9706E1-E72E-4152-A2A6-417AD742DC41" zoneID:v6];
+    zoneID = [v5 zoneID];
+    v7 = [v4 initWithRecordName:@"BC9706E1-E72E-4152-A2A6-417AD742DC41" zoneID:zoneID];
     v8 = self->_homeDataV3RecordID;
     self->_homeDataV3RecordID = v7;
 
@@ -213,8 +213,8 @@ LABEL_24:
 
 - (BOOL)isHomeDataRecordAvailable
 {
-  v3 = [(HMDCloudLegacyZone *)self homeDataObjectID];
-  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:v3];
+  homeDataObjectID = [(HMDCloudLegacyZone *)self homeDataObjectID];
+  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:homeDataObjectID];
 
   return v4 != 0;
 }
@@ -226,8 +226,8 @@ LABEL_24:
   {
     v4 = objc_alloc(MEMORY[0x277CBC5D0]);
     v5 = [(HMDCloudZone *)self zone];
-    v6 = [v5 zoneID];
-    v7 = [v4 initWithRecordName:@"84968B22-8974-4102-AAA6-7B9C763A14B5" zoneID:v6];
+    zoneID = [v5 zoneID];
+    v7 = [v4 initWithRecordName:@"84968B22-8974-4102-AAA6-7B9C763A14B5" zoneID:zoneID];
     v8 = self->_homeDataRecordID;
     self->_homeDataRecordID = v7;
 
@@ -254,8 +254,8 @@ LABEL_24:
 
 - (BOOL)isMetadataRecordAvailable
 {
-  v3 = [(HMDCloudLegacyZone *)self metadataObjectID];
-  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:v3];
+  metadataObjectID = [(HMDCloudLegacyZone *)self metadataObjectID];
+  v4 = [(HMDCloudZone *)self cloudRecordWithObjectID:metadataObjectID];
 
   return v4 != 0;
 }
@@ -267,8 +267,8 @@ LABEL_24:
   {
     v4 = objc_alloc(MEMORY[0x277CBC5D0]);
     v5 = [(HMDCloudZone *)self zone];
-    v6 = [v5 zoneID];
-    v7 = [v4 initWithRecordName:@"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300" zoneID:v6];
+    zoneID = [v5 zoneID];
+    v7 = [v4 initWithRecordName:@"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300" zoneID:zoneID];
     v8 = self->_metadataRecordID;
     self->_metadataRecordID = v7;
 
@@ -293,23 +293,23 @@ LABEL_24:
   return metadataObjectID;
 }
 
-+ (void)createLegacyZoneWithName:(id)a3 owner:(id)a4 cacheZone:(id)a5 cloudCache:(id)a6 completion:(id)a7
++ (void)createLegacyZoneWithName:(id)name owner:(id)owner cacheZone:(id)zone cloudCache:(id)cache completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [objc_opt_class() zoneRootRecordName];
-  v17 = [objc_opt_class() zoneSubscriptionName:v15];
+  completionCopy = completion;
+  cacheCopy = cache;
+  zoneCopy = zone;
+  ownerCopy = owner;
+  nameCopy = name;
+  zoneRootRecordName = [objc_opt_class() zoneRootRecordName];
+  v17 = [objc_opt_class() zoneSubscriptionName:nameCopy];
   v18 = objc_opt_class();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __85__HMDCloudLegacyZone_createLegacyZoneWithName_owner_cacheZone_cloudCache_completion___block_invoke;
   v20[3] = &unk_2797252D0;
-  v21 = v11;
-  v19 = v11;
-  [v18 createZoneWithName:v15 rootRecordName:v16 subscriptionName:v17 owner:v14 cacheZone:v13 cloudCache:v12 completion:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [v18 createZoneWithName:nameCopy rootRecordName:zoneRootRecordName subscriptionName:v17 owner:ownerCopy cacheZone:zoneCopy cloudCache:cacheCopy completion:v20];
 }
 
 void __85__HMDCloudLegacyZone_createLegacyZoneWithName_owner_cacheZone_cloudCache_completion___block_invoke(uint64_t a1, void *a2, void *a3)

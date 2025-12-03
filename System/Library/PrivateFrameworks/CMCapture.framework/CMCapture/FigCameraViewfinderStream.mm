@@ -1,15 +1,15 @@
 @interface FigCameraViewfinderStream
 + (void)initialize;
 - (FigCameraViewfinderStream)init;
-- (int)enqueueVideoSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (int)enqueueVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (uint64_t)_setupStateMachine;
-- (void)_handleEndpointsChanged:(uint64_t)a1;
-- (void)_handleStreamsChanged:(void *)a1;
-- (void)_setEndpoint:(uint64_t)a1;
+- (void)_handleEndpointsChanged:(uint64_t)changed;
+- (void)_handleStreamsChanged:(void *)changed;
+- (void)_setEndpoint:(uint64_t)endpoint;
 - (void)_updateStreams;
 - (void)close;
 - (void)dealloc;
-- (void)openWithDestination:(id)a3;
+- (void)openWithDestination:(id)destination;
 @end
 
 @implementation FigCameraViewfinderStream
@@ -55,7 +55,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -78,12 +78,12 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(FigStateMachine *)self->_stateMachine currentState];
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
 
   self->_delegateStorage = 0;
-  if (v3 >= 2)
+  if (currentState >= 2)
   {
-    if (v3 != 8)
+    if (currentState != 8)
     {
       [(FigCameraViewfinderStream *)self close];
     }
@@ -114,7 +114,7 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
   [(FigCameraViewfinderStream *)&v7 dealloc];
 }
 
-- (void)openWithDestination:(id)a3
+- (void)openWithDestination:(id)destination
 {
   if (dword_1ED844170)
   {
@@ -130,14 +130,14 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
     if (gEndpointManager)
     {
       v6 = [FigWeakReference weakReferenceToObject:self];
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v8 = *MEMORY[0x1E6961890];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __49__FigCameraViewfinderStream_openWithDestination___block_invoke;
       v32[3] = &unk_1E798FC90;
       v32[4] = v6;
-      self->_endpointsChangedNotificationToken = [v7 addObserverForName:v8 object:gEndpointManager queue:0 usingBlock:v32];
+      self->_endpointsChangedNotificationToken = [defaultCenter addObserverForName:v8 object:gEndpointManager queue:0 usingBlock:v32];
       v9 = FigVirtualDisplaySourceCameraViewfinderStreamCreate(*MEMORY[0x1E695E480], &self->_displaySource);
       if (v9)
       {
@@ -161,9 +161,9 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
           v24 = 136315650;
           v25 = "[FigCameraViewfinderStream openWithDestination:]";
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v28 = 1024;
-          LODWORD(v29) = v13;
+          LODWORD(destinationCopy) = v13;
           LODWORD(v23) = 28;
           v21 = &v24;
           _os_log_send_and_compose_impl();
@@ -176,7 +176,7 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
         v11 = *(*(CMBaseObjectGetVTable() + 8) + 56);
         if (v11)
         {
-          v12 = v11(CMBaseObject, 0x1F21999F0, a3);
+          v12 = v11(CMBaseObject, 0x1F21999F0, destination);
           if (!v12)
           {
             cvs_endpointManagerSetDisplaySource(self->_displaySource);
@@ -210,9 +210,9 @@ const void *__33__FigCameraViewfinderStream_init__block_invoke()
           v24 = 136315906;
           v25 = "[FigCameraViewfinderStream openWithDestination:]";
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v28 = 2112;
-          v29 = a3;
+          destinationCopy = destination;
           v30 = 1024;
           v31 = v13;
           LODWORD(v23) = 38;
@@ -273,9 +273,9 @@ void __49__FigCameraViewfinderStream_openWithDestination___block_invoke(uint64_t
   }
 }
 
-- (int)enqueueVideoSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)enqueueVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     [FigCameraViewfinderStream enqueueVideoSampleBuffer:?];
     return time.value;
@@ -289,14 +289,14 @@ void __49__FigCameraViewfinderStream_openWithDestination___block_invoke(uint64_t
 
   if (self->_displaySource)
   {
-    v5 = CMGetAttachment(a3, *off_1E798A430, 0);
+    v5 = CMGetAttachment(buffer, *off_1E798A430, 0);
     memset(&rect, 0, sizeof(rect));
     memset(&v21, 0, sizeof(v21));
-    CMSampleBufferGetPresentationTimeStamp(&v21, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v21, buffer);
     if (v5)
     {
       CGRectMakeWithDictionaryRepresentation(v5, &rect);
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
       CVPixelBufferGetWidth(ImageBuffer);
       CVPixelBufferGetHeight(ImageBuffer);
       FigCaptureMetadataUtilitiesDenormalizeCropRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
@@ -309,7 +309,7 @@ void __49__FigCameraViewfinderStream_openWithDestination___block_invoke(uint64_t
 
     else
     {
-      v13 = CMSampleBufferGetImageBuffer(a3);
+      v13 = CMSampleBufferGetImageBuffer(buffer);
       Width = CVPixelBufferGetWidth(v13);
       Height = CVPixelBufferGetHeight(v13);
       rect.origin.x = 0.0;
@@ -320,7 +320,7 @@ void __49__FigCameraViewfinderStream_openWithDestination___block_invoke(uint64_t
       v7 = 0.0;
     }
 
-    v15 = FigVirtualDisplaySourceCameraViewfinderStreamEnqueueFrame(v7, v8, Width, Height, self->_displaySource, a3);
+    v15 = FigVirtualDisplaySourceCameraViewfinderStreamEnqueueFrame(v7, v8, Width, Height, self->_displaySource, buffer);
     if (v15)
     {
       v20 = 0;
@@ -445,9 +445,9 @@ void __42__FigCameraViewfinderStream__setEndpoint___block_invoke(uint64_t a1, vo
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_handleEndpointsChanged:(uint64_t)a1
+- (void)_handleEndpointsChanged:(uint64_t)changed
 {
-  if (a1)
+  if (changed)
   {
     v26[0] = 0;
     if (dword_1ED844170)
@@ -478,12 +478,12 @@ void __42__FigCameraViewfinderStream__setEndpoint___block_invoke(uint64_t a1, vo
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v7 = [a2 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69718F0]];
-    if (!v8 || v8 == *(a1 + 40))
+    userInfo = [a2 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69718F0]];
+    if (!v8 || v8 == *(changed + 40))
     {
-      v9 = [a2 userInfo];
-      v10 = [objc_msgSend(v9 objectForKeyedSubscript:{*MEMORY[0x1E69718F8]), "intValue"}];
+      userInfo2 = [a2 userInfo];
+      v10 = [objc_msgSend(userInfo2 objectForKeyedSubscript:{*MEMORY[0x1E69718F8]), "intValue"}];
       if (v10)
       {
         v16 = v10;
@@ -530,12 +530,12 @@ void __42__FigCameraViewfinderStream__setEndpoint___block_invoke(uint64_t a1, vo
             if (v26[0] && CFArrayGetCount(v26[0]) >= 1)
             {
               ValueAtIndex = CFArrayGetValueAtIndex(v26[0], 0);
-              [(FigCameraViewfinderStream *)a1 _setEndpoint:?];
+              [(FigCameraViewfinderStream *)changed _setEndpoint:?];
               goto LABEL_23;
             }
 
-            [(FigCameraViewfinderStream *)a1 _setEndpoint:?];
-            if ([*(a1 + 16) transitionToState:1 fromStates:14])
+            [(FigCameraViewfinderStream *)changed _setEndpoint:?];
+            if ([*(changed + 16) transitionToState:1 fromStates:14])
             {
 LABEL_23:
               if (v26[0])
@@ -565,10 +565,10 @@ LABEL_41:
               goto LABEL_23;
             }
 
-            [*(a1 + 16) currentStateLabel];
-            [*(a1 + 16) labelForState:2];
-            [*(a1 + 16) labelForState:4];
-            [*(a1 + 16) labelForState:8];
+            [*(changed + 16) currentStateLabel];
+            [*(changed + 16) labelForState:2];
+            [*(changed + 16) labelForState:4];
+            [*(changed + 16) labelForState:8];
             OUTLINED_FUNCTION_15_7();
             OUTLINED_FUNCTION_4_24();
             OUTLINED_FUNCTION_5();
@@ -592,7 +592,7 @@ LABEL_37:
       }
 
       FigDebugAssert3();
-      [*(a1 + 16) transitionToState:1 errorStatus:{v16, v23}];
+      [*(changed + 16) transitionToState:1 errorStatus:{v16, v23}];
       goto LABEL_23;
     }
 
@@ -613,18 +613,18 @@ LABEL_37:
   }
 }
 
-- (void)_setEndpoint:(uint64_t)a1
+- (void)_setEndpoint:(uint64_t)endpoint
 {
-  if (a1)
+  if (endpoint)
   {
-    v4 = *(a1 + 24);
+    v4 = *(endpoint + 24);
     if (v4 != a2)
     {
       if (v4)
       {
         [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
-        *(a1 + 64) = 0;
-        v5 = *(a1 + 24);
+        *(endpoint + 64) = 0;
+        v5 = *(endpoint + 24);
       }
 
       else
@@ -632,7 +632,7 @@ LABEL_37:
         v5 = 0;
       }
 
-      *(a1 + 24) = a2;
+      *(endpoint + 24) = a2;
       if (a2)
       {
         CFRetain(a2);
@@ -645,24 +645,24 @@ LABEL_37:
 
       if (a2)
       {
-        v6 = [FigWeakReference weakReferenceToObject:a1];
-        v7 = [MEMORY[0x1E696AD88] defaultCenter];
+        v6 = [FigWeakReference weakReferenceToObject:endpoint];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v8 = *MEMORY[0x1E6961940];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __42__FigCameraViewfinderStream__setEndpoint___block_invoke;
         v9[3] = &unk_1E798FC90;
         v9[4] = v6;
-        *(a1 + 64) = [v7 addObserverForName:v8 object:a2 queue:0 usingBlock:v9];
-        [(FigCameraViewfinderStream *)a1 _updateStreams];
+        *(endpoint + 64) = [defaultCenter addObserverForName:v8 object:a2 queue:0 usingBlock:v9];
+        [(FigCameraViewfinderStream *)endpoint _updateStreams];
       }
     }
   }
 }
 
-- (void)_handleStreamsChanged:(void *)a1
+- (void)_handleStreamsChanged:(void *)changed
 {
-  if (a1)
+  if (changed)
   {
     if (dword_1ED844170)
     {
@@ -680,11 +680,11 @@ LABEL_37:
       OUTLINED_FUNCTION_13_0();
     }
 
-    v6 = [a2 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6961910]];
+    userInfo = [a2 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6961910]];
     if (!v7 || ([v7 BOOLValue] & 1) != 0)
     {
-      [(FigCameraViewfinderStream *)a1 _updateStreams];
+      [(FigCameraViewfinderStream *)changed _updateStreams];
     }
 
     else
@@ -714,14 +714,14 @@ LABEL_37:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [a1 close];
+      [changed close];
     }
   }
 }
 
 - (void)_updateStreams
 {
-  if (a1)
+  if (self)
   {
     v89[0] = 0;
     CMBaseObject = FigEndpointGetCMBaseObject();
@@ -833,10 +833,10 @@ LABEL_24:
       OUTLINED_FUNCTION_13_0();
     }
 
-    v37 = *(a1 + 32);
+    v37 = *(self + 32);
     if (!v23 || v37)
     {
-      *(a1 + 32) = v23;
+      *(self + 32) = v23;
       if (!v23)
       {
         if (!v37)
@@ -850,7 +850,7 @@ LABEL_24:
 
     else
     {
-      [*(a1 + 16) transitionToState:4 fromState:2];
+      [*(self + 16) transitionToState:4 fromState:2];
       if (v13[92])
       {
         v38 = OUTLINED_FUNCTION_6_19();
@@ -868,8 +868,8 @@ LABEL_24:
         OUTLINED_FUNCTION_13_0();
       }
 
-      v37 = *(a1 + 32);
-      *(a1 + 32) = v23;
+      v37 = *(self + 32);
+      *(self + 32) = v23;
     }
 
     CFRetain(v23);

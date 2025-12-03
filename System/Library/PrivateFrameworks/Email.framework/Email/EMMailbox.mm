@@ -1,16 +1,16 @@
 @interface EMMailbox
-+ (BOOL)deleteMovesToTrashForMailboxes:(id)a3;
-+ (BOOL)shouldArchiveByDefaultForMailboxes:(id)a3;
-+ (BOOL)supportsArchivingForMailboxes:(id)a3;
-+ (BOOL)supportsSelectAllForMailboxes:(id)a3;
-+ (BOOL)typeIsValidTransferDestination:(int64_t)a3;
-+ (id)predicateForMailboxAccount:(id)a3;
-+ (id)predicateForMailboxAccount:(id)a3 topLevelOnly:(BOOL)a4;
-+ (id)predicateForMailboxAccountIdentifier:(id)a3 topLevelOnly:(BOOL)a4;
-+ (id)predicateForMailboxChildren:(id)a3;
-+ (id)predicateForMailboxName:(id)a3;
-+ (id)predicateForMailboxType:(int64_t)a3;
-+ (id)predicateForPrimaryMailboxWithAccount:(id)a3;
++ (BOOL)deleteMovesToTrashForMailboxes:(id)mailboxes;
++ (BOOL)shouldArchiveByDefaultForMailboxes:(id)mailboxes;
++ (BOOL)supportsArchivingForMailboxes:(id)mailboxes;
++ (BOOL)supportsSelectAllForMailboxes:(id)mailboxes;
++ (BOOL)typeIsValidTransferDestination:(int64_t)destination;
++ (id)predicateForMailboxAccount:(id)account;
++ (id)predicateForMailboxAccount:(id)account topLevelOnly:(BOOL)only;
++ (id)predicateForMailboxAccountIdentifier:(id)identifier topLevelOnly:(BOOL)only;
++ (id)predicateForMailboxChildren:(id)children;
++ (id)predicateForMailboxName:(id)name;
++ (id)predicateForMailboxType:(int64_t)type;
++ (id)predicateForPrimaryMailboxWithAccount:(id)account;
 + (id)predicateForTopLevelMailboxes;
 - (BOOL)_hasFetchedAccount;
 - (BOOL)_shouldArchiveByDefault;
@@ -18,9 +18,9 @@
 - (BOOL)isSendLaterMailbox;
 - (BOOL)isTopLevelMailbox;
 - (BOOL)shouldArchiveByDefault;
-- (EMMailbox)initWithCoder:(id)a3;
-- (EMMailbox)initWithObjectID:(id)a3;
-- (EMMailbox)initWithObjectID:(id)a3 repository:(id)a4 name:(id)a5 accountIdentifier:(id)a6 type:(int64_t)a7 builder:(id)a8;
+- (EMMailbox)initWithCoder:(id)coder;
+- (EMMailbox)initWithObjectID:(id)d;
+- (EMMailbox)initWithObjectID:(id)d repository:(id)repository name:(id)name accountIdentifier:(id)identifier type:(int64_t)type builder:(id)builder;
 - (EMMailbox)parent;
 - (EMMailboxObjectID)parentID;
 - (EMMailboxRepository)repository;
@@ -30,29 +30,29 @@
 - (NSString)ef_publicDescription;
 - (NSURL)externalURL;
 - (id)_shouldArchiveByDefaultString;
-- (void)_commonInitName:(id)a3 accountIdentifier:(id)a4 type:(int64_t)a5 canContainMessages:(BOOL)a6 children:(id)a7 parentID:(id)a8 builder:(id)a9;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParentFromMailboxes:(id)a3;
-- (void)setRepository:(id)a3;
+- (void)_commonInitName:(id)name accountIdentifier:(id)identifier type:(int64_t)type canContainMessages:(BOOL)messages children:(id)children parentID:(id)d builder:(id)builder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParentFromMailboxes:(id)mailboxes;
+- (void)setRepository:(id)repository;
 @end
 
 @implementation EMMailbox
 
 - (EMMailboxObjectID)parentID
 {
-  v3 = [(EMMailbox *)self parent];
-  v4 = v3;
-  if (v3)
+  parent = [(EMMailbox *)self parent];
+  v4 = parent;
+  if (parent)
   {
-    v5 = [v3 objectID];
+    objectID = [parent objectID];
   }
 
   else
   {
-    v5 = self->_parentID;
+    objectID = self->_parentID;
   }
 
-  v6 = v5;
+  v6 = objectID;
 
   return v6;
 }
@@ -68,18 +68,18 @@
 {
   v7.receiver = self;
   v7.super_class = EMMailbox;
-  v4 = [(EMRepositoryObject *)&v7 repository];
-  if (v4)
+  repository = [(EMRepositoryObject *)&v7 repository];
+  if (repository)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:87 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:87 description:@"Wrong repository type"];
     }
   }
 
-  return v4;
+  return repository;
 }
 
 - (BOOL)isOutgoingMailbox
@@ -94,31 +94,31 @@
 
 - (BOOL)isSendLaterMailbox
 {
-  v2 = [(EMMailbox *)self name];
-  v3 = [v2 isEqualToString:@"x-apple-send-later"];
+  name = [(EMMailbox *)self name];
+  v3 = [name isEqualToString:@"x-apple-send-later"];
 
   return v3;
 }
 
 - (NSString)ef_publicDescription
 {
-  v3 = [(EMMailbox *)self descriptionUsesRealName];
-  v4 = [(EMObject *)self objectID];
-  v5 = v4;
-  if (v3)
+  descriptionUsesRealName = [(EMMailbox *)self descriptionUsesRealName];
+  objectID = [(EMObject *)self objectID];
+  v5 = objectID;
+  if (descriptionUsesRealName)
   {
-    v6 = [v4 debugDescription];
+    v6 = [objectID debugDescription];
 
-    v7 = [(EMMailbox *)self name];
+    name = [(EMMailbox *)self name];
   }
 
   else
   {
-    v6 = [v4 description];
+    v6 = [objectID description];
 
     v8 = MEMORY[0x1E699B858];
-    v9 = [(EMMailbox *)self name];
-    v7 = [v8 fullyOrPartiallyRedactedStringForString:v9];
+    name2 = [(EMMailbox *)self name];
+    name = [v8 fullyOrPartiallyRedactedStringForString:name2];
   }
 
   v10 = MEMORY[0x1E696AEC0];
@@ -127,8 +127,8 @@
   v12 = ECNSStringFromMailboxMailboxType();
   [(EMMailbox *)self canArchive];
   v13 = NSStringFromBOOL();
-  v14 = [(EMMailbox *)self _shouldArchiveByDefaultString];
-  v15 = [v10 stringWithFormat:@"<%@: %p> ObjectID:%@ Name:%@ Type:%@ CanArchive:%@ ShouldArchive:%@", v11, self, v6, v7, v12, v13, v14];
+  _shouldArchiveByDefaultString = [(EMMailbox *)self _shouldArchiveByDefaultString];
+  v15 = [v10 stringWithFormat:@"<%@: %p> ObjectID:%@ Name:%@ Type:%@ CanArchive:%@ ShouldArchive:%@", v11, self, v6, name, v12, v13, _shouldArchiveByDefaultString];
 
   return v15;
 }
@@ -136,9 +136,9 @@
 - (id)_shouldArchiveByDefaultString
 {
   v3 = [(EMMailbox *)self _canArchiveForMailboxType:[(EMMailbox *)self type]];
-  v4 = [(EMMailbox *)self _hasFetchedAccount];
+  _hasFetchedAccount = [(EMMailbox *)self _hasFetchedAccount];
   v5 = @"?";
-  if (v3 && v4)
+  if (v3 && _hasFetchedAccount)
   {
     [(EMMailbox *)self shouldArchiveByDefault];
     v5 = NSStringFromBOOL();
@@ -158,17 +158,17 @@
 - (EMReceivingAccount)account
 {
   os_unfair_lock_lock(&self->_accountLock);
-  v3 = [(EMMailbox *)self accountIdentifier];
-  if (v3)
+  accountIdentifier = [(EMMailbox *)self accountIdentifier];
+  if (accountIdentifier)
   {
     account = self->_account;
 
     if (!account)
     {
-      v5 = [(EMMailbox *)self repository];
-      v6 = [v5 accountRepository];
-      v7 = [(EMMailbox *)self accountIdentifier];
-      v8 = [v6 accountForIdentifier:v7];
+      repository = [(EMMailbox *)self repository];
+      accountRepository = [repository accountRepository];
+      accountIdentifier2 = [(EMMailbox *)self accountIdentifier];
+      v8 = [accountRepository accountForIdentifier:accountIdentifier2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -193,11 +193,11 @@
 
 - (NSURL)externalURL
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v2)
+  if (selfCopy)
   {
-    v4 = v2;
+    v4 = selfCopy;
     do
     {
       if ([v4 type] == 8)
@@ -205,15 +205,15 @@
         break;
       }
 
-      v5 = [v4 name];
-      [v3 insertObject:v5 atIndex:0];
+      name = [v4 name];
+      [v3 insertObject:name atIndex:0];
 
-      v6 = [v4 parent];
+      parent = [v4 parent];
 
-      v4 = v6;
+      v4 = parent;
     }
 
-    while (v6);
+    while (parent);
   }
 
   else
@@ -223,18 +223,18 @@
 
   if ([v3 count])
   {
-    v7 = [(EMMailbox *)v2 account];
-    v8 = [v7 identityEmailAddress];
+    account = [(EMMailbox *)selfCopy account];
+    identityEmailAddress = [account identityEmailAddress];
 
     v9 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v9 setScheme:@"x-apple-mail-mailbox"];
-    if (v8)
+    if (identityEmailAddress)
     {
-      v10 = [v8 localPart];
-      [v9 setUser:v10];
+      localPart = [identityEmailAddress localPart];
+      [v9 setUser:localPart];
 
-      v11 = [v8 domain];
-      [v9 setHost:v11];
+      domain = [identityEmailAddress domain];
+      [v9 setHost:domain];
     }
 
     v12 = [MEMORY[0x1E696AEC0] pathWithComponents:v3];
@@ -261,12 +261,12 @@
   return v3;
 }
 
-+ (BOOL)deleteMovesToTrashForMailboxes:(id)a3
++ (BOOL)deleteMovesToTrashForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([v3 count])
+  mailboxesCopy = mailboxes;
+  if ([mailboxesCopy count])
   {
-    v4 = [v3 ef_all:&__block_literal_global_23];
+    v4 = [mailboxesCopy ef_all:&__block_literal_global_23];
   }
 
   else
@@ -285,12 +285,12 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v3;
 }
 
-+ (BOOL)supportsArchivingForMailboxes:(id)a3
++ (BOOL)supportsArchivingForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([v3 count])
+  mailboxesCopy = mailboxes;
+  if ([mailboxesCopy count])
   {
-    v4 = [v3 ef_any:&__block_literal_global_2];
+    v4 = [mailboxesCopy ef_any:&__block_literal_global_2];
   }
 
   else
@@ -301,12 +301,12 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v4;
 }
 
-+ (BOOL)shouldArchiveByDefaultForMailboxes:(id)a3
++ (BOOL)shouldArchiveByDefaultForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([v3 count])
+  mailboxesCopy = mailboxes;
+  if ([mailboxesCopy count])
   {
-    v4 = [v3 ef_any:&__block_literal_global_4_0];
+    v4 = [mailboxesCopy ef_any:&__block_literal_global_4_0];
   }
 
   else
@@ -317,12 +317,12 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v4;
 }
 
-+ (BOOL)supportsSelectAllForMailboxes:(id)a3
++ (BOOL)supportsSelectAllForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([v3 count])
+  mailboxesCopy = mailboxes;
+  if ([mailboxesCopy count])
   {
-    v4 = [v3 ef_all:&__block_literal_global_6];
+    v4 = [mailboxesCopy ef_all:&__block_literal_global_6];
   }
 
   else
@@ -333,104 +333,104 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v4;
 }
 
-- (EMMailbox)initWithObjectID:(id)a3
+- (EMMailbox)initWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(EMMailbox *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EMMailbox initWithObjectID:]", "EMMailbox.m", 47, "0");
 }
 
-- (EMMailbox)initWithObjectID:(id)a3 repository:(id)a4 name:(id)a5 accountIdentifier:(id)a6 type:(int64_t)a7 builder:(id)a8
+- (EMMailbox)initWithObjectID:(id)d repository:(id)repository name:(id)name accountIdentifier:(id)identifier type:(int64_t)type builder:(id)builder
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  if (!v19)
+  dCopy = d;
+  repositoryCopy = repository;
+  nameCopy = name;
+  identifierCopy = identifier;
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v24.receiver = self;
   v24.super_class = EMMailbox;
-  v20 = [(EMObject *)&v24 initWithObjectID:v15];
+  v20 = [(EMObject *)&v24 initWithObjectID:dCopy];
   v21 = v20;
   if (v20)
   {
     v20->_accountLock._os_unfair_lock_opaque = 0;
-    [(EMMailbox *)v20 setRepository:v16];
-    [(EMMailbox *)v21 _commonInitName:v17 accountIdentifier:v18 type:a7 canContainMessages:0 children:0 parentID:0 builder:v19];
+    [(EMMailbox *)v20 setRepository:repositoryCopy];
+    [(EMMailbox *)v21 _commonInitName:nameCopy accountIdentifier:identifierCopy type:type canContainMessages:0 children:0 parentID:0 builder:builderCopy];
   }
 
   return v21;
 }
 
-- (void)_commonInitName:(id)a3 accountIdentifier:(id)a4 type:(int64_t)a5 canContainMessages:(BOOL)a6 children:(id)a7 parentID:(id)a8 builder:(id)a9
+- (void)_commonInitName:(id)name accountIdentifier:(id)identifier type:(int64_t)type canContainMessages:(BOOL)messages children:(id)children parentID:(id)d builder:(id)builder
 {
-  v24 = a3;
-  v23 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  objc_storeStrong(&self->_name, a3);
-  objc_storeStrong(&self->_accountIdentifier, a4);
-  self->_type = a5;
-  self->_canContainMessages = a6;
-  self->_canArchive = [(EMMailbox *)self _canArchiveForMailboxType:a5];
-  objc_storeStrong(&self->_children, a7);
-  objc_storeStrong(&self->_parentID, a8);
-  v18[2](v18, self);
+  nameCopy = name;
+  identifierCopy = identifier;
+  childrenCopy = children;
+  dCopy = d;
+  builderCopy = builder;
+  objc_storeStrong(&self->_name, name);
+  objc_storeStrong(&self->_accountIdentifier, identifier);
+  self->_type = type;
+  self->_canContainMessages = messages;
+  self->_canArchive = [(EMMailbox *)self _canArchiveForMailboxType:type];
+  objc_storeStrong(&self->_children, children);
+  objc_storeStrong(&self->_parentID, d);
+  builderCopy[2](builderCopy, self);
   if (!self->_children)
   {
     v19 = [EMMailboxCollection alloc];
-    v20 = [(EMMailbox *)self repository];
-    v21 = [(EMMailboxCollection *)v19 initWithMailbox:self repository:v20];
+    repository = [(EMMailbox *)self repository];
+    v21 = [(EMMailboxCollection *)v19 initWithMailbox:self repository:repository];
     children = self->_children;
     self->_children = v21;
   }
 }
 
-- (void)setRepository:(id)a3
+- (void)setRepository:(id)repository
 {
-  v5 = a3;
-  if (v5)
+  repositoryCopy = repository;
+  if (repositoryCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:92 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:92 description:@"Wrong repository type"];
     }
   }
 
   v8.receiver = self;
   v8.super_class = EMMailbox;
-  [(EMRepositoryObject *)&v8 setRepository:v5];
-  v6 = [(EMMailbox *)self children];
-  [v6 setRepository:v5];
+  [(EMRepositoryObject *)&v8 setRepository:repositoryCopy];
+  children = [(EMMailbox *)self children];
+  [children setRepository:repositoryCopy];
 }
 
-- (void)setParentFromMailboxes:(id)a3
+- (void)setParentFromMailboxes:(id)mailboxes
 {
-  v11 = a3;
-  v5 = [(EMMailbox *)self parentID];
-  v6 = [(EMMailbox *)self parent];
+  mailboxesCopy = mailboxes;
+  parentID = [(EMMailbox *)self parentID];
+  parent = [(EMMailbox *)self parent];
 
-  if (!v6)
+  if (!parent)
   {
-    if (v5)
+    if (parentID)
     {
-      v7 = [v11 objectForKey:v5];
+      v7 = [mailboxesCopy objectForKey:parentID];
       [(EMMailbox *)self setParent:v7];
 
-      v8 = [(EMMailbox *)self parent];
+      parent2 = [(EMMailbox *)self parent];
 
-      if (!v8)
+      if (!parent2)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:123 description:{@"failed to set parent mailbox with id:%@", v5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EMMailbox.m" lineNumber:123 description:{@"failed to set parent mailbox with id:%@", parentID}];
       }
     }
   }
@@ -441,11 +441,11 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
 
 - (BOOL)isTopLevelMailbox
 {
-  v2 = [(EMMailbox *)self parent];
-  v3 = v2;
-  if (v2)
+  parent = [(EMMailbox *)self parent];
+  v3 = parent;
+  if (parent)
   {
-    v4 = [v2 type] == 8;
+    v4 = [parent type] == 8;
   }
 
   else
@@ -456,16 +456,16 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v4;
 }
 
-+ (BOOL)typeIsValidTransferDestination:(int64_t)a3
++ (BOOL)typeIsValidTransferDestination:(int64_t)destination
 {
-  v4 = [a1 _isOutgoingMailboxType:?];
-  v5 = a3 != 8;
-  if (a3 == -100)
+  v4 = [self _isOutgoingMailboxType:?];
+  v5 = destination != 8;
+  if (destination == -100)
   {
     v5 = 0;
   }
 
-  if (a3 == -500)
+  if (destination == -500)
   {
     v5 = 0;
   }
@@ -477,30 +477,30 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EMObject *)self objectID];
-  v6 = [v5 debugDescription];
-  v7 = [(EMMailbox *)self name];
+  objectID = [(EMObject *)self objectID];
+  v6 = [objectID debugDescription];
+  name = [(EMMailbox *)self name];
   [(EMMailbox *)self type];
   v8 = ECNSStringFromMailboxMailboxType();
   [(EMMailbox *)self canArchive];
   v9 = NSStringFromBOOL();
-  v10 = [(EMMailbox *)self _shouldArchiveByDefaultString];
-  v11 = [v3 stringWithFormat:@"<%@: %p> ObjectID:%@ Name:%@ Type:%@ CanArchive:%@ ShouldArchive:%@", v4, self, v6, v7, v8, v9, v10];
+  _shouldArchiveByDefaultString = [(EMMailbox *)self _shouldArchiveByDefaultString];
+  v11 = [v3 stringWithFormat:@"<%@: %p> ObjectID:%@ Name:%@ Type:%@ CanArchive:%@ ShouldArchive:%@", v4, self, v6, name, v8, v9, _shouldArchiveByDefaultString];
 
   return v11;
 }
 
-- (EMMailbox)initWithCoder:(id)a3
+- (EMMailbox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = EMMailbox;
-  v5 = [(EMObject *)&v17 initWithCoder:v4];
+  v5 = [(EMObject *)&v17 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v5->_accountLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
     v8 = v7;
     v9 = &stru_1F45FD218;
     if (v7)
@@ -510,37 +510,37 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
 
     v10 = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_accountIdentifier"];
-    v12 = [v4 decodeIntegerForKey:@"EFPropertyKey_type"];
-    v13 = [v4 decodeBoolForKey:@"EFPropertyKey_canContainMessages"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_children"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_parentID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_accountIdentifier"];
+    v12 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_type"];
+    v13 = [coderCopy decodeBoolForKey:@"EFPropertyKey_canContainMessages"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_children"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_parentID"];
     [(EMMailbox *)v6 _commonInitName:v10 accountIdentifier:v11 type:v12 canContainMessages:v13 children:v14 parentID:v15 builder:&__block_literal_global_24];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMMailbox;
-  [(EMObject *)&v9 encodeWithCoder:v4];
-  v5 = [(EMMailbox *)self name];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_name"];
+  [(EMObject *)&v9 encodeWithCoder:coderCopy];
+  name = [(EMMailbox *)self name];
+  [coderCopy encodeObject:name forKey:@"EFPropertyKey_name"];
 
-  v6 = [(EMMailbox *)self accountIdentifier];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_accountIdentifier"];
+  accountIdentifier = [(EMMailbox *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"EFPropertyKey_accountIdentifier"];
 
-  [v4 encodeInteger:-[EMMailbox type](self forKey:{"type"), @"EFPropertyKey_type"}];
-  [v4 encodeBool:-[EMMailbox canContainMessages](self forKey:{"canContainMessages"), @"EFPropertyKey_canContainMessages"}];
-  [v4 encodeBool:-[EMMailbox canArchive](self forKey:{"canArchive"), @"EFPropertyKey_canArchive"}];
-  v7 = [(EMMailbox *)self children];
-  [v4 encodeObject:v7 forKey:@"EFPropertyKey_children"];
+  [coderCopy encodeInteger:-[EMMailbox type](self forKey:{"type"), @"EFPropertyKey_type"}];
+  [coderCopy encodeBool:-[EMMailbox canContainMessages](self forKey:{"canContainMessages"), @"EFPropertyKey_canContainMessages"}];
+  [coderCopy encodeBool:-[EMMailbox canArchive](self forKey:{"canArchive"), @"EFPropertyKey_canArchive"}];
+  children = [(EMMailbox *)self children];
+  [coderCopy encodeObject:children forKey:@"EFPropertyKey_children"];
 
-  v8 = [(EMMailbox *)self parentID];
-  [v4 encodeObject:v8 forKey:@"EFPropertyKey_parentID"];
+  parentID = [(EMMailbox *)self parentID];
+  [coderCopy encodeObject:parentID forKey:@"EFPropertyKey_parentID"];
 }
 
 - (BOOL)shouldArchiveByDefault
@@ -556,61 +556,61 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
 
 - (BOOL)_shouldArchiveByDefault
 {
-  v2 = [(EMMailbox *)self account];
-  v3 = [v2 shouldArchiveByDefault];
+  account = [(EMMailbox *)self account];
+  shouldArchiveByDefault = [account shouldArchiveByDefault];
 
-  return v3;
+  return shouldArchiveByDefault;
 }
 
-+ (id)predicateForMailboxName:(id)a3
++ (id)predicateForMailboxName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x1E696AB18];
   v5 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"name"];
-  v6 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v3];
+  v6 = [MEMORY[0x1E696ABC8] expressionForConstantValue:nameCopy];
   v7 = [v4 predicateWithLeftExpression:v5 rightExpression:v6 modifier:0 type:4 options:0];
 
   return v7;
 }
 
-+ (id)predicateForMailboxType:(int64_t)a3
++ (id)predicateForMailboxType:(int64_t)type
 {
   v4 = MEMORY[0x1E696AB18];
   v5 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"type"];
   v6 = MEMORY[0x1E696ABC8];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v8 = [v6 expressionForConstantValue:v7];
   v9 = [v4 predicateWithLeftExpression:v5 rightExpression:v8 modifier:0 type:4 options:0];
 
   return v9;
 }
 
-+ (id)predicateForMailboxAccount:(id)a3
++ (id)predicateForMailboxAccount:(id)account
 {
-  v3 = [a1 predicateForMailboxAccount:a3 topLevelOnly:0];
+  v3 = [self predicateForMailboxAccount:account topLevelOnly:0];
 
   return v3;
 }
 
-+ (id)predicateForMailboxAccount:(id)a3 topLevelOnly:(BOOL)a4
++ (id)predicateForMailboxAccount:(id)account topLevelOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = MEMORY[0x1E696AB18];
   v8 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"account.objectID.representedObjectID"];
   v9 = MEMORY[0x1E696ABC8];
-  v10 = [v6 objectID];
-  v11 = [v10 representedObjectID];
-  v12 = [v9 expressionForConstantValue:v11];
+  objectID = [accountCopy objectID];
+  representedObjectID = [objectID representedObjectID];
+  v12 = [v9 expressionForConstantValue:representedObjectID];
   v13 = [v7 predicateWithLeftExpression:v8 rightExpression:v12 modifier:0 type:4 options:0];
 
-  if (v4)
+  if (onlyCopy)
   {
     v14 = MEMORY[0x1E696AB28];
     v20[0] = v13;
-    v15 = [a1 predicateForTopLevelMailboxes];
-    v20[1] = v15;
+    predicateForTopLevelMailboxes = [self predicateForTopLevelMailboxes];
+    v20[1] = predicateForTopLevelMailboxes;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v17 = [v14 andPredicateWithSubpredicates:v16];
 
@@ -622,22 +622,22 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v13;
 }
 
-+ (id)predicateForMailboxAccountIdentifier:(id)a3 topLevelOnly:(BOOL)a4
++ (id)predicateForMailboxAccountIdentifier:(id)identifier topLevelOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E696AB18];
   v8 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"account.objectID.representedObjectID"];
-  v9 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v6];
+  v9 = [MEMORY[0x1E696ABC8] expressionForConstantValue:identifierCopy];
   v10 = [v7 predicateWithLeftExpression:v8 rightExpression:v9 modifier:0 type:4 options:0];
 
-  if (v4)
+  if (onlyCopy)
   {
     v11 = MEMORY[0x1E696AB28];
     v17[0] = v10;
-    v12 = [a1 predicateForTopLevelMailboxes];
-    v17[1] = v12;
+    predicateForTopLevelMailboxes = [self predicateForTopLevelMailboxes];
+    v17[1] = predicateForTopLevelMailboxes;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v14 = [v11 andPredicateWithSubpredicates:v13];
 
@@ -649,12 +649,12 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v10;
 }
 
-+ (id)predicateForPrimaryMailboxWithAccount:(id)a3
++ (id)predicateForPrimaryMailboxWithAccount:(id)account
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 predicateForMailboxAccount:v4 topLevelOnly:0];
-  v6 = [a1 predicateForMailboxType:7];
+  accountCopy = account;
+  v5 = [self predicateForMailboxAccount:accountCopy topLevelOnly:0];
+  v6 = [self predicateForMailboxType:7];
   v7 = MEMORY[0x1E696AB28];
   v12[0] = v5;
   v12[1] = v6;
@@ -666,14 +666,14 @@ BOOL __63__EMMailbox_TriageInteraction__deleteMovesToTrashForMailboxes___block_i
   return v9;
 }
 
-+ (id)predicateForMailboxChildren:(id)a3
++ (id)predicateForMailboxChildren:(id)children
 {
-  v3 = a3;
+  childrenCopy = children;
   v4 = MEMORY[0x1E696AB18];
   v5 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"parent.objectID.url"];
   v6 = MEMORY[0x1E696ABC8];
-  v7 = [v3 objectID];
-  v8 = [v7 url];
+  objectID = [childrenCopy objectID];
+  v8 = [objectID url];
   v9 = [v6 expressionForConstantValue:v8];
   v10 = [v4 predicateWithLeftExpression:v5 rightExpression:v9 modifier:0 type:4 options:0];
 

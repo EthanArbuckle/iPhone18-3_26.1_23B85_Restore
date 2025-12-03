@@ -1,33 +1,33 @@
 @interface GDKnosisDebug
-- (GDKnosisDebug)initWithCoder:(id)a3;
-- (GDKnosisDebug)initWithIndexCallCount:(int)a3 execSteps:(id)a4 messages:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (GDKnosisDebug)initWithCoder:(id)coder;
+- (GDKnosisDebug)initWithIndexCallCount:(int)count execSteps:(id)steps messages:(id)messages;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDKnosisDebug
 
-- (GDKnosisDebug)initWithCoder:(id)a3
+- (GDKnosisDebug)initWithCoder:(id)coder
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_indexCallCount);
-  v6 = [v4 decodeIntForKey:v5];
+  v6 = [coderCopy decodeIntForKey:v5];
 
-  v7 = [v4 error];
+  error = [coderCopy error];
 
-  if (!v7)
+  if (!error)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_execSteps);
-    v11 = [v4 decodeArrayOfObjectsOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:v9 forKey:v10];
 
     if (!v11)
     {
-      v15 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v15)
+      if (error2)
       {
-        v8 = 0;
+        selfCopy = 0;
 LABEL_11:
 
         goto LABEL_12;
@@ -38,20 +38,20 @@ LABEL_11:
       v28[0] = @"GDKnosisDebug execSteps is nil";
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v21 = [v19 errorWithDomain:@"GDErrorDomain" code:9 userInfo:v20];
-      [v4 failWithError:v21];
+      [coderCopy failWithError:v21];
     }
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_messages);
-    v14 = [v4 decodeArrayOfObjectsOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:v12 forKey:v13];
 
     if (!v14)
     {
-      v16 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v16)
+      if (error3)
       {
-        v8 = 0;
+        selfCopy = 0;
         goto LABEL_10;
       }
 
@@ -60,55 +60,55 @@ LABEL_11:
       v26 = @"GDKnosisDebug messages is nil";
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v24 = [v22 errorWithDomain:@"GDErrorDomain" code:9 userInfo:v23];
-      [v4 failWithError:v24];
+      [coderCopy failWithError:v24];
     }
 
     self = [(GDKnosisDebug *)self initWithIndexCallCount:v6 execSteps:v11 messages:v14];
-    v8 = self;
+    selfCopy = self;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_12:
 
   v17 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   indexCallCount = self->_indexCallCount;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_indexCallCount);
-  [v5 encodeInt:indexCallCount forKey:v6];
+  [coderCopy encodeInt:indexCallCount forKey:v6];
 
   execSteps = self->_execSteps;
   v8 = NSStringFromSelector(sel_execSteps);
-  [v5 encodeObject:execSteps forKey:v8];
+  [coderCopy encodeObject:execSteps forKey:v8];
 
   messages = self->_messages;
   v10 = NSStringFromSelector(sel_messages);
-  [v5 encodeObject:messages forKey:v10];
+  [coderCopy encodeObject:messages forKey:v10];
 }
 
-- (GDKnosisDebug)initWithIndexCallCount:(int)a3 execSteps:(id)a4 messages:(id)a5
+- (GDKnosisDebug)initWithIndexCallCount:(int)count execSteps:(id)steps messages:(id)messages
 {
-  v8 = a4;
-  v9 = a5;
+  stepsCopy = steps;
+  messagesCopy = messages;
   v17.receiver = self;
   v17.super_class = GDKnosisDebug;
   v10 = [(GDKnosisDebug *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_indexCallCount = a3;
-    v12 = [v8 copy];
+    v10->_indexCallCount = count;
+    v12 = [stepsCopy copy];
     execSteps = v11->_execSteps;
     v11->_execSteps = v12;
 
-    v14 = [v9 copy];
+    v14 = [messagesCopy copy];
     messages = v11->_messages;
     v11->_messages = v14;
   }

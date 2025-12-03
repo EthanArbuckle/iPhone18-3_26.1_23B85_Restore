@@ -1,13 +1,13 @@
 @interface _SerializableCVPixelBuffer
-- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)a3;
-- (_SerializableCVPixelBuffer)initWithCoder:(id)a3;
+- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)ref;
+- (_SerializableCVPixelBuffer)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SerializableCVPixelBuffer
 
-- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)a3
+- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)ref
 {
   v7.receiver = self;
   v7.super_class = _SerializableCVPixelBuffer;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pixelBuffer = a3;
-    CVBufferRetain(a3);
+    v4->_pixelBuffer = ref;
+    CVBufferRetain(ref);
   }
 
   return v5;
@@ -36,20 +36,20 @@
   [(_SerializableCVPixelBuffer *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   CVPixelBufferLockBaseAddress(self->_pixelBuffer, 1uLL);
   PlaneCount = CVPixelBufferGetPlaneCount(self->_pixelBuffer);
   v6 = [NSNumber numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(self->_pixelBuffer)];
-  [v4 encodeObject:v6 forKey:@"PixelFormat"];
+  [coderCopy encodeObject:v6 forKey:@"PixelFormat"];
 
   v7 = [NSNumber numberWithInteger:PlaneCount];
-  [v4 encodeObject:v7 forKey:@"PlaneCount"];
+  [coderCopy encodeObject:v7 forKey:@"PlaneCount"];
 
   if (PlaneCount)
   {
-    v37 = v4;
+    v37 = coderCopy;
     v8 = objc_alloc_init(NSMutableArray);
     v9 = objc_alloc_init(NSMutableArray);
     v38 = objc_alloc_init(NSMutableArray);
@@ -94,7 +94,7 @@
       while (v15 != v14);
     }
 
-    v4 = v37;
+    coderCopy = v37;
     [v37 encodeObject:v8 forKey:@"Width"];
     [v37 encodeObject:v13 forKey:@"Height"];
     [v37 encodeObject:v38 forKey:@"BytesPerRow"];
@@ -106,42 +106,42 @@
     v27 = [NSNumber numberWithUnsignedLong:CVPixelBufferGetWidth(self->_pixelBuffer)];
     v42 = v27;
     v28 = [NSArray arrayWithObjects:&v42 count:1];
-    [v4 encodeObject:v28 forKey:@"Width"];
+    [coderCopy encodeObject:v28 forKey:@"Width"];
 
     v29 = [NSNumber numberWithUnsignedLong:CVPixelBufferGetHeight(self->_pixelBuffer)];
     v41 = v29;
     v30 = [NSArray arrayWithObjects:&v41 count:1];
-    [v4 encodeObject:v30 forKey:@"Height"];
+    [coderCopy encodeObject:v30 forKey:@"Height"];
 
     v31 = [NSNumber numberWithUnsignedLong:CVPixelBufferGetBytesPerRow(self->_pixelBuffer)];
     v40 = v31;
     v32 = [NSArray arrayWithObjects:&v40 count:1];
-    [v4 encodeObject:v32 forKey:@"BytesPerRow"];
+    [coderCopy encodeObject:v32 forKey:@"BytesPerRow"];
 
     v33 = [NSData alloc];
     BaseAddress = CVPixelBufferGetBaseAddress(self->_pixelBuffer);
     v35 = [v33 initWithBytes:BaseAddress length:CVPixelBufferGetDataSize(self->_pixelBuffer)];
     v39 = v35;
     v36 = [NSArray arrayWithObjects:&v39 count:1];
-    [v4 encodeObject:v36 forKey:@"PixelData"];
+    [coderCopy encodeObject:v36 forKey:@"PixelData"];
   }
 
   CVPixelBufferUnlockBaseAddress(self->_pixelBuffer, 1uLL);
 }
 
-- (_SerializableCVPixelBuffer)initWithCoder:(id)a3
+- (_SerializableCVPixelBuffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"PlaneCount"] && objc_msgSend(v4, "containsValueForKey:", @"PixelFormat") && objc_msgSend(v4, "containsValueForKey:", @"Width") && objc_msgSend(v4, "containsValueForKey:", @"Height") && objc_msgSend(v4, "containsValueForKey:", @"BytesPerRow") && objc_msgSend(v4, "containsValueForKey:", @"PixelData"))
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"PlaneCount"] && objc_msgSend(coderCopy, "containsValueForKey:", @"PixelFormat") && objc_msgSend(coderCopy, "containsValueForKey:", @"Width") && objc_msgSend(coderCopy, "containsValueForKey:", @"Height") && objc_msgSend(coderCopy, "containsValueForKey:", @"BytesPerRow") && objc_msgSend(coderCopy, "containsValueForKey:", @"PixelData"))
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PlaneCount"];
-    v6 = [v5 integerValue];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PlaneCount"];
+    integerValue = [v5 integerValue];
     v84[0] = objc_opt_class();
     v84[1] = objc_opt_class();
     v7 = [NSArray arrayWithObjects:v84 count:2];
     v8 = [NSSet setWithArray:v7];
 
-    v9 = v6;
+    v9 = integerValue;
     v83[0] = objc_opt_class();
     v83[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v83 count:2];
@@ -149,22 +149,22 @@
 
     v73 = v11;
     v74 = v8;
-    if (v6)
+    if (integerValue)
     {
-      v71 = self;
+      selfCopy = self;
       v72 = v5;
-      v12 = [v4 decodeObjectOfClasses:v8 forKey:@"Width"];
-      v13 = [v4 decodeObjectOfClasses:v8 forKey:@"Height"];
+      v12 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Width"];
+      v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Height"];
       v14 = v8;
       v15 = v13;
-      v16 = [v4 decodeObjectOfClasses:v14 forKey:@"BytesPerRow"];
-      v67 = v4;
-      v17 = [v4 decodeObjectOfClasses:v11 forKey:@"PixelData"];
+      v16 = [coderCopy decodeObjectOfClasses:v14 forKey:@"BytesPerRow"];
+      v67 = coderCopy;
+      v17 = [coderCopy decodeObjectOfClasses:v11 forKey:@"PixelData"];
       v18 = [(size_t *)v12 objectAtIndexedSubscript:0];
-      v69 = [v18 integerValue];
+      integerValue2 = [v18 integerValue];
 
       v19 = [v15 objectAtIndexedSubscript:0];
-      v68 = [v19 integerValue];
+      integerValue3 = [v19 integerValue];
 
       v70 = &v67;
       (__chkstk_darwin)();
@@ -218,12 +218,12 @@
           v30[v26] = [v37 integerValue];
 
           v38 = [v15 objectAtIndexedSubscript:v26 + 1];
-          v39 = [v38 integerValue];
-          v77[v26] = v39;
+          integerValue4 = [v38 integerValue];
+          v77[v26] = integerValue4;
 
           v40 = [v16 objectAtIndexedSubscript:v26];
-          v41 = [v40 integerValue];
-          planeBytesPerRow[v26] = v41;
+          integerValue5 = [v40 integerValue];
+          planeBytesPerRow[v26] = integerValue5;
 
           v9 = v75;
           v26 = v26 + 1;
@@ -234,18 +234,18 @@
 
       pixelBufferOut = 0;
       v42 = objc_opt_class();
-      v4 = v67;
+      coderCopy = v67;
       v43 = [v67 decodeObjectOfClass:v42 forKey:@"PixelFormat"];
 
-      v44 = [(size_t *)v43 integerValue];
-      v45 = CVPixelBufferCreateWithPlanarBytes(kCFAllocatorDefault, v69, v68, v44, 0, 0, v9, v21, planeWidth, v77, planeBytesPerRow, sub_100003694, 0, 0, &pixelBufferOut);
+      integerValue6 = [(size_t *)v43 integerValue];
+      v45 = CVPixelBufferCreateWithPlanarBytes(kCFAllocatorDefault, integerValue2, integerValue3, integerValue6, 0, 0, v9, v21, planeWidth, v77, planeBytesPerRow, sub_100003694, 0, 0, &pixelBufferOut);
       if (v45)
       {
         v46 = v45;
         v47 = sub_100003650();
         v48 = os_log_type_enabled(v47, OS_LOG_TYPE_ERROR);
         v49 = v74;
-        self = v71;
+        self = selfCopy;
         if (v48)
         {
           *buf = 67109120;
@@ -253,12 +253,12 @@
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "failed to create planar CVPixelBuffer: %d", buf, 8u);
         }
 
-        v50 = 0;
+        selfCopy3 = 0;
       }
 
       else
       {
-        v78.receiver = v71;
+        v78.receiver = selfCopy;
         v78.super_class = _SerializableCVPixelBuffer;
         v65 = [(_SerializableCVPixelBuffer *)&v78 init];
         v49 = v74;
@@ -268,35 +268,35 @@
         }
 
         self = v65;
-        v50 = self;
+        selfCopy3 = self;
       }
     }
 
     else
     {
-      v52 = [v4 decodeObjectOfClasses:v11 forKey:@"PixelData"];
+      v52 = [coderCopy decodeObjectOfClasses:v11 forKey:@"PixelData"];
       v53 = [v52 objectAtIndexedSubscript:0];
 
       v70 = malloc_type_malloc([v53 length], 0x74067141uLL);
       v77 = v53;
       memcpy(v70, [v53 bytes], objc_msgSend(v53, "length"));
       pixelBufferOut = 0;
-      v54 = [v4 decodeObjectOfClasses:v8 forKey:@"Width"];
-      v55 = [v4 decodeObjectOfClasses:v8 forKey:@"Height"];
-      v56 = [v4 decodeObjectOfClasses:v8 forKey:@"BytesPerRow"];
-      v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PixelFormat"];
+      v54 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Width"];
+      v55 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Height"];
+      v56 = [coderCopy decodeObjectOfClasses:v8 forKey:@"BytesPerRow"];
+      v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PixelFormat"];
 
       planeBytesPerRow = v57;
-      v69 = [(size_t *)v57 integerValue];
+      integerValue2 = [(size_t *)v57 integerValue];
       v75 = v54;
       v58 = [v54 objectAtIndexedSubscript:0];
-      v59 = [v58 integerValue];
+      integerValue7 = [v58 integerValue];
       v72 = v55;
       v60 = [v55 objectAtIndexedSubscript:0];
-      v61 = [v60 integerValue];
-      v71 = v56;
+      integerValue8 = [v60 integerValue];
+      selfCopy = v56;
       v62 = [(_SerializableCVPixelBuffer *)v56 objectAtIndexedSubscript:0];
-      v63 = CVPixelBufferCreateWithBytes(kCFAllocatorDefault, v59, v61, v69, v70, [v62 integerValue], sub_100003648, 0, 0, &pixelBufferOut);
+      v63 = CVPixelBufferCreateWithBytes(kCFAllocatorDefault, integerValue7, integerValue8, integerValue2, v70, [v62 integerValue], sub_100003648, 0, 0, &pixelBufferOut);
 
       if (v63)
       {
@@ -308,7 +308,7 @@
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "failed to create CVPixelBuffer: %d", buf, 8u);
         }
 
-        v50 = 0;
+        selfCopy3 = 0;
       }
 
       else
@@ -322,7 +322,7 @@
         }
 
         self = v66;
-        v50 = self;
+        selfCopy3 = self;
       }
 
       v49 = v74;
@@ -333,10 +333,10 @@
 
   else
   {
-    v50 = 0;
+    selfCopy3 = 0;
   }
 
-  return v50;
+  return selfCopy3;
 }
 
 @end

@@ -12,16 +12,16 @@
 
 - (BOOL)vc_isFileNotFound
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696A250]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
   result = 1;
-  if (!v3 || [a1 code] != 260 && objc_msgSend(a1, "code") != 4)
+  if (!v3 || [self code] != 260 && objc_msgSend(self, "code") != 4)
   {
-    v4 = [a1 domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x1E696A798]];
+    domain2 = [self domain];
+    v5 = [domain2 isEqualToString:*MEMORY[0x1E696A798]];
 
-    if (!v5 || [a1 code] != 2)
+    if (!v5 || [self code] != 2)
     {
       return 0;
     }
@@ -32,16 +32,16 @@
 
 - (BOOL)vc_isFileAlreadyExists
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696A250]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
   result = 1;
-  if (!v3 || [a1 code] != 516)
+  if (!v3 || [self code] != 516)
   {
-    v4 = [a1 domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x1E696A798]];
+    domain2 = [self domain];
+    v5 = [domain2 isEqualToString:*MEMORY[0x1E696A798]];
 
-    if (!v5 || [a1 code] != 17)
+    if (!v5 || [self code] != 17)
     {
       return 0;
     }
@@ -109,7 +109,7 @@
     a5 = [[v13 alloc] initWithFormat:v14 arguments:&a9];
   }
 
-  v15 = [a1 _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:v12 reason:a5];
+  v15 = [self _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:v12 reason:a5];
 
   return v15;
 }
@@ -128,7 +128,7 @@
     v13 = 0;
   }
 
-  v14 = [a1 _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:0 reason:v13];
+  v14 = [self _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:0 reason:v13];
 
   return v14;
 }
@@ -163,7 +163,7 @@ LABEL_3:
 
   v15 = 0;
 LABEL_6:
-  v16 = [a1 _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:v15 reason:{v14, v19}];
+  v16 = [self _vc_voiceShortcutErrorWithCode:a3 extraUserInfo:v15 reason:{v14, v19}];
 
   v17 = *MEMORY[0x1E69E9840];
 

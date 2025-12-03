@@ -1,28 +1,28 @@
 @interface _SFPBRFButtonCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFButtonCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFButtonCardSection)initWithFacade:(id)a3;
-- (_SFPBRFButtonCardSection)initWithJSON:(id)a3;
+- (_SFPBRFButtonCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFButtonCardSection)initWithFacade:(id)facade;
+- (_SFPBRFButtonCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFButtonCardSection
 
-- (_SFPBRFButtonCardSection)initWithFacade:(id)a3
+- (_SFPBRFButtonCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFButtonCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 button];
+    button = [facadeCopy button];
 
-    if (v6)
+    if (button)
     {
       v7 = [_SFPBButtonItem alloc];
-      v8 = [v4 button];
-      v9 = [(_SFPBButtonItem *)v7 initWithFacade:v8];
+      button2 = [facadeCopy button];
+      v9 = [(_SFPBButtonItem *)v7 initWithFacade:button2];
       [(_SFPBRFButtonCardSection *)v5 setButton:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBRFButtonCardSection)initWithDictionary:(id)a3
+- (_SFPBRFButtonCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFButtonCardSection;
   v5 = [(_SFPBRFButtonCardSection *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"button"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"button"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBRFButtonCardSection)initWithJSON:(id)a3
+- (_SFPBRFButtonCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFButtonCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFButtonCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFButtonCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_button)
   {
-    v4 = [(_SFPBRFButtonCardSection *)self button];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    button = [(_SFPBRFButtonCardSection *)self button];
+    dictionaryRepresentation = [button dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"button"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"button"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"button"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"button"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFButtonCardSection *)self button];
-    v6 = [v4 button];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    button = [(_SFPBRFButtonCardSection *)self button];
+    button2 = [equalCopy button];
+    v7 = button2;
+    if ((button != 0) != (button2 == 0))
     {
-      v8 = [(_SFPBRFButtonCardSection *)self button];
-      if (!v8)
+      button3 = [(_SFPBRFButtonCardSection *)self button];
+      if (!button3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFButtonCardSection *)self button];
-      v11 = [v4 button];
-      v12 = [v10 isEqual:v11];
+      v9 = button3;
+      button4 = [(_SFPBRFButtonCardSection *)self button];
+      button5 = [equalCopy button];
+      v12 = [button4 isEqual:button5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFButtonCardSection *)self button];
-  if (v4)
+  toCopy = to;
+  button = [(_SFPBRFButtonCardSection *)self button];
+  if (button)
   {
     PBDataWriterWriteSubmessage();
   }

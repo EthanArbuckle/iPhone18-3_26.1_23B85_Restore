@@ -1,16 +1,16 @@
 @interface _UIPrototypingMenuBoolCell
-- (_UIPrototypingMenuBoolCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_UIPrototypingMenuBoolCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_prototypingSettingDidChange;
-- (void)_switchDidChangeValue:(id)a3;
+- (void)_switchDidChangeValue:(id)value;
 @end
 
 @implementation _UIPrototypingMenuBoolCell
 
-- (_UIPrototypingMenuBoolCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_UIPrototypingMenuBoolCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = _UIPrototypingMenuBoolCell;
-  v4 = [(_UIPrototypingMenuCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_UIPrototypingMenuCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UISwitch alloc];
@@ -20,8 +20,8 @@
 
     [(UIView *)v4->_valueSwitch sizeToFit];
     [(UIControl *)v4->_valueSwitch addTarget:v4 action:sel__switchDidChangeValue_ forControlEvents:4096];
-    v8 = [(_UIPrototypingMenuCell *)v4 stackView];
-    [v8 addArrangedSubview:v4->_valueSwitch];
+    stackView = [(_UIPrototypingMenuCell *)v4 stackView];
+    [stackView addArrangedSubview:v4->_valueSwitch];
 
     [(UITableViewCell *)v4 setSelectionStyle:0];
   }
@@ -34,18 +34,18 @@
   v7.receiver = self;
   v7.super_class = _UIPrototypingMenuBoolCell;
   [(_UIPrototypingMenuCell *)&v7 _prototypingSettingDidChange];
-  v3 = [(_UIPrototypingMenuCell *)self prototypingSetting];
-  v4 = [v3 currentValue];
-  v5 = [v4 BOOLValue];
-  v6 = [(_UIPrototypingMenuBoolCell *)self valueSwitch];
-  [v6 setOn:v5];
+  prototypingSetting = [(_UIPrototypingMenuCell *)self prototypingSetting];
+  currentValue = [prototypingSetting currentValue];
+  bOOLValue = [currentValue BOOLValue];
+  valueSwitch = [(_UIPrototypingMenuBoolCell *)self valueSwitch];
+  [valueSwitch setOn:bOOLValue];
 }
 
-- (void)_switchDidChangeValue:(id)a3
+- (void)_switchDidChangeValue:(id)value
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "isOn")}];
-  v4 = [(_UIPrototypingMenuCell *)self prototypingSetting];
-  [v4 setCurrentValue:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(value, "isOn")}];
+  prototypingSetting = [(_UIPrototypingMenuCell *)self prototypingSetting];
+  [prototypingSetting setCurrentValue:v5];
 }
 
 @end

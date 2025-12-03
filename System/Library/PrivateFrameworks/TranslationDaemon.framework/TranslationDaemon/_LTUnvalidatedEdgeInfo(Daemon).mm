@@ -10,18 +10,18 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 alternativeDescription];
-    v6 = [v5 alternativeType];
-    if (v6 == 1)
+    alternativeDescription = [v4 alternativeDescription];
+    alternativeType = [alternativeDescription alternativeType];
+    if (alternativeType == 1)
     {
-      v10 = [v5 meaningDescription];
-      v7 = v10;
-      if (v10)
+      meaningDescription = [alternativeDescription meaningDescription];
+      genderDescription = meaningDescription;
+      if (meaningDescription)
       {
-        v11 = [v10 definition];
-        if ([v11 length])
+        definition = [meaningDescription definition];
+        if ([definition length])
         {
-          v8 = [a1 meaningEdgeInfoWithTargetPhraseIndex:objc_msgSend(v4 targetLinkIndex:"translationPhraseIndex") meaningDescription:{objc_msgSend(v4, "selectionSpanIndex"), v11}];
+          v8 = [self meaningEdgeInfoWithTargetPhraseIndex:objc_msgSend(v4 targetLinkIndex:"translationPhraseIndex") meaningDescription:{objc_msgSend(v4, "selectionSpanIndex"), definition}];
         }
 
         else
@@ -47,7 +47,7 @@
 
     else
     {
-      if (v6)
+      if (alternativeType)
       {
         v8 = 0;
 LABEL_23:
@@ -55,10 +55,10 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v7 = [v5 genderDescription];
-      if (v7)
+      genderDescription = [alternativeDescription genderDescription];
+      if (genderDescription)
       {
-        v8 = [a1 genderEdgeInfoWithTargetPhraseIndex:objc_msgSend(v4 targetLinkIndex:"translationPhraseIndex") gender:objc_msgSend(v4 defaultGender:{"selectionSpanIndex"), objc_msgSend(v7, "gender") != 0, objc_msgSend(v7, "defaultGender") != 0}];
+        v8 = [self genderEdgeInfoWithTargetPhraseIndex:objc_msgSend(v4 targetLinkIndex:"translationPhraseIndex") gender:objc_msgSend(v4 defaultGender:{"selectionSpanIndex"), objc_msgSend(genderDescription, "gender") != 0, objc_msgSend(genderDescription, "defaultGender") != 0}];
 LABEL_22:
 
         goto LABEL_23;
@@ -91,14 +91,14 @@ LABEL_24:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 alternative_description_index];
-  if ([v7 count] > v8)
+  alternative_description_index = [v6 alternative_description_index];
+  if ([v7 count] > alternative_description_index)
   {
-    v9 = [v7 objectAtIndexedSubscript:v8];
-    v10 = [v9 alternative_type];
-    if (v10)
+    v9 = [v7 objectAtIndexedSubscript:alternative_description_index];
+    alternative_type = [v9 alternative_type];
+    if (alternative_type)
     {
-      if (v10 != 1)
+      if (alternative_type != 1)
       {
         v14 = 0;
 LABEL_23:
@@ -106,14 +106,14 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v11 = [v9 meaning_description];
-      v12 = v11;
-      if (v11)
+      meaning_description = [v9 meaning_description];
+      gender_description = meaning_description;
+      if (meaning_description)
       {
-        v13 = [v11 definition];
-        if ([v13 length])
+        definition = [meaning_description definition];
+        if ([definition length])
         {
-          v14 = [a1 meaningEdgeInfoWithTargetPhraseIndex:objc_msgSend(v6 targetLinkIndex:"translation_phrase_index") meaningDescription:{objc_msgSend(v6, "selection_span_index"), v13}];
+          v14 = [self meaningEdgeInfoWithTargetPhraseIndex:objc_msgSend(v6 targetLinkIndex:"translation_phrase_index") meaningDescription:{objc_msgSend(v6, "selection_span_index"), definition}];
         }
 
         else
@@ -139,10 +139,10 @@ LABEL_23:
 
     else
     {
-      v12 = [v9 gender_description];
-      if (v12)
+      gender_description = [v9 gender_description];
+      if (gender_description)
       {
-        v14 = [a1 genderEdgeInfoWithTargetPhraseIndex:objc_msgSend(v6 targetLinkIndex:"translation_phrase_index") gender:objc_msgSend(v6 defaultGender:{"selection_span_index"), objc_msgSend(v12, "gender") != 0, objc_msgSend(v12, "default_gender") != 0}];
+        v14 = [self genderEdgeInfoWithTargetPhraseIndex:objc_msgSend(v6 targetLinkIndex:"translation_phrase_index") gender:objc_msgSend(v6 defaultGender:{"selection_span_index"), objc_msgSend(gender_description, "gender") != 0, objc_msgSend(gender_description, "default_gender") != 0}];
 LABEL_22:
 
         goto LABEL_23;
@@ -162,7 +162,7 @@ LABEL_22:
   v15 = _LTOSLogDisambiguation();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
   {
-    [(_LTUnvalidatedEdgeInfo(Daemon) *)v15 unvalidatedEdgeWithFTAlternative:v7 descriptions:v8];
+    [(_LTUnvalidatedEdgeInfo(Daemon) *)v15 unvalidatedEdgeWithFTAlternative:v7 descriptions:alternative_description_index];
   }
 
   v14 = 0;

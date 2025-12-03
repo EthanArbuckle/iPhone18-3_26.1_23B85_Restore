@@ -1,18 +1,18 @@
 @interface AppInstallationEvent
-+ (id)additionalMetricsWithRestoreInstalls:(id)a3;
-+ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)a3;
-+ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)a3 bag:(id)a4;
-+ (id)metricsOverlayWithPurchaseInfo:(id)a3 bag:(id)a4;
++ (id)additionalMetricsWithRestoreInstalls:(id)installs;
++ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)install;
++ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)install bag:(id)bag;
++ (id)metricsOverlayWithPurchaseInfo:(id)info bag:(id)bag;
 - (_TtC9appstored20AppInstallationEvent)init;
 @end
 
 @implementation AppInstallationEvent
 
-+ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)a3
++ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)install
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1001688F0(v4);
+  installCopy = install;
+  v5 = sub_1001688F0(installCopy);
 
   if (v5)
   {
@@ -27,12 +27,12 @@
   return v6.super.isa;
 }
 
-+ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)a3 bag:(id)a4
++ (id)downloadLoadURLEventMetricsOverlayWithInstall:(id)install bag:(id)bag
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_100168B50(v6, v7);
+  installCopy = install;
+  bagCopy = bag;
+  v8 = sub_100168B50(installCopy, bagCopy);
 
   if (v8)
   {
@@ -47,19 +47,19 @@
   return v9.super.isa;
 }
 
-+ (id)metricsOverlayWithPurchaseInfo:(id)a3 bag:(id)a4
++ (id)metricsOverlayWithPurchaseInfo:(id)info bag:(id)bag
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = a4;
-  sub_100169860(v6, v7);
+  infoCopy = info;
+  bagCopy = bag;
+  sub_100169860(infoCopy, bagCopy);
 
   v8.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   return v8.super.isa;
 }
 
-+ (id)additionalMetricsWithRestoreInstalls:(id)a3
++ (id)additionalMetricsWithRestoreInstalls:(id)installs
 {
   sub_10009FAD4(0, &qword_10059E848);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

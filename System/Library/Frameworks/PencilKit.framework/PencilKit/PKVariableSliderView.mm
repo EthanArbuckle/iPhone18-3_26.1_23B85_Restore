@@ -1,6 +1,6 @@
 @interface PKVariableSliderView
 - (CGSize)intrinsicContentSize;
-- (void)_stringFromNumber:(void *)a1;
+- (void)_stringFromNumber:(void *)number;
 - (void)layoutSubviews;
 - (void)sendValueChanged;
 - (void)setupViewsIfNecessary;
@@ -9,53 +9,53 @@
 
 @implementation PKVariableSliderView
 
-- (void)_stringFromNumber:(void *)a1
+- (void)_stringFromNumber:(void *)number
 {
-  v2 = a1;
-  if (a1)
+  numberCopy = number;
+  if (number)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v4 setNumberStyle:1];
-    [v4 setMinimumFractionDigits:v2[58]];
-    [v4 setMaximumFractionDigits:v2[58]];
+    [v4 setMinimumFractionDigits:numberCopy[58]];
+    [v4 setMaximumFractionDigits:numberCopy[58]];
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
-    v2 = [v4 stringFromNumber:v5];
+    numberCopy = [v4 stringFromNumber:v5];
   }
 
-  return v2;
+  return numberCopy;
 }
 
 - (void)setupViewsIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 424))
+    if (!*(self + 424))
     {
       v2 = [MEMORY[0x1E69DC730] effectWithStyle:7];
       v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v2];
       [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v3 _setContinuousCornerRadius:8.0];
       [v3 setClipsToBounds:1];
-      v4 = *(a1 + 424);
-      *(a1 + 424) = v3;
+      v4 = *(self + 424);
+      *(self + 424) = v3;
       v5 = v3;
 
-      [a1 addSubview:*(a1 + 424)];
+      [self addSubview:*(self + 424)];
     }
 
-    if (!*(a1 + 408))
+    if (!*(self + 408))
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DCF60]);
-      v7 = *(a1 + 408);
-      *(a1 + 408) = v6;
+      v7 = *(self + 408);
+      *(self + 408) = v6;
 
-      [*(a1 + 408) setTranslatesAutoresizingMaskIntoConstraints:0];
-      [*(a1 + 408) addTarget:a1 action:sel_sliderValueChanged forControlEvents:4096];
-      [a1 addSubview:*(a1 + 408)];
-      v8 = *(a1 + 472);
+      [*(self + 408) setTranslatesAutoresizingMaskIntoConstraints:0];
+      [*(self + 408) addTarget:self action:sel_sliderValueChanged forControlEvents:4096];
+      [self addSubview:*(self + 408)];
+      v8 = *(self + 472);
       if (v8 >= 0.0)
       {
-        v9 = *(a1 + 472);
+        v9 = *(self + 472);
       }
 
       else
@@ -81,11 +81,11 @@
       {
         v16 = fmax(v8 + v10 * -0.5, 0.0);
         *&v16 = v16;
-        [*(a1 + 408) setMinimumValue:v16];
-        [*(a1 + 408) minimumValue];
+        [*(self + 408) setMinimumValue:v16];
+        [*(self + 408) minimumValue];
         v18 = v10 + v17;
         *&v18 = v18;
-        [*(a1 + 408) setMaximumValue:v18];
+        [*(self + 408) setMaximumValue:v18];
       }
 
       else
@@ -97,31 +97,31 @@
         }
 
         *&v13 = v13;
-        [*(a1 + 408) setMaximumValue:v13];
-        [*(a1 + 408) maximumValue];
+        [*(self + 408) setMaximumValue:v13];
+        [*(self + 408) maximumValue];
         v15 = v14 - v10;
         *&v15 = v15;
-        [*(a1 + 408) setMinimumValue:v15];
+        [*(self + 408) setMinimumValue:v15];
       }
 
-      v19 = *(a1 + 472);
+      v19 = *(self + 472);
       *&v19 = v19;
-      [*(a1 + 408) setValue:v19];
+      [*(self + 408) setValue:v19];
     }
 
-    if (!*(a1 + 416))
+    if (!*(self + 416))
     {
       v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-      v21 = *(a1 + 416);
-      *(a1 + 416) = v20;
+      v21 = *(self + 416);
+      *(self + 416) = v20;
 
-      [*(a1 + 416) setTranslatesAutoresizingMaskIntoConstraints:0];
-      v22 = [(PKVariableSliderView *)a1 _stringFromNumber:?];
-      [*(a1 + 416) setText:v22];
+      [*(self + 416) setTranslatesAutoresizingMaskIntoConstraints:0];
+      v22 = [(PKVariableSliderView *)self _stringFromNumber:?];
+      [*(self + 416) setText:v22];
 
-      v23 = *(a1 + 416);
+      v23 = *(self + 416);
 
-      [a1 addSubview:v23];
+      [self addSubview:v23];
     }
   }
 }
@@ -174,8 +174,8 @@
   [(UISlider *)self->_slider value];
   v4 = v3;
   v7 = [(PKVariableSliderView *)self _stringFromNumber:v3];
-  v5 = [(UILabel *)self->_label text];
-  v6 = [v7 isEqual:v5];
+  text = [(UILabel *)self->_label text];
+  v6 = [v7 isEqual:text];
 
   if ((v6 & 1) == 0)
   {

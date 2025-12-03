@@ -3,13 +3,13 @@
 - (id)getInputStream;
 - (id)getOutputStream;
 - (void)__javaClone;
-- (void)bindWithJavaNetSocketAddress:(id)a3;
+- (void)bindWithJavaNetSocketAddress:(id)address;
 - (void)close;
 @end
 
 @implementation JavaNioSocketChannelImpl_SocketAdapter
 
-- (void)bindWithJavaNetSocketAddress:(id)a3
+- (void)bindWithJavaNetSocketAddress:(id)address
 {
   Weak = objc_loadWeak(&self->channel_);
   if (!Weak)
@@ -32,7 +32,7 @@ LABEL_8:
 
   v7.receiver = self;
   v7.super_class = JavaNioSocketChannelImpl_SocketAdapter;
-  [(JavaNetSocket *)&v7 bindWithJavaNetSocketAddress:a3];
+  [(JavaNetSocket *)&v7 bindWithJavaNetSocketAddress:address];
   [objc_loadWeak(&self->channel_) onBindWithBoolean:0];
 }
 
@@ -61,10 +61,10 @@ LABEL_8:
 {
   v7.receiver = self;
   v7.super_class = JavaNioSocketChannelImpl_SocketAdapter;
-  v3 = [(JavaNetSocket *)&v7 getOutputStream];
+  getOutputStream = [(JavaNetSocket *)&v7 getOutputStream];
   Weak = objc_loadWeak(&self->channel_);
   v5 = [JavaNioSocketChannelImpl_BlockingCheckOutputStream alloc];
-  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(v5, v3);
+  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(v5, getOutputStream);
   JreStrongAssign(&v5->channel_, Weak);
   return v5;
 }
@@ -73,10 +73,10 @@ LABEL_8:
 {
   v7.receiver = self;
   v7.super_class = JavaNioSocketChannelImpl_SocketAdapter;
-  v3 = [(JavaNetSocket *)&v7 getInputStream];
+  getInputStream = [(JavaNetSocket *)&v7 getInputStream];
   Weak = objc_loadWeak(&self->channel_);
   v5 = [JavaNioSocketChannelImpl_BlockingCheckInputStream alloc];
-  JavaIoFilterInputStream_initWithJavaIoInputStream_(v5, v3);
+  JavaIoFilterInputStream_initWithJavaIoInputStream_(v5, getInputStream);
   JreStrongAssign(&v5->channel_, Weak);
   return v5;
 }

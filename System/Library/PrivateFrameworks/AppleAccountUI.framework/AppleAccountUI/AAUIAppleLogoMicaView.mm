@@ -28,17 +28,17 @@
   v4 = [v3 pathForResource:@"SignInProgress" ofType:@"caar"];
 
   v5 = [AAUIMicaPlayer alloc];
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v7 = [(AAUIMicaPlayer *)v5 initWithPath:v4 retinaScale:?];
   [(AAUIAppleLogoMicaView *)self setMicaPlayer:v7];
 
-  v8 = [(AAUIAppleLogoMicaView *)self micaPlayer];
-  v9 = [(AAUIAppleLogoMicaView *)self layer];
-  [v8 addToLayer:v9 onTop:1 gravity:*MEMORY[0x1E6979DE8]];
+  micaPlayer = [(AAUIAppleLogoMicaView *)self micaPlayer];
+  layer = [(AAUIAppleLogoMicaView *)self layer];
+  [micaPlayer addToLayer:layer onTop:1 gravity:*MEMORY[0x1E6979DE8]];
 
-  v10 = [(AAUIAppleLogoMicaView *)self micaPlayer];
-  [v10 pause];
+  micaPlayer2 = [(AAUIAppleLogoMicaView *)self micaPlayer];
+  [micaPlayer2 pause];
 
   v11 = objc_opt_self();
   v14[0] = v11;
@@ -54,16 +54,16 @@
   v5.super_class = AAUIAppleLogoMicaView;
   [(AAUIAppleLogoMicaView *)&v5 layoutSubviews];
   micaPlayer = self->_micaPlayer;
-  v4 = [(AAUIAppleLogoMicaView *)self layer];
-  [(AAUIMicaPlayer *)micaPlayer moveAndResizeWithinParentLayer:v4 usingGravity:*MEMORY[0x1E6979DE8] animate:0];
+  layer = [(AAUIAppleLogoMicaView *)self layer];
+  [(AAUIMicaPlayer *)micaPlayer moveAndResizeWithinParentLayer:layer usingGravity:*MEMORY[0x1E6979DE8] animate:0];
 }
 
 - (void)_updateColors
 {
   v15[2] = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v3 = [(AAUIAppleLogoMicaView *)self micaPlayer];
-  v4 = [v3 publishedLayerWithKey:@"Transparency Gradient" required:1];
+  micaPlayer = [(AAUIAppleLogoMicaView *)self micaPlayer];
+  v4 = [micaPlayer publishedLayerWithKey:@"Transparency Gradient" required:1];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -76,24 +76,24 @@
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E6979518] disableActions];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v7 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v8 = [v7 colorWithAlphaComponent:0.7];
-    v9 = [(AAUIAppleLogoMicaView *)self traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v8 = [systemBlueColor colorWithAlphaComponent:0.7];
+    traitCollection = [(AAUIAppleLogoMicaView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v10 == 1)
+    if (userInterfaceStyle == 1)
     {
       v15[0] = [v8 CGColor];
       v11 = v15;
-      v12 = v7;
+      v12 = systemBlueColor;
     }
 
     else
     {
-      v14 = [v7 CGColor];
-      v11 = &v14;
+      cGColor = [systemBlueColor CGColor];
+      v11 = &cGColor;
       v12 = v8;
     }
 
@@ -101,15 +101,15 @@
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     [v5 setColors:v13];
 
-    [MEMORY[0x1E6979518] setDisableActions:v6];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions];
   }
 
   else
   {
-    v7 = _AAUILogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    systemBlueColor = _AAUILogSystem();
+    if (os_log_type_enabled(systemBlueColor, OS_LOG_TYPE_ERROR))
     {
-      [(AAUIAppleLogoMicaView *)v7 _updateColors];
+      [(AAUIAppleLogoMicaView *)systemBlueColor _updateColors];
     }
   }
 }

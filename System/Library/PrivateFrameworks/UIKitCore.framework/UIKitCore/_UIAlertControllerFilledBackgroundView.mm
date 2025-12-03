@@ -1,19 +1,19 @@
 @interface _UIAlertControllerFilledBackgroundView
-- (_UIAlertControllerFilledBackgroundView)initWithFrame:(CGRect)a3;
+- (_UIAlertControllerFilledBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setFillColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setFillColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 @end
 
 @implementation _UIAlertControllerFilledBackgroundView
 
-- (_UIAlertControllerFilledBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerFilledBackgroundView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UIAlertControllerFilledBackgroundView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,9 +36,9 @@
   v4 = v3;
   [(UIView *)self->_backgroundView setFrame:?];
   v5 = v4 * 0.5;
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v9 = fmin(v5, 32.0);
   if (!IsAccessibilityCategory)
@@ -57,35 +57,35 @@
   [(UIView *)backgroundView setAlpha:v11];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fillColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_fillColor, color);
     [(UIView *)self->_backgroundView setBackgroundColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(UIView *)self->_backgroundView layer];
-  [v4 setCornerRadius:a3];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v4 = [(UIView *)self->_backgroundView layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMaskedCorners:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_isHighlighted != a3)
+  if (self->_isHighlighted != highlighted)
   {
-    v3 = a3;
+    highlightedCopy = highlighted;
     if (+[UIView areAnimationsEnabled])
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -93,14 +93,14 @@
       v6[2] = __57___UIAlertControllerFilledBackgroundView_setHighlighted___block_invoke;
       v6[3] = &unk_1E70F35E0;
       v6[4] = self;
-      v7 = v3;
+      v7 = highlightedCopy;
       [UIView animateWithDuration:v6 animations:0.1];
     }
 
     else
     {
       v5 = 0.4;
-      if (!v3)
+      if (!highlightedCopy)
       {
         v5 = 1.0;
       }
@@ -108,7 +108,7 @@
       [(UIView *)self->_backgroundView setAlpha:v5];
     }
 
-    self->_isHighlighted = v3;
+    self->_isHighlighted = highlightedCopy;
   }
 }
 

@@ -38,7 +38,7 @@
 
 - (NSAttributedString)content
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214554804();
 
   return v3;

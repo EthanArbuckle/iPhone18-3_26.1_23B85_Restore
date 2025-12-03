@@ -1,22 +1,22 @@
 @interface ATDispatchConnector
 - (_TtC15ScreenTimeAgent19ATDispatchConnector)init;
-- (void)tellAskToAboutAskForTimeResponseWithAnswer:(int64_t)a3 timeApproved:(NSNumber *)a4 requestIdentifier:(NSString *)a5 responderDSID:(NSNumber *)a6 completionHandler:(id)a7;
+- (void)tellAskToAboutAskForTimeResponseWithAnswer:(int64_t)answer timeApproved:(NSNumber *)approved requestIdentifier:(NSString *)identifier responderDSID:(NSNumber *)d completionHandler:(id)handler;
 @end
 
 @implementation ATDispatchConnector
 
-- (void)tellAskToAboutAskForTimeResponseWithAnswer:(int64_t)a3 timeApproved:(NSNumber *)a4 requestIdentifier:(NSString *)a5 responderDSID:(NSNumber *)a6 completionHandler:(id)a7
+- (void)tellAskToAboutAskForTimeResponseWithAnswer:(int64_t)answer timeApproved:(NSNumber *)approved requestIdentifier:(NSString *)identifier responderDSID:(NSNumber *)d completionHandler:(id)handler
 {
   v13 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v26 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = answer;
+  v18[3] = approved;
+  v18[4] = identifier;
+  v18[5] = d;
   v18[6] = v17;
   v18[7] = self;
   v19 = type metadata accessor for TaskPriority();
@@ -31,10 +31,10 @@
   v21[3] = 0;
   v21[4] = &unk_100140550;
   v21[5] = v20;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = self;
+  approvedCopy = approved;
+  identifierCopy = identifier;
+  dCopy = d;
+  selfCopy = self;
   sub_10010D4C0(0, 0, v16, &unk_100140230, v21);
 }
 

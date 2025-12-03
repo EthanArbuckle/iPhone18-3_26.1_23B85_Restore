@@ -1,28 +1,28 @@
 @interface PXStoryDefaultAssetsProducerFactory
-- (id)assetsProducerForConfiguration:(id)a3;
+- (id)assetsProducerForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultAssetsProducerFactory
 
-- (id)assetsProducerForConfiguration:(id)a3
+- (id)assetsProducerForConfiguration:(id)configuration
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 options];
-  v5 = [v3 assetCollection];
-  v6 = [v3 keyAsset];
-  v7 = [v3 assets];
-  v8 = [v3 referencePersons];
-  v9 = [v3 persistableRecipe];
-  if ((v4 & 2) != 0 && v6)
+  configurationCopy = configuration;
+  options = [configurationCopy options];
+  assetCollection = [configurationCopy assetCollection];
+  keyAsset = [configurationCopy keyAsset];
+  assets = [configurationCopy assets];
+  referencePersons = [configurationCopy referencePersons];
+  persistableRecipe = [configurationCopy persistableRecipe];
+  if ((options & 2) != 0 && keyAsset)
   {
-    v53[0] = v6;
+    v53[0] = keyAsset;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
     v11 = [PXStaticDisplayAssetsDataSource alloc];
     v12 = v11;
-    if (v5)
+    if (assetCollection)
     {
-      v52 = v5;
+      v52 = assetCollection;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
       v14 = [(PXStaticDisplayAssetsDataSource *)v12 initWithAssetCollectionBySection:v13 assetsBySection:0 curatedAssetsBySection:0 keyAssetsBySection:v10 sectionContent:0];
     }
@@ -42,9 +42,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = (v4 >> 8) & 2 | ((v4 & 2) >> 1);
+    v15 = (options >> 8) & 2 | ((options & 2) >> 1);
     v16 = [PXStoryPHAssetCollectionAssetsProducer alloc];
-    v17 = v6;
+    v17 = keyAsset;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v18 = v17;
@@ -55,15 +55,15 @@
       v18 = 0;
     }
 
-    v22 = -[PXStoryPHAssetCollectionAssetsProducer initWithAssetCollection:keyAsset:referencePersons:curationKind:options:](v16, "initWithAssetCollection:keyAsset:referencePersons:curationKind:options:", v5, v18, v8, [v3 curationKind], v15);
+    v22 = -[PXStoryPHAssetCollectionAssetsProducer initWithAssetCollection:keyAsset:referencePersons:curationKind:options:](v16, "initWithAssetCollection:keyAsset:referencePersons:curationKind:options:", assetCollection, v18, referencePersons, [configurationCopy curationKind], v15);
     goto LABEL_32;
   }
 
-  if (!(v6 | v7))
+  if (!(keyAsset | assets))
   {
-    if (v9)
+    if (persistableRecipe)
     {
-      v22 = [[PXStoryPersistableRecipeAssetsProducer alloc] initWithPersistableRecipe:v9];
+      v22 = [[PXStoryPersistableRecipeAssetsProducer alloc] initWithPersistableRecipe:persistableRecipe];
       goto LABEL_32;
     }
 
@@ -78,7 +78,7 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && v5)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && assetCollection)
   {
     v19 = [PXStaticDisplayAssetsDataSource alloc];
     goto LABEL_24;
@@ -87,20 +87,20 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v6)
+    if (keyAsset)
     {
 LABEL_23:
       v19 = [PXStaticDisplayAssetsDataSource alloc];
-      if (!v5)
+      if (!assetCollection)
       {
         v23 = 0;
         v42 = 1;
-        if (v7)
+        if (assets)
         {
 LABEL_25:
-          v45 = v7;
+          v45 = assets;
           v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-          if (v6)
+          if (keyAsset)
           {
             goto LABEL_26;
           }
@@ -110,14 +110,14 @@ LABEL_25:
 
 LABEL_36:
         v24 = 0;
-        if (v6)
+        if (keyAsset)
         {
 LABEL_26:
-          v44 = v6;
+          v44 = keyAsset;
           v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
           v10 = [(PXStaticDisplayAssetsDataSource *)v19 initWithAssetCollectionBySection:v23 assetsBySection:v24 curatedAssetsBySection:0 keyAssetsBySection:v25 sectionContent:0];
 
-          if (!v7)
+          if (!assets)
           {
             goto LABEL_28;
           }
@@ -127,7 +127,7 @@ LABEL_26:
 
 LABEL_37:
         v10 = [(PXStaticDisplayAssetsDataSource *)v19 initWithAssetCollectionBySection:v23 assetsBySection:v24 curatedAssetsBySection:0 keyAssetsBySection:0 sectionContent:0];
-        if (!v7)
+        if (!assets)
         {
 LABEL_28:
           if ((v42 & 1) == 0)
@@ -149,10 +149,10 @@ LABEL_27:
       }
 
 LABEL_24:
-      v46 = v5;
+      v46 = assetCollection;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
       v42 = 0;
-      if (v7)
+      if (assets)
       {
         goto LABEL_25;
       }
@@ -161,11 +161,11 @@ LABEL_24:
     }
   }
 
-  v28 = v7;
+  v28 = assets;
   v43 = v28;
-  if (v5)
+  if (assetCollection)
   {
-    v29 = v5;
+    v29 = assetCollection;
   }
 
   else
@@ -181,16 +181,16 @@ LABEL_24:
 
   v41 = v33;
   v40 = [MEMORY[0x1E6978650] fetchCollectionsInCollectionList:v33 options:0];
-  v34 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v40 options:32 * (v6 != 0)];
-  if (v6)
+  v34 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v40 options:32 * (keyAsset != 0)];
+  if (keyAsset)
   {
     v49 = v31;
-    v50 = v6;
+    v50 = keyAsset;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     [(PXPhotosDataSourceConfiguration *)v34 setExistingKeyAssetsFetchResults:v35];
   }
 
-  if (v7)
+  if (assets)
   {
     v47 = v31;
     v48 = v43;

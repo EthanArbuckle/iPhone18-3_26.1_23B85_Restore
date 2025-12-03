@@ -1,15 +1,15 @@
 @interface UIStatusBarLockScreenForegroundStyleAttributes
-- (CGPoint)positionForMoonMaskInBounds:(CGRect)a3;
+- (CGPoint)positionForMoonMaskInBounds:(CGRect)bounds;
 - (UIEdgeInsets)edgeInsetsForBatteryInsides;
-- (double)sizeForMoonMaskVisible:(BOOL)a3;
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3;
+- (double)sizeForMoonMaskVisible:(BOOL)visible;
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity;
 @end
 
 @implementation UIStatusBarLockScreenForegroundStyleAttributes
 
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     return 12;
   }
@@ -43,21 +43,21 @@
   return result;
 }
 
-- (double)sizeForMoonMaskVisible:(BOOL)a3
+- (double)sizeForMoonMaskVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   if (v5 <= 2.5)
   {
     [(UIStatusBarForegroundStyleAttributes *)self scale];
     v8 = 15.0;
-    if (v3)
+    if (visibleCopy)
     {
       v8 = 10.0;
     }
 
     v9 = 13.5;
-    if (v3)
+    if (visibleCopy)
     {
       v9 = 9.5;
     }
@@ -76,7 +76,7 @@
   else
   {
     result = 13.3333333;
-    if (v3)
+    if (visibleCopy)
     {
       return 9.66666667;
     }
@@ -85,12 +85,12 @@
   return result;
 }
 
-- (CGPoint)positionForMoonMaskInBounds:(CGRect)a3
+- (CGPoint)positionForMoonMaskInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIStatusBarForegroundStyleAttributes *)self scale];
   if (v8 <= 2.5)
   {

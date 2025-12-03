@@ -1,13 +1,13 @@
 @interface AppleConnectActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation AppleConnectActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v4 = [a4 chrome];
-  [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:v4 withProxyURL:0];
+  chrome = [context chrome];
+  [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:chrome withProxyURL:0];
 }
 
 @end

@@ -23,10 +23,10 @@
   v7 = 1.0;
   do
   {
-    v8 = [(GKCoherentNoiseSource *)self seed];
+    seed = [(GKCoherentNoiseSource *)self seed];
     v18[0] = v15;
     v18[1] = v17;
-    v9 = fabs(getGradientCoherentNoise(v18, v5 + v8));
+    v9 = fabs(getGradientCoherentNoise(v18, v5 + seed));
     v10 = (1.0 - v9) * (1.0 - v9) * v7;
     v7 = fmax(fmin(v10 + v10, 1.0), 0.0);
     v6 = v6 + v10 * self->m_weights[v5];
@@ -44,12 +44,12 @@
 {
   [(GKCoherentNoiseSource *)self frequency];
   v4 = v3;
-  v5 = [(GKCoherentNoiseSource *)self octaveCount];
+  octaveCount = [(GKCoherentNoiseSource *)self octaveCount];
   [(GKCoherentNoiseSource *)self lacunarity];
   v7 = v6;
-  v8 = [(GKCoherentNoiseSource *)self seed];
+  seed = [(GKCoherentNoiseSource *)self seed];
 
-  return [GKRidgedNoiseSource ridgedNoiseSourceWithFrequency:v5 octaveCount:v8 lacunarity:v4 seed:v7];
+  return [GKRidgedNoiseSource ridgedNoiseSourceWithFrequency:octaveCount octaveCount:seed lacunarity:v4 seed:v7];
 }
 
 @end

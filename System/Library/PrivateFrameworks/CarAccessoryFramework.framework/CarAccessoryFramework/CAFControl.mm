@@ -1,10 +1,10 @@
 @interface CAFControl
-+ (id)controlWithService:(id)a3 config:(id)a4;
++ (id)controlWithService:(id)service config:(id)config;
 + (id)registeredControlClasses;
-+ (void)_appendParametersDescription:(id)a3 parameters:(id)a4;
++ (void)_appendParametersDescription:(id)description parameters:(id)parameters;
 + (void)load;
-+ (void)registerControlClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)registerControlClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)notifies;
 - (BOOL)supportsDisable;
 - (BOOL)supportsError;
@@ -12,12 +12,12 @@
 - (BOOL)supportsStates;
 - (CAFAccessory)accessory;
 - (CAFCar)car;
-- (CAFControl)initWithService:(id)a3 config:(id)a4;
+- (CAFControl)initWithService:(id)service config:(id)config;
 - (CAFService)service;
 - (NSString)description;
 - (NSString)fullDescription;
 - (id)allInstanceIDs;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
 - (id)parametersDescription;
 - (id)pluginID;
 - (id)propertiesDescription;
@@ -26,14 +26,14 @@
 - (unint64_t)hash;
 - (void)_didUpdate;
 - (void)dealloc;
-- (void)handleNotificationWithValue:(id)a3;
-- (void)handleRequestWithValue:(id)a3 withResponse:(id)a4;
-- (void)handleUpdateWithInstanceID:(id)a3 value:(id)a4;
-- (void)handleValueAndError:(id)a3 value:(id)a4;
-- (void)notifyWithValue:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)requestWithValue:(id)a3 response:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)handleNotificationWithValue:(id)value;
+- (void)handleRequestWithValue:(id)value withResponse:(id)response;
+- (void)handleUpdateWithInstanceID:(id)d value:(id)value;
+- (void)handleValueAndError:(id)error value:(id)value;
+- (void)notifyWithValue:(id)value;
+- (void)registerObserver:(id)observer;
+- (void)requestWithValue:(id)value response:(id)response;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFControl
@@ -49,7 +49,7 @@
   }
 }
 
-+ (void)registerControlClass:(Class)a3
++ (void)registerControlClass:(Class)class
 {
   if (registerControlClass__onceToken != -1)
   {
@@ -59,8 +59,8 @@
   obj = _registeredControlClasses;
   objc_sync_enter(obj);
   v4 = _registeredControlClasses;
-  v5 = [(objc_class *)a3 controlIdentifier];
-  [v4 setObject:a3 forKeyedSubscript:v5];
+  controlIdentifier = [(objc_class *)class controlIdentifier];
+  [v4 setObject:class forKeyedSubscript:controlIdentifier];
 
   objc_sync_exit(obj);
 }
@@ -82,11 +82,11 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
   return v3;
 }
 
-+ (id)controlWithService:(id)a3 config:(id)a4
++ (id)controlWithService:(id)service config:(id)config
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CAFCarConfiguration getType:v5];
+  configCopy = config;
+  serviceCopy = service;
+  v7 = [CAFCarConfiguration getType:configCopy];
   v8 = +[CAFControl registeredControlClasses];
   v9 = [v8 objectForKeyedSubscript:v7];
 
@@ -95,15 +95,15 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
     v9 = objc_opt_class();
   }
 
-  v10 = [[v9 alloc] initWithService:v6 config:v5];
+  v10 = [[v9 alloc] initWithService:serviceCopy config:configCopy];
 
   return v10;
 }
 
-- (CAFControl)initWithService:(id)a3 config:(id)a4
+- (CAFControl)initWithService:(id)service config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  configCopy = config;
   v54.receiver = self;
   v54.super_class = CAFControl;
   v8 = [(CAFControl *)&v54 init];
@@ -111,9 +111,9 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
   if (v8)
   {
     v8->_valueLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_service, v6);
+    objc_storeWeak(&v8->_service, serviceCopy);
     objc_opt_class();
-    v10 = [v7 objectForKeyedSubscript:@"iid"];
+    v10 = [configCopy objectForKeyedSubscript:@"iid"];
     if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v11 = v10;
@@ -128,7 +128,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
     v9->_instanceID = v11;
 
     objc_opt_class();
-    v13 = [v7 objectForKeyedSubscript:@"iidError"];
+    v13 = [configCopy objectForKeyedSubscript:@"iidError"];
     if (v13 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v14 = v13;
@@ -143,7 +143,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
     v9->_errorInstanceID = v14;
 
     objc_opt_class();
-    v16 = [v7 objectForKeyedSubscript:@"iidDisabled"];
+    v16 = [configCopy objectForKeyedSubscript:@"iidDisabled"];
     if (v16 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v17 = v16;
@@ -158,7 +158,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
     v9->_disabledInstanceID = v17;
 
     objc_opt_class();
-    v19 = [v7 objectForKeyedSubscript:@"iidRestricted"];
+    v19 = [configCopy objectForKeyedSubscript:@"iidRestricted"];
     if (v19 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v20 = v19;
@@ -174,7 +174,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
 
     if (v9->_instanceID)
     {
-      v22 = [CAFCarConfiguration getType:v7];
+      v22 = [CAFCarConfiguration getType:configCopy];
       controlType = v9->_controlType;
       v9->_controlType = v22;
 
@@ -183,14 +183,14 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
         v37 = CAFControlLogging();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          [CAFControl initWithService:v6 config:&v9->_instanceID];
+          [CAFControl initWithService:serviceCopy config:&v9->_instanceID];
         }
 
         goto LABEL_47;
       }
 
-      v24 = [v6 pluginID];
-      v25 = [CAFCarConfiguration getUUID:v24 instanceID:v9->_instanceID];
+      pluginID = [serviceCopy pluginID];
+      v25 = [CAFCarConfiguration getUUID:pluginID instanceID:v9->_instanceID];
       uniqueIdentifier = v9->_uniqueIdentifier;
       v9->_uniqueIdentifier = v25;
 
@@ -199,7 +199,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
       v9->_typeName = v27;
 
       objc_opt_class();
-      v29 = [v7 objectForKeyedSubscript:@"priority"];
+      v29 = [configCopy objectForKeyedSubscript:@"priority"];
       if (v29 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v30 = v29;
@@ -214,7 +214,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
       v9->_priority = v30;
 
       objc_opt_class();
-      v33 = [v7 objectForKeyedSubscript:@"sender"];
+      v33 = [configCopy objectForKeyedSubscript:@"sender"];
       if (v33 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v34 = v33;
@@ -228,9 +228,9 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
       if (v34)
       {
         v9->_sender = [v34 unsignedIntegerValue];
-        v9->_hasResponse = [CAFCarConfiguration getBoolean:v7 key:@"hasResponse"];
+        v9->_hasResponse = [CAFCarConfiguration getBoolean:configCopy key:@"hasResponse"];
         objc_opt_class();
-        v35 = [v7 objectForKeyedSubscript:@"requestParameters"];
+        v35 = [configCopy objectForKeyedSubscript:@"requestParameters"];
         if (v35 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v36 = v35;
@@ -246,7 +246,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
         v9->_requestParameters = v38;
 
         objc_opt_class();
-        v40 = [v7 objectForKeyedSubscript:@"responseParameters"];
+        v40 = [configCopy objectForKeyedSubscript:@"responseParameters"];
         if (v40 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v41 = v40;
@@ -263,12 +263,12 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
 
         v9->_isNotificationEnabled = 0;
         v44 = [(CAFControl *)v9 car];
-        v45 = [v44 carManager];
-        v9->_shouldInitialize = [v45 shouldInitializeControl:v9];
+        carManager = [v44 carManager];
+        v9->_shouldInitialize = [carManager shouldInitializeControl:v9];
 
         v46 = objc_alloc(MEMORY[0x277CF89C0]);
-        v47 = [objc_opt_class() observerProtocol];
-        v48 = [v46 initWithProtocol:v47];
+        observerProtocol = [objc_opt_class() observerProtocol];
+        v48 = [v46 initWithProtocol:observerProtocol];
         observers = v9->_observers;
         v9->_observers = v48;
 
@@ -291,7 +291,7 @@ uint64_t __35__CAFControl_registerControlClass___block_invoke()
       v31 = CAFControlLogging();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        [CAFControl initWithService:v6 config:?];
+        [CAFControl initWithService:serviceCopy config:?];
       }
     }
 
@@ -319,16 +319,16 @@ LABEL_48:
 
 - (unint64_t)hash
 {
-  v2 = [(CAFControl *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(CAFControl *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -338,9 +338,9 @@ LABEL_48:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CAFControl *)v4 uniqueIdentifier];
-      v6 = [(CAFControl *)self uniqueIdentifier];
-      v7 = [v5 isEqual:v6];
+      uniqueIdentifier = [(CAFControl *)equalCopy uniqueIdentifier];
+      uniqueIdentifier2 = [(CAFControl *)self uniqueIdentifier];
+      v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
     }
 
     else
@@ -354,18 +354,18 @@ LABEL_48:
 
 - (CAFCar)car
 {
-  v2 = [(CAFControl *)self accessory];
-  v3 = [v2 car];
+  accessory = [(CAFControl *)self accessory];
+  v3 = [accessory car];
 
   return v3;
 }
 
 - (CAFAccessory)accessory
 {
-  v2 = [(CAFControl *)self service];
-  v3 = [v2 accessory];
+  service = [(CAFControl *)self service];
+  accessory = [service accessory];
 
-  return v3;
+  return accessory;
 }
 
 - (BOOL)notifies
@@ -375,48 +375,48 @@ LABEL_48:
     return 1;
   }
 
-  v4 = [(CAFControl *)self errorInstanceID];
-  if (v4)
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
+  if (errorInstanceID)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(CAFControl *)self disabledInstanceID];
-    if (v5)
+    disabledInstanceID = [(CAFControl *)self disabledInstanceID];
+    if (disabledInstanceID)
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(CAFControl *)self restrictedInstanceID];
-      v3 = v6 != 0;
+      restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
+      v3 = restrictedInstanceID != 0;
     }
   }
 
   return v3;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFControl *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFControl *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFControl *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFControl *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (NSString)description
 {
-  v2 = [(CAFControl *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFControl *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
@@ -441,13 +441,13 @@ void __24__CAFControl__didUpdate__block_invoke(uint64_t a1)
   [v3 controlDidUpdate:*(a1 + 32)];
 }
 
-- (void)requestWithValue:(id)a3 response:(id)a4
+- (void)requestWithValue:(id)value response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  responseCopy = response;
   if (![(CAFControl *)self outgoing])
   {
-    if (!v7)
+    if (!responseCopy)
     {
       goto LABEL_9;
     }
@@ -457,7 +457,7 @@ void __24__CAFControl__didUpdate__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __40__CAFControl_requestWithValue_response___block_invoke;
     block[3] = &unk_27890D5E8;
-    v17 = v7;
+    v17 = responseCopy;
     dispatch_async(v11, block);
 
     v12 = v17;
@@ -466,14 +466,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [(CAFControl *)self hasResponse];
+  hasResponse = [(CAFControl *)self hasResponse];
   v9 = [(CAFControl *)self car];
   v10 = v9;
-  if (!v8)
+  if (!hasResponse)
   {
-    [v9 notifyControl:self value:v6];
+    [v9 notifyControl:self value:valueCopy];
 
-    if (!v7)
+    if (!responseCopy)
     {
       goto LABEL_9;
     }
@@ -483,14 +483,14 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = __40__CAFControl_requestWithValue_response___block_invoke_2;
     v14[3] = &unk_27890D5E8;
-    v15 = v7;
+    v15 = responseCopy;
     dispatch_async(v13, v14);
 
     v12 = v15;
     goto LABEL_8;
   }
 
-  [v9 requestControl:self value:v6 response:v7];
+  [v9 requestControl:self value:valueCopy response:responseCopy];
 
 LABEL_9:
 }
@@ -502,22 +502,22 @@ void __40__CAFControl_requestWithValue_response___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)notifyWithValue:(id)a3
+- (void)notifyWithValue:(id)value
 {
-  v7 = a3;
+  valueCopy = value;
   if ([(CAFControl *)self outgoing])
   {
-    v4 = [(CAFControl *)self hasResponse];
+    hasResponse = [(CAFControl *)self hasResponse];
     v5 = [(CAFControl *)self car];
     v6 = v5;
-    if (v4)
+    if (hasResponse)
     {
-      [v5 requestControl:self value:v7 response:0];
+      [v5 requestControl:self value:valueCopy response:0];
     }
 
     else
     {
-      [v5 notifyControl:self value:v7];
+      [v5 notifyControl:self value:valueCopy];
     }
   }
 }
@@ -534,57 +534,57 @@ void __40__CAFControl_requestWithValue_response___block_invoke(uint64_t a1)
 
 - (BOOL)supportsError
 {
-  v2 = [(CAFControl *)self errorInstanceID];
-  v3 = v2 != 0;
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
+  v3 = errorInstanceID != 0;
 
   return v3;
 }
 
 - (BOOL)supportsDisable
 {
-  v2 = [(CAFControl *)self disabledInstanceID];
-  v3 = v2 != 0;
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
+  v3 = disabledInstanceID != 0;
 
   return v3;
 }
 
 - (BOOL)supportsRestricted
 {
-  v2 = [(CAFControl *)self restrictedInstanceID];
-  v3 = v2 != 0;
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
+  v3 = restrictedInstanceID != 0;
 
   return v3;
 }
 
 - (id)propertiesDescription
 {
-  v3 = [(CAFControl *)self hasResponse];
-  v4 = [(CAFControl *)self outgoing];
-  if (v3)
+  hasResponse = [(CAFControl *)self hasResponse];
+  outgoing = [(CAFControl *)self outgoing];
+  if (hasResponse)
   {
     v5 = @"C";
-    if (v4)
+    if (outgoing)
     {
       goto LABEL_8;
     }
 
-    v6 = [(CAFControl *)self isNotificationEnabled];
+    isNotificationEnabled = [(CAFControl *)self isNotificationEnabled];
     v7 = @"c";
   }
 
   else
   {
     v5 = @"E";
-    if (v4)
+    if (outgoing)
     {
       goto LABEL_8;
     }
 
-    v6 = [(CAFControl *)self isNotificationEnabled];
+    isNotificationEnabled = [(CAFControl *)self isNotificationEnabled];
     v7 = @"e";
   }
 
-  if (!v6)
+  if (!isNotificationEnabled)
   {
     v5 = v7;
   }
@@ -612,9 +612,9 @@ LABEL_8:
     v11 = &stru_284626CA8;
   }
 
-  v12 = [(CAFControl *)self supportsStates];
+  supportsStates = [(CAFControl *)self supportsStates];
   v13 = @"S";
-  if (!v12)
+  if (!supportsStates)
   {
     v13 = &stru_284626CA8;
   }
@@ -624,19 +624,19 @@ LABEL_8:
   return v14;
 }
 
-+ (void)_appendParametersDescription:(id)a3 parameters:(id)a4
++ (void)_appendParametersDescription:(id)description parameters:(id)parameters
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  descriptionCopy = description;
+  parametersCopy = parameters;
+  v7 = parametersCopy;
+  if (parametersCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [parametersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -652,16 +652,16 @@ LABEL_8:
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
-          objc_msgSend(v5, "appendString:", @"(");
-          v13 = [v12 formatString];
-          [v5 appendString:v13];
+          objc_msgSend(descriptionCopy, "appendString:", @"(");
+          formatString = [v12 formatString];
+          [descriptionCopy appendString:formatString];
 
           if ([v12 supportsInvalid])
           {
-            [v5 appendString:@"?"];
+            [descriptionCopy appendString:@"?"];
           }
 
-          [v5 appendString:@" "]);
+          [descriptionCopy appendString:@" "]);
           ++v11;
         }
 
@@ -679,24 +679,24 @@ LABEL_8:
 - (id)parametersDescription
 {
   v3 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"( ");
-  v4 = [(CAFControl *)self requestParameters];
-  v5 = [v4 count];
+  requestParameters = [(CAFControl *)self requestParameters];
+  v5 = [requestParameters count];
 
   if (v5)
   {
     [v3 appendString:@"in: "];
-    v6 = [(CAFControl *)self requestParameters];
-    [CAFControl _appendParametersDescription:v3 parameters:v6];
+    requestParameters2 = [(CAFControl *)self requestParameters];
+    [CAFControl _appendParametersDescription:v3 parameters:requestParameters2];
   }
 
-  v7 = [(CAFControl *)self responseParameters];
-  v8 = [v7 count];
+  responseParameters = [(CAFControl *)self responseParameters];
+  v8 = [responseParameters count];
 
   if (v8)
   {
     [v3 appendString:@"out: "];
-    v9 = [(CAFControl *)self responseParameters];
-    [CAFControl _appendParametersDescription:v3 parameters:v9];
+    responseParameters2 = [(CAFControl *)self responseParameters];
+    [CAFControl _appendParametersDescription:v3 parameters:responseParameters2];
   }
 
   else if (!v5)
@@ -712,31 +712,31 @@ LABEL_8:
 - (id)allInstanceIDs
 {
   v3 = objc_opt_new();
-  v4 = [(CAFControl *)self instanceID];
-  [v3 addObject:v4];
+  instanceID = [(CAFControl *)self instanceID];
+  [v3 addObject:instanceID];
 
-  v5 = [(CAFControl *)self errorInstanceID];
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
 
-  if (v5)
+  if (errorInstanceID)
   {
-    v6 = [(CAFControl *)self errorInstanceID];
-    [v3 addObject:v6];
+    errorInstanceID2 = [(CAFControl *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v7 = [(CAFControl *)self disabledInstanceID];
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
 
-  if (v7)
+  if (disabledInstanceID)
   {
-    v8 = [(CAFControl *)self disabledInstanceID];
-    [v3 addObject:v8];
+    disabledInstanceID2 = [(CAFControl *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v9 = [(CAFControl *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
 
-  if (v9)
+  if (restrictedInstanceID)
   {
-    v10 = [(CAFControl *)self restrictedInstanceID];
-    [v3 addObject:v10];
+    restrictedInstanceID2 = [(CAFControl *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -745,28 +745,28 @@ LABEL_8:
 - (id)readInstanceIDs
 {
   v3 = objc_opt_new();
-  v4 = [(CAFControl *)self errorInstanceID];
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
 
-  if (v4)
+  if (errorInstanceID)
   {
-    v5 = [(CAFControl *)self errorInstanceID];
-    [v3 addObject:v5];
+    errorInstanceID2 = [(CAFControl *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v6 = [(CAFControl *)self disabledInstanceID];
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
 
-  if (v6)
+  if (disabledInstanceID)
   {
-    v7 = [(CAFControl *)self disabledInstanceID];
-    [v3 addObject:v7];
+    disabledInstanceID2 = [(CAFControl *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v8 = [(CAFControl *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
 
-  if (v8)
+  if (restrictedInstanceID)
   {
-    v9 = [(CAFControl *)self restrictedInstanceID];
-    [v3 addObject:v9];
+    restrictedInstanceID2 = [(CAFControl *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -777,32 +777,32 @@ LABEL_8:
   v3 = objc_opt_new();
   if ([(CAFControl *)self incoming])
   {
-    v4 = [(CAFControl *)self instanceID];
-    [v3 addObject:v4];
+    instanceID = [(CAFControl *)self instanceID];
+    [v3 addObject:instanceID];
   }
 
-  v5 = [(CAFControl *)self errorInstanceID];
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
 
-  if (v5)
+  if (errorInstanceID)
   {
-    v6 = [(CAFControl *)self errorInstanceID];
-    [v3 addObject:v6];
+    errorInstanceID2 = [(CAFControl *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v7 = [(CAFControl *)self disabledInstanceID];
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
 
-  if (v7)
+  if (disabledInstanceID)
   {
-    v8 = [(CAFControl *)self disabledInstanceID];
-    [v3 addObject:v8];
+    disabledInstanceID2 = [(CAFControl *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v9 = [(CAFControl *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
 
-  if (v9)
+  if (restrictedInstanceID)
   {
-    v10 = [(CAFControl *)self restrictedInstanceID];
-    [v3 addObject:v10];
+    restrictedInstanceID2 = [(CAFControl *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -810,16 +810,16 @@ LABEL_8:
 
 - (id)pluginID
 {
-  v2 = [(CAFControl *)self service];
-  v3 = [v2 accessory];
-  v4 = [v3 pluginID];
+  service = [(CAFControl *)self service];
+  accessory = [service accessory];
+  pluginID = [accessory pluginID];
 
-  return v4;
+  return pluginID;
 }
 
-- (void)handleNotificationWithValue:(id)a3
+- (void)handleNotificationWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = CAFControlLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -832,8 +832,8 @@ LABEL_8:
   v8[2] = __42__CAFControl_handleNotificationWithValue___block_invoke;
   v8[3] = &unk_27890D548;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = valueCopy;
+  v7 = valueCopy;
   dispatch_async(v6, v8);
 }
 
@@ -844,10 +844,10 @@ void __42__CAFControl_handleNotificationWithValue___block_invoke(uint64_t a1)
   [v2 control:*(a1 + 32) didNotifyWithValue:*(a1 + 40)];
 }
 
-- (void)handleRequestWithValue:(id)a3 withResponse:(id)a4
+- (void)handleRequestWithValue:(id)value withResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  responseCopy = response;
   v8 = CAFControlLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -860,10 +860,10 @@ void __42__CAFControl_handleNotificationWithValue___block_invoke(uint64_t a1)
   block[2] = __50__CAFControl_handleRequestWithValue_withResponse___block_invoke;
   block[3] = &unk_27890D638;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = valueCopy;
+  v14 = responseCopy;
+  v10 = responseCopy;
+  v11 = valueCopy;
   dispatch_async(v9, block);
 }
 
@@ -911,21 +911,21 @@ uint64_t __50__CAFControl_handleRequestWithValue_withResponse___block_invoke_2(v
   return result;
 }
 
-- (void)handleValueAndError:(id)a3 value:(id)a4
+- (void)handleValueAndError:(id)error value:(id)value
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFControl *)self errorInstanceID];
-  v9 = [v6 isEqual:v8];
+  errorCopy = error;
+  valueCopy = value;
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
+  v9 = [errorCopy isEqual:errorInstanceID];
 
   if (v9)
   {
     objc_opt_class();
-    v10 = [v7 value];
-    if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
+    value = [valueCopy value];
+    if (value && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v10;
+      v11 = value;
     }
 
     else
@@ -936,14 +936,14 @@ uint64_t __50__CAFControl_handleRequestWithValue_withResponse___block_invoke_2(v
     v15 = CAFControlLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(CAFControl *)self pluginID];
-      v24 = [(CAFControl *)self instanceID];
+      pluginID = [(CAFControl *)self pluginID];
+      instanceID = [(CAFControl *)self instanceID];
       v29 = 138413058;
-      v30 = v23;
+      v30 = pluginID;
       v31 = 2112;
-      v32 = v24;
+      v32 = instanceID;
       v33 = 2112;
-      v34 = v6;
+      v34 = errorCopy;
       v35 = 2112;
       v36 = v11;
       _os_log_debug_impl(&dword_231618000, v15, OS_LOG_TYPE_DEBUG, "Handle control error state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v29, 0x2Au);
@@ -959,16 +959,16 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v12 = [(CAFControl *)self disabledInstanceID];
-  v13 = [v6 isEqual:v12];
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
+  v13 = [errorCopy isEqual:disabledInstanceID];
 
   if (v13)
   {
     objc_opt_class();
-    v14 = [v7 value];
-    if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
+    value2 = [valueCopy value];
+    if (value2 && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v14;
+      v11 = value2;
     }
 
     else
@@ -979,14 +979,14 @@ LABEL_25:
     v20 = CAFControlLogging();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [(CAFControl *)self pluginID];
-      v26 = [(CAFControl *)self instanceID];
+      pluginID2 = [(CAFControl *)self pluginID];
+      instanceID2 = [(CAFControl *)self instanceID];
       v29 = 138413058;
-      v30 = v25;
+      v30 = pluginID2;
       v31 = 2112;
-      v32 = v26;
+      v32 = instanceID2;
       v33 = 2112;
-      v34 = v6;
+      v34 = errorCopy;
       v35 = 2112;
       v36 = v11;
       _os_log_debug_impl(&dword_231618000, v20, OS_LOG_TYPE_DEBUG, "Handle control disabled state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v29, 0x2Au);
@@ -998,16 +998,16 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v17 = [(CAFControl *)self restrictedInstanceID];
-  v18 = [v6 isEqual:v17];
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
+  v18 = [errorCopy isEqual:restrictedInstanceID];
 
   if (v18)
   {
     objc_opt_class();
-    v19 = [v7 value];
-    if (v19 && (objc_opt_isKindOfClass() & 1) != 0)
+    value3 = [valueCopy value];
+    if (value3 && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v19;
+      v11 = value3;
     }
 
     else
@@ -1018,14 +1018,14 @@ LABEL_25:
     v21 = CAFControlLogging();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [(CAFControl *)self pluginID];
-      v28 = [(CAFControl *)self instanceID];
+      pluginID3 = [(CAFControl *)self pluginID];
+      instanceID3 = [(CAFControl *)self instanceID];
       v29 = 138413058;
-      v30 = v27;
+      v30 = pluginID3;
       v31 = 2112;
-      v32 = v28;
+      v32 = instanceID3;
       v33 = 2112;
-      v34 = v6;
+      v34 = errorCopy;
       v35 = 2112;
       v36 = v11;
       _os_log_debug_impl(&dword_231618000, v21, OS_LOG_TYPE_DEBUG, "Handle control restricted state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v29, 0x2Au);
@@ -1042,10 +1042,10 @@ LABEL_26:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdateWithInstanceID:(id)a3 value:(id)a4
+- (void)handleUpdateWithInstanceID:(id)d value:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  [(CAFControl *)self handleValueAndError:a3 value:a4];
+  [(CAFControl *)self handleValueAndError:d value:value];
   v5 = CARSignpostLogForCategory();
   if (self)
   {
@@ -1065,15 +1065,15 @@ LABEL_26:
 
   if (os_signpost_enabled(v5))
   {
-    v8 = [(CAFControl *)self name];
-    v9 = [(CAFControl *)self pluginID];
-    v10 = [(CAFControl *)self instanceID];
+    name = [(CAFControl *)self name];
+    pluginID = [(CAFControl *)self pluginID];
+    instanceID = [(CAFControl *)self instanceID];
     v12 = 138543874;
-    v13 = v8;
+    v13 = name;
     v14 = 2114;
-    v15 = v9;
+    v15 = pluginID;
     v16 = 2114;
-    v17 = v10;
+    v17 = instanceID;
     _os_signpost_emit_with_name_impl(&dword_231618000, v5, OS_SIGNPOST_EVENT, v7, "Update", "Control: %{public}@ pluginID: %{public}@ instanceID: %{public}@", &v12, 0x20u);
   }
 
@@ -1107,9 +1107,9 @@ LABEL_7:
       v5 = &stru_284626CA8;
     }
 
-    v6 = [(CAFControl *)self isRestricted];
+    isRestricted = [(CAFControl *)self isRestricted];
     v7 = @"R";
-    if (!v6)
+    if (!isRestricted)
     {
       v7 = &stru_284626CA8;
     }
@@ -1140,18 +1140,18 @@ LABEL_7:
   return v13;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
   v28 = MEMORY[0x277CCACA8];
   v27 = objc_opt_class();
-  v26 = [(CAFControl *)self name];
-  v31 = [(CAFControl *)self pluginID];
-  v24 = [(CAFControl *)self instanceID];
-  v4 = [(CAFControl *)self errorInstanceID];
-  v30 = v4;
-  if (v4)
+  name = [(CAFControl *)self name];
+  pluginID = [(CAFControl *)self pluginID];
+  instanceID = [(CAFControl *)self instanceID];
+  errorInstanceID = [(CAFControl *)self errorInstanceID];
+  v30 = errorInstanceID;
+  if (errorInstanceID)
   {
-    v5 = v4;
+    v5 = errorInstanceID;
   }
 
   else
@@ -1160,11 +1160,11 @@ LABEL_7:
   }
 
   v23 = v5;
-  v6 = [(CAFControl *)self disabledInstanceID];
-  v29 = v6;
-  if (v6)
+  disabledInstanceID = [(CAFControl *)self disabledInstanceID];
+  v29 = disabledInstanceID;
+  if (disabledInstanceID)
   {
-    v7 = v6;
+    v7 = disabledInstanceID;
   }
 
   else
@@ -1173,11 +1173,11 @@ LABEL_7:
   }
 
   v22 = v7;
-  v8 = [(CAFControl *)self restrictedInstanceID];
-  v25 = v8;
-  if (v8)
+  restrictedInstanceID = [(CAFControl *)self restrictedInstanceID];
+  v25 = restrictedInstanceID;
+  if (restrictedInstanceID)
   {
-    v9 = v8;
+    v9 = restrictedInstanceID;
   }
 
   else
@@ -1186,16 +1186,16 @@ LABEL_7:
   }
 
   v21 = v9;
-  v20 = [(CAFControl *)self controlType];
-  v19 = [(CAFControl *)self parametersDescription];
-  v10 = [(CAFControl *)self accessory];
-  v11 = [(CAFControl *)self accessory];
-  v12 = [v11 instanceID];
-  v13 = [(CAFControl *)self service];
-  v14 = [(CAFControl *)self service];
-  v15 = [v14 instanceID];
-  v16 = [(CAFControl *)self propertiesDescription];
-  v17 = [v28 stringWithFormat:@"<%@: %p %@ %@ %@ (%@|%@|%@) type=%@ parameters=%@ accessory=(%p)%@ service=(%p)%@ properties=%@>", v27, self, v26, v31, v24, v23, v22, v21, v20, v19, v10, v12, v13, v15, v16];
+  controlType = [(CAFControl *)self controlType];
+  parametersDescription = [(CAFControl *)self parametersDescription];
+  accessory = [(CAFControl *)self accessory];
+  accessory2 = [(CAFControl *)self accessory];
+  instanceID2 = [accessory2 instanceID];
+  service = [(CAFControl *)self service];
+  service2 = [(CAFControl *)self service];
+  instanceID3 = [service2 instanceID];
+  propertiesDescription = [(CAFControl *)self propertiesDescription];
+  v17 = [v28 stringWithFormat:@"<%@: %p %@ %@ %@ (%@|%@|%@) type=%@ parameters=%@ accessory=(%p)%@ service=(%p)%@ properties=%@>", v27, self, name, pluginID, instanceID, v23, v22, v21, controlType, parametersDescription, accessory, instanceID2, service, instanceID3, propertiesDescription];
 
   return v17;
 }

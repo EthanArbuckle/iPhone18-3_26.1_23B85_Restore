@@ -1,29 +1,29 @@
 @interface STShowWeatherCurrentConditionsRequest
-- (STShowWeatherCurrentConditionsRequest)initWithCoder:(id)a3;
-- (id)_initWithCurrentConditions:(id)a3 city:(id)a4 units:(id)a5;
+- (STShowWeatherCurrentConditionsRequest)initWithCoder:(id)coder;
+- (id)_initWithCurrentConditions:(id)conditions city:(id)city units:(id)units;
 - (id)createResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STShowWeatherCurrentConditionsRequest
 
-- (STShowWeatherCurrentConditionsRequest)initWithCoder:(id)a3
+- (STShowWeatherCurrentConditionsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STShowWeatherCurrentConditionsRequest;
-  v5 = [(AFSiriRequest *)&v13 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_currentConditions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_currentConditions"];
     currentConditions = v5->_currentConditions;
     v5->_currentConditions = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
     city = v5->_city;
     v5->_city = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_units"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_units"];
     units = v5->_units;
     v5->_units = v10;
   }
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STShowWeatherCurrentConditionsRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_currentConditions forKey:{@"_currentConditions", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_city forKey:@"_city"];
-  [v4 encodeObject:self->_units forKey:@"_units"];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_currentConditions forKey:{@"_currentConditions", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_city forKey:@"_city"];
+  [coderCopy encodeObject:self->_units forKey:@"_units"];
 }
 
 - (id)createResponse
@@ -49,20 +49,20 @@
   return v2;
 }
 
-- (id)_initWithCurrentConditions:(id)a3 city:(id)a4 units:(id)a5
+- (id)_initWithCurrentConditions:(id)conditions city:(id)city units:(id)units
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  conditionsCopy = conditions;
+  cityCopy = city;
+  unitsCopy = units;
   v15.receiver = self;
   v15.super_class = STShowWeatherCurrentConditionsRequest;
   v12 = [(AFSiriRequest *)&v15 init];
   p_isa = &v12->super.super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_currentConditions, a3);
-    objc_storeStrong(p_isa + 6, a4);
-    objc_storeStrong(p_isa + 7, a5);
+    objc_storeStrong(&v12->_currentConditions, conditions);
+    objc_storeStrong(p_isa + 6, city);
+    objc_storeStrong(p_isa + 7, units);
   }
 
   return p_isa;

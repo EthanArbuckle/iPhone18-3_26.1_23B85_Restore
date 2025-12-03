@@ -1,27 +1,27 @@
 @interface RERelevanceEnginePreferencesController
 - (RERelevanceEnginePreferences)effectivePreferences;
-- (RERelevanceEnginePreferencesController)initWithQueue:(id)a3;
+- (RERelevanceEnginePreferencesController)initWithQueue:(id)queue;
 - (void)_resetEffectivePreferences;
-- (void)removePreferencesForObject:(id)a3;
-- (void)setPreferences:(id)a3 forObject:(id)a4;
+- (void)removePreferencesForObject:(id)object;
+- (void)setPreferences:(id)preferences forObject:(id)object;
 @end
 
 @implementation RERelevanceEnginePreferencesController
 
-- (RERelevanceEnginePreferencesController)initWithQueue:(id)a3
+- (RERelevanceEnginePreferencesController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = RERelevanceEnginePreferencesController;
   v6 = [(RERelevanceEnginePreferencesController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     preferences = v7->_preferences;
-    v7->_preferences = v8;
+    v7->_preferences = weakToStrongObjectsMapTable;
 
     effectivePreferences = v7->_effectivePreferences;
     v7->_effectivePreferences = 0;
@@ -64,15 +64,15 @@
           {
             if (v8)
             {
-              v13 = [v11 disabledDataSourceIdentifiers];
-              [v8 intersectSet:v13];
+              disabledDataSourceIdentifiers = [v11 disabledDataSourceIdentifiers];
+              [v8 intersectSet:disabledDataSourceIdentifiers];
             }
 
             else
             {
               v14 = MEMORY[0x277CBEB58];
-              v13 = [v11 disabledDataSourceIdentifiers];
-              v8 = [v14 setWithSet:v13];
+              disabledDataSourceIdentifiers = [v11 disabledDataSourceIdentifiers];
+              v8 = [v14 setWithSet:disabledDataSourceIdentifiers];
             }
 
             v7 |= [v12 mode];
@@ -117,26 +117,26 @@ LABEL_19:
   return v18;
 }
 
-- (void)setPreferences:(id)a3 forObject:(id)a4
+- (void)setPreferences:(id)preferences forObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
+  objectCopy = object;
+  preferencesCopy = preferences;
   os_unfair_lock_lock(&self->_lock);
-  [v7 setDelegate:self];
-  [(NSMapTable *)self->_preferences setObject:v7 forKey:v6];
+  [preferencesCopy setDelegate:self];
+  [(NSMapTable *)self->_preferences setObject:preferencesCopy forKey:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   [(RERelevanceEnginePreferencesController *)self _resetEffectivePreferences];
 }
 
-- (void)removePreferencesForObject:(id)a3
+- (void)removePreferencesForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_preferences objectForKey:v4];
+  v5 = [(NSMapTable *)self->_preferences objectForKey:objectCopy];
   [v5 setDelegate:0];
-  [(NSMapTable *)self->_preferences removeObjectForKey:v4];
+  [(NSMapTable *)self->_preferences removeObjectForKey:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   [(RERelevanceEnginePreferencesController *)self _resetEffectivePreferences];
@@ -149,8 +149,8 @@ LABEL_19:
   self->_effectivePreferences = 0;
 
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"RERelevanceEnginePreferencesDidUpdate" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RERelevanceEnginePreferencesDidUpdate" object:self];
 }
 
 @end

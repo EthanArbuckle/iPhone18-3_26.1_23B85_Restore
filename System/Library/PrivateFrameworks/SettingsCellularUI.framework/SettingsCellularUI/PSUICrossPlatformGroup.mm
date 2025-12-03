@@ -1,25 +1,25 @@
 @interface PSUICrossPlatformGroup
 - (PSListController)listController;
-- (PSUICrossPlatformGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUICrossPlatformGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)crossPlatformPressed:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)crossPlatformPressed:(id)pressed;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUICrossPlatformGroup
 
-- (PSUICrossPlatformGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUICrossPlatformGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v16.receiver = self;
   v16.super_class = PSUICrossPlatformGroup;
   v8 = [(PSUICrossPlatformGroup *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
-    objc_storeStrong(&v9->_groupSpecifier, a4);
+    objc_storeWeak(&v8->_listController, controllerCopy);
+    objc_storeStrong(&v9->_groupSpecifier, specifier);
     groupSpecifier = v9->_groupSpecifier;
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -45,15 +45,15 @@
   return v3;
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUICrossPlatformGroup *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICrossPlatformGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v9 = "[PSUICrossPlatformGroup simSetupFlowCompleted:]";
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -84,13 +84,13 @@ void __48__PSUICrossPlatformGroup_simSetupFlowCompleted___block_invoke(uint64_t 
   }
 }
 
-- (void)crossPlatformPressed:(id)a3
+- (void)crossPlatformPressed:(id)pressed
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v6 = [WeakRetained view];
-  [v6 setUserInteractionEnabled:0];
+  view = [WeakRetained view];
+  [view setUserInteractionEnabled:0];
 
   v7 = *MEMORY[0x277D49558];
   v16[0] = *MEMORY[0x277D49548];

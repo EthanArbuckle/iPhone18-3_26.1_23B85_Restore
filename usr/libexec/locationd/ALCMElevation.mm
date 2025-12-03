@@ -1,25 +1,25 @@
 @interface ALCMElevation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)gradeTypeAsString:(int)a3;
-- (id)rawGradeTypeAsString:(int)a3;
-- (id)sourceAsString:(int)a3;
-- (int)StringAsGradeType:(id)a3;
-- (int)StringAsRawGradeType:(id)a3;
-- (int)StringAsSource:(id)a3;
+- (id)gradeTypeAsString:(int)string;
+- (id)rawGradeTypeAsString:(int)string;
+- (id)sourceAsString:(int)string;
+- (int)StringAsGradeType:(id)type;
+- (int)StringAsRawGradeType:(id)type;
+- (int)StringAsSource:(id)source;
 - (int)gradeType;
 - (int)rawGradeType;
 - (int)source;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGradeType:(BOOL)a3;
-- (void)setHasRawGradeType:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)setHasVerticalSpeed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGradeType:(BOOL)type;
+- (void)setHasRawGradeType:(BOOL)type;
+- (void)setHasSource:(BOOL)source;
+- (void)setHasVerticalSpeed:(BOOL)speed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCMElevation
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)setHasGradeType:(BOOL)a3
+- (void)setHasGradeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -52,37 +52,37 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)gradeTypeAsString:(int)a3
+- (id)gradeTypeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return off_102455B88[a3];
+    return off_102455B88[string];
   }
 }
 
-- (int)StringAsGradeType:(id)a3
+- (int)StringAsGradeType:(id)type
 {
-  if ([a3 isEqualToString:@"Unknown"])
+  if ([type isEqualToString:@"Unknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Uphill"])
+  if ([type isEqualToString:@"Uphill"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"Flat"])
+  if ([type isEqualToString:@"Flat"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"Downhill"])
+  if ([type isEqualToString:@"Downhill"])
   {
     return 3;
   }
@@ -90,9 +90,9 @@
   return 0;
 }
 
-- (void)setHasVerticalSpeed:(BOOL)a3
+- (void)setHasVerticalSpeed:(BOOL)speed
 {
-  if (a3)
+  if (speed)
   {
     v3 = 16;
   }
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)setHasRawGradeType:(BOOL)a3
+- (void)setHasRawGradeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -133,37 +133,37 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)rawGradeTypeAsString:(int)a3
+- (id)rawGradeTypeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return off_102455B88[a3];
+    return off_102455B88[string];
   }
 }
 
-- (int)StringAsRawGradeType:(id)a3
+- (int)StringAsRawGradeType:(id)type
 {
-  if ([a3 isEqualToString:@"Unknown"])
+  if ([type isEqualToString:@"Unknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Uphill"])
+  if ([type isEqualToString:@"Uphill"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"Flat"])
+  if ([type isEqualToString:@"Flat"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"Downhill"])
+  if ([type isEqualToString:@"Downhill"])
   {
     return 3;
   }
@@ -184,9 +184,9 @@
   }
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }
@@ -199,31 +199,31 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)sourceAsString:(int)a3
+- (id)sourceAsString:(int)string
 {
-  if (!a3)
+  if (!string)
   {
     return @"Phone";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"Watch";
   }
 
-  return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+  return [NSString stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsSource:(id)a3
+- (int)StringAsSource:(id)source
 {
-  if ([a3 isEqualToString:@"Phone"])
+  if ([source isEqualToString:@"Phone"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"Watch"];
+    return [source isEqualToString:@"Watch"];
   }
 }
 
@@ -340,7 +340,7 @@ LABEL_17:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   has = self->_has;
@@ -404,14 +404,14 @@ LABEL_11:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_elevationAscended;
+  *(to + 2) = self->_elevationAscended;
   has = self->_has;
   if (has)
   {
-    *(a3 + 3) = self->_elevationDescended;
-    *(a3 + 32) |= 1u;
+    *(to + 3) = self->_elevationDescended;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -430,8 +430,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_gradeType;
-  *(a3 + 32) |= 2u;
+  *(to + 4) = self->_gradeType;
+  *(to + 32) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -445,8 +445,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 7) = LODWORD(self->_verticalSpeed);
-  *(a3 + 32) |= 0x10u;
+  *(to + 7) = LODWORD(self->_verticalSpeed);
+  *(to + 32) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -457,23 +457,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 6) = self->_source;
-    *(a3 + 32) |= 8u;
+    *(to + 6) = self->_source;
+    *(to + 32) |= 8u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 5) = self->_rawGradeType;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_rawGradeType;
+  *(to + 32) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_elevationAscended;
   has = self->_has;
   if (has)
@@ -541,12 +541,12 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_elevationAscended != *(a3 + 2))
+    if (self->_elevationAscended != *(equal + 2))
     {
 LABEL_27:
       LOBYTE(v5) = 0;
@@ -555,60 +555,60 @@ LABEL_27:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_elevationDescended != *(a3 + 3))
+      if ((*(equal + 32) & 1) == 0 || self->_elevationDescended != *(equal + 3))
       {
         goto LABEL_27;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_27;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_gradeType != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_gradeType != *(equal + 4))
       {
         goto LABEL_27;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_27;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 32) & 0x10) == 0 || self->_verticalSpeed != *(a3 + 7))
+      if ((*(equal + 32) & 0x10) == 0 || self->_verticalSpeed != *(equal + 7))
       {
         goto LABEL_27;
       }
     }
 
-    else if ((*(a3 + 32) & 0x10) != 0)
+    else if ((*(equal + 32) & 0x10) != 0)
     {
       goto LABEL_27;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_rawGradeType != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_rawGradeType != *(equal + 5))
       {
         goto LABEL_27;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
       goto LABEL_27;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 8) == 0;
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 32) & 8) == 0 || self->_source != *(a3 + 6))
+      if ((*(equal + 32) & 8) == 0 || self->_source != *(equal + 6))
       {
         goto LABEL_27;
       }
@@ -699,15 +699,15 @@ LABEL_17:
   return v4 ^ v5 ^ v6 ^ v10 ^ v11 ^ (2654435761 * self->_elevationAscended);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_elevationAscended = *(a3 + 2);
-  v3 = *(a3 + 32);
+  self->_elevationAscended = *(from + 2);
+  v3 = *(from + 32);
   if (v3)
   {
-    self->_elevationDescended = *(a3 + 3);
+    self->_elevationDescended = *(from + 3);
     *&self->_has |= 1u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -720,14 +720,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 2) == 0)
+  else if ((*(from + 32) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_gradeType = *(a3 + 4);
+  self->_gradeType = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -740,9 +740,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_verticalSpeed = *(a3 + 7);
+  self->_verticalSpeed = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -752,15 +752,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_source = *(a3 + 6);
+    self->_source = *(from + 6);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_10:
-  self->_rawGradeType = *(a3 + 5);
+  self->_rawGradeType = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 32) & 8) != 0)
+  if ((*(from + 32) & 8) != 0)
   {
     goto LABEL_11;
   }

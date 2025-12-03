@@ -1,6 +1,6 @@
 @interface CIPerspectiveAutoCalcV2
 - (BOOL)compute;
-- (CIPerspectiveAutoCalcV2)initWithContext:(id)a3 image:(id)a4 config:(id *)a5;
+- (CIPerspectiveAutoCalcV2)initWithContext:(id)context image:(id)image config:(id *)config;
 - (float)evaluateCost:(CIPerspectiveAutoCalcV2 *)self;
 - (float)evaluateCostXZ:(CIPerspectiveAutoCalcV2 *)self;
 - (float)evaluateCostYZ:(CIPerspectiveAutoCalcV2 *)self;
@@ -19,11 +19,11 @@
 
 @implementation CIPerspectiveAutoCalcV2
 
-- (CIPerspectiveAutoCalcV2)initWithContext:(id)a3 image:(id)a4 config:(id *)a5
+- (CIPerspectiveAutoCalcV2)initWithContext:(id)context image:(id)image config:(id *)config
 {
   v26.receiver = self;
   v26.super_class = CIPerspectiveAutoCalcV2;
-  v5 = [(CIPerspectiveAutoCalc *)&v26 initWithContext:a3 image:a4 config:a5];
+  v5 = [(CIPerspectiveAutoCalc *)&v26 initWithContext:context image:image config:config];
   [(CIImage *)v5->super.img extent];
   *&v7 = v6;
   v9.f64[1] = v8;
@@ -132,9 +132,9 @@
     -[CIFilter setValue:forKey:](v22, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v24], @"inputYaw");
     *&v25 = roll;
     -[CIFilter setValue:forKey:](v22, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v25], @"inputRoll");
-    v26 = [(CIFilter *)v22 outputImage];
-    self->super.debugImage = v26;
-    [(CIImage *)v26 extent];
+    outputImage = [(CIFilter *)v22 outputImage];
+    self->super.debugImage = outputImage;
+    [(CIImage *)outputImage extent];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -164,7 +164,7 @@
     v38 = [(CIImage *)[(CIFilter *)v35 outputImage] imageByCroppingToRect:v28, v30, v32, v34];
     v39 = [CIFilter filterWithName:@"CIBlendWithAlphaMask"];
     v40 = [[CIImage imageWithColor:?], "imageByCroppingToRect:", v28, v30, v32, v34];
-    [(CIFilter *)v39 setValue:v26 forKey:@"inputImage"];
+    [(CIFilter *)v39 setValue:outputImage forKey:@"inputImage"];
     [(CIFilter *)v39 setValue:v38 forKey:@"inputBackgroundImage"];
     [(CIFilter *)v39 setValue:v40 forKey:@"inputMaskImage"];
     self->super.debugImage = [(CIImage *)[(CIFilter *)v39 outputImage] imageByCompositingOverImage:v38];
@@ -318,7 +318,7 @@
   [(CIFilter *)v20 setValue:self->super.img forKey:@"inputImage"];
   [(CIFilter *)v20 setValue:v17 forKey:@"inputBackgroundImage"];
   [(CIFilter *)v20 setValue:v19 forKey:@"inputMaskImage"];
-  v21 = [(CIFilter *)v20 outputImage];
+  outputImage = [(CIFilter *)v20 outputImage];
   if (CI::Perspective::CI_AUTOPERSPECTIVE_DEBUG(void)::onceToken != -1)
   {
     [CIPerspectiveAutoCalcV2 standardizeImage];
@@ -328,10 +328,10 @@
   if (CI::Perspective::CI_AUTOPERSPECTIVE_DEBUG(void)::dump == 1)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/PerspectiveV2_%@.png", @"0_Enhanced"];
-    CI::Perspective::CIImageToFile(v21, v23, v24, *v22);
+    CI::Perspective::CIImageToFile(outputImage, v23, v24, *v22);
   }
 
-  v25 = [objc_msgSend(objc_msgSend(-[CI::Perspective imageByApplyingFilter:](v21 imageByApplyingFilter:{@"CILinearToSRGBToneCurve", "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 1.4), "imageByCroppingToRect:", v10, v12, v14, v16}];
+  v25 = [objc_msgSend(objc_msgSend(-[CI::Perspective imageByApplyingFilter:](outputImage imageByApplyingFilter:{@"CILinearToSRGBToneCurve", "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 1.4), "imageByCroppingToRect:", v10, v12, v14, v16}];
   if (CI::Perspective::CI_AUTOPERSPECTIVE_DEBUG(void)::onceToken != -1)
   {
     [CIPerspectiveAutoCalcV2 standardizeImage];
@@ -633,7 +633,7 @@ LABEL_96:
           v100 = *v18;
           v19 = CI::Perspective::intersect(&v102, &v100, v99);
           v20 = v19;
-          if (!v19 || (CI::Perspective::pointInBounds(v99, a1) & 1) == 0)
+          if (!v19 || (CI::Perspective::pointInBounds(v99, self) & 1) == 0)
           {
             v21 = *v17;
             v22 = v17[1];

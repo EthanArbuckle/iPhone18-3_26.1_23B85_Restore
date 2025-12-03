@@ -1,26 +1,26 @@
 @interface EMSheetMapper
 - (CGSize)adjustedSize;
-- (CGSize)preprocessSizeWithState:(id)a3;
+- (CGSize)preprocessSizeWithState:(id)state;
 @end
 
 @implementation EMSheetMapper
 
 - (CGSize)adjustedSize
 {
-  v3 = [(EMSheetMapper *)self width];
-  v4 = [(EMSheetMapper *)self height];
-  if (v3 > 0 || v4 >= 1)
+  width = [(EMSheetMapper *)self width];
+  height = [(EMSheetMapper *)self height];
+  if (width > 0 || height >= 1)
   {
-    v7 = v4;
-    if (v3 <= 0)
+    v7 = height;
+    if (width <= 0)
     {
       v8 = v7 * 4.0 / 3.0;
     }
 
     else
     {
-      v8 = v3;
-      if (v4 <= 0)
+      v8 = width;
+      if (height <= 0)
       {
         v7 = v8 * 3.0 * 0.25;
       }
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (CGSize)preprocessSizeWithState:(id)a3
+- (CGSize)preprocessSizeWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(EMSheetMapper *)self preprocessWidthWithState:v4];
-  v6 = [(EMSheetMapper *)self preprocessHeightWithState:v4];
+  stateCopy = state;
+  v5 = [(EMSheetMapper *)self preprocessWidthWithState:stateCopy];
+  v6 = [(EMSheetMapper *)self preprocessHeightWithState:stateCopy];
   if (v5 >= 400.0)
   {
     v7 = v5;

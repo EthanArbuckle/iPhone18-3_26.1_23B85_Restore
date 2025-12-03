@@ -2,7 +2,7 @@
 + (HFDefaultRoomSuggestionVendor)TVAccessorySuggestionVendor;
 + (HFDefaultRoomSuggestionVendor)homeAppSuggestionVendor;
 - (HFDefaultRoomSuggestionVendor)init;
-- (HFDefaultRoomSuggestionVendor)initWithRoomSuggestionsPlistURL:(id)a3;
+- (HFDefaultRoomSuggestionVendor)initWithRoomSuggestionsPlistURL:(id)l;
 - (NSSet)roomSuggestions;
 - (id)prioritizedRoomSuggestions;
 @end
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (HFDefaultRoomSuggestionVendor)initWithRoomSuggestionsPlistURL:(id)a3
+- (HFDefaultRoomSuggestionVendor)initWithRoomSuggestionsPlistURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = HFDefaultRoomSuggestionVendor;
   v5 = [(HFDefaultRoomSuggestionVendor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     roomSuggestionsPlistURL = v5->_roomSuggestionsPlistURL;
     v5->_roomSuggestionsPlistURL = v6;
   }
@@ -53,9 +53,9 @@
 
 - (id)prioritizedRoomSuggestions
 {
-  v2 = [(HFDefaultRoomSuggestionVendor *)self roomSuggestions];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_39_2];
+  roomSuggestions = [(HFDefaultRoomSuggestionVendor *)self roomSuggestions];
+  allObjects = [roomSuggestions allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_39_2];
 
   return v4;
 }
@@ -85,8 +85,8 @@ uint64_t __59__HFDefaultRoomSuggestionVendor_prioritizedRoomSuggestions__block_i
   else
   {
     v6 = MEMORY[0x277CBEA90];
-    v7 = [(HFDefaultRoomSuggestionVendor *)self roomSuggestionsPlistURL];
-    v8 = [v6 dataWithContentsOfURL:v7];
+    roomSuggestionsPlistURL = [(HFDefaultRoomSuggestionVendor *)self roomSuggestionsPlistURL];
+    v8 = [v6 dataWithContentsOfURL:roomSuggestionsPlistURL];
 
     v9 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:0 format:0 error:0];
     objc_opt_class();
@@ -128,8 +128,8 @@ uint64_t __59__HFDefaultRoomSuggestionVendor_prioritizedRoomSuggestions__block_i
 
     else
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"HFRoomSuggestionVendor.m" lineNumber:86 description:{@"Missing or malformatted suggestions plist %@", v9}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HFRoomSuggestionVendor.m" lineNumber:86 description:{@"Missing or malformatted suggestions plist %@", v9}];
 
       v3 = [MEMORY[0x277CBEB98] set];
     }

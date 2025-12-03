@@ -1,79 +1,79 @@
 @interface CNPropertySendMessageAction
 - (BOOL)shouldPresentDisambiguationMenu;
 - (CNContactActionsController)actionsController;
-- (CNPropertySendMessageAction)initWithContact:(id)a3 propertyItems:(id)a4 actionDataSource:(id)a5;
-- (id)menuProviderForContextMenuInteraction:(id)a3;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)didSelectActionItem:(id)a3 shouldDismissController:(BOOL)a4;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
-- (void)performActionWithSender:(id)a3;
+- (CNPropertySendMessageAction)initWithContact:(id)contact propertyItems:(id)items actionDataSource:(id)source;
+- (id)menuProviderForContextMenuInteraction:(id)interaction;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)didSelectActionItem:(id)item shouldDismissController:(BOOL)controller;
+- (void)performActionForItem:(id)item sender:(id)sender;
+- (void)performActionWithSender:(id)sender;
 - (void)setUpActionsController;
 @end
 
 @implementation CNPropertySendMessageAction
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v7 = a4;
-  if ([v7 count])
+  menuCopy = menu;
+  if ([menuCopy count])
   {
-    v5 = [(CNPropertySendMessageAction *)self actionMenuHelper];
-    v6 = [(CNPropertySendMessageAction *)self contextMenuInteraction];
-    [v5 updateWithMenuItems:v7 contextMenuInteraction:v6];
+    actionMenuHelper = [(CNPropertySendMessageAction *)self actionMenuHelper];
+    contextMenuInteraction = [(CNPropertySendMessageAction *)self contextMenuInteraction];
+    [actionMenuHelper updateWithMenuItems:menuCopy contextMenuInteraction:contextMenuInteraction];
   }
 }
 
-- (void)didSelectActionItem:(id)a3 shouldDismissController:(BOOL)a4
+- (void)didSelectActionItem:(id)item shouldDismissController:(BOOL)controller
 {
-  v4 = a4;
-  v9 = a3;
+  controllerCopy = controller;
+  itemCopy = item;
   v6 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v7 = [v9 performActionWithContext:v6];
+  v7 = [itemCopy performActionWithContext:v6];
 
-  v8 = [(CNContactAction *)self delegate];
-  [v8 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  if (v4)
+  if (controllerCopy)
   {
     [(CNPropertySendMessageAction *)self setActionsController:0];
     [(CNPropertySendMessageAction *)self setActionMenuHelper:0];
   }
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695C330]];
+  itemCopy = item;
+  property = [itemCopy property];
+  v6 = [property isEqualToString:*MEMORY[0x1E695C330]];
 
   if (v6)
   {
-    v7 = [v4 labeledValue];
-    v8 = [v7 value];
+    labeledValue = [itemCopy labeledValue];
+    value = [labeledValue value];
 
-    v9 = [v8 stringValue];
+    stringValue = [value stringValue];
 LABEL_5:
-    v12 = v9;
+    v12 = stringValue;
 
     goto LABEL_7;
   }
 
-  v10 = [v4 property];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E695C208]];
+  property2 = [itemCopy property];
+  v11 = [property2 isEqualToString:*MEMORY[0x1E695C208]];
 
   if (v11)
   {
-    v8 = [v4 labeledValue];
-    v9 = [v8 value];
+    value = [itemCopy labeledValue];
+    stringValue = [value value];
     goto LABEL_5;
   }
 
   v12 = 0;
 LABEL_7:
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v15 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v14];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v15 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   v16 = [v13 stringWithFormat:@"sms:%@", v15];
 
   v17 = [MEMORY[0x1E695DFF8] URLWithString:v16];
@@ -88,27 +88,27 @@ LABEL_7:
 
   v25[0] = *v20;
   v24[1] = CNUIDataCollectorActionTypeAttributeContact;
-  v21 = [v4 contact];
-  v25[1] = v21;
+  contact = [itemCopy contact];
+  v25[1] = contact;
   v24[2] = CNUIDataCollectorActionTypeAttributeLabeledValue;
-  v22 = [v4 labeledValue];
-  v25[2] = v22;
+  labeledValue2 = [itemCopy labeledValue];
+  v25[2] = labeledValue2;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
   [v18 logContactActionType:v19 attributes:v23];
 
   [*MEMORY[0x1E69DDA98] openURL:v17 withCompletionHandler:0];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v6 = a3;
+  senderCopy = sender;
   if (![(CNPropertySendMessageAction *)self shouldPresentDisambiguationMenu])
   {
-    v4 = [(CNPropertyAction *)self propertyItem];
-    [(CNPropertySendMessageAction *)self performActionForItem:v4 sender:v6];
+    propertyItem = [(CNPropertyAction *)self propertyItem];
+    [(CNPropertySendMessageAction *)self performActionForItem:propertyItem sender:senderCopy];
 
-    v5 = [(CNContactAction *)self delegate];
-    [v5 actionDidFinish:self];
+    delegate = [(CNContactAction *)self delegate];
+    [delegate actionDidFinish:self];
   }
 }
 
@@ -116,21 +116,21 @@ LABEL_7:
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = [CNContactActionsController alloc];
-  v4 = [(CNContactAction *)self contact];
-  v5 = [(CNPropertySendMessageAction *)self actionsDataSource];
+  contact = [(CNContactAction *)self contact];
+  actionsDataSource = [(CNPropertySendMessageAction *)self actionsDataSource];
   v11[0] = *MEMORY[0x1E695C178];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v7 = [(CNContactActionsController *)v3 initWithContact:v4 dataSource:v5 actionTypes:v6];
+  v7 = [(CNContactActionsController *)v3 initWithContact:contact dataSource:actionsDataSource actionTypes:v6];
   [(CNPropertySendMessageAction *)self setActionsController:v7];
 
-  v8 = [(CNPropertySendMessageAction *)self actionsController];
-  [v8 setShouldUseOutlinedActionGlyphStyle:1];
+  actionsController = [(CNPropertySendMessageAction *)self actionsController];
+  [actionsController setShouldUseOutlinedActionGlyphStyle:1];
 
-  v9 = [(CNPropertySendMessageAction *)self actionsController];
-  [v9 setDelegate:self];
+  actionsController2 = [(CNPropertySendMessageAction *)self actionsController];
+  [actionsController2 setDelegate:self];
 
-  v10 = [(CNPropertySendMessageAction *)self actionsController];
-  [v10 retrieveModels];
+  actionsController3 = [(CNPropertySendMessageAction *)self actionsController];
+  [actionsController3 retrieveModels];
 }
 
 - (CNContactActionsController)actionsController
@@ -145,18 +145,18 @@ LABEL_7:
   return actionsController;
 }
 
-- (id)menuProviderForContextMenuInteraction:(id)a3
+- (id)menuProviderForContextMenuInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   if ([(CNPropertySendMessageAction *)self shouldPresentDisambiguationMenu])
   {
-    [(CNPropertySendMessageAction *)self setContextMenuInteraction:v4];
+    [(CNPropertySendMessageAction *)self setContextMenuInteraction:interactionCopy];
     v5 = objc_alloc_init(CNActionMenuHelper);
     [(CNPropertySendMessageAction *)self setActionMenuHelper:v5];
 
     [(CNPropertySendMessageAction *)self setUpActionsController];
-    v6 = [(CNPropertySendMessageAction *)self actionMenuHelper];
-    v7 = [v6 menuProviderWithActionBlock:&__block_literal_global_43884];
+    actionMenuHelper = [(CNPropertySendMessageAction *)self actionMenuHelper];
+    v7 = [actionMenuHelper menuProviderWithActionBlock:&__block_literal_global_43884];
   }
 
   else
@@ -169,22 +169,22 @@ LABEL_7:
 
 - (BOOL)shouldPresentDisambiguationMenu
 {
-  v2 = [(CNPropertyAction *)self propertyItems];
-  v3 = [v2 count] != 1;
+  propertyItems = [(CNPropertyAction *)self propertyItems];
+  v3 = [propertyItems count] != 1;
 
   return v3;
 }
 
-- (CNPropertySendMessageAction)initWithContact:(id)a3 propertyItems:(id)a4 actionDataSource:(id)a5
+- (CNPropertySendMessageAction)initWithContact:(id)contact propertyItems:(id)items actionDataSource:(id)source
 {
-  v9 = a5;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = CNPropertySendMessageAction;
-  v10 = [(CNPropertyAction *)&v13 initWithContact:a3 propertyItems:a4];
+  v10 = [(CNPropertyAction *)&v13 initWithContact:contact propertyItems:items];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_actionsDataSource, a5);
+    objc_storeStrong(&v10->_actionsDataSource, source);
   }
 
   return v11;

@@ -6,11 +6,11 @@
 
 - (id)firstValueOfPropertyForName:()SGCalendarAttachmentDissectorUtility
 {
-  v1 = [a1 propertiesForName:?];
-  v2 = [v1 firstObject];
-  v3 = [v2 value];
+  v1 = [self propertiesForName:?];
+  firstObject = [v1 firstObject];
+  value = [firstObject value];
 
-  return v3;
+  return value;
 }
 
 @end

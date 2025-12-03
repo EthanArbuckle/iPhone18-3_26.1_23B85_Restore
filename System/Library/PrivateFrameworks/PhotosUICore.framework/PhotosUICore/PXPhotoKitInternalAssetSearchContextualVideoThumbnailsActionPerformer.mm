@@ -1,42 +1,42 @@
 @interface PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (_TtC12PhotosUICore69PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer)initWithActionType:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (_TtC12PhotosUICore69PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer)initWithActionType:(id)type;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   sub_1A3C52C70(0, &qword_1EB126BB0);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v8 = a3;
-  v9 = [ObjCClassFromMetadata sharedInstance];
-  v10 = [v9 canShowInternalUI];
+  assetCopy = asset;
+  objCClassFromMetadata = [ObjCClassFromMetadata sharedInstance];
+  canShowInternalUI = [objCClassFromMetadata canShowInternalUI];
 
-  if (v10)
+  if (canShowInternalUI)
   {
-    v11 = [v8 px_containsSearchContextualVideoThumbnailsDebugOnly];
+    px_containsSearchContextualVideoThumbnailsDebugOnly = [assetCopy px_containsSearchContextualVideoThumbnailsDebugOnly];
   }
 
   else
   {
-    v11 = 0;
+    px_containsSearchContextualVideoThumbnailsDebugOnly = 0;
   }
 
-  return v11;
+  return px_containsSearchContextualVideoThumbnailsDebugOnly;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
   v4 = sub_1A524C634();
 
   return v4;
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
   v3 = sub_1A524C634();
 
@@ -45,15 +45,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A48E0700();
 }
 
-- (_TtC12PhotosUICore69PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer)initWithActionType:(id)a3
+- (_TtC12PhotosUICore69PXPhotoKitInternalAssetSearchContextualVideoThumbnailsActionPerformer)initWithActionType:(id)type
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(PXActionPerformer *)&v5 initWithActionType:a3];
+  return [(PXActionPerformer *)&v5 initWithActionType:type];
 }
 
 @end

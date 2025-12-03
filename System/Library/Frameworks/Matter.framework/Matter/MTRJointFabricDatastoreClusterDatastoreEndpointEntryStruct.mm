@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self endpointID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setEndpointID:v5];
+  endpointID = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self endpointID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setEndpointID:endpointID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setNodeID:v6];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setNodeID:nodeID];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setFriendlyName:v7];
+  friendlyName = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setFriendlyName:friendlyName];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self statusEntry];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setStatusEntry:v8];
+  statusEntry = [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)self statusEntry];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointEntryStruct *)v4 setStatusEntry:statusEntry];
 
   return v4;
 }

@@ -1,21 +1,21 @@
 @interface OITSUUIImage
-+ (id)imageNamed:(id)a3;
-+ (void)i_performBlockWithUIImageLock:(id)a3;
++ (id)imageNamed:(id)named;
++ (void)i_performBlockWithUIImageLock:(id)lock;
 - (CGImage)CGImage;
-- (CGImage)CGImageForSize:(CGSize)a3;
+- (CGImage)CGImageForSize:(CGSize)size;
 - (CGSize)size;
-- (OITSUUIImage)initWithContentsOfFile:(id)a3;
+- (OITSUUIImage)initWithContentsOfFile:(id)file;
 - (double)scale;
 - (id)UIImage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_initWithUIImage:(id)a3 needsGuard:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_initWithUIImage:(id)image needsGuard:(BOOL)guard;
 - (int64_t)imageOrientation;
 - (void)dealloc;
 @end
 
 @implementation OITSUUIImage
 
-+ (void)i_performBlockWithUIImageLock:(id)a3
++ (void)i_performBlockWithUIImageLock:(id)lock
 {
   if (i_performBlockWithUIImageLock__sOnce != -1)
   {
@@ -23,7 +23,7 @@
   }
 
   dispatch_semaphore_wait(i_performBlockWithUIImageLock__sLock, 0xFFFFFFFFFFFFFFFFLL);
-  (*(a3 + 2))(a3);
+  (*(lock + 2))(lock);
   v4 = i_performBlockWithUIImageLock__sLock;
 
   dispatch_semaphore_signal(v4);
@@ -36,10 +36,10 @@ dispatch_semaphore_t __46__OITSUUIImage_i_performBlockWithUIImageLock___block_in
   return result;
 }
 
-+ (id)imageNamed:(id)a3
++ (id)imageNamed:(id)named
 {
   v5 = [TSUQuicklookResource imagePathForQuicklookResource:?];
-  if (!v5 || (v6 = [[a1 alloc] initWithContentsOfFile:v5]) == 0)
+  if (!v5 || (v6 = [[self alloc] initWithContentsOfFile:v5]) == 0)
   {
     v10 = 0;
     v11 = &v10;
@@ -51,12 +51,12 @@ dispatch_semaphore_t __46__OITSUUIImage_i_performBlockWithUIImageLock___block_in
     v9[1] = 3221225472;
     v9[2] = __27__OITSUUIImage_imageNamed___block_invoke;
     v9[3] = &unk_2799C65E8;
-    v9[4] = a3;
+    v9[4] = named;
     v9[5] = &v10;
-    [a1 i_performBlockWithUIImageLock:v9];
+    [self i_performBlockWithUIImageLock:v9];
     if (v11[5])
     {
-      v7 = [a1 alloc];
+      v7 = [self alloc];
       v6 = [v7 p_initWithUIImage:v11[5] needsGuard:1];
     }
 
@@ -79,19 +79,19 @@ void __27__OITSUUIImage_imageNamed___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)p_initWithUIImage:(id)a3 needsGuard:(BOOL)a4
+- (id)p_initWithUIImage:(id)image needsGuard:(BOOL)guard
 {
-  v4 = a4;
+  guardCopy = guard;
   v11.receiver = self;
   v11.super_class = OITSUUIImage;
   v6 = [(OITSUImage *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (image)
     {
-      v6->mUIImage = a3;
-      if (v4)
+      v6->mUIImage = image;
+      if (guardCopy)
       {
         v8 = [[OITSUUIImageAutoreleasePoolGuard alloc] initWithUIImage:v7->mUIImage];
         v7->mGuard = v8;
@@ -112,14 +112,14 @@ void __27__OITSUUIImage_imageNamed___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (OITSUUIImage)initWithContentsOfFile:(id)a3
+- (OITSUUIImage)initWithContentsOfFile:(id)file
 {
-  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:a3];
+  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:file];
 
   return [(OITSUUIImage *)self initWithUIImage:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mUIImage = self->mUIImage;
@@ -198,7 +198,7 @@ void __27__OITSUUIImage_imageNamed___block_invoke(uint64_t a1)
   return [mUIImage CGImage];
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3
+- (CGImage)CGImageForSize:(CGSize)size
 {
   mGuard = self->mGuard;
   if (mGuard)
@@ -208,7 +208,7 @@ void __27__OITSUUIImage_imageNamed___block_invoke(uint64_t a1)
 
   mUIImage = self->mUIImage;
 
-  return [mUIImage CGImage:a3.width];
+  return [mUIImage CGImage:size.width];
 }
 
 - (int64_t)imageOrientation

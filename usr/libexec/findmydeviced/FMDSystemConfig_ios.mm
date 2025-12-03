@@ -1,5 +1,5 @@
 @interface FMDSystemConfig_ios
-- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)a3;
+- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)key;
 - (BOOL)allowsActivationLock;
 - (BOOL)deviceSupportsUltraLowPowerNetworking;
 - (BOOL)hasCellularCapability;
@@ -14,8 +14,8 @@
 - (BOOL)isRegionMonitoringAvailable;
 - (BOOL)isRoseCapable;
 - (FMDSystemConfig_ios)init;
-- (id)_numberGestaltQueryForKey:(__CFString *)a3;
-- (id)_stringGestaltQueryForKey:(__CFString *)a3;
+- (id)_numberGestaltQueryForKey:(__CFString *)key;
+- (id)_stringGestaltQueryForKey:(__CFString *)key;
 - (id)backOfEnclosureColor;
 - (id)btMacAddress;
 - (id)buildVersion;
@@ -45,7 +45,7 @@
 - (int64_t)connectionStatus;
 - (int64_t)deviceClass;
 - (unint64_t)unlockState;
-- (void)_handleGestaltError:(int)a3 forKey:(__CFString *)a4;
+- (void)_handleGestaltError:(int)error forKey:(__CFString *)key;
 - (void)currentPasscodeStateMayNeedUpdate;
 - (void)dealloc;
 - (void)deviceNameMayNeedUpdate;
@@ -102,17 +102,17 @@
 - (id)timezone
 {
   v2 = +[NSTimeZone systemTimeZone];
-  v3 = [v2 name];
+  name = [v2 name];
 
-  return v3;
+  return name;
 }
 
 - (id)locale
 {
   v2 = +[NSLocale autoupdatingCurrentLocale];
-  v3 = [v2 localeIdentifier];
+  localeIdentifier = [v2 localeIdentifier];
 
-  return v3;
+  return localeIdentifier;
 }
 
 - (id)deviceName
@@ -371,17 +371,17 @@
 - (BOOL)isPasscodeChangeRestricted
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isPasscodeModificationAllowed];
+  isPasscodeModificationAllowed = [v2 isPasscodeModificationAllowed];
 
-  return v3 ^ 1;
+  return isPasscodeModificationAllowed ^ 1;
 }
 
 - (id)suinfoLastModifiedTimestamp
 {
-  v2 = [(FMDSystemConfig_ios *)self pscSUIURL];
+  pscSUIURL = [(FMDSystemConfig_ios *)self pscSUIURL];
   v11 = 0;
   v10 = 0;
-  [v2 getResourceValue:&v11 forKey:NSURLContentModificationDateKey error:&v10];
+  [pscSUIURL getResourceValue:&v11 forKey:NSURLContentModificationDateKey error:&v10];
   v3 = v11;
   v4 = v10;
   v5 = v4;
@@ -402,19 +402,19 @@
       v7 = sub_100002880();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_10022C214(v2, v5, v7);
+        sub_10022C214(pscSUIURL, v5, v7);
       }
     }
 
-    v8 = 0;
+    fm_epochObject = 0;
   }
 
   else
   {
-    v8 = [v3 fm_epochObject];
+    fm_epochObject = [v3 fm_epochObject];
   }
 
-  return v8;
+  return fm_epochObject;
 }
 
 - (id)pscSUIURL
@@ -478,9 +478,9 @@
 - (BOOL)isLowPowerModeEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 - (BOOL)isFMIPLocationServicesEnabled
@@ -528,30 +528,30 @@
   CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, sub_100199968, @"com.apple.system.timezone", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)_handleGestaltError:(int)a3 forKey:(__CFString *)a4
+- (void)_handleGestaltError:(int)error forKey:(__CFString *)key
 {
   v6 = sub_100002880();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_10022C04C(a4, a3, v6);
+    sub_10022C04C(key, error, v6);
   }
 }
 
-- (id)_stringGestaltQueryForKey:(__CFString *)a3
+- (id)_stringGestaltQueryForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
 
   return v3;
 }
 
-- (id)_numberGestaltQueryForKey:(__CFString *)a3
+- (id)_numberGestaltQueryForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
 
   return v3;
 }
 
-- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)a3
+- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
   if (!v3)
@@ -574,11 +574,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Device name may need update", buf, 2u);
   }
 
-  v4 = [(FMDSystemConfig_ios *)self deviceName];
+  deviceName = [(FMDSystemConfig_ios *)self deviceName];
   self->_deviceNameUpToDate = 0;
-  v5 = [(FMDSystemConfig_ios *)self deviceName];
-  v6 = v5;
-  if (!v4 && v5 || v4 && !v5 || ([v4 isEqualToString:v5] & 1) == 0)
+  deviceName2 = [(FMDSystemConfig_ios *)self deviceName];
+  v6 = deviceName2;
+  if (!deviceName && deviceName2 || deviceName && !deviceName2 || ([deviceName isEqualToString:deviceName2] & 1) == 0)
   {
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -786,13 +786,13 @@
 
 - (void)currentPasscodeStateMayNeedUpdate
 {
-  v3 = [(FMDSystemConfig_ios *)self currentPasscodeConstraint];
+  currentPasscodeConstraint = [(FMDSystemConfig_ios *)self currentPasscodeConstraint];
   self->_passcodeConstraintUpToDate = 0;
-  v4 = [(FMDSystemConfig_ios *)self currentPasscodeConstraint];
-  v5 = [(FMDSystemConfig_ios *)self isPasscodeSet];
+  currentPasscodeConstraint2 = [(FMDSystemConfig_ios *)self currentPasscodeConstraint];
+  isPasscodeSet = [(FMDSystemConfig_ios *)self isPasscodeSet];
   self->_passcodeStateUpToDate = 0;
-  v6 = [(FMDSystemConfig_ios *)self isPasscodeSet];
-  if (v3 != v4 || v5 != v6)
+  isPasscodeSet2 = [(FMDSystemConfig_ios *)self isPasscodeSet];
+  if (currentPasscodeConstraint != currentPasscodeConstraint2 || isPasscodeSet != isPasscodeSet2)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 postNotificationName:@"FMDPasscodeStateChangedNotification" object:0];
@@ -809,9 +809,9 @@
 - (id)escrowHash
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 activationLockBypassHash];
+  activationLockBypassHash = [v2 activationLockBypassHash];
 
-  return v3;
+  return activationLockBypassHash;
 }
 
 - (int64_t)connectionStatus

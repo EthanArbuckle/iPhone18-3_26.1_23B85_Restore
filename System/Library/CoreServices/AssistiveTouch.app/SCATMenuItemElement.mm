@@ -1,8 +1,8 @@
 @interface SCATMenuItemElement
 - (BOOL)allowsDwellScanningToAbortAfterTimeout;
-- (BOOL)scatPerformAction:(int)a3;
+- (BOOL)scatPerformAction:(int)action;
 - (BOOL)scatShouldSuppressAudioOutput;
-- (SCATMenuItemElement)initWithMenuItem:(id)a3;
+- (SCATMenuItemElement)initWithMenuItem:(id)item;
 - (SCATModernMenuItem)menuItem;
 - (id)accessibilityLabel;
 - (id)scatSpeakableDescription;
@@ -10,65 +10,65 @@
 
 @implementation SCATMenuItemElement
 
-- (SCATMenuItemElement)initWithMenuItem:(id)a3
+- (SCATMenuItemElement)initWithMenuItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = SCATMenuItemElement;
   v5 = [(SCATMenuItemElement *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATMenuItemElement *)v5 setMenuItem:v4];
+    [(SCATMenuItemElement *)v5 setMenuItem:itemCopy];
   }
 
   return v6;
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
-  if (a3 != 2010)
+  if (action != 2010)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = [(SCATMenuItemElement *)self menuItem];
-  LOBYTE(v3) = [v4 handleActivateWithElement:v3];
+  selfCopy = self;
+  menuItem = [(SCATMenuItemElement *)self menuItem];
+  LOBYTE(selfCopy) = [menuItem handleActivateWithElement:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)scatSpeakableDescription
 {
-  v2 = [(SCATMenuItemElement *)self menuItem];
-  v3 = [v2 accessibilityLabel];
+  menuItem = [(SCATMenuItemElement *)self menuItem];
+  accessibilityLabel = [menuItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)scatShouldSuppressAudioOutput
 {
-  v2 = [(SCATMenuItemElement *)self menuItem];
-  v3 = [v2 shouldSuppressAudioOutput];
+  menuItem = [(SCATMenuItemElement *)self menuItem];
+  shouldSuppressAudioOutput = [menuItem shouldSuppressAudioOutput];
 
-  return v3;
+  return shouldSuppressAudioOutput;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SCATMenuItemElement *)self menuItem];
-  v3 = [v2 accessibilityLabel];
+  menuItem = [(SCATMenuItemElement *)self menuItem];
+  accessibilityLabel = [menuItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)allowsDwellScanningToAbortAfterTimeout
 {
-  v2 = [(SCATMenuItemElement *)self menuItem];
-  v3 = [v2 allowsDwellScanningToAbortAfterTimeout];
+  menuItem = [(SCATMenuItemElement *)self menuItem];
+  allowsDwellScanningToAbortAfterTimeout = [menuItem allowsDwellScanningToAbortAfterTimeout];
 
-  return v3;
+  return allowsDwellScanningToAbortAfterTimeout;
 }
 
 - (SCATModernMenuItem)menuItem

@@ -1,55 +1,55 @@
 @interface ATXChargerPluggedInEvent
-- (ATXChargerPluggedInEvent)initWithStartTime:(id)a3 endTime:(id)a4 connected:(BOOL)a5 adapterType:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXChargerPluggedInEvent:(id)a3;
+- (ATXChargerPluggedInEvent)initWithStartTime:(id)time endTime:(id)endTime connected:(BOOL)connected adapterType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXChargerPluggedInEvent:(id)event;
 - (unint64_t)hash;
 @end
 
 @implementation ATXChargerPluggedInEvent
 
-- (ATXChargerPluggedInEvent)initWithStartTime:(id)a3 endTime:(id)a4 connected:(BOOL)a5 adapterType:(id)a6
+- (ATXChargerPluggedInEvent)initWithStartTime:(id)time endTime:(id)endTime connected:(BOOL)connected adapterType:(id)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = ATXChargerPluggedInEvent;
   v14 = [(ATXChargerPluggedInEvent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_startTime, a3);
-    objc_storeStrong(&v15->_endTime, a4);
-    v15->_connected = a5;
-    objc_storeStrong(&v15->_adapterType, a6);
+    objc_storeStrong(&v14->_startTime, time);
+    objc_storeStrong(&v15->_endTime, endTime);
+    v15->_connected = connected;
+    objc_storeStrong(&v15->_adapterType, type);
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXChargerPluggedInEvent *)self isEqualToATXChargerPluggedInEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXChargerPluggedInEvent *)self isEqualToATXChargerPluggedInEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXChargerPluggedInEvent:(id)a3
+- (BOOL)isEqualToATXChargerPluggedInEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_startTime;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == eventCopy[2])
   {
   }
 
@@ -65,7 +65,7 @@
 
   v8 = self->_endTime;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == eventCopy[3])
   {
   }
 
@@ -79,7 +79,7 @@
     }
   }
 
-  if (self->_connected != *(v4 + 8))
+  if (self->_connected != *(eventCopy + 8))
   {
 LABEL_12:
     v13 = 0;
@@ -88,7 +88,7 @@ LABEL_12:
 
   v11 = self->_adapterType;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == eventCopy[4])
   {
     v13 = 1;
   }
@@ -104,15 +104,15 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXChargerPluggedInEvent *)self startTime];
-  v4 = [v3 hash];
+  startTime = [(ATXChargerPluggedInEvent *)self startTime];
+  v4 = [startTime hash];
 
-  v5 = [(ATXChargerPluggedInEvent *)self endTime];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  endTime = [(ATXChargerPluggedInEvent *)self endTime];
+  v6 = [endTime hash] - v4 + 32 * v4;
 
   v7 = 31 * v6 + [(ATXChargerPluggedInEvent *)self connected];
-  v8 = [(ATXChargerPluggedInEvent *)self adapterType];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  adapterType = [(ATXChargerPluggedInEvent *)self adapterType];
+  v9 = [adapterType hash] - v7 + 32 * v7;
 
   return v9;
 }

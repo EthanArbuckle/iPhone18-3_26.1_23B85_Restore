@@ -1,5 +1,5 @@
 @interface NCNotificationListSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureClearButtonIfNecessary;
 - (void)_configureCollapseButtonIfNecessary;
@@ -7,15 +7,15 @@
 
 @implementation NCNotificationListSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"clearButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_configureClearButtonIfNecessary" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_handleCollapseActionTriggered:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_configureCollapseButtonIfNecessary" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"clearButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_configureClearButtonIfNecessary" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_handleCollapseActionTriggered:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListSectionHeaderView" hasInstanceMethod:@"_configureCollapseButtonIfNecessary" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,25 +24,25 @@
   v11.super_class = NCNotificationListSectionHeaderViewAccessibility;
   [(NCNotificationListSectionHeaderViewAccessibility *)&v11 _accessibilityLoadAccessibilityInformation];
   v3 = [(NCNotificationListSectionHeaderViewAccessibility *)self safeValueForKey:@"clearButton"];
-  v4 = [(NCNotificationListSectionHeaderViewAccessibility *)self axTitle];
-  [v3 setAccessibilityValue:v4];
+  axTitle = [(NCNotificationListSectionHeaderViewAccessibility *)self axTitle];
+  [v3 setAccessibilityValue:axTitle];
 
-  v5 = [(NCNotificationListSectionHeaderViewAccessibility *)self axDigestCollapseButton];
+  axDigestCollapseButton = [(NCNotificationListSectionHeaderViewAccessibility *)self axDigestCollapseButton];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __94__NCNotificationListSectionHeaderViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v10[3] = &unk_29F317108;
   v10[4] = self;
-  [v5 _setAccessibilityLabelBlock:v10];
+  [axDigestCollapseButton _setAccessibilityLabelBlock:v10];
 
   objc_initWeak(&location, self);
-  v6 = [(NCNotificationListSectionHeaderViewAccessibility *)self axDigestCollapseButton];
+  axDigestCollapseButton2 = [(NCNotificationListSectionHeaderViewAccessibility *)self axDigestCollapseButton];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __94__NCNotificationListSectionHeaderViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;
   v7[3] = &unk_29F317130;
   objc_copyWeak(&v8, &location);
-  [v6 _setAccessibilityActivateBlock:v7];
+  [axDigestCollapseButton2 _setAccessibilityActivateBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

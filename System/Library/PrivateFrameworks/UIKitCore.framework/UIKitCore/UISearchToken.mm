@@ -1,6 +1,6 @@
 @interface UISearchToken
 + (UISearchToken)tokenWithIcon:(UIImage *)icon text:(NSString *)text;
-+ (UISearchToken)tokenWithImage:(id)a3;
++ (UISearchToken)tokenWithImage:(id)image;
 - (id)_initToken;
 @end
 
@@ -13,25 +13,25 @@
   return [(UISearchToken *)&v3 init];
 }
 
-+ (UISearchToken)tokenWithImage:(id)a3
++ (UISearchToken)tokenWithImage:(id)image
 {
-  v3 = a3;
-  v4 = [[_UISearchToken alloc] _initToken];
-  [v4 setImage:v3];
+  imageCopy = image;
+  _initToken = [[_UISearchToken alloc] _initToken];
+  [_initToken setImage:imageCopy];
 
-  return v4;
+  return _initToken;
 }
 
 + (UISearchToken)tokenWithIcon:(UIImage *)icon text:(NSString *)text
 {
   v5 = text;
   v6 = icon;
-  v7 = [[_UISearchToken alloc] _initToken];
-  [v7 setImage:v6];
+  _initToken = [[_UISearchToken alloc] _initToken];
+  [_initToken setImage:v6];
 
-  [v7 setText:v5];
+  [_initToken setText:v5];
 
-  return v7;
+  return _initToken;
 }
 
 @end

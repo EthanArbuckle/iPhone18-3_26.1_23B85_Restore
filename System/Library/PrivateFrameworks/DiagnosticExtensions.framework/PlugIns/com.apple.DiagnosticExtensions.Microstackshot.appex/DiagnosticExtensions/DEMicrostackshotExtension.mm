@@ -1,6 +1,6 @@
 @interface DEMicrostackshotExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEMicrostackshotExtension
@@ -32,29 +32,29 @@
   return v2;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = PowerMSSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "parameters: %@", buf, 0xCu);
   }
 
-  v5 = [v3 objectForKey:@"from"];
+  v5 = [parametersCopy objectForKey:@"from"];
 
   if (v5)
   {
-    v5 = [v3 objectForKeyedSubscript:@"from"];
+    v5 = [parametersCopy objectForKeyedSubscript:@"from"];
   }
 
-  v6 = [v3 objectForKey:@"to"];
+  v6 = [parametersCopy objectForKey:@"to"];
 
   if (v6)
   {
-    v6 = [v3 objectForKeyedSubscript:@"to"];
+    v6 = [parametersCopy objectForKeyedSubscript:@"to"];
   }
 
   if (v5 && !v6)
@@ -89,7 +89,7 @@ LABEL_15:
   if (v9)
   {
     v11 = [v9 objectForKeyedSubscript:@"microstackshots"];
-    NSLog(@"[DEMicrostackshotExtension] attachmentsForParameters(parameters=%@): %@\n", v3, v11);
+    NSLog(@"[DEMicrostackshotExtension] attachmentsForParameters(parameters=%@): %@\n", parametersCopy, v11);
     v12 = PowerMSSLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {

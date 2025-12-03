@@ -1,25 +1,25 @@
 @interface VUIPlaybackSettings
 + (id)sharedSettings;
 - (VUIPlaybackSettings)init;
-- (id)_descriptionForExternalScreenType:(unsigned int)a3;
-- (int64_t)_downloadQualityForString:(id)a3;
-- (int64_t)_playbackQualityForString:(id)a3 forCellular:(BOOL)a4;
+- (id)_descriptionForExternalScreenType:(unsigned int)type;
+- (int64_t)_downloadQualityForString:(id)string;
+- (int64_t)_playbackQualityForString:(id)string forCellular:(BOOL)cellular;
 - (int64_t)preferredDownloadQualityForCurrentNetworkStatus;
 - (int64_t)preferredPlaybackQualityForCurrentNetworkStatus;
-- (void)_externalScreenTypeDidChange:(id)a3;
-- (void)_handlePreferencesDidChangeNotification:(id)a3;
+- (void)_externalScreenTypeDidChange:(id)change;
+- (void)_handlePreferencesDidChangeNotification:(id)notification;
 - (void)_registerObserverForUserPrefsChange;
-- (void)_sceneWillConnect:(id)a3;
+- (void)_sceneWillConnect:(id)connect;
 - (void)_updateNetworkStatus;
 - (void)_updatePropertiesFromUserPrefs;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
-- (void)setCellularDataDownloadEnabled:(BOOL)a3;
-- (void)setCellularDataPlaybackEnabled:(BOOL)a3;
-- (void)setPreferAVAdapterCompatibility:(BOOL)a3;
-- (void)setPreferredAudioLanguageCode:(id)a3;
-- (void)setPreferredWifiDownloadQuality:(int64_t)a3;
-- (void)updateSupplementaryAvailableAudioLanguageCodes:(id)a3;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
+- (void)setCellularDataDownloadEnabled:(BOOL)enabled;
+- (void)setCellularDataPlaybackEnabled:(BOOL)enabled;
+- (void)setPreferAVAdapterCompatibility:(BOOL)compatibility;
+- (void)setPreferredAudioLanguageCode:(id)code;
+- (void)setPreferredWifiDownloadQuality:(int64_t)quality;
+- (void)updateSupplementaryAvailableAudioLanguageCodes:(id)codes;
 @end
 
 @implementation VUIPlaybackSettings
@@ -51,17 +51,17 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
   if (v2)
   {
     MRMediaRemoteSetWantsExternalScreenTypeChangeNotifications();
-    v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-    [v3 registerObserver:v2];
+    mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+    [mEMORY[0x1E69E4428] registerObserver:v2];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__externalScreenTypeDidChange_ name:*MEMORY[0x1E69B0DB0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__externalScreenTypeDidChange_ name:*MEMORY[0x1E69B0DB0] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__sceneWillConnect_ name:*MEMORY[0x1E69DE350] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__sceneWillConnect_ name:*MEMORY[0x1E69DE350] object:0];
 
     objc_initWeak(&location, v2);
     v7 = MEMORY[0x1E69E96A0];
@@ -72,10 +72,10 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
     objc_copyWeak(&v18, &location);
     MRMediaRemoteGetExternalScreenType();
 
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 vuiIsNonLightningAVAdapterConnected];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    vuiIsNonLightningAVAdapterConnected = [mEMORY[0x1E69DC668] vuiIsNonLightningAVAdapterConnected];
 
-    if (v9)
+    if (vuiIsNonLightningAVAdapterConnected)
     {
       v10 = VUIDefaultLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -84,8 +84,8 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
         _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "A non-Lightning AV adapter is connected", v13, 2u);
       }
 
-      v11 = [MEMORY[0x1E69E15F0] sharedPreferences];
-      [v11 setHasAVAdapterEvenBeenConnected:1];
+      mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+      [mEMORY[0x1E69E15F0] setHasAVAdapterEvenBeenConnected:1];
     }
 
     [(VUIPlaybackSettings *)v2 _updateNetworkStatus];
@@ -101,8 +101,8 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
 - (void)_updateNetworkStatus
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v4 = [v3 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
 
   v5 = VUIDefaultLogObject();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -111,11 +111,11 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
   }
 
   v6 = @"Unknown";
-  if (v4 > 99)
+  if (networkType > 99)
   {
-    if (v4 > 1000)
+    if (networkType > 1000)
     {
-      switch(v4)
+      switch(networkType)
       {
         case 1001:
           v6 = @"Bridged WiFi";
@@ -131,14 +131,14 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
       goto LABEL_5;
     }
 
-    if (v4 != 100)
+    if (networkType != 100)
     {
-      if (v4 == 500)
+      if (networkType == 500)
       {
         v6 = @"Bluetooth";
       }
 
-      else if (v4 == 1000)
+      else if (networkType == 1000)
       {
         v6 = @"WiFi";
       }
@@ -149,20 +149,20 @@ void __37__VUIPlaybackSettings_sharedSettings__block_invoke()
     goto LABEL_4;
   }
 
-  if ((v4 - 1) < 8)
+  if ((networkType - 1) < 8)
   {
 LABEL_4:
     v6 = @"Cellular";
   }
 
 LABEL_5:
-  v7 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v8 = [v7 isCurrentNetworkLinkExpensive];
+  mEMORY[0x1E69E4428]2 = [MEMORY[0x1E69E4428] sharedMonitor];
+  isCurrentNetworkLinkExpensive = [mEMORY[0x1E69E4428]2 isCurrentNetworkLinkExpensive];
   v9 = @"NO";
   *v11 = 134218498;
-  *&v11[4] = v4;
+  *&v11[4] = networkType;
   *&v11[12] = 2112;
-  if (v8)
+  if (isCurrentNetworkLinkExpensive)
   {
     v9 = @"YES";
   }
@@ -194,34 +194,34 @@ LABEL_8:
 - (void)_updatePropertiesFromUserPrefs
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v26 = [v3 useCellularDataPlayback];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  useCellularDataPlayback = [mEMORY[0x1E69E15F0] useCellularDataPlayback];
 
-  v4 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v5 = [v4 wifiQualityPlayback];
+  mEMORY[0x1E69E15F0]2 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  wifiQualityPlayback = [mEMORY[0x1E69E15F0]2 wifiQualityPlayback];
 
-  v6 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v7 = [v6 cellularQualityPlayback];
+  mEMORY[0x1E69E15F0]3 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  cellularQualityPlayback = [mEMORY[0x1E69E15F0]3 cellularQualityPlayback];
 
-  v8 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v25 = [v8 audioLanguageCode];
+  mEMORY[0x1E69E15F0]4 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  audioLanguageCode = [mEMORY[0x1E69E15F0]4 audioLanguageCode];
 
-  v9 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v24 = [v9 useCellularDataDownload];
+  mEMORY[0x1E69E15F0]5 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  useCellularDataDownload = [mEMORY[0x1E69E15F0]5 useCellularDataDownload];
 
-  v10 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v11 = [v10 downloadsCompatibleWithAVAdapter];
+  mEMORY[0x1E69E15F0]6 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  downloadsCompatibleWithAVAdapter = [mEMORY[0x1E69E15F0]6 downloadsCompatibleWithAVAdapter];
 
-  v12 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v13 = [v12 wifiQualityDownload];
+  mEMORY[0x1E69E15F0]7 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  wifiQualityDownload = [mEMORY[0x1E69E15F0]7 wifiQualityDownload];
 
-  v14 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v15 = [v14 cellularQualityDownload];
+  mEMORY[0x1E69E15F0]8 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  cellularQualityDownload = [mEMORY[0x1E69E15F0]8 cellularQualityDownload];
 
-  v16 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v17 = [v16 selectedAudioLanguagesDownload];
+  mEMORY[0x1E69E15F0]9 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  selectedAudioLanguagesDownload = [mEMORY[0x1E69E15F0]9 selectedAudioLanguagesDownload];
 
-  if (![v17 count])
+  if (![selectedAudioLanguagesDownload count])
   {
     v27[0] = @"ORIGINAL_AUDIO_LANGUAGE";
     v27[1] = @"DEVICE_AUDIO_LANGUAGE";
@@ -229,42 +229,42 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if ([v17 containsObject:@"DEFAULT_LANGUAGE"])
+  if ([selectedAudioLanguagesDownload containsObject:@"DEFAULT_LANGUAGE"])
   {
-    v18 = [v17 mutableCopy];
+    v18 = [selectedAudioLanguagesDownload mutableCopy];
     [v18 removeObject:@"DEFAULT_LANGUAGE"];
     [v18 insertObject:@"ORIGINAL_AUDIO_LANGUAGE" atIndex:0];
     [v18 insertObject:@"DEVICE_AUDIO_LANGUAGE" atIndex:1];
 LABEL_5:
 
-    v17 = v18;
+    selectedAudioLanguagesDownload = v18;
   }
 
-  v19 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v20 = [v19 subtitleDefaultLanguageEnabledDownload];
+  mEMORY[0x1E69E15F0]10 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  subtitleDefaultLanguageEnabledDownload = [mEMORY[0x1E69E15F0]10 subtitleDefaultLanguageEnabledDownload];
 
-  v21 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v22 = [v21 subtitleAudioLanguagesDownload];
+  mEMORY[0x1E69E15F0]11 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  subtitleAudioLanguagesDownload = [mEMORY[0x1E69E15F0]11 subtitleAudioLanguagesDownload];
 
-  [(VUIPlaybackSettings *)self setPreferredWifiPlaybackQuality:[(VUIPlaybackSettings *)self _playbackQualityForString:v5 forCellular:0]];
-  [(VUIPlaybackSettings *)self setPreferredCellularPlaybackQuality:[(VUIPlaybackSettings *)self _playbackQualityForString:v7 forCellular:1]];
-  [(VUIPlaybackSettings *)self setPreferredCellularDownloadQuality:[(VUIPlaybackSettings *)self _downloadQualityForString:v15]];
-  [(VUIPlaybackSettings *)self setPreferredAudioDownloadLanguages:v17];
-  [(VUIPlaybackSettings *)self setUseDefaultSubtitleDownloadLanguages:v20];
-  [(VUIPlaybackSettings *)self setPreferredSubtitleDownloadLanguages:v22];
-  self->_cellularDataPlaybackEnabled = v26;
-  self->_cellularDataDownloadEnabled = v24;
+  [(VUIPlaybackSettings *)self setPreferredWifiPlaybackQuality:[(VUIPlaybackSettings *)self _playbackQualityForString:wifiQualityPlayback forCellular:0]];
+  [(VUIPlaybackSettings *)self setPreferredCellularPlaybackQuality:[(VUIPlaybackSettings *)self _playbackQualityForString:cellularQualityPlayback forCellular:1]];
+  [(VUIPlaybackSettings *)self setPreferredCellularDownloadQuality:[(VUIPlaybackSettings *)self _downloadQualityForString:cellularQualityDownload]];
+  [(VUIPlaybackSettings *)self setPreferredAudioDownloadLanguages:selectedAudioLanguagesDownload];
+  [(VUIPlaybackSettings *)self setUseDefaultSubtitleDownloadLanguages:subtitleDefaultLanguageEnabledDownload];
+  [(VUIPlaybackSettings *)self setPreferredSubtitleDownloadLanguages:subtitleAudioLanguagesDownload];
+  self->_cellularDataPlaybackEnabled = useCellularDataPlayback;
+  self->_cellularDataDownloadEnabled = useCellularDataDownload;
   preferredAudioLanguageCode = self->_preferredAudioLanguageCode;
-  self->_preferredAudioLanguageCode = v25;
+  self->_preferredAudioLanguageCode = audioLanguageCode;
 
-  self->_preferAVAdapterCompatibility = v11;
-  self->_preferredWifiDownloadQuality = [(VUIPlaybackSettings *)self _downloadQualityForString:v13];
+  self->_preferAVAdapterCompatibility = downloadsCompatibleWithAVAdapter;
+  self->_preferredWifiDownloadQuality = [(VUIPlaybackSettings *)self _downloadQualityForString:wifiQualityDownload];
 }
 
 - (void)_registerObserverForUserPrefsChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handlePreferencesDidChangeNotification_ name:*MEMORY[0x1E69E1728] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handlePreferencesDidChangeNotification_ name:*MEMORY[0x1E69E1728] object:0];
 }
 
 void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
@@ -289,8 +289,8 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIPlaybackSettings;
@@ -299,14 +299,14 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
 
 - (int64_t)preferredPlaybackQualityForCurrentNetworkStatus
 {
-  v3 = [(VUIPlaybackSettings *)self networkStatus];
-  if (v3 == 2)
+  networkStatus = [(VUIPlaybackSettings *)self networkStatus];
+  if (networkStatus == 2)
   {
 
     return [(VUIPlaybackSettings *)self preferredCellularPlaybackQuality];
   }
 
-  else if (v3 == 1)
+  else if (networkStatus == 1)
   {
 
     return [(VUIPlaybackSettings *)self preferredWifiPlaybackQuality];
@@ -320,14 +320,14 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
 
 - (int64_t)preferredDownloadQualityForCurrentNetworkStatus
 {
-  v3 = [(VUIPlaybackSettings *)self networkStatus];
-  if (v3 == 2)
+  networkStatus = [(VUIPlaybackSettings *)self networkStatus];
+  if (networkStatus == 2)
   {
 
     return [(VUIPlaybackSettings *)self preferredCellularDownloadQuality];
   }
 
-  else if (v3 == 1)
+  else if (networkStatus == 1)
   {
 
     return [(VUIPlaybackSettings *)self preferredWifiDownloadQuality];
@@ -339,47 +339,47 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)setCellularDataPlaybackEnabled:(BOOL)a3
+- (void)setCellularDataPlaybackEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_cellularDataPlaybackEnabled = a3;
-  v4 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v4 setUseCellularDataPlayback:v3];
+  enabledCopy = enabled;
+  self->_cellularDataPlaybackEnabled = enabled;
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0] setUseCellularDataPlayback:enabledCopy];
 }
 
-- (void)setCellularDataDownloadEnabled:(BOOL)a3
+- (void)setCellularDataDownloadEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_cellularDataDownloadEnabled = a3;
-  v4 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v4 setUseCellularDataDownload:v3];
+  enabledCopy = enabled;
+  self->_cellularDataDownloadEnabled = enabled;
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0] setUseCellularDataDownload:enabledCopy];
 }
 
-- (void)setPreferredAudioLanguageCode:(id)a3
+- (void)setPreferredAudioLanguageCode:(id)code
 {
-  objc_storeStrong(&self->_preferredAudioLanguageCode, a3);
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v5 setAudioLanguageCode:v4];
+  objc_storeStrong(&self->_preferredAudioLanguageCode, code);
+  codeCopy = code;
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0] setAudioLanguageCode:codeCopy];
 }
 
-- (void)setPreferAVAdapterCompatibility:(BOOL)a3
+- (void)setPreferAVAdapterCompatibility:(BOOL)compatibility
 {
-  v3 = a3;
-  self->_preferAVAdapterCompatibility = a3;
-  v4 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v4 setHasAVAdapterEvenBeenConnected:1];
+  compatibilityCopy = compatibility;
+  self->_preferAVAdapterCompatibility = compatibility;
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0] setHasAVAdapterEvenBeenConnected:1];
 
-  v5 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v5 setDownloadsCompatibleWithAVAdapter:v3];
+  mEMORY[0x1E69E15F0]2 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0]2 setDownloadsCompatibleWithAVAdapter:compatibilityCopy];
 }
 
-- (void)setPreferredWifiDownloadQuality:(int64_t)a3
+- (void)setPreferredWifiDownloadQuality:(int64_t)quality
 {
-  self->_preferredWifiDownloadQuality = a3;
-  if (a3)
+  self->_preferredWifiDownloadQuality = quality;
+  if (quality)
   {
-    if (a3 != 1)
+    if (quality != 1)
     {
       return;
     }
@@ -396,27 +396,27 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
   if (v4)
   {
     v6 = v4;
-    v5 = [MEMORY[0x1E69E15F0] sharedPreferences];
-    [v5 setWifiQualityDownload:v6];
+    mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+    [mEMORY[0x1E69E15F0] setWifiQualityDownload:v6];
   }
 }
 
-- (void)updateSupplementaryAvailableAudioLanguageCodes:(id)a3
+- (void)updateSupplementaryAvailableAudioLanguageCodes:(id)codes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  codesCopy = codes;
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v3;
+    v23 = codesCopy;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "Updating supplementary available audio language codes with %@", buf, 0xCu);
   }
 
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v7 = [v6 supplementaryAvailableAudioLanguages];
-  v8 = [v5 initWithArray:v7];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  supplementaryAvailableAudioLanguages = [mEMORY[0x1E69E15F0] supplementaryAvailableAudioLanguages];
+  v8 = [v5 initWithArray:supplementaryAvailableAudioLanguages];
 
   if (!v8)
   {
@@ -427,7 +427,7 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v3;
+  v9 = codesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -463,37 +463,37 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
     _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Updated supplementary available audio language codes: %@", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  [v16 setSupplementaryAvailableAudioLanguages:v8];
+  mEMORY[0x1E69E15F0]2 = [MEMORY[0x1E69E15F0] sharedPreferences];
+  [mEMORY[0x1E69E15F0]2 setSupplementaryAvailableAudioLanguages:v8];
 }
 
-- (void)_externalScreenTypeDidChange:(id)a3
+- (void)_externalScreenTypeDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 vui_numberForKey:*MEMORY[0x1E69B0DB8]];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo vui_numberForKey:*MEMORY[0x1E69B0DB8]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(VUIPlaybackSettings *)self _descriptionForExternalScreenType:v6];
+    v8 = [(VUIPlaybackSettings *)self _descriptionForExternalScreenType:unsignedIntValue];
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "External screen type did change to %@", &v10, 0xCu);
   }
 
-  if (v6 == 2)
+  if (unsignedIntValue == 2)
   {
-    v9 = [MEMORY[0x1E69E15F0] sharedPreferences];
-    [v9 setHasAVAdapterEvenBeenConnected:1];
+    mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+    [mEMORY[0x1E69E15F0] setHasAVAdapterEvenBeenConnected:1];
   }
 }
 
-- (void)_sceneWillConnect:(id)a3
+- (void)_sceneWillConnect:(id)connect
 {
-  v3 = [a3 object];
-  if ([v3 vui_isNonLightningSecondScreenScene])
+  object = [connect object];
+  if ([object vui_isNonLightningSecondScreenScene])
   {
     v4 = VUIDefaultLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -502,18 +502,18 @@ void __27__VUIPlaybackSettings_init__block_invoke(uint64_t a1, uint64_t a2)
       _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "A non-Lightning AV adapter was connected", v6, 2u);
     }
 
-    v5 = [MEMORY[0x1E69E15F0] sharedPreferences];
-    [v5 setHasAVAdapterEvenBeenConnected:1];
+    mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+    [mEMORY[0x1E69E15F0] setHasAVAdapterEvenBeenConnected:1];
   }
 }
 
-- (void)_handlePreferencesDidChangeNotification:(id)a3
+- (void)_handlePreferencesDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __63__VUIPlaybackSettings__handlePreferencesDidChangeNotification___block_invoke;
   v5 = &unk_1E872D768;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);
@@ -532,54 +532,54 @@ void __63__VUIPlaybackSettings__handlePreferencesDidChangeNotification___block_i
   [v2 postNotificationName:@"VUIPlaybackSettingsUserPreferencesDidChange" object:*(a1 + 32)];
 }
 
-- (int64_t)_playbackQualityForString:(id)a3 forCellular:(BOOL)a4
+- (int64_t)_playbackQualityForString:(id)string forCellular:(BOOL)cellular
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 isEqualToString:*MEMORY[0x1E69E1650]])
+  cellularCopy = cellular;
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E69E1650]])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69E1658]] | v4;
+    v6 = [stringCopy isEqualToString:*MEMORY[0x1E69E1658]] | cellularCopy;
   }
 
   return v6;
 }
 
-- (int64_t)_downloadQualityForString:(id)a3
+- (int64_t)_downloadQualityForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69E1640]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E69E1640]])
   {
     v4 = 0;
   }
 
   else
   {
-    [v3 isEqualToString:*MEMORY[0x1E69E1648]];
+    [stringCopy isEqualToString:*MEMORY[0x1E69E1648]];
     v4 = 1;
   }
 
   return v4;
 }
 
-- (id)_descriptionForExternalScreenType:(unsigned int)a3
+- (id)_descriptionForExternalScreenType:(unsigned int)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E8730468[a3];
+    return off_1E8730468[type];
   }
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

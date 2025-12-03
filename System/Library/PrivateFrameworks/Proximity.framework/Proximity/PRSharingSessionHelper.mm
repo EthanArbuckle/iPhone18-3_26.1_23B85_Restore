@@ -1,32 +1,32 @@
 @interface PRSharingSessionHelper
 + (basic_string<char,)UIntToHexString:(std::allocator<char>> *__return_ptr)retstr len:;
-+ (id)HexStringToNSDataMac:(const void *)a3;
-+ (id)NSDataMacToUUID:(id)a3;
-+ (id)ProxToString:(int64_t)a3;
-+ (id)UUIDStringToNSDataMac:(const void *)a3 len:(unint64_t)a4;
-+ (id)UUIDToNSDataMac:(id)a3 len:(unint64_t)a4;
-+ (id)convertMacStringToNSData:(const void *)a3;
-+ (id)reverseNSData:(id)a3;
-+ (int)ProxToCoarseRange:(int64_t)a3;
-+ (int64_t)CoarseRangeToProx:(int)a3;
-+ (unint64_t)NSDataToUInt64:(id)a3;
++ (id)HexStringToNSDataMac:(const void *)mac;
++ (id)NSDataMacToUUID:(id)d;
++ (id)ProxToString:(int64_t)string;
++ (id)UUIDStringToNSDataMac:(const void *)mac len:(unint64_t)len;
++ (id)UUIDToNSDataMac:(id)mac len:(unint64_t)len;
++ (id)convertMacStringToNSData:(const void *)data;
++ (id)reverseNSData:(id)data;
++ (int)ProxToCoarseRange:(int64_t)range;
++ (int64_t)CoarseRangeToProx:(int)prox;
++ (unint64_t)NSDataToUInt64:(id)int64;
 @end
 
 @implementation PRSharingSessionHelper
 
-+ (id)NSDataMacToUUID:(id)a3
++ (id)NSDataMacToUUID:(id)d
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PRSharingSessionHelper.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mac"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSessionHelper.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mac"}];
   }
 
   v10[0] = 0;
   v10[1] = 0;
-  [v5 getBytes:v10 length:{objc_msgSend(v5, "length")}];
+  [dCopy getBytes:v10 length:{objc_msgSend(dCopy, "length")}];
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v10];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -34,22 +34,22 @@
   return v6;
 }
 
-+ (id)UUIDToNSDataMac:(id)a3 len:(unint64_t)a4
++ (id)UUIDToNSDataMac:(id)mac len:(unint64_t)len
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  macCopy = mac;
+  if (!macCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PRSharingSessionHelper.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSessionHelper.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
-  if (a4 <= 8)
+  if (len <= 8)
   {
     v12[0] = 0;
     v12[1] = 0;
-    [v7 getUUIDBytes:v12];
-    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v12 length:a4];
+    [macCopy getUUIDBytes:v12];
+    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v12 length:len];
   }
 
   else
@@ -62,29 +62,29 @@
   return v8;
 }
 
-+ (id)UUIDStringToNSDataMac:(const void *)a3 len:(unint64_t)a4
++ (id)UUIDStringToNSDataMac:(const void *)mac len:(unint64_t)len
 {
-  v5 = a3;
-  if ((*(a3 + 23) & 0x80000000) == 0)
+  macCopy = mac;
+  if ((*(mac + 23) & 0x80000000) == 0)
   {
     v6 = 0;
-    if (!a4 || !*(a3 + 23))
+    if (!len || !*(mac + 23))
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    v7 = [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+    v7 = [MEMORY[0x277CCACA8] stringWithCString:macCopy encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
     v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
-    v6 = [PRSharingSessionHelper UUIDToNSDataMac:v8 len:a4];
+    v6 = [PRSharingSessionHelper UUIDToNSDataMac:v8 len:len];
 
     goto LABEL_9;
   }
 
   v6 = 0;
-  if (a4 && *(a3 + 1))
+  if (len && *(mac + 1))
   {
-    v5 = *a3;
+    macCopy = *mac;
     goto LABEL_8;
   }
 
@@ -93,13 +93,13 @@ LABEL_9:
   return v6;
 }
 
-+ (id)HexStringToNSDataMac:(const void *)a3
++ (id)HexStringToNSDataMac:(const void *)mac
 {
-  if (*(a3 + 23) < 0)
+  if (*(mac + 23) < 0)
   {
-    if (*(a3 + 1))
+    if (*(mac + 1))
     {
-      v6 = (*(a3 + 1) & 1) == 0;
+      v6 = (*(mac + 1) & 1) == 0;
     }
 
     else
@@ -112,14 +112,14 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v5 = *a3;
+    macCopy = *mac;
   }
 
   else
   {
-    if (*(a3 + 23))
+    if (*(mac + 23))
     {
-      v4 = (*(a3 + 23) & 1) == 0;
+      v4 = (*(mac + 23) & 1) == 0;
     }
 
     else
@@ -134,10 +134,10 @@ LABEL_12:
       goto LABEL_25;
     }
 
-    v5 = a3;
+    macCopy = mac;
   }
 
-  v8 = strlen(v5);
+  v8 = strlen(macCopy);
   if (v8 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -152,7 +152,7 @@ LABEL_12:
   *(&__p.__r_.__value_.__s + 23) = v8;
   if (v8)
   {
-    memmove(&__p, v5, v8);
+    memmove(&__p, macCopy, v8);
   }
 
   __p.__r_.__value_.__s.__data_[v9] = 0;
@@ -164,10 +164,10 @@ LABEL_12:
 
   v15 = v10;
   v11 = objc_alloc(MEMORY[0x277CBEA90]);
-  v12 = *(a3 + 23);
+  v12 = *(mac + 23);
   if ((v12 & 0x80u) != 0)
   {
-    v12 = *(a3 + 1);
+    v12 = *(mac + 1);
   }
 
   v7 = [v11 initWithBytes:&v15 length:{v12 >> 1, __p.__r_.__value_.__r.__words[0], __p.__r_.__value_.__l.__size_, __p.__r_.__value_.__r.__words[2]}];
@@ -239,17 +239,17 @@ LABEL_10:
   return MEMORY[0x23191EE10](&v20);
 }
 
-+ (unint64_t)NSDataToUInt64:(id)a3
++ (unint64_t)NSDataToUInt64:(id)int64
 {
-  v5 = a3;
-  if (!v5)
+  int64Copy = int64;
+  if (!int64Copy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PRSharingSessionHelper.mm" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"inData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSessionHelper.mm" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"inData"}];
   }
 
   v11 = 0;
-  v6 = [v5 length];
+  v6 = [int64Copy length];
   if (v6 >= 8)
   {
     v7 = 8;
@@ -260,18 +260,18 @@ LABEL_10:
     v7 = v6;
   }
 
-  [v5 getBytes:&v11 length:v7];
+  [int64Copy getBytes:&v11 length:v7];
   v8 = v11;
 
   return v8;
 }
 
-+ (id)convertMacStringToNSData:(const void *)a3
++ (id)convertMacStringToNSData:(const void *)data
 {
-  v3 = *(a3 + 23);
+  v3 = *(data + 23);
   if ((v3 & 0x80u) != 0)
   {
-    v3 = *(a3 + 1);
+    v3 = *(data + 1);
   }
 
   if (v3 == 36)
@@ -288,22 +288,22 @@ LABEL_10:
   return v4;
 }
 
-+ (id)reverseNSData:(id)a3
++ (id)reverseNSData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PRSharingSessionHelper.mm" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"inData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSessionHelper.mm" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"inData"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:v5];
-  v7 = [v6 mutableBytes];
+  v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:dataCopy];
+  mutableBytes = [v6 mutableBytes];
   v8 = [v6 length];
-  v9 = (v7 + v8 - 1);
+  v9 = (mutableBytes + v8 - 1);
   if (v8)
   {
-    v10 = v9 > v7;
+    v10 = v9 > mutableBytes;
   }
 
   else
@@ -313,7 +313,7 @@ LABEL_10:
 
   if (v10)
   {
-    v11 = v7 + 1;
+    v11 = mutableBytes + 1;
     do
     {
       v12 = *(v11 - 1);
@@ -329,42 +329,42 @@ LABEL_10:
   return v14;
 }
 
-+ (int)ProxToCoarseRange:(int64_t)a3
++ (int)ProxToCoarseRange:(int64_t)range
 {
-  if (a3 > 4)
+  if (range > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_230EED628[a3];
+    return dword_230EED628[range];
   }
 }
 
-+ (id)ProxToString:(int64_t)a3
++ (id)ProxToString:(int64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"immediate";
   }
 
   else
   {
-    return off_2788F3BE8[a3];
+    return off_2788F3BE8[string];
   }
 }
 
-+ (int64_t)CoarseRangeToProx:(int)a3
++ (int64_t)CoarseRangeToProx:(int)prox
 {
-  if (a3 > 3)
+  if (prox > 3)
   {
     return 4;
   }
 
   else
   {
-    return qword_230EED640[a3];
+    return qword_230EED640[prox];
   }
 }
 

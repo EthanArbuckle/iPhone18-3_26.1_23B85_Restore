@@ -1,12 +1,12 @@
 @interface SearchAddressBookOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (SearchAddressBookOperation)initWithSearchQuery:(id)a3 context:(id)a4;
+- (SearchAddressBookOperation)initWithSearchQuery:(id)query context:(id)context;
 - (SearchAddressBookOperationDelegate)delegate;
 - (void)_markOperationAsFinished;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 @end
 
 @implementation SearchAddressBookOperation
@@ -40,21 +40,21 @@
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   [(SearchAddressBookOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_stateLock);
-  self->_isExecuting = a3;
+  self->_isExecuting = executing;
   os_unfair_lock_unlock(&self->_stateLock);
 
   [(SearchAddressBookOperation *)self didChangeValueForKey:@"isExecuting"];
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   [(SearchAddressBookOperation *)self willChangeValueForKey:@"isFinished"];
   os_unfair_lock_lock(&self->_stateLock);
-  self->_isFinished = a3;
+  self->_isFinished = finished;
   os_unfair_lock_unlock(&self->_stateLock);
 
   [(SearchAddressBookOperation *)self didChangeValueForKey:@"isFinished"];
@@ -78,7 +78,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   if ([(SearchAddressBookOperation *)self isCancelled])
   {
     v3 = sub_100067540();
@@ -88,14 +88,14 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "SearchAddressBookOperation - Operation is cancelled", buf, 2u);
     }
 
-    v4 = [(SearchAddressBookOperation *)v2 delegate];
-    [v4 searchAddressBookOperation:v2 didMatchResults:&__NSArray0__struct];
+    delegate = [(SearchAddressBookOperation *)selfCopy delegate];
+    [delegate searchAddressBookOperation:selfCopy didMatchResults:&__NSArray0__struct];
 
-    [(SearchAddressBookOperation *)v2 setFinished:1];
+    [(SearchAddressBookOperation *)selfCopy setFinished:1];
     return;
   }
 
-  [(SearchAddressBookOperation *)v2 setExecuting:1];
+  [(SearchAddressBookOperation *)selfCopy setExecuting:1];
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -110,14 +110,14 @@
     v8 = +[NSMutableDictionary dictionary];
     v9 = +[NSMutableDictionary dictionary];
     v10 = +[AddressBookManager sharedManager];
-    v11 = [v10 contactStore];
+    contactStore = [v10 contactStore];
 
     v12 = [CNContactFetchRequest alloc];
     v13 = +[AddressBookManager sharedManager];
-    v14 = [v13 properties];
-    v15 = [v12 initWithKeysToFetch:v14];
+    properties = [v13 properties];
+    v15 = [v12 initWithKeysToFetch:properties];
 
-    v16 = [CNContact predicateForContactsMatchingName:v2->_searchQuery options:3];
+    v16 = [CNContact predicateForContactsMatchingName:selfCopy->_searchQuery options:3];
     [v15 setPredicate:v16];
 
     [v15 setSortOrder:1];
@@ -126,14 +126,14 @@
     v64[1] = 3221225472;
     v64[2] = sub_100D0C748;
     v64[3] = &unk_101655688;
-    v64[4] = v2;
+    v64[4] = selfCopy;
     v17 = v7;
     v65 = v17;
     v57 = v8;
     v66 = v57;
     v18 = v9;
     v67 = v18;
-    [v11 enumerateContactsWithFetchRequest:v15 error:&v68 usingBlock:v64];
+    [contactStore enumerateContactsWithFetchRequest:v15 error:&v68 usingBlock:v64];
     v19 = v68;
     if (GEOConfigGetBOOL() && [v17 count])
     {
@@ -141,8 +141,8 @@
       v52 = v17;
       v53 = v15;
       v54 = v6;
-      v55 = v11;
-      v56 = v2;
+      v55 = contactStore;
+      v56 = selfCopy;
       v20 = +[_CDPeopleSuggesterContext currentContext];
       [v20 setConsumerIdentifier:@"com.apple.Maps.autocomplete"];
       v21 = +[NSDate date];
@@ -180,14 +180,14 @@
           }
 
           v29 = *(*(&v60 + 1) + 8 * i);
-          v30 = [v29 contact];
-          v31 = v30;
-          if (v30)
+          contact = [v29 contact];
+          v31 = contact;
+          if (contact)
           {
-            v32 = [v30 personId];
+            personId = [contact personId];
             if ([v31 personIdType] == 1)
             {
-              v33 = [v18 objectForKeyedSubscript:v32];
+              v33 = [v18 objectForKeyedSubscript:personId];
             }
 
             else
@@ -197,12 +197,12 @@
 
             if ([v31 personIdType] == 3)
             {
-              v34 = [v57 objectForKeyedSubscript:v32];
+              v34 = [v57 objectForKeyedSubscript:personId];
 
               v33 = v34;
               if (!v34)
               {
-                v33 = [v18 objectForKeyedSubscript:v32];
+                v33 = [v18 objectForKeyedSubscript:personId];
                 goto LABEL_22;
               }
 
@@ -237,8 +237,8 @@ LABEL_22:
         {
 LABEL_31:
 
-          v11 = v55;
-          v2 = v56;
+          contactStore = v55;
+          selfCopy = v56;
           v15 = v53;
           v6 = v54;
           v19 = v51;
@@ -253,7 +253,7 @@ LABEL_31:
     v58[1] = 3221225472;
     v58[2] = sub_100D0C86C;
     v58[3] = &unk_1016513F8;
-    v58[4] = v2;
+    v58[4] = selfCopy;
     v39 = v17;
     v40 = v6;
     v59 = v40;
@@ -274,7 +274,7 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "SearchAddressBookOperation - collected %lu results", buf, 0xCu);
   }
 
-  if (([(SearchAddressBookOperation *)v2 isCancelled]& 1) != 0)
+  if (([(SearchAddressBookOperation *)selfCopy isCancelled]& 1) != 0)
   {
     v43 = sub_100067540();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
@@ -283,41 +283,41 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "SearchAddressBookOperation - The operation was cancelled.", buf, 2u);
     }
 
-    [(SearchAddressBookOperation *)v2 _markOperationAsFinished];
-    v44 = [(SearchAddressBookOperation *)v2 delegate];
-    v45 = v44;
+    [(SearchAddressBookOperation *)selfCopy _markOperationAsFinished];
+    delegate2 = [(SearchAddressBookOperation *)selfCopy delegate];
+    v45 = delegate2;
     v46 = &__NSArray0__struct;
-    v47 = v2;
+    v47 = selfCopy;
   }
 
   else
   {
-    [(SearchAddressBookOperation *)v2 _markOperationAsFinished];
-    v44 = [(SearchAddressBookOperation *)v2 delegate];
-    v45 = v44;
-    v47 = v2;
+    [(SearchAddressBookOperation *)selfCopy _markOperationAsFinished];
+    delegate2 = [(SearchAddressBookOperation *)selfCopy delegate];
+    v45 = delegate2;
+    v47 = selfCopy;
     v46 = v40;
   }
 
-  [v44 searchAddressBookOperation:v47 didMatchResults:v46];
+  [delegate2 searchAddressBookOperation:v47 didMatchResults:v46];
 }
 
-- (SearchAddressBookOperation)initWithSearchQuery:(id)a3 context:(id)a4
+- (SearchAddressBookOperation)initWithSearchQuery:(id)query context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SearchAddressBookOperation;
   v8 = [(SearchAddressBookOperation *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [queryCopy copy];
     searchQuery = v8->_searchQuery;
     v8->_searchQuery = v9;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
     v11 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v12 = [v6 componentsSeparatedByCharactersInSet:v11];
+    v12 = [queryCopy componentsSeparatedByCharactersInSet:v11];
     searchTerms = v8->_searchTerms;
     v8->_searchTerms = v12;
   }

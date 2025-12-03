@@ -6,10 +6,10 @@
 
 - (NSUUID)uuid
 {
-  v2 = [(EPResource *)self resourceManager];
-  v3 = [v2 uuid];
+  resourceManager = [(EPResource *)self resourceManager];
+  uuid = [resourceManager uuid];
 
-  return v3;
+  return uuid;
 }
 
 @end

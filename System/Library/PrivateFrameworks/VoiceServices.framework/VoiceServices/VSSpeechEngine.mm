@@ -1,23 +1,23 @@
 @interface VSSpeechEngine
-+ (BOOL)hasPhaticResponses:(id)a3;
-+ (BOOL)isUserCancelError:(id)a3;
-+ (id)mimeForFileExtension:(id)a3;
++ (BOOL)hasPhaticResponses:(id)responses;
++ (BOOL)isUserCancelError:(id)error;
++ (id)mimeForFileExtension:(id)extension;
 - (AudioStreamBasicDescription)asbd;
-- (BOOL)initializeWithResourcePath:(id)a3;
-- (VSSpeechEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4;
-- (id)loadResource:(id)a3 error:(id *)a4;
-- (id)loadResourceAtPath:(id)a3 mimeType:(id)a4 error:(id *)a5;
-- (id)synthesizeText:(id)a3 loggable:(BOOL)a4 callback:(id)a5;
+- (BOOL)initializeWithResourcePath:(id)path;
+- (VSSpeechEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath;
+- (id)loadResource:(id)resource error:(id *)error;
+- (id)loadResourceAtPath:(id)path mimeType:(id)type error:(id *)error;
+- (id)synthesizeText:(id)text loggable:(BOOL)loggable callback:(id)callback;
 - (id)synthesizeText:loggable:callback:;
 - (uint64_t)synthesizeText:loggable:callback:;
 - (void)dealloc;
 - (void)preheat;
-- (void)setPitch:(float)a3;
-- (void)setRate:(float)a3;
-- (void)setVolume:(float)a3;
-- (void)stopAtMarker:(int64_t)a3;
+- (void)setPitch:(float)pitch;
+- (void)setRate:(float)rate;
+- (void)setVolume:(float)volume;
+- (void)stopAtMarker:(int64_t)marker;
 - (void)synthesizeText:loggable:callback:;
-- (void)unloadResource:(id)a3;
+- (void)unloadResource:(id)resource;
 @end
 
 @implementation VSSpeechEngine
@@ -56,28 +56,28 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAtMarker:(int64_t)a3
+- (void)stopAtMarker:(int64_t)marker
 {
-  if (a3 == 1)
+  if (marker == 1)
   {
-    v5 = [(VSSpeechEngine *)self currentCallbackResult];
-    [v5 setStopMark:1];
+    currentCallbackResult = [(VSSpeechEngine *)self currentCallbackResult];
+    [currentCallbackResult setStopMark:1];
   }
 
-  else if (!a3)
+  else if (!marker)
   {
     TTSSynthesizer::stop_synthesis(self->_synthesizer);
   }
 
-  v6 = [(VSSpeechEngine *)self currentCallbackResult];
-  [v6 setStopMark:a3];
+  currentCallbackResult2 = [(VSSpeechEngine *)self currentCallbackResult];
+  [currentCallbackResult2 setStopMark:marker];
 }
 
-- (id)synthesizeText:(id)a3 loggable:(BOOL)a4 callback:(id)a5
+- (id)synthesizeText:(id)text loggable:(BOOL)loggable callback:(id)callback
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  textCopy = text;
+  callbackCopy = callback;
   [(NSLock *)self->_synthesisLock lock];
   v9 = VSGetLogDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -87,13 +87,13 @@
     _os_log_debug_impl(&dword_272850000, v9, OS_LOG_TYPE_DEBUG, "VSSpeechEngine %p started synthesis.", buf, 0xCu);
   }
 
-  v10 = [[VSSpeechSynthesisCallbackResult alloc] initWithCallback:v8];
+  v10 = [[VSSpeechSynthesisCallbackResult alloc] initWithCallback:callbackCopy];
   [(VSSpeechEngine *)self asbd];
   *buf = v33;
   v47 = v34;
   v48 = v35;
   [(VSSpeechSynthesisCallbackResult *)v10 setAsbd:buf];
-  [(VSSpeechSynthesisCallbackResult *)v10 setText:v7];
+  [(VSSpeechSynthesisCallbackResult *)v10 setText:textCopy];
   objc_storeStrong(&self->_currentCallbackResult, v10);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -157,8 +157,8 @@
   }
 
   v17 = self->_synthesizer;
-  v18 = v7;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v7 UTF8String]);
+  v18 = textCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [textCopy UTF8String]);
   [(VSSpeechSynthesisCallbackResult *)v16 sampleBuffer];
   [(VSSpeechSynthesisCallbackResult *)v16 markerBuffer];
   v19 = *(&v47 + 1);
@@ -315,7 +315,7 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z51-[VSSpeechEngine synthesizeText:loggable:callback:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -333,19 +333,19 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
 - (id)synthesizeText:loggable:callback:
 {
   *a2 = &unk_2881D64E0;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
 
-- (void)unloadResource:(id)a3
+- (void)unloadResource:(id)resource
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resourceCopy = resource;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = resourceCopy;
     [(NSLock *)self->_synthesisLock lock];
     synthesizer = self->_synthesizer;
     if (v5)
@@ -373,7 +373,7 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v8) = 138412290;
-      *(&v8 + 4) = v4;
+      *(&v8 + 4) = resourceCopy;
       _os_log_error_impl(&dword_272850000, v5, OS_LOG_TYPE_ERROR, "Unknown voice resource handle to unload: %@", &v8, 0xCu);
     }
   }
@@ -381,21 +381,21 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadResource:(id)a3 error:(id *)a4
+- (id)loadResource:(id)resource error:(id *)error
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 path];
-  if (v7)
+  resourceCopy = resource;
+  path = [resourceCopy path];
+  if (path)
   {
-    v8 = [v6 pathExtension];
-    v9 = [VSSpeechEngine mimeForFileExtension:v8];
+    pathExtension = [resourceCopy pathExtension];
+    v9 = [VSSpeechEngine mimeForFileExtension:pathExtension];
 
     v10 = VSGetLogDefault();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = resourceCopy;
       v25 = 2112;
       v26 = v9;
       _os_log_impl(&dword_272850000, v10, OS_LOG_TYPE_INFO, "Loading resource: %@, mime-type: %@", buf, 0x16u);
@@ -403,7 +403,7 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
 
     if (v9)
     {
-      v11 = [(VSSpeechEngine *)self loadResourceAtPath:v7 mimeType:v9 error:a4];
+      v11 = [(VSSpeechEngine *)self loadResourceAtPath:path mimeType:v9 error:error];
     }
 
     else
@@ -412,20 +412,20 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v6;
+        v24 = resourceCopy;
         _os_log_error_impl(&dword_272850000, v15, OS_LOG_TYPE_ERROR, "Unable to find mime-type for '%@'", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v16 = MEMORY[0x277CCA9B8];
         v17 = *MEMORY[0x277CCA470];
         v21[0] = @"url";
         v21[1] = v17;
-        v22[0] = v6;
+        v22[0] = resourceCopy;
         v22[1] = @"unknown mime-type";
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
-        *a4 = [v16 errorWithDomain:@"VSVocalizerEngine" code:1 userInfo:v18];
+        *error = [v16 errorWithDomain:@"VSVocalizerEngine" code:1 userInfo:v18];
       }
 
       v9 = 0;
@@ -439,21 +439,21 @@ uint64_t __51__VSSpeechEngine_synthesizeText_loggable_callback___block_invoke(ui
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = resourceCopy;
     _os_log_error_impl(&dword_272850000, v12, OS_LOG_TYPE_ERROR, "Url doesn't conform to RFC 1808 '%@'", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277CCA470];
     v27[0] = @"url";
     v27[1] = v14;
-    v28[0] = v6;
+    v28[0] = resourceCopy;
     v28[1] = @"unknown path";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
     [v13 errorWithDomain:@"VSVocalizerEngine" code:1 userInfo:v9];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
 LABEL_15:
 
     goto LABEL_16;
@@ -467,16 +467,16 @@ LABEL_16:
   return v11;
 }
 
-- (id)loadResourceAtPath:(id)a3 mimeType:(id)a4 error:(id *)a5
+- (id)loadResourceAtPath:(id)path mimeType:(id)type error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  typeCopy = type;
   [(NSLock *)self->_synthesisLock lock];
   synthesizer = self->_synthesizer;
-  std::string::basic_string[abi:ne200100]<0>(buf, [v8 UTF8String]);
-  v11 = v9;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v9 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(buf, [pathCopy UTF8String]);
+  v11 = typeCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [typeCopy UTF8String]);
   TTSSynthesizer::load_voice_resource();
   if (v22 < 0)
   {
@@ -513,21 +513,21 @@ LABEL_16:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v8;
+      *&buf[4] = pathCopy;
       _os_log_error_impl(&dword_272850000, v14, OS_LOG_TYPE_ERROR, "Unable to load resource '%@'", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v25[0] = @"path";
       v25[1] = @"mimeType";
-      v26[0] = v8;
-      v26[1] = v9;
+      v26[0] = pathCopy;
+      v26[1] = typeCopy;
       v25[2] = *MEMORY[0x277CCA470];
       v26[2] = @"TTSSynthesizer::load_voice_resource";
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
-      *a5 = [v15 errorWithDomain:@"VSVocalizerEngine" code:1 userInfo:v16];
+      *error = [v15 errorWithDomain:@"VSVocalizerEngine" code:1 userInfo:v16];
     }
 
     v13 = 0;
@@ -543,20 +543,20 @@ LABEL_16:
   return v13;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.01)
+  if (volume <= 0.01)
   {
-    v3 = 0.01;
+    volumeCopy = 0.01;
   }
 
   else
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (self->_volume != v3)
+  if (self->_volume != volumeCopy)
   {
     synthesizer = self->_synthesizer;
     v6 = TTSSynthesizer::set_global_property();
@@ -574,28 +574,28 @@ LABEL_16:
 
     else
     {
-      self->_volume = v3;
+      self->_volume = volumeCopy;
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 < 0.5)
+  rateCopy = rate;
+  if (rateCopy < 0.5)
   {
-    v3 = 0.5;
+    rateCopy = 0.5;
   }
 
-  if (v3 >= 4.0)
+  if (rateCopy >= 4.0)
   {
-    v3 = 4.0;
+    rateCopy = 4.0;
   }
 
-  v4 = v3;
+  v4 = rateCopy;
   if (self->_rate != v4)
   {
     synthesizer = self->_synthesizer;
@@ -621,21 +621,21 @@ LABEL_16:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 < 0.5)
+  pitchCopy = pitch;
+  if (pitchCopy < 0.5)
   {
-    v3 = 0.5;
+    pitchCopy = 0.5;
   }
 
-  if (v3 >= 2.0)
+  if (pitchCopy >= 2.0)
   {
-    v3 = 2.0;
+    pitchCopy = 2.0;
   }
 
-  v4 = v3;
+  v4 = pitchCopy;
   if (self->_pitch != v4)
   {
     synthesizer = self->_synthesizer;
@@ -676,10 +676,10 @@ LABEL_16:
   [(VSSpeechEngine *)&v4 dealloc];
 }
 
-- (BOOL)initializeWithResourcePath:(id)a3
+- (BOOL)initializeWithResourcePath:(id)path
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   voicePath = self->_voicePath;
   v6 = VSGetLogDefault();
   v7 = v6;
@@ -706,11 +706,11 @@ LABEL_16:
   return 0;
 }
 
-- (VSSpeechEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4
+- (VSSpeechEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath
 {
   v45 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v33 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v39.receiver = self;
   v39.super_class = VSSpeechEngine;
   v7 = [(VSSpeechEngine *)&v39 init];
@@ -721,7 +721,7 @@ LABEL_16:
     goto LABEL_3;
   }
 
-  objc_storeStrong(&v7->_voicePath, a3);
+  objc_storeStrong(&v7->_voicePath, path);
   v34->_volume = 0.8;
   __asm { FMOV            V0.2S, #1.0 }
 
@@ -730,7 +730,7 @@ LABEL_16:
   synthesisLock = v34->_synthesisLock;
   v34->_synthesisLock = v14;
 
-  v16 = [(VSSpeechEngine *)v34 initializeWithResourcePath:v33];
+  v16 = [(VSSpeechEngine *)v34 initializeWithResourcePath:resourcePathCopy];
   v8 = v34;
   if (!v16)
   {
@@ -738,15 +738,15 @@ LABEL_16:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v42 = v32;
+      v42 = pathCopy;
       v43 = 2112;
-      v44 = v33;
+      v44 = resourcePathCopy;
       _os_log_impl(&dword_272850000, v18, OS_LOG_TYPE_DEFAULT, "voice path '%@', resource path '%@'\n", buf, 0x16u);
     }
 
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v20 = v19;
-    v31 = [v19 contentsOfDirectoryAtPath:v32 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v20 = defaultManager;
+    v31 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
     v21 = VSGetLogDefault();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -807,15 +807,15 @@ LABEL_3:
   return v17;
 }
 
-+ (id)mimeForFileExtension:(id)a3
++ (id)mimeForFileExtension:(id)extension
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"dcb"])
+  extensionCopy = extension;
+  if ([extensionCopy isEqualToString:@"dcb"])
   {
     v4 = @"application/edct-bin-dictionary";
   }
 
-  else if ([v3 isEqualToString:@"txt"])
+  else if ([extensionCopy isEqualToString:@"txt"])
   {
     v4 = @"application/x-vocalizer-rettt+text";
   }
@@ -828,10 +828,10 @@ LABEL_3:
   return v4;
 }
 
-+ (BOOL)hasPhaticResponses:(id)a3
++ (BOOL)hasPhaticResponses:(id)responses
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+  responsesCopy = responses;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [responsesCopy UTF8String]);
   has_phatic_responses = TTSSynthesizer::has_phatic_responses();
   if (v7 < 0)
   {
@@ -841,14 +841,14 @@ LABEL_3:
   return has_phatic_responses;
 }
 
-+ (BOOL)isUserCancelError:(id)a3
++ (BOOL)isUserCancelError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 code] == 2147485703)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy && [errorCopy code] == 2147485703)
   {
-    v5 = [v4 domain];
-    v6 = [v5 isEqualToString:@"VSVocalizerEngine"];
+    domain = [v4 domain];
+    v6 = [domain isEqualToString:@"VSVocalizerEngine"];
   }
 
   else

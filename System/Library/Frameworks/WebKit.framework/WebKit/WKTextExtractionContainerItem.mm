@@ -1,16 +1,16 @@
 @interface WKTextExtractionContainerItem
 - (WKTextExtractionContainerItem)init;
-- (WKTextExtractionContainerItem)initWithContainer:(int64_t)a3 rectInWebView:(CGRect)a4 children:(id)a5;
+- (WKTextExtractionContainerItem)initWithContainer:(int64_t)container rectInWebView:(CGRect)view children:(id)children;
 @end
 
 @implementation WKTextExtractionContainerItem
 
-- (WKTextExtractionContainerItem)initWithContainer:(int64_t)a3 rectInWebView:(CGRect)a4 children:(id)a5
+- (WKTextExtractionContainerItem)initWithContainer:(int64_t)container rectInWebView:(CGRect)view children:(id)children
 {
-  *&self->WKTextExtractionItem_opaque[OBJC_IVAR___WKTextExtractionContainerItem_container] = a3;
+  *&self->WKTextExtractionItem_opaque[OBJC_IVAR___WKTextExtractionContainerItem_container] = container;
   v6.receiver = self;
   v6.super_class = WKTextExtractionContainerItem;
-  return [(WKTextExtractionItem *)&v6 initWith:a5 children:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  return [(WKTextExtractionItem *)&v6 initWith:children children:view.origin.x, view.origin.y, view.size.width, view.size.height];
 }
 
 - (WKTextExtractionContainerItem)init

@@ -1,13 +1,13 @@
 @interface OFRescaler
-- (OFRescaler)initWithSegments:(id)a3;
-- (double)computeSegmentDurations:(double *)a3 forSpeedFactor:(double)a4;
-- (double)computeSegmentDurations:(double *)a3 forTotalDuration:(double)a4;
+- (OFRescaler)initWithSegments:(id)segments;
+- (double)computeSegmentDurations:(double *)durations forSpeedFactor:(double)factor;
+- (double)computeSegmentDurations:(double *)durations forTotalDuration:(double)duration;
 - (void)dealloc;
 @end
 
 @implementation OFRescaler
 
-- (OFRescaler)initWithSegments:(id)a3
+- (OFRescaler)initWithSegments:(id)segments
 {
   v44 = *MEMORY[0x277D85DE8];
   v42.receiver = self;
@@ -15,13 +15,13 @@
   v4 = [(OFRescaler *)&v42 init];
   if (v4)
   {
-    v4->_segments = [a3 copy];
+    v4->_segments = [segments copy];
     objc_opt_class();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v5 = [segments countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v5)
     {
       v6 = v5;
@@ -36,7 +36,7 @@
         {
           if (*v39 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(segments);
           }
 
           v14 = *(*(&v38 + 1) + 8 * v13);
@@ -192,7 +192,7 @@ LABEL_22:
         }
 
         while (v6 != v13);
-        v35 = [a3 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v35 = [segments countByEnumeratingWithState:&v38 objects:v43 count:16];
         v6 = v35;
       }
 
@@ -217,13 +217,13 @@ LABEL_22:
   [(OFRescaler *)&v4 dealloc];
 }
 
-- (double)computeSegmentDurations:(double *)a3 forTotalDuration:(double)a4
+- (double)computeSegmentDurations:(double *)durations forTotalDuration:(double)duration
 {
   minimumDuration = self->_minimumDuration;
-  if (minimumDuration <= a4)
+  if (minimumDuration <= duration)
   {
-    minimumDuration = a4;
-    if (self->_maximumDuration < a4)
+    minimumDuration = duration;
+    if (self->_maximumDuration < duration)
     {
       minimumDuration = self->_maximumDuration;
     }
@@ -237,7 +237,7 @@ LABEL_22:
     v17[1] = 3221225472;
     v17[2] = __55__OFRescaler_computeSegmentDurations_forTotalDuration___block_invoke_3;
     v17[3] = &__block_descriptor_40_e38_v32__0___OFRescalableSegment__8Q16_B24l;
-    v17[4] = a3;
+    v17[4] = durations;
     [(NSArray *)segments enumerateObjectsUsingBlock:v17];
   }
 
@@ -262,7 +262,7 @@ LABEL_22:
     v25[3] = &unk_279C89DB8;
     v26 = minimumDuration > defaultDuration;
     v25[5] = &v27;
-    v25[6] = a3;
+    v25[6] = durations;
     v25[4] = &v31;
     [(NSArray *)v8 enumerateObjectsUsingBlock:v25];
     v21 = 0;
@@ -305,7 +305,7 @@ LABEL_22:
       v18[6] = &v21;
       v20 = v13;
       v18[7] = &v27;
-      v18[8] = a3;
+      v18[8] = durations;
       [(NSArray *)v14 enumerateObjectsUsingBlock:v18];
     }
 
@@ -453,7 +453,7 @@ uint64_t __55__OFRescaler_computeSegmentDurations_forTotalDuration___block_invok
   return result;
 }
 
-- (double)computeSegmentDurations:(double *)a3 forSpeedFactor:(double)a4
+- (double)computeSegmentDurations:(double *)durations forSpeedFactor:(double)factor
 {
   v8 = 0;
   v9 = &v8;
@@ -464,8 +464,8 @@ uint64_t __55__OFRescaler_computeSegmentDurations_forTotalDuration___block_invok
   v7[1] = 3221225472;
   v7[2] = __53__OFRescaler_computeSegmentDurations_forSpeedFactor___block_invoke;
   v7[3] = &unk_279C89E28;
-  *&v7[5] = a4;
-  v7[6] = a3;
+  *&v7[5] = factor;
+  v7[6] = durations;
   v7[4] = &v8;
   [(NSArray *)segments enumerateObjectsUsingBlock:v7];
   v5 = v9[3];

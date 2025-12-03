@@ -1,9 +1,9 @@
 @interface PXImageRequest
 - (CGSize)targetSize;
-- (PXImageRequest)initWithMediaProvider:(id)a3 asset:(id)a4 targetSize:(CGSize)a5 options:(id)a6;
+- (PXImageRequest)initWithMediaProvider:(id)provider asset:(id)asset targetSize:(CGSize)size options:(id)options;
 - (id)description;
 - (void)cancel;
-- (void)performWithResultHandler:(id)a3;
+- (void)performWithResultHandler:(id)handler;
 @end
 
 @implementation PXImageRequest
@@ -23,28 +23,28 @@
   v15.receiver = self;
   v15.super_class = PXImageRequest;
   v4 = [(PXImageRequest *)&v15 description];
-  v5 = [(PXImageRequest *)self requestID];
-  v6 = [(PXImageRequest *)self asset];
+  requestID = [(PXImageRequest *)self requestID];
+  asset = [(PXImageRequest *)self asset];
   [(PXImageRequest *)self targetSize];
   v7 = NSStringFromCGSize(v17);
-  v8 = [(PXImageRequest *)self image];
-  v9 = [(PXImageRequest *)self gotFullQualityImage];
+  image = [(PXImageRequest *)self image];
+  gotFullQualityImage = [(PXImageRequest *)self gotFullQualityImage];
   v10 = @"NO";
-  if (v9)
+  if (gotFullQualityImage)
   {
     v10 = @"YES";
   }
 
   v11 = v10;
-  v12 = [(PXImageRequest *)self error];
-  v13 = [v3 stringWithFormat:@"<%@ requestID:%ld asset:%p targetSize:%@ image:%@ gotFullQuality:%@ error:%@>", v4, v5, v6, v7, v8, v11, v12];
+  error = [(PXImageRequest *)self error];
+  v13 = [v3 stringWithFormat:@"<%@ requestID:%ld asset:%p targetSize:%@ image:%@ gotFullQuality:%@ error:%@>", v4, requestID, asset, v7, image, v11, error];
 
   return v13;
 }
 
-- (void)performWithResultHandler:(id)a3
+- (void)performWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   mediaProvider = self->_mediaProvider;
   asset = self->_asset;
   options = self->_options;
@@ -53,10 +53,10 @@
   v11[2] = __43__PXImageRequest_performWithResultHandler___block_invoke;
   v11[3] = &unk_1E7745E40;
   v11[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   width = self->_targetSize.width;
   height = self->_targetSize.height;
-  v10 = v4;
+  v10 = handlerCopy;
   self->_requestID = [(PXUIImageProvider *)mediaProvider requestImageForAsset:asset targetSize:1 contentMode:options options:v11 resultHandler:width, height];
 }
 
@@ -94,35 +94,35 @@ void __43__PXImageRequest_performWithResultHandler___block_invoke(uint64_t a1, v
 
 - (void)cancel
 {
-  v3 = [(PXImageRequest *)self requestID];
-  if (v3)
+  requestID = [(PXImageRequest *)self requestID];
+  if (requestID)
   {
-    v4 = v3;
-    v5 = [(PXImageRequest *)self mediaProvider];
-    [v5 cancelImageRequest:v4];
+    v4 = requestID;
+    mediaProvider = [(PXImageRequest *)self mediaProvider];
+    [mediaProvider cancelImageRequest:v4];
   }
 
   self->_canceled = 1;
 }
 
-- (PXImageRequest)initWithMediaProvider:(id)a3 asset:(id)a4 targetSize:(CGSize)a5 options:(id)a6
+- (PXImageRequest)initWithMediaProvider:(id)provider asset:(id)asset targetSize:(CGSize)size options:(id)options
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  assetCopy = asset;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = PXImageRequest;
   v15 = [(PXImageRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mediaProvider, a3);
-    objc_storeStrong(&v16->_asset, a4);
+    objc_storeStrong(&v15->_mediaProvider, provider);
+    objc_storeStrong(&v16->_asset, asset);
     v16->_targetSize.width = width;
     v16->_targetSize.height = height;
-    objc_storeStrong(&v16->_options, a6);
+    objc_storeStrong(&v16->_options, options);
   }
 
   return v16;

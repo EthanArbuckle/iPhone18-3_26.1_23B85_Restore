@@ -1,14 +1,14 @@
 @interface AXMotionCuesController
 - (AXMotionCuesController)init;
-- (id)motionCuesEnabled:(id)a3;
-- (id)motionCuesIntensity:(id)a3;
+- (id)motionCuesEnabled:(id)enabled;
+- (id)motionCuesIntensity:(id)intensity;
 - (id)specifiers;
-- (void)setMotionCuesEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setMotionCuesEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateMotionCuesInCarStatus;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation AXMotionCuesController
@@ -23,19 +23,19 @@
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXMotionCuesController;
-  [(AXMotionCuesController *)&v4 viewDidAppear:a3];
+  [(AXMotionCuesController *)&v4 viewDidAppear:appear];
   [(AXMotionCuesController *)self setIsDisappeared:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AXMotionCuesController;
-  [(AXMotionCuesController *)&v4 viewDidDisappear:a3];
+  [(AXMotionCuesController *)&v4 viewDidDisappear:disappear];
   [(AXMotionCuesController *)self setIsDisappeared:1];
 }
 
@@ -126,7 +126,7 @@
   return v4;
 }
 
-- (id)motionCuesIntensity:(id)a3
+- (id)motionCuesIntensity:(id)intensity
 {
   v3 = _AXSMotionCuesIntensity();
   if (v3 > 2)
@@ -142,59 +142,59 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  if (![a5 section] && !-[AXMotionCuesController isDisappeared](self, "isDisappeared"))
+  cellCopy = cell;
+  if (![path section] && !-[AXMotionCuesController isDisappeared](self, "isDisappeared"))
   {
     v7 = _AXSMotionCuesMode();
-    v8 = v12;
-    v9 = [v8 specifier];
-    v10 = [v9 propertyForKey:@"MotionCueKey"];
+    v8 = cellCopy;
+    specifier = [v8 specifier];
+    v10 = [specifier propertyForKey:@"MotionCueKey"];
     v11 = [v10 intValue] == v7;
 
     [v8 setChecked:v11];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = AXMotionCuesController;
-  [(AXMotionCuesController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  if (![v6 section] && (AXDeviceIsPad() & 1) == 0)
+  [(AXMotionCuesController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  if (![pathCopy section] && (AXDeviceIsPad() & 1) == 0)
   {
-    v7 = [(AXMotionCuesController *)self specifierForIndexPath:v6];
+    v7 = [(AXMotionCuesController *)self specifierForIndexPath:pathCopy];
     v8 = [v7 propertyForKey:@"MotionCueKey"];
     [v8 intValue];
 
     _AXSSetMotionCuesMode();
-    [(AXMotionCuesController *)self updateTableCheckedSelection:v6];
+    [(AXMotionCuesController *)self updateTableCheckedSelection:pathCopy];
   }
 }
 
-- (id)motionCuesEnabled:(id)a3
+- (id)motionCuesEnabled:(id)enabled
 {
   v3 = _AXSMotionCuesMode() == 1;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)setMotionCuesEnabled:(id)a3 specifier:(id)a4
+- (void)setMotionCuesEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = AXLogMotionCues();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = v4;
+    v11 = bOOLValue;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Settings user change: enabled=%{BOOL}d", buf, 8u);
   }
 
   _AXSSetMotionCuesMode();
-  v6 = [NSNumber numberWithBool:v4, AXMotionCuesAnalyticsEnableKey];
-  v9 = v6;
+  aXMotionCuesAnalyticsEnableKey = [NSNumber numberWithBool:bOOLValue, AXMotionCuesAnalyticsEnableKey];
+  v9 = aXMotionCuesAnalyticsEnableKey;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   AnalyticsSendEvent();
 }

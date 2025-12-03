@@ -1,40 +1,40 @@
 @interface PCXYZCoordinate
-- (PCXYZCoordinate)initWithX:(double)a3 y:(double)a4 z:(double)a5;
-- (double)distanceTo:(id)a3;
+- (PCXYZCoordinate)initWithX:(double)x y:(double)y z:(double)z;
+- (double)distanceTo:(id)to;
 - (id)description;
 @end
 
 @implementation PCXYZCoordinate
 
-- (PCXYZCoordinate)initWithX:(double)a3 y:(double)a4 z:(double)a5
+- (PCXYZCoordinate)initWithX:(double)x y:(double)y z:(double)z
 {
   v9.receiver = self;
   v9.super_class = PCXYZCoordinate;
   result = [(PCXYZCoordinate *)&v9 init];
   if (result)
   {
-    result->_x = a3;
-    result->_y = a4;
-    result->_z = a5;
+    result->_x = x;
+    result->_y = y;
+    result->_z = z;
   }
 
   return result;
 }
 
-- (double)distanceTo:(id)a3
+- (double)distanceTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   [(PCXYZCoordinate *)self x];
   v6 = v5;
-  [v4 x];
+  [toCopy x];
   v8 = v6 - v7;
   [(PCXYZCoordinate *)self y];
   v10 = v9;
-  [v4 y];
+  [toCopy y];
   v12 = v10 - v11;
   [(PCXYZCoordinate *)self z];
   v14 = v13;
-  [v4 z];
+  [toCopy z];
   v16 = v15;
 
   return sqrt(v12 * v12 + v8 * v8 + (v14 - v16) * (v14 - v16));

@@ -1,32 +1,32 @@
 @interface HDDateRangeQueryServer
-- (HDDateRangeQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDDateRangeQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (_BYTE)_queue_sendUpdatedResultsToClient;
-- (void)_deliverErrorToClient:(void *)a1;
+- (void)_deliverErrorToClient:(void *)client;
 - (void)_queue_start;
-- (void)_queue_updateTimePeriodsForSampleTypes:(id *)a1;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)_queue_updateTimePeriodsForSampleTypes:(id *)types;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDDateRangeQueryServer
 
-- (HDDateRangeQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDDateRangeQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = HDDateRangeQueryServer;
-  v11 = [(HDQueryServer *)&v18 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDQueryServer *)&v18 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
     sampleTypesToReFetch = v11->_sampleTypesToReFetch;
     v11->_sampleTypesToReFetch = v12;
 
-    v14 = [v10 profile];
-    v15 = [v14 database];
-    v16 = [(HDQueryServer *)v11 queryQueue];
-    [v15 addProtectedDataObserver:v11 queue:v16];
+    profile = [clientCopy profile];
+    database = [profile database];
+    queryQueue = [(HDQueryServer *)v11 queryQueue];
+    [database addProtectedDataObserver:v11 queue:queryQueue];
   }
 
   return v11;
@@ -37,9 +37,9 @@
   v8.receiver = self;
   v8.super_class = HDDateRangeQueryServer;
   [(HDQueryServer *)&v8 _queue_start];
-  v3 = [(HDQueryServer *)self profile];
+  profile = [(HDQueryServer *)self profile];
   v7 = 0;
-  v4 = [HDSampleEntity dateIntervalsForSampleTypes:0 profile:v3 error:&v7];
+  v4 = [HDSampleEntity dateIntervalsForSampleTypes:0 profile:profile error:&v7];
   v5 = v7;
   v6 = [v4 mutableCopy];
 
@@ -55,14 +55,14 @@
   }
 }
 
-- (void)_deliverErrorToClient:(void *)a1
+- (void)_deliverErrorToClient:(void *)client
 {
-  if (a1)
+  if (client)
   {
     v3 = a2;
-    v5 = [a1 clientProxy];
-    v4 = [a1 queryUUID];
-    [v5 client_deliverError:v3 forQuery:v4];
+    clientProxy = [client clientProxy];
+    queryUUID = [client queryUUID];
+    [clientProxy client_deliverError:v3 forQuery:queryUUID];
   }
 }
 
@@ -82,16 +82,16 @@
   return result;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HDDateRangeQueryServer_samplesAdded_anchor___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = addedCopy;
+  v6 = addedCopy;
   [(HDQueryServer *)self onQueue:v7];
 }
 
@@ -254,16 +254,16 @@ LABEL_36:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v5 = a3;
+  removedCopy = removed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = removedCopy;
+  v6 = removedCopy;
   [(HDQueryServer *)self onQueue:v7];
 }
 
@@ -289,7 +289,7 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
   }
 }
 
-- (void)_queue_updateTimePeriodsForSampleTypes:(id *)a1
+- (void)_queue_updateTimePeriodsForSampleTypes:(id *)types
 {
   v39 = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -299,7 +299,7 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v35 = a1;
+    typesCopy2 = types;
     _os_log_debug_impl(&dword_228986000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: Updating periods for sample types", buf, 0xCu);
   }
 
@@ -322,7 +322,7 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
           objc_enumerationMutation(v6);
         }
 
-        [a1[27] removeObjectForKey:*(*(&v29 + 1) + 8 * i)];
+        [types[27] removeObjectForKey:*(*(&v29 + 1) + 8 * i)];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
@@ -331,9 +331,9 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
     while (v8);
   }
 
-  v11 = [a1 profile];
+  profile = [types profile];
   v28 = 0;
-  v12 = [HDSampleEntity dateIntervalsForSampleTypes:v6 profile:v11 error:&v28];
+  v12 = [HDSampleEntity dateIntervalsForSampleTypes:v6 profile:profile error:&v28];
   v13 = v28;
 
   if (v12)
@@ -343,8 +343,8 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [v12 allKeys];
-    v15 = [v14 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    allKeys = [v12 allKeys];
+    v15 = [allKeys countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v15)
     {
       v16 = v15;
@@ -355,21 +355,21 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys);
           }
 
           v19 = *(*(&v24 + 1) + 8 * j);
           v20 = [v12 objectForKeyedSubscript:v19];
-          [a1[27] setObject:v20 forKeyedSubscript:v19];
+          [types[27] setObject:v20 forKeyedSubscript:v19];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v24 objects:v33 count:16];
       }
 
       while (v16);
     }
 
-    [(HDDateRangeQueryServer *)a1 _queue_sendUpdatedResultsToClient];
+    [(HDDateRangeQueryServer *)types _queue_sendUpdatedResultsToClient];
     v13 = v23;
   }
 
@@ -380,7 +380,7 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
     if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v35 = a1;
+      typesCopy2 = types;
       v36 = 2114;
       v37 = v13;
       _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Error reading intervals from sample types: %{public}@", buf, 0x16u);
@@ -388,12 +388,12 @@ void __59__HDDateRangeQueryServer_samplesOfTypesWereRemoved_anchor___block_invok
 
     if ([v13 hk_isDatabaseAccessibilityError])
     {
-      [a1[28] addObjectsFromArray:v6];
+      [types[28] addObjectsFromArray:v6];
     }
 
     else
     {
-      [(HDDateRangeQueryServer *)a1 _deliverErrorToClient:v13];
+      [(HDDateRangeQueryServer *)types _deliverErrorToClient:v13];
     }
   }
 
@@ -431,17 +431,17 @@ void __59__HDDateRangeQueryServer__queue_sendUpdatedResultsToClient__block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = [(HDQueryServer *)self queryQueue];
-  dispatch_assert_queue_V2(v6);
+  availableCopy = available;
+  queryQueue = [(HDQueryServer *)self queryQueue];
+  dispatch_assert_queue_V2(queryQueue);
 
-  if (self && v4 && [(NSMutableSet *)self->_sampleTypesToReFetch count])
+  if (self && availableCopy && [(NSMutableSet *)self->_sampleTypesToReFetch count])
   {
-    v7 = [(NSMutableSet *)self->_sampleTypesToReFetch allObjects];
+    allObjects = [(NSMutableSet *)self->_sampleTypesToReFetch allObjects];
     [(NSMutableSet *)self->_sampleTypesToReFetch removeAllObjects];
-    [(HDDateRangeQueryServer *)&self->super.super.isa _queue_updateTimePeriodsForSampleTypes:v7];
+    [(HDDateRangeQueryServer *)&self->super.super.isa _queue_updateTimePeriodsForSampleTypes:allObjects];
   }
 }
 

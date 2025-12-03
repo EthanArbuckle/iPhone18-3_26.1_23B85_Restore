@@ -10,7 +10,7 @@
 + (id)supportedContentTypes
 {
   v7[3] = *MEMORY[0x29EDCA608];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[0] = LPAPFSPhysicalStoreMediaUUID[0];
     v7[1] = LPAPFSPhysicalStoreDiagsMediaUUID[0];
@@ -20,7 +20,7 @@
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___LPAPFSPhysicalStore;
     v3 = objc_msgSendSuper2(&v6, sel_supportedContentTypes);
   }
@@ -33,9 +33,9 @@
 - (int)role
 {
   v8 = *MEMORY[0x29EDCA608];
-  v2 = [(LPMedia *)self content];
-  v3 = v2;
-  if (!v2)
+  content = [(LPMedia *)self content];
+  v3 = content;
+  if (!content)
   {
     _os_log_pack_size();
     v5 = _os_log_pack_fill();
@@ -45,7 +45,7 @@
     goto LABEL_7;
   }
 
-  if (([v2 isEqualToString:LPAPFSPhysicalStoreDiagsMediaUUID[0]] & 1) == 0)
+  if (([content isEqualToString:LPAPFSPhysicalStoreDiagsMediaUUID[0]] & 1) == 0)
   {
     if ([v3 isEqualToString:LPAPFSPhysicalStoreRecoveryMediaUUID[0]])
     {

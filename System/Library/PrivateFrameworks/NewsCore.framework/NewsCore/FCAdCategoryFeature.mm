@@ -1,7 +1,7 @@
 @interface FCAdCategoryFeature
 - (FCAdCategoryFeature)init;
-- (FCAdCategoryFeature)initWithPersonalizationIdentifier:(id)a3;
-- (FCAdCategoryFeature)initWithTagID:(id)a3;
+- (FCAdCategoryFeature)initWithPersonalizationIdentifier:(id)identifier;
+- (FCAdCategoryFeature)initWithTagID:(id)d;
 @end
 
 @implementation FCAdCategoryFeature
@@ -33,43 +33,43 @@
   objc_exception_throw(v6);
 }
 
-- (FCAdCategoryFeature)initWithTagID:(id)a3
+- (FCAdCategoryFeature)initWithTagID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = FCAdCategoryFeature;
   v6 = [(FCPersonalizationFeature *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._tagID, a3);
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"fa1", @"+", v5];
+    objc_storeStrong(&v6->super._tagID, d);
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"fa1", @"+", dCopy];
     personalizationIdentifier = v7->super._personalizationIdentifier;
-    v7->super._personalizationIdentifier = v8;
+    v7->super._personalizationIdentifier = dCopy;
   }
 
   return v7;
 }
 
-- (FCAdCategoryFeature)initWithPersonalizationIdentifier:(id)a3
+- (FCAdCategoryFeature)initWithPersonalizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 length];
+  identifierCopy = identifier;
+  v5 = [identifierCopy length];
   v6 = [@"fa1" length];
   if (v5 <= [@"+" length] + v6)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = [v4 substringFromIndex:{objc_msgSend(@"+", "length") + objc_msgSend(@"fa1", "length")}];
+    v7 = [identifierCopy substringFromIndex:{objc_msgSend(@"+", "length") + objc_msgSend(@"fa1", "length")}];
     self = [(FCAdCategoryFeature *)self initWithTagID:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

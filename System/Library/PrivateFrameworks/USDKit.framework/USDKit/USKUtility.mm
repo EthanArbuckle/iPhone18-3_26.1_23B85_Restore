@@ -1,36 +1,36 @@
 @interface USKUtility
-+ (BOOL)isSceneGraphNode:(id)a3;
-+ (BOOL)isShaderOutputProperty:(id)a3;
-+ (BOOL)isTransformNode:(id)a3;
-+ (__n128)localTransformWithNode:(void *)a3 time:;
-+ (__n128)worldTransformWithNode:(uint64_t)a3 time:(void *)a4;
++ (BOOL)isSceneGraphNode:(id)node;
++ (BOOL)isShaderOutputProperty:(id)property;
++ (BOOL)isTransformNode:(id)node;
++ (__n128)localTransformWithNode:(void *)node time:;
++ (__n128)worldTransformWithNode:(uint64_t)node time:(void *)time;
 + (id)USDPreviewSurfaceDefaults;
-+ (id)bufferMaterialPropertiesWithMaterial:(id)a3;
-+ (id)constantMaterialPropertiesWithMaterial:(id)a3;
-+ (id)firstUVMeshAttributeNameInMaterial:(id)a3;
-+ (id)localTransformOperationWithNode:(id)a3 time:(double)a4;
-+ (id)meshGroupsWithNode:(id)a3;
-+ (id)meshUniqueAndTriangulate:(id)a3 names:(id)a4;
-+ (id)shaderNodeType:(id)a3;
-+ (id)targetPropertyWithProperty:(id)a3;
-+ (id)textureMaterialPropertiesWithMaterial:(id)a3;
-+ (id)transformKeyTimesWithNode:(id)a3;
-+ (void)setLocalTransformOperationWithNode:(id)a3 op:(id)a4 time:(double)a5;
-+ (void)setLocalTransformWithNode:(uint64_t)a1 transform:(uint64_t)a2 time:(void *)a3;
++ (id)bufferMaterialPropertiesWithMaterial:(id)material;
++ (id)constantMaterialPropertiesWithMaterial:(id)material;
++ (id)firstUVMeshAttributeNameInMaterial:(id)material;
++ (id)localTransformOperationWithNode:(id)node time:(double)time;
++ (id)meshGroupsWithNode:(id)node;
++ (id)meshUniqueAndTriangulate:(id)triangulate names:(id)names;
++ (id)shaderNodeType:(id)type;
++ (id)targetPropertyWithProperty:(id)property;
++ (id)textureMaterialPropertiesWithMaterial:(id)material;
++ (id)transformKeyTimesWithNode:(id)node;
++ (void)setLocalTransformOperationWithNode:(id)node op:(id)op time:(double)time;
++ (void)setLocalTransformWithNode:(uint64_t)node transform:(uint64_t)transform time:(void *)time;
 @end
 
 @implementation USKUtility
 
-+ (id)localTransformOperationWithNode:(id)a3 time:(double)a4
++ (id)localTransformOperationWithNode:(id)node time:(double)time
 {
-  v5 = a3;
-  v9 = v5;
-  if (v5)
+  nodeCopy = node;
+  v9 = nodeCopy;
+  if (nodeCopy)
   {
     v29._propName._rep._ptrAndBits = 0;
     v30 = 0;
     v31 = 0;
-    objc_msgSend_usdPrim(v5, v6, v7, v8);
+    objc_msgSend_usdPrim(nodeCopy, v6, v7, v8);
     pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(&v29._propName, &v29);
     v29._propName._rep._ptrAndBits = (MEMORY[0x277D86748] + 16);
     if ((v29._proxyPrimPath._propPart._poolHandle & 7) != 0)
@@ -56,7 +56,7 @@
       v16 = *(v13 + 128);
       v27 = *(v13 + 132);
       v26[32] = v16;
-      v19 = objc_msgSend_initWithOperation_atTime_(v15, v17, v26, v18, a4);
+      v19 = objc_msgSend_initWithOperation_atTime_(v15, v17, v26, v18, time);
       sub_270314308(v26);
       objc_msgSend_addObject_(v12, v20, v19, v21);
     }
@@ -77,17 +77,17 @@
   return v24;
 }
 
-+ (void)setLocalTransformOperationWithNode:(id)a3 op:(id)a4 time:(double)a5
++ (void)setLocalTransformOperationWithNode:(id)node op:(id)op time:(double)time
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v10 = a4;
-  if (v6)
+  nodeCopy = node;
+  opCopy = op;
+  if (nodeCopy)
   {
     v33._propName._rep._ptrAndBits = 0;
     v34 = 0;
     v35 = 0;
-    objc_msgSend_usdPrim(v6, v7, v8, v9);
+    objc_msgSend_usdPrim(nodeCopy, v7, v8, v9);
     pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(&v33._propName, &v33);
     v33._propName._rep._ptrAndBits = (MEMORY[0x277D86748] + 16);
     if ((v33._proxyPrimPath._propPart._poolHandle & 7) != 0)
@@ -104,13 +104,13 @@
 
     if (v34 && (*(v34 + 57) & 8) == 0 && (*(v33._propName._rep._ptrAndBits + 4))(&v33._propName))
     {
-      objc_msgSend_resetsStack(v10, v11, v12, v13);
+      objc_msgSend_resetsStack(opCopy, v11, v12, v13);
       pxrInternal__aapl__pxrReserved__::UsdGeomXformable::SetResetXformStack(&v33._propName);
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v17 = objc_msgSend_operations(v10, v14, v15, v16);
+      v17 = objc_msgSend_operations(opCopy, v14, v15, v16);
       v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v29, v36, 16);
       if (v19)
       {
@@ -145,16 +145,16 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (__n128)localTransformWithNode:(void *)a3 time:
++ (__n128)localTransformWithNode:(void *)node time:
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (nodeCopy)
   {
     v15 = 0;
     v16 = 0;
     v17 = 0;
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(nodeCopy, v4, v5, v6);
     pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(&v15, v14);
     v15 = MEMORY[0x277D86748] + 16;
     if ((v14[24] & 7) != 0)
@@ -196,16 +196,16 @@
   return v12;
 }
 
-+ (void)setLocalTransformWithNode:(uint64_t)a1 transform:(uint64_t)a2 time:(void *)a3
++ (void)setLocalTransformWithNode:(uint64_t)node transform:(uint64_t)transform time:(void *)time
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  timeCopy = time;
+  v7 = timeCopy;
+  if (timeCopy)
   {
     v14 = 0;
     v15 = 0;
     v16 = 0;
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(timeCopy, v4, v5, v6);
     pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(&v14, v10);
     v14 = MEMORY[0x277D86748] + 16;
     if ((v10[24] & 7) != 0)
@@ -250,15 +250,15 @@
   }
 }
 
-+ (__n128)worldTransformWithNode:(uint64_t)a3 time:(void *)a4
++ (__n128)worldTransformWithNode:(uint64_t)node time:(void *)time
 {
-  v5 = a4;
-  v9 = v5;
-  v19 = a1;
+  timeCopy = time;
+  v9 = timeCopy;
+  selfCopy = self;
   memset(&v18, 0, 32);
-  if (v5)
+  if (timeCopy)
   {
-    objc_msgSend_usdPrim(v5, v6, v7, v8);
+    objc_msgSend_usdPrim(timeCopy, v6, v7, v8);
   }
 
   memset(v17, 0, sizeof(v17));
@@ -296,17 +296,17 @@
   return v14;
 }
 
-+ (id)transformKeyTimesWithNode:(id)a3
++ (id)transformKeyTimesWithNode:(id)node
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (nodeCopy)
   {
     v18 = 0;
     v19 = 0;
     v20 = 0;
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(nodeCopy, v4, v5, v6);
     pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(&v18, &v14);
     v18 = MEMORY[0x277D86748] + 16;
     if ((v14._proxyPrimPath._propPart._poolHandle & 7) != 0)
@@ -359,15 +359,15 @@
   return 0;
 }
 
-+ (BOOL)isSceneGraphNode:(id)a3
++ (BOOL)isSceneGraphNode:(id)node
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (nodeCopy)
   {
     *v15 = 0u;
     v16 = 0u;
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(nodeCopy, v4, v5, v6);
     pxrInternal__aapl__pxrReserved__::Usd_ThrowExpiredPrimAccessError(0, v8);
     v9 = MEMORY[0x18];
     v10 = MEMORY[0x27439E610](&v14, "");
@@ -410,13 +410,13 @@
   return IsA;
 }
 
-+ (BOOL)isTransformNode:(id)a3
++ (BOOL)isTransformNode:(id)node
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (nodeCopy)
   {
-    v8 = objc_msgSend_usdPrim(v3, v4, v5, v6);
+    v8 = objc_msgSend_usdPrim(nodeCopy, v4, v5, v6);
     pxrInternal__aapl__pxrReserved__::UsdGeomXformable::_GetStaticTfType(v8);
     pxrInternal__aapl__pxrReserved__::UsdSchemaRegistry::FindSchemaInfo();
     IsA = pxrInternal__aapl__pxrReserved__::UsdPrim::_IsA();
@@ -441,13 +441,13 @@
   return IsA;
 }
 
-+ (BOOL)isShaderOutputProperty:(id)a3
++ (BOOL)isShaderOutputProperty:(id)property
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  propertyCopy = property;
+  v7 = propertyCopy;
+  if (propertyCopy)
   {
-    objc_msgSend_usdProperty(v3, v4, v5, v6);
+    objc_msgSend_usdProperty(propertyCopy, v4, v5, v6);
     v8 = v18 == 3;
     if ((BYTE8(v19) & 7) != 0)
     {
@@ -542,16 +542,16 @@ LABEL_25:
   return v14;
 }
 
-+ (id)shaderNodeType:(id)a3
++ (id)shaderNodeType:(id)type
 {
-  v3 = a3;
-  v7 = v3;
+  typeCopy = type;
+  v7 = typeCopy;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  if (v3)
+  if (typeCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(typeCopy, v4, v5, v6);
   }
 
   else
@@ -586,16 +586,16 @@ LABEL_25:
   return v8;
 }
 
-+ (id)constantMaterialPropertiesWithMaterial:(id)a3
++ (id)constantMaterialPropertiesWithMaterial:(id)material
 {
-  v3 = a3;
+  materialCopy = material;
   v7 = objc_opt_new();
   v63._propName._rep._ptrAndBits = 0;
   v64 = 0;
   v65 = 0;
-  if (v3)
+  if (materialCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(materialCopy, v4, v5, v6);
   }
 
   else
@@ -748,7 +748,7 @@ LABEL_25:
               if (v28)
               {
                 v39 = v7;
-                v41 = v3;
+                v41 = materialCopy;
                 v46 = 0;
                 v47 = 0;
                 v48 = 0;
@@ -814,7 +814,7 @@ LABEL_25:
                 }
                 v36 = ;
                 v7 = v40;
-                v3 = v42;
+                materialCopy = v42;
                 objc_msgSend_setObject_forKey_(v40, v37, v28, v36);
 
                 if (SHIBYTE(v48) < 0)
@@ -935,16 +935,16 @@ LABEL_99:
   return v7;
 }
 
-+ (id)bufferMaterialPropertiesWithMaterial:(id)a3
++ (id)bufferMaterialPropertiesWithMaterial:(id)material
 {
-  v3 = a3;
+  materialCopy = material;
   v7 = objc_opt_new();
   v46._propName._rep._ptrAndBits = 0;
   v47 = 0;
   v48 = 0;
-  if (v3)
+  if (materialCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(materialCopy, v4, v5, v6);
   }
 
   else
@@ -1180,16 +1180,16 @@ LABEL_66:
   return v7;
 }
 
-+ (id)textureMaterialPropertiesWithMaterial:(id)a3
++ (id)textureMaterialPropertiesWithMaterial:(id)material
 {
-  v3 = a3;
+  materialCopy = material;
   v7 = objc_opt_new();
   v42._propName._rep._ptrAndBits = 0;
   v43 = 0;
   v44 = 0;
-  if (v3)
+  if (materialCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(materialCopy, v4, v5, v6);
   }
 
   else
@@ -1372,17 +1372,17 @@ LABEL_51:
   return v7;
 }
 
-+ (id)firstUVMeshAttributeNameInMaterial:(id)a3
++ (id)firstUVMeshAttributeNameInMaterial:(id)material
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = v3;
+  materialCopy = material;
+  v7 = materialCopy;
   v60._propName._rep._ptrAndBits = 0;
   v61 = 0;
   v62 = 0;
-  if (v3)
+  if (materialCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(materialCopy, v4, v5, v6);
   }
 
   else
@@ -1927,13 +1927,13 @@ LABEL_161:
   operator new();
 }
 
-+ (id)targetPropertyWithProperty:(id)a3
++ (id)targetPropertyWithProperty:(id)property
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  propertyCopy = property;
+  v7 = propertyCopy;
+  if (propertyCopy)
   {
-    objc_msgSend_usdProperty(v3, v4, v5, v6);
+    objc_msgSend_usdProperty(propertyCopy, v4, v5, v6);
     v8 = LODWORD(v23[0]) == 3;
     if ((v23[3] & 7) != 0)
     {
@@ -2052,14 +2052,14 @@ LABEL_161:
   return v12;
 }
 
-+ (id)meshGroupsWithNode:(id)a3
++ (id)meshGroupsWithNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(&v30, 0, 32);
-  if (v3)
+  if (nodeCopy)
   {
-    objc_msgSend_usdPrim(v3, v4, v5, v6);
+    objc_msgSend_usdPrim(nodeCopy, v4, v5, v6);
   }
 
   v28 = 0u;
@@ -2118,28 +2118,28 @@ LABEL_161:
   return v16;
 }
 
-+ (id)meshUniqueAndTriangulate:(id)a3 names:(id)a4
++ (id)meshUniqueAndTriangulate:(id)triangulate names:(id)names
 {
   v182 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v128 = a4;
-  v129 = v5;
+  triangulateCopy = triangulate;
+  namesCopy = names;
+  v129 = triangulateCopy;
   v130 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = objc_msgSend_type(v5, v6, v7, v8);
+  v9 = objc_msgSend_type(triangulateCopy, v6, v7, v8);
 
   if (v9 == @"Mesh")
   {
     memset(&v165, 0, 32);
-    if (v5)
+    if (triangulateCopy)
     {
-      objc_msgSend_usdPrim(v5, v10, v11, v12);
+      objc_msgSend_usdPrim(triangulateCopy, v10, v11, v12);
     }
 
     v163 = 0u;
     v164 = 0u;
     v161 = 0u;
     v162 = 0u;
-    v20 = v128;
+    v20 = namesCopy;
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v21, &v161, v181, 16);
     if (v24)
     {
@@ -2171,7 +2171,7 @@ LABEL_161:
         v157 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v30 = objc_msgSend_property_(v5, v28, @"faceVertexIndices", v29);
+        v30 = objc_msgSend_property_(triangulateCopy, v28, @"faceVertexIndices", v29);
         v34 = objc_msgSend_data(v30, v31, v32, v33);
         v38 = v34;
         if (v34)
@@ -2196,7 +2196,7 @@ LABEL_161:
         sub_270310E24(&v173);
         sub_270311D34(&v170);
 
-        v42 = objc_msgSend_property_(v5, v40, @"faceVertexCounts", v41);
+        v42 = objc_msgSend_property_(triangulateCopy, v40, @"faceVertexCounts", v41);
         v46 = objc_msgSend_data(v42, v43, v44, v45);
         v50 = v46;
         if (v46)
@@ -2223,7 +2223,7 @@ LABEL_161:
 
         v179 = 0;
         v180 = 0;
-        v53 = objc_msgSend_property_(v5, v51, @"points", v52);
+        v53 = objc_msgSend_property_(triangulateCopy, v51, @"points", v52);
         v57 = objc_msgSend_data(v53, v54, v55, v56);
         v61 = v57;
         if (v57)
@@ -2629,7 +2629,7 @@ LABEL_109:
 
   else
   {
-    v13 = objc_msgSend_name(v5, v10, v11, v12);
+    v13 = objc_msgSend_name(triangulateCopy, v10, v11, v12);
     v17 = objc_msgSend_stringValue(v13, v14, v15, v16);
     NSLog(&cfstr_ErrorNodeIsNot.isa, v17);
 

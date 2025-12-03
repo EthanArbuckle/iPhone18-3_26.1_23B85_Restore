@@ -1,33 +1,33 @@
 @interface BCAnnotationsProtoBook
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnnotation:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnnotation:(id)annotation;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCAnnotationsProtoBook
 
-- (void)addAnnotation:(id)a3
+- (void)addAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   annotations = self->_annotations;
-  v8 = v4;
+  v8 = annotationCopy;
   if (!annotations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_annotations;
     self->_annotations = v6;
 
-    v4 = v8;
+    annotationCopy = v8;
     annotations = self->_annotations;
   }
 
-  [(NSMutableArray *)annotations addObject:v4];
+  [(NSMutableArray *)annotations addObject:annotationCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = BCAnnotationsProtoBook;
   v3 = [(BCAnnotationsProtoBook *)&v7 description];
-  v4 = [(BCAnnotationsProtoBook *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BCAnnotationsProtoBook *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,8 +85,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -101,15 +101,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_assetID)
   {
     sub_1001C36E8();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_appVersion)
   {
@@ -155,44 +155,44 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setAssetID:self->_assetID];
-  [v8 setAppVersion:self->_appVersion];
+  toCopy = to;
+  [toCopy setAssetID:self->_assetID];
+  [toCopy setAppVersion:self->_appVersion];
   if (self->_assetVersion)
   {
-    [v8 setAssetVersion:?];
+    [toCopy setAssetVersion:?];
   }
 
   if ([(BCAnnotationsProtoBook *)self annotationsCount])
   {
-    [v8 clearAnnotations];
-    v4 = [(BCAnnotationsProtoBook *)self annotationsCount];
-    if (v4)
+    [toCopy clearAnnotations];
+    annotationsCount = [(BCAnnotationsProtoBook *)self annotationsCount];
+    if (annotationsCount)
     {
-      v5 = v4;
+      v5 = annotationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BCAnnotationsProtoBook *)self annotationAtIndex:i];
-        [v8 addAnnotation:v7];
+        [toCopy addAnnotation:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_assetID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_assetID copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_appVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_appVersion copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_assetVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_assetVersion copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
@@ -216,7 +216,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addAnnotation:v17];
 
         v16 = v16 + 1;
@@ -232,13 +232,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((assetID = self->_assetID, !(assetID | v4[3])) || -[NSString isEqual:](assetID, "isEqual:")) && ((appVersion = self->_appVersion, !(appVersion | v4[2])) || -[NSString isEqual:](appVersion, "isEqual:")) && ((assetVersion = self->_assetVersion, !(assetVersion | v4[4])) || -[NSString isEqual:](assetVersion, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((assetID = self->_assetID, !(assetID | equalCopy[3])) || -[NSString isEqual:](assetID, "isEqual:")) && ((appVersion = self->_appVersion, !(appVersion | equalCopy[2])) || -[NSString isEqual:](appVersion, "isEqual:")) && ((assetVersion = self->_assetVersion, !(assetVersion | equalCopy[4])) || -[NSString isEqual:](assetVersion, "isEqual:")))
   {
     annotations = self->_annotations;
-    if (annotations | v4[1])
+    if (annotations | equalCopy[1])
     {
       v9 = [(NSMutableArray *)annotations isEqual:?];
     }
@@ -265,20 +265,20 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_annotations hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(BCAnnotationsProtoBook *)self setAssetID:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BCAnnotationsProtoBook *)self setAppVersion:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BCAnnotationsProtoBook *)self setAssetVersion:?];
   }
@@ -287,7 +287,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

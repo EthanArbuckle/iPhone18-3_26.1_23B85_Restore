@@ -19,7 +19,7 @@
   v12 = 0;
   v2 = *MEMORY[0x277CBE890];
   v11 = 0;
-  v3 = [a1 getResourceValue:&v12 forKey:v2 error:&v11];
+  v3 = [self getResourceValue:&v12 forKey:v2 error:&v11];
   v4 = v12;
   v5 = v11;
   if ((v3 & 1) == 0)
@@ -35,17 +35,17 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&dword_261653000, v7, OS_LOG_TYPE_ERROR, "Failed to determine if url is package: %@ (%@) #Generic", buf, 0x16u);
     }
   }
 
-  v8 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
 - (uint64_t)_QLDownloadingStatusIsNotCurrent
@@ -54,7 +54,7 @@
   v12 = 0;
   v2 = *MEMORY[0x277CBE948];
   v11 = 0;
-  v3 = [a1 getPromisedItemResourceValue:&v12 forKey:v2 error:&v11];
+  v3 = [self getPromisedItemResourceValue:&v12 forKey:v2 error:&v11];
   v4 = v12;
   v5 = v11;
   if ((v3 & 1) == 0)
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&dword_261653000, v8, OS_LOG_TYPE_ERROR, "Failed to get download status for url:%@ error:%@ #Generic", buf, 0x16u);
@@ -99,12 +99,12 @@ LABEL_10:
   v12 = 0;
   v2 = *MEMORY[0x277CBE888];
   v11 = 0;
-  v3 = [a1 getPromisedItemResourceValue:&v12 forKey:v2 error:&v11];
+  v3 = [self getPromisedItemResourceValue:&v12 forKey:v2 error:&v11];
   v4 = v12;
   v5 = v11;
   if (v3)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
@@ -120,17 +120,17 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&dword_261653000, v8, OS_LOG_TYPE_ERROR, "Failed to determine if file is hidden for url: %@ error: %@ #Generic", buf, 0x16u);
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return bOOLValue;
 }
 
 - (id)_QLSingleFileSizeForURL:()_QL_Utilities
@@ -170,9 +170,9 @@ LABEL_10:
 
 - (id)_QLUrlFileSize
 {
-  v1 = a1;
+  selfCopy = self;
   v47 = *MEMORY[0x277D85DE8];
-  if ([a1 _QLDownloadingStatusIsNotCurrent])
+  if ([self _QLDownloadingStatusIsNotCurrent])
   {
     goto LABEL_15;
   }
@@ -180,7 +180,7 @@ LABEL_10:
   v41 = 0;
   v2 = *MEMORY[0x277CBE868];
   v40 = 0;
-  v3 = [v1 getResourceValue:&v41 forKey:v2 error:&v40];
+  v3 = [selfCopy getResourceValue:&v41 forKey:v2 error:&v40];
   v4 = v41;
   v5 = v40;
   if ((v3 & 1) == 0)
@@ -196,7 +196,7 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v44 = v1;
+      v44 = selfCopy;
       v45 = 2112;
       v46 = v5;
       _os_log_impl(&dword_261653000, v14, OS_LOG_TYPE_ERROR, "Failed to determine if the URL (%@) is a directory error: %@ #Generic", buf, 0x16u);
@@ -210,14 +210,14 @@ LABEL_10:
 LABEL_14:
 
 LABEL_15:
-    v12 = [v1 _QLSingleFileSizeForURL:{v1, v29, v30, v31, v32, v33}];
+    v12 = [selfCopy _QLSingleFileSizeForURL:{selfCopy, v29, v30, v31, v32, v33}];
     goto LABEL_16;
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v1 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [selfCopy path];
   v39 = 0;
-  v8 = [v6 contentsOfDirectoryAtPath:v7 error:&v39];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:&v39];
   v9 = v39;
 
   if (v9)
@@ -233,7 +233,7 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v44 = v1;
+      v44 = selfCopy;
       v45 = 2112;
       v46 = v9;
       _os_log_impl(&dword_261653000, v11, OS_LOG_TYPE_ERROR, "Failed to get the contents of folder at URL (%@) with error: %@ #Generic", buf, 0x16u);
@@ -246,7 +246,7 @@ LABEL_15:
   {
     v29 = 0;
     v30 = v8;
-    v31 = v6;
+    v31 = defaultManager;
     v32 = v5;
     v33 = v4;
     v37 = 0u;
@@ -271,14 +271,14 @@ LABEL_15:
 
           v22 = *(*(&v35 + 1) + 8 * i);
           v23 = MEMORY[0x277CBEBC0];
-          v24 = [v1 path];
-          v25 = [v24 stringByAppendingPathComponent:v22];
+          path2 = [selfCopy path];
+          v25 = [path2 stringByAppendingPathComponent:v22];
           v26 = [v23 fileURLWithPath:v25];
           [v26 _QLUrlFileSize];
-          v28 = v27 = v1;
+          v28 = v27 = selfCopy;
           v19 += [v28 unsignedLongLongValue];
 
-          v1 = v27;
+          selfCopy = v27;
         }
 
         v18 = [obj countByEnumeratingWithState:&v35 objects:v42 count:16];
@@ -296,7 +296,7 @@ LABEL_15:
     v5 = v32;
     v4 = v33;
     v8 = v30;
-    v6 = v31;
+    defaultManager = v31;
     v9 = v29;
   }
 
@@ -317,16 +317,16 @@ LABEL_16:
   v4 = MEMORY[0x277CBEBC0];
   v5 = NSTemporaryDirectory();
   v6 = [v4 fileURLWithPath:v5];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 URLByAppendingPathComponent:v8 isDirectory:1];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v6 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  LOBYTE(v7) = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
+  LOBYTE(uUID) = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
   v11 = v18;
 
-  if (v7)
+  if (uUID)
   {
     v12 = v9;
   }
@@ -371,14 +371,14 @@ LABEL_16:
 + (id)_QLTemporaryFileURLWithType:()_QL_Utilities filename:
 {
   v5 = a4;
-  v6 = [a3 preferredFilenameExtension];
-  v7 = [v5 stringByDeletingPathExtension];
+  preferredFilenameExtension = [a3 preferredFilenameExtension];
+  stringByDeletingPathExtension = [v5 stringByDeletingPathExtension];
 
   v8 = MEMORY[0x277CBEBC0];
   v9 = NSTemporaryDirectory();
   v10 = [v8 fileURLWithPath:v9];
-  v11 = [v10 URLByAppendingPathComponent:v7];
-  v12 = [v11 URLByAppendingPathExtension:v6];
+  v11 = [v10 URLByAppendingPathComponent:stringByDeletingPathExtension];
+  v12 = [v11 URLByAppendingPathExtension:preferredFilenameExtension];
 
   return v12;
 }
@@ -387,8 +387,8 @@ LABEL_16:
 {
   v5 = MEMORY[0x277CBEBC0];
   v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [v5 _QLTemporaryFileURLWithType:v6 filename:v7];
+  uUIDString = [a4 UUIDString];
+  v8 = [v5 _QLTemporaryFileURLWithType:v6 filename:uUIDString];
 
   return v8;
 }
@@ -399,7 +399,7 @@ LABEL_16:
   v11 = a3;
   v12 = a4;
   v13 = a7;
-  v14 = [v11 preferredFilenameExtension];
+  preferredFilenameExtension = [v11 preferredFilenameExtension];
   v15 = *a6;
   if (*a6)
   {
@@ -420,22 +420,22 @@ LABEL_16:
     _os_log_impl(&dword_261653000, v17, OS_LOG_TYPE_INFO, "No temporary directory passed from host #Generic", buf, 2u);
   }
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  v19 = [v18 URLForDirectory:99 inDomain:1 appropriateForURL:v12 create:1 error:&v25];
-  v20 = v25;
+  lastPathComponent = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v12 create:1 error:&v25];
+  uRLByDeletingPathExtension = v25;
 
-  if (v19 && !v20)
+  if (lastPathComponent && !uRLByDeletingPathExtension)
   {
-    v21 = v19;
-    *a6 = v19;
+    v21 = lastPathComponent;
+    *a6 = lastPathComponent;
 
     v15 = *a6;
 LABEL_9:
-    v20 = [v12 URLByDeletingPathExtension];
-    v19 = [v20 lastPathComponent];
-    v22 = [v15 URLByAppendingPathComponent:v19];
-    *a5 = [v22 URLByAppendingPathExtension:v14];
+    uRLByDeletingPathExtension = [v12 URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+    v22 = [v15 URLByAppendingPathComponent:lastPathComponent];
+    *a5 = [v22 URLByAppendingPathExtension:preferredFilenameExtension];
 
     goto LABEL_10;
   }
@@ -452,7 +452,7 @@ LABEL_9:
     *buf = 138412546;
     v27 = v12;
     v28 = 2112;
-    v29 = v20;
+    v29 = uRLByDeletingPathExtension;
     _os_log_impl(&dword_261653000, v24, OS_LOG_TYPE_ERROR, "Failed to create a temporary directory URL for URL: %@. Error: %@ #Generic", buf, 0x16u);
   }
 
@@ -470,9 +470,9 @@ LABEL_10:
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v16];
+  v7 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v16];
   v8 = v16;
 
   if (v7)

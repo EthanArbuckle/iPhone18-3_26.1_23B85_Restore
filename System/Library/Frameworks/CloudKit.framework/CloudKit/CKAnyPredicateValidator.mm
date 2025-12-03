@@ -1,14 +1,14 @@
 @interface CKAnyPredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKAnyPredicateValidator
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -44,10 +44,10 @@
       }
 
       v16 = *(*(&v37 + 1) + 8 * i);
-      if (a4)
+      if (error)
       {
         v36 = 0;
-        v17 = objc_msgSend_validate_error_(v16, v11, v6, &v36);
+        v17 = objc_msgSend_validate_error_(v16, v11, validateCopy, &v36);
         v18 = v36;
         v21 = v18;
         if (v17)
@@ -79,7 +79,7 @@ LABEL_15:
         continue;
       }
 
-      if (objc_msgSend_validate_error_(v16, v11, v6, 0))
+      if (objc_msgSend_validate_error_(v16, v11, validateCopy, 0))
       {
         v21 = 0;
 LABEL_30:
@@ -106,7 +106,7 @@ LABEL_30:
 
 LABEL_23:
 
-  if (a4)
+  if (error)
   {
     v8 = objc_msgSend_lastObject(0, v25, v26);
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend_count(v13, v29, v30))
@@ -118,7 +118,7 @@ LABEL_23:
 
     v32 = v8;
     v33 = 0;
-    *a4 = v8;
+    *error = v8;
 LABEL_31:
   }
 

@@ -1,59 +1,59 @@
 @interface FRAppDelegate
-+ (BOOL)shouldHideHeadline:(id)a3;
++ (BOOL)shouldHideHeadline:(id)headline;
 + (id)sharedDelegate;
 + (id)stateRestorationURL;
 + (void)registerDefaults;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)safeIsAppRunningInBackground;
 - (FRAppDelegate)init;
 - (NSArray)tfAssemblies;
 - (NSArray)tfBundleAssemblies;
 - (TFResolver)resolver;
 - (double)_timeSinceLastActivation;
-- (id)_extractWidgetEngagementFromReferralURL:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)gizmoSyncManager:(id)a3 fetchOperationForArticleIDs:(id)a4;
-- (id)setupAnalyticsReferralWithOptions:(id)a3;
+- (id)_extractWidgetEngagementFromReferralURL:(id)l;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)gizmoSyncManager:(id)manager fetchOperationForArticleIDs:(id)ds;
+- (id)setupAnalyticsReferralWithOptions:(id)options;
 - (id)setupDestructiveDataAction;
-- (int)fcDigestModeFromScheduledDeliverySetting:(int64_t)a3;
-- (void)_application:(id)a3 openURL:(id)a4 options:(id)a5 animated:(BOOL)a6;
+- (int)fcDigestModeFromScheduledDeliverySetting:(int64_t)setting;
+- (void)_application:(id)_application openURL:(id)l options:(id)options animated:(BOOL)animated;
 - (void)_configureBackgroundFetch;
 - (void)_didCommitFirstFrame;
 - (void)_didResumeLowPriorityTasks;
-- (void)_updateBackgroundFetchSettingsWithAppConfiguration:(id)a3;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)application:(id)a3 didSendEvent:(id)a4;
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)clearOldCacheItemsWithFeldsparContext:(id)a3;
+- (void)_updateBackgroundFetchSettingsWithAppConfiguration:(id)configuration;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)application:(id)application didSendEvent:(id)event;
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler;
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)clearOldCacheItemsWithFeldsparContext:(id)context;
 - (void)dealloc;
-- (void)hideAlert:(id)a3;
-- (void)localDraftsDeviceOnPreview:(id)a3 articleIdentifier:(id)a4 channelIdentifier:(id)a5;
+- (void)hideAlert:(id)alert;
+- (void)localDraftsDeviceOnPreview:(id)preview articleIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier;
 - (void)prepareAppCacheSnapShot;
 - (void)registerForDeviceLockNotifications;
 - (void)resolveAppSingletons;
 - (void)sceneDidBecomeActive;
 - (void)sceneDidEnterBackground;
 - (void)sceneWillEnterForeground;
-- (void)scheduleTasksWithOptions:(id)a3;
-- (void)setRunningPPTWithApplication:(id)a3;
-- (void)setupAnalyticsControllerWithFeldsparContext:(id *)a3 versionHelpers:(id)a4 referral:(id)a5;
-- (void)setupCloudContextWithAppActivityMonitor:(id)a3 dataActionProvider:(id)a4 versionHelpers:(id)a5 configurationManager:(id)a6 networkBehaviorMonitor:(id)a7 networkReachability:(id)a8;
-- (void)setupCloudContextWithFavoritesPersonalizer:(id)a3 state:(int64_t)a4 launchOptions:(id)a5 versionHelpers:(id)a6 referral:(id)a7;
+- (void)scheduleTasksWithOptions:(id)options;
+- (void)setRunningPPTWithApplication:(id)application;
+- (void)setupAnalyticsControllerWithFeldsparContext:(id *)context versionHelpers:(id)helpers referral:(id)referral;
+- (void)setupCloudContextWithAppActivityMonitor:(id)monitor dataActionProvider:(id)provider versionHelpers:(id)helpers configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor networkReachability:(id)reachability;
+- (void)setupCloudContextWithFavoritesPersonalizer:(id)personalizer state:(int64_t)state launchOptions:(id)options versionHelpers:(id)helpers referral:(id)referral;
 - (void)setupLanguages;
-- (void)setupNotificationManagerWithFeldsparContext:(id *)a3;
+- (void)setupNotificationManagerWithFeldsparContext:(id *)context;
 - (void)setupUserDefaultsForPPT;
-- (void)showAlertWithPin:(id)a3 pin:(id)a4;
+- (void)showAlertWithPin:(id)pin pin:(id)a4;
 - (void)showAppUnsupportedAlert;
 - (void)unregisterForDeviceLockNotifications;
-- (void)validateCommand:(id)a3;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation FRAppDelegate
@@ -84,12 +84,12 @@
 
   v3 = +[NSLocale _globalPreferredLanguages];
   v4 = [NSBundle preferredLocalizationsFromArray:&off_1000CB3B8 forPreferences:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   v6 = @"en-US";
-  if (v5)
+  if (firstObject)
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   v7 = v6;
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = v5;
+    v13 = firstObject;
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Found preferred language: %{public}@, setting language as %{public}@", buf, 0x16u);
@@ -213,7 +213,7 @@
 
 - (void)registerForDeviceLockNotifications
 {
-  v2 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v3 = &_dispatch_main_q;
   handler[0] = _NSConcreteStackBlock;
@@ -221,10 +221,10 @@
   handler[2] = sub_10004A6E0;
   handler[3] = &unk_1000C4FC0;
   objc_copyWeak(&v5, &location);
-  handler[4] = v2;
-  LODWORD(v2) = notify_register_dispatch("com.apple.springboard.lockstate", &v2->lockStateToken, &_dispatch_main_q, handler);
+  handler[4] = selfCopy;
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.springboard.lockstate", &selfCopy->lockStateToken, &_dispatch_main_q, handler);
 
-  if (v2 && os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_ERROR))
+  if (selfCopy && os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_ERROR))
   {
     sub_100071018();
   }
@@ -257,12 +257,12 @@
 {
   v5 = +[NSUserDefaults standardUserDefaults];
   v2 = +[FRPPTContext sharedContext];
-  v3 = [v2 isRunningPPT];
+  isRunningPPT = [v2 isRunningPPT];
 
   v4 = +[FRPPTContext sharedContext];
   [v4 d_logState];
 
-  if (v3)
+  if (isRunningPPT)
   {
     [v5 setBool:0 forKey:FCWhitetailOnboardingNeededKey];
     [v5 setBool:1 forKey:FCPeaceOnboardingCompletedKey];
@@ -296,11 +296,11 @@
   v6 = objc_alloc_init(NAPAssembly);
   v31[11] = v6;
   v7 = [TSFrameworkAssembly alloc];
-  v21 = self;
-  v8 = [(FRAppDelegate *)self feldsparContext];
-  v9 = [v8 cloudContext];
-  v10 = [v9 appConfigurationManager];
-  v11 = [v7 initWithNewsAppConfigurationManager:v10];
+  selfCopy = self;
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
+  appConfigurationManager = [cloudContext appConfigurationManager];
+  v11 = [v7 initWithNewsAppConfigurationManager:appConfigurationManager];
   v31[12] = v11;
   v12 = objc_alloc_init(SNAssembly);
   v31[13] = v12;
@@ -315,8 +315,8 @@
 
     v15 = [v22 mutableCopy];
     v16 = objc_alloc(NSClassFromString(@"FRInternalExtrasAssembly"));
-    v17 = [(FRAppDelegate *)v21 feldsparContext];
-    v18 = [v16 initWithContext:v17];
+    feldsparContext2 = [(FRAppDelegate *)selfCopy feldsparContext];
+    v18 = [v16 initWithContext:feldsparContext2];
 
     if (v18)
     {
@@ -341,38 +341,38 @@
 - (NSArray)tfAssemblies
 {
   v3 = +[UIApplication sharedApplication];
-  v20 = [v3 key_window];
+  key_window = [v3 key_window];
 
   v4 = [FRCoreAssembly alloc];
-  v30 = [(FRAppDelegate *)self cloudContext];
-  v32 = [(FRAppDelegate *)self cloudContext];
-  v29 = [v32 configurationManager];
-  v31 = [(FRAppDelegate *)self cloudContext];
-  v28 = [v31 appActivityMonitor];
-  v27 = [(FRAppDelegate *)self networkBehaviorMonitor];
-  v26 = [(FRAppDelegate *)self offlineModeMonitor];
-  v25 = [(FRCoreAssembly *)v4 initWithCloudContext:v30 configurationManager:v29 appActivityMonitor:v28 networkBehaviorMonitor:v27 offlineModeMonitor:v26];
+  cloudContext = [(FRAppDelegate *)self cloudContext];
+  cloudContext2 = [(FRAppDelegate *)self cloudContext];
+  configurationManager = [cloudContext2 configurationManager];
+  cloudContext3 = [(FRAppDelegate *)self cloudContext];
+  appActivityMonitor = [cloudContext3 appActivityMonitor];
+  networkBehaviorMonitor = [(FRAppDelegate *)self networkBehaviorMonitor];
+  offlineModeMonitor = [(FRAppDelegate *)self offlineModeMonitor];
+  v25 = [(FRCoreAssembly *)v4 initWithCloudContext:cloudContext configurationManager:configurationManager appActivityMonitor:appActivityMonitor networkBehaviorMonitor:networkBehaviorMonitor offlineModeMonitor:offlineModeMonitor];
   v33[0] = v25;
   v24 = objc_alloc_init(FRAnalyticsAssembly);
   v33[1] = v24;
   v5 = [FRFeldsparContextAssembly alloc];
-  v23 = [(FRAppDelegate *)self feldsparContext];
-  v22 = [(FRAppDelegate *)self privateDataUpdateCoordinator];
-  v21 = [(FRFeldsparContextAssembly *)v5 initWithContext:v23 privateDataUpdateCoordinator:v22];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  privateDataUpdateCoordinator = [(FRAppDelegate *)self privateDataUpdateCoordinator];
+  v21 = [(FRFeldsparContextAssembly *)v5 initWithContext:feldsparContext privateDataUpdateCoordinator:privateDataUpdateCoordinator];
   v33[2] = v21;
   v6 = objc_alloc_init(FRFeedSubscriptionAssembly);
   v33[3] = v6;
   v7 = [FREditorialAssembly alloc];
-  v8 = [(FRAppDelegate *)self feldsparContext];
-  v9 = [(FRAppDelegate *)self dataProviderFactory];
-  v10 = [(FREditorialAssembly *)v7 initWithFeldsparContext:v8 dataProviderFactory:v9];
+  feldsparContext2 = [(FRAppDelegate *)self feldsparContext];
+  dataProviderFactory = [(FRAppDelegate *)self dataProviderFactory];
+  v10 = [(FREditorialAssembly *)v7 initWithFeldsparContext:feldsparContext2 dataProviderFactory:dataProviderFactory];
   v33[4] = v10;
   v11 = objc_alloc_init(FRHeadlineRendererAssembly);
   v33[5] = v11;
   v12 = [FRRoutingAssembly alloc];
-  v13 = [(FRAppDelegate *)self feldsparContext];
-  v14 = [(FRAppDelegate *)self bridgedAppDelegate];
-  v15 = [(FRRoutingAssembly *)v12 initWithFeldsparContext:v13 bridgedAppDelegate:v14 window:v20];
+  feldsparContext3 = [(FRAppDelegate *)self feldsparContext];
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  v15 = [(FRRoutingAssembly *)v12 initWithFeldsparContext:feldsparContext3 bridgedAppDelegate:bridgedAppDelegate window:key_window];
   v33[6] = v15;
   v16 = objc_alloc_init(FRHistoryAssembly);
   v33[7] = v16;
@@ -401,74 +401,74 @@
 
 - (void)resolveAppSingletons
 {
-  v2 = self;
+  selfCopy = self;
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_100032E10;
   v43[3] = &unk_1000C3A20;
-  v43[4] = v2;
-  v3 = [(FRAppDelegate *)v2 cloudContext];
-  [v3 setOfflineArticleManagerProvider:v43];
+  v43[4] = selfCopy;
+  cloudContext = [(FRAppDelegate *)selfCopy cloudContext];
+  [cloudContext setOfflineArticleManagerProvider:v43];
 
-  v4 = [(FRAppDelegate *)v2 resolver];
-  v5 = [v4 resolveProtocol:&OBJC_PROTOCOL___FCLocalRegionManager];
-  v6 = [(FRAppDelegate *)v2 cloudContext];
-  [v6 setLocalRegionProvider:v5];
+  resolver = [(FRAppDelegate *)selfCopy resolver];
+  v5 = [resolver resolveProtocol:&OBJC_PROTOCOL___FCLocalRegionManager];
+  cloudContext2 = [(FRAppDelegate *)selfCopy cloudContext];
+  [cloudContext2 setLocalRegionProvider:v5];
 
-  v7 = [(FRAppDelegate *)v2 resolver];
-  v8 = [v7 resolveProtocol:&OBJC_PROTOCOL___FCLocalChannelsProvider];
-  v9 = [(FRAppDelegate *)v2 cloudContext];
-  [v9 setLocalChannelsProvider:v8];
+  resolver2 = [(FRAppDelegate *)selfCopy resolver];
+  v8 = [resolver2 resolveProtocol:&OBJC_PROTOCOL___FCLocalChannelsProvider];
+  cloudContext3 = [(FRAppDelegate *)selfCopy cloudContext];
+  [cloudContext3 setLocalChannelsProvider:v8];
 
-  v10 = [(FRAppDelegate *)v2 resolver];
-  v11 = [v10 resolveClass:objc_opt_class()];
-  [(FRAppDelegate *)v2 setTodayAgent:v11];
+  resolver3 = [(FRAppDelegate *)selfCopy resolver];
+  v11 = [resolver3 resolveClass:objc_opt_class()];
+  [(FRAppDelegate *)selfCopy setTodayAgent:v11];
 
-  v12 = [(FRAppDelegate *)v2 resolver];
-  v13 = [v12 resolveClass:objc_opt_class()];
-  [(FRAppDelegate *)v2 setDiagnosticFileCollectionCoordinator:v13];
+  resolver4 = [(FRAppDelegate *)selfCopy resolver];
+  v13 = [resolver4 resolveClass:objc_opt_class()];
+  [(FRAppDelegate *)selfCopy setDiagnosticFileCollectionCoordinator:v13];
 
-  v14 = [(FRAppDelegate *)v2 feldsparContext];
-  v15 = [(FRAppDelegate *)v2 resolver];
-  v16 = [v15 resolveProtocol:&OBJC_PROTOCOL___TSSharedImageCacheType];
-  [v14 setUnderlyingImageCache:v16];
+  feldsparContext = [(FRAppDelegate *)selfCopy feldsparContext];
+  resolver5 = [(FRAppDelegate *)selfCopy resolver];
+  v16 = [resolver5 resolveProtocol:&OBJC_PROTOCOL___TSSharedImageCacheType];
+  [feldsparContext setUnderlyingImageCache:v16];
 
-  v17 = [(FRAppDelegate *)v2 resolver];
-  v18 = [v17 resolveClass:objc_opt_class()];
-  [v14 setArticlePrefetchManager:v18];
+  resolver6 = [(FRAppDelegate *)selfCopy resolver];
+  v18 = [resolver6 resolveClass:objc_opt_class()];
+  [feldsparContext setArticlePrefetchManager:v18];
 
-  v19 = [(FRAppDelegate *)v2 resolver];
-  v20 = [v19 resolveProtocol:&OBJC_PROTOCOL___AAViewingSessionManagerType name:@"Issue"];
-  [v14 setIssueViewingSessionManager:v20];
+  resolver7 = [(FRAppDelegate *)selfCopy resolver];
+  v20 = [resolver7 resolveProtocol:&OBJC_PROTOCOL___AAViewingSessionManagerType name:@"Issue"];
+  [feldsparContext setIssueViewingSessionManager:v20];
 
-  v21 = [(FRAppDelegate *)v2 resolver];
-  v22 = [v21 resolveProtocol:&OBJC_PROTOCOL___FRToCEditorialManager];
+  resolver8 = [(FRAppDelegate *)selfCopy resolver];
+  v22 = [resolver8 resolveProtocol:&OBJC_PROTOCOL___FRToCEditorialManager];
 
   [v22 refreshEditorialItems];
-  v23 = [(FRAppDelegate *)v2 resolver];
-  v24 = [v23 resolveProtocol:&OBJC_PROTOCOL___TSLocationDetectionManagerType];
-  v25 = [(FRAppDelegate *)v2 feldsparContext];
-  v26 = [v25 favoritesPersonalizer];
-  [v26 setLocationManager:v24];
+  resolver9 = [(FRAppDelegate *)selfCopy resolver];
+  v24 = [resolver9 resolveProtocol:&OBJC_PROTOCOL___TSLocationDetectionManagerType];
+  feldsparContext2 = [(FRAppDelegate *)selfCopy feldsparContext];
+  favoritesPersonalizer = [feldsparContext2 favoritesPersonalizer];
+  [favoritesPersonalizer setLocationManager:v24];
 
-  [(FRAppDelegate *)v2 setFeldsparContext:v14];
-  [(FRAppDelegate *)v2 clearOldCacheItemsWithFeldsparContext:v14];
+  [(FRAppDelegate *)selfCopy setFeldsparContext:feldsparContext];
+  [(FRAppDelegate *)selfCopy clearOldCacheItemsWithFeldsparContext:feldsparContext];
   if (+[FRMacros iPhone])
   {
     v27 = [FRGizmoSyncManager alloc];
-    v28 = [v14 cloudContext];
-    v29 = [v28 appConfigurationManager];
-    v30 = [v14 readingList];
-    v31 = [v14 readingHistory];
-    v32 = [(FRGizmoSyncManager *)v27 initWithAppConfigManager:v29 readingList:v30 readingHistory:v31];
+    cloudContext4 = [feldsparContext cloudContext];
+    appConfigurationManager = [cloudContext4 appConfigurationManager];
+    readingList = [feldsparContext readingList];
+    readingHistory = [feldsparContext readingHistory];
+    v32 = [(FRGizmoSyncManager *)v27 initWithAppConfigManager:appConfigurationManager readingList:readingList readingHistory:readingHistory];
 
-    [(FRGizmoSyncManager *)v32 setDelegate:v2];
-    [v14 setGizmoSyncManager:v32];
+    [(FRGizmoSyncManager *)v32 setDelegate:selfCopy];
+    [feldsparContext setGizmoSyncManager:v32];
   }
 
-  v33 = [(FRAppDelegate *)v2 resolver];
-  v34 = [v33 resolveProtocol:&OBJC_PROTOCOL___FRURLRouterManagerType];
-  [(FRAppDelegate *)v2 setUrlRouterManager:v34];
+  resolver10 = [(FRAppDelegate *)selfCopy resolver];
+  v34 = [resolver10 resolveProtocol:&OBJC_PROTOCOL___FRURLRouterManagerType];
+  [(FRAppDelegate *)selfCopy setUrlRouterManager:v34];
 
   if (NFInternalBuild())
   {
@@ -477,55 +477,55 @@
 
     if (v36)
     {
-      v37 = [(FRAppDelegate *)v2 resolver];
-      v38 = [v37 resolveProtocol:&OBJC_PROTOCOL___TSLocalDraftsDeviceManagerType];
-      [(FRAppDelegate *)v2 setDeviceManager:v38];
+      resolver11 = [(FRAppDelegate *)selfCopy resolver];
+      v38 = [resolver11 resolveProtocol:&OBJC_PROTOCOL___TSLocalDraftsDeviceManagerType];
+      [(FRAppDelegate *)selfCopy setDeviceManager:v38];
 
-      v39 = [(FRAppDelegate *)v2 deviceManager];
-      [v39 setDelegate:v2];
+      deviceManager = [(FRAppDelegate *)selfCopy deviceManager];
+      [deviceManager setDelegate:selfCopy];
 
       v40 = [UIAlertController alertControllerWithTitle:@"News Preview - Device PIN" message:0 preferredStyle:1];
-      [(FRAppDelegate *)v2 setPinAlertController:v40];
+      [(FRAppDelegate *)selfCopy setPinAlertController:v40];
 
-      v41 = [(FRAppDelegate *)v2 pinAlertController];
+      pinAlertController = [(FRAppDelegate *)selfCopy pinAlertController];
       v42 = [UIAlertAction actionWithTitle:@"Done" style:1 handler:0];
-      [v41 addAction:v42];
+      [pinAlertController addAction:v42];
     }
   }
 
-  [(FRAppDelegate *)v2 _configureBackgroundFetch];
+  [(FRAppDelegate *)selfCopy _configureBackgroundFetch];
 }
 
 - (void)_configureBackgroundFetch
 {
-  v3 = [(FRAppDelegate *)self feldsparContext];
-  v4 = [v3 cloudContext];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
 
   v5 = +[UIApplication sharedApplication];
   v6 = [[TSApplicationBackgroundFetchScheduler alloc] initWithApplication:v5];
   [v6 prepareForUseWithApplicationDelegate:self];
   [(FRAppDelegate *)self setBackgroundFetchScheduler:v6];
-  v7 = [(FRAppDelegate *)self resolver];
-  v8 = [v7 resolveClass:objc_opt_class()];
+  resolver = [(FRAppDelegate *)self resolver];
+  v8 = [resolver resolveClass:objc_opt_class()];
   [(FRAppDelegate *)self setBackgroundFetchManager:v8];
 
-  v9 = [(FRAppDelegate *)self backgroundFetchManager];
+  backgroundFetchManager = [(FRAppDelegate *)self backgroundFetchManager];
 
-  if (!v9 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!backgroundFetchManager && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10007110C();
   }
 
-  v10 = [v4 appConfigurationManager];
-  [v10 addAppConfigObserver:self];
-  v11 = [v10 possiblyUnfetchedAppConfiguration];
-  [(FRAppDelegate *)self _updateBackgroundFetchSettingsWithAppConfiguration:v11];
+  appConfigurationManager = [cloudContext appConfigurationManager];
+  [appConfigurationManager addAppConfigObserver:self];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  [(FRAppDelegate *)self _updateBackgroundFetchSettingsWithAppConfiguration:possiblyUnfetchedAppConfiguration];
 }
 
 - (void)sceneWillEnterForeground
 {
-  v3 = [(FRAppDelegate *)self resolver];
-  v4 = [v3 resolveProtocol:&OBJC_PROTOCOL___AAViewingSessionManagerType name:@"Issue"];
+  resolver = [(FRAppDelegate *)self resolver];
+  v4 = [resolver resolveProtocol:&OBJC_PROTOCOL___AAViewingSessionManagerType name:@"Issue"];
 
   [v4 endActiveViewingSession];
   block[0] = _NSConcreteStackBlock;
@@ -547,17 +547,17 @@
   dispatch_async(v3, block);
 
   +[NSURLRequest setupFeldsparUserAgent];
-  v4 = [(FRAppDelegate *)self feldsparContext];
-  v5 = [v4 cloudContext];
-  v6 = [v5 userInfo];
-  [v6 maybeUpdateOnboardingVersion:&stru_1000C4EA8];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
+  userInfo = [cloudContext userInfo];
+  [userInfo maybeUpdateOnboardingVersion:&stru_1000C4EA8];
 
   v7 = dispatch_get_global_queue(2, 0);
   dispatch_async(v7, &stru_1000C4EC8);
 
   [(FRAppDelegate *)self _disableLoggingForUnsupportedControls];
-  v8 = [(FRAppDelegate *)self bridgedAppDelegate];
-  [v8 didCommitFirstFrame];
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  [bridgedAppDelegate didCommitFirstFrame];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -578,21 +578,21 @@
 
   if (v4 > 604800.0 || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:FCSimulateServerSidePrivateDataReset], v7, v8))
   {
-    v9 = [(FRAppDelegate *)self privateDataUpdateCoordinator];
-    [v9 markAllPrivateDataControllersAsNeedingUpdate];
+    privateDataUpdateCoordinator = [(FRAppDelegate *)self privateDataUpdateCoordinator];
+    [privateDataUpdateCoordinator markAllPrivateDataControllersAsNeedingUpdate];
   }
 
-  v10 = [(FRAppDelegate *)self privateDataUpdateCoordinator];
-  [v10 updatePrivateDataControllersWithCompletion:&stru_1000C4F58];
+  privateDataUpdateCoordinator2 = [(FRAppDelegate *)self privateDataUpdateCoordinator];
+  [privateDataUpdateCoordinator2 updatePrivateDataControllersWithCompletion:&stru_1000C4F58];
 
   v11 = +[NSUserDefaults standardUserDefaults];
   v12 = [v11 BOOLForKey:@"simulate_quick_subscription_refresh"];
 
   if (v12)
   {
-    v13 = [(FRAppDelegate *)self cloudContext];
-    v14 = [v13 subscriptionController];
-    [v14 performSelector:"refreshAndNotifyAboutSubscribedTags" withObject:0 afterDelay:120.0];
+    cloudContext = [(FRAppDelegate *)self cloudContext];
+    subscriptionController = [cloudContext subscriptionController];
+    [subscriptionController performSelector:"refreshAndNotifyAboutSubscribedTags" withObject:0 afterDelay:120.0];
   }
 
   else
@@ -606,10 +606,10 @@
   }
 
   v15 = +[NSDate date];
-  v16 = [(FRAppDelegate *)self feldsparContext];
-  v17 = [v16 cloudContext];
-  v18 = [v17 userInfo];
-  [v18 setDateLastOpened:v15];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  cloudContext2 = [feldsparContext cloudContext];
+  userInfo = [cloudContext2 userInfo];
+  [userInfo setDateLastOpened:v15];
 
   v19 = +[NSNotificationCenter defaultCenter];
   v20 = +[NSOperationQueue mainQueue];
@@ -621,16 +621,16 @@
   v24 = [NSArray arrayWithObjects:&v32 count:1];
   [v22 enqueueNotification:v23 postingStyle:1 coalesceMask:3 forModes:v24];
 
-  v25 = [(FRAppDelegate *)self feldsparContext];
-  v26 = [v25 gizmoSyncManager];
-  [v26 syncWithGizmo];
+  feldsparContext2 = [(FRAppDelegate *)self feldsparContext];
+  gizmoSyncManager = [feldsparContext2 gizmoSyncManager];
+  [gizmoSyncManager syncWithGizmo];
 
-  v27 = [(FRAppDelegate *)self resolver];
-  v28 = [v27 resolveClass:objc_opt_class()];
+  resolver = [(FRAppDelegate *)self resolver];
+  v28 = [resolver resolveClass:objc_opt_class()];
 
   [v28 updateUnderlyingMappingWithQualityOfService:-1 completion:0];
-  v29 = [(FRAppDelegate *)self resolver];
-  v30 = [v29 resolveClass:objc_opt_class()];
+  resolver2 = [(FRAppDelegate *)self resolver];
+  v30 = [resolver2 resolveClass:objc_opt_class()];
   [(FRAppDelegate *)self setKeyboardInputMonitor:v30];
 }
 
@@ -654,52 +654,52 @@
   return v6;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  applicationCopy = application;
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 key_window];
+  key_window = [v8 key_window];
 
-  v10 = [(FRAppDelegate *)self applicationUpdateNotifier];
-  v11 = [v9 rootViewController];
-  [v10 setViewController:v11];
+  applicationUpdateNotifier = [(FRAppDelegate *)self applicationUpdateNotifier];
+  rootViewController = [key_window rootViewController];
+  [applicationUpdateNotifier setViewController:rootViewController];
 
   v12 = +[FCAppleAccount sharedAccount];
-  v13 = [v12 endpointConnectionClientID];
+  endpointConnectionClientID = [v12 endpointConnectionClientID];
 
   v14 = +[NSUserDefaults standardUserDefaults];
   [v14 setBool:1 forKey:@"hasLaunchedBefore"];
 
   [WKBrowsingContextController registerSchemeForCustomProtocol:FCExcerptURLScheme];
   [(FRAppDelegate *)self performSelector:"_didCommitFirstFrame" withObject:0 afterDelay:0.0];
-  v15 = [(FRAppDelegate *)self bridgedAppDelegate];
-  LOBYTE(v14) = [v15 application:v7 didFinishLaunchingWithOptions:v6];
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  LOBYTE(v14) = [bridgedAppDelegate application:applicationCopy didFinishLaunchingWithOptions:optionsCopy];
 
   return v14;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   [(FRAppDelegate *)self setupLanguages];
-  [(FRAppDelegate *)self scheduleTasksWithOptions:v7];
-  v127 = v6;
-  [(FRAppDelegate *)self setRunningPPTWithApplication:v6];
-  v125 = [(FRAppDelegate *)self setupDestructiveDataAction];
+  [(FRAppDelegate *)self scheduleTasksWithOptions:optionsCopy];
+  v127 = applicationCopy;
+  [(FRAppDelegate *)self setRunningPPTWithApplication:applicationCopy];
+  setupDestructiveDataAction = [(FRAppDelegate *)self setupDestructiveDataAction];
   [(FRAppDelegate *)self registerForDeviceLockNotifications];
-  v126 = v7;
-  v124 = [(FRAppDelegate *)self setupAnalyticsReferralWithOptions:v7];
+  v126 = optionsCopy;
+  v124 = [(FRAppDelegate *)self setupAnalyticsReferralWithOptions:optionsCopy];
   [(FRAppDelegate *)self prepareAppCacheSnapShot];
   v8 = +[FRAppDelegate stateRestorationURL];
-  v9 = [v8 path];
+  path = [v8 path];
 
   v10 = +[NSFileManager defaultManager];
-  v121 = v9;
-  LOBYTE(v9) = [v10 fileExistsAtPath:v9];
+  v121 = path;
+  LOBYTE(path) = [v10 fileExistsAtPath:path];
 
-  if ((v9 & 1) == 0)
+  if ((path & 1) == 0)
   {
     TFCompletedStartup();
   }
@@ -716,8 +716,8 @@
   [(FRVersionHelpers *)v128 updateAppObsolescenceState];
   v14 = [FCNetworkBehaviorMonitor alloc];
   v15 = FRURLForNewsAppCachesDirectory();
-  v16 = [v15 path];
-  v123 = [v14 initWithCacheDirectory:v16];
+  path2 = [v15 path];
+  v123 = [v14 initWithCacheDirectory:path2];
 
   v17 = objc_opt_new();
   [v17 addMonitor:v123];
@@ -745,152 +745,152 @@
   v116 = v18;
   v112 = v28;
   v118 = v17;
-  [(FRAppDelegate *)self setupCloudContextWithAppActivityMonitor:v18 dataActionProvider:v125 versionHelpers:v128 configurationManager:v28 networkBehaviorMonitor:v17 networkReachability:v29];
+  [(FRAppDelegate *)self setupCloudContextWithAppActivityMonitor:v18 dataActionProvider:setupDestructiveDataAction versionHelpers:v128 configurationManager:v28 networkBehaviorMonitor:v17 networkReachability:v29];
   v30 = [FRFavoritesPersonalizer alloc];
-  v31 = [(FRAppDelegate *)self cloudContext];
-  v122 = [(FRFavoritesPersonalizer *)v30 initWithCloudContext:v31];
+  cloudContext = [(FRAppDelegate *)self cloudContext];
+  v122 = [(FRFavoritesPersonalizer *)v30 initWithCloudContext:cloudContext];
 
-  v32 = [(FRAppDelegate *)self cloudContext];
-  v110 = [v32 subscriptionList];
+  cloudContext2 = [(FRAppDelegate *)self cloudContext];
+  subscriptionList = [cloudContext2 subscriptionList];
 
   v111 = v29;
   v33 = [[FRPrivateDataUpdateCoordinator alloc] initWithNetworkReachability:v29];
   [(FRAppDelegate *)self setPrivateDataUpdateCoordinator:v33];
 
-  v109 = [(FRAppDelegate *)self cloudContext];
-  v108 = [v109 subscriptionList];
-  v129[0] = v108;
-  v107 = [(FRAppDelegate *)self cloudContext];
-  v106 = [v107 readingList];
-  v129[1] = v106;
-  v105 = [(FRAppDelegate *)self cloudContext];
-  v104 = [v105 userInfo];
-  v129[2] = v104;
-  v103 = [(FRAppDelegate *)self cloudContext];
-  v102 = [v103 audioPlaylist];
-  v129[3] = v102;
-  v101 = [(FRAppDelegate *)self cloudContext];
-  v100 = [v101 privateChannelMembershipController];
-  v129[4] = v100;
-  v99 = [(FRAppDelegate *)self cloudContext];
-  v98 = [v99 shortcutList];
-  v129[5] = v98;
-  v97 = [(FRAppDelegate *)self cloudContext];
-  v96 = [v97 shortcutCategoryList];
-  v129[6] = v96;
-  v95 = [(FRAppDelegate *)self cloudContext];
-  v94 = [v95 personalizationData];
-  v129[7] = v94;
-  v93 = [(FRAppDelegate *)self cloudContext];
-  v92 = [v93 userEventHistory];
-  v129[8] = v92;
-  v91 = [(FRAppDelegate *)self cloudContext];
-  v34 = [v91 readingHistory];
-  v129[9] = v34;
-  v35 = [(FRAppDelegate *)self cloudContext];
-  v36 = [v35 issueReadingHistory];
-  v129[10] = v36;
-  v37 = [(FRAppDelegate *)self cloudContext];
-  v38 = [v37 puzzleHistory];
-  v129[11] = v38;
-  v39 = [(FRAppDelegate *)self cloudContext];
-  v40 = [v39 recipeUserEventHistory];
-  v129[12] = v40;
+  cloudContext3 = [(FRAppDelegate *)self cloudContext];
+  subscriptionList2 = [cloudContext3 subscriptionList];
+  v129[0] = subscriptionList2;
+  cloudContext4 = [(FRAppDelegate *)self cloudContext];
+  readingList = [cloudContext4 readingList];
+  v129[1] = readingList;
+  cloudContext5 = [(FRAppDelegate *)self cloudContext];
+  userInfo = [cloudContext5 userInfo];
+  v129[2] = userInfo;
+  cloudContext6 = [(FRAppDelegate *)self cloudContext];
+  audioPlaylist = [cloudContext6 audioPlaylist];
+  v129[3] = audioPlaylist;
+  cloudContext7 = [(FRAppDelegate *)self cloudContext];
+  privateChannelMembershipController = [cloudContext7 privateChannelMembershipController];
+  v129[4] = privateChannelMembershipController;
+  cloudContext8 = [(FRAppDelegate *)self cloudContext];
+  shortcutList = [cloudContext8 shortcutList];
+  v129[5] = shortcutList;
+  cloudContext9 = [(FRAppDelegate *)self cloudContext];
+  shortcutCategoryList = [cloudContext9 shortcutCategoryList];
+  v129[6] = shortcutCategoryList;
+  cloudContext10 = [(FRAppDelegate *)self cloudContext];
+  personalizationData = [cloudContext10 personalizationData];
+  v129[7] = personalizationData;
+  cloudContext11 = [(FRAppDelegate *)self cloudContext];
+  userEventHistory = [cloudContext11 userEventHistory];
+  v129[8] = userEventHistory;
+  cloudContext12 = [(FRAppDelegate *)self cloudContext];
+  readingHistory = [cloudContext12 readingHistory];
+  v129[9] = readingHistory;
+  cloudContext13 = [(FRAppDelegate *)self cloudContext];
+  issueReadingHistory = [cloudContext13 issueReadingHistory];
+  v129[10] = issueReadingHistory;
+  cloudContext14 = [(FRAppDelegate *)self cloudContext];
+  puzzleHistory = [cloudContext14 puzzleHistory];
+  v129[11] = puzzleHistory;
+  cloudContext15 = [(FRAppDelegate *)self cloudContext];
+  recipeUserEventHistory = [cloudContext15 recipeUserEventHistory];
+  v129[12] = recipeUserEventHistory;
   v41 = [NSArray arrayWithObjects:v129 count:13];
-  v42 = [(FRAppDelegate *)self privateDataUpdateCoordinator];
-  [v42 setPrivateDataControllers:v41];
+  privateDataUpdateCoordinator = [(FRAppDelegate *)self privateDataUpdateCoordinator];
+  [privateDataUpdateCoordinator setPrivateDataControllers:v41];
 
   v43 = [FRFlintEmbedConfigurationManager alloc];
-  v44 = [(FRAppDelegate *)self cloudContext];
-  v45 = [v44 appConfigurationManager];
-  v46 = [(FRAppDelegate *)self cloudContext];
-  v47 = [v46 flintResourceManager];
-  v48 = [(FRFlintEmbedConfigurationManager *)v43 initWithConfigurationManager:v45 resourceManager:v47];
+  cloudContext16 = [(FRAppDelegate *)self cloudContext];
+  appConfigurationManager = [cloudContext16 appConfigurationManager];
+  cloudContext17 = [(FRAppDelegate *)self cloudContext];
+  flintResourceManager = [cloudContext17 flintResourceManager];
+  v48 = [(FRFlintEmbedConfigurationManager *)v43 initWithConfigurationManager:appConfigurationManager resourceManager:flintResourceManager];
   [(FRAppDelegate *)self setEmbedConfigurationManager:v48];
 
   v49 = [FRFlintDataProviderFactory alloc];
-  v50 = [(FRAppDelegate *)self cloudContext];
-  v51 = [(FRAppDelegate *)self cloudContext];
-  v52 = [v51 flintResourceManager];
-  v53 = [(FRAppDelegate *)self embedConfigurationManager];
-  v54 = [(FRFlintDataProviderFactory *)v49 initWithCloudContext:v50 resourceManager:v52 embedConfigurationManager:v53];
+  cloudContext18 = [(FRAppDelegate *)self cloudContext];
+  cloudContext19 = [(FRAppDelegate *)self cloudContext];
+  flintResourceManager2 = [cloudContext19 flintResourceManager];
+  embedConfigurationManager = [(FRAppDelegate *)self embedConfigurationManager];
+  v54 = [(FRFlintDataProviderFactory *)v49 initWithCloudContext:cloudContext18 resourceManager:flintResourceManager2 embedConfigurationManager:embedConfigurationManager];
 
   [(FRAppDelegate *)self setDataProviderFactory:v54];
   -[FRAppDelegate setupCloudContextWithFavoritesPersonalizer:state:launchOptions:versionHelpers:referral:](self, "setupCloudContextWithFavoritesPersonalizer:state:launchOptions:versionHelpers:referral:", v122, [v127 applicationState], v126, v128, v124);
-  v55 = [(FRAppDelegate *)self bridgedAppDelegate];
-  v56 = [v55 createBridgedAppResolver];
-  [(FRAppDelegate *)self setResolver:v56];
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  createBridgedAppResolver = [bridgedAppDelegate createBridgedAppResolver];
+  [(FRAppDelegate *)self setResolver:createBridgedAppResolver];
 
-  v57 = [(FRAppDelegate *)self resolver];
-  v58 = [v57 resolveProtocol:&OBJC_PROTOCOL___FCReadonlyAggregateStoreProviderType];
+  resolver = [(FRAppDelegate *)self resolver];
+  v58 = [resolver resolveProtocol:&OBJC_PROTOCOL___FCReadonlyAggregateStoreProviderType];
 
   [(FRFavoritesPersonalizer *)v122 setAggregateStoreProvider:v58];
-  v59 = [(FRAppDelegate *)self resolver];
-  v60 = [v59 resolveProtocol:&OBJC_PROTOCOL___FCTagRanking];
+  resolver2 = [(FRAppDelegate *)self resolver];
+  v60 = [resolver2 resolveProtocol:&OBJC_PROTOCOL___FCTagRanking];
 
   [(FRFavoritesPersonalizer *)v122 setTagRanker:v60];
-  v61 = [(FRAppDelegate *)self resolver];
-  v62 = [v61 resolveProtocol:&OBJC_PROTOCOL___FCFeedPersonalizing];
-  v63 = [(FRAppDelegate *)self cloudContext];
-  [v63 setFeedPersonalizer:v62];
+  resolver3 = [(FRAppDelegate *)self resolver];
+  v62 = [resolver3 resolveProtocol:&OBJC_PROTOCOL___FCFeedPersonalizing];
+  cloudContext20 = [(FRAppDelegate *)self cloudContext];
+  [cloudContext20 setFeedPersonalizer:v62];
 
-  v64 = [(FRAppDelegate *)self resolver];
-  v65 = [v64 resolveProtocol:&OBJC_PROTOCOL___FCUserVectorAggregateVectorProvider];
-  v66 = [(FRAppDelegate *)self cloudContext];
-  [v66 setUserVectorAggregateVectorProvider:v65];
+  resolver4 = [(FRAppDelegate *)self resolver];
+  v65 = [resolver4 resolveProtocol:&OBJC_PROTOCOL___FCUserVectorAggregateVectorProvider];
+  cloudContext21 = [(FRAppDelegate *)self cloudContext];
+  [cloudContext21 setUserVectorAggregateVectorProvider:v65];
 
-  v67 = [(FRAppDelegate *)self resolver];
+  resolver5 = [(FRAppDelegate *)self resolver];
   v68 = +[FCItemExposureRegistryNames article];
-  v69 = [v67 resolveProtocol:&OBJC_PROTOCOL___FCItemExposureRegistryType name:v68];
-  v70 = [(FRAppDelegate *)self cloudContext];
-  v71 = [v70 readingHistory];
-  [v71 setArticleExposureRegistry:v69];
+  v69 = [resolver5 resolveProtocol:&OBJC_PROTOCOL___FCItemExposureRegistryType name:v68];
+  cloudContext22 = [(FRAppDelegate *)self cloudContext];
+  readingHistory2 = [cloudContext22 readingHistory];
+  [readingHistory2 setArticleExposureRegistry:v69];
 
   v72 = [FRSubscribedTagRanker alloc];
-  v73 = [(FRAppDelegate *)self resolver];
-  v74 = [v73 resolveProtocol:&OBJC_PROTOCOL___FCFeedPersonalizing];
+  resolver6 = [(FRAppDelegate *)self resolver];
+  v74 = [resolver6 resolveProtocol:&OBJC_PROTOCOL___FCFeedPersonalizing];
   v75 = [(FRSubscribedTagRanker *)v72 initWithTagRanker:v74];
-  [v110 setSubscribedTagRanker:v75];
+  [subscriptionList setSubscribedTagRanker:v75];
 
-  [v110 assignOrderToTagSubscriptionsIfNeeded];
+  [subscriptionList assignOrderToTagSubscriptionsIfNeeded];
   [(FRAppDelegate *)self resolveAppSingletons];
-  v76 = [(FRAppDelegate *)self resolver];
-  v77 = [v76 resolveProtocol:&OBJC_PROTOCOL___FRURLAnalyticsReferralFactory];
+  resolver7 = [(FRAppDelegate *)self resolver];
+  v77 = [resolver7 resolveProtocol:&OBJC_PROTOCOL___FRURLAnalyticsReferralFactory];
 
-  v78 = [(FRAppDelegate *)self feldsparContext];
-  v79 = [v78 appActivityMonitor];
-  [v79 setAnalyticsReferralFactory:v77];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  appActivityMonitor = [feldsparContext appActivityMonitor];
+  [appActivityMonitor setAnalyticsReferralFactory:v77];
 
-  v80 = [(FRAppDelegate *)self feldsparContext];
-  v81 = [v80 appActivityMonitor];
-  [v81 applicationWillFinishLaunching];
+  feldsparContext2 = [(FRAppDelegate *)self feldsparContext];
+  appActivityMonitor2 = [feldsparContext2 appActivityMonitor];
+  [appActivityMonitor2 applicationWillFinishLaunching];
 
   [(FRAppDelegate *)self prewarmAd];
   if (NFInternalBuild())
   {
     v82 = [FRCrashLogMessageManager alloc];
-    v83 = [(FRAppDelegate *)self feldsparContext];
-    v84 = [v83 cloudContext];
-    v85 = [v84 appConfigurationManager];
-    v86 = [(FRCrashLogMessageManager *)v82 initWithAppConfigurationManager:v85];
+    feldsparContext3 = [(FRAppDelegate *)self feldsparContext];
+    cloudContext23 = [feldsparContext3 cloudContext];
+    appConfigurationManager2 = [cloudContext23 appConfigurationManager];
+    v86 = [(FRCrashLogMessageManager *)v82 initWithAppConfigurationManager:appConfigurationManager2];
     [(FRAppDelegate *)self setCrashLogMessageManager:v86];
 
-    v87 = [(FRAppDelegate *)self crashLogMessageManager];
-    [v87 updateCrashLogMessageWithCurrentData];
+    crashLogMessageManager = [(FRAppDelegate *)self crashLogMessageManager];
+    [crashLogMessageManager updateCrashLogMessageWithCurrentData];
   }
 
-  v88 = [(FRAppDelegate *)self bridgedAppDelegate];
-  v89 = [v88 application:v127 willFinishLaunchingWithOptions:v126];
+  bridgedAppDelegate2 = [(FRAppDelegate *)self bridgedAppDelegate];
+  v89 = [bridgedAppDelegate2 application:v127 willFinishLaunchingWithOptions:v126];
 
   return v89;
 }
 
-- (void)scheduleTasksWithOptions:(id)a3
+- (void)scheduleTasksWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   +[FCTaskScheduler pushHighPriorityTaskInFlight];
   +[FCTaskScheduler pushHighPriorityTaskInFlight];
-  v4 = [v3 objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  v4 = [optionsCopy objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 
   if (v4)
   {
@@ -899,16 +899,16 @@
   }
 }
 
-- (void)setRunningPPTWithApplication:(id)a3
+- (void)setRunningPPTWithApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[FRPPTContext sharedContext];
   [v4 d_logState];
 
   v5 = +[FRPPTContext sharedContext];
-  v6 = [v3 launchedToTest];
+  launchedToTest = [applicationCopy launchedToTest];
 
-  [v5 setRunningPPT:v6];
+  [v5 setRunningPPT:launchedToTest];
   v7 = +[FRPPTContext sharedContext];
   [v7 d_logState];
 
@@ -936,37 +936,37 @@
   }
 }
 
-- (void)clearOldCacheItemsWithFeldsparContext:(id)a3
+- (void)clearOldCacheItemsWithFeldsparContext:(id)context
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000330EC;
   v4[3] = &unk_1000C18D0;
-  v5 = a3;
-  v3 = v5;
+  contextCopy = context;
+  v3 = contextCopy;
   [FCTaskScheduler scheduleLowPriorityBlock:v4];
 }
 
-- (void)setupCloudContextWithAppActivityMonitor:(id)a3 dataActionProvider:(id)a4 versionHelpers:(id)a5 configurationManager:(id)a6 networkBehaviorMonitor:(id)a7 networkReachability:(id)a8
+- (void)setupCloudContextWithAppActivityMonitor:(id)monitor dataActionProvider:(id)provider versionHelpers:(id)helpers configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor networkReachability:(id)reachability
 {
-  v55 = a3;
-  v49 = a8;
-  v50 = a7;
-  v13 = a6;
-  v51 = a5;
-  v14 = a4;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  behaviorMonitorCopy = behaviorMonitor;
+  managerCopy = manager;
+  helpersCopy = helpers;
+  providerCopy = provider;
   v15 = FRURLForNewsAppCachesDirectory();
   v16 = +[FCContextConfiguration defaultConfiguration];
   v52 = +[FCFeldsparIDProvider sharedInstance];
   v17 = [FCCloudContext alloc];
   v18 = FRURLForNewsAppDocumentsDirectory();
-  LOBYTE(a5) = +[FRMacros iPad];
+  LOBYTE(helpers) = +[FRMacros iPad];
   v19 = +[UIApplication sharedApplication];
   v20 = +[FCPrivateDataSyncAvailability defaultAvailability];
   v21 = +[FRPPTContext sharedContext];
-  LOBYTE(v48) = a5;
+  LOBYTE(v48) = helpers;
   v53 = v15;
-  v22 = [v17 initWithConfiguration:v16 configurationManager:v13 contentHostDirectory:v15 privateDataHostDirectory:v18 privateDataActionProvider:v14 networkBehaviorMonitor:v50 networkReachability:v49 appActivityMonitor:v55 desiredHeadlineFieldOptions:0xF87FFFFC1 feedUsage:6 deviceIsiPad:v48 backgroundTaskable:v19 privateDataSyncAvailability:v20 pptContext:v21 options:14];
+  v22 = [v17 initWithConfiguration:v16 configurationManager:managerCopy contentHostDirectory:v15 privateDataHostDirectory:v18 privateDataActionProvider:providerCopy networkBehaviorMonitor:behaviorMonitorCopy networkReachability:reachabilityCopy appActivityMonitor:monitorCopy desiredHeadlineFieldOptions:0xF87FFFFC1 feedUsage:6 deviceIsiPad:v48 backgroundTaskable:v19 privateDataSyncAvailability:v20 pptContext:v21 options:14];
 
   if (FeldsparInternalExtrasEnabled())
   {
@@ -974,32 +974,32 @@
     [v23 load];
 
     v24 = objc_alloc(NSClassFromString(@"FREntitlementsOverrideProvider"));
-    v25 = [v22 configurationManager];
-    v26 = [v24 initWithConfigurationManager:v25];
+    configurationManager = [v22 configurationManager];
+    v26 = [v24 initWithConfigurationManager:configurationManager];
 
     v27 = FCProtocolCast();
-    v28 = [v22 purchaseController];
-    [v28 setEntitlementsOverrideProvider:v27];
+    purchaseController = [v22 purchaseController];
+    [purchaseController setEntitlementsOverrideProvider:v27];
 
-    v29 = [v22 bundleSubscriptionManager];
-    [v29 setEntitlementsOverrideProvider:v27];
+    bundleSubscriptionManager = [v22 bundleSubscriptionManager];
+    [bundleSubscriptionManager setEntitlementsOverrideProvider:v27];
 
     v30 = objc_alloc_init(NSClassFromString(@"FRPurchaseFlowOverrideProvider"));
     v31 = FCProtocolCast();
-    v32 = [v22 purchaseManager];
-    [v32 setPurchaseFlowOverrideProvider:v31];
+    purchaseManager = [v22 purchaseManager];
+    [purchaseManager setPurchaseFlowOverrideProvider:v31];
   }
 
   [v22 prewarmStores];
   [TSTodayPrewarmManager prewarmTodayWithContext:v22];
-  v33 = [v22 tagController];
-  [v33 setShouldPrefetchGlobalTags:1];
+  tagController = [v22 tagController];
+  [tagController setShouldPrefetchGlobalTags:1];
 
-  v34 = [v22 userInfo];
-  [v52 registerUserInfo:v34];
+  userInfo = [v22 userInfo];
+  [v52 registerUserInfo:userInfo];
 
   FRSetupLogging();
-  v35 = [[FRApplicationUpdateNotifier alloc] initWithVersionHelpers:v51 appActivityMonitor:v55];
+  v35 = [[FRApplicationUpdateNotifier alloc] initWithVersionHelpers:helpersCopy appActivityMonitor:monitorCopy];
 
   [(FRApplicationUpdateNotifier *)v35 setup];
   [(FRAppDelegate *)self setApplicationUpdateNotifier:v35];
@@ -1036,120 +1036,120 @@
     }
 
     v46 = [NSNumber numberWithInteger:v43];
-    v47 = [v22 userInfo];
-    [v47 setOnboardingVersionNumber:v46];
+    userInfo2 = [v22 userInfo];
+    [userInfo2 setOnboardingVersionNumber:v46];
   }
 
   [(FRAppDelegate *)self setCloudContext:v22];
 }
 
-- (void)setupCloudContextWithFavoritesPersonalizer:(id)a3 state:(int64_t)a4 launchOptions:(id)a5 versionHelpers:(id)a6 referral:(id)a7
+- (void)setupCloudContextWithFavoritesPersonalizer:(id)personalizer state:(int64_t)state launchOptions:(id)options versionHelpers:(id)helpers referral:(id)referral
 {
-  v40 = a7;
-  v39 = a6;
-  v10 = a3;
+  referralCopy = referral;
+  helpersCopy = helpers;
+  personalizerCopy = personalizer;
   v11 = objc_alloc_init(FRFeldsparContext);
-  v12 = [(FRAppDelegate *)self cloudContext];
-  [(FRFeldsparContext *)v11 setCloudContext:v12];
+  cloudContext = [(FRAppDelegate *)self cloudContext];
+  [(FRFeldsparContext *)v11 setCloudContext:cloudContext];
 
-  v13 = [(FRAppDelegate *)self cloudContext];
-  v14 = [v13 readingHistory];
-  [(FRFeldsparContext *)v11 setReadingHistory:v14];
+  cloudContext2 = [(FRAppDelegate *)self cloudContext];
+  readingHistory = [cloudContext2 readingHistory];
+  [(FRFeldsparContext *)v11 setReadingHistory:readingHistory];
 
-  v15 = [(FRAppDelegate *)self cloudContext];
-  v16 = [v15 readingList];
-  [(FRFeldsparContext *)v11 setReadingList:v16];
+  cloudContext3 = [(FRAppDelegate *)self cloudContext];
+  readingList = [cloudContext3 readingList];
+  [(FRFeldsparContext *)v11 setReadingList:readingList];
 
-  [(FRFeldsparContext *)v11 setFavoritesPersonalizer:v10];
+  [(FRFeldsparContext *)v11 setFavoritesPersonalizer:personalizerCopy];
   v42 = v11;
   [(FRAppDelegate *)self setupNotificationManagerWithFeldsparContext:&v42];
   v37 = v42;
 
   v17 = [FRPresubscribeService alloc];
-  v38 = [(FRAppDelegate *)self cloudContext];
-  v36 = [v38 appConfigurationManager];
-  v18 = [(FRAppDelegate *)self cloudContext];
-  v19 = [v18 tagController];
-  v20 = [(FRAppDelegate *)self cloudContext];
-  v21 = [v20 subscriptionController];
-  v22 = [(FRAppDelegate *)self cloudContext];
-  v23 = [v22 purchaseController];
-  v24 = [(FRAppDelegate *)self notificationManager];
-  v25 = [(FRPresubscribeService *)v17 initWithAppConfigurationManager:v36 tagController:v19 subscriptionController:v21 purchaseController:v23 notificationManager:v24];
+  cloudContext4 = [(FRAppDelegate *)self cloudContext];
+  appConfigurationManager = [cloudContext4 appConfigurationManager];
+  cloudContext5 = [(FRAppDelegate *)self cloudContext];
+  tagController = [cloudContext5 tagController];
+  cloudContext6 = [(FRAppDelegate *)self cloudContext];
+  subscriptionController = [cloudContext6 subscriptionController];
+  cloudContext7 = [(FRAppDelegate *)self cloudContext];
+  purchaseController = [cloudContext7 purchaseController];
+  notificationManager = [(FRAppDelegate *)self notificationManager];
+  v25 = [(FRPresubscribeService *)v17 initWithAppConfigurationManager:appConfigurationManager tagController:tagController subscriptionController:subscriptionController purchaseController:purchaseController notificationManager:notificationManager];
   [(FRFeldsparContext *)v37 setPresubscribeService:v25];
 
   v26 = [FRArticleContentPool alloc];
-  v27 = [(FRAppDelegate *)self cloudContext];
-  v28 = [(FRAppDelegate *)self dataProviderFactory];
-  v29 = [(FRArticleContentPool *)v26 initWithCloudContext:v27 dataProviderFactory:v28];
+  cloudContext8 = [(FRAppDelegate *)self cloudContext];
+  dataProviderFactory = [(FRAppDelegate *)self dataProviderFactory];
+  v29 = [(FRArticleContentPool *)v26 initWithCloudContext:cloudContext8 dataProviderFactory:dataProviderFactory];
   [(FRFeldsparContext *)v37 setArticleContentPool:v29];
 
   v30 = [FRSpotlightManager alloc];
-  v31 = [(FRAppDelegate *)self cloudContext];
-  v32 = [(FRSpotlightManager *)v30 initWithCloudContext:v31];
+  cloudContext9 = [(FRAppDelegate *)self cloudContext];
+  v32 = [(FRSpotlightManager *)v30 initWithCloudContext:cloudContext9];
   [(FRFeldsparContext *)v37 setSpotlightManager:v32];
 
   v33 = objc_alloc_init(AppEntityAssociator);
-  v34 = [(FRFeldsparContext *)v37 spotlightManager];
-  [v34 setAssociator:v33];
+  spotlightManager = [(FRFeldsparContext *)v37 spotlightManager];
+  [spotlightManager setAssociator:v33];
 
   v41 = v37;
-  [(FRAppDelegate *)self setupAnalyticsControllerWithFeldsparContext:&v41 versionHelpers:v39 referral:v40];
+  [(FRAppDelegate *)self setupAnalyticsControllerWithFeldsparContext:&v41 versionHelpers:helpersCopy referral:referralCopy];
 
   v35 = v41;
   [(FRAppDelegate *)self setFeldsparContext:v35];
 }
 
-- (void)setupAnalyticsControllerWithFeldsparContext:(id *)a3 versionHelpers:(id)a4 referral:(id)a5
+- (void)setupAnalyticsControllerWithFeldsparContext:(id *)context versionHelpers:(id)helpers referral:(id)referral
 {
-  v7 = *a3;
-  v8 = a5;
+  v7 = *context;
+  referralCopy = referral;
   v9 = [FRAnalyticsController alloc];
-  v10 = [(FRAppDelegate *)self cloudContext];
-  v18 = [(FRAnalyticsController *)v9 initWithCloudContext:v10];
+  cloudContext = [(FRAppDelegate *)self cloudContext];
+  v18 = [(FRAnalyticsController *)v9 initWithCloudContext:cloudContext];
 
   [v7 setAnalyticsController:v18];
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 key_window];
+  key_window = [v11 key_window];
 
   v13 = [FRAppActivityMonitor alloc];
-  v14 = [(FRAppDelegate *)self cloudContext];
-  v15 = [v14 appActivityMonitor];
-  v16 = [(FRAppDelegate *)self cloudContext];
-  v17 = [(FRAppActivityMonitor *)v13 initWithAnalyticsController:v18 appActivityMonitor:v15 cloudContext:v16 window:v12];
+  cloudContext2 = [(FRAppDelegate *)self cloudContext];
+  appActivityMonitor = [cloudContext2 appActivityMonitor];
+  cloudContext3 = [(FRAppDelegate *)self cloudContext];
+  v17 = [(FRAppActivityMonitor *)v13 initWithAnalyticsController:v18 appActivityMonitor:appActivityMonitor cloudContext:cloudContext3 window:key_window];
 
   [(FRAppActivityMonitor *)v17 addObserver:self];
   [v7 setAppActivityMonitor:v17];
 
-  [(FRAppActivityMonitor *)v17 setAppSessionStartReferral:v8];
+  [(FRAppActivityMonitor *)v17 setAppSessionStartReferral:referralCopy];
   [(FRAppDelegate *)self setActivityMonitor:v17];
 }
 
-- (id)setupAnalyticsReferralWithOptions:(id)a3
+- (id)setupAnalyticsReferralWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:?];
-  v21 = self;
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:?];
+  selfCopy = self;
   if ([v5 nss_isNewsURL])
   {
     v6 = +[NSUserDefaults standardUserDefaults];
     [v6 setBool:0 forKey:FCWhitetailOnboardingNeededKey];
 
-    v22 = [v5 fr_campaignID];
-    v7 = [v5 fr_campaignType];
-    v8 = [v5 fr_creativeID];
-    v9 = [v5 fr_widgetModeGroupID];
+    fr_campaignID = [v5 fr_campaignID];
+    fr_campaignType = [v5 fr_campaignType];
+    fr_creativeID = [v5 fr_creativeID];
+    fr_widgetModeGroupID = [v5 fr_widgetModeGroupID];
     v10 = [(FRAppDelegate *)self _extractWidgetEngagementFromReferralURL:v5];
     if ([v5 fr_isFeldsparReferableURL])
     {
-      v11 = [v5 absoluteString];
+      absoluteString = [v5 absoluteString];
       v12 = 0;
       LOBYTE(v13) = 1;
     }
 
     else
     {
-      v11 = 0;
+      absoluteString = 0;
       LOBYTE(v13) = 0;
       v12 = 0;
     }
@@ -1159,33 +1159,33 @@
 
   else
   {
-    v13 = [v4 objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+    v13 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
 
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
-      v22 = NSSSafariSearchCampaignID;
+      v14 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+      fr_campaignID = NSSSafariSearchCampaignID;
       v12 = [v14 objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityTypeKey];
 
-      v11 = 0;
-      v9 = 0;
+      absoluteString = 0;
+      fr_widgetModeGroupID = 0;
       v10 = 0;
       v15 = 0;
-      v8 = 0;
-      v7 = 0;
+      fr_creativeID = 0;
+      fr_campaignType = 0;
       LOBYTE(v13) = 1;
     }
 
     else
     {
-      v11 = 0;
-      v9 = 0;
+      absoluteString = 0;
+      fr_widgetModeGroupID = 0;
       v10 = 0;
       v15 = 0;
       v12 = 0;
-      v8 = 0;
-      v7 = 0;
-      v22 = 0;
+      fr_creativeID = 0;
+      fr_campaignType = 0;
+      fr_campaignID = 0;
     }
   }
 
@@ -1204,40 +1204,40 @@
     v15 = 9;
   }
 
-  else if ([v22 isEqualToString:NSSSafariSearchCampaignID])
+  else if ([fr_campaignID isEqualToString:NSSSafariSearchCampaignID])
   {
     v15 = 8;
   }
 
   LOBYTE(v20) = v13;
-  v16 = [[FRAnalyticsReferral alloc] initWithUserActivityType:v12 creativeID:v8 campaignID:v22 campaignType:v7 referringApplication:0 referringURL:v11 appOpenedByUserActivity:v20 widgetModeGroupID:v9 widgetEngagement:v10 appSessionStartMethod:v15 appSessionStartNotificationType:0];
-  v17 = [v4 objectForKey:UIApplicationLaunchOptionsURLKey];
+  v16 = [[FRAnalyticsReferral alloc] initWithUserActivityType:v12 creativeID:fr_creativeID campaignID:fr_campaignID campaignType:fr_campaignType referringApplication:0 referringURL:absoluteString appOpenedByUserActivity:v20 widgetModeGroupID:fr_widgetModeGroupID widgetEngagement:v10 appSessionStartMethod:v15 appSessionStartNotificationType:0];
+  v17 = [optionsCopy objectForKey:UIApplicationLaunchOptionsURLKey];
   v18 = v17;
   if (v17)
   {
-    -[FRAppDelegate setInPreviewMode:](v21, "setInPreviewMode:", [v17 fr_isPreviewURL]);
+    -[FRAppDelegate setInPreviewMode:](selfCopy, "setInPreviewMode:", [v17 fr_isPreviewURL]);
   }
 
   return v16;
 }
 
-- (id)_extractWidgetEngagementFromReferralURL:(id)a3
+- (id)_extractWidgetEngagementFromReferralURL:(id)l
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006E234();
   }
 
-  if (([v3 nss_isNewsURL] & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (([lCopy nss_isNewsURL] & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006E314();
   }
 
-  v4 = [v3 fr_widgetEngagementFileURL];
-  if (v4)
+  fr_widgetEngagementFileURL = [lCopy fr_widgetEngagementFileURL];
+  if (fr_widgetEngagementFileURL)
   {
-    v5 = [[NSData alloc] initWithContentsOfURL:v4];
+    v5 = [[NSData alloc] initWithContentsOfURL:fr_widgetEngagementFileURL];
     if (v5)
     {
       v6 = [[NTPBWidgetEngagement alloc] initWithData:v5];
@@ -1261,7 +1261,7 @@
 {
   objc_opt_class();
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   v4 = FCDynamicCast();
 
   return v4;
@@ -1275,30 +1275,30 @@
   [(FRAppDelegate *)&v3 dealloc];
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(FRAppDelegate *)self resolver];
-  v10 = [v9 resolveProtocol:&OBJC_PROTOCOL___SNTestRunner];
+  optionsCopy = options;
+  testCopy = test;
+  resolver = [(FRAppDelegate *)self resolver];
+  v10 = [resolver resolveProtocol:&OBJC_PROTOCOL___SNTestRunner];
 
-  LOBYTE(v9) = [v10 runTest:v8 options:v7];
-  return v9;
+  LOBYTE(resolver) = [v10 runTest:testCopy options:optionsCopy];
+  return resolver;
 }
 
-- (void)localDraftsDeviceOnPreview:(id)a3 articleIdentifier:(id)a4 channelIdentifier:(id)a5
+- (void)localDraftsDeviceOnPreview:(id)preview articleIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier
 {
-  v6 = [NSString stringWithFormat:@"applenews://preview/%@/%@", a5, a4];
-  v7 = [NSURL URLWithString:v6];
+  identifier = [NSString stringWithFormat:@"applenews://preview/%@/%@", channelIdentifier, identifier];
+  v7 = [NSURL URLWithString:identifier];
 
   [(FRAppDelegate *)self _application:self openURL:v7 options:&__NSDictionary0__struct animated:+[UIView areAnimationsEnabled]];
 }
 
-- (void)showAlertWithPin:(id)a3 pin:(id)a4
+- (void)showAlertWithPin:(id)pin pin:(id)a4
 {
   v5 = a4;
   v6 = +[UIApplication sharedApplication];
-  v14 = [v6 key_window];
+  key_window = [v6 key_window];
 
   v7 = [NSMutableAttributedString alloc];
   v8 = [@"\n" stringByAppendingString:v5];
@@ -1308,18 +1308,18 @@
   [v9 addAttribute:NSFontAttributeName value:v10 range:{0, 7}];
 
   [v9 addAttribute:NSKernAttributeName value:&off_1000CB618 range:{0, 7}];
-  v11 = [(FRAppDelegate *)self pinAlertController];
-  [v11 setValue:v9 forKey:@"attributedMessage"];
+  pinAlertController = [(FRAppDelegate *)self pinAlertController];
+  [pinAlertController setValue:v9 forKey:@"attributedMessage"];
 
-  v12 = [v14 rootViewController];
-  v13 = [(FRAppDelegate *)self pinAlertController];
-  [v12 presentViewController:v13 animated:1 completion:0];
+  rootViewController = [key_window rootViewController];
+  pinAlertController2 = [(FRAppDelegate *)self pinAlertController];
+  [rootViewController presentViewController:pinAlertController2 animated:1 completion:0];
 }
 
-- (void)hideAlert:(id)a3
+- (void)hideAlert:(id)alert
 {
-  v3 = [(FRAppDelegate *)self pinAlertController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  pinAlertController = [(FRAppDelegate *)self pinAlertController];
+  [pinAlertController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)showAppUnsupportedAlert
@@ -1334,56 +1334,56 @@
   v6 = [UIAlertAction actionWithTitle:v5 style:2 handler:&stru_1000C4E88];
   [v3 addAction:v6];
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 key_window];
+  key_window = [v7 key_window];
 
-  v9 = [v8 rootViewController];
-  [v9 presentViewController:v3 animated:1 completion:0];
+  rootViewController = [key_window rootViewController];
+  [rootViewController presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FRAppDelegate *)self bridgedAppDelegate];
-  [v11 application:v10 handleIntent:v9 completionHandler:v8];
+  handlerCopy = handler;
+  intentCopy = intent;
+  applicationCopy = application;
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  [bridgedAppDelegate application:applicationCopy handleIntent:intentCopy completionHandler:handlerCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = [(FRAppDelegate *)self bridgedAppDelegate];
-  v5 = [v4 forwardingTargetForSelector:a3];
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  v5 = [bridgedAppDelegate forwardingTargetForSelector:selector];
 
   return v5;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(FRAppDelegate *)self bridgedAppDelegate];
-  [v5 buildMenuWithBuilder:v4];
+  builderCopy = builder;
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  [bridgedAppDelegate buildMenuWithBuilder:builderCopy];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(FRAppDelegate *)self bridgedAppDelegate];
-  [v5 validateCommand:v4];
+  commandCopy = command;
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  [bridgedAppDelegate validateCommand:commandCopy];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(FRAppDelegate *)self bridgedAppDelegate];
-  LOBYTE(a3) = [v7 canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  LOBYTE(action) = [bridgedAppDelegate canPerformAction:action withSender:senderCopy];
 
-  return a3;
+  return action;
 }
 
 - (void)_didResumeLowPriorityTasks
 {
-  v3 = [(FRAppDelegate *)self resolver];
-  v4 = [v3 resolveProtocol:&OBJC_PROTOCOL___TSCacheFlushingManagerType];
+  resolver = [(FRAppDelegate *)self resolver];
+  v4 = [resolver resolveProtocol:&OBJC_PROTOCOL___TSCacheFlushingManagerType];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -1391,8 +1391,8 @@
   v16[3] = &unk_1000C30E8;
   v16[4] = self;
   [v4 addPreFlushTask:v16];
-  v5 = [(FRAppDelegate *)self resolver];
-  v6 = [v5 resolveProtocol:&OBJC_PROTOCOL___FRToCEditorialManager];
+  resolver2 = [(FRAppDelegate *)self resolver];
+  v6 = [resolver2 resolveProtocol:&OBJC_PROTOCOL___FRToCEditorialManager];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
@@ -1406,34 +1406,34 @@
 
   [v9 acquireHoldTokenOnUnderlyingAssets];
   [v4 enableFlushing];
-  v10 = [(FRAppDelegate *)self todayAgent];
-  [v10 performSelector:"enable" withObject:0 afterDelay:1.0];
+  todayAgent = [(FRAppDelegate *)self todayAgent];
+  [todayAgent performSelector:"enable" withObject:0 afterDelay:1.0];
 }
 
-- (void)application:(id)a3 didSendEvent:(id)a4
+- (void)application:(id)application didSendEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(FRAppDelegate *)self keyboardInputMonitor];
-  [v6 handle:v5];
+  eventCopy = event;
+  keyboardInputMonitor = [(FRAppDelegate *)self keyboardInputMonitor];
+  [keyboardInputMonitor handle:eventCopy];
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  lCopy = l;
+  optionsCopy = options;
   LODWORD(v11) = +[UIView areAnimationsEnabled];
   v12 = FRNavigationLog;
   if (os_log_type_enabled(FRNavigationLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v37 = v9;
+    v37 = lCopy;
     v38 = 1024;
     v39 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ApplicationDelegate received URL to handle <%{public}@>, animated %d", buf, 0x12u);
   }
 
-  LODWORD(v13) = [v9 nss_isNewsURL];
+  LODWORD(v13) = [lCopy nss_isNewsURL];
   if (v13)
   {
     v14 = [UIView alloc];
@@ -1444,23 +1444,23 @@
     v17 = +[UIColor systemBackgroundColor];
     [v16 setBackgroundColor:v17];
 
-    v18 = [v10 valueForKey:NUURLWasOpenedFromNewsKey];
-    if (([v18 isEqual:&__kCFBooleanTrue] & 1) == 0)
+    key_window = [optionsCopy valueForKey:NUURLWasOpenedFromNewsKey];
+    if (([key_window isEqual:&__kCFBooleanTrue] & 1) == 0)
     {
-      [v10 valueForKey:UIApplicationOpenURLOptionsSourceApplicationKey];
+      [optionsCopy valueForKey:UIApplicationOpenURLOptionsSourceApplicationKey];
       v11 = v29 = v11;
       v19 = +[NSBundle mainBundle];
       [v19 bundleIdentifier];
       v20 = v16;
       v21 = v13;
-      v13 = v10;
-      v22 = self;
-      v24 = v23 = v8;
+      v13 = optionsCopy;
+      selfCopy = self;
+      v24 = v23 = applicationCopy;
       v28 = [v11 isEqual:v24];
 
-      v8 = v23;
-      self = v22;
-      v10 = v13;
+      applicationCopy = v23;
+      self = selfCopy;
+      optionsCopy = v13;
       LOBYTE(v13) = v21;
       v16 = v20;
 
@@ -1473,10 +1473,10 @@ LABEL_8:
         block[2] = sub_10004A26C;
         block[3] = &unk_1000C4F38;
         block[4] = self;
-        v31 = v8;
-        v32 = v9;
+        v31 = applicationCopy;
+        v32 = lCopy;
         v35 = v11;
-        v33 = v10;
+        v33 = optionsCopy;
         v34 = v16;
         v26 = v16;
         dispatch_async(&_dispatch_main_q, block);
@@ -1485,9 +1485,9 @@ LABEL_8:
       }
 
       v25 = +[UIApplication sharedApplication];
-      v18 = [v25 key_window];
+      key_window = [v25 key_window];
 
-      [v18 addSubview:v16];
+      [key_window addSubview:v16];
     }
 
     goto LABEL_8;
@@ -1498,58 +1498,58 @@ LABEL_9:
   return v13;
 }
 
-+ (BOOL)shouldHideHeadline:(id)a3
++ (BOOL)shouldHideHeadline:(id)headline
 {
-  v3 = a3;
+  headlineCopy = headline;
   v4 = +[FRAppDelegate sharedDelegate];
-  v5 = [v4 cloudContext];
-  v6 = [v5 readingList];
-  v7 = [v6 shouldHideHeadline:v3];
+  cloudContext = [v4 cloudContext];
+  readingList = [cloudContext readingList];
+  v7 = [readingList shouldHideHeadline:headlineCopy];
 
   return v7;
 }
 
-- (void)_application:(id)a3 openURL:(id)a4 options:(id)a5 animated:(BOOL)a6
+- (void)_application:(id)_application openURL:(id)l options:(id)options animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 nss_isNewsURL])
+  animatedCopy = animated;
+  lCopy = l;
+  optionsCopy = options;
+  if ([lCopy nss_isNewsURL])
   {
-    if ([v9 fr_isFeldsparOpenInNewsErrorURL])
+    if ([lCopy fr_isFeldsparOpenInNewsErrorURL])
     {
       v11 = +[UIApplication sharedApplication];
-      v12 = [v11 key_window];
+      key_window = [v11 key_window];
 
-      v13 = [v12 rootViewController];
-      v14 = [v13 presentedViewController];
+      rootViewController = [key_window rootViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
-      if (v14)
+      if (presentedViewController)
       {
-        v15 = [v13 presentedViewController];
+        presentedViewController2 = [rootViewController presentedViewController];
 
-        v13 = v15;
+        rootViewController = presentedViewController2;
       }
 
-      FROpenInNewsAlert(v13);
+      FROpenInNewsAlert(rootViewController);
     }
 
     else
     {
-      v16 = [(FRAppDelegate *)self resolver];
-      v12 = [v16 resolveProtocol:&OBJC_PROTOCOL___FRURLAnalyticsReferralFactory];
+      resolver = [(FRAppDelegate *)self resolver];
+      key_window = [resolver resolveProtocol:&OBJC_PROTOCOL___FRURLAnalyticsReferralFactory];
 
-      v17 = [v10 objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
-      v18 = [v12 analyticsReferralForURL:v9 sourceApplication:v17];
+      v17 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+      v18 = [key_window analyticsReferralForURL:lCopy sourceApplication:v17];
 
-      v19 = [(FRAppDelegate *)self feldsparContext];
-      v20 = [v19 appActivityMonitor];
-      [v20 setAppSessionStartReferral:v18];
+      feldsparContext = [(FRAppDelegate *)self feldsparContext];
+      appActivityMonitor = [feldsparContext appActivityMonitor];
+      [appActivityMonitor setAppSessionStartReferral:v18];
 
-      if (v6)
+      if (animatedCopy)
       {
-        v21 = [(FRAppDelegate *)self urlRouterManager];
-        [v21 handleOpenURL:v9 options:v10 analyticsReferral:v18];
+        urlRouterManager = [(FRAppDelegate *)self urlRouterManager];
+        [urlRouterManager handleOpenURL:lCopy options:optionsCopy analyticsReferral:v18];
       }
 
       else
@@ -1559,8 +1559,8 @@ LABEL_9:
         v22[2] = sub_10004A56C;
         v22[3] = &unk_1000C1970;
         v22[4] = self;
-        v23 = v9;
-        v24 = v10;
+        v23 = lCopy;
+        v24 = optionsCopy;
         v25 = v18;
         [UIView performWithoutAnimation:v22];
       }
@@ -1570,14 +1570,14 @@ LABEL_9:
 
 - (void)sceneDidEnterBackground
 {
-  v3 = [(FRAppDelegate *)self feldsparContext];
-  v7 = [v3 underlyingImageCache];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  underlyingImageCache = [feldsparContext underlyingImageCache];
 
-  [v7 pruneImagesOlderThan:86400.0];
+  [underlyingImageCache pruneImagesOlderThan:86400.0];
   v4 = objc_alloc_init(FRInternalExtrasFakeNotificationSender);
-  v5 = [(FRAppDelegate *)self notificationManager];
+  notificationManager = [(FRAppDelegate *)self notificationManager];
   v6 = +[UIApplication sharedApplication];
-  [(FRInternalExtrasFakeNotificationSender *)v4 scheduleAnyFakeNotificationsFromInternalExtras:v5 whenAppEntersBackground:v6];
+  [(FRInternalExtrasFakeNotificationSender *)v4 scheduleAnyFakeNotificationsFromInternalExtras:notificationManager whenAppEntersBackground:v6];
 }
 
 - (void)unregisterForDeviceLockNotifications
@@ -1591,37 +1591,37 @@ LABEL_9:
   }
 }
 
-- (void)setupNotificationManagerWithFeldsparContext:(id *)a3
+- (void)setupNotificationManagerWithFeldsparContext:(id *)context
 {
-  v4 = *a3;
+  v4 = *context;
   v5 = objc_alloc_init(FCAMSPushHandler);
   [(FRAppDelegate *)self setAmsPushHandler:v5];
 
   v6 = [[FRNotificationManager alloc] initWithFeldsparContext:v4];
   [(FRAppDelegate *)self setNotificationManager:v6];
 
-  v7 = [(FRAppDelegate *)self notificationManager];
-  [v4 setNotificationManager:v7];
+  notificationManager = [(FRAppDelegate *)self notificationManager];
+  [v4 setNotificationManager:notificationManager];
 }
 
-- (int)fcDigestModeFromScheduledDeliverySetting:(int64_t)a3
+- (int)fcDigestModeFromScheduledDeliverySetting:(int64_t)setting
 {
-  if (a3 == 2)
+  if (setting == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return setting == 1;
   }
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v6 = a4;
-  v7 = [a4 bytes];
-  v8 = [NSString stringWithFormat:@"%08X%08X%08X%08X%08X%08X%08X%08X", bswap32(*v7), bswap32(v7[1]), bswap32(v7[2]), bswap32(v7[3]), bswap32(v7[4]), bswap32(v7[5]), bswap32(v7[6]), bswap32(v7[7])];
+  tokenCopy = token;
+  bytes = [token bytes];
+  v8 = [NSString stringWithFormat:@"%08X%08X%08X%08X%08X%08X%08X%08X", bswap32(*bytes), bswap32(bytes[1]), bswap32(bytes[2]), bswap32(bytes[3]), bswap32(bytes[4]), bswap32(bytes[5]), bswap32(bytes[6]), bswap32(bytes[7])];
   v9 = FCPushNotificationsLog;
   if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_INFO))
   {
@@ -1631,7 +1631,7 @@ LABEL_9:
   }
 
   objc_opt_class();
-  v10 = [(FRAppDelegate *)self feldsparContext];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
   v11 = FCDynamicCast();
 
   v12 = +[UNUserNotificationCenter currentNotificationCenter];
@@ -1647,52 +1647,52 @@ LABEL_9:
   [v12 getNotificationSettingsWithCompletionHandler:v15];
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_ERROR))
   {
     sub_100071098();
   }
 
   objc_opt_class();
-  v6 = [(FRAppDelegate *)self feldsparContext];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
   v7 = FCDynamicCast();
 
   v8 = +[UNUserNotificationCenter currentNotificationCenter];
-  v9 = [v8 notificationSettings];
-  v10 = -[FRAppDelegate fcDigestModeFromScheduledDeliverySetting:](self, "fcDigestModeFromScheduledDeliverySetting:", [v9 scheduledDeliverySetting]);
-  v11 = [v7 cloudContext];
-  v12 = [v11 notificationController];
-  [v12 registerDeviceToken:0 deviceDigestMode:v10];
+  notificationSettings = [v8 notificationSettings];
+  v10 = -[FRAppDelegate fcDigestModeFromScheduledDeliverySetting:](self, "fcDigestModeFromScheduledDeliverySetting:", [notificationSettings scheduledDeliverySetting]);
+  cloudContext = [v7 cloudContext];
+  notificationController = [cloudContext notificationController];
+  [notificationController registerDeviceToken:0 deviceDigestMode:v10];
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FRAppDelegate *)self bridgedAppDelegate];
-  [v11 application:v10 didReceiveRemoteNotification:v9 fetchCompletionHandler:v8];
+  handlerCopy = handler;
+  notificationCopy = notification;
+  applicationCopy = application;
+  bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
+  [bridgedAppDelegate application:applicationCopy didReceiveRemoteNotification:notificationCopy fetchCompletionHandler:handlerCopy];
 }
 
-- (id)gizmoSyncManager:(id)a3 fetchOperationForArticleIDs:(id)a4
+- (id)gizmoSyncManager:(id)manager fetchOperationForArticleIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v6 = [FCArticleHeadlinesFetchOperation alloc];
-  v7 = [(FRAppDelegate *)self feldsparContext];
-  v8 = [v7 cloudContext];
-  v9 = [v5 copy];
+  feldsparContext = [(FRAppDelegate *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
+  v9 = [dsCopy copy];
 
-  v10 = [v6 initWithContext:v8 articleIDs:v9 ignoreCacheForArticleIDs:&__NSArray0__struct];
+  v10 = [v6 initWithContext:cloudContext articleIDs:v9 ignoreCacheForArticleIDs:&__NSArray0__struct];
 
   return v10;
 }
 
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  handlerCopy = handler;
   v8 = FRBackgroundFetchLog;
   if (os_log_type_enabled(FRBackgroundFetchLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1700,19 +1700,19 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "app was awoken for fetching via application:performFetchWithCompletionHandler:", buf, 2u);
   }
 
-  v9 = [(FRAppDelegate *)self offlineModeMonitor];
-  v10 = [v9 isCloudKitReachable];
+  offlineModeMonitor = [(FRAppDelegate *)self offlineModeMonitor];
+  isCloudKitReachable = [offlineModeMonitor isCloudKitReachable];
 
-  if (v10)
+  if (isCloudKitReachable)
   {
     if ([(FRAppDelegate *)self safeIsAppRunningInBackground])
     {
       +[FCTaskScheduler enableBackgroundDownloadsInSpiteOfHighPriorityTasks];
       v11 = dispatch_group_create();
       v12 = +[NSMutableSet set];
-      v13 = [(FRAppDelegate *)self bridgedAppDelegate];
+      bridgedAppDelegate = [(FRAppDelegate *)self bridgedAppDelegate];
 
-      if (v13)
+      if (bridgedAppDelegate)
       {
         v14 = FRBackgroundFetchLog;
         if (os_log_type_enabled(FRBackgroundFetchLog, OS_LOG_TYPE_DEFAULT))
@@ -1722,19 +1722,19 @@ LABEL_9:
         }
 
         dispatch_group_enter(v11);
-        v15 = [(FRAppDelegate *)self bridgedAppDelegate];
+        bridgedAppDelegate2 = [(FRAppDelegate *)self bridgedAppDelegate];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_10004B2F8;
         v26[3] = &unk_1000C5010;
         v27 = v12;
         v28 = v11;
-        [v15 application:v6 performFetchWithCompletionHandler:v26];
+        [bridgedAppDelegate2 application:applicationCopy performFetchWithCompletionHandler:v26];
       }
 
-      v16 = [(FRAppDelegate *)self backgroundFetchManager];
+      backgroundFetchManager = [(FRAppDelegate *)self backgroundFetchManager];
 
-      if (v16)
+      if (backgroundFetchManager)
       {
         v17 = FRBackgroundFetchLog;
         if (os_log_type_enabled(FRBackgroundFetchLog, OS_LOG_TYPE_DEFAULT))
@@ -1744,14 +1744,14 @@ LABEL_9:
         }
 
         dispatch_group_enter(v11);
-        v18 = [(FRAppDelegate *)self backgroundFetchManager];
+        backgroundFetchManager2 = [(FRAppDelegate *)self backgroundFetchManager];
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_10004B3B0;
         v23[3] = &unk_1000C5038;
         v24 = v12;
         v25 = v11;
-        [v18 peformBackgroundFetchWithReason:0 timeout:v23 completionHandler:25.0];
+        [backgroundFetchManager2 peformBackgroundFetchWithReason:0 timeout:v23 completionHandler:25.0];
       }
 
       v20[0] = _NSConcreteStackBlock;
@@ -1759,7 +1759,7 @@ LABEL_9:
       v20[2] = sub_10004B468;
       v20[3] = &unk_1000C1E48;
       v21 = v12;
-      v22 = v7;
+      v22 = handlerCopy;
       v19 = v12;
       dispatch_group_notify(v11, &_dispatch_main_q, v20);
     }
@@ -1770,7 +1770,7 @@ LABEL_9:
       v30 = 3221225472;
       v31 = sub_10004B2E4;
       v32 = &unk_1000C3098;
-      v33 = v7;
+      v33 = handlerCopy;
       v33[2](v33, 1);
       v11 = v33;
     }
@@ -1782,20 +1782,20 @@ LABEL_9:
     v35 = 3221225472;
     v36 = sub_10004B2D0;
     v37 = &unk_1000C3098;
-    v38 = v7;
+    v38 = handlerCopy;
     v38[2](v38, 2);
     v11 = v38;
   }
 }
 
-- (void)_updateBackgroundFetchSettingsWithAppConfiguration:(id)a3
+- (void)_updateBackgroundFetchSettingsWithAppConfiguration:(id)configuration
 {
-  v9 = [a3 prefetchConfig];
-  if ([v9 isBackgroundFetchEnabled])
+  prefetchConfig = [configuration prefetchConfig];
+  if ([prefetchConfig isBackgroundFetchEnabled])
   {
-    [v9 minimumBackgroundFetchInterval];
+    [prefetchConfig minimumBackgroundFetchInterval];
     v5 = v4;
-    v6 = [(FRAppDelegate *)self backgroundFetchScheduler];
+    backgroundFetchScheduler = [(FRAppDelegate *)self backgroundFetchScheduler];
     if (v5 <= 0.0)
     {
       v7 = UIApplicationBackgroundFetchIntervalMinimum;
@@ -1803,38 +1803,38 @@ LABEL_9:
 
     else
     {
-      [v9 minimumBackgroundFetchInterval];
+      [prefetchConfig minimumBackgroundFetchInterval];
     }
 
-    v8 = v6;
+    backgroundFetchScheduler2 = backgroundFetchScheduler;
   }
 
   else
   {
-    v8 = [(FRAppDelegate *)self backgroundFetchScheduler];
-    v6 = v8;
+    backgroundFetchScheduler2 = [(FRAppDelegate *)self backgroundFetchScheduler];
+    backgroundFetchScheduler = backgroundFetchScheduler2;
     v7 = UIApplicationBackgroundFetchIntervalNever;
   }
 
-  [v8 setMinimumBackgroundFetchInterval:v7];
+  [backgroundFetchScheduler2 setMinimumBackgroundFetchInterval:v7];
 }
 
 - (BOOL)safeIsAppRunningInBackground
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
+  key_window = [v3 key_window];
 
   if (+[NSThread isMainThread])
   {
-    v5 = [v4 windowScene];
-    if ([v5 activationState] == 2)
+    windowScene = [key_window windowScene];
+    if ([windowScene activationState] == 2)
     {
-      v6 = 1;
+      isDeviceLocked = 1;
     }
 
     else
     {
-      v6 = [(FRAppDelegate *)self isDeviceLocked];
+      isDeviceLocked = [(FRAppDelegate *)self isDeviceLocked];
     }
   }
 
@@ -1849,15 +1849,15 @@ LABEL_9:
     block[2] = sub_10004B6F8;
     block[3] = &unk_1000C5060;
     v11 = &v12;
-    v9 = v4;
-    v10 = self;
+    v9 = key_window;
+    selfCopy = self;
     dispatch_sync(&_dispatch_main_q, block);
-    v6 = *(v13 + 24);
+    isDeviceLocked = *(v13 + 24);
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return v6 & 1;
+  return isDeviceLocked & 1;
 }
 
 @end

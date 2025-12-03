@@ -1,9 +1,9 @@
 @interface HKMultiTypeSampleIterator
-- (BOOL)_queryForNextPageIfNecessaryWithError:(id *)a3;
-- (BOOL)advanceWithError:(id *)a3;
+- (BOOL)_queryForNextPageIfNecessaryWithError:(id *)error;
+- (BOOL)advanceWithError:(id *)error;
 - (HKMultiTypeSampleIterator)init;
-- (HKMultiTypeSampleIterator)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 bufferSize:(unint64_t)a8 limit:(unint64_t)a9 healthStore:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HKMultiTypeSampleIterator)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths bufferSize:(unint64_t)size limit:(unint64_t)limit healthStore:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKMultiTypeSampleIterator
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (BOOL)_queryForNextPageIfNecessaryWithError:(id *)a3
+- (BOOL)_queryForNextPageIfNecessaryWithError:(id *)error
 {
   if ([(NSMutableArray *)self->_buffer count])
   {
@@ -27,7 +27,7 @@
 
   else if (self->_state == 2)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a3 code:900 format:@"Multi-type sample iterator is exhausted"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:900 format:@"Multi-type sample iterator is exhausted"];
     v5 = 0;
   }
 
@@ -51,7 +51,7 @@
     v21 = &v23;
     v7 = v6;
     v19 = v7;
-    v20 = self;
+    selfCopy = self;
     v22 = &v29;
     v8 = _Block_copy(aBlock);
     bufferSize = self->_bufferSize;
@@ -82,10 +82,10 @@
     v15 = v14;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v16 = v14;
-        *a3 = v15;
+        *error = v15;
       }
 
       else
@@ -150,22 +150,22 @@ void __67__HKMultiTypeSampleIterator__queryForNextPageIfNecessaryWithError___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (HKMultiTypeSampleIterator)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 bufferSize:(unint64_t)a8 limit:(unint64_t)a9 healthStore:(id)a10
+- (HKMultiTypeSampleIterator)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths bufferSize:(unint64_t)size limit:(unint64_t)limit healthStore:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  if (!v16)
+  descriptorsCopy = descriptors;
+  sortDescriptorsCopy = sortDescriptors;
+  anchorCopy = anchor;
+  includingAnchorCopy = includingAnchor;
+  pathsCopy = paths;
+  storeCopy = store;
+  if (!descriptorsCopy)
   {
     [HKMultiTypeSampleIterator initWithQueryDescriptors:sortDescriptors:followingAnchor:upToAndIncludingAnchor:distinctByKeyPaths:bufferSize:limit:healthStore:];
   }
 
-  if ([v16 count])
+  if ([descriptorsCopy count])
   {
-    if (v21)
+    if (storeCopy)
     {
       goto LABEL_5;
     }
@@ -174,7 +174,7 @@ void __67__HKMultiTypeSampleIterator__queryForNextPageIfNecessaryWithError___blo
   else
   {
     [HKMultiTypeSampleIterator initWithQueryDescriptors:sortDescriptors:followingAnchor:upToAndIncludingAnchor:distinctByKeyPaths:bufferSize:limit:healthStore:];
-    if (v21)
+    if (storeCopy)
     {
       goto LABEL_5;
     }
@@ -187,29 +187,29 @@ LABEL_5:
   v22 = [(HKMultiTypeSampleIterator *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [descriptorsCopy copy];
     queryDescriptors = v22->_queryDescriptors;
     v22->_queryDescriptors = v23;
 
-    v25 = [v17 copy];
+    v25 = [sortDescriptorsCopy copy];
     sortDescriptors = v22->_sortDescriptors;
     v22->_sortDescriptors = v25;
 
-    v27 = [v18 copy];
+    v27 = [anchorCopy copy];
     followingAnchor = v22->_followingAnchor;
     v22->_followingAnchor = v27;
 
-    v29 = [v19 copy];
+    v29 = [includingAnchorCopy copy];
     upToAndIncludingAnchor = v22->_upToAndIncludingAnchor;
     v22->_upToAndIncludingAnchor = v29;
 
-    v31 = [v20 copy];
+    v31 = [pathsCopy copy];
     distinctByKeyPaths = v22->_distinctByKeyPaths;
     v22->_distinctByKeyPaths = v31;
 
-    v22->_bufferSize = a8;
-    v22->_limit = a9;
-    objc_storeStrong(&v22->_healthStore, a10);
+    v22->_bufferSize = size;
+    v22->_limit = limit;
+    objc_storeStrong(&v22->_healthStore, store);
     queryCursor = v22->_queryCursor;
     v22->_state = 0;
     v22->_queryCursor = 0;
@@ -223,16 +223,16 @@ LABEL_5:
   return v22;
 }
 
-- (BOOL)advanceWithError:(id *)a3
+- (BOOL)advanceWithError:(id *)error
 {
   v5 = [(HKMultiTypeSampleIterator *)self _queryForNextPageIfNecessaryWithError:?];
   if (v5)
   {
     if ([(NSMutableArray *)self->_buffer count])
     {
-      v6 = [(NSMutableArray *)self->_buffer lastObject];
+      lastObject = [(NSMutableArray *)self->_buffer lastObject];
       current = self->_current;
-      self->_current = v6;
+      self->_current = lastObject;
 
       [(NSMutableArray *)self->_buffer removeLastObject];
       ++self->_numberOfSamplesDelivered;
@@ -246,7 +246,7 @@ LABEL_5:
         [HKMultiTypeSampleIterator advanceWithError:];
       }
 
-      [MEMORY[0x1E696ABC0] hk_assignError:a3 code:900 format:@"Multi-type sample iterator is exhausted"];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:900 format:@"Multi-type sample iterator is exhausted"];
       LOBYTE(v5) = 0;
     }
   }
@@ -254,7 +254,7 @@ LABEL_5:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HKMultiTypeSampleIterator alloc] initWithQueryDescriptors:self->_queryDescriptors sortDescriptors:self->_sortDescriptors followingAnchor:self->_followingAnchor upToAndIncludingAnchor:self->_upToAndIncludingAnchor distinctByKeyPaths:self->_distinctByKeyPaths bufferSize:self->_bufferSize limit:self->_limit healthStore:self->_healthStore];
   v5 = [(HKSampleIteratorQueryCursor *)self->_queryCursor copy];

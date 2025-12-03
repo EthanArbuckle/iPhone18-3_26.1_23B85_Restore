@@ -3,17 +3,17 @@
 - (BOOL)isAlwaysOnEnabled;
 - (BOOL)isShowingBlankingWindow;
 - (SBBacklightPlatformProvider)init;
-- (SBBacklightPlatformProvider)initWithBacklightEnvironmentSessionProvider:(id)a3;
+- (SBBacklightPlatformProvider)initWithBacklightEnvironmentSessionProvider:(id)provider;
 - (UIWindowScene)windowScene;
 - (double)backlightFadeInDuration;
 - (void)_notifyObserversOfSignificantUserInteraction;
-- (void)_setBlankingWindowVisible:(BOOL)a3 fadeDuration:(double)a4;
+- (void)_setBlankingWindowVisible:(BOOL)visible fadeDuration:(double)duration;
 - (void)_updateAlwaysOnEnabled;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)completeInitializationAfterBLSStartup;
-- (void)removeObserver:(id)a3;
-- (void)setSignificantUserInteractionMonitor:(id)a3;
-- (void)showBlankingWindow:(BOOL)a3 withFadeDuration:(double)a4;
+- (void)removeObserver:(id)observer;
+- (void)setSignificantUserInteractionMonitor:(id)monitor;
+- (void)showBlankingWindow:(BOOL)window withFadeDuration:(double)duration;
 @end
 
 @implementation SBBacklightPlatformProvider
@@ -30,8 +30,8 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_lock_alwaysOnObservers allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_lock_alwaysOnObservers allObjects];
+  v4 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v5 = SBLogBacklight();
@@ -88,10 +88,10 @@
   }
 
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 alwaysOnDefaults];
-  v6 = [v5 forceAndromedaSupport];
+  alwaysOnDefaults = [v4 alwaysOnDefaults];
+  forceAndromedaSupport = [alwaysOnDefaults forceAndromedaSupport];
 
-  return v6;
+  return forceAndromedaSupport;
 }
 
 - (double)backlightFadeInDuration
@@ -100,15 +100,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 lastBacklightChangeSource];
+    lastBacklightChangeSource = [v2 lastBacklightChangeSource];
   }
 
   else
   {
-    v4 = 0;
+    lastBacklightChangeSource = 0;
   }
 
-  [SBScreenWakeAnimationController backlightFadeDurationForSource:v4 isWake:1];
+  [SBScreenWakeAnimationController backlightFadeDurationForSource:lastBacklightChangeSource isWake:1];
   v6 = v5;
 
   return v6;
@@ -116,17 +116,17 @@
 
 - (SBBacklightPlatformProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithBacklightEnvironmentSessionProvider_);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBBacklightPlatformProvider.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[SBBacklightPlatformProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBBacklightPlatformProvider.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[SBBacklightPlatformProvider init]", v5}];
 
   return 0;
 }
 
-- (SBBacklightPlatformProvider)initWithBacklightEnvironmentSessionProvider:(id)a3
+- (SBBacklightPlatformProvider)initWithBacklightEnvironmentSessionProvider:(id)provider
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v41.receiver = self;
   v41.super_class = SBBacklightPlatformProvider;
   v6 = [(SBBacklightPlatformProvider *)&v41 init];
@@ -134,15 +134,15 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277D65FB8] rootSettings];
+    rootSettings = [MEMORY[0x277D65FB8] rootSettings];
     wakeAnimationSettings = v7->_wakeAnimationSettings;
-    v7->_wakeAnimationSettings = v8;
+    v7->_wakeAnimationSettings = rootSettings;
 
-    objc_storeStrong(&v7->_sessionProvider, a3);
+    objc_storeStrong(&v7->_sessionProvider, provider);
     v10 = +[SBDefaults localDefaults];
-    v11 = [v10 alwaysOnDefaults];
+    alwaysOnDefaults = [v10 alwaysOnDefaults];
     alwaysOnDefaults = v7->_alwaysOnDefaults;
-    v7->_alwaysOnDefaults = v11;
+    v7->_alwaysOnDefaults = alwaysOnDefaults;
 
     if ([(SBAlwaysOnDefaults *)v7->_alwaysOnDefaults useAlwaysOnBrightnessCurve])
     {
@@ -167,14 +167,14 @@
     v20 = [(SBAlwaysOnDefaults *)v15 observeDefaults:v18 onQueue:MEMORY[0x277D85CD0] withBlock:&v36];
 
     v21 = [SBMainDisplayRootWindowScenePresentationBinder sharedInstance:v36];
-    v22 = [v21 rootWindow];
+    rootWindow = [v21 rootWindow];
 
     v23 = objc_alloc_init(SBAveragePixelLuminanceLimitController);
     aplLimitController = v19->_aplLimitController;
     v19->_aplLimitController = v23;
 
     [(SBAveragePixelLuminanceLimitController *)v19->_aplLimitController setGlobalFilter:1];
-    [(SBAveragePixelLuminanceLimitController *)v19->_aplLimitController setTargetView:v22];
+    [(SBAveragePixelLuminanceLimitController *)v19->_aplLimitController setTargetView:rootWindow];
     if ([objc_opt_class() deviceSupportsAlwaysOn])
     {
       v25 = [[SBAlwaysOnTelemetryEmitter alloc] initWithBacklightEnvironmentSessionProvider:v7->_sessionProvider];
@@ -190,11 +190,11 @@
 
     v27 = MGGetSInt32Answer();
     v28 = (v27 & ~(v27 >> 31)) << 20;
-    v29 = [(SBAlwaysOnDefaults *)v7->_alwaysOnDefaults maximumRenderInterval];
-    v30 = v29;
-    if (v29)
+    maximumRenderInterval = [(SBAlwaysOnDefaults *)v7->_alwaysOnDefaults maximumRenderInterval];
+    v30 = maximumRenderInterval;
+    if (maximumRenderInterval)
     {
-      [v29 doubleValue];
+      [maximumRenderInterval doubleValue];
       v32 = v31;
     }
 
@@ -211,17 +211,17 @@
   return v7;
 }
 
-- (void)setSignificantUserInteractionMonitor:(id)a3
+- (void)setSignificantUserInteractionMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   significantUserInteractionMonitor = self->_significantUserInteractionMonitor;
-  if (significantUserInteractionMonitor != v5)
+  if (significantUserInteractionMonitor != monitorCopy)
   {
-    v7 = v5;
+    v7 = monitorCopy;
     [(SBBacklightSignificantUserInteractionMonitor *)significantUserInteractionMonitor removeObserver:self];
-    objc_storeStrong(&self->_significantUserInteractionMonitor, a3);
+    objc_storeStrong(&self->_significantUserInteractionMonitor, monitor);
     [(SBBacklightSignificantUserInteractionMonitor *)self->_significantUserInteractionMonitor addObserver:self];
-    v5 = v7;
+    monitorCopy = v7;
   }
 }
 
@@ -267,10 +267,10 @@
   return lock_alwaysOnEnabled;
 }
 
-- (void)showBlankingWindow:(BOOL)a3 withFadeDuration:(double)a4
+- (void)showBlankingWindow:(BOOL)window withFadeDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_showingBlankingWindow = a3;
+  self->_lock_showingBlankingWindow = window;
   os_unfair_lock_unlock(&self->_lock);
   BSDispatchMain();
 }
@@ -304,29 +304,29 @@ uint64_t __75__SBBacklightPlatformProvider_useAlwaysOnBrightnessCurve_withRampDu
   return [v2 setAplLimitsEnabled:v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_alwaysOnObservers = self->_lock_alwaysOnObservers;
   if (!lock_alwaysOnObservers)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_lock_alwaysOnObservers;
-    self->_lock_alwaysOnObservers = v5;
+    self->_lock_alwaysOnObservers = weakObjectsHashTable;
 
     lock_alwaysOnObservers = self->_lock_alwaysOnObservers;
   }
 
-  [(NSHashTable *)lock_alwaysOnObservers addObject:v7];
+  [(NSHashTable *)lock_alwaysOnObservers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_alwaysOnObservers removeObject:v4];
+  [(NSHashTable *)self->_lock_alwaysOnObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -348,8 +348,8 @@ uint64_t __75__SBBacklightPlatformProvider_useAlwaysOnBrightnessCurve_withRampDu
   os_unfair_lock_lock(&self->_lock);
   lock_alwaysOnEnabled = self->_lock_alwaysOnEnabled;
   self->_lock_alwaysOnEnabled = v4;
-  v6 = [(NSHashTable *)self->_lock_alwaysOnObservers allObjects];
-  v7 = [v6 copy];
+  allObjects = [(NSHashTable *)self->_lock_alwaysOnObservers allObjects];
+  v7 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (lock_alwaysOnEnabled != v4)
@@ -400,27 +400,27 @@ uint64_t __75__SBBacklightPlatformProvider_useAlwaysOnBrightnessCurve_withRampDu
   }
 }
 
-- (void)_setBlankingWindowVisible:(BOOL)a3 fadeDuration:(double)a4
+- (void)_setBlankingWindowVisible:(BOOL)visible fadeDuration:(double)duration
 {
-  v5 = a3;
+  visibleCopy = visible;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = [(SBBacklightPlatformProvider *)self windowScene];
+  windowScene = [(SBBacklightPlatformProvider *)self windowScene];
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v18 = v5;
+    v18 = visibleCopy;
     v19 = 2048;
-    v20 = a4;
+    durationCopy = duration;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "making blanking window visible: %{BOOL}u duration: %f", buf, 0x12u);
   }
 
-  if (v5 && !self->_blankingWindow)
+  if (visibleCopy && !self->_blankingWindow)
   {
-    v9 = [[SBBacklightBlankingWindow alloc] initWithWindowScene:v7];
+    v9 = [[SBBacklightBlankingWindow alloc] initWithWindowScene:windowScene];
     [(SBBacklightBlankingWindow *)v9 setWindowLevel:*MEMORY[0x277D76A38] + 801.0];
-    v10 = [MEMORY[0x277D75348] blackColor];
-    [(SBBacklightBlankingWindow *)v9 setBackgroundColor:v10];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SBBacklightBlankingWindow *)v9 setBackgroundColor:blackColor];
 
     [(SBBacklightBlankingWindow *)v9 setAlpha:0.0];
     [(SBFWindow *)v9 setHidden:0];
@@ -432,7 +432,7 @@ uint64_t __75__SBBacklightPlatformProvider_useAlwaysOnBrightnessCurve_withRampDu
   v15[1] = 3221225472;
   v15[2] = __70__SBBacklightPlatformProvider__setBlankingWindowVisible_fadeDuration___block_invoke;
   v15[3] = &unk_2783A9F58;
-  v16 = v5;
+  v16 = visibleCopy;
   v15[4] = self;
   v12 = MEMORY[0x223D6F7F0](v15);
   if (BSFloatIsZero())
@@ -446,12 +446,12 @@ uint64_t __75__SBBacklightPlatformProvider_useAlwaysOnBrightnessCurve_withRampDu
     v13[1] = 3221225472;
     v13[2] = __70__SBBacklightPlatformProvider__setBlankingWindowVisible_fadeDuration___block_invoke_2;
     v13[3] = &unk_2783AF318;
-    v14 = v5;
+    v14 = visibleCopy;
     v13[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:v12 animations:v13 completion:a4];
+    [MEMORY[0x277D75D18] animateWithDuration:v12 animations:v13 completion:duration];
   }
 
-  [v7 _synchronizeDrawing];
+  [windowScene _synchronizeDrawing];
 }
 
 uint64_t __70__SBBacklightPlatformProvider__setBlankingWindowVisible_fadeDuration___block_invoke(uint64_t a1)

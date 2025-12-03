@@ -1,11 +1,11 @@
 @interface _UIBarCustomizationItem
-+ (_UIBarCustomizationItem)itemWithIdentifier:(id)a3 icon:(id)a4 name:(id)a5 view:(id)a6;
-+ (id)groupWithWithIdentifier:(id)a3 icon:(id)a4 name:(id)a5 items:(id)a6;
-- (CGRect)_sourceFrameInContainer:(id)a3;
++ (_UIBarCustomizationItem)itemWithIdentifier:(id)identifier icon:(id)icon name:(id)name view:(id)view;
++ (id)groupWithWithIdentifier:(id)identifier icon:(id)icon name:(id)name items:(id)items;
+- (CGRect)_sourceFrameInContainer:(id)container;
 - (_UIBarCustomizationItem)init;
 - (id)description;
-- (void)_enumerateSubitemsWithBlock:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
+- (void)_enumerateSubitemsWithBlock:(id)block;
+- (void)setCollapsed:(BOOL)collapsed;
 @end
 
 @implementation _UIBarCustomizationItem
@@ -25,15 +25,15 @@
   return v3;
 }
 
-+ (_UIBarCustomizationItem)itemWithIdentifier:(id)a3 icon:(id)a4 name:(id)a5 view:(id)a6
++ (_UIBarCustomizationItem)itemWithIdentifier:(id)identifier icon:(id)icon name:(id)name view:(id)view
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  viewCopy = view;
+  nameCopy = name;
+  iconCopy = icon;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!(v12 | v11 | v10))
+    if (!(iconCopy | nameCopy | viewCopy))
     {
       v16 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -44,7 +44,7 @@
     }
   }
 
-  else if (!(v12 | v11 | v10))
+  else if (!(iconCopy | nameCopy | viewCopy))
   {
     v17 = *(__UILogGetCategoryCachedImpl("Assert", &itemWithIdentifier_icon_name_view____s_category) + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -56,26 +56,26 @@
 
   v13 = objc_opt_new();
   v14 = v13[2];
-  v13[2] = v9;
+  v13[2] = identifierCopy;
 
   [v13 setEnabled:1];
-  [v13 setIcon:v12];
+  [v13 setIcon:iconCopy];
 
-  [v13 setName:v11];
-  [v13 setView:v10];
+  [v13 setName:nameCopy];
+  [v13 setView:viewCopy];
 
   return v13;
 }
 
-+ (id)groupWithWithIdentifier:(id)a3 icon:(id)a4 name:(id)a5 items:(id)a6
++ (id)groupWithWithIdentifier:(id)identifier icon:(id)icon name:(id)name items:(id)items
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  iconCopy = icon;
+  nameCopy = name;
+  itemsCopy = items;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v14 = [v12 count];
+  v14 = [itemsCopy count];
   if (has_internal_diagnostics)
   {
     if (!v14)
@@ -99,19 +99,19 @@
     }
   }
 
-  v15 = v11;
+  v15 = nameCopy;
   v16 = v15;
   if (![v15 length])
   {
-    v35 = v9;
-    v36 = v10;
+    v35 = identifierCopy;
+    v36 = iconCopy;
     v16 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v34 = v12;
-    v17 = v12;
+    v34 = itemsCopy;
+    v17 = itemsCopy;
     v18 = [v17 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v18)
     {
@@ -127,8 +127,8 @@
           }
 
           v22 = *(*(&v37 + 1) + 8 * i);
-          v23 = [v22 name];
-          v24 = [v23 length];
+          name = [v22 name];
+          v24 = [name length];
 
           if (v24)
           {
@@ -137,8 +137,8 @@
               [v16 appendString:{@", "}];
             }
 
-            v25 = [v22 name];
-            [v16 appendString:v25];
+            name2 = [v22 name];
+            [v16 appendString:name2];
           }
         }
 
@@ -148,20 +148,20 @@
       while (v19);
     }
 
-    v9 = v35;
-    v10 = v36;
-    v12 = v34;
+    identifierCopy = v35;
+    iconCopy = v36;
+    itemsCopy = v34;
   }
 
   v26 = objc_opt_new();
   v27 = v26[2];
-  v26[2] = v9;
-  v28 = v9;
+  v26[2] = identifierCopy;
+  v28 = identifierCopy;
 
   v29 = v26[8];
-  v26[8] = v12;
+  v26[8] = itemsCopy;
 
-  if (v10)
+  if (iconCopy)
   {
     v30 = 1;
   }
@@ -173,27 +173,27 @@
 
   [v26 setCollapsible:v30];
   [v26 setEnabled:1];
-  [v26 setIcon:v10];
+  [v26 setIcon:iconCopy];
   [v26 setName:v16];
 
   return v26;
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
+  collapsedCopy = collapsed;
   if ([(_UIBarCustomizationItem *)self collapsible])
   {
-    if (self->_collapsed != v3)
+    if (self->_collapsed != collapsedCopy)
     {
-      self->_collapsed = v3;
+      self->_collapsed = collapsedCopy;
     }
   }
 }
 
-- (CGRect)_sourceFrameInContainer:(id)a3
+- (CGRect)_sourceFrameInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v24 = 0;
   v25 = &v24;
   v26 = 0x4010000000;
@@ -205,7 +205,7 @@
   v19 = 3221225472;
   v20 = __51___UIBarCustomizationItem__sourceFrameInContainer___block_invoke;
   v21 = &unk_1E7115A80;
-  v6 = v4;
+  v6 = containerCopy;
   v22 = v6;
   v23 = &v24;
   v7 = _Block_copy(&v18);
@@ -236,9 +236,9 @@
   return result;
 }
 
-- (void)_enumerateSubitemsWithBlock:(id)a3
+- (void)_enumerateSubitemsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(_UIBarCustomizationItem *)self reverseItemsForRTL])
   {
     v5 = 2;
@@ -249,53 +249,53 @@
     v5 = 0;
   }
 
-  v6 = [(_UIBarCustomizationItem *)self subitems];
+  subitems = [(_UIBarCustomizationItem *)self subitems];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55___UIBarCustomizationItem__enumerateSubitemsWithBlock___block_invoke;
   v8[3] = &unk_1E7115AA8;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsWithOptions:v5 usingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [subitems enumerateObjectsWithOptions:v5 usingBlock:v8];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(_UIBarCustomizationItem *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier = %@", v4, self, v5];;
+  identifier = [(_UIBarCustomizationItem *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier = %@", v4, self, identifier];;
 
-  v7 = [(_UIBarCustomizationItem *)self icon];
-  if (v7)
+  icon = [(_UIBarCustomizationItem *)self icon];
+  if (icon)
   {
-    [v6 appendFormat:@"; icon = <%@: %p", objc_opt_class(), v7];
-    if ([v7 isSymbolImage])
+    [v6 appendFormat:@"; icon = <%@: %p", objc_opt_class(), icon];
+    if ([icon isSymbolImage])
     {
-      v8 = _UIImageName(v7);
+      v8 = _UIImageName(icon);
       [v6 appendFormat:@"; symbol = (%@)", v8];
     }
 
     [v6 appendString:@">"];
   }
 
-  v9 = [(_UIBarCustomizationItem *)self name];
-  v10 = v9;
-  if (v9)
+  name = [(_UIBarCustomizationItem *)self name];
+  v10 = name;
+  if (name)
   {
-    [v6 appendFormat:@"; name = %@", v9];
+    [v6 appendFormat:@"; name = %@", name];
   }
 
-  v11 = [(_UIBarCustomizationItem *)self view];
-  if (v11)
+  view = [(_UIBarCustomizationItem *)self view];
+  if (view)
   {
-    [v6 appendFormat:@"; view = <%@: %p>", objc_opt_class(), v11];
+    [v6 appendFormat:@"; view = <%@: %p>", objc_opt_class(), view];
   }
 
-  v12 = [(_UIBarCustomizationItem *)self subitems];
-  if ([v12 count])
+  subitems = [(_UIBarCustomizationItem *)self subitems];
+  if ([subitems count])
   {
-    [v6 appendFormat:@"; subitems = <%@: %p>", objc_opt_class(), v12];
+    [v6 appendFormat:@"; subitems = <%@: %p>", objc_opt_class(), subitems];
   }
 
   [v6 appendString:@">"];

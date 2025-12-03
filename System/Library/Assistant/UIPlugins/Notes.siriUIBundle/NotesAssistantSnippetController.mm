@@ -1,18 +1,18 @@
 @interface NotesAssistantSnippetController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (NotesAssistantSnippetController)initWithAceObject:(id)a3 error:(id *)a4;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (NotesAssistantSnippetController)initWithAceObject:(id)object error:(id *)error;
+- (double)desiredHeightForWidth:(double)width;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)sashItem;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 @end
 
 @implementation NotesAssistantSnippetController
 
-- (NotesAssistantSnippetController)initWithAceObject:(id)a3 error:(id *)a4
+- (NotesAssistantSnippetController)initWithAceObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_alloc_init(UICollectionViewFlowLayout);
   [v7 setMinimumLineSpacing:0.0];
   [v7 setMinimumInteritemSpacing:0.0];
@@ -26,11 +26,11 @@
   v12 = v11;
   if (v11)
   {
-    v34 = a4;
+    errorCopy = error;
     [(NotesAssistantSnippetController *)v11 setDefaultViewInsets:UIEdgeInsetsZero.top, left, bottom, right];
-    v13 = [[NoteContext alloc] initForMainContext];
+    initForMainContext = [[NoteContext alloc] initForMainContext];
     htmlContext = v12->_htmlContext;
-    v12->_htmlContext = v13;
+    v12->_htmlContext = initForMainContext;
 
     v15 = objc_alloc_init(NSMutableArray);
     notes = v12->_notes;
@@ -40,8 +40,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v35 = v6;
-    obj = [v6 notes];
+    v35 = objectCopy;
+    obj = [objectCopy notes];
     v17 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v17)
     {
@@ -58,9 +58,9 @@
 
           v21 = *(*(&v37 + 1) + 8 * i);
           v22 = +[ICNoteContext sharedContext];
-          v23 = [v22 managedObjectContext];
-          v24 = [(NoteContext *)v12->_htmlContext managedObjectContext];
-          v25 = [NotesAssistantUtilities searchIndexableNoteForObject:v21 modernNoteContext:v23 htmlNoteContext:v24];
+          managedObjectContext = [v22 managedObjectContext];
+          managedObjectContext2 = [(NoteContext *)v12->_htmlContext managedObjectContext];
+          v25 = [NotesAssistantUtilities searchIndexableNoteForObject:v21 modernNoteContext:managedObjectContext htmlNoteContext:managedObjectContext2];
 
           if (v25)
           {
@@ -80,8 +80,8 @@
       {
         v26 = [(NSMutableArray *)v12->_notes objectAtIndexedSubscript:0];
         v27 = [ICNoteListSortUtilities dateForCurrentSortTypeForNote:v26 folderNoteSortType:0];
-        v28 = [v27 ic_briefFormattedDate];
-        [(NotesAssistantSnippetController *)v12 setSubtitle:v28];
+        ic_briefFormattedDate = [v27 ic_briefFormattedDate];
+        [(NotesAssistantSnippetController *)v12 setSubtitle:ic_briefFormattedDate];
 
         v29 = [[NotesAssistantSingleNoteViewCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
         viewCell = v12->_viewCell;
@@ -99,10 +99,10 @@
     else
     {
 
-      if (v34)
+      if (errorCopy)
       {
         [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
-        *v34 = v12 = 0;
+        *errorCopy = v12 = 0;
       }
 
       else
@@ -111,7 +111,7 @@
       }
     }
 
-    v6 = v35;
+    objectCopy = v35;
   }
 
   return v12;
@@ -122,26 +122,26 @@
   v9.receiver = self;
   v9.super_class = NotesAssistantSnippetController;
   [(NotesAssistantSnippetController *)&v9 loadView];
-  v3 = [(NotesAssistantSnippetController *)self collectionView];
+  collectionView = [(NotesAssistantSnippetController *)self collectionView];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [collectionView setBackgroundColor:v4];
 
-  [v3 setScrollEnabled:0];
+  [collectionView setScrollEnabled:0];
   v5 = objc_opt_class();
   v6 = +[NotesAssistantSingleNoteViewCell reuseIdentifier];
-  [v3 registerClass:v5 forCellWithReuseIdentifier:v6];
+  [collectionView registerClass:v5 forCellWithReuseIdentifier:v6];
 
   v7 = objc_opt_class();
   v8 = +[NotesAssistantNotesListViewCellWithImage reuseIdentifier];
-  [v3 registerClass:v7 forCellWithReuseIdentifier:v8];
+  [collectionView registerClass:v7 forCellWithReuseIdentifier:v8];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   [(NotesAssistantSnippetController *)self loadViewIfNeeded];
-  v4 = [(NotesAssistantSnippetController *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 collectionViewContentSize];
+  collectionView = [(NotesAssistantSnippetController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v7 = v6;
 
   return v7;
@@ -156,14 +156,14 @@
   return v4;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(NotesAssistantSnippetController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  delegate = [(NotesAssistantSnippetController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   width = v8;
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   if (v10 >= [(NSMutableArray *)self->_notes count])
   {
     width = CGSizeZero.width;
@@ -174,7 +174,7 @@
   {
     viewCell = self->_viewCell;
     v12 = ICProtocolCast();
-    v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [v6 row]);
+    v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [pathCopy row]);
     [v12 setNote:v13];
 
     if ([(NSMutableArray *)self->_notes count]== &dword_0 + 1)
@@ -197,43 +197,43 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [v5 row]);
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [pathCopy row]);
   v7 = [(NSMutableArray *)self->_notes count];
-  v8 = [(NotesAssistantSnippetController *)self collectionView];
+  collectionView = [(NotesAssistantSnippetController *)self collectionView];
   v9 = &off_18260;
   if (v7 != &dword_0 + 1)
   {
     v9 = off_18258;
   }
 
-  v10 = [(__objc2_class *)*v9 reuseIdentifier];
-  v11 = [v8 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v5];
+  reuseIdentifier = [(__objc2_class *)*v9 reuseIdentifier];
+  v11 = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   [v11 setNote:v6];
-  [v11 setKeylineType:{4 * (objc_msgSend(v5, "row") != -[NSMutableArray count](self->_notes, "count") - 1)}];
+  [v11 setKeylineType:{4 * (objc_msgSend(pathCopy, "row") != -[NSMutableArray count](self->_notes, "count") - 1)}];
 
   return v11;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v16 = a4;
-  v5 = [v16 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   v6 = v5 >= [(NSMutableArray *)self->_notes count];
-  v7 = v16;
+  v7 = pathCopy;
   if (!v6)
   {
-    v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [v16 row]);
+    v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_notes, "objectAtIndexedSubscript:", [pathCopy row]);
     v9 = ICProtocolCast();
 
     if (!v9)
     {
 LABEL_10:
 
-      v7 = v16;
+      v7 = pathCopy;
       goto LABEL_11;
     }
 
@@ -262,8 +262,8 @@ LABEL_9:
     v14 = v13;
     if (v13)
     {
-      v15 = [(NotesAssistantSnippetController *)self delegate];
-      [v15 siriViewController:self openURL:v14 completion:0];
+      delegate = [(NotesAssistantSnippetController *)self delegate];
+      [delegate siriViewController:self openURL:v14 completion:0];
     }
 
     goto LABEL_9;

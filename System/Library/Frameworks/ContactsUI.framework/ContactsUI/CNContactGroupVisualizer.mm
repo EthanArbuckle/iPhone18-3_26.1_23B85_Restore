@@ -1,57 +1,57 @@
 @interface CNContactGroupVisualizer
 + (id)allContactsOnboardingViewController;
-+ (id)allContactsOnboardingViewControllerLimitMaxContactsCount:(int)a3;
++ (id)allContactsOnboardingViewControllerLimitMaxContactsCount:(int)count;
 + (id)allContactsSettingsViewController;
-+ (id)allContactsSettingsViewControllerLimitMaxContactsCount:(int)a3;
++ (id)allContactsSettingsViewControllerLimitMaxContactsCount:(int)count;
 + (id)fullAccessPromptSettingsContactsController;
-+ (id)hostingControllerForType:(int64_t)a3 contacts:(id)a4 limitMaxContactsCount:(int)a5;
-+ (id)viewControllerForContacts:(id)a3;
-+ (id)viewControllerForContacts:(id)a3 limitMaxContactsCount:(int)a4;
++ (id)hostingControllerForType:(int64_t)type contacts:(id)contacts limitMaxContactsCount:(int)count;
++ (id)viewControllerForContacts:(id)contacts;
++ (id)viewControllerForContacts:(id)contacts limitMaxContactsCount:(int)count;
 @end
 
 @implementation CNContactGroupVisualizer
 
-+ (id)hostingControllerForType:(int64_t)a3 contacts:(id)a4 limitMaxContactsCount:(int)a5
++ (id)hostingControllerForType:(int64_t)type contacts:(id)contacts limitMaxContactsCount:(int)count
 {
-  v7 = a4;
+  contactsCopy = contacts;
   v8 = [_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper alloc];
-  if (a5 < 1)
+  if (count < 1)
   {
-    v9 = [(CNContactGroupVisualizerViewWrapper *)v8 initWithType:a3 contacts:v7];
+    v9 = [(CNContactGroupVisualizerViewWrapper *)v8 initWithType:type contacts:contactsCopy];
   }
 
   else
   {
-    v9 = [(CNContactGroupVisualizerViewWrapper *)v8 initWithType:a3 contacts:v7 limitContactsCount:a5];
+    v9 = [(CNContactGroupVisualizerViewWrapper *)v8 initWithType:type contacts:contactsCopy limitContactsCount:count];
   }
 
   v10 = v9;
 
-  v11 = [v10 hostingController];
+  hostingController = [v10 hostingController];
 
-  return v11;
+  return hostingController;
 }
 
-+ (id)viewControllerForContacts:(id)a3 limitMaxContactsCount:(int)a4
++ (id)viewControllerForContacts:(id)contacts limitMaxContactsCount:(int)count
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [objc_opt_class() hostingControllerForType:2 contacts:v5 limitMaxContactsCount:v4];
+  v4 = *&count;
+  contactsCopy = contacts;
+  v6 = [objc_opt_class() hostingControllerForType:2 contacts:contactsCopy limitMaxContactsCount:v4];
 
   return v6;
 }
 
-+ (id)viewControllerForContacts:(id)a3
++ (id)viewControllerForContacts:(id)contacts
 {
-  v3 = a3;
-  v4 = [objc_opt_class() viewControllerForContacts:v3 limitMaxContactsCount:0xFFFFFFFFLL];
+  contactsCopy = contacts;
+  v4 = [objc_opt_class() viewControllerForContacts:contactsCopy limitMaxContactsCount:0xFFFFFFFFLL];
 
   return v4;
 }
 
-+ (id)allContactsOnboardingViewControllerLimitMaxContactsCount:(int)a3
++ (id)allContactsOnboardingViewControllerLimitMaxContactsCount:(int)count
 {
-  v3 = *&a3;
+  v3 = *&count;
   v4 = objc_opt_class();
 
   return [v4 hostingControllerForType:1 contacts:0 limitMaxContactsCount:v3];
@@ -64,9 +64,9 @@
   return [v2 allContactsOnboardingViewControllerLimitMaxContactsCount:0xFFFFFFFFLL];
 }
 
-+ (id)allContactsSettingsViewControllerLimitMaxContactsCount:(int)a3
++ (id)allContactsSettingsViewControllerLimitMaxContactsCount:(int)count
 {
-  v3 = *&a3;
+  v3 = *&count;
   v4 = objc_opt_class();
 
   return [v4 hostingControllerForType:0 contacts:0 limitMaxContactsCount:v3];

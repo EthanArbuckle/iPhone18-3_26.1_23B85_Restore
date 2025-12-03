@@ -1,62 +1,62 @@
 @interface FCAssetKeyManager
-- (id)cachedWrappingKeyWithID:(id)a3;
-- (id)initWithService:(void *)a3 cache:(void *)a4 delegate:;
-- (uint64_t)_canRetryAfterNetworkError:(uint64_t)a1;
+- (id)cachedWrappingKeyWithID:(id)d;
+- (id)initWithService:(void *)service cache:(void *)cache delegate:;
+- (uint64_t)_canRetryAfterNetworkError:(uint64_t)error;
 - (void)clearUnauthorizedAssetKeys;
 - (void)eraseAllKeys;
-- (void)fetchWrappingKeyWithID:(id)a3 completionHandler:(id)a4;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (void)fetchWrappingKeyWithID:(id)d completionHandler:(id)handler;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 @end
 
 @implementation FCAssetKeyManager
 
-- (id)initWithService:(void *)a3 cache:(void *)a4 delegate:
+- (id)initWithService:(void *)service cache:(void *)cache delegate:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  serviceCopy = service;
+  cacheCopy = cache;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = FCAssetKeyManager;
     v11 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeWeak(a1 + 3, v10);
+      objc_storeStrong(self + 2, service);
+      objc_storeWeak(self + 3, cacheCopy);
       v12 = objc_alloc_init(FCThreadSafeMutableSet);
-      v13 = a1[5];
-      a1[5] = v12;
+      v13 = self[5];
+      self[5] = v12;
 
-      v14 = [[FCOperationThrottler alloc] initWithDelegate:a1];
-      v15 = a1[4];
-      a1[4] = v14;
+      v14 = [[FCOperationThrottler alloc] initWithDelegate:self];
+      v15 = self[4];
+      self[4] = v14;
 
       v16 = objc_alloc_init(FCThreadSafeMutableDictionary);
-      v17 = a1[6];
-      a1[6] = v16;
+      v17 = self[6];
+      self[6] = v16;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)cachedWrappingKeyWithID:(id)a3
+- (id)cachedWrappingKeyWithID:(id)d
 {
   if (self)
   {
     self = self->_cache;
   }
 
-  return [(FCAssetKeyManager *)self wrappingKeyForWrappingKeyID:a3];
+  return [(FCAssetKeyManager *)self wrappingKeyForWrappingKeyID:d];
 }
 
-- (void)fetchWrappingKeyWithID:(id)a3 completionHandler:(id)a4
+- (void)fetchWrappingKeyWithID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (self)
   {
     cache = self->_cache;
@@ -67,10 +67,10 @@
     cache = 0;
   }
 
-  v9 = [(FCAssetKeyCacheType *)cache wrappingKeyForWrappingKeyID:v6];
+  v9 = [(FCAssetKeyCacheType *)cache wrappingKeyForWrappingKeyID:dCopy];
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
@@ -85,23 +85,23 @@
       errorsByKey = 0;
     }
 
-    v11 = [(FCThreadSafeMutableDictionary *)errorsByKey objectForKey:v6];
+    v11 = [(FCThreadSafeMutableDictionary *)errorsByKey objectForKey:dCopy];
     if (v11 && ([(FCAssetKeyManager *)self _canRetryAfterNetworkError:v11]& 1) == 0)
     {
-      (v7)[2](v7, 0, v11);
+      (handlerCopy)[2](handlerCopy, 0, v11);
     }
 
     else
     {
       if (self)
       {
-        [(FCThreadSafeMutableSet *)self->_pendingWrappingKeyIDs addObject:v6];
+        [(FCThreadSafeMutableSet *)self->_pendingWrappingKeyIDs addObject:dCopy];
         throttler = self->_throttler;
       }
 
       else
       {
-        [0 addObject:v6];
+        [0 addObject:dCopy];
         throttler = 0;
       }
 
@@ -110,46 +110,46 @@
       v13[2] = __62__FCAssetKeyManager_fetchWrappingKeyWithID_completionHandler___block_invoke;
       v13[3] = &unk_1E7C38FF0;
       v13[4] = self;
-      v14 = v6;
-      v15 = v7;
+      v14 = dCopy;
+      v15 = handlerCopy;
       [(FCOperationThrottler *)throttler tickleWithCompletion:v13];
     }
   }
 }
 
-- (uint64_t)_canRetryAfterNetworkError:(uint64_t)a1
+- (uint64_t)_canRetryAfterNetworkError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:@"FCErrorDomain"];
+    domain = [v3 domain];
+    v6 = [domain isEqualToString:@"FCErrorDomain"];
 
     if (v6)
     {
       if ([v4 code] == 27)
       {
-        a1 = 0;
+        error = 0;
         goto LABEL_10;
       }
 
 LABEL_9:
-      a1 = 1;
+      error = 1;
       goto LABEL_10;
     }
 
-    v7 = [v4 domain];
-    v8 = [v7 isEqualToString:@"FCEndpointConnectionErrorDomain"];
+    domain2 = [v4 domain];
+    v8 = [domain2 isEqualToString:@"FCEndpointConnectionErrorDomain"];
 
     if (!v8)
     {
       goto LABEL_9;
     }
 
-    v9 = [v4 code];
-    a1 = 0;
-    if (v9 != 429 && v9 != 500 && v9 != 503)
+    code = [v4 code];
+    error = 0;
+    if (code != 429 && code != 500 && code != 503)
     {
       goto LABEL_9;
     }
@@ -157,7 +157,7 @@ LABEL_9:
 
 LABEL_10:
 
-  return a1;
+  return error;
 }
 
 void __62__FCAssetKeyManager_fetchWrappingKeyWithID_completionHandler___block_invoke(void *a1)
@@ -273,10 +273,10 @@ void __47__FCAssetKeyManager_clearUnauthorizedAssetKeys__block_invoke(uint64_t a
   [(FCThreadSafeMutableDictionary *)errorsByKey removeAllObjects];
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
     pendingWrappingKeyIDs = self->_pendingWrappingKeyIDs;
@@ -292,7 +292,7 @@ void __47__FCAssetKeyManager_clearUnauthorizedAssetKeys__block_invoke(uint64_t a
   v19[2] = __76__FCAssetKeyManager_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v19[3] = &unk_1E7C37CD8;
   v19[4] = self;
-  v8 = v6;
+  v8 = array;
   v20 = v8;
   [(FCThreadSafeMutableSet *)pendingWrappingKeyIDs readWriteWithAccessor:v19];
   if ([v8 count])
@@ -313,7 +313,7 @@ void __47__FCAssetKeyManager_clearUnauthorizedAssetKeys__block_invoke(uint64_t a
     v11[3] = &unk_1E7C378E8;
     v11[4] = self;
     v12 = v8;
-    v13 = v5;
+    v13 = completionCopy;
     [(FCAssetKeyServiceType *)service fetchWrappingKeysWithIDs:v12 completionHandler:v11];
 
     v10 = v12;
@@ -325,7 +325,7 @@ void __47__FCAssetKeyManager_clearUnauthorizedAssetKeys__block_invoke(uint64_t a
     v15 = 3221225472;
     v16 = __76__FCAssetKeyManager_operationThrottler_performAsyncOperationWithCompletion___block_invoke_2;
     v17 = &unk_1E7C379C8;
-    v18 = v5;
+    v18 = completionCopy;
     v18[2]();
     v10 = v18;
   }

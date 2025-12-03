@@ -1,19 +1,19 @@
 @interface ASVWorldGestureRecognizer
-- (ASVWorldGestureRecognizer)initWithWorldDelegate:(id)a3 feedbackGenerator:(id)a4;
+- (ASVWorldGestureRecognizer)initWithWorldDelegate:(id)delegate feedbackGenerator:(id)generator;
 - (ASVWorldGestureRecognizerDelegate)worldDelegate;
 - (BOOL)isActive;
 - (BOOL)isDecelerating;
 - (float)maximumObjectScale;
 - (float)minimumObjectScale;
-- (id)singleFingerGestureForTouch:(id)a3 dataSource:(id)a4 enabledGestureTypes:(unint64_t)a5;
-- (id)twoFingerGestureForFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5;
-- (void)gesture:(id)a3 levitatedAssetToScreenPoint:;
-- (void)gesture:(id)a3 translatedAssetToScreenPoint:;
-- (void)gestureBeganLevitation:(id)a3;
-- (void)gestureBeganTranslation:(id)a3;
-- (void)gestureEndedLevitation:(id)a3;
-- (void)gestureEndedTranslation:(id)a3;
-- (void)setEnabledGestureTypes:(unint64_t)a3;
+- (id)singleFingerGestureForTouch:(id)touch dataSource:(id)source enabledGestureTypes:(unint64_t)types;
+- (id)twoFingerGestureForFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source;
+- (void)gesture:(id)gesture levitatedAssetToScreenPoint:;
+- (void)gesture:(id)gesture translatedAssetToScreenPoint:;
+- (void)gestureBeganLevitation:(id)levitation;
+- (void)gestureBeganTranslation:(id)translation;
+- (void)gestureEndedLevitation:(id)levitation;
+- (void)gestureEndedTranslation:(id)translation;
+- (void)setEnabledGestureTypes:(unint64_t)types;
 - (void)startTranslationDecelerationWithInitialVelocity:(ASVWorldGestureRecognizer *)self;
 - (void)update;
 - (void)updateDecelerationTranslation;
@@ -21,16 +21,16 @@
 
 @implementation ASVWorldGestureRecognizer
 
-- (ASVWorldGestureRecognizer)initWithWorldDelegate:(id)a3 feedbackGenerator:(id)a4
+- (ASVWorldGestureRecognizer)initWithWorldDelegate:(id)delegate feedbackGenerator:(id)generator
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = ASVWorldGestureRecognizer;
-  v7 = [(ASVUnifiedGestureRecognizer *)&v15 initWithDelegate:v6 feedbackGenerator:a4];
+  v7 = [(ASVUnifiedGestureRecognizer *)&v15 initWithDelegate:delegateCopy feedbackGenerator:generator];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_worldDelegate, v6);
+    objc_storeWeak(&v7->_worldDelegate, delegateCopy);
     v9 = MEMORY[0x277CBEB98];
     LODWORD(v10) = 1.0;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
@@ -42,34 +42,34 @@
   return v8;
 }
 
-- (void)setEnabledGestureTypes:(unint64_t)a3
+- (void)setEnabledGestureTypes:(unint64_t)types
 {
   v4.receiver = self;
   v4.super_class = ASVWorldGestureRecognizer;
-  [(ASVUnifiedGestureRecognizer *)&v4 setEnabledGestureTypes:a3];
+  [(ASVUnifiedGestureRecognizer *)&v4 setEnabledGestureTypes:types];
   [(ASVWorldGestureRecognizer *)self cancelDeceleration];
 }
 
-- (id)singleFingerGestureForTouch:(id)a3 dataSource:(id)a4 enabledGestureTypes:(unint64_t)a5
+- (id)singleFingerGestureForTouch:(id)touch dataSource:(id)source enabledGestureTypes:(unint64_t)types
 {
-  v7 = a3;
+  touchCopy = touch;
   v8 = [ASVWorldSingleFingerGesture alloc];
-  v9 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  v10 = [(ASVWorldSingleFingerGesture *)v8 initWithTouch:v7 dataSource:v9 worldDelegate:self enabledGestureTypes:a5];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  v10 = [(ASVWorldSingleFingerGesture *)v8 initWithTouch:touchCopy dataSource:dataSource worldDelegate:self enabledGestureTypes:types];
 
   return v10;
 }
 
-- (id)twoFingerGestureForFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5
+- (id)twoFingerGestureForFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source
 {
-  v7 = a4;
-  v8 = a3;
+  secondTouchCopy = secondTouch;
+  touchCopy = touch;
   v9 = [ASVWorldTwoFingerGesture alloc];
-  v10 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  v11 = [(ASVWorldTwoFingerGesture *)v9 initWithFirstTouch:v8 secondTouch:v7 dataSource:v10 worldDelegate:self];
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  v11 = [(ASVWorldTwoFingerGesture *)v9 initWithFirstTouch:touchCopy secondTouch:secondTouchCopy dataSource:dataSource worldDelegate:self];
 
-  v12 = [(ASVWorldGestureRecognizer *)self snapScalesSet];
-  [(ASVTwoFingerGesture *)v11 setSnapScalesSet:v12];
+  snapScalesSet = [(ASVWorldGestureRecognizer *)self snapScalesSet];
+  [(ASVTwoFingerGesture *)v11 setSnapScalesSet:snapScalesSet];
 
   return v11;
 }
@@ -126,38 +126,38 @@
   return result;
 }
 
-- (void)gestureBeganTranslation:(id)a3
+- (void)gestureBeganTranslation:(id)translation
 {
   [(ASVWorldGestureRecognizer *)self cancelDeceleration];
   [(ASVWorldGestureRecognizer *)self setTranslationVelocitySample:0];
   [(ASVWorldGestureRecognizer *)self setTranslationLastVelocitySample:0];
-  v4 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  [v4 worldGestureRecognizerBeganTranslation:self];
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  [worldDelegate worldGestureRecognizerBeganTranslation:self];
 }
 
-- (void)gesture:(id)a3 translatedAssetToScreenPoint:
+- (void)gesture:(id)gesture translatedAssetToScreenPoint:
 {
   v4 = v3;
-  v6 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  [v6 worldGestureRecognizer:self translatedAssetToScreenPoint:v4];
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  [worldDelegate worldGestureRecognizer:self translatedAssetToScreenPoint:v4];
 
-  v7 = [(ASVUnifiedGestureRecognizer *)self dataSource];
-  if (v7)
+  dataSource = [(ASVUnifiedGestureRecognizer *)self dataSource];
+  if (dataSource)
   {
-    v17 = v7;
-    [v7 assetWorldPosition];
+    v17 = dataSource;
+    [dataSource assetWorldPosition];
     v18 = v8;
     v9 = CACurrentMediaTime();
-    v10 = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
+    translationVelocitySample = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
 
-    if (!v10)
+    if (!translationVelocitySample)
     {
       [(ASVWorldGestureRecognizer *)self setLastTranslationLocation:v18];
       [(ASVWorldGestureRecognizer *)self setLastTranslationTime:v9];
     }
 
-    v11 = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
-    [(ASVWorldGestureRecognizer *)self setTranslationLastVelocitySample:v11];
+    translationVelocitySample2 = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
+    [(ASVWorldGestureRecognizer *)self setTranslationLastVelocitySample:translationVelocitySample2];
 
     v12 = [ASVVelocitySample3D alloc];
     [(ASVWorldGestureRecognizer *)self lastTranslationLocation];
@@ -168,36 +168,36 @@
 
     [(ASVWorldGestureRecognizer *)self setLastTranslationLocation:v18];
     [(ASVWorldGestureRecognizer *)self setLastTranslationTime:v9];
-    v7 = v17;
+    dataSource = v17;
   }
 }
 
-- (void)gestureEndedTranslation:(id)a3
+- (void)gestureEndedTranslation:(id)translation
 {
-  v4 = a3;
+  translationCopy = translation;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
-    v7 = [(ASVWorldGestureRecognizer *)self translationLastVelocitySample];
-    [v6 calcFinalVelocityFromPreviousSample:v7];
+    translationVelocitySample = [(ASVWorldGestureRecognizer *)self translationVelocitySample];
+    translationLastVelocitySample = [(ASVWorldGestureRecognizer *)self translationLastVelocitySample];
+    [translationVelocitySample calcFinalVelocityFromPreviousSample:translationLastVelocitySample];
     v9 = v8;
 
     [(ASVWorldGestureRecognizer *)self startTranslationDecelerationWithInitialVelocity:v9];
   }
 
-  v10 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  [v10 worldGestureRecognizerEndedTranslation:self];
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  [worldDelegate worldGestureRecognizerEndedTranslation:self];
 }
 
-- (void)gestureBeganLevitation:(id)a3
+- (void)gestureBeganLevitation:(id)levitation
 {
-  v4 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  if (v4)
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  if (worldDelegate)
   {
-    v5 = v4;
+    v5 = worldDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 worldGestureRecognizerBeganLevitation:self];
@@ -207,13 +207,13 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)gesture:(id)a3 levitatedAssetToScreenPoint:
+- (void)gesture:(id)gesture levitatedAssetToScreenPoint:
 {
   v4 = v3;
-  v6 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  if (v6)
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  if (worldDelegate)
   {
-    v7 = v6;
+    v7 = worldDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v7 worldGestureRecognizer:self levitatedAssetToScreenPoint:v4];
@@ -223,12 +223,12 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)gestureEndedLevitation:(id)a3
+- (void)gestureEndedLevitation:(id)levitation
 {
-  v4 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-  if (v4)
+  worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+  if (worldDelegate)
   {
-    v5 = v4;
+    v5 = worldDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 worldGestureRecognizerEndedLevitation:self];
@@ -258,49 +258,49 @@
     v13 = [(ASVDampingDeceleration *)v7 initWithVelocity:v15 minEndDelta:v12 decelerationRate:v11];
     [(ASVWorldGestureRecognizer *)self setTranslationDeceleration:v13];
 
-    v16 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-    [v16 worldGestureRecognizerBeganTranslationDeceleration:self];
+    worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+    [worldDelegate worldGestureRecognizerBeganTranslationDeceleration:self];
   }
 }
 
 - (BOOL)isDecelerating
 {
-  v3 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
-  if (v3)
+  translationDeceleration = [(ASVWorldGestureRecognizer *)self translationDeceleration];
+  if (translationDeceleration)
   {
-    v4 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
-    v5 = [v4 isDecelerating];
+    translationDeceleration2 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
+    isDecelerating = [translationDeceleration2 isDecelerating];
   }
 
   else
   {
-    v5 = 0;
+    isDecelerating = 0;
   }
 
-  return v5;
+  return isDecelerating;
 }
 
 - (void)updateDecelerationTranslation
 {
-  v3 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
+  translationDeceleration = [(ASVWorldGestureRecognizer *)self translationDeceleration];
 
-  if (v3)
+  if (translationDeceleration)
   {
-    v8 = [(ASVWorldGestureRecognizer *)self worldDelegate];
-    v4 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
-    [v4 decelerationDelta];
+    worldDelegate = [(ASVWorldGestureRecognizer *)self worldDelegate];
+    translationDeceleration2 = [(ASVWorldGestureRecognizer *)self translationDeceleration];
+    [translationDeceleration2 decelerationDelta];
     v7 = v5;
 
     if (*&v7 <= 0.0)
     {
       [(ASVWorldGestureRecognizer *)self setTranslationDeceleration:0, v7];
-      [v8 worldGestureRecognizerEndedTranslationDeceleration:self];
+      [worldDelegate worldGestureRecognizerEndedTranslationDeceleration:self];
     }
 
     else
     {
       [(ASVWorldGestureRecognizer *)self normalizedVelocity];
-      [v8 worldGestureRecognizer:self decelerationTranslationDelta:{*vmulq_n_f32(v6, *&v7).i64}];
+      [worldDelegate worldGestureRecognizer:self decelerationTranslationDelta:{*vmulq_n_f32(v6, *&v7).i64}];
     }
   }
 }

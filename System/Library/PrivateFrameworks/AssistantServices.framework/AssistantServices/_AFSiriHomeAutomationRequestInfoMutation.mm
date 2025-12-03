@@ -1,5 +1,5 @@
 @interface _AFSiriHomeAutomationRequestInfoMutation
-- (_AFSiriHomeAutomationRequestInfoMutation)initWithBaseModel:(id)a3;
+- (_AFSiriHomeAutomationRequestInfoMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,16 +14,16 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_context;
+        context = self->_context;
       }
 
       else
       {
-        v6 = [(AFSiriHomeAutomationRequestInfo *)baseModel context];
+        context = [(AFSiriHomeAutomationRequestInfo *)baseModel context];
       }
 
-      v7 = v6;
-      v5 = [[AFSiriHomeAutomationRequestInfo alloc] initWithContext:v6];
+      v7 = context;
+      v5 = [[AFSiriHomeAutomationRequestInfo alloc] initWithContext:context];
 
       goto LABEL_10;
     }
@@ -42,16 +42,16 @@ LABEL_10:
   return v5;
 }
 
-- (_AFSiriHomeAutomationRequestInfoMutation)initWithBaseModel:(id)a3
+- (_AFSiriHomeAutomationRequestInfoMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _AFSiriHomeAutomationRequestInfoMutation;
   v6 = [(_AFSiriHomeAutomationRequestInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

@@ -8,25 +8,25 @@
 
 - (uint64_t)isLowercase
 {
-  v2 = [a1 lowercaseString];
-  v3 = [a1 isEqualToString:v2];
+  lowercaseString = [self lowercaseString];
+  v3 = [self isEqualToString:lowercaseString];
 
   return v3;
 }
 
 - (uint64_t)isUppercase
 {
-  v2 = [a1 uppercaseString];
-  v3 = [a1 isEqualToString:v2];
+  uppercaseString = [self uppercaseString];
+  v3 = [self isEqualToString:uppercaseString];
 
   return v3;
 }
 
 - (uint64_t)isCaseApplicable
 {
-  if ([a1 isUppercase])
+  if ([self isUppercase])
   {
-    return [a1 isLowercase] ^ 1;
+    return [self isLowercase] ^ 1;
   }
 
   else

@@ -1,42 +1,42 @@
 @interface AVKeyValueChange
-- (AVKeyValueChange)initWithValue:(id)a3 oldValue:(id)a4 keyPath:(id)a5 observationToken:(id)a6;
+- (AVKeyValueChange)initWithValue:(id)value oldValue:(id)oldValue keyPath:(id)path observationToken:(id)token;
 @end
 
 @implementation AVKeyValueChange
 
-- (AVKeyValueChange)initWithValue:(id)a3 oldValue:(id)a4 keyPath:(id)a5 observationToken:(id)a6
+- (AVKeyValueChange)initWithValue:(id)value oldValue:(id)oldValue keyPath:(id)path observationToken:(id)token
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  oldValueCopy = oldValue;
+  pathCopy = path;
+  tokenCopy = token;
   v28.receiver = self;
   v28.super_class = AVKeyValueChange;
   v14 = [(AVKeyValueChange *)&v28 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
-    if (v15 == v10)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (null == valueCopy)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v10;
+      v16 = valueCopy;
     }
 
     objc_storeStrong(&v14->_value, v16);
 
-    v17 = [MEMORY[0x1E695DFB0] null];
-    if (v17 == v11)
+    null2 = [MEMORY[0x1E695DFB0] null];
+    if (null2 == oldValueCopy)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v11;
+      v18 = oldValueCopy;
     }
 
     objc_storeStrong(&v14->_oldValue, v18);
@@ -53,11 +53,11 @@
       v14->_oldValue = v21;
     }
 
-    v23 = [v12 copy];
+    v23 = [pathCopy copy];
     keyPath = v14->_keyPath;
     v14->_keyPath = v23;
 
-    v25 = [v13 copy];
+    v25 = [tokenCopy copy];
     observationToken = v14->_observationToken;
     v14->_observationToken = v25;
   }

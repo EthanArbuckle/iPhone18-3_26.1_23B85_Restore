@@ -1,17 +1,17 @@
 @interface KNBuildVanishParticleSystem
 - ($94F468A8D4C62B317260615823C2B210)lifeSpan;
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 - (double)speedMax;
 @end
 
 @implementation KNBuildVanishParticleSystem
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   [(KNBuildVanishParticleSystem *)self randomParticleSpeedMax];
   v5 = v4;
   [(KNBuildVanishParticleSystem *)self objectSize];
@@ -37,18 +37,18 @@
   v18 = __sincos_stret(v17);
   v19 = v16;
   v20 = v45 * fabsf(v19);
-  v21 = [(KNBuildVanishParticleSystem *)self particlesWide];
-  v22 = [(KNBuildVanishParticleSystem *)self particlesHigh];
-  v23 = [(KNBuildVanishParticleSystem *)self particlesWide];
-  v24 = [(KNBuildVanishParticleSystem *)self particlesHigh];
-  if (v23 <= v24)
+  particlesWide = [(KNBuildVanishParticleSystem *)self particlesWide];
+  particlesHigh = [(KNBuildVanishParticleSystem *)self particlesHigh];
+  particlesWide2 = [(KNBuildVanishParticleSystem *)self particlesWide];
+  particlesHigh2 = [(KNBuildVanishParticleSystem *)self particlesHigh];
+  if (particlesWide2 <= particlesHigh2)
   {
-    v25 = v24;
+    v25 = particlesHigh2;
   }
 
   else
   {
-    v25 = v23;
+    v25 = particlesWide2;
   }
 
   v26 = vcvtd_n_f64_u64(v25, 1uLL) + 20.0;
@@ -57,8 +57,8 @@
   v29.f64[0] = v18.__cosval;
   v29.f64[1] = v18.__sinval;
   v30 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(vcvt_f32_f64(vmulq_n_f64(v29, v41))), v45));
-  *&v29.f64[0] = v21;
-  *&v29.f64[1] = v22;
+  *&v29.f64[0] = particlesWide;
+  *&v29.f64[1] = particlesHigh;
   __asm { FMOV            V3.2D, #-0.5 }
 
   v36.f64[0] = x;
@@ -104,9 +104,9 @@
   return v10 * (v6 / v8);
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  [(KNBuildVanishParticleSystem *)self minScale:a3.x];
+  [(KNBuildVanishParticleSystem *)self minScale:point.x];
   [(KNBuildVanishParticleSystem *)self maxScale];
   TSURandomBetween();
 
@@ -114,7 +114,7 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
   TSURandomBetween();
   TSUMix();

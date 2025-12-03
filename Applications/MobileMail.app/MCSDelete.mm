@@ -1,29 +1,29 @@
 @interface MCSDelete
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5;
-- (MCSDelete)initWithDeleteInPlace:(BOOL)a3;
-- (MCSDelete)initWithStore:(id)a3;
-- (id)applyPendingChangeToObjects:(id)a3;
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages;
+- (MCSDelete)initWithDeleteInPlace:(BOOL)place;
+- (MCSDelete)initWithStore:(id)store;
+- (id)applyPendingChangeToObjects:(id)objects;
 - (id)localizedShortOperationDescription;
 @end
 
 @implementation MCSDelete
 
-- (MCSDelete)initWithStore:(id)a3
+- (MCSDelete)initWithStore:(id)store
 {
-  v4 = a3;
-  v5 = -[MCSDelete initWithDeleteInPlace:](self, "initWithDeleteInPlace:", [v4 shouldDeleteInPlace]);
+  storeCopy = store;
+  v5 = -[MCSDelete initWithDeleteInPlace:](self, "initWithDeleteInPlace:", [storeCopy shouldDeleteInPlace]);
 
   return v5;
 }
 
-- (MCSDelete)initWithDeleteInPlace:(BOOL)a3
+- (MCSDelete)initWithDeleteInPlace:(BOOL)place
 {
   v10.receiver = self;
   v10.super_class = MCSDelete;
   v4 = [(MCSDelete *)&v10 init];
   if (v4)
   {
-    if (a3)
+    if (place)
     {
       v5 = [MCSFlagChange alloc];
       v6 = [NSSet setWithObjects:MessageIsDeleted, MessageIsRead, 0];
@@ -43,22 +43,22 @@
   return v4;
 }
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v3 = [(MCSOperation *)self->_operation applyPendingChangeToObjects:a3];
+  v3 = [(MCSOperation *)self->_operation applyPendingChangeToObjects:objects];
 
   return v3;
 }
 
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  newMessagesCopy = newMessages;
   v11 = +[MFActivityMonitor currentMonitor];
   [v11 addReason:MonitoredActivityReasonDeleting];
 
-  LOBYTE(self) = [(MCSMessageOperation *)self->_operation commitToMessages:v8 failures:v9 newMessages:v10];
+  LOBYTE(self) = [(MCSMessageOperation *)self->_operation commitToMessages:messagesCopy failures:failuresCopy newMessages:newMessagesCopy];
   return self;
 }
 

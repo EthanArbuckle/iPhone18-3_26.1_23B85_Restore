@@ -1,10 +1,10 @@
 @interface MindfulnessManager
-- (void)appDidEnterBackground:(id)a3;
+- (void)appDidEnterBackground:(id)background;
 @end
 
 @implementation MindfulnessManager
 
-- (void)appDidEnterBackground:(id)a3
+- (void)appDidEnterBackground:(id)background
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

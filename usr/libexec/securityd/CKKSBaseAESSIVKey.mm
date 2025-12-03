@@ -1,17 +1,17 @@
 @interface CKKSBaseAESSIVKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKKSBaseAESSIVKey)init;
-- (CKKSBaseAESSIVKey)initWithBase64:(id)a3;
-- (CKKSBaseAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKKSBaseAESSIVKey)initWithBase64:(id)base64;
+- (CKKSBaseAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation CKKSBaseAESSIVKey
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   size = self->size;
 
   return [v4 initWithBytes:self->key len:size];
@@ -25,15 +25,15 @@
   [(CKKSBaseAESSIVKey *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = 0;
   if (objc_opt_isKindOfClass())
   {
     size = self->size;
-    if (size == v4[11] && !memcmp(self->key, v4 + 1, size))
+    if (size == equalCopy[11] && !memcmp(self->key, equalCopy + 1, size))
     {
       v6 = 1;
     }
@@ -42,9 +42,9 @@
   return v6;
 }
 
-- (CKKSBaseAESSIVKey)initWithBase64:(id)a3
+- (CKKSBaseAESSIVKey)initWithBase64:(id)base64
 {
-  v4 = a3;
+  base64Copy = base64;
   v9.receiver = self;
   v9.super_class = CKKSBaseAESSIVKey;
   v5 = [(CKKSBaseAESSIVKey *)&v9 init];
@@ -55,7 +55,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [[NSData alloc] initWithBase64EncodedString:v4 options:0];
+  v6 = [[NSData alloc] initWithBase64EncodedString:base64Copy options:0];
   v7 = v6;
   if (v6)
   {
@@ -73,16 +73,16 @@ LABEL_7:
   return v7;
 }
 
-- (CKKSBaseAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4
+- (CKKSBaseAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len
 {
   v9.receiver = self;
   v9.super_class = CKKSBaseAESSIVKey;
   v6 = [(CKKSBaseAESSIVKey *)&v9 init];
   v7 = v6;
-  if (a4 <= 0x50 && v6)
+  if (len <= 0x50 && v6)
   {
-    v6->size = a4;
-    memcpy(v6->key, a3, a4);
+    v6->size = len;
+    memcpy(v6->key, bytes, len);
   }
 
   return v7;

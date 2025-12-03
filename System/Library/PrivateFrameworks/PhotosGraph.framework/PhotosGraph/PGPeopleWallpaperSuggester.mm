@@ -1,20 +1,20 @@
 @interface PGPeopleWallpaperSuggester
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6;
-- (PGPeopleWallpaperSuggester)initWithSession:(id)a3;
-- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (void)_buildSuggestersWithNumberOfSuggestions:(unint64_t)a3 progressBlock:(id)a4;
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason;
+- (PGPeopleWallpaperSuggester)initWithSession:(id)session;
+- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)progress;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (void)_buildSuggestersWithNumberOfSuggestions:(unint64_t)suggestions progressBlock:(id)block;
 - (void)setupFilteringContexts;
 @end
 
 @implementation PGPeopleWallpaperSuggester
 
-- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)a3
+- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 curationContext];
-  v7 = [v5 loggingConnection];
+  progressCopy = progress;
+  session = [(PGAbstractSuggester *)self session];
+  curationContext = [session curationContext];
+  loggingConnection = [session loggingConnection];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   primaryFilteringContext = self->_primaryFilteringContext;
   if (primaryFilteringContext)
@@ -25,28 +25,28 @@
   else
   {
     v11 = [PGPeopleWallpaperSuggesterFilteringContext alloc];
-    v12 = [objc_opt_class() filtersForTopSuggestions];
-    v13 = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self->_primaryFilteringContext orientation];
-    v10 = [(PGPeopleWallpaperSuggesterFilteringContext *)v11 initForTopPeople:v12 withDictionary:MEMORY[0x277CBEC10] orientation:v13];
+    filtersForTopSuggestions = [objc_opt_class() filtersForTopSuggestions];
+    orientation = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self->_primaryFilteringContext orientation];
+    v10 = [(PGPeopleWallpaperSuggesterFilteringContext *)v11 initForTopPeople:filtersForTopSuggestions withDictionary:MEMORY[0x277CBEC10] orientation:orientation];
   }
 
   v14 = v10;
-  v15 = [v5 workingContext];
+  workingContext = [session workingContext];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __96__PGPeopleWallpaperSuggester_personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress___block_invoke;
   v24[3] = &unk_278887068;
-  v25 = v6;
-  v26 = v7;
+  v25 = curationContext;
+  v26 = loggingConnection;
   v27 = v14;
-  v29 = v4;
+  v29 = progressCopy;
   v16 = v8;
   v28 = v16;
-  v17 = v4;
+  v17 = progressCopy;
   v18 = v14;
-  v19 = v7;
-  v20 = v6;
-  [v15 performSynchronousConcurrentGraphReadUsingBlock:v24];
+  v19 = loggingConnection;
+  v20 = curationContext;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v24];
 
   v21 = v28;
   v22 = v16;
@@ -90,11 +90,11 @@ void __96__PGPeopleWallpaperSuggester_personLocalIdentifiersByOriginalPersonLoca
   }
 }
 
-- (void)_buildSuggestersWithNumberOfSuggestions:(unint64_t)a3 progressBlock:(id)a4
+- (void)_buildSuggestersWithNumberOfSuggestions:(unint64_t)suggestions progressBlock:(id)block
 {
   buf[5] = *MEMORY[0x277D85DE8];
-  v52 = a4;
-  v6 = _Block_copy(v52);
+  blockCopy = block;
+  v6 = _Block_copy(blockCopy);
   v82 = 0;
   v83 = &v82;
   v84 = 0x2020000000;
@@ -105,13 +105,13 @@ void __96__PGPeopleWallpaperSuggester_personLocalIdentifiersByOriginalPersonLoca
   v81 = 0;
   if (!v6 || (v7 = CFAbsoluteTimeGetCurrent(), v7 - v79[3] < 0.01) || (v79[3] = v7, LOBYTE(v86) = 0, (*(v6 + 2))(v6, &v86, 0.0), v8 = *(v83 + 24) | v86, *(v83 + 24) = v8, (v8 & 1) == 0))
   {
-    v9 = [(PGAbstractSuggester *)self session];
-    v54 = [v9 curationContext];
-    v50 = a3;
-    v53 = v9;
-    v10 = [v9 loggingConnection];
-    v11 = os_signpost_id_generate(v10);
-    v12 = v10;
+    session = [(PGAbstractSuggester *)self session];
+    curationContext = [session curationContext];
+    suggestionsCopy = suggestions;
+    v53 = session;
+    loggingConnection = [session loggingConnection];
+    v11 = os_signpost_id_generate(loggingConnection);
+    v12 = loggingConnection;
     v13 = v12;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
@@ -218,21 +218,21 @@ LABEL_12:
     v28 = [v55 count];
     v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v55, "count")}];
     v30 = +[PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:](PGWallpaperSuggestionUtilities, "assetFetchPropertySetsIncludingGating:", [objc_opt_class() filtersForTopSuggestions]);
-    v31 = [v53 forbiddenAssetUUIDs];
+    forbiddenAssetUUIDs = [v53 forbiddenAssetUUIDs];
     v32 = 0.5 / v28;
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_progressBlock___block_invoke_308;
     v57[3] = &unk_278887018;
-    v58 = v54;
+    v58 = curationContext;
     v33 = v27;
     v59 = v33;
-    v60 = self;
+    selfCopy = self;
     v49 = v30;
     v61 = v49;
-    v34 = v31;
+    v34 = forbiddenAssetUUIDs;
     v62 = v34;
-    v68 = v50;
+    v68 = suggestionsCopy;
     v35 = v15;
     v64 = v35;
     v65 = &v78;
@@ -455,11 +455,11 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
   }
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v106 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v97 = 0;
   v98 = &v97;
   v99 = 0x2020000000;
@@ -468,14 +468,14 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
   v94 = &v93;
   v95 = 0x2020000000;
   v96 = 0;
-  v69 = _Block_copy(v7);
-  v63 = v7;
+  v69 = _Block_copy(progressCopy);
+  v63 = progressCopy;
   if (!v69 || (v8 = CFAbsoluteTimeGetCurrent(), v8 - v94[3] < 0.01) || (v94[3] = v8, LOBYTE(v101) = 0, (*(v69 + 2))(v69, &v101, 0.0), v9 = *(v98 + 24) | v101, *(v98 + 24) = v9, (v9 & 1) == 0))
   {
-    v62 = [(PGAbstractSuggester *)self session];
-    v11 = [v62 loggingConnection];
-    v12 = os_signpost_id_generate(v11);
-    v13 = v11;
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    v12 = os_signpost_id_generate(loggingConnection);
+    v13 = loggingConnection;
     v14 = v13;
     spid = v12;
     v61 = v12 - 1;
@@ -490,19 +490,19 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
     info = 0;
     mach_timebase_info(&info);
     v58 = mach_absolute_time();
-    v65 = [v6 maximumNumberOfSuggestions];
-    v66 = [v6 additionalOptions];
-    v67 = [v66 objectForKeyedSubscript:@"filteringContext"];
+    maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+    additionalOptions = [optionsCopy additionalOptions];
+    v67 = [additionalOptions objectForKeyedSubscript:@"filteringContext"];
     [(PGPeopleWallpaperSuggesterFilteringContext *)self->_primaryFilteringContext updateFilteringContextWithDictionary:v67];
     [(PGPeopleWallpaperSuggesterFilteringContext *)self->_secondaryFilteringContext updateFilteringContextWithDictionary:v67];
     v15 = [PGSinglePersonWallpaperAssetSuggesterScoringContext alloc];
-    v16 = [v66 objectForKeyedSubscript:@"scoringContext"];
+    v16 = [additionalOptions objectForKeyedSubscript:@"scoringContext"];
     v17 = [(PGSinglePersonWallpaperAssetSuggesterScoringContext *)v15 initWithDictionary:v16];
     scoringContext = self->_scoringContext;
     self->_scoringContext = v17;
 
     v19 = [PGSinglePersonWallpaperAssetSuggesterDistancingContext alloc];
-    v20 = [v66 objectForKeyedSubscript:@"distancingContext"];
+    v20 = [additionalOptions objectForKeyedSubscript:@"distancingContext"];
     v21 = [(PGSinglePersonWallpaperAssetSuggesterDistancingContext *)v19 initWithDictionary:v20];
     distancingContext = self->_distancingContext;
     self->_distancingContext = v21;
@@ -511,7 +511,7 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 67109120;
-      HIDWORD(buf) = v65;
+      HIDWORD(buf) = maximumNumberOfSuggestions;
       _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_INFO, "[PGPeopleWallpaperSuggester] Starting to generate %d suggestions per person.", &buf, 8u);
     }
 
@@ -526,7 +526,7 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
       v89 = &v93;
       v90 = &v97;
       v91 = 0x3F847AE147AE147BLL;
-      [(PGPeopleWallpaperSuggester *)self _buildSuggestersWithNumberOfSuggestions:v65 progressBlock:v87];
+      [(PGPeopleWallpaperSuggester *)self _buildSuggestersWithNumberOfSuggestions:maximumNumberOfSuggestions progressBlock:v87];
       if (*(v98 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -572,7 +572,7 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
 
     if (self->_assetGater)
     {
-      v30 = 2 * v65;
+      v30 = 2 * maximumNumberOfSuggestions;
     }
 
     else
@@ -580,11 +580,11 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
       v30 = 0;
     }
 
-    v31 = [objc_opt_class() suggestionTypes];
-    v32 = [v31 firstIndex];
+    suggestionTypes = [objc_opt_class() suggestionTypes];
+    firstIndex = [suggestionTypes firstIndex];
 
-    v33 = [objc_opt_class() suggestionSubtypes];
-    v34 = [v33 firstIndex];
+    suggestionSubtypes = [objc_opt_class() suggestionSubtypes];
+    firstIndex2 = [suggestionSubtypes firstIndex];
 
     v35 = [(NSDictionary *)self->_suggesterByPersonLocalIdentifier count];
     if (v35 <= 1)
@@ -607,16 +607,16 @@ void __84__PGPeopleWallpaperSuggester__buildSuggestersWithNumberOfSuggestions_pr
     v71[2] = __62__PGPeopleWallpaperSuggester_suggestionsWithOptions_progress___block_invoke_279;
     v71[3] = &unk_278886FF0;
     v38 = 0.25 / v36;
-    v79 = v65;
+    v79 = maximumNumberOfSuggestions;
     v80 = v29;
     v81 = v30;
     v24 = v28;
     p_buf = &buf;
     v82 = v38;
-    v84 = v32;
-    v85 = v34;
+    v84 = firstIndex;
+    v85 = firstIndex2;
     v72 = v24;
-    v73 = self;
+    selfCopy = self;
     v39 = v69;
     v75 = v39;
     v77 = &v93;
@@ -1045,9 +1045,9 @@ void __62__PGPeopleWallpaperSuggester_suggestionsWithOptions_progress___block_in
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -1057,7 +1057,7 @@ LABEL_11:
     return;
   }
 
-  if (([(PGPeopleWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGPeopleWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v12 = objc_opt_class();
     NSStringFromClass(v12);
@@ -1073,8 +1073,8 @@ LABEL_11:
   if (IsIPad)
   {
     v6 = [(PGPeopleWallpaperSuggesterFilteringContext *)v5 initForPeopleInOrientation:2];
-    primaryFilteringContext = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v6;
+    primaryFilteringContext = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v6;
 
     v8 = [[PGPeopleWallpaperSuggesterFilteringContext alloc] initForPeopleInOrientation:1];
   }
@@ -1082,29 +1082,29 @@ LABEL_11:
   else
   {
     v9 = [(PGPeopleWallpaperSuggesterFilteringContext *)v5 initForPeopleInOrientation:1];
-    v10 = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v9;
+    v10 = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v9;
 
     v8 = 0;
   }
 
-  secondaryFilteringContext = v2->_secondaryFilteringContext;
-  v2->_secondaryFilteringContext = v8;
+  secondaryFilteringContext = selfCopy->_secondaryFilteringContext;
+  selfCopy->_secondaryFilteringContext = v8;
 }
 
-- (PGPeopleWallpaperSuggester)initWithSession:(id)a3
+- (PGPeopleWallpaperSuggester)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = PGPeopleWallpaperSuggester;
-  v5 = [(PGAbstractSuggester *)&v11 initWithSession:v4];
+  v5 = [(PGAbstractSuggester *)&v11 initWithSession:sessionCopy];
   if (v5)
   {
     if ([objc_opt_class() filtersForTopSuggestions])
     {
       v6 = [PGWallpaperSuggestionAssetGater alloc];
-      v7 = [v4 loggingConnection];
-      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:1 loggingConnection:v7];
+      loggingConnection = [sessionCopy loggingConnection];
+      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:1 loggingConnection:loggingConnection];
       assetGater = v5->_assetGater;
       v5->_assetGater = v8;
 
@@ -1117,25 +1117,25 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [objc_opt_class() filtersForTopSuggestions];
-  v12 = [PGSinglePersonWallpaperAssetSuggester passesFilteringWithAsset:v9 forTopWallpaperSuggestions:v11 curationContext:v10 orientation:a5 reason:a6];
+  assetCopy = asset;
+  contextCopy = context;
+  filtersForTopSuggestions = [objc_opt_class() filtersForTopSuggestions];
+  v12 = [PGSinglePersonWallpaperAssetSuggester passesFilteringWithAsset:assetCopy forTopWallpaperSuggestions:filtersForTopSuggestions curationContext:contextCopy orientation:orientation reason:reason];
 
-  if (v11 && v12)
+  if (filtersForTopSuggestions && v12)
   {
     v13 = [PGWallpaperSuggestionAssetGater alloc];
     LOBYTE(v12) = 1;
     v14 = [(PGWallpaperSuggestionAssetGater *)v13 initWithType:1 loggingConnection:MEMORY[0x277D86220]];
     [(PGWallpaperSuggestionAssetGater *)v14 setCoversTracks:1];
     [(PGWallpaperSuggestionAssetGater *)v14 setIsUserInitiated:1];
-    v15 = [(PGWallpaperSuggestionAssetGater *)v14 gateAsset:v9 progressBlock:&__block_literal_global_58035];
+    v15 = [(PGWallpaperSuggestionAssetGater *)v14 gateAsset:assetCopy progressBlock:&__block_literal_global_58035];
     if ([v15 passesAnyGating])
     {
       v16 = @"Pass Segmented";
-      if (!a6)
+      if (!reason)
       {
         goto LABEL_15;
       }
@@ -1145,9 +1145,9 @@ LABEL_11:
     {
       v26 = 0;
       v25 = 1.0;
-      [MEMORY[0x277D3C810] cropScoreWithAsset:v9 classification:1 passesClockOverlap:&v26 cropZoomRatio:&v25 orientation:a5];
+      [MEMORY[0x277D3C810] cropScoreWithAsset:assetCopy classification:1 passesClockOverlap:&v26 cropZoomRatio:&v25 orientation:orientation];
       v18 = v17;
-      v19 = [[PGPeopleWallpaperSuggesterFilteringContext alloc] initForTopPeopleInOrientation:a5];
+      v19 = [[PGPeopleWallpaperSuggesterFilteringContext alloc] initForTopPeopleInOrientation:orientation];
       v20 = v19;
       if (v26)
       {
@@ -1181,13 +1181,13 @@ LABEL_11:
         v16 = @"Clock Overlap";
       }
 
-      if (!a6)
+      if (!reason)
       {
         goto LABEL_15;
       }
     }
 
-    *a6 = v16;
+    *reason = v16;
 LABEL_15:
   }
 

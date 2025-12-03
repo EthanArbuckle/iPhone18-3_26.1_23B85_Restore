@@ -6,7 +6,7 @@
 
 - (uint64_t)MPU_applyBoundsAndCenterForUntransformedFrame:()MPUAdditions
 {
-  [a1 setBounds:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8)}];
+  [self setBounds:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8)}];
   v14.origin.x = a2;
   v14.origin.y = a3;
   v14.size.width = a4;
@@ -18,7 +18,7 @@
   v15.size.height = a5;
   MidY = CGRectGetMidY(v15);
 
-  return [a1 setCenter:{MidX, MidY}];
+  return [self setCenter:{MidX, MidY}];
 }
 
 @end

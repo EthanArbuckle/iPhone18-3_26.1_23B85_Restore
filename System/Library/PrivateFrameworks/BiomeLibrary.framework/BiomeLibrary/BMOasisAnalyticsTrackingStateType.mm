@@ -1,28 +1,28 @@
 @interface BMOasisAnalyticsTrackingStateType
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsTrackingStateType)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMOasisAnalyticsTrackingStateType)initWithMode:(int)a3 health:(id)a4 numberInlierPoints:(id)a5 numberOfRegularKeyframes:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsTrackingStateType)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMOasisAnalyticsTrackingStateType)initWithMode:(int)mode health:(id)health numberInlierPoints:(id)points numberOfRegularKeyframes:(id)keyframes;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsTrackingStateType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsTrackingStateType *)self mode];
-    if (v6 != [v5 mode])
+    v5 = equalCopy;
+    mode = [(BMOasisAnalyticsTrackingStateType *)self mode];
+    if (mode != [v5 mode])
     {
       goto LABEL_19;
     }
@@ -60,8 +60,8 @@
         goto LABEL_19;
       }
 
-      v10 = [(BMOasisAnalyticsTrackingStateType *)self numberInlierPoints];
-      if (v10 != [v5 numberInlierPoints])
+      numberInlierPoints = [(BMOasisAnalyticsTrackingStateType *)self numberInlierPoints];
+      if (numberInlierPoints != [v5 numberInlierPoints])
       {
         goto LABEL_19;
       }
@@ -75,8 +75,8 @@
 
     if (-[BMOasisAnalyticsTrackingStateType hasNumberOfRegularKeyframes](self, "hasNumberOfRegularKeyframes") && [v5 hasNumberOfRegularKeyframes])
     {
-      v11 = [(BMOasisAnalyticsTrackingStateType *)self numberOfRegularKeyframes];
-      v12 = v11 == [v5 numberOfRegularKeyframes];
+      numberOfRegularKeyframes = [(BMOasisAnalyticsTrackingStateType *)self numberOfRegularKeyframes];
+      v12 = numberOfRegularKeyframes == [v5 numberOfRegularKeyframes];
     }
 
     else
@@ -134,37 +134,37 @@ LABEL_21:
   }
 
   v16[0] = @"mode";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
+  v17[0] = null;
   v16[1] = @"health";
-  v10 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v16[2] = @"numberInlierPoints";
-  v11 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v11;
+  v17[2] = null3;
   v16[3] = @"numberOfRegularKeyframes";
-  v12 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
   if (v8)
   {
@@ -215,25 +215,25 @@ LABEL_23:
   return v13;
 }
 
-- (BMOasisAnalyticsTrackingStateType)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsTrackingStateType)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"mode"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v37 = 0;
 LABEL_9:
-    v9 = [v6 objectForKeyedSubscript:@"health"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"health"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v20 = 0;
+          selfCopy4 = 0;
           goto LABEL_35;
         }
 
@@ -245,8 +245,8 @@ LABEL_9:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v23 = [v21 initWithDomain:v22 code:2 userInfo:v11];
         v10 = 0;
-        v20 = 0;
-        *a4 = v23;
+        selfCopy4 = 0;
+        *error = v23;
         goto LABEL_34;
       }
 
@@ -258,17 +258,17 @@ LABEL_9:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"numberInlierPoints"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numberInlierPoints"];
     v36 = v7;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
-          v20 = 0;
+          selfCopy4 = 0;
           goto LABEL_34;
         }
 
@@ -279,39 +279,39 @@ LABEL_9:
         v41 = v17;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
         v12 = v10;
-        v13 = self;
-        v16 = v25 = a4;
+        selfCopy3 = self;
+        v16 = v25 = error;
         v26 = [v34 initWithDomain:v24 code:2 userInfo:v16];
         v15 = 0;
-        v20 = 0;
+        selfCopy4 = 0;
         *v25 = v26;
         goto LABEL_32;
       }
 
       v12 = v10;
-      v13 = self;
-      v14 = a4;
+      selfCopy3 = self;
+      errorCopy2 = error;
       v15 = v11;
     }
 
     else
     {
       v12 = v10;
-      v13 = self;
-      v14 = a4;
+      selfCopy3 = self;
+      errorCopy2 = error;
       v15 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"numberOfRegularKeyframes"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numberOfRegularKeyframes"];
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v17 = 0;
 LABEL_18:
-      v18 = [v37 intValue];
-      v19 = v13;
+      intValue = [v37 intValue];
+      v19 = selfCopy3;
       v10 = v12;
-      self = [(BMOasisAnalyticsTrackingStateType *)v19 initWithMode:v18 health:v12 numberInlierPoints:v15 numberOfRegularKeyframes:v17];
-      v20 = self;
+      self = [(BMOasisAnalyticsTrackingStateType *)v19 initWithMode:intValue health:v12 numberInlierPoints:v15 numberOfRegularKeyframes:v17];
+      selfCopy4 = self;
 LABEL_33:
 
       v7 = v36;
@@ -327,7 +327,7 @@ LABEL_34:
       goto LABEL_18;
     }
 
-    if (v14)
+    if (errorCopy2)
     {
       v35 = objc_alloc(MEMORY[0x1E696ABC0]);
       v33 = *MEMORY[0x1E698F240];
@@ -335,13 +335,13 @@ LABEL_34:
       v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"numberOfRegularKeyframes"];
       v39 = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      *v14 = [v35 initWithDomain:v33 code:2 userInfo:v28];
+      *errorCopy2 = [v35 initWithDomain:v33 code:2 userInfo:v28];
     }
 
     v17 = 0;
-    v20 = 0;
+    selfCopy4 = 0;
 LABEL_32:
-    self = v13;
+    self = selfCopy3;
     v10 = v12;
     goto LABEL_33;
   }
@@ -362,10 +362,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v37 = 0;
-    v20 = 0;
+    selfCopy4 = 0;
     goto LABEL_36;
   }
 
@@ -376,29 +376,29 @@ LABEL_8:
   v45[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
   v37 = 0;
-  v20 = 0;
-  *a4 = [v31 initWithDomain:v32 code:2 userInfo:v9];
+  selfCopy4 = 0;
+  *error = [v31 initWithDomain:v32 code:2 userInfo:v9];
 LABEL_35:
 
 LABEL_36:
   v29 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsTrackingStateType *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   mode = self->_mode;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasHealth)
   {
@@ -419,9 +419,9 @@ LABEL_36:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v43.receiver = self;
   v43.super_class = BMOasisAnalyticsTrackingStateType;
   v5 = [(BMEventBase *)&v43 init];
@@ -430,12 +430,12 @@ LABEL_36:
     goto LABEL_73;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -446,18 +446,18 @@ LABEL_36:
       while (1)
       {
         LOBYTE(v44) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v44) & 0x7F) << v7;
@@ -475,9 +475,9 @@ LABEL_36:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -494,18 +494,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v44) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 |= (LOBYTE(v44) & 0x7F) << v32;
@@ -523,7 +523,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -557,18 +557,18 @@ LABEL_35:
           while (1)
           {
             LOBYTE(v44) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v44) & 0x7F) << v18;
@@ -586,7 +586,7 @@ LABEL_35:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -611,18 +611,18 @@ LABEL_58:
         while (1)
         {
           LOBYTE(v44) = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (LOBYTE(v44) & 0x7F) << v25;
@@ -638,7 +638,7 @@ LABEL_58:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v27 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v27 > 3)
         {
 LABEL_61:
           LODWORD(v27) = 0;
@@ -656,31 +656,31 @@ LABEL_61:
 
         v5->_hasHealth = 1;
         v44 = 0.0;
-        v16 = [v4 position] + 4;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 4, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 4;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 4, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v39 = [v4 data];
-          [v39 getBytes:&v44 range:{objc_msgSend(v4, "position"), 4}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_health = v44;
       }
 
 LABEL_70:
-      v40 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v40 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_72:
     v41 = 0;
@@ -709,22 +709,22 @@ LABEL_73:
   return v9;
 }
 
-- (BMOasisAnalyticsTrackingStateType)initWithMode:(int)a3 health:(id)a4 numberInlierPoints:(id)a5 numberOfRegularKeyframes:(id)a6
+- (BMOasisAnalyticsTrackingStateType)initWithMode:(int)mode health:(id)health numberInlierPoints:(id)points numberOfRegularKeyframes:(id)keyframes
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  healthCopy = health;
+  pointsCopy = points;
+  keyframesCopy = keyframes;
   v18.receiver = self;
   v18.super_class = BMOasisAnalyticsTrackingStateType;
   v13 = [(BMEventBase *)&v18 init];
   if (v13)
   {
     v13->_dataVersion = [objc_opt_class() latestDataVersion];
-    v13->_mode = a3;
-    if (v10)
+    v13->_mode = mode;
+    if (healthCopy)
     {
       v13->_hasHealth = 1;
-      [v10 floatValue];
+      [healthCopy floatValue];
     }
 
     else
@@ -734,32 +734,32 @@ LABEL_73:
     }
 
     v13->_health = v14;
-    if (v11)
+    if (pointsCopy)
     {
       v13->_hasNumberInlierPoints = 1;
-      v15 = [v11 unsignedIntValue];
+      unsignedIntValue = [pointsCopy unsignedIntValue];
     }
 
     else
     {
-      v15 = 0;
+      unsignedIntValue = 0;
       v13->_hasNumberInlierPoints = 0;
     }
 
-    v13->_numberInlierPoints = v15;
-    if (v12)
+    v13->_numberInlierPoints = unsignedIntValue;
+    if (keyframesCopy)
     {
       v13->_hasNumberOfRegularKeyframes = 1;
-      v16 = [v12 unsignedIntValue];
+      unsignedIntValue2 = [keyframesCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue2 = 0;
       v13->_hasNumberOfRegularKeyframes = 0;
     }
 
-    v13->_numberOfRegularKeyframes = v16;
+    v13->_numberOfRegularKeyframes = unsignedIntValue2;
   }
 
   return v13;
@@ -801,9 +801,9 @@ LABEL_73:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -811,8 +811,8 @@ LABEL_73:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsTrackingStateType alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,28 +1,28 @@
 @interface SBTraitsSceneOrientationRequestsAssistant
 - (NSString)errorDomain;
-- (SBTraitsSceneOrientationRequestsAssistant)initWithTraitsSceneDelegate:(id)a3 errorDomain:(id)a4;
+- (SBTraitsSceneOrientationRequestsAssistant)initWithTraitsSceneDelegate:(id)delegate errorDomain:(id)domain;
 - (SBTraitsSceneParticipantDelegate)traitsDelegate;
-- (void)_startSceneOrientationRequestWithDesiredOrientations:(unint64_t)a3 error:(id *)a4;
-- (void)checkValidityAgainstUpdateReasons:(int64_t)a3;
-- (void)coalescedNotifyArbitrationUpdateNeeded:(id)a3 withReason:(id)a4;
+- (void)_startSceneOrientationRequestWithDesiredOrientations:(unint64_t)orientations error:(id *)error;
+- (void)checkValidityAgainstUpdateReasons:(int64_t)reasons;
+- (void)coalescedNotifyArbitrationUpdateNeeded:(id)needed withReason:(id)reason;
 - (void)invalidate;
-- (void)setUpForTransitionContextIfNeeded:(id)a3;
+- (void)setUpForTransitionContextIfNeeded:(id)needed;
 @end
 
 @implementation SBTraitsSceneOrientationRequestsAssistant
 
-- (SBTraitsSceneOrientationRequestsAssistant)initWithTraitsSceneDelegate:(id)a3 errorDomain:(id)a4
+- (SBTraitsSceneOrientationRequestsAssistant)initWithTraitsSceneDelegate:(id)delegate errorDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  domainCopy = domain;
   v11.receiver = self;
   v11.super_class = SBTraitsSceneOrientationRequestsAssistant;
   v8 = [(SBTraitsSceneOrientationRequestsAssistant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_traitsDelegate, v6);
-    objc_storeWeak(&v9->_errorDomain, v7);
+    objc_storeWeak(&v8->_traitsDelegate, delegateCopy);
+    objc_storeWeak(&v9->_errorDomain, domainCopy);
   }
 
   return v9;
@@ -32,20 +32,20 @@
 {
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_traitsDelegate);
-  v5 = [WeakRetained sceneHandle];
-  v6 = SBSafeCast(v3, v5);
+  sceneHandle = [WeakRetained sceneHandle];
+  v6 = SBSafeCast(v3, sceneHandle);
 
   [v6 _setInitialDeviceOrientationFromSceneOrientationRequestSetup:0];
   [v6 _setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:0];
   [v6 _setSettingUpSceneOrientationRequest:0];
 }
 
-- (void)checkValidityAgainstUpdateReasons:(int64_t)a3
+- (void)checkValidityAgainstUpdateReasons:(int64_t)reasons
 {
   WeakRetained = objc_loadWeakRetained(&self->_traitsDelegate);
   v5 = objc_opt_class();
-  v6 = [WeakRetained sceneHandle];
-  v7 = SBSafeCast(v5, v6);
+  sceneHandle = [WeakRetained sceneHandle];
+  v7 = SBSafeCast(v5, sceneHandle);
 
   if (v7)
   {
@@ -56,13 +56,13 @@
 
     else
     {
-      v8 = [WeakRetained participant];
-      v9 = [v8 sbf_currentDeviceOrientation];
+      participant = [WeakRetained participant];
+      sbf_currentDeviceOrientation = [participant sbf_currentDeviceOrientation];
 
-      v10 = [v7 _initialDeviceOrientationFromSceneOrientationRequestSetup];
-      if ([v7 _supportedInterfaceOrientationsFromSceneOrientationRequestSetup] && (!v10 || v9 != v10))
+      _initialDeviceOrientationFromSceneOrientationRequestSetup = [v7 _initialDeviceOrientationFromSceneOrientationRequestSetup];
+      if ([v7 _supportedInterfaceOrientationsFromSceneOrientationRequestSetup] && (!_initialDeviceOrientationFromSceneOrientationRequestSetup || sbf_currentDeviceOrientation != _initialDeviceOrientationFromSceneOrientationRequestSetup))
       {
-        if ((v9 - 1) > 3)
+        if ((sbf_currentDeviceOrientation - 1) > 3)
         {
           [v7 _setInitialDeviceOrientationFromSceneOrientationRequestSetup:0];
         }
@@ -97,18 +97,18 @@ void __79__SBTraitsSceneOrientationRequestsAssistant_checkValidityAgainstUpdateR
   }
 }
 
-- (void)setUpForTransitionContextIfNeeded:(id)a3
+- (void)setUpForTransitionContextIfNeeded:(id)needed
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 actions];
+  actions = [needed actions];
   WeakRetained = objc_loadWeakRetained(&self->_errorDomain);
-  if ([v4 count])
+  if ([actions count])
   {
-    v6 = [v4 bs_firstObjectPassingTest:&__block_literal_global_334];
+    v6 = [actions bs_firstObjectPassingTest:&__block_literal_global_334];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 requestedInterfaceOrientationMask];
+      requestedInterfaceOrientationMask = [v6 requestedInterfaceOrientationMask];
       if ([v7 policy] == 2 && (+[SBOrientationLockManager sharedInstance](SBOrientationLockManager, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isUserLocked"), v9, v10))
       {
         v11 = MEMORY[0x277CCA9B8];
@@ -122,13 +122,13 @@ void __79__SBTraitsSceneOrientationRequestsAssistant_checkValidityAgainstUpdateR
       {
         v12 = objc_loadWeakRetained(&self->_traitsDelegate);
         v14 = objc_opt_class();
-        v15 = [v12 sceneHandle];
-        v16 = SBSafeCast(v14, v15);
+        sceneHandle = [v12 sceneHandle];
+        v16 = SBSafeCast(v14, sceneHandle);
 
         if (v16)
         {
           v26 = 0;
-          [(SBTraitsSceneOrientationRequestsAssistant *)self _startSceneOrientationRequestWithDesiredOrientations:v8 error:&v26];
+          [(SBTraitsSceneOrientationRequestsAssistant *)self _startSceneOrientationRequestWithDesiredOrientations:requestedInterfaceOrientationMask error:&v26];
           v13 = v26;
         }
 
@@ -137,9 +137,9 @@ void __79__SBTraitsSceneOrientationRequestsAssistant_checkValidityAgainstUpdateR
           v17 = MEMORY[0x277CCA9B8];
           v27 = *MEMORY[0x277CCA450];
           v18 = MEMORY[0x277CCACA8];
-          v19 = [v12 scene];
-          v20 = [v19 identifier];
-          v21 = [v18 stringWithFormat:@"The requesting scene [%@] is not supported", v20];
+          scene = [v12 scene];
+          identifier = [scene identifier];
+          v21 = [v18 stringWithFormat:@"The requesting scene [%@] is not supported", identifier];
           v28 = v21;
           v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
           v13 = [v17 errorWithDomain:WeakRetained code:1 userInfo:v22];
@@ -149,8 +149,8 @@ void __79__SBTraitsSceneOrientationRequestsAssistant_checkValidityAgainstUpdateR
       if ([v7 canSendResponse])
       {
         v23 = objc_alloc(MEMORY[0x277CF0B68]);
-        v24 = [v7 info];
-        v25 = [v23 initWithInfo:v24 error:v13];
+        info = [v7 info];
+        v25 = [v23 initWithInfo:info error:v13];
 
         [v7 sendResponse:v25];
       }
@@ -158,13 +158,13 @@ void __79__SBTraitsSceneOrientationRequestsAssistant_checkValidityAgainstUpdateR
   }
 }
 
-- (void)coalescedNotifyArbitrationUpdateNeeded:(id)a3 withReason:(id)a4
+- (void)coalescedNotifyArbitrationUpdateNeeded:(id)needed withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   objc_copyWeak(&v9, &location);
-  v8 = v6;
+  v8 = neededCopy;
   BSRunLoopPerformRelativeToCACommit();
 
   objc_destroyWeak(&v9);
@@ -184,24 +184,24 @@ void __95__SBTraitsSceneOrientationRequestsAssistant_coalescedNotifyArbitrationU
   }
 }
 
-- (void)_startSceneOrientationRequestWithDesiredOrientations:(unint64_t)a3 error:(id *)a4
+- (void)_startSceneOrientationRequestWithDesiredOrientations:(unint64_t)orientations error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_traitsDelegate);
   v9 = objc_opt_class();
-  v10 = [WeakRetained sceneHandle];
-  v11 = SBSafeCast(v9, v10);
+  sceneHandle = [WeakRetained sceneHandle];
+  v11 = SBSafeCast(v9, sceneHandle);
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [SBTraitsSceneOrientationRequestsAssistant _startSceneOrientationRequestWithDesiredOrientations:a2 error:self];
-    if (a3)
+    if (orientations)
     {
       goto LABEL_4;
     }
@@ -212,30 +212,30 @@ LABEL_7:
     v17 = *MEMORY[0x277CCA450];
     v18[0] = @"Invalid requested orientation.";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    *a4 = [v14 errorWithDomain:v15 code:0 userInfo:v16];
+    *error = [v14 errorWithDomain:v15 code:0 userInfo:v16];
 
     goto LABEL_8;
   }
 
   [SBTraitsSceneOrientationRequestsAssistant _startSceneOrientationRequestWithDesiredOrientations:a2 error:self];
-  if (!a4)
+  if (!error)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!a3)
+  if (!orientations)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v12 = [v11 _supportedInterfaceOrientationsFromSceneOrientationRequestSetup];
+  _supportedInterfaceOrientationsFromSceneOrientationRequestSetup = [v11 _supportedInterfaceOrientationsFromSceneOrientationRequestSetup];
   [v11 _setInterfaceOrientationFromUserResizing:0];
-  [v11 _setSettingUpSceneOrientationRequest:v12 == 0];
-  [v11 _setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:a3];
-  v13 = [WeakRetained participant];
-  [v11 _setInitialDeviceOrientationFromSceneOrientationRequestSetup:{objc_msgSend(v13, "currentDeviceOrientation")}];
+  [v11 _setSettingUpSceneOrientationRequest:_supportedInterfaceOrientationsFromSceneOrientationRequestSetup == 0];
+  [v11 _setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:orientations];
+  participant = [WeakRetained participant];
+  [v11 _setInitialDeviceOrientationFromSceneOrientationRequestSetup:{objc_msgSend(participant, "currentDeviceOrientation")}];
 
   [(SBTraitsSceneOrientationRequestsAssistant *)self coalescedNotifyArbitrationUpdateNeeded:@"SBSceneGeometryOrientationRequestedNotification" withReason:@"SceneOrientationRequest setup"];
 LABEL_8:

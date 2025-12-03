@@ -1,6 +1,6 @@
 @interface PXCNRecipientSearchResult
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXCNRecipientSearchResult
@@ -16,10 +16,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PXCNComposeRecipient *)self recipient];
-  v5 = [v4 copy];
+  recipient = [(PXCNComposeRecipient *)self recipient];
+  v5 = [recipient copy];
 
   v6 = [(PXCNComposeRecipient *)[PXCNRecipientSearchResult alloc] initWithRecipient:v5];
   v6->_validationType = self->_validationType;

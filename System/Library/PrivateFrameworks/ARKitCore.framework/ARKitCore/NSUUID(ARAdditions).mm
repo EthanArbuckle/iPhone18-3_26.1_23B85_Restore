@@ -29,10 +29,10 @@
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 bytes];
+  bytes = [v3 bytes];
   v5 = [v3 length];
 
-  CC_SHA1(v4, v5, md);
+  CC_SHA1(bytes, v5, md);
   v8 = *md;
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:&v8];
 
@@ -72,7 +72,7 @@
   v2[2] = *MEMORY[0x1E69E9840];
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getUUIDBytes:v2];
+  [self getUUIDBytes:v2];
   return v2[0];
 }
 
@@ -81,14 +81,14 @@
   v3 = *MEMORY[0x1E69E9840];
   *&v2.byte0 = 0;
   *&v2.byte8 = 0;
-  [a1 getUUIDBytes:&v2];
+  [self getUUIDBytes:&v2];
   return CFUUIDCreateFromUUIDBytes(*MEMORY[0x1E695E480], v2);
 }
 
 - (id)ar_tinyUUIDString
 {
-  v1 = [a1 UUIDString];
-  v2 = [v1 substringWithRange:{0, 8}];
+  uUIDString = [self UUIDString];
+  v2 = [uUIDString substringWithRange:{0, 8}];
 
   return v2;
 }
@@ -98,23 +98,23 @@
   if (theArray)
   {
     Count = CFArrayGetCount(theArray);
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:Count];
+    array = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:Count];
     if (Count)
     {
       for (i = 0; i != Count; ++i)
       {
         v7 = [MEMORY[0x1E696AFB0] ar_UUIDWithCFUUIDRef:{CFArrayGetValueAtIndex(theArray, i)}];
-        [v5 addObject:v7];
+        [array addObject:v7];
       }
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v5;
+  return array;
 }
 
 + (id)ar_NSUUIDSetWithCFArrayRef:()ARAdditions

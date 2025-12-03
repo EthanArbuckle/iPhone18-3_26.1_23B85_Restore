@@ -6,7 +6,7 @@
 
 - (uint64_t)bgTaskExpirationReason
 {
-  if ([a1 lastDenialValue] >= 0)
+  if ([self lastDenialValue] >= 0)
   {
     return 1;
   }

@@ -1,36 +1,36 @@
 @interface NEExtensionBaseProviderHost
 - (NEExtensionBaseHostDelegate)extensionDelegate;
-- (void)setExtensionDelegate:(id)a3;
-- (void)setExtensionExportedObject:(id)a3;
-- (void)setExtensionHostXPCProtocol:(id)a3;
-- (void)setExtensionQueue:(id)a3;
-- (void)setExtensionXPCProtocol:(id)a3;
-- (void)setupWithCompletion:(id)a3;
-- (void)sleepWithCompletion:(id)a3;
-- (void)wakeWithCompletion:(id)a3;
+- (void)setExtensionDelegate:(id)delegate;
+- (void)setExtensionExportedObject:(id)object;
+- (void)setExtensionHostXPCProtocol:(id)protocol;
+- (void)setExtensionQueue:(id)queue;
+- (void)setExtensionXPCProtocol:(id)protocol;
+- (void)setupWithCompletion:(id)completion;
+- (void)sleepWithCompletion:(id)completion;
+- (void)wakeWithCompletion:(id)completion;
 @end
 
 @implementation NEExtensionBaseProviderHost
 
-- (void)setExtensionQueue:(id)a3
+- (void)setExtensionQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionQueue);
-  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionQueue) = queue;
+  queueCopy = queue;
 }
 
-- (void)setExtensionXPCProtocol:(id)a3
+- (void)setExtensionXPCProtocol:(id)protocol
 {
   v4 = *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionXPCProtocol);
-  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionXPCProtocol) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionXPCProtocol) = protocol;
+  protocolCopy = protocol;
 }
 
-- (void)setExtensionHostXPCProtocol:(id)a3
+- (void)setExtensionHostXPCProtocol:(id)protocol
 {
   v4 = *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionHostXPCProtocol);
-  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionHostXPCProtocol) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionHostXPCProtocol) = protocol;
+  protocolCopy = protocol;
 }
 
 - (NEExtensionBaseHostDelegate)extensionDelegate
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (void)setExtensionDelegate:(id)a3
+- (void)setExtensionDelegate:(id)delegate
 {
   v3 = *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionDelegate);
-  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionDelegate) = a3;
+  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionDelegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setExtensionExportedObject:(id)a3
+- (void)setExtensionExportedObject:(id)object
 {
   v4 = *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionExportedObject);
-  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionExportedObject) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NEExtensionBaseProviderHost_extensionExportedObject) = object;
+  objectCopy = object;
 }
 
-- (void)setupWithCompletion:(id)a3
+- (void)setupWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -79,17 +79,17 @@
   v13[3] = 0;
   v13[4] = &unk_1BAA4D140;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v8, &unk_1BAA4D148, v13);
 }
 
-- (void)sleepWithCompletion:(id)a3
+- (void)sleepWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -105,17 +105,17 @@
   v13[3] = 0;
   v13[4] = &unk_1BAA4D120;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v8, &unk_1BAA4D128, v13);
 }
 
-- (void)wakeWithCompletion:(id)a3
+- (void)wakeWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -131,7 +131,7 @@
   v13[3] = 0;
   v13[4] = &unk_1BAA4D100;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v8, &unk_1BAA4CD70, v13);
 }
 

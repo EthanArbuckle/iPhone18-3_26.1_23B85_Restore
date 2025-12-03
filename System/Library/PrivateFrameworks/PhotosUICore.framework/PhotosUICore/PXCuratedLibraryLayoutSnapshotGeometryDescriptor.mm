@@ -3,11 +3,11 @@
 - (CGRect)visibleRect;
 - (NSIndexSet)sections;
 - (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)init;
-- (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)initWithLayout:(id)a3;
+- (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)initWithLayout:(id)layout;
 - (id)description;
-- (id)geometryDescriptorForSectionAtIndexPath:(PXSimpleIndexPath *)a3;
-- (void)compactifySectionsBeyondVisibleRectWithAnchorSection:(int64_t)a3;
-- (void)extrapolateSectionsBetween:(int64_t)a3 and:(int64_t)a4 withAnchorSection:(int64_t)a5;
+- (id)geometryDescriptorForSectionAtIndexPath:(PXSimpleIndexPath *)path;
+- (void)compactifySectionsBeyondVisibleRectWithAnchorSection:(int64_t)section;
+- (void)extrapolateSectionsBetween:(int64_t)between and:(int64_t)and withAnchorSection:(int64_t)section;
 @end
 
 @implementation PXCuratedLibraryLayoutSnapshotGeometryDescriptor
@@ -33,7 +33,7 @@
   v7 = NSStringFromCGPoint(v19);
   [v6 appendFormat:@"\toffset=%@\n", v7];
 
-  v8 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
+  sections = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_invoke;
@@ -41,7 +41,7 @@
   v17[4] = self;
   v9 = v6;
   v18 = v9;
-  [v8 enumerateIndexesUsingBlock:v17];
+  [sections enumerateIndexesUsingBlock:v17];
 
   sectionGeometryDescriptorsByIndexPath = self->_sectionGeometryDescriptorsByIndexPath;
   v15[0] = MEMORY[0x1E69E9820];
@@ -88,17 +88,17 @@ void __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_i
   PXSimpleIndexPathDescription();
 }
 
-- (void)compactifySectionsBeyondVisibleRectWithAnchorSection:(int64_t)a3
+- (void)compactifySectionsBeyondVisibleRectWithAnchorSection:(int64_t)section
 {
-  v5 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
-  if (-[PXCuratedLibraryLayoutSnapshotGeometryDescriptor zoomLevel](self, "zoomLevel") == 3 && [v5 containsIndex:a3])
+  sections = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
+  if (-[PXCuratedLibraryLayoutSnapshotGeometryDescriptor zoomLevel](self, "zoomLevel") == 3 && [sections containsIndex:section])
   {
     x = self->_visibleRect.origin.x;
     y = self->_visibleRect.origin.y;
     width = self->_visibleRect.size.width;
     height = self->_visibleRect.size.height;
-    v10 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
-    v113 = self;
+    dataSourceIdentifier = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
+    selfCopy = self;
     v11 = [(NSDictionary *)self->_sectionGeometryDescriptorsByIndexPath mutableCopy];
     v12 = +[PXCuratedLibrarySettings sharedInstance];
     [v12 interitemSpacingForDays];
@@ -115,11 +115,11 @@ void __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_i
     v145.size.width = width;
     v145.size.height = height;
     MinY = CGRectGetMinY(v145);
-    v114 = v5;
-    v15 = [v5 firstIndex];
-    if (v15 <= a3)
+    v114 = sections;
+    firstIndex = [sections firstIndex];
+    if (firstIndex <= section)
     {
-      v16 = v15;
+      v16 = firstIndex;
       v17 = 0;
       v116 = MinY - v115;
       v117 = -1.79769313e308;
@@ -127,12 +127,12 @@ void __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_i
       v18.f64[1] = NAN;
       v118 = vnegq_f64(v18);
       v19 = v135;
-      v20 = a3;
+      sectionCopy = section;
       v120 = MinY;
       do
       {
-        v142 = v10;
-        v143 = v20;
+        v142 = dataSourceIdentifier;
+        sectionCopy2 = sectionCopy;
         v144 = v118;
         v21 = [MEMORY[0x1E696B098] px_valueWithSimpleIndexPath:&v142];
         v22 = [v11 objectForKeyedSubscript:v21];
@@ -239,11 +239,11 @@ void __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_i
         v52 = v51;
         v54 = v53;
         v56 = v55;
-        v57 = [v23 headerAsset];
-        v58 = -[PXCuratedLibrarySectionGeometryDescriptor initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:](v48, "initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:", v57, [v23 visualPosition], v45, v27, v122, v124, v130, v136, v128, v126, *&v138, *&v140, *&v35, *&v46, __PAIR64__(v52, v50), __PAIR64__(v56, v54));
+        headerAsset = [v23 headerAsset];
+        v58 = -[PXCuratedLibrarySectionGeometryDescriptor initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:](v48, "initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:", headerAsset, [v23 visualPosition], v45, v27, v122, v124, v130, v136, v128, v126, *&v138, *&v140, *&v35, *&v46, __PAIR64__(v52, v50), __PAIR64__(v56, v54));
         [v11 setObject:v58 forKeyedSubscript:v21];
 
-        v59 = v20-- <= v16;
+        v59 = sectionCopy-- <= v16;
         MinY = v120;
         v19 = v132;
       }
@@ -256,20 +256,20 @@ void __63__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_description__block_i
     v153.size.height = v109;
     v153.size.width = v110;
     v123 = CGRectGetMaxY(v153);
-    v5 = v114;
-    v60 = [v114 lastIndex];
-    if (v60 >= a3)
+    sections = v114;
+    lastIndex = [v114 lastIndex];
+    if (lastIndex >= section)
     {
       v61 = 0;
-      v62 = v60 + 1;
+      v62 = lastIndex + 1;
       v119 = 1.79769313e308;
       v63.f64[0] = NAN;
       v63.f64[1] = NAN;
       v121 = vnegq_f64(v63);
       do
       {
-        v142 = v10;
-        v143 = a3;
+        v142 = dataSourceIdentifier;
+        sectionCopy2 = section;
         v144 = v121;
         v64 = [MEMORY[0x1E696B098] px_valueWithSimpleIndexPath:&v142];
         v65 = [v11 objectForKeyedSubscript:v64];
@@ -402,47 +402,47 @@ LABEL_34:
         v100 = v99;
         v102 = v101;
         v104 = v103;
-        v105 = [v66 headerAsset];
-        v106 = -[PXCuratedLibrarySectionGeometryDescriptor initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:](v96, "initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:", v105, [v66 visualPosition], v141, v125, v139, v127, v137, v133, v131, v129, *&v76, *&v90, *&v72, *&v92, __PAIR64__(v100, v98), __PAIR64__(v104, v102));
+        headerAsset2 = [v66 headerAsset];
+        v106 = -[PXCuratedLibrarySectionGeometryDescriptor initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:](v96, "initWithSectionRect:headerRect:keyAssetRect:headerCornerRadius:headerAsset:visualPosition:", headerAsset2, [v66 visualPosition], v141, v125, v139, v127, v137, v133, v131, v129, *&v76, *&v90, *&v72, *&v92, __PAIR64__(v100, v98), __PAIR64__(v104, v102));
         [v11 setObject:v106 forKeyedSubscript:v64];
 
-        ++a3;
+        ++section;
       }
 
-      while (v62 != a3);
+      while (v62 != section);
     }
 
     v107 = [v11 copy];
-    sectionGeometryDescriptorsByIndexPath = v113->_sectionGeometryDescriptorsByIndexPath;
-    v113->_sectionGeometryDescriptorsByIndexPath = v107;
+    sectionGeometryDescriptorsByIndexPath = selfCopy->_sectionGeometryDescriptorsByIndexPath;
+    selfCopy->_sectionGeometryDescriptorsByIndexPath = v107;
   }
 }
 
-- (void)extrapolateSectionsBetween:(int64_t)a3 and:(int64_t)a4 withAnchorSection:(int64_t)a5
+- (void)extrapolateSectionsBetween:(int64_t)between and:(int64_t)and withAnchorSection:(int64_t)section
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
-  if ([v7 count])
+  sections = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self sections];
+  if ([sections count])
   {
     v8 = [(NSDictionary *)self->_sectionGeometryDescriptorsByIndexPath mutableCopy];
-    v9 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
-    v10 = [v7 firstIndex];
-    if (v10 >= a5)
+    dataSourceIdentifier = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
+    firstIndex = [sections firstIndex];
+    if (firstIndex >= section)
     {
       v12 = 0;
     }
 
     else
     {
-      v11 = v10;
+      v11 = firstIndex;
       v12 = 0;
       v13.f64[0] = NAN;
       v13.f64[1] = NAN;
       v27 = vnegq_f64(v13);
       do
       {
-        v14 = [v7 containsIndex:v11];
-        *&buf = v9;
+        v14 = [sections containsIndex:v11];
+        *&buf = dataSourceIdentifier;
         *(&buf + 1) = v11;
         v30 = v27;
         if (v14)
@@ -462,20 +462,20 @@ LABEL_34:
         ++v11;
       }
 
-      while (a5 != v11);
+      while (section != v11);
     }
 
-    v18 = [v7 lastIndex];
-    if (v18 > a5)
+    lastIndex = [sections lastIndex];
+    if (lastIndex > section)
     {
-      v19 = v18;
+      v19 = lastIndex;
       v20.f64[0] = NAN;
       v20.f64[1] = NAN;
       v28 = vnegq_f64(v20);
       do
       {
-        v21 = [v7 containsIndex:v19];
-        *&buf = v9;
+        v21 = [sections containsIndex:v19];
+        *&buf = dataSourceIdentifier;
         *(&buf + 1) = v19;
         v30 = v28;
         if (v21)
@@ -495,12 +495,12 @@ LABEL_34:
         --v19;
       }
 
-      while (v19 > a5);
+      while (v19 > section);
     }
 
-    v24 = [v7 firstIndex];
-    *&buf = v9;
-    *(&buf + 1) = v24;
+    firstIndex2 = [sections firstIndex];
+    *&buf = dataSourceIdentifier;
+    *(&buf + 1) = firstIndex2;
     v25.f64[0] = NAN;
     v25.f64[1] = NAN;
     v30 = vnegq_f64(v25);
@@ -522,13 +522,13 @@ LABEL_34:
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v4 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
+  dataSourceIdentifier = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self dataSourceIdentifier];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSDictionary *)self->_sectionGeometryDescriptorsByIndexPath keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSDictionary *)self->_sectionGeometryDescriptorsByIndexPath keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -539,7 +539,7 @@ LABEL_34:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -548,13 +548,13 @@ LABEL_34:
           [v10 px_simpleIndexPathValue];
         }
 
-        if (!v4)
+        if (!dataSourceIdentifier)
         {
           [v3 addIndex:0];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -565,11 +565,11 @@ LABEL_34:
   return v11;
 }
 
-- (id)geometryDescriptorForSectionAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)geometryDescriptorForSectionAtIndexPath:(PXSimpleIndexPath *)path
 {
   sectionGeometryDescriptorsByIndexPath = self->_sectionGeometryDescriptorsByIndexPath;
-  v5 = *&a3->item;
-  v10[0] = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v10[0] = *&path->dataSourceIdentifier;
   v10[1] = v5;
   v6 = [MEMORY[0x1E696B098] px_valueWithSimpleIndexPath:v10];
   v7 = [(NSDictionary *)sectionGeometryDescriptorsByIndexPath objectForKeyedSubscript:v6];
@@ -593,29 +593,29 @@ LABEL_34:
   return CGRectOffset(*&x, v4, v6);
 }
 
-- (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)initWithLayout:(id)a3
+- (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v35.receiver = self;
   v35.super_class = PXCuratedLibraryLayoutSnapshotGeometryDescriptor;
   v5 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)&v35 init];
   if (v5)
   {
-    v6 = [v4 libraryBodyLayout];
-    v7 = [v6 presentedDataSource];
-    v5->_dataSourceIdentifier = [v7 identifier];
+    libraryBodyLayout = [layoutCopy libraryBodyLayout];
+    presentedDataSource = [libraryBodyLayout presentedDataSource];
+    v5->_dataSourceIdentifier = [presentedDataSource identifier];
 
-    v5->_zoomLevel = [v4 presentedZoomLevel];
-    [v4 presentedVisibleRect];
+    v5->_zoomLevel = [layoutCopy presentedZoomLevel];
+    [layoutCopy presentedVisibleRect];
     v5->_visibleRect.origin.x = v8;
     v5->_visibleRect.origin.y = v9;
     v5->_visibleRect.size.width = v10;
     v5->_visibleRect.size.height = v11;
     v5->_offset = *MEMORY[0x1E695EFF8];
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if (v6)
+    if (libraryBodyLayout)
     {
-      [v6 orientedContentTransform];
+      [libraryBodyLayout orientedContentTransform];
     }
 
     else
@@ -633,13 +633,13 @@ LABEL_34:
     v21 = 3221225472;
     v22 = __67__PXCuratedLibraryLayoutSnapshotGeometryDescriptor_initWithLayout___block_invoke;
     v23 = &unk_1E7741558;
-    v24 = v4;
+    v24 = layoutCopy;
     v13 = v5;
     v25 = v13;
-    v26 = v6;
+    v26 = libraryBodyLayout;
     v27 = v12;
     v14 = v12;
-    v15 = v6;
+    v15 = libraryBodyLayout;
     [v15 enumerateAssetsSectionSublayoutsUsingBlock:&v20];
     v16 = [v14 copy];
     sectionGeometryDescriptorsByIndexPath = v13->_sectionGeometryDescriptorsByIndexPath;
@@ -781,8 +781,8 @@ LABEL_20:
 
 - (PXCuratedLibraryLayoutSnapshotGeometryDescriptor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutSnapshotGeometryDescriptor.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXCuratedLibraryLayoutSnapshotGeometryDescriptor init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutSnapshotGeometryDescriptor.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXCuratedLibraryLayoutSnapshotGeometryDescriptor init]"}];
 
   abort();
 }

@@ -1,30 +1,30 @@
 @interface PKRewardsHubViewController
-- (PKRewardsHubViewController)initWithAccount:(id)a3 transactionSourceCollection:(id)a4 accountService:(id)a5;
+- (PKRewardsHubViewController)initWithAccount:(id)account transactionSourceCollection:(id)collection accountService:(id)service;
 - (id)_nonNilSections;
-- (void)navigateToRewardsHubDestination:(int64_t)a3;
-- (void)openURL:(id)a3 sensitive:(BOOL)a4 preferInApp:(BOOL)a5;
-- (void)preflightWithCompletion:(id)a3;
+- (void)navigateToRewardsHubDestination:(int64_t)destination;
+- (void)openURL:(id)l sensitive:(BOOL)sensitive preferInApp:(BOOL)app;
+- (void)preflightWithCompletion:(id)completion;
 - (void)presentEducationViewController;
-- (void)presentEnhancedMerchant:(id)a3;
-- (void)presentEnhancedMerchantsListWithCompletion:(id)a3;
-- (void)reportEventIfNecessary:(id)a3;
-- (void)scrollToPromotionWithProgramIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentEnhancedMerchant:(id)merchant;
+- (void)presentEnhancedMerchantsListWithCompletion:(id)completion;
+- (void)reportEventIfNecessary:(id)necessary;
+- (void)scrollToPromotionWithProgramIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PKRewardsHubViewController
 
-- (PKRewardsHubViewController)initWithAccount:(id)a3 transactionSourceCollection:(id)a4 accountService:(id)a5
+- (PKRewardsHubViewController)initWithAccount:(id)account transactionSourceCollection:(id)collection accountService:(id)service
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  collectionCopy = collection;
+  serviceCopy = service;
   v36.receiver = self;
   v36.super_class = PKRewardsHubViewController;
   v12 = [(PKDynamicCollectionViewController *)&v36 init];
@@ -32,32 +32,32 @@
   if (v12)
   {
     [(PKDynamicCollectionViewController *)v12 setUseItemIdentityWhenUpdating:1];
-    objc_storeStrong(&v13->_account, a3);
-    objc_storeStrong(&v13->_accountService, a5);
-    objc_storeStrong(&v13->_transactionSourceCollection, a4);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_accountService, service);
+    objc_storeStrong(&v13->_transactionSourceCollection, collection);
     v14 = [objc_alloc(MEMORY[0x1E69B9158]) initWithTransactionSourceCollection:v13->_transactionSourceCollection account:v13->_account];
     rewardsFetcher = v13->_rewardsFetcher;
     v13->_rewardsFetcher = v14;
 
     v16 = objc_alloc(MEMORY[0x1E69B8368]);
-    v17 = [(PKAccount *)v13->_account accountIdentifier];
-    v18 = [v16 initWithAccountIdentifier:v17 accountService:v13->_accountService];
+    accountIdentifier = [(PKAccount *)v13->_account accountIdentifier];
+    v18 = [v16 initWithAccountIdentifier:accountIdentifier accountService:v13->_accountService];
     enhancedMerchantsFetcher = v13->_enhancedMerchantsFetcher;
     v13->_enhancedMerchantsFetcher = v18;
 
-    v20 = [(PKAccount *)v13->_account showRewardsGraph];
+    showRewardsGraph = [(PKAccount *)v13->_account showRewardsGraph];
     v38[0] = @"PKRewardsHubSectionLifetimeSummary";
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
     v22 = v21;
-    if ((v20 & 1) == 0)
+    if ((showRewardsGraph & 1) == 0)
     {
       v23 = [v21 arrayByAddingObject:@"PKRewardsHubSectionDateRangeSummary"];
 
       v22 = v23;
     }
 
-    v24 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-    v25 = [[PKRewardsHubSummarySectionController alloc] initWithSectionIdentifiers:v22 rewardsFetcher:v13->_rewardsFetcher paymentDataProvider:v24 showRewardsGraph:v20 delegate:v13];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v25 = [[PKRewardsHubSummarySectionController alloc] initWithSectionIdentifiers:v22 rewardsFetcher:v13->_rewardsFetcher paymentDataProvider:defaultDataProvider showRewardsGraph:showRewardsGraph delegate:v13];
     summariesSectionController = v13->_summariesSectionController;
     v13->_summariesSectionController = v25;
 
@@ -93,10 +93,10 @@ void __89__PKRewardsHubViewController_initWithAccount_transactionSourceCollectio
   [v8 reloadDataWithoutRebuildingDataStores];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  completionCopy = completion;
   v4 = dispatch_group_create();
   v25[0] = 0;
   v25[1] = v25;
@@ -143,7 +143,7 @@ void __89__PKRewardsHubViewController_initWithAccount_transactionSourceCollectio
     while (v5);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -151,7 +151,7 @@ void __89__PKRewardsHubViewController_initWithAccount_transactionSourceCollectio
     block[3] = &unk_1E8014B30;
     block[4] = self;
     v12 = obj;
-    v13 = v9;
+    v13 = completionCopy;
     v14 = v25;
     dispatch_group_notify(v4, MEMORY[0x1E69E96A0], block);
   }
@@ -183,75 +183,75 @@ uint64_t __54__PKRewardsHubViewController_preflightWithCompletion___block_invoke
   v8.receiver = self;
   v8.super_class = PKRewardsHubViewController;
   [(PKDynamicCollectionViewController *)&v8 viewDidLoad];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v3 setShowsVerticalScrollIndicator:1];
-  [v3 setAlwaysBounceVertical:1];
-  [v3 setBounces:1];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:1];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [collectionView setBackgroundColor:v4];
 
-  v5 = [(PKRewardsHubViewController *)self navigationItem];
+  navigationItem = [(PKRewardsHubViewController *)self navigationItem];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v5 pkui_setupScrollEdgeChromelessAppearance];
-    [v5 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+    [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
   }
 
-  [v5 setLargeTitleDisplayMode:1];
+  [navigationItem setLargeTitleDisplayMode:1];
   v6 = PKLocalizedFeatureString();
-  [v5 setTitle:v6];
+  [navigationItem setTitle:v6];
 
-  v7 = [(PKRewardsHubViewController *)self view];
-  [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9B98]];
+  view = [(PKRewardsHubViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9B98]];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKRewardsHubViewController;
-  [(PKDynamicCollectionViewController *)&v6 viewWillAppear:a3];
-  v4 = [(PKRewardsHubViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setPrefersLargeTitles:1];
+  [(PKDynamicCollectionViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(PKRewardsHubViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKRewardsHubViewController;
-  [(PKDynamicCollectionViewController *)&v5 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v5 viewDidAppear:appear];
   v4 = [(PKDailyCashSelectionSectionController *)self->_dailyCashSelectionSectionController analyticsEventReportWithPreSelect:1];
   [v4 setObject:*MEMORY[0x1E69BA818] forKeyedSubscript:*MEMORY[0x1E69BA680]];
   [(PKRewardsHubViewController *)self reportEventIfNecessary:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKRewardsHubViewController;
-  [(PKRewardsHubViewController *)&v5 viewDidDisappear:a3];
+  [(PKRewardsHubViewController *)&v5 viewDidDisappear:disappear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA820];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKRewardsHubViewController *)self reportEventIfNecessary:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = PKRewardsHubViewController;
-  [(PKRewardsHubViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PKRewardsHubViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(PKDynamicCollectionViewController *)self reloadDataWithoutRebuildingDataStores];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKRewardsHubViewController;
   [(PKRewardsHubViewController *)&v9 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     v5 = *MEMORY[0x1E69BA6F0];
     v6 = *MEMORY[0x1E69BA440];
@@ -265,26 +265,26 @@ uint64_t __54__PKRewardsHubViewController_preflightWithCompletion___block_invoke
   }
 }
 
-- (void)scrollToPromotionWithProgramIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)scrollToPromotionWithProgramIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PKRewardsHubViewController_scrollToPromotionWithProgramIdentifier_animated_completion___block_invoke;
   aBlock[3] = &unk_1E8010AD8;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v7)
+  if (identifierCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __89__PKRewardsHubViewController_scrollToPromotionWithProgramIdentifier_animated_completion___block_invoke_2;
     v12[3] = &unk_1E8012300;
     v12[4] = self;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = v11;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
   }
@@ -318,28 +318,28 @@ void __89__PKRewardsHubViewController_scrollToPromotionWithProgramIdentifier_ani
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)navigateToRewardsHubDestination:(int64_t)a3
+- (void)navigateToRewardsHubDestination:(int64_t)destination
 {
-  if (a3 == 1)
+  if (destination == 1)
   {
     [(PKRewardsHubViewController *)self presentEnhancedMerchantsListWithCompletion:0];
   }
 }
 
-- (void)openURL:(id)a3 sensitive:(BOOL)a4 preferInApp:(BOOL)a5
+- (void)openURL:(id)l sensitive:(BOOL)sensitive preferInApp:(BOOL)app
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  appCopy = app;
+  sensitiveCopy = sensitive;
+  lCopy = l;
+  if (lCopy)
   {
-    v11 = v8;
-    if ([MEMORY[0x1E696F4A8] canHandleURL:v8])
+    v11 = lCopy;
+    if ([MEMORY[0x1E696F4A8] canHandleURL:lCopy])
     {
       [MEMORY[0x1E696F270] _openDefaultNavigationWithURL:v11 fromScene:0 completionHandler:0];
     }
 
-    else if (!v6 && v5 && PKIsURLHttpScheme())
+    else if (!sensitiveCopy && appCopy && PKIsURLHttpScheme())
     {
       v9 = [[PKBasicWebViewController alloc] initWithURL:v11];
       v10 = [[PKNavigationController alloc] initWithRootViewController:v9];
@@ -351,67 +351,67 @@ void __89__PKRewardsHubViewController_scrollToPromotionWithProgramIdentifier_ani
       PKOpenURL();
     }
 
-    v8 = v11;
+    lCopy = v11;
   }
 }
 
 - (void)presentEducationViewController
 {
-  v5 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v3 = [[PKRewardsEducationViewController alloc] initWithAccount:self->_account accountService:self->_accountService paymentPass:v5 enhancedMerchantsFetcher:self->_enhancedMerchantsFetcher];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v3 = [[PKRewardsEducationViewController alloc] initWithAccount:self->_account accountService:self->_accountService paymentPass:paymentPass enhancedMerchantsFetcher:self->_enhancedMerchantsFetcher];
   v4 = [[PKNavigationController alloc] initWithRootViewController:v3];
   [(PKRewardsHubViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)reportEventIfNecessary:(id)a3
+- (void)reportEventIfNecessary:(id)necessary
 {
-  v5 = [a3 mutableCopy];
+  v5 = [necessary mutableCopy];
   [v5 setObject:*MEMORY[0x1E69BA558] forKey:*MEMORY[0x1E69BABE8]];
   v3 = MEMORY[0x1E69B8540];
   v4 = [v5 copy];
   [v3 reportAccountRewardsEventIfNecessary:v4];
 }
 
-- (void)presentEnhancedMerchant:(id)a3
+- (void)presentEnhancedMerchant:(id)merchant
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  merchantCopy = merchant;
+  v5 = merchantCopy;
+  if (merchantCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__PKRewardsHubViewController_presentEnhancedMerchant___block_invoke;
     v6[3] = &unk_1E801EDA0;
-    v7 = v4;
+    v7 = merchantCopy;
     [(PKRewardsHubViewController *)self presentEnhancedMerchantsListWithCompletion:v6];
   }
 }
 
 - (id)_nonNilSections
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_summariesSectionController];
-  [v3 safelyAddObject:self->_dailyCashSelectionSectionController];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_summariesSectionController];
+  [array safelyAddObject:self->_dailyCashSelectionSectionController];
   if ([(PKAccount *)self->_account showEnhancedMerchants])
   {
-    [v3 safelyAddObject:self->_enhancedMerchantsShelfSectionController];
+    [array safelyAddObject:self->_enhancedMerchantsShelfSectionController];
   }
 
   if ([(PKAccount *)self->_account showCardPromotions])
   {
-    [v3 safelyAddObject:self->_promotionsSectionController];
+    [array safelyAddObject:self->_promotionsSectionController];
   }
 
-  v4 = [v3 copy];
+  v4 = [array copy];
 
   return v4;
 }
 
-- (void)presentEnhancedMerchantsListWithCompletion:(id)a3
+- (void)presentEnhancedMerchantsListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v6 = [[PKEnhancedMerchantsViewController alloc] initWithAccount:self->_account accountService:self->_accountService paymentPass:v5 enhancedMerchantsFetcher:self->_enhancedMerchantsFetcher];
+  completionCopy = completion;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v6 = [[PKEnhancedMerchantsViewController alloc] initWithAccount:self->_account accountService:self->_accountService paymentPass:paymentPass enhancedMerchantsFetcher:self->_enhancedMerchantsFetcher];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -420,7 +420,7 @@ void __89__PKRewardsHubViewController_scrollToPromotionWithProgramIdentifier_ani
   objc_copyWeak(&v16, &location);
   v7 = v6;
   v14 = v7;
-  v8 = v4;
+  v8 = completionCopy;
   v15 = v8;
   v9 = _Block_copy(aBlock);
   v11[0] = MEMORY[0x1E69E9820];

@@ -1,27 +1,27 @@
 @interface PALOngoingAccessIntervalState
-- (PALOngoingAccessIntervalState)initWithAccess:(id)a3 queue:(id)a4 applicationMetadataResolver:(id)a5 eligibleForMetricCollection:(BOOL)a6 startTimestamp:(unint64_t)a7;
+- (PALOngoingAccessIntervalState)initWithAccess:(id)access queue:(id)queue applicationMetadataResolver:(id)resolver eligibleForMetricCollection:(BOOL)collection startTimestamp:(unint64_t)timestamp;
 - (double)intervalSinceStart;
 - (void)dealloc;
 - (void)invalidate;
-- (void)recordAccessToAssetIdentifiers:(id)a3 withVisibilityState:(int64_t)a4 accessEventCount:(unint64_t)a5;
+- (void)recordAccessToAssetIdentifiers:(id)identifiers withVisibilityState:(int64_t)state accessEventCount:(unint64_t)count;
 @end
 
 @implementation PALOngoingAccessIntervalState
 
-- (PALOngoingAccessIntervalState)initWithAccess:(id)a3 queue:(id)a4 applicationMetadataResolver:(id)a5 eligibleForMetricCollection:(BOOL)a6 startTimestamp:(unint64_t)a7
+- (PALOngoingAccessIntervalState)initWithAccess:(id)access queue:(id)queue applicationMetadataResolver:(id)resolver eligibleForMetricCollection:(BOOL)collection startTimestamp:(unint64_t)timestamp
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  accessCopy = access;
+  queueCopy = queue;
+  resolverCopy = resolver;
   v34.receiver = self;
   v34.super_class = PALOngoingAccessIntervalState;
   v16 = [(PALOngoingAccessIntervalState *)&v34 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_access, a3);
-    v17->_eligibleForMetricCollection = a6;
-    v17->_startTimestamp = a7;
+    objc_storeStrong(&v16->_access, access);
+    v17->_eligibleForMetricCollection = collection;
+    v17->_startTimestamp = timestamp;
     v18 = os_transaction_create();
     transaction = v17->_transaction;
     v17->_transaction = v18;
@@ -29,11 +29,11 @@
     v20 = [PAAssetIdentifierPool alloc];
     v21 = PADefaultAssetIdentifierPoolMaxSize;
     v22 = PADefaultAssetIdentifierPoolAutoDrainInterval;
-    v23 = [v15 bundleRecordRetriever];
-    v24 = [v13 accessor];
-    v25 = (v23)[2](v23, v24);
-    v26 = [v15 aggregateVisibilityStateMonitor];
-    v27 = [v20 initWithMaxPoolSize:v21 autoDrainInterval:v25 bundleRecord:v26 aggregateVisibilityStateMonitor:v14 onQueue:v17 delegate:v22];
+    bundleRecordRetriever = [resolverCopy bundleRecordRetriever];
+    accessor = [accessCopy accessor];
+    v25 = (bundleRecordRetriever)[2](bundleRecordRetriever, accessor);
+    aggregateVisibilityStateMonitor = [resolverCopy aggregateVisibilityStateMonitor];
+    v27 = [v20 initWithMaxPoolSize:v21 autoDrainInterval:v25 bundleRecord:aggregateVisibilityStateMonitor aggregateVisibilityStateMonitor:queueCopy onQueue:v17 delegate:v22];
     assetIdentifierPool = v17->_assetIdentifierPool;
     v17->_assetIdentifierPool = v27;
 
@@ -72,30 +72,30 @@
   return result;
 }
 
-- (void)recordAccessToAssetIdentifiers:(id)a3 withVisibilityState:(int64_t)a4 accessEventCount:(unint64_t)a5
+- (void)recordAccessToAssetIdentifiers:(id)identifiers withVisibilityState:(int64_t)state accessEventCount:(unint64_t)count
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   if ([(PALOngoingAccessIntervalState *)self eligibleForMetricCollection])
   {
     eventCountByVisibilityState = self->_eventCountByVisibilityState;
-    v10 = [NSNumber numberWithInteger:a4];
+    v10 = [NSNumber numberWithInteger:state];
     v11 = [(NSMutableDictionary *)eventCountByVisibilityState objectForKeyedSubscript:v10];
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 integerValue] + a5);
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 integerValue] + count);
     v13 = self->_eventCountByVisibilityState;
-    v14 = [NSNumber numberWithInteger:a4];
+    v14 = [NSNumber numberWithInteger:state];
     [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
 
-    if ([v8 count])
+    if ([identifiersCopy count])
     {
       assetIdentifierHashesByVisibilityState = self->_assetIdentifierHashesByVisibilityState;
-      v16 = [NSNumber numberWithInteger:a4];
+      v16 = [NSNumber numberWithInteger:state];
       v17 = [(NSMutableDictionary *)assetIdentifierHashesByVisibilityState objectForKeyedSubscript:v16];
 
       if (!v17)
       {
         v17 = +[NSMutableSet set];
         v18 = self->_assetIdentifierHashesByVisibilityState;
-        v19 = [NSNumber numberWithInteger:a4];
+        v19 = [NSNumber numberWithInteger:state];
         [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v19];
       }
 
@@ -103,7 +103,7 @@
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v20 = v8;
+      v20 = identifiersCopy;
       v21 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v21)
       {

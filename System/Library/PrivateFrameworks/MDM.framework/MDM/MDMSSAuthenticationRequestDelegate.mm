@@ -1,17 +1,17 @@
 @interface MDMSSAuthenticationRequestDelegate
-+ (id)instanceWithAuthenticationContext:(id)a3;
++ (id)instanceWithAuthenticationContext:(id)context;
 - (id)storeLoginFailedError;
-- (void)authenticateRequest:(id)a3 didReceiveResponse:(id)a4;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)authenticateRequest:(id)request didReceiveResponse:(id)response;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation MDMSSAuthenticationRequestDelegate
 
-+ (id)instanceWithAuthenticationContext:(id)a3
++ (id)instanceWithAuthenticationContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [MDMSSAuthenticationRequestDelegate alloc];
-  v5 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:v3];
+  v5 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:contextCopy];
 
   v6 = [(MDMSSRequestDelegate *)v4 initWithRequest:v5];
 
@@ -28,10 +28,10 @@
   return v5;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = +[MDMMCInterface isLimitedAppsMode];
   v6 = *DMCLogObjects();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -43,10 +43,10 @@
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_DEFAULT, "Not prompting for iTunes account in a limited apps mode.", buf, 2u);
     }
 
-    if (v4)
+    if (blockCopy)
     {
-      v8 = [(MDMSSAuthenticationRequestDelegate *)self storeLoginFailedError];
-      v4[2](v4, v8, 0);
+      storeLoginFailedError = [(MDMSSAuthenticationRequestDelegate *)self storeLoginFailedError];
+      blockCopy[2](blockCopy, storeLoginFailedError, 0);
     }
   }
 
@@ -66,7 +66,7 @@
     v12[2] = __63__MDMSSAuthenticationRequestDelegate_startWithCompletionBlock___block_invoke;
     v12[3] = &unk_27982D0B8;
     v12[4] = self;
-    v13 = v4;
+    v13 = blockCopy;
     [(MDMSSRequestDelegate *)self _startTimeout:v12 completionBlock:900.0];
   }
 
@@ -102,13 +102,13 @@ void __63__MDMSSAuthenticationRequestDelegate_startWithCompletionBlock___block_i
   }
 }
 
-- (void)authenticateRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)authenticateRequest:(id)request didReceiveResponse:(id)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 authenticateResponseType];
+  responseCopy = response;
+  authenticateResponseType = [responseCopy authenticateResponseType];
   v7 = *DMCLogObjects();
-  if (v6 == 4)
+  if (authenticateResponseType == 4)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -116,16 +116,16 @@ void __63__MDMSSAuthenticationRequestDelegate_startWithCompletionBlock___block_i
       _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEFAULT, "User successfully logged into iTunes account.", &v12, 2u);
     }
 
-    v8 = [v5 authenticatedAccount];
+    authenticatedAccount = [responseCopy authenticatedAccount];
     authenticatedAccount = self->_authenticatedAccount;
-    self->_authenticatedAccount = v8;
+    self->_authenticatedAccount = authenticatedAccount;
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v10 = v7;
     v12 = 134217984;
-    v13 = [v5 authenticateResponseType];
+    authenticateResponseType2 = [responseCopy authenticateResponseType];
     _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_ERROR, "User failed to log into iTunes account. Reason code: %ld", &v12, 0xCu);
   }
 

@@ -1,15 +1,15 @@
 @interface LocationSearch.SearchModelWrapper
-- (BOOL)shouldIncludeConferenceRoom:(id)a3;
-- (BOOL)shouldIssueAvailabilityRequestForSearchModel:(id)a3;
+- (BOOL)shouldIncludeConferenceRoom:(id)room;
+- (BOOL)shouldIssueAvailabilityRequestForSearchModel:(id)model;
 - (_TtCV8EventKit14LocationSearch18SearchModelWrapper)init;
-- (id)eventIDForSearchModel:(id)a3;
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5;
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4;
+- (id)eventIDForSearchModel:(id)model;
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error;
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types;
 @end
 
 @implementation LocationSearch.SearchModelWrapper
 
-- (id)eventIDForSearchModel:(id)a3
+- (id)eventIDForSearchModel:(id)model
 {
   sub_1A81ACD84();
   sub_1A81ACD74();
@@ -35,7 +35,7 @@
   return v5;
 }
 
-- (BOOL)shouldIssueAvailabilityRequestForSearchModel:(id)a3
+- (BOOL)shouldIssueAvailabilityRequestForSearchModel:(id)model
 {
   sub_1A81ACD84();
   sub_1A81ACD74();
@@ -50,7 +50,7 @@
   return v4;
 }
 
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error
 {
   sub_1A81ACD84();
   sub_1A81ACD74();
@@ -61,7 +61,7 @@
   }
 }
 
-- (BOOL)shouldIncludeConferenceRoom:(id)a3
+- (BOOL)shouldIncludeConferenceRoom:(id)room
 {
   sub_1A81ACD84();
   sub_1A81ACD74();
@@ -71,14 +71,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1A818760C(v5);
+  roomCopy = room;
+  selfCopy = self;
+  v7 = sub_1A818760C(roomCopy);
 
   return v7 & 1;
 }
 
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types
 {
   sub_1A81ACD84();
   sub_1A81ACD74();
@@ -88,9 +88,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a3;
-  v7 = self;
-  if (([v6 resultsPending] & 1) == 0)
+  modelCopy = model;
+  selfCopy = self;
+  if (([modelCopy resultsPending] & 1) == 0)
   {
     sub_1A81878B0();
   }

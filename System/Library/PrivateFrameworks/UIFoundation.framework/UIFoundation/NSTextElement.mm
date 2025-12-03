@@ -1,10 +1,10 @@
 @interface NSTextElement
-+ (int64_t)_searchElements:(id)a3 forLocation:(id)a4;
++ (int64_t)_searchElements:(id)elements forLocation:(id)location;
 - (BOOL)isBeginningOfDocument;
 - (BOOL)isEndOfDocument;
-- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)a3;
+- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)manager;
 - (NSTextElement)initWithTextContentManager:(NSTextContentManager *)textContentManager;
-- (id)childTextElementForLocation:(id)a3 elementIndex:(int64_t *)a4;
+- (id)childTextElementForLocation:(id)location elementIndex:(int64_t *)index;
 - (void)dealloc;
 - (void)setTextContentManager:(NSTextContentManager *)textContentManager;
 @end
@@ -33,39 +33,39 @@
 
 - (BOOL)isBeginningOfDocument
 {
-  v3 = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] documentRange];
-  if (v3)
+  documentRange = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] documentRange];
+  if (documentRange)
   {
-    LODWORD(v3) = [-[NSTextRange location](v3 "location")];
-    if (v3)
+    LODWORD(documentRange) = [-[NSTextRange location](documentRange "location")];
+    if (documentRange)
     {
-      v4 = [(NSTextElement *)self parentElement];
-      if (v4)
+      parentElement = [(NSTextElement *)self parentElement];
+      if (parentElement)
       {
-        v5 = v4;
+        parentElement2 = parentElement;
         do
         {
-          v6 = [(NSTextElement *)v5 isRepresentedElement];
-          if (v6)
+          isRepresentedElement = [(NSTextElement *)parentElement2 isRepresentedElement];
+          if (isRepresentedElement)
           {
             break;
           }
 
-          v5 = [(NSTextElement *)v5 parentElement];
+          parentElement2 = [(NSTextElement *)parentElement2 parentElement];
         }
 
-        while (v5);
-        LOBYTE(v3) = !v6;
+        while (parentElement2);
+        LOBYTE(documentRange) = !isRepresentedElement;
       }
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(documentRange) = 1;
       }
     }
   }
 
-  return v3;
+  return documentRange;
 }
 
 - (NSTextElement)initWithTextContentManager:(NSTextContentManager *)textContentManager
@@ -90,19 +90,19 @@
   if (v5 != textContentManager)
   {
     objc_storeWeak(p_textContentManager, textContentManager);
-    v7 = [(NSTextElement *)self childElements];
+    childElements = [(NSTextElement *)self childElements];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__NSTextElement_setTextContentManager___block_invoke;
     v8[3] = &unk_1E7266F70;
     v8[4] = textContentManager;
-    [(NSArray *)v7 enumerateObjectsUsingBlock:v8];
+    [(NSArray *)childElements enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)a3
+- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)manager
 {
-  v3 = [a3 textContainerForLocation:{-[NSTextRange location](-[NSTextElement elementRange](self, "elementRange"), "location")}];
+  v3 = [manager textContainerForLocation:{-[NSTextRange location](-[NSTextElement elementRange](self, "elementRange"), "location")}];
   v5 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
   if (v3)
@@ -123,28 +123,28 @@
   return result;
 }
 
-+ (int64_t)_searchElements:(id)a3 forLocation:(id)a4
++ (int64_t)_searchElements:(id)elements forLocation:(id)location
 {
-  if (!a3)
+  if (!elements)
   {
-    [NSTextElement _searchElements:a2 forLocation:a1];
-    if (a4)
+    [NSTextElement _searchElements:a2 forLocation:self];
+    if (location)
     {
       goto LABEL_3;
     }
 
 LABEL_18:
-    [NSTextElement _searchElements:a2 forLocation:a1];
+    [NSTextElement _searchElements:a2 forLocation:self];
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!location)
   {
     goto LABEL_18;
   }
 
 LABEL_3:
-  v8 = [a3 count] - 1;
+  v8 = [elements count] - 1;
   if (v8 < 0)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -154,15 +154,15 @@ LABEL_3:
   while (1)
   {
     v10 = v9 + (v8 - v9) / 2;
-    v11 = [a3 objectAtIndexedSubscript:v10];
-    v12 = [v11 elementRange];
-    if ([a4 compare:{objc_msgSend(v12, "location")}] == -1)
+    v11 = [elements objectAtIndexedSubscript:v10];
+    elementRange = [v11 elementRange];
+    if ([location compare:{objc_msgSend(elementRange, "location")}] == -1)
     {
       v8 = v10 - 1;
       goto LABEL_9;
     }
 
-    if ([a4 compare:{objc_msgSend(v12, "endLocation")}] == -1)
+    if ([location compare:{objc_msgSend(elementRange, "endLocation")}] == -1)
     {
       break;
     }
@@ -177,7 +177,7 @@ LABEL_9:
 
   if (v11 || v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v11 && [a3 indexOfObject:v11] != v10)
+    if (v11 && [elements indexOfObject:v11] != v10)
     {
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
@@ -185,23 +185,23 @@ LABEL_9:
 
   else
   {
-    [(NSTextElement *)a2 _searchElements:a1 forLocation:v9 + (v8 - v9) / 2];
+    [(NSTextElement *)a2 _searchElements:self forLocation:v9 + (v8 - v9) / 2];
   }
 
   return v10;
 }
 
-- (id)childTextElementForLocation:(id)a3 elementIndex:(int64_t *)a4
+- (id)childTextElementForLocation:(id)location elementIndex:(int64_t *)index
 {
-  v6 = [(NSTextElement *)self childElements];
-  if (![(NSArray *)v6 count])
+  childElements = [(NSTextElement *)self childElements];
+  if (![(NSArray *)childElements count])
   {
     return 0;
   }
 
   do
   {
-    v7 = [(NSArray *)v6 count]- 1;
+    v7 = [(NSArray *)childElements count]- 1;
     if (v7 < 0)
     {
 LABEL_9:
@@ -213,15 +213,15 @@ LABEL_9:
     while (1)
     {
       v9 = v8 + (v7 - v8) / 2;
-      v10 = [(NSArray *)v6 objectAtIndexedSubscript:v9];
-      v11 = [v10 elementRange];
-      if ([a3 compare:{objc_msgSend(v11, "location")}] == -1)
+      v10 = [(NSArray *)childElements objectAtIndexedSubscript:v9];
+      elementRange = [v10 elementRange];
+      if ([location compare:{objc_msgSend(elementRange, "location")}] == -1)
       {
         v7 = v9 - 1;
         goto LABEL_8;
       }
 
-      if ([a3 compare:{objc_msgSend(v11, "endLocation")}] == -1)
+      if ([location compare:{objc_msgSend(elementRange, "endLocation")}] == -1)
       {
         break;
       }
@@ -234,12 +234,12 @@ LABEL_8:
       }
     }
 
-    *a4 = v9;
+    *index = v9;
 LABEL_11:
-    v6 = [v10 childElements];
+    childElements = [v10 childElements];
   }
 
-  while ([(NSArray *)v6 count]);
+  while ([(NSArray *)childElements count]);
   return v10;
 }
 

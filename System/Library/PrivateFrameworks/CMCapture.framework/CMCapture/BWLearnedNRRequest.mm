@@ -1,7 +1,7 @@
 @interface BWLearnedNRRequest
 - (id)description;
 - (void)dealloc;
-- (void)initWithInput:(void *)a3 delegate:;
+- (void)initWithInput:(void *)input delegate:;
 @end
 
 @implementation BWLearnedNRRequest
@@ -20,20 +20,20 @@
   return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@", v4, self, -[BWStillImageCaptureSettings settingsID](-[BWStillImageProcessorControllerInput captureSettings](self->_input, "captureSettings"), "settingsID"), BWPhotoEncoderStringFromEncodingScheme(-[BWStillImageCaptureStreamSettings captureType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "captureType")), -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "portType")];
 }
 
-- (void)initWithInput:(void *)a3 delegate:
+- (void)initWithInput:(void *)input delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = BWLearnedNRRequest;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = input;
   }
 
   return v5;

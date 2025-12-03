@@ -1,24 +1,24 @@
 @interface SUUISettingsContext
 - (SUUIClientContext)clientContext;
-- (SUUISettingsContext)initWithClientContext:(id)a3;
-- (id)_dequeueReusableSettingDescriptionWithReuseIdentifier:(id)a3 forViewElement:(id)a4 parent:(id)a5;
-- (id)dequeueReusableSettingDescriptionForViewElement:(id)a3 parent:(id)a4;
+- (SUUISettingsContext)initWithClientContext:(id)context;
+- (id)_dequeueReusableSettingDescriptionWithReuseIdentifier:(id)identifier forViewElement:(id)element parent:(id)parent;
+- (id)dequeueReusableSettingDescriptionForViewElement:(id)element parent:(id)parent;
 - (void)_registerReuseClasses;
-- (void)recycleSettingDescriptions:(id)a3;
+- (void)recycleSettingDescriptions:(id)descriptions;
 @end
 
 @implementation SUUISettingsContext
 
-- (SUUISettingsContext)initWithClientContext:(id)a3
+- (SUUISettingsContext)initWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = SUUISettingsContext;
   v5 = [(SUUISettingsContext *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_clientContext, v4);
+    objc_storeWeak(&v5->_clientContext, contextCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     elementTypeClass = v6->_elementTypeClass;
     v6->_elementTypeClass = v7;
@@ -37,22 +37,22 @@
   return v6;
 }
 
-- (id)dequeueReusableSettingDescriptionForViewElement:(id)a3 parent:(id)a4
+- (id)dequeueReusableSettingDescriptionForViewElement:(id)element parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 elementType];
+  elementCopy = element;
+  parentCopy = parent;
+  elementType = [elementCopy elementType];
   v9 = 0;
-  if (v8 <= 111)
+  if (elementType <= 111)
   {
-    if (v8 == 66)
+    if (elementType == 66)
     {
       v10 = @"default";
     }
 
     else
     {
-      if (v8 != 111)
+      if (elementType != 111)
       {
         goto LABEL_13;
       }
@@ -63,7 +63,7 @@
 
   else
   {
-    switch(v8)
+    switch(elementType)
     {
       case 'p':
         v10 = @"family";
@@ -79,21 +79,21 @@
     }
   }
 
-  v9 = [(SUUISettingsContext *)self _dequeueReusableSettingDescriptionWithReuseIdentifier:v10 forViewElement:v6 parent:v7];
+  v9 = [(SUUISettingsContext *)self _dequeueReusableSettingDescriptionWithReuseIdentifier:v10 forViewElement:elementCopy parent:parentCopy];
 LABEL_13:
 
   return v9;
 }
 
-- (void)recycleSettingDescriptions:(id)a3
+- (void)recycleSettingDescriptions:(id)descriptions
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionsCopy = descriptions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [descriptionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,36 +105,36 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(descriptionsCopy);
         }
 
         [(NSMutableArray *)self->_descriptionReusePool addObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [descriptionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_dequeueReusableSettingDescriptionWithReuseIdentifier:(id)a3 forViewElement:(id)a4 parent:(id)a5
+- (id)_dequeueReusableSettingDescriptionWithReuseIdentifier:(id)identifier forViewElement:(id)element parent:(id)parent
 {
-  v8 = a3;
+  identifierCopy = identifier;
   descriptionReusePool = self->_descriptionReusePool;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __99__SUUISettingsContext__dequeueReusableSettingDescriptionWithReuseIdentifier_forViewElement_parent___block_invoke;
   v17[3] = &unk_2798FB268;
-  v18 = v8;
-  v10 = v8;
-  v11 = a5;
-  v12 = a4;
+  v18 = identifierCopy;
+  v10 = identifierCopy;
+  parentCopy = parent;
+  elementCopy = element;
   v13 = [(NSMutableArray *)descriptionReusePool indexOfObjectPassingTest:v17];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [objc_alloc(-[NSMutableDictionary objectForKey:](self->_elementTypeClass objectForKey:{v10)), "initWithViewElement:parent:", v12, v11}];
+    v14 = [objc_alloc(-[NSMutableDictionary objectForKey:](self->_elementTypeClass objectForKey:{v10)), "initWithViewElement:parent:", elementCopy, parentCopy}];
 
     objc_setAssociatedObject(v14, "com.apple.iTunesStoreUI.SUUISettingsContext.reuseIdentifier", v10, 1);
   }
@@ -144,7 +144,7 @@ LABEL_13:
     v15 = v13;
     v14 = [(NSMutableArray *)self->_descriptionReusePool objectAtIndex:v13];
     [(NSMutableArray *)self->_descriptionReusePool removeObjectAtIndex:v15];
-    [v14 reloadWithViewElement:v12 parent:v11];
+    [v14 reloadWithViewElement:elementCopy parent:parentCopy];
   }
 
   return v14;

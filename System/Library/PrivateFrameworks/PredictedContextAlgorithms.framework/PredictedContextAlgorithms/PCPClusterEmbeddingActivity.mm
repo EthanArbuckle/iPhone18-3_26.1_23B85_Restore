@@ -1,12 +1,12 @@
 @interface PCPClusterEmbeddingActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPClusterEmbeddingActivity
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = PCPClusterEmbeddingActivity;
   v4 = [(PCPClusterEmbeddingActivity *)&v8 description];
-  v5 = [(PCPClusterEmbeddingActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPClusterEmbeddingActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   activityType = self->_activityType;
   if (activityType)
   {
-    [v3 setObject:activityType forKey:@"activityType"];
+    [dictionary setObject:activityType forKey:@"activityType"];
   }
 
   if (*&self->_has)
@@ -54,69 +54,69 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_activityType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     startTimeCFAbsolute = self->_startTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hkObjectUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sourceBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_activityType)
   {
-    [v4 setActivityType:?];
-    v4 = v5;
+    [toCopy setActivityType:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_startTimeCFAbsolute;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_startTimeCFAbsolute;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_hkObjectUUID)
   {
     [v5 setHkObjectUUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sourceBundleIdentifier)
   {
     [v5 setSourceBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_activityType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_activityType copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -126,27 +126,27 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSData *)self->_hkObjectUUID copyWithZone:a3];
+  v8 = [(NSData *)self->_hkObjectUUID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   activityType = self->_activityType;
-  if (activityType | *(v4 + 2))
+  if (activityType | *(equalCopy + 2))
   {
     if (![(NSString *)activityType isEqual:?])
     {
@@ -154,16 +154,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_startTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -171,13 +171,13 @@ LABEL_13:
   }
 
   hkObjectUUID = self->_hkObjectUUID;
-  if (hkObjectUUID | *(v4 + 3) && ![(NSData *)hkObjectUUID isEqual:?])
+  if (hkObjectUUID | *(equalCopy + 3) && ![(NSData *)hkObjectUUID isEqual:?])
   {
     goto LABEL_13;
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  if (sourceBundleIdentifier | *(v4 + 4))
+  if (sourceBundleIdentifier | *(equalCopy + 4))
   {
     v9 = [(NSString *)sourceBundleIdentifier isEqual:?];
   }
@@ -233,32 +233,32 @@ LABEL_14:
   return v10 ^ v11 ^ [(NSString *)self->_sourceBundleIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PCPClusterEmbeddingActivity *)self setActivityType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_startTimeCFAbsolute = v4[1];
+    self->_startTimeCFAbsolute = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PCPClusterEmbeddingActivity *)self setHkObjectUUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PCPClusterEmbeddingActivity *)self setSourceBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

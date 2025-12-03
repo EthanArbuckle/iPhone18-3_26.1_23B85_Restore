@@ -3,39 +3,39 @@
 - (BOOL)isPlaceholderAccount;
 - (BOOL)isRestrictedByApple;
 - (BOOL)shouldSendNotification;
-- (DSIDRecord)initWithDSID:(id)a3 serializedRecord:(id)a4 version:(int)a5;
+- (DSIDRecord)initWithDSID:(id)d serializedRecord:(id)record version:(int)version;
 - (id)_parseItunesFlags;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)encryptedIDForClientType:(int64_t)a3;
+- (id)encryptedIDForClientType:(int64_t)type;
 - (id)idAccountsDictionaryRepresentation;
-- (id)idForClientType:(int64_t)a3;
-- (void)setAccountAgeUnknown:(BOOL)a3;
-- (void)setAccountIsT13:(BOOL)a3;
-- (void)setAccountIsU13:(BOOL)a3;
-- (void)setAccountIsU18:(BOOL)a3;
-- (void)setActualBirthYear:(int)a3;
-- (void)setDeviceIDRotationTimestamp:(int)a3;
-- (void)setDirty:(BOOL)a3;
-- (void)setEffectiveBirthYear:(int)a3;
-- (void)setID:(id)a3 forClientType:(int64_t)a4;
-- (void)setIsDPIDLocal:(BOOL)a3;
-- (void)setIsDPIDManatee:(BOOL)a3;
-- (void)setIsProtoTeen:(BOOL)a3;
-- (void)setIsProtoU13:(BOOL)a3;
-- (void)setIso3166Code:(id)a3;
-- (void)setLastJingleAccountStatus:(int64_t)a3;
-- (void)setLastSegmentServedTimestamp:(int)a3;
-- (void)setLastSentPersonalizedAdsStatus:(BOOL)a3;
-- (void)setLastSentPersonalizedAdsTimestamp:(int)a3;
-- (void)setLastSentSegmentDataTimestamp:(int)a3;
-- (void)setNextReconcileTimestamp:(int)a3;
-- (void)setNoiseAppliedVersion:(int)a3;
-- (void)setPersonalizedAdsTimestamp:(int)a3;
-- (void)setSegmentData:(id)a3;
-- (void)setSegmentDataTimestamp:(int)a3;
-- (void)setSensitiveContentEligible:(BOOL)a3;
+- (id)idForClientType:(int64_t)type;
+- (void)setAccountAgeUnknown:(BOOL)unknown;
+- (void)setAccountIsT13:(BOOL)t13;
+- (void)setAccountIsU13:(BOOL)u13;
+- (void)setAccountIsU18:(BOOL)u18;
+- (void)setActualBirthYear:(int)year;
+- (void)setDeviceIDRotationTimestamp:(int)timestamp;
+- (void)setDirty:(BOOL)dirty;
+- (void)setEffectiveBirthYear:(int)year;
+- (void)setID:(id)d forClientType:(int64_t)type;
+- (void)setIsDPIDLocal:(BOOL)local;
+- (void)setIsDPIDManatee:(BOOL)manatee;
+- (void)setIsProtoTeen:(BOOL)teen;
+- (void)setIsProtoU13:(BOOL)u13;
+- (void)setIso3166Code:(id)code;
+- (void)setLastJingleAccountStatus:(int64_t)status;
+- (void)setLastSegmentServedTimestamp:(int)timestamp;
+- (void)setLastSentPersonalizedAdsStatus:(BOOL)status;
+- (void)setLastSentPersonalizedAdsTimestamp:(int)timestamp;
+- (void)setLastSentSegmentDataTimestamp:(int)timestamp;
+- (void)setNextReconcileTimestamp:(int)timestamp;
+- (void)setNoiseAppliedVersion:(int)version;
+- (void)setPersonalizedAdsTimestamp:(int)timestamp;
+- (void)setSegmentData:(id)data;
+- (void)setSegmentDataTimestamp:(int)timestamp;
+- (void)setSensitiveContentEligible:(BOOL)eligible;
 @end
 
 @implementation DSIDRecord
@@ -48,16 +48,16 @@
   v6 = [(DSIDRecord *)self idForClientType:4];
   v7 = [(DSIDRecord *)self idForClientType:5];
   v8 = [(DSIDRecord *)self idForClientType:0];
-  v9 = [(DSIDRecord *)self _parseItunesFlags];
-  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v9];
+  _parseItunesFlags = [(DSIDRecord *)self _parseItunesFlags];
+  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:_parseItunesFlags];
   [v10 setValue:v3 forKey:@"deviceNewsPlusSubscriberID"];
   [v10 setValue:v4 forKey:@"anonymousDemandID"];
   [v10 setValue:v5 forKey:@"contentID"];
   [v10 setValue:v6 forKey:@"toroID"];
   [v10 setValue:v7 forKey:@"DPID"];
   [v10 setValue:v8 forKey:@"iAdID"];
-  v11 = [(DSIDRecord *)self segmentData];
-  [v10 setValue:v11 forKey:@"segmentData"];
+  segmentData = [(DSIDRecord *)self segmentData];
+  [v10 setValue:segmentData forKey:@"segmentData"];
 
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v10];
 
@@ -67,21 +67,21 @@
 - (id)_parseItunesFlags
 {
   v34[14] = *MEMORY[0x277D85DE8];
-  v3 = [(DSIDRecord *)self DSID];
-  v31 = [(DSIDRecord *)self iCloudDSID];
-  v32 = v3;
-  v4 = [v3 isEqualToString:?];
-  v5 = [(DSIDRecord *)self accountAgeUnknown];
-  if (v5)
+  dSID = [(DSIDRecord *)self DSID];
+  iCloudDSID = [(DSIDRecord *)self iCloudDSID];
+  v32 = dSID;
+  v4 = [dSID isEqualToString:?];
+  accountAgeUnknown = [(DSIDRecord *)self accountAgeUnknown];
+  if (accountAgeUnknown)
   {
     v6 = 0;
     v7 = 0;
-    v8 = 0;
+    accountIsU13 = 0;
   }
 
   else
   {
-    v8 = [(DSIDRecord *)self accountIsU13];
+    accountIsU13 = [(DSIDRecord *)self accountIsU13];
     if ([(DSIDRecord *)self accountIsU18]&& [(DSIDRecord *)self accountIsT13])
     {
       v7 = 1;
@@ -110,10 +110,10 @@
 
   v23 = +[ADCoreSettings sharedInstance];
   v33[0] = @"iTunesDSID";
-  v30 = [(DSIDRecord *)self DSID];
-  v34[0] = v30;
+  dSID2 = [(DSIDRecord *)self DSID];
+  v34[0] = dSID2;
   v33[1] = @"isChild";
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:accountIsU13];
   v34[1] = v29;
   v33[2] = @"isAdolescent";
   v28 = [MEMORY[0x277CCABB0] numberWithBool:v7];
@@ -122,17 +122,17 @@
   v27 = [MEMORY[0x277CCABB0] numberWithBool:v6];
   v34[3] = v27;
   v33[4] = @"ageUnknown";
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:accountAgeUnknown];
   v34[4] = v26;
   v33[5] = @"isiCloudLoggedIn";
   v9 = MEMORY[0x277CCABB0];
-  v25 = [(DSIDRecord *)self iCloudDSID];
-  v24 = [v9 numberWithInt:v25 != 0];
+  iCloudDSID2 = [(DSIDRecord *)self iCloudDSID];
+  v24 = [v9 numberWithInt:iCloudDSID2 != 0];
   v34[5] = v24;
   v33[6] = @"isiTunesLoggedIn";
   v10 = MEMORY[0x277CCABB0];
-  v22 = [(DSIDRecord *)self DSID];
-  v11 = [v10 numberWithInt:v22 != 0];
+  dSID3 = [(DSIDRecord *)self DSID];
+  v11 = [v10 numberWithInt:dSID3 != 0];
   v34[6] = v11;
   v33[7] = @"isiCloudSameAsiTunes";
   v12 = [MEMORY[0x277CCABB0] numberWithBool:v4];
@@ -162,11 +162,11 @@
   return v19;
 }
 
-- (DSIDRecord)initWithDSID:(id)a3 serializedRecord:(id)a4 version:(int)a5
+- (DSIDRecord)initWithDSID:(id)d serializedRecord:(id)record version:(int)version
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dCopy = d;
+  recordCopy = record;
+  if (dCopy)
   {
     v58.receiver = self;
     v58.super_class = DSIDRecord;
@@ -174,79 +174,79 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_DSID, a3);
+      objc_storeStrong(&v10->_DSID, d);
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
       ADIDRecords = v11->_ADIDRecords;
       v11->_ADIDRecords = v12;
 
       v11->_lastJingleAccountStatus = -1;
-      if (v9)
+      if (recordCopy)
       {
-        v14 = [v9 valueForKey:@"kADDSIDRecord_AccountIs13Key"];
+        v14 = [recordCopy valueForKey:@"kADDSIDRecord_AccountIs13Key"];
         v11->_accountIsT13 = [v14 BOOLValue];
 
-        v15 = [v9 valueForKey:@"kADDSIDRecord_AccountIsU13Key"];
+        v15 = [recordCopy valueForKey:@"kADDSIDRecord_AccountIsU13Key"];
         v11->_accountIsU13 = [v15 BOOLValue];
 
-        v16 = [v9 valueForKey:@"kADDSIDRecord_AccountIsU18Key"];
+        v16 = [recordCopy valueForKey:@"kADDSIDRecord_AccountIsU18Key"];
         v11->_accountIsU18 = [v16 BOOLValue];
 
-        v17 = [v9 valueForKey:@"kADDSIDRecord_AccountAgeUnknownKey"];
+        v17 = [recordCopy valueForKey:@"kADDSIDRecord_AccountAgeUnknownKey"];
         v11->_accountAgeUnknown = [v17 BOOLValue];
 
-        v18 = [v9 valueForKey:@"kADDSIDRecord_SensitiveContentEligibleKey"];
+        v18 = [recordCopy valueForKey:@"kADDSIDRecord_SensitiveContentEligibleKey"];
         v11->_sensitiveContentEligible = [v18 BOOLValue];
 
-        v19 = [v9 valueForKey:@"kADDSIDRecord_AccountIsProtoU13Key"];
+        v19 = [recordCopy valueForKey:@"kADDSIDRecord_AccountIsProtoU13Key"];
         v11->_isProtoU13 = [v19 BOOLValue];
 
-        v20 = [v9 valueForKey:@"kADDSIDRecord_AccountIsProtoTeenKey"];
+        v20 = [recordCopy valueForKey:@"kADDSIDRecord_AccountIsProtoTeenKey"];
         v11->_isProtoTeen = [v20 BOOLValue];
 
-        v21 = [v9 valueForKey:@"kADDSIDRecord_EffectiveBirthYearKey"];
+        v21 = [recordCopy valueForKey:@"kADDSIDRecord_EffectiveBirthYearKey"];
         v11->_effectiveBirthYear = [v21 intValue];
 
-        v22 = [v9 valueForKey:@"kADDSIDRecord_ActualBirthYearKey"];
+        v22 = [recordCopy valueForKey:@"kADDSIDRecord_ActualBirthYearKey"];
         v11->_actualBirthYear = [v22 intValue];
 
-        v23 = [v9 valueForKey:@"kADDSIDRecord_ISO3166CodeKey"];
+        v23 = [recordCopy valueForKey:@"kADDSIDRecord_ISO3166CodeKey"];
         iso3166Code = v11->_iso3166Code;
         v11->_iso3166Code = v23;
 
-        v25 = [v9 valueForKey:@"kADDSIDRecord_NoiseAppliedVersionKey"];
+        v25 = [recordCopy valueForKey:@"kADDSIDRecord_NoiseAppliedVersionKey"];
         v11->_noiseAppliedVersion = [v25 intValue];
 
-        v26 = [v9 valueForKey:@"kADDSIDRecord_IsDPIDManatee"];
+        v26 = [recordCopy valueForKey:@"kADDSIDRecord_IsDPIDManatee"];
         v11->_isDPIDManatee = [v26 BOOLValue];
 
-        v27 = [v9 valueForKey:@"kADDSIDRecord_IsDPIDLocal"];
+        v27 = [recordCopy valueForKey:@"kADDSIDRecord_IsDPIDLocal"];
         v11->_isDPIDLocal = [v27 BOOLValue];
 
-        v28 = [v9 valueForKey:@"kADDSIDRecord_PersonalizedAdsTimestampKey"];
+        v28 = [recordCopy valueForKey:@"kADDSIDRecord_PersonalizedAdsTimestampKey"];
         v11->_personalizedAdsTimestamp = [v28 intValue];
 
-        v29 = [v9 valueForKey:@"kADDSIDRecord_LastJingleAccountStatusKey"];
+        v29 = [recordCopy valueForKey:@"kADDSIDRecord_LastJingleAccountStatusKey"];
         v11->_lastJingleAccountStatus = [v29 integerValue];
 
-        v30 = [v9 valueForKey:@"kADiAdIDRecord_LastSentPersonalizedAdsStatusKey"];
+        v30 = [recordCopy valueForKey:@"kADiAdIDRecord_LastSentPersonalizedAdsStatusKey"];
         v11->_lastSentPersonalizedAdsStatus = [v30 BOOLValue];
 
-        v31 = [v9 valueForKey:@"kADiAdIDRecord_LastSentPersonalizedAdsTimestampKey"];
+        v31 = [recordCopy valueForKey:@"kADiAdIDRecord_LastSentPersonalizedAdsTimestampKey"];
         v11->_lastSentPersonalizedAdsTimestamp = [v31 intValue];
 
-        v32 = [v9 valueForKey:@"kADDSIDRecord_SegmentDataTimestampKey"];
+        v32 = [recordCopy valueForKey:@"kADDSIDRecord_SegmentDataTimestampKey"];
         v11->_segmentDataTimestamp = [v32 intValue];
 
-        v33 = [v9 valueForKey:@"kADiAdIDRecord_LastSentSegmentDataTimestampKey"];
+        v33 = [recordCopy valueForKey:@"kADiAdIDRecord_LastSentSegmentDataTimestampKey"];
         v11->_lastSentSegmentDataTimestamp = [v33 intValue];
 
-        v34 = [v9 valueForKey:@"kADiAdIDRecord_LastSegmentServedTimestampKey"];
+        v34 = [recordCopy valueForKey:@"kADiAdIDRecord_LastSegmentServedTimestampKey"];
         v11->_lastSegmentServedTimestamp = [v34 intValue];
 
-        v35 = [v9 valueForKey:@"kADiAdIDRecord_NextReconcileTimestamp"];
+        v35 = [recordCopy valueForKey:@"kADiAdIDRecord_NextReconcileTimestamp"];
         v11->_nextReconcileTimestamp = [v35 intValue];
 
-        v36 = [v9 valueForKey:@"kADDSIDRecord_DeviceIDRotationTimestampKey"];
+        v36 = [recordCopy valueForKey:@"kADDSIDRecord_DeviceIDRotationTimestampKey"];
         v11->_deviceIDRotationTimestamp = [v36 intValue];
 
         v37 = +[ADCoreDefaults sharedInstance];
@@ -255,16 +255,16 @@
         if (v38)
         {
           v39 = +[ADCoreSettings sharedInstance];
-          v40 = [v39 customJinglePayload];
+          customJinglePayload = [v39 customJinglePayload];
           segmentData = v11->_segmentData;
-          v11->_segmentData = v40;
+          v11->_segmentData = customJinglePayload;
 
           v42 = @"CUSTOM";
         }
 
         else
         {
-          v44 = [v9 valueForKey:@"kADDSIDRecord_SegmentDataKey"];
+          v44 = [recordCopy valueForKey:@"kADDSIDRecord_SegmentDataKey"];
           v39 = v11->_segmentData;
           v11->_segmentData = v44;
           v42 = @"ACTUAL";
@@ -273,7 +273,7 @@
         v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"Saving the %@ segment payload with data: %@", v42, v11->_segmentData];
         _ADLog(@"iAdIDLogging", v45, 0);
 
-        v46 = [v9 valueForKey:@"kADDSIDRecord_iAdIDRecordsKey"];
+        v46 = [recordCopy valueForKey:@"kADDSIDRecord_iAdIDRecordsKey"];
         v56[0] = MEMORY[0x277D85DD0];
         v56[1] = 3221225472;
         v56[2] = __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke;
@@ -312,15 +312,15 @@
     }
 
     self = v11;
-    v43 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v43 = 0;
+    selfCopy = 0;
   }
 
-  return v43;
+  return selfCopy;
 }
 
 void __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -333,93 +333,93 @@ void __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke(uint6
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(DSIDRecord *)v6 DSID];
-    v8 = [v7 copyWithZone:a3];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    dSID = [(DSIDRecord *)selfCopy DSID];
+    v8 = [dSID copyWithZone:zone];
     [v5 setDSID:v8];
 
-    [v5 setAccountIsT13:{-[DSIDRecord accountIsT13](v6, "accountIsT13")}];
-    [v5 setAccountIsU13:{-[DSIDRecord accountIsU13](v6, "accountIsU13")}];
-    [v5 setAccountIsU18:{-[DSIDRecord accountIsU18](v6, "accountIsU18")}];
-    [v5 setAccountAgeUnknown:{-[DSIDRecord accountAgeUnknown](v6, "accountAgeUnknown")}];
-    [v5 setSensitiveContentEligible:{-[DSIDRecord sensitiveContentEligible](v6, "sensitiveContentEligible")}];
-    [v5 setIsProtoU13:{-[DSIDRecord isProtoU13](v6, "isProtoU13")}];
-    [v5 setIsProtoTeen:{-[DSIDRecord isProtoTeen](v6, "isProtoTeen")}];
-    [v5 setEffectiveBirthYear:{-[DSIDRecord effectiveBirthYear](v6, "effectiveBirthYear")}];
-    [v5 setActualBirthYear:{-[DSIDRecord actualBirthYear](v6, "actualBirthYear")}];
-    v9 = [(DSIDRecord *)v6 iso3166Code];
-    [v5 setIso3166Code:v9];
+    [v5 setAccountIsT13:{-[DSIDRecord accountIsT13](selfCopy, "accountIsT13")}];
+    [v5 setAccountIsU13:{-[DSIDRecord accountIsU13](selfCopy, "accountIsU13")}];
+    [v5 setAccountIsU18:{-[DSIDRecord accountIsU18](selfCopy, "accountIsU18")}];
+    [v5 setAccountAgeUnknown:{-[DSIDRecord accountAgeUnknown](selfCopy, "accountAgeUnknown")}];
+    [v5 setSensitiveContentEligible:{-[DSIDRecord sensitiveContentEligible](selfCopy, "sensitiveContentEligible")}];
+    [v5 setIsProtoU13:{-[DSIDRecord isProtoU13](selfCopy, "isProtoU13")}];
+    [v5 setIsProtoTeen:{-[DSIDRecord isProtoTeen](selfCopy, "isProtoTeen")}];
+    [v5 setEffectiveBirthYear:{-[DSIDRecord effectiveBirthYear](selfCopy, "effectiveBirthYear")}];
+    [v5 setActualBirthYear:{-[DSIDRecord actualBirthYear](selfCopy, "actualBirthYear")}];
+    iso3166Code = [(DSIDRecord *)selfCopy iso3166Code];
+    [v5 setIso3166Code:iso3166Code];
 
-    [v5 setNoiseAppliedVersion:{-[DSIDRecord noiseAppliedVersion](v6, "noiseAppliedVersion")}];
-    v10 = [(DSIDRecord *)v6 ADIDRecords];
-    v11 = [v10 mutableCopyWithZone:a3];
+    [v5 setNoiseAppliedVersion:{-[DSIDRecord noiseAppliedVersion](selfCopy, "noiseAppliedVersion")}];
+    aDIDRecords = [(DSIDRecord *)selfCopy ADIDRecords];
+    v11 = [aDIDRecords mutableCopyWithZone:zone];
     [v5 setADIDRecords:v11];
 
-    [v5 setLastJingleAccountStatus:{-[DSIDRecord lastJingleAccountStatus](v6, "lastJingleAccountStatus")}];
-    [v5 setPersonalizedAdsTimestamp:{-[DSIDRecord personalizedAdsTimestamp](v6, "personalizedAdsTimestamp")}];
-    [v5 setLastSentPersonalizedAdsStatus:{-[DSIDRecord lastSentPersonalizedAdsStatus](v6, "lastSentPersonalizedAdsStatus")}];
-    v12 = [(DSIDRecord *)v6 segmentData];
-    v13 = [v12 copyWithZone:a3];
+    [v5 setLastJingleAccountStatus:{-[DSIDRecord lastJingleAccountStatus](selfCopy, "lastJingleAccountStatus")}];
+    [v5 setPersonalizedAdsTimestamp:{-[DSIDRecord personalizedAdsTimestamp](selfCopy, "personalizedAdsTimestamp")}];
+    [v5 setLastSentPersonalizedAdsStatus:{-[DSIDRecord lastSentPersonalizedAdsStatus](selfCopy, "lastSentPersonalizedAdsStatus")}];
+    segmentData = [(DSIDRecord *)selfCopy segmentData];
+    v13 = [segmentData copyWithZone:zone];
     [v5 setSegmentData:v13];
 
-    [v5 setSegmentDataTimestamp:{-[DSIDRecord segmentDataTimestamp](v6, "segmentDataTimestamp")}];
-    [v5 setLastSentPersonalizedAdsTimestamp:{-[DSIDRecord lastSentPersonalizedAdsTimestamp](v6, "lastSentPersonalizedAdsTimestamp")}];
-    [v5 setLastSentSegmentDataTimestamp:{-[DSIDRecord lastSentSegmentDataTimestamp](v6, "lastSentSegmentDataTimestamp")}];
-    [v5 setLastSegmentServedTimestamp:{-[DSIDRecord lastSegmentServedTimestamp](v6, "lastSegmentServedTimestamp")}];
-    [v5 setNextReconcileTimestamp:{-[DSIDRecord nextReconcileTimestamp](v6, "nextReconcileTimestamp")}];
-    [v5 setDeviceIDRotationTimestamp:{-[DSIDRecord deviceIDRotationTimestamp](v6, "deviceIDRotationTimestamp")}];
-    objc_sync_exit(v6);
+    [v5 setSegmentDataTimestamp:{-[DSIDRecord segmentDataTimestamp](selfCopy, "segmentDataTimestamp")}];
+    [v5 setLastSentPersonalizedAdsTimestamp:{-[DSIDRecord lastSentPersonalizedAdsTimestamp](selfCopy, "lastSentPersonalizedAdsTimestamp")}];
+    [v5 setLastSentSegmentDataTimestamp:{-[DSIDRecord lastSentSegmentDataTimestamp](selfCopy, "lastSentSegmentDataTimestamp")}];
+    [v5 setLastSegmentServedTimestamp:{-[DSIDRecord lastSegmentServedTimestamp](selfCopy, "lastSegmentServedTimestamp")}];
+    [v5 setNextReconcileTimestamp:{-[DSIDRecord nextReconcileTimestamp](selfCopy, "nextReconcileTimestamp")}];
+    [v5 setDeviceIDRotationTimestamp:{-[DSIDRecord deviceIDRotationTimestamp](selfCopy, "deviceIDRotationTimestamp")}];
+    objc_sync_exit(selfCopy);
   }
 
   return v5;
 }
 
-- (id)idForClientType:(int64_t)a3
+- (id)idForClientType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  ADIDRecords = v4->_ADIDRecords;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ADIDRecords = selfCopy->_ADIDRecords;
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v7 = [(NSMutableDictionary *)ADIDRecords objectForKeyedSubscript:v6];
   v8 = [v7 ID];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)setID:(id)a3 forClientType:(int64_t)a4
+- (void)setID:(id)d forClientType:(int64_t)type
 {
-  v10 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [[ADIDRecord alloc] initWithID:v10];
-  v8 = [(DSIDRecord *)v6 ADIDRecords];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [[ADIDRecord alloc] initWithID:dCopy];
+  aDIDRecords = [(DSIDRecord *)selfCopy ADIDRecords];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [aDIDRecords setObject:v7 forKeyedSubscript:v9];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)encryptedIDForClientType:(int64_t)a3
+- (id)encryptedIDForClientType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  ADIDRecords = v4->_ADIDRecords;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ADIDRecords = selfCopy->_ADIDRecords;
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v7 = [(NSMutableDictionary *)ADIDRecords objectForKeyedSubscript:v6];
 
-  v8 = [v7 encryptedID];
+  encryptedID = [v7 encryptedID];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return encryptedID;
 }
 
 - (id)description
@@ -464,8 +464,8 @@ void __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke(uint6
   v12 = [MEMORY[0x277CCABB0] numberWithInt:{-[DSIDRecord actualBirthYear](self, "actualBirthYear")}];
   [v3 setObject:v12 forKeyedSubscript:@"kADDSIDRecord_ActualBirthYearKey"];
 
-  v13 = [(DSIDRecord *)self iso3166Code];
-  [v3 setObject:v13 forKeyedSubscript:@"kADDSIDRecord_ISO3166CodeKey"];
+  iso3166Code = [(DSIDRecord *)self iso3166Code];
+  [v3 setObject:iso3166Code forKeyedSubscript:@"kADDSIDRecord_ISO3166CodeKey"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInt:{-[DSIDRecord noiseAppliedVersion](self, "noiseAppliedVersion")}];
   [v3 setObject:v14 forKeyedSubscript:@"kADDSIDRecord_NoiseAppliedVersionKey"];
@@ -488,8 +488,8 @@ void __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke(uint6
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DSIDRecord lastJingleAccountStatus](self, "lastJingleAccountStatus")}];
   [v3 setObject:v20 forKeyedSubscript:@"kADDSIDRecord_LastJingleAccountStatusKey"];
 
-  v21 = [(DSIDRecord *)self segmentData];
-  [v3 setObject:v21 forKeyedSubscript:@"kADDSIDRecord_SegmentDataKey"];
+  segmentData = [(DSIDRecord *)self segmentData];
+  [v3 setObject:segmentData forKeyedSubscript:@"kADDSIDRecord_SegmentDataKey"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInt:{-[DSIDRecord segmentDataTimestamp](self, "segmentDataTimestamp")}];
   [v3 setObject:v22 forKeyedSubscript:@"kADDSIDRecord_SegmentDataTimestampKey"];
@@ -512,16 +512,16 @@ void __52__DSIDRecord_initWithDSID_serializedRecord_version___block_invoke(uint6
   v34 = __Block_byref_object_copy_;
   v35 = __Block_byref_object_dispose_;
   v36 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v27 = self;
-  objc_sync_enter(v27);
-  ADIDRecords = v27->_ADIDRecords;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ADIDRecords = selfCopy->_ADIDRecords;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __38__DSIDRecord_dictionaryRepresentation__block_invoke;
   v30[3] = &unk_278C550C0;
   v30[4] = &v31;
   [(NSMutableDictionary *)ADIDRecords enumerateKeysAndObjectsUsingBlock:v30];
-  objc_sync_exit(v27);
+  objc_sync_exit(selfCopy);
 
   [v3 setObject:v32[5] forKeyedSubscript:@"kADDSIDRecord_iAdIDRecordsKey"];
   _Block_object_dispose(&v31, 8);
@@ -567,7 +567,7 @@ void __38__DSIDRecord_dictionaryRepresentation__block_invoke(uint64_t a1, void *
   v4 = +[ADCoreSettings sharedInstance];
   if ([v4 isManagedAppleID])
   {
-    v3 = 1;
+    isProtoTeenState = 1;
   }
 
   else
@@ -575,7 +575,7 @@ void __38__DSIDRecord_dictionaryRepresentation__block_invoke(uint64_t a1, void *
     v5 = +[ADCoreSettings sharedInstance];
     if ([v5 educationModeEnabled])
     {
-      v3 = 1;
+      isProtoTeenState = 1;
     }
 
     else
@@ -583,32 +583,32 @@ void __38__DSIDRecord_dictionaryRepresentation__block_invoke(uint64_t a1, void *
       v6 = +[ADCoreSettings sharedInstance];
       if ([v6 isProtoU13state])
       {
-        v3 = 1;
+        isProtoTeenState = 1;
       }
 
       else
       {
         v7 = +[ADCoreSettings sharedInstance];
-        v3 = [v7 isProtoTeenState];
+        isProtoTeenState = [v7 isProtoTeenState];
       }
     }
   }
 
-  return v3;
+  return isProtoTeenState;
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
-  self->_dirty = a3;
-  if (!a3)
+  self->_dirty = dirty;
+  if (!dirty)
   {
-    v4 = [(DSIDRecord *)self ADIDRecords];
+    aDIDRecords = [(DSIDRecord *)self ADIDRecords];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __23__DSIDRecord_setDirty___block_invoke;
     v5[3] = &__block_descriptor_33_e37_v32__0__NSNumber_8__ADIDRecord_16_B24l;
-    v6 = a3;
-    [v4 enumerateKeysAndObjectsUsingBlock:v5];
+    dirtyCopy = dirty;
+    [aDIDRecords enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
 
@@ -625,17 +625,17 @@ uint64_t __23__DSIDRecord_setDirty___block_invoke(uint64_t a1, uint64_t a2, void
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(DSIDRecord *)self ADIDRecords];
+  aDIDRecords = [(DSIDRecord *)self ADIDRecords];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __31__DSIDRecord_iAdIDRecordsDirty__block_invoke;
   v4[3] = &unk_278C550C0;
   v4[4] = &v5;
-  [v2 enumerateKeysAndObjectsUsingBlock:v4];
+  [aDIDRecords enumerateKeysAndObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(aDIDRecords) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return aDIDRecords;
 }
 
 uint64_t __31__DSIDRecord_iAdIDRecordsDirty__block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -656,212 +656,212 @@ uint64_t __31__DSIDRecord_iAdIDRecordsDirty__block_invoke(uint64_t a1, uint64_t 
   return [(DSIDRecord *)self iAdIDRecordsDirty];
 }
 
-- (void)setAccountIsU13:(BOOL)a3
+- (void)setAccountIsU13:(BOOL)u13
 {
-  if (self->_accountIsU13 != a3)
+  if (self->_accountIsU13 != u13)
   {
-    self->_accountIsU13 = a3;
+    self->_accountIsU13 = u13;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setAccountIsT13:(BOOL)a3
+- (void)setAccountIsT13:(BOOL)t13
 {
-  if (self->_accountIsT13 != a3)
+  if (self->_accountIsT13 != t13)
   {
-    self->_accountIsT13 = a3;
+    self->_accountIsT13 = t13;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setAccountIsU18:(BOOL)a3
+- (void)setAccountIsU18:(BOOL)u18
 {
-  if (self->_accountIsU18 != a3)
+  if (self->_accountIsU18 != u18)
   {
-    self->_accountIsU18 = a3;
+    self->_accountIsU18 = u18;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setAccountAgeUnknown:(BOOL)a3
+- (void)setAccountAgeUnknown:(BOOL)unknown
 {
-  if (self->_accountAgeUnknown != a3)
+  if (self->_accountAgeUnknown != unknown)
   {
-    self->_accountAgeUnknown = a3;
+    self->_accountAgeUnknown = unknown;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setSensitiveContentEligible:(BOOL)a3
+- (void)setSensitiveContentEligible:(BOOL)eligible
 {
-  if (self->_sensitiveContentEligible != a3)
+  if (self->_sensitiveContentEligible != eligible)
   {
-    self->_sensitiveContentEligible = a3;
+    self->_sensitiveContentEligible = eligible;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setIsProtoU13:(BOOL)a3
+- (void)setIsProtoU13:(BOOL)u13
 {
-  if (self->_isProtoU13 != a3)
+  if (self->_isProtoU13 != u13)
   {
-    self->_isProtoU13 = a3;
+    self->_isProtoU13 = u13;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setIsProtoTeen:(BOOL)a3
+- (void)setIsProtoTeen:(BOOL)teen
 {
-  if (self->_isProtoTeen != a3)
+  if (self->_isProtoTeen != teen)
   {
-    self->_isProtoTeen = a3;
+    self->_isProtoTeen = teen;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setEffectiveBirthYear:(int)a3
+- (void)setEffectiveBirthYear:(int)year
 {
-  if (self->_effectiveBirthYear != a3)
+  if (self->_effectiveBirthYear != year)
   {
-    self->_effectiveBirthYear = a3;
+    self->_effectiveBirthYear = year;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setActualBirthYear:(int)a3
+- (void)setActualBirthYear:(int)year
 {
-  if (self->_actualBirthYear != a3)
+  if (self->_actualBirthYear != year)
   {
-    self->_actualBirthYear = a3;
+    self->_actualBirthYear = year;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setIso3166Code:(id)a3
+- (void)setIso3166Code:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   if (![(NSString *)self->_iso3166Code isEqualToString:?])
   {
-    objc_storeStrong(&self->_iso3166Code, a3);
+    objc_storeStrong(&self->_iso3166Code, code);
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setNoiseAppliedVersion:(int)a3
+- (void)setNoiseAppliedVersion:(int)version
 {
-  if (self->_noiseAppliedVersion != a3)
+  if (self->_noiseAppliedVersion != version)
   {
-    self->_noiseAppliedVersion = a3;
+    self->_noiseAppliedVersion = version;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setIsDPIDManatee:(BOOL)a3
+- (void)setIsDPIDManatee:(BOOL)manatee
 {
-  if (self->_isDPIDManatee != a3)
+  if (self->_isDPIDManatee != manatee)
   {
-    self->_isDPIDManatee = a3;
+    self->_isDPIDManatee = manatee;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setIsDPIDLocal:(BOOL)a3
+- (void)setIsDPIDLocal:(BOOL)local
 {
-  if (self->_isDPIDLocal != a3)
+  if (self->_isDPIDLocal != local)
   {
-    self->_isDPIDLocal = a3;
+    self->_isDPIDLocal = local;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setLastSentPersonalizedAdsStatus:(BOOL)a3
+- (void)setLastSentPersonalizedAdsStatus:(BOOL)status
 {
-  if (self->_lastSentPersonalizedAdsStatus != a3)
+  if (self->_lastSentPersonalizedAdsStatus != status)
   {
-    self->_lastSentPersonalizedAdsStatus = a3;
+    self->_lastSentPersonalizedAdsStatus = status;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setLastSentPersonalizedAdsTimestamp:(int)a3
+- (void)setLastSentPersonalizedAdsTimestamp:(int)timestamp
 {
-  if (self->_lastSentPersonalizedAdsTimestamp != a3)
+  if (self->_lastSentPersonalizedAdsTimestamp != timestamp)
   {
-    self->_lastSentPersonalizedAdsTimestamp = a3;
+    self->_lastSentPersonalizedAdsTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setLastJingleAccountStatus:(int64_t)a3
+- (void)setLastJingleAccountStatus:(int64_t)status
 {
-  if (self->_lastJingleAccountStatus != a3)
+  if (self->_lastJingleAccountStatus != status)
   {
-    self->_lastJingleAccountStatus = a3;
+    self->_lastJingleAccountStatus = status;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setSegmentData:(id)a3
+- (void)setSegmentData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (![(NSString *)self->_segmentData isEqualToString:?])
   {
-    objc_storeStrong(&self->_segmentData, a3);
+    objc_storeStrong(&self->_segmentData, data);
     [(DSIDRecord *)self setDirty:1];
     [(DSIDRecord *)self setNotificationRequired:1];
   }
 }
 
-- (void)setSegmentDataTimestamp:(int)a3
+- (void)setSegmentDataTimestamp:(int)timestamp
 {
-  if (self->_segmentDataTimestamp != a3)
+  if (self->_segmentDataTimestamp != timestamp)
   {
-    self->_segmentDataTimestamp = a3;
+    self->_segmentDataTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setLastSentSegmentDataTimestamp:(int)a3
+- (void)setLastSentSegmentDataTimestamp:(int)timestamp
 {
-  if (self->_lastSentSegmentDataTimestamp != a3)
+  if (self->_lastSentSegmentDataTimestamp != timestamp)
   {
-    self->_lastSentSegmentDataTimestamp = a3;
+    self->_lastSentSegmentDataTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setLastSegmentServedTimestamp:(int)a3
+- (void)setLastSegmentServedTimestamp:(int)timestamp
 {
-  if (self->_lastSegmentServedTimestamp != a3)
+  if (self->_lastSegmentServedTimestamp != timestamp)
   {
-    self->_lastSegmentServedTimestamp = a3;
+    self->_lastSegmentServedTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setPersonalizedAdsTimestamp:(int)a3
+- (void)setPersonalizedAdsTimestamp:(int)timestamp
 {
-  if (self->_personalizedAdsTimestamp != a3)
+  if (self->_personalizedAdsTimestamp != timestamp)
   {
-    self->_personalizedAdsTimestamp = a3;
+    self->_personalizedAdsTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setDeviceIDRotationTimestamp:(int)a3
+- (void)setDeviceIDRotationTimestamp:(int)timestamp
 {
-  if (self->_deviceIDRotationTimestamp != a3)
+  if (self->_deviceIDRotationTimestamp != timestamp)
   {
-    self->_deviceIDRotationTimestamp = a3;
+    self->_deviceIDRotationTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }
 
-- (void)setNextReconcileTimestamp:(int)a3
+- (void)setNextReconcileTimestamp:(int)timestamp
 {
-  if (self->_nextReconcileTimestamp != a3)
+  if (self->_nextReconcileTimestamp != timestamp)
   {
-    self->_nextReconcileTimestamp = a3;
+    self->_nextReconcileTimestamp = timestamp;
     [(DSIDRecord *)self setDirty:1];
   }
 }

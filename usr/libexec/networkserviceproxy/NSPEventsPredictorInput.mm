@@ -1,31 +1,31 @@
 @interface NSPEventsPredictorInput
-- (NSPEventsPredictorInput)initWithLstm_input:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (NSPEventsPredictorInput)initWithLstm_input:(id)lstm_input;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation NSPEventsPredictorInput
 
-- (NSPEventsPredictorInput)initWithLstm_input:(id)a3
+- (NSPEventsPredictorInput)initWithLstm_input:(id)lstm_input
 {
-  v5 = a3;
+  lstm_inputCopy = lstm_input;
   v9.receiver = self;
   v9.super_class = NSPEventsPredictorInput;
   v6 = [(NSPEventsPredictorInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lstm_input, a3);
+    objc_storeStrong(&v6->_lstm_input, lstm_input);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"lstm_input"])
+  if ([name isEqualToString:@"lstm_input"])
   {
-    v4 = [(NSPEventsPredictorInput *)self lstm_input];
-    v5 = [MLFeatureValue featureValueWithMultiArray:v4];
+    lstm_input = [(NSPEventsPredictorInput *)self lstm_input];
+    v5 = [MLFeatureValue featureValueWithMultiArray:lstm_input];
   }
 
   else

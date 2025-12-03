@@ -1,10 +1,10 @@
 @interface FCLocalArea
-- (BOOL)containsLocation:(id)a3;
-- (BOOL)containsPointAtLatitude:(double)a3 longitude:(double)a4;
-- (BOOL)isValue:(double)a3 betweenValue:(double)a4 andValue:(double)a5;
+- (BOOL)containsLocation:(id)location;
+- (BOOL)containsPointAtLatitude:(double)latitude longitude:(double)longitude;
+- (BOOL)isValue:(double)value betweenValue:(double)betweenValue andValue:(double)andValue;
 - (FCLocalArea)init;
-- (FCLocalArea)initWithDictionary:(id)a3;
-- (FCLocalArea)initWithIdentifier:(id)a3 bbox:(id)a4 regionIDs:(id)a5;
+- (FCLocalArea)initWithDictionary:(id)dictionary;
+- (FCLocalArea)initWithIdentifier:(id)identifier bbox:(id)bbox regionIDs:(id)ds;
 - (double)maxLat;
 - (double)maxLon;
 - (double)minLat;
@@ -13,24 +13,24 @@
 
 @implementation FCLocalArea
 
-- (FCLocalArea)initWithDictionary:(id)a3
+- (FCLocalArea)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCLocalArea alloc];
-  v6 = FCAppConfigurationStringValue(v4, @"id", 0);
-  v7 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"bbox", 0);
-  v8 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"regionIds", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"id", 0);
+  v7 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"bbox", 0);
+  v8 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"regionIds", 0);
 
   v9 = [(FCLocalArea *)v5 initWithIdentifier:v6 bbox:v7 regionIDs:v8];
   return v9;
 }
 
-- (FCLocalArea)initWithIdentifier:(id)a3 bbox:(id)a4 regionIDs:(id)a5
+- (FCLocalArea)initWithIdentifier:(id)identifier bbox:(id)bbox regionIDs:(id)ds
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v38 = a5;
+  identifierCopy = identifier;
+  bboxCopy = bbox;
+  dsCopy = ds;
   v39.receiver = self;
   v39.super_class = FCLocalArea;
   v11 = [(FCLocalArea *)&v39 init];
@@ -40,10 +40,10 @@
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v11->_identifier, a3);
-  objc_storeStrong(&v12->_bbox, a4);
-  objc_storeStrong(&v12->_regionIds, a5);
-  v13 = v10;
+  objc_storeStrong(&v11->_identifier, identifier);
+  objc_storeStrong(&v12->_bbox, bbox);
+  objc_storeStrong(&v12->_regionIds, ds);
+  v13 = bboxCopy;
   if ([v13 count] != 4)
   {
     v32 = 0;
@@ -65,7 +65,7 @@
   v15 = v14;
   v37 = *v41;
   v16 = 0x1E696A000uLL;
-  v35 = v9;
+  v35 = identifierCopy;
   while (2)
   {
     for (i = 0; i != v15; ++i)
@@ -84,7 +84,7 @@ LABEL_32:
 
 LABEL_33:
         v32 = 0;
-        v9 = v35;
+        identifierCopy = v35;
         goto LABEL_34;
       }
 
@@ -160,7 +160,7 @@ LABEL_33:
 
     v15 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
     v32 = 1;
-    v9 = v35;
+    identifierCopy = v35;
     if (v15)
     {
       continue;
@@ -205,23 +205,23 @@ LABEL_36:
   objc_exception_throw(v6);
 }
 
-- (BOOL)containsLocation:(id)a3
+- (BOOL)containsLocation:(id)location
 {
-  if (!a3)
+  if (!location)
   {
     return 0;
   }
 
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v8 = v7;
 
   return [(FCLocalArea *)self containsPointAtLatitude:v6 longitude:v8];
 }
 
-- (BOOL)containsPointAtLatitude:(double)a3 longitude:(double)a4
+- (BOOL)containsPointAtLatitude:(double)latitude longitude:(double)longitude
 {
   if (![(FCLocalArea *)self isBboxValid])
   {
@@ -231,7 +231,7 @@ LABEL_36:
   [(FCLocalArea *)self minLat];
   v8 = v7;
   [(FCLocalArea *)self maxLat];
-  if (![(FCLocalArea *)self isValue:a3 betweenValue:v8 andValue:v9])
+  if (![(FCLocalArea *)self isValue:latitude betweenValue:v8 andValue:v9])
   {
     return 0;
   }
@@ -240,24 +240,24 @@ LABEL_36:
   v11 = v10;
   [(FCLocalArea *)self maxLon];
 
-  return [(FCLocalArea *)self isValue:a4 betweenValue:v11 andValue:v12];
+  return [(FCLocalArea *)self isValue:longitude betweenValue:v11 andValue:v12];
 }
 
-- (BOOL)isValue:(double)a3 betweenValue:(double)a4 andValue:(double)a5
+- (BOOL)isValue:(double)value betweenValue:(double)betweenValue andValue:(double)andValue
 {
-  v5 = a3 <= a4;
-  if (a3 < a5)
+  v5 = value <= betweenValue;
+  if (value < andValue)
   {
     v5 = 0;
   }
 
-  return a3 >= a4 && a3 <= a5 || v5;
+  return value >= betweenValue && value <= andValue || v5;
 }
 
 - (double)minLat
 {
-  v2 = [(FCLocalArea *)self bbox];
-  v3 = [v2 objectAtIndexedSubscript:2];
+  bbox = [(FCLocalArea *)self bbox];
+  v3 = [bbox objectAtIndexedSubscript:2];
   v4 = [v3 objectAtIndexedSubscript:0];
   [v4 doubleValue];
   v6 = v5;
@@ -267,8 +267,8 @@ LABEL_36:
 
 - (double)maxLat
 {
-  v2 = [(FCLocalArea *)self bbox];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  bbox = [(FCLocalArea *)self bbox];
+  v3 = [bbox objectAtIndexedSubscript:0];
   v4 = [v3 objectAtIndexedSubscript:0];
   [v4 doubleValue];
   v6 = v5;
@@ -278,8 +278,8 @@ LABEL_36:
 
 - (double)minLon
 {
-  v2 = [(FCLocalArea *)self bbox];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  bbox = [(FCLocalArea *)self bbox];
+  v3 = [bbox objectAtIndexedSubscript:0];
   v4 = [v3 objectAtIndexedSubscript:1];
   [v4 doubleValue];
   v6 = v5;
@@ -289,8 +289,8 @@ LABEL_36:
 
 - (double)maxLon
 {
-  v2 = [(FCLocalArea *)self bbox];
-  v3 = [v2 objectAtIndexedSubscript:2];
+  bbox = [(FCLocalArea *)self bbox];
+  v3 = [bbox objectAtIndexedSubscript:2];
   v4 = [v3 objectAtIndexedSubscript:1];
   [v4 doubleValue];
   v6 = v5;

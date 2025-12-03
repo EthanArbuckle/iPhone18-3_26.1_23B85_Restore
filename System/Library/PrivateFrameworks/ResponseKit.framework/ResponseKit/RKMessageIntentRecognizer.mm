@@ -1,10 +1,10 @@
 @interface RKMessageIntentRecognizer
-+ (id)getRangesOfKeywords:(id)a3 forMessage:(id)a4;
++ (id)getRangesOfKeywords:(id)keywords forMessage:(id)message;
 + (id)sharedManager;
 - (RKMessageIntentRecognizer)init;
-- (id)copyAttributedTokensForMessage:(id)a3 conversationTurns:(id)a4 metadata:(id)a5 languageID:(id)a6;
+- (id)copyAttributedTokensForMessage:(id)message conversationTurns:(id)turns metadata:(id)metadata languageID:(id)d;
 - (void)dealloc;
-- (void)getMessageIntentRecognizer:(id)a3;
+- (void)getMessageIntentRecognizer:(id)recognizer;
 @end
 
 @implementation RKMessageIntentRecognizer
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __42__RKMessageIntentRecognizer_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_0 != -1)
   {
     dispatch_once(&sharedManager_onceToken_0, block);
@@ -55,48 +55,48 @@ uint64_t __42__RKMessageIntentRecognizer_sharedManager__block_invoke(uint64_t a1
   [(RKMessageIntentRecognizer *)&v2 dealloc];
 }
 
-- (void)getMessageIntentRecognizer:(id)a3
+- (void)getMessageIntentRecognizer:(id)recognizer
 {
-  v3 = a3;
-  v4 = [_localeMessageIntentRecognizer objectForKeyedSubscript:v3];
+  recognizerCopy = recognizer;
+  v4 = [_localeMessageIntentRecognizer objectForKeyedSubscript:recognizerCopy];
 
   if (v4)
   {
-    v5 = [_localeMessageIntentRecognizer objectForKeyedSubscript:v3];
+    v5 = [_localeMessageIntentRecognizer objectForKeyedSubscript:recognizerCopy];
   }
 
   else
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v7 = Mutable;
-    if (!v3)
+    if (!recognizerCopy)
     {
-      v3 = @"en";
+      recognizerCopy = @"en";
     }
 
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D2B840], v3);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D2B840], recognizerCopy);
     v5 = NLMessageIntentRecognizerCreate();
     CFRelease(v7);
     if (v5)
     {
-      [_localeMessageIntentRecognizer setObject:v5 forKeyedSubscript:v3];
+      [_localeMessageIntentRecognizer setObject:v5 forKeyedSubscript:recognizerCopy];
     }
   }
 
   return v5;
 }
 
-+ (id)getRangesOfKeywords:(id)a3 forMessage:(id)a4
++ (id)getRangesOfKeywords:(id)keywords forMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  keywordsCopy = keywords;
+  messageCopy = message;
   v21 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = keywordsCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -113,7 +113,7 @@ uint64_t __42__RKMessageIntentRecognizer_sharedManager__block_invoke(uint64_t a1
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v6 substringFromIndex:{v9, v21}];
+        v13 = [messageCopy substringFromIndex:{v9, v21}];
         v14 = [v13 rangeOfString:v12];
         if (v14 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -137,21 +137,21 @@ uint64_t __42__RKMessageIntentRecognizer_sharedManager__block_invoke(uint64_t a1
   return v21;
 }
 
-- (id)copyAttributedTokensForMessage:(id)a3 conversationTurns:(id)a4 metadata:(id)a5 languageID:(id)a6
+- (id)copyAttributedTokensForMessage:(id)message conversationTurns:(id)turns metadata:(id)metadata languageID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:a6];
+  messageCopy = message;
+  turnsCopy = turns;
+  metadataCopy = metadata;
+  v13 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:d];
   [(RKMessageIntentRecognizer *)self getMessageIntentRecognizer:v13];
   v14 = *MEMORY[0x277CBECE8];
   Mutable = CFArrayCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF128]);
-  if (v11)
+  if (turnsCopy)
   {
     v30 = v13;
-    v31 = v12;
-    v32 = v10;
-    v16 = [v11 count];
+    v31 = metadataCopy;
+    v32 = messageCopy;
+    v16 = [turnsCopy count];
     if (v16 >= 1)
     {
       v17 = v16;
@@ -159,7 +159,7 @@ uint64_t __42__RKMessageIntentRecognizer_sharedManager__block_invoke(uint64_t a1
       v19 = &stru_2874A9C90;
       while (1)
       {
-        v20 = [v11 objectAtIndexedSubscript:v18];
+        v20 = [turnsCopy objectAtIndexedSubscript:v18];
         [v20 timestamp];
 
         [v20 text];
@@ -167,8 +167,8 @@ uint64_t __42__RKMessageIntentRecognizer_sharedManager__block_invoke(uint64_t a1
 
         v21 = NLMessageConversationTurnCreate();
         CFArrayInsertValueAtIndex(Mutable, v18, v21);
-        v22 = [v20 text];
-        v23 = [v22 stringByAppendingString:v19];
+        text = [v20 text];
+        v23 = [text stringByAppendingString:v19];
 
         if (!v23)
         {
@@ -204,8 +204,8 @@ LABEL_6:
     v19 = &stru_2874A9C90;
 LABEL_14:
 
-    v12 = v31;
-    v10 = v32;
+    metadataCopy = v31;
+    messageCopy = v32;
     v13 = v30;
   }
 

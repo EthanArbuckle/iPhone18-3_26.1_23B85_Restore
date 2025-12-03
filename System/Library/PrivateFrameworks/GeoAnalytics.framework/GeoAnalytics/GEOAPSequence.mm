@@ -1,8 +1,8 @@
 @interface GEOAPSequence
-- (BOOL)processUserAction:(uint64_t)a3 target:(double)a4 atTime:;
-- (id)initWithStartingState:(id *)a1;
+- (BOOL)processUserAction:(uint64_t)action target:(double)target atTime:;
+- (id)initWithStartingState:(id *)state;
 - (void)reset;
-- (void)setName:(uint64_t)a1;
+- (void)setName:(uint64_t)name;
 @end
 
 @implementation GEOAPSequence
@@ -10,23 +10,23 @@
 - (void)reset
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = GEOGetGEOAPSequenceAnalyticsLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = *(a1 + 24);
+      v3 = *(self + 24);
       *buf = 138412290;
       v16 = v3;
       _os_log_impl(&dword_1AB634000, v2, OS_LOG_TYPE_DEBUG, "sequence '%@' is resetting", buf, 0xCu);
     }
 
-    *(a1 + 16) = 0;
+    *(self + 16) = 0;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
@@ -56,29 +56,29 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initWithStartingState:(id *)a1
+- (id)initWithStartingState:(id *)state
 {
   v3 = a2;
-  if (a1)
+  if (state)
   {
-    v7.receiver = a1;
+    v7.receiver = state;
     v7.super_class = GEOAPSequence;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    state = objc_msgSendSuper2(&v7, sel_init);
+    if (state)
     {
       v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = state[1];
+      state[1] = v4;
 
-      [a1[1] addObject:v3];
-      a1[2] = 0;
+      [state[1] addObject:v3];
+      state[2] = 0;
     }
   }
 
-  return a1;
+  return state;
 }
 
-- (BOOL)processUserAction:(uint64_t)a3 target:(double)a4 atTime:
+- (BOOL)processUserAction:(uint64_t)action target:(double)target atTime:
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -5015,477 +5015,477 @@ LABEL_117:
 
 LABEL_1427:
     v11 = v10;
-    if (a3 <= 1000)
+    if (action <= 1000)
     {
-      v12 = @"UI_TARGET_UNKNOWN";
-      switch(a3)
+      action = @"UI_TARGET_UNKNOWN";
+      switch(action)
       {
         case 0:
           goto LABEL_1997;
         case 1:
-          v12 = @"UI_TARGET_POI";
+          action = @"UI_TARGET_POI";
           break;
         case 2:
-          v12 = @"UI_TARGET_SEARCH_RESULT_LIST";
+          action = @"UI_TARGET_SEARCH_RESULT_LIST";
           break;
         case 3:
-          v12 = @"UI_TARGET_POPULAR_NEARBY_LIST";
+          action = @"UI_TARGET_POPULAR_NEARBY_LIST";
           break;
         case 4:
-          v12 = @"UI_TARGET_CALLOUT";
+          action = @"UI_TARGET_CALLOUT";
           break;
         case 5:
-          v12 = @"UI_TARGET_SEARCH_PIN";
+          action = @"UI_TARGET_SEARCH_PIN";
           break;
         case 6:
-          v12 = @"UI_TARGET_DROPPED_PIN";
+          action = @"UI_TARGET_DROPPED_PIN";
           break;
         case 7:
-          v12 = @"UI_TARGET_TRANSIT_LINE";
+          action = @"UI_TARGET_TRANSIT_LINE";
           break;
         case 8:
-          v12 = @"SEARCH_TRAY";
+          action = @"SEARCH_TRAY";
           break;
         case 9:
-          v12 = @"SEARCH_TRAY_BROWSE";
+          action = @"SEARCH_TRAY_BROWSE";
           break;
         case 10:
-          v12 = @"SEARCH_TRAY_POPULAR_NEARBY";
+          action = @"SEARCH_TRAY_POPULAR_NEARBY";
           break;
         case 11:
-          v12 = @"SEARCH_TRAY_AC";
+          action = @"SEARCH_TRAY_AC";
           break;
         case 12:
-          v12 = @"SEARCH_TRAY_AC_INTERMEDIATE";
+          action = @"SEARCH_TRAY_AC_INTERMEDIATE";
           break;
         case 13:
-          v12 = @"SEARCH_TRAY_NO_QUERY";
+          action = @"SEARCH_TRAY_NO_QUERY";
           break;
         case 14:
-          v12 = @"AR_WALKING_LEGAL_TRAY";
+          action = @"AR_WALKING_LEGAL_TRAY";
           break;
         case 15:
-          v12 = @"RAISE_TO_START_AR_TRAY";
+          action = @"RAISE_TO_START_AR_TRAY";
           break;
         case 16:
-          v12 = @"EVENTS_ADVISORY_DETAILS_PAGE";
+          action = @"EVENTS_ADVISORY_DETAILS_PAGE";
           break;
         case 17:
-          v12 = @"INCIDENT_REPORT_TRAY_CARPLAY";
+          action = @"INCIDENT_REPORT_TRAY_CARPLAY";
           break;
         case 18:
-          v12 = @"HIGHLIGHTED_AREA";
+          action = @"HIGHLIGHTED_AREA";
           break;
         case 19:
-          v12 = @"CURATED_COLLECTIONS_HOME";
+          action = @"CURATED_COLLECTIONS_HOME";
           break;
         case 20:
-          v12 = @"TRAVEL_PREFERENCES_TRAY";
+          action = @"TRAVEL_PREFERENCES_TRAY";
           break;
         case 21:
-          v12 = @"RESULT_TRAY_SEARCH";
+          action = @"RESULT_TRAY_SEARCH";
           break;
         case 22:
-          v12 = @"SINGLE_CARD_FILTER";
+          action = @"SINGLE_CARD_FILTER";
           break;
         case 23:
-          v12 = @"FULL_CARD_FILTER";
+          action = @"FULL_CARD_FILTER";
           break;
         case 24:
-          v12 = @"ACCOUNT_PRIVACY_TRAY";
+          action = @"ACCOUNT_PRIVACY_TRAY";
           break;
         case 25:
-          v12 = @"APPLE_RATINGS_HISTORY_TRAY";
+          action = @"APPLE_RATINGS_HISTORY_TRAY";
           break;
         case 26:
-          v12 = @"CURATED_COLLECTIONS_HOME_FILTERED";
+          action = @"CURATED_COLLECTIONS_HOME_FILTERED";
           break;
         case 27:
-          v12 = @"CITY_MENU";
+          action = @"CITY_MENU";
           break;
         case 28:
-          v12 = @"CURATED_COLLECTIONS_HOME_CONDENSED";
+          action = @"CURATED_COLLECTIONS_HOME_CONDENSED";
           break;
         case 29:
-          v12 = @"ACCOUNT_TRAY";
+          action = @"ACCOUNT_TRAY";
           break;
         case 30:
-          v12 = @"QUICK_ACTION_TRAY";
+          action = @"QUICK_ACTION_TRAY";
           break;
         case 31:
-          v12 = @"SUBMIT_TRIP_FEEDBACK";
+          action = @"SUBMIT_TRIP_FEEDBACK";
           break;
         case 32:
-          v12 = @"RAP_PLACE_ISSUE_DETAILS";
+          action = @"RAP_PLACE_ISSUE_DETAILS";
           break;
         case 33:
-          v12 = @"RAP_GUIDES_DETAILS";
+          action = @"RAP_GUIDES_DETAILS";
           break;
         case 34:
-          v12 = @"RAP_BAD_DIRECTIONS_DETAILS";
+          action = @"RAP_BAD_DIRECTIONS_DETAILS";
           break;
         case 35:
-          v12 = @"RAP_ADD_MAP_DETAILS";
+          action = @"RAP_ADD_MAP_DETAILS";
           break;
         case 36:
-          v12 = @"WATCH_COMPLICATION";
+          action = @"WATCH_COMPLICATION";
           break;
         case 37:
-          v12 = @"RAP_NAV_MENU";
+          action = @"RAP_NAV_MENU";
           break;
         case 38:
-          v12 = @"NOTIFICATION_ALIGHT_BANNER_TRANSIT";
+          action = @"NOTIFICATION_ALIGHT_BANNER_TRANSIT";
           break;
         case 39:
-          v12 = @"RAP_REPORT_MENU";
+          action = @"RAP_REPORT_MENU";
           break;
         case 40:
-          v12 = @"RAP_CURATED_COLLECTION_MENU";
+          action = @"RAP_CURATED_COLLECTION_MENU";
           break;
         case 41:
-          v12 = @"RAP_REPORT_CARD_DETAILS";
+          action = @"RAP_REPORT_CARD_DETAILS";
           break;
         case 42:
-          v12 = @"NOTIFICATION_NO_LOCATION_TRANSIT";
+          action = @"NOTIFICATION_NO_LOCATION_TRANSIT";
           break;
         case 43:
-          v12 = @"RAP_STREET_ISSUE_DETAILS";
+          action = @"RAP_STREET_ISSUE_DETAILS";
           break;
         case 44:
-          v12 = @"NEARBY_TRANSIT_CARD";
+          action = @"NEARBY_TRANSIT_CARD";
           break;
         case 45:
-          v12 = @"WATCH_NAV_MENU";
+          action = @"WATCH_NAV_MENU";
           break;
         case 46:
-          v12 = @"GENERIC_ADVISORY_PAGE";
+          action = @"GENERIC_ADVISORY_PAGE";
           break;
         case 47:
-          v12 = @"USER_PROFILE_TRAY";
+          action = @"USER_PROFILE_TRAY";
           break;
         case 48:
-          v12 = @"MEDIA_APP_MENU";
+          action = @"MEDIA_APP_MENU";
           break;
         case 49:
-          v12 = @"TEMPLATE_PLACE_TRAY";
+          action = @"TEMPLATE_PLACE_TRAY";
           break;
         case 50:
-          v12 = @"NOTIFICATION_CONSENT_REPROMPT_RAP";
+          action = @"NOTIFICATION_CONSENT_REPROMPT_RAP";
           break;
         case 51:
-          v12 = @"ALLOW_NOTIFICATION_DIALOG";
+          action = @"ALLOW_NOTIFICATION_DIALOG";
           break;
         case 52:
-          v12 = @"NOTIFICATION_CONSENT_REPROMPT_DRIVING";
+          action = @"NOTIFICATION_CONSENT_REPROMPT_DRIVING";
           break;
         case 53:
-          v12 = @"NOTIFICATION_CONSENT_REPROMPT_ARP";
+          action = @"NOTIFICATION_CONSENT_REPROMPT_ARP";
           break;
         case 54:
-          v12 = @"NOTIFICATION_CONSENT_REPROMPT_TIME_ELAPSED";
+          action = @"NOTIFICATION_CONSENT_REPROMPT_TIME_ELAPSED";
           break;
         case 55:
-          v12 = @"NOTIFICATION_CONSENT_PROMPT";
+          action = @"NOTIFICATION_CONSENT_PROMPT";
           break;
         case 56:
-          v12 = @"QUICK_ACTION_TRAY_VENDORS_MENU";
+          action = @"QUICK_ACTION_TRAY_VENDORS_MENU";
           break;
         case 57:
-          v12 = @"PLACECARD_TRAY_VENDORS_MENU";
+          action = @"PLACECARD_TRAY_VENDORS_MENU";
           break;
         case 58:
-          v12 = @"RESULTS_TRAY_SEARCH_ROUTE_PLANNING";
+          action = @"RESULTS_TRAY_SEARCH_ROUTE_PLANNING";
           break;
         case 59:
-          v12 = @"SEARCH_ALONG_ROUTE_TRAY";
+          action = @"SEARCH_ALONG_ROUTE_TRAY";
           break;
         case 60:
-          v12 = @"MAP_RESULTS_SEARCH_ROUTE_PLANNING";
+          action = @"MAP_RESULTS_SEARCH_ROUTE_PLANNING";
           break;
         case 61:
-          v12 = @"PLACECARD_SHOWCASE_MENU";
+          action = @"PLACECARD_SHOWCASE_MENU";
           break;
         case 62:
-          v12 = @"RAP_INLINE_ADD_DETAILS";
+          action = @"RAP_INLINE_ADD_DETAILS";
           break;
         case 63:
-          v12 = @"RAP_EDIT_MENU_DETAILS";
+          action = @"RAP_EDIT_MENU_DETAILS";
           break;
         case 64:
-          v12 = @"RAP_SUBMISSION_PROMPT";
+          action = @"RAP_SUBMISSION_PROMPT";
           break;
         case 65:
-          v12 = @"RAP_PLACECARD_EDIT_MENU";
+          action = @"RAP_PLACECARD_EDIT_MENU";
           break;
         case 66:
-          v12 = @"ARP_SUBMISSION_CONFIRMATION_PAGE";
+          action = @"ARP_SUBMISSION_CONFIRMATION_PAGE";
           break;
         case 67:
-          v12 = @"INCIDENT_REPORT_MENU";
+          action = @"INCIDENT_REPORT_MENU";
           break;
         case 68:
-          v12 = @"RAP_SELECT_BAD_ROUTES_STEPS";
+          action = @"RAP_SELECT_BAD_ROUTES_STEPS";
           break;
         case 69:
-          v12 = @"RAP_SELECT_BAD_ROUTES";
+          action = @"RAP_SELECT_BAD_ROUTES";
           break;
         case 70:
-          v12 = @"SIRI_SUGGESTION_RESUME_ROUTE";
+          action = @"SIRI_SUGGESTION_RESUME_ROUTE";
           break;
         case 71:
-          v12 = @"SIRI_SUGGESTION_RESUME_MULTIPOINT_ROUTE";
+          action = @"SIRI_SUGGESTION_RESUME_MULTIPOINT_ROUTE";
           break;
         case 72:
-          v12 = @"SPOTLIGHT_BUSINESS_ENTITY_LIST";
+          action = @"SPOTLIGHT_BUSINESS_ENTITY_LIST";
           break;
         case 73:
-          v12 = @"SPOTLIGHT_BUSINESS_ENTITY";
+          action = @"SPOTLIGHT_BUSINESS_ENTITY";
           break;
         case 74:
-          v12 = @"NOTIFICATION_ARP";
+          action = @"NOTIFICATION_ARP";
           break;
         case 75:
-          v12 = @"IMPROVE_LOCATION_ACCURACY_PROMPT";
+          action = @"IMPROVE_LOCATION_ACCURACY_PROMPT";
           break;
         case 76:
-          v12 = @"YOUR_PHOTOS_ALBUM";
+          action = @"YOUR_PHOTOS_ALBUM";
           break;
         case 77:
-          v12 = @"ARP_PHOTO_CREDIT";
+          action = @"ARP_PHOTO_CREDIT";
           break;
         case 78:
-          v12 = @"RAP_OUTREACH_REVIEWED_REPORT";
+          action = @"RAP_OUTREACH_REVIEWED_REPORT";
           break;
         case 79:
-          v12 = @"RAP_REPORT_MENU_MORE";
+          action = @"RAP_REPORT_MENU_MORE";
           break;
         case 80:
-          v12 = @"WATCH_MAPS_SETTINGS";
+          action = @"WATCH_MAPS_SETTINGS";
           break;
         case 81:
-          v12 = @"OFFLINE_FEATURE_PROMPT";
+          action = @"OFFLINE_FEATURE_PROMPT";
           break;
         case 82:
-          v12 = @"EXPIRED_MAPS_DETAILS";
+          action = @"EXPIRED_MAPS_DETAILS";
           break;
         case 83:
-          v12 = @"MAPS_VIEW";
+          action = @"MAPS_VIEW";
           break;
         case 84:
-          v12 = @"NOTIFICATION_OFFLINE";
+          action = @"NOTIFICATION_OFFLINE";
           break;
         case 85:
-          v12 = @"EXPIRED_MAPS_MANAGEMENT";
+          action = @"EXPIRED_MAPS_MANAGEMENT";
           break;
         case 86:
-          v12 = @"OFFLINE_NEW_MAPS_MANAGEMENT";
+          action = @"OFFLINE_NEW_MAPS_MANAGEMENT";
           break;
         case 87:
-          v12 = @"EDIT_EXPIRED_MAPS_MANAGEMENT";
+          action = @"EDIT_EXPIRED_MAPS_MANAGEMENT";
           break;
         case 88:
-          v12 = @"OFFLINE_MAPS_MANAGEMENT";
+          action = @"OFFLINE_MAPS_MANAGEMENT";
           break;
         case 89:
-          v12 = @"REGION_SELECTOR";
+          action = @"REGION_SELECTOR";
           break;
         case 90:
-          v12 = @"OFFLINE_SUGGESTED_MAPS_MANAGEMENT";
+          action = @"OFFLINE_SUGGESTED_MAPS_MANAGEMENT";
           break;
         case 91:
-          v12 = @"FIND_MY_ETA_SHARING_TRAY";
+          action = @"FIND_MY_ETA_SHARING_TRAY";
           break;
         case 92:
-          v12 = @"WATCH_PLACE";
+          action = @"WATCH_PLACE";
           break;
         case 93:
-          v12 = @"WATCH_ROUTE_PLANNING_TRANSIT_CAROUSEL";
+          action = @"WATCH_ROUTE_PLANNING_TRANSIT_CAROUSEL";
           break;
         case 94:
-          v12 = @"WATCH_ROUTE_PLANNING_MAP";
+          action = @"WATCH_ROUTE_PLANNING_MAP";
           break;
         case 95:
-          v12 = @"WATCH_NAV_WALKING_CONTROLS";
+          action = @"WATCH_NAV_WALKING_CONTROLS";
           break;
         case 96:
-          v12 = @"WATCH_NAV_CYCLING_CONTROLS";
+          action = @"WATCH_NAV_CYCLING_CONTROLS";
           break;
         case 97:
-          v12 = @"WATCH_ROUTE_PLANNING_WALKING_CAROUSEL";
+          action = @"WATCH_ROUTE_PLANNING_WALKING_CAROUSEL";
           break;
         case 98:
-          v12 = @"WATCH_NAV_TRANSIT_CONTROLS";
+          action = @"WATCH_NAV_TRANSIT_CONTROLS";
           break;
         case 99:
-          v12 = @"WATCH_SEARCH_RESULTS_CAROUSEL";
+          action = @"WATCH_SEARCH_RESULTS_CAROUSEL";
           break;
         case 100:
-          v12 = @"WATCH_NAV_DRIVING_CONTROLS";
+          action = @"WATCH_NAV_DRIVING_CONTROLS";
           break;
         case 101:
-          v12 = @"RESULTS_TRAY_SEARCH";
+          action = @"RESULTS_TRAY_SEARCH";
           break;
         case 102:
-          v12 = @"RESULTS_TRAY_BROWSE";
+          action = @"RESULTS_TRAY_BROWSE";
           break;
         case 103:
-          v12 = @"RESULTS_TRAY_FAVORITES";
+          action = @"RESULTS_TRAY_FAVORITES";
           break;
         case 104:
-          v12 = @"RESULTS_TRAY_SEARCH_ALONG_ROUTE";
+          action = @"RESULTS_TRAY_SEARCH_ALONG_ROUTE";
           break;
         case 105:
-          v12 = @"RESULTS_TRAY_CLUSTER";
+          action = @"RESULTS_TRAY_CLUSTER";
           break;
         case 106:
-          v12 = @"RESULTS_TRAY_VENUE_BROWSE";
+          action = @"RESULTS_TRAY_VENUE_BROWSE";
           break;
         case 107:
-          v12 = @"WATCH_MAP_RESULTS";
+          action = @"WATCH_MAP_RESULTS";
           break;
         case 108:
-          v12 = @"WATCH_NAV_WALKING_ELEVATION_VIEW";
+          action = @"WATCH_NAV_WALKING_ELEVATION_VIEW";
           break;
         case 109:
-          v12 = @"WATCH_PLACES";
+          action = @"WATCH_PLACES";
           break;
         case 110:
-          v12 = @"WATCH_NAV_CYCLING_ELEVATION_VIEW";
+          action = @"WATCH_NAV_CYCLING_ELEVATION_VIEW";
           break;
         case 111:
-          v12 = @"WATCH_ROUTE_PLANNING_CYCLING_CAROUSEL";
+          action = @"WATCH_ROUTE_PLANNING_CYCLING_CAROUSEL";
           break;
         case 112:
-          v12 = @"DOWNLOADED_MAPS_DETAILS";
+          action = @"DOWNLOADED_MAPS_DETAILS";
           break;
         case 113:
-          v12 = @"WATCH_ROUTE_PLANNING_DRIVING_CAROUSEL";
+          action = @"WATCH_ROUTE_PLANNING_DRIVING_CAROUSEL";
           break;
         case 114:
-          v12 = @"WATCH_NAV_TRANSIT_OVERVIEW_MAP";
+          action = @"WATCH_NAV_TRANSIT_OVERVIEW_MAP";
           break;
         case 115:
-          v12 = @"WATCH_NAV_WALKING_OVERVIEW_MAP";
+          action = @"WATCH_NAV_WALKING_OVERVIEW_MAP";
           break;
         case 116:
-          v12 = @"WATCH_NAV_CYCLING_OVERVIEW_MAP";
+          action = @"WATCH_NAV_CYCLING_OVERVIEW_MAP";
           break;
         case 117:
-          v12 = @"WATCH_ROUTE_OPTIONS";
+          action = @"WATCH_ROUTE_OPTIONS";
           break;
         case 118:
-          v12 = @"WATCH_NAV_DRIVING_OVERVIEW_MAP";
+          action = @"WATCH_NAV_DRIVING_OVERVIEW_MAP";
           break;
         case 119:
-          v12 = @"WATCH_MORE_GUIDES";
+          action = @"WATCH_MORE_GUIDES";
           break;
         case 120:
-          v12 = @"WATCH_RECENTLY_VIEWED";
+          action = @"WATCH_RECENTLY_VIEWED";
           break;
         case 121:
-          v12 = @"EV_SUCCESS_TRAY";
+          action = @"EV_SUCCESS_TRAY";
           break;
         case 122:
-          v12 = @"PREFERRED_NETWORK_SELECTION_TRAY";
+          action = @"PREFERRED_NETWORK_SELECTION_TRAY";
           break;
         case 123:
-          v12 = @"PREFERRED_NETWORK_TRAY";
+          action = @"PREFERRED_NETWORK_TRAY";
           break;
         case 124:
-          v12 = @"WALKING_TRANSITION_SUGGESTION_TRAY";
+          action = @"WALKING_TRANSITION_SUGGESTION_TRAY";
           break;
         case 125:
-          v12 = @"FINDMY_TRANSITION_SUGGESTION_TRAY";
+          action = @"FINDMY_TRANSITION_SUGGESTION_TRAY";
           break;
         case 126:
-          v12 = @"CARPLAY_FIND_MY_ETA_SHARING_TRAY";
+          action = @"CARPLAY_FIND_MY_ETA_SHARING_TRAY";
           break;
         case 127:
-          v12 = @"AC_KEYBOARD_TRAY";
+          action = @"AC_KEYBOARD_TRAY";
           break;
         case 128:
-          v12 = @"MORE_RELATED_TRAILS";
+          action = @"MORE_RELATED_TRAILS";
           break;
         case 129:
-          v12 = @"MORE_RELATED_TRAILHEADS";
+          action = @"MORE_RELATED_TRAILHEADS";
           break;
         case 130:
-          v12 = @"ROUTING_TRAY_CUSTOM_ROUTE";
+          action = @"ROUTING_TRAY_CUSTOM_ROUTE";
           break;
         case 131:
-          v12 = @"CUSTOM_ROUTE_CREATION_TRAY";
+          action = @"CUSTOM_ROUTE_CREATION_TRAY";
           break;
         case 132:
-          v12 = @"ROUTING_TRAY_CURATED_HIKE";
+          action = @"ROUTING_TRAY_CURATED_HIKE";
           break;
         case 133:
-          v12 = @"MORE_CURATED_HIKES";
+          action = @"MORE_CURATED_HIKES";
           break;
         case 134:
-          v12 = @"CUSTOM_ROUTE_ONBOARDING";
+          action = @"CUSTOM_ROUTE_ONBOARDING";
           break;
         case 135:
-          v12 = @"LIBRARY_ROUTES";
+          action = @"LIBRARY_ROUTES";
           break;
         case 136:
-          v12 = @"HIKING_TRANSITION_SUGGESTION_TRAY";
+          action = @"HIKING_TRANSITION_SUGGESTION_TRAY";
           break;
         case 137:
-          v12 = @"MY_LIBRARY";
+          action = @"MY_LIBRARY";
           break;
         case 138:
-          v12 = @"EDIT_NOTE_TRAY";
+          action = @"EDIT_NOTE_TRAY";
           break;
         case 139:
-          v12 = @"CREATE_NOTE_TRAY";
+          action = @"CREATE_NOTE_TRAY";
           break;
         case 140:
-          v12 = @"LIBRARY_PLACES";
+          action = @"LIBRARY_PLACES";
           break;
         case 141:
-          v12 = @"WATCH_ACCOUNT";
+          action = @"WATCH_ACCOUNT";
           break;
         case 142:
-          v12 = @"WATCH_DOWNLOADED_MAPS";
+          action = @"WATCH_DOWNLOADED_MAPS";
           break;
         case 143:
-          v12 = @"VISUAL_INTELLIGENCE_DETECTION_LIST";
+          action = @"VISUAL_INTELLIGENCE_DETECTION_LIST";
           break;
         case 144:
-          v12 = @"VISUAL_INTELLIGENCE_DETECTION";
+          action = @"VISUAL_INTELLIGENCE_DETECTION";
           break;
         case 145:
-          v12 = @"VISUAL_INTELLIGENCE_SNIPPET";
+          action = @"VISUAL_INTELLIGENCE_SNIPPET";
           break;
         case 146:
-          v12 = @"FAMILIAR_ROUTE_NOTIFICATION";
+          action = @"FAMILIAR_ROUTE_NOTIFICATION";
           break;
         case 147:
-          v12 = @"LIBRARY_VISITED";
+          action = @"LIBRARY_VISITED";
           break;
         case 148:
-          v12 = @"VISITED_PLACES_ONBOARDING";
+          action = @"VISITED_PLACES_ONBOARDING";
           break;
         case 149:
-          v12 = @"NOTIFICATION_VISITED_PLACES";
+          action = @"NOTIFICATION_VISITED_PLACES";
           break;
         case 150:
-          v12 = @"LOCATION_CORRECTION_TRAY";
+          action = @"LOCATION_CORRECTION_TRAY";
           break;
         case 151:
-          v12 = @"MAPS_WIDGET_VISITED_PLACE";
+          action = @"MAPS_WIDGET_VISITED_PLACE";
           break;
         case 152:
-          v12 = @"REMOVE_VISIT_TRAY";
+          action = @"REMOVE_VISIT_TRAY";
           break;
         case 153:
-          v12 = @"NEARBY_SUGGESTION_TRAY";
+          action = @"NEARBY_SUGGESTION_TRAY";
           break;
         case 154:
-          v12 = @"FAMILIAR_ROUTES_ONBOARDING";
+          action = @"FAMILIAR_ROUTES_ONBOARDING";
           break;
         case 155:
-          v12 = @"ROUTING_TRAY_CARPLAY";
+          action = @"ROUTING_TRAY_CARPLAY";
           break;
         case 156:
         case 157:
@@ -5948,1014 +5948,1014 @@ LABEL_1427:
         case 800:
           goto LABEL_1996;
         case 201:
-          v12 = @"PLACECARD_TRAY";
+          action = @"PLACECARD_TRAY";
           break;
         case 202:
-          v12 = @"WEB_MODULE";
+          action = @"WEB_MODULE";
           break;
         case 203:
-          v12 = @"ACTION_BAR";
+          action = @"ACTION_BAR";
           break;
         case 204:
-          v12 = @"ACTION_BAR_VENDORS_MENU";
+          action = @"ACTION_BAR_VENDORS_MENU";
           break;
         case 250:
-          v12 = @"ADD_FAVORITE_TRAY";
+          action = @"ADD_FAVORITE_TRAY";
           break;
         case 251:
-          v12 = @"COLLECTION_LIST";
+          action = @"COLLECTION_LIST";
           break;
         case 252:
-          v12 = @"COLLECTION_VIEW";
+          action = @"COLLECTION_VIEW";
           break;
         case 253:
-          v12 = @"FAVORITE_DETAILS";
+          action = @"FAVORITE_DETAILS";
           break;
         case 254:
-          v12 = @"FAVORITES_TRAY";
+          action = @"FAVORITES_TRAY";
           break;
         case 255:
-          v12 = @"SHARED_COLLECTION";
+          action = @"SHARED_COLLECTION";
           break;
         case 256:
-          v12 = @"SHARED_COLLECTION_VIEW";
+          action = @"SHARED_COLLECTION_VIEW";
           break;
         case 257:
-          v12 = @"RECENTLY_VIEWED";
+          action = @"RECENTLY_VIEWED";
           break;
         case 258:
-          v12 = @"SHARED_WEB_COLLECTION";
+          action = @"SHARED_WEB_COLLECTION";
           break;
         case 259:
-          v12 = @"CURATED_COLLECTION_VIEW";
+          action = @"CURATED_COLLECTION_VIEW";
           break;
         case 260:
-          v12 = @"FEATURED_COLLECTIONS";
+          action = @"FEATURED_COLLECTIONS";
           break;
         case 261:
-          v12 = @"PUBLISHER_TRAY";
+          action = @"PUBLISHER_TRAY";
           break;
         case 262:
-          v12 = @"SHARED_CURATED_COLLECTION_VIEW";
+          action = @"SHARED_CURATED_COLLECTION_VIEW";
           break;
         case 263:
-          v12 = @"CURATED_COLLECTION_NOTIFICATION";
+          action = @"CURATED_COLLECTION_NOTIFICATION";
           break;
         case 264:
-          v12 = @"CURATED_COLLECTION_LIST";
+          action = @"CURATED_COLLECTION_LIST";
           break;
         case 265:
-          v12 = @"PUBLISHER_LIST";
+          action = @"PUBLISHER_LIST";
           break;
         case 266:
-          v12 = @"WATCH_CURATED_COLLECTION_VIEW";
+          action = @"WATCH_CURATED_COLLECTION_VIEW";
           break;
         case 267:
-          v12 = @"SIRI_SUGGESTION_SHARED_ETA_SUBLIST";
+          action = @"SIRI_SUGGESTION_SHARED_ETA_SUBLIST";
           break;
         case 268:
-          v12 = @"SIRI_SUGGESTION_SHARED_ETA_CARPLAY_SUBLIST";
+          action = @"SIRI_SUGGESTION_SHARED_ETA_CARPLAY_SUBLIST";
           break;
         case 301:
-          v12 = @"ROUTING_TRAY_DRIVING";
+          action = @"ROUTING_TRAY_DRIVING";
           break;
         case 302:
-          v12 = @"ROUTING_TRAY_WALKING";
+          action = @"ROUTING_TRAY_WALKING";
           break;
         case 303:
-          v12 = @"ROUTING_TRAY_TRANSIT";
+          action = @"ROUTING_TRAY_TRANSIT";
           break;
         case 304:
-          v12 = @"ROUTING_TRAY_RIDESHARE";
+          action = @"ROUTING_TRAY_RIDESHARE";
           break;
         case 305:
-          v12 = @"ROUTING_TRAY_CYCLING";
+          action = @"ROUTING_TRAY_CYCLING";
           break;
         case 306:
-          v12 = @"ROUTING_TRAY_VIRTUAL_GARAGE_VIEW";
+          action = @"ROUTING_TRAY_VIRTUAL_GARAGE_VIEW";
           break;
         case 401:
-          v12 = @"NAV_TRAY_DRIVING";
+          action = @"NAV_TRAY_DRIVING";
           break;
         case 402:
-          v12 = @"NAV_TRAY_WALKING";
+          action = @"NAV_TRAY_WALKING";
           break;
         case 403:
-          v12 = @"NAV_TRAY_TRANSIT";
+          action = @"NAV_TRAY_TRANSIT";
           break;
         case 404:
-          v12 = @"NAV_TRAY_CYCLING";
+          action = @"NAV_TRAY_CYCLING";
           break;
         case 501:
-          v12 = @"MAP_PLACECARD";
+          action = @"MAP_PLACECARD";
           break;
         case 502:
-          v12 = @"MAP_SEARCH";
+          action = @"MAP_SEARCH";
           break;
         case 503:
-          v12 = @"MAP_RESULTS";
+          action = @"MAP_RESULTS";
           break;
         case 504:
-          v12 = @"MAP_ROUTING";
+          action = @"MAP_ROUTING";
           break;
         case 505:
-          v12 = @"MAP_NAV";
+          action = @"MAP_NAV";
           break;
         case 506:
-          v12 = @"MAP_RESULTS_SEARCH_ALONG_ROUTE";
+          action = @"MAP_RESULTS_SEARCH_ALONG_ROUTE";
           break;
         case 507:
-          v12 = @"MAP_TRAFFIC_INCIDENT";
+          action = @"MAP_TRAFFIC_INCIDENT";
           break;
         case 508:
-          v12 = @"MAP_FULL_SCREEN";
+          action = @"MAP_FULL_SCREEN";
           break;
         case 509:
-          v12 = @"MAP_DRIVE";
+          action = @"MAP_DRIVE";
           break;
         case 510:
-          v12 = @"MAP_LAUNCH_AND_GO";
+          action = @"MAP_LAUNCH_AND_GO";
           break;
         case 511:
-          v12 = @"MAP_VIEW";
+          action = @"MAP_VIEW";
           break;
         case 601:
-          v12 = @"MAPS_SETTINGS";
+          action = @"MAPS_SETTINGS";
           break;
         case 602:
-          v12 = @"MAPS_PREFERENCES";
+          action = @"MAPS_PREFERENCES";
           break;
         case 603:
-          v12 = @"RAP";
+          action = @"RAP";
           break;
         case 604:
-          v12 = @"ROUTING_DRIVING_DETAILS";
+          action = @"ROUTING_DRIVING_DETAILS";
           break;
         case 605:
-          v12 = @"ROUTING_WALKING_DETAILS";
+          action = @"ROUTING_WALKING_DETAILS";
           break;
         case 606:
-          v12 = @"ROUTING_TRANSIT_DETAILS";
+          action = @"ROUTING_TRANSIT_DETAILS";
           break;
         case 607:
-          v12 = @"ROUTING_EDITOR";
+          action = @"ROUTING_EDITOR";
           break;
         case 608:
-          v12 = @"NAV_DRIVING_DETAILS";
+          action = @"NAV_DRIVING_DETAILS";
           break;
         case 609:
-          v12 = @"NAV_WALKING_DETAILS";
+          action = @"NAV_WALKING_DETAILS";
           break;
         case 610:
-          v12 = @"NAV_TRANSIT_DETAILS";
+          action = @"NAV_TRANSIT_DETAILS";
           break;
         case 611:
-          v12 = @"NAV_AUDIO_SETTINGS";
+          action = @"NAV_AUDIO_SETTINGS";
           break;
         case 612:
-          v12 = @"PHOTO_VIEWER_ALL";
+          action = @"PHOTO_VIEWER_ALL";
           break;
         case 613:
-          v12 = @"PHOTO_VIEWER_SINGLE";
+          action = @"PHOTO_VIEWER_SINGLE";
           break;
         case 614:
-          v12 = @"ROUTE_OPTIONS_TRANSIT";
+          action = @"ROUTE_OPTIONS_TRANSIT";
           break;
         case 615:
-          v12 = @"TRAFFIC_INCIDENT_TRAY";
+          action = @"TRAFFIC_INCIDENT_TRAY";
           break;
         case 616:
-          v12 = @"NAV_DIRECTIONS_BANNER_DRIVING";
+          action = @"NAV_DIRECTIONS_BANNER_DRIVING";
           break;
         case 617:
-          v12 = @"NAV_DIRECTIONS_BANNER_WALKING";
+          action = @"NAV_DIRECTIONS_BANNER_WALKING";
           break;
         case 618:
-          v12 = @"NAV_DIRECTIONS_BANNER_TRANSIT";
+          action = @"NAV_DIRECTIONS_BANNER_TRANSIT";
           break;
         case 619:
-          v12 = @"REFINE_SEARCH_SUGGESTION_AREA";
+          action = @"REFINE_SEARCH_SUGGESTION_AREA";
           break;
         case 620:
-          v12 = @"ADD_PHOTO_SHEET";
+          action = @"ADD_PHOTO_SHEET";
           break;
         case 621:
-          v12 = @"ADD_PLACE_SHEET";
+          action = @"ADD_PLACE_SHEET";
           break;
         case 622:
-          v12 = @"SHARE_SHEET";
+          action = @"SHARE_SHEET";
           break;
         case 623:
-          v12 = @"EDIT_LOCATION_SHEET";
+          action = @"EDIT_LOCATION_SHEET";
           break;
         case 624:
-          v12 = @"ADD_CONTACT_SHEET";
+          action = @"ADD_CONTACT_SHEET";
           break;
         case 625:
-          v12 = @"EDIT_NAME_SHEET";
+          action = @"EDIT_NAME_SHEET";
           break;
         case 626:
-          v12 = @"DRIVING_NAV_SETTINGS";
+          action = @"DRIVING_NAV_SETTINGS";
           break;
         case 627:
-          v12 = @"TRANSIT_SETTINGS";
+          action = @"TRANSIT_SETTINGS";
           break;
         case 628:
-          v12 = @"TRANSIT_ADVISORY_SHEET";
+          action = @"TRANSIT_ADVISORY_SHEET";
           break;
         case 629:
-          v12 = @"REMOVE_CAR_SHEET";
+          action = @"REMOVE_CAR_SHEET";
           break;
         case 630:
-          v12 = @"ROUTE_OPTIONS_DRIVING";
+          action = @"ROUTE_OPTIONS_DRIVING";
           break;
         case 631:
-          v12 = @"ROUTE_OPTIONS_DATETIME";
+          action = @"ROUTE_OPTIONS_DATETIME";
           break;
         case 632:
-          v12 = @"TRANSIT_ADVISORY_BANNER";
+          action = @"TRANSIT_ADVISORY_BANNER";
           break;
         case 633:
-          v12 = @"BOOK_TABLE_SELECT_TIME";
+          action = @"BOOK_TABLE_SELECT_TIME";
           break;
         case 634:
-          v12 = @"BOOK_TABLE_MORE_OPTIONS";
+          action = @"BOOK_TABLE_MORE_OPTIONS";
           break;
         case 635:
-          v12 = @"BOOK_TABLE_READY";
+          action = @"BOOK_TABLE_READY";
           break;
         case 636:
-          v12 = @"BOOK_TABLE_BOOKED";
+          action = @"BOOK_TABLE_BOOKED";
           break;
         case 637:
-          v12 = @"TRANSIT_LINE_CLUSTER_SHEET";
+          action = @"TRANSIT_LINE_CLUSTER_SHEET";
           break;
         case 638:
-          v12 = @"TRANSIT_LINE_LIST_SHEET";
+          action = @"TRANSIT_LINE_LIST_SHEET";
           break;
         case 639:
-          v12 = @"TRANSIT_BALANCE_BANNER";
+          action = @"TRANSIT_BALANCE_BANNER";
           break;
         case 640:
-          v12 = @"WEATHER_ICON";
+          action = @"WEATHER_ICON";
           break;
         case 641:
-          v12 = @"HELP_IMPROVE_MAPS_DIALOG";
+          action = @"HELP_IMPROVE_MAPS_DIALOG";
           break;
         case 642:
-          v12 = @"HELP_IMPROVE_COMMUTE_PREDICTION_ACCURACY_DIALOG";
+          action = @"HELP_IMPROVE_COMMUTE_PREDICTION_ACCURACY_DIALOG";
           break;
         case 643:
-          v12 = @"COMMUTE_PREDICTION_ACCURACY_DIALOG";
+          action = @"COMMUTE_PREDICTION_ACCURACY_DIALOG";
           break;
         case 644:
-          v12 = @"FLOOR_PICKER";
+          action = @"FLOOR_PICKER";
           break;
         case 645:
-          v12 = @"VENUE_LIST";
+          action = @"VENUE_LIST";
           break;
         case 646:
-          v12 = @"AR_MODE";
+          action = @"AR_MODE";
           break;
         case 647:
-          v12 = @"ROUTING_TRANSIT_TICKETS_SHEET";
+          action = @"ROUTING_TRANSIT_TICKETS_SHEET";
           break;
         case 648:
-          v12 = @"LINKED_SERVICE_HOURS";
+          action = @"LINKED_SERVICE_HOURS";
           break;
         case 649:
-          v12 = @"SHARE_ETA_TRAY";
+          action = @"SHARE_ETA_TRAY";
           break;
         case 650:
-          v12 = @"ETA_UPDATE_TRAY";
+          action = @"ETA_UPDATE_TRAY";
           break;
         case 651:
-          v12 = @"SCHEDULECARD_TRAY";
+          action = @"SCHEDULECARD_TRAY";
           break;
         case 652:
-          v12 = @"AR_NAV";
+          action = @"AR_NAV";
           break;
         case 653:
-          v12 = @"TAP_TRANSIT_ACCESS_POINT";
+          action = @"TAP_TRANSIT_ACCESS_POINT";
           break;
         case 654:
-          v12 = @"LOCATIONS_INSIDE";
+          action = @"LOCATIONS_INSIDE";
           break;
         case 655:
-          v12 = @"SIMILAR_LOCATIONS";
+          action = @"SIMILAR_LOCATIONS";
           break;
         case 656:
-          v12 = @"LOCATIONS_AT_ADDRESS";
+          action = @"LOCATIONS_AT_ADDRESS";
           break;
         case 657:
-          v12 = @"NAV_DIRECTIONS_BANNER_CYCLING";
+          action = @"NAV_DIRECTIONS_BANNER_CYCLING";
           break;
         case 658:
-          v12 = @"ROUTE_OPTIONS_CYCLING";
+          action = @"ROUTE_OPTIONS_CYCLING";
           break;
         case 659:
-          v12 = @"EV_CONNECTION_TRAY";
+          action = @"EV_CONNECTION_TRAY";
           break;
         case 660:
-          v12 = @"VIRTUAL_GARAGE";
+          action = @"VIRTUAL_GARAGE";
           break;
         case 661:
-          v12 = @"VIRTUAL_GARAGE_BANNER";
+          action = @"VIRTUAL_GARAGE_BANNER";
           break;
         case 662:
-          v12 = @"VIRTUAL_GARAGE_VEHICLE_VIEW";
+          action = @"VIRTUAL_GARAGE_VEHICLE_VIEW";
           break;
         case 663:
-          v12 = @"ADVISORY_DETAILS_PAGE";
+          action = @"ADVISORY_DETAILS_PAGE";
           break;
         case 664:
-          v12 = @"APP_CLIP_NOTIFICATION";
+          action = @"APP_CLIP_NOTIFICATION";
           break;
         case 665:
-          v12 = @"PHOTO_VIEWER_GALLERY";
+          action = @"PHOTO_VIEWER_GALLERY";
           break;
         case 666:
-          v12 = @"RECOMMENDATION_CARD";
+          action = @"RECOMMENDATION_CARD";
           break;
         case 667:
-          v12 = @"INCIDENT_REPORT_TRAY";
+          action = @"INCIDENT_REPORT_TRAY";
           break;
         case 668:
-          v12 = @"MAPS_WIDGET_DISPLAY";
+          action = @"MAPS_WIDGET_DISPLAY";
           break;
         case 669:
-          v12 = @"VISUAL_LOCATION_FRAMEWORK";
+          action = @"VISUAL_LOCATION_FRAMEWORK";
           break;
         case 670:
-          v12 = @"APP_CLIP_TRAY";
+          action = @"APP_CLIP_TRAY";
           break;
         case 671:
-          v12 = @"LICENSE_PLATE_SUGGESTION_PAGE";
+          action = @"LICENSE_PLATE_SUGGESTION_PAGE";
           break;
         case 672:
-          v12 = @"NOTIFICATION_ADD_PLATE";
+          action = @"NOTIFICATION_ADD_PLATE";
           break;
         case 673:
-          v12 = @"MAPS_RESULTS";
+          action = @"MAPS_RESULTS";
           break;
         case 674:
-          v12 = @"MAPS_WIDGET_APP_CONNECTION";
+          action = @"MAPS_WIDGET_APP_CONNECTION";
           break;
         case 675:
-          v12 = @"MAPS_WIDGET_CURRENT_LOCATION";
+          action = @"MAPS_WIDGET_CURRENT_LOCATION";
           break;
         case 676:
-          v12 = @"MAPS_WIDGET_CURRENT_NAV";
+          action = @"MAPS_WIDGET_CURRENT_NAV";
           break;
         case 677:
-          v12 = @"MAPS_WIDGET_ETA";
+          action = @"MAPS_WIDGET_ETA";
           break;
         case 678:
-          v12 = @"MAPS_WIDGET_TRANSIT";
+          action = @"MAPS_WIDGET_TRANSIT";
           break;
         case 679:
-          v12 = @"MAPS_WIDGET_UPC_DESTINATION";
+          action = @"MAPS_WIDGET_UPC_DESTINATION";
           break;
         case 680:
-          v12 = @"WIDGET_CREATION_TRAY";
+          action = @"WIDGET_CREATION_TRAY";
           break;
         case 681:
-          v12 = @"MAPS_WIDGET_HOME";
+          action = @"MAPS_WIDGET_HOME";
           break;
         case 682:
-          v12 = @"MAPS_WIDGET_PARKED_CAR";
+          action = @"MAPS_WIDGET_PARKED_CAR";
           break;
         case 683:
-          v12 = @"MAPS_WIDGET_POI";
+          action = @"MAPS_WIDGET_POI";
           break;
         case 684:
-          v12 = @"MAPS_WIDGET_SCHOOL";
+          action = @"MAPS_WIDGET_SCHOOL";
           break;
         case 685:
-          v12 = @"MAPS_WIDGET_WORK";
+          action = @"MAPS_WIDGET_WORK";
           break;
         case 686:
-          v12 = @"AIRPORT_NOTIFICATION";
+          action = @"AIRPORT_NOTIFICATION";
           break;
         case 687:
-          v12 = @"MAPS_WIDGET_EMPTY";
+          action = @"MAPS_WIDGET_EMPTY";
           break;
         case 688:
-          v12 = @"COARSE_LOCATION_OPTIONS_PROMPT";
+          action = @"COARSE_LOCATION_OPTIONS_PROMPT";
           break;
         case 689:
-          v12 = @"ALLOW_PRECISE_LOCATION_PROMPT";
+          action = @"ALLOW_PRECISE_LOCATION_PROMPT";
           break;
         case 690:
-          v12 = @"SHARE_MY_LOCATION";
+          action = @"SHARE_MY_LOCATION";
           break;
         case 691:
-          v12 = @"MARK_MY_LOCATION";
+          action = @"MARK_MY_LOCATION";
           break;
         case 692:
-          v12 = @"AIRPORT_NOTIFICATION_WATCH";
+          action = @"AIRPORT_NOTIFICATION_WATCH";
           break;
         case 693:
-          v12 = @"EDIT_FAVORITE";
+          action = @"EDIT_FAVORITE";
           break;
         case 694:
-          v12 = @"ROUTING_CYCLING_DETAILS";
+          action = @"ROUTING_CYCLING_DETAILS";
           break;
         case 695:
-          v12 = @"NAV_CYCLING_DETAILS";
+          action = @"NAV_CYCLING_DETAILS";
           break;
         case 696:
-          v12 = @"MAPS_SUGGESTION_WIDGET";
+          action = @"MAPS_SUGGESTION_WIDGET";
           break;
         case 697:
-          v12 = @"ARP_TIPKIT";
+          action = @"ARP_TIPKIT";
           break;
         case 698:
-          v12 = @"ARP_PRIVACY";
+          action = @"ARP_PRIVACY";
           break;
         case 699:
-          v12 = @"ROUTE_OPTIONS_WALKING";
+          action = @"ROUTE_OPTIONS_WALKING";
           break;
         case 701:
-          v12 = @"SAFARI_SEARCH";
+          action = @"SAFARI_SEARCH";
           break;
         case 702:
-          v12 = @"SPOTLIGHT_SEARCH";
+          action = @"SPOTLIGHT_SEARCH";
           break;
         case 703:
-          v12 = @"SAFARI_MAPS_SEARCH_RESULTS";
+          action = @"SAFARI_MAPS_SEARCH_RESULTS";
           break;
         case 704:
-          v12 = @"SPOTLIGHT_MAPS_SEARCH_RESULTS";
+          action = @"SPOTLIGHT_MAPS_SEARCH_RESULTS";
           break;
         case 705:
-          v12 = @"WIDGET_MAPS_DESTINATIONS";
+          action = @"WIDGET_MAPS_DESTINATIONS";
           break;
         case 706:
-          v12 = @"WIDGET_MAPS_TRANSIT";
+          action = @"WIDGET_MAPS_TRANSIT";
           break;
         case 707:
-          v12 = @"WIDGET_MAPS_NEARBY";
+          action = @"WIDGET_MAPS_NEARBY";
           break;
         case 708:
-          v12 = @"NOTIFICATION_FIND_MY_CAR";
+          action = @"NOTIFICATION_FIND_MY_CAR";
           break;
         case 709:
-          v12 = @"CONTROL_CENTER";
+          action = @"CONTROL_CENTER";
           break;
         case 710:
-          v12 = @"NOTIFICATION_CENTER";
+          action = @"NOTIFICATION_CENTER";
           break;
         case 711:
-          v12 = @"NOTIFICATION_DOOM";
+          action = @"NOTIFICATION_DOOM";
           break;
         case 712:
-          v12 = @"NOTIFICATION_VENUES";
+          action = @"NOTIFICATION_VENUES";
           break;
         case 713:
-          v12 = @"NOTIFICATION_RAP_UPDATE";
+          action = @"NOTIFICATION_RAP_UPDATE";
           break;
         case 714:
-          v12 = @"NOTIFICATION_TRIP_CANCELLED";
+          action = @"NOTIFICATION_TRIP_CANCELLED";
           break;
         case 715:
-          v12 = @"NOTIFICATION_STOP_SKIPPED";
+          action = @"NOTIFICATION_STOP_SKIPPED";
           break;
         case 716:
-          v12 = @"NOTIFICATION_TRIP_DELAYED";
+          action = @"NOTIFICATION_TRIP_DELAYED";
           break;
         case 717:
-          v12 = @"NOTIFICATION_RAP";
+          action = @"NOTIFICATION_RAP";
           break;
         case 718:
-          v12 = @"NOTIFICATION_PROXY_AUTH";
+          action = @"NOTIFICATION_PROXY_AUTH";
           break;
         case 719:
-          v12 = @"NOTIFICATION_PUSH_TO_DEVICE";
+          action = @"NOTIFICATION_PUSH_TO_DEVICE";
           break;
         case 720:
-          v12 = @"NOTIFICATION_LOW_FUEL";
+          action = @"NOTIFICATION_LOW_FUEL";
           break;
         case 721:
-          v12 = @"NOTIFICATION_FIND_MY_CAR_RESET";
+          action = @"NOTIFICATION_FIND_MY_CAR_RESET";
           break;
         case 722:
-          v12 = @"NOTIFICATION_TRAFFIC_CONDITIONS";
+          action = @"NOTIFICATION_TRAFFIC_CONDITIONS";
           break;
         case 723:
-          v12 = @"NOTIFICATION_SHARED_ETA";
+          action = @"NOTIFICATION_SHARED_ETA";
           break;
         case 724:
-          v12 = @"NOTIFICATION_SHARED_ETA_UPDATE";
+          action = @"NOTIFICATION_SHARED_ETA_UPDATE";
           break;
         case 725:
-          v12 = @"ANNOUNCEMENT_TYPE_UNKNOWN";
+          action = @"ANNOUNCEMENT_TYPE_UNKNOWN";
           break;
         case 726:
-          v12 = @"ANNOUNCEMENT_TYPE_GENERAL";
+          action = @"ANNOUNCEMENT_TYPE_GENERAL";
           break;
         case 727:
-          v12 = @"ANNOUNCEMENT_TYPE_FLYOVER";
+          action = @"ANNOUNCEMENT_TYPE_FLYOVER";
           break;
         case 728:
-          v12 = @"ANNOUNCEMENT_TYPE_TRANSIT";
+          action = @"ANNOUNCEMENT_TYPE_TRANSIT";
           break;
         case 729:
-          v12 = @"ANNOUNCEMENT_TYPE_VENUES";
+          action = @"ANNOUNCEMENT_TYPE_VENUES";
           break;
         case 730:
-          v12 = @"ANNOUNCEMENT_TYPE_ENHANCED_DETAIL";
+          action = @"ANNOUNCEMENT_TYPE_ENHANCED_DETAIL";
           break;
         case 731:
-          v12 = @"ANNOUNCEMENT_TYPE_LANE_GUIDANCE";
+          action = @"ANNOUNCEMENT_TYPE_LANE_GUIDANCE";
           break;
         case 732:
-          v12 = @"ANNOUNCEMENT_TYPE_LOOK_AROUND";
+          action = @"ANNOUNCEMENT_TYPE_LOOK_AROUND";
           break;
         case 733:
-          v12 = @"APP_SHEET";
+          action = @"APP_SHEET";
           break;
         case 734:
-          v12 = @"CZ_ADVISORY_DETAILS_PAGE";
+          action = @"CZ_ADVISORY_DETAILS_PAGE";
           break;
         case 735:
-          v12 = @"SHARE_ETA_CONTACT_TRAY";
+          action = @"SHARE_ETA_CONTACT_TRAY";
           break;
         case 736:
-          v12 = @"SIRI_SHARE_ETA";
+          action = @"SIRI_SHARE_ETA";
           break;
         case 737:
-          v12 = @"SIRI_SUGGESTION_SHARED_ETA";
+          action = @"SIRI_SUGGESTION_SHARED_ETA";
           break;
         case 738:
-          v12 = @"SIRI_SUGGESTION_SHARED_ETA_CARPLAY";
+          action = @"SIRI_SUGGESTION_SHARED_ETA_CARPLAY";
           break;
         case 739:
-          v12 = @"INCIDENT_ALERT_TRAY";
+          action = @"INCIDENT_ALERT_TRAY";
           break;
         case 740:
-          v12 = @"INCIDENT_REPORT_CONFIRMATION_TRAY";
+          action = @"INCIDENT_REPORT_CONFIRMATION_TRAY";
           break;
         case 741:
-          v12 = @"RAP_INCIDENT_REPORT_VIEW";
+          action = @"RAP_INCIDENT_REPORT_VIEW";
           break;
         case 742:
-          v12 = @"SEARCH_ALONG_ROUTE_CATEGORY_TRAY";
+          action = @"SEARCH_ALONG_ROUTE_CATEGORY_TRAY";
           break;
         case 743:
-          v12 = @"TRAFFIC_ADVISORY_SHEET";
+          action = @"TRAFFIC_ADVISORY_SHEET";
           break;
         case 801:
-          v12 = @"SIRI_PLUGIN_SNIPPET";
+          action = @"SIRI_PLUGIN_SNIPPET";
           break;
         case 802:
-          v12 = @"SIRI_PLUGIN_COMMAND";
+          action = @"SIRI_PLUGIN_COMMAND";
           break;
         case 803:
-          v12 = @"SIRI_SEARCH_RESULT_LIST";
+          action = @"SIRI_SEARCH_RESULT_LIST";
           break;
         case 804:
-          v12 = @"SIRI_DISAMBIGUATION_LIST";
+          action = @"SIRI_DISAMBIGUATION_LIST";
           break;
         case 805:
-          v12 = @"SIRI_PLACE_SNIPPET";
+          action = @"SIRI_PLACE_SNIPPET";
           break;
         default:
-          if (a3 != 901)
+          if (action != 901)
           {
             goto LABEL_1996;
           }
 
-          v12 = @"CHROME";
+          action = @"CHROME";
           break;
       }
 
       goto LABEL_1997;
     }
 
-    if (a3 <= 1400)
+    if (action <= 1400)
     {
-      switch(a3)
+      switch(action)
       {
         case 1001:
-          v12 = @"CARPLAY_NAV";
+          action = @"CARPLAY_NAV";
           break;
         case 1002:
-          v12 = @"CARPLAY_EXPLORE";
+          action = @"CARPLAY_EXPLORE";
           break;
         case 1003:
-          v12 = @"CARPLAY_DESTINATIONS";
+          action = @"CARPLAY_DESTINATIONS";
           break;
         case 1004:
-          v12 = @"CARPLAY_TRAFFIC_INCIDENT";
+          action = @"CARPLAY_TRAFFIC_INCIDENT";
           break;
         case 1005:
-          v12 = @"CARPLAY_CONTROL";
+          action = @"CARPLAY_CONTROL";
           break;
         case 1006:
-          v12 = @"CARPLAY_PROACTIVE";
+          action = @"CARPLAY_PROACTIVE";
           break;
         case 1007:
-          v12 = @"CARPLAY_ROUTING";
+          action = @"CARPLAY_ROUTING";
           break;
         case 1008:
-          v12 = @"CARPLAY_MORE_ROUTES";
+          action = @"CARPLAY_MORE_ROUTES";
           break;
         case 1009:
-          v12 = @"CARPLAY_SEARCH_ALONG_ROUTE";
+          action = @"CARPLAY_SEARCH_ALONG_ROUTE";
           break;
         case 1010:
-          v12 = @"CARPLAY_SEARCH";
+          action = @"CARPLAY_SEARCH";
           break;
         case 1011:
-          v12 = @"CARPLAY_SEARCH_RESULTS";
+          action = @"CARPLAY_SEARCH_RESULTS";
           break;
         case 1012:
-          v12 = @"CARPLAY_FAVORITES";
+          action = @"CARPLAY_FAVORITES";
           break;
         case 1013:
-          v12 = @"CARPLAY_NAV_CONFIRMATION";
+          action = @"CARPLAY_NAV_CONFIRMATION";
           break;
         case 1014:
-          v12 = @"CARPLAY_DESTINATION_SHARING";
+          action = @"CARPLAY_DESTINATION_SHARING";
           break;
         case 1015:
-          v12 = @"CARPLAY_NOTIFICATION_BATTERY";
+          action = @"CARPLAY_NOTIFICATION_BATTERY";
           break;
         case 1016:
-          v12 = @"CARPLAY_NOTIFICATION_DOOM";
+          action = @"CARPLAY_NOTIFICATION_DOOM";
           break;
         case 1017:
-          v12 = @"CARPLAY_NOTIFICATION_FUEL";
+          action = @"CARPLAY_NOTIFICATION_FUEL";
           break;
         case 1018:
-          v12 = @"CARPLAY_NOTIFICATION_HYBRID";
+          action = @"CARPLAY_NOTIFICATION_HYBRID";
           break;
         case 1019:
-          v12 = @"CARPLAY_SHARE_ETA_TRAY";
+          action = @"CARPLAY_SHARE_ETA_TRAY";
           break;
         case 1020:
-          v12 = @"CARPLAY_ETA_UPDATE_TRAY";
+          action = @"CARPLAY_ETA_UPDATE_TRAY";
           break;
         case 1021:
-          v12 = @"CARPLAY_ACTION_TRAY";
+          action = @"CARPLAY_ACTION_TRAY";
           break;
         case 1022:
-          v12 = @"CARPLAY_PLACECARD";
+          action = @"CARPLAY_PLACECARD";
           break;
         case 1023:
-          v12 = @"CARPLAY_KEYBOARD";
+          action = @"CARPLAY_KEYBOARD";
           break;
         case 1024:
-          v12 = @"CARPLAY_UI_TARGET_UNKNOWN";
+          action = @"CARPLAY_UI_TARGET_UNKNOWN";
           break;
         case 1025:
-          v12 = @"CARPLAY_EDIT_STOPS";
+          action = @"CARPLAY_EDIT_STOPS";
           break;
         case 1100:
-          v12 = @"RAP_DIRECTIONS_MENU";
+          action = @"RAP_DIRECTIONS_MENU";
           break;
         case 1101:
-          v12 = @"RAP_DIRECTIONS_INSTRUCTIONS_INCORRECT_LIST";
+          action = @"RAP_DIRECTIONS_INSTRUCTIONS_INCORRECT_LIST";
           break;
         case 1102:
-          v12 = @"RAP_DIRECTIONS_INSTRUCTIONS_INCORRECT_DETAILS_FORM";
+          action = @"RAP_DIRECTIONS_INSTRUCTIONS_INCORRECT_DETAILS_FORM";
           break;
         case 1103:
-          v12 = @"RAP_DIRECTIONS_BETTER_ROUTE_AVAILABLE_FORM";
+          action = @"RAP_DIRECTIONS_BETTER_ROUTE_AVAILABLE_FORM";
           break;
         case 1104:
-          v12 = @"RAP_DIRECTIONS_ESTIMATED_TIME_INCORRECT_FORM";
+          action = @"RAP_DIRECTIONS_ESTIMATED_TIME_INCORRECT_FORM";
           break;
         case 1105:
-          v12 = @"RAP_DIRECTIONS_ARRIVAL_ENTRY_POINT_INCORRECT_FORM";
+          action = @"RAP_DIRECTIONS_ARRIVAL_ENTRY_POINT_INCORRECT_FORM";
           break;
         case 1106:
-          v12 = @"RAP_TRANSIT_MENU";
+          action = @"RAP_TRANSIT_MENU";
           break;
         case 1107:
-          v12 = @"RAP_STATION_MAP";
+          action = @"RAP_STATION_MAP";
           break;
         case 1108:
-          v12 = @"RAP_STATION_MENU";
+          action = @"RAP_STATION_MENU";
           break;
         case 1109:
-          v12 = @"RAP_STATION_ENTRANCE_EXIT_INCORRECT_MAP";
+          action = @"RAP_STATION_ENTRANCE_EXIT_INCORRECT_MAP";
           break;
         case 1110:
-          v12 = @"RAP_STATION_ENTRANCE_EXIT_INCORRECT_FORM";
+          action = @"RAP_STATION_ENTRANCE_EXIT_INCORRECT_FORM";
           break;
         case 1111:
-          v12 = @"RAP_STATION_CLOSED_FORM";
+          action = @"RAP_STATION_CLOSED_FORM";
           break;
         case 1112:
-          v12 = @"RAP_LINE_MAP";
+          action = @"RAP_LINE_MAP";
           break;
         case 1113:
-          v12 = @"RAP_LINE_MENU";
+          action = @"RAP_LINE_MENU";
           break;
         case 1114:
-          v12 = @"RAP_LINE_NAME_FORM";
+          action = @"RAP_LINE_NAME_FORM";
           break;
         case 1115:
-          v12 = @"RAP_LINE_SHAPE_FORM";
+          action = @"RAP_LINE_SHAPE_FORM";
           break;
         case 1116:
-          v12 = @"RAP_LINE_SCHEDULE_INCORRECT_FORM";
+          action = @"RAP_LINE_SCHEDULE_INCORRECT_FORM";
           break;
         case 1117:
-          v12 = @"RAP_ADD_PLACE_MENU";
+          action = @"RAP_ADD_PLACE_MENU";
           break;
         case 1118:
-          v12 = @"RAP_ADD_POI_MAP";
+          action = @"RAP_ADD_POI_MAP";
           break;
         case 1119:
-          v12 = @"RAP_CATEGORY_LIST";
+          action = @"RAP_CATEGORY_LIST";
           break;
         case 1120:
-          v12 = @"RAP_POI_DETAILS_FORM";
+          action = @"RAP_POI_DETAILS_FORM";
           break;
         case 1121:
-          v12 = @"RAP_ADD_STREET_MAP";
+          action = @"RAP_ADD_STREET_MAP";
           break;
         case 1122:
-          v12 = @"RAP_STREET_DETAILS_FORM";
+          action = @"RAP_STREET_DETAILS_FORM";
           break;
         case 1123:
-          v12 = @"RAP_ADD_OTHER_MAP";
+          action = @"RAP_ADD_OTHER_MAP";
           break;
         case 1124:
-          v12 = @"RAP_OTHER_DETAILS_FORM";
+          action = @"RAP_OTHER_DETAILS_FORM";
           break;
         case 1125:
-          v12 = @"RAP_CAMERA";
+          action = @"RAP_CAMERA";
           break;
         case 1126:
-          v12 = @"RAP_LABEL_MAP";
+          action = @"RAP_LABEL_MAP";
           break;
         case 1127:
-          v12 = @"RAP_LABEL_DETAILS_FORM";
+          action = @"RAP_LABEL_DETAILS_FORM";
           break;
         case 1128:
-          v12 = @"RAP_SEARCH_MENU";
+          action = @"RAP_SEARCH_MENU";
           break;
         case 1129:
-          v12 = @"RAP_SEARCH_UNEXPECTED_RESULT_FORM";
+          action = @"RAP_SEARCH_UNEXPECTED_RESULT_FORM";
           break;
         case 1130:
-          v12 = @"RAP_SEARCH_ADDRESS_INCORRECT_FORM";
+          action = @"RAP_SEARCH_ADDRESS_INCORRECT_FORM";
           break;
         case 1131:
-          v12 = @"RAP_SEARCH_LOCATION_INCORRECT_MAP";
+          action = @"RAP_SEARCH_LOCATION_INCORRECT_MAP";
           break;
         case 1132:
-          v12 = @"RAP_SEARCH_LOCATION_INCORRECT_DETAILS_FORM";
+          action = @"RAP_SEARCH_LOCATION_INCORRECT_DETAILS_FORM";
           break;
         case 1133:
-          v12 = @"RAP_SATELLITE_IMAGE_MAP";
+          action = @"RAP_SATELLITE_IMAGE_MAP";
           break;
         case 1134:
-          v12 = @"RAP_SATELLITE_IMAGE_DETAILS_FORM";
+          action = @"RAP_SATELLITE_IMAGE_DETAILS_FORM";
           break;
         case 1135:
-          v12 = @"RAP_OTHER_FORM";
+          action = @"RAP_OTHER_FORM";
           break;
         case 1136:
-          v12 = @"RAP_PRIVACY";
+          action = @"RAP_PRIVACY";
           break;
         case 1137:
-          v12 = @"RAP_CONFIRMATION";
+          action = @"RAP_CONFIRMATION";
           break;
         case 1138:
-          v12 = @"RAP_POI_MENU";
+          action = @"RAP_POI_MENU";
           break;
         case 1139:
-          v12 = @"RAP_SEARCH_AUTOCOMPLETE_MENU";
+          action = @"RAP_SEARCH_AUTOCOMPLETE_MENU";
           break;
         case 1140:
-          v12 = @"RAP_ADD_A_PLACE_MAP";
+          action = @"RAP_ADD_A_PLACE_MAP";
           break;
         case 1141:
-          v12 = @"RAP_POI_LOCATION_MAP";
+          action = @"RAP_POI_LOCATION_MAP";
           break;
         case 1142:
-          v12 = @"RAP_DIRECTIONS_ARRIVAL_ENTRY_POINT_INCORRECT_MAP";
+          action = @"RAP_DIRECTIONS_ARRIVAL_ENTRY_POINT_INCORRECT_MAP";
           break;
         case 1143:
-          v12 = @"RAP_POI_CLOSED_FORM";
+          action = @"RAP_POI_CLOSED_FORM";
           break;
         case 1144:
-          v12 = @"RAP_CLAIM_BUSINESS_DIALOG";
+          action = @"RAP_CLAIM_BUSINESS_DIALOG";
           break;
         case 1145:
-          v12 = @"RAP_BRAND_MENU";
+          action = @"RAP_BRAND_MENU";
           break;
         case 1146:
-          v12 = @"RAP_BRAND_DETAILS_FORM";
+          action = @"RAP_BRAND_DETAILS_FORM";
           break;
         case 1147:
-          v12 = @"RAP_LOOK_AROUND_IMAGE_QUALITY_FORM";
+          action = @"RAP_LOOK_AROUND_IMAGE_QUALITY_FORM";
           break;
         case 1148:
-          v12 = @"RAP_LOOK_AROUND_LABELS_STREET_FORM";
+          action = @"RAP_LOOK_AROUND_LABELS_STREET_FORM";
           break;
         case 1149:
-          v12 = @"RAP_LOOK_AROUND_BLURRING_FORM";
+          action = @"RAP_LOOK_AROUND_BLURRING_FORM";
           break;
         case 1150:
-          v12 = @"RAP_LOOK_AROUND_REMOVE_HOME_FORM";
+          action = @"RAP_LOOK_AROUND_REMOVE_HOME_FORM";
           break;
         case 1151:
-          v12 = @"RAP_LOOK_AROUND_MENU";
+          action = @"RAP_LOOK_AROUND_MENU";
           break;
         case 1152:
-          v12 = @"RAP_LOOK_AROUND_LABELS_STORE_FORM";
+          action = @"RAP_LOOK_AROUND_LABELS_STORE_FORM";
           break;
         case 1153:
-          v12 = @"RAP_LOOK_AROUND_PRIVACY_MENU";
+          action = @"RAP_LOOK_AROUND_PRIVACY_MENU";
           break;
         case 1154:
-          v12 = @"RAP_LIGHTWEIGHT";
+          action = @"RAP_LIGHTWEIGHT";
           break;
         case 1155:
-          v12 = @"RAP_EDIT_PLACE_DETAILS";
+          action = @"RAP_EDIT_PLACE_DETAILS";
           break;
         case 1156:
-          v12 = @"RAP_ADD_CATEGORY";
+          action = @"RAP_ADD_CATEGORY";
           break;
         case 1157:
-          v12 = @"RAP_ADD_HOURS";
+          action = @"RAP_ADD_HOURS";
           break;
         case 1158:
-          v12 = @"RAP_EDIT_LOCATION";
+          action = @"RAP_EDIT_LOCATION";
           break;
         case 1159:
-          v12 = @"RAP_EDIT_ENTRY_POINT";
+          action = @"RAP_EDIT_ENTRY_POINT";
           break;
         case 1160:
-          v12 = @"RAP_LOOK_AROUND";
+          action = @"RAP_LOOK_AROUND";
           break;
         case 1161:
-          v12 = @"RAP_ADD_ENTRY_POINT";
+          action = @"RAP_ADD_ENTRY_POINT";
           break;
         case 1201:
-          v12 = @"WATCH_MAIN_MENU";
+          action = @"WATCH_MAIN_MENU";
           break;
         case 1202:
-          v12 = @"WATCH_MAIN_PRESS_MENU";
+          action = @"WATCH_MAIN_PRESS_MENU";
           break;
         case 1203:
-          v12 = @"WATCH_SEARCH";
+          action = @"WATCH_SEARCH";
           break;
         case 1204:
-          v12 = @"WATCH_DICTATION";
+          action = @"WATCH_DICTATION";
           break;
         case 1205:
-          v12 = @"WATCH_FAVORITES";
+          action = @"WATCH_FAVORITES";
           break;
         case 1206:
-          v12 = @"WATCH_SUB_CATEGORY_LIST";
+          action = @"WATCH_SUB_CATEGORY_LIST";
           break;
         case 1207:
-          v12 = @"WATCH_SEARCH_RESULTS_LIST";
+          action = @"WATCH_SEARCH_RESULTS_LIST";
           break;
         case 1208:
-          v12 = @"WATCH_MAP_VIEW";
+          action = @"WATCH_MAP_VIEW";
           break;
         case 1209:
-          v12 = @"WATCH_PLACECARD";
+          action = @"WATCH_PLACECARD";
           break;
         case 1210:
-          v12 = @"WATCH_ROUTE_PLANNING";
+          action = @"WATCH_ROUTE_PLANNING";
           break;
         case 1211:
-          v12 = @"WATCH_ROUTE_DETAILS";
+          action = @"WATCH_ROUTE_DETAILS";
           break;
         case 1212:
-          v12 = @"WATCH_NAV_TBT";
+          action = @"WATCH_NAV_TBT";
           break;
         case 1213:
-          v12 = @"WATCH_NAV_MAP";
+          action = @"WATCH_NAV_MAP";
           break;
         case 1214:
-          v12 = @"WATCH_NAV_PRESS_MENU";
+          action = @"WATCH_NAV_PRESS_MENU";
           break;
         case 1215:
-          v12 = @"WATCH_MAP_PRESS_MENU";
+          action = @"WATCH_MAP_PRESS_MENU";
           break;
         case 1216:
-          v12 = @"WATCH_ROUTING_PRESS_MENU";
+          action = @"WATCH_ROUTING_PRESS_MENU";
           break;
         case 1217:
-          v12 = @"WATCH_TRANSIT_MAP_VIEW";
+          action = @"WATCH_TRANSIT_MAP_VIEW";
           break;
         case 1218:
-          v12 = @"WATCH_SCRIBBLE";
+          action = @"WATCH_SCRIBBLE";
           break;
         case 1219:
-          v12 = @"WATCH_COLLECTION_VIEW";
+          action = @"WATCH_COLLECTION_VIEW";
           break;
         case 1220:
-          v12 = @"WATCH_ROUTE_PLANNING_WALKING";
+          action = @"WATCH_ROUTE_PLANNING_WALKING";
           break;
         case 1221:
-          v12 = @"WATCH_ROUTE_PLANNING_DRIVING";
+          action = @"WATCH_ROUTE_PLANNING_DRIVING";
           break;
         case 1222:
-          v12 = @"WATCH_ROUTE_PLANNING_TRANSIT";
+          action = @"WATCH_ROUTE_PLANNING_TRANSIT";
           break;
         case 1223:
-          v12 = @"WATCH_PAIRED_DEVICE";
+          action = @"WATCH_PAIRED_DEVICE";
           break;
         case 1224:
-          v12 = @"WATCH_NAV_DRIVING_SPLIT";
+          action = @"WATCH_NAV_DRIVING_SPLIT";
           break;
         case 1225:
-          v12 = @"WATCH_NAV_DRIVING_PLATTER";
+          action = @"WATCH_NAV_DRIVING_PLATTER";
           break;
         case 1226:
-          v12 = @"WATCH_NAV_DRIVING_MAP";
+          action = @"WATCH_NAV_DRIVING_MAP";
           break;
         case 1227:
-          v12 = @"WATCH_NAV_WALKING_SPLIT";
+          action = @"WATCH_NAV_WALKING_SPLIT";
           break;
         case 1228:
-          v12 = @"WATCH_NAV_WALKING_PLATTER";
+          action = @"WATCH_NAV_WALKING_PLATTER";
           break;
         case 1229:
-          v12 = @"WATCH_NAV_WALKING_MAP";
+          action = @"WATCH_NAV_WALKING_MAP";
           break;
         case 1230:
-          v12 = @"WATCH_NAV_TRANSIT_SPLIT";
+          action = @"WATCH_NAV_TRANSIT_SPLIT";
           break;
         case 1231:
-          v12 = @"WATCH_NAV_TRANSIT_PLATTER";
+          action = @"WATCH_NAV_TRANSIT_PLATTER";
           break;
         case 1232:
-          v12 = @"WATCH_NAV_TRANSIT_MAP";
+          action = @"WATCH_NAV_TRANSIT_MAP";
           break;
         case 1233:
-          v12 = @"WATCH_ROUTE_INFO";
+          action = @"WATCH_ROUTE_INFO";
           break;
         case 1234:
-          v12 = @"WATCH_NAV_CYCLING_MAP";
+          action = @"WATCH_NAV_CYCLING_MAP";
           break;
         case 1235:
-          v12 = @"WATCH_NAV_CYCLING_PLATTER";
+          action = @"WATCH_NAV_CYCLING_PLATTER";
           break;
         case 1236:
-          v12 = @"WATCH_NAV_CYCLING_SPLIT";
+          action = @"WATCH_NAV_CYCLING_SPLIT";
           break;
         case 1237:
-          v12 = @"WATCH_ROUTE_PLANNING_CYCLING";
+          action = @"WATCH_ROUTE_PLANNING_CYCLING";
           break;
         case 1238:
-          v12 = @"WATCH_SEARCH_INPUT";
+          action = @"WATCH_SEARCH_INPUT";
           break;
         case 1239:
-          v12 = @"WATCH_SIRI_SUGGESTION_RESUME_MULTIPOINT_ROUTE";
+          action = @"WATCH_SIRI_SUGGESTION_RESUME_MULTIPOINT_ROUTE";
           break;
         case 1240:
-          v12 = @"WATCH_SIRI_SUGGESTION_RESUME_ROUTE";
+          action = @"WATCH_SIRI_SUGGESTION_RESUME_ROUTE";
           break;
         case 1301:
-          v12 = @"PERSONALIZED_ADDRESS_LIST";
+          action = @"PERSONALIZED_ADDRESS_LIST";
           break;
         case 1302:
-          v12 = @"PERSONALIZED_ADDRESS_FORM";
+          action = @"PERSONALIZED_ADDRESS_FORM";
           break;
         case 1303:
-          v12 = @"PERSONALIZED_LABEL_FORM";
+          action = @"PERSONALIZED_LABEL_FORM";
           break;
         case 1304:
-          v12 = @"PERSONALIZED_EDIT_MAP";
+          action = @"PERSONALIZED_EDIT_MAP";
           break;
         case 1305:
-          v12 = @"PERSONALIZED_CONFIRMATION";
+          action = @"PERSONALIZED_CONFIRMATION";
           break;
         case 1306:
-          v12 = @"PERSONALIZED_ADDRESS_DELETE_DIALOG";
+          action = @"PERSONALIZED_ADDRESS_DELETE_DIALOG";
           break;
         case 1307:
-          v12 = @"PERSONALIZED_ADDRESS_INFO";
+          action = @"PERSONALIZED_ADDRESS_INFO";
           break;
         case 1308:
-          v12 = @"PERSONALIZED_ADDRESS_SEARCH";
+          action = @"PERSONALIZED_ADDRESS_SEARCH";
           break;
         case 1309:
-          v12 = @"PERSONALIZED_ADDRESS_SEARCH_RESULTS";
+          action = @"PERSONALIZED_ADDRESS_SEARCH_RESULTS";
           break;
         case 1310:
-          v12 = @"FAVORITE_SEARCH";
+          action = @"FAVORITE_SEARCH";
           break;
         case 1311:
-          v12 = @"FAVORITE_LIST";
+          action = @"FAVORITE_LIST";
           break;
         case 1312:
-          v12 = @"FAVORITE_INFO";
+          action = @"FAVORITE_INFO";
           break;
         case 1313:
-          v12 = @"PERSONALIZED_CONFIRMATION_WITH_PRIVACY";
+          action = @"PERSONALIZED_CONFIRMATION_WITH_PRIVACY";
           break;
         default:
           goto LABEL_1996;
@@ -6964,67 +6964,67 @@ LABEL_1427:
       goto LABEL_1997;
     }
 
-    if (a3 > 1705)
+    if (action > 1705)
     {
-      if (a3 > 1806)
+      if (action > 1806)
       {
-        if (a3 <= 1899)
+        if (action <= 1899)
         {
-          if (a3 <= 1808)
+          if (action <= 1808)
           {
-            if (a3 == 1807)
+            if (action == 1807)
             {
-              v12 = @"MAPS_WEB_RELATED_PLACES_LIST";
+              action = @"MAPS_WEB_RELATED_PLACES_LIST";
             }
 
             else
             {
-              v12 = @"MAPS_WEB_COLLECTION_LIST";
+              action = @"MAPS_WEB_COLLECTION_LIST";
             }
 
             goto LABEL_1997;
           }
 
-          if (a3 == 1809)
+          if (action == 1809)
           {
-            v12 = @"MAPS_WEB_DIRECTIONS";
+            action = @"MAPS_WEB_DIRECTIONS";
             goto LABEL_1997;
           }
 
-          if (a3 == 1810)
+          if (action == 1810)
           {
-            v12 = @"MAPS_WEB_SIDEBAR";
+            action = @"MAPS_WEB_SIDEBAR";
             goto LABEL_1997;
           }
         }
 
         else
         {
-          if (a3 <= 1901)
+          if (action <= 1901)
           {
-            if (a3 == 1900)
+            if (action == 1900)
             {
-              v12 = @"FIND_MY_AIR_TAG_VIEW";
+              action = @"FIND_MY_AIR_TAG_VIEW";
             }
 
             else
             {
-              v12 = @"FIND_MY_AIR_PODS_VIEW";
+              action = @"FIND_MY_AIR_PODS_VIEW";
             }
 
             goto LABEL_1997;
           }
 
-          switch(a3)
+          switch(action)
           {
             case 0x76E:
-              v12 = @"FIND_MY_ACCESSORY_VIEW";
+              action = @"FIND_MY_ACCESSORY_VIEW";
               goto LABEL_1997;
             case 0x76F:
-              v12 = @"FIND_MY_DEVICE_VIEW";
+              action = @"FIND_MY_DEVICE_VIEW";
               goto LABEL_1997;
             case 0x770:
-              v12 = @"FIND_MY_PERSON_VIEW";
+              action = @"FIND_MY_PERSON_VIEW";
               goto LABEL_1997;
           }
         }
@@ -7032,129 +7032,129 @@ LABEL_1427:
 
       else
       {
-        if (a3 > 1801)
+        if (action > 1801)
         {
-          if (a3 <= 1803)
+          if (action <= 1803)
           {
-            if (a3 == 1802)
+            if (action == 1802)
             {
-              v12 = @"MAPS_WEB_SEARCH";
+              action = @"MAPS_WEB_SEARCH";
             }
 
             else
             {
-              v12 = @"MAPS_WEB_SEARCH_RESULTS";
+              action = @"MAPS_WEB_SEARCH_RESULTS";
             }
           }
 
-          else if (a3 == 1804)
+          else if (action == 1804)
           {
-            v12 = @"MAPS_WEB_PUBLISHER";
+            action = @"MAPS_WEB_PUBLISHER";
           }
 
-          else if (a3 == 1805)
+          else if (action == 1805)
           {
-            v12 = @"MAPS_WEB_GUIDE";
-          }
-
-          else
-          {
-            v12 = @"MAPS_WEB_GUIDES_HOME";
-          }
-
-          goto LABEL_1997;
-        }
-
-        if (a3 <= 1707)
-        {
-          if (a3 == 1706)
-          {
-            v12 = @"LOOK_AROUND_VIEW_PLACECARD";
+            action = @"MAPS_WEB_GUIDE";
           }
 
           else
           {
-            v12 = @"LOOK_AROUND_PIP_PLACECARD";
+            action = @"MAPS_WEB_GUIDES_HOME";
           }
 
           goto LABEL_1997;
         }
 
-        if (a3 == 1708)
+        if (action <= 1707)
         {
-          v12 = @"OFFLINE_BROWSE_ONLY_SEARCH_TRAY";
+          if (action == 1706)
+          {
+            action = @"LOOK_AROUND_VIEW_PLACECARD";
+          }
+
+          else
+          {
+            action = @"LOOK_AROUND_PIP_PLACECARD";
+          }
+
           goto LABEL_1997;
         }
 
-        if (a3 == 1801)
+        if (action == 1708)
         {
-          v12 = @"MAPS_WEB_PLACE";
+          action = @"OFFLINE_BROWSE_ONLY_SEARCH_TRAY";
+          goto LABEL_1997;
+        }
+
+        if (action == 1801)
+        {
+          action = @"MAPS_WEB_PLACE";
           goto LABEL_1997;
         }
       }
     }
 
-    else if (a3 > 1502)
+    else if (action > 1502)
     {
-      if (a3 > 1700)
+      if (action > 1700)
       {
-        if (a3 <= 1702)
+        if (action <= 1702)
         {
-          if (a3 == 1701)
+          if (action == 1701)
           {
-            v12 = @"LOOK_AROUND_ACTION_SHEET";
+            action = @"LOOK_AROUND_ACTION_SHEET";
           }
 
           else
           {
-            v12 = @"LOOK_AROUND_VIEW";
+            action = @"LOOK_AROUND_VIEW";
           }
         }
 
-        else if (a3 == 1703)
+        else if (action == 1703)
         {
-          v12 = @"LOOK_AROUND_PLATTER";
+          action = @"LOOK_AROUND_PLATTER";
         }
 
-        else if (a3 == 1704)
+        else if (action == 1704)
         {
-          v12 = @"LOOK_AROUND_PIP_UNAVAILABLE_ZOOM";
+          action = @"LOOK_AROUND_PIP_UNAVAILABLE_ZOOM";
         }
 
         else
         {
-          v12 = @"LOOK_AROUND_PIP_UNAVAILABLE_REGION";
+          action = @"LOOK_AROUND_PIP_UNAVAILABLE_REGION";
         }
 
         goto LABEL_1997;
       }
 
-      if (a3 > 1600)
+      if (action > 1600)
       {
-        if (a3 == 1601)
+        if (action == 1601)
         {
-          v12 = @"MENU_ITEM_DARK_MAP";
+          action = @"MENU_ITEM_DARK_MAP";
           goto LABEL_1997;
         }
 
-        if (a3 == 1700)
+        if (action == 1700)
         {
-          v12 = @"LOOK_AROUND_PIP";
+          action = @"LOOK_AROUND_PIP";
           goto LABEL_1997;
         }
       }
 
       else
       {
-        if (a3 == 1503)
+        if (action == 1503)
         {
-          v12 = @"PLACECARD_PHONE";
+          action = @"PLACECARD_PHONE";
           goto LABEL_1997;
         }
 
-        if (a3 == 1504)
+        if (action == 1504)
         {
-          v12 = @"PLACECARD_URL";
+          action = @"PLACECARD_URL";
           goto LABEL_1997;
         }
       }
@@ -7162,66 +7162,66 @@ LABEL_1427:
 
     else
     {
-      if (a3 <= 1404)
+      if (action <= 1404)
       {
-        if (a3 > 1402)
+        if (action > 1402)
         {
-          if (a3 == 1403)
+          if (action == 1403)
           {
-            v12 = @"ROUTING_TRAY_RIDESHARE_CONFIRMATION_REQUESTING";
+            action = @"ROUTING_TRAY_RIDESHARE_CONFIRMATION_REQUESTING";
           }
 
           else
           {
-            v12 = @"ROUTING_TRAY_RIDESHARE_CONFIRMATION_CONFIRMED";
+            action = @"ROUTING_TRAY_RIDESHARE_CONFIRMATION_CONFIRMED";
           }
         }
 
-        else if (a3 == 1401)
+        else if (action == 1401)
         {
-          v12 = @"ROUTING_TRAY_RIDESHARE_RIDE_OPTIONS";
+          action = @"ROUTING_TRAY_RIDESHARE_RIDE_OPTIONS";
         }
 
         else
         {
-          v12 = @"ROUTING_TRAY_RIDESHARE_DETAILS_PICKING";
+          action = @"ROUTING_TRAY_RIDESHARE_DETAILS_PICKING";
         }
 
         goto LABEL_1997;
       }
 
-      if (a3 <= 1406)
+      if (action <= 1406)
       {
-        if (a3 == 1405)
+        if (action == 1405)
         {
-          v12 = @"ROUTING_TRAY_RIDESHARE_SURGE_PRICING_DIALOG";
+          action = @"ROUTING_TRAY_RIDESHARE_SURGE_PRICING_DIALOG";
         }
 
         else
         {
-          v12 = @"ROUTING_TRAY_RIDESHARE_FEEDBACK";
+          action = @"ROUTING_TRAY_RIDESHARE_FEEDBACK";
         }
 
         goto LABEL_1997;
       }
 
-      switch(a3)
+      switch(action)
       {
         case 0x57F:
-          v12 = @"ROUTING_TRAY_RIDESHARE_ENABLE_ALL";
+          action = @"ROUTING_TRAY_RIDESHARE_ENABLE_ALL";
           goto LABEL_1997;
         case 0x5DD:
-          v12 = @"PLACECARD_HEADER";
+          action = @"PLACECARD_HEADER";
           goto LABEL_1997;
         case 0x5DE:
-          v12 = @"PLACECARD_ADDRESS";
+          action = @"PLACECARD_ADDRESS";
 LABEL_1997:
           *buf = 138412802;
           v26 = v9;
           v27 = 2112;
           v28 = v11;
           v29 = 2112;
-          v30 = v12;
+          v30 = action;
           _os_log_impl(&dword_1AB634000, v8, OS_LOG_TYPE_DEBUG, "sequence '%@' is processing (%@, %@)", buf, 0x20u);
 
           goto LABEL_1998;
@@ -7229,7 +7229,7 @@ LABEL_1997:
     }
 
 LABEL_1996:
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a3];
+    action = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", action];
     goto LABEL_1997;
   }
 
@@ -7239,7 +7239,7 @@ LABEL_1998:
   if (v13 < [*(v7 + 8) count])
   {
     v14 = [*(v7 + 8) objectAtIndexedSubscript:*(v7 + 16)];
-    v15 = [v14 processUserAction:a2 target:a3 atTime:a4];
+    v15 = [v14 processUserAction:a2 target:action atTime:target];
     if (v15 > 1)
     {
       if (v15 == 2)
@@ -7291,7 +7291,7 @@ LABEL_2007:
     {
       v22 = [*(v7 + 8) objectAtIndexedSubscript:*(v7 + 16)];
 
-      [v22 setStartTime:a4];
+      [v22 setStartTime:target];
       v14 = v22;
     }
 
@@ -7312,11 +7312,11 @@ LABEL_2016:
   return result;
 }
 
-- (void)setName:(uint64_t)a1
+- (void)setName:(uint64_t)name
 {
-  if (a1)
+  if (name)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((name + 24), a2);
   }
 }
 

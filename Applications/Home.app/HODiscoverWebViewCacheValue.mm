@@ -1,14 +1,14 @@
 @interface HODiscoverWebViewCacheValue
-+ (id)valueWithWebView:(id)a3;
++ (id)valueWithWebView:(id)view;
 @end
 
 @implementation HODiscoverWebViewCacheValue
 
-+ (id)valueWithWebView:(id)a3
++ (id)valueWithWebView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(HODiscoverWebViewCacheValue);
-  [(HODiscoverWebViewCacheValue *)v4 setWebView:v3];
+  [(HODiscoverWebViewCacheValue *)v4 setWebView:viewCopy];
 
   [(HODiscoverWebViewCacheValue *)v4 setNavigationState:0];
 

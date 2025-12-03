@@ -1,15 +1,15 @@
 @interface ATXSuggestedPagesStackLayoutSmallSpiral
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5;
-- (void)layOutStacks:(id)a3 numberOfColumns:(unint64_t)a4 forPageType:(int64_t)a5;
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment;
+- (void)layOutStacks:(id)stacks numberOfColumns:(unint64_t)columns forPageType:(int64_t)type;
 @end
 
 @implementation ATXSuggestedPagesStackLayoutSmallSpiral
 
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  widgetsCopy = widgets;
+  environmentCopy = environment;
   if ([MEMORY[0x277D42590] isiPad])
   {
     v8 = 0;
@@ -22,7 +22,7 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = v6;
+    v10 = widgetsCopy;
     v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v11)
     {
@@ -66,7 +66,7 @@
       v29 = v17;
       v30 = v18;
       v31 = v16;
-      v32 = v7;
+      v32 = environmentCopy;
       v21 = v16;
       v22 = v18;
       v23 = v17;
@@ -126,30 +126,30 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v10, v11);
 }
 
-- (void)layOutStacks:(id)a3 numberOfColumns:(unint64_t)a4 forPageType:(int64_t)a5
+- (void)layOutStacks:(id)stacks numberOfColumns:(unint64_t)columns forPageType:(int64_t)type
 {
-  v7 = a3;
-  if ([v7 count] != 3)
+  stacksCopy = stacks;
+  if ([stacksCopy count] != 3)
   {
     [ATXSuggestedPagesStackLayoutSmallSpiral layOutStacks:a2 numberOfColumns:self forPageType:?];
   }
 
-  v8 = [v7 objectAtIndexedSubscript:0];
+  v8 = [stacksCopy objectAtIndexedSubscript:0];
   [v8 setCoordinateRow:0];
 
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [stacksCopy objectAtIndexedSubscript:0];
   [v9 setCoordinateColumn:0];
 
-  v10 = [v7 objectAtIndexedSubscript:1];
+  v10 = [stacksCopy objectAtIndexedSubscript:1];
   [v10 setCoordinateRow:2];
 
-  v11 = [v7 objectAtIndexedSubscript:1];
+  v11 = [stacksCopy objectAtIndexedSubscript:1];
   [v11 setCoordinateColumn:2];
 
-  v12 = [v7 objectAtIndexedSubscript:2];
+  v12 = [stacksCopy objectAtIndexedSubscript:2];
   [v12 setCoordinateRow:4];
 
-  v13 = [v7 objectAtIndexedSubscript:2];
+  v13 = [stacksCopy objectAtIndexedSubscript:2];
 
   [v13 setCoordinateColumn:0];
 }

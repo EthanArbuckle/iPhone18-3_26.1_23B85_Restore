@@ -1,17 +1,17 @@
 @interface CKFetchWebAuthTokenOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchWebAuthTokenOperation)init;
 - (CKFetchWebAuthTokenOperation)initWithAPIToken:(NSString *)APIToken;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)fetchWebAuthTokenCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleOperationDidCompleteWithWebAuthToken:(id)a3 metrics:(id)a4 error:(id)a5;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleOperationDidCompleteWithWebAuthToken:(id)token metrics:(id)metrics error:(id)error;
 - (void)setFetchWebAuthTokenCompletionBlock:(void *)fetchWebAuthTokenCompletionBlock;
 @end
 
@@ -106,23 +106,23 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v5 = objc_msgSend_APIToken(self, a2, a3);
+  v5 = objc_msgSend_APIToken(self, a2, run);
 
   if (v5)
   {
     v10.receiver = self;
     v10.super_class = CKFetchWebAuthTokenOperation;
-    return [(CKDatabaseOperation *)&v10 CKOperationShouldRun:a3];
+    return [(CKDatabaseOperation *)&v10 CKOperationShouldRun:run];
   }
 
-  else if (a3)
+  else if (run)
   {
     v8 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v6, @"CKErrorDomain", 12, @"You must provide an APIToken");
     v9 = v8;
     result = 0;
-    *a3 = v8;
+    *run = v8;
   }
 
   else
@@ -148,37 +148,37 @@ LABEL_9:
   return v5;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_APIToken(self, v5, v6);
-  objc_msgSend_setAPIToken_(v4, v8, v7);
+  objc_msgSend_setAPIToken_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKFetchWebAuthTokenOperation;
-  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKFetchWebAuthTokenOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_APIToken(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_APIToken(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setAPIToken_(self, v8, v7);
 }
 
-- (void)handleOperationDidCompleteWithWebAuthToken:(id)a3 metrics:(id)a4 error:(id)a5
+- (void)handleOperationDidCompleteWithWebAuthToken:(id)token metrics:(id)metrics error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  tokenCopy = token;
+  errorCopy = error;
+  metricsCopy = metrics;
   if ((objc_msgSend_isCancelled(self, v11, v12) & 1) == 0)
   {
-    objc_msgSend_setWebAuthToken_(self, v13, v8);
+    objc_msgSend_setWebAuthToken_(self, v13, tokenCopy);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -194,20 +194,20 @@ LABEL_9:
     *buf = 138543618;
     v22 = v19;
     v23 = 2112;
-    v24 = v8;
+    v24 = tokenCopy;
     _os_log_debug_impl(&dword_1883EA000, v16, OS_LOG_TYPE_DEBUG, "Received completion callback for operation %{public}@ with web auth token %@", buf, 0x16u);
   }
 
   v20.receiver = self;
   v20.super_class = CKFetchWebAuthTokenOperation;
-  [(CKOperation *)&v20 handleOperationDidCompleteWithMetrics:v10 error:v9];
+  [(CKOperation *)&v20 handleOperationDidCompleteWithMetrics:metricsCopy error:errorCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -270,7 +270,7 @@ LABEL_9:
 
   if (v23)
   {
-    v27 = objc_msgSend_CKClientSuitableError(v4, v25, v26);
+    v27 = objc_msgSend_CKClientSuitableError(errorCopy, v25, v26);
     v30 = objc_msgSend_webAuthToken(self, v28, v29);
     v31 = v30 | v27;
 
@@ -287,7 +287,7 @@ LABEL_9:
 
   v36.receiver = self;
   v36.super_class = CKFetchWebAuthTokenOperation;
-  [(CKOperation *)&v36 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v36 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -364,10 +364,10 @@ LABEL_9:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -411,7 +411,7 @@ LABEL_9:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchWebAuthTokenOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -426,15 +426,15 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleOperationDidCompleteWithWebAuthToken_metrics_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleOperationDidCompleteWithWebAuthToken_metrics_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchWebAuthTokenOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

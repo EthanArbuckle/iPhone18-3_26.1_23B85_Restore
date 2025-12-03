@@ -1,32 +1,32 @@
 @interface LNFetchActionOutputValueOperation
-- (LNFetchActionOutputValueOperation)initWithConnectionInterface:(id)a3 actionOutput:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchActionOutputValueOperation)initWithConnectionInterface:(id)interface actionOutput:(id)output queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchActionOutputValueOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchActionOutputValueOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchActionOutputValueOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchActionOutputValueOperation *)self value];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    value = [(LNFetchActionOutputValueOperation *)self value];
+    v7 = [(LNConnectionOperation *)self validatingResult:value error:errorCopy];
 
-    v8 = [(LNFetchActionOutputValueOperation *)self completionHandler];
-    v9 = [(LNFetchActionOutputValueOperation *)self value];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchActionOutputValueOperation *)self completionHandler];
+    value2 = [(LNFetchActionOutputValueOperation *)self value];
+    (completionHandler2)[2](completionHandler2, value2, v7);
 
     [(LNFetchActionOutputValueOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchActionOutputValueOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -38,24 +38,24 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNFetchActionOutputValueOperation *)self actionOutput];
-    v5 = [v4 identifier];
-    v6 = [(LNConnectionOperation *)self identifier];
+    actionOutput = [(LNFetchActionOutputValueOperation *)self actionOutput];
+    identifier = [actionOutput identifier];
+    identifier2 = [(LNConnectionOperation *)self identifier];
     *buf = 138543618;
-    v14 = v5;
+    v14 = identifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifier2;
   }
 
-  v7 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v8 = [(LNFetchActionOutputValueOperation *)self actionOutput];
-  v9 = [v8 identifier];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  actionOutput2 = [(LNFetchActionOutputValueOperation *)self actionOutput];
+  identifier3 = [actionOutput2 identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__LNFetchActionOutputValueOperation_start__block_invoke;
   v11[3] = &unk_1E74B1010;
   v11[4] = self;
-  [v7 fetchActionOutputValueWithIdentifier:v9 completionHandler:v11];
+  [connectionInterface fetchActionOutputValueWithIdentifier:identifier3 completionHandler:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -72,24 +72,24 @@ void __42__LNFetchActionOutputValueOperation_start__block_invoke(uint64_t a1, vo
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchActionOutputValueOperation)initWithConnectionInterface:(id)a3 actionOutput:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchActionOutputValueOperation)initWithConnectionInterface:(id)interface actionOutput:(id)output queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  interfaceCopy = interface;
+  outputCopy = output;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v12)
+    if (outputCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionOutput"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionOutput"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -97,34 +97,34 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v12)
+  if (!outputCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNFetchActionOutputValueOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v24.receiver = self;
   v24.super_class = LNFetchActionOutputValueOperation;
-  v16 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:v15 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_4505];
+  v16 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_4505];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_actionOutput, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v16->_actionOutput, output);
+    v17 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v17;
 

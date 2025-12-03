@@ -1,42 +1,42 @@
 @interface PKApplyFieldsViewController
-- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)a3;
+- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)editing;
 - (BOOL)shouldAppearWithFirstEmptyFieldAsFirstResponder;
-- (PKApplyFieldsViewController)initWithController:(id)a3 setupDelegate:(id)a4 applyPage:(id)a5;
-- (void)_analyticsReportError:(id)a3;
-- (void)_analyticsReportRowTapForFieldCell:(id)a3;
+- (PKApplyFieldsViewController)initWithController:(id)controller setupDelegate:(id)delegate applyPage:(id)page;
+- (void)_analyticsReportError:(id)error;
+- (void)_analyticsReportRowTapForFieldCell:(id)cell;
 - (void)_completeInWalletLater;
 - (void)_featureApplicationUpdated;
 - (void)_handleLearnMoreTapped;
 - (void)_handleNextStep;
-- (void)_handleNextViewController:(id)a3 displayableError:(id)a4 terminationHandler:(id)a5;
-- (void)_handleURL:(id)a3;
-- (void)_presentTermsViewControllerForIdentifier:(id)a3;
+- (void)_handleNextViewController:(id)controller displayableError:(id)error terminationHandler:(id)handler;
+- (void)_handleURL:(id)l;
+- (void)_presentTermsViewControllerForIdentifier:(id)identifier;
 - (void)_terminateFlow;
 - (void)_withdrawApplicationTapped;
-- (void)didTapFooterLink:(id)a3;
-- (void)didTapLink:(id)a3 termsIdentifier:(id)a4 analyticsIdentifier:(id)a5;
-- (void)fieldCellDidTapButton:(id)a3;
+- (void)didTapFooterLink:(id)link;
+- (void)didTapLink:(id)link termsIdentifier:(id)identifier analyticsIdentifier:(id)analyticsIdentifier;
+- (void)fieldCellDidTapButton:(id)button;
 - (void)handleCancelTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyFieldsViewController
 
-- (PKApplyFieldsViewController)initWithController:(id)a3 setupDelegate:(id)a4 applyPage:(id)a5
+- (PKApplyFieldsViewController)initWithController:(id)controller setupDelegate:(id)delegate applyPage:(id)page
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  controllerCopy = controller;
+  pageCopy = page;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKApplyFieldsViewController;
-  v12 = -[PKDynamicProvisioningFieldsPageViewController initWithWebService:context:setupDelegate:fieldsPage:](&v14, sel_initWithWebService_context_setupDelegate_fieldsPage_, 0, [v9 context], v11, v10);
+  v12 = -[PKDynamicProvisioningFieldsPageViewController initWithWebService:context:setupDelegate:fieldsPage:](&v14, sel_initWithWebService_context_setupDelegate_fieldsPage_, 0, [controllerCopy context], delegateCopy, pageCopy);
 
   if (v12)
   {
-    objc_storeStrong(&v12->_controller, a3);
-    objc_storeStrong(&v12->_applyPage, a5);
+    objc_storeStrong(&v12->_controller, controller);
+    objc_storeStrong(&v12->_applyPage, page);
   }
 
   return v12;
@@ -48,12 +48,12 @@
   v39.receiver = self;
   v39.super_class = PKApplyFieldsViewController;
   [(PKDynamicProvisioningFieldsPageViewController *)&v39 viewDidLoad];
-  v28 = [(PKApplyRequiredFieldsPage *)self->_applyPage footerContent];
-  v27 = [v28 footerText];
-  v25 = [(PKPaymentSetupTableViewController *)self dockView];
-  if (v28)
+  footerContent = [(PKApplyRequiredFieldsPage *)self->_applyPage footerContent];
+  footerText = [footerContent footerText];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  if (footerContent)
   {
-    v2 = v27 == 0;
+    v2 = footerText == 0;
   }
 
   else
@@ -64,7 +64,7 @@
   if (!v2)
   {
     v26 = objc_alloc_init(PKMultiHyperlinkView);
-    [(PKMultiHyperlinkView *)v26 setText:v27];
+    [(PKMultiHyperlinkView *)v26 setText:footerText];
     [(PKMultiHyperlinkView *)v26 setTextAlignment:1];
     objc_initWeak(&location, self);
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -72,8 +72,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v4 = [v28 links];
-    v5 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    links = [footerContent links];
+    v5 = [links countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v5)
     {
       v6 = *v35;
@@ -83,25 +83,25 @@
         {
           if (*v35 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(links);
           }
 
           v8 = *(*(&v34 + 1) + 8 * i);
           v9 = [PKTextRangeHyperlink alloc];
-          v10 = [v8 linkText];
+          linkText = [v8 linkText];
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v32[2] = __42__PKApplyFieldsViewController_viewDidLoad__block_invoke;
           v32[3] = &unk_1E80110E0;
           objc_copyWeak(&v33, &location);
           v32[4] = v8;
-          v11 = [(PKTextRangeHyperlink *)v9 initWithLinkText:v10 action:v32];
+          v11 = [(PKTextRangeHyperlink *)v9 initWithLinkText:linkText action:v32];
 
           [v3 safelyAddObject:v11];
           objc_destroyWeak(&v33);
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v5 = [links countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v5);
@@ -123,37 +123,37 @@
     {
     }
 
-    [v25 setAdditionalView:v26];
-    [v25 setAdditionalViewBottomPadding:16.0];
+    [dockView setAdditionalView:v26];
+    [dockView setAdditionalViewBottomPadding:16.0];
 
     objc_destroyWeak(&location);
   }
 
-  v14 = [(PKPaymentSetupFieldsViewController *)self headerView];
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
   if (([(PKApplyController *)self->_controller applicationType]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v15 = [(PKApplyRequiredFieldsPage *)self->_applyPage identifier];
-    if (v15 != @"creditReporting")
+    identifier = [(PKApplyRequiredFieldsPage *)self->_applyPage identifier];
+    if (identifier != @"creditReporting")
     {
-      v16 = v15;
-      if (!v15 || (v17 = [(__CFString *)v15 isEqualToString:@"creditReporting"], v16, v16, (v17 & 1) == 0))
+      v16 = identifier;
+      if (!identifier || (v17 = [(__CFString *)identifier isEqualToString:@"creditReporting"], v16, v16, (v17 & 1) == 0))
       {
         v18 = PKFeatureApplicationHeaderImageWithImage([(PKApplyController *)self->_controller featureIdentifier], 0);
         [v18 size];
-        [v14 setImageViewImage:v18 withSize:0 animated:?];
+        [headerView setImageViewImage:v18 withSize:0 animated:?];
       }
     }
   }
 
-  v19 = [(PKApplyRequiredFieldsPage *)self->_applyPage learnMore];
-  v20 = [v19 title];
-  v21 = [v20 length] == 0;
+  learnMore = [(PKApplyRequiredFieldsPage *)self->_applyPage learnMore];
+  title = [learnMore title];
+  v21 = [title length] == 0;
 
   if (!v21)
   {
-    [v14 setActionButtonUsesLearnMoreStyle:1];
-    v22 = [v19 buttonTitle];
-    [v14 setActionTitle:v22];
+    [headerView setActionButtonUsesLearnMoreStyle:1];
+    buttonTitle = [learnMore buttonTitle];
+    [headerView setActionTitle:buttonTitle];
 
     objc_initWeak(&location, self);
     v23 = MEMORY[0x1E69DC628];
@@ -163,7 +163,7 @@
     v30[3] = &unk_1E8010A60;
     objc_copyWeak(&v31, &location);
     v24 = [v23 actionWithHandler:v30];
-    [v14 setActionButtonAction:v24];
+    [headerView setActionButtonAction:v24];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -187,93 +187,93 @@ void __42__PKApplyFieldsViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   [WeakRetained _handleLearnMoreTapped];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = PKApplyFieldsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v10 viewDidAppear:a3];
+  [(PKPaymentSetupFieldsViewController *)&v10 viewDidAppear:appear];
   [(PKApplyController *)self->_controller applyFlowDidAppear];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PKApplyRequiredFieldsPage *)self->_applyPage fieldModel];
-  v7 = [v6 setupFieldAnalytics];
-  [v5 addEntriesFromDictionary:v7];
+  fieldModel = [(PKApplyRequiredFieldsPage *)self->_applyPage fieldModel];
+  setupFieldAnalytics = [fieldModel setupFieldAnalytics];
+  [v5 addEntriesFromDictionary:setupFieldAnalytics];
 
   [v5 setObject:*MEMORY[0x1E69BA818] forKey:*MEMORY[0x1E69BA680]];
   controller = self->_controller;
-  v9 = [(PKApplyFieldsViewController *)self currentPage];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v9 pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v5];
+  currentPage = [(PKApplyFieldsViewController *)self currentPage];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = PKApplyFieldsViewController;
-  [(PKApplyFieldsViewController *)&v10 viewDidDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
+  [(PKApplyFieldsViewController *)&v10 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PKApplyRequiredFieldsPage *)self->_applyPage fieldModel];
-  v7 = [v6 setupFieldAnalytics];
-  [v5 addEntriesFromDictionary:v7];
+  fieldModel = [(PKApplyRequiredFieldsPage *)self->_applyPage fieldModel];
+  setupFieldAnalytics = [fieldModel setupFieldAnalytics];
+  [v5 addEntriesFromDictionary:setupFieldAnalytics];
 
   [v5 setObject:*MEMORY[0x1E69BA820] forKey:*MEMORY[0x1E69BA680]];
   controller = self->_controller;
-  v9 = [(PKApplyFieldsViewController *)self currentPage];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v9 pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v5];
+  currentPage = [(PKApplyFieldsViewController *)self currentPage];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v5];
 }
 
-- (void)didTapFooterLink:(id)a3
+- (void)didTapFooterLink:(id)link
 {
-  v4 = a3;
-  v7 = [v4 linkURL];
-  v5 = [v4 termsIdentifier];
-  v6 = [v4 analyticsIdentifier];
+  linkCopy = link;
+  linkURL = [linkCopy linkURL];
+  termsIdentifier = [linkCopy termsIdentifier];
+  analyticsIdentifier = [linkCopy analyticsIdentifier];
 
-  [(PKApplyFieldsViewController *)self didTapLink:v7 termsIdentifier:v5 analyticsIdentifier:v6];
+  [(PKApplyFieldsViewController *)self didTapLink:linkURL termsIdentifier:termsIdentifier analyticsIdentifier:analyticsIdentifier];
 }
 
-- (void)didTapLink:(id)a3 termsIdentifier:(id)a4 analyticsIdentifier:(id)a5
+- (void)didTapLink:(id)link termsIdentifier:(id)identifier analyticsIdentifier:(id)analyticsIdentifier
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  linkCopy = link;
+  identifierCopy = identifier;
+  analyticsIdentifierCopy = analyticsIdentifier;
+  if (analyticsIdentifierCopy)
   {
     controller = self->_controller;
-    v12 = [(PKApplyFieldsViewController *)self currentPage];
+    currentPage = [(PKApplyFieldsViewController *)self currentPage];
     v13 = *MEMORY[0x1E69BA6F0];
     v14 = *MEMORY[0x1E69BA440];
     v16[0] = *MEMORY[0x1E69BA680];
     v16[1] = v14;
     v17[0] = v13;
-    v17[1] = v10;
+    v17[1] = analyticsIdentifierCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-    [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v12 pageTag:0 additionalValues:v15];
+    [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:0 additionalValues:v15];
   }
 
-  if (v9)
+  if (identifierCopy)
   {
-    [(PKApplyFieldsViewController *)self _presentTermsViewControllerForIdentifier:v9];
+    [(PKApplyFieldsViewController *)self _presentTermsViewControllerForIdentifier:identifierCopy];
   }
 
-  else if (v8)
+  else if (linkCopy)
   {
-    [(PKApplyFieldsViewController *)self _handleURL:v8];
+    [(PKApplyFieldsViewController *)self _handleURL:linkCopy];
   }
 }
 
 - (void)_featureApplicationUpdated
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PKDynamicProvisioningFieldsPageViewController *)self isLoading];
+  isLoading = [(PKDynamicProvisioningFieldsPageViewController *)self isLoading];
   v4 = PKLogFacilityTypeGetObject();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isLoading)
   {
     if (v5)
     {
@@ -404,31 +404,31 @@ uint64_t __57__PKApplyFieldsViewController__withdrawApplicationTapped__block_inv
   [(PKApplyFieldsViewController *)self _handleNextStep];
 }
 
-- (void)fieldCellDidTapButton:(id)a3
+- (void)fieldCellDidTapButton:(id)button
 {
   v5.receiver = self;
   v5.super_class = PKApplyFieldsViewController;
-  v4 = a3;
-  [(PKPaymentSetupFieldsViewController *)&v5 fieldCellDidTapButton:v4];
-  [(PKApplyFieldsViewController *)self _analyticsReportRowTapForFieldCell:v4, v5.receiver, v5.super_class];
+  buttonCopy = button;
+  [(PKPaymentSetupFieldsViewController *)&v5 fieldCellDidTapButton:buttonCopy];
+  [(PKApplyFieldsViewController *)self _analyticsReportRowTapForFieldCell:buttonCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)a3
+- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  [(PKApplyFieldsViewController *)self _analyticsReportRowTapForFieldCell:v4];
+  editingCopy = editing;
+  [(PKApplyFieldsViewController *)self _analyticsReportRowTapForFieldCell:editingCopy];
   v6.receiver = self;
   v6.super_class = PKApplyFieldsViewController;
-  LOBYTE(self) = [(PKPaymentSetupFieldsViewController *)&v6 fieldCellEditableTextFieldShouldBeginEditing:v4];
+  LOBYTE(self) = [(PKPaymentSetupFieldsViewController *)&v6 fieldCellEditableTextFieldShouldBeginEditing:editingCopy];
 
   return self;
 }
 
 - (BOOL)shouldAppearWithFirstEmptyFieldAsFirstResponder
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69BC1E0]];
+  firstEmptySetupField = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
+  identifier = [firstEmptySetupField identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69BC1E0]];
 
   return v4 ^ 1;
 }
@@ -444,8 +444,8 @@ uint64_t __57__PKApplyFieldsViewController__withdrawApplicationTapped__block_inv
   v4 = [(PKApplyController *)self->_controller cancelAlertWithContinueAction:v3];
   if (v4)
   {
-    v5 = [(PKApplyFieldsViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKApplyFieldsViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -486,7 +486,7 @@ uint64_t __49__PKApplyFieldsViewController_handleCancelTapped__block_invoke(uint
   v15[2] = *MEMORY[0x1E69E9840];
   [(PKDynamicProvisioningFieldsPageViewController *)self showSpinner:1];
   controller = self->_controller;
-  v4 = [(PKApplyFieldsViewController *)self currentPage];
+  currentPage = [(PKApplyFieldsViewController *)self currentPage];
   v5 = *MEMORY[0x1E69BA6F0];
   v6 = *MEMORY[0x1E69BA440];
   v14[0] = *MEMORY[0x1E69BA680];
@@ -495,7 +495,7 @@ uint64_t __49__PKApplyFieldsViewController_handleCancelTapped__block_invoke(uint
   v15[0] = v5;
   v15[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v4 pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v8];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:*MEMORY[0x1E69BA1E0] additionalValues:v8];
 
   objc_initWeak(&location, self);
   v9 = self->_controller;
@@ -539,44 +539,44 @@ uint64_t __46__PKApplyFieldsViewController__handleNextStep__block_invoke_2(uint6
   return [*(a1 + 32) _terminateFlow];
 }
 
-- (void)_handleNextViewController:(id)a3 displayableError:(id)a4 terminationHandler:(id)a5
+- (void)_handleNextViewController:(id)controller displayableError:(id)error terminationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  controllerCopy = controller;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (controllerCopy)
   {
-    v11 = [(PKApplyFieldsViewController *)self navigationController];
+    navigationController = [(PKApplyFieldsViewController *)self navigationController];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __93__PKApplyFieldsViewController__handleNextViewController_displayableError_terminationHandler___block_invoke;
     v14[3] = &unk_1E8011D28;
     v14[4] = self;
-    [v11 pk_presentPaymentSetupViewController:v8 animated:1 delay:0 completion:v14];
+    [navigationController pk_presentPaymentSetupViewController:controllerCopy animated:1 delay:0 completion:v14];
 LABEL_5:
 
     goto LABEL_6;
   }
 
   [(PKDynamicProvisioningFieldsPageViewController *)self showSpinner:0];
-  if (v9)
+  if (errorCopy)
   {
-    [(PKApplyFieldsViewController *)self _analyticsReportError:v9];
+    [(PKApplyFieldsViewController *)self _analyticsReportError:errorCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __93__PKApplyFieldsViewController__handleNextViewController_displayableError_terminationHandler___block_invoke_2;
     v13[3] = &unk_1E8010970;
     v13[4] = self;
-    v11 = PKAlertForDisplayableErrorWithHandlers(v9, 0, v13, 0);
-    v12 = [(PKApplyFieldsViewController *)self navigationController];
-    [v12 presentViewController:v11 animated:1 completion:0];
+    navigationController = PKAlertForDisplayableErrorWithHandlers(errorCopy, 0, v13, 0);
+    navigationController2 = [(PKApplyFieldsViewController *)self navigationController];
+    [navigationController2 presentViewController:navigationController animated:1 completion:0];
 
     goto LABEL_5;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_6:
@@ -614,84 +614,84 @@ void __93__PKApplyFieldsViewController__handleNextViewController_displayableErro
 
 - (void)_handleLearnMoreTapped
 {
-  v15 = [(PKApplyRequiredFieldsPage *)self->_applyPage learnMore];
-  v3 = [v15 buttonURL];
-  v4 = [v15 termsIdentifier];
-  v5 = v4;
-  if (v3)
+  learnMore = [(PKApplyRequiredFieldsPage *)self->_applyPage learnMore];
+  buttonURL = [learnMore buttonURL];
+  termsIdentifier = [learnMore termsIdentifier];
+  v5 = termsIdentifier;
+  if (buttonURL)
   {
-    [(PKApplyFieldsViewController *)self _handleURL:v3];
+    [(PKApplyFieldsViewController *)self _handleURL:buttonURL];
   }
 
-  else if (v4)
+  else if (termsIdentifier)
   {
-    [(PKApplyFieldsViewController *)self _presentTermsViewControllerForIdentifier:v4];
+    [(PKApplyFieldsViewController *)self _presentTermsViewControllerForIdentifier:termsIdentifier];
   }
 
   else
   {
     v6 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKPaymentSetupTableViewController *)self context]];
-    v7 = [v15 title];
-    [(PKPaymentMoreInformationViewController *)v6 setDetailTitle:v7];
+    title = [learnMore title];
+    [(PKPaymentMoreInformationViewController *)v6 setDetailTitle:title];
 
-    v8 = [v15 subtitle];
-    [(PKPaymentMoreInformationViewController *)v6 setDetailSubtitle:v8];
+    subtitle = [learnMore subtitle];
+    [(PKPaymentMoreInformationViewController *)v6 setDetailSubtitle:subtitle];
 
-    v9 = [v15 body];
-    [(PKPaymentMoreInformationViewController *)v6 setDetailBody:v9];
+    body = [learnMore body];
+    [(PKPaymentMoreInformationViewController *)v6 setDetailBody:body];
 
-    v10 = [v15 businessChatIntentName];
-    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatIntentName:v10];
+    businessChatIntentName = [learnMore businessChatIntentName];
+    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatIntentName:businessChatIntentName];
 
-    v11 = [v15 businessChatButtonTitle];
-    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatButtonTitle:v11];
+    businessChatButtonTitle = [learnMore businessChatButtonTitle];
+    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatButtonTitle:businessChatButtonTitle];
 
-    v12 = [(PKApplyController *)self->_controller featureApplication];
-    v13 = [v12 businessChatIdentifier];
-    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatIdentifier:v13];
+    featureApplication = [(PKApplyController *)self->_controller featureApplication];
+    businessChatIdentifier = [featureApplication businessChatIdentifier];
+    [(PKPaymentMoreInformationViewController *)v6 setBusinessChatIdentifier:businessChatIdentifier];
 
-    v14 = [(PKApplyFieldsViewController *)self navigationController];
-    [v14 pushViewController:v6 animated:1];
+    navigationController = [(PKApplyFieldsViewController *)self navigationController];
+    [navigationController pushViewController:v6 animated:1];
   }
 }
 
 - (void)_terminateFlow
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKApplyFieldsViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyFieldsViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_presentTermsViewControllerForIdentifier:(id)a3
+- (void)_presentTermsViewControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [PKApplyTermsAndConditionsViewController alloc];
   controller = self->_controller;
-  v7 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v9 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:controller setupDelegate:v7 context:[(PKPaymentSetupTableViewController *)self context] termsIdentifier:v4];
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v9 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:controller setupDelegate:setupDelegate context:[(PKPaymentSetupTableViewController *)self context] termsIdentifier:identifierCopy];
 
   [(PKApplyTermsAndConditionsViewController *)v9 setPreflightPDFTerms:1];
-  v8 = [(PKApplyFieldsViewController *)self navigationController];
-  [v8 pk_presentPaymentSetupViewController:v9 animated:1 completion:0];
+  navigationController = [(PKApplyFieldsViewController *)self navigationController];
+  [navigationController pk_presentPaymentSetupViewController:v9 animated:1 completion:0];
 }
 
-- (void)_handleURL:(id)a3
+- (void)_handleURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   if (PKIsURLHttpScheme())
   {
-    v4 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v6];
-    v5 = [(PKApplyFieldsViewController *)self navigationController];
-    [v5 pushViewController:v4 animated:1];
+    v4 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:lCopy];
+    navigationController = [(PKApplyFieldsViewController *)self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 
   else
@@ -700,33 +700,33 @@ void __93__PKApplyFieldsViewController__handleNextViewController_displayableErro
   }
 }
 
-- (void)_analyticsReportRowTapForFieldCell:(id)a3
+- (void)_analyticsReportRowTapForFieldCell:(id)cell
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = [a3 paymentSetupField];
-  v5 = [v4 identifier];
+  paymentSetupField = [cell paymentSetupField];
+  identifier = [paymentSetupField identifier];
 
-  if ([v5 length])
+  if ([identifier length])
   {
     controller = self->_controller;
-    v7 = [(PKApplyFieldsViewController *)self currentPage];
+    currentPage = [(PKApplyFieldsViewController *)self currentPage];
     v8 = *MEMORY[0x1E69BB170];
     v11[0] = *MEMORY[0x1E69BA680];
     v11[1] = v8;
     v9 = *MEMORY[0x1E69BA1E0];
     v12[0] = *MEMORY[0x1E69BA7C8];
-    v12[1] = v5;
+    v12[1] = identifier;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-    [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v7 pageTag:v9 additionalValues:v10];
+    [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:v9 additionalValues:v10];
   }
 }
 
-- (void)_analyticsReportError:(id)a3
+- (void)_analyticsReportError:(id)error
 {
   controller = self->_controller;
-  v5 = a3;
-  v6 = [(PKApplyFieldsViewController *)self currentPage];
-  [(PKApplyController *)controller reportAnalyticsError:v5 page:v6 pageTag:*MEMORY[0x1E69BA1E0] additionalValues:0];
+  errorCopy = error;
+  currentPage = [(PKApplyFieldsViewController *)self currentPage];
+  [(PKApplyController *)controller reportAnalyticsError:errorCopy page:currentPage pageTag:*MEMORY[0x1E69BA1E0] additionalValues:0];
 }
 
 @end

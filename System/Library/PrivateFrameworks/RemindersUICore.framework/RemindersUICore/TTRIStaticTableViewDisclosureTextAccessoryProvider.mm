@@ -1,7 +1,7 @@
 @interface TTRIStaticTableViewDisclosureTextAccessoryProvider
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (_TtC15RemindersUICore50TTRIStaticTableViewDisclosureTextAccessoryProvider)init;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 @end
 
 @implementation TTRIStaticTableViewDisclosureTextAccessoryProvider
@@ -13,12 +13,12 @@
   return result;
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = self;
-  sub_21D36B444(v8);
+  viewCopy = view;
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_21D36B444(subviewCopy);
   v11 = v10;
   v13 = v12;
 
@@ -29,9 +29,9 @@
   return result;
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v3 = self;
+  selfCopy = self;
   _s15RemindersUICore50TTRIStaticTableViewDisclosureTextAccessoryProviderC09containerE25DidLayoutArrangedSubviewsyySo012NUIContainerE0CF_0();
 }
 

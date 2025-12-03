@@ -1,45 +1,45 @@
 @interface HFMediaPlaybackActionBuilder
-- (BOOL)canUpdateWithActionBuilder:(id)a3;
-- (BOOL)hasSameTargetAsAction:(id)a3;
-- (BOOL)isMediaActionValid:(id *)a3;
-- (BOOL)updateWithActionBuilder:(id)a3;
-- (HFMediaPlaybackActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (BOOL)canUpdateWithActionBuilder:(id)builder;
+- (BOOL)hasSameTargetAsAction:(id)action;
+- (BOOL)isMediaActionValid:(id *)valid;
+- (BOOL)updateWithActionBuilder:(id)builder;
+- (HFMediaPlaybackActionBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSString)localizedDescription;
 - (id)commitItem;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)containedAccessoryRepresentables;
 - (id)copyForCreatingNewAction;
 - (id)createNewAction;
 - (id)description;
-- (id)mediaProfileContainersForAccessories:(id)a3 home:(id)a4;
+- (id)mediaProfileContainersForAccessories:(id)accessories home:(id)home;
 - (id)performValidation;
 - (id)validationError;
 - (void)_ensureConsistency;
 - (void)defaultActionIfMediaActionInvalid;
-- (void)setMediaProfiles:(id)a3;
+- (void)setMediaProfiles:(id)profiles;
 @end
 
 @implementation HFMediaPlaybackActionBuilder
 
-- (HFMediaPlaybackActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFMediaPlaybackActionBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v29.receiver = self;
   v29.super_class = HFMediaPlaybackActionBuilder;
-  v8 = [(HFItemBuilder *)&v29 initWithExistingObject:a3 inHome:v7];
+  v8 = [(HFItemBuilder *)&v29 initWithExistingObject:object inHome:homeCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(HFActionBuilder *)v8 action];
-    v11 = [v10 mediaProfiles];
+    action = [(HFActionBuilder *)v8 action];
+    mediaProfiles = [action mediaProfiles];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __62__HFMediaPlaybackActionBuilder_initWithExistingObject_inHome___block_invoke;
     v27[3] = &unk_277DF7208;
-    v12 = v7;
+    v12 = homeCopy;
     v28 = v12;
-    v13 = [v11 na_map:v27];
-    v14 = v13;
+    v13 = [mediaProfiles na_map:v27];
+    action5 = v13;
     if (v13)
     {
       v15 = v13;
@@ -55,22 +55,22 @@
     v17 = [(HFMediaPlaybackActionBuilder *)v9 mediaProfileContainersForAccessories:v16 home:v12];
     objc_storeStrong(&v9->_accessories, v16);
     objc_storeStrong(&v9->_mediaProfiles, v17);
-    v18 = [(HFActionBuilder *)v9 action];
-    v9->_targetPlayState = [v18 state];
+    action2 = [(HFActionBuilder *)v9 action];
+    v9->_targetPlayState = [action2 state];
 
-    v19 = [(HFActionBuilder *)v9 action];
-    v20 = [v19 volume];
+    action3 = [(HFActionBuilder *)v9 action];
+    volume = [action3 volume];
     targetVolume = v9->_targetVolume;
-    v9->_targetVolume = v20;
+    v9->_targetVolume = volume;
 
-    v22 = [(HFActionBuilder *)v9 action];
-    v23 = [v22 playbackArchive];
-    if (v23)
+    action4 = [(HFActionBuilder *)v9 action];
+    playbackArchive = [action4 playbackArchive];
+    if (playbackArchive)
     {
       v24 = [HFPlaybackArchive alloc];
-      v14 = [(HFActionBuilder *)v9 action];
-      v4 = [v14 playbackArchive];
-      v25 = [(HFPlaybackArchive *)v24 initWithMediaPlayerPlaybackArchive:v4];
+      action5 = [(HFActionBuilder *)v9 action];
+      playbackArchive2 = [action5 playbackArchive];
+      v25 = [(HFPlaybackArchive *)v24 initWithMediaPlayerPlaybackArchive:playbackArchive2];
     }
 
     else
@@ -79,7 +79,7 @@
     }
 
     objc_storeStrong(&v9->_playbackArchive, v25);
-    if (v23)
+    if (playbackArchive)
     {
     }
   }
@@ -112,29 +112,29 @@ uint64_t __62__HFMediaPlaybackActionBuilder_initWithExistingObject_inHome___bloc
   return v6;
 }
 
-- (BOOL)canUpdateWithActionBuilder:(id)a3
+- (BOOL)canUpdateWithActionBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)updateWithActionBuilder:(id)a3
+- (BOOL)updateWithActionBuilder:(id)builder
 {
-  v4 = a3;
-  if ([(HFMediaPlaybackActionBuilder *)self canUpdateWithActionBuilder:v4])
+  builderCopy = builder;
+  if ([(HFMediaPlaybackActionBuilder *)self canUpdateWithActionBuilder:builderCopy])
   {
-    v5 = v4;
-    v6 = [(HFMediaPlaybackActionBuilder *)self accessories];
-    v7 = [v6 mutableCopy];
+    v5 = builderCopy;
+    accessories = [(HFMediaPlaybackActionBuilder *)self accessories];
+    v7 = [accessories mutableCopy];
 
-    v8 = [v5 accessories];
-    [v7 unionSet:v8];
+    accessories2 = [v5 accessories];
+    [v7 unionSet:accessories2];
 
-    v9 = [(HFMediaPlaybackActionBuilder *)self accessories];
-    v10 = [v7 isEqualToSet:v9];
+    accessories3 = [(HFMediaPlaybackActionBuilder *)self accessories];
+    v10 = [v7 isEqualToSet:accessories3];
 
     if ((v10 & 1) == 0)
     {
@@ -142,20 +142,20 @@ uint64_t __62__HFMediaPlaybackActionBuilder_initWithExistingObject_inHome___bloc
     }
 
     v11 = v10 ^ 1;
-    v12 = [(HFMediaPlaybackActionBuilder *)self accessories];
-    v13 = [(HFItemBuilder *)self home];
-    v14 = [(HFMediaPlaybackActionBuilder *)self mediaProfileContainersForAccessories:v12 home:v13];
+    accessories4 = [(HFMediaPlaybackActionBuilder *)self accessories];
+    home = [(HFItemBuilder *)self home];
+    v14 = [(HFMediaPlaybackActionBuilder *)self mediaProfileContainersForAccessories:accessories4 home:home];
 
-    v15 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-    v16 = v15;
-    if (v15 == v14)
+    mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+    v16 = mediaProfiles;
+    if (mediaProfiles == v14)
     {
     }
 
     else
     {
-      v17 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-      v18 = [v17 isEqualToSet:v14];
+      mediaProfiles2 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+      v18 = [mediaProfiles2 isEqualToSet:v14];
 
       if ((v18 & 1) == 0)
       {
@@ -164,38 +164,38 @@ uint64_t __62__HFMediaPlaybackActionBuilder_initWithExistingObject_inHome___bloc
       }
     }
 
-    v19 = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
-    if (v19 != [v5 targetPlayState])
+    targetPlayState = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
+    if (targetPlayState != [v5 targetPlayState])
     {
       -[HFMediaPlaybackActionBuilder setTargetPlayState:](self, "setTargetPlayState:", [v5 targetPlayState]);
       v11 = 1;
     }
 
-    v20 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    v21 = [v5 playbackArchive];
+    playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    playbackArchive2 = [v5 playbackArchive];
 
-    if (v20 != v21)
+    if (playbackArchive != playbackArchive2)
     {
-      v22 = [v5 playbackArchive];
-      [(HFMediaPlaybackActionBuilder *)self setPlaybackArchive:v22];
+      playbackArchive3 = [v5 playbackArchive];
+      [(HFMediaPlaybackActionBuilder *)self setPlaybackArchive:playbackArchive3];
 
       v11 = 1;
     }
 
-    v23 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-    v24 = [v5 targetVolume];
-    v25 = v23;
-    v26 = v24;
+    targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+    targetVolume2 = [v5 targetVolume];
+    targetVolume3 = targetVolume;
+    v26 = targetVolume2;
     v27 = v26;
-    if (v25 == v26)
+    if (targetVolume3 == v26)
     {
     }
 
     else
     {
-      if (v25)
+      if (targetVolume3)
       {
-        v28 = [v25 isEqual:v26];
+        v28 = [targetVolume3 isEqual:v26];
 
         if (v28)
         {
@@ -207,8 +207,8 @@ uint64_t __62__HFMediaPlaybackActionBuilder_initWithExistingObject_inHome___bloc
       {
       }
 
-      v25 = [v5 targetVolume];
-      [(HFMediaPlaybackActionBuilder *)self setTargetVolume:v25];
+      targetVolume3 = [v5 targetVolume];
+      [(HFMediaPlaybackActionBuilder *)self setTargetVolume:targetVolume3];
       v11 = 1;
     }
 
@@ -228,17 +228,17 @@ LABEL_22:
   v3 = 0;
   if ([(HFMediaPlaybackActionBuilder *)self isMediaActionValid:0])
   {
-    v4 = [(HFMediaPlaybackActionBuilder *)self accessories];
-    v5 = [v4 na_map:&__block_literal_global_142_0];
+    accessories = [(HFMediaPlaybackActionBuilder *)self accessories];
+    v5 = [accessories na_map:&__block_literal_global_142_0];
 
     if ([v5 count])
     {
       v6 = objc_alloc(MEMORY[0x277CD1BD0]);
-      v7 = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
-      v8 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-      v9 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-      v10 = [v9 mediaPlayerPlaybackArchive];
-      v3 = [v6 initWithMediaProfiles:v5 playbackState:v7 volume:v8 playbackArchive:v10];
+      targetPlayState = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
+      targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+      playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      mediaPlayerPlaybackArchive = [playbackArchive mediaPlayerPlaybackArchive];
+      v3 = [v6 initWithMediaProfiles:v5 playbackState:targetPlayState volume:targetVolume playbackArchive:mediaPlayerPlaybackArchive];
     }
 
     else
@@ -250,26 +250,26 @@ LABEL_22:
   return v3;
 }
 
-- (void)setMediaProfiles:(id)a3
+- (void)setMediaProfiles:(id)profiles
 {
-  if (self->_mediaProfiles != a3)
+  if (self->_mediaProfiles != profiles)
   {
-    v4 = [a3 na_flatMap:&__block_literal_global_145_0];
+    v4 = [profiles na_flatMap:&__block_literal_global_145_0];
     [(HFMediaPlaybackActionBuilder *)self setAccessories:v4];
 
-    v8 = [(HFMediaPlaybackActionBuilder *)self accessories];
-    v5 = [(HFItemBuilder *)self home];
-    v6 = [(HFMediaPlaybackActionBuilder *)self mediaProfileContainersForAccessories:v8 home:v5];
+    accessories = [(HFMediaPlaybackActionBuilder *)self accessories];
+    home = [(HFItemBuilder *)self home];
+    v6 = [(HFMediaPlaybackActionBuilder *)self mediaProfileContainersForAccessories:accessories home:home];
     mediaProfiles = self->_mediaProfiles;
     self->_mediaProfiles = v6;
   }
 }
 
-- (id)mediaProfileContainersForAccessories:(id)a3 home:(id)a4
+- (id)mediaProfileContainersForAccessories:(id)accessories home:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  accessoriesCopy = accessories;
+  homeCopy = home;
+  if (!accessoriesCopy)
   {
     NSLog(&cfstr_AccessoriesSho.isa);
   }
@@ -278,9 +278,9 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories_home___block_invoke;
   v10[3] = &unk_277DF7278;
-  v11 = v6;
-  v7 = v6;
-  v8 = [v5 na_map:v10];
+  v11 = homeCopy;
+  v7 = homeCopy;
+  v8 = [accessoriesCopy na_map:v10];
 
   return v8;
 }
@@ -335,11 +335,11 @@ uint64_t __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories
   return v6;
 }
 
-- (BOOL)hasSameTargetAsAction:(id)a3
+- (BOOL)hasSameTargetAsAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v5 = v4;
+  v5 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -354,9 +354,9 @@ uint64_t __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories
 
   if (v7)
   {
-    v8 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-    v9 = [v7 mediaProfiles];
-    v10 = [v8 intersectsSet:v9];
+    mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+    mediaProfiles2 = [v7 mediaProfiles];
+    v10 = [mediaProfiles intersectsSet:mediaProfiles2];
   }
 
   else
@@ -370,28 +370,28 @@ uint64_t __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories
 - (id)copyForCreatingNewAction
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HFItemBuilder *)self home];
+  v5 = [v3 initWithHome:home];
 
   [v5 setTargetPlayState:{-[HFMediaPlaybackActionBuilder targetPlayState](self, "targetPlayState")}];
-  v6 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-  v7 = [v6 copy];
+  targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+  v7 = [targetVolume copy];
   [v5 setTargetVolume:v7];
 
   v8 = [HFPlaybackArchive alloc];
-  v9 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-  v10 = [v9 mediaPlayerPlaybackArchive];
-  v11 = [v10 copyWithOptions:0];
+  playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+  mediaPlayerPlaybackArchive = [playbackArchive mediaPlayerPlaybackArchive];
+  v11 = [mediaPlayerPlaybackArchive copyWithOptions:0];
   v12 = [(HFPlaybackArchive *)v8 initWithMediaPlayerPlaybackArchive:v11];
   [v5 setPlaybackArchive:v12];
 
-  v13 = [(HFMediaPlaybackActionBuilder *)self accessories];
-  v14 = [v13 copy];
+  accessories = [(HFMediaPlaybackActionBuilder *)self accessories];
+  v14 = [accessories copy];
   [v5 setAccessories:v14];
 
-  v15 = [v5 accessories];
-  v16 = [v5 home];
-  v17 = [v5 mediaProfileContainersForAccessories:v15 home:v16];
+  accessories2 = [v5 accessories];
+  home2 = [v5 home];
+  v17 = [v5 mediaProfileContainersForAccessories:accessories2 home:home2];
   [v5 setMediaProfiles:v17];
 
   return v5;
@@ -401,19 +401,19 @@ uint64_t __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories
 {
   if ([(HFMediaPlaybackActionBuilder *)self targetPlayState]== 1)
   {
-    v3 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
 
     v4 = @"HFMediaActionPlay";
     v5 = @"HFMediaActionResume";
-    v6 = v3 == 0;
+    v6 = playbackArchive == 0;
   }
 
   else
   {
-    v7 = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
+    targetPlayState = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
     v4 = @"HFMediaSelectionCustomVolumeTitle";
     v5 = @"HFMediaActionPause";
-    v6 = v7 == 2;
+    v6 = targetPlayState == 2;
   }
 
   if (v6)
@@ -434,35 +434,35 @@ uint64_t __74__HFMediaPlaybackActionBuilder_mediaProfileContainersForAccessories
 - (id)description
 {
   v3 = NSStringFromHMMediaPlaybackState([(HFMediaPlaybackActionBuilder *)self targetPlayState]);
-  v4 = [v3 lowercaseString];
+  lowercaseString = [v3 lowercaseString];
 
-  v5 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-  v6 = [v5 count];
+  mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+  v6 = [mediaProfiles count];
 
   if (v6 == 1)
   {
-    v7 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-    v8 = [v7 anyObject];
-    v9 = [v8 hf_displayName];
+    mediaProfiles2 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+    anyObject = [mediaProfiles2 anyObject];
+    hf_displayName = [anyObject hf_displayName];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu accessories", v6];
+    hf_displayName = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu accessories", v6];
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<set playback on %@ to %@>", v9, v4];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<set playback on %@ to %@>", hf_displayName, lowercaseString];
 
   return v10;
 }
 
 - (id)containedAccessoryRepresentables
 {
-  v2 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-  v3 = [v2 na_map:&__block_literal_global_171];
-  v4 = [v3 allObjects];
+  mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+  v3 = [mediaProfiles na_map:&__block_literal_global_171];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 void *__64__HFMediaPlaybackActionBuilder_containedAccessoryRepresentables__block_invoke(uint64_t a1, void *a2)
@@ -487,14 +487,14 @@ void *__64__HFMediaPlaybackActionBuilder_containedAccessoryRepresentables__block
 {
   if ([(HFMediaPlaybackActionBuilder *)self targetPlayState]== 1)
   {
-    v3 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
 
-    if (v3)
+    if (playbackArchive)
     {
-      v4 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-      v5 = [v4 mediaPlayerPlaybackArchive];
+      playbackArchive2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      mediaPlayerPlaybackArchive = [playbackArchive2 mediaPlayerPlaybackArchive];
 
-      if (!v5)
+      if (!mediaPlayerPlaybackArchive)
       {
 
         [(HFMediaPlaybackActionBuilder *)self setPlaybackArchive:0];
@@ -503,23 +503,23 @@ void *__64__HFMediaPlaybackActionBuilder_containedAccessoryRepresentables__block
   }
 }
 
-- (BOOL)isMediaActionValid:(id *)a3
+- (BOOL)isMediaActionValid:(id *)valid
 {
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D2C8B8] code:2 userInfo:0];
-  v6 = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
-  switch(v6)
+  targetPlayState = [(HFMediaPlaybackActionBuilder *)self targetPlayState];
+  switch(targetPlayState)
   {
     case 2:
-      v7 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-      v8 = v7 == 0;
+      targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+      v8 = targetVolume == 0;
       goto LABEL_13;
     case 1:
-      v9 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-      if (v9)
+      playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      if (playbackArchive)
       {
-        v10 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-        v11 = [v10 mediaPlayerPlaybackArchive];
-        v8 = v11 != 0;
+        playbackArchive2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+        mediaPlayerPlaybackArchive = [playbackArchive2 mediaPlayerPlaybackArchive];
+        v8 = mediaPlayerPlaybackArchive != 0;
       }
 
       else
@@ -527,21 +527,21 @@ void *__64__HFMediaPlaybackActionBuilder_containedAccessoryRepresentables__block
         v8 = 1;
       }
 
-      v12 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      playbackArchive3 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
 
-      if (v12 && !v8)
+      if (playbackArchive3 && !v8)
       {
         [MEMORY[0x277CCA9B8] hf_errorWithCode:53 operation:@"HFOperationMediaSelection" options:0];
         v13 = v8 = 0;
-        v7 = v5;
+        targetVolume = v5;
         v5 = v13;
         goto LABEL_13;
       }
 
       break;
     case 0:
-      v7 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-      v8 = v7 != 0;
+      targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+      v8 = targetVolume != 0;
 LABEL_13:
 
       break;
@@ -550,14 +550,14 @@ LABEL_13:
       break;
   }
 
-  if (a3 && !v8)
+  if (valid && !v8)
   {
     v14 = v5;
-    *a3 = v5;
+    *valid = v5;
   }
 
-  v15 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-  if ([v15 count])
+  mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+  if ([mediaProfiles count])
   {
     v16 = v8;
   }
@@ -610,43 +610,43 @@ LABEL_13:
 {
   if ([(HFMediaPlaybackActionBuilder *)self targetPlayState]== 1)
   {
-    v4 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    v5 = [v4 isRepeatEnabled];
-    if (v5)
+    playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    isRepeatEnabled = [playbackArchive isRepeatEnabled];
+    if (isRepeatEnabled)
     {
-      v2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-      v6 = [v2 isRepeatSupported];
+      playbackArchive2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      isRepeatSupported = [playbackArchive2 isRepeatSupported];
     }
 
     else
     {
-      v6 = 0;
+      isRepeatSupported = 0;
     }
 
-    v7 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    [v7 setRepeatEnabled:v6];
+    playbackArchive3 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    [playbackArchive3 setRepeatEnabled:isRepeatSupported];
 
-    if (v5)
+    if (isRepeatEnabled)
     {
     }
 
-    v8 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    v9 = [v8 isShuffleEnabled];
-    if (v9)
+    playbackArchive4 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    isShuffleEnabled = [playbackArchive4 isShuffleEnabled];
+    if (isShuffleEnabled)
     {
-      v2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-      v10 = [v2 isShuffleSupported];
+      playbackArchive2 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+      isShuffleSupported = [playbackArchive2 isShuffleSupported];
     }
 
     else
     {
-      v10 = 0;
+      isShuffleSupported = 0;
     }
 
-    v11 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    [v11 setShuffleEnabled:v10];
+    playbackArchive5 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    [playbackArchive5 setShuffleEnabled:isShuffleSupported];
 
-    if (v9)
+    if (isShuffleEnabled)
     {
     }
   }
@@ -665,13 +665,13 @@ LABEL_13:
 
 - (id)commitItem
 {
-  v3 = [(HFMediaPlaybackActionBuilder *)self performValidation];
+  performValidation = [(HFMediaPlaybackActionBuilder *)self performValidation];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HFMediaPlaybackActionBuilder_commitItem__block_invoke;
   v7[3] = &unk_277DF2CE0;
   v7[4] = self;
-  v4 = [v3 flatMap:v7];
+  v4 = [performValidation flatMap:v7];
   v5 = [v4 recover:&__block_literal_global_292];
 
   return v5;
@@ -750,42 +750,42 @@ id __42__HFMediaPlaybackActionBuilder_commitItem__block_invoke_4(uint64_t a1)
   return v3;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v25.receiver = self;
   v25.super_class = HFMediaPlaybackActionBuilder;
-  v5 = [(HFActionBuilder *)&v25 compareToObject:v4];
+  v5 = [(HFActionBuilder *)&v25 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-    v7 = [v4 mediaProfiles];
-    v8 = [v6 isEqualToSet:v7];
+    mediaProfiles = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+    mediaProfiles2 = [objectCopy mediaProfiles];
+    v8 = [mediaProfiles isEqualToSet:mediaProfiles2];
 
     if ((v8 & 1) == 0)
     {
       v9 = [HFPropertyDifference alloc];
-      v10 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
-      v11 = [v10 copy];
-      v12 = [v4 mediaProfiles];
-      v13 = [v12 copy];
+      mediaProfiles3 = [(HFMediaPlaybackActionBuilder *)self mediaProfiles];
+      v11 = [mediaProfiles3 copy];
+      mediaProfiles4 = [objectCopy mediaProfiles];
+      v13 = [mediaProfiles4 copy];
       v14 = [(HFPropertyDifference *)v9 initWithObjectA:v11 toObjectB:v13 key:@"mediaProfiles" priority:3];
       [v5 add:v14];
     }
 
-    v15 = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
-    v16 = [v4 playbackArchive];
-    v17 = [HFPropertyDifference compareObjectA:v15 toObjectB:v16 key:@"playbackArchive" priority:1];
+    playbackArchive = [(HFMediaPlaybackActionBuilder *)self playbackArchive];
+    playbackArchive2 = [objectCopy playbackArchive];
+    v17 = [HFPropertyDifference compareObjectA:playbackArchive toObjectB:playbackArchive2 key:@"playbackArchive" priority:1];
     [v5 add:v17];
 
     v18 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HFMediaPlaybackActionBuilder targetPlayState](self, "targetPlayState")}];
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "targetPlayState")}];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(objectCopy, "targetPlayState")}];
     v20 = [HFPropertyDifference compareObjectA:v18 toObjectB:v19 key:@"targetPlayState" priority:3];
     [v5 add:v20];
 
-    v21 = [(HFMediaPlaybackActionBuilder *)self targetVolume];
-    v22 = [v4 targetVolume];
-    v23 = [HFPropertyDifference compareObjectA:v21 toObjectB:v22 key:@"targetVolume" priority:3];
+    targetVolume = [(HFMediaPlaybackActionBuilder *)self targetVolume];
+    targetVolume2 = [objectCopy targetVolume];
+    v23 = [HFPropertyDifference compareObjectA:targetVolume toObjectB:targetVolume2 key:@"targetVolume" priority:3];
     [v5 add:v23];
   }
 

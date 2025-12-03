@@ -1,73 +1,73 @@
 @interface BLDownloadStatus
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BLDownloadStatus
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
   if (v4)
   {
     [v4 setStoreID:self->_storeID];
-    v6 = [(BLDownloadStatus *)self storePlaylistID];
-    [v5 setStorePlaylistID:v6];
+    storePlaylistID = [(BLDownloadStatus *)self storePlaylistID];
+    [v5 setStorePlaylistID:storePlaylistID];
 
-    v7 = [(BLDownloadStatus *)self permLink];
-    [v5 setPermLink:v7];
+    permLink = [(BLDownloadStatus *)self permLink];
+    [v5 setPermLink:permLink];
 
-    v8 = [(BLDownloadStatus *)self downloadID];
-    [v5 setDownloadID:v8];
+    downloadID = [(BLDownloadStatus *)self downloadID];
+    [v5 setDownloadID:downloadID];
 
     [v5 setPersistentIdentifier:{-[BLDownloadStatus persistentIdentifier](self, "persistentIdentifier")}];
-    v9 = [(BLDownloadStatus *)self percentComplete];
-    [v5 setPercentComplete:v9];
+    percentComplete = [(BLDownloadStatus *)self percentComplete];
+    [v5 setPercentComplete:percentComplete];
 
-    v10 = [(BLDownloadStatus *)self estimatedTimeRemaining];
-    [v5 setEstimatedTimeRemaining:v10];
+    estimatedTimeRemaining = [(BLDownloadStatus *)self estimatedTimeRemaining];
+    [v5 setEstimatedTimeRemaining:estimatedTimeRemaining];
 
-    v11 = [(BLDownloadStatus *)self transferBytesWritten];
-    [v5 setTransferBytesWritten:v11];
+    transferBytesWritten = [(BLDownloadStatus *)self transferBytesWritten];
+    [v5 setTransferBytesWritten:transferBytesWritten];
 
-    v12 = [(BLDownloadStatus *)self transferBytesExpected];
-    [v5 setTransferBytesExpected:v12];
+    transferBytesExpected = [(BLDownloadStatus *)self transferBytesExpected];
+    [v5 setTransferBytesExpected:transferBytesExpected];
 
     [v5 setDownloadPhase:{-[BLDownloadStatus downloadPhase](self, "downloadPhase")}];
     [v5 setIsAudiobook:{-[BLDownloadStatus isAudiobook](self, "isAudiobook")}];
     [v5 setIsRestore:{-[BLDownloadStatus isRestore](self, "isRestore")}];
     [v5 setIsSample:{-[BLDownloadStatus isSample](self, "isSample")}];
     [v5 setIsPurchase:{-[BLDownloadStatus isPurchase](self, "isPurchase")}];
-    v13 = [(BLDownloadStatus *)self purchaseDate];
-    [v5 setPurchaseDate:v13];
+    purchaseDate = [(BLDownloadStatus *)self purchaseDate];
+    [v5 setPurchaseDate:purchaseDate];
 
     [v5 setPersistentIdentifier:{-[BLDownloadStatus persistentIdentifier](self, "persistentIdentifier")}];
-    v14 = [(BLDownloadStatus *)self storeAccountIdentifier];
-    [v5 setStoreAccountIdentifier:v14];
+    storeAccountIdentifier = [(BLDownloadStatus *)self storeAccountIdentifier];
+    [v5 setStoreAccountIdentifier:storeAccountIdentifier];
 
-    v15 = [(BLDownloadStatus *)self artistName];
-    [v5 setArtistName:v15];
+    artistName = [(BLDownloadStatus *)self artistName];
+    [v5 setArtistName:artistName];
 
-    v16 = [(BLDownloadStatus *)self title];
-    [v5 setTitle:v16];
+    title = [(BLDownloadStatus *)self title];
+    [v5 setTitle:title];
 
-    v17 = [(BLDownloadStatus *)self subtitle];
-    [v5 setSubtitle:v17];
+    subtitle = [(BLDownloadStatus *)self subtitle];
+    [v5 setSubtitle:subtitle];
 
-    v18 = [(BLDownloadStatus *)self collectionArtistName];
-    [v5 setCollectionArtistName:v18];
+    collectionArtistName = [(BLDownloadStatus *)self collectionArtistName];
+    [v5 setCollectionArtistName:collectionArtistName];
 
-    v19 = [(BLDownloadStatus *)self collectionTitle];
-    [v5 setCollectionTitle:v19];
+    collectionTitle = [(BLDownloadStatus *)self collectionTitle];
+    [v5 setCollectionTitle:collectionTitle];
 
-    v20 = [(BLDownloadStatus *)self genre];
-    [v5 setGenre:v20];
+    genre = [(BLDownloadStatus *)self genre];
+    [v5 setGenre:genre];
 
-    v21 = [(BLDownloadStatus *)self thumbnailImageURL];
-    [v5 setThumbnailImageURL:v21];
+    thumbnailImageURL = [(BLDownloadStatus *)self thumbnailImageURL];
+    [v5 setThumbnailImageURL:thumbnailImageURL];
 
-    v22 = [(BLDownloadStatus *)self assetKind];
-    [v5 setAssetKind:v22];
+    assetKind = [(BLDownloadStatus *)self assetKind];
+    [v5 setAssetKind:assetKind];
   }
 
   return v5;

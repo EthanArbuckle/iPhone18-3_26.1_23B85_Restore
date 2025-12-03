@@ -1,26 +1,26 @@
 @interface AKAnisetteProvisioningService
-- (AKAnisetteProvisioningService)initWithClient:(id)a3;
-- (AKAnisetteProvisioningService)initWithClient:(id)a3 authenticationContext:(id)a4;
-- (AKAnisetteProvisioningService)initWithClient:(id)a3 context:(id)a4;
+- (AKAnisetteProvisioningService)initWithClient:(id)client;
+- (AKAnisetteProvisioningService)initWithClient:(id)client authenticationContext:(id)context;
+- (AKAnisetteProvisioningService)initWithClient:(id)client context:(id)context;
 - (id)_clientAnisetteService;
-- (id)_helperServiceForDevice:(id)a3;
+- (id)_helperServiceForDevice:(id)device;
 - (id)_nativeAnisetteService;
-- (id)anisetteDataForDevice:(id)a3 provisionIfNecessary:(BOOL)a4;
-- (void)_attestationDataForRequestData:(id)a3 completion:(id)a4;
-- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 device:(id)a4 completion:(id)a5;
-- (void)absintheSignatureForData:(id)a3 completion:(id)a4;
-- (void)attestationDataForDevice:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)attestationDataForRequestData:(id)a3 completion:(id)a4;
-- (void)eraseAnisetteForDevice:(id)a3 completion:(id)a4;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 device:(id)a4 completion:(id)a5;
-- (void)legacyAnisetteDataForDSID:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)postAttestationAnalyticsWithData:(id)a3 completion:(id)a4;
-- (void)provisionAnisetteForDevice:(id)a3 completion:(id)a4;
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3;
-- (void)resetDeviceIdentityWithCompletion:(id)a3;
-- (void)setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4;
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)syncAnisetteWithSIMData:(id)a3 device:(id)a4 completion:(id)a5;
+- (id)anisetteDataForDevice:(id)device provisionIfNecessary:(BOOL)necessary;
+- (void)_attestationDataForRequestData:(id)data completion:(id)completion;
+- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary device:(id)device completion:(id)completion;
+- (void)absintheSignatureForData:(id)data completion:(id)completion;
+- (void)attestationDataForDevice:(id)device withRequest:(id)request completion:(id)completion;
+- (void)attestationDataForRequestData:(id)data completion:(id)completion;
+- (void)eraseAnisetteForDevice:(id)device completion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary device:(id)device completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d device:(id)device completion:(id)completion;
+- (void)postAttestationAnalyticsWithData:(id)data completion:(id)completion;
+- (void)provisionAnisetteForDevice:(id)device completion:(id)completion;
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion;
+- (void)resetDeviceIdentityWithCompletion:(id)completion;
+- (void)setTimeAdjustmentWithServerTime:(id)time completion:(id)completion;
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data device:(id)device completion:(id)completion;
 @end
 
 @implementation AKAnisetteProvisioningService
@@ -40,90 +40,90 @@
   return v4;
 }
 
-- (AKAnisetteProvisioningService)initWithClient:(id)a3
+- (AKAnisetteProvisioningService)initWithClient:(id)client
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKAnisetteProvisioningService;
-  v12 = [(AKAnisetteProvisioningService *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKAnisetteProvisioningService *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v12->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
     v4 = +[AKAbsintheSigner sharedSigner];
-    absintheSigner = v12->_absintheSigner;
-    v12->_absintheSigner = v4;
+    absintheSigner = selfCopy->_absintheSigner;
+    selfCopy->_absintheSigner = v4;
     _objc_release(absintheSigner);
     v6 = +[AKAttestationSigner sharedSigner];
-    attestationSigner = v12->_attestationSigner;
-    v12->_attestationSigner = v6;
+    attestationSigner = selfCopy->_attestationSigner;
+    selfCopy->_attestationSigner = v6;
     _objc_release(attestationSigner);
   }
 
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (AKAnisetteProvisioningService)initWithClient:(id)a3 context:(id)a4
+- (AKAnisetteProvisioningService)initWithClient:(id)client context:(id)context
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, context);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8 = [(AKAnisetteProvisioningService *)v4 initWithClient:location[0]];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v11->_context, v9);
+    objc_storeStrong(&selfCopy->_context, v9);
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKAnisetteProvisioningService)initWithClient:(id)a3 authenticationContext:(id)a4
+- (AKAnisetteProvisioningService)initWithClient:(id)client authenticationContext:(id)context
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, context);
   v4 = [AKAppleIDAuthenticationContext alloc];
   v9 = [v4 initWithContext:v10];
-  v5 = v12;
-  v12 = 0;
-  v12 = [(AKAnisetteProvisioningService *)v5 initWithClient:location[0] context:v9];
-  v8 = _objc_retain(v12);
+  v5 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAnisetteProvisioningService *)v5 initWithClient:location[0] context:v9];
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (id)anisetteDataForDevice:(id)a3 provisionIfNecessary:(BOOL)a4
+- (id)anisetteDataForDevice:(id)device provisionIfNecessary:(BOOL)necessary
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, device);
+  necessaryCopy = necessary;
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -132,8 +132,8 @@
   v23 = sub_100011200;
   v24 = 0;
   v17 = dispatch_semaphore_create(0);
-  v9 = v27;
-  v7 = v25;
+  v9 = selfCopy;
+  v7 = necessaryCopy;
   v8 = location[0];
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
@@ -156,33 +156,33 @@
   return v5;
 }
 
-- (void)attestationDataForDevice:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)attestationDataForDevice:(id)device withRequest:(id)request completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, request);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, completion);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_10004DCC8(v21, v18, location[0], v16);
+    sub_10004DCC8(v21, selfCopy, location[0], v16);
     _os_log_debug_impl(&_mh_execute_header, oslog, type, "%@: Fetching attestation data for device (%@) with request (%@)", v21, 0x20u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v12 = [(AKAnisetteProvisioningService *)v18 _helperServiceForDevice:location[0]];
+  v12 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:location[0]];
   if (objc_opt_respondsToSelector())
   {
     v11 = _AKLogSystem();
     v10 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10001B098(v20, v18, v12);
+      sub_10001B098(v20, selfCopy, v12);
       _os_log_impl(&_mh_execute_header, v11, v10, "%@: Calling anisette service (%@) for peer attestation data", v20, 0x16u);
     }
 
@@ -195,7 +195,7 @@
     v9 = _AKLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100034214(v19, v18, location[0], v16, v12);
+      sub_100034214(v19, selfCopy, location[0], v16, v12);
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@: Unable to grab attestation data for device (%@) with request (%@) using anisette service (%@)", v19, 0x2Au);
     }
 
@@ -212,17 +212,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)attestationDataForRequestData:(id)a3 completion:(id)a4
+- (void)attestationDataForRequestData:(id)data completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  if ([(AKClient *)v14->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v12, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    [(AKAnisetteProvisioningService *)v14 _attestationDataForRequestData:location[0] completion:v12];
+    [(AKAnisetteProvisioningService *)selfCopy _attestationDataForRequestData:location[0] completion:v12];
   }
 
   else
@@ -248,30 +248,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_attestationDataForRequestData:(id)a3 completion:(id)a4
+- (void)_attestationDataForRequestData:(id)data completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAnisetteProvisioningService *)v8 _nativeAnisetteService];
-  [v5 fetchAttestationDataForRequestData:location[0] completion:v6];
-  _objc_release(v5);
+  objc_storeStrong(&v6, completion);
+  _nativeAnisetteService = [(AKAnisetteProvisioningService *)selfCopy _nativeAnisetteService];
+  [_nativeAnisetteService fetchAttestationDataForRequestData:location[0] completion:v6];
+  _objc_release(_nativeAnisetteService);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4
+- (void)setTimeAdjustmentWithServerTime:(id)time completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, time);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  if ([(AKClient *)v16->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v14, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v4 = +[AKBAATimeProvider sharedInstance];
     v5 = [(AKBAATimeProvider *)v4 addServerAdjustment:location[0]];
@@ -302,18 +302,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 device:(id)a4 completion:(id)a5
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary device:(id)device completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, device);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  if ([(AKClient *)v17->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v13, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    [(AKAnisetteProvisioningService *)v17 _fetchAnisetteDataAndProvisionIfNecessary:v15 device:location completion:v13];
+    [(AKAnisetteProvisioningService *)selfCopy _fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy device:location completion:v13];
   }
 
   else
@@ -339,17 +339,17 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)resetDeviceIdentityWithCompletion:(id)a3
+- (void)resetDeviceIdentityWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v12->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v3 = [(AKAnisetteProvisioningService *)v12 _nativeAnisetteService];
-    [v3 resetDeviceIdentityWithCompletion:location[0]];
-    _objc_release(v3);
+    _nativeAnisetteService = [(AKAnisetteProvisioningService *)selfCopy _nativeAnisetteService];
+    [_nativeAnisetteService resetDeviceIdentityWithCompletion:location[0]];
+    _objc_release(_nativeAnisetteService);
   }
 
   else
@@ -374,13 +374,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v13->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v7 = +[AKBAADeviceTokenController sharedTokenController];
     [(AKBAADeviceTokenController *)v7 refreshBAADeviceTokenWithCompletionHandler:location[0]];
@@ -411,15 +411,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)postAttestationAnalyticsWithData:(id)a3 completion:(id)a4
+- (void)postAttestationAnalyticsWithData:(id)data completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
-  if ([(AKClient *)v48->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v46, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v25 = +[AKDevice currentDevice];
     v40 = 0;
@@ -446,10 +446,10 @@
     else
     {
       v23 = +[AKConfiguration sharedConfiguration];
-      v24 = [v23 lastKnownIDMSEnvironment];
+      lastKnownIDMSEnvironment = [v23 lastKnownIDMSEnvironment];
       _objc_release(v23);
-      v39[1] = v24;
-      if (v24)
+      v39[1] = lastKnownIDMSEnvironment;
+      if (lastKnownIDMSEnvironment)
       {
         v39[0] = _AKLogSystem();
         v38 = 2;
@@ -470,27 +470,27 @@
       {
         v36 = 0;
         v35 = [AAFAnalyticsEvent ak_analyticsEventWithEventName:@"com.apple.authkit.baa.stats" error:0];
-        v18 = [(AKClient *)v48->_client name];
+        name = [(AKClient *)selfCopy->_client name];
         [v35 setObject:? forKeyedSubscript:?];
-        _objc_release(v18);
-        v19 = [location[0] endPointVIP];
-        v20 = [v19 length];
-        _objc_release(v19);
+        _objc_release(name);
+        endPointVIP = [location[0] endPointVIP];
+        v20 = [endPointVIP length];
+        _objc_release(endPointVIP);
         if (v20)
         {
-          v17 = [location[0] endPointVIP];
+          endPointVIP2 = [location[0] endPointVIP];
           [v35 setObject:? forKeyedSubscript:?];
-          _objc_release(v17);
+          _objc_release(endPointVIP2);
         }
 
-        v15 = [location[0] requestMethod];
-        v16 = [v15 length];
-        _objc_release(v15);
+        requestMethod = [location[0] requestMethod];
+        v16 = [requestMethod length];
+        _objc_release(requestMethod);
         if (v16)
         {
-          v14 = [location[0] requestMethod];
+          requestMethod2 = [location[0] requestMethod];
           [v35 setObject:? forKeyedSubscript:?];
-          _objc_release(v14);
+          _objc_release(requestMethod2);
         }
 
         if ([location[0] headerSize])
@@ -520,19 +520,19 @@
         if ([location[0] errorCode] > 0)
         {
           v36 = 1;
-          v6 = [location[0] errorDomain];
+          errorDomain = [location[0] errorDomain];
           v7 = 1;
-          if (!v6)
+          if (!errorDomain)
           {
             v7 = [location[0] errorCode] != 0;
           }
 
-          _objc_release(v6);
+          _objc_release(errorDomain);
           if (v7)
           {
-            v5 = [location[0] errorDomain];
-            v34[0] = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v5, [location[0] errorCode]);
-            _objc_release(v5);
+            errorDomain2 = [location[0] errorDomain];
+            v34[0] = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", errorDomain2, [location[0] errorCode]);
+            _objc_release(errorDomain2);
             [v35 populateUnderlyingErrorsStartingWithRootError:v34[0]];
             objc_storeStrong(v34, 0);
           }
@@ -545,10 +545,10 @@
           v32 = _AKLogSystem();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v4 = [v35 reportData];
-            sub_1000194D4(v49, v4);
+            reportData = [v35 reportData];
+            sub_1000194D4(v49, reportData);
             _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "Finish Aurora reporting for BAA attestation response. Reportdata - %@", v49, 0xCu);
-            _objc_release(v4);
+            _objc_release(reportData);
           }
 
           objc_storeStrong(&v32, 0);
@@ -586,19 +586,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 device:(id)a4 completion:(id)a5
+- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary device:(id)device completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, device);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v9 = [(AKAnisetteProvisioningService *)v14 _helperServiceForDevice:location];
+  objc_storeStrong(&v10, completion);
+  v9 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:location];
   if (v9)
   {
-    [v9 fetchAnisetteDataAndProvisionIfNecessary:v12 withCompletion:v10];
+    [v9 fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy withCompletion:v10];
   }
 
   else
@@ -622,19 +622,19 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 device:(id)a4 completion:(id)a5
+- (void)legacyAnisetteDataForDSID:(id)d device:(id)device completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, device);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  if ([(AKClient *)v22->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v19, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v14 = [(AKAnisetteProvisioningService *)v22 _helperServiceForDevice:v20];
+    v14 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:v20];
     if (v14)
     {
       [v14 legacyAnisetteDataForDSID:location[0] withCompletion:v19];
@@ -685,17 +685,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)provisionAnisetteForDevice:(id)a3 completion:(id)a4
+- (void)provisionAnisetteForDevice:(id)device completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  if ([(AKClient *)v19->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v17, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v12 = [(AKAnisetteProvisioningService *)v19 _helperServiceForDevice:location[0]];
+    v12 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:location[0]];
     if (v12)
     {
       [v12 provisionAnisetteWithCompletion:v17];
@@ -745,19 +745,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 device:(id)a4 completion:(id)a5
+- (void)syncAnisetteWithSIMData:(id)data device:(id)device completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, device);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  if ([(AKClient *)v22->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v19, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v14 = [(AKAnisetteProvisioningService *)v22 _helperServiceForDevice:v20];
+    v14 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:v20];
     if (v14)
     {
       [v14 syncAnisetteWithSIMData:location[0] completion:v19];
@@ -808,17 +808,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)eraseAnisetteForDevice:(id)a3 completion:(id)a4
+- (void)eraseAnisetteForDevice:(id)device completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  if ([(AKClient *)v19->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v17, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v12 = [(AKAnisetteProvisioningService *)v19 _helperServiceForDevice:location[0]];
+    v12 = [(AKAnisetteProvisioningService *)selfCopy _helperServiceForDevice:location[0]];
     if (v12)
     {
       [v12 eraseAnisetteWithCompletion:v17];
@@ -868,37 +868,37 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_helperServiceForDevice:(id)a3
+- (id)_helperServiceForDevice:(id)device
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   if (location[0] && [location[0] linkType] != 1)
   {
     if ([location[0] linkType] == 2)
     {
-      v7 = [(AKAnisetteProvisioningService *)v6 _pairedDeviceAnisetteService];
+      _pairedDeviceAnisetteService = [(AKAnisetteProvisioningService *)selfCopy _pairedDeviceAnisetteService];
     }
 
     else if ([location[0] linkType] == 3)
     {
-      v7 = [(AKAnisetteProvisioningService *)v6 _clientAnisetteService];
+      _pairedDeviceAnisetteService = [(AKAnisetteProvisioningService *)selfCopy _clientAnisetteService];
     }
 
     else
     {
-      v7 = 0;
+      _pairedDeviceAnisetteService = 0;
     }
   }
 
   else
   {
-    v7 = [(AKAnisetteProvisioningService *)v6 _nativeAnisetteService];
+    _pairedDeviceAnisetteService = [(AKAnisetteProvisioningService *)selfCopy _nativeAnisetteService];
   }
 
   objc_storeStrong(location, 0);
-  v3 = v7;
+  v3 = _pairedDeviceAnisetteService;
 
   return v3;
 }
@@ -910,23 +910,23 @@
   return v2;
 }
 
-- (void)absintheSignatureForData:(id)a3 completion:(id)a4
+- (void)absintheSignatureForData:(id)data completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  if ([(AKClient *)v19->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v17, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v12 = [NSURL URLWithString:@"https://www.apple.com"];
     v4 = [NSMutableURLRequest alloc];
     v11 = [v4 initWithURL:v12];
     [v11 setHTTPBody:location[0]];
-    v5 = [(AKAnisetteProvisioningService *)v19 absintheSigner];
-    [(AKAbsintheSigner *)v5 signatureForURLRequest:v11 completionHandler:v17];
-    _objc_release(v5);
+    absintheSigner = [(AKAnisetteProvisioningService *)selfCopy absintheSigner];
+    [(AKAbsintheSigner *)absintheSigner signatureForURLRequest:v11 completionHandler:v17];
+    _objc_release(absintheSigner);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v12, 0);
     v13 = 0;
@@ -956,21 +956,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, options);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  if ([(AKClient *)v18->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v15, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v5 = [(AKAnisetteProvisioningService *)v18 attestationSigner];
-    [(AKAttestationSigner *)v5 signaturesForData:location[0] options:v16 completion:v15];
-    _objc_release(v5);
+    attestationSigner = [(AKAnisetteProvisioningService *)selfCopy attestationSigner];
+    [(AKAttestationSigner *)attestationSigner signaturesForData:location[0] options:v16 completion:v15];
+    _objc_release(attestationSigner);
   }
 
   else

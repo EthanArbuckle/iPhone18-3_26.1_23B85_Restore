@@ -16,8 +16,8 @@
     [v8 setLatitude:?];
     [v6 longitude];
     [v8 setLongitude:?];
-    v9 = [v6 date];
-    [v9 timeIntervalSinceReferenceDate];
+    date = [v6 date];
+    [date timeIntervalSinceReferenceDate];
     [v8 setTimestamp:?];
 
     [v6 horizontalUncertainty];

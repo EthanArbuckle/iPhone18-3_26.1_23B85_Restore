@@ -1,16 +1,16 @@
 @interface DOCItemCollectionViewPool
 - (_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool)init;
-- (_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool)initWithConfiguration:(id)a3;
+- (_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool)initWithConfiguration:(id)configuration;
 @end
 
 @implementation DOCItemCollectionViewPool
 
-- (_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool)initWithConfiguration:(id)a3
+- (_TtC26DocumentManagerExecutables25DOCItemCollectionViewPool)initWithConfiguration:(id)configuration
 {
-  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCItemCollectionViewPool_configuration) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCItemCollectionViewPool_configuration) = configuration;
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCItemCollectionViewPool();
-  v4 = a3;
+  configurationCopy = configuration;
   return [(DOCItemCollectionViewPool *)&v6 init];
 }
 

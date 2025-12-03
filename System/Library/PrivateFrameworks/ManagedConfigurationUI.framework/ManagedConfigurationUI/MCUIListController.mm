@@ -1,37 +1,37 @@
 @interface MCUIListController
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5;
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3;
-- (MCUIListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d;
+- (MCUIListController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_specifiersForPhone;
 - (id)specifiers;
 - (void)_cleanCacheAndReloadSpecifiers;
 - (void)_effectiveSettingsChanged;
 - (void)_handleDeferredPush;
-- (void)_loadManagedAccountSpecifiersWithCompletionHandler:(id)a3;
-- (void)_loadVPNSpecifiersWithCompletionHandler:(id)a3;
-- (void)_mainQueue_setManagedSignInButtonEnabled:(BOOL)a3;
+- (void)_loadManagedAccountSpecifiersWithCompletionHandler:(id)handler;
+- (void)_loadVPNSpecifiersWithCompletionHandler:(id)handler;
+- (void)_mainQueue_setManagedSignInButtonEnabled:(BOOL)enabled;
 - (void)_mcuiUpdated;
-- (void)_setIsGuestUserModeActive:(BOOL)a3;
+- (void)_setIsGuestUserModeActive:(BOOL)active;
 - (void)_setupDeviceExpert;
-- (void)_showAccountDetailsPaneWithUsername:(id)a3 completion:(id)a4;
-- (void)_uprootDistributedNotificationReceived:(id)a3;
-- (void)_uprootNotificationReceived:(id)a3;
-- (void)_watchFetchFailed:(id)a3;
-- (void)accountCellWasTapped:(id)a3;
+- (void)_showAccountDetailsPaneWithUsername:(id)username completion:(id)completion;
+- (void)_uprootDistributedNotificationReceived:(id)received;
+- (void)_uprootNotificationReceived:(id)received;
+- (void)_watchFetchFailed:(id)failed;
+- (void)accountCellWasTapped:(id)tapped;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation MCUIListController
 
-- (MCUIListController)initWithNibName:(id)a3 bundle:(id)a4
+- (MCUIListController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v37.receiver = self;
   v37.super_class = MCUIListController;
-  v8 = [(MCUIListController *)&v37 initWithNibName:v6 bundle:v7];
+  v8 = [(MCUIListController *)&v37 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = +[MCUIWatchManager shared];
@@ -42,8 +42,8 @@
       bridgeSpecifierProvider = v8->_bridgeSpecifierProvider;
       v8->_bridgeSpecifierProvider = v10;
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v8 selector:sel__watchFetchFailed_ name:@"kMCUIWatchFetchFailedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel__watchFetchFailed_ name:@"kMCUIWatchFetchFailedNotification" object:0];
     }
 
     else
@@ -57,22 +57,22 @@
       dmcEnrollmentInterface = v8->_dmcEnrollmentInterface;
       v8->_dmcEnrollmentInterface = v15;
 
-      v12 = [(DMCEnrollmentInterface *)v8->_dmcEnrollmentInterface accountSpecifierProvider];
-      [v12 setDelegate:v8];
+      defaultCenter = [(DMCEnrollmentInterface *)v8->_dmcEnrollmentInterface accountSpecifierProvider];
+      [defaultCenter setDelegate:v8];
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v8 selector:sel__effectiveSettingsChanged name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel__effectiveSettingsChanged name:*MEMORY[0x277D25CA0] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v8 selector:sel__mcuiUpdated name:@"kMCUIUpdatedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v8 selector:sel__mcuiUpdated name:@"kMCUIUpdatedNotification" object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
     v20 = *MEMORY[0x277D24DD8];
-    [v19 addObserver:v8 selector:sel__uprootNotificationReceived_ name:*MEMORY[0x277D24DD8] object:0];
+    [defaultCenter4 addObserver:v8 selector:sel__uprootNotificationReceived_ name:*MEMORY[0x277D24DD8] object:0];
 
-    v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v21 addObserver:v8 selector:sel__uprootDistributedNotificationReceived_ name:v20 object:0];
+    defaultCenter5 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter5 addObserver:v8 selector:sel__uprootDistributedNotificationReceived_ name:v20 object:0];
 
     objc_initWeak(&location, v8);
     v22 = MEMORY[0x277D85CD0];
@@ -162,11 +162,11 @@ void __45__MCUIListController_initWithNibName_bundle___block_invoke_3(uint64_t a
   notify_cancel(self->_provisioningProfileInstalledToken);
   notify_cancel(self->_provisioningProfileRemovedToken);
   notify_cancel(self->_mdmMigrationAvailableToken);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = MCUIListController;
@@ -178,18 +178,18 @@ void __45__MCUIListController_initWithNibName_bundle___block_invoke_3(uint64_t a
   v12.receiver = self;
   v12.super_class = MCUIListController;
   [(MCUIListController *)&v12 viewDidLoad];
-  v3 = [(MCUIListController *)self mcSpecifierProvider];
-  v4 = [(MCUIListController *)self table];
-  [v3 registerCustomCellClassesInTableView:v4];
+  mcSpecifierProvider = [(MCUIListController *)self mcSpecifierProvider];
+  table = [(MCUIListController *)self table];
+  [mcSpecifierProvider registerCustomCellClassesInTableView:table];
 
-  v5 = [(MCUIListController *)self bridgeSpecifierProvider];
-  v6 = [(MCUIListController *)self table];
-  [v5 registerCustomCellClassesInTableView:v6];
+  bridgeSpecifierProvider = [(MCUIListController *)self bridgeSpecifierProvider];
+  table2 = [(MCUIListController *)self table];
+  [bridgeSpecifierProvider registerCustomCellClassesInTableView:table2];
 
-  v7 = [(MCUIListController *)self dmcEnrollmentInterface];
-  v8 = [v7 accountSpecifierProvider];
-  v9 = [(MCUIListController *)self table];
-  [v8 registerCustomCellClassesInTableView:v9];
+  dmcEnrollmentInterface = [(MCUIListController *)self dmcEnrollmentInterface];
+  accountSpecifierProvider = [dmcEnrollmentInterface accountSpecifierProvider];
+  table3 = [(MCUIListController *)self table];
+  [accountSpecifierProvider registerCustomCellClassesInTableView:table3];
 
   v10 = +[MCUIBundleController mcuiTitle];
   [(MCUIListController *)self setTitle:v10];
@@ -201,10 +201,10 @@ void __45__MCUIListController_initWithNibName_bundle___block_invoke_3(uint64_t a
 - (void)_setupDeviceExpert
 {
   v3 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v8 = [v3 initWithKey:@"VPN & Device Management" table:0 locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v8 = [v3 initWithKey:@"VPN & Device Management" table:0 locale:currentLocale bundleURL:bundleURL];
 
   v7 = [MEMORY[0x277CBEBC0] URLWithString:*MEMORY[0x277D24D60]];
   [(MCUIListController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.device-management" title:v8 localizedNavigationComponents:MEMORY[0x277CBEBF8] deepLink:v7];
@@ -265,25 +265,25 @@ void __34__MCUIListController__mcuiUpdated__block_invoke(uint64_t a1)
   [(MCUIListController *)self reloadSpecifiers];
 }
 
-- (void)_uprootNotificationReceived:(id)a3
+- (void)_uprootNotificationReceived:(id)received
 {
-  NSLog(&cfstr_Mcuilistcontro.isa, a2, a3);
+  NSLog(&cfstr_Mcuilistcontro.isa, a2, received);
 
   [(MCUIListController *)self _mcuiUpdated];
 }
 
-- (void)_uprootDistributedNotificationReceived:(id)a3
+- (void)_uprootDistributedNotificationReceived:(id)received
 {
-  NSLog(&cfstr_Mcuilistcontro_0.isa, a2, a3);
+  NSLog(&cfstr_Mcuilistcontro_0.isa, a2, received);
 
   [(MCUIListController *)self _mcuiUpdated];
 }
 
-- (void)_watchFetchFailed:(id)a3
+- (void)_watchFetchFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"kMCUINotificationErrorKey"];
+  failedCopy = failed;
+  userInfo = [failedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"kMCUINotificationErrorKey"];
 
   if (v6)
   {
@@ -302,7 +302,7 @@ void __34__MCUIListController__mcuiUpdated__block_invoke(uint64_t a1)
 
   else
   {
-    NSLog(&cfstr_Mcuilistcontro_1.isa, v4);
+    NSLog(&cfstr_Mcuilistcontro_1.isa, failedCopy);
   }
 }
 
@@ -337,17 +337,17 @@ void __40__MCUIListController__watchFetchFailed___block_invoke_2(uint64_t a1)
 
     if (v5)
     {
-      v6 = [(MCUIListController *)self bridgeSpecifierProvider];
-      v7 = [v6 specifiers];
+      bridgeSpecifierProvider = [(MCUIListController *)self bridgeSpecifierProvider];
+      specifiers = [bridgeSpecifierProvider specifiers];
       v8 = *(&self->super.super.super.super.super.super.isa + v2);
-      *(&self->super.super.super.super.super.super.isa + v2) = v7;
+      *(&self->super.super.super.super.super.super.isa + v2) = specifiers;
     }
 
     else
     {
-      v9 = [(MCUIListController *)self _specifiersForPhone];
-      v6 = *(&self->super.super.super.super.super.super.isa + v2);
-      *(&self->super.super.super.super.super.super.isa + v2) = v9;
+      _specifiersForPhone = [(MCUIListController *)self _specifiersForPhone];
+      bridgeSpecifierProvider = *(&self->super.super.super.super.super.super.isa + v2);
+      *(&self->super.super.super.super.super.super.isa + v2) = _specifiersForPhone;
     }
 
     v3 = *(&self->super.super.super.super.super.super.isa + v2);
@@ -362,12 +362,12 @@ void __40__MCUIListController__watchFetchFailed___block_invoke_2(uint64_t a1)
 {
   v3 = objc_opt_new();
   v4 = dispatch_group_create();
-  v5 = [(MCUIListController *)self vpnSpecifiers];
+  vpnSpecifiers = [(MCUIListController *)self vpnSpecifiers];
 
-  if (v5)
+  if (vpnSpecifiers)
   {
-    v6 = [(MCUIListController *)self vpnSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    vpnSpecifiers2 = [(MCUIListController *)self vpnSpecifiers];
+    [v3 addObjectsFromArray:vpnSpecifiers2];
   }
 
   else
@@ -386,19 +386,19 @@ void __40__MCUIListController__watchFetchFailed___block_invoke_2(uint64_t a1)
     goto LABEL_9;
   }
 
-  v7 = [(MCUIListController *)self managedAccountSpecifiers];
-  v8 = [v7 count];
+  managedAccountSpecifiers = [(MCUIListController *)self managedAccountSpecifiers];
+  v8 = [managedAccountSpecifiers count];
 
   if (v8)
   {
-    v9 = [(MCUIListController *)self managedAccountSpecifiers];
-    [v3 addObjectsFromArray:v9];
+    managedAccountSpecifiers2 = [(MCUIListController *)self managedAccountSpecifiers];
+    [v3 addObjectsFromArray:managedAccountSpecifiers2];
   }
 
   if (![(MCUIListController *)self needsToReloadManageAccountSpecifiers])
   {
 LABEL_9:
-    if (v5)
+    if (vpnSpecifiers)
     {
       goto LABEL_11;
     }
@@ -422,37 +422,37 @@ LABEL_9:
   block[4] = self;
   dispatch_group_notify(v4, MEMORY[0x277D85CD0], block);
 LABEL_11:
-  v10 = [(MCUIListController *)self mcSpecifierProvider];
-  v11 = [v10 specifiers];
+  mcSpecifierProvider = [(MCUIListController *)self mcSpecifierProvider];
+  specifiers = [mcSpecifierProvider specifiers];
 
-  if (v11)
+  if (specifiers)
   {
-    [v3 addObjectsFromArray:v11];
+    [v3 addObjectsFromArray:specifiers];
   }
 
-  v12 = [(MCUIListController *)self dmcEnrollmentInterface];
-  v13 = [v12 specifiersForDebuggingEnrollment];
+  dmcEnrollmentInterface = [(MCUIListController *)self dmcEnrollmentInterface];
+  specifiersForDebuggingEnrollment = [dmcEnrollmentInterface specifiersForDebuggingEnrollment];
 
-  if (v13)
+  if (specifiersForDebuggingEnrollment)
   {
-    [v3 addObjectsFromArray:v13];
+    [v3 addObjectsFromArray:specifiersForDebuggingEnrollment];
   }
 
-  v14 = [(MCUIListController *)self dmcEnrollmentInterface];
-  v15 = [v14 specifiersForMDMMigration];
+  dmcEnrollmentInterface2 = [(MCUIListController *)self dmcEnrollmentInterface];
+  specifiersForMDMMigration = [dmcEnrollmentInterface2 specifiersForMDMMigration];
 
-  if (v15)
+  if (specifiersForMDMMigration)
   {
-    [v3 addObjectsFromArray:v15];
+    [v3 addObjectsFromArray:specifiersForMDMMigration];
   }
 
   if (![v3 count])
   {
-    v16 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v17 = MCUILocalizedString(@"NO_PROFILES_INSTALLED");
-    [v16 setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
 
-    [v3 addObject:v16];
+    [v3 addObject:emptyGroupSpecifier];
   }
 
   return v3;
@@ -466,9 +466,9 @@ uint64_t __41__MCUIListController__specifiersForPhone__block_invoke_3(uint64_t a
   return [v2 _handleDeferredPush];
 }
 
-- (void)_loadVPNSpecifiersWithCompletionHandler:(id)a3
+- (void)_loadVPNSpecifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -476,8 +476,8 @@ uint64_t __41__MCUIListController__specifiersForPhone__block_invoke_3(uint64_t a
   block[2] = __62__MCUIListController__loadVPNSpecifiersWithCompletionHandler___block_invoke;
   block[3] = &unk_279861BD0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -550,10 +550,10 @@ void __62__MCUIListController__loadVPNSpecifiersWithCompletionHandler___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3
+- (BOOL)shouldDeferPushForSpecifierID:(id)d
 {
   v4 = *MEMORY[0x277D24D78];
-  if ([a3 isEqualToString:*MEMORY[0x277D24D78]])
+  if ([d isEqualToString:*MEMORY[0x277D24D78]])
   {
     v5 = [(MCUIListController *)self specifierForID:v4];
 
@@ -568,8 +568,8 @@ void __62__MCUIListController__loadVPNSpecifiersWithCompletionHandler___block_in
 
 - (void)_handleDeferredPush
 {
-  v3 = [(MCUIListController *)self specifierIDPendingPush];
-  v4 = [v3 length];
+  specifierIDPendingPush = [(MCUIListController *)self specifierIDPendingPush];
+  v4 = [specifierIDPendingPush length];
 
   if (v4)
   {
@@ -578,17 +578,17 @@ void __62__MCUIListController__loadVPNSpecifiersWithCompletionHandler___block_in
   }
 }
 
-- (void)_loadManagedAccountSpecifiersWithCompletionHandler:(id)a3
+- (void)_loadManagedAccountSpecifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__MCUIListController__loadManagedAccountSpecifiersWithCompletionHandler___block_invoke;
   v7[3] = &unk_2798621A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -618,13 +618,13 @@ uint64_t __73__MCUIListController__loadManagedAccountSpecifiersWithCompletionHan
   return v2();
 }
 
-- (void)accountCellWasTapped:(id)a3
+- (void)accountCellWasTapped:(id)tapped
 {
-  v4 = [MEMORY[0x277D03248] accountControllerFromSpecifier:a3 baseViewController:self preferiCloudAccount:1];
+  v4 = [MEMORY[0x277D03248] accountControllerFromSpecifier:tapped baseViewController:self preferiCloudAccount:1];
   [(MCUIListController *)self showController:v4 animate:1];
 }
 
-- (void)_mainQueue_setManagedSignInButtonEnabled:(BOOL)a3
+- (void)_mainQueue_setManagedSignInButtonEnabled:(BOOL)enabled
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -632,7 +632,7 @@ uint64_t __73__MCUIListController__loadManagedAccountSpecifiersWithCompletionHan
   block[2] = __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_invoke;
   block[3] = &unk_2798621C8;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  enabledCopy = enabled;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -652,15 +652,15 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"sender"];
-  v6 = [v4 objectForKey:@"path"];
+  lCopy = l;
+  v5 = [lCopy objectForKey:@"sender"];
+  v6 = [lCopy objectForKey:@"path"];
   [objc_opt_class() setOriginalURLSender:v5];
   if ([v6 isEqualToString:*MEMORY[0x277D24D28]])
   {
-    v7 = [v4 objectForKey:*MEMORY[0x277D24D70]];
+    v7 = [lCopy objectForKey:*MEMORY[0x277D24D70]];
     v8 = v7;
     if (v7)
     {
@@ -670,10 +670,10 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
 
     else
     {
-      NSLog(&cfstr_Mcuilistcontro_2.isa, v6, v5, v4);
+      NSLog(&cfstr_Mcuilistcontro_2.isa, v6, v5, lCopy);
       v9.receiver = self;
       v9.super_class = MCUIListController;
-      [(MCURLListenerListController *)&v9 handleURL:v4];
+      [(MCURLListenerListController *)&v9 handleURL:lCopy];
     }
   }
 
@@ -681,21 +681,21 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
   {
     v10.receiver = self;
     v10.super_class = MCUIListController;
-    [(MCURLListenerListController *)&v10 handleURL:v4];
+    [(MCURLListenerListController *)&v10 handleURL:lCopy];
   }
 }
 
-- (void)_showAccountDetailsPaneWithUsername:(id)a3 completion:(id)a4
+- (void)_showAccountDetailsPaneWithUsername:(id)username completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277D03230] itemSpecifierIDForAccountUsername:a3];
+  completionCopy = completion;
+  v7 = [MEMORY[0x277D03230] itemSpecifierIDForAccountUsername:username];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(MCUIListController *)self specifiers];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  specifiers = [(MCUIListController *)self specifiers];
+  v9 = [specifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -706,12 +706,12 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(specifiers);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v7];
+        identifier = [v13 identifier];
+        v15 = [identifier isEqualToString:v7];
 
         if (v15)
         {
@@ -726,7 +726,7 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [specifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -738,25 +738,25 @@ void __63__MCUIListController__mainQueue_setManagedSignInButtonEnabled___block_i
 
 LABEL_11:
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v10 = +[MCUIWatchManager shared];
-  if (v10 && (v11 = v10, v12 = [v8 isEqualToString:*MEMORY[0x277D264C0]], v11, v12))
+  if (v10 && (v11 = v10, v12 = [dCopy isEqualToString:*MEMORY[0x277D264C0]], v11, v12))
   {
     v13 = 1;
-    if (a5)
+    if (push)
     {
-      *a5 = 1;
+      *push = 1;
     }
   }
 
@@ -764,13 +764,13 @@ LABEL_11:
   {
     v15.receiver = self;
     v15.super_class = MCUIListController;
-    v13 = [(MCUIListController *)&v15 prepareHandlingURLForSpecifierID:v8 resourceDictionary:v9 animatePush:a5];
+    v13 = [(MCUIListController *)&v15 prepareHandlingURLForSpecifierID:dCopy resourceDictionary:dictionaryCopy animatePush:push];
   }
 
   return v13;
 }
 
-- (void)_setIsGuestUserModeActive:(BOOL)a3
+- (void)_setIsGuestUserModeActive:(BOOL)active
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -778,7 +778,7 @@ LABEL_11:
   block[2] = __48__MCUIListController__setIsGuestUserModeActive___block_invoke;
   block[3] = &unk_2798621C8;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  activeCopy = active;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

@@ -1,5 +1,5 @@
 @interface ASUINamingViewController
-- (_TtC16AccessorySetupUI24ASUINamingViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI24ASUINamingViewController)initWithContentView:(id)view;
 - (void)textFieldDidChange;
 - (void)viewDidLoad;
 @end
@@ -17,14 +17,14 @@
 
 - (void)textFieldDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002B464();
 }
 
-- (_TtC16AccessorySetupUI24ASUINamingViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI24ASUINamingViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_10002B8AC(a3);
+  viewCopy = view;
+  v5 = sub_10002B8AC(view);
 
   return v5;
 }

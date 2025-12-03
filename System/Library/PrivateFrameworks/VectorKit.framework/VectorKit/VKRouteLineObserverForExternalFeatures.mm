@@ -1,5 +1,5 @@
 @interface VKRouteLineObserverForExternalFeatures
-- (VKRouteLineObserverForExternalFeatures)initWithRouteLineSupport:(void *)a3 andRouteLine:(id)a4;
+- (VKRouteLineObserverForExternalFeatures)initWithRouteLineSupport:(void *)support andRouteLine:(id)line;
 - (void)dealloc;
 @end
 
@@ -15,18 +15,18 @@
   [(VKRouteLineObserverForExternalFeatures *)&v4 dealloc];
 }
 
-- (VKRouteLineObserverForExternalFeatures)initWithRouteLineSupport:(void *)a3 andRouteLine:(id)a4
+- (VKRouteLineObserverForExternalFeatures)initWithRouteLineSupport:(void *)support andRouteLine:(id)line
 {
-  v6 = a4;
+  lineCopy = line;
   v12.receiver = self;
   v12.super_class = VKRouteLineObserverForExternalFeatures;
   v7 = [(VKRouteLineObserverForExternalFeatures *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_routeLineSupport = a3;
-    v9 = objc_storeWeak(&v7->_routeLine, v6);
-    [v6 setObserver:v8];
+    v7->_routeLineSupport = support;
+    v9 = objc_storeWeak(&v7->_routeLine, lineCopy);
+    [lineCopy setObserver:v8];
 
     v10 = v8;
   }

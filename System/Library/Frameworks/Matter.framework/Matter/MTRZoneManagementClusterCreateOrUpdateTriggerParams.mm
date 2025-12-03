@@ -1,8 +1,8 @@
 @interface MTRZoneManagementClusterCreateOrUpdateTriggerParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRZoneManagementClusterCreateOrUpdateTriggerParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterCreateOrUpdateTriggerParams);
-  v5 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setTrigger:v5];
+  trigger = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setTrigger:trigger];
 
-  v6 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self timedInvokeTimeoutMs];
-  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self timedInvokeTimeoutMs];
+  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self serverSideProcessingTimeout];
-  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self serverSideProcessingTimeout];
+  [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,7 +54,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v35[0] = 0;
   v37 = 0;
@@ -63,35 +63,35 @@
   v34[0] = 0;
   v34[1] = 0;
   v33 = v34;
-  v5 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v6 = [v5 zoneID];
-  v35[0] = [v6 unsignedShortValue];
+  trigger = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  zoneID = [trigger zoneID];
+  v35[0] = [zoneID unsignedShortValue];
 
-  v7 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v8 = [v7 initialDuration];
-  LODWORD(v36) = [v8 unsignedIntValue];
+  trigger2 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  initialDuration = [trigger2 initialDuration];
+  LODWORD(v36) = [initialDuration unsignedIntValue];
 
-  v9 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v10 = [v9 augmentationDuration];
-  HIDWORD(v36) = [v10 unsignedIntValue];
+  trigger3 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  augmentationDuration = [trigger3 augmentationDuration];
+  HIDWORD(v36) = [augmentationDuration unsignedIntValue];
 
-  v11 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v12 = [v11 maxDuration];
-  LODWORD(v37) = [v12 unsignedIntValue];
+  trigger4 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  maxDuration = [trigger4 maxDuration];
+  LODWORD(v37) = [maxDuration unsignedIntValue];
 
-  v13 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v14 = [v13 blindDuration];
-  HIDWORD(v37) = [v14 unsignedIntValue];
+  trigger5 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  blindDuration = [trigger5 blindDuration];
+  HIDWORD(v37) = [blindDuration unsignedIntValue];
 
-  v15 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-  v16 = [v15 sensitivity];
+  trigger6 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+  sensitivity = [trigger6 sensitivity];
 
-  if (v16)
+  if (sensitivity)
   {
     v38 = 1;
-    v17 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
-    v18 = [v17 sensitivity];
-    HIBYTE(v38) = [v18 unsignedCharValue];
+    trigger7 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self trigger];
+    sensitivity2 = [trigger7 sensitivity];
+    HIBYTE(v38) = [sensitivity2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v32);
@@ -113,8 +113,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v32);
-      v19 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v32);
+      v19 = sub_2393C7114(reader, 21, 256);
       v22 = v26;
       v21 = v19;
     }
@@ -142,19 +142,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRZoneManagementClusterCreateOrUpdateTriggerParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -165,7 +165,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x83FE00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

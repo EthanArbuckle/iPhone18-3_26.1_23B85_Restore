@@ -1,18 +1,18 @@
 @interface SSRollableLog
 - (SSLogFileOptions)logOptions;
-- (SSRollableLog)initWithLogOptions:(id)a3;
-- (id)_logFilePathWithIndex:(int64_t)a3;
+- (SSRollableLog)initWithLogOptions:(id)options;
+- (id)_logFilePathWithIndex:(int64_t)index;
 - (void)_checkLogFileSize;
 - (void)_closeLogFile;
 - (void)_openLogFile;
 - (void)_rollLogFiles;
 - (void)dealloc;
-- (void)writeString:(id)a3;
+- (void)writeString:(id)string;
 @end
 
 @implementation SSRollableLog
 
-- (SSRollableLog)initWithLogOptions:(id)a3
+- (SSRollableLog)initWithLogOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = SSRollableLog;
@@ -21,7 +21,7 @@
   {
     v4->_dispatchQueue = dispatch_queue_create("com.apple.StoreServices.SSRollableLog", 0);
     v4->_lastFileStatTime = -1.79769313e308;
-    v4->_options = [a3 copy];
+    v4->_options = [options copy];
     [(SSRollableLog *)v4 _openLogFile];
   }
 
@@ -51,7 +51,7 @@
   return v2;
 }
 
-- (void)writeString:(id)a3
+- (void)writeString:(id)string
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -59,7 +59,7 @@
   v4[2] = __29__SSRollableLog_writeString___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = string;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -78,10 +78,10 @@ uint64_t __29__SSRollableLog_writeString___block_invoke(uint64_t a1)
 
 - (void)_checkLogFileSize
 {
-  v3 = [(SSLogFileOptions *)self->_options maxLogFileSize];
-  if (v3)
+  maxLogFileSize = [(SSLogFileOptions *)self->_options maxLogFileSize];
+  if (maxLogFileSize)
   {
-    v4 = v3;
+    v4 = maxLogFileSize;
     if ([(SSLogFileOptions *)self->_options maxNumberOfLogFiles]>= 2 && CFAbsoluteTimeGetCurrent() - self->_lastFileStatTime >= 60.0)
     {
       memset(&v5.st_size, 0, 48);
@@ -106,38 +106,38 @@ uint64_t __29__SSRollableLog_writeString___block_invoke(uint64_t a1)
   self->_fileHandle = 0;
 }
 
-- (id)_logFilePathWithIndex:(int64_t)a3
+- (id)_logFilePathWithIndex:(int64_t)index
 {
-  v5 = [(SSLogFileOptions *)self->_options logFileBaseName];
-  v6 = [(NSString *)v5 pathExtension];
-  if ([(__CFString *)v6 length])
+  logFileBaseName = [(SSLogFileOptions *)self->_options logFileBaseName];
+  pathExtension = [(NSString *)logFileBaseName pathExtension];
+  if ([(__CFString *)pathExtension length])
   {
-    if (a3 < 1)
+    if (index < 1)
     {
       goto LABEL_8;
     }
 
-    v7 = [(NSString *)v5 stringByDeletingPathExtension];
-    v8 = -[NSString stringByAppendingPathExtension:](v7, "stringByAppendingPathExtension:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3]);
-    v9 = v6;
+    stringByDeletingPathExtension = [(NSString *)logFileBaseName stringByDeletingPathExtension];
+    v8 = -[NSString stringByAppendingPathExtension:](stringByDeletingPathExtension, "stringByAppendingPathExtension:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", index]);
+    v9 = pathExtension;
   }
 
   else
   {
-    if (a3 >= 1)
+    if (index >= 1)
     {
-      v5 = -[NSString stringByAppendingPathExtension:](v5, "stringByAppendingPathExtension:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3]);
+      logFileBaseName = -[NSString stringByAppendingPathExtension:](logFileBaseName, "stringByAppendingPathExtension:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", index]);
     }
 
     v9 = @"log";
-    v8 = v5;
+    v8 = logFileBaseName;
   }
 
-  v5 = [(NSString *)v8 stringByAppendingPathExtension:v9];
+  logFileBaseName = [(NSString *)v8 stringByAppendingPathExtension:v9];
 LABEL_8:
-  v10 = [(SSLogFileOptions *)self->_options logDirectoryPath];
+  logDirectoryPath = [(SSLogFileOptions *)self->_options logDirectoryPath];
 
-  return [(NSString *)v10 stringByAppendingPathComponent:v5];
+  return [(NSString *)logDirectoryPath stringByAppendingPathComponent:logFileBaseName];
 }
 
 - (void)_openLogFile
@@ -158,15 +158,15 @@ LABEL_8:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [(SSLogConfig *)v6 shouldLog];
+    shouldLog = [(SSLogConfig *)v6 shouldLog];
     if ([(SSLogConfig *)v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([(SSLogConfig *)v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -176,9 +176,9 @@ LABEL_8:
 
     if (v8)
     {
-      v9 = [(SSLogFileOptions *)self->_options logDirectoryPath];
+      logDirectoryPath = [(SSLogFileOptions *)self->_options logDirectoryPath];
       v31 = 138412546;
-      v32 = v9;
+      v32 = logDirectoryPath;
       v33 = 2112;
       v34 = v30;
       LODWORD(v26) = 22;
@@ -233,10 +233,10 @@ uint64_t __29__SSRollableLog__openLogFile__block_invoke(uint64_t a1)
 {
   v6 = objc_alloc_init(MEMORY[0x1E696AC08]);
   [(SSRollableLog *)self _closeLogFile];
-  v3 = [(SSLogFileOptions *)self->_options maxNumberOfLogFiles];
-  [v6 removeItemAtPath:-[SSRollableLog _logFilePathWithIndex:](self error:{"_logFilePathWithIndex:", v3 - 1), 0}];
-  v4 = v3 - 2;
-  if (v3 >= 2)
+  maxNumberOfLogFiles = [(SSLogFileOptions *)self->_options maxNumberOfLogFiles];
+  [v6 removeItemAtPath:-[SSRollableLog _logFilePathWithIndex:](self error:{"_logFilePathWithIndex:", maxNumberOfLogFiles - 1), 0}];
+  v4 = maxNumberOfLogFiles - 2;
+  if (maxNumberOfLogFiles >= 2)
   {
     do
     {

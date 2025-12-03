@@ -2,18 +2,18 @@
 - (AVPlayerItem)targetPlayerItem;
 - (id)axmDescription;
 - (void)_mainQueue_endAutoTriggerOfLegibilityEvents;
-- (void)autoTriggerLegibilityEventsWithAVPlayerItem:(id)a3;
+- (void)autoTriggerLegibilityEventsWithAVPlayerItem:(id)item;
 - (void)endAutoTriggerOfLegibilityEvents;
-- (void)legibleOutput:(id)a3 didOutputAttributedStrings:(id)a4 nativeSampleBuffers:(id)a5 forItemTime:(id *)a6;
+- (void)legibleOutput:(id)output didOutputAttributedStrings:(id)strings nativeSampleBuffers:(id)buffers forItemTime:(id *)time;
 - (void)nodeInitialize;
-- (void)setShouldProcessRemotely:(BOOL)a3;
+- (void)setShouldProcessRemotely:(BOOL)remotely;
 @end
 
 @implementation AXMAVPlayerItemNode
 
-- (void)setShouldProcessRemotely:(BOOL)a3
+- (void)setShouldProcessRemotely:(BOOL)remotely
 {
-  if (a3)
+  if (remotely)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D930];
@@ -44,16 +44,16 @@
   [(AXMAVPlayerItemNode *)self setAnalysisOptions:v5];
 }
 
-- (void)autoTriggerLegibilityEventsWithAVPlayerItem:(id)a3
+- (void)autoTriggerLegibilityEventsWithAVPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__AXMAVPlayerItemNode_autoTriggerLegibilityEventsWithAVPlayerItem___block_invoke;
   v6[3] = &unk_1E7A1CB30;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = itemCopy;
+  selfCopy = self;
+  v5 = itemCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -115,22 +115,22 @@ LABEL_10:
 - (void)_mainQueue_endAutoTriggerOfLegibilityEvents
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(AXMAVPlayerItemNode *)self targetPlayerItem];
+  targetPlayerItem = [(AXMAVPlayerItemNode *)self targetPlayerItem];
   v4 = AXMediaLogCaptionDescriptions();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v3;
+    v28 = targetPlayerItem;
     _os_log_impl(&dword_1AE37B000, v4, OS_LOG_TYPE_DEFAULT, "Will stop processing legibility events for player item: %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v3 outputs];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  outputs = [targetPlayerItem outputs];
+  v7 = [outputs countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -142,21 +142,21 @@ LABEL_10:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(outputs);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [outputs countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
@@ -166,7 +166,7 @@ LABEL_10:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v5;
+  v12 = array;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -182,7 +182,7 @@ LABEL_10:
           objc_enumerationMutation(v12);
         }
 
-        [v3 removeOutput:{*(*(&v17 + 1) + 8 * v16++), v17}];
+        [targetPlayerItem removeOutput:{*(*(&v17 + 1) + 8 * v16++), v17}];
       }
 
       while (v14 != v16);
@@ -211,25 +211,25 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = AXMAVPlayerItemNode;
-  v4 = [(AXMVisionEngineNode *)&v8 axmDescription];
-  v5 = [(AXMAVPlayerItemNode *)self targetPlayerItem];
-  v6 = [v3 stringWithFormat:@"%@ playerItem:<%@>", v4, v5];
+  axmDescription = [(AXMVisionEngineNode *)&v8 axmDescription];
+  targetPlayerItem = [(AXMAVPlayerItemNode *)self targetPlayerItem];
+  v6 = [v3 stringWithFormat:@"%@ playerItem:<%@>", axmDescription, targetPlayerItem];
 
   return v6;
 }
 
-- (void)legibleOutput:(id)a3 didOutputAttributedStrings:(id)a4 nativeSampleBuffers:(id)a5 forItemTime:(id *)a6
+- (void)legibleOutput:(id)output didOutputAttributedStrings:(id)strings nativeSampleBuffers:(id)buffers forItemTime:(id *)time
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  stringsCopy = strings;
   v8 = AXMediaLogCaptionDescriptions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [AXMAVPlayerItemNode legibleOutput:v7 didOutputAttributedStrings:v8 nativeSampleBuffers:? forItemTime:?];
+    [AXMAVPlayerItemNode legibleOutput:stringsCopy didOutputAttributedStrings:v8 nativeSampleBuffers:? forItemTime:?];
   }
 
   self->_triggeringLegibilityEvents = 1;
-  if ([v7 count])
+  if ([stringsCopy count])
   {
     v25[0] = @"sourceProvidesResults";
     v25[1] = @"diagnosticsEnabled";
@@ -237,14 +237,14 @@ LABEL_10:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXMVisionEngineNode areDiagnosticsEnabled](self, "areDiagnosticsEnabled")}];
     v26[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v11 = [(AXMAVPlayerItemNode *)self analysisOptions];
-    v12 = [AXMVisionPipelineContext contextWithSourceParameters:v10 options:v11];
+    analysisOptions = [(AXMAVPlayerItemNode *)self analysisOptions];
+    v12 = [AXMVisionPipelineContext contextWithSourceParameters:v10 options:analysisOptions];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v7;
+    v13 = stringsCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {

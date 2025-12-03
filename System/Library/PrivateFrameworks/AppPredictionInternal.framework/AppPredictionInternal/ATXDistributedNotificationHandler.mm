@@ -1,9 +1,9 @@
 @interface ATXDistributedNotificationHandler
 + (id)sharedInstance;
 - (ATXDistributedNotificationHandler)init;
-- (void)_notificationFired:(id)a3;
+- (void)_notificationFired:(id)fired;
 - (void)_pruneOldRecents;
-- (void)_repostNotificationFromSource:(id)a3 name:(id)a4 userInfo:(id)a5;
+- (void)_repostNotificationFromSource:(id)source name:(id)name userInfo:(id)info;
 - (void)dealloc;
 - (void)registerXPCHandler;
 @end
@@ -42,9 +42,9 @@ uint64_t __51__ATXDistributedNotificationHandler_sharedInstance__block_invoke()
     recentNotifications = v2->_recentNotifications;
     v2->_recentNotifications = v3;
 
-    v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v5 addObserver:v2 selector:sel__notificationFired_ name:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:0];
-    [v5 addObserver:v2 selector:sel__notificationFired_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__notificationFired_ name:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:0];
+    [defaultCenter addObserver:v2 selector:sel__notificationFired_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:0];
   }
 
   return v2;
@@ -52,24 +52,24 @@ uint64_t __51__ATXDistributedNotificationHandler_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATXDistributedNotificationHandler;
   [(ATXDistributedNotificationHandler *)&v4 dealloc];
 }
 
-- (void)_notificationFired:(id)a3
+- (void)_notificationFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__ATXDistributedNotificationHandler__notificationFired___block_invoke;
   v6[3] = &unk_278596C10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = firedCopy;
+  v5 = firedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -85,7 +85,7 @@ void __56__ATXDistributedNotificationHandler__notificationFired___block_invoke(u
 {
   v6 = *MEMORY[0x277D85DE8];
   v4 = 134217984;
-  v5 = [a1 count];
+  v5 = [self count];
   _os_log_debug_impl(&dword_2263AA000, a2, OS_LOG_TYPE_DEBUG, "ATXDistributedNotificationHandler: removing %ld old notifications", &v4, 0xCu);
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -98,25 +98,25 @@ BOOL __53__ATXDistributedNotificationHandler__pruneOldRecents__block_invoke(uint
   return vabdd_f64(v3, v4) > 10.0;
 }
 
-- (void)_repostNotificationFromSource:(id)a3 name:(id)a4 userInfo:(id)a5
+- (void)_repostNotificationFromSource:(id)source name:(id)name userInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  nameCopy = name;
+  infoCopy = info;
   [(ATXDistributedNotificationHandler *)self _pruneOldRecents];
-  v11 = [[_ATXDistributedNotification alloc] initWithName:v9 userInfo:v10];
+  v11 = [[_ATXDistributedNotification alloc] initWithName:nameCopy userInfo:infoCopy];
   if ([(NSMutableSet *)self->_recentNotifications containsObject:v11])
   {
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543874;
-      v17 = v8;
+      v17 = sourceCopy;
       v18 = 2114;
-      v19 = v9;
+      v19 = nameCopy;
       v20 = 2112;
-      v21 = v10;
+      v21 = infoCopy;
       v13 = "ATXDistributedNotificationHandler: dropping duplicate event (%{public}@) %{public}@; userInfo=%@";
 LABEL_6:
       _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, v13, &v16, 0x20u);
@@ -125,19 +125,19 @@ LABEL_6:
 
   else
   {
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:v9 object:0 userInfo:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:nameCopy object:0 userInfo:infoCopy];
 
     [(NSMutableSet *)self->_recentNotifications addObject:v11];
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543874;
-      v17 = v8;
+      v17 = sourceCopy;
       v18 = 2114;
-      v19 = v9;
+      v19 = nameCopy;
       v20 = 2112;
-      v21 = v10;
+      v21 = infoCopy;
       v13 = "ATXDistributedNotificationHandler: handled event (%{public}@) %{public}@; userInfo=%@";
       goto LABEL_6;
     }

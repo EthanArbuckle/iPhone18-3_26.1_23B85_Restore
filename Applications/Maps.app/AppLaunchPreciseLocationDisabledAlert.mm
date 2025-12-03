@@ -3,7 +3,7 @@
 - (void)_alertDidFinishProcessing;
 - (void)_presentAlertUI;
 - (void)cancelAlertIfNecessary;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchPreciseLocationDisabledAlert
@@ -43,22 +43,22 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 locationProvider];
+    locationProvider = [v4 locationProvider];
     v6 = +[MKLocationManager sharedLocationManager];
     v11 = 138412546;
-    v12 = v5;
+    v12 = locationProvider;
     v13 = 2048;
-    v14 = [v6 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v6 isAuthorizedForPreciseLocation];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "AppLaunchPreciseLocationDisabledAlert: location provider %@ is authorized for precise location: %lu", &v11, 0x16u);
   }
 
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 isLocationServicesApproved];
+  isLocationServicesApproved = [v7 isLocationServicesApproved];
 
   v9 = +[MKLocationManager sharedLocationManager];
-  v10 = [v9 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation2 = [v9 isAuthorizedForPreciseLocation];
 
-  return v8 & (v10 ^ 1);
+  return isLocationServicesApproved & (isAuthorizedForPreciseLocation2 ^ 1);
 }
 
 - (void)cancelAlertIfNecessary
@@ -67,16 +67,16 @@
   [v2 dismissCurrentInterruptionOfKind:15];
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(AppLaunchPreciseLocationDisabledAlert *)self _shouldDisplayAlert];
+  _shouldDisplayAlert = [(AppLaunchPreciseLocationDisabledAlert *)self _shouldDisplayAlert];
   v7 = sub_100005610();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_shouldDisplayAlert)
   {
     if (v8)
     {

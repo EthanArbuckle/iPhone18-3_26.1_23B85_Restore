@@ -1,6 +1,6 @@
 @interface CBExtendedDisplayMitigation
 + (BOOL)isSupported;
-- (BOOL)setActive:(BOOL)a3;
+- (BOOL)setActive:(BOOL)active;
 - (CBExtendedDisplayMitigation)init;
 - (void)dealloc;
 @end
@@ -21,19 +21,19 @@
 - (CBExtendedDisplayMitigation)init
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = CBExtendedDisplayMitigation;
-  v9 = [(CBExtendedDisplayMitigation *)&v7 init];
-  if (v9)
+  selfCopy = [(CBExtendedDisplayMitigation *)&v7 init];
+  if (selfCopy)
   {
-    v9->_isActive = 0;
+    selfCopy->_isActive = 0;
     v2 = os_log_create("com.apple.CoreBrightness.AABC.EDM", "default");
-    v9->_logHandle = v2;
-    if (v9->_logHandle)
+    selfCopy->_logHandle = v2;
+    if (selfCopy->_logHandle)
     {
-      logHandle = v9->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -53,35 +53,35 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      [(CBExtendedDisplayMitigation *)v9 getCap];
+      [(CBExtendedDisplayMitigation *)selfCopy getCap];
       __os_log_helper_16_0_1_8_0(v10, COERCE__INT64(v3));
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "EDM cap created, will limit to %f when active", v10, 0xCu);
     }
   }
 
   *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
-    v4->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBExtendedDisplayMitigation;
   [(CBExtendedDisplayMitigation *)&v2 dealloc];
 }
 
-- (BOOL)setActive:(BOOL)a3
+- (BOOL)setActive:(BOOL)active
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_isActive == a3)
+  if (self->_isActive == active)
   {
     if (self->_logHandle)
     {
@@ -105,7 +105,7 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_0_1_4_0(v11, a3);
+      __os_log_helper_16_0_1_4_0(v11, active);
       _os_log_error_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_ERROR, "State of extended display mitigation already set to to %d", v11, 8u);
     }
 
@@ -114,7 +114,7 @@
 
   else
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     if (self->_logHandle)
     {
       v5 = self->_logHandle;
@@ -137,7 +137,7 @@
 
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v10, a3);
+      __os_log_helper_16_0_1_4_0(v10, active);
       _os_log_impl(&dword_1DE8E5000, v5, OS_LOG_TYPE_DEFAULT, "Setting state of extended display mitigation to %d", v10, 8u);
     }
 

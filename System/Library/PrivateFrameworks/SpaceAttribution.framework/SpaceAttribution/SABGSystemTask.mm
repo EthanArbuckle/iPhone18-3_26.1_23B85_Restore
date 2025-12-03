@@ -1,32 +1,32 @@
 @interface SABGSystemTask
-+ (id)newWithBGTask:(id)a3;
++ (id)newWithBGTask:(id)task;
 - (BOOL)shouldDefer;
-- (SABGSystemTask)initWithBGTask:(id)a3;
+- (SABGSystemTask)initWithBGTask:(id)task;
 - (void)deferTask;
 @end
 
 @implementation SABGSystemTask
 
-- (SABGSystemTask)initWithBGTask:(id)a3
+- (SABGSystemTask)initWithBGTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = SABGSystemTask;
   v6 = [(SABGSystemTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_task, a3);
+    objc_storeStrong(&v6->_task, task);
     v7->_shouldDefer = 0;
   }
 
   return v7;
 }
 
-+ (id)newWithBGTask:(id)a3
++ (id)newWithBGTask:(id)task
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBGTask:v4];
+  taskCopy = task;
+  v5 = [[self alloc] initWithBGTask:taskCopy];
 
   return v5;
 }
@@ -41,10 +41,10 @@
 
 - (BOOL)shouldDefer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shouldDefer = v2->_shouldDefer;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldDefer = selfCopy->_shouldDefer;
+  objc_sync_exit(selfCopy);
 
   return shouldDefer;
 }

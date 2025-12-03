@@ -1,25 +1,25 @@
 @interface JSFeatureFlags
-- (BOOL)isEnabled:(id)a3;
-- (BOOL)isGSEUIEnabled:(id)a3;
+- (BOOL)isEnabled:(id)enabled;
+- (BOOL)isGSEUIEnabled:(id)enabled;
 - (_TtC11AppStoreKit14JSFeatureFlags)init;
 @end
 
 @implementation JSFeatureFlags
 
-- (BOOL)isEnabled:(id)a3
+- (BOOL)isEnabled:(id)enabled
 {
   v4 = sub_1E1AF5DFC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1E16F95E4(v4, v6);
 
   return v4 & 1;
 }
 
-- (BOOL)isGSEUIEnabled:(id)a3
+- (BOOL)isGSEUIEnabled:(id)enabled
 {
   sub_1E1AF5DFC();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1E1AF72FC();
   if (v5 == 1)
   {

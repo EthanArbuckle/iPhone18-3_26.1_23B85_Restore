@@ -1,25 +1,25 @@
 @interface SUItemValidatorRatingTest
-- (BOOL)validateItems:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)validateItems:(id)items error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUItemValidatorRatingTest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = SUItemValidatorRatingTest;
-  return [(SUItemValidatorTest *)&v4 copyWithZone:a3];
+  return [(SUItemValidatorTest *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)validateItems:(id)a3 error:(id *)a4
+- (BOOL)validateItems:(id)items error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -30,13 +30,13 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
-      v10 = [*(*(&v12 + 1) + 8 * v9) contentRating];
-      if ([v10 shouldHideWhenRestricted])
+      contentRating = [*(*(&v12 + 1) + 8 * v9) contentRating];
+      if ([contentRating shouldHideWhenRestricted])
       {
-        if ([v10 isRestricted])
+        if ([contentRating isRestricted])
         {
           break;
         }
@@ -44,7 +44,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -55,7 +55,7 @@ LABEL_3:
     }
 
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -65,10 +65,10 @@ LABEL_3:
 
 LABEL_10:
   result = 1;
-  if (a4)
+  if (error)
   {
 LABEL_13:
-    *a4 = 0;
+    *error = 0;
   }
 
   return result;

@@ -8,8 +8,8 @@
 + (id)siriui_semiTransparentChevronImageAndAllowNaturalLayout:()UIKit_SiriUIFrameworkAdditions
 {
   v4 = MEMORY[0x277D755B8];
-  v5 = [MEMORY[0x277D75348] siriui_semiTransparentTextColor];
-  v6 = [v4 siriui_semiTransparentChevronImageWithColor:v5 allowNaturalLayout:a3];
+  siriui_semiTransparentTextColor = [MEMORY[0x277D75348] siriui_semiTransparentTextColor];
+  v6 = [v4 siriui_semiTransparentChevronImageWithColor:siriui_semiTransparentTextColor allowNaturalLayout:a3];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface ASCMiniProductPageMediaFlowLayout
 - (ASCMiniProductPageMediaFlowLayout)init;
 - (CGPoint)collectionViewBoundsMidpoint;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (void)dealloc;
-- (void)panGestureRecognizedByRecognizer:(id)a3;
-- (void)prepareForTransitionToLayout:(id)a3;
+- (void)panGestureRecognizedByRecognizer:(id)recognizer;
+- (void)prepareForTransitionToLayout:(id)layout;
 - (void)prepareLayout;
 @end
 
@@ -26,9 +26,9 @@
 
 - (void)dealloc
 {
-  v3 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
   v5.receiver = self;
   v5.super_class = ASCMiniProductPageMediaFlowLayout;
@@ -37,15 +37,15 @@
 
 - (CGPoint)collectionViewBoundsMidpoint
 {
-  v3 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+  collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
-    v4 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-    [v4 bounds];
+    collectionView2 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+    [collectionView2 bounds];
     v6 = v5 * 0.5;
-    v7 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-    [v7 bounds];
+    collectionView3 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+    [collectionView3 bounds];
     v9 = v8 * 0.5;
   }
 
@@ -67,72 +67,72 @@
   v7.receiver = self;
   v7.super_class = ASCMiniProductPageMediaFlowLayout;
   [(UICollectionViewFlowLayout *)&v7 prepareLayout];
-  v3 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
-  v5 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-  v6 = [v5 panGestureRecognizer];
-  [v6 addTarget:self action:sel_panGestureRecognizedByRecognizer_];
+  collectionView2 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+  panGestureRecognizer2 = [collectionView2 panGestureRecognizer];
+  [panGestureRecognizer2 addTarget:self action:sel_panGestureRecognizedByRecognizer_];
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = ASCMiniProductPageMediaFlowLayout;
-  [(ASCMiniProductPageMediaFlowLayout *)&v6 prepareForTransitionToLayout:a3];
-  v4 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 removeTarget:self action:0];
+  [(ASCMiniProductPageMediaFlowLayout *)&v6 prepareForTransitionToLayout:layout];
+  collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  x = a4.x;
-  y = a3.y;
-  v6 = a3.x;
-  v8 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView:a3.x];
+  x = velocity.x;
+  y = offset.y;
+  v6 = offset.x;
+  v8 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView:offset.x];
 
   if (v8)
   {
-    v9 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-    [v9 bounds];
+    collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+    [collectionView bounds];
     v10 = [(UICollectionViewFlowLayout *)self layoutAttributesForElementsInRect:?];
 
     if (v10)
     {
       if ([v10 count])
       {
-        v11 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-        v12 = [v11 numberOfItemsInSection:0];
+        collectionView2 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+        v12 = [collectionView2 numberOfItemsInSection:0];
 
-        v13 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-        [v13 frame];
+        collectionView3 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+        [collectionView3 frame];
         v15 = v6 + v14;
         [(UICollectionViewFlowLayout *)self collectionViewContentSize];
         v17 = v16;
 
         if (v15 < v17)
         {
-          v18 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-          v19 = [v18 traitCollection];
-          v20 = [v19 layoutDirection];
+          collectionView4 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+          traitCollection = [collectionView4 traitCollection];
+          layoutDirection = [traitCollection layoutDirection];
 
           v21 = 0;
           if (v6 <= 0.0)
           {
 LABEL_12:
-            if (v20 == 1)
+            if (layoutDirection == 1)
             {
               v21 = v12 + ~v21;
             }
 
             if ([(ASCMiniProductPageMediaFlowLayout *)self indexAtInitialScroll]== v21)
             {
-              if ((x >= 0.0 || v20 == 1) && (x <= 0.0 || v20 != 1))
+              if ((x >= 0.0 || layoutDirection == 1) && (x <= 0.0 || layoutDirection != 1))
               {
-                v39 = v20 == 1 || x <= 0.0;
-                if (!v39 || x < 0.0 && v20 == 1)
+                v39 = layoutDirection == 1 || x <= 0.0;
+                if (!v39 || x < 0.0 && layoutDirection == 1)
                 {
                   if (v12 - 1 >= v21 + 1)
                   {
@@ -170,8 +170,8 @@ LABEL_12:
               [v30 frame];
               v32 = v31;
               v34 = v33;
-              v35 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
-              [v35 bounds];
+              collectionView5 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+              [collectionView5 bounds];
               v6 = v32 + (v36 - v34) * -0.5;
             }
           }
@@ -219,13 +219,13 @@ LABEL_12:
   return result;
 }
 
-- (void)panGestureRecognizedByRecognizer:(id)a3
+- (void)panGestureRecognizedByRecognizer:(id)recognizer
 {
-  if ([a3 state] == 1)
+  if ([recognizer state] == 1)
   {
-    v5 = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
+    collectionView = [(ASCMiniProductPageMediaFlowLayout *)self collectionView];
     [(ASCMiniProductPageMediaFlowLayout *)self collectionViewBoundsMidpoint];
-    v4 = [v5 indexPathForItemAtPoint:?];
+    v4 = [collectionView indexPathForItemAtPoint:?];
     -[ASCMiniProductPageMediaFlowLayout setIndexAtInitialScroll:](self, "setIndexAtInitialScroll:", [v4 item]);
   }
 }

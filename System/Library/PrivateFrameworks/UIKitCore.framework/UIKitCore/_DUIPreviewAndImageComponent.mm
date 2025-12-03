@@ -1,15 +1,15 @@
 @interface _DUIPreviewAndImageComponent
-- (BOOL)isEqual:(id)a3;
-- (_DUIPreviewAndImageComponent)initWithCoder:(id)a3;
-- (_DUIPreviewAndImageComponent)initWithPreviewAndImageComponent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_DUIPreviewAndImageComponent)initWithCoder:(id)coder;
+- (_DUIPreviewAndImageComponent)initWithPreviewAndImageComponent:(id)component;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DUIPreviewAndImageComponent
 
-- (_DUIPreviewAndImageComponent)initWithPreviewAndImageComponent:(id)a3
+- (_DUIPreviewAndImageComponent)initWithPreviewAndImageComponent:(id)component
 {
   v12.receiver = self;
   v12.super_class = _DUIPreviewAndImageComponent;
@@ -18,13 +18,13 @@
   if (v3)
   {
     v3->_index = [(_DUIPreviewAndImageComponent *)v3 index];
-    v5 = [(_DUIPreviewAndImageComponent *)v4 imageComponent];
-    v6 = [v5 copy];
+    imageComponent = [(_DUIPreviewAndImageComponent *)v4 imageComponent];
+    v6 = [imageComponent copy];
     imageComponent = v4->_imageComponent;
     v4->_imageComponent = v6;
 
-    v8 = [(_DUIPreviewAndImageComponent *)v4 preview];
-    v9 = [v8 copy];
+    preview = [(_DUIPreviewAndImageComponent *)v4 preview];
+    v9 = [preview copy];
     preview = v4->_preview;
     v4->_preview = v9;
   }
@@ -32,47 +32,47 @@
   return v4;
 }
 
-- (_DUIPreviewAndImageComponent)initWithCoder:(id)a3
+- (_DUIPreviewAndImageComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _DUIPreviewAndImageComponent;
   v5 = [(_DUIPreviewAndImageComponent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
     preview = v5->_preview;
     v5->_preview = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageComponent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageComponent"];
     imageComponent = v5->_imageComponent;
     v5->_imageComponent = v8;
 
-    v5->_index = [v4 decodeIntegerForKey:@"index"];
+    v5->_index = [coderCopy decodeIntegerForKey:@"index"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(_DUIPreviewAndImageComponent *)self preview];
-  [v6 encodeObject:v4 forKey:@"preview"];
+  coderCopy = coder;
+  preview = [(_DUIPreviewAndImageComponent *)self preview];
+  [coderCopy encodeObject:preview forKey:@"preview"];
 
-  v5 = [(_DUIPreviewAndImageComponent *)self imageComponent];
-  [v6 encodeObject:v5 forKey:@"imageComponent"];
+  imageComponent = [(_DUIPreviewAndImageComponent *)self imageComponent];
+  [coderCopy encodeObject:imageComponent forKey:@"imageComponent"];
 
-  [v6 encodeInteger:-[_DUIPreviewAndImageComponent index](self forKey:{"index"), @"index"}];
+  [coderCopy encodeInteger:-[_DUIPreviewAndImageComponent index](self forKey:{"index"), @"index"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_index != v5[3])
     {
@@ -143,7 +143,7 @@ LABEL_18:
   return v4 ^ [(_DUIImageComponent *)self->_imageComponent hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 

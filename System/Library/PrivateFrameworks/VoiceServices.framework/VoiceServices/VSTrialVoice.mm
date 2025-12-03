@@ -1,7 +1,7 @@
 @interface VSTrialVoice
-- (VSTrialVoice)initWithFactorLevel:(id)a3;
-- (VSTrialVoice)initWithFactorName:(id)a3;
-- (VSTrialVoice)initWithLanguage:(id)a3 name:(id)a4;
+- (VSTrialVoice)initWithFactorLevel:(id)level;
+- (VSTrialVoice)initWithFactorName:(id)name;
+- (VSTrialVoice)initWithLanguage:(id)language name:(id)name;
 - (double)preferenceScore;
 - (id)description;
 - (id)factorName;
@@ -12,8 +12,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(VSTrialVoice *)self factorName];
-  v4 = [v2 stringWithFormat:@"Voice factor name: %@", v3];
+  factorName = [(VSTrialVoice *)self factorName];
+  v4 = [v2 stringWithFormat:@"Voice factor name: %@", factorName];
 
   return v4;
 }
@@ -73,41 +73,41 @@
   return v6;
 }
 
-- (VSTrialVoice)initWithFactorLevel:(id)a3
+- (VSTrialVoice)initWithFactorLevel:(id)level
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 factor];
-  v6 = [v5 name];
-  v7 = [(VSTrialVoice *)self initWithFactorName:v6];
+  levelCopy = level;
+  factor = [levelCopy factor];
+  name = [factor name];
+  v7 = [(VSTrialVoice *)self initWithFactorName:name];
 
   if (v7)
   {
-    if ([v4 hasLevel])
+    if ([levelCopy hasLevel])
     {
-      v8 = [v4 level];
-      v9 = [v8 directoryValue];
+      level = [levelCopy level];
+      directoryValue = [level directoryValue];
 
-      if (v9)
+      if (directoryValue)
       {
-        if (([v9 hasAsset]& 1) != 0)
+        if (([directoryValue hasAsset]& 1) != 0)
         {
-          if ([v9 hasPath])
+          if ([directoryValue hasPath])
           {
-            v10 = [v9 path];
-            v11 = [v10 length];
+            path = [directoryValue path];
+            v11 = [path length];
 
             if (v11)
             {
-              v12 = [v9 path];
+              path2 = [directoryValue path];
               path = v7->_path;
-              v7->_path = v12;
+              v7->_path = path2;
             }
           }
 
-          v14 = [v4 level];
-          v15 = [v14 metadata];
-          v16 = [v15 objectForKeyedSubscript:@"assetSize"];
+          level2 = [levelCopy level];
+          metadata = [level2 metadata];
+          v16 = [metadata objectForKeyedSubscript:@"assetSize"];
 
           if (v16)
           {
@@ -118,9 +118,9 @@
             }
           }
 
-          v17 = [v4 level];
-          v18 = [v17 metadata];
-          v19 = [v18 objectForKeyedSubscript:@"ttsCompatibilityVersion"];
+          level3 = [levelCopy level];
+          metadata2 = [level3 metadata];
+          v19 = [metadata2 objectForKeyedSubscript:@"ttsCompatibilityVersion"];
 
           if (v19)
           {
@@ -131,9 +131,9 @@
             }
           }
 
-          v20 = [v4 level];
-          v21 = [v20 metadata];
-          v22 = [v21 objectForKeyedSubscript:@"ttsContentVersion"];
+          level4 = [levelCopy level];
+          metadata3 = [level4 metadata];
+          v22 = [metadata3 objectForKeyedSubscript:@"ttsContentVersion"];
 
           if (v22)
           {
@@ -144,9 +144,9 @@
             }
           }
 
-          v23 = [v4 level];
-          v24 = [v23 metadata];
-          v25 = [v24 objectForKeyedSubscript:@"gender"];
+          level5 = [levelCopy level];
+          metadata4 = [level5 metadata];
+          v25 = [metadata4 objectForKeyedSubscript:@"gender"];
 
           if (v25)
           {
@@ -156,43 +156,43 @@
           goto LABEL_20;
         }
 
-        v27 = VSGetLogDefault();
-        if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        factor3 = VSGetLogDefault();
+        if (!os_log_type_enabled(factor3, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_29;
         }
 
-        v28 = [v4 factor];
-        v29 = [v28 name];
+        factor2 = [levelCopy factor];
+        name2 = [factor2 name];
         v33 = 138412290;
-        v34 = v29;
+        v34 = name2;
         v30 = "#Trial Error: voice is not deployed. It will be ignored. Factor name: %@";
       }
 
       else
       {
-        v27 = VSGetLogDefault();
-        if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        factor3 = VSGetLogDefault();
+        if (!os_log_type_enabled(factor3, OS_LOG_TYPE_ERROR))
         {
 LABEL_29:
 
           goto LABEL_30;
         }
 
-        v28 = [v4 factor];
-        v29 = [v28 name];
+        factor2 = [levelCopy factor];
+        name2 = [factor2 name];
         v33 = 138412290;
-        v34 = v29;
+        v34 = name2;
         v30 = "#Trial Error: voice should be as directory. Factor name: %@";
       }
 
-      _os_log_error_impl(&dword_272850000, v27, OS_LOG_TYPE_ERROR, v30, &v33, 0xCu);
+      _os_log_error_impl(&dword_272850000, factor3, OS_LOG_TYPE_ERROR, v30, &v33, 0xCu);
     }
 
     else
     {
-      v9 = VSGetLogDefault();
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      directoryValue = VSGetLogDefault();
+      if (!os_log_type_enabled(directoryValue, OS_LOG_TYPE_ERROR))
       {
 LABEL_30:
 
@@ -200,11 +200,11 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v27 = [v4 factor];
-      v28 = [v27 name];
+      factor3 = [levelCopy factor];
+      factor2 = [factor3 name];
       v33 = 138412290;
-      v34 = v28;
-      _os_log_error_impl(&dword_272850000, v9, OS_LOG_TYPE_ERROR, "#Trial Error: Factor has no level. It will be ignored. Factor name: %@", &v33, 0xCu);
+      v34 = factor2;
+      _os_log_error_impl(&dword_272850000, directoryValue, OS_LOG_TYPE_ERROR, "#Trial Error: Factor has no level. It will be ignored. Factor name: %@", &v33, 0xCu);
     }
 
     goto LABEL_29;
@@ -218,13 +218,13 @@ LABEL_31:
   return v26;
 }
 
-- (VSTrialVoice)initWithFactorName:(id)a3
+- (VSTrialVoice)initWithFactorName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasPrefix:@"com.apple.siri.tts.voice"] && (objc_msgSend(v4, "hasSuffix:", @".version") & 1) == 0)
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"com.apple.siri.tts.voice"] && (objc_msgSend(nameCopy, "hasSuffix:", @".version") & 1) == 0)
   {
-    v6 = [v4 componentsSeparatedByString:@"."];
+    v6 = [nameCopy componentsSeparatedByString:@"."];
     if ([v6 count] == 9)
     {
       v7 = [v6 objectAtIndexedSubscript:5];
@@ -243,7 +243,7 @@ LABEL_31:
 
       self = v10;
 
-      v5 = self;
+      selfCopy = self;
     }
 
     else
@@ -252,35 +252,35 @@ LABEL_31:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = nameCopy;
         _os_log_error_impl(&dword_272850000, v13, OS_LOG_TYPE_ERROR, "#Trial Unexpected voice factor name: %@", &v16, 0xCu);
       }
 
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
-- (VSTrialVoice)initWithLanguage:(id)a3 name:(id)a4
+- (VSTrialVoice)initWithLanguage:(id)language name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  languageCopy = language;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = VSTrialVoice;
   v9 = [(VSTrialVoice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_language, a3);
-    objc_storeStrong(&v10->_name, a4);
+    objc_storeStrong(&v9->_language, language);
+    objc_storeStrong(&v10->_name, name);
   }
 
   return v10;

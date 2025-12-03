@@ -1,16 +1,16 @@
 @interface SAWSUpdateTimeToIndexMapping
-+ (id)arrayOfMappingsFromWSUpdataDataArray:(id)a3 andSampleDataStore:(id)a4;
-- (SAWSUpdateTimeToIndexMapping)initWithWSUpdateData:(id)a3 andSampleDataStore:(id)a4 andHintIndex:(unint64_t)a5;
++ (id)arrayOfMappingsFromWSUpdataDataArray:(id)array andSampleDataStore:(id)store;
+- (SAWSUpdateTimeToIndexMapping)initWithWSUpdateData:(id)data andSampleDataStore:(id)store andHintIndex:(unint64_t)index;
 - (unint64_t)deferEndSampleIndex;
 - (unint64_t)frameEndSampleIndex;
 - (unint64_t)frameStartSampleIndex;
 - (unint64_t)numFrameIndices;
 - (unint64_t)waitEndSampleIndex;
 - (unint64_t)workEndSampleIndex;
-- (void)printDeferIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4;
-- (void)printFrameIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4;
-- (void)printWaitIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4;
-- (void)printWorkIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4;
+- (void)printDeferIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta;
+- (void)printFrameIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta;
+- (void)printWaitIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta;
+- (void)printWorkIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta;
 @end
 
 @implementation SAWSUpdateTimeToIndexMapping
@@ -41,8 +41,8 @@
 
 - (unint64_t)numFrameIndices
 {
-  v3 = [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices];
-  v4 = [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices]+ v3;
+  numWaitIndices = [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices];
+  v4 = [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices]+ numWaitIndices;
   return v4 + [(SAWSUpdateTimeToIndexMapping *)self numWorkIndices];
 }
 
@@ -51,8 +51,8 @@
   result = [(SAWSUpdateTimeToIndexMapping *)self frameStartSampleIndex];
   if (result != -1)
   {
-    v4 = [(SAWSUpdateTimeToIndexMapping *)self frameStartSampleIndex];
-    return v4 + [(SAWSUpdateTimeToIndexMapping *)self numFrameIndices]- 1;
+    frameStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self frameStartSampleIndex];
+    return frameStartSampleIndex + [(SAWSUpdateTimeToIndexMapping *)self numFrameIndices]- 1;
   }
 
   return result;
@@ -63,8 +63,8 @@
   result = [(SAWSUpdateTimeToIndexMapping *)self waitStartSampleIndex];
   if (result != -1)
   {
-    v4 = [(SAWSUpdateTimeToIndexMapping *)self waitStartSampleIndex];
-    return v4 + [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices]- 1;
+    waitStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self waitStartSampleIndex];
+    return waitStartSampleIndex + [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices]- 1;
   }
 
   return result;
@@ -75,8 +75,8 @@
   result = [(SAWSUpdateTimeToIndexMapping *)self deferStartSampleIndex];
   if (result != -1)
   {
-    v4 = [(SAWSUpdateTimeToIndexMapping *)self deferStartSampleIndex];
-    return v4 + [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices]- 1;
+    deferStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self deferStartSampleIndex];
+    return deferStartSampleIndex + [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices]- 1;
   }
 
   return result;
@@ -87,17 +87,17 @@
   result = [(SAWSUpdateTimeToIndexMapping *)self workStartSampleIndex];
   if (result != -1)
   {
-    v4 = [(SAWSUpdateTimeToIndexMapping *)self workStartSampleIndex];
-    return v4 + [(SAWSUpdateTimeToIndexMapping *)self numWorkIndices]- 1;
+    workStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self workStartSampleIndex];
+    return workStartSampleIndex + [(SAWSUpdateTimeToIndexMapping *)self numWorkIndices]- 1;
   }
 
   return result;
 }
 
-- (SAWSUpdateTimeToIndexMapping)initWithWSUpdateData:(id)a3 andSampleDataStore:(id)a4 andHintIndex:(unint64_t)a5
+- (SAWSUpdateTimeToIndexMapping)initWithWSUpdateData:(id)data andSampleDataStore:(id)store andHintIndex:(unint64_t)index
 {
-  v5 = 0;
-  if (a3 && a4)
+  selfCopy = 0;
+  if (data && store)
   {
     v16.receiver = self;
     v16.super_class = SAWSUpdateTimeToIndexMapping;
@@ -112,40 +112,40 @@
       v13 = v9 + 16;
       *(v9 + 8) = xmmword_1E0F28420;
       v14 = v9 + 8;
-      _getIndexRangeForTimestamps(v9 + 1, v9 + 2, a4, a5, *(a3 + 1), *(a3 + 2));
+      _getIndexRangeForTimestamps(v9 + 1, v9 + 2, store, index, *(data + 1), *(data + 2));
       if (*v14 != -1)
       {
-        a5 = *v13 + *v14;
+        index = *v13 + *v14;
       }
 
-      _getIndexRangeForTimestamps(v10 + 3, v10 + 4, a4, a5, *(a3 + 2), *(a3 + 3));
+      _getIndexRangeForTimestamps(v10 + 3, v10 + 4, store, index, *(data + 2), *(data + 3));
       if (*v11 != -1)
       {
-        a5 = *v12 + *v11;
+        index = *v12 + *v11;
       }
 
-      _getIndexRangeForTimestamps(v10 + 5, v10 + 6, a4, a5, *(a3 + 3), *(a3 + 4));
+      _getIndexRangeForTimestamps(v10 + 5, v10 + 6, store, index, *(data + 3), *(data + 4));
     }
 
     self = v10;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-+ (id)arrayOfMappingsFromWSUpdataDataArray:(id)a3 andSampleDataStore:(id)a4
++ (id)arrayOfMappingsFromWSUpdataDataArray:(id)array andSampleDataStore:(id)store
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (array && store)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = a3;
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    arrayCopy = array;
+    v8 = [arrayCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
@@ -157,29 +157,29 @@
         {
           if (*v26 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(arrayCopy);
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
           v14 = [SAWSUpdateTimeToIndexMapping alloc];
-          v15 = [(SAWSUpdateTimeToIndexMapping *)v14 initWithWSUpdateData:v13 andSampleDataStore:a4 andHintIndex:v11, v25];
+          v15 = [(SAWSUpdateTimeToIndexMapping *)v14 initWithWSUpdateData:v13 andSampleDataStore:store andHintIndex:v11, v25];
           if ([(SAWSUpdateTimeToIndexMapping *)v15 frameStartSampleIndex]!= -1)
           {
-            v16 = [(SAWSUpdateTimeToIndexMapping *)v15 frameStartSampleIndex];
-            v11 = [(SAWSUpdateTimeToIndexMapping *)v15 numFrameIndices]+ v16;
+            frameStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)v15 frameStartSampleIndex];
+            v11 = [(SAWSUpdateTimeToIndexMapping *)v15 numFrameIndices]+ frameStartSampleIndex;
           }
 
           [v6 addObject:v15];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v9 = [arrayCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v9);
     }
 
     v17 = [v6 count];
-    if (v17 == [v7 count])
+    if (v17 == [arrayCopy count])
     {
       v18 = v6;
     }
@@ -218,36 +218,36 @@
   return v18;
 }
 
-- (void)printFrameIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4
+- (void)printFrameIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta
 {
-  v7 = [(SAWSUpdateTimeToIndexMapping *)self frameStartSampleIndex];
-  v8 = [(SAWSUpdateTimeToIndexMapping *)self numFrameIndices];
+  frameStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self frameStartSampleIndex];
+  numFrameIndices = [(SAWSUpdateTimeToIndexMapping *)self numFrameIndices];
 
-  _printSampleRangeForIndices(a3, v7, v8, a4);
+  _printSampleRangeForIndices(stream, frameStartSampleIndex, numFrameIndices, delta);
 }
 
-- (void)printWaitIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4
+- (void)printWaitIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta
 {
-  v7 = [(SAWSUpdateTimeToIndexMapping *)self waitStartSampleIndex];
-  v8 = [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices];
+  waitStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self waitStartSampleIndex];
+  numWaitIndices = [(SAWSUpdateTimeToIndexMapping *)self numWaitIndices];
 
-  _printSampleRangeForIndices(a3, v7, v8, a4);
+  _printSampleRangeForIndices(stream, waitStartSampleIndex, numWaitIndices, delta);
 }
 
-- (void)printDeferIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4
+- (void)printDeferIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta
 {
-  v7 = [(SAWSUpdateTimeToIndexMapping *)self deferStartSampleIndex];
-  v8 = [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices];
+  deferStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self deferStartSampleIndex];
+  numDeferIndices = [(SAWSUpdateTimeToIndexMapping *)self numDeferIndices];
 
-  _printSampleRangeForIndices(a3, v7, v8, a4);
+  _printSampleRangeForIndices(stream, deferStartSampleIndex, numDeferIndices, delta);
 }
 
-- (void)printWorkIndexRangeToStream:(id)a3 withTranslationDelta:(int64_t)a4
+- (void)printWorkIndexRangeToStream:(id)stream withTranslationDelta:(int64_t)delta
 {
-  v7 = [(SAWSUpdateTimeToIndexMapping *)self workStartSampleIndex];
-  v8 = [(SAWSUpdateTimeToIndexMapping *)self numWorkIndices];
+  workStartSampleIndex = [(SAWSUpdateTimeToIndexMapping *)self workStartSampleIndex];
+  numWorkIndices = [(SAWSUpdateTimeToIndexMapping *)self numWorkIndices];
 
-  _printSampleRangeForIndices(a3, v7, v8, a4);
+  _printSampleRangeForIndices(stream, workStartSampleIndex, numWorkIndices, delta);
 }
 
 @end

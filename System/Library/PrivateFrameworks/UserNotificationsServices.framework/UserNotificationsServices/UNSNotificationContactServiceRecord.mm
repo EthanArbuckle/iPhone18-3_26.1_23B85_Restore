@@ -1,12 +1,12 @@
 @interface UNSNotificationContactServiceRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation UNSNotificationContactServiceRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,7 +20,7 @@ LABEL_7:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (!v5)
   {
@@ -28,8 +28,8 @@ LABEL_7:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  v8 = [v5 bundleIdentifier];
-  LODWORD(bundleIdentifier) = [(NSString *)bundleIdentifier isEqualToString:v8];
+  bundleIdentifier = [v5 bundleIdentifier];
+  LODWORD(bundleIdentifier) = [(NSString *)bundleIdentifier isEqualToString:bundleIdentifier];
 
   if (!bundleIdentifier)
   {
@@ -37,8 +37,8 @@ LABEL_7:
   }
 
   contact = self->_contact;
-  v10 = [v6 contact];
-  v11 = [(_UNNotificationContact *)contact isSimilar:v10];
+  contact = [v6 contact];
+  v11 = [(_UNNotificationContact *)contact isSimilar:contact];
 
 LABEL_8:
   return v11;

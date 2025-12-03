@@ -2,8 +2,8 @@
 - (BOOL)foreground;
 - (BOOL)groupBackdrops;
 - (_UIViewGlassGroup)init;
-- (void)setForeground:(BOOL)a3;
-- (void)setGroupBackdrops:(BOOL)a3;
+- (void)setForeground:(BOOL)foreground;
+- (void)setGroupBackdrops:(BOOL)backdrops;
 @end
 
 @implementation _UIViewGlassGroup
@@ -31,19 +31,19 @@
   return v5[41];
 }
 
-- (void)setGroupBackdrops:(BOOL)a3
+- (void)setGroupBackdrops:(BOOL)backdrops
 {
   v5 = OBJC_IVAR____UIViewGlassGroup__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v5, &v7);
-  v6 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  v13 = a3;
+  backdropsCopy = backdrops;
   v10 = &type metadata for _GlassGroup;
   v11 = &protocol witness table for _GlassGroup;
   LOBYTE(v7) = v12;
-  BYTE1(v7) = a3;
+  BYTE1(v7) = backdrops;
   *(&v7 + 1) = v14;
   v8 = v15;
   v9 = v16;
@@ -63,18 +63,18 @@
   return v5[40];
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
   v5 = OBJC_IVAR____UIViewGlassGroup__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v5, &v7);
-  v6 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  v12 = a3;
+  foregroundCopy = foreground;
   v10 = &type metadata for _GlassGroup;
   v11 = &protocol witness table for _GlassGroup;
-  LOWORD(v7) = __PAIR16__(v13, a3);
+  LOWORD(v7) = __PAIR16__(v13, foreground);
   *(&v7 + 1) = v14;
   v8 = v15;
   v9 = v16;

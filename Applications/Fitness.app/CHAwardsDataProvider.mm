@@ -1,6 +1,6 @@
 @interface CHAwardsDataProvider
 - (CHAwardsDataProvider)init;
-- (id)achievementsForWorkoutIdentifier:(id)a3;
+- (id)achievementsForWorkoutIdentifier:(id)identifier;
 @end
 
 @implementation CHAwardsDataProvider
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (id)achievementsForWorkoutIdentifier:(id)a3
+- (id)achievementsForWorkoutIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1000066AC((&self->super.isa + OBJC_IVAR___CHAwardsDataProvider_awardsDataProvider), *&self->awardsDataProvider[OBJC_IVAR___CHAwardsDataProvider_awardsDataProvider + 16]);
-  v4 = self;
+  selfCopy = self;
   dispatch thunk of AAUIAwardsDataProviding.achievements(forWorkoutIdentifier:)();
 
   sub_1001E0AAC();

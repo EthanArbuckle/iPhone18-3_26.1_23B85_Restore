@@ -1,14 +1,14 @@
 @interface SXDocumentColorScheme
-- (int64_t)automaticDarkModeEnabledWithValue:(id)a3 withType:(int)a4;
+- (int64_t)automaticDarkModeEnabledWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXDocumentColorScheme
 
-- (int64_t)automaticDarkModeEnabledWithValue:(id)a3 withType:(int)a4
+- (int64_t)automaticDarkModeEnabledWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

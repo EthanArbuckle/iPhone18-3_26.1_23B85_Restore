@@ -1,29 +1,29 @@
 @interface _VOSProfileMode
-+ (_VOSProfileMode)profileModeWithStringValue:(id)a3;
-+ (id)profileModeWitMode:(id)a3;
-- (_VOSProfileMode)initWithCoder:(id)a3;
-- (id)_initWithMode:(id)a3 commands:(id)a4;
++ (_VOSProfileMode)profileModeWithStringValue:(id)value;
++ (id)profileModeWitMode:(id)mode;
+- (_VOSProfileMode)initWithCoder:(id)coder;
+- (id)_initWithMode:(id)mode commands:(id)commands;
 - (id)description;
-- (void)addCommand:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addCommand:(id)command;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _VOSProfileMode
 
-+ (id)profileModeWitMode:(id)a3
++ (id)profileModeWitMode:(id)mode
 {
-  v3 = a3;
-  v4 = [[_VOSProfileMode alloc] _initWithMode:v3 commands:0];
+  modeCopy = mode;
+  v4 = [[_VOSProfileMode alloc] _initWithMode:modeCopy commands:0];
 
   return v4;
 }
 
-+ (_VOSProfileMode)profileModeWithStringValue:(id)a3
++ (_VOSProfileMode)profileModeWithStringValue:(id)value
 {
-  v4 = [VOSScreenreaderMode modeWithStringValue:a3];
+  v4 = [VOSScreenreaderMode modeWithStringValue:value];
   if (v4)
   {
-    v5 = [a1 profileModeWitMode:v4];
+    v5 = [self profileModeWitMode:v4];
   }
 
   else
@@ -34,21 +34,21 @@
   return v5;
 }
 
-- (id)_initWithMode:(id)a3 commands:(id)a4
+- (id)_initWithMode:(id)mode commands:(id)commands
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  commandsCopy = commands;
   v24.receiver = self;
   v24.super_class = _VOSProfileMode;
   v9 = [(_VOSProfileMode *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mode, a3);
-    if (v8)
+    objc_storeStrong(&v9->_mode, mode);
+    if (commandsCopy)
     {
-      v11 = v8;
+      v11 = commandsCopy;
     }
 
     else
@@ -63,7 +63,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v8;
+    v13 = commandsCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v14)
     {
@@ -99,17 +99,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_VOSProfileMode *)self mode];
-  v7 = [v6 rawValue];
-  v8 = [v3 stringWithFormat:@"%@<%p>: rawValue '%@'", v5, self, v7];
+  mode = [(_VOSProfileMode *)self mode];
+  rawValue = [mode rawValue];
+  v8 = [v3 stringWithFormat:@"%@<%p>: rawValue '%@'", v5, self, rawValue];
 
   return v8;
 }
 
-- (_VOSProfileMode)initWithCoder:(id)a3
+- (_VOSProfileMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
   v6 = [VOSScreenreaderMode modeWithStringValue:v5];
   if (!v6)
   {
@@ -119,28 +119,28 @@
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"commands"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"commands"];
 
   v11 = [(_VOSProfileMode *)self _initWithMode:v6 commands:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mode = self->_mode;
-  v6 = a3;
-  v5 = [(VOSScreenreaderMode *)mode rawValue];
-  [v6 encodeObject:v5 forKey:@"mode"];
+  coderCopy = coder;
+  rawValue = [(VOSScreenreaderMode *)mode rawValue];
+  [coderCopy encodeObject:rawValue forKey:@"mode"];
 
-  [v6 encodeObject:self->_commands forKey:@"commands"];
+  [coderCopy encodeObject:self->_commands forKey:@"commands"];
 }
 
-- (void)addCommand:(id)a3
+- (void)addCommand:(id)command
 {
   commands = self->_commands;
-  v5 = a3;
-  [(NSMutableSet *)commands addObject:v5];
-  [v5 setMode:self];
+  commandCopy = command;
+  [(NSMutableSet *)commands addObject:commandCopy];
+  [commandCopy setMode:self];
 }
 
 @end

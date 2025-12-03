@@ -10,8 +10,8 @@
   if (Image)
   {
     v4 = Image;
-    v5 = [(UIGraphicsRendererContext *)self format];
-    [v5 _contextScale];
+    format = [(UIGraphicsRendererContext *)self format];
+    [format _contextScale];
     if (v6 == 0.0)
     {
       v6 = 1.0;

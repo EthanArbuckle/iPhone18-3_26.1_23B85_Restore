@@ -1,7 +1,7 @@
 @interface ChromeContainerDelegateProxy
 + (id)protocols;
-- (ChromeContainerDelegateProxy)initWithChromeViewController:(id)a3;
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4;
+- (ChromeContainerDelegateProxy)initWithChromeViewController:(id)controller;
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol;
 @end
 
 @implementation ChromeContainerDelegateProxy
@@ -18,14 +18,14 @@
   return v3;
 }
 
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol
 {
-  v4 = [(ChromeDelegateProxy *)self chromeViewController];
-  v5 = [v4 topContext];
+  chromeViewController = [(ChromeDelegateProxy *)self chromeViewController];
+  topContext = [chromeViewController topContext];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = v5;
+    v8 = topContext;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
 
@@ -37,24 +37,24 @@
   return v6;
 }
 
-- (ChromeContainerDelegateProxy)initWithChromeViewController:(id)a3
+- (ChromeContainerDelegateProxy)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = ChromeContainerDelegateProxy;
-    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:v4];
-    v5 = self;
+    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:controllerCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface _CPValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)bytes_value;
 - (NSString)string_value;
 - (_CPListValue)list_value;
 - (_CPStruct)struct_value;
-- (_CPValue)initWithFacade:(id)a3;
+- (_CPValue)initWithFacade:(id)facade;
 - (double)number_value;
 - (int)null_value;
 - (unint64_t)hash;
 - (void)clearKind;
-- (void)setBool_value:(BOOL)a3;
-- (void)setBytes_value:(id)a3;
-- (void)setList_value:(id)a3;
-- (void)setNull_value:(int)a3;
-- (void)setNumber_value:(double)a3;
-- (void)setString_value:(id)a3;
-- (void)setStruct_value:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setBool_value:(BOOL)bool_value;
+- (void)setBytes_value:(id)bytes_value;
+- (void)setList_value:(id)list_value;
+- (void)setNull_value:(int)null_value;
+- (void)setNumber_value:(double)number_value;
+- (void)setString_value:(id)string_value;
+- (void)setStruct_value:(id)struct_value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPValue
@@ -42,41 +42,41 @@
   return v9 ^ v7 ^ v10 ^ v11 ^ v12 ^ [(NSData *)self->_bytes_value hash]^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   null_value = self->_null_value;
-  if (null_value != [v4 null_value])
+  if (null_value != [equalCopy null_value])
   {
     goto LABEL_25;
   }
 
   number_value = self->_number_value;
-  [v4 number_value];
+  [equalCopy number_value];
   if (number_value != v7)
   {
     goto LABEL_25;
   }
 
-  v8 = [(_CPValue *)self string_value];
-  v9 = [v4 string_value];
-  if ((v8 != 0) == (v9 == 0))
+  string_value = [(_CPValue *)self string_value];
+  string_value2 = [equalCopy string_value];
+  if ((string_value != 0) == (string_value2 == 0))
   {
     goto LABEL_24;
   }
 
-  v10 = [(_CPValue *)self string_value];
-  if (v10)
+  string_value3 = [(_CPValue *)self string_value];
+  if (string_value3)
   {
-    v11 = v10;
-    v12 = [(_CPValue *)self string_value];
-    v13 = [v4 string_value];
-    v14 = [v12 isEqual:v13];
+    v11 = string_value3;
+    string_value4 = [(_CPValue *)self string_value];
+    string_value5 = [equalCopy string_value];
+    v14 = [string_value4 isEqual:string_value5];
 
     if (!v14)
     {
@@ -89,25 +89,25 @@
   }
 
   BOOL_value = self->_BOOL_value;
-  if (BOOL_value != [v4 BOOL_value])
+  if (BOOL_value != [equalCopy BOOL_value])
   {
     goto LABEL_25;
   }
 
-  v8 = [(_CPValue *)self struct_value];
-  v9 = [v4 struct_value];
-  if ((v8 != 0) == (v9 == 0))
+  string_value = [(_CPValue *)self struct_value];
+  string_value2 = [equalCopy struct_value];
+  if ((string_value != 0) == (string_value2 == 0))
   {
     goto LABEL_24;
   }
 
-  v16 = [(_CPValue *)self struct_value];
-  if (v16)
+  struct_value = [(_CPValue *)self struct_value];
+  if (struct_value)
   {
-    v17 = v16;
-    v18 = [(_CPValue *)self struct_value];
-    v19 = [v4 struct_value];
-    v20 = [v18 isEqual:v19];
+    v17 = struct_value;
+    struct_value2 = [(_CPValue *)self struct_value];
+    struct_value3 = [equalCopy struct_value];
+    v20 = [struct_value2 isEqual:struct_value3];
 
     if (!v20)
     {
@@ -119,20 +119,20 @@
   {
   }
 
-  v8 = [(_CPValue *)self list_value];
-  v9 = [v4 list_value];
-  if ((v8 != 0) == (v9 == 0))
+  string_value = [(_CPValue *)self list_value];
+  string_value2 = [equalCopy list_value];
+  if ((string_value != 0) == (string_value2 == 0))
   {
     goto LABEL_24;
   }
 
-  v21 = [(_CPValue *)self list_value];
-  if (v21)
+  list_value = [(_CPValue *)self list_value];
+  if (list_value)
   {
-    v22 = v21;
-    v23 = [(_CPValue *)self list_value];
-    v24 = [v4 list_value];
-    v25 = [v23 isEqual:v24];
+    v22 = list_value;
+    list_value2 = [(_CPValue *)self list_value];
+    list_value3 = [equalCopy list_value];
+    v25 = [list_value2 isEqual:list_value3];
 
     if (!v25)
     {
@@ -144,17 +144,17 @@
   {
   }
 
-  v8 = [(_CPValue *)self bytes_value];
-  v9 = [v4 bytes_value];
-  if ((v8 != 0) == (v9 == 0))
+  string_value = [(_CPValue *)self bytes_value];
+  string_value2 = [equalCopy bytes_value];
+  if ((string_value != 0) == (string_value2 == 0))
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v26 = [(_CPValue *)self bytes_value];
-  if (!v26)
+  bytes_value = [(_CPValue *)self bytes_value];
+  if (!bytes_value)
   {
 
 LABEL_28:
@@ -162,10 +162,10 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  v27 = v26;
-  v28 = [(_CPValue *)self bytes_value];
-  v29 = [v4 bytes_value];
-  v30 = [v28 isEqual:v29];
+  v27 = bytes_value;
+  bytes_value2 = [(_CPValue *)self bytes_value];
+  bytes_value3 = [equalCopy bytes_value];
+  v30 = [bytes_value2 isEqual:bytes_value3];
 
   if (v30)
   {
@@ -179,9 +179,9 @@ LABEL_26:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if ([(_CPValue *)self null_value])
   {
     null_value = self->_null_value;
@@ -195,9 +195,9 @@ LABEL_26:
     PBDataWriterWriteDoubleField();
   }
 
-  v7 = [(_CPValue *)self string_value];
+  string_value = [(_CPValue *)self string_value];
 
-  if (v7)
+  if (string_value)
   {
     string_value = self->_string_value;
     PBDataWriterWriteStringField();
@@ -209,30 +209,30 @@ LABEL_26:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(_CPValue *)self struct_value];
+  struct_value = [(_CPValue *)self struct_value];
 
-  if (v10)
+  if (struct_value)
   {
-    v11 = [(_CPValue *)self struct_value];
+    struct_value2 = [(_CPValue *)self struct_value];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_CPValue *)self list_value];
+  list_value = [(_CPValue *)self list_value];
 
-  if (v12)
+  if (list_value)
   {
-    v13 = [(_CPValue *)self list_value];
+    list_value2 = [(_CPValue *)self list_value];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_CPValue *)self bytes_value];
+  bytes_value = [(_CPValue *)self bytes_value];
 
-  v15 = v17;
-  if (v14)
+  v15 = toCopy;
+  if (bytes_value)
   {
     bytes_value = self->_bytes_value;
     PBDataWriterWriteDataField();
-    v15 = v17;
+    v15 = toCopy;
   }
 }
 
@@ -251,18 +251,18 @@ LABEL_26:
   return v3;
 }
 
-- (void)setBytes_value:(id)a3
+- (void)setBytes_value:(id)bytes_value
 {
-  v7 = a3;
+  bytes_valueCopy = bytes_value;
   [(_CPValue *)self clearKind];
   v4 = 7;
-  if (!v7)
+  if (!bytes_valueCopy)
   {
     v4 = 0;
   }
 
   self->_whichKind = v4;
-  v5 = [v7 copy];
+  v5 = [bytes_valueCopy copy];
   bytes_value = self->_bytes_value;
   self->_bytes_value = v5;
 }
@@ -282,19 +282,19 @@ LABEL_26:
   return v3;
 }
 
-- (void)setList_value:(id)a3
+- (void)setList_value:(id)list_value
 {
-  v4 = a3;
+  list_valueCopy = list_value;
   [(_CPValue *)self clearKind];
   v5 = 6;
-  if (!v4)
+  if (!list_valueCopy)
   {
     v5 = 0;
   }
 
   self->_whichKind = v5;
   list_value = self->_list_value;
-  self->_list_value = v4;
+  self->_list_value = list_valueCopy;
 }
 
 - (_CPStruct)struct_value
@@ -312,26 +312,26 @@ LABEL_26:
   return v3;
 }
 
-- (void)setStruct_value:(id)a3
+- (void)setStruct_value:(id)struct_value
 {
-  v4 = a3;
+  struct_valueCopy = struct_value;
   [(_CPValue *)self clearKind];
   v5 = 5;
-  if (!v4)
+  if (!struct_valueCopy)
   {
     v5 = 0;
   }
 
   self->_whichKind = v5;
   struct_value = self->_struct_value;
-  self->_struct_value = v4;
+  self->_struct_value = struct_valueCopy;
 }
 
-- (void)setBool_value:(BOOL)a3
+- (void)setBool_value:(BOOL)bool_value
 {
   [(_CPValue *)self clearKind];
   self->_whichKind = 4;
-  self->_BOOL_value = a3;
+  self->_BOOL_value = bool_value;
 }
 
 - (NSString)string_value
@@ -349,18 +349,18 @@ LABEL_26:
   return v3;
 }
 
-- (void)setString_value:(id)a3
+- (void)setString_value:(id)string_value
 {
-  v7 = a3;
+  string_valueCopy = string_value;
   [(_CPValue *)self clearKind];
   v4 = 3;
-  if (!v7)
+  if (!string_valueCopy)
   {
     v4 = 0;
   }
 
   self->_whichKind = v4;
-  v5 = [v7 copy];
+  v5 = [string_valueCopy copy];
   string_value = self->_string_value;
   self->_string_value = v5;
 }
@@ -376,11 +376,11 @@ LABEL_26:
   return result;
 }
 
-- (void)setNumber_value:(double)a3
+- (void)setNumber_value:(double)number_value
 {
   [(_CPValue *)self clearKind];
   self->_whichKind = 2;
-  self->_number_value = a3;
+  self->_number_value = number_value;
 }
 
 - (int)null_value
@@ -396,11 +396,11 @@ LABEL_26:
   }
 }
 
-- (void)setNull_value:(int)a3
+- (void)setNull_value:(int)null_value
 {
   [(_CPValue *)self clearKind];
   self->_whichKind = 1;
-  self->_null_value = a3;
+  self->_null_value = null_value;
 }
 
 - (void)clearKind
@@ -422,19 +422,19 @@ LABEL_26:
   self->_bytes_value = 0;
 }
 
-- (_CPValue)initWithFacade:(id)a3
+- (_CPValue)initWithFacade:(id)facade
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPValue *)self init];
   if (v5)
   {
-    if (v4 && ([MEMORY[0x1E695DFB0] null], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqual:", v6), v6, !v7))
+    if (facadeCopy && ([MEMORY[0x1E695DFB0] null], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(facadeCopy, "isEqual:", v6), v6, !v7))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v4;
+        v8 = facadeCopy;
         v9 = [[_CPStruct alloc] initWithFacade:v8];
 
         [(_CPValue *)v5 setStruct_value:v9];
@@ -445,7 +445,7 @@ LABEL_26:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = v4;
+          v10 = facadeCopy;
           v9 = [[_CPListValue alloc] initWithFacade:v10];
 
           [(_CPValue *)v5 setList_value:v9];
@@ -456,16 +456,16 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(_CPValue *)v5 setString_value:v4];
+            [(_CPValue *)v5 setString_value:facadeCopy];
             goto LABEL_10;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = v4;
-            v14 = [(_CPStruct *)v9 objCType];
-            if (*v14 == 66 && !v14[1])
+            v9 = facadeCopy;
+            objCType = [(_CPStruct *)v9 objCType];
+            if (*objCType == 66 && !objCType[1])
             {
               [(_CPValue *)v5 setBool_value:[(_CPStruct *)v9 BOOLValue]];
             }
@@ -482,7 +482,7 @@ LABEL_26:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(_CPValue *)v5 setBytes_value:v4];
+              [(_CPValue *)v5 setBytes_value:facadeCopy];
               goto LABEL_10;
             }
 

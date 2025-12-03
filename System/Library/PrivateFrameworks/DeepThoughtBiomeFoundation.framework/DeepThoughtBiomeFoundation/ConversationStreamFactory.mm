@@ -1,12 +1,12 @@
 @interface ConversationStreamFactory
-+ (id)createWithType:(int64_t)a3;
++ (id)createWithType:(int64_t)type;
 @end
 
 @implementation ConversationStreamFactory
 
-+ (id)createWithType:(int64_t)a3
++ (id)createWithType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = type metadata accessor for ConversationStreamAIMLIS();
   }

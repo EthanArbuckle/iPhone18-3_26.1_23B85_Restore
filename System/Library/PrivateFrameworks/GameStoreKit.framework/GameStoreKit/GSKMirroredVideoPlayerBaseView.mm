@@ -1,12 +1,12 @@
 @interface GSKMirroredVideoPlayerBaseView
-- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithCoder:(id)a3;
-- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithFrame:(CGRect)a3;
+- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithCoder:(id)coder;
+- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation GSKMirroredVideoPlayerBaseView
 
-- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithCoder:(id)a3
+- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView_videoLayer;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x277CE65D8]) init];
@@ -26,7 +26,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithFrame:(CGRect)a3
+- (_TtC12GameStoreKit30GSKMirroredVideoPlayerBaseView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

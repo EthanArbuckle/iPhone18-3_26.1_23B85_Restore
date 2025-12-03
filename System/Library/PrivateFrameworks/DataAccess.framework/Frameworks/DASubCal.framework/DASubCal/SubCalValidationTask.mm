@@ -1,17 +1,17 @@
 @interface SubCalValidationTask
-- (BOOL)_isInvalidVCalBeginningForData:(id)a3;
+- (BOOL)_isInvalidVCalBeginningForData:(id)data;
 - (SubCalValidationTaskDelegate)delegate;
-- (id)_searchForCalNameInConnectionData:(id)a3;
-- (id)_stringBeforeNewline:(const char *)a3 length:(unint64_t)a4;
-- (void)_tryQuickValidationCurrentData:(id)a3;
+- (id)_searchForCalNameInConnectionData:(id)data;
+- (id)_stringBeforeNewline:(const char *)newline length:(unint64_t)length;
+- (void)_tryQuickValidationCurrentData:(id)data;
 - (void)didFinish;
-- (void)handleTrustChallenge:(id)a3 forSubCalURLRequest:(id)a4;
-- (void)handleTrustChallenge:(id)a3 forSubCalURLRequest:(id)a4 completionHandler:(id)a5;
-- (void)performDelegateCallbackWithError:(id)a3;
+- (void)handleTrustChallenge:(id)challenge forSubCalURLRequest:(id)request;
+- (void)handleTrustChallenge:(id)challenge forSubCalURLRequest:(id)request completionHandler:(id)handler;
+- (void)performDelegateCallbackWithError:(id)error;
 - (void)performTask;
-- (void)subCalURLRequest:(id)a3 finishedWithData:(id)a4 error:(id)a5;
-- (void)subCalURLRequest:(id)a3 updatedData:(id)a4;
-- (void)subCalURLRequestNeedsUsernameAndPasswordForHost:(id)a3 continuation:(id)a4;
+- (void)subCalURLRequest:(id)request finishedWithData:(id)data error:(id)error;
+- (void)subCalURLRequest:(id)request updatedData:(id)data;
+- (void)subCalURLRequestNeedsUsernameAndPasswordForHost:(id)host continuation:(id)continuation;
 - (void)willFinish;
 @end
 
@@ -19,20 +19,20 @@
 
 - (void)willFinish
 {
-  v3 = [(SubCalValidationTask *)self request];
-  [v3 cancel];
+  request = [(SubCalValidationTask *)self request];
+  [request cancel];
 
   [(SubCalValidationTask *)self setRequest:0];
 }
 
-- (void)performDelegateCallbackWithError:(id)a3
+- (void)performDelegateCallbackWithError:(id)error
 {
-  v4 = a3;
-  v8 = [(SubCalValidationTask *)self delegate];
-  v5 = [(SubCalValidationTask *)self calendarName];
-  v6 = [(SubCalValidationTask *)self icsDocument];
-  v7 = [(SubCalValidationTask *)self icsData];
-  [v8 subCalValidationTask:self finishedWithError:v4 calendarName:v5 document:v6 calendarData:v7];
+  errorCopy = error;
+  delegate = [(SubCalValidationTask *)self delegate];
+  calendarName = [(SubCalValidationTask *)self calendarName];
+  icsDocument = [(SubCalValidationTask *)self icsDocument];
+  icsData = [(SubCalValidationTask *)self icsData];
+  [delegate subCalValidationTask:self finishedWithError:errorCopy calendarName:calendarName document:icsDocument calendarData:icsData];
 }
 
 - (void)didFinish
@@ -46,119 +46,119 @@
 {
   if (self->_subscriptionURL)
   {
-    v3 = [(SubCalDATask *)self taskManager];
-    v4 = [v3 account];
-    v5 = [v4 wasUserInitiated];
+    taskManager = [(SubCalDATask *)self taskManager];
+    account = [taskManager account];
+    wasUserInitiated = [account wasUserInitiated];
 
     v6 = [SubCalURLRequest alloc];
-    v7 = [(SubCalValidationTask *)self subscriptionURL];
-    v8 = [(SubCalURLRequest *)v6 initWithURL:v7 wasUserRequested:v5];
+    subscriptionURL = [(SubCalValidationTask *)self subscriptionURL];
+    v8 = [(SubCalURLRequest *)v6 initWithURL:subscriptionURL wasUserRequested:wasUserInitiated];
     [(SubCalValidationTask *)self setRequest:v8];
 
-    v9 = [(SubCalDATask *)self statusReport];
-    v10 = [(SubCalValidationTask *)self request];
-    [v10 setStatusReport:v9];
+    statusReport = [(SubCalDATask *)self statusReport];
+    request = [(SubCalValidationTask *)self request];
+    [request setStatusReport:statusReport];
 
-    v11 = [(SubCalValidationTask *)self request];
-    [v11 setDelegate:self];
+    request2 = [(SubCalValidationTask *)self request];
+    [request2 setDelegate:self];
 
-    v12 = [(SubCalValidationTask *)self username];
-    v13 = [(SubCalValidationTask *)self request];
-    [v13 setUsername:v12];
+    username = [(SubCalValidationTask *)self username];
+    request3 = [(SubCalValidationTask *)self request];
+    [request3 setUsername:username];
 
-    v14 = [(SubCalValidationTask *)self password];
-    v15 = [(SubCalValidationTask *)self request];
-    [v15 setPassword:v14];
+    password = [(SubCalValidationTask *)self password];
+    request4 = [(SubCalValidationTask *)self request];
+    [request4 setPassword:password];
 
     if ([(SubCalValidationTask *)self performQuickValidation]|| [(SubCalValidationTask *)self useShortTimeout])
     {
-      v16 = [(SubCalValidationTask *)self request];
-      [v16 setUseShortTimeoutInterval:1];
+      request5 = [(SubCalValidationTask *)self request];
+      [request5 setUseShortTimeoutInterval:1];
     }
 
-    v17 = [(SubCalValidationTask *)self request];
-    [v17 startConnection];
+    request6 = [(SubCalValidationTask *)self request];
+    [request6 startConnection];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D03F98] code:1 userInfo:0];
+    request6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D03F98] code:1 userInfo:0];
     [(SubCalDATask *)self finishWithError:?];
   }
 }
 
-- (void)handleTrustChallenge:(id)a3 forSubCalURLRequest:(id)a4
+- (void)handleTrustChallenge:(id)challenge forSubCalURLRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(SubCalValidationTask *)self delegate];
-  [v6 handleTrustChallenge:v5 forTask:self];
+  challengeCopy = challenge;
+  delegate = [(SubCalValidationTask *)self delegate];
+  [delegate handleTrustChallenge:challengeCopy forTask:self];
 }
 
-- (void)handleTrustChallenge:(id)a3 forSubCalURLRequest:(id)a4 completionHandler:(id)a5
+- (void)handleTrustChallenge:(id)challenge forSubCalURLRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(SubCalValidationTask *)self delegate];
-  [v9 handleTrustChallenge:v8 forTask:self completionHandler:v7];
+  handlerCopy = handler;
+  challengeCopy = challenge;
+  delegate = [(SubCalValidationTask *)self delegate];
+  [delegate handleTrustChallenge:challengeCopy forTask:self completionHandler:handlerCopy];
 }
 
-- (void)subCalURLRequestNeedsUsernameAndPasswordForHost:(id)a3 continuation:(id)a4
+- (void)subCalURLRequestNeedsUsernameAndPasswordForHost:(id)host continuation:(id)continuation
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SubCalValidationTask *)self delegate];
+  hostCopy = host;
+  continuationCopy = continuation;
+  delegate = [(SubCalValidationTask *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 subCalTask:self needsUsernameAndPasswordForHost:v8 continuation:v6];
+    [delegate subCalTask:self needsUsernameAndPasswordForHost:hostCopy continuation:continuationCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(continuationCopy + 2))(continuationCopy, 0, 0);
   }
 }
 
-- (void)subCalURLRequest:(id)a3 updatedData:(id)a4
+- (void)subCalURLRequest:(id)request updatedData:(id)data
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(SubCalValidationTask *)self delegate];
-  v8 = [v6 receivedDataSize];
-  v9 = [v6 expectedDataSize];
+  dataCopy = data;
+  requestCopy = request;
+  delegate = [(SubCalValidationTask *)self delegate];
+  receivedDataSize = [requestCopy receivedDataSize];
+  expectedDataSize = [requestCopy expectedDataSize];
 
-  [v7 subCalValidationTask:self downloadProgressedTo:v8 outOf:v9];
+  [delegate subCalValidationTask:self downloadProgressedTo:receivedDataSize outOf:expectedDataSize];
   if ([(SubCalValidationTask *)self performQuickValidation])
   {
-    [(SubCalValidationTask *)self _tryQuickValidationCurrentData:v10];
+    [(SubCalValidationTask *)self _tryQuickValidationCurrentData:dataCopy];
   }
 }
 
-- (void)subCalURLRequest:(id)a3 finishedWithData:(id)a4 error:(id)a5
+- (void)subCalURLRequest:(id)request finishedWithData:(id)data error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  dataCopy = data;
+  errorCopy = error;
+  if (dataCopy)
   {
-    v15 = v8;
-    v9 = [objc_alloc(MEMORY[0x277D7F108]) initWithData:v7 options:0 error:&v15];
+    v15 = errorCopy;
+    v9 = [objc_alloc(MEMORY[0x277D7F108]) initWithData:dataCopy options:0 error:&v15];
     v10 = v15;
 
     if (!v10)
     {
-      v11 = [v9 calendar];
-      if (v11)
+      calendar = [v9 calendar];
+      if (calendar)
       {
-        [(SubCalValidationTask *)self setIcsData:v7];
+        [(SubCalValidationTask *)self setIcsData:dataCopy];
         [(SubCalValidationTask *)self setIcsDocument:v9];
-        v12 = [v11 x_wr_calname];
-        [(SubCalValidationTask *)self setCalendarName:v12];
+        x_wr_calname = [calendar x_wr_calname];
+        [(SubCalValidationTask *)self setCalendarName:x_wr_calname];
 
-        v13 = [(SubCalValidationTask *)self calendarName];
+        calendarName = [(SubCalValidationTask *)self calendarName];
 
-        if (!v13)
+        if (!calendarName)
         {
-          v14 = [v11 x_wr_caldesc];
-          [(SubCalValidationTask *)self setCalendarName:v14];
+          x_wr_caldesc = [calendar x_wr_caldesc];
+          [(SubCalValidationTask *)self setCalendarName:x_wr_caldesc];
         }
 
         v10 = 0;
@@ -170,23 +170,23 @@
       }
     }
 
-    v8 = v10;
+    errorCopy = v10;
   }
 
-  [(SubCalDATask *)self finishWithError:v8];
+  [(SubCalDATask *)self finishWithError:errorCopy];
 }
 
-- (BOOL)_isInvalidVCalBeginningForData:(id)a3
+- (BOOL)_isInvalidVCalBeginningForData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
   result = 0;
-  if (v7 && v8 >= 0xF)
+  if (bytes && v8 >= 0xF)
   {
-    if (!strncmp(v7, "BEGIN:VCALENDAR", 0xFuLL))
+    if (!strncmp(bytes, "BEGIN:VCALENDAR", 0xFuLL))
     {
       [(SubCalValidationTask *)self setFoundBeginVCal:1];
       [(SubCalValidationTask *)self setSearchIndex:15];
@@ -202,47 +202,47 @@
   return result;
 }
 
-- (id)_stringBeforeNewline:(const char *)a3 length:(unint64_t)a4
+- (id)_stringBeforeNewline:(const char *)newline length:(unint64_t)length
 {
-  v4 = a3;
-  if (a3)
+  newlineCopy = newline;
+  if (newline)
   {
-    v5 = strnstr(a3, "\n", a4);
+    v5 = strnstr(newline, "\n", length);
     if (v5)
     {
-      v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v4 length:v5 - v4 encoding:4];
-      v7 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v4 = [v6 stringByTrimmingCharactersInSet:v7];
+      v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:newlineCopy length:v5 - newlineCopy encoding:4];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      newlineCopy = [v6 stringByTrimmingCharactersInSet:newlineCharacterSet];
     }
 
     else
     {
-      v4 = 0;
+      newlineCopy = 0;
     }
   }
 
-  return v4;
+  return newlineCopy;
 }
 
-- (id)_searchForCalNameInConnectionData:(id)a3
+- (id)_searchForCalNameInConnectionData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  if (v5)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v6 = v5;
-    v7 = [v4 length];
-    v8 = [(SubCalValidationTask *)self foundCalName];
-    v9 = [(SubCalValidationTask *)self searchIndex];
-    v10 = v9;
-    if (v8)
+    v6 = bytes;
+    v7 = [dataCopy length];
+    foundCalName = [(SubCalValidationTask *)self foundCalName];
+    searchIndex = [(SubCalValidationTask *)self searchIndex];
+    searchIndex2 = searchIndex;
+    if (foundCalName)
     {
 LABEL_12:
-      v15 = [(SubCalValidationTask *)self _stringBeforeNewline:v6 + v10 length:v7 - [(SubCalValidationTask *)self searchIndex]];
+      v15 = [(SubCalValidationTask *)self _stringBeforeNewline:v6 + searchIndex2 length:v7 - [(SubCalValidationTask *)self searchIndex]];
       goto LABEL_15;
     }
 
-    if (v9 < 0xE)
+    if (searchIndex < 0xE)
     {
       v11 = 0;
     }
@@ -268,7 +268,7 @@ LABEL_12:
       v14 = v13;
       [(SubCalValidationTask *)self setFoundCalName:1];
       [(SubCalValidationTask *)self setSearchIndex:&v14[-v6 + 13]];
-      v10 = [(SubCalValidationTask *)self searchIndex];
+      searchIndex2 = [(SubCalValidationTask *)self searchIndex];
       goto LABEL_12;
     }
 
@@ -281,11 +281,11 @@ LABEL_15:
   return v15;
 }
 
-- (void)_tryQuickValidationCurrentData:(id)a3
+- (void)_tryQuickValidationCurrentData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SubCalValidationTask *)self foundBeginVCal]|| ![(SubCalValidationTask *)self _isInvalidVCalBeginningForData:v4])
+  dataCopy = data;
+  if ([(SubCalValidationTask *)self foundBeginVCal]|| ![(SubCalValidationTask *)self _isInvalidVCalBeginningForData:dataCopy])
   {
     v8 = 0;
     if (![(SubCalValidationTask *)self foundBeginVCal])
@@ -317,7 +317,7 @@ LABEL_15:
     v9 = 1;
   }
 
-  v10 = [(SubCalValidationTask *)self _searchForCalNameInConnectionData:v4, *v15];
+  v10 = [(SubCalValidationTask *)self _searchForCalNameInConnectionData:dataCopy, *v15];
   if (v10)
   {
     v11 = v10;

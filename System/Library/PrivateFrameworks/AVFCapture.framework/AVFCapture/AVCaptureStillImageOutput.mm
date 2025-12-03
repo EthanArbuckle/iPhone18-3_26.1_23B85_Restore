@@ -1,56 +1,56 @@
 @interface AVCaptureStillImageOutput
 + (NSData)jpegStillImageNSDataRepresentation:(CMSampleBufferRef)jpegSampleBuffer;
-+ (__CFDictionary)_copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:(opaqueCMSampleBuffer *)a3;
-+ (id)jpegStillImageNSDataRepresentationForSurface:(__IOSurface *)a3 size:(unint64_t)a4 metadata:(id)a5;
++ (__CFDictionary)_copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
++ (id)jpegStillImageNSDataRepresentationForSurface:(__IOSurface *)surface size:(unint64_t)size metadata:(id)metadata;
 + (unint64_t)maxStillImageJPEGDataSize;
 + (void)initialize;
 - (AVCaptureStillImageOutput)init;
-- (BOOL)_bracketedSettingsAreValid:(id)a3 fromConnection:(id)a4 exceptionReason:(id *)a5;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
-- (CGSize)outputSizeForSourceFormat:(id)a3;
+- (BOOL)_bracketedSettingsAreValid:(id)valid fromConnection:(id)connection exceptionReason:(id *)reason;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
+- (CGSize)outputSizeForSourceFormat:(id)format;
 - (CGSize)previewImageSize;
 - (NSArray)availableImageDataCodecTypes;
 - (NSUInteger)maxBracketedCaptureStillImageCount;
-- (id)_figCaptureStillImageSettingsForBracketedCaptureSettingsArray:(id)a3 fromConnection:(id)a4;
-- (id)_figCaptureStillImageSettingsForConnection:(id)a3;
-- (id)addConnection:(id)a3 error:(id *)a4;
+- (id)_figCaptureStillImageSettingsForBracketedCaptureSettingsArray:(id)array fromConnection:(id)connection;
+- (id)_figCaptureStillImageSettingsForConnection:(id)connection;
+- (id)addConnection:(id)connection error:(id *)error;
 - (id)firstActiveConnection;
-- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)a3;
-- (void)_updateCameraSensorOrientationCompensationSupportedForDevice:(id)a3;
-- (void)_updateLensStabilizationDuringBracketedCaptureSupportedForDevice:(id)a3;
-- (void)_updateMaxBracketedStillImageCaptureCountForSourceFormat:(id)a3;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)enabled;
+- (void)_updateCameraSensorOrientationCompensationSupportedForDevice:(id)device;
+- (void)_updateLensStabilizationDuringBracketedCaptureSupportedForDevice:(id)device;
+- (void)_updateMaxBracketedStillImageCaptureCountForSourceFormat:(id)format;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)captureStillImageAsynchronouslyFromConnection:(AVCaptureConnection *)connection completionHandler:(void *)handler;
 - (void)captureStillImageBracketAsynchronouslyFromConnection:(AVCaptureConnection *)connection withSettingsArray:(NSArray *)settings completionHandler:(void *)handler;
-- (void)captureStillImageSurfaceAsynchronouslyFromConnection:(id)a3 completionHandler:(id)a4;
+- (void)captureStillImageSurfaceAsynchronouslyFromConnection:(id)connection completionHandler:(id)handler;
 - (void)clearPreparedBracketIfNeeded;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)handleBackgroundBlurActiveChangedForDevice:(id)a3;
-- (void)handleBackgroundReplacementActiveChangedForDevice:(id)a3;
-- (void)handleCenterStageActiveChangedForDevice:(id)a3;
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4;
-- (void)handleNotification:(id)a3 payload:(id)a4;
-- (void)handleNotificationForPrepareRequest:(id)a3 withPayload:(id)a4;
-- (void)handleNotificationForRequest:(id)a3 withPayload:(id)a4 imageIsEV0:(BOOL *)a5;
-- (void)handleStudioLightingActiveChangedForDevice:(id)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)handleBackgroundBlurActiveChangedForDevice:(id)device;
+- (void)handleBackgroundReplacementActiveChangedForDevice:(id)device;
+- (void)handleCenterStageActiveChangedForDevice:(id)device;
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device;
+- (void)handleNotification:(id)notification payload:(id)payload;
+- (void)handleNotificationForPrepareRequest:(id)request withPayload:(id)payload;
+- (void)handleNotificationForRequest:(id)request withPayload:(id)payload imageIsEV0:(BOOL *)v0;
+- (void)handleStudioLightingActiveChangedForDevice:(id)device;
 - (void)prepareToCaptureStillImageBracketFromConnection:(AVCaptureConnection *)connection withSettingsArray:(NSArray *)settings completionHandler:(void *)handler;
-- (void)removeConnection:(id)a3;
-- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)removeConnection:(id)connection;
+- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)setAutomaticallyEnablesStillImageStabilizationWhenAvailable:(BOOL)automaticallyEnablesStillImageStabilizationWhenAvailable;
-- (void)setCameraSensorOrientationCompensationEnabled:(BOOL)a3;
+- (void)setCameraSensorOrientationCompensationEnabled:(BOOL)enabled;
 - (void)setHighResolutionStillImageOutputEnabled:(BOOL)highResolutionStillImageOutputEnabled;
 - (void)setLensStabilizationDuringBracketedCaptureEnabled:(BOOL)lensStabilizationDuringBracketedCaptureEnabled;
 - (void)setOutputSettings:(NSDictionary *)outputSettings;
-- (void)setShutterSound:(unsigned int)a3;
-- (void)updateSISSupportedForSourceDevice:(id)a3;
+- (void)setShutterSound:(unsigned int)sound;
+- (void)updateSISSupportedForSourceDevice:(id)device;
 @end
 
 @implementation AVCaptureStillImageOutput
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     AVCaptureInitializeShutterSoundSuppressedByAirpodStemClickStorageOnce();
@@ -61,14 +61,14 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureStillImageOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureStillImageOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
     }
 
     else
@@ -78,7 +78,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -88,9 +88,9 @@
   [(AVCaptureOutput *)&v3 dealloc];
 }
 
-- (void)updateSISSupportedForSourceDevice:(id)a3
+- (void)updateSISSupportedForSourceDevice:(id)device
 {
-  v5 = [objc_msgSend(a3 "activeFormat")];
+  v5 = [objc_msgSend(device "activeFormat")];
   internal = self->_internal;
   if (internal->SISSupported == v5)
   {
@@ -120,7 +120,7 @@ LABEL_6:
 LABEL_4:
   SISEnabled = 0;
 LABEL_7:
-  v10 = [a3 deviceType] == @"AVCaptureDeviceTypeBuiltInDualCamera" && v7;
+  v10 = [device deviceType] == @"AVCaptureDeviceTypeBuiltInDualCamera" && v7;
   [(AVCaptureStillImageOutput *)self willChangeValueForKey:@"stillImageStabilizationSupported"];
   if (v8 == SISEnabled)
   {
@@ -156,26 +156,26 @@ LABEL_7:
   objc_sync_exit(internal);
 }
 
-- (id)addConnection:(id)a3 error:(id *)a4
+- (id)addConnection:(id)connection error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = AVCaptureStillImageOutput;
-  v5 = [(AVCaptureOutput *)&v8 addConnection:a3 error:a4];
-  v6 = [v5 sourceDevice];
-  [(AVCaptureStillImageOutput *)self updateSISSupportedForSourceDevice:v6];
+  v5 = [(AVCaptureOutput *)&v8 addConnection:connection error:error];
+  sourceDevice = [v5 sourceDevice];
+  [(AVCaptureStillImageOutput *)self updateSISSupportedForSourceDevice:sourceDevice];
   [(AVCaptureStillImageOutput *)self _setStillImageStabilizationAutomaticallyEnabled:[(AVCaptureStillImageOutput *)self automaticallyEnablesStillImageStabilizationWhenAvailable]];
-  -[AVCaptureStillImageOutput _updateMaxBracketedStillImageCaptureCountForSourceFormat:](self, "_updateMaxBracketedStillImageCaptureCountForSourceFormat:", [v6 activeFormat]);
-  [(AVCaptureStillImageOutput *)self _updateLensStabilizationDuringBracketedCaptureSupportedForDevice:v6];
-  [(AVCaptureStillImageOutput *)self _updateCameraSensorOrientationCompensationSupportedForDevice:v6];
+  -[AVCaptureStillImageOutput _updateMaxBracketedStillImageCaptureCountForSourceFormat:](self, "_updateMaxBracketedStillImageCaptureCountForSourceFormat:", [sourceDevice activeFormat]);
+  [(AVCaptureStillImageOutput *)self _updateLensStabilizationDuringBracketedCaptureSupportedForDevice:sourceDevice];
+  [(AVCaptureStillImageOutput *)self _updateCameraSensorOrientationCompensationSupportedForDevice:sourceDevice];
   return v5;
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   [(AVCaptureStillImageOutput *)self _setStillImageStabilizationAutomaticallyEnabled:0];
   v5.receiver = self;
   v5.super_class = AVCaptureStillImageOutput;
-  [(AVCaptureOutput *)&v5 removeConnection:a3];
+  [(AVCaptureOutput *)&v5 removeConnection:connection];
   [(AVCaptureStillImageOutput *)self updateSISSupportedForSourceDevice:0];
   [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:0];
   [(AVCaptureStillImageOutput *)self _updateLensStabilizationDuringBracketedCaptureSupportedForDevice:0];
@@ -246,15 +246,15 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v8 = AVOSTypeForString();
+    intValue = AVOSTypeForString();
 LABEL_7:
-    self->_internal->imageDataFormatType = v8;
+    self->_internal->imageDataFormatType = intValue;
     goto LABEL_8;
   }
 
   if ([(NSArray *)[(AVCaptureStillImageOutput *)self availableImageDataCVPixelFormatTypes] containsObject:v5])
   {
-    v8 = [v5 intValue];
+    intValue = [v5 intValue];
     goto LABEL_7;
   }
 
@@ -262,12 +262,12 @@ LABEL_7:
   v14 = *MEMORY[0x1E695D940];
   [v5 intValue];
   v19 = AVStringForOSType();
-  v20 = [v5 intValue];
+  intValue2 = [v5 intValue];
   v15 = AVMethodExceptionReasonWithObjectAndSelector();
   v16 = v13;
   v17 = v14;
 LABEL_22:
-  v18 = [v16 exceptionWithName:v17 reason:v15 userInfo:{0, v19, v20}];
+  v18 = [v16 exceptionWithName:v17 reason:v15 userInfo:{0, v19, intValue2}];
   if (AVCaptureShouldThrowForAPIViolations())
   {
     objc_exception_throw(v18);
@@ -289,10 +289,10 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  v7 = [a3 mediaType];
-  if (![v7 isEqualToString:*MEMORY[0x1E6987608]])
+  mediaType = [connection mediaType];
+  if (![mediaType isEqualToString:*MEMORY[0x1E6987608]])
   {
     v8 = 1;
     goto LABEL_5;
@@ -302,53 +302,53 @@ LABEL_22:
   {
     v8 = 2;
 LABEL_5:
-    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, a3);
+    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, connection);
     result = 0;
-    *a4 = v9;
+    *reason = v9;
     return result;
   }
 
   return 1;
 }
 
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device
 {
-  [(AVCaptureStillImageOutput *)self updateSISSupportedForSourceDevice:a4];
+  [(AVCaptureStillImageOutput *)self updateSISSupportedForSourceDevice:device];
   [(AVCaptureStillImageOutput *)self _setStillImageStabilizationAutomaticallyEnabled:[(AVCaptureStillImageOutput *)self automaticallyEnablesStillImageStabilizationWhenAvailable]];
-  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:a3];
-  [(AVCaptureStillImageOutput *)self _updateLensStabilizationDuringBracketedCaptureSupportedForDevice:a4];
+  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:format];
+  [(AVCaptureStillImageOutput *)self _updateLensStabilizationDuringBracketedCaptureSupportedForDevice:device];
   [(AVCaptureStillImageOutput *)self clearPreparedBracketIfNeeded];
   v7.receiver = self;
   v7.super_class = AVCaptureStillImageOutput;
-  [(AVCaptureOutput *)&v7 handleChangedActiveFormat:a3 forDevice:a4];
+  [(AVCaptureOutput *)&v7 handleChangedActiveFormat:format forDevice:device];
 }
 
-- (void)handleCenterStageActiveChangedForDevice:(id)a3
+- (void)handleCenterStageActiveChangedForDevice:(id)device
 {
-  v4 = [a3 activeFormat];
+  activeFormat = [device activeFormat];
 
-  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:v4];
+  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:activeFormat];
 }
 
-- (void)handleBackgroundBlurActiveChangedForDevice:(id)a3
+- (void)handleBackgroundBlurActiveChangedForDevice:(id)device
 {
-  v4 = [a3 activeFormat];
+  activeFormat = [device activeFormat];
 
-  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:v4];
+  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:activeFormat];
 }
 
-- (void)handleStudioLightingActiveChangedForDevice:(id)a3
+- (void)handleStudioLightingActiveChangedForDevice:(id)device
 {
-  v4 = [a3 activeFormat];
+  activeFormat = [device activeFormat];
 
-  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:v4];
+  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:activeFormat];
 }
 
-- (void)handleBackgroundReplacementActiveChangedForDevice:(id)a3
+- (void)handleBackgroundReplacementActiveChangedForDevice:(id)device
 {
-  v4 = [a3 activeFormat];
+  activeFormat = [device activeFormat];
 
-  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:v4];
+  [(AVCaptureStillImageOutput *)self _updateMaxBracketedStillImageCaptureCountForSourceFormat:activeFormat];
 }
 
 - (CGSize)previewImageSize
@@ -366,9 +366,9 @@ LABEL_5:
   if ([(AVCaptureStillImageOutput *)self isStillImageStabilizationSupported])
   {
     self->_internal->SISEnabled = automaticallyEnablesStillImageStabilizationWhenAvailable;
-    v5 = [(AVCaptureStillImageOutput *)self automaticallyEnablesStillImageStabilizationWhenAvailable];
+    automaticallyEnablesStillImageStabilizationWhenAvailable = [(AVCaptureStillImageOutput *)self automaticallyEnablesStillImageStabilizationWhenAvailable];
 
-    [(AVCaptureStillImageOutput *)self _setStillImageStabilizationAutomaticallyEnabled:v5];
+    [(AVCaptureStillImageOutput *)self _setStillImageStabilizationAutomaticallyEnabled:automaticallyEnablesStillImageStabilizationWhenAvailable];
   }
 
   else
@@ -402,11 +402,11 @@ LABEL_5:
   }
 }
 
-- (void)setShutterSound:(unsigned int)a3
+- (void)setShutterSound:(unsigned int)sound
 {
   if (AVCaptureClientHasEntitlement(AVCaptureEntitlementShutterSoundManipulation))
   {
-    self->_internal->shutterSoundID = a3;
+    self->_internal->shutterSoundID = sound;
   }
 
   else
@@ -421,10 +421,10 @@ LABEL_5:
   }
 }
 
-- (void)setCameraSensorOrientationCompensationEnabled:(BOOL)a3
+- (void)setCameraSensorOrientationCompensationEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (a3 && !internal->cameraSensorOrientationCompensationSupported)
+  if (enabled && !internal->cameraSensorOrientationCompensationSupported)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -439,9 +439,9 @@ LABEL_5:
   {
     internal->cameraSensorOrientationCompensationAutomaticallyEnabled = 0;
     v4 = self->_internal;
-    if (v4->cameraSensorOrientationCompensationEnabled != a3)
+    if (v4->cameraSensorOrientationCompensationEnabled != enabled)
     {
-      v4->cameraSensorOrientationCompensationEnabled = a3;
+      v4->cameraSensorOrientationCompensationEnabled = enabled;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -450,20 +450,20 @@ LABEL_5:
 
 - (id)firstActiveConnection
 {
-  v2 = [(AVCaptureOutput *)self liveConnections];
+  liveConnections = [(AVCaptureOutput *)self liveConnections];
 
-  return [v2 firstObject];
+  return [liveConnections firstObject];
 }
 
-- (id)_figCaptureStillImageSettingsForConnection:(id)a3
+- (id)_figCaptureStillImageSettingsForConnection:(id)connection
 {
   atomic_fetch_add_explicit(&_figCaptureStillImageSettingsForConnection__gSettingsID, 1uLL, memory_order_relaxed);
   v5 = objc_alloc(MEMORY[0x1E698F7F8]);
   v6 = [v5 initWithSettingsID:_figCaptureStillImageSettingsForConnection__gSettingsID];
-  v7 = [a3 sourceDevice];
-  v8 = [v7 activeFormat];
-  v9 = v8;
-  if (self->_internal->highResStillEnabled && ([v8 supportsHighResolutionStillImageOutput] & 1) != 0)
+  sourceDevice = [connection sourceDevice];
+  activeFormat = [sourceDevice activeFormat];
+  v9 = activeFormat;
+  if (self->_internal->highResStillEnabled && ([activeFormat supportsHighResolutionStillImageOutput] & 1) != 0)
   {
     v10 = 0;
     Dimensions = 0;
@@ -477,7 +477,7 @@ LABEL_5:
     v10 = HIDWORD(*&Dimensions);
   }
 
-  [objc_msgSend(objc_msgSend(objc_msgSend(a3 "sourceDevice")];
+  [objc_msgSend(objc_msgSend(objc_msgSend(connection "sourceDevice")];
   IsSensorMountedInPortraitOrientation = AVCaptureIsSensorMountedInPortraitOrientation(v13);
   if (IsSensorMountedInPortraitOrientation)
   {
@@ -501,8 +501,8 @@ LABEL_5:
   [v6 setOutputWidth:Dimensions];
   [v6 setOutputHeight:v10];
   [v6 setOriginalOutputDimensions:{objc_msgSend(v6, "outputDimensions")}];
-  [v6 setOutputMirroring:{objc_msgSend(a3, "isVideoMirrored")}];
-  [a3 videoRotationAngle];
+  [v6 setOutputMirroring:{objc_msgSend(connection, "isVideoMirrored")}];
+  [connection videoRotationAngle];
   [v6 setOutputRotationDegrees:v17];
   v18 = 0;
   internal = self->_internal;
@@ -517,24 +517,24 @@ LABEL_5:
     v20 = self->_internal;
     width = v20->previewImageSize.width;
     height = v20->previewImageSize.height;
-    v23 = [v6 outputWidth];
-    v24 = [v6 outputHeight];
+    outputWidth = [v6 outputWidth];
+    outputHeight = [v6 outputHeight];
     if (v12)
     {
-      v25 = [v9 highResolutionStillImageDimensions];
+      highResolutionStillImageDimensions = [v9 highResolutionStillImageDimensions];
       if (IsSensorMountedInPortraitOrientation)
       {
-        v25 = AVCaptureFlippedDimensions(v25);
+        highResolutionStillImageDimensions = AVCaptureFlippedDimensions(highResolutionStillImageDimensions);
       }
 
-      v26 = v25;
-      v27 = SHIDWORD(v25);
+      v26 = highResolutionStillImageDimensions;
+      v27 = SHIDWORD(highResolutionStillImageDimensions);
     }
 
     else
     {
-      v26 = v23;
-      v27 = v24;
+      v26 = outputWidth;
+      v27 = outputHeight;
     }
 
     if (v26 <= width && v27 <= height)
@@ -576,11 +576,11 @@ LABEL_5:
   }
 
   [v6 setNoiseReductionEnabled:self->_internal->noiseReductionEnabled];
-  [a3 videoScaleAndCropFactor];
+  [connection videoScaleAndCropFactor];
   *&v35 = v35;
   [v6 setScaleFactor:v35];
   [v6 setShutterSound:self->_internal->shutterSoundID];
-  [v6 setFlashMode:{objc_msgSend(v7, "flashMode")}];
+  [v6 setFlashMode:{objc_msgSend(sourceDevice, "flashMode")}];
   [v6 setWideColorMode:2];
   if (self->_internal->bravoImageFusionSupported)
   {
@@ -599,53 +599,53 @@ LABEL_5:
 
   [v6 setQualityPrioritization:v36];
   [v6 setClientQualityPrioritization:{objc_msgSend(v6, "qualityPrioritization")}];
-  v37 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDeviceInput];
-  if ([v7 isCenterStageActive])
+  sourceDeviceInput = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDeviceInput];
+  if ([sourceDevice isCenterStageActive])
   {
-    v38 = [v37 isCenterStageAllowed];
+    isCenterStageAllowed = [sourceDeviceInput isCenterStageAllowed];
   }
 
   else
   {
-    v38 = 0;
+    isCenterStageAllowed = 0;
   }
 
-  if ([v7 isBackgroundBlurActive])
+  if ([sourceDevice isBackgroundBlurActive])
   {
-    v39 = [v37 isBackgroundBlurAllowed];
+    isBackgroundBlurAllowed = [sourceDeviceInput isBackgroundBlurAllowed];
   }
 
   else
   {
-    v39 = 0;
+    isBackgroundBlurAllowed = 0;
   }
 
-  if ([v7 isStudioLightingActive])
+  if ([sourceDevice isStudioLightingActive])
   {
-    v40 = [v37 isStudioLightingAllowed];
+    isStudioLightingAllowed = [sourceDeviceInput isStudioLightingAllowed];
   }
 
   else
   {
-    v40 = 0;
+    isStudioLightingAllowed = 0;
   }
 
-  v41 = [v7 isBackgroundReplacementActive];
-  if (v41)
+  isBackgroundReplacementActive = [sourceDevice isBackgroundReplacementActive];
+  if (isBackgroundReplacementActive)
   {
-    v41 = [v37 isBackgroundReplacementAllowed];
+    isBackgroundReplacementActive = [sourceDeviceInput isBackgroundReplacementAllowed];
   }
 
-  if (((v38 | v39 | v40) & 1) != 0 || v41)
+  if (((isCenterStageAllowed | isBackgroundBlurAllowed | isStudioLightingAllowed) & 1) != 0 || isBackgroundReplacementActive)
   {
     [v6 setQualityPrioritization:1];
   }
 
   if ([v9 videoHDRFlavor] == 2 && (objc_msgSend(v6, "qualityPrioritization") > 1 || objc_msgSend(v6, "HDRMode")))
   {
-    if ([v7 isVideoHDREnabled])
+    if ([sourceDevice isVideoHDREnabled])
     {
-      if ([v7 isVideoHDRSuspended])
+      if ([sourceDevice isVideoHDRSuspended])
       {
         v43 = 0;
       }
@@ -772,9 +772,9 @@ uint64_t __93__AVCaptureStillImageOutput_captureStillImageAsynchronouslyFromConn
   return result;
 }
 
-- (void)captureStillImageSurfaceAsynchronouslyFromConnection:(id)a3 completionHandler:(id)a4
+- (void)captureStillImageSurfaceAsynchronouslyFromConnection:(id)connection completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     if ([-[AVCaptureOutput liveConnections](self "liveConnections")])
     {
@@ -798,8 +798,8 @@ uint64_t __93__AVCaptureStillImageOutput_captureStillImageAsynchronouslyFromConn
       v13[2] = __100__AVCaptureStillImageOutput_captureStillImageSurfaceAsynchronouslyFromConnection_completionHandler___block_invoke;
       v13[3] = &unk_1E786F770;
       v13[4] = self;
-      v13[5] = a3;
-      v13[6] = a4;
+      v13[5] = connection;
+      v13[6] = handler;
       v13[7] = buf;
       [(AVCaptureOutput *)self performFigCaptureSessionOperationSafelyUsingBlock:v13];
       if ((v15[24] & 1) == 0)
@@ -1175,9 +1175,9 @@ uint64_t __118__AVCaptureStillImageOutput_captureStillImageBracketAsynchronously
   return result;
 }
 
-- (BOOL)_bracketedSettingsAreValid:(id)a3 fromConnection:(id)a4 exceptionReason:(id *)a5
+- (BOOL)_bracketedSettingsAreValid:(id)valid fromConnection:(id)connection exceptionReason:(id *)reason
 {
-  v9 = [a3 count];
+  v9 = [valid count];
   if (v9 > [(AVCaptureStillImageOutput *)self maxBracketedCaptureStillImageCount])
   {
     LOBYTE(v10) = 0;
@@ -1185,14 +1185,14 @@ uint64_t __118__AVCaptureStillImageOutput_captureStillImageBracketAsynchronously
     goto LABEL_62;
   }
 
-  v10 = [a3 count];
+  v10 = [valid count];
   if (!v10)
   {
     v11 = @"Bracketed capture settings array contains 0 elements";
     goto LABEL_62;
   }
 
-  [a3 objectAtIndexedSubscript:0];
+  [valid objectAtIndexedSubscript:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1206,12 +1206,12 @@ uint64_t __118__AVCaptureStillImageOutput_captureStillImageBracketAsynchronously
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v58 objects:v57 count:16];
+  v13 = [valid countByEnumeratingWithState:&v58 objects:v57 count:16];
   if (!v13)
   {
 LABEL_13:
-    v17 = [a4 sourceDevice];
-    v18 = [v17 activeFormat];
+    sourceDevice = [connection sourceDevice];
+    activeFormat = [sourceDevice activeFormat];
     if (v12 != objc_opt_class())
     {
       if (v12 == objc_opt_class())
@@ -1220,7 +1220,7 @@ LABEL_13:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v31 = [a3 countByEnumeratingWithState:&v46 objects:v45 count:16];
+        v31 = [valid countByEnumeratingWithState:&v46 objects:v45 count:16];
         if (v31)
         {
           v32 = v31;
@@ -1231,7 +1231,7 @@ LABEL_13:
             {
               if (*v47 != v33)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(valid);
               }
 
               v35 = *(*(&v46 + 1) + 8 * i);
@@ -1240,8 +1240,8 @@ LABEL_13:
               {
                 [v35 exposureTargetBias];
                 v38 = v37;
-                [v17 minExposureTargetBias];
-                if (v38 < v39 || ([v35 exposureTargetBias], v41 = v40, objc_msgSend(v17, "maxExposureTargetBias"), v41 > v42))
+                [sourceDevice minExposureTargetBias];
+                if (v38 < v39 || ([v35 exposureTargetBias], v41 = v40, objc_msgSend(sourceDevice, "maxExposureTargetBias"), v41 > v42))
                 {
                   v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ contains an out of range exposure target bias. Use AVCaptureDevice -minExposureTargetBias / -maxExposureTargetBias", v35];
                   goto LABEL_60;
@@ -1249,7 +1249,7 @@ LABEL_13:
               }
             }
 
-            v32 = [a3 countByEnumeratingWithState:&v46 objects:v45 count:16];
+            v32 = [valid countByEnumeratingWithState:&v46 objects:v45 count:16];
             if (v32)
             {
               continue;
@@ -1267,7 +1267,7 @@ LABEL_13:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v19 = [a3 countByEnumeratingWithState:&v53 objects:v52 count:16];
+    v19 = [valid countByEnumeratingWithState:&v53 objects:v52 count:16];
     if (!v19)
     {
       goto LABEL_44;
@@ -1281,7 +1281,7 @@ LABEL_20:
     {
       if (*v54 != v21)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(valid);
       }
 
       v23 = *(*(&v53 + 1) + 8 * v22);
@@ -1290,8 +1290,8 @@ LABEL_20:
       {
         [v23 ISO];
         v26 = v25;
-        [v18 minISO];
-        if (v26 < v27 || ([v23 ISO], v29 = v28, objc_msgSend(v18, "maxISO"), v29 > v30))
+        [activeFormat minISO];
+        if (v26 < v27 || ([v23 ISO], v29 = v28, objc_msgSend(activeFormat, "maxISO"), v29 > v30))
         {
           v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ contains an out of range ISO value. Use AVCaptureDeviceFormat -minISO / -maxISO", v23];
 LABEL_60:
@@ -1319,14 +1319,14 @@ LABEL_60:
 LABEL_42:
       if (v20 == ++v22)
       {
-        v20 = [a3 countByEnumeratingWithState:&v53 objects:v52 count:16];
+        v20 = [valid countByEnumeratingWithState:&v53 objects:v52 count:16];
         if (v20)
         {
           goto LABEL_20;
         }
 
 LABEL_44:
-        if (([v17 isExposureModeSupported:3] & 1) == 0)
+        if (([sourceDevice isExposureModeSupported:3] & 1) == 0)
         {
           LOBYTE(v10) = 0;
           v11 = @"Source device does not support manual exposure bracketed capture. Use AVCaptureDevice -isExposureModeSupported: with AVCaptureExposureModeCustom";
@@ -1343,10 +1343,10 @@ LABEL_15:
     if (v23)
     {
       [v23 exposureDuration];
-      if (v18)
+      if (activeFormat)
       {
 LABEL_32:
-        [v18 minExposureDuration];
+        [activeFormat minExposureDuration];
         goto LABEL_35;
       }
     }
@@ -1354,7 +1354,7 @@ LABEL_32:
     else
     {
       memset(&time1, 0, sizeof(time1));
-      if (v18)
+      if (activeFormat)
       {
         goto LABEL_32;
       }
@@ -1370,10 +1370,10 @@ LABEL_35:
     if (v23)
     {
       [v23 exposureDuration];
-      if (v18)
+      if (activeFormat)
       {
 LABEL_38:
-        [v18 maxExposureDuration];
+        [activeFormat maxExposureDuration];
         goto LABEL_41;
       }
     }
@@ -1381,7 +1381,7 @@ LABEL_38:
     else
     {
       memset(&time1, 0, sizeof(time1));
-      if (v18)
+      if (activeFormat)
       {
         goto LABEL_38;
       }
@@ -1408,7 +1408,7 @@ LABEL_7:
   {
     if (*v59 != v15)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(valid);
     }
 
     if (objc_opt_class() != v12)
@@ -1418,7 +1418,7 @@ LABEL_7:
 
     if (v14 == ++v16)
     {
-      v14 = [a3 countByEnumeratingWithState:&v58 objects:v57 count:16];
+      v14 = [valid countByEnumeratingWithState:&v58 objects:v57 count:16];
       if (!v14)
       {
         goto LABEL_13;
@@ -1431,23 +1431,23 @@ LABEL_7:
 LABEL_61:
   LOBYTE(v10) = 0;
 LABEL_62:
-  if (a5)
+  if (reason)
   {
-    *a5 = v11;
+    *reason = v11;
   }
 
   return v10;
 }
 
-- (id)_figCaptureStillImageSettingsForBracketedCaptureSettingsArray:(id)a3 fromConnection:(id)a4
+- (id)_figCaptureStillImageSettingsForBracketedCaptureSettingsArray:(id)array fromConnection:(id)connection
 {
-  v6 = [(AVCaptureStillImageOutput *)self _figCaptureStillImageSettingsForConnection:a4];
+  v6 = [(AVCaptureStillImageOutput *)self _figCaptureStillImageSettingsForConnection:connection];
   [v6 setFlashMode:0];
   [v6 setHDRMode:0];
   v7 = 1;
   [v6 setQualityPrioritization:1];
   [v6 setLensStabilizationDuringBracketEnabled:{-[AVCaptureStillImageOutput isLensStabilizationDuringBracketedCaptureEnabled](self, "isLensStabilizationDuringBracketedCaptureEnabled")}];
-  [a3 firstObject];
+  [array firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -1457,7 +1457,7 @@ LABEL_62:
 
   else
   {
-    [a3 firstObject];
+    [array firstObject];
     objc_opt_class();
     v24 = objc_opt_isKindOfClass();
     if (v24)
@@ -1471,12 +1471,12 @@ LABEL_62:
     }
   }
 
-  [v6 setBracketType:v7 imageCount:{objc_msgSend(a3, "count")}];
+  [v6 setBracketType:v7 imageCount:{objc_msgSend(array, "count")}];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  v9 = [array countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1490,14 +1490,14 @@ LABEL_62:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v15 = *(*(&v28 + 1) + 8 * v13);
         if (isKindOfClass)
         {
-          v16 = a3;
-          v17 = [v6 exposureDurations];
+          arrayCopy = array;
+          exposureDurations = [v6 exposureDurations];
           if (v15)
           {
             [v15 exposureDuration];
@@ -1509,13 +1509,13 @@ LABEL_62:
             v26 = 0;
           }
 
-          v21 = v17 + v14;
+          v21 = exposureDurations + v14;
           *(v21 + 16) = v26;
           *v21 = v25;
           [v15 ISO];
           v19 = v22;
-          v20 = [v6 ISOs];
-          a3 = v16;
+          iSOs = [v6 ISOs];
+          array = arrayCopy;
         }
 
         else
@@ -1527,10 +1527,10 @@ LABEL_62:
 
           [*(*(&v28 + 1) + 8 * v13) exposureTargetBias];
           v19 = v18;
-          v20 = [v6 exposureTargetBiases];
+          iSOs = [v6 exposureTargetBiases];
         }
 
-        *(v20 + 4 * v11) = v19;
+        *(iSOs + 4 * v11) = v19;
 LABEL_19:
         ++v11;
         ++v13;
@@ -1538,7 +1538,7 @@ LABEL_19:
       }
 
       while (v10 != v13);
-      v10 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v10 = [array countByEnumeratingWithState:&v28 objects:v27 count:16];
     }
 
     while (v10);
@@ -1547,49 +1547,49 @@ LABEL_19:
   return v6;
 }
 
-- (void)_updateMaxBracketedStillImageCaptureCountForSourceFormat:(id)a3
+- (void)_updateMaxBracketedStillImageCaptureCountForSourceFormat:(id)format
 {
-  if (a3)
+  if (format)
   {
-    v4 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDeviceInput];
-    v5 = [v4 device];
-    if ([v5 isCenterStageActive])
+    sourceDeviceInput = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDeviceInput];
+    device = [sourceDeviceInput device];
+    if ([device isCenterStageActive])
     {
-      v6 = [v4 isCenterStageAllowed];
+      isCenterStageAllowed = [sourceDeviceInput isCenterStageAllowed];
     }
 
     else
     {
-      v6 = 0;
+      isCenterStageAllowed = 0;
     }
 
-    if ([v5 isBackgroundBlurActive])
+    if ([device isBackgroundBlurActive])
     {
-      v8 = [v4 isBackgroundBlurAllowed];
+      isBackgroundBlurAllowed = [sourceDeviceInput isBackgroundBlurAllowed];
     }
 
     else
     {
-      v8 = 0;
+      isBackgroundBlurAllowed = 0;
     }
 
-    if ([v5 isStudioLightingActive])
+    if ([device isStudioLightingActive])
     {
-      v9 = [v4 isStudioLightingAllowed];
+      isStudioLightingAllowed = [sourceDeviceInput isStudioLightingAllowed];
     }
 
     else
     {
-      v9 = 0;
+      isStudioLightingAllowed = 0;
     }
 
-    v10 = [v5 isBackgroundReplacementActive];
-    if (v10)
+    isBackgroundReplacementActive = [device isBackgroundReplacementActive];
+    if (isBackgroundReplacementActive)
     {
-      LOBYTE(v10) = [v4 isBackgroundReplacementAllowed];
+      LOBYTE(isBackgroundReplacementActive) = [sourceDeviceInput isBackgroundReplacementAllowed];
     }
 
-    if (((v6 | v8) | (v9 | v10)))
+    if (((isCenterStageAllowed | isBackgroundBlurAllowed) | (isStudioLightingAllowed | isBackgroundReplacementActive)))
     {
       v7 = 0;
     }
@@ -1617,33 +1617,33 @@ LABEL_19:
   objc_sync_exit(internal);
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE70] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE60] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE68] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE58] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE70] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE60] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE68] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE58] object:session flags:0];
   v7.receiver = self;
   v7.super_class = AVCaptureStillImageOutput;
-  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE70] object:a3];
-  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE60] object:a3];
-  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE68] object:a3];
-  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE58] object:a3];
+  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE70] object:session];
+  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE60] object:session];
+  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE68] object:session];
+  [v5 removeListenerWithWeakReference:weakReference callback:sioNotificationHandler name:*MEMORY[0x1E698FE58] object:session];
   v7.receiver = self;
   v7.super_class = AVCaptureStillImageOutput;
-  [(AVCaptureOutput *)&v7 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)safelyHandleServerConnectionDeathForFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   internal = self->_internal;
   objc_sync_enter(internal);
@@ -1681,17 +1681,17 @@ LABEL_19:
   objc_sync_exit(internal);
 }
 
-- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)a3
+- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDevice];
+  enabledCopy = enabled;
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E6987608]] sourceDevice];
 
-  [v4 _setStillImageStabilizationAutomaticallyEnabled:v3];
+  [sourceDevice _setStillImageStabilizationAutomaticallyEnabled:enabledCopy];
 }
 
-- (void)_updateLensStabilizationDuringBracketedCaptureSupportedForDevice:(id)a3
+- (void)_updateLensStabilizationDuringBracketedCaptureSupportedForDevice:(id)device
 {
-  if ([a3 isLensStabilizationSupported])
+  if ([device isLensStabilizationSupported])
   {
     internal = self->_internal;
     objc_sync_enter(internal);
@@ -1719,10 +1719,10 @@ LABEL_19:
   }
 }
 
-- (void)_updateCameraSensorOrientationCompensationSupportedForDevice:(id)a3
+- (void)_updateCameraSensorOrientationCompensationSupportedForDevice:(id)device
 {
-  v4 = [a3 figCaptureSourceAttributes];
-  v5 = [objc_msgSend(v4 objectForKeyedSubscript:{*MEMORY[0x1E69900E8]), "intValue"}];
+  figCaptureSourceAttributes = [device figCaptureSourceAttributes];
+  v5 = [objc_msgSend(figCaptureSourceAttributes objectForKeyedSubscript:{*MEMORY[0x1E69900E8]), "intValue"}];
   v6 = v5 != 0;
   internal = self->_internal;
   cameraSensorOrientationCompensationSupported = internal->cameraSensorOrientationCompensationSupported;
@@ -1789,20 +1789,20 @@ LABEL_19:
   }
 }
 
-- (CGSize)outputSizeForSourceFormat:(id)a3
+- (CGSize)outputSizeForSourceFormat:(id)format
 {
   if ([(AVCaptureStillImageOutput *)self isHighResolutionStillImageOutputEnabled])
   {
-    v5 = [a3 highResolutionStillImageDimensions];
-    v6 = v5;
-    v7 = SHIDWORD(v5);
+    highResolutionStillImageDimensions = [format highResolutionStillImageDimensions];
+    v6 = highResolutionStillImageDimensions;
+    v7 = SHIDWORD(highResolutionStillImageDimensions);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVCaptureStillImageOutput;
-    [(AVCaptureOutput *)&v8 outputSizeForSourceFormat:a3];
+    [(AVCaptureOutput *)&v8 outputSizeForSourceFormat:format];
   }
 
   result.height = v7;
@@ -1810,10 +1810,10 @@ LABEL_19:
   return result;
 }
 
-- (void)handleNotificationForRequest:(id)a3 withPayload:(id)a4 imageIsEV0:(BOOL *)a5
+- (void)handleNotificationForRequest:(id)request withPayload:(id)payload imageIsEV0:(BOOL *)v0
 {
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FC40]), "intValue"}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FC38]), "intValue"}];
+  v8 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FC40]), "intValue"}];
+  [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FC38]), "intValue"}];
   if (v8)
   {
     v9 = AVLocalizedErrorWithUnderlyingOSStatus();
@@ -1824,15 +1824,15 @@ LABEL_19:
     v9 = 0;
   }
 
-  if ([a3 sbufCompletionBlock])
+  if ([request sbufCompletionBlock])
   {
-    v10 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FCD0]];
+    v10 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FCD0]];
     if (v10)
     {
       v11 = [objc_msgSend(CMGetAttachment(v10 *MEMORY[0x1E696D9B0]];
-      if (a5)
+      if (v0)
       {
-        *a5 = v11 == 4;
+        *v0 = v11 == 4;
       }
     }
 
@@ -1841,27 +1841,27 @@ LABEL_19:
       AVLocalizedError();
     }
 
-    v20 = *([a3 sbufCompletionBlock] + 16);
+    v20 = *([request sbufCompletionBlock] + 16);
 
     v20();
   }
 
-  else if ([a3 iosurfaceCompletionBlock])
+  else if ([request iosurfaceCompletionBlock])
   {
-    v12 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FCF8]];
-    v13 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FD00]), "unsignedIntegerValue"}];
-    [a4 objectForKeyedSubscript:*MEMORY[0x1E698FCB0]];
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCB8]), "unsignedIntegerValue"}];
-    v14 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FC70]];
+    v12 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FCF8]];
+    v13 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FD00]), "unsignedIntegerValue"}];
+    [payload objectForKeyedSubscript:*MEMORY[0x1E698FCB0]];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCB8]), "unsignedIntegerValue"}];
+    v14 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FC70]];
     if (v14)
     {
       v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
       if (v15)
       {
         v16 = [objc_msgSend(v15 objectForKeyedSubscript:{*MEMORY[0x1E696D988]), "intValue"}];
-        if (a5)
+        if (v0)
         {
-          *a5 = v16 == 4;
+          *v0 = v16 == 4;
         }
       }
     }
@@ -1881,54 +1881,54 @@ LABEL_19:
       AVLocalizedError();
     }
 
-    v19 = *([a3 iosurfaceCompletionBlock] + 16);
+    v19 = *([request iosurfaceCompletionBlock] + 16);
 
     v19();
   }
 
-  else if ([a3 bracketedCaptureCompletionBlock])
+  else if ([request bracketedCaptureCompletionBlock])
   {
-    v21 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FCD0]];
+    v21 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FCD0]];
     if (!(v21 | v9))
     {
       v9 = AVLocalizedError();
     }
 
-    v22 = [a3 bracketedCaptureCompletionBlock];
-    v23 = [a3 bracketedSettings];
-    v24 = *(v22 + 16);
+    bracketedCaptureCompletionBlock = [request bracketedCaptureCompletionBlock];
+    bracketedSettings = [request bracketedSettings];
+    v24 = *(bracketedCaptureCompletionBlock + 16);
 
-    v24(v22, v21, v23, v9);
+    v24(bracketedCaptureCompletionBlock, v21, bracketedSettings, v9);
   }
 }
 
-- (void)handleNotificationForPrepareRequest:(id)a3 withPayload:(id)a4
+- (void)handleNotificationForPrepareRequest:(id)request withPayload:(id)payload
 {
-  v6 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FC40]), "intValue"}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FC38]), "intValue"}];
+  v6 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FC40]), "intValue"}];
+  [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FC38]), "intValue"}];
   if (v6)
   {
     AVLocalizedErrorWithUnderlyingOSStatus();
   }
 
-  if ([a3 completionBlock])
+  if ([request completionBlock])
   {
-    v7 = *([a3 completionBlock] + 16);
+    v7 = *([request completionBlock] + 16);
 
     v7();
   }
 }
 
-- (void)handleNotification:(id)a3 payload:(id)a4
+- (void)handleNotification:(id)notification payload:(id)payload
 {
-  if (![objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
+  if (![objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
   {
     return;
   }
 
-  if (![a3 isEqualToString:*MEMORY[0x1E698FE70]])
+  if (![notification isEqualToString:*MEMORY[0x1E698FE70]])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE60]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE60]])
     {
       [(AVCaptureStillImageOutput *)self willChangeValueForKey:@"capturingStillImage"];
       self->_internal->isCapturingPhoto = 0;
@@ -1943,9 +1943,9 @@ LABEL_19:
       return;
     }
 
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE68]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE68]])
     {
-      v17 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
+      v17 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
       internal = self->_internal;
       objc_sync_enter(internal);
       if ([(NSMutableArray *)self->_internal->stillImageRequests count])
@@ -2001,7 +2001,7 @@ LABEL_28:
           }
 
           v45 = 0;
-          [(AVCaptureStillImageOutput *)self handleNotificationForRequest:v34 withPayload:a4 imageIsEV0:&v45];
+          [(AVCaptureStillImageOutput *)self handleNotificationForRequest:v34 withPayload:payload imageIsEV0:&v45];
           if (v45 == 1)
           {
             v35 = self->_internal;
@@ -2022,12 +2022,12 @@ LABEL_34:
 
     else
     {
-      if (![a3 isEqualToString:*MEMORY[0x1E698FE58]])
+      if (![notification isEqualToString:*MEMORY[0x1E698FE58]])
       {
         return;
       }
 
-      v26 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
+      v26 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
       obja = self->_internal;
       objc_sync_enter(obja);
       v41 = 0u;
@@ -2083,7 +2083,7 @@ LABEL_38:
           return;
         }
 
-        [(AVCaptureStillImageOutput *)self handleNotificationForPrepareRequest:v34 withPayload:a4];
+        [(AVCaptureStillImageOutput *)self handleNotificationForPrepareRequest:v34 withPayload:payload];
         goto LABEL_51;
       }
 
@@ -2095,7 +2095,7 @@ LABEL_44:
     return;
   }
 
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
+  v7 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCE0]), "longLongValue"}];
   v8 = self->_internal;
   objc_sync_enter(v8);
   v54 = 0u;
@@ -2119,11 +2119,11 @@ LABEL_44:
         v13 = *(*(&v52 + 1) + 8 * i);
         if ([v13 settingsID] == v7)
         {
-          v14 = [v13 shutterSoundID];
+          shutterSoundID = [v13 shutterSoundID];
           objc_sync_exit(v8);
-          if (v14)
+          if (shutterSoundID)
           {
-            AVCaptureStillImageOutputPlayShutterSound(self, v14, 0);
+            AVCaptureStillImageOutputPlayShutterSound(self, shutterSoundID, 0);
           }
 
           goto LABEL_20;
@@ -2143,7 +2143,7 @@ LABEL_44:
   objc_sync_exit(v8);
 LABEL_20:
   [(AVCaptureStillImageOutput *)self willChangeValueForKey:@"capturingStillImage"];
-  v15 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990018]];
+  v15 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990018]];
   if (v15)
   {
     v16 = v15;
@@ -2218,7 +2218,7 @@ LABEL_9:
         else
         {
           v8 = CFDataCreateWithBytesNoCopy(v7, dataPointerOut, totalLengthOut, *MEMORY[0x1E695E498]);
-          v9 = [a1 _copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:jpegSampleBuffer];
+          v9 = [self _copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:jpegSampleBuffer];
           EXIFJPEGData = CGImageCreateEXIFJPEGData();
           v11 = EXIFJPEGData;
           if (v9)
@@ -2267,14 +2267,14 @@ LABEL_9:
   return 0;
 }
 
-+ (id)jpegStillImageNSDataRepresentationForSurface:(__IOSurface *)a3 size:(unint64_t)a4 metadata:(id)a5
++ (id)jpegStillImageNSDataRepresentationForSurface:(__IOSurface *)surface size:(unint64_t)size metadata:(id)metadata
 {
-  if (a3 && a4)
+  if (surface && size)
   {
-    CFRetain(a3);
-    IOSurfaceLock(a3, 1u, 0);
-    BaseAddress = IOSurfaceGetBaseAddress(a3);
-    v8 = CFDataCreateWithBytesNoCopy(*MEMORY[0x1E695E480], BaseAddress, a4, *MEMORY[0x1E695E498]);
+    CFRetain(surface);
+    IOSurfaceLock(surface, 1u, 0);
+    BaseAddress = IOSurfaceGetBaseAddress(surface);
+    v8 = CFDataCreateWithBytesNoCopy(*MEMORY[0x1E695E480], BaseAddress, size, *MEMORY[0x1E695E498]);
     EXIFJPEGData = CGImageCreateEXIFJPEGData();
     v10 = EXIFJPEGData;
     if (v8)
@@ -2282,8 +2282,8 @@ LABEL_9:
       CFRelease(v8);
     }
 
-    IOSurfaceUnlock(a3, 1u, 0);
-    CFRelease(a3);
+    IOSurfaceUnlock(surface, 1u, 0);
+    CFRelease(surface);
   }
 
   else
@@ -2301,10 +2301,10 @@ LABEL_9:
   return EXIFJPEGData;
 }
 
-+ (__CFDictionary)_copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (__CFDictionary)_copyAttachmentsAndPropagateFaceRegionsToExifAuxDictionaryForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v3 = *MEMORY[0x1E695E480];
-  v4 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], a3, 1u);
+  v4 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], buffer, 1u);
   v5 = v4;
   if (v4)
   {

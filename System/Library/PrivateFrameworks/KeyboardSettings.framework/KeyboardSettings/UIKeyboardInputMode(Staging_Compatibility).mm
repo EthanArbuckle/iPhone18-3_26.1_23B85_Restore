@@ -9,13 +9,13 @@
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 extendedDisplayName];
+    return [self extendedDisplayName];
   }
 
   else
   {
 
-    return [a1 displayName];
+    return [self displayName];
   }
 }
 

@@ -16,18 +16,18 @@
 
 - (id)shortDescription
 {
-  v1 = [a1 allObjects];
-  v2 = [v1 shortDescription];
+  allObjects = [self allObjects];
+  shortDescription = [allObjects shortDescription];
 
-  return v2;
+  return shortDescription;
 }
 
 - (id)privateDescription
 {
-  v1 = [a1 allObjects];
-  v2 = [v1 privateDescription];
+  allObjects = [self allObjects];
+  privateDescription = [allObjects privateDescription];
 
-  return v2;
+  return privateDescription;
 }
 
 - (void)hmf_enumerateWithAutoreleasePoolUsingBlock:()HMFoundation
@@ -39,7 +39,7 @@
   v6[3] = &unk_2786E7F58;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 @end

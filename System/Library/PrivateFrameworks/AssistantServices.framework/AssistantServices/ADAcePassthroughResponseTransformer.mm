@@ -1,27 +1,27 @@
 @interface ADAcePassthroughResponseTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
 @end
 
 @implementation ADAcePassthroughResponseTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v8)
+    if (errorCopy)
     {
-      [v9 ad_aceResponseCommandRepresentationWithErrorCode:objc_msgSend(v8 reason:{"code"), 0}];
+      [commandCopy ad_aceResponseCommandRepresentationWithErrorCode:objc_msgSend(errorCopy reason:{"code"), 0}];
     }
 
     else
     {
-      [v7 replyCommand];
+      [responseCopy replyCommand];
     }
-    v10 = ;
+    ad_aceResponseCommandGenericErrorRepresentation = ;
   }
 
   else
@@ -32,14 +32,14 @@
       v14 = 136315394;
       v15 = "[ADAcePassthroughResponseTransformer aceCommandForSiriResponse:responseError:forRequestCommand:]";
       v16 = 2112;
-      v17 = v7;
+      v17 = responseCopy;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Unexpected response %@", &v14, 0x16u);
     }
 
-    v10 = [v9 ad_aceResponseCommandGenericErrorRepresentation];
+    ad_aceResponseCommandGenericErrorRepresentation = [commandCopy ad_aceResponseCommandGenericErrorRepresentation];
   }
 
-  v12 = v10;
+  v12 = ad_aceResponseCommandGenericErrorRepresentation;
 
   return v12;
 }

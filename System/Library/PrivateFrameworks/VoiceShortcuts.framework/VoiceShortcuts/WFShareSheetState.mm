@@ -1,41 +1,41 @@
 @interface WFShareSheetState
 + (NSDictionary)shareSheetShortcuts;
 + (id)storageURL;
-+ (void)setShareSheetShortcuts:(id)a3;
++ (void)setShareSheetShortcuts:(id)shortcuts;
 @end
 
 @implementation WFShareSheetState
 
-+ (void)setShareSheetShortcuts:(id)a3
++ (void)setShareSheetShortcuts:(id)shortcuts
 {
-  v6 = a3;
-  if (v6)
+  shortcutsCopy = shortcuts;
+  if (shortcutsCopy)
   {
-    v4 = [a1 storageURL];
-    [v6 writeToURL:v4 error:0];
+    storageURL = [self storageURL];
+    [shortcutsCopy writeToURL:storageURL error:0];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [a1 storageURL];
-    [v4 removeItemAtURL:v5 error:0];
+    storageURL = [MEMORY[0x277CCAA00] defaultManager];
+    storageURL2 = [self storageURL];
+    [storageURL removeItemAtURL:storageURL2 error:0];
   }
 }
 
 + (NSDictionary)shareSheetShortcuts
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [a1 storageURL];
-  v4 = [v2 dictionaryWithContentsOfURL:v3];
+  storageURL = [self storageURL];
+  v4 = [v2 dictionaryWithContentsOfURL:storageURL];
 
   return v4;
 }
 
 + (id)storageURL
 {
-  v2 = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ShareSheetState.plist" isDirectory:0];
+  wf_shortcutsDirectoryURL = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
+  v3 = [wf_shortcutsDirectoryURL URLByAppendingPathComponent:@"ShareSheetState.plist" isDirectory:0];
 
   return v3;
 }

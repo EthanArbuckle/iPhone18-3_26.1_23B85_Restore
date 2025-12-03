@@ -1,20 +1,20 @@
 @interface IMEmojiStickerChatItem
 - (NSString)emojiString;
-- (id)_initWithItem:(id)a3 sender:(id)a4 transferGUID:(id)a5 emojiSticker:(id)a6;
+- (id)_initWithItem:(id)item sender:(id)sender transferGUID:(id)d emojiSticker:(id)sticker;
 @end
 
 @implementation IMEmojiStickerChatItem
 
-- (id)_initWithItem:(id)a3 sender:(id)a4 transferGUID:(id)a5 emojiSticker:(id)a6
+- (id)_initWithItem:(id)item sender:(id)sender transferGUID:(id)d emojiSticker:(id)sticker
 {
-  v10 = a6;
+  stickerCopy = sticker;
   v15.receiver = self;
   v15.super_class = IMEmojiStickerChatItem;
-  v11 = [(IMAssociatedStickerChatItem *)&v15 _initWithItem:a3 sender:a4 transferGUID:a5];
+  v11 = [(IMAssociatedStickerChatItem *)&v15 _initWithItem:item sender:sender transferGUID:d];
   v13 = v11;
   if (v11)
   {
-    objc_msgSend_setEmojiSticker_(v11, v12, v10);
+    objc_msgSend_setEmojiSticker_(v11, v12, stickerCopy);
   }
 
   return v13;

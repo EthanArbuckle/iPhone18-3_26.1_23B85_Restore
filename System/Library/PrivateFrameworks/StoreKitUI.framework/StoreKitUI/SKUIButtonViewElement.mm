@@ -1,12 +1,12 @@
 @interface SKUIButtonViewElement
 - (BOOL)isEnabled;
 - (IKViewElementStyle)buttonTitleStyle;
-- (SKUIButtonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIButtonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIBuyButtonDescriptor)buyButtonDescriptor;
 - (SKUIImageViewElement)additionalButtonImage;
 - (SKUIViewElementText)buttonText;
 - (id)_parseButtonText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)description;
 - (id)personalizationLibraryItems;
 - (unint64_t)elementType;
@@ -15,11 +15,11 @@
 
 @implementation SKUIButtonViewElement
 
-- (SKUIButtonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIButtonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -34,34 +34,34 @@
 
   v82.receiver = self;
   v82.super_class = SKUIButtonViewElement;
-  v20 = [(SKUIViewElement *)&v82 initWithDOMElement:v9 parent:v10 elementFactory:v11];
+  v20 = [(SKUIViewElement *)&v82 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v20)
   {
-    v70 = v11;
-    v71 = v10;
-    v21 = [v9 getAttribute:@"type"];
+    v70 = factoryCopy;
+    v71 = parentCopy;
+    v21 = [elementCopy getAttribute:@"type"];
     v20->_buttonViewType = SKUIButtonViewTypeForString(v21);
 
-    v22 = [v9 getAttribute:@"sub-type"];
+    v22 = [elementCopy getAttribute:@"sub-type"];
     v23 = [v22 isEqualToString:@"toggle"];
 
     v20->_buttonViewSubType = v23;
-    v24 = [v9 getAttribute:@"size-variant"];
+    v24 = [elementCopy getAttribute:@"size-variant"];
     sizeVariant = v20->_sizeVariant;
     v20->_sizeVariant = v24;
 
-    v26 = [v9 getAttribute:@"confirm-text"];
+    v26 = [elementCopy getAttribute:@"confirm-text"];
     confirmationText = v20->_confirmationText;
     v20->_confirmationText = v26;
 
-    v28 = [v9 getAttribute:@"data-content-id"];
+    v28 = [elementCopy getAttribute:@"data-content-id"];
     v20->_itemIdentifier = [v28 longLongValue];
 
     v29 = [[SKUIStoreIdentifier alloc] initWithLongLong:v20->_itemIdentifier];
     storeIdentifier = v20->_storeIdentifier;
     v20->_storeIdentifier = v29;
 
-    objc_storeStrong(&v20->_xml, a3);
+    objc_storeStrong(&v20->_xml, element);
     v78 = 0;
     v79 = &v78;
     v80 = 0x2020000000;
@@ -74,18 +74,18 @@
     [(SKUIViewElement *)v20 enumerateChildrenUsingBlock:v77];
     if ((v79[3] & 1) == 0)
     {
-      v31 = [(SKUIButtonViewElement *)v20 _parseButtonText];
+      _parseButtonText = [(SKUIButtonViewElement *)v20 _parseButtonText];
       buttonText = v20->_buttonText;
-      v20->_buttonText = v31;
+      v20->_buttonText = _parseButtonText;
     }
 
-    v74 = [v9 getAttribute:@"data-feed-url"];
+    v74 = [elementCopy getAttribute:@"data-feed-url"];
     if ([v74 length])
     {
       [(SKUIStoreIdentifier *)v20->_storeIdentifier setPodcastFeedURLIdentifier:v74];
     }
 
-    v33 = [v9 getAttribute:@"bundle-id"];
+    v33 = [elementCopy getAttribute:@"bundle-id"];
     bundleIdentifier = v20->_bundleIdentifier;
     v20->_bundleIdentifier = v33;
 
@@ -94,19 +94,19 @@
       [(SKUIStoreIdentifier *)v20->_storeIdentifier setBundleIdentifier:v20->_bundleIdentifier];
     }
 
-    v35 = [v9 getAttribute:@"selected"];
+    v35 = [elementCopy getAttribute:@"selected"];
     v20->_selected = [v35 BOOLValue];
 
-    v72 = [v9 getAttribute:@"badge"];
+    v72 = [elementCopy getAttribute:@"badge"];
     if (v72)
     {
       v36 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v72];
-      v37 = [v36 host];
+      host = [v36 host];
       badgeResourceName = v20->_badgeResourceName;
-      v20->_badgeResourceName = v37;
+      v20->_badgeResourceName = host;
     }
 
-    v39 = [v9 getAttribute:@"disabled"];
+    v39 = [elementCopy getAttribute:@"disabled"];
     v69 = v39;
     if ([v39 length])
     {
@@ -119,8 +119,8 @@
     }
 
     v20->_enabled = v40;
-    v41 = [v9 getAttribute:@"data-type"];
-    v75 = [v9 getAttribute:@"data-variant"];
+    v41 = [elementCopy getAttribute:@"data-type"];
+    v75 = [elementCopy getAttribute:@"data-variant"];
     if ([v41 length])
     {
       v76 = v41;
@@ -169,82 +169,82 @@ LABEL_26:
 LABEL_35:
       if (v20->_buttonViewType == 12)
       {
-        v45 = [v9 getAttribute:@"data-content-id"];
+        v45 = [elementCopy getAttribute:@"data-content-id"];
         playItemIdentifier = v20->_playItemIdentifier;
         v20->_playItemIdentifier = v45;
       }
 
       if (v20->_buttonViewSubType == 1)
       {
-        v47 = [v9 getAttribute:@"toggled-text"];
+        v47 = [elementCopy getAttribute:@"toggled-text"];
         toggledText = v20->_toggledText;
         v20->_toggledText = v47;
 
-        v49 = [v9 getAttribute:@"non-toggled-text"];
+        v49 = [elementCopy getAttribute:@"non-toggled-text"];
         nonToggledText = v20->_nonToggledText;
         v20->_nonToggledText = v49;
       }
 
-      v73 = [v9 getAttribute:@"big-hit-size"];
+      v73 = [elementCopy getAttribute:@"big-hit-size"];
       if ([v73 length] && (objc_opt_respondsToSelector() & 1) != 0)
       {
         [v73 floatValue];
         v20->_bigHitSize = v51;
       }
 
-      v52 = [v9 getAttribute:@"big-hit"];
+      v52 = [elementCopy getAttribute:@"big-hit"];
       if ([v52 length])
       {
-        v53 = [v52 lowercaseString];
-        v20->_bigHitButton = [v53 isEqualToString:@"true"];
+        lowercaseString = [v52 lowercaseString];
+        v20->_bigHitButton = [lowercaseString isEqualToString:@"true"];
       }
 
-      v54 = [v9 getAttribute:@"show-on-demand"];
+      v54 = [elementCopy getAttribute:@"show-on-demand"];
       if ([v54 length])
       {
-        v55 = [v54 lowercaseString];
-        v20->_showOnDemand = [v55 isEqualToString:@"true"];
+        lowercaseString2 = [v54 lowercaseString];
+        v20->_showOnDemand = [lowercaseString2 isEqualToString:@"true"];
       }
 
-      v56 = [v9 getAttribute:@"toggled"];
+      v56 = [elementCopy getAttribute:@"toggled"];
       if ([v56 length])
       {
-        v57 = [v56 lowercaseString];
-        v20->_toggled = [v57 isEqualToString:@"true"];
+        lowercaseString3 = [v56 lowercaseString];
+        v20->_toggled = [lowercaseString3 isEqualToString:@"true"];
       }
 
-      v58 = [v9 getAttribute:@"toggle-id"];
+      v58 = [elementCopy getAttribute:@"toggle-id"];
       if ([v58 length])
       {
-        v59 = [v9 getAttribute:@"toggle-id"];
+        v59 = [elementCopy getAttribute:@"toggle-id"];
         toggleItemIdentifier = v20->_toggleItemIdentifier;
         v20->_toggleItemIdentifier = v59;
       }
 
-      v61 = [v9 getAttribute:@"auto-increment-count"];
+      v61 = [elementCopy getAttribute:@"auto-increment-count"];
       if ([v61 length])
       {
-        v62 = [v61 lowercaseString];
-        v20->_autoIncrementCount = [v62 isEqualToString:@"true"];
+        lowercaseString4 = [v61 lowercaseString];
+        v20->_autoIncrementCount = [lowercaseString4 isEqualToString:@"true"];
       }
 
-      v63 = [v9 getAttribute:@"disabled-but-selectable"];
+      v63 = [elementCopy getAttribute:@"disabled-but-selectable"];
       if ([v63 length])
       {
-        v64 = [v63 lowercaseString];
-        v20->_disabledButSelectable = [v64 isEqualToString:@"true"];
+        lowercaseString5 = [v63 lowercaseString];
+        v20->_disabledButSelectable = [lowercaseString5 isEqualToString:@"true"];
       }
 
-      v65 = [v9 getAttribute:@"suppress-cloud-restore"];
+      v65 = [elementCopy getAttribute:@"suppress-cloud-restore"];
       if ([v65 length])
       {
-        v66 = [v65 lowercaseString];
-        v20->_suppressCloudRestore = [v66 isEqualToString:@"true"];
+        lowercaseString6 = [v65 lowercaseString];
+        v20->_suppressCloudRestore = [lowercaseString6 isEqualToString:@"true"];
       }
 
       _Block_object_dispose(&v78, 8);
-      v11 = v70;
-      v10 = v71;
+      factoryCopy = v70;
+      parentCopy = v71;
       goto LABEL_57;
     }
 
@@ -282,8 +282,8 @@ void __66__SKUIButtonViewElement_initWithDOMElement_parent_elementFactory___bloc
   xml = self->_xml;
   if (xml)
   {
-    v4 = [(SKUIButtonViewElement *)self appDocument];
-    SKUIViewElementTextDeadlockFix(xml, v4);
+    appDocument = [(SKUIButtonViewElement *)self appDocument];
+    SKUIViewElementTextDeadlockFix(xml, appDocument);
 
     v5 = self->_xml;
     self->_xml = 0;
@@ -344,9 +344,9 @@ void __46__SKUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   buttonText = self->_buttonText;
   if (!buttonText)
   {
-    v4 = [(SKUIButtonViewElement *)self _parseButtonText];
+    _parseButtonText = [(SKUIButtonViewElement *)self _parseButtonText];
     v5 = self->_buttonText;
-    self->_buttonText = v4;
+    self->_buttonText = _parseButtonText;
 
     buttonText = self->_buttonText;
   }
@@ -360,15 +360,15 @@ void __46__SKUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   v3 = v2;
   if (v2 && ([v2 elementName], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"span"), v4, (v5 & 1) == 0))
   {
-    v6 = [v3 style];
+    style = [v3 style];
   }
 
   else
   {
-    v6 = 0;
+    style = 0;
   }
 
-  return v6;
+  return style;
 }
 
 - (SKUIBuyButtonDescriptor)buyButtonDescriptor
@@ -389,23 +389,23 @@ void __46__SKUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
 
     [(SKUIBuyButtonDescriptor *)buyButtonDescriptor setButtonType:v4];
     v8 = self->_buyButtonDescriptor;
-    v9 = [(SKUIButtonViewElement *)self buttonText];
-    v10 = [v9 string];
-    [(SKUIBuyButtonDescriptor *)v8 setButtonText:v10];
+    buttonText = [(SKUIButtonViewElement *)self buttonText];
+    string = [buttonText string];
+    [(SKUIBuyButtonDescriptor *)v8 setButtonText:string];
 
     v11 = self->_buyButtonDescriptor;
-    v12 = [(SKUIButtonViewElement *)self confirmationText];
-    [(SKUIBuyButtonDescriptor *)v11 setConfirmationText:v12];
+    confirmationText = [(SKUIButtonViewElement *)self confirmationText];
+    [(SKUIBuyButtonDescriptor *)v11 setConfirmationText:confirmationText];
 
     [(SKUIBuyButtonDescriptor *)self->_buyButtonDescriptor setElementType:[(SKUIButtonViewElement *)self elementType]];
     [(SKUIBuyButtonDescriptor *)self->_buyButtonDescriptor setItemIdentifier:[(SKUIButtonViewElement *)self itemIdentifier]];
     v13 = self->_buyButtonDescriptor;
-    v14 = [(SKUIButtonViewElement *)self storeIdentifier];
-    [(SKUIBuyButtonDescriptor *)v13 setStoreIdentifier:v14];
+    storeIdentifier = [(SKUIButtonViewElement *)self storeIdentifier];
+    [(SKUIBuyButtonDescriptor *)v13 setStoreIdentifier:storeIdentifier];
 
     v15 = self->_buyButtonDescriptor;
-    v16 = [(SKUIButtonViewElement *)self variantIdentifier];
-    [(SKUIBuyButtonDescriptor *)v15 setVariantIdentifier:v16];
+    variantIdentifier = [(SKUIButtonViewElement *)self variantIdentifier];
+    [(SKUIBuyButtonDescriptor *)v15 setVariantIdentifier:variantIdentifier];
 
     [(SKUIBuyButtonDescriptor *)self->_buyButtonDescriptor setShouldSuppressCloudRestore:[(SKUIButtonViewElement *)self suppressCloudRestore]];
     v17 = self->_buyButtonDescriptor;
@@ -419,14 +419,14 @@ void __46__SKUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   return v17;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v26.receiver = self;
   v26.super_class = SKUIButtonViewElement;
-  v5 = [(SKUIViewElement *)&v26 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v26 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 == self || v5 != self)
+  if (elementCopy == self || v5 != self)
   {
     if (v5 == self)
     {
@@ -434,50 +434,50 @@ void __46__SKUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
     }
 
     bundleIdentifier = [(SKUIButtonViewElement *)self buyButtonDescriptor];
-    [(SKUIButtonViewElement *)v4 setBuyButtonDescriptor:bundleIdentifier];
+    [(SKUIButtonViewElement *)elementCopy setBuyButtonDescriptor:bundleIdentifier];
   }
 
   else
   {
-    v7 = [(SKUIButtonViewElement *)v4 badgeResourceName];
+    badgeResourceName = [(SKUIButtonViewElement *)elementCopy badgeResourceName];
     badgeResourceName = self->_badgeResourceName;
-    self->_badgeResourceName = v7;
+    self->_badgeResourceName = badgeResourceName;
 
-    v9 = [(SKUIButtonViewElement *)v4 buttonText];
+    buttonText = [(SKUIButtonViewElement *)elementCopy buttonText];
     buttonText = self->_buttonText;
-    self->_buttonText = v9;
+    self->_buttonText = buttonText;
 
-    self->_buttonViewType = [(SKUIButtonViewElement *)v4 buttonViewType];
-    v11 = [(SKUIButtonViewElement *)v4 buyButtonDescriptor];
+    self->_buttonViewType = [(SKUIButtonViewElement *)elementCopy buttonViewType];
+    buyButtonDescriptor = [(SKUIButtonViewElement *)elementCopy buyButtonDescriptor];
     buyButtonDescriptor = self->_buyButtonDescriptor;
-    self->_buyButtonDescriptor = v11;
+    self->_buyButtonDescriptor = buyButtonDescriptor;
 
-    v13 = [(SKUIButtonViewElement *)v4 confirmationText];
+    confirmationText = [(SKUIButtonViewElement *)elementCopy confirmationText];
     confirmationText = self->_confirmationText;
-    self->_confirmationText = v13;
+    self->_confirmationText = confirmationText;
 
-    self->_enabled = v4->_enabled;
-    self->_itemIdentifier = [(SKUIButtonViewElement *)v4 itemIdentifier];
-    v15 = [(SKUIButtonViewElement *)v4 nonToggledText];
+    self->_enabled = elementCopy->_enabled;
+    self->_itemIdentifier = [(SKUIButtonViewElement *)elementCopy itemIdentifier];
+    nonToggledText = [(SKUIButtonViewElement *)elementCopy nonToggledText];
     nonToggledText = self->_nonToggledText;
-    self->_nonToggledText = v15;
+    self->_nonToggledText = nonToggledText;
 
-    self->_selected = [(SKUIButtonViewElement *)v4 isSelected];
-    v17 = [(SKUIButtonViewElement *)v4 storeIdentifier];
+    self->_selected = [(SKUIButtonViewElement *)elementCopy isSelected];
+    storeIdentifier = [(SKUIButtonViewElement *)elementCopy storeIdentifier];
     storeIdentifier = self->_storeIdentifier;
-    self->_storeIdentifier = v17;
+    self->_storeIdentifier = storeIdentifier;
 
-    v19 = [(SKUIButtonViewElement *)v4 toggledText];
+    toggledText = [(SKUIButtonViewElement *)elementCopy toggledText];
     toggledText = self->_toggledText;
-    self->_toggledText = v19;
+    self->_toggledText = toggledText;
 
-    v21 = [(SKUIButtonViewElement *)v4 variantIdentifier];
+    variantIdentifier = [(SKUIButtonViewElement *)elementCopy variantIdentifier];
     variantIdentifier = self->_variantIdentifier;
-    self->_variantIdentifier = v21;
+    self->_variantIdentifier = variantIdentifier;
 
-    v23 = [(SKUIButtonViewElement *)v4 bundleIdentifier];
+    bundleIdentifier = [(SKUIButtonViewElement *)elementCopy bundleIdentifier];
     bundleIdentifier = self->_bundleIdentifier;
-    self->_bundleIdentifier = v23;
+    self->_bundleIdentifier = bundleIdentifier;
   }
 
 LABEL_7:

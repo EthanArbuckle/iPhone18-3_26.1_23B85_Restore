@@ -1,6 +1,6 @@
 @interface CADLocalXPCConnection
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (CADLocalXPCConnection)initWithRemoteObject:(id)a3;
+- (CADLocalXPCConnection)initWithRemoteObject:(id)object;
 - (int)processIdentifier;
 - (void)invalidate;
 - (void)resume;
@@ -54,25 +54,25 @@
 - (void)invalidate
 {
   self->_state = 2;
-  v3 = [(CADLocalXPCConnection *)self invalidationHandler];
+  invalidationHandler = [(CADLocalXPCConnection *)self invalidationHandler];
 
-  if (v3)
+  if (invalidationHandler)
   {
-    v4 = [(CADLocalXPCConnection *)self invalidationHandler];
-    v4[2]();
+    invalidationHandler2 = [(CADLocalXPCConnection *)self invalidationHandler];
+    invalidationHandler2[2]();
   }
 }
 
-- (CADLocalXPCConnection)initWithRemoteObject:(id)a3
+- (CADLocalXPCConnection)initWithRemoteObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CADLocalXPCConnection;
   v6 = [(CADLocalXPCConnection *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_remoteObject, a3);
+    objc_storeStrong(&v6->_remoteObject, object);
     v7->_state = 0;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("CADLocalXPCConnectionQueue", v8);

@@ -1,8 +1,8 @@
 @interface ArchiveExtractor
-- (BOOL)copyDataFromReadArchive:(archive *)a3 toWriteDiskArchive:(archive *)a4;
-- (BOOL)extractArchiveAtURL:(id)a3 toDestinationDirectoryURL:(id)a4;
-- (BOOL)performExtractionForArchive:(archive *)a3 toDestinationDirectory:(id)a4;
-- (BOOL)unarchiveData:(id)a3 toDestinationDirectory:(id)a4;
+- (BOOL)copyDataFromReadArchive:(archive *)archive toWriteDiskArchive:(archive *)diskArchive;
+- (BOOL)extractArchiveAtURL:(id)l toDestinationDirectoryURL:(id)rL;
+- (BOOL)performExtractionForArchive:(archive *)archive toDestinationDirectory:(id)directory;
+- (BOOL)unarchiveData:(id)data toDestinationDirectory:(id)directory;
 - (archive)createReadArchive;
 - (archive)createWriteDiskArchive;
 - (void)createReadArchive;
@@ -114,7 +114,7 @@ LABEL_4:
   return v2;
 }
 
-- (BOOL)copyDataFromReadArchive:(archive *)a3 toWriteDiskArchive:(archive *)a4
+- (BOOL)copyDataFromReadArchive:(archive *)archive toWriteDiskArchive:(archive *)diskArchive
 {
   while (1)
   {
@@ -153,23 +153,23 @@ LABEL_8:
   return data_block;
 }
 
-- (BOOL)performExtractionForArchive:(archive *)a3 toDestinationDirectory:(id)a4
+- (BOOL)performExtractionForArchive:(archive *)archive toDestinationDirectory:(id)directory
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v43 = 0;
-  v8 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v43];
+  v8 = [defaultManager createDirectoryAtURL:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v43];
   v9 = v43;
 
   if ((v8 & 1) == 0)
   {
-    v30 = [v9 domain];
-    if ([v30 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [v9 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
-      v31 = [v9 code];
+      code = [v9 code];
 
-      if (v31 == 516)
+      if (code == 516)
       {
         goto LABEL_2;
       }
@@ -190,8 +190,8 @@ LABEL_8:
 
 LABEL_2:
 
-  v10 = [(ArchiveExtractor *)self createWriteDiskArchive];
-  if (!v10)
+  createWriteDiskArchive = [(ArchiveExtractor *)self createWriteDiskArchive];
+  if (!createWriteDiskArchive)
   {
     v9 = TRILogCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -204,8 +204,8 @@ LABEL_38:
     goto LABEL_58;
   }
 
-  v11 = v10;
-  v12 = [v6 URLByResolvingSymlinksInPath];
+  v11 = createWriteDiskArchive;
+  uRLByResolvingSymlinksInPath = [directoryCopy URLByResolvingSymlinksInPath];
 
   *&v13 = 136315138;
   v39 = v13;
@@ -289,8 +289,8 @@ LABEL_38:
       break;
     }
 
-    v28 = [v12 path];
-    v29 = [v28 stringByAppendingPathComponent:v24];
+    path = [uRLByResolvingSymlinksInPath path];
+    v29 = [path stringByAppendingPathComponent:v24];
 
     [v29 fileSystemRepresentation];
     archive_entry_update_pathname_utf8();
@@ -311,7 +311,7 @@ LABEL_38:
         goto LABEL_45;
       }
 
-      if ((!archive_entry_size_is_set() || archive_entry_size() >= 1) && ![(ArchiveExtractor *)self copyDataFromReadArchive:a3 toWriteDiskArchive:v11])
+      if ((!archive_entry_size_is_set() || archive_entry_size() >= 1) && ![(ArchiveExtractor *)self copyDataFromReadArchive:archive toWriteDiskArchive:v11])
       {
         v34 = TRILogCategory();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -375,10 +375,10 @@ LABEL_50:
       [ArchiveExtractor performExtractionForArchive:toDestinationDirectory:];
     }
 
-    v6 = v12;
+    directoryCopy = uRLByResolvingSymlinksInPath;
 LABEL_58:
 
-    v12 = v6;
+    uRLByResolvingSymlinksInPath = directoryCopy;
   }
 
 LABEL_59:
@@ -387,12 +387,12 @@ LABEL_59:
   return v33;
 }
 
-- (BOOL)unarchiveData:(id)a3 toDestinationDirectory:(id)a4
+- (BOOL)unarchiveData:(id)data toDestinationDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ArchiveExtractor *)self createReadArchive];
-  if (!v8)
+  dataCopy = data;
+  directoryCopy = directory;
+  createReadArchive = [(ArchiveExtractor *)self createReadArchive];
+  if (!createReadArchive)
   {
     v12 = TRILogCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -404,9 +404,9 @@ LABEL_59:
     goto LABEL_16;
   }
 
-  v9 = v8;
-  [v6 bytes];
-  [v6 length];
+  v9 = createReadArchive;
+  [dataCopy bytes];
+  [dataCopy length];
   if (archive_read_open_memory())
   {
     v10 = TRILogCategory();
@@ -420,7 +420,7 @@ LABEL_59:
 
   else
   {
-    v11 = [(ArchiveExtractor *)self performExtractionForArchive:v9 toDestinationDirectory:v7];
+    v11 = [(ArchiveExtractor *)self performExtractionForArchive:v9 toDestinationDirectory:directoryCopy];
     if (!archive_read_close())
     {
       goto LABEL_13;
@@ -449,13 +449,13 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)extractArchiveAtURL:(id)a3 toDestinationDirectoryURL:(id)a4
+- (BOOL)extractArchiveAtURL:(id)l toDestinationDirectoryURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 path];
+  lCopy = l;
+  rLCopy = rL;
+  path = [lCopy path];
   v14 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v8 options:8 error:&v14];
+  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:path options:8 error:&v14];
   v10 = v14;
   if (!v9)
   {
@@ -468,7 +468,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  if (![(ArchiveExtractor *)self unarchiveData:v9 toDestinationDirectory:v7])
+  if (![(ArchiveExtractor *)self unarchiveData:v9 toDestinationDirectory:rLCopy])
   {
     v12 = TRILogCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))

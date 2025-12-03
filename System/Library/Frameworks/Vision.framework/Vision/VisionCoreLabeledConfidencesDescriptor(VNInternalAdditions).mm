@@ -12,10 +12,10 @@
   v12 = a4;
   v13 = a3;
   v14 = [v10 alloc];
-  v15 = [a1 name];
-  v16 = [v14 initWithNamedObjects:{v15, v13, 0}];
+  name = [self name];
+  v16 = [v14 initWithNamedObjects:{name, v13, 0}];
 
-  v17 = [a1 newClassificationObservationsFromOutputObjects:v16 originatingRequestSpecifier:v12 operationPointsProvider:v11 error:a6];
+  v17 = [self newClassificationObservationsFromOutputObjects:v16 originatingRequestSpecifier:v12 operationPointsProvider:v11 error:a6];
   return v17;
 }
 
@@ -40,25 +40,25 @@
     v14 = 0;
   }
 
-  v15 = [a1 shape];
-  v16 = [v15 elementCount];
-  v17 = [a1 labels];
-  if ([v17 count] == v16)
+  shape = [self shape];
+  elementCount = [shape elementCount];
+  labels = [self labels];
+  if ([labels count] == elementCount)
   {
-    v18 = [a1 validLabelIndexes];
-    v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
+    validLabelIndexes = [self validLabelIndexes];
+    v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(validLabelIndexes, "count")}];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __168__VisionCoreLabeledConfidencesDescriptor_VNInternalAdditions__newClassificationObservationsFromOutputObjects_originatingRequestSpecifier_operationPointsProvider_error___block_invoke;
     aBlock[3] = &unk_1E77B4978;
-    v26 = v17;
+    v26 = labels;
     v27 = v14;
     v24 = v11;
     v28 = v11;
     v20 = v19;
     v29 = v20;
     v21 = _Block_copy(aBlock);
-    if ([v10 VNEnumerateFloatValuesAtIndexes:v18 asTensor:a1 usingBlock:v21 error:a6])
+    if ([v10 VNEnumerateFloatValuesAtIndexes:validLabelIndexes asTensor:self usingBlock:v21 error:a6])
     {
       a6 = v20;
     }
@@ -73,7 +73,7 @@
 
   else if (a6)
   {
-    v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Tensor with %lu elements does not align with %lu labels", v16, objc_msgSend(v17, "count")];
+    v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Tensor with %lu elements does not align with %lu labels", elementCount, objc_msgSend(labels, "count")];
     *a6 = [VNError errorForInternalErrorWithLocalizedDescription:v22];
 
     a6 = 0;

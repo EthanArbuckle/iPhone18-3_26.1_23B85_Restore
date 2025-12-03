@@ -22,10 +22,10 @@
     self->_performingLayout = 0;
   }
 
-  v3 = [(SUUIScrollingSegmentedControllerCollectionView *)self delegate];
+  delegate = [(SUUIScrollingSegmentedControllerCollectionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 scrollingSegmentedControllerCollectionViewDidLayoutSubviews:self];
+    [delegate scrollingSegmentedControllerCollectionViewDidLayoutSubviews:self];
   }
 }
 

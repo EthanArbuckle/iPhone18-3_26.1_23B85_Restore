@@ -1,39 +1,39 @@
 @interface EDPrecomputedThreadQueryHandler
 + (OS_os_log)log;
-+ (id)sortKeysForSectionPredicates:(id)a3;
-- (BOOL)_isAddingOrDeletingObjectID:(id)a3;
++ (id)sortKeysForSectionPredicates:(id)predicates;
+- (BOOL)_isAddingOrDeletingObjectID:(id)d;
 - (BOOL)_shouldSectionItemsRemainInSection;
 - (BOOL)start;
 - (BOOL)updateDisplayDate;
-- (EDPrecomputedThreadQueryHandler)initWithQuery:(id)a3 threadScope:(id)a4 sortKeys:(id)a5 messagePersistence:(id)a6 threadPersistence:(id)a7 hookRegistry:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 observationResumer:(id)a12;
-- (id)_extraInfoPrecachedThreadsForInitialObjectIDs:(id)a3;
-- (id)_messageForPersistedMessage:(id)a3;
-- (id)itemIDsForStateCaptureWithErrorString:(id *)a3;
+- (EDPrecomputedThreadQueryHandler)initWithQuery:(id)query threadScope:(id)scope sortKeys:(id)keys messagePersistence:(id)persistence threadPersistence:(id)threadPersistence hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 observationResumer:(id)self2;
+- (id)_extraInfoPrecachedThreadsForInitialObjectIDs:(id)ds;
+- (id)_messageForPersistedMessage:(id)message;
+- (id)itemIDsForStateCaptureWithErrorString:(id *)string;
 - (id)labelForStateCapture;
-- (id)messageListItemForObjectID:(id)a3 error:(id *)a4;
-- (id)sectionIdentifierForThreadObjectID:(id)a3;
-- (void)_addChangeToPendingChanges:(id)a3 forThreadObjectID:(id)a4;
-- (void)_flushUpdatesWithReason:(id)a3;
+- (id)messageListItemForObjectID:(id)d error:(id *)error;
+- (id)sectionIdentifierForThreadObjectID:(id)d;
+- (void)_addChangeToPendingChanges:(id)changes forThreadObjectID:(id)d;
+- (void)_flushUpdatesWithReason:(id)reason;
 - (void)_getInitialResults;
 - (void)_oldestThreadsNeedUpdate;
-- (void)_onScheduler:(id)a3 performCancelableBlock:(id)a4;
-- (void)_persistenceIsAddingThreadWithObjectID:(id)a3;
-- (void)_persistenceIsChangingThreadWithObjectID:(id)a3 changedKeyPaths:(id)a4;
-- (void)_reportMoveForThreadObjectID:(id)a3;
+- (void)_onScheduler:(id)scheduler performCancelableBlock:(id)block;
+- (void)_persistenceIsAddingThreadWithObjectID:(id)d;
+- (void)_persistenceIsChangingThreadWithObjectID:(id)d changedKeyPaths:(id)paths;
+- (void)_reportMoveForThreadObjectID:(id)d;
 - (void)_updateDisplayDateForMessagesIfNeeded;
 - (void)cancel;
-- (void)controller:(id)a3 messageTimerFired:(id)a4;
-- (void)persistenceDidChangeBusinessIDForMessages:(id)a3 fromBusinessID:(int64_t)a4;
-- (void)persistenceDidChangeConversationNotificationLevel:(int64_t)a3 conversationID:(int64_t)a4 generationWindow:(id)a5;
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6;
+- (void)controller:(id)controller messageTimerFired:(id)fired;
+- (void)persistenceDidChangeBusinessIDForMessages:(id)messages fromBusinessID:(int64_t)d;
+- (void)persistenceDidChangeConversationNotificationLevel:(int64_t)level conversationID:(int64_t)d generationWindow:(id)window;
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window;
 - (void)persistenceDidFinishThreadUpdates;
-- (void)persistenceDidUpdateProperties:(id)a3 message:(id)a4 generationWindow:(id)a5;
-- (void)persistenceIsAddingThread:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5;
-- (void)persistenceIsChangingThreadWithObjectID:(id)a3 changedKeyPaths:(id)a4 generationWindow:(id)a5;
-- (void)persistenceIsChangingThreadWithObjectID:(id)a3 newIsUrgentValue:(BOOL)a4 generationWindow:(id)a5;
-- (void)persistenceIsDeletingThreadWithObjectID:(id)a3 generationWindow:(id)a4;
-- (void)persistenceIsMarkingThreadAsJournaledWithObjectID:(id)a3 generationWindow:(id)a4;
-- (void)persistenceIsReconcilingJournaledThreadsWithObjectIDs:(id)a3 generationWindow:(id)a4;
+- (void)persistenceDidUpdateProperties:(id)properties message:(id)message generationWindow:(id)window;
+- (void)persistenceIsAddingThread:(id)thread journaled:(BOOL)journaled generationWindow:(id)window;
+- (void)persistenceIsChangingThreadWithObjectID:(id)d changedKeyPaths:(id)paths generationWindow:(id)window;
+- (void)persistenceIsChangingThreadWithObjectID:(id)d newIsUrgentValue:(BOOL)value generationWindow:(id)window;
+- (void)persistenceIsDeletingThreadWithObjectID:(id)d generationWindow:(id)window;
+- (void)persistenceIsMarkingThreadAsJournaledWithObjectID:(id)d generationWindow:(id)window;
+- (void)persistenceIsReconcilingJournaledThreadsWithObjectIDs:(id)ds generationWindow:(id)window;
 - (void)test_tearDown;
 @end
 
@@ -44,48 +44,48 @@
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = EDPrecomputedThreadQueryHandler;
-  v3 = [(EDMessageRepositoryQueryHandler *)&v16 start];
+  start = [(EDMessageRepositoryQueryHandler *)&v16 start];
   v4 = +[EDPrecomputedThreadQueryHandler log];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (start)
   {
     if (v5)
     {
-      v6 = [(EDMessageRepositoryQueryHandler *)self query];
+      query = [(EDMessageRepositoryQueryHandler *)self query];
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v6;
+      v20 = query;
       _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_INFO, "%p: Starting with query '%@'", buf, 0x16u);
     }
 
-    v7 = [(EDMessageRepositoryQueryHandler *)self remindMeNotificationController];
-    v4 = [v7 addRemindMeObserver:self];
+    remindMeNotificationController = [(EDMessageRepositoryQueryHandler *)self remindMeNotificationController];
+    v4 = [remindMeNotificationController addRemindMeObserver:self];
 
-    v8 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
-    [v8 addCancelable:v4];
+    cancelationToken = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
+    [cancelationToken addCancelable:v4];
 
-    v9 = [(EDMessageRepositoryQueryHandler *)self hookRegistry];
-    v10 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    hookRegistry = [(EDMessageRepositoryQueryHandler *)self hookRegistry];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __40__EDPrecomputedThreadQueryHandler_start__block_invoke;
     v14[3] = &unk_1E8255F20;
     v14[4] = self;
-    v11 = v9;
+    v11 = hookRegistry;
     v15 = v11;
-    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v10 performCancelableBlock:v14];
+    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v14];
   }
 
   else if (v5)
   {
     *buf = 134217984;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_INFO, "%p: Ignoring subsequent call to -start.", buf, 0xCu);
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v3;
+  return start;
 }
 
 void __40__EDPrecomputedThreadQueryHandler_start__block_invoke(uint64_t a1)
@@ -137,30 +137,30 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_2(uint64_t a1)
 {
   if ([(EDPrecomputedThreadQueryHandler *)self updateDisplayDate])
   {
-    v11 = [(EDMessageRepositoryQueryHandler *)self query];
+    query = [(EDMessageRepositoryQueryHandler *)self query];
     v3 = objc_alloc(MEMORY[0x1E699AE28]);
     v4 = objc_opt_class();
-    v5 = [v11 predicate];
-    v6 = [v11 sortDescriptors];
-    v7 = [v3 initWithTargetClass:v4 predicate:v5 sortDescriptors:v6 queryOptions:objc_msgSend(v11 label:{"queryOptions"), 0}];
+    predicate = [query predicate];
+    sortDescriptors = [query sortDescriptors];
+    v7 = [v3 initWithTargetClass:v4 predicate:predicate sortDescriptors:sortDescriptors queryOptions:objc_msgSend(query label:{"queryOptions"), 0}];
 
-    v8 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-    [v8 updateBeforeDisplayForMessagesMatchingQuery:v7];
+    messagePersistence = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+    [messagePersistence updateBeforeDisplayForMessagesMatchingQuery:v7];
 
-    v9 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-    v10 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-    [v9 updateIsUrgentForThreadScope:v10];
+    threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+    threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+    [threadPersistence updateIsUrgentForThreadScope:threadScope];
   }
 }
 
 - (BOOL)updateDisplayDate
 {
-  v2 = [(EDMessageRepositoryQueryHandler *)self query];
-  v3 = [v2 targetClassOptions];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699A9D8]];
-  v5 = [v4 BOOLValue];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  targetClassOptions = [query targetClassOptions];
+  v4 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9D8]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (OS_os_log)log
@@ -169,7 +169,7 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__EDPrecomputedThreadQueryHandler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_79 != -1)
   {
     dispatch_once(&log_onceToken_79, block);
@@ -183,8 +183,8 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_2(uint64_t a1)
 - (void)_getInitialResults
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
-  v4 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+  resultsObserver = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
+  observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -198,42 +198,42 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_2(uint64_t a1)
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self sectionPredicates];
-  v6 = [v5 count] == 0;
+  sectionPredicates = [(EDPrecomputedThreadQueryHandler *)self sectionPredicates];
+  v6 = [sectionPredicates count] == 0;
 
   v31 = v6;
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-  v8 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v9 = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
+  threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+  threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  sortKeys = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
   v10 = v35[3];
-  v11 = [(EDPrecomputedThreadQueryHandler *)self unreportedJournaledObjectIDs];
+  unreportedJournaledObjectIDs = [(EDPrecomputedThreadQueryHandler *)self unreportedJournaledObjectIDs];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __53__EDPrecomputedThreadQueryHandler__getInitialResults__block_invoke;
   v23 = &unk_1E8255F48;
   v27 = &v34;
-  v24 = self;
+  selfCopy = self;
   v28 = v32;
   v29 = v30;
-  v12 = v3;
+  v12 = resultsObserver;
   v25 = v12;
-  v13 = v4;
+  v13 = observationIdentifier;
   v26 = v13;
-  [v7 threadObjectIDsForThreadScope:v8 sortKeys:v9 initialBatchSize:v10 journaledObjectIDs:v11 batchBlock:&v20];
+  [threadPersistence threadObjectIDsForThreadScope:threadScope sortKeys:sortKeys initialBatchSize:v10 journaledObjectIDs:unreportedJournaledObjectIDs batchBlock:&v20];
 
   v14 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken:v20];
-  LODWORD(v8) = [v14 isCanceled];
+  LODWORD(threadScope) = [v14 isCanceled];
 
-  if (v8)
+  if (threadScope)
   {
     v15 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       *buf = 134218242;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
-      v41 = v16;
+      v41 = threadScope2;
       _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "%p: Canceled initial results\n%{public}@", buf, 0x16u);
     }
   }
@@ -243,11 +243,11 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_2(uint64_t a1)
     v17 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope3 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       *buf = 134218242;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2114;
-      v41 = v18;
+      v41 = threadScope3;
       _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "%p: Returning initial load did finish\n%{public}@", buf, 0x16u);
     }
 
@@ -378,32 +378,32 @@ void __53__EDPrecomputedThreadQueryHandler__getInitialResults__block_invoke(uint
 
 - (void)_oldestThreadsNeedUpdate
 {
-  v3 = [(EDMessageRepositoryQueryHandler *)self query];
-  v4 = [v3 queryOptions];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  queryOptions = [query queryOptions];
 
-  if (v4)
+  if (queryOptions)
   {
-    v5 = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
+    updateOldestThreadsCancelationToken = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
 
-    if (v5)
+    if (updateOldestThreadsCancelationToken)
     {
-      v6 = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
-      [v6 cancel];
+      updateOldestThreadsCancelationToken2 = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
+      [updateOldestThreadsCancelationToken2 cancel];
     }
 
     objc_initWeak(&location, self);
-    v7 = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
+    backgroundWorkScheduler = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __59__EDPrecomputedThreadQueryHandler__oldestThreadsNeedUpdate__block_invoke;
     v14 = &unk_1E8250808;
     objc_copyWeak(&v15, &location);
-    v8 = [v7 afterDelay:&v11 performBlock:2.0];
+    v8 = [backgroundWorkScheduler afterDelay:&v11 performBlock:2.0];
     [(EDPrecomputedThreadQueryHandler *)self setUpdateOldestThreadsCancelationToken:v8, v11, v12, v13, v14];
 
-    v9 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
-    v10 = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
-    [v9 addCancelable:v10];
+    cancelationToken = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
+    updateOldestThreadsCancelationToken3 = [(EDPrecomputedThreadQueryHandler *)self updateOldestThreadsCancelationToken];
+    [cancelationToken addCancelable:updateOldestThreadsCancelationToken3];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -418,13 +418,13 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
   log_log_79 = v1;
 }
 
-+ (id)sortKeysForSectionPredicates:(id)a3
++ (id)sortKeysForSectionPredicates:(id)predicates
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  predicatesCopy = predicates;
+  if ([predicatesCopy count])
   {
-    if ([v3 count] == 1 && (objc_msgSend(v3, "objectAtIndexedSubscript:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E699ADA0], "predicateForIsUrgentMessages"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqual:", v5), v5, v4, v6))
+    if ([predicatesCopy count] == 1 && (objc_msgSend(predicatesCopy, "objectAtIndexedSubscript:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E699ADA0], "predicateForIsUrgentMessages"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqual:", v5), v5, v4, v6))
     {
       v12[0] = @"UrgentDescending";
       v7 = v12;
@@ -449,27 +449,27 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (EDPrecomputedThreadQueryHandler)initWithQuery:(id)a3 threadScope:(id)a4 sortKeys:(id)a5 messagePersistence:(id)a6 threadPersistence:(id)a7 hookRegistry:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 observationResumer:(id)a12
+- (EDPrecomputedThreadQueryHandler)initWithQuery:(id)query threadScope:(id)scope sortKeys:(id)keys messagePersistence:(id)persistence threadPersistence:(id)threadPersistence hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 observationResumer:(id)self2
 {
-  v17 = a3;
-  obj = a4;
-  v77 = a4;
-  v71 = a5;
-  v76 = a5;
-  v18 = a6;
-  v75 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v78 = a12;
+  queryCopy = query;
+  obj = scope;
+  scopeCopy = scope;
+  keysCopy = keys;
+  keysCopy2 = keys;
+  persistenceCopy = persistence;
+  threadPersistenceCopy = threadPersistence;
+  registryCopy = registry;
+  controllerCopy = controller;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  resumerCopy = resumer;
   v79.receiver = self;
   v79.super_class = EDPrecomputedThreadQueryHandler;
-  v72 = v20;
-  v74 = v19;
-  v23 = v19;
-  v24 = v18;
-  v25 = [(EDMessageRepositoryQueryHandler *)&v79 initWithQuery:v17 messagePersistence:v18 hookRegistry:v23 remindMeNotificationController:v20 observer:v21 observationIdentifier:v22];
+  v72 = controllerCopy;
+  v74 = registryCopy;
+  v23 = registryCopy;
+  v24 = persistenceCopy;
+  v25 = [(EDMessageRepositoryQueryHandler *)&v79 initWithQuery:queryCopy messagePersistence:persistenceCopy hookRegistry:v23 remindMeNotificationController:controllerCopy observer:observerCopy observationIdentifier:identifierCopy];
   if (v25)
   {
     v26 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.email.EDPrecomputedThreadQueryHandler.changeScheduler" qualityOfService:25];
@@ -485,8 +485,8 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
     v25->_cancelationToken = v30;
 
     objc_storeStrong(&v25->_threadScope, obj);
-    objc_storeStrong(&v25->_sortKeys, v71);
-    objc_storeStrong(&v25->_threadPersistence, a7);
+    objc_storeStrong(&v25->_sortKeys, keysCopy);
+    objc_storeStrong(&v25->_threadPersistence, threadPersistence);
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
     pendingChanges = v25->_pendingChanges;
     v25->_pendingChanges = v32;
@@ -507,7 +507,7 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
     oldestThreadObjectIDsByMailbox = v25->_oldestThreadObjectIDsByMailbox;
     v25->_oldestThreadObjectIDsByMailbox = v40;
 
-    v42 = [[EDUpdateThrottler alloc] initWithName:@"Precomputed Threads" delayInterval:v78 resumable:1.0];
+    v42 = [[EDUpdateThrottler alloc] initWithName:@"Precomputed Threads" delayInterval:resumerCopy resumable:1.0];
     updateThrottler = v25->_updateThrottler;
     v25->_updateThrottler = v42;
 
@@ -516,9 +516,9 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
     v25->_reloadSummaryHelper = v44;
 
     v46 = MEMORY[0x1E699ADA0];
-    v47 = [v17 predicate];
-    v48 = [v18 mailboxPersistence];
-    v49 = [v46 mailboxScopeForPredicate:v47 withMailboxTypeResolver:v48];
+    predicate = [queryCopy predicate];
+    mailboxPersistence = [persistenceCopy mailboxPersistence];
+    v49 = [v46 mailboxScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
     mailboxScope = v25->_mailboxScope;
     v25->_mailboxScope = v49;
 
@@ -535,8 +535,8 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
     stateCapturer = v25->_stateCapturer;
     v25->_stateCapturer = v58;
 
-    v60 = [v17 targetClassOptions];
-    v61 = [v60 objectForKeyedSubscript:*MEMORY[0x1E699A9F0]];
+    targetClassOptions = [queryCopy targetClassOptions];
+    v61 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9F0]];
     sectionPredicates = v25->_sectionPredicates;
     v25->_sectionPredicates = v61;
 
@@ -545,8 +545,8 @@ void __38__EDPrecomputedThreadQueryHandler_log__block_invoke(uint64_t a1)
     {
       if (-[EFOrderedDictionary count](v63, "count") != 1 || (-[EFOrderedDictionary objectAtIndexedSubscript:](v25->_sectionPredicates, "objectAtIndexedSubscript:", 0), v64 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E699ADA0] predicateForIsUrgentMessages], v65 = objc_claimAutoreleasedReturnValue(), v66 = objc_msgSend(v64, "isEqual:", v65), v65, v64, (v66 & 1) == 0))
       {
-        v67 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v67 handleFailureInMethod:a2 object:v25 file:@"EDPrecomputedThreadQueryHandler.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"(_sectionPredicates.count == 1) && [_sectionPredicates[kIsUrgentSectionPredicateIndex] isEqual:[EMMessageListItemPredicates predicateForIsUrgentMessages]]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v25 file:@"EDPrecomputedThreadQueryHandler.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"(_sectionPredicates.count == 1) && [_sectionPredicates[kIsUrgentSectionPredicateIndex] isEqual:[EMMessageListItemPredicates predicateForIsUrgentMessages]]"}];
       }
     }
 
@@ -572,11 +572,11 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_3(uint64_t a1)
   [(EFCancelable *)self->_updateOldestThreadsCancelationToken cancel];
   if (EFIsRunningUnitTests())
   {
-    v3 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
-    [v3 performSyncBlock:&__block_literal_global_37_0];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    [changeScheduler performSyncBlock:&__block_literal_global_37_0];
 
-    v4 = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
-    [v4 performSyncBlock:&__block_literal_global_39_0];
+    backgroundWorkScheduler = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
+    [backgroundWorkScheduler performSyncBlock:&__block_literal_global_39_0];
   }
 }
 
@@ -584,32 +584,32 @@ void __40__EDPrecomputedThreadQueryHandler_start__block_invoke_3(uint64_t a1)
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDPrecomputedThreadQueryHandler.m" lineNumber:176 description:{@"%s can only be called from unit tests", "-[EDPrecomputedThreadQueryHandler test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPrecomputedThreadQueryHandler.m" lineNumber:176 description:{@"%s can only be called from unit tests", "-[EDPrecomputedThreadQueryHandler test_tearDown]"}];
   }
 
   v7.receiver = self;
   v7.super_class = EDPrecomputedThreadQueryHandler;
   [(EDMessageRepositoryQueryHandler *)&v7 test_tearDown];
-  v4 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
-  [v4 performSyncBlock:&__block_literal_global_46_2];
+  changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+  [changeScheduler performSyncBlock:&__block_literal_global_46_2];
 
-  v5 = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
-  [v5 performSyncBlock:&__block_literal_global_48_1];
+  backgroundWorkScheduler = [(EDPrecomputedThreadQueryHandler *)self backgroundWorkScheduler];
+  [backgroundWorkScheduler performSyncBlock:&__block_literal_global_48_1];
 }
 
-- (void)_onScheduler:(id)a3 performCancelableBlock:(id)a4
+- (void)_onScheduler:(id)scheduler performCancelableBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
-  v8 = [v7 isCanceled];
+  schedulerCopy = scheduler;
+  blockCopy = block;
+  cancelationToken = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
+  isCanceled = [cancelationToken isCanceled];
 
-  if ((v8 & 1) == 0)
+  if ((isCanceled & 1) == 0)
   {
-    v9 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
-    v10 = [v11 performCancelableBlock:v6];
-    [v9 addCancelable:v10];
+    cancelationToken2 = [(EDPrecomputedThreadQueryHandler *)self cancelationToken];
+    v10 = [schedulerCopy performCancelableBlock:blockCopy];
+    [cancelationToken2 addCancelable:v10];
   }
 }
 
@@ -652,26 +652,26 @@ void __53__EDPrecomputedThreadQueryHandler__getInitialResults__block_invoke_51(u
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageListItemForObjectID:(id)a3 error:(id *)a4
+- (id)messageListItemForObjectID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-  v8 = [(EDMessageRepositoryQueryHandler *)self query];
-  v9 = [v7 threadForObjectID:v6 originatingQuery:v8 error:a4];
+  dCopy = d;
+  threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  v9 = [threadPersistence threadForObjectID:dCopy originatingQuery:query error:error];
 
   return v9;
 }
 
-- (id)_extraInfoPrecachedThreadsForInitialObjectIDs:(id)a3
+- (id)_extraInfoPrecachedThreadsForInitialObjectIDs:(id)ds
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDMessageRepositoryQueryHandler *)self query];
-  v6 = [v5 targetClassOptions];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E699A9E8]];
-  v8 = [v7 unsignedIntegerValue];
+  dsCopy = ds;
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  targetClassOptions = [query targetClassOptions];
+  v7 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9E8]];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v4 ef_prefix:v8];
+  v9 = [dsCopy ef_prefix:unsignedIntegerValue];
 
   v18 = 0;
   v19 = &v18;
@@ -699,8 +699,8 @@ void __53__EDPrecomputedThreadQueryHandler__getInitialResults__block_invoke_51(u
     v12 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v19[5] ef_publicDescription];
-      [(EDInMemoryThreadQueryHandler *)self _extraInfoPrecachedThreadsForInitialObjectIDs:v13, buf, v12];
+      ef_publicDescription = [v19[5] ef_publicDescription];
+      [(EDInMemoryThreadQueryHandler *)self _extraInfoPrecachedThreadsForInitialObjectIDs:ef_publicDescription, buf, v12];
     }
 
     v14 = 0;
@@ -748,24 +748,24 @@ id __71__EDPrecomputedThreadQueryHandler__extraInfoForThreadObjectIDs_isMove___b
   return v2;
 }
 
-- (id)sectionIdentifierForThreadObjectID:(id)a3
+- (id)sectionIdentifierForThreadObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__33;
   v20 = __Block_byref_object_dispose__33;
   v21 = 0;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self sectionIndexesByConversationID];
+  sectionIndexesByConversationID = [(EDPrecomputedThreadQueryHandler *)self sectionIndexesByConversationID];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __70__EDPrecomputedThreadQueryHandler_sectionIdentifierForThreadObjectID___block_invoke;
   v13 = &unk_1E8251838;
   v15 = &v16;
-  v6 = v4;
+  v6 = dCopy;
   v14 = v6;
-  [v5 performWhileLocked:&v10];
+  [sectionIndexesByConversationID performWhileLocked:&v10];
 
   if (v17[5])
   {
@@ -793,32 +793,32 @@ void __70__EDPrecomputedThreadQueryHandler_sectionIdentifierForThreadObjectID___
   *(v5 + 40) = v4;
 }
 
-- (void)_addChangeToPendingChanges:(id)a3 forThreadObjectID:(id)a4
+- (void)_addChangeToPendingChanges:(id)changes forThreadObjectID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  changesCopy = changes;
+  dCopy = d;
+  pendingChanges = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
+  v9 = [pendingChanges objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
     v10 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v16 = 134218754;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v7;
+      v19 = dCopy;
       v20 = 2114;
-      v21 = v6;
+      v21 = changesCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = threadScope;
       _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "%p: Adding change to existing change for objectID: %{public}@\n%{public}@\n%{public}@", &v16, 0x2Au);
     }
 
-    [v9 addChange:v6];
+    [v9 addChange:changesCopy];
   }
 
   else
@@ -826,36 +826,36 @@ void __70__EDPrecomputedThreadQueryHandler_sectionIdentifierForThreadObjectID___
     v12 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v16 = 134218754;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v7;
+      v19 = dCopy;
       v20 = 2114;
-      v21 = v6;
+      v21 = changesCopy;
       v22 = 2114;
-      v23 = v13;
+      v23 = threadScope2;
       _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "%p: Adding change for objectID: %{public}@\n%{public}@\n%{public}@", &v16, 0x2Au);
     }
 
-    v14 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
-    [v14 setObject:v6 forKeyedSubscript:v7];
+    pendingChanges2 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
+    [pendingChanges2 setObject:changesCopy forKeyedSubscript:dCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isAddingOrDeletingObjectID:(id)a3
+- (BOOL)_isAddingOrDeletingObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+  dCopy = d;
+  pendingPositionChanges = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___block_invoke;
   v9[3] = &unk_1E8255F70;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
-  v7 = [v5 ef_any:v9];
+  v7 = [pendingPositionChanges ef_any:v9];
 
   return v7;
 }
@@ -876,13 +876,13 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
   return v4;
 }
 
-- (void)_flushUpdatesWithReason:(id)a3
+- (void)_flushUpdatesWithReason:(id)reason
 {
   v99 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v50 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
-  v49 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-  if ([v50 count] || objc_msgSend(v49, "count"))
+  reasonCopy = reason;
+  pendingChanges = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
+  pendingPositionChanges = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+  if ([pendingChanges count] || objc_msgSend(pendingPositionChanges, "count"))
   {
     v87[0] = 0;
     v87[1] = v87;
@@ -895,27 +895,27 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
     aBlock[2] = __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invoke;
     aBlock[3] = &unk_1E8255F98;
     v86 = v87;
-    v85 = v48;
+    v85 = reasonCopy;
     v52 = _Block_copy(aBlock);
     v83 = 0;
     objc_initWeak(&location, self);
-    v4 = [(EDPrecomputedThreadQueryHandler *)self updateThrottler];
+    updateThrottler = [(EDPrecomputedThreadQueryHandler *)self updateThrottler];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
     v80[2] = __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invoke_2;
     v80[3] = &unk_1E8252B00;
     objc_copyWeak(&v81, &location);
-    v51 = [v4 updateWithBlock:v80 unacknowledgedUpdatesCount:&v83];
+    v51 = [updateThrottler updateWithBlock:v80 unacknowledgedUpdatesCount:&v83];
 
     if (v51)
     {
-      v56 = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
-      v55 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-      if ([v50 count])
+      resultsObserver = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
+      observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+      if ([pendingChanges count])
       {
-        v5 = [(EDPrecomputedThreadQueryHandler *)self reloadSummaryHelper];
-        v6 = [(EDPrecomputedThreadQueryHandler *)self mailboxScope];
-        v7 = [v5 summariesToReloadForChanges:v50 mailboxScope:v6];
+        reloadSummaryHelper = [(EDPrecomputedThreadQueryHandler *)self reloadSummaryHelper];
+        mailboxScope = [(EDPrecomputedThreadQueryHandler *)self mailboxScope];
+        v7 = [reloadSummaryHelper summariesToReloadForChanges:pendingChanges mailboxScope:mailboxScope];
 
         v78 = 0u;
         v79 = 0u;
@@ -948,31 +948,31 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v52[2]();
-          v14 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
-          v15 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+          pendingChanges2 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
+          threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
           *buf = 134218754;
-          v91 = self;
+          selfCopy4 = self;
           v92 = 2114;
           v93 = v13;
           v94 = 2114;
-          v95 = v14;
+          v95 = pendingChanges2;
           v96 = 2114;
-          v97 = v15;
+          v97 = threadScope;
           _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "%p: Flushing changes%{public}@: %{public}@\n%{public}@", buf, 0x2Au);
         }
 
-        [v56 observer:v55 matchedChangesForObjectIDs:v50];
-        v16 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
-        [v16 removeAllObjects];
+        [resultsObserver observer:observationIdentifier matchedChangesForObjectIDs:pendingChanges];
+        pendingChanges3 = [(EDPrecomputedThreadQueryHandler *)self pendingChanges];
+        [pendingChanges3 removeAllObjects];
       }
 
-      if ([v49 count])
+      if ([pendingPositionChanges count])
       {
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
         v73 = 0u;
-        obj = v49;
+        obj = pendingPositionChanges;
         v17 = [obj countByEnumeratingWithState:&v72 objects:v89 count:16];
         if (v17)
         {
@@ -991,31 +991,31 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
                 v21 = v52[2]();
-                v22 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+                threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
                 *buf = 134218754;
-                v91 = self;
+                selfCopy4 = self;
                 v92 = 2114;
                 v93 = v21;
                 v94 = 2114;
                 v95 = v19;
                 v96 = 2114;
-                v97 = v22;
+                v97 = threadScope2;
                 _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "%p: Flushing position changes%{public}@: %{public}@\n%{public}@", buf, 0x2Au);
               }
 
-              v23 = [v19 objectIDsToAddByBeforeObjectID];
+              objectIDsToAddByBeforeObjectID = [v19 objectIDsToAddByBeforeObjectID];
               v69[0] = MEMORY[0x1E69E9820];
               v69[1] = 3221225472;
               v69[2] = __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invoke_80;
               v69[3] = &unk_1E8255FC0;
               v69[4] = self;
-              v24 = v56;
+              v24 = resultsObserver;
               v70 = v24;
-              v25 = v55;
+              v25 = observationIdentifier;
               v71 = v25;
-              [v23 enumerateKeysAndObjectsUsingBlock:v69];
+              [objectIDsToAddByBeforeObjectID enumerateKeysAndObjectsUsingBlock:v69];
 
-              v26 = [v19 objectIDsToMoveByBeforeObjectID];
+              objectIDsToMoveByBeforeObjectID = [v19 objectIDsToMoveByBeforeObjectID];
               v66[0] = MEMORY[0x1E69E9820];
               v66[1] = 3221225472;
               v66[2] = __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invoke_2_83;
@@ -1025,16 +1025,16 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
               v67 = v27;
               v28 = v25;
               v68 = v28;
-              [v26 enumerateKeysAndObjectsUsingBlock:v66];
+              [objectIDsToMoveByBeforeObjectID enumerateKeysAndObjectsUsingBlock:v66];
 
-              v29 = [v19 objectIDsToDelete];
-              v30 = [v29 allObjects];
+              objectIDsToDelete = [v19 objectIDsToDelete];
+              allObjects = [objectIDsToDelete allObjects];
 
-              if ([v30 count])
+              if ([allObjects count])
               {
-                v31 = [v19 objectIDsToDelete];
-                v32 = [v31 allObjects];
-                [v27 observer:v28 matchedDeletedObjectIDs:v32];
+                objectIDsToDelete2 = [v19 objectIDsToDelete];
+                allObjects2 = [objectIDsToDelete2 allObjects];
+                [v27 observer:v28 matchedDeletedObjectIDs:allObjects2];
               }
             }
 
@@ -1044,21 +1044,21 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
           while (v17);
         }
 
-        v33 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-        [v33 removeAllObjects];
+        pendingPositionChanges2 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+        [pendingPositionChanges2 removeAllObjects];
 
         [(EDPrecomputedThreadQueryHandler *)self _oldestThreadsNeedUpdate];
       }
 
-      v34 = [v51 label];
+      label = [v51 label];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invoke_3_84;
       block[3] = &unk_1E8255188;
       objc_copyWeak(&v65, &location);
-      v35 = v55;
+      v35 = observationIdentifier;
       v63 = v35;
-      v36 = v34;
+      v36 = label;
       v64 = v36;
       v37 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
       v38 = dispatch_time(0, 5000000000);
@@ -1082,7 +1082,7 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
       {
         v44 = v52[2]();
         *buf = 134218754;
-        v91 = self;
+        selfCopy4 = self;
         v92 = 2114;
         v93 = v44;
         v94 = 2114;
@@ -1092,11 +1092,11 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
         _os_log_impl(&dword_1C61EF000, v43, OS_LOG_TYPE_DEFAULT, "%p: Sending update%{public}@ for %{public}@: %{public}@", buf, 0x2Au);
       }
 
-      [v56 observer:v41 wasUpdated:v51];
+      [resultsObserver observer:v41 wasUpdated:v51];
       objc_destroyWeak(&v61);
 
       objc_destroyWeak(&v65);
-      v45 = v56;
+      v45 = resultsObserver;
     }
 
     else
@@ -1106,7 +1106,7 @@ uint64_t __63__EDPrecomputedThreadQueryHandler__isAddingOrDeletingObjectID___blo
       {
         v46 = v52[2]();
         *buf = 134218498;
-        v91 = self;
+        selfCopy4 = self;
         v92 = 2114;
         v93 = v46;
         v94 = 2048;
@@ -1252,26 +1252,26 @@ void __59__EDPrecomputedThreadQueryHandler__flushUpdatesWithReason___block_invok
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsAddingThread:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5
+- (void)persistenceIsAddingThread:(id)thread journaled:(BOOL)journaled generationWindow:(id)window
 {
-  v7 = a3;
-  v8 = [v7 objectID];
-  v9 = [v8 threadScope];
-  v10 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v11 = [v9 isEqual:v10];
+  threadCopy = thread;
+  objectID = [threadCopy objectID];
+  threadScope = [objectID threadScope];
+  threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v11 = [threadScope isEqual:threadScope2];
 
   if (v11)
   {
-    v12 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __88__EDPrecomputedThreadQueryHandler_persistenceIsAddingThread_journaled_generationWindow___block_invoke;
     v13[3] = &unk_1E8255940;
-    v16 = a4;
+    journaledCopy = journaled;
     v13[4] = self;
-    v14 = v8;
-    v15 = v7;
-    [v12 performSyncBlock:v13];
+    v14 = objectID;
+    v15 = threadCopy;
+    [changeScheduler performSyncBlock:v13];
   }
 }
 
@@ -1319,47 +1319,47 @@ void __88__EDPrecomputedThreadQueryHandler_persistenceIsAddingThread_journaled_g
   [v4 setObject:&unk_1F45E68F8 forKeyedSubscript:v3];
 }
 
-- (void)_persistenceIsAddingThreadWithObjectID:(id)a3
+- (void)_persistenceIsAddingThreadWithObjectID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self reportedJournaledObjectIDs];
-  v6 = [v5 allKeys];
+  dCopy = d;
+  reportedJournaledObjectIDs = [(EDPrecomputedThreadQueryHandler *)self reportedJournaledObjectIDs];
+  allKeys = [reportedJournaledObjectIDs allKeys];
 
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-  v8 = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
-  v9 = [v7 nextExistingThreadObjectIDForThreadObjectID:v4 forSortKeys:v8 journaledThreadsToCheck:v6 excluding:0];
+  threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+  sortKeys = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
+  v9 = [threadPersistence nextExistingThreadObjectIDForThreadObjectID:dCopy forSortKeys:sortKeys journaledThreadsToCheck:allKeys excluding:0];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    null = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12 = v11;
+  v12 = null;
 
-  v13 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-  v14 = [v13 lastObject];
-  v15 = [v14 addObjectIDToAdd:v4 before:v12];
+  pendingPositionChanges = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+  lastObject = [pendingPositionChanges lastObject];
+  v15 = [lastObject addObjectIDToAdd:dCopy before:v12];
 
   if (v15)
   {
     v16 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v22 = 134218754;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
-      v29 = v17;
+      v29 = threadScope;
       _os_log_impl(&dword_1C61EF000, &v16->super, OS_LOG_TYPE_DEFAULT, "%p: Adding add for objectID: %{public}@ -> %{public}@\n%{public}@", &v22, 0x2Au);
     }
   }
@@ -1367,22 +1367,22 @@ void __88__EDPrecomputedThreadQueryHandler_persistenceIsAddingThread_journaled_g
   else
   {
     v16 = objc_alloc_init(_EDThreadPositionChangeSet);
-    [(_EDThreadPositionChangeSet *)v16 addObjectIDToAdd:v4 before:v12];
-    v18 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-    [v18 addObject:v16];
+    [(_EDThreadPositionChangeSet *)v16 addObjectIDToAdd:dCopy before:v12];
+    pendingPositionChanges2 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+    [pendingPositionChanges2 addObject:v16];
 
     v19 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v22 = 134218754;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
-      v29 = v20;
+      v29 = threadScope2;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "%p: Adding add to new position change for objectID: %{public}@ -> %{public}@\n%{public}@", &v22, 0x2Au);
     }
   }
@@ -1390,23 +1390,23 @@ void __88__EDPrecomputedThreadQueryHandler_persistenceIsAddingThread_journaled_g
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsMarkingThreadAsJournaledWithObjectID:(id)a3 generationWindow:(id)a4
+- (void)persistenceIsMarkingThreadAsJournaledWithObjectID:(id)d generationWindow:(id)window
 {
-  v5 = a3;
-  v6 = [v5 threadScope];
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v8 = [v6 isEqual:v7];
+  dCopy = d;
+  threadScope = [dCopy threadScope];
+  threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v8 = [threadScope isEqual:threadScope2];
 
   if (v8)
   {
-    v9 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __102__EDPrecomputedThreadQueryHandler_persistenceIsMarkingThreadAsJournaledWithObjectID_generationWindow___block_invoke;
     v10[3] = &unk_1E8255F20;
     v10[4] = self;
-    v11 = v5;
-    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v9 performCancelableBlock:v10];
+    v11 = dCopy;
+    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v10];
   }
 }
 
@@ -1423,29 +1423,29 @@ void __102__EDPrecomputedThreadQueryHandler_persistenceIsMarkingThreadAsJournale
   }
 }
 
-- (void)persistenceIsReconcilingJournaledThreadsWithObjectIDs:(id)a3 generationWindow:(id)a4
+- (void)persistenceIsReconcilingJournaledThreadsWithObjectIDs:(id)ds generationWindow:(id)window
 {
-  v5 = a3;
-  v6 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  dsCopy = ds;
+  threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __106__EDPrecomputedThreadQueryHandler_persistenceIsReconcilingJournaledThreadsWithObjectIDs_generationWindow___block_invoke;
   v14[3] = &unk_1E8256010;
-  v7 = v6;
+  v7 = threadScope;
   v15 = v7;
-  v8 = [v5 ef_filter:v14];
+  v8 = [dsCopy ef_filter:v14];
 
   if ([v8 count])
   {
-    v9 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __106__EDPrecomputedThreadQueryHandler_persistenceIsReconcilingJournaledThreadsWithObjectIDs_generationWindow___block_invoke_2;
     v10[3] = &unk_1E8250720;
     v11 = v8;
-    v12 = self;
+    selfCopy = self;
     v13 = v7;
-    [v9 performSyncBlock:v10];
+    [changeScheduler performSyncBlock:v10];
   }
 }
 
@@ -1630,25 +1630,25 @@ void __106__EDPrecomputedThreadQueryHandler_persistenceIsReconcilingJournaledThr
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsChangingThreadWithObjectID:(id)a3 changedKeyPaths:(id)a4 generationWindow:(id)a5
+- (void)persistenceIsChangingThreadWithObjectID:(id)d changedKeyPaths:(id)paths generationWindow:(id)window
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 threadScope];
-  v10 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v11 = [v9 isEqual:v10];
+  dCopy = d;
+  pathsCopy = paths;
+  threadScope = [dCopy threadScope];
+  threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v11 = [threadScope isEqual:threadScope2];
 
   if (v11)
   {
-    v12 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjectID_changedKeyPaths_generationWindow___block_invoke;
     v13[3] = &unk_1E8250720;
     v13[4] = self;
-    v14 = v7;
-    v15 = v8;
-    [v12 performSyncBlock:v13];
+    v14 = dCopy;
+    v15 = pathsCopy;
+    [changeScheduler performSyncBlock:v13];
   }
 }
 
@@ -1732,84 +1732,84 @@ void __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjec
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_persistenceIsChangingThreadWithObjectID:(id)a3 changedKeyPaths:(id)a4
+- (void)_persistenceIsChangingThreadWithObjectID:(id)d changedKeyPaths:(id)paths
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(EDPrecomputedThreadQueryHandler *)self _isAddingOrDeletingObjectID:v6])
+  dCopy = d;
+  pathsCopy = paths;
+  if ([(EDPrecomputedThreadQueryHandler *)self _isAddingOrDeletingObjectID:dCopy])
   {
     v8 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v6;
+      v16 = dCopy;
       v17 = 2114;
-      v18 = v9;
+      v18 = threadScope;
       _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Ignoring change for objectID: %{public}@\n%{public}@", &v13, 0x20u);
     }
   }
 
   else
   {
-    v10 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-    v11 = [v10 changeForThreadWithObjectID:v6 changedKeyPaths:v7];
+    threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+    v11 = [threadPersistence changeForThreadWithObjectID:dCopy changedKeyPaths:pathsCopy];
 
-    [(EDPrecomputedThreadQueryHandler *)self _addChangeToPendingChanges:v11 forThreadObjectID:v6];
+    [(EDPrecomputedThreadQueryHandler *)self _addChangeToPendingChanges:v11 forThreadObjectID:dCopy];
   }
 
-  if ([(EDMessageRepositoryQueryHandler *)self keyPathsAffectSorting:v7])
+  if ([(EDMessageRepositoryQueryHandler *)self keyPathsAffectSorting:pathsCopy])
   {
-    [(EDPrecomputedThreadQueryHandler *)self _reportMoveForThreadObjectID:v6];
+    [(EDPrecomputedThreadQueryHandler *)self _reportMoveForThreadObjectID:dCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportMoveForThreadObjectID:(id)a3
+- (void)_reportMoveForThreadObjectID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self reportedJournaledObjectIDs];
-  v6 = [v5 allKeys];
+  dCopy = d;
+  reportedJournaledObjectIDs = [(EDPrecomputedThreadQueryHandler *)self reportedJournaledObjectIDs];
+  allKeys = [reportedJournaledObjectIDs allKeys];
 
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-  v8 = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
-  v9 = [v7 nextExistingThreadObjectIDForThreadObjectID:v4 forSortKeys:v8 journaledThreadsToCheck:v6 excluding:0];
+  threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+  sortKeys = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
+  v9 = [threadPersistence nextExistingThreadObjectIDForThreadObjectID:dCopy forSortKeys:sortKeys journaledThreadsToCheck:allKeys excluding:0];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    null = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12 = v11;
+  v12 = null;
 
-  v13 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-  v14 = [v13 lastObject];
-  v15 = [v14 addObjectIDToMove:v4 before:v12];
+  pendingPositionChanges = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+  lastObject = [pendingPositionChanges lastObject];
+  v15 = [lastObject addObjectIDToMove:dCopy before:v12];
 
   if (v15)
   {
     v16 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v22 = 134218754;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
-      v29 = v17;
+      v29 = threadScope;
       _os_log_impl(&dword_1C61EF000, &v16->super, OS_LOG_TYPE_DEFAULT, "%p: Adding move for objectID: %{public}@ -> %{public}@\n%{public}@", &v22, 0x2Au);
     }
   }
@@ -1817,22 +1817,22 @@ void __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjec
   else
   {
     v16 = objc_alloc_init(_EDThreadPositionChangeSet);
-    [(_EDThreadPositionChangeSet *)v16 addObjectIDToMove:v4 before:v12];
-    v18 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
-    [v18 addObject:v16];
+    [(_EDThreadPositionChangeSet *)v16 addObjectIDToMove:dCopy before:v12];
+    pendingPositionChanges2 = [(EDPrecomputedThreadQueryHandler *)self pendingPositionChanges];
+    [pendingPositionChanges2 addObject:v16];
 
     v19 = +[EDPrecomputedThreadQueryHandler log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+      threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
       v22 = 134218754;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
-      v29 = v20;
+      v29 = threadScope2;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "%p: Adding move to new position change for objectID: %{public}@ -> %{public}@\n%{public}@", &v22, 0x2Au);
     }
   }
@@ -1840,14 +1840,14 @@ void __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjec
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsChangingThreadWithObjectID:(id)a3 newIsUrgentValue:(BOOL)a4 generationWindow:(id)a5
+- (void)persistenceIsChangingThreadWithObjectID:(id)d newIsUrgentValue:(BOOL)value generationWindow:(id)window
 {
-  v5 = a4;
+  valueCopy = value;
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 threadScope];
-  v9 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v10 = [v8 isEqual:v9];
+  dCopy = d;
+  threadScope = [dCopy threadScope];
+  threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v10 = [threadScope isEqual:threadScope2];
 
   if (v10)
   {
@@ -1857,20 +1857,20 @@ void __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjec
       *buf = 134218498;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v5;
+      *&buf[14] = valueCopy;
       *&buf[18] = 2114;
-      *&buf[20] = v7;
+      *&buf[20] = dCopy;
       _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%p: Urgent flag set to %d for objectID: %{public}@", buf, 0x1Cu);
     }
 
-    v12 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+    threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
     v28[0] = *MEMORY[0x1E699A900];
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v14 = [v12 changeForThreadWithObjectID:v7 changedKeyPaths:v13];
+    v14 = [threadPersistence changeForThreadWithObjectID:dCopy changedKeyPaths:v13];
 
-    [(EDPrecomputedThreadQueryHandler *)self _addChangeToPendingChanges:v14 forThreadObjectID:v7];
-    v15 = [(EDPrecomputedThreadQueryHandler *)self sectionPredicates];
-    LOBYTE(v13) = [v15 count] == 0;
+    [(EDPrecomputedThreadQueryHandler *)self _addChangeToPendingChanges:v14 forThreadObjectID:dCopy];
+    sectionPredicates = [(EDPrecomputedThreadQueryHandler *)self sectionPredicates];
+    LOBYTE(v13) = [sectionPredicates count] == 0;
 
     if ((v13 & 1) == 0)
     {
@@ -1878,17 +1878,17 @@ void __108__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjec
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       buf[24] = 0;
-      v16 = [(EDPrecomputedThreadQueryHandler *)self sectionIndexesByConversationID];
+      sectionIndexesByConversationID = [(EDPrecomputedThreadQueryHandler *)self sectionIndexesByConversationID];
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __109__EDPrecomputedThreadQueryHandler_persistenceIsChangingThreadWithObjectID_newIsUrgentValue_generationWindow___block_invoke;
       v22 = &unk_1E8256038;
-      v26 = v5;
-      v17 = v7;
+      v26 = valueCopy;
+      v17 = dCopy;
       v23 = v17;
-      v24 = self;
+      selfCopy = self;
       v25 = buf;
-      [v16 performWhileLocked:&v19];
+      [sectionIndexesByConversationID performWhileLocked:&v19];
 
       if (*(*&buf[8] + 24) == 1)
       {
@@ -1969,42 +1969,42 @@ LABEL_10:
 
 - (BOOL)_shouldSectionItemsRemainInSection
 {
-  v2 = [(EDMessageRepositoryQueryHandler *)self query];
-  v3 = [v2 targetClassOptions];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699A9F8]];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  targetClassOptions = [query targetClassOptions];
+  v4 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9F8]];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)persistenceDidChangeConversationNotificationLevel:(int64_t)a3 conversationID:(int64_t)a4 generationWindow:(id)a5
+- (void)persistenceDidChangeConversationNotificationLevel:(int64_t)level conversationID:(int64_t)d generationWindow:(id)window
 {
   v8 = objc_alloc(MEMORY[0x1E699AEF8]);
-  v9 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v10 = [v8 initWithConversationID:a4 threadScope:v9];
+  threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v10 = [v8 initWithConversationID:d threadScope:threadScope];
 
   v11 = [(EDPrecomputedThreadQueryHandler *)self messageListItemForObjectID:v10 error:0];
 
   if (v11)
   {
-    v12 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __117__EDPrecomputedThreadQueryHandler_persistenceDidChangeConversationNotificationLevel_conversationID_generationWindow___block_invoke;
     v13[3] = &unk_1E8251A78;
     v13[4] = self;
     v14 = v10;
-    v15 = a3;
-    [v12 performSyncBlock:v13];
+    levelCopy = level;
+    [changeScheduler performSyncBlock:v13];
   }
 }
 
@@ -2050,23 +2050,23 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsDeletingThreadWithObjectID:(id)a3 generationWindow:(id)a4
+- (void)persistenceIsDeletingThreadWithObjectID:(id)d generationWindow:(id)window
 {
-  v5 = a3;
-  v6 = [v5 threadScope];
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v8 = [v6 isEqual:v7];
+  dCopy = d;
+  threadScope = [dCopy threadScope];
+  threadScope2 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  v8 = [threadScope isEqual:threadScope2];
 
   if (v8)
   {
-    v9 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __92__EDPrecomputedThreadQueryHandler_persistenceIsDeletingThreadWithObjectID_generationWindow___block_invoke;
     v10[3] = &unk_1E8255F20;
     v10[4] = self;
-    v11 = v5;
-    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v9 performCancelableBlock:v10];
+    v11 = dCopy;
+    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v10];
   }
 }
 
@@ -2128,26 +2128,26 @@ void __92__EDPrecomputedThreadQueryHandler_persistenceIsDeletingThreadWithObject
 
 - (void)persistenceDidFinishThreadUpdates
 {
-  v3 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+  changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__EDPrecomputedThreadQueryHandler_persistenceDidFinishThreadUpdates__block_invoke;
   v4[3] = &unk_1E8255EF8;
   v4[4] = self;
-  [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v3 performCancelableBlock:v4];
+  [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v4];
 }
 
-- (void)persistenceDidChangeBusinessIDForMessages:(id)a3 fromBusinessID:(int64_t)a4
+- (void)persistenceDidChangeBusinessIDForMessages:(id)messages fromBusinessID:(int64_t)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  messagesCopy = messages;
   v5 = objc_opt_new();
   v22 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v20;
+  obj = messagesCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -2162,17 +2162,17 @@ void __92__EDPrecomputedThreadQueryHandler_persistenceIsDeletingThreadWithObject
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:*(*(&v27 + 1) + 8 * v8), v20];
-        v10 = v9;
-        if (v9)
+        messagesCopy = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:*(*(&v27 + 1) + 8 * v8), messagesCopy];
+        v10 = messagesCopy;
+        if (messagesCopy)
         {
-          v11 = [v9 itemID];
-          [v22 addObject:v11];
+          itemID = [messagesCopy itemID];
+          [v22 addObject:itemID];
 
           v12 = objc_alloc(MEMORY[0x1E699AEF8]);
-          v13 = [v10 conversationID];
-          v14 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-          v15 = [v12 initWithConversationID:v13 threadScope:v14];
+          conversationID = [v10 conversationID];
+          threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+          v15 = [v12 initWithConversationID:conversationID threadScope:threadScope];
 
           [v5 addObject:v15];
         }
@@ -2187,17 +2187,17 @@ void __92__EDPrecomputedThreadQueryHandler_persistenceIsDeletingThreadWithObject
     while (v6);
   }
 
-  v16 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+  changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __92__EDPrecomputedThreadQueryHandler_persistenceDidChangeBusinessIDForMessages_fromBusinessID___block_invoke;
   v23[3] = &unk_1E8255340;
   v17 = v5;
   v24 = v17;
-  v25 = self;
+  selfCopy = self;
   v18 = v22;
   v26 = v18;
-  [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v16 performCancelableBlock:v23];
+  [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v23];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -2280,20 +2280,20 @@ void __92__EDPrecomputedThreadQueryHandler_persistenceDidChangeBusinessIDForMess
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window
 {
-  v7 = a5;
-  v8 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:v7];
+  messageCopy = message;
+  v8 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:messageCopy];
   if (v8)
   {
-    v9 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+    changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __113__EDPrecomputedThreadQueryHandler_persistenceDidChangeGlobalMessageID_orConversationID_message_generationWindow___block_invoke;
     v10[3] = &unk_1E8255F20;
     v11 = v8;
-    v12 = self;
-    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v9 performCancelableBlock:v10];
+    selfCopy = self;
+    [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v10];
   }
 }
 
@@ -2349,33 +2349,33 @@ void __113__EDPrecomputedThreadQueryHandler_persistenceDidChangeGlobalMessageID_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidUpdateProperties:(id)a3 message:(id)a4 generationWindow:(id)a5
+- (void)persistenceDidUpdateProperties:(id)properties message:(id)message generationWindow:(id)window
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 containsObject:*MEMORY[0x1E699B1D0]];
-  v10 = [v7 containsObject:*MEMORY[0x1E699B1D8]];
-  v11 = [v7 containsObject:@"GeneratedSummary"];
-  v12 = [v7 containsObject:@"BrandIndicatorLocation"];
+  propertiesCopy = properties;
+  messageCopy = message;
+  v9 = [propertiesCopy containsObject:*MEMORY[0x1E699B1D0]];
+  v10 = [propertiesCopy containsObject:*MEMORY[0x1E699B1D8]];
+  v11 = [propertiesCopy containsObject:@"GeneratedSummary"];
+  v12 = [propertiesCopy containsObject:@"BrandIndicatorLocation"];
   v13 = v12;
   if ((v9 | v10 | v11 | v12))
   {
-    v14 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:v8];
+    v14 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:messageCopy];
     if (v14)
     {
-      v15 = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
+      changeScheduler = [(EDPrecomputedThreadQueryHandler *)self changeScheduler];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __91__EDPrecomputedThreadQueryHandler_persistenceDidUpdateProperties_message_generationWindow___block_invoke;
       v17[3] = &unk_1E8256088;
       v16 = v14;
       v18 = v16;
-      v19 = self;
+      selfCopy = self;
       v20 = v9;
       v21 = v10;
       v22 = v11;
       v23 = v13;
-      [(EDPrecomputedThreadQueryHandler *)self _onScheduler:v15 performCancelableBlock:v17];
+      [(EDPrecomputedThreadQueryHandler *)self _onScheduler:changeScheduler performCancelableBlock:v17];
     }
   }
 }
@@ -2557,34 +2557,34 @@ void __91__EDPrecomputedThreadQueryHandler_persistenceDidUpdateProperties_messag
   }
 }
 
-- (id)_messageForPersistedMessage:(id)a3
+- (id)_messageForPersistedMessage:(id)message
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v6 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-  v16[0] = v4;
+  messageCopy = message;
+  threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  messagePersistence = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+  v16[0] = messageCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v8 = [v5 mailboxScope];
-  v9 = [v6 messagesForPersistedMessages:v7 mailboxScope:v8];
-  v10 = [v9 firstObject];
+  mailboxScope = [threadScope mailboxScope];
+  v9 = [messagePersistence messagesForPersistedMessages:v7 mailboxScope:mailboxScope];
+  firstObject = [v9 firstObject];
 
-  v11 = [v5 filterPredicate];
-  if (v11)
+  filterPredicate = [threadScope filterPredicate];
+  if (filterPredicate)
   {
-    v12 = [v5 filterPredicate];
-    v13 = [v12 evaluateWithObject:v10];
+    filterPredicate2 = [threadScope filterPredicate];
+    v13 = [filterPredicate2 evaluateWithObject:firstObject];
 
     if ((v13 & 1) == 0)
     {
 
-      v10 = 0;
+      firstObject = 0;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return firstObject;
 }
 
 void __59__EDPrecomputedThreadQueryHandler__oldestThreadsNeedUpdate__block_invoke(uint64_t a1)
@@ -2683,19 +2683,19 @@ void __59__EDPrecomputedThreadQueryHandler__oldestThreadsNeedUpdate__block_invok
   [v3 observer:v2 matchedOldestItemsUpdatedForMailboxes:*(a1 + 40)];
 }
 
-- (void)controller:(id)a3 messageTimerFired:(id)a4
+- (void)controller:(id)controller messageTimerFired:(id)fired
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  firedCopy = fired;
   if ([(EDPrecomputedThreadQueryHandler *)self updateDisplayDate])
   {
-    v6 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:v5];
+    v6 = [(EDPrecomputedThreadQueryHandler *)self _messageForPersistedMessage:firedCopy];
     if (v6)
     {
-      v7 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-      v10[0] = v5;
+      messagePersistence = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+      v10[0] = firedCopy;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      [v7 updateBeforeDisplayForPersistedMessages:v8];
+      [messagePersistence updateBeforeDisplayForPersistedMessages:v8];
     }
   }
 
@@ -2704,29 +2704,29 @@ void __59__EDPrecomputedThreadQueryHandler__oldestThreadsNeedUpdate__block_invok
 
 - (id)labelForStateCapture
 {
-  v2 = [(EDMessageRepositoryQueryHandler *)self query];
-  v3 = [v2 label];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  label = [query label];
 
-  return v3;
+  return label;
 }
 
-- (id)itemIDsForStateCaptureWithErrorString:(id *)a3
+- (id)itemIDsForStateCaptureWithErrorString:(id *)string
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
-  v7 = [(EDPrecomputedThreadQueryHandler *)self threadScope];
-  v8 = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
+  threadPersistence = [(EDPrecomputedThreadQueryHandler *)self threadPersistence];
+  threadScope = [(EDPrecomputedThreadQueryHandler *)self threadScope];
+  sortKeys = [(EDPrecomputedThreadQueryHandler *)self sortKeys];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__EDPrecomputedThreadQueryHandler_itemIDsForStateCaptureWithErrorString___block_invoke;
   v11[3] = &unk_1E82560B0;
   v9 = v5;
   v12 = v9;
-  [v6 threadObjectIDsForThreadScope:v7 sortKeys:v8 initialBatchSize:15000 journaledObjectIDs:0 batchBlock:v11];
+  [threadPersistence threadObjectIDsForThreadScope:threadScope sortKeys:sortKeys initialBatchSize:15000 journaledObjectIDs:0 batchBlock:v11];
 
-  if (a3)
+  if (string)
   {
-    *a3 = 0;
+    *string = 0;
   }
 
   return v9;

@@ -1,6 +1,6 @@
 @interface DOMHTMLLinkElement
 - (BOOL)_mediaQueryMatches;
-- (BOOL)_mediaQueryMatchesForOrientation:(int)a3;
+- (BOOL)_mediaQueryMatchesForOrientation:(int)orientation;
 - (BOOL)disabled;
 - (DOMStyleSheet)sheet;
 - (NSString)charset;
@@ -15,9 +15,9 @@
 - (id)as;
 - (id)crossOrigin;
 - (id)relList;
-- (void)setAs:(id)a3;
+- (void)setAs:(id)as;
 - (void)setCharset:(NSString *)charset;
-- (void)setCrossOrigin:(id)a3;
+- (void)setCrossOrigin:(id)origin;
 - (void)setDisabled:(BOOL)disabled;
 - (void)setHref:(NSString *)href;
 - (void)setHreflang:(NSString *)hreflang;
@@ -30,7 +30,7 @@
 
 @implementation DOMHTMLLinkElement
 
-- (BOOL)_mediaQueryMatchesForOrientation:(int)a3
+- (BOOL)_mediaQueryMatchesForOrientation:(int)orientation
 {
   v5 = *(*(*(core(self) + 48) + 8) + 552);
   if (!v5)
@@ -54,7 +54,7 @@
   v9 = WebCore::ScrollView::layoutSize(v7) >> 32;
   v13 = WebCore::ScrollView::fixedLayoutSize(v7);
   WebCore::ScrollView::useFixedLayout(v7);
-  if (a3 == 1 && v8 > v9 || a3 == 2 && v8 < v9)
+  if (orientation == 1 && v8 > v9 || orientation == 2 && v8 < v9)
   {
     v12 = __PAIR64__(v8, v9);
     WebCore::ScrollView::setFixedLayoutSize();
@@ -591,10 +591,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setAs:(id)a3
+- (void)setAs:(id)as
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, as, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -649,10 +649,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)setCrossOrigin:(id)a3
+- (void)setCrossOrigin:(id)origin
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, origin, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)

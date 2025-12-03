@@ -1,15 +1,15 @@
 @interface DeviceOrientationObserver
-- (void)deviceDidRotateWithNotification:(id)a3;
+- (void)deviceDidRotateWithNotification:(id)notification;
 @end
 
 @implementation DeviceOrientationObserver
 
-- (void)deviceDidRotateWithNotification:(id)a3
+- (void)deviceDidRotateWithNotification:(id)notification
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C765E10);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v9 - v5;
-  if (a3)
+  if (notification)
   {
     sub_20C1325E4();
     v7 = sub_20C132614();

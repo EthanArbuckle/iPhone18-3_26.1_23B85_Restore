@@ -4,8 +4,8 @@
 - (void)beginMonitoring;
 - (void)dealloc;
 - (void)endMonitoring;
-- (void)setCMObserver:(id)a3;
-- (void)setNetworkIsActive:(BOOL)a3;
+- (void)setCMObserver:(id)observer;
+- (void)setNetworkIsActive:(BOOL)active;
 @end
 
 @implementation CMNetworkActivityMonitor
@@ -49,14 +49,14 @@ CMNetworkActivityMonitor *__49__CMNetworkActivityMonitor_sharedActivityMonitor__
   [(CMNetworkActivityMonitor *)&v3 dealloc];
 }
 
-- (void)setCMObserver:(id)a3
+- (void)setCMObserver:(id)observer
 {
   cmObserver = self->_cmObserver;
-  if (cmObserver != a3)
+  if (cmObserver != observer)
   {
     [(CMNetworkActivityObserver *)cmObserver invalidate];
 
-    self->_cmObserver = a3;
+    self->_cmObserver = observer;
   }
 }
 
@@ -112,14 +112,14 @@ uint64_t __41__CMNetworkActivityMonitor_endMonitoring__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setNetworkIsActive:(BOOL)a3
+- (void)setNetworkIsActive:(BOOL)active
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__CMNetworkActivityMonitor_setNetworkIsActive___block_invoke;
   v4[3] = &unk_1E7483B70;
-  v5 = a3;
+  activeCopy = active;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }

@@ -1,5 +1,5 @@
 @interface VUIFocusableTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsMoreLabelVisible;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
@@ -7,11 +7,11 @@
 
 @implementation VUIFocusableTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIFocusableTextView" isKindOfClass:@"TVFocusableTextView"];
-  [v3 validateClass:@"TVFocusableTextView" hasProperty:@"moreLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIFocusableTextView" isKindOfClass:@"TVFocusableTextView"];
+  [validationsCopy validateClass:@"TVFocusableTextView" hasProperty:@"moreLabel" withType:"@"];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -43,17 +43,17 @@
 {
   if ([(VUIFocusableTextViewAccessibility *)self _accessibilityIsMoreLabelVisible])
   {
-    v3 = accessibilityLocalizedString(@"more.label.details.hint");
+    accessibilityHint = accessibilityLocalizedString(@"more.label.details.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = VUIFocusableTextViewAccessibility;
-    v3 = [(VUIFocusableTextViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(VUIFocusableTextViewAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_accessibilityIsMoreLabelVisible

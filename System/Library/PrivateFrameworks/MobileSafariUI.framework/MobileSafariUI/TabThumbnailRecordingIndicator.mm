@@ -1,37 +1,37 @@
 @interface TabThumbnailRecordingIndicator
-- (TabThumbnailRecordingIndicator)initWithFrame:(CGRect)a3;
+- (TabThumbnailRecordingIndicator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMediaStateIcon:(unint64_t)a3;
+- (void)setMediaStateIcon:(unint64_t)icon;
 @end
 
 @implementation TabThumbnailRecordingIndicator
 
-- (TabThumbnailRecordingIndicator)initWithFrame:(CGRect)a3
+- (TabThumbnailRecordingIndicator)initWithFrame:(CGRect)frame
 {
   v29[4] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = TabThumbnailRecordingIndicator;
-  v3 = [(TabThumbnailRecordingIndicator *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TabThumbnailRecordingIndicator *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(TabThumbnailRecordingIndicator *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277D75348] systemRedColor];
-    [(TabThumbnailRecordingIndicator *)v4 setBackgroundColor:v5];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(TabThumbnailRecordingIndicator *)v4 setBackgroundColor:systemRedColor];
 
     [(TabThumbnailRecordingIndicator *)v4 setClipsToBounds:0];
-    v27 = [(TabThumbnailRecordingIndicator *)v4 layer];
+    layer = [(TabThumbnailRecordingIndicator *)v4 layer];
     LODWORD(v6) = 0.25;
-    [v27 setShadowOpacity:v6];
-    [v27 setShadowOffset:{0.0, 0.0}];
-    [v27 setShadowRadius:12.0];
-    [v27 setShadowPathIsBounds:1];
+    [layer setShadowOpacity:v6];
+    [layer setShadowOffset:{0.0, 0.0}];
+    [layer setShadowRadius:12.0];
+    [layer setShadowPathIsBounds:1];
     v7 = objc_alloc_init(MEMORY[0x277D755E8]);
     imageView = v4->_imageView;
     v4->_imageView = v7;
 
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v4->_imageView setTintColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v4->_imageView setTintColor:whiteColor];
 
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = MEMORY[0x277D755D0];
@@ -43,19 +43,19 @@
     [(UIImageView *)v4->_imageView _sf_setMatchesIntrinsicContentSize];
     [(TabThumbnailRecordingIndicator *)v4 addSubview:v4->_imageView];
     v24 = MEMORY[0x277CCAAD0];
-    v26 = [(UIImageView *)v4->_imageView centerXAnchor];
-    v25 = [(TabThumbnailRecordingIndicator *)v4 centerXAnchor];
-    v13 = [v26 constraintEqualToAnchor:v25];
+    centerXAnchor = [(UIImageView *)v4->_imageView centerXAnchor];
+    centerXAnchor2 = [(TabThumbnailRecordingIndicator *)v4 centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v29[0] = v13;
-    v14 = [(UIImageView *)v4->_imageView centerYAnchor];
-    v15 = [(TabThumbnailRecordingIndicator *)v4 centerYAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerYAnchor = [(UIImageView *)v4->_imageView centerYAnchor];
+    centerYAnchor2 = [(TabThumbnailRecordingIndicator *)v4 centerYAnchor];
+    v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v29[1] = v16;
-    v17 = [(TabThumbnailRecordingIndicator *)v4 widthAnchor];
-    v18 = [v17 constraintEqualToConstant:22.0];
+    widthAnchor = [(TabThumbnailRecordingIndicator *)v4 widthAnchor];
+    v18 = [widthAnchor constraintEqualToConstant:22.0];
     v29[2] = v18;
-    v19 = [(TabThumbnailRecordingIndicator *)v4 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:22.0];
+    heightAnchor = [(TabThumbnailRecordingIndicator *)v4 heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:22.0];
     v29[3] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [v24 activateConstraints:v21];
@@ -75,11 +75,11 @@
   [(TabThumbnailRecordingIndicator *)self _setCornerRadius:CGRectGetWidth(v4) * 0.5];
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     v5 = MEMORY[0x277D755B8];
     v7 = SFSystemImageNameForMediaStateIcon();
     v6 = [v5 systemImageNamed:v7];

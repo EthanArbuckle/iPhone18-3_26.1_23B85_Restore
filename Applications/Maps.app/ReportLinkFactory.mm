@@ -1,24 +1,24 @@
 @interface ReportLinkFactory
-- (id)createModelForType:(int64_t)a3;
+- (id)createModelForType:(int64_t)type;
 @end
 
 @implementation ReportLinkFactory
 
-- (id)createModelForType:(int64_t)a3
+- (id)createModelForType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = objc_alloc_init(*(&off_101651770)[a3]);
+    v3 = objc_alloc_init(*(&off_101651770)[type]);
   }
 
-  v4 = [v3 createReportLink];
+  createReportLink = [v3 createReportLink];
 
-  return v4;
+  return createReportLink;
 }
 
 @end

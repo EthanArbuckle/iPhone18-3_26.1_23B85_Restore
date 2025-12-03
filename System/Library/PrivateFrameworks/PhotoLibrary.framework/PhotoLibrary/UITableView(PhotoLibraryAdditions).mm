@@ -10,10 +10,10 @@
 
 - (uint64_t)pl_resetContentOffsetFromContentInsets
 {
-  [a1 contentInset];
+  [self contentInset];
   v3 = v2;
   v5 = v4;
-  [a1 contentOffset];
+  [self contentOffset];
   v8 = v7 - v5;
   if (v8 < -v5)
   {
@@ -26,19 +26,19 @@
     v9 = -v3;
   }
 
-  return [a1 setContentOffset:{v8, v9}];
+  return [self setContentOffset:{v8, v9}];
 }
 
 - (uint64_t)pl_indexPathForLastRow
 {
-  v2 = [a1 numberOfSections];
-  if (!v2)
+  numberOfSections = [self numberOfSections];
+  if (!numberOfSections)
   {
     return 0;
   }
 
-  v3 = v2 - 1;
-  v4 = [a1 numberOfRowsInSection:v2 - 1];
+  v3 = numberOfSections - 1;
+  v4 = [self numberOfRowsInSection:numberOfSections - 1];
   if (!v4)
   {
     return 0;
@@ -52,14 +52,14 @@
 
 - (uint64_t)pl_lastRowIsVisible
 {
-  v2 = [a1 pl_indexPathForLastRow];
-  if (!v2)
+  pl_indexPathForLastRow = [self pl_indexPathForLastRow];
+  if (!pl_indexPathForLastRow)
   {
     return 0;
   }
 
-  v3 = v2;
-  v4 = [objc_msgSend(a1 "indexPathsForVisibleRows")];
+  v3 = pl_indexPathForLastRow;
+  v4 = [objc_msgSend(self "indexPathsForVisibleRows")];
   if (!v4)
   {
     return 0;
@@ -70,21 +70,21 @@
 
 - (uint64_t)pl_scrollToBottom:()PhotoLibraryAdditions
 {
-  v5 = [a1 tableFooterView];
-  if (v5)
+  tableFooterView = [self tableFooterView];
+  if (tableFooterView)
   {
-    [v5 frame];
+    [tableFooterView frame];
 
-    return [a1 scrollRectToVisible:a3 animated:?];
+    return [self scrollRectToVisible:a3 animated:?];
   }
 
   else
   {
-    result = [a1 pl_indexPathForLastRow];
+    result = [self pl_indexPathForLastRow];
     if (result)
     {
 
-      return [a1 scrollToRowAtIndexPath:result atScrollPosition:3 animated:a3];
+      return [self scrollToRowAtIndexPath:result atScrollPosition:3 animated:a3];
     }
   }
 
@@ -93,32 +93,32 @@
 
 - (uint64_t)pl_scrollToVisibleRowAtIndexPath:()PhotoLibraryAdditions animated:
 {
-  v8 = [a3 section];
+  section = [a3 section];
   v9 = [a3 row];
-  if (v9 >= [a1 numberOfRowsInSection:v8])
+  if (v9 >= [self numberOfRowsInSection:section])
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
 
-  [a1 rectForRowAtIndexPath:a3];
+  [self rectForRowAtIndexPath:a3];
   v37 = v11;
   v38 = v10;
   v35 = v13;
   v36 = v12;
-  [a1 contentInset];
+  [self contentInset];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [a1 bounds];
+  [self bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  if ([a3 isEqual:{objc_msgSend(a1, "pl_indexPathForLastRow")}])
+  if ([a3 isEqual:{objc_msgSend(self, "pl_indexPathForLastRow")}])
   {
 
-    return [a1 pl_scrollToBottom:a4];
+    return [self pl_scrollToBottom:a4];
   }
 
   else
@@ -149,14 +149,14 @@
       if (CGRectIntersectsRect(v41, v43))
       {
 
-        return [a1 scrollRectToVisible:a4 animated:{v38, v37, v36, v35}];
+        return [self scrollRectToVisible:a4 animated:{v38, v37, v36, v35}];
       }
 
       else
       {
-        [a1 scrollToRowAtIndexPath:a3 atScrollPosition:2 animated:a4];
+        [self scrollToRowAtIndexPath:a3 atScrollPosition:2 animated:a4];
 
-        return [a1 pl_resetContentOffsetFromContentInsets];
+        return [self pl_resetContentOffsetFromContentInsets];
       }
     }
   }

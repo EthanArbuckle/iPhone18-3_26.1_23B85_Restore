@@ -1,10 +1,10 @@
 @interface PLXPCTransaction
 + (id)openXPCTransactionStatus;
-+ (id)transaction:(const char *)a3;
-+ (void)_startTrackingTransaction:(id)a3;
-+ (void)_stopTrackingTransaction:(id)a3;
++ (id)transaction:(const char *)transaction;
++ (void)_startTrackingTransaction:(id)transaction;
++ (void)_stopTrackingTransaction:(id)transaction;
 + (void)initialize;
-- (PLXPCTransaction)initWithIdentifier:(const char *)a3;
+- (PLXPCTransaction)initWithIdentifier:(const char *)identifier;
 - (id)description;
 - (void)dealloc;
 @end
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (PLXPCTransaction)initWithIdentifier:(const char *)a3
+- (PLXPCTransaction)initWithIdentifier:(const char *)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -50,9 +50,9 @@
   v4 = [(PLXPCTransaction *)&v22 init];
   if (v4)
   {
-    if (a3)
+    if (identifier)
     {
-      if (*a3)
+      if (*identifier)
       {
         goto LABEL_4;
       }
@@ -72,48 +72,48 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
 LABEL_21:
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138543618;
         v24 = v10;
         v25 = 2112;
-        v26 = v20;
+        v26 = callStackSymbols;
         _os_log_impl(&dword_1AA9BD000, v11, OS_LOG_TYPE_FAULT, "%{public}@, backtrace:\n%@", buf, 0x16u);
       }
     }
 
 LABEL_4:
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos.PLXPCTransaction: %p %s", v4, a3];
-    if (!v5)
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos.PLXPCTransaction: %p %s", v4, identifier];
+    if (!identifier)
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: created nil transaction description (identifier: %s).", a3];
+      identifier2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: created nil transaction description (identifier: %s).", identifier];
       v13 = PLBackendGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138543618;
-        v24 = v12;
+        v24 = identifier2;
         v25 = 2112;
-        v26 = v14;
+        v26 = callStackSymbols2;
         _os_log_impl(&dword_1AA9BD000, v13, OS_LOG_TYPE_FAULT, "%{public}@, backtrace:\n%@", buf, 0x16u);
       }
     }
 
-    [v5 UTF8String];
+    [identifier UTF8String];
     v6 = os_transaction_create();
     transaction = v4->_transaction;
     v4->_transaction = v6;
 
     if (!v4->_transaction)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: created NULL os_transaction (identifier: %s, transactionDescription: %@).", a3, v5];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: created NULL os_transaction (identifier: %s, transactionDescription: %@).", identifier, identifier];
       v16 = PLBackendGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        v17 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138543618;
         v24 = v15;
         v25 = 2112;
-        v26 = v17;
+        v26 = callStackSymbols3;
         _os_log_impl(&dword_1AA9BD000, v16, OS_LOG_TYPE_FAULT, "%{public}@, backtrace:\n%@", buf, 0x16u);
       }
     }
@@ -124,13 +124,13 @@ LABEL_4:
       if (*description)
       {
 LABEL_8:
-        v4->_identifier = a3;
+        v4->_identifier = identifier;
         [PLXPCTransaction _startTrackingTransaction:v4];
 
         return v4;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: os_transaction has an empty description (identifier: %s, transactionDescription: %@).", a3, v5];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: os_transaction has an empty description (identifier: %s, transactionDescription: %@).", identifier, identifier];
       v19 = PLBackendGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -140,16 +140,16 @@ LABEL_8:
 
     else
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: os_transaction has a NULL description (identifier: %s, transactionDescription: %@).", a3, v5];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLXPCTransaction: os_transaction has a NULL description (identifier: %s, transactionDescription: %@).", identifier, identifier];
       v19 = PLBackendGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
 LABEL_24:
-        v21 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138543618;
         v24 = v18;
         v25 = 2112;
-        v26 = v21;
+        v26 = callStackSymbols4;
         _os_log_impl(&dword_1AA9BD000, v19, OS_LOG_TYPE_FAULT, "%{public}@, backtrace:\n%@", buf, 0x16u);
       }
     }
@@ -185,13 +185,13 @@ uint64_t __44__PLXPCTransaction_openXPCTransactionStatus__block_invoke(uint64_t 
   return result;
 }
 
-+ (void)_stopTrackingTransaction:(id)a3
++ (void)_stopTrackingTransaction:(id)transaction
 {
-  v5 = a3;
-  if (!v5)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PLXPCTransaction.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLXPCTransaction.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
   }
 
   v10 = 0;
@@ -201,7 +201,7 @@ uint64_t __44__PLXPCTransaction_openXPCTransactionStatus__block_invoke(uint64_t 
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2050000000;
-  v9[3] = v5;
+  v9[3] = transactionCopy;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__PLXPCTransaction__stopTrackingTransaction___block_invoke;
@@ -211,8 +211,8 @@ uint64_t __44__PLXPCTransaction_openXPCTransactionStatus__block_invoke(uint64_t 
   dispatch_sync(_allTransactionsLock, block);
   if (!v11[3])
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"kPLXPCTransactionIdleNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"kPLXPCTransactionIdleNotification" object:0];
   }
 
   _Block_object_dispose(v9, 8);
@@ -227,13 +227,13 @@ uint64_t __45__PLXPCTransaction__stopTrackingTransaction___block_invoke(uint64_t
   return result;
 }
 
-+ (void)_startTrackingTransaction:(id)a3
++ (void)_startTrackingTransaction:(id)transaction
 {
-  v5 = a3;
-  if (!v5)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLXPCTransaction.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLXPCTransaction.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
   }
 
   v6 = _allTransactionsLock;
@@ -241,14 +241,14 @@ uint64_t __45__PLXPCTransaction__stopTrackingTransaction___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __46__PLXPCTransaction__startTrackingTransaction___block_invoke;
   block[3] = &unk_1E79329F0;
-  v10 = v5;
-  v7 = v5;
+  v10 = transactionCopy;
+  v7 = transactionCopy;
   dispatch_sync(v6, block);
 }
 
-+ (id)transaction:(const char *)a3
++ (id)transaction:(const char *)transaction
 {
-  v3 = [[PLXPCTransaction alloc] initWithIdentifier:a3];
+  v3 = [[PLXPCTransaction alloc] initWithIdentifier:transaction];
 
   return v3;
 }

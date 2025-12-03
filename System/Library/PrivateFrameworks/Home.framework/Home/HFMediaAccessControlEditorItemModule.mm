@@ -1,38 +1,38 @@
 @interface HFMediaAccessControlEditorItemModule
-+ (id)_descriptionFooterTextForAccessControlDescriptor:(id)a3 hasNonPeerToPeerMediaAccessories:(BOOL)a4;
++ (id)_descriptionFooterTextForAccessControlDescriptor:(id)descriptor hasNonPeerToPeerMediaAccessories:(BOOL)accessories;
 - (BOOL)_hasNonPeerToPeerMediaAccessories;
-- (BOOL)containsItem:(id)a3;
-- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)a3;
-- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)containsItem:(id)item;
+- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)updater;
+- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
-- (id)updateAccessControlDescriptor:(id)a3;
-- (void)home:(id)a3 didUpdateMediaPassword:(id)a4;
-- (void)home:(id)a3 didUpdateMinimumMediaUserPrivilege:(int64_t)a4;
+- (id)updateAccessControlDescriptor:(id)descriptor;
+- (void)home:(id)home didUpdateMediaPassword:(id)password;
+- (void)home:(id)home didUpdateMinimumMediaUserPrivilege:(int64_t)privilege;
 @end
 
 @implementation HFMediaAccessControlEditorItemModule
 
-- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)a3
+- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlEditorItemModule.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlEditorItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlEditorItemModule.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlEditorItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HFMediaAccessControlEditorItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFMediaAccessControlEditorItemModule;
-  v8 = [(HFItemModule *)&v14 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v14 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
-    v10 = [[HFMediaAccessControlEditorItemProvider alloc] initWithHome:v7];
+    objc_storeStrong(&v8->_home, home);
+    v10 = [[HFMediaAccessControlEditorItemProvider alloc] initWithHome:homeCopy];
     accessControlEditorItemProvider = v9->_accessControlEditorItemProvider;
     v9->_accessControlEditorItemProvider = v10;
 
@@ -54,8 +54,8 @@
   else
   {
     v5 = objc_opt_new();
-    v6 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-    [(NSSet *)v5 na_safeAddObject:v6];
+    accessControlEditorItemProvider = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+    [(NSSet *)v5 na_safeAddObject:accessControlEditorItemProvider];
 
     v7 = self->_itemProviders;
     self->_itemProviders = v5;
@@ -67,37 +67,37 @@
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  v8 = [v7 accessControlItems];
-  v9 = [v6 setWithArray:v8];
+  accessControlEditorItemProvider = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  accessControlItems = [accessControlEditorItemProvider accessControlItems];
+  v9 = [v6 setWithArray:accessControlItems];
 
   v10 = MEMORY[0x277CBEB98];
-  v11 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  v12 = [v11 passwordEnableItem];
-  v13 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  v14 = [v13 passwordItem];
-  v15 = [v10 setWithObjects:{v12, v14, 0}];
+  accessControlEditorItemProvider2 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  passwordEnableItem = [accessControlEditorItemProvider2 passwordEnableItem];
+  accessControlEditorItemProvider3 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  passwordItem = [accessControlEditorItemProvider3 passwordItem];
+  v15 = [v10 setWithObjects:{passwordEnableItem, passwordItem, 0}];
 
-  v16 = [v15 intersectsSet:v4];
+  v16 = [v15 intersectsSet:itemsCopy];
   v39 = v9;
   v17 = 0;
-  if ([v9 intersectsSet:v4])
+  if ([v9 intersectsSet:itemsCopy])
   {
     v17 = [(HFItemSection *)[HFMutableItemSection alloc] initWithIdentifier:@"ACCESS_CONTROL_SECTION"];
-    v24 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-    v25 = [v24 accessControlItems];
+    accessControlEditorItemProvider4 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+    accessControlItems2 = [accessControlEditorItemProvider4 accessControlItems];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __72__HFMediaAccessControlEditorItemModule_buildSectionsWithDisplayedItems___block_invoke;
     v42[3] = &unk_277DF4B70;
-    v43 = v4;
-    [v25 na_filter:v42];
+    v43 = itemsCopy;
+    [accessControlItems2 na_filter:v42];
     v27 = v26 = v5;
     [(HFItemSection *)v17 setItems:v27];
 
@@ -124,20 +124,20 @@ LABEL_3:
   }
 
   v38 = [(HFItemSection *)[HFMutableItemSection alloc] initWithIdentifier:@"ACCESS_CONTROL_PASSWORD_SECTION"];
-  v29 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  [v29 passwordEnableItem];
-  v30 = v4;
+  accessControlEditorItemProvider5 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  [accessControlEditorItemProvider5 passwordEnableItem];
+  v30 = itemsCopy;
   v31 = v15;
   v33 = v32 = v5;
   v44[0] = v33;
-  v34 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  v35 = [v34 passwordItem];
-  v44[1] = v35;
+  accessControlEditorItemProvider6 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  passwordItem2 = [accessControlEditorItemProvider6 passwordItem];
+  v44[1] = passwordItem2;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
 
   v5 = v32;
   v15 = v31;
-  v4 = v30;
+  itemsCopy = v30;
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -153,9 +153,9 @@ LABEL_3:
   {
 LABEL_4:
     v18 = objc_opt_class();
-    v19 = [(HFMediaAccessControlEditorItemModule *)self home];
-    v20 = [v19 hf_accessControlDescriptor];
-    v21 = [v18 _descriptionFooterTextForAccessControlDescriptor:v20 hasNonPeerToPeerMediaAccessories:{-[HFMediaAccessControlEditorItemModule _hasNonPeerToPeerMediaAccessories](self, "_hasNonPeerToPeerMediaAccessories")}];
+    home = [(HFMediaAccessControlEditorItemModule *)self home];
+    hf_accessControlDescriptor = [home hf_accessControlDescriptor];
+    v21 = [v18 _descriptionFooterTextForAccessControlDescriptor:hf_accessControlDescriptor hasNonPeerToPeerMediaAccessories:{-[HFMediaAccessControlEditorItemModule _hasNonPeerToPeerMediaAccessories](self, "_hasNonPeerToPeerMediaAccessories")}];
     [(HFItemSection *)v17 setFooterTitle:v21];
   }
 
@@ -166,17 +166,17 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HFMediaAccessControlEditorItemModule *)self itemProviders];
+  itemCopy = item;
+  itemProviders = [(HFMediaAccessControlEditorItemModule *)self itemProviders];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HFMediaAccessControlEditorItemModule_containsItem___block_invoke;
   v9[3] = &unk_277DF6898;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = itemCopy;
+  v6 = itemCopy;
+  v7 = [itemProviders na_any:v9];
 
   return v7;
 }
@@ -189,15 +189,15 @@ uint64_t __53__HFMediaAccessControlEditorItemModule_containsItem___block_invoke(
   return v4;
 }
 
-- (id)updateAccessControlDescriptor:(id)a3
+- (id)updateAccessControlDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = [(HFMediaAccessControlEditorItemModule *)self itemProviders];
-  v7 = [HFItemUpdateRequest requestToReloadItemProviders:v6 senderSelector:a2];
+  descriptorCopy = descriptor;
+  itemProviders = [(HFMediaAccessControlEditorItemModule *)self itemProviders];
+  v7 = [HFItemUpdateRequest requestToReloadItemProviders:itemProviders senderSelector:a2];
 
   objc_initWeak(&location, self);
-  v8 = [(HFMediaAccessControlEditorItemModule *)self home];
-  v9 = [v8 hf_updateAccessControlDescriptor:v5];
+  home = [(HFMediaAccessControlEditorItemModule *)self home];
+  v9 = [home hf_updateAccessControlDescriptor:descriptorCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__HFMediaAccessControlEditorItemModule_updateAccessControlDescriptor___block_invoke;
@@ -229,27 +229,27 @@ void __70__HFMediaAccessControlEditorItemModule_updateAccessControlDescriptor___
 
 - (BOOL)_hasNonPeerToPeerMediaAccessories
 {
-  v2 = [(HFMediaAccessControlEditorItemModule *)self home];
-  v3 = [v2 accessories];
-  v4 = [v3 na_any:&__block_literal_global_51];
+  home = [(HFMediaAccessControlEditorItemModule *)self home];
+  accessories = [home accessories];
+  v4 = [accessories na_any:&__block_literal_global_51];
 
   return v4;
 }
 
-+ (id)_descriptionFooterTextForAccessControlDescriptor:(id)a3 hasNonPeerToPeerMediaAccessories:(BOOL)a4
++ (id)_descriptionFooterTextForAccessControlDescriptor:(id)descriptor hasNonPeerToPeerMediaAccessories:(BOOL)accessories
 {
-  v4 = a4;
-  v7 = a3;
+  accessoriesCopy = accessories;
+  descriptorCopy = descriptor;
   v8 = objc_opt_new();
   [v8 addObject:@"HFMediaAccessControlFooter"];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __122__HFMediaAccessControlEditorItemModule__descriptionFooterTextForAccessControlDescriptor_hasNonPeerToPeerMediaAccessories___block_invoke;
   v18[3] = &unk_277DF68E8;
-  v9 = v7;
+  v9 = descriptorCopy;
   v19 = v9;
   v20 = a2;
-  v21 = a1;
+  selfCopy = self;
   v10 = __122__HFMediaAccessControlEditorItemModule__descriptionFooterTextForAccessControlDescriptor_hasNonPeerToPeerMediaAccessories___block_invoke(v18);
   [v8 addObject:v10];
 
@@ -270,7 +270,7 @@ void __70__HFMediaAccessControlEditorItemModule_updateAccessControlDescriptor___
     [v8 addObject:v11];
   }
 
-  if (![v9 access] && v4)
+  if (![v9 access] && accessoriesCopy)
   {
     [v8 addObject:@"WithNonP2PAccessories"];
   }
@@ -331,27 +331,27 @@ __CFString *__122__HFMediaAccessControlEditorItemModule__descriptionFooterTextFo
   }
 }
 
-- (void)home:(id)a3 didUpdateMinimumMediaUserPrivilege:(int64_t)a4
+- (void)home:(id)home didUpdateMinimumMediaUserPrivilege:(int64_t)privilege
 {
-  v6 = [(HFMediaAccessControlEditorItemModule *)self itemProviders:a3];
+  v6 = [(HFMediaAccessControlEditorItemModule *)self itemProviders:home];
   v9 = [HFItemUpdateRequest requestToReloadItemProviders:v6 senderSelector:a2];
 
-  v7 = [(HFItemModule *)self itemUpdater];
-  v8 = [v7 performItemUpdateRequest:v9];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v8 = [itemUpdater performItemUpdateRequest:v9];
 }
 
-- (void)home:(id)a3 didUpdateMediaPassword:(id)a4
+- (void)home:(id)home didUpdateMediaPassword:(id)password
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider:a3];
-  v8 = [v7 passwordItem];
-  v9 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
-  v10 = [v9 passwordEnableItem];
-  v11 = [v6 setWithObjects:{v8, v10, 0}];
+  v7 = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider:home];
+  passwordItem = [v7 passwordItem];
+  accessControlEditorItemProvider = [(HFMediaAccessControlEditorItemModule *)self accessControlEditorItemProvider];
+  passwordEnableItem = [accessControlEditorItemProvider passwordEnableItem];
+  v11 = [v6 setWithObjects:{passwordItem, passwordEnableItem, 0}];
   v14 = [HFItemUpdateRequest requestToUpdateItems:v11 senderSelector:a2];
 
-  v12 = [(HFItemModule *)self itemUpdater];
-  v13 = [v12 performItemUpdateRequest:v14];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v13 = [itemUpdater performItemUpdateRequest:v14];
 }
 
 @end

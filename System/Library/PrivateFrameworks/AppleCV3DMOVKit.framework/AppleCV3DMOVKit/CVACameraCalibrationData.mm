@@ -1,18 +1,18 @@
 @interface CVACameraCalibrationData
 + (id)classes;
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CGPoint)lensDistortionCenter;
 - (CGSize)intrinsicMatrixReferenceDimensions;
-- (CVACameraCalibrationData)initWithAVCameraCalibrationData:(id)a3 timestamp:(double)a4 streamID:(id)a5;
-- (CVACameraCalibrationData)initWithCoder:(id)a3;
+- (CVACameraCalibrationData)initWithAVCameraCalibrationData:(id)data timestamp:(double)timestamp streamID:(id)d;
+- (CVACameraCalibrationData)initWithCoder:(id)coder;
 - (__n128)extrinsicMatrix;
 - (__n128)intrinsicMatrix;
-- (__n128)setExtrinsicMatrix:(__n128)a3;
-- (__n128)setIntrinsicMatrix:(__n128)a3;
+- (__n128)setExtrinsicMatrix:(__n128)matrix;
+- (__n128)setIntrinsicMatrix:(__n128)matrix;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateProperties:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateProperties:(id)properties;
 @end
 
 @implementation CVACameraCalibrationData
@@ -33,11 +33,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACameraCalibrationData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -55,20 +55,20 @@
   return v6;
 }
 
-- (void)updateProperties:(id)a3
+- (void)updateProperties:(id)properties
 {
-  v4 = a3;
-  [v4 intrinsicMatrix];
+  propertiesCopy = properties;
+  [propertiesCopy intrinsicMatrix];
   *&self->_anon_60[8] = v5;
   *&self->_anon_60[24] = v6;
   *self->_anon_60 = v7;
   *&self->_anon_60[16] = v8;
   *&self->_anon_60[40] = v9;
   *&self->_anon_60[32] = v10;
-  [v4 intrinsicMatrixReferenceDimensions];
+  [propertiesCopy intrinsicMatrixReferenceDimensions];
   self->_intrinsicMatrixReferenceDimensions.width = v11;
   self->_intrinsicMatrixReferenceDimensions.height = v12;
-  [v4 extrinsicMatrix];
+  [propertiesCopy extrinsicMatrix];
   self[1]._pixelSize = v13;
   self[1].super.isa = v14;
   LODWORD(self[1]._timestamp) = v15;
@@ -77,17 +77,17 @@
   self[1]._calibrationDictionary = v18;
   LODWORD(self[1]._inverseLensDistortionLookupTable) = v19;
   self[1]._lensDistortionLookupTable = v20;
-  [v4 pixelSize];
+  [propertiesCopy pixelSize];
   self->_pixelSize = v21;
-  v22 = [v4 lensDistortionLookupTable];
+  lensDistortionLookupTable = [propertiesCopy lensDistortionLookupTable];
   lensDistortionLookupTable = self->_lensDistortionLookupTable;
-  self->_lensDistortionLookupTable = v22;
+  self->_lensDistortionLookupTable = lensDistortionLookupTable;
 
-  v24 = [v4 inverseLensDistortionLookupTable];
+  inverseLensDistortionLookupTable = [propertiesCopy inverseLensDistortionLookupTable];
   inverseLensDistortionLookupTable = self->_inverseLensDistortionLookupTable;
-  self->_inverseLensDistortionLookupTable = v24;
+  self->_inverseLensDistortionLookupTable = inverseLensDistortionLookupTable;
 
-  [v4 lensDistortionCenter];
+  [propertiesCopy lensDistortionCenter];
   v27 = v26;
   v29 = v28;
 
@@ -95,47 +95,47 @@
   self->_lensDistortionCenter.y = v29;
 }
 
-- (CVACameraCalibrationData)initWithAVCameraCalibrationData:(id)a3 timestamp:(double)a4 streamID:(id)a5
+- (CVACameraCalibrationData)initWithAVCameraCalibrationData:(id)data timestamp:(double)timestamp streamID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = CVACameraCalibrationData;
   v10 = [(CVACameraCalibrationData *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_streamID, a5);
-    v11->_timestamp = a4;
-    [(CVACameraCalibrationData *)v11 updateProperties:v8];
+    objc_storeStrong(&v10->_streamID, d);
+    v11->_timestamp = timestamp;
+    [(CVACameraCalibrationData *)v11 updateProperties:dataCopy];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 cameraCalibrationDataDictionary];
+      cameraCalibrationDataDictionary = [dataCopy cameraCalibrationDataDictionary];
       calibrationDictionary = v11->_calibrationDictionary;
-      v11->_calibrationDictionary = v12;
+      v11->_calibrationDictionary = cameraCalibrationDataDictionary;
     }
   }
 
   return v11;
 }
 
-- (CVACameraCalibrationData)initWithCoder:(id)a3
+- (CVACameraCalibrationData)initWithCoder:(id)coder
 {
   v117 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v114.receiver = self;
   v114.super_class = CVACameraCalibrationData;
   v5 = [(CVACameraCalibrationData *)&v114 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"si"];
+    v7 = [coderCopy decodeObjectForKey:@"si"];
     streamID = v5->_streamID;
     v5->_streamID = v7;
 
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v9;
-    v10 = [v4 decodeObjectForKey:@"d"];
+    v10 = [coderCopy decodeObjectForKey:@"d"];
     calibrationDictionary = v5->_calibrationDictionary;
     v5->_calibrationDictionary = v10;
 
@@ -181,13 +181,13 @@ LABEL_24:
 
       else
       {
-        v89 = [MEMORY[0x277CCAC38] processInfo];
-        v90 = [v89 operatingSystemVersionString];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        operatingSystemVersionString = [processInfo operatingSystemVersionString];
         v91 = +[AppleCV3DMOVKitLog defaultLog];
         if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v116 = v90;
+          v116 = operatingSystemVersionString;
           _os_log_impl(&dword_24016D000, v91, OS_LOG_TYPE_ERROR, "Failed to recreate calibration data : OS %@", buf, 0xCu);
         }
       }
@@ -196,7 +196,7 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v19 = [v4 decodeObjectForKey:@"im"];
+    v19 = [coderCopy decodeObjectForKey:@"im"];
     v15 = v19;
     if (v19)
     {
@@ -249,7 +249,7 @@ LABEL_24:
       *&v5->_anon_60[44] = 0;
     }
 
-    v41 = [v4 decodeObjectForKey:@"imrd"];
+    v41 = [coderCopy decodeObjectForKey:@"imrd"];
     v18 = v41;
     if (v41)
     {
@@ -262,7 +262,7 @@ LABEL_24:
       v5->_intrinsicMatrixReferenceDimensions.height = v46;
     }
 
-    v47 = [v4 decodeObjectForKey:@"em"];
+    v47 = [coderCopy decodeObjectForKey:@"em"];
     v48 = v47;
     if (v47)
     {
@@ -331,17 +331,17 @@ LABEL_24:
       HIDWORD(v5[1]._inverseLensDistortionLookupTable) = 0;
     }
 
-    [v4 decodeFloatForKey:{@"ps", v94}];
+    [coderCopy decodeFloatForKey:{@"ps", v94}];
     v5->_pixelSize = v77;
-    v78 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ldlt"];
+    v78 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ldlt"];
     lensDistortionLookupTable = v5->_lensDistortionLookupTable;
     v5->_lensDistortionLookupTable = v78;
 
-    v80 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ildlt"];
+    v80 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ildlt"];
     inverseLensDistortionLookupTable = v5->_inverseLensDistortionLookupTable;
     v5->_inverseLensDistortionLookupTable = v80;
 
-    v82 = [v4 decodeObjectForKey:@"ldc"];
+    v82 = [coderCopy decodeObjectForKey:@"ldc"];
     v83 = v82;
     if (v82)
     {
@@ -363,17 +363,17 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v63[9] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  [v4 encodeObject:self->_streamID forKey:@"si"];
-  [v4 encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeObject:self->_streamID forKey:@"si"];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
   calibrationDictionary = self->_calibrationDictionary;
   if (calibrationDictionary)
   {
-    [v4 encodeObject:calibrationDictionary forKey:@"d"];
+    [coderCopy encodeObject:calibrationDictionary forKey:@"d"];
   }
 
   else
@@ -408,13 +408,13 @@ LABEL_25:
     v63[8] = v21;
     v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:9];
 
-    [v4 encodeObject:v58 forKey:@"im"];
+    [coderCopy encodeObject:v58 forKey:@"im"];
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:self->_intrinsicMatrixReferenceDimensions.width];
     v62[0] = v22;
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_intrinsicMatrixReferenceDimensions.height];
     v62[1] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:2];
-    [v4 encodeObject:v24 forKey:@"imrd"];
+    [coderCopy encodeObject:v24 forKey:@"imrd"];
 
     LODWORD(v25) = self[1].super.isa;
     v57 = [MEMORY[0x277CCABB0] numberWithFloat:v25];
@@ -454,17 +454,17 @@ LABEL_25:
     v61[11] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:12];
 
-    [v4 encodeObject:v44 forKey:@"em"];
+    [coderCopy encodeObject:v44 forKey:@"em"];
     *&v45 = self->_pixelSize;
-    [v4 encodeFloat:@"ps" forKey:v45];
-    [v4 encodeObject:self->_lensDistortionLookupTable forKey:@"ldlt"];
-    [v4 encodeObject:self->_inverseLensDistortionLookupTable forKey:@"ildlt"];
+    [coderCopy encodeFloat:@"ps" forKey:v45];
+    [coderCopy encodeObject:self->_lensDistortionLookupTable forKey:@"ldlt"];
+    [coderCopy encodeObject:self->_inverseLensDistortionLookupTable forKey:@"ildlt"];
     v46 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lensDistortionCenter.x];
     v60[0] = v46;
     v47 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lensDistortionCenter.y];
     v60[1] = v47;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
-    [v4 encodeObject:v48 forKey:@"ldc"];
+    [coderCopy encodeObject:v48 forKey:@"ldc"];
 
     v5 = v59;
   }
@@ -648,24 +648,24 @@ LABEL_13:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACameraCalibrationData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACameraCalibrationData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }
 
 - (__n128)intrinsicMatrix
 {
-  result = *(a1 + 96);
-  v2 = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 96);
+  v2 = *(self + 112);
+  v3 = *(self + 128);
   return result;
 }
 
-- (__n128)setIntrinsicMatrix:(__n128)a3
+- (__n128)setIntrinsicMatrix:(__n128)matrix
 {
   result[6] = a2;
-  result[7] = a3;
+  result[7] = matrix;
   result[8] = a4;
   return result;
 }
@@ -681,17 +681,17 @@ LABEL_13:
 
 - (__n128)extrinsicMatrix
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
-  v4 = *(a1 + 192);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
+  v4 = *(self + 192);
   return result;
 }
 
-- (__n128)setExtrinsicMatrix:(__n128)a3
+- (__n128)setExtrinsicMatrix:(__n128)matrix
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = matrix;
   result[11] = a4;
   result[12] = a5;
   return result;

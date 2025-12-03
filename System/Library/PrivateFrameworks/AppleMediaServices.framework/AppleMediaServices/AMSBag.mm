@@ -1,14 +1,14 @@
 @interface AMSBag
 + (AMSBagCache)bagCache;
-+ (id)_bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 accountProvider:(id)a6;
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4;
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5;
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 account:(id)a6;
++ (id)_bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info accountProvider:(id)provider;
++ (id)bagForProfile:(id)profile profileVersion:(id)version;
++ (id)bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info;
++ (id)bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info account:(id)account;
 + (id)sharedPersistenceQueue;
 + (id)sharedPersistenceWithDefaultDirectory;
 + (void)resetBagCache;
-- (AMSBag)initWithDataSource:(id)a3 persistenceDirectoryURL:(id)a4 persistenceQueue:(id)a5 changeHandlerQueue:(id)a6 shouldConfigureDataSourceHandlers:(BOOL)a7;
-- (AMSBag)initWithDataSource:(id)a3 shouldConfigureDataSourceHandlers:(BOOL)a4;
+- (AMSBag)initWithDataSource:(id)source persistenceDirectoryURL:(id)l persistenceQueue:(id)queue changeHandlerQueue:(id)handlerQueue shouldConfigureDataSourceHandlers:(BOOL)handlers;
+- (AMSBag)initWithDataSource:(id)source shouldConfigureDataSourceHandlers:(BOOL)handlers;
 - (AMSProcessInfo)processInfo;
 - (BOOL)isExpired;
 - (BOOL)isLoaded;
@@ -18,26 +18,26 @@
 - (NSString)descriptionExtended;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
-- (id)URLFromURLString:(id)a3 account:(id)a4;
-- (id)_availableValuesFromCachedData:(id)a3 keys:(id)a4 partialIdentifier:(id)a5 expirationDate:(id)a6 updateHandler:(id)a7 outToken:(unint64_t *)a8;
-- (id)_availableValuesFromPersistedBagData:(id)a3 error:(id)a4 keys:(id)a5 partialIdentifier:(id)a6 updateHandler:(id)a7 outToken:(unint64_t *)a8;
-- (id)_initWithDataSource:(id)a3 persistence:(id)a4 persistenceQueue:(id)a5 updateHandlers:(id)a6 shouldConfigureDataSourceHandlers:(BOOL)a7;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
+- (id)URLFromURLString:(id)string account:(id)account;
+- (id)_availableValuesFromCachedData:(id)data keys:(id)keys partialIdentifier:(id)identifier expirationDate:(id)date updateHandler:(id)handler outToken:(unint64_t *)token;
+- (id)_availableValuesFromPersistedBagData:(id)data error:(id)error keys:(id)keys partialIdentifier:(id)identifier updateHandler:(id)handler outToken:(unint64_t *)token;
+- (id)_initWithDataSource:(id)source persistence:(id)persistence persistenceQueue:(id)queue updateHandlers:(id)handlers shouldConfigureDataSourceHandlers:(BOOL)sourceHandlers;
 - (id)_temporaryDictionary;
-- (id)arrayForKey:(id)a3;
-- (id)cachedValuesForKeys:(id)a3 observationToken:(unint64_t *)a4 updateHandler:(id)a5;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)cachedValuesForKeys:(id)keys observationToken:(unint64_t *)token updateHandler:(id)handler;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
 - (void)_configureDataSourceHandlers;
 - (void)_loadAndPersistBag;
-- (void)_persistBagDictionary:(id)a3 withIdentifier:(id)a4 partialIdentifier:(id)a5 expirationDate:(id)a6 onlyIfPreExisting:(BOOL)a7;
-- (void)createSnapshotWithCompletion:(id)a3;
-- (void)removeObserverWithToken:(unint64_t)a3;
-- (void)setDefaultValue:(id)a3 forKey:(id)a4;
+- (void)_persistBagDictionary:(id)dictionary withIdentifier:(id)identifier partialIdentifier:(id)partialIdentifier expirationDate:(id)date onlyIfPreExisting:(BOOL)existing;
+- (void)createSnapshotWithCompletion:(id)completion;
+- (void)removeObserverWithToken:(unint64_t)token;
+- (void)setDefaultValue:(id)value forKey:(id)key;
 - (void)waitUntilPersistenceWorkComplete;
 @end
 
@@ -109,16 +109,16 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
   v7[2] = __38__AMSBag__configureDataSourceHandlers__block_invoke;
   v7[3] = &unk_1E73B41B8;
   objc_copyWeak(&v8, &location);
-  v3 = [(AMSBag *)self dataSource];
-  [v3 setDataSourceChangedHandler:v7];
+  dataSource = [(AMSBag *)self dataSource];
+  [dataSource setDataSourceChangedHandler:v7];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__AMSBag__configureDataSourceHandlers__block_invoke_2;
   v5[3] = &unk_1E73B41E0;
   objc_copyWeak(&v6, &location);
-  v4 = [(AMSBag *)self dataSource];
-  [v4 setDataSourceDataInvalidatedHandler:v5];
+  dataSource2 = [(AMSBag *)self dataSource];
+  [dataSource2 setDataSourceDataInvalidatedHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
@@ -127,16 +127,16 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
 
 - (NSString)description
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 description];
+  dataSource = [(AMSBag *)self dataSource];
+  v3 = [dataSource description];
 
   return v3;
 }
 
 - (BOOL)persistenceIsEnabled
 {
-  v2 = [(AMSBag *)self persistence];
-  v3 = v2 != 0;
+  persistence = [(AMSBag *)self persistence];
+  v3 = persistence != 0;
 
   return v3;
 }
@@ -150,8 +150,8 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = AMSLogKey();
     v7 = MEMORY[0x1E696AEC0];
@@ -170,7 +170,7 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
     v10 = ;
     *buf = 138543362;
     v14 = v10;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Calling loadWithCompletion.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Calling loadWithCompletion.", buf, 0xCu);
     if (v6)
     {
 
@@ -178,22 +178,22 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
     }
   }
 
-  v11 = [(AMSBag *)self dataSource];
+  dataSource = [(AMSBag *)self dataSource];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __28__AMSBag__loadAndPersistBag__block_invoke;
   v12[3] = &unk_1E73B40F8;
   v12[4] = self;
-  [v11 loadWithCompletion:v12];
+  [dataSource loadWithCompletion:v12];
 }
 
 - (BOOL)isExpired
 {
-  v2 = [(AMSBag *)self expirationDate];
-  if (v2)
+  expirationDate = [(AMSBag *)self expirationDate];
+  if (expirationDate)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    v4 = [v3 compare:v2] == 1;
+    date = [MEMORY[0x1E695DF00] date];
+    v4 = [date compare:expirationDate] == 1;
   }
 
   else
@@ -206,26 +206,26 @@ void __32__AMSBag_sharedPersistenceQueue__block_invoke()
 
 - (NSDate)expirationDate
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 expirationDate];
+  dataSource = [(AMSBag *)self dataSource];
+  expirationDate = [dataSource expirationDate];
 
-  return v3;
+  return expirationDate;
 }
 
 - (NSString)profile
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 profile];
+  dataSource = [(AMSBag *)self dataSource];
+  profile = [dataSource profile];
 
-  return v3;
+  return profile;
 }
 
 - (NSString)profileVersion
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 profileVersion];
+  dataSource = [(AMSBag *)self dataSource];
+  profileVersion = [dataSource profileVersion];
 
-  return v3;
+  return profileVersion;
 }
 
 void __38__AMSBag__configureDataSourceHandlers__block_invoke(uint64_t a1, void *a2)
@@ -385,10 +385,10 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_125(uint64_t a1)
 
 - (AMSProcessInfo)processInfo
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 processInfo];
+  dataSource = [(AMSBag *)self dataSource];
+  processInfo = [dataSource processInfo];
 
-  return v3;
+  return processInfo;
 }
 
 void __28__AMSBag__loadAndPersistBag__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -572,16 +572,16 @@ LABEL_40:
 LABEL_41:
 }
 
-- (AMSBag)initWithDataSource:(id)a3 persistenceDirectoryURL:(id)a4 persistenceQueue:(id)a5 changeHandlerQueue:(id)a6 shouldConfigureDataSourceHandlers:(BOOL)a7
+- (AMSBag)initWithDataSource:(id)source persistenceDirectoryURL:(id)l persistenceQueue:(id)queue changeHandlerQueue:(id)handlerQueue shouldConfigureDataSourceHandlers:(BOOL)handlers
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v13)
+  handlersCopy = handlers;
+  sourceCopy = source;
+  lCopy = l;
+  queueCopy = queue;
+  handlerQueueCopy = handlerQueue;
+  if (sourceCopy)
   {
-    if (v14)
+    if (lCopy)
     {
       goto LABEL_3;
     }
@@ -589,64 +589,64 @@ LABEL_41:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:106 description:{@"Unexpected nil reference: %s", "dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:106 description:{@"Unexpected nil reference: %s", "dataSource"}];
 
-    if (v14)
+    if (lCopy)
     {
 LABEL_3:
-      if (v15)
+      if (queueCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:108 description:{@"Unexpected nil reference: %s", "persistenceQueue"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:108 description:{@"Unexpected nil reference: %s", "persistenceQueue"}];
 
-      if (v16)
+      if (handlerQueueCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_9:
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:109 description:{@"Unexpected nil reference: %s", "changeHandlerQueue"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:109 description:{@"Unexpected nil reference: %s", "changeHandlerQueue"}];
 
       goto LABEL_5;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:107 description:{@"Unexpected nil reference: %s", "persistenceDirectoryURL"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:107 description:{@"Unexpected nil reference: %s", "persistenceDirectoryURL"}];
 
-  if (!v15)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (!v16)
+  if (!handlerQueueCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  v17 = [[AMSBagUnderlyingDataPersistence alloc] initWithDirectoryURL:v14];
-  v18 = [[AMSBagCachedValueUpdateHandlers alloc] initWithHandlerQueue:v16];
-  v19 = [(AMSBag *)self _initWithDataSource:v13 persistence:v17 persistenceQueue:v15 updateHandlers:v18 shouldConfigureDataSourceHandlers:v7];
+  v17 = [[AMSBagUnderlyingDataPersistence alloc] initWithDirectoryURL:lCopy];
+  v18 = [[AMSBagCachedValueUpdateHandlers alloc] initWithHandlerQueue:handlerQueueCopy];
+  v19 = [(AMSBag *)self _initWithDataSource:sourceCopy persistence:v17 persistenceQueue:queueCopy updateHandlers:v18 shouldConfigureDataSourceHandlers:handlersCopy];
 
   return v19;
 }
 
-- (AMSBag)initWithDataSource:(id)a3 shouldConfigureDataSourceHandlers:(BOOL)a4
+- (AMSBag)initWithDataSource:(id)source shouldConfigureDataSourceHandlers:(BOOL)handlers
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  handlersCopy = handlers;
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:121 description:{@"Unexpected nil reference: %s", "dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:121 description:{@"Unexpected nil reference: %s", "dataSource"}];
   }
 
   v8 = +[AMSBag sharedPersistenceWithDefaultDirectory];
@@ -661,22 +661,22 @@ LABEL_5:
   }
 
   v10 = objc_alloc_init(AMSBagCachedValueUpdateHandlers);
-  v11 = [(AMSBag *)self _initWithDataSource:v7 persistence:v8 persistenceQueue:v9 updateHandlers:v10 shouldConfigureDataSourceHandlers:v4];
+  v11 = [(AMSBag *)self _initWithDataSource:sourceCopy persistence:v8 persistenceQueue:v9 updateHandlers:v10 shouldConfigureDataSourceHandlers:handlersCopy];
 
   return v11;
 }
 
-- (id)_initWithDataSource:(id)a3 persistence:(id)a4 persistenceQueue:(id)a5 updateHandlers:(id)a6 shouldConfigureDataSourceHandlers:(BOOL)a7
+- (id)_initWithDataSource:(id)source persistence:(id)persistence persistenceQueue:(id)queue updateHandlers:(id)handlers shouldConfigureDataSourceHandlers:(BOOL)sourceHandlers
 {
-  v31 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (v13)
+  sourceHandlersCopy = sourceHandlers;
+  sourceCopy = source;
+  persistenceCopy = persistence;
+  queueCopy = queue;
+  handlersCopy = handlers;
+  v17 = handlersCopy;
+  if (sourceCopy)
   {
-    if (v16)
+    if (handlersCopy)
     {
       goto LABEL_3;
     }
@@ -684,13 +684,13 @@ LABEL_5:
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:139 description:{@"Unexpected nil reference: %s", "dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:139 description:{@"Unexpected nil reference: %s", "dataSource"}];
 
     if (v17)
     {
 LABEL_3:
-      if (!v14)
+      if (!persistenceCopy)
       {
         goto LABEL_5;
       }
@@ -699,37 +699,37 @@ LABEL_3:
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:140 description:{@"Unexpected nil reference: %s", "updateHandlers"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:140 description:{@"Unexpected nil reference: %s", "updateHandlers"}];
 
-  if (!v14)
+  if (!persistenceCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_4:
-  if (!v15)
+  if (!queueCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = @"'persistenceQueue' must be provided if 'persistence' is provided.";
-    v28 = v23;
+    v28 = currentHandler3;
     v25 = a2;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 141;
     goto LABEL_13;
   }
 
 LABEL_5:
-  if (!v14 && v15)
+  if (!persistenceCopy && queueCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = @"'persistence' must be provided if 'persistenceQueue' is provided.";
-    v28 = v23;
+    v28 = currentHandler3;
     v25 = a2;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 142;
 LABEL_13:
-    [v23 handleFailureInMethod:v25 object:v26 file:@"AMSBag.m" lineNumber:v27 description:v24];
+    [currentHandler3 handleFailureInMethod:v25 object:selfCopy2 file:@"AMSBag.m" lineNumber:v27 description:v24];
   }
 
   v32.receiver = self;
@@ -742,13 +742,13 @@ LABEL_13:
     changeNotificationQueue = v18->_changeNotificationQueue;
     v18->_changeNotificationQueue = v20;
 
-    objc_storeStrong(&v18->_dataSource, a3);
-    objc_storeStrong(&v18->_persistence, a4);
+    objc_storeStrong(&v18->_dataSource, source);
+    objc_storeStrong(&v18->_persistence, persistence);
     v18->_persistenceAPIWasCalled = 0;
-    objc_storeStrong(&v18->_persistenceQueue, a5);
+    objc_storeStrong(&v18->_persistenceQueue, queue);
     v18->_updateHandlerConsistencyLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v18->_updateHandlers, a6);
-    if (v31)
+    objc_storeStrong(&v18->_updateHandlers, handlers);
+    if (sourceHandlersCopy)
     {
       [(AMSBag *)v18 _configureDataSourceHandlers];
     }
@@ -757,69 +757,69 @@ LABEL_13:
   return v18;
 }
 
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4
++ (id)bagForProfile:(id)profile profileVersion:(id)version
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() bagForProfile:v6 profileVersion:v5 processInfo:0];
+  versionCopy = version;
+  profileCopy = profile;
+  v7 = [objc_opt_class() bagForProfile:profileCopy profileVersion:versionCopy processInfo:0];
 
   return v7;
 }
 
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5
++ (id)bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  infoCopy = info;
+  versionCopy = version;
+  profileCopy = profile;
   v10 = objc_opt_class();
   v11 = objc_alloc_init(AMSBagActiveAccountProvider);
-  v12 = [v10 _bagForProfile:v9 profileVersion:v8 processInfo:v7 accountProvider:v11];
+  v12 = [v10 _bagForProfile:profileCopy profileVersion:versionCopy processInfo:infoCopy accountProvider:v11];
 
   return v12;
 }
 
-+ (id)bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 account:(id)a6
++ (id)bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info account:(id)account
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  accountCopy = account;
+  infoCopy = info;
+  versionCopy = version;
+  profileCopy = profile;
   v13 = objc_opt_class();
-  v14 = [[AMSBagFixedAccountProvider alloc] initWithAccount:v9];
+  v14 = [[AMSBagFixedAccountProvider alloc] initWithAccount:accountCopy];
 
-  v15 = [v13 _bagForProfile:v12 profileVersion:v11 processInfo:v10 accountProvider:v14];
+  v15 = [v13 _bagForProfile:profileCopy profileVersion:versionCopy processInfo:infoCopy accountProvider:v14];
 
   return v15;
 }
 
 - (BOOL)isLoaded
 {
-  v2 = [(AMSBag *)self dataSource];
-  v3 = [v2 isLoaded];
+  dataSource = [(AMSBag *)self dataSource];
+  isLoaded = [dataSource isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
-- (id)cachedValuesForKeys:(id)a3 observationToken:(unint64_t *)a4 updateHandler:(id)a5
+- (id)cachedValuesForKeys:(id)keys observationToken:(unint64_t *)token updateHandler:(id)handler
 {
   v87 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v58 = a5;
-  if (!v9)
+  keysCopy = keys;
+  handlerCopy = handler;
+  if (!keysCopy)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:236 description:@"The 'keys' set must be provided."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:236 description:@"The 'keys' set must be provided."];
   }
 
-  if (![v9 count])
+  if (![keysCopy count])
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v50 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:237 description:@"The 'keys' set must not be empty."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:237 description:@"The 'keys' set must not be empty."];
   }
 
-  if ([v9 ams_allWithTest:&__block_literal_global_58])
+  if ([keysCopy ams_allWithTest:&__block_literal_global_58])
   {
-    if (a4)
+    if (token)
     {
       goto LABEL_7;
     }
@@ -827,23 +827,23 @@ LABEL_13:
 
   else
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v51 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:240 description:@"Every value in the 'keys' set must be a non-empty string."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:240 description:@"Every value in the 'keys' set must be a non-empty string."];
 
-    if (a4)
+    if (token)
     {
       goto LABEL_7;
     }
   }
 
-  v52 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v52 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:241 description:@"An 'outToken' pointer must be provided."];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:241 description:@"An 'outToken' pointer must be provided."];
 
 LABEL_7:
-  if (!v58)
+  if (!handlerCopy)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:242 description:@"An 'updateHandler' block must be provided."];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:242 description:@"An 'updateHandler' block must be provided."];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -851,7 +851,7 @@ LABEL_7:
   aBlock[2] = __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_invoke_2;
   aBlock[3] = &unk_1E73B40A8;
   aBlock[4] = self;
-  aBlock[5] = a4;
+  aBlock[5] = token;
   v57 = _Block_copy(aBlock);
   [(AMSBag *)self setPersistenceAPIWasCalled:1];
   os_unfair_lock_lock(&self->_updateHandlerConsistencyLock);
@@ -861,22 +861,22 @@ LABEL_7:
   v78[3] = &unk_1E73B3680;
   v78[4] = self;
   v10 = _Block_copy(v78);
-  v11 = [(AMSBag *)self dataSource];
-  v56 = [v11 bagLoadingPartialIdentifier];
+  dataSource = [(AMSBag *)self dataSource];
+  bagLoadingPartialIdentifier = [dataSource bagLoadingPartialIdentifier];
 
-  v12 = [(AMSBag *)self dataSource];
+  dataSource2 = [(AMSBag *)self dataSource];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(AMSBag *)self dataSource];
+    dataSource3 = [(AMSBag *)self dataSource];
     v77 = 0;
-    v15 = [v14 loadedValuesForKeys:v9 outExpirationDate:&v77];
+    v15 = [dataSource3 loadedValuesForKeys:keysCopy outExpirationDate:&v77];
     v16 = v77;
 
     if (v15)
     {
-      v17 = [(AMSBag *)self _availableValuesFromCachedData:v15 keys:v9 partialIdentifier:v56 expirationDate:v16 updateHandler:v58 outToken:a4];
+      v17 = [(AMSBag *)self _availableValuesFromCachedData:v15 keys:keysCopy partialIdentifier:bagLoadingPartialIdentifier expirationDate:v16 updateHandler:handlerCopy outToken:token];
 
       goto LABEL_62;
     }
@@ -903,8 +903,8 @@ LABEL_7:
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v30 = AMSLogKey();
       v31 = MEMORY[0x1E696AEC0];
@@ -922,7 +922,7 @@ LABEL_7:
       v33 = ;
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v33;
-      _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Persistence is not enabled. No cached values will be returned from cachedValuesForKeys:.", &buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Persistence is not enabled. No cached values will be returned from cachedValuesForKeys:.", &buf, 0xCu);
       if (v30)
       {
 
@@ -930,23 +930,23 @@ LABEL_7:
       }
     }
 
-    v46 = [(AMSBag *)self updateHandlers];
-    *a4 = [v46 addHandlerWithKeys:v9 initialValues:MEMORY[0x1E695E0F8] handler:v58];
+    updateHandlers = [(AMSBag *)self updateHandlers];
+    *token = [updateHandlers addHandlerWithKeys:keysCopy initialValues:MEMORY[0x1E695E0F8] handler:handlerCopy];
 
-    v47 = [(AMSBag *)self dataSource];
+    dataSource4 = [(AMSBag *)self dataSource];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_invoke_91;
     v59[3] = &unk_1E73B40F8;
     v59[4] = self;
-    [v47 loadWithCompletion:v59];
+    [dataSource4 loadWithCompletion:v59];
 
     v17 = MEMORY[0x1E695E0F8];
     goto LABEL_61;
   }
 
-  v18 = [(AMSBag *)self persistenceQueue];
-  v19 = v18 == 0;
+  persistenceQueue = [(AMSBag *)self persistenceQueue];
+  v19 = persistenceQueue == 0;
 
   if (v19)
   {
@@ -958,8 +958,8 @@ LABEL_7:
         v34 = +[AMSLogConfig sharedConfig];
       }
 
-      v35 = [v34 OSLogObject];
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v34 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v36 = AMSLogKey();
         v37 = MEMORY[0x1E696AEC0];
@@ -977,7 +977,7 @@ LABEL_7:
         v39 = ;
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v39;
-        _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_ERROR, "%{public}@Persistence was enabled but persisteneQueue was unexpectedly nil. No persisted bag will be loaded.", &buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Persistence was enabled but persisteneQueue was unexpectedly nil. No persisted bag will be loaded.", &buf, 0xCu);
         if (v36)
         {
 
@@ -985,21 +985,21 @@ LABEL_7:
         }
       }
 
-      v40 = [MEMORY[0x1E696AD88] defaultCenter];
-      v41 = +[AMSLogConfig sharedBagConfig];
-      [v40 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v41 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject3 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject3 userInfo:0];
     }
 
     else
     {
-      v40 = +[AMSLogConfig sharedBagConfig];
-      if (!v40)
+      defaultCenter = +[AMSLogConfig sharedBagConfig];
+      if (!defaultCenter)
       {
-        v40 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v41 = [v40 OSLogObject];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_FAULT))
+      oSLogObject3 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_FAULT))
       {
         v42 = AMSLogKey();
         v43 = MEMORY[0x1E696AEC0];
@@ -1017,7 +1017,7 @@ LABEL_7:
         v45 = ;
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v45;
-        _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_FAULT, "%{public}@Persistence was enabled but persisteneQueue was unexpectedly nil. No persisted bag will be loaded.", &buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_FAULT, "%{public}@Persistence was enabled but persisteneQueue was unexpectedly nil. No persisted bag will be loaded.", &buf, 0xCu);
         if (v42)
         {
 
@@ -1035,18 +1035,18 @@ LABEL_7:
     v84 = __Block_byref_object_copy__5;
     v85 = __Block_byref_object_dispose__5;
     v86 = 0;
-    v20 = [(AMSBag *)self persistenceQueue];
+    persistenceQueue2 = [(AMSBag *)self persistenceQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_invoke_90;
     block[3] = &unk_1E73B40D0;
     block[4] = self;
     p_buf = &buf;
-    v17 = v56;
+    v17 = bagLoadingPartialIdentifier;
     v61 = v17;
     v63 = &v71;
     v64 = &v65;
-    dispatch_sync(v20, block);
+    dispatch_sync(persistenceQueue2, block);
 
     v21 = *(*(&buf + 1) + 40);
     if (v21)
@@ -1058,8 +1058,8 @@ LABEL_7:
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
         v55 = AMSLogKey();
         v54 = MEMORY[0x1E696AEC0];
@@ -1077,7 +1077,7 @@ LABEL_7:
         v26 = ;
         *v80 = 138543362;
         v81 = v26;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Preloaded persisted bag data was found and will be returned from cachedValuesForKeys:.", v80, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@Preloaded persisted bag data was found and will be returned from cachedValuesForKeys:.", v80, 0xCu);
         if (v55)
         {
 
@@ -1085,7 +1085,7 @@ LABEL_7:
         }
       }
 
-      v17 = [(AMSBag *)self _availableValuesFromPersistedBagData:*(*(&buf + 1) + 40) error:0 keys:v9 partialIdentifier:v17 updateHandler:v58 outToken:a4];
+      v17 = [(AMSBag *)self _availableValuesFromPersistedBagData:*(*(&buf + 1) + 40) error:0 keys:keysCopy partialIdentifier:v17 updateHandler:handlerCopy outToken:token];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -1095,7 +1095,7 @@ LABEL_7:
     }
   }
 
-  v17 = [(AMSBag *)self _availableValuesFromPersistedBagData:v72[5] error:v66[5] keys:v9 partialIdentifier:v56 updateHandler:v58 outToken:a4];
+  v17 = [(AMSBag *)self _availableValuesFromPersistedBagData:v72[5] error:v66[5] keys:keysCopy partialIdentifier:bagLoadingPartialIdentifier updateHandler:handlerCopy outToken:token];
 LABEL_61:
   _Block_object_dispose(&v65, 8);
 
@@ -1388,24 +1388,24 @@ void __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_inv
   }
 }
 
-- (void)removeObserverWithToken:(unint64_t)a3
+- (void)removeObserverWithToken:(unint64_t)token
 {
-  v4 = [(AMSBag *)self updateHandlers];
-  [v4 removeHandlerWithToken:a3];
+  updateHandlers = [(AMSBag *)self updateHandlers];
+  [updateHandlers removeHandlerWithToken:token];
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[AMSLogConfig sharedConfigOversize];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
@@ -1415,13 +1415,13 @@ void __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_inv
     v20 = 2114;
     v21 = v9;
     v22 = 2114;
-    v23 = self;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to create a snapshot. originalBag = %{public}@", buf, 0x20u);
+    selfCopy = self;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to create a snapshot. originalBag = %{public}@", buf, 0x20u);
   }
 
   v10 = AMSLogKey();
   objc_initWeak(buf, self);
-  v11 = [(AMSBag *)self dataSource];
+  dataSource = [(AMSBag *)self dataSource];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__AMSBag_createSnapshotWithCompletion___block_invoke;
@@ -1429,9 +1429,9 @@ void __61__AMSBag_cachedValuesForKeys_observationToken_updateHandler___block_inv
   objc_copyWeak(&v17, buf);
   v12 = v10;
   v15 = v12;
-  v13 = v4;
+  v13 = completionCopy;
   v16 = v13;
-  [v11 loadWithCompletion:v14];
+  [dataSource loadWithCompletion:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -1589,110 +1589,110 @@ LABEL_26:
 
 - (NSString)descriptionExtended
 {
-  v3 = [(AMSBag *)self dataSource];
+  dataSource = [(AMSBag *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(AMSBag *)self dataSource];
-  v6 = v5;
+  dataSource2 = [(AMSBag *)self dataSource];
+  v6 = dataSource2;
   if (v4)
   {
-    [v5 descriptionExtended];
+    [dataSource2 descriptionExtended];
   }
 
   else
   {
-    [v5 description];
+    [dataSource2 description];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)setDefaultValue:(id)a3 forKey:(id)a4
+- (void)setDefaultValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSBag *)self dataSource];
-  [v8 setDefaultValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  dataSource = [(AMSBag *)self dataSource];
+  [dataSource setDefaultValue:valueCopy forKey:keyCopy];
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:0];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:0];
 
   return v7;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:1];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:1];
 
   return v7;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:2];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:2];
 
   return v7;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:3];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:3];
 
   return v7;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:4];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:4];
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:5];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:5];
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
+  accountCopy = account;
+  keyCopy = key;
   v8 = [AMSBagValue alloc];
-  v9 = [(AMSBag *)self dataSource];
-  v10 = [(AMSBagValue *)v8 initWithDataSource:v9 key:v7 valueType:5 account:v6];
+  dataSource = [(AMSBag *)self dataSource];
+  v10 = [(AMSBagValue *)v8 initWithDataSource:dataSource key:keyCopy valueType:5 account:accountCopy];
 
   return v10;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:6];
+  dataSource = [(AMSBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:6];
 
   return v7;
 }
@@ -1701,7 +1701,7 @@ LABEL_26:
 {
   v3 = objc_alloc_init(AMSMutablePromise);
   objc_initWeak(&location, self);
-  v4 = [(AMSBag *)self dataSource];
+  dataSource = [(AMSBag *)self dataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __30__AMSBag__temporaryDictionary__block_invoke;
@@ -1710,7 +1710,7 @@ LABEL_26:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 loadWithCompletion:v9];
+  [dataSource loadWithCompletion:v9];
 
   v6 = v10;
   v7 = v5;
@@ -1761,15 +1761,15 @@ void __30__AMSBag__temporaryDictionary__block_invoke(uint64_t a1, void *a2, void
   }
 }
 
-+ (id)_bagForProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 accountProvider:(id)a6
++ (id)_bagForProfile:(id)profile profileVersion:(id)version processInfo:(id)info accountProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  profileCopy = profile;
+  versionCopy = version;
+  infoCopy = info;
+  providerCopy = provider;
+  if (profileCopy)
   {
-    if (v12)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -1777,13 +1777,13 @@ void __30__AMSBag__temporaryDictionary__block_invoke(uint64_t a1, void *a2, void
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"AMSBag.m" lineNumber:474 description:{@"Unexpected nil reference: %s", "profile"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:474 description:{@"Unexpected nil reference: %s", "profile"}];
 
-    if (v12)
+    if (versionCopy)
     {
 LABEL_3:
-      if (v14)
+      if (providerCopy)
       {
         goto LABEL_4;
       }
@@ -1792,13 +1792,13 @@ LABEL_3:
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"AMSBag.m" lineNumber:475 description:{@"Unexpected nil reference: %s", "profileVersion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:475 description:{@"Unexpected nil reference: %s", "profileVersion"}];
 
-  if (v14)
+  if (providerCopy)
   {
 LABEL_4:
-    if (v13)
+    if (infoCopy)
     {
       goto LABEL_6;
     }
@@ -1807,35 +1807,35 @@ LABEL_4:
   }
 
 LABEL_11:
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"AMSBag.m" lineNumber:476 description:{@"Unexpected nil reference: %s", "accountProvider"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"AMSBag.m" lineNumber:476 description:{@"Unexpected nil reference: %s", "accountProvider"}];
 
-  if (!v13)
+  if (!infoCopy)
   {
 LABEL_5:
-    v13 = +[AMSProcessInfo currentProcess];
+    infoCopy = +[AMSProcessInfo currentProcess];
   }
 
 LABEL_6:
-  v15 = [AMSBagNetworkDataSource requestPartialIdentifierForClientInfo:v13 profile:v11 profileVersion:v12];
-  v16 = [v14 identity];
-  v17 = [v13 accountMediaType];
-  v18 = [a1 bagCache];
+  v15 = [AMSBagNetworkDataSource requestPartialIdentifierForClientInfo:infoCopy profile:profileCopy profileVersion:versionCopy];
+  identity = [providerCopy identity];
+  accountMediaType = [infoCopy accountMediaType];
+  bagCache = [self bagCache];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __68__AMSBag__bagForProfile_profileVersion_processInfo_accountProvider___block_invoke;
   v28[3] = &unk_1E73B4190;
-  v29 = v11;
-  v30 = v12;
-  v31 = v13;
-  v32 = v14;
+  v29 = profileCopy;
+  v30 = versionCopy;
+  v31 = infoCopy;
+  v32 = providerCopy;
   v33 = a2;
-  v34 = a1;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v11;
-  v23 = [v18 bagWithIdentifier:v15 accountProviderIdentity:v16 accountMediaType:v17 orCreateUsingBlock:v28];
+  selfCopy = self;
+  v19 = providerCopy;
+  v20 = infoCopy;
+  v21 = versionCopy;
+  v22 = profileCopy;
+  v23 = [bagCache bagWithIdentifier:v15 accountProviderIdentity:identity accountMediaType:accountMediaType orCreateUsingBlock:v28];
 
   return v23;
 }
@@ -1913,30 +1913,30 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_availableValuesFromCachedData:(id)a3 keys:(id)a4 partialIdentifier:(id)a5 expirationDate:(id)a6 updateHandler:(id)a7 outToken:(unint64_t *)a8
+- (id)_availableValuesFromCachedData:(id)data keys:(id)keys partialIdentifier:(id)identifier expirationDate:(id)date updateHandler:(id)handler outToken:(unint64_t *)token
 {
   v51 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v42 = a5;
-  v40 = a7;
-  v15 = a6;
-  v16 = [v14 mutableCopy];
+  dataCopy = data;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  dateCopy = date;
+  v16 = [keysCopy mutableCopy];
   v17 = MEMORY[0x1E695DFD8];
-  v18 = [v13 allKeys];
-  v19 = [v17 setWithArray:v18];
+  allKeys = [dataCopy allKeys];
+  v19 = [v17 setWithArray:allKeys];
   [v16 intersectSet:v19];
 
   v20 = [v16 count];
-  v21 = [v14 count];
+  v21 = [keysCopy count];
   v22 = +[AMSLogConfig sharedBagConfig];
   if (!v22)
   {
     v22 = +[AMSLogConfig sharedConfig];
   }
 
-  v23 = [v22 OSLogObject];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v22 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v38 = v21;
     v39 = v20;
@@ -1955,7 +1955,7 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_2(uint64_t a1)
       [v25 stringWithFormat:@"%@: ", v26];
     }
     v28 = ;
-    v29 = AMSHashIfNeeded(v42);
+    v29 = AMSHashIfNeeded(identifierCopy);
     *buf = 138544130;
     v44 = v28;
     v45 = 2048;
@@ -1964,7 +1964,7 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_2(uint64_t a1)
     v48 = v38;
     v49 = 2114;
     v50 = v29;
-    _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Returning %lu cached bag values from a total of %lu. partialBagIdentifier = %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Returning %lu cached bag values from a total of %lu. partialBagIdentifier = %{public}@", buf, 0x2Au);
     if (v24)
     {
 
@@ -1972,57 +1972,57 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_2(uint64_t a1)
     }
   }
 
-  v30 = [v13 ams_valuesForKeys:v16];
+  v30 = [dataCopy ams_valuesForKeys:v16];
   v31 = [MEMORY[0x1E695DF00] now];
-  v32 = [v15 compare:v31];
+  v32 = [dateCopy compare:v31];
 
-  v33 = +[AMSBagPersistenceMetricsTracker trackerForCachedValuesCallWithRequestedValueCount:cachedValueCount:cachedBagWasExpired:](AMSBagPersistenceMetricsTracker, "trackerForCachedValuesCallWithRequestedValueCount:cachedValueCount:cachedBagWasExpired:", [v14 count], objc_msgSend(v16, "count"), v32 == -1);
-  v34 = [(AMSBag *)self updateHandlers];
-  v35 = [v34 addHandlerWithKeys:v14 initialValues:v30 metricsTracker:v33 handler:v40];
+  v33 = +[AMSBagPersistenceMetricsTracker trackerForCachedValuesCallWithRequestedValueCount:cachedValueCount:cachedBagWasExpired:](AMSBagPersistenceMetricsTracker, "trackerForCachedValuesCallWithRequestedValueCount:cachedValueCount:cachedBagWasExpired:", [keysCopy count], objc_msgSend(v16, "count"), v32 == -1);
+  updateHandlers = [(AMSBag *)self updateHandlers];
+  v35 = [updateHandlers addHandlerWithKeys:keysCopy initialValues:v30 metricsTracker:v33 handler:handlerCopy];
 
-  *a8 = v35;
+  *token = v35;
   [(AMSBag *)self _loadAndPersistBag];
 
   return v30;
 }
 
-- (id)_availableValuesFromPersistedBagData:(id)a3 error:(id)a4 keys:(id)a5 partialIdentifier:(id)a6 updateHandler:(id)a7 outToken:(unint64_t *)a8
+- (id)_availableValuesFromPersistedBagData:(id)data error:(id)error keys:(id)keys partialIdentifier:(id)identifier updateHandler:(id)handler outToken:(unint64_t *)token
 {
   v67 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14)
+  dataCopy = data;
+  errorCopy = error;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (dataCopy)
   {
-    v19 = [v14 bagDictionary];
-    v20 = [v14 expirationDate];
-    v21 = [(AMSBag *)self _availableValuesFromCachedData:v19 keys:v16 partialIdentifier:v17 expirationDate:v20 updateHandler:v18 outToken:a8];
+    bagDictionary = [dataCopy bagDictionary];
+    expirationDate = [dataCopy expirationDate];
+    v21 = [(AMSBag *)self _availableValuesFromCachedData:bagDictionary keys:keysCopy partialIdentifier:identifierCopy expirationDate:expirationDate updateHandler:handlerCopy outToken:token];
 
     goto LABEL_54;
   }
 
-  v22 = [(AMSBag *)self updateHandlers];
-  v23 = [v22 addHandlerWithKeys:v16 initialValues:MEMORY[0x1E695E0F8] handler:v18];
+  updateHandlers = [(AMSBag *)self updateHandlers];
+  v23 = [updateHandlers addHandlerWithKeys:keysCopy initialValues:MEMORY[0x1E695E0F8] handler:handlerCopy];
 
-  *a8 = v23;
-  if (!v15)
+  *token = v23;
+  if (!errorCopy)
   {
-    if (v17)
+    if (identifierCopy)
     {
       v33 = +[AMSUnitTests isRunningUnitTests];
       v34 = +[AMSLogConfig sharedBagConfig];
-      v35 = v34;
+      defaultCenter = v34;
       if (v33)
       {
         if (!v34)
         {
-          v35 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v36 = [v35 OSLogObject];
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v37 = AMSLogKey();
           v38 = MEMORY[0x1E696AEC0];
@@ -2038,20 +2038,20 @@ void __38__AMSBag__configureDataSourceHandlers__block_invoke_2(uint64_t a1)
           {
             [v38 stringWithFormat:@"%@: ", v39];
           }
-          v41 = ;
+          selfCopy = ;
           *buf = 138543362;
-          v64 = v41;
-          _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly received no error or result data. No data will be returned.", buf, 0xCu);
+          v64 = selfCopy;
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly received no error or result data. No data will be returned.", buf, 0xCu);
           if (v37)
           {
 
-            v41 = self;
+            selfCopy = self;
           }
         }
 
-        v35 = [MEMORY[0x1E696AD88] defaultCenter];
-        v45 = +[AMSLogConfig sharedBagConfig];
-        [v35 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v45 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedBagConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
 LABEL_52:
 
         goto LABEL_53;
@@ -2059,11 +2059,11 @@ LABEL_52:
 
       if (!v34)
       {
-        v35 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v45 = [v35 OSLogObject];
-      if (!os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_52;
       }
@@ -2082,24 +2082,24 @@ LABEL_52:
       {
         [v51 stringWithFormat:@"%@: ", v52];
       }
-      v50 = ;
+      selfCopy2 = ;
       *buf = 138543362;
-      v64 = v50;
+      v64 = selfCopy2;
       v58 = "%{public}@Unexpectedly received no error or result data. No data will be returned.";
-      v59 = v45;
+      v59 = oSLogObject2;
       v60 = OS_LOG_TYPE_FAULT;
     }
 
     else
     {
-      v35 = +[AMSLogConfig sharedBagConfig];
-      if (!v35)
+      defaultCenter = +[AMSLogConfig sharedBagConfig];
+      if (!defaultCenter)
       {
-        v35 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v45 = [v35 OSLogObject];
-      if (!os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_52;
       }
@@ -2118,11 +2118,11 @@ LABEL_52:
       {
         [v47 stringWithFormat:@"%@: ", v48];
       }
-      v50 = ;
+      selfCopy2 = ;
       *buf = 138543362;
-      v64 = v50;
+      v64 = selfCopy2;
       v58 = "%{public}@Data source didn't provide a loading identifier. No cached data will be returned.";
-      v59 = v45;
+      v59 = oSLogObject2;
       v60 = OS_LOG_TYPE_DEFAULT;
     }
 
@@ -2130,13 +2130,13 @@ LABEL_52:
     if (v46)
     {
 
-      v50 = self;
+      selfCopy2 = self;
     }
 
     goto LABEL_52;
   }
 
-  IsEqual = AMSErrorIsEqual(v15, @"AMSErrorDomain", 7);
+  IsEqual = AMSErrorIsEqual(errorCopy, @"AMSErrorDomain", 7);
   v25 = +[AMSLogConfig sharedBagConfig];
   v26 = v25;
   if (IsEqual)
@@ -2146,8 +2146,8 @@ LABEL_52:
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v26 OSLogObject];
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v26 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_39;
     }
@@ -2167,13 +2167,13 @@ LABEL_52:
       [v29 stringWithFormat:@"%@: ", v30];
     }
     v32 = ;
-    v54 = AMSHashIfNeeded(v17);
+    v54 = AMSHashIfNeeded(identifierCopy);
     *buf = 138543618;
     v64 = v32;
     v65 = 2114;
     v66 = v54;
     v55 = "%{public}@Failed to load persisted bag because one wasn't found on file system. Returning empty dictionary. partialBagIdentifier = %{public}@";
-    v56 = v27;
+    v56 = oSLogObject3;
     v57 = OS_LOG_TYPE_DEFAULT;
   }
 
@@ -2184,8 +2184,8 @@ LABEL_52:
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v26 OSLogObject];
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v26 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_39;
     }
@@ -2205,13 +2205,13 @@ LABEL_52:
       [v42 stringWithFormat:@"%@: ", v43];
     }
     v32 = ;
-    v54 = AMSHashIfNeeded(v17);
+    v54 = AMSHashIfNeeded(identifierCopy);
     *buf = 138543618;
     v64 = v32;
     v65 = 2114;
     v66 = v54;
     v55 = "%{public}@Failed to load persisted bag for reading cached values. partialBagIdentifier = %{public}@";
-    v56 = v27;
+    v56 = oSLogObject3;
     v57 = OS_LOG_TYPE_ERROR;
   }
 
@@ -2224,7 +2224,7 @@ LABEL_52:
 
 LABEL_39:
   [(AMSBag *)self _loadAndPersistBag];
-  +[AMSBagPersistenceMetricsTracker trackCachedValuesUnavailableWithRequestedValueCount:](AMSBagPersistenceMetricsTracker, "trackCachedValuesUnavailableWithRequestedValueCount:", [v16 count]);
+  +[AMSBagPersistenceMetricsTracker trackCachedValuesUnavailableWithRequestedValueCount:](AMSBagPersistenceMetricsTracker, "trackCachedValuesUnavailableWithRequestedValueCount:", [keysCopy count]);
 LABEL_53:
   v21 = MEMORY[0x1E695E0F8];
 LABEL_54:
@@ -2232,38 +2232,38 @@ LABEL_54:
   return v21;
 }
 
-- (void)_persistBagDictionary:(id)a3 withIdentifier:(id)a4 partialIdentifier:(id)a5 expirationDate:(id)a6 onlyIfPreExisting:(BOOL)a7
+- (void)_persistBagDictionary:(id)dictionary withIdentifier:(id)identifier partialIdentifier:(id)partialIdentifier expirationDate:(id)date onlyIfPreExisting:(BOOL)existing
 {
   v161 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v150 = a5;
-  v13 = a6;
-  v14 = [(AMSBag *)self persistence];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  partialIdentifierCopy = partialIdentifier;
+  dateCopy = date;
+  persistence = [(AMSBag *)self persistence];
 
-  v149 = v13;
-  if (!v14)
+  v149 = dateCopy;
+  if (!persistence)
   {
     v15 = +[AMSUnitTests isRunningUnitTests];
     v16 = 0x1E73B0000uLL;
     v17 = +[AMSLogConfig sharedBagConfig];
-    v18 = v17;
-    v19 = v12;
+    defaultCenter = v17;
+    v19 = identifierCopy;
     if (v15)
     {
       if (!v17)
       {
-        v18 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v18 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v21 = AMSLogKey();
         v22 = MEMORY[0x1E696AEC0];
         v23 = objc_opt_class();
         v24 = v23;
-        v139 = v11;
+        v139 = dictionaryCopy;
         if (v21)
         {
           v145 = AMSLogKey();
@@ -2283,37 +2283,37 @@ LABEL_54:
         *&buf[14] = v32;
         *&buf[22] = 2114;
         v158 = v33;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v21)
         {
 
           v25 = v145;
         }
 
-        v11 = v139;
-        v13 = v149;
+        dictionaryCopy = v139;
+        dateCopy = v149;
       }
 
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      v26 = +[AMSLogConfig sharedBagConfig];
-      [v18 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v26 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v17)
       {
-        v18 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v18 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v27 = AMSLogKey();
         v28 = MEMORY[0x1E696AEC0];
         v29 = objc_opt_class();
         v30 = v29;
-        v140 = v11;
+        v140 = dictionaryCopy;
         if (v27)
         {
           v16 = AMSLogKey();
@@ -2333,44 +2333,44 @@ LABEL_54:
         *&buf[14] = v34;
         *&buf[22] = 2114;
         v158 = v35;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v27)
         {
 
           v31 = v16;
         }
 
-        v11 = v140;
-        v13 = v149;
+        dictionaryCopy = v140;
+        dateCopy = v149;
       }
     }
 
-    v12 = v19;
+    identifierCopy = v19;
   }
 
-  v36 = [(AMSBag *)self persistenceQueue];
+  persistenceQueue = [(AMSBag *)self persistenceQueue];
 
-  if (!v36)
+  if (!persistenceQueue)
   {
-    v146 = v12;
+    v146 = identifierCopy;
     v37 = +[AMSUnitTests isRunningUnitTests];
     v38 = +[AMSLogConfig sharedBagConfig];
-    v39 = v38;
+    defaultCenter2 = v38;
     if (v37)
     {
       if (!v38)
       {
-        v39 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v40 = [v39 OSLogObject];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [defaultCenter2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v41 = AMSLogKey();
         v42 = MEMORY[0x1E696AEC0];
         v43 = objc_opt_class();
         v44 = v43;
-        v141 = v11;
+        v141 = dictionaryCopy;
         if (v41)
         {
           v138 = AMSLogKey();
@@ -2390,37 +2390,37 @@ LABEL_54:
         *&buf[14] = v53;
         *&buf[22] = 2114;
         v158 = v54;
-        _os_log_impl(&dword_192869000, v40, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v41)
         {
 
           v45 = v138;
         }
 
-        v11 = v141;
-        v13 = v149;
+        dictionaryCopy = v141;
+        dateCopy = v149;
       }
 
-      v39 = [MEMORY[0x1E696AD88] defaultCenter];
-      v46 = +[AMSLogConfig sharedBagConfig];
-      [v39 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v46 userInfo:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject4 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter2 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject4 userInfo:0];
     }
 
     else
     {
       if (!v38)
       {
-        v39 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v46 = [v39 OSLogObject];
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [defaultCenter2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         v47 = AMSLogKey();
         v48 = MEMORY[0x1E696AEC0];
         v49 = objc_opt_class();
         v50 = v49;
-        v51 = v11;
+        v51 = dictionaryCopy;
         if (v47)
         {
           v138 = AMSLogKey();
@@ -2440,24 +2440,24 @@ LABEL_54:
         *&buf[14] = v55;
         *&buf[22] = 2114;
         v158 = v56;
-        _os_log_impl(&dword_192869000, v46, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v47)
         {
 
           v52 = v138;
         }
 
-        v11 = v51;
-        v13 = v149;
+        dictionaryCopy = v51;
+        dateCopy = v149;
       }
     }
 
-    v12 = v146;
+    identifierCopy = v146;
   }
 
-  if (v14)
+  if (persistence)
   {
-    v57 = v36 == 0;
+    v57 = persistenceQueue == 0;
   }
 
   else
@@ -2466,30 +2466,30 @@ LABEL_54:
   }
 
   v58 = !v57;
-  if (!v12)
+  if (!identifierCopy)
   {
     v59 = +[AMSUnitTests isRunningUnitTests];
     v60 = +[AMSLogConfig sharedBagConfig];
-    v61 = v60;
+    defaultCenter3 = v60;
     if (v59)
     {
       if (!v60)
       {
-        v61 = +[AMSLogConfig sharedConfig];
+        defaultCenter3 = +[AMSLogConfig sharedConfig];
       }
 
-      v62 = [v61 OSLogObject];
-      if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [defaultCenter3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
         v63 = AMSLogKey();
         v64 = MEMORY[0x1E696AEC0];
         v65 = objc_opt_class();
         v66 = v65;
-        v142 = v11;
+        v142 = dictionaryCopy;
         if (v63)
         {
-          v12 = AMSLogKey();
-          [v64 stringWithFormat:@"%@: [%@] ", v66, v12];
+          identifierCopy = AMSLogKey();
+          [v64 stringWithFormat:@"%@: [%@] ", v66, identifierCopy];
         }
 
         else
@@ -2505,42 +2505,42 @@ LABEL_54:
         *&buf[14] = v75;
         *&buf[22] = 2114;
         v158 = v76;
-        _os_log_impl(&dword_192869000, v62, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v63)
         {
 
-          v67 = v12;
+          v67 = identifierCopy;
         }
 
-        v11 = v142;
-        v12 = 0;
-        v13 = v149;
+        dictionaryCopy = v142;
+        identifierCopy = 0;
+        dateCopy = v149;
       }
 
-      v61 = [MEMORY[0x1E696AD88] defaultCenter];
-      v68 = +[AMSLogConfig sharedBagConfig];
-      [v61 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v68 userInfo:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject6 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter3 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject6 userInfo:0];
     }
 
     else
     {
       if (!v60)
       {
-        v61 = +[AMSLogConfig sharedConfig];
+        defaultCenter3 = +[AMSLogConfig sharedConfig];
       }
 
-      v68 = [v61 OSLogObject];
-      if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
+      oSLogObject6 = [defaultCenter3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_FAULT))
       {
         v69 = AMSLogKey();
         v70 = MEMORY[0x1E696AEC0];
         v71 = objc_opt_class();
         v72 = v71;
-        v73 = v11;
+        v73 = dictionaryCopy;
         if (v69)
         {
-          v12 = AMSLogKey();
-          [v70 stringWithFormat:@"%@: [%@] ", v72, v12];
+          identifierCopy = AMSLogKey();
+          [v70 stringWithFormat:@"%@: [%@] ", v72, identifierCopy];
         }
 
         else
@@ -2556,50 +2556,50 @@ LABEL_54:
         *&buf[14] = v77;
         *&buf[22] = 2114;
         v158 = v78;
-        _os_log_impl(&dword_192869000, v68, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v69)
         {
 
-          v74 = v12;
+          v74 = identifierCopy;
         }
 
-        v11 = v73;
-        v12 = 0;
-        v13 = v149;
+        dictionaryCopy = v73;
+        identifierCopy = 0;
+        dateCopy = v149;
       }
     }
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
     v58 = 0;
   }
 
-  if (!v13)
+  if (!dateCopy)
   {
     v79 = +[AMSUnitTests isRunningUnitTests];
     v80 = +[AMSLogConfig sharedBagConfig];
-    v81 = v80;
+    defaultCenter4 = v80;
     if (v79)
     {
       if (!v80)
       {
-        v81 = +[AMSLogConfig sharedConfig];
+        defaultCenter4 = +[AMSLogConfig sharedConfig];
       }
 
-      v82 = [v81 OSLogObject];
-      if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
+      oSLogObject7 = [defaultCenter4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
       {
-        v147 = v12;
+        v147 = identifierCopy;
         v83 = AMSLogKey();
         v84 = MEMORY[0x1E696AEC0];
         v85 = objc_opt_class();
         v86 = v85;
-        v143 = v11;
+        v143 = dictionaryCopy;
         if (v83)
         {
-          v12 = AMSLogKey();
-          [v84 stringWithFormat:@"%@: [%@] ", v86, v12];
+          identifierCopy = AMSLogKey();
+          [v84 stringWithFormat:@"%@: [%@] ", v86, identifierCopy];
         }
 
         else
@@ -2615,43 +2615,43 @@ LABEL_54:
         *&buf[14] = v95;
         *&buf[22] = 2114;
         v158 = v96;
-        _os_log_impl(&dword_192869000, v82, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v83)
         {
 
-          v87 = v12;
+          v87 = identifierCopy;
         }
 
-        v11 = v143;
-        v12 = v147;
-        v13 = v149;
+        dictionaryCopy = v143;
+        identifierCopy = v147;
+        dateCopy = v149;
       }
 
-      v81 = [MEMORY[0x1E696AD88] defaultCenter];
-      v88 = +[AMSLogConfig sharedBagConfig];
-      [v81 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v88 userInfo:0];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject8 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter4 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject8 userInfo:0];
     }
 
     else
     {
       if (!v80)
       {
-        v81 = +[AMSLogConfig sharedConfig];
+        defaultCenter4 = +[AMSLogConfig sharedConfig];
       }
 
-      v88 = [v81 OSLogObject];
-      if (os_log_type_enabled(v88, OS_LOG_TYPE_FAULT))
+      oSLogObject8 = [defaultCenter4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_FAULT))
       {
-        v148 = v12;
+        v148 = identifierCopy;
         v89 = AMSLogKey();
         v90 = MEMORY[0x1E696AEC0];
         v91 = objc_opt_class();
         v92 = v91;
-        v93 = v11;
+        v93 = dictionaryCopy;
         if (v89)
         {
-          v12 = AMSLogKey();
-          [v90 stringWithFormat:@"%@: [%@] ", v92, v12];
+          identifierCopy = AMSLogKey();
+          [v90 stringWithFormat:@"%@: [%@] ", v92, identifierCopy];
         }
 
         else
@@ -2667,24 +2667,24 @@ LABEL_54:
         *&buf[14] = v97;
         *&buf[22] = 2114;
         v158 = v98;
-        _os_log_impl(&dword_192869000, v88, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v89)
         {
 
-          v94 = v12;
+          v94 = identifierCopy;
         }
 
-        v11 = v93;
-        v12 = v148;
-        v13 = v149;
+        dictionaryCopy = v93;
+        identifierCopy = v148;
+        dateCopy = v149;
       }
     }
   }
 
-  if ([v12 length])
+  if ([identifierCopy length])
   {
     v99 = v58 ^ 1;
-    if (!v13)
+    if (!dateCopy)
     {
       v99 = 1;
     }
@@ -2698,10 +2698,10 @@ LABEL_54:
         v101 = +[AMSLogConfig sharedConfig];
       }
 
-      v102 = [v101 OSLogObject];
-      if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
+      oSLogObject9 = [v101 OSLogObject];
+      if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_DEFAULT))
       {
-        v103 = v11;
+        v103 = dictionaryCopy;
         v104 = AMSLogKey();
         v105 = MEMORY[0x1E696AEC0];
         v106 = objc_opt_class();
@@ -2717,33 +2717,33 @@ LABEL_54:
           [v105 stringWithFormat:@"%@: ", v106];
         }
         v108 = ;
-        v127 = AMSHashIfNeeded(v12);
+        v127 = AMSHashIfNeeded(identifierCopy);
         *buf = 138543618;
         *&buf[4] = v108;
         *&buf[12] = 2114;
         *&buf[14] = v127;
-        _os_log_impl(&dword_192869000, v102, OS_LOG_TYPE_DEFAULT, "%{public}@Enqueuing async bag persistence. bagIdentifier = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject9, OS_LOG_TYPE_DEFAULT, "%{public}@Enqueuing async bag persistence. bagIdentifier = %{public}@", buf, 0x16u);
         if (v104)
         {
 
           v108 = v100;
         }
 
-        v11 = v103;
-        v13 = v149;
+        dictionaryCopy = v103;
+        dateCopy = v149;
       }
 
-      v128 = [(AMSBag *)self persistenceQueue];
+      persistenceQueue2 = [(AMSBag *)self persistenceQueue];
       v151[0] = MEMORY[0x1E69E9820];
       v151[1] = 3221225472;
       v151[2] = __98__AMSBag__persistBagDictionary_withIdentifier_partialIdentifier_expirationDate_onlyIfPreExisting___block_invoke;
       v151[3] = &unk_1E73B4208;
       v151[4] = self;
-      v152 = v12;
-      v153 = v13;
-      v156 = a7;
-      v154 = v150;
-      v155 = v11;
+      v152 = identifierCopy;
+      v153 = dateCopy;
+      existingCopy = existing;
+      v154 = partialIdentifierCopy;
+      v155 = dictionaryCopy;
       v129 = v151;
       v130 = AMSLogKey();
       *buf = MEMORY[0x1E69E9820];
@@ -2753,7 +2753,7 @@ LABEL_54:
       v159 = v130;
       v160 = v129;
       v131 = v130;
-      dispatch_async(v128, buf);
+      dispatch_async(persistenceQueue2, buf);
     }
   }
 
@@ -2769,15 +2769,15 @@ LABEL_54:
         v111 = +[AMSLogConfig sharedConfig];
       }
 
-      v112 = [v111 OSLogObject];
-      if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
+      oSLogObject10 = [v111 OSLogObject];
+      if (os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_ERROR))
       {
-        v113 = v12;
+        v113 = identifierCopy;
         v114 = AMSLogKey();
         v115 = MEMORY[0x1E696AEC0];
         v116 = objc_opt_class();
         v117 = v116;
-        v118 = v11;
+        v118 = dictionaryCopy;
         if (v114)
         {
           self = AMSLogKey();
@@ -2788,31 +2788,31 @@ LABEL_54:
         {
           [v115 stringWithFormat:@"%@: ", v116];
         }
-        v119 = ;
+        selfCopy = ;
         v132 = AMSHashIfNeeded(@"identifier.length > 0");
         v133 = AMSHashIfNeeded(@"'identifier' must be non-empty in order to persist a bag.");
         *buf = 138543874;
-        *&buf[4] = v119;
+        *&buf[4] = selfCopy;
         *&buf[12] = 2114;
         *&buf[14] = v132;
         *&buf[22] = 2114;
         v158 = v133;
-        _os_log_impl(&dword_192869000, v112, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject10, OS_LOG_TYPE_ERROR, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v114)
         {
 
-          v119 = self;
+          selfCopy = self;
         }
 
-        v11 = v118;
-        v12 = v113;
+        dictionaryCopy = v118;
+        identifierCopy = v113;
       }
 
-      v134 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
       v135 = +[AMSLogConfig sharedBagConfig];
-      [v134 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v135 userInfo:0];
+      [defaultCenter5 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v135 userInfo:0];
 
-      v13 = v149;
+      dateCopy = v149;
     }
 
     else
@@ -2822,14 +2822,14 @@ LABEL_54:
         v111 = +[AMSLogConfig sharedConfig];
       }
 
-      v120 = [v111 OSLogObject];
-      if (os_log_type_enabled(v120, OS_LOG_TYPE_FAULT))
+      oSLogObject11 = [v111 OSLogObject];
+      if (os_log_type_enabled(oSLogObject11, OS_LOG_TYPE_FAULT))
       {
         v121 = AMSLogKey();
         v122 = MEMORY[0x1E696AEC0];
         v123 = objc_opt_class();
         v124 = v123;
-        v125 = v11;
+        v125 = dictionaryCopy;
         if (v121)
         {
           self = AMSLogKey();
@@ -2840,24 +2840,24 @@ LABEL_54:
         {
           [v122 stringWithFormat:@"%@: ", v123];
         }
-        v126 = ;
+        selfCopy2 = ;
         v136 = AMSHashIfNeeded(@"identifier.length > 0");
         v137 = AMSHashIfNeeded(@"'identifier' must be non-empty in order to persist a bag.");
         *buf = 138543874;
-        *&buf[4] = v126;
+        *&buf[4] = selfCopy2;
         *&buf[12] = 2114;
         *&buf[14] = v136;
         *&buf[22] = 2114;
         v158 = v137;
-        _os_log_impl(&dword_192869000, v120, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject11, OS_LOG_TYPE_FAULT, "%{public}@Assertion failed: %{public}@. Description: %{public}@", buf, 0x20u);
         if (v121)
         {
 
-          v126 = self;
+          selfCopy2 = self;
         }
 
-        v11 = v125;
-        v13 = v149;
+        dictionaryCopy = v125;
+        dateCopy = v149;
       }
     }
   }
@@ -3085,20 +3085,20 @@ LABEL_42:
 
 + (void)resetBagCache
 {
-  v2 = [a1 bagCache];
-  [v2 removeAll];
+  bagCache = [self bagCache];
+  [bagCache removeAll];
 }
 
 - (void)waitUntilPersistenceWorkComplete
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSBag *)self persistenceQueue];
+  persistenceQueue = [(AMSBag *)self persistenceQueue];
 
-  if (v3)
+  if (persistenceQueue)
   {
-    v4 = [v2 persistenceQueue];
-    dispatch_sync(v4, &__block_literal_global_162);
+    persistenceQueue2 = [selfCopy persistenceQueue];
+    dispatch_sync(persistenceQueue2, &__block_literal_global_162);
 
     v5 = +[AMSLogConfig sharedBagConfig];
     if (!v5)
@@ -3106,8 +3106,8 @@ LABEL_42:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 = AMSLogKey();
       v8 = MEMORY[0x1E696AEC0];
@@ -3115,8 +3115,8 @@ LABEL_42:
       v10 = v9;
       if (v7)
       {
-        v2 = AMSLogKey();
-        [v8 stringWithFormat:@"%@: [%@] ", v10, v2];
+        selfCopy = AMSLogKey();
+        [v8 stringWithFormat:@"%@: [%@] ", v10, selfCopy];
       }
 
       else
@@ -3126,37 +3126,37 @@ LABEL_42:
       v11 = ;
       *buf = 138543362;
       v13 = v11;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@Finished waiting for any pending persistence work.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Finished waiting for any pending persistence work.", buf, 0xCu);
       if (v7)
       {
 
-        v11 = v2;
+        v11 = selfCopy;
       }
     }
   }
 }
 
-- (id)URLFromURLString:(id)a3 account:(id)a4
+- (id)URLFromURLString:(id)string account:(id)account
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  stringCopy = string;
+  accountCopy = account;
+  if (!accountCopy)
   {
     v8 = objc_alloc_init(AMSBagActiveAccountProvider);
-    v9 = [(AMSBag *)self processInfo];
-    v10 = [v9 accountMediaType];
-    v7 = [(AMSBagActiveAccountProvider *)v8 bagAccountForAccountMediaType:v10];
+    processInfo = [(AMSBag *)self processInfo];
+    accountMediaType = [processInfo accountMediaType];
+    accountCopy = [(AMSBagActiveAccountProvider *)v8 bagAccountForAccountMediaType:accountMediaType];
   }
 
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __35__AMSBag_URLFromURLString_account___block_invoke;
   v26 = &unk_1E73B4230;
-  v27 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = accountCopy;
   v28 = v11;
-  v12 = [AMSBagURLParser URLBySubstitutingVariablesInURLString:v6 usingBlock:&v23];
+  v12 = [AMSBagURLParser URLBySubstitutingVariablesInURLString:stringCopy usingBlock:&v23];
   if (!v12)
   {
     v13 = +[AMSLogConfig sharedBagConfig];
@@ -3165,8 +3165,8 @@ LABEL_42:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -3175,27 +3175,27 @@ LABEL_42:
       if (v15)
       {
         self = AMSLogKey();
-        [v16 stringWithFormat:@"%@: [%@] ", v18, self, v23, v24, v25, v26, v27];
+        [v16 stringWithFormat:@"%@: [%@] ", v18, self, v23, v24, v25, v26, selfCopy];
       }
 
       else
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
-      v20 = AMSHashIfNeeded(v6);
+      selfCopy2 = ;
+      v20 = AMSHashIfNeeded(stringCopy);
       v21 = AMSHashIfNeeded(v11);
       *buf = 138543874;
-      v30 = v19;
+      v30 = selfCopy2;
       v31 = 2114;
       v32 = v20;
       v33 = 2114;
       v34 = v21;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to create template-substituted URL. URL = %{public}@ | account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to create template-substituted URL. URL = %{public}@ | account = %{public}@", buf, 0x20u);
       if (v15)
       {
 
-        v19 = self;
+        selfCopy2 = self;
       }
     }
   }

@@ -2,13 +2,13 @@
 - (MPSCNNCrossChannelNormalization)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNCrossChannelNormalization)initWithDevice:(id)device;
 - (MPSCNNCrossChannelNormalization)initWithDevice:(id)device kernelSize:(NSUInteger)kernelSize;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4;
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4;
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImages:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images;
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image;
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImages:(id)destinationImages;
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNCrossChannelNormalization
@@ -68,47 +68,47 @@
   return 0;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage
 {
   v5.receiver = self;
   v5.super_class = MPSCNNCrossChannelNormalization;
-  [(MPSCNNKernel *)&v5 encodeToCommandBuffer:a3 sourceImage:a4 destinationImage:a5];
+  [(MPSCNNKernel *)&v5 encodeToCommandBuffer:buffer sourceImage:image destinationImage:destinationImage];
 }
 
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImages:(id)a5
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImages:(id)destinationImages
 {
   v5.receiver = self;
   v5.super_class = MPSCNNCrossChannelNormalization;
-  [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:a3 sourceImages:a4 destinationImages:a5];
+  [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:buffer sourceImages:images destinationImages:destinationImages];
 }
 
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = MPSCNNCrossChannelNormalization;
-  return [(MPSCNNKernel *)&v5 encodeToCommandBuffer:a3 sourceImage:a4];
+  return [(MPSCNNKernel *)&v5 encodeToCommandBuffer:buffer sourceImage:image];
 }
 
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images
 {
   v5.receiver = self;
   v5.super_class = MPSCNNCrossChannelNormalization;
-  return [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:a3 sourceImages:a4];
+  return [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:buffer sourceImages:images];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v31.receiver = self;
   v31.super_class = MPSCNNCrossChannelNormalization;
   [(MPSCNNKernel *)&v31 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_kernelSize, @"MPSCNNCrossChannelNormalization.kernelSize", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_kernelSize, @"MPSCNNCrossChannelNormalization.kernelSize", v6, v7, v8, v9);
   *&v10 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSCNNCrossChannelNormalization.alpha", v12, v13, v14, v15, v16, v10);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSCNNCrossChannelNormalization.alpha", v12, v13, v14, v15, v16, v10);
   *&v17 = self->_beta;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"MPSCNNCrossChannelNormalization.beta", v19, v20, v21, v22, v23, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"MPSCNNCrossChannelNormalization.beta", v19, v20, v21, v22, v23, v17);
   *&v24 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v25, @"MPSCNNCrossChannelNormalization.delta", v26, v27, v28, v29, v30, v24);
+  objc_msgSend_encodeFloat_forKey_(coder, v25, @"MPSCNNCrossChannelNormalization.delta", v26, v27, v28, v29, v30, v24);
 }
 
 - (MPSCNNCrossChannelNormalization)initWithDevice:(id)device
@@ -123,11 +123,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNCrossChannelNormalization;
-  result = [(MPSCNNKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 41) = self->_kernelSize;

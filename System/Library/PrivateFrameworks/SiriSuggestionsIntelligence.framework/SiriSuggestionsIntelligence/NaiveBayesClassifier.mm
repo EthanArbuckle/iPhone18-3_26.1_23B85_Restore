@@ -1,15 +1,15 @@
 @interface NaiveBayesClassifier
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation NaiveBayesClassifier
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  SiriSuggestionsIntelligence.NaiveBayesClassifier.prediction(from:options:)(a3);
+  optionsCopy = options;
+  selfCopy = self;
+  SiriSuggestionsIntelligence.NaiveBayesClassifier.prediction(from:options:)(features);
   v11 = v10;
 
   swift_unknownObjectRelease();

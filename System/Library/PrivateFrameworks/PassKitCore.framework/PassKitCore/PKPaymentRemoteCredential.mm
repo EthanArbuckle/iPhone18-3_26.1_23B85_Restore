@@ -1,21 +1,21 @@
 @interface PKPaymentRemoteCredential
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)summaryMetadataDescription;
-- (PKPaymentRemoteCredential)initWithDictionary:(id)a3;
-- (PKPaymentRemoteCredential)initWithIdentifier:(id)a3 status:(int64_t)a4 credentialType:(int64_t)a5 passURL:(id)a6;
+- (PKPaymentRemoteCredential)initWithDictionary:(id)dictionary;
+- (PKPaymentRemoteCredential)initWithIdentifier:(id)identifier status:(int64_t)status credentialType:(int64_t)type passURL:(id)l;
 - (id)description;
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3;
-- (int64_t)compare:(id)a3;
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)updateWithDictionary:(id)a3;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentRemoteCredential
 
-- (PKPaymentRemoteCredential)initWithDictionary:(id)a3
+- (PKPaymentRemoteCredential)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v8.receiver = self;
     v8.super_class = PKPaymentRemoteCredential;
@@ -23,7 +23,7 @@
     v6 = v5;
     if (v5)
     {
-      [(PKPaymentRemoteCredential *)v5 updateWithDictionary:v4];
+      [(PKPaymentRemoteCredential *)v5 updateWithDictionary:dictionaryCopy];
     }
   }
 
@@ -36,23 +36,23 @@
   return v6;
 }
 
-- (PKPaymentRemoteCredential)initWithIdentifier:(id)a3 status:(int64_t)a4 credentialType:(int64_t)a5 passURL:(id)a6
+- (PKPaymentRemoteCredential)initWithIdentifier:(id)identifier status:(int64_t)status credentialType:(int64_t)type passURL:(id)l
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = PKPaymentRemoteCredential;
   v12 = [(PKPaymentCredential *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    [(PKPaymentCredential *)v12 setCredentialType:a5];
-    v14 = [v10 copy];
+    [(PKPaymentCredential *)v12 setCredentialType:type];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v13->_status = a4;
-    v16 = [v11 copy];
+    v13->_status = status;
+    v16 = [lCopy copy];
     passURL = v13->_passURL;
     v13->_passURL = v16;
   }
@@ -60,19 +60,19 @@
   return v13;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v120 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"identifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  v7 = [v4 PKStringForKey:@"passTypeIdentifier"];
+  v7 = [dictionaryCopy PKStringForKey:@"passTypeIdentifier"];
   passTypeIdentifier = self->_passTypeIdentifier;
   self->_passTypeIdentifier = v7;
 
-  v9 = [v4 PKNumberForKey:@"status"];
+  v9 = [dictionaryCopy PKNumberForKey:@"status"];
   v10 = v9;
   v11 = &unk_1F23B4E68;
   if (v9)
@@ -82,12 +82,12 @@
 
   v12 = v11;
 
-  v97 = [v12 integerValue];
+  integerValue = [v12 integerValue];
   [(PKPaymentRemoteCredential *)self setStatus:?];
-  v13 = [v4 PKURLForKey:@"passURL"];
+  v13 = [dictionaryCopy PKURLForKey:@"passURL"];
   [(PKPaymentRemoteCredential *)self setPassURL:v13];
 
-  v14 = [v4 PKStringForKey:@"serialNumber"];
+  v14 = [dictionaryCopy PKStringForKey:@"serialNumber"];
   if (v14)
   {
     [(PKPaymentRemoteCredential *)self setSerialNumber:v14];
@@ -98,42 +98,42 @@
     passURL = self->_passURL;
     if (passURL)
     {
-      v16 = [(NSURL *)passURL lastPathComponent];
-      [(PKPaymentRemoteCredential *)self setSerialNumber:v16];
+      lastPathComponent = [(NSURL *)passURL lastPathComponent];
+      [(PKPaymentRemoteCredential *)self setSerialNumber:lastPathComponent];
     }
   }
 
-  -[PKPaymentCredential setDeletable:](self, "setDeletable:", [v4 PKBoolForKey:@"isDeletable"]);
-  v17 = [v4 objectForKey:@"cardType"];
+  -[PKPaymentCredential setDeletable:](self, "setDeletable:", [dictionaryCopy PKBoolForKey:@"isDeletable"]);
+  v17 = [dictionaryCopy objectForKey:@"cardType"];
   v103 = v14;
   v104 = v12;
   v102 = v17;
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v17 integerValue];
+    integerValue2 = [v17 integerValue];
   }
 
   else
   {
-    v18 = 0;
+    integerValue2 = 0;
   }
 
-  [(PKPaymentCredential *)self setCredentialType:v18];
-  v19 = [v4 PKStringForKey:@"sanitizedPrimaryAccountNumber"];
+  [(PKPaymentCredential *)self setCredentialType:integerValue2];
+  v19 = [dictionaryCopy PKStringForKey:@"sanitizedPrimaryAccountNumber"];
   [(PKPaymentCredential *)self setSanitizedPrimaryAccountNumber:v19];
 
-  v20 = [v4 PKStringForKey:@"sanitizedPrimaryAccountName"];
+  v20 = [dictionaryCopy PKStringForKey:@"sanitizedPrimaryAccountName"];
   [(PKPaymentCredential *)self setSanitizedPrimaryAccountName:v20];
 
-  v21 = [v4 PKStringForKey:@"expiration"];
+  v21 = [dictionaryCopy PKStringForKey:@"expiration"];
   [(PKPaymentCredential *)self setExpiration:v21];
 
-  v22 = [v4 PKStringForKey:@"nonce"];
-  v23 = [(PKPaymentCredential *)self state];
-  [v23 setNonce:v22];
+  v22 = [dictionaryCopy PKStringForKey:@"nonce"];
+  state = [(PKPaymentCredential *)self state];
+  [state setNonce:v22];
 
-  v24 = [v4 PKStringForKey:@"longDescription"];
-  v106 = self;
+  v24 = [dictionaryCopy PKStringForKey:@"longDescription"];
+  selfCopy = self;
   v101 = v24;
   if (v24)
   {
@@ -142,12 +142,12 @@
 
   else
   {
-    v25 = PKDisplayablePaymentNetworkNameForPaymentCredentialType(v18);
+    v25 = PKDisplayablePaymentNetworkNameForPaymentCredentialType(integerValue2);
     [(PKPaymentCredential *)self setLongDescription:v25];
   }
 
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v27 = [v4 PKArrayForKey:@"metadata"];
+  v27 = [dictionaryCopy PKArrayForKey:@"metadata"];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
@@ -179,7 +179,7 @@
     while (v29);
   }
 
-  v33 = [v4 PKStringForKey:@"paymentCardType"];
+  v33 = [dictionaryCopy PKStringForKey:@"paymentCardType"];
   v34 = v33;
   if (v33)
   {
@@ -200,24 +200,24 @@
       v37 = v36;
     }
 
-    [(PKPaymentCredential *)v106 setCardType:v37];
+    [(PKPaymentCredential *)selfCopy setCardType:v37];
   }
 
   v100 = v34;
-  v38 = [v4 PKStringForKey:@"productIdentifier"];
+  v38 = [dictionaryCopy PKStringForKey:@"productIdentifier"];
   if (v38)
   {
-    objc_storeStrong(&v106->_productIdentifier, v38);
+    objc_storeStrong(&selfCopy->_productIdentifier, v38);
   }
 
   v99 = v38;
   v39 = [v26 copy];
-  [(PKPaymentCredential *)v106 setMetadata:v39];
+  [(PKPaymentCredential *)selfCopy setMetadata:v39];
 
   v107 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v105 = v4;
-  v41 = [v4 PKArrayForKey:@"summaryMetadata"];
+  v105 = dictionaryCopy;
+  v41 = [dictionaryCopy PKArrayForKey:@"summaryMetadata"];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
@@ -240,10 +240,10 @@
         if (v46)
         {
           [v40 addObject:v46];
-          v47 = [v46 displayString];
-          if (v47)
+          displayString = [v46 displayString];
+          if (displayString)
           {
-            [v107 addObject:v47];
+            [v107 addObject:displayString];
           }
         }
       }
@@ -255,16 +255,16 @@
   }
 
   v48 = [v40 copy];
-  v49 = v106;
-  summaryMetadata = v106->_summaryMetadata;
-  v106->_summaryMetadata = v48;
+  v49 = selfCopy;
+  summaryMetadata = selfCopy->_summaryMetadata;
+  selfCopy->_summaryMetadata = v48;
 
   if (![v107 count])
   {
-    v51 = PKSanitizedPrimaryAccountRepresentationForPaymentCredential(v106);
+    v51 = PKSanitizedPrimaryAccountRepresentationForPaymentCredential(selfCopy);
     if ([v51 length])
     {
-      if (v97 == 2)
+      if (integerValue == 2)
       {
         v52 = PKLocalizedPaymentString(&cfstr_IdmsCardOnFile.isa, &stru_1F2281668.isa, v51);
 
@@ -276,28 +276,28 @@
   }
 
   v53 = MEMORY[0x1E696AEC0];
-  v54 = [MEMORY[0x1E695DF58] currentLocale];
-  v55 = [v54 objectForKey:*MEMORY[0x1E695D9A0]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v55 = [currentLocale objectForKey:*MEMORY[0x1E695D9A0]];
   v56 = [v53 stringWithFormat:@"%@ ", v55];
 
   v98 = v56;
   v57 = [v107 componentsJoinedByString:v56];
-  summaryMetadataDescription = v106->_summaryMetadataDescription;
-  v106->_summaryMetadataDescription = v57;
+  summaryMetadataDescription = selfCopy->_summaryMetadataDescription;
+  selfCopy->_summaryMetadataDescription = v57;
 
   v59 = [v105 PKStringForKey:@"statusDescription"];
-  statusDescription = v106->_statusDescription;
-  v106->_statusDescription = v59;
+  statusDescription = selfCopy->_statusDescription;
+  selfCopy->_statusDescription = v59;
 
   v61 = [v105 PKStringForKey:@"ownershipTokenIdentifier"];
-  ownershipTokenIdentifier = v106->_ownershipTokenIdentifier;
-  v106->_ownershipTokenIdentifier = v61;
+  ownershipTokenIdentifier = selfCopy->_ownershipTokenIdentifier;
+  selfCopy->_ownershipTokenIdentifier = v61;
 
   v63 = [PKPaymentRemoteCredentialFIDOProfile alloc];
   v64 = [v105 PKDictionaryForKey:@"fidoProfile"];
   v65 = [(PKPaymentRemoteCredentialFIDOProfile *)v63 initWithDictionary:v64];
-  fidoProfile = v106->_fidoProfile;
-  v106->_fidoProfile = v65;
+  fidoProfile = selfCopy->_fidoProfile;
+  selfCopy->_fidoProfile = v65;
 
   v67 = v105;
   v68 = [v105 PKArrayContaining:objc_opt_class() forKey:@"transferableFromDevices"];
@@ -305,25 +305,25 @@
   if (v68)
   {
     v70 = [v68 pk_arrayBySafelyApplyingBlock:&__block_literal_global_336];
-    transferableFromDevices = v106->_transferableFromDevices;
-    v106->_transferableFromDevices = v70;
+    transferableFromDevices = selfCopy->_transferableFromDevices;
+    selfCopy->_transferableFromDevices = v70;
   }
 
   v96 = v69;
   v72 = [v105 PKStringForKey:@"transferType"];
-  v106->_transferType = PKRemoteCredentialTransferTypeFromString(v72);
+  selfCopy->_transferType = PKRemoteCredentialTransferTypeFromString(v72);
 
-  if (!v106->_transferType && [(NSArray *)v106->_transferableFromDevices count])
+  if (!selfCopy->_transferType && [(NSArray *)selfCopy->_transferableFromDevices count])
   {
-    v106->_transferType = 1;
+    selfCopy->_transferType = 1;
   }
 
   v95 = [v105 PKArrayContaining:objc_opt_class() forKey:@"authorizationOptions"];
   v73 = [v95 pk_arrayBySafelyApplyingBlock:&__block_literal_global_343];
-  activationMethods = v106->_activationMethods;
-  v106->_activationMethods = v73;
+  activationMethods = selfCopy->_activationMethods;
+  selfCopy->_activationMethods = v73;
 
-  v75 = v106->_activationMethods;
+  v75 = selfCopy->_activationMethods;
   if (!v75 || ![(NSArray *)v75 count])
   {
     v94 = [PKPaymentCredentialProvisioningMethod alloc];
@@ -333,10 +333,10 @@
     v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v116 count:1];
     v79 = [(PKPaymentCredentialProvisioningMethod *)v94 initWithSupportsFrictionlessProvisioning:v76 actions:v78];
     v117 = v79;
-    v49 = v106;
+    v49 = selfCopy;
     v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v117 count:1];
-    v81 = v106->_activationMethods;
-    v106->_activationMethods = v80;
+    v81 = selfCopy->_activationMethods;
+    selfCopy->_activationMethods = v80;
 
     v67 = v105;
   }
@@ -397,10 +397,10 @@ PKProvisioningPaymentApplication *__50__PKPaymentRemoteCredential_updateWithDict
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -410,7 +410,7 @@ PKProvisioningPaymentApplication *__50__PKPaymentRemoteCredential_updateWithDict
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v19.receiver = self;
       v19.super_class = PKPaymentRemoteCredential;
       if (![(PKPaymentCredential *)&v19 isEqual:v5])
@@ -509,14 +509,14 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_summaryMetadata];
-  [v3 safelyAddObject:self->_summaryMetadataDescription];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_summaryMetadata];
+  [array safelyAddObject:self->_summaryMetadataDescription];
   v8.receiver = self;
   v8.super_class = PKPaymentRemoteCredential;
   v4 = [(PKPaymentCredential *)&v8 hash];
-  v5 = PKCombinedHash(v4, v3);
+  v5 = PKCombinedHash(v4, array);
   v6 = self->_requiresMetadata - v5 + 32 * v5;
 
   return v6;
@@ -539,35 +539,35 @@ LABEL_22:
   return v8;
 }
 
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment
 {
   if (self->_transferType == 2)
   {
-    v4 = 0;
+    summaryMetadataDescription = 0;
   }
 
   else
   {
     if ([(PKPaymentCredential *)self cardType]== 4)
     {
-      if (a3 == 1)
+      if (environment == 1)
       {
-        v4 = PKLocalizedIdentityString(&cfstr_PrecursorPassS.isa, 0);
+        summaryMetadataDescription = PKLocalizedIdentityString(&cfstr_PrecursorPassS.isa, 0);
       }
 
       else
       {
-        v4 = 0;
+        summaryMetadataDescription = 0;
       }
     }
 
     else
     {
-      v4 = [(PKPaymentRemoteCredential *)self summaryMetadataDescription];
+      summaryMetadataDescription = [(PKPaymentRemoteCredential *)self summaryMetadataDescription];
     }
   }
 
-  return v4;
+  return summaryMetadataDescription;
 }
 
 - (NSString)summaryMetadataDescription
@@ -585,34 +585,34 @@ LABEL_22:
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PKPaymentCredential *)self cardType];
-  if (v5 < [v4 cardType])
+  compareCopy = compare;
+  cardType = [(PKPaymentCredential *)self cardType];
+  if (cardType < [compareCopy cardType])
   {
     goto LABEL_2;
   }
 
-  v7 = [(PKPaymentCredential *)self cardType];
-  if (v7 > [v4 cardType])
+  cardType2 = [(PKPaymentCredential *)self cardType];
+  if (cardType2 > [compareCopy cardType])
   {
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  v9 = [(PKPaymentCredential *)self credentialType];
-  if (v9 >= [v4 credentialType])
+  credentialType = [(PKPaymentCredential *)self credentialType];
+  if (credentialType >= [compareCopy credentialType])
   {
-    v10 = [(PKPaymentCredential *)self credentialType];
-    if (v10 <= [v4 credentialType])
+    credentialType2 = [(PKPaymentCredential *)self credentialType];
+    if (credentialType2 <= [compareCopy credentialType])
     {
       rank = self->_rank;
-      if (rank >= [v4 rank])
+      if (rank >= [compareCopy rank])
       {
         v12 = self->_rank;
-        v6 = v12 > [v4 rank];
+        v6 = v12 > [compareCopy rank];
         goto LABEL_5;
       }
 

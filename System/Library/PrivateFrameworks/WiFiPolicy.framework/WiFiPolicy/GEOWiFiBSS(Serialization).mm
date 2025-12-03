@@ -14,20 +14,20 @@
 - (void)encodeWithCoder:()Serialization
 {
   v9 = a3;
-  [v9 encodeBool:objc_msgSend(a1 forKey:{"isEdge"), @"edge"}];
-  v4 = [a1 BSSID];
-  [v9 encodeObject:v4 forKey:@"bssid"];
+  [v9 encodeBool:objc_msgSend(self forKey:{"isEdge"), @"edge"}];
+  bSSID = [self BSSID];
+  [v9 encodeObject:bSSID forKey:@"bssid"];
 
-  [a1 latitude];
+  [self latitude];
   [v9 encodeDouble:@"latitude" forKey:?];
-  [a1 longitude];
+  [self longitude];
   [v9 encodeDouble:@"longitude" forKey:?];
-  v5 = [a1 popularityScore];
+  popularityScore = [self popularityScore];
 
-  if (v5)
+  if (popularityScore)
   {
-    v6 = [a1 popularityScore];
-    [v9 encodeInt64:objc_msgSend(v6 forKey:{"score"), @"popularityScoreValue"}];
+    popularityScore2 = [self popularityScore];
+    [v9 encodeInt64:objc_msgSend(popularityScore2 forKey:{"score"), @"popularityScoreValue"}];
   }
 
   else
@@ -35,12 +35,12 @@
     [v9 encodeInt64:0 forKey:@"popularityScoreValue"];
   }
 
-  v7 = [a1 qualityScore];
+  qualityScore = [self qualityScore];
 
-  if (v7)
+  if (qualityScore)
   {
-    v8 = [a1 qualityScore];
-    [v9 encodeInt64:objc_msgSend(v8 forKey:{"score"), @"qualityScoreValue"}];
+    qualityScore2 = [self qualityScore];
+    [v9 encodeInt64:objc_msgSend(qualityScore2 forKey:{"score"), @"qualityScoreValue"}];
   }
 
   else
@@ -51,63 +51,63 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isEdge")}];
-  [v2 setObject:v3 forKey:@"edge"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isEdge")}];
+  [dictionary setObject:v3 forKey:@"edge"];
 
-  v4 = [a1 BSSID];
+  bSSID = [self BSSID];
 
-  if (v4)
+  if (bSSID)
   {
-    v5 = [a1 BSSID];
-    [v2 setObject:v5 forKey:@"bssid"];
+    bSSID2 = [self BSSID];
+    [dictionary setObject:bSSID2 forKey:@"bssid"];
   }
 
   v6 = MEMORY[0x277CCABB0];
-  [a1 latitude];
+  [self latitude];
   v7 = [v6 numberWithDouble:?];
-  [v2 setObject:v7 forKey:@"latitude"];
+  [dictionary setObject:v7 forKey:@"latitude"];
 
   v8 = MEMORY[0x277CCABB0];
-  [a1 longitude];
+  [self longitude];
   v9 = [v8 numberWithDouble:?];
-  [v2 setObject:v9 forKey:@"longitude"];
+  [dictionary setObject:v9 forKey:@"longitude"];
 
-  v10 = [a1 popularityScore];
+  popularityScore = [self popularityScore];
 
-  if (v10)
+  if (popularityScore)
   {
     v11 = MEMORY[0x277CCABB0];
-    v12 = [a1 popularityScore];
-    v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "score")}];
-    [v2 setObject:v13 forKey:@"popularityScoreValue"];
+    popularityScore2 = [self popularityScore];
+    v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(popularityScore2, "score")}];
+    [dictionary setObject:v13 forKey:@"popularityScoreValue"];
   }
 
-  v14 = [a1 qualityScore];
+  qualityScore = [self qualityScore];
 
-  if (v14)
+  if (qualityScore)
   {
     v15 = MEMORY[0x277CCABB0];
-    v16 = [a1 qualityScore];
-    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "score")}];
-    [v2 setObject:v17 forKey:@"qualityScoreValue"];
+    qualityScore2 = [self qualityScore];
+    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(qualityScore2, "score")}];
+    [dictionary setObject:v17 forKey:@"qualityScoreValue"];
   }
 
-  return v2;
+  return dictionary;
 }
 
 - (double)latitude
 {
-  if ([a1 hasLatLngE7])
+  if ([self hasLatLngE7])
   {
-    v2 = [a1 latLngE7];
-    v3 = [v2 latE7] / 10000000.0;
+    latLngE7 = [self latLngE7];
+    v3 = [latLngE7 latE7] / 10000000.0;
   }
 
   else
   {
-    v2 = [a1 location];
-    [v2 lat];
+    latLngE7 = [self location];
+    [latLngE7 lat];
     v3 = v4;
   }
 
@@ -116,16 +116,16 @@
 
 - (double)longitude
 {
-  if ([a1 hasLatLngE7])
+  if ([self hasLatLngE7])
   {
-    v2 = [a1 latLngE7];
-    v3 = [v2 lngE7] / 10000000.0;
+    latLngE7 = [self latLngE7];
+    v3 = [latLngE7 lngE7] / 10000000.0;
   }
 
   else
   {
-    v2 = [a1 location];
-    [v2 lng];
+    latLngE7 = [self location];
+    [latLngE7 lng];
     v3 = v4;
   }
 
@@ -134,44 +134,44 @@
 
 - (id)BSSID
 {
-  if ([a1 hasUniqueIdentifier])
+  if ([self hasUniqueIdentifier])
   {
-    v2 = TBMacAdressFromLong([a1 uniqueIdentifier]);
+    lowercaseString = TBMacAdressFromLong([self uniqueIdentifier]);
   }
 
   else
   {
-    v3 = [a1 identifier];
-    v2 = [v3 lowercaseString];
+    identifier = [self identifier];
+    lowercaseString = [identifier lowercaseString];
   }
 
-  return v2;
+  return lowercaseString;
 }
 
 - (id)popularityScore
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 qualities];
+  qualities = [self qualities];
 
-  if (!v2)
+  if (!qualities)
   {
     goto LABEL_19;
   }
 
-  v3 = [a1 qualities];
-  v2 = [v3 firstObject];
+  qualities2 = [self qualities];
+  qualities = [qualities2 firstObject];
 
-  v4 = [a1 qualities];
-  v5 = [v4 count];
+  qualities3 = [self qualities];
+  v5 = [qualities3 count];
 
   if (v5 >= 2)
   {
     NSLog(&cfstr_SMulitpleQuali.isa, "[GEOWiFiBSS(Serialization) popularityScore]");
   }
 
-  if ([v2 qualitiesCount])
+  if ([qualities qualitiesCount])
   {
-    v6 = [OUTLINED_FUNCTION_1_0() qualities];
+    qualities4 = [OUTLINED_FUNCTION_1_0() qualities];
     OUTLINED_FUNCTION_0_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -183,7 +183,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(qualities4);
           }
 
           v11 = *(v14 + 8 * i);
@@ -195,7 +195,7 @@
         }
 
         OUTLINED_FUNCTION_0_1();
-        v8 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v8 = [qualities4 countByEnumeratingWithState:? objects:? count:?];
         if (v8)
         {
           continue;
@@ -222,27 +222,27 @@ LABEL_19:
 - (id)qualityScore
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 qualities];
+  qualities = [self qualities];
 
-  if (!v2)
+  if (!qualities)
   {
     goto LABEL_19;
   }
 
-  v3 = [a1 qualities];
-  v2 = [v3 firstObject];
+  qualities2 = [self qualities];
+  qualities = [qualities2 firstObject];
 
-  v4 = [a1 qualities];
-  v5 = [v4 count];
+  qualities3 = [self qualities];
+  v5 = [qualities3 count];
 
   if (v5 >= 2)
   {
     NSLog(&cfstr_SMulitpleQuali.isa, "[GEOWiFiBSS(Serialization) qualityScore]");
   }
 
-  if ([v2 qualitiesCount])
+  if ([qualities qualitiesCount])
   {
-    v6 = [OUTLINED_FUNCTION_1_0() qualities];
+    qualities4 = [OUTLINED_FUNCTION_1_0() qualities];
     OUTLINED_FUNCTION_0_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -254,7 +254,7 @@ LABEL_19:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(qualities4);
           }
 
           v11 = *(v14 + 8 * i);
@@ -266,7 +266,7 @@ LABEL_19:
         }
 
         OUTLINED_FUNCTION_0_1();
-        v8 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v8 = [qualities4 countByEnumeratingWithState:? objects:? count:?];
         if (v8)
         {
           continue;
@@ -292,7 +292,7 @@ LABEL_19:
 
 - (BOOL)_hasAttribute:()Serialization
 {
-  if (![a1 attributes] || !objc_msgSend(a1, "attributesCount"))
+  if (![self attributes] || !objc_msgSend(self, "attributesCount"))
   {
     return 0;
   }
@@ -300,7 +300,7 @@ LABEL_19:
   v5 = 0;
   do
   {
-    v6 = [a1 attributesAtIndex:v5];
+    v6 = [self attributesAtIndex:v5];
     v7 = v6 == a3;
     if (v6 == a3)
     {
@@ -310,7 +310,7 @@ LABEL_19:
     ++v5;
   }
 
-  while ([a1 attributesCount] > v5);
+  while ([self attributesCount] > v5);
   return v7;
 }
 

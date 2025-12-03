@@ -1,20 +1,20 @@
 @interface _DPPrivacyBudgetProperties
-+ (_DPPrivacyBudgetProperties)budgetPropertiesWithName:(id)a3 fromDictionary:(id)a4;
++ (_DPPrivacyBudgetProperties)budgetPropertiesWithName:(id)name fromDictionary:(id)dictionary;
 + (id)budgetMaintenanceSchedule;
-+ (id)budgetPropertiesForKey:(id)a3;
-+ (id)budgetPropertiesFromFile:(id)a3;
++ (id)budgetPropertiesForKey:(id)key;
++ (id)budgetPropertiesFromFile:(id)file;
 + (void)initializeAllBudgetProperties;
-- (_DPPrivacyBudgetProperties)initWithName:(id)a3 dictionary:(id)a4;
+- (_DPPrivacyBudgetProperties)initWithName:(id)name dictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation _DPPrivacyBudgetProperties
 
-- (_DPPrivacyBudgetProperties)initWithName:(id)a3 dictionary:(id)a4
+- (_DPPrivacyBudgetProperties)initWithName:(id)name dictionary:(id)dictionary
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = _DPPrivacyBudgetProperties;
   v9 = [(_DPPrivacyBudgetProperties *)&v44 init];
@@ -24,16 +24,16 @@
     goto LABEL_38;
   }
 
-  objc_storeStrong(&v9->_name, a3);
-  v11 = [v8 objectForKeyedSubscript:@"SessionSeconds"];
+  objc_storeStrong(&v9->_name, name);
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"SessionSeconds"];
   objc_storeStrong(&v10->_interval, v11);
-  v12 = [v8 objectForKeyedSubscript:@"SessionAmount"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"SessionAmount"];
   objc_storeStrong(&v10->_intervalBudgetValue, v12);
-  v13 = [v8 objectForKeyedSubscript:@"RefillInterval"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"RefillInterval"];
   objc_storeStrong(&v10->_refillInterval, v13);
-  v14 = [v8 objectForKeyedSubscript:@"RefillAmount"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"RefillAmount"];
   objc_storeStrong(&v10->_refillAmount, v14);
-  v15 = [v8 objectForKeyedSubscript:@"CohortAggregateSessionAmount"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"CohortAggregateSessionAmount"];
   v16 = v15;
   if (v15)
   {
@@ -51,7 +51,7 @@
     goto LABEL_30;
   }
 
-  v18 = [v8 objectForKeyedSubscript:@"SessionChunks"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"SessionChunks"];
   v43 = v18;
   if (v18)
   {
@@ -64,8 +64,8 @@
   }
 
   objc_storeStrong(&v10->_intervalChunksValue, v19);
-  v20 = [(NSNumber *)v10->_interval unsignedLongLongValue];
-  if (v20 < kSecondsInOneDay)
+  unsignedLongLongValue = [(NSNumber *)v10->_interval unsignedLongLongValue];
+  if (unsignedLongLongValue < kSecondsInOneDay)
   {
     v21 = +[_DPLog framework];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -73,7 +73,7 @@
       name = v10->_name;
       interval = v10->_interval;
       *buf = 138412802;
-      v46 = name;
+      nameCopy2 = name;
       v47 = 2112;
       v48 = interval;
       v49 = 2048;
@@ -100,7 +100,7 @@ LABEL_28:
         v27 = v10->_name;
         intervalChunksValue = v10->_intervalChunksValue;
         *buf = 138412802;
-        v46 = v27;
+        nameCopy2 = v27;
         v47 = 2112;
         v48 = intervalChunksValue;
         v49 = 2048;
@@ -121,7 +121,7 @@ LABEL_28:
         v31 = v10->_interval;
         refillInterval = v10->_refillInterval;
         *buf = 138412802;
-        v46 = v30;
+        nameCopy2 = v30;
         v47 = 2112;
         v48 = v31;
         v49 = 2112;
@@ -144,7 +144,7 @@ LABEL_28:
       v36 = v10->_name;
       refillAmount = v10->_refillAmount;
       *buf = 138412802;
-      v46 = v36;
+      nameCopy2 = v36;
       v47 = 2048;
       v48 = 100;
       v49 = 2112;
@@ -165,7 +165,7 @@ LABEL_28:
       v39 = v10->_name;
       intervalCohortAggregateBudgetValue = v10->_intervalCohortAggregateBudgetValue;
       *buf = 138412546;
-      v46 = v39;
+      nameCopy2 = v39;
       v47 = 2112;
       v48 = intervalCohortAggregateBudgetValue;
       v24 = "%@: _intervalCohortAggregateBudgetValue=%@";
@@ -185,7 +185,7 @@ LABEL_38:
     v25 = v10->_name;
     intervalBudgetValue = v10->_intervalBudgetValue;
     *buf = 138412802;
-    v46 = v25;
+    nameCopy2 = v25;
     v47 = 2112;
     v48 = intervalBudgetValue;
     v49 = 2048;
@@ -204,11 +204,11 @@ LABEL_39:
   return v35;
 }
 
-+ (_DPPrivacyBudgetProperties)budgetPropertiesWithName:(id)a3 fromDictionary:(id)a4
++ (_DPPrivacyBudgetProperties)budgetPropertiesWithName:(id)name fromDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 dictionary:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy dictionary:dictionaryCopy];
 
   return v8;
 }
@@ -222,13 +222,13 @@ LABEL_39:
   objc_autoreleasePoolPop(v2);
 }
 
-+ (id)budgetPropertiesForKey:(id)a3
++ (id)budgetPropertiesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[_DPStrings budgetPropertiesPath];
   v5 = [_DPPrivacyBudgetProperties budgetPropertiesFromFile:v4];
 
-  v6 = [v5 objectForKeyedSubscript:v3];
+  v6 = [v5 objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
@@ -243,17 +243,17 @@ LABEL_39:
   return v6;
 }
 
-+ (id)budgetPropertiesFromFile:(id)a3
++ (id)budgetPropertiesFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55___DPPrivacyBudgetProperties_budgetPropertiesFromFile___block_invoke;
   v10[3] = &unk_27858ABB8;
-  v11 = v4;
-  v12 = a1;
+  v11 = fileCopy;
+  selfCopy = self;
   v5 = budgetPropertiesFromFile__onceToken;
-  v6 = v4;
+  v6 = fileCopy;
   if (v5 != -1)
   {
     dispatch_once(&budgetPropertiesFromFile__onceToken, v10);
@@ -273,8 +273,8 @@ LABEL_39:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [gAllBudgetProperties allValues];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [gAllBudgetProperties allValues];
+  v4 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -285,30 +285,30 @@ LABEL_39:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 interval];
-        v10 = [v8 name];
-        if (v10)
+        interval = [v8 interval];
+        name = [v8 name];
+        if (name)
         {
-          v11 = [v2 objectForKeyedSubscript:v9];
+          v11 = [v2 objectForKeyedSubscript:interval];
           if (v11)
           {
             v12 = v11;
-            [v11 addObject:v10];
+            [v11 addObject:name];
           }
 
           else
           {
-            v12 = [MEMORY[0x277CBEB58] setWithObject:v10];
-            [v2 setObject:v12 forKeyedSubscript:v9];
+            v12 = [MEMORY[0x277CBEB58] setWithObject:name];
+            [v2 setObject:v12 forKeyedSubscript:interval];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);

@@ -1,86 +1,86 @@
 @interface CRKASMConcreteUser
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConcreteUser:(id)a3;
-- (CRKASMConcreteUser)initWithBackingPerson:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConcreteUser:(id)user;
+- (CRKASMConcreteUser)initWithBackingPerson:(id)person;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMConcreteUser
 
-- (CRKASMConcreteUser)initWithBackingPerson:(id)a3
+- (CRKASMConcreteUser)initWithBackingPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v16.receiver = self;
   v16.super_class = CRKASMConcreteUser;
   v6 = [(CRKASMConcreteUser *)&v16 init];
   if (v6)
   {
-    v7 = [v5 objectID];
+    objectID = [personCopy objectID];
     identifier = v6->_identifier;
-    v6->_identifier = v7;
+    v6->_identifier = objectID;
 
-    v9 = [v5 appleID];
+    appleID = [personCopy appleID];
     appleID = v6->_appleID;
-    v6->_appleID = v9;
+    v6->_appleID = appleID;
 
-    v11 = [[CRKASMConcreteNameComponents alloc] initWithPerson:v5];
+    v11 = [[CRKASMConcreteNameComponents alloc] initWithPerson:personCopy];
     nameComponents = v6->_nameComponents;
     v6->_nameComponents = v11;
 
-    objc_storeStrong(&v6->_backingPerson, a3);
-    v13 = [v5 dateLastModified];
+    objc_storeStrong(&v6->_backingPerson, person);
+    dateLastModified = [personCopy dateLastModified];
     backingPersonInitialModificationDate = v6->_backingPersonInitialModificationDate;
-    v6->_backingPersonInitialModificationDate = v13;
+    v6->_backingPersonInitialModificationDate = dateLastModified;
 
-    v6->_federated = [v5 isFederatedAccount];
-    v6->_accountLockedDueToFailedLoginAttempts = [v5 isAccountFailedPasswordLocked];
-    v6->_accountATOLocked = [v5 isAccountATOLocked];
+    v6->_federated = [personCopy isFederatedAccount];
+    v6->_accountLockedDueToFailedLoginAttempts = [personCopy isAccountFailedPasswordLocked];
+    v6->_accountATOLocked = [personCopy isAccountATOLocked];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToConcreteUser:(id)a3
+- (BOOL)isEqualToConcreteUser:(id)user
 {
-  v8 = a3;
-  if (!v8)
+  userCopy = user;
+  if (!userCopy)
   {
     LOBYTE(v11) = 0;
     goto LABEL_36;
   }
 
-  v9 = [(CRKASMConcreteUser *)self identifier];
-  if (v9 || ([v8 identifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifier = [(CRKASMConcreteUser *)self identifier];
+  if (identifier || ([userCopy identifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKASMConcreteUser *)self identifier];
-    v4 = [v8 identifier];
-    if (![v3 isEqual:v4])
+    identifier2 = [(CRKASMConcreteUser *)self identifier];
+    identifier3 = [userCopy identifier];
+    if (![identifier2 isEqual:identifier3])
     {
       LOBYTE(v11) = 0;
       goto LABEL_32;
     }
 
-    v10 = 1;
+    nameComponents2 = 1;
   }
 
   else
   {
-    v10 = 0;
+    nameComponents2 = 0;
   }
 
-  v12 = [(CRKASMConcreteUser *)self appleID];
-  if (v12 || ([v8 appleID], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+  appleID = [(CRKASMConcreteUser *)self appleID];
+  if (appleID || ([userCopy appleID], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = [(CRKASMConcreteUser *)self appleID];
-    v5 = [v8 appleID];
-    if (![v13 isEqual:v5])
+    appleID2 = [(CRKASMConcreteUser *)self appleID];
+    appleID3 = [userCopy appleID];
+    if (![appleID2 isEqual:appleID3])
     {
       LOBYTE(v11) = 0;
       goto LABEL_29;
     }
 
-    v23 = v13;
+    v23 = appleID2;
     v25 = 1;
   }
 
@@ -90,14 +90,14 @@
     v25 = 0;
   }
 
-  v26 = v5;
-  v27 = v10;
-  v14 = [(CRKASMConcreteUser *)self nameComponents];
-  if (v14 || ([v8 nameComponents], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+  v26 = appleID3;
+  v27 = nameComponents2;
+  nameComponents = [(CRKASMConcreteUser *)self nameComponents];
+  if (nameComponents || ([userCopy nameComponents], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = [(CRKASMConcreteUser *)self nameComponents];
-    v5 = [v8 nameComponents];
-    if (![v10 isEqual:v5])
+    nameComponents2 = [(CRKASMConcreteUser *)self nameComponents];
+    appleID3 = [userCopy nameComponents];
+    if (![nameComponents2 isEqual:appleID3])
     {
       LOBYTE(v11) = 0;
       goto LABEL_24;
@@ -114,8 +114,8 @@
     v21 = 0;
   }
 
-  v15 = [(CRKASMConcreteUser *)self isFederated];
-  if (v15 != [v8 isFederated] || (v16 = -[CRKASMConcreteUser isAccountLockedDueToFailedLoginAttempts](self, "isAccountLockedDueToFailedLoginAttempts"), v16 != objc_msgSend(v8, "isAccountLockedDueToFailedLoginAttempts")))
+  isFederated = [(CRKASMConcreteUser *)self isFederated];
+  if (isFederated != [userCopy isFederated] || (v16 = -[CRKASMConcreteUser isAccountLockedDueToFailedLoginAttempts](self, "isAccountLockedDueToFailedLoginAttempts"), v16 != objc_msgSend(userCopy, "isAccountLockedDueToFailedLoginAttempts")))
   {
     LOBYTE(v11) = 0;
     v6 = v22;
@@ -127,8 +127,8 @@
     goto LABEL_24;
   }
 
-  v18 = [(CRKASMConcreteUser *)self isAccountATOLocked];
-  v11 = v18 ^ [v8 isAccountATOLocked] ^ 1;
+  isAccountATOLocked = [(CRKASMConcreteUser *)self isAccountATOLocked];
+  v11 = isAccountATOLocked ^ [userCopy isAccountATOLocked] ^ 1;
   v6 = v22;
   if (v21)
   {
@@ -136,9 +136,9 @@ LABEL_24:
   }
 
 LABEL_25:
-  LODWORD(v10) = v27;
-  v5 = v26;
-  if (v14)
+  LODWORD(nameComponents2) = v27;
+  appleID3 = v26;
+  if (nameComponents)
   {
 
     if (!v25)
@@ -146,13 +146,13 @@ LABEL_25:
       goto LABEL_30;
     }
 
-    v13 = v23;
+    appleID2 = v23;
   }
 
   else
   {
 
-    v13 = v23;
+    appleID2 = v23;
     if ((v25 & 1) == 0)
     {
       goto LABEL_30;
@@ -162,10 +162,10 @@ LABEL_25:
 LABEL_29:
 
 LABEL_30:
-  if (!v12)
+  if (!appleID)
   {
 
-    if ((v10 & 1) == 0)
+    if ((nameComponents2 & 1) == 0)
     {
       goto LABEL_33;
     }
@@ -173,13 +173,13 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (v10)
+  if (nameComponents2)
   {
 LABEL_32:
   }
 
 LABEL_33:
-  if (!v9)
+  if (!identifier)
   {
   }
 
@@ -189,30 +189,30 @@ LABEL_36:
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMConcreteUser *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CRKASMConcreteUser *)self appleID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKASMConcreteUser *)self nameComponents];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(CRKASMConcreteUser *)self isFederated];
-  v10 = v8 ^ v9 ^ [(CRKASMConcreteUser *)self isAccountLockedDueToFailedLoginAttempts];
-  v11 = [(CRKASMConcreteUser *)self isAccountATOLocked];
+  identifier = [(CRKASMConcreteUser *)self identifier];
+  v4 = [identifier hash];
+  appleID = [(CRKASMConcreteUser *)self appleID];
+  v6 = [appleID hash] ^ v4;
+  nameComponents = [(CRKASMConcreteUser *)self nameComponents];
+  v8 = v6 ^ [nameComponents hash];
+  isFederated = [(CRKASMConcreteUser *)self isFederated];
+  v10 = v8 ^ isFederated ^ [(CRKASMConcreteUser *)self isAccountLockedDueToFailedLoginAttempts];
+  isAccountATOLocked = [(CRKASMConcreteUser *)self isAccountATOLocked];
 
-  return v10 ^ v11;
+  return v10 ^ isAccountATOLocked;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
 
-  else if ([(CRKASMConcreteUser *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(CRKASMConcreteUser *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CRKASMConcreteUser *)self isEqualToConcreteUser:v4];
+    v5 = [(CRKASMConcreteUser *)self isEqualToConcreteUser:equalCopy];
   }
 
   else
@@ -227,9 +227,9 @@ LABEL_36:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKASMConcreteUser *)self identifier];
-  v6 = [(CRKASMConcreteUser *)self appleID];
-  v7 = [(CRKASMConcreteUser *)self nameComponents];
+  identifier = [(CRKASMConcreteUser *)self identifier];
+  appleID = [(CRKASMConcreteUser *)self appleID];
+  nameComponents = [(CRKASMConcreteUser *)self nameComponents];
   if ([(CRKASMConcreteUser *)self isFederated])
   {
     v8 = @"YES";
@@ -262,7 +262,7 @@ LABEL_36:
     v12 = @"NO";
   }
 
-  v13 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, appleID = %@, nameComponents = %@, isFederated = %@, isAccountLockedDueToFailedLoginAttempts = %@, isAccountATOLocked = %@ }>", v4, self, v5, v6, v7, v9, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, appleID = %@, nameComponents = %@, isFederated = %@, isAccountLockedDueToFailedLoginAttempts = %@, isAccountATOLocked = %@ }>", v4, self, identifier, appleID, nameComponents, v9, v11, v12];
 
   return v13;
 }

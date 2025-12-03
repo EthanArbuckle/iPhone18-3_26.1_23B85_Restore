@@ -1,19 +1,19 @@
 @interface QLModelDocument
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (_TtC30com_apple_MLKit_MLModelPreview15QLModelDocument)initWithFileURL:(id)a3;
-- (id)contentsForType:(id)a3 error:(id *)a4;
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error;
+- (_TtC30com_apple_MLKit_MLModelPreview15QLModelDocument)initWithFileURL:(id)l;
+- (id)contentsForType:(id)type error:(id *)error;
 @end
 
 @implementation QLModelDocument
 
-- (id)contentsForType:(id)a3 error:(id *)a4
+- (id)contentsForType:(id)type error:(id *)error
 {
   v4 = sub_100019F98();
 
   return v4;
 }
 
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error
 {
   swift_unknownObjectRetain();
   sub_100019E58();
@@ -22,7 +22,7 @@
   return 1;
 }
 
-- (_TtC30com_apple_MLKit_MLModelPreview15QLModelDocument)initWithFileURL:(id)a3
+- (_TtC30com_apple_MLKit_MLModelPreview15QLModelDocument)initWithFileURL:(id)l
 {
   v4 = sub_100019958();
   v5 = *(v4 - 8);

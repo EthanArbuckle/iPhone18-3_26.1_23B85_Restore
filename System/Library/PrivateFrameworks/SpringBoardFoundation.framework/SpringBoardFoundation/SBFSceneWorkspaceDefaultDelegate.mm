@@ -1,17 +1,17 @@
 @interface SBFSceneWorkspaceDefaultDelegate
 - (SBFSceneWorkspaceDefaultDelegate)init;
-- (void)_activateScene:(id)a3;
-- (void)_cleanupTransitionContextGeneratorBlockForSceneIfNeeded:(id)a3;
-- (void)_setScene:(id)a3 activatesWithTransitionContextGeneratorBlock:(id)a4;
-- (void)_setScene:(id)a3 cached:(BOOL)a4 inContainer:(id)a5 withContextGenerator:(id)a6;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4;
-- (void)setScene:(id)a3 shouldActivateUponClientConnection:(BOOL)a4 withContextGenerator:(id)a5;
-- (void)setScene:(id)a3 shouldBeKeptActiveWhileForeground:(BOOL)a4 withContextGenerator:(id)a5;
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4;
-- (void)workspace:(id)a3 didAddScene:(id)a4;
-- (void)workspace:(id)a3 willRemoveScene:(id)a4;
+- (void)_activateScene:(id)scene;
+- (void)_cleanupTransitionContextGeneratorBlockForSceneIfNeeded:(id)needed;
+- (void)_setScene:(id)scene activatesWithTransitionContextGeneratorBlock:(id)block;
+- (void)_setScene:(id)scene cached:(BOOL)cached inContainer:(id)container withContextGenerator:(id)generator;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context;
+- (void)setScene:(id)scene shouldActivateUponClientConnection:(BOOL)connection withContextGenerator:(id)generator;
+- (void)setScene:(id)scene shouldBeKeptActiveWhileForeground:(BOOL)foreground withContextGenerator:(id)generator;
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake;
+- (void)workspace:(id)workspace didAddScene:(id)scene;
+- (void)workspace:(id)workspace willRemoveScene:(id)scene;
 @end
 
 @implementation SBFSceneWorkspaceDefaultDelegate
@@ -31,55 +31,55 @@
     scenesActivatedUponClientConnection = v2->_scenesActivatedUponClientConnection;
     v2->_scenesActivatedUponClientConnection = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     scenesWithActivationContextGeneratorBlock = v2->_scenesWithActivationContextGeneratorBlock;
-    v2->_scenesWithActivationContextGeneratorBlock = v7;
+    v2->_scenesWithActivationContextGeneratorBlock = dictionary;
   }
 
   return v2;
 }
 
-- (void)setScene:(id)a3 shouldActivateUponClientConnection:(BOOL)a4 withContextGenerator:(id)a5
+- (void)setScene:(id)scene shouldActivateUponClientConnection:(BOOL)connection withContextGenerator:(id)generator
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = v11;
-  v10 = v8;
-  if (!v11)
+  connectionCopy = connection;
+  sceneCopy = scene;
+  generatorCopy = generator;
+  v9 = sceneCopy;
+  v10 = generatorCopy;
+  if (!sceneCopy)
   {
     [SBFSceneWorkspaceDefaultDelegate setScene:shouldActivateUponClientConnection:withContextGenerator:];
     v9 = 0;
   }
 
-  [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:v9 cached:v6 inContainer:self->_scenesActivatedUponClientConnection withContextGenerator:v10];
+  [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:v9 cached:connectionCopy inContainer:self->_scenesActivatedUponClientConnection withContextGenerator:v10];
 }
 
-- (void)setScene:(id)a3 shouldBeKeptActiveWhileForeground:(BOOL)a4 withContextGenerator:(id)a5
+- (void)setScene:(id)scene shouldBeKeptActiveWhileForeground:(BOOL)foreground withContextGenerator:(id)generator
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = v11;
-  v10 = v8;
-  if (!v11)
+  foregroundCopy = foreground;
+  sceneCopy = scene;
+  generatorCopy = generator;
+  v9 = sceneCopy;
+  v10 = generatorCopy;
+  if (!sceneCopy)
   {
     [SBFSceneWorkspaceDefaultDelegate setScene:shouldBeKeptActiveWhileForeground:withContextGenerator:];
     v9 = 0;
   }
 
-  [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:v9 cached:v6 inContainer:self->_scenesKeptActiveWhileForeground withContextGenerator:v10];
+  [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:v9 cached:foregroundCopy inContainer:self->_scenesKeptActiveWhileForeground withContextGenerator:v10];
 }
 
-- (void)_setScene:(id)a3 cached:(BOOL)a4 inContainer:(id)a5 withContextGenerator:(id)a6
+- (void)_setScene:(id)scene cached:(BOOL)cached inContainer:(id)container withContextGenerator:(id)generator
 {
-  v8 = a4;
-  v12 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v12)
+  cachedCopy = cached;
+  sceneCopy = scene;
+  containerCopy = container;
+  generatorCopy = generator;
+  if (sceneCopy)
   {
-    if (v10)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
@@ -88,7 +88,7 @@
   else
   {
     [SBFSceneWorkspaceDefaultDelegate _setScene:cached:inContainer:withContextGenerator:];
-    if (v10)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
@@ -96,33 +96,33 @@
 
   [SBFSceneWorkspaceDefaultDelegate _setScene:cached:inContainer:withContextGenerator:];
 LABEL_3:
-  if (v8)
+  if (cachedCopy)
   {
-    if (([v10 containsObject:?] & 1) == 0)
+    if (([containerCopy containsObject:?] & 1) == 0)
     {
-      [v10 addObject:v12];
-      if (v11)
+      [containerCopy addObject:sceneCopy];
+      if (generatorCopy)
       {
-        [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:v12 activatesWithTransitionContextGeneratorBlock:v11];
+        [(SBFSceneWorkspaceDefaultDelegate *)self _setScene:sceneCopy activatesWithTransitionContextGeneratorBlock:generatorCopy];
       }
     }
   }
 
   else
   {
-    [v10 removeObject:?];
-    [(SBFSceneWorkspaceDefaultDelegate *)self _cleanupTransitionContextGeneratorBlockForSceneIfNeeded:v12];
+    [containerCopy removeObject:?];
+    [(SBFSceneWorkspaceDefaultDelegate *)self _cleanupTransitionContextGeneratorBlockForSceneIfNeeded:sceneCopy];
   }
 }
 
-- (void)_setScene:(id)a3 activatesWithTransitionContextGeneratorBlock:(id)a4
+- (void)_setScene:(id)scene activatesWithTransitionContextGeneratorBlock:(id)block
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = v15;
-  if (v15)
+  sceneCopy = scene;
+  blockCopy = block;
+  v7 = sceneCopy;
+  if (sceneCopy)
   {
-    if (v6)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -132,73 +132,73 @@ LABEL_3:
   {
     [SBFSceneWorkspaceDefaultDelegate _setScene:activatesWithTransitionContextGeneratorBlock:];
     v7 = 0;
-    if (v6)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
   }
 
   [SBFSceneWorkspaceDefaultDelegate _setScene:activatesWithTransitionContextGeneratorBlock:];
-  v7 = v15;
+  v7 = sceneCopy;
 LABEL_3:
   scenesWithActivationContextGeneratorBlock = self->_scenesWithActivationContextGeneratorBlock;
-  v9 = [v7 identifier];
-  v10 = [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock objectForKey:v9];
+  identifier = [v7 identifier];
+  v10 = [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock objectForKey:identifier];
 
   if (!v10)
   {
     v11 = self->_scenesWithActivationContextGeneratorBlock;
-    v12 = [v6 copy];
+    v12 = [blockCopy copy];
     v13 = MEMORY[0x1BFB4D9B0]();
-    v14 = [v15 identifier];
-    [(NSMutableDictionary *)v11 setObject:v13 forKey:v14];
+    identifier2 = [sceneCopy identifier];
+    [(NSMutableDictionary *)v11 setObject:v13 forKey:identifier2];
   }
 }
 
-- (void)_cleanupTransitionContextGeneratorBlockForSceneIfNeeded:(id)a3
+- (void)_cleanupTransitionContextGeneratorBlockForSceneIfNeeded:(id)needed
 {
-  v6 = a3;
-  if (([(NSMutableSet *)self->_scenesActivatedUponClientConnection containsObject:?]& 1) == 0 && ([(NSMutableSet *)self->_scenesKeptActiveWhileForeground containsObject:v6]& 1) == 0)
+  neededCopy = needed;
+  if (([(NSMutableSet *)self->_scenesActivatedUponClientConnection containsObject:?]& 1) == 0 && ([(NSMutableSet *)self->_scenesKeptActiveWhileForeground containsObject:neededCopy]& 1) == 0)
   {
     scenesWithActivationContextGeneratorBlock = self->_scenesWithActivationContextGeneratorBlock;
-    v5 = [v6 identifier];
-    [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock removeObjectForKey:v5];
+    identifier = [neededCopy identifier];
+    [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock removeObjectForKey:identifier];
   }
 }
 
-- (void)_activateScene:(id)a3
+- (void)_activateScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   BSDispatchQueueAssertMain();
-  if (!v4)
+  if (!sceneCopy)
   {
     [SBFSceneWorkspaceDefaultDelegate _activateScene:];
   }
 
   scenesWithActivationContextGeneratorBlock = self->_scenesWithActivationContextGeneratorBlock;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock objectForKey:v6];
+  identifier = [sceneCopy identifier];
+  v7 = [(NSMutableDictionary *)scenesWithActivationContextGeneratorBlock objectForKey:identifier];
   v8 = v7[2]();
 
-  [v4 activateWithTransitionContext:v8];
+  [sceneCopy activateWithTransitionContext:v8];
 }
 
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake
 {
   v39 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v27 = a4;
+  workspaceCopy = workspace;
+  handshakeCopy = handshake;
   BSDispatchQueueAssertMain();
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v24 identifier];
+    identifier = [workspaceCopy identifier];
     *buf = 134218498;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
-    v36 = v7;
+    v36 = identifier;
     v37 = 2114;
-    v38 = v27;
+    v38 = handshakeCopy;
     _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p-%{public}@] client did connect with handshake: %{public}@", buf, 0x20u);
   }
 
@@ -206,7 +206,7 @@ LABEL_3:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v25 = self;
+  selfCopy2 = self;
   obj = [(NSMutableSet *)self->_scenesActivatedUponClientConnection allObjects];
   v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
@@ -225,27 +225,27 @@ LABEL_3:
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v13 definition];
-        v15 = [v14 clientIdentity];
-        v16 = [v15 processIdentity];
-        v17 = [v27 handle];
-        v18 = [v17 identity];
-        v19 = [v16 isEqual:v18];
+        definition = [v13 definition];
+        clientIdentity = [definition clientIdentity];
+        processIdentity = [clientIdentity processIdentity];
+        handle = [handshakeCopy handle];
+        identity = [handle identity];
+        v19 = [processIdentity isEqual:identity];
 
         if (v19 && ([v13 isActive] & 1) == 0)
         {
-          [(SBFSceneWorkspaceDefaultDelegate *)v25 _activateScene:v13];
+          [(SBFSceneWorkspaceDefaultDelegate *)selfCopy2 _activateScene:v13];
           v20 = SBLogCommon();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v24 identifier];
-            v22 = [v13 identifier];
+            identifier2 = [workspaceCopy identifier];
+            identifier3 = [v13 identifier];
             *buf = v23;
-            v34 = v25;
+            selfCopy = selfCopy2;
             v35 = 2114;
-            v36 = v21;
+            v36 = identifier2;
             v37 = 2114;
-            v38 = v22;
+            v38 = identifier3;
             _os_log_impl(&dword_1BEA11000, v20, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p-%{public}@] scene was activated for client process is running: %{public}@", buf, 0x20u);
           }
         }
@@ -258,139 +258,139 @@ LABEL_3:
   }
 }
 
-- (void)workspace:(id)a3 didAddScene:(id)a4
+- (void)workspace:(id)workspace didAddScene:(id)scene
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  workspaceCopy = workspace;
+  sceneCopy = scene;
   BSDispatchQueueAssertMain();
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
-    v10 = [v7 identifier];
+    identifier = [workspaceCopy identifier];
+    identifier2 = [sceneCopy identifier];
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v9;
+    v14 = identifier;
     v15 = 2114;
-    v16 = v10;
+    v16 = identifier2;
     _os_log_impl(&dword_1BEA11000, v8, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p-%{public}@] did add scene: %{public}@", &v11, 0x20u);
   }
 
-  [v7 setDelegate:self];
+  [sceneCopy setDelegate:self];
 }
 
-- (void)workspace:(id)a3 willRemoveScene:(id)a4
+- (void)workspace:(id)workspace willRemoveScene:(id)scene
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  workspaceCopy = workspace;
+  sceneCopy = scene;
   BSDispatchQueueAssertMain();
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
-    v10 = [v7 identifier];
+    identifier = [workspaceCopy identifier];
+    identifier2 = [sceneCopy identifier];
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v9;
+    v14 = identifier;
     v15 = 2114;
-    v16 = v10;
+    v16 = identifier2;
     _os_log_impl(&dword_1BEA11000, v8, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p-%{public}@] will remove scene: %{public}@", &v11, 0x20u);
   }
 
-  [v7 setDelegate:0];
+  [sceneCopy setDelegate:0];
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activateCopy = activate;
   BSDispatchQueueAssertMain();
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [activateCopy identifier];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p] scene did activate: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deactivateCopy = deactivate;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
-  v8 = [v6 identifier];
-  v9 = [v7 error];
+  identifier = [deactivateCopy identifier];
+  error = [contextCopy error];
 
   v10 = SBLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 localizedDescription];
+    localizedDescription = [error localizedDescription];
     v16 = 134218498;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
-    v19 = v8;
+    v19 = identifier;
     v20 = 2114;
-    v21 = v11;
+    v21 = localizedDescription;
     _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p] scene did deactivate: %{public}@ error: %{public}@", &v16, 0x20u);
   }
 
-  v12 = [v6 settings];
-  v13 = [v12 isForeground];
+  settings = [deactivateCopy settings];
+  isForeground = [settings isForeground];
 
-  if (v13)
+  if (isForeground)
   {
     v14 = SBLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
-      v19 = v8;
+      v19 = identifier;
       _os_log_impl(&dword_1BEA11000, v14, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p] scene did deactivate while foreground: %{public}@", &v16, 0x16u);
     }
 
-    if ([(NSMutableSet *)self->_scenesKeptActiveWhileForeground containsObject:v6])
+    if ([(NSMutableSet *)self->_scenesKeptActiveWhileForeground containsObject:deactivateCopy])
     {
       v15 = SBLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 134218242;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2114;
-        v19 = v8;
+        v19 = identifier;
         _os_log_impl(&dword_1BEA11000, v15, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p] automatically re-activating scene: %{public}@", &v16, 0x16u);
       }
 
-      [(SBFSceneWorkspaceDefaultDelegate *)self _activateScene:v6];
+      [(SBFSceneWorkspaceDefaultDelegate *)self _activateScene:deactivateCopy];
     }
   }
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   BSDispatchQueueAssertMain();
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 contentState];
-    v7 = [v4 identifier];
+    contentState = [changeCopy contentState];
+    identifier = [changeCopy identifier];
     v8 = 134218498;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = contentState;
     v12 = 2114;
-    v13 = v7;
+    v13 = identifier;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_DEFAULT, "SceneWorkspaceDelegate[%p] content state did change: %ld for scene: %{public}@", &v8, 0x20u);
   }
 }

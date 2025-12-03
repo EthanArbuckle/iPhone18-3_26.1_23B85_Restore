@@ -1,41 +1,41 @@
 @interface RbData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRlcMode:(id)a3;
+- (int)StringAsRlcMode:(id)mode;
 - (int)rlcMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDlDataBytes:(BOOL)a3;
-- (void)setHasDlHcEnabled:(BOOL)a3;
-- (void)setHasDlHcPdus:(BOOL)a3;
-- (void)setHasDlLastXSecTotalBytes:(BOOL)a3;
-- (void)setHasDlLastXSecTotalPdus:(BOOL)a3;
-- (void)setHasDlTotalPdus:(BOOL)a3;
-- (void)setHasHcDecFailPdus:(BOOL)a3;
-- (void)setHasQos:(BOOL)a3;
-- (void)setHasRb:(BOOL)a3;
-- (void)setHasRlcMode:(BOOL)a3;
-- (void)setHasUlDataBytes:(BOOL)a3;
-- (void)setHasUlDiscardBytes:(BOOL)a3;
-- (void)setHasUlDiscardPdus:(BOOL)a3;
-- (void)setHasUlDiscardSduBytes:(BOOL)a3;
-- (void)setHasUlDiscardSdus:(BOOL)a3;
-- (void)setHasUlLastXSecDiscardBytes:(BOOL)a3;
-- (void)setHasUlLastXSecDiscardPdus:(BOOL)a3;
-- (void)setHasUlLastXSecTotalBytes:(BOOL)a3;
-- (void)setHasUlLastXSecTotalPdus:(BOOL)a3;
-- (void)setHasUlTotalPdus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDlDataBytes:(BOOL)bytes;
+- (void)setHasDlHcEnabled:(BOOL)enabled;
+- (void)setHasDlHcPdus:(BOOL)pdus;
+- (void)setHasDlLastXSecTotalBytes:(BOOL)bytes;
+- (void)setHasDlLastXSecTotalPdus:(BOOL)pdus;
+- (void)setHasDlTotalPdus:(BOOL)pdus;
+- (void)setHasHcDecFailPdus:(BOOL)pdus;
+- (void)setHasQos:(BOOL)qos;
+- (void)setHasRb:(BOOL)rb;
+- (void)setHasRlcMode:(BOOL)mode;
+- (void)setHasUlDataBytes:(BOOL)bytes;
+- (void)setHasUlDiscardBytes:(BOOL)bytes;
+- (void)setHasUlDiscardPdus:(BOOL)pdus;
+- (void)setHasUlDiscardSduBytes:(BOOL)bytes;
+- (void)setHasUlDiscardSdus:(BOOL)sdus;
+- (void)setHasUlLastXSecDiscardBytes:(BOOL)bytes;
+- (void)setHasUlLastXSecDiscardPdus:(BOOL)pdus;
+- (void)setHasUlLastXSecTotalBytes:(BOOL)bytes;
+- (void)setHasUlLastXSecTotalPdus:(BOOL)pdus;
+- (void)setHasUlTotalPdus:(BOOL)pdus;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RbData
 
-- (void)setHasQos:(BOOL)a3
+- (void)setHasQos:(BOOL)qos
 {
-  if (a3)
+  if (qos)
   {
     v3 = 128;
   }
@@ -48,9 +48,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasRb:(BOOL)a3
+- (void)setHasRb:(BOOL)rb
 {
-  if (a3)
+  if (rb)
   {
     v3 = 256;
   }
@@ -63,9 +63,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasUlDataBytes:(BOOL)a3
+- (void)setHasUlDataBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 1024;
   }
@@ -78,9 +78,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasDlDataBytes:(BOOL)a3
+- (void)setHasDlDataBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -93,9 +93,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasUlDiscardSduBytes:(BOOL)a3
+- (void)setHasUlDiscardSduBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 0x2000;
   }
@@ -108,9 +108,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasUlDiscardBytes:(BOOL)a3
+- (void)setHasUlDiscardBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2048;
   }
@@ -123,9 +123,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasDlTotalPdus:(BOOL)a3
+- (void)setHasDlTotalPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 32;
   }
@@ -138,9 +138,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasDlHcPdus:(BOOL)a3
+- (void)setHasDlHcPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 4;
   }
@@ -153,9 +153,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasHcDecFailPdus:(BOOL)a3
+- (void)setHasHcDecFailPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 64;
   }
@@ -168,9 +168,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasUlLastXSecTotalPdus:(BOOL)a3
+- (void)setHasUlLastXSecTotalPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 0x40000;
   }
@@ -183,9 +183,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasUlLastXSecTotalBytes:(BOOL)a3
+- (void)setHasUlLastXSecTotalBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 0x20000;
   }
@@ -198,9 +198,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasUlLastXSecDiscardBytes:(BOOL)a3
+- (void)setHasUlLastXSecDiscardBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 0x8000;
   }
@@ -213,9 +213,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasUlLastXSecDiscardPdus:(BOOL)a3
+- (void)setHasUlLastXSecDiscardPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 0x10000;
   }
@@ -228,9 +228,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasDlHcEnabled:(BOOL)a3
+- (void)setHasDlHcEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x100000;
   }
@@ -256,9 +256,9 @@
   }
 }
 
-- (void)setHasRlcMode:(BOOL)a3
+- (void)setHasRlcMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 512;
   }
@@ -271,13 +271,13 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsRlcMode:(id)a3
+- (int)StringAsRlcMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = 1;
-  if (([v3 isEqualToString:@"AM"] & 1) == 0)
+  if (([modeCopy isEqualToString:@"AM"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"UM"])
+    if ([modeCopy isEqualToString:@"UM"])
     {
       v4 = 2;
     }
@@ -291,9 +291,9 @@
   return v4;
 }
 
-- (void)setHasUlDiscardSdus:(BOOL)a3
+- (void)setHasUlDiscardSdus:(BOOL)sdus
 {
-  if (a3)
+  if (sdus)
   {
     v3 = 0x4000;
   }
@@ -306,9 +306,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasUlDiscardPdus:(BOOL)a3
+- (void)setHasUlDiscardPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 4096;
   }
@@ -321,9 +321,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasUlTotalPdus:(BOOL)a3
+- (void)setHasUlTotalPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 0x80000;
   }
@@ -336,9 +336,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasDlLastXSecTotalPdus:(BOOL)a3
+- (void)setHasDlLastXSecTotalPdus:(BOOL)pdus
 {
-  if (a3)
+  if (pdus)
   {
     v3 = 16;
   }
@@ -351,9 +351,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasDlLastXSecTotalBytes:(BOOL)a3
+- (void)setHasDlLastXSecTotalBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 8;
   }
@@ -371,8 +371,8 @@
   v7.receiver = self;
   v7.super_class = RbData;
   v3 = [(RbData *)&v7 description];
-  v4 = [(RbData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RbData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -722,9 +722,9 @@ LABEL_23:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
@@ -1030,14 +1030,14 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
-    v4[9] = self->_qos;
-    v4[23] |= 0x80u;
+    toCopy[9] = self->_qos;
+    toCopy[23] |= 0x80u;
     has = self->_has;
     if ((*&has & 0x100) == 0)
     {
@@ -1056,8 +1056,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[10] = self->_rb;
-  v4[23] |= 0x100u;
+  toCopy[10] = self->_rb;
+  toCopy[23] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1071,8 +1071,8 @@ LABEL_4:
   }
 
 LABEL_28:
-  v4[12] = self->_ulDataBytes;
-  v4[23] |= 0x400u;
+  toCopy[12] = self->_ulDataBytes;
+  toCopy[23] |= 0x400u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1086,8 +1086,8 @@ LABEL_5:
   }
 
 LABEL_29:
-  v4[3] = self->_dlDataBytes;
-  v4[23] |= 2u;
+  toCopy[3] = self->_dlDataBytes;
+  toCopy[23] |= 2u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1101,8 +1101,8 @@ LABEL_6:
   }
 
 LABEL_30:
-  v4[15] = self->_ulDiscardSduBytes;
-  v4[23] |= 0x2000u;
+  toCopy[15] = self->_ulDiscardSduBytes;
+  toCopy[23] |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1116,8 +1116,8 @@ LABEL_7:
   }
 
 LABEL_31:
-  v4[13] = self->_ulDiscardBytes;
-  v4[23] |= 0x800u;
+  toCopy[13] = self->_ulDiscardBytes;
+  toCopy[23] |= 0x800u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1131,8 +1131,8 @@ LABEL_8:
   }
 
 LABEL_32:
-  v4[2] = self->_dlCtrlPdus;
-  v4[23] |= 1u;
+  toCopy[2] = self->_dlCtrlPdus;
+  toCopy[23] |= 1u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1146,8 +1146,8 @@ LABEL_9:
   }
 
 LABEL_33:
-  v4[7] = self->_dlTotalPdus;
-  v4[23] |= 0x20u;
+  toCopy[7] = self->_dlTotalPdus;
+  toCopy[23] |= 0x20u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1161,8 +1161,8 @@ LABEL_10:
   }
 
 LABEL_34:
-  v4[4] = self->_dlHcPdus;
-  v4[23] |= 4u;
+  toCopy[4] = self->_dlHcPdus;
+  toCopy[23] |= 4u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1176,8 +1176,8 @@ LABEL_11:
   }
 
 LABEL_35:
-  v4[8] = self->_hcDecFailPdus;
-  v4[23] |= 0x40u;
+  toCopy[8] = self->_hcDecFailPdus;
+  toCopy[23] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1191,8 +1191,8 @@ LABEL_12:
   }
 
 LABEL_36:
-  v4[20] = self->_ulLastXSecTotalPdus;
-  v4[23] |= 0x40000u;
+  toCopy[20] = self->_ulLastXSecTotalPdus;
+  toCopy[23] |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1206,8 +1206,8 @@ LABEL_13:
   }
 
 LABEL_37:
-  v4[19] = self->_ulLastXSecTotalBytes;
-  v4[23] |= 0x20000u;
+  toCopy[19] = self->_ulLastXSecTotalBytes;
+  toCopy[23] |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1221,8 +1221,8 @@ LABEL_14:
   }
 
 LABEL_38:
-  v4[17] = self->_ulLastXSecDiscardBytes;
-  v4[23] |= 0x8000u;
+  toCopy[17] = self->_ulLastXSecDiscardBytes;
+  toCopy[23] |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1236,8 +1236,8 @@ LABEL_15:
   }
 
 LABEL_39:
-  v4[18] = self->_ulLastXSecDiscardPdus;
-  v4[23] |= 0x10000u;
+  toCopy[18] = self->_ulLastXSecDiscardPdus;
+  toCopy[23] |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1251,8 +1251,8 @@ LABEL_16:
   }
 
 LABEL_40:
-  *(v4 + 88) = self->_dlHcEnabled;
-  v4[23] |= 0x100000u;
+  *(toCopy + 88) = self->_dlHcEnabled;
+  toCopy[23] |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1266,8 +1266,8 @@ LABEL_17:
   }
 
 LABEL_41:
-  v4[11] = self->_rlcMode;
-  v4[23] |= 0x200u;
+  toCopy[11] = self->_rlcMode;
+  toCopy[23] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1281,8 +1281,8 @@ LABEL_18:
   }
 
 LABEL_42:
-  v4[16] = self->_ulDiscardSdus;
-  v4[23] |= 0x4000u;
+  toCopy[16] = self->_ulDiscardSdus;
+  toCopy[23] |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1296,8 +1296,8 @@ LABEL_19:
   }
 
 LABEL_43:
-  v4[14] = self->_ulDiscardPdus;
-  v4[23] |= 0x1000u;
+  toCopy[14] = self->_ulDiscardPdus;
+  toCopy[23] |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1311,8 +1311,8 @@ LABEL_20:
   }
 
 LABEL_44:
-  v4[21] = self->_ulTotalPdus;
-  v4[23] |= 0x80000u;
+  toCopy[21] = self->_ulTotalPdus;
+  toCopy[23] |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1326,21 +1326,21 @@ LABEL_21:
   }
 
 LABEL_45:
-  v4[6] = self->_dlLastXSecTotalPdus;
-  v4[23] |= 0x10u;
+  toCopy[6] = self->_dlLastXSecTotalPdus;
+  toCopy[23] |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_22:
-    v4[5] = self->_dlLastXSecTotalBytes;
-    v4[23] |= 8u;
+    toCopy[5] = self->_dlLastXSecTotalBytes;
+    toCopy[23] |= 8u;
   }
 
 LABEL_23:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
@@ -1647,19 +1647,19 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_110;
   }
 
   has = self->_has;
-  v6 = *(v4 + 23);
+  v6 = *(equalCopy + 23);
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_qos != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_qos != *(equalCopy + 9))
     {
       goto LABEL_110;
     }
@@ -1672,7 +1672,7 @@ LABEL_22:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_rb != *(v4 + 10))
+    if ((v6 & 0x100) == 0 || self->_rb != *(equalCopy + 10))
     {
       goto LABEL_110;
     }
@@ -1685,7 +1685,7 @@ LABEL_22:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_ulDataBytes != *(v4 + 12))
+    if ((v6 & 0x400) == 0 || self->_ulDataBytes != *(equalCopy + 12))
     {
       goto LABEL_110;
     }
@@ -1698,7 +1698,7 @@ LABEL_22:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_dlDataBytes != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_dlDataBytes != *(equalCopy + 3))
     {
       goto LABEL_110;
     }
@@ -1711,7 +1711,7 @@ LABEL_22:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_ulDiscardSduBytes != *(v4 + 15))
+    if ((v6 & 0x2000) == 0 || self->_ulDiscardSduBytes != *(equalCopy + 15))
     {
       goto LABEL_110;
     }
@@ -1724,7 +1724,7 @@ LABEL_22:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_ulDiscardBytes != *(v4 + 13))
+    if ((v6 & 0x800) == 0 || self->_ulDiscardBytes != *(equalCopy + 13))
     {
       goto LABEL_110;
     }
@@ -1737,7 +1737,7 @@ LABEL_22:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_dlCtrlPdus != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_dlCtrlPdus != *(equalCopy + 2))
     {
       goto LABEL_110;
     }
@@ -1750,7 +1750,7 @@ LABEL_22:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_dlTotalPdus != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_dlTotalPdus != *(equalCopy + 7))
     {
       goto LABEL_110;
     }
@@ -1763,7 +1763,7 @@ LABEL_22:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_dlHcPdus != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_dlHcPdus != *(equalCopy + 4))
     {
       goto LABEL_110;
     }
@@ -1776,7 +1776,7 @@ LABEL_22:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_hcDecFailPdus != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_hcDecFailPdus != *(equalCopy + 8))
     {
       goto LABEL_110;
     }
@@ -1789,7 +1789,7 @@ LABEL_22:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_ulLastXSecTotalPdus != *(v4 + 20))
+    if ((v6 & 0x40000) == 0 || self->_ulLastXSecTotalPdus != *(equalCopy + 20))
     {
       goto LABEL_110;
     }
@@ -1802,7 +1802,7 @@ LABEL_22:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_ulLastXSecTotalBytes != *(v4 + 19))
+    if ((v6 & 0x20000) == 0 || self->_ulLastXSecTotalBytes != *(equalCopy + 19))
     {
       goto LABEL_110;
     }
@@ -1815,7 +1815,7 @@ LABEL_22:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_ulLastXSecDiscardBytes != *(v4 + 17))
+    if ((v6 & 0x8000) == 0 || self->_ulLastXSecDiscardBytes != *(equalCopy + 17))
     {
       goto LABEL_110;
     }
@@ -1828,7 +1828,7 @@ LABEL_22:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_ulLastXSecDiscardPdus != *(v4 + 18))
+    if ((v6 & 0x10000) == 0 || self->_ulLastXSecDiscardPdus != *(equalCopy + 18))
     {
       goto LABEL_110;
     }
@@ -1856,16 +1856,16 @@ LABEL_110:
     goto LABEL_110;
   }
 
-  v7 = *(v4 + 88);
+  v7 = *(equalCopy + 88);
   if (self->_dlHcEnabled)
   {
-    if ((*(v4 + 88) & 1) == 0)
+    if ((*(equalCopy + 88) & 1) == 0)
     {
       goto LABEL_110;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_110;
   }
@@ -1873,7 +1873,7 @@ LABEL_110:
 LABEL_74:
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_rlcMode != *(v4 + 11))
+    if ((v6 & 0x200) == 0 || self->_rlcMode != *(equalCopy + 11))
     {
       goto LABEL_110;
     }
@@ -1886,7 +1886,7 @@ LABEL_74:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_ulDiscardSdus != *(v4 + 16))
+    if ((v6 & 0x4000) == 0 || self->_ulDiscardSdus != *(equalCopy + 16))
     {
       goto LABEL_110;
     }
@@ -1899,7 +1899,7 @@ LABEL_74:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_ulDiscardPdus != *(v4 + 14))
+    if ((v6 & 0x1000) == 0 || self->_ulDiscardPdus != *(equalCopy + 14))
     {
       goto LABEL_110;
     }
@@ -1912,7 +1912,7 @@ LABEL_74:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_ulTotalPdus != *(v4 + 21))
+    if ((v6 & 0x80000) == 0 || self->_ulTotalPdus != *(equalCopy + 21))
     {
       goto LABEL_110;
     }
@@ -1925,7 +1925,7 @@ LABEL_74:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_dlLastXSecTotalPdus != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_dlLastXSecTotalPdus != *(equalCopy + 6))
     {
       goto LABEL_110;
     }
@@ -1938,7 +1938,7 @@ LABEL_74:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_dlLastXSecTotalBytes != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_dlLastXSecTotalBytes != *(equalCopy + 5))
     {
       goto LABEL_110;
     }
@@ -1948,7 +1948,7 @@ LABEL_74:
 
   else
   {
-    v8 = (*(v4 + 23) & 8) == 0;
+    v8 = (*(equalCopy + 23) & 8) == 0;
   }
 
 LABEL_111:
@@ -2243,15 +2243,15 @@ LABEL_38:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 23);
+  fromCopy = from;
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x80) != 0)
   {
-    self->_qos = *(v4 + 9);
+    self->_qos = *(fromCopy + 9);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 23);
+    v5 = *(fromCopy + 23);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -2269,9 +2269,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_rb = *(v4 + 10);
+  self->_rb = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x400) == 0)
   {
 LABEL_4:
@@ -2284,9 +2284,9 @@ LABEL_4:
   }
 
 LABEL_28:
-  self->_ulDataBytes = *(v4 + 12);
+  self->_ulDataBytes = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -2299,9 +2299,9 @@ LABEL_5:
   }
 
 LABEL_29:
-  self->_dlDataBytes = *(v4 + 3);
+  self->_dlDataBytes = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -2314,9 +2314,9 @@ LABEL_6:
   }
 
 LABEL_30:
-  self->_ulDiscardSduBytes = *(v4 + 15);
+  self->_ulDiscardSduBytes = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x800) == 0)
   {
 LABEL_7:
@@ -2329,9 +2329,9 @@ LABEL_7:
   }
 
 LABEL_31:
-  self->_ulDiscardBytes = *(v4 + 13);
+  self->_ulDiscardBytes = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -2344,9 +2344,9 @@ LABEL_8:
   }
 
 LABEL_32:
-  self->_dlCtrlPdus = *(v4 + 2);
+  self->_dlCtrlPdus = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -2359,9 +2359,9 @@ LABEL_9:
   }
 
 LABEL_33:
-  self->_dlTotalPdus = *(v4 + 7);
+  self->_dlTotalPdus = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -2374,9 +2374,9 @@ LABEL_10:
   }
 
 LABEL_34:
-  self->_dlHcPdus = *(v4 + 4);
+  self->_dlHcPdus = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -2389,9 +2389,9 @@ LABEL_11:
   }
 
 LABEL_35:
-  self->_hcDecFailPdus = *(v4 + 8);
+  self->_hcDecFailPdus = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_12:
@@ -2404,9 +2404,9 @@ LABEL_12:
   }
 
 LABEL_36:
-  self->_ulLastXSecTotalPdus = *(v4 + 20);
+  self->_ulLastXSecTotalPdus = *(fromCopy + 20);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_13:
@@ -2419,9 +2419,9 @@ LABEL_13:
   }
 
 LABEL_37:
-  self->_ulLastXSecTotalBytes = *(v4 + 19);
+  self->_ulLastXSecTotalBytes = *(fromCopy + 19);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_14:
@@ -2434,9 +2434,9 @@ LABEL_14:
   }
 
 LABEL_38:
-  self->_ulLastXSecDiscardBytes = *(v4 + 17);
+  self->_ulLastXSecDiscardBytes = *(fromCopy + 17);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_15:
@@ -2449,9 +2449,9 @@ LABEL_15:
   }
 
 LABEL_39:
-  self->_ulLastXSecDiscardPdus = *(v4 + 18);
+  self->_ulLastXSecDiscardPdus = *(fromCopy + 18);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_16:
@@ -2464,9 +2464,9 @@ LABEL_16:
   }
 
 LABEL_40:
-  self->_dlHcEnabled = *(v4 + 88);
+  self->_dlHcEnabled = *(fromCopy + 88);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x200) == 0)
   {
 LABEL_17:
@@ -2479,9 +2479,9 @@ LABEL_17:
   }
 
 LABEL_41:
-  self->_rlcMode = *(v4 + 11);
+  self->_rlcMode = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_18:
@@ -2494,9 +2494,9 @@ LABEL_18:
   }
 
 LABEL_42:
-  self->_ulDiscardSdus = *(v4 + 16);
+  self->_ulDiscardSdus = *(fromCopy + 16);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_19:
@@ -2509,9 +2509,9 @@ LABEL_19:
   }
 
 LABEL_43:
-  self->_ulDiscardPdus = *(v4 + 14);
+  self->_ulDiscardPdus = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_20:
@@ -2524,9 +2524,9 @@ LABEL_20:
   }
 
 LABEL_44:
-  self->_ulTotalPdus = *(v4 + 21);
+  self->_ulTotalPdus = *(fromCopy + 21);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 23);
+  v5 = *(fromCopy + 23);
   if ((v5 & 0x10) == 0)
   {
 LABEL_21:
@@ -2539,12 +2539,12 @@ LABEL_21:
   }
 
 LABEL_45:
-  self->_dlLastXSecTotalPdus = *(v4 + 6);
+  self->_dlLastXSecTotalPdus = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 23) & 8) != 0)
+  if ((*(fromCopy + 23) & 8) != 0)
   {
 LABEL_22:
-    self->_dlLastXSecTotalBytes = *(v4 + 5);
+    self->_dlLastXSecTotalBytes = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

@@ -1,9 +1,9 @@
 @interface VGMLSegmentationModel
 - (VGMLSegmentationModel)init;
-- (id)_performSegmentationRequest:(id)a3 onPixelBuffer:(__CVBuffer *)a4 segmentationRequestRevision:(unint64_t)a5 error:(id *)a6;
-- (id)_resizePixelBuffer:(__CVBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (id)segmentationMaps:(__CVBuffer *)a3;
-- (id)segmentationSurfaces:(__CVBuffer *)a3;
+- (id)_performSegmentationRequest:(id)request onPixelBuffer:(__CVBuffer *)buffer segmentationRequestRevision:(unint64_t)revision error:(id *)error;
+- (id)_resizePixelBuffer:(__CVBuffer *)buffer width:(unint64_t)width height:(unint64_t)height;
+- (id)segmentationMaps:(__CVBuffer *)maps;
+- (id)segmentationSurfaces:(__CVBuffer *)surfaces;
 @end
 
 @implementation VGMLSegmentationModel
@@ -94,12 +94,12 @@
   return v2;
 }
 
-- (id)_performSegmentationRequest:(id)a3 onPixelBuffer:(__CVBuffer *)a4 segmentationRequestRevision:(unint64_t)a5 error:(id *)a6
+- (id)_performSegmentationRequest:(id)request onPixelBuffer:(__CVBuffer *)buffer segmentationRequestRevision:(unint64_t)revision error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  requestCopy = request;
   v10 = objc_alloc(MEMORY[0x277CE2D50]);
-  v11 = [v10 initWithCVPixelBuffer:a4 options:MEMORY[0x277CBEC10]];
+  v11 = [v10 initWithCVPixelBuffer:buffer options:MEMORY[0x277CBEC10]];
   if (!v11)
   {
     v15 = __VGLogSharedInstance();
@@ -119,7 +119,7 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v9;
+    v12 = requestCopy;
     [v12 setQualityLevel:0];
     [v12 setOutputPixelFormat:1278226534];
     goto LABEL_4;
@@ -139,14 +139,14 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v15 = v9;
+  v15 = requestCopy;
   [v15 setQualityLevel:0];
-  if (([v15 setRevision:a5 error:a6]& 1) == 0)
+  if (([v15 setRevision:revision error:error]& 1) == 0)
   {
     v21 = __VGLogSharedInstance();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = *a6;
+      v22 = *error;
       *buf = 138412290;
       v27 = v22;
       _os_log_impl(&dword_270F06000, v21, OS_LOG_TYPE_ERROR, " Error setting revision for person instance model %@ ", buf, 0xCu);
@@ -159,16 +159,16 @@ LABEL_23:
   [v15 setOutputPixelFormat:1278226534];
 LABEL_4:
 
-  v25 = v9;
+  v25 = requestCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-  v14 = [v11 performRequests:v13 error:a6];
+  v14 = [v11 performRequests:v13 error:error];
 
   if (v14)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v20 = [v9 results];
+      results = [requestCopy results];
       goto LABEL_26;
     }
 
@@ -186,7 +186,7 @@ LABEL_4:
     v15 = __VGLogSharedInstance();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v17 = *a6;
+      v17 = *error;
       *buf = 138412290;
       v27 = v17;
       v16 = " Failed to process segmentation request %@ ";
@@ -199,31 +199,31 @@ LABEL_24:
 
 LABEL_25:
 
-  v20 = 0;
+  results = 0;
 LABEL_26:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return results;
 }
 
-- (id)_resizePixelBuffer:(__CVBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)_resizePixelBuffer:(__CVBuffer *)buffer width:(unint64_t)width height:(unint64_t)height
 {
-  v7 = CVPixelBufferGetIOSurface(a3);
-  v8 = resizeSurface(v7, a4, a5);
+  v7 = CVPixelBufferGetIOSurface(buffer);
+  v8 = resizeSurface(v7, width, height);
 
   return v8;
 }
 
-- (id)segmentationSurfaces:(__CVBuffer *)a3
+- (id)segmentationSurfaces:(__CVBuffer *)surfaces
 {
   v61 = *MEMORY[0x277D85DE8];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(surfaces);
+  Height = CVPixelBufferGetHeight(surfaces);
   v45 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSOrderedSet count](self->_outputSegmentationMaps, "count")}];
   v56 = 0;
   v35 = objc_opt_new();
-  v39 = a3;
+  surfacesCopy = surfaces;
   v37 = [VGMLSegmentationModel _performSegmentationRequest:"_performSegmentationRequest:onPixelBuffer:segmentationRequestRevision:error:" onPixelBuffer:? segmentationRequestRevision:? error:?];
   v36 = 0;
   if (v36)
@@ -260,8 +260,8 @@ LABEL_26:
 
           v9 = *(*(&v52 + 1) + 8 * i);
           v10 = humanAttributesMap();
-          v11 = [v9 featureName];
-          v12 = [v10 objectForKey:v11];
+          featureName = [v9 featureName];
+          v12 = [v10 objectForKey:featureName];
           v13 = v12 == 0;
 
           if (v13)
@@ -269,9 +269,9 @@ LABEL_26:
             v14 = __VGLogSharedInstance();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v17 = [v9 featureName];
+              featureName2 = [v9 featureName];
               *buf = 138412290;
-              v60 = v17;
+              v60 = featureName2;
               _os_log_impl(&dword_270F06000, v14, OS_LOG_TYPE_ERROR, " Received an unexpected output map from VNGenerateHumanAttributesSegmentationRequest: %@ ", buf, 0xCu);
             }
           }
@@ -279,8 +279,8 @@ LABEL_26:
           else
           {
             v14 = -[VGMLSegmentationModel _resizePixelBuffer:width:height:](self, "_resizePixelBuffer:width:height:", [v9 pixelBuffer], Width, Height);
-            v15 = [v9 featureName];
-            v16 = [v10 objectForKeyedSubscript:v15];
+            featureName3 = [v9 featureName];
+            v16 = [v10 objectForKeyedSubscript:featureName3];
             [v45 setObject:v14 forKey:v16];
           }
         }
@@ -348,7 +348,7 @@ LABEL_26:
 
   v27 = objc_opt_new();
   v46 = obja;
-  v28 = [(VGMLSegmentationModel *)self _performSegmentationRequest:v27 onPixelBuffer:v39 segmentationRequestRevision:1 error:&v46];
+  v28 = [(VGMLSegmentationModel *)self _performSegmentationRequest:v27 onPixelBuffer:surfacesCopy segmentationRequestRevision:1 error:&v46];
   v29 = v46;
 
   if (v29)
@@ -382,10 +382,10 @@ LABEL_33:
   return v45;
 }
 
-- (id)segmentationMaps:(__CVBuffer *)a3
+- (id)segmentationMaps:(__CVBuffer *)maps
 {
   v22 = *MEMORY[0x277D85DE8];
-  v15 = [(VGMLSegmentationModel *)self segmentationSurfaces:a3];
+  v15 = [(VGMLSegmentationModel *)self segmentationSurfaces:maps];
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v15, "count")}];
   v19 = 0u;
   v20 = 0u;

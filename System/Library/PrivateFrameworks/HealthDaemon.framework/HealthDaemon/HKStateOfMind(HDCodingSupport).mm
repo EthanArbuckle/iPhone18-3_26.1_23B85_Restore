@@ -13,11 +13,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKObjectValidationConfigurationWithOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -25,7 +25,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;
@@ -49,20 +49,20 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(HDCodableStateOfMind);
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &off_283D44F30;
   v3 = objc_msgSendSuper2(&v26, sel_codableRepresentationForSync);
   [(HDCodableStateOfMind *)v2 setSample:v3];
 
-  -[HDCodableStateOfMind setReflectiveInterval:](v2, "setReflectiveInterval:", [a1 reflectiveInterval]);
-  [a1 valence];
+  -[HDCodableStateOfMind setReflectiveInterval:](v2, "setReflectiveInterval:", [self reflectiveInterval]);
+  [self valence];
   [(HDCodableStateOfMind *)v2 setValence:?];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [a1 labels];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  labels = [self labels];
+  v5 = [labels countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,13 +73,13 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(labels);
         }
 
         -[HDCodableStateOfMind addLabels:](v2, "addLabels:", [*(*(&v22 + 1) + 8 * i) longLongValue]);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v6 = [labels countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v6);
@@ -89,8 +89,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [a1 domains];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v27 count:16];
+  domains = [self domains];
+  v10 = [domains countByEnumeratingWithState:&v18 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -101,24 +101,24 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(domains);
         }
 
         -[HDCodableStateOfMind addDomains:](v2, "addDomains:", [*(*(&v18 + 1) + 8 * j) longLongValue]);
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v27 count:16];
+      v11 = [domains countByEnumeratingWithState:&v18 objects:v27 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [a1 context];
+  context = [self context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [a1 context];
-    [(HDCodableStateOfMind *)v2 setContext:v15];
+    context2 = [self context];
+    [(HDCodableStateOfMind *)v2 setContext:context2];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -129,13 +129,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addStateOfMindLogs:v5];
+    [v4 addStateOfMindLogs:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface NTKEsterbrookSceneDialView
-- (NTKEsterbrookSceneDialView)initWithCoder:(id)a3;
-- (NTKEsterbrookSceneDialView)initWithFrame:(CGRect)a3;
-- (void)applyDensityTransitionWithFraction:(double)a3 from:(unint64_t)a4 to:(unint64_t)a5;
-- (void)setDensity:(unint64_t)a3;
-- (void)setTritiumProgress:(double)a3;
+- (NTKEsterbrookSceneDialView)initWithCoder:(id)coder;
+- (NTKEsterbrookSceneDialView)initWithFrame:(CGRect)frame;
+- (void)applyDensityTransitionWithFraction:(double)fraction from:(unint64_t)from to:(unint64_t)to;
+- (void)setDensity:(unint64_t)density;
+- (void)setTritiumProgress:(double)progress;
 @end
 
 @implementation NTKEsterbrookSceneDialView
 
-- (void)setDensity:(unint64_t)a3
+- (void)setDensity:(unint64_t)density
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___NTKEsterbrookSceneDialView_density);
-  *(&self->super.super.super.isa + OBJC_IVAR___NTKEsterbrookSceneDialView_density) = a3;
-  if (v4 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR___NTKEsterbrookSceneDialView_density) = density;
+  if (v4 != density)
   {
-    v6 = self;
-    sub_23BDE7204(a3);
+    selfCopy = self;
+    sub_23BDE7204(density);
   }
 }
 
-- (NTKEsterbrookSceneDialView)initWithCoder:(id)a3
+- (NTKEsterbrookSceneDialView)initWithCoder:(id)coder
 {
   *(&self->super.super + OBJC_IVAR___NTKEsterbrookSceneDialView_hours) = xmmword_23BE36610;
   v4 = OBJC_IVAR___NTKEsterbrookSceneDialView_hourLayers;
@@ -32,20 +32,20 @@
   return 0;
 }
 
-- (void)applyDensityTransitionWithFraction:(double)a3 from:(unint64_t)a4 to:(unint64_t)a5
+- (void)applyDensityTransitionWithFraction:(double)fraction from:(unint64_t)from to:(unint64_t)to
 {
-  v8 = self;
-  sub_23BDE6AE4(a4, a5, a3);
+  selfCopy = self;
+  sub_23BDE6AE4(from, to, fraction);
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___NTKEsterbrookSceneDialView_tritiumProgress) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___NTKEsterbrookSceneDialView_tritiumProgress) = progress;
+  selfCopy = self;
   sub_23BDE7788();
 }
 
-- (NTKEsterbrookSceneDialView)initWithFrame:(CGRect)a3
+- (NTKEsterbrookSceneDialView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

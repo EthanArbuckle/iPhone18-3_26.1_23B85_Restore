@@ -1,24 +1,24 @@
 @interface VNRectangleObservation
-+ (VNRectangleObservation)observationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4;
++ (VNRectangleObservation)observationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box;
 + (VNRectangleObservation)rectangleObservationWithRequestRevision:(NSUInteger)requestRevision topLeft:(CGPoint)topLeft bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight topRight:(CGPoint)topRight;
 + (VNRectangleObservation)rectangleObservationWithRequestRevision:(NSUInteger)requestRevision topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
-- (VNRectangleObservation)initWithCoder:(id)a3;
-- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4;
-- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomRight:(CGPoint)a6 bottomLeft:(CGPoint)a7;
-- (VNRectangleObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4;
-- (VNRectangleObservation)initWithRequestRevision:(unint64_t)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomRight:(CGPoint)a6 bottomLeft:(CGPoint)a7;
-- (double)initWithOriginatingRequestSpecifier:(double)a3 topLeft:(double)a4 topRight:(double)a5 bottomRight:(double)a6 bottomLeft:(double)a7 boundingBox:(double)a8;
+- (VNRectangleObservation)initWithCoder:(id)coder;
+- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box;
+- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)specifier topLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
+- (VNRectangleObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box;
+- (VNRectangleObservation)initWithRequestRevision:(unint64_t)revision topLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
+- (double)initWithOriginatingRequestSpecifier:(double)specifier topLeft:(double)left topRight:(double)right bottomRight:(double)bottomRight bottomLeft:(double)bottomLeft boundingBox:(double)box;
 - (id)debugQuickLookObject;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)_setQuadrilateralPointsFromBoundingBox:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getTopLeftPoint:(CGPoint *)a3 topRightPoint:(CGPoint *)a4 bottomRightPoint:(CGPoint *)a5 bottomLeftPoint:(CGPoint *)a6 inTopLeftOrigin:(BOOL)a7 orientation:(unsigned int)a8;
+- (void)_setQuadrilateralPointsFromBoundingBox:(CGRect)box;
+- (void)encodeWithCoder:(id)coder;
+- (void)getTopLeftPoint:(CGPoint *)point topRightPoint:(CGPoint *)rightPoint bottomRightPoint:(CGPoint *)bottomRightPoint bottomLeftPoint:(CGPoint *)leftPoint inTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 @end
 
 @implementation VNRectangleObservation
@@ -86,13 +86,13 @@
   {
     v25.receiver = self;
     v25.super_class = VNRectangleObservation;
-    v21 = [(VNDetectedObjectObservation *)&v25 debugQuickLookObject];
-    if (v21)
+    debugQuickLookObject = [(VNDetectedObjectObservation *)&v25 debugQuickLookObject];
+    if (debugQuickLookObject)
     {
       v26[0] = xmmword_1A6052420;
       v26[1] = unk_1A6052430;
       v22 = VNDebugColorFromValues(v26);
-      VNDebugImageRenderNormalizedCGPathOnImage(Mutable, v21, v22);
+      VNDebugImageRenderNormalizedCGPathOnImage(Mutable, debugQuickLookObject, v22);
     }
 
     else
@@ -112,13 +112,13 @@
   return v23;
 }
 
-- (void)_setQuadrilateralPointsFromBoundingBox:(CGRect)a3
+- (void)_setQuadrilateralPointsFromBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MaxY = CGRectGetMaxY(a3);
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  MaxY = CGRectGetMaxY(box);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -147,15 +147,15 @@
   }
 }
 
-- (VNRectangleObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4
+- (VNRectangleObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v12.receiver = self;
   v12.super_class = VNRectangleObservation;
-  v8 = [(VNDetectedObjectObservation *)&v12 initWithRequestRevision:a3 boundingBox:?];
+  v8 = [(VNDetectedObjectObservation *)&v12 initWithRequestRevision:revision boundingBox:?];
   v9 = v8;
   if (v8)
   {
@@ -166,10 +166,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -178,9 +178,9 @@
   {
     v32.receiver = self;
     v32.super_class = VNRectangleObservation;
-    if ([(VNDetectedObjectObservation *)&v32 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNDetectedObjectObservation *)&v32 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNRectangleObservation *)self topLeft];
       v7 = v6;
       v9 = v8;
@@ -288,58 +288,58 @@
 {
   v5.receiver = self;
   v5.super_class = VNRectangleObservation;
-  v3 = [(VNDetectedObjectObservation *)&v5 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNDetectedObjectObservation *)&v5 vn_cloneObject];
+  if (vn_cloneObject)
   {
-    v3[10] = self->_topLeft;
-    v3[13] = self->_topRight;
-    v3[11] = self->_bottomLeft;
-    v3[12] = self->_bottomRight;
+    vn_cloneObject[10] = self->_topLeft;
+    vn_cloneObject[13] = self->_topRight;
+    vn_cloneObject[11] = self->_bottomLeft;
+    vn_cloneObject[12] = self->_bottomRight;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNRectangleObservation;
-  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"TLX" forKey:self->_topLeft.x];
-  [v4 encodeDouble:@"TLY" forKey:self->_topLeft.y];
-  [v4 encodeDouble:@"TRX" forKey:self->_topRight.x];
-  [v4 encodeDouble:@"TRY" forKey:self->_topRight.y];
-  [v4 encodeDouble:@"BLX" forKey:self->_bottomLeft.x];
-  [v4 encodeDouble:@"BLY" forKey:self->_bottomLeft.y];
+  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"TLX" forKey:self->_topLeft.x];
+  [coderCopy encodeDouble:@"TLY" forKey:self->_topLeft.y];
+  [coderCopy encodeDouble:@"TRX" forKey:self->_topRight.x];
+  [coderCopy encodeDouble:@"TRY" forKey:self->_topRight.y];
+  [coderCopy encodeDouble:@"BLX" forKey:self->_bottomLeft.x];
+  [coderCopy encodeDouble:@"BLY" forKey:self->_bottomLeft.y];
   self = (self + 192);
-  [v4 encodeDouble:@"BRX" forKey:*&self->super.super.super.isa];
-  [v4 encodeDouble:@"BRY" forKey:*&self->super.super._originatingRequestSpecifier];
+  [coderCopy encodeDouble:@"BRX" forKey:*&self->super.super.super.isa];
+  [coderCopy encodeDouble:@"BRY" forKey:*&self->super.super._originatingRequestSpecifier];
 }
 
-- (VNRectangleObservation)initWithCoder:(id)a3
+- (VNRectangleObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = VNRectangleObservation;
-  v5 = [(VNDetectedObjectObservation *)&v28 initWithCoder:v4];
+  v5 = [(VNDetectedObjectObservation *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"TLX"];
+    [coderCopy decodeDoubleForKey:@"TLX"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"TLY"];
+    [coderCopy decodeDoubleForKey:@"TLY"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"TRX"];
+    [coderCopy decodeDoubleForKey:@"TRX"];
     v11 = v10;
-    [v4 decodeDoubleForKey:@"TRY"];
+    [coderCopy decodeDoubleForKey:@"TRY"];
     v13 = v12;
-    [v4 decodeDoubleForKey:@"BLX"];
+    [coderCopy decodeDoubleForKey:@"BLX"];
     v15 = v14;
-    [v4 decodeDoubleForKey:@"BLY"];
+    [coderCopy decodeDoubleForKey:@"BLY"];
     v17 = v16;
-    [v4 decodeDoubleForKey:@"BRX"];
+    [coderCopy decodeDoubleForKey:@"BRX"];
     v19 = v18;
-    [v4 decodeDoubleForKey:@"BRY"];
+    [coderCopy decodeDoubleForKey:@"BRY"];
     v21 = v20;
     VisionCoreBoundingBoxForQuadrilateralPoints();
     v5->super._boundingBox.origin.x = v22;
@@ -365,41 +365,41 @@
   return v26;
 }
 
-- (double)initWithOriginatingRequestSpecifier:(double)a3 topLeft:(double)a4 topRight:(double)a5 bottomRight:(double)a6 bottomLeft:(double)a7 boundingBox:(double)a8
+- (double)initWithOriginatingRequestSpecifier:(double)specifier topLeft:(double)left topRight:(double)right bottomRight:(double)bottomRight bottomLeft:(double)bottomLeft boundingBox:(double)box
 {
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = VNRectangleObservation;
   result = objc_msgSendSuper2(&v29, sel_initWithOriginatingRequestSpecifier_boundingBox_, a10, a11, a12, a13);
   if (result)
   {
     result[20] = a2;
-    result[21] = a3;
-    result[22] = a8;
+    result[21] = specifier;
+    result[22] = box;
     result[23] = a9;
-    result[24] = a6;
-    result[25] = a7;
-    result[26] = a4;
-    result[27] = a5;
+    result[24] = bottomRight;
+    result[25] = bottomLeft;
+    result[26] = left;
+    result[27] = right;
   }
 
   return result;
 }
 
-- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomRight:(CGPoint)a6 bottomLeft:(CGPoint)a7
+- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)specifier topLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v13 = a4.y;
-  v14 = a4.x;
-  v16 = a3;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v9 = bottomRight.y;
+  v10 = bottomRight.x;
+  v11 = right.y;
+  v12 = right.x;
+  v13 = left.y;
+  v14 = left.x;
+  specifierCopy = specifier;
   VisionCoreBoundingBoxForQuadrilateralPoints();
   v20.receiver = self;
   v20.super_class = VNRectangleObservation;
-  v17 = [(VNDetectedObjectObservation *)&v20 initWithOriginatingRequestSpecifier:v16 boundingBox:?];
+  v17 = [(VNDetectedObjectObservation *)&v20 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:?];
   v18 = v17;
   if (v17)
   {
@@ -416,40 +416,40 @@
   return v18;
 }
 
-- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4
+- (VNRectangleObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = VNRectangleObservation;
-  v10 = [(VNDetectedObjectObservation *)&v14 initWithOriginatingRequestSpecifier:v9 boundingBox:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(VNDetectedObjectObservation *)&v14 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(VNRectangleObservation *)v10 _setQuadrilateralPointsFromBoundingBox:x, y, width, height];
+    [(VNRectangleObservation *)height _setQuadrilateralPointsFromBoundingBox:x, y, width, height];
     v12 = v11;
   }
 
   return v11;
 }
 
-- (VNRectangleObservation)initWithRequestRevision:(unint64_t)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomRight:(CGPoint)a6 bottomLeft:(CGPoint)a7
+- (VNRectangleObservation)initWithRequestRevision:(unint64_t)revision topLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v13 = a4.y;
-  v14 = a4.x;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v9 = bottomRight.y;
+  v10 = bottomRight.x;
+  v11 = right.y;
+  v12 = right.x;
+  v13 = left.y;
+  v14 = left.x;
   VisionCoreBoundingBoxForQuadrilateralPoints();
   v18.receiver = self;
   v18.super_class = VNRectangleObservation;
-  result = [(VNDetectedObjectObservation *)&v18 initWithRequestRevision:a3 boundingBox:?];
+  result = [(VNDetectedObjectObservation *)&v18 initWithRequestRevision:revision boundingBox:?];
   if (result)
   {
     result->_topLeft.x = v14;
@@ -467,56 +467,56 @@
 
 + (VNRectangleObservation)rectangleObservationWithRequestRevision:(NSUInteger)requestRevision topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  v7 = [[a1 alloc] initWithRequestRevision:requestRevision topLeft:topLeft.x topRight:topLeft.y bottomRight:topRight.x bottomLeft:{topRight.y, bottomRight.x, bottomRight.y, bottomLeft.x, bottomLeft.y}];
+  v7 = [[self alloc] initWithRequestRevision:requestRevision topLeft:topLeft.x topRight:topLeft.y bottomRight:topRight.x bottomLeft:{topRight.y, bottomRight.x, bottomRight.y, bottomLeft.x, bottomLeft.y}];
 
   return v7;
 }
 
 + (VNRectangleObservation)rectangleObservationWithRequestRevision:(NSUInteger)requestRevision topLeft:(CGPoint)topLeft bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight topRight:(CGPoint)topRight
 {
-  v7 = [[a1 alloc] initWithRequestRevision:requestRevision topLeft:topLeft.x bottomLeft:topLeft.y bottomRight:bottomLeft.x topRight:{bottomLeft.y, bottomRight.x, bottomRight.y, topRight.x, topRight.y}];
+  v7 = [[self alloc] initWithRequestRevision:requestRevision topLeft:topLeft.x bottomLeft:topLeft.y bottomRight:bottomLeft.x topRight:{bottomLeft.y, bottomRight.x, bottomRight.y, topRight.x, topRight.y}];
 
   return v7;
 }
 
-+ (VNRectangleObservation)observationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4
++ (VNRectangleObservation)observationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box
 {
-  v4 = [[a1 alloc] initWithRequestRevision:a3 boundingBox:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v4 = [[self alloc] initWithRequestRevision:revision boundingBox:{box.origin.x, box.origin.y, box.size.width, box.size.height}];
 
   return v4;
 }
 
-- (void)getTopLeftPoint:(CGPoint *)a3 topRightPoint:(CGPoint *)a4 bottomRightPoint:(CGPoint *)a5 bottomLeftPoint:(CGPoint *)a6 inTopLeftOrigin:(BOOL)a7 orientation:(unsigned int)a8
+- (void)getTopLeftPoint:(CGPoint *)point topRightPoint:(CGPoint *)rightPoint bottomRightPoint:(CGPoint *)bottomRightPoint bottomLeftPoint:(CGPoint *)leftPoint inTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  v13.x = VNAffineTransformForVisionToTopLeftOriginOrientation(a7, a8, &v22);
-  if (a3)
+  v13.x = VNAffineTransformForVisionToTopLeftOriginOrientation(origin, orientation, &v22);
+  if (point)
   {
     [(VNRectangleObservation *)self topLeft];
     v13 = vaddq_f64(v24, vmlaq_n_f64(vmulq_n_f64(v23, v14), v22, v15));
-    *a3 = v13;
+    *point = v13;
   }
 
-  if (a4)
+  if (rightPoint)
   {
     [(VNRectangleObservation *)self topRight];
     v13 = vaddq_f64(v24, vmlaq_n_f64(vmulq_n_f64(v23, v16), v22, v17));
-    *a4 = v13;
+    *rightPoint = v13;
   }
 
-  if (a5)
+  if (bottomRightPoint)
   {
     [(VNRectangleObservation *)self bottomRight];
     v13 = vaddq_f64(v24, vmlaq_n_f64(vmulq_n_f64(v23, v18), v22, v19));
-    *a5 = v13;
+    *bottomRightPoint = v13;
   }
 
-  if (a6)
+  if (leftPoint)
   {
     [(VNRectangleObservation *)self bottomLeft];
-    *a6 = vaddq_f64(v24, vmlaq_n_f64(vmulq_n_f64(v23, v20), v22, v21));
+    *leftPoint = vaddq_f64(v24, vmlaq_n_f64(vmulq_n_f64(v23, v20), v22, v21));
   }
 }
 

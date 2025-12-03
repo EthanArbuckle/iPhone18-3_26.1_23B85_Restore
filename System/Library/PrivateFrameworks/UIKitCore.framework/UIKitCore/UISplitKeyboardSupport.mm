@@ -1,60 +1,60 @@
 @interface UISplitKeyboardSupport
-- (BOOL)_updateKeyboardLayoutGuideForHostFrame:(CGRect)a3 animated:(BOOL)a4;
-- (BOOL)completedPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5;
-- (BOOL)generateSplitNotificationForNewPlacement:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)startedPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5;
-- (void)_connectController:(id)a3;
-- (void)_disconnectingController:(id)a3;
-- (void)_updateBounceAnimation:(id)a3;
-- (void)_updateKeyboardLayoutGuideForSplitTransition:(BOOL)a3;
-- (void)_updateTrackingProviderForPoint:(CGPoint)a3;
+- (BOOL)_updateKeyboardLayoutGuideForHostFrame:(CGRect)frame animated:(BOOL)animated;
+- (BOOL)completedPlacementFrom:(id)from to:(id)to forController:(id)controller;
+- (BOOL)generateSplitNotificationForNewPlacement:(id)placement;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)startedPlacementFrom:(id)from to:(id)to forController:(id)controller;
+- (void)_connectController:(id)controller;
+- (void)_disconnectingController:(id)controller;
+- (void)_updateBounceAnimation:(id)animation;
+- (void)_updateKeyboardLayoutGuideForSplitTransition:(BOOL)transition;
+- (void)_updateTrackingProviderForPoint:(CGPoint)point;
 - (void)_updatedController;
 - (void)bounceAnimationDidFinish;
 - (void)cancelBounceAnimation;
 - (void)cancelGestureRecognizers;
 - (void)dock;
-- (void)finishTransitionWithCompletion:(id)a3;
+- (void)finishTransitionWithCompletion:(id)completion;
 - (void)invalidateDisplayLink;
 - (void)prepareForTransition;
-- (void)transitionDidFinish:(BOOL)a3;
-- (void)translateDetected:(id)a3;
-- (void)updateProgress:(double)a3 startHeight:(double)a4 endHeight:(double)a5;
-- (void)updatedControllerApplicator:(id)a3;
-- (void)willPerformPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5;
+- (void)transitionDidFinish:(BOOL)finish;
+- (void)translateDetected:(id)detected;
+- (void)updateProgress:(double)progress startHeight:(double)height endHeight:(double)endHeight;
+- (void)updatedControllerApplicator:(id)applicator;
+- (void)willPerformPlacementFrom:(id)from to:(id)to forController:(id)controller;
 @end
 
 @implementation UISplitKeyboardSupport
 
-- (void)_disconnectingController:(id)a3
+- (void)_disconnectingController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 draggableView];
-  [v5 removeGestureRecognizer:self->_singleFingerPanRecognizer];
+  controllerCopy = controller;
+  draggableView = [controllerCopy draggableView];
+  [draggableView removeGestureRecognizer:self->_singleFingerPanRecognizer];
 
   singleFingerPanRecognizer = self->_singleFingerPanRecognizer;
   self->_singleFingerPanRecognizer = 0;
 
-  v7 = [v4 applicator];
-  v8 = [v7 twoFingerDraggableView];
-  [v8 removeGestureRecognizer:self->_twoFingerPanRecognizer];
+  applicator = [controllerCopy applicator];
+  twoFingerDraggableView = [applicator twoFingerDraggableView];
+  [twoFingerDraggableView removeGestureRecognizer:self->_twoFingerPanRecognizer];
 
   twoFingerPanRecognizer = self->_twoFingerPanRecognizer;
   self->_twoFingerPanRecognizer = 0;
 
   v10.receiver = self;
   v10.super_class = UISplitKeyboardSupport;
-  [(UIKeyboardMotionSupport *)&v10 _disconnectingController:v4];
+  [(UIKeyboardMotionSupport *)&v10 _disconnectingController:controllerCopy];
 }
 
-- (void)_connectController:(id)a3
+- (void)_connectController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = UISplitKeyboardSupport;
-  [(UIKeyboardMotionSupport *)&v14 _connectController:v4];
+  [(UIKeyboardMotionSupport *)&v14 _connectController:controllerCopy];
   v5 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel_translateDetected_];
   singleFingerPanRecognizer = self->_singleFingerPanRecognizer;
   self->_singleFingerPanRecognizer = v5;
@@ -69,8 +69,8 @@
   if (v7)
   {
     [(UIPanGestureRecognizer *)v7 setDelegate:self];
-    v8 = [v4 draggableView];
-    [v8 addGestureRecognizer:self->_singleFingerPanRecognizer];
+    draggableView = [controllerCopy draggableView];
+    [draggableView addGestureRecognizer:self->_singleFingerPanRecognizer];
   }
 
   v9 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel_translateDetected_];
@@ -87,9 +87,9 @@
   if (v11)
   {
     [(UIPanGestureRecognizer *)v11 setDelegate:self];
-    v12 = [v4 applicator];
-    v13 = [v12 twoFingerDraggableView];
-    [v13 addGestureRecognizer:self->_twoFingerPanRecognizer];
+    applicator = [controllerCopy applicator];
+    twoFingerDraggableView = [applicator twoFingerDraggableView];
+    [twoFingerDraggableView addGestureRecognizer:self->_twoFingerPanRecognizer];
   }
 }
 
@@ -98,83 +98,83 @@
   v17.receiver = self;
   v17.super_class = UISplitKeyboardSupport;
   [(UIKeyboardMotionSupport *)&v17 _updatedController];
-  v3 = [(UIGestureRecognizer *)self->_singleFingerPanRecognizer view];
-  v4 = [(UIKeyboardMotionSupport *)self masterController];
-  v5 = [v4 draggableView];
+  view = [(UIGestureRecognizer *)self->_singleFingerPanRecognizer view];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  draggableView = [masterController draggableView];
 
-  if (v3 != v5)
+  if (view != draggableView)
   {
-    v6 = [(UIGestureRecognizer *)self->_singleFingerPanRecognizer view];
-    [v6 removeGestureRecognizer:self->_singleFingerPanRecognizer];
+    view2 = [(UIGestureRecognizer *)self->_singleFingerPanRecognizer view];
+    [view2 removeGestureRecognizer:self->_singleFingerPanRecognizer];
 
-    v7 = [(UIKeyboardMotionSupport *)self masterController];
-    v8 = [v7 draggableView];
+    masterController2 = [(UIKeyboardMotionSupport *)self masterController];
+    draggableView2 = [masterController2 draggableView];
 
-    [v8 addGestureRecognizer:self->_singleFingerPanRecognizer];
+    [draggableView2 addGestureRecognizer:self->_singleFingerPanRecognizer];
   }
 
-  v9 = [(UIGestureRecognizer *)self->_twoFingerPanRecognizer view];
-  v10 = [(UIKeyboardMotionSupport *)self masterController];
-  v11 = [v10 applicator];
-  v12 = [v11 twoFingerDraggableView];
+  view3 = [(UIGestureRecognizer *)self->_twoFingerPanRecognizer view];
+  masterController3 = [(UIKeyboardMotionSupport *)self masterController];
+  applicator = [masterController3 applicator];
+  twoFingerDraggableView = [applicator twoFingerDraggableView];
 
-  if (v9 != v12)
+  if (view3 != twoFingerDraggableView)
   {
-    v13 = [(UIGestureRecognizer *)self->_twoFingerPanRecognizer view];
-    [v13 removeGestureRecognizer:self->_twoFingerPanRecognizer];
+    view4 = [(UIGestureRecognizer *)self->_twoFingerPanRecognizer view];
+    [view4 removeGestureRecognizer:self->_twoFingerPanRecognizer];
 
-    v14 = [(UIKeyboardMotionSupport *)self masterController];
-    v15 = [v14 applicator];
+    masterController4 = [(UIKeyboardMotionSupport *)self masterController];
+    applicator2 = [masterController4 applicator];
 
-    v16 = [v15 twoFingerDraggableView];
-    [v16 addGestureRecognizer:self->_twoFingerPanRecognizer];
+    twoFingerDraggableView2 = [applicator2 twoFingerDraggableView];
+    [twoFingerDraggableView2 addGestureRecognizer:self->_twoFingerPanRecognizer];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (+[UIInputWindowController keyboardDotDotDotEnabled](UIInputWindowController, "keyboardDotDotDotEnabled") && self->_singleFingerPanRecognizer == v6 && +[UIKeyboardImpl isSplit])
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (+[UIInputWindowController keyboardDotDotDotEnabled](UIInputWindowController, "keyboardDotDotDotEnabled") && self->_singleFingerPanRecognizer == recognizerCopy && +[UIKeyboardImpl isSplit])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(UIKeyboardMotionSupport *)self masterController];
-    v10 = [v9 applicator];
+    masterController = [(UIKeyboardMotionSupport *)self masterController];
+    applicator = [masterController applicator];
 
-    v11 = [(UIKeyboardMotionSupport *)self masterController];
-    v12 = [v11 draggableView];
-    [v7 locationInView:v12];
-    v8 = [v10 isGesture:v6 inDraggableView:?];
+    masterController2 = [(UIKeyboardMotionSupport *)self masterController];
+    draggableView = [masterController2 draggableView];
+    [touchCopy locationInView:draggableView];
+    v8 = [applicator isGesture:recognizerCopy inDraggableView:?];
   }
 
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_singleFingerPanRecognizer != v4 && self->_twoFingerPanRecognizer != v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_singleFingerPanRecognizer != beginCopy && self->_twoFingerPanRecognizer != beginCopy)
   {
     goto LABEL_3;
   }
 
-  v7 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  v8 = [v7 inputView];
-  if (!v8 || ([(UISplitKeyboardSource *)self->super._controller isChangingPlacement]& 1) != 0 || !+[UIKeyboardImpl rivenShouldUndock](UIKeyboardImpl, "rivenShouldUndock") && !+[UIKeyboardImpl isFloating])
+  inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  inputView = [inputViewSet inputView];
+  if (!inputView || ([(UISplitKeyboardSource *)self->super._controller isChangingPlacement]& 1) != 0 || !+[UIKeyboardImpl rivenShouldUndock](UIKeyboardImpl, "rivenShouldUndock") && !+[UIKeyboardImpl isFloating])
   {
     goto LABEL_10;
   }
@@ -190,9 +190,9 @@ LABEL_11:
   }
 
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 splitTransitionInProgress];
+  splitTransitionInProgress = [v11 splitTransitionInProgress];
 
-  if (v12)
+  if (splitTransitionInProgress)
   {
     goto LABEL_11;
   }
@@ -205,9 +205,9 @@ LABEL_3:
   }
 
   v42 = 0;
-  v13 = [(UIKeyboardMotionSupport *)self masterController];
-  v14 = [v13 applicator];
-  v15 = [v14 preBeginGesture:v5 shouldBegin:&v42];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  applicator = [masterController applicator];
+  v15 = [applicator preBeginGesture:v5 shouldBegin:&v42];
 
   if (v15)
   {
@@ -219,35 +219,35 @@ LABEL_3:
     [(UIPanGestureRecognizer *)v5 locationInView:0];
     v17 = v16;
     v19 = v18;
-    v20 = [(UISplitKeyboardSource *)self->super._controller view];
-    v21 = [v20 window];
-    v22 = [v21 _isHostedInAnotherProcess];
+    view = [(UISplitKeyboardSource *)self->super._controller view];
+    window = [view window];
+    _isHostedInAnotherProcess = [window _isHostedInAnotherProcess];
 
-    if (v22)
+    if (_isHostedInAnotherProcess)
     {
-      v23 = [(UISplitKeyboardSource *)self->super._controller view];
-      v24 = [v23 window];
-      [v24 convertPoint:0 fromWindow:{v17, v19}];
+      view2 = [(UISplitKeyboardSource *)self->super._controller view];
+      window2 = [view2 window];
+      [window2 convertPoint:0 fromWindow:{v17, v19}];
       v17 = v25;
       v19 = v26;
     }
 
-    v27 = [(UIKeyboardMotionSupport *)self masterController];
-    v28 = [v27 draggableView];
-    v29 = [(UISplitKeyboardSource *)self->super._controller view];
-    v30 = [v29 window];
-    [v28 convertPoint:v30 fromView:{v17, v19}];
+    masterController2 = [(UIKeyboardMotionSupport *)self masterController];
+    draggableView = [masterController2 draggableView];
+    view3 = [(UISplitKeyboardSource *)self->super._controller view];
+    window3 = [view3 window];
+    [draggableView convertPoint:window3 fromView:{v17, v19}];
     v32 = v31;
     v34 = v33;
 
-    v35 = [(UISplitKeyboardSource *)self->super._controller view];
-    [(UIPanGestureRecognizer *)v5 translationInView:v35];
+    view4 = [(UISplitKeyboardSource *)self->super._controller view];
+    [(UIPanGestureRecognizer *)v5 translationInView:view4];
     v37 = v36;
     v39 = v38;
 
-    v40 = [(UIKeyboardMotionSupport *)self masterController];
-    v41 = [v40 applicator];
-    v6 = [v41 isGesture:v5 inDraggableView:{v32 + v37, v34 - v39}];
+    masterController3 = [(UIKeyboardMotionSupport *)self masterController];
+    applicator2 = [masterController3 applicator];
+    v6 = [applicator2 isGesture:v5 inDraggableView:{v32 + v37, v34 - v39}];
   }
 
 LABEL_12:
@@ -255,100 +255,100 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (BOOL)generateSplitNotificationForNewPlacement:(id)a3
+- (BOOL)generateSplitNotificationForNewPlacement:(id)placement
 {
   controller = self->super._controller;
-  v4 = a3;
-  v5 = [(UISplitKeyboardSource *)controller placement];
-  v6 = [v5 isUndocked];
-  v7 = [v4 isUndocked];
+  placementCopy = placement;
+  placement = [(UISplitKeyboardSource *)controller placement];
+  isUndocked = [placement isUndocked];
+  isUndocked2 = [placementCopy isUndocked];
 
-  return v6 ^ v7;
+  return isUndocked ^ isUndocked2;
 }
 
-- (void)updatedControllerApplicator:(id)a3
+- (void)updatedControllerApplicator:(id)applicator
 {
-  v4 = a3;
-  v5 = [(UIKeyboardMotionSupport *)self masterController];
+  applicatorCopy = applicator;
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
 
-  if (v5 == v4)
+  if (masterController == applicatorCopy)
   {
 
     [(UISplitKeyboardSupport *)self _updatedController];
   }
 }
 
-- (void)willPerformPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5
+- (void)willPerformPlacementFrom:(id)from to:(id)to forController:(id)controller
 {
   if (self->_displayLink)
   {
-    [(UISplitKeyboardSupport *)self cancelBounceAnimation:a3];
+    [(UISplitKeyboardSupport *)self cancelBounceAnimation:from];
   }
 }
 
-- (BOOL)startedPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5
+- (BOOL)startedPlacementFrom:(id)from to:(id)to forController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isUndocked])
+  fromCopy = from;
+  toCopy = to;
+  controllerCopy = controller;
+  if ([fromCopy isUndocked])
   {
-    v11 = 1;
+    isUndocked = 1;
   }
 
   else
   {
-    v11 = [v9 isUndocked];
+    isUndocked = [toCopy isUndocked];
   }
 
-  if (self->super._controller == v10)
+  if (self->super._controller == controllerCopy)
   {
-    self->_isTranslating = v11;
+    self->_isTranslating = isUndocked;
   }
 
-  if ((([v8 isUndocked] & 1) != 0 || objc_msgSend(v9, "isUndocked")) && (objc_msgSend(v8, "isFloatingAssistantView") & 1) == 0 && (objc_msgSend(v9, "isFloating") & 1) == 0 && objc_msgSend(v9, "isVisible"))
+  if ((([fromCopy isUndocked] & 1) != 0 || objc_msgSend(toCopy, "isUndocked")) && (objc_msgSend(fromCopy, "isFloatingAssistantView") & 1) == 0 && (objc_msgSend(toCopy, "isFloating") & 1) == 0 && objc_msgSend(toCopy, "isVisible"))
   {
-    if (+[UIInputWindowController useMetronomeTracking](UIInputWindowController, "useMetronomeTracking") && [v9 isVisible])
+    if (+[UIInputWindowController useMetronomeTracking](UIInputWindowController, "useMetronomeTracking") && [toCopy isVisible])
     {
-      v12 = [v9 keyboardState];
-      v13 = [getTUIKeyboardAnimationInfoClass() defaultInfo];
-      [v13 setShouldAnimate:0];
+      keyboardState = [toCopy keyboardState];
+      defaultInfo = [getTUIKeyboardAnimationInfoClass() defaultInfo];
+      [defaultInfo setShouldAnimate:0];
       v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v15 = [v14 keyboardTrackingProvider];
-      v16 = [(UISplitKeyboardSource *)self->super._controller hostView];
-      [v16 frame];
-      [v15 keyboardWillChangeState:v12 endFrame:v13 animationInfo:?];
+      keyboardTrackingProvider = [v14 keyboardTrackingProvider];
+      hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+      [hostView frame];
+      [keyboardTrackingProvider keyboardWillChangeState:keyboardState endFrame:defaultInfo animationInfo:?];
     }
 
-    -[UISplitKeyboardSupport _updateKeyboardLayoutGuideForSplitTransition:](self, "_updateKeyboardLayoutGuideForSplitTransition:", [v9 isUndocked]);
-    v17 = [(UISplitKeyboardSource *)self->super._controller hostView];
-    [v17 frame];
+    -[UISplitKeyboardSupport _updateKeyboardLayoutGuideForSplitTransition:](self, "_updateKeyboardLayoutGuideForSplitTransition:", [toCopy isUndocked]);
+    hostView2 = [(UISplitKeyboardSource *)self->super._controller hostView];
+    [hostView2 frame];
     [(UISplitKeyboardSupport *)self _updateKeyboardLayoutGuideForHostFrame:1 animated:?];
   }
 
-  return v11;
+  return isUndocked;
 }
 
-- (BOOL)completedPlacementFrom:(id)a3 to:(id)a4 forController:(id)a5
+- (BOOL)completedPlacementFrom:(id)from to:(id)to forController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 isUndocked])
+  toCopy = to;
+  controllerCopy = controller;
+  if ([from isUndocked])
   {
-    v10 = 1;
+    isUndocked = 1;
   }
 
   else
   {
-    v10 = [v8 isUndocked];
+    isUndocked = [toCopy isUndocked];
   }
 
-  if (self->super._controller == v9)
+  if (self->super._controller == controllerCopy)
   {
     self->_isTranslating = 0;
   }
 
-  return v10;
+  return isUndocked;
 }
 
 - (void)cancelGestureRecognizers
@@ -368,27 +368,27 @@ LABEL_12:
   }
 }
 
-- (void)translateDetected:(id)a3
+- (void)translateDetected:(id)detected
 {
   v195[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UISplitKeyboardSource *)self->super._controller hostView];
-  if (!v5)
+  detectedCopy = detected;
+  hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+  if (!hostView)
   {
     goto LABEL_116;
   }
 
-  v6 = v5;
+  v6 = hostView;
   v7 = +[UIInputSwitcherView activeInstance];
-  v8 = [v7 isVisible];
+  isVisible = [v7 isVisible];
 
-  if (v8)
+  if (isVisible)
   {
     goto LABEL_116;
   }
 
-  v9 = [v4 state];
-  switch(v9)
+  state = [detectedCopy state];
+  switch(state)
   {
     case 4:
       [(UISplitKeyboardSupport *)self cancelBounceAnimation];
@@ -403,9 +403,9 @@ LABEL_12:
       self->_initialTranslation.x = v10;
       self->_initialTranslation.y = v11;
       self->_lastTranslationNotificationTime = 0.0;
-      v12 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-      v13 = [v12 keyboard];
-      if (v13 && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v8 = objc_claimAutoreleasedReturnValue(), [v8 rivenSplitLock]))
+      inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+      keyboard = [inputViewSet keyboard];
+      if (keyboard && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), isVisible = objc_claimAutoreleasedReturnValue(), [isVisible rivenSplitLock]))
       {
         self->_splitLockState = 1;
       }
@@ -413,24 +413,24 @@ LABEL_12:
       else
       {
         self->_splitLockState = +[UIKeyboardImpl isFloating];
-        if (!v13)
+        if (!keyboard)
         {
 LABEL_81:
 
           [(UISplitKeyboardSupport *)self invalidateDisplayLink];
-          v27 = [(UISplitKeyboardSource *)self->super._controller placement];
-          v129 = [(UISplitKeyboardSource *)self->super._controller hostView];
-          [v129 frame];
+          placement = [(UISplitKeyboardSource *)self->super._controller placement];
+          hostView2 = [(UISplitKeyboardSource *)self->super._controller hostView];
+          [hostView2 frame];
           v131 = v130;
           v133 = v132;
           v135 = v134;
           v137 = v136;
 
-          if ([v27 isFloating])
+          if ([placement isFloating])
           {
-            [v27 updateChromeBuffer];
-            v138 = [(UISplitKeyboardSource *)self->super._controller containerView];
-            [v138 frame];
+            [placement updateChromeBuffer];
+            containerView = [(UISplitKeyboardSource *)self->super._controller containerView];
+            [containerView frame];
             [UIInputViewSetPlacementFloating frameAtOffset:v131 keyboardSize:v133 screenSize:v135, v137, v139, v140];
             v131 = v141;
             v133 = v142;
@@ -440,19 +440,19 @@ LABEL_81:
 
           if (+[UIInputWindowController useMetronomeTracking])
           {
-            v145 = [(UISplitKeyboardSource *)self->super._controller hostView];
-            [v145 frame];
+            hostView3 = [(UISplitKeyboardSource *)self->super._controller hostView];
+            [hostView3 frame];
             v147 = v146;
 
             v148 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-            v149 = [v148 keyboardTrackingProvider];
-            v150 = [getTUIKeyboardStateClass_0() floatingState];
-            v151 = [getTUIKeyboardAnimationInfoClass() defaultInfo];
-            [v149 keyboardWillChangeState:v150 endFrame:v151 animationInfo:{v131, v147, v135, v137}];
+            keyboardTrackingProvider = [v148 keyboardTrackingProvider];
+            floatingState = [getTUIKeyboardStateClass_0() floatingState];
+            defaultInfo = [getTUIKeyboardAnimationInfoClass() defaultInfo];
+            [keyboardTrackingProvider keyboardWillChangeState:floatingState endFrame:defaultInfo animationInfo:{v131, v147, v135, v137}];
 
             v152 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-            v153 = [v152 keyboardTrackingProvider];
-            [v153 interactiveOffsetUpdateFromPoint:{v131, v133}];
+            keyboardTrackingProvider2 = [v152 keyboardTrackingProvider];
+            [keyboardTrackingProvider2 interactiveOffsetUpdateFromPoint:{v131, v133}];
 
             self->_shouldUpdateKLGForTransition = 0;
           }
@@ -470,16 +470,16 @@ LABEL_115:
 
       goto LABEL_81;
     default:
-      v75 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v4 translationInView:v75];
+      view = [(UISplitKeyboardSource *)self->super._controller view];
+      [detectedCopy translationInView:view];
       v77 = v76;
       v79 = v78;
 
-      v80 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v80 frame];
+      view2 = [(UISplitKeyboardSource *)self->super._controller view];
+      [view2 frame];
       v82 = v81;
-      v83 = [(UISplitKeyboardSource *)self->super._controller hostView];
-      [v83 frame];
+      hostView4 = [(UISplitKeyboardSource *)self->super._controller hostView];
+      [hostView4 frame];
       v85 = v84;
 
       v86 = v77 + self->_initialTranslation.x;
@@ -496,11 +496,11 @@ LABEL_115:
         v86 = round(v86 * 0.3);
       }
 
-      v87 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v87 frame];
+      view3 = [(UISplitKeyboardSource *)self->super._controller view];
+      [view3 frame];
       v89 = v88;
-      v90 = [(UISplitKeyboardSource *)self->super._controller hostView];
-      [v90 frame];
+      hostView5 = [(UISplitKeyboardSource *)self->super._controller hostView];
+      [hostView5 frame];
       v92 = v91;
 
       v93 = self->_initialTranslation.y - v79;
@@ -537,27 +537,27 @@ LABEL_115:
         v190[1] = 3221225472;
         v190[2] = __44__UISplitKeyboardSupport_translateDetected___block_invoke_2;
         v190[3] = &unk_1E7116848;
-        v27 = v94;
-        v191 = v27;
+        placement = v94;
+        v191 = placement;
         [v104 performOnDistributedControllers:v190];
 
         [(UISplitKeyboardSupport *)self _updateTrackingProviderForPoint:v86, v93];
         if (v93 > 0.0)
         {
-          v105 = [(UISplitKeyboardSource *)self->super._controller placement];
-          v106 = [v105 isUndocked];
+          placement2 = [(UISplitKeyboardSource *)self->super._controller placement];
+          isUndocked = [placement2 isUndocked];
 
-          if ((v106 & 1) == 0)
+          if ((isUndocked & 1) == 0)
           {
             [(UISplitKeyboardSupport *)self undock];
           }
         }
 
-        v107 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-        v108 = [v107 keyboard];
-        if (v108)
+        inputViewSet2 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+        keyboard2 = [inputViewSet2 keyboard];
+        if (keyboard2)
         {
-          v109 = v108;
+          v109 = keyboard2;
           v110 = +[UIKeyboardImpl rivenPreference];
 
           if (!v110)
@@ -565,9 +565,9 @@ LABEL_115:
             goto LABEL_74;
           }
 
-          v111 = [(UISplitKeyboardSource *)self->super._controller view];
-          v112 = [v111 window];
-          v113 = [v112 interfaceOrientation] - 3;
+          view4 = [(UISplitKeyboardSource *)self->super._controller view];
+          window = [view4 window];
+          v113 = [window interfaceOrientation] - 3;
 
           if (v113 >= 2)
           {
@@ -591,10 +591,10 @@ LABEL_115:
 
           if (self->_splitLockState)
           {
-            v116 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-            v117 = [v116 _inputViewIsSplit];
+            inputViewSet3 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+            _inputViewIsSplit = [inputViewSet3 _inputViewIsSplit];
 
-            if (v117)
+            if (_inputViewIsSplit)
             {
               v118 = v93 >= v115;
             }
@@ -608,13 +608,13 @@ LABEL_115:
             {
               self->_splitLockState = 1;
 LABEL_74:
-              [v4 locationInView:0];
+              [detectedCopy locationInView:0];
               v124 = v123;
               v126 = v125;
               if (+[UIKeyboardImpl isFloating]&& [UIKeyboardFloatingTransitionController isPointWithinDockingRegion:v124, v126])
               {
                 v127 = +[UIKeyboardImpl activeInstance];
-                [v127 beginFloatingTransitionFromPanGestureRecognizer:v4];
+                [v127 beginFloatingTransitionFromPanGestureRecognizer:detectedCopy];
 
                 self->_handedOffTouchesToFloatingTransitionController = 1;
               }
@@ -647,8 +647,8 @@ LABEL_74:
             }
           }
 
-          v107 = +[UIKeyboardImpl activeInstance];
-          [v107 setSplitProgress:v120];
+          inputViewSet2 = +[UIKeyboardImpl activeInstance];
+          [inputViewSet2 setSplitProgress:v120];
         }
 
         goto LABEL_74;
@@ -672,19 +672,19 @@ LABEL_74:
   if (!self->_handedOffTouchesToFloatingTransitionController)
   {
     [(UISplitKeyboardSupport *)self invalidateDisplayLink];
-    v17 = [(UIKeyboardMotionSupport *)self _intendedScreen];
-    v18 = [v17 displayLinkWithTarget:self selector:sel__updateBounceAnimation_];
+    _intendedScreen = [(UIKeyboardMotionSupport *)self _intendedScreen];
+    v18 = [_intendedScreen displayLinkWithTarget:self selector:sel__updateBounceAnimation_];
     displayLink = self->_displayLink;
     self->_displayLink = v18;
 
     v20 = self->_displayLink;
-    v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v20 addToRunLoop:v21 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v20 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     self->_lastBounceTime = CACurrentMediaTime();
     p_translationVelocity = &self->_translationVelocity;
-    v23 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v4 velocityInView:v23];
+    view5 = [(UISplitKeyboardSource *)self->super._controller view];
+    [detectedCopy velocityInView:view5];
     self->_translationVelocity.x = v24;
     self->_translationVelocity.y = v25;
 
@@ -700,7 +700,7 @@ LABEL_74:
       self->_translationVelocity.y = -0.015;
     }
 
-    v27 = [(UISplitKeyboardSource *)self->super._controller placement];
+    placement = [(UISplitKeyboardSource *)self->super._controller placement];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v29 = 0.0;
@@ -709,34 +709,34 @@ LABEL_74:
     v32 = 0.0;
     if (isKindOfClass)
     {
-      [v27 chromeBuffer];
+      [placement chromeBuffer];
       v32 = v33;
       v31 = v34;
     }
 
     v185 = v29;
     v187 = v30;
-    v35 = [(UISplitKeyboardSource *)self->super._controller hostView];
-    [v35 frame];
+    hostView6 = [(UISplitKeyboardSource *)self->super._controller hostView];
+    [hostView6 frame];
     v184 = v36;
     v38 = v37;
 
-    v39 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v39 bounds];
+    view6 = [(UISplitKeyboardSource *)self->super._controller view];
+    [view6 bounds];
     v41 = v40;
     v43 = v42;
 
     v183 = v43;
     v188 = v43 - (v32 + v38);
-    v44 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v4 translationInView:v44];
+    view7 = [(UISplitKeyboardSource *)self->super._controller view];
+    [detectedCopy translationInView:view7];
     v46 = v45;
     v48 = v47;
 
     v49 = v46 + self->_initialTranslation.x + p_translationVelocity->x * 110.0;
     v50 = self->_initialTranslation.y - (v48 + self->_translationVelocity.y * 110.0);
-    v51 = [(UISplitKeyboardSource *)self->super._controller applicator];
-    [v51 contentInsets];
+    applicator = [(UISplitKeyboardSource *)self->super._controller applicator];
+    [applicator contentInsets];
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -827,8 +827,8 @@ LABEL_94:
         v157 = fabs(v72);
         self->_targetTranslation.x = v70;
         self->_targetTranslation.y = v157;
-        v158 = [UIInputViewSetPlacementFloating infoWithPoint:self->super._controller forOwner:v70, v157];
-        v159 = [v158 objectForKey:@"PopoverRect"];
+        v157 = [UIInputViewSetPlacementFloating infoWithPoint:self->super._controller forOwner:v70, v157];
+        v159 = [v157 objectForKey:@"PopoverRect"];
         [v159 CGRectValue];
         v161 = v160;
         v163 = v162;
@@ -837,8 +837,8 @@ LABEL_94:
 
         if (v60)
         {
-          v168 = [(UISplitKeyboardSource *)self->super._controller view];
-          [v4 locationInView:v168];
+          view8 = [(UISplitKeyboardSource *)self->super._controller view];
+          [detectedCopy locationInView:view8];
           [UIKBAnalyticsDispatcher floatingKeyboardMoved:v73 toPosition:v161 touchPosition:v163, v169, v170];
         }
 
@@ -856,9 +856,9 @@ LABEL_94:
 
         else
         {
-          v171 = [(UISplitKeyboardSource *)self->super._controller view];
-          v172 = [v171 window];
-          v173 = [v172 interfaceOrientation] - 3;
+          view9 = [(UISplitKeyboardSource *)self->super._controller view];
+          window2 = [view9 window];
+          v173 = [window2 interfaceOrientation] - 3;
 
           v174 = 80.0;
           if (v173 < 2)
@@ -908,9 +908,9 @@ LABEL_94:
 
         [(UISplitKeyboardSource *)self->super._controller setInterfaceAutorotationDisabled:0];
         v181 = +[UIKeyboard activeKeyboard];
-        v182 = [v181 isActive];
+        isActive = [v181 isActive];
 
-        if ((v182 & 1) == 0)
+        if ((isActive & 1) == 0)
         {
           [(UISplitKeyboardSupport *)self cancelBounceAnimation];
         }
@@ -940,25 +940,25 @@ void __44__UISplitKeyboardSupport_translateDetected___block_invoke(uint64_t a1, 
   [v3 startTransition:@"_UISplitKeyboardBounce" withInfo:0];
 }
 
-- (void)_updateTrackingProviderForPoint:(CGPoint)a3
+- (void)_updateTrackingProviderForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (+[UIInputWindowController useMetronomeTracking])
   {
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v6 keyboardTrackingProvider];
-    [v5 interactiveOffsetUpdateFromPoint:{x, y}];
+    keyboardTrackingProvider = [v6 keyboardTrackingProvider];
+    [keyboardTrackingProvider interactiveOffsetUpdateFromPoint:{x, y}];
   }
 }
 
-- (void)_updateKeyboardLayoutGuideForSplitTransition:(BOOL)a3
+- (void)_updateKeyboardLayoutGuideForSplitTransition:(BOOL)transition
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __71__UISplitKeyboardSupport__updateKeyboardLayoutGuideForSplitTransition___block_invoke;
   v3[3] = &unk_1E7117988;
-  v4 = a3;
+  transitionCopy = transition;
   v3[4] = self;
   [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v3];
 }
@@ -982,12 +982,12 @@ void __71__UISplitKeyboardSupport__updateKeyboardLayoutGuideForSplitTransition__
   }
 }
 
-- (BOOL)_updateKeyboardLayoutGuideForHostFrame:(CGRect)a3 animated:(BOOL)a4
+- (BOOL)_updateKeyboardLayoutGuideForHostFrame:(CGRect)frame animated:(BOOL)animated
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (+[UIAssistantBarButtonItemProvider _isScribbleButtonsVisible])
   {
     v10 = 0;
@@ -1005,9 +1005,9 @@ void __71__UISplitKeyboardSupport__updateKeyboardLayoutGuideForSplitTransition__
     v33.size.height = height;
     if (!CGRectEqualToRect(*MEMORY[0x1E695F058], v33))
     {
-      v11 = [(UISplitKeyboardSource *)self->super._controller containerView];
-      v12 = [v11 window];
-      [v12 bounds];
+      containerView = [(UISplitKeyboardSource *)self->super._controller containerView];
+      window = [containerView window];
+      [window bounds];
       MaxY = CGRectGetMaxY(v31);
       v32.origin.x = x;
       v32.origin.y = y;
@@ -1017,9 +1017,9 @@ void __71__UISplitKeyboardSupport__updateKeyboardLayoutGuideForSplitTransition__
 
       if (x > 0.0 || (v15 = MaxY - v14, v16 = MaxY - v14 <= 0.0, v17 = width, v18 = height, v19 = x, !v16))
       {
-        v20 = [(UISplitKeyboardSource *)self->super._controller containerView];
-        v21 = [v20 window];
-        [v21 bounds];
+        containerView2 = [(UISplitKeyboardSource *)self->super._controller containerView];
+        window2 = [containerView2 window];
+        [window2 bounds];
         v17 = v22;
 
         v15 = 0.0;
@@ -1046,7 +1046,7 @@ void __71__UISplitKeyboardSupport__updateKeyboardLayoutGuideForSplitTransition__
       *&v24[9] = height;
       v24[4] = self;
       v24[5] = &v27;
-      v25 = a4;
+      animatedCopy = animated;
       [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v24];
     }
 
@@ -1155,20 +1155,20 @@ void __74__UISplitKeyboardSupport__updateKeyboardLayoutGuideForHostFrame_animate
 
 - (void)bounceAnimationDidFinish
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   bounceCompletionBlock = self->_bounceCompletionBlock;
   if (bounceCompletionBlock)
   {
     bounceCompletionBlock[2]();
-    [v3 setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardRefreshPresentation"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardRefreshPresentation"];
     v5 = self->_bounceCompletionBlock;
     self->_bounceCompletionBlock = 0;
   }
 
-  v6 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v6 bounds];
-  v7 = [(UISplitKeyboardSource *)self->super._controller hostView];
-  [v7 frame];
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [view bounds];
+  hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+  [hostView frame];
 
   v8 = +[UIKeyboardImpl activeInstance];
   if ([v8 rivenSplitLock])
@@ -1181,14 +1181,14 @@ void __74__UISplitKeyboardSupport__updateKeyboardLayoutGuideForHostFrame_animate
 
     if (!v9)
     {
-      v10 = [(UISplitKeyboardSource *)self->super._controller view];
-      v11 = [v10 window];
-      [v11 interfaceOrientation];
+      view2 = [(UISplitKeyboardSource *)self->super._controller view];
+      window = [view2 window];
+      [window interfaceOrientation];
     }
   }
 
-  v12 = [(UISplitKeyboardSource *)self->super._controller hostView];
-  [v12 frame];
+  hostView2 = [(UISplitKeyboardSource *)self->super._controller hostView];
+  [hostView2 frame];
   [UIKeyboardImpl setPersistentOffset:?];
 
   self->_isTranslating = 0;
@@ -1198,20 +1198,20 @@ void __74__UISplitKeyboardSupport__updateKeyboardLayoutGuideForHostFrame_animate
     goto LABEL_12;
   }
 
-  v13 = [(UISplitKeyboardSource *)self->super._controller placement];
-  if (([v13 isUndocked] & 1) == 0)
+  placement = [(UISplitKeyboardSource *)self->super._controller placement];
+  if (([placement isUndocked] & 1) == 0)
   {
 
     goto LABEL_12;
   }
 
-  v14 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  v15 = [v14 _inputViewIsSplit];
+  inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  _inputViewIsSplit = [inputViewSet _inputViewIsSplit];
 
-  if (v15)
+  if (_inputViewIsSplit)
   {
 LABEL_12:
-    [v3 setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
+    [dictionary setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
     goto LABEL_13;
   }
 
@@ -1222,8 +1222,8 @@ LABEL_13:
   v18[1] = 3221225472;
   v18[2] = __50__UISplitKeyboardSupport_bounceAnimationDidFinish__block_invoke;
   v18[3] = &unk_1E7116848;
-  v19 = v3;
-  v17 = v3;
+  v19 = dictionary;
+  v17 = dictionary;
   [v16 performOnDistributedControllers:v18];
 }
 
@@ -1238,9 +1238,9 @@ LABEL_13:
   }
 }
 
-- (void)_updateBounceAnimation:(id)a3
+- (void)_updateBounceAnimation:(id)animation
 {
-  [a3 timestamp];
+  [animation timestamp];
   v5 = v4;
   v6 = (v4 - self->_lastBounceTime) * 1000.0;
   if (v6 > 1.0)
@@ -1285,15 +1285,15 @@ LABEL_13:
 
 - (void)dock
 {
-  v2 = [(UISplitKeyboardSource *)self->super._controller placement];
-  v3 = [v2 isUndocked];
+  placement = [(UISplitKeyboardSource *)self->super._controller placement];
+  isUndocked = [placement isUndocked];
 
-  if (v3)
+  if (isUndocked)
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 rivenSplitLock];
+    rivenSplitLock = [v4 rivenSplitLock];
 
-    if ((v5 & 1) == 0)
+    if ((rivenSplitLock & 1) == 0)
     {
 
       [UIKeyboardImpl setPersistentSplitProgress:0.0];
@@ -1303,20 +1303,20 @@ LABEL_13:
 
 - (void)prepareForTransition
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   if (self->_isSplitting)
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardTransitionInhibitStart"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardTransitionInhibitStart"];
   }
 
   else
   {
     [(UISplitKeyboardSource *)self->super._controller setInterfaceAutorotationDisabled:1];
-    v5 = [(UISplitKeyboardSource *)self->super._controller placement];
-    v6 = [v5 isUndocked];
+    placement = [(UISplitKeyboardSource *)self->super._controller placement];
+    isUndocked = [placement isUndocked];
 
-    if (v6)
+    if (isUndocked)
     {
       [v4 setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardGenerateNotification"];
     }
@@ -1327,13 +1327,13 @@ LABEL_13:
     }
 
     self->_isSplitting = 1;
-    v7 = [(UIKeyboardMotionSupport *)self masterController];
-    [v7 prepareForSplitTransition];
+    masterController = [(UIKeyboardMotionSupport *)self masterController];
+    [masterController prepareForSplitTransition];
   }
 
   [(UISplitKeyboardSupport *)self _updateKeyboardLayoutGuideForSplitTransition:1];
-  v8 = [(UISplitKeyboardSource *)self->super._controller hostView];
-  [v8 frame];
+  hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+  [hostView frame];
   self->_shouldUpdateKLGForTransition = [(UISplitKeyboardSupport *)self _updateKeyboardLayoutGuideForHostFrame:0 animated:?];
 
   v9 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
@@ -1346,39 +1346,39 @@ LABEL_13:
   [v9 performOnDistributedControllers:v11];
 }
 
-- (void)updateProgress:(double)a3 startHeight:(double)a4 endHeight:(double)a5
+- (void)updateProgress:(double)progress startHeight:(double)height endHeight:(double)endHeight
 {
   v32[3] = *MEMORY[0x1E69E9840];
   if (!self->_isTranslating && self->_shouldUpdateKLGForTransition)
   {
-    v9 = a4 - (a4 - a5) * a3;
-    v10 = [(UISplitKeyboardSource *)self->super._controller placement];
-    v11 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-    [v10 inputAssistantViewHeightForInputViewSet:v11];
+    v9 = height - (height - endHeight) * progress;
+    placement = [(UISplitKeyboardSource *)self->super._controller placement];
+    inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+    [placement inputAssistantViewHeightForInputViewSet:inputViewSet];
     v13 = v12;
 
     v14 = v9 + v13;
-    v15 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v15 bounds];
+    view = [(UISplitKeyboardSource *)self->super._controller view];
+    [view bounds];
     v17 = v16;
     [(UISplitKeyboardSource *)self->super._controller offsetForSplitTransition];
     v19 = v17 - (v14 - v18);
 
-    v20 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v20 bounds];
+    view2 = [(UISplitKeyboardSource *)self->super._controller view];
+    [view2 bounds];
     v22 = v21;
 
     [(UISplitKeyboardSupport *)self _updateKeyboardLayoutGuideForHostFrame:0 animated:0.0, v19, v22, v14];
   }
 
   v31[0] = @"_UISplitKeyboardTransitionProgress";
-  v23 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v23 = [MEMORY[0x1E696AD98] numberWithDouble:progress];
   v32[0] = v23;
   v31[1] = @"_UISplitKeyboardTransitionStartHeight";
-  v24 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v24 = [MEMORY[0x1E696AD98] numberWithDouble:height];
   v32[1] = v24;
   v31[2] = @"_UISplitKeyboardTransitionEndHeight";
-  v25 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v25 = [MEMORY[0x1E696AD98] numberWithDouble:endHeight];
   v32[2] = v25;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
@@ -1392,40 +1392,40 @@ LABEL_13:
   [v27 performOnDistributedControllers:v29];
 }
 
-- (void)finishTransitionWithCompletion:(id)a3
+- (void)finishTransitionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  completionCopy = completion;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(UISplitKeyboardSupport *)self isTranslating])
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     bounceCompletionBlock = self->_bounceCompletionBlock;
     self->_bounceCompletionBlock = v6;
   }
 
   else
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
-      [v5 setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardRefreshPresentation"];
+      completionCopy[2](completionCopy);
+      [dictionary setObject:MEMORY[0x1E695E118] forKey:@"_UISplitKeyboardRefreshPresentation"];
     }
 
-    v8 = [(UISplitKeyboardSource *)self->super._controller hostView];
-    [v8 frame];
+    hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+    [hostView frame];
     v10 = v9;
 
-    v11 = [(UISplitKeyboardSource *)self->super._controller view];
-    [v11 bounds];
+    view = [(UISplitKeyboardSource *)self->super._controller view];
+    [view bounds];
     v13 = v12;
-    v14 = [(UISplitKeyboardSource *)self->super._controller hostView];
-    [v14 frame];
+    hostView2 = [(UISplitKeyboardSource *)self->super._controller hostView];
+    [hostView2 frame];
     v17 = v13 - (v15 + v16);
 
     [UIKeyboardImpl setPersistentOffset:v10, v17];
-    [v5 setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
+    [dictionary setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
     bounceCompletionBlock = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{dispatch_time(0, 100000000)}];
-    [v5 setObject:bounceCompletionBlock forKey:@"_UISplitKeyboardGenerateNotificationTime"];
+    [dictionary setObject:bounceCompletionBlock forKey:@"_UISplitKeyboardGenerateNotificationTime"];
   }
 
   v18 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
@@ -1433,16 +1433,16 @@ LABEL_13:
   v20[1] = 3221225472;
   v20[2] = __57__UISplitKeyboardSupport_finishTransitionWithCompletion___block_invoke;
   v20[3] = &unk_1E7116848;
-  v21 = v5;
-  v19 = v5;
+  v21 = dictionary;
+  v19 = dictionary;
   [v18 performOnDistributedControllers:v20];
 
   [(UISplitKeyboardSource *)self->super._controller setInterfaceAutorotationDisabled:0];
 }
 
-- (void)transitionDidFinish:(BOOL)a3
+- (void)transitionDidFinish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   bounceCompletionBlock = self->_bounceCompletionBlock;
   if (bounceCompletionBlock)
   {
@@ -1451,9 +1451,9 @@ LABEL_13:
     self->_bounceCompletionBlock = 0;
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v7 setObject:v8 forKey:@"_UISplitKeyboardTransitionCallback"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:finishCopy];
+  [dictionary setObject:v8 forKey:@"_UISplitKeyboardTransitionCallback"];
 
   self->_isSplitting = 0;
   if (!self->_isTranslating || self->_targetTranslation.y != 0.0)
@@ -1461,19 +1461,19 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v9 = [(UISplitKeyboardSource *)self->super._controller placement];
-  if (![v9 isUndocked])
+  placement = [(UISplitKeyboardSource *)self->super._controller placement];
+  if (![placement isUndocked])
   {
     goto LABEL_8;
   }
 
-  v10 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  if ([v10 _inputViewIsSplit])
+  inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  if ([inputViewSet _inputViewIsSplit])
   {
 
 LABEL_8:
 LABEL_9:
-    [v7 setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
+    [dictionary setObject:MEMORY[0x1E695E110] forKey:@"_UISplitKeyboardGenerateNotification"];
     v11 = 0;
     v12 = 0;
     goto LABEL_10;
@@ -1488,8 +1488,8 @@ LABEL_9:
 
   [(UISplitKeyboardSource *)self->super._controller positionConstraintConstant];
   v20 = v19;
-  v21 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  [v21 splitHeightDelta];
+  inputViewSet2 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  [inputViewSet2 splitHeightDelta];
   v12 = v20 < floor(v22 * -0.5);
 
   v11 = +[UIInputViewSetPlacementOnScreen placement];
@@ -1508,17 +1508,17 @@ LABEL_11:
   v23[1] = 3221225472;
   v23[2] = __46__UISplitKeyboardSupport_transitionDidFinish___block_invoke;
   v23[3] = &unk_1E71179F8;
-  v24 = v7;
+  v24 = dictionary;
   v25 = v11;
   v26 = v12;
   v27 = v13;
   v15 = v11;
-  v16 = v7;
+  v16 = dictionary;
   [v14 performOnDistributedControllers:v23];
 
   self->_shouldUpdateKLGForTransition = 0;
-  v17 = [(UIKeyboardMotionSupport *)self masterController];
-  [v17 finishSplitTransition];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  [masterController finishSplitTransition];
 }
 
 void __46__UISplitKeyboardSupport_transitionDidFinish___block_invoke(uint64_t a1, void *a2)

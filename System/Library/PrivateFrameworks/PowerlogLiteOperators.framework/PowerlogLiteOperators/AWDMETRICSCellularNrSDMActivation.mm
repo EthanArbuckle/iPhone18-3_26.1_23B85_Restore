@@ -1,16 +1,16 @@
 @interface AWDMETRICSCellularNrSDMActivation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCurrentRat:(id)a3;
-- (int)StringAsDeployment:(id)a3;
-- (int)StringAsFr:(id)a3;
-- (int)StringAsNewState:(id)a3;
-- (int)StringAsPrevRat:(id)a3;
-- (int)StringAsPrevTriggerCause:(id)a3;
-- (int)StringAsSaVerdict:(id)a3;
-- (int)StringAsTriggerCause:(id)a3;
+- (int)StringAsCurrentRat:(id)rat;
+- (int)StringAsDeployment:(id)deployment;
+- (int)StringAsFr:(id)fr;
+- (int)StringAsNewState:(id)state;
+- (int)StringAsPrevRat:(id)rat;
+- (int)StringAsPrevTriggerCause:(id)cause;
+- (int)StringAsSaVerdict:(id)verdict;
+- (int)StringAsTriggerCause:(id)cause;
 - (int)currentRat;
 - (int)deployment;
 - (int)fr;
@@ -20,23 +20,23 @@
 - (int)saVerdict;
 - (int)triggerCause;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApNrRecomm:(BOOL)a3;
-- (void)setHasApNrRecommConfFactor:(BOOL)a3;
-- (void)setHasCurrentRat:(BOOL)a3;
-- (void)setHasDeployment:(BOOL)a3;
-- (void)setHasDurationInPrevState:(BOOL)a3;
-- (void)setHasFr1MeasDisabled:(BOOL)a3;
-- (void)setHasFr2MeasDisabled:(BOOL)a3;
-- (void)setHasFr:(BOOL)a3;
-- (void)setHasNewState:(BOOL)a3;
-- (void)setHasPrevRat:(BOOL)a3;
-- (void)setHasPrevTriggerCause:(BOOL)a3;
-- (void)setHasSaVerdict:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTriggerCause:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApNrRecomm:(BOOL)recomm;
+- (void)setHasApNrRecommConfFactor:(BOOL)factor;
+- (void)setHasCurrentRat:(BOOL)rat;
+- (void)setHasDeployment:(BOOL)deployment;
+- (void)setHasDurationInPrevState:(BOOL)state;
+- (void)setHasFr1MeasDisabled:(BOOL)disabled;
+- (void)setHasFr2MeasDisabled:(BOOL)disabled;
+- (void)setHasFr:(BOOL)fr;
+- (void)setHasNewState:(BOOL)state;
+- (void)setHasPrevRat:(BOOL)rat;
+- (void)setHasPrevTriggerCause:(BOOL)cause;
+- (void)setHasSaVerdict:(BOOL)verdict;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTriggerCause:(BOOL)cause;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSCellularNrSDMActivation
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)setHasDeployment:(BOOL)a3
+- (void)setHasDeployment:(BOOL)deployment
 {
-  if (a3)
+  if (deployment)
   {
     v3 = 4;
   }
@@ -69,20 +69,20 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsDeployment:(id)a3
+- (int)StringAsDeployment:(id)deployment
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DEPLOYMENT_SA"])
+  deploymentCopy = deployment;
+  if ([deploymentCopy isEqualToString:@"DEPLOYMENT_SA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEPLOYMENT_NSA"])
+  else if ([deploymentCopy isEqualToString:@"DEPLOYMENT_NSA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DEPLOYMENT_NRDC"])
+  else if ([deploymentCopy isEqualToString:@"DEPLOYMENT_NRDC"])
   {
     v4 = 2;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasFr1MeasDisabled:(BOOL)a3
+- (void)setHasFr1MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 0x2000;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasFr2MeasDisabled:(BOOL)a3
+- (void)setHasFr2MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 0x4000;
   }
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)setHasTriggerCause:(BOOL)a3
+- (void)setHasTriggerCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 1024;
   }
@@ -153,165 +153,165 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsTriggerCause:(id)a3
+- (int)StringAsTriggerCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_GOOD"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_GOOD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AVS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AVS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_LPM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_LPM"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOLTE"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOLTE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_SNR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_SNR"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DCNR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DCNR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_RLGS"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MT_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MT_DATA"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FTV_DUP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FTV_DUP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_VOIP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_VOIP"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ULD"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ULD"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ENH_BUFF"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ENH_BUFF"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_ASSOCIATED"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_ASSOCIATED"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR_SL"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW_SL"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS_SL"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_VONR_CON"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_VONR_CON"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_THERMAL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_THERMAL"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
   {
     v4 = 31;
   }
@@ -337,9 +337,9 @@
   }
 }
 
-- (void)setHasPrevTriggerCause:(BOOL)a3
+- (void)setHasPrevTriggerCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 128;
   }
@@ -352,165 +352,165 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsPrevTriggerCause:(id)a3
+- (int)StringAsPrevTriggerCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_GOOD"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_GOOD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AVS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AVS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_LPM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_LPM"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOLTE"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOLTE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_SNR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_SNR"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DCNR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DCNR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FR1_SCG_RLGS"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MT_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MT_DATA"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_FTV_DUP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_FTV_DUP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_VOIP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_VOIP"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ULD"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ULD"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ENH_BUFF"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_DROP_NR_ENH_BUFF"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_ASSOCIATED"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_ASSOCIATED"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_BWP_SWITCH_TMR_SL"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_HI_BW_SL"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS_SL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SA_UPGRADE_RLGS_SL"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_VONR_CON"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_VONR_CON"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_THERMAL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SADC_THERMAL"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
   {
     v4 = 31;
   }
@@ -523,9 +523,9 @@
   return v4;
 }
 
-- (void)setHasApNrRecomm:(BOOL)a3
+- (void)setHasApNrRecomm:(BOOL)recomm
 {
-  if (a3)
+  if (recomm)
   {
     v3 = 2048;
   }
@@ -538,9 +538,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasApNrRecommConfFactor:(BOOL)a3
+- (void)setHasApNrRecommConfFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 4096;
   }
@@ -553,9 +553,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasDurationInPrevState:(BOOL)a3
+- (void)setHasDurationInPrevState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -568,9 +568,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 512;
   }
@@ -596,9 +596,9 @@
   }
 }
 
-- (void)setHasFr:(BOOL)a3
+- (void)setHasFr:(BOOL)fr
 {
-  if (a3)
+  if (fr)
   {
     v3 = 16;
   }
@@ -611,20 +611,20 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsFr:(id)a3
+- (int)StringAsFr:(id)fr
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUB6"])
+  frCopy = fr;
+  if ([frCopy isEqualToString:@"SUB6"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MMWAVE"])
+  else if ([frCopy isEqualToString:@"MMWAVE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INVALID"])
+  else if ([frCopy isEqualToString:@"INVALID"])
   {
     v4 = 2;
   }
@@ -650,9 +650,9 @@
   }
 }
 
-- (void)setHasPrevRat:(BOOL)a3
+- (void)setHasPrevRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 64;
   }
@@ -665,75 +665,75 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsPrevRat:(id)a3
+- (int)StringAsPrevRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA"])
+  else if ([ratCopy isEqualToString:@"WCDMA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LTE"])
+  else if ([ratCopy isEqualToString:@"LTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ENDC_SUB6"])
+  else if ([ratCopy isEqualToString:@"ENDC_SUB6"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ENDC_MMW"])
+  else if ([ratCopy isEqualToString:@"ENDC_MMW"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NR_SA"])
+  else if ([ratCopy isEqualToString:@"NR_SA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GSM"])
+  else if ([ratCopy isEqualToString:@"GSM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CDMA"])
+  else if ([ratCopy isEqualToString:@"CDMA"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"EVDO"])
+  else if ([ratCopy isEqualToString:@"EVDO"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ONEXSRLTE"])
+  else if ([ratCopy isEqualToString:@"ONEXSRLTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ONEXHYBRID"])
+  else if ([ratCopy isEqualToString:@"ONEXHYBRID"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NRDC_SUB6"])
+  else if ([ratCopy isEqualToString:@"NRDC_SUB6"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NRDC_MMW"])
+  else if ([ratCopy isEqualToString:@"NRDC_MMW"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([ratCopy isEqualToString:@"MAX"])
   {
     v4 = 13;
   }
@@ -759,9 +759,9 @@
   }
 }
 
-- (void)setHasCurrentRat:(BOOL)a3
+- (void)setHasCurrentRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 2;
   }
@@ -774,75 +774,75 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsCurrentRat:(id)a3
+- (int)StringAsCurrentRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA"])
+  else if ([ratCopy isEqualToString:@"WCDMA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LTE"])
+  else if ([ratCopy isEqualToString:@"LTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ENDC_SUB6"])
+  else if ([ratCopy isEqualToString:@"ENDC_SUB6"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ENDC_MMW"])
+  else if ([ratCopy isEqualToString:@"ENDC_MMW"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NR_SA"])
+  else if ([ratCopy isEqualToString:@"NR_SA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GSM"])
+  else if ([ratCopy isEqualToString:@"GSM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CDMA"])
+  else if ([ratCopy isEqualToString:@"CDMA"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"EVDO"])
+  else if ([ratCopy isEqualToString:@"EVDO"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ONEXSRLTE"])
+  else if ([ratCopy isEqualToString:@"ONEXSRLTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ONEXHYBRID"])
+  else if ([ratCopy isEqualToString:@"ONEXHYBRID"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NRDC_SUB6"])
+  else if ([ratCopy isEqualToString:@"NRDC_SUB6"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NRDC_MMW"])
+  else if ([ratCopy isEqualToString:@"NRDC_MMW"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([ratCopy isEqualToString:@"MAX"])
   {
     v4 = 13;
   }
@@ -868,9 +868,9 @@
   }
 }
 
-- (void)setHasNewState:(BOOL)a3
+- (void)setHasNewState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -883,45 +883,45 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsNewState:(id)a3
+- (int)StringAsNewState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_DISABLE_SA"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"SDM_DISABLE_SA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_ENABLE_SA"])
+  else if ([stateCopy isEqualToString:@"SDM_ENABLE_SA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_UNKNOWN_SA"])
+  else if ([stateCopy isEqualToString:@"SDM_UNKNOWN_SA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_DISABLE_NR"])
+  else if ([stateCopy isEqualToString:@"SDM_DISABLE_NR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SDM_DISABLE_FR1"])
+  else if ([stateCopy isEqualToString:@"SDM_DISABLE_FR1"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SDM_DISABLE_FR2"])
+  else if ([stateCopy isEqualToString:@"SDM_DISABLE_FR2"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SDM_ENABLE_NR"])
+  else if ([stateCopy isEqualToString:@"SDM_ENABLE_NR"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SDM_UNKNOWN_STATE"])
+  else if ([stateCopy isEqualToString:@"SDM_UNKNOWN_STATE"])
   {
     v4 = 7;
   }
@@ -947,9 +947,9 @@
   }
 }
 
-- (void)setHasSaVerdict:(BOOL)a3
+- (void)setHasSaVerdict:(BOOL)verdict
 {
-  if (a3)
+  if (verdict)
   {
     v3 = 256;
   }
@@ -962,40 +962,40 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsSaVerdict:(id)a3
+- (int)StringAsSaVerdict:(id)verdict
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DISABLEMENT_WITH_RAT_CHANGE"])
+  verdictCopy = verdict;
+  if ([verdictCopy isEqualToString:@"DISABLEMENT_WITH_RAT_CHANGE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DISABLEMENT_WITHOUT_RAT_CHANGE"])
+  else if ([verdictCopy isEqualToString:@"DISABLEMENT_WITHOUT_RAT_CHANGE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DISABLEMENT_NOT_RELEVANT"])
+  else if ([verdictCopy isEqualToString:@"DISABLEMENT_NOT_RELEVANT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ENABLEMENT_WITH_RAT_CHANGE"])
+  else if ([verdictCopy isEqualToString:@"ENABLEMENT_WITH_RAT_CHANGE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ENABLEMENT_WITHOUT_RAT_CHANGE"])
+  else if ([verdictCopy isEqualToString:@"ENABLEMENT_WITHOUT_RAT_CHANGE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ENABLEMENT_NOT_RELEVANT"])
+  else if ([verdictCopy isEqualToString:@"ENABLEMENT_NOT_RELEVANT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN"])
+  else if ([verdictCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 6;
   }
@@ -1014,20 +1014,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSCellularNrSDMActivation;
   v4 = [(AWDMETRICSCellularNrSDMActivation *)&v8 description];
-  v5 = [(AWDMETRICSCellularNrSDMActivation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSCellularNrSDMActivation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -1058,7 +1058,7 @@ LABEL_3:
     v7 = off_2782593F0[deployment];
   }
 
-  [v3 setObject:v7 forKey:@"deployment"];
+  [dictionary setObject:v7 forKey:@"deployment"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -1074,7 +1074,7 @@ LABEL_4:
 
 LABEL_22:
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_fr1MeasDisabled];
-  [v3 setObject:v8 forKey:@"fr1_meas_disabled"];
+  [dictionary setObject:v8 forKey:@"fr1_meas_disabled"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -1090,7 +1090,7 @@ LABEL_5:
 
 LABEL_23:
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_fr2MeasDisabled];
-  [v3 setObject:v9 forKey:@"fr2_meas_disabled"];
+  [dictionary setObject:v9 forKey:@"fr2_meas_disabled"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -1116,7 +1116,7 @@ LABEL_24:
     v11 = off_278259408[triggerCause];
   }
 
-  [v3 setObject:v11 forKey:@"trigger_cause"];
+  [dictionary setObject:v11 forKey:@"trigger_cause"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -1142,7 +1142,7 @@ LABEL_28:
     v13 = off_278259408[prevTriggerCause];
   }
 
-  [v3 setObject:v13 forKey:@"prev_trigger_cause"];
+  [dictionary setObject:v13 forKey:@"prev_trigger_cause"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -1158,7 +1158,7 @@ LABEL_8:
 
 LABEL_32:
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_apNrRecomm];
-  [v3 setObject:v14 forKey:@"ap_nr_recomm"];
+  [dictionary setObject:v14 forKey:@"ap_nr_recomm"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -1174,7 +1174,7 @@ LABEL_9:
 
 LABEL_33:
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_apNrRecommConfFactor];
-  [v3 setObject:v15 forKey:@"ap_nr_recomm_conf_factor"];
+  [dictionary setObject:v15 forKey:@"ap_nr_recomm_conf_factor"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -1190,7 +1190,7 @@ LABEL_10:
 
 LABEL_34:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationInPrevState];
-  [v3 setObject:v16 forKey:@"duration_in_prev_state"];
+  [dictionary setObject:v16 forKey:@"duration_in_prev_state"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -1206,7 +1206,7 @@ LABEL_11:
 
 LABEL_35:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v17 forKey:@"subs_id"];
+  [dictionary setObject:v17 forKey:@"subs_id"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -1232,7 +1232,7 @@ LABEL_36:
     v19 = off_278259508[fr];
   }
 
-  [v3 setObject:v19 forKey:@"fr"];
+  [dictionary setObject:v19 forKey:@"fr"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -1258,7 +1258,7 @@ LABEL_40:
     v21 = off_278259520[prevRat];
   }
 
-  [v3 setObject:v21 forKey:@"prev_rat"];
+  [dictionary setObject:v21 forKey:@"prev_rat"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -1284,7 +1284,7 @@ LABEL_44:
     v23 = off_278259520[currentRat];
   }
 
-  [v3 setObject:v23 forKey:@"current_rat"];
+  [dictionary setObject:v23 forKey:@"current_rat"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -1310,7 +1310,7 @@ LABEL_48:
     v25 = off_278259590[newState];
   }
 
-  [v3 setObject:v25 forKey:@"new_state"];
+  [dictionary setObject:v25 forKey:@"new_state"];
 
   if ((*&self->_has & 0x100) != 0)
   {
@@ -1326,18 +1326,18 @@ LABEL_52:
       v27 = off_2782595D0[saVerdict];
     }
 
-    [v3 setObject:v27 forKey:@"sa_verdict"];
+    [dictionary setObject:v27 forKey:@"sa_verdict"];
   }
 
 LABEL_56:
-  v28 = v3;
+  v28 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1553,14 +1553,14 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 30) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 30) |= 1u;
     has = self->_has;
     if ((has & 0x2000) == 0)
     {
@@ -1579,8 +1579,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 58) = self->_fr1MeasDisabled;
-  *(v4 + 30) |= 0x2000u;
+  *(toCopy + 58) = self->_fr1MeasDisabled;
+  *(toCopy + 30) |= 0x2000u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -1594,8 +1594,8 @@ LABEL_4:
   }
 
 LABEL_22:
-  *(v4 + 59) = self->_fr2MeasDisabled;
-  *(v4 + 30) |= 0x4000u;
+  *(toCopy + 59) = self->_fr2MeasDisabled;
+  *(toCopy + 30) |= 0x4000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1609,8 +1609,8 @@ LABEL_5:
   }
 
 LABEL_23:
-  *(v4 + 13) = self->_triggerCause;
-  *(v4 + 30) |= 0x400u;
+  *(toCopy + 13) = self->_triggerCause;
+  *(toCopy + 30) |= 0x400u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1624,8 +1624,8 @@ LABEL_6:
   }
 
 LABEL_24:
-  *(v4 + 56) = self->_apNrRecomm;
-  *(v4 + 30) |= 0x800u;
+  *(toCopy + 56) = self->_apNrRecomm;
+  *(toCopy + 30) |= 0x800u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -1639,8 +1639,8 @@ LABEL_7:
   }
 
 LABEL_25:
-  *(v4 + 57) = self->_apNrRecommConfFactor;
-  *(v4 + 30) |= 0x1000u;
+  *(toCopy + 57) = self->_apNrRecommConfFactor;
+  *(toCopy + 30) |= 0x1000u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1654,8 +1654,8 @@ LABEL_8:
   }
 
 LABEL_26:
-  *(v4 + 6) = self->_durationInPrevState;
-  *(v4 + 30) |= 8u;
+  *(toCopy + 6) = self->_durationInPrevState;
+  *(toCopy + 30) |= 8u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -1669,8 +1669,8 @@ LABEL_9:
   }
 
 LABEL_27:
-  *(v4 + 12) = self->_subsId;
-  *(v4 + 30) |= 0x200u;
+  *(toCopy + 12) = self->_subsId;
+  *(toCopy + 30) |= 0x200u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1684,8 +1684,8 @@ LABEL_10:
   }
 
 LABEL_28:
-  *(v4 + 7) = self->_fr;
-  *(v4 + 30) |= 0x10u;
+  *(toCopy + 7) = self->_fr;
+  *(toCopy + 30) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1699,8 +1699,8 @@ LABEL_11:
   }
 
 LABEL_29:
-  *(v4 + 5) = self->_deployment;
-  *(v4 + 30) |= 4u;
+  *(toCopy + 5) = self->_deployment;
+  *(toCopy + 30) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1714,8 +1714,8 @@ LABEL_12:
   }
 
 LABEL_30:
-  *(v4 + 9) = self->_prevRat;
-  *(v4 + 30) |= 0x40u;
+  *(toCopy + 9) = self->_prevRat;
+  *(toCopy + 30) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1729,8 +1729,8 @@ LABEL_13:
   }
 
 LABEL_31:
-  *(v4 + 4) = self->_currentRat;
-  *(v4 + 30) |= 2u;
+  *(toCopy + 4) = self->_currentRat;
+  *(toCopy + 30) |= 2u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1744,8 +1744,8 @@ LABEL_14:
   }
 
 LABEL_32:
-  *(v4 + 10) = self->_prevTriggerCause;
-  *(v4 + 30) |= 0x80u;
+  *(toCopy + 10) = self->_prevTriggerCause;
+  *(toCopy + 30) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1759,21 +1759,21 @@ LABEL_15:
   }
 
 LABEL_33:
-  *(v4 + 8) = self->_newState;
-  *(v4 + 30) |= 0x20u;
+  *(toCopy + 8) = self->_newState;
+  *(toCopy + 30) |= 0x20u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_16:
-    *(v4 + 11) = self->_saVerdict;
-    *(v4 + 30) |= 0x100u;
+    *(toCopy + 11) = self->_saVerdict;
+    *(toCopy + 30) |= 0x100u;
   }
 
 LABEL_17:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -1990,19 +1990,19 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_89;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_89;
     }
@@ -2015,101 +2015,101 @@ LABEL_16:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 30) & 0x2000) == 0)
+    if ((*(equalCopy + 30) & 0x2000) == 0)
     {
       goto LABEL_89;
     }
 
-    v7 = *(v4 + 58);
+    v7 = *(equalCopy + 58);
     if (self->_fr1MeasDisabled)
     {
-      if ((*(v4 + 58) & 1) == 0)
+      if ((*(equalCopy + 58) & 1) == 0)
       {
         goto LABEL_89;
       }
     }
 
-    else if (*(v4 + 58))
+    else if (*(equalCopy + 58))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 30) & 0x2000) != 0)
+  else if ((*(equalCopy + 30) & 0x2000) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 30) & 0x4000) == 0)
+    if ((*(equalCopy + 30) & 0x4000) == 0)
     {
       goto LABEL_89;
     }
 
-    v8 = *(v4 + 59);
+    v8 = *(equalCopy + 59);
     if (self->_fr2MeasDisabled)
     {
-      if ((*(v4 + 59) & 1) == 0)
+      if ((*(equalCopy + 59) & 1) == 0)
       {
         goto LABEL_89;
       }
     }
 
-    else if (*(v4 + 59))
+    else if (*(equalCopy + 59))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 30) & 0x4000) != 0)
+  else if ((*(equalCopy + 30) & 0x4000) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 30) & 0x400) == 0 || self->_triggerCause != *(v4 + 13))
+    if ((*(equalCopy + 30) & 0x400) == 0 || self->_triggerCause != *(equalCopy + 13))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 30) & 0x400) != 0)
+  else if ((*(equalCopy + 30) & 0x400) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 30) & 0x800) == 0)
+    if ((*(equalCopy + 30) & 0x800) == 0)
     {
       goto LABEL_89;
     }
 
-    v9 = *(v4 + 56);
+    v9 = *(equalCopy + 56);
     if (self->_apNrRecomm)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_89;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 30) & 0x800) != 0)
+  else if ((*(equalCopy + 30) & 0x800) != 0)
   {
     goto LABEL_89;
   }
 
   if ((*&self->_has & 0x1000) == 0)
   {
-    if ((*(v4 + 30) & 0x1000) == 0)
+    if ((*(equalCopy + 30) & 0x1000) == 0)
     {
       goto LABEL_30;
     }
@@ -2119,21 +2119,21 @@ LABEL_89:
     goto LABEL_90;
   }
 
-  if ((*(v4 + 30) & 0x1000) == 0)
+  if ((*(equalCopy + 30) & 0x1000) == 0)
   {
     goto LABEL_89;
   }
 
-  v10 = *(v4 + 57);
+  v10 = *(equalCopy + 57);
   if (self->_apNrRecommConfFactor)
   {
-    if ((*(v4 + 57) & 1) == 0)
+    if ((*(equalCopy + 57) & 1) == 0)
     {
       goto LABEL_89;
     }
   }
 
-  else if (*(v4 + 57))
+  else if (*(equalCopy + 57))
   {
     goto LABEL_89;
   }
@@ -2141,7 +2141,7 @@ LABEL_89:
 LABEL_30:
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_durationInPrevState != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_durationInPrevState != *(equalCopy + 6))
     {
       goto LABEL_89;
     }
@@ -2154,20 +2154,20 @@ LABEL_30:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 30) & 0x200) == 0 || self->_subsId != *(v4 + 12))
+    if ((*(equalCopy + 30) & 0x200) == 0 || self->_subsId != *(equalCopy + 12))
     {
       goto LABEL_89;
     }
   }
 
-  else if ((*(v4 + 30) & 0x200) != 0)
+  else if ((*(equalCopy + 30) & 0x200) != 0)
   {
     goto LABEL_89;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_fr != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_fr != *(equalCopy + 7))
     {
       goto LABEL_89;
     }
@@ -2180,7 +2180,7 @@ LABEL_30:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_deployment != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_deployment != *(equalCopy + 5))
     {
       goto LABEL_89;
     }
@@ -2193,7 +2193,7 @@ LABEL_30:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_prevRat != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_prevRat != *(equalCopy + 9))
     {
       goto LABEL_89;
     }
@@ -2206,7 +2206,7 @@ LABEL_30:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_currentRat != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_currentRat != *(equalCopy + 4))
     {
       goto LABEL_89;
     }
@@ -2219,7 +2219,7 @@ LABEL_30:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_prevTriggerCause != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_prevTriggerCause != *(equalCopy + 10))
     {
       goto LABEL_89;
     }
@@ -2232,7 +2232,7 @@ LABEL_30:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_newState != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_newState != *(equalCopy + 8))
     {
       goto LABEL_89;
     }
@@ -2245,7 +2245,7 @@ LABEL_30:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 30) & 0x100) == 0 || self->_saVerdict != *(v4 + 11))
+    if ((*(equalCopy + 30) & 0x100) == 0 || self->_saVerdict != *(equalCopy + 11))
     {
       goto LABEL_89;
     }
@@ -2472,15 +2472,15 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 0x2000) == 0)
     {
 LABEL_3:
@@ -2493,14 +2493,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 30) & 0x2000) == 0)
+  else if ((*(fromCopy + 30) & 0x2000) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_fr1MeasDisabled = *(v4 + 58);
+  self->_fr1MeasDisabled = *(fromCopy + 58);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_4:
@@ -2513,9 +2513,9 @@ LABEL_4:
   }
 
 LABEL_22:
-  self->_fr2MeasDisabled = *(v4 + 59);
+  self->_fr2MeasDisabled = *(fromCopy + 59);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x400) == 0)
   {
 LABEL_5:
@@ -2528,9 +2528,9 @@ LABEL_5:
   }
 
 LABEL_23:
-  self->_triggerCause = *(v4 + 13);
+  self->_triggerCause = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x800) == 0)
   {
 LABEL_6:
@@ -2543,9 +2543,9 @@ LABEL_6:
   }
 
 LABEL_24:
-  self->_apNrRecomm = *(v4 + 56);
+  self->_apNrRecomm = *(fromCopy + 56);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_7:
@@ -2558,9 +2558,9 @@ LABEL_7:
   }
 
 LABEL_25:
-  self->_apNrRecommConfFactor = *(v4 + 57);
+  self->_apNrRecommConfFactor = *(fromCopy + 57);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -2573,9 +2573,9 @@ LABEL_8:
   }
 
 LABEL_26:
-  self->_durationInPrevState = *(v4 + 6);
+  self->_durationInPrevState = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -2588,9 +2588,9 @@ LABEL_9:
   }
 
 LABEL_27:
-  self->_subsId = *(v4 + 12);
+  self->_subsId = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -2603,9 +2603,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  self->_fr = *(v4 + 7);
+  self->_fr = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -2618,9 +2618,9 @@ LABEL_11:
   }
 
 LABEL_29:
-  self->_deployment = *(v4 + 5);
+  self->_deployment = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x40) == 0)
   {
 LABEL_12:
@@ -2633,9 +2633,9 @@ LABEL_12:
   }
 
 LABEL_30:
-  self->_prevRat = *(v4 + 9);
+  self->_prevRat = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 2) == 0)
   {
 LABEL_13:
@@ -2648,9 +2648,9 @@ LABEL_13:
   }
 
 LABEL_31:
-  self->_currentRat = *(v4 + 4);
+  self->_currentRat = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -2663,9 +2663,9 @@ LABEL_14:
   }
 
 LABEL_32:
-  self->_prevTriggerCause = *(v4 + 10);
+  self->_prevTriggerCause = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x20) == 0)
   {
 LABEL_15:
@@ -2678,12 +2678,12 @@ LABEL_15:
   }
 
 LABEL_33:
-  self->_newState = *(v4 + 8);
+  self->_newState = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 30) & 0x100) != 0)
+  if ((*(fromCopy + 30) & 0x100) != 0)
   {
 LABEL_16:
-    self->_saVerdict = *(v4 + 11);
+    self->_saVerdict = *(fromCopy + 11);
     *&self->_has |= 0x100u;
   }
 

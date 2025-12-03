@@ -1,17 +1,17 @@
 @interface AXAuditObjectTransportInfo
-- (AXAuditObjectTransportInfo)initWithTransportKey:(id)a3;
+- (AXAuditObjectTransportInfo)initWithTransportKey:(id)key;
 @end
 
 @implementation AXAuditObjectTransportInfo
 
-- (AXAuditObjectTransportInfo)initWithTransportKey:(id)a3
+- (AXAuditObjectTransportInfo)initWithTransportKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [(AXAuditObjectTransportInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transportKey, a3);
+    objc_storeStrong(&v6->_transportKey, key);
   }
 
   return v7;

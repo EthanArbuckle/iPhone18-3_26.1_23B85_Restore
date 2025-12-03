@@ -1,13 +1,13 @@
 @interface FBSDisplayLayoutElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
 - (CGRect)referenceFrame;
-- (FBSDisplayLayoutElement)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSDisplayLayoutElement)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setOtherSettings:(id)a3;
+- (void)setOtherSettings:(id)settings;
 @end
 
 @implementation FBSDisplayLayoutElement
@@ -61,15 +61,15 @@
   return result;
 }
 
-- (FBSDisplayLayoutElement)initWithIdentifier:(id)a3
+- (FBSDisplayLayoutElement)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FBSDisplayLayoutElement;
   v5 = [(FBSDisplayLayoutElement *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -83,16 +83,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [off_1E76BC9C0 builderWithObject:self ofExpectedClass:objc_opt_class()];
   application = self->_application;
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __35__FBSDisplayLayoutElement_isEqual___block_invoke;
   v48[3] = &unk_1E76BD8B8;
-  v7 = v4;
+  v7 = equalCopy;
   v49 = v7;
   v8 = [v5 appendBool:application counterpart:v48];
   keyboardFocus = self->_keyboardFocus;
@@ -162,13 +162,13 @@
   return v26;
 }
 
-- (void)setOtherSettings:(id)a3
+- (void)setOtherSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   otherSettings = self->_otherSettings;
-  if (otherSettings != v4)
+  if (otherSettings != settingsCopy)
   {
-    v8 = v4;
+    v8 = settingsCopy;
     [(BSMutableSettings *)otherSettings setDescriptionProvider:0];
     if (v8)
     {
@@ -184,29 +184,29 @@
     self->_otherSettings = v6;
 
     otherSettings = [(BSMutableSettings *)self->_otherSettings setDescriptionProvider:self];
-    v4 = v8;
+    settingsCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](otherSettings, v4);
+  MEMORY[0x1EEE66BB8](otherSettings, settingsCopy);
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplayLayoutElement *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplayLayoutElement *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplayLayoutElement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplayLayoutElement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier];
   [v4 setFrame:{self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height}];

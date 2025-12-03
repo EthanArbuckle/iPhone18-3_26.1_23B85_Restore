@@ -1,26 +1,26 @@
 @interface AWDProactiveModelFittingSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasSupervisionType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasSupervisionType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingSession
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[7] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[7] & 4) != 0)
   {
-    self->_timestamp = v4[3];
+    self->_timestamp = fromCopy[3];
     *&self->_has |= 4u;
   }
 
@@ -173,31 +173,31 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   modelInfo = self->_modelInfo;
-  if (modelInfo | *(v4 + 5))
+  if (modelInfo | *(equalCopy + 5))
   {
     if (![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
     {
@@ -205,12 +205,12 @@ LABEL_9:
     }
 
     has = self->_has;
-    v6 = *(v4 + 56);
+    v6 = *(equalCopy + 56);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_label != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_label != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
@@ -222,12 +222,12 @@ LABEL_9:
   }
 
   sparseFloatFeatures = self->_sparseFloatFeatures;
-  if (sparseFloatFeatures | *(v4 + 6))
+  if (sparseFloatFeatures | *(equalCopy + 6))
   {
     if ([(AWDProactiveModelFittingSparseFloatVector *)sparseFloatFeatures isEqual:?])
     {
       has = self->_has;
-      v6 = *(v4 + 56);
+      v6 = *(equalCopy + 56);
       goto LABEL_18;
     }
 
@@ -239,7 +239,7 @@ LABEL_27:
 LABEL_18:
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_supervisionType != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_supervisionType != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
@@ -253,7 +253,7 @@ LABEL_18:
   v9 = (v6 & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_confidenceScore != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_confidenceScore != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
@@ -266,9 +266,9 @@ LABEL_28:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -276,7 +276,7 @@ LABEL_28:
     *(v5 + 56) |= 4u;
   }
 
-  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
@@ -286,7 +286,7 @@ LABEL_28:
     *(v6 + 56) |= 1u;
   }
 
-  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatFeatures copyWithZone:a3];
+  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatFeatures copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
@@ -307,52 +307,52 @@ LABEL_28:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = self->_timestamp;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = self->_timestamp;
+    *(toCopy + 56) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
-    v4 = v6;
+    [toCopy setModelInfo:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_label;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_label;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_sparseFloatFeatures)
   {
     [v6 setSparseFloatFeatures:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_supervisionType;
-    *(v4 + 56) |= 2u;
+    toCopy[2] = self->_supervisionType;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(v4 + 8) = LODWORD(self->_confidenceScore);
-    *(v4 + 56) |= 8u;
+    *(toCopy + 8) = LODWORD(self->_confidenceScore);
+    *(toCopy + 56) |= 8u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     timestamp = self->_timestamp;
@@ -392,38 +392,38 @@ LABEL_28:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v7 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_label];
-    [v3 setObject:v8 forKey:@"label"];
+    [dictionary setObject:v8 forKey:@"label"];
   }
 
   sparseFloatFeatures = self->_sparseFloatFeatures;
   if (sparseFloatFeatures)
   {
-    v10 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatFeatures dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"sparseFloatFeatures"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatFeatures dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sparseFloatFeatures"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_supervisionType];
-    [v3 setObject:v12 forKey:@"supervisionType"];
+    [dictionary setObject:v12 forKey:@"supervisionType"];
 
     has = self->_has;
   }
@@ -432,10 +432,10 @@ LABEL_28:
   {
     *&v4 = self->_confidenceScore;
     v13 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v13 forKey:@"confidenceScore"];
+    [dictionary setObject:v13 forKey:@"confidenceScore"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -444,15 +444,15 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingSession;
   v4 = [(AWDProactiveModelFittingSession *)&v8 description];
-  v5 = [(AWDProactiveModelFittingSession *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingSession *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -465,9 +465,9 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSupervisionType:(BOOL)a3
+- (void)setHasSupervisionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -480,9 +480,9 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }

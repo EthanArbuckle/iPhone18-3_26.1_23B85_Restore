@@ -9,12 +9,12 @@
   v55[1] = *MEMORY[0x1E69E9840];
   if ([(NSNumber *)self->super.inputSize unsignedIntValue]> 0x31)
   {
-    v3 = 50;
+    unsignedIntValue = 50;
   }
 
   else
   {
-    v3 = [(NSNumber *)self->super.inputSize unsignedIntValue];
+    unsignedIntValue = [(NSNumber *)self->super.inputSize unsignedIntValue];
   }
 
   [(NSNumber *)self->super.inputSoften doubleValue];
@@ -26,19 +26,19 @@
 
   v6 = fmax(v4, 0.0);
   v7 = fmin(v6, 50.0);
-  v8 = fmax(v3 * 0.21, 0.5);
-  v9 = [(CUIInnerBevelEmbossFilter *)self _kernelInvertMask];
+  v8 = fmax(unsignedIntValue * 0.21, 0.5);
+  _kernelInvertMask = [(CUIInnerBevelEmbossFilter *)self _kernelInvertMask];
   v10 = *MEMORY[0x1E695F040];
   v11 = *(MEMORY[0x1E695F040] + 8);
   v12 = *(MEMORY[0x1E695F040] + 16);
   v13 = *(MEMORY[0x1E695F040] + 24);
   v55[0] = inputImage;
-  v14 = [v9 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v55, 1), v10, v11, v12, v13}];
+  v14 = [_kernelInvertMask applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v55, 1), v10, v11, v12, v13}];
   v15 = v14;
   if (v8 != 0.5 || v7 > 4.0)
   {
     v17 = _CUIMappedBlurImageWithSize(v14, fmin(v6, 2.0), 0);
-    v18 = _CUIMappedBlurImageWithSize(v17, v3, 0);
+    v18 = _CUIMappedBlurImageWithSize(v17, unsignedIntValue, 0);
     if (v8 == 0.5)
     {
       v52 = xmmword_19CF2A938;
@@ -52,7 +52,7 @@
     else
     {
       v37 = [CIVector vectorWithX:-v8 Y:v8];
-      v38 = [(CUIOuterBevelEmbossFilter *)self _kernel];
+      _kernel = [(CUIOuterBevelEmbossFilter *)self _kernel];
       [(CIImage *)v18 extent];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
@@ -61,7 +61,7 @@
       v44 = v8;
       v47[0] = v18;
       v47[1] = v37;
-      v19 = [v38 applyWithExtent:v43 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v47, 2), v39, v40, v41, v42}];
+      v19 = [_kernel applyWithExtent:v43 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v47, 2), v39, v40, v41, v42}];
     }
   }
 
@@ -96,19 +96,19 @@
   }
 
   v23 = v19;
-  v24 = [(CUIOuterBevelEmbossFilter *)self _kernelC];
+  _kernelC = [(CUIOuterBevelEmbossFilter *)self _kernelC];
   [v23 extent];
   inputHighlightColor = self->super.inputHighlightColor;
   v46[0] = v23;
   v46[1] = inputHighlightColor;
   v46[2] = self->super.inputShadowColor;
-  v30 = [v24 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 3), v26, v27, v28, v29}];
-  v31 = [(CUIInnerBevelEmbossFilter *)self _kernelMultiplyByMask];
+  v30 = [_kernelC applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 3), v26, v27, v28, v29}];
+  _kernelMultiplyByMask = [(CUIInnerBevelEmbossFilter *)self _kernelMultiplyByMask];
   [(CIImage *)self->super.inputImage extent];
   v32 = self->super.inputImage;
   v45[0] = v30;
   v45[1] = v32;
-  return [v31 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 2), v33, v34, v35, v36}];
+  return [_kernelMultiplyByMask applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 2), v33, v34, v35, v36}];
 }
 
 double __40__CUIInnerBevelEmbossFilter_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

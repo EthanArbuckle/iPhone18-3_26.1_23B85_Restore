@@ -1,6 +1,6 @@
 @interface NotificationCoreServiceListener
 - (_TtC21UserNotificationsCore31NotificationCoreServiceListener)init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation NotificationCoreServiceListener
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1DA884D58(v8);
+  selfCopy = self;
+  sub_1DA884D58(connectionCopy);
 
   swift_unknownObjectRelease();
 }

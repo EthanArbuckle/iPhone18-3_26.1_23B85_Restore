@@ -1,11 +1,11 @@
 @interface PGChildActivityMemoryGenerator
-- (PGChildActivityMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
+- (PGChildActivityMemoryGenerator)initWithMemoryGenerationContext:(id)context;
 - (id)_supportedCompoundActivityLabels;
 - (id)_supportedIndividualActivityLabels;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGChildActivityMemoryGenerator
@@ -44,54 +44,54 @@
   return v4;
 }
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
-  v12 = [v10 memoryMomentNodes];
-  v13 = [v12 temporarySet];
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  temporarySet = [memoryMomentNodes temporarySet];
 
-  v14 = [v10 memoryFeatureNodes];
-  v15 = [(PGGraphNodeCollection *)PGGraphPersonActivityMeaningNodeCollection subsetInCollection:v14];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v15 = [(PGGraphNodeCollection *)PGGraphPersonActivityMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
 
-  v16 = [v15 personActivityMeaningLabels];
-  if ([v16 count])
+  personActivityMeaningLabels = [v15 personActivityMeaningLabels];
+  if ([personActivityMeaningLabels count])
   {
-    v17 = [v15 personNodes];
-    if ([v17 count] >= 2)
+    personNodes = [v15 personNodes];
+    if ([personNodes count] >= 2)
     {
-      v18 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v35 = v15;
-        _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "[PGChildActivityMemoryGenerator] More than 1 child found in activityNode:%@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGChildActivityMemoryGenerator] More than 1 child found in activityNode:%@", buf, 0xCu);
       }
     }
 
-    v19 = [v17 anyNode];
-    v20 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v21 = [v20 serviceManager];
-    v22 = [PGPeopleTitleUtility nameFromPersonNode:v19 serviceManager:v21];
+    anyNode = [personNodes anyNode];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    serviceManager = [memoryGenerationContext serviceManager];
+    v22 = [PGPeopleTitleUtility nameFromPersonNode:anyNode serviceManager:serviceManager];
 
     v23 = [PGChildActivityMemoryTitleGenerator alloc];
-    v24 = [(PGMemoryGenerator *)self loggingConnection];
-    v33 = v13;
-    v25 = v13;
-    v26 = v11;
-    v27 = [(PGChildActivityMemoryTitleGenerator *)v23 initWithMomentNodes:v25 activityLabels:v16 childName:v22 titleGenerationContext:v11 loggingConnection:v24];
+    loggingConnection2 = [(PGMemoryGenerator *)self loggingConnection];
+    v33 = temporarySet;
+    v25 = temporarySet;
+    v26 = contextCopy;
+    v27 = [(PGChildActivityMemoryTitleGenerator *)v23 initWithMomentNodes:v25 activityLabels:personActivityMeaningLabels childName:v22 titleGenerationContext:contextCopy loggingConnection:loggingConnection2];
 
-    v28 = [v10 memoryFeatureNodes];
-    v29 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v28];
+    memoryFeatureNodes2 = [memoryCopy memoryFeatureNodes];
+    v29 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes2];
 
     if ([v29 count] == 1)
     {
       [(PGTitleGenerator *)v27 setFeaturedYearNodes:v29];
     }
 
-    v11 = v26;
-    v13 = v33;
+    contextCopy = v26;
+    temporarySet = v33;
   }
 
   else
@@ -104,38 +104,38 @@
   return v27;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v11.receiver = self;
   v11.super_class = PGChildActivityMemoryGenerator;
-  v5 = a3;
-  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:v5 inGraph:a4];
-  v7 = [v5 memoryFeatureNodes];
+  memoryCopy = memory;
+  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graph];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
 
-  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v7];
+  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
-  v9 = [v8 localIdentifiers];
-  [v6 setReferencePersonLocalIdentifiers:v9];
+  localIdentifiers = [v8 localIdentifiers];
+  [v6 setReferencePersonLocalIdentifiers:localIdentifiers];
 
   return v6;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_284486240 includingMe:0 inGraph:a3];
+  blockCopy = block;
+  v7 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_284486240 includingMe:0 inGraph:graph];
   if ([v7 count])
   {
-    v31 = v6;
-    v8 = [(PGChildActivityMemoryGenerator *)self _supportedIndividualActivityLabels];
-    v9 = [(PGChildActivityMemoryGenerator *)self _supportedCompoundActivityLabels];
-    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v8];
+    v31 = blockCopy;
+    _supportedIndividualActivityLabels = [(PGChildActivityMemoryGenerator *)self _supportedIndividualActivityLabels];
+    _supportedCompoundActivityLabels = [(PGChildActivityMemoryGenerator *)self _supportedCompoundActivityLabels];
+    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:_supportedIndividualActivityLabels];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v11 = v9;
+    v11 = _supportedCompoundActivityLabels;
     v12 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v12)
     {
@@ -165,16 +165,16 @@
     v17 = +[PGGraphPersonNode personActivityMeaningOfPerson];
     v41[0] = v17;
     v18 = [PGGraphPersonActivityMeaningNode filterWithActivityLabels:v10];
-    v19 = [v18 relation];
-    v41[1] = v19;
+    relation = [v18 relation];
+    v41[1] = relation;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
     v21 = [v16 chain:v20];
 
     v22 = [MEMORY[0x277D22BF8] adjacencyWithSources:v7 relation:v21 targetsClass:objc_opt_class()];
     v23 = MEMORY[0x277D22BF8];
-    v24 = [v22 targets];
+    targets = [v22 targets];
     v25 = +[PGGraphFeatureNodeCollection momentOfFeature];
-    v26 = [v23 adjacencyWithSources:v24 relation:v25 targetsClass:objc_opt_class()];
+    v26 = [v23 adjacencyWithSources:targets relation:v25 targetsClass:objc_opt_class()];
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -183,10 +183,10 @@
     v32[4] = self;
     v33 = v11;
     v34 = v26;
-    v6 = v31;
-    v35 = v8;
+    blockCopy = v31;
+    v35 = _supportedIndividualActivityLabels;
     v36 = v31;
-    v27 = v8;
+    v27 = _supportedIndividualActivityLabels;
     v28 = v26;
     v29 = v11;
     [v22 enumerateTargetsBySourceWithBlock:v32];
@@ -322,34 +322,34 @@ void __88__PGChildActivityMemoryGenerator_enumerateMomentNodesAndFeatureNodesInG
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 15001;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 15002;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -360,11 +360,11 @@ void __88__PGChildActivityMemoryGenerator_enumerateMomentNodesAndFeatureNodesInG
   return result;
 }
 
-- (PGChildActivityMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGChildActivityMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = PGChildActivityMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v16 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v16 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {

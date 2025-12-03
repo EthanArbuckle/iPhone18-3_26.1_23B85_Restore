@@ -1,8 +1,8 @@
 @interface AVPlayerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axObservePIPStateNotifications;
-- (void)_axPIPStop:(id)a3;
+- (void)_axPIPStop:(id)stop;
 - (void)_axSetupVideoLayerView;
 - (void)_togglePictureInPicture;
 - (void)dealloc;
@@ -10,22 +10,22 @@
 
 @implementation AVPlayerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVPictureInPictureController" hasInstanceMethod:@"isPictureInPictureActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceMethod:@"_togglePictureInPicture" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceVariable:@"_playerLayerView" withType:"__AVPlayerLayerView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVPictureInPictureController" hasInstanceMethod:@"isPictureInPictureActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceMethod:@"_togglePictureInPicture" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceVariable:@"_playerLayerView" withType:"__AVPlayerLayerView"];
 }
 
 - (void)_axObservePIPStateNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__axPIPStop_ name:AXPIPStoppedNotification object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__axPIPStop_ name:AXPIPStoppedNotification object:0];
 }
 
-- (void)_axPIPStop:(id)a3
+- (void)_axPIPStop:(id)stop
 {
   v3 = [(AVPlayerViewControllerAccessibility *)self safeValueForKey:@"_playerLayerView"];
   [v3 setIsAccessibilityElement:1];
@@ -49,8 +49,8 @@
   [v3 _accessibilityLoadAccessibilityInformation];
   LOBYTE(location) = 0;
   v4 = __UIAccessibilitySafeClass();
-  v5 = [v4 contentOverlayView];
-  objc_initWeak(&location, v5);
+  contentOverlayView = [v4 contentOverlayView];
+  objc_initWeak(&location, contentOverlayView);
 
   v6 = objc_loadWeakRetained(&location);
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -80,8 +80,8 @@ BOOL __81__AVPlayerViewControllerAccessibility__accessibilityLoadAccessibilityIn
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:AXPIPStoppedNotification];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:AXPIPStoppedNotification];
 
   v4.receiver = self;
   v4.super_class = AVPlayerViewControllerAccessibility;

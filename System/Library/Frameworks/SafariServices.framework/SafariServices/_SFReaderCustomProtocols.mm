@@ -1,5 +1,5 @@
 @interface _SFReaderCustomProtocols
-+ (OpaqueJSScript)readerUserInterfaceScriptForContext:(OpaqueJSContext *)a3;
++ (OpaqueJSScript)readerUserInterfaceScriptForContext:(OpaqueJSContext *)context;
 + (void)registerReaderCustomProtocols;
 @end
 
@@ -12,10 +12,10 @@
   SafariShared::TranslatedFileURLProtocol::registerProtocol();
 }
 
-+ (OpaqueJSScript)readerUserInterfaceScriptForContext:(OpaqueJSContext *)a3
++ (OpaqueJSScript)readerUserInterfaceScriptForContext:(OpaqueJSContext *)context
 {
   {
-    JSContextGetGroup(a3);
+    JSContextGetGroup(context);
     +[_SFReaderCustomProtocols readerUserInterfaceScriptForContext:]::userInterfaceScript = JSScriptCreateReferencingImmortalASCIIText();
   }
 

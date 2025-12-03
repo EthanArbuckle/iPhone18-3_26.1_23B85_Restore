@@ -1,17 +1,17 @@
 @interface HKCoreTelephonySatelliteClient
 - (BOOL)isSatelliteSupportedForEmergencyDemo;
 - (HKCoreTelephonySatelliteClient)init;
-- (HKCoreTelephonySatelliteClient)initWithDelegate:(id)a3 queue:(id)a4;
+- (HKCoreTelephonySatelliteClient)initWithDelegate:(id)delegate queue:(id)queue;
 - (HKCoreTelephonySatelliteClientDelegate)delegate;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation HKCoreTelephonySatelliteClient
 
-- (HKCoreTelephonySatelliteClient)initWithDelegate:(id)a3 queue:(id)a4
+- (HKCoreTelephonySatelliteClient)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = HKCoreTelephonySatelliteClient;
   v8 = [(HKCoreTelephonySatelliteClient *)&v16 init];
@@ -19,15 +19,15 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_queue, a4);
-    objc_storeWeak(&v9->_delegate, v6);
+    objc_storeStrong(&v8->_queue, queue);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = [objc_alloc(MEMORY[0x1E6965080]) initWithDelegate:v9 queue:v9->_queue];
     stewieStateMonitor = v9->_stewieStateMonitor;
     v9->_stewieStateMonitor = v10;
 
     [(CTStewieStateMonitor *)v9->_stewieStateMonitor start];
-    v12 = [(CTStewieStateMonitor *)v9->_stewieStateMonitor getState];
-    v13 = [v12 copy];
+    getState = [(CTStewieStateMonitor *)v9->_stewieStateMonitor getState];
+    v13 = [getState copy];
     cachedStewieState = v9->_cachedStewieState;
     v9->_cachedStewieState = v13;
   }
@@ -43,12 +43,12 @@
   return v4;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [changedCopy copy];
 
   cachedStewieState = self->_cachedStewieState;
   self->_cachedStewieState = v5;
@@ -65,8 +65,8 @@
     _os_log_impl(&dword_19197B000, v8, OS_LOG_TYPE_DEFAULT, "[%@][Satellite Support] Satellite support changed", v12, 0xCu);
   }
 
-  v10 = [(HKCoreTelephonySatelliteClient *)self delegate];
-  [v10 satelliteSupportChanged:self];
+  delegate = [(HKCoreTelephonySatelliteClient *)self delegate];
+  [delegate satelliteSupportChanged:self];
 
   v11 = *MEMORY[0x1E69E9840];
 }

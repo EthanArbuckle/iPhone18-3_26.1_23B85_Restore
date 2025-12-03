@@ -1,23 +1,23 @@
 @interface PINPairMainController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_startPairing:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
-- (void)showDoneUI:(int)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_startPairing:(id)pairing;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)handleButtonActions:(id)actions;
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (void)showDoneUI:(int)i;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PINPairMainController
 
-- (void)_startPairing:(id)a3
+- (void)_startPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
-    v7 = v4;
+    v7 = pairingCopy;
     LogPrintF();
   }
 
@@ -26,7 +26,7 @@
   pairingSession = self->_pairingSession;
   self->_pairingSession = v5;
 
-  [(SFPINPairSession *)self->_pairingSession setPeerDevice:v4];
+  [(SFPINPairSession *)self->_pairingSession setPeerDevice:pairingCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100107AF8;
@@ -42,9 +42,9 @@
   [(SFPINPairSession *)self->_pairingSession activate];
 }
 
-- (void)showDoneUI:(int)a3
+- (void)showDoneUI:(int)i
 {
-  v3 = *&a3;
+  v3 = *&i;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     v10 = v3;
@@ -69,18 +69,18 @@
   sub_100127D6C(vcNav, v9, 0);
 }
 
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   vcAuth = self->_vcAuth;
   if (vcAuth)
   {
 
-    [(PINPairAuthViewController *)vcAuth showWithFlags:*&a3 throttleSeconds:*&a4];
+    [(PINPairAuthViewController *)vcAuth showWithFlags:*&flags throttleSeconds:*&seconds];
   }
 
   else
   {
-    v6 = [(UIStoryboard *)self->_storyboard instantiateViewControllerWithIdentifier:@"Auth", *&a4];
+    v6 = [(UIStoryboard *)self->_storyboard instantiateViewControllerWithIdentifier:@"Auth", *&seconds];
     v7 = self->_vcAuth;
     self->_vcAuth = v6;
 
@@ -92,14 +92,14 @@
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -110,7 +110,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -124,21 +124,21 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   if (!self->_dismissed)
   {
-    v3 = a3;
+    animatedCopy = animated;
     self->_dismissed = 1;
-    v5 = [(PINPairMainController *)self _remoteViewControllerProxy];
-    v6 = v5;
+    _remoteViewControllerProxy = [(PINPairMainController *)self _remoteViewControllerProxy];
+    v6 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -146,20 +146,20 @@
       v8[1] = 3221225472;
       v8[2] = sub_10010805C;
       v8[3] = &unk_100195AC0;
-      v9 = v5;
-      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:v3 completion:v8];
+      v9 = _remoteViewControllerProxy;
+      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:animatedCopy completion:v8];
     }
 
     else
     {
-      [v5 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -199,12 +199,12 @@
 
   v11.receiver = self;
   v11.super_class = PINPairMainController;
-  [(SVSBaseMainController *)&v11 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v11 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -212,30 +212,30 @@
 
   v14.receiver = self;
   v14.super_class = PINPairMainController;
-  [(PINPairMainController *)&v14 viewDidAppear:v3];
+  [(PINPairMainController *)&v14 viewDidAppear:appearCopy];
   v5 = [UIStoryboard storyboardWithName:@"PINPair" bundle:0];
   storyboard = self->_storyboard;
   self->_storyboard = v5;
 
-  v7 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v7;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
-  v11 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v12 = [v11 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v12;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(PINPairMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
@@ -243,10 +243,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(PINPairMainController *)self view];
-  v3 = [v2 window];
+  view = [(PINPairMainController *)self view];
+  window = [view window];
 
-  if (v3)
+  if (window)
   {
     v4 = (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -259,12 +259,12 @@
   return v4;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
@@ -278,9 +278,9 @@
     self->_testFlags = SFTestFlagsFromString();
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 

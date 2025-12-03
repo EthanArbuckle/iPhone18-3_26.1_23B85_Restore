@@ -1,38 +1,38 @@
 @interface WLKLocationManager
 + (id)defaultLocationManager;
-+ (void)locationServicesEnabled:(id)a3;
-- (BOOL)_isIgnorableLocationError:(id)a3;
-- (BOOL)_isLastKnownLocation:(id)a3 freshForMaxAge:(double)a4 fromNewTimestamp:(double)a5;
-- (BOOL)_isLastKnownLocation:(id)a3 significantlyOlderThanNewLocation:(id)a4;
-- (BOOL)_isLastKnownLocationFresh:(id)a3;
-- (BOOL)_shouldLastKnownLocation:(id)a3 beUpdatedTo:(id)a4;
++ (void)locationServicesEnabled:(id)enabled;
+- (BOOL)_isIgnorableLocationError:(id)error;
+- (BOOL)_isLastKnownLocation:(id)location freshForMaxAge:(double)age fromNewTimestamp:(double)timestamp;
+- (BOOL)_isLastKnownLocation:(id)location significantlyOlderThanNewLocation:(id)newLocation;
+- (BOOL)_isLastKnownLocationFresh:(id)fresh;
+- (BOOL)_shouldLastKnownLocation:(id)location beUpdatedTo:(id)to;
 - (BOOL)isAuthorizationDenied;
 - (NSDictionary)lastKnownLocation;
 - (WLKLocationManager)init;
-- (double)_getDistanceOfLastKnownLocationDictionary:(id)a3 fromLocation:(id)a4;
-- (id)_cachedDictionary:(BOOL)a3;
+- (double)_getDistanceOfLastKnownLocationDictionary:(id)dictionary fromLocation:(id)location;
+- (id)_cachedDictionary:(BOOL)dictionary;
 - (id)_connection;
 - (id)_copyLastKnownLocation;
-- (id)_createLocationObjFromLocationDictionary:(id)a3;
-- (id)_dictionaryForCLLocation:(id)a3;
+- (id)_createLocationObjFromLocationDictionary:(id)dictionary;
+- (id)_dictionaryForCLLocation:(id)location;
 - (id)_dictionaryRepresentation;
 - (id)_locationQueryParameters;
-- (int64_t)_statusForCLAuthorizationStatus:(int)a3;
+- (int64_t)_statusForCLAuthorizationStatus:(int)status;
 - (int64_t)authorizationStatus;
 - (void)_deleteLastKnownLocation;
-- (void)_locationAuthorizationStatus:(id)a3;
-- (void)_networkReachbilityDidChange:(id)a3;
+- (void)_locationAuthorizationStatus:(id)status;
+- (void)_networkReachbilityDidChange:(id)change;
 - (void)_requestActiveLocationChangeUpdates;
-- (void)_requestCLLocationUpdates:(id)a3;
-- (void)_requestRecentCLLocation:(id)a3;
-- (void)_setLastKnownLocation:(id)a3;
+- (void)_requestCLLocationUpdates:(id)updates;
+- (void)_requestRecentCLLocation:(id)location;
+- (void)_setLastKnownLocation:(id)location;
 - (void)_updateLocationIfNeeded;
 - (void)dealloc;
-- (void)fetchAuthorizationStatus:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)requestAuthorizationWithForcedPrompt:(BOOL)a3;
+- (void)fetchAuthorizationStatus:(id)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)requestAuthorizationWithForcedPrompt:(BOOL)prompt;
 @end
 
 @implementation WLKLocationManager
@@ -101,8 +101,8 @@ uint64_t __44__WLKLocationManager_defaultLocationManager__block_invoke()
 - (void)_deleteLastKnownLocation
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
-  [v3 UTF8String];
+  localizedDescription = [self localizedDescription];
+  [localizedDescription UTF8String];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(&dword_272A0F000, a2, OS_LOG_TYPE_ERROR, "WLKLocationManager - Failed to remove last known location file with error: %s", v5, 0xCu);
 
@@ -194,8 +194,8 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
   if ([(WLKLocationManager *)self isAuthorizationApproved])
   {
-    v3 = [(WLKLocationManager *)self _copyLastKnownLocation];
-    if (v3 && [(WLKLocationManager *)self _isLastKnownLocationFresh:v3])
+    _copyLastKnownLocation = [(WLKLocationManager *)self _copyLastKnownLocation];
+    if (_copyLastKnownLocation && [(WLKLocationManager *)self _isLastKnownLocationFresh:_copyLastKnownLocation])
     {
       v4 = WLKSystemLogObject();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -222,11 +222,11 @@ LABEL_10:
 
   else
   {
-    v3 = WLKSystemLogObject();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    _copyLastKnownLocation = WLKSystemLogObject();
+    if (os_log_type_enabled(_copyLastKnownLocation, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v7) = 0;
-      _os_log_impl(&dword_272A0F000, v3, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - _updateLocationIfNeeded: location not authorized", &v7, 2u);
+      _os_log_impl(&dword_272A0F000, _copyLastKnownLocation, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - _updateLocationIfNeeded: location not authorized", &v7, 2u);
     }
   }
 
@@ -303,18 +303,18 @@ void __26__WLKLocationManager_init__block_invoke_29(uint64_t a1)
 - (id)_locationQueryParameters
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WLKLocationManager *)self lastKnownLocation];
+  lastKnownLocation = [(WLKLocationManager *)self lastKnownLocation];
   if ([(WLKLocationManager *)self isAuthorizationDenied])
   {
     v4 = &unk_288222E28;
   }
 
-  else if (v3)
+  else if (lastKnownLocation)
   {
     v14 = @"latlong";
     v5 = MEMORY[0x277CCACA8];
-    v6 = [v3 objectForKeyedSubscript:@"reducedPrecisionLatitudeString"];
-    v7 = [v3 objectForKeyedSubscript:@"reducedPrecisionLongitudeString"];
+    v6 = [lastKnownLocation objectForKeyedSubscript:@"reducedPrecisionLatitudeString"];
+    v7 = [lastKnownLocation objectForKeyedSubscript:@"reducedPrecisionLongitudeString"];
     v8 = [v5 stringWithFormat:@"%@, %@", v6, v7];
     v15[0] = v8;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -340,17 +340,17 @@ void __26__WLKLocationManager_init__block_invoke_29(uint64_t a1)
 
 - (NSDictionary)lastKnownLocation
 {
-  v2 = [(WLKLocationManager *)self _copyLastKnownLocation];
+  _copyLastKnownLocation = [(WLKLocationManager *)self _copyLastKnownLocation];
 
-  return v2;
+  return _copyLastKnownLocation;
 }
 
 - (id)_copyLastKnownLocation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_lastKnownLocation copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_lastKnownLocation copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -362,19 +362,19 @@ uint64_t __43__WLKLocationManager_isAuthorizationDenied__block_invoke(uint64_t a
   return result;
 }
 
-+ (void)locationServicesEnabled:(id)a3
++ (void)locationServicesEnabled:(id)enabled
 {
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
-    v5 = [a1 defaultLocationManager];
-    v6 = [v5 clQueue];
+    defaultLocationManager = [self defaultLocationManager];
+    clQueue = [defaultLocationManager clQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__WLKLocationManager_locationServicesEnabled___block_invoke;
     block[3] = &unk_279E5EA90;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = enabledCopy;
+    dispatch_async(clQueue, block);
   }
 }
 
@@ -390,9 +390,9 @@ void __46__WLKLocationManager_locationServicesEnabled___block_invoke(uint64_t a1
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_networkReachbilityDidChange:(id)a3
+- (void)_networkReachbilityDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [WLKLocationManager _networkReachbilityDidChange:];
@@ -435,8 +435,8 @@ void __51__WLKLocationManager__networkReachbilityDidChange___block_invoke(uint64
     notify_cancel(didChangeNotificationToken);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = WLKLocationManager;
@@ -454,15 +454,15 @@ void __29__WLKLocationManager_dealloc__block_invoke(uint64_t a1)
   [v3 setDelegate:0];
 }
 
-- (void)fetchAuthorizationStatus:(id)a3
+- (void)fetchAuthorizationStatus:(id)status
 {
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     [WLKLocationManager fetchAuthorizationStatus:];
   }
 
-  v5 = v4;
+  v5 = statusCopy;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -541,9 +541,9 @@ uint64_t __47__WLKLocationManager_fetchAuthorizationStatus___block_invoke_2(uint
   return result;
 }
 
-- (void)requestAuthorizationWithForcedPrompt:(BOOL)a3
+- (void)requestAuthorizationWithForcedPrompt:(BOOL)prompt
 {
-  if (!a3 || [(WLKLocationManager *)self _locationServicesEnabled]&& [(WLKLocationManager *)self authorizationStatus])
+  if (!prompt || [(WLKLocationManager *)self _locationServicesEnabled]&& [(WLKLocationManager *)self authorizationStatus])
   {
     clQueue = self->_clQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -630,18 +630,18 @@ void __57__WLKLocationManager__requestActiveLocationChangeUpdates__block_invoke(
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isIgnorableLocationError:(id)a3
+- (BOOL)_isIgnorableLocationError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = *MEMORY[0x277CBFCF0], v5, v5 == v6))
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy && ([errorCopy domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = *MEMORY[0x277CBFCF0], v5, v5 == v6))
   {
     v8 = WLKSystemLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = [v4 code];
+      code = [v4 code];
       _os_log_impl(&dword_272A0F000, v8, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - Ignoring location error: %ld", &v11, 0xCu);
     }
 
@@ -659,27 +659,27 @@ void __57__WLKLocationManager__requestActiveLocationChangeUpdates__block_invoke(
 
 - (id)_dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSDictionary *)v4->_lastKnownLocation copy];
-  [v3 setObject:v5 forKeyedSubscript:@"LastKnownLocation"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSDictionary *)selfCopy->_lastKnownLocation copy];
+  [dictionary setObject:v5 forKeyedSubscript:@"LastKnownLocation"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)_isLastKnownLocation:(id)a3 freshForMaxAge:(double)a4 fromNewTimestamp:(double)a5
+- (BOOL)_isLastKnownLocation:(id)location freshForMaxAge:(double)age fromNewTimestamp:(double)timestamp
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (location)
   {
-    v7 = [a3 objectForKeyedSubscript:@"secondsSinceEpoch"];
+    v7 = [location objectForKeyedSubscript:@"secondsSinceEpoch"];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = a5 - v9;
+    v10 = timestamp - v9;
     v11 = WLKSystemLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -688,11 +688,11 @@ void __57__WLKLocationManager__requestActiveLocationChangeUpdates__block_invoke(
       v17 = 2048;
       v18 = v10;
       v19 = 2048;
-      v20 = a4;
+      ageCopy = age;
       _os_log_impl(&dword_272A0F000, v11, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - %s: locationAge %f, maxAge %f", &v15, 0x20u);
     }
 
-    result = v10 < a4;
+    result = v10 < age;
   }
 
   else
@@ -712,23 +712,23 @@ void __57__WLKLocationManager__requestActiveLocationChangeUpdates__block_invoke(
   return result;
 }
 
-- (BOOL)_isLastKnownLocationFresh:(id)a3
+- (BOOL)_isLastKnownLocationFresh:(id)fresh
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [v6 timeIntervalSince1970];
-  LOBYTE(self) = [(WLKLocationManager *)self _isLastKnownLocation:v5 freshForMaxAge:86400.0 fromNewTimestamp:v7];
+  freshCopy = fresh;
+  date = [v4 date];
+  [date timeIntervalSince1970];
+  LOBYTE(self) = [(WLKLocationManager *)self _isLastKnownLocation:freshCopy freshForMaxAge:86400.0 fromNewTimestamp:v7];
 
   return self;
 }
 
-- (BOOL)_shouldLastKnownLocation:(id)a3 beUpdatedTo:(id)a4
+- (BOOL)_shouldLastKnownLocation:(id)location beUpdatedTo:(id)to
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(WLKLocationManager *)self _isLastKnownLocation:v6 significantlyOlderThanNewLocation:v7])
+  locationCopy = location;
+  toCopy = to;
+  if ([(WLKLocationManager *)self _isLastKnownLocation:locationCopy significantlyOlderThanNewLocation:toCopy])
   {
     v8 = WLKSystemLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -743,7 +743,7 @@ LABEL_7:
 
   else
   {
-    [(WLKLocationManager *)self _getDistanceOfLastKnownLocationDictionary:v6 fromLocation:v7];
+    [(WLKLocationManager *)self _getDistanceOfLastKnownLocationDictionary:locationCopy fromLocation:toCopy];
     if (v10 <= 1000.0)
     {
       v11 = 0;
@@ -767,33 +767,33 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_isLastKnownLocation:(id)a3 significantlyOlderThanNewLocation:(id)a4
+- (BOOL)_isLastKnownLocation:(id)location significantlyOlderThanNewLocation:(id)newLocation
 {
-  if (!a4)
+  if (!newLocation)
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [a4 timestamp];
-  [v7 timeIntervalSince1970];
-  LOBYTE(self) = [(WLKLocationManager *)self _isLastKnownLocation:v6 freshForMaxAge:7200.0 fromNewTimestamp:v8];
+  locationCopy = location;
+  timestamp = [newLocation timestamp];
+  [timestamp timeIntervalSince1970];
+  LOBYTE(self) = [(WLKLocationManager *)self _isLastKnownLocation:locationCopy freshForMaxAge:7200.0 fromNewTimestamp:v8];
 
   return self;
 }
 
-- (id)_createLocationObjFromLocationDictionary:(id)a3
+- (id)_createLocationObjFromLocationDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKey:@"reducedPrecisionLatitudeString"];
+    v4 = [dictionaryCopy objectForKey:@"reducedPrecisionLatitudeString"];
     v5 = v4;
     if (v4)
     {
       [v4 doubleValue];
       v7 = v6;
-      v8 = [v3 objectForKey:@"reducedPrecisionLongitudeString"];
+      v8 = [dictionaryCopy objectForKey:@"reducedPrecisionLongitudeString"];
       v9 = v8;
       if (v8)
       {
@@ -821,12 +821,12 @@ LABEL_10:
   return v11;
 }
 
-- (double)_getDistanceOfLastKnownLocationDictionary:(id)a3 fromLocation:(id)a4
+- (double)_getDistanceOfLastKnownLocationDictionary:(id)dictionary fromLocation:(id)location
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  locationCopy = location;
+  if (!locationCopy)
   {
     v12 = WLKSystemLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -844,7 +844,7 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!dictionaryCopy)
   {
     v12 = WLKSystemLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -858,11 +858,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [(WLKLocationManager *)self _createLocationObjFromLocationDictionary:v6];
+  v8 = [(WLKLocationManager *)self _createLocationObjFromLocationDictionary:dictionaryCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 distanceFromLocation:v7];
+    [v8 distanceFromLocation:locationCopy];
     v11 = v10;
   }
 
@@ -884,10 +884,10 @@ LABEL_15:
   return v11;
 }
 
-- (void)_setLastKnownLocation:(id)a3
+- (void)_setLastKnownLocation:(id)location
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -896,12 +896,12 @@ LABEL_15:
     _os_log_impl(&dword_272A0F000, v5, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - %s", &v12, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  lastKnownLocation = v6->_lastKnownLocation;
-  v6->_lastKnownLocation = v4;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastKnownLocation = selfCopy->_lastKnownLocation;
+  selfCopy->_lastKnownLocation = locationCopy;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v8 = WLKSystemLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -910,7 +910,7 @@ LABEL_15:
   }
 
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_45_0);
-  didChangeNotificationToken = v6->_didChangeNotificationToken;
+  didChangeNotificationToken = selfCopy->_didChangeNotificationToken;
   v10 = getpid();
   notify_set_state(didChangeNotificationToken, v10);
   notify_post("com.apple.WatchListKit.WLKLocationManagerLocationDidChangeNotification");
@@ -930,17 +930,17 @@ void __44__WLKLocationManager__setLastKnownLocation___block_invoke()
   [v1 postNotificationName:@"WLKLocationManagerLocationDidChangeNotification" object:0];
 }
 
-- (void)_requestRecentCLLocation:(id)a3
+- (void)_requestRecentCLLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   clQueue = self->_clQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__WLKLocationManager__requestRecentCLLocation___block_invoke;
   v7[3] = &unk_279E5F6A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_async(clQueue, v7);
 }
 
@@ -989,12 +989,12 @@ void __47__WLKLocationManager__requestRecentCLLocation___block_invoke(uint64_t a
   }
 }
 
-- (void)_requestCLLocationUpdates:(id)a3
+- (void)_requestCLLocationUpdates:(id)updates
 {
-  v4 = a3;
-  if (v4)
+  updatesCopy = updates;
+  if (updatesCopy)
   {
-    [(WLKLocationManager *)self setLocationUpdateBlock:v4];
+    [(WLKLocationManager *)self setLocationUpdateBlock:updatesCopy];
   }
 
   v5 = WLKSystemLogObject();
@@ -1007,19 +1007,19 @@ void __47__WLKLocationManager__requestRecentCLLocation___block_invoke(uint64_t a
   [(CLLocationManager *)self->_clLocationManager requestLocation];
 }
 
-- (id)_dictionaryForCLLocation:(id)a3
+- (id)_dictionaryForCLLocation:(id)location
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (location)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = a3;
+    locationCopy = location;
     v5 = [v3 stringWithFormat:@"%s%df", "%0.0", 3];
     v6 = MEMORY[0x277CCACA8];
-    [v4 coordinate];
+    [locationCopy coordinate];
     v8 = [v6 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%f" error:0, v7];
     v9 = MEMORY[0x277CCACA8];
-    [v4 coordinate];
+    [locationCopy coordinate];
     v11 = [v9 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%f" error:0, v10];
     v18[0] = @"reducedPrecisionLatitudeString";
     v18[1] = @"reducedPrecisionLongitudeString";
@@ -1027,9 +1027,9 @@ void __47__WLKLocationManager__requestRecentCLLocation___block_invoke(uint64_t a
     v19[1] = v11;
     v18[2] = @"secondsSinceEpoch";
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v4 timestamp];
+    timestamp = [locationCopy timestamp];
 
-    [v13 timeIntervalSince1970];
+    [timestamp timeIntervalSince1970];
     v14 = [v12 numberWithDouble:?];
     v19[2] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
@@ -1045,35 +1045,35 @@ void __47__WLKLocationManager__requestRecentCLLocation___block_invoke(uint64_t a
   return v15;
 }
 
-- (int64_t)_statusForCLAuthorizationStatus:(int)a3
+- (int64_t)_statusForCLAuthorizationStatus:(int)status
 {
-  if ((a3 - 2) > 2)
+  if ((status - 2) > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_272A7F548[a3 - 2];
+    return qword_272A7F548[status - 2];
   }
 }
 
-- (id)_cachedDictionary:(BOOL)a3
+- (id)_cachedDictionary:(BOOL)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     goto LABEL_4;
   }
 
   v4 = +[WLKAppLibrary defaultAppLibrary];
-  v5 = [v4 isTVAppInstalled];
+  isTVAppInstalled = [v4 isTVAppInstalled];
 
-  if (v5)
+  if (isTVAppInstalled)
   {
     if ([(WLKLocationManager *)self isAuthorizationApproved])
     {
 LABEL_4:
-      v6 = [(WLKLocationManager *)self _copyLastKnownLocation];
+      _copyLastKnownLocation = [(WLKLocationManager *)self _copyLastKnownLocation];
       goto LABEL_12;
     }
   }
@@ -1101,23 +1101,23 @@ LABEL_4:
   }
 
 LABEL_11:
-  v6 = 0;
+  _copyLastKnownLocation = 0;
 LABEL_12:
 
-  return v6;
+  return _copyLastKnownLocation;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   location[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authorizationCopy = authorization;
   dispatch_assert_queue_V2(self->_clQueue);
-  v5 = [v4 authorizationStatus];
+  authorizationStatus = [authorizationCopy authorizationStatus];
   if ([(WLKLocationManager *)self isAuthorizationApproved])
   {
     if (!self->_lastKnownLocation)
     {
-      v6 = [(WLKLocationManager *)self _statusForCLAuthorizationStatus:v5];
+      v6 = [(WLKLocationManager *)self _statusForCLAuthorizationStatus:authorizationStatus];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__WLKLocationManager_locationManagerDidChangeAuthorization___block_invoke;
@@ -1143,11 +1143,11 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 67109120;
-      HIDWORD(location[0]) = v5;
+      HIDWORD(location[0]) = authorizationStatus;
       _os_log_impl(&dword_272A0F000, v7, OS_LOG_TYPE_DEFAULT, "WLKLocationManager - Authorization status is not approved with status: %d", location, 8u);
     }
 
-    if ((v5 & 0xFFFFFFFD) == 0)
+    if ((authorizationStatus & 0xFFFFFFFD) == 0)
     {
       v8 = WLKSystemLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1162,7 +1162,7 @@ LABEL_12:
       v10[2] = __60__WLKLocationManager_locationManagerDidChangeAuthorization___block_invoke_57;
       v10[3] = &unk_279E5F6F8;
       v10[4] = self;
-      v11 = v5;
+      v11 = authorizationStatus;
       dispatch_async(MEMORY[0x277D85CD0], v10);
     }
   }
@@ -1226,31 +1226,31 @@ void __60__WLKLocationManager_locationManagerDidChangeAuthorization___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a4;
+  locationsCopy = locations;
   clQueue = self->_clQueue;
-  v8 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(clQueue);
   clLocationManager = self->_clLocationManager;
 
-  if (clLocationManager == v8)
+  if (clLocationManager == managerCopy)
   {
-    v13 = [(WLKLocationManager *)self locationUpdateBlock];
+    locationUpdateBlock = [(WLKLocationManager *)self locationUpdateBlock];
 
-    if (v13)
+    if (locationUpdateBlock)
     {
-      if ([v6 count])
+      if ([locationsCopy count])
       {
-        v10 = [(WLKLocationManager *)self locationUpdateBlock];
-        v14 = [v6 lastObject];
-        (*(v10 + 16))(v10, v14, 0);
+        locationUpdateBlock2 = [(WLKLocationManager *)self locationUpdateBlock];
+        lastObject = [locationsCopy lastObject];
+        (*(locationUpdateBlock2 + 16))(locationUpdateBlock2, lastObject, 0);
 
         goto LABEL_12;
       }
 
-      v10 = WLKSystemLogObject();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      locationUpdateBlock2 = WLKSystemLogObject();
+      if (!os_log_type_enabled(locationUpdateBlock2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_12;
       }
@@ -1262,8 +1262,8 @@ void __60__WLKLocationManager_locationManagerDidChangeAuthorization___block_invo
 
     else
     {
-      v10 = WLKSystemLogObject();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      locationUpdateBlock2 = WLKSystemLogObject();
+      if (!os_log_type_enabled(locationUpdateBlock2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_12;
       }
@@ -1276,28 +1276,28 @@ void __60__WLKLocationManager_locationManagerDidChangeAuthorization___block_invo
     goto LABEL_4;
   }
 
-  v10 = WLKSystemLogObject();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  locationUpdateBlock2 = WLKSystemLogObject();
+  if (os_log_type_enabled(locationUpdateBlock2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     v11 = "WLKLocationManager - Location manager ref don't match";
     v12 = buf;
 LABEL_4:
-    _os_log_impl(&dword_272A0F000, v10, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
+    _os_log_impl(&dword_272A0F000, locationUpdateBlock2, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
   }
 
 LABEL_12:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   clQueue = self->_clQueue;
-  v8 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(clQueue);
   clLocationManager = self->_clLocationManager;
 
-  if (clLocationManager == v8)
+  if (clLocationManager == managerCopy)
   {
     v10 = WLKSystemLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1305,19 +1305,19 @@ LABEL_12:
       [WLKLocationManager locationManager:didFailWithError:];
     }
 
-    v11 = [(WLKLocationManager *)self locationUpdateBlock];
+    locationUpdateBlock = [(WLKLocationManager *)self locationUpdateBlock];
 
-    if (v11)
+    if (locationUpdateBlock)
     {
-      v12 = [(WLKLocationManager *)self locationUpdateBlock];
-      (v12)[2](v12, 0, v6);
+      locationUpdateBlock2 = [(WLKLocationManager *)self locationUpdateBlock];
+      (locationUpdateBlock2)[2](locationUpdateBlock2, 0, errorCopy);
     }
   }
 }
 
-- (void)_locationAuthorizationStatus:(id)a3
+- (void)_locationAuthorizationStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if ((WLKShouldRunInProcess() & 1) != 0 || WLKIsTVApp())
   {
     objc_initWeak(location, self);
@@ -1328,8 +1328,8 @@ LABEL_12:
     block[3] = &unk_279E5EB88;
     objc_copyWeak(&v18, location);
     block[4] = self;
-    v17 = v4;
-    v6 = v4;
+    v17 = statusCopy;
+    v6 = statusCopy;
     dispatch_async(clQueue, block);
 
     objc_destroyWeak(&v18);
@@ -1338,14 +1338,14 @@ LABEL_12:
 
   else
   {
-    v7 = [(WLKLocationManager *)self _connection];
+    _connection = [(WLKLocationManager *)self _connection];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __51__WLKLocationManager__locationAuthorizationStatus___block_invoke_2;
     v14[3] = &unk_279E5EB38;
-    v8 = v4;
+    v8 = statusCopy;
     v15 = v8;
-    v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
+    v9 = [_connection remoteObjectProxyWithErrorHandler:v14];
 
     v10 = WLKSystemLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1429,41 +1429,41 @@ uint64_t __51__WLKLocationManager__locationAuthorizationStatus___block_invoke_73
 
 - (id)_connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connection = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
   if (!connection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.watchlistd.xpc" options:0];
-    v5 = v2->_connection;
-    v2->_connection = v4;
+    v5 = selfCopy->_connection;
+    selfCopy->_connection = v4;
 
-    v6 = v2->_connection;
+    v6 = selfCopy->_connection;
     v7 = WLKConnectionClientInterface();
     [(NSXPCConnection *)v6 setExportedInterface:v7];
 
-    [(NSXPCConnection *)v2->_connection setExportedObject:v2];
-    v8 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setExportedObject:selfCopy];
+    v8 = selfCopy->_connection;
     v9 = WLKConnectionServerInterface();
     [(NSXPCConnection *)v8 setRemoteObjectInterface:v9];
 
-    [(NSXPCConnection *)v2->_connection setInterruptionHandler:&__block_literal_global_79];
-    objc_initWeak(&location, v2);
-    v10 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:&__block_literal_global_79];
+    objc_initWeak(&location, selfCopy);
+    v10 = selfCopy->_connection;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __33__WLKLocationManager__connection__block_invoke_80;
     v16 = &unk_279E5EC50;
     objc_copyWeak(&v17, &location);
     [(NSXPCConnection *)v10 setInvalidationHandler:&v13];
-    [(NSXPCConnection *)v2->_connection resume:v13];
+    [(NSXPCConnection *)selfCopy->_connection resume:v13];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
-    connection = v2->_connection;
+    connection = selfCopy->_connection;
   }
 
   v11 = connection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }

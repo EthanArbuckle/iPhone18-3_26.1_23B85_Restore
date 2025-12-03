@@ -1,18 +1,18 @@
 @interface SUCorePolicyDDMConfiguration
-+ (id)declarationFromAllDeclarationDicts:(id)a3;
-+ (id)declarationFromAllDeclarations:(id)a3;
++ (id)declarationFromAllDeclarationDicts:(id)dicts;
++ (id)declarationFromAllDeclarations:(id)declarations;
 + (id)getDaemonCacheDirectory;
 + (id)sharedInstance;
 + (id)statePersistencePath;
 + (void)getDaemonCacheDirectory;
-- (BOOL)addDeclaration:(id)a3 returningError:(id *)a4;
-- (BOOL)addGlobalSettingsDeclaration:(id)a3 returningError:(id *)a4;
+- (BOOL)addDeclaration:(id)declaration returningError:(id *)error;
+- (BOOL)addGlobalSettingsDeclaration:(id)declaration returningError:(id *)error;
 - (BOOL)hasManagedConfigurations;
-- (BOOL)invalidateDeclarationForKey:(id)a3;
-- (BOOL)removeDeclarationForKey:(id)a3;
-- (BOOL)setActiveDeclarationKey:(id)a3;
-- (SUCorePolicyDDMConfiguration)initWithStatePersistencePath:(id)a3;
-- (id)_dateFromString:(id)a3;
+- (BOOL)invalidateDeclarationForKey:(id)key;
+- (BOOL)removeDeclarationForKey:(id)key;
+- (BOOL)setActiveDeclarationKey:(id)key;
+- (SUCorePolicyDDMConfiguration)initWithStatePersistencePath:(id)path;
+- (id)_dateFromString:(id)string;
 - (id)_getActiveDeclarationKey;
 - (id)activeDeclarationKey;
 - (id)allDeclarations;
@@ -20,14 +20,14 @@
 - (id)allKeys;
 - (id)currentGlobalSettingsDeclaration;
 - (id)currentlyApplicableDeclaration;
-- (id)declarationForKey:(id)a3;
+- (id)declarationForKey:(id)key;
 - (id)description;
 - (id)invalidateAllInvalidDeclarationsReturningAllInvalid;
-- (void)_getDeclarations:(id *)a3 invalid:(id *)a4;
-- (void)_persistActiveDeclarationKey:(id)a3;
-- (void)_persistInvalidDeclarations:(id)a3;
+- (void)_getDeclarations:(id *)declarations invalid:(id *)invalid;
+- (void)_persistActiveDeclarationKey:(id)key;
+- (void)_persistInvalidDeclarations:(id)declarations;
 - (void)_persistState;
-- (void)_persistValidDeclarations:(id)a3;
+- (void)_persistValidDeclarations:(id)declarations;
 - (void)removeAllDeclarations;
 - (void)removeGlobalSettingsDeclaration;
 @end
@@ -53,9 +53,9 @@ uint64_t __46__SUCorePolicyDDMConfiguration_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (SUCorePolicyDDMConfiguration)initWithStatePersistencePath:(id)a3
+- (SUCorePolicyDDMConfiguration)initWithStatePersistencePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = SUCorePolicyDDMConfiguration;
   v5 = [(SUCorePolicyDDMConfiguration *)&v25 init];
@@ -68,24 +68,24 @@ uint64_t __46__SUCorePolicyDDMConfiguration_sharedInstance__block_invoke()
     stateQueue = v6->_stateQueue;
     v6->_stateQueue = v8;
 
-    if (!v4)
+    if (!pathCopy)
     {
-      v4 = [objc_opt_class() statePersistencePath];
-      if (!v4)
+      pathCopy = [objc_opt_class() statePersistencePath];
+      if (!pathCopy)
       {
         v10 = +[SUCoreDDMUtilities sharedLogger];
-        v11 = [v10 oslog];
+        oslog = [v10 oslog];
 
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
-          [(SUCorePolicyDDMConfiguration *)v11 initWithStatePersistencePath:v12, v13, v14, v15, v16, v17, v18];
+          [(SUCorePolicyDDMConfiguration *)oslog initWithStatePersistencePath:v12, v13, v14, v15, v16, v17, v18];
         }
 
-        v4 = @"/tmp/SoftwareUpdateDDMStatePersistence.plist";
+        pathCopy = @"/tmp/SoftwareUpdateDDMStatePersistence.plist";
       }
     }
 
-    v19 = [objc_alloc(MEMORY[0x277D64478]) initWithDispatchQueue:v6->_stateQueue withPersistencePath:v4 forPolicyVersion:@"1.0"];
+    v19 = [objc_alloc(MEMORY[0x277D64478]) initWithDispatchQueue:v6->_stateQueue withPersistencePath:pathCopy forPolicyVersion:@"1.0"];
     persistedState = v6->_persistedState;
     v6->_persistedState = v19;
 
@@ -134,11 +134,11 @@ void __61__SUCorePolicyDDMConfiguration_initWithStatePersistencePath___block_inv
 
 + (id)statePersistencePath
 {
-  v2 = [objc_opt_class() getDaemonCacheDirectory];
-  v3 = v2;
-  if (v2)
+  getDaemonCacheDirectory = [objc_opt_class() getDaemonCacheDirectory];
+  v3 = getDaemonCacheDirectory;
+  if (getDaemonCacheDirectory)
   {
-    v4 = [v2 stringByAppendingPathComponent:@"com.apple.su.ddm.plist"];
+    v4 = [getDaemonCacheDirectory stringByAppendingPathComponent:@"com.apple.su.ddm.plist"];
   }
 
   else
@@ -155,109 +155,109 @@ void __61__SUCorePolicyDDMConfiguration_initWithStatePersistencePath___block_inv
   bzero(__s, 0x400uLL);
   if (confstr(65538, __s, 0x400uLL) >= 1)
   {
-    v2 = [MEMORY[0x277CCAA00] defaultManager];
-    v3 = [v2 stringWithFileSystemRepresentation:__s length:strlen(__s)];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryDirectory = [defaultManager stringWithFileSystemRepresentation:__s length:strlen(__s)];
 
-    v4 = [v3 stringByAppendingPathComponent:@"SUCorePolicyDDMConfiguration"];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    v4 = [temporaryDirectory stringByAppendingPathComponent:@"SUCorePolicyDDMConfiguration"];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager2 fileExistsAtPath:v4];
 
     if ((v6 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), v26 = 0, objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 0, 0, &v26), v8 = v26, v7, !v8))
     {
-      v11 = v4;
+      path2 = v4;
     }
 
     else
     {
       v9 = +[SUCoreDDMUtilities sharedLogger];
-      v10 = [v9 oslog];
+      oslog = [v9 oslog];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         +[SUCorePolicyDDMConfiguration getDaemonCacheDirectory];
       }
 
-      v11 = 0;
+      path2 = 0;
     }
 
     goto LABEL_20;
   }
 
   v12 = +[SUCoreDDMUtilities sharedLogger];
-  v13 = [v12 oslog];
+  oslog2 = [v12 oslog];
 
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
   {
     +[SUCorePolicyDDMConfiguration getDaemonCacheDirectory];
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v14 temporaryDirectory];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager3 temporaryDirectory];
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v3 path];
-  v17 = [v15 fileExistsAtPath:v16];
+  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+  path = [temporaryDirectory path];
+  v17 = [defaultManager4 fileExistsAtPath:path];
 
   if (v17)
   {
 LABEL_19:
-    v11 = [v3 path];
+    path2 = [temporaryDirectory path];
     goto LABEL_20;
   }
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v3 path];
+  defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [temporaryDirectory path];
   v25 = 0;
-  [v18 createDirectoryAtPath:v19 withIntermediateDirectories:0 attributes:0 error:&v25];
+  [defaultManager5 createDirectoryAtPath:path3 withIntermediateDirectories:0 attributes:0 error:&v25];
   v20 = v25;
 
   v21 = +[SUCoreDDMUtilities sharedLogger];
-  v22 = [v21 oslog];
+  oslog3 = [v21 oslog];
 
   if (!v20)
   {
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v28 = "+[SUCorePolicyDDMConfiguration getDaemonCacheDirectory]";
-      _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, "%s: Created tmp directory", buf, 0xCu);
+      _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "%s: Created tmp directory", buf, 0xCu);
     }
 
     goto LABEL_19;
   }
 
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
   {
     +[SUCorePolicyDDMConfiguration getDaemonCacheDirectory];
   }
 
-  v11 = 0;
+  path2 = 0;
 LABEL_20:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return path2;
 }
 
 - (BOOL)hasManagedConfigurations
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
   dispatch_assert_queue_not_V2(self->_stateQueue);
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__SUCorePolicyDDMConfiguration_hasManagedConfigurations__block_invoke;
   v5[3] = &unk_27892C880;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(stateQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __56__SUCorePolicyDDMConfiguration_hasManagedConfigurations__block_invoke(uint64_t a1)
@@ -305,13 +305,13 @@ void __56__SUCorePolicyDDMConfiguration_hasManagedConfigurations__block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getDeclarations:(id *)a3 invalid:(id *)a4
+- (void)_getDeclarations:(id *)declarations invalid:(id *)invalid
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (a3)
+  if (declarations)
   {
-    v7 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-    v8 = [v7 dictionaryForKey:@"Declarations"];
+    persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+    v8 = [persistedState dictionaryForKey:@"Declarations"];
 
     v9 = [v8 mutableCopy];
     if (!v9)
@@ -320,13 +320,13 @@ void __56__SUCorePolicyDDMConfiguration_hasManagedConfigurations__block_invoke(u
     }
 
     v10 = v9;
-    *a3 = v10;
+    *declarations = v10;
   }
 
-  if (a4)
+  if (invalid)
   {
-    v11 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-    v14 = [v11 dictionaryForKey:@"invalidDeclarations"];
+    persistedState2 = [(SUCorePolicyDDMConfiguration *)self persistedState];
+    v14 = [persistedState2 dictionaryForKey:@"invalidDeclarations"];
 
     v12 = [v14 mutableCopy];
     if (!v12)
@@ -335,49 +335,49 @@ void __56__SUCorePolicyDDMConfiguration_hasManagedConfigurations__block_invoke(u
     }
 
     v13 = v12;
-    *a4 = v13;
+    *invalid = v13;
   }
 }
 
-- (void)_persistValidDeclarations:(id)a3
+- (void)_persistValidDeclarations:(id)declarations
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  declarationsCopy = declarations;
   dispatch_assert_queue_V2(stateQueue);
-  v6 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-  [v6 persistDictionary:v5 forKey:@"Declarations" shouldPersist:0];
+  persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+  [persistedState persistDictionary:declarationsCopy forKey:@"Declarations" shouldPersist:0];
 }
 
-- (void)_persistInvalidDeclarations:(id)a3
+- (void)_persistInvalidDeclarations:(id)declarations
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  declarationsCopy = declarations;
   dispatch_assert_queue_V2(stateQueue);
-  v6 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-  [v6 persistDictionary:v5 forKey:@"invalidDeclarations" shouldPersist:0];
+  persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+  [persistedState persistDictionary:declarationsCopy forKey:@"invalidDeclarations" shouldPersist:0];
 }
 
-- (void)_persistActiveDeclarationKey:(id)a3
+- (void)_persistActiveDeclarationKey:(id)key
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(stateQueue);
-  v6 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-  [v6 persistString:v5 forKey:@"activeDeclarationKey" shouldPersist:0];
+  persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+  [persistedState persistString:keyCopy forKey:@"activeDeclarationKey" shouldPersist:0];
 }
 
 - (void)_persistState
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-  [v3 persistState];
+  persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+  [persistedState persistState];
 }
 
 - (id)_getActiveDeclarationKey
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(SUCorePolicyDDMConfiguration *)self persistedState];
-  v4 = [v3 stringForKey:@"activeDeclarationKey"];
+  persistedState = [(SUCorePolicyDDMConfiguration *)self persistedState];
+  v4 = [persistedState stringForKey:@"activeDeclarationKey"];
 
   return v4;
 }
@@ -415,9 +415,9 @@ uint64_t __52__SUCorePolicyDDMConfiguration_activeDeclarationKey__block_invoke(u
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)setActiveDeclarationKey:(id)a3
+- (BOOL)setActiveDeclarationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -429,14 +429,14 @@ uint64_t __52__SUCorePolicyDDMConfiguration_activeDeclarationKey__block_invoke(u
   block[2] = __56__SUCorePolicyDDMConfiguration_setActiveDeclarationKey___block_invoke;
   block[3] = &unk_27892D520;
   block[4] = self;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(keyCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return keyCopy;
 }
 
 void __56__SUCorePolicyDDMConfiguration_setActiveDeclarationKey___block_invoke(uint64_t a1)
@@ -491,9 +491,9 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addDeclaration:(id)a3 returningError:(id *)a4
+- (BOOL)addDeclaration:(id)declaration returningError:(id *)error
 {
-  v6 = a3;
+  declarationCopy = declaration;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -510,16 +510,16 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __62__SUCorePolicyDDMConfiguration_addDeclaration_returningError___block_invoke;
   v11[3] = &unk_27892DD98;
-  v8 = v6;
+  v8 = declarationCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
   dispatch_sync(stateQueue, v11);
   v9 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = *(v23 + 24);
   }
 
@@ -633,9 +633,9 @@ LABEL_18:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)declarationForKey:(id)a3
+- (id)declarationForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -649,9 +649,9 @@ LABEL_18:
   block[2] = __50__SUCorePolicyDDMConfiguration_declarationForKey___block_invoke;
   block[3] = &unk_27892D520;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(stateQueue, block);
   v7 = v13[5];
 
@@ -803,16 +803,16 @@ void __47__SUCorePolicyDDMConfiguration_allDeclarations__block_invoke_2(uint64_t
   v10[5] = &v11;
   dispatch_sync(stateQueue, v10);
   v4 = +[SUCoreDDMUtilities sharedLogger];
-  v5 = [v4 oslog];
+  oslog = [v4 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v12[5];
     *buf = 136315394;
     v18 = "[SUCorePolicyDDMConfiguration allDeclarationsIncludingInvalid]";
     v19 = 2114;
     v20 = v6;
-    _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "%s: All enforced-su declarations: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%s: All enforced-su declarations: %{public}@", buf, 0x16u);
   }
 
   v7 = v12[5];
@@ -861,10 +861,10 @@ void __63__SUCorePolicyDDMConfiguration_allDeclarationsIncludingInvalid__block_i
   [*(*(*(a1 + 32) + 8) + 40) addObject:v5];
 }
 
-- (BOOL)invalidateDeclarationForKey:(id)a3
+- (BOOL)invalidateDeclarationForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -877,7 +877,7 @@ void __63__SUCorePolicyDDMConfiguration_allDeclarationsIncludingInvalid__block_i
     block[2] = __60__SUCorePolicyDDMConfiguration_invalidateDeclarationForKey___block_invoke;
     block[3] = &unk_27892D520;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     v12 = &v13;
     dispatch_sync(stateQueue, block);
     v6 = *(v14 + 24);
@@ -888,9 +888,9 @@ void __63__SUCorePolicyDDMConfiguration_allDeclarationsIncludingInvalid__block_i
   else
   {
     v7 = +[SUCoreDDMUtilities sharedLogger];
-    v8 = [v7 oslog];
+    oslog = [v7 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCorePolicyDDMConfiguration invalidateDeclarationForKey:];
     }
@@ -1235,11 +1235,11 @@ void __39__SUCorePolicyDDMConfiguration_allKeys__block_invoke(uint64_t a1)
   [v7 addObjectsFromArray:v8];
 }
 
-- (BOOL)removeDeclarationForKey:(id)a3
+- (BOOL)removeDeclarationForKey:(id)key
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -1252,31 +1252,31 @@ void __39__SUCorePolicyDDMConfiguration_allKeys__block_invoke(uint64_t a1)
     block[2] = __56__SUCorePolicyDDMConfiguration_removeDeclarationForKey___block_invoke;
     block[3] = &unk_27892D520;
     block[4] = self;
-    v6 = v4;
+    v6 = keyCopy;
     v16 = v6;
     v17 = &v18;
     dispatch_sync(stateQueue, block);
     if (*(v19 + 24) == 1)
     {
       v7 = +[SUCoreDDMUtilities sharedLogger];
-      v8 = [v7 oslog];
+      oslog = [v7 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
         v23 = "[SUCorePolicyDDMConfiguration removeDeclarationForKey:]";
         v24 = 2114;
         v25 = v6;
-        _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "%s: Successfully removed %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%s: Successfully removed %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
       v12 = +[SUCoreDDMUtilities sharedLogger];
-      v8 = [v12 oslog];
+      oslog = [v12 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         [SUCorePolicyDDMConfiguration removeDeclarationForKey:];
       }
@@ -1289,9 +1289,9 @@ void __39__SUCorePolicyDDMConfiguration_allKeys__block_invoke(uint64_t a1)
   else
   {
     v9 = +[SUCoreDDMUtilities sharedLogger];
-    v10 = [v9 oslog];
+    oslog2 = [v9 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       [SUCorePolicyDDMConfiguration removeDeclarationForKey:];
     }
@@ -1378,22 +1378,22 @@ LABEL_19:
 - (id)currentlyApplicableDeclaration
 {
   v3 = objc_opt_class();
-  v4 = [(SUCorePolicyDDMConfiguration *)self allDeclarations];
-  v5 = [v3 declarationFromAllDeclarations:v4];
+  allDeclarations = [(SUCorePolicyDDMConfiguration *)self allDeclarations];
+  v5 = [v3 declarationFromAllDeclarations:allDeclarations];
 
   return v5;
 }
 
-+ (id)declarationFromAllDeclarationDicts:(id)a3
++ (id)declarationFromAllDeclarationDicts:(id)dicts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  dictsCopy = dicts;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1427,32 +1427,32 @@ LABEL_19:
   return v13;
 }
 
-+ (id)declarationFromAllDeclarations:(id)a3
++ (id)declarationFromAllDeclarations:(id)declarations
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_336];
+  v3 = [declarations sortedArrayUsingComparator:&__block_literal_global_336];
   v4 = +[SUCoreDDMUtilities sharedLogger];
-  v5 = [v4 oslog];
+  oslog = [v4 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "+[SUCorePolicyDDMConfiguration declarationFromAllDeclarations:]";
     v11 = 2114;
     v12 = v3;
-    _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "%s: Sorted DDM declarations: %{public}@", &v9, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%s: Sorted DDM declarations: %{public}@", &v9, 0x16u);
   }
 
-  v6 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return firstObject;
 }
 
-- (BOOL)addGlobalSettingsDeclaration:(id)a3 returningError:(id *)a4
+- (BOOL)addGlobalSettingsDeclaration:(id)declaration returningError:(id *)error
 {
-  v6 = a3;
+  declarationCopy = declaration;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1469,16 +1469,16 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = __76__SUCorePolicyDDMConfiguration_addGlobalSettingsDeclaration_returningError___block_invoke;
   v11[3] = &unk_27892DD98;
-  v8 = v6;
+  v8 = declarationCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v22;
   v15 = &v16;
   dispatch_sync(stateQueue, v11);
   v9 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = *(v23 + 24);
   }
 
@@ -1598,13 +1598,13 @@ void __63__SUCorePolicyDDMConfiguration_removeGlobalSettingsDeclaration__block_i
   [v1 persistDictionary:0 forKey:@"SUCoreDDMDeclarationGlobalSettings" shouldPersist:1];
 }
 
-- (id)_dateFromString:(id)a3
+- (id)_dateFromString:(id)string
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-  v6 = [v5 dateFromString:v4];
+  v6 = [v5 dateFromString:stringCopy];
 
   return v6;
 }
@@ -1612,8 +1612,8 @@ void __63__SUCorePolicyDDMConfiguration_removeGlobalSettingsDeclaration__block_i
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SUCorePolicyDDMConfiguration *)self allDeclarations];
-  v4 = [v2 stringWithFormat:@"SUCorePolicyDDMConfiguration (Declarations:%@)", v3];
+  allDeclarations = [(SUCorePolicyDDMConfiguration *)self allDeclarations];
+  v4 = [v2 stringWithFormat:@"SUCorePolicyDDMConfiguration (Declarations:%@)", allDeclarations];
 
   return v4;
 }

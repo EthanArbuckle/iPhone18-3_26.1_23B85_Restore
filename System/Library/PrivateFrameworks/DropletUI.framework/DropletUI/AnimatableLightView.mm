@@ -1,5 +1,5 @@
 @interface AnimatableLightView
-- (_TtC9DropletUIP33_1A307C73748F469B76839B7113A1F63419AnimatableLightView)initWithFrame:(CGRect)a3 preferringAudioReactivity:(BOOL)a4;
+- (_TtC9DropletUIP33_1A307C73748F469B76839B7113A1F63419AnimatableLightView)initWithFrame:(CGRect)frame preferringAudioReactivity:(BOOL)reactivity;
 - (void)layoutSubviews;
 @end
 
@@ -20,7 +20,7 @@
   [v4 setFrame_];
 }
 
-- (_TtC9DropletUIP33_1A307C73748F469B76839B7113A1F63419AnimatableLightView)initWithFrame:(CGRect)a3 preferringAudioReactivity:(BOOL)a4
+- (_TtC9DropletUIP33_1A307C73748F469B76839B7113A1F63419AnimatableLightView)initWithFrame:(CGRect)frame preferringAudioReactivity:(BOOL)reactivity
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

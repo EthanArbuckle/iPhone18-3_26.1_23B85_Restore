@@ -1,6 +1,6 @@
 @interface VUINamedLayerImage
-+ (id)decodedNamedLayerImageFromNamedLayerImage:(id)a3;
-+ (id)namedLayerImageFromNamedLayerImage:(id)a3;
++ (id)decodedNamedLayerImageFromNamedLayerImage:(id)image;
++ (id)namedLayerImageFromNamedLayerImage:(id)image;
 - (BOOL)fixedFrame;
 - (CGRect)frame;
 - (NSString)name;
@@ -23,31 +23,31 @@
   return result;
 }
 
-+ (id)namedLayerImageFromNamedLayerImage:(id)a3
++ (id)namedLayerImageFromNamedLayerImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v3 = a3;
-    v4 = [objc_alloc(objc_opt_class()) _init];
-    [v4 setNamedLayerImage:v3];
+    imageCopy = image;
+    _init = [objc_alloc(objc_opt_class()) _init];
+    [_init setNamedLayerImage:imageCopy];
   }
 
   else
   {
-    v4 = 0;
+    _init = 0;
   }
 
-  return v4;
+  return _init;
 }
 
-+ (id)decodedNamedLayerImageFromNamedLayerImage:(id)a3
++ (id)decodedNamedLayerImageFromNamedLayerImage:(id)image
 {
-  v3 = a3;
-  if (v3)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v4 = [objc_alloc(objc_opt_class()) _init];
-    [v4 setNamedLayerImage:v3];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v3 imageObj], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    _init = [objc_alloc(objc_opt_class()) _init];
+    [_init setNamedLayerImage:imageCopy];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([imageCopy imageObj], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;
       v7 = [VUIGraphicsImageRenderer decodedImage:v5 opaque:0];
@@ -58,43 +58,43 @@
       v7 = 0;
     }
 
-    [v4 setDecodedImage:v7];
+    [_init setDecodedImage:v7];
   }
 
   else
   {
-    v4 = 0;
+    _init = 0;
   }
 
-  return v4;
+  return _init;
 }
 
 - (NSString)name
 {
-  v3 = [(VUINamedLayerImage *)self namedLayerImage];
+  namedLayerImage = [(VUINamedLayerImage *)self namedLayerImage];
 
-  if (v3)
+  if (namedLayerImage)
   {
-    v4 = [(VUINamedLayerImage *)self namedLayerImage];
-    v5 = [v4 name];
+    namedLayerImage2 = [(VUINamedLayerImage *)self namedLayerImage];
+    name = [namedLayerImage2 name];
   }
 
   else
   {
-    v5 = @"VUIDefaultLayerName";
+    name = @"VUIDefaultLayerName";
   }
 
-  return v5;
+  return name;
 }
 
 - (CGRect)frame
 {
-  v3 = [(VUINamedLayerImage *)self namedLayerImage];
+  namedLayerImage = [(VUINamedLayerImage *)self namedLayerImage];
 
-  if (v3)
+  if (namedLayerImage)
   {
-    v4 = [(VUINamedLayerImage *)self namedLayerImage];
-    [v4 frame];
+    namedLayerImage2 = [(VUINamedLayerImage *)self namedLayerImage];
+    [namedLayerImage2 frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -103,9 +103,9 @@
 
   else
   {
-    v13 = [(VUINamedLayerImage *)self decodedImage];
+    decodedImage = [(VUINamedLayerImage *)self decodedImage];
 
-    if (!v13)
+    if (!decodedImage)
     {
       v6 = *MEMORY[0x277CBF3A0];
       v8 = *(MEMORY[0x277CBF3A0] + 8);
@@ -116,8 +116,8 @@
 
     v6 = *MEMORY[0x277CBF348];
     v8 = *(MEMORY[0x277CBF348] + 8);
-    v4 = [(VUINamedLayerImage *)self decodedImage];
-    [v4 size];
+    namedLayerImage2 = [(VUINamedLayerImage *)self decodedImage];
+    [namedLayerImage2 size];
     v10 = v14;
     v12 = v15;
   }
@@ -136,15 +136,15 @@ LABEL_6:
 
 - (double)opacity
 {
-  v3 = [(VUINamedLayerImage *)self namedLayerImage];
+  namedLayerImage = [(VUINamedLayerImage *)self namedLayerImage];
 
-  if (!v3)
+  if (!namedLayerImage)
   {
     return 1.0;
   }
 
-  v4 = [(VUINamedLayerImage *)self namedLayerImage];
-  [v4 opacity];
+  namedLayerImage2 = [(VUINamedLayerImage *)self namedLayerImage];
+  [namedLayerImage2 opacity];
   v6 = v5;
 
   return v6;
@@ -152,7 +152,7 @@ LABEL_6:
 
 - (BOOL)fixedFrame
 {
-  v3 = [(VUINamedLayerImage *)self namedLayerImage];
+  namedLayerImage = [(VUINamedLayerImage *)self namedLayerImage];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -160,10 +160,10 @@ LABEL_6:
     return 0;
   }
 
-  v5 = [(VUINamedLayerImage *)self namedLayerImage];
-  v6 = [v5 fixedFrame];
+  namedLayerImage2 = [(VUINamedLayerImage *)self namedLayerImage];
+  fixedFrame = [namedLayerImage2 fixedFrame];
 
-  return v6;
+  return fixedFrame;
 }
 
 @end

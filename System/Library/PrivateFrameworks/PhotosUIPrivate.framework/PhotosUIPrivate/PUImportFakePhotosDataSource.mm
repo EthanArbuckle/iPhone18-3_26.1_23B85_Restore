@@ -1,15 +1,15 @@
 @interface PUImportFakePhotosDataSource
-- (PUImportFakePhotosDataSource)initWithImportDataSource:(id)a3 photoLibrary:(id)a4;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (PUImportFakePhotosDataSource)initWithImportDataSource:(id)source photoLibrary:(id)library;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)prefetchApproximateAssetsAtIndexPaths:(id)a3 reverseOrder:(BOOL)a4;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)prefetchApproximateAssetsAtIndexPaths:(id)paths reverseOrder:(BOOL)order;
 @end
 
 @implementation PUImportFakePhotosDataSource
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = _importDataLog();
@@ -21,7 +21,7 @@
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = _importDataLog();
@@ -35,7 +35,7 @@
   return 0;
 }
 
-- (void)prefetchApproximateAssetsAtIndexPaths:(id)a3 reverseOrder:(BOOL)a4
+- (void)prefetchApproximateAssetsAtIndexPaths:(id)paths reverseOrder:(BOOL)order
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _importDataLog();
@@ -47,32 +47,32 @@
   }
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PUImportFakePhotosDataSource *)self importDataSource];
-  v5 = [v4 numberOfItemsInSection:a3];
+  importDataSource = [(PUImportFakePhotosDataSource *)self importDataSource];
+  v5 = [importDataSource numberOfItemsInSection:section];
 
   return v5;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PUImportFakePhotosDataSource *)self importDataSource];
-  v3 = [v2 numberOfSections];
+  importDataSource = [(PUImportFakePhotosDataSource *)self importDataSource];
+  numberOfSections = [importDataSource numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
-- (PUImportFakePhotosDataSource)initWithImportDataSource:(id)a3 photoLibrary:(id)a4
+- (PUImportFakePhotosDataSource)initWithImportDataSource:(id)source photoLibrary:(id)library
 {
-  v6 = a4;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUImportFakePhotosDataSource.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportFakePhotosDataSource.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v7 = [MEMORY[0x1E69788E0] emptyFetchResultWithPhotoLibrary:v6];
+  v7 = [MEMORY[0x1E69788E0] emptyFetchResultWithPhotoLibrary:libraryCopy];
   v8 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:v7 options:0];
   v12.receiver = self;
   v12.super_class = PUImportFakePhotosDataSource;

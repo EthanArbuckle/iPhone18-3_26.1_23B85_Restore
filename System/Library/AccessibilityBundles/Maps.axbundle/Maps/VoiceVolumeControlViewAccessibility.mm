@@ -1,17 +1,17 @@
 @interface VoiceVolumeControlViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_animateContentUpdate;
 @end
 
 @implementation VoiceVolumeControlViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VoiceVolumeControlView" hasInstanceVariable:@"_currentSelection" withType:"NSInteger"];
-  [v3 validateClass:@"VoiceVolumeControlView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
-  [v3 validateClass:@"VoiceVolumeControlView" hasInstanceMethod:@"_animateContentUpdate" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VoiceVolumeControlView" hasInstanceVariable:@"_currentSelection" withType:"NSInteger"];
+  [validationsCopy validateClass:@"VoiceVolumeControlView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
+  [validationsCopy validateClass:@"VoiceVolumeControlView" hasInstanceMethod:@"_animateContentUpdate" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -44,10 +44,10 @@
         objc_opt_class();
         v12 = __UIAccessibilityCastAsClass();
         v13 = [v12 tag];
-        v14 = [v12 accessibilityTraits];
+        accessibilityTraits = [v12 accessibilityTraits];
         if (v13 == v4)
         {
-          v15 = v9 | v14;
+          v15 = v9 | accessibilityTraits;
         }
 
         else

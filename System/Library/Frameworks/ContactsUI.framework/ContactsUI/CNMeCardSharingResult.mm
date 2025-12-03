@@ -1,5 +1,5 @@
 @interface CNMeCardSharingResult
-- (CNMeCardSharingResult)initWithGivenName:(id)a3 familyName:(id)a4 contactImage:(id)a5 wallpaper:(id)a6 watchWallpaperImageData:(id)a7 didSaveImageToMeCard:(BOOL)a8;
+- (CNMeCardSharingResult)initWithGivenName:(id)name familyName:(id)familyName contactImage:(id)image wallpaper:(id)wallpaper watchWallpaperImageData:(id)data didSaveImageToMeCard:(BOOL)card;
 - (id)description;
 @end
 
@@ -14,30 +14,30 @@
   v7 = [v3 appendName:@"wallpaper" object:self->_wallpaper];
   v8 = [v3 appendName:@"watchWallpaperImageData" object:self->_watchWallpaperImageData];
   v9 = [v3 appendName:@"didSaveToMeCard" BOOLValue:self->_didSaveImageToMeCard];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (CNMeCardSharingResult)initWithGivenName:(id)a3 familyName:(id)a4 contactImage:(id)a5 wallpaper:(id)a6 watchWallpaperImageData:(id)a7 didSaveImageToMeCard:(BOOL)a8
+- (CNMeCardSharingResult)initWithGivenName:(id)name familyName:(id)familyName contactImage:(id)image wallpaper:(id)wallpaper watchWallpaperImageData:(id)data didSaveImageToMeCard:(BOOL)card
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = CNMeCardSharingResult;
   v18 = [(CNMeCardSharingResult *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_givenName, a3);
-    objc_storeStrong(&v19->_familyName, a4);
-    objc_storeStrong(&v19->_contactImage, a5);
-    objc_storeStrong(&v19->_wallpaper, a6);
-    objc_storeStrong(&v19->_watchWallpaperImageData, a7);
-    v19->_didSaveImageToMeCard = a8;
+    objc_storeStrong(&v18->_givenName, name);
+    objc_storeStrong(&v19->_familyName, familyName);
+    objc_storeStrong(&v19->_contactImage, image);
+    objc_storeStrong(&v19->_wallpaper, wallpaper);
+    objc_storeStrong(&v19->_watchWallpaperImageData, data);
+    v19->_didSaveImageToMeCard = card;
     v20 = v19;
   }
 

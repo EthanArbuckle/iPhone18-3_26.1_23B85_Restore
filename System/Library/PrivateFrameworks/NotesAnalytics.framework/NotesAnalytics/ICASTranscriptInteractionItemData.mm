@@ -1,22 +1,22 @@
 @interface ICASTranscriptInteractionItemData
-- (ICASTranscriptInteractionItemData)initWithTranscriptInteractionTarget:(id)a3 transcriptActionType:(id)a4;
+- (ICASTranscriptInteractionItemData)initWithTranscriptInteractionTarget:(id)target transcriptActionType:(id)type;
 - (id)toDict;
 @end
 
 @implementation ICASTranscriptInteractionItemData
 
-- (ICASTranscriptInteractionItemData)initWithTranscriptInteractionTarget:(id)a3 transcriptActionType:(id)a4
+- (ICASTranscriptInteractionItemData)initWithTranscriptInteractionTarget:(id)target transcriptActionType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = ICASTranscriptInteractionItemData;
   v9 = [(ICASTranscriptInteractionItemData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transcriptInteractionTarget, a3);
-    objc_storeStrong(&v10->_transcriptActionType, a4);
+    objc_storeStrong(&v9->_transcriptInteractionTarget, target);
+    objc_storeStrong(&v10->_transcriptActionType, type);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"transcriptInteractionTarget";
-  v3 = [(ICASTranscriptInteractionItemData *)self transcriptInteractionTarget];
-  if (v3)
+  transcriptInteractionTarget = [(ICASTranscriptInteractionItemData *)self transcriptInteractionTarget];
+  if (transcriptInteractionTarget)
   {
-    v4 = [(ICASTranscriptInteractionItemData *)self transcriptInteractionTarget];
+    transcriptInteractionTarget2 = [(ICASTranscriptInteractionItemData *)self transcriptInteractionTarget];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    transcriptInteractionTarget2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = transcriptInteractionTarget2;
   v12[1] = @"transcriptActionType";
-  v13[0] = v4;
-  v6 = [(ICASTranscriptInteractionItemData *)self transcriptActionType];
-  if (v6)
+  v13[0] = transcriptInteractionTarget2;
+  transcriptActionType = [(ICASTranscriptInteractionItemData *)self transcriptActionType];
+  if (transcriptActionType)
   {
-    v7 = [(ICASTranscriptInteractionItemData *)self transcriptActionType];
+    transcriptActionType2 = [(ICASTranscriptInteractionItemData *)self transcriptActionType];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    transcriptActionType2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = transcriptActionType2;
+  v13[1] = transcriptActionType2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

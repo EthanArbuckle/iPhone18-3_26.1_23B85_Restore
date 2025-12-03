@@ -1,13 +1,13 @@
 @interface UAFAutoAssetProgress
 + (id)getSerialQueue;
-- (UAFAutoAssetProgress)initWithAssetSetUsages:(id)a3 configurationManager:(id)a4 internalProgressWithStatus:(id)a5;
-- (void)finished:(id)a3 withStatus:(unint64_t)a4 withError:(id)a5;
-- (void)finishedOutOfSpace:(id)a3;
-- (void)progress:(id)a3;
-- (void)reportStatus:(unint64_t)a3;
-- (void)started:(id)a3;
+- (UAFAutoAssetProgress)initWithAssetSetUsages:(id)usages configurationManager:(id)manager internalProgressWithStatus:(id)status;
+- (void)finished:(id)finished withStatus:(unint64_t)status withError:(id)error;
+- (void)finishedOutOfSpace:(id)space;
+- (void)progress:(id)progress;
+- (void)reportStatus:(unint64_t)status;
+- (void)started:(id)started;
 - (void)summarize;
-- (void)updateFinished:(id)a3;
+- (void)updateFinished:(id)finished;
 @end
 
 @implementation UAFAutoAssetProgress
@@ -32,21 +32,21 @@ void __38__UAFAutoAssetProgress_getSerialQueue__block_invoke()
   qword_1ED7D1130 = v0;
 }
 
-- (UAFAutoAssetProgress)initWithAssetSetUsages:(id)a3 configurationManager:(id)a4 internalProgressWithStatus:(id)a5
+- (UAFAutoAssetProgress)initWithAssetSetUsages:(id)usages configurationManager:(id)manager internalProgressWithStatus:(id)status
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  usagesCopy = usages;
+  managerCopy = manager;
+  statusCopy = status;
   v46.receiver = self;
   v46.super_class = UAFAutoAssetProgress;
   v11 = [(UAFAutoAssetProgress *)&v46 init];
   if (v11)
   {
-    v40 = v10;
+    v40 = statusCopy;
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v8 allKeys];
-    v14 = [v12 stringWithFormat:@"%@", v13];
+    allKeys = [usagesCopy allKeys];
+    v14 = [v12 stringWithFormat:@"%@", allKeys];
     v15 = *(v11 + 2);
     *(v11 + 2) = v14;
 
@@ -70,8 +70,8 @@ void __38__UAFAutoAssetProgress_getSerialQueue__block_invoke()
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v41 = v8;
-    v22 = v8;
+    v41 = usagesCopy;
+    v22 = usagesCopy;
     v23 = [v22 countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (!v23)
     {
@@ -90,7 +90,7 @@ void __38__UAFAutoAssetProgress_getSerialQueue__block_invoke()
         }
 
         v27 = *(*(&v42 + 1) + 8 * i);
-        v28 = [v9 getAssetSet:v27];
+        v28 = [managerCopy getAssetSet:v27];
         v29 = v28;
         if (!v28)
         {
@@ -109,9 +109,9 @@ void __38__UAFAutoAssetProgress_getSerialQueue__block_invoke()
           goto LABEL_13;
         }
 
-        v30 = [v28 autoAssetType];
+        autoAssetType = [v28 autoAssetType];
 
-        if (v30)
+        if (autoAssetType)
         {
           v31 = MEMORY[0x1E696AD98];
           v32 = 1;
@@ -139,13 +139,13 @@ LABEL_16:
       {
 LABEL_18:
 
-        v10 = v40;
+        statusCopy = v40;
         v35 = MEMORY[0x1BFB33950](v40);
         v36 = *(v11 + 11);
         *(v11 + 11) = v35;
 
         v37 = v11;
-        v8 = v41;
+        usagesCopy = v41;
         break;
       }
     }
@@ -155,7 +155,7 @@ LABEL_18:
   return v11;
 }
 
-- (void)reportStatus:(unint64_t)a3
+- (void)reportStatus:(unint64_t)status
 {
   v38 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -175,7 +175,7 @@ LABEL_18:
     [(NSMutableDictionary *)statuses enumerateKeysAndObjectsUsingBlock:v19];
   }
 
-  if (a3 & 0xFFFFFFFFFFFFFFFELL) == 4 || (v21[3])
+  if (status & 0xFFFFFFFFFFFFFFFELL) == 4 || (v21[3])
   {
     totalWork = self->_totalWork;
     completedWork = self->_completedWork;
@@ -187,7 +187,7 @@ LABEL_18:
     completedWork = 0;
   }
 
-  if (self->_reportedStatus == a3 && self->_reportedCompletedWork == completedWork && self->_reportedTotalWork == totalWork)
+  if (self->_reportedStatus == status && self->_reportedCompletedWork == completedWork && self->_reportedTotalWork == totalWork)
   {
     v9 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -205,7 +205,7 @@ LABEL_18:
       v34 = 2048;
       v35 = totalWork;
       v36 = 1024;
-      v37 = a3;
+      statusCopy = status;
       _os_log_debug_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_DEBUG, "%s Progress and status has not changed, suppressing update: %llu/%llu %llu/%llu %u", buf, 0x3Au);
     }
 
@@ -216,7 +216,7 @@ LABEL_18:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     name = self->_name;
-    v14 = UAFSubscriptionDownloadStatusDescription(a3);
+    v14 = UAFSubscriptionDownloadStatusDescription(status);
     *buf = 136316162;
     v27 = "[UAFAutoAssetProgress reportStatus:]";
     v28 = 2114;
@@ -232,7 +232,7 @@ LABEL_18:
 
   self->_reportedTotalWork = totalWork;
   self->_reportedCompletedWork = completedWork;
-  self->_reportedStatus = a3;
+  self->_reportedStatus = status;
   if (self->_internalProgressCompletion)
   {
     v24[0] = @"statuses";
@@ -302,17 +302,17 @@ void __37__UAFAutoAssetProgress_reportStatus___block_invoke(uint64_t a1, void *a
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_autoAssetSets objectForKeyedSubscript:v11];
-        v13 = [v12 downloadProgress];
+        downloadProgress = [v12 downloadProgress];
 
-        if (v13)
+        if (downloadProgress)
         {
           v14 = [(NSMutableDictionary *)self->_autoAssetSets objectForKeyedSubscript:v11];
-          v15 = [v14 downloadProgress];
-          v7 += [v15 totalExpectedBytes];
+          downloadProgress2 = [v14 downloadProgress];
+          v7 += [downloadProgress2 totalExpectedBytes];
 
           v16 = [(NSMutableDictionary *)self->_autoAssetSets objectForKeyedSubscript:v11];
-          v17 = [v16 downloadProgress];
-          v8 += [v17 totalWrittenBytes];
+          downloadProgress3 = [v16 downloadProgress];
+          v8 += [downloadProgress3 totalWrittenBytes];
         }
       }
 
@@ -351,17 +351,17 @@ void __37__UAFAutoAssetProgress_reportStatus___block_invoke(uint64_t a1, void *a
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)started:(id)a3
+- (void)started:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = +[UAFAutoAssetProgress getSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__UAFAutoAssetProgress_started___block_invoke;
   v7[3] = &unk_1E7FFD098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   dispatch_async(v5, v7);
 }
 
@@ -376,17 +376,17 @@ uint64_t __32__UAFAutoAssetProgress_started___block_invoke(uint64_t a1)
   return [v4 summarize];
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v5 = +[UAFAutoAssetProgress getSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__UAFAutoAssetProgress_progress___block_invoke;
   v7[3] = &unk_1E7FFD098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(v5, v7);
 }
 
@@ -457,21 +457,21 @@ LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finished:(id)a3 withStatus:(unint64_t)a4 withError:(id)a5
+- (void)finished:(id)finished withStatus:(unint64_t)status withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  finishedCopy = finished;
+  errorCopy = error;
   v10 = +[UAFAutoAssetProgress getSerialQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__UAFAutoAssetProgress_finished_withStatus_withError___block_invoke;
   v13[3] = &unk_1E7FFD968;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = finishedCopy;
+  v15 = errorCopy;
+  statusCopy = status;
+  v11 = errorCopy;
+  v12 = finishedCopy;
   dispatch_async(v10, v13);
 }
 
@@ -517,17 +517,17 @@ void __54__UAFAutoAssetProgress_finished_withStatus_withError___block_invoke(uin
   }
 }
 
-- (void)updateFinished:(id)a3
+- (void)updateFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = +[UAFAutoAssetProgress getSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__UAFAutoAssetProgress_updateFinished___block_invoke;
   v7[3] = &unk_1E7FFD5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishedCopy;
+  v6 = finishedCopy;
   dispatch_async(v5, v7);
 }
 
@@ -540,17 +540,17 @@ uint64_t __39__UAFAutoAssetProgress_updateFinished___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)finishedOutOfSpace:(id)a3
+- (void)finishedOutOfSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v5 = +[UAFAutoAssetProgress getSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__UAFAutoAssetProgress_finishedOutOfSpace___block_invoke;
   v7[3] = &unk_1E7FFD098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = spaceCopy;
+  v6 = spaceCopy;
   dispatch_async(v5, v7);
 }
 

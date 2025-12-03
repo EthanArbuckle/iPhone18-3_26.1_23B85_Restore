@@ -12,7 +12,7 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"nil is not a valid predicate for filtering" userInfo:0]);
   }
 
-  v5 = [a1 count];
+  v5 = [self count];
   v19[0] = 0;
   if (v5 >> 60)
   {
@@ -41,7 +41,7 @@
     v9 = 0;
   }
 
-  _filterObjectsUsingPredicate(a1, a3, v7, v19);
+  _filterObjectsUsingPredicate(self, a3, v7, v19);
   v10 = v19[0];
   if (v9)
   {

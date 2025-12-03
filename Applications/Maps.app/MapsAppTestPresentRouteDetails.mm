@@ -8,7 +8,7 @@
 - (void)directionsPlanDidSetup
 {
   [(MapsAppTest *)self startedTest];
-  v3 = [(MapsAppTest *)self testName];
+  testName = [(MapsAppTest *)self testName];
   v4[4] = self;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -19,7 +19,7 @@
   v4[1] = 3221225472;
   v4[2] = sub_1005896E4;
   v4[3] = &unk_101661B18;
-  [(MapsAppTest *)self presentDismissTrayTestAndSubTestsWithPrefix:v3 presenter:v5 completion:v4];
+  [(MapsAppTest *)self presentDismissTrayTestAndSubTestsWithPrefix:testName presenter:v5 completion:v4];
 }
 
 - (BOOL)runTest

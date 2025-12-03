@@ -1,7 +1,7 @@
 @interface CPUIGridButton
-+ (id)buttonWithGridButton:(id)a3 layout:(id)a4 templateDelegate:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGridButton:(id)a3;
++ (id)buttonWithGridButton:(id)button layout:(id)layout templateDelegate:(id)delegate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGridButton:(id)button;
 - (CGSize)preferredSize;
 - (CGSize)textSize;
 - (CPTemplateDelegate)templateDelegate;
@@ -10,51 +10,51 @@
 - (id)imageWithOverlay;
 - (unint64_t)hash;
 - (void)_updateLabelColor;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateImageSet:(id)a3;
-- (void)updateTitleVariants:(id)a3;
-- (void)updateUnread:(BOOL)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateImageSet:(id)set;
+- (void)updateTitleVariants:(id)variants;
+- (void)updateUnread:(BOOL)unread;
 @end
 
 @implementation CPUIGridButton
 
-+ (id)buttonWithGridButton:(id)a3 layout:(id)a4 templateDelegate:(id)a5
++ (id)buttonWithGridButton:(id)button layout:(id)layout templateDelegate:(id)delegate
 {
   v56[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v55.receiver = a1;
+  buttonCopy = button;
+  layoutCopy = layout;
+  delegateCopy = delegate;
+  v55.receiver = self;
   v55.super_class = &OBJC_METACLASS___CPUIGridButton;
   v11 = objc_msgSendSuper2(&v55, sel_buttonWithType_, 0);
   v12 = v11;
   if (v11)
   {
-    [v11 setGridButton:v8];
-    [v12 setTemplateDelegate:v10];
-    [v12 setEnabled:{objc_msgSend(v8, "isEnabled")}];
-    [v8 identifier];
-    v13 = v53 = v10;
+    [v11 setGridButton:buttonCopy];
+    [v12 setTemplateDelegate:delegateCopy];
+    [v12 setEnabled:{objc_msgSend(buttonCopy, "isEnabled")}];
+    [buttonCopy identifier];
+    v13 = v53 = delegateCopy;
     [v12 setIdentifier:v13];
 
-    [v12 setLayout:v9];
-    v14 = [v12 imageWithOverlay];
-    [v12 setImage:v14 forState:0];
+    [v12 setLayout:layoutCopy];
+    imageWithOverlay = [v12 imageWithOverlay];
+    [v12 setImage:imageWithOverlay forState:0];
 
-    v15 = [v12 imageView];
-    v16 = [v15 layer];
-    [v16 setAllowsEdgeAntialiasing:1];
+    imageView = [v12 imageView];
+    layer = [imageView layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [MEMORY[0x277D75348] _carSystemFocusColor];
-    [v17 setBackgroundColor:v18];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
+    [v17 setBackgroundColor:_carSystemFocusColor];
 
     [v17 _setCornerRadius:4.0];
     [v17 setHidden:1];
@@ -62,67 +62,67 @@
     [v12 addSubview:v17];
     v19 = objc_alloc_init(CPUIAbridgableLabel);
     [(CPUIAbridgableLabel *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v20 = [MEMORY[0x277D75348] labelColor];
-    [(CPUIAbridgableLabel *)v19 setTextColor:v20];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(CPUIAbridgableLabel *)v19 setTextColor:labelColor];
 
-    v21 = [v12 traitCollection];
-    v22 = [v9 fontForTraitCollection:v21];
+    traitCollection = [v12 traitCollection];
+    v22 = [layoutCopy fontForTraitCollection:traitCollection];
     [(CPUIAbridgableLabel *)v19 setFont:v22];
 
     [(CPUIAbridgableLabel *)v19 setTextAlignment:1];
     [(CPUIAbridgableLabel *)v19 setNumberOfLines:1];
     [(CPUIAbridgableLabel *)v19 sizeToFit];
-    -[CPUIAbridgableLabel setEnabled:](v19, "setEnabled:", [v8 isEnabled]);
+    -[CPUIAbridgableLabel setEnabled:](v19, "setEnabled:", [buttonCopy isEnabled]);
     LODWORD(v23) = 1148846080;
     [(CPUIAbridgableLabel *)v19 setContentCompressionResistancePriority:0 forAxis:v23];
     [v12 setCustomTitleLabel:v19];
     [v12 addSubview:v19];
-    v51 = [(CPUIAbridgableLabel *)v19 topAnchor];
-    v52 = [v12 imageView];
-    v50 = [v52 bottomAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:2.0];
+    topAnchor = [(CPUIAbridgableLabel *)v19 topAnchor];
+    imageView2 = [v12 imageView];
+    bottomAnchor = [imageView2 bottomAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:2.0];
     v56[0] = v49;
-    v48 = [(CPUIAbridgableLabel *)v19 centerXAnchor];
-    v47 = [v12 centerXAnchor];
-    v45 = [v48 constraintEqualToAnchor:v47];
+    centerXAnchor = [(CPUIAbridgableLabel *)v19 centerXAnchor];
+    centerXAnchor2 = [v12 centerXAnchor];
+    v45 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v56[1] = v45;
-    v44 = [(CPUIAbridgableLabel *)v19 widthAnchor];
-    v43 = [v12 widthAnchor];
-    v42 = [v44 constraintLessThanOrEqualToAnchor:v43];
+    widthAnchor = [(CPUIAbridgableLabel *)v19 widthAnchor];
+    widthAnchor2 = [v12 widthAnchor];
+    v42 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v56[2] = v42;
-    v41 = [v17 leftAnchor];
-    v40 = [(CPUIAbridgableLabel *)v19 leftAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:-4.0];
+    leftAnchor = [v17 leftAnchor];
+    leftAnchor2 = [(CPUIAbridgableLabel *)v19 leftAnchor];
+    v39 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-4.0];
     v56[3] = v39;
-    v38 = [v17 rightAnchor];
-    v37 = [(CPUIAbridgableLabel *)v19 rightAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:4.0];
+    rightAnchor = [v17 rightAnchor];
+    rightAnchor2 = [(CPUIAbridgableLabel *)v19 rightAnchor];
+    v36 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:4.0];
     v56[4] = v36;
     v24 = v17;
     v46 = v17;
-    v25 = [v17 topAnchor];
-    v26 = [(CPUIAbridgableLabel *)v19 topAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    topAnchor2 = [v17 topAnchor];
+    topAnchor3 = [(CPUIAbridgableLabel *)v19 topAnchor];
+    v27 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v56[5] = v27;
     [v24 bottomAnchor];
-    v28 = v54 = v9;
-    v29 = [(CPUIAbridgableLabel *)v19 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:1.0];
+    v28 = v54 = layoutCopy;
+    bottomAnchor2 = [(CPUIAbridgableLabel *)v19 bottomAnchor];
+    v30 = [v28 constraintEqualToAnchor:bottomAnchor2 constant:1.0];
     v56[6] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:7];
     [v12 addConstraints:v31];
 
-    v9 = v54;
-    v32 = [v8 titleVariants];
-    [(CPUIAbridgableLabel *)v19 setTextVariants:v32];
+    layoutCopy = v54;
+    titleVariants = [buttonCopy titleVariants];
+    [(CPUIAbridgableLabel *)v19 setTextVariants:titleVariants];
 
-    v33 = [(CPUIAbridgableLabel *)v19 textVariants];
-    [v12 setAccessibilityUserInputLabels:v33];
+    textVariants = [(CPUIAbridgableLabel *)v19 textVariants];
+    [v12 setAccessibilityUserInputLabels:textVariants];
 
-    v34 = [v8 messageConfiguration];
-    [v12 updateUnread:{objc_msgSend(v34, "isUnread")}];
+    messageConfiguration = [buttonCopy messageConfiguration];
+    [v12 updateUnread:{objc_msgSend(messageConfiguration, "isUnread")}];
 
-    v10 = v53;
+    delegateCopy = v53;
   }
 
   return v12;
@@ -130,17 +130,17 @@
 
 - (id)imageWithOverlay
 {
-  v3 = [(CPUIGridButton *)self gridButton];
-  v4 = [v3 messageConfiguration];
+  gridButton = [(CPUIGridButton *)self gridButton];
+  messageConfiguration = [gridButton messageConfiguration];
 
-  if (v4)
+  if (messageConfiguration)
   {
     v5 = [CPUIGridImageRenderer alloc];
-    v6 = [v3 image];
-    v7 = [v3 messageConfiguration];
-    v8 = [v7 isUnread];
-    v9 = [(CPUIGridButton *)self traitCollection];
-    [v9 displayScale];
+    image = [gridButton image];
+    messageConfiguration2 = [gridButton messageConfiguration];
+    isUnread = [messageConfiguration2 isUnread];
+    traitCollection = [(CPUIGridButton *)self traitCollection];
+    [traitCollection displayScale];
     v11 = v10;
 
     v12 = 2.0;
@@ -149,49 +149,49 @@
       v12 = v11;
     }
 
-    v13 = [(CPUIGridImageRenderer *)v5 initWithImage:v6 unread:v8 scale:v12];
+    v13 = [(CPUIGridImageRenderer *)v5 initWithImage:image unread:isUnread scale:v12];
 
-    v14 = [(CPUIGridImageRenderer *)v13 image];
+    image2 = [(CPUIGridImageRenderer *)v13 image];
   }
 
   else
   {
-    v14 = [v3 image];
+    image2 = [gridButton image];
   }
 
-  return v14;
+  return image2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CPUIGridButton *)self isEqualToGridButton:v4];
+  equalCopy = equal;
+  v5 = self == equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CPUIGridButton *)self isEqualToGridButton:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToGridButton:(id)a3
+- (BOOL)isEqualToGridButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CPUIGridButton *)self gridButton];
-  v6 = [v4 gridButton];
+  buttonCopy = button;
+  gridButton = [(CPUIGridButton *)self gridButton];
+  gridButton2 = [buttonCopy gridButton];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(buttonCopy) = [gridButton isEqual:gridButton2];
+  return buttonCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CPUIGridButton *)self gridButton];
-  v3 = [v2 hash];
+  gridButton = [(CPUIGridButton *)self gridButton];
+  v3 = [gridButton hash];
 
   return v3;
 }
 
 - (CGSize)preferredSize
 {
-  v3 = [(CPUIGridButton *)self layout];
-  [v3 preferredSize];
+  layout = [(CPUIGridButton *)self layout];
+  [layout preferredSize];
   v5 = v4;
   v7 = v6;
 
@@ -205,8 +205,8 @@
 
 - (double)maxWidth
 {
-  v2 = [(CPUIGridButton *)self layout];
-  [v2 maxWidth];
+  layout = [(CPUIGridButton *)self layout];
+  [layout maxWidth];
   v4 = v3;
 
   return v4;
@@ -223,12 +223,12 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = self;
-  v6 = [(CPUIGridButton *)self gridButton];
-  v7 = [v6 titleVariants];
+  selfCopy = self;
+  gridButton = [(CPUIGridButton *)self gridButton];
+  titleVariants = [gridButton titleVariants];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  obj = titleVariants;
+  v8 = [titleVariants countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -246,9 +246,9 @@
 
         v14 = *(*(&v25 + 1) + 8 * i);
         v29[0] = v11;
-        v15 = [(CPUIAbridgableLabel *)v5->_customTitleLabel font];
+        font = [(CPUIAbridgableLabel *)selfCopy->_customTitleLabel font];
         v29[1] = v12;
-        v30[0] = v15;
+        v30[0] = font;
         v30[1] = v24;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
         [v14 sizeWithAttributes:v16];
@@ -295,39 +295,39 @@
   [(CPUIGridButton *)&v12 layoutSubviews];
   [(CPUIGridButton *)self bounds];
   Width = CGRectGetWidth(v13);
-  v4 = [(CPUIGridButton *)self layout];
-  [v4 imageSize];
+  layout = [(CPUIGridButton *)self layout];
+  [layout imageSize];
   v6 = (Width - v5) * 0.5;
 
   [(CPUIGridButton *)self bounds];
   Height = CGRectGetHeight(v14);
-  v8 = [(CPUIGridButton *)self layout];
-  [v8 imageSize];
+  layout2 = [(CPUIGridButton *)self layout];
+  [layout2 imageSize];
   v10 = Height - v9;
 
   [(CPUIGridButton *)self setImageEdgeInsets:0.0, v6, v10, v6];
-  v11 = [(CPUIGridButton *)self imageView];
-  [v11 setNeedsUpdateConstraints];
+  imageView = [(CPUIGridButton *)self imageView];
+  [imageView setNeedsUpdateConstraints];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = CPUIGridButton;
   [(CPUIButton *)&v6 setEnabled:?];
-  v5 = [(CPUIGridButton *)self customTitleLabel];
-  [v5 setEnabled:v3];
+  customTitleLabel = [(CPUIGridButton *)self customTitleLabel];
+  [customTitleLabel setEnabled:enabledCopy];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  beganCopy = began;
   v13.receiver = self;
   v13.super_class = CPUIGridButton;
-  [(CPUIGridButton *)&v13 pressesBegan:v6 withEvent:a4];
-  v7 = v6;
+  [(CPUIGridButton *)&v13 pressesBegan:beganCopy withEvent:event];
+  v7 = beganCopy;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -372,14 +372,14 @@
 LABEL_11:
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  endedCopy = ended;
   v13.receiver = self;
   v13.super_class = CPUIGridButton;
-  [(CPUIGridButton *)&v13 pressesEnded:v6 withEvent:a4];
-  v7 = v6;
+  [(CPUIGridButton *)&v13 pressesEnded:endedCopy withEvent:event];
+  v7 = endedCopy;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -424,14 +424,14 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cancelledCopy = cancelled;
   v13.receiver = self;
   v13.super_class = CPUIGridButton;
-  [(CPUIGridButton *)&v13 pressesCancelled:v6 withEvent:a4];
-  v7 = v6;
+  [(CPUIGridButton *)&v13 pressesCancelled:cancelledCopy withEvent:event];
+  v7 = cancelledCopy;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -476,43 +476,43 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v10.receiver = self;
   v10.super_class = CPUIGridButton;
-  v6 = a3;
-  [(CPUIGridButton *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(CPUIGridButton *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  v8 = v7 != self;
-  v9 = [(CPUIGridButton *)self focusView];
-  [v9 setHidden:v8];
+  v8 = nextFocusedItem != self;
+  focusView = [(CPUIGridButton *)self focusView];
+  [focusView setHidden:v8];
 
   [(CPUIGridButton *)self _updateLabelColor];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = CPUIGridButton;
-  v4 = a3;
-  [(CPUIButton *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CPUIButton *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(CPUIGridButton *)self imageWithOverlay:v9.receiver];
   [(CPUIGridButton *)self setImage:v5 forState:0];
 
-  v6 = [(CPUIGridButton *)self customTitleLabel];
-  v7 = [(CPUIGridButton *)self layout];
-  v8 = [v7 fontForTraitCollection:v4];
+  customTitleLabel = [(CPUIGridButton *)self customTitleLabel];
+  layout = [(CPUIGridButton *)self layout];
+  v8 = [layout fontForTraitCollection:changeCopy];
 
-  [v6 setFont:v8];
+  [customTitleLabel setFont:v8];
   [(CPUIGridButton *)self _updateLabelColor];
 }
 
 - (void)_updateLabelColor
 {
-  v3 = [(CPUIGridButton *)self isFocused];
-  v5 = [(CPUIGridButton *)self customTitleLabel];
-  if (v3)
+  isFocused = [(CPUIGridButton *)self isFocused];
+  customTitleLabel = [(CPUIGridButton *)self customTitleLabel];
+  if (isFocused)
   {
     [MEMORY[0x277D75348] _carSystemFocusLabelColor];
   }
@@ -522,41 +522,41 @@ LABEL_11:
     [MEMORY[0x277D75348] labelColor];
   }
   v4 = ;
-  [v5 setTextColor:v4];
+  [customTitleLabel setTextColor:v4];
 }
 
-- (void)updateImageSet:(id)a3
+- (void)updateImageSet:(id)set
 {
-  v4 = a3;
-  v5 = [(CPUIGridButton *)self gridButton];
-  [v5 setImageSet:v4];
+  setCopy = set;
+  gridButton = [(CPUIGridButton *)self gridButton];
+  [gridButton setImageSet:setCopy];
 
-  v6 = [(CPUIGridButton *)self imageWithOverlay];
-  [(CPUIGridButton *)self setImage:v6 forState:0];
+  imageWithOverlay = [(CPUIGridButton *)self imageWithOverlay];
+  [(CPUIGridButton *)self setImage:imageWithOverlay forState:0];
 }
 
-- (void)updateTitleVariants:(id)a3
+- (void)updateTitleVariants:(id)variants
 {
-  v4 = a3;
-  v5 = [(CPUIGridButton *)self gridButton];
-  [v5 updateTitleVariants:v4];
+  variantsCopy = variants;
+  gridButton = [(CPUIGridButton *)self gridButton];
+  [gridButton updateTitleVariants:variantsCopy];
 
-  v6 = [(CPUIGridButton *)self customTitleLabel];
-  [v6 setTextVariants:v4];
+  customTitleLabel = [(CPUIGridButton *)self customTitleLabel];
+  [customTitleLabel setTextVariants:variantsCopy];
 
-  v7 = [(CPUIGridButton *)self gridButton];
-  [v7 setAccessibilityUserInputLabels:v4];
+  gridButton2 = [(CPUIGridButton *)self gridButton];
+  [gridButton2 setAccessibilityUserInputLabels:variantsCopy];
 }
 
-- (void)updateUnread:(BOOL)a3
+- (void)updateUnread:(BOOL)unread
 {
-  v3 = a3;
-  v5 = [(CPUIGridButton *)self gridButton];
-  v6 = [v5 messageConfiguration];
-  [v6 setUnread:v3];
+  unreadCopy = unread;
+  gridButton = [(CPUIGridButton *)self gridButton];
+  messageConfiguration = [gridButton messageConfiguration];
+  [messageConfiguration setUnread:unreadCopy];
 
-  v7 = [(CPUIGridButton *)self imageWithOverlay];
-  [(CPUIGridButton *)self setImage:v7 forState:0];
+  imageWithOverlay = [(CPUIGridButton *)self imageWithOverlay];
+  [(CPUIGridButton *)self setImage:imageWithOverlay forState:0];
 }
 
 - (CPTemplateDelegate)templateDelegate

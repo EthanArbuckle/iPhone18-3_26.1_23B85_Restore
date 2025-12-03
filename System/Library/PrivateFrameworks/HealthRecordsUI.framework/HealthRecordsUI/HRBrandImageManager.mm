@@ -1,34 +1,34 @@
 @interface HRBrandImageManager
 + (id)_fetchOrCreateSalt;
-+ (id)imageManagerWithHealthRecordsStore:(id)a3;
-- (HRBrandImageManager)initWithHealthRecordsStore:(id)a3;
++ (id)imageManagerWithHealthRecordsStore:(id)store;
+- (HRBrandImageManager)initWithHealthRecordsStore:(id)store;
 - (NSCache)fetchedImages;
 - (NSMutableDictionary)outstandingRequests;
-- (id)_hashedSaltedStringFromString:(id)a3;
-- (id)_logoURLForBrand:(id)a3;
+- (id)_hashedSaltedStringFromString:(id)string;
+- (id)_logoURLForBrand:(id)brand;
 - (id)_scaleKeyForCurrentDevice;
-- (id)loadStoredLogoForBrand:(id)a3;
-- (void)_writeImageData:(id)a3 brand:(id)a4;
-- (void)dispatchResponsesForBrand:(id)a3 image:(id)a4 error:(id)a5;
-- (void)fetchLogoForBrand:(id)a3 completion:(id)a4;
-- (void)onMainQueue:(id)a3;
-- (void)processFetchResponseWithData:(id)a3 error:(id)a4 brand:(id)a5;
-- (void)retrieveLogoForBrand:(id)a3 size:(double)a4 options:(unint64_t)a5 completion:(id)a6;
+- (id)loadStoredLogoForBrand:(id)brand;
+- (void)_writeImageData:(id)data brand:(id)brand;
+- (void)dispatchResponsesForBrand:(id)brand image:(id)image error:(id)error;
+- (void)fetchLogoForBrand:(id)brand completion:(id)completion;
+- (void)onMainQueue:(id)queue;
+- (void)processFetchResponseWithData:(id)data error:(id)error brand:(id)brand;
+- (void)retrieveLogoForBrand:(id)brand size:(double)size options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HRBrandImageManager
 
-+ (id)imageManagerWithHealthRecordsStore:(id)a3
++ (id)imageManagerWithHealthRecordsStore:(id)store
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHealthRecordsStore:v4];
+  storeCopy = store;
+  v5 = [[self alloc] initWithHealthRecordsStore:storeCopy];
 
   return v5;
 }
 
-- (HRBrandImageManager)initWithHealthRecordsStore:(id)a3
+- (HRBrandImageManager)initWithHealthRecordsStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = HRBrandImageManager;
   v5 = [(HRBrandImageManager *)&v16 init];
@@ -39,17 +39,17 @@
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [(HRBrandImageManager *)v5 fileOperationQueue];
-    [v9 setName:v8];
+    fileOperationQueue = [(HRBrandImageManager *)v5 fileOperationQueue];
+    [fileOperationQueue setName:v8];
 
-    v10 = [(HRBrandImageManager *)v5 fileOperationQueue];
+    fileOperationQueue2 = [(HRBrandImageManager *)v5 fileOperationQueue];
     v11 = objc_opt_new();
-    [v10 addOperation:v11];
+    [fileOperationQueue2 addOperation:v11];
 
-    [(HRBrandImageManager *)v5 setHealthRecordsStore:v4];
+    [(HRBrandImageManager *)v5 setHealthRecordsStore:storeCopy];
     v12 = objc_alloc(MEMORY[0x1E69A3F68]);
-    v13 = [v4 healthStore];
-    v14 = [v12 initWithHealthStore:v13];
+    healthStore = [storeCopy healthStore];
+    v14 = [v12 initWithHealthStore:healthStore];
     [(HRBrandImageManager *)v5 setProviderServiceStore:v14];
   }
 
@@ -76,9 +76,9 @@
   outstandingRequests = self->_outstandingRequests;
   if (!outstandingRequests)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_outstandingRequests;
-    self->_outstandingRequests = v4;
+    self->_outstandingRequests = dictionary;
 
     outstandingRequests = self->_outstandingRequests;
   }
@@ -88,8 +88,8 @@
 
 - (id)_scaleKeyForCurrentDevice
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   v5 = @"3x";
@@ -109,37 +109,37 @@
   }
 }
 
-- (void)onMainQueue:(id)a3
+- (void)onMainQueue:(id)queue
 {
-  v6 = a3;
-  v3 = [MEMORY[0x1E696ADC8] currentQueue];
-  v4 = [MEMORY[0x1E696ADC8] mainQueue];
+  queueCopy = queue;
+  currentQueue = [MEMORY[0x1E696ADC8] currentQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
 
-  if (v3 == v4)
+  if (currentQueue == mainQueue)
   {
-    v6[2]();
+    queueCopy[2]();
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696ADC8] mainQueue];
-    [v5 addOperationWithBlock:v6];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
+    [mainQueue2 addOperationWithBlock:queueCopy];
   }
 }
 
-- (void)retrieveLogoForBrand:(id)a3 size:(double)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)retrieveLogoForBrand:(id)brand size:(double)size options:(unint64_t)options completion:(id)completion
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
-  v11 = [(HRBrandImageManager *)self loadStoredLogoForBrand:v9];
+  optionsCopy = options;
+  brandCopy = brand;
+  completionCopy = completion;
+  v11 = [(HRBrandImageManager *)self loadStoredLogoForBrand:brandCopy];
   if (v11)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___block_invoke;
     v17[3] = &unk_1E83DD748;
-    v19 = v10;
+    v19 = completionCopy;
     v18 = v11;
     [(HRBrandImageManager *)self onMainQueue:v17];
 
@@ -149,31 +149,31 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v9 isLocalDevelopmentSampleBrand])
+  if ([brandCopy isLocalDevelopmentSampleBrand])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___block_invoke_2;
     v15[3] = &unk_1E83DD770;
-    v16 = v10;
+    v16 = completionCopy;
     [(HRBrandImageManager *)self onMainQueue:v15];
     v12 = v16;
     goto LABEL_8;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___block_invoke_3;
     v13[3] = &unk_1E83DD770;
-    v14 = v10;
+    v14 = completionCopy;
     [(HRBrandImageManager *)self onMainQueue:v13];
     v12 = v14;
     goto LABEL_8;
   }
 
-  [(HRBrandImageManager *)self fetchLogoForBrand:v9 completion:v10];
+  [(HRBrandImageManager *)self fetchLogoForBrand:brandCopy completion:completionCopy];
 LABEL_9:
 }
 
@@ -191,12 +191,12 @@ void __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___bl
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)loadStoredLogoForBrand:(id)a3
+- (id)loadStoredLogoForBrand:(id)brand
 {
-  v4 = a3;
-  v5 = [v4 externalID];
-  v6 = [(HRBrandImageManager *)self fetchedImages];
-  v7 = [v6 objectForKey:v5];
+  brandCopy = brand;
+  externalID = [brandCopy externalID];
+  fetchedImages = [(HRBrandImageManager *)self fetchedImages];
+  v7 = [fetchedImages objectForKey:externalID];
 
   if (v7)
   {
@@ -205,12 +205,12 @@ void __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___bl
 
   else
   {
-    v9 = [(HRBrandImageManager *)self _logoURLForBrand:v4];
+    v9 = [(HRBrandImageManager *)self _logoURLForBrand:brandCopy];
     if (v9)
     {
       v10 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v11 = [v9 path];
-      v8 = [v10 initWithContentsOfFile:v11];
+      path = [v9 path];
+      v8 = [v10 initWithContentsOfFile:path];
     }
 
     else
@@ -222,16 +222,16 @@ void __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___bl
   return v8;
 }
 
-- (void)fetchLogoForBrand:(id)a3 completion:(id)a4
+- (void)fetchLogoForBrand:(id)brand completion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 externalID];
-  v9 = [(HRBrandImageManager *)self outstandingRequests];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  brandCopy = brand;
+  completionCopy = completion;
+  externalID = [brandCopy externalID];
+  outstandingRequests = [(HRBrandImageManager *)self outstandingRequests];
+  v10 = [outstandingRequests objectForKeyedSubscript:externalID];
 
-  v11 = _Block_copy(v7);
+  v11 = _Block_copy(completionCopy);
   if (v10)
   {
     [v10 addObject:v11];
@@ -242,42 +242,42 @@ void __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___bl
     v19[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v13 = [v12 mutableCopy];
-    v14 = [(HRBrandImageManager *)self outstandingRequests];
-    [v14 setObject:v13 forKeyedSubscript:v8];
+    outstandingRequests2 = [(HRBrandImageManager *)self outstandingRequests];
+    [outstandingRequests2 setObject:v13 forKeyedSubscript:externalID];
 
-    v15 = [(HRBrandImageManager *)self providerServiceStore];
-    v16 = [(HRBrandImageManager *)self _scaleKeyForCurrentDevice];
+    providerServiceStore = [(HRBrandImageManager *)self providerServiceStore];
+    _scaleKeyForCurrentDevice = [(HRBrandImageManager *)self _scaleKeyForCurrentDevice];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __52__HRBrandImageManager_fetchLogoForBrand_completion___block_invoke;
     v17[3] = &unk_1E83DD798;
     v17[4] = self;
-    v18 = v6;
-    [v15 fetchLogoDataForBrand:v18 scaleKey:v16 completion:v17];
+    v18 = brandCopy;
+    [providerServiceStore fetchLogoDataForBrand:v18 scaleKey:_scaleKeyForCurrentDevice completion:v17];
   }
 }
 
-- (void)processFetchResponseWithData:(id)a3 error:(id)a4 brand:(id)a5
+- (void)processFetchResponseWithData:(id)data error:(id)error brand:(id)brand
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dataCopy = data;
+  errorCopy = error;
+  brandCopy = brand;
+  if (dataCopy)
   {
-    v11 = [MEMORY[0x1E69DCAB8] imageWithData:v8];
+    v11 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
     if (v11)
     {
-      [(HRBrandImageManager *)self _writeImageData:v8 brand:v10];
+      [(HRBrandImageManager *)self _writeImageData:dataCopy brand:brandCopy];
     }
 
     else
     {
       v16 = [MEMORY[0x1E696ABC0] hk_error:100 format:@"Image decoding error for brand"];
 
-      v9 = v16;
+      errorCopy = v16;
     }
 
-    [(HRBrandImageManager *)self dispatchResponsesForBrand:v10 image:v11 error:v9];
+    [(HRBrandImageManager *)self dispatchResponsesForBrand:brandCopy image:v11 error:errorCopy];
   }
 
   else
@@ -286,32 +286,32 @@ void __68__HRBrandImageManager_retrieveLogoForBrand_size_options_completion___bl
     v12 = *MEMORY[0x1E696B948];
     if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR))
     {
-      [HRBrandImageManager processFetchResponseWithData:v12 error:v10 brand:?];
+      [HRBrandImageManager processFetchResponseWithData:v12 error:brandCopy brand:?];
     }
 
     v13 = MEMORY[0x1E696ABC0];
     v14 = HKSensitiveLogItem();
     v15 = [v13 hk_error:100 format:{@"Unable to fetch image for brand: %@", v14}];
-    [(HRBrandImageManager *)self dispatchResponsesForBrand:v10 image:0 error:v15];
+    [(HRBrandImageManager *)self dispatchResponsesForBrand:brandCopy image:0 error:v15];
   }
 }
 
-- (void)dispatchResponsesForBrand:(id)a3 image:(id)a4 error:(id)a5
+- (void)dispatchResponsesForBrand:(id)brand image:(id)image error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 externalID];
+  imageCopy = image;
+  errorCopy = error;
+  externalID = [brand externalID];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__HRBrandImageManager_dispatchResponsesForBrand_image_error___block_invoke;
   v14[3] = &unk_1E83DCA90;
   v14[4] = self;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = externalID;
+  v16 = imageCopy;
+  v17 = errorCopy;
+  v11 = errorCopy;
+  v12 = imageCopy;
+  v13 = externalID;
   [(HRBrandImageManager *)self onMainQueue:v14];
 }
 
@@ -362,20 +362,20 @@ void __61__HRBrandImageManager_dispatchResponsesForBrand_image_error___block_inv
   }
 }
 
-- (void)_writeImageData:(id)a3 brand:(id)a4
+- (void)_writeImageData:(id)data brand:(id)brand
 {
-  v6 = a3;
-  v7 = [(HRBrandImageManager *)self _logoURLForBrand:a4];
+  dataCopy = data;
+  v7 = [(HRBrandImageManager *)self _logoURLForBrand:brand];
   if (v7)
   {
-    v8 = [(HRBrandImageManager *)self fileOperationQueue];
+    fileOperationQueue = [(HRBrandImageManager *)self fileOperationQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__HRBrandImageManager__writeImageData_brand___block_invoke;
     v9[3] = &unk_1E83DD1A8;
-    v10 = v6;
+    v10 = dataCopy;
     v11 = v7;
-    [v8 addOperationWithBlock:v9];
+    [fileOperationQueue addOperationWithBlock:v9];
   }
 
   else
@@ -405,27 +405,27 @@ void __45__HRBrandImageManager__writeImageData_brand___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_logoURLForBrand:(id)a3
+- (id)_logoURLForBrand:(id)brand
 {
-  v4 = [a3 externalID];
-  v5 = [(HRBrandImageManager *)self _hashedSaltedStringFromString:v4];
+  externalID = [brand externalID];
+  v5 = [(HRBrandImageManager *)self _hashedSaltedStringFromString:externalID];
 
   if (v5)
   {
     v6 = [v5 stringByAppendingPathExtension:@"png"];
     v7 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
-    v9 = [v8 stringByAppendingPathComponent:@"BrandLogos"];
+    v9 = [firstObject stringByAppendingPathComponent:@"BrandLogos"];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v9];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v18 = 0;
-      v13 = [v12 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
+      v13 = [defaultManager2 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
       v14 = v18;
 
       if ((v13 & 1) == 0)
@@ -471,26 +471,26 @@ void __45__HRBrandImageManager__writeImageData_brand___block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)_hashedSaltedStringFromString:(id)a3
+- (id)_hashedSaltedStringFromString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fetchOrCreateSalt];
-  if (v4)
+  stringCopy = string;
+  _fetchOrCreateSalt = [objc_opt_class() _fetchOrCreateSalt];
+  if (_fetchOrCreateSalt)
   {
-    v5 = [v3 stringByAppendingString:v4];
+    v5 = [stringCopy stringByAppendingString:_fetchOrCreateSalt];
     v6 = [v5 dataUsingEncoding:4];
-    v7 = [v6 hk_MD5];
-    v8 = v7;
-    if (v7)
+    hk_MD5 = [v6 hk_MD5];
+    v8 = hk_MD5;
+    if (hk_MD5)
     {
-      v9 = [v7 bytes];
+      bytes = [hk_MD5 bytes];
       v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v8, "length")}];
       if ([v8 length])
       {
         v11 = 0;
         do
         {
-          [v10 appendFormat:@"%02.2hhX", *(v9 + v11++)];
+          [v10 appendFormat:@"%02.2hhX", *(bytes + v11++)];
         }
 
         while (v11 < [v8 length]);
@@ -515,8 +515,8 @@ void __45__HRBrandImageManager__writeImageData_brand___block_invoke(uint64_t a1)
 
 + (id)_fetchOrCreateSalt
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_fetchOrCreateSalt__salt)
   {
     v3 = _fetchOrCreateSalt__salt;
@@ -557,10 +557,10 @@ void __45__HRBrandImageManager__writeImageData_brand___block_invoke(uint64_t a1)
 
       else
       {
-        v10 = [MEMORY[0x1E696AFB0] UUID];
-        v11 = [v10 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
         v12 = _fetchOrCreateSalt__salt;
-        _fetchOrCreateSalt__salt = v11;
+        _fetchOrCreateSalt__salt = uUIDString;
 
         v9 = [v4 mutableCopy];
         v13 = [_fetchOrCreateSalt__salt dataUsingEncoding:4];
@@ -580,7 +580,7 @@ void __45__HRBrandImageManager__writeImageData_brand___block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

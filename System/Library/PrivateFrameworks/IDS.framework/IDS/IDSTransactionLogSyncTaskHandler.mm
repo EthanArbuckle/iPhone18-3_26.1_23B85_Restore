@@ -1,37 +1,37 @@
 @interface IDSTransactionLogSyncTaskHandler
-- (IDSTransactionLogSyncTaskHandler)initWithTask:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (IDSTransactionLogSyncTaskHandler)initWithTask:(id)task delegate:(id)delegate queue:(id)queue;
 - (IDSTransactionLogTaskHandlerDelegate)delegate;
-- (id)_destinationsInMessages:(id)a3;
-- (id)_groupIDsFromMessages:(id)a3;
-- (id)_groupsByGroupIDFromGroups:(id)a3;
-- (id)_participantsByAliasFromParticipants:(id)a3;
-- (id)_transactionMessageFromTransportMessage:(id)a3 groups:(id)a4 participants:(id)a5 accountInfo:(id)a6;
-- (id)_transactionMessageFromTransportMessage:(id)a3 withDecryptedPayload:(id)a4 accountInfo:(id)a5;
-- (id)_transactionMessageFromTransportMessage:(id)a3 withParticipants:(id)a4 accountInfo:(id)a5;
-- (void)_completeWithError:(id)a3;
-- (void)_transactionMessagesFromTransportMessages:(id)a3 withParticipants:(id)a4 groups:(id)a5 accountInfo:(id)a6 completion:(id)a7;
+- (id)_destinationsInMessages:(id)messages;
+- (id)_groupIDsFromMessages:(id)messages;
+- (id)_groupsByGroupIDFromGroups:(id)groups;
+- (id)_participantsByAliasFromParticipants:(id)participants;
+- (id)_transactionMessageFromTransportMessage:(id)message groups:(id)groups participants:(id)participants accountInfo:(id)info;
+- (id)_transactionMessageFromTransportMessage:(id)message withDecryptedPayload:(id)payload accountInfo:(id)info;
+- (id)_transactionMessageFromTransportMessage:(id)message withParticipants:(id)participants accountInfo:(id)info;
+- (void)_completeWithError:(id)error;
+- (void)_transactionMessagesFromTransportMessages:(id)messages withParticipants:(id)participants groups:(id)groups accountInfo:(id)info completion:(id)completion;
 - (void)perform;
-- (void)qFetchParticipantsFromDeviceMessges:(id)a3 andGroupsFromGroupMessages:(id)a4 completion:(id)a5;
-- (void)qIngestMessages:(id)a3 completion:(id)a4;
-- (void)qPerformWithToken:(id)a3;
+- (void)qFetchParticipantsFromDeviceMessges:(id)messges andGroupsFromGroupMessages:(id)messages completion:(id)completion;
+- (void)qIngestMessages:(id)messages completion:(id)completion;
+- (void)qPerformWithToken:(id)token;
 @end
 
 @implementation IDSTransactionLogSyncTaskHandler
 
-- (IDSTransactionLogSyncTaskHandler)initWithTask:(id)a3 delegate:(id)a4 queue:(id)a5
+- (IDSTransactionLogSyncTaskHandler)initWithTask:(id)task delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  taskCopy = task;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = IDSTransactionLogSyncTaskHandler;
-  v12 = [(IDSTransactionLogTaskHandler *)&v15 _init];
-  v13 = v12;
-  if (v12)
+  _init = [(IDSTransactionLogTaskHandler *)&v15 _init];
+  v13 = _init;
+  if (_init)
   {
-    objc_storeStrong(v12 + 1, a3);
-    objc_storeStrong(&v13->_queue, a5);
-    objc_storeWeak(&v13->_delegate, v10);
+    objc_storeStrong(_init + 1, task);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;
@@ -39,28 +39,28 @@
 
 - (void)perform
 {
-  v3 = [(IDSTransactionLogSyncTaskHandler *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IDSTransactionLogSyncTaskHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = _os_activity_create(&dword_1959FF000, "IDSTransactionLogSync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v7, &state);
-  v4 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
+  delegate = [(IDSTransactionLogSyncTaskHandler *)self delegate];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_195B23470;
   v5[3] = &unk_1E7443688;
   v5[4] = self;
-  [v4 persistedTokenForTaskHandler:self completion:v5];
+  [delegate persistedTokenForTaskHandler:self completion:v5];
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)qPerformWithToken:(id)a3
+- (void)qPerformWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[IDSLogging transactionLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -68,20 +68,20 @@
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_INFO, "Fetching messages", buf, 2u);
   }
 
-  v6 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
+  delegate = [(IDSTransactionLogSyncTaskHandler *)self delegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195B23704;
   v7[3] = &unk_1E7443700;
   v7[4] = self;
-  [v6 taskHandler:self messagesFromToken:v4 completion:v7];
+  [delegate taskHandler:self messagesFromToken:tokenCopy completion:v7];
 }
 
-- (void)qIngestMessages:(id)a3 completion:(id)a4
+- (void)qIngestMessages:(id)messages completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v26 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -89,7 +89,7 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v6;
+  v10 = messagesCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
@@ -105,9 +105,9 @@
         }
 
         v15 = *(*(&v32 + 1) + 8 * i);
-        v16 = [v15 groupID];
+        groupID = [v15 groupID];
 
-        if (v16)
+        if (groupID)
         {
           v17 = v7;
         }
@@ -118,12 +118,12 @@
         }
 
         [v17 addObject:v15];
-        v18 = [v15 recipientAlias];
+        recipientAlias = [v15 recipientAlias];
 
-        if (v18)
+        if (recipientAlias)
         {
-          v19 = [v15 recipientAlias];
-          [v9 addObject:v19];
+          recipientAlias2 = [v15 recipientAlias];
+          [v9 addObject:recipientAlias2];
         }
       }
 
@@ -133,7 +133,7 @@
     while (v12);
   }
 
-  v20 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
+  delegate = [(IDSTransactionLogSyncTaskHandler *)self delegate];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = sub_195B23E84;
@@ -142,29 +142,29 @@
   v28 = v8;
   v29 = v7;
   v30 = v10;
-  v31 = v26;
-  v21 = v26;
+  v31 = completionCopy;
+  v21 = completionCopy;
   v22 = v10;
   v23 = v7;
   v24 = v8;
-  [v20 taskHandler:self accountInfoForAliases:v9 completion:v27];
+  [delegate taskHandler:self accountInfoForAliases:v9 completion:v27];
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)qFetchParticipantsFromDeviceMessges:(id)a3 andGroupsFromGroupMessages:(id)a4 completion:(id)a5
+- (void)qFetchParticipantsFromDeviceMessges:(id)messges andGroupsFromGroupMessages:(id)messages completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messgesCopy = messges;
+  messagesCopy = messages;
+  completionCopy = completion;
   v11 = +[IDSLogging transactionLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    *&buf[4] = [v8 count];
+    *&buf[4] = [messgesCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = [v9 count];
+    *&buf[14] = [messagesCopy count];
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_INFO, "Fetching participants/groups for deviceMessges {deviceMessages.count: %ld, groupMessages.count: %ld}", buf, 0x16u);
   }
 
@@ -187,9 +187,9 @@
   v43[3] = sub_195A00854;
   v43[4] = sub_195A03DD0;
   v44 = 0;
-  v13 = [(IDSTransactionLogSyncTaskHandler *)self _destinationsInMessages:v8];
+  v13 = [(IDSTransactionLogSyncTaskHandler *)self _destinationsInMessages:messgesCopy];
   dispatch_group_enter(v12);
-  v14 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
+  delegate = [(IDSTransactionLogSyncTaskHandler *)self delegate];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = sub_195B248D8;
@@ -198,16 +198,16 @@
   v15 = v13;
   v38 = v15;
   v41 = buf;
-  v16 = v8;
+  v16 = messgesCopy;
   v39 = v16;
   v42 = v43;
   v17 = v12;
   v40 = v17;
-  [v14 taskHandler:self participantsWithDestinations:v15 completion:v37];
+  [delegate taskHandler:self participantsWithDestinations:v15 completion:v37];
 
-  v18 = [(IDSTransactionLogSyncTaskHandler *)self _groupIDsFromMessages:v9];
+  v18 = [(IDSTransactionLogSyncTaskHandler *)self _groupIDsFromMessages:messagesCopy];
   dispatch_group_enter(v17);
-  v19 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
+  delegate2 = [(IDSTransactionLogSyncTaskHandler *)self delegate];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = sub_195B24A78;
@@ -216,24 +216,24 @@
   v20 = v18;
   v32 = v20;
   v35 = v45;
-  v21 = v9;
+  v21 = messagesCopy;
   v33 = v21;
   v36 = v43;
   v22 = v17;
   v34 = v22;
-  [v19 taskHandler:self groupsWithGroupIDs:v20 completion:v31];
+  [delegate2 taskHandler:self groupsWithGroupIDs:v20 completion:v31];
 
-  v23 = [(IDSTransactionLogSyncTaskHandler *)self queue];
+  queue = [(IDSTransactionLogSyncTaskHandler *)self queue];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = sub_195B24C18;
   v26[3] = &unk_1E74437F0;
-  v27 = v10;
+  v27 = completionCopy;
   v28 = v43;
   v29 = buf;
   v30 = v45;
-  v24 = v10;
-  dispatch_group_notify(v22, v23, v26);
+  v24 = completionCopy;
+  dispatch_group_notify(v22, queue, v26);
 
   _Block_object_dispose(v43, 8);
   _Block_object_dispose(v45, 8);
@@ -242,22 +242,22 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_transactionMessagesFromTransportMessages:(id)a3 withParticipants:(id)a4 groups:(id)a5 accountInfo:(id)a6 completion:(id)a7
+- (void)_transactionMessagesFromTransportMessages:(id)messages withParticipants:(id)participants groups:(id)groups accountInfo:(id)info completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v25 = a7;
-  v15 = [(IDSTransactionLogSyncTaskHandler *)self _groupsByGroupIDFromGroups:a5];
-  v26 = v13;
-  v16 = [(IDSTransactionLogSyncTaskHandler *)self _participantsByAliasFromParticipants:v13];
-  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
+  messagesCopy = messages;
+  participantsCopy = participants;
+  infoCopy = info;
+  completionCopy = completion;
+  v15 = [(IDSTransactionLogSyncTaskHandler *)self _groupsByGroupIDFromGroups:groups];
+  v26 = participantsCopy;
+  v16 = [(IDSTransactionLogSyncTaskHandler *)self _participantsByAliasFromParticipants:participantsCopy];
+  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = v12;
+  v18 = messagesCopy;
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v19)
   {
@@ -273,7 +273,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:*(*(&v27 + 1) + 8 * v22) groups:v15 participants:v16 accountInfo:v14];
+        v23 = [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:*(*(&v27 + 1) + 8 * v22) groups:v15 participants:v16 accountInfo:infoCopy];
         if (v23)
         {
           [v17 addObject:v23];
@@ -289,7 +289,7 @@
     while (v20);
   }
 
-  v25[2](v25, v17, 0);
+  completionCopy[2](completionCopy, v17, 0);
   v24 = *MEMORY[0x1E69E9840];
 }
 
@@ -307,23 +307,23 @@
   return v5;
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(IDSTransactionLogSyncTaskHandler *)self syncTask];
-  [v5 _completeWithError:v4];
+  errorCopy = error;
+  syncTask = [(IDSTransactionLogSyncTaskHandler *)self syncTask];
+  [syncTask _completeWithError:errorCopy];
 }
 
-- (id)_destinationsInMessages:(id)a3
+- (id)_destinationsInMessages:(id)messages
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -338,10 +338,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) destination];
-        if (v10)
+        destination = [*(*(&v13 + 1) + 8 * i) destination];
+        if (destination)
         {
-          [v4 addObject:v10];
+          [v4 addObject:destination];
         }
       }
 
@@ -356,16 +356,16 @@
   return v4;
 }
 
-- (id)_groupIDsFromMessages:(id)a3
+- (id)_groupIDsFromMessages:(id)messages
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -380,10 +380,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) groupID];
-        if (v10)
+        groupID = [*(*(&v13 + 1) + 8 * i) groupID];
+        if (groupID)
         {
-          [v4 addObject:v10];
+          [v4 addObject:groupID];
         }
       }
 
@@ -398,16 +398,16 @@
   return v4;
 }
 
-- (id)_groupsByGroupIDFromGroups:(id)a3
+- (id)_groupsByGroupIDFromGroups:(id)groups
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = groupsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -423,8 +423,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 groupID];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        groupID = [v10 groupID];
+        [v4 setObject:v10 forKeyedSubscript:groupID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -438,16 +438,16 @@
   return v4;
 }
 
-- (id)_participantsByAliasFromParticipants:(id)a3
+- (id)_participantsByAliasFromParticipants:(id)participants
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = participantsCopy;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -467,8 +467,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [v10 aliases];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        aliases = [v10 aliases];
+        v12 = [aliases countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
           v13 = v12;
@@ -479,13 +479,13 @@
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(aliases);
               }
 
               [v4 setObject:v10 forKeyedSubscript:*(*(&v18 + 1) + 8 * j)];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v13 = [aliases countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v13);
@@ -503,53 +503,53 @@
   return v4;
 }
 
-- (id)_transactionMessageFromTransportMessage:(id)a3 groups:(id)a4 participants:(id)a5 accountInfo:(id)a6
+- (id)_transactionMessageFromTransportMessage:(id)message groups:(id)groups participants:(id)participants accountInfo:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v13 groupID];
-  if (v14)
+  groupsCopy = groups;
+  participantsCopy = participants;
+  infoCopy = info;
+  messageCopy = message;
+  groupID = [messageCopy groupID];
+  if (groupID)
   {
-    [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:v13 withGroupID:v14 groups:v10 accountInfo:v12];
+    [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:messageCopy withGroupID:groupID groups:groupsCopy accountInfo:infoCopy];
   }
 
   else
   {
-    [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:v13 withParticipants:v11 accountInfo:v12];
+    [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:messageCopy withParticipants:participantsCopy accountInfo:infoCopy];
   }
   v15 = ;
 
   return v15;
 }
 
-- (id)_transactionMessageFromTransportMessage:(id)a3 withParticipants:(id)a4 accountInfo:(id)a5
+- (id)_transactionMessageFromTransportMessage:(id)message withParticipants:(id)participants accountInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 destination];
-  v12 = [v11 alias];
-  v13 = [v10 objectForKeyedSubscript:v12];
+  messageCopy = message;
+  infoCopy = info;
+  participantsCopy = participants;
+  destination = [messageCopy destination];
+  alias = [destination alias];
+  v13 = [participantsCopy objectForKeyedSubscript:alias];
 
-  v14 = [v11 pushToken];
-  v15 = [v13 deviceWithIdentifier:v14];
+  pushToken = [destination pushToken];
+  v15 = [v13 deviceWithIdentifier:pushToken];
 
   if (v15)
   {
-    v16 = [v8 encryptedPayload];
-    v17 = [v9 accountIdentity];
-    v18 = [v8 cypherIdentifier];
-    v25 = v16;
+    encryptedPayload = [messageCopy encryptedPayload];
+    accountIdentity = [infoCopy accountIdentity];
+    cypherIdentifier = [messageCopy cypherIdentifier];
+    v25 = encryptedPayload;
     v26 = 0;
-    v19 = [v15 verifyAndRevealData:v16 withReceipient:v17 cypherIdentifier:v18 error:&v26];
+    v19 = [v15 verifyAndRevealData:encryptedPayload withReceipient:accountIdentity cypherIdentifier:cypherIdentifier error:&v26];
     v20 = v26;
 
     if (v19)
     {
-      v21 = [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:v8 withDecryptedPayload:v19 accountInfo:v9];
+      v21 = [(IDSTransactionLogSyncTaskHandler *)self _transactionMessageFromTransportMessage:messageCopy withDecryptedPayload:v19 accountInfo:infoCopy];
     }
 
     else
@@ -576,45 +576,45 @@
   return v21;
 }
 
-- (id)_transactionMessageFromTransportMessage:(id)a3 withDecryptedPayload:(id)a4 accountInfo:(id)a5
+- (id)_transactionMessageFromTransportMessage:(id)message withDecryptedPayload:(id)payload accountInfo:(id)info
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 senderAlias];
-  v11 = [v7 recipientAlias];
-  v12 = v11;
-  if (v10 && v11)
+  messageCopy = message;
+  payloadCopy = payload;
+  infoCopy = info;
+  senderAlias = [messageCopy senderAlias];
+  recipientAlias = [messageCopy recipientAlias];
+  v12 = recipientAlias;
+  if (senderAlias && recipientAlias)
   {
-    v13 = [v9 accountForAlias:v11];
+    v13 = [infoCopy accountForAlias:recipientAlias];
     if (v13)
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v15 = [v7 payload];
-      [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69A4DF0]];
+      payload = [messageCopy payload];
+      [v14 setObject:payload forKeyedSubscript:*MEMORY[0x1E69A4DF0]];
 
-      v16 = [v7 payload];
-      v17 = [v16 objectForKeyedSubscript:@"E"];
+      payload2 = [messageCopy payload];
+      v17 = [payload2 objectForKeyedSubscript:@"E"];
       [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69A4DE8]];
 
-      [v14 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69A4DD0]];
+      [v14 setObject:payloadCopy forKeyedSubscript:*MEMORY[0x1E69A4DD0]];
       v18 = [IDSTransactionLogDictionaryMessage alloc];
-      v19 = [v13 uniqueID];
-      v20 = [v7 senderAlias];
+      uniqueID = [v13 uniqueID];
+      senderAlias2 = [messageCopy senderAlias];
       [v13 loginID];
-      v31 = v8;
-      v21 = v32 = v10;
-      [v9 serviceName];
+      v31 = payloadCopy;
+      v21 = v32 = senderAlias;
+      [infoCopy serviceName];
       v22 = v12;
-      v24 = v23 = v9;
-      v25 = [(IDSTransactionLogDictionaryMessage *)v18 initWithDictionary:v14 accountUniqueID:v19 fromID:v20 loginID:v21 serviceName:v24];
+      v24 = v23 = infoCopy;
+      v25 = [(IDSTransactionLogDictionaryMessage *)v18 initWithDictionary:v14 accountUniqueID:uniqueID fromID:senderAlias2 loginID:v21 serviceName:v24];
 
-      v9 = v23;
+      infoCopy = v23;
       v12 = v22;
 
-      v8 = v31;
-      v10 = v32;
+      payloadCopy = v31;
+      senderAlias = v32;
 
       goto LABEL_16;
     }
@@ -622,7 +622,7 @@
     v28 = +[IDSLogging transactionLog];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      sub_195B450D4(v7, v9, v28);
+      sub_195B450D4(messageCopy, infoCopy, v28);
     }
   }
 
@@ -633,8 +633,8 @@
     {
       v26 = @"NO";
       *buf = 138478851;
-      v34 = v10;
-      if (v10)
+      v34 = senderAlias;
+      if (senderAlias)
       {
         v27 = @"YES";
       }
@@ -652,7 +652,7 @@
       v35 = 2113;
       v36 = v12;
       v37 = 2113;
-      v38 = v7;
+      v38 = messageCopy;
       v39 = 2114;
       v40 = v27;
       v41 = 2114;

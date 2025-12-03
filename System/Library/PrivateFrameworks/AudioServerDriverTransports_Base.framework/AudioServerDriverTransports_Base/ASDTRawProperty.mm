@@ -1,16 +1,16 @@
 @interface ASDTRawProperty
-- (ASDTRawProperty)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
+- (ASDTRawProperty)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 @end
 
 @implementation ASDTRawProperty
 
-- (ASDTRawProperty)initWithConfig:(id)a3
+- (ASDTRawProperty)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = ASDTRawProperty;
-  v5 = [(ASDTCustomProperty *)&v11 initWithConfig:v4 propertyDataType:1918990199 qualifierDataType:0];
+  v5 = [(ASDTCustomProperty *)&v11 initWithConfig:configCopy propertyDataType:1918990199 qualifierDataType:0];
   v6 = v5;
   if (!v5)
   {
@@ -18,11 +18,11 @@
   }
 
   [(ASDTCustomProperty *)v5 setCacheMode:2];
-  v7 = [v4 asdtPropertyValue];
+  asdtPropertyValue = [configCopy asdtPropertyValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ASDTRawProperty *)v6 storePropertyValue:v7];
+    [(ASDTRawProperty *)v6 storePropertyValue:asdtPropertyValue];
 
 LABEL_4:
     v8 = v6;
@@ -41,13 +41,13 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
-  v4 = a3;
-  -[ASDTCustomProperty setPropertyValueSize:](self, "setPropertyValueSize:", [v4 length]);
+  valueCopy = value;
+  -[ASDTCustomProperty setPropertyValueSize:](self, "setPropertyValueSize:", [valueCopy length]);
   v6.receiver = self;
   v6.super_class = ASDTRawProperty;
-  LOBYTE(self) = [(ASDTCustomProperty *)&v6 storePropertyValue:v4];
+  LOBYTE(self) = [(ASDTCustomProperty *)&v6 storePropertyValue:valueCopy];
 
   return self;
 }

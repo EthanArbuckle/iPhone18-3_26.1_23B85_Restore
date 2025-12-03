@@ -1,19 +1,19 @@
 @interface ISRegion
-+ (id)regionWithName:(id)a3 code:(id)a4;
++ (id)regionWithName:(id)name code:(id)code;
 @end
 
 @implementation ISRegion
 
-+ (id)regionWithName:(id)a3 code:(id)a4
++ (id)regionWithName:(id)name code:(id)code
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  codeCopy = code;
   v7 = objc_alloc_init(ISRegion);
   v8 = v7;
   if (v7)
   {
-    [(ISRegion *)v7 setRegionName:v5];
-    [(ISRegion *)v8 setRegionCode:v6];
+    [(ISRegion *)v7 setRegionName:nameCopy];
+    [(ISRegion *)v8 setRegionCode:codeCopy];
   }
 
   return v8;

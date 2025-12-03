@@ -1,5 +1,5 @@
 @interface BKUIPearlEnrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityDetailLabel;
 - (id)_accessibilityInstructionLabel;
 - (id)_accessibilityInstructionView;
@@ -11,22 +11,22 @@
 
 @implementation BKUIPearlEnrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIPearlPillContainerView"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"bottomContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewBottomContainer" hasInstanceMethod:@"instructionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instructionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_state" withType:"int"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_substate" withType:"int"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_enrollView" withType:"BKUIPearlEnrollView"];
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_pillContainer" withType:"BKUIPearlPillContainerView"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"finalizeInstructionAnimation" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"_setState:animated:completion:" withFullSignature:{"v", "i", "B", "@?", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"_setSubstate:animated:" withFullSignature:{"v", "i", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIPearlPillContainerView"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"bottomContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewBottomContainer" hasInstanceMethod:@"instructionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instructionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_state" withType:"int"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_substate" withType:"int"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_enrollView" withType:"BKUIPearlEnrollView"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_pillContainer" withType:"BKUIPearlPillContainerView"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"finalizeInstructionAnimation" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"_setState:animated:completion:" withFullSignature:{"v", "i", "B", "@?", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"_setSubstate:animated:" withFullSignature:{"v", "i", "B", 0}];
 }
 
 - (id)_accessibilityInstructionView
@@ -39,16 +39,16 @@
 
 - (id)_accessibilityInstructionLabel
 {
-  v2 = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionView];
-  v3 = [v2 safeValueForKey:@"instructionLabel"];
+  _accessibilityInstructionView = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionView];
+  v3 = [_accessibilityInstructionView safeValueForKey:@"instructionLabel"];
 
   return v3;
 }
 
 - (id)_accessibilityDetailLabel
 {
-  v2 = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionView];
-  v3 = [v2 safeValueForKey:@"detailLabel"];
+  _accessibilityInstructionView = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionView];
+  v3 = [_accessibilityInstructionView safeValueForKey:@"detailLabel"];
 
   return v3;
 }
@@ -58,8 +58,8 @@
   v6.receiver = self;
   v6.super_class = BKUIPearlEnrollViewControllerAccessibility;
   [(BKUIPearlEnrollViewControllerAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionLabel];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
+  _accessibilityInstructionLabel = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionLabel];
+  [_accessibilityInstructionLabel setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
   objc_opt_class();
   v4 = [(BKUIPearlEnrollViewControllerAccessibility *)self safeValueForKeyPath:@"_enrollView._pillContainer"];
   v5 = __UIAccessibilityCastAsSafeCategory();
@@ -81,8 +81,8 @@
   v5.super_class = BKUIPearlEnrollViewControllerAccessibility;
   [(BKUIPearlEnrollViewControllerAccessibility *)&v5 finalizeInstructionAnimation];
   v3 = *MEMORY[0x29EDC7ED8];
-  v4 = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionLabel];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityInstructionLabel = [(BKUIPearlEnrollViewControllerAccessibility *)self _accessibilityInstructionLabel];
+  UIAccessibilityPostNotification(v3, _accessibilityInstructionLabel);
 }
 
 void __76__BKUIPearlEnrollViewControllerAccessibility__setState_animated_completion___block_invoke(uint64_t a1)

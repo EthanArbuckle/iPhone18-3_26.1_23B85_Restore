@@ -1,35 +1,35 @@
 @interface CKStaticPhotoStackBalloonView
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
-- (void)setMediaObjects:(id)a3;
-- (void)setStackAlpha:(double)a3;
+- (void)setMediaObjects:(id)objects;
+- (void)setStackAlpha:(double)alpha;
 @end
 
 @implementation CKStaticPhotoStackBalloonView
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
   v6.receiver = self;
   v6.super_class = CKStaticPhotoStackBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v6 configureForMessagePart:v4];
-  v5 = [v4 mediaObjects];
+  partCopy = part;
+  [(CKBalloonView *)&v6 configureForMessagePart:partCopy];
+  mediaObjects = [partCopy mediaObjects];
 
-  [(CKStaticPhotoStackBalloonView *)self setMediaObjects:v5];
+  [(CKStaticPhotoStackBalloonView *)self setMediaObjects:mediaObjects];
 }
 
-- (void)setMediaObjects:(id)a3
+- (void)setMediaObjects:(id)objects
 {
-  v8 = a3;
-  v5 = [(CKStaticPhotoStackBalloonView *)self mediaObjects];
-  v6 = [v8 isEqual:v5];
+  objectsCopy = objects;
+  mediaObjects = [(CKStaticPhotoStackBalloonView *)self mediaObjects];
+  v6 = [objectsCopy isEqual:mediaObjects];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_mediaObjects, a3);
-    v7 = [(CKStaticPhotoStackBalloonView *)self stackView];
-    [v7 removeFromSuperview];
+    objc_storeStrong(&self->_mediaObjects, objects);
+    stackView = [(CKStaticPhotoStackBalloonView *)self stackView];
+    [stackView removeFromSuperview];
 
     [(CKStaticPhotoStackBalloonView *)self setStackView:0];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
@@ -41,9 +41,9 @@
   v11.receiver = self;
   v11.super_class = CKStaticPhotoStackBalloonView;
   [(CKBalloonView *)&v11 prepareForDisplay];
-  v3 = [(CKStaticPhotoStackBalloonView *)self stackView];
+  stackView = [(CKStaticPhotoStackBalloonView *)self stackView];
 
-  if (v3)
+  if (stackView)
   {
     [(CKStaticPhotoStackBalloonView *)self setNeedsLayout];
   }
@@ -51,17 +51,17 @@
   else
   {
     v4 = [CKStaticImageStackView alloc];
-    v5 = [(CKStaticPhotoStackBalloonView *)self mediaObjects];
-    v6 = [(CKStaticImageStackView *)v4 initWithFrame:v5 mediaObjects:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    mediaObjects = [(CKStaticPhotoStackBalloonView *)self mediaObjects];
+    v6 = [(CKStaticImageStackView *)v4 initWithFrame:mediaObjects mediaObjects:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CKStaticPhotoStackBalloonView *)self setStackView:v6];
 
     [(CKStaticPhotoStackBalloonView *)self stackCornerRadius];
     v8 = v7;
-    v9 = [(CKStaticPhotoStackBalloonView *)self stackView];
-    [v9 setStackCornerRadius:v8];
+    stackView2 = [(CKStaticPhotoStackBalloonView *)self stackView];
+    [stackView2 setStackCornerRadius:v8];
 
-    v10 = [(CKStaticPhotoStackBalloonView *)self stackView];
-    [(CKStaticPhotoStackBalloonView *)self addSubview:v10];
+    stackView3 = [(CKStaticPhotoStackBalloonView *)self stackView];
+    [(CKStaticPhotoStackBalloonView *)self addSubview:stackView3];
   }
 }
 
@@ -70,15 +70,15 @@
   v4.receiver = self;
   v4.super_class = CKStaticPhotoStackBalloonView;
   [(CKBalloonView *)&v4 layoutSubviews];
-  v3 = [(CKStaticPhotoStackBalloonView *)self stackView];
+  stackView = [(CKStaticPhotoStackBalloonView *)self stackView];
   [(CKStaticPhotoStackBalloonView *)self bounds];
-  [v3 setFrame:?];
+  [stackView setFrame:?];
 }
 
-- (void)setStackAlpha:(double)a3
+- (void)setStackAlpha:(double)alpha
 {
-  v4 = [(CKStaticPhotoStackBalloonView *)self stackView];
-  [v4 setAlpha:a3];
+  stackView = [(CKStaticPhotoStackBalloonView *)self stackView];
+  [stackView setAlpha:alpha];
 }
 
 @end

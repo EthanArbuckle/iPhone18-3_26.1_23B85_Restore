@@ -1,54 +1,54 @@
 @interface _SFPBPlayWatchListItemButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPlayWatchListItemButtonItem)initWithDictionary:(id)a3;
-- (_SFPBPlayWatchListItemButtonItem)initWithFacade:(id)a3;
-- (_SFPBPlayWatchListItemButtonItem)initWithJSON:(id)a3;
+- (_SFPBPlayWatchListItemButtonItem)initWithDictionary:(id)dictionary;
+- (_SFPBPlayWatchListItemButtonItem)initWithFacade:(id)facade;
+- (_SFPBPlayWatchListItemButtonItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPlayWatchListItemButtonItem
 
-- (_SFPBPlayWatchListItemButtonItem)initWithFacade:(id)a3
+- (_SFPBPlayWatchListItemButtonItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPlayWatchListItemButtonItem *)self init];
   if (v5)
   {
-    v6 = [v4 watchListItem];
+    watchListItem = [facadeCopy watchListItem];
 
-    if (v6)
+    if (watchListItem)
     {
       v7 = [_SFPBWatchListItem alloc];
-      v8 = [v4 watchListItem];
-      v9 = [(_SFPBWatchListItem *)v7 initWithFacade:v8];
+      watchListItem2 = [facadeCopy watchListItem];
+      v9 = [(_SFPBWatchListItem *)v7 initWithFacade:watchListItem2];
       [(_SFPBPlayWatchListItemButtonItem *)v5 setWatchListItem:v9];
     }
 
-    v10 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(_SFPBPlayWatchListItemButtonItem *)v5 setTitle:v11];
+      title2 = [facadeCopy title];
+      [(_SFPBPlayWatchListItemButtonItem *)v5 setTitle:title2];
     }
 
-    v12 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v12)
+    if (image)
     {
       v13 = [_SFPBImage alloc];
-      v14 = [v4 image];
-      v15 = [(_SFPBImage *)v13 initWithFacade:v14];
+      image2 = [facadeCopy image];
+      v15 = [(_SFPBImage *)v13 initWithFacade:image2];
       [(_SFPBPlayWatchListItemButtonItem *)v5 setImage:v15];
     }
 
-    if ([v4 hasUniqueId])
+    if ([facadeCopy hasUniqueId])
     {
-      -[_SFPBPlayWatchListItemButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[_SFPBPlayWatchListItemButtonItem setUniqueId:](v5, "setUniqueId:", [facadeCopy uniqueId]);
     }
 
     v16 = v5;
@@ -57,15 +57,15 @@
   return v5;
 }
 
-- (_SFPBPlayWatchListItemButtonItem)initWithDictionary:(id)a3
+- (_SFPBPlayWatchListItemButtonItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBPlayWatchListItemButtonItem;
   v5 = [(_SFPBPlayWatchListItemButtonItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"watchListItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"watchListItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(_SFPBPlayWatchListItemButtonItem *)v5 setWatchListItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(_SFPBPlayWatchListItemButtonItem *)v5 setTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"image"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(_SFPBPlayWatchListItemButtonItem *)v5 setImage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"uniqueId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,30 +102,30 @@
   return v5;
 }
 
-- (_SFPBPlayWatchListItemButtonItem)initWithJSON:(id)a3
+- (_SFPBPlayWatchListItemButtonItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPlayWatchListItemButtonItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPlayWatchListItemButtonItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPlayWatchListItemButtonItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -138,53 +138,53 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_image)
   {
-    v4 = [(_SFPBPlayWatchListItemButtonItem *)self image];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    image = [(_SFPBPlayWatchListItemButtonItem *)self image];
+    dictionaryRepresentation = [image dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"image"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_title)
   {
-    v7 = [(_SFPBPlayWatchListItemButtonItem *)self title];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"title"];
+    title = [(_SFPBPlayWatchListItemButtonItem *)self title];
+    v8 = [title copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"title"];
   }
 
   if (self->_uniqueId)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBPlayWatchListItemButtonItem uniqueId](self, "uniqueId")}];
-    [v3 setObject:v9 forKeyedSubscript:@"uniqueId"];
+    [dictionary setObject:v9 forKeyedSubscript:@"uniqueId"];
   }
 
   if (self->_watchListItem)
   {
-    v10 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    watchListItem = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
+    dictionaryRepresentation2 = [watchListItem dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"watchListItem"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"watchListItem"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"watchListItem"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"watchListItem"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,28 +194,28 @@
   return v4 ^ v3 ^ [(_SFPBImage *)self->_image hash]^ (2654435761u * self->_uniqueId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
-  v6 = [v4 watchListItem];
-  if ((v5 != 0) == (v6 == 0))
+  watchListItem = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
+  watchListItem2 = [equalCopy watchListItem];
+  if ((watchListItem != 0) == (watchListItem2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
-  if (v7)
+  watchListItem3 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
+  if (watchListItem3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
-    v10 = [v4 watchListItem];
-    v11 = [v9 isEqual:v10];
+    v8 = watchListItem3;
+    watchListItem4 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
+    watchListItem5 = [equalCopy watchListItem];
+    v11 = [watchListItem4 isEqual:watchListItem5];
 
     if (!v11)
     {
@@ -227,20 +227,20 @@
   {
   }
 
-  v5 = [(_SFPBPlayWatchListItemButtonItem *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  watchListItem = [(_SFPBPlayWatchListItemButtonItem *)self title];
+  watchListItem2 = [equalCopy title];
+  if ((watchListItem != 0) == (watchListItem2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBPlayWatchListItemButtonItem *)self title];
-  if (v12)
+  title = [(_SFPBPlayWatchListItemButtonItem *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_SFPBPlayWatchListItemButtonItem *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_SFPBPlayWatchListItemButtonItem *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -252,24 +252,24 @@
   {
   }
 
-  v5 = [(_SFPBPlayWatchListItemButtonItem *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) != (v6 == 0))
+  watchListItem = [(_SFPBPlayWatchListItemButtonItem *)self image];
+  watchListItem2 = [equalCopy image];
+  if ((watchListItem != 0) != (watchListItem2 == 0))
   {
-    v17 = [(_SFPBPlayWatchListItemButtonItem *)self image];
-    if (!v17)
+    image = [(_SFPBPlayWatchListItemButtonItem *)self image];
+    if (!image)
     {
 
 LABEL_20:
       uniqueId = self->_uniqueId;
-      v22 = uniqueId == [v4 uniqueId];
+      v22 = uniqueId == [equalCopy uniqueId];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBPlayWatchListItemButtonItem *)self image];
-    v20 = [v4 image];
-    v21 = [v19 isEqual:v20];
+    v18 = image;
+    image2 = [(_SFPBPlayWatchListItemButtonItem *)self image];
+    image3 = [equalCopy image];
+    v21 = [image2 isEqual:image3];
 
     if (v21)
     {
@@ -289,39 +289,39 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
-  if (v4)
+  toCopy = to;
+  watchListItem = [(_SFPBPlayWatchListItemButtonItem *)self watchListItem];
+  if (watchListItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBPlayWatchListItemButtonItem *)self title];
-  if (v5)
+  title = [(_SFPBPlayWatchListItemButtonItem *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBPlayWatchListItemButtonItem *)self image];
-  if (v6)
+  image = [(_SFPBPlayWatchListItemButtonItem *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBPlayWatchListItemButtonItem *)self uniqueId];
-  v8 = v9;
-  if (v7)
+  uniqueId = [(_SFPBPlayWatchListItemButtonItem *)self uniqueId];
+  v8 = toCopy;
+  if (uniqueId)
   {
     PBDataWriterWriteUint64Field();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

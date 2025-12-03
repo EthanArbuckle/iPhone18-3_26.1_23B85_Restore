@@ -1,22 +1,22 @@
 @interface DTSColorPicker
-- (DTSColorPicker)initWithFrame:(CGRect)a3;
+- (DTSColorPicker)initWithFrame:(CGRect)frame;
 - (DTSColorPickerDelegate)delegate;
 - (double)colorCircleDiameter;
 - (double)colorCircleHorizontalSpacing;
-- (void)createPaletteCirclesWithParentView:(id)a3;
-- (void)didReceiveLongPress:(id)a3;
-- (void)paletteCircleTapped:(id)a3;
-- (void)selectCircle:(id)a3 completion:(id)a4;
-- (void)setColorCircleSize:(unint64_t)a3;
+- (void)createPaletteCirclesWithParentView:(id)view;
+- (void)didReceiveLongPress:(id)press;
+- (void)paletteCircleTapped:(id)tapped;
+- (void)selectCircle:(id)circle completion:(id)completion;
+- (void)setColorCircleSize:(unint64_t)size;
 @end
 
 @implementation DTSColorPicker
 
-- (DTSColorPicker)initWithFrame:(CGRect)a3
+- (DTSColorPicker)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = DTSColorPicker;
-  v3 = [(DTSColorPicker *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DTSColorPicker *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v3 action:sel_didReceiveLongPress_];
@@ -68,12 +68,12 @@
   return result;
 }
 
-- (void)setColorCircleSize:(unint64_t)a3
+- (void)setColorCircleSize:(unint64_t)size
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (self->_colorCircleSize != a3)
+  if (self->_colorCircleSize != size)
   {
-    self->_colorCircleSize = a3;
+    self->_colorCircleSize = size;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -117,29 +117,29 @@
   }
 }
 
-- (void)createPaletteCirclesWithParentView:(id)a3
+- (void)createPaletteCirclesWithParentView:(id)view
 {
-  v20 = a3;
+  viewCopy = view;
   +[ETPaletteCircleView paletteCircleDiameter];
   v5 = v4;
   v6 = +[ETColorStore defaultStore];
-  v7 = [v6 colors];
+  colors = [v6 colors];
 
-  v8 = [v7 count];
+  v8 = [colors count];
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v8];
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
       v11 = [[ETPaletteCircleView alloc] initWithFrame:0.0, 0.0, v5, v5];
-      v12 = [v7 objectAtIndexedSubscript:i];
+      v12 = [colors objectAtIndexedSubscript:i];
       [(ETPaletteCircleView *)v11 setBackgroundColor:v12];
 
       v13 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_paletteCircleTapped_];
       [v13 requireGestureRecognizerToFail:self->_longPressRecognizer];
       [(ETPaletteCircleView *)v11 addGestureRecognizer:v13];
       [(NSArray *)v9 addObject:v11];
-      [v20 addSubview:v11];
+      [viewCopy addSubview:v11];
     }
   }
 
@@ -156,21 +156,21 @@
   [(ETPaletteCircleView *)self->_selectedCircle setSelected:1];
 }
 
-- (void)selectCircle:(id)a3 completion:(id)a4
+- (void)selectCircle:(id)circle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  circleCopy = circle;
+  completionCopy = completion;
   [(ETPaletteCircleView *)self->_selectedCircle setSelected:0 animated:1 completion:0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__DTSColorPicker_selectCircle_completion___block_invoke;
   v12[3] = &unk_278F79EA8;
-  v13 = v7;
-  v8 = v7;
-  [(ETPaletteCircleView *)v6 setSelected:1 animated:1 completion:v12];
+  v13 = completionCopy;
+  v8 = completionCopy;
+  [(ETPaletteCircleView *)circleCopy setSelected:1 animated:1 completion:v12];
   selectedCircle = self->_selectedCircle;
-  self->_selectedCircle = v6;
-  v10 = v6;
+  self->_selectedCircle = circleCopy;
+  v10 = circleCopy;
 
   v11 = +[ETColorStore defaultStore];
   [v11 setSelectedColorIndex:{-[NSArray indexOfObject:](self->_paletteCircles, "indexOfObject:", self->_selectedCircle)}];
@@ -187,29 +187,29 @@ uint64_t __42__DTSColorPicker_selectCircle_completion___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)paletteCircleTapped:(id)a3
+- (void)paletteCircleTapped:(id)tapped
 {
-  v7 = [a3 view];
-  v4 = [(DTSColorPicker *)self selectedCircle];
+  view = [tapped view];
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
 
-  if (v4 != v7)
+  if (selectedCircle != view)
   {
-    [(DTSColorPicker *)self selectCircle:v7 completion:0];
-    v5 = [(DTSColorPicker *)self delegate];
-    [v5 colorPickerSelectedColorDidChange:self];
+    [(DTSColorPicker *)self selectCircle:view completion:0];
+    delegate = [(DTSColorPicker *)self delegate];
+    [delegate colorPickerSelectedColorDidChange:self];
   }
 
-  v6 = [(DTSColorPicker *)self delegate];
-  [v6 colorPickerTapped:self];
+  delegate2 = [(DTSColorPicker *)self delegate];
+  [delegate2 colorPickerTapped:self];
 }
 
-- (void)didReceiveLongPress:(id)a3
+- (void)didReceiveLongPress:(id)press
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    [v4 locationInView:self];
+    [pressCopy locationInView:self];
     v6 = v5;
     v8 = v7;
     [(DTSColorPicker *)self paletteCircles];
@@ -241,13 +241,13 @@ uint64_t __42__DTSColorPicker_selectCircle_completion___block_invoke(uint64_t a1
 
             if (v15)
             {
-              v16 = [v9 lastObject];
+              lastObject = [v9 lastObject];
 
-              if (v15 != v16)
+              if (v15 != lastObject)
               {
-                v17 = [(DTSColorPicker *)self selectedCircle];
+                selectedCircle = [(DTSColorPicker *)self selectedCircle];
 
-                if (v15 == v17)
+                if (v15 == selectedCircle)
                 {
                   [(DTSColorPicker *)self showColorWheel];
                 }

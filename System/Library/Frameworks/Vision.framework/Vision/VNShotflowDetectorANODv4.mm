@@ -1,19 +1,19 @@
 @interface VNShotflowDetectorANODv4
 + (id)defaultFilterThresholds;
-+ (id)filterThresholdsArrayForFilterThresholds:(id)a3 error:(id *)a4;
++ (id)filterThresholdsArrayForFilterThresholds:(id)thresholds error:(id *)error;
 + (id)supportedLabelKeys;
-- (VNShotflowDetectorANODv4)initWithNetwork:(id)a3;
-- (id)getIndexBoxes:(id)a3 filterThresholdIndex:(unint64_t)a4;
-- (id)nmsBoxes:(id)a3 usingThresholds:(id)a4;
-- (id)processBoxes:(id)a3 withHeight:(float)a4 andWidth:(float)a5 filterThresholds:(id)a6;
+- (VNShotflowDetectorANODv4)initWithNetwork:(id)network;
+- (id)getIndexBoxes:(id)boxes filterThresholdIndex:(unint64_t)index;
+- (id)nmsBoxes:(id)boxes usingThresholds:(id)thresholds;
+- (id)processBoxes:(id)boxes withHeight:(float)height andWidth:(float)width filterThresholds:(id)thresholds;
 @end
 
 @implementation VNShotflowDetectorANODv4
 
-+ (id)filterThresholdsArrayForFilterThresholds:(id)a3 error:(id *)a4
++ (id)filterThresholdsArrayForFilterThresholds:(id)thresholds error:(id *)error
 {
   v10[12] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  thresholdsCopy = thresholds;
   v10[0] = @"VNShotflowDetectorFilterThresholdKey_HumanFace";
   v10[1] = @"VNShotflowDetectorFilterThresholdKey_HumanHead";
   v10[2] = @"VNShotflowDetectorFilterThresholdKey_HumanBody";
@@ -27,7 +27,7 @@
   v10[10] = @"VNShotflowDetectorFilterThresholdKey_SportsBall";
   v10[11] = @"VNShotflowDetectorFilterThresholdKey_FullBody";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:12];
-  v8 = [(VNShotflowDetector *)a1 _filterThresholdsArrayFromKeys:v7 inFilterThresholds:v6 error:a4];
+  v8 = [(VNShotflowDetector *)self _filterThresholdsArrayFromKeys:v7 inFilterThresholds:thresholdsCopy error:error];
 
   return v8;
 }
@@ -82,7 +82,7 @@ void __51__VNShotflowDetectorANODv4_defaultFilterThresholds__block_invoke()
   block[1] = 3221225472;
   block[2] = __46__VNShotflowDetectorANODv4_supportedLabelKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNShotflowDetectorANODv4 supportedLabelKeys]::onceToken != -1)
   {
     dispatch_once(&+[VNShotflowDetectorANODv4 supportedLabelKeys]::onceToken, block);
@@ -102,28 +102,28 @@ void __46__VNShotflowDetectorANODv4_supportedLabelKeys__block_invoke(uint64_t a1
   +[VNShotflowDetectorANODv4 supportedLabelKeys]::supportedLabelKeys = v1;
 }
 
-- (id)nmsBoxes:(id)a3 usingThresholds:(id)a4
+- (id)nmsBoxes:(id)boxes usingThresholds:(id)thresholds
 {
-  v21 = a3;
-  v18 = a4;
-  v20 = self;
+  boxesCopy = boxes;
+  thresholdsCopy = thresholds;
+  selfCopy = self;
   [(VNShotflowDetector *)self nmsThreshold];
   v7 = v6;
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [v18 count];
+  v19 = [thresholdsCopy count];
   if (v19)
   {
     for (i = 0; i != v19; ++i)
     {
       if (i)
       {
-        v9 = [(VNShotflowDetectorANODv4 *)v20 getIndexBoxes:v21 filterThresholdIndex:i];
+        v9 = [(VNShotflowDetectorANODv4 *)selfCopy getIndexBoxes:boxesCopy filterThresholdIndex:i];
         [v22 addObjectsFromArray:v9];
       }
 
       else
       {
-        v9 = [(VNShotflowDetector *)v20 sortBoxes:v21 filterThresholdIndex:0];
+        v9 = [(VNShotflowDetector *)selfCopy sortBoxes:boxesCopy filterThresholdIndex:0];
         v10 = [v9 count];
         std::vector<BOOL>::vector(&__p, v10);
         if (v10)
@@ -179,31 +179,31 @@ void __46__VNShotflowDetectorANODv4_supportedLabelKeys__block_invoke(uint64_t a1
   return v22;
 }
 
-- (id)getIndexBoxes:(id)a3 filterThresholdIndex:(unint64_t)a4
+- (id)getIndexBoxes:(id)boxes filterThresholdIndex:(unint64_t)index
 {
-  v5 = a3;
+  boxesCopy = boxes;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__VNShotflowDetectorANODv4_getIndexBoxes_filterThresholdIndex___block_invoke;
   v9[3] = &__block_descriptor_40_e46_B24__0__VNShotflowDetection_8__NSDictionary_16l;
-  v9[4] = a4;
+  v9[4] = index;
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:v9];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [boxesCopy filteredArrayUsingPredicate:v6];
 
   return v7;
 }
 
-- (id)processBoxes:(id)a3 withHeight:(float)a4 andWidth:(float)a5 filterThresholds:(id)a6
+- (id)processBoxes:(id)boxes withHeight:(float)height andWidth:(float)width filterThresholds:(id)thresholds
 {
-  v10 = a3;
-  v11 = a6;
+  boxesCopy = boxes;
+  thresholdsCopy = thresholds;
   v12 = objc_autoreleasePoolPush();
-  v13 = [(VNShotflowDetector *)self filterBoxes:v10 usingThresholds:v11];
+  v13 = [(VNShotflowDetector *)self filterBoxes:boxesCopy usingThresholds:thresholdsCopy];
 
-  v14 = [(VNShotflowDetectorANODv4 *)self nmsBoxes:v13 usingThresholds:v11];
+  v14 = [(VNShotflowDetectorANODv4 *)self nmsBoxes:v13 usingThresholds:thresholdsCopy];
 
-  *&v15 = a4;
-  *&v16 = a5;
+  *&v15 = height;
+  *&v16 = width;
   v17 = [(VNShotflowDetector *)self enforceSquareFaces:v14 withHeight:v15 andWidth:v16];
 
   v18 = [(VNShotflowDetectorANODBase *)self mergeHeadsBoxes:v17];
@@ -211,18 +211,18 @@ void __46__VNShotflowDetectorANODv4_supportedLabelKeys__block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v12);
   v23.receiver = self;
   v23.super_class = VNShotflowDetectorANODv4;
-  *&v19 = a4;
-  *&v20 = a5;
-  v21 = [(VNShotflowDetector *)&v23 processBoxes:v18 withHeight:v11 andWidth:v19 filterThresholds:v20];
+  *&v19 = height;
+  *&v20 = width;
+  v21 = [(VNShotflowDetector *)&v23 processBoxes:v18 withHeight:thresholdsCopy andWidth:v19 filterThresholds:v20];
 
   return v21;
 }
 
-- (VNShotflowDetectorANODv4)initWithNetwork:(id)a3
+- (VNShotflowDetectorANODv4)initWithNetwork:(id)network
 {
   v7.receiver = self;
   v7.super_class = VNShotflowDetectorANODv4;
-  v3 = [(VNShotflowDetector *)&v7 initWithNetwork:a3];
+  v3 = [(VNShotflowDetector *)&v7 initWithNetwork:network];
   v4 = v3;
   if (v3)
   {

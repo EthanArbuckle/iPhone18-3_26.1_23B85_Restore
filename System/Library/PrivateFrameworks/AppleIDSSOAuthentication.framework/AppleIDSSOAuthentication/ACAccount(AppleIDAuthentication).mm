@@ -15,21 +15,21 @@
 - (id)aida_tokenForService:()AppleIDAuthentication
 {
   v4 = a3;
-  v5 = [a1 accountStore];
-  v6 = [v5 credentialForAccount:a1 serviceID:v4];
+  accountStore = [self accountStore];
+  v6 = [accountStore credentialForAccount:self serviceID:v4];
 
-  v7 = [v6 token];
+  token = [v6 token];
 
-  return v7;
+  return token;
 }
 
 - (id)aida_tokenWithExpiryCheckForService:()AppleIDAuthentication
 {
   v4 = a3;
-  v5 = [a1 accountStore];
-  v6 = [v5 credentialForAccount:a1 serviceID:v4];
+  accountStore = [self accountStore];
+  v6 = [accountStore credentialForAccount:self serviceID:v4];
 
-  v7 = [a1 _expirationCheckedTokenForCredential:v6];
+  v7 = [self _expirationCheckedTokenForCredential:v6];
 
   return v7;
 }
@@ -38,7 +38,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 aida_tokenWithExpiryCheckForService:v6];
+  v8 = [self aida_tokenWithExpiryCheckForService:v6];
   if (v8)
   {
     if (v7)
@@ -55,24 +55,24 @@
     v9[3] = &unk_1E8683278;
     v11 = v7;
     v10 = v6;
-    [a1 _performSilentReauthForAccount:a1 completionHandler:v9];
+    [self _performSilentReauthForAccount:self completionHandler:v9];
   }
 }
 
 - (id)aida_tokenWithExpirationCheck
 {
-  v2 = [a1 credential];
-  v3 = [a1 _expirationCheckedTokenForCredential:v2];
+  credential = [self credential];
+  v3 = [self _expirationCheckedTokenForCredential:credential];
 
   return v3;
 }
 
 - (id)aida_alternateDSID
 {
-  v2 = [a1 accountPropertyForKey:@"altDSID"];
+  v2 = [self accountPropertyForKey:@"altDSID"];
   if (!v2)
   {
-    v2 = [a1 accountPropertyForKey:@"adsid"];
+    v2 = [self accountPropertyForKey:@"adsid"];
   }
 
   return v2;
@@ -80,19 +80,19 @@
 
 - (id)aida_dsid
 {
-  v1 = [a1 accountPropertyForKey:@"dsid"];
+  v1 = [self accountPropertyForKey:@"dsid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 stringValue];
+    stringValue = [v1 stringValue];
   }
 
   else
   {
-    v2 = v1;
+    stringValue = v1;
   }
 
-  v3 = v2;
+  v3 = stringValue;
 
   return v3;
 }
@@ -100,10 +100,10 @@
 - (id)aida_deviceProvisioningInfo
 {
   v31 = *MEMORY[0x1E69E9840];
-  v2 = [a1 aida_dsid];
+  aida_dsid = [self aida_dsid];
   v3 = MEMORY[0x1E696AE88];
-  v4 = [a1 aida_dsid];
-  v5 = [v3 scannerWithString:v4];
+  aida_dsid2 = [self aida_dsid];
+  v5 = [v3 scannerWithString:aida_dsid2];
 
   v24 = 0;
   [v5 scanUnsignedLongLong:&v24];
@@ -187,19 +187,19 @@ LABEL_16:
 {
   v3 = a3;
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [v3 tokenExpiryDate];
-  v6 = v5;
-  if (v5 && [v5 compare:v4] != 1)
+  tokenExpiryDate = [v3 tokenExpiryDate];
+  v6 = tokenExpiryDate;
+  if (tokenExpiryDate && [tokenExpiryDate compare:v4] != 1)
   {
-    v7 = 0;
+    token = 0;
   }
 
   else
   {
-    v7 = [v3 token];
+    token = [v3 token];
   }
 
-  return v7;
+  return token;
 }
 
 - (void)_performSilentReauthForAccount:()AppleIDAuthentication completionHandler:
@@ -212,11 +212,11 @@ LABEL_16:
   [v8 setIsUsernameEditable:0];
   [v8 setServiceType:1];
   [v8 setShouldUpdatePersistentServiceTokens:1];
-  v9 = [v7 aida_alternateDSID];
+  aida_alternateDSID = [v7 aida_alternateDSID];
 
-  if (v9 && [v9 length])
+  if (aida_alternateDSID && [aida_alternateDSID length])
   {
-    [v8 setAltDSID:v9];
+    [v8 setAltDSID:aida_alternateDSID];
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E698DCC0]);

@@ -1,12 +1,12 @@
 @interface _CNForkJoinWhenCompleteResultObservationStrategy
-- (_CNForkJoinWhenCompleteResultObservationStrategy)initWithCapacity:(unint64_t)a3;
-- (void)observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4;
-- (void)receiveResult:(id)a3 fromObservableAtIndex:(unint64_t)a4 observer:(id)a5;
+- (_CNForkJoinWhenCompleteResultObservationStrategy)initWithCapacity:(unint64_t)capacity;
+- (void)observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer;
+- (void)receiveResult:(id)result fromObservableAtIndex:(unint64_t)index observer:(id)observer;
 @end
 
 @implementation _CNForkJoinWhenCompleteResultObservationStrategy
 
-- (_CNForkJoinWhenCompleteResultObservationStrategy)initWithCapacity:(unint64_t)a3
+- (_CNForkJoinWhenCompleteResultObservationStrategy)initWithCapacity:(unint64_t)capacity
 {
   v13.receiver = self;
   v13.super_class = _CNForkJoinWhenCompleteResultObservationStrategy;
@@ -17,11 +17,11 @@
     results = v4->_results;
     v4->_results = v5;
 
-    for (; a3; --a3)
+    for (; capacity; --capacity)
     {
       v7 = v4->_results;
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableArray *)v7 addObject:v8];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableArray *)v7 addObject:null];
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -34,36 +34,36 @@
   return v4;
 }
 
-- (void)receiveResult:(id)a3 fromObservableAtIndex:(unint64_t)a4 observer:(id)a5
+- (void)receiveResult:(id)result fromObservableAtIndex:(unint64_t)index observer:(id)observer
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSMutableArray *)v9->_results replaceObjectAtIndex:a4 withObject:v10];
-  objc_sync_exit(v9);
+  resultCopy = result;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_results replaceObjectAtIndex:index withObject:resultCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4
+- (void)observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer
 {
-  v9 = a4;
+  observerCopy = observer;
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_results, "count")}];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableIndexSet *)v7->_finishedObservables addIndex:a3];
-  v8 = [(NSMutableIndexSet *)v7->_finishedObservables count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableIndexSet *)selfCopy->_finishedObservables addIndex:index];
+  v8 = [(NSMutableIndexSet *)selfCopy->_finishedObservables count];
   if (v8 == [(NSMutableArray *)self->_results count])
   {
     [v6 setArray:self->_results];
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
-    [v9 observerDidReceiveResult:v6];
-    [v9 observerDidComplete];
+    [observerCopy observerDidReceiveResult:v6];
+    [observerCopy observerDidComplete];
   }
 
   else
   {
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 

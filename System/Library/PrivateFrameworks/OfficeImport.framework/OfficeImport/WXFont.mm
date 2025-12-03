@@ -7,7 +7,7 @@
 + (void)fontFamilyEnumMap;
 + (void)fontPitchEnumMap;
 + (void)isoCharacterSetEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXFont
@@ -104,19 +104,19 @@ void __26__WXFont_fontPitchEnumMap__block_invoke()
   +[WXFont fontPitchEnumMap]::sFontPitchEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "altName");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "altName");
 
   if (v10)
   {
-    v11 = [v8 WXMainNamespace];
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
     v35 = 0;
-    v12 = CXOptionalStringAttribute(v10, v11, "val", &v35);
+    v12 = CXOptionalStringAttribute(v10, wXMainNamespace2, "val", &v35);
     v26 = v35;
 
     if (v12)
@@ -141,12 +141,12 @@ void __26__WXFont_fontPitchEnumMap__block_invoke()
             }
 
             v17 = *(*(&v31 + 1) + 8 * v16);
-            v18 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-            v19 = [v17 stringByTrimmingCharactersInSet:v18];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+            v19 = [v17 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
             if ([v19 length])
             {
-              [v7 addAlternateName:v19];
+              [toCopy addAlternateName:v19];
             }
 
             ++v16;
@@ -162,24 +162,24 @@ void __26__WXFont_fontPitchEnumMap__block_invoke()
   }
 
   v30 = 0;
-  v20 = [a1 fontFamilyEnumMap];
-  readEnumProperty<WDFontFamily>(a3, "family", "val", v20, &v30, v8);
+  fontFamilyEnumMap = [self fontFamilyEnumMap];
+  readEnumProperty<WDFontFamily>(from, "family", "val", fontFamilyEnumMap, &v30, stateCopy);
 
-  [v7 setFontFamily:v30];
+  [toCopy setFontFamily:v30];
   v29 = 0;
-  v21 = [a1 characterSetEnumMap];
-  v22 = readEnumProperty<WDCharacterSet>(a3, "charset", "val", v21, &v29, v8);
+  characterSetEnumMap = [self characterSetEnumMap];
+  v22 = readEnumProperty<WDCharacterSet>(from, "charset", "val", characterSetEnumMap, &v29, stateCopy);
 
-  if ((v22 & 1) != 0 || ([a1 isoCharacterSetEnumMap], v23 = objc_claimAutoreleasedReturnValue(), v24 = readEnumProperty<WDCharacterSet>(a3, "charset", "characterSet", v23, &v29, v8), v23, v24))
+  if ((v22 & 1) != 0 || ([self isoCharacterSetEnumMap], v23 = objc_claimAutoreleasedReturnValue(), v24 = readEnumProperty<WDCharacterSet>(from, "charset", "characterSet", v23, &v29, stateCopy), v23, v24))
   {
-    [v7 setCharacterSet:v29];
+    [toCopy setCharacterSet:v29];
   }
 
   v28 = 0;
-  v25 = [a1 fontPitchEnumMap];
-  readEnumProperty<WDFontPitch>(a3, "pitch", "val", v25, &v28, v8);
+  fontPitchEnumMap = [self fontPitchEnumMap];
+  readEnumProperty<WDFontPitch>(from, "pitch", "val", fontPitchEnumMap, &v28, stateCopy);
 
-  [v7 setPitch:v28];
+  [toCopy setPitch:v28];
 }
 
 + (void)fontFamilyEnumMap

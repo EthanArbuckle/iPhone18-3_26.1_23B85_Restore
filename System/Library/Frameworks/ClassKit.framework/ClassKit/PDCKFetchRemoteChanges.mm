@@ -1,13 +1,13 @@
 @interface PDCKFetchRemoteChanges
-- (BOOL)processObject:(id)a3 andUpdateSyncMetadataForRecord:(id)a4;
-- (BOOL)processPendingRecord:(id)a3;
-- (BOOL)processPendingSyncUpdatesWithParentRecordIDs:(id)a3;
-- (id)objectForCKRecord:(id)a3;
+- (BOOL)processObject:(id)object andUpdateSyncMetadataForRecord:(id)record;
+- (BOOL)processPendingRecord:(id)record;
+- (BOOL)processPendingSyncUpdatesWithParentRecordIDs:(id)ds;
+- (id)objectForCKRecord:(id)record;
 - (id)zoneIDsToFetch;
 - (void)execute;
-- (void)fetchChangesInZonesWithZoneIDs:(id)a3;
-- (void)serverChangedRecord:(id)a3;
-- (void)serverDeletedRecordWithID:(id)a3 type:(id)a4;
+- (void)fetchChangesInZonesWithZoneIDs:(id)ds;
+- (void)serverChangedRecord:(id)record;
+- (void)serverDeletedRecordWithID:(id)d type:(id)type;
 @end
 
 @implementation PDCKFetchRemoteChanges
@@ -18,10 +18,10 @@
   {
     if ([(PDCKOperation *)self isBootstrapped])
     {
-      v3 = [(PDCKFetchRemoteChanges *)self zoneIDsToFetch];
-      if ([v3 count])
+      zoneIDsToFetch = [(PDCKFetchRemoteChanges *)self zoneIDsToFetch];
+      if ([zoneIDsToFetch count])
       {
-        [(PDCKFetchRemoteChanges *)self fetchChangesInZonesWithZoneIDs:v3];
+        [(PDCKFetchRemoteChanges *)self fetchChangesInZonesWithZoneIDs:zoneIDsToFetch];
       }
 
       else
@@ -49,46 +49,46 @@
   else
   {
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(PDCKOperation *)self progressZone];
-    v6 = [v5 zoneID];
+    progressZone = [(PDCKOperation *)self progressZone];
+    zoneID = [progressZone zoneID];
 
-    if (v6)
+    if (zoneID)
     {
-      [v4 addObject:v6];
+      [v4 addObject:zoneID];
     }
 
-    v7 = [(PDCKOperation *)self teacherZone];
-    v8 = [v7 zoneID];
+    teacherZone = [(PDCKOperation *)self teacherZone];
+    zoneID2 = [teacherZone zoneID];
 
-    if (v8)
+    if (zoneID2)
     {
-      [v4 addObject:v8];
+      [v4 addObject:zoneID2];
     }
 
-    v9 = [(PDCKOperation *)self surveyAnswerZone];
-    v10 = [v9 zoneID];
+    surveyAnswerZone = [(PDCKOperation *)self surveyAnswerZone];
+    zoneID3 = [surveyAnswerZone zoneID];
 
-    if (v10)
+    if (zoneID3)
     {
-      [v4 addObject:v10];
+      [v4 addObject:zoneID3];
     }
   }
 
   return v4;
 }
 
-- (void)fetchChangesInZonesWithZoneIDs:(id)a3
+- (void)fetchChangesInZonesWithZoneIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000F1AA0;
   v28[3] = &unk_1002031D8;
-  v7 = v4;
+  v7 = dsCopy;
   v29 = v7;
-  v8 = v6;
+  v8 = database;
   v30 = v8;
   v9 = v5;
   v31 = v9;
@@ -130,7 +130,7 @@
   objc_copyWeak(&v17, &location);
   v13 = v12;
   v15 = v13;
-  v16 = self;
+  selfCopy = self;
   [v10 setCompletionBlock:v14];
   [(PDCKOperation *)self performCKDatabaseOperation:v10];
 
@@ -143,12 +143,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)serverChangedRecord:(id)a3
+- (void)serverChangedRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = +[PDCKOperation recordTypeToEntityMap];
-  v6 = [v4 recordType];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  recordType = [recordCopy recordType];
+  v7 = [v5 objectForKeyedSubscript:recordType];
 
   if (v7)
   {
@@ -163,8 +163,8 @@
     v8 = v12[3] = &unk_100204E80;
     v13 = v8;
     v17 = v7;
-    v9 = v4;
-    v15 = self;
+    v9 = recordCopy;
+    selfCopy = self;
     v16 = v18;
     v14 = v9;
     if (!v8 || ([v8 performTransaction:v12 forWriting:1] & 1) == 0)
@@ -173,11 +173,11 @@
       v10 = CLSLogSync;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v9 recordID];
+        recordID = [v9 recordID];
         *buf = 138412546;
         v21 = v9;
         v22 = 2114;
-        v23 = v11;
+        v23 = recordID;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to save updated object in replay log; record: %@, recordID: %{public}@", buf, 0x16u);
       }
 
@@ -188,44 +188,44 @@
   }
 }
 
-- (id)objectForCKRecord:(id)a3
+- (id)objectForCKRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = +[PDCKOperation recordTypeToEntityMap];
-  v5 = [v3 recordType];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  recordType = [recordCopy recordType];
+  v6 = [v4 objectForKeyedSubscript:recordType];
 
-  v7 = [[v6 alloc] initWithCKRecord:v3];
+  v7 = [[v6 alloc] initWithCKRecord:recordCopy];
 
   return v7;
 }
 
-- (BOOL)processObject:(id)a3 andUpdateSyncMetadataForRecord:(id)a4
+- (BOOL)processObject:(id)object andUpdateSyncMetadataForRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  recordCopy = record;
+  if (objectCopy)
   {
-    v8 = [(PDOperation *)self database];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 shouldInsertInDatabase:v8])
+    database = [(PDOperation *)self database];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![objectCopy shouldInsertInDatabase:database])
     {
       goto LABEL_13;
     }
 
-    if ([v8 insertOrUpdateObject:v6])
+    if ([database insertOrUpdateObject:objectCopy])
     {
-      if (![(PDCKOperation *)self updateSyncMetadataForRecord:v7])
+      if (![(PDCKOperation *)self updateSyncMetadataForRecord:recordCopy])
       {
         CLSInitLog();
         v9 = CLSLogSync;
         if (os_log_type_enabled(CLSLogSync, OS_LOG_TYPE_ERROR))
         {
           v14 = v9;
-          v15 = [v7 recordID];
+          recordID = [recordCopy recordID];
           v16 = 138412546;
-          v17 = v7;
+          v17 = recordCopy;
           v18 = 2114;
-          v19 = v15;
+          v19 = recordID;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to update metadata for record; %@, recordID: %{public}@;", &v16, 0x16u);
         }
       }
@@ -236,10 +236,10 @@
         goto LABEL_13;
       }
 
-      v10 = v6;
+      v10 = objectCopy;
       if ([v10 type]== 3)
       {
-        sub_10012E18C(PDFileSyncManager, v10, v8);
+        sub_10012E18C(PDFileSyncManager, v10, database);
       }
     }
 
@@ -253,11 +253,11 @@
       }
 
       v10 = v11;
-      v13 = [v7 recordID];
+      recordID2 = [recordCopy recordID];
       v16 = 138412546;
-      v17 = v7;
+      v17 = recordCopy;
       v18 = 2114;
-      v19 = v13;
+      v19 = recordID2;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to insert/update object for record; %@, recordID: %{public}@;", &v16, 0x16u);
     }
 
@@ -267,13 +267,13 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)processPendingRecord:(id)a3
+- (BOOL)processPendingRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(PDCKFetchRemoteChanges *)self objectForCKRecord:v4];
+  recordCopy = record;
+  v5 = [(PDCKFetchRemoteChanges *)self objectForCKRecord:recordCopy];
   if (v5)
   {
-    v6 = [(PDCKFetchRemoteChanges *)self processObject:v5 andUpdateSyncMetadataForRecord:v4];
+    v6 = [(PDCKFetchRemoteChanges *)self processObject:v5 andUpdateSyncMetadataForRecord:recordCopy];
   }
 
   else
@@ -284,16 +284,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)processPendingSyncUpdatesWithParentRecordIDs:(id)a3
+- (BOOL)processPendingSyncUpdatesWithParentRecordIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [PDDatabase whereSQLForArray:v4 prefix:@"parentRecordID in "];
+  dsCopy = ds;
+  v5 = [PDDatabase whereSQLForArray:dsCopy prefix:@"parentRecordID in "];
   v6 = [[NSMutableArray alloc] initWithCapacity:200];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v7 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v8 = objc_opt_class();
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -303,8 +303,8 @@ LABEL_13:
   v15[4] = self;
   v9 = v6;
   v16 = v9;
-  [v7 selectAll:v8 where:v5 orderBy:0 bindings:v4 block:v15];
-  if (*(v19 + 24) == 1 && (v10 = [v7 deleteAll:objc_opt_class() where:v5 bindings:v4], *(v19 + 24) = v10, (v10 & 1) != 0))
+  [database selectAll:v8 where:v5 orderBy:0 bindings:dsCopy block:v15];
+  if (*(v19 + 24) == 1 && (v10 = [database deleteAll:objc_opt_class() where:v5 bindings:dsCopy], *(v19 + 24) = v10, (v10 & 1) != 0))
   {
     if ([v9 count])
     {
@@ -335,24 +335,24 @@ LABEL_13:
   return v11;
 }
 
-- (void)serverDeletedRecordWithID:(id)a3 type:(id)a4
+- (void)serverDeletedRecordWithID:(id)d type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDOperation *)self database];
-  v9 = [v6 recordName];
+  dCopy = d;
+  typeCopy = type;
+  database = [(PDOperation *)self database];
+  recordName = [dCopy recordName];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000F2FFC;
   v15[3] = &unk_100204ED0;
   v15[4] = self;
-  v10 = v6;
+  v10 = dCopy;
   v16 = v10;
-  v11 = v7;
+  v11 = typeCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = database;
   v18 = v12;
-  v13 = v9;
+  v13 = recordName;
   v19 = v13;
   if (!v12 || ([v12 performTransaction:v15 forWriting:1] & 1) == 0)
   {

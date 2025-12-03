@@ -1,20 +1,20 @@
 @interface UIKeyboardDockView
-+ ($35570C6CB20FD1065279CABE7A6FABE9)_itemFramesForBoundingSize:(SEL)a3;
++ ($35570C6CB20FD1065279CABE7A6FABE9)_itemFramesForBoundingSize:(SEL)size;
 + (id)dockViewHomeGestureExclusionZones;
 + (int64_t)_currentInterfaceOrientation;
-- (UIKeyboardDockView)initWithFrame:(CGRect)a3;
+- (UIKeyboardDockView)initWithFrame:(CGRect)frame;
 - (UIKeyboardDockViewDelegate)delegate;
-- (id)_dockItemWithButton:(id)a3;
+- (id)_dockItemWithButton:(id)button;
 - (id)_keyboardLayoutView;
 - (id)_keyboardLongPressInteractionRegions;
-- (void)_configureDockItem:(id)a3;
-- (void)_dockItemButtonWasTapped:(id)a3 withEvent:(id)a4;
+- (void)_configureDockItem:(id)item;
+- (void)_dockItemButtonWasTapped:(id)tapped withEvent:(id)event;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCenterDockItem:(id)a3;
-- (void)setCenterView:(id)a3;
-- (void)setLeftDockItem:(id)a3;
-- (void)setRightDockItem:(id)a3;
+- (void)setCenterDockItem:(id)item;
+- (void)setCenterView:(id)view;
+- (void)setLeftDockItem:(id)item;
+- (void)setRightDockItem:(id)item;
 @end
 
 @implementation UIKeyboardDockView
@@ -67,114 +67,114 @@
 
   if (v12)
   {
-    v13 = [(UIKeyboardDockView *)self leftDockItem];
-    v14 = [v13 button];
-    [v14 setContentMode:4];
+    leftDockItem = [(UIKeyboardDockView *)self leftDockItem];
+    button = [leftDockItem button];
+    [button setContentMode:4];
 
     v15 = _UIKBGetDockItemTouchPaddingForCurrentDevice();
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UIKeyboardDockView *)self leftDockItem];
-    v23 = [v22 button];
-    [v23 setImageEdgeInsets:{v15, v17, v19, v21}];
+    leftDockItem2 = [(UIKeyboardDockView *)self leftDockItem];
+    button2 = [leftDockItem2 button];
+    [button2 setImageEdgeInsets:{v15, v17, v19, v21}];
 
-    v24 = [(UIKeyboardDockView *)self leftDockItem];
-    v25 = [v24 image];
-    [v25 baselineOffsetFromBottom];
+    leftDockItem3 = [(UIKeyboardDockView *)self leftDockItem];
+    image = [leftDockItem3 image];
+    [image baselineOffsetFromBottom];
     v27 = v85 + v26;
 
-    v28 = [(UIKeyboardDockView *)self leftDockItem];
-    v29 = [v28 button];
-    [v29 setFrame:{v84, v27, v87, v88}];
+    leftDockItem4 = [(UIKeyboardDockView *)self leftDockItem];
+    button3 = [leftDockItem4 button];
+    [button3 setFrame:{v84, v27, v87, v88}];
 
-    v30 = [(UIKeyboardDockView *)self leftDockItem];
-    v31 = [v30 button];
-    [v31 setTapActionRegion:{v87 - v5 * (v87 + -12.49376), 0.0, v5 * (v87 + -12.49376), v88 + -6.11907}];
+    leftDockItem5 = [(UIKeyboardDockView *)self leftDockItem];
+    button4 = [leftDockItem5 button];
+    [button4 setTapActionRegion:{v87 - v5 * (v87 + -12.49376), 0.0, v5 * (v87 + -12.49376), v88 + -6.11907}];
   }
 
-  v32 = [(UIKeyboardDockView *)self rightDockItem];
+  rightDockItem = [(UIKeyboardDockView *)self rightDockItem];
 
-  if (v32)
+  if (rightDockItem)
   {
-    v33 = [(UIKeyboardDockView *)self rightDockItem];
-    v34 = [v33 button];
-    [v34 setContentMode:4];
+    rightDockItem2 = [(UIKeyboardDockView *)self rightDockItem];
+    button5 = [rightDockItem2 button];
+    [button5 setContentMode:4];
 
     v35 = _UIKBGetDockItemTouchPaddingForCurrentDevice();
     v37 = v36;
     v39 = v38;
     v41 = v40;
-    v42 = [(UIKeyboardDockView *)self rightDockItem];
-    v43 = [v42 button];
-    [v43 setImageEdgeInsets:{v35, v37, v39, v41}];
+    rightDockItem3 = [(UIKeyboardDockView *)self rightDockItem];
+    button6 = [rightDockItem3 button];
+    [button6 setImageEdgeInsets:{v35, v37, v39, v41}];
 
     v44 = *&v89;
-    v45 = [(UIKeyboardDockView *)self rightDockItem];
-    v46 = [v45 image];
-    [v46 baselineOffsetFromBottom];
+    rightDockItem4 = [(UIKeyboardDockView *)self rightDockItem];
+    image2 = [rightDockItem4 image];
+    [image2 baselineOffsetFromBottom];
     v48 = *(&v89 + 1) + v47;
 
-    v49 = [(UIKeyboardDockView *)self rightDockItem];
-    v50 = [v49 identifier];
-    v51 = [v50 isEqualToString:@"keyboardkeyboard"];
+    rightDockItem5 = [(UIKeyboardDockView *)self rightDockItem];
+    identifier = [rightDockItem5 identifier];
+    v51 = [identifier isEqualToString:@"keyboardkeyboard"];
 
     if (v51)
     {
       v44 = *&v89 + -5.0;
     }
 
-    v52 = [(UIKeyboardDockView *)self rightDockItem];
-    v53 = [v52 button];
-    [v53 setFrame:{v44, v48, v90}];
+    rightDockItem6 = [(UIKeyboardDockView *)self rightDockItem];
+    button7 = [rightDockItem6 button];
+    [button7 setFrame:{v44, v48, v90}];
 
-    v54 = [(UIKeyboardDockView *)self rightDockItem];
-    v55 = [v54 button];
-    [v55 setTapActionRegion:{0.0, 0.0, v5 * (*&v90 + -12.49376), *(&v90 + 1) + -6.11907}];
+    rightDockItem7 = [(UIKeyboardDockView *)self rightDockItem];
+    button8 = [rightDockItem7 button];
+    [button8 setTapActionRegion:{0.0, 0.0, v5 * (*&v90 + -12.49376), *(&v90 + 1) + -6.11907}];
   }
 
-  v56 = [(UIKeyboardDockView *)self centerDockItem];
+  centerDockItem = [(UIKeyboardDockView *)self centerDockItem];
 
-  if (v56)
+  if (centerDockItem)
   {
-    v57 = [(UIKeyboardDockView *)self centerDockItem];
-    v58 = [v57 button];
-    [v58 setContentMode:4];
+    centerDockItem2 = [(UIKeyboardDockView *)self centerDockItem];
+    button9 = [centerDockItem2 button];
+    [button9 setContentMode:4];
 
     v59 = _UIKBGetDockItemTouchPaddingForCurrentDevice();
     v61 = v60;
     v63 = v62;
     v65 = v64;
-    v66 = [(UIKeyboardDockView *)self centerDockItem];
-    v67 = [v66 button];
-    [v67 setImageEdgeInsets:{v59, v61, v63, v65}];
+    centerDockItem3 = [(UIKeyboardDockView *)self centerDockItem];
+    button10 = [centerDockItem3 button];
+    [button10 setImageEdgeInsets:{v59, v61, v63, v65}];
 
-    v68 = [(UIKeyboardDockView *)self centerDockItem];
-    v69 = [v68 image];
-    [v69 baselineOffsetFromBottom];
+    centerDockItem4 = [(UIKeyboardDockView *)self centerDockItem];
+    image3 = [centerDockItem4 image];
+    [image3 baselineOffsetFromBottom];
     v71 = *(&v89 + 1) + v70;
 
-    v72 = [(UIKeyboardDockView *)self centerDockItem];
-    v73 = [v72 button];
-    [v73 setFrame:{floor((v8 - *&v90) * 0.5), v71, v90}];
+    centerDockItem5 = [(UIKeyboardDockView *)self centerDockItem];
+    button11 = [centerDockItem5 button];
+    [button11 setFrame:{floor((v8 - *&v90) * 0.5), v71, v90}];
 
-    v74 = [(UIKeyboardDockView *)self centerDockItem];
-    v75 = [v74 button];
-    [v75 setTapActionRegion:{0.0, 0.0, *&v90 + -12.49376, *(&v90 + 1) + -6.11907}];
+    centerDockItem6 = [(UIKeyboardDockView *)self centerDockItem];
+    button12 = [centerDockItem6 button];
+    [button12 setTapActionRegion:{0.0, 0.0, *&v90 + -12.49376, *(&v90 + 1) + -6.11907}];
   }
 
-  v76 = [(UIKeyboardDockView *)self centerView];
+  centerView = [(UIKeyboardDockView *)self centerView];
 
-  if (v76)
+  if (centerView)
   {
-    v77 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     [(UIView *)self center];
-    [v77 convertPoint:self toView:?];
+    [superview convertPoint:self toView:?];
     v79 = v78;
     v81 = v80;
 
-    v82 = [(UIKeyboardDockView *)self centerView];
-    [v82 setCenter:{v79, v81 + 3.0}];
+    centerView2 = [(UIKeyboardDockView *)self centerView];
+    [centerView2 setCenter:{v79, v81 + 3.0}];
   }
 }
 
@@ -184,26 +184,26 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 interfaceOrientation];
+    interfaceOrientation = [v2 interfaceOrientation];
   }
 
   else
   {
-    v4 = [UIApp activeInterfaceOrientation];
+    interfaceOrientation = [UIApp activeInterfaceOrientation];
   }
 
-  v5 = v4;
+  v5 = interfaceOrientation;
 
   return v5;
 }
 
-+ ($35570C6CB20FD1065279CABE7A6FABE9)_itemFramesForBoundingSize:(SEL)a3
++ ($35570C6CB20FD1065279CABE7A6FABE9)_itemFramesForBoundingSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
-  v6 = [a2 _currentInterfaceOrientation];
+  _currentInterfaceOrientation = [a2 _currentInterfaceOrientation];
   v7 = +[UIKeyboardImpl isFloating];
-  if ((v6 - 3) > 1)
+  if ((_currentInterfaceOrientation - 3) > 1)
   {
     v11 = 33.0;
     if (v7)
@@ -213,14 +213,14 @@
 
     v51 = v11;
     v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v13 = [v12 preferencesActions];
-    v9 = [v13 handBias];
+    preferencesActions = [v12 preferencesActions];
+    handBias = [preferencesActions handBias];
   }
 
   else
   {
     v8 = +[UIKeyboardImpl isFloating];
-    v9 = 0;
+    handBias = 0;
     v10 = 30.0;
     if (v8)
     {
@@ -230,8 +230,8 @@
     v51 = v10;
   }
 
-  v14 = [objc_opt_self() mainScreen];
-  [v14 _nativePointsPerMillimeter];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _nativePointsPerMillimeter];
   v16 = v15;
 
   v52 = width;
@@ -255,7 +255,7 @@
 
   v21 = v16 * v20;
   v22 = v16 * v20;
-  if (v9 == 1)
+  if (handBias == 1)
   {
     UIRoundToScale(v17, 0.0);
     v22 = v23 + 22.0;
@@ -269,7 +269,7 @@
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  if (v9 == 2)
+  if (handBias == 2)
   {
     UIRoundToScale(v17, 0.0);
     v21 = v34 + 22.0;
@@ -297,12 +297,12 @@
 + (id)dockViewHomeGestureExclusionZones
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_self() mainScreen];
-  [v3 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
-  [a1 _itemFramesForBoundingSize:{v5, v7}];
+  [self _itemFramesForBoundingSize:{v5, v7}];
   v8 = [MEMORY[0x1E696B098] valueWithCGRect:{0, 0}];
   v12[0] = v8;
   v9 = [MEMORY[0x1E696B098] valueWithCGRect:{0, 0}];
@@ -314,146 +314,146 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardHandBiasDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardHandBiasDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIKeyboardDockView;
   [(UIView *)&v4 dealloc];
 }
 
-- (UIKeyboardDockView)initWithFrame:(CGRect)a3
+- (UIKeyboardDockView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIKeyboardDockView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__didReceiveHandBiasChangeNotification_ name:@"UIKeyboardHandBiasDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__didReceiveHandBiasChangeNotification_ name:@"UIKeyboardHandBiasDidChangeNotification" object:0];
   }
 
   return v3;
 }
 
-- (void)_dockItemButtonWasTapped:(id)a3 withEvent:(id)a4
+- (void)_dockItemButtonWasTapped:(id)tapped withEvent:(id)event
 {
-  v9 = a4;
-  v6 = [(UIKeyboardDockView *)self _dockItemWithButton:a3];
+  eventCopy = event;
+  v6 = [(UIKeyboardDockView *)self _dockItemWithButton:tapped];
   if (v6)
   {
-    v7 = [(UIKeyboardDockView *)self delegate];
+    delegate = [(UIKeyboardDockView *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(UIKeyboardDockView *)self delegate];
-      [v8 keyboardDockView:self didPressDockItem:v6 withEvent:v9];
+      delegate2 = [(UIKeyboardDockView *)self delegate];
+      [delegate2 keyboardDockView:self didPressDockItem:v6 withEvent:eventCopy];
     }
   }
 }
 
-- (void)_configureDockItem:(id)a3
+- (void)_configureDockItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 button];
-  [v5 addTarget:self action:sel__dockItemButtonWasTapped_withEvent_ forControlEvents:0xFFFFFFFFLL];
+  itemCopy = item;
+  button = [itemCopy button];
+  [button addTarget:self action:sel__dockItemButtonWasTapped_withEvent_ forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [v4 button];
+  button2 = [itemCopy button];
 
-  [(UIView *)self addSubview:v6];
+  [(UIView *)self addSubview:button2];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (id)_dockItemWithButton:(id)a3
+- (id)_dockItemWithButton:(id)button
 {
-  v4 = a3;
-  v5 = [(UIKeyboardDockView *)self leftDockItem];
-  v6 = [v5 button];
+  buttonCopy = button;
+  leftDockItem = [(UIKeyboardDockView *)self leftDockItem];
+  button = [leftDockItem button];
 
-  if (v6 == v4)
+  if (button == buttonCopy)
   {
-    v12 = [(UIKeyboardDockView *)self leftDockItem];
+    leftDockItem2 = [(UIKeyboardDockView *)self leftDockItem];
   }
 
   else
   {
-    v7 = [(UIKeyboardDockView *)self rightDockItem];
-    v8 = [v7 button];
+    rightDockItem = [(UIKeyboardDockView *)self rightDockItem];
+    button2 = [rightDockItem button];
 
-    if (v8 == v4)
+    if (button2 == buttonCopy)
     {
-      v12 = [(UIKeyboardDockView *)self rightDockItem];
+      leftDockItem2 = [(UIKeyboardDockView *)self rightDockItem];
     }
 
     else
     {
-      v9 = [(UIKeyboardDockView *)self centerDockItem];
-      v10 = [v9 button];
+      centerDockItem = [(UIKeyboardDockView *)self centerDockItem];
+      button3 = [centerDockItem button];
 
-      if (v10 != v4)
+      if (button3 != buttonCopy)
       {
         v11 = 0;
         goto LABEL_9;
       }
 
-      v12 = [(UIKeyboardDockView *)self centerDockItem];
+      leftDockItem2 = [(UIKeyboardDockView *)self centerDockItem];
     }
   }
 
-  v11 = v12;
+  v11 = leftDockItem2;
 LABEL_9:
 
   return v11;
 }
 
-- (void)setLeftDockItem:(id)a3
+- (void)setLeftDockItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   if (![(UIKeyboardDockItem *)self->_leftDockItem isEqual:?])
   {
-    v5 = [(UIKeyboardDockItem *)self->_leftDockItem button];
-    [v5 removeFromSuperview];
+    button = [(UIKeyboardDockItem *)self->_leftDockItem button];
+    [button removeFromSuperview];
 
-    objc_storeStrong(&self->_leftDockItem, a3);
-    [(UIKeyboardDockView *)self _configureDockItem:v6];
+    objc_storeStrong(&self->_leftDockItem, item);
+    [(UIKeyboardDockView *)self _configureDockItem:itemCopy];
   }
 }
 
-- (void)setRightDockItem:(id)a3
+- (void)setRightDockItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   if (![(UIKeyboardDockItem *)self->_rightDockItem isEqual:?])
   {
-    v5 = [(UIKeyboardDockItem *)self->_rightDockItem button];
-    [v5 removeFromSuperview];
+    button = [(UIKeyboardDockItem *)self->_rightDockItem button];
+    [button removeFromSuperview];
 
-    objc_storeStrong(&self->_rightDockItem, a3);
-    [(UIKeyboardDockView *)self _configureDockItem:v6];
+    objc_storeStrong(&self->_rightDockItem, item);
+    [(UIKeyboardDockView *)self _configureDockItem:itemCopy];
   }
 }
 
-- (void)setCenterDockItem:(id)a3
+- (void)setCenterDockItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   if (![(UIKeyboardDockItem *)self->_centerDockItem isEqual:?])
   {
-    v5 = [(UIKeyboardDockItem *)self->_centerDockItem button];
-    [v5 removeFromSuperview];
+    button = [(UIKeyboardDockItem *)self->_centerDockItem button];
+    [button removeFromSuperview];
 
-    objc_storeStrong(&self->_centerDockItem, a3);
-    [(UIKeyboardDockView *)self _configureDockItem:v6];
+    objc_storeStrong(&self->_centerDockItem, item);
+    [(UIKeyboardDockView *)self _configureDockItem:itemCopy];
   }
 }
 
-- (void)setCenterView:(id)a3
+- (void)setCenterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_centerView isEqual:?]& 1) == 0)
   {
     [(UIView *)self->_centerView removeFromSuperview];
-    objc_storeStrong(&self->_centerView, a3);
-    [(UIView *)self addSubview:v5];
+    objc_storeStrong(&self->_centerView, view);
+    [(UIView *)self addSubview:viewCopy];
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -466,15 +466,15 @@ LABEL_9:
 
   if (v4)
   {
-    v5 = [v2 _layout];
+    _layout = [v2 _layout];
   }
 
   else
   {
-    v5 = 0;
+    _layout = 0;
   }
 
-  return v5;
+  return _layout;
 }
 
 - (id)_keyboardLongPressInteractionRegions

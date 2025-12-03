@@ -32,9 +32,9 @@
   v11 = [v3 appendName:@"type" object:self->_type];
   v12 = [v3 appendName:@"sharingAudience" integerValue:self->_sharingAudience];
   v13 = [v3 appendName:@"didPersistImageToContact" BOOLValue:self->_didPersistImageToContact];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 @end

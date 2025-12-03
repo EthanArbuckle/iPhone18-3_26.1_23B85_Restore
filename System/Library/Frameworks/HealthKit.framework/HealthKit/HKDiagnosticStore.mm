@@ -1,26 +1,26 @@
 @interface HKDiagnosticStore
 + (id)taskIdentifier;
-- (HKDiagnosticStore)initWithHealthStore:(id)a3;
-- (id)fetchSQLPragma:(int64_t)a3 error:(id *)a4;
-- (void)fetchDiagnosticsForKeys:(id)a3 completion:(id)a4;
-- (void)fetchPragma:(int64_t)a3 completion:(id)a4;
-- (void)fetchURLForAnalyticsFileWithName:(id)a3 completion:(id)a4;
+- (HKDiagnosticStore)initWithHealthStore:(id)store;
+- (id)fetchSQLPragma:(int64_t)pragma error:(id *)error;
+- (void)fetchDiagnosticsForKeys:(id)keys completion:(id)completion;
+- (void)fetchPragma:(int64_t)pragma completion:(id)completion;
+- (void)fetchURLForAnalyticsFileWithName:(id)name completion:(id)completion;
 @end
 
 @implementation HKDiagnosticStore
 
-- (HKDiagnosticStore)initWithHealthStore:(id)a3
+- (HKDiagnosticStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKDiagnosticStore;
   v5 = [(HKDiagnosticStore *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -37,16 +37,16 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchDiagnosticsForKeys:(id)a3 completion:(id)a4
+- (void)fetchDiagnosticsForKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keysCopy = keys;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__HKDiagnosticStore_fetchDiagnosticsForKeys_completion___block_invoke;
   v13[3] = &unk_1E7384CC0;
-  v14 = v6;
+  v14 = keysCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -54,20 +54,20 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keysCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchURLForAnalyticsFileWithName:(id)a3 completion:(id)a4
+- (void)fetchURLForAnalyticsFileWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  nameCopy = name;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__HKDiagnosticStore_fetchURLForAnalyticsFileWithName_completion___block_invoke;
   v13[3] = &unk_1E7384CC0;
-  v14 = v6;
+  v14 = nameCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -75,11 +75,11 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = nameCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)fetchSQLPragma:(int64_t)a3 error:(id *)a4
+- (id)fetchSQLPragma:(int64_t)pragma error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -99,7 +99,7 @@
   v12[2] = __42__HKDiagnosticStore_fetchSQLPragma_error___block_invoke;
   v12[3] = &unk_1E7384CE8;
   v12[5] = &v13;
-  v12[6] = a3;
+  v12[6] = pragma;
   v12[4] = &v19;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -111,10 +111,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a4)
+    if (error)
     {
       v8 = v6;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -156,15 +156,15 @@ void __42__HKDiagnosticStore_fetchSQLPragma_error___block_invoke_2(uint64_t a1, 
   *(v9 + 40) = v6;
 }
 
-- (void)fetchPragma:(int64_t)a3 completion:(id)a4
+- (void)fetchPragma:(int64_t)pragma completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__HKDiagnosticStore_fetchPragma_completion___block_invoke;
   v11[3] = &unk_1E7384D10;
-  v13 = a3;
+  pragmaCopy = pragma;
   v12 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

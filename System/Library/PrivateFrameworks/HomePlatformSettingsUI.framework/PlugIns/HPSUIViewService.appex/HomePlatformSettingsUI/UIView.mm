@@ -1,18 +1,18 @@
 @interface UIView
-- (void)addSubviewToBounds:(id)a3 with:(UIEdgeInsets)a4;
+- (void)addSubviewToBounds:(id)bounds with:(UIEdgeInsets)with;
 @end
 
 @implementation UIView
 
-- (void)addSubviewToBounds:(id)a3 with:(UIEdgeInsets)a4
+- (void)addSubviewToBounds:(id)bounds with:(UIEdgeInsets)with
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v10 = self;
-  v11 = sub_1000498B4(v9, 0, top, left, bottom, right);
+  right = with.right;
+  bottom = with.bottom;
+  left = with.left;
+  top = with.top;
+  boundsCopy = bounds;
+  selfCopy = self;
+  v11 = sub_1000498B4(boundsCopy, 0, top, left, bottom, right);
   v13 = v12;
   v15 = v14;
   v17 = v16;

@@ -1,14 +1,14 @@
 @interface KernelMsgSignalHandlerSDXC
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)releaseHandler;
-- (void)setupListener:(id)a3;
+- (void)setupListener:(id)listener;
 @end
 
 @implementation KernelMsgSignalHandlerSDXC
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v10.receiver = self;
   v10.super_class = KernelMsgSignalHandlerSDXC;
   v6 = [(KernelMsgSignalHandlerSDXC *)&v10 init];
@@ -21,15 +21,15 @@
       _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_DEBUG, " StorageKernelSignal: KernelMsgSignalHandler init ++ \n", v9, 2u);
     }
 
-    objc_storeStrong(&adminABC, a3);
+    objc_storeStrong(&adminABC, init);
   }
 
   return v6;
 }
 
-- (void)setupListener:(id)a3
+- (void)setupListener:(id)listener
 {
-  queue = a3;
+  queue = listener;
   v3 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
   gNotifyPort = v3;
   if (v3)

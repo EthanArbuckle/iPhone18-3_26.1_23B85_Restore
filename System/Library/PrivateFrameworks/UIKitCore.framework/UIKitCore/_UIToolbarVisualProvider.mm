@@ -1,20 +1,20 @@
 @interface _UIToolbarVisualProvider
 - (CGRect)backgroundFrame;
-- (CGSize)defaultSizeForOrientation:(int64_t)a3;
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation;
 - (NSDirectionalEdgeInsets)contentViewMargins;
-- (_UIToolbarVisualProvider)initWithToolbar:(id)a3;
+- (_UIToolbarVisualProvider)initWithToolbar:(id)toolbar;
 @end
 
 @implementation _UIToolbarVisualProvider
 
-- (_UIToolbarVisualProvider)initWithToolbar:(id)a3
+- (_UIToolbarVisualProvider)initWithToolbar:(id)toolbar
 {
   v5.receiver = self;
   v5.super_class = _UIToolbarVisualProvider;
   result = [(_UIToolbarVisualProvider *)&v5 init];
   if (result)
   {
-    result->_toolbar = a3;
+    result->_toolbar = toolbar;
   }
 
   return result;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (CGSize)defaultSizeForOrientation:(int64_t)a3
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);

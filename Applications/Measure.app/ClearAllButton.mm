@@ -1,11 +1,11 @@
 @interface ClearAllButton
 - (CGSize)intrinsicContentSize;
-- (_TtC7Measure14ClearAllButton)initWithCoder:(id)a3;
+- (_TtC7Measure14ClearAllButton)initWithCoder:(id)coder;
 @end
 
 @implementation ClearAllButton
 
-- (_TtC7Measure14ClearAllButton)initWithCoder:(id)a3
+- (_TtC7Measure14ClearAllButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Measure14ClearAllButton_separator;
   type metadata accessor for SeparatorView();

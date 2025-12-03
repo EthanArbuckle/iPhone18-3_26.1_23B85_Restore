@@ -1,24 +1,24 @@
 @interface CHConfiguration
 - (BOOL)isCloudKitEnabled;
-- (CHConfiguration)initWithDataSource:(id)a3;
-- (id)numberForKey:(id)a3;
+- (CHConfiguration)initWithDataSource:(id)source;
+- (id)numberForKey:(id)key;
 - (int64_t)keepCallsTimeIntervalType;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CHConfiguration
 
-- (CHConfiguration)initWithDataSource:(id)a3
+- (CHConfiguration)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = CHConfiguration;
   v6 = [(CHConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(CHDelegateController);
     delegateController = v7->_delegateController;
     v7->_delegateController = v8;
@@ -30,24 +30,24 @@
 - (BOOL)isCloudKitEnabled
 {
   v2 = [(CHConfiguration *)self numberForKey:@"cloudKitEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)keepCallsTimeIntervalType
 {
   v2 = [(CHConfiguration *)self numberForKey:@"keepCallsTimeIntervalType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CHConfiguration *)self dataSource];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  dataSource = [(CHConfiguration *)self dataSource];
+  v6 = [dataSource objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -63,19 +63,19 @@
   return v7;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CHConfiguration *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(CHConfiguration *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CHConfiguration *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(CHConfiguration *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
 @end

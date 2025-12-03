@@ -1,10 +1,10 @@
 @interface CNTipHeaderView
 - (BOOL)displaysBottomSeparator;
 - (UIView)hostingView;
-- (_TtC10ContactsUI15CNTipHeaderView)initWithCoder:(id)a3;
-- (_TtC10ContactsUI15CNTipHeaderView)initWithFrame:(CGRect)a3;
-- (void)setDisplaysBottomSeparator:(BOOL)a3;
-- (void)setHostingView:(id)a3;
+- (_TtC10ContactsUI15CNTipHeaderView)initWithCoder:(id)coder;
+- (_TtC10ContactsUI15CNTipHeaderView)initWithFrame:(CGRect)frame;
+- (void)setDisplaysBottomSeparator:(BOOL)separator;
+- (void)setHostingView:(id)view;
 @end
 
 @implementation CNTipHeaderView
@@ -16,12 +16,12 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setDisplaysBottomSeparator:(BOOL)a3
+- (void)setDisplaysBottomSeparator:(BOOL)separator
 {
   v5 = OBJC_IVAR____TtC10ContactsUI15CNTipHeaderView_displaysBottomSeparator;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + v5) = separator;
+  selfCopy = self;
   sub_199B88C80();
 }
 
@@ -32,19 +32,19 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setHostingView:(id)a3
+- (void)setHostingView:(id)view
 {
   v5 = OBJC_IVAR____TtC10ContactsUI15CNTipHeaderView_hostingView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = view;
+  viewCopy = view;
+  selfCopy = self;
 
   sub_199B892B4();
 }
 
-- (_TtC10ContactsUI15CNTipHeaderView)initWithCoder:(id)a3
+- (_TtC10ContactsUI15CNTipHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC10ContactsUI15CNTipHeaderView_separatorEdgeInset);
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (_TtC10ContactsUI15CNTipHeaderView)initWithFrame:(CGRect)a3
+- (_TtC10ContactsUI15CNTipHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

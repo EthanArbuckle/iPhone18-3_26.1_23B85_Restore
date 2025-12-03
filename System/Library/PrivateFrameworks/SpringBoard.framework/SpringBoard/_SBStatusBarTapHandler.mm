@@ -1,18 +1,18 @@
 @interface _SBStatusBarTapHandler
 - (BOOL)canRequestUnlock;
 - (BOOL)handleTap;
-- (void)initWithApplicationDestination:(void *)a1;
-- (void)initWithBlock:(void *)a1;
-- (void)initWithURL:(void *)a1;
+- (void)initWithApplicationDestination:(void *)destination;
+- (void)initWithBlock:(void *)block;
+- (void)initWithURL:(void *)l;
 @end
 
 @implementation _SBStatusBarTapHandler
 
 - (BOOL)handleTap
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
+    v2 = self[1];
     if (v2)
     {
       SBWorkspaceActivateApplicationFromURL(v2, 0, 0);
@@ -20,7 +20,7 @@
 
     else
     {
-      v3 = a1[2];
+      v3 = self[2];
       if (v3)
       {
         (*(v3 + 16))();
@@ -28,11 +28,11 @@
 
       else
       {
-        v4 = a1[3];
+        v4 = self[3];
         if (v4)
         {
-          v5 = [v4 bundleIdentifier];
-          v6 = SBWorkspaceApplicationForIdentifier(v5);
+          bundleIdentifier = [v4 bundleIdentifier];
+          v6 = SBWorkspaceApplicationForIdentifier(bundleIdentifier);
 
           if (v6)
           {
@@ -41,7 +41,7 @@
             v10[1] = 3221225472;
             v10[2] = __35___SBStatusBarTapHandler_handleTap__block_invoke;
             v10[3] = &unk_2783AAA48;
-            v10[4] = a1;
+            v10[4] = self;
             v11 = v6;
             [v7 requestTransitionWithBuilder:v10];
           }
@@ -49,14 +49,14 @@
 
         else
         {
-          v8 = [MEMORY[0x277CCA890] currentHandler];
-          [v8 handleFailureInMethod:sel_handleTap object:a1 file:@"SBStatusBarTapManager.m" lineNumber:450 description:@"not valid to have a tap handler without the ability to handle anything!"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:sel_handleTap object:self file:@"SBStatusBarTapManager.m" lineNumber:450 description:@"not valid to have a tap handler without the ability to handle anything!"];
         }
       }
     }
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
 - (BOOL)canRequestUnlock
@@ -69,61 +69,61 @@
   return result;
 }
 
-- (void)initWithApplicationDestination:(void *)a1
+- (void)initWithApplicationDestination:(void *)destination
 {
   v3 = a2;
-  if (a1)
+  if (destination)
   {
-    v7.receiver = a1;
+    v7.receiver = destination;
     v7.super_class = _SBStatusBarTapHandler;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    destination = objc_msgSendSuper2(&v7, sel_init);
+    if (destination)
     {
       v4 = [v3 copy];
-      v5 = a1[3];
-      a1[3] = v4;
+      v5 = destination[3];
+      destination[3] = v4;
     }
   }
 
-  return a1;
+  return destination;
 }
 
-- (void)initWithBlock:(void *)a1
+- (void)initWithBlock:(void *)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v7.receiver = a1;
+    v7.receiver = block;
     v7.super_class = _SBStatusBarTapHandler;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    block = objc_msgSendSuper2(&v7, sel_init);
+    if (block)
     {
       v4 = [v3 copy];
-      v5 = a1[2];
-      a1[2] = v4;
+      v5 = block[2];
+      block[2] = v4;
     }
   }
 
-  return a1;
+  return block;
 }
 
-- (void)initWithURL:(void *)a1
+- (void)initWithURL:(void *)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
-    v7.receiver = a1;
+    v7.receiver = l;
     v7.super_class = _SBStatusBarTapHandler;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    l = objc_msgSendSuper2(&v7, sel_init);
+    if (l)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = l[1];
+      l[1] = v4;
     }
   }
 
-  return a1;
+  return l;
 }
 
 @end

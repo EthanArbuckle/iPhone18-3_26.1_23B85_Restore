@@ -1,29 +1,29 @@
 @interface NTKUpNextMatchupUpcomingView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKUpNextMatchupUpcomingView)initWithFrame:(CGRect)a3;
-- (void)configureWithMatchup:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (NTKUpNextMatchupUpcomingView)initWithFrame:(CGRect)frame;
+- (void)configureWithMatchup:(id)matchup;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextMatchupUpcomingView
 
-- (NTKUpNextMatchupUpcomingView)initWithFrame:(CGRect)a3
+- (NTKUpNextMatchupUpcomingView)initWithFrame:(CGRect)frame
 {
   v96[20] = *MEMORY[0x277D85DE8];
   v95.receiver = self;
   v95.super_class = NTKUpNextMatchupUpcomingView;
-  v3 = [(NTKUpNextMatchupUpcomingView *)&v95 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextMatchupUpcomingView *)&v95 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v91 = [v4 device];
+    device = [v4 device];
 
     v94 = 0.0;
     v92 = 0u;
     v93 = 0u;
-    ___LayoutConstants_block_invoke_20(v91, &v92);
+    ___LayoutConstants_block_invoke_20(device, &v92);
     v89 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
     v5 = objc_alloc(MEMORY[0x277D755E8]);
     v6 = *MEMORY[0x277CBF3A0];
@@ -61,8 +61,8 @@
     v86 = [MEMORY[0x277CBBB08] systemFontOfSize:*(&v92 + 1) weight:*MEMORY[0x277D743F8]];
     v16 = [[off_27877BEF8 alloc] initWithFrame:{v6, v7, v8, v9}];
     [(CLKUIColoringLabel *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v16 setTextColor:v17];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v16 setTextColor:whiteColor];
 
     [(CLKUIColoringLabel *)v16 setFont:v86];
     [(NTKUpNextMatchupUpcomingView *)v3 addSubview:v16];
@@ -82,86 +82,86 @@
 
     [(UILayoutGuide *)v3->_awayLogoLayoutGuide setIdentifier:@"NTKUpNextUpcomingAwayLogoView"];
     [(NTKUpNextMatchupUpcomingView *)v3 addLayoutGuide:v3->_awayLogoLayoutGuide];
-    v85 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide leadingAnchor];
-    v84 = [(NTKUpNextMatchupUpcomingView *)v3 leadingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    leadingAnchor = [(UILayoutGuide *)v3->_homeLogoLayoutGuide leadingAnchor];
+    leadingAnchor2 = [(NTKUpNextMatchupUpcomingView *)v3 leadingAnchor];
+    v83 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v96[0] = v83;
-    v82 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide widthAnchor];
+    widthAnchor = [(UILayoutGuide *)v3->_homeLogoLayoutGuide widthAnchor];
     v23 = *(&v93 + 1);
-    v81 = [v82 constraintEqualToConstant:*(&v93 + 1)];
+    v81 = [widthAnchor constraintEqualToConstant:*(&v93 + 1)];
     v96[1] = v81;
-    v80 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide heightAnchor];
+    heightAnchor = [(UILayoutGuide *)v3->_homeLogoLayoutGuide heightAnchor];
     v24 = v94;
-    v79 = [v80 constraintEqualToConstant:v94];
+    v79 = [heightAnchor constraintEqualToConstant:v94];
     v96[2] = v79;
-    v78 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerYAnchor];
-    v77 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
-    v75 = [v78 constraintEqualToAnchor:v77];
+    centerYAnchor = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerYAnchor];
+    centerYAnchor2 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
+    v75 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v96[3] = v75;
-    v74 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide trailingAnchor];
-    v73 = [(NTKUpNextMatchupUpcomingView *)v3 trailingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    trailingAnchor = [(UILayoutGuide *)v3->_awayLogoLayoutGuide trailingAnchor];
+    trailingAnchor2 = [(NTKUpNextMatchupUpcomingView *)v3 trailingAnchor];
+    v72 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v96[4] = v72;
-    v71 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide widthAnchor];
-    v70 = [v71 constraintEqualToConstant:v23];
+    widthAnchor2 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide widthAnchor];
+    v70 = [widthAnchor2 constraintEqualToConstant:v23];
     v96[5] = v70;
-    v69 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide heightAnchor];
-    v67 = [v69 constraintEqualToConstant:v24];
+    heightAnchor2 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide heightAnchor];
+    v67 = [heightAnchor2 constraintEqualToConstant:v24];
     v96[6] = v67;
-    v66 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerYAnchor];
-    v65 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    centerYAnchor3 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerYAnchor];
+    centerYAnchor4 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
+    v64 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v96[7] = v64;
-    v63 = [(UIImageView *)v3->_homeLogoImageView centerXAnchor];
-    v62 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerXAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    centerXAnchor = [(UIImageView *)v3->_homeLogoImageView centerXAnchor];
+    centerXAnchor2 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerXAnchor];
+    v61 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v96[8] = v61;
-    v60 = [(UIImageView *)v3->_homeLogoImageView centerYAnchor];
-    v59 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerYAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    centerYAnchor5 = [(UIImageView *)v3->_homeLogoImageView centerYAnchor];
+    centerYAnchor6 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide centerYAnchor];
+    v58 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v96[9] = v58;
-    v57 = [(UIImageView *)v3->_homeLogoImageView widthAnchor];
-    v56 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide widthAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    widthAnchor3 = [(UIImageView *)v3->_homeLogoImageView widthAnchor];
+    widthAnchor4 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide widthAnchor];
+    v55 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v96[10] = v55;
-    v54 = [(UIImageView *)v3->_homeLogoImageView heightAnchor];
-    v53 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide heightAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    heightAnchor3 = [(UIImageView *)v3->_homeLogoImageView heightAnchor];
+    heightAnchor4 = [(UILayoutGuide *)v3->_homeLogoLayoutGuide heightAnchor];
+    v52 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     v96[11] = v52;
-    v51 = [(UIImageView *)v3->_awayLogoImageView centerXAnchor];
-    v50 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerXAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    centerXAnchor3 = [(UIImageView *)v3->_awayLogoImageView centerXAnchor];
+    centerXAnchor4 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerXAnchor];
+    v49 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v96[12] = v49;
-    v48 = [(UIImageView *)v3->_awayLogoImageView centerYAnchor];
-    v47 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerYAnchor];
-    v45 = [v48 constraintEqualToAnchor:v47];
+    centerYAnchor7 = [(UIImageView *)v3->_awayLogoImageView centerYAnchor];
+    centerYAnchor8 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide centerYAnchor];
+    v45 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v96[13] = v45;
-    v44 = [(UIImageView *)v3->_awayLogoImageView widthAnchor];
-    v43 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide widthAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    widthAnchor5 = [(UIImageView *)v3->_awayLogoImageView widthAnchor];
+    widthAnchor6 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide widthAnchor];
+    v42 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v96[14] = v42;
-    v41 = [(UIImageView *)v3->_awayLogoImageView heightAnchor];
-    v40 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide heightAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    heightAnchor5 = [(UIImageView *)v3->_awayLogoImageView heightAnchor];
+    heightAnchor6 = [(UILayoutGuide *)v3->_awayLogoLayoutGuide heightAnchor];
+    v39 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
     v96[15] = v39;
-    v38 = [(CLKUIColoringLabel *)v3->_versusLabel centerXAnchor];
-    v37 = [(NTKUpNextMatchupUpcomingView *)v3 centerXAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    centerXAnchor5 = [(CLKUIColoringLabel *)v3->_versusLabel centerXAnchor];
+    centerXAnchor6 = [(NTKUpNextMatchupUpcomingView *)v3 centerXAnchor];
+    v36 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v96[16] = v36;
-    v35 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
-    v25 = [(NTKUpNextMatchupUpcomingView *)v3 centerYAnchor];
-    v26 = [(CLKUIColoringLabel *)v3->_descriptionLabel font];
-    [v26 lineHeight];
+    centerYAnchor9 = [(CLKUIColoringLabel *)v3->_versusLabel centerYAnchor];
+    centerYAnchor10 = [(NTKUpNextMatchupUpcomingView *)v3 centerYAnchor];
+    font = [(CLKUIColoringLabel *)v3->_descriptionLabel font];
+    [font lineHeight];
     CLKRoundForDevice();
-    v27 = [v35 constraintEqualToAnchor:v25 constant:?];
+    v27 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10 constant:?];
     v96[17] = v27;
-    v28 = [(CLKUIColoringLabel *)v3->_descriptionLabel centerXAnchor];
-    v29 = [(NTKUpNextMatchupUpcomingView *)v3 centerXAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerXAnchor7 = [(CLKUIColoringLabel *)v3->_descriptionLabel centerXAnchor];
+    centerXAnchor8 = [(NTKUpNextMatchupUpcomingView *)v3 centerXAnchor];
+    v30 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v96[18] = v30;
-    v31 = [(CLKUIColoringLabel *)v3->_descriptionLabel lastBaselineAnchor];
-    v32 = [(CLKUIColoringLabel *)v3->_versusLabel lastBaselineAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:*&v93];
+    lastBaselineAnchor = [(CLKUIColoringLabel *)v3->_descriptionLabel lastBaselineAnchor];
+    lastBaselineAnchor2 = [(CLKUIColoringLabel *)v3->_versusLabel lastBaselineAnchor];
+    v33 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:*&v93];
     v96[19] = v33;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:20];
 
@@ -171,53 +171,53 @@
   return v3;
 }
 
-- (void)configureWithMatchup:(id)a3
+- (void)configureWithMatchup:(id)matchup
 {
-  v23 = a3;
-  v4 = [v23 homeTeamImage];
-  v5 = [v4 image];
+  matchupCopy = matchup;
+  homeTeamImage = [matchupCopy homeTeamImage];
+  image = [homeTeamImage image];
 
-  [(UIImageView *)self->_homeLogoImageView setImage:v5];
-  v6 = [v23 awayTeamImage];
-  v7 = [v6 image];
+  [(UIImageView *)self->_homeLogoImageView setImage:image];
+  awayTeamImage = [matchupCopy awayTeamImage];
+  image2 = [awayTeamImage image];
 
-  [(UIImageView *)self->_awayLogoImageView setImage:v7];
-  v8 = [v23 matchupStartDate];
-  v9 = [v23 status];
-  if (v9 == 4 || v9 == 3)
+  [(UIImageView *)self->_awayLogoImageView setImage:image2];
+  matchupStartDate = [matchupCopy matchupStartDate];
+  status = [matchupCopy status];
+  if (status == 4 || status == 3)
   {
     v17 = MEMORY[0x277CBBB88];
-    v10 = [v23 matchupProgress];
-    v16 = [v17 textProviderWithText:v10];
+    matchupProgress = [matchupCopy matchupProgress];
+    v16 = [v17 textProviderWithText:matchupProgress];
   }
 
   else
   {
-    if (v9 != 1)
+    if (status != 1)
     {
       v16 = 0;
       goto LABEL_11;
     }
 
-    v10 = [MEMORY[0x277CBBBB8] textProviderWithDate:v8];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = NTKStartOfDayForDate(v11);
-    v13 = NTKStartOfNextDayForDate(v11);
+    matchupProgress = [MEMORY[0x277CBBBB8] textProviderWithDate:matchupStartDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = NTKStartOfDayForDate(date);
+    v13 = NTKStartOfNextDayForDate(date);
     v14 = NTKEndOfDayForDate(v13);
 
     v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:v14];
-    if ([v15 containsDate:v8])
+    if ([v15 containsDate:matchupStartDate])
     {
-      v16 = v10;
+      v16 = matchupProgress;
     }
 
     else
     {
-      [MEMORY[0x277CBBAE0] textProviderWithDate:v8 units:24];
+      [MEMORY[0x277CBBAE0] textProviderWithDate:matchupStartDate units:24];
       v18 = v22 = v12;
       NTKClockFaceLocalizedString(@"UP_NEXT_MATCHUP_TIME_FORMAT", @"%@, %@");
       v19 = v21 = v14;
-      v16 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v19, v10, v18];
+      v16 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v19, matchupProgress, v18];
 
       v14 = v21;
       v12 = v22;
@@ -229,46 +229,46 @@ LABEL_11:
   [(CLKUIColoringLabel *)self->_descriptionLabel setText:0];
   [v16 finalize];
   [(CLKUIColoringLabel *)self->_descriptionLabel setTextProvider:v16];
-  v20 = [(CLKUIColoringLabel *)self->_descriptionLabel textProvider];
-  [v20 setPaused:{-[NTKUpNextMatchupUpcomingView isPaused](self, "isPaused")}];
+  textProvider = [(CLKUIColoringLabel *)self->_descriptionLabel textProvider];
+  [textProvider setPaused:{-[NTKUpNextMatchupUpcomingView isPaused](self, "isPaused")}];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v4 = [(CLKUIColoringLabel *)self->_descriptionLabel textProvider];
-  [v4 setPaused:v3];
+  pausedCopy = paused;
+  textProvider = [(CLKUIColoringLabel *)self->_descriptionLabel textProvider];
+  [textProvider setPaused:pausedCopy];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
   v16 = v5;
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(fraction) >= 0.00000011920929)
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    v7 = NTKInterpolateBetweenColors();
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = NTKInterpolateBetweenColors();
 
-    [(CLKUIColoringLabel *)self->_versusLabel setTextColor:v7];
-    v9 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
-    v10 = [v9 filtersForView:self style:2 fraction:a3];
+    [(CLKUIColoringLabel *)self->_versusLabel setTextColor:whiteColor2];
+    filterProvider = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
+    v10 = [filterProvider filtersForView:self style:2 fraction:fraction];
 
     if (v10)
     {
-      v11 = [(CLKUIColoringLabel *)self->_descriptionLabel layer];
-      [v11 setFilters:v10];
+      layer = [(CLKUIColoringLabel *)self->_descriptionLabel layer];
+      [layer setFilters:v10];
     }
 
-    v12 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
-    v13 = [v12 filtersForView:self style:1 fraction:a3];
+    filterProvider2 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
+    v13 = [filterProvider2 filtersForView:self style:1 fraction:fraction];
 
     if (v13)
     {
-      v14 = [(UIImageView *)self->_awayLogoImageView layer];
-      [v14 setFilters:v13];
+      layer2 = [(UIImageView *)self->_awayLogoImageView layer];
+      [layer2 setFilters:v13];
 
-      v15 = [(UIImageView *)self->_homeLogoImageView layer];
-      [v15 setFilters:v13];
+      layer3 = [(UIImageView *)self->_homeLogoImageView layer];
+      [layer3 setFilters:v13];
     }
   }
 
@@ -276,40 +276,40 @@ LABEL_11:
   {
     [(CLKUIColoringLabel *)self->_versusLabel setTextColor:v5];
     descriptionLabel = self->_descriptionLabel;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)descriptionLabel setTextColor:v7];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)descriptionLabel setTextColor:whiteColor2];
   }
 }
 
 - (void)updateMonochromeColor
 {
   versusLabel = self->_versusLabel;
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)versusLabel setTextColor:v4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)versusLabel setTextColor:whiteColor];
 
   descriptionLabel = self->_descriptionLabel;
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)descriptionLabel setTextColor:v6];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)descriptionLabel setTextColor:whiteColor2];
 
-  v7 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
-  v13 = [v7 filtersForView:self style:2];
+  filterProvider = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
+  v13 = [filterProvider filtersForView:self style:2];
 
   if (v13)
   {
-    v8 = [(CLKUIColoringLabel *)self->_descriptionLabel layer];
-    [v8 setFilters:v13];
+    layer = [(CLKUIColoringLabel *)self->_descriptionLabel layer];
+    [layer setFilters:v13];
   }
 
-  v9 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
-  v10 = [v9 filtersForView:self style:1];
+  filterProvider2 = [(NTKUpNextMatchupUpcomingView *)self filterProvider];
+  v10 = [filterProvider2 filtersForView:self style:1];
 
   if (v10)
   {
-    v11 = [(UIImageView *)self->_awayLogoImageView layer];
-    [v11 setFilters:v10];
+    layer2 = [(UIImageView *)self->_awayLogoImageView layer];
+    [layer2 setFilters:v10];
 
-    v12 = [(UIImageView *)self->_homeLogoImageView layer];
-    [v12 setFilters:v10];
+    layer3 = [(UIImageView *)self->_homeLogoImageView layer];
+    [layer3 setFilters:v10];
   }
 }
 

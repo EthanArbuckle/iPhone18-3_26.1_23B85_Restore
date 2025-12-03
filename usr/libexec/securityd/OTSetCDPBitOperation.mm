@@ -1,5 +1,5 @@
 @interface OTSetCDPBitOperation
-- (OTSetCDPBitOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTSetCDPBitOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -8,32 +8,32 @@
 - (void)groupStart
 {
   v32[0] = kSecurityRTCFieldAccountIsW;
-  v3 = [(OTSetCDPBitOperation *)self deps];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 accountIsW]);
+  deps = [(OTSetCDPBitOperation *)self deps];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps accountIsW]);
   v33[0] = v4;
   v32[1] = kSecurityRTCFieldAccountIsG;
-  v5 = [(OTSetCDPBitOperation *)self deps];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 accountIsG]);
+  deps2 = [(OTSetCDPBitOperation *)self deps];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps2 accountIsG]);
   v33[1] = v6;
   v28 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
 
   v27 = [AAFAnalyticsEventSecurity alloc];
-  v7 = [(OTSetCDPBitOperation *)self deps];
-  v8 = [v7 activeAccount];
-  v9 = [v8 altDSID];
-  v10 = [(OTSetCDPBitOperation *)self deps];
-  v11 = [v10 flowID];
-  v12 = [(OTSetCDPBitOperation *)self deps];
-  v13 = [v12 deviceSessionID];
+  deps3 = [(OTSetCDPBitOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps4 = [(OTSetCDPBitOperation *)self deps];
+  flowID = [deps4 flowID];
+  deps5 = [(OTSetCDPBitOperation *)self deps];
+  deviceSessionID = [deps5 deviceSessionID];
   v14 = kSecurityRTCEventNameOTSetCDPBitOperation;
-  v15 = [(OTSetCDPBitOperation *)self deps];
-  LOBYTE(v26) = [v15 permittedToSendMetrics];
-  v16 = [v27 initWithKeychainCircleMetrics:v28 altDSID:v9 flowID:v11 deviceSessionID:v13 eventName:v14 testsAreEnabled:0 canSendMetrics:v26 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  deps6 = [(OTSetCDPBitOperation *)self deps];
+  LOBYTE(v26) = [deps6 permittedToSendMetrics];
+  v16 = [v27 initWithKeychainCircleMetrics:v28 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v14 testsAreEnabled:0 canSendMetrics:v26 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
-  v17 = [(OTSetCDPBitOperation *)self deps];
-  v18 = [v17 stateHolder];
+  deps7 = [(OTSetCDPBitOperation *)self deps];
+  stateHolder = [deps7 stateHolder];
   v29 = 0;
-  [v18 persistAccountChanges:&stru_100337050 error:&v29];
+  [stateHolder persistAccountChanges:&stru_100337050 error:&v29];
   v19 = v29;
 
   v20 = sub_100006274("octagon-cdp-status");
@@ -60,8 +60,8 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Successfully set CDP bit", buf, 2u);
     }
 
-    v25 = [(OTSetCDPBitOperation *)self intendedState];
-    [(OTSetCDPBitOperation *)self setNextState:v25];
+    intendedState = [(OTSetCDPBitOperation *)self intendedState];
+    [(OTSetCDPBitOperation *)self setNextState:intendedState];
 
     v22 = v16;
     v23 = 1;
@@ -71,20 +71,20 @@
   [v22 sendMetricWithResult:v23 error:v24];
 }
 
-- (OTSetCDPBitOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTSetCDPBitOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTSetCDPBitOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

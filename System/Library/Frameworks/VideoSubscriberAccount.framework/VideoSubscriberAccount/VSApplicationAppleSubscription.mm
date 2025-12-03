@@ -1,8 +1,8 @@
 @interface VSApplicationAppleSubscription
-+ (id)appleSubscriptionsFromApplicationAppleSubscriptions:(id)a3;
-+ (id)applicationAppleSubscriptionsFromAppleSubscriptions:(id)a3;
++ (id)appleSubscriptionsFromApplicationAppleSubscriptions:(id)subscriptions;
++ (id)applicationAppleSubscriptionsFromAppleSubscriptions:(id)subscriptions;
 - (VSApplicationAppleSubscription)init;
-- (VSApplicationAppleSubscription)initWithAppleSubscription:(id)a3;
+- (VSApplicationAppleSubscription)initWithAppleSubscription:(id)subscription;
 - (id)appleSubscription;
 @end
 
@@ -15,21 +15,21 @@
   return [(VSApplicationAppleSubscription *)&v3 init];
 }
 
-- (VSApplicationAppleSubscription)initWithAppleSubscription:(id)a3
+- (VSApplicationAppleSubscription)initWithAppleSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v13.receiver = self;
   v13.super_class = VSApplicationAppleSubscription;
   v5 = [(VSApplicationAppleSubscription *)&v13 init];
   if (v5)
   {
-    v6 = [v4 customerID];
-    v7 = [v6 copy];
+    customerID = [subscriptionCopy customerID];
+    v7 = [customerID copy];
     customerID = v5->_customerID;
     v5->_customerID = v7;
 
-    v9 = [v4 productCodes];
-    v10 = [v9 copy];
+    productCodes = [subscriptionCopy productCodes];
+    v10 = [productCodes copy];
     productCodes = v5->_productCodes;
     v5->_productCodes = v10;
   }
@@ -40,39 +40,39 @@
 - (id)appleSubscription
 {
   v3 = [VSAppleSubscription alloc];
-  v4 = [(VSApplicationAppleSubscription *)self customerID];
+  customerID = [(VSApplicationAppleSubscription *)self customerID];
 
-  if (!v4)
+  if (!customerID)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self customerID] parameter must not be nil."];
   }
 
-  v5 = [(VSApplicationAppleSubscription *)self customerID];
-  v6 = [v5 copy];
-  v7 = [(VSApplicationAppleSubscription *)self productCodes];
+  customerID2 = [(VSApplicationAppleSubscription *)self customerID];
+  v6 = [customerID2 copy];
+  productCodes = [(VSApplicationAppleSubscription *)self productCodes];
 
-  if (!v7)
+  if (!productCodes)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self productCodes] parameter must not be nil."];
   }
 
-  v8 = [(VSApplicationAppleSubscription *)self productCodes];
-  v9 = [v8 copy];
+  productCodes2 = [(VSApplicationAppleSubscription *)self productCodes];
+  v9 = [productCodes2 copy];
   v10 = [(VSAppleSubscription *)v3 initWithCustomerID:v6 productCodes:v9];
 
   return v10;
 }
 
-+ (id)appleSubscriptionsFromApplicationAppleSubscriptions:(id)a3
++ (id)appleSubscriptionsFromApplicationAppleSubscriptions:(id)subscriptions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = subscriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -87,10 +87,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) appleSubscription];
-        if (v10)
+        appleSubscription = [*(*(&v12 + 1) + 8 * i) appleSubscription];
+        if (appleSubscription)
         {
-          [v4 addObject:v10];
+          [v4 addObject:appleSubscription];
         }
       }
 
@@ -103,16 +103,16 @@
   return v4;
 }
 
-+ (id)applicationAppleSubscriptionsFromAppleSubscriptions:(id)a3
++ (id)applicationAppleSubscriptionsFromAppleSubscriptions:(id)subscriptions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = subscriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

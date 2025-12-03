@@ -1,56 +1,56 @@
 @interface _SFPBEntitySearchMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBEntitySearchMetadata)initWithDictionary:(id)a3;
-- (_SFPBEntitySearchMetadata)initWithFacade:(id)a3;
-- (_SFPBEntitySearchMetadata)initWithJSON:(id)a3;
+- (_SFPBEntitySearchMetadata)initWithDictionary:(id)dictionary;
+- (_SFPBEntitySearchMetadata)initWithFacade:(id)facade;
+- (_SFPBEntitySearchMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setEntityIdentifier:(id)a3;
-- (void)setEntitySearchQuery:(id)a3;
-- (void)setTokenQuery:(id)a3;
-- (void)setViewConfigName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEntityIdentifier:(id)identifier;
+- (void)setEntitySearchQuery:(id)query;
+- (void)setTokenQuery:(id)query;
+- (void)setViewConfigName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBEntitySearchMetadata
 
-- (_SFPBEntitySearchMetadata)initWithFacade:(id)a3
+- (_SFPBEntitySearchMetadata)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBEntitySearchMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 entitySearchQuery];
+    entitySearchQuery = [facadeCopy entitySearchQuery];
 
-    if (v6)
+    if (entitySearchQuery)
     {
-      v7 = [v4 entitySearchQuery];
-      [(_SFPBEntitySearchMetadata *)v5 setEntitySearchQuery:v7];
+      entitySearchQuery2 = [facadeCopy entitySearchQuery];
+      [(_SFPBEntitySearchMetadata *)v5 setEntitySearchQuery:entitySearchQuery2];
     }
 
-    v8 = [v4 tokenQuery];
+    tokenQuery = [facadeCopy tokenQuery];
 
-    if (v8)
+    if (tokenQuery)
     {
-      v9 = [v4 tokenQuery];
-      [(_SFPBEntitySearchMetadata *)v5 setTokenQuery:v9];
+      tokenQuery2 = [facadeCopy tokenQuery];
+      [(_SFPBEntitySearchMetadata *)v5 setTokenQuery:tokenQuery2];
     }
 
-    v10 = [v4 entityIdentifier];
+    entityIdentifier = [facadeCopy entityIdentifier];
 
-    if (v10)
+    if (entityIdentifier)
     {
-      v11 = [v4 entityIdentifier];
-      [(_SFPBEntitySearchMetadata *)v5 setEntityIdentifier:v11];
+      entityIdentifier2 = [facadeCopy entityIdentifier];
+      [(_SFPBEntitySearchMetadata *)v5 setEntityIdentifier:entityIdentifier2];
     }
 
-    v12 = [v4 viewConfigName];
+    viewConfigName = [facadeCopy viewConfigName];
 
-    if (v12)
+    if (viewConfigName)
     {
-      v13 = [v4 viewConfigName];
-      [(_SFPBEntitySearchMetadata *)v5 setViewConfigName:v13];
+      viewConfigName2 = [facadeCopy viewConfigName];
+      [(_SFPBEntitySearchMetadata *)v5 setViewConfigName:viewConfigName2];
     }
 
     v14 = v5;
@@ -59,15 +59,15 @@
   return v5;
 }
 
-- (_SFPBEntitySearchMetadata)initWithDictionary:(id)a3
+- (_SFPBEntitySearchMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBEntitySearchMetadata;
   v5 = [(_SFPBEntitySearchMetadata *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entitySearchQuery"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entitySearchQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBEntitySearchMetadata *)v5 setEntitySearchQuery:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tokenQuery"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tokenQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(_SFPBEntitySearchMetadata *)v5 setTokenQuery:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entityIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(_SFPBEntitySearchMetadata *)v5 setEntityIdentifier:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"viewConfigName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"viewConfigName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (_SFPBEntitySearchMetadata)initWithJSON:(id)a3
+- (_SFPBEntitySearchMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBEntitySearchMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBEntitySearchMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBEntitySearchMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -141,36 +141,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entityIdentifier)
   {
-    v4 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"entityIdentifier"];
+    entityIdentifier = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
+    v5 = [entityIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"entityIdentifier"];
   }
 
   if (self->_entitySearchQuery)
   {
-    v6 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"entitySearchQuery"];
+    entitySearchQuery = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
+    v7 = [entitySearchQuery copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"entitySearchQuery"];
   }
 
   if (self->_tokenQuery)
   {
-    v8 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"tokenQuery"];
+    tokenQuery = [(_SFPBEntitySearchMetadata *)self tokenQuery];
+    v9 = [tokenQuery copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"tokenQuery"];
   }
 
   if (self->_viewConfigName)
   {
-    v10 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"viewConfigName"];
+    viewConfigName = [(_SFPBEntitySearchMetadata *)self viewConfigName];
+    v11 = [viewConfigName copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"viewConfigName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -181,28 +181,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_viewConfigName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
-  v6 = [v4 entitySearchQuery];
-  if ((v5 != 0) == (v6 == 0))
+  entitySearchQuery = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
+  entitySearchQuery2 = [equalCopy entitySearchQuery];
+  if ((entitySearchQuery != 0) == (entitySearchQuery2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
-  if (v7)
+  entitySearchQuery3 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
+  if (entitySearchQuery3)
   {
-    v8 = v7;
-    v9 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
-    v10 = [v4 entitySearchQuery];
-    v11 = [v9 isEqual:v10];
+    v8 = entitySearchQuery3;
+    entitySearchQuery4 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
+    entitySearchQuery5 = [equalCopy entitySearchQuery];
+    v11 = [entitySearchQuery4 isEqual:entitySearchQuery5];
 
     if (!v11)
     {
@@ -214,20 +214,20 @@
   {
   }
 
-  v5 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
-  v6 = [v4 tokenQuery];
-  if ((v5 != 0) == (v6 == 0))
+  entitySearchQuery = [(_SFPBEntitySearchMetadata *)self tokenQuery];
+  entitySearchQuery2 = [equalCopy tokenQuery];
+  if ((entitySearchQuery != 0) == (entitySearchQuery2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
-  if (v12)
+  tokenQuery = [(_SFPBEntitySearchMetadata *)self tokenQuery];
+  if (tokenQuery)
   {
-    v13 = v12;
-    v14 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
-    v15 = [v4 tokenQuery];
-    v16 = [v14 isEqual:v15];
+    v13 = tokenQuery;
+    tokenQuery2 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
+    tokenQuery3 = [equalCopy tokenQuery];
+    v16 = [tokenQuery2 isEqual:tokenQuery3];
 
     if (!v16)
     {
@@ -239,20 +239,20 @@
   {
   }
 
-  v5 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
-  v6 = [v4 entityIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  entitySearchQuery = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
+  entitySearchQuery2 = [equalCopy entityIdentifier];
+  if ((entitySearchQuery != 0) == (entitySearchQuery2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
-  if (v17)
+  entityIdentifier = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
+  if (entityIdentifier)
   {
-    v18 = v17;
-    v19 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
-    v20 = [v4 entityIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = entityIdentifier;
+    entityIdentifier2 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
+    entityIdentifier3 = [equalCopy entityIdentifier];
+    v21 = [entityIdentifier2 isEqual:entityIdentifier3];
 
     if (!v21)
     {
@@ -264,12 +264,12 @@
   {
   }
 
-  v5 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
-  v6 = [v4 viewConfigName];
-  if ((v5 != 0) != (v6 == 0))
+  entitySearchQuery = [(_SFPBEntitySearchMetadata *)self viewConfigName];
+  entitySearchQuery2 = [equalCopy viewConfigName];
+  if ((entitySearchQuery != 0) != (entitySearchQuery2 == 0))
   {
-    v22 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
-    if (!v22)
+    viewConfigName = [(_SFPBEntitySearchMetadata *)self viewConfigName];
+    if (!viewConfigName)
     {
 
 LABEL_25:
@@ -277,10 +277,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
-    v25 = [v4 viewConfigName];
-    v26 = [v24 isEqual:v25];
+    v23 = viewConfigName;
+    viewConfigName2 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
+    viewConfigName3 = [equalCopy viewConfigName];
+    v26 = [viewConfigName2 isEqual:viewConfigName3];
 
     if (v26)
     {
@@ -300,64 +300,64 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
-  if (v4)
+  toCopy = to;
+  entitySearchQuery = [(_SFPBEntitySearchMetadata *)self entitySearchQuery];
+  if (entitySearchQuery)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBEntitySearchMetadata *)self tokenQuery];
-  if (v5)
+  tokenQuery = [(_SFPBEntitySearchMetadata *)self tokenQuery];
+  if (tokenQuery)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
-  if (v6)
+  entityIdentifier = [(_SFPBEntitySearchMetadata *)self entityIdentifier];
+  if (entityIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBEntitySearchMetadata *)self viewConfigName];
-  if (v7)
+  viewConfigName = [(_SFPBEntitySearchMetadata *)self viewConfigName];
+  if (viewConfigName)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setViewConfigName:(id)a3
+- (void)setViewConfigName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   viewConfigName = self->_viewConfigName;
   self->_viewConfigName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   entityIdentifier = self->_entityIdentifier;
   self->_entityIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTokenQuery:(id)a3
+- (void)setTokenQuery:(id)query
 {
-  v4 = [a3 copy];
+  v4 = [query copy];
   tokenQuery = self->_tokenQuery;
   self->_tokenQuery = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setEntitySearchQuery:(id)a3
+- (void)setEntitySearchQuery:(id)query
 {
-  v4 = [a3 copy];
+  v4 = [query copy];
   entitySearchQuery = self->_entitySearchQuery;
   self->_entitySearchQuery = v4;
 

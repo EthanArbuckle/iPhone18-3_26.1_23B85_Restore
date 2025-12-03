@@ -1,23 +1,23 @@
 @interface SBFocusActivityBannerAuthority
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6;
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change;
 @end
 
 @implementation SBFocusActivityBannerAuthority
 
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change
 {
-  v9 = a3;
-  v10 = [a4 lastObject];
-  v11 = [objc_opt_class() requesterIdentifier];
-  v12 = [v10 requesterIdentifier];
-  if (([v12 isEqual:v11] & 1) == 0)
+  presentableCopy = presentable;
+  lastObject = [presentables lastObject];
+  requesterIdentifier = [objc_opt_class() requesterIdentifier];
+  requesterIdentifier2 = [lastObject requesterIdentifier];
+  if (([requesterIdentifier2 isEqual:requesterIdentifier] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v13 = [v9 requesterIdentifier];
-  v14 = [v13 isEqual:v11];
+  requesterIdentifier3 = [presentableCopy requesterIdentifier];
+  v14 = [requesterIdentifier3 isEqual:requesterIdentifier];
 
   if (!v14)
   {
@@ -26,15 +26,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (responsiblePresentable)
   {
-    v15 = v10;
-    *a5 = v10;
+    v15 = lastObject;
+    *responsiblePresentable = lastObject;
   }
 
-  if (a6)
+  if (change)
   {
-    *a6 = MEMORY[0x277CBEC38];
+    *change = MEMORY[0x277CBEC38];
   }
 
   v16 = 1;

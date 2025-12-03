@@ -1,6 +1,6 @@
 @interface NTKComplicationDataSourceCacheKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -8,25 +8,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_pairingID];
-  v5 = [v3 appendUnsignedInteger:self->_complicationType];
-  v6 = [v3 appendInteger:self->_complicationFamily];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_pairingID];
+  v5 = [builder appendUnsignedInteger:self->_complicationType];
+  v6 = [builder appendInteger:self->_complicationFamily];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   pairingID = self->_pairingID;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __45__NTKComplicationDataSourceCacheKey_isEqual___block_invoke;
   v20[3] = &unk_278780340;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:pairingID counterpart:v20];
   complicationType = self->_complicationType;
@@ -50,7 +50,7 @@
   return complicationFamily;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong((v4 + 8), self->_pairingID);

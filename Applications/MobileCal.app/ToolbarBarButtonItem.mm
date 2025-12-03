@@ -1,19 +1,19 @@
 @interface ToolbarBarButtonItem
-- (ToolbarBarButtonItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)setTitle:(id)a3;
+- (ToolbarBarButtonItem)initWithTitle:(id)title target:(id)target action:(SEL)action;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ToolbarBarButtonItem
 
-- (ToolbarBarButtonItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (ToolbarBarButtonItem)initWithTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  targetCopy = target;
   if (CalSystemSolariumEnabled())
   {
     v21.receiver = self;
     v21.super_class = ToolbarBarButtonItem;
-    v10 = [(ToolbarBarButtonItem *)&v21 initWithTitle:v8 style:0 target:v9 action:a5];
+    v10 = [(ToolbarBarButtonItem *)&v21 initWithTitle:titleCopy style:0 target:targetCopy action:action];
   }
 
   else
@@ -22,12 +22,12 @@
     button = self->_button;
     self->_button = v11;
 
-    [(UIButton *)self->_button setTitle:v8 forState:0];
+    [(UIButton *)self->_button setTitle:titleCopy forState:0];
     v13 = [UIFont systemFontOfSize:17.0];
-    v14 = [(UIButton *)self->_button titleLabel];
-    [v14 setFont:v13];
+    titleLabel = [(UIButton *)self->_button titleLabel];
+    [titleLabel setFont:v13];
 
-    [(UIButton *)self->_button addTarget:v9 action:a5 forControlEvents:64];
+    [(UIButton *)self->_button addTarget:targetCopy action:action forControlEvents:64];
     [(UIButton *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v15) = 1148846080;
     [(UIButton *)self->_button setContentCompressionResistancePriority:0 forAxis:v15];
@@ -38,7 +38,7 @@
     v10 = v17;
     if (v17)
     {
-      [(ToolbarBarButtonItem *)v17 setTitle:v8];
+      [(ToolbarBarButtonItem *)v17 setTitle:titleCopy];
     }
   }
 
@@ -47,13 +47,13 @@
   return v18;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = ToolbarBarButtonItem;
-  v4 = a3;
-  [(ToolbarBarButtonItem *)&v5 setTitle:v4];
-  [(UIButton *)self->_button setTitle:v4 forState:0, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(ToolbarBarButtonItem *)&v5 setTitle:titleCopy];
+  [(UIButton *)self->_button setTitle:titleCopy forState:0, v5.receiver, v5.super_class];
 }
 
 @end

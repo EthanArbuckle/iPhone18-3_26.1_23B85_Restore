@@ -1,32 +1,32 @@
 @interface PCCProxyingDevice
-- (BOOL)isFilenameReasonable:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (PCCProxyingDevice)initWithEndpoint:(id)a3;
-- (void)ack:(id)a3 result:(BOOL)a4 error:(id)a5;
-- (void)addRequest:(id)a3 event:(id)a4 type:(id)a5 onComplete:(id)a6;
-- (void)deliver:(id)a3 tasking:(id)a4 taskId:(id)a5 fromBlob:(id)a6;
-- (void)diagnosticResultsEvent:(id)a3 type:(id)a4 result:(id)a5;
-- (void)finishRequest:(id)a3 result:(id)a4;
-- (void)finishRequestWithMessage:(id)a3 result:(id)a4;
-- (void)handleConnection:(BOOL)a3 from:(id)a4;
-- (void)handleFile:(id)a3 from:(id)a4 metadata:(id)a5;
-- (void)handleMessage:(id)a3 from:(id)a4;
-- (void)listDevices:(id)a3;
-- (void)request:(id)a3 logListWithOptions:(id)a4 onComplete:(id)a5;
-- (void)request:(id)a3 transferGroupWithOptions:(id)a4 onComplete:(id)a5;
-- (void)request:(id)a3 transferLog:(id)a4 withOptions:(id)a5 onComplete:(id)a6;
-- (void)startRequest:(id)a3 message:(id)a4 onComplete:(id)a5;
+- (BOOL)isFilenameReasonable:(id)reasonable;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (PCCProxyingDevice)initWithEndpoint:(id)endpoint;
+- (void)ack:(id)ack result:(BOOL)result error:(id)error;
+- (void)addRequest:(id)request event:(id)event type:(id)type onComplete:(id)complete;
+- (void)deliver:(id)deliver tasking:(id)tasking taskId:(id)id fromBlob:(id)blob;
+- (void)diagnosticResultsEvent:(id)event type:(id)type result:(id)result;
+- (void)finishRequest:(id)request result:(id)result;
+- (void)finishRequestWithMessage:(id)message result:(id)result;
+- (void)handleConnection:(BOOL)connection from:(id)from;
+- (void)handleFile:(id)file from:(id)from metadata:(id)metadata;
+- (void)handleMessage:(id)message from:(id)from;
+- (void)listDevices:(id)devices;
+- (void)request:(id)request logListWithOptions:(id)options onComplete:(id)complete;
+- (void)request:(id)request transferGroupWithOptions:(id)options onComplete:(id)complete;
+- (void)request:(id)request transferLog:(id)log withOptions:(id)options onComplete:(id)complete;
+- (void)startRequest:(id)request message:(id)message onComplete:(id)complete;
 - (void)startTimer;
-- (void)summarizeLog:(id)a3 reason:(id)a4;
-- (void)synchronize:(id)a3 withOptions:(id)a4 onComplete:(id)a5;
-- (void)updateProxiedDeviceMetadata:(id)a3 from:(id)a4;
+- (void)summarizeLog:(id)log reason:(id)reason;
+- (void)synchronize:(id)synchronize withOptions:(id)options onComplete:(id)complete;
+- (void)updateProxiedDeviceMetadata:(id)metadata from:(id)from;
 @end
 
 @implementation PCCProxyingDevice
 
-- (PCCProxyingDevice)initWithEndpoint:(id)a3
+- (PCCProxyingDevice)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v21.receiver = self;
   v21.super_class = PCCProxyingDevice;
   v6 = [(PCCProxyingDevice *)&v21 init];
@@ -50,7 +50,7 @@
     sync_proxy_queue = v7->_sync_proxy_queue;
     v7->_sync_proxy_queue = v14;
 
-    objc_storeStrong(&v7->_endpoint, a3);
+    objc_storeStrong(&v7->_endpoint, endpoint);
     [(PCCEndpoint *)v7->_endpoint runWithDelegate:v7];
     v16 = objc_opt_new();
     sync_summary = v7->_sync_summary;
@@ -64,70 +64,70 @@
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CCAE90];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_286EB66F0];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v6 setExportedObject:self];
-  [v6 _setQueue:self->_sync_proxy_queue];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy _setQueue:self->_sync_proxy_queue];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)listDevices:(id)a3
+- (void)listDevices:(id)devices
 {
   endpoint = self->_endpoint;
-  v5 = a3;
-  v6 = [(PCCEndpoint *)endpoint deviceIds];
-  (*(a3 + 2))(v5, v6, 0);
+  devicesCopy = devices;
+  deviceIds = [(PCCEndpoint *)endpoint deviceIds];
+  (*(devices + 2))(devicesCopy, deviceIds, 0);
 }
 
-- (void)synchronize:(id)a3 withOptions:(id)a4 onComplete:(id)a5
+- (void)synchronize:(id)synchronize withOptions:(id)options onComplete:(id)complete
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PCCEndpoint *)self->_endpoint synchronize:v8 withOptions:v9];
-  v12 = [v9 objectForKeyedSubscript:@"remote"];
-  v13 = [v12 BOOLValue];
+  synchronizeCopy = synchronize;
+  optionsCopy = options;
+  completeCopy = complete;
+  v11 = [(PCCEndpoint *)self->_endpoint synchronize:synchronizeCopy withOptions:optionsCopy];
+  v12 = [optionsCopy objectForKeyedSubscript:@"remote"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v50 = *&v9;
+      v50 = *&optionsCopy;
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "requesting remote synchronization with options: %@", buf, 0xCu);
     }
 
     v47[0] = @"messageType";
     v47[1] = @"options";
     v48[0] = @"synchronize";
-    v48[1] = v9;
+    v48[1] = optionsCopy;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
-    [(PCCProxyingDevice *)self startRequest:v8 message:v14 onComplete:v10];
+    [(PCCProxyingDevice *)self startRequest:synchronizeCopy message:v14 onComplete:completeCopy];
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v15 = [v9 objectForKeyedSubscript:@"status"];
-  v16 = [v15 BOOLValue];
+  v15 = [optionsCopy objectForKeyedSubscript:@"status"];
+  bOOLValue2 = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue2)
   {
     v45[0] = @"requesting";
-    v41 = [(NSMutableDictionary *)self->_reqById allValues];
-    v40 = [v41 valueForKey:@"description"];
+    allValues = [(NSMutableDictionary *)self->_reqById allValues];
+    v40 = [allValues valueForKey:@"description"];
     v46[0] = v40;
     v45[1] = @"tracking";
-    v39 = [(NSMutableDictionary *)self->_reqByTracker allKeys];
-    v46[1] = v39;
+    allKeys = [(NSMutableDictionary *)self->_reqByTracker allKeys];
+    v46[1] = allKeys;
     v45[2] = @"timeout";
     v38 = [MEMORY[0x277CCABB0] numberWithDouble:self->_requestTimeout];
     v46[2] = v38;
@@ -154,30 +154,30 @@ LABEL_17:
     v22 = [MEMORY[0x277CCABB0] numberWithInt:self->expire_count];
     v46[9] = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:10];
-    (v10)[2](v10, v23, v18);
+    (completeCopy)[2](completeCopy, v23, v18);
 
     v11 = v18;
-    v24 = v41;
+    v24 = allValues;
 LABEL_7:
 
     goto LABEL_18;
   }
 
-  v25 = [v9 objectForKey:@"set-expire"];
+  v25 = [optionsCopy objectForKey:@"set-expire"];
 
   if (v25)
   {
-    v26 = [v9 objectForKeyedSubscript:@"set-expire"];
-    v27 = [v26 intValue];
+    v26 = [optionsCopy objectForKeyedSubscript:@"set-expire"];
+    intValue = [v26 intValue];
 
-    if (v27 <= 5)
+    if (intValue <= 5)
     {
       v28 = 5;
     }
 
     else
     {
-      v28 = v27;
+      v28 = intValue;
     }
 
     if (v28 >= 3600)
@@ -195,15 +195,15 @@ LABEL_7:
     }
 
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"requestTimeout set to %.0f secs", *&self->_requestTimeout];
-    (v10)[2](v10, v14, v11);
+    (completeCopy)[2](completeCopy, v14, v11);
     goto LABEL_17;
   }
 
-  v31 = [v9 objectForKeyedSubscript:@"test-expire"];
-  v32 = [v31 BOOLValue];
+  v31 = [optionsCopy objectForKeyedSubscript:@"test-expire"];
+  bOOLValue3 = [v31 BOOLValue];
 
   v33 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (v32)
+  if (bOOLValue3)
   {
     if (v33)
     {
@@ -213,13 +213,13 @@ LABEL_7:
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "starting bogus request; wait for expiration in %.1f mins", buf, 0xCu);
     }
 
-    [(PCCProxyingDevice *)self startRequest:v8 message:&unk_286EB2350 onComplete:0];
+    [(PCCProxyingDevice *)self startRequest:synchronizeCopy message:&unk_286EB2350 onComplete:0];
     request_queue = self->_request_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__PCCProxyingDevice_synchronize_withOptions_onComplete___block_invoke;
     block[3] = &unk_2799C0240;
-    v44 = v10;
+    v44 = completeCopy;
     block[4] = self;
     v43 = v11;
     dispatch_async(request_queue, block);
@@ -234,7 +234,7 @@ LABEL_7:
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "local synchronization", buf, 2u);
   }
 
-  (v10)[2](v10, @"local-Ok", v11);
+  (completeCopy)[2](completeCopy, @"local-Ok", v11);
 LABEL_18:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -248,11 +248,11 @@ void __56__PCCProxyingDevice_synchronize_withOptions_onComplete___block_invoke(v
   (*(v2 + 16))(v2, v3, a1[5]);
 }
 
-- (void)handleConnection:(BOOL)a3 from:(id)a4
+- (void)handleConnection:(BOOL)connection from:(id)from
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  connectionCopy = connection;
+  fromCopy = from;
+  if (connectionCopy)
   {
     ++self->up_count;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -276,16 +276,16 @@ LABEL_6:
   }
 }
 
-- (void)handleMessage:(id)a3 from:(id)a4
+- (void)handleMessage:(id)message from:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  fromCopy = from;
   ++self->msg_count;
-  v8 = [v6 objectForKeyedSubscript:@"messageType"];
+  v8 = [messageCopy objectForKeyedSubscript:@"messageType"];
   if ([v8 isEqualToString:@"updateProxiedDeviceMetadata"])
   {
-    v9 = [v6 objectForKeyedSubscript:@"deviceMetadata"];
+    v9 = [messageCopy objectForKeyedSubscript:@"deviceMetadata"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -298,25 +298,25 @@ LABEL_6:
       [PCCProxyingDevice handleMessage:from:];
     }
 
-    [(PCCProxyingDevice *)self updateProxiedDeviceMetadata:v9 from:v7];
-    [(PCCProxyingDevice *)self finishRequestWithMessage:v6 result:v9];
+    [(PCCProxyingDevice *)self updateProxiedDeviceMetadata:v9 from:fromCopy];
+    [(PCCProxyingDevice *)self finishRequestWithMessage:messageCopy result:v9];
   }
 
   else if ([v8 isEqualToString:@"jobStatus"])
   {
-    v10 = [v6 objectForKeyedSubscript:@"error_domain"];
+    v10 = [messageCopy objectForKeyedSubscript:@"error_domain"];
     if (!v10)
     {
       goto LABEL_12;
     }
 
     v11 = MEMORY[0x277CCA9B8];
-    v12 = [v6 objectForKeyedSubscript:@"error_code"];
-    v13 = [v12 intValue];
-    v14 = [v6 objectForKeyedSubscript:{@"error_info", *MEMORY[0x277CCA450]}];
+    v12 = [messageCopy objectForKeyedSubscript:@"error_code"];
+    intValue = [v12 intValue];
+    v14 = [messageCopy objectForKeyedSubscript:{@"error_info", *MEMORY[0x277CCA450]}];
     v21 = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v16 = [v11 errorWithDomain:v10 code:v13 userInfo:v15];
+    v16 = [v11 errorWithDomain:v10 code:intValue userInfo:v15];
 
     if (v16)
     {
@@ -327,38 +327,38 @@ LABEL_6:
     else
     {
 LABEL_12:
-      v17 = [v6 objectForKeyedSubscript:@"content"];
+      v17 = [messageCopy objectForKeyedSubscript:@"content"];
       v18 = 0;
     }
 
-    [(PCCProxyingDevice *)self finishRequestWithMessage:v6 result:v17];
+    [(PCCProxyingDevice *)self finishRequestWithMessage:messageCopy result:v17];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v6;
+    v23 = messageCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unknown message %@", buf, 0xCu);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)summarizeLog:(id)a3 reason:(id)a4
+- (void)summarizeLog:(id)log reason:(id)reason
 {
-  v10 = a4;
+  reasonCopy = reason;
   sync_summary = self->_sync_summary;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)sync_summary objectForKeyedSubscript:v10];
+  logCopy = log;
+  v8 = [(NSMutableDictionary *)sync_summary objectForKeyedSubscript:reasonCopy];
   if (!v8)
   {
     v8 = objc_opt_new();
-    [(NSMutableDictionary *)self->_sync_summary setObject:v8 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_sync_summary setObject:v8 forKeyedSubscript:reasonCopy];
   }
 
-  if ([(__CFString *)v7 length])
+  if ([(__CFString *)logCopy length])
   {
-    v9 = v7;
+    v9 = logCopy;
   }
 
   else
@@ -369,18 +369,18 @@ LABEL_12:
   [v8 _accumulateKey:v9 value:1];
 }
 
-- (BOOL)isFilenameReasonable:(id)a3
+- (BOOL)isFilenameReasonable:(id)reasonable
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 stringByStandardizingPath];
-  v5 = [v4 pathComponents];
+  reasonableCopy = reasonable;
+  stringByStandardizingPath = [reasonableCopy stringByStandardizingPath];
+  pathComponents = [stringByStandardizingPath pathComponents];
 
-  v6 = [v5 count];
+  v6 = [pathComponents count];
   if (v6 != 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v3;
+    v10 = reasonableCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "FAILED untrusted filename validation '%{public}@'", &v9, 0xCu);
   }
 
@@ -388,32 +388,32 @@ LABEL_12:
   return v6 == 1;
 }
 
-- (void)handleFile:(id)a3 from:(id)a4 metadata:(id)a5
+- (void)handleFile:(id)file from:(id)from metadata:(id)metadata
 {
   v153[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v118 = a4;
-  v9 = a5;
+  fileCopy = file;
+  fromCopy = from;
+  metadataCopy = metadata;
   ++self->file_count;
   v10 = objc_alloc(MEMORY[0x277D36B68]);
-  v11 = [v8 path];
-  v12 = [MEMORY[0x277D36B80] sharedInstance];
-  v13 = [v10 initWithPath:v11 forRouting:@"<sync>" usingConfig:v12 options:&unk_286EB2378 error:0];
+  path = [fileCopy path];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  v13 = [v10 initWithPath:path forRouting:@"<sync>" usingConfig:mEMORY[0x277D36B80] options:&unk_286EB2378 error:0];
 
   [v13 closeFileStream];
   v122 = v13;
-  v14 = [v13 bugType];
+  bugType = [v13 bugType];
   v15 = 0x277CBE000;
-  v119 = v9;
-  v115 = self;
-  v117 = v8;
-  if (![v14 isEqualToString:@"211"])
+  v119 = metadataCopy;
+  selfCopy = self;
+  v117 = fileCopy;
+  if (![bugType isEqualToString:@"211"])
   {
     goto LABEL_7;
   }
 
-  v16 = [MEMORY[0x277D36B80] sharedInstance];
-  if (([v16 optInApple] & 1) != 0 || (objc_msgSend(v9, "objectForKeyedSubscript:", @"device_class"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  mEMORY[0x277D36B80]2 = [MEMORY[0x277D36B80] sharedInstance];
+  if (([mEMORY[0x277D36B80]2 optInApple] & 1) != 0 || (objc_msgSend(metadataCopy, "objectForKeyedSubscript:", @"device_class"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_6:
 
@@ -422,7 +422,7 @@ LABEL_7:
   }
 
   v18 = v17;
-  v19 = [v9 objectForKeyedSubscript:@"device_class"];
+  v19 = [metadataCopy objectForKeyedSubscript:@"device_class"];
   if ([v19 intValue] == 7)
   {
 
@@ -430,12 +430,12 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v62 = [v9 objectForKeyedSubscript:@"dnu-override"];
-  v63 = [v62 BOOLValue];
+  v62 = [metadataCopy objectForKeyedSubscript:@"dnu-override"];
+  bOOLValue = [v62 BOOLValue];
 
-  v9 = v119;
+  metadataCopy = v119;
   v15 = 0x277CBE000uLL;
-  if ((v63 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v64 = MEMORY[0x277CCA9B8];
     v134 = *MEMORY[0x277CCA450];
@@ -449,19 +449,19 @@ LABEL_7:
   }
 
 LABEL_8:
-  v20 = [v9 objectForKeyedSubscript:@"proxied_dev"];
+  v20 = [metadataCopy objectForKeyedSubscript:@"proxied_dev"];
   v21 = [@"ProxiedDevice-" stringByAppendingString:v20];
 
   if ([(PCCProxyingDevice *)self isFilenameReasonable:v21])
   {
-    v22 = [v9 objectForKeyedSubscript:@"name"];
+    v22 = [metadataCopy objectForKeyedSubscript:@"name"];
     if ([(PCCProxyingDevice *)self isFilenameReasonable:v22])
     {
       v114 = v22;
-      v23 = [v9 objectForKeyedSubscript:@"subdir"];
+      v23 = [metadataCopy objectForKeyedSubscript:@"subdir"];
       v24 = MEMORY[0x277D36B80];
-      v25 = [MEMORY[0x277D36B80] sharedInstance];
-      v26 = [v25 pathSubmission];
+      mEMORY[0x277D36B80]3 = [MEMORY[0x277D36B80] sharedInstance];
+      pathSubmission = [mEMORY[0x277D36B80]3 pathSubmission];
       v112 = v23;
       if (v23)
       {
@@ -479,16 +479,16 @@ LABEL_8:
       v152 = *MEMORY[0x277D36C60];
       v153[0] = MEMORY[0x277CBEC38];
       v31 = [*(v29 + 2752) dictionaryWithObjects:v153 forKeys:&v152 count:1];
-      v32 = [v24 ensureUsablePath:v26 component:v30 options:v31];
+      v32 = [v24 ensureUsablePath:pathSubmission component:v30 options:v31];
 
       if (v32)
       {
         v111 = v32;
         v33 = [v32 stringByAppendingPathComponent:v114];
         v34 = MEMORY[0x277CCACA8];
-        v35 = [MEMORY[0x277D36B80] sharedInstance];
-        v36 = [v35 pathSubmission];
-        v151[0] = v36;
+        mEMORY[0x277D36B80]4 = [MEMORY[0x277D36B80] sharedInstance];
+        pathSubmission2 = [mEMORY[0x277D36B80]4 pathSubmission];
+        v151[0] = pathSubmission2;
         v151[1] = v28;
         v151[2] = @"Retired";
         v151[3] = v114;
@@ -513,7 +513,7 @@ LABEL_8:
         v129 = 0u;
         obj = v42;
         v43 = [obj countByEnumeratingWithState:&v128 objects:v149 count:16];
-        v9 = v119;
+        metadataCopy = v119;
         v15 = v29;
         v21 = v38;
         if (v43)
@@ -547,8 +547,8 @@ LABEL_16:
             }
           }
 
-          v53 = [v120 pathExtension];
-          v54 = [v53 isEqualToString:@"ips"];
+          pathExtension = [v120 pathExtension];
+          v54 = [pathExtension isEqualToString:@"ips"];
 
           v55 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
           if (v54)
@@ -584,9 +584,9 @@ LABEL_16:
 
 LABEL_35:
 
-        v66 = [v8 path];
+        path2 = [fileCopy path];
         v127 = 0;
-        v67 = [v121 moveItemAtPath:v66 toPath:v120 error:&v127];
+        v67 = [v121 moveItemAtPath:path2 toPath:v120 error:&v127];
         v113 = v127;
 
         v68 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
@@ -602,25 +602,25 @@ LABEL_35:
 
           [v122 rename:v120];
           v69 = v114;
-          v70 = [v69 pathExtension];
-          v71 = [v70 isEqualToString:@"synced"];
+          pathExtension2 = [v69 pathExtension];
+          v71 = [pathExtension2 isEqualToString:@"synced"];
 
           if (v71)
           {
-            v72 = [v69 stringByDeletingPathExtension];
+            stringByDeletingPathExtension = [v69 stringByDeletingPathExtension];
 
-            v69 = v72;
+            v69 = stringByDeletingPathExtension;
           }
 
-          v73 = [v69 pathExtension];
-          v74 = [&unk_286EB2440 containsObject:v73];
+          pathExtension3 = [v69 pathExtension];
+          v74 = [&unk_286EB2440 containsObject:pathExtension3];
 
           if (v74)
           {
             v108 = v69;
             v109 = v21;
-            v107 = [v122 bugType];
-            [(PCCProxyingDevice *)self receivedReport:v122 from:v118 metadata:v119];
+            bugType2 = [v122 bugType];
+            [(PCCProxyingDevice *)self receivedReport:v122 from:fromCopy metadata:v119];
             v75 = [v119 objectForKeyedSubscript:@"xattr_list"];
             v123 = 0u;
             v124 = 0u;
@@ -653,8 +653,8 @@ LABEL_35:
                   }
 
                   v83 = MEMORY[0x277D36B68];
-                  v84 = [v122 filepath];
-                  [v83 markFile:v84 withKey:objc_msgSend(v81 value:{"UTF8String"), objc_msgSend(v82, "UTF8String")}];
+                  filepath = [v122 filepath];
+                  [v83 markFile:filepath withKey:objc_msgSend(v81 value:{"UTF8String"), objc_msgSend(v82, "UTF8String")}];
                 }
 
                 v77 = [v75 countByEnumeratingWithState:&v123 objects:v148 count:16];
@@ -663,24 +663,24 @@ LABEL_35:
               while (v77);
             }
 
-            v8 = v117;
-            v9 = v119;
+            fileCopy = v117;
+            metadataCopy = v119;
             v22 = v114;
-            self = v115;
+            self = selfCopy;
             v15 = 0x277CBE000;
             v69 = v108;
             v21 = v109;
-            v85 = v107;
+            pathExtension4 = bugType2;
           }
 
           else
           {
-            v85 = [v69 pathExtension];
+            pathExtension4 = [v69 pathExtension];
           }
 
-          [(PCCProxyingDevice *)self summarizeLog:v85 reason:@"received"];
+          [(PCCProxyingDevice *)self summarizeLog:pathExtension4 reason:@"received"];
 
-          v58 = v85;
+          v58 = pathExtension4;
           v59 = v112;
         }
 
@@ -691,7 +691,7 @@ LABEL_35:
           if (v68)
           {
             *buf = 138543874;
-            v143 = v8;
+            v143 = fileCopy;
             v144 = 2114;
             v145 = v120;
             v146 = 2114;
@@ -719,7 +719,7 @@ LABEL_57:
         v22 = v114;
         [(PCCProxyingDevice *)self summarizeLog:v114 reason:@"failed-path"];
         v120 = 0;
-        v9 = v119;
+        metadataCopy = v119;
         v15 = v29;
         v21 = v28;
         v59 = v112;
@@ -755,20 +755,20 @@ LABEL_57:
 
 LABEL_61:
   v86 = v15;
-  v87 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastTouch = self->_lastTouch;
-  self->_lastTouch = v87;
+  self->_lastTouch = date;
 
   if (v50 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [PCCProxyingDevice handleFile:v8 from:v118 metadata:v50];
+    [PCCProxyingDevice handleFile:fileCopy from:fromCopy metadata:v50];
   }
 
   v89 = v50;
-  v90 = [v9 objectForKeyedSubscript:@"jobId"];
-  v91 = [v9 objectForKeyedSubscript:@"jobEvent"];
-  v92 = [v9 objectForKeyedSubscript:@"jobType"];
-  v93 = [v9 objectForKeyedSubscript:@"status"];
+  v90 = [metadataCopy objectForKeyedSubscript:@"jobId"];
+  v91 = [metadataCopy objectForKeyedSubscript:@"jobEvent"];
+  v92 = [metadataCopy objectForKeyedSubscript:@"jobType"];
+  v93 = [metadataCopy objectForKeyedSubscript:@"status"];
   v94 = *(v86 + 2752);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -819,15 +819,15 @@ LABEL_61:
       v101 = v120;
     }
 
-    [(PCCProxyingDevice *)v115 finishRequestWithMessage:v99 result:v101];
+    [(PCCProxyingDevice *)selfCopy finishRequestWithMessage:v99 result:v101];
 
-    v102 = v118;
+    v102 = fromCopy;
     v103 = v119;
   }
 
   else
   {
-    v102 = v118;
+    v102 = fromCopy;
     v103 = v119;
     v100 = v120;
     if (v90)
@@ -857,28 +857,28 @@ LABEL_61:
         v105 = @"xfer-group";
       }
 
-      [(PCCProxyingDevice *)v115 addRequest:v90 event:v104 type:v105 onComplete:0];
+      [(PCCProxyingDevice *)selfCopy addRequest:v90 event:v104 type:v105 onComplete:0];
     }
   }
 
   v106 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ack:(id)a3 result:(BOOL)a4 error:(id)a5
+- (void)ack:(id)ack result:(BOOL)result error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  ackCopy = ack;
+  errorCopy = error;
   request_queue = self->_request_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__PCCProxyingDevice_ack_result_error___block_invoke;
   v13[3] = &unk_2799C01A0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = ackCopy;
+  resultCopy = result;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = ackCopy;
   dispatch_async(request_queue, v13);
 }
 
@@ -915,19 +915,19 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProxiedDeviceMetadata:(id)a3 from:(id)a4
+- (void)updateProxiedDeviceMetadata:(id)metadata from:(id)from
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"crashreporter_key"];
-  v46 = self;
+  metadataCopy = metadata;
+  fromCopy = from;
+  v8 = [metadataCopy objectForKeyedSubscript:@"crashreporter_key"];
+  selfCopy = self;
   if ([(PCCProxyingDevice *)self isFilenameReasonable:v8])
   {
     v9 = MEMORY[0x277D36B80];
-    v10 = [MEMORY[0x277D36B80] sharedInstance];
-    v11 = [v10 pathSubmission];
-    if ([v7 isEqualToString:@"Bridge"])
+    mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+    pathSubmission = [mEMORY[0x277D36B80] pathSubmission];
+    if ([fromCopy isEqualToString:@"Bridge"])
     {
       v12 = @"Bridge";
     }
@@ -941,7 +941,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
     v63 = *MEMORY[0x277D36C60];
     v64[0] = MEMORY[0x277CBEC38];
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:&v63 count:1];
-    v15 = [v9 ensureUsablePath:v11 component:v13 options:v14];
+    v15 = [v9 ensureUsablePath:pathSubmission component:v13 options:v14];
 
     if (v15)
     {
@@ -954,10 +954,10 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
         _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "writing: %@", buf, 0xCu);
       }
 
-      v17 = [v6 mutableCopy];
+      v17 = [metadataCopy mutableCopy];
       v18 = MEMORY[0x277CCABB0];
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v19 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v20 = [v18 numberWithDouble:?];
       [v17 setObject:v20 forKeyedSubscript:@"proxyingDeviceTimeAtLastUpdate"];
 
@@ -973,23 +973,23 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
         v40 = v17;
         v41 = v16;
         v42 = v8;
-        v44 = v7;
-        v48 = [MEMORY[0x277CCAA00] defaultManager];
-        v21 = [v6 objectForKeyedSubscript:@"currentTaskingIDByRouting"];
-        v22 = [v21 allKeys];
+        v44 = fromCopy;
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v21 = [metadataCopy objectForKeyedSubscript:@"currentTaskingIDByRouting"];
+        allKeys = [v21 allKeys];
 
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        obj = v22;
+        obj = allKeys;
         v23 = [obj countByEnumeratingWithState:&v50 objects:v62 count:16];
         v24 = v45;
         if (v23)
         {
           v25 = v23;
           v26 = *v51;
-          v43 = v6;
+          v43 = metadataCopy;
           do
           {
             for (i = 0; i != v25; ++i)
@@ -1000,7 +1000,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
               }
 
               v28 = *(*(&v50 + 1) + 8 * i);
-              v29 = [v6 objectForKeyedSubscript:@"currentTaskingIDByRouting"];
+              v29 = [metadataCopy objectForKeyedSubscript:@"currentTaskingIDByRouting"];
               v30 = [v29 objectForKeyedSubscript:v28];
 
               v31 = [v24 stringByAppendingPathComponent:@"tasking"];
@@ -1008,7 +1008,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
               v33 = [v32 stringByAppendingPathExtension:@"proxy"];
 
               v49 = 0;
-              if ([v48 fileExistsAtPath:v33 isDirectory:&v49] && (v49 & 1) == 0)
+              if ([defaultManager fileExistsAtPath:v33 isDirectory:&v49] && (v49 & 1) == 0)
               {
                 v34 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v33];
                 v35 = [v34 objectForKeyedSubscript:@"taskingID"];
@@ -1027,7 +1027,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
                   }
 
                   v37 = [v34 objectForKeyedSubscript:@"payload"];
-                  [(PCCProxyingDevice *)v46 deliver:v44 tasking:v28 taskId:v36 fromBlob:v37];
+                  [(PCCProxyingDevice *)selfCopy deliver:v44 tasking:v28 taskId:v36 fromBlob:v37];
 
                   v54[0] = @"action";
                   v54[1] = @"taskId";
@@ -1036,9 +1036,9 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
                   v54[2] = @"blob";
                   v55[2] = v33;
                   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:3];
-                  [(NSMutableDictionary *)v46->_tasking_summary setObject:v38 forKeyedSubscript:v28];
+                  [(NSMutableDictionary *)selfCopy->_tasking_summary setObject:v38 forKeyedSubscript:v28];
 
-                  v6 = v43;
+                  metadataCopy = v43;
                   v24 = v45;
                 }
 
@@ -1066,7 +1066,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
           while (v25);
         }
 
-        v7 = v44;
+        fromCopy = v44;
         v16 = v41;
         v8 = v42;
         v17 = v40;
@@ -1079,36 +1079,36 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deliver:(id)a3 tasking:(id)a4 taskId:(id)a5 fromBlob:(id)a6
+- (void)deliver:(id)deliver tasking:(id)tasking taskId:(id)id fromBlob:(id)blob
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deliverCopy = deliver;
+  taskingCopy = tasking;
+  idCopy = id;
+  blobCopy = blob;
   v24[0] = @"messageType";
   v24[1] = @"forRouting";
   v24[2] = @"withTaskingId";
   v25[0] = @"acceptTasking";
   v14 = @"-1";
-  if (v12)
+  if (idCopy)
   {
-    v14 = v12;
+    v14 = idCopy;
   }
 
-  v25[1] = v11;
+  v25[1] = taskingCopy;
   v25[2] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
   v16 = [v15 mutableCopy];
 
-  if (v12)
+  if (idCopy)
   {
-    v17 = [(__CFString *)v12 isEqualToString:@"-1"];
-    if (v13)
+    v17 = [(__CFString *)idCopy isEqualToString:@"-1"];
+    if (blobCopy)
     {
       if ((v17 & 1) == 0)
       {
-        [v16 setObject:v13 forKeyedSubscript:@"settings"];
+        [v16 setObject:blobCopy forKeyedSubscript:@"settings"];
       }
     }
   }
@@ -1118,34 +1118,34 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
     v20 = 138412546;
     v21 = @"acceptTasking";
     v22 = 2112;
-    v23 = v11;
+    v23 = taskingCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "posted %@-%@", &v20, 0x16u);
   }
 
-  v18 = [(PCCEndpoint *)self->_endpoint send:v10 message:v16 error:0];
+  v18 = [(PCCEndpoint *)self->_endpoint send:deliverCopy message:v16 error:0];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 transferGroupWithOptions:(id)a4 onComplete:(id)a5
+- (void)request:(id)request transferGroupWithOptions:(id)options onComplete:(id)complete
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 objectForKeyedSubscript:@"allFiles"];
-  v12 = [v11 BOOLValue];
+  optionsCopy = options;
+  completeCopy = complete;
+  requestCopy = request;
+  v11 = [optionsCopy objectForKeyedSubscript:@"allFiles"];
+  bOOLValue = [v11 BOOLValue];
 
   v19[0] = @"initiateLogTransfer";
   v18[0] = @"messageType";
   v18[1] = @"allFiles";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   v19[1] = v13;
   v18[2] = @"jobEvent";
-  v14 = [v8 objectForKeyedSubscript:@"event"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"event"];
   if (v14)
   {
-    v15 = [v8 objectForKeyedSubscript:@"event"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"event"];
   }
 
   else
@@ -1155,7 +1155,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
 
   v19[2] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
-  [(PCCProxyingDevice *)self startRequest:v10 message:v16 onComplete:v9];
+  [(PCCProxyingDevice *)self startRequest:requestCopy message:v16 onComplete:completeCopy];
 
   if (v14)
   {
@@ -1164,24 +1164,24 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 transferLog:(id)a4 withOptions:(id)a5 onComplete:(id)a6
+- (void)request:(id)request transferLog:(id)log withOptions:(id)options onComplete:(id)complete
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  logCopy = log;
+  optionsCopy = options;
+  completeCopy = complete;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v12;
+    v21 = optionsCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "transferLog options %@", buf, 0xCu);
   }
 
-  v14 = [v12 objectForKeyedSubscript:{@"event", @"messageType", @"logFile", @"jobEvent", @"initiateLogTransfer", v11}];
+  v14 = [optionsCopy objectForKeyedSubscript:{@"event", @"messageType", @"logFile", @"jobEvent", @"initiateLogTransfer", logCopy}];
   if (v14)
   {
-    v15 = [v12 objectForKeyedSubscript:@"event"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"event"];
   }
 
   else
@@ -1191,7 +1191,7 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
 
   v19[2] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:3];
-  [(PCCProxyingDevice *)self startRequest:v10 message:v16 onComplete:v13];
+  [(PCCProxyingDevice *)self startRequest:requestCopy message:v16 onComplete:completeCopy];
 
   if (v14)
   {
@@ -1200,12 +1200,12 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 logListWithOptions:(id)a4 onComplete:(id)a5
+- (void)request:(id)request logListWithOptions:(id)options onComplete:(id)complete
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 objectForKeyedSubscript:@"path"];
+  completeCopy = complete;
+  requestCopy = request;
+  v10 = [options objectForKeyedSubscript:@"path"];
   v11 = v10;
   v15[0] = @"messageType";
   v15[1] = @"path";
@@ -1218,28 +1218,28 @@ void __38__PCCProxyingDevice_ack_result_error___block_invoke(uint64_t a1)
   v16[0] = @"initiateLogList";
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  [(PCCProxyingDevice *)self startRequest:v9 message:v13 onComplete:v8];
+  [(PCCProxyingDevice *)self startRequest:requestCopy message:v13 onComplete:completeCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startRequest:(id)a3 message:(id)a4 onComplete:(id)a5
+- (void)startRequest:(id)request message:(id)message onComplete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  messageCopy = message;
+  completeCopy = complete;
   request_queue = self->_request_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__PCCProxyingDevice_startRequest_message_onComplete___block_invoke;
   v15[3] = &unk_2799C0268;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = messageCopy;
+  v17 = requestCopy;
+  v18 = completeCopy;
+  v12 = completeCopy;
+  v13 = requestCopy;
+  v14 = messageCopy;
   dispatch_async(request_queue, v15);
 }
 
@@ -1315,26 +1315,26 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequest:(id)a3 event:(id)a4 type:(id)a5 onComplete:(id)a6
+- (void)addRequest:(id)request event:(id)event type:(id)type onComplete:(id)complete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  eventCopy = event;
+  typeCopy = type;
+  completeCopy = complete;
   request_queue = self->_request_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__PCCProxyingDevice_addRequest_event_type_onComplete___block_invoke;
   block[3] = &unk_2799C0290;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = requestCopy;
+  v21 = eventCopy;
+  v22 = typeCopy;
+  v23 = completeCopy;
+  v15 = completeCopy;
+  v16 = typeCopy;
+  v17 = eventCopy;
+  v18 = requestCopy;
   dispatch_async(request_queue, block);
 }
 
@@ -1369,20 +1369,20 @@ void __54__PCCProxyingDevice_addRequest_event_type_onComplete___block_invoke(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishRequest:(id)a3 result:(id)a4
+- (void)finishRequest:(id)request result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resultCopy = result;
   request_queue = self->_request_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__PCCProxyingDevice_finishRequest_result___block_invoke;
   block[3] = &unk_2799C0178;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = resultCopy;
+  selfCopy = self;
+  v9 = resultCopy;
+  v10 = requestCopy;
   dispatch_async(request_queue, block);
 }
 
@@ -1496,20 +1496,20 @@ void __42__PCCProxyingDevice_finishRequest_result___block_invoke_422(uint64_t a1
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)finishRequestWithMessage:(id)a3 result:(id)a4
+- (void)finishRequestWithMessage:(id)message result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  resultCopy = result;
   request_queue = self->_request_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__PCCProxyingDevice_finishRequestWithMessage_result___block_invoke;
   block[3] = &unk_2799C0178;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = resultCopy;
+  selfCopy = self;
+  v9 = resultCopy;
+  v10 = messageCopy;
   dispatch_async(request_queue, block);
 }
 
@@ -1623,30 +1623,30 @@ LABEL_24:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)diagnosticResultsEvent:(id)a3 type:(id)a4 result:(id)a5
+- (void)diagnosticResultsEvent:(id)event type:(id)type result:(id)result
 {
   v37[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([(__CFString *)v9 isEqualToString:@"xfer-group"]& 1) != 0 || ([(__CFString *)v9 isEqualToString:@"xfer-all"]& 1) != 0 || [(__CFString *)v9 isEqualToString:@"xfer-file"])
+  eventCopy = event;
+  typeCopy = type;
+  resultCopy = result;
+  if (([(__CFString *)typeCopy isEqualToString:@"xfer-group"]& 1) != 0 || ([(__CFString *)typeCopy isEqualToString:@"xfer-all"]& 1) != 0 || [(__CFString *)typeCopy isEqualToString:@"xfer-file"])
   {
-    v11 = [MEMORY[0x277D36B80] sharedInstance];
-    v12 = [v11 appleInternal];
+    mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+    appleInternal = [mEMORY[0x277D36B80] appleInternal];
 
-    if (v12)
+    if (appleInternal)
     {
-      v32 = [MEMORY[0x277CBEAA8] date];
-      v37[0] = v32;
+      date = [MEMORY[0x277CBEAA8] date];
+      v37[0] = date;
       v36[0] = @"time";
       v36[1] = @"version";
-      v13 = [MEMORY[0x277D36B80] sharedInstance];
-      v14 = [v13 buildVersion];
-      v15 = v14;
+      mEMORY[0x277D36B80]2 = [MEMORY[0x277D36B80] sharedInstance];
+      buildVersion = [mEMORY[0x277D36B80]2 buildVersion];
+      v15 = buildVersion;
       v16 = @"<unknown>";
-      if (v8)
+      if (eventCopy)
       {
-        v17 = v8;
+        v17 = eventCopy;
       }
 
       else
@@ -1654,20 +1654,20 @@ LABEL_24:
         v17 = @"<unknown>";
       }
 
-      v37[1] = v14;
+      v37[1] = buildVersion;
       v37[2] = v17;
       v36[2] = @"event";
       v36[3] = @"transfer";
-      if (v9)
+      if (typeCopy)
       {
-        v16 = v9;
+        v16 = typeCopy;
       }
 
       v34[0] = @"type";
       v34[1] = @"result";
       v35[0] = v16;
-      v35[1] = v10;
-      v31 = v10;
+      v35[1] = resultCopy;
+      v31 = resultCopy;
       v34[2] = @"summary";
       v35[2] = self->_sync_summary;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
@@ -1680,22 +1680,22 @@ LABEL_24:
         [v20 setObject:self->_tasking_summary forKeyedSubscript:@"taskings"];
       }
 
-      v21 = [MEMORY[0x277D36B80] sharedInstance];
-      v22 = [v21 pathDiagnostics];
+      mEMORY[0x277D36B80]3 = [MEMORY[0x277D36B80] sharedInstance];
+      pathDiagnostics = [mEMORY[0x277D36B80]3 pathDiagnostics];
       v23 = MEMORY[0x277CCACA8];
       v24 = OSANSDateFormat();
       v25 = [v23 stringWithFormat:@"transfer-%@", v24];
-      v26 = [v22 stringByAppendingPathComponent:v25];
+      v26 = [pathDiagnostics stringByAppendingPathComponent:v25];
       v27 = [v26 stringByAppendingPathExtension:@"results"];
 
       if ([v20 writeToFile:v27 atomically:1])
       {
-        v10 = v31;
+        resultCopy = v31;
       }
 
       else
       {
-        v10 = v31;
+        resultCopy = v31;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;

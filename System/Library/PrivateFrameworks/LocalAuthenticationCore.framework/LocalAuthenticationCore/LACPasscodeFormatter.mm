@@ -1,7 +1,7 @@
 @interface LACPasscodeFormatter
 + (id)sharedInstance;
 - (LACPasscodeFormatter)init;
-- (id)localizePasscode:(id)a3 type:(int64_t)a4;
+- (id)localizePasscode:(id)passcode type:(int64_t)type;
 @end
 
 @implementation LACPasscodeFormatter
@@ -49,13 +49,13 @@ uint64_t __38__LACPasscodeFormatter_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)localizePasscode:(id)a3 type:(int64_t)a4
+- (id)localizePasscode:(id)passcode type:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 4)
+  passcodeCopy = passcode;
+  v7 = passcodeCopy;
+  if (type == 4)
   {
-    v8 = v6;
+    v8 = passcodeCopy;
   }
 
   else

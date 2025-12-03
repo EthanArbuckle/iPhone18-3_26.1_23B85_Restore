@@ -1,13 +1,13 @@
 @interface DMCRatchet
 + (BOOL)isEnabled;
-+ (id)_ratchetCalloutForOperation:(unint64_t)a3;
-+ (id)_ratchetCountdownForOperation:(unint64_t)a3;
-+ (id)_ratchetReasonForOperation:(unint64_t)a3;
-+ (id)_ratchetStrictTextForOperation:(unint64_t)a3;
-+ (id)_ratchetTextForOperation:(unint64_t)a3;
-+ (id)_ratchetTitleForOperation:(unint64_t)a3;
-+ (unint64_t)_responseFromRatchetResult:(id)a3 error:(id)a4;
-+ (void)isAuthorizedForOperation:(unint64_t)a3 completion:(id)a4;
++ (id)_ratchetCalloutForOperation:(unint64_t)operation;
++ (id)_ratchetCountdownForOperation:(unint64_t)operation;
++ (id)_ratchetReasonForOperation:(unint64_t)operation;
++ (id)_ratchetStrictTextForOperation:(unint64_t)operation;
++ (id)_ratchetTextForOperation:(unint64_t)operation;
++ (id)_ratchetTitleForOperation:(unint64_t)operation;
++ (unint64_t)_responseFromRatchetResult:(id)result error:(id)error;
++ (void)isAuthorizedForOperation:(unint64_t)operation completion:(id)completion;
 @end
 
 @implementation DMCRatchet
@@ -16,10 +16,10 @@
 {
   if (getLARatchetManagerClass())
   {
-    v2 = [getLARatchetManagerClass() sharedInstance];
-    v3 = [v2 isFeatureEnabled];
+    sharedInstance = [getLARatchetManagerClass() sharedInstance];
+    isFeatureEnabled = [sharedInstance isFeatureEnabled];
 
-    return v3;
+    return isFeatureEnabled;
   }
 
   else
@@ -35,11 +35,11 @@
   }
 }
 
-+ (void)isAuthorizedForOperation:(unint64_t)a3 completion:(id)a4
++ (void)isAuthorizedForOperation:(unint64_t)operation completion:(id)completion
 {
   v28[9] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (([a1 isEnabled] & 1) == 0)
+  completionCopy = completion;
+  if (([self isEnabled] & 1) == 0)
   {
     v17 = *DMCLogObjects();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -53,7 +53,7 @@ LABEL_8:
     }
 
 LABEL_9:
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -75,22 +75,22 @@ LABEL_9:
   v23 = [objc_alloc(getLARatchetClass()) initWithIdentifier:@"com.apple.devicemanagementclient.DMCRatchet"];
   v7 = MEMORY[0x1E695DF90];
   v27[0] = &unk_1F28682C0;
-  v8 = [a1 _ratchetTitleForOperation:a3];
+  v8 = [self _ratchetTitleForOperation:operation];
   v28[0] = v8;
   v27[1] = &unk_1F28682D8;
-  v9 = [a1 _ratchetTextForOperation:a3];
+  v9 = [self _ratchetTextForOperation:operation];
   v28[1] = v9;
   v27[2] = &unk_1F28682F0;
-  v10 = [a1 _ratchetStrictTextForOperation:a3];
+  v10 = [self _ratchetStrictTextForOperation:operation];
   v28[2] = v10;
   v27[3] = &unk_1F2868308;
-  v11 = [a1 _ratchetCountdownForOperation:a3];
+  v11 = [self _ratchetCountdownForOperation:operation];
   v28[3] = v11;
   v27[4] = &unk_1F2868320;
-  v12 = [a1 _ratchetReasonForOperation:a3];
+  v12 = [self _ratchetReasonForOperation:operation];
   v28[4] = v12;
   v27[5] = &unk_1F2868338;
-  v13 = [a1 _ratchetCalloutForOperation:a3];
+  v13 = [self _ratchetCalloutForOperation:operation];
   v28[5] = v13;
   v27[6] = &unk_1F2868350;
   v14 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=General&path=ManagedConfigurationList"];
@@ -106,7 +106,7 @@ LABEL_9:
   v24[1] = 3221225472;
   v24[2] = __50__DMCRatchet_isAuthorizedForOperation_completion___block_invoke;
   v24[3] = &unk_1E7ADD178;
-  v25 = v6;
+  v25 = completionCopy;
   [v23 armWithOptions:v16 completion:v24];
 
 LABEL_10:
@@ -122,29 +122,29 @@ uint64_t __50__DMCRatchet_isAuthorizedForOperation_completion___block_invoke(uin
   return v5(v3, v4);
 }
 
-+ (unint64_t)_responseFromRatchetResult:(id)a3 error:(id)a4
++ (unint64_t)_responseFromRatchetResult:(id)result error:(id)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:&unk_1F2868338];
+  resultCopy = result;
+  errorCopy = error;
+  v7 = [resultCopy objectForKeyedSubscript:&unk_1F2868338];
 
   if (!v7)
   {
-    if (!v6)
+    if (!errorCopy)
     {
       v13 = *DMCLogObjects();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v34 = v5;
+        v34 = resultCopy;
         _os_log_impl(&dword_1B1630000, v13, OS_LOG_TYPE_DEFAULT, "DMCRatchet is unauthorized with result: %{public}@", buf, 0xCu);
       }
 
       goto LABEL_31;
     }
 
-    if ([v6 code] == 4)
+    if ([errorCopy code] == 4)
     {
       v12 = *DMCLogObjects();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -160,7 +160,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if ([v6 code] == 5)
+    if ([errorCopy code] == 5)
     {
       v12 = *DMCLogObjects();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -173,14 +173,14 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    if ([v6 code] == 1)
+    if ([errorCopy code] == 1)
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v17 = [v6 underlyingErrors];
-      v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      underlyingErrors = [errorCopy underlyingErrors];
+      v18 = [underlyingErrors countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v18)
       {
         v19 = v18;
@@ -191,7 +191,7 @@ LABEL_13:
           {
             if (*v30 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(underlyingErrors);
             }
 
             if ([*(*(&v29 + 1) + 8 * i) code] == -2)
@@ -208,7 +208,7 @@ LABEL_13:
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          v19 = [underlyingErrors countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v19)
           {
             continue;
@@ -225,9 +225,9 @@ LABEL_13:
       }
 
       v23 = v22;
-      v24 = [v6 userInfo];
+      userInfo = [errorCopy userInfo];
       *buf = 138543362;
-      v34 = v24;
+      v34 = userInfo;
       _os_log_impl(&dword_1B1630000, v23, OS_LOG_TYPE_DEFAULT, "DMCRatchet is unauthorized with generic error user info: %{public}@", buf, 0xCu);
     }
 
@@ -242,12 +242,12 @@ LABEL_31:
       }
 
       v23 = v25;
-      v26 = [v6 code];
-      v27 = [v6 userInfo];
+      code = [errorCopy code];
+      userInfo2 = [errorCopy userInfo];
       *buf = 134349314;
-      v34 = v26;
+      v34 = code;
       v35 = 2114;
-      v36 = v27;
+      v36 = userInfo2;
       _os_log_impl(&dword_1B1630000, v23, OS_LOG_TYPE_DEFAULT, "DMCRatchet is unauthorized with error code %{public}ld and user info: %{public}@", buf, 0x16u);
     }
 
@@ -258,7 +258,7 @@ LABEL_31:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = v5;
+    v34 = resultCopy;
     v9 = "DMCRatchet is authorized with result: %{public}@";
     v10 = v8;
     v11 = 12;
@@ -274,11 +274,11 @@ LABEL_16:
   return v14;
 }
 
-+ (id)_ratchetTitleForOperation:(unint64_t)a3
++ (id)_ratchetTitleForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -291,17 +291,17 @@ LABEL_16:
     v4 = @"DMC_SDP_RATCHET_TITLE_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_ratchetTextForOperation:(unint64_t)a3
++ (id)_ratchetTextForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -314,17 +314,17 @@ LABEL_6:
     v4 = @"DMC_SDP_RATCHET_TEXT_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_ratchetStrictTextForOperation:(unint64_t)a3
++ (id)_ratchetStrictTextForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -337,17 +337,17 @@ LABEL_6:
     v4 = @"DMC_SDP_RATCHET_STRICT_TEXT_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_ratchetCountdownForOperation:(unint64_t)a3
++ (id)_ratchetCountdownForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -360,17 +360,17 @@ LABEL_6:
     v4 = @"DMC_SDP_RATCHET_COUNTDOWN_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_ratchetReasonForOperation:(unint64_t)a3
++ (id)_ratchetReasonForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -383,17 +383,17 @@ LABEL_6:
     v4 = @"DMC_SDP_RATCHET_REASON_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_ratchetCalloutForOperation:(unint64_t)a3
++ (id)_ratchetCalloutForOperation:(unint64_t)operation
 {
-  if (a3)
+  if (operation)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
       goto LABEL_6;
     }
@@ -406,10 +406,10 @@ LABEL_6:
     v4 = @"DMC_SDP_RATCHET_CALLOUT_INSTALL_PROFILE";
   }
 
-  a1 = DMCLocalizedString(v4);
+  self = DMCLocalizedString(v4);
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 @end

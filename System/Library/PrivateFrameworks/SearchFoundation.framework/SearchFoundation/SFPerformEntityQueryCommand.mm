@@ -1,106 +1,106 @@
 @interface SFPerformEntityQueryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPerformEntityQueryCommand)initWithCoder:(id)a3;
-- (SFPerformEntityQueryCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPerformEntityQueryCommand)initWithCoder:(id)coder;
+- (SFPerformEntityQueryCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPerformEntityQueryCommand
 
-- (SFPerformEntityQueryCommand)initWithProtobuf:(id)a3
+- (SFPerformEntityQueryCommand)initWithProtobuf:(id)protobuf
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v59.receiver = self;
   v59.super_class = SFPerformEntityQueryCommand;
   v5 = [(SFPerformEntityQueryCommand *)&v59 init];
   if (v5)
   {
-    v6 = [v4 searchString];
+    searchString = [protobufCopy searchString];
 
-    if (v6)
+    if (searchString)
     {
-      v7 = [v4 searchString];
-      [(SFPerformEntityQueryCommand *)v5 setSearchString:v7];
+      searchString2 = [protobufCopy searchString];
+      [(SFPerformEntityQueryCommand *)v5 setSearchString:searchString2];
     }
 
-    v8 = [v4 tokenString];
+    tokenString = [protobufCopy tokenString];
 
-    if (v8)
+    if (tokenString)
     {
-      v9 = [v4 tokenString];
-      [(SFPerformEntityQueryCommand *)v5 setTokenString:v9];
+      tokenString2 = [protobufCopy tokenString];
+      [(SFPerformEntityQueryCommand *)v5 setTokenString:tokenString2];
     }
 
-    v10 = [v4 symbolImage];
+    symbolImage = [protobufCopy symbolImage];
 
-    if (v10)
+    if (symbolImage)
     {
       v11 = [SFSymbolImage alloc];
-      v12 = [v4 symbolImage];
-      v13 = [(SFSymbolImage *)v11 initWithProtobuf:v12];
+      symbolImage2 = [protobufCopy symbolImage];
+      v13 = [(SFSymbolImage *)v11 initWithProtobuf:symbolImage2];
       [(SFPerformEntityQueryCommand *)v5 setSymbolImage:v13];
     }
 
-    if ([v4 entityType])
+    if ([protobufCopy entityType])
     {
-      -[SFPerformEntityQueryCommand setEntityType:](v5, "setEntityType:", [v4 entityType]);
+      -[SFPerformEntityQueryCommand setEntityType:](v5, "setEntityType:", [protobufCopy entityType]);
     }
 
-    v14 = [v4 entityIdentifier];
+    entityIdentifier = [protobufCopy entityIdentifier];
 
-    if (v14)
+    if (entityIdentifier)
     {
-      v15 = [v4 entityIdentifier];
-      [(SFPerformEntityQueryCommand *)v5 setEntityIdentifier:v15];
+      entityIdentifier2 = [protobufCopy entityIdentifier];
+      [(SFPerformEntityQueryCommand *)v5 setEntityIdentifier:entityIdentifier2];
     }
 
-    v16 = [v4 entityBackgroundColor];
+    entityBackgroundColor = [protobufCopy entityBackgroundColor];
 
-    if (v16)
+    if (entityBackgroundColor)
     {
       v17 = [SFColor alloc];
-      v18 = [v4 entityBackgroundColor];
-      v19 = [(SFColor *)v17 initWithProtobuf:v18];
+      entityBackgroundColor2 = [protobufCopy entityBackgroundColor];
+      v19 = [(SFColor *)v17 initWithProtobuf:entityBackgroundColor2];
       [(SFPerformEntityQueryCommand *)v5 setEntityBackgroundColor:v19];
     }
 
-    v20 = [v4 metadata];
+    metadata = [protobufCopy metadata];
 
-    if (v20)
+    if (metadata)
     {
       v21 = [SFDrillDownMetadata alloc];
-      v22 = [v4 metadata];
-      v23 = [(SFDrillDownMetadata *)v21 initWithProtobuf:v22];
+      metadata2 = [protobufCopy metadata];
+      v23 = [(SFDrillDownMetadata *)v21 initWithProtobuf:metadata2];
       [(SFPerformEntityQueryCommand *)v5 setMetadata:v23];
     }
 
-    v24 = [v4 drilldownMetadata];
+    drilldownMetadata = [protobufCopy drilldownMetadata];
 
-    if (v24)
+    if (drilldownMetadata)
     {
       v25 = [SFDrillDownMetadata alloc];
-      v26 = [v4 drilldownMetadata];
-      v27 = [(SFDrillDownMetadata *)v25 initWithProtobuf:v26];
+      drilldownMetadata2 = [protobufCopy drilldownMetadata];
+      v27 = [(SFDrillDownMetadata *)v25 initWithProtobuf:drilldownMetadata2];
       [(SFPerformEntityQueryCommand *)v5 setDrilldownMetadata:v27];
     }
 
-    v28 = [v4 tokenImage];
+    tokenImage = [protobufCopy tokenImage];
 
-    if (v28)
+    if (tokenImage)
     {
       v29 = [SFImage alloc];
-      v30 = [v4 tokenImage];
-      v31 = [(SFImage *)v29 initWithProtobuf:v30];
+      tokenImage2 = [protobufCopy tokenImage];
+      v31 = [(SFImage *)v29 initWithProtobuf:tokenImage2];
       [(SFPerformEntityQueryCommand *)v5 setTokenImage:v31];
     }
 
-    v32 = [v4 filterQueries];
-    if (v32)
+    filterQueries = [protobufCopy filterQueries];
+    if (filterQueries)
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -114,8 +114,8 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v34 = [v4 filterQueries];
-    v35 = [v34 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    filterQueries2 = [protobufCopy filterQueries];
+    v35 = [filterQueries2 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v35)
     {
       v36 = v35;
@@ -126,7 +126,7 @@
         {
           if (*v56 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(filterQueries2);
           }
 
           if (*(*(&v55 + 1) + 8 * i))
@@ -135,15 +135,15 @@
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v36 = [filterQueries2 countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v36);
     }
 
     [(SFPerformEntityQueryCommand *)v5 setFilterQueries:v33];
-    v39 = [v4 enabledDomains];
-    if (v39)
+    enabledDomains = [protobufCopy enabledDomains];
+    if (enabledDomains)
     {
       v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -157,8 +157,8 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v41 = [v4 enabledDomains];
-    v42 = [v41 countByEnumeratingWithState:&v51 objects:v60 count:16];
+    enabledDomains2 = [protobufCopy enabledDomains];
+    v42 = [enabledDomains2 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v42)
     {
       v43 = v42;
@@ -169,7 +169,7 @@
         {
           if (*v52 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(enabledDomains2);
           }
 
           if (*(*(&v51 + 1) + 8 * j))
@@ -178,19 +178,19 @@
           }
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v43 = [enabledDomains2 countByEnumeratingWithState:&v51 objects:v60 count:16];
       }
 
       while (v43);
     }
 
     [(SFPerformEntityQueryCommand *)v5 setEnabledDomains:v40];
-    v46 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v46)
+    if (bundleIdentifier)
     {
-      v47 = [v4 bundleIdentifier];
-      [(SFPerformEntityQueryCommand *)v5 setBundleIdentifier:v47];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFPerformEntityQueryCommand *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
     v48 = v5;
@@ -205,53 +205,53 @@
   v28.receiver = self;
   v28.super_class = SFPerformEntityQueryCommand;
   v3 = [(SFCommand *)&v28 hash];
-  v27 = [(SFPerformEntityQueryCommand *)self searchString];
-  v4 = [v27 hash];
-  v26 = [(SFPerformEntityQueryCommand *)self tokenString];
-  v5 = v4 ^ [v26 hash];
-  v25 = [(SFPerformEntityQueryCommand *)self symbolImage];
-  v6 = v5 ^ [v25 hash];
+  searchString = [(SFPerformEntityQueryCommand *)self searchString];
+  v4 = [searchString hash];
+  tokenString = [(SFPerformEntityQueryCommand *)self tokenString];
+  v5 = v4 ^ [tokenString hash];
+  symbolImage = [(SFPerformEntityQueryCommand *)self symbolImage];
+  v6 = v5 ^ [symbolImage hash];
   v7 = v6 ^ [(SFPerformEntityQueryCommand *)self entityType];
-  v8 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
-  v9 = v7 ^ [v8 hash] ^ v3;
-  v10 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
-  v11 = [v10 hash];
-  v12 = [(SFPerformEntityQueryCommand *)self metadata];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(SFPerformEntityQueryCommand *)self tokenImage];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFPerformEntityQueryCommand *)self filterQueries];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(SFPerformEntityQueryCommand *)self enabledDomains];
-  v21 = v9 ^ v19 ^ [v20 hash];
-  v22 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
-  v23 = [v22 hash];
+  entityIdentifier = [(SFPerformEntityQueryCommand *)self entityIdentifier];
+  v9 = v7 ^ [entityIdentifier hash] ^ v3;
+  entityBackgroundColor = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
+  v11 = [entityBackgroundColor hash];
+  metadata = [(SFPerformEntityQueryCommand *)self metadata];
+  v13 = v11 ^ [metadata hash];
+  drilldownMetadata = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
+  v15 = v13 ^ [drilldownMetadata hash];
+  tokenImage = [(SFPerformEntityQueryCommand *)self tokenImage];
+  v17 = v15 ^ [tokenImage hash];
+  filterQueries = [(SFPerformEntityQueryCommand *)self filterQueries];
+  v19 = v17 ^ [filterQueries hash];
+  enabledDomains = [(SFPerformEntityQueryCommand *)self enabledDomains];
+  v21 = v9 ^ v19 ^ [enabledDomains hash];
+  bundleIdentifier = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
+  v23 = [bundleIdentifier hash];
 
   return v21 ^ v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_79;
   }
 
-  if (![(SFPerformEntityQueryCommand *)v4 isMemberOfClass:objc_opt_class()]|| (v119.receiver = self, v119.super_class = SFPerformEntityQueryCommand, ![(SFCommand *)&v119 isEqual:v4]))
+  if (![(SFPerformEntityQueryCommand *)equalCopy isMemberOfClass:objc_opt_class()]|| (v119.receiver = self, v119.super_class = SFPerformEntityQueryCommand, ![(SFCommand *)&v119 isEqual:equalCopy]))
   {
     v19 = 0;
     goto LABEL_79;
   }
 
-  v5 = v4;
-  v114 = [(SFPerformEntityQueryCommand *)self searchString];
-  v113 = [(SFPerformEntityQueryCommand *)v5 searchString];
-  v111 = v113 == 0;
-  v112 = v114 != 0;
+  v5 = equalCopy;
+  searchString = [(SFPerformEntityQueryCommand *)self searchString];
+  searchString2 = [(SFPerformEntityQueryCommand *)v5 searchString];
+  v111 = searchString2 == 0;
+  v112 = searchString != 0;
   if (v112 == v111)
   {
     memset(v118, 0, sizeof(v118));
@@ -272,15 +272,15 @@
     goto LABEL_16;
   }
 
-  v7 = [(SFPerformEntityQueryCommand *)self searchString];
-  v8 = v7 != 0;
-  v109 = v7;
-  if (v7)
+  searchString3 = [(SFPerformEntityQueryCommand *)self searchString];
+  v8 = searchString3 != 0;
+  v109 = searchString3;
+  if (searchString3)
   {
-    v9 = [(SFPerformEntityQueryCommand *)self searchString];
-    v104 = [(SFPerformEntityQueryCommand *)v5 searchString];
-    v105 = v9;
-    if (![v9 isEqual:?])
+    searchString4 = [(SFPerformEntityQueryCommand *)self searchString];
+    searchString5 = [(SFPerformEntityQueryCommand *)v5 searchString];
+    v105 = searchString4;
+    if (![searchString4 isEqual:?])
     {
       memset(v118, 0, sizeof(v118));
       *v110 = 0uLL;
@@ -302,10 +302,10 @@
     }
   }
 
-  v107 = [(SFPerformEntityQueryCommand *)self tokenString];
-  v106 = [(SFPerformEntityQueryCommand *)v5 tokenString];
+  tokenString = [(SFPerformEntityQueryCommand *)self tokenString];
+  tokenString2 = [(SFPerformEntityQueryCommand *)v5 tokenString];
   *&v110[16] = v8;
-  if ((v107 != 0) == (v106 == 0))
+  if ((tokenString != 0) == (tokenString2 == 0))
   {
     *&v118[0] = 0;
     *&v110[8] = 0;
@@ -328,15 +328,15 @@
     goto LABEL_16;
   }
 
-  v20 = [(SFPerformEntityQueryCommand *)self tokenString];
-  v21 = v20 != 0;
-  v103 = v20;
-  if (v20)
+  tokenString3 = [(SFPerformEntityQueryCommand *)self tokenString];
+  v21 = tokenString3 != 0;
+  v103 = tokenString3;
+  if (tokenString3)
   {
-    v22 = [(SFPerformEntityQueryCommand *)self tokenString];
-    v99 = [(SFPerformEntityQueryCommand *)v5 tokenString];
-    v100 = v22;
-    if (![v22 isEqual:?])
+    tokenString4 = [(SFPerformEntityQueryCommand *)self tokenString];
+    tokenString5 = [(SFPerformEntityQueryCommand *)v5 tokenString];
+    v100 = tokenString4;
+    if (![tokenString4 isEqual:?])
     {
       *&v110[4] = 0;
       v10 = 0;
@@ -368,9 +368,9 @@
     *&v110[12] = 0;
   }
 
-  v102 = [(SFPerformEntityQueryCommand *)self symbolImage];
-  v101 = [(SFPerformEntityQueryCommand *)v5 symbolImage];
-  if ((v102 != 0) == (v101 == 0))
+  symbolImage = [(SFPerformEntityQueryCommand *)self symbolImage];
+  symbolImage2 = [(SFPerformEntityQueryCommand *)v5 symbolImage];
+  if ((symbolImage != 0) == (symbolImage2 == 0))
   {
     *&v117[8] = 0;
     *&v110[4] = 0;
@@ -395,15 +395,15 @@
     goto LABEL_16;
   }
 
-  v35 = [(SFPerformEntityQueryCommand *)self symbolImage];
-  v36 = v35 != 0;
-  v98 = v35;
-  if (v35)
+  symbolImage3 = [(SFPerformEntityQueryCommand *)self symbolImage];
+  v36 = symbolImage3 != 0;
+  v98 = symbolImage3;
+  if (symbolImage3)
   {
-    v37 = [(SFPerformEntityQueryCommand *)self symbolImage];
-    v96 = [(SFPerformEntityQueryCommand *)v5 symbolImage];
-    v97 = v37;
-    if (![v37 isEqual:?])
+    symbolImage4 = [(SFPerformEntityQueryCommand *)self symbolImage];
+    symbolImage5 = [(SFPerformEntityQueryCommand *)v5 symbolImage];
+    v97 = symbolImage4;
+    if (![symbolImage4 isEqual:?])
     {
       *&v117[4] = 0;
       *v110 = 0;
@@ -430,8 +430,8 @@
   }
 
   *&v110[8] = v36;
-  v38 = [(SFPerformEntityQueryCommand *)self entityType];
-  if (v38 != [(SFPerformEntityQueryCommand *)v5 entityType])
+  entityType = [(SFPerformEntityQueryCommand *)self entityType];
+  if (entityType != [(SFPerformEntityQueryCommand *)v5 entityType])
   {
     *&v117[4] = 0;
     *v110 = 0;
@@ -455,9 +455,9 @@
     goto LABEL_16;
   }
 
-  v95 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
-  v94 = [(SFPerformEntityQueryCommand *)v5 entityIdentifier];
-  if ((v95 != 0) == (v94 == 0))
+  entityIdentifier = [(SFPerformEntityQueryCommand *)self entityIdentifier];
+  entityIdentifier2 = [(SFPerformEntityQueryCommand *)v5 entityIdentifier];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     *v110 = 0;
     v10 = 0;
@@ -481,15 +481,15 @@
     goto LABEL_16;
   }
 
-  v39 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
-  v40 = v39 != 0;
-  v93 = v39;
-  if (v39)
+  entityIdentifier3 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
+  v40 = entityIdentifier3 != 0;
+  v93 = entityIdentifier3;
+  if (entityIdentifier3)
   {
-    v41 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
-    v89 = [(SFPerformEntityQueryCommand *)v5 entityIdentifier];
-    v90 = v41;
-    if (![v41 isEqual:?])
+    entityIdentifier4 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
+    entityIdentifier5 = [(SFPerformEntityQueryCommand *)v5 entityIdentifier];
+    v90 = entityIdentifier4;
+    if (![entityIdentifier4 isEqual:?])
     {
       v10 = 0;
       *v117 = 0;
@@ -521,9 +521,9 @@
     *&v110[4] = 0;
   }
 
-  v92 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
-  v91 = [(SFPerformEntityQueryCommand *)v5 entityBackgroundColor];
-  if ((v92 != 0) == (v91 == 0))
+  entityBackgroundColor = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
+  entityBackgroundColor2 = [(SFPerformEntityQueryCommand *)v5 entityBackgroundColor];
+  if ((entityBackgroundColor != 0) == (entityBackgroundColor2 == 0))
   {
     *v117 = 0;
     *v110 = 0;
@@ -547,15 +547,15 @@
     goto LABEL_16;
   }
 
-  v42 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
-  v43 = v42 != 0;
-  v88 = v42;
-  if (v42)
+  entityBackgroundColor3 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
+  v43 = entityBackgroundColor3 != 0;
+  v88 = entityBackgroundColor3;
+  if (entityBackgroundColor3)
   {
-    v44 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
-    v84 = [(SFPerformEntityQueryCommand *)v5 entityBackgroundColor];
-    v85 = v44;
-    if (![v44 isEqual:?])
+    entityBackgroundColor4 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
+    entityBackgroundColor5 = [(SFPerformEntityQueryCommand *)v5 entityBackgroundColor];
+    v85 = entityBackgroundColor4;
+    if (![entityBackgroundColor4 isEqual:?])
     {
       v116 = 0;
       v11 = 0;
@@ -587,9 +587,9 @@
     *v110 = 0;
   }
 
-  v87 = [(SFPerformEntityQueryCommand *)self metadata];
-  v86 = [(SFPerformEntityQueryCommand *)v5 metadata];
-  if ((v87 != 0) == (v86 == 0))
+  metadata = [(SFPerformEntityQueryCommand *)self metadata];
+  metadata2 = [(SFPerformEntityQueryCommand *)v5 metadata];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     v11 = 0;
     v115 = 0;
@@ -613,14 +613,14 @@
 
   else
   {
-    v45 = [(SFPerformEntityQueryCommand *)self metadata];
-    HIDWORD(v118[1]) = v45 != 0;
-    v83 = v45;
-    if (!v45 || (-[SFPerformEntityQueryCommand metadata](self, "metadata"), v46 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand metadata](v5, "metadata"), v79 = objc_claimAutoreleasedReturnValue(), v80 = v46, [v46 isEqual:?]))
+    metadata3 = [(SFPerformEntityQueryCommand *)self metadata];
+    HIDWORD(v118[1]) = metadata3 != 0;
+    v83 = metadata3;
+    if (!metadata3 || (-[SFPerformEntityQueryCommand metadata](self, "metadata"), v46 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand metadata](v5, "metadata"), v79 = objc_claimAutoreleasedReturnValue(), v80 = v46, [v46 isEqual:?]))
     {
-      v82 = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
-      v81 = [(SFPerformEntityQueryCommand *)v5 drilldownMetadata];
-      if ((v82 != 0) == (v81 == 0))
+      drilldownMetadata = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
+      drilldownMetadata2 = [(SFPerformEntityQueryCommand *)v5 drilldownMetadata];
+      if ((drilldownMetadata != 0) == (drilldownMetadata2 == 0))
       {
         v12 = 0;
         *(&v118[1] + 4) = 0;
@@ -645,14 +645,14 @@
 
       else
       {
-        v47 = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
-        DWORD2(v118[1]) = v47 != 0;
-        v78 = v47;
-        if (!v47 || (-[SFPerformEntityQueryCommand drilldownMetadata](self, "drilldownMetadata"), v48 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand drilldownMetadata](v5, "drilldownMetadata"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v48, [v48 isEqual:?]))
+        drilldownMetadata3 = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
+        DWORD2(v118[1]) = drilldownMetadata3 != 0;
+        v78 = drilldownMetadata3;
+        if (!drilldownMetadata3 || (-[SFPerformEntityQueryCommand drilldownMetadata](self, "drilldownMetadata"), v48 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand drilldownMetadata](v5, "drilldownMetadata"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v48, [v48 isEqual:?]))
         {
-          v77 = [(SFPerformEntityQueryCommand *)self tokenImage];
-          v76 = [(SFPerformEntityQueryCommand *)v5 tokenImage];
-          if ((v77 != 0) == (v76 == 0))
+          tokenImage = [(SFPerformEntityQueryCommand *)self tokenImage];
+          tokenImage2 = [(SFPerformEntityQueryCommand *)v5 tokenImage];
+          if ((tokenImage != 0) == (tokenImage2 == 0))
           {
             v13 = 0;
             *&v118[1] = 0;
@@ -676,14 +676,14 @@
 
           else
           {
-            v49 = [(SFPerformEntityQueryCommand *)self tokenImage];
-            DWORD1(v118[1]) = v49 != 0;
-            v73 = v49;
-            if (!v49 || (-[SFPerformEntityQueryCommand tokenImage](self, "tokenImage"), v50 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand tokenImage](v5, "tokenImage"), v69 = objc_claimAutoreleasedReturnValue(), v70 = v50, [v50 isEqual:?]))
+            tokenImage3 = [(SFPerformEntityQueryCommand *)self tokenImage];
+            DWORD1(v118[1]) = tokenImage3 != 0;
+            v73 = tokenImage3;
+            if (!tokenImage3 || (-[SFPerformEntityQueryCommand tokenImage](self, "tokenImage"), v50 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand tokenImage](v5, "tokenImage"), v69 = objc_claimAutoreleasedReturnValue(), v70 = v50, [v50 isEqual:?]))
             {
-              v72 = [(SFPerformEntityQueryCommand *)self filterQueries];
-              v71 = [(SFPerformEntityQueryCommand *)v5 filterQueries];
-              if ((v72 != 0) == (v71 == 0))
+              filterQueries = [(SFPerformEntityQueryCommand *)self filterQueries];
+              filterQueries2 = [(SFPerformEntityQueryCommand *)v5 filterQueries];
+              if ((filterQueries != 0) == (filterQueries2 == 0))
               {
                 v14 = 0;
                 *(v118 + 12) = 0;
@@ -707,14 +707,14 @@
 
               else
               {
-                v51 = [(SFPerformEntityQueryCommand *)self filterQueries];
-                LODWORD(v118[1]) = v51 != 0;
-                v68 = v51;
-                if (!v51 || (-[SFPerformEntityQueryCommand filterQueries](self, "filterQueries"), v52 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand filterQueries](v5, "filterQueries"), v64 = objc_claimAutoreleasedReturnValue(), v65 = v52, [v52 isEqual:?]))
+                filterQueries3 = [(SFPerformEntityQueryCommand *)self filterQueries];
+                LODWORD(v118[1]) = filterQueries3 != 0;
+                v68 = filterQueries3;
+                if (!filterQueries3 || (-[SFPerformEntityQueryCommand filterQueries](self, "filterQueries"), v52 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand filterQueries](v5, "filterQueries"), v64 = objc_claimAutoreleasedReturnValue(), v65 = v52, [v52 isEqual:?]))
                 {
-                  v67 = [(SFPerformEntityQueryCommand *)self enabledDomains];
-                  v66 = [(SFPerformEntityQueryCommand *)v5 enabledDomains];
-                  if ((v67 != 0) == (v66 == 0))
+                  enabledDomains = [(SFPerformEntityQueryCommand *)self enabledDomains];
+                  enabledDomains2 = [(SFPerformEntityQueryCommand *)v5 enabledDomains];
+                  if ((enabledDomains != 0) == (enabledDomains2 == 0))
                   {
                     v15 = 0;
                     v16 = 0;
@@ -737,14 +737,14 @@
 
                   else
                   {
-                    v53 = [(SFPerformEntityQueryCommand *)self enabledDomains];
-                    HIDWORD(v118[0]) = v53 != 0;
-                    v63 = v53;
-                    if (!v53 || (-[SFPerformEntityQueryCommand enabledDomains](self, "enabledDomains"), v54 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand enabledDomains](v5, "enabledDomains"), v59 = objc_claimAutoreleasedReturnValue(), v60 = v54, [v54 isEqual:?]))
+                    enabledDomains3 = [(SFPerformEntityQueryCommand *)self enabledDomains];
+                    HIDWORD(v118[0]) = enabledDomains3 != 0;
+                    v63 = enabledDomains3;
+                    if (!enabledDomains3 || (-[SFPerformEntityQueryCommand enabledDomains](self, "enabledDomains"), v54 = objc_claimAutoreleasedReturnValue(), -[SFPerformEntityQueryCommand enabledDomains](v5, "enabledDomains"), v59 = objc_claimAutoreleasedReturnValue(), v60 = v54, [v54 isEqual:?]))
                     {
-                      v62 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
-                      v61 = [(SFPerformEntityQueryCommand *)v5 bundleIdentifier];
-                      if ((v62 != 0) == (v61 == 0))
+                      bundleIdentifier = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
+                      bundleIdentifier2 = [(SFPerformEntityQueryCommand *)v5 bundleIdentifier];
+                      if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
                       {
                         v17 = 0;
                         v18 = 0;
@@ -767,14 +767,14 @@
 
                       else
                       {
-                        v58 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
-                        if (v58)
+                        bundleIdentifier3 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
+                        if (bundleIdentifier3)
                         {
-                          v55 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
-                          v56 = [(SFPerformEntityQueryCommand *)v5 bundleIdentifier];
-                          v57 = v55;
-                          v19 = [v55 isEqual:v56];
-                          v6 = v56;
+                          bundleIdentifier4 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
+                          bundleIdentifier5 = [(SFPerformEntityQueryCommand *)v5 bundleIdentifier];
+                          v57 = bundleIdentifier4;
+                          v19 = [bundleIdentifier4 isEqual:bundleIdentifier5];
+                          v6 = bundleIdentifier5;
                           v18 = 1;
                           DWORD2(v118[0]) = 1;
                           *&v117[12] = 0x100000001;
@@ -795,7 +795,7 @@
 
                         else
                         {
-                          v58 = 0;
+                          bundleIdentifier3 = 0;
                           v18 = 0;
                           DWORD2(v118[0]) = 1;
                           *&v117[12] = 0x100000001;
@@ -942,7 +942,7 @@
 LABEL_16:
   if (v18)
   {
-    v108 = v4;
+    v108 = equalCopy;
     v23 = v19;
     v24 = v13;
     v25 = v14;
@@ -964,7 +964,7 @@ LABEL_16:
     v14 = v25;
     v13 = v24;
     v19 = v23;
-    v4 = v108;
+    equalCopy = v108;
     if (!v33)
     {
       goto LABEL_18;
@@ -1112,54 +1112,54 @@ LABEL_79:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = SFPerformEntityQueryCommand;
-  v4 = [(SFCommand *)&v28 copyWithZone:a3];
-  v5 = [(SFPerformEntityQueryCommand *)self searchString];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v28 copyWithZone:zone];
+  searchString = [(SFPerformEntityQueryCommand *)self searchString];
+  v6 = [searchString copy];
   [v4 setSearchString:v6];
 
-  v7 = [(SFPerformEntityQueryCommand *)self tokenString];
-  v8 = [v7 copy];
+  tokenString = [(SFPerformEntityQueryCommand *)self tokenString];
+  v8 = [tokenString copy];
   [v4 setTokenString:v8];
 
-  v9 = [(SFPerformEntityQueryCommand *)self symbolImage];
-  v10 = [v9 copy];
+  symbolImage = [(SFPerformEntityQueryCommand *)self symbolImage];
+  v10 = [symbolImage copy];
   [v4 setSymbolImage:v10];
 
   [v4 setEntityType:{-[SFPerformEntityQueryCommand entityType](self, "entityType")}];
-  v11 = [(SFPerformEntityQueryCommand *)self entityIdentifier];
-  v12 = [v11 copy];
+  entityIdentifier = [(SFPerformEntityQueryCommand *)self entityIdentifier];
+  v12 = [entityIdentifier copy];
   [v4 setEntityIdentifier:v12];
 
-  v13 = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
-  v14 = [v13 copy];
+  entityBackgroundColor = [(SFPerformEntityQueryCommand *)self entityBackgroundColor];
+  v14 = [entityBackgroundColor copy];
   [v4 setEntityBackgroundColor:v14];
 
-  v15 = [(SFPerformEntityQueryCommand *)self metadata];
-  v16 = [v15 copy];
+  metadata = [(SFPerformEntityQueryCommand *)self metadata];
+  v16 = [metadata copy];
   [v4 setMetadata:v16];
 
-  v17 = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
-  v18 = [v17 copy];
+  drilldownMetadata = [(SFPerformEntityQueryCommand *)self drilldownMetadata];
+  v18 = [drilldownMetadata copy];
   [v4 setDrilldownMetadata:v18];
 
-  v19 = [(SFPerformEntityQueryCommand *)self tokenImage];
-  v20 = [v19 copy];
+  tokenImage = [(SFPerformEntityQueryCommand *)self tokenImage];
+  v20 = [tokenImage copy];
   [v4 setTokenImage:v20];
 
-  v21 = [(SFPerformEntityQueryCommand *)self filterQueries];
-  v22 = [v21 copy];
+  filterQueries = [(SFPerformEntityQueryCommand *)self filterQueries];
+  v22 = [filterQueries copy];
   [v4 setFilterQueries:v22];
 
-  v23 = [(SFPerformEntityQueryCommand *)self enabledDomains];
-  v24 = [v23 copy];
+  enabledDomains = [(SFPerformEntityQueryCommand *)self enabledDomains];
+  v24 = [enabledDomains copy];
   [v4 setEnabledDomains:v24];
 
-  v25 = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
-  v26 = [v25 copy];
+  bundleIdentifier = [(SFPerformEntityQueryCommand *)self bundleIdentifier];
+  v26 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v26];
 
   return v4;
@@ -1168,82 +1168,82 @@ LABEL_79:
 - (NSData)jsonData
 {
   v2 = [[_SFPBPerformEntityQueryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPerformEntityQueryCommand *)v2 jsonData];
+  jsonData = [(_SFPBPerformEntityQueryCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPerformEntityQueryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPerformEntityQueryCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPerformEntityQueryCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFPerformEntityQueryCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFPerformEntityQueryCommand)initWithCoder:(id)a3
+- (SFPerformEntityQueryCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFPerformEntityQueryCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 searchString];
-    [(SFPerformEntityQueryCommand *)v5 setSearchString:v9];
+    searchString = [(SFCommand *)v8 searchString];
+    [(SFPerformEntityQueryCommand *)v5 setSearchString:searchString];
 
-    v10 = [(SFCommand *)v8 tokenString];
-    [(SFPerformEntityQueryCommand *)v5 setTokenString:v10];
+    tokenString = [(SFCommand *)v8 tokenString];
+    [(SFPerformEntityQueryCommand *)v5 setTokenString:tokenString];
 
-    v11 = [(SFCommand *)v8 symbolImage];
-    [(SFPerformEntityQueryCommand *)v5 setSymbolImage:v11];
+    symbolImage = [(SFCommand *)v8 symbolImage];
+    [(SFPerformEntityQueryCommand *)v5 setSymbolImage:symbolImage];
 
     [(SFPerformEntityQueryCommand *)v5 setEntityType:[(SFCommand *)v8 entityType]];
-    v12 = [(SFCommand *)v8 entityIdentifier];
-    [(SFPerformEntityQueryCommand *)v5 setEntityIdentifier:v12];
+    entityIdentifier = [(SFCommand *)v8 entityIdentifier];
+    [(SFPerformEntityQueryCommand *)v5 setEntityIdentifier:entityIdentifier];
 
-    v13 = [(SFCommand *)v8 entityBackgroundColor];
-    [(SFPerformEntityQueryCommand *)v5 setEntityBackgroundColor:v13];
+    entityBackgroundColor = [(SFCommand *)v8 entityBackgroundColor];
+    [(SFPerformEntityQueryCommand *)v5 setEntityBackgroundColor:entityBackgroundColor];
 
-    v14 = [(SFCommand *)v8 metadata];
-    [(SFPerformEntityQueryCommand *)v5 setMetadata:v14];
+    metadata = [(SFCommand *)v8 metadata];
+    [(SFPerformEntityQueryCommand *)v5 setMetadata:metadata];
 
-    v15 = [(SFCommand *)v8 drilldownMetadata];
-    [(SFPerformEntityQueryCommand *)v5 setDrilldownMetadata:v15];
+    drilldownMetadata = [(SFCommand *)v8 drilldownMetadata];
+    [(SFPerformEntityQueryCommand *)v5 setDrilldownMetadata:drilldownMetadata];
 
-    v16 = [(SFCommand *)v8 tokenImage];
-    [(SFPerformEntityQueryCommand *)v5 setTokenImage:v16];
+    tokenImage = [(SFCommand *)v8 tokenImage];
+    [(SFPerformEntityQueryCommand *)v5 setTokenImage:tokenImage];
 
-    v17 = [(SFCommand *)v8 filterQueries];
-    [(SFPerformEntityQueryCommand *)v5 setFilterQueries:v17];
+    filterQueries = [(SFCommand *)v8 filterQueries];
+    [(SFPerformEntityQueryCommand *)v5 setFilterQueries:filterQueries];
 
-    v18 = [(SFCommand *)v8 enabledDomains];
-    [(SFPerformEntityQueryCommand *)v5 setEnabledDomains:v18];
+    enabledDomains = [(SFCommand *)v8 enabledDomains];
+    [(SFPerformEntityQueryCommand *)v5 setEnabledDomains:enabledDomains];
 
-    v19 = [(SFCommand *)v8 bundleIdentifier];
-    [(SFPerformEntityQueryCommand *)v5 setBundleIdentifier:v19];
+    bundleIdentifier = [(SFCommand *)v8 bundleIdentifier];
+    [(SFPerformEntityQueryCommand *)v5 setBundleIdentifier:bundleIdentifier];
 
-    v20 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v20];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v21 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v21];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v22 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v22];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v23 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v23];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

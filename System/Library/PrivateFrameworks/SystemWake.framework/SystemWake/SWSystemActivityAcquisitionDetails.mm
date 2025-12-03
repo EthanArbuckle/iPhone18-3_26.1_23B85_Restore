@@ -1,20 +1,20 @@
 @interface SWSystemActivityAcquisitionDetails
 - (NSString)description;
-- (SWSystemActivityAcquisitionDetails)initWithAfterPendingSleepWasAlreadyInitiated:(BOOL)a3 afterFailingToRevertPendingSleep:(BOOL)a4 afterSleepOfNonZeroDuration:(BOOL)a5;
+- (SWSystemActivityAcquisitionDetails)initWithAfterPendingSleepWasAlreadyInitiated:(BOOL)initiated afterFailingToRevertPendingSleep:(BOOL)sleep afterSleepOfNonZeroDuration:(BOOL)duration;
 @end
 
 @implementation SWSystemActivityAcquisitionDetails
 
-- (SWSystemActivityAcquisitionDetails)initWithAfterPendingSleepWasAlreadyInitiated:(BOOL)a3 afterFailingToRevertPendingSleep:(BOOL)a4 afterSleepOfNonZeroDuration:(BOOL)a5
+- (SWSystemActivityAcquisitionDetails)initWithAfterPendingSleepWasAlreadyInitiated:(BOOL)initiated afterFailingToRevertPendingSleep:(BOOL)sleep afterSleepOfNonZeroDuration:(BOOL)duration
 {
   v9.receiver = self;
   v9.super_class = SWSystemActivityAcquisitionDetails;
   result = [(SWSystemActivityAcquisitionDetails *)&v9 init];
   if (result)
   {
-    result->_afterPendingSleepWasAlreadyInitiated = a3;
-    result->_afterFailingToRevertPendingSleep = a4;
-    result->_afterSleepOfNonZeroDuration = a5;
+    result->_afterPendingSleepWasAlreadyInitiated = initiated;
+    result->_afterFailingToRevertPendingSleep = sleep;
+    result->_afterSleepOfNonZeroDuration = duration;
   }
 
   return result;
@@ -26,9 +26,9 @@
   v4 = [v3 appendBool:self->_afterPendingSleepWasAlreadyInitiated withName:@"afterPendingSleepWasAlreadyInitiated"];
   v5 = [v3 appendBool:self->_afterFailingToRevertPendingSleep withName:@"afterFailingToRevertPendingSleep"];
   v6 = [v3 appendBool:self->_afterSleepOfNonZeroDuration withName:@"afterSleepOfNonZeroDuration"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

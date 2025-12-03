@@ -2,62 +2,62 @@
 - (id)sb_focusModeIdentifier;
 - (void)sb_accessibilityTripleClickState;
 - (void)sb_focusModeIdentifier;
-- (void)sb_getCameraCaptureMode:(void *)a3 andCaptureDevice:;
+- (void)sb_getCameraCaptureMode:(void *)mode andCaptureDevice:;
 @end
 
 @implementation WFConfiguredStaccatoIntentAction
 
 - (void)sb_accessibilityTripleClickState
 {
-  v3 = [a1 templateParameterValues];
-  v6 = [v3 objectForKey:*MEMORY[0x277CE79B0]];
+  templateParameterValues = [self templateParameterValues];
+  v6 = [templateParameterValues objectForKey:*MEMORY[0x277CE79B0]];
 
-  v4 = [v6 identifier];
-  v5 = [v4 intValue];
+  identifier = [v6 identifier];
+  intValue = [identifier intValue];
 
-  *a2 = [MEMORY[0x277CE7E70] stateForTripleClickOption:v5];
+  *a2 = [MEMORY[0x277CE7E70] stateForTripleClickOption:intValue];
 }
 
 - (id)sb_focusModeIdentifier
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = [a1 sectionIdentifier];
-    v3 = [v2 isEqualToString:@"Focus"];
+    selfCopy = self;
+    sectionIdentifier = [self sectionIdentifier];
+    v3 = [sectionIdentifier isEqualToString:@"Focus"];
 
     if ((v3 & 1) == 0)
     {
       [(WFConfiguredStaccatoIntentAction *)sel_sb_focusModeIdentifier sb_focusModeIdentifier];
     }
 
-    [(WFConfiguredStaccatoIntentAction *)v1 sb_focusModeIdentifier];
-    a1 = v5;
+    [(WFConfiguredStaccatoIntentAction *)selfCopy sb_focusModeIdentifier];
+    self = v5;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)sb_getCameraCaptureMode:(void *)a3 andCaptureDevice:
+- (void)sb_getCameraCaptureMode:(void *)mode andCaptureDevice:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1 sectionIdentifier];
-    v7 = [v6 isEqualToString:@"Camera"];
+    sectionIdentifier = [self sectionIdentifier];
+    v7 = [sectionIdentifier isEqualToString:@"Camera"];
 
     if ((v7 & 1) == 0)
     {
       [WFConfiguredStaccatoIntentAction sb_getCameraCaptureMode:? andCaptureDevice:?];
     }
 
-    [(WFConfiguredStaccatoIntentAction *)a1 sb_getCameraCaptureMode:a2 andCaptureDevice:a3];
+    [(WFConfiguredStaccatoIntentAction *)self sb_getCameraCaptureMode:a2 andCaptureDevice:mode];
   }
 }
 
 - (void)sb_focusModeIdentifier
 {
-  v4 = [a1 templateParameterValues];
-  v3 = [v4 objectForKey:@"focus"];
+  templateParameterValues = [self templateParameterValues];
+  v3 = [templateParameterValues objectForKey:@"focus"];
   *a2 = [v3 identifier];
 }
 

@@ -1,17 +1,17 @@
 @interface IMAutomationMessageSend
 - (IMAutomationMessageSend)init;
-- (id)_sendIMMessage:(id)a3 chat:(id)a4 service:(id)a5 timeOut:(double)a6 resultDict:(id)a7 error:(id *)a8;
-- (id)appendFilePathsWithGUIDs:(id)a3 withText:(id)a4;
+- (id)_sendIMMessage:(id)message chat:(id)chat service:(id)service timeOut:(double)out resultDict:(id)dict error:(id *)error;
+- (id)appendFilePathsWithGUIDs:(id)ds withText:(id)text;
 - (id)clearAttachmentsUploadedToCloudkit;
-- (id)copyFilePathsToTmpLocation:(id)a3;
-- (id)createIMMessageToSendWithMessage:(id)a3 filePaths:(id)a4 bundleID:(id)a5 attributionInfoName:(id)a6 isAudioMessage:(BOOL)a7 threadIdentifier:(id)a8;
-- (id)deleteAttachmentWithMessageGUID:(id)a3 andFilePathIndex:(int64_t)a4;
-- (id)dictionaryFromGUID:(id)a3;
-- (id)fileSizeForMessageGUID:(id)a3 withFilePathIndex:(int64_t)a4;
-- (id)loadHighResolutionFileForMessageGUID:(id)a3 withFilePathIndex:(int64_t)a4;
-- (id)sendMessage:(id)a3 destinationID:(id)a4 filePaths:(id)a5 isAudioMessage:(BOOL)a6 groupID:(id)a7 bundleID:(id)a8 attributionInfoName:(id)a9 service:(id)a10 timeOut:(double)a11 threadIdentifier:(id)a12 error:(id *)a13;
-- (id)uploadAttachmentToCloudkitWithMessageGUID:(id)a3 andFilePathIndex:(int64_t)a4;
-- (void)deleteTmpFilePath:(id)a3;
+- (id)copyFilePathsToTmpLocation:(id)location;
+- (id)createIMMessageToSendWithMessage:(id)message filePaths:(id)paths bundleID:(id)d attributionInfoName:(id)name isAudioMessage:(BOOL)audioMessage threadIdentifier:(id)identifier;
+- (id)deleteAttachmentWithMessageGUID:(id)d andFilePathIndex:(int64_t)index;
+- (id)dictionaryFromGUID:(id)d;
+- (id)fileSizeForMessageGUID:(id)d withFilePathIndex:(int64_t)index;
+- (id)loadHighResolutionFileForMessageGUID:(id)d withFilePathIndex:(int64_t)index;
+- (id)sendMessage:(id)message destinationID:(id)d filePaths:(id)paths isAudioMessage:(BOOL)audioMessage groupID:(id)iD bundleID:(id)bundleID attributionInfoName:(id)name service:(id)self0 timeOut:(double)self1 threadIdentifier:(id)self2 error:(id *)self3;
+- (id)uploadAttachmentToCloudkitWithMessageGUID:(id)d andFilePathIndex:(int64_t)index;
+- (void)deleteTmpFilePath:(id)path;
 @end
 
 @implementation IMAutomationMessageSend
@@ -35,17 +35,17 @@
   return v2;
 }
 
-- (id)createIMMessageToSendWithMessage:(id)a3 filePaths:(id)a4 bundleID:(id)a5 attributionInfoName:(id)a6 isAudioMessage:(BOOL)a7 threadIdentifier:(id)a8
+- (id)createIMMessageToSendWithMessage:(id)message filePaths:(id)paths bundleID:(id)d attributionInfoName:(id)name isAudioMessage:(BOOL)audioMessage threadIdentifier:(id)identifier
 {
-  v62 = a7;
+  audioMessageCopy = audioMessage;
   v79 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v12 = a4;
-  v13 = a5;
-  v70 = a6;
-  v64 = a8;
+  messageCopy = message;
+  pathsCopy = paths;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
   v69 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (objc_msgSend_count(v12, v14, v15))
+  if (objc_msgSend_count(pathsCopy, v14, v15))
   {
     v18 = 0;
     v68 = *MEMORY[0x1E69A6FB0];
@@ -54,13 +54,13 @@
     do
     {
       v19 = MEMORY[0x1E695DFF8];
-      v20 = objc_msgSend_objectAtIndex_(v12, v16, v18);
+      v20 = objc_msgSend_objectAtIndex_(pathsCopy, v16, v18);
       v22 = objc_msgSend_fileURLWithPath_(v19, v21, v20);
 
       v25 = objc_msgSend_sharedInstance(IMFileTransferCenter, v23, v24);
       v27 = objc_msgSend_createNewOutgoingTransferWithLocalFileURL_(v25, v26, v22);
 
-      if (objc_msgSend_length(v13, v28, v29) && objc_msgSend_length(v70, v30, v31))
+      if (objc_msgSend_length(dCopy, v28, v29) && objc_msgSend_length(nameCopy, v30, v31))
       {
         v33 = objc_msgSend_sharedInstance(IMFileTransferCenter, v30, v32);
         v35 = objc_msgSend_transferForGUID_(v33, v34, v27);
@@ -74,7 +74,7 @@
             *buf = 138412802;
             v74 = v36;
             v75 = 2112;
-            v76 = v70;
+            v76 = nameCopy;
             v77 = 2112;
             v78 = v27;
             _os_log_impl(&dword_1A823F000, v38, OS_LOG_TYPE_INFO, "createIMMessageToSendWithMessage, setting bundleID value to %@ and attribution info name %@ on transferGUID %@", buf, 0x20u);
@@ -84,7 +84,7 @@
         v71[0] = v68;
         v71[1] = v67;
         v72[0] = v36;
-        v72[1] = v70;
+        v72[1] = nameCopy;
         v71[2] = v66;
         v72[2] = &unk_1F1BA1830;
         v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v37, v72, v71, 3);
@@ -110,30 +110,30 @@
       ++v18;
     }
 
-    while (objc_msgSend_count(v12, v49, v50) > v18);
+    while (objc_msgSend_count(pathsCopy, v49, v50) > v18);
   }
 
   if (objc_msgSend_count(v69, v16, v17))
   {
-    v54 = objc_msgSend_appendFilePathsWithGUIDs_withText_(self, v51, v69, v65);
-    if (v62)
+    v54 = objc_msgSend_appendFilePathsWithGUIDs_withText_(self, v51, v69, messageCopy);
+    if (audioMessageCopy)
     {
-      objc_msgSend_instantMessageWithText_messageSubject_fileTransferGUIDs_flags_threadIdentifier_(IMMessage, v53, v54, 0, v69, 2097157, v64);
+      objc_msgSend_instantMessageWithText_messageSubject_fileTransferGUIDs_flags_threadIdentifier_(IMMessage, v53, v54, 0, v69, 2097157, identifierCopy);
     }
 
     else
     {
-      objc_msgSend_instantMessageWithText_messageSubject_fileTransferGUIDs_flags_threadIdentifier_(IMMessage, v53, v54, 0, v69, 5, v64);
+      objc_msgSend_instantMessageWithText_messageSubject_fileTransferGUIDs_flags_threadIdentifier_(IMMessage, v53, v54, 0, v69, 5, identifierCopy);
     }
     v55 = ;
     goto LABEL_22;
   }
 
-  if (objc_msgSend_length(v65, v51, v52))
+  if (objc_msgSend_length(messageCopy, v51, v52))
   {
     v56 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v54 = objc_msgSend_initWithString_attributes_(v56, v57, v65, 0);
-    v55 = objc_msgSend_instantMessageWithText_flags_threadIdentifier_(IMMessage, v58, v54, 5, v64);
+    v54 = objc_msgSend_initWithString_attributes_(v56, v57, messageCopy, 0);
+    v55 = objc_msgSend_instantMessageWithText_flags_threadIdentifier_(IMMessage, v58, v54, 5, identifierCopy);
 LABEL_22:
     v59 = v55;
 
@@ -148,52 +148,52 @@ LABEL_23:
   return v59;
 }
 
-- (id)sendMessage:(id)a3 destinationID:(id)a4 filePaths:(id)a5 isAudioMessage:(BOOL)a6 groupID:(id)a7 bundleID:(id)a8 attributionInfoName:(id)a9 service:(id)a10 timeOut:(double)a11 threadIdentifier:(id)a12 error:(id *)a13
+- (id)sendMessage:(id)message destinationID:(id)d filePaths:(id)paths isAudioMessage:(BOOL)audioMessage groupID:(id)iD bundleID:(id)bundleID attributionInfoName:(id)name service:(id)self0 timeOut:(double)self1 threadIdentifier:(id)self2 error:(id *)self3
 {
-  v64 = a6;
+  audioMessageCopy = audioMessage;
   v82 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v69 = a4;
-  v20 = a5;
-  v21 = a7;
-  v67 = a8;
-  v68 = a9;
-  v66 = a10;
-  v65 = a12;
+  messageCopy = message;
+  dCopy = d;
+  pathsCopy = paths;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  nameCopy = name;
+  serviceCopy = service;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v22 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138413570;
-      v71 = v19;
+      v71 = messageCopy;
       v72 = 2112;
-      v73 = v69;
+      v73 = dCopy;
       v74 = 2112;
-      v75 = v20;
+      v75 = pathsCopy;
       v76 = 2112;
-      v77 = v67;
+      v77 = bundleIDCopy;
       v78 = 2112;
-      v79 = v68;
+      v79 = nameCopy;
       v80 = 2048;
-      v81 = a11;
+      outCopy = out;
       _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_INFO, "sendMessageSync messageText %@ handle %@ filePaths %@ bundleID %@ attributionInfoName %@ timeout: %f", buf, 0x3Eu);
     }
   }
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF20]);
-  v26 = objc_msgSend_length(v21, v24, v25);
-  v29 = objc_msgSend_length(v19, v27, v28);
+  v26 = objc_msgSend_length(iDCopy, v24, v25);
+  v29 = objc_msgSend_length(messageCopy, v27, v28);
   if (v26)
   {
-    if (v20 && v29)
+    if (pathsCopy && v29)
     {
 LABEL_8:
       v32 = v26 == 0;
-      v62 = objc_msgSend_copyFilePathsToTmpLocation_(self, v30, v20);
-      if (v66)
+      v62 = objc_msgSend_copyFilePathsToTmpLocation_(self, v30, pathsCopy);
+      if (serviceCopy)
       {
-        objc_msgSend_serviceWithInternalName_(IMServiceImpl, v33, v66, v62);
+        objc_msgSend_serviceWithInternalName_(IMServiceImpl, v33, serviceCopy, v62);
       }
 
       else
@@ -206,7 +206,7 @@ LABEL_8:
         v47 = objc_msgSend_sharedInstance(IMAccountController, v34, v35);
         v37 = objc_msgSend_bestAccountForService_(v47, v48, v36);
 
-        v50 = objc_msgSend_imHandleWithID_(v37, v49, v69);
+        v50 = objc_msgSend_imHandleWithID_(v37, v49, dCopy);
         v53 = objc_msgSend_sharedRegistry(IMChatRegistry, v51, v52);
         v39 = objc_msgSend_chatWithHandle_(v53, v54, v50);
       }
@@ -214,13 +214,13 @@ LABEL_8:
       else
       {
         v37 = objc_msgSend_sharedRegistry(IMChatRegistry, v34, v35);
-        v39 = objc_msgSend_existingChatWithGroupID_(v37, v38, v21);
+        v39 = objc_msgSend_existingChatWithGroupID_(v37, v38, iDCopy);
       }
 
       if (v39)
       {
-        v56 = objc_msgSend_createIMMessageToSendWithMessage_filePaths_bundleID_attributionInfoName_isAudioMessage_threadIdentifier_(self, v55, v19, v63, v67, v68, v64, v65);
-        v58 = objc_msgSend__sendIMMessage_chat_service_timeOut_resultDict_error_(self, v57, v56, v39, v36, v23, a13, a11);
+        v56 = objc_msgSend_createIMMessageToSendWithMessage_filePaths_bundleID_attributionInfoName_isAudioMessage_threadIdentifier_(self, v55, messageCopy, v63, bundleIDCopy, nameCopy, audioMessageCopy, identifierCopy);
+        v58 = objc_msgSend__sendIMMessage_chat_service_timeOut_resultDict_error_(self, v57, v56, v39, v36, v23, error, out);
 
         v23 = v58;
       }
@@ -244,13 +244,13 @@ LABEL_8:
 
   else
   {
-    v40 = v20 == 0;
-    if (objc_msgSend_length(v19, v30, v31))
+    v40 = pathsCopy == 0;
+    if (objc_msgSend_length(messageCopy, v30, v31))
     {
       v40 = 0;
     }
 
-    if (objc_msgSend_length(v69, v41, v42))
+    if (objc_msgSend_length(dCopy, v41, v42))
     {
       v43 = v40;
     }
@@ -276,9 +276,9 @@ LABEL_8:
     }
   }
 
-  if (a13)
+  if (error)
   {
-    *a13 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v44, @"com.apple.private.IMCore.IMAutomationMessageSend", 2, 0);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v44, @"com.apple.private.IMCore.IMAutomationMessageSend", 2, 0);
   }
 
   v46 = v23;
@@ -289,16 +289,16 @@ LABEL_34:
   return v46;
 }
 
-- (id)_sendIMMessage:(id)a3 chat:(id)a4 service:(id)a5 timeOut:(double)a6 resultDict:(id)a7 error:(id *)a8
+- (id)_sendIMMessage:(id)message chat:(id)chat service:(id)service timeOut:(double)out resultDict:(id)dict error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  messageCopy = message;
+  chatCopy = chat;
+  serviceCopy = service;
+  dictCopy = dict;
   v16 = objc_alloc(MEMORY[0x1E695DF90]);
-  v18 = objc_msgSend_initWithDictionary_(v16, v17, v15);
-  v21 = objc_msgSend_guid(v12, v19, v20);
+  v18 = objc_msgSend_initWithDictionary_(v16, v17, dictCopy);
+  v21 = objc_msgSend_guid(messageCopy, v19, v20);
   objc_msgSend_setObject_forKey_(v18, v22, v21, @"GUID");
   v25 = objc_msgSend_pendingSendGUIDs(self, v23, v24);
   objc_msgSend_addObject_(v25, v26, v21);
@@ -306,14 +306,14 @@ LABEL_34:
   v29 = objc_msgSend_sharedRegistry(IMChatRegistry, v27, v28);
   objc_msgSend__setPostMessageSentNotifications_(v29, v30, 1);
 
-  objc_msgSend_refreshServiceForSending(v13, v31, v32);
+  objc_msgSend_refreshServiceForSending(chatCopy, v31, v32);
   if (IMOSLoggingEnabled())
   {
     v34 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v37 = objc_msgSend_plainBody(v12, v35, v36);
-      if (objc_msgSend_isTypingMessage(v12, v38, v39))
+      v37 = objc_msgSend_plainBody(messageCopy, v35, v36);
+      if (objc_msgSend_isTypingMessage(messageCopy, v38, v39))
       {
         v42 = @"YES";
       }
@@ -324,7 +324,7 @@ LABEL_34:
       }
 
       v43 = MEMORY[0x1E696AD98];
-      v44 = objc_msgSend_flags(v12, v40, v41);
+      v44 = objc_msgSend_flags(messageCopy, v40, v41);
       v46 = objc_msgSend_numberWithUnsignedLongLong_(v43, v45, v44);
       v50 = 138412802;
       v51 = v37;
@@ -336,14 +336,14 @@ LABEL_34:
     }
   }
 
-  if (v14)
+  if (serviceCopy)
   {
-    objc_msgSend_sendMessage_onService_(v13, v33, v12, v14);
+    objc_msgSend_sendMessage_onService_(chatCopy, v33, messageCopy, serviceCopy);
   }
 
   else
   {
-    objc_msgSend_sendMessage_(v13, v33, v12);
+    objc_msgSend_sendMessage_(chatCopy, v33, messageCopy);
   }
 
   if (IMOSLoggingEnabled())
@@ -364,10 +364,10 @@ LABEL_34:
   return v18;
 }
 
-- (id)loadHighResolutionFileForMessageGUID:(id)a3 withFilePathIndex:(int64_t)a4
+- (id)loadHighResolutionFileForMessageGUID:(id)d withFilePathIndex:(int64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -379,7 +379,7 @@ LABEL_34:
   {
     v7 = IMDMessageRecordCopyAttachments();
     v8 = v7;
-    if (a4 < 0 || !v7)
+    if (index < 0 || !v7)
     {
       if (!v7)
       {
@@ -389,9 +389,9 @@ LABEL_8:
       }
     }
 
-    else if (CFArrayGetCount(v7) > a4)
+    else if (CFArrayGetCount(v7) > index)
     {
-      CFArrayGetValueAtIndex(v8, a4);
+      CFArrayGetValueAtIndex(v8, index);
       v13 = 0;
       cf = 0;
       _IMDAttachmentRecordBulkCopy();
@@ -410,7 +410,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)deleteAttachmentWithMessageGUID:(id)a3 andFilePathIndex:(int64_t)a4
+- (id)deleteAttachmentWithMessageGUID:(id)d andFilePathIndex:(int64_t)index
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
@@ -424,17 +424,17 @@ LABEL_9:
   return v2;
 }
 
-- (id)uploadAttachmentToCloudkitWithMessageGUID:(id)a3 andFilePathIndex:(int64_t)a4
+- (id)uploadAttachmentToCloudkitWithMessageGUID:(id)d andFilePathIndex:(int64_t)index
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
   return v4;
 }
 
-- (id)fileSizeForMessageGUID:(id)a3 withFilePathIndex:(int64_t)a4
+- (id)fileSizeForMessageGUID:(id)d withFilePathIndex:(int64_t)index
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = IMDMessageRecordCopyMessageForGUID();
   if (!v7)
@@ -446,11 +446,11 @@ LABEL_9:
   v9 = v7;
   v10 = IMDMessageRecordCopyAttachments();
   v11 = v10;
-  if ((a4 & 0x8000000000000000) == 0 && v10)
+  if ((index & 0x8000000000000000) == 0 && v10)
   {
-    if (CFArrayGetCount(v10) > a4)
+    if (CFArrayGetCount(v10) > index)
     {
-      CFArrayGetValueAtIndex(v11, a4);
+      CFArrayGetValueAtIndex(v11, index);
       v14 = 0;
       v15 = 0;
       _IMDAttachmentRecordBulkCopy();
@@ -473,9 +473,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)dictionaryFromGUID:(id)a3
+- (id)dictionaryFromGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (qword_1EB2EA3F0 != -1)
   {
     sub_1A84E1F68();
@@ -487,7 +487,7 @@ LABEL_10:
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = off_1EB2EA3E8(v3);
+  v5 = off_1EB2EA3E8(dCopy);
   if (v5)
   {
     v6 = v5;
@@ -797,16 +797,16 @@ LABEL_10:
   return v4;
 }
 
-- (id)copyFilePathsToTmpLocation:(id)a3
+- (id)copyFilePathsToTmpLocation:(id)location
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  locationCopy = location;
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = locationCopy;
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v38, v45, 16);
   if (v6)
   {
@@ -864,16 +864,16 @@ LABEL_10:
   return v34;
 }
 
-- (void)deleteTmpFilePath:(id)a3
+- (void)deleteTmpFilePath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v6 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v4, v5);
-  if (objc_msgSend_fileExistsAtPath_(v6, v7, v3))
+  if (objc_msgSend_fileExistsAtPath_(v6, v7, pathCopy))
   {
     v10 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v8, v9);
     v16 = 0;
-    v12 = objc_msgSend_removeItemAtPath_error_(v10, v11, v3, &v16);
+    v12 = objc_msgSend_removeItemAtPath_error_(v10, v11, pathCopy, &v16);
     v13 = v16;
 
     if ((v12 & 1) == 0 && IMOSLoggingEnabled())
@@ -897,16 +897,16 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)appendFilePathsWithGUIDs:(id)a3 withText:(id)a4
+- (id)appendFilePathsWithGUIDs:(id)ds withText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  textCopy = text;
   v7 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = objc_msgSend_length(v6, v9, v10);
+  v11 = objc_msgSend_length(textCopy, v9, v10);
   v14 = MEMORY[0x1E69A5FD8];
   v15 = 0x1E696A000uLL;
-  v45 = v6;
+  v45 = textCopy;
   if (v11)
   {
     NSLog(&cfstr_ValidText.isa);
@@ -914,7 +914,7 @@ LABEL_10:
     objc_msgSend_setObject_forKey_(v8, v18, v17, *v14);
 
     v19 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v21 = objc_msgSend_initWithString_attributes_(v19, v20, v6, v8);
+    v21 = objc_msgSend_initWithString_attributes_(v19, v20, textCopy, v8);
     objc_msgSend_appendAttributedString_(v7, v22, v21);
 
     v23 = 1;
@@ -926,14 +926,14 @@ LABEL_10:
   }
 
   v46 = v7;
-  if (objc_msgSend_count(v5, v12, v13))
+  if (objc_msgSend_count(dsCopy, v12, v13))
   {
     v25 = 0;
     v26 = *v14;
     v27 = *MEMORY[0x1E69A5F68];
     do
     {
-      v28 = objc_msgSend_objectAtIndex_(v5, v24, v25);
+      v28 = objc_msgSend_objectAtIndex_(dsCopy, v24, v25);
       if (v28)
       {
         v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -958,7 +958,7 @@ LABEL_10:
       ++v25;
     }
 
-    while (objc_msgSend_count(v5, v42, v43) > v25);
+    while (objc_msgSend_count(dsCopy, v42, v43) > v25);
   }
 
   return v46;

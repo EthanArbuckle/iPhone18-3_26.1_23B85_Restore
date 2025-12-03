@@ -12,7 +12,7 @@
 
 - (id)_operateOnDataUsingCompressionAlgorithm:()SCNExtensions operation:
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -38,8 +38,8 @@
     return 0;
   }
 
-  v12.src_ptr = [a1 bytes];
-  v12.src_size = [a1 length];
+  v12.src_ptr = [self bytes];
+  v12.src_size = [self length];
   v8 = malloc_type_malloc(0x1000uLL, 0x5A2A09E9uLL);
   v12.dst_ptr = v8;
   v12.dst_size = 4096;
@@ -79,20 +79,20 @@
 
 - (id)scn_indexedDataEncodingHighWatermarkWithBytesPerIndex:()SCNExtensions
 {
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   switch(a3)
   {
     case 4:
-      v24 = [a1 bytes];
-      v25 = [v5 bytes];
-      v26 = *v24;
-      *v25 = *v24;
-      v27 = [a1 length];
+      bytes = [self bytes];
+      bytes2 = [v5 bytes];
+      v26 = *bytes;
+      *bytes2 = *bytes;
+      v27 = [self length];
       if (v27 >= 8)
       {
         v28 = (v27 >> 2) - 1;
-        v29 = v25 + 1;
-        v30 = v24 + 1;
+        v29 = bytes2 + 1;
+        v30 = bytes + 1;
         do
         {
           *v29++ = v26 - *v30;
@@ -111,16 +111,16 @@
 
       break;
     case 2:
-      v15 = [a1 bytes];
-      v16 = [v5 bytes];
-      v17 = *v15;
-      *v16 = *v15;
-      v18 = [a1 length];
+      bytes3 = [self bytes];
+      bytes4 = [v5 bytes];
+      v17 = *bytes3;
+      *bytes4 = *bytes3;
+      v18 = [self length];
       if (v18 >= 4)
       {
         v19 = (v18 >> 1) - 1;
-        v20 = v16 + 1;
-        v21 = v15 + 1;
+        v20 = bytes4 + 1;
+        v21 = bytes3 + 1;
         do
         {
           *v20++ = v17 - *v21;
@@ -139,16 +139,16 @@
 
       break;
     case 1:
-      v6 = [a1 bytes];
-      v7 = [v5 bytes];
-      v8 = *v6;
-      *v7 = *v6;
-      v9 = [a1 length];
+      bytes5 = [self bytes];
+      bytes6 = [v5 bytes];
+      v8 = *bytes5;
+      *bytes6 = *bytes5;
+      v9 = [self length];
       if (v9 >= 2)
       {
         v10 = v9 - 1;
-        v11 = v7 + 1;
-        v12 = v6 + 1;
+        v11 = bytes6 + 1;
+        v12 = bytes5 + 1;
         do
         {
           *v11++ = v8 - *v12;
@@ -175,20 +175,20 @@
 
 - (id)scn_indexedDataDecodingHighWatermarkWithBytesPerIndex:()SCNExtensions
 {
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   switch(a3)
   {
     case 4:
-      v24 = [a1 bytes];
-      v25 = [v5 bytes];
-      v26 = *v24;
-      *v25 = *v24;
-      v27 = [a1 length];
+      bytes = [self bytes];
+      bytes2 = [v5 bytes];
+      v26 = *bytes;
+      *bytes2 = *bytes;
+      v27 = [self length];
       if (v27 >= 8)
       {
         v28 = (v27 >> 2) - 1;
-        v29 = v25 + 1;
-        v30 = (v24 + 1);
+        v29 = bytes2 + 1;
+        v30 = (bytes + 1);
         do
         {
           v31 = *v30++;
@@ -207,16 +207,16 @@
 
       break;
     case 2:
-      v15 = [a1 bytes];
-      v16 = [v5 bytes];
-      v17 = *v15;
-      *v16 = *v15;
-      v18 = [a1 length];
+      bytes3 = [self bytes];
+      bytes4 = [v5 bytes];
+      v17 = *bytes3;
+      *bytes4 = *bytes3;
+      v18 = [self length];
       if (v18 >= 4)
       {
         v19 = (v18 >> 1) - 1;
-        v20 = v16 + 1;
-        v21 = (v15 + 1);
+        v20 = bytes4 + 1;
+        v21 = (bytes3 + 1);
         do
         {
           v22 = *v21++;
@@ -235,16 +235,16 @@
 
       break;
     case 1:
-      v6 = [a1 bytes];
-      v7 = [v5 bytes];
-      v8 = *v6;
-      *v7 = *v6;
-      v9 = [a1 length];
+      bytes5 = [self bytes];
+      bytes6 = [v5 bytes];
+      v8 = *bytes5;
+      *bytes6 = *bytes5;
+      v9 = [self length];
       if (v9 >= 2)
       {
         v10 = v9 - 1;
-        v11 = v7 + 1;
-        v12 = (v6 + 1);
+        v11 = bytes6 + 1;
+        v12 = (bytes5 + 1);
         do
         {
           v13 = *v12++;
@@ -271,19 +271,19 @@
 
 - (id)scn_indexedDataEncodingDeltaWithBytesPerIndex:()SCNExtensions
 {
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   switch(a3)
   {
     case 4:
-      v18 = [a1 bytes];
-      v19 = [v5 bytes];
-      *v19 = *v18;
-      v20 = [a1 length];
+      bytes = [self bytes];
+      bytes2 = [v5 bytes];
+      *bytes2 = *bytes;
+      v20 = [self length];
       if (v20 >= 8)
       {
         v21 = (v20 >> 2) - 1;
-        v22 = v19 + 1;
-        v23 = v18 + 1;
+        v22 = bytes2 + 1;
+        v23 = bytes + 1;
         do
         {
           *v22++ = *v23 - *(v23 - 1);
@@ -296,15 +296,15 @@
 
       break;
     case 2:
-      v12 = [a1 bytes];
-      v13 = [v5 bytes];
-      *v13 = *v12;
-      v14 = [a1 length];
+      bytes3 = [self bytes];
+      bytes4 = [v5 bytes];
+      *bytes4 = *bytes3;
+      v14 = [self length];
       if (v14 >= 4)
       {
         v15 = (v14 >> 1) - 1;
-        v16 = v13 + 1;
-        v17 = v12 + 1;
+        v16 = bytes4 + 1;
+        v17 = bytes3 + 1;
         do
         {
           *v16++ = *v17 - *(v17 - 1);
@@ -317,15 +317,15 @@
 
       break;
     case 1:
-      v6 = [a1 bytes];
-      v7 = [v5 bytes];
-      *v7 = *v6;
-      v8 = [a1 length];
+      bytes5 = [self bytes];
+      bytes6 = [v5 bytes];
+      *bytes6 = *bytes5;
+      v8 = [self length];
       if (v8 >= 2)
       {
         v9 = v8 - 1;
-        v10 = v7 + 1;
-        v11 = v6 + 1;
+        v10 = bytes6 + 1;
+        v11 = bytes5 + 1;
         do
         {
           *v10++ = *v11 - *(v11 - 1);
@@ -346,21 +346,21 @@
 
 - (id)scn_indexedDataDecodingDeltaWithBytesPerIndex:()SCNExtensions
 {
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   switch(a3)
   {
     case 4:
-      v24 = [a1 bytes];
-      v25 = [v5 bytes];
-      *v25 = *v24;
-      v26 = [a1 length];
+      bytes = [self bytes];
+      bytes2 = [v5 bytes];
+      *bytes2 = *bytes;
+      v26 = [self length];
       if (v26 >= 8)
       {
-        v29 = *v25;
-        v28 = v25 + 1;
+        v29 = *bytes2;
+        v28 = bytes2 + 1;
         v27 = v29;
         v30 = (v26 >> 2) - 1;
-        v31 = v24 + 1;
+        v31 = bytes + 1;
         do
         {
           v32 = *v31++;
@@ -374,17 +374,17 @@
 
       break;
     case 2:
-      v15 = [a1 bytes];
-      v16 = [v5 bytes];
-      *v16 = *v15;
-      v17 = [a1 length];
+      bytes3 = [self bytes];
+      bytes4 = [v5 bytes];
+      *bytes4 = *bytes3;
+      v17 = [self length];
       if (v17 >= 4)
       {
-        v20 = *v16;
-        v19 = v16 + 1;
+        v20 = *bytes4;
+        v19 = bytes4 + 1;
         v18 = v20;
         v21 = (v17 >> 1) - 1;
-        v22 = v15 + 1;
+        v22 = bytes3 + 1;
         do
         {
           v23 = *v22++;
@@ -398,17 +398,17 @@
 
       break;
     case 1:
-      v6 = [a1 bytes];
-      v7 = [v5 bytes];
-      *v7 = *v6;
-      v8 = [a1 length];
+      bytes5 = [self bytes];
+      bytes6 = [v5 bytes];
+      *bytes6 = *bytes5;
+      v8 = [self length];
       if (v8 >= 2)
       {
-        v11 = *v7;
-        v10 = v7 + 1;
+        v11 = *bytes6;
+        v10 = bytes6 + 1;
         v9 = v11;
         v12 = v8 - 1;
-        v13 = v6 + 1;
+        v13 = bytes5 + 1;
         do
         {
           v14 = *v13++;
@@ -431,8 +431,8 @@
 - (uint64_t)scn_indexedDataEncodingTrianglePairsWithBytesPerIndex:()SCNExtensions
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [a1 bytes];
-  v6 = [a1 length];
+  bytes = [self bytes];
+  v6 = [self length];
   v7 = v6 / a3;
   v8 = malloc_type_malloc(v6 / a3 * a3, 0x100004077774924uLL);
   v9 = v8;
@@ -450,7 +450,7 @@
         goto LABEL_18;
       }
 
-      v14 = (v5 + v13);
+      v14 = (bytes + v13);
       switch(a3)
       {
         case 4uLL:
@@ -481,7 +481,7 @@
       HIDWORD(v45) = v17;
       if (v15 != v16 && v17 != v15 && v16 != v17)
       {
-        v23 = (v5 + v12 * a3);
+        v23 = (bytes + v12 * a3);
         if (a3 == 4)
         {
           v43 = *v23;
@@ -646,7 +646,7 @@ LABEL_29:
       }
 
 LABEL_18:
-      v14 = (v5 + v13);
+      v14 = (bytes + v13);
       switch(a3)
       {
         case 4uLL:
@@ -771,8 +771,8 @@ LABEL_82:
 
 - (uint64_t)scn_indexedDataDecodingTrianglePairsWithBytesPerIndex:()SCNExtensions
 {
-  v5 = [a1 bytes];
-  v6 = [a1 length];
+  bytes = [self bytes];
+  v6 = [self length];
   v7 = malloc_type_malloc((((3 * (v6 / a3)) >> 1) & 0x3FFFFFFFFFFFFFFFLL) * a3, 0x100004077774924uLL);
   v8 = v7;
   v9 = v7;
@@ -783,7 +783,7 @@ LABEL_82:
     v9 = v7;
     do
     {
-      v12 = (v5 + v10 * a3);
+      v12 = (bytes + v10 * a3);
       switch(a3)
       {
         case 1uLL:
@@ -823,7 +823,7 @@ LABEL_17:
         v19 = v18 * a3;
         if (a3 == 4)
         {
-          v22 = *(v5 + v19);
+          v22 = *(bytes + v19);
           *v9 = v13;
           *(v9 + 1) = v22;
           *(v9 + 2) = v15;
@@ -831,7 +831,7 @@ LABEL_17:
 
         else if (a3 == 2)
         {
-          v21 = *(v5 + v19);
+          v21 = *(bytes + v19);
           *v9 = v13;
           *(v9 + 1) = v21;
           *(v9 + 2) = v15;
@@ -839,7 +839,7 @@ LABEL_17:
 
         else
         {
-          v20 = *(v5 + v19);
+          v20 = *(bytes + v19);
           *v9 = v13;
           v9[1] = v20;
           v9[2] = v15;

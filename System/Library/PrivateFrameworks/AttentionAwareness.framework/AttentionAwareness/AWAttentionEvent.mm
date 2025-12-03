@@ -1,15 +1,15 @@
 @interface AWAttentionEvent
-- (AWAttentionEvent)initWithCoder:(id)a3;
-- (AWAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 eventMask:(unint64_t)a5;
+- (AWAttentionEvent)initWithCoder:(id)coder;
+- (AWAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index eventMask:(unint64_t)mask;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithConfig:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithConfig:(id)config;
 - (void)validateMask;
 @end
 
 @implementation AWAttentionEvent
 
-- (void)updateWithConfig:(id)a3
+- (void)updateWithConfig:(id)config
 {
   v6 = +[AWAttentionAwarenessClientConfig sharedClientConfig];
   v4 = [v6 tagForIndex:self->_tagIndex];
@@ -30,7 +30,7 @@
   return v9;
 }
 
-- (AWAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 eventMask:(unint64_t)a5
+- (AWAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index eventMask:(unint64_t)mask
 {
   v11.receiver = self;
   v11.super_class = AWAttentionEvent;
@@ -38,9 +38,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a3;
-    v8->_tagIndex = a4;
-    v8->_eventMask = a5;
+    v8->_timestamp = timestamp;
+    v8->_tagIndex = index;
+    v8->_eventMask = mask;
     [(AWAttentionEvent *)v8 validateMask];
   }
 
@@ -57,15 +57,15 @@
   }
 }
 
-- (AWAttentionEvent)initWithCoder:(id)a3
+- (AWAttentionEvent)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15 = 0;
   v14.receiver = self;
   v14.super_class = AWAttentionEvent;
   v5 = [(AWAttentionEvent *)&v14 init];
-  if (v5 && ((v5->_eventMask = decodeUInt64(v4, &v15, @"eventMask"), v5->_timestamp = decodeDouble(v4, &v15, @"timestamp"), v5->_tagIndex = decodeUInt64(v4, &v15, @"tagIndex"), v5->_eventMask == 1) || (v15 & 1) != 0))
+  if (v5 && ((v5->_eventMask = decodeUInt64(coderCopy, &v15, @"eventMask"), v5->_timestamp = decodeDouble(coderCopy, &v15, @"timestamp"), v5->_tagIndex = decodeUInt64(coderCopy, &v15, @"tagIndex"), v5->_eventMask == 1) || (v15 & 1) != 0))
   {
     if (currentLogLevel >= 3)
     {
@@ -105,17 +105,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   eventMask = self->_eventMask;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:eventMask];
-  [v6 encodeObject:v7 forKey:@"eventMask"];
+  [coderCopy encodeObject:v7 forKey:@"eventMask"];
 
-  [v6 encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_tagIndex];
-  [v6 encodeObject:v8 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v8 forKey:@"tagIndex"];
 }
 
 @end

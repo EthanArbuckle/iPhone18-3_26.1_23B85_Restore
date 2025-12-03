@@ -1,21 +1,21 @@
 @interface KmlTestClientReporter
-- (BOOL)didReceiveInvitationRequestWithUuid:(id)a3 ownerKeyIdentifier:(id)a4 friendKeyIdentifier:(id)a5 targetType:(int64_t)a6;
+- (BOOL)didReceiveInvitationRequestWithUuid:(id)uuid ownerKeyIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier targetType:(int64_t)type;
 - (KmlTestClientReporter)init;
 - (void)cleanup;
-- (void)didReceiveSharingInvitationWithIdentifier:(id)a3 uuid:(id)a4 metadata:(id)a5 ownerIdsId:(id)a6;
-- (void)finishedSharingForKey:(id)a3 result:(id)a4;
-- (void)passcodeRetryRequestedFor:(id)a3 retriesLeft:(unint64_t)a4;
-- (void)registerCrossPlatformMessageSendHandler:(id)a3;
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3;
-- (void)registerFriendSidePasscodeRetryRequestHandler:(id)a3;
-- (void)registerFriendSideSharingTestCompletion:(id)a3;
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3;
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3;
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4;
-- (void)reportUnusableInvitation:(id)a3 reason:(id)a4;
-- (void)requestAuthorizationForSharingInvitationIdentifier:(id)a3;
-- (void)sendCrossPlatformSharingMessage:(id)a3 toMailboxIdentifier:(id)a4;
-- (void)sharingCompleteForInvitationIdentifier:(id)a3 friendKeyIdentifier:(id)a4 status:(id)a5;
+- (void)didReceiveSharingInvitationWithIdentifier:(id)identifier uuid:(id)uuid metadata:(id)metadata ownerIdsId:(id)id;
+- (void)finishedSharingForKey:(id)key result:(id)result;
+- (void)passcodeRetryRequestedFor:(id)for retriesLeft:(unint64_t)left;
+- (void)registerCrossPlatformMessageSendHandler:(id)handler;
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler;
+- (void)registerFriendSidePasscodeRetryRequestHandler:(id)handler;
+- (void)registerFriendSideSharingTestCompletion:(id)completion;
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler;
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler;
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback;
+- (void)reportUnusableInvitation:(id)invitation reason:(id)reason;
+- (void)requestAuthorizationForSharingInvitationIdentifier:(id)identifier;
+- (void)sendCrossPlatformSharingMessage:(id)message toMailboxIdentifier:(id)identifier;
+- (void)sharingCompleteForInvitationIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier status:(id)status;
 @end
 
 @implementation KmlTestClientReporter
@@ -81,9 +81,9 @@
   self->_friendPasscodeRetryRequestHandler = 0;
 }
 
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -94,14 +94,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   friendInvitationHandler = self->_friendInvitationHandler;
   self->_friendInvitationHandler = v6;
 }
 
-- (void)registerFriendSideSharingTestCompletion:(id)a3
+- (void)registerFriendSideSharingTestCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -112,15 +112,15 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(completionCopy);
   friendCompletionHandler = self->_friendCompletionHandler;
   self->_friendCompletionHandler = v6;
 }
 
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  invitationsCopy = invitations;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -132,17 +132,17 @@
   }
 
   v9 = objc_alloc_init(KmlTestClientCallbackInfo);
-  v10 = [(KmlTestClientCallbackInfo *)v9 invitationSet];
-  [v10 addObjectsFromArray:v7];
+  invitationSet = [(KmlTestClientCallbackInfo *)v9 invitationSet];
+  [invitationSet addObjectsFromArray:invitationsCopy];
 
-  [(KmlTestClientCallbackInfo *)v9 setOwnerCompletionHandler:v6];
+  [(KmlTestClientCallbackInfo *)v9 setOwnerCompletionHandler:callbackCopy];
   [(NSMutableSet *)self->_callbackInfoSet addObject:v9];
   ++self->_totalCallbacks;
 }
 
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -153,14 +153,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   ownerInvitationRequestHandler = self->_ownerInvitationRequestHandler;
   self->_ownerInvitationRequestHandler = v6;
 }
 
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -171,14 +171,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   friendInvitationUnusableHandler = self->_friendInvitationUnusableHandler;
   self->_friendInvitationUnusableHandler = v6;
 }
 
-- (void)registerFriendSidePasscodeRetryRequestHandler:(id)a3
+- (void)registerFriendSidePasscodeRetryRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -189,14 +189,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   friendPasscodeRetryRequestHandler = self->_friendPasscodeRetryRequestHandler;
   self->_friendPasscodeRetryRequestHandler = v6;
 }
 
-- (void)registerCrossPlatformMessageSendHandler:(id)a3
+- (void)registerCrossPlatformMessageSendHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -207,12 +207,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : ", &v8, 0x12u);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   crossPlatformSendMessageHandler = self->_crossPlatformSendMessageHandler;
   self->_crossPlatformSendMessageHandler = v6;
 }
 
-- (void)didReceiveSharingInvitationWithIdentifier:(id)a3 uuid:(id)a4 metadata:(id)a5 ownerIdsId:(id)a6
+- (void)didReceiveSharingInvitationWithIdentifier:(id)identifier uuid:(id)uuid metadata:(id)metadata ownerIdsId:(id)id
 {
   friendInvitationHandler = self->_friendInvitationHandler;
   if (friendInvitationHandler)
@@ -236,7 +236,7 @@
   }
 }
 
-- (void)finishedSharingForKey:(id)a3 result:(id)a4
+- (void)finishedSharingForKey:(id)key result:(id)result
 {
   friendCompletionHandler = self->_friendCompletionHandler;
   if (friendCompletionHandler)
@@ -260,7 +260,7 @@
   }
 }
 
-- (void)reportUnusableInvitation:(id)a3 reason:(id)a4
+- (void)reportUnusableInvitation:(id)invitation reason:(id)reason
 {
   friendInvitationUnusableHandler = self->_friendInvitationUnusableHandler;
   if (friendInvitationUnusableHandler)
@@ -284,7 +284,7 @@
   }
 }
 
-- (void)requestAuthorizationForSharingInvitationIdentifier:(id)a3
+- (void)requestAuthorizationForSharingInvitationIdentifier:(id)identifier
 {
   v3 = KmlLogger();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -297,15 +297,15 @@
   }
 }
 
-- (void)sharingCompleteForInvitationIdentifier:(id)a3 friendKeyIdentifier:(id)a4 status:(id)a5
+- (void)sharingCompleteForInvitationIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier status:(id)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  statusCopy = status;
   if ([(NSMutableSet *)self->_callbackInfoSet count])
   {
-    v30 = v9;
-    v11 = v10;
+    v30 = keyIdentifierCopy;
+    v11 = statusCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -326,8 +326,8 @@ LABEL_4:
         }
 
         v17 = *(*(&v31 + 1) + 8 * v16);
-        v18 = [v17 invitationSet];
-        v19 = [v18 containsObject:v8];
+        invitationSet = [v17 invitationSet];
+        v19 = [invitationSet containsObject:identifierCopy];
 
         if (v19)
         {
@@ -354,8 +354,8 @@ LABEL_4:
       }
 
       v21 = KmlLogger();
-      v10 = v11;
-      v9 = v30;
+      statusCopy = v11;
+      keyIdentifierCopy = v30;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 136316162;
@@ -363,11 +363,11 @@ LABEL_4:
         v37 = 1024;
         v38 = 257;
         v39 = 2112;
-        v40 = v8;
+        v40 = identifierCopy;
         v41 = 2112;
         v42 = v30;
         v43 = 2112;
-        v44 = v10;
+        v44 = statusCopy;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s : %i : Sharing completed for Invitation ID: %@, friend key Id : %@, error: %@", buf, 0x30u);
       }
 
@@ -381,14 +381,14 @@ LABEL_4:
         v22 = @"null";
       }
 
-      v23 = [v20 results];
-      [v23 setObject:v22 forKeyedSubscript:v8];
+      results = [v20 results];
+      [results setObject:v22 forKeyedSubscript:identifierCopy];
 
-      v24 = [v20 invitationSet];
-      [v24 removeObject:v8];
+      invitationSet2 = [v20 invitationSet];
+      [invitationSet2 removeObject:identifierCopy];
 
-      v25 = [v20 invitationSet];
-      v26 = [v25 count];
+      invitationSet3 = [v20 invitationSet];
+      v26 = [invitationSet3 count];
 
       if (!v26)
       {
@@ -402,9 +402,9 @@ LABEL_4:
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s : %i : Heard from all invitiations. Reporting back", buf, 0x12u);
         }
 
-        v28 = [v20 ownerCompletionHandler];
-        v29 = [v20 results];
-        (v28)[2](v28, v29);
+        ownerCompletionHandler = [v20 ownerCompletionHandler];
+        results2 = [v20 results];
+        (ownerCompletionHandler)[2](ownerCompletionHandler, results2);
 
         [(NSMutableSet *)self->_callbackInfoSet removeObject:v20];
       }
@@ -416,8 +416,8 @@ LABEL_10:
 
       v20 = 0;
 LABEL_21:
-      v10 = v11;
-      v9 = v30;
+      statusCopy = v11;
+      keyIdentifierCopy = v30;
     }
   }
 
@@ -435,11 +435,11 @@ LABEL_21:
   }
 }
 
-- (BOOL)didReceiveInvitationRequestWithUuid:(id)a3 ownerKeyIdentifier:(id)a4 friendKeyIdentifier:(id)a5 targetType:(int64_t)a6
+- (BOOL)didReceiveInvitationRequestWithUuid:(id)uuid ownerKeyIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier targetType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  uuidCopy = uuid;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
   v12 = KmlLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -453,7 +453,7 @@ LABEL_21:
   ownerInvitationRequestHandler = self->_ownerInvitationRequestHandler;
   if (ownerInvitationRequestHandler)
   {
-    ownerInvitationRequestHandler[2](ownerInvitationRequestHandler, v9, v10, v11);
+    ownerInvitationRequestHandler[2](ownerInvitationRequestHandler, uuidCopy, identifierCopy, keyIdentifierCopy);
   }
 
   else
@@ -472,10 +472,10 @@ LABEL_21:
   return ownerInvitationRequestHandler != 0;
 }
 
-- (void)sendCrossPlatformSharingMessage:(id)a3 toMailboxIdentifier:(id)a4
+- (void)sendCrossPlatformSharingMessage:(id)message toMailboxIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -484,12 +484,12 @@ LABEL_21:
     v18 = 1024;
     v19 = 282;
     v20 = 2112;
-    v21 = v6;
+    v21 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s : %i : Message to send: %@", buf, 0x1Cu);
   }
 
   v15 = 0;
-  v9 = [v6 encodeWithError:&v15];
+  v9 = [messageCopy encodeWithError:&v15];
   v10 = v15;
   if (v10)
   {
@@ -525,7 +525,7 @@ LABEL_13:
     }
 
     v11 = sub_10037E00C();
-    sub_1003CD554(v11, v9, v7);
+    sub_1003CD554(v11, v9, identifierCopy);
     goto LABEL_13;
   }
 
@@ -542,7 +542,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)passcodeRetryRequestedFor:(id)a3 retriesLeft:(unint64_t)a4
+- (void)passcodeRetryRequestedFor:(id)for retriesLeft:(unint64_t)left
 {
   friendPasscodeRetryRequestHandler = self->_friendPasscodeRetryRequestHandler;
   if (friendPasscodeRetryRequestHandler)

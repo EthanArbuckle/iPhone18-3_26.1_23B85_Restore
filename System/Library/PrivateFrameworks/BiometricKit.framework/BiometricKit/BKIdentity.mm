@@ -1,8 +1,8 @@
 @interface BKIdentity
 + (id)identity;
-- (BKIdentity)initWithServerIdentity:(id)a3 device:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentity:(id)a3;
+- (BKIdentity)initWithServerIdentity:(id)identity device:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentity:(id)identity;
 - (id)serverIdentity;
 @end
 
@@ -10,57 +10,57 @@
 
 + (id)identity
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BKIdentity)initWithServerIdentity:(id)a3 device:(id)a4
+- (BKIdentity)initWithServerIdentity:(id)identity device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  deviceCopy = device;
   v25.receiver = self;
   v25.super_class = BKIdentity;
   v8 = [(BKIdentity *)&v25 init];
   v9 = v8;
-  if (v6 && v8)
+  if (identityCopy && v8)
   {
-    v10 = [v6 uuid];
+    uuid = [identityCopy uuid];
     uuid = v9->_uuid;
-    v9->_uuid = v10;
+    v9->_uuid = uuid;
 
-    v9->_userID = [v6 userID];
-    v12 = [v6 name];
+    v9->_userID = [identityCopy userID];
+    name = [identityCopy name];
     name = v9->_name;
-    v9->_name = v12;
+    v9->_name = name;
 
-    v14 = [v6 creationTime];
+    creationTime = [identityCopy creationTime];
     creationTime = v9->_creationTime;
-    v9->_creationTime = v14;
+    v9->_creationTime = creationTime;
 
-    objc_storeStrong(&v9->_device, a4);
+    objc_storeStrong(&v9->_device, device);
     v16 = [BKAccessory alloc];
-    v17 = [v6 accessory];
-    v18 = [(BKAccessory *)v16 initWithServerAccessory:v17 device:v7];
+    accessory = [identityCopy accessory];
+    v18 = [(BKAccessory *)v16 initWithServerAccessory:accessory device:deviceCopy];
     accessory = v9->_accessory;
     v9->_accessory = v18;
 
-    v20 = [(BKAccessory *)v9->_accessory accessoryGroup];
+    accessoryGroup = [(BKAccessory *)v9->_accessory accessoryGroup];
     accessoryGroup = v9->_accessoryGroup;
-    v9->_accessoryGroup = v20;
+    v9->_accessoryGroup = accessoryGroup;
 
-    v9->_placeholderIdentity = [v6 flags] & 1;
-    if ([v6 type] == 4)
+    v9->_placeholderIdentity = [identityCopy flags] & 1;
+    if ([identityCopy type] == 4)
     {
-      v9->_hasPeriocularEnrollment = ([v6 flags] >> 16) & 1;
-      v9->_hasPeriocularEnrollmentWithGlasses = ([v6 flags] & 0x20000) != 0;
-      v9->_canAddPeriocularEnrollment = ([v6 flags] & 0x40000) != 0;
-      v9->_secondaryPeriocularEnrollments = ([v6 flags] >> 19) & 7;
+      v9->_hasPeriocularEnrollment = ([identityCopy flags] >> 16) & 1;
+      v9->_hasPeriocularEnrollmentWithGlasses = ([identityCopy flags] & 0x20000) != 0;
+      v9->_canAddPeriocularEnrollment = ([identityCopy flags] & 0x40000) != 0;
+      v9->_secondaryPeriocularEnrollments = ([identityCopy flags] >> 19) & 7;
     }
 
-    v22 = [v6 type];
-    v23 = 2 * (v22 == 4);
-    if (v22 == 1)
+    type = [identityCopy type];
+    v23 = 2 * (type == 4);
+    if (type == 1)
     {
       v23 = 1;
     }
@@ -94,13 +94,13 @@
   return v3;
 }
 
-- (BOOL)isEqualToIdentity:(id)a3
+- (BOOL)isEqualToIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == *(v4 + 3) && self->_userID == *(v4 + 3))
+  identityCopy = identity;
+  v5 = identityCopy;
+  if (identityCopy && self->_type == *(identityCopy + 3) && self->_userID == *(identityCopy + 3))
   {
-    v6 = [(NSUUID *)self->_uuid isEqual:*(v4 + 2)];
+    v6 = [(NSUUID *)self->_uuid isEqual:*(identityCopy + 2)];
   }
 
   else
@@ -111,10 +111,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -122,7 +122,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKIdentity *)self isEqualToIdentity:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKIdentity *)self isEqualToIdentity:equalCopy];
   }
 
   return v5;

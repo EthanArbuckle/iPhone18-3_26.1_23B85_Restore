@@ -1,9 +1,9 @@
 @interface MRUActivityNowPlayingHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MRUActivityNowPlayingHeaderView)init;
 - (double)labelInset;
 - (void)layoutSubviews;
-- (void)setStylingProvider:(id)a3;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisibilty;
 @end
 
@@ -40,9 +40,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUActivityNowPlayingHeaderView *)self SBUISA_layoutMode];
+  sBUISA_layoutMode = [(MRUActivityNowPlayingHeaderView *)self SBUISA_layoutMode];
   labelView = self->_labelView;
-  if (v11 == 4)
+  if (sBUISA_layoutMode == 4)
   {
     [(MRUNowPlayingLabelView *)labelView sizeThatFits:v8, v10];
     v18.origin.x = v4;
@@ -66,10 +66,10 @@
   [(MRUNowPlayingLabelView *)labelView setFrame:v4, v6, v8, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:fits.width, fits.height];
   if (v4 < 66.0)
   {
     v4 = 66.0;
@@ -81,27 +81,27 @@
   return result;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUNowPlayingLabelView *)self->_labelView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
 - (double)labelInset
 {
-  v3 = [(MRUNowPlayingLabelView *)self->_labelView viewForFirstBaselineLayout];
+  viewForFirstBaselineLayout = [(MRUNowPlayingLabelView *)self->_labelView viewForFirstBaselineLayout];
   [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:1.79769313e308, 1.79769313e308];
   v5 = v4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 mr_tightBoundingRectOfFirstLine];
+    [viewForFirstBaselineLayout mr_tightBoundingRectOfFirstLine];
     v5 = v5 - CGRectGetMinY(v7);
   }
 

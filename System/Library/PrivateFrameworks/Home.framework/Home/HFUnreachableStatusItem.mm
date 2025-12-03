@@ -1,17 +1,17 @@
 @interface HFUnreachableStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFUnreachableStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = MEMORY[0x277D2C900];
     v33 = @"hidden";
@@ -23,10 +23,10 @@
 
   else
   {
-    v11 = [(HFStatusItem *)self home];
-    v12 = [v11 hf_shouldBlockCurrentRestrictedGuestFromHome];
+    home = [(HFStatusItem *)self home];
+    hf_shouldBlockCurrentRestrictedGuestFromHome = [home hf_shouldBlockCurrentRestrictedGuestFromHome];
 
-    if (v12)
+    if (hf_shouldBlockCurrentRestrictedGuestFromHome)
     {
       v13 = MEMORY[0x277D2C900];
       v31 = @"hidden";
@@ -38,13 +38,13 @@
 
     else
     {
-      v15 = [(HFStatusItem *)self filteredServices];
+      filteredServices = [(HFStatusItem *)self filteredServices];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __55__HFUnreachableStatusItem__subclass_updateWithOptions___block_invoke;
       v30[3] = &unk_277DF4020;
       v30[4] = self;
-      v16 = [v15 na_filter:v30];
+      v16 = [filteredServices na_filter:v30];
       objc_initWeak(&location, self);
       v17 = MEMORY[0x277D2C900];
       v24[0] = MEMORY[0x277D85DD0];
@@ -52,15 +52,15 @@
       v24[2] = __55__HFUnreachableStatusItem__subclass_updateWithOptions___block_invoke_3;
       v24[3] = &unk_277DFCA88;
       objc_copyWeak(&v28, &location);
-      v25 = v4;
-      v8 = v15;
+      v25 = optionsCopy;
+      v8 = filteredServices;
       v26 = v8;
       v18 = v16;
       v27 = v18;
-      v19 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-      v20 = [v17 futureWithBlock:v24 scheduler:v19];
-      v21 = [MEMORY[0x277D2C938] mainThreadScheduler];
-      v10 = [v20 reschedule:v21];
+      globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+      v20 = [v17 futureWithBlock:v24 scheduler:globalAsyncScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+      v10 = [v20 reschedule:mainThreadScheduler];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);

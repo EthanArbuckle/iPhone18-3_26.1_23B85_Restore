@@ -1,28 +1,28 @@
 @interface HAPBTLETuple
-+ (id)atvState2String:(unint64_t)a3;
-+ (id)state2String:(BTStatus *)a3;
-+ (void)bandwidthFromATVState:(unint64_t)a3 MinBandwidth:(float *)a4 MaxBandwidth:(float *)a5;
++ (id)atvState2String:(unint64_t)string;
++ (id)state2String:(BTStatus *)string;
++ (void)bandwidthFromATVState:(unint64_t)state MinBandwidth:(float *)bandwidth MaxBandwidth:(float *)maxBandwidth;
 - (BTStatus)state;
 - (id)description;
-- (void)setState:(BTStatus *)a3;
+- (void)setState:(BTStatus *)state;
 @end
 
 @implementation HAPBTLETuple
 
-- (void)setState:(BTStatus *)a3
+- (void)setState:(BTStatus *)state
 {
-  *&self->_state.leRemote = *&a3->leRemote;
-  v3 = *&a3->btKB;
-  v4 = *&a3->btGC;
-  v5 = *&a3->nonHIDConnections;
-  *&self->_state.hk = *&a3->hk;
+  *&self->_state.leRemote = *&state->leRemote;
+  v3 = *&state->btKB;
+  v4 = *&state->btGC;
+  v5 = *&state->nonHIDConnections;
+  *&self->_state.hk = *&state->hk;
   *&self->_state.nonHIDConnections = v5;
   *&self->_state.btKB = v3;
   *&self->_state.btGC = v4;
-  v6 = *&a3->oneSniffAttemptDevices;
-  v7 = *&a3->sco;
-  v8 = *&a3->remote;
-  *&self->_state.isScanning = *&a3->isScanning;
+  v6 = *&state->oneSniffAttemptDevices;
+  v7 = *&state->sco;
+  v8 = *&state->remote;
+  *&self->_state.isScanning = *&state->isScanning;
   *&self->_state.sco = v7;
   *&self->_state.remote = v8;
   *&self->_state.oneSniffAttemptDevices = v6;
@@ -62,40 +62,40 @@
   return v3;
 }
 
-+ (id)state2String:(BTStatus *)a3
++ (id)state2String:(BTStatus *)string
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ LE devices            : %zu \n", &stru_283E79C60, a3->lowEnergyConnections];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ classic devices       : %zu \n", v4, a3->connectedDevices];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ LE devices            : %zu \n", &stru_283E79C60, string->lowEnergyConnections];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ classic devices       : %zu \n", v4, string->connectedDevices];
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ leRemote              : %zu \n", v5, a3->leRemote];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ leRemote              : %zu \n", v5, string->leRemote];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ leAcc                 : %zu \n", v6, a3->leAcc];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ leAcc                 : %zu \n", v6, string->leAcc];
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ btKb                  : %zu \n", v7, a3->btKB];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ btKb                  : %zu \n", v7, string->btKB];
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ a2dp                  : %zu \n", v8, a3->a2dp];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ a2dp                  : %zu \n", v8, string->a2dp];
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ btGC                  : %zu \n", v9, a3->btGC];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ btGC                  : %zu \n", v9, string->btGC];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ eAcc                  : %zu \n", v10, a3->eAcc];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ eAcc                  : %zu \n", v10, string->eAcc];
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ HK                    : %zu \n", v11, a3->hk];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ HK                    : %zu \n", v11, string->hk];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ non-HID               : %zu \n", v12, a3->nonHIDConnections];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ non-HID               : %zu \n", v12, string->nonHIDConnections];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ HID                   : %zu \n", v13, a3->connectedHIDDevices];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ HID                   : %zu \n", v13, string->connectedHIDDevices];
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ oneSniffAttemptDevices: %zu \n", v14, a3->oneSniffAttemptDevices];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ oneSniffAttemptDevices: %zu \n", v14, string->oneSniffAttemptDevices];
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ twoSniffAttemptDevices: %zu \n", v15, a3->twoSniffAttemptDevices];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ twoSniffAttemptDevices: %zu \n", v15, string->twoSniffAttemptDevices];
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ sco                   : %zu \n", v16, a3->sco];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ sco                   : %zu \n", v16, string->sco];
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ wiap                  : %zu \n", v17, a3->wiap];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ wiap                  : %zu \n", v17, string->wiap];
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ remote                : %zu \n", v18, a3->remote];
+  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ remote                : %zu \n", v18, string->remote];
 
-  if (a3->isScanning)
+  if (string->isScanning)
   {
     v20 = @"YES";
   }
@@ -107,7 +107,7 @@
 
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ scanning              : %@ \n", v19, v20];
 
-  if (a3->isDiscoverable)
+  if (string->isDiscoverable)
   {
     v22 = @"YES";
   }
@@ -119,7 +119,7 @@
 
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ discoverable          : %@ \n", v21, v22];
 
-  if (a3->isConnectable)
+  if (string->isConnectable)
   {
     v24 = @"YES";
   }
@@ -134,15 +134,15 @@
   return v25;
 }
 
-+ (id)atvState2String:(unint64_t)a3
++ (id)atvState2String:(unint64_t)string
 {
-  v4 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d ("), a3;
+  v4 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d ("), string;
   if ([&unk_283EA9C08 count])
   {
     v5 = 0;
     do
     {
-      if ((qword_22AC9DF78[v5] & a3) != 0)
+      if ((qword_22AC9DF78[v5] & string) != 0)
       {
         v6 = MEMORY[0x277CCACA8];
         v7 = [&unk_283EA9C08 objectAtIndexedSubscript:v5];
@@ -162,17 +162,17 @@
   return v9;
 }
 
-+ (void)bandwidthFromATVState:(unint64_t)a3 MinBandwidth:(float *)a4 MaxBandwidth:(float *)a5
++ (void)bandwidthFromATVState:(unint64_t)state MinBandwidth:(float *)bandwidth MaxBandwidth:(float *)maxBandwidth
 {
   v5 = 0;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = (a3 >> 1) & 2;
-  if ((a3 & 2) != 0)
+  v6 = (state >> 1) & 2;
+  if ((state & 2) != 0)
   {
     v6 = 1;
   }
 
-  while ((btgcConfig[v5] & a3) == 0)
+  while ((btgcConfig[v5] & state) == 0)
   {
     if (++v5 == 4)
     {
@@ -184,8 +184,8 @@
   v7 = v5 + 1;
 LABEL_7:
   v8 = 0;
-  v9 = vand_s8(vshl_u32(vdup_n_s32(a3), 0xFFFFFFF9FFFFFFFALL), 0x100000001);
-  while ((leaConfig[v8] & a3) == 0)
+  v9 = vand_s8(vshl_u32(vdup_n_s32(state), 0xFFFFFFF9FFFFFFFALL), 0x100000001);
+  while ((leaConfig[v8] & state) == 0)
   {
     if (++v8 == 3)
     {
@@ -197,7 +197,7 @@ LABEL_7:
   v10 = v8 + 1;
 LABEL_12:
   v11 = 0;
-  while ((eaConfig[v11] & a3) == 0)
+  while ((eaConfig[v11] & state) == 0)
   {
     if (++v11 == 3)
     {
@@ -209,7 +209,7 @@ LABEL_12:
   v12 = v11 + 1;
 LABEL_17:
   v13 = 0;
-  while ((hkConfig_21606[v13] & a3) == 0)
+  while ((hkConfig_21606[v13] & state) == 0)
   {
     if (++v13 == 3)
     {
@@ -237,8 +237,8 @@ LABEL_22:
   }
 
   while (v15 != 7);
-  *a4 = v17;
-  *a5 = v16;
+  *bandwidth = v17;
+  *maxBandwidth = v16;
   v19 = *MEMORY[0x277D85DE8];
 }
 

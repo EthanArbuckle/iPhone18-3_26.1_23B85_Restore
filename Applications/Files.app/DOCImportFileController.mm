@@ -1,7 +1,7 @@
 @interface DOCImportFileController
 - (_TtC5Files23DOCImportFileController)init;
-- (void)documentPicker:(id)a3 didConfirmDocumentsAtURLs:(id)a4;
-- (void)documentPickerDidCancel:(id)a3;
+- (void)documentPicker:(id)picker didConfirmDocumentsAtURLs:(id)ls;
+- (void)documentPickerDidCancel:(id)cancel;
 @end
 
 @implementation DOCImportFileController
@@ -18,19 +18,19 @@
   return [(DOCImportFileController *)&v4 init];
 }
 
-- (void)documentPicker:(id)a3 didConfirmDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didConfirmDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_100070384(v6);
 }
 
-- (void)documentPickerDidCancel:(id)a3
+- (void)documentPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_1000704EC();
 }
 

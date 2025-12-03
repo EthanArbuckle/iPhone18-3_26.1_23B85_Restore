@@ -1,23 +1,23 @@
 @interface ATHostNetService
-- (ATHostNetService)initWithNetService:(id)a3;
+- (ATHostNetService)initWithNetService:(id)service;
 @end
 
 @implementation ATHostNetService
 
-- (ATHostNetService)initWithNetService:(id)a3
+- (ATHostNetService)initWithNetService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v16.receiver = self;
   v16.super_class = ATHostNetService;
   v6 = [(ATHostNetService *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_netService, a3);
-    v8 = [v5 TXTRecordData];
-    if (v8)
+    objc_storeStrong(&v6->_netService, service);
+    tXTRecordData = [serviceCopy TXTRecordData];
+    if (tXTRecordData)
     {
-      v9 = [MEMORY[0x277CCAB78] dictionaryFromTXTRecordData:v8];
+      v9 = [MEMORY[0x277CCAB78] dictionaryFromTXTRecordData:tXTRecordData];
     }
 
     else

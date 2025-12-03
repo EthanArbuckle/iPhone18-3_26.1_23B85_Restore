@@ -3,91 +3,91 @@
 - (CGPoint)anchorPointFromConfiguration;
 - (CGSize)directionalShadowOffset;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (CLKUIHandView)initWithConfiguration:(id)a3 forDevice:(id)a4 maskedShadow:(BOOL)a5;
-- (CLKUIHandView)initWithImage:(id)a3 forDevice:(id)a4;
+- (CLKUIHandView)initWithConfiguration:(id)configuration forDevice:(id)device maskedShadow:(BOOL)shadow;
+- (CLKUIHandView)initWithImage:(id)image forDevice:(id)device;
 - (UIEdgeInsets)inlayInsets;
 - (UIEdgeInsets)shadowInsets;
 - (void)_adjustHandImageSubviewOrder;
-- (void)_initWithImage:(id)a3 forDevice:(id)a4;
+- (void)_initWithImage:(id)image forDevice:(id)device;
 - (void)_layoutInlayLayer;
 - (void)_updateShadows;
 - (void)_updateTransform;
 - (void)layoutSubviews;
-- (void)noModelUpdate_setHandDotColor:(id)a3;
-- (void)noModelUpdate_setInlayColor:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setColor:(id)a3;
-- (void)setDropShadowImage:(id)a3;
-- (void)setDropShadowsHidden:(BOOL)a3;
-- (void)setEnableBackgroundColorAction:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)noModelUpdate_setHandDotColor:(id)color;
+- (void)noModelUpdate_setInlayColor:(id)color;
+- (void)setAlpha:(double)alpha;
+- (void)setColor:(id)color;
+- (void)setDropShadowImage:(id)image;
+- (void)setDropShadowsHidden:(BOOL)hidden;
+- (void)setEnableBackgroundColorAction:(BOOL)action;
+- (void)setHidden:(BOOL)hidden;
 - (void)setNeedsLayout;
-- (void)setRadialShadowImage:(id)a3;
-- (void)setRadialShadowsHidden:(BOOL)a3;
-- (void)setShadowImageBehindHand:(BOOL)a3;
-- (void)setShadowsHidden:(BOOL)a3;
-- (void)setupHandDotViewWithDiameter:(double)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setRadialShadowImage:(id)image;
+- (void)setRadialShadowsHidden:(BOOL)hidden;
+- (void)setShadowImageBehindHand:(BOOL)hand;
+- (void)setShadowsHidden:(BOOL)hidden;
+- (void)setupHandDotViewWithDiameter:(double)diameter;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CLKUIHandView
 
-- (CLKUIHandView)initWithImage:(id)a3 forDevice:(id)a4
+- (CLKUIHandView)initWithImage:(id)image forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = CLKUIHandView;
   v8 = [(CLKUIHandView *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CLKUIHandView *)v8 _initWithImage:v6 forDevice:v7];
+    [(CLKUIHandView *)v8 _initWithImage:imageCopy forDevice:deviceCopy];
   }
 
   return v9;
 }
 
-- (void)_initWithImage:(id)a3 forDevice:(id)a4
+- (void)_initWithImage:(id)image forDevice:(id)device
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CLKUIColoringImageView alloc] initWithImage:v6];
+  imageCopy = image;
+  deviceCopy = device;
+  v8 = [[CLKUIColoringImageView alloc] initWithImage:imageCopy];
   handImageView = self->_handImageView;
   self->_handImageView = v8;
 
-  [(UIImage *)v6 size];
+  [(UIImage *)imageCopy size];
   v11 = v10;
-  [(UIImage *)v6 size];
+  [(UIImage *)imageCopy size];
   [(CLKUIColoringImageView *)self->_handImageView setBounds:0.0, 0.0, v11, v12];
   [(CLKUIHandView *)self addSubview:self->_handImageView];
   device = self->_device;
-  self->_device = v7;
-  v14 = v7;
+  self->_device = deviceCopy;
+  v14 = deviceCopy;
 
   image = self->_image;
-  self->_image = v6;
-  v16 = v6;
+  self->_image = imageCopy;
+  v16 = imageCopy;
 
   self->_dropShadowsHidden = 1;
   [(CLKUIHandView *)self _updateShadows];
   self->_scale = 1.0;
   self->_zRotation = 0.0;
-  v17 = [(CLKUIHandView *)self layer];
+  layer = [(CLKUIHandView *)self layer];
   v22[0] = @"transform";
-  v18 = [MEMORY[0x1E695DFB0] null];
-  v23[0] = v18;
+  null = [MEMORY[0x1E695DFB0] null];
+  v23[0] = null;
   v22[1] = @"bounds";
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v23[1] = v19;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v23[1] = null2;
   v22[2] = @"position";
-  v20 = [MEMORY[0x1E695DFB0] null];
-  v23[2] = v20;
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v23[2] = null3;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
-  [v17 setActions:v21];
+  [layer setActions:v21];
 }
 
 - (void)layoutSubviews
@@ -111,14 +111,14 @@
   Height = CGRectGetHeight(v21);
   [(UIImageView *)self->_dropShadowImageView bounds];
   v10 = Height / CGRectGetHeight(v22);
-  v11 = [(CLKUIHandView *)self layer];
-  [v11 anchorPoint];
+  layer = [(CLKUIHandView *)self layer];
+  [layer anchorPoint];
   v13 = (v12 + -0.5) * v8 + 0.5;
-  v14 = [(CLKUIHandView *)self layer];
-  [v14 anchorPoint];
+  layer2 = [(CLKUIHandView *)self layer];
+  [layer2 anchorPoint];
   v16 = (v15 + -0.5) * v10 + 0.5;
-  v17 = [(UIImageView *)self->_dropShadowImageView layer];
-  [v17 setAnchorPoint:{v13, v16}];
+  layer3 = [(UIImageView *)self->_dropShadowImageView layer];
+  [layer3 setAnchorPoint:{v13, v16}];
 
   [(CLKUIHandView *)self _updateShadows];
 }
@@ -141,49 +141,49 @@
   [(CALayer *)v15 setCornerRadius:v10 * 0.5];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
-  [(CLKUIHandView *)self noModelUpdate_setColor:v5];
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
+  [(CLKUIHandView *)self noModelUpdate_setColor:colorCopy];
 }
 
 - (void)_updateTransform
 {
-  v3 = [(CLKUIHandView *)self layer];
+  layer = [(CLKUIHandView *)self layer];
   CATransform3DMakeScale(&v5, self->_scale, self->_scale, self->_scale);
   CATransform3DRotate(&v6, &v5, self->_zRotation, 0.0, 0.0, 1.0);
-  [v3 setTransform:&v6];
+  [layer setTransform:&v6];
 
-  v4 = [(UIImageView *)self->_dropShadowImageView layer];
+  layer2 = [(UIImageView *)self->_dropShadowImageView layer];
   CATransform3DMakeScale(&v5, self->_scale, self->_scale, self->_scale);
   CATransform3DRotate(&v6, &v5, self->_zRotation, 0.0, 0.0, 1.0);
-  [v4 setTransform:&v6];
+  [layer2 setTransform:&v6];
 }
 
-- (void)setEnableBackgroundColorAction:(BOOL)a3
+- (void)setEnableBackgroundColorAction:(BOOL)action
 {
-  if (self->_enableBackgroundColorAction != a3)
+  if (self->_enableBackgroundColorAction != action)
   {
-    v3 = a3;
-    v5 = [(CALayer *)self->_inlayLayer actions];
-    v8 = [v5 mutableCopy];
+    actionCopy = action;
+    actions = [(CALayer *)self->_inlayLayer actions];
+    v8 = [actions mutableCopy];
 
-    if (v3)
+    if (actionCopy)
     {
       [v8 removeObjectForKey:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v8 setObject:v6 forKey:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v8 setObject:null forKey:@"backgroundColor"];
     }
 
-    v7 = [(CLKUIHandView *)self inlayLayer];
-    [v7 setActions:v8];
+    inlayLayer = [(CLKUIHandView *)self inlayLayer];
+    [inlayLayer setActions:v8];
 
-    self->_enableBackgroundColorAction = v3;
+    self->_enableBackgroundColorAction = actionCopy;
   }
 }
 
@@ -193,28 +193,28 @@
   inlayLayer = self->_inlayLayer;
   if (!inlayLayer)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v5 = self->_inlayLayer;
-    self->_inlayLayer = v4;
+    self->_inlayLayer = layer;
 
     v6 = self->_inlayLayer;
     v14[0] = @"transform";
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v15[0] = v7;
+    null = [MEMORY[0x1E695DFB0] null];
+    v15[0] = null;
     v14[1] = @"bounds";
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v15[1] = v8;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v15[1] = null2;
     v14[2] = @"position";
-    v9 = [MEMORY[0x1E695DFB0] null];
-    v15[2] = v9;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v15[2] = null3;
     v14[3] = @"backgroundColor";
-    v10 = [MEMORY[0x1E695DFB0] null];
-    v15[3] = v10;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v15[3] = null4;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
     [(CALayer *)v6 setActions:v11];
 
-    v12 = [(CLKUIColoringImageView *)self->_handImageView layer];
-    [v12 addSublayer:self->_inlayLayer];
+    layer2 = [(CLKUIColoringImageView *)self->_handImageView layer];
+    [layer2 addSublayer:self->_inlayLayer];
 
     [(CLKUIHandView *)self _adjustHandImageSubviewOrder];
     inlayLayer = self->_inlayLayer;
@@ -223,10 +223,10 @@
   return inlayLayer;
 }
 
-- (void)setRadialShadowImage:(id)a3
+- (void)setRadialShadowImage:(id)image
 {
-  v8 = a3;
-  objc_storeStrong(&self->_radialShadowImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_radialShadowImage, image);
   radialShadowImageView = self->_radialShadowImageView;
   if (!radialShadowImageView)
   {
@@ -238,16 +238,16 @@
     radialShadowImageView = self->_radialShadowImageView;
   }
 
-  [(UIImageView *)radialShadowImageView setImage:v8];
+  [(UIImageView *)radialShadowImageView setImage:imageCopy];
   [(CLKUIHandView *)self _updateShadows];
 }
 
-- (void)setShadowImageBehindHand:(BOOL)a3
+- (void)setShadowImageBehindHand:(BOOL)hand
 {
-  v3 = a3;
-  self->_shadowImageBehindHand = a3;
+  handCopy = hand;
+  self->_shadowImageBehindHand = hand;
   radialShadowImageView = self->_radialShadowImageView;
-  if (v3)
+  if (handCopy)
   {
     [(CLKUIHandView *)self sendSubviewToBack:radialShadowImageView];
   }
@@ -258,15 +258,15 @@
   }
 }
 
-- (void)noModelUpdate_setInlayColor:(id)a3
+- (void)noModelUpdate_setInlayColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   inlayColor = self->_inlayColor;
-  if (inlayColor != v5)
+  if (inlayColor != colorCopy)
   {
-    v12 = v5;
-    v7 = v5 == 0;
-    objc_storeStrong(&self->_inlayColor, a3);
+    v12 = colorCopy;
+    v7 = colorCopy == 0;
+    objc_storeStrong(&self->_inlayColor, color);
     if (((v7 ^ (inlayColor != 0)) & 1) == 0)
     {
       if (v12)
@@ -280,55 +280,55 @@
       }
 
       v9 = !v8;
-      v10 = [(CLKUIHandView *)self inlayLayer];
-      [v10 setHidden:v9];
+      inlayLayer = [(CLKUIHandView *)self inlayLayer];
+      [inlayLayer setHidden:v9];
     }
 
     if (self->_inlayColor)
     {
-      v11 = [(CLKUIHandView *)self inlayLayer];
-      [v11 setBackgroundColor:{-[UIColor CGColor](self->_inlayColor, "CGColor")}];
+      inlayLayer2 = [(CLKUIHandView *)self inlayLayer];
+      [inlayLayer2 setBackgroundColor:{-[UIColor CGColor](self->_inlayColor, "CGColor")}];
     }
 
     [(CLKUIHandView *)self setNeedsLayout];
-    v5 = v12;
+    colorCopy = v12;
   }
 }
 
-- (void)setShadowsHidden:(BOOL)a3
+- (void)setShadowsHidden:(BOOL)hidden
 {
-  if (self->_shadowsHidden != a3)
+  if (self->_shadowsHidden != hidden)
   {
-    self->_shadowsHidden = a3;
+    self->_shadowsHidden = hidden;
     [(CLKUIHandView *)self _updateShadows];
   }
 }
 
-- (void)setRadialShadowsHidden:(BOOL)a3
+- (void)setRadialShadowsHidden:(BOOL)hidden
 {
-  if (self->_radialShadowsHidden != a3)
+  if (self->_radialShadowsHidden != hidden)
   {
-    self->_radialShadowsHidden = a3;
+    self->_radialShadowsHidden = hidden;
     [(CLKUIHandView *)self _updateShadows];
   }
 }
 
-- (void)setDropShadowsHidden:(BOOL)a3
+- (void)setDropShadowsHidden:(BOOL)hidden
 {
-  if (self->_dropShadowsHidden != a3)
+  if (self->_dropShadowsHidden != hidden)
   {
-    self->_dropShadowsHidden = a3;
+    self->_dropShadowsHidden = hidden;
     [(CLKUIHandView *)self _updateShadows];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = CLKUIHandView;
   [(CLKUIHandView *)&v5 setHidden:?];
-  [(CLKUIHandView *)self setShadowsHidden:v3];
+  [(CLKUIHandView *)self setShadowsHidden:hiddenCopy];
 }
 
 - (void)setNeedsLayout
@@ -413,23 +413,23 @@ LABEL_10:
   }
 }
 
-- (void)setDropShadowImage:(id)a3
+- (void)setDropShadowImage:(id)image
 {
-  objc_storeStrong(&self->_dropShadowImage, a3);
+  objc_storeStrong(&self->_dropShadowImage, image);
 
   [(CLKUIHandView *)self _updateShadows];
 }
 
-- (void)noModelUpdate_setHandDotColor:(id)a3
+- (void)noModelUpdate_setHandDotColor:(id)color
 {
-  objc_storeStrong(&self->_handDotColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_handDotColor, color);
+  colorCopy = color;
   handDotColor = self->_handDotColor;
-  v7 = [(CLKUIHandView *)self handDotView];
-  [v7 setBackgroundColor:handDotColor];
+  handDotView = [(CLKUIHandView *)self handDotView];
+  [handDotView setBackgroundColor:handDotColor];
 }
 
-- (void)setupHandDotViewWithDiameter:(double)a3
+- (void)setupHandDotViewWithDiameter:(double)diameter
 {
   handDotView = self->_handDotView;
   if (!handDotView)
@@ -441,20 +441,20 @@ LABEL_10:
     handDotView = self->_handDotView;
   }
 
-  [(UIView *)handDotView setBounds:0.0, 0.0, a3, a3];
-  v8 = [(UIView *)self->_handDotView layer];
-  [v8 setCornerRadius:a3 * 0.5];
+  [(UIView *)handDotView setBounds:0.0, 0.0, diameter, diameter];
+  layer = [(UIView *)self->_handDotView layer];
+  [layer setCornerRadius:diameter * 0.5];
 
   v9 = self->_handDotView;
   [(CLKUIHandView *)self bounds];
   v11 = v10;
-  v12 = [(CLKUIHandView *)self layer];
-  [v12 anchorPoint];
+  layer2 = [(CLKUIHandView *)self layer];
+  [layer2 anchorPoint];
   v14 = v11 * v13;
   [(CLKUIHandView *)self bounds];
   v16 = v15;
-  v17 = [(CLKUIHandView *)self layer];
-  [v17 anchorPoint];
+  layer3 = [(CLKUIHandView *)self layer];
+  [layer3 anchorPoint];
   [(UIView *)v9 setCenter:v14, v16 * v18];
 
   [(CLKUIHandView *)self addSubview:self->_handDotView];
@@ -468,8 +468,8 @@ LABEL_10:
   if (inlayLayer)
   {
     [(CALayer *)inlayLayer removeFromSuperlayer];
-    v4 = [(CLKUIColoringImageView *)self->_handImageView layer];
-    [v4 addSublayer:self->_inlayLayer];
+    layer = [(CLKUIColoringImageView *)self->_handImageView layer];
+    [layer addSublayer:self->_inlayLayer];
   }
 
   handDotView = self->_handDotView;
@@ -478,67 +478,67 @@ LABEL_10:
   [(CLKUIHandView *)self insertSubview:handDotView aboveSubview:handImageView];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(CLKUIHandView *)self filterProvider];
-  v10 = [v5 filtersForView:self style:2 fraction:a3];
+  filterProvider = [(CLKUIHandView *)self filterProvider];
+  v10 = [filterProvider filtersForView:self style:2 fraction:fraction];
 
   if (v10)
   {
-    v6 = [(CLKUIColoringImageView *)self->_handImageView layer];
-    [v6 setFilters:v10];
+    layer = [(CLKUIColoringImageView *)self->_handImageView layer];
+    [layer setFilters:v10];
   }
 
-  v7 = [(CLKUIHandView *)self filterProvider];
-  v8 = [v7 filtersForView:self style:0 fraction:a3];
+  filterProvider2 = [(CLKUIHandView *)self filterProvider];
+  v8 = [filterProvider2 filtersForView:self style:0 fraction:fraction];
 
   if (v8)
   {
-    v9 = [(UIView *)self->_handDotView layer];
-    [v9 setFilters:v8];
+    layer2 = [(UIView *)self->_handDotView layer];
+    [layer2 setFilters:v8];
   }
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(CLKUIHandView *)self filterProvider];
-  v8 = [v3 filtersForView:self style:2];
+  filterProvider = [(CLKUIHandView *)self filterProvider];
+  v8 = [filterProvider filtersForView:self style:2];
 
   if (v8)
   {
-    v4 = [(CLKUIColoringImageView *)self->_handImageView layer];
-    [v4 setFilters:v8];
+    layer = [(CLKUIColoringImageView *)self->_handImageView layer];
+    [layer setFilters:v8];
   }
 
-  v5 = [(CLKUIHandView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:0];
+  filterProvider2 = [(CLKUIHandView *)self filterProvider];
+  v6 = [filterProvider2 filtersForView:self style:0];
 
   if (v6)
   {
-    v7 = [(UIView *)self->_handDotView layer];
-    [v7 setFilters:v6];
+    layer2 = [(UIView *)self->_handDotView layer];
+    [layer2 setFilters:v6];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = CLKUIHandView;
-  [(CLKUIHandView *)&v4 setAlpha:a3];
+  [(CLKUIHandView *)&v4 setAlpha:alpha];
   [(CLKUIHandView *)self _updateShadows];
 }
 
-- (CLKUIHandView)initWithConfiguration:(id)a3 forDevice:(id)a4 maskedShadow:(BOOL)a5
+- (CLKUIHandView)initWithConfiguration:(id)configuration forDevice:(id)device maskedShadow:(BOOL)shadow
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  shadowCopy = shadow;
+  configurationCopy = configuration;
+  deviceCopy = device;
   v26.receiver = self;
   v26.super_class = CLKUIHandView;
   v10 = [(CLKUIHandView *)&v26 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [configurationCopy copy];
     configuration = v10->_configuration;
     v10->_configuration = v11;
 
@@ -548,7 +548,7 @@ LABEL_10:
     [(CLKUIAnalogHandConfiguration *)v10->_configuration radialShadowOpacity];
     v17 = v16;
     v18 = v16 == 0.0;
-    if (v5)
+    if (shadowCopy)
     {
       v19 = 22;
     }
@@ -560,7 +560,7 @@ LABEL_10:
 
     v20 = [CLKUIAnalogHandFactory getAssets:v19 forConfiguration:v10->_configuration];
     v21 = [v20 objectForKey:&unk_1F5E96DE0];
-    [(CLKUIHandView *)v10 _initWithImage:v21 forDevice:v9];
+    [(CLKUIHandView *)v10 _initWithImage:v21 forDevice:deviceCopy];
     [(CLKUIAnalogHandConfiguration *)v10->_configuration bounds];
     [(CLKUIHandView *)v10 setBounds:?];
     [(CLKUIAnalogHandConfiguration *)v10->_configuration inlayInsets];
@@ -572,7 +572,7 @@ LABEL_10:
     [(CLKUIHandView *)v10 setDirectionalShadowOffset:?];
     if (v14 != 0.0)
     {
-      if (v5)
+      if (shadowCopy)
       {
         v22 = &unk_1F5E96DF8;
       }

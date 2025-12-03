@@ -1,34 +1,34 @@
 @interface PUCompositeVideoActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityViewController;
 - (void)_exportGeneratedVideo;
-- (void)_finishWithSuccess:(BOOL)a3 cancelled:(BOOL)a4;
-- (void)_sucessfullyFinishedSaving:(BOOL)a3 error:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)prepareWithViewController:(id)a3 assets:(id)a4;
+- (void)_finishWithSuccess:(BOOL)success cancelled:(BOOL)cancelled;
+- (void)_sucessfullyFinishedSaving:(BOOL)saving error:(id)error;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)prepareWithActivityItems:(id)items;
+- (void)prepareWithViewController:(id)controller assets:(id)assets;
 @end
 
 @implementation PUCompositeVideoActivity
 
-- (void)_finishWithSuccess:(BOOL)a3 cancelled:(BOOL)a4
+- (void)_finishWithSuccess:(BOOL)success cancelled:(BOOL)cancelled
 {
-  v4 = a4;
-  v5 = a3;
-  [(PUCompositeVideoActivity *)self setCancelled:a4];
+  cancelledCopy = cancelled;
+  successCopy = success;
+  [(PUCompositeVideoActivity *)self setCancelled:cancelled];
   [(PUCompositeVideoActivity *)self setGenerator:0];
   [(PUCompositeVideoActivity *)self setExportSession:0];
   [(PUCompositeVideoActivity *)self setPresenterViewController:0];
-  [(UIActivity *)self activityDidFinish:v5];
-  v7 = [(PXActivity *)self actionDelegate];
+  [(UIActivity *)self activityDidFinish:successCopy];
+  actionDelegate = [(PXActivity *)self actionDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    v9 = [(PXActivity *)self actionDelegate];
-    if (v4)
+    actionDelegate2 = [(PXActivity *)self actionDelegate];
+    if (cancelledCopy)
     {
       v10 = v11;
     }
@@ -38,16 +38,16 @@
       v10 = 0;
     }
 
-    [v9 activity:self didFinishWithSuccess:v5 error:v10];
+    [actionDelegate2 activity:self didFinishWithSuccess:successCopy error:v10];
   }
 }
 
-- (void)_sucessfullyFinishedSaving:(BOOL)a3 error:(id)a4
+- (void)_sucessfullyFinishedSaving:(BOOL)saving error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (![(PUCompositeVideoActivity *)self isCancelled])
   {
-    v6 = v5;
+    v6 = errorCopy;
     px_dispatch_on_main_queue();
   }
 }
@@ -257,44 +257,44 @@ void __49__PUCompositeVideoActivity__exportGeneratedVideo__block_invoke_2(uint64
   [*(a1 + 32) _sucessfullyFinishedSaving:a2 error:v5];
 }
 
-- (void)prepareWithViewController:(id)a3 assets:(id)a4
+- (void)prepareWithViewController:(id)controller assets:(id)assets
 {
-  v9 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (assets)
   {
-    v6 = a4;
-    v7 = [[PUCompositeVideoGenerator alloc] initWithAssets:v6 outputType:1 onlyAllowOverlappingAssets:0];
+    assetsCopy = assets;
+    v7 = [[PUCompositeVideoGenerator alloc] initWithAssets:assetsCopy outputType:1 onlyAllowOverlappingAssets:0];
 
     [(PUCompositeVideoGenerator *)v7 registerChangeObserver:self context:generatorContext];
     [(PUCompositeVideoActivity *)self setGenerator:v7];
   }
 
-  [(PUCompositeVideoActivity *)self setPresenterViewController:v9];
-  v8 = [(PUCompositeVideoActivity *)self generator];
-  [v8 start];
+  [(PUCompositeVideoActivity *)self setPresenterViewController:controllerCopy];
+  generator = [(PUCompositeVideoActivity *)self generator];
+  [generator start];
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  [(PUCompositeVideoActivity *)self prepareWithViewController:v9 assets:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  [(PUCompositeVideoActivity *)self prepareWithViewController:controllerCopy assets:0];
   v11.receiver = self;
   v11.super_class = PUCompositeVideoActivity;
-  LOBYTE(v5) = [(PXActivity *)&v11 _presentActivityOnViewController:v9 animated:v5 completion:v8];
+  LOBYTE(animatedCopy) = [(PXActivity *)&v11 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-  return v5;
+  return animatedCopy;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && generatorContext == a5)
+  if ((change & 1) != 0 && generatorContext == context)
   {
-    v6 = [(PUCompositeVideoActivity *)self generator];
-    v7 = [v6 state];
+    generator = [(PUCompositeVideoActivity *)self generator];
+    state = [generator state];
 
-    if (v7 == 2)
+    if (state == 2)
     {
 
       [(PUCompositeVideoActivity *)self _exportGeneratedVideo];
@@ -302,22 +302,22 @@ void __49__PUCompositeVideoActivity__exportGeneratedVideo__block_invoke_2(uint64
   }
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   [(PUCompositeVideoActivity *)self setCancelled:0];
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 assets];
-  v7 = [v5 array];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  array = [assets array];
 
-  v6 = [[PUCompositeVideoGenerator alloc] initWithAssets:v7 outputType:1 onlyAllowOverlappingAssets:0];
+  v6 = [[PUCompositeVideoGenerator alloc] initWithAssets:array outputType:1 onlyAllowOverlappingAssets:0];
   [(PUCompositeVideoGenerator *)v6 registerChangeObserver:self context:generatorContext];
   [(PUCompositeVideoActivity *)self setGenerator:v6];
 }
 
 - (id)activityViewController
 {
-  v3 = [(PUCompositeVideoActivity *)self progressController];
-  if (!v3)
+  progressController = [(PUCompositeVideoActivity *)self progressController];
+  if (!progressController)
   {
     objc_initWeak(&location, self);
     v4 = PULocalizedString(@"SHARING_SAVE_LIVE_PHOTO_VIDEO_ACTIVITY_PROGRESS_ALERT_MESSAGE");
@@ -327,14 +327,14 @@ void __49__PUCompositeVideoActivity__exportGeneratedVideo__block_invoke_2(uint64
     v9 = __50__PUCompositeVideoActivity_activityViewController__block_invoke;
     v10 = &unk_1E7B80638;
     objc_copyWeak(&v11, &location);
-    v3 = [v5 activityAlertControllerWithTitle:v4 cancelHandler:&v7];
-    [(PUCompositeVideoActivity *)self setProgressController:v3, v7, v8, v9, v10];
+    progressController = [v5 activityAlertControllerWithTitle:v4 cancelHandler:&v7];
+    [(PUCompositeVideoActivity *)self setProgressController:progressController, v7, v8, v9, v10];
     objc_destroyWeak(&v11);
 
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return progressController;
 }
 
 void __50__PUCompositeVideoActivity_activityViewController__block_invoke(uint64_t a1)
@@ -343,21 +343,21 @@ void __50__PUCompositeVideoActivity_activityViewController__block_invoke(uint64_
   [WeakRetained _finishWithSuccess:0 cancelled:1];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  if (!v5)
+  if (!isPreparingIndividualItems)
   {
     return 0;
   }
 
-  v6 = [(PXActivity *)self itemSourceController];
-  v7 = [v6 assets];
+  itemSourceController2 = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController2 assets];
 
-  LOBYTE(v6) = [PUCompositeVideoActivity canPerformWithAssets:v7];
-  return v6;
+  LOBYTE(itemSourceController2) = [PUCompositeVideoActivity canPerformWithAssets:assets];
+  return itemSourceController2;
 }
 
 uint64_t __49__PUCompositeVideoActivity_canPerformWithAssets___block_invoke(uint64_t a1, void *a2)

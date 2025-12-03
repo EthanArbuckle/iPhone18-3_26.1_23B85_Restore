@@ -1,31 +1,31 @@
 @interface ASTIdentity
-+ (ASTIdentity)identityWithIdentityAliases:(id)a3;
-+ (ASTIdentity)identityWithSerialNumber:(id)a3;
-- (ASTIdentity)initWithCoder:(id)a3;
-- (ASTIdentity)initWithIdentityAliases:(id)a3;
-- (id)_dictionariesFromIdentityAliases:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (ASTIdentity)identityWithIdentityAliases:(id)aliases;
++ (ASTIdentity)identityWithSerialNumber:(id)number;
+- (ASTIdentity)initWithCoder:(id)coder;
+- (ASTIdentity)initWithIdentityAliases:(id)aliases;
+- (id)_dictionariesFromIdentityAliases:(id)aliases;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userAgent;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASTIdentity
 
-- (ASTIdentity)initWithIdentityAliases:(id)a3
+- (ASTIdentity)initWithIdentityAliases:(id)aliases
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  aliasesCopy = aliases;
   v39.receiver = self;
   v39.super_class = ASTIdentity;
   v6 = [(ASTIdentity *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(ASTIdentity *)v6 _dictionariesFromIdentityAliases:v5];
+    v8 = [(ASTIdentity *)v6 _dictionariesFromIdentityAliases:aliasesCopy];
     if ([MEMORY[0x277CCAAA0] isValidJSONObject:v8])
     {
-      obj = a3;
-      v33 = v5;
+      obj = aliases;
+      v33 = aliasesCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -80,9 +80,9 @@ LABEL_15:
 
       objc_storeStrong(&v7->_aliases, obj);
       objc_storeStrong(&v7->_json, v8);
-      v21 = [MEMORY[0x277CCA8D8] mainBundle];
-      v22 = [v21 infoDictionary];
-      v23 = [v22 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      infoDictionary = [mainBundle infoDictionary];
+      v23 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
       v24 = v23;
       if (v23)
       {
@@ -96,9 +96,9 @@ LABEL_15:
 
       objc_storeStrong(&v7->_hostAppVersion, v25);
 
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v26 = [v19 infoDictionary];
-      v27 = [v26 objectForKeyedSubscript:@"CFBundleVersion"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      infoDictionary2 = [mainBundle2 infoDictionary];
+      v27 = [infoDictionary2 objectForKeyedSubscript:@"CFBundleVersion"];
       v28 = v27;
       if (v27)
       {
@@ -112,12 +112,12 @@ LABEL_15:
 
       objc_storeStrong(&v7->_hostAppBuild, v29);
 
-      v5 = v33;
+      aliasesCopy = v33;
     }
 
     else
     {
-      v19 = v7;
+      mainBundle2 = v7;
       v7 = 0;
     }
   }
@@ -126,19 +126,19 @@ LABEL_15:
   return v7;
 }
 
-+ (ASTIdentity)identityWithIdentityAliases:(id)a3
++ (ASTIdentity)identityWithIdentityAliases:(id)aliases
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentityAliases:v4];
+  aliasesCopy = aliases;
+  v5 = [[self alloc] initWithIdentityAliases:aliasesCopy];
 
   return v5;
 }
 
-+ (ASTIdentity)identityWithSerialNumber:(id)a3
++ (ASTIdentity)identityWithSerialNumber:(id)number
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [ASTIdentityAlias identityAliasWithSerialNumber:a3];
-  v5 = [a1 alloc];
+  v4 = [ASTIdentityAlias identityAliasWithSerialNumber:number];
+  v5 = [self alloc];
   v10[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v7 = [v5 initWithIdentityAliases:v6];
@@ -192,19 +192,19 @@ void __24__ASTIdentity_userAgent__block_invoke(uint64_t a1)
   userAgent_userAgent = v14;
 }
 
-- (ASTIdentity)initWithCoder:(id)a3
+- (ASTIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ASTIdentity;
   v5 = [(ASTIdentity *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hostAppVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hostAppVersion"];
     hostAppVersion = v5->_hostAppVersion;
     v5->_hostAppVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hostAppBuild"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hostAppBuild"];
     hostAppBuild = v5->_hostAppBuild;
     v5->_hostAppBuild = v8;
 
@@ -212,7 +212,7 @@ void __24__ASTIdentity_userAgent__block_invoke(uint64_t a1)
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"aliases"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"aliases"];
     aliases = v5->_aliases;
     v5->_aliases = v14;
 
@@ -232,47 +232,47 @@ void __24__ASTIdentity_userAgent__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASTIdentity *)self hostAppVersion];
-  [v4 encodeObject:v5 forKey:@"hostAppVersion"];
+  coderCopy = coder;
+  hostAppVersion = [(ASTIdentity *)self hostAppVersion];
+  [coderCopy encodeObject:hostAppVersion forKey:@"hostAppVersion"];
 
-  v6 = [(ASTIdentity *)self hostAppBuild];
-  [v4 encodeObject:v6 forKey:@"hostAppBuild"];
+  hostAppBuild = [(ASTIdentity *)self hostAppBuild];
+  [coderCopy encodeObject:hostAppBuild forKey:@"hostAppBuild"];
 
-  v7 = [(ASTIdentity *)self aliases];
-  [v4 encodeObject:v7 forKey:@"aliases"];
+  aliases = [(ASTIdentity *)self aliases];
+  [coderCopy encodeObject:aliases forKey:@"aliases"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_hostAppVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_hostAppVersion copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_hostAppBuild copyWithZone:a3];
+  v8 = [(NSString *)self->_hostAppBuild copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSArray *)self->_aliases copyWithZone:a3];
+  v10 = [(NSArray *)self->_aliases copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (id)_dictionariesFromIdentityAliases:(id)a3
+- (id)_dictionariesFromIdentityAliases:(id)aliases
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  aliasesCopy = aliases;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(aliasesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = aliasesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -287,8 +287,8 @@ void __24__ASTIdentity_userAgent__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dictionary];
-        [v4 addObject:v10];
+        dictionary = [*(*(&v13 + 1) + 8 * i) dictionary];
+        [v4 addObject:dictionary];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

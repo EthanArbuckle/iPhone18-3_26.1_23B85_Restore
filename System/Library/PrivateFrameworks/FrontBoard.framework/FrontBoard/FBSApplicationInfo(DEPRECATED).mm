@@ -11,7 +11,7 @@
 - (id)_initForProfileManagerTesting
 {
   v2 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/"];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &off_1F1C26950;
   v3 = objc_msgSendSuper2(&v5, sel__initWithBundleIdentifier_url_, @"com.apple.frontboard.appInfoTest", v2);
 
@@ -20,8 +20,8 @@
 
 - (uint64_t)signatureState
 {
-  v2 = [a1 _signatureValidationService];
-  v3 = [a1 _mapSignatureStateFromTrustState:{objc_msgSend(v2, "trustStateForApplication:", a1)}];
+  _signatureValidationService = [self _signatureValidationService];
+  v3 = [self _mapSignatureStateFromTrustState:{objc_msgSend(_signatureValidationService, "trustStateForApplication:", self)}];
 
   return v3;
 }
@@ -29,26 +29,26 @@
 - (id)_signatureValidationService
 {
   v2 = objc_alloc(MEMORY[0x1E699FB38]);
-  v3 = [MEMORY[0x1E699FBC0] sharedInstance];
-  v4 = [a1 signerIdentity];
-  v5 = [v3 profilesForSignerIdentity:v4];
-  v6 = [MEMORY[0x1E699FBC0] sharedInstance];
-  v7 = [a1 bundleIdentifier];
-  v8 = [v2 initWithApplicationInfo:a1 andProvisioningProfiles:v5 isManaged:{objc_msgSend(v6, "isManaged:", v7)}];
+  mEMORY[0x1E699FBC0] = [MEMORY[0x1E699FBC0] sharedInstance];
+  signerIdentity = [self signerIdentity];
+  v5 = [mEMORY[0x1E699FBC0] profilesForSignerIdentity:signerIdentity];
+  mEMORY[0x1E699FBC0]2 = [MEMORY[0x1E699FBC0] sharedInstance];
+  bundleIdentifier = [self bundleIdentifier];
+  v8 = [v2 initWithApplicationInfo:self andProvisioningProfiles:v5 isManaged:{objc_msgSend(mEMORY[0x1E699FBC0]2, "isManaged:", bundleIdentifier)}];
 
   return v8;
 }
 
 - (void)acceptApplicationSignatureIdentity
 {
-  v1 = [a1 signerIdentity];
-  if (v1)
+  signerIdentity = [self signerIdentity];
+  if (signerIdentity)
   {
-    v7 = v1;
+    v7 = signerIdentity;
     MCProfileConnectionClass = getMCProfileConnectionClass();
-    v3 = [MCProfileConnectionClass sharedConnection];
-    v4 = [v3 trustedCodeSigningIdentities];
-    v5 = [v4 mutableCopy];
+    mCProfileConnectionClass = [MCProfileConnectionClass sharedConnection];
+    trustedCodeSigningIdentities = [mCProfileConnectionClass trustedCodeSigningIdentities];
+    v5 = [trustedCodeSigningIdentities mutableCopy];
 
     if (!v5)
     {
@@ -56,10 +56,10 @@
     }
 
     [v5 addObject:v7];
-    v6 = [MCProfileConnectionClass sharedConnection];
-    [v6 setTrustedCodeSigningIdentities:v5];
+    mCProfileConnectionClass2 = [MCProfileConnectionClass sharedConnection];
+    [mCProfileConnectionClass2 setTrustedCodeSigningIdentities:v5];
 
-    v1 = v7;
+    signerIdentity = v7;
   }
 }
 

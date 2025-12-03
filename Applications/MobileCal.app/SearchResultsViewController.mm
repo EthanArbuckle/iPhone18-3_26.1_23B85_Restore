@@ -1,61 +1,61 @@
 @interface SearchResultsViewController
 - (BOOL)_useLargeFormatBehavior;
 - (BOOL)prefersShowingViewControllersOnNavigationStack;
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4;
-- (SearchResultsViewController)initWithModel:(id)a3 window:(id)a4;
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame;
+- (SearchResultsViewController)initWithModel:(id)model window:(id)window;
 - (SearchResultsViewControllerDelegate)searchResultsDelegate;
 - (UISearchBar)searchBar;
 - (double)_maxHeightOfTableView;
 - (id)_sizingContextWindow;
 - (id)backButtonTitleForEventDetails;
-- (id)contentUnavailableConfigurationForState:(id)a3;
-- (void)_eventStoreChanged:(id)a3;
+- (id)contentUnavailableConfigurationForState:(id)state;
+- (void)_eventStoreChanged:(id)changed;
 - (void)_refreshView;
-- (void)_searchResultsUpdated:(id)a3;
+- (void)_searchResultsUpdated:(id)updated;
 - (void)_setContentInsets;
 - (void)_updateFilterState;
 - (void)_updatePreferredContentSize;
-- (void)_updateTableAlpha:(BOOL)a3;
-- (void)beginSearch:(id)a3;
+- (void)_updateTableAlpha:(BOOL)alpha;
+- (void)beginSearch:(id)search;
 - (void)cancelTimer;
 - (void)dealloc;
-- (void)eventViewController:(id)a3 requestsDismissalOfEditViewController:(id)a4;
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5;
-- (void)scrollToDate:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)showEvent:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)eventViewController:(id)controller requestsDismissalOfEditViewController:(id)viewController;
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated;
+- (void)scrollToDate:(id)date animated:(BOOL)animated;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)showEvent:(id)event;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SearchResultsViewController
 
-- (SearchResultsViewController)initWithModel:(id)a3 window:(id)a4
+- (SearchResultsViewController)initWithModel:(id)model window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  windowCopy = window;
   v19.receiver = self;
   v19.super_class = SearchResultsViewController;
-  v8 = [(ListViewController *)&v19 initWithModel:v6 window:v7];
+  v8 = [(ListViewController *)&v19 initWithModel:modelCopy window:windowCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(MainViewController *)v8 model];
-    v11 = [v10 searchString];
+    model = [(MainViewController *)v8 model];
+    searchString = [model searchString];
 
-    if (v11)
+    if (searchString)
     {
-      v12 = [(MainViewController *)v9 model];
-      [v12 setSearchString:0];
+      model2 = [(MainViewController *)v9 model];
+      [model2 setSearchString:0];
     }
 
     [(ListViewController *)v9 setOverrideExtendedEdges:0];
@@ -82,8 +82,8 @@
   [(SearchResultsViewController *)self cancelTimer];
   if (![(SearchResultsViewController *)self shouldLeaveSearchString])
   {
-    v3 = [(MainViewController *)self model];
-    [v3 setSearchString:0];
+    model = [(MainViewController *)self model];
+    [model setSearchString:0];
   }
 
   v4.receiver = self;
@@ -99,77 +99,77 @@
   [(SearchResultsViewController *)&v3 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = SearchResultsViewController;
-  [(ListViewController *)&v13 viewWillAppear:a3];
-  v4 = [(SearchResultsViewController *)self presentingViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
+  [(ListViewController *)&v13 viewWillAppear:appear];
+  presentingViewController = [(SearchResultsViewController *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
   [(SearchResultsViewController *)self _updateFilterState];
   [(SearchResultsViewController *)self _updatePreferredContentSize];
-  v7 = [(SearchResultsViewController *)self presentingViewController];
-  v8 = [v7 view];
-  v9 = [v8 window];
+  presentingViewController2 = [(SearchResultsViewController *)self presentingViewController];
+  view2 = [presentingViewController2 view];
+  window2 = [view2 window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 
   [(SearchResultsViewController *)self _updateTableAlpha:0];
   v10 = +[NSNotificationCenter defaultCenter];
   v11 = CUIKCalendarModelSearchResultsAvailableNotification;
-  v12 = [(MainViewController *)self model];
-  [v10 addObserver:self selector:"_searchResultsUpdated:" name:v11 object:v12];
+  model = [(MainViewController *)self model];
+  [v10 addObserver:self selector:"_searchResultsUpdated:" name:v11 object:model];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SearchResultsViewController;
-  [(ListViewController *)&v10 viewDidAppear:a3];
+  [(ListViewController *)&v10 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(MainViewController *)self model];
-    v9 = [v8 searchString];
+    model = [(MainViewController *)self model];
+    searchString = [model searchString];
     *buf = 138543619;
     v12 = v7;
     v13 = 2113;
-    v14 = v9;
+    v14 = searchString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. searchString = %{private}@", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SearchResultsViewController;
-  [(ListViewController *)&v5 viewWillDisappear:a3];
+  [(ListViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(MainViewController *)self window];
+  window = [(MainViewController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
   [(SearchResultsViewController *)self _setContentInsets];
   v5.receiver = self;
   v5.super_class = SearchResultsViewController;
   [(SearchResultsViewController *)&v5 viewWillLayoutSubviews];
-  v4 = [(MainViewController *)self window];
+  window2 = [(MainViewController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 }
 
 - (void)_setContentInsets
 {
-  v3 = [(ListViewController *)self tableView];
-  [v3 contentInset];
+  tableView = [(ListViewController *)self tableView];
+  [tableView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -177,25 +177,25 @@
 
   if ([(ListViewController *)self destination]!= 2)
   {
-    v12 = [(SearchResultsViewController *)self searchBar];
-    [v12 bounds];
+    searchBar = [(SearchResultsViewController *)self searchBar];
+    [searchBar bounds];
     MaxY = CGRectGetMaxY(v21);
 
-    v14 = [(ListViewController *)self tableView];
-    v15 = [(SearchResultsViewController *)self searchBar];
-    [v14 convertPoint:v15 fromView:{0.0, MaxY}];
+    tableView2 = [(ListViewController *)self tableView];
+    searchBar2 = [(SearchResultsViewController *)self searchBar];
+    [tableView2 convertPoint:searchBar2 fromView:{0.0, MaxY}];
 
-    v16 = [(ListViewController *)self tableView];
-    [v16 contentOffset];
+    tableView3 = [(ListViewController *)self tableView];
+    [tableView3 contentOffset];
 
-    v17 = [(ListViewController *)self tableView];
-    [v17 safeAreaInsets];
+    tableView4 = [(ListViewController *)self tableView];
+    [tableView4 safeAreaInsets];
     CalRoundToScreenScale();
     v5 = v18;
   }
 
-  v19 = [(ListViewController *)self tableView];
-  [v19 setContentInset:{v5, v7, v9, v11}];
+  tableView5 = [(ListViewController *)self tableView];
+  [tableView5 setContentInset:{v5, v7, v9, v11}];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -208,7 +208,7 @@
 
 - (BOOL)_useLargeFormatBehavior
 {
-  v2 = [(SearchResultsViewController *)self _sizingContextWindow];
+  _sizingContextWindow = [(SearchResultsViewController *)self _sizingContextWindow];
   ShouldUseLargeFormatInterface = EKUICurrentWindowInterfaceParadigm_ShouldUseLargeFormatInterface();
 
   return ShouldUseLargeFormatInterface;
@@ -221,16 +221,16 @@
     return;
   }
 
-  v3 = [(SearchResultsViewController *)self searchBar];
-  v4 = [v3 text];
-  if ([v4 length])
+  searchBar = [(SearchResultsViewController *)self searchBar];
+  text = [searchBar text];
+  if ([text length])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [(ListViewController *)self tableView];
-  v6 = [(ListViewController *)self numberOfSectionsInTableView:v5];
+  tableView = [(ListViewController *)self tableView];
+  v6 = [(ListViewController *)self numberOfSectionsInTableView:tableView];
 
   if (v6)
   {
@@ -240,8 +240,8 @@ LABEL_5:
     [(SearchResultsViewController *)self preferredContentSize];
     if (vabdd_f64(v9, v8) >= 2.22044605e-16)
     {
-      v12 = [(ListViewController *)self tableView];
-      [v12 frame];
+      tableView2 = [(ListViewController *)self tableView];
+      [tableView2 frame];
       [(SearchResultsViewController *)self setPreferredContentSize:v10, v8];
     }
 
@@ -255,13 +255,13 @@ LABEL_5:
 
 - (double)_maxHeightOfTableView
 {
-  v3 = [(SearchResultsViewController *)self view];
-  v4 = [v3 window];
-  if (v4)
+  view = [(SearchResultsViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v5 = [(SearchResultsViewController *)self view];
-    v6 = [v5 window];
-    [v6 bounds];
+    view2 = [(SearchResultsViewController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     Height = CGRectGetHeight(v17);
   }
 
@@ -270,15 +270,15 @@ LABEL_5:
     Height = 4000.0;
   }
 
-  v8 = [(ListViewController *)self tableView];
-  v9 = [v8 numberOfSections];
+  tableView = [(ListViewController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v9 < 1)
+  if (numberOfSections < 1)
   {
     v11 = 0.0;
 LABEL_10:
-    v14 = [(ListViewController *)self tableView];
-    [v14 estimatedRowHeight];
+    tableView2 = [(ListViewController *)self tableView];
+    [tableView2 estimatedRowHeight];
     Height = v11 + v15;
   }
 
@@ -288,8 +288,8 @@ LABEL_10:
     v11 = 0.0;
     while (1)
     {
-      v12 = [(ListViewController *)self tableView];
-      [v12 rectForSection:v10];
+      tableView3 = [(ListViewController *)self tableView];
+      [tableView3 rectForSection:v10];
       v11 = v11 + v13;
 
       if (v11 >= Height)
@@ -297,7 +297,7 @@ LABEL_10:
         break;
       }
 
-      if (v9 == ++v10)
+      if (numberOfSections == ++v10)
       {
         goto LABEL_10;
       }
@@ -307,9 +307,9 @@ LABEL_10:
   return Height;
 }
 
-- (void)_updateTableAlpha:(BOOL)a3
+- (void)_updateTableAlpha:(BOOL)alpha
 {
-  v3 = a3;
+  alphaCopy = alpha;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -319,7 +319,7 @@ LABEL_10:
   v7[4] = self;
   v5 = objc_retainBlock(v7);
   v6 = v5;
-  if (v3)
+  if (alphaCopy)
   {
     [UIView animateWithDuration:0 delay:v5 usingSpringWithDamping:0 initialSpringVelocity:0.3 options:0.0 animations:1.0 completion:0.0];
   }
@@ -333,15 +333,15 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (id)contentUnavailableConfigurationForState:(id)a3
+- (id)contentUnavailableConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[UIContentUnavailableConfiguration searchConfiguration];
-  v6 = [v5 updatedConfigurationForState:v4];
+  v6 = [v5 updatedConfigurationForState:stateCopy];
 
-  v7 = [(MainViewController *)self model];
-  v8 = [v7 searchString];
-  v9 = [v8 length];
+  model = [(MainViewController *)self model];
+  searchString = [model searchString];
+  v9 = [searchString length];
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = v10;
@@ -364,7 +364,7 @@ LABEL_10:
 
 - (void)_updateFilterState
 {
-  v6 = [(SearchResultsViewController *)self view];
+  view = [(SearchResultsViewController *)self view];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy())
   {
     [(ListViewController *)self setShowFilteredData:1];
@@ -372,12 +372,12 @@ LABEL_10:
 
   else
   {
-    v3 = [(SearchResultsViewController *)self view];
+    view2 = [(SearchResultsViewController *)self view];
     if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy())
     {
-      v4 = [(SearchResultsViewController *)self searchBar];
-      v5 = [v4 text];
-      -[ListViewController setShowFilteredData:](self, "setShowFilteredData:", [v5 length] != 0);
+      searchBar = [(SearchResultsViewController *)self searchBar];
+      text = [searchBar text];
+      -[ListViewController setShowFilteredData:](self, "setShowFilteredData:", [text length] != 0);
     }
 
     else
@@ -387,19 +387,19 @@ LABEL_10:
   }
 }
 
-- (void)scrollToDate:(id)a3 animated:(BOOL)a4
+- (void)scrollToDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v7 = [(ListViewController *)self tableView];
+    tableView = [(ListViewController *)self tableView];
 
-    if (v7)
+    if (tableView)
     {
       v8.receiver = self;
       v8.super_class = SearchResultsViewController;
-      [(ListViewController *)&v8 scrollToDate:v6 animated:v4];
+      [(ListViewController *)&v8 scrollToDate:dateCopy animated:animatedCopy];
     }
   }
 }
@@ -412,11 +412,11 @@ LABEL_10:
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 cachedOccurrenceAtIndexPath:v7 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  pathCopy = path;
+  model = [(MainViewController *)self model];
+  v6 = [model cachedOccurrenceAtIndexPath:pathCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
   [(SearchResultsViewController *)self showEvent:v6];
   if ([(ListViewController *)self destination]== 2)
@@ -424,71 +424,71 @@ LABEL_10:
     [(ListViewController *)self setCurrentSelectedEvent:v6];
   }
 
-  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:v7];
+  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:pathCopy];
 }
 
-- (void)showEvent:(id)a3
+- (void)showEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(ListViewController *)self destination]== 2)
   {
-    v5 = [(SearchResultsViewController *)self searchResultsDelegate];
+    searchResultsDelegate = [(SearchResultsViewController *)self searchResultsDelegate];
 
-    if (v5)
+    if (searchResultsDelegate)
     {
-      v6 = [(SearchResultsViewController *)self searchResultsDelegate];
-      [v6 searchResultsViewController:self didSelectEvent:v4];
+      searchResultsDelegate2 = [(SearchResultsViewController *)self searchResultsDelegate];
+      [searchResultsDelegate2 searchResultsViewController:self didSelectEvent:eventCopy];
     }
   }
 
   else
   {
-    v7 = [(SearchResultsViewController *)self traitCollection];
-    if ([v7 horizontalSizeClass] == 1)
+    traitCollection = [(SearchResultsViewController *)self traitCollection];
+    if ([traitCollection horizontalSizeClass] == 1)
     {
     }
 
     else
     {
-      v8 = [(SearchResultsViewController *)self traitCollection];
-      v9 = [v8 verticalSizeClass];
+      traitCollection2 = [(SearchResultsViewController *)self traitCollection];
+      verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-      if (v9 != 1)
+      if (verticalSizeClass != 1)
       {
-        v15 = [(MainViewController *)self model];
-        [v15 setSelectedOccurrence:v4];
+        model = [(MainViewController *)self model];
+        [model setSelectedOccurrence:eventCopy];
 
-        v16 = [(SearchResultsViewController *)self presentingViewController];
+        presentingViewController = [(SearchResultsViewController *)self presentingViewController];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10013E6A4;
         v17[3] = &unk_10020EC68;
         v17[4] = self;
-        v18 = v4;
-        [v16 dismissViewControllerAnimated:1 completion:v17];
+        v18 = eventCopy;
+        [presentingViewController dismissViewControllerAnimated:1 completion:v17];
 
         goto LABEL_12;
       }
     }
 
-    v10 = [(SearchResultsViewController *)self presentedViewController];
+    presentedViewController = [(SearchResultsViewController *)self presentedViewController];
 
-    if (!v10)
+    if (!presentedViewController)
     {
       [(ListViewController *)self setPreventScrollingForNextViewAppear:1];
-      [(ListViewController *)self showEvent:v4 animated:1 showMode:1 context:0];
+      [(ListViewController *)self showEvent:eventCopy animated:1 showMode:1 context:0];
     }
 
-    v11 = [(SearchResultsViewController *)self searchBar];
-    [v11 resignFirstResponder];
+    searchBar = [(SearchResultsViewController *)self searchBar];
+    [searchBar resignFirstResponder];
 
-    v12 = [(SearchResultsViewController *)self traitCollection];
-    v13 = [v12 horizontalSizeClass];
+    traitCollection3 = [(SearchResultsViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection3 horizontalSizeClass];
 
-    if (v13 == 1)
+    if (horizontalSizeClass == 1)
     {
-      v14 = [(SearchResultsViewController *)self navigationController];
-      [v14 hideSearchBarForNavigationTransitionAnimated:1];
+      navigationController = [(SearchResultsViewController *)self navigationController];
+      [navigationController hideSearchBarForNavigationTransitionAnimated:1];
     }
   }
 
@@ -497,82 +497,82 @@ LABEL_12:
 
 - (BOOL)prefersShowingViewControllersOnNavigationStack
 {
-  v3 = [(SearchResultsViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 1)
+  traitCollection = [(SearchResultsViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SearchResultsViewController *)self traitCollection];
-    v4 = [v5 verticalSizeClass] == 1;
+    traitCollection2 = [(SearchResultsViewController *)self traitCollection];
+    v4 = [traitCollection2 verticalSizeClass] == 1;
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [v6 previewViewController];
+  animatorCopy = animator;
+  previewViewController = [animatorCopy previewViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 previewViewController];
+    previewViewController2 = [animatorCopy previewViewController];
   }
 
   else
   {
-    v8 = 0;
+    previewViewController2 = 0;
   }
 
-  v9 = [v8 event];
-  [v8 willCommitPreview];
-  if (v9)
+  event = [previewViewController2 event];
+  [previewViewController2 willCommitPreview];
+  if (event)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10013E8A0;
     v10[3] = &unk_10020EC68;
     v10[4] = self;
-    v11 = v9;
-    [v6 addAnimations:v10];
+    v11 = event;
+    [animatorCopy addAnimations:v10];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v6 = [a3 searchBar];
-  v4 = [(SearchResultsViewController *)self searchBar];
-  v5 = [v4 text];
-  [(SearchResultsViewController *)self searchBar:v6 textDidChange:v5];
+  searchBar = [controller searchBar];
+  searchBar2 = [(SearchResultsViewController *)self searchBar];
+  text = [searchBar2 text];
+  [(SearchResultsViewController *)self searchBar:searchBar textDidChange:text];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = [(SearchResultsViewController *)self navigationController];
-  [v4 setViewControllers:&__NSArray0__struct];
+  navigationController = [(SearchResultsViewController *)self navigationController];
+  [navigationController setViewControllers:&__NSArray0__struct];
 
-  v6 = [(SearchResultsViewController *)self navigationController];
-  v5 = [v6 presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController2 = [(SearchResultsViewController *)self navigationController];
+  presentingViewController = [navigationController2 presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = [(SearchResultsViewController *)self searchBar];
-  [v3 resignFirstResponder];
+  searchBar = [(SearchResultsViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   [(SearchResultsViewController *)self cancelTimer];
-  if ([v5 length])
+  if ([changeCopy length])
   {
     v11 = @"text";
-    v12 = v5;
+    v12 = changeCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"beginSearch:" selector:v6 userInfo:0 repeats:0.35];
     timer = self->_timer;
@@ -581,8 +581,8 @@ LABEL_12:
 
   else
   {
-    v9 = [(MainViewController *)self model];
-    [v9 setSearchString:0];
+    model = [(MainViewController *)self model];
+    [model setSearchString:0];
 
     [(SearchResultsViewController *)self _updateFilterState];
     [(SearchResultsViewController *)self _refreshView];
@@ -591,14 +591,14 @@ LABEL_12:
   }
 }
 
-- (void)beginSearch:(id)a3
+- (void)beginSearch:(id)search
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:@"text"];
+  userInfo = [search userInfo];
+  v6 = [userInfo objectForKey:@"text"];
 
   [(SearchResultsViewController *)self cancelTimer];
-  v5 = [(MainViewController *)self model];
-  [v5 setSearchString:v6];
+  model = [(MainViewController *)self model];
+  [model setSearchString:v6];
 }
 
 - (void)cancelTimer
@@ -610,41 +610,41 @@ LABEL_12:
 
 - (id)_sizingContextWindow
 {
-  v3 = [(SearchResultsViewController *)self view];
-  v4 = [v3 window];
+  view = [(SearchResultsViewController *)self view];
+  window = [view window];
 
-  if (!v4)
+  if (!window)
   {
-    v5 = [(SearchResultsViewController *)self navigationController];
-    v6 = [v5 view];
-    v4 = [v6 window];
+    navigationController = [(SearchResultsViewController *)self navigationController];
+    view2 = [navigationController view];
+    window = [view2 window];
 
-    if (!v4)
+    if (!window)
     {
-      v7 = [(SearchResultsViewController *)self presentingViewController];
-      v8 = [v7 view];
-      v4 = [v8 window];
+      presentingViewController = [(SearchResultsViewController *)self presentingViewController];
+      view3 = [presentingViewController view];
+      window = [view3 window];
     }
   }
 
-  return v4;
+  return window;
 }
 
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  barCopy = bar;
   EKUIWidthForWindowSizeParadigm();
   v11 = v10;
-  v12 = [(SearchResultsViewController *)self _sizingContextWindow];
-  if (v12)
+  _sizingContextWindow = [(SearchResultsViewController *)self _sizingContextWindow];
+  if (_sizingContextWindow)
   {
     if (!EKUICurrentWidthSizeClassIsCompactInViewHierarchy() || (EKUICurrentHeightSizeClassIsRegular() & 1) == 0)
     {
-      [v9 bounds];
+      [barCopy bounds];
       x = CGRectGetWidth(v24) * 0.5 - v11 * 0.5;
       width = v11;
     }
@@ -652,14 +652,14 @@ LABEL_12:
 
   else
   {
-    v13 = [v9 searchField];
-    [v13 frame];
+    searchField = [barCopy searchField];
+    [searchField frame];
     IsNull = CGRectIsNull(v25);
 
     if (!IsNull)
     {
-      v15 = [v9 searchField];
-      [v15 frame];
+      searchField2 = [barCopy searchField];
+      [searchField2 frame];
       x = v16;
       y = v17;
       width = v18;
@@ -678,34 +678,34 @@ LABEL_12:
   return result;
 }
 
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(SearchResultsViewController *)self navigationController];
-  v9 = [v8 parentViewController];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  navigationController = [(SearchResultsViewController *)self navigationController];
+  parentViewController = [navigationController parentViewController];
 
-  [v9 presentViewController:v7 animated:v5 completion:0];
+  [parentViewController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)eventViewController:(id)a3 requestsDismissalOfEditViewController:(id)a4
+- (void)eventViewController:(id)controller requestsDismissalOfEditViewController:(id)viewController
 {
-  v4 = [(SearchResultsViewController *)self navigationController:a3];
-  v5 = [v4 parentViewController];
+  v4 = [(SearchResultsViewController *)self navigationController:controller];
+  parentViewController = [v4 parentViewController];
 
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_eventStoreChanged:(id)a3
+- (void)_eventStoreChanged:(id)changed
 {
-  v4 = [(SearchResultsViewController *)self searchBar];
-  v5 = [v4 text];
-  if (v5)
+  searchBar = [(SearchResultsViewController *)self searchBar];
+  text = [searchBar text];
+  if (text)
   {
-    v6 = v5;
-    v7 = [(SearchResultsViewController *)self searchBar];
-    v8 = [v7 text];
-    v9 = [v8 isEqualToString:&stru_1002133B8];
+    v6 = text;
+    searchBar2 = [(SearchResultsViewController *)self searchBar];
+    text2 = [searchBar2 text];
+    v9 = [text2 isEqualToString:&stru_1002133B8];
 
     if (!v9)
     {
@@ -717,21 +717,21 @@ LABEL_12:
   {
   }
 
-  v12 = [(SearchResultsViewController *)self searchBar];
-  v10 = [(SearchResultsViewController *)self searchBar];
-  v11 = [v10 text];
-  [(SearchResultsViewController *)self searchBar:v12 textDidChange:v11];
+  searchBar3 = [(SearchResultsViewController *)self searchBar];
+  searchBar4 = [(SearchResultsViewController *)self searchBar];
+  text3 = [searchBar4 text];
+  [(SearchResultsViewController *)self searchBar:searchBar3 textDidChange:text3];
 }
 
-- (void)_searchResultsUpdated:(id)a3
+- (void)_searchResultsUpdated:(id)updated
 {
-  v8 = a3;
+  updatedCopy = updated;
   if ((CalSolariumEnabled() & 1) != 0 || ([(SearchResultsViewController *)self navigationController], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     [(SearchResultsViewController *)self _updateFilterState];
     [(SearchResultsViewController *)self _refreshView];
-    v5 = [v8 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"scrollToToday"];
+    userInfo = [updatedCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"scrollToToday"];
 
     if ([v6 BOOLValue])
     {
@@ -745,10 +745,10 @@ LABEL_12:
 
 - (void)_refreshView
 {
-  v3 = [(ListViewController *)self tableView];
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 searchString];
-  [v3 setShowsVerticalScrollIndicator:v5 != 0];
+  tableView = [(ListViewController *)self tableView];
+  model = [(MainViewController *)self model];
+  searchString = [model searchString];
+  [tableView setShowsVerticalScrollIndicator:searchString != 0];
 
   [(ListViewController *)self refresh];
   [(SearchResultsViewController *)self _updateTableAlpha:1];

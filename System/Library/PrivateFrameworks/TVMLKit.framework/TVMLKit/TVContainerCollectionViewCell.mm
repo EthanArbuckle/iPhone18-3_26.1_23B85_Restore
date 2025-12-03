@@ -1,22 +1,22 @@
 @interface TVContainerCollectionViewCell
 - (BOOL)canBecomeFocused;
-- (TVContainerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (TVContainerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4 context:(id)a5 coordinator:(id)a6;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated context:(id)context coordinator:(id)coordinator;
 @end
 
 @implementation TVContainerCollectionViewCell
 
-- (TVContainerCollectionViewCell)initWithFrame:(CGRect)a3
+- (TVContainerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TVContainerCollectionViewCell;
-  result = [(TVContainerCollectionViewCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TVContainerCollectionViewCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_selectSubviews = 1;
@@ -33,21 +33,21 @@
   return [(TVContainerCollectionViewCell *)&v5 canBecomeFocused]&& self->_allowsFocus;
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
-  v7 = [(TVContainerCollectionViewCell *)self selectingView];
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  selectingView = [(TVContainerCollectionViewCell *)self selectingView];
+  v8 = selectingView;
+  if (selectingView)
   {
-    v9 = [v7 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [selectingView _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = TVContainerCollectionViewCell;
-    v9 = [(TVContainerCollectionViewCell *)&v12 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [(TVContainerCollectionViewCell *)&v12 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   v10 = v9;
@@ -55,35 +55,35 @@
   return v10;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  [(TVContainerCollectionViewCell *)self setFocused:[(TVContainerCollectionViewCell *)self isFocused] animated:1 context:v7 coordinator:v6];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  [(TVContainerCollectionViewCell *)self setFocused:[(TVContainerCollectionViewCell *)self isFocused] animated:1 context:contextCopy coordinator:coordinatorCopy];
 }
 
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4 context:(id)a5 coordinator:(id)a6
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated context:(id)context coordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  focusedCopy = focused;
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(TVContainerCollectionViewCell *)self selectingView];
-  v13 = v12;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selectingView = [(TVContainerCollectionViewCell *)self selectingView];
+  v13 = selectingView;
   if (self->_selectSubviews)
   {
-    if (v12)
+    if (selectingView)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 setSelected:v8 animated:v7 focusUpdateContext:v10 withAnimationCoordinator:v11];
+        [v13 setSelected:focusedCopy animated:animatedCopy focusUpdateContext:contextCopy withAnimationCoordinator:coordinatorCopy];
       }
 
       else
       {
-        [v13 setSelected:v8 animated:1 withAnimationCoordinator:v11];
+        [v13 setSelected:focusedCopy animated:1 withAnimationCoordinator:coordinatorCopy];
       }
     }
 
@@ -93,10 +93,10 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v14 = [(TVContainerCollectionViewCell *)self contentView];
-      v15 = [v14 subviews];
+      contentView = [(TVContainerCollectionViewCell *)self contentView];
+      subviews = [contentView subviews];
 
-      v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v16 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v16)
       {
         v17 = v16;
@@ -107,13 +107,13 @@
           {
             if (*v21 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(subviews);
             }
 
-            [*(*(&v20 + 1) + 8 * i) setSelected:v8 animated:1 withAnimationCoordinator:v11];
+            [*(*(&v20 + 1) + 8 * i) setSelected:focusedCopy animated:1 withAnimationCoordinator:coordinatorCopy];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v17 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v17);
@@ -122,54 +122,54 @@
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v9.receiver = self;
   v9.super_class = TVContainerCollectionViewCell;
-  [(TVContainerCollectionViewCell *)&v9 pressesBegan:v6 withEvent:a4];
-  if ([v6 count] == 1)
+  [(TVContainerCollectionViewCell *)&v9 pressesBegan:beganCopy withEvent:event];
+  if ([beganCopy count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [v7 type];
+    anyObject = [beganCopy anyObject];
+    type = [anyObject type];
 
-    if (v8 == 4)
+    if (type == 4)
     {
       [(TVContainerCollectionViewCell *)self _showPressState];
     }
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v9.receiver = self;
   v9.super_class = TVContainerCollectionViewCell;
-  [(TVContainerCollectionViewCell *)&v9 pressesEnded:v6 withEvent:a4];
-  if ([v6 count] == 1)
+  [(TVContainerCollectionViewCell *)&v9 pressesEnded:endedCopy withEvent:event];
+  if ([endedCopy count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [v7 type];
+    anyObject = [endedCopy anyObject];
+    type = [anyObject type];
 
-    if (v8 == 4)
+    if (type == 4)
     {
       [(TVContainerCollectionViewCell *)self _clearPressState];
     }
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v9.receiver = self;
   v9.super_class = TVContainerCollectionViewCell;
-  [(TVContainerCollectionViewCell *)&v9 pressesCancelled:v6 withEvent:a4];
-  if ([v6 count] == 1)
+  [(TVContainerCollectionViewCell *)&v9 pressesCancelled:cancelledCopy withEvent:event];
+  if ([cancelledCopy count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [v7 type];
+    anyObject = [cancelledCopy anyObject];
+    type = [anyObject type];
 
-    if (v8 == 4)
+    if (type == 4)
     {
       [(TVContainerCollectionViewCell *)self _clearPressState];
     }

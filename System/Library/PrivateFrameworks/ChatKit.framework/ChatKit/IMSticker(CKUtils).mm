@@ -21,49 +21,49 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 identifier];
-  v33 = [v6 representations];
-  v9 = [v6 effectType];
-  v10 = [v6 externalURI];
-  v29 = [v6 name];
-  v11 = [v6 accessibilityLabel];
-  v12 = [v6 accessibilityName];
-  v32 = [v6 searchText];
+  identifier = [v6 identifier];
+  representations = [v6 representations];
+  effectType = [v6 effectType];
+  externalURI = [v6 externalURI];
+  name = [v6 name];
+  accessibilityLabel = [v6 accessibilityLabel];
+  accessibilityName = [v6 accessibilityName];
+  searchText = [v6 searchText];
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v6 sanitizedPrompt];
+    sanitizedPrompt = [v6 sanitizedPrompt];
   }
 
   else
   {
-    v31 = 0;
+    sanitizedPrompt = 0;
   }
 
-  v30 = [v6 metadata];
-  v34 = [v6 attributionInfo];
-  v13 = [v34 objectForKeyedSubscript:*MEMORY[0x1E69A6FB0]];
+  metadata = [v6 metadata];
+  attributionInfo = [v6 attributionInfo];
+  v13 = [attributionInfo objectForKeyedSubscript:*MEMORY[0x1E69A6FB0]];
   if (v13)
   {
     v14 = v13;
-    v15 = a1;
+    selfCopy = self;
     v16 = +[CKBalloonPluginManager sharedInstance];
     v17 = [v16 pluginForIdentifier:v14];
     if (v17)
     {
 
-      a1 = v15;
+      self = selfCopy;
       goto LABEL_18;
     }
 
-    v34 = 0;
-    a1 = v15;
+    attributionInfo = 0;
+    self = selfCopy;
   }
 
-  v18 = [v6 _ck_stickerType];
+  _ck_stickerType = [v6 _ck_stickerType];
   v14 = 0;
-  if (v18 > 2)
+  if (_ck_stickerType > 2)
   {
-    switch(v18)
+    switch(_ck_stickerType)
     {
       case 3:
         v19 = MEMORY[0x1E69A6980];
@@ -81,7 +81,7 @@
 
   else
   {
-    if (v18 > 2)
+    if (_ck_stickerType > 2)
     {
       goto LABEL_18;
     }
@@ -91,26 +91,26 @@
 
   v14 = *v19;
 LABEL_18:
-  v20 = [a1 initWithStickerIdentifier:v8 stickerPackID:v14 representations:v33 effectType:v9 initialFrameIndex:0 externalURI:v10 stickerName:v29 accessibilityLabel:v11 accessibilityName:v12 searchText:v32 sanitizedPrompt:v31 metadata:v30];
-  [v20 setAttributionInfo:v34];
+  v20 = [self initWithStickerIdentifier:identifier stickerPackID:v14 representations:representations effectType:effectType initialFrameIndex:0 externalURI:externalURI stickerName:name accessibilityLabel:accessibilityLabel accessibilityName:accessibilityName searchText:searchText sanitizedPrompt:sanitizedPrompt metadata:metadata];
+  [v20 setAttributionInfo:attributionInfo];
   if (v7)
   {
     [MEMORY[0x1E69A82C0] saveAdaptiveImageGlyphToTemporaryFile:v7];
-    v21 = v28 = v8;
+    v21 = v28 = identifier;
     v22 = [v21 copy];
     [v20 setFileURL:v22];
 
     [v20 setRepresentations:0];
-    v23 = [v7 contentIdentifier];
-    v24 = [v23 copy];
+    contentIdentifier = [v7 contentIdentifier];
+    v24 = [contentIdentifier copy];
     [v20 setAdaptiveImageGlyphContentIdentifier:v24];
 
-    v25 = [v7 contentDescription];
-    v26 = [v25 copy];
+    contentDescription = [v7 contentDescription];
+    v26 = [contentDescription copy];
     [v20 setAdaptiveImageGlyphContentDescription:v26];
 
     [v20 setCachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly:v7];
-    v8 = v28;
+    identifier = v28;
   }
 
   return v20;
@@ -118,71 +118,71 @@ LABEL_18:
 
 - (id)uiSticker
 {
-  v2 = [a1 stickerGUID];
-  v3 = [a1 representations];
-  v28 = [a1 stickerEffectType];
-  v4 = [a1 externalURI];
-  v5 = [a1 attributionInfo];
-  v6 = [a1 stickerName];
-  v7 = [a1 accessibilityLabel];
-  v8 = [a1 accessibilityName];
-  v9 = [a1 searchText];
-  v10 = v9;
-  if (v9)
+  stickerGUID = [self stickerGUID];
+  representations = [self representations];
+  stickerEffectType = [self stickerEffectType];
+  externalURI = [self externalURI];
+  attributionInfo = [self attributionInfo];
+  stickerName = [self stickerName];
+  accessibilityLabel = [self accessibilityLabel];
+  accessibilityName = [self accessibilityName];
+  searchText = [self searchText];
+  v10 = searchText;
+  if (searchText)
   {
-    v11 = v9;
+    adaptiveImageGlyphContentDescription = searchText;
   }
 
   else
   {
-    v11 = [a1 adaptiveImageGlyphContentDescription];
+    adaptiveImageGlyphContentDescription = [self adaptiveImageGlyphContentDescription];
   }
 
-  v12 = v11;
+  v12 = adaptiveImageGlyphContentDescription;
 
-  v29 = [a1 sanitizedPrompt];
-  v13 = [a1 metadata];
-  if (![v3 count])
+  sanitizedPrompt = [self sanitizedPrompt];
+  metadata = [self metadata];
+  if (![representations count])
   {
-    v14 = [a1 fileURL];
+    fileURL = [self fileURL];
     v15 = [MEMORY[0x193AF5EC0](@"MSSticker" @"Messages")];
-    v16 = v3;
+    v16 = representations;
     v17 = v12;
-    v18 = v8;
-    v19 = v7;
-    v20 = v6;
-    v21 = v5;
-    v22 = v4;
-    v23 = v2;
+    v18 = accessibilityName;
+    v19 = accessibilityLabel;
+    v20 = stickerName;
+    v21 = attributionInfo;
+    v22 = externalURI;
+    v23 = stickerGUID;
     v24 = v15;
 
     v25 = v24;
-    v2 = v23;
-    v4 = v22;
-    v5 = v21;
-    v6 = v20;
-    v7 = v19;
-    v8 = v18;
+    stickerGUID = v23;
+    externalURI = v22;
+    attributionInfo = v21;
+    stickerName = v20;
+    accessibilityLabel = v19;
+    accessibilityName = v18;
     v12 = v17;
-    v3 = v25;
+    representations = v25;
   }
 
   v26 = objc_opt_new();
-  [v26 setIdentifier:v2];
-  [v26 setRepresentations:v3];
-  [v26 setAttributionInfo:v5];
-  [v26 setEffectType:v28];
-  [v26 setName:v6];
-  [v26 setExternalURI:v4];
+  [v26 setIdentifier:stickerGUID];
+  [v26 setRepresentations:representations];
+  [v26 setAttributionInfo:attributionInfo];
+  [v26 setEffectType:stickerEffectType];
+  [v26 setName:stickerName];
+  [v26 setExternalURI:externalURI];
   [v26 setSearchText:v12];
   if (objc_opt_respondsToSelector())
   {
-    [v26 setSanitizedPrompt:v29];
+    [v26 setSanitizedPrompt:sanitizedPrompt];
   }
 
-  [v26 setAccessibilityName:v8];
-  [v26 setAccessibilityLabel:v7];
-  [v26 setMetadata:v13];
+  [v26 setAccessibilityName:accessibilityName];
+  [v26 setAccessibilityLabel:accessibilityLabel];
+  [v26 setMetadata:metadata];
 
   return v26;
 }
@@ -193,42 +193,42 @@ LABEL_18:
   if (a3)
   {
     v3 = a3;
-    v4 = [v3 attributionInfo];
+    attributionInfo = [v3 attributionInfo];
     v5 = *MEMORY[0x1E69A6FB0];
-    v6 = [v4 objectForKey:*MEMORY[0x1E69A6FB0]];
+    v6 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FB0]];
 
     if (v6)
     {
       if ([v6 containsString:@"com.apple.messages.MSMessageExtensionBalloonPlugin:"])
       {
         v7 = [v6 componentsSeparatedByString:@":"];
-        v8 = [v7 lastObject];
+        lastObject = [v7 lastObject];
 
-        v6 = v8;
+        v6 = lastObject;
       }
 
       v9 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
-      v10 = [v9 teamIdentifier];
-      v11 = v10;
+      teamIdentifier = [v9 teamIdentifier];
+      v11 = teamIdentifier;
       v12 = @"0000000000";
-      if (v10)
+      if (teamIdentifier)
       {
-        v12 = v10;
+        v12 = teamIdentifier;
       }
 
       v13 = v12;
 
       v14 = IMBalloonExtensionIDWithTeamAndSuffix();
 
-      v15 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      v16 = [v15 balloonPluginForBundleID:v14];
+      mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+      v16 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v14];
 
       v17 = IMLogHandleForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [v16 identifier];
+        identifier = [v16 identifier];
         v25 = 138412290;
-        v26 = v18;
+        v26 = identifier;
         _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Using plugin identifier for sticker drop: %@", &v25, 0xCu);
       }
     }
@@ -245,12 +245,12 @@ LABEL_18:
       v6 = 0;
     }
 
-    v20 = [v16 identifier];
-    v21 = v20;
+    identifier2 = [v16 identifier];
+    v21 = identifier2;
     v22 = &stru_1F04268F8;
-    if (v20)
+    if (identifier2)
     {
-      v22 = v20;
+      v22 = identifier2;
     }
 
     v23 = v22;
@@ -268,31 +268,31 @@ LABEL_18:
 
 - (id)image
 {
-  v2 = [a1 fileURL];
-  v3 = [v2 path];
+  fileURL = [self fileURL];
+  path = [fileURL path];
 
-  if (v3)
+  if (path)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [a1 fileURL];
-    v6 = [v5 path];
-    v7 = [v4 imageWithContentsOfFile:v6];
+    fileURL2 = [self fileURL];
+    path2 = [fileURL2 path];
+    v7 = [v4 imageWithContentsOfFile:path2];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v8 = [a1 representations];
-  v9 = [v8 firstObject];
-  v10 = [v9 data];
+  representations = [self representations];
+  firstObject = [representations firstObject];
+  data = [firstObject data];
 
-  if (v10)
+  if (data)
   {
     v11 = MEMORY[0x1E69DCAB8];
-    v5 = [a1 representations];
-    v6 = [v5 firstObject];
-    v12 = [v6 data];
-    v7 = [v11 imageWithData:v12];
+    fileURL2 = [self representations];
+    path2 = [fileURL2 firstObject];
+    data2 = [path2 data];
+    v7 = [v11 imageWithData:data2];
 
     goto LABEL_5;
   }
@@ -305,30 +305,30 @@ LABEL_6:
 
 - (CKImageData)imageData
 {
-  v2 = [a1 fileURL];
-  v3 = [v2 path];
+  fileURL = [self fileURL];
+  path = [fileURL path];
 
-  if (v3)
+  if (path)
   {
     v4 = [CKImageData alloc];
-    v5 = [a1 fileURL];
-    v6 = [(CKImageData *)v4 initWithURL:v5];
+    fileURL2 = [self fileURL];
+    v6 = [(CKImageData *)v4 initWithURL:fileURL2];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [a1 representations];
-  v8 = [v7 firstObject];
-  v9 = [v8 data];
+  representations = [self representations];
+  firstObject = [representations firstObject];
+  data = [firstObject data];
 
-  if (v9)
+  if (data)
   {
     v10 = [CKImageData alloc];
-    v5 = [a1 representations];
-    v11 = [v5 firstObject];
-    v12 = [v11 data];
-    v6 = [(CKImageData *)v10 initWithData:v12];
+    fileURL2 = [self representations];
+    firstObject2 = [fileURL2 firstObject];
+    data2 = [firstObject2 data];
+    v6 = [(CKImageData *)v10 initWithData:data2];
 
     goto LABEL_5;
   }
@@ -342,15 +342,15 @@ LABEL_6:
 + (double)calculatePreviewScaleWithTargetSize:()CKUtils imageData:
 {
   v7 = a5;
-  v8 = [v7 image];
+  image = [v7 image];
 
-  if (v8)
+  if (image)
   {
     [v7 ptSize];
     v10 = v9;
     v12 = v11;
-    v13 = [v7 image];
-    [v13 scale];
+    image2 = [v7 image];
+    [image2 scale];
     v15 = v14;
 
     v16 = +[CKUIBehavior sharedBehaviors];
@@ -386,7 +386,7 @@ LABEL_6:
         v39 = v33;
       }
 
-      v37 = a1 / v39;
+      v37 = self / v39;
     }
 
     else
@@ -441,19 +441,19 @@ LABEL_6:
   width = v26.scale.width;
   v9 = v26.scale.width * 48.0;
   v10 = v26.scale.height * 48.0;
-  v11 = [v5 mediaObject];
-  v12 = [v11 transfer];
-  v13 = [v12 attributionInfo];
-  v14 = [v13 objectForKey:*MEMORY[0x1E69A6F98]];
+  mediaObject = [v5 mediaObject];
+  transfer = [mediaObject transfer];
+  attributionInfo = [transfer attributionInfo];
+  v14 = [attributionInfo objectForKey:*MEMORY[0x1E69A6F98]];
 
-  v15 = [v5 stickerPackGUID];
+  stickerPackGUID = [v5 stickerPackGUID];
 
   v16 = IMStickersExtensionIdentifier();
-  if ([v15 containsString:v16])
+  if ([stickerPackGUID containsString:v16])
   {
-    v17 = [v11 sticker];
-    v18 = [v17 externalURI];
-    if ([v18 hasPrefix:@"sticker:///emoji/"])
+    sticker = [mediaObject sticker];
+    externalURI = [sticker externalURI];
+    if ([externalURI hasPrefix:@"sticker:///emoji/"])
     {
 
       goto LABEL_17;
@@ -472,18 +472,18 @@ LABEL_6:
   }
 
   v19 = 96.0;
-  if (a1 > 430.0)
+  if (self > 430.0)
   {
     v19 = 224.0;
   }
 
   v20 = 4.0;
-  if (a1 > 430.0)
+  if (self > 430.0)
   {
     v20 = 8.0;
   }
 
-  v21 = (a1 + -32.0 - v19) / v20 * width;
+  v21 = (self + -32.0 - v19) / v20 * width;
   v22 = v21 < v9;
   if (v21 < v10)
   {
@@ -503,8 +503,8 @@ LABEL_17:
 - (double)calculatePreviewScaleWithTargetSize:()CKUtils
 {
   v5 = MEMORY[0x1E69A82C0];
-  v6 = [a1 imageData];
-  [v5 calculatePreviewScaleWithTargetSize:v6 imageData:{a2, a3}];
+  imageData = [self imageData];
+  [v5 calculatePreviewScaleWithTargetSize:imageData imageData:{a2, a3}];
   v8 = v7;
 
   return v8;
@@ -514,10 +514,10 @@ LABEL_17:
 {
   v8 = a3;
   v9 = a5;
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isClingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-  if (v11)
+  if (isClingEnabled)
   {
     if (a4)
     {
@@ -525,14 +525,14 @@ LABEL_17:
       v13[1] = 3221225472;
       v13[2] = __82__IMSticker_CKUtils__stickerViewForStickerChatItem_snapshotEffectView_completion___block_invoke;
       v13[3] = &unk_1E72EFCB0;
-      v13[4] = a1;
+      v13[4] = self;
       v14 = v9;
-      [a1 stickerEffectViewSnapshotForStickerChatItem:v8 completion:v13];
+      [self stickerEffectViewSnapshotForStickerChatItem:v8 completion:v13];
     }
 
     else
     {
-      v12 = [a1 stickerEffectViewForStickerChatItem:v8];
+      v12 = [self stickerEffectViewForStickerChatItem:v8];
       (*(v9 + 2))(v9, v12);
     }
   }
@@ -541,17 +541,17 @@ LABEL_17:
 - (id)stickerEffectViewForStickerChatItem:()CKUtils
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isClingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-  if (v6)
+  if (isClingEnabled)
   {
-    v7 = [v4 mediaObject];
+    mediaObject = [v4 mediaObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [v8 stickerEffectType];
+      v8 = mediaObject;
+      stickerEffectType = [v8 stickerEffectType];
       if ([v8 needsAnimation] & 1) != 0 || (IMStickerEffectTypeShouldAvoidEffectView())
       {
         v10 = 0;
@@ -562,7 +562,7 @@ LABEL_17:
         v11 = MTLCreateSystemDefaultDevice();
         v10 = [objc_alloc(MEMORY[0x1E69DFA08]) initWithDevice:v11];
         [v10 setContentMode:1];
-        v12 = [v10 layer];
+        layer = [v10 layer];
         v13 = *(MEMORY[0x1E69792E8] + 80);
         v21[4] = *(MEMORY[0x1E69792E8] + 64);
         v21[5] = v13;
@@ -575,15 +575,15 @@ LABEL_17:
         v16 = *(MEMORY[0x1E69792E8] + 48);
         v21[2] = *(MEMORY[0x1E69792E8] + 32);
         v21[3] = v16;
-        [v12 setTransform:v21];
+        [layer setTransform:v21];
 
-        v17 = [v10 layer];
-        [v17 removeAllAnimations];
+        layer2 = [v10 layer];
+        [layer2 removeAllAnimations];
 
-        v18 = [a1 image];
-        [v10 setImage:v18];
+        image = [self image];
+        [v10 setImage:image];
 
-        v19 = [MEMORY[0x1E69DFA00] effectWithType:v9];
+        v19 = [MEMORY[0x1E69DFA00] effectWithType:stickerEffectType];
         [v10 setEffect:v19];
       }
     }
@@ -606,12 +606,12 @@ LABEL_17:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isClingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-  if (v9)
+  if (isClingEnabled)
   {
-    v10 = [a1 stickerEffectViewForStickerChatItem:v6];
+    v10 = [self stickerEffectViewForStickerChatItem:v6];
     if (v10)
     {
       v11[0] = MEMORY[0x1E69E9820];
@@ -641,16 +641,16 @@ LABEL_17:
 + (uint64_t)dragItemIsSticker:()CKUtils
 {
   v3 = a3;
-  v4 = [v3 itemProvider];
-  if ([v4 hasItemConformingToTypeIdentifier:@"com.apple.sticker.mediaPayload"])
+  itemProvider = [v3 itemProvider];
+  if ([itemProvider hasItemConformingToTypeIdentifier:@"com.apple.sticker.mediaPayload"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 itemProvider];
-    v5 = [v6 hasItemConformingToTypeIdentifier:@"com.apple.sticker"];
+    itemProvider2 = [v3 itemProvider];
+    v5 = [itemProvider2 hasItemConformingToTypeIdentifier:@"com.apple.sticker"];
   }
 
   return v5;
@@ -659,13 +659,13 @@ LABEL_17:
 + (BOOL)dragItemIsRepositioningSticker:()CKUtils
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isStickerRepositioningEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickerRepositioningEnabled = [mEMORY[0x1E69A8070] isStickerRepositioningEnabled];
 
-  if (v5 && ([v3 localObject], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0) && objc_msgSend(MEMORY[0x1E69A82C0], "dragItemIsSticker:", v3))
+  if (isStickerRepositioningEnabled && ([v3 localObject], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0) && objc_msgSend(MEMORY[0x1E69A82C0], "dragItemIsSticker:", v3))
   {
-    v8 = [v3 localObject];
-    v9 = [v8 objectForKey:@"kStickerIsRepositioningKey"];
+    localObject = [v3 localObject];
+    v9 = [localObject objectForKey:@"kStickerIsRepositioningKey"];
     v10 = v9 != 0;
   }
 
@@ -684,8 +684,8 @@ LABEL_17:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  items = [a3 items];
+  v4 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -695,7 +695,7 @@ LABEL_17:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         if ([MEMORY[0x1E69A82C0] dragItemIsRepositioningSticker:*(*(&v8 + 1) + 8 * i)])
@@ -705,7 +705,7 @@ LABEL_17:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;

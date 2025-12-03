@@ -1,6 +1,6 @@
 @interface AVTAvatarAttributeEditorModel
-- (AVTAvatarAttributeEditorModel)initWithCategories:(id)a3;
-- (id)differenceFromModel:(id)a3;
+- (AVTAvatarAttributeEditorModel)initWithCategories:(id)categories;
+- (id)differenceFromModel:(id)model;
 @end
 
 @implementation AVTAvatarAttributeEditorModel
@@ -25,59 +25,59 @@ uint64_t __61__AVTAvatarAttributeEditorModel_diffOfSections_fromSections___block
   return v7;
 }
 
-- (AVTAvatarAttributeEditorModel)initWithCategories:(id)a3
+- (AVTAvatarAttributeEditorModel)initWithCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   v9.receiver = self;
   v9.super_class = AVTAvatarAttributeEditorModel;
   v6 = [(AVTAvatarAttributeEditorModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_categories, a3);
+    objc_storeStrong(&v6->_categories, categories);
   }
 
   return v7;
 }
 
-- (id)differenceFromModel:(id)a3
+- (id)differenceFromModel:(id)model
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v36 = [MEMORY[0x1E695DF70] array];
-  v41 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [v3 categories];
-  v5 = [v4 count];
+  modelCopy = model;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  categories = [modelCopy categories];
+  v5 = [categories count];
 
   if (v5)
   {
     v6 = 0;
-    v35 = v3;
+    v35 = modelCopy;
     do
     {
-      v7 = [v3 categories];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      categories2 = [modelCopy categories];
+      v8 = [categories2 objectAtIndexedSubscript:v6];
 
-      v9 = [(AVTAvatarAttributeEditorModel *)self categories];
+      categories3 = [(AVTAvatarAttributeEditorModel *)self categories];
       v40 = v6;
-      v10 = [v9 objectAtIndexedSubscript:v6];
+      v10 = [categories3 objectAtIndexedSubscript:v6];
 
       v11 = objc_opt_class();
-      v12 = [v10 sections];
-      v13 = [v8 sections];
-      v14 = [v11 diffOfSections:v12 fromSections:v13];
+      sections = [v10 sections];
+      sections2 = [v8 sections];
+      v14 = [v11 diffOfSections:sections fromSections:sections2];
 
       v37 = v14;
-      [v36 addObject:v14];
+      [array addObject:v14];
       v15 = MEMORY[0x1E695DF20];
       v39 = v8;
-      v16 = [v8 sections];
-      v44 = [v15 _avtui_dictionaryByIndexingObjectsInArray:v16 by:&__block_literal_global_8];
+      sections3 = [v8 sections];
+      v44 = [v15 _avtui_dictionaryByIndexingObjectsInArray:sections3 by:&__block_literal_global_8];
 
       v17 = MEMORY[0x1E695DF20];
       v38 = v10;
-      v18 = [v10 sections];
-      v19 = [v17 _avtui_dictionaryByIndexingObjectsInArray:v18 by:&__block_literal_global_10];
+      sections4 = [v10 sections];
+      v19 = [v17 _avtui_dictionaryByIndexingObjectsInArray:sections4 by:&__block_literal_global_10];
 
       v47 = 0u;
       v48 = 0u;
@@ -104,13 +104,13 @@ uint64_t __61__AVTAvatarAttributeEditorModel_diffOfSections_fromSections___block
             if (v26)
             {
               v27 = objc_opt_class();
-              v28 = [v25 sectionItems];
-              v29 = [v26 sectionItems];
-              v30 = [v27 diffOfSectionItems:v28 fromSectionItems:v29];
+              sectionItems = [v25 sectionItems];
+              sectionItems2 = [v26 sectionItems];
+              v30 = [v27 diffOfSectionItems:sectionItems fromSectionItems:sectionItems2];
 
               if ([v30 hasChanges])
               {
-                [v41 setObject:v30 forKeyedSubscript:v24];
+                [dictionary setObject:v30 forKeyedSubscript:v24];
               }
             }
           }
@@ -122,15 +122,15 @@ uint64_t __61__AVTAvatarAttributeEditorModel_diffOfSections_fromSections___block
       }
 
       v6 = v40 + 1;
-      v3 = v35;
-      v31 = [v35 categories];
-      v32 = [v31 count];
+      modelCopy = v35;
+      categories4 = [v35 categories];
+      v32 = [categories4 count];
     }
 
     while (v40 + 1 < v32);
   }
 
-  v33 = [[AVTAvatarAttributeEditorModelDiff alloc] initWithSectionDiffs:v36 sectionItemDiffs:v41];
+  v33 = [[AVTAvatarAttributeEditorModelDiff alloc] initWithSectionDiffs:array sectionItemDiffs:dictionary];
 
   return v33;
 }

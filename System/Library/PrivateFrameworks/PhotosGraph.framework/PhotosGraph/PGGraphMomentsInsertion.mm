@@ -1,6 +1,6 @@
 @interface PGGraphMomentsInsertion
-- (PGGraphMomentsInsertion)initWithMomentUUIDs:(id)a3;
-- (PGGraphMomentsInsertion)initWithMoments:(id)a3;
+- (PGGraphMomentsInsertion)initWithMomentUUIDs:(id)ds;
+- (PGGraphMomentsInsertion)initWithMoments:(id)moments;
 - (id)description;
 @end
 
@@ -17,16 +17,16 @@
   return v5;
 }
 
-- (PGGraphMomentsInsertion)initWithMoments:(id)a3
+- (PGGraphMomentsInsertion)initWithMoments:(id)moments
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  momentsCopy = moments;
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(momentsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = momentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -42,10 +42,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) uuid];
-        if (v12)
+        uuid = [*(*(&v17 + 1) + 8 * v11) uuid];
+        if (uuid)
         {
-          [v6 addObject:v12];
+          [v6 addObject:uuid];
         }
 
         ++v11;
@@ -62,23 +62,23 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_moments, a3);
+    objc_storeStrong(&v13->_moments, moments);
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (PGGraphMomentsInsertion)initWithMomentUUIDs:(id)a3
+- (PGGraphMomentsInsertion)initWithMomentUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = PGGraphMomentsInsertion;
   v6 = [(PGGraphMomentsInsertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentUUIDs, a3);
+    objc_storeStrong(&v6->_momentUUIDs, ds);
   }
 
   return v7;

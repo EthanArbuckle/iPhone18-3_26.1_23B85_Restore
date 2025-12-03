@@ -10,14 +10,14 @@
   v16 = a5;
   v17 = a6;
   v18 = a7;
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v13 = objc_alloc_init(MEMORY[0x277CE3858]);
-  v10 = [MEMORY[0x277CE3868] nonPersistentDataStore];
+  nonPersistentDataStore = [MEMORY[0x277CE3868] nonPersistentDataStore];
   [v13 setWebsiteDataStore:?];
-  *&v7 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  *&v7 = MEMORY[0x277D82BD8](nonPersistentDataStore).n128_u64[0];
   [v13 setSuppressesIncrementalRendering:{1, v7}];
   [v13 setMediaTypesRequiringUserActionForPlayback:-1];
   [v13 _setCanShowWhileLocked:1];

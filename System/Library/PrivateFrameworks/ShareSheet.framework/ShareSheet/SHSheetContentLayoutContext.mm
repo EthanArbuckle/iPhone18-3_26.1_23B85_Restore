@@ -1,26 +1,26 @@
 @interface SHSheetContentLayoutContext
 - (NSDirectionalEdgeInsets)viewDirectionalLayoutMargins;
-- (SHSheetContentLayoutContext)initWithSectionIdentifier:(id)a3 dataSourceSnapshot:(id)a4 environment:(id)a5;
+- (SHSheetContentLayoutContext)initWithSectionIdentifier:(id)identifier dataSourceSnapshot:(id)snapshot environment:(id)environment;
 @end
 
 @implementation SHSheetContentLayoutContext
 
-- (SHSheetContentLayoutContext)initWithSectionIdentifier:(id)a3 dataSourceSnapshot:(id)a4 environment:(id)a5
+- (SHSheetContentLayoutContext)initWithSectionIdentifier:(id)identifier dataSourceSnapshot:(id)snapshot environment:(id)environment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  snapshotCopy = snapshot;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = SHSheetContentLayoutContext;
   v11 = [(SHSheetContentLayoutContext *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     sectionIdentifier = v11->_sectionIdentifier;
     v11->_sectionIdentifier = v12;
 
-    objc_storeStrong(&v11->_dataSourceSnapshot, a4);
-    objc_storeStrong(&v11->_environment, a5);
+    objc_storeStrong(&v11->_dataSourceSnapshot, snapshot);
+    objc_storeStrong(&v11->_environment, environment);
     v11->_sectionTopContentInset = 0.0;
     v11->_sectionBottomContentInset = 0.0;
     v11->_enableCustomViewSectionFooter = _ShareSheetSolariumEnabled() ^ 1;

@@ -1,16 +1,16 @@
 @interface PDSRemoteRegistry
-+ (id)remoteVendorForClientID:(id)a3;
-+ (void)registerGlobalVendor:(id)a3;
++ (id)remoteVendorForClientID:(id)d;
++ (void)registerGlobalVendor:(id)vendor;
 @end
 
 @implementation PDSRemoteRegistry
 
-+ (id)remoteVendorForClientID:(id)a3
++ (id)remoteVendorForClientID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    [(PDSRemoteRegistry *)a2 remoteVendorForClientID:a1];
+    [(PDSRemoteRegistry *)a2 remoteVendorForClientID:self];
   }
 
   os_unfair_lock_lock(&kVendorsLock);
@@ -24,18 +24,18 @@
     v7 = kVendors;
     if (!kVendors)
     {
-      v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
       v9 = kVendors;
-      kVendors = v8;
+      kVendors = strongToWeakObjectsMapTable;
 
       v7 = kVendors;
     }
 
-    v6 = [v7 objectForKey:v5];
+    v6 = [v7 objectForKey:dCopy];
     if (!v6)
     {
-      v6 = [[PDSXPCConnector alloc] initWithClientID:v5];
-      [kVendors setObject:v6 forKey:v5];
+      v6 = [[PDSXPCConnector alloc] initWithClientID:dCopy];
+      [kVendors setObject:v6 forKey:dCopy];
     }
   }
 
@@ -44,13 +44,13 @@
   return v6;
 }
 
-+ (void)registerGlobalVendor:(id)a3
++ (void)registerGlobalVendor:(id)vendor
 {
-  v3 = a3;
+  vendorCopy = vendor;
   os_unfair_lock_lock(&kVendorsLock);
   v4 = kGlobalVendor;
-  kGlobalVendor = v3;
-  v5 = v3;
+  kGlobalVendor = vendorCopy;
+  v5 = vendorCopy;
 
   v6 = kVendors;
   kVendors = 0;

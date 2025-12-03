@@ -1,16 +1,16 @@
 @interface SGEntity
 - (BOOL)hasExtractionException;
-- (BOOL)hasTag:(id)a3;
+- (BOOL)hasTag:(id)tag;
 - (BOOL)isCancelled;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntity:(id)entity;
 - (BOOL)isEventComplete;
 - (BOOL)isFromForwardedMessage;
 - (BOOL)isInhuman;
 - (BOOL)isNaturalLanguageEvent;
 - (BOOL)isPartiallyDownloaded;
 - (SGEntity)init;
-- (SGEntity)initWithEntity:(id)a3;
+- (SGEntity)initWithEntity:(id)entity;
 - (_NSRange)contentRangeOfInterest;
 - (id)description;
 - (id)extraKeyTag;
@@ -19,9 +19,9 @@
 - (id)tags;
 - (id)templateShortName;
 - (unint64_t)hash;
-- (void)addTag:(id)a3;
+- (void)addTag:(id)tag;
 - (void)dealloc;
-- (void)removeTag:(id)a3;
+- (void)removeTag:(id)tag;
 - (void)validate;
 @end
 
@@ -43,8 +43,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = v15 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  isEventComplete = v15 = 0u;
+  v3 = [isEventComplete countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -55,7 +55,7 @@ LABEL_3:
     {
       if (*v13 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(isEventComplete);
       }
 
       v7 = *(*(&v12 + 1) + 8 * v6);
@@ -66,7 +66,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v4 = [isEventComplete countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -80,12 +80,12 @@ LABEL_3:
 
     if (v8)
     {
-      v2 = [v8 isEventComplete];
-      v9 = [v2 BOOLValue];
+      isEventComplete = [v8 isEventComplete];
+      bOOLValue = [isEventComplete BOOLValue];
       goto LABEL_12;
     }
 
-    v9 = 1;
+    bOOLValue = 1;
   }
 
   else
@@ -93,12 +93,12 @@ LABEL_3:
 LABEL_9:
 
     v8 = 0;
-    v9 = 1;
+    bOOLValue = 1;
 LABEL_12:
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
 - (id)loggingIdentifier
@@ -131,10 +131,10 @@ LABEL_12:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SGEntity *)self duplicateKey];
-  v5 = [(SGEntity *)self sourceKey];
-  v6 = [(SGEntity *)self title];
-  v7 = [v3 initWithFormat:@"<SGEntity:%@, sourceKey=%@, title=%@>", v4, v5, v6];
+  duplicateKey = [(SGEntity *)self duplicateKey];
+  sourceKey = [(SGEntity *)self sourceKey];
+  title = [(SGEntity *)self title];
+  v7 = [v3 initWithFormat:@"<SGEntity:%@, sourceKey=%@, title=%@>", duplicateKey, sourceKey, title];
 
   return v7;
 }
@@ -160,21 +160,21 @@ LABEL_12:
 
 - (BOOL)isPartiallyDownloaded
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] isPartiallyDownloaded];
-  v4 = [v2 containsObject:v3];
+  tags = [(SGEntity *)self tags];
+  isPartiallyDownloaded = [MEMORY[0x277D01FA0] isPartiallyDownloaded];
+  v4 = [tags containsObject:isPartiallyDownloaded];
 
   return v4;
 }
 
 - (BOOL)isInhuman
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] inhuman];
-  if ([v2 containsObject:v3])
+  tags = [(SGEntity *)self tags];
+  inhuman = [MEMORY[0x277D01FA0] inhuman];
+  if ([tags containsObject:inhuman])
   {
-    v4 = [MEMORY[0x277D01FA0] human];
-    v5 = [v2 containsObject:v4] ^ 1;
+    human = [MEMORY[0x277D01FA0] human];
+    v5 = [tags containsObject:human] ^ 1;
   }
 
   else
@@ -226,11 +226,11 @@ LABEL_12:
 
 LABEL_11:
 
-  v7 = [v3 value];
+  value = [v3 value];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return value;
 }
 
 - (id)extraKeyTag
@@ -279,16 +279,16 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)hasTag:(id)a3
+- (BOOL)hasTag:(id)tag
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tagCopy = tag;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SGEntity *)self tags];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tags = [(SGEntity *)self tags];
+  v6 = [tags countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -298,17 +298,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tags);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isEqualToEntityTag:v4])
+        if ([*(*(&v11 + 1) + 8 * i) isEqualToEntityTag:tagCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [tags countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -343,43 +343,43 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeTag:(id)a3
+- (void)removeTag:(id)tag
 {
-  v7 = a3;
-  if (!v7)
+  tagCopy = tag;
+  if (!tagCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
   }
 
   pthread_mutex_lock(&self->_tagsLock);
-  if ([(NSMutableSet *)self->_tags containsObject:v7])
+  if ([(NSMutableSet *)self->_tags containsObject:tagCopy])
   {
     tagsSnapshot = self->_tagsSnapshot;
     self->_tagsSnapshot = 0;
 
-    [(NSMutableSet *)self->_tags removeObject:v7];
+    [(NSMutableSet *)self->_tags removeObject:tagCopy];
   }
 
   pthread_mutex_unlock(&self->_tagsLock);
 }
 
-- (void)addTag:(id)a3
+- (void)addTag:(id)tag
 {
-  v7 = a3;
-  if (!v7)
+  tagCopy = tag;
+  if (!tagCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
   }
 
   pthread_mutex_lock(&self->_tagsLock);
-  if (([(NSMutableSet *)self->_tags containsObject:v7]& 1) == 0)
+  if (([(NSMutableSet *)self->_tags containsObject:tagCopy]& 1) == 0)
   {
     tagsSnapshot = self->_tagsSnapshot;
     self->_tagsSnapshot = 0;
 
-    [(NSMutableSet *)self->_tags addObject:v7];
+    [(NSMutableSet *)self->_tags addObject:tagCopy];
   }
 
   pthread_mutex_unlock(&self->_tagsLock);
@@ -387,67 +387,67 @@ LABEL_11:
 
 - (BOOL)isFromForwardedMessage
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] fromForwardedMessage];
-  v4 = [v2 containsObject:v3];
+  tags = [(SGEntity *)self tags];
+  fromForwardedMessage = [MEMORY[0x277D01FA0] fromForwardedMessage];
+  v4 = [tags containsObject:fromForwardedMessage];
 
   return v4;
 }
 
 - (BOOL)hasExtractionException
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] templateException];
-  v4 = [v2 containsObject:v3];
+  tags = [(SGEntity *)self tags];
+  templateException = [MEMORY[0x277D01FA0] templateException];
+  v4 = [tags containsObject:templateException];
 
   return v4;
 }
 
 - (BOOL)isCancelled
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] extractedEventCancellation];
-  v4 = [v2 containsObject:v3];
+  tags = [(SGEntity *)self tags];
+  extractedEventCancellation = [MEMORY[0x277D01FA0] extractedEventCancellation];
+  v4 = [tags containsObject:extractedEventCancellation];
 
   return v4;
 }
 
 - (BOOL)isNaturalLanguageEvent
 {
-  v2 = [(SGEntity *)self tags];
-  v3 = [MEMORY[0x277D01FA0] naturalLanguageEvent];
-  v4 = [v2 containsObject:v3];
+  tags = [(SGEntity *)self tags];
+  naturalLanguageEvent = [MEMORY[0x277D01FA0] naturalLanguageEvent];
+  v4 = [tags containsObject:naturalLanguageEvent];
 
   return v4;
 }
 
 - (void)validate
 {
-  v4 = [(SGEntity *)self duplicateKey];
-  v5 = [v4 entityKey];
+  duplicateKey = [(SGEntity *)self duplicateKey];
+  entityKey = [duplicateKey entityKey];
 
-  if (!v5)
+  if (!entityKey)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:120 description:@"entityKey can't be nil."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:120 description:@"entityKey can't be nil."];
   }
 
-  v6 = [(SGEntity *)self duplicateKey];
-  v7 = [v6 entityType];
+  duplicateKey2 = [(SGEntity *)self duplicateKey];
+  entityType = [duplicateKey2 entityType];
 
-  if (!v7)
+  if (!entityType)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:121 description:@"entityType must not be SGEntityTypeUnknown"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:121 description:@"entityType must not be SGEntityTypeUnknown"];
   }
 
-  v8 = [(SGEntity *)self duplicateKey];
-  v9 = [v8 entityType];
+  duplicateKey3 = [(SGEntity *)self duplicateKey];
+  entityType2 = [duplicateKey3 entityType];
 
-  if (v9 == 8)
+  if (entityType2 == 8)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:122 description:@"entityType must not be SGEntityTypeDetectedEmailAddress"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGEntity.m" lineNumber:122 description:@"entityType must not be SGEntityTypeDetectedEmailAddress"];
   }
 }
 
@@ -458,12 +458,12 @@ LABEL_11:
   return [(NSString *)self->_sourceKey hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqualToEntity:(id)a3
+- (BOOL)isEqualToEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = self->_recordId;
   v6 = v5;
-  if (v5 == v4[12])
+  if (v5 == entityCopy[12])
   {
   }
 
@@ -479,7 +479,7 @@ LABEL_11:
 
   v8 = self->_duplicateKey;
   v9 = v8;
-  if (v8 == v4[13])
+  if (v8 == entityCopy[13])
   {
   }
 
@@ -495,7 +495,7 @@ LABEL_11:
 
   v11 = self->_sourceKey;
   v12 = v11;
-  if (v11 == v4[15])
+  if (v11 == entityCopy[15])
   {
   }
 
@@ -511,7 +511,7 @@ LABEL_11:
 
   v14 = self->_content;
   v15 = v14;
-  if (v14 == v4[16])
+  if (v14 == entityCopy[16])
   {
   }
 
@@ -526,11 +526,11 @@ LABEL_11:
   }
 
   v17 = 0;
-  if (self->_contentRangeOfInterest.location == v4[30] && self->_contentRangeOfInterest.length == v4[31])
+  if (self->_contentRangeOfInterest.location == entityCopy[30] && self->_contentRangeOfInterest.length == entityCopy[31])
   {
     v18 = self->_title;
     v19 = v18;
-    if (v18 == v4[17])
+    if (v18 == entityCopy[17])
     {
     }
 
@@ -544,13 +544,13 @@ LABEL_11:
       }
     }
 
-    [v4 creationTimestamp];
+    [entityCopy creationTimestamp];
     if (self->_creationTimestamp.secondsFromUnixEpoch != v21)
     {
       goto LABEL_27;
     }
 
-    [v4 lastModifiedTimestamp];
+    [entityCopy lastModifiedTimestamp];
     if (self->_lastModifiedTimestamp.secondsFromUnixEpoch != v22)
     {
       goto LABEL_27;
@@ -558,7 +558,7 @@ LABEL_11:
 
     v23 = self->_timeRange;
     v24 = v23;
-    if (v23 == v4[23])
+    if (v23 == entityCopy[23])
     {
     }
 
@@ -574,16 +574,16 @@ LABEL_27:
       }
     }
 
-    v27 = [(SGEntity *)self tags];
-    v28 = [v4 tags];
-    if (![v27 isEqual:v28])
+    tags = [(SGEntity *)self tags];
+    tags2 = [entityCopy tags];
+    if (![tags isEqual:tags2])
     {
       goto LABEL_42;
     }
 
     v29 = self->_structuredData;
     v30 = v29;
-    if (v29 == v4[24])
+    if (v29 == entityCopy[24])
     {
     }
 
@@ -598,12 +598,12 @@ LABEL_27:
     }
 
     quality = self->_quality;
-    [v4 quality];
+    [entityCopy quality];
     if (quality == v33)
     {
       v34 = self->_locations;
       v35 = v34;
-      if (v34 == v4[26])
+      if (v34 == entityCopy[26])
       {
       }
 
@@ -618,10 +618,10 @@ LABEL_27:
       }
 
       masterEntityId = self->_masterEntityId;
-      if (masterEntityId == [v4 masterEntityId])
+      if (masterEntityId == [entityCopy masterEntityId])
       {
         state = self->_state;
-        v17 = state == [v4 state];
+        v17 = state == [entityCopy state];
 LABEL_43:
 
         goto LABEL_28;
@@ -638,18 +638,18 @@ LABEL_28:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntity *)self isEqualToEntity:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntity *)self isEqualToEntity:v5];
   }
 
   return v6;
@@ -663,63 +663,63 @@ LABEL_28:
   [(SGEntity *)&v3 dealloc];
 }
 
-- (SGEntity)initWithEntity:(id)a3
+- (SGEntity)initWithEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = [(SGEntity *)self init];
   if (v5)
   {
-    v6 = [v4 recordId];
+    recordId = [entityCopy recordId];
     recordId = v5->_recordId;
-    v5->_recordId = v6;
+    v5->_recordId = recordId;
 
-    v8 = [v4 duplicateKey];
+    duplicateKey = [entityCopy duplicateKey];
     duplicateKey = v5->_duplicateKey;
-    v5->_duplicateKey = v8;
+    v5->_duplicateKey = duplicateKey;
 
-    v10 = [v4 extractionInfo];
+    extractionInfo = [entityCopy extractionInfo];
     extractionInfo = v5->_extractionInfo;
-    v5->_extractionInfo = v10;
+    v5->_extractionInfo = extractionInfo;
 
-    v12 = [v4 sourceKey];
+    sourceKey = [entityCopy sourceKey];
     sourceKey = v5->_sourceKey;
-    v5->_sourceKey = v12;
+    v5->_sourceKey = sourceKey;
 
-    v14 = [v4 content];
+    content = [entityCopy content];
     content = v5->_content;
-    v5->_content = v14;
+    v5->_content = content;
 
-    v5->_contentRangeOfInterest.location = [v4 contentRangeOfInterest];
+    v5->_contentRangeOfInterest.location = [entityCopy contentRangeOfInterest];
     v5->_contentRangeOfInterest.length = v16;
-    v17 = [v4 title];
+    title = [entityCopy title];
     title = v5->_title;
-    v5->_title = v17;
+    v5->_title = title;
 
-    v19 = [v4 author];
+    author = [entityCopy author];
     author = v5->_author;
-    v5->_author = v19;
+    v5->_author = author;
 
-    [v4 creationTimestamp];
+    [entityCopy creationTimestamp];
     v5->_creationTimestamp.secondsFromUnixEpoch = v21;
-    [v4 lastModifiedTimestamp];
+    [entityCopy lastModifiedTimestamp];
     v5->_lastModifiedTimestamp.secondsFromUnixEpoch = v22;
-    v23 = [v4 timeRange];
+    timeRange = [entityCopy timeRange];
     timeRange = v5->_timeRange;
-    v5->_timeRange = v23;
+    v5->_timeRange = timeRange;
 
-    v25 = [v4 structuredData];
+    structuredData = [entityCopy structuredData];
     structuredData = v5->_structuredData;
-    v5->_structuredData = v25;
+    v5->_structuredData = structuredData;
 
-    [v4 quality];
+    [entityCopy quality];
     v5->_quality = v27;
-    v28 = [v4 locations];
+    locations = [entityCopy locations];
     locations = v5->_locations;
-    v5->_locations = v28;
+    v5->_locations = locations;
 
-    v5->_masterEntityId = [v4 masterEntityId];
-    v5->_groupId = [v4 groupId];
-    v5->_state = [v4 state];
+    v5->_masterEntityId = [entityCopy masterEntityId];
+    v5->_groupId = [entityCopy groupId];
+    v5->_state = [entityCopy state];
   }
 
   return v5;

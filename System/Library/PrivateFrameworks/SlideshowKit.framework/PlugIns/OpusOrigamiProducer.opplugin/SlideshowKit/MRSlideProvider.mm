@@ -2,55 +2,55 @@
 - (BOOL)canPlay;
 - (BOOL)endLiveUpdate;
 - (BOOL)isOpaque;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (BOOL)updateStuffWithAssetManager:(id)a3;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (BOOL)updateStuffWithAssetManager:(id)manager;
 - (CGPoint)center;
 - (CGSize)defaultSize;
-- (CGSize)framedImageSizeAtIndex:(unsigned int)a3 aspectRatio:(float)a4;
+- (CGSize)framedImageSizeAtIndex:(unsigned int)index aspectRatio:(float)ratio;
 - (CGSize)requestedSize;
 - (CGSize)sizeFactor;
-- (CGSize)unframedImageSizeForAspectRatio:(float)a3 frameID:(id)a4 andFrameAttributes:(id)a5 atIndex:(unsigned int)a6 framedImageSize:(CGSize *)a7;
-- (MRSlideProvider)initWithEffectLayer:(id)a3;
+- (CGSize)unframedImageSizeForAspectRatio:(float)ratio frameID:(id)d andFrameAttributes:(id)attributes atIndex:(unsigned int)index framedImageSize:(CGSize *)size;
+- (MRSlideProvider)initWithEffectLayer:(id)layer;
 - (id)currentSlideInfo;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_computeImageSizeInContext:(id)a3 withArguments:(id)a4;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_computeImageSizeInContext:(id)context withArguments:(id)arguments;
 - (void)_unloadIfNotUpdatingLive;
-- (void)applyKenBurnsAtTime:(double)a3 withTargetSize:(CGSize)a4 kenBurnsType:(int)a5 translation:(CGPoint *)a6 scale:(double *)a7 rotation:(double *)a8;
+- (void)applyKenBurnsAtTime:(double)time withTargetSize:(CGSize)size kenBurnsType:(int)type translation:(CGPoint *)translation scale:(double *)scale rotation:(double *)rotation;
 - (void)cancelLoading;
 - (void)cleanup;
 - (void)dealloc;
-- (void)imageIsAvailableFromAssetPlayer:(id)a3;
-- (void)loadForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5 now:(BOOL)a6;
-- (void)loadWithArguments:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAssetPath:(id)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setCenterAnimationPath:(id)a3;
-- (void)setDefaultSize:(CGSize)a3;
-- (void)setEffectAttributes:(id)a3;
-- (void)setImageSizeScript:(id)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setIsPlaying:(BOOL)a3;
-- (void)setIsStill:(BOOL)a3;
-- (void)setNeedsToUpdateLayout:(BOOL)a3;
-- (void)setRotation:(double)a3;
-- (void)setRotationAnimationPath:(id)a3;
-- (void)setScale:(double)a3;
-- (void)setScaleAnimationPath:(id)a3;
-- (void)setShowDuration:(double)a3;
-- (void)setSlide:(id)a3;
-- (void)setSlideIsReadonly:(BOOL)a3;
-- (void)setTime:(double)a3;
-- (void)setWantsMipmap:(BOOL)a3;
-- (void)setWantsMonochromatic:(BOOL)a3;
+- (void)imageIsAvailableFromAssetPlayer:(id)player;
+- (void)loadForTime:(double)time inContext:(id)context withArguments:(id)arguments now:(BOOL)now;
+- (void)loadWithArguments:(id)arguments;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAssetPath:(id)path;
+- (void)setCenter:(CGPoint)center;
+- (void)setCenterAnimationPath:(id)path;
+- (void)setDefaultSize:(CGSize)size;
+- (void)setEffectAttributes:(id)attributes;
+- (void)setImageSizeScript:(id)script;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setIsPlaying:(BOOL)playing;
+- (void)setIsStill:(BOOL)still;
+- (void)setNeedsToUpdateLayout:(BOOL)layout;
+- (void)setRotation:(double)rotation;
+- (void)setRotationAnimationPath:(id)path;
+- (void)setScale:(double)scale;
+- (void)setScaleAnimationPath:(id)path;
+- (void)setShowDuration:(double)duration;
+- (void)setSlide:(id)slide;
+- (void)setSlideIsReadonly:(BOOL)readonly;
+- (void)setTime:(double)time;
+- (void)setWantsMipmap:(BOOL)mipmap;
+- (void)setWantsMonochromatic:(BOOL)monochromatic;
 - (void)unload;
-- (void)updateShowTimeAndDurationWithPlugTiming:(id)a3 andAttributes:(id)a4;
+- (void)updateShowTimeAndDurationWithPlugTiming:(id)timing andAttributes:(id)attributes;
 @end
 
 @implementation MRSlideProvider
 
-- (MRSlideProvider)initWithEffectLayer:(id)a3
+- (MRSlideProvider)initWithEffectLayer:(id)layer
 {
   v14.receiver = self;
   v14.super_class = MRSlideProvider;
@@ -58,7 +58,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mEffectLayer = a3;
+    v4->mEffectLayer = layer;
     v4->mKenBurnsType = 1;
     v4->mLastTime = -1.0;
     __asm { FMOV            V0.2D, #1.0 }
@@ -108,9 +108,9 @@
   objc_sync_exit(self);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"asset.path", a4, a5, a6}])
+  if ([path isEqualToString:{@"asset.path", object, change, context}])
   {
     v8 = 2;
 LABEL_6:
@@ -118,14 +118,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([a3 isEqualToString:@"startTime"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"duration"))
+  if (([path isEqualToString:@"startTime"] & 1) != 0 || objc_msgSend(path, "isEqualToString:", @"duration"))
   {
     v8 = 1;
     goto LABEL_6;
   }
 
 LABEL_7:
-  if ([a3 isEqualToString:@"frameID"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"frameAttributes"))
+  if ([path isEqualToString:@"frameID"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"frameAttributes"))
   {
     v9 = 64;
 LABEL_17:
@@ -133,35 +133,35 @@ LABEL_17:
     return;
   }
 
-  if ([a3 isEqualToString:@"animationPaths"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"kenBurnsType") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"center") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"scale") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"rotation") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"filters"))
+  if ([path isEqualToString:@"animationPaths"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"kenBurnsType") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"center") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"scale") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"rotation") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"filters"))
   {
     v9 = 0x80;
     goto LABEL_17;
   }
 
-  if ([a3 isEqualToString:@"builtVolume"])
+  if ([path isEqualToString:@"builtVolume"])
   {
     v9 = 4;
     goto LABEL_17;
   }
 }
 
-- (void)setDefaultSize:(CGSize)a3
+- (void)setDefaultSize:(CGSize)size
 {
-  if (a3.width != self->mDefaultSize.width || a3.height != self->mDefaultSize.height)
+  if (size.width != self->mDefaultSize.width || size.height != self->mDefaultSize.height)
   {
-    self->mDefaultSize = a3;
+    self->mDefaultSize = size;
     [(MRSlideProvider *)self _unloadIfNotUpdatingLive];
   }
 }
 
-- (void)setWantsMonochromatic:(BOOL)a3
+- (void)setWantsMonochromatic:(BOOL)monochromatic
 {
   mFlags = self->mFlags;
-  if (((((mFlags & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((mFlags & 0x40) == 0) ^ monochromatic) & 1) == 0)
   {
     v4 = mFlags & 0xBF;
-    if (a3)
+    if (monochromatic)
     {
       v5 = 64;
     }
@@ -176,13 +176,13 @@ LABEL_17:
   }
 }
 
-- (void)setWantsMipmap:(BOOL)a3
+- (void)setWantsMipmap:(BOOL)mipmap
 {
   mFlags = self->mFlags;
-  if (((((mFlags & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((mFlags & 0x20) == 0) ^ mipmap) & 1) == 0)
   {
     v4 = mFlags & 0xDF;
-    if (a3)
+    if (mipmap)
     {
       v5 = 32;
     }
@@ -197,36 +197,36 @@ LABEL_17:
   }
 }
 
-- (void)setImageSizeScript:(id)a3
+- (void)setImageSizeScript:(id)script
 {
-  if (self->mImageSizeScript != a3 && ([a3 isEqualToString:?] & 1) == 0)
+  if (self->mImageSizeScript != script && ([script isEqualToString:?] & 1) == 0)
   {
 
-    self->mImageSizeScript = [a3 copy];
+    self->mImageSizeScript = [script copy];
 
     [(MRSlideProvider *)self _unloadIfNotUpdatingLive];
   }
 }
 
-- (void)setEffectAttributes:(id)a3
+- (void)setEffectAttributes:(id)attributes
 {
   mEffectAttributes = self->mEffectAttributes;
-  if (mEffectAttributes != a3)
+  if (mEffectAttributes != attributes)
   {
 
-    self->mEffectAttributes = a3;
+    self->mEffectAttributes = attributes;
 
     [(MRSlideProvider *)self _unloadIfNotUpdatingLive];
   }
 }
 
-- (void)setIsStill:(BOOL)a3
+- (void)setIsStill:(BOOL)still
 {
   mFlags = self->mFlags;
-  if (((((mFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((mFlags & 8) == 0) ^ still) & 1) == 0)
   {
     v4 = mFlags & 0xF7;
-    if (a3)
+    if (still)
     {
       v5 = 8;
     }
@@ -241,9 +241,9 @@ LABEL_17:
   }
 }
 
-- (void)setSlideIsReadonly:(BOOL)a3
+- (void)setSlideIsReadonly:(BOOL)readonly
 {
-  if (a3)
+  if (readonly)
   {
     v3 = 64;
   }
@@ -256,9 +256,9 @@ LABEL_17:
   BYTE1(self->mFlags) = BYTE1(self->mFlags) & 0xBF | v3;
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
-  if (a3)
+  if (muted)
   {
     v4 = 32;
   }
@@ -272,12 +272,12 @@ LABEL_17:
   mSlidePlayer = self->mSlidePlayer;
   if (mSlidePlayer)
   {
-    v6 = a3;
+    mutedCopy = muted;
     if ([(MRAssetPlayer *)mSlidePlayer conformsToProtocol:&OBJC_PROTOCOL___MRAudioPlayer])
     {
       v7 = self->mSlidePlayer;
 
-      [(MRAssetPlayer *)v7 setIsMuted:v6];
+      [(MRAssetPlayer *)v7 setIsMuted:mutedCopy];
     }
   }
 }
@@ -301,15 +301,15 @@ LABEL_17:
   return mSlideLayer;
 }
 
-- (void)setNeedsToUpdateLayout:(BOOL)a3
+- (void)setNeedsToUpdateLayout:(BOOL)layout
 {
-  if (a3 && [(MCSlide *)self->_slide countOfLayouts]>= 2)
+  if (layout && [(MCSlide *)self->_slide countOfLayouts]>= 2)
   {
     BYTE1(self->mFlags) |= 2u;
   }
 }
 
-- (CGSize)framedImageSizeAtIndex:(unsigned int)a3 aspectRatio:(float)a4
+- (CGSize)framedImageSizeAtIndex:(unsigned int)index aspectRatio:(float)ratio
 {
   width = self->mDefaultSize.width;
   height = self->mDefaultSize.height;
@@ -322,9 +322,9 @@ LABEL_17:
     v13 = [NSNumber numberWithFloat:v12];
     LODWORD(v14) = 1.0;
     v15 = [NSNumber numberWithFloat:v14];
-    *&v16 = a3;
+    *&v16 = index;
     v17 = [NSNumber numberWithFloat:v16];
-    *&v18 = a4;
+    *&v18 = ratio;
     v19 = [v9 initWithObjectsAndKeys:{v11, @"layerWidth", v13, @"layerHeight", v15, @"numOfImages", v17, @"indexOfImage", +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v18), @"imageAspectRatio", 0}];
     v20 = [MRUtilities executeScript:self->mImageSizeScript withHeader:v19 andAttributes:self->mEffectAttributes];
 
@@ -343,23 +343,23 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)unframedImageSizeForAspectRatio:(float)a3 frameID:(id)a4 andFrameAttributes:(id)a5 atIndex:(unsigned int)a6 framedImageSize:(CGSize *)a7
+- (CGSize)unframedImageSizeForAspectRatio:(float)ratio frameID:(id)d andFrameAttributes:(id)attributes atIndex:(unsigned int)index framedImageSize:(CGSize *)size
 {
-  [(MRSlideProvider *)self framedImageSizeAtIndex:*&a6 aspectRatio:?];
+  [(MRSlideProvider *)self framedImageSizeAtIndex:*&index aspectRatio:?];
   width = v11;
   height = v12;
-  if (a7)
+  if (size)
   {
-    a7->width = v11;
-    a7->height = v12;
+    size->width = v11;
+    size->height = v12;
   }
 
   v15 = [+[MRFrameManager sharedManager](MRFrameManager "sharedManager")];
   if (v15)
   {
     v16 = v15;
-    v17 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", width), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", height), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a3), @"imageAspectRatio", 0}];
-    v18 = [MRUtilities executeScript:v16 withHeader:v17 andAttributes:a5];
+    v17 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", width), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", height), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", ratio), @"imageAspectRatio", 0}];
+    v18 = [MRUtilities executeScript:v16 withHeader:v17 andAttributes:attributes];
 
     if (v18)
     {
@@ -393,9 +393,9 @@ LABEL_17:
   return result;
 }
 
-- (void)setShowDuration:(double)a3
+- (void)setShowDuration:(double)duration
 {
-  self->_showDuration = a3;
+  self->_showDuration = duration;
   audioDucker = self->_audioDucker;
   if (audioDucker)
   {
@@ -403,15 +403,15 @@ LABEL_17:
   }
 }
 
-- (void)updateShowTimeAndDurationWithPlugTiming:(id)a3 andAttributes:(id)a4
+- (void)updateShowTimeAndDurationWithPlugTiming:(id)timing andAttributes:(id)attributes
 {
-  [a3 phaseInDuration];
+  [timing phaseInDuration];
   v8 = v7;
-  [a3 loopDuration];
+  [timing loopDuration];
   v10 = v9;
-  [a3 phaseOutDuration];
+  [timing phaseOutDuration];
   v12 = v11;
-  if (self->mShowTimeScript && (v13 = [NSDictionary alloc], v14 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v8), v15 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v10), v16 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v12), [a3 fullDuration], v17 = objc_msgSend(v13, "initWithObjectsAndKeys:", v14, @"phaseInDuration", v15, @"mainDuration", v16, @"phaseOutDuration", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:"), @"fullDuration", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", -[MCSlide index](self->_slide, "index")), @"indexOfImage", 0), v18 = +[MRUtilities executeScript:withHeader:andAttributes:](MRUtilities, "executeScript:withHeader:andAttributes:", self->mShowTimeScript, v17, a4), v17, v18))
+  if (self->mShowTimeScript && (v13 = [NSDictionary alloc], v14 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v8), v15 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v10), v16 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v12), [timing fullDuration], v17 = objc_msgSend(v13, "initWithObjectsAndKeys:", v14, @"phaseInDuration", v15, @"mainDuration", v16, @"phaseOutDuration", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:"), @"fullDuration", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", -[MCSlide index](self->_slide, "index")), @"indexOfImage", 0), v18 = +[MRUtilities executeScript:withHeader:andAttributes:](MRUtilities, "executeScript:withHeader:andAttributes:", self->mShowTimeScript, v17, attributes), v17, v18))
   {
     v19 = CGSizeFromString(v18);
     self->_showTime = v19.width;
@@ -437,9 +437,9 @@ LABEL_17:
   }
 }
 
-- (void)setSlide:(id)a3
+- (void)setSlide:(id)slide
 {
-  if (self->_slide != a3)
+  if (self->_slide != slide)
   {
     [(MRSlideProvider *)self unload];
     slide = self->_slide;
@@ -447,9 +447,9 @@ LABEL_17:
     {
       if ((self->mFlags & 0x4000) == 0)
       {
-        v6 = [(MCObject *)slide isSnapshot];
+        isSnapshot = [(MCObject *)slide isSnapshot];
         slide = self->_slide;
-        if ((v6 & 1) == 0)
+        if ((isSnapshot & 1) == 0)
         {
           [(MCSlide *)slide removeObserver:self forKeyPath:@"startTime"];
           [(MCSlide *)self->_slide removeObserver:self forKeyPath:@"duration"];
@@ -471,11 +471,11 @@ LABEL_17:
       self->_slide = 0;
     }
 
-    if (a3)
+    if (slide)
     {
-      v7 = a3;
-      self->_slide = v7;
-      if ((self->mFlags & 0x4000) == 0 && ![(MCObject *)v7 isSnapshot])
+      slideCopy = slide;
+      self->_slide = slideCopy;
+      if ((self->mFlags & 0x4000) == 0 && ![(MCObject *)slideCopy isSnapshot])
       {
         [(MCSlide *)self->_slide addObserver:self forKeyPath:@"startTime" options:0 context:0];
         [(MCSlide *)self->_slide addObserver:self forKeyPath:@"duration" options:0 context:0];
@@ -498,21 +498,21 @@ LABEL_17:
   }
 }
 
-- (void)setAssetPath:(id)a3
+- (void)setAssetPath:(id)path
 {
-  if (self->_assetPath != a3)
+  if (self->_assetPath != path)
   {
     [(MRSlideProvider *)self unload];
 
-    self->_assetPath = a3;
+    self->_assetPath = path;
     BYTE1(self->mFlags) |= 2u;
     BYTE2(self->mFlags) |= 0x40u;
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  self->_center = a3;
+  self->_center = center;
   if (self->_centerAnimationPath)
   {
     [(MRSlideProvider *)self setCenterAnimationPath:0];
@@ -521,9 +521,9 @@ LABEL_17:
   BYTE1(self->mFlags) |= 8u;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  self->_scale = a3;
+  self->_scale = scale;
   if (self->_scaleAnimationPath)
   {
     [(MRSlideProvider *)self setScaleAnimationPath:0];
@@ -532,9 +532,9 @@ LABEL_17:
   BYTE1(self->mFlags) |= 8u;
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
-  self->_rotation = a3;
+  self->_rotation = rotation;
   if (self->_rotationAnimationPath)
   {
     [(MRSlideProvider *)self setRotationAnimationPath:0];
@@ -543,46 +543,46 @@ LABEL_17:
   BYTE1(self->mFlags) |= 8u;
 }
 
-- (void)setCenterAnimationPath:(id)a3
+- (void)setCenterAnimationPath:(id)path
 {
   centerAnimationPath = self->_centerAnimationPath;
-  if (centerAnimationPath != a3)
+  if (centerAnimationPath != path)
   {
 
-    self->_centerAnimationPath = a3;
+    self->_centerAnimationPath = path;
     self->_centerAnimationPathTriggerTime = -1.0;
   }
 }
 
-- (void)setScaleAnimationPath:(id)a3
+- (void)setScaleAnimationPath:(id)path
 {
   scaleAnimationPath = self->_scaleAnimationPath;
-  if (scaleAnimationPath != a3)
+  if (scaleAnimationPath != path)
   {
 
-    self->_scaleAnimationPath = a3;
+    self->_scaleAnimationPath = path;
     self->_scaleAnimationPathTriggerTime = -1.0;
   }
 }
 
-- (void)setRotationAnimationPath:(id)a3
+- (void)setRotationAnimationPath:(id)path
 {
   rotationAnimationPath = self->_rotationAnimationPath;
-  if (rotationAnimationPath != a3)
+  if (rotationAnimationPath != path)
   {
 
-    self->_rotationAnimationPath = a3;
+    self->_rotationAnimationPath = path;
     self->_rotationAnimationPathTriggerTime = -1.0;
   }
 }
 
-- (void)setIsPlaying:(BOOL)a3
+- (void)setIsPlaying:(BOOL)playing
 {
   mFlags = self->mFlags;
   if ((mFlags & 8) == 0)
   {
-    v4 = a3;
-    v6 = a3 ? 0x80 : 0;
+    playingCopy = playing;
+    v6 = playing ? 0x80 : 0;
     BYTE1(self->mFlags) = v6 & 0x80 | BYTE1(self->mFlags) & 0x7F;
     if (mFlags)
     {
@@ -593,7 +593,7 @@ LABEL_17:
         {
           v8 = self->mSlidePlayer;
 
-          [(MRAssetPlayer *)v8 setIsPlaying:v4];
+          [(MRAssetPlayer *)v8 setIsPlaying:playingCopy];
         }
       }
 
@@ -602,17 +602,17 @@ LABEL_17:
         mSlideLayer = self->mSlideLayer;
         if (mSlideLayer)
         {
-          v10 = [(MRLayer *)mSlideLayer clock];
-          if (v4)
+          clock = [(MRLayer *)mSlideLayer clock];
+          if (playingCopy)
           {
 
-            [(MRLayerClock *)v10 resumeOnNextUpdate];
+            [(MRLayerClock *)clock resumeOnNextUpdate];
           }
 
           else
           {
 
-            [(MRLayerClock *)v10 pauseOnNextUpdate];
+            [(MRLayerClock *)clock pauseOnNextUpdate];
           }
         }
       }
@@ -620,9 +620,9 @@ LABEL_17:
   }
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  v4 = a3 - self->_showTime;
+  v4 = time - self->_showTime;
   mSlidePlayer = self->mSlidePlayer;
   if (mSlidePlayer)
   {
@@ -741,15 +741,15 @@ LABEL_17:
   return v3;
 }
 
-- (void)loadForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5 now:(BOOL)a6
+- (void)loadForTime:(double)time inContext:(id)context withArguments:(id)arguments now:(BOOL)now
 {
   if ((self->mFlags & 3) == 0)
   {
     LOBYTE(self->mFlags) |= 2u;
-    self->_timeToPreloadFor = a3;
+    self->_timeToPreloadFor = time;
     if (self->_assetPath)
     {
-      v8 = a6;
+      nowCopy = now;
       v10 = objc_alloc_init(MRAssetPlayerOptions);
       [(MRAssetPlayerOptions *)v10 setWantsMonochromatic:(LOBYTE(self->mFlags) >> 6) & 1];
       [(MRAssetPlayerOptions *)v10 setWantsMipmap:(LOBYTE(self->mFlags) >> 5) & 1];
@@ -764,7 +764,7 @@ LABEL_17:
       }
 
       [(MRAssetPlayerOptions *)v10 setWantsPowerOfTwo:v11];
-      -[MRAssetPlayerOptions setIsForExport:](v10, "setIsForExport:", [objc_msgSend(a5 "renderer")] == 1);
+      -[MRAssetPlayerOptions setIsForExport:](v10, "setIsForExport:", [objc_msgSend(arguments "renderer")] == 1);
       if ((self->mFlags & 8) != 0)
       {
         mStillTime = self->mStillTime;
@@ -788,14 +788,14 @@ LABEL_17:
         [(MRAssetPlayerOptions *)v10 setStillTime:v16];
       }
 
-      v20 = [a5 thumbnailPolicy];
-      v21 = !v8;
-      if (v20 != 1)
+      thumbnailPolicy = [arguments thumbnailPolicy];
+      v21 = !nowCopy;
+      if (thumbnailPolicy != 1)
       {
         v21 = 0;
       }
 
-      if (v20)
+      if (thumbnailPolicy)
       {
         v22 = v21;
       }
@@ -807,22 +807,22 @@ LABEL_17:
 
       [(MRAssetPlayerOptions *)v10 setThumbnailIsOK:v22];
       [(MRAssetPlayerOptions *)v10 setPlayerHint:self->_playerHint];
-      v23 = [(MRLayer *)self->mEffectLayer plugAsSerial];
-      v24 = [(MRLayer *)self->mEffectLayer superlayer];
-      if (v23 || (v23 = [[(MRLayer *)self->mEffectLayer superlayer] plugAsSerial], v24 = [[(MRLayer *)self->mEffectLayer superlayer] superlayer], v23))
+      plugAsSerial = [(MRLayer *)self->mEffectLayer plugAsSerial];
+      superlayer = [(MRLayer *)self->mEffectLayer superlayer];
+      if (plugAsSerial || (plugAsSerial = [[(MRLayer *)self->mEffectLayer superlayer] plugAsSerial], superlayer = [[(MRLayer *)self->mEffectLayer superlayer] superlayer], plugAsSerial))
       {
-        v25 = v24;
-        v26 = [(MCPlugSerial *)v23 index];
-        if (!v26)
+        v25 = superlayer;
+        index = [(MCPlugSerial *)plugAsSerial index];
+        if (!index)
         {
-          v26 = [-[MRLayer sublayers](v25 "sublayers")];
+          index = [-[MRLayer sublayers](v25 "sublayers")];
         }
 
         [-[MCContainer plugAtIndex:](-[MCPlug container](-[MRLayer plug](v25 "plug")];
         [(MRAssetPlayerOptions *)v10 setIntroDuration:?];
-        [(MCPlugSerial *)v23 transitionDuration];
+        [(MCPlugSerial *)plugAsSerial transitionDuration];
         [(MRAssetPlayerOptions *)v10 setOutroDuration:?];
-        [(MCPlug *)v23 fullDuration];
+        [(MCPlug *)plugAsSerial fullDuration];
         v28 = v27;
         [(MRAssetPlayerOptions *)v10 introDuration];
         v30 = v28 - v29;
@@ -861,7 +861,7 @@ LABEL_17:
         [(MRAssetPlayerOptions *)v10 setMainDuration:v44 - v45];
       }
 
-      self->mSlidePlayer = [objc_msgSend(a4 "imageManager")];
+      self->mSlidePlayer = [objc_msgSend(context "imageManager")];
 
       [(MRAssetPlayer *)self->mSlidePlayer setDelegate:self];
       BYTE2(self->mFlags) |= 0xCu;
@@ -871,14 +871,14 @@ LABEL_17:
         [(NSLock *)self->mPreloadOperationLock lock];
         if (!self->mPreloadOperation)
         {
-          v46 = [a5 preloadQueue];
-          if (v46)
+          preloadQueue = [arguments preloadQueue];
+          if (preloadQueue)
           {
-            v47 = [a5 copyForPreloading];
-            v48 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a4, @"context", objc_msgSend(a4, "imageManager"), @"imageManager", v47, @"renderArguments", self->mSlidePlayer, @"slidePlayer", 0}];
+            copyForPreloading = [arguments copyForPreloading];
+            v48 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{context, @"context", objc_msgSend(context, "imageManager"), @"imageManager", copyForPreloading, @"renderArguments", self->mSlidePlayer, @"slidePlayer", 0}];
             v49 = [[NSInvocationOperation alloc] initWithTarget:self selector:"loadWithArguments:" object:v48];
             self->mPreloadOperation = v49;
-            if (v8)
+            if (nowCopy)
             {
               v50 = 33;
             }
@@ -890,11 +890,11 @@ LABEL_17:
 
             [(NSInvocationOperation *)v49 setQualityOfService:v50];
             [v48 setObject:+[NSValue valueWithPointer:](NSValue forKey:{"valueWithPointer:", self->mPreloadOperation), @"preloadOperationPointer"}];
-            [v46 addOperation:self->mPreloadOperation];
+            [preloadQueue addOperation:self->mPreloadOperation];
           }
         }
 
-        if (v8)
+        if (nowCopy)
         {
           v51 = 8;
         }
@@ -911,10 +911,10 @@ LABEL_17:
       objc_sync_exit(self);
     }
 
-    else if ([(MCSlide *)self->_slide plug:a4])
+    else if ([(MCSlide *)self->_slide plug:context])
     {
       LOBYTE(self->mFlags) |= 1u;
-      v12 = +[MRLayer layerWithPlug:andParameters:inSuperlayer:](MRLayer, "layerWithPlug:andParameters:inSuperlayer:", -[MCSlide plug](self->_slide, "plug"), [objc_msgSend(a5 "renderer")], 0);
+      v12 = +[MRLayer layerWithPlug:andParameters:inSuperlayer:](MRLayer, "layerWithPlug:andParameters:inSuperlayer:", -[MCSlide plug](self->_slide, "plug"), [objc_msgSend(arguments "renderer")], 0);
       self->mSlideLayer = v12;
       [(MRLayer *)v12 setPixelSize:self->mImageSize.width, self->mImageSize.height];
       if (![(MRLayer *)self->mSlideLayer isPreactivated])
@@ -922,33 +922,33 @@ LABEL_17:
         [(MRLayer *)self->mSlideLayer preactivate];
         [(MRLayerClock *)[(MRLayer *)self->mSlideLayer clock] setContainerTime:self->_timeToPreloadFor];
         v13 = SBYTE1(self->mFlags);
-        v14 = [(MRLayer *)self->mSlideLayer clock];
+        clock = [(MRLayer *)self->mSlideLayer clock];
         if (v13 < 0)
         {
 
-          [(MRLayerClock *)v14 resumeOnNextUpdate];
+          [(MRLayerClock *)clock resumeOnNextUpdate];
         }
 
         else
         {
 
-          [(MRLayerClock *)v14 pauseOnNextUpdate];
+          [(MRLayerClock *)clock pauseOnNextUpdate];
         }
       }
     }
   }
 }
 
-- (void)loadWithArguments:(id)a3
+- (void)loadWithArguments:(id)arguments
 {
   pthread_setname_np([[NSString stringWithFormat:?];
-  v5 = [objc_msgSend(a3 objectForKey:{@"preloadOperationPointer", "pointerValue"}];
+  v5 = [objc_msgSend(arguments objectForKey:{@"preloadOperationPointer", "pointerValue"}];
   if (self->mPreloadOperation == v5 && (self->mFlags & 1) == 0)
   {
     v6 = v5;
-    v7 = [a3 objectForKey:@"renderArguments"];
+    v7 = [arguments objectForKey:@"renderArguments"];
     [objc_msgSend(v7 "renderer")];
-    [objc_msgSend(a3 objectForKey:{@"slidePlayer", "loadForTime:", self->_timeToPreloadFor}];
+    [objc_msgSend(arguments objectForKey:{@"slidePlayer", "loadForTime:", self->_timeToPreloadFor}];
     [(NSLock *)self->mPreloadOperationLock lock];
     mPreloadOperation = self->mPreloadOperation;
     if (mPreloadOperation == v6 && (self->mFlags & 1) == 0)
@@ -1062,26 +1062,26 @@ LABEL_17:
 
 - (BOOL)isOpaque
 {
-  v3 = [(MRImage *)self->mOriginalImage isOpaque];
-  if (v3)
+  isOpaque = [(MRImage *)self->mOriginalImage isOpaque];
+  if (isOpaque)
   {
-    LOBYTE(v3) = self->mKenBurnsType == 1;
+    LOBYTE(isOpaque) = self->mKenBurnsType == 1;
   }
 
-  return v3;
+  return isOpaque;
 }
 
-- (void)_computeImageSizeInContext:(id)a3 withArguments:(id)a4
+- (void)_computeImageSizeInContext:(id)context withArguments:(id)arguments
 {
   p_mRequestedSize = &self->mRequestedSize;
   height = CGSizeZero.height;
   if (self->mRequestedSize.width == CGSizeZero.width && self->mRequestedSize.height == height)
   {
     mOriginalImageAspectRatio = self->mOriginalImageAspectRatio;
-    v10 = [(MCSlide *)self->_slide frameID];
+    frameID = [(MCSlide *)self->_slide frameID];
     v11 = [(NSDictionary *)[(MCSlide *)self->_slide frameAttributes] objectForKey:@"specificAttributes"];
     *&v12 = mOriginalImageAspectRatio;
-    [(MRSlideProvider *)self unframedImageSizeForAspectRatio:v10 frameID:v11 andFrameAttributes:0 atIndex:0 framedImageSize:v12];
+    [(MRSlideProvider *)self unframedImageSizeForAspectRatio:frameID frameID:v11 andFrameAttributes:0 atIndex:0 framedImageSize:v12];
     self->mRequestedSize.width = v13;
     self->mRequestedSize.height = v14;
     self->mSlideIndex = [(MCSlide *)self->_slide index];
@@ -1102,7 +1102,7 @@ LABEL_17:
 
   p_mImageSize = &self->mImageSize;
   v18 = self->mImageSize.width == CGSizeZero.width && self->mImageSize.height == height;
-  if (v18 || (self->mFlags & 0x1000) == 0 && ([a4 freezesSizeOfImageRequests] & 1) == 0)
+  if (v18 || (self->mFlags & 0x1000) == 0 && ([arguments freezesSizeOfImageRequests] & 1) == 0)
   {
     *p_mImageSize = *p_mRequestedSize;
     if (![(MCSlide *)self->_slide countOfAnimationPaths])
@@ -1206,7 +1206,7 @@ LABEL_43:
   }
 }
 
-- (BOOL)updateStuffWithAssetManager:(id)a3
+- (BOOL)updateStuffWithAssetManager:(id)manager
 {
   v5 = atomic_fetch_and(&self->mFlags + 1, 0xFDu);
   v6 = v5 & 2 | atomic_fetch_and(&self->mFlags + 2, 0xBFu) & 0x40;
@@ -1230,13 +1230,13 @@ LABEL_48:
     }
 
 LABEL_57:
-    v32 = [(MCSlide *)self->_slide frameID];
+    frameID = [(MCSlide *)self->_slide frameID];
     mFrame = self->mFrame;
-    if (v32)
+    if (frameID)
     {
-      if (![(NSString *)v32 isEqualToString:[(MRFrame *)mFrame frameID]])
+      if (![(NSString *)frameID isEqualToString:[(MRFrame *)mFrame frameID]])
       {
-        v34 = [MRFrame retainedFrameWithFrameID:v32 forSlideProvider:self];
+        v34 = [MRFrame retainedFrameWithFrameID:frameID forSlideProvider:self];
         self->mFrame = v34;
         [(MRFrame *)v34 setPixelSize:self->mDefaultSize.width, self->mDefaultSize.height];
       }
@@ -1286,7 +1286,7 @@ LABEL_24:
       if (v13)
       {
 LABEL_8:
-        [a3 resolutionForAssetAtPath:?];
+        [manager resolutionForAssetAtPath:?];
         v16 = v14 / v15;
         if (v15 <= 0.0)
         {
@@ -1294,7 +1294,7 @@ LABEL_8:
         }
 
         self->mOriginalImageAspectRatio = v16;
-        if ([a3 isSupportedMovieForAssetAtPath:self->_assetPath])
+        if ([manager isSupportedMovieForAssetAtPath:self->_assetPath])
         {
           v17 = 4;
         }
@@ -1356,13 +1356,13 @@ LABEL_25:
     {
       if (![(MCSlide *)self->_slide startTimeIsDefined])
       {
-        [a3 startTimeForAssetAtPath:self->_assetPath];
+        [manager startTimeForAssetAtPath:self->_assetPath];
         self->_slideStartTime = v22;
       }
 
       if (![(MCSlide *)self->_slide durationIsDefined])
       {
-        [a3 stopTimeForAssetAtPath:self->_assetPath];
+        [manager stopTimeForAssetAtPath:self->_assetPath];
         self->_slideDuration = v23 - self->_slideStartTime;
       }
     }
@@ -1398,23 +1398,23 @@ LABEL_47:
   }
 
 LABEL_40:
-  v24 = [(MCSlide *)self->_slide kenBurnsType];
-  if ([(NSString *)v24 isEqualToString:@"Crop to Fit"])
+  kenBurnsType = [(MCSlide *)self->_slide kenBurnsType];
+  if ([(NSString *)kenBurnsType isEqualToString:@"Crop to Fit"])
   {
     mDefaultKenBurnsType = 1;
   }
 
-  else if ([(NSString *)v24 isEqualToString:@"Scale to Fit"])
+  else if ([(NSString *)kenBurnsType isEqualToString:@"Scale to Fit"])
   {
     mDefaultKenBurnsType = 2;
   }
 
-  else if ([(NSString *)v24 isEqualToString:@"Linear"])
+  else if ([(NSString *)kenBurnsType isEqualToString:@"Linear"])
   {
     mDefaultKenBurnsType = 0;
   }
 
-  else if ([(NSString *)v24 isEqualToString:@"Scrop to Fit"])
+  else if ([(NSString *)kenBurnsType isEqualToString:@"Scrop to Fit"])
   {
     mDefaultKenBurnsType = 3;
   }
@@ -1463,7 +1463,7 @@ LABEL_64:
   return v10 & 1;
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (*&self->mSlidePlayer == 0 && !self->_assetPath)
   {
@@ -1474,7 +1474,7 @@ LABEL_64:
     }
   }
 
-  v10 = a3 - self->_showTime;
+  v10 = time - self->_showTime;
   mFlags_low = LOBYTE(self->mFlags);
   v12 = SBYTE1(self->mFlags);
   if (v10 < -10.0 || v10 >= self->_showDuration || ![(MRLayer *)self->mEffectLayer isPreactivated])
@@ -1519,7 +1519,7 @@ LABEL_64:
 
   if ((self->mFlags & 0x20000) != 0)
   {
-    [(MRSlideProvider *)self _computeImageSizeInContext:a4 withArguments:a5];
+    [(MRSlideProvider *)self _computeImageSizeInContext:context withArguments:arguments];
   }
 
   v13 = mFlags_low >> 1;
@@ -1582,7 +1582,7 @@ LABEL_64:
 
   if (v10 >= 0.0)
   {
-    v28 = [(MRLayer *)self->mEffectLayer isActivated];
+    isActivated = [(MRLayer *)self->mEffectLayer isActivated];
     if (mFlags_low)
     {
       goto LABEL_53;
@@ -1591,7 +1591,7 @@ LABEL_64:
 
   else
   {
-    v28 = 0;
+    isActivated = 0;
     if (mFlags_low)
     {
       goto LABEL_53;
@@ -1600,7 +1600,7 @@ LABEL_64:
 
   if (v13)
   {
-    if (v28)
+    if (isActivated)
     {
       [(NSLock *)self->mPreloadOperationLock lock];
       [(NSInvocationOperation *)self->mPreloadOperation setQueuePriority:8];
@@ -1610,7 +1610,7 @@ LABEL_64:
 
   else
   {
-    [(MRSlideProvider *)self loadForTime:a4 inContext:a5 withArguments:v28 now:v10];
+    [(MRSlideProvider *)self loadForTime:context inContext:arguments withArguments:isActivated now:v10];
   }
 
 LABEL_53:
@@ -1728,10 +1728,10 @@ LABEL_53:
     v36 = self->mSlideLayer;
     if (v36 && [(MRLayer *)v36 isPreactivated])
     {
-      v37 = [(MRLayer *)self->mSlideLayer isActivated];
-      if (!v28 || (v37 & 1) != 0)
+      isActivated2 = [(MRLayer *)self->mSlideLayer isActivated];
+      if (!isActivated || (isActivated2 & 1) != 0)
       {
-        if (!v28 && (v37 & 1) != 0)
+        if (!isActivated && (isActivated2 & 1) != 0)
         {
           [(MRLayer *)self->mSlideLayer deactivate];
         }
@@ -1742,7 +1742,7 @@ LABEL_53:
         [(MRLayer *)self->mSlideLayer activate];
       }
 
-      [(MRLayer *)self->mSlideLayer prerenderForTime:a4 inContext:a5 withArguments:v10];
+      [(MRLayer *)self->mSlideLayer prerenderForTime:context inContext:arguments withArguments:v10];
     }
 
     else
@@ -1751,7 +1751,7 @@ LABEL_53:
     }
   }
 
-  if (v28 && (self->mFlags & 8) == 0 && [objc_msgSend(a5 "renderer")] && -[MRLayer isActivated](self->mEffectLayer, "isActivated"))
+  if (isActivated && (self->mFlags & 8) == 0 && [objc_msgSend(arguments "renderer")] && -[MRLayer isActivated](self->mEffectLayer, "isActivated"))
   {
     v47 = ![(MRLayerClock *)[(MRLayer *)self->mEffectLayer clock] isPaused];
   }
@@ -1769,9 +1769,9 @@ LABEL_53:
 
   if ((v47 & 1) == 0)
   {
-    v50 = [(MRLayerClock *)[(MRLayer *)self->mEffectLayer clock] isPaused];
+    isPaused = [(MRLayerClock *)[(MRLayer *)self->mEffectLayer clock] isPaused];
     v51 = -1000.0;
-    if (v50)
+    if (isPaused)
     {
       v51 = v10;
     }
@@ -1835,7 +1835,7 @@ LABEL_109:
   }
 
 LABEL_116:
-  if (v28)
+  if (isActivated)
   {
     if (self->_centerAnimationPath || self->_scaleAnimationPath)
     {
@@ -1891,21 +1891,21 @@ LABEL_130:
   return audioDucker;
 }
 
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (*&self->mSlidePlayer == 0)
   {
-    NSLog(@"Slide was unloaded although expected", a2, a3);
+    NSLog(@"Slide was unloaded although expected", a2, time);
     return 0;
   }
 
-  v8 = a3 - self->_showTime;
+  v8 = time - self->_showTime;
   if (v8 < 0.0 || v8 >= self->_showDuration)
   {
     return 0;
   }
 
-  if ((SHIBYTE(self->mFlags) & 0x80000000) == 0 && ([objc_msgSend(a5 "renderer")] & 1) == 0 && self->_assetPath)
+  if ((SHIBYTE(self->mFlags) & 0x80000000) == 0 && ([objc_msgSend(arguments "renderer")] & 1) == 0 && self->_assetPath)
   {
     if (self->mEffectLayer)
     {
@@ -1914,7 +1914,7 @@ LABEL_130:
       {
         v10 = [NSDictionary dictionaryWithObjectsAndKeys:@"layer", slide, @"slide", 0];
         v11 = +[NSNotificationCenter defaultCenter];
-        -[NSNotificationCenter postNotificationName:object:userInfo:](v11, "postNotificationName:object:userInfo:", kMRNotificationSlideIsOn, [a5 renderer], v10);
+        -[NSNotificationCenter postNotificationName:object:userInfo:](v11, "postNotificationName:object:userInfo:", kMRNotificationSlideIsOn, [arguments renderer], v10);
       }
     }
 
@@ -1925,13 +1925,13 @@ LABEL_130:
   {
     width = self->mImageSize.width;
     height = self->mImageSize.height;
-    if ([a5 thumbnailPolicy])
+    if ([arguments thumbnailPolicy])
     {
       [(MRAssetPlayer *)self->mSlidePlayer setThumbnailIsOK:0];
     }
 
     mSlidePlayer = self->mSlidePlayer;
-    [a5 displayLinkTimestamp];
+    [arguments displayLinkTimestamp];
     v16 = [(MRAssetPlayer *)mSlidePlayer retainedByUserImageAtTime:v8 displayLinkTimestamp:v15];
     if (!v16)
     {
@@ -1942,7 +1942,7 @@ LABEL_130:
   else
   {
     mSlideLayer = self->mSlideLayer;
-    if (!mSlideLayer || v8 == self->mLastTime && self->mOriginalImage && self->mLastImageSize.width == self->mImageSize.width && self->mLastImageSize.height == self->mImageSize.height || (v16 = [(MRLayer *)mSlideLayer retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:v8], [(MRImage *)v16 width], width = v19, [(MRImage *)v16 height], height = v20, !v16))
+    if (!mSlideLayer || v8 == self->mLastTime && self->mOriginalImage && self->mLastImageSize.width == self->mImageSize.width && self->mLastImageSize.height == self->mImageSize.height || (v16 = [(MRLayer *)mSlideLayer retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:v8], [(MRImage *)v16 width], width = v19, [(MRImage *)v16 height], height = v20, !v16))
     {
 LABEL_30:
       v22 = 0;
@@ -2023,9 +2023,9 @@ LABEL_31:
         v41 = 0;
 LABEL_50:
         [(MRImage *)self->mOutputImage releaseByUser];
-        v42 = [(MRImage *)self->mOriginalImage retainedByUserImage];
-        self->mOutputImage = v42;
-        [(MRImage *)v42 setCenterX:v55.x];
+        retainedByUserImage = [(MRImage *)self->mOriginalImage retainedByUserImage];
+        self->mOutputImage = retainedByUserImage;
+        [(MRImage *)retainedByUserImage setCenterX:v55.x];
         [(MRImage *)self->mOutputImage setCenterY:v55.y];
         [(MRImage *)self->mOutputImage setScale:v54];
         [(MRImage *)self->mOutputImage setRotationAngle:v53];
@@ -2055,7 +2055,7 @@ LABEL_50:
         if (mFrame)
         {
           [(MRFrame *)mFrame setInputImage:mOutputImage];
-          v46 = [(MRFrame *)self->mFrame retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:v8];
+          v46 = [(MRFrame *)self->mFrame retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:v8];
           mOutputImage = self->mOutputImage;
           if (v46)
           {
@@ -2112,9 +2112,9 @@ LABEL_70:
   return [(MRImage *)mOutputImage retainByUser];
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  v6 = [(MRSlideProvider *)self retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+  v6 = [(MRSlideProvider *)self retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
   v7 = 2.0 / (self->mDefaultSize.width / self->mDefaultSize.height);
   v8 = [[NSDictionary alloc] initWithObjectsAndKeys:{objc_msgSend(v6, "insertingInCollection"), @"image", +[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:", -1.0, v7 * -0.5, 2.0, v7), @"rectangle", 0}];
   v9 = [NSArray arrayWithObject:v8];
@@ -2123,7 +2123,7 @@ LABEL_70:
   return v9;
 }
 
-- (void)imageIsAvailableFromAssetPlayer:(id)a3
+- (void)imageIsAvailableFromAssetPlayer:(id)player
 {
   BYTE2(self->mFlags) |= 0x10u;
   if ([(MRLayer *)self->mEffectLayer isActivated])
@@ -2171,10 +2171,10 @@ LABEL_70:
   return result;
 }
 
-- (void)applyKenBurnsAtTime:(double)a3 withTargetSize:(CGSize)a4 kenBurnsType:(int)a5 translation:(CGPoint *)a6 scale:(double *)a7 rotation:(double *)a8
+- (void)applyKenBurnsAtTime:(double)time withTargetSize:(CGSize)size kenBurnsType:(int)type translation:(CGPoint *)translation scale:(double *)scale rotation:(double *)rotation
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [(MRImage *)self->mOriginalImage aspectRatio];
   v17 = v16;
   [(MRImage *)self->mOriginalImage width];
@@ -2184,37 +2184,37 @@ LABEL_70:
   center = self->_center;
   v69 = center;
   scale = self->_scale;
-  v67 = scale;
+  scaleCopy = scale;
   mEffectLayer = self->mEffectLayer;
   if ((self->mFlags & 0x400) != 0)
   {
-    v23 = [(MRLayer *)mEffectLayer plug];
+    plug = [(MRLayer *)mEffectLayer plug];
   }
 
   else
   {
-    v23 = [(MRLayer *)mEffectLayer clock];
+    plug = [(MRLayer *)mEffectLayer clock];
   }
 
-  v24 = v23;
+  v24 = plug;
   centerAnimationPath = self->_centerAnimationPath;
   if (centerAnimationPath)
   {
     if ([(MCAnimationPath *)centerAnimationPath isTriggered]&& self->_centerAnimationPathTriggerTime < 0.0)
     {
-      self->_centerAnimationPathTriggerTime = a3;
+      self->_centerAnimationPathTriggerTime = time;
     }
 
     v65 = 0;
     v26 = self->_centerAnimationPath;
-    v27 = [(MCAnimationPath *)v26 isTriggered];
+    isTriggered = [(MCAnimationPath *)v26 isTriggered];
     centerAnimationPathTriggerTime = 0.0;
-    if (v27)
+    if (isTriggered)
     {
       centerAnimationPathTriggerTime = self->_centerAnimationPathTriggerTime;
     }
 
-    [MRUtilities valueForPointAnimationPath:v26 withPlugTiming:v24 atTime:&v69 defaultsTo:&center previousKeyPoint:&v65 nextKeyPoint:a3 - centerAnimationPathTriggerTime animationIsOver:self->_center.x, self->_center.y];
+    [MRUtilities valueForPointAnimationPath:v26 withPlugTiming:v24 atTime:&v69 defaultsTo:&center previousKeyPoint:&v65 nextKeyPoint:time - centerAnimationPathTriggerTime animationIsOver:self->_center.x, self->_center.y];
     self->_center.x = v29;
     self->_center.y = v30;
     if (v65 == 1 && [(MCAnimationPath *)self->_centerAnimationPath isTriggered])
@@ -2230,19 +2230,19 @@ LABEL_70:
   {
     if ([(MCAnimationPath *)scaleAnimationPath isTriggered]&& self->_scaleAnimationPathTriggerTime < 0.0)
     {
-      self->_scaleAnimationPathTriggerTime = a3;
+      self->_scaleAnimationPathTriggerTime = time;
     }
 
     v65 = 0;
     v32 = self->_scaleAnimationPath;
-    v33 = [(MCAnimationPath *)v32 isTriggered];
+    isTriggered2 = [(MCAnimationPath *)v32 isTriggered];
     scaleAnimationPathTriggerTime = 0.0;
-    if (v33)
+    if (isTriggered2)
     {
       scaleAnimationPathTriggerTime = self->_scaleAnimationPathTriggerTime;
     }
 
-    [MRUtilities valueForScalarAnimationPath:v32 withPlugTiming:v24 atTime:&v67 defaultsTo:&scale previousKeyValue:&v65 nextKeyValue:a3 - scaleAnimationPathTriggerTime animationIsOver:self->_scale];
+    [MRUtilities valueForScalarAnimationPath:v32 withPlugTiming:v24 atTime:&scaleCopy defaultsTo:&scale previousKeyValue:&v65 nextKeyValue:time - scaleAnimationPathTriggerTime animationIsOver:self->_scale];
     self->_scale = v35;
     if (v65 == 1 && [(MCAnimationPath *)self->_scaleAnimationPath isTriggered])
     {
@@ -2257,19 +2257,19 @@ LABEL_70:
   {
     if ([(MCAnimationPath *)rotationAnimationPath isTriggered]&& self->_rotationAnimationPathTriggerTime < 0.0)
     {
-      self->_rotationAnimationPathTriggerTime = a3;
+      self->_rotationAnimationPathTriggerTime = time;
     }
 
     v65 = 0;
     v37 = self->_rotationAnimationPath;
-    v38 = [(MCAnimationPath *)v37 isTriggered];
+    isTriggered3 = [(MCAnimationPath *)v37 isTriggered];
     rotationAnimationPathTriggerTime = 0.0;
-    if (v38)
+    if (isTriggered3)
     {
       rotationAnimationPathTriggerTime = self->_rotationAnimationPathTriggerTime;
     }
 
-    [MRUtilities valueForScalarAnimationPath:v37 withPlugTiming:v24 atTime:0 defaultsTo:0 previousKeyValue:&v65 nextKeyValue:a3 - rotationAnimationPathTriggerTime animationIsOver:self->_rotation];
+    [MRUtilities valueForScalarAnimationPath:v37 withPlugTiming:v24 atTime:0 defaultsTo:0 previousKeyValue:&v65 nextKeyValue:time - rotationAnimationPathTriggerTime animationIsOver:self->_rotation];
     self->_rotation = v40;
     if (v65 == 1 && [(MCAnimationPath *)self->_rotationAnimationPath isTriggered])
     {
@@ -2281,27 +2281,27 @@ LABEL_70:
 
   x = self->_center.x;
   y = self->_center.y;
-  if (a6)
+  if (translation)
   {
-    x = x + a6->x;
-    y = y + a6->y;
+    x = x + translation->x;
+    y = y + translation->y;
   }
 
   v43 = self->_scale;
-  if (a7)
+  if (scale)
   {
-    v43 = v43 * *a7;
+    v43 = v43 * *scale;
   }
 
   rotation = self->_rotation;
-  if (a8)
+  if (rotation)
   {
-    rotation = rotation + *a8;
+    rotation = rotation + *rotation;
   }
 
   v45 = width / height;
   v46 = height / width;
-  if (a5 == 2)
+  if (type == 2)
   {
     v47 = v19 / v43;
     if (v45 <= 0.0)
@@ -2309,19 +2309,19 @@ LABEL_70:
       v55 = CGPointZero.x;
       v56 = CGPointZero.y;
 LABEL_71:
-      if (!a6)
+      if (!translation)
       {
         goto LABEL_74;
       }
 
-      a6->x = (v55 + v55) / v19 + -1.0;
+      translation->x = (v55 + v55) / v19 + -1.0;
       v59 = (v56 + v56) / v21 + -1.0;
       goto LABEL_73;
     }
 
     if (v45 >= v17)
     {
-      v60 = v21 / v67;
+      v60 = v21 / scaleCopy;
       v47 = v45 * (v21 / v43);
       v61 = v21 / scale;
       if (center.x == v69.x)
@@ -2349,7 +2349,7 @@ LABEL_71:
       goto LABEL_71;
     }
 
-    v53 = v19 / v67;
+    v53 = v19 / scaleCopy;
     v54 = v19 / scale;
     if (center.x == v69.x)
     {
@@ -2376,15 +2376,15 @@ LABEL_57:
     goto LABEL_71;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v47 = v19 / v43;
-    v48 = v19 / v67;
+    v48 = v19 / scaleCopy;
     v49 = v19 / scale;
     if (v45 <= v17)
     {
       v50 = v21 / v43;
-      v51 = v21 / v67;
+      v51 = v21 / scaleCopy;
       v52 = v21 / scale;
       if (v45 > 0.0)
       {
@@ -2423,15 +2423,15 @@ LABEL_57:
   }
 
   v47 = v19;
-  if (a5)
+  if (type)
   {
     goto LABEL_74;
   }
 
-  if (scale == v67)
+  if (scale == scaleCopy)
   {
     v47 = v19 / v43;
-    if (!a6)
+    if (!translation)
     {
       goto LABEL_74;
     }
@@ -2439,25 +2439,25 @@ LABEL_57:
     goto LABEL_60;
   }
 
-  v47 = v19 * (1.0 / v67 + (v43 - v67) * (1.0 / scale - 1.0 / v67) / (scale - v67));
-  if (a6)
+  v47 = v19 * (1.0 / scaleCopy + (v43 - scaleCopy) * (1.0 / scale - 1.0 / scaleCopy) / (scale - scaleCopy));
+  if (translation)
   {
 LABEL_60:
-    a6->x = x * 2.0 + -1.0;
+    translation->x = x * 2.0 + -1.0;
     v59 = y * 2.0 + -1.0;
 LABEL_73:
-    a6->y = v59;
+    translation->y = v59;
   }
 
 LABEL_74:
-  if (a7)
+  if (scale)
   {
-    *a7 = v19 / v47;
+    *scale = v19 / v47;
   }
 
-  if (a8)
+  if (rotation)
   {
-    *a8 = -rotation;
+    *rotation = -rotation;
   }
 }
 

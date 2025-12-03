@@ -1,45 +1,45 @@
 @interface TPFootnoteLayoutController
-- (TPFootnoteLayoutController)initWithPaginatedPageController:(id)a3;
+- (TPFootnoteLayoutController)initWithPaginatedPageController:(id)controller;
 - (TSWPFootnoteMarkProvider)footnoteMarkProvider;
-- (_NSRange)endnoteRangeForSectionCharRange:(_NSRange)a3 isLastSection:(BOOL)a4 sectionHint:(id)a5;
-- (_NSRange)footnoteLayoutRangeForPageCharRange:(_NSRange)a3;
-- (_NSRange)layOutFootnotesFromIndex:(unint64_t)a3 intoFootnoteContainer:(id)a4 maxBlockHeight:(double)a5 pageCharRange:(_NSRange)a6 sectionCharRange:(_NSRange)a7 isLastSection:(BOOL)a8 sectionHint:(id)a9 pageHintIndex:(unint64_t)a10;
-- (id)p_footnoteReferenceStoragesInFootnoteIndexRange:(_NSRange)a3;
-- (id)p_layoutForFootnoteReferenceStorage:(id)a3;
-- (unint64_t)p_layoutFootnotesInRange:(_NSRange)a3 intoFootnoteContainer:(id)a4 maxBlockHeight:(double)a5 measure:(BOOL)a6 inflating:(BOOL)a7;
-- (void)inflateFootnotesInRange:(_NSRange)a3 intoFootnoteContainer:(id)a4;
-- (void)removeDeletedFootnoteInContainer:(id)a3;
+- (_NSRange)endnoteRangeForSectionCharRange:(_NSRange)range isLastSection:(BOOL)section sectionHint:(id)hint;
+- (_NSRange)footnoteLayoutRangeForPageCharRange:(_NSRange)range;
+- (_NSRange)layOutFootnotesFromIndex:(unint64_t)index intoFootnoteContainer:(id)container maxBlockHeight:(double)height pageCharRange:(_NSRange)range sectionCharRange:(_NSRange)charRange isLastSection:(BOOL)section sectionHint:(id)hint pageHintIndex:(unint64_t)self0;
+- (id)p_footnoteReferenceStoragesInFootnoteIndexRange:(_NSRange)range;
+- (id)p_layoutForFootnoteReferenceStorage:(id)storage;
+- (unint64_t)p_layoutFootnotesInRange:(_NSRange)range intoFootnoteContainer:(id)container maxBlockHeight:(double)height measure:(BOOL)measure inflating:(BOOL)inflating;
+- (void)inflateFootnotesInRange:(_NSRange)range intoFootnoteContainer:(id)container;
+- (void)removeDeletedFootnoteInContainer:(id)container;
 @end
 
 @implementation TPFootnoteLayoutController
 
-- (TPFootnoteLayoutController)initWithPaginatedPageController:(id)a3
+- (TPFootnoteLayoutController)initWithPaginatedPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = TPFootnoteLayoutController;
   v5 = [(TPFootnoteLayoutController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageController, v4);
-    v12 = objc_msgSend_documentRoot(v4, v7, v8, v9, v10, v11);
+    objc_storeWeak(&v5->_pageController, controllerCopy);
+    v12 = objc_msgSend_documentRoot(controllerCopy, v7, v8, v9, v10, v11);
     objc_storeWeak(&v6->_documentRoot, v12);
   }
 
   return v6;
 }
 
-- (_NSRange)layOutFootnotesFromIndex:(unint64_t)a3 intoFootnoteContainer:(id)a4 maxBlockHeight:(double)a5 pageCharRange:(_NSRange)a6 sectionCharRange:(_NSRange)a7 isLastSection:(BOOL)a8 sectionHint:(id)a9 pageHintIndex:(unint64_t)a10
+- (_NSRange)layOutFootnotesFromIndex:(unint64_t)index intoFootnoteContainer:(id)container maxBlockHeight:(double)height pageCharRange:(_NSRange)range sectionCharRange:(_NSRange)charRange isLastSection:(BOOL)section sectionHint:(id)hint pageHintIndex:(unint64_t)self0
 {
-  length = a7.length;
-  location = a7.location;
-  v12 = a6.length;
-  v13 = a6.location;
-  v16 = a4;
-  v18 = a9;
-  v181 = v16;
-  if (!v16)
+  length = charRange.length;
+  location = charRange.location;
+  v12 = range.length;
+  v13 = range.location;
+  containerCopy = container;
+  hintCopy = hint;
+  v181 = containerCopy;
+  if (!containerCopy)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, v19, v20, v21, v22, "[TPFootnoteLayoutController layOutFootnotesFromIndex:intoFootnoteContainer:maxBlockHeight:pageCharRange:sectionCharRange:isLastSection:sectionHint:pageHintIndex:]");
@@ -55,13 +55,13 @@
   v47 = objc_loadWeakRetained(&self->_documentRoot);
   v53 = objc_msgSend_footnoteKind(v47, v48, v49, v50, v51, v52);
 
-  v59 = objc_msgSend_pageHints(v18, v54, v55, v56, v57, v58);
-  v65 = objc_msgSend_objectAtIndexedSubscript_(v59, v60, v61, v62, v63, v64, a10);
+  v59 = objc_msgSend_pageHints(hintCopy, v54, v55, v56, v57, v58);
+  v65 = objc_msgSend_objectAtIndexedSubscript_(v59, v60, v61, v62, v63, v64, hintIndex);
 
   if (!v53)
   {
     v71 = objc_msgSend_pageKind(v65, v66, v67, v68, v69, v70);
-    if (!a10 || v71 != 4)
+    if (!hintIndex || v71 != 4)
     {
       goto LABEL_24;
     }
@@ -90,8 +90,8 @@
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v109, v110, v111, v112, v113);
 LABEL_18:
-    v114 = objc_msgSend_pageHints(v18, v91, v92, v93, v94, v95);
-    v120 = objc_msgSend_objectAtIndexedSubscript_(v114, v115, v116, v117, v118, v119, a10 - 1);
+    v114 = objc_msgSend_pageHints(hintCopy, v91, v92, v93, v94, v95);
+    v120 = objc_msgSend_objectAtIndexedSubscript_(v114, v115, v116, v117, v118, v119, hintIndex - 1);
 
     v13 = objc_msgSend_range(v120, v121, v122, v123, v124, v125);
     v12 = v126;
@@ -108,9 +108,9 @@ LABEL_18:
       goto LABEL_24;
     }
 
-    if (v53 == 1 && a8)
+    if (v53 == 1 && section)
     {
-      if (self->_bumpedDocumentEndnotesForPageBreak || (v127 = objc_msgSend_length(v182, v66, v67, v68, v69, v70), a3) || !v127 || (v128 = objc_msgSend_range(v182, v66, v67, v68, v69, v70), objc_msgSend_characterAtIndex_(v182, v129, v130, v131, v132, v133, &v129[v128 - 1]) != 5))
+      if (self->_bumpedDocumentEndnotesForPageBreak || (v127 = objc_msgSend_length(v182, v66, v67, v68, v69, v70), index) || !v127 || (v128 = objc_msgSend_range(v182, v66, v67, v68, v69, v70), objc_msgSend_characterAtIndex_(v182, v129, v130, v131, v132, v133, &v129[v128 - 1]) != 5))
       {
         self->_bumpedDocumentEndnotesForPageBreak = 0;
         v13 = objc_msgSend_range(v182, v66, v67, v68, v69, v70);
@@ -128,7 +128,7 @@ LABEL_18:
 LABEL_24:
   if (self->_bumpedDocumentEndnotesForPageBreak)
   {
-    v134 = 0;
+    indexCopy4 = 0;
     v135 = 0;
     v136 = v181;
     goto LABEL_45;
@@ -136,15 +136,15 @@ LABEL_24:
 
   v137 = objc_msgSend_footnoteRangeForTextRange_(v182, v66, v67, v68, v69, v70, v13, v12);
   v139 = v137 + v138;
-  v134 = a3;
+  indexCopy4 = index;
   if (v12)
   {
-    v140 = v137 + v138;
+    indexCopy2 = v137 + v138;
   }
 
   else
   {
-    v140 = a3;
+    indexCopy2 = index;
   }
 
   v141 = objc_loadWeakRetained(&self->_documentRoot);
@@ -159,65 +159,65 @@ LABEL_24:
 
       if (!v170)
       {
-        v140 = v139;
+        indexCopy2 = v139;
       }
 
-      v134 = a3;
+      indexCopy4 = index;
       goto LABEL_38;
     }
 
-    v134 = a3;
+    indexCopy4 = index;
   }
 
 LABEL_38:
-  if (v140 <= v134)
+  if (indexCopy2 <= indexCopy4)
   {
-    v176 = v134;
+    v176 = indexCopy4;
   }
 
   else
   {
-    v176 = v140;
+    v176 = indexCopy2;
   }
 
-  if (v140 >= v134)
+  if (indexCopy2 >= indexCopy4)
   {
-    v177 = v134;
+    v177 = indexCopy4;
   }
 
   else
   {
-    v177 = v140;
+    v177 = indexCopy2;
   }
 
   v136 = v181;
-  v172.n128_f64[0] = a5;
+  v172.n128_f64[0] = height;
   v135 = objc_msgSend_p_layoutFootnotesInRange_intoFootnoteContainer_maxBlockHeight_measure_inflating_(self, v171, v172, v173, v174, v175, v177, v176 - v177, v181, v53 != 0, 0);
 LABEL_45:
 
-  v178 = v134;
+  v178 = indexCopy4;
   v179 = v135;
   result.length = v179;
   result.location = v178;
   return result;
 }
 
-- (void)inflateFootnotesInRange:(_NSRange)a3 intoFootnoteContainer:(id)a4
+- (void)inflateFootnotesInRange:(_NSRange)range intoFootnoteContainer:(id)container
 {
-  if (a3.length)
+  if (range.length)
   {
     v4.n128_u64[0] = 0x7FEFFFFFFFFFFFFFLL;
-    objc_msgSend_p_layoutFootnotesInRange_intoFootnoteContainer_maxBlockHeight_measure_inflating_(self, a2, v4, v5, v6, v7, a3.location, a3.length, a4, 0, 1);
+    objc_msgSend_p_layoutFootnotesInRange_intoFootnoteContainer_maxBlockHeight_measure_inflating_(self, a2, v4, v5, v6, v7, range.location, range.length, container, 0, 1);
   }
 }
 
-- (_NSRange)endnoteRangeForSectionCharRange:(_NSRange)a3 isLastSection:(BOOL)a4 sectionHint:(id)a5
+- (_NSRange)endnoteRangeForSectionCharRange:(_NSRange)range isLastSection:(BOOL)section sectionHint:(id)hint
 {
-  v5 = a4;
-  length = a3.length;
-  location = a3.location;
+  sectionCopy = section;
+  length = range.length;
+  location = range.location;
   v88 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  hintCopy = hint;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v16 = objc_msgSend_bodyStorage(WeakRetained, v11, v12, v13, v14, v15);
 
@@ -230,7 +230,7 @@ LABEL_45:
   {
     if (v25 == 1)
     {
-      if (v5)
+      if (sectionCopy)
       {
         v17 = objc_msgSend_range(v16, v26, v27, v28, v29, v30);
         v18 = v26;
@@ -259,7 +259,7 @@ LABEL_45:
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
-        obj = objc_msgSend_pageHints(v9, v26, 0, v28, v29, v30);
+        obj = objc_msgSend_pageHints(hintCopy, v26, 0, v28, v29, v30);
         v55 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v50, v51, v52, v53, v54, &v83, v87, 16);
         if (v55)
         {
@@ -342,10 +342,10 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)footnoteLayoutRangeForPageCharRange:(_NSRange)a3
+- (_NSRange)footnoteLayoutRangeForPageCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v12 = objc_msgSend_footnoteKind(WeakRetained, v7, v8, v9, v10, v11);
 
@@ -371,11 +371,11 @@ LABEL_11:
   return result;
 }
 
-- (void)removeDeletedFootnoteInContainer:(id)a3
+- (void)removeDeletedFootnoteInContainer:(id)container
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v9 = objc_msgSend_children(v3, v4, v5, v6, v7, v8);
+  containerCopy = container;
+  v9 = objc_msgSend_children(containerCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_copy(v9, v10, v11, v12, v13, v14);
 
   v41 = 0u;
@@ -403,7 +403,7 @@ LABEL_11:
 
         if (!v38)
         {
-          objc_msgSend_removeFootnoteLayout_(v3, v23, v24, v25, v26, v27, v31);
+          objc_msgSend_removeFootnoteLayout_(containerCopy, v23, v24, v25, v26, v27, v31);
         }
       }
 
@@ -414,14 +414,14 @@ LABEL_11:
   }
 }
 
-- (unint64_t)p_layoutFootnotesInRange:(_NSRange)a3 intoFootnoteContainer:(id)a4 maxBlockHeight:(double)a5 measure:(BOOL)a6 inflating:(BOOL)a7
+- (unint64_t)p_layoutFootnotesInRange:(_NSRange)range intoFootnoteContainer:(id)container maxBlockHeight:(double)height measure:(BOOL)measure inflating:(BOOL)inflating
 {
-  v192 = a6;
-  length = a3.length;
-  location = a3.location;
+  measureCopy = measure;
+  length = range.length;
+  location = range.location;
   v205 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v191 = objc_msgSend_layoutController(v10, v11, v12, v13, v14, v15);
+  containerCopy = container;
+  v191 = objc_msgSend_layoutController(containerCopy, v11, v12, v13, v14, v15);
   if (!v191)
   {
     v21 = MEMORY[0x277D81150];
@@ -432,7 +432,7 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37, v38);
   }
 
-  v39 = objc_msgSend_children(v10, v16, v17, v18, v19, v20);
+  v39 = objc_msgSend_children(containerCopy, v16, v17, v18, v19, v20);
   v188 = v39;
   if (objc_msgSend_count(v39, v40, v41, v42, v43, v44))
   {
@@ -475,10 +475,10 @@ LABEL_11:
     v62 = 0;
   }
 
-  objc_msgSend_removeAllFootnoteLayouts(v10, v45, v46, v47, v48, v49);
+  objc_msgSend_removeAllFootnoteLayouts(containerCopy, v45, v46, v47, v48, v49);
   if (length)
   {
-    v193 = v10;
+    v193 = containerCopy;
     objc_msgSend_p_footnoteReferenceStoragesInFootnoteIndexRange_(self, v85, v86, v87, v88, v89, location, length);
     v195 = 0u;
     v196 = 0u;
@@ -531,11 +531,11 @@ LABEL_11:
             }
 
             objc_msgSend_addFootnoteLayout_(v193, v132, v133, v134, v135, v136, v125);
-            if (v192)
+            if (measureCopy)
             {
               objc_msgSend_validateLayoutWithDependencies_(v191, v137, v138, v139, v140, v141, v193);
               objc_msgSend_blockHeight(v193, v142, v143, v144, v145, v146);
-              if (v148.n128_f64[0] > a5)
+              if (v148.n128_f64[0] > height)
               {
                 objc_msgSend_removeFootnoteLayout_(v193, v147, v148, v149, v150, v151, v125);
 
@@ -568,7 +568,7 @@ LABEL_11:
 LABEL_32:
 
     v157 = v191;
-    v10 = v193;
+    containerCopy = v193;
     objc_msgSend_validateLayoutWithDependencies_(v191, v158, v159, v160, v161, v162, v193);
     if (v97 > v187)
     {
@@ -577,7 +577,7 @@ LABEL_32:
       v175 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v170, v171, v172, v173, v174, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPFootnoteLayoutController.m");
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v168, v176, v177, v178, v179, v180, v169, v175, 246, 0, "Found %lu footnoteStorages vs. %lu in the text range", v97, v187);
 
-      v10 = v193;
+      containerCopy = v193;
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v181, v182, v183, v184, v185);
     }
   }
@@ -585,27 +585,27 @@ LABEL_32:
   else
   {
     v157 = v191;
-    objc_msgSend_validateLayoutWithDependencies_(v191, v85, v86, v87, v88, v89, v10);
+    objc_msgSend_validateLayoutWithDependencies_(v191, v85, v86, v87, v88, v89, containerCopy);
     v97 = 0;
   }
 
   return v97;
 }
 
-- (id)p_layoutForFootnoteReferenceStorage:(id)a3
+- (id)p_layoutForFootnoteReferenceStorage:(id)storage
 {
-  v3 = a3;
-  v9 = objc_alloc(objc_msgSend_layoutClass(v3, v4, v5, v6, v7, v8));
-  v15 = objc_msgSend_initWithInfo_(v9, v10, v11, v12, v13, v14, v3);
+  storageCopy = storage;
+  v9 = objc_alloc(objc_msgSend_layoutClass(storageCopy, v4, v5, v6, v7, v8));
+  v15 = objc_msgSend_initWithInfo_(v9, v10, v11, v12, v13, v14, storageCopy);
 
   return v15;
 }
 
-- (id)p_footnoteReferenceStoragesInFootnoteIndexRange:(_NSRange)a3
+- (id)p_footnoteReferenceStoragesInFootnoteIndexRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPFootnoteLayoutController p_footnoteReferenceStoragesInFootnoteIndexRange:]");

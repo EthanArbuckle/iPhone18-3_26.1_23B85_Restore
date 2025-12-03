@@ -1,21 +1,21 @@
 @interface CPSStorePurchaseResponse
-- (CPSStorePurchaseResponse)initWithCoder:(id)a3;
-- (CPSStorePurchaseResponse)initWithPurchaseResult:(id)a3;
+- (CPSStorePurchaseResponse)initWithCoder:(id)coder;
+- (CPSStorePurchaseResponse)initWithPurchaseResult:(id)result;
 - (id)description;
 @end
 
 @implementation CPSStorePurchaseResponse
 
-- (CPSStorePurchaseResponse)initWithPurchaseResult:(id)a3
+- (CPSStorePurchaseResponse)initWithPurchaseResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = CPSStorePurchaseResponse;
   v6 = [(CPSStorePurchaseResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_purchaseResult, a3);
+    objc_storeStrong(&v6->_purchaseResult, result);
   }
 
   return v7;
@@ -25,20 +25,20 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_purchaseResult withName:@"purchaseResult"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (CPSStorePurchaseResponse)initWithCoder:(id)a3
+- (CPSStorePurchaseResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPSStorePurchaseResponse;
   v5 = [(CPSStorePurchaseResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:getAMSDelegatePurchaseResultClass() forKey:@"purchaseResult"];
+    v6 = [coderCopy decodeObjectOfClass:getAMSDelegatePurchaseResultClass() forKey:@"purchaseResult"];
     purchaseResult = v5->_purchaseResult;
     v5->_purchaseResult = v6;
   }

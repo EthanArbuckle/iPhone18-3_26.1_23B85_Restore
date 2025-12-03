@@ -1,19 +1,19 @@
 @interface _EXDecoderHack
-- (_EXDecoderHack)initWithContextFactory:(id)a3;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
+- (_EXDecoderHack)initWithContextFactory:(id)factory;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
 @end
 
 @implementation _EXDecoderHack
 
-- (_EXDecoderHack)initWithContextFactory:(id)a3
+- (_EXDecoderHack)initWithContextFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v9.receiver = self;
   v9.super_class = _EXDecoderHack;
   v5 = [(_EXDecoderHack *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(factoryCopy);
     contextFactory = v5->_contextFactory;
     v5->_contextFactory = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
-  v6 = a4;
-  if (EXGetExtensionContextInternalClass() != a3)
+  keyCopy = key;
+  if (EXGetExtensionContextInternalClass() != class)
   {
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -35,7 +35,7 @@
     goto LABEL_10;
   }
 
-  if (([v6 isEqualToString:@"self.internalExtensionContext"] & 1) == 0)
+  if (([keyCopy isEqualToString:@"self.internalExtensionContext"] & 1) == 0)
   {
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))

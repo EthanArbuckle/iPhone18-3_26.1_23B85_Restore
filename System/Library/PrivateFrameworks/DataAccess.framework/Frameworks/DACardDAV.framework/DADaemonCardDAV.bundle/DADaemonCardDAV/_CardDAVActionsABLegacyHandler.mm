@@ -1,24 +1,24 @@
 @interface _CardDAVActionsABLegacyHandler
-- (BOOL)handleAction:(id)a3 forContainer:(id)a4 inAccount:(id)a5 withFolderURL:(id)a6 isInitialSync:(BOOL)a7 arePartialResults:(BOOL)a8 syncInfo:(id)a9 heldAsideGroups:(id)a10 internalReference:(id)a11;
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4;
-- (_CardDAVActionsABLegacyHandler)initWithAddressBook:(void *)a3;
-- (id)wrappedRecordFromRecord:(void *)a3;
-- (void)_copyExistingABRecordForContact:(id)a3 inStore:(void *)a4;
-- (void)_localRecordForExternalURL:(id)a3 inContainer:(void *)a4 withFolderURL:(id)a5;
+- (BOOL)handleAction:(id)action forContainer:(id)container inAccount:(id)account withFolderURL:(id)l isInitialSync:(BOOL)sync arePartialResults:(BOOL)results syncInfo:(id)info heldAsideGroups:(id)self0 internalReference:(id)self1;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record;
+- (_CardDAVActionsABLegacyHandler)initWithAddressBook:(void *)book;
+- (id)wrappedRecordFromRecord:(void *)record;
+- (void)_copyExistingABRecordForContact:(id)contact inStore:(void *)store;
+- (void)_localRecordForExternalURL:(id)l inContainer:(void *)container withFolderURL:(id)rL;
 - (void)dealloc;
-- (void)moveToLocalStoreContacts:(id)a3 groups:(id)a4;
+- (void)moveToLocalStoreContacts:(id)contacts groups:(id)groups;
 @end
 
 @implementation _CardDAVActionsABLegacyHandler
 
-- (_CardDAVActionsABLegacyHandler)initWithAddressBook:(void *)a3
+- (_CardDAVActionsABLegacyHandler)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _CardDAVActionsABLegacyHandler;
   v4 = [(_CardDAVActionsABLegacyHandler *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -32,44 +32,44 @@
   [(_CardDAVActionsABLegacyHandler *)&v3 dealloc];
 }
 
-- (BOOL)handleAction:(id)a3 forContainer:(id)a4 inAccount:(id)a5 withFolderURL:(id)a6 isInitialSync:(BOOL)a7 arePartialResults:(BOOL)a8 syncInfo:(id)a9 heldAsideGroups:(id)a10 internalReference:(id)a11
+- (BOOL)handleAction:(id)action forContainer:(id)container inAccount:(id)account withFolderURL:(id)l isInitialSync:(BOOL)sync arePartialResults:(BOOL)results syncInfo:(id)info heldAsideGroups:(id)self0 internalReference:(id)self1
 {
-  v59 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v63 = a6;
-  v60 = a9;
-  v61 = a10;
-  v18 = a11;
-  v62 = v16;
-  v19 = [v16 asSource];
+  syncCopy = sync;
+  actionCopy = action;
+  containerCopy = container;
+  accountCopy = account;
+  lCopy = l;
+  infoCopy = info;
+  groupsCopy = groups;
+  referenceCopy = reference;
+  v62 = containerCopy;
+  asSource = [containerCopy asSource];
   v20 = objc_autoreleasePoolPush();
-  v21 = [v15 changedItem];
-  if (v18)
+  changedItem = [actionCopy changedItem];
+  if (referenceCopy)
   {
-    v22 = [(_CardDAVActionsABLegacyHandler *)self _localRecordForExternalURL:v18 inContainer:v19 withFolderURL:v63];
+    v22 = [(_CardDAVActionsABLegacyHandler *)self _localRecordForExternalURL:referenceCopy inContainer:asSource withFolderURL:lCopy];
     if (v22)
     {
       v23 = v22;
-      v24 = v18;
+      serverID = referenceCopy;
 LABEL_6:
       CFRetain(v23);
       goto LABEL_7;
     }
   }
 
-  v24 = [v21 serverID];
-  v25 = [(_CardDAVActionsABLegacyHandler *)self _localRecordForExternalURL:v24 inContainer:v19 withFolderURL:v63];
+  serverID = [changedItem serverID];
+  v25 = [(_CardDAVActionsABLegacyHandler *)self _localRecordForExternalURL:serverID inContainer:asSource withFolderURL:lCopy];
   if (v25)
   {
     v23 = v25;
     goto LABEL_6;
   }
 
-  if (v59 && ([v60 startedWithNoContacts] & 1) == 0)
+  if (syncCopy && ([infoCopy startedWithNoContacts] & 1) == 0)
   {
-    v23 = [(_CardDAVActionsABLegacyHandler *)self _copyExistingABRecordForContact:v21 inStore:v19];
+    v23 = [(_CardDAVActionsABLegacyHandler *)self _copyExistingABRecordForContact:changedItem inStore:asSource];
   }
 
   else
@@ -78,13 +78,13 @@ LABEL_6:
   }
 
 LABEL_7:
-  v26 = [v15 itemChangeType];
-  if (v26 < 2)
+  itemChangeType = [actionCopy itemChangeType];
+  if (itemChangeType < 2)
   {
     v64 = 0;
-    [v21 createOrphanedABRecordFromParsedVCardOutRecordType:&v64];
+    [changedItem createOrphanedABRecordFromParsedVCardOutRecordType:&v64];
     v57 = v56 = v20;
-    if (!v59)
+    if (!syncCopy)
     {
       goto LABEL_36;
     }
@@ -100,7 +100,7 @@ LABEL_7:
         goto LABEL_31;
       }
 
-      v53 = v17;
+      v53 = accountCopy;
       v32 = [[DAABLegacyContact alloc] initWithABPerson:v23];
       v72 = v32;
       v33 = [NSArray arrayWithObjects:&v72 count:1];
@@ -135,14 +135,14 @@ LABEL_36:
           {
             v38 = objc_opt_class();
             NSStringFromClass(v38);
-            v39 = v24;
-            v41 = v40 = v17;
+            v39 = serverID;
+            v41 = v40 = accountCopy;
             *buf = 138412290;
             v66 = v41;
             _os_log_impl(&dword_0, v35, v36, "updating %@", buf, 0xCu);
 
-            v17 = v40;
-            v24 = v39;
+            accountCopy = v40;
+            serverID = v39;
           }
         }
 
@@ -150,28 +150,28 @@ LABEL_36:
         {
           v42 = objc_opt_class();
           NSStringFromClass(v42);
-          v43 = v54 = v17;
+          v43 = v54 = accountCopy;
           *buf = 138412290;
           v66 = v43;
           _os_log_impl(&dword_0, v35, v36, "adding %@", buf, 0xCu);
 
-          v17 = v54;
+          accountCopy = v54;
         }
 
         v44 = [(_CardDAVActionsABLegacyHandler *)self wrappedRecordFromRecord:v23];
-        LOBYTE(v52) = !a8;
-        v45 = [v21 saveWithLocalObject:v44 toContainer:v62 containerURL:v63 shouldMergeProperties:v59 outMergeDidChooseLocalProperties:0 account:v17 shouldSaveGroups:v52];
+        LOBYTE(v52) = !results;
+        v45 = [changedItem saveWithLocalObject:v44 toContainer:v62 containerURL:lCopy shouldMergeProperties:syncCopy outMergeDidChooseLocalProperties:0 account:accountCopy shouldSaveGroups:v52];
         if (v45 == &dword_0 + 2)
         {
           v50 = DALoggingwithCategory();
           if (os_log_type_enabled(v50, v36))
           {
             *buf = 138412290;
-            v66 = v24;
+            v66 = serverID;
             _os_log_impl(&dword_0, v50, v36, "Holding aside group with server id %@", buf, 0xCu);
           }
 
-          [v61 addObject:v15];
+          [groupsCopy addObject:actionCopy];
         }
 
         else if (v45 == &dword_0 + 1)
@@ -181,17 +181,17 @@ LABEL_36:
           {
             v47 = objc_opt_class();
             v48 = NSStringFromClass(v47);
-            [v21 clientID];
-            v49 = v55 = v17;
+            [changedItem clientID];
+            v49 = v55 = accountCopy;
             *buf = 138412802;
             v66 = v48;
             v67 = 2112;
-            v68 = v24;
+            v68 = serverID;
             v69 = 2112;
             v70 = v49;
             _os_log_impl(&dword_0, v46, v36, "saved %@, server id %@, clientID %@", buf, 0x20u);
 
-            v17 = v55;
+            accountCopy = v55;
           }
 
           v31 = 1;
@@ -210,7 +210,7 @@ LABEL_50:
         goto LABEL_50;
       }
 
-      v53 = v17;
+      v53 = accountCopy;
       v32 = [[DAABLegacyGroup alloc] initWithGroup:v23];
       v71 = v32;
       v34 = [NSArray arrayWithObjects:&v71 count:1];
@@ -218,22 +218,22 @@ LABEL_50:
       HIDWORD(v52) = 0;
     }
 
-    v17 = v53;
+    accountCopy = v53;
     goto LABEL_31;
   }
 
-  if (v26 != &dword_0 + 2)
+  if (itemChangeType != &dword_0 + 2)
   {
-    if (v26 == &dword_4 + 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (itemChangeType == &dword_4 + 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v27 = [v15 contacts];
-      [v15 groups];
-      v28 = v24;
+      contacts = [actionCopy contacts];
+      [actionCopy groups];
+      v28 = serverID;
       v30 = v29 = v20;
-      [(_CardDAVActionsABLegacyHandler *)self moveToLocalStoreContacts:v27 groups:v30];
+      [(_CardDAVActionsABLegacyHandler *)self moveToLocalStoreContacts:contacts groups:v30];
 
       v20 = v29;
-      v24 = v28;
+      serverID = v28;
 
       v31 = 1;
       if (!v23)
@@ -256,8 +256,8 @@ LABEL_50:
 
   if (v23)
   {
-    [v21 setLocalItem:v23];
-    [v21 deleteFromContainer:v19 account:v17];
+    [changedItem setLocalItem:v23];
+    [changedItem deleteFromContainer:asSource account:accountCopy];
     v31 = 1;
 LABEL_51:
     CFRelease(v23);
@@ -271,12 +271,12 @@ LABEL_52:
   return v31;
 }
 
-- (void)moveToLocalStoreContacts:(id)a3 groups:(id)a4
+- (void)moveToLocalStoreContacts:(id)contacts groups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if ([v7 count] + v8)
+  contactsCopy = contacts;
+  groupsCopy = groups;
+  v8 = [contactsCopy count];
+  if ([groupsCopy count] + v8)
   {
     [(_CardDAVActionsABLegacyHandler *)self addressBook];
     v9 = ABAddressBookCopyLocalSource();
@@ -290,7 +290,7 @@ LABEL_52:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v6;
+    v11 = contactsCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v12)
     {
@@ -321,7 +321,7 @@ LABEL_52:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v7;
+    v16 = groupsCopy;
     v17 = [v16 countByEnumeratingWithState:&v21 objects:v30 count:16];
     if (v17)
     {
@@ -358,19 +358,19 @@ LABEL_52:
   }
 }
 
-- (id)wrappedRecordFromRecord:(void *)a3
+- (id)wrappedRecordFromRecord:(void *)record
 {
-  if (a3)
+  if (record)
   {
-    if (!ABRecordGetRecordType(a3))
+    if (!ABRecordGetRecordType(record))
     {
-      v4 = [[DAABLegacyContact alloc] initWithABPerson:a3];
+      v4 = [[DAABLegacyContact alloc] initWithABPerson:record];
       goto LABEL_10;
     }
 
-    if (ABRecordGetRecordType(a3) == 1)
+    if (ABRecordGetRecordType(record) == 1)
     {
-      v4 = [[DAABLegacyGroup alloc] initWithGroup:a3];
+      v4 = [[DAABLegacyGroup alloc] initWithGroup:record];
       goto LABEL_10;
     }
 
@@ -379,7 +379,7 @@ LABEL_52:
     if (os_log_type_enabled(v5, v6))
     {
       v8 = 138412290;
-      v9 = a3;
+      recordCopy = record;
       _os_log_impl(&dword_0, v5, v6, "Unexpected ABRecordType for item %@", &v8, 0xCu);
     }
   }
@@ -390,9 +390,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)_localRecordForExternalURL:(id)a3 inContainer:(void *)a4 withFolderURL:(id)a5
+- (void)_localRecordForExternalURL:(id)l inContainer:(void *)container withFolderURL:(id)rL
 {
-  v6 = [a3 da_leastInfoStringRepresentationRelativeToParentURL:a5];
+  v6 = [l da_leastInfoStringRepresentationRelativeToParentURL:rL];
   [(_CardDAVActionsABLegacyHandler *)self addressBook];
   v7 = ABAddressBookCopyArrayOfAllPeopleWithExternalIdentifierInSource();
   if ([v7 count])
@@ -419,12 +419,12 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record
 {
-  v6 = a3;
-  if (a4)
+  continueCopy = continue;
+  if (record)
   {
-    v7 = ABRecordCopyValue(a4, kABPersonExternalIdentifierProperty);
+    v7 = ABRecordCopyValue(record, kABPersonExternalIdentifierProperty);
     if ([v7 length])
     {
       goto LABEL_19;
@@ -433,7 +433,7 @@ LABEL_10:
     if ([(_CardDAVActionsABLegacyHandler *)self matchMode]== 1 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 2 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 3)
     {
       v8 = ABRecordCopyValue([(_CardDAVActionsABLegacyHandler *)self testRecord], kABPersonFirstNameProperty);
-      v9 = ABRecordCopyValue(a4, kABPersonFirstNameProperty);
+      v9 = ABRecordCopyValue(record, kABPersonFirstNameProperty);
       v10 = v9 != 0;
 
       if ((v8 == 0) == v10)
@@ -445,7 +445,7 @@ LABEL_10:
     if ([(_CardDAVActionsABLegacyHandler *)self matchMode]== 1 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 2 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 3)
     {
       v11 = ABRecordCopyValue([(_CardDAVActionsABLegacyHandler *)self testRecord], kABPersonLastNameProperty);
-      v12 = ABRecordCopyValue(a4, kABPersonLastNameProperty);
+      v12 = ABRecordCopyValue(record, kABPersonLastNameProperty);
       v13 = v12 != 0;
 
       if ((v11 == 0) == v13)
@@ -457,7 +457,7 @@ LABEL_10:
     if ([(_CardDAVActionsABLegacyHandler *)self matchMode]== 1 || self->_matchMode == 2)
     {
       v14 = ABRecordCopyValue([(_CardDAVActionsABLegacyHandler *)self testRecord], kABPersonMiddleNameProperty);
-      v15 = ABRecordCopyValue(a4, kABPersonMiddleNameProperty);
+      v15 = ABRecordCopyValue(record, kABPersonMiddleNameProperty);
       v16 = v15 != 0;
 
       if ((v14 == 0) == v16)
@@ -466,7 +466,7 @@ LABEL_10:
       }
     }
 
-    if (([(_CardDAVActionsABLegacyHandler *)self matchMode]== 1 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 2 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 3) && (v17 = ABRecordCopyValue([(_CardDAVActionsABLegacyHandler *)self testRecord], kABPersonSuffixProperty), v18 = ABRecordCopyValue(a4, kABPersonSuffixProperty), v19 = v18 != 0, v18, v17, (v17 == 0) == v19))
+    if (([(_CardDAVActionsABLegacyHandler *)self matchMode]== 1 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 2 || [(_CardDAVActionsABLegacyHandler *)self matchMode]== 3) && (v17 = ABRecordCopyValue([(_CardDAVActionsABLegacyHandler *)self testRecord], kABPersonSuffixProperty), v18 = ABRecordCopyValue(record, kABPersonSuffixProperty), v19 = v18 != 0, v18, v17, (v17 == 0) == v19))
     {
 LABEL_19:
       v20 = 1;
@@ -474,8 +474,8 @@ LABEL_19:
 
     else
     {
-      [(_CardDAVActionsABLegacyHandler *)self setMatchedRecord:a4];
-      CFRetain(a4);
+      [(_CardDAVActionsABLegacyHandler *)self setMatchedRecord:record];
+      CFRetain(record);
       v20 = 0;
     }
   }
@@ -488,18 +488,18 @@ LABEL_19:
   return v20;
 }
 
-- (void)_copyExistingABRecordForContact:(id)a3 inStore:(void *)a4
+- (void)_copyExistingABRecordForContact:(id)contact inStore:(void *)store
 {
   v76 = 0;
   v77 = &v76;
   v78 = 0x2020000000;
   v79 = 0;
   v75 = 0;
-  v68 = a3;
-  v69 = [v68 createOrphanedABRecordFromParsedVCardOutRecordType:&v75];
+  contactCopy = contact;
+  v69 = [contactCopy createOrphanedABRecordFromParsedVCardOutRecordType:&v75];
   if ([v69 isContact])
   {
-    v5 = [v69 asPerson];
+    asPerson = [v69 asPerson];
   }
 
   else
@@ -512,15 +512,15 @@ LABEL_86:
       goto LABEL_87;
     }
 
-    v5 = [v69 asABGroup];
+    asPerson = [v69 asABGroup];
   }
 
-  v6 = v5;
+  v6 = asPerson;
   v7 = v75;
-  if (v5 && !v75)
+  if (asPerson && !v75)
   {
-    self->_testRecord = v5;
-    v63 = [ABPredicate personPredicateWithGroup:0 source:a4 account:0];
+    self->_testRecord = asPerson;
+    v63 = [ABPredicate personPredicateWithGroup:0 source:store account:0];
     v8 = kABPersonExternalUUIDProperty;
     v9 = ABRecordCopyValue(v6, kABPersonExternalUUIDProperty);
     if (v9)
@@ -612,7 +612,7 @@ LABEL_86:
           *buf = 138412802;
           v82 = v18;
           v83 = 2112;
-          v84 = v68;
+          v84 = contactCopy;
           v85 = 1024;
           v86 = RecordID;
           _os_log_impl(&dword_0, v19, v20, "Predicate %@ matched contact %@ with local id %d", buf, 0x1Cu);
@@ -661,7 +661,7 @@ LABEL_86:
           *buf = 138412802;
           v82 = v24;
           v83 = 2112;
-          v84 = v68;
+          v84 = contactCopy;
           v85 = 1024;
           v86 = v27;
           _os_log_impl(&dword_0, v25, v26, "Predicate %@ matched contact %@ with local id %d", buf, 0x1Cu);
@@ -692,7 +692,7 @@ LABEL_86:
           *buf = 138412802;
           v82 = v29;
           v83 = 2112;
-          v84 = v68;
+          v84 = contactCopy;
           v85 = 1024;
           v86 = v32;
           _os_log_impl(&dword_0, v30, v31, "Predicate %@ matched contact %@ with local id %d", buf, 0x1Cu);
@@ -737,7 +737,7 @@ LABEL_86:
           *buf = 138412802;
           v82 = v34;
           v83 = 2112;
-          v84 = v68;
+          v84 = contactCopy;
           v85 = 1024;
           v86 = v37;
           _os_log_impl(&dword_0, v35, v36, "Predicate %@ matched contact %@ with local id %d", buf, 0x1Cu);
@@ -761,7 +761,7 @@ LABEL_86:
       v74 = v6;
       v70[4] = self;
       v71 = v63;
-      v72 = v68;
+      v72 = contactCopy;
       v38 = objc_retainBlock(v70);
       (v38[2])(v38, kABPersonEmailProperty);
       (v38[2])(v38, kABPersonPhoneProperty);
@@ -779,7 +779,7 @@ LABEL_86:
       if (os_log_type_enabled(v39, v40))
       {
         *buf = 138412290;
-        v82 = v68;
+        v82 = contactCopy;
         _os_log_impl(&dword_0, v39, v40, "Found no match for contact %@", buf, 0xCu);
       }
     }
@@ -812,7 +812,7 @@ LABEL_87:
         v44 = +[NSCharacterSet whitespaceCharacterSet];
         v45 = [v67 stringByTrimmingCharactersInSet:v44];
 
-        v46 = ABAddressBookCopyArrayOfAllGroupsInSource([(_CardDAVActionsABLegacyHandler *)self addressBook], a4);
+        v46 = ABAddressBookCopyArrayOfAllGroupsInSource([(_CardDAVActionsABLegacyHandler *)self addressBook], store);
         for (i = 0; i < [(__CFArray *)v46 count]; ++i)
         {
           v48 = [(__CFArray *)v46 objectAtIndexedSubscript:i];

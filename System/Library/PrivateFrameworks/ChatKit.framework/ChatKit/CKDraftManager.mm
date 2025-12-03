@@ -1,24 +1,24 @@
 @interface CKDraftManager
 + (id)sharedInstance;
-- (id)_draftForConversationWithChatIdentifier:(id)a3 fetchPolicy:(unsigned __int8)a4;
+- (id)_draftForConversationWithChatIdentifier:(id)identifier fetchPolicy:(unsigned __int8)policy;
 - (id)_pendingChatIdentifier;
 - (id)_pendingChatIdentifierURL;
 - (id)_pendingRecipients;
 - (id)_pendingRecipientsURL;
-- (id)draftForConversation:(id)a3;
-- (id)draftForConversation:(id)a3 fetchPolicy:(unsigned __int8)a4;
-- (id)draftForPendingConversationWithRecipients:(id *)a3 chatIdentifier:(id *)a4;
-- (void)_clearDraftForConversation:(id)a3;
-- (void)_setDraft:(id)a3 forKey:(id)a4;
-- (void)_setPendingChatIdentifier:(id)a3;
-- (void)_setPendingRecipients:(id)a3;
-- (void)clearDraftForComposition:(id)a3;
+- (id)draftForConversation:(id)conversation;
+- (id)draftForConversation:(id)conversation fetchPolicy:(unsigned __int8)policy;
+- (id)draftForPendingConversationWithRecipients:(id *)recipients chatIdentifier:(id *)identifier;
+- (void)_clearDraftForConversation:(id)conversation;
+- (void)_setDraft:(id)draft forKey:(id)key;
+- (void)_setPendingChatIdentifier:(id)identifier;
+- (void)_setPendingRecipients:(id)recipients;
+- (void)clearDraftForComposition:(id)composition;
 - (void)clearDraftForPendingConversation;
 - (void)dealloc;
-- (void)preloadAllDraftsInConversations:(id)a3 completion:(id)a4;
-- (void)saveCompositionAndFlushCache:(BOOL)a3;
-- (void)setDraft:(id)a3 forConversation:(id)a4;
-- (void)setDraftForPendingConversation:(id)a3 withRecipients:(id)a4 chatIdentifier:(id)a5;
+- (void)preloadAllDraftsInConversations:(id)conversations completion:(id)completion;
+- (void)saveCompositionAndFlushCache:(BOOL)cache;
+- (void)setDraft:(id)draft forConversation:(id)conversation;
+- (void)setDraftForPendingConversation:(id)conversation withRecipients:(id)recipients chatIdentifier:(id)identifier;
 @end
 
 @implementation CKDraftManager
@@ -30,12 +30,12 @@
     goto LABEL_2;
   }
 
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v5 = sDraftManager;
   sDraftManager = v4;
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v6 BOOLForKey:@"PendingCleared"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"PendingCleared"])
   {
 
     goto LABEL_13;
@@ -69,8 +69,8 @@ LABEL_13:
     }
   }
 
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v9 setBool:1 forKey:@"PendingCleared"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setBool:1 forKey:@"PendingCleared"];
 
   [sDraftManager clearDraftForPendingConversation];
   [sDraftManager saveCompositionAndFlushCache:0];
@@ -88,10 +88,10 @@ LABEL_2:
   [(CKDraftManager *)&v3 dealloc];
 }
 
-- (void)_clearDraftForConversation:(id)a3
+- (void)_clearDraftForConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -101,7 +101,7 @@ LABEL_2:
       *buf = 136315394;
       v10 = "[CKDraftManager _clearDraftForConversation:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = conversationCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "%s conversation:[%@]", buf, 0x16u);
     }
   }
@@ -109,18 +109,18 @@ LABEL_2:
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
     v7 = "[CKDraftManager _clearDraftForConversation:]";
-    v8 = v4;
+    v8 = conversationCopy;
     _CKLog();
   }
 
-  v6 = [v4 uniqueIdentifier];
-  [(CKDraftManager *)self _setDraft:0 forKey:v6];
+  uniqueIdentifier = [conversationCopy uniqueIdentifier];
+  [(CKDraftManager *)self _setDraft:0 forKey:uniqueIdentifier];
 }
 
-- (id)draftForConversation:(id)a3
+- (id)draftForConversation:(id)conversation
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -128,28 +128,28 @@ LABEL_2:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = conversationCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "draftForConversation: %@", buf, 0xCu);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v9 = v4;
+    v9 = conversationCopy;
     _CKLog();
   }
 
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(CKDraftManager *)self draftForConversationWithChatIdentifier:v6];
+  uniqueIdentifier = [conversationCopy uniqueIdentifier];
+  v7 = [(CKDraftManager *)self draftForConversationWithChatIdentifier:uniqueIdentifier];
 
   return v7;
 }
 
-- (id)draftForConversation:(id)a3 fetchPolicy:(unsigned __int8)a4
+- (id)draftForConversation:(id)conversation fetchPolicy:(unsigned __int8)policy
 {
-  v4 = a4;
+  policyCopy = policy;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -157,28 +157,28 @@ LABEL_2:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v6;
+      v13 = conversationCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_DEBUG, "draftForConversation: %@", buf, 0xCu);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v11 = v6;
+    v11 = conversationCopy;
     _CKLog();
   }
 
-  v8 = [v6 uniqueIdentifier];
-  v9 = [(CKDraftManager *)self _draftForConversationWithChatIdentifier:v8 fetchPolicy:v4];
+  uniqueIdentifier = [conversationCopy uniqueIdentifier];
+  v9 = [(CKDraftManager *)self _draftForConversationWithChatIdentifier:uniqueIdentifier fetchPolicy:policyCopy];
 
   return v9;
 }
 
-- (void)setDraft:(id)a3 forConversation:(id)a4
+- (void)setDraft:(id)draft forConversation:(id)conversation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  draftCopy = draft;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -186,22 +186,22 @@ LABEL_2:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = draftCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = conversationCopy;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_DEBUG, "setDraft: %@ forConversation: %@", buf, 0x16u);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v18 = v6;
-    v20 = v7;
+    v18 = draftCopy;
+    v20 = conversationCopy;
     _CKLog();
   }
 
-  v9 = [v7 uniqueIdentifier];
-  v10 = v9 == 0;
+  uniqueIdentifier = [conversationCopy uniqueIdentifier];
+  v10 = uniqueIdentifier == 0;
 
   if (v10)
   {
@@ -214,9 +214,9 @@ LABEL_2:
 
   else
   {
-    v11 = [v6 hasRestorableContent];
+    hasRestorableContent = [draftCopy hasRestorableContent];
     v12 = IMOSLoggingEnabled();
-    if (v11)
+    if (hasRestorableContent)
     {
       if (v12)
       {
@@ -227,23 +227,23 @@ LABEL_2:
           *buf = 136315650;
           v24 = "[CKDraftManager setDraft:forConversation:]";
           v25 = 2112;
-          v26 = v6;
+          v26 = draftCopy;
           v27 = 2112;
-          v28 = v7;
+          v28 = conversationCopy;
           _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_DEBUG, "%s draft:[%@],conversation:[%@]", buf, 0x20u);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
-        v21 = v6;
-        v22 = v7;
+        v21 = draftCopy;
+        v22 = conversationCopy;
         v19 = "[CKDraftManager setDraft:forConversation:]";
         _CKLog();
       }
 
-      v14 = [v7 uniqueIdentifier];
-      [(CKDraftManager *)self _setDraft:v6 forKey:v14];
+      uniqueIdentifier2 = [conversationCopy uniqueIdentifier];
+      [(CKDraftManager *)self _setDraft:draftCopy forKey:uniqueIdentifier2];
 
       if (IMIsRunningInMessagesExtension())
       {
@@ -261,23 +261,23 @@ LABEL_2:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v24 = v7;
+          v24 = conversationCopy;
           _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Clearing the draft conversation. This is expected if the conversation has NO composition, or the composition lacks content, or the conversation has no unique identifier, or composition was only whitespace, or the composition was expirable (and not an audio message). Conversation: %@", buf, 0xCu);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLogExternal())
       {
-        v19 = v7;
+        v19 = conversationCopy;
         _CKLogExternal();
       }
 
-      [(CKDraftManager *)self _clearDraftForConversation:v7, v19];
+      [(CKDraftManager *)self _clearDraftForConversation:conversationCopy, v19];
     }
   }
 }
 
-- (id)draftForPendingConversationWithRecipients:(id *)a3 chatIdentifier:(id *)a4
+- (id)draftForPendingConversationWithRecipients:(id *)recipients chatIdentifier:(id *)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -299,26 +299,26 @@ LABEL_2:
   }
 
   v8 = [(CKDraftManager *)self draftForConversationWithChatIdentifier:@"Pending", v10];
-  if (a3)
+  if (recipients)
   {
-    *a3 = [(CKDraftManager *)self _pendingRecipients];
+    *recipients = [(CKDraftManager *)self _pendingRecipients];
   }
 
-  if (a4)
+  if (identifier)
   {
-    *a4 = [(CKDraftManager *)self _pendingChatIdentifier];
+    *identifier = [(CKDraftManager *)self _pendingChatIdentifier];
   }
 
   return v8;
 }
 
-- (void)setDraftForPendingConversation:(id)a3 withRecipients:(id)a4 chatIdentifier:(id)a5
+- (void)setDraftForPendingConversation:(id)conversation withRecipients:(id)recipients chatIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 | v9)
+  conversationCopy = conversation;
+  recipientsCopy = recipients;
+  identifierCopy = identifier;
+  if (conversationCopy | recipientsCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -328,18 +328,18 @@ LABEL_2:
         v12 = 136315906;
         v13 = "[CKDraftManager setDraftForPendingConversation:withRecipients:chatIdentifier:]";
         v14 = 2112;
-        v15 = v8;
+        v15 = conversationCopy;
         v16 = 2112;
-        v17 = v9;
+        v17 = recipientsCopy;
         v18 = 2112;
-        v19 = v10;
+        v19 = identifierCopy;
         _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "%s draft:[%@],recipients:[%@], chatID:%@", &v12, 0x2Au);
       }
     }
 
-    [(CKDraftManager *)self _setDraft:v8 forKey:@"Pending"];
-    [(CKDraftManager *)self _setPendingRecipients:v9];
-    [(CKDraftManager *)self _setPendingChatIdentifier:v10];
+    [(CKDraftManager *)self _setDraft:conversationCopy forKey:@"Pending"];
+    [(CKDraftManager *)self _setPendingRecipients:recipientsCopy];
+    [(CKDraftManager *)self _setPendingChatIdentifier:identifierCopy];
   }
 
   else
@@ -374,16 +374,16 @@ LABEL_2:
   [(CKDraftManager *)self _setPendingChatIdentifier:0];
 }
 
-- (void)clearDraftForComposition:(id)a3
+- (void)clearDraftForComposition:(id)composition
 {
-  [a3 cleanupCKShareFromComposition];
+  [composition cleanupCKShareFromComposition];
 
   [(CKDraftManager *)self clearDraftForPendingConversation];
 }
 
-- (void)saveCompositionAndFlushCache:(BOOL)a3
+- (void)saveCompositionAndFlushCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v40 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
@@ -415,12 +415,12 @@ LABEL_2:
   }
 
   [(NSMutableSet *)self->_dirtyDraftIDs removeAllObjects];
-  if (v3)
+  if (cacheCopy)
   {
     [(CKDraftManager *)self flushCache];
   }
 
-  v11 = [(CKDraftManager *)self _pendingRecipientsURL];
+  _pendingRecipientsURL = [(CKDraftManager *)self _pendingRecipientsURL];
   if ([(NSArray *)self->_pendingRecipients count])
   {
     if (IMOSLoggingEnabled())
@@ -436,12 +436,12 @@ LABEL_2:
     }
 
     v14 = MEMORY[0x1E696AE40];
-    v15 = [(CKDraftManager *)self pendingRecipients];
+    pendingRecipients = [(CKDraftManager *)self pendingRecipients];
     v32 = 0;
-    v16 = [v14 dataWithPropertyList:v15 format:100 options:0 error:&v32];
-    v17 = v32;
+    v16 = [v14 dataWithPropertyList:pendingRecipients format:100 options:0 error:&v32];
+    defaultManager = v32;
 
-    if (v17)
+    if (defaultManager)
     {
       v18 = IMLogHandleForCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -451,7 +451,7 @@ LABEL_2:
     }
 
     v31 = 0;
-    v19 = [v16 writeToURL:v11 options:1073741825 error:&v31];
+    v19 = [v16 writeToURL:_pendingRecipientsURL options:1073741825 error:&v31];
     v20 = v31;
     if ((v19 & 1) == 0)
     {
@@ -461,17 +461,17 @@ LABEL_2:
         [CKDraftManager saveCompositionAndFlushCache:];
       }
 
-      [(NSArray *)self->_pendingRecipients writeToURL:v11 atomically:1];
+      [(NSArray *)self->_pendingRecipients writeToURL:_pendingRecipientsURL atomically:1];
     }
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    [v17 removeItemAtURL:v11 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:_pendingRecipientsURL error:0];
   }
 
-  v22 = [(CKDraftManager *)self _pendingChatIdentifierURL];
+  _pendingChatIdentifierURL = [(CKDraftManager *)self _pendingChatIdentifierURL];
   if ([(NSString *)self->_pendingChatIdentifier length])
   {
     if (IMOSLoggingEnabled())
@@ -486,11 +486,11 @@ LABEL_2:
       }
     }
 
-    v25 = [(CKDraftManager *)self pendingChatIdentifier];
-    v26 = [v25 dataUsingEncoding:4];
+    pendingChatIdentifier = [(CKDraftManager *)self pendingChatIdentifier];
+    defaultManager2 = [pendingChatIdentifier dataUsingEncoding:4];
 
     v30 = 0;
-    v27 = [v26 writeToURL:v22 options:1073741825 error:&v30];
+    v27 = [defaultManager2 writeToURL:_pendingChatIdentifierURL options:1073741825 error:&v30];
     v28 = v30;
     if ((v27 & 1) == 0)
     {
@@ -500,21 +500,21 @@ LABEL_2:
         [CKDraftManager saveCompositionAndFlushCache:];
       }
 
-      [(NSArray *)self->_pendingRecipients writeToURL:v22 atomically:1];
+      [(NSArray *)self->_pendingRecipients writeToURL:_pendingChatIdentifierURL atomically:1];
     }
   }
 
   else
   {
-    v26 = [MEMORY[0x1E696AC08] defaultManager];
-    [v26 removeItemAtURL:v22 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtURL:_pendingChatIdentifierURL error:0];
   }
 }
 
-- (void)preloadAllDraftsInConversations:(id)a3 completion:(id)a4
+- (void)preloadAllDraftsInConversations:(id)conversations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  conversationsCopy = conversations;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -534,9 +534,9 @@ LABEL_2:
   v8 = _Block_copy(aBlock);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    if (!v6)
+    if (!conversationsCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
       goto LABEL_7;
     }
 
@@ -555,11 +555,11 @@ LABEL_2:
   v10[2] = __61__CKDraftManager_preloadAllDraftsInConversations_completion___block_invoke_3;
   v10[3] = &unk_1E72F1688;
   v15 = &v18;
-  v11 = v6;
-  v13 = v7;
+  v11 = conversationsCopy;
+  v13 = completionCopy;
   v16 = v22;
   v14 = v8;
-  v12 = self;
+  selfCopy = self;
   dispatch_async(v9, v10);
 
 LABEL_7:
@@ -816,25 +816,25 @@ void __43__CKDraftManager__pendingChatIdentifierURL__block_invoke()
   [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
 }
 
-- (id)_draftForConversationWithChatIdentifier:(id)a3 fetchPolicy:(unsigned __int8)a4
+- (id)_draftForConversationWithChatIdentifier:(id)identifier fetchPolicy:(unsigned __int8)policy
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 1)
+  policyCopy = policy;
+  identifierCopy = identifier;
+  if (policyCopy == 1)
   {
-    v7 = 0;
+    null2 = 0;
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_cachedDrafts objectForKey:v6];
+    null2 = [(NSMutableDictionary *)self->_cachedDrafts objectForKey:identifierCopy];
   }
 
-  if (v4 == 2 || v7)
+  if (policyCopy == 2 || null2)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v7 != v10)
+    if (null2 != null)
     {
       goto LABEL_14;
     }
@@ -842,15 +842,15 @@ void __43__CKDraftManager__pendingChatIdentifierURL__block_invoke()
 
   else
   {
-    v8 = [CKComposition savedCompositionForChatIdentifier:v6];
-    v7 = v8;
+    v8 = [CKComposition savedCompositionForChatIdentifier:identifierCopy];
+    null2 = v8;
     cachedDrafts = self->_cachedDrafts;
     if (cachedDrafts)
     {
       if (v8)
       {
 LABEL_8:
-        [(NSMutableDictionary *)cachedDrafts setObject:v7 forKey:v6];
+        [(NSMutableDictionary *)cachedDrafts setObject:null2 forKey:identifierCopy];
         goto LABEL_14;
       }
     }
@@ -862,43 +862,43 @@ LABEL_8:
       self->_cachedDrafts = v11;
 
       cachedDrafts = self->_cachedDrafts;
-      if (v7)
+      if (null2)
       {
         goto LABEL_8;
       }
     }
 
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)cachedDrafts setObject:v7 forKey:v6];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)cachedDrafts setObject:null2 forKey:identifierCopy];
   }
 
-  v7 = 0;
+  null2 = 0;
 LABEL_14:
 
-  return v7;
+  return null2;
 }
 
-- (void)_setDraft:(id)a3 forKey:(id)a4
+- (void)_setDraft:(id)draft forKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  draftCopy = draft;
+  keyCopy = key;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMEventCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v15 = 138412546;
-      v16 = v7;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = draftCopy;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "_setDraft: %@, %@", &v15, 0x16u);
     }
   }
 
-  if (v7)
+  if (keyCopy)
   {
-    if (v6)
+    if (draftCopy)
     {
       if (!self->_cachedDrafts)
       {
@@ -914,19 +914,19 @@ LABEL_14:
         self->_dirtyDraftIDs = v11;
       }
 
-      v13 = [(CKDraftManager *)self _cachedDraftForConversationWithChatIdentifier:v7];
-      if (v13 != v6)
+      v13 = [(CKDraftManager *)self _cachedDraftForConversationWithChatIdentifier:keyCopy];
+      if (v13 != draftCopy)
       {
-        [(NSMutableDictionary *)self->_cachedDrafts setObject:v6 forKey:v7];
-        [(NSMutableSet *)self->_dirtyDraftIDs addObject:v7];
+        [(NSMutableDictionary *)self->_cachedDrafts setObject:draftCopy forKey:keyCopy];
+        [(NSMutableSet *)self->_dirtyDraftIDs addObject:keyCopy];
       }
     }
 
     else
     {
-      [CKComposition deleteCompositionWithChatIdentifier:v7];
-      [(NSMutableDictionary *)self->_cachedDrafts removeObjectForKey:v7];
-      [(NSMutableSet *)self->_dirtyDraftIDs removeObject:v7];
+      [CKComposition deleteCompositionWithChatIdentifier:keyCopy];
+      [(NSMutableDictionary *)self->_cachedDrafts removeObjectForKey:keyCopy];
+      [(NSMutableSet *)self->_dirtyDraftIDs removeObject:keyCopy];
     }
   }
 
@@ -940,22 +940,22 @@ LABEL_14:
   }
 }
 
-- (void)_setPendingRecipients:(id)a3
+- (void)_setPendingRecipients:(id)recipients
 {
-  v5 = a3;
-  if (self->_pendingRecipients != v5)
+  recipientsCopy = recipients;
+  if (self->_pendingRecipients != recipientsCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_pendingRecipients, a3);
+    v9 = recipientsCopy;
+    objc_storeStrong(&self->_pendingRecipients, recipients);
     v6 = [(NSArray *)self->_pendingRecipients count];
-    v5 = v9;
+    recipientsCopy = v9;
     if (!v6)
     {
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
-      v8 = [(CKDraftManager *)self _pendingRecipientsURL];
-      [v7 removeItemAtURL:v8 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      _pendingRecipientsURL = [(CKDraftManager *)self _pendingRecipientsURL];
+      [defaultManager removeItemAtURL:_pendingRecipientsURL error:0];
 
-      v5 = v9;
+      recipientsCopy = v9;
     }
   }
 }
@@ -966,8 +966,8 @@ LABEL_14:
   if (!pendingRecipients)
   {
     v4 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v5 = [(CKDraftManager *)self _pendingRecipientsURL];
-    v6 = [v4 initWithContentsOfURL:v5];
+    _pendingRecipientsURL = [(CKDraftManager *)self _pendingRecipientsURL];
+    v6 = [v4 initWithContentsOfURL:_pendingRecipientsURL];
     v7 = self->_pendingRecipients;
     self->_pendingRecipients = v6;
 
@@ -977,22 +977,22 @@ LABEL_14:
   return pendingRecipients;
 }
 
-- (void)_setPendingChatIdentifier:(id)a3
+- (void)_setPendingChatIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_pendingChatIdentifier != v5)
+  identifierCopy = identifier;
+  if (self->_pendingChatIdentifier != identifierCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_pendingChatIdentifier, a3);
+    v9 = identifierCopy;
+    objc_storeStrong(&self->_pendingChatIdentifier, identifier);
     v6 = [(NSString *)self->_pendingChatIdentifier length];
-    v5 = v9;
+    identifierCopy = v9;
     if (!v6)
     {
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
-      v8 = [(CKDraftManager *)self _pendingChatIdentifierURL];
-      [v7 removeItemAtURL:v8 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      _pendingChatIdentifierURL = [(CKDraftManager *)self _pendingChatIdentifierURL];
+      [defaultManager removeItemAtURL:_pendingChatIdentifierURL error:0];
 
-      v5 = v9;
+      identifierCopy = v9;
     }
   }
 }
@@ -1004,9 +1004,9 @@ LABEL_14:
   if (!pendingChatIdentifier)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(CKDraftManager *)self _pendingChatIdentifierURL];
+    _pendingChatIdentifierURL = [(CKDraftManager *)self _pendingChatIdentifierURL];
     v12 = 0;
-    v6 = [v4 initWithContentsOfURL:v5 encoding:4 error:&v12];
+    v6 = [v4 initWithContentsOfURL:_pendingChatIdentifierURL encoding:4 error:&v12];
     v7 = v12;
     v8 = self->_pendingChatIdentifier;
     self->_pendingChatIdentifier = v6;
@@ -1016,11 +1016,11 @@ LABEL_14:
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(CKDraftManager *)self _pendingChatIdentifierURL];
+        _pendingChatIdentifierURL2 = [(CKDraftManager *)self _pendingChatIdentifierURL];
         *buf = 138412546;
         v14 = v7;
         v15 = 2112;
-        v16 = v10;
+        v16 = _pendingChatIdentifierURL2;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Got error while decoding _pendingChatIdentifier: %@, at: %@.", buf, 0x16u);
       }
     }

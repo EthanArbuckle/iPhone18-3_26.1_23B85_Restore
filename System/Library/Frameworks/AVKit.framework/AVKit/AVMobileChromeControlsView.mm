@@ -1,17 +1,17 @@
 @interface AVMobileChromeControlsView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setActivePlaybackControlsView:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setActivePlaybackControlsView:(id)view;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation AVMobileChromeControlsView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AVMobileChromeControlsView;
-  [(AVMobileChromeControlsView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AVMobileChromeControlsView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (self)
   {
     activePlaybackControlsView = self->_activePlaybackControlsView;
@@ -33,11 +33,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = AVMobileChromeControlsView;
-  v5 = [(AVMobileChromeControlsView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(AVMobileChromeControlsView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -52,19 +52,19 @@
   return v7;
 }
 
-- (void)setActivePlaybackControlsView:(id)a3
+- (void)setActivePlaybackControlsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   activePlaybackControlsView = self->_activePlaybackControlsView;
-  v7 = v5;
-  if (activePlaybackControlsView != v5)
+  v7 = viewCopy;
+  if (activePlaybackControlsView != viewCopy)
   {
     if (activePlaybackControlsView)
     {
       [(UIView *)activePlaybackControlsView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_activePlaybackControlsView, a3);
+    objc_storeStrong(&self->_activePlaybackControlsView, view);
     if (self->_activePlaybackControlsView)
     {
       [(AVMobileChromeControlsView *)self addSubview:?];

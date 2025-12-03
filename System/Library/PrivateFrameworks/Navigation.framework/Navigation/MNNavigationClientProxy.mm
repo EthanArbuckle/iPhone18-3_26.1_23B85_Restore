@@ -1,7 +1,7 @@
 @interface MNNavigationClientProxy
 - (MNNavigationClientProxy)init;
 - (id)_directionsRequestManager;
-- (void)requestDirections:(id)a3 withIdentifier:(id)a4 handler:(id)a5;
+- (void)requestDirections:(id)directions withIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation MNNavigationClientProxy
@@ -21,22 +21,22 @@
   return directionsRequestManager;
 }
 
-- (void)requestDirections:(id)a3 withIdentifier:(id)a4 handler:(id)a5
+- (void)requestDirections:(id)directions withIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 auditToken];
-  auditToken = v11;
-  if (!v11)
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  directionsCopy = directions;
+  auditToken = [directionsCopy auditToken];
+  auditToken = auditToken;
+  if (!auditToken)
   {
     auditToken = self->_auditToken;
   }
 
   v13 = auditToken;
 
-  v14 = [(MNNavigationClientProxy *)self _directionsRequestManager];
-  [v14 requestDirections:v10 withIdentifier:v9 auditToken:v13 finishedHandler:v8];
+  _directionsRequestManager = [(MNNavigationClientProxy *)self _directionsRequestManager];
+  [_directionsRequestManager requestDirections:directionsCopy withIdentifier:identifierCopy auditToken:v13 finishedHandler:handlerCopy];
 }
 
 - (MNNavigationClientProxy)init
@@ -47,9 +47,9 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E69A1B68]);
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v3 initWithProxiedApplicationBundleId:v5];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [v3 initWithProxiedApplicationBundleId:bundleIdentifier];
     auditToken = v2->_auditToken;
     v2->_auditToken = v6;
 

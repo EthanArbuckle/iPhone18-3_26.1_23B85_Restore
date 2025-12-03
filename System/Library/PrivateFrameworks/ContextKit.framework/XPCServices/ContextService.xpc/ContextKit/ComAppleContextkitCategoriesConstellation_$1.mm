@@ -1,20 +1,20 @@
 @interface ComAppleContextkitCategoriesConstellation_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = [a3 intValue], !a4))
+  if (!id || (v5 = [id intValue], !withId))
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  v7 = [a4 intValue];
+  intValue = [withId intValue];
 
-  return JavaLangInteger_compareWithInt_withInt_(v6 ^ 0x80000000, v7 ^ 0x80000000);
+  return JavaLangInteger_compareWithInt_withInt_(v6 ^ 0x80000000, intValue ^ 0x80000000);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WFOpenInAction
 + (id)userInterfaceXPCInterface;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (id)inputContentClasses;
 - (id)selectedApp;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)openContentInSelectedApp:(id)a3;
-- (void)openContentUsingDefaultApp:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)openContentInSelectedApp:(id)app;
+- (void)openContentUsingDefaultApp:(id)app;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 - (void)updateContentClasses;
 @end
 
@@ -16,7 +16,7 @@
 
 + (id)userInterfaceXPCInterface
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___WFOpenInAction;
   v2 = objc_msgSendSuper2(&v5, sel_userInterfaceXPCInterface);
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
@@ -25,34 +25,34 @@
   return v2;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 length];
+  descriptionCopy = description;
+  nameCopy = name;
+  destinationCopy = destination;
+  v10 = [descriptionCopy length];
   v11 = MEMORY[0x277CCACA8];
   if (v10)
   {
     v12 = WFLocalizedString(@"Allow “%1$@” to open “%2$@” with %3$@?");
-    [v11 localizedStringWithFormat:v12, v8, v9, v7];
+    [v11 localizedStringWithFormat:v12, nameCopy, destinationCopy, descriptionCopy];
   }
 
   else
   {
     v12 = WFLocalizedString(@"Allow “%1$@” to open “%2$@”?");
-    [v11 localizedStringWithFormat:v12, v8, v9, v15];
+    [v11 localizedStringWithFormat:v12, nameCopy, destinationCopy, v15];
   }
   v13 = ;
 
   return v13;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFOpenInAction *)self input];
-  v6 = v4;
+  handlerCopy = handler;
+  input = [(WFOpenInAction *)self input];
+  v6 = handlerCopy;
   WFGetContentLocationFromURLActionInput();
 }
 
@@ -191,25 +191,25 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
 
   if ([(NSArray *)contentClasses count])
   {
-    v4 = self->_contentClasses;
+    inputContentClasses = self->_contentClasses;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WFOpenInAction;
-    v4 = [(WFOpenInAction *)&v6 inputContentClasses];
+    inputContentClasses = [(WFOpenInAction *)&v6 inputContentClasses];
   }
 
-  return v4;
+  return inputContentClasses;
 }
 
 - (void)updateContentClasses
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(WFOpenInAction *)self selectedApp];
-  v4 = [v3 documentTypes];
-  v5 = [v4 if_compactMap:&__block_literal_global_11334];
+  selectedApp = [(WFOpenInAction *)self selectedApp];
+  documentTypes = [selectedApp documentTypes];
+  v5 = [documentTypes if_compactMap:&__block_literal_global_11334];
 
   if ([v5 count])
   {
@@ -235,8 +235,8 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
-          v13 = [MEMORY[0x277CFC308] sharedRegistry];
-          v14 = [v13 contentItemClassForType:v12];
+          mEMORY[0x277CFC308] = [MEMORY[0x277CFC308] sharedRegistry];
+          v14 = [mEMORY[0x277CFC308] contentItemClassForType:v12];
 
           if (v14)
           {
@@ -253,9 +253,9 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
       while (v9);
     }
 
-    v15 = [v6 array];
+    array = [v6 array];
     contentClasses = self->_contentClasses;
-    self->_contentClasses = v15;
+    self->_contentClasses = array;
   }
 
   else
@@ -267,13 +267,13 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"WFSelectedApp"])
+  stateCopy = state;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"WFSelectedApp"])
   {
-    v8 = v6;
+    v8 = stateCopy;
     if (v8)
     {
       objc_opt_class();
@@ -295,15 +295,15 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
 
     v10 = v9;
 
-    v11 = [v10 value];
+    value = [v10 value];
 
-    v12 = [v11 bundleIdentifier];
-    [(WFOpenInAction *)self setSupplementalParameterValue:v12 forKey:@"WFOpenInAppIdentifier"];
+    bundleIdentifier = [value bundleIdentifier];
+    [(WFOpenInAction *)self setSupplementalParameterValue:bundleIdentifier forKey:@"WFOpenInAppIdentifier"];
   }
 
   v15.receiver = self;
   v15.super_class = WFOpenInAction;
-  v13 = [(WFOpenInAction *)&v15 setParameterState:v6 forKey:v7];
+  v13 = [(WFOpenInAction *)&v15 setParameterState:stateCopy forKey:keyCopy];
   if (v13)
   {
     [(WFOpenInAction *)self updateContentClasses];
@@ -312,19 +312,19 @@ uint64_t __61__WFOpenInAction_getContentDestinationWithCompletionHandler___block
   return v13;
 }
 
-- (void)openContentUsingDefaultApp:(id)a3
+- (void)openContentUsingDefaultApp:(id)app
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
+  appCopy = app;
+  defaultManager = [v4 defaultManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__WFOpenInAction_openContentUsingDefaultApp___block_invoke;
   v8[3] = &unk_278C1A628;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [v5 getFileRepresentationAndAttributionSet:v8 forType:0];
+  v9 = defaultManager;
+  v7 = defaultManager;
+  [appCopy getFileRepresentationAndAttributionSet:v8 forType:0];
 }
 
 void __45__WFOpenInAction_openContentUsingDefaultApp___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -403,19 +403,19 @@ void __45__WFOpenInAction_openContentUsingDefaultApp___block_invoke_2(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openContentInSelectedApp:(id)a3
+- (void)openContentInSelectedApp:(id)app
 {
-  v4 = a3;
-  v5 = [(WFOpenInAction *)self selectedApp];
+  appCopy = app;
+  selectedApp = [(WFOpenInAction *)self selectedApp];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__WFOpenInAction_openContentInSelectedApp___block_invoke;
   v8[3] = &unk_278C1A5D8;
   v8[4] = self;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = selectedApp;
+  v10 = appCopy;
+  v6 = appCopy;
+  v7 = selectedApp;
   [v6 getFileRepresentationAndAttributionSet:v8 forType:0];
 }
 
@@ -511,19 +511,19 @@ void __43__WFOpenInAction_openContentInSelectedApp___block_invoke_2(id *a1, char
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  inputCopy = input;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__WFOpenInAction_runWithRemoteUserInterface_input___block_invoke;
   v10[3] = &unk_278C1A5D8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = inputCopy;
+  v12 = interfaceCopy;
+  v8 = interfaceCopy;
+  v9 = inputCopy;
   [v9 getFileRepresentationAndAttributionSet:v10 forType:0];
 }
 
@@ -588,17 +588,17 @@ void __51__WFOpenInAction_runWithRemoteUserInterface_input___block_invoke_2(uint
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFOpenInAction *)self parameterValueForKey:@"WFOpenInAskWhenRun" ofClass:objc_opt_class()];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v8.receiver = self;
     v8.super_class = WFOpenInAction;
-    [(WFOpenInAction *)&v8 runAsynchronouslyWithInput:v4];
+    [(WFOpenInAction *)&v8 runAsynchronouslyWithInput:inputCopy];
   }
 
   else
@@ -606,12 +606,12 @@ void __51__WFOpenInAction_runWithRemoteUserInterface_input___block_invoke_2(uint
     v7 = [(WFOpenInAction *)self parameterValueForKey:@"WFSelectedApp" ofClass:objc_opt_class()];
     if (v7)
     {
-      [(WFOpenInAction *)self openContentInSelectedApp:v4];
+      [(WFOpenInAction *)self openContentInSelectedApp:inputCopy];
     }
 
     else
     {
-      [(WFOpenInAction *)self openContentUsingDefaultApp:v4];
+      [(WFOpenInAction *)self openContentUsingDefaultApp:inputCopy];
     }
   }
 }

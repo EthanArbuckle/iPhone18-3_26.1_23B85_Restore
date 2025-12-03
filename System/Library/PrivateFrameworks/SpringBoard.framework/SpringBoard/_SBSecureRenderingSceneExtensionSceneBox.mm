@@ -1,30 +1,30 @@
 @interface _SBSecureRenderingSceneExtensionSceneBox
-+ (id)boxForFBScene:(id)a3;
++ (id)boxForFBScene:(id)scene;
 - (FBScene)fbScene;
-- (_SBSecureRenderingSceneExtensionSceneBox)initWithFBScene:(id)a3;
+- (_SBSecureRenderingSceneExtensionSceneBox)initWithFBScene:(id)scene;
 @end
 
 @implementation _SBSecureRenderingSceneExtensionSceneBox
 
-- (_SBSecureRenderingSceneExtensionSceneBox)initWithFBScene:(id)a3
+- (_SBSecureRenderingSceneExtensionSceneBox)initWithFBScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _SBSecureRenderingSceneExtensionSceneBox;
   v5 = [(_SBSecureRenderingSceneExtensionSceneBox *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_fbScene, v4);
+    objc_storeWeak(&v5->_fbScene, sceneCopy);
   }
 
   return v6;
 }
 
-+ (id)boxForFBScene:(id)a3
++ (id)boxForFBScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBScene:sceneCopy];
 
   return v5;
 }

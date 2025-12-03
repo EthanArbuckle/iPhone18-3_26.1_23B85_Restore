@@ -1,20 +1,20 @@
 @interface NavdAnalytics
-- (void)addValueForKey:(const char *)a3 value:(unint64_t)a4;
-- (void)recordEarlyDepartureDelta:(double)a3 lateDepartureDelta:(double)a4 earlyArrivalDelta:(double)a5 lateArrivalDelta:(double)a6 rerouteCount:(unint64_t)a7 uiNotification:(unint64_t)a8;
-- (void)recordHypothesisCount:(unint64_t)a3 forClient:(id)a4;
+- (void)addValueForKey:(const char *)key value:(unint64_t)value;
+- (void)recordEarlyDepartureDelta:(double)delta lateDepartureDelta:(double)departureDelta earlyArrivalDelta:(double)arrivalDelta lateArrivalDelta:(double)lateArrivalDelta rerouteCount:(unint64_t)count uiNotification:(unint64_t)notification;
+- (void)recordHypothesisCount:(unint64_t)count forClient:(id)client;
 @end
 
 @implementation NavdAnalytics
 
-- (void)addValueForKey:(const char *)a3 value:(unint64_t)a4
+- (void)addValueForKey:(const char *)key value:(unint64_t)value
 {
-  v4 = [[NSString alloc] initWithUTF8String:a3];
+  v4 = [[NSString alloc] initWithUTF8String:key];
   AnalyticsSendEventLazy();
 }
 
-- (void)recordEarlyDepartureDelta:(double)a3 lateDepartureDelta:(double)a4 earlyArrivalDelta:(double)a5 lateArrivalDelta:(double)a6 rerouteCount:(unint64_t)a7 uiNotification:(unint64_t)a8
+- (void)recordEarlyDepartureDelta:(double)delta lateDepartureDelta:(double)departureDelta earlyArrivalDelta:(double)arrivalDelta lateArrivalDelta:(double)lateArrivalDelta rerouteCount:(unint64_t)count uiNotification:(unint64_t)notification
 {
-  if ((~a8 & 3) != 0)
+  if ((~notification & 3) != 0)
   {
     v8 = 1;
   }
@@ -24,30 +24,30 @@
     v8 = 3;
   }
 
-  if (a8)
+  if (notification)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = a8 & 2;
+    v9 = notification & 2;
   }
 
-  [GEOAPPortal captureTimeToLeaveHypothesisEventWithEarlyDepartureDelta:a7 lateDepartureDelta:v9 earlyArrivalDelta:a3 lateArrivalDelta:a4 rerouteCount:a5 uiNotification:a6];
+  [GEOAPPortal captureTimeToLeaveHypothesisEventWithEarlyDepartureDelta:count lateDepartureDelta:v9 earlyArrivalDelta:delta lateArrivalDelta:departureDelta rerouteCount:arrivalDelta uiNotification:lateArrivalDelta];
 }
 
-- (void)recordHypothesisCount:(unint64_t)a3 forClient:(id)a4
+- (void)recordHypothesisCount:(unint64_t)count forClient:(id)client
 {
-  v7 = a4;
-  if ([v7 isCalendarClientInfo])
+  clientCopy = client;
+  if ([clientCopy isCalendarClientInfo])
   {
     v6 = "com.apple.navd.hypothesisSentToCal";
   }
 
   else
   {
-    if (![v7 isNavdClientInfo])
+    if (![clientCopy isNavdClientInfo])
     {
       goto LABEL_6;
     }
@@ -55,7 +55,7 @@
     v6 = "com.apple.navd.hypothesisSentToRoutine";
   }
 
-  [(NavdAnalytics *)self addValueForKey:v6 value:a3];
+  [(NavdAnalytics *)self addValueForKey:v6 value:count];
 LABEL_6:
 }
 

@@ -1,12 +1,12 @@
 @interface FigExternalSyncDeviceDiscoverySessionDelegateHandler
-- (FigExternalSyncDeviceDiscoverySessionDelegateHandler)initWithSource:(OpaqueFigCaptureSource *)a3;
-- (void)externalSyncDeviceDiscoverySessionManager:(id)a3 connectedDevicesDidChange:(id)a4;
+- (FigExternalSyncDeviceDiscoverySessionDelegateHandler)initWithSource:(OpaqueFigCaptureSource *)source;
+- (void)externalSyncDeviceDiscoverySessionManager:(id)manager connectedDevicesDidChange:(id)change;
 - (void)forceCleanup;
 @end
 
 @implementation FigExternalSyncDeviceDiscoverySessionDelegateHandler
 
-- (FigExternalSyncDeviceDiscoverySessionDelegateHandler)initWithSource:(OpaqueFigCaptureSource *)a3
+- (FigExternalSyncDeviceDiscoverySessionDelegateHandler)initWithSource:(OpaqueFigCaptureSource *)source
 {
   v10.receiver = self;
   v10.super_class = FigExternalSyncDeviceDiscoverySessionDelegateHandler;
@@ -14,7 +14,7 @@
   if (v4)
   {
     DerivedStorage = CMBaseObjectGetDerivedStorage();
-    v4->_source = a3;
+    v4->_source = source;
     v6 = +[FigExternalSyncDeviceDiscoverySessionManager sharedFigExternalSyncDeviceDiscoverySessionManager];
     v7 = *(DerivedStorage + 20);
     v9[0] = *(DerivedStorage + 4);
@@ -41,17 +41,17 @@
   }
 }
 
-- (void)externalSyncDeviceDiscoverySessionManager:(id)a3 connectedDevicesDidChange:(id)a4
+- (void)externalSyncDeviceDiscoverySessionManager:(id)manager connectedDevicesDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_sourceLock);
   if (self->_source)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [a4 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v7 = [change countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -62,13 +62,13 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(change);
           }
 
-          [v6 setObject:objc_msgSend(*(*(&v16 + 1) + 8 * i) forKeyedSubscript:{"getDeviceInfoDict"), objc_msgSend(*(*(&v16 + 1) + 8 * i), "externalSyncDeviceDeviceIdentifer")}];
+          [dictionary setObject:objc_msgSend(*(*(&v16 + 1) + 8 * i) forKeyedSubscript:{"getDeviceInfoDict"), objc_msgSend(*(*(&v16 + 1) + 8 * i), "externalSyncDeviceDeviceIdentifer")}];
         }
 
-        v8 = [a4 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v8 = [change countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v8);
@@ -80,9 +80,9 @@
     {
       v13 = DerivedStorage;
       CFRetain(@"ExternalSyncDeviceDiscoverySessionUpdateNotification");
-      if (v6)
+      if (dictionary)
       {
-        CFRetain(v6);
+        CFRetain(dictionary);
       }
 
       if (source)
@@ -97,7 +97,7 @@
       block[3] = &__block_descriptor_56_e5_v8__0l;
       block[4] = @"ExternalSyncDeviceDiscoverySessionUpdateNotification";
       block[5] = source;
-      block[6] = v6;
+      block[6] = dictionary;
       dispatch_async(v14, block);
     }
 

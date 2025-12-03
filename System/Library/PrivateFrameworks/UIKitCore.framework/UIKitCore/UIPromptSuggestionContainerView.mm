@@ -1,12 +1,12 @@
 @interface UIPromptSuggestionContainerView
-- (_TtC5UIKit31UIPromptSuggestionContainerView)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC5UIKit31UIPromptSuggestionContainerView)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation UIPromptSuggestionContainerView
 
-- (_TtC5UIKit31UIPromptSuggestionContainerView)initWithCoder:(id)a3
+- (_TtC5UIKit31UIPromptSuggestionContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit31UIPromptSuggestionContainerView_suggestionViews) = MEMORY[0x1E69E7CC0];
   v3 = OBJC_IVAR____TtC5UIKit31UIPromptSuggestionContainerView_contentView;
@@ -18,17 +18,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189013418();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_189013738(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_189013738(event, x, y);
 
   return v10;
 }

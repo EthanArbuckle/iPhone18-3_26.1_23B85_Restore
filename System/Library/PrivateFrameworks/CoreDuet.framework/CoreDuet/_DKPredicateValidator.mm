@@ -1,99 +1,99 @@
 @interface _DKPredicateValidator
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5;
-+ (BOOL)validateSortDescriptors:(id)a3;
-- (BOOL)validateWithError:(id *)a3;
-- (_DKPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4;
-- (void)visitPredicateExpression:(id)a3;
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error;
++ (BOOL)validateSortDescriptors:(id)descriptors;
+- (BOOL)validateWithError:(id *)error;
+- (_DKPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation _DKPredicateValidator
 
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (predicate)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[a1 alloc] initWithPredicate:v9 allowedKeys:v8];
+    keysCopy = keys;
+    predicateCopy = predicate;
+    v10 = [[self alloc] initWithPredicate:predicateCopy allowedKeys:keysCopy];
 
     if (v10)
     {
-      LOBYTE(a5) = [v10 validateWithError:a5];
+      LOBYTE(error) = [v10 validateWithError:error];
     }
 
-    else if (a5)
+    else if (error)
     {
       v14 = *MEMORY[0x1E696A578];
       v15[0] = @"Predicate was invalid because it was nil.";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMQueryErrorDomain" code:2 userInfo:v11];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMQueryErrorDomain" code:2 userInfo:v11];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (_DKPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4
+- (_DKPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  keysCopy = keys;
+  if (predicateCopy)
   {
     v15.receiver = self;
     v15.super_class = _DKPredicateValidator;
     v8 = [(_DKPredicateValidator *)&v15 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [predicateCopy copy];
       predicate = v8->_predicate;
       v8->_predicate = v9;
 
-      if (v7)
+      if (keysCopy)
       {
-        v11 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+        v11 = [MEMORY[0x1E695DFD8] setWithArray:keysCopy];
         allowedKeys = v8->_allowedKeys;
         v8->_allowedKeys = v11;
       }
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   [(_DKPredicateValidator *)self setValidated:1];
-  v5 = [(_DKPredicateValidator *)self predicate];
+  predicate = [(_DKPredicateValidator *)self predicate];
 
-  if (v5)
+  if (predicate)
   {
-    v6 = [(_DKPredicateValidator *)self predicate];
-    [v6 acceptVisitor:self flags:3];
+    predicate2 = [(_DKPredicateValidator *)self predicate];
+    [predicate2 acceptVisitor:self flags:3];
 
-    if (a3)
+    if (error)
     {
-      v7 = [(_DKPredicateValidator *)self error];
+      error = [(_DKPredicateValidator *)self error];
 
-      if (v7)
+      if (error)
       {
-        *a3 = [(_DKPredicateValidator *)self error];
+        *error = [(_DKPredicateValidator *)self error];
       }
     }
   }
@@ -101,20 +101,20 @@
   return [(_DKPredicateValidator *)self validated];
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  expressionCopy = expression;
   if ([(_DKPredicateValidator *)self validated])
   {
     v5 = objc_alloc(MEMORY[0x1E695DFD8]);
     v43 = [v5 initWithObjects:{*MEMORY[0x1E696A240], *MEMORY[0x1E696A258], *MEMORY[0x1E696A288], *MEMORY[0x1E696A290], *MEMORY[0x1E696A298], *MEMORY[0x1E696A5B0], *MEMORY[0x1E696A748], *MEMORY[0x1E696A900], *MEMORY[0x1E696AA50], *MEMORY[0x1E696AA58], *MEMORY[0x1E696AA60], 0}];
-    v6 = [v4 expressionType];
-    v42 = v4;
-    if (v6 == 10)
+    expressionType = [expressionCopy expressionType];
+    v42 = expressionCopy;
+    if (expressionType == 10)
     {
 LABEL_5:
-      v41 = [v4 keyPath];
+      keyPath = [expressionCopy keyPath];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -130,8 +130,8 @@ LABEL_5:
         goto LABEL_38;
       }
 
-      v7 = [v4 keyPath];
-      v8 = [v7 componentsSeparatedByString:@"."];
+      keyPath2 = [expressionCopy keyPath];
+      v8 = [keyPath2 componentsSeparatedByString:@"."];
 
       v47 = 0u;
       v48 = 0u;
@@ -172,11 +172,11 @@ LABEL_5:
 
           else
           {
-            v15 = [(_DKPredicateValidator *)self allowedKeys];
-            if (v15)
+            allowedKeys = [(_DKPredicateValidator *)self allowedKeys];
+            if (allowedKeys)
             {
-              v16 = [(_DKPredicateValidator *)self allowedKeys];
-              v17 = [v16 containsObject:v13];
+              allowedKeys2 = [(_DKPredicateValidator *)self allowedKeys];
+              v17 = [allowedKeys2 containsObject:v13];
 
               if ((v17 & 1) == 0)
               {
@@ -216,9 +216,9 @@ LABEL_24:
       }
     }
 
-    if (v6 != 4)
+    if (expressionType != 4)
     {
-      if (v6 == 3)
+      if (expressionType == 3)
       {
         goto LABEL_5;
       }
@@ -226,25 +226,25 @@ LABEL_24:
       goto LABEL_39;
     }
 
-    v41 = [v4 function];
+    keyPath = [expressionCopy function];
     obj = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"valueForKey:", @"valueForKeyPath:", @"value", 0}];
-    if ([obj containsObject:v41])
+    if ([obj containsObject:keyPath])
     {
       goto LABEL_38;
     }
 
-    if (![v41 isEqual:@"castObject:toType:"])
+    if (![keyPath isEqual:@"castObject:toType:"])
     {
       v29 = MEMORY[0x1E696ABC8];
-      v30 = [v4 function];
-      v31 = [v4 arguments];
-      v32 = [v29 expressionForFunction:v30 arguments:v31];
+      function = [expressionCopy function];
+      arguments = [expressionCopy arguments];
+      v32 = [v29 expressionForFunction:function arguments:arguments];
 
       if (!v32)
       {
         [(_DKPredicateValidator *)self setValidated:0];
         v49 = *MEMORY[0x1E696A578];
-        v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid function: %@", v41];
+        v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid function: %@", keyPath];
         v50 = v33;
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
@@ -257,21 +257,21 @@ LABEL_24:
 LABEL_38:
 LABEL_39:
 
-      v4 = v42;
+      expressionCopy = v42;
       goto LABEL_40;
     }
 
-    v21 = [v4 arguments];
-    if ([v21 count] == 2)
+    arguments2 = [expressionCopy arguments];
+    if ([arguments2 count] == 2)
     {
-      v22 = [v4 arguments];
-      v23 = [v22 objectAtIndexedSubscript:1];
+      arguments3 = [expressionCopy arguments];
+      v23 = [arguments3 objectAtIndexedSubscript:1];
       if (![v23 expressionType])
       {
-        v37 = [v4 arguments];
-        v38 = [v37 objectAtIndexedSubscript:1];
-        v39 = [v38 constantValue];
-        v40 = [v39 isEqual:@"NSDate"];
+        arguments4 = [expressionCopy arguments];
+        v38 = [arguments4 objectAtIndexedSubscript:1];
+        constantValue = [v38 constantValue];
+        v40 = [constantValue isEqual:@"NSDate"];
 
         if (v40)
         {
@@ -299,16 +299,16 @@ LABEL_40:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)validateSortDescriptors:(id)a3
++ (BOOL)validateSortDescriptors:(id)descriptors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"alloc", @"new", @"init", @"mutableCopy", @"release", @"retain", @"autorelease", @"dealloc", @"finalize", 0}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = descriptorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {

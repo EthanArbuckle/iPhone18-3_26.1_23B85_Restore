@@ -7,34 +7,34 @@
 
 - (id)aaf_removeFirstObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 firstObject];
-    [a1 removeObjectAtIndex:0];
+    firstObject = [self firstObject];
+    [self removeObjectAtIndex:0];
   }
 
   else
   {
-    v2 = 0;
+    firstObject = 0;
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (id)aaf_removeLastObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 lastObject];
-    [a1 removeLastObject];
+    lastObject = [self lastObject];
+    [self removeLastObject];
   }
 
   else
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
-  return v2;
+  return lastObject;
 }
 
 @end

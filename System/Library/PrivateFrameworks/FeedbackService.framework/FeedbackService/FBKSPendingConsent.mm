@@ -1,31 +1,31 @@
 @interface FBKSPendingConsent
-- (FBKSPendingConsent)initWithDictionary:(id)a3;
+- (FBKSPendingConsent)initWithDictionary:(id)dictionary;
 - (NSString)consentTypeString;
 @end
 
 @implementation FBKSPendingConsent
 
-- (FBKSPendingConsent)initWithDictionary:(id)a3
+- (FBKSPendingConsent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = FBKSPendingConsent;
   v5 = [(FBKSPendingConsent *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     ID = v5->_ID;
     v5->_ID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v9 = _FBKSNilIfNSNull(v8);
     v10 = v9;
     if (v9 && ([v9 isEqualToString:&stru_1F25DB460] & 1) == 0)
     {
-      v12 = [v10 lowercaseString];
+      lowercaseString = [v10 lowercaseString];
 
-      v11 = [v12 isEqualToString:@"confidentiality_agreement"];
-      v10 = v12;
+      v11 = [lowercaseString isEqualToString:@"confidentiality_agreement"];
+      v10 = lowercaseString;
     }
 
     else
@@ -34,7 +34,7 @@
     }
 
     v5->_type = v11;
-    v13 = [v4 objectForKeyedSubscript:@"icon"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"icon"];
     v14 = v13;
     if (v13)
     {
@@ -48,17 +48,17 @@
 
     objc_storeStrong(&v5->_symbolImageName, v15);
 
-    v16 = [v4 objectForKeyedSubscript:@"learn_more"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"learn_more"];
     v17 = _FBKSNilIfNSNull(v16);
 
     v18 = [MEMORY[0x1E695DFF8] URLWithString:v17];
     learnMoreURL = v5->_learnMoreURL;
     v5->_learnMoreURL = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"properties"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"properties"];
     v5->_isRequired = [v20 containsObject:@"PARTICIPANT_REQUIRED"];
 
-    v21 = [v4 objectForKeyedSubscript:@"title"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     v22 = v21;
     if (v21)
     {
@@ -75,7 +75,7 @@
       v5->_title = v25;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"text"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     v28 = v27;
     if (v27)
     {
@@ -92,7 +92,7 @@
       v5->_bodyText = v31;
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"agree_text_button"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"agree_text_button"];
     v34 = v33;
     if (v33)
     {
@@ -109,7 +109,7 @@
       v5->_agreeButtonText = v37;
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"decline_text_button"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"decline_text_button"];
     v40 = v39;
     if (v39)
     {

@@ -1,18 +1,18 @@
 @interface NanoNewsSettingsManager
-+ (BOOL)_validDateArray:(id)a3;
++ (BOOL)_validDateArray:(id)array;
 + (id)articleIdentifiersOnGizmo;
 + (id)gizmoSavedHeadlineIdentifiers;
 + (id)preferredRefreshDates;
 + (id)savedHeadlineIdentifiers;
 + (id)seenHeadlineIdentifiers;
-+ (void)addSavedIdentifier:(id)a3;
-+ (void)addSeenIdentifier:(id)a3;
-+ (void)removeSavedIdentifier:(id)a3;
-+ (void)removeSeenIdentifier:(id)a3;
++ (void)addSavedIdentifier:(id)identifier;
++ (void)addSeenIdentifier:(id)identifier;
++ (void)removeSavedIdentifier:(id)identifier;
++ (void)removeSeenIdentifier:(id)identifier;
 + (void)resetSaved;
 + (void)resetSeen;
-+ (void)setPreferredRefreshDates:(id)a3;
-+ (void)setSavedIdentifiers:(id)a3;
++ (void)setPreferredRefreshDates:(id)dates;
++ (void)setSavedIdentifiers:(id)identifiers;
 + (void)synchronizeSeenHeadlineIdentifiers;
 @end
 
@@ -27,17 +27,17 @@
 + (id)seenHeadlineIdentifiers
 {
   v2 = +[NNArticleIdentifierSyncManager seenManager];
-  v3 = [v2 articleIdentifiers];
+  articleIdentifiers = [v2 articleIdentifiers];
 
-  return v3;
+  return articleIdentifiers;
 }
 
 + (id)savedHeadlineIdentifiers
 {
   v2 = +[NNArticleIdentifierSyncManager savedManager];
-  v3 = [v2 articleIdentifiers];
+  articleIdentifiers = [v2 articleIdentifiers];
 
-  return v3;
+  return articleIdentifiers;
 }
 
 + (id)articleIdentifiersOnGizmo
@@ -53,51 +53,51 @@
 + (id)gizmoSavedHeadlineIdentifiers
 {
   v2 = +[NNArticleIdentifierSyncManager savedManager];
-  v3 = [v2 readonlyArticleIdentifiers];
+  readonlyArticleIdentifiers = [v2 readonlyArticleIdentifiers];
 
-  return v3;
+  return readonlyArticleIdentifiers;
 }
 
-+ (void)addSeenIdentifier:(id)a3
++ (void)addSeenIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NNArticleIdentifierSyncManager seenManager];
-  [v4 addIdentifier:v3];
+  [v4 addIdentifier:identifierCopy];
 }
 
-+ (void)addSavedIdentifier:(id)a3
++ (void)addSavedIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NNArticleIdentifierSyncManager savedManager];
-  [v4 addIdentifier:v3];
+  [v4 addIdentifier:identifierCopy];
 
   [v4 synchronize];
 }
 
-+ (void)removeSavedIdentifier:(id)a3
++ (void)removeSavedIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NNArticleIdentifierSyncManager savedManager];
-  [v4 removeIdentifier:v3];
+  [v4 removeIdentifier:identifierCopy];
 
   [v4 synchronize];
 }
 
-+ (void)removeSeenIdentifier:(id)a3
++ (void)removeSeenIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NNArticleIdentifierSyncManager seenManager];
-  [v4 removeIdentifier:v3];
+  [v4 removeIdentifier:identifierCopy];
 }
 
-+ (BOOL)_validDateArray:(id)a3
++ (BOOL)_validDateArray:(id)array
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrayCopy = array;
+  v4 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -108,7 +108,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -120,7 +120,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -141,7 +141,7 @@ LABEL_11:
   v3 = +[NSUserDefaults nanoNewsSyncDefaults];
   [v3 synchronize];
   v4 = [v3 objectForKey:@"preferredRefreshDates"];
-  v5 = [a1 _validDateArray:v4];
+  v5 = [self _validDateArray:v4];
   if (v4 && (v5 & 1) != 0)
   {
     v6 = v4;
@@ -193,28 +193,28 @@ LABEL_11:
   return v6;
 }
 
-+ (void)setPreferredRefreshDates:(id)a3
++ (void)setPreferredRefreshDates:(id)dates
 {
-  v6 = a3;
+  datesCopy = dates;
   v4 = +[NSUserDefaults nanoNewsSyncDefaults];
   [v4 synchronize];
-  if ([a1 _validDateArray:v6])
+  if ([self _validDateArray:datesCopy])
   {
-    [v4 setObject:v6 forKey:@"preferredRefreshDates"];
+    [v4 setObject:datesCopy forKey:@"preferredRefreshDates"];
     [v4 synchronize];
     v5 = [NSSet setWithObject:@"preferredRefreshDates"];
     [v4 nn_synchronizeKeys:v5];
   }
 }
 
-+ (void)setSavedIdentifiers:(id)a3
++ (void)setSavedIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -225,27 +225,27 @@ LABEL_11:
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
-        [a1 addSavedIdentifier:*(*(&v34 + 1) + 8 * i)];
+        [self addSavedIdentifier:*(*(&v34 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v6);
   }
 
   v9 = +[NNArticleIdentifierSyncManager savedManager];
-  v10 = [v9 articleIdentifiers];
+  articleIdentifiers = [v9 articleIdentifiers];
 
   v11 = +[NSMutableSet set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v10;
+  v12 = articleIdentifiers;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v13)
   {
@@ -261,7 +261,7 @@ LABEL_11:
         }
 
         v17 = *(*(&v30 + 1) + 8 * j);
-        if (([v4 containsObject:v17] & 1) == 0)
+        if (([identifiersCopy containsObject:v17] & 1) == 0)
         {
           [v11 addObject:v17];
         }

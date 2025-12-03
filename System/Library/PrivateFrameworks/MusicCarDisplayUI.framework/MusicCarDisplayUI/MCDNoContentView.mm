@@ -1,13 +1,13 @@
 @interface MCDNoContentView
-- (MCDNoContentView)initWithFrame:(CGRect)a3;
-- (MCDNoContentView)initWithTitle:(id)a3 subtitle:(id)a4 buttonText:(id)a5;
+- (MCDNoContentView)initWithFrame:(CGRect)frame;
+- (MCDNoContentView)initWithTitle:(id)title subtitle:(id)subtitle buttonText:(id)text;
 - (MCDNoContentViewDelegate)delegate;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 @end
 
 @implementation MCDNoContentView
 
-- (MCDNoContentView)initWithFrame:(CGRect)a3
+- (MCDNoContentView)initWithFrame:(CGRect)frame
 {
   v4 = MCDCarDisplayBundle();
   v5 = [v4 localizedStringForKey:@"NO_CONTENT_TITLE" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
@@ -18,12 +18,12 @@
   return v8;
 }
 
-- (MCDNoContentView)initWithTitle:(id)a3 subtitle:(id)a4 buttonText:(id)a5
+- (MCDNoContentView)initWithTitle:(id)title subtitle:(id)subtitle buttonText:(id)text
 {
   v82[4] = *MEMORY[0x277D85DE8];
-  v78 = a3;
-  v77 = a4;
-  v79 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  textCopy = text;
   v80.receiver = self;
   v80.super_class = MCDNoContentView;
   v8 = *MEMORY[0x277CBF3A0];
@@ -33,8 +33,8 @@
   v12 = [(MCDNoContentView *)&v80 initWithFrame:*MEMORY[0x277CBF3A0], v9, v10, v11];
   if (v12)
   {
-    v13 = [MEMORY[0x277D75348] tableBackgroundColor];
-    [(MCDNoContentView *)v12 setBackgroundColor:v13];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    [(MCDNoContentView *)v12 setBackgroundColor:tableBackgroundColor];
 
     v14 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v8, v9, v10, v11}];
     v15 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v8, v9, v10, v11}];
@@ -42,9 +42,9 @@
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v16 setHidden:1];
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v14 setText:v78];
-    [v15 setText:v78];
-    [v15 setText:v77];
+    [v14 setText:titleCopy];
+    [v15 setText:titleCopy];
+    [v15 setText:subtitleCopy];
     v72 = [MEMORY[0x277D74300] systemFontOfSize:28.0];
     [v14 setFont:?];
     v17 = [MEMORY[0x277D74300] systemFontOfSize:16.0];
@@ -52,11 +52,11 @@
 
     [v14 setTextAlignment:1];
     [v15 setTextAlignment:1];
-    v18 = [MEMORY[0x277D75348] labelColor];
-    [v14 setTextColor:v18];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v14 setTextColor:labelColor];
 
-    v19 = [MEMORY[0x277D75348] _carSystemSecondaryColor];
-    [v15 setTextColor:v19];
+    _carSystemSecondaryColor = [MEMORY[0x277D75348] _carSystemSecondaryColor];
+    [v15 setTextColor:_carSystemSecondaryColor];
 
     [v14 setNumberOfLines:0];
     [v15 setNumberOfLines:0];
@@ -76,55 +76,55 @@
     v65 = v15;
     v66 = [MEMORY[0x277CCAAD0] constraintWithItem:v16 attribute:4 relatedBy:0 toItem:v15 attribute:4 multiplier:1.0 constant:0.0];
     v22 = MEMORY[0x277CCAAD0];
-    v23 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-    v74 = [v22 constraintWithItem:v16 attribute:1 relatedBy:0 toItem:v23 attribute:1 multiplier:1.0 constant:12.0];
+    safeAreaLayoutGuide = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+    v74 = [v22 constraintWithItem:v16 attribute:1 relatedBy:0 toItem:safeAreaLayoutGuide attribute:1 multiplier:1.0 constant:12.0];
 
     v24 = MEMORY[0x277CCAAD0];
-    v25 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-    v73 = [v24 constraintWithItem:v16 attribute:2 relatedBy:0 toItem:v25 attribute:2 multiplier:1.0 constant:-12.0];
+    safeAreaLayoutGuide2 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+    v73 = [v24 constraintWithItem:v16 attribute:2 relatedBy:0 toItem:safeAreaLayoutGuide2 attribute:2 multiplier:1.0 constant:-12.0];
 
     v26 = MEMORY[0x277CCAAD0];
-    v27 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-    v28 = [v26 constraintWithItem:v16 attribute:10 relatedBy:0 toItem:v27 attribute:10 multiplier:1.0 constant:-11.0];
+    safeAreaLayoutGuide3 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+    v28 = [v26 constraintWithItem:v16 attribute:10 relatedBy:0 toItem:safeAreaLayoutGuide3 attribute:10 multiplier:1.0 constant:-11.0];
 
     v29 = MEMORY[0x277CCAAD0];
-    v30 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-    v64 = [v29 constraintWithItem:v16 attribute:3 relatedBy:1 toItem:v30 attribute:3 multiplier:1.0 constant:0.0];
+    safeAreaLayoutGuide4 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+    v64 = [v29 constraintWithItem:v16 attribute:3 relatedBy:1 toItem:safeAreaLayoutGuide4 attribute:3 multiplier:1.0 constant:0.0];
 
     v31 = MEMORY[0x277CCAAD0];
-    v32 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-    v33 = [v31 constraintWithItem:v16 attribute:4 relatedBy:-1 toItem:v32 attribute:4 multiplier:1.0 constant:0.0];
+    safeAreaLayoutGuide5 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+    v33 = [v31 constraintWithItem:v16 attribute:4 relatedBy:-1 toItem:safeAreaLayoutGuide5 attribute:4 multiplier:1.0 constant:0.0];
 
     v34 = 0x277CBE000uLL;
-    if (v79)
+    if (textCopy)
     {
       v35 = objc_opt_new();
-      v36 = [v35 titleLabel];
+      titleLabel = [v35 titleLabel];
       v37 = _MCDNoContentFontWithTextStyle(*MEMORY[0x277D76920]);
-      [v36 setFont:v37];
+      [titleLabel setFont:v37];
 
-      [v35 setTitle:v79 forState:0];
+      [v35 setTitle:textCopy forState:0];
       [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v35 addTarget:v12 action:sel_buttonPressed_ forControlEvents:64];
       [v35 sizeToFit];
       [(MCDNoContentView *)v12 addSubview:v35];
-      v38 = [v35 widthAnchor];
-      v39 = [(MCDNoContentView *)v12 widthAnchor];
-      v62 = [v38 constraintEqualToAnchor:v39 multiplier:0.699999988 constant:0.0];
+      widthAnchor = [v35 widthAnchor];
+      widthAnchor2 = [(MCDNoContentView *)v12 widthAnchor];
+      v62 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.699999988 constant:0.0];
 
-      v40 = [v35 heightAnchor];
-      v61 = [v40 constraintEqualToConstant:40.0];
+      heightAnchor = [v35 heightAnchor];
+      v61 = [heightAnchor constraintEqualToConstant:40.0];
 
-      v41 = [v35 centerXAnchor];
+      centerXAnchor = [v35 centerXAnchor];
       [(MCDNoContentView *)v12 safeAreaLayoutGuide];
       v42 = v63 = v33;
-      v43 = [v42 centerXAnchor];
-      v44 = [v41 constraintEqualToAnchor:v43];
+      centerXAnchor2 = [v42 centerXAnchor];
+      v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-      v45 = [v35 bottomAnchor];
-      v46 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
-      v47 = [v46 bottomAnchor];
-      v48 = [v45 constraintEqualToAnchor:v47 constant:-24.0];
+      bottomAnchor = [v35 bottomAnchor];
+      safeAreaLayoutGuide6 = [(MCDNoContentView *)v12 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide6 bottomAnchor];
+      v48 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-24.0];
 
       v82[0] = v62;
       v82[1] = v61;
@@ -171,7 +171,7 @@
   return v12;
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

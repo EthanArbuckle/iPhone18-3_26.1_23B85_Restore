@@ -1,52 +1,52 @@
 @interface UIPickerTableView
-- (BOOL)_beginTrackingWithEvent:(id)a3;
-- (BOOL)_scrollRowAtIndexPathToSelectionBar:(id)a3 animated:(BOOL)a4;
-- (BOOL)didSelectDisabled:(BOOL)a3;
-- (BOOL)selectRow:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5 updateChecked:(BOOL)a6;
-- (CATransform3D)_transformForCellAtY:(SEL)a3;
-- (CGPoint)contentOffsetForRowAtIndexPath:(id)a3;
-- (CGRect)_selectionBarRectForBounds:(CGRect)a3;
+- (BOOL)_beginTrackingWithEvent:(id)event;
+- (BOOL)_scrollRowAtIndexPathToSelectionBar:(id)bar animated:(BOOL)animated;
+- (BOOL)didSelectDisabled:(BOOL)disabled;
+- (BOOL)selectRow:(int64_t)row animated:(BOOL)animated notify:(BOOL)notify updateChecked:(BOOL)checked;
+- (CATransform3D)_transformForCellAtY:(SEL)y;
+- (CGPoint)contentOffsetForRowAtIndexPath:(id)path;
+- (CGRect)_selectionBarRectForBounds:(CGRect)bounds;
 - (CGRect)_visibleBounds;
 - (CGRect)selectionBarRect;
-- (UIPickerTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4 visibleRect:(CGRect)a5;
+- (UIPickerTableView)initWithFrame:(CGRect)frame style:(int64_t)style visibleRect:(CGRect)rect;
 - (id)_anyDateLabel;
 - (id)_checkedRows;
 - (id)_containerView;
 - (id)_pickerView;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)_deactivateFeedbackGeneratorIfNeeded;
 - (void)_notifyContentOffsetChange;
 - (void)_playClickIfNecessary;
-- (void)_rectChangedWithNewSize:(CGSize)a3 oldSize:(CGSize)a4;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_rectChangedWithNewSize:(CGSize)size oldSize:(CGSize)oldSize;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 - (void)_scrollingFinished;
-- (void)_setContentOffset:(CGPoint)a3 notify:(BOOL)a4;
-- (void)_setSelectionBarRow:(int64_t)a3;
-- (void)_setTextColor:(id)a3;
+- (void)_setContentOffset:(CGPoint)offset notify:(BOOL)notify;
+- (void)_setSelectionBarRow:(int64_t)row;
+- (void)_setTextColor:(id)color;
 - (void)_updateContentInsets;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation UIPickerTableView
 
-- (UIPickerTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4 visibleRect:(CGRect)a5
+- (UIPickerTableView)initWithFrame:(CGRect)frame style:(int64_t)style visibleRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20.receiver = self;
   v20.super_class = UIPickerTableView;
-  v9 = [(UITableView *)&v20 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(UITableView *)&v20 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
@@ -77,8 +77,8 @@
     [(UITableView *)v11 setEstimatedSectionHeaderHeight:0.0];
     [(UITableView *)v11 setEstimatedSectionFooterHeight:0.0];
     [(UITableView *)v11 setPrefetchingEnabled:0];
-    v16 = [(UITableView *)v11 _scrollView];
-    [v16 _setSupportsPointerDragScrolling:1];
+    _scrollView = [(UITableView *)v11 _scrollView];
+    [_scrollView _setSupportsPointerDragScrolling:1];
   }
 
   return v10;
@@ -118,8 +118,8 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
 
 - (id)_pickerView
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     do
     {
@@ -129,15 +129,15 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (void)dealloc
@@ -178,10 +178,10 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   [(UITableView *)&v8 dealloc];
 }
 
-- (CGRect)_selectionBarRectForBounds:(CGRect)a3
+- (CGRect)_selectionBarRectForBounds:(CGRect)bounds
 {
   p_selectionBarRect = &self->_selectionBarRect;
-  MinY = CGRectGetMinY(a3);
+  MinY = CGRectGetMinY(bounds);
   x = p_selectionBarRect->origin.x;
   y = p_selectionBarRect->origin.y;
   width = p_selectionBarRect->size.width;
@@ -190,11 +190,11 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   return CGRectOffset(*&x, 0.0, MinY);
 }
 
-- (BOOL)_scrollRowAtIndexPathToSelectionBar:(id)a3 animated:(BOOL)a4
+- (BOOL)_scrollRowAtIndexPathToSelectionBar:(id)bar animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 row];
+  animatedCopy = animated;
+  barCopy = bar;
+  v7 = [barCopy row];
   if (v7 >= [(UITableView *)self numberOfRowsInSection:0])
   {
     v14 = 0;
@@ -202,16 +202,16 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
 
   else
   {
-    -[UIPickerTableView _setSelectionBarRow:](self, "_setSelectionBarRow:", [v6 row]);
+    -[UIPickerTableView _setSelectionBarRow:](self, "_setSelectionBarRow:", [barCopy row]);
     *&self->_pickerTableFlags |= 0x40u;
     [(UIScrollView *)self stopScrollingAndZooming];
     *&self->_pickerTableFlags &= ~0x40u;
-    [(UIPickerTableView *)self contentOffsetForRowAtIndexPath:v6];
+    [(UIPickerTableView *)self contentOffsetForRowAtIndexPath:barCopy];
     v9 = v8;
     v11 = v10;
     [(UIScrollView *)self contentOffset];
     v14 = v11 != v13 || v9 != v12;
-    [(UIScrollView *)self setContentOffset:v4 animated:v9, v11];
+    [(UIScrollView *)self setContentOffset:animatedCopy animated:v9, v11];
     [(UIPickerTableView *)self _notifyContentOffsetChange];
   }
 
@@ -233,31 +233,31 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   return checkedRows;
 }
 
-- (BOOL)selectRow:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5 updateChecked:(BOOL)a6
+- (BOOL)selectRow:(int64_t)row animated:(BOOL)animated notify:(BOOL)notify updateChecked:(BOOL)checked
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v11 = [(UIPickerTableView *)self _checkedRows];
-  v12 = [(UIPickerTableView *)self _pickerView];
-  v13 = [(UITableView *)self allowsMultipleSelection];
-  v14 = v13;
-  if (v6)
+  checkedCopy = checked;
+  notifyCopy = notify;
+  animatedCopy = animated;
+  _checkedRows = [(UIPickerTableView *)self _checkedRows];
+  _pickerView = [(UIPickerTableView *)self _pickerView];
+  allowsMultipleSelection = [(UITableView *)self allowsMultipleSelection];
+  v14 = allowsMultipleSelection;
+  if (checkedCopy)
   {
-    if (!v13)
+    if (!allowsMultipleSelection)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_invoke;
       v34[3] = &unk_1E70FD030;
-      v36 = a3;
+      rowCopy = row;
       v34[4] = self;
-      v35 = v12;
-      [v11 enumerateIndexesUsingBlock:v34];
-      [v11 removeAllIndexes];
+      v35 = _pickerView;
+      [_checkedRows enumerateIndexesUsingBlock:v34];
+      [_checkedRows removeAllIndexes];
     }
 
-    [v11 addIndex:a3];
+    [_checkedRows addIndex:row];
   }
 
   v28 = 0;
@@ -272,20 +272,20 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   v27[3] = &unk_1E711BF88;
   v27[4] = self;
   v27[5] = &v28;
-  v27[6] = a3;
+  v27[6] = row;
   [UIView performWithoutAnimation:v27];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & v6) == 1)
+  if ((objc_opt_isKindOfClass() & checkedCopy) == 1)
   {
-    v15 = [v29[5] wrappedView];
+    wrappedView = [v29[5] wrappedView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v14 && ([v15 isChecked] & 1) != 0)
+      if (v14 && ([wrappedView isChecked] & 1) != 0)
       {
-        if ([v15 isChecked])
+        if ([wrappedView isChecked])
         {
-          [v11 removeIndex:a3];
+          [_checkedRows removeIndex:row];
         }
 
         v16 = 0;
@@ -294,12 +294,12 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
 
       else
       {
-        v17 = [v15 isChecked] ^ 1;
+        v17 = [wrappedView isChecked] ^ 1;
         v16 = 1;
       }
 
-      [v15 setChecked:v16];
-      [v12 _sendCheckedRow:a3 inTableView:self checked:v16];
+      [wrappedView setChecked:v16];
+      [_pickerView _sendCheckedRow:row inTableView:self checked:v16];
     }
 
     else
@@ -313,7 +313,7 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
     v17 = 0;
   }
 
-  if (v7)
+  if (notifyCopy)
   {
     v18 = 16;
   }
@@ -324,8 +324,8 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   }
 
   *&self->_pickerTableFlags = *&self->_pickerTableFlags & 0xE7 | v18;
-  v19 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
-  v20 = [(UIPickerTableView *)self _scrollRowAtIndexPathToSelectionBar:v19 animated:v8]&& v8;
+  v19 = [MEMORY[0x1E696AC88] indexPathForRow:row inSection:0];
+  v20 = [(UIPickerTableView *)self _scrollRowAtIndexPathToSelectionBar:v19 animated:animatedCopy]&& animatedCopy;
 
   pickerTableFlags = self->_pickerTableFlags;
   if (!v20)
@@ -352,10 +352,10 @@ uint64_t __53__UIPickerTableView_initWithFrame_style_visibleRect___block_invoke(
   }
 
   *&self->_pickerTableFlags = v23 | v24 | v22;
-  if (!v20 && (v17 & [v12 _usesCheckSelection]) == 1)
+  if (!v20 && (v17 & [_pickerView _usesCheckSelection]) == 1)
   {
-    v25 = [(UIPickerTableView *)self _pickerView];
-    [v25 _sendSelectionChangedFromTable:self notify:1];
+    _pickerView2 = [(UIPickerTableView *)self _pickerView];
+    [_pickerView2 _sendSelectionChangedFromTable:self notify:1];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -399,10 +399,10 @@ void __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_inv
   *(v4 + 40) = v3;
 }
 
-- (BOOL)didSelectDisabled:(BOOL)a3
+- (BOOL)didSelectDisabled:(BOOL)disabled
 {
   pickerTableFlags = self->_pickerTableFlags;
-  if (a3)
+  if (disabled)
   {
     *&self->_pickerTableFlags = *&pickerTableFlags & 0xF7;
   }
@@ -410,11 +410,11 @@ void __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_inv
   return (*&pickerTableFlags >> 3) & 1;
 }
 
-- (void)_rectChangedWithNewSize:(CGSize)a3 oldSize:(CGSize)a4
+- (void)_rectChangedWithNewSize:(CGSize)size oldSize:(CGSize)oldSize
 {
   v5.receiver = self;
   v5.super_class = UIPickerTableView;
-  [(UITableView *)&v5 _rectChangedWithNewSize:a3.width oldSize:a3.height, a4.width, a4.height];
+  [(UITableView *)&v5 _rectChangedWithNewSize:size.width oldSize:size.height, oldSize.width, oldSize.height];
   [(UIPickerTableView *)self _updateContentInsets];
 }
 
@@ -429,11 +429,11 @@ void __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_inv
   v11 = v10 == 0.0 && MinY == v7;
   if (!v11 || v9 != 0.0 || v6 != v8)
   {
-    v12 = [(UIPickerTableView *)self selectionBarRow];
+    selectionBarRow = [(UIPickerTableView *)self selectionBarRow];
     *&self->_pickerTableFlags |= 0x80u;
     [(UITableView *)self setContentInset:MinY, 0.0, v6, 0.0];
     *&self->_pickerTableFlags &= ~0x80u;
-    if (v12 != -1)
+    if (selectionBarRow != -1)
     {
       v13 = [MEMORY[0x1E696AC88] indexPathForRow:-[UIPickerTableView selectionBarRow](self inSection:{"selectionBarRow"), 0}];
       [(UIPickerTableView *)self _scrollRowAtIndexPathToSelectionBar:v13 animated:0];
@@ -441,10 +441,10 @@ void __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_inv
   }
 }
 
-- (CATransform3D)_transformForCellAtY:(SEL)a3
+- (CATransform3D)_transformForCellAtY:(SEL)y
 {
-  v7 = [(UIView *)self traitCollection];
-  v19 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v7 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v19 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
   [(UIView *)self bounds];
   v9 = v8;
@@ -476,18 +476,18 @@ void __61__UIPickerTableView_selectRow_animated_notify_updateChecked___block_inv
 
 - (void)_notifyContentOffsetChange
 {
-  v3 = [(UIPickerTableView *)self _containerView];
+  _containerView = [(UIPickerTableView *)self _containerView];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _pickerTableViewDidChangeContentOffset:self];
+    [_containerView _pickerTableViewDidChangeContentOffset:self];
   }
 }
 
-- (void)_setContentOffset:(CGPoint)a3 notify:(BOOL)a4
+- (void)_setContentOffset:(CGPoint)offset notify:(BOOL)notify
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  notifyCopy = notify;
+  y = offset.y;
+  x = offset.x;
   [(UIScrollView *)self contentOffset];
   v9 = v8;
   v26.receiver = self;
@@ -568,11 +568,11 @@ LABEL_20:
   }
 
 LABEL_21:
-  v25 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v25)
+  if (window)
   {
-    if (v4)
+    if (notifyCopy)
     {
       [(UIPickerTableView *)self _notifyContentOffsetChange];
     }
@@ -662,42 +662,42 @@ void __35__UIPickerTableView_layoutSubviews__block_invoke(uint64_t a1)
 
 - (id)_anyDateLabel
 {
-  v2 = [(UITableView *)self visibleCells];
-  if ([v2 count])
+  visibleCells = [(UITableView *)self visibleCells];
+  if ([visibleCells count])
   {
-    v3 = [v2 lastObject];
+    lastObject = [visibleCells lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 _anyDateLabel];
+      _anyDateLabel = [lastObject _anyDateLabel];
     }
 
     else
     {
-      v4 = 0;
+      _anyDateLabel = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    _anyDateLabel = 0;
   }
 
-  return v4;
+  return _anyDateLabel;
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
   v5.receiver = self;
   v5.super_class = UIPickerTableView;
-  [(UITableView *)&v5 _scrollViewAnimationEnded:a3 finished:a4];
+  [(UITableView *)&v5 _scrollViewAnimationEnded:ended finished:finished];
   *&self->_pickerTableFlags &= 0xF9u;
 }
 
 - (id)_containerView
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     do
     {
@@ -707,29 +707,29 @@ void __35__UIPickerTableView_layoutSubviews__block_invoke(uint64_t a1)
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (void)_playClickIfNecessary
 {
   if (self->_playsFeedback && (*&self->_pickerTableFlags & 0x10) == 0)
   {
-    v3 = [(UIView *)self window];
-    if (v3)
+    window = [(UIView *)self window];
+    if (window)
     {
-      v4 = v3;
-      v5 = [(UIPickerTableView *)self _pickerView];
-      v6 = [v5 _soundsEnabled];
+      v4 = window;
+      _pickerView = [(UIPickerTableView *)self _pickerView];
+      _soundsEnabled = [_pickerView _soundsEnabled];
 
-      if (v6)
+      if (_soundsEnabled)
       {
         [(UIScrollView *)self contentOffset];
         v8 = v7;
@@ -738,20 +738,20 @@ void __35__UIPickerTableView_layoutSubviews__block_invoke(uint64_t a1)
         [(UITableView *)self rowHeight];
         if (v10 >= v11 * 0.5)
         {
-          v12 = [(UIPickerTableView *)self _pickerView];
-          [v12 _willPlayClickSound];
+          _pickerView2 = [(UIPickerTableView *)self _pickerView];
+          [_pickerView2 _willPlayClickSound];
 
-          v13 = [(UIPickerTableView *)self _pickerView];
-          v19 = [v13 _selectionFeedbackGenerator];
+          _pickerView3 = [(UIPickerTableView *)self _pickerView];
+          _selectionFeedbackGenerator = [_pickerView3 _selectionFeedbackGenerator];
 
           if (self->_generatorActivated)
           {
-            v14 = [(UIPickerTableView *)self _containerView];
-            [v14 center];
+            _containerView = [(UIPickerTableView *)self _containerView];
+            [_containerView center];
             v16 = v15;
             v18 = v17;
 
-            [v19 selectionChangedAtLocation:{v16, v18}];
+            [_selectionFeedbackGenerator selectionChangedAtLocation:{v16, v18}];
           }
 
           self->_lastClickedOffset = v8;
@@ -761,76 +761,76 @@ void __35__UIPickerTableView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setSelectionBarRow:(int64_t)a3
+- (void)_setSelectionBarRow:(int64_t)row
 {
   selectionBarRow = self->_selectionBarRow;
-  if (selectionBarRow != a3)
+  if (selectionBarRow != row)
   {
-    self->_selectionBarRow = a3;
-    v5 = [(UIPickerTableView *)self _containerView];
+    self->_selectionBarRow = row;
+    _containerView = [(UIPickerTableView *)self _containerView];
     if (objc_opt_respondsToSelector())
     {
-      [v5 pickerTableView:self didChangeSelectionBarRowFrom:selectionBarRow to:self->_selectionBarRow];
+      [_containerView pickerTableView:self didChangeSelectionBarRowFrom:selectionBarRow to:self->_selectionBarRow];
     }
 
     [(UIPickerTableView *)self _playClickIfNecessary];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
-  v12 = [(UIPickerTableView *)self selectionBarRow];
+  selectionBarRow = [(UIPickerTableView *)self selectionBarRow];
   v15.receiver = self;
   v15.super_class = UIPickerTableView;
   [(UITableView *)&v15 setFrame:x, y, width, height];
   if (v9 != width || v11 != height)
   {
-    v14 = [MEMORY[0x1E696AC88] indexPathForRow:v12 inSection:0];
+    v14 = [MEMORY[0x1E696AC88] indexPathForRow:selectionBarRow inSection:0];
     [(UIPickerTableView *)self _scrollRowAtIndexPathToSelectionBar:v14 animated:0];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
-  v12 = [(UIPickerTableView *)self selectionBarRow];
+  selectionBarRow = [(UIPickerTableView *)self selectionBarRow];
   v15.receiver = self;
   v15.super_class = UIPickerTableView;
   [(UITableView *)&v15 setBounds:x, y, width, height];
   if (v9 != width || v11 != height)
   {
-    v14 = [MEMORY[0x1E696AC88] indexPathForRow:v12 inSection:0];
+    v14 = [MEMORY[0x1E696AC88] indexPathForRow:selectionBarRow inSection:0];
     [(UIPickerTableView *)self _scrollRowAtIndexPathToSelectionBar:v14 animated:0];
   }
 }
 
-- (BOOL)_beginTrackingWithEvent:(id)a3
+- (BOOL)_beginTrackingWithEvent:(id)event
 {
   *&self->_pickerTableFlags |= 0x40u;
   v5.receiver = self;
   v5.super_class = UIPickerTableView;
-  result = [(UITableView *)&v5 _beginTrackingWithEvent:a3];
+  result = [(UITableView *)&v5 _beginTrackingWithEvent:event];
   *&self->_pickerTableFlags &= ~0x40u;
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a5->y;
-  [(UIPickerTableView *)self selectionBarRect:a3];
+  y = offset->y;
+  [(UIPickerTableView *)self selectionBarRect:dragging];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -901,13 +901,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  a5->x = v26;
-  a5->y = v28;
+  offset->x = v26;
+  offset->y = v28;
 }
 
-- (CGPoint)contentOffsetForRowAtIndexPath:(id)a3
+- (CGPoint)contentOffsetForRowAtIndexPath:(id)path
 {
-  [(UITableView *)self rectForRowAtIndexPath:a3];
+  [(UITableView *)self rectForRowAtIndexPath:path];
   x = v9.origin.x;
   MinY = CGRectGetMinY(v9);
   [(UIPickerTableView *)self selectionBarRect];
@@ -934,12 +934,12 @@ LABEL_13:
 
     else
     {
-      v4 = [(UIPickerTableView *)self _pickerView];
-      v3 = [v4 _usesCheckSelection] ^ 1;
+      _pickerView = [(UIPickerTableView *)self _pickerView];
+      v3 = [_pickerView _usesCheckSelection] ^ 1;
     }
 
-    v5 = [(UIPickerTableView *)self _pickerView];
-    [v5 _sendSelectionChangedFromTable:self notify:v3];
+    _pickerView2 = [(UIPickerTableView *)self _pickerView];
+    [_pickerView2 _sendSelectionChangedFromTable:self notify:v3];
 
     pickerTableFlags = self->_pickerTableFlags;
     *&self->_pickerTableFlags = pickerTableFlags & 0xDF;
@@ -952,7 +952,7 @@ LABEL_13:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if ((*&self->_pickerTableFlags & 8) != 0)
   {
@@ -961,78 +961,78 @@ LABEL_13:
 
   if (!self->_generatorActivated)
   {
-    v4 = [(UIPickerTableView *)self _pickerView];
-    v5 = [v4 _selectionFeedbackGenerator];
-    [v5 activateWithCompletionBlock:0];
+    _pickerView = [(UIPickerTableView *)self _pickerView];
+    _selectionFeedbackGenerator = [_pickerView _selectionFeedbackGenerator];
+    [_selectionFeedbackGenerator activateWithCompletionBlock:0];
 
     self->_generatorActivated = 1;
   }
 
-  v7 = [(UIView *)self window];
-  v6 = [v7 windowScene];
-  [v6 _setReachabilitySupported:0 forReason:@"UIPickerTableView scrollViewWillBeginDragging"];
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
+  [windowScene _setReachabilitySupported:0 forReason:@"UIPickerTableView scrollViewWillBeginDragging"];
 }
 
 - (void)_deactivateFeedbackGeneratorIfNeeded
 {
-  v3 = [(UIPickerTableView *)self _pickerView];
-  v4 = [v3 _selectionFeedbackGenerator];
+  _pickerView = [(UIPickerTableView *)self _pickerView];
+  _selectionFeedbackGenerator = [_pickerView _selectionFeedbackGenerator];
 
   if (self->_generatorActivated)
   {
-    [v4 deactivate];
+    [_selectionFeedbackGenerator deactivate];
     self->_generatorActivated = 0;
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(UIPickerTableView *)self _scrollingFinished];
     [(UIPickerTableView *)self _deactivateFeedbackGeneratorIfNeeded];
   }
 
-  v6 = [(UIView *)self window];
-  v5 = [v6 windowScene];
-  [v5 _setReachabilitySupported:1 forReason:@"UIPickerTableView scrollViewDidEndDragging"];
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
+  [windowScene _setReachabilitySupported:1 forReason:@"UIPickerTableView scrollViewDidEndDragging"];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(UIPickerTableView *)self _scrollingFinished];
 
   [(UIPickerTableView *)self _deactivateFeedbackGeneratorIfNeeded];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [(UITableView *)self deselectRowAtIndexPath:v5 animated:1];
-  v6 = [v5 row];
+  pathCopy = path;
+  [(UITableView *)self deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = [pathCopy row];
 
   [(UIPickerTableView *)self selectRow:v6 animated:1 notify:1];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UIPickerTableView *)self _pickerView];
-  if ([v6 _usesCheckedSelection])
+  pathCopy = path;
+  _pickerView = [(UIPickerTableView *)self _pickerView];
+  if ([_pickerView _usesCheckedSelection])
   {
-    v7 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v5 inSection:{"row"), objc_msgSend(v5, "section")}];
+    v7 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section")}];
     v8 = [(UITableView *)self cellForRowAtIndexPath:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 wrappedView];
+      wrappedView = [v8 wrappedView];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v9 _isSelectable])
+        if ([wrappedView _isSelectable])
         {
-          v10 = v5;
+          v10 = pathCopy;
         }
 
         else
@@ -1047,28 +1047,28 @@ LABEL_13:
     }
   }
 
-  v11 = v5;
+  v11 = pathCopy;
 LABEL_11:
 
   return v11;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
+  cellCopy = cell;
   v6 = +[UIColor clearColor];
-  [v7 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 
-  [v7 setPickerTable:self];
-  [(NSMutableArray *)self->_referencingCells addObject:v7];
+  [cellCopy setPickerTable:self];
+  [(NSMutableArray *)self->_referencingCells addObject:cellCopy];
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_textColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_textColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
   }
 }
 

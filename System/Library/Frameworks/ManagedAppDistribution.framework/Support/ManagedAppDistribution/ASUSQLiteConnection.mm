@@ -1,31 +1,31 @@
 @interface ASUSQLiteConnection
-- (ASUSQLiteConnection)initWithOptions:(id)a3;
+- (ASUSQLiteConnection)initWithOptions:(id)options;
 - (ASUSQLiteConnectionDelegate)delegate;
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4;
-- (BOOL)performSavepoint:(id)a3;
-- (BOOL)performTransaction:(id)a3 error:(id *)a4;
-- (BOOL)tableExists:(id)a3;
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error;
+- (BOOL)performSavepoint:(id)savepoint;
+- (BOOL)performTransaction:(id)transaction error:(id *)error;
+- (BOOL)tableExists:(id)exists;
 - (uint64_t)close;
 - (void)dealloc;
-- (void)dispatchAfterTransaction:(id)a3;
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4;
-- (void)executeQuery:(id)a3 withResults:(id)a4;
+- (void)dispatchAfterTransaction:(id)transaction;
+- (void)executePreparedQuery:(id)query withResults:(id)results;
+- (void)executeQuery:(id)query withResults:(id)results;
 - (void)open;
 @end
 
 @implementation ASUSQLiteConnection
 
-- (ASUSQLiteConnection)initWithOptions:(id)a3
+- (ASUSQLiteConnection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = ASUSQLiteConnection;
   v5 = [(ASUSQLiteConnection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
@@ -55,10 +55,10 @@
   [(ASUSQLiteConnection *)&v4 dealloc];
 }
 
-- (void)dispatchAfterTransaction:(id)a3
+- (void)dispatchAfterTransaction:(id)transaction
 {
-  v4 = a3;
-  v10 = v4;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
   if (self->_transactionDepth)
   {
     if (!self->_afterTransactionBlocks)
@@ -67,10 +67,10 @@
       afterTransactionBlocks = self->_afterTransactionBlocks;
       self->_afterTransactionBlocks = v5;
 
-      v4 = v10;
+      transactionCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [transactionCopy copy];
     v8 = self->_afterTransactionBlocks;
     v9 = objc_retainBlock(v7);
     [(NSMutableArray *)v8 addObject:v9];
@@ -78,16 +78,16 @@
 
   else
   {
-    v4[2]();
+    transactionCopy[2]();
   }
 }
 
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4
+- (void)executePreparedQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = sub_1006712F0(self, v6, &v11);
+  v8 = sub_1006712F0(self, queryCopy, &v11);
   v9 = v11;
   if (v8)
   {
@@ -99,19 +99,19 @@
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 clearBindings];
   [v8 reset];
 }
 
-- (void)executeQuery:(id)a3 withResults:(id)a4
+- (void)executeQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v12 = 0;
-  v8 = sub_100671510(self, v6, &v12);
+  v8 = sub_100671510(self, queryCopy, &v12);
   v9 = v12;
-  v10 = sub_100670E54([ASUSQLitePreparedStatement alloc], self->_database, v6);
+  v10 = sub_100670E54([ASUSQLitePreparedStatement alloc], self->_database, queryCopy);
   if (v10)
   {
     [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v10];
@@ -127,7 +127,7 @@
     v11 = 0;
   }
 
-  v7[2](v7, v11, v9);
+  resultsCopy[2](resultsCopy, v11, v9);
   [v8 finalizeStatement];
   if (v10)
   {
@@ -135,23 +135,23 @@
   }
 }
 
-- (BOOL)performSavepoint:(id)a3
+- (BOOL)performSavepoint:(id)savepoint
 {
-  v4 = a3;
+  savepointCopy = savepoint;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"-" withString:&stru_100770428];
+  uUIDString = [v5 UUIDString];
+  v7 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_100770428];
   v8 = [NSString stringWithFormat:@"SP_%@", v7];
 
   v9 = [NSString stringWithFormat:@"SAVEPOINT %@", v8];
-  LODWORD(v6) = [(ASUSQLiteConnection *)self executeStatement:v9 error:0];
+  LODWORD(uUIDString) = [(ASUSQLiteConnection *)self executeStatement:v9 error:0];
 
-  if (!v6)
+  if (!uUIDString)
   {
     goto LABEL_5;
   }
 
-  if (!v4[2](v4))
+  if (!savepointCopy[2](savepointCopy))
   {
     v12 = [NSString stringWithFormat:@"ROLLBACK TRANSACTION TO SAVEPOINT %@", v8];
     [(ASUSQLiteConnection *)self executeStatement:v12 error:0];
@@ -168,9 +168,9 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)performTransaction:(id)a3 error:(id *)a4
+- (BOOL)performTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v16[0] = 0;
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
@@ -189,12 +189,12 @@ LABEL_6:
     self->_transactionDepth = transactionDepth + 1;
     if (self->_transactionWantsRollback)
     {
-      if (a4)
+      if (error)
       {
         v8 = [NSError errorWithDomain:@"ASUSQLiteErrorDomain" code:6 userInfo:0];
 LABEL_21:
         v9 = 0;
-        *a4 = v8;
+        *error = v8;
         goto LABEL_24;
       }
 
@@ -203,7 +203,7 @@ LABEL_21:
   }
 
   os_variant_has_internal_content();
-  v9 = v6[2](v6, self);
+  v9 = transactionCopy[2](transactionCopy, self);
   v10 = self->_transactionDepth;
   v11 = self->_transactionWantsRollback | v9 ^ 1;
   self->_transactionWantsRollback = v11 & 1;
@@ -233,7 +233,7 @@ LABEL_21:
     sub_100671734(self);
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v9;
   }
@@ -252,7 +252,7 @@ LABEL_21:
     }
 
     v14 = [NSError errorWithDomain:@"ASUSQLiteErrorDomain" code:0 userInfo:0];
-    *a4 = v14;
+    *error = v14;
 
 LABEL_23:
     v9 = 0;
@@ -263,7 +263,7 @@ LABEL_24:
   return v9;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
   v9 = 0;
   v10 = &v9;
@@ -273,8 +273,8 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = sub_1001E8E6C;
   v6[3] = &unk_1007567C0;
-  v4 = a3;
-  v7 = v4;
+  existsCopy = exists;
+  v7 = existsCopy;
   v8 = &v9;
   [(ASUSQLiteConnection *)self executeQuery:@"SELECT name FROM sqlite_master where name = ?" withResults:v6];
   LOBYTE(self) = *(v10 + 24);
@@ -290,7 +290,7 @@ LABEL_24:
   return WeakRetained;
 }
 
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
   sub_1001E91DC();
   v27 = v5;
@@ -338,14 +338,14 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v20 = 0;
-  v9 = a3;
-  v10 = sub_100671510(self, v9, &v20);
+  statementCopy = statement;
+  v10 = sub_100671510(self, statementCopy, &v20);
   v11 = v20;
-  v12 = sub_100670E54([ASUSQLitePreparedStatement alloc], self->_database, v9);
+  v12 = sub_100670E54([ASUSQLitePreparedStatement alloc], self->_database, statementCopy);
 
   if (v12)
   {
@@ -355,7 +355,7 @@ LABEL_24:
   if (!v10)
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -363,7 +363,7 @@ LABEL_24:
     goto LABEL_5;
   }
 
-  if (v8)
+  if (bindingsCopy)
   {
     v16 = sub_1001E91C8();
     v17(v16);
@@ -380,13 +380,13 @@ LABEL_24:
   }
 
   v11 = v18;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     if ((v13 & 1) == 0)
     {
       v14 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -395,16 +395,16 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v13 = 0;
-  v7 = sub_1006712F0(self, v6, &v13);
+  v7 = sub_1006712F0(self, statementCopy, &v13);
   v8 = v13;
   if (!v7)
   {
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -415,13 +415,13 @@ LABEL_7:
   v9 = ASUSQLiteCreateErrorForResultCode([v7 finalizeStatement]);
 
   v10 = v9 == 0;
-  [(NSMapTable *)self->_preparedStatements removeObjectForKey:v6];
+  [(NSMapTable *)self->_preparedStatements removeObjectForKey:statementCopy];
   v8 = v9;
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_4:

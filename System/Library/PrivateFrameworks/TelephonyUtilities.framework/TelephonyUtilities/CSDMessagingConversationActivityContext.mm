@@ -1,36 +1,36 @@
 @interface CSDMessagingConversationActivityContext
-+ (id)activityContextWithTUActivityContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)activityContextWithTUActivityContext:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (TUConversationActivityContext)tuConversationActivityContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationActivityContext
 
-+ (id)activityContextWithTUActivityContext:(id)a3
++ (id)activityContextWithTUActivityContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = a3;
+    contextCopy = context;
     v4 = objc_alloc_init(CSDMessagingConversationActivityContext);
-    v5 = [v3 identifier];
-    [(CSDMessagingConversationActivityContext *)v4 setContextIdentifier:v5];
+    identifier = [contextCopy identifier];
+    [(CSDMessagingConversationActivityContext *)v4 setContextIdentifier:identifier];
 
-    v6 = [v3 actionDescription];
-    [(CSDMessagingConversationActivityContext *)v4 setActionDescription:v6];
+    actionDescription = [contextCopy actionDescription];
+    [(CSDMessagingConversationActivityContext *)v4 setActionDescription:actionDescription];
 
-    v7 = [v3 ongoingDescription];
-    [(CSDMessagingConversationActivityContext *)v4 setOngoingDescription:v7];
+    ongoingDescription = [contextCopy ongoingDescription];
+    [(CSDMessagingConversationActivityContext *)v4 setOngoingDescription:ongoingDescription];
 
-    v8 = [v3 completedDescription];
+    completedDescription = [contextCopy completedDescription];
 
-    [(CSDMessagingConversationActivityContext *)v4 setCompletedDescription:v8];
+    [(CSDMessagingConversationActivityContext *)v4 setCompletedDescription:completedDescription];
   }
 
   else
@@ -48,11 +48,11 @@
     if ([(CSDMessagingConversationActivityContext *)self hasContextIdentifier]&& [(CSDMessagingConversationActivityContext *)self hasActionDescription]&& [(CSDMessagingConversationActivityContext *)self hasOngoingDescription]&& [(CSDMessagingConversationActivityContext *)self hasCompletedDescription])
     {
       v5 = [TUConversationActivityContext alloc];
-      v6 = [(CSDMessagingConversationActivityContext *)self contextIdentifier];
-      v7 = [(CSDMessagingConversationActivityContext *)self actionDescription];
-      v8 = [(CSDMessagingConversationActivityContext *)self ongoingDescription];
-      v9 = [(CSDMessagingConversationActivityContext *)self completedDescription];
-      v4 = [v5 initWithContextIdentifier:v6 actionDescription:v7 ongoingDescription:v8 completedDescription:v9];
+      contextIdentifier = [(CSDMessagingConversationActivityContext *)self contextIdentifier];
+      actionDescription = [(CSDMessagingConversationActivityContext *)self actionDescription];
+      ongoingDescription = [(CSDMessagingConversationActivityContext *)self ongoingDescription];
+      completedDescription = [(CSDMessagingConversationActivityContext *)self completedDescription];
+      v4 = [v5 initWithContextIdentifier:contextIdentifier actionDescription:actionDescription ongoingDescription:ongoingDescription completedDescription:completedDescription];
     }
 
     else
@@ -69,8 +69,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationActivityContext;
   v3 = [(CSDMessagingConversationActivityContext *)&v7 description];
-  v4 = [(CSDMessagingConversationActivityContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationActivityContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -106,93 +106,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_contextIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_actionDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ongoingDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_completedDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_contextIdentifier)
   {
-    [v4 setContextIdentifier:?];
-    v4 = v5;
+    [toCopy setContextIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_actionDescription)
   {
     [v5 setActionDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ongoingDescription)
   {
     [v5 setOngoingDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_completedDescription)
   {
     [v5 setCompletedDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_contextIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_contextIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_actionDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_actionDescription copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_ongoingDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_ongoingDescription copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_completedDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_completedDescription copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((contextIdentifier = self->_contextIdentifier, !(contextIdentifier | v4[3])) || -[NSString isEqual:](contextIdentifier, "isEqual:")) && ((actionDescription = self->_actionDescription, !(actionDescription | v4[1])) || -[NSString isEqual:](actionDescription, "isEqual:")) && ((ongoingDescription = self->_ongoingDescription, !(ongoingDescription | v4[4])) || -[NSString isEqual:](ongoingDescription, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((contextIdentifier = self->_contextIdentifier, !(contextIdentifier | equalCopy[3])) || -[NSString isEqual:](contextIdentifier, "isEqual:")) && ((actionDescription = self->_actionDescription, !(actionDescription | equalCopy[1])) || -[NSString isEqual:](actionDescription, "isEqual:")) && ((ongoingDescription = self->_ongoingDescription, !(ongoingDescription | equalCopy[4])) || -[NSString isEqual:](ongoingDescription, "isEqual:")))
   {
     completedDescription = self->_completedDescription;
-    if (completedDescription | v4[2])
+    if (completedDescription | equalCopy[2])
     {
       v9 = [(NSString *)completedDescription isEqual:?];
     }
@@ -219,25 +219,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_completedDescription hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(CSDMessagingConversationActivityContext *)self setContextIdentifier:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(CSDMessagingConversationActivityContext *)self setActionDescription:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(CSDMessagingConversationActivityContext *)self setOngoingDescription:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(CSDMessagingConversationActivityContext *)self setCompletedDescription:?];
   }

@@ -8,9 +8,9 @@
 {
   objc_opt_class();
   [(TSPObject *)self documentRoot];
-  v3 = [TSUCheckedDynamicCast() bookDescription];
+  bookDescription = [TSUCheckedDynamicCast() bookDescription];
 
-  return [v3 drmContext];
+  return [bookDescription drmContext];
 }
 
 @end

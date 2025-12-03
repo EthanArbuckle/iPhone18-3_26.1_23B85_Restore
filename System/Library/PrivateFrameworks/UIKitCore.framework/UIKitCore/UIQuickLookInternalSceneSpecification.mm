@@ -12,8 +12,8 @@
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v8.receiver = self;
   v8.super_class = UIQuickLookInternalSceneSpecification;
-  v5 = [(UIApplicationSceneSpecification *)&v8 initialActionHandlers];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  initialActionHandlers = [(UIApplicationSceneSpecification *)&v8 initialActionHandlers];
+  v6 = [v4 arrayByAddingObjectsFromArray:initialActionHandlers];
 
   return v6;
 }

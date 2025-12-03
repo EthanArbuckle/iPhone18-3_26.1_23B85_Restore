@@ -1,12 +1,12 @@
 @interface GradientBuffer
 + (void)initialize;
-- (GradientBuffer)initWithTensorBefore:(id)a3 tensorAfter:(id)a4 withScale:(float)a5 shouldSparsify:(BOOL)a6 error:(id *)a7;
+- (GradientBuffer)initWithTensorBefore:(id)before tensorAfter:(id)after withScale:(float)scale shouldSparsify:(BOOL)sparsify error:(id *)error;
 - (float)l2norm;
 - (id).cxx_construct;
 - (id)description;
-- (void)accumulateDifferenceBetweenTensorBefore:(id)a3 andTensorAfter:(id)a4 withScale:(float)a5 error:(id *)a6;
-- (void)applyToTensor:(id)a3 scale:(float)a4 error:(id *)a5;
-- (void)multiply:(float)a3;
+- (void)accumulateDifferenceBetweenTensorBefore:(id)before andTensorAfter:(id)after withScale:(float)scale error:(id *)error;
+- (void)applyToTensor:(id)tensor scale:(float)scale error:(id *)error;
+- (void)multiply:(float)multiply;
 - (void)reset;
 @end
 
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.speech.speechmodeltraining", "GradientBuffer");
     v3 = sLog;
@@ -22,11 +22,11 @@
   }
 }
 
-- (GradientBuffer)initWithTensorBefore:(id)a3 tensorAfter:(id)a4 withScale:(float)a5 shouldSparsify:(BOOL)a6 error:(id *)a7
+- (GradientBuffer)initWithTensorBefore:(id)before tensorAfter:(id)after withScale:(float)scale shouldSparsify:(BOOL)sparsify error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v52 = a4;
+  beforeCopy = before;
+  afterCopy = after;
   v58.receiver = self;
   v58.super_class = GradientBuffer;
   v13 = [(GradientBuffer *)&v58 init];
@@ -37,20 +37,20 @@ LABEL_29:
     goto LABEL_33;
   }
 
-  v14 = [v12 shape];
-  v15 = [v52 shape];
-  v16 = [v14 isEqual:v15];
+  shape = [beforeCopy shape];
+  shape2 = [afterCopy shape];
+  v16 = [shape isEqual:shape2];
 
   if (v16)
   {
-    v13->_isSparse = a6;
+    v13->_isSparse = sparsify;
     v13->_size = 1;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v17 = [v12 shape];
-    v18 = [v17 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    shape3 = [beforeCopy shape];
+    v18 = [shape3 countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v18)
     {
       v19 = *v55;
@@ -60,28 +60,28 @@ LABEL_29:
         {
           if (*v55 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(shape3);
           }
 
           v21 = *(*(&v54 + 1) + 8 * i);
           v13->_size *= [v21 intValue];
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v54 objects:v60 count:16];
+        v18 = [shape3 countByEnumeratingWithState:&v54 objects:v60 count:16];
       }
 
       while (v18);
     }
 
-    v22 = [v12 dataPointer];
-    v23 = [v52 dataPointer];
+    dataPointer = [beforeCopy dataPointer];
+    dataPointer2 = [afterCopy dataPointer];
     if (v13->_size)
     {
-      v24 = v23;
+      v24 = dataPointer2;
       v25 = 0;
       do
       {
-        v26 = (*(v24 + 4 * v25) - *(v22 + 4 * v25)) * a5;
+        v26 = (*(v24 + 4 * v25) - *(dataPointer + 4 * v25)) * scale;
         if (v13->_isSparse)
         {
           if (v26 != 0.0)
@@ -172,7 +172,7 @@ LABEL_29:
   v61 = *MEMORY[0x1E696A578];
   v62[0] = @"unable to compute difference between two tensors of different shapes";
   v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:&v61 count:1];
-  *a7 = [v49 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:1 userInfo:v50];
+  *error = [v49 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:1 userInfo:v50];
 
   v40 = 0;
 LABEL_33:
@@ -180,14 +180,14 @@ LABEL_33:
   return v40;
 }
 
-- (void)accumulateDifferenceBetweenTensorBefore:(id)a3 andTensorAfter:(id)a4 withScale:(float)a5 error:(id *)a6
+- (void)accumulateDifferenceBetweenTensorBefore:(id)before andTensorAfter:(id)after withScale:(float)scale error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 shape];
-  v12 = [v10 shape];
-  v13 = [v11 isEqual:v12];
+  beforeCopy = before;
+  afterCopy = after;
+  shape = [beforeCopy shape];
+  shape2 = [afterCopy shape];
+  v13 = [shape isEqual:shape2];
 
   if ((v13 & 1) == 0)
   {
@@ -200,7 +200,7 @@ LABEL_33:
     v29 = MEMORY[0x1E696ABC0];
     v59 = *MEMORY[0x1E696A578];
     v60[0] = @"unable to compute difference between two tensors of different shapes";
-    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:{1, a6}];
+    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:{1, error}];
     v31 = [v29 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:151 userInfo:v30];
     goto LABEL_30;
   }
@@ -209,8 +209,8 @@ LABEL_33:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v14 = [v9 shape];
-  v15 = [v14 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  shape3 = [beforeCopy shape];
+  v15 = [shape3 countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v15)
   {
     v16 = *v52;
@@ -221,16 +221,16 @@ LABEL_33:
       {
         if (*v52 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(shape3);
         }
 
         v19 = *(*(&v51 + 1) + 8 * i);
-        v20 = [v19 intValue];
+        intValue = [v19 intValue];
 
-        v17 *= v20;
+        v17 *= intValue;
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v51 objects:v58 count:16];
+      v15 = [shape3 countByEnumeratingWithState:&v51 objects:v58 count:16];
     }
 
     while (v15);
@@ -252,7 +252,7 @@ LABEL_33:
     v47 = MEMORY[0x1E696ABC0];
     v56 = *MEMORY[0x1E696A578];
     v57 = @"unable to accumulate difference of mismatch size";
-    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:{1, a6}];
+    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:{1, error}];
     v31 = [v47 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:151 userInfo:v30];
 LABEL_30:
     *v49 = v31;
@@ -260,15 +260,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v32 = [v9 dataPointer];
-  v33 = [v10 dataPointer];
+  dataPointer = [beforeCopy dataPointer];
+  dataPointer2 = [afterCopy dataPointer];
   size = self->_size;
   if (size)
   {
-    v35 = v33;
+    v35 = dataPointer2;
     for (j = 0; j < size; ++j)
     {
-      v37 = (*(v35 + 4 * j) - *(v32 + 4 * j)) * a5;
+      v37 = (*(v35 + 4 * j) - *(dataPointer + 4 * j)) * scale;
       if (self->_isSparse)
       {
         if (v37 != 0.0)
@@ -300,16 +300,16 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)applyToTensor:(id)a3 scale:(float)a4 error:(id *)a5
+- (void)applyToTensor:(id)tensor scale:(float)scale error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  tensorCopy = tensor;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v9 = [v8 shape];
-  v10 = [v9 countByEnumeratingWithState:&v41 objects:v51 count:16];
+  shape = [tensorCopy shape];
+  v10 = [shape countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (v10)
   {
     v11 = *v42;
@@ -320,16 +320,16 @@ LABEL_31:
       {
         if (*v42 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(shape);
         }
 
         v14 = *(*(&v41 + 1) + 8 * i);
-        v15 = [v14 intValue];
+        intValue = [v14 intValue];
 
-        v12 *= v15;
+        v12 *= intValue;
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v41 objects:v51 count:16];
+      v10 = [shape countByEnumeratingWithState:&v41 objects:v51 count:16];
     }
 
     while (v10);
@@ -354,13 +354,13 @@ LABEL_31:
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v24 = [v33 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:1 userInfo:v23];
 LABEL_21:
-    *a5 = v24;
+    *error = v24;
 
     goto LABEL_22;
   }
 
-  v16 = [v8 dataPointer];
-  v17 = v16;
+  dataPointer = [tensorCopy dataPointer];
+  v17 = dataPointer;
   if (!self->_isSparse)
   {
     begin = self->_data.__begin_;
@@ -379,7 +379,7 @@ LABEL_21:
 
     while (1)
     {
-      v38 = *v17 + (begin[v36] * a4);
+      v38 = *v17 + (begin[v36] * scale);
       *v17 = v38;
       if ((LODWORD(v38) & 0x7FFFFFFFu) >= 0x7F800000)
       {
@@ -418,8 +418,8 @@ LABEL_21:
     }
 
     next_low = SLODWORD(p_first_node[2].__next_);
-    v20 = *(v16 + 4 * next_low) + (*(&p_first_node[2].__next_ + 1) * a4);
-    *(v16 + 4 * next_low) = v20;
+    v20 = *(dataPointer + 4 * next_low) + (*(&p_first_node[2].__next_ + 1) * scale);
+    *(dataPointer + 4 * next_low) = v20;
     if ((LODWORD(v20) & 0x7FFFFFFFu) >= 0x7F800000)
     {
       v21 = sLog;
@@ -513,13 +513,13 @@ LABEL_12:
   return sqrtf(v3);
 }
 
-- (void)multiply:(float)a3
+- (void)multiply:(float)multiply
 {
   if (self->_isSparse)
   {
     for (i = self->_sparseData.__table_.__first_node_.__next_; i; i = *i)
     {
-      i[5] = i[5] * a3;
+      i[5] = i[5] * multiply;
     }
   }
 
@@ -537,7 +537,7 @@ LABEL_12:
 
       do
       {
-        *begin = *begin * a3;
+        *begin = *begin * multiply;
         ++begin;
         --v6;
       }

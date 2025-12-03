@@ -1,69 +1,69 @@
 @interface ACHDataStorePropertyProviderSnapshot
-- (ACHDataStorePropertyProviderSnapshot)initWithCoder:(id)a3;
-- (ACHDataStorePropertyProviderSnapshot)initWithDate:(id)a3 validThroughDate:(id)a4 version:(int64_t)a5 properties:(id)a6;
-- (ACHDataStorePropertyProviderSnapshot)initWithValidThroughDate:(id)a3 version:(int64_t)a4 properties:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (ACHDataStorePropertyProviderSnapshot)initWithCoder:(id)coder;
+- (ACHDataStorePropertyProviderSnapshot)initWithDate:(id)date validThroughDate:(id)throughDate version:(int64_t)version properties:(id)properties;
+- (ACHDataStorePropertyProviderSnapshot)initWithValidThroughDate:(id)date version:(int64_t)version properties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACHDataStorePropertyProviderSnapshot
 
-- (ACHDataStorePropertyProviderSnapshot)initWithValidThroughDate:(id)a3 version:(int64_t)a4 properties:(id)a5
+- (ACHDataStorePropertyProviderSnapshot)initWithValidThroughDate:(id)date version:(int64_t)version properties:(id)properties
 {
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 date];
-  v12 = [(ACHDataStorePropertyProviderSnapshot *)self initWithDate:v11 validThroughDate:v10 version:a4 properties:v9];
+  propertiesCopy = properties;
+  dateCopy = date;
+  date = [v8 date];
+  v12 = [(ACHDataStorePropertyProviderSnapshot *)self initWithDate:date validThroughDate:dateCopy version:version properties:propertiesCopy];
 
   return v12;
 }
 
-- (ACHDataStorePropertyProviderSnapshot)initWithDate:(id)a3 validThroughDate:(id)a4 version:(int64_t)a5 properties:(id)a6
+- (ACHDataStorePropertyProviderSnapshot)initWithDate:(id)date validThroughDate:(id)throughDate version:(int64_t)version properties:(id)properties
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dateCopy = date;
+  throughDateCopy = throughDate;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = ACHDataStorePropertyProviderSnapshot;
   v14 = [(ACHDataStorePropertyProviderSnapshot *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_snapshotDate, a3);
-    objc_storeStrong(&v15->_validThroughDate, a4);
-    v15->_version = a5;
-    objc_storeStrong(&v15->_properties, a6);
+    objc_storeStrong(&v14->_snapshotDate, date);
+    objc_storeStrong(&v15->_validThroughDate, throughDate);
+    v15->_version = version;
+    objc_storeStrong(&v15->_properties, properties);
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ACHDataStorePropertyProviderSnapshot *)self snapshotDate];
-  [v8 encodeObject:v4 forKey:@"date"];
+  coderCopy = coder;
+  snapshotDate = [(ACHDataStorePropertyProviderSnapshot *)self snapshotDate];
+  [coderCopy encodeObject:snapshotDate forKey:@"date"];
 
-  [v8 encodeInteger:-[ACHDataStorePropertyProviderSnapshot version](self forKey:{"version"), @"version"}];
-  v5 = [(ACHDataStorePropertyProviderSnapshot *)self validThroughDate];
+  [coderCopy encodeInteger:-[ACHDataStorePropertyProviderSnapshot version](self forKey:{"version"), @"version"}];
+  validThroughDate = [(ACHDataStorePropertyProviderSnapshot *)self validThroughDate];
 
-  if (v5)
+  if (validThroughDate)
   {
-    v6 = [(ACHDataStorePropertyProviderSnapshot *)self validThroughDate];
-    [v8 encodeObject:v6 forKey:@"validThroughDate"];
+    validThroughDate2 = [(ACHDataStorePropertyProviderSnapshot *)self validThroughDate];
+    [coderCopy encodeObject:validThroughDate2 forKey:@"validThroughDate"];
   }
 
-  v7 = [(ACHDataStorePropertyProviderSnapshot *)self properties];
-  [v8 encodeObject:v7 forKey:@"properties"];
+  properties = [(ACHDataStorePropertyProviderSnapshot *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 }
 
-- (ACHDataStorePropertyProviderSnapshot)initWithCoder:(id)a3
+- (ACHDataStorePropertyProviderSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  if ([v4 containsValueForKey:@"validThroughDate"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  if ([coderCopy containsValueForKey:@"validThroughDate"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validThroughDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validThroughDate"];
   }
 
   else
@@ -71,9 +71,9 @@
     v6 = 0;
   }
 
-  if ([v4 containsValueForKey:@"version"])
+  if ([coderCopy containsValueForKey:@"version"])
   {
-    v7 = [v4 decodeIntegerForKey:@"version"];
+    v7 = [coderCopy decodeIntegerForKey:@"version"];
   }
 
   else
@@ -82,7 +82,7 @@
   }
 
   v8 = objc_opt_class();
-  v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"properties"];
+  v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"properties"];
   v10 = [(ACHDataStorePropertyProviderSnapshot *)self initWithDate:v5 validThroughDate:v6 version:v7 properties:v9];
 
   return v10;

@@ -1,23 +1,23 @@
 @interface NSArray
-- (BOOL)NF_isEqualToExpressConfigList:(id)a3;
+- (BOOL)NF_isEqualToExpressConfigList:(id)list;
 - (unint64_t)NF_expressConfigHash;
 @end
 
 @implementation NSArray
 
-- (BOOL)NF_isEqualToExpressConfigList:(id)a3
+- (BOOL)NF_isEqualToExpressConfigList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [(NSArray *)self count];
-  if (v5 == [v4 count])
+  if (v5 == [listCopy count])
   {
     if ([(NSArray *)self count])
     {
       v6 = [[NSMutableArray alloc] initWithArray:self];
-      v7 = [[NSMutableArray alloc] initWithArray:v4];
+      v7 = [[NSMutableArray alloc] initWithArray:listCopy];
       while (2)
       {
-        v8 = [v6 firstObject];
+        firstObject = [v6 firstObject];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
@@ -38,7 +38,7 @@ LABEL_6:
             }
 
             v14 = *(*(&v18 + 1) + 8 * v13);
-            if ([v8 NF_isEqualToExpressConfig:v14])
+            if ([firstObject NF_isEqualToExpressConfig:v14])
             {
               break;
             }
@@ -57,7 +57,7 @@ LABEL_6:
 
           v15 = v14;
 
-          [v6 removeObject:v8];
+          [v6 removeObject:firstObject];
           [v9 removeObject:v15];
 
           if ([v6 count])
@@ -99,8 +99,8 @@ LABEL_16:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = self;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  selfCopy = self;
+  v3 = [(NSArray *)selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -112,13 +112,13 @@ LABEL_16:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v5 ^= [*(*(&v9 + 1) + 8 * i) NF_expressConfigHash];
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [(NSArray *)selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);

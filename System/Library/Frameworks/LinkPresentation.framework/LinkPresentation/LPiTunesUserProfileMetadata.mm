@@ -1,32 +1,32 @@
 @interface LPiTunesUserProfileMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesUserProfileMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesUserProfileMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesUserProfileMetadata
 
-- (LPiTunesUserProfileMetadata)initWithCoder:(id)a3
+- (LPiTunesUserProfileMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = LPiTunesUserProfileMetadata;
   v5 = [(LPiTunesUserProfileMetadata *)&v14 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v8 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v8;
 
-    v10 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
+    v10 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
     artworkMetadata = v5->_artworkMetadata;
     v5->_artworkMetadata = v10;
 
@@ -36,27 +36,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesUserProfileMetadata allocWithZone:a3];
+  v4 = [LPiTunesUserProfileMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesUserProfileMetadata *)self name];
-    [(LPiTunesUserProfileMetadata *)v4 setName:v5];
+    name = [(LPiTunesUserProfileMetadata *)self name];
+    [(LPiTunesUserProfileMetadata *)v4 setName:name];
 
-    v6 = [(LPiTunesUserProfileMetadata *)self artwork];
-    [(LPiTunesUserProfileMetadata *)v4 setArtwork:v6];
+    artwork = [(LPiTunesUserProfileMetadata *)self artwork];
+    [(LPiTunesUserProfileMetadata *)v4 setArtwork:artwork];
 
-    v7 = [(LPiTunesUserProfileMetadata *)self artworkMetadata];
-    [(LPiTunesUserProfileMetadata *)v4 setArtworkMetadata:v7];
+    artworkMetadata = [(LPiTunesUserProfileMetadata *)self artworkMetadata];
+    [(LPiTunesUserProfileMetadata *)v4 setArtworkMetadata:artworkMetadata];
 
     v8 = v4;
   }
@@ -64,12 +64,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesUserProfileMetadata;
-  if ([(LPiTunesUserProfileMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesUserProfileMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_name) & 1) != 0 && objectsAreEqual_0(v6[3], self->_artwork))
       {
         v5 = objectsAreEqual_0(v6[4], self->_artworkMetadata);
@@ -100,52 +100,52 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:40];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:40];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  if ([v4 effectiveSizeClass] == 2)
+  if ([transformerCopy effectiveSizeClass] == 2)
   {
-    v7 = [(LPiTunesUserProfileMetadata *)self name];
+    name = [(LPiTunesUserProfileMetadata *)self name];
     v8 = LPLocalizedString(@"Profile");
-    v9 = appleMusicWordmark(v4);
-    populateCaptionBar(v5, v7, v8, v9, 1, v4);
+    v9 = appleMusicWordmark(transformerCopy);
+    populateCaptionBar(v5, name, v8, v9, 1, transformerCopy);
   }
 
   else
   {
-    v7 = [(LPiTunesUserProfileMetadata *)self name];
-    v8 = appleMusicWordmark(v4);
-    populateCaptionBar(v5, v7, 0, v8, 1, v4);
+    name = [(LPiTunesUserProfileMetadata *)self name];
+    v8 = appleMusicWordmark(transformerCopy);
+    populateCaptionBar(v5, name, 0, v8, 1, transformerCopy);
   }
 
-  v10 = [(LPiTunesUserProfileMetadata *)self artwork];
-  [v4 _populateProperties:v5 withPrimaryImage:v10];
+  artwork = [(LPiTunesUserProfileMetadata *)self artwork];
+  [transformerCopy _populateProperties:v5 withPrimaryImage:artwork];
 
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"Profile: %@");
-  v6 = [(LPiTunesUserProfileMetadata *)self name];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  name = [(LPiTunesUserProfileMetadata *)self name];
+  v7 = [v4 localizedStringWithFormat:v5, name];
 
   return v7;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v6 = a3;
-  v4 = [(LPiTunesUserProfileMetadata *)self name];
-  [v6 setTitle:v4];
+  compatibilityCopy = compatibility;
+  name = [(LPiTunesUserProfileMetadata *)self name];
+  [compatibilityCopy setTitle:name];
 
-  v5 = [(LPiTunesUserProfileMetadata *)self artwork];
-  [v6 setImage:v5];
+  artwork = [(LPiTunesUserProfileMetadata *)self artwork];
+  [compatibilityCopy setImage:artwork];
 }
 
 @end

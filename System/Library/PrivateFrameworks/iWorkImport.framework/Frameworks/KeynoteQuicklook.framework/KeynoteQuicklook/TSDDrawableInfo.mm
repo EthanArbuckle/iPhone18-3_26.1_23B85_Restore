@@ -1,6 +1,6 @@
 @interface TSDDrawableInfo
 - (BOOL)hasActionBuilds;
-- (BOOL)hasBuildOfAnimationType:(int64_t)a3;
+- (BOOL)hasBuildOfAnimationType:(int64_t)type;
 - (BOOL)hasContentBuilds;
 - (BOOL)isRightToLeft;
 - (BOOL)mayHaveImplicitBuildEvents;
@@ -15,10 +15,10 @@
 - (NSSet)actionBuilds;
 - (NSSet)builds;
 - (NSSet)contentBuilds;
-- (id)buildChunksForAnimationType:(int64_t)a3;
-- (id)validBuildsInBuilds:(id)a3;
+- (id)buildChunksForAnimationType:(int64_t)type;
+- (id)validBuildsInBuilds:(id)builds;
 - (unint64_t)buildCount;
-- (void)swizzled_setMatchesObjectPlaceholderGeometry:(BOOL)a3;
+- (void)swizzled_setMatchesObjectPlaceholderGeometry:(BOOL)geometry;
 @end
 
 @implementation TSDDrawableInfo
@@ -97,14 +97,14 @@
   return v7;
 }
 
-- (BOOL)hasBuildOfAnimationType:(int64_t)a3
+- (BOOL)hasBuildOfAnimationType:(int64_t)type
 {
-  v5 = objc_msgSend_abstractSlide(self, a2, a3);
-  v9 = objc_msgSend_buildsForDrawable_type_(v5, v6, self, a3);
+  v5 = objc_msgSend_abstractSlide(self, a2, type);
+  v9 = objc_msgSend_buildsForDrawable_type_(v5, v6, self, type);
   if (v9)
   {
     v10 = objc_msgSend_abstractSlide(self, v7, v8);
-    v12 = objc_msgSend_buildsForDrawable_type_(v10, v11, self, a3);
+    v12 = objc_msgSend_buildsForDrawable_type_(v10, v11, self, type);
     v15 = objc_msgSend_count(v12, v13, v14) != 0;
   }
 
@@ -124,9 +124,9 @@
   return v6;
 }
 
-- (id)validBuildsInBuilds:(id)a3
+- (id)validBuildsInBuilds:(id)builds
 {
-  v4 = a3;
+  buildsCopy = builds;
   v7 = objc_msgSend_animationFilters(self, v5, v6);
   v8 = MEMORY[0x277CCAC30];
   v15[0] = MEMORY[0x277D85DD0];
@@ -136,7 +136,7 @@
   v16 = v7;
   v9 = v7;
   v11 = objc_msgSend_predicateWithBlock_(v8, v10, v15);
-  v13 = objc_msgSend_filteredSetUsingPredicate_(v4, v12, v11);
+  v13 = objc_msgSend_filteredSetUsingPredicate_(buildsCopy, v12, v11);
 
   return v13;
 }
@@ -200,10 +200,10 @@
   return v5;
 }
 
-- (id)buildChunksForAnimationType:(int64_t)a3
+- (id)buildChunksForAnimationType:(int64_t)type
 {
-  v5 = objc_msgSend_abstractSlide(self, a2, a3);
-  v7 = objc_msgSend_chunksForDrawable_animationType_(v5, v6, self, a3);
+  v5 = objc_msgSend_abstractSlide(self, a2, type);
+  v7 = objc_msgSend_chunksForDrawable_animationType_(v5, v6, self, type);
 
   return v7;
 }
@@ -234,10 +234,10 @@
   return v10;
 }
 
-- (void)swizzled_setMatchesObjectPlaceholderGeometry:(BOOL)a3
+- (void)swizzled_setMatchesObjectPlaceholderGeometry:(BOOL)geometry
 {
-  v3 = a3;
-  v5 = objc_msgSend_slide(self, a2, a3);
+  geometryCopy = geometry;
+  v5 = objc_msgSend_slide(self, a2, geometry);
   if (v5)
   {
     v12 = v5;
@@ -245,9 +245,9 @@
     v10 = objc_msgSend_containsObject_(v8, v9, self);
 
     v5 = v12;
-    if (v10 != v3)
+    if (v10 != geometryCopy)
     {
-      if (v3)
+      if (geometryCopy)
       {
         objc_msgSend_addInfoUsingObjectPlaceholderGeometry_(v12, v11, self);
       }

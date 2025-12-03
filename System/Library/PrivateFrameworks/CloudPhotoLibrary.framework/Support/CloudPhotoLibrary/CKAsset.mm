@@ -1,16 +1,16 @@
 @interface CKAsset
-+ (id)cplFingerPrintForSignature:(id)a3;
++ (id)cplFingerPrintForSignature:(id)signature;
 - (id)cplCopyCleanAsset;
 - (id)cplFingerPrint;
 @end
 
 @implementation CKAsset
 
-+ (id)cplFingerPrintForSignature:(id)a3
++ (id)cplFingerPrintForSignature:(id)signature
 {
-  if (a3)
+  if (signature)
   {
-    v4 = [a3 base64EncodedStringWithOptions:0];
+    v4 = [signature base64EncodedStringWithOptions:0];
   }
 
   else
@@ -23,68 +23,68 @@
 
 - (id)cplFingerPrint
 {
-  v2 = [(CKAsset *)self signature];
-  v3 = [CKAsset cplFingerPrintForSignature:v2];
+  signature = [(CKAsset *)self signature];
+  v3 = [CKAsset cplFingerPrintForSignature:signature];
 
   return v3;
 }
 
 - (id)cplCopyCleanAsset
 {
-  v4 = [(CKAsset *)self assetReference];
+  assetReference = [(CKAsset *)self assetReference];
 
-  if (v4)
+  if (assetReference)
   {
     v5 = [CKAsset alloc];
-    v6 = [(CKAsset *)self assetReference];
-    v7 = [v6 copy];
-    v8 = [v5 initWithAssetReference:v7];
+    assetReference2 = [(CKAsset *)self assetReference];
+    signature2 = [assetReference2 copy];
+    v8 = [v5 initWithAssetReference:signature2];
     goto LABEL_3;
   }
 
-  v14 = [(CKAsset *)self fileURL];
+  fileURL = [(CKAsset *)self fileURL];
 
-  if (v14)
+  if (fileURL)
   {
-    v15 = [(CKAsset *)self signature];
+    signature = [(CKAsset *)self signature];
 
     v16 = [CKAsset alloc];
-    v6 = [(CKAsset *)self fileURL];
-    if (!v15)
+    assetReference2 = [(CKAsset *)self fileURL];
+    if (!signature)
     {
-      v9 = [v16 initWithFileURL:v6];
+      v9 = [v16 initWithFileURL:assetReference2];
       goto LABEL_4;
     }
 
-    v7 = [(CKAsset *)self signature];
-    v8 = [v16 initWithFileURL:v6 signature:v7];
+    signature2 = [(CKAsset *)self signature];
+    v8 = [v16 initWithFileURL:assetReference2 signature:signature2];
 LABEL_3:
     v9 = v8;
 
 LABEL_4:
-    v10 = [(CKAsset *)self itemTypeHint];
-    [v9 setItemTypeHint:v10];
+    itemTypeHint = [(CKAsset *)self itemTypeHint];
+    [v9 setItemTypeHint:itemTypeHint];
     goto LABEL_5;
   }
 
-  v17 = [(CKAsset *)self assetContent];
+  assetContent = [(CKAsset *)self assetContent];
 
-  if (!v17)
+  if (!assetContent)
   {
     sub_1001A397C(a2, self);
   }
 
   v18 = [CKAsset alloc];
-  v10 = [(CKAsset *)self assetContent];
-  v19 = [(CKAsset *)self itemTypeHint];
-  v9 = [v18 initWithAssetContent:v10 itemTypeHint:v19];
+  itemTypeHint = [(CKAsset *)self assetContent];
+  itemTypeHint2 = [(CKAsset *)self itemTypeHint];
+  v9 = [v18 initWithAssetContent:itemTypeHint itemTypeHint:itemTypeHint2];
 
 LABEL_5:
-  v11 = [(CKAsset *)self assetTransferOptions];
-  [v9 setAssetTransferOptions:v11];
+  assetTransferOptions = [(CKAsset *)self assetTransferOptions];
+  [v9 setAssetTransferOptions:assetTransferOptions];
 
-  v12 = [(CKAsset *)self boundaryKey];
-  [v9 setBoundaryKey:v12];
+  boundaryKey = [(CKAsset *)self boundaryKey];
+  [v9 setBoundaryKey:boundaryKey];
 
   return v9;
 }

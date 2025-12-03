@@ -1,5 +1,5 @@
 @interface SMSToSuperParserContext
-- (void)_addPart:(id)a3;
+- (void)_addPart:(id)part;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(SMSToSuperParserContext *)&v3 dealloc];
 }
 
-- (void)_addPart:(id)a3
+- (void)_addPart:(id)part
 {
-  if (a3)
+  if (part)
   {
     orderedParts = self->_orderedParts;
     if (!orderedParts)
@@ -23,7 +23,7 @@
       self->_orderedParts = orderedParts;
     }
 
-    [(NSMutableArray *)orderedParts addObject:a3];
+    [(NSMutableArray *)orderedParts addObject:part];
   }
 }
 

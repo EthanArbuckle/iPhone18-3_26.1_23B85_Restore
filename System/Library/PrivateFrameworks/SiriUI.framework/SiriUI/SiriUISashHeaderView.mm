@@ -1,17 +1,17 @@
 @interface SiriUISashHeaderView
 + (id)reuseIdentifier;
-- (SiriUISashHeaderView)initWithFrame:(CGRect)a3;
+- (SiriUISashHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTitleText:(id)a3;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation SiriUISashHeaderView
 
-- (SiriUISashHeaderView)initWithFrame:(CGRect)a3
+- (SiriUISashHeaderView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SiriUISashHeaderView;
-  v3 = [(SiriUISashHeaderView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUISashHeaderView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -23,8 +23,8 @@
     [(UILabel *)v6 setFont:v7];
 
     v8 = v3->_headerLabel;
-    v9 = [MEMORY[0x277D75348] siriui_textColor];
-    [(UILabel *)v8 setTextColor:v9];
+    siriui_textColor = [MEMORY[0x277D75348] siriui_textColor];
+    [(UILabel *)v8 setTextColor:siriui_textColor];
 
     [(UILabel *)v3->_headerLabel setTextAlignment:0];
     [(UILabel *)v3->_headerLabel setNumberOfLines:1];
@@ -50,9 +50,9 @@
   [(UILabel *)headerLabel setFrame:v6];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  [(UILabel *)self->_headerLabel setText:a3];
+  [(UILabel *)self->_headerLabel setText:text];
 
   [(SiriUISashHeaderView *)self setNeedsLayout];
 }

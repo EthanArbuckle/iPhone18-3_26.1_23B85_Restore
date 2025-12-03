@@ -1,14 +1,14 @@
 @interface _DASLogCondition
-+ (id)withCondition:(id)a3;
++ (id)withCondition:(id)condition;
 @end
 
 @implementation _DASLogCondition
 
-+ (id)withCondition:(id)a3
++ (id)withCondition:(id)condition
 {
-  v3 = a3;
+  conditionCopy = condition;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setCondition:v3];
+  [v4 setCondition:conditionCopy];
 
   return v4;
 }

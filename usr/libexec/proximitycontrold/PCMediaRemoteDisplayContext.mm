@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PCMediaRemoteDisplayContext.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

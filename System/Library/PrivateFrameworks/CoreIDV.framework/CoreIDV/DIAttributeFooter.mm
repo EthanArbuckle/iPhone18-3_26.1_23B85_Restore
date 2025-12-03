@@ -1,26 +1,26 @@
 @interface DIAttributeFooter
 - (DIAttributeFooter)init;
-- (DIAttributeFooter)initWithCoder:(id)a3;
+- (DIAttributeFooter)initWithCoder:(id)coder;
 - (id)defaultValue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefaultValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefaultValue:(id)value;
 @end
 
 @implementation DIAttributeFooter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DIAttributeFooter;
-  [(DIAttributeLabel *)&v3 encodeWithCoder:a3];
+  [(DIAttributeLabel *)&v3 encodeWithCoder:coder];
 }
 
-- (DIAttributeFooter)initWithCoder:(id)a3
+- (DIAttributeFooter)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DIAttributeFooter;
-  return [(DIAttributeLabel *)&v4 initWithCoder:a3];
+  return [(DIAttributeLabel *)&v4 initWithCoder:coder];
 }
 
 - (DIAttributeFooter)init
@@ -37,27 +37,27 @@
   return v3;
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeFooter;
-  [(DIAttributeLabel *)&v3 setDefaultValue:a3];
+  [(DIAttributeLabel *)&v3 setDefaultValue:value];
 }
 
 - (id)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeFooter;
-  v2 = [(DIAttributeLabel *)&v4 defaultValue];
+  defaultValue = [(DIAttributeLabel *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(DIAttributeFooter *)self defaultValue];
-  [v3 appendFormat:@"defaultValue: '%@'; ", v4];
+  defaultValue = [(DIAttributeFooter *)self defaultValue];
+  [v3 appendFormat:@"defaultValue: '%@'; ", defaultValue];
 
   [v3 appendFormat:@">"];
 

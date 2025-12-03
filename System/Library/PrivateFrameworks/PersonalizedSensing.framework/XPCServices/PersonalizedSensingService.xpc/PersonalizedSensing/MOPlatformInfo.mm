@@ -240,15 +240,15 @@ void __46__MOPlatformInfo__createDefaultsManagerDaemon__block_invoke(id a1)
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isSeedBuild
@@ -258,47 +258,47 @@ void __46__MOPlatformInfo__createDefaultsManagerDaemon__block_invoke(id a1)
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isDNUEnabled
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  isDiagnosticSubmissionAllowed = [v2 isDiagnosticSubmissionAllowed];
 
   v4 = +[MOPlatformInfo _createDefaultsManagerDaemon];
   v5 = [v4 objectForKey:@"PlatformInfoOverrideIsDNUEnabled"];
   v6 = v5;
   if (v5)
   {
-    v3 = [v5 BOOLValue];
+    isDiagnosticSubmissionAllowed = [v5 BOOLValue];
   }
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 + (BOOL)isIHAEnabled
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  isHealthDataSubmissionAllowed = [v2 isHealthDataSubmissionAllowed];
 
   v4 = +[MOPlatformInfo _createDefaultsManagerDaemon];
   v5 = [v4 objectForKey:@"PlatformInfoOverrideIsIHAEnabled"];
   v6 = v5;
   if (v5)
   {
-    v3 = [v5 BOOLValue];
+    isHealthDataSubmissionAllowed = [v5 BOOLValue];
   }
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 + (BOOL)wasBuildVersionUpdated
@@ -397,7 +397,7 @@ void __52__MOPlatformInfo_generativeModelsAvailabilityStatus__block_invoke(uint6
 
 + (void)getDeviceClass
 {
-  v2 = *a1;
+  v2 = *self;
   v3[0] = 67109120;
   v3[1] = v2;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Could not get device class (MGError=%d)", v3, 8u);

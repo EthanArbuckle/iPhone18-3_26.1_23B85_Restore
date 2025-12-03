@@ -1,16 +1,16 @@
 @interface _ATXInternalNotification
-+ (void)postData:(id)a3 forNotificationNamed:(id)a4;
-- (_ATXInternalNotification)initWithNotificationName:(id)a3;
++ (void)postData:(id)data forNotificationNamed:(id)named;
+- (_ATXInternalNotification)initWithNotificationName:(id)name;
 - (void)dealloc;
-- (void)registerForNotifications:(id)a3;
+- (void)registerForNotifications:(id)notifications;
 @end
 
 @implementation _ATXInternalNotification
 
-- (_ATXInternalNotification)initWithNotificationName:(id)a3
+- (_ATXInternalNotification)initWithNotificationName:(id)name
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [(_ATXInternalNotification *)a2 initWithNotificationName:?];
   }
@@ -21,7 +21,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_notificationName, a3);
+    objc_storeStrong(&v7->_notificationName, name);
     pthread_mutex_init(&v8->_lock, 0);
   }
 
@@ -33,8 +33,8 @@
   pthread_mutex_lock(&self->_lock);
   if (self->_token)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_token];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_token];
   }
 
   pthread_mutex_unlock(&self->_lock);
@@ -44,20 +44,20 @@
   [(_ATXInternalNotification *)&v4 dealloc];
 }
 
-- (void)registerForNotifications:(id)a3
+- (void)registerForNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   pthread_mutex_lock(&self->_lock);
   if (!self->_token)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationName = self->_notificationName;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53___ATXInternalNotification_registerForNotifications___block_invoke;
     v9[3] = &unk_27859E970;
-    v10 = v4;
-    v7 = [v5 addObserverForName:notificationName object:0 queue:0 usingBlock:v9];
+    v10 = notificationsCopy;
+    v7 = [defaultCenter addObserverForName:notificationName object:0 queue:0 usingBlock:v9];
     token = self->_token;
     self->_token = v7;
   }
@@ -65,15 +65,15 @@
   pthread_mutex_unlock(&self->_lock);
 }
 
-+ (void)postData:(id)a3 forNotificationNamed:(id)a4
++ (void)postData:(id)data forNotificationNamed:(id)named
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  namedCopy = named;
+  if (dataCopy)
   {
     v10 = @"data";
-    v11[0] = v5;
+    v11[0] = dataCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -82,8 +82,8 @@
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:v6 object:0 userInfo:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:namedCopy object:0 userInfo:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 }

@@ -1,16 +1,16 @@
 @interface _NMRSendCommandResultMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)handlerReturnStatusAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)handlerReturnStatusAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasOriginIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasOriginIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRSendCommandResultMessageProtobuf
@@ -23,9 +23,9 @@
   [(_NMRSendCommandResultMessageProtobuf *)&v3 dealloc];
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -38,23 +38,23 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)handlerReturnStatusAtIndex:(unint64_t)a3
+- (unsigned)handlerReturnStatusAtIndex:(unint64_t)index
 {
   p_handlerReturnStatus = &self->_handlerReturnStatus;
   count = self->_handlerReturnStatus.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_handlerReturnStatus->list[a3];
+  return p_handlerReturnStatus->list[index];
 }
 
-- (void)setHasOriginIdentifier:(BOOL)a3
+- (void)setHasOriginIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -72,8 +72,8 @@
   v7.receiver = self;
   v7.super_class = _NMRSendCommandResultMessageProtobuf;
   v3 = [(_NMRSendCommandResultMessageProtobuf *)&v7 description];
-  v4 = [(_NMRSendCommandResultMessageProtobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRSendCommandResultMessageProtobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -108,15 +108,15 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_handlerReturnStatus.count)
@@ -126,7 +126,7 @@
     {
       v7 = self->_handlerReturnStatus.list[v6];
       PBDataWriterWriteUint32Field();
-      v4 = v11;
+      toCopy = v11;
       ++v6;
     }
 
@@ -138,7 +138,7 @@
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
   }
 
@@ -146,27 +146,27 @@
   {
     originIdentifier = self->_originIdentifier;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[10] = self->_errorCode;
-    *(v4 + 48) |= 2u;
+    toCopy[10] = self->_errorCode;
+    *(toCopy + 48) |= 2u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(_NMRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount])
   {
     [v9 clearHandlerReturnStatus];
-    v5 = [(_NMRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount];
-    if (v5)
+    handlerReturnStatusCount = [(_NMRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount];
+    if (handlerReturnStatusCount)
     {
-      v6 = v5;
+      v6 = handlerReturnStatusCount;
       for (i = 0; i != v6; ++i)
       {
         [v9 addHandlerReturnStatus:{-[_NMRSendCommandResultMessageProtobuf handlerReturnStatusAtIndex:](self, "handlerReturnStatusAtIndex:", i)}];
@@ -189,9 +189,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if ((*&self->_has & 2) != 0)
   {
@@ -217,24 +217,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_errorCode != *(v4 + 10))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_errorCode != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_17;
   }
@@ -248,21 +248,21 @@ LABEL_17:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_17;
   }
 
-  v6 = (*(v4 + 48) & 4) == 0;
+  v6 = (*(equalCopy + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_originIdentifier != *(v4 + 11))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_originIdentifier != *(equalCopy + 11))
     {
       goto LABEL_17;
     }
@@ -334,20 +334,20 @@ LABEL_18:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[12] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[12] & 2) != 0)
   {
-    self->_errorCode = v4[10];
+    self->_errorCode = fromCopy[10];
     *&self->_has |= 2u;
   }
 
-  v9 = v4;
-  v5 = [v4 handlerReturnStatusCount];
-  if (v5)
+  v9 = fromCopy;
+  handlerReturnStatusCount = [fromCopy handlerReturnStatusCount];
+  if (handlerReturnStatusCount)
   {
-    v6 = v5;
+    v6 = handlerReturnStatusCount;
     for (i = 0; i != v6; ++i)
     {
       -[_NMRSendCommandResultMessageProtobuf addHandlerReturnStatus:](self, "addHandlerReturnStatus:", [v9 handlerReturnStatusAtIndex:i]);

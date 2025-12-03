@@ -1,7 +1,7 @@
 @interface BMAccessDescriptor
-- (BMAccessDescriptor)accessDescriptorWithAccessMode:(unint64_t)a3;
-- (BMAccessDescriptor)initWithDomain:(unint64_t)a3 accessMode:(unint64_t)a4 resource:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMAccessDescriptor)accessDescriptorWithAccessMode:(unint64_t)mode;
+- (BMAccessDescriptor)initWithDomain:(unint64_t)domain accessMode:(unint64_t)mode resource:(id)resource;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -20,11 +20,11 @@
   return v6 ^ v8;
 }
 
-- (BMAccessDescriptor)initWithDomain:(unint64_t)a3 accessMode:(unint64_t)a4 resource:(id)a5
+- (BMAccessDescriptor)initWithDomain:(unint64_t)domain accessMode:(unint64_t)mode resource:(id)resource
 {
-  v9 = a5;
-  v10 = [v9 name];
-  IsPathSafe = BMIdentifierIsPathSafe(v10);
+  resourceCopy = resource;
+  name = [resourceCopy name];
+  IsPathSafe = BMIdentifierIsPathSafe(name);
 
   if (IsPathSafe)
   {
@@ -34,16 +34,16 @@
     v13 = v12;
     if (v12)
     {
-      v12->_domain = a3;
-      v12->_mode = a4;
-      objc_storeStrong(&v12->_resource, a5);
+      v12->_domain = domain;
+      v12->_mode = mode;
+      objc_storeStrong(&v12->_resource, resource);
       v14 = +[BMPersonaUtilities currentPersonaIdentifier];
       personaIdentifier = v13->_personaIdentifier;
       v13->_personaIdentifier = v14;
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -54,35 +54,35 @@
       [BMAccessDescriptor initWithDomain:v17 accessMode:? resource:?];
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (BMAccessDescriptor)accessDescriptorWithAccessMode:(unint64_t)a3
+- (BMAccessDescriptor)accessDescriptorWithAccessMode:(unint64_t)mode
 {
-  if (self->_mode == a3)
+  if (self->_mode == mode)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_alloc(objc_opt_class()) initWithDomain:self->_domain accessMode:a3 resource:self->_resource];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithDomain:self->_domain accessMode:mode resource:self->_resource];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_domain == v4[1] && self->_mode == v4[2] && [(BMResourceSpecifier *)self->_resource isEqual:v4[3]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_domain == equalCopy[1] && self->_mode == equalCopy[2] && [(BMResourceSpecifier *)self->_resource isEqual:equalCopy[3]])
   {
     personaIdentifier = self->_personaIdentifier;
-    if (personaIdentifier | v4[4])
+    if (personaIdentifier | equalCopy[4])
     {
       v6 = [(NSString *)personaIdentifier isEqual:?];
     }
@@ -106,8 +106,8 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMAccessModePrintableDescription(self->_mode);
   resource = self->_resource;
-  v6 = [(BMAccessDescriptor *)self domain];
-  v7 = v6;
+  domain = [(BMAccessDescriptor *)self domain];
+  v7 = domain;
   if (self->_personaIdentifier)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@" as persona %@", self->_personaIdentifier];
@@ -116,7 +116,7 @@
 
   else
   {
-    v9 = [v3 initWithFormat:@"<BMAccessDescriptor: %@ access to %@ in domain %lu%@>", v4, resource, v6, &stru_1F20E2850];
+    v9 = [v3 initWithFormat:@"<BMAccessDescriptor: %@ access to %@ in domain %lu%@>", v4, resource, domain, &stru_1F20E2850];
   }
 
   return v9;

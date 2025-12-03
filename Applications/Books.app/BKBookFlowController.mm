@@ -1,79 +1,79 @@
 @interface BKBookFlowController
-- (BKBookFlowController)initWithLibraryAssetProvider:(id)a3;
+- (BKBookFlowController)initWithLibraryAssetProvider:(id)provider;
 - (BKSceneHosting)sceneHosting;
-- (BOOL)_isPresenterAudiobook:(id)a3;
-- (BOOL)_shouldOpenBookUsingLargeCover:(id)a3;
-- (BOOL)_wantsMinifiedAssetPresenterToOpenForTransaction:(id)a3 forceOpen:(BOOL)a4;
-- (BOOL)isOpeningFromCard:(id)a3 options:(id)a4;
+- (BOOL)_isPresenterAudiobook:(id)audiobook;
+- (BOOL)_shouldOpenBookUsingLargeCover:(id)cover;
+- (BOOL)_wantsMinifiedAssetPresenterToOpenForTransaction:(id)transaction forceOpen:(BOOL)open;
+- (BOOL)isOpeningFromCard:(id)card options:(id)options;
 - (CGRect)openAnimationRect;
 - (CGRect)openAnimationSourceRect;
-- (id)_bookFlowAssetPresentingForShowAssetAction:(id)a3;
+- (id)_bookFlowAssetPresentingForShowAssetAction:(id)action;
 - (id)_currentAssetPresentersFromAllScenes;
-- (id)_currentPresenterFromAllScenesForAssetID:(id)a3;
+- (id)_currentPresenterFromAllScenesForAssetID:(id)d;
 - (id)_dockedAssetViewController;
-- (id)_largeCoverViewControllerForAssetIdentifier:(id)a3 download:(BOOL)a4 options:(id)a5 minifiedPresenter:(id)a6 holdAnimationAssertion:(id)a7 withTransaction:(id)a8;
-- (id)_largeCoverViewControllerForBook:(id)a3 options:(id)a4 transaction:(id)a5 minifiedPresenter:(id)a6 holdAnimationAssertion:(id)a7;
-- (id)_optionsForLibraryAsset:(id)a3 transaction:(id)a4;
-- (id)_prepareOpenFromCardOverlayWithTransaction:(id)a3 assetIdentifier:(id)a4 options:(id)a5;
-- (id)_pushLargeCoverAndOpenBook:(id)a3 options:(id)a4 minifiedPresenter:(id)a5 animated:(BOOL)a6 transaction:(id)a7 completion:(id)a8;
-- (id)_removePresenters:(id)a3 thatMustStayOpenWhenOpeningBook:(id)a4;
+- (id)_largeCoverViewControllerForAssetIdentifier:(id)identifier download:(BOOL)download options:(id)options minifiedPresenter:(id)presenter holdAnimationAssertion:(id)assertion withTransaction:(id)transaction;
+- (id)_largeCoverViewControllerForBook:(id)book options:(id)options transaction:(id)transaction minifiedPresenter:(id)presenter holdAnimationAssertion:(id)assertion;
+- (id)_optionsForLibraryAsset:(id)asset transaction:(id)transaction;
+- (id)_prepareOpenFromCardOverlayWithTransaction:(id)transaction assetIdentifier:(id)identifier options:(id)options;
+- (id)_pushLargeCoverAndOpenBook:(id)book options:(id)options minifiedPresenter:(id)presenter animated:(BOOL)animated transaction:(id)transaction completion:(id)completion;
+- (id)_removePresenters:(id)presenters thatMustStayOpenWhenOpeningBook:(id)book;
 - (id)_storeController;
-- (id)bookPresenterCurrentlyOpenBookForSingleScene:(id)a3;
-- (id)currentAssetPresentersForSingleSceneWithTransaction:(id)a3;
-- (void)_closeMinifiedPresenters:(id)a3 excludeAssetID:(id)a4 isAudiobook:(BOOL)a5 completion:(id)a6;
-- (void)_closePresenter:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_closePresenters:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_libraryOwnershipNotification:(id)a3;
-- (void)_obtainImageForAsset:(id)a3 withAssetIdentifier:(id)a4 options:(id)a5 withTransaction:(id)a6 completion:(id)a7;
-- (void)_openPDFAsset:(id)a3;
-- (void)_optionallyCloseCardStack:(id)a3 inPresentedVC:(id)a4 completion:(id)a5;
-- (void)_pendingAssetUpdateNotification:(id)a3;
-- (void)_popToPresenterIfNeeded:(id)a3 completion:(id)a4;
-- (void)_prepareMinifiedAssetPresenterForAssetID:(id)a3 transaction:(id)a4 force:(BOOL)a5 openBook:(BOOL)a6 showRestorationScrim:(BOOL)a7;
-- (void)_presentItem:(id)a3 transaction:(id)a4 host:(id)a5 source:(id)a6 options:(id)a7;
-- (void)_presentViewController:(id)a3 bookFlowPresenting:(id)a4 options:(id)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)_presentViewController:(id)a3 transaction:(id)a4 animated:(BOOL)a5 overlayView:(id)a6 options:(id)a7 completion:(id)a8;
-- (void)_processAndClearReopenAssetIDs:(id)a3 options:(id)a4 assetIDToPresenterMap:(id)a5;
+- (id)bookPresenterCurrentlyOpenBookForSingleScene:(id)scene;
+- (id)currentAssetPresentersForSingleSceneWithTransaction:(id)transaction;
+- (void)_closeMinifiedPresenters:(id)presenters excludeAssetID:(id)d isAudiobook:(BOOL)audiobook completion:(id)completion;
+- (void)_closePresenter:(id)presenter animated:(BOOL)animated completion:(id)completion;
+- (void)_closePresenters:(id)presenters animated:(BOOL)animated completion:(id)completion;
+- (void)_libraryOwnershipNotification:(id)notification;
+- (void)_obtainImageForAsset:(id)asset withAssetIdentifier:(id)identifier options:(id)options withTransaction:(id)transaction completion:(id)completion;
+- (void)_openPDFAsset:(id)asset;
+- (void)_optionallyCloseCardStack:(id)stack inPresentedVC:(id)c completion:(id)completion;
+- (void)_pendingAssetUpdateNotification:(id)notification;
+- (void)_popToPresenterIfNeeded:(id)needed completion:(id)completion;
+- (void)_prepareMinifiedAssetPresenterForAssetID:(id)d transaction:(id)transaction force:(BOOL)force openBook:(BOOL)book showRestorationScrim:(BOOL)scrim;
+- (void)_presentItem:(id)item transaction:(id)transaction host:(id)host source:(id)source options:(id)options;
+- (void)_presentViewController:(id)controller bookFlowPresenting:(id)presenting options:(id)options animated:(BOOL)animated completion:(id)completion;
+- (void)_presentViewController:(id)controller transaction:(id)transaction animated:(BOOL)animated overlayView:(id)view options:(id)options completion:(id)completion;
+- (void)_processAndClearReopenAssetIDs:(id)ds options:(id)options assetIDToPresenterMap:(id)map;
 - (void)_processNextShowAssetInvocation;
-- (void)_promptInVCToRestartReadingFromBeginning:(id)a3 completion:(id)a4;
-- (void)_removeViewForCardOverlayWithTransaction:(id)a3 options:(id)a4;
-- (void)_replacePresenterWithTransaction:(id)a3 oldPresenter:(id)a4 newPresenter:(id)a5 completion:(id)a6;
-- (void)_showAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)_showAssetWithoutStateRestoration:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)_showRestorationScrimForAssetID:(id)a3 transaction:(id)a4;
-- (void)_showStoreAsset:(id)a3 asset:(id)a4 options:(id)a5;
-- (void)_updateAssetAfterOpen:(id)a3;
-- (void)closeAllPresentersForSingleSceneWithTransaction:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_promptInVCToRestartReadingFromBeginning:(id)beginning completion:(id)completion;
+- (void)_removeViewForCardOverlayWithTransaction:(id)transaction options:(id)options;
+- (void)_replacePresenterWithTransaction:(id)transaction oldPresenter:(id)presenter newPresenter:(id)newPresenter completion:(id)completion;
+- (void)_showAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion;
+- (void)_showAssetWithoutStateRestoration:(id)restoration assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion;
+- (void)_showRestorationScrimForAssetID:(id)d transaction:(id)transaction;
+- (void)_showStoreAsset:(id)asset asset:(id)a4 options:(id)options;
+- (void)_updateAssetAfterOpen:(id)open;
+- (void)closeAllPresentersForSingleSceneWithTransaction:(id)transaction animated:(BOOL)animated completion:(id)completion;
 - (void)dealloc;
-- (void)enqueueShowAssetWithTransactionProvider:(id)a3 assetID:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)handleBookOpenErrorWithTransaction:(id)a3 error:(id)a4 assetIdentifier:(id)a5;
-- (void)handleFamilyChangeErrorWithTransaction:(id)a3 error:(id)a4 assetIdentifier:(id)a5;
-- (void)minifiedAssetPresenterForAssetIdentifier:(id)a3 transaction:(id)a4 completion:(id)a5;
-- (void)minifiedAssetPresenterForAssetIdentifier:(id)a3 transaction:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)preflightShowAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 completion:(id)a5;
-- (void)presentItem:(id)a3 transaction:(id)a4 host:(id)a5 source:(id)a6 options:(id)a7;
-- (void)requestOpenLastKnownBookWithTransaction:(id)a3;
-- (void)requestReopenAssetIDs:(id)a3 options:(id)a4;
-- (void)showAssetWithTransaction:(id)a3 assetID:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)showAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)showAssetWithTransaction:(id)a3 storeID:(id)a4 options:(id)a5;
-- (void)showInstallationErrorWithTransaction:(id)a3 assetIdentifier:(id)a4;
-- (void)showNotEnoughMemAlertWithTransaction:(id)a3 name:(id)a4;
-- (void)showStoreAsset:(id)a3 asset:(id)a4 options:(id)a5;
+- (void)enqueueShowAssetWithTransactionProvider:(id)provider assetID:(id)d location:(id)location options:(id)options completion:(id)completion;
+- (void)handleBookOpenErrorWithTransaction:(id)transaction error:(id)error assetIdentifier:(id)identifier;
+- (void)handleFamilyChangeErrorWithTransaction:(id)transaction error:(id)error assetIdentifier:(id)identifier;
+- (void)minifiedAssetPresenterForAssetIdentifier:(id)identifier transaction:(id)transaction completion:(id)completion;
+- (void)minifiedAssetPresenterForAssetIdentifier:(id)identifier transaction:(id)transaction options:(id)options completion:(id)completion;
+- (void)preflightShowAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier completion:(id)completion;
+- (void)presentItem:(id)item transaction:(id)transaction host:(id)host source:(id)source options:(id)options;
+- (void)requestOpenLastKnownBookWithTransaction:(id)transaction;
+- (void)requestReopenAssetIDs:(id)ds options:(id)options;
+- (void)showAssetWithTransaction:(id)transaction assetID:(id)d location:(id)location options:(id)options completion:(id)completion;
+- (void)showAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion;
+- (void)showAssetWithTransaction:(id)transaction storeID:(id)d options:(id)options;
+- (void)showInstallationErrorWithTransaction:(id)transaction assetIdentifier:(id)identifier;
+- (void)showNotEnoughMemAlertWithTransaction:(id)transaction name:(id)name;
+- (void)showStoreAsset:(id)asset asset:(id)a4 options:(id)options;
 @end
 
 @implementation BKBookFlowController
 
-- (BKBookFlowController)initWithLibraryAssetProvider:(id)a3
+- (BKBookFlowController)initWithLibraryAssetProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = BKBookFlowController;
   v5 = [(BKBookFlowController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(BKBookFlowController *)v5 setLibraryAssetProvider:v4];
+    [(BKBookFlowController *)v5 setLibraryAssetProvider:providerCopy];
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"_libraryOwnershipNotification:" name:BKLibraryOwnershipDidChangeNotification object:0];
 
@@ -98,10 +98,10 @@
   [(BKBookFlowController *)&v4 dealloc];
 }
 
-- (void)_pendingAssetUpdateNotification:(id)a3
+- (void)_pendingAssetUpdateNotification:(id)notification
 {
-  v4 = [a3 object];
-  [v4 assetID];
+  object = [notification object];
+  [object assetID];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100089FA8;
@@ -111,25 +111,25 @@
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)_libraryOwnershipNotification:(id)a3
+- (void)_libraryOwnershipNotification:(id)notification
 {
-  v27 = self;
-  v30 = a3;
-  v3 = [v30 userInfo];
+  selfCopy = self;
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   objc_opt_class();
   v4 = BCGetUnsafeAppDelegateReference();
   v5 = BUDynamicCast();
 
   v28 = v5;
-  v6 = [v5 ubiquityStatusMonitor];
-  [v6 isICloudDriveEnabled];
+  ubiquityStatusMonitor = [v5 ubiquityStatusMonitor];
+  [ubiquityStatusMonitor isICloudDriveEnabled];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v29 = v3;
-  obj = [v3 objectForKeyedSubscript:BKLibraryOwnershipAssetsKey];
+  v29 = userInfo;
+  obj = [userInfo objectForKeyedSubscript:BKLibraryOwnershipAssetsKey];
   v7 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v7)
   {
@@ -151,25 +151,25 @@
         }
 
         v10 = *(*(&v41 + 1) + 8 * i);
-        v11 = [v10 objectForKeyedSubscript:{v36, v27}];
-        v12 = [v11 stringValue];
+        v11 = [v10 objectForKeyedSubscript:{v36, selfCopy}];
+        stringValue = [v11 stringValue];
 
         v13 = [v10 objectForKeyedSubscript:v35];
-        v14 = [v13 stringValue];
+        stringValue2 = [v13 stringValue];
 
         v15 = [v10 objectForKeyedSubscript:v34];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
         v17 = [v10 objectForKeyedSubscript:v33];
-        v18 = [v17 integerValue];
+        integerValue2 = [v17 integerValue];
 
         v19 = [v10 objectForKeyedSubscript:v32];
         v20 = @"com.apple.iBooks.plist.sample.stashed";
         v21 = @"com.apple.ibooks.plist.untethered";
-        if ([v12 isEqualToString:v20])
+        if ([stringValue isEqualToString:v20])
         {
-          v22 = [v14 isEqualToString:v21];
-          if (v16 == 2)
+          v22 = [stringValue2 isEqualToString:v21];
+          if (integerValue == 2)
           {
             v23 = 1;
           }
@@ -185,8 +185,8 @@
           v23 = 0;
         }
 
-        v24 = [v12 isEqualToString:v21];
-        if (v16 == 2)
+        v24 = [stringValue isEqualToString:v21];
+        if (integerValue == 2)
         {
           v25 = v24;
         }
@@ -196,7 +196,7 @@
           v25 = 0;
         }
 
-        if (v19 && v18 == 1 && (v23 & 1) == 0 && (v25 & 1) == 0)
+        if (v19 && integerValue2 == 1 && (v23 & 1) == 0 && (v25 & 1) == 0)
         {
           v26 = v38;
           if (!v38)
@@ -226,7 +226,7 @@
     block[1] = 3221225472;
     block[2] = sub_10008A59C;
     block[3] = &unk_100A03440;
-    block[4] = v27;
+    block[4] = selfCopy;
     v40 = v38;
     dispatch_async(&_dispatch_main_q, block);
   }
@@ -235,39 +235,39 @@
 - (id)_storeController
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 storeController];
+  storeController = [v2 storeController];
 
-  return v3;
+  return storeController;
 }
 
-- (id)_optionsForLibraryAsset:(id)a3 transaction:(id)a4
+- (id)_optionsForLibraryAsset:(id)asset transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  transactionCopy = transaction;
   v8 = +[NSMutableDictionary dictionary];
-  if ([v6 isPreorderBook])
+  if ([assetCopy isPreorderBook])
   {
     [v8 setObject:&__kCFBooleanTrue forKey:AEHelperNumberIsPreorderKey];
   }
 
-  if ([v6 isAudiobook])
+  if ([assetCopy isAudiobook])
   {
-    v9 = [v6 lastOpenDate];
+    lastOpenDate = [assetCopy lastOpenDate];
 
-    if (v9)
+    if (lastOpenDate)
     {
-      v10 = [v6 lastOpenDate];
-      [v8 setObject:v10 forKey:AEHelperDateLastOpenKey];
+      lastOpenDate2 = [assetCopy lastOpenDate];
+      [v8 setObject:lastOpenDate2 forKey:AEHelperDateLastOpenKey];
     }
 
-    if ([v6 isStore])
+    if ([assetCopy isStore])
     {
-      v11 = [v6 supplementalContentAssets];
-      v12 = [v11 allObjects];
-      v13 = [v12 bu_arrayByInvokingBlock:&stru_100A04EA8];
-      v14 = [v13 bu_arrayByRemovingNSNulls];
+      supplementalContentAssets = [assetCopy supplementalContentAssets];
+      allObjects = [supplementalContentAssets allObjects];
+      v13 = [allObjects bu_arrayByInvokingBlock:&stru_100A04EA8];
+      bu_arrayByRemovingNSNulls = [v13 bu_arrayByRemovingNSNulls];
 
-      [v8 setObject:v14 forKeyedSubscript:AEHelperNumberSupplementalContentAssetIDs];
+      [v8 setObject:bu_arrayByRemovingNSNulls forKeyedSubscript:AEHelperNumberSupplementalContentAssetIDs];
     }
 
     else
@@ -280,8 +280,8 @@
     v18[2] = sub_10008AE14;
     v18[3] = &unk_100A04ED0;
     v18[4] = self;
-    v19 = v7;
-    v20 = v6;
+    v19 = transactionCopy;
+    v20 = assetCopy;
     v15 = objc_retainBlock(v18);
     v16 = [v15 copy];
     [v8 setObject:v16 forKey:AEHelperImageMetadataCoverBlockKey];
@@ -292,23 +292,23 @@
   return v8;
 }
 
-- (id)_largeCoverViewControllerForBook:(id)a3 options:(id)a4 transaction:(id)a5 minifiedPresenter:(id)a6 holdAnimationAssertion:(id)a7
+- (id)_largeCoverViewControllerForBook:(id)book options:(id)options transaction:(id)transaction minifiedPresenter:(id)presenter holdAnimationAssertion:(id)assertion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  bookCopy = book;
+  optionsCopy = options;
+  assertionCopy = assertion;
+  presenterCopy = presenter;
+  transactionCopy = transaction;
   v17 = +[NSMutableDictionary dictionary];
   v18 = v17;
-  if (v13)
+  if (optionsCopy)
   {
-    [v17 addEntriesFromDictionary:v13];
+    [v17 addEntriesFromDictionary:optionsCopy];
   }
 
-  if (([v12 isDownloading] & 1) != 0 || (objc_msgSend(v12, "isLocal") & 1) == 0)
+  if (([bookCopy isDownloading] & 1) != 0 || (objc_msgSend(bookCopy, "isLocal") & 1) == 0)
   {
-    v19 = [v12 streamable] ^ 1;
+    v19 = [bookCopy streamable] ^ 1;
   }
 
   else
@@ -317,26 +317,26 @@
   }
 
   v20 = BKLibraryAssetIdentifierFromAsset();
-  v21 = [(BKBookFlowController *)self _largeCoverViewControllerForAssetIdentifier:v20 download:v19 options:v18 minifiedPresenter:v15 holdAnimationAssertion:v14 withTransaction:v16];
+  v21 = [(BKBookFlowController *)self _largeCoverViewControllerForAssetIdentifier:v20 download:v19 options:v18 minifiedPresenter:presenterCopy holdAnimationAssertion:assertionCopy withTransaction:transactionCopy];
 
   return v21;
 }
 
-- (void)_obtainImageForAsset:(id)a3 withAssetIdentifier:(id)a4 options:(id)a5 withTransaction:(id)a6 completion:(id)a7
+- (void)_obtainImageForAsset:(id)asset withAssetIdentifier:(id)identifier options:(id)options withTransaction:(id)transaction completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 permanentOrTemporaryAssetID];
-  if ([v17 length])
+  assetCopy = asset;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  completionCopy = completion;
+  permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
+  if ([permanentOrTemporaryAssetID length])
   {
-    v63 = [v14 objectForKeyedSubscript:@"storeAsset"];
+    v63 = [optionsCopy objectForKeyedSubscript:@"storeAsset"];
     v18 = [v63 objectForKeyedSubscript:@"artwork"];
     objc_opt_class();
     v19 = BUDynamicCast();
-    v64 = v16;
+    v64 = completionCopy;
     v67 = v18;
     v62 = v19;
     if (v18)
@@ -345,8 +345,8 @@
       if (v19)
       {
         v21 = objc_alloc_init(BICProductProfileData);
-        v22 = [v20 assetID];
-        [v21 setIdentifier:v22];
+        assetID = [v20 assetID];
+        [v21 setIdentifier:assetID];
 
         v23 = [v67 objectForKeyedSubscript:@"url"];
         [v21 setUrl:v23];
@@ -368,9 +368,9 @@
       }
     }
 
-    if (v12)
+    if (assetCopy)
     {
-      v29 = [BKLibraryManager processingOptionsFor:v12 coverEffectsEnvironment:0];
+      v29 = [BKLibraryManager processingOptionsFor:assetCopy coverEffectsEnvironment:0];
     }
 
     else
@@ -378,29 +378,29 @@
       v29 = 2;
     }
 
-    v66 = v12;
+    v66 = assetCopy;
     objc_opt_class();
-    v32 = [v14 objectForKeyedSubscript:@"isRTL"];
+    v32 = [optionsCopy objectForKeyedSubscript:@"isRTL"];
     v33 = BUDynamicCast();
 
     v61 = v33;
-    v34 = [v33 BOOLValue];
+    bOOLValue = [v33 BOOLValue];
     v35 = +[UIScreen mainScreen];
     [v35 nativeBounds];
     v37 = v36;
     v39 = v38;
 
-    v65 = v15;
-    v60 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v15];
+    v65 = transactionCopy;
+    v60 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
     v59 = [v60 presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCUCoverEffectsEnvironment];
-    v40 = [v59 coverEffectsNightMode];
+    coverEffectsNightMode = [v59 coverEffectsNightMode];
     v41 = BCImageCacheLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
       sub_10078B464();
     }
 
-    if (v40)
+    if (coverEffectsNightMode)
     {
       v42 = 64;
     }
@@ -410,7 +410,7 @@
       v42 = 0;
     }
 
-    if (v34)
+    if (bOOLValue)
     {
       v43 = 128;
     }
@@ -421,24 +421,24 @@
     }
 
     v44 = v43 | v29 | v42;
-    v45 = [BICDescribedImage describedImageWithIdentifier:v17 size:v44 | 0x100u processingOptions:v37, v39];
+    v45 = [BICDescribedImage describedImageWithIdentifier:permanentOrTemporaryAssetID size:v44 | 0x100u processingOptions:v37, v39];
     [v45 setRequestOptions:18];
     [v45 setPriority:6];
-    v46 = [v14 objectForKeyedSubscript:@"title"];
+    v46 = [optionsCopy objectForKeyedSubscript:@"title"];
     [v45 setTitle:v46];
 
-    v47 = [v14 objectForKeyedSubscript:@"author"];
+    v47 = [optionsCopy objectForKeyedSubscript:@"author"];
     [v45 setAuthor:v47];
 
     v48 = [v45 copy];
     [v48 setRequestOptions:514];
-    v49 = [BICDescribedImage describedImageWithIdentifier:v17 size:v44 | 0x10u processingOptions:v37, v39];
+    v49 = [BICDescribedImage describedImageWithIdentifier:permanentOrTemporaryAssetID size:v44 | 0x10u processingOptions:v37, v39];
     [v49 setRequestOptions:18];
     [v49 setPriority:6];
-    v50 = [v14 objectForKeyedSubscript:@"title"];
+    v50 = [optionsCopy objectForKeyedSubscript:@"title"];
     [v49 setTitle:v50];
 
-    v51 = [v14 objectForKeyedSubscript:@"author"];
+    v51 = [optionsCopy objectForKeyedSubscript:@"author"];
     [v49 setAuthor:v51];
 
     v86[0] = 0;
@@ -499,7 +499,7 @@
     block[3] = &unk_100A04F20;
     v70 = v86;
     v71 = v84;
-    v16 = v64;
+    completionCopy = v64;
     v69 = v64;
     v72 = v82;
     dispatch_group_notify(v58, &_dispatch_main_q, block);
@@ -508,13 +508,13 @@
     _Block_object_dispose(v84, 8);
 
     _Block_object_dispose(v86, 8);
-    v15 = v65;
-    v12 = v66;
+    transactionCopy = v65;
+    assetCopy = v66;
   }
 
   else
   {
-    v30 = objc_retainBlock(v16);
+    v30 = objc_retainBlock(completionCopy);
     v31 = v30;
     if (v30)
     {
@@ -523,16 +523,16 @@
   }
 }
 
-- (id)_largeCoverViewControllerForAssetIdentifier:(id)a3 download:(BOOL)a4 options:(id)a5 minifiedPresenter:(id)a6 holdAnimationAssertion:(id)a7 withTransaction:(id)a8
+- (id)_largeCoverViewControllerForAssetIdentifier:(id)identifier download:(BOOL)download options:(id)options minifiedPresenter:(id)presenter holdAnimationAssertion:(id)assertion withTransaction:(id)transaction
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  presenterCopy = presenter;
+  assertionCopy = assertion;
+  transactionCopy = transaction;
   v19 = objc_opt_new();
-  v20 = [(BKBookFlowController *)self libraryAssetProvider];
-  v21 = [v20 libraryAssetOnMainQueueWithAssetIdentifier:v14];
+  libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+  v21 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
   v22 = sub_100089C18();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -540,33 +540,33 @@
     *buf = 141558530;
     v48 = 1752392040;
     v49 = 2112;
-    v50 = v14;
+    v50 = identifierCopy;
     v51 = 2112;
     v52 = v21;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] _largeCoverViewControllerForAssetIdentifier: %@", buf, 0x20u);
   }
 
-  v23 = [v21 contentType];
+  contentType = [v21 contentType];
   v34 = _NSConcreteStackBlock;
   v35 = 3221225472;
   v36 = sub_10008BE44;
   v37 = &unk_100A04FC0;
-  v24 = (v23 - 7) != 65534 && (v23 - 7) != 0xFFFF;
+  v24 = (contentType - 7) != 65534 && (contentType - 7) != 0xFFFF;
   v45 = v24;
-  v38 = v15;
-  v39 = v14;
-  v40 = v17;
-  v41 = self;
-  v46 = a4;
-  v42 = v16;
-  v43 = v18;
+  v38 = optionsCopy;
+  v39 = identifierCopy;
+  v40 = assertionCopy;
+  selfCopy = self;
+  downloadCopy = download;
+  v42 = presenterCopy;
+  v43 = transactionCopy;
   v25 = v19;
   v44 = v25;
-  v26 = v18;
-  v27 = v16;
-  v28 = v17;
-  v29 = v14;
-  v30 = v15;
+  v26 = transactionCopy;
+  v27 = presenterCopy;
+  v28 = assertionCopy;
+  v29 = identifierCopy;
+  v30 = optionsCopy;
   v31 = objc_retainBlock(&v34);
   [(BKBookFlowController *)self _obtainImageForAsset:v21 withAssetIdentifier:v29 options:v30 withTransaction:v26 completion:v31, v34, v35, v36, v37];
   v32 = v25;
@@ -574,83 +574,83 @@
   return v25;
 }
 
-- (id)_bookFlowAssetPresentingForShowAssetAction:(id)a3
+- (id)_bookFlowAssetPresentingForShowAssetAction:(id)action
 {
-  v4 = a3;
-  v5 = [(BKBookFlowController *)self sceneHosting];
-  v6 = [v5 defaultSceneControllerForTransaction:v4];
+  actionCopy = action;
+  sceneHosting = [(BKBookFlowController *)self sceneHosting];
+  v6 = [sceneHosting defaultSceneControllerForTransaction:actionCopy];
 
   if (!v6)
   {
     sub_10078B4D8();
   }
 
-  v7 = [v6 bookFlowAssetPresenting];
-  if (!v7)
+  bookFlowAssetPresenting = [v6 bookFlowAssetPresenting];
+  if (!bookFlowAssetPresenting)
   {
     sub_10078B510();
   }
 
-  return v7;
+  return bookFlowAssetPresenting;
 }
 
-- (void)_presentViewController:(id)a3 transaction:(id)a4 animated:(BOOL)a5 overlayView:(id)a6 options:(id)a7 completion:(id)a8
+- (void)_presentViewController:(id)controller transaction:(id)transaction animated:(BOOL)animated overlayView:(id)view options:(id)options completion:(id)completion
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  transactionCopy = transaction;
+  viewCopy = view;
+  optionsCopy = options;
+  completionCopy = completion;
   v19 = sub_100089C18();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v14;
+    v34 = controllerCopy;
     v35 = 1024;
-    v36 = v11;
+    v36 = animatedCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "_presentViewController: %@ animated: %{BOOL}d", buf, 0x12u);
   }
 
-  v20 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v15];
+  v20 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
   v21 = v20;
-  if (v16)
+  if (viewCopy)
   {
-    v22 = [v20 presenterModalPresentingViewController];
-    v23 = [v22 view];
-    [v23 addSubview:v16];
+    presenterModalPresentingViewController = [v20 presenterModalPresentingViewController];
+    view = [presenterModalPresentingViewController view];
+    [view addSubview:viewCopy];
 
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = sub_10008C78C;
     v28 = &unk_100A04FE8;
-    v29 = self;
-    v30 = v15;
-    v31 = v17;
-    v32 = v18;
+    selfCopy = self;
+    v30 = transactionCopy;
+    v31 = optionsCopy;
+    v32 = completionCopy;
     v24 = objc_retainBlock(&v25);
   }
 
   else
   {
-    v24 = objc_retainBlock(v18);
+    v24 = objc_retainBlock(completionCopy);
   }
 
-  [(BKBookFlowController *)self _presentViewController:v14 bookFlowPresenting:v21 options:v17 animated:v11 completion:v24, v25, v26, v27, v28, v29];
+  [(BKBookFlowController *)self _presentViewController:controllerCopy bookFlowPresenting:v21 options:optionsCopy animated:animatedCopy completion:v24, v25, v26, v27, v28, selfCopy];
 }
 
-- (void)_presentViewController:(id)a3 bookFlowPresenting:(id)a4 options:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_presentViewController:(id)controller bookFlowPresenting:(id)presenting options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v36 = a6;
-  v37 = a3;
-  v10 = a5;
-  v11 = a7;
-  v12 = a4;
-  v13 = [v12 presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost];
-  v35 = [v13 ba_effectiveAnalyticsTracker];
-  v14 = [v35 chainWithName:@"ContentReading"];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  optionsCopy = options;
+  completionCopy = completion;
+  presentingCopy = presenting;
+  v13 = [presentingCopy presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost];
+  ba_effectiveAnalyticsTracker = [v13 ba_effectiveAnalyticsTracker];
+  v14 = [ba_effectiveAnalyticsTracker chainWithName:@"ContentReading"];
   objc_opt_class();
-  v15 = [v10 objectForKeyedSubscript:@"interimTrackerPathOverride"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"interimTrackerPathOverride"];
   v16 = BUDynamicCast();
 
   if (v16)
@@ -660,9 +660,9 @@
     v14 = [v17 chainWithName:@"ContentReading"];
   }
 
-  [v37 ba_setAnalyticsTracker:v14];
+  [controllerCopy ba_setAnalyticsTracker:v14];
   objc_opt_class();
-  v18 = [v10 objectForKeyedSubscript:@"rawUpSellData"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"rawUpSellData"];
   v19 = BUDynamicCast();
 
   if (v19)
@@ -671,12 +671,12 @@
     objc_opt_class();
     v20 = [v19 valueForKey:BAUpSellLocationKey];
     v21 = BUDynamicCast();
-    v22 = [v21 integerValue];
+    integerValue = [v21 integerValue];
 
     objc_opt_class();
     v23 = [v19 valueForKey:BAUpSellVariantKey];
     v24 = BUDynamicCast();
-    v25 = [v24 integerValue];
+    integerValue2 = [v24 integerValue];
 
     objc_opt_class();
     v26 = [v19 objectForKeyedSubscript:BAUpSellVariantVersionKey];
@@ -686,7 +686,7 @@
     v28 = BUDynamicCast();
     if (v28)
     {
-      v29 = [[BAUpSellData alloc] initWithLocation:v22 variant:v25 variantVersion:v27];
+      v29 = [[BAUpSellData alloc] initWithLocation:integerValue variant:integerValue2 variantVersion:v27];
       [v28 setUpSellData:v29];
     }
 
@@ -694,7 +694,7 @@
   }
 
   objc_opt_class();
-  v30 = [v10 objectForKeyedSubscript:@"rawAppAnalyticsAdditionalData"];
+  v30 = [optionsCopy objectForKeyedSubscript:@"rawAppAnalyticsAdditionalData"];
   v31 = BUDynamicCast();
 
   if (v31 && _os_feature_enabled_impl())
@@ -708,14 +708,14 @@
     }
   }
 
-  [v37 setModalPresentationStyle:{0, v34}];
-  [v12 presenterShowModalController:v37 animated:v36 completion:v11];
+  [controllerCopy setModalPresentationStyle:{0, v34}];
+  [presentingCopy presenterShowModalController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (id)_removePresenters:(id)a3 thatMustStayOpenWhenOpeningBook:(id)a4
+- (id)_removePresenters:(id)presenters thatMustStayOpenWhenOpeningBook:(id)book
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  bookCopy = book;
+  v6 = [presenters mutableCopy];
   v7 = [v6 count];
   if (v7 - 1 >= 0)
   {
@@ -723,13 +723,13 @@
     do
     {
       --v8;
-      if ([v5 isSupplementalContent])
+      if ([bookCopy isSupplementalContent])
       {
-        v9 = [v5 supplementalContentParent];
-        v10 = [v9 assetID];
+        supplementalContentParent = [bookCopy supplementalContentParent];
+        assetID = [supplementalContentParent assetID];
         v11 = [v6 objectAtIndexedSubscript:v8];
-        v12 = [v11 assetPresenterAssetID];
-        v13 = [v10 isEqualToString:v12];
+        assetPresenterAssetID = [v11 assetPresenterAssetID];
+        v13 = [assetID isEqualToString:assetPresenterAssetID];
 
         if (v13)
         {
@@ -746,14 +746,14 @@
   return v14;
 }
 
-- (id)_pushLargeCoverAndOpenBook:(id)a3 options:(id)a4 minifiedPresenter:(id)a5 animated:(BOOL)a6 transaction:(id)a7 completion:(id)a8
+- (id)_pushLargeCoverAndOpenBook:(id)book options:(id)options minifiedPresenter:(id)presenter animated:(BOOL)animated transaction:(id)transaction completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v17];
+  bookCopy = book;
+  optionsCopy = options;
+  presenterCopy = presenter;
+  transactionCopy = transaction;
+  completionCopy = completion;
+  v19 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
   if (!v19)
   {
     sub_10078B548();
@@ -765,18 +765,18 @@
   v29[2] = sub_10008CE48;
   v29[3] = &unk_100A05060;
   v29[4] = self;
-  v30 = v14;
-  v31 = v15;
-  v32 = v17;
-  v20 = v33 = v16;
-  v36 = a6;
+  v30 = bookCopy;
+  v31 = optionsCopy;
+  v32 = transactionCopy;
+  v20 = v33 = presenterCopy;
+  animatedCopy = animated;
   v34 = v20;
-  v35 = v18;
-  v21 = v18;
-  v22 = v16;
-  v23 = v17;
-  v24 = v15;
-  v25 = v14;
+  v35 = completionCopy;
+  v21 = completionCopy;
+  v22 = presenterCopy;
+  v23 = transactionCopy;
+  v24 = optionsCopy;
+  v25 = bookCopy;
   [v19 presenterFinishModalTransitionsWithCompletion:v29];
   v26 = v35;
   v27 = v20;
@@ -784,29 +784,29 @@
   return v20;
 }
 
-- (void)enqueueShowAssetWithTransactionProvider:(id)a3 assetID:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7
+- (void)enqueueShowAssetWithTransactionProvider:(id)provider assetID:(id)d location:(id)location options:(id)options completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  locationCopy = location;
+  dCopy = d;
+  providerCopy = provider;
   v20 = objc_alloc_init(_BKShowAssetInvocation);
-  [(_BKShowAssetInvocation *)v20 setTransactionProvider:v16];
+  [(_BKShowAssetInvocation *)v20 setTransactionProvider:providerCopy];
 
-  [(_BKShowAssetInvocation *)v20 setAssetID:v15];
-  [(_BKShowAssetInvocation *)v20 setLocation:v14];
+  [(_BKShowAssetInvocation *)v20 setAssetID:dCopy];
+  [(_BKShowAssetInvocation *)v20 setLocation:locationCopy];
 
-  [(_BKShowAssetInvocation *)v20 setOptions:v13];
-  [(_BKShowAssetInvocation *)v20 setCompletion:v12];
+  [(_BKShowAssetInvocation *)v20 setOptions:optionsCopy];
+  [(_BKShowAssetInvocation *)v20 setCompletion:completionCopy];
 
-  v17 = [(BKBookFlowController *)self pendingShowAssetInvocations];
-  v18 = [v17 arrayByAddingObject:v20];
+  pendingShowAssetInvocations = [(BKBookFlowController *)self pendingShowAssetInvocations];
+  v18 = [pendingShowAssetInvocations arrayByAddingObject:v20];
   [(BKBookFlowController *)self setPendingShowAssetInvocations:v18];
 
-  v19 = [(BKBookFlowController *)self runningShowAssetInvocation];
+  runningShowAssetInvocation = [(BKBookFlowController *)self runningShowAssetInvocation];
 
-  if (!v19)
+  if (!runningShowAssetInvocation)
   {
     [(BKBookFlowController *)self _processNextShowAssetInvocation];
   }
@@ -814,35 +814,35 @@
 
 - (void)_processNextShowAssetInvocation
 {
-  v3 = [(BKBookFlowController *)self runningShowAssetInvocation];
+  runningShowAssetInvocation = [(BKBookFlowController *)self runningShowAssetInvocation];
 
-  if (v3)
+  if (runningShowAssetInvocation)
   {
     sub_10078B580();
   }
 
-  v4 = [(BKBookFlowController *)self pendingShowAssetInvocations];
-  v5 = [v4 count];
+  pendingShowAssetInvocations = [(BKBookFlowController *)self pendingShowAssetInvocations];
+  v5 = [pendingShowAssetInvocations count];
 
   if (v5)
   {
-    v6 = [(BKBookFlowController *)self pendingShowAssetInvocations];
-    v7 = [v6 firstObject];
-    [(BKBookFlowController *)self setRunningShowAssetInvocation:v7];
+    pendingShowAssetInvocations2 = [(BKBookFlowController *)self pendingShowAssetInvocations];
+    firstObject = [pendingShowAssetInvocations2 firstObject];
+    [(BKBookFlowController *)self setRunningShowAssetInvocation:firstObject];
 
-    v8 = [(BKBookFlowController *)self pendingShowAssetInvocations];
-    v9 = [v8 subarrayWithRange:{1, v5 - 1}];
+    pendingShowAssetInvocations3 = [(BKBookFlowController *)self pendingShowAssetInvocations];
+    v9 = [pendingShowAssetInvocations3 subarrayWithRange:{1, v5 - 1}];
     [(BKBookFlowController *)self setPendingShowAssetInvocations:v9];
 
-    v10 = [v7 transactionProvider];
+    transactionProvider = [firstObject transactionProvider];
 
-    if (v10)
+    if (transactionProvider)
     {
-      v11 = [v7 transactionProvider];
-      v12 = [v11 newShowAssetTransaction];
+      transactionProvider2 = [firstObject transactionProvider];
+      newShowAssetTransaction = [transactionProvider2 newShowAssetTransaction];
 
-      v13 = [v7 options];
-      v14 = [v13 mutableCopy];
+      options = [firstObject options];
+      v14 = [options mutableCopy];
 
       if (!v14)
       {
@@ -851,19 +851,19 @@
 
       if (+[BKSceneUtilities hasMultiWindowEnabled])
       {
-        [v14 setObject:v12 forKeyedSubscript:BCTransactionOptionsTransactionKey];
+        [v14 setObject:newShowAssetTransaction forKeyedSubscript:BCTransactionOptionsTransactionKey];
       }
 
       objc_initWeak(&location, self);
-      v15 = [v7 assetID];
-      v16 = [v7 location];
+      assetID = [firstObject assetID];
+      location = [firstObject location];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10008D668;
       v17[3] = &unk_100A05088;
-      v18 = v7;
+      v18 = firstObject;
       objc_copyWeak(&v19, &location);
-      [(BKBookFlowController *)self showAssetWithTransaction:v12 assetID:v15 location:v16 options:v14 completion:v17];
+      [(BKBookFlowController *)self showAssetWithTransaction:newShowAssetTransaction assetID:assetID location:location options:v14 completion:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -871,37 +871,37 @@
   }
 }
 
-- (void)_processAndClearReopenAssetIDs:(id)a3 options:(id)a4 assetIDToPresenterMap:(id)a5
+- (void)_processAndClearReopenAssetIDs:(id)ds options:(id)options assetIDToPresenterMap:(id)map
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  optionsCopy = options;
+  mapCopy = map;
+  if ([dsCopy count])
   {
-    v11 = [v8 firstObject];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    firstObject = [dsCopy firstObject];
+    v12 = [mapCopy objectForKeyedSubscript:firstObject];
     v13 = v12;
     if (v12)
     {
       v14 = [v12 im_ancestorConformingToProtocol:&OBJC_PROTOCOL___BKTransactionProviding];
-      v15 = [v14 newShowAssetTransaction];
-      v16 = [v9 mutableCopy];
+      newShowAssetTransaction = [v14 newShowAssetTransaction];
+      v16 = [optionsCopy mutableCopy];
       if (!v16)
       {
         v16 = objc_alloc_init(NSMutableDictionary);
       }
 
-      [v16 setObject:v15 forKeyedSubscript:BCTransactionOptionsTransactionKey];
+      [v16 setObject:newShowAssetTransaction forKeyedSubscript:BCTransactionOptionsTransactionKey];
       objc_initWeak(&location, self);
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10008D914;
       v17[3] = &unk_100A050B0;
-      v18 = v8;
+      v18 = dsCopy;
       objc_copyWeak(&v21, &location);
-      v19 = v9;
-      v20 = v10;
-      [(BKBookFlowController *)self showAssetWithTransaction:v15 assetID:v11 location:0 options:v16 completion:v17];
+      v19 = optionsCopy;
+      v20 = mapCopy;
+      [(BKBookFlowController *)self showAssetWithTransaction:newShowAssetTransaction assetID:firstObject location:0 options:v16 completion:v17];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -909,14 +909,14 @@
   }
 }
 
-- (void)requestReopenAssetIDs:(id)a3 options:(id)a4
+- (void)requestReopenAssetIDs:(id)ds options:(id)options
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dsCopy = ds;
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (optionsCopy)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [optionsCopy mutableCopy];
   }
 
   else
@@ -931,8 +931,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(BKBookFlowController *)self _currentAssetPresentersFromAllScenes];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _currentAssetPresentersFromAllScenes = [(BKBookFlowController *)self _currentAssetPresentersFromAllScenes];
+  v12 = [_currentAssetPresentersFromAllScenes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -943,46 +943,46 @@
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_currentAssetPresentersFromAllScenes);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        v17 = [v16 assetPresenterAssetID];
+        assetPresenterAssetID = [v16 assetPresenterAssetID];
 
-        if (v17)
+        if (assetPresenterAssetID)
         {
-          v18 = [v16 assetPresenterAssetID];
-          [v10 setObject:v16 forKeyedSubscript:v18];
+          assetPresenterAssetID2 = [v16 assetPresenterAssetID];
+          [v10 setObject:v16 forKeyedSubscript:assetPresenterAssetID2];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [_currentAssetPresentersFromAllScenes countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
   }
 
-  v19 = [v20 mutableCopy];
+  v19 = [dsCopy mutableCopy];
   [(BKBookFlowController *)self _processAndClearReopenAssetIDs:v19 options:v9 assetIDToPresenterMap:v10];
 }
 
-- (void)_prepareMinifiedAssetPresenterForAssetID:(id)a3 transaction:(id)a4 force:(BOOL)a5 openBook:(BOOL)a6 showRestorationScrim:(BOOL)a7
+- (void)_prepareMinifiedAssetPresenterForAssetID:(id)d transaction:(id)transaction force:(BOOL)force openBook:(BOOL)book showRestorationScrim:(BOOL)scrim
 {
-  v7 = a6;
-  v10 = a3;
-  v11 = a4;
-  if (![v10 length])
+  bookCopy = book;
+  dCopy = d;
+  transactionCopy = transaction;
+  if (![dCopy length])
   {
     goto LABEL_27;
   }
 
-  if (v7)
+  if (bookCopy)
   {
     v12 = BCCurrentBookLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v44 = v10;
+      v44 = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Requesting opening of the last known open book %@.", buf, 0xCu);
     }
   }
@@ -991,12 +991,12 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Requesting minified opening of book %@.", buf, 0xCu);
   }
 
-  v14 = [(BKBookFlowController *)self libraryAssetProvider];
-  v15 = [v14 libraryAssetOnMainQueueWithAssetID:v10];
+  libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+  v15 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetID:dCopy];
 
   if (([v15 canOpen] & 1) == 0)
   {
@@ -1015,10 +1015,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v16 = [v15 isExplicit];
-  v17 = [v16 BOOLValue];
+  isExplicit = [v15 isExplicit];
+  bOOLValue = [isExplicit BOOLValue];
 
-  if (!v17)
+  if (!bOOLValue)
   {
     if (![v15 isEphemeral])
     {
@@ -1036,10 +1036,10 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v18 = [(BKBookFlowController *)self libraryAssetProvider];
-  v19 = [v18 isExplicitMaterialAllowed];
+  libraryAssetProvider2 = [(BKBookFlowController *)self libraryAssetProvider];
+  isExplicitMaterialAllowed = [libraryAssetProvider2 isExplicitMaterialAllowed];
 
-  if ((v19 & 1) == 0)
+  if ((isExplicitMaterialAllowed & 1) == 0)
   {
 
     v20 = BCCurrentBookLog();
@@ -1056,14 +1056,14 @@ LABEL_15:
   }
 
 LABEL_17:
-  v22 = [v15 assetID];
-  if (v22)
+  assetID = [v15 assetID];
+  if (assetID)
   {
-    v23 = [(BKBookFlowController *)self libraryAssetProvider];
-    v24 = [v23 libraryAssetOnMainQueueWithAssetID:v22];
+    libraryAssetProvider3 = [(BKBookFlowController *)self libraryAssetProvider];
+    v24 = [libraryAssetProvider3 libraryAssetOnMainQueueWithAssetID:assetID];
 
-    v25 = [(BKBookFlowController *)self minifiedPresenter];
-    [v25 setShouldIgnoreCurrentBookNotifications:1];
+    minifiedPresenter = [(BKBookFlowController *)self minifiedPresenter];
+    [minifiedPresenter setShouldIgnoreCurrentBookNotifications:1];
 
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
@@ -1072,10 +1072,10 @@ LABEL_17:
     v38[4] = self;
     v26 = v24;
     v39 = v26;
-    v40 = v22;
-    v27 = v11;
+    v40 = assetID;
+    v27 = transactionCopy;
     v41 = v27;
-    v42 = v7;
+    v42 = bookCopy;
     v28 = objc_retainBlock(v38);
     if ([v26 isAudiobook])
     {
@@ -1097,11 +1097,11 @@ LABEL_17:
     {
       if (+[BKAssetUtilities supportsRestorationSnapshots:](BKAssetUtilities, "supportsRestorationSnapshots:", [v26 contentType]))
       {
-        [(BKBookFlowController *)self _showRestorationScrimForAssetID:v10 transaction:v27];
+        [(BKBookFlowController *)self _showRestorationScrimForAssetID:dCopy transaction:v27];
       }
 
       v32 = +[BKAppDelegate delegate];
-      v33 = [v32 appLaunchCoordinator];
+      appLaunchCoordinator = [v32 appLaunchCoordinator];
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_10008E798;
@@ -1110,7 +1110,7 @@ LABEL_17:
       v34[4] = self;
       v35 = v26;
       v36 = v27;
-      [v33 appLaunchCoordinatorOnConditionMask:0x4000 blockID:@"minifiedAssetPresenter resolveAndShowAsset" performBlock:v34];
+      [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:0x4000 blockID:@"minifiedAssetPresenter resolveAndShowAsset" performBlock:v34];
 
       v30 = v37;
     }
@@ -1119,17 +1119,17 @@ LABEL_17:
 LABEL_27:
 }
 
-- (void)_showRestorationScrimForAssetID:(id)a3 transaction:(id)a4
+- (void)_showRestorationScrimForAssetID:(id)d transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:a4];
-  v8 = [v7 presenterModalPresentingViewController];
-  v9 = [v8 view];
-  v10 = [v9 window];
+  dCopy = d;
+  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transaction];
+  presenterModalPresentingViewController = [v7 presenterModalPresentingViewController];
+  view = [presenterModalPresentingViewController view];
+  window = [view window];
 
-  if (v10)
+  if (window)
   {
-    v11 = [[BKRestorationScrimView alloc] initWithAssetID:v6 window:v10];
+    v11 = [[BKRestorationScrimView alloc] initWithAssetID:dCopy window:window];
   }
 
   else
@@ -1147,9 +1147,9 @@ LABEL_27:
   [(BKRestorationScrimView *)v12 removeEventually];
 }
 
-- (void)requestOpenLastKnownBookWithTransaction:(id)a3
+- (void)requestOpenLastKnownBookWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
   if ([v5 length])
   {
@@ -1169,47 +1169,47 @@ LABEL_27:
       +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
     }
 
-    [(BKBookFlowController *)self _prepareMinifiedAssetPresenterForAssetID:v5 transaction:v4 force:0 openBook:1 showRestorationScrim:1];
+    [(BKBookFlowController *)self _prepareMinifiedAssetPresenterForAssetID:v5 transaction:transactionCopy force:0 openBook:1 showRestorationScrim:1];
   }
 }
 
-- (id)bookPresenterCurrentlyOpenBookForSingleScene:(id)a3
+- (id)bookPresenterCurrentlyOpenBookForSingleScene:(id)scene
 {
-  v3 = [a3 bookFlowAssetPresenting];
-  v4 = [v3 presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  bookFlowAssetPresenting = [scene bookFlowAssetPresenting];
+  v4 = [bookFlowAssetPresenting presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   return v4;
 }
 
-- (void)minifiedAssetPresenterForAssetIdentifier:(id)a3 transaction:(id)a4 completion:(id)a5
+- (void)minifiedAssetPresenterForAssetIdentifier:(id)identifier transaction:(id)transaction completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKBookFlowController *)self libraryAssetProvider];
-  v13 = [v11 libraryAssetOnMainQueueWithAssetIdentifier:v10];
+  completionCopy = completion;
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+  v13 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
-  v12 = [(BKBookFlowController *)self _optionsForLibraryAsset:v13 transaction:v9];
-  [(BKBookFlowController *)self minifiedAssetPresenterForAssetIdentifier:v10 transaction:v9 options:v12 completion:v8];
+  v12 = [(BKBookFlowController *)self _optionsForLibraryAsset:v13 transaction:transactionCopy];
+  [(BKBookFlowController *)self minifiedAssetPresenterForAssetIdentifier:identifierCopy transaction:transactionCopy options:v12 completion:completionCopy];
 }
 
-- (void)minifiedAssetPresenterForAssetIdentifier:(id)a3 transaction:(id)a4 options:(id)a5 completion:(id)a6
+- (void)minifiedAssetPresenterForAssetIdentifier:(id)identifier transaction:(id)transaction options:(id)options completion:(id)completion
 {
-  v14 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(BKBookFlowController *)self minifiedPresenter];
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
+  minifiedPresenter = [(BKBookFlowController *)self minifiedPresenter];
 
-  if (v11)
+  if (minifiedPresenter)
   {
-    v12 = [(BKBookFlowController *)self minifiedPresenter];
-    [v12 minifiedPresenterAssetPresenterForAssetIdentifier:v14 options:v9 completion:v10];
+    minifiedPresenter2 = [(BKBookFlowController *)self minifiedPresenter];
+    [minifiedPresenter2 minifiedPresenterAssetPresenterForAssetIdentifier:identifierCopy options:optionsCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = objc_retainBlock(v10);
-    v12 = v13;
+    v13 = objc_retainBlock(completionCopy);
+    minifiedPresenter2 = v13;
     if (v13)
     {
       (*(v13 + 2))(v13, 0);
@@ -1217,22 +1217,22 @@ LABEL_27:
   }
 }
 
-- (BOOL)_wantsMinifiedAssetPresenterToOpenForTransaction:(id)a3 forceOpen:(BOOL)a4
+- (BOOL)_wantsMinifiedAssetPresenterToOpenForTransaction:(id)transaction forceOpen:(BOOL)open
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  transactionCopy = transaction;
+  v6 = transactionCopy;
+  if (open)
   {
-    v7 = 1;
+    sceneSupportsMinifiedPresenting = 1;
   }
 
   else
   {
-    v8 = [v5 targetSceneDescriptor];
+    targetSceneDescriptor = [transactionCopy targetSceneDescriptor];
 
-    if (v8)
+    if (targetSceneDescriptor)
     {
-      v9 = [v6 targetSceneDescriptor];
+      targetSceneDescriptor2 = [v6 targetSceneDescriptor];
       v10 = BUProtocolCast();
 
       if (!v10)
@@ -1243,19 +1243,19 @@ LABEL_27:
 
     else
     {
-      v11 = [v6 destinationSceneController];
+      destinationSceneController = [v6 destinationSceneController];
       v10 = BUProtocolCast();
     }
 
-    v7 = [v10 sceneSupportsMinifiedPresenting];
+    sceneSupportsMinifiedPresenting = [v10 sceneSupportsMinifiedPresenting];
   }
 
-  return v7;
+  return sceneSupportsMinifiedPresenting;
 }
 
-- (void)_updateAssetAfterOpen:(id)a3
+- (void)_updateAssetAfterOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   if ((+[AEAnnotationSerializationManager managedBooksAllowedToSync]& 1) == 0)
   {
     [(BKBookFlowController *)self libraryAssetProvider];
@@ -1263,15 +1263,15 @@ LABEL_27:
     v6[1] = 3221225472;
     v6[2] = sub_10008EE00;
     v7 = v6[3] = &unk_100A044A0;
-    v8 = v4;
+    v8 = openCopy;
     v5 = v7;
     [v5 performBlockOnWorkerQueue:v6];
   }
 }
 
-- (id)currentAssetPresentersForSingleSceneWithTransaction:(id)a3
+- (id)currentAssetPresentersForSingleSceneWithTransaction:(id)transaction
 {
-  v3 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:a3];
+  v3 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transaction];
   v4 = [v3 presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   return v4;
@@ -1279,21 +1279,21 @@ LABEL_27:
 
 - (id)_currentAssetPresentersFromAllScenes
 {
-  v2 = [(BKBookFlowController *)self sceneHosting];
-  v3 = [v2 sceneHostingAllViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  sceneHosting = [(BKBookFlowController *)self sceneHosting];
+  v3 = [sceneHosting sceneHostingAllViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   return v3;
 }
 
-- (id)_currentPresenterFromAllScenesForAssetID:(id)a3
+- (id)_currentPresenterFromAllScenesForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(BKBookFlowController *)self _currentAssetPresentersFromAllScenes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _currentAssetPresentersFromAllScenes = [(BKBookFlowController *)self _currentAssetPresentersFromAllScenes];
+  v6 = [_currentAssetPresentersFromAllScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1303,12 +1303,12 @@ LABEL_27:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_currentAssetPresentersFromAllScenes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 assetPresenterAssetID];
-        v11 = [v10 isEqualToString:v4];
+        assetPresenterAssetID = [v9 assetPresenterAssetID];
+        v11 = [assetPresenterAssetID isEqualToString:dCopy];
 
         if (v11)
         {
@@ -1317,7 +1317,7 @@ LABEL_27:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_currentAssetPresentersFromAllScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1335,52 +1335,52 @@ LABEL_11:
 - (id)_dockedAssetViewController
 {
   v2 = +[BKAppDelegate sceneManager];
-  v3 = [v2 primarySceneController];
-  v4 = [v3 rootBarCoordinator];
+  primarySceneController = [v2 primarySceneController];
+  rootBarCoordinator = [primarySceneController rootBarCoordinator];
 
-  v5 = [v4 miniPlayerViewController];
+  miniPlayerViewController = [rootBarCoordinator miniPlayerViewController];
   objc_opt_class();
   v6 = BUClassAndProtocolCast();
 
   return v6;
 }
 
-- (BOOL)_shouldOpenBookUsingLargeCover:(id)a3
+- (BOOL)_shouldOpenBookUsingLargeCover:(id)cover
 {
-  v3 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:a3];
-  v4 = [v3 presenterShouldOpenBookUsingLargeCover];
+  v3 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:cover];
+  presenterShouldOpenBookUsingLargeCover = [v3 presenterShouldOpenBookUsingLargeCover];
 
-  return v4;
+  return presenterShouldOpenBookUsingLargeCover;
 }
 
-- (BOOL)_isPresenterAudiobook:(id)a3
+- (BOOL)_isPresenterAudiobook:(id)audiobook
 {
-  v4 = a3;
-  v5 = [(BKBookFlowController *)self libraryAssetProvider];
-  v6 = [v4 assetPresenterAssetID];
+  audiobookCopy = audiobook;
+  libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+  assetPresenterAssetID = [audiobookCopy assetPresenterAssetID];
 
-  v7 = [v5 libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:v6];
+  v7 = [libraryAssetProvider libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:assetPresenterAssetID];
 
-  LOBYTE(v5) = [v7 isAudiobook];
-  return v5;
+  LOBYTE(libraryAssetProvider) = [v7 isAudiobook];
+  return libraryAssetProvider;
 }
 
-- (void)_popToPresenterIfNeeded:(id)a3 completion:(id)a4
+- (void)_popToPresenterIfNeeded:(id)needed completion:(id)completion
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 bc_descendentPresentedViewController];
+  neededCopy = needed;
+  completionCopy = completion;
+  bc_descendentPresentedViewController = [neededCopy bc_descendentPresentedViewController];
 
-  if (v6)
+  if (bc_descendentPresentedViewController)
   {
-    v7 = [v9 bc_descendentPresentedViewController];
-    [v7 dismissViewControllerAnimated:1 completion:v5];
+    bc_descendentPresentedViewController2 = [neededCopy bc_descendentPresentedViewController];
+    [bc_descendentPresentedViewController2 dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
   else
   {
-    v8 = objc_retainBlock(v5);
-    v7 = v8;
+    v8 = objc_retainBlock(completionCopy);
+    bc_descendentPresentedViewController2 = v8;
     if (v8)
     {
       (*(v8 + 2))(v8);
@@ -1388,12 +1388,12 @@ LABEL_11:
   }
 }
 
-- (void)_replacePresenterWithTransaction:(id)a3 oldPresenter:(id)a4 newPresenter:(id)a5 completion:(id)a6
+- (void)_replacePresenterWithTransaction:(id)transaction oldPresenter:(id)presenter newPresenter:(id)newPresenter completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:a3];
+  presenterCopy = presenter;
+  newPresenterCopy = newPresenter;
+  completionCopy = completion;
+  v13 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transaction];
   if (!v13)
   {
     sub_10078B5F0();
@@ -1404,33 +1404,33 @@ LABEL_11:
   v17[2] = sub_10008F3D4;
   v17[3] = &unk_100A049A0;
   v18 = v13;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
+  v19 = newPresenterCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = newPresenterCopy;
   v16 = v13;
-  [v16 presenterDismissModalController:v10 animated:0 completion:v17];
+  [v16 presenterDismissModalController:presenterCopy animated:0 completion:v17];
 }
 
-- (void)showStoreAsset:(id)a3 asset:(id)a4 options:(id)a5
+- (void)showStoreAsset:(id)asset asset:(id)a4 options:(id)options
 {
-  v8 = a3;
+  assetCopy = asset;
   v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
   v11 = +[BKAppDelegate delegate];
-  v12 = [v11 appLaunchCoordinator];
+  appLaunchCoordinator = [v11 appLaunchCoordinator];
 
-  [v12 appLaunchCoordinatorHoldAtConditionAssertion:3];
+  [appLaunchCoordinator appLaunchCoordinatorHoldAtConditionAssertion:3];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_10008F63C;
   v38 = v37[3] = &unk_100A038D0;
   v13 = v38;
-  [v12 appLaunchCoordinatorOnConditionMask:2 blockID:@"showStoreAsset invalidate holdAssertion" performBlock:v37];
-  v14 = [v10 objectForKeyedSubscript:@"BKBookPresentingForceOpenBeforeWelcomeCompleted"];
-  v15 = [v14 BOOLValue];
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:2 blockID:@"showStoreAsset invalidate holdAssertion" performBlock:v37];
+  v14 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingForceOpenBeforeWelcomeCompleted"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -1438,17 +1438,17 @@ LABEL_11:
     v33[3] = &unk_100A05178;
     v16 = &v34;
     v33[4] = self;
-    v34 = v8;
+    v34 = assetCopy;
     v17 = &v35;
     v18 = &v36;
     v35 = v9;
-    v36 = v10;
-    v19 = v10;
+    v36 = optionsCopy;
+    v19 = optionsCopy;
     v20 = v9;
-    v21 = v8;
+    v21 = assetCopy;
     v22 = @"_showStoreAsset forceOpenBeforeWelcome";
     v23 = v33;
-    v24 = v12;
+    v24 = appLaunchCoordinator;
     v25 = 2;
   }
 
@@ -1460,40 +1460,40 @@ LABEL_11:
     v29[3] = &unk_100A05178;
     v16 = &v30;
     v29[4] = self;
-    v30 = v8;
+    v30 = assetCopy;
     v17 = &v31;
     v18 = &v32;
     v31 = v9;
-    v32 = v10;
-    v26 = v10;
+    v32 = optionsCopy;
+    v26 = optionsCopy;
     v27 = v9;
-    v28 = v8;
+    v28 = assetCopy;
     v22 = @"_showStoreAsset";
     v23 = v29;
-    v24 = v12;
+    v24 = appLaunchCoordinator;
     v25 = 10;
   }
 
   [v24 appLaunchCoordinatorOnConditionMask:v25 blockID:v22 performBlock:v23];
 }
 
-- (void)_showStoreAsset:(id)a3 asset:(id)a4 options:(id)a5
+- (void)_showStoreAsset:(id)asset asset:(id)a4 options:(id)options
 {
-  v8 = a3;
+  assetCopy = asset;
   v9 = a4;
-  v10 = a5;
-  v11 = [(BKBookFlowController *)self minifiedPresenter];
+  optionsCopy = options;
+  minifiedPresenter = [(BKBookFlowController *)self minifiedPresenter];
 
-  if (v11)
+  if (minifiedPresenter)
   {
-    v12 = [(BKBookFlowController *)self minifiedPresenter];
+    minifiedPresenter2 = [(BKBookFlowController *)self minifiedPresenter];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10008F764;
     v13[3] = &unk_100A051A0;
-    v14 = v8;
-    v15 = self;
-    [v12 minifiedPresenterAssetPresenterForStoreAsset:v9 options:v10 completion:v13];
+    v14 = assetCopy;
+    selfCopy = self;
+    [minifiedPresenter2 minifiedPresenterAssetPresenterForStoreAsset:v9 options:optionsCopy completion:v13];
   }
 }
 
@@ -1507,44 +1507,44 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isOpeningFromCard:(id)a3 options:(id)a4
+- (BOOL)isOpeningFromCard:(id)card options:(id)options
 {
-  v6 = a4;
-  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:a3];
-  v8 = [v6 objectForKeyedSubscript:@"BKBookPresentingFromUserActivity"];
+  optionsCopy = options;
+  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:card];
+  v8 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingFromUserActivity"];
 
-  LOBYTE(v6) = [v8 BOOLValue];
+  LOBYTE(optionsCopy) = [v8 BOOLValue];
   v9 = [v7 presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAugmentedExperienceCardPresenting];
   v10 = v9;
-  v11 = (v6 & 1) == 0 && [v9 count] != 0;
+  v11 = (optionsCopy & 1) == 0 && [v9 count] != 0;
 
   return v11;
 }
 
-- (id)_prepareOpenFromCardOverlayWithTransaction:(id)a3 assetIdentifier:(id)a4 options:(id)a5
+- (id)_prepareOpenFromCardOverlayWithTransaction:(id)transaction assetIdentifier:(id)identifier options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v11 = sub_100089C18();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 objectForKeyedSubscript:AEAssetLogID];
+    v12 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
     *buf = 138412546;
-    v57 = v9;
+    v57 = identifierCopy;
     v58 = 2114;
     v59 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "prepare to open asset %@ from card logID: %{public}@ with transaction", buf, 0x16u);
   }
 
-  v13 = v10;
+  v13 = optionsCopy;
   v14 = [v13 objectForKeyedSubscript:@"BKBookPresentingOverlayView"];
 
   v15 = v13;
   if (!v14)
   {
-    v53 = v8;
-    v16 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v8];
+    v53 = transactionCopy;
+    v16 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
     v17 = [v13 objectForKeyedSubscript:@"BKBookPresentingAnimateFromUid"];
     v18 = [v13 objectForKeyedSubscript:@"BKBookPresentingAnimateFromRefId"];
     v19 = v18;
@@ -1560,19 +1560,19 @@ LABEL_11:
     v23 = v22;
     if (v22)
     {
-      v24 = v22;
+      permanentOrTemporaryAssetID = v22;
     }
 
     else
     {
-      v24 = [v9 permanentOrTemporaryAssetID];
+      permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
     }
 
-    v25 = v24;
+    v25 = permanentOrTemporaryAssetID;
 
-    v26 = [v16 presenterModalPresentingViewController];
-    v52 = [v26 presentedViewController];
-    v51 = [v52 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost includePresented:1];
+    presenterModalPresentingViewController = [v16 presenterModalPresentingViewController];
+    presentedViewController = [presenterModalPresentingViewController presentedViewController];
+    v51 = [presentedViewController im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost includePresented:1];
     v54 = v17;
     v27 = [v51 coverAnimationHostSourceForUUID:0 uid:v17 refId:v21 refInstance:v25];
 
@@ -1585,7 +1585,7 @@ LABEL_11:
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [v27 coverAnimationSourceReferenceView];
+    coverAnimationSourceReferenceView = [v27 coverAnimationSourceReferenceView];
     v62.origin.x = CGRectZero.origin.x;
     v62.origin.y = CGRectZero.origin.y;
     v62.size.width = CGRectZero.size.width;
@@ -1594,10 +1594,10 @@ LABEL_11:
     v61.origin.y = v32;
     v61.size.width = v34;
     v61.size.height = v36;
-    v49 = v37;
+    v49 = coverAnimationSourceReferenceView;
     if (!CGRectEqualToRect(v61, v62))
     {
-      [v37 convertRect:0 toView:{v30, v32, v34, v36, v37}];
+      [coverAnimationSourceReferenceView convertRect:0 toView:{v30, v32, v34, v36, coverAnimationSourceReferenceView}];
       v30 = v38;
       v32 = v39;
       v34 = v40;
@@ -1610,12 +1610,12 @@ LABEL_11:
     v43 = [v42 snapshotViewAfterScreenUpdates:0];
 
     [v27 coverAnimationSourceFinalize];
-    v44 = [v43 layer];
-    [v44 setZPosition:1000.0];
+    layer = [v43 layer];
+    [layer setZPosition:1000.0];
 
-    v45 = [v26 view];
-    v46 = [v45 window];
-    [v46 addSubview:v43];
+    view = [presenterModalPresentingViewController view];
+    window = [view window];
+    [window addSubview:v43];
 
     if (v13)
     {
@@ -1631,28 +1631,28 @@ LABEL_11:
     [v47 setObject:v43 forKeyedSubscript:@"BKBookPresentingOverlayView"];
     [v15 setObject:&__kCFBooleanTrue forKeyedSubscript:@"BKBookPresentWithoutCloseAnimation"];
 
-    v8 = v53;
+    transactionCopy = v53;
   }
 
   return v15;
 }
 
-- (void)_removeViewForCardOverlayWithTransaction:(id)a3 options:(id)a4
+- (void)_removeViewForCardOverlayWithTransaction:(id)transaction options:(id)options
 {
-  v6 = a3;
-  v9 = [(BKBookFlowController *)self _viewForCardOverlayFromOptions:a4];
+  transactionCopy = transaction;
+  v9 = [(BKBookFlowController *)self _viewForCardOverlayFromOptions:options];
   [v9 removeFromSuperview];
-  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v6];
+  v7 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
 
   objc_opt_class();
   v8 = BUDynamicCast();
   [v8 setBookOpenAnimationHelper:0];
 }
 
-- (void)_promptInVCToRestartReadingFromBeginning:(id)a3 completion:(id)a4
+- (void)_promptInVCToRestartReadingFromBeginning:(id)beginning completion:(id)completion
 {
-  v5 = a4;
-  v19 = a3;
+  completionCopy = completion;
+  beginningCopy = beginning;
   v6 = +[NSBundle mainBundle];
   v18 = [v6 localizedStringForKey:@"You Are Reading This Book" value:&stru_100A30A68 table:0];
 
@@ -1666,7 +1666,7 @@ LABEL_11:
   v22[1] = 3221225472;
   v22[2] = sub_100090158;
   v22[3] = &unk_100A051C8;
-  v12 = v5;
+  v12 = completionCopy;
   v23 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:1 handler:v22];
   [v9 addAction:v13];
@@ -1682,108 +1682,108 @@ LABEL_11:
   v17 = [UIAlertAction actionWithTitle:v15 style:0 handler:v20];
   [v9 addAction:v17];
 
-  [v19 presentViewController:v9 animated:1 completion:0];
+  [beginningCopy presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_optionallyCloseCardStack:(id)a3 inPresentedVC:(id)a4 completion:(id)a5
+- (void)_optionallyCloseCardStack:(id)stack inPresentedVC:(id)c completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stackCopy = stack;
+  cCopy = c;
+  completionCopy = completion;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000902EC;
   v15[3] = &unk_100A05218;
-  if (v8)
+  if (stackCopy)
   {
-    v11 = v8;
+    v11 = stackCopy;
   }
 
   else
   {
-    v11 = v9;
+    v11 = cCopy;
   }
 
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = stackCopy;
+  v17 = cCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = cCopy;
+  v14 = stackCopy;
   [(BKBookFlowController *)self _promptInVCToRestartReadingFromBeginning:v11 completion:v15];
 }
 
-- (void)showAssetWithTransaction:(id)a3 assetID:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7
+- (void)showAssetWithTransaction:(id)transaction assetID:(id)d location:(id)location options:(id)options completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [BKAssetID identifierWithAssetID:a4];
-  [(BKBookFlowController *)self showAssetWithTransaction:v15 assetIdentifier:v16 location:v14 options:v13 completion:v12];
+  completionCopy = completion;
+  optionsCopy = options;
+  locationCopy = location;
+  transactionCopy = transaction;
+  v16 = [BKAssetID identifierWithAssetID:d];
+  [(BKBookFlowController *)self showAssetWithTransaction:transactionCopy assetIdentifier:v16 location:locationCopy options:optionsCopy completion:completionCopy];
 }
 
-- (void)showAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7
+- (void)showAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  locationCopy = location;
+  optionsCopy = options;
+  completionCopy = completion;
   v17 = sub_100089C18();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 debugDescription];
-    v19 = [v15 objectForKeyedSubscript:AEAssetLogID];
+    v18 = [transactionCopy debugDescription];
+    v19 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
     *buf = 138544130;
     v81 = v18;
     v82 = 2160;
     v83 = 1752392040;
     v84 = 2112;
-    v85 = v13;
+    v85 = identifierCopy;
     v86 = 2114;
     v87 = v19;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "showAssetWithTransaction: %{public}@ assetID: %{mask.hash}@ logID: %{public}@", buf, 0x2Au);
   }
 
-  v56 = v14;
-  if ([(BKBookFlowController *)self isOpeningFromCard:v12 options:v15])
+  v56 = locationCopy;
+  if ([(BKBookFlowController *)self isOpeningFromCard:transactionCopy options:optionsCopy])
   {
     v20 = sub_100089C18();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v15 objectForKeyedSubscript:AEAssetLogID];
+      v21 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
       *buf = 141558530;
       v81 = 1752392040;
       v82 = 2112;
-      v83 = v13;
+      v83 = identifierCopy;
       v84 = 2114;
       v85 = v21;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "showAssetWithTransaction step 0: open asset %{mask.hash}@ from card logID: %{public}@", buf, 0x20u);
     }
 
-    v22 = [v13 permanentOrTemporaryAssetID];
-    v23 = [(BKBookFlowController *)self _currentPresenterFromAllScenesForAssetID:v22];
+    permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
+    v23 = [(BKBookFlowController *)self _currentPresenterFromAllScenesForAssetID:permanentOrTemporaryAssetID];
 
-    v24 = [v23 presentedViewController];
-    if (v24)
+    presentedViewController = [v23 presentedViewController];
+    if (presentedViewController)
     {
-      v25 = v24;
+      v25 = presentedViewController;
       v26 = sub_100089C18();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v15 objectForKeyedSubscript:AEAssetLogID];
+        v27 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
         *buf = 141558530;
         v81 = 1752392040;
         v82 = 2112;
-        v83 = v13;
+        v83 = identifierCopy;
         v84 = 2114;
         v85 = v27;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "showAssetWithTransaction step 0: asset %{mask.hash}@ already open logID: %{public}@", buf, 0x20u);
       }
 
       objc_opt_class();
-      v28 = [v25 presentedViewController];
+      presentedViewController2 = [v25 presentedViewController];
       v29 = BUDynamicCast();
 
       v77[0] = _NSConcreteStackBlock;
@@ -1791,17 +1791,17 @@ LABEL_11:
       v77[2] = sub_100090CFC;
       v77[3] = &unk_100A04160;
       v78 = v23;
-      v79 = v16;
-      v30 = v16;
+      v79 = completionCopy;
+      v30 = completionCopy;
       v31 = v23;
       [(BKBookFlowController *)self _optionallyCloseCardStack:v29 inPresentedVC:v25 completion:v77];
 
       goto LABEL_19;
     }
 
-    v32 = [(BKBookFlowController *)self _prepareOpenFromCardOverlayWithTransaction:v12 assetIdentifier:v13 options:v15];
+    v32 = [(BKBookFlowController *)self _prepareOpenFromCardOverlayWithTransaction:transactionCopy assetIdentifier:identifierCopy options:optionsCopy];
 
-    v15 = v32;
+    optionsCopy = v32;
   }
 
   v71[0] = _NSConcreteStackBlock;
@@ -1809,15 +1809,15 @@ LABEL_11:
   v71[2] = sub_100090D70;
   v71[3] = &unk_100A05268;
   v71[4] = self;
-  v55 = v12;
-  v72 = v12;
-  v33 = v16;
+  v55 = transactionCopy;
+  v72 = transactionCopy;
+  v33 = completionCopy;
   v76 = v33;
-  v54 = v13;
-  v34 = v13;
+  v54 = identifierCopy;
+  v34 = identifierCopy;
   v73 = v34;
-  v74 = v14;
-  v35 = v15;
+  v74 = locationCopy;
+  v35 = optionsCopy;
   v75 = v35;
   v36 = objc_retainBlock(v71);
   v67[0] = _NSConcreteStackBlock;
@@ -1827,20 +1827,20 @@ LABEL_11:
   v67[4] = self;
   v37 = v34;
   v68 = v37;
-  v15 = v35;
-  v69 = v15;
+  optionsCopy = v35;
+  v69 = optionsCopy;
   v38 = v36;
   v70 = v38;
   v39 = objc_retainBlock(v67);
   v40 = +[BKAppDelegate delegate];
-  v41 = [v40 appLaunchCoordinator];
+  appLaunchCoordinator = [v40 appLaunchCoordinator];
 
   v62[0] = _NSConcreteStackBlock;
   v62[1] = 3221225472;
   v62[2] = sub_1000915EC;
   v62[3] = &unk_100A05308;
   v65 = v39;
-  v42 = v41;
+  v42 = appLaunchCoordinator;
   v63 = v42;
   v43 = v37;
   v64 = v43;
@@ -1848,10 +1848,10 @@ LABEL_11:
   v66 = v44;
   v53 = v39;
   v45 = objc_retainBlock(v62);
-  v46 = [v15 objectForKeyedSubscript:@"BKBookPresentingForceOpenBeforeWelcomeCompleted"];
+  v46 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingForceOpenBeforeWelcomeCompleted"];
   LODWORD(v39) = [v46 BOOLValue];
 
-  v47 = [v15 objectForKeyedSubscript:AEAssetLogID];
+  v47 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
   v48 = sub_100089C18();
   v49 = os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT);
   if (v39)
@@ -1902,25 +1902,25 @@ LABEL_11:
   v52 = v45;
   [v51 appLaunchCoordinatorOnConditionMask:v50 blockID:@"showAsset:onLaunch" performBlock:v57];
 
-  v13 = v54;
-  v12 = v55;
+  identifierCopy = v54;
+  transactionCopy = v55;
 LABEL_19:
 }
 
-- (void)_showAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7
+- (void)_showAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  locationCopy = location;
+  optionsCopy = options;
+  completionCopy = completion;
   v17 = sub_100089C18();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v40 = 1752392040;
     v41 = 2112;
-    v42 = v13;
+    v42 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "_showAssetWithTransaction: assetID: %{mask.hash}@", buf, 0x16u);
   }
 
@@ -1928,46 +1928,46 @@ LABEL_19:
   v36[1] = 3221225472;
   v36[2] = sub_100091D10;
   v36[3] = &unk_100A05358;
-  v18 = v13;
+  v18 = identifierCopy;
   v37 = v18;
-  v19 = v16;
+  v19 = completionCopy;
   v38 = v19;
   v20 = objc_retainBlock(v36);
-  v21 = [(BKBookFlowController *)self sceneHosting];
-  v22 = [v18 permanentOrTemporaryAssetID];
-  v23 = [v21 sceneInfoPresentingAssetID:v22];
+  sceneHosting = [(BKBookFlowController *)self sceneHosting];
+  permanentOrTemporaryAssetID = [v18 permanentOrTemporaryAssetID];
+  v23 = [sceneHosting sceneInfoPresentingAssetID:permanentOrTemporaryAssetID];
 
   if (v23 && ([v23 sceneController], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
   {
-    v25 = [(BKBookFlowController *)self sceneHosting];
+    sceneHosting2 = [(BKBookFlowController *)self sceneHosting];
     v26 = sub_100089C18();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-    if (v25)
+    if (sceneHosting2)
     {
       if (v27)
       {
-        sub_10078B814(v18, v15);
+        sub_10078B814(v18, optionsCopy);
       }
 
-      v28 = [v18 permanentOrTemporaryAssetID];
+      permanentOrTemporaryAssetID2 = [v18 permanentOrTemporaryAssetID];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100091E54;
       v29[3] = &unk_100A05380;
-      v30 = v12;
-      v31 = self;
+      v30 = transactionCopy;
+      selfCopy = self;
       v32 = v18;
-      v33 = v14;
-      v34 = v15;
+      v33 = locationCopy;
+      v34 = optionsCopy;
       v35 = v20;
-      [v25 requestSceneWithAssetID:v28 completion:v29];
+      [sceneHosting2 requestSceneWithAssetID:permanentOrTemporaryAssetID2 completion:v29];
     }
 
     else
     {
       if (v27)
       {
-        sub_10078B8E0(v15);
+        sub_10078B8E0(optionsCopy);
       }
 
       (v20[2])(v20, 0, 0, 0);
@@ -1976,91 +1976,91 @@ LABEL_19:
 
   else
   {
-    [(BKBookFlowController *)self _showAssetWithoutStateRestoration:v12 assetIdentifier:v18 location:v14 options:v15 completion:v20];
+    [(BKBookFlowController *)self _showAssetWithoutStateRestoration:transactionCopy assetIdentifier:v18 location:locationCopy options:optionsCopy completion:v20];
   }
 }
 
-- (void)_openPDFAsset:(id)a3
+- (void)_openPDFAsset:(id)asset
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100091F30;
   block[3] = &unk_100A033C8;
-  v5 = a3;
-  v3 = v5;
+  assetCopy = asset;
+  v3 = assetCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_showAssetWithoutStateRestoration:(id)a3 assetIdentifier:(id)a4 location:(id)a5 options:(id)a6 completion:(id)a7
+- (void)_showAssetWithoutStateRestoration:(id)restoration assetIdentifier:(id)identifier location:(id)location options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v49 = a5;
-  v14 = a6;
-  v48 = a7;
+  restorationCopy = restoration;
+  identifierCopy = identifier;
+  locationCopy = location;
+  optionsCopy = options;
+  completionCopy = completion;
   v15 = sub_100089C18();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v14 objectForKeyedSubscript:AEAssetLogID];
+    v16 = [optionsCopy objectForKeyedSubscript:AEAssetLogID];
     *buf = 141558530;
     *&buf[4] = 1752392040;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2114;
     v79 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "_showAssetWithoutStateRestoration: Showing asset: %{mask.hash}@ logID: %{public}@", buf, 0x20u);
   }
 
-  v47 = [v12 originatingSceneController];
+  originatingSceneController = [restorationCopy originatingSceneController];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v79 = sub_100027334;
   v80 = sub_1000275E0;
-  v17 = [(BKBookFlowController *)self sceneHosting];
-  v18 = [v17 defaultSceneControllerForTransaction:v12];
+  sceneHosting = [(BKBookFlowController *)self sceneHosting];
+  v18 = [sceneHosting defaultSceneControllerForTransaction:restorationCopy];
   v81 = BUProtocolCast();
 
-  v19 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v12];
+  v19 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:restorationCopy];
   if (!v19)
   {
     BCReportAssertionFailureWithMessage();
   }
 
   v44 = v19;
-  v20 = [v13 permanentOrTemporaryAssetID];
-  v21 = [(BKBookFlowController *)self _currentPresenterFromAllScenesForAssetID:v20];
+  permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
+  v21 = [(BKBookFlowController *)self _currentPresenterFromAllScenesForAssetID:permanentOrTemporaryAssetID];
 
   v72 = 0;
   v73 = &v72;
   v74 = 0x3032000000;
   v75 = sub_100027334;
   v76 = sub_1000275E0;
-  v77 = [(BKBookFlowController *)self currentAssetPresentersForSingleSceneWithTransaction:v12];
+  v77 = [(BKBookFlowController *)self currentAssetPresentersForSingleSceneWithTransaction:restorationCopy];
   v70[0] = 0;
   v70[1] = v70;
   v70[2] = 0x3032000000;
   v70[3] = sub_100027334;
   v70[4] = sub_1000275E0;
-  v71 = [v73[5] lastObject];
-  v22 = [v14 objectForKeyedSubscript:@"BKBookPresentingCloseAndReopenAssetIfNeeded"];
-  v46 = [v22 BOOLValue];
+  lastObject = [v73[5] lastObject];
+  v22 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingCloseAndReopenAssetIfNeeded"];
+  bOOLValue = [v22 BOOLValue];
 
   objc_opt_class();
-  v23 = [v14 objectForKeyedSubscript:@"BKBookPresentingSecure"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingSecure"];
   v24 = BUDynamicCast();
-  v25 = [v24 BOOLValue];
+  bOOLValue2 = [v24 BOOLValue];
 
-  v26 = [v14 objectForKeyedSubscript:@"BKBookPresentingForceExistingAssetToClose"];
+  v26 = [optionsCopy objectForKeyedSubscript:@"BKBookPresentingForceExistingAssetToClose"];
   v27 = v26;
   if (v26)
   {
-    v45 = [v26 BOOLValue];
+    bOOLValue3 = [v26 BOOLValue];
   }
 
   else
   {
-    v45 = 1;
+    bOOLValue3 = 1;
   }
 
   v68[0] = _NSConcreteStackBlock;
@@ -2068,26 +2068,26 @@ LABEL_19:
   v68[2] = sub_100092928;
   v68[3] = &unk_100A053D0;
   v68[4] = self;
-  v28 = v13;
+  v28 = identifierCopy;
   v69 = v28;
   v29 = objc_retainBlock(v68);
   v30 = (v29[2])();
-  v31 = [(BKBookFlowController *)self _optionsForLibraryAsset:v30 transaction:v12];
+  v31 = [(BKBookFlowController *)self _optionsForLibraryAsset:v30 transaction:restorationCopy];
   v32 = [v31 mutableCopy];
 
-  v33 = [v30 isAudiobook];
-  if (v14)
+  isAudiobook = [v30 isAudiobook];
+  if (optionsCopy)
   {
-    [v32 addEntriesFromDictionary:v14];
+    [v32 addEntriesFromDictionary:optionsCopy];
   }
 
-  if (v49)
+  if (locationCopy)
   {
-    [v32 setObject:v49 forKeyedSubscript:@"BKAssetPresentingOpenLocationKey"];
+    [v32 setObject:locationCopy forKeyedSubscript:@"BKAssetPresentingOpenLocationKey"];
   }
 
-  v34 = [(BKBookFlowController *)self minifiedPresenter];
-  [v34 setShouldIgnoreCurrentBookNotifications:1];
+  minifiedPresenter = [(BKBookFlowController *)self minifiedPresenter];
+  [minifiedPresenter setShouldIgnoreCurrentBookNotifications:1];
 
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
@@ -2095,30 +2095,30 @@ LABEL_19:
   v50[3] = &unk_100A057A0;
   v35 = v28;
   v51 = v35;
-  v36 = v14;
+  v36 = optionsCopy;
   v52 = v36;
-  v37 = v12;
+  v37 = restorationCopy;
   v53 = v37;
   v38 = v32;
   v54 = v38;
-  v55 = self;
-  v64 = v25;
+  selfCopy = self;
+  v64 = bOOLValue2;
   v61 = buf;
-  v39 = v48;
+  v39 = completionCopy;
   v59 = v39;
   v40 = v21;
   v56 = v40;
-  v41 = v47;
-  v65 = v33;
+  v41 = originatingSceneController;
+  v65 = isAudiobook;
   v57 = v41;
   v62 = v70;
   v63 = &v72;
   v42 = v29;
   v60 = v42;
-  v66 = v46;
-  v43 = v49;
+  v66 = bOOLValue;
+  v43 = locationCopy;
   v58 = v43;
-  v67 = v45;
+  v67 = bOOLValue3;
   [(BKBookFlowController *)self minifiedAssetPresenterForAssetIdentifier:v35 transaction:v37 options:v38 completion:v50];
 
   _Block_object_dispose(v70, 8);
@@ -2127,20 +2127,20 @@ LABEL_19:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_closePresenter:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_closePresenter:(id)presenter animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BKBookFlowController *)self sceneHosting];
-  v11 = [v10 sceneControllerForViewController:v8];
+  presenterCopy = presenter;
+  completionCopy = completion;
+  sceneHosting = [(BKBookFlowController *)self sceneHosting];
+  v11 = [sceneHosting sceneControllerForViewController:presenterCopy];
 
   if (!v11)
   {
     sub_10078BBEC();
   }
 
-  v12 = [v11 bookFlowAssetPresenting];
-  if (!v12)
+  bookFlowAssetPresenting = [v11 bookFlowAssetPresenting];
+  if (!bookFlowAssetPresenting)
   {
     sub_10078BC24();
   }
@@ -2149,47 +2149,47 @@ LABEL_19:
   v16[1] = 3221225472;
   v16[2] = sub_10009661C;
   v16[3] = &unk_100A057C8;
-  v17 = v12;
-  v18 = v8;
-  v20 = a4;
-  v19 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v12;
+  v17 = bookFlowAssetPresenting;
+  v18 = presenterCopy;
+  animatedCopy = animated;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = presenterCopy;
+  v15 = bookFlowAssetPresenting;
   [v15 presenterWaitForAssetPresenterTransitionsToFinishIfNeededWithCompletion:v16];
 }
 
-- (void)closeAllPresentersForSingleSceneWithTransaction:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)closeAllPresentersForSingleSceneWithTransaction:(id)transaction animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(BKBookFlowController *)self currentAssetPresentersForSingleSceneWithTransaction:a3];
-  [(BKBookFlowController *)self _closePresenters:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = [(BKBookFlowController *)self currentAssetPresentersForSingleSceneWithTransaction:transaction];
+  [(BKBookFlowController *)self _closePresenters:v9 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_closePresenters:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_closePresenters:(id)presenters animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 lastObject];
-  if (v10)
+  animatedCopy = animated;
+  presentersCopy = presenters;
+  completionCopy = completion;
+  lastObject = [presentersCopy lastObject];
+  if (lastObject)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000967D8;
     v13[3] = &unk_100A057F0;
-    v14 = v8;
-    v15 = v10;
-    v16 = self;
-    v18 = v6;
-    v17 = v9;
-    [(BKBookFlowController *)self _closePresenter:v15 animated:v6 completion:v13];
+    v14 = presentersCopy;
+    v15 = lastObject;
+    selfCopy = self;
+    v18 = animatedCopy;
+    v17 = completionCopy;
+    [(BKBookFlowController *)self _closePresenter:v15 animated:animatedCopy completion:v13];
   }
 
   else
   {
-    v11 = objc_retainBlock(v9);
+    v11 = objc_retainBlock(completionCopy);
     v12 = v11;
     if (v11)
     {
@@ -2198,51 +2198,51 @@ LABEL_19:
   }
 }
 
-- (void)_closeMinifiedPresenters:(id)a3 excludeAssetID:(id)a4 isAudiobook:(BOOL)a5 completion:(id)a6
+- (void)_closeMinifiedPresenters:(id)presenters excludeAssetID:(id)d isAudiobook:(BOOL)audiobook completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 anyObject];
-  if (v13)
+  audiobookCopy = audiobook;
+  presentersCopy = presenters;
+  dCopy = d;
+  completionCopy = completion;
+  anyObject = [presentersCopy anyObject];
+  if (anyObject)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100096A90;
     v24[3] = &unk_100A05010;
-    v25 = v10;
-    v14 = v13;
+    v25 = presentersCopy;
+    v14 = anyObject;
     v26 = v14;
-    v27 = self;
-    v15 = v11;
+    selfCopy = self;
+    v15 = dCopy;
     v28 = v15;
-    v30 = v7;
-    v29 = v12;
+    v30 = audiobookCopy;
+    v29 = completionCopy;
     v16 = objc_retainBlock(v24);
-    v17 = [v14 minifiedAssetPresenterAssetID];
-    v18 = [v17 isEqualToString:v15];
+    minifiedAssetPresenterAssetID = [v14 minifiedAssetPresenterAssetID];
+    v18 = [minifiedAssetPresenterAssetID isEqualToString:v15];
 
-    if ([v14 minifiedAssetPresenterIsAudiobook] != v7 || (v18 & 1) != 0 || +[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled") || (v7 & 1) != 0)
+    if ([v14 minifiedAssetPresenterIsAudiobook] != audiobookCopy || (v18 & 1) != 0 || +[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled") || (audiobookCopy & 1) != 0)
     {
       (v16[2])(v16);
     }
 
     else
     {
-      v19 = [(BKBookFlowController *)self minifiedPresenter];
+      minifiedPresenter = [(BKBookFlowController *)self minifiedPresenter];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100096B00;
       v22[3] = &unk_100A03920;
       v23 = v16;
-      [v19 minifiedPresenterClose:v14 completion:v22];
+      [minifiedPresenter minifiedPresenterClose:v14 completion:v22];
     }
   }
 
   else
   {
-    v20 = objc_retainBlock(v12);
+    v20 = objc_retainBlock(completionCopy);
     v21 = v20;
     if (v20)
     {
@@ -2251,13 +2251,13 @@ LABEL_19:
   }
 }
 
-- (void)handleFamilyChangeErrorWithTransaction:(id)a3 error:(id)a4 assetIdentifier:(id)a5
+- (void)handleFamilyChangeErrorWithTransaction:(id)transaction error:(id)error assetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v33 = self;
-  v11 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v8];
+  transactionCopy = transaction;
+  errorCopy = error;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v11 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"To read it value:you must buy it from the Book Store." table:{&stru_100A30A68, 0}];
 
@@ -2275,19 +2275,19 @@ LABEL_19:
 
   objc_opt_class();
   v22 = BUDynamicCast();
-  v23 = [v22 assetID];
+  assetID = [v22 assetID];
 
-  if (v23)
+  if (assetID)
   {
-    v31 = v9;
-    v32 = v8;
+    v31 = errorCopy;
+    v32 = transactionCopy;
     v24 = +[NSBundle mainBundle];
     v25 = [v24 localizedStringForKey:@"Delete Book" value:&stru_100A30A68 table:0];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_100096F0C;
     v41[3] = &unk_100A05818;
-    v26 = v23;
+    v26 = assetID;
     v42 = v26;
     v27 = [UIAlertAction actionWithTitle:v25 style:2 handler:v41];
     [v18 addAction:v27];
@@ -2297,7 +2297,7 @@ LABEL_19:
     v39[2] = 0x3032000000;
     v39[3] = sub_100027334;
     v39[4] = sub_1000275E0;
-    v40 = v33;
+    v40 = selfCopy;
     v28 = +[NSBundle mainBundle];
     v29 = [v28 localizedStringForKey:@"View in Book Store" value:&stru_100A30A68 table:0];
     v35[0] = _NSConcreteStackBlock;
@@ -2311,25 +2311,25 @@ LABEL_19:
     [v18 addAction:v30];
 
     _Block_object_dispose(v39, 8);
-    v9 = v31;
-    v8 = v32;
+    errorCopy = v31;
+    transactionCopy = v32;
   }
 
   [v17 presenterShowAlertController:v18 animated:1];
 }
 
-- (void)preflightShowAssetWithTransaction:(id)a3 assetIdentifier:(id)a4 completion:(id)a5
+- (void)preflightShowAssetWithTransaction:(id)transaction assetIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(BKBookFlowController *)self libraryAssetProvider];
-  v12 = [v11 libraryAssetOnMainQueueWithAssetIdentifier:v10];
+  transactionCopy = transaction;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+  v12 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
-  LOBYTE(v10) = [v12 isLocal];
-  if ((v10 & 1) != 0 || !+[BKReachability isOffline])
+  LOBYTE(identifierCopy) = [v12 isLocal];
+  if ((identifierCopy & 1) != 0 || !+[BKReachability isOffline])
   {
-    v23 = objc_retainBlock(v9);
+    v23 = objc_retainBlock(completionCopy);
     v24 = v23;
     if (v23)
     {
@@ -2351,99 +2351,99 @@ LABEL_19:
     v20 = [UIAlertAction actionWithTitle:v19 style:1 handler:0];
     [v17 addAction:v20];
 
-    v21 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v8];
-    v22 = [v21 presenterSceneController];
+    v21 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
+    presenterSceneController = [v21 presenterSceneController];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000972B8;
     v25[3] = &unk_100A051F0;
-    v26 = v9;
+    v26 = completionCopy;
     v27 = 0;
-    [v22 presentViewController:v17 animated:1 completion:v25];
+    [presenterSceneController presentViewController:v17 animated:1 completion:v25];
   }
 }
 
-- (void)handleBookOpenErrorWithTransaction:(id)a3 error:(id)a4 assetIdentifier:(id)a5
+- (void)handleBookOpenErrorWithTransaction:(id)transaction error:(id)error assetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 code] != 2002 || (objc_msgSend(v9, "domain"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", AssetEngineErrorDomain), v11, (v12 & 1) == 0))
+  transactionCopy = transaction;
+  errorCopy = error;
+  identifierCopy = identifier;
+  if ([errorCopy code] != 2002 || (objc_msgSend(errorCopy, "domain"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", AssetEngineErrorDomain), v11, (v12 & 1) == 0))
   {
-    if ([v9 code] == 2003 && (objc_msgSend(v9, "domain"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", AssetEngineErrorDomain), v13, v14))
+    if ([errorCopy code] == 2003 && (objc_msgSend(errorCopy, "domain"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", AssetEngineErrorDomain), v13, v14))
     {
-      [(BKBookFlowController *)self handleFamilyChangeErrorWithTransaction:v8 error:v9 assetIdentifier:v10];
+      [(BKBookFlowController *)self handleFamilyChangeErrorWithTransaction:transactionCopy error:errorCopy assetIdentifier:identifierCopy];
     }
 
-    else if ([v9 code] == 3001)
+    else if ([errorCopy code] == 3001)
     {
-      v15 = [(BKBookFlowController *)self libraryAssetProvider];
-      v16 = [v15 libraryAssetOnMainQueueWithAssetIdentifier:v10];
+      libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+      v16 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
-      v17 = [(BKBookFlowController *)self libraryAssetProvider];
+      libraryAssetProvider2 = [(BKBookFlowController *)self libraryAssetProvider];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10009750C;
       v20[3] = &unk_100A053A8;
       v20[4] = self;
-      v21 = v8;
-      [v17 assetForLibraryAsset:v16 completion:v20];
+      v21 = transactionCopy;
+      [libraryAssetProvider2 assetForLibraryAsset:v16 completion:v20];
     }
 
-    else if ([v9 code] == 1)
+    else if ([errorCopy code] == 1)
     {
-      v18 = [v9 domain];
-      v19 = [v18 isEqualToString:@"BKAssetLookup"];
+      domain = [errorCopy domain];
+      v19 = [domain isEqualToString:@"BKAssetLookup"];
 
       if (v19)
       {
-        [(BKBookFlowController *)self showInstallationErrorWithTransaction:v8 assetIdentifier:v10];
+        [(BKBookFlowController *)self showInstallationErrorWithTransaction:transactionCopy assetIdentifier:identifierCopy];
       }
     }
   }
 }
 
-- (void)showNotEnoughMemAlertWithTransaction:(id)a3 name:(id)a4
+- (void)showNotEnoughMemAlertWithTransaction:(id)transaction name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  transactionCopy = transaction;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Unable to Open “%@”" value:&stru_100A30A68 table:0];
-  v18 = [NSString stringWithFormat:v9, v6];
+  nameCopy = [NSString stringWithFormat:v9, nameCopy];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Cannot Open Document" value:&stru_100A30A68 table:0];
-  v12 = [UIAlertController alertControllerWithTitle:v11 message:v18 preferredStyle:1];
+  v12 = [UIAlertController alertControllerWithTitle:v11 message:nameCopy preferredStyle:1];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"OK" value:&stru_100A30A68 table:0];
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
   [v12 addAction:v15];
 
-  v16 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v7];
+  v16 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
 
-  v17 = [v16 presenterSceneController];
-  [v17 presentViewController:v12 animated:1 completion:0];
+  presenterSceneController = [v16 presenterSceneController];
+  [presenterSceneController presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)showInstallationErrorWithTransaction:(id)a3 assetIdentifier:(id)a4
+- (void)showInstallationErrorWithTransaction:(id)transaction assetIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (a4)
+  transactionCopy = transaction;
+  if (identifier)
   {
-    v7 = a4;
+    identifierCopy = identifier;
     v8 = +[BKLibraryManager defaultManager];
-    v9 = [v8 libraryAssetOnMainQueueWithAssetIdentifier:v7];
+    v9 = [v8 libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
     if (v9)
     {
-      v25 = [v9 title];
+      title = [v9 title];
       v10 = +[NSBundle mainBundle];
       v24 = [v10 localizedStringForKey:@"There is not enough available storage to install this book. You can manage your storage in Settings." value:&stru_100A30A68 table:0];
 
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:@"Cannot install “%@”" value:&stru_100A30A68 table:0];
-      v13 = [NSString stringWithFormat:v12, v25];
+      v13 = [NSString stringWithFormat:v12, title];
       v14 = [UIAlertController alertControllerWithTitle:v13 message:v24 preferredStyle:1];
 
       v15 = +[NSBundle mainBundle];
@@ -2469,19 +2469,19 @@ LABEL_19:
       v21 = [UIAlertAction actionWithTitle:v20 style:0 handler:v26];
       [v14 addAction:v21];
 
-      v22 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:v6];
-      v23 = [v22 presenterSceneController];
-      [v23 presentViewController:v14 animated:1 completion:0];
+      v22 = [(BKBookFlowController *)self _bookFlowAssetPresentingForShowAssetAction:transactionCopy];
+      presenterSceneController = [v22 presenterSceneController];
+      [presenterSceneController presentViewController:v14 animated:1 completion:0];
     }
   }
 }
 
-- (void)showAssetWithTransaction:(id)a3 storeID:(id)a4 options:(id)a5
+- (void)showAssetWithTransaction:(id)transaction storeID:(id)d options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v9 unsignedLongLongValue])
+  transactionCopy = transaction;
+  dCopy = d;
+  optionsCopy = options;
+  if (dCopy && [dCopy unsignedLongLongValue])
   {
     v19 = 0;
     v20 = &v19;
@@ -2489,10 +2489,10 @@ LABEL_19:
     v22 = sub_100027334;
     v23 = sub_1000275E0;
     v11 = +[BSUIItemDescriptionCache sharedInstance];
-    v25 = v9;
+    v25 = dCopy;
     v12 = [NSArray arrayWithObjects:&v25 count:1];
     v13 = [v11 itemDescriptionsFromIdentifiers:v12];
-    v24 = [v13 objectForKeyedSubscript:v9];
+    v24 = [v13 objectForKeyedSubscript:dCopy];
 
     v14 = v20[5];
     v15[0] = _NSConcreteStackBlock;
@@ -2500,8 +2500,8 @@ LABEL_19:
     v15[2] = sub_100097EDC;
     v15[3] = &unk_100A05890;
     v15[4] = self;
-    v16 = v8;
-    v17 = v10;
+    v16 = transactionCopy;
+    v17 = optionsCopy;
     v18 = &v19;
     [v14 get:v15];
 
@@ -2509,50 +2509,50 @@ LABEL_19:
   }
 }
 
-- (void)presentItem:(id)a3 transaction:(id)a4 host:(id)a5 source:(id)a6 options:(id)a7
+- (void)presentItem:(id)item transaction:(id)transaction host:(id)host source:(id)source options:(id)options
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v17 storeID];
-  if (v17 && v16)
+  itemCopy = item;
+  transactionCopy = transaction;
+  hostCopy = host;
+  sourceCopy = source;
+  optionsCopy = options;
+  storeID = [itemCopy storeID];
+  if (itemCopy && storeID)
   {
-    [(BKBookFlowController *)self _presentItem:v17 transaction:v12 host:v13 source:v14 options:v15];
+    [(BKBookFlowController *)self _presentItem:itemCopy transaction:transactionCopy host:hostCopy source:sourceCopy options:optionsCopy];
   }
 }
 
-- (void)_presentItem:(id)a3 transaction:(id)a4 host:(id)a5 source:(id)a6 options:(id)a7
+- (void)_presentItem:(id)item transaction:(id)transaction host:(id)host source:(id)source options:(id)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 storeID];
-  v18 = v17;
-  if (v12 && v17)
+  itemCopy = item;
+  transactionCopy = transaction;
+  hostCopy = host;
+  sourceCopy = source;
+  optionsCopy = options;
+  storeID = [itemCopy storeID];
+  v18 = storeID;
+  if (itemCopy && storeID)
   {
-    if ([(BKBookFlowController *)self isOpeningFromCard:v13 options:v16])
+    if ([(BKBookFlowController *)self isOpeningFromCard:transactionCopy options:optionsCopy])
     {
-      v19 = [v12 storeID];
-      v20 = [BKAssetID identifierWithAssetID:v19];
-      v21 = [(BKBookFlowController *)self _prepareOpenFromCardOverlayWithTransaction:v13 assetIdentifier:v20 options:v16];
+      storeID2 = [itemCopy storeID];
+      v20 = [BKAssetID identifierWithAssetID:storeID2];
+      v21 = [(BKBookFlowController *)self _prepareOpenFromCardOverlayWithTransaction:transactionCopy assetIdentifier:v20 options:optionsCopy];
 
-      v16 = v21;
+      optionsCopy = v21;
     }
 
-    v22 = [(BKBookFlowController *)self libraryAssetProvider];
-    v23 = [v22 libraryAssetOnMainQueueWithAssetID:v18];
+    libraryAssetProvider = [(BKBookFlowController *)self libraryAssetProvider];
+    v23 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetID:v18];
 
-    v24 = [NSMutableDictionary dictionaryWithDictionary:v16];
+    v24 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
     [v24 setObject:&__kCFBooleanTrue forKeyedSubscript:@"BKBookPresentingCanPresentOverStore"];
-    [v24 setObject:v14 forKeyedSubscript:@"BKBookPresentingCoverAnimationHost"];
-    [v24 setObject:v15 forKeyedSubscript:@"BKBookPresentingCoverAnimationSource"];
+    [v24 setObject:hostCopy forKeyedSubscript:@"BKBookPresentingCoverAnimationHost"];
+    [v24 setObject:sourceCopy forKeyedSubscript:@"BKBookPresentingCoverAnimationSource"];
     if ([v23 canOpen])
     {
-      [(BKBookFlowController *)self showAssetWithTransaction:v13 assetID:v18 location:0 options:v24 completion:0];
+      [(BKBookFlowController *)self showAssetWithTransaction:transactionCopy assetID:v18 location:0 options:v24 completion:0];
     }
 
     else if ([v23 isCloud] && (objc_msgSend(v23, "isPreorderBook") & 1) == 0)
@@ -2562,8 +2562,8 @@ LABEL_19:
       v45[1] = 3221225472;
       v45[2] = sub_100098514;
       v45[3] = &unk_100A058E0;
-      v46 = v13;
-      v47 = self;
+      v46 = transactionCopy;
+      selfCopy = self;
       v48 = v23;
       v49 = v24;
       [(BKBookFlowController *)self minifiedAssetPresenterForAssetIdentifier:v38 transaction:v46 completion:v45];
@@ -2571,55 +2571,55 @@ LABEL_19:
 
     else
     {
-      v25 = [v12 sampleDownloadURL];
+      sampleDownloadURL = [itemCopy sampleDownloadURL];
 
-      if (v25)
+      if (sampleDownloadURL)
       {
         v35 = v23;
-        v26 = [v12 artworkURLTemplate];
-        if (v26)
+        artworkURLTemplate = [itemCopy artworkURLTemplate];
+        if (artworkURLTemplate)
         {
           +[BCCacheManager defaultCacheManager];
-          v27 = v36 = v15;
-          v28 = [v12 storeID];
-          [v27 addURLTemplate:v26 forIdentifier:v28];
+          v27 = v36 = sourceCopy;
+          storeID3 = [itemCopy storeID];
+          [v27 addURLTemplate:artworkURLTemplate forIdentifier:storeID3];
 
-          v15 = v36;
+          sourceCopy = v36;
         }
 
-        v34 = v26;
-        v29 = [v12 title];
-        if (v29)
+        v34 = artworkURLTemplate;
+        title = [itemCopy title];
+        if (title)
         {
-          [v24 setObject:v29 forKeyedSubscript:@"title"];
+          [v24 setObject:title forKeyedSubscript:@"title"];
         }
 
-        v37 = v14;
-        v30 = [v12 author];
-        if (v30)
+        v37 = hostCopy;
+        author = [itemCopy author];
+        if (author)
         {
-          [v24 setObject:v30 forKeyedSubscript:@"author"];
+          [v24 setObject:author forKeyedSubscript:@"author"];
         }
 
         v31 = +[BKAppDelegate delegate];
-        v32 = [v31 isConnectedToInternet];
+        isConnectedToInternet = [v31 isConnectedToInternet];
 
-        if (v32)
+        if (isConnectedToInternet)
         {
           v39[0] = _NSConcreteStackBlock;
           v39[1] = 3221225472;
           v39[2] = sub_1000988C4;
           v39[3] = &unk_100A039C0;
           v40 = v18;
-          v41 = self;
+          selfCopy2 = self;
           v42 = v24;
-          v43 = v13;
-          v44 = v16;
+          v43 = transactionCopy;
+          v44 = optionsCopy;
           [v43 commit:v39];
         }
 
         v23 = v35;
-        v14 = v37;
+        hostCopy = v37;
       }
     }
   }

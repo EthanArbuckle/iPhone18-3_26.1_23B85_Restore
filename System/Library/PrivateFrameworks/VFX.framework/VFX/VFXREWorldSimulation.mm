@@ -1,26 +1,26 @@
 @interface VFXREWorldSimulation
 - (BOOL)wantsCollisionPlanes;
-- (VFXREWorldSimulation)initWithCommandQueue:(id)a3;
+- (VFXREWorldSimulation)initWithCommandQueue:(id)queue;
 - (id).cxx_construct;
 - (id)_sceneForCollisionPlanes;
 - (id)recycleBuffersGetCompletion;
-- (uint64_t)addCollisionPlaneWithExtents:(uint64_t)a3 transform:(uint64_t)a4;
-- (uint64_t)updateCollisionPlane:(uint64_t)a3 extents:(uint64_t)a4 transform:(double)a5;
-- (void)addSecondaryPointOfView:(id)a3;
-- (void)beginFrameWithEncoder:(id)a3 frameIndex:(unint64_t)a4;
+- (uint64_t)addCollisionPlaneWithExtents:(uint64_t)extents transform:(uint64_t)transform;
+- (uint64_t)updateCollisionPlane:(uint64_t)plane extents:(uint64_t)extents transform:(double)transform;
+- (void)addSecondaryPointOfView:(id)view;
+- (void)beginFrameWithEncoder:(id)encoder frameIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)endFrame;
-- (void)enumerateDrawCallsForNode:(id)a3 usingBlock:(id)a4;
-- (void)enumerateSecondaryPointOfViewsUsingBlock:(id)a3;
-- (void)removeCollisionPlane:(unint64_t)a3;
-- (void)setWorld:(id)a3;
-- (void)updateCollisionPlane:(unint64_t)a3 collideOutsideExtents:(BOOL)a4;
-- (void)updateWithDeltaTime:(double)a3;
+- (void)enumerateDrawCallsForNode:(id)node usingBlock:(id)block;
+- (void)enumerateSecondaryPointOfViewsUsingBlock:(id)block;
+- (void)removeCollisionPlane:(unint64_t)plane;
+- (void)setWorld:(id)world;
+- (void)updateCollisionPlane:(unint64_t)plane collideOutsideExtents:(BOOL)extents;
+- (void)updateWithDeltaTime:(double)time;
 @end
 
 @implementation VFXREWorldSimulation
 
-- (VFXREWorldSimulation)initWithCommandQueue:(id)a3
+- (VFXREWorldSimulation)initWithCommandQueue:(id)queue
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -31,7 +31,7 @@
     v13 = @"kVFXRendererInitOptionForRERendering";
     v14[0] = MEMORY[0x1E695E118];
     v6 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v4, v14, &v13, 1);
-    v8 = objc_msgSend_rendererWithCommandQueue_options_(VFXRenderer, v7, a3, v6);
+    v8 = objc_msgSend_rendererWithCommandQueue_options_(VFXRenderer, v7, queue, v6);
     v5->_renderer = v8;
     objc_msgSend_setRendererKind_(v8, v9, 6, v10);
     v5->_transientDrawCall = objc_alloc_init(VFXDrawCall);
@@ -43,12 +43,12 @@
   return 0;
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
-  objc_msgSend_flush(VFXTransaction, a2, a3, v3);
+  objc_msgSend_flush(VFXTransaction, a2, world, v3);
   objc_msgSend_setImmediateMode_(VFXTransaction, v6, 1, v7);
-  self->_world = a3;
-  v8 = a3;
+  self->_world = world;
+  worldCopy = world;
   v12 = objc_msgSend_rootNode(self->_world, v9, v10, v11);
   v34 = 0;
   v35 = &v34;
@@ -74,25 +74,25 @@
   _Block_object_dispose(&v34, 8);
 }
 
-- (void)addSecondaryPointOfView:(id)a3
+- (void)addSecondaryPointOfView:(id)view
 {
-  v6 = objc_msgSend_camera(a3, a2, a3, v3);
+  v6 = objc_msgSend_camera(view, a2, view, v3);
   if (v6 && (objc_msgSend_usesOrthographicProjection(v6, v7, v8, v9) & 1) == 0)
   {
     secondaryPovs = self->_secondaryPovs;
 
-    objc_msgSend_addObject_(secondaryPovs, v10, a3, v11);
+    objc_msgSend_addObject_(secondaryPovs, v10, view, v11);
   }
 }
 
-- (void)enumerateSecondaryPointOfViewsUsingBlock:(id)a3
+- (void)enumerateSecondaryPointOfViewsUsingBlock:(id)block
 {
   secondaryPovs = self->_secondaryPovs;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1AF325528;
   v5[3] = &unk_1E7A7F050;
-  v5[4] = a3;
+  v5[4] = block;
   objc_msgSend_enumerateObjectsUsingBlock_(secondaryPovs, a2, v5, v3);
 }
 
@@ -110,7 +110,7 @@
   [(VFXREWorldSimulation *)&v4 dealloc];
 }
 
-- (void)updateWithDeltaTime:(double)a3
+- (void)updateWithDeltaTime:(double)time
 {
   objc_msgSend_flush(VFXTransaction, a2, v3, v4);
   systemTime = self->_systemTime;
@@ -121,7 +121,7 @@
 
   else
   {
-    v11 = systemTime + a3;
+    v11 = systemTime + time;
   }
 
   self->_systemTime = v11;
@@ -130,18 +130,18 @@
   objc_msgSend_updateAtTime_(renderer, v7, v8, v9);
 }
 
-- (void)enumerateDrawCallsForNode:(id)a3 usingBlock:(id)a4
+- (void)enumerateDrawCallsForNode:(id)node usingBlock:(id)block
 {
-  v7 = objc_msgSend__engineContext(self->_renderer, a2, a3, a4, a4, self->_transientDrawCall, self->_transientPass);
+  v7 = objc_msgSend__engineContext(self->_renderer, a2, node, block, block, self->_transientDrawCall, self->_transientPass);
   v15[3] = sub_1AF12E2AC(v7);
   v15[4] = objc_msgSend_worldRef(self->_world, v8, v9, v10);
-  v15[5] = objc_msgSend_nodeRef(a3, v11, v12, v13);
-  objc_msgSend_enumerateDrawCallsUsingBlock_context_(a3, v14, a4, v15);
+  v15[5] = objc_msgSend_nodeRef(node, v11, v12, v13);
+  objc_msgSend_enumerateDrawCallsUsingBlock_context_(node, v14, block, v15);
 }
 
-- (void)beginFrameWithEncoder:(id)a3 frameIndex:(unint64_t)a4
+- (void)beginFrameWithEncoder:(id)encoder frameIndex:(unint64_t)index
 {
-  v4 = objc_msgSend__engineContext(self->_renderer, a2, a3, a4);
+  v4 = objc_msgSend__engineContext(self->_renderer, a2, encoder, index);
   v5 = sub_1AF12E2AC(v4);
   objc_msgSend_frameConstantBufferPool(v5, v6, v7, v8);
   operator new();
@@ -171,14 +171,14 @@
   return objc_msgSend_presentationScene(v4, v5, v6, v7);
 }
 
-- (uint64_t)addCollisionPlaneWithExtents:(uint64_t)a3 transform:(uint64_t)a4
+- (uint64_t)addCollisionPlaneWithExtents:(uint64_t)extents transform:(uint64_t)transform
 {
-  v4 = objc_msgSend__sceneForCollisionPlanes(a1, a2, a3, a4);
+  v4 = objc_msgSend__sceneForCollisionPlanes(self, a2, extents, transform);
 
   return MEMORY[0x1EEE66B58](v4, sel_createCollisionPlane_transform_, v5, v6);
 }
 
-- (uint64_t)updateCollisionPlane:(uint64_t)a3 extents:(uint64_t)a4 transform:(double)a5
+- (uint64_t)updateCollisionPlane:(uint64_t)plane extents:(uint64_t)extents transform:(double)transform
 {
   v9 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(a8, a8), a8, 0xCuLL), vnegq_f32(a7)), a8, vextq_s8(vuzp1q_s32(a7, a7), a7, 0xCuLL));
   v10 = vmulq_f32(a6, vextq_s8(vuzp1q_s32(v9, v9), v9, 0xCuLL));
@@ -207,22 +207,22 @@
   v22.i32[3] = v22.i32[2];
   if ((vmaxvq_u32(v22) & 0x80000000) != 0)
   {
-    v23 = objc_msgSend__sceneForCollisionPlanes(a1, a2, a3, a4, 0, 0);
+    v23 = objc_msgSend__sceneForCollisionPlanes(self, a2, plane, extents, 0, 0);
   }
 
   else
   {
-    v23 = objc_msgSend__sceneForCollisionPlanes(a1, a2, a3, a4, *&v21);
+    v23 = objc_msgSend__sceneForCollisionPlanes(self, a2, plane, extents, *&v21);
   }
 
-  return MEMORY[0x1EEE66B58](v23, sel_updateCollisionPlane_scale_orientation_position_, a3, v24);
+  return MEMORY[0x1EEE66B58](v23, sel_updateCollisionPlane_scale_orientation_position_, plane, v24);
 }
 
-- (void)removeCollisionPlane:(unint64_t)a3
+- (void)removeCollisionPlane:(unint64_t)plane
 {
-  v5 = objc_msgSend__sceneForCollisionPlanes(self, a2, a3, v3);
+  v5 = objc_msgSend__sceneForCollisionPlanes(self, a2, plane, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_destroyCollisionPlane_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_destroyCollisionPlane_, plane, v6);
 }
 
 - (BOOL)wantsCollisionPlanes
@@ -233,12 +233,12 @@
   return MEMORY[0x1EEE66B58](v8, sel_wantsCollisionPlanes, v9, v10);
 }
 
-- (void)updateCollisionPlane:(unint64_t)a3 collideOutsideExtents:(BOOL)a4
+- (void)updateCollisionPlane:(unint64_t)plane collideOutsideExtents:(BOOL)extents
 {
-  v4 = a4;
-  v6 = objc_msgSend__sceneForCollisionPlanes(self, a2, a3, a4);
+  extentsCopy = extents;
+  v6 = objc_msgSend__sceneForCollisionPlanes(self, a2, plane, extents);
 
-  MEMORY[0x1EEE66B58](v6, sel_updateCollisionPlane_collideOutsideExtents_, a3, v4);
+  MEMORY[0x1EEE66B58](v6, sel_updateCollisionPlane_collideOutsideExtents_, plane, extentsCopy);
 }
 
 - (id).cxx_construct

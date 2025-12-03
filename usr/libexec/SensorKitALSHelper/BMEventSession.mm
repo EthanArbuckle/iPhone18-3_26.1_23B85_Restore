@@ -25,7 +25,7 @@
     if (os_log_type_enabled(qword_10002B278, OS_LOG_TYPE_FAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "Event session is empty, impossible to get timestamp: %@", &v6, 0xCu);
     }
 
@@ -55,7 +55,7 @@
     if (os_log_type_enabled(qword_10002B278, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Event session is empty, impossible to get data: %@", &v6, 0xCu);
     }
 

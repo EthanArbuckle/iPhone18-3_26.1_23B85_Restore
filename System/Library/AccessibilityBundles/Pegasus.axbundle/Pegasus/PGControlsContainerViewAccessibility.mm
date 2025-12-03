@@ -1,35 +1,35 @@
 @interface PGControlsContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_controlsShouldAutoHide;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PGControlsContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_setPrefersControlsHidden:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_controlsShouldAutoHide" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PGControlsView"];
-  [v3 validateClass:@"PGControlsContainerView" hasInstanceVariable:@"_controlsView" withType:"PGControlsView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceMethod:@"prefersControlsHidden" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PGControlsViewModel"];
-  [v3 validateClass:@"PGControlsContainerView" hasInstanceVariable:@"_viewModel" withType:"PGControlsViewModel"];
-  [v3 validateClass:@"PGControlsViewModelValues"];
-  [v3 validateClass:@"PGControlsViewModel" hasInstanceVariable:@"_values" withType:"PGControlsViewModelValues"];
-  [v3 validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"restoreButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"cancelButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"actionButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"skipBackButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"skipForwardButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_restoreButton" withType:"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_cancelButton" withType:"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_skipBackButton" withType:"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_actionButton" withType:"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"PGButtonView"];
-  [v3 validateClass:@"PGControlsView" hasInstanceVariable:@"_liveIndicatorBadgeButton" withType:"PGButtonView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_setPrefersControlsHidden:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_controlsShouldAutoHide" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PGControlsView"];
+  [validationsCopy validateClass:@"PGControlsContainerView" hasInstanceVariable:@"_controlsView" withType:"PGControlsView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceMethod:@"prefersControlsHidden" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PGControlsViewModel"];
+  [validationsCopy validateClass:@"PGControlsContainerView" hasInstanceVariable:@"_viewModel" withType:"PGControlsViewModel"];
+  [validationsCopy validateClass:@"PGControlsViewModelValues"];
+  [validationsCopy validateClass:@"PGControlsViewModel" hasInstanceVariable:@"_values" withType:"PGControlsViewModelValues"];
+  [validationsCopy validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"restoreButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"cancelButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"actionButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"skipBackButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PGControlsViewModelValues" hasInstanceMethod:@"skipForwardButtonAccessibilityIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_restoreButton" withType:"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_cancelButton" withType:"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_skipBackButton" withType:"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_actionButton" withType:"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"PGButtonView"];
+  [validationsCopy validateClass:@"PGControlsView" hasInstanceVariable:@"_liveIndicatorBadgeButton" withType:"PGButtonView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

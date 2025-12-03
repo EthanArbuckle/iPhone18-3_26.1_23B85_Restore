@@ -1,55 +1,55 @@
 @interface PHFaceCrop
-+ (id)_trainingFaceCropByUUIDForPerson:(id)a3 options:(id)a4;
++ (id)_trainingFaceCropByUUIDForPerson:(id)person options:(id)options;
 + (id)entityKeyMap;
-+ (id)fetchFaceCropByFaceLocalIdentifierForFaces:(id)a3 fetchOptions:(id)a4;
-+ (id)fetchFaceCropsForPerson:(id)a3 options:(id)a4;
-+ (id)fetchFaceCropsNeedingFaceDetectionWithOptions:(id)a3;
-+ (id)fetchFaceCropsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchFaceCropsWithOptions:(id)a3;
-+ (id)fetchTransientTrainingFaceCropsForPerson:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (PHFaceCrop)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchFaceCropByFaceLocalIdentifierForFaces:(id)faces fetchOptions:(id)options;
++ (id)fetchFaceCropsForPerson:(id)person options:(id)options;
++ (id)fetchFaceCropsNeedingFaceDetectionWithOptions:(id)options;
++ (id)fetchFaceCropsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchFaceCropsWithOptions:(id)options;
++ (id)fetchTransientTrainingFaceCropsForPerson:(id)person options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (PHFaceCrop)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 @end
 
 @implementation PHFaceCrop
 
-- (PHFaceCrop)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHFaceCrop)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PHFaceCrop;
-  v9 = [(PHObject *)&v15 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v15 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"resourceData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"resourceData"];
     resourceData = v9->_resourceData;
     v9->_resourceData = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"state"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     v9->_state = [v12 shortValue];
 
-    v13 = [v8 objectForKeyedSubscript:@"type"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v9->_type = [v13 integerValue];
   }
 
   return v9;
 }
 
-+ (id)fetchFaceCropByFaceLocalIdentifierForFaces:(id)a3 fetchOptions:(id)a4
++ (id)fetchFaceCropByFaceLocalIdentifierForFaces:(id)faces fetchOptions:(id)options
 {
-  v23 = a1;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = a4;
-  v6 = [v5 photoLibrary];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  facesCopy = faces;
+  optionsCopy = options;
+  photoLibrary = [facesCopy photoLibrary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v5;
+  v9 = facesCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -65,13 +65,13 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 objectID];
-        v16 = [v14 localIdentifier];
-        [v7 addObject:v15];
-        [v8 setObject:v16 forKeyedSubscript:v15];
-        if (!v6)
+        objectID = [v14 objectID];
+        localIdentifier = [v14 localIdentifier];
+        [array addObject:objectID];
+        [dictionary setObject:localIdentifier forKeyedSubscript:objectID];
+        if (!photoLibrary)
         {
-          v6 = [v14 photoLibrary];
+          photoLibrary = [v14 photoLibrary];
         }
       }
 
@@ -81,28 +81,28 @@
     while (v11);
   }
 
-  v17 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v18 = MEMORY[0x1E69BE410];
-  v19 = [v6 photoLibrary];
-  v20 = [v18 batchFetchFaceCropByFaceObjectIDWithFaceObjectIDs:v7 library:v19];
+  v6PhotoLibrary = [photoLibrary photoLibrary];
+  v20 = [v18 batchFetchFaceCropByFaceObjectIDWithFaceObjectIDs:array library:v6PhotoLibrary];
 
   if ([v20 count])
   {
-    v21 = [v6 photoLibrary];
+    v6PhotoLibrary2 = [photoLibrary photoLibrary];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___block_invoke;
     v25[3] = &unk_1E75AA2F0;
     v26 = v20;
-    v27 = v8;
-    v28 = v6;
-    v29 = v24;
-    v31 = v23;
-    v30 = v17;
-    [v21 performBlockAndWait:v25];
+    v27 = dictionary;
+    v28 = photoLibrary;
+    v29 = optionsCopy;
+    v31 = selfCopy;
+    v30 = dictionary2;
+    [v6PhotoLibrary2 performBlockAndWait:v25];
   }
 
-  return v17;
+  return dictionary2;
 }
 
 void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___block_invoke(uint64_t a1)
@@ -136,22 +136,22 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
   }
 }
 
-+ (id)_trainingFaceCropByUUIDForPerson:(id)a3 options:(id)a4
++ (id)_trainingFaceCropByUUIDForPerson:(id)person options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
-  v8 = [v7 librarySpecificFetchOptions];
+  personCopy = person;
+  optionsCopy = options;
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
+  librarySpecificFetchOptions = [v7 librarySpecificFetchOptions];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"vipModelType", 1];
-  [v8 setInternalPredicate:v9];
+  [librarySpecificFetchOptions setInternalPredicate:v9];
 
-  [v8 setFetchLimit:{objc_msgSend(v6, "fetchLimit")}];
-  v10 = [v6 sortDescriptors];
-  [v8 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setFetchLimit:{objc_msgSend(optionsCopy, "fetchLimit")}];
+  sortDescriptors = [optionsCopy sortDescriptors];
+  [librarySpecificFetchOptions setSortDescriptors:sortDescriptors];
 
-  [v8 setIncludeNonvisibleFaces:{objc_msgSend(v6, "includeNonvisibleFaces")}];
-  v11 = [PHFace fetchFacesForPerson:v5 options:v8];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:{objc_msgSend(optionsCopy, "includeNonvisibleFaces")}];
+  v11 = [PHFace fetchFacesForPerson:personCopy options:librarySpecificFetchOptions];
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v26 = 0u;
   v27 = 0u;
@@ -172,8 +172,8 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v26 + 1) + 8 * i) localIdentifier];
-        [v12 addObject:v18];
+        localIdentifier = [*(*(&v26 + 1) + 8 * i) localIdentifier];
+        [v12 addObject:localIdentifier];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v36 count:16];
@@ -184,9 +184,9 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
 
   if ([v12 count])
   {
-    v19 = [v7 photoAnalysisClient];
+    photoAnalysisClient = [v7 photoAnalysisClient];
     v25 = 0;
-    v20 = [v19 requestOnDemandFaceCropsForFaceLocalIdentifiers:v12 error:&v25];
+    v20 = [photoAnalysisClient requestOnDemandFaceCropsForFaceLocalIdentifiers:v12 error:&v25];
     v21 = v25;
 
     if (v21 || !v20)
@@ -195,7 +195,7 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v31 = v5;
+        v31 = personCopy;
         v32 = 2112;
         v33 = v12;
         v34 = 2112;
@@ -218,7 +218,7 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v31 = v5;
+      v31 = personCopy;
       _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_ERROR, "No on demand face crops to request for person: %@", buf, 0xCu);
     }
 
@@ -228,27 +228,27 @@ void __70__PHFaceCrop_fetchFaceCropByFaceLocalIdentifierForFaces_fetchOptions___
   return v22;
 }
 
-+ (id)fetchTransientTrainingFaceCropsForPerson:(id)a3 options:(id)a4
++ (id)fetchTransientTrainingFaceCropsForPerson:(id)person options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v6];
-  v9 = [a1 _trainingFaceCropByUUIDForPerson:v6 options:v7];
+  personCopy = person;
+  optionsCopy = options;
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:personCopy];
+  v9 = [self _trainingFaceCropByUUIDForPerson:personCopy options:optionsCopy];
 
   if (v9)
   {
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-    v11 = [v6 uuid];
+    uuid = [personCopy uuid];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __63__PHFaceCrop_fetchTransientTrainingFaceCropsForPerson_options___block_invoke;
     v17[3] = &unk_1E75AA2A0;
-    v18 = v11;
+    v18 = uuid;
     v12 = v8;
     v19 = v12;
     v20 = v10;
     v13 = v10;
-    v14 = v11;
+    v14 = uuid;
     [v9 enumerateKeysAndObjectsUsingBlock:v17];
     v15 = [[PHManualFetchResult alloc] initWithObjects:v13 photoLibrary:v12 fetchType:@"PHFaceCrop" fetchPropertySets:0 identifier:0 registerIfNeeded:0];
   }
@@ -280,14 +280,14 @@ void __63__PHFaceCrop_fetchTransientTrainingFaceCropsForPerson_options___block_i
   [*(a1 + 48) addObject:v9];
 }
 
-+ (id)fetchFaceCropsNeedingFaceDetectionWithOptions:(id)a3
++ (id)fetchFaceCropsNeedingFaceDetectionWithOptions:(id)options
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  optionsCopy = options;
+  if (optionsCopy)
   {
-    v5 = v4;
-    v6 = [v4 copy];
+    v5 = optionsCopy;
+    v6 = [optionsCopy copy];
   }
 
   else
@@ -296,13 +296,13 @@ void __63__PHFaceCrop_fetchTransientTrainingFaceCropsForPerson_options___block_i
   }
 
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"state == %d", 0];
-  v8 = [v6 predicate];
+  predicate = [v6 predicate];
 
-  if (v8)
+  if (predicate)
   {
-    v9 = [v6 predicate];
+    predicate2 = [v6 predicate];
     v10 = MEMORY[0x1E696AB28];
-    v15[0] = v9;
+    v15[0] = predicate2;
     v15[1] = v7;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v12 = [v10 andPredicateWithSubpredicates:v11];
@@ -314,23 +314,23 @@ void __63__PHFaceCrop_fetchTransientTrainingFaceCropsForPerson_options___block_i
     [v6 setPredicate:v7];
   }
 
-  v13 = [a1 fetchFaceCropsWithOptions:v6];
+  v13 = [self fetchFaceCropsWithOptions:v6];
 
   return v13;
 }
 
-+ (id)fetchFaceCropsForPerson:(id)a3 options:(id)a4
++ (id)fetchFaceCropsForPerson:(id)person options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  personCopy = person;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__PHFaceCrop_fetchFaceCropsForPerson_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = personCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = personCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -344,18 +344,18 @@ id __46__PHFaceCrop_fetchFaceCropsForPerson_options___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)fetchFaceCropsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchFaceCropsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__PHFaceCrop_fetchFaceCropsWithLocalIdentifiers_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = identifiersCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = identifiersCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -369,15 +369,15 @@ id __57__PHFaceCrop_fetchFaceCropsWithLocalIdentifiers_options___block_invoke(ui
   return v2;
 }
 
-+ (id)fetchFaceCropsWithOptions:(id)a3
++ (id)fetchFaceCropsWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__PHFaceCrop_fetchFaceCropsWithOptions___block_invoke;
   v7[3] = &unk_1E75AB0E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = optionsCopy;
+  v4 = optionsCopy;
   v5 = [PHObject authorizationAwareFetchResultWithOptions:v4 fetchBlock:v7];
 
   return v5;
@@ -391,23 +391,23 @@ id __40__PHFaceCrop_fetchFaceCropsWithOptions___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__PHFaceCrop_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_48135 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_48135, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_48136 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_48136 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -466,7 +466,7 @@ void __26__PHFaceCrop_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_48139 = v6;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_48141 != -1)
   {

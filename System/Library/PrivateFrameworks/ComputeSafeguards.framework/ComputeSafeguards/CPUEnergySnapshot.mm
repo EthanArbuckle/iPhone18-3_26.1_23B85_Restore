@@ -1,13 +1,13 @@
 @interface CPUEnergySnapshot
-+ (id)snapshotCPUEnergy:(unint64_t)a3;
-- (double)computeEnergyDiff:(id)a3;
++ (id)snapshotCPUEnergy:(unint64_t)energy;
+- (double)computeEnergyDiff:(id)diff;
 @end
 
 @implementation CPUEnergySnapshot
 
-+ (id)snapshotCPUEnergy:(unint64_t)a3
++ (id)snapshotCPUEnergy:(unint64_t)energy
 {
-  if (!a3)
+  if (!energy)
   {
     v6 = processLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -51,8 +51,8 @@ LABEL_12:
   [(CPUEnergySnapshot *)v7 setCpuEnergy:v4[11]];
   [(CPUEnergySnapshot *)v7 setCpuEnergyBilledToMe:v4[20]];
   [(CPUEnergySnapshot *)v7 setCpuEnergyBilledToOthers:v4[21]];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [(CPUEnergySnapshot *)v7 setTime:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(CPUEnergySnapshot *)v7 setTime:date];
 
   free(v4);
 LABEL_13:
@@ -60,24 +60,24 @@ LABEL_13:
   return v7;
 }
 
-- (double)computeEnergyDiff:(id)a3
+- (double)computeEnergyDiff:(id)diff
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
-  v6 = [v4 numberWithUnsignedLongLong:{-[CPUEnergySnapshot cpuEnergy](self, "cpuEnergy") - objc_msgSend(v5, "cpuEnergy")}];
+  diffCopy = diff;
+  v6 = [v4 numberWithUnsignedLongLong:{-[CPUEnergySnapshot cpuEnergy](self, "cpuEnergy") - objc_msgSend(diffCopy, "cpuEnergy")}];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[CPUEnergySnapshot cpuEnergyBilledToMe](self, "cpuEnergyBilledToMe") - objc_msgSend(v5, "cpuEnergyBilledToMe")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[CPUEnergySnapshot cpuEnergyBilledToMe](self, "cpuEnergyBilledToMe") - objc_msgSend(diffCopy, "cpuEnergyBilledToMe")}];
   [v9 doubleValue];
   v11 = v10;
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [(CPUEnergySnapshot *)self cpuEnergyBilledToOthers];
-  v14 = [v5 cpuEnergyBilledToOthers];
+  cpuEnergyBilledToOthers = [(CPUEnergySnapshot *)self cpuEnergyBilledToOthers];
+  cpuEnergyBilledToOthers2 = [diffCopy cpuEnergyBilledToOthers];
 
-  v15 = [v12 numberWithUnsignedLongLong:v13 - v14];
+  v15 = [v12 numberWithUnsignedLongLong:cpuEnergyBilledToOthers - cpuEnergyBilledToOthers2];
   [v15 doubleValue];
   v17 = v16;
 

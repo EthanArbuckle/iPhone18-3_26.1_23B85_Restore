@@ -1,19 +1,19 @@
 @interface HKRaceRouteLocationSeriesQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKRaceRouteLocationSeriesQuery)initWithClusterUUID:(id)a3 workoutSelection:(unint64_t)a4 timestampAnchor:(double)a5 limit:(unint64_t)a6 dataHandler:(id)a7;
-- (HKRaceRouteLocationSeriesQuery)initWithWorkoutUUID:(id)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 dataHandler:(id)a6;
-- (void)client_deliverRaceRouteLocations:(id)a3 isFinal:(BOOL)a4 query:(id)a5;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKRaceRouteLocationSeriesQuery)initWithClusterUUID:(id)d workoutSelection:(unint64_t)selection timestampAnchor:(double)anchor limit:(unint64_t)limit dataHandler:(id)handler;
+- (HKRaceRouteLocationSeriesQuery)initWithWorkoutUUID:(id)d timestampAnchor:(double)anchor limit:(unint64_t)limit dataHandler:(id)handler;
+- (void)client_deliverRaceRouteLocations:(id)locations isFinal:(BOOL)final query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 @end
 
 @implementation HKRaceRouteLocationSeriesQuery
 
-- (HKRaceRouteLocationSeriesQuery)initWithClusterUUID:(id)a3 workoutSelection:(unint64_t)a4 timestampAnchor:(double)a5 limit:(unint64_t)a6 dataHandler:(id)a7
+- (HKRaceRouteLocationSeriesQuery)initWithClusterUUID:(id)d workoutSelection:(unint64_t)selection timestampAnchor:(double)anchor limit:(unint64_t)limit dataHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a7;
+  dCopy = d;
+  handlerCopy = handler;
   v15 = +[HKSeriesType workoutRouteType];
   v22.receiver = self;
   v22.super_class = HKRaceRouteLocationSeriesQuery;
@@ -21,11 +21,11 @@
 
   if (v16)
   {
-    objc_storeStrong(&v16->_clusterUUID, a3);
-    v16->_workoutSelection = a4;
-    v16->_timestampAnchor = a5;
-    v16->_limit = a6;
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v16->_clusterUUID, d);
+    v16->_workoutSelection = selection;
+    v16->_timestampAnchor = anchor;
+    v16->_limit = limit;
+    v17 = _Block_copy(handlerCopy);
     dataHandler = v16->_dataHandler;
     v16->_dataHandler = v17;
 
@@ -37,10 +37,10 @@
   return v16;
 }
 
-- (HKRaceRouteLocationSeriesQuery)initWithWorkoutUUID:(id)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 dataHandler:(id)a6
+- (HKRaceRouteLocationSeriesQuery)initWithWorkoutUUID:(id)d timestampAnchor:(double)anchor limit:(unint64_t)limit dataHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = +[HKSeriesType workoutRouteType];
   v20.receiver = self;
   v20.super_class = HKRaceRouteLocationSeriesQuery;
@@ -48,10 +48,10 @@
 
   if (v14)
   {
-    objc_storeStrong(&v14->_workoutUUID, a3);
-    v14->_timestampAnchor = a4;
-    v14->_limit = a5;
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v14->_workoutUUID, d);
+    v14->_timestampAnchor = anchor;
+    v14->_limit = limit;
+    v15 = _Block_copy(handlerCopy);
     dataHandler = v14->_dataHandler;
     v14->_dataHandler = v15;
 
@@ -63,22 +63,22 @@
   return v14;
 }
 
-- (void)client_deliverRaceRouteLocations:(id)a3 isFinal:(BOOL)a4 query:(id)a5
+- (void)client_deliverRaceRouteLocations:(id)locations isFinal:(BOOL)final query:(id)query
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HKQuery *)self queue];
+  locationsCopy = locations;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__HKRaceRouteLocationSeriesQuery_client_deliverRaceRouteLocations_isFinal_query___block_invoke;
   v13[3] = &unk_1E7378428;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = locationsCopy;
+  finalCopy = final;
+  v15 = queryCopy;
+  v11 = queryCopy;
+  v12 = locationsCopy;
+  dispatch_async(queue, v13);
 }
 
 void __81__HKRaceRouteLocationSeriesQuery_client_deliverRaceRouteLocations_isFinal_query___block_invoke(uint64_t a1)
@@ -116,51 +116,51 @@ void __81__HKRaceRouteLocationSeriesQuery_client_deliverRaceRouteLocations_isFin
   _Block_object_dispose(&v11, 8);
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKRaceRouteLocationSeriesQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverRaceRouteLocations_isFinal_query_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverRaceRouteLocations_isFinal_query_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKRaceRouteLocationSeriesQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setClusterUUID:{self->_clusterUUID, v5.receiver, v5.super_class}];
-  [v4 setWorkoutSelection:self->_workoutSelection];
-  [v4 setWorkoutUUID:self->_workoutUUID];
-  [v4 setTimestampAnchor:self->_timestampAnchor];
-  [v4 setLimit:self->_limit];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setClusterUUID:{self->_clusterUUID, v5.receiver, v5.super_class}];
+  [configurationCopy setWorkoutSelection:self->_workoutSelection];
+  [configurationCopy setWorkoutUUID:self->_workoutUUID];
+  [configurationCopy setTimestampAnchor:self->_timestampAnchor];
+  [configurationCopy setLimit:self->_limit];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_dataHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__HKRaceRouteLocationSeriesQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKRaceRouteLocationSeriesQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   dataHandler = self->_dataHandler;
   self->_dataHandler = 0;
 }

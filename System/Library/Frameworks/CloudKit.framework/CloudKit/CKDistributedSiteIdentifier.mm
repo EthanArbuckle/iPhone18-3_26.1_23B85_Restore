@@ -1,14 +1,14 @@
 @interface CKDistributedSiteIdentifier
-+ (id)SHADescription:(id)a3;
-+ (id)pSiteIdentifierFromSiteIdentifier:(id)a3;
-+ (id)siteIdentifierFromPSiteIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CKDistributedSiteIdentifier)initWithCoder:(id)a3;
-- (CKDistributedSiteIdentifier)initWithIdentifier:(id)a3 modifier:(id)a4;
++ (id)SHADescription:(id)description;
++ (id)pSiteIdentifierFromSiteIdentifier:(id)identifier;
++ (id)siteIdentifierFromPSiteIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (CKDistributedSiteIdentifier)initWithCoder:(id)coder;
+- (CKDistributedSiteIdentifier)initWithIdentifier:(id)identifier modifier:(id)modifier;
 - (id)description;
 - (id)descriptionWithStringSiteIdentifiers;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDistributedSiteIdentifier
@@ -23,20 +23,20 @@
   return v13 ^ v7;
 }
 
-- (CKDistributedSiteIdentifier)initWithIdentifier:(id)a3 modifier:(id)a4
+- (CKDistributedSiteIdentifier)initWithIdentifier:(id)identifier modifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  modifierCopy = modifier;
   v20.receiver = self;
   v20.super_class = CKDistributedSiteIdentifier;
   v10 = [(CKDistributedSiteIdentifier *)&v20 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(identifierCopy, v8, v9);
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(modifierCopy, v13, v14);
     v16 = v15;
     if (v15)
     {
@@ -55,43 +55,43 @@
   return v10;
 }
 
-- (CKDistributedSiteIdentifier)initWithCoder:(id)a3
+- (CKDistributedSiteIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_identifier);
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v5, v6);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v5, v6);
 
   v9 = objc_opt_class();
   v10 = NSStringFromSelector(sel_modifier);
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v9, v10);
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v9, v10);
 
   v14 = objc_msgSend_initWithIdentifier_modifier_(self, v13, v8, v12);
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_identifier(self, v5, v6);
   v8 = NSStringFromSelector(sel_identifier);
-  objc_msgSend_encodeObject_forKey_(v15, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_modifier(self, v10, v11);
   v13 = NSStringFromSelector(sel_modifier);
-  objc_msgSend_encodeObject_forKey_(v15, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (((v5 != 0) & objc_opt_isKindOfClass()) != 0)
+  if (((equalCopy != 0) & objc_opt_isKindOfClass()) != 0)
   {
-    v6 = v5;
+    v6 = equalCopy;
     v9 = objc_msgSend_identifier(self, v7, v8);
     v14 = objc_msgSend_identifier(v6, v10, v11);
     if (v9 == v14 || (objc_msgSend_identifier(self, v12, v13), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend_identifier(v6, v15, v16), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend_isEqual_(v32, v17, v3)))
@@ -133,16 +133,16 @@ LABEL_12:
   return isEqual;
 }
 
-+ (id)SHADescription:(id)a3
++ (id)SHADescription:(id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v6 = objc_msgSend_string(MEMORY[0x1E696AD60], v4, v5);
-  if (objc_msgSend_length(v3, v7, v8))
+  if (objc_msgSend_length(descriptionCopy, v7, v8))
   {
-    v10 = v3;
+    v10 = descriptionCopy;
     v13 = objc_msgSend_bytes(v10, v11, v12);
-    v16 = objc_msgSend_length(v3, v14, v15);
+    v16 = objc_msgSend_length(descriptionCopy, v14, v15);
     CC_SHA1(v13, v16, md);
     for (i = 0; i != 4; ++i)
     {
@@ -232,26 +232,26 @@ LABEL_12:
   return v18;
 }
 
-+ (id)pSiteIdentifierFromSiteIdentifier:(id)a3
++ (id)pSiteIdentifierFromSiteIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  v7 = objc_msgSend_identifier(v3, v5, v6);
+  v7 = objc_msgSend_identifier(identifierCopy, v5, v6);
   objc_msgSend_setIdentifier_(v4, v8, v7);
 
-  v11 = objc_msgSend_modifier(v3, v9, v10);
+  v11 = objc_msgSend_modifier(identifierCopy, v9, v10);
 
   objc_msgSend_setModifier_(v4, v12, v11);
 
   return v4;
 }
 
-+ (id)siteIdentifierFromPSiteIdentifier:(id)a3
++ (id)siteIdentifierFromPSiteIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [CKDistributedSiteIdentifier alloc];
-  v7 = objc_msgSend_identifier(v3, v5, v6);
-  v10 = objc_msgSend_modifier(v3, v8, v9);
+  v7 = objc_msgSend_identifier(identifierCopy, v5, v6);
+  v10 = objc_msgSend_modifier(identifierCopy, v8, v9);
 
   v12 = objc_msgSend_initWithIdentifier_modifier_(v4, v11, v7, v10);
 

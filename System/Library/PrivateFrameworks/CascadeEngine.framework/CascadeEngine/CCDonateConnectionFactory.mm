@@ -1,49 +1,49 @@
 @interface CCDonateConnectionFactory
-- (CCDonateConnectionFactory)initWithRequestManager:(id)a3;
-- (id)makeConnection:(id)a3;
-- (id)makeXPCConnection:(id)a3;
-- (void)terminateConnection:(id)a3;
+- (CCDonateConnectionFactory)initWithRequestManager:(id)manager;
+- (id)makeConnection:(id)connection;
+- (id)makeXPCConnection:(id)connection;
+- (void)terminateConnection:(id)connection;
 @end
 
 @implementation CCDonateConnectionFactory
 
-- (CCDonateConnectionFactory)initWithRequestManager:(id)a3
+- (CCDonateConnectionFactory)initWithRequestManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = CCDonateConnectionFactory;
   v6 = [(CCDonateConnectionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestManager, a3);
+    objc_storeStrong(&v6->_requestManager, manager);
   }
 
   return v7;
 }
 
-- (id)makeXPCConnection:(id)a3
+- (id)makeXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[CCDonateConnection alloc] initWithRequestManager:self->_requestManager xpcConnection:v4];
+  connectionCopy = connection;
+  v5 = [[CCDonateConnection alloc] initWithRequestManager:self->_requestManager xpcConnection:connectionCopy];
 
   return v5;
 }
 
-- (id)makeConnection:(id)a3
+- (id)makeConnection:(id)connection
 {
   v3 = [[CCDonateConnection alloc] initWithRequestManager:self->_requestManager xpcConnection:0];
 
   return v3;
 }
 
-- (void)terminateConnection:(id)a3
+- (void)terminateConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 abortSetDonation];
+    [connectionCopy abortSetDonation];
   }
 }
 

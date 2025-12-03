@@ -1,14 +1,14 @@
 @interface _NTKEFaceChoiceAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation _NTKEFaceChoiceAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKEFaceChoice" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_NTKEFaceChoice" hasInstanceMethod:@"_selected" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKEFaceChoice" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_NTKEFaceChoice" hasInstanceMethod:@"_selected" withFullSignature:{"v", 0}];
 }
 
 @end

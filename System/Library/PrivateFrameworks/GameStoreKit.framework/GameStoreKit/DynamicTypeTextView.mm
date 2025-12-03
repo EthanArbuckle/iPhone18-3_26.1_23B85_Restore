@@ -1,45 +1,45 @@
 @interface DynamicTypeTextView
 - (NSString)text;
-- (_TtC12GameStoreKit19DynamicTypeTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC12GameStoreKit19DynamicTypeTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (int64_t)textAlignment;
 - (void)buttonShapesDidChange;
-- (void)setAttributedText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation DynamicTypeTextView
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  v5 = self;
-  sub_24F25DFC4(a3);
+  fontCopy = font;
+  selfCopy = self;
+  sub_24F25DFC4(font);
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for DynamicTypeTextView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v8.receiver;
-  [(DynamicTypeTextView *)&v8 setTextColor:v4];
-  v6 = [v5 textColor];
+  [(DynamicTypeTextView *)&v8 setTextColor:colorCopy];
+  textColor = [v5 textColor];
   v7 = *&v5[OBJC_IVAR____TtC12GameStoreKit19DynamicTypeTextView__cachedTextColor];
-  *&v5[OBJC_IVAR____TtC12GameStoreKit19DynamicTypeTextView__cachedTextColor] = v6;
+  *&v5[OBJC_IVAR____TtC12GameStoreKit19DynamicTypeTextView__cachedTextColor] = textColor;
 
   sub_24F25C664();
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DynamicTypeTextView();
-  v4 = a3;
+  textCopy = text;
   v5 = v6.receiver;
-  [(DynamicTypeTextView *)&v6 setAttributedText:v4];
+  [(DynamicTypeTextView *)&v6 setAttributedText:textCopy];
   if ((v5[OBJC_IVAR____TtC12GameStoreKit19DynamicTypeTextView_isUpdatingAttributedText] & 1) == 0)
   {
     sub_24F25C664();
@@ -51,10 +51,10 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for DynamicTypeTextView();
   v2 = v7.receiver;
-  v3 = [(DynamicTypeTextView *)&v7 text];
-  if (v3)
+  text = [(DynamicTypeTextView *)&v7 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     sub_24F92B0D8();
 
     v5 = sub_24F92B098();
@@ -69,18 +69,18 @@
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     sub_24F92B0D8();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_24F92B098();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -98,24 +98,24 @@
   return [(DynamicTypeTextView *)&v3 textAlignment];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v7 = 0;
   v4 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x1F0);
-  v5 = self;
+  selfCopy = self;
   v4(&v7);
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for DynamicTypeTextView();
-  [(DynamicTypeTextView *)&v6 setTextAlignment:a3];
+  [(DynamicTypeTextView *)&v6 setTextAlignment:alignment];
 }
 
 - (void)buttonShapesDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_24F25C4D8();
 }
 
-- (_TtC12GameStoreKit19DynamicTypeTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC12GameStoreKit19DynamicTypeTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -23,10 +23,10 @@
 - (id)_compressGZIP
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  bytes = [self bytes];
+  v4 = [self length];
   v5 = 0;
-  if (v3)
+  if (bytes)
   {
     v6 = v4;
     if (v4)
@@ -56,10 +56,10 @@
 
 - (id)ams_SHA1
 {
-  if ([a1 length])
+  if ([self length])
   {
     v2 = [MEMORY[0x1E695DF88] dataWithLength:20];
-    CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), objc_msgSend(v2, "mutableBytes"));
+    CC_SHA1([self bytes], objc_msgSend(self, "length"), objc_msgSend(v2, "mutableBytes"));
     v3 = [v2 copy];
   }
 
@@ -75,8 +75,8 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   memset(&strm.avail_in, 0, 104);
-  strm.avail_in = [a1 length];
-  strm.next_in = [a1 bytes];
+  strm.avail_in = [self length];
+  strm.next_in = [self bytes];
   v2 = 0;
   if (!inflateInit2_(&strm, 31, "1.2.12", 112))
   {
@@ -123,15 +123,15 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v3 = [a1 _compressGZIP];
+    _compressGZIP = [self _compressGZIP];
   }
 
   else
   {
-    v3 = [a1 _compressLZMA];
+    _compressGZIP = [self _compressLZMA];
   }
 
-  a2 = v3;
+  a2 = _compressGZIP;
 LABEL_6:
 
   return a2;
@@ -146,15 +146,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [a1 _decompressGZIP];
+    _decompressGZIP = [self _decompressGZIP];
   }
 
   else
   {
-    v3 = [a1 _decompressLZMA];
+    _decompressGZIP = [self _decompressLZMA];
   }
 
-  a2 = v3;
+  a2 = _decompressGZIP;
 LABEL_6:
 
   return a2;
@@ -165,7 +165,7 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
   v2 = objc_autoreleasePoolPush();
   v10 = 0;
-  v3 = [a1 compressedDataUsingAlgorithm:2 error:&v10];
+  v3 = [self compressedDataUsingAlgorithm:2 error:&v10];
   v4 = v10;
   if (v4)
   {
@@ -175,8 +175,8 @@ LABEL_6:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -186,7 +186,7 @@ LABEL_6:
       v14 = v8;
       v15 = 2114;
       v16 = v4;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error compressing LZMA data. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error compressing LZMA data. %{public}@", buf, 0x20u);
     }
   }
 
@@ -200,7 +200,7 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
   v2 = objc_autoreleasePoolPush();
   v10 = 0;
-  v3 = [a1 decompressedDataUsingAlgorithm:2 error:&v10];
+  v3 = [self decompressedDataUsingAlgorithm:2 error:&v10];
   v4 = v10;
   if (v4)
   {
@@ -210,8 +210,8 @@ LABEL_6:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -221,7 +221,7 @@ LABEL_6:
       v14 = v8;
       v15 = 2114;
       v16 = v4;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error decompressing LZMA data. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error decompressing LZMA data. %{public}@", buf, 0x20u);
     }
   }
 
@@ -232,7 +232,7 @@ LABEL_6:
 
 - (id)ams_urlSafeBase64EncodedString
 {
-  v1 = [a1 base64EncodedStringWithOptions:0];
+  v1 = [self base64EncodedStringWithOptions:0];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
@@ -266,7 +266,7 @@ LABEL_6:
   v12 = [MEMORY[0x1E695DEF0] _AESKeyForDataProtectionClass:a3 error:a6];
   if (v12)
   {
-    v13 = [a1 ams_decryptUsingKey:v12 initializationVectorData:v10 tagData:v11 error:a6];
+    v13 = [self ams_decryptUsingKey:v12 initializationVectorData:v10 tagData:v11 error:a6];
   }
 
   else
@@ -277,14 +277,14 @@ LABEL_6:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = 138543618;
       v18 = objc_opt_class();
       v19 = 2048;
       v20 = a3;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get the AES key. Data decryption will fail. dataProtectionClass = %lu", &v17, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get the AES key. Data decryption will fail. dataProtectionClass = %lu", &v17, 0x16u);
     }
 
     v13 = 0;
@@ -300,17 +300,17 @@ LABEL_6:
   v10 = a5;
   v11 = a4;
   v12 = a3;
-  v13 = [v9 dataWithLength:{objc_msgSend(a1, "length")}];
+  v13 = [v9 dataWithLength:{objc_msgSend(self, "length")}];
   [v12 bytes];
   [v12 length];
 
   [v11 bytes];
   [v11 length];
 
-  [a1 bytes];
-  v14 = [a1 length];
-  v15 = [v13 mutableBytes];
-  v16 = [v10 bytes];
+  [self bytes];
+  v14 = [self length];
+  mutableBytes = [v13 mutableBytes];
+  bytes = [v10 bytes];
   v17 = [v10 length];
 
   v18 = CCCryptorGCMOneshotDecrypt();
@@ -324,14 +324,14 @@ LABEL_6:
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v32 = objc_opt_class();
       v33 = 1024;
       v34 = v19;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Data decryption failed. status = %d", buf, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Data decryption failed. status = %d", buf, 0x12u);
     }
 
     if (a6)
@@ -362,7 +362,7 @@ LABEL_6:
   v8 = [MEMORY[0x1E695DEF0] _AESKeyForDataProtectionClass:? error:?];
   if (v8)
   {
-    [a1 ams_encryptDataUsingKey:v8 error:a3];
+    [self ams_encryptDataUsingKey:v8 error:a3];
   }
 
   else
@@ -373,14 +373,14 @@ LABEL_6:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543618;
       v12 = objc_opt_class();
       v13 = 2048;
       v14 = a2;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get the AES key. Data encryption will fail. dataProtectionClass = %lu", &v11, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get the AES key. Data encryption will fail. dataProtectionClass = %lu", &v11, 0x16u);
     }
 
     __copy_constructor_8_8_s0_s8_s16(a4);
@@ -399,15 +399,15 @@ LABEL_6:
       v24 = a3;
       v26 = a4;
       v9 = [MEMORY[0x1E695DF88] dataWithLength:16];
-      v10 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(a1, "length")}];
+      v10 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(self, "length")}];
       [v7 bytes];
       [v7 length];
       [v8 bytes];
       [v8 length];
-      [a1 bytes];
-      v11 = [a1 length];
-      v12 = [v10 mutableBytes];
-      v22 = [v9 mutableBytes];
+      [self bytes];
+      v11 = [self length];
+      mutableBytes = [v10 mutableBytes];
+      mutableBytes2 = [v9 mutableBytes];
       v23 = [v9 length];
       v13 = CCCryptorGCMOneshotEncrypt();
       if (v13)
@@ -421,14 +421,14 @@ LABEL_6:
           v16 = +[AMSLogConfig sharedConfig];
         }
 
-        v17 = [v16 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v16 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
           v28 = objc_opt_class();
           v29 = 1024;
           LODWORD(v30) = v14;
-          _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Data encryption failed. status = %d", buf, 0x12u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Data encryption failed. status = %d", buf, 0x12u);
         }
 
         if (v24)
@@ -464,8 +464,8 @@ LABEL_6:
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
       v28 = objc_opt_class();
@@ -473,7 +473,7 @@ LABEL_6:
       v30 = [v7 length];
       v31 = 2048;
       v32 = 32;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: The encryption key isn't valid. Data encryption will fail. length = %lu, requiredLength = %lu", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: The encryption key isn't valid. Data encryption will fail. length = %lu, requiredLength = %lu", buf, 0x20u);
     }
 
     if (a3)
@@ -500,14 +500,14 @@ LABEL_6:
       v3 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = 138543618;
       v8 = objc_opt_class();
       v9 = 1024;
       v10 = v2;
-      _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate an encryption/decryption key. status = %d", &v7, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate an encryption/decryption key. status = %d", &v7, 0x12u);
     }
 
     v5 = 0;
@@ -551,14 +551,14 @@ LABEL_6:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2048;
       *&buf[14] = a3;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Running unit tests. We won't go to the keychain for the AES key. dataProtectionClass = %lu", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Running unit tests. We won't go to the keychain for the AES key. dataProtectionClass = %lu", buf, 0x16u);
     }
 
     v10 = [AMSUnitTests encryptionKeyForDataProtectionClass:a3];
@@ -590,10 +590,10 @@ LABEL_6:
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], @"apple");
-      v15 = [a1 _labelForDataProtectionClass:a3];
+      v15 = [self _labelForDataProtectionClass:a3];
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC40], v15);
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AD30], *MEMORY[0x1E697AD48]);
-      v16 = [a1 _labelForDataProtectionClass:a3];
+      v16 = [self _labelForDataProtectionClass:a3];
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ADC8], v16);
       v17 = *MEMORY[0x1E695E4D0];
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B390], *MEMORY[0x1E695E4D0]);
@@ -619,15 +619,15 @@ LABEL_6:
           v18 = +[AMSLogConfig sharedConfig];
         }
 
-        v19 = [v18 OSLogObject];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v18 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v20 = objc_opt_class();
           *v36 = 138543618;
           v37 = v20;
           v38 = 2048;
           v39 = a3;
-          _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Generating an AMSDataProtectionClass encryption/decryption key. dataProtectionClass = %lu", v36, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Generating an AMSDataProtectionClass encryption/decryption key. dataProtectionClass = %lu", v36, 0x16u);
         }
 
         v30[0] = MEMORY[0x1E69E9820];
@@ -635,7 +635,7 @@ LABEL_6:
         v30[2] = __66__NSData_AppleMediaServices___AESKeyForDataProtectionClass_error___block_invoke_53;
         v30[3] = &unk_1E73BE200;
         v30[6] = Mutable;
-        v30[7] = a1;
+        v30[7] = self;
         v30[8] = a3;
         v30[4] = &v32;
         v30[5] = buf;
@@ -651,8 +651,8 @@ LABEL_6:
           v21 = +[AMSLogConfig sharedConfig];
         }
 
-        v22 = [v21 OSLogObject];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v21 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v23 = objc_opt_class();
           v24 = *(v33 + 6);
@@ -662,7 +662,7 @@ LABEL_6:
           v39 = a3;
           v40 = 1024;
           v41 = v24;
-          _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch an AMSDataProtectionClass encryption/decryption key. dataProtectionClass = %lu | error = %d", v36, 0x1Cu);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch an AMSDataProtectionClass encryption/decryption key. dataProtectionClass = %lu | error = %d", v36, 0x1Cu);
         }
 
         if (a4)
@@ -716,14 +716,14 @@ LABEL_6:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v13 = objc_opt_class();
       v14 = 1024;
       v15 = v6;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate IV data. Data encryption will fail. status = %d", buf, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate IV data. Data encryption will fail. status = %d", buf, 0x12u);
     }
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to generate IV data. status = %d", v6];

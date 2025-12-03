@@ -8,15 +8,15 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [v5 dataType];
-  if (v6 == 65552)
+  dataType = [v5 dataType];
+  if (dataType == 65552)
   {
     v7 = 1;
     v8 = 1;
     goto LABEL_5;
   }
 
-  if (v6 == 65568)
+  if (dataType == 65568)
   {
     v7 = 0;
     v8 = 2;

@@ -1,31 +1,31 @@
 @interface IDSDXPCActivityMonitor
 + (BOOL)isActivityMonitorSupported;
-- (BOOL)_entitledForActivity:(id)a3;
-- (IDSDXPCActivityMonitor)initWithQueue:(id)a3 connection:(id)a4 activityMonitorStateManager:(id)a5;
-- (void)_handleUpdate:(id)a3 forActivity:(id)a4;
-- (void)checkIfListeningForActivity:(id)a3 completion:(id)a4;
-- (void)currentSubscriptionsForActivity:(id)a3 completion:(id)a4;
-- (void)setShouldListen:(BOOL)a3 forActivity:(id)a4 completion:(id)a5;
-- (void)setupActivityMonitorClient:(id)a3 forActivity:(id)a4;
-- (void)subscribeInfo:(id)a3 forActivity:(id)a4 withCompletion:(id)a5;
-- (void)unsubscribeActivity:(id)a3 andSubActivity:(id)a4 withCompletion:(id)a5;
+- (BOOL)_entitledForActivity:(id)activity;
+- (IDSDXPCActivityMonitor)initWithQueue:(id)queue connection:(id)connection activityMonitorStateManager:(id)manager;
+- (void)_handleUpdate:(id)update forActivity:(id)activity;
+- (void)checkIfListeningForActivity:(id)activity completion:(id)completion;
+- (void)currentSubscriptionsForActivity:(id)activity completion:(id)completion;
+- (void)setShouldListen:(BOOL)listen forActivity:(id)activity completion:(id)completion;
+- (void)setupActivityMonitorClient:(id)client forActivity:(id)activity;
+- (void)subscribeInfo:(id)info forActivity:(id)activity withCompletion:(id)completion;
+- (void)unsubscribeActivity:(id)activity andSubActivity:(id)subActivity withCompletion:(id)completion;
 @end
 
 @implementation IDSDXPCActivityMonitor
 
-- (IDSDXPCActivityMonitor)initWithQueue:(id)a3 connection:(id)a4 activityMonitorStateManager:(id)a5
+- (IDSDXPCActivityMonitor)initWithQueue:(id)queue connection:(id)connection activityMonitorStateManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(IDSDXPCActivityMonitor *)v10 valueForEntitlement:kIDSActivityMonitorEntitlement];
+  queueCopy = queue;
+  connectionCopy = connection;
+  managerCopy = manager;
+  v12 = [(IDSDXPCActivityMonitor *)connectionCopy valueForEntitlement:kIDSActivityMonitorEntitlement];
   if (!v12)
   {
     v21 = +[IMIDSLog activityMonitor];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v10;
+      v35 = connectionCopy;
       v22 = "Missing activity monitor entitlement -- failing creation of IDSDXPCActivityMonitor collaborator {connection: %@}";
       v23 = v21;
       v24 = 12;
@@ -34,7 +34,7 @@
 
 LABEL_22:
 
-    v20 = 0;
+    selfCopy2 = 0;
     goto LABEL_23;
   }
 
@@ -45,7 +45,7 @@ LABEL_22:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v35 = v10;
+      v35 = connectionCopy;
       v36 = 2112;
       v37 = v12;
       v22 = "Invalid activity monitor entitlement -- failing creation of IDSDXPCActivityMonitor collaborator {connection: %@, activityMonitorEntitlementValue: %@}";
@@ -59,8 +59,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v27 = self;
-  v28 = v9;
+  selfCopy = self;
+  v28 = queueCopy;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -87,15 +87,15 @@ LABEL_21:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v35 = v10;
+            v35 = connectionCopy;
             v36 = 2112;
             v37 = v13;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Found a non-string activity monitor entitlement value -- failing creation of IDSDXPCActivityMonitor collaborator {connection: %@, activityMonitorEntitlementValue: %@}", buf, 0x16u);
           }
 
-          v20 = 0;
-          v9 = v28;
-          self = v27;
+          selfCopy2 = 0;
+          queueCopy = v28;
+          self = selfCopy;
           goto LABEL_23;
         }
       }
@@ -110,10 +110,10 @@ LABEL_21:
     }
   }
 
-  v29.receiver = v27;
+  v29.receiver = selfCopy;
   v29.super_class = IDSDXPCActivityMonitor;
   v18 = [(IDSDXPCActivityMonitor *)&v29 init];
-  v9 = v28;
+  queueCopy = v28;
   if (v18)
   {
     v19 = +[IMIDSLog activityMonitor];
@@ -124,26 +124,26 @@ LABEL_21:
       v36 = 2112;
       v37 = v13;
       v38 = 2112;
-      v39 = v10;
+      v39 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Created XPCActivityMonitor {self: %p, activityMonitorEntitlementValue: %@, connection: %@}", buf, 0x20u);
     }
 
-    objc_storeStrong(&v18->_queue, a3);
+    objc_storeStrong(&v18->_queue, queue);
     objc_storeStrong(&v18->_activityMonitorEntitlements, v12);
-    objc_storeStrong(&v18->_stateManager, a5);
+    objc_storeStrong(&v18->_stateManager, manager);
   }
 
   self = v18;
-  v20 = self;
+  selfCopy2 = self;
 LABEL_23:
 
-  return v20;
+  return selfCopy2;
 }
 
-- (BOOL)_entitledForActivity:(id)a3
+- (BOOL)_entitledForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_activityMonitorEntitlements containsObject:v4];
+  activityCopy = activity;
+  v5 = [(NSArray *)self->_activityMonitorEntitlements containsObject:activityCopy];
   if (!v5)
   {
     v6 = +[IMIDSLog activityMonitor];
@@ -151,9 +151,9 @@ LABEL_23:
     {
       activityMonitorEntitlements = self->_activityMonitorEntitlements;
       v9 = 134218498;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = activityCopy;
       v13 = 2112;
       v14 = activityMonitorEntitlements;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Not entitled for activity monitor activity! {self: %p, activity: %@, _activityMonitorEntitlements: %@}", &v9, 0x20u);
@@ -163,22 +163,22 @@ LABEL_23:
   return v5;
 }
 
-- (void)_handleUpdate:(id)a3 forActivity:(id)a4
+- (void)_handleUpdate:(id)update forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_clientRemoteObjectByActivity objectForKeyedSubscript:v7];
+  updateCopy = update;
+  activityCopy = activity;
+  v8 = [(NSMutableDictionary *)self->_clientRemoteObjectByActivity objectForKeyedSubscript:activityCopy];
   if (v8)
   {
     v9 = +[IMIDSLog activityMonitor];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v7;
+      v15 = activityCopy;
       v16 = 2112;
-      v17 = v6;
+      v17 = updateCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Posting update {self: %p, activity: %@, update: %@}", buf, 0x20u);
     }
 
@@ -187,30 +187,30 @@ LABEL_23:
     v10[2] = sub_10051591C;
     v10[3] = &unk_100BD6E40;
     v10[4] = self;
-    v11 = v7;
-    [v8 handleIncomingUpdate:v6 onActivity:v11 completion:v10];
+    v11 = activityCopy;
+    [v8 handleIncomingUpdate:updateCopy onActivity:v11 completion:v10];
   }
 }
 
-- (void)setupActivityMonitorClient:(id)a3 forActivity:(id)a4
+- (void)setupActivityMonitorClient:(id)client forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v7])
+  clientCopy = client;
+  activityCopy = activity;
+  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
   {
-    if (v6)
+    if (clientCopy)
     {
-      v8 = [v6 remoteObjectProxy];
+      remoteObjectProxy = [clientCopy remoteObjectProxy];
       v9 = +[IMIDSLog activityMonitor];
       v10 = v9;
-      if (v8)
+      if (remoteObjectProxy)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2112;
-          v31 = v7;
+          v31 = activityCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding activity monitor client {self: %p, activity: %@}", buf, 0x16u);
         }
 
@@ -224,12 +224,12 @@ LABEL_23:
           clientRemoteObjectByActivity = self->_clientRemoteObjectByActivity;
         }
 
-        [(NSMutableDictionary *)clientRemoteObjectByActivity setObject:v8 forKeyedSubscript:v7];
-        v14 = [(IDSDXPCActivityMonitor *)self stateManager];
-        [v14 addListener:self forActivity:v7];
+        [(NSMutableDictionary *)clientRemoteObjectByActivity setObject:remoteObjectProxy forKeyedSubscript:activityCopy];
+        stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+        [stateManager addListener:self forActivity:activityCopy];
 
-        v15 = [(IDSDXPCActivityMonitor *)self stateManager];
-        v16 = [v15 storedUpdatesForActivity:v7];
+        stateManager2 = [(IDSDXPCActivityMonitor *)self stateManager];
+        v16 = [stateManager2 storedUpdatesForActivity:activityCopy];
 
         v25 = 0u;
         v26 = 0u;
@@ -251,7 +251,7 @@ LABEL_23:
                 objc_enumerationMutation(v10);
               }
 
-              [(IDSDXPCActivityMonitor *)self _handleUpdate:*(*(&v23 + 1) + 8 * v20) forActivity:v7, v23];
+              [(IDSDXPCActivityMonitor *)self _handleUpdate:*(*(&v23 + 1) + 8 * v20) forActivity:activityCopy, v23];
               v20 = v20 + 1;
             }
 
@@ -265,7 +265,7 @@ LABEL_23:
 
       else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10092818C(self, v7, v10);
+        sub_10092818C(self, activityCopy, v10);
       }
 
       goto LABEL_23;
@@ -275,125 +275,125 @@ LABEL_23:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
-      v31 = v7;
+      v31 = activityCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Removing activity monitor client {self: %p, activity: %@}", buf, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_clientRemoteObjectByActivity setObject:0 forKeyedSubscript:v7];
-    v22 = [(IDSDXPCActivityMonitor *)self stateManager];
-    [v22 removeListener:self forActivity:v7];
+    [(NSMutableDictionary *)self->_clientRemoteObjectByActivity setObject:0 forKeyedSubscript:activityCopy];
+    stateManager3 = [(IDSDXPCActivityMonitor *)self stateManager];
+    [stateManager3 removeListener:self forActivity:activityCopy];
 
     if (![(NSMutableDictionary *)self->_clientRemoteObjectByActivity count])
     {
-      v8 = self->_clientRemoteObjectByActivity;
+      remoteObjectProxy = self->_clientRemoteObjectByActivity;
       self->_clientRemoteObjectByActivity = 0;
 LABEL_23:
     }
   }
 }
 
-- (void)checkIfListeningForActivity:(id)a3 completion:(id)a4
+- (void)checkIfListeningForActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v6])
+  activityCopy = activity;
+  completionCopy = completion;
+  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
   {
-    v8 = [(IDSDXPCActivityMonitor *)self stateManager];
-    v9 = [v8 isListeningOnActivity:v6];
+    stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+    v9 = [stateManager isListeningOnActivity:activityCopy];
 
     v10 = +[IMIDSLog activityMonitor];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       if (v9)
       {
         v11 = @"YES";
       }
 
-      v16 = v6;
+      v16 = activityCopy;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Checking if listening for activity monitor activity {self: %p, activity: %@, isListening: %@}", &v13, 0x20u);
     }
 
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
     v12 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
-    (v7)[2](v7, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 }
 
-- (void)setShouldListen:(BOOL)a3 forActivity:(id)a4 completion:(id)a5
+- (void)setShouldListen:(BOOL)listen forActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v8])
+  listenCopy = listen;
+  activityCopy = activity;
+  completionCopy = completion;
+  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
   {
     v10 = +[IMIDSLog activityMonitor];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       v15 = 134218498;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      if (v6)
+      if (listenCopy)
       {
         v11 = @"YES";
       }
 
-      v18 = v8;
+      v18 = activityCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting should listen for activity monitor activity {self: %p, activity: %@, shouldListen: %@}", &v15, 0x20u);
     }
 
-    v12 = [(IDSDXPCActivityMonitor *)self stateManager];
-    v13 = v12;
-    if (v6)
+    stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+    v13 = stateManager;
+    if (listenCopy)
     {
-      [v12 startListeningOnActivity:v8];
+      [stateManager startListeningOnActivity:activityCopy];
     }
 
     else
     {
-      [v12 stopListeningOnActivity:v8];
+      [stateManager stopListeningOnActivity:activityCopy];
     }
 
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v14 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
-    (v9)[2](v9, v14);
+    (completionCopy)[2](completionCopy, v14);
   }
 }
 
-- (void)currentSubscriptionsForActivity:(id)a3 completion:(id)a4
+- (void)currentSubscriptionsForActivity:(id)activity completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v9])
+  activityCopy = activity;
+  completionCopy = completion;
+  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
   {
-    v7 = [(IDSDXPCActivityMonitor *)self stateManager];
-    v8 = [v7 currentSubscriptionsForActivity:v9];
+    stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+    v8 = [stateManager currentSubscriptionsForActivity:activityCopy];
 
-    v6[2](v6, v8, 0);
+    completionCopy[2](completionCopy, v8, 0);
   }
 
   else
   {
     v8 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
-    (v6)[2](v6, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 }
 
@@ -408,16 +408,16 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 intValue];
+      intValue = [v4 intValue];
       v6 = +[IMIDSLog activityMonitor];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 134217984;
-        v9 = v5;
+        v9 = intValue;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Server provided a minimum value for activity monitor which was %ld", &v8, 0xCu);
       }
 
-      v2 = v5 < 2;
+      v2 = intValue < 2;
     }
 
     else
@@ -429,76 +429,76 @@ LABEL_23:
   return v2;
 }
 
-- (void)subscribeInfo:(id)a3 forActivity:(id)a4 withCompletion:(id)a5
+- (void)subscribeInfo:(id)info forActivity:(id)activity withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  activityCopy = activity;
+  completionCopy = completion;
   if ([objc_opt_class() isActivityMonitorSupported])
   {
-    if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v9])
+    if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
     {
       v11 = +[IMIDSLog activityMonitor];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134218498;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
-        v16 = v9;
+        v16 = activityCopy;
         v17 = 2112;
-        v18 = v8;
+        v18 = infoCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Subscribing for activity monitor session {self: %p, activity: %@, info: %@}", &v13, 0x20u);
       }
 
-      v12 = [(IDSDXPCActivityMonitor *)self stateManager];
-      [v12 subscribeForInfo:v8 onActivity:v9 withCompletion:v10];
+      stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+      [stateManager subscribeForInfo:infoCopy onActivity:activityCopy withCompletion:completionCopy];
     }
 
     else
     {
-      v12 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
-      v10[2](v10, v12);
+      stateManager = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
+      completionCopy[2](completionCopy, stateManager);
     }
   }
 
   else
   {
-    v12 = +[IMIDSLog activityMonitor];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    stateManager = +[IMIDSLog activityMonitor];
+    if (os_log_type_enabled(stateManager, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Activity monitor is currently disabled by the server.", &v13, 2u);
+      _os_log_impl(&_mh_execute_header, stateManager, OS_LOG_TYPE_DEFAULT, "Activity monitor is currently disabled by the server.", &v13, 2u);
     }
   }
 }
 
-- (void)unsubscribeActivity:(id)a3 andSubActivity:(id)a4 withCompletion:(id)a5
+- (void)unsubscribeActivity:(id)activity andSubActivity:(id)subActivity withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:v8])
+  activityCopy = activity;
+  subActivityCopy = subActivity;
+  completionCopy = completion;
+  if ([(IDSDXPCActivityMonitor *)self _entitledForActivity:activityCopy])
   {
     v11 = +[IMIDSLog activityMonitor];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v8;
+      v16 = activityCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = subActivityCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unsubscribing for activity monitor session {self: %p, activity: %@, subActivity: %@}", &v13, 0x20u);
     }
 
-    v12 = [(IDSDXPCActivityMonitor *)self stateManager];
-    [v12 unsubscribeForActivity:v8 subActivity:v9 withCompletion:v10];
+    stateManager = [(IDSDXPCActivityMonitor *)self stateManager];
+    [stateManager unsubscribeForActivity:activityCopy subActivity:subActivityCopy withCompletion:completionCopy];
   }
 
   else
   {
-    v12 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
-    v10[2](v10, v12);
+    stateManager = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-400 userInfo:0];
+    completionCopy[2](completionCopy, stateManager);
   }
 }
 

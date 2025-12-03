@@ -1,16 +1,16 @@
 @interface SpecifierViewController
-- (_TtC18HealthExperienceUI23SpecifierViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI23SpecifierViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI23SpecifierViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI23SpecifierViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (void)dismissNavigationController;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SpecifierViewController
 
-- (_TtC18HealthExperienceUI23SpecifierViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23SpecifierViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC18HealthExperienceUI23SpecifierViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -43,13 +43,13 @@
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SpecifierViewController();
   v4 = v5.receiver;
-  [(SpecifierViewController *)&v5 viewWillAppear:v3];
+  [(SpecifierViewController *)&v5 viewWillAppear:appearCopy];
   if (*(v4 + OBJC_IVAR____TtC18HealthExperienceUI23SpecifierViewController_shouldReloadSpecifiersOnViewWillAppear) == 1)
   {
     sub_1B9FCE7DC();
@@ -59,18 +59,18 @@
 
 - (void)dismissNavigationController
 {
-  v4 = self;
-  v2 = [(SpecifierViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(SpecifierViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = navigationController;
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B9FCE338();
 
   if (v3)
@@ -86,21 +86,21 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1BA4A1998();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BA4A1918();
-  v10 = a3;
-  v11 = self;
-  sub_1B9FCE5A4(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1B9FCE5A4(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC18HealthExperienceUI23SpecifierViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI23SpecifierViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

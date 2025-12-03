@@ -1,8 +1,8 @@
 @interface CSWallpaperFloatingLayerComponent
 - (BOOL)shouldRenderInline;
 - (CSWallpaperFloatingLayerComponent)init;
-- (void)setShouldMatchMove:(BOOL)a3;
-- (void)setShouldRenderInline:(BOOL)a3;
+- (void)setShouldMatchMove:(BOOL)move;
+- (void)setShouldRenderInline:(BOOL)inline;
 @end
 
 @implementation CSWallpaperFloatingLayerComponent
@@ -23,19 +23,19 @@
 
 - (BOOL)shouldRenderInline
 {
-  v2 = [(CSComponent *)self value];
-  v3 = [v2 BOOLValue];
+  value = [(CSComponent *)self value];
+  bOOLValue = [value BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setShouldRenderInline:(BOOL)a3
+- (void)setShouldRenderInline:(BOOL)inline
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:inline];
   [(CSComponent *)self setValue:v4];
 }
 
-- (void)setShouldMatchMove:(BOOL)a3
+- (void)setShouldMatchMove:(BOOL)move
 {
   v4 = BSSettingFlagForBool();
 

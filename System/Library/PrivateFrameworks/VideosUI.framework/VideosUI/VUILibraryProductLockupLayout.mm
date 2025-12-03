@@ -1,32 +1,32 @@
 @interface VUILibraryProductLockupLayout
 - (CGSize)coverArtImageSize;
-- (VUILibraryProductLockupLayout)initWithLayoutType:(int64_t)a3 entityType:(id)a4;
-- (double)buttonModuleTopMarginForWindowWidth:(double)a3;
-- (double)contentDescriptionBottomMarginForWindowWidth:(double)a3;
-- (double)contentDescriptionTopMarginForWindowWidth:(double)a3;
-- (double)coverArtImageRightMarginForWindowWidth:(double)a3;
-- (double)subtitleTopMarginForWindowWidth:(double)a3;
-- (id)contentDescriptionFontForSizeClass:(int64_t)a3;
-- (id)descriptionTextLayoutForTraitCollection:(id)a3 isExpanded:(BOOL)a4;
-- (id)subtitleTextLayoutForWindowWidth:(double)a3;
-- (int)contentDescriptionNumberOfLinesForTraitCollection:(id)a3;
+- (VUILibraryProductLockupLayout)initWithLayoutType:(int64_t)type entityType:(id)entityType;
+- (double)buttonModuleTopMarginForWindowWidth:(double)width;
+- (double)contentDescriptionBottomMarginForWindowWidth:(double)width;
+- (double)contentDescriptionTopMarginForWindowWidth:(double)width;
+- (double)coverArtImageRightMarginForWindowWidth:(double)width;
+- (double)subtitleTopMarginForWindowWidth:(double)width;
+- (id)contentDescriptionFontForSizeClass:(int64_t)class;
+- (id)descriptionTextLayoutForTraitCollection:(id)collection isExpanded:(BOOL)expanded;
+- (id)subtitleTextLayoutForWindowWidth:(double)width;
+- (int)contentDescriptionNumberOfLinesForTraitCollection:(id)collection;
 - (int64_t)downloadButtonPosition;
 - (void)configLayout;
 @end
 
 @implementation VUILibraryProductLockupLayout
 
-- (VUILibraryProductLockupLayout)initWithLayoutType:(int64_t)a3 entityType:(id)a4
+- (VUILibraryProductLockupLayout)initWithLayoutType:(int64_t)type entityType:(id)entityType
 {
-  v7 = a4;
+  entityTypeCopy = entityType;
   v11.receiver = self;
   v11.super_class = VUILibraryProductLockupLayout;
   v8 = [(VUILibraryProductLockupLayout *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_entityType, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_entityType, entityType);
   }
 
   [(VUILibraryProductLockupLayout *)v9 configLayout];
@@ -43,8 +43,8 @@
   [(VUITextLayout *)self->_playLabelTextLayout setTextStyle:21];
   [(VUITextLayout *)self->_playLabelTextLayout setFontWeight:0];
   v5 = self->_playLabelTextLayout;
-  v6 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [(VUITextLayout *)v5 setColor:v6];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [(VUITextLayout *)v5 setColor:vui_primaryTextColor];
 
   v7 = self->_playLabelTextLayout;
 
@@ -80,9 +80,9 @@ LABEL_6:
   return result;
 }
 
-- (double)coverArtImageRightMarginForWindowWidth:(double)a3
+- (double)coverArtImageRightMarginForWindowWidth:(double)width
 {
-  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3];
+  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width];
   result = 30.0;
   if (!v3)
   {
@@ -92,9 +92,9 @@ LABEL_6:
   return result;
 }
 
-- (double)subtitleTopMarginForWindowWidth:(double)a3
+- (double)subtitleTopMarginForWindowWidth:(double)width
 {
-  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3];
+  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width];
   result = 26.0;
   if (!v3)
   {
@@ -104,9 +104,9 @@ LABEL_6:
   return result;
 }
 
-- (double)contentDescriptionTopMarginForWindowWidth:(double)a3
+- (double)contentDescriptionTopMarginForWindowWidth:(double)width
 {
-  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3];
+  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width];
   result = 24.0;
   if (!v3)
   {
@@ -116,9 +116,9 @@ LABEL_6:
   return result;
 }
 
-- (double)contentDescriptionBottomMarginForWindowWidth:(double)a3
+- (double)contentDescriptionBottomMarginForWindowWidth:(double)width
 {
-  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3];
+  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width];
   result = 24.0;
   if (!v3)
   {
@@ -128,9 +128,9 @@ LABEL_6:
   return result;
 }
 
-- (double)buttonModuleTopMarginForWindowWidth:(double)a3
+- (double)buttonModuleTopMarginForWindowWidth:(double)width
 {
-  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3];
+  v3 = [(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width];
   result = 16.0;
   if (!v3)
   {
@@ -153,7 +153,7 @@ LABEL_6:
   }
 }
 
-- (id)subtitleTextLayoutForWindowWidth:(double)a3
+- (id)subtitleTextLayoutForWindowWidth:(double)width
 {
   if (!self->_subtitleTextLayout)
   {
@@ -162,13 +162,13 @@ LABEL_6:
     self->_subtitleTextLayout = v5;
 
     v7 = self->_subtitleTextLayout;
-    v8 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(VUITextLayout *)v7 setColor:v8];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(VUITextLayout *)v7 setColor:vui_primaryTextColor];
 
     [(VUITextLayout *)self->_subtitleTextLayout setNumberOfLines:1];
   }
 
-  if ([(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:a3]== 1)
+  if ([(VUILibraryProductLockupLayout *)self layoutTypeForWindowWidth:width]== 1)
   {
     v9 = 2;
   }
@@ -185,9 +185,9 @@ LABEL_6:
   return v10;
 }
 
-- (id)descriptionTextLayoutForTraitCollection:(id)a3 isExpanded:(BOOL)a4
+- (id)descriptionTextLayoutForTraitCollection:(id)collection isExpanded:(BOOL)expanded
 {
-  v6 = a3;
+  collectionCopy = collection;
   descriptionTextLayout = self->_descriptionTextLayout;
   if (!descriptionTextLayout)
   {
@@ -197,21 +197,21 @@ LABEL_6:
 
     [(VUITextLayout *)self->_descriptionTextLayout setAlignment:4];
     v11 = self->_descriptionTextLayout;
-    v12 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(VUITextLayout *)v11 setSeeMoreTextColor:v12];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(VUITextLayout *)v11 setSeeMoreTextColor:vui_keyColor];
 
     descriptionTextLayout = self->_descriptionTextLayout;
-    if (a4)
+    if (expanded)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v8 = [(VUILibraryProductLockupLayout *)self contentDescriptionNumberOfLinesForTraitCollection:v6];
+    v8 = [(VUILibraryProductLockupLayout *)self contentDescriptionNumberOfLinesForTraitCollection:collectionCopy];
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!expanded)
   {
     goto LABEL_5;
   }
@@ -226,13 +226,13 @@ LABEL_6:
   return v13;
 }
 
-- (int)contentDescriptionNumberOfLinesForTraitCollection:(id)a3
+- (int)contentDescriptionNumberOfLinesForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
+  collectionCopy = collection;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v7 = [MEMORY[0x1E69DF6D0] vuiContentSizeCategoryFor:v6];
+  v7 = [MEMORY[0x1E69DF6D0] vuiContentSizeCategoryFor:preferredContentSizeCategory];
   if ([MEMORY[0x1E69DF678] contentSizeCategoryIsAccessibility:v7])
   {
     v8 = 5;
@@ -240,10 +240,10 @@ LABEL_6:
 
   else
   {
-    v9 = [v4 userInterfaceIdiom];
-    v10 = [v4 horizontalSizeClass];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
     v8 = 4;
-    if (v9 && (v9 != 1 || v10 != 1))
+    if (userInterfaceIdiom && (userInterfaceIdiom != 1 || horizontalSizeClass != 1))
     {
       if (self->_type)
       {
@@ -260,7 +260,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)contentDescriptionFontForSizeClass:(int64_t)a3
+- (id)contentDescriptionFontForSizeClass:(int64_t)class
 {
   if (self->_type)
   {
@@ -270,7 +270,7 @@ LABEL_6:
   else
   {
     v3 = MEMORY[0x1E69DB878];
-    if ((a3 - 3) <= 2)
+    if ((class - 3) <= 2)
     {
       v4 = 20;
       goto LABEL_6;

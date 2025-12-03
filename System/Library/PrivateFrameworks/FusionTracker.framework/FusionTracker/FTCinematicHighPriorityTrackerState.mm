@@ -1,15 +1,15 @@
 @interface FTCinematicHighPriorityTrackerState
-- (BOOL)_unsafeMeanFillAndScaleSourceBuffer:(__CVBuffer *)a3 destinationBuffer:(__CVBuffer *)a4 sourceRect:(CGRect)a5 meanPixel:(id)a6 scaler:;
-- (BOOL)_updateHighPriorityTrackWithRect:(Rect<double>)a3 confidence:(double)a4 isTapToTrack:(BOOL)a5;
+- (BOOL)_unsafeMeanFillAndScaleSourceBuffer:(__CVBuffer *)buffer destinationBuffer:(__CVBuffer *)destinationBuffer sourceRect:(CGRect)rect meanPixel:(id)pixel scaler:;
+- (BOOL)_updateHighPriorityTrackWithRect:(Rect<double>)rect confidence:(double)confidence isTapToTrack:(BOOL)track;
 - (BOOL)_validatePostProcessingInvocation;
-- (BOOL)postProcessExemplarOutputs:(id)a3 forTargetRect:(CGRect)a4;
-- (BOOL)postProcessInstanceOutputs:(id)a3;
-- (BOOL)preProcessExemplarInputFromSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 forTargetRect:(CGRect)a5 meanPixel:(id)a6 scaler:;
-- (BOOL)preProcessInstanceInputFromSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 meanPixel:(id)a5 scaler:;
-- (CGRect)exemplarInputRoiForTargetRect:(CGRect)a3;
+- (BOOL)postProcessExemplarOutputs:(id)outputs forTargetRect:(CGRect)rect;
+- (BOOL)postProcessInstanceOutputs:(id)outputs;
+- (BOOL)preProcessExemplarInputFromSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer forTargetRect:(CGRect)rect meanPixel:(id)pixel scaler:;
+- (BOOL)preProcessInstanceInputFromSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer meanPixel:(id)pixel scaler:;
+- (CGRect)exemplarInputRoiForTargetRect:(CGRect)rect;
 - (CGRect)instanceInputRoi;
 - (CGRect)targetRect;
-- (FTCinematicHighPriorityTrackerState)initWithTracker:(shared_ptr<ft:(shared_ptr<ft::Frame>)a4 :CinematicTracker>)a3 frame:;
+- (FTCinematicHighPriorityTrackerState)initWithTracker:(shared_ptr<ft:(shared_ptr<ft::Frame>)tracker :CinematicTracker>)a3 frame:;
 - (id).cxx_construct;
 - (id)opDescription;
 - (void)_setup;
@@ -20,7 +20,7 @@
 
 @implementation FTCinematicHighPriorityTrackerState
 
-- (FTCinematicHighPriorityTrackerState)initWithTracker:(shared_ptr<ft:(shared_ptr<ft::Frame>)a4 :CinematicTracker>)a3 frame:
+- (FTCinematicHighPriorityTrackerState)initWithTracker:(shared_ptr<ft:(shared_ptr<ft::Frame>)tracker :CinematicTracker>)a3 frame:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -208,7 +208,7 @@
   return result;
 }
 
-- (CGRect)exemplarInputRoiForTargetRect:(CGRect)a3
+- (CGRect)exemplarInputRoiForTargetRect:(CGRect)rect
 {
   if ((self->_op | 2) == 3)
   {
@@ -260,18 +260,18 @@
   return result;
 }
 
-- (BOOL)_unsafeMeanFillAndScaleSourceBuffer:(__CVBuffer *)a3 destinationBuffer:(__CVBuffer *)a4 sourceRect:(CGRect)a5 meanPixel:(id)a6 scaler:
+- (BOOL)_unsafeMeanFillAndScaleSourceBuffer:(__CVBuffer *)buffer destinationBuffer:(__CVBuffer *)destinationBuffer sourceRect:(CGRect)rect meanPixel:(id)pixel scaler:
 {
-  v7 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  pixelCopy = pixel;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14 = v6;
-  v15 = CVPixelBufferGetWidth(a3);
-  v16 = CVPixelBufferGetHeight(a3);
-  v17 = CVPixelBufferGetWidth(a3);
-  v18 = CVPixelBufferGetHeight(a3);
+  v15 = CVPixelBufferGetWidth(buffer);
+  v16 = CVPixelBufferGetHeight(buffer);
+  v17 = CVPixelBufferGetWidth(buffer);
+  v18 = CVPixelBufferGetHeight(buffer);
   v19 = v15;
   v20 = x * v19;
   v21 = v16;
@@ -344,8 +344,8 @@
   else
   {
     CGAffineTransformMakeTranslation(&t1, -v20, -v22);
-    v31 = CVPixelBufferGetWidth(a4);
-    v32 = CVPixelBufferGetHeight(a4);
+    v31 = CVPixelBufferGetWidth(destinationBuffer);
+    v32 = CVPixelBufferGetHeight(destinationBuffer);
     CGAffineTransformMakeScale(&v40, v31 / v23, v32 / v24);
     CGAffineTransformConcat(&v42, &t1, &v40);
     v43.origin.x = v27;
@@ -357,14 +357,14 @@
     v34 = v44.origin.y;
     v35 = v44.size.width;
     v36 = v44.size.height;
-    if (FTFillPixelBufferWithColor(a4, v7))
+    if (FTFillPixelBufferWithColor(destinationBuffer, pixelCopy))
     {
       v37 = 0;
     }
 
     else
     {
-      [v14 scaleSourceBuffer:a3 toDestinationBuffer:a4 sourceROI:round(v27) destinationROI:{round(v28), round(v29), round(v30), round(v33), round(v34), round(v35), round(v36)}];
+      [v14 scaleSourceBuffer:buffer toDestinationBuffer:destinationBuffer sourceROI:round(v27) destinationROI:{round(v28), round(v29), round(v30), round(v33), round(v34), round(v35), round(v36)}];
       v37 = 1;
     }
   }
@@ -372,32 +372,32 @@
   return v37;
 }
 
-- (BOOL)preProcessExemplarInputFromSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 forTargetRect:(CGRect)a5 meanPixel:(id)a6 scaler:
+- (BOOL)preProcessExemplarInputFromSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer forTargetRect:(CGRect)rect meanPixel:(id)pixel scaler:
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = v6;
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
   [(FTCinematicHighPriorityTrackerState *)self exemplarInputRoiForTargetRect:x, y, width, height];
-  LOBYTE(a6) = [(FTCinematicHighPriorityTrackerState *)self _unsafeMeanFillAndScaleSourceBuffer:a3 destinationBuffer:a4 sourceRect:a6 meanPixel:v15 scaler:?];
+  LOBYTE(pixel) = [(FTCinematicHighPriorityTrackerState *)self _unsafeMeanFillAndScaleSourceBuffer:buffer destinationBuffer:destinationBuffer sourceRect:pixel meanPixel:v15 scaler:?];
   std::recursive_mutex::unlock((ptr + 80));
 
-  return a6;
+  return pixel;
 }
 
-- (BOOL)preProcessInstanceInputFromSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 meanPixel:(id)a5 scaler:
+- (BOOL)preProcessInstanceInputFromSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer meanPixel:(id)pixel scaler:
 {
   v10 = v5;
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
   [(FTCinematicHighPriorityTrackerState *)self instanceInputRoi];
-  LOBYTE(a5) = [(FTCinematicHighPriorityTrackerState *)self _unsafeMeanFillAndScaleSourceBuffer:a3 destinationBuffer:a4 sourceRect:a5 meanPixel:v10 scaler:?];
+  LOBYTE(pixel) = [(FTCinematicHighPriorityTrackerState *)self _unsafeMeanFillAndScaleSourceBuffer:buffer destinationBuffer:destinationBuffer sourceRect:pixel meanPixel:v10 scaler:?];
   std::recursive_mutex::unlock((ptr + 80));
 
-  return a5;
+  return pixel;
 }
 
 - (BOOL)_validatePostProcessingInvocation
@@ -421,7 +421,7 @@
   }
 }
 
-- (BOOL)_updateHighPriorityTrackWithRect:(Rect<double>)a3 confidence:(double)a4 isTapToTrack:(BOOL)a5
+- (BOOL)_updateHighPriorityTrackWithRect:(Rect<double>)rect confidence:(double)confidence isTapToTrack:(BOOL)track
 {
   ptr = self->_tracker.__ptr_;
   v6 = *(ptr + 19);
@@ -435,15 +435,15 @@
 
   if (v6)
   {
-    *&v22 = a3.var0;
-    *(&v22 + 1) = *&a3.var1;
-    var2 = a3.var2;
-    var3 = a3.var3;
-    if (a5)
+    *&v22 = rect.var0;
+    *(&v22 + 1) = *&rect.var1;
+    var2 = rect.var2;
+    var3 = rect.var3;
+    if (track)
     {
       v25 = 912559;
-      v8 = a4;
-      v26 = v8;
+      confidenceCopy = confidence;
+      v26 = confidenceCopy;
       v9 = self->_frame.__ptr_;
       v10 = *(v9 + 2);
       v27 = *v9;
@@ -454,8 +454,8 @@
     else
     {
       v25 = *(v6 + 88);
-      v13 = a4;
-      v26 = v13;
+      confidenceCopy2 = confidence;
+      v26 = confidenceCopy2;
       v9 = self->_frame.__ptr_;
       v14 = *v9;
       v28 = *(v9 + 2);
@@ -502,15 +502,15 @@
   return v6 != 0;
 }
 
-- (BOOL)postProcessExemplarOutputs:(id)a3 forTargetRect:(CGRect)a4
+- (BOOL)postProcessExemplarOutputs:(id)outputs forTargetRect:(CGRect)rect
 {
-  v5 = a3;
+  outputsCopy = outputs;
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
   if ([(FTCinematicHighPriorityTrackerState *)self _validatePostProcessingInvocation])
   {
     v7 = self->_tracker.__ptr_;
-    AsEspressoBufferMap(__p, v5);
+    AsEspressoBufferMap(__p, outputsCopy);
     ft::SiameseRpnSession::PostProcessExemplarOutputs(v7 + 25, __p);
   }
 
@@ -519,15 +519,15 @@
   return 0;
 }
 
-- (BOOL)postProcessInstanceOutputs:(id)a3
+- (BOOL)postProcessInstanceOutputs:(id)outputs
 {
-  v4 = a3;
+  outputsCopy = outputs;
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
   if ([(FTCinematicHighPriorityTrackerState *)self _validatePostProcessingInvocation])
   {
     v6 = self->_tracker.__ptr_;
-    AsEspressoBufferMap(__p, v4);
+    AsEspressoBufferMap(__p, outputsCopy);
     ft::SiameseRpnSession::PostProcessInstanceOutputs(v6 + 25, __p);
   }
 

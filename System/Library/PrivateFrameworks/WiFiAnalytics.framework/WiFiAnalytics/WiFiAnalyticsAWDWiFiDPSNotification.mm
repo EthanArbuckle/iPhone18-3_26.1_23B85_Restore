@@ -1,23 +1,23 @@
 @interface WiFiAnalyticsAWDWiFiDPSNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSymptom:(id)a3;
+- (int)StringAsSymptom:(id)symptom;
 - (int)symptom;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCca:(BOOL)a3;
-- (void)setHasFacetimeCallInProgress:(BOOL)a3;
-- (void)setHasIsNANEnabled:(BOOL)a3;
-- (void)setHasProblemAC:(BOOL)a3;
-- (void)setHasSymptom:(BOOL)a3;
-- (void)setHasTxBETrId:(BOOL)a3;
-- (void)setHasTxBKTrId:(BOOL)a3;
-- (void)setHasTxVITrId:(BOOL)a3;
-- (void)setHasTxVOTrId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCca:(BOOL)cca;
+- (void)setHasFacetimeCallInProgress:(BOOL)progress;
+- (void)setHasIsNANEnabled:(BOOL)enabled;
+- (void)setHasProblemAC:(BOOL)c;
+- (void)setHasSymptom:(BOOL)symptom;
+- (void)setHasTxBETrId:(BOOL)id;
+- (void)setHasTxBKTrId:(BOOL)id;
+- (void)setHasTxVITrId:(BOOL)id;
+- (void)setHasTxVOTrId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiDPSNotification
@@ -35,9 +35,9 @@
   }
 }
 
-- (void)setHasSymptom:(BOOL)a3
+- (void)setHasSymptom:(BOOL)symptom
 {
-  if (a3)
+  if (symptom)
   {
     v3 = 8;
   }
@@ -50,30 +50,30 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsSymptom:(id)a3
+- (int)StringAsSymptom:(id)symptom
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kDriverDetectedStall"])
+  symptomCopy = symptom;
+  if ([symptomCopy isEqualToString:@"kDriverDetectedStall"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kDriverDetectedSlow"])
+  else if ([symptomCopy isEqualToString:@"kDriverDetectedSlow"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kUserToggleOff"])
+  else if ([symptomCopy isEqualToString:@"kUserToggleOff"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kUserToggleOn"])
+  else if ([symptomCopy isEqualToString:@"kUserToggleOn"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsdTrigger"])
+  else if ([symptomCopy isEqualToString:@"kSymptomsdTrigger"])
   {
     v4 = 4;
   }
@@ -86,9 +86,9 @@
   return v4;
 }
 
-- (void)setHasProblemAC:(BOOL)a3
+- (void)setHasProblemAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 4;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasFacetimeCallInProgress:(BOOL)a3
+- (void)setHasFacetimeCallInProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 256;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasCca:(BOOL)a3
+- (void)setHasCca:(BOOL)cca
 {
-  if (a3)
+  if (cca)
   {
     v3 = 2;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTxBETrId:(BOOL)a3
+- (void)setHasTxBETrId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTxBKTrId:(BOOL)a3
+- (void)setHasTxBKTrId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTxVITrId:(BOOL)a3
+- (void)setHasTxVITrId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTxVOTrId:(BOOL)a3
+- (void)setHasTxVOTrId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 128;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsNANEnabled:(BOOL)a3
+- (void)setHasIsNANEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -212,20 +212,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiDPSNotification;
   v4 = [(WiFiAnalyticsAWDWiFiDPSNotification *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiDPSNotification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiDPSNotification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -256,7 +256,7 @@ LABEL_3:
     v9 = off_1E830EF30[symptom];
   }
 
-  [v3 setObject:v9 forKey:@"symptom"];
+  [dictionary setObject:v9 forKey:@"symptom"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -272,7 +272,7 @@ LABEL_4:
 
 LABEL_20:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_problemAC];
-  [v3 setObject:v10 forKey:@"problemAC"];
+  [dictionary setObject:v10 forKey:@"problemAC"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -288,7 +288,7 @@ LABEL_5:
 
 LABEL_21:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_facetimeCallInProgress];
-  [v3 setObject:v11 forKey:@"facetimeCallInProgress"];
+  [dictionary setObject:v11 forKey:@"facetimeCallInProgress"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -304,7 +304,7 @@ LABEL_6:
 
 LABEL_22:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_cca];
-  [v3 setObject:v12 forKey:@"cca"];
+  [dictionary setObject:v12 forKey:@"cca"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -320,7 +320,7 @@ LABEL_7:
 
 LABEL_23:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txBETrId];
-  [v3 setObject:v13 forKey:@"txBETrId"];
+  [dictionary setObject:v13 forKey:@"txBETrId"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -336,7 +336,7 @@ LABEL_8:
 
 LABEL_24:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txBKTrId];
-  [v3 setObject:v14 forKey:@"txBKTrId"];
+  [dictionary setObject:v14 forKey:@"txBKTrId"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -352,7 +352,7 @@ LABEL_9:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txVITrId];
-  [v3 setObject:v15 forKey:@"txVITrId"];
+  [dictionary setObject:v15 forKey:@"txVITrId"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -368,23 +368,23 @@ LABEL_10:
 
 LABEL_26:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txVOTrId];
-  [v3 setObject:v16 forKey:@"txVOTrId"];
+  [dictionary setObject:v16 forKey:@"txVOTrId"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_11:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isNANEnabled];
-    [v3 setObject:v5 forKey:@"isNANEnabled"];
+    [dictionary setObject:v5 forKey:@"isNANEnabled"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -525,14 +525,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -551,8 +551,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_symptom;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 6) = self->_symptom;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -566,8 +566,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(v4 + 5) = self->_problemAC;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 5) = self->_problemAC;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -581,8 +581,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(v4 + 44) = self->_facetimeCallInProgress;
-  *(v4 + 24) |= 0x100u;
+  *(toCopy + 44) = self->_facetimeCallInProgress;
+  *(toCopy + 24) |= 0x100u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -596,8 +596,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(v4 + 4) = self->_cca;
-  *(v4 + 24) |= 2u;
+  *(toCopy + 4) = self->_cca;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -611,8 +611,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(v4 + 7) = self->_txBETrId;
-  *(v4 + 24) |= 0x10u;
+  *(toCopy + 7) = self->_txBETrId;
+  *(toCopy + 24) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -626,8 +626,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(v4 + 8) = self->_txBKTrId;
-  *(v4 + 24) |= 0x20u;
+  *(toCopy + 8) = self->_txBKTrId;
+  *(toCopy + 24) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -641,8 +641,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(v4 + 9) = self->_txVITrId;
-  *(v4 + 24) |= 0x40u;
+  *(toCopy + 9) = self->_txVITrId;
+  *(toCopy + 24) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -656,21 +656,21 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_txVOTrId;
-  *(v4 + 24) |= 0x80u;
+  *(toCopy + 10) = self->_txVOTrId;
+  *(toCopy + 24) |= 0x80u;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_11:
-    *(v4 + 45) = self->_isNANEnabled;
-    *(v4 + 24) |= 0x200u;
+    *(toCopy + 45) = self->_isNANEnabled;
+    *(toCopy + 24) |= 0x200u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -812,19 +812,19 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_53;
     }
@@ -837,7 +837,7 @@ LABEL_11:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_symptom != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_symptom != *(equalCopy + 6))
     {
       goto LABEL_53;
     }
@@ -850,7 +850,7 @@ LABEL_11:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_problemAC != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_problemAC != *(equalCopy + 5))
     {
       goto LABEL_53;
     }
@@ -863,34 +863,34 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 24) & 0x100) == 0)
+    if ((*(equalCopy + 24) & 0x100) == 0)
     {
       goto LABEL_53;
     }
 
-    v7 = *(v4 + 44);
+    v7 = *(equalCopy + 44);
     if (self->_facetimeCallInProgress)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 24) & 0x100) != 0)
+  else if ((*(equalCopy + 24) & 0x100) != 0)
   {
     goto LABEL_53;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_cca != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_cca != *(equalCopy + 4))
     {
       goto LABEL_53;
     }
@@ -903,7 +903,7 @@ LABEL_11:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_txBETrId != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_txBETrId != *(equalCopy + 7))
     {
       goto LABEL_53;
     }
@@ -916,7 +916,7 @@ LABEL_11:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_txBKTrId != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_txBKTrId != *(equalCopy + 8))
     {
       goto LABEL_53;
     }
@@ -929,7 +929,7 @@ LABEL_11:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_txVITrId != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_txVITrId != *(equalCopy + 9))
     {
       goto LABEL_53;
     }
@@ -942,7 +942,7 @@ LABEL_11:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_txVOTrId != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_txVOTrId != *(equalCopy + 10))
     {
       goto LABEL_53;
     }
@@ -955,17 +955,17 @@ LABEL_11:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 24) & 0x200) != 0)
+    if ((*(equalCopy + 24) & 0x200) != 0)
     {
       if (self->_isNANEnabled)
       {
-        if ((*(v4 + 45) & 1) == 0)
+        if ((*(equalCopy + 45) & 1) == 0)
         {
           goto LABEL_53;
         }
       }
 
-      else if (*(v4 + 45))
+      else if (*(equalCopy + 45))
       {
         goto LABEL_53;
       }
@@ -1124,15 +1124,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -1150,9 +1150,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_symptom = *(v4 + 6);
+  self->_symptom = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1165,9 +1165,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_problemAC = *(v4 + 5);
+  self->_problemAC = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x100) == 0)
   {
 LABEL_5:
@@ -1180,9 +1180,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_facetimeCallInProgress = *(v4 + 44);
+  self->_facetimeCallInProgress = *(fromCopy + 44);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1195,9 +1195,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_cca = *(v4 + 4);
+  self->_cca = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -1210,9 +1210,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_txBETrId = *(v4 + 7);
+  self->_txBETrId = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -1225,9 +1225,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_txBKTrId = *(v4 + 8);
+  self->_txBKTrId = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -1240,9 +1240,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_txVITrId = *(v4 + 9);
+  self->_txVITrId = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x80) == 0)
   {
 LABEL_10:
@@ -1255,12 +1255,12 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_txVOTrId = *(v4 + 10);
+  self->_txVOTrId = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 24) & 0x200) != 0)
+  if ((*(fromCopy + 24) & 0x200) != 0)
   {
 LABEL_11:
-    self->_isNANEnabled = *(v4 + 45);
+    self->_isNANEnabled = *(fromCopy + 45);
     *&self->_has |= 0x200u;
   }
 

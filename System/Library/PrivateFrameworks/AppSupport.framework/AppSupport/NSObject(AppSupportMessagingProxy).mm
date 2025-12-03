@@ -11,42 +11,42 @@
 
 - (uint64_t)pep_onMainThread
 {
-  v2 = [MEMORY[0x1E696AF00] mainThread];
+  mainThread = [MEMORY[0x1E696AF00] mainThread];
 
-  return [a1 pep_onThread:v2];
+  return [self pep_onThread:mainThread];
 }
 
 - (uint64_t)pep_onMainThreadIfNecessary
 {
-  v2 = [MEMORY[0x1E696AF00] mainThread];
+  mainThread = [MEMORY[0x1E696AF00] mainThread];
 
-  return [a1 pep_onThread:v2 immediateForMatchingThread:1];
+  return [self pep_onThread:mainThread immediateForMatchingThread:1];
 }
 
 - (ThreadedInvocationTrampoline)pep_onThread:()AppSupportMessagingProxy immediateForMatchingThread:
 {
-  v4 = [[ThreadedInvocationTrampoline alloc] initWithTarget:a1 thread:a3 immediateForMatchingThread:a4];
+  v4 = [[ThreadedInvocationTrampoline alloc] initWithTarget:self thread:a3 immediateForMatchingThread:a4];
 
   return v4;
 }
 
 - (DelayedInvocationTrampoline)pep_afterDelay:()AppSupportMessagingProxy
 {
-  v2 = [[DelayedInvocationTrampoline alloc] initWithTarget:a1 delay:a2];
+  v2 = [[DelayedInvocationTrampoline alloc] initWithTarget:self delay:a2];
 
   return v2;
 }
 
 - (OperationQueueInvocationTrampoline)pep_onOperationQueue:()AppSupportMessagingProxy priority:
 {
-  v4 = [[OperationQueueInvocationTrampoline alloc] initWithTarget:a1 operationQueue:a3 priority:a4];
+  v4 = [[OperationQueueInvocationTrampoline alloc] initWithTarget:self operationQueue:a3 priority:a4];
 
   return v4;
 }
 
 - (CapturedInvocationTrampoline)pep_getInvocation:()AppSupportMessagingProxy
 {
-  v3 = [[CapturedInvocationTrampoline alloc] initWithTarget:a1 outInvocation:a3];
+  v3 = [[CapturedInvocationTrampoline alloc] initWithTarget:self outInvocation:a3];
 
   return v3;
 }

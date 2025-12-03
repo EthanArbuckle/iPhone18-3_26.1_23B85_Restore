@@ -1,8 +1,8 @@
 @interface PhotosDetailsLocationSearchDataSource
 - (PXPhotosDetailsLocationSearchDelegate)delegate;
 - (_TtC12PhotosUICore37PhotosDetailsLocationSearchDataSource)init;
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4;
-- (void)infoUpdaterDidUpdate:(id)a3;
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler;
+- (void)infoUpdaterDidUpdate:(id)update;
 @end
 
 @implementation PhotosDetailsLocationSearchDataSource
@@ -15,23 +15,23 @@
   return Strong;
 }
 
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = self;
-  v7 = sub_1A3EBE834(v6, v5);
+  selfCopy = self;
+  v7 = sub_1A3EBE834(selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 
   return v7;
 }
 
-- (void)infoUpdaterDidUpdate:(id)a3
+- (void)infoUpdaterDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3EBDD10(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_1A3EBDD10(updateCopy);
 }
 
 - (_TtC12PhotosUICore37PhotosDetailsLocationSearchDataSource)init

@@ -1,13 +1,13 @@
 @interface BYAnalyticsEventRecommendedLocale
-- (BYAnalyticsEventRecommendedLocale)initWithAnalyticsManager:(id)a3;
+- (BYAnalyticsEventRecommendedLocale)initWithAnalyticsManager:(id)manager;
 - (id)eventPayload;
 @end
 
 @implementation BYAnalyticsEventRecommendedLocale
 
-- (BYAnalyticsEventRecommendedLocale)initWithAnalyticsManager:(id)a3
+- (BYAnalyticsEventRecommendedLocale)initWithAnalyticsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = BYAnalyticsEventRecommendedLocale;
   v5 = [(BYAnalyticsEventRecommendedLocale *)&v10 init];
@@ -19,7 +19,7 @@
     v8[2] = __62__BYAnalyticsEventRecommendedLocale_initWithAnalyticsManager___block_invoke;
     v8[3] = &unk_1E7D036A0;
     v9 = v5;
-    [v4 addEvent:@"com.apple.setupassistant.ios.guessedCountry" withPayloadBlock:v8 persist:1];
+    [managerCopy addEvent:@"com.apple.setupassistant.ios.guessedCountry" withPayloadBlock:v8 persist:1];
   }
 
   return v6;
@@ -43,15 +43,15 @@ id __62__BYAnalyticsEventRecommendedLocale_initWithAnalyticsManager___block_invo
 - (id)eventPayload
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BYAnalyticsEventRecommendedLocale *)self source];
-  if (v3 > 5)
+  source = [(BYAnalyticsEventRecommendedLocale *)self source];
+  if (source > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E7D03DC0[v3];
+    v4 = off_1E7D03DC0[source];
   }
 
   v12[0] = v4;

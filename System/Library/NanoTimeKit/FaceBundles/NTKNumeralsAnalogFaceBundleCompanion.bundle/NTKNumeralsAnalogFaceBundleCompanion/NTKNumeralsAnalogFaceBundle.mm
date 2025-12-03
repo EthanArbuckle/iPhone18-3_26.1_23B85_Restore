@@ -1,15 +1,15 @@
 @interface NTKNumeralsAnalogFaceBundle
 + (id)complicationTypesBySlot;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKNumeralsAnalogFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 218;
@@ -20,15 +20,15 @@
     v4 = 18;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3669496134])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v5 = 0;
   }
@@ -37,15 +37,15 @@
   {
     v7.receiver = self;
     v7.super_class = NTKNumeralsAnalogFaceBundle;
-    v5 = [(NTKNumeralsAnalogFaceBundle *)&v7 galleryTitleForDevice:v4];
+    v5 = [(NTKNumeralsAnalogFaceBundle *)&v7 galleryTitleForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v6 = +[NTKNumeralsAnalogFaceBundle styles];
   if ([v6 count])
@@ -55,16 +55,16 @@
     {
       if (v7 || CLKLocaleCurrentNumberSystem() == 1)
       {
-        v8 = [(NTKNumeralsAnalogFaceBundle *)self defaultFaceForDevice:v4];
+        v8 = [(NTKNumeralsAnalogFaceBundle *)self defaultFaceForDevice:deviceCopy];
         if (v8)
         {
-          v9 = [NTKNumeralsAnalogFaceColorEditOption optionWithFaceColor:19 forDevice:v4];
+          v9 = [NTKNumeralsAnalogFaceColorEditOption optionWithFaceColor:19 forDevice:deviceCopy];
           [v8 selectOption:v9 forCustomEditMode:10 slot:0];
 
           v10 = [v6 objectAtIndexedSubscript:v7];
-          v11 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-          v12 = [NTKNumeralsAnalogStyleEditOption optionWithStyle:v11 forDevice:v4];
+          v12 = [NTKNumeralsAnalogStyleEditOption optionWithStyle:unsignedIntegerValue forDevice:deviceCopy];
           [v8 selectOption:v12 forCustomEditMode:13 slot:0];
 
           v13 = +[NTKNumeralsAnalogFaceBundle complicationTypesBySlot];

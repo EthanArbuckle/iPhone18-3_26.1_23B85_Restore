@@ -4,9 +4,9 @@
 - (void)_activate;
 - (void)_reportMetrics;
 - (void)activate;
-- (void)logAWDLBrowseClient:(id)a3;
-- (void)logNeedsAWDLAdvertisementClient:(id)a3 actionType:(unsigned __int8)a4 bluetoothType:(unsigned __int8)a5;
-- (void)logReceivedMessageType:(int)a3 identifier:(id)a4 options:(id)a5 appID:(id)a6 ctx:(id *)a7;
+- (void)logAWDLBrowseClient:(id)client;
+- (void)logNeedsAWDLAdvertisementClient:(id)client actionType:(unsigned __int8)type bluetoothType:(unsigned __int8)bluetoothType;
+- (void)logReceivedMessageType:(int)type identifier:(id)identifier options:(id)options appID:(id)d ctx:(id *)ctx;
 @end
 
 @implementation RPMetrics
@@ -87,68 +87,68 @@
   }
 }
 
-- (void)logAWDLBrowseClient:(id)a3
+- (void)logAWDLBrowseClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   reportQueue = self->_reportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100079578;
   v7[3] = &unk_1001AB488;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(reportQueue, v7);
 }
 
-- (void)logNeedsAWDLAdvertisementClient:(id)a3 actionType:(unsigned __int8)a4 bluetoothType:(unsigned __int8)a5
+- (void)logNeedsAWDLAdvertisementClient:(id)client actionType:(unsigned __int8)type bluetoothType:(unsigned __int8)bluetoothType
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v8 && v6 && v5)
+  bluetoothTypeCopy = bluetoothType;
+  typeCopy = type;
+  clientCopy = client;
+  v9 = clientCopy;
+  if (clientCopy && typeCopy && bluetoothTypeCopy)
   {
     reportQueue = self->_reportQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000796EC;
     block[3] = &unk_1001AD6E8;
-    v14 = v6;
-    v15 = v5;
-    v12 = v8;
-    v13 = self;
+    v14 = typeCopy;
+    v15 = bluetoothTypeCopy;
+    v12 = clientCopy;
+    selfCopy = self;
     dispatch_async(reportQueue, block);
   }
 }
 
-- (void)logReceivedMessageType:(int)a3 identifier:(id)a4 options:(id)a5 appID:(id)a6 ctx:(id *)a7
+- (void)logReceivedMessageType:(int)type identifier:(id)identifier options:(id)options appID:(id)d ctx:(id *)ctx
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  var1 = a7->var1;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  dCopy = d;
+  var1 = ctx->var1;
   v16 = CFDictionaryGetInt64() + var1;
-  a7->var1 = v16;
-  v17 = a7->var2 + 1;
-  a7->var2 = v17;
+  ctx->var1 = v16;
+  v17 = ctx->var2 + 1;
+  ctx->var2 = v17;
   Current = CFAbsoluteTimeGetCurrent();
-  var0 = a7->var0;
-  if (Current - a7->var0 >= 60.0)
+  var0 = ctx->var0;
+  if (Current - ctx->var0 >= 60.0)
   {
-    a7->var0 = Current;
-    a7->var1 = 0;
-    a7->var2 = 0;
+    ctx->var0 = Current;
+    ctx->var1 = 0;
+    ctx->var2 = 0;
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100079968;
     block[3] = &unk_1001AD710;
     block[4] = self;
-    v29 = a3;
-    v22 = v12;
-    v23 = v13;
-    v24 = v14;
+    typeCopy = type;
+    v22 = identifierCopy;
+    v23 = optionsCopy;
+    v24 = dCopy;
     v25 = var0;
     v26 = Current;
     v27 = v16;
@@ -161,13 +161,13 @@
 {
   if (self->_sendReport)
   {
-    v2 = self;
+    selfCopy = self;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v3 = [(NSMutableDictionary *)self->_awdlBrowseMetrics allKeys];
-    v4 = [v3 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    allKeys = [(NSMutableDictionary *)self->_awdlBrowseMetrics allKeys];
+    v4 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v4)
     {
       v5 = v4;
@@ -178,12 +178,12 @@
         {
           if (*v34 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v33 + 1) + 8 * i);
           v40[0] = @"browseCount";
-          v9 = [(NSMutableDictionary *)v2->_awdlBrowseMetrics objectForKey:v8];
+          v9 = [(NSMutableDictionary *)selfCopy->_awdlBrowseMetrics objectForKey:v8];
           v40[1] = @"client";
           v41[0] = v9;
           v41[1] = v8;
@@ -192,7 +192,7 @@
           CUMetricsLog();
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v5);
@@ -202,7 +202,7 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = [(NSMutableDictionary *)v2->_needsAWDLAdvertisementMetrics allKeys];
+    obj = [(NSMutableDictionary *)selfCopy->_needsAWDLAdvertisementMetrics allKeys];
     v28 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
     if (v28)
     {
@@ -219,10 +219,10 @@
           v12 = *(*(&v29 + 1) + 8 * j);
           v13 = [v12 componentsSeparatedByString:{@", "}];
           v37[0] = @"advCount";
-          v14 = [(NSMutableDictionary *)v2->_needsAWDLAdvertisementMetrics objectForKey:v12];
+          v14 = [(NSMutableDictionary *)selfCopy->_needsAWDLAdvertisementMetrics objectForKey:v12];
           v38[0] = v14;
           v37[1] = @"actionType";
-          v15 = v2;
+          v15 = selfCopy;
           v16 = [v13 objectAtIndexedSubscript:0];
           v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v16 intValue]);
           v38[1] = v17;
@@ -235,7 +235,7 @@
           v38[3] = v20;
           v21 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:4];
 
-          v2 = v15;
+          selfCopy = v15;
           CUMetricsLog();
         }
 
@@ -246,14 +246,14 @@
     }
 
     v22 = +[NSMutableDictionary dictionary];
-    awdlBrowseMetrics = v2->_awdlBrowseMetrics;
-    v2->_awdlBrowseMetrics = v22;
+    awdlBrowseMetrics = selfCopy->_awdlBrowseMetrics;
+    selfCopy->_awdlBrowseMetrics = v22;
 
     v24 = +[NSMutableDictionary dictionary];
-    needsAWDLAdvertisementMetrics = v2->_needsAWDLAdvertisementMetrics;
-    v2->_needsAWDLAdvertisementMetrics = v24;
+    needsAWDLAdvertisementMetrics = selfCopy->_needsAWDLAdvertisementMetrics;
+    selfCopy->_needsAWDLAdvertisementMetrics = v24;
 
-    v2->_sendReport = 0;
+    selfCopy->_sendReport = 0;
   }
 }
 

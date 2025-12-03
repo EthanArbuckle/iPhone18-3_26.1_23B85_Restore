@@ -4,7 +4,7 @@
 - (void)_registerForEvents;
 - (void)_setupLink;
 - (void)_tearDownLink;
-- (void)broadcastAnnouncementPlayed:(id)a3;
+- (void)broadcastAnnouncementPlayed:(id)played;
 @end
 
 @implementation ANCompanionConnection
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (void)broadcastAnnouncementPlayed:(id)a3
+- (void)broadcastAnnouncementPlayed:(id)played
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playedCopy = played;
   if (([MEMORY[0x277CEAB88] isPad] & 1) == 0)
   {
     v5 = *MEMORY[0x277D44230];
     v10[0] = @"announcementID";
     v10[1] = @"senderType";
-    v11[0] = v4;
+    v11[0] = playedCopy;
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
     v11[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-    v8 = [(ANCompanionConnection *)self companionLinkClient];
-    [v8 sendEventID:@"com.apple.announce.AnnouncementPlayed" event:v7 destinationID:v5 options:0 completion:&__block_literal_global_32];
+    companionLinkClient = [(ANCompanionConnection *)self companionLinkClient];
+    [companionLinkClient sendEventID:@"com.apple.announce.AnnouncementPlayed" event:v7 destinationID:v5 options:0 completion:&__block_literal_global_32];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -85,8 +85,8 @@ void __53__ANCompanionConnection_broadcastAnnouncementPlayed___block_invoke(uint
   companionLinkClient = self->_companionLinkClient;
   self->_companionLinkClient = v3;
 
-  v5 = [(ANCompanionConnection *)self rapportQueue];
-  [(RPCompanionLinkClient *)self->_companionLinkClient setDispatchQueue:v5];
+  rapportQueue = [(ANCompanionConnection *)self rapportQueue];
+  [(RPCompanionLinkClient *)self->_companionLinkClient setDispatchQueue:rapportQueue];
 
   [(RPCompanionLinkClient *)self->_companionLinkClient setControlFlags:32];
   objc_initWeak(&location, self);
@@ -172,17 +172,17 @@ void __35__ANCompanionConnection__setupLink__block_invoke_2(uint64_t a1, void *a
     _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "%@Registering for Event IDs", buf, 0xCu);
   }
 
-  v4 = [(ANCompanionConnection *)self companionLinkClient];
-  [v4 deregisterEventID:@"com.apple.announce.AnnouncementPlayed"];
+  companionLinkClient = [(ANCompanionConnection *)self companionLinkClient];
+  [companionLinkClient deregisterEventID:@"com.apple.announce.AnnouncementPlayed"];
 
   objc_initWeak(buf, self);
-  v5 = [(ANCompanionConnection *)self companionLinkClient];
+  companionLinkClient2 = [(ANCompanionConnection *)self companionLinkClient];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ANCompanionConnection__registerForEvents__block_invoke;
   v7[3] = &unk_278C877F0;
   objc_copyWeak(&v8, buf);
-  [v5 registerEventID:@"com.apple.announce.AnnouncementPlayed" options:0 handler:v7];
+  [companionLinkClient2 registerEventID:@"com.apple.announce.AnnouncementPlayed" options:0 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);

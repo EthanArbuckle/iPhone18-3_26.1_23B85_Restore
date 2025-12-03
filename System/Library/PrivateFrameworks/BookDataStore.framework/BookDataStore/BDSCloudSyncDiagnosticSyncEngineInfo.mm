@@ -1,70 +1,70 @@
 @interface BDSCloudSyncDiagnosticSyncEngineInfo
-- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithCoder:(id)a3;
-- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithEstablishedSalt:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
+- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithCoder:(id)coder;
+- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithEstablishedSalt:(BOOL)salt;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)stateForLog;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSCloudSyncDiagnosticSyncEngineInfo
 
-- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithEstablishedSalt:(BOOL)a3
+- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithEstablishedSalt:(BOOL)salt
 {
   v5.receiver = self;
   v5.super_class = BDSCloudSyncDiagnosticSyncEngineInfo;
   result = [(BDSCloudSyncDiagnosticSyncEngineInfo *)&v5 init];
   if (result)
   {
-    result->_establishedSalt = a3;
+    result->_establishedSalt = salt;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(equalCopy) = 1;
   }
 
   else
   {
-    v5 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v4 = BUDynamicCast();
 
-    LOBYTE(v5) = 0;
+    LOBYTE(equalCopy) = 0;
     if (self && v4)
     {
-      v6 = [(BDSCloudSyncDiagnosticSyncEngineInfo *)self establishedSalt];
-      LODWORD(v5) = v6 ^ [v4 establishedSalt] ^ 1;
+      establishedSalt = [(BDSCloudSyncDiagnosticSyncEngineInfo *)self establishedSalt];
+      LODWORD(equalCopy) = establishedSalt ^ [v4 establishedSalt] ^ 1;
     }
   }
 
-  return v5;
+  return equalCopy;
 }
 
-- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithCoder:(id)a3
+- (BDSCloudSyncDiagnosticSyncEngineInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSCloudSyncDiagnosticSyncEngineInfo *)self init];
   if (v5)
   {
-    v5->_establishedSalt = [v4 decodeBoolForKey:@"establishedSalt"];
+    v5->_establishedSalt = [coderCopy decodeBoolForKey:@"establishedSalt"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[BDSCloudSyncDiagnosticSyncEngineInfo establishedSalt](self forKey:{"establishedSalt"), @"establishedSalt"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[BDSCloudSyncDiagnosticSyncEngineInfo establishedSalt](self forKey:{"establishedSalt"), @"establishedSalt"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSCloudSyncDiagnosticSyncEngineInfo);
   if (v4)

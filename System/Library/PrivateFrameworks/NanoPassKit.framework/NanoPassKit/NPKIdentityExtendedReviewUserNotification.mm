@@ -1,5 +1,5 @@
 @interface NPKIdentityExtendedReviewUserNotification
-- (NPKIdentityExtendedReviewUserNotification)initWithNotificationType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5;
+- (NPKIdentityExtendedReviewUserNotification)initWithNotificationType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name;
 - (id)body;
 - (id)identifierHashComponents;
 - (id)title;
@@ -7,18 +7,18 @@
 
 @implementation NPKIdentityExtendedReviewUserNotification
 
-- (NPKIdentityExtendedReviewUserNotification)initWithNotificationType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5
+- (NPKIdentityExtendedReviewUserNotification)initWithNotificationType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NPKIdentityExtendedReviewUserNotification;
   v9 = [(NPKIdentityExtendedReviewUserNotification *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_notificationType = a3;
-    v9->_documentType = a4;
-    v11 = [v8 copy];
+    v9->_notificationType = type;
+    v9->_documentType = documentType;
+    v11 = [nameCopy copy];
     issuerName = v10->_issuerName;
     v10->_issuerName = v11;
   }
@@ -219,8 +219,8 @@ LABEL_26:
 {
   v6.receiver = self;
   v6.super_class = NPKIdentityExtendedReviewUserNotification;
-  v3 = [(NPKUserNotification *)&v6 identifierHashComponents];
-  v4 = [v3 mutableCopy];
+  identifierHashComponents = [(NPKUserNotification *)&v6 identifierHashComponents];
+  v4 = [identifierHashComponents mutableCopy];
 
   [v4 safelyAddObject:self->_issuerName];
 

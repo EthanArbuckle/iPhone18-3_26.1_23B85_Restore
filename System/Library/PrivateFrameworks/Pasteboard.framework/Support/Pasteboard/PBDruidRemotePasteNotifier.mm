@@ -1,13 +1,13 @@
 @interface PBDruidRemotePasteNotifier
 - (void)notifyDeniedPaste;
-- (void)notifyPaste:(id)a3;
+- (void)notifyPaste:(id)paste;
 @end
 
 @implementation PBDruidRemotePasteNotifier
 
-- (void)notifyPaste:(id)a3
+- (void)notifyPaste:(id)paste
 {
-  v3 = a3;
+  pasteCopy = paste;
   v4 = [NSXPCConnection alloc];
   v7 = [v4 initWithMachServiceName:DRPasteAnnouncementServiceName options:0];
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DRPasteAnnouncing];
@@ -15,7 +15,7 @@
 
   v6 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&stru_100031C28];
   [v7 resume];
-  [v6 announcePaste:v3];
+  [v6 announcePaste:pasteCopy];
 
   [v7 invalidate];
 }

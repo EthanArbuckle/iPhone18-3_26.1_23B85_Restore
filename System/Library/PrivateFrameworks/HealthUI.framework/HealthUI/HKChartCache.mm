@@ -1,17 +1,17 @@
 @interface HKChartCache
 - (HKChartCache)init;
 - (HKChartCachePriorityDelegate)priorityDelegateForBufferedIdentifiers;
-- (id)_operationForIdentifier:(id)a3 priorityDelegate:(id)a4;
-- (id)cachedResultsForIdentifier:(id)a3;
-- (unint64_t)stateForIdentifier:(id)a3;
-- (void)_addFetchOperationsForIdentifiers:(id)a3 priorityDelegate:(id)a4;
+- (id)_operationForIdentifier:(id)identifier priorityDelegate:(id)delegate;
+- (id)cachedResultsForIdentifier:(id)identifier;
+- (unint64_t)stateForIdentifier:(id)identifier;
+- (void)_addFetchOperationsForIdentifiers:(id)identifiers priorityDelegate:(id)delegate;
 - (void)_alertObserversDidUpdateResults;
-- (void)_handleOperationCompletionWithOperation:(id)a3 identifier:(id)a4 priorityDelegate:(id)a5 results:(id)a6 error:(id)a7;
-- (void)_removeFetchOperationsForIdentifiers:(id)a3;
-- (void)fetchResultsForIdentifiers:(id)a3 priorityDelegate:(id)a4;
+- (void)_handleOperationCompletionWithOperation:(id)operation identifier:(id)identifier priorityDelegate:(id)delegate results:(id)results error:(id)error;
+- (void)_removeFetchOperationsForIdentifiers:(id)identifiers;
+- (void)fetchResultsForIdentifiers:(id)identifiers priorityDelegate:(id)delegate;
 - (void)invalidateCache;
-- (void)invalidateResultsForIdentifiers:(id)a3;
-- (void)setShouldBufferFetchOperations:(BOOL)a3;
+- (void)invalidateResultsForIdentifiers:(id)identifiers;
+- (void)setShouldBufferFetchOperations:(BOOL)operations;
 @end
 
 @implementation HKChartCache
@@ -28,9 +28,9 @@
     v2->_cachedResultsLock = v3;
 
     [(NSLock *)v2->_cachedResultsLock setName:@"HKChartCacheResultsLock"];
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     cachedResultsByIdentifier = v2->_cachedResultsByIdentifier;
@@ -55,19 +55,19 @@
   return v2;
 }
 
-- (void)setShouldBufferFetchOperations:(BOOL)a3
+- (void)setShouldBufferFetchOperations:(BOOL)operations
 {
   shouldBufferFetchOperations = self->_shouldBufferFetchOperations;
-  self->_shouldBufferFetchOperations = a3;
-  if (shouldBufferFetchOperations != a3 && !a3)
+  self->_shouldBufferFetchOperations = operations;
+  if (shouldBufferFetchOperations != operations && !operations)
   {
-    v5 = [(HKChartCache *)self bufferedIdentifiers];
+    bufferedIdentifiers = [(HKChartCache *)self bufferedIdentifiers];
 
-    if (v5)
+    if (bufferedIdentifiers)
     {
-      v6 = [(HKChartCache *)self bufferedIdentifiers];
+      bufferedIdentifiers2 = [(HKChartCache *)self bufferedIdentifiers];
       WeakRetained = objc_loadWeakRetained(&self->_priorityDelegateForBufferedIdentifiers);
-      [(HKChartCache *)self fetchResultsForIdentifiers:v6 priorityDelegate:WeakRetained];
+      [(HKChartCache *)self fetchResultsForIdentifiers:bufferedIdentifiers2 priorityDelegate:WeakRetained];
 
       [(HKChartCache *)self setBufferedIdentifiers:0];
 
@@ -110,9 +110,9 @@
   }
 }
 
-- (unint64_t)stateForIdentifier:(id)a3
+- (unint64_t)stateForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_resultsLoadedByIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_resultsLoadedByIdentifier objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3)
   {
@@ -135,62 +135,62 @@
   return v5;
 }
 
-- (id)cachedResultsForIdentifier:(id)a3
+- (id)cachedResultsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HKChartCache *)self cachedResultsLock];
-  [v5 lock];
+  identifierCopy = identifier;
+  cachedResultsLock = [(HKChartCache *)self cachedResultsLock];
+  [cachedResultsLock lock];
 
-  v6 = [(NSMutableDictionary *)self->_cachedResultsByIdentifier objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_cachedResultsByIdentifier objectForKeyedSubscript:identifierCopy];
 
-  v7 = [(HKChartCache *)self cachedResultsLock];
-  [v7 unlock];
+  cachedResultsLock2 = [(HKChartCache *)self cachedResultsLock];
+  [cachedResultsLock2 unlock];
 
   return v6;
 }
 
-- (void)fetchResultsForIdentifiers:(id)a3 priorityDelegate:(id)a4
+- (void)fetchResultsForIdentifiers:(id)identifiers priorityDelegate:(id)delegate
 {
-  v12 = a3;
+  identifiersCopy = identifiers;
   if (self->_shouldBufferFetchOperations)
   {
-    v6 = a4;
-    v7 = [(HKChartCache *)self bufferedIdentifiers];
+    delegateCopy = delegate;
+    bufferedIdentifiers = [(HKChartCache *)self bufferedIdentifiers];
 
-    if (v7)
+    if (bufferedIdentifiers)
     {
-      v8 = [(HKChartCache *)self bufferedIdentifiers];
-      v9 = [v8 arrayByAddingObjectsFromArray:v12];
+      bufferedIdentifiers2 = [(HKChartCache *)self bufferedIdentifiers];
+      v9 = [bufferedIdentifiers2 arrayByAddingObjectsFromArray:identifiersCopy];
       [(HKChartCache *)self setBufferedIdentifiers:v9];
     }
 
     else
     {
-      [(HKChartCache *)self setBufferedIdentifiers:v12];
+      [(HKChartCache *)self setBufferedIdentifiers:identifiersCopy];
     }
 
-    [(HKChartCache *)self setPriorityDelegateForBufferedIdentifiers:v6];
+    [(HKChartCache *)self setPriorityDelegateForBufferedIdentifiers:delegateCopy];
   }
 
   else
   {
     v10 = MEMORY[0x1E695DFA8];
-    v11 = a4;
-    v6 = [v10 setWithArray:v12];
-    [(HKChartCache *)self _addFetchOperationsForIdentifiers:v6 priorityDelegate:v11];
+    delegateCopy2 = delegate;
+    delegateCopy = [v10 setWithArray:identifiersCopy];
+    [(HKChartCache *)self _addFetchOperationsForIdentifiers:delegateCopy priorityDelegate:delegateCopy2];
   }
 }
 
-- (void)_removeFetchOperationsForIdentifiers:(id)a3
+- (void)_removeFetchOperationsForIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -223,17 +223,17 @@
   [(HKOutstandingFetchOperationManager *)self->_operationManager removeFetchOperations:v5];
 }
 
-- (void)_addFetchOperationsForIdentifiers:(id)a3 priorityDelegate:(id)a4
+- (void)_addFetchOperationsForIdentifiers:(id)identifiers priorityDelegate:(id)delegate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  delegateCopy = delegate;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -257,7 +257,7 @@
 
         if (![(HKChartCache *)self stateForIdentifier:v14])
         {
-          v15 = [(HKChartCache *)self _operationForIdentifier:v14 priorityDelegate:v7];
+          v15 = [(HKChartCache *)self _operationForIdentifier:v14 priorityDelegate:delegateCopy];
           if (v15)
           {
             v16 = v15;
@@ -280,9 +280,9 @@
   [(HKOutstandingFetchOperationManager *)self->_operationManager addFetchOperations:v8];
 }
 
-- (void)invalidateResultsForIdentifiers:(id)a3
+- (void)invalidateResultsForIdentifiers:(id)identifiers
 {
-  [(NSMutableDictionary *)self->_resultsLoadedByIdentifier removeObjectsForKeys:a3];
+  [(NSMutableDictionary *)self->_resultsLoadedByIdentifier removeObjectsForKeys:identifiers];
 
   [(HKChartCache *)self _alertObserversDidUpdateResults];
 }
@@ -294,10 +294,10 @@
   [(HKChartCache *)self _alertObserversDidUpdateResults];
 }
 
-- (id)_operationForIdentifier:(id)a3 priorityDelegate:(id)a4
+- (id)_operationForIdentifier:(id)identifier priorityDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   dataSource = self->_dataSource;
   v13 = MEMORY[0x1E69E9820];
@@ -305,9 +305,9 @@
   v15 = __57__HKChartCache__operationForIdentifier_priorityDelegate___block_invoke;
   v16 = &unk_1E81BABF0;
   objc_copyWeak(&v19, &location);
-  v9 = v6;
+  v9 = identifierCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = delegateCopy;
   v18 = v10;
   v11 = [(HKChartCacheDataSource *)dataSource operationForIdentifier:v9 priorityDelegate:v10 completion:&v13];
   [v11 setIdentifier:{v9, v13, v14, v15, v16}];
@@ -347,26 +347,26 @@ void __57__HKChartCache__operationForIdentifier_priorityDelegate___block_invoke_
   [WeakRetained _handleOperationCompletionWithOperation:*(a1 + 32) identifier:*(a1 + 40) priorityDelegate:*(a1 + 48) results:*(a1 + 56) error:*(a1 + 64)];
 }
 
-- (void)_handleOperationCompletionWithOperation:(id)a3 identifier:(id)a4 priorityDelegate:(id)a5 results:(id)a6 error:(id)a7
+- (void)_handleOperationCompletionWithOperation:(id)operation identifier:(id)identifier priorityDelegate:(id)delegate results:(id)results error:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager removeFetchOperation:a3];
-  if (v15)
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  resultsCopy = results;
+  errorCopy = error;
+  [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager removeFetchOperation:operation];
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v16 = MEMORY[0x1E696B940];
     v17 = *MEMORY[0x1E696B940];
     if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR))
     {
-      [HKChartCache _handleOperationCompletionWithOperation:v15 identifier:v17 priorityDelegate:? results:? error:?];
+      [HKChartCache _handleOperationCompletionWithOperation:errorCopy identifier:v17 priorityDelegate:? results:? error:?];
     }
 
-    [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager incrementRetryCountForIdentifier:v12];
-    v18 = [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager retryCountForIdentifier:v12];
+    [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager incrementRetryCountForIdentifier:identifierCopy];
+    v18 = [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager retryCountForIdentifier:identifierCopy];
     maxRetryCount = self->_maxRetryCount;
     _HKInitializeLogging();
     v20 = *v16;
@@ -376,48 +376,48 @@ void __57__HKChartCache__operationForIdentifier_priorityDelegate___block_invoke_
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138412546;
-        v27 = v12;
+        v27 = identifierCopy;
         v28 = 2048;
         v29 = v18;
         _os_log_impl(&dword_1C3942000, v20, OS_LOG_TYPE_DEFAULT, "[HKCC] Retrying fetch operation for identifier (%@) retry count (%ld)", &v26, 0x16u);
       }
 
-      v24 = [MEMORY[0x1E695DFD8] setWithObject:v12];
-      [(HKChartCache *)self _addFetchOperationsForIdentifiers:v24 priorityDelegate:v13];
+      v24 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
+      [(HKChartCache *)self _addFetchOperationsForIdentifiers:v24 priorityDelegate:delegateCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [HKChartCache _handleOperationCompletionWithOperation:v12 identifier:v18 priorityDelegate:v20 results:? error:?];
+        [HKChartCache _handleOperationCompletionWithOperation:identifierCopy identifier:v18 priorityDelegate:v20 results:? error:?];
       }
 
-      [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager resetRetryCountForIdentifier:v12];
+      [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager resetRetryCountForIdentifier:identifierCopy];
     }
   }
 
   else
   {
-    v22 = [(HKChartCache *)self cachedResultsLock];
-    [v22 lock];
+    cachedResultsLock = [(HKChartCache *)self cachedResultsLock];
+    [cachedResultsLock lock];
 
     cachedResultsByIdentifier = self->_cachedResultsByIdentifier;
-    if (v14)
+    if (resultsCopy)
     {
-      [(NSMutableDictionary *)cachedResultsByIdentifier setObject:v14 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)cachedResultsByIdentifier setObject:resultsCopy forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)cachedResultsByIdentifier removeObjectForKey:v12];
+      [(NSMutableDictionary *)cachedResultsByIdentifier removeObjectForKey:identifierCopy];
     }
 
-    v25 = [(HKChartCache *)self cachedResultsLock];
-    [v25 unlock];
+    cachedResultsLock2 = [(HKChartCache *)self cachedResultsLock];
+    [cachedResultsLock2 unlock];
 
-    [(NSMutableDictionary *)self->_resultsLoadedByIdentifier setObject:MEMORY[0x1E695E118] forKeyedSubscript:v12];
-    [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager resetRetryCountForIdentifier:v12];
+    [(NSMutableDictionary *)self->_resultsLoadedByIdentifier setObject:MEMORY[0x1E695E118] forKeyedSubscript:identifierCopy];
+    [(_HKChartCachePendingFetchOperationManager *)self->_pendingFetchOperationsManager resetRetryCountForIdentifier:identifierCopy];
     [(HKChartCache *)self _alertObserversDidUpdateResults];
   }
 }

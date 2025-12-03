@@ -1,10 +1,10 @@
 @interface _UITextSelectionRangeView
 - (CGPath)path;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)setPath:(CGPath *)a3;
-- (void)setSelectionBorderColor:(id)a3;
-- (void)setSelectionBorderWidth:(double)a3;
-- (void)setSelectionColor:(id)a3;
+- (void)setPath:(CGPath *)path;
+- (void)setSelectionBorderColor:(id)color;
+- (void)setSelectionBorderWidth:(double)width;
+- (void)setSelectionColor:(id)color;
 @end
 
 @implementation _UITextSelectionRangeView
@@ -14,56 +14,56 @@
   v9.receiver = self;
   v9.super_class = _UITextSelectionRangeView;
   [(UIView *)&v9 _dynamicUserInterfaceTraitDidChange];
-  v3 = [(_UITextSelectionRangeView *)self selectionColor];
-  v4 = [v3 CGColor];
-  v5 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v5 setFillColor:v4];
+  selectionColor = [(_UITextSelectionRangeView *)self selectionColor];
+  cGColor = [selectionColor CGColor];
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer setFillColor:cGColor];
 
-  v6 = [(_UITextSelectionRangeView *)self selectionBorderColor];
-  v7 = [v6 CGColor];
-  v8 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v8 setStrokeColor:v7];
+  selectionBorderColor = [(_UITextSelectionRangeView *)self selectionBorderColor];
+  cGColor2 = [selectionBorderColor CGColor];
+  pathLayer2 = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer2 setStrokeColor:cGColor2];
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
-  v4 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v4 setPath:a3];
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer setPath:path];
 }
 
 - (CGPath)path
 {
-  v2 = [(_UITextSelectionRangeView *)self pathLayer];
-  v3 = [v2 path];
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  path = [pathLayer path];
 
-  return v3;
+  return path;
 }
 
-- (void)setSelectionColor:(id)a3
+- (void)setSelectionColor:(id)color
 {
-  objc_storeStrong(&self->_selectionColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_selectionColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v7 setFillColor:v6];
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer setFillColor:cGColor];
 }
 
-- (void)setSelectionBorderColor:(id)a3
+- (void)setSelectionBorderColor:(id)color
 {
-  objc_storeStrong(&self->_selectionBorderColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_selectionBorderColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v7 setStrokeColor:v6];
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer setStrokeColor:cGColor];
 }
 
-- (void)setSelectionBorderWidth:(double)a3
+- (void)setSelectionBorderWidth:(double)width
 {
-  self->_selectionBorderWidth = a3;
-  v4 = [(_UITextSelectionRangeView *)self pathLayer];
-  [v4 setLineWidth:a3];
+  self->_selectionBorderWidth = width;
+  pathLayer = [(_UITextSelectionRangeView *)self pathLayer];
+  [pathLayer setLineWidth:width];
 }
 
 @end

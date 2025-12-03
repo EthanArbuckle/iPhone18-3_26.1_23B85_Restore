@@ -1,14 +1,14 @@
 @interface WBSSafariExtensionsConfigurationAdapter
-- (BOOL)applyCombinedConfiguration:(id)a3 declarationKeys:(id)a4 scope:(int64_t)a5 returningReasons:(id *)a6 error:(id *)a7;
-- (BOOL)removeCombinedConfigurationForScope:(int64_t)a3 error:(id *)a4;
-- (id)allDeclarationKeysForScope:(int64_t)a3 error:(id *)a4;
-- (id)declarationKeyForConfiguration:(id)a3;
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+- (BOOL)applyCombinedConfiguration:(id)configuration declarationKeys:(id)keys scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error;
+- (BOOL)removeCombinedConfigurationForScope:(int64_t)scope error:(id *)error;
+- (id)allDeclarationKeysForScope:(int64_t)scope error:(id *)error;
+- (id)declarationKeyForConfiguration:(id)configuration;
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation WBSSafariExtensionsConfigurationAdapter
 
-- (id)allDeclarationKeysForScope:(int64_t)a3 error:(id *)a4
+- (id)allDeclarationKeysForScope:(int64_t)scope error:(id *)error
 {
   v4 = sub_100000F14();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -35,10 +35,10 @@
   return v9;
 }
 
-- (BOOL)applyCombinedConfiguration:(id)a3 declarationKeys:(id)a4 scope:(int64_t)a5 returningReasons:(id *)a6 error:(id *)a7
+- (BOOL)applyCombinedConfiguration:(id)configuration declarationKeys:(id)keys scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  keysCopy = keys;
+  configurationCopy = configuration;
   v11 = sub_100000F14();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -46,7 +46,7 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Applying extensions configuration", v22, 2u);
   }
 
-  v12 = [v10 serializeWithType:0];
+  v12 = [configurationCopy serializeWithType:0];
 
   v13 = &__NSDictionary0__struct;
   if (v12)
@@ -59,13 +59,13 @@
   v15 = +[NSMutableDictionary dictionary];
   [v15 setObject:v14 forKeyedSubscript:WBSManagedExtensionSettingsKey];
 
-  v16 = [v9 allObjects];
+  allObjects = [keysCopy allObjects];
 
-  v17 = [v16 safari_mapAndFilterObjectsUsingBlock:&stru_1000082E0];
+  v17 = [allObjects safari_mapAndFilterObjectsUsingBlock:&stru_1000082E0];
   [v15 setObject:v17 forKeyedSubscript:WBSManagedExtensionsDeclarationKeysKey];
 
   v18 = +[WBSManagedExtensionsController managedExtensionsConfigurationURL];
-  v19 = [v15 writeToURL:v18 error:a7];
+  v19 = [v15 writeToURL:v18 error:error];
 
   v20 = +[NSDistributedNotificationCenter defaultCenter];
   [v20 postNotificationName:WBSManagedExtensionsConfigurationDidChangeNotification object:0 userInfo:0 deliverImmediately:1];
@@ -73,7 +73,7 @@
   return v19;
 }
 
-- (BOOL)removeCombinedConfigurationForScope:(int64_t)a3 error:(id *)a4
+- (BOOL)removeCombinedConfigurationForScope:(int64_t)scope error:(id *)error
 {
   v5 = sub_100000F14();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -84,14 +84,14 @@
 
   v6 = +[NSFileManager defaultManager];
   v7 = +[WBSManagedExtensionsController managedExtensionsConfigurationURL];
-  v8 = [v7 path];
-  v9 = [v6 fileExistsAtPath:v8];
+  path = [v7 path];
+  v9 = [v6 fileExistsAtPath:path];
 
   if (v9)
   {
     v10 = +[NSFileManager defaultManager];
     v11 = +[WBSManagedExtensionsController managedExtensionsConfigurationURL];
-    v12 = [v10 removeItemAtURL:v11 error:a4];
+    v12 = [v10 removeItemAtURL:v11 error:error];
 
     v13 = +[NSDistributedNotificationCenter defaultCenter];
     [v13 postNotificationName:WBSManagedExtensionsConfigurationDidChangeNotification object:0 userInfo:0 deliverImmediately:1];
@@ -111,37 +111,37 @@
   return v12;
 }
 
-- (id)declarationKeyForConfiguration:(id)a3
+- (id)declarationKeyForConfiguration:(id)configuration
 {
-  v3 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"com.apple.RemoteManagement.SafariExtension" reference:a3];
+  v3 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"com.apple.RemoteManagement.SafariExtension" reference:configuration];
 
   return v3;
 }
 
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [a3 declaration];
+  handlerCopy = handler;
+  declaration = [configuration declaration];
   v8 = sub_100000F14();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 declarationIdentifier];
+    declarationIdentifier = [declaration declarationIdentifier];
     *buf = 138543362;
-    v46 = v10;
+    v46 = declarationIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Getting extensions configuration UI for: %{public}@", buf, 0xCu);
   }
 
   +[NSMutableArray array];
-  v37 = v36 = v7;
-  v11 = [v7 payloadManagedExtensions];
-  v12 = [v11 payloadDictionary];
+  v37 = v36 = declaration;
+  payloadManagedExtensions = [declaration payloadManagedExtensions];
+  payloadDictionary = [payloadManagedExtensions payloadDictionary];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = v12;
+  v13 = payloadDictionary;
   v14 = [v13 countByEnumeratingWithState:&v38 objects:v44 count:16];
   v15 = v13;
   if (!v14)
@@ -150,7 +150,7 @@
   }
 
   v16 = v14;
-  v35 = v6;
+  v35 = handlerCopy;
   v17 = 0;
   v18 = *v39;
   do
@@ -164,8 +164,8 @@
 
       v20 = *(*(&v38 + 1) + 8 * i);
       v21 = [v13 objectForKeyedSubscript:v20];
-      v22 = [v21 payloadState];
-      v23 = sub_1000017FC(v22);
+      payloadState = [v21 payloadState];
+      v23 = sub_1000017FC(payloadState);
 
       if (v23)
       {
@@ -177,9 +177,9 @@
         else
         {
           v24 = [v20 componentsSeparatedByString:@" "];
-          v25 = [v24 firstObject];
+          firstObject = [v24 firstObject];
 
-          v43[0] = v25;
+          v43[0] = firstObject;
           v43[1] = v23;
           v26 = [NSArray arrayWithObjects:v43 count:2];
           [v37 addObject:v26];
@@ -192,7 +192,7 @@
 
   while (v16);
 
-  v6 = v35;
+  handlerCopy = v35;
   if (v17)
   {
     if ([v37 count])
@@ -206,8 +206,8 @@
     }
     v15 = ;
     v27 = [v13 objectForKeyedSubscript:@"*"];
-    v28 = [v27 payloadState];
-    v29 = sub_1000017FC(v28);
+    payloadState2 = [v27 payloadState];
+    v29 = sub_1000017FC(payloadState2);
 
     v42[0] = v15;
     v42[1] = v29;
@@ -222,7 +222,7 @@ LABEL_19:
   v33 = [v37 copy];
   v34 = [RMConfigurationUIDetails configurationUIWithTitle:v31 description:v32 details:v33];
 
-  v6[2](v6, 1, v34, 0);
+  handlerCopy[2](handlerCopy, 1, v34, 0);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface NPSManagedConfigurationMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPSManagedConfigurationMsg
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NPSManagedConfigurationMsg;
   v3 = [(NPSManagedConfigurationMsg *)&v7 description];
-  v4 = [(NPSManagedConfigurationMsg *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPSManagedConfigurationMsg *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,109 +59,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_kind)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_feature)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setting)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_restriction)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userSettingsAndRestrictions)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_kind)
   {
-    [v4 setKind:?];
-    v4 = v5;
+    [toCopy setKind:?];
+    toCopy = v5;
   }
 
   if (self->_feature)
   {
     [v5 setFeature:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setting)
   {
     [v5 setSetting:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_restriction)
   {
     [v5 setRestriction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userSettingsAndRestrictions)
   {
     [v5 setUserSettingsAndRestrictions:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_kind copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_kind copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_feature copyWithZone:a3];
+  v8 = [(NSString *)self->_feature copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_setting copyWithZone:a3];
+  v10 = [(NSData *)self->_setting copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSData *)self->_restriction copyWithZone:a3];
+  v12 = [(NSData *)self->_restriction copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSData *)self->_userSettingsAndRestrictions copyWithZone:a3];
+  v14 = [(NSData *)self->_userSettingsAndRestrictions copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((kind = self->_kind, !(kind | v4[2])) || -[NSString isEqual:](kind, "isEqual:")) && ((feature = self->_feature, !(feature | v4[1])) || -[NSString isEqual:](feature, "isEqual:")) && ((setting = self->_setting, !(setting | v4[4])) || -[NSData isEqual:](setting, "isEqual:")) && ((restriction = self->_restriction, !(restriction | v4[3])) || -[NSData isEqual:](restriction, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((kind = self->_kind, !(kind | equalCopy[2])) || -[NSString isEqual:](kind, "isEqual:")) && ((feature = self->_feature, !(feature | equalCopy[1])) || -[NSString isEqual:](feature, "isEqual:")) && ((setting = self->_setting, !(setting | equalCopy[4])) || -[NSData isEqual:](setting, "isEqual:")) && ((restriction = self->_restriction, !(restriction | equalCopy[3])) || -[NSData isEqual:](restriction, "isEqual:")))
   {
     userSettingsAndRestrictions = self->_userSettingsAndRestrictions;
-    if (userSettingsAndRestrictions | v4[5])
+    if (userSettingsAndRestrictions | equalCopy[5])
     {
       v10 = [(NSData *)userSettingsAndRestrictions isEqual:?];
     }
@@ -189,30 +189,30 @@
   return v6 ^ [(NSData *)self->_userSettingsAndRestrictions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
     [(NPSManagedConfigurationMsg *)self setKind:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPSManagedConfigurationMsg *)self setFeature:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPSManagedConfigurationMsg *)self setSetting:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPSManagedConfigurationMsg *)self setRestriction:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(NPSManagedConfigurationMsg *)self setUserSettingsAndRestrictions:?];
   }

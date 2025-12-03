@@ -1,17 +1,17 @@
 @interface ATXModeFaceLayoutTwoRectangular
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4;
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face;
 @end
 
 @implementation ATXModeFaceLayoutTwoRectangular
 
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face
 {
-  v5 = a4;
-  v6 = [a3 _pas_filteredArrayWithTest:&__block_literal_global_143];
+  faceCopy = face;
+  v6 = [candidates _pas_filteredArrayWithTest:&__block_literal_global_143];
   v7 = [v6 count];
   if (v7 >= 2)
   {
-    [v5 setLayoutType:1];
+    [faceCopy setLayoutType:1];
     v8 = [v6 count];
     if (v8 >= 2)
     {
@@ -24,7 +24,7 @@
     }
 
     v10 = [v6 subarrayWithRange:{0, v9}];
-    [v5 setComplications:v10];
+    [faceCopy setComplications:v10];
   }
 
   return v7 > 1;

@@ -1,9 +1,9 @@
 @interface _MKZoomingPanGestureRecognizer
-- (_MKZoomingPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_MKZoomingPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)velocity;
-- (void)_updateScaleAndVelocityIfNeeded:(int64_t)a3;
+- (void)_updateScaleAndVelocityIfNeeded:(int64_t)needed;
 - (void)reset;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _MKZoomingPanGestureRecognizer
@@ -20,12 +20,12 @@
   self->_previousVelocity = 0.0;
 }
 
-- (void)_updateScaleAndVelocityIfNeeded:(int64_t)a3
+- (void)_updateScaleAndVelocityIfNeeded:(int64_t)needed
 {
-  if (a3 == 2)
+  if (needed == 2)
   {
-    v4 = [(_MKZoomingPanGestureRecognizer *)self view];
-    [(_MKZoomingPanGestureRecognizer *)self translationInView:v4];
+    view = [(_MKZoomingPanGestureRecognizer *)self view];
+    [(_MKZoomingPanGestureRecognizer *)self translationInView:view];
     v6 = v5;
 
     if (self->_didStartUpdate)
@@ -48,11 +48,11 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _MKZoomingPanGestureRecognizer;
-  [(_MKZoomingPanGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(_MKZoomingPanGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   [(_MKZoomingPanGestureRecognizer *)self _updateScaleAndVelocityIfNeeded:[(_MKZoomingPanGestureRecognizer *)self state]];
 }
 
@@ -70,11 +70,11 @@
   }
 }
 
-- (_MKZoomingPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_MKZoomingPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _MKZoomingPanGestureRecognizer;
-  v4 = [(_MKZoomingPanGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(_MKZoomingPanGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

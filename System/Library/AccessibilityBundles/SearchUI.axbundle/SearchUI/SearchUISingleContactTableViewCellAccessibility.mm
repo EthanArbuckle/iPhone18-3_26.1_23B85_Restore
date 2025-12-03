@@ -1,30 +1,30 @@
 @interface SearchUISingleContactTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axActionButton;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
-- (void)_axPerformCustomAction:(id)a3;
-- (void)updateThumbnailViewForResult:(id)a3;
+- (void)_axPerformCustomAction:(id)action;
+- (void)updateThumbnailViewForResult:(id)result;
 @end
 
 @implementation SearchUISingleContactTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUISingleContactTableViewCell" hasInstanceMethod:@"textAreaView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUISingleContactTableViewCell" hasInstanceMethod:@"accessoryViewControllerForResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIContactActionButton" hasInstanceMethod:@"actions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIAccessoryViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNQuickAction" hasInstanceMethod:@"perform" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNQuickAction" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUISingleContactTableViewCell" hasInstanceMethod:@"textAreaView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUISingleContactTableViewCell" hasInstanceMethod:@"accessoryViewControllerForResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIContactActionButton" hasInstanceMethod:@"actions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIAccessoryViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNQuickAction" hasInstanceMethod:@"perform" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNQuickAction" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v6.receiver = self;
   v6.super_class = SearchUISingleContactTableViewCellAccessibility;
-  v2 = [(SearchUISingleContactTableViewCellAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(SearchUISingleContactTableViewCellAccessibility *)&v6 accessibilityLabel];
   v5 = accessibilityLocalizedString(@"suggestion.contact");
   v3 = __UIAXStringForVariables();
 
@@ -34,15 +34,15 @@
 - (id)accessibilityCustomActions
 {
   v29 = *MEMORY[0x29EDCA608];
-  v2 = [(SearchUISingleContactTableViewCellAccessibility *)self _axActionButton];
+  _axActionButton = [(SearchUISingleContactTableViewCellAccessibility *)self _axActionButton];
   v27 = 0;
   objc_opt_class();
-  v3 = [v2 safeValueForKey:@"actions"];
+  v3 = [_axActionButton safeValueForKey:@"actions"];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v4 && [v4 count])
   {
-    v19 = v2;
+    v19 = _axActionButton;
     v22 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:{objc_msgSend(v4, "count")}];
     v23 = 0u;
     v24 = 0u;
@@ -98,7 +98,7 @@
       while (v6);
     }
 
-    v2 = v19;
+    _axActionButton = v19;
   }
 
   else
@@ -112,18 +112,18 @@
   return v22;
 }
 
-- (void)_axPerformCustomAction:(id)a3
+- (void)_axPerformCustomAction:(id)action
 {
-  v4 = [a3 _accessibilityValueForKey:@"AXCNActionKey"];
+  v4 = [action _accessibilityValueForKey:@"AXCNActionKey"];
   v3 = v4;
   AXPerformSafeBlock();
 }
 
-- (void)updateThumbnailViewForResult:(id)a3
+- (void)updateThumbnailViewForResult:(id)result
 {
   v3.receiver = self;
   v3.super_class = SearchUISingleContactTableViewCellAccessibility;
-  [(SearchUISingleContactTableViewCellAccessibility *)&v3 updateThumbnailViewForResult:a3];
+  [(SearchUISingleContactTableViewCellAccessibility *)&v3 updateThumbnailViewForResult:result];
 }
 
 - (id)_axActionButton

@@ -1,69 +1,69 @@
 @interface CNPhotoPickerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 @end
 
 @implementation CNPhotoPickerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPhotoPickerProviderItem" hasInstanceVariable:@"_localizedVariantDisplayName" withType:"NSString"];
-  [v3 validateClass:@"CNPhotoPickerAnimojiProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"avatarRecord" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"poseConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerCollectionViewCell" hasInstanceMethod:@"captionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem" hasInstanceMethod:@"monogramText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem" hasInstanceMethod:@"renderingScope" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRMonogramColor"];
-  [v3 validateClass:@"PRMonogramColor" hasInstanceMethod:@"colorName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerProviderGroup"];
-  [v3 validateClass:@"CNPhotoPickerProviderGroup" hasProperty:@"groupType" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPhotoPickerProviderItem" hasInstanceVariable:@"_localizedVariantDisplayName" withType:"NSString"];
+  [validationsCopy validateClass:@"CNPhotoPickerAnimojiProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"avatarRecord" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"poseConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerCollectionViewCell" hasInstanceMethod:@"captionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem" hasInstanceMethod:@"monogramText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem" hasInstanceMethod:@"renderingScope" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRMonogramColor"];
+  [validationsCopy validateClass:@"PRMonogramColor" hasInstanceMethod:@"colorName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerProviderGroup"];
+  [validationsCopy validateClass:@"CNPhotoPickerProviderGroup" hasProperty:@"groupType" withType:"q"];
 }
 
 - (id)accessibilityUserInputLabels
 {
   v10[1] = *MEMORY[0x29EDCA608];
-  v3 = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderItem];
+  _axProviderItem = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderItem];
   MEMORY[0x29C2D1D40](@"CNPhotoPickerAnimojiProviderItem");
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 safeValueForKey:@"avatarRecord"], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "safeBoolForKey:", @"isEditable"), v4, v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([_axProviderItem safeValueForKey:@"avatarRecord"], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "safeBoolForKey:", @"isEditable"), v4, v5))
   {
     v6 = accessibilityLocalizedString(@"contact.image.type.memoji");
     v10[0] = v6;
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    accessibilityUserInputLabels = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CNPhotoPickerCollectionViewCellAccessibility;
-    v7 = [(CNPhotoPickerCollectionViewCellAccessibility *)&v9 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(CNPhotoPickerCollectionViewCellAccessibility *)&v9 accessibilityUserInputLabels];
   }
 
-  return v7;
+  return accessibilityUserInputLabels;
 }
 
 - (id)accessibilityLabel
 {
   if (![(CNPhotoPickerCollectionViewCellAccessibility *)self _axIsAddItem])
   {
-    v4 = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderItem];
+    _axProviderItem = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderItem];
     v6 = [(CNPhotoPickerCollectionViewCellAccessibility *)self safeValueForKey:@"captionLabel"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
     MEMORY[0x29C2D1D40](@"CNPhotoPickerMonogramProviderItem");
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       v8 = __UIAccessibilityCastAsSafeCategory();
-      v9 = [v8 _axColorVariantName];
-      v10 = [v4 safeStringForKey:@"monogramText"];
+      _axColorVariantName = [v8 _axColorVariantName];
+      _axColorVariantName3 = [_axProviderItem safeStringForKey:@"monogramText"];
       v11 = MEMORY[0x29EDBA0F8];
       v12 = accessibilityLocalizedString(@"monogram.description.button");
-      [v11 stringWithFormat:v12, v10, v9];
+      [v11 stringWithFormat:v12, _axColorVariantName3, _axColorVariantName];
     }
 
     else
@@ -73,11 +73,11 @@
       {
         objc_opt_class();
         v8 = __UIAccessibilityCastAsSafeCategory();
-        v14 = [v8 _axSymbolName];
-        v13 = v14;
-        if (v14)
+        _axSymbolName = [v8 _axSymbolName];
+        v13 = _axSymbolName;
+        if (_axSymbolName)
         {
-          v15 = v14;
+          v15 = _axSymbolName;
         }
 
         goto LABEL_28;
@@ -89,7 +89,7 @@
         MEMORY[0x29C2D1D40](@"CNPhotoPickerAnimojiProviderItem");
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v7)
+          if (accessibilityLabel)
           {
             v13 = 0;
           }
@@ -106,11 +106,11 @@
         {
           objc_opt_class();
           v21 = __UIAccessibilityCastAsSafeCategory();
-          v22 = [v21 _axColorVariantName];
-          v23 = v22;
-          if (v22)
+          _axColorVariantName2 = [v21 _axColorVariantName];
+          v23 = _axColorVariantName2;
+          if (_axColorVariantName2)
           {
-            v24 = v22;
+            v24 = _axColorVariantName2;
           }
         }
 
@@ -119,8 +119,8 @@
           v23 = 0;
         }
 
-        v8 = [v4 safeValueForKey:@"avatarRecord"];
-        v25 = [v4 safeValueForKey:@"poseConfiguration"];
+        v8 = [_axProviderItem safeValueForKey:@"avatarRecord"];
+        v25 = [_axProviderItem safeValueForKey:@"poseConfiguration"];
         v26 = [v25 safeStringForKey:@"localizedName"];
 
         v27 = __UIAXStringForVariables();
@@ -131,7 +131,7 @@
 
 LABEL_28:
 LABEL_29:
-        v28 = [v4 safeStringForKey:{@"_localizedVariantDisplayName", v31, v32}];
+        v28 = [_axProviderItem safeStringForKey:{@"_localizedVariantDisplayName", v31, v32}];
         v29 = __UIAXStringForVariables();
 
         v5 = __UIAXStringForVariables();
@@ -141,28 +141,28 @@ LABEL_29:
 
       objc_opt_class();
       v8 = __UIAccessibilityCastAsSafeCategory();
-      v9 = [v8 _axStringRepresentation];
-      v10 = [v8 _axColorVariantName];
+      _axColorVariantName = [v8 _axStringRepresentation];
+      _axColorVariantName3 = [v8 _axColorVariantName];
       v20 = MEMORY[0x29EDBA0F8];
       v12 = accessibilityLocalizedString(@"emoji.description.button");
-      [v20 stringWithFormat:v12, v9, v10];
+      [v20 stringWithFormat:v12, _axColorVariantName, _axColorVariantName3];
     }
     v13 = ;
 
     goto LABEL_28;
   }
 
-  v3 = [(CNPhotoPickerCollectionViewCellAccessibility *)self accessibilityUserDefinedLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedLabel = [(CNPhotoPickerCollectionViewCellAccessibility *)self accessibilityUserDefinedLabel];
+  _axProviderItem = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v5 = v3;
+    v5 = accessibilityUserDefinedLabel;
   }
 
   else
   {
-    v16 = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderGroup];
-    v17 = [v16 safeIntegerForKey:@"groupType"];
+    _axProviderGroup = [(CNPhotoPickerCollectionViewCellAccessibility *)self _axProviderGroup];
+    v17 = [_axProviderGroup safeIntegerForKey:@"groupType"];
     v18 = @"contact.image.add.button.label";
     if (v17 == 3)
     {

@@ -1,28 +1,28 @@
 @interface _PortraitOnlyNavigationController
 - (void)dealloc;
-- (void)viewWillMoveToWindow:(id)a3;
+- (void)viewWillMoveToWindow:(id)window;
 @end
 
 @implementation _PortraitOnlyNavigationController
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(_PortraitOnlyNavigationController *)self presentedViewController];
-    v5 = v6 != 0;
+    presentedViewController = [(_PortraitOnlyNavigationController *)self presentedViewController];
+    v5 = presentedViewController != 0;
   }
 
   [MEMORY[0x1E69DF6F0] enablePortraitLock:v5];
   v7.receiver = self;
   v7.super_class = _PortraitOnlyNavigationController;
-  [(_PortraitOnlyNavigationController *)&v7 viewWillMoveToWindow:v4];
+  [(_PortraitOnlyNavigationController *)&v7 viewWillMoveToWindow:windowCopy];
 }
 
 - (void)dealloc

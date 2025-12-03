@@ -1,22 +1,22 @@
 @interface HVPBContentStateEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addUniqueIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUniqueIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HVPBContentStateEntry
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   state = self->_state;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (state)
   {
     if (v6)
@@ -34,7 +34,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((state = self->_state, !(state | v4[1])) || -[HVPBContentState isEqual:](state, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((state = self->_state, !(state | equalCopy[1])) || -[HVPBContentState isEqual:](state, "isEqual:")))
   {
     uniqueIds = self->_uniqueIds;
-    if (uniqueIds | v4[2])
+    if (uniqueIds | equalCopy[2])
     {
       v7 = [(NSMutableArray *)uniqueIds isEqual:?];
     }
@@ -86,11 +86,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HVPBContentState *)self->_state copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HVPBContentState *)self->_state copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addUniqueIds:v13];
 
         ++v12;
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_state)
   {
-    [v8 setState:?];
+    [toCopy setState:?];
   }
 
   if ([(HVPBContentStateEntry *)self uniqueIdsCount])
   {
-    [v8 clearUniqueIds];
-    v4 = [(HVPBContentStateEntry *)self uniqueIdsCount];
-    if (v4)
+    [toCopy clearUniqueIds];
+    uniqueIdsCount = [(HVPBContentStateEntry *)self uniqueIdsCount];
+    if (uniqueIdsCount)
     {
-      v5 = v4;
+      v5 = uniqueIdsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HVPBContentStateEntry *)self uniqueIdsAtIndex:i];
-        [v8 addUniqueIds:v7];
+        [toCopy addUniqueIds:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_state)
   {
     PBDataWriterWriteSubmessage();
@@ -201,21 +201,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   state = self->_state;
   if (state)
   {
-    v5 = [(HVPBContentState *)state dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"state"];
+    dictionaryRepresentation = [(HVPBContentState *)state dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"state"];
   }
 
   uniqueIds = self->_uniqueIds;
   if (uniqueIds)
   {
-    [v3 setObject:uniqueIds forKey:@"uniqueIds"];
+    [dictionary setObject:uniqueIds forKey:@"uniqueIds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -224,28 +224,28 @@
   v8.receiver = self;
   v8.super_class = HVPBContentStateEntry;
   v4 = [(HVPBContentStateEntry *)&v8 description];
-  v5 = [(HVPBContentStateEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HVPBContentStateEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addUniqueIds:(id)a3
+- (void)addUniqueIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   uniqueIds = self->_uniqueIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!uniqueIds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_uniqueIds;
     self->_uniqueIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     uniqueIds = self->_uniqueIds;
   }
 
-  [(NSMutableArray *)uniqueIds addObject:v4];
+  [(NSMutableArray *)uniqueIds addObject:idsCopy];
 }
 
 @end

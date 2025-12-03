@@ -1,20 +1,20 @@
 @interface SDAutoUnlockAuthPromptImageData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFinalMessage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFinalMessage:(BOOL)message;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockAuthPromptImageData
 
-- (void)setHasFinalMessage:(BOOL)a3
+- (void)setHasFinalMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockAuthPromptImageData;
   v3 = [(SDAutoUnlockAuthPromptImageData *)&v7 description];
-  v4 = [(SDAutoUnlockAuthPromptImageData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockAuthPromptImageData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -62,57 +62,57 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_imageData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     finalMessage = self->_finalMessage;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_imageData)
   {
-    v5 = v4;
-    [v4 setImageData:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setImageData:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 20) = self->_finalMessage;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_finalMessage;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -120,7 +120,7 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSData *)self->_imageData copyWithZone:a3];
+  v7 = [(NSData *)self->_imageData copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -133,31 +133,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
   imageData = self->_imageData;
-  if (imageData | *(v4 + 1))
+  if (imageData | *(equalCopy + 1))
   {
     if (![(NSData *)imageData isEqual:?])
     {
@@ -167,20 +167,20 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 24) & 2) == 0;
+  v8 = (*(equalCopy + 24) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) != 0)
+    if ((*(equalCopy + 24) & 2) != 0)
     {
       if (self->_finalMessage)
       {
-        if ((*(v4 + 20) & 1) == 0)
+        if ((*(equalCopy + 20) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 20))
+      else if (*(equalCopy + 20))
       {
         goto LABEL_12;
       }
@@ -224,25 +224,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 24))
+  fromCopy = from;
+  if (*(fromCopy + 24))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(SDAutoUnlockAuthPromptImageData *)self setImageData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 24) & 2) != 0)
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_finalMessage = *(v4 + 20);
+    self->_finalMessage = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 }

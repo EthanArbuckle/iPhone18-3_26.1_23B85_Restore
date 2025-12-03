@@ -1,24 +1,24 @@
 @interface CKNavbarCanvasViewController
-+ (void)updateFTControlsWithConversation:(id)a3 canvasViewController:(id)a4 screenSharingCapabilities:(id)a5 unifiedCallButton:(id)a6;
++ (void)updateFTControlsWithConversation:(id)conversation canvasViewController:(id)controller screenSharingCapabilities:(id)capabilities unifiedCallButton:(id)button;
 - (BOOL)_canShowAvatarView;
 - (BOOL)_shouldShowFacetimeButton;
 - (BOOL)_shouldShowPersistentMenu;
 - (BOOL)findMyNavBarEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hideChevron;
 - (BOOL)shouldConfigureForJunkModal;
 - (BOOL)shouldUseMinimumSafeAreas;
 - (BOOL)splitViewControllerIsCollapsed;
-- (BOOL)wantsVerifiedIconForTitle:(id)a3;
+- (BOOL)wantsVerifiedIconForTitle:(id)title;
 - (CKCanvasBackButtonView)backButtonView;
 - (CKDetailsContactsManager)contactsManager;
 - (CKLabel)defaultLabel;
 - (CKNavBarConversationIdentityView)conversationIdentityView;
 - (CKNavBarUnifiedCallButton)unifiedCallButton;
-- (CKNavbarCanvasViewController)initWithConversation:(id)a3 navigationController:(id)a4 hideLocationIfUnavailable:(BOOL)a5;
+- (CKNavbarCanvasViewController)initWithConversation:(id)conversation navigationController:(id)controller hideLocationIfUnavailable:(BOOL)unavailable;
 - (CKNavbarCanvasViewControllerDelegate)delegate;
 - (CNContactStore)suggestionsEnabledContactStore;
-- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)a3;
+- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)view;
 - (UIBarButtonItem)detailsBarButton;
 - (UIButton)closeButton;
 - (UIButton)doneButton;
@@ -26,100 +26,100 @@
 - (UINavigationController)proxyNavigationController;
 - (_TtC7ChatKit29CKNavBarPersistentMenuManager)persistentMenuManager;
 - (id)_KTTitleIconAttributedString;
-- (id)_leftItemViewForTraitCollection:(id)a3;
-- (id)_rightItemViewForTraitCollection:(id)a3;
-- (id)_titleItemViewForTraitCollection:(id)a3;
+- (id)_leftItemViewForTraitCollection:(id)collection;
+- (id)_rightItemViewForTraitCollection:(id)collection;
+- (id)_titleItemViewForTraitCollection:(id)collection;
 - (id)_windowTraitCollection;
-- (id)navBarTitleFromConversation:(id)a3;
+- (id)navBarTitleFromConversation:(id)conversation;
 - (id)persistentMenuButton;
 - (id)recipientContextMenu;
 - (int64_t)_unreadCount;
-- (void)_addUserDidTapNavigationBarRecognizer:(id)a3;
-- (void)_buttonPressed:(id)a3;
-- (void)_chatUnreadCountDidChange:(id)a3;
+- (void)_addUserDidTapNavigationBarRecognizer:(id)recognizer;
+- (void)_buttonPressed:(id)pressed;
+- (void)_chatUnreadCountDidChange:(id)change;
 - (void)_configureForDefaultMode;
 - (void)_configureForEditMode;
-- (void)_contactPhotosEnabledChangedNotification:(id)a3;
-- (void)_facetimeAudioButtonTapped:(id)a3;
-- (void)_facetimeVideoButtonTapped:(id)a3;
-- (void)_handleAddressBookChange:(id)a3;
-- (void)_handleAllowedByScreenTimeChatChanged:(id)a3;
-- (void)_handleKeyTransparencyStatusChangedNotification:(id)a3;
-- (void)_handlePersistentMenuChangedNotification:(id)a3;
-- (void)_handleServiceChangedNotification:(id)a3;
-- (void)_infoButtonTapped:(id)a3;
-- (void)_initializeForTraitCollection:(id)a3;
+- (void)_contactPhotosEnabledChangedNotification:(id)notification;
+- (void)_facetimeAudioButtonTapped:(id)tapped;
+- (void)_facetimeVideoButtonTapped:(id)tapped;
+- (void)_handleAddressBookChange:(id)change;
+- (void)_handleAllowedByScreenTimeChatChanged:(id)changed;
+- (void)_handleKeyTransparencyStatusChangedNotification:(id)notification;
+- (void)_handlePersistentMenuChangedNotification:(id)notification;
+- (void)_handleServiceChangedNotification:(id)notification;
+- (void)_infoButtonTapped:(id)tapped;
+- (void)_initializeForTraitCollection:(id)collection;
 - (void)_notifyDelegateForNavBarResize;
-- (void)_refreshIDSStatusWithCompletion:(id)a3;
+- (void)_refreshIDSStatusWithCompletion:(id)completion;
 - (void)_updateFTControls;
-- (void)_updateUnreadCountForBackbuttonView:(int64_t)a3;
+- (void)_updateUnreadCountForBackbuttonView:(int64_t)view;
 - (void)_userDidTapNavigationBar;
-- (void)button:(id)a3 requestsJoinActiveCallWithVideoEnabled:(BOOL)a4;
-- (void)button:(id)a3 requestsStartFaceTimeWithScreenShareType:(unint64_t)a4;
-- (void)buttonRequestsOpenJoinedCall:(id)a3;
-- (void)buttonRequestsStartFaceTimeAudio:(id)a3;
-- (void)buttonRequestsStartFaceTimeVideo:(id)a3;
-- (void)buttonRequestsStartTelephonyCall:(id)a3;
-- (void)buttonWidthDidChange:(id)a3;
-- (void)configureForEditing:(BOOL)a3;
-- (void)conversationIdentityViewTapped:(id)a3;
+- (void)button:(id)button requestsJoinActiveCallWithVideoEnabled:(BOOL)enabled;
+- (void)button:(id)button requestsStartFaceTimeWithScreenShareType:(unint64_t)type;
+- (void)buttonRequestsOpenJoinedCall:(id)call;
+- (void)buttonRequestsStartFaceTimeAudio:(id)audio;
+- (void)buttonRequestsStartFaceTimeVideo:(id)video;
+- (void)buttonRequestsStartTelephonyCall:(id)call;
+- (void)buttonWidthDidChange:(id)change;
+- (void)configureForEditing:(BOOL)editing;
+- (void)conversationIdentityViewTapped:(id)tapped;
 - (void)dealloc;
-- (void)fmfSessionChatLocationReceived:(id)a3;
-- (void)fmfSessionChatLocationRefreshed:(id)a3;
-- (void)fmfSessionRelationshipDidChange:(id)a3;
-- (void)handleCloseNavBarAnimationCompleteNotification:(id)a3;
+- (void)fmfSessionChatLocationReceived:(id)received;
+- (void)fmfSessionChatLocationRefreshed:(id)refreshed;
+- (void)fmfSessionRelationshipDidChange:(id)change;
+- (void)handleCloseNavBarAnimationCompleteNotification:(id)notification;
 - (void)loadView;
-- (void)persistentMenuManager:(id)a3 selectedChipAction:(id)a4;
-- (void)persistentMenuManager:(id)a3 selectedSuggestedReply:(id)a4;
+- (void)persistentMenuManager:(id)manager selectedChipAction:(id)action;
+- (void)persistentMenuManager:(id)manager selectedSuggestedReply:(id)reply;
 - (void)refreshAudioButtonTargetAction;
 - (void)refreshFMFLocationIfNecessary;
 - (void)registerNotifications;
-- (void)setCanShowBackButtonView:(BOOL)a3;
+- (void)setCanShowBackButtonView:(BOOL)view;
 - (void)setDefaultLabelText;
-- (void)setDetailsBarButton:(id)a3;
-- (void)setIndicatorType:(int64_t)a3;
-- (void)setIsInEditingMode:(BOOL)a3;
-- (void)setLocationLabel:(id)a3;
-- (void)setLocationLabelHidden:(BOOL)a3;
-- (void)setLocationToDisplay:(id)a3;
-- (void)setNavBarContext:(int64_t)a3;
+- (void)setDetailsBarButton:(id)button;
+- (void)setIndicatorType:(int64_t)type;
+- (void)setIsInEditingMode:(BOOL)mode;
+- (void)setLocationLabel:(id)label;
+- (void)setLocationLabelHidden:(BOOL)hidden;
+- (void)setLocationToDisplay:(id)display;
+- (void)setNavBarContext:(int64_t)context;
 - (void)setUnreadCountTitleColor;
-- (void)showContactCardForEntity:(id)a3 address:(id)a4;
-- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showContactCardForEntity:(id)entity address:(id)address;
+- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)available;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAvatarPickerDelegate;
-- (void)updateContentsForConversation:(id)a3;
+- (void)updateContentsForConversation:(id)conversation;
 - (void)updateDefaultLabelIfNecessary;
 - (void)updateForRecoveredJunkConversation;
 - (void)updateLeftItemView;
 - (void)updateLocationLabel;
 - (void)updateLocationLabelParentViewAssignment;
-- (void)updateLocationToDisplayWithHandle:(id)a3;
+- (void)updateLocationToDisplayWithHandle:(id)handle;
 - (void)updateRightItemView;
-- (void)updateTitle:(id)a3 animated:(BOOL)a4;
-- (void)updateTitleViewAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTitle:(id)title animated:(BOOL)animated;
+- (void)updateTitleViewAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKNavbarCanvasViewController
 
-- (CKNavbarCanvasViewController)initWithConversation:(id)a3 navigationController:(id)a4 hideLocationIfUnavailable:(BOOL)a5
+- (CKNavbarCanvasViewController)initWithConversation:(id)conversation navigationController:(id)controller hideLocationIfUnavailable:(BOOL)unavailable
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  conversationCopy = conversation;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = CKNavbarCanvasViewController;
   v10 = [(CKNavbarCanvasViewController *)&v22 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    [(CKNavbarCanvasViewController *)v10 setConversation:v8];
-    [(CKNavbarCanvasViewController *)v11 setProxyNavigationController:v9];
-    v12 = [(CKNavbarCanvasViewController *)v11 navBarTitleFromConversation:v8];
+    [(CKNavbarCanvasViewController *)v10 setConversation:conversationCopy];
+    [(CKNavbarCanvasViewController *)v11 setProxyNavigationController:controllerCopy];
+    v12 = [(CKNavbarCanvasViewController *)v11 navBarTitleFromConversation:conversationCopy];
     [(CKNavbarCanvasViewController *)v11 setNavbarTitle:v12];
 
     [(CKNavbarCanvasViewController *)v11 registerNotifications];
@@ -128,21 +128,21 @@
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(CKNavbarCanvasViewController *)v11 findMyNavBarEnabled];
-        v15 = [(CKNavbarCanvasViewController *)v11 conversation];
-        v16 = v15;
+        findMyNavBarEnabled = [(CKNavbarCanvasViewController *)v11 findMyNavBarEnabled];
+        conversation = [(CKNavbarCanvasViewController *)v11 conversation];
+        v16 = conversation;
         v17 = @"NO";
         *buf = 136315650;
         v24 = "[CKNavbarCanvasViewController initWithConversation:navigationController:hideLocationIfUnavailable:]";
         v25 = 2112;
-        if (v14)
+        if (findMyNavBarEnabled)
         {
           v17 = @"YES";
         }
 
         v26 = v17;
         v27 = 2112;
-        v28 = v15;
+        v28 = conversation;
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "%s: Nav bar location refresh enablement: %@ for conversation: %@", buf, 0x20u);
       }
     }
@@ -150,10 +150,10 @@
     if ([(CKNavbarCanvasViewController *)v11 findMyNavBarEnabled])
     {
       [(CKNavbarCanvasViewController *)v11 refreshFMFLocationIfNecessary];
-      if (a5)
+      if (unavailable)
       {
-        v18 = [(CKNavbarCanvasViewController *)v11 locationToDisplay];
-        [(CKNavbarCanvasViewController *)v11 setLocationLabelHidden:v18 == 0];
+        locationToDisplay = [(CKNavbarCanvasViewController *)v11 locationToDisplay];
+        [(CKNavbarCanvasViewController *)v11 setLocationLabelHidden:locationToDisplay == 0];
       }
 
       else
@@ -195,54 +195,54 @@ void __100__CKNavbarCanvasViewController_initWithConversation_navigationControll
 
 - (void)registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [(CKNavbarCanvasViewController *)self conversation];
-  [v3 addObserver:self selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationParticipantsDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  [defaultCenter addObserver:self selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationParticipantsDidChangeNotification" object:conversation];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69A56E8];
-  v7 = [(CKNavbarCanvasViewController *)self conversation];
-  v8 = [v7 chat];
-  [v5 addObserver:self selector:sel__handleAllowedByScreenTimeChatChanged_ name:v6 object:v8];
+  conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+  chat = [conversation2 chat];
+  [defaultCenter2 addObserver:self selector:sel__handleAllowedByScreenTimeChatChanged_ name:v6 object:chat];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__handleKeyTransparencyStatusChangedNotification_ name:*MEMORY[0x1E69A5810] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleKeyTransparencyStatusChangedNotification_ name:*MEMORY[0x1E69A5810] object:0];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__handleServiceChangedNotification_ name:*MEMORY[0x1E69A5908] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__handleServiceChangedNotification_ name:*MEMORY[0x1E69A5908] object:0];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel__handlePersistentMenuChangedNotification_ name:*MEMORY[0x1E69A6AC8] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__handlePersistentMenuChangedNotification_ name:*MEMORY[0x1E69A6AC8] object:0];
 
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:self selector:sel_fmfSessionRelationshipDidChange_ name:*MEMORY[0x1E69A5990] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:self selector:sel_fmfSessionRelationshipDidChange_ name:*MEMORY[0x1E69A5990] object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
     v14 = *MEMORY[0x1E69A5980];
-    v15 = [(CKNavbarCanvasViewController *)self conversation];
-    v16 = [v15 chat];
-    [v13 addObserver:self selector:sel_fmfSessionChatLocationRefreshed_ name:v14 object:v16];
+    conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+    chat2 = [conversation3 chat];
+    [defaultCenter7 addObserver:self selector:sel_fmfSessionChatLocationRefreshed_ name:v14 object:chat2];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:self selector:sel_fmfSessionChatLocationReceived_ name:*MEMORY[0x1E69A5988] object:0];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 addObserver:self selector:sel_fmfSessionChatLocationReceived_ name:*MEMORY[0x1E69A5988] object:0];
   }
 }
 
-- (void)_refreshIDSStatusWithCompletion:(id)a3
+- (void)_refreshIDSStatusWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  v6 = [v5 recipients];
-  v7 = [v6 __im_canonicalIDSAddressesFromEntities];
+  completionCopy = completion;
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  recipients = [conversation recipients];
+  __im_canonicalIDSAddressesFromEntities = [recipients __im_canonicalIDSAddressesFromEntities];
 
-  if ([v7 count])
+  if ([__im_canonicalIDSAddressesFromEntities count])
   {
     v8 = dispatch_group_create();
-    v9 = [(CKNavbarCanvasViewController *)self conversation];
-    v10 = [CKFaceTimeUtilities isModernScreenSharingAvailable:v9];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    v10 = [CKFaceTimeUtilities isModernScreenSharingAvailable:conversation2];
 
     if (v10)
     {
@@ -253,14 +253,14 @@ void __100__CKNavbarCanvasViewController_initWithConversation_navigationControll
       v14[3] = &unk_1E72EEB58;
       v14[4] = self;
       v15 = v8;
-      [CKFaceTimeUtilities queryModernScreenSharingCapabilities:v7 completion:v14];
+      [CKFaceTimeUtilities queryModernScreenSharingCapabilities:__im_canonicalIDSAddressesFromEntities completion:v14];
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__CKNavbarCanvasViewController__refreshIDSStatusWithCompletion___block_invoke_2;
     block[3] = &unk_1E72EBDB8;
-    v13 = v4;
+    v13 = completionCopy;
     dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
   }
 
@@ -272,7 +272,7 @@ void __100__CKNavbarCanvasViewController_initWithConversation_navigationControll
       *buf = 136315394;
       v17 = "[CKNavbarCanvasViewController _refreshIDSStatusWithCompletion:]";
       v18 = 2048;
-      v19 = [v7 count];
+      v19 = [__im_canonicalIDSAddressesFromEntities count];
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "%s early returning for addresses.count: %lu", buf, 0x16u);
     }
   }
@@ -290,11 +290,11 @@ void __64__CKNavbarCanvasViewController__refreshIDSStatusWithCompletion___block_
 {
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v3 = [MEMORY[0x1E69A5B70] sharedInstance];
-    v4 = [(CKNavbarCanvasViewController *)self conversation];
-    v5 = [v4 recipient];
-    v6 = [v5 defaultIMHandle];
-    v8 = [v3 findMyLocationForHandleOrSibling:v6];
+    mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    recipient = [conversation recipient];
+    defaultIMHandle = [recipient defaultIMHandle];
+    v8 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:defaultIMHandle];
 
     if (v8)
     {
@@ -312,17 +312,17 @@ void __64__CKNavbarCanvasViewController__refreshIDSStatusWithCompletion___block_
 
 - (BOOL)findMyNavBarEnabled
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isFindMyNavBarEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isFindMyNavBarEnabled = [mEMORY[0x1E69A8070] isFindMyNavBarEnabled];
 
-  v5 = [MEMORY[0x1E69A5B70] sharedInstance];
-  v6 = [v5 disableLocationSharing];
+  mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+  disableLocationSharing = [mEMORY[0x1E69A5B70] disableLocationSharing];
 
-  v7 = [(CKNavbarCanvasViewController *)self conversation];
-  if (v7)
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  if (conversation)
   {
-    v8 = [(CKNavbarCanvasViewController *)self conversation];
-    v9 = [v8 isGroupConversation] ^ 1;
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    v9 = [conversation2 isGroupConversation] ^ 1;
   }
 
   else
@@ -330,30 +330,30 @@ void __64__CKNavbarCanvasViewController__refreshIDSStatusWithCompletion___block_
     LOBYTE(v9) = 0;
   }
 
-  return v4 & v9 & (v6 ^ 1);
+  return isFindMyNavBarEnabled & v9 & (disableLocationSharing ^ 1);
 }
 
-- (void)fmfSessionChatLocationRefreshed:(id)a3
+- (void)fmfSessionChatLocationRefreshed:(id)refreshed
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  refreshedCopy = refreshed;
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v5 = [v4 object];
+    object = [refreshedCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 object];
+      object2 = [refreshedCopy object];
     }
 
     else
     {
-      v6 = 0;
+      object2 = 0;
     }
 
-    v7 = [(CKNavbarCanvasViewController *)self conversation];
-    v8 = [v7 chat];
-    v9 = [v6 isEqual:v8];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    v9 = [object2 isEqual:chat];
 
     if (v9)
     {
@@ -362,58 +362,58 @@ void __64__CKNavbarCanvasViewController__refreshIDSStatusWithCompletion___block_
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(CKNavbarCanvasViewController *)self conversation];
-          v12 = [v11 recipient];
-          v13 = [v12 defaultIMHandle];
+          conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+          recipient = [conversation2 recipient];
+          defaultIMHandle = [recipient defaultIMHandle];
           v17 = 136315394;
           v18 = "[CKNavbarCanvasViewController fmfSessionChatLocationRefreshed:]";
           v19 = 2112;
-          v20 = v13;
+          v20 = defaultIMHandle;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "%s handle: %@", &v17, 0x16u);
         }
       }
 
-      v14 = [(CKNavbarCanvasViewController *)self conversation];
-      v15 = [v14 recipient];
-      v16 = [v15 defaultIMHandle];
-      [(CKNavbarCanvasViewController *)self updateLocationToDisplayWithHandle:v16];
+      conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+      recipient2 = [conversation3 recipient];
+      defaultIMHandle2 = [recipient2 defaultIMHandle];
+      [(CKNavbarCanvasViewController *)self updateLocationToDisplayWithHandle:defaultIMHandle2];
     }
   }
 }
 
-- (void)fmfSessionChatLocationReceived:(id)a3
+- (void)fmfSessionChatLocationReceived:(id)received
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  receivedCopy = received;
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v5 = [v4 object];
+    object = [receivedCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 object];
+      object2 = [receivedCopy object];
     }
 
     else
     {
-      v6 = 0;
+      object2 = 0;
     }
 
-    v7 = [(CKNavbarCanvasViewController *)self conversation];
-    v8 = [v7 chat];
-    v9 = [v8 recipient];
-    v10 = [v6 identifier];
-    v19 = v6;
-    if ([v9 isEqual:v10])
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    recipient = [chat recipient];
+    identifier = [object2 identifier];
+    v19 = object2;
+    if ([recipient isEqual:identifier])
     {
     }
 
     else
     {
-      v11 = [(CKNavbarCanvasViewController *)self conversation];
-      v12 = [v11 chat];
-      v13 = [v12 allSiblingFindMyHandles];
-      v14 = [v13 containsObject:v6];
+      conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+      chat2 = [conversation2 chat];
+      allSiblingFindMyHandles = [chat2 allSiblingFindMyHandles];
+      v14 = [allSiblingFindMyHandles containsObject:object2];
 
       if ((v14 & 1) == 0)
       {
@@ -436,10 +436,10 @@ LABEL_13:
       }
     }
 
-    v16 = [(CKNavbarCanvasViewController *)self conversation];
-    v17 = [v16 recipient];
-    v18 = [v17 defaultIMHandle];
-    [(CKNavbarCanvasViewController *)self updateLocationToDisplayWithHandle:v18];
+    conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+    recipient2 = [conversation3 recipient];
+    defaultIMHandle = [recipient2 defaultIMHandle];
+    [(CKNavbarCanvasViewController *)self updateLocationToDisplayWithHandle:defaultIMHandle];
 
     goto LABEL_13;
   }
@@ -447,24 +447,24 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)fmfSessionRelationshipDidChange:(id)a3
+- (void)fmfSessionRelationshipDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v5 = [v4 object];
+    object = [changeCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 object];
+      object2 = [changeCopy object];
 
-      if (v6)
+      if (object2)
       {
-        v7 = [(CKNavbarCanvasViewController *)self conversation];
-        v8 = [v7 chat];
-        v9 = [v8 allSiblingFindMyHandles];
-        v10 = [v9 containsObject:v6];
+        conversation = [(CKNavbarCanvasViewController *)self conversation];
+        chat = [conversation chat];
+        allSiblingFindMyHandles = [chat allSiblingFindMyHandles];
+        v10 = [allSiblingFindMyHandles containsObject:object2];
 
         if (v10)
         {
@@ -476,7 +476,7 @@ LABEL_14:
               v12 = 136315394;
               v13 = "[CKNavbarCanvasViewController fmfSessionRelationshipDidChange:]";
               v14 = 2112;
-              v15 = v6;
+              v15 = object2;
               _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "%s handle: %@", &v12, 0x16u);
             }
           }
@@ -489,32 +489,32 @@ LABEL_14:
     else
     {
 
-      v6 = 0;
+      object2 = 0;
     }
   }
 }
 
-- (void)updateLocationToDisplayWithHandle:(id)a3
+- (void)updateLocationToDisplayWithHandle:(id)handle
 {
-  v16 = a3;
-  v4 = [(CKNavbarCanvasViewController *)self findMyNavBarEnabled];
-  if (v16)
+  handleCopy = handle;
+  findMyNavBarEnabled = [(CKNavbarCanvasViewController *)self findMyNavBarEnabled];
+  if (handleCopy)
   {
-    if (v4)
+    if (findMyNavBarEnabled)
     {
-      v5 = [(CKNavbarCanvasViewController *)self conversation];
-      v6 = [v5 chat];
-      v7 = [v6 allSiblingFindMyHandles];
-      v8 = [v16 findMyHandle];
-      v9 = [v7 containsObject:v8];
+      conversation = [(CKNavbarCanvasViewController *)self conversation];
+      chat = [conversation chat];
+      allSiblingFindMyHandles = [chat allSiblingFindMyHandles];
+      findMyHandle = [handleCopy findMyHandle];
+      v9 = [allSiblingFindMyHandles containsObject:findMyHandle];
 
       if (v9)
       {
-        v10 = [MEMORY[0x1E69A5B70] sharedInstance];
-        v11 = [(CKNavbarCanvasViewController *)self conversation];
-        v12 = [v11 recipient];
-        v13 = [v12 defaultIMHandle];
-        v14 = [v10 findMyLocationForHandleOrSibling:v13];
+        mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+        conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+        recipient = [conversation2 recipient];
+        defaultIMHandle = [recipient defaultIMHandle];
+        v14 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:defaultIMHandle];
 
         if (v14)
         {
@@ -532,28 +532,28 @@ LABEL_14:
   }
 }
 
-- (void)setLocationLabelHidden:(BOOL)a3
+- (void)setLocationLabelHidden:(BOOL)hidden
 {
-  if (self->_locationLabelHidden != a3)
+  if (self->_locationLabelHidden != hidden)
   {
-    v4 = a3;
-    self->_locationLabelHidden = a3;
-    v6 = [(CKNavbarCanvasViewController *)self locationLabel];
-    [v6 setHidden:v4];
+    hiddenCopy = hidden;
+    self->_locationLabelHidden = hidden;
+    locationLabel = [(CKNavbarCanvasViewController *)self locationLabel];
+    [locationLabel setHidden:hiddenCopy];
 
-    v7 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v7 setSubtitleHidden:v4];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [conversationIdentityView setSubtitleHidden:hiddenCopy];
 
     [(CKNavbarCanvasViewController *)self _notifyDelegateForNavBarResize];
   }
 }
 
-- (void)setLocationToDisplay:(id)a3
+- (void)setLocationToDisplay:(id)display
 {
-  v5 = a3;
-  if (-[CKNavbarCanvasViewController findMyNavBarEnabled](self, "findMyNavBarEnabled") && ([v5 isEqual:self->_locationToDisplay] & 1) == 0)
+  displayCopy = display;
+  if (-[CKNavbarCanvasViewController findMyNavBarEnabled](self, "findMyNavBarEnabled") && ([displayCopy isEqual:self->_locationToDisplay] & 1) == 0)
   {
-    objc_storeStrong(&self->_locationToDisplay, a3);
+    objc_storeStrong(&self->_locationToDisplay, display);
     [(CKNavbarCanvasViewController *)self updateLocationLabel];
   }
 }
@@ -563,26 +563,26 @@ LABEL_14:
   v49 = *MEMORY[0x1E69E9840];
   if ([(CKNavbarCanvasViewController *)self findMyNavBarEnabled])
   {
-    v3 = [(CKNavbarCanvasViewController *)self locationToDisplay];
-    v4 = [v3 shortAddress];
+    locationToDisplay = [(CKNavbarCanvasViewController *)self locationToDisplay];
+    shortAddress = [locationToDisplay shortAddress];
 
-    if (v4)
+    if (shortAddress)
     {
-      v5 = [(CKNavbarCanvasViewController *)self locationLabel];
-      v6 = [v5 attributedText];
-      v7 = [v6 string];
-      v8 = [v7 isEqualToString:v4];
+      locationLabel = [(CKNavbarCanvasViewController *)self locationLabel];
+      attributedText = [locationLabel attributedText];
+      string = [attributedText string];
+      v8 = [string isEqualToString:shortAddress];
 
       if (v8)
       {
-        v9 = [(CKNavbarCanvasViewController *)self locationLabel];
-        v10 = [v9 attributedText];
-        v11 = [v10 attributesAtIndex:0 effectiveRange:0];
+        locationLabel2 = [(CKNavbarCanvasViewController *)self locationLabel];
+        attributedText2 = [locationLabel2 attributedText];
+        v11 = [attributedText2 attributesAtIndex:0 effectiveRange:0];
 
         v12 = +[CKUIBehavior sharedBehaviors];
-        v13 = [(CKNavbarCanvasViewController *)self traitCollection];
-        v14 = [v13 preferredContentSizeCategory];
-        v15 = [v12 navBarSubtitleAttributedStringAttributesForContentSizeCategory:v14];
+        traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+        preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+        v15 = [v12 navBarSubtitleAttributedStringAttributesForContentSizeCategory:preferredContentSizeCategory];
 
         v16 = *MEMORY[0x1E69DB648];
         v17 = [v11 objectForKey:*MEMORY[0x1E69DB648]];
@@ -605,15 +605,15 @@ LABEL_14:
 
         if (v18 != v22)
         {
-          v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v15];
-          v24 = [(CKNavbarCanvasViewController *)self locationLabel];
-          [v24 setAttributedText:v23];
+          v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:shortAddress attributes:v15];
+          locationLabel3 = [(CKNavbarCanvasViewController *)self locationLabel];
+          [locationLabel3 setAttributedText:v23];
 
-          v25 = [(CKNavbarCanvasViewController *)self locationLabel];
-          [v25 sizeToFit];
+          locationLabel4 = [(CKNavbarCanvasViewController *)self locationLabel];
+          [locationLabel4 sizeToFit];
 
-          v26 = [(CKNavbarCanvasViewController *)self locationLabel];
-          [v26 setNeedsLayout];
+          locationLabel5 = [(CKNavbarCanvasViewController *)self locationLabel];
+          [locationLabel5 setNeedsLayout];
         }
       }
 
@@ -622,23 +622,23 @@ LABEL_14:
         v30 = objc_alloc(MEMORY[0x1E69DCC10]);
         v11 = [v30 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
         v31 = +[CKUIBehavior sharedBehaviors];
-        v32 = [(CKNavbarCanvasViewController *)self traitCollection];
-        v33 = [v32 preferredContentSizeCategory];
-        v15 = [v31 navBarSubtitleAttributedStringAttributesForContentSizeCategory:v33];
+        traitCollection2 = [(CKNavbarCanvasViewController *)self traitCollection];
+        preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+        v15 = [v31 navBarSubtitleAttributedStringAttributesForContentSizeCategory:preferredContentSizeCategory2];
 
-        v34 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v15];
+        v34 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:shortAddress attributes:v15];
         [v11 setAttributedText:v34];
 
-        v35 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-        [v11 setTextColor:v35];
+        tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+        [v11 setTextColor:tertiaryLabelColor];
 
         [v11 setTextAlignment:1];
         [(CKNavbarCanvasViewController *)self setLocationLabel:v11];
       }
 
-      v36 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-      v37 = [v36 subtitle];
-      v38 = [v37 isEqualToString:v4];
+      conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+      subtitle = [conversationIdentityView subtitle];
+      v38 = [subtitle isEqualToString:shortAddress];
 
       if (v38)
       {
@@ -653,8 +653,8 @@ LABEL_32:
 
       else
       {
-        v39 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-        [v39 setSubtitle:v4];
+        conversationIdentityView2 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+        [conversationIdentityView2 setSubtitle:shortAddress];
       }
 
       if (IMOSLoggingEnabled())
@@ -673,9 +673,9 @@ LABEL_32:
         v41 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v42 = [(CKNavbarCanvasViewController *)self locationLabelHidden];
+          locationLabelHidden = [(CKNavbarCanvasViewController *)self locationLabelHidden];
           v47 = 67109120;
-          LODWORD(v48) = v42;
+          LODWORD(v48) = locationLabelHidden;
           _os_log_impl(&dword_19020E000, v41, OS_LOG_TYPE_INFO, "Location label is shown: %{BOOL}d", &v47, 8u);
         }
       }
@@ -694,16 +694,16 @@ LABEL_32:
         }
       }
 
-      v28 = [(CKNavbarCanvasViewController *)self locationLabel];
-      if (!v28)
+      locationLabel6 = [(CKNavbarCanvasViewController *)self locationLabel];
+      if (!locationLabel6)
       {
-        v43 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-        v44 = [v43 subtitle];
-        v45 = [v44 isEqualToString:&stru_1F04268F8];
+        conversationIdentityView3 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+        subtitle2 = [conversationIdentityView3 subtitle];
+        v45 = [subtitle2 isEqualToString:&stru_1F04268F8];
 
         [(CKNavbarCanvasViewController *)self setLocationLabel:0];
-        v46 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-        [v46 setSubtitle:&stru_1F04268F8];
+        conversationIdentityView4 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+        [conversationIdentityView4 setSubtitle:&stru_1F04268F8];
 
         [(CKNavbarCanvasViewController *)self updateLocationLabelParentViewAssignment];
         if (v45)
@@ -715,8 +715,8 @@ LABEL_32:
       }
 
       [(CKNavbarCanvasViewController *)self setLocationLabel:0];
-      v29 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-      [v29 setSubtitle:&stru_1F04268F8];
+      conversationIdentityView5 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+      [conversationIdentityView5 setSubtitle:&stru_1F04268F8];
     }
 
     [(CKNavbarCanvasViewController *)self updateLocationLabelParentViewAssignment];
@@ -726,17 +726,17 @@ LABEL_31:
   }
 }
 
-- (void)setLocationLabel:(id)a3
+- (void)setLocationLabel:(id)label
 {
-  v7 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self findMyNavBarEnabled];
-  v6 = v7;
-  if (v5 && self->_locationLabel != v7)
+  labelCopy = label;
+  findMyNavBarEnabled = [(CKNavbarCanvasViewController *)self findMyNavBarEnabled];
+  v6 = labelCopy;
+  if (findMyNavBarEnabled && self->_locationLabel != labelCopy)
   {
-    [(UILabel *)v7 sizeToFit];
-    objc_storeStrong(&self->_locationLabel, a3);
+    [(UILabel *)labelCopy sizeToFit];
+    objc_storeStrong(&self->_locationLabel, label);
     [(UILabel *)self->_locationLabel setHidden:[(CKNavbarCanvasViewController *)self locationLabelHidden]];
-    v6 = v7;
+    v6 = labelCopy;
   }
 }
 
@@ -752,13 +752,13 @@ LABEL_31:
     locationLabel = self->_locationLabel;
   }
 
-  v4 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v4 setSubtitleView:locationLabel];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setSubtitleView:locationLabel];
 }
 
-- (id)navBarTitleFromConversation:(id)a3
+- (id)navBarTitleFromConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   if (IMIsRunningInScreenshotTesting_IsolatedTranscriptUI())
   {
     v5 = 0;
@@ -766,14 +766,14 @@ LABEL_31:
 
   else
   {
-    if ([v4 hasDisplayName])
+    if ([conversationCopy hasDisplayName])
     {
-      [v4 displayName];
+      [conversationCopy displayName];
     }
 
     else
     {
-      [v4 displayNameForMediaObjects:0 subject:0 shouldListParticipants:{-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView")}];
+      [conversationCopy displayNameForMediaObjects:0 subject:0 shouldListParticipants:{-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView")}];
     }
     v5 = ;
   }
@@ -781,38 +781,38 @@ LABEL_31:
   return v5;
 }
 
-- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)a3
+- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)available
 {
-  v3 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  v7 = [v5 recipient];
+  availableCopy = available;
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  recipient = [conversation recipient];
 
-  if (v7)
+  if (recipient)
   {
-    v6 = [(CKNavbarCanvasViewController *)self contactsManager];
-    [v6 startCommunicationForEntity:v7 action:2 address:0 usePreferredRouteIfAvailable:v3];
+    contactsManager = [(CKNavbarCanvasViewController *)self contactsManager];
+    [contactsManager startCommunicationForEntity:recipient action:2 address:0 usePreferredRouteIfAvailable:availableCopy];
   }
 }
 
 - (id)_windowTraitCollection
 {
-  v2 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v3 = [v2 traitCollection];
+  keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+  traitCollection = [keyWindow traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-- (void)setIsInEditingMode:(BOOL)a3
+- (void)setIsInEditingMode:(BOOL)mode
 {
-  if (self->_isInEditingMode != a3)
+  if (self->_isInEditingMode != mode)
   {
-    self->_isInEditingMode = a3;
-    v4 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v4 setShouldAnimateAvatarLayoutChanges:1];
+    self->_isInEditingMode = mode;
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView setShouldAnimateAvatarLayoutChanges:1];
 
     isInEditingMode = self->_isInEditingMode;
-    v6 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v6 setIsInEditingMode:isInEditingMode];
+    canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView2 setIsInEditingMode:isInEditingMode];
   }
 }
 
@@ -823,10 +823,10 @@ LABEL_31:
     return 0;
   }
 
-  v4 = [(CKNavbarCanvasViewController *)self delegate];
-  v5 = [v4 shouldShowAvatarViewInNavBarCanvas];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  shouldShowAvatarViewInNavBarCanvas = [delegate shouldShowAvatarViewInNavBarCanvas];
 
-  return v5;
+  return shouldShowAvatarViewInNavBarCanvas;
 }
 
 - (CKDetailsContactsManager)contactsManager
@@ -846,7 +846,7 @@ LABEL_31:
 
 - (void)loadView
 {
-  v14 = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
+  _windowTraitCollection = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
   v3 = [CKNavigationBarCanvasView alloc];
   v4 = [(CKNavigationBarCanvasView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CKNavbarCanvasViewController *)self setCanvasView:v4];
@@ -856,64 +856,64 @@ LABEL_31:
     [(CKNavbarCanvasViewController *)self updateLocationLabel];
   }
 
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v5 setDelegate:self];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setDelegate:self];
 
-  v6 = [(CKNavbarCanvasViewController *)self conversation];
-  v7 = [v6 isGroupConversation];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  isGroupConversation = [conversation isGroupConversation];
 
-  if (v7)
+  if (isGroupConversation)
   {
     v8 = +[CKFaceTimeUtilities isGroupFaceTimeSupported];
-    v9 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v9 setMultiwayAudioButtonHidden:!v8];
+    canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView2 setMultiwayAudioButtonHidden:!v8];
   }
 
-  v10 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v10 setKeepTitleViewCentered:1];
+  canvasView3 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView3 setKeepTitleViewCentered:1];
 
-  [(CKNavbarCanvasViewController *)self _initializeForTraitCollection:v14];
-  v11 = [(CKNavbarCanvasViewController *)self navbarTitle];
-  [(CKNavbarCanvasViewController *)self updateTitle:v11 animated:0];
+  [(CKNavbarCanvasViewController *)self _initializeForTraitCollection:_windowTraitCollection];
+  navbarTitle = [(CKNavbarCanvasViewController *)self navbarTitle];
+  [(CKNavbarCanvasViewController *)self updateTitle:navbarTitle animated:0];
 
   [(CKNavbarCanvasViewController *)self updateAvatarPickerDelegate];
-  v12 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v12 setClipsToBounds:1];
+  canvasView4 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView4 setClipsToBounds:1];
 
-  v13 = [(CKNavbarCanvasViewController *)self canvasView];
-  [(CKNavbarCanvasViewController *)self setView:v13];
+  canvasView5 = [(CKNavbarCanvasViewController *)self canvasView];
+  [(CKNavbarCanvasViewController *)self setView:canvasView5];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  v6 = [v5 leftItemView];
+  beginCopy = begin;
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  leftItemView = [canvasView leftItemView];
 
-  v7 = [(CKNavbarCanvasViewController *)self canvasView];
-  v8 = [v7 buttonViewFaceTimeAudio];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  buttonViewFaceTimeAudio = [canvasView2 buttonViewFaceTimeAudio];
 
-  v9 = [(CKNavbarCanvasViewController *)self canvasView];
-  v10 = [v9 buttonViewFaceTimeVideo];
+  canvasView3 = [(CKNavbarCanvasViewController *)self canvasView];
+  buttonViewFaceTimeVideo = [canvasView3 buttonViewFaceTimeVideo];
 
-  v11 = [(CKNavbarCanvasViewController *)self view];
-  [v4 locationInView:v11];
+  view = [(CKNavbarCanvasViewController *)self view];
+  [beginCopy locationInView:view];
   v13 = v12;
   v15 = v14;
 
   if (![(CKNavbarCanvasViewController *)self shouldShowAvatarView])
   {
-    [v6 frame];
+    [leftItemView frame];
     v20.x = v13;
     v20.y = v15;
     if (!CGRectContainsPoint(v23, v20))
     {
-      [v8 frame];
+      [buttonViewFaceTimeAudio frame];
       v21.x = v13;
       v21.y = v15;
       if (!CGRectContainsPoint(v24, v21))
       {
-        [v10 frame];
+        [buttonViewFaceTimeVideo frame];
         v22.x = v13;
         v22.y = v15;
         v18 = !CGRectContainsPoint(v25, v22);
@@ -931,9 +931,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-  v17 = [(CKNavbarCanvasViewController *)self canvasView];
-  v18 = [v16 avatarWantsTapAtPoint:v17 fromView:{v13, v15}] ^ 1;
+  conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+  canvasView4 = [(CKNavbarCanvasViewController *)self canvasView];
+  v18 = [conversationIdentityView avatarWantsTapAtPoint:canvasView4 fromView:{v13, v15}] ^ 1;
 
 LABEL_7:
   return v18;
@@ -941,24 +941,24 @@ LABEL_7:
 
 - (void)_updateFTControls
 {
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  v3 = [(CKNavbarCanvasViewController *)self modernScreenSharingCapabilities];
-  v4 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
-  [CKNavbarCanvasViewController updateFTControlsWithConversation:v5 canvasViewController:self screenSharingCapabilities:v3 unifiedCallButton:v4];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  modernScreenSharingCapabilities = [(CKNavbarCanvasViewController *)self modernScreenSharingCapabilities];
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  [CKNavbarCanvasViewController updateFTControlsWithConversation:conversation canvasViewController:self screenSharingCapabilities:modernScreenSharingCapabilities unifiedCallButton:unifiedCallButton];
 }
 
-+ (void)updateFTControlsWithConversation:(id)a3 canvasViewController:(id)a4 screenSharingCapabilities:(id)a5 unifiedCallButton:(id)a6
++ (void)updateFTControlsWithConversation:(id)conversation canvasViewController:(id)controller screenSharingCapabilities:(id)capabilities unifiedCallButton:(id)button
 {
-  v39 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v39 chat];
-  v13 = [v12 conversation];
+  conversationCopy = conversation;
+  controllerCopy = controller;
+  capabilitiesCopy = capabilities;
+  buttonCopy = button;
+  chat = [conversationCopy chat];
+  conversation = [chat conversation];
 
-  if (!v13)
+  if (!conversation)
   {
-    [v9 setIndicatorType:0];
+    [controllerCopy setIndicatorType:0];
     v15 = 0;
     v16 = 0;
     if (!CKIsRunningInMacCatalyst())
@@ -969,11 +969,11 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  v14 = [v13 state] == 3 || objc_msgSend(v13, "state") == 2;
-  v17 = [MEMORY[0x1E69A5B78] conversationIsVideoCall:v13];
-  v18 = [MEMORY[0x1E69A5B78] conversationIsAVLessSharePlay:v13];
-  v19 = [v13 state];
-  if ([v13 isNearbySession])
+  v14 = [conversation state] == 3 || objc_msgSend(conversation, "state") == 2;
+  v17 = [MEMORY[0x1E69A5B78] conversationIsVideoCall:conversation];
+  v18 = [MEMORY[0x1E69A5B78] conversationIsAVLessSharePlay:conversation];
+  state = [conversation state];
+  if ([conversation isNearbySession])
   {
     v15 = 0;
     v16 = 0;
@@ -1017,7 +1017,7 @@ LABEL_7:
 
   else
   {
-    if (v19 == 4)
+    if (state == 4)
     {
       goto LABEL_31;
     }
@@ -1053,52 +1053,52 @@ LABEL_7:
     }
   }
 
-  v23 = [v13 state];
-  if (((v23 - 2) < 2 || !v23) && CKIsRunningInMacCatalyst())
+  state2 = [conversation state];
+  if (((state2 - 2) < 2 || !state2) && CKIsRunningInMacCatalyst())
   {
 LABEL_22:
-    v24 = [v9 delegate];
-    [v24 navbarCanvasViewController:v9 updatedJoinStateWithStyle:v15];
+    delegate = [controllerCopy delegate];
+    [delegate navbarCanvasViewController:controllerCopy updatedJoinStateWithStyle:v15];
   }
 
 LABEL_23:
-  v25 = [v39 isGroupConversation];
-  v26 = [v39 chat];
-  v27 = [v26 supportsCapabilities:1024];
+  isGroupConversation = [conversationCopy isGroupConversation];
+  chat2 = [conversationCopy chat];
+  v27 = [chat2 supportsCapabilities:1024];
 
-  v28 = [CKFaceTimeUtilities isFaceTimeAudioAvailable:v39]& v27;
-  v29 = [CKFaceTimeUtilities isFaceTimeVideoAvailable:v39]& v27;
-  v30 = [v39 recipient];
-  v31 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:v30 capabilities:v10];
+  v28 = [CKFaceTimeUtilities isFaceTimeAudioAvailable:conversationCopy]& v27;
+  v29 = [CKFaceTimeUtilities isFaceTimeVideoAvailable:conversationCopy]& v27;
+  recipient = [conversationCopy recipient];
+  v31 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:recipient capabilities:capabilitiesCopy];
 
-  if ((v25 & 1) == 0)
+  if ((isGroupConversation & 1) == 0)
   {
     if (v28)
     {
-      v32 = [v39 chat];
-      v28 = [v32 isSMS] ^ 1;
+      chat3 = [conversationCopy chat];
+      v28 = [chat3 isSMS] ^ 1;
     }
 
     if (v29)
     {
-      v33 = [v39 chat];
-      v29 = [v33 isSMS] ^ 1;
+      chat4 = [conversationCopy chat];
+      v29 = [chat4 isSMS] ^ 1;
     }
   }
 
-  v34 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v35 = [v34 isTranscriptSharingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptSharingEnabled = [mEMORY[0x1E69A8070] isTranscriptSharingEnabled];
 
-  if (v35)
+  if (isTranscriptSharingEnabled)
   {
-    v36 = [v39 chat];
-    v37 = [v36 isStewieSharingChat];
+    chat5 = [conversationCopy chat];
+    isStewieSharingChat = [chat5 isStewieSharingChat];
 
-    v28 = (v37 ^ 1) & v28;
-    v29 = (v37 ^ 1) & v29;
+    v28 = (isStewieSharingChat ^ 1) & v28;
+    v29 = (isStewieSharingChat ^ 1) & v29;
   }
 
-  [v11 updateWithStyle:v16 availabilityForVideo:v29 audio:v28 telephony:0 screenSharing:v31];
+  [buttonCopy updateWithStyle:v16 availabilityForVideo:v29 audio:v28 telephony:0 screenSharing:v31];
 LABEL_31:
 }
 
@@ -1108,19 +1108,19 @@ LABEL_31:
   {
     if ((v3 = [(CKNavbarCanvasViewController *)self navBarContext], v3 <= 4) && ((1 << v3) & 0x1A) != 0 && !CKIsRunningInMessagesTranscriptExtension() || ![(CKNavbarCanvasViewController *)self shouldShowAvatarView])
     {
-      v5 = [(CKNavbarCanvasViewController *)self delegate];
-      v4 = [(CKNavbarCanvasViewController *)self canvasView];
-      [v5 navbarCanvasViewController:self didTapView:v4];
+      delegate = [(CKNavbarCanvasViewController *)self delegate];
+      canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+      [delegate navbarCanvasViewController:self didTapView:canvasView];
     }
   }
 }
 
-- (void)handleCloseNavBarAnimationCompleteNotification:(id)a3
+- (void)handleCloseNavBarAnimationCompleteNotification:(id)notification
 {
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = CKNavigationBarCanvasViewHeightAnimationCompletedNotification;
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v6 removeObserver:self name:v4 object:v5];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [defaultCenter removeObserver:self name:v4 object:canvasView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1128,24 +1128,24 @@ LABEL_31:
   v30.receiver = self;
   v30.super_class = CKNavbarCanvasViewController;
   [(CKNavbarCanvasViewController *)&v30 viewDidLayoutSubviews];
-  v3 = [(CKNavbarCanvasViewController *)self detailsButton];
-  v4 = [(CKNavbarCanvasViewController *)self detailsButton];
-  [v4 bounds];
-  [v3 contentRectForBounds:?];
+  detailsButton = [(CKNavbarCanvasViewController *)self detailsButton];
+  detailsButton2 = [(CKNavbarCanvasViewController *)self detailsButton];
+  [detailsButton2 bounds];
+  [detailsButton contentRectForBounds:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CKNavbarCanvasViewController *)self detailsButton];
-  [v13 imageRectForContentRect:{v6, v8, v10, v12}];
+  detailsButton3 = [(CKNavbarCanvasViewController *)self detailsButton];
+  [detailsButton3 imageRectForContentRect:{v6, v8, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(CKNavbarCanvasViewController *)self detailsButton];
-  [v22 bounds];
+  detailsButton4 = [(CKNavbarCanvasViewController *)self detailsButton];
+  [detailsButton4 bounds];
   Width = CGRectGetWidth(v31);
   v32.origin.x = v15;
   v32.origin.y = v17;
@@ -1153,10 +1153,10 @@ LABEL_31:
   v32.size.height = v21;
   v24 = Width - CGRectGetWidth(v32);
 
-  v25 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  v26 = [(CKNavbarCanvasViewController *)self detailsButton];
-  v27 = v26;
-  if (v25)
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  detailsButton5 = [(CKNavbarCanvasViewController *)self detailsButton];
+  v27 = detailsButton5;
+  if (userInterfaceLayoutDirection)
   {
     v28 = 0.0;
   }
@@ -1166,7 +1166,7 @@ LABEL_31:
     v28 = v24;
   }
 
-  if (v25)
+  if (userInterfaceLayoutDirection)
   {
     v29 = v24;
   }
@@ -1176,7 +1176,7 @@ LABEL_31:
     v29 = 0.0;
   }
 
-  [v26 setImageEdgeInsets:{0.0, v28, 0.0, v29}];
+  [detailsButton5 setImageEdgeInsets:{0.0, v28, 0.0, v29}];
 }
 
 - (void)viewDidLoad
@@ -1185,12 +1185,12 @@ LABEL_31:
   v16.super_class = CKNavbarCanvasViewController;
   [(CKNavbarCanvasViewController *)&v16 viewDidLoad];
   [(CKNavbarCanvasViewController *)self _updateUnreadCountForBackbuttonView:[(CKNavbarCanvasViewController *)self _unreadCount]];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__chatUnreadCountDidChange_ name:*MEMORY[0x1E69A58D0] object:0];
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isUnreadCountRefactorEnabled];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__chatUnreadCountDidChange_ name:*MEMORY[0x1E69A58D0] object:0];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isUnreadCountRefactorEnabled = [mEMORY[0x1E69A8070] isUnreadCountRefactorEnabled];
 
-  if (v5)
+  if (isUnreadCountRefactorEnabled)
   {
     v6 = *MEMORY[0x1E69A7DD0];
   }
@@ -1200,84 +1200,84 @@ LABEL_31:
     v6 = *MEMORY[0x1E69A5920];
   }
 
-  [v3 addObserver:self selector:sel__chatUnreadCountDidChange_ name:v6 object:0];
-  [v3 addObserver:self selector:sel__contactPhotosEnabledChangedNotification_ name:CKConversationListContactPhotosEnabledNotification object:0];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_multiwayStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
+  [defaultCenter addObserver:self selector:sel__chatUnreadCountDidChange_ name:v6 object:0];
+  [defaultCenter addObserver:self selector:sel__contactPhotosEnabledChangedNotification_ name:CKConversationListContactPhotosEnabledNotification object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_multiwayStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
 
-  [v3 addObserver:self selector:sel__handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
-  v8 = [(CKNavbarCanvasViewController *)self canvasView];
-  v9 = [(CKNavbarCanvasViewController *)self conversation];
-  v10 = [v9 chat];
-  [v8 setIsBusinessChat:{objc_msgSend(v10, "isBusinessChat")}];
+  [defaultCenter addObserver:self selector:sel__handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  chat = [conversation chat];
+  [canvasView setIsBusinessChat:{objc_msgSend(chat, "isBusinessChat")}];
 
-  v11 = [(CKNavbarCanvasViewController *)self conversation];
-  v12 = [v11 chat];
-  v13 = [v12 conversation];
+  conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+  chat2 = [conversation2 chat];
+  conversation3 = [chat2 conversation];
 
-  if (v13 && ![v13 state])
+  if (conversation3 && ![conversation3 state])
   {
-    v14 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v15 = [v14 conversationManager];
-    [v15 refreshActiveConversations];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    conversationManager = [mEMORY[0x1E69A5AF8] conversationManager];
+    [conversationManager refreshActiveConversations];
   }
 
   [(CKNavbarCanvasViewController *)self _updateFTControls];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CKNavbarCanvasViewController;
-  [(CKNavbarCanvasViewController *)&v4 viewWillAppear:a3];
+  [(CKNavbarCanvasViewController *)&v4 viewWillAppear:appear];
   [(CKNavbarCanvasViewController *)self refreshAudioButtonTargetAction];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CKNavbarCanvasViewController;
-  [(CKNavbarCanvasViewController *)&v3 viewDidAppear:a3];
+  [(CKNavbarCanvasViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v18.receiver = self;
   v18.super_class = CKNavbarCanvasViewController;
-  v4 = a3;
-  [(CKNavbarCanvasViewController *)&v18 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CKNavbarCanvasViewController *)&v18 traitCollectionDidChange:changeCopy];
   v5 = [(CKNavbarCanvasViewController *)self traitCollection:v18.receiver];
   [(CKNavbarCanvasViewController *)self _initializeForTraitCollection:v5];
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 noAvatarTitleFont];
-  v8 = [(CKNavbarCanvasViewController *)self defaultLabel];
-  [v8 setFont:v7];
+  noAvatarTitleFont = [v6 noAvatarTitleFont];
+  defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
+  [defaultLabel setFont:noAvatarTitleFont];
 
-  v9 = [v4 horizontalSizeClass];
-  v10 = [v5 horizontalSizeClass];
-  v11 = [v4 verticalSizeClass];
-  v12 = [v5 verticalSizeClass];
-  v13 = [v4 preferredContentSizeCategory];
+  horizontalSizeClass = [changeCopy horizontalSizeClass];
+  horizontalSizeClass2 = [v5 horizontalSizeClass];
+  verticalSizeClass = [changeCopy verticalSizeClass];
+  verticalSizeClass2 = [v5 verticalSizeClass];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v14 = [v5 preferredContentSizeCategory];
-  v15 = UIContentSizeCategoryCompareToCategory(v13, v14);
+  preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
+  v15 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
-  if (v15 || v9 != v10 || v11 != v12)
+  if (v15 || horizontalSizeClass != horizontalSizeClass2 || verticalSizeClass != verticalSizeClass2)
   {
     [(CKNavbarCanvasViewController *)self updateTitleViewAnimated:0];
     [(CKNavbarCanvasViewController *)self updateLocationLabel];
-    v16 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v16 setNeedsLayout];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView setNeedsLayout];
 
-    v17 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v17 layoutIfNeeded];
+    canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView2 layoutIfNeeded];
   }
 }
 
-- (void)_handleAddressBookChange:(id)a3
+- (void)_handleAddressBookChange:(id)change
 {
-  v4 = [(CKNavbarCanvasViewController *)self conversation];
-  v5 = [(CKNavbarCanvasViewController *)self navBarTitleFromConversation:v4];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  v5 = [(CKNavbarCanvasViewController *)self navBarTitleFromConversation:conversation];
   [(CKNavbarCanvasViewController *)self updateTitle:v5 animated:1];
 
   [(CKNavbarCanvasViewController *)self refreshAudioButtonTargetAction];
@@ -1285,13 +1285,13 @@ LABEL_31:
 
 - (void)_notifyDelegateForNavBarResize
 {
-  v3 = [(CKNavbarCanvasViewController *)self delegate];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKNavbarCanvasViewController *)self delegate];
-    [v5 navbarCanvasViewControllerCanvasHeightDidChange:self];
+    delegate2 = [(CKNavbarCanvasViewController *)self delegate];
+    [delegate2 navbarCanvasViewControllerCanvasHeightDidChange:self];
   }
 }
 
@@ -1299,17 +1299,17 @@ LABEL_31:
 {
   if ([(CKNavbarCanvasViewController *)self shouldShowAvatarView])
   {
-    v3 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v3 setDelegate:self];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [conversationIdentityView setDelegate:self];
   }
 }
 
-- (void)configureForEditing:(BOOL)a3
+- (void)configureForEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    if (a3)
+    self->_editing = editing;
+    if (editing)
     {
       [(CKNavbarCanvasViewController *)self _configureForEditMode];
     }
@@ -1321,27 +1321,27 @@ LABEL_31:
   }
 }
 
-- (void)updateTitle:(id)a3 animated:(BOOL)a4
+- (void)updateTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  titleCopy = title;
   navbarTitle = self->_navbarTitle;
-  if (navbarTitle != v7)
+  if (navbarTitle != titleCopy)
   {
-    v10 = v7;
-    if (!v7 || (v9 = [(NSString *)navbarTitle isEqualToString:v7], v7 = v10, !v9))
+    v10 = titleCopy;
+    if (!titleCopy || (v9 = [(NSString *)navbarTitle isEqualToString:titleCopy], titleCopy = v10, !v9))
     {
-      objc_storeStrong(&self->_navbarTitle, a3);
-      [(CKNavbarCanvasViewController *)self updateTitleViewAnimated:v4];
-      v7 = v10;
+      objc_storeStrong(&self->_navbarTitle, title);
+      [(CKNavbarCanvasViewController *)self updateTitleViewAnimated:animatedCopy];
+      titleCopy = v10;
     }
   }
 }
 
-- (void)updateTitleViewAnimated:(BOOL)a3
+- (void)updateTitleViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v15 = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
+  animatedCopy = animated;
+  _windowTraitCollection = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
   v5 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:?];
   v6 = [(CKNavbarCanvasViewController *)self wantsVerifiedIconForTitle:self->_navbarTitle];
   if ([(CKNavbarCanvasViewController *)self _canShowAvatarView])
@@ -1359,13 +1359,13 @@ LABEL_31:
     v7 = 2;
   }
 
-  v8 = [(CKNavbarCanvasViewController *)self defaultLabel];
+  defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
 
-  if (v5 == v8)
+  if (v5 == defaultLabel)
   {
     [(CKNavbarCanvasViewController *)self setDefaultLabelText];
-    v10 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    v11 = v10;
+    defaultLabel2 = [(CKNavbarCanvasViewController *)self defaultLabel];
+    v11 = defaultLabel2;
     if (v6)
     {
       v12 = 3;
@@ -1376,39 +1376,39 @@ LABEL_31:
       v12 = v7;
     }
 
-    [v10 setTitleIconImageType:v12];
+    [defaultLabel2 setTitleIconImageType:v12];
 
-    v13 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    [v13 setShouldHaveRotatedTitleIconImage:0 animated:v3];
+    defaultLabel3 = [(CKNavbarCanvasViewController *)self defaultLabel];
+    [defaultLabel3 setShouldHaveRotatedTitleIconImage:0 animated:animatedCopy];
 
-    v14 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v14 setNeedsLayout];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView setNeedsLayout];
 
-    v9 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v9 layoutIfNeeded];
+    canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView2 layoutIfNeeded];
   }
 
   else
   {
-    v9 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v9 setChevronHidden:{-[CKNavbarCanvasViewController hideChevron](self, "hideChevron")}];
+    canvasView2 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [canvasView2 setChevronHidden:{-[CKNavbarCanvasViewController hideChevron](self, "hideChevron")}];
   }
 }
 
 - (void)updateLeftItemView
 {
-  v5 = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
-  v3 = [(CKNavbarCanvasViewController *)self _leftItemViewForTraitCollection:v5];
-  v4 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v4 setLeftItemView:v3];
+  _windowTraitCollection = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
+  v3 = [(CKNavbarCanvasViewController *)self _leftItemViewForTraitCollection:_windowTraitCollection];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setLeftItemView:v3];
 }
 
 - (void)updateRightItemView
 {
-  v5 = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
-  v3 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:v5];
-  v4 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v4 setRightItemView:v3];
+  _windowTraitCollection = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
+  v3 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:_windowTraitCollection];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setRightItemView:v3];
 }
 
 - (void)updateForRecoveredJunkConversation
@@ -1418,16 +1418,16 @@ LABEL_31:
   [(CKNavbarCanvasViewController *)self _configureForDefaultMode];
 }
 
-- (BOOL)wantsVerifiedIconForTitle:(id)a3
+- (BOOL)wantsVerifiedIconForTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  if ([v5 shouldShowVerifiedCheckmark])
+  titleCopy = title;
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  if ([conversation shouldShowVerifiedCheckmark])
   {
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 recipient];
-    v8 = [v7 name];
-    v9 = [v4 isEqualToString:v8];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    recipient = [conversation2 recipient];
+    name = [recipient name];
+    v9 = [titleCopy isEqualToString:name];
   }
 
   else
@@ -1445,31 +1445,31 @@ LABEL_31:
     goto LABEL_3;
   }
 
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  v6 = [v5 chat];
-  if ([v6 isStewieChat])
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  chat = [conversation chat];
+  if ([chat isStewieChat])
   {
     LOBYTE(v3) = 1;
     goto LABEL_7;
   }
 
-  v7 = [(CKNavbarCanvasViewController *)self conversation];
-  v8 = [v7 chat];
-  v9 = [v8 isStewieSharingChat];
+  conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+  chat2 = [conversation2 chat];
+  isStewieSharingChat = [chat2 isStewieSharingChat];
 
-  if ((v9 & 1) == 0)
+  if ((isStewieSharingChat & 1) == 0)
   {
     if (!IMIsOscarEnabled() || (+[CKConversationList sharedConversationList](CKConversationList, "sharedConversationList"), v10 = objc_claimAutoreleasedReturnValue(), -[CKNavbarCanvasViewController conversation](self, "conversation"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 primaryFilterModeForConversation:v11], v11, v10, v12 != 9))
     {
-      v5 = [(CKNavbarCanvasViewController *)self delegate];
-      if (!v5)
+      conversation = [(CKNavbarCanvasViewController *)self delegate];
+      if (!conversation)
       {
         LOBYTE(v3) = 0;
         goto LABEL_8;
       }
 
-      v6 = [(CKNavbarCanvasViewController *)self delegate];
-      v3 = [v6 shouldShowChevronInNavbarCanvasViewController:self] ^ 1;
+      chat = [(CKNavbarCanvasViewController *)self delegate];
+      v3 = [chat shouldShowChevronInNavbarCanvasViewController:self] ^ 1;
 LABEL_7:
 
 LABEL_8:
@@ -1482,51 +1482,51 @@ LABEL_3:
   return v3;
 }
 
-- (void)_initializeForTraitCollection:(id)a3
+- (void)_initializeForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self _leftItemViewForTraitCollection:v4];
-  v6 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v6 setLeftItemView:v5];
+  collectionCopy = collection;
+  v5 = [(CKNavbarCanvasViewController *)self _leftItemViewForTraitCollection:collectionCopy];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setLeftItemView:v5];
 
-  v7 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:v4];
-  v8 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v8 setRightItemView:v7];
+  v7 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:collectionCopy];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView2 setRightItemView:v7];
 
-  v9 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:v4];
-  v10 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v10 setTitleView:v9];
+  v9 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:collectionCopy];
+  canvasView3 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView3 setTitleView:v9];
 
-  v11 = [v4 verticalSizeClass];
-  if (v11 == 1)
+  verticalSizeClass = [collectionCopy verticalSizeClass];
+  if (verticalSizeClass == 1)
   {
-    v12 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v12 removeFromSuperview];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [conversationIdentityView removeFromSuperview];
   }
 }
 
 - (id)recipientContextMenu
 {
-  v3 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [v3 recipient];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  recipient = [conversation recipient];
 
-  if (v4)
+  if (recipient)
   {
-    v5 = [(CKNavbarCanvasViewController *)self conversation];
-    v6 = [v5 recipient];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    recipient2 = [conversation2 recipient];
 
-    v7 = [v6 defaultIMHandle];
-    v8 = [v7 isContact];
+    defaultIMHandle = [recipient2 defaultIMHandle];
+    isContact = [defaultIMHandle isContact];
 
-    if (v8)
+    if (isContact)
     {
-      v9 = [(CKNavbarCanvasViewController *)self contactsManager];
-      v10 = [v9 conversationContextMenuForEntity:v6 allowConversationRemoval:0];
+      contactsManager = [(CKNavbarCanvasViewController *)self contactsManager];
+      v10 = [contactsManager conversationContextMenuForEntity:recipient2 allowConversationRemoval:0];
     }
 
     else
     {
-      v10 = [(CKNavbarCanvasViewController *)self contextMenuForUnknownRecipient:v6];
+      v10 = [(CKNavbarCanvasViewController *)self contextMenuForUnknownRecipient:recipient2];
     }
   }
 
@@ -1538,71 +1538,71 @@ LABEL_3:
   return v10;
 }
 
-- (void)setCanShowBackButtonView:(BOOL)a3
+- (void)setCanShowBackButtonView:(BOOL)view
 {
-  if (self->_canShowBackButtonView != a3)
+  if (self->_canShowBackButtonView != view)
   {
-    self->_canShowBackButtonView = a3;
-    v5 = [(CKNavbarCanvasViewController *)self canvasView];
-    v6 = [v5 leftItemView];
-    v7 = [(CKNavbarCanvasViewController *)self backButtonView];
+    self->_canShowBackButtonView = view;
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    leftItemView = [canvasView leftItemView];
+    backButtonView = [(CKNavbarCanvasViewController *)self backButtonView];
 
-    if (a3)
+    if (view)
     {
-      if (v6 == v7)
+      if (leftItemView == backButtonView)
       {
         return;
       }
 
-      v9 = [(CKNavbarCanvasViewController *)self backButtonView];
-      v8 = [(CKNavbarCanvasViewController *)self canvasView];
-      [v8 setLeftItemView:v9];
+      backButtonView2 = [(CKNavbarCanvasViewController *)self backButtonView];
+      canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+      [canvasView2 setLeftItemView:backButtonView2];
     }
 
     else
     {
-      if (v6 != v7)
+      if (leftItemView != backButtonView)
       {
         return;
       }
 
-      v9 = [(CKNavbarCanvasViewController *)self canvasView];
-      [v9 setLeftItemView:0];
+      backButtonView2 = [(CKNavbarCanvasViewController *)self canvasView];
+      [backButtonView2 setLeftItemView:0];
     }
   }
 }
 
-- (void)setIndicatorType:(int64_t)a3
+- (void)setIndicatorType:(int64_t)type
 {
-  if (self->_indicatorType != a3)
+  if (self->_indicatorType != type)
   {
-    self->_indicatorType = a3;
+    self->_indicatorType = type;
     if (![(CKNavbarCanvasViewController *)self _canShowAvatarView])
     {
-      v5 = [(CKNavbarCanvasViewController *)self canvasView];
-      [v5 setStatusIndicatorType:a3];
+      canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+      [canvasView setStatusIndicatorType:type];
     }
   }
 }
 
-- (void)updateContentsForConversation:(id)a3
+- (void)updateContentsForConversation:(id)conversation
 {
-  v6 = a3;
-  v4 = [(CKNavbarCanvasViewController *)self conversation];
+  conversationCopy = conversation;
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
 
-  if (v4 != v6)
+  if (conversation != conversationCopy)
   {
-    [(CKNavbarCanvasViewController *)self setConversation:v6];
-    v5 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v5 setConversation:v6];
+    [(CKNavbarCanvasViewController *)self setConversation:conversationCopy];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [conversationIdentityView setConversation:conversationCopy];
   }
 }
 
-- (void)setNavBarContext:(int64_t)a3
+- (void)setNavBarContext:(int64_t)context
 {
-  if (self->_navBarContext != a3)
+  if (self->_navBarContext != context)
   {
-    self->_navBarContext = a3;
+    self->_navBarContext = context;
     [(CKNavbarCanvasViewController *)self updateTitleViewAnimated:0];
     [(CKNavbarCanvasViewController *)self updateLeftItemView];
 
@@ -1610,30 +1610,30 @@ LABEL_3:
   }
 }
 
-- (id)_leftItemViewForTraitCollection:(id)a3
+- (id)_leftItemViewForTraitCollection:(id)collection
 {
   if ([(CKNavbarCanvasViewController *)self canShowBackButtonView])
   {
-    v4 = [(CKNavbarCanvasViewController *)self backButtonView];
+    backButtonView = [(CKNavbarCanvasViewController *)self backButtonView];
   }
 
   else if ([(CKNavbarCanvasViewController *)self shouldShowDoneButton])
   {
-    v4 = [(CKNavbarCanvasViewController *)self doneButton];
+    backButtonView = [(CKNavbarCanvasViewController *)self doneButton];
   }
 
   else
   {
-    v4 = 0;
+    backButtonView = 0;
   }
 
-  return v4;
+  return backButtonView;
 }
 
-- (id)_rightItemViewForTraitCollection:(id)a3
+- (id)_rightItemViewForTraitCollection:(id)collection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   if ([(CKNavbarCanvasViewController *)self editing])
   {
     if (IMOSLoggingEnabled())
@@ -1641,14 +1641,14 @@ LABEL_3:
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(CKNavbarCanvasViewController *)self editCancelButtonView];
+        editCancelButtonView = [(CKNavbarCanvasViewController *)self editCancelButtonView];
         v20 = 138412290;
-        v21 = v6;
+        v21 = editCancelButtonView;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Right item view: User is editing, returning %@", &v20, 0xCu);
       }
     }
 
-    v7 = [(CKNavbarCanvasViewController *)self editCancelButtonView];
+    editCancelButtonView2 = [(CKNavbarCanvasViewController *)self editCancelButtonView];
   }
 
   else if (CKIsRunningInMessagesTranscriptExtension())
@@ -1658,19 +1658,19 @@ LABEL_3:
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(CKNavbarCanvasViewController *)self doneButton];
+        doneButton = [(CKNavbarCanvasViewController *)self doneButton];
         v20 = 138412290;
-        v21 = v9;
+        v21 = doneButton;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Right item view: Running in transcript extension, returning %@", &v20, 0xCu);
       }
     }
 
-    v7 = [(CKNavbarCanvasViewController *)self doneButton];
+    editCancelButtonView2 = [(CKNavbarCanvasViewController *)self doneButton];
   }
 
   else if ([(CKNavbarCanvasViewController *)self _isConfiguredForInlineReply])
   {
-    v7 = [(CKNavbarCanvasViewController *)self closeButton];
+    editCancelButtonView2 = [(CKNavbarCanvasViewController *)self closeButton];
   }
 
   else if ([(CKNavbarCanvasViewController *)self _shouldShowPersistentMenu])
@@ -1680,35 +1680,35 @@ LABEL_3:
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(CKNavbarCanvasViewController *)self persistentMenuButton];
+        persistentMenuButton = [(CKNavbarCanvasViewController *)self persistentMenuButton];
         v20 = 138412290;
-        v21 = v11;
+        v21 = persistentMenuButton;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Right item view: We want to show the persistent menu, returning %@", &v20, 0xCu);
       }
     }
 
-    v7 = [(CKNavbarCanvasViewController *)self persistentMenuButton];
+    editCancelButtonView2 = [(CKNavbarCanvasViewController *)self persistentMenuButton];
   }
 
   else
   {
-    v12 = [(CKNavbarCanvasViewController *)self _shouldShowFacetimeButton];
+    _shouldShowFacetimeButton = [(CKNavbarCanvasViewController *)self _shouldShowFacetimeButton];
     v13 = IMOSLoggingEnabled();
-    if (v12)
+    if (_shouldShowFacetimeButton)
     {
       if (v13)
       {
         v14 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+          unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
           v20 = 138412290;
-          v21 = v15;
+          v21 = unifiedCallButton;
           _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Right item view: We want to show the facetime button, returning %@", &v20, 0xCu);
         }
       }
 
-      v7 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+      editCancelButtonView2 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
     }
 
     else
@@ -1718,40 +1718,40 @@ LABEL_3:
         v16 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [(CKNavbarCanvasViewController *)self detailsButton];
+          detailsButton = [(CKNavbarCanvasViewController *)self detailsButton];
           v20 = 138412290;
-          v21 = v17;
+          v21 = detailsButton;
           _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Right item view: By default, returning %@", &v20, 0xCu);
         }
       }
 
-      v7 = [(CKNavbarCanvasViewController *)self detailsButton];
+      editCancelButtonView2 = [(CKNavbarCanvasViewController *)self detailsButton];
     }
   }
 
-  v18 = v7;
+  v18 = editCancelButtonView2;
 
   return v18;
 }
 
 - (BOOL)_shouldShowFacetimeButton
 {
-  v2 = self;
-  v3 = [(CKNavbarCanvasViewController *)self delegate];
-  LOBYTE(v2) = [v3 shouldShowFacetimeButtonInNavbarCanvasViewController:v2];
+  selfCopy = self;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate shouldShowFacetimeButtonInNavbarCanvasViewController:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_shouldShowPersistentMenu
 {
-  v3 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [v3 chat];
-  v5 = [v4 persistentMenu];
-  if (v5)
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  chat = [conversation chat];
+  persistentMenu = [chat persistentMenu];
+  if (persistentMenu)
   {
-    v6 = [(CKNavbarCanvasViewController *)self persistentMenuButton];
-    v7 = v6 != 0;
+    persistentMenuButton = [(CKNavbarCanvasViewController *)self persistentMenuButton];
+    v7 = persistentMenuButton != 0;
   }
 
   else
@@ -1762,20 +1762,20 @@ LABEL_3:
   return v7;
 }
 
-- (id)_titleItemViewForTraitCollection:(id)a3
+- (id)_titleItemViewForTraitCollection:(id)collection
 {
-  v4 = a3;
-  if (-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView") && [v4 verticalSizeClass] != 1)
+  collectionCopy = collection;
+  if (-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView") && [collectionCopy verticalSizeClass] != 1)
   {
-    v5 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
   }
 
   else
   {
-    v5 = [(CKNavbarCanvasViewController *)self defaultLabel];
+    conversationIdentityView = [(CKNavbarCanvasViewController *)self defaultLabel];
   }
 
-  v6 = v5;
+  v6 = conversationIdentityView;
 
   return v6;
 }
@@ -1786,8 +1786,8 @@ LABEL_3:
   if (!conversationIdentityView)
   {
     v4 = [CKNavBarConversationIdentityView alloc];
-    v5 = [(CKNavbarCanvasViewController *)self conversation];
-    v6 = [(CKNavBarConversationIdentityView *)v4 initWithConversation:v5];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    v6 = [(CKNavBarConversationIdentityView *)v4 initWithConversation:conversation];
     v7 = self->_conversationIdentityView;
     self->_conversationIdentityView = v6;
 
@@ -1807,39 +1807,39 @@ LABEL_3:
     v5 = self->_defaultLabel;
     self->_defaultLabel = v4;
 
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 isBusinessConversation];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    isBusinessConversation = [conversation isBusinessConversation];
 
-    [(CKLabel *)self->_defaultLabel setTextAlignment:([(CKNavbarCanvasViewController *)self _canShowAvatarView]| v7) & 1];
+    [(CKLabel *)self->_defaultLabel setTextAlignment:([(CKNavbarCanvasViewController *)self _canShowAvatarView]| isBusinessConversation) & 1];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 noAvatarTitleFont];
-    [(CKLabel *)self->_defaultLabel setFont:v9];
+    noAvatarTitleFont = [v8 noAvatarTitleFont];
+    [(CKLabel *)self->_defaultLabel setFont:noAvatarTitleFont];
 
     [(CKNavbarCanvasViewController *)self setDefaultLabelText];
-    if (v7)
+    if (isBusinessConversation)
     {
       v10 = +[CKUIBehavior sharedBehaviors];
-      v11 = [v10 theme];
-      v12 = [(CKNavbarCanvasViewController *)self conversation];
-      v13 = [v12 chat];
-      v14 = [v11 secondaryBrandColorForBusinessChat:v13];
+      theme = [v10 theme];
+      conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+      chat = [conversation2 chat];
+      v14 = [theme secondaryBrandColorForBusinessChat:chat];
       [(CKLabel *)self->_defaultLabel setTextColor:v14];
     }
 
-    v15 = [(CKNavbarCanvasViewController *)self conversation];
-    v16 = [v15 hasVerifiedBusiness];
+    conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+    hasVerifiedBusiness = [conversation3 hasVerifiedBusiness];
 
-    v17 = [(CKNavbarCanvasViewController *)self hideChevron];
+    hideChevron = [(CKNavbarCanvasViewController *)self hideChevron];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __44__CKNavbarCanvasViewController_defaultLabel__block_invoke;
     v20[3] = &unk_1E72EEB80;
-    v21 = v16;
+    v21 = hasVerifiedBusiness;
     v20[4] = self;
-    v22 = !v17;
+    v22 = !hideChevron;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v20];
-    v18 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    [v18 setShouldHaveRotatedTitleIconImage:0 animated:0];
+    defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
+    [defaultLabel setShouldHaveRotatedTitleIconImage:0 animated:0];
 
     [(CKNavbarCanvasViewController *)self _addUserDidTapNavigationBarRecognizer:self->_defaultLabel];
     defaultLabel = self->_defaultLabel;
@@ -1906,38 +1906,38 @@ LABEL_9:
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 businessVerifiedImageSmall];
-    [v4 setImage:v6];
+    businessVerifiedImageSmall = [v5 businessVerifiedImageSmall];
+    [v4 setImage:businessVerifiedImageSmall];
 
     v7 = [MEMORY[0x1E696AD40] attributedStringWithAttachment:v4];
     [v13 appendAttributedString:v7];
   }
 
-  v8 = [(CKNavbarCanvasViewController *)self _KTTitleIconAttributedString];
-  if (v8)
+  _KTTitleIconAttributedString = [(CKNavbarCanvasViewController *)self _KTTitleIconAttributedString];
+  if (_KTTitleIconAttributedString)
   {
-    [v13 appendAttributedString:v8];
-    v9 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    [v9 setIsAccessibilityElement:1];
+    [v13 appendAttributedString:_KTTitleIconAttributedString];
+    defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
+    [defaultLabel setIsAccessibilityElement:1];
 
-    v10 = [v13 string];
-    v11 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    [v11 setAccessibilityLabel:v10];
+    string = [v13 string];
+    defaultLabel2 = [(CKNavbarCanvasViewController *)self defaultLabel];
+    [defaultLabel2 setAccessibilityLabel:string];
   }
 
-  v12 = [(CKNavbarCanvasViewController *)self defaultLabel];
-  [v12 setAttributedText:v13];
+  defaultLabel3 = [(CKNavbarCanvasViewController *)self defaultLabel];
+  [defaultLabel3 setAttributedText:v13];
 }
 
 - (void)updateDefaultLabelIfNecessary
 {
-  v5 = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
-  if (!-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView") || [v5 verticalSizeClass] == 1)
+  _windowTraitCollection = [(CKNavbarCanvasViewController *)self _windowTraitCollection];
+  if (!-[CKNavbarCanvasViewController _canShowAvatarView](self, "_canShowAvatarView") || [_windowTraitCollection verticalSizeClass] == 1)
   {
     [(CKNavbarCanvasViewController *)self setDefaultLabel:0];
-    v3 = [(CKNavbarCanvasViewController *)self canvasView];
-    v4 = [(CKNavbarCanvasViewController *)self defaultLabel];
-    [v3 setTitleView:v4];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
+    [canvasView setTitleView:defaultLabel];
 
     [(CKNavbarCanvasViewController *)self updateTitleViewAnimated:0];
   }
@@ -1947,20 +1947,20 @@ LABEL_9:
 {
   if (!CKIsRunningInMacCatalyst())
   {
-    v3 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v3 setLeftItemView:0];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView setLeftItemView:0];
   }
 
-  v5 = [(CKNavbarCanvasViewController *)self editCancelButtonView];
-  v4 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v4 setRightItemView:v5];
+  editCancelButtonView = [(CKNavbarCanvasViewController *)self editCancelButtonView];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView2 setRightItemView:editCancelButtonView];
 }
 
 - (void)_configureForDefaultMode
 {
   if ([(CKNavbarCanvasViewController *)self shouldShowDoneButton])
   {
-    v3 = [(CKNavbarCanvasViewController *)self doneButton];
+    doneButton = [(CKNavbarCanvasViewController *)self doneButton];
   }
 
   else
@@ -1970,18 +1970,18 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v3 = [(CKNavbarCanvasViewController *)self backButtonView];
+    doneButton = [(CKNavbarCanvasViewController *)self backButtonView];
   }
 
-  v4 = v3;
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v5 setLeftItemView:v4];
+  v4 = doneButton;
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setLeftItemView:v4];
 
 LABEL_6:
-  v8 = [(CKNavbarCanvasViewController *)self traitCollection];
-  v6 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:v8];
-  v7 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v7 setRightItemView:v6];
+  traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+  v6 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:traitCollection];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView2 setRightItemView:v6];
 }
 
 - (UIButton)editCancelButtonView
@@ -1998,9 +1998,9 @@ LABEL_6:
     v8 = [v7 localizedStringForKey:@"CANCEL" value:&stru_1F04268F8 table:@"ChatKit"];
     [(UIButton *)v6 setTitle:v8 forState:0];
 
-    v9 = [(UIButton *)self->_editCancelButtonView titleLabel];
+    titleLabel = [(UIButton *)self->_editCancelButtonView titleLabel];
     v10 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0];
-    [v9 setFont:v10];
+    [titleLabel setFont:v10];
 
     [(UIButton *)self->_editCancelButtonView addTarget:self action:sel__buttonPressed_ forEvents:64];
     editCancelButtonView = self->_editCancelButtonView;
@@ -2030,11 +2030,11 @@ LABEL_6:
 {
   if (!self->_unifiedCallButton && !CKIsRunningInMacCatalyst())
   {
-    v3 = [(CKNavbarCanvasViewController *)self conversation];
-    v4 = [v3 chat];
-    v5 = [v4 isBusinessChat];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    isBusinessChat = [chat isBusinessChat];
 
-    if ((v5 & 1) == 0)
+    if ((isBusinessChat & 1) == 0)
     {
       v6 = [CKNavBarUnifiedCallButton buttonWithType:1];
       unifiedCallButton = self->_unifiedCallButton;
@@ -2051,31 +2051,31 @@ LABEL_6:
 
 - (id)persistentMenuButton
 {
-  v2 = [(CKNavbarCanvasViewController *)self persistentMenuManager];
-  v3 = [v2 button];
+  persistentMenuManager = [(CKNavbarCanvasViewController *)self persistentMenuManager];
+  button = [persistentMenuManager button];
 
-  return v3;
+  return button;
 }
 
 - (_TtC7ChatKit29CKNavBarPersistentMenuManager)persistentMenuManager
 {
   if (!self->_persistentMenuManager && !CKIsRunningInMacCatalyst())
   {
-    v3 = [(CKNavbarCanvasViewController *)self conversation];
-    v4 = [v3 chat];
-    v5 = [v4 persistentMenu];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    persistentMenu = [chat persistentMenu];
 
-    if (v5)
+    if (persistentMenu)
     {
       v6 = [[_TtC7ChatKit29CKNavBarPersistentMenuManager alloc] initWithDelegate:self];
       persistentMenuManager = self->_persistentMenuManager;
       self->_persistentMenuManager = v6;
 
       v8 = self->_persistentMenuManager;
-      v9 = [(CKNavbarCanvasViewController *)self conversation];
-      v10 = [v9 chat];
-      v11 = [v10 persistentMenu];
-      [(CKNavBarPersistentMenuManager *)v8 setupWithPersistentMenu:v11];
+      conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+      chat2 = [conversation2 chat];
+      persistentMenu2 = [chat2 persistentMenu];
+      [(CKNavBarPersistentMenuManager *)v8 setupWithPersistentMenu:persistentMenu2];
     }
   }
 
@@ -2084,28 +2084,28 @@ LABEL_6:
   return v12;
 }
 
-- (void)_handlePersistentMenuChangedNotification:(id)a3
+- (void)_handlePersistentMenuChangedNotification:(id)notification
 {
-  v6 = [(CKNavbarCanvasViewController *)self traitCollection];
-  v4 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:v6];
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v5 setRightItemView:v4];
+  traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+  v4 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:traitCollection];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setRightItemView:v4];
 }
 
 - (UIBarButtonItem)detailsBarButton
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 useMacToolbar];
+  useMacToolbar = [v3 useMacToolbar];
 
-  if (v4)
+  if (useMacToolbar)
   {
     detailsBarButton = self->_detailsBarButton;
     if (!detailsBarButton)
     {
       v6 = objc_alloc(MEMORY[0x1E69DC708]);
       v7 = +[CKUIBehavior sharedBehaviors];
-      v8 = [v7 macToolbarDetailsImage];
-      v9 = [v6 initWithImage:v8 style:0 target:self action:sel__buttonPressed_];
+      macToolbarDetailsImage = [v7 macToolbarDetailsImage];
+      v9 = [v6 initWithImage:macToolbarDetailsImage style:0 target:self action:sel__buttonPressed_];
       v10 = self->_detailsBarButton;
       self->_detailsBarButton = v9;
 
@@ -2123,16 +2123,16 @@ LABEL_6:
   return v11;
 }
 
-- (void)setDetailsBarButton:(id)a3
+- (void)setDetailsBarButton:(id)button
 {
-  v9 = a3;
+  buttonCopy = button;
   v5 = +[CKUIBehavior sharedBehaviors];
   if ([v5 useMacToolbar])
   {
     detailsBarButton = self->_detailsBarButton;
 
-    v7 = v9;
-    if (detailsBarButton == v9)
+    v7 = buttonCopy;
+    if (detailsBarButton == buttonCopy)
     {
       goto LABEL_8;
     }
@@ -2144,7 +2144,7 @@ LABEL_6:
       [(UIBarButtonItem *)self->_detailsBarButton setAction:0];
     }
 
-    objc_storeStrong(&self->_detailsBarButton, a3);
+    objc_storeStrong(&self->_detailsBarButton, button);
     [(UIBarButtonItem *)self->_detailsBarButton setTarget:self];
     [(UIBarButtonItem *)self->_detailsBarButton setAction:sel__buttonPressed_];
   }
@@ -2153,7 +2153,7 @@ LABEL_6:
   {
   }
 
-  v7 = v9;
+  v7 = buttonCopy;
 LABEL_8:
 }
 
@@ -2195,205 +2195,205 @@ LABEL_8:
   return closeButton;
 }
 
-- (void)_addUserDidTapNavigationBarRecognizer:(id)a3
+- (void)_addUserDidTapNavigationBarRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   if (!CKIsRunningInMacCatalyst())
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__userDidTapNavigationBar];
     [v4 setDelegate:self];
-    [v5 setUserInteractionEnabled:1];
-    [v5 addGestureRecognizer:v4];
+    [recognizerCopy setUserInteractionEnabled:1];
+    [recognizerCopy addGestureRecognizer:v4];
   }
 }
 
-- (void)conversationIdentityViewTapped:(id)a3
+- (void)conversationIdentityViewTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+  tappedCopy = tapped;
+  conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
 
-  if (v5 == v4)
+  if (conversationIdentityView == tappedCopy)
   {
-    v7 = [(CKNavbarCanvasViewController *)self delegate];
-    v6 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
-    [v7 navbarCanvasViewController:self didTapView:v6];
+    delegate = [(CKNavbarCanvasViewController *)self delegate];
+    conversationIdentityView2 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+    [delegate navbarCanvasViewController:self didTapView:conversationIdentityView2];
   }
 }
 
-- (void)buttonRequestsStartFaceTimeVideo:(id)a3
+- (void)buttonRequestsStartFaceTimeVideo:(id)video
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  videoCopy = video;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v5 == v4)
+  if (unifiedCallButton == videoCopy)
   {
     if (IMDeviceIsGreenTea() && (-[CKNavbarCanvasViewController conversation](self, "conversation"), v6 = objc_claimAutoreleasedReturnValue(), [v6 chat], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isGroupChat"), v7, v6, (v8 & 1) == 0))
     {
-      v10 = [(CKNavbarCanvasViewController *)self conversation];
-      v9 = [v10 chat];
-      [v9 initiateTUDialRequestWithVideoEnabled:1];
+      conversation = [(CKNavbarCanvasViewController *)self conversation];
+      chat = [conversation chat];
+      [chat initiateTUDialRequestWithVideoEnabled:1];
     }
 
     else
     {
-      v10 = [(CKNavbarCanvasViewController *)self conversation];
-      v9 = [v10 chat];
-      [v9 initiateTUConversationWithVideoEnabled:1];
+      conversation = [(CKNavbarCanvasViewController *)self conversation];
+      chat = [conversation chat];
+      [chat initiateTUConversationWithVideoEnabled:1];
     }
   }
 }
 
-- (void)buttonRequestsStartFaceTimeAudio:(id)a3
+- (void)buttonRequestsStartFaceTimeAudio:(id)audio
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  audioCopy = audio;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v5 == v4)
+  if (unifiedCallButton == audioCopy)
   {
-    v7 = [(CKNavbarCanvasViewController *)self conversation];
-    v6 = [v7 chat];
-    [v6 initiateTUConversationWithVideoEnabled:0];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    [chat initiateTUConversationWithVideoEnabled:0];
   }
 }
 
-- (void)buttonRequestsStartTelephonyCall:(id)a3
+- (void)buttonRequestsStartTelephonyCall:(id)call
 {
-  v4 = a3;
-  v11 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  callCopy = call;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  v5 = v11;
-  if (v11 == v4)
+  v5 = unifiedCallButton;
+  if (unifiedCallButton == callCopy)
   {
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 recipient];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    recipient = [conversation recipient];
 
-    if (!v7)
+    if (!recipient)
     {
       return;
     }
 
-    v8 = [(CKNavbarCanvasViewController *)self conversation];
-    v12 = [v8 recipient];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    recipient2 = [conversation2 recipient];
 
-    v9 = [(CKNavbarCanvasViewController *)self contactsManager];
-    v10 = [v12 rawAddress];
-    [v9 startCommunicationForEntity:v12 action:3 address:v10];
+    contactsManager = [(CKNavbarCanvasViewController *)self contactsManager];
+    rawAddress = [recipient2 rawAddress];
+    [contactsManager startCommunicationForEntity:recipient2 action:3 address:rawAddress];
 
-    v5 = v12;
+    v5 = recipient2;
   }
 }
 
-- (void)button:(id)a3 requestsJoinActiveCallWithVideoEnabled:(BOOL)a4
+- (void)button:(id)button requestsJoinActiveCallWithVideoEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  enabledCopy = enabled;
+  buttonCopy = button;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v7 == v6)
+  if (unifiedCallButton == buttonCopy)
   {
-    v8 = [(CKNavbarCanvasViewController *)self conversation];
-    v9 = [v8 chat];
-    v10 = [v9 conversation];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    conversation2 = [chat conversation];
 
-    if (v10)
+    if (conversation2)
     {
-      v14 = [(CKNavbarCanvasViewController *)self conversation];
-      v11 = [v14 chat];
-      [v11 joinExistingTUConversation];
+      conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+      chat2 = [conversation3 chat];
+      [chat2 joinExistingTUConversation];
     }
 
     else
     {
       IsGreenTea = IMDeviceIsGreenTea();
-      v14 = [(CKNavbarCanvasViewController *)self conversation];
-      v13 = [v14 chat];
-      v11 = v13;
+      conversation3 = [(CKNavbarCanvasViewController *)self conversation];
+      chat3 = [conversation3 chat];
+      chat2 = chat3;
       if (IsGreenTea)
       {
-        [v13 initiateTUDialRequestWithVideoEnabled:v4];
+        [chat3 initiateTUDialRequestWithVideoEnabled:enabledCopy];
       }
 
       else
       {
-        [v13 initiateTUConversationWithVideoEnabled:v4];
+        [chat3 initiateTUConversationWithVideoEnabled:enabledCopy];
       }
     }
   }
 }
 
-- (void)button:(id)a3 requestsStartFaceTimeWithScreenShareType:(unint64_t)a4
+- (void)button:(id)button requestsStartFaceTimeWithScreenShareType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  buttonCopy = button;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v7 == v6)
+  if (unifiedCallButton == buttonCopy)
   {
-    v9 = [(CKNavbarCanvasViewController *)self conversation];
-    v8 = [v9 chat];
-    [v8 initiateTUConversationWithScreenShareType:a4];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    [chat initiateTUConversationWithScreenShareType:type];
   }
 }
 
-- (void)buttonRequestsOpenJoinedCall:(id)a3
+- (void)buttonRequestsOpenJoinedCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  callCopy = call;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v5 == v4)
+  if (unifiedCallButton == callCopy)
   {
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 chat];
-    v10 = [v7 conversation];
+    conversation = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation chat];
+    conversation2 = [chat conversation];
 
-    if (v10 && [v10 state])
+    if (conversation2 && [conversation2 state])
     {
-      v8 = [MEMORY[0x1E695DFF8] faceTimeShowInCallUIURL];
+      faceTimeShowInCallUIURL = [MEMORY[0x1E695DFF8] faceTimeShowInCallUIURL];
       TUOpenURL();
     }
 
     else
     {
-      v8 = [(CKNavbarCanvasViewController *)self conversation];
-      v9 = [v8 chat];
-      [v9 joinExistingTUConversation];
+      faceTimeShowInCallUIURL = [(CKNavbarCanvasViewController *)self conversation];
+      chat2 = [faceTimeShowInCallUIURL chat];
+      [chat2 joinExistingTUConversation];
     }
   }
 }
 
-- (void)buttonWidthDidChange:(id)a3
+- (void)buttonWidthDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self unifiedCallButton];
+  changeCopy = change;
+  unifiedCallButton = [(CKNavbarCanvasViewController *)self unifiedCallButton];
 
-  if (v5 == v4)
+  if (unifiedCallButton == changeCopy)
   {
-    v6 = [(CKNavbarCanvasViewController *)self canvasView];
-    [v6 setNeedsLayout];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    [canvasView setNeedsLayout];
   }
 }
 
-- (void)showContactCardForEntity:(id)a3 address:(id)a4
+- (void)showContactCardForEntity:(id)entity address:(id)address
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v28[0] = v8;
+  entityCopy = entity;
+  addressCopy = address;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v28[0] = descriptorForRequiredKeys;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
 
   v10 = MEMORY[0x1E69A7FD0];
-  v11 = [v6 defaultIMHandle];
-  v12 = [v11 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  defaultIMHandle = [entityCopy defaultIMHandle];
+  v12 = [defaultIMHandle cnContactWithKeys:MEMORY[0x1E695E0F0]];
   v13 = [v10 isCNContactAKnownContact:v12];
 
   if (v13)
   {
-    v14 = [(CKNavbarCanvasViewController *)self suggestionsEnabledContactStore];
-    v15 = [v6 cnContactWithKeys:MEMORY[0x1E695E0F0]];
-    v16 = [v15 identifier];
-    v17 = [v14 unifiedContactWithIdentifier:v16 keysToFetch:v9 error:0];
+    suggestionsEnabledContactStore = [(CKNavbarCanvasViewController *)self suggestionsEnabledContactStore];
+    v15 = [entityCopy cnContactWithKeys:MEMORY[0x1E695E0F0]];
+    identifier = [v15 identifier];
+    v17 = [suggestionsEnabledContactStore unifiedContactWithIdentifier:identifier keysToFetch:v9 error:0];
 
-    if (v7)
+    if (addressCopy)
     {
       goto LABEL_6;
     }
@@ -2401,20 +2401,20 @@ LABEL_8:
 
   else
   {
-    v17 = [v6 cnContactWithKeys:v9];
-    if (v7)
+    v17 = [entityCopy cnContactWithKeys:v9];
+    if (addressCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v18 = [v6 defaultIMHandle];
-  v7 = [v18 ID];
+  defaultIMHandle2 = [entityCopy defaultIMHandle];
+  addressCopy = [defaultIMHandle2 ID];
 
 LABEL_6:
-  v19 = [v7 _appearsToBePhoneNumber];
+  _appearsToBePhoneNumber = [addressCopy _appearsToBePhoneNumber];
   v20 = MEMORY[0x1E695C330];
-  if (!v19)
+  if (!_appearsToBePhoneNumber)
   {
     v20 = MEMORY[0x1E695C208];
   }
@@ -2423,8 +2423,8 @@ LABEL_6:
   if (v13)
   {
     v22 = [MEMORY[0x1E695D148] viewControllerForContact:v17];
-    v23 = [v22 contentViewController];
-    [v23 setShouldShowLinkedContacts:1];
+    contentViewController = [v22 contentViewController];
+    [contentViewController setShouldShowLinkedContacts:1];
   }
 
   else
@@ -2432,22 +2432,22 @@ LABEL_6:
     v22 = [MEMORY[0x1E695D148] viewControllerForUnknownContact:v17];
   }
 
-  v24 = [v17 identifierForKey:v21 withDestination:v7];
+  v24 = [v17 identifierForKey:v21 withDestination:addressCopy];
   [v22 highlightPropertyWithKey:v21 identifier:v24];
 
-  v25 = [(CKNavbarCanvasViewController *)self suggestionsEnabledContactStore];
-  [v22 setContactStore:v25];
+  suggestionsEnabledContactStore2 = [(CKNavbarCanvasViewController *)self suggestionsEnabledContactStore];
+  [v22 setContactStore:suggestionsEnabledContactStore2];
 
-  v26 = [v22 contentViewController];
-  [v26 setAllowsContactBlocking:1];
+  contentViewController2 = [v22 contentViewController];
+  [contentViewController2 setAllowsContactBlocking:1];
 
   if (objc_opt_respondsToSelector())
   {
     [v22 setEdgesForExtendedLayout:0];
   }
 
-  v27 = [(CKNavbarCanvasViewController *)self proxyNavigationController];
-  [v27 pushViewController:v22 animated:1];
+  proxyNavigationController = [(CKNavbarCanvasViewController *)self proxyNavigationController];
+  [proxyNavigationController pushViewController:v22 animated:1];
 }
 
 - (CNContactStore)suggestionsEnabledContactStore
@@ -2478,100 +2478,100 @@ LABEL_6:
 
 - (int64_t)_unreadCount
 {
-  v3 = [(CKNavbarCanvasViewController *)self delegate];
-  if (v3)
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  if (delegate)
   {
-    v4 = [(CKNavbarCanvasViewController *)self delegate];
+    delegate2 = [(CKNavbarCanvasViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CKNavbarCanvasViewController *)self delegate];
-      v3 = [v6 unreadCountForCurrentFilterModeForNavbarCanvasViewController:self];
+      delegate3 = [(CKNavbarCanvasViewController *)self delegate];
+      delegate = [delegate3 unreadCountForCurrentFilterModeForNavbarCanvasViewController:self];
     }
 
     else
     {
-      v3 = 0;
+      delegate = 0;
     }
   }
 
-  v7 = [(CKNavbarCanvasViewController *)self conversation];
-  v8 = v3 - [v7 unreadCount];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  v8 = delegate - [conversation unreadCount];
 
   return v8;
 }
 
-- (void)_updateUnreadCountForBackbuttonView:(int64_t)a3
+- (void)_updateUnreadCountForBackbuttonView:(int64_t)view
 {
   [(CKNavbarCanvasViewController *)self setUnreadCountTitleColor];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:view];
   v9 = v5;
-  if (a3 < 1)
+  if (view < 1)
   {
-    v6 = 0;
+    __ck_localizedString = 0;
   }
 
   else
   {
-    v6 = [v5 __ck_localizedString];
+    __ck_localizedString = [v5 __ck_localizedString];
   }
 
-  v7 = [(CKNavbarCanvasViewController *)self backButtonView];
-  [v7 setBackButtonTitle:v6];
+  backButtonView = [(CKNavbarCanvasViewController *)self backButtonView];
+  [backButtonView setBackButtonTitle:__ck_localizedString];
 
-  v8 = [(CKNavbarCanvasViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(CKNavbarCanvasViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_chatUnreadCountDidChange:(id)a3
+- (void)_chatUnreadCountDidChange:(id)change
 {
-  v4 = [(CKNavbarCanvasViewController *)self _unreadCount];
+  _unreadCount = [(CKNavbarCanvasViewController *)self _unreadCount];
 
-  [(CKNavbarCanvasViewController *)self _updateUnreadCountForBackbuttonView:v4];
+  [(CKNavbarCanvasViewController *)self _updateUnreadCountForBackbuttonView:_unreadCount];
 }
 
 - (void)setUnreadCountTitleColor
 {
-  v3 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [v3 isBusinessConversation];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  isBusinessConversation = [conversation isBusinessConversation];
 
-  v10 = [(CKNavbarCanvasViewController *)self backButtonView];
-  if (v4)
+  backButtonView = [(CKNavbarCanvasViewController *)self backButtonView];
+  if (isBusinessConversation)
   {
-    v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [(CKNavbarCanvasViewController *)self conversation];
-    v8 = [v7 chat];
-    v9 = [v6 primaryBrandColorForBusinessChat:v8];
-    [v10 setTitleLabelColor:v9];
+    whiteColor = +[CKUIBehavior sharedBehaviors];
+    theme = [whiteColor theme];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation2 chat];
+    v9 = [theme primaryBrandColorForBusinessChat:chat];
+    [backButtonView setTitleLabelColor:v9];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [v10 setTitleLabelColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [backButtonView setTitleLabelColor:whiteColor];
   }
 }
 
-- (void)_contactPhotosEnabledChangedNotification:(id)a3
+- (void)_contactPhotosEnabledChangedNotification:(id)notification
 {
-  v4 = [(CKNavbarCanvasViewController *)self traitCollection];
-  v5 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:v4];
-  v6 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v6 setTitleView:v5];
+  traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+  v5 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:traitCollection];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setTitleView:v5];
 
-  v7 = [(CKNavbarCanvasViewController *)self canvasView];
-  v8 = [v7 titleView];
-  v9 = [(CKNavbarCanvasViewController *)self conversationIdentityView];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  titleView = [canvasView2 titleView];
+  conversationIdentityView = [(CKNavbarCanvasViewController *)self conversationIdentityView];
 
-  if (v8 == v9)
+  if (titleView == conversationIdentityView)
   {
-    v10 = [(CKNavbarCanvasViewController *)self canvasView];
-    v11 = [v10 titleView];
-    v12 = [(CKNavbarCanvasViewController *)self defaultLabel];
+    canvasView3 = [(CKNavbarCanvasViewController *)self canvasView];
+    titleView2 = [canvasView3 titleView];
+    defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
 
-    if (v11 != v12)
+    if (titleView2 != defaultLabel)
     {
       [(CKNavbarCanvasViewController *)self setDefaultLabel:0];
     }
@@ -2582,83 +2582,83 @@ LABEL_6:
     [(CKNavbarCanvasViewController *)self setConversationIdentityView:0];
   }
 
-  v13 = [(CKNavbarCanvasViewController *)self navbarTitle];
-  [(CKNavbarCanvasViewController *)self updateTitle:v13 animated:0];
+  navbarTitle = [(CKNavbarCanvasViewController *)self navbarTitle];
+  [(CKNavbarCanvasViewController *)self updateTitle:navbarTitle animated:0];
 
-  v14 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v14 setNeedsLayout];
+  canvasView4 = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView4 setNeedsLayout];
 }
 
 - (void)refreshAudioButtonTargetAction
 {
-  v3 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [v3 recipients];
-  v5 = [v4 count];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  recipients = [conversation recipients];
+  v5 = [recipients count];
 
   if (v5 == 1)
   {
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 recipient];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    recipient = [conversation2 recipient];
 
-    v8 = [(CKNavbarCanvasViewController *)self contactsManager];
-    v9 = [v8 shouldAlwaysShowCallMenuForEntity:v7];
+    contactsManager = [(CKNavbarCanvasViewController *)self contactsManager];
+    v9 = [contactsManager shouldAlwaysShowCallMenuForEntity:recipient];
 
-    v10 = [(CKNavbarCanvasViewController *)self canvasView];
-    v11 = [v10 buttonViewFaceTimeAudio];
-    [v11 setContextMenuIsPrimary:v9];
+    canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+    buttonViewFaceTimeAudio = [canvasView buttonViewFaceTimeAudio];
+    [buttonViewFaceTimeAudio setContextMenuIsPrimary:v9];
 
     if (v9)
     {
-      v15 = [(CKNavbarCanvasViewController *)self canvasView];
-      v12 = [v15 buttonViewFaceTimeAudio];
-      [v12 removeTarget:0 action:0 forControlEvents:64];
+      canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+      buttonViewFaceTimeAudio2 = [canvasView2 buttonViewFaceTimeAudio];
+      [buttonViewFaceTimeAudio2 removeTarget:0 action:0 forControlEvents:64];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v13 = [(CKNavbarCanvasViewController *)self canvasView];
-    v14 = [v13 buttonViewFaceTimeAudio];
-    [v14 setContextMenuIsPrimary:0];
+    canvasView3 = [(CKNavbarCanvasViewController *)self canvasView];
+    buttonViewFaceTimeAudio3 = [canvasView3 buttonViewFaceTimeAudio];
+    [buttonViewFaceTimeAudio3 setContextMenuIsPrimary:0];
   }
 
-  v15 = [(CKNavbarCanvasViewController *)self canvasView];
-  v12 = [v15 buttonViewFaceTimeAudio];
-  [v12 addTarget:self action:sel__facetimeAudioButtonTapped_ forControlEvents:64];
+  canvasView2 = [(CKNavbarCanvasViewController *)self canvasView];
+  buttonViewFaceTimeAudio2 = [canvasView2 buttonViewFaceTimeAudio];
+  [buttonViewFaceTimeAudio2 addTarget:self action:sel__facetimeAudioButtonTapped_ forControlEvents:64];
 LABEL_6:
 }
 
-- (void)_facetimeAudioButtonTapped:(id)a3
+- (void)_facetimeAudioButtonTapped:(id)tapped
 {
-  v4 = [(CKNavbarCanvasViewController *)self delegate];
-  [v4 navbarCanvasViewControllerFaceTimeAudioButtonTapped:self];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  [delegate navbarCanvasViewControllerFaceTimeAudioButtonTapped:self];
 }
 
-- (void)_facetimeVideoButtonTapped:(id)a3
+- (void)_facetimeVideoButtonTapped:(id)tapped
 {
-  v4 = [(CKNavbarCanvasViewController *)self delegate];
-  [v4 navbarCanvasViewControllerFaceTimeVideoButtonTapped:self];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  [delegate navbarCanvasViewControllerFaceTimeVideoButtonTapped:self];
 }
 
-- (void)_infoButtonTapped:(id)a3
+- (void)_infoButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self delegate];
-  [v5 navbarCanvasViewController:self infoButtonTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  [delegate navbarCanvasViewController:self infoButtonTapped:tappedCopy];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKNavbarCanvasViewController *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKNavbarCanvasViewController *)self delegate];
-    [v7 navbarCanvasViewController:self didTapView:v4];
+    delegate2 = [(CKNavbarCanvasViewController *)self delegate];
+    [delegate2 navbarCanvasViewController:self didTapView:pressedCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -2666,8 +2666,8 @@ LABEL_6:
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(CKNavbarCanvasViewController *)self delegate];
-      v10 = [(CKNavbarCanvasViewController *)self delegate];
+      delegate3 = [(CKNavbarCanvasViewController *)self delegate];
+      delegate4 = [(CKNavbarCanvasViewController *)self delegate];
       v11 = objc_opt_respondsToSelector();
       v12 = @"NO";
       if (v11)
@@ -2676,7 +2676,7 @@ LABEL_6:
       }
 
       v13 = 138412546;
-      v14 = v9;
+      v14 = delegate3;
       v15 = 2112;
       v16 = v12;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Delegate (%@), respondsToSelector (%@)", &v13, 0x16u);
@@ -2686,34 +2686,34 @@ LABEL_6:
 
 - (BOOL)shouldConfigureForJunkModal
 {
-  v2 = self;
-  v3 = [(CKNavbarCanvasViewController *)self delegate];
-  LOBYTE(v2) = [v3 shouldConfigureForJunkModalInNavbarCanvasViewController:v2];
+  selfCopy = self;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate shouldConfigureForJunkModalInNavbarCanvasViewController:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)splitViewControllerIsCollapsed
 {
-  v2 = [(CKNavbarCanvasViewController *)self delegate];
-  v3 = [v2 splitViewController];
-  v4 = [v3 isCollapsed];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  splitViewController = [delegate splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  return v4;
+  return isCollapsed;
 }
 
 - (BOOL)shouldUseMinimumSafeAreas
 {
-  v2 = [(CKNavbarCanvasViewController *)self delegate];
-  v3 = [v2 shouldUseMinimumSafeAreas];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  shouldUseMinimumSafeAreas = [delegate shouldUseMinimumSafeAreas];
 
-  return v3;
+  return shouldUseMinimumSafeAreas;
 }
 
-- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)a3
+- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)view
 {
-  v4 = [(CKNavbarCanvasViewController *)self delegate];
-  [v4 systemMinimumLayoutMarginsForViewController:self];
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
+  [delegate systemMinimumLayoutMarginsForViewController:self];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2730,60 +2730,60 @@ LABEL_6:
   return result;
 }
 
-- (void)_handleAllowedByScreenTimeChatChanged:(id)a3
+- (void)_handleAllowedByScreenTimeChatChanged:(id)changed
 {
-  v5 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [(CKNavbarCanvasViewController *)self navBarTitleFromConversation:v5];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  v4 = [(CKNavbarCanvasViewController *)self navBarTitleFromConversation:conversation];
   [(CKNavbarCanvasViewController *)self updateTitle:v4 animated:1];
 }
 
-- (void)persistentMenuManager:(id)a3 selectedChipAction:(id)a4
+- (void)persistentMenuManager:(id)manager selectedChipAction:(id)action
 {
-  v8 = a4;
-  v5 = [(CKNavbarCanvasViewController *)self delegate];
+  actionCopy = action;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKNavbarCanvasViewController *)self delegate];
-    [v7 navbarCanvasViewController:self selectedChipAction:v8];
+    delegate2 = [(CKNavbarCanvasViewController *)self delegate];
+    [delegate2 navbarCanvasViewController:self selectedChipAction:actionCopy];
   }
 }
 
-- (void)_handleServiceChangedNotification:(id)a3
+- (void)_handleServiceChangedNotification:(id)notification
 {
-  v6 = [(CKNavbarCanvasViewController *)self traitCollection];
-  v4 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:v6];
-  v5 = [(CKNavbarCanvasViewController *)self canvasView];
-  [v5 setRightItemView:v4];
+  traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+  v4 = [(CKNavbarCanvasViewController *)self _rightItemViewForTraitCollection:traitCollection];
+  canvasView = [(CKNavbarCanvasViewController *)self canvasView];
+  [canvasView setRightItemView:v4];
 }
 
-- (void)persistentMenuManager:(id)a3 selectedSuggestedReply:(id)a4
+- (void)persistentMenuManager:(id)manager selectedSuggestedReply:(id)reply
 {
-  v8 = a4;
-  v5 = [(CKNavbarCanvasViewController *)self delegate];
+  replyCopy = reply;
+  delegate = [(CKNavbarCanvasViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKNavbarCanvasViewController *)self delegate];
-    [v7 navbarCanvasViewController:self selectedSuggestedReply:v8];
+    delegate2 = [(CKNavbarCanvasViewController *)self delegate];
+    [delegate2 navbarCanvasViewController:self selectedSuggestedReply:replyCopy];
   }
 }
 
-- (void)_handleKeyTransparencyStatusChangedNotification:(id)a3
+- (void)_handleKeyTransparencyStatusChangedNotification:(id)notification
 {
-  v4 = [(CKNavbarCanvasViewController *)self traitCollection];
-  v8 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:v4];
+  traitCollection = [(CKNavbarCanvasViewController *)self traitCollection];
+  v8 = [(CKNavbarCanvasViewController *)self _titleItemViewForTraitCollection:traitCollection];
 
-  v5 = [(CKNavbarCanvasViewController *)self defaultLabel];
+  defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
 
   v6 = v8;
-  if (v8 == v5)
+  if (v8 == defaultLabel)
   {
     [(CKNavbarCanvasViewController *)self setDefaultLabel:0];
-    v7 = [(CKNavbarCanvasViewController *)self traitCollection];
-    [(CKNavbarCanvasViewController *)self _initializeForTraitCollection:v7];
+    traitCollection2 = [(CKNavbarCanvasViewController *)self traitCollection];
+    [(CKNavbarCanvasViewController *)self _initializeForTraitCollection:traitCollection2];
 
     v6 = v8;
   }
@@ -2791,16 +2791,16 @@ LABEL_6:
 
 - (id)_KTTitleIconAttributedString
 {
-  v3 = [(CKNavbarCanvasViewController *)self conversation];
-  v4 = [v3 sendingService];
-  v5 = [v4 supportsCapability:*MEMORY[0x1E69A79A0]];
+  conversation = [(CKNavbarCanvasViewController *)self conversation];
+  sendingService = [conversation sendingService];
+  v5 = [sendingService supportsCapability:*MEMORY[0x1E69A79A0]];
 
   if (v5)
   {
-    v6 = [(CKNavbarCanvasViewController *)self conversation];
-    v7 = [v6 chat];
+    conversation2 = [(CKNavbarCanvasViewController *)self conversation];
+    chat = [conversation2 chat];
     v31 = 0;
-    v8 = [v7 keyTransparencyStatusForAffectedHandles:&v31];
+    v8 = [chat keyTransparencyStatusForAffectedHandles:&v31];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     [v9 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
@@ -2835,16 +2835,16 @@ LABEL_12:
       }
 
       v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11];
-      v13 = [(CKNavbarCanvasViewController *)self defaultLabel];
-      [v13 setAccessibilityIdentifier:v12];
+      defaultLabel = [(CKNavbarCanvasViewController *)self defaultLabel];
+      [defaultLabel setAccessibilityIdentifier:v12];
     }
 
-    v14 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v15 = [v10 imageWithTintColor:v14];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v15 = [v10 imageWithTintColor:systemGrayColor];
 
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 noAvatarTitleFont];
-    [v17 pointSize];
+    noAvatarTitleFont = [v16 noAvatarTitleFont];
+    [noAvatarTitleFont pointSize];
     v19 = v18;
 
     [v15 size];
@@ -2852,8 +2852,8 @@ LABEL_12:
     [v15 size];
     v23 = v19 * (v21 / v22);
     v24 = +[CKUIBehavior sharedBehaviors];
-    v25 = [v24 noAvatarTitleFont];
-    [v25 capHeight];
+    noAvatarTitleFont2 = [v24 noAvatarTitleFont];
+    [noAvatarTitleFont2 capHeight];
     v27 = (v26 - v19) * 0.5;
 
     [v9 setBounds:{0.0, v27, v23, v19}];

@@ -11,32 +11,32 @@
   v17 = a5;
   v18 = a6;
   v19 = a8;
-  v20 = a9;
-  if (!v20)
+  currentLocale = a9;
+  if (!currentLocale)
   {
-    v20 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
   if ([v16 isEqualToString:@"Relative"])
   {
     v21 = objc_opt_new();
-    [v21 setLocale:v20];
-    v22 = [MEMORY[0x277CBEAA8] date];
-    v23 = [v21 localizedStringForDate:a1 relativeToDate:v22];
+    [v21 setLocale:currentLocale];
+    date = [MEMORY[0x277CBEAA8] date];
+    v23 = [v21 localizedStringForDate:self relativeToDate:date];
 
     goto LABEL_17;
   }
 
   v21 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v21 setTimeZone:v19];
-  [v21 setLocale:v20];
+  [v21 setLocale:currentLocale];
   if ([v15 isEqualToString:@"Custom"])
   {
     [v21 setDateFormat:v18];
-    v24 = [v20 localeIdentifier];
-    if (([v24 hasSuffix:@"_POSIX"] & 1) == 0)
+    localeIdentifier = [currentLocale localeIdentifier];
+    if (([localeIdentifier hasSuffix:@"_POSIX"] & 1) == 0)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@_POSIX", v24];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@_POSIX", localeIdentifier];
       v25 = v31 = v17;
       v26 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v25];
       [v21 setLocale:v26];
@@ -99,7 +99,7 @@ LABEL_25:
 LABEL_15:
   [v21 setDateFormat:v28];
 LABEL_16:
-  v23 = [v21 stringFromDate:a1];
+  v23 = [v21 stringFromDate:self];
 LABEL_17:
 
   return v23;

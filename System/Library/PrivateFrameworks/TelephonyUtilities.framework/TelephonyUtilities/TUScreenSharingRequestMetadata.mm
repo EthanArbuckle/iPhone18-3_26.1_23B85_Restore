@@ -1,11 +1,11 @@
 @interface TUScreenSharingRequestMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScreenSharingRequestMetadata:(id)a3;
-- (TUScreenSharingRequestMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScreenSharingRequestMetadata:(id)metadata;
+- (TUScreenSharingRequestMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUScreenSharingRequestMetadata
@@ -13,14 +13,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
-  [v3 appendFormat:@" bundleIdentifier=%@", v4];
+  bundleIdentifier = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
+  [v3 appendFormat:@" bundleIdentifier=%@", bundleIdentifier];
 
-  v5 = [(TUScreenSharingRequestMetadata *)self appName];
-  [v3 appendFormat:@" appName=%@", v5];
+  appName = [(TUScreenSharingRequestMetadata *)self appName];
+  [v3 appendFormat:@" appName=%@", appName];
 
-  v6 = [(TUScreenSharingRequestMetadata *)self sceneID];
-  [v3 appendFormat:@" sceneID=%@", v6];
+  sceneID = [(TUScreenSharingRequestMetadata *)self sceneID];
+  [v3 appendFormat:@" sceneID=%@", sceneID];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];
@@ -28,29 +28,29 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUScreenSharingRequestMetadata *)self isEqualToScreenSharingRequestMetadata:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUScreenSharingRequestMetadata *)self isEqualToScreenSharingRequestMetadata:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToScreenSharingRequestMetadata:(id)a3
+- (BOOL)isEqualToScreenSharingRequestMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if (TUObjectsAreEqualOrNil(v5, v6))
+  metadataCopy = metadata;
+  bundleIdentifier = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
+  bundleIdentifier2 = [metadataCopy bundleIdentifier];
+  if (TUObjectsAreEqualOrNil(bundleIdentifier, bundleIdentifier2))
   {
-    v7 = [(TUScreenSharingRequestMetadata *)self appName];
-    v8 = [v4 appName];
-    if (TUObjectsAreEqualOrNil(v7, v8))
+    appName = [(TUScreenSharingRequestMetadata *)self appName];
+    appName2 = [metadataCopy appName];
+    if (TUObjectsAreEqualOrNil(appName, appName2))
     {
-      v9 = [(TUScreenSharingRequestMetadata *)self sceneID];
-      v10 = [v4 sceneID];
-      v11 = TUObjectsAreEqualOrNil(v9, v10);
+      sceneID = [(TUScreenSharingRequestMetadata *)self sceneID];
+      sceneID2 = [metadataCopy sceneID];
+      v11 = TUObjectsAreEqualOrNil(sceneID, sceneID2);
     }
 
     else
@@ -69,49 +69,49 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(TUScreenSharingRequestMetadata *)self appName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUScreenSharingRequestMetadata *)self sceneID];
-  v8 = [v7 hash];
+  bundleIdentifier = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  appName = [(TUScreenSharingRequestMetadata *)self appName];
+  v6 = [appName hash] ^ v4;
+  sceneID = [(TUScreenSharingRequestMetadata *)self sceneID];
+  v8 = [sceneID hash];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  bundleIdentifier = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
-  v6 = [(TUScreenSharingRequestMetadata *)self appName];
-  [v4 setAppName:v6];
+  appName = [(TUScreenSharingRequestMetadata *)self appName];
+  [v4 setAppName:appName];
 
-  v7 = [(TUScreenSharingRequestMetadata *)self sceneID];
-  [v4 setSceneID:v7];
+  sceneID = [(TUScreenSharingRequestMetadata *)self sceneID];
+  [v4 setSceneID:sceneID];
 
   return v4;
 }
 
-- (TUScreenSharingRequestMetadata)initWithCoder:(id)a3
+- (TUScreenSharingRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_bundleIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v7;
 
   v9 = objc_opt_class();
   v10 = NSStringFromSelector(sel_appName);
-  v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+  v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
   appName = self->_appName;
   self->_appName = v11;
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_sceneID);
-  v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   sceneID = self->_sceneID;
   self->_sceneID = v15;
@@ -119,20 +119,20 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
+  coderCopy = coder;
+  bundleIdentifier = [(TUScreenSharingRequestMetadata *)self bundleIdentifier];
   v6 = NSStringFromSelector(sel_bundleIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:bundleIdentifier forKey:v6];
 
-  v7 = [(TUScreenSharingRequestMetadata *)self appName];
+  appName = [(TUScreenSharingRequestMetadata *)self appName];
   v8 = NSStringFromSelector(sel_appName);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:appName forKey:v8];
 
-  v10 = [(TUScreenSharingRequestMetadata *)self sceneID];
+  sceneID = [(TUScreenSharingRequestMetadata *)self sceneID];
   v9 = NSStringFromSelector(sel_sceneID);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:sceneID forKey:v9];
 }
 
 @end

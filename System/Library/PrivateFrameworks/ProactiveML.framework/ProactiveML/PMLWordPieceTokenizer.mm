@@ -1,8 +1,8 @@
 @interface PMLWordPieceTokenizer
-- (PMLWordPieceTokenizer)initWithVocab:(id)a3;
-- (id)tokenize:(id)a3 withLength:(unint64_t)a4;
-- (int)toTokens:(_NSRange *)a3 fromInput:(id)a4 withLength:(unint64_t)a5;
-- (int)tokenizeToIds:(float *)a3 fromString:(id)a4 tokens:(_NSRange *)a5 tokenCount:(int)a6 length:(unint64_t)a7;
+- (PMLWordPieceTokenizer)initWithVocab:(id)vocab;
+- (id)tokenize:(id)tokenize withLength:(unint64_t)length;
+- (int)toTokens:(_NSRange *)tokens fromInput:(id)input withLength:(unint64_t)length;
+- (int)tokenizeToIds:(float *)ids fromString:(id)string tokens:(_NSRange *)tokens tokenCount:(int)count length:(unint64_t)length;
 - (unsigned)endId;
 - (unsigned)padId;
 - (unsigned)startId;
@@ -15,8 +15,8 @@
   v4 = [(PMLWordPieceVocabProtocol *)self->_vocab payloadForString:@"[PAD]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"padId != PMLWordPieceVocabNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"padId != PMLWordPieceVocabNotFound"}];
   }
 
   return v4;
@@ -27,8 +27,8 @@
   v4 = [(PMLWordPieceVocabProtocol *)self->_vocab payloadForString:@"[SEP]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"endId != PMLWordPieceVocabNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"endId != PMLWordPieceVocabNotFound"}];
   }
 
   return v4;
@@ -39,44 +39,44 @@
   v4 = [(PMLWordPieceVocabProtocol *)self->_vocab payloadForString:@"[CLS]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"startId != PMLWordPieceVocabNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"startId != PMLWordPieceVocabNotFound"}];
   }
 
   return v4;
 }
 
-- (int)tokenizeToIds:(float *)a3 fromString:(id)a4 tokens:(_NSRange *)a5 tokenCount:(int)a6 length:(unint64_t)a7
+- (int)tokenizeToIds:(float *)ids fromString:(id)string tokens:(_NSRange *)tokens tokenCount:(int)count length:(unint64_t)length
 {
-  v46 = a4;
+  stringCopy = string;
   v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:206];
   [@"##" getCharacters:objc_msgSend(v10 range:{"mutableBytes"), 0, 2}];
   v11 = objc_opt_new();
   v38 = v10;
-  v45 = [v10 mutableBytes];
+  mutableBytes = [v10 mutableBytes];
   LODWORD(v12) = 0;
-  if (a6 >= 1)
+  if (count >= 1)
   {
     v37 = a2;
-    if (a7)
+    if (length)
     {
       v13 = 0;
       v14 = 0;
-      __dst = (v45 + 4);
+      __dst = (mutableBytes + 4);
       v15 = *MEMORY[0x277CBED00];
-      v16 = a6;
+      countCopy = count;
       v17 = 0;
-      v42 = v16;
-      v43 = a7;
+      v42 = countCopy;
+      lengthCopy = length;
       do
       {
-        v18 = &a5[v13];
+        v18 = &tokens[v13];
         length = v18->length;
         if (length < 0x65)
         {
           location = v18->location;
           v23 = length + v18->location;
-          [v46 getCharacters:__dst range:v18->location];
+          [stringCopy getCharacters:__dst range:v18->location];
           if (location >= v23)
           {
             v12 = v14;
@@ -98,7 +98,7 @@
                 break;
               }
 
-              v26 = (v45 + 4 * (v24 == location));
+              v26 = (mutableBytes + 4 * (v24 == location));
               while (1)
               {
                 v27 = v11;
@@ -118,19 +118,19 @@
                 }
               }
 
-              a7 = v43;
-              if (v12 >= v43)
+              length = lengthCopy;
+              if (v12 >= lengthCopy)
               {
                 v30 = 0;
               }
 
               else
               {
-                a3[v12] = v29;
+                ids[v12] = v29;
                 v30 = 1;
               }
 
-              v16 = v42;
+              countCopy = v42;
               v24 += v25;
               v23 = v39;
               memmove(__dst, &__dst[2 * v25], 2 * (v39 - v24));
@@ -146,23 +146,23 @@ LABEL_24:
             v31 = [(PMLWordPieceVocabProtocol *)self->_vocab payloadForString:@"[UNK]"];
             if (v31 == -1)
             {
-              v35 = [MEMORY[0x277CCA890] currentHandler];
-              [v35 handleFailureInMethod:v37 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"unkToken != PMLWordPieceVocabNotFound"}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v37 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"unkToken != PMLWordPieceVocabNotFound"}];
             }
 
-            a7 = v43;
-            if (v40 >= v43)
+            length = lengthCopy;
+            if (v40 >= lengthCopy)
             {
               v32 = 0;
             }
 
             else
             {
-              a3[v40] = v31;
+              ids[v40] = v31;
               v32 = 1;
             }
 
-            v16 = v42;
+            countCopy = v42;
             v12 = (v32 + v41);
           }
         }
@@ -179,14 +179,14 @@ LABEL_24:
             v17 = v33;
           }
 
-          if (v17 >= a7)
+          if (v17 >= length)
           {
             v21 = 0;
           }
 
           else
           {
-            a3[v17] = v20;
+            ids[v17] = v20;
             v21 = 1;
           }
 
@@ -194,7 +194,7 @@ LABEL_24:
         }
 
 LABEL_30:
-        if (++v13 >= v16)
+        if (++v13 >= countCopy)
         {
           break;
         }
@@ -203,16 +203,16 @@ LABEL_30:
         v14 = v12;
       }
 
-      while (v12 != a7);
+      while (v12 != length);
     }
   }
 
   return v12;
 }
 
-- (int)toTokens:(_NSRange *)a3 fromInput:(id)a4 withLength:(unint64_t)a5
+- (int)toTokens:(_NSRange *)tokens fromInput:(id)input withLength:(unint64_t)length
 {
-  v7 = a4;
+  inputCopy = input;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -233,14 +233,14 @@ LABEL_30:
   v10 = *(v23 + 6);
   if (v8)
   {
-    if (v10 >= a5)
+    if (v10 >= length)
     {
       v12 = 0;
     }
 
     else
     {
-      v11 = &a3[v10];
+      v11 = &tokens[v10];
       v11->location = v19[3];
       v11->length = v8;
       v12 = 1;
@@ -325,26 +325,26 @@ uint64_t __55__PMLWordPieceTokenizer_toTokens_fromInput_withLength___block_invok
   return result;
 }
 
-- (id)tokenize:(id)a3 withLength:(unint64_t)a4
+- (id)tokenize:(id)tokenize withLength:(unint64_t)length
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 >= 0x200)
+  tokenizeCopy = tokenize;
+  if (length >= 0x200)
   {
-    v7 = 512;
+    lengthCopy = 512;
   }
 
   else
   {
-    v7 = a4;
+    lengthCopy = length;
   }
 
-  v8 = (4 * (v7 & 0x1FFFFFFFFFFFFFFFLL)) | 3;
+  v8 = (4 * (lengthCopy & 0x1FFFFFFFFFFFFFFFLL)) | 3;
   memptr = 0;
   v21 = 0;
   if (v8 > 0x194)
   {
-    v16 = malloc_type_posix_memalign(&memptr, 8uLL, 4 * v7, 0x100004052888210uLL);
+    v16 = malloc_type_posix_memalign(&memptr, 8uLL, 4 * lengthCopy, 0x100004052888210uLL);
     LOBYTE(v21) = 0;
     if (v16)
     {
@@ -357,20 +357,20 @@ uint64_t __55__PMLWordPieceTokenizer_toTokens_fromInput_withLength___block_invok
   else
   {
     v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v9, (4 * (v7 & 0x1FFFFFFFFFFFFFFFLL)) | 3);
+    bzero(v9, (4 * (lengthCopy & 0x1FFFFFFFFFFFFFFFLL)) | 3);
   }
 
-  v10 = (16 * (v7 & 0x7FFFFFFFFFFFFFFLL)) | 7;
+  v10 = (16 * (lengthCopy & 0x7FFFFFFFFFFFFFFLL)) | 7;
   memptr = 0;
   v21 = 0;
   if (v10 <= 0x328)
   {
     v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v11, (16 * (v7 & 0x7FFFFFFFFFFFFFFLL)) | 7);
+    bzero(v11, (16 * (lengthCopy & 0x7FFFFFFFFFFFFFFLL)) | 7);
     goto LABEL_8;
   }
 
-  v17 = malloc_type_posix_memalign(&memptr, 8uLL, 16 * v7, 0x1000040451B5BE8uLL);
+  v17 = malloc_type_posix_memalign(&memptr, 8uLL, 16 * lengthCopy, 0x1000040451B5BE8uLL);
   LOBYTE(v21) = 0;
   if (v17)
   {
@@ -382,7 +382,7 @@ LABEL_19:
   v11 = memptr;
 LABEL_8:
   v12 = objc_autoreleasePoolPush();
-  v13 = [PMLSparseVector sparseVectorFromDense:v9 length:[(PMLWordPieceTokenizer *)self tokenizeToIds:v9 fromString:v6 tokens:v11 tokenCount:[(PMLWordPieceTokenizer *)self toTokens:v11 fromInput:v6 withLength:v7] length:v7]];
+  v13 = [PMLSparseVector sparseVectorFromDense:v9 length:[(PMLWordPieceTokenizer *)self tokenizeToIds:v9 fromString:tokenizeCopy tokens:v11 tokenCount:[(PMLWordPieceTokenizer *)self toTokens:v11 fromInput:tokenizeCopy withLength:lengthCopy] length:lengthCopy]];
   objc_autoreleasePoolPop(v12);
   if (v8 >= 0x195)
   {
@@ -399,13 +399,13 @@ LABEL_8:
   return v13;
 }
 
-- (PMLWordPieceTokenizer)initWithVocab:(id)a3
+- (PMLWordPieceTokenizer)initWithVocab:(id)vocab
 {
-  v6 = a3;
-  if (!v6)
+  vocabCopy = vocab;
+  if (!vocabCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"vocab"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLWordPieceTokenizer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"vocab"}];
   }
 
   v11.receiver = self;
@@ -414,7 +414,7 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_vocab, a3);
+    objc_storeStrong(&v7->_vocab, vocab);
   }
 
   return v8;

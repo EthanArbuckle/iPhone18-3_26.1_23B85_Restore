@@ -1,11 +1,11 @@
 @interface WFRemoteExecutionRequest
-+ (BOOL)isUnsupportedVersionError:(id)a3;
-+ (id)identifierFromData:(id)a3 error:(id *)a4;
++ (BOOL)isUnsupportedVersionError:(id)error;
++ (id)identifierFromData:(id)data error:(id *)error;
 + (id)unsupportedVersionError;
-- (BOOL)readFrom:(id)a3 error:(id *)a4;
-- (BOOL)writeTo:(id)a3 error:(id *)a4;
+- (BOOL)readFrom:(id)from error:(id *)error;
+- (BOOL)writeTo:(id)to error:(id *)error;
 - (WFRemoteExecutionRequest)init;
-- (WFRemoteExecutionRequest)initWithData:(id)a3 error:(id *)a4;
+- (WFRemoteExecutionRequest)initWithData:(id)data error:(id *)error;
 - (id)emptyProtobufError;
 @end
 
@@ -25,13 +25,13 @@
   return v4;
 }
 
-- (BOOL)writeTo:(id)a3 error:(id *)a4
+- (BOOL)writeTo:(id)to error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  toCopy = to;
   v7 = objc_alloc_init(WFREPBRequest);
-  v8 = [(WFRemoteExecutionRequest *)self identifier];
-  [(WFREPBRequest *)v7 setIdentifier:v8];
+  identifier = [(WFRemoteExecutionRequest *)self identifier];
+  [(WFREPBRequest *)v7 setIdentifier:identifier];
 
   -[WFREPBRequest setVersion:](v7, "setVersion:", [objc_opt_class() version]);
   v9 = objc_alloc_init(MEMORY[0x1E69C65C0]);
@@ -41,7 +41,7 @@
   if (v10)
   {
     [(WFREPBRequest *)v7 setMessage:v10];
-    [(WFREPBRequest *)v7 writeTo:v6];
+    [(WFREPBRequest *)v7 writeTo:toCopy];
   }
 
   else
@@ -56,10 +56,10 @@
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_FAULT, "%s Writing message from request failed with error: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -67,12 +67,12 @@
   return v10 != 0;
 }
 
-- (BOOL)readFrom:(id)a3 error:(id *)a4
+- (BOOL)readFrom:(id)from error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fromCopy = from;
   v7 = objc_alloc_init(WFREPBRequest);
-  v8 = [(PBCodable *)v7 readFrom:v6 error:a4];
+  v8 = [(PBCodable *)v7 readFrom:fromCopy error:error];
 
   if (!v8)
   {
@@ -89,9 +89,9 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v9 = [(WFREPBRequest *)v7 identifier];
+  identifier = [(WFREPBRequest *)v7 identifier];
   identifier = self->_identifier;
-  self->_identifier = v9;
+  self->_identifier = identifier;
 
   self->_version = [(WFREPBRequest *)v7 version];
   if (([objc_opt_class() supportsVersion:self->_version] & 1) == 0)
@@ -104,19 +104,19 @@ LABEL_12:
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_FAULT, "%s Unsupported version of request", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       [objc_opt_class() unsupportedVersionError];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_17;
     }
 
     goto LABEL_12;
   }
 
-  v11 = [(WFREPBRequest *)v7 message];
+  message = [(WFREPBRequest *)v7 message];
   v20 = 0;
-  v12 = [(WFRemoteExecutionRequest *)self readMessageFromData:v11 error:&v20];
+  v12 = [(WFRemoteExecutionRequest *)self readMessageFromData:message error:&v20];
   v13 = v20;
   if (!v12)
   {
@@ -130,10 +130,10 @@ LABEL_12:
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_FAULT, "%s Reading message from request failed with error: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -142,16 +142,16 @@ LABEL_17:
   return v12;
 }
 
-- (WFRemoteExecutionRequest)initWithData:(id)a3 error:(id *)a4
+- (WFRemoteExecutionRequest)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = WFRemoteExecutionRequest;
   v7 = [(WFRemoteExecutionRequest *)&v11 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v6];
-    if ([(WFRemoteExecutionRequest *)v7 readFrom:v8 error:a4])
+    v8 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
+    if ([(WFRemoteExecutionRequest *)v7 readFrom:v8 error:error])
     {
       v9 = v7;
     }
@@ -177,10 +177,10 @@ LABEL_17:
   v2 = [(WFRemoteExecutionRequest *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = v2;
   }
@@ -206,16 +206,16 @@ LABEL_17:
   return v6;
 }
 
-+ (BOOL)isUnsupportedVersionError:(id)a3
++ (BOOL)isUnsupportedVersionError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 unsupportedVersionError];
-  v6 = [v5 domain];
-  v7 = [v4 domain];
-  if ([v6 isEqualToString:v7])
+  errorCopy = error;
+  unsupportedVersionError = [self unsupportedVersionError];
+  domain = [unsupportedVersionError domain];
+  domain2 = [errorCopy domain];
+  if ([domain isEqualToString:domain2])
   {
-    v8 = [v5 code];
-    v9 = v8 == [v4 code];
+    code = [unsupportedVersionError code];
+    v9 = code == [errorCopy code];
   }
 
   else
@@ -226,12 +226,12 @@ LABEL_17:
   return v9;
 }
 
-+ (id)identifierFromData:(id)a3 error:(id *)a4
++ (id)identifierFromData:(id)data error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69C65B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy];
 
   v8 = objc_alloc_init(WFREPBRequest);
   v16 = 0;
@@ -239,7 +239,7 @@ LABEL_17:
   v10 = v16;
   if (v9)
   {
-    v11 = [(WFREPBRequest *)v8 identifier];
+    identifier = [(WFREPBRequest *)v8 identifier];
   }
 
   else
@@ -254,22 +254,22 @@ LABEL_17:
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_FAULT, "%s Failed to read base request protobuf: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v10;
-      v11 = 0;
-      *a4 = v10;
+      identifier = 0;
+      *error = v10;
     }
 
     else
     {
-      v11 = 0;
+      identifier = 0;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return identifier;
 }
 
 @end

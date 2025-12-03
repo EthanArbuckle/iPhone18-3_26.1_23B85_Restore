@@ -1,6 +1,6 @@
 @interface CalculatorMDMRestrictionsManager
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation CalculatorMDMRestrictionsManager
@@ -9,14 +9,14 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedConnection];
-  if (v6)
+  selfCopy = self;
+  sharedConnection = [v4 sharedConnection];
+  if (sharedConnection)
   {
-    v7 = v6;
-    [v6 unregisterObserver:v5];
+    v7 = sharedConnection;
+    [sharedConnection unregisterObserver:selfCopy];
 
-    v8.receiver = v5;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
     [(CalculatorMDMRestrictionsManager *)&v8 dealloc];
   }
@@ -27,16 +27,16 @@
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
-  sub_10007197C(a3);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_10007197C(notification);
 }
 
 @end

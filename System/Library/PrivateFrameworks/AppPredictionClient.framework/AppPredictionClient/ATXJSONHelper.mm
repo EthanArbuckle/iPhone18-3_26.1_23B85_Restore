@@ -1,41 +1,41 @@
 @interface ATXJSONHelper
-+ (id)unwrapData:(id)a3;
-+ (id)unwrapObject:(id)a3;
-+ (id)wrapObject:(id)a3;
++ (id)unwrapData:(id)data;
++ (id)unwrapObject:(id)object;
++ (id)wrapObject:(id)object;
 @end
 
 @implementation ATXJSONHelper
 
-+ (id)wrapObject:(id)a3
++ (id)wrapObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:1];
+      null = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objectCopy encoding:1];
     }
 
     else
     {
-      v4 = v3;
+      null = objectCopy;
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
 
   return v5;
 }
 
-+ (id)unwrapObject:(id)a3
++ (id)unwrapObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,19 +44,19 @@
 
   else
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   return v4;
 }
 
-+ (id)unwrapData:(id)a3
++ (id)unwrapData:(id)data
 {
-  v3 = a3;
-  v4 = [ATXJSONHelper unwrapObject:v3];
+  dataCopy = data;
+  v4 = [ATXJSONHelper unwrapObject:dataCopy];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v3 dataUsingEncoding:1];
+    v5 = [dataCopy dataUsingEncoding:1];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface RTBluePOIAggregator
-- (BOOL)_isSinglePOI:(id)a3;
-- (RTBluePOIAggregator)initWithBluePOIMetricManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 platform:(id)a6;
-- (id)updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:(id)a3 collectMetrics:(BOOL)a4 error:(id *)a5;
-- (void)collectMetricsWithPreaggregatedResult:(id)a3 cachedResult:(id)a4 aggregatedResult:(id)a5 distance:(double)a6 timeDifference:(double)a7;
+- (BOOL)_isSinglePOI:(id)i;
+- (RTBluePOIAggregator)initWithBluePOIMetricManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator platform:(id)platform;
+- (id)updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:(id)result collectMetrics:(BOOL)metrics error:(id *)error;
+- (void)collectMetricsWithPreaggregatedResult:(id)result cachedResult:(id)cachedResult aggregatedResult:(id)aggregatedResult distance:(double)distance timeDifference:(double)difference;
 @end
 
 @implementation RTBluePOIAggregator
 
-- (RTBluePOIAggregator)initWithBluePOIMetricManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 platform:(id)a6
+- (RTBluePOIAggregator)initWithBluePOIMetricManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator platform:(id)platform
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  platformCopy = platform;
+  v15 = platformCopy;
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v12)
+  if (!defaultsManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v13)
+  if (!calculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v14)
+  if (!platformCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -77,10 +77,10 @@ LABEL_20:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_bluePOIMetricManager, a3);
-    objc_storeStrong(&v17->_defaultsManager, a4);
-    objc_storeStrong(&v17->_distanceCalculator, a5);
-    objc_storeStrong(&v17->_platform, a6);
+    objc_storeStrong(&v16->_bluePOIMetricManager, manager);
+    objc_storeStrong(&v17->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v17->_distanceCalculator, calculator);
+    objc_storeStrong(&v17->_platform, platform);
     v18 = objc_opt_new();
     maximumSingleShotConfidenceSeen = v17->_maximumSingleShotConfidenceSeen;
     v17->_maximumSingleShotConfidenceSeen = v18;
@@ -97,64 +97,64 @@ LABEL_20:
   }
 
   self = v17;
-  v21 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v21;
+  return selfCopy;
 }
 
-- (BOOL)_isSinglePOI:(id)a3
+- (BOOL)_isSinglePOI:(id)i
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [a3 poiConfidences];
-  v5 = [v4 allKeys];
-  v6 = [v3 setWithArray:v5];
+  poiConfidences = [i poiConfidences];
+  allKeys = [poiConfidences allKeys];
+  v6 = [v3 setWithArray:allKeys];
 
   [v6 removeObject:&unk_2845A0908];
-  LOBYTE(v4) = [v6 count] == 1;
+  LOBYTE(poiConfidences) = [v6 count] == 1;
 
-  return v4;
+  return poiConfidences;
 }
 
-- (id)updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:(id)a3 collectMetrics:(BOOL)a4 error:(id *)a5
+- (id)updateAndFetchAggregatedPOIEstimateWithLocalBluePOIResult:(id)result collectMetrics:(BOOL)metrics error:(id *)error
 {
-  v6 = a4;
+  metricsCopy = metrics;
   v145 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+  resultCopy = result;
+  currentPOIEstimate = [(RTBluePOIAggregator *)self currentPOIEstimate];
 
-  if (!v9)
+  if (!currentPOIEstimate)
   {
-    [(RTBluePOIAggregator *)self setCurrentPOIEstimate:v8];
-    v40 = [v8 poiConfidences];
-    v41 = [v40 mutableCopy];
+    [(RTBluePOIAggregator *)self setCurrentPOIEstimate:resultCopy];
+    poiConfidences = [resultCopy poiConfidences];
+    v41 = [poiConfidences mutableCopy];
     [(RTBluePOIAggregator *)self setMaximumSingleShotConfidenceSeen:v41];
 
-    if (v6)
+    if (metricsCopy)
     {
-      [(RTBluePOIAggregator *)self collectMetricsWithPreaggregatedResult:v8 cachedResult:0 aggregatedResult:v8 distance:-1.0 timeDifference:-1.0];
+      [(RTBluePOIAggregator *)self collectMetricsWithPreaggregatedResult:resultCopy cachedResult:0 aggregatedResult:resultCopy distance:-1.0 timeDifference:-1.0];
     }
 
-    v42 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+    currentPOIEstimate2 = [(RTBluePOIAggregator *)self currentPOIEstimate];
     goto LABEL_19;
   }
 
-  v10 = [v8 referenceLocation];
-  v11 = [v10 date];
-  if (!v11)
+  referenceLocation = [resultCopy referenceLocation];
+  date = [referenceLocation date];
+  if (!date)
   {
 
     goto LABEL_14;
   }
 
-  v12 = v11;
-  v127 = v6;
-  v13 = [(RTBluePOIAggregator *)self currentPOIEstimate];
-  v14 = [v13 referenceLocation];
-  v15 = [v14 date];
-  v16 = [v8 referenceLocation];
-  v17 = [v16 date];
-  [v15 timeIntervalSinceDate:v17];
+  v12 = date;
+  v127 = metricsCopy;
+  currentPOIEstimate3 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+  referenceLocation2 = [currentPOIEstimate3 referenceLocation];
+  date2 = [referenceLocation2 date];
+  referenceLocation3 = [resultCopy referenceLocation];
+  date3 = [referenceLocation3 date];
+  [date2 timeIntervalSinceDate:date3];
   v19 = v18;
 
   if (v19 > 0.0)
@@ -166,40 +166,40 @@ LABEL_14:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v144 = v8;
+        v144 = resultCopy;
         _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "RTBluePOIAggregator out of order query %@", buf, 0xCu);
       }
     }
 
-    v42 = v8;
+    currentPOIEstimate2 = resultCopy;
 LABEL_19:
-    v44 = v42;
+    currentPOIEstimate9 = currentPOIEstimate2;
     goto LABEL_20;
   }
 
   v20 = objc_opt_new();
   v21 = MEMORY[0x277CBEAC0];
-  v22 = [v8 aoiConfidences];
-  v126 = [v21 dictionaryWithDictionary:v22];
+  aoiConfidences = [resultCopy aoiConfidences];
+  v126 = [v21 dictionaryWithDictionary:aoiConfidences];
 
-  v23 = [(RTBluePOIAggregator *)self distanceCalculator];
-  v24 = [v8 referenceLocation];
-  v25 = [(RTBluePOIAggregator *)self currentPOIEstimate];
-  v26 = [v25 referenceLocation];
-  [v23 distanceFromLocation:v24 toLocation:v26 error:a5];
+  distanceCalculator = [(RTBluePOIAggregator *)self distanceCalculator];
+  referenceLocation4 = [resultCopy referenceLocation];
+  currentPOIEstimate4 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+  referenceLocation5 = [currentPOIEstimate4 referenceLocation];
+  [distanceCalculator distanceFromLocation:referenceLocation4 toLocation:referenceLocation5 error:error];
   v28 = v27;
 
-  v29 = [v8 referenceLocation];
-  v30 = [v29 date];
-  v31 = [(RTBluePOIAggregator *)self currentPOIEstimate];
-  v32 = [v31 referenceLocation];
-  v33 = [v32 date];
-  [v30 timeIntervalSinceDate:v33];
+  referenceLocation6 = [resultCopy referenceLocation];
+  date4 = [referenceLocation6 date];
+  currentPOIEstimate5 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+  referenceLocation7 = [currentPOIEstimate5 referenceLocation];
+  date5 = [referenceLocation7 date];
+  [date4 timeIntervalSinceDate:date5];
   v35 = v34;
 
-  v131 = v8;
-  v132 = self;
-  if ([(RTBluePOIAggregator *)self _isSinglePOI:v8])
+  v131 = resultCopy;
+  selfCopy = self;
+  if ([(RTBluePOIAggregator *)self _isSinglePOI:resultCopy])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -207,28 +207,28 @@ LABEL_19:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v144 = v8;
+        v144 = resultCopy;
         _os_log_impl(&dword_2304B3000, v36, OS_LOG_TYPE_INFO, "RTBluePOIAggregator Single POI %@", buf, 0xCu);
       }
     }
 
     v37 = MEMORY[0x277CBEB38];
-    v38 = [v8 poiConfidences];
-    [v37 dictionaryWithDictionary:v38];
+    poiConfidences2 = [resultCopy poiConfidences];
+    [v37 dictionaryWithDictionary:poiConfidences2];
     v20 = v39 = v20;
     goto LABEL_58;
   }
 
   v46 = MEMORY[0x277CBEB58];
-  v47 = [v8 poiConfidences];
-  v48 = [v47 allKeys];
-  v49 = [v46 setWithArray:v48];
+  poiConfidences3 = [resultCopy poiConfidences];
+  allKeys = [poiConfidences3 allKeys];
+  v49 = [v46 setWithArray:allKeys];
 
   v50 = MEMORY[0x277CBEB58];
-  v51 = [(RTBluePOIAggregator *)self currentPOIEstimate];
-  v52 = [v51 poiConfidences];
-  v53 = [v52 allKeys];
-  v54 = [v50 setWithArray:v53];
+  currentPOIEstimate6 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+  poiConfidences4 = [currentPOIEstimate6 poiConfidences];
+  allKeys2 = [poiConfidences4 allKeys];
+  v54 = [v50 setWithArray:allKeys2];
 
   v123 = v49;
   [v54 unionSet:v49];
@@ -263,21 +263,21 @@ LABEL_19:
         }
 
         v64 = *(*(&v137 + 1) + 8 * i);
-        v65 = [(RTBluePOIAggregator *)self currentPOIEstimate];
-        v66 = [v65 poiConfidences];
-        v67 = [v66 objectForKeyedSubscript:v64];
+        currentPOIEstimate7 = [(RTBluePOIAggregator *)self currentPOIEstimate];
+        poiConfidences5 = [currentPOIEstimate7 poiConfidences];
+        v67 = [poiConfidences5 objectForKeyedSubscript:v64];
         [v67 doubleValue];
         v69 = v68;
 
         v70 = v59 + (v69 - v59) * v60;
-        v71 = [v8 poiConfidences];
-        v72 = [v71 objectForKeyedSubscript:v64];
+        poiConfidences6 = [resultCopy poiConfidences];
+        v72 = [poiConfidences6 objectForKeyedSubscript:v64];
         [v72 doubleValue];
         v74 = v73;
 
         v75 = MEMORY[0x277CCABB0];
-        v76 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
-        v77 = [v76 objectForKeyedSubscript:v64];
+        maximumSingleShotConfidenceSeen = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
+        v77 = [maximumSingleShotConfidenceSeen objectForKeyedSubscript:v64];
         [v77 doubleValue];
         v79 = v78;
 
@@ -294,9 +294,9 @@ LABEL_19:
         v81 = [v75 numberWithDouble:v80];
         [v130 setObject:v81 forKeyedSubscript:v64];
 
-        v82 = [v8 poiConfidences];
-        v83 = [v82 allKeys];
-        v84 = [v83 count];
+        poiConfidences7 = [resultCopy poiConfidences];
+        allKeys3 = [poiConfidences7 allKeys];
+        v84 = [allKeys3 count];
 
         if (v84)
         {
@@ -342,8 +342,8 @@ LABEL_19:
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v89 = [v20 allKeys];
-  v90 = [v89 countByEnumeratingWithState:&v133 objects:v141 count:16];
+  allKeys4 = [v20 allKeys];
+  v90 = [allKeys4 countByEnumeratingWithState:&v133 objects:v141 count:16];
   if (v90)
   {
     v91 = v90;
@@ -355,7 +355,7 @@ LABEL_19:
       {
         if (*v134 != v92)
         {
-          objc_enumerationMutation(v89);
+          objc_enumerationMutation(allKeys4);
         }
 
         v95 = *(*(&v133 + 1) + 8 * j);
@@ -365,23 +365,23 @@ LABEL_19:
 
         if ([v55 unsignedLongLongValue])
         {
-          v99 = [v95 unsignedLongLongValue];
-          if (v99 == [v55 unsignedLongLongValue])
+          unsignedLongLongValue = [v95 unsignedLongLongValue];
+          if (unsignedLongLongValue == [v55 unsignedLongLongValue])
           {
-            v100 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
-            v101 = [v100 objectForKeyedSubscript:v95];
+            maximumSingleShotConfidenceSeen2 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
+            v101 = [maximumSingleShotConfidenceSeen2 objectForKeyedSubscript:v95];
             [v101 doubleValue];
             v103 = v102;
 
             if (v98 > v103)
             {
-              v104 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
-              v105 = [v104 objectForKeyedSubscript:v95];
+              maximumSingleShotConfidenceSeen3 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
+              v105 = [maximumSingleShotConfidenceSeen3 objectForKeyedSubscript:v95];
               [v105 doubleValue];
               v93 = v98 - v106;
 
-              v107 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
-              v108 = [v107 objectForKeyedSubscript:v95];
+              maximumSingleShotConfidenceSeen4 = [(RTBluePOIAggregator *)self maximumSingleShotConfidenceSeen];
+              v108 = [maximumSingleShotConfidenceSeen4 objectForKeyedSubscript:v95];
               [v108 doubleValue];
               v98 = v109;
             }
@@ -392,12 +392,12 @@ LABEL_19:
         [v20 setObject:v110 forKeyedSubscript:v95];
       }
 
-      v91 = [v89 countByEnumeratingWithState:&v133 objects:v141 count:16];
+      v91 = [allKeys4 countByEnumeratingWithState:&v133 objects:v141 count:16];
     }
 
     while (v91);
 
-    v8 = v131;
+    resultCopy = v131;
     v35 = v124;
     v39 = obj;
     if (v93 <= 0.0)
@@ -406,10 +406,10 @@ LABEL_19:
     }
 
     v111 = MEMORY[0x277CCABB0];
-    v89 = [v20 objectForKeyedSubscript:&unk_2845A0908];
-    [v89 doubleValue];
-    v113 = [v111 numberWithDouble:v93 + v112];
-    [v20 setObject:v113 forKeyedSubscript:&unk_2845A0908];
+    allKeys4 = [v20 objectForKeyedSubscript:&unk_2845A0908];
+    [allKeys4 doubleValue];
+    v112 = [v111 numberWithDouble:v93 + v112];
+    [v20 setObject:v112 forKeyedSubscript:&unk_2845A0908];
   }
 
   else
@@ -419,55 +419,55 @@ LABEL_19:
 
 LABEL_57:
   v28 = v125;
-  v38 = v123;
+  poiConfidences2 = v123;
 LABEL_58:
 
   v114 = objc_alloc(MEMORY[0x277D01158]);
-  v115 = [v8 distanceToNearestAOILowerBound];
-  v116 = [v115 copy];
-  v117 = [v8 referenceLocation];
-  v118 = [v117 copy];
-  v119 = [v8 queryTime];
-  v120 = [v119 copy];
+  distanceToNearestAOILowerBound = [resultCopy distanceToNearestAOILowerBound];
+  v116 = [distanceToNearestAOILowerBound copy];
+  referenceLocation8 = [resultCopy referenceLocation];
+  v118 = [referenceLocation8 copy];
+  queryTime = [resultCopy queryTime];
+  v120 = [queryTime copy];
   v121 = [v114 initWithPOIConfidences:v20 aoiConfidences:v126 distanceToNearestAOILowerBound:v116 referenceLocation:v118 queryTime:v120];
 
   if (v127)
   {
-    v122 = [(RTBluePOIAggregator *)v132 currentPOIEstimate];
-    [(RTBluePOIAggregator *)v132 collectMetricsWithPreaggregatedResult:v8 cachedResult:v122 aggregatedResult:v121 distance:v28 timeDifference:v35];
+    currentPOIEstimate8 = [(RTBluePOIAggregator *)selfCopy currentPOIEstimate];
+    [(RTBluePOIAggregator *)selfCopy collectMetricsWithPreaggregatedResult:resultCopy cachedResult:currentPOIEstimate8 aggregatedResult:v121 distance:v28 timeDifference:v35];
   }
 
-  [(RTBluePOIAggregator *)v132 setCurrentPOIEstimate:v121];
-  v44 = [(RTBluePOIAggregator *)v132 currentPOIEstimate];
+  [(RTBluePOIAggregator *)selfCopy setCurrentPOIEstimate:v121];
+  currentPOIEstimate9 = [(RTBluePOIAggregator *)selfCopy currentPOIEstimate];
 
 LABEL_20:
 
-  return v44;
+  return currentPOIEstimate9;
 }
 
-- (void)collectMetricsWithPreaggregatedResult:(id)a3 cachedResult:(id)a4 aggregatedResult:(id)a5 distance:(double)a6 timeDifference:(double)a7
+- (void)collectMetricsWithPreaggregatedResult:(id)result cachedResult:(id)cachedResult aggregatedResult:(id)aggregatedResult distance:(double)distance timeDifference:(double)difference
 {
-  v100 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v98 = vcvtpd_u64_f64(a6);
+  resultCopy = result;
+  cachedResultCopy = cachedResult;
+  aggregatedResultCopy = aggregatedResult;
+  bluePOIMetricManager = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v98 = vcvtpd_u64_f64(distance);
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v98];
-  [v14 setEventMetricsValue:v15 forKey:@"aggregationDistancePOI"];
+  [bluePOIMetricManager setEventMetricsValue:v15 forKey:@"aggregationDistancePOI"];
 
-  v16 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v99 = fmin(ceil(a7), 3600.0);
+  bluePOIMetricManager2 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v99 = fmin(ceil(difference), 3600.0);
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v99];
-  [v16 setEventMetricsValue:v17 forKey:@"aggregationDurationPOI"];
+  [bluePOIMetricManager2 setEventMetricsValue:v17 forKey:@"aggregationDurationPOI"];
 
-  v18 = [v100 mostConfidentPOI];
-  v19 = v12;
-  if (v18)
+  mostConfidentPOI = [resultCopy mostConfidentPOI];
+  v19 = cachedResultCopy;
+  if (mostConfidentPOI)
   {
-    v20 = [v100 mostConfidentPOI];
-    v21 = [v100 poiConfidences];
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
-    v23 = [v21 objectForKeyedSubscript:v22];
+    mostConfidentPOI2 = [resultCopy mostConfidentPOI];
+    poiConfidences = [resultCopy poiConfidences];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentPOI2];
+    v23 = [poiConfidences objectForKeyedSubscript:v22];
     [v23 doubleValue];
     v25 = v24;
 
@@ -476,51 +476,51 @@ LABEL_20:
 
   else
   {
-    v20 = 0;
+    mostConfidentPOI2 = 0;
     v26 = -10000.0;
   }
 
-  v27 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v28 = [MEMORY[0x277CCABB0] numberWithBool:v18 != 0];
-  [v27 setEventMetricsValue:v28 forKey:@"preAggregatedInferenceAvailablePOI"];
+  bluePOIMetricManager3 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v28 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentPOI != 0];
+  [bluePOIMetricManager3 setEventMetricsValue:v28 forKey:@"preAggregatedInferenceAvailablePOI"];
 
-  v29 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager4 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v30 = [MEMORY[0x277CCABB0] numberWithDouble:round(v26)];
-  [v29 setEventMetricsValue:v30 forKey:@"preAggregationConfidencePOI"];
+  [bluePOIMetricManager4 setEventMetricsValue:v30 forKey:@"preAggregationConfidencePOI"];
 
-  v31 = [v12 mostConfidentPOI];
-  if (v31)
+  mostConfidentPOI3 = [cachedResultCopy mostConfidentPOI];
+  if (mostConfidentPOI3)
   {
-    v32 = [v12 mostConfidentPOI];
-    v33 = [v12 poiConfidences];
-    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32];
-    v35 = [v33 objectForKeyedSubscript:v34];
+    mostConfidentPOI4 = [cachedResultCopy mostConfidentPOI];
+    poiConfidences2 = [cachedResultCopy poiConfidences];
+    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentPOI4];
+    v35 = [poiConfidences2 objectForKeyedSubscript:v34];
     [v35 doubleValue];
   }
 
   else
   {
-    v32 = 0;
+    mostConfidentPOI4 = 0;
   }
 
-  v36 = v31 != 0;
-  v37 = v20 == v32;
-  v38 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v36 = mostConfidentPOI3 != 0;
+  v37 = mostConfidentPOI2 == mostConfidentPOI4;
+  bluePOIMetricManager5 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v39 = [MEMORY[0x277CCABB0] numberWithBool:v36];
-  [v38 setEventMetricsValue:v39 forKey:@"cachedInferenceAvailablePOI"];
+  [bluePOIMetricManager5 setEventMetricsValue:v39 forKey:@"cachedInferenceAvailablePOI"];
 
-  v40 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager6 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v41 = [MEMORY[0x277CCABB0] numberWithBool:v37];
-  [v40 setEventMetricsValue:v41 forKey:@"preAggregationMatchesCachePOI"];
+  [bluePOIMetricManager6 setEventMetricsValue:v41 forKey:@"preAggregationMatchesCachePOI"];
 
-  v42 = [v13 mostConfidentPOI];
+  mostConfidentPOI5 = [aggregatedResultCopy mostConfidentPOI];
   v43 = -10000.0;
-  if (v42)
+  if (mostConfidentPOI5)
   {
-    v44 = [v13 mostConfidentPOI];
-    v45 = [v13 poiConfidences];
-    v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v44];
-    v47 = [v45 objectForKeyedSubscript:v46];
+    mostConfidentPOI6 = [aggregatedResultCopy mostConfidentPOI];
+    poiConfidences3 = [aggregatedResultCopy poiConfidences];
+    v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentPOI6];
+    v47 = [poiConfidences3 objectForKeyedSubscript:v46];
     [v47 doubleValue];
     v49 = v48;
 
@@ -529,39 +529,39 @@ LABEL_20:
 
   else
   {
-    v44 = 0;
+    mostConfidentPOI6 = 0;
     v50 = -10000.0;
   }
 
   v51 = v19;
-  v52 = v42 != 0;
-  v53 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v52 = mostConfidentPOI5 != 0;
+  bluePOIMetricManager7 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v54 = [MEMORY[0x277CCABB0] numberWithBool:v52];
-  [v53 setEventMetricsValue:v54 forKey:@"postAggregatedInferenceAvailablePOI"];
+  [bluePOIMetricManager7 setEventMetricsValue:v54 forKey:@"postAggregatedInferenceAvailablePOI"];
 
-  v55 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v56 = [MEMORY[0x277CCABB0] numberWithBool:v20 == v44];
-  [v55 setEventMetricsValue:v56 forKey:@"preAggregationMatchesPostAggregationPOI"];
+  bluePOIMetricManager8 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v56 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentPOI2 == mostConfidentPOI6];
+  [bluePOIMetricManager8 setEventMetricsValue:v56 forKey:@"preAggregationMatchesPostAggregationPOI"];
 
-  v57 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager9 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v58 = [MEMORY[0x277CCABB0] numberWithDouble:round(v50)];
-  [v57 setEventMetricsValue:v58 forKey:@"postAggregationConfidencePOI"];
+  [bluePOIMetricManager9 setEventMetricsValue:v58 forKey:@"postAggregationConfidencePOI"];
 
-  v59 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager10 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v98];
-  [v59 setEventMetricsValue:v60 forKey:@"aggregationDistanceAOI"];
+  [bluePOIMetricManager10 setEventMetricsValue:v60 forKey:@"aggregationDistanceAOI"];
 
-  v61 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager11 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v99];
-  [v61 setEventMetricsValue:v62 forKey:@"aggregationDurationAOI"];
+  [bluePOIMetricManager11 setEventMetricsValue:v62 forKey:@"aggregationDurationAOI"];
 
-  v63 = [v100 mostConfidentAOI];
-  if (v63)
+  mostConfidentAOI = [resultCopy mostConfidentAOI];
+  if (mostConfidentAOI)
   {
-    v64 = [v100 mostConfidentAOI];
-    v65 = [v100 aoiConfidences];
-    v66 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v64];
-    v67 = [v65 objectForKeyedSubscript:v66];
+    mostConfidentAOI2 = [resultCopy mostConfidentAOI];
+    aoiConfidences = [resultCopy aoiConfidences];
+    v66 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentAOI2];
+    v67 = [aoiConfidences objectForKeyedSubscript:v66];
     [v67 doubleValue];
     v69 = v68;
 
@@ -570,47 +570,47 @@ LABEL_20:
 
   else
   {
-    v64 = 0;
+    mostConfidentAOI2 = 0;
   }
 
-  v70 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v71 = [MEMORY[0x277CCABB0] numberWithBool:v63 != 0];
-  [v70 setEventMetricsValue:v71 forKey:@"preAggregatedInferenceAvailableAOI"];
+  bluePOIMetricManager12 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v71 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentAOI != 0];
+  [bluePOIMetricManager12 setEventMetricsValue:v71 forKey:@"preAggregatedInferenceAvailableAOI"];
 
-  v72 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager13 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v73 = [MEMORY[0x277CCABB0] numberWithDouble:round(v43)];
-  [v72 setEventMetricsValue:v73 forKey:@"preAggregationConfidenceAOI"];
+  [bluePOIMetricManager13 setEventMetricsValue:v73 forKey:@"preAggregationConfidenceAOI"];
 
-  v74 = [v51 mostConfidentAOI];
-  if (v74)
+  mostConfidentAOI3 = [v51 mostConfidentAOI];
+  if (mostConfidentAOI3)
   {
-    v75 = [v51 mostConfidentAOI];
-    v76 = [v51 aoiConfidences];
-    v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v75];
-    v78 = [v76 objectForKeyedSubscript:v77];
+    mostConfidentAOI4 = [v51 mostConfidentAOI];
+    aoiConfidences2 = [v51 aoiConfidences];
+    v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentAOI4];
+    v78 = [aoiConfidences2 objectForKeyedSubscript:v77];
     [v78 doubleValue];
   }
 
   else
   {
-    v75 = 0;
+    mostConfidentAOI4 = 0;
   }
 
-  v79 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v80 = [MEMORY[0x277CCABB0] numberWithBool:v74 != 0];
-  [v79 setEventMetricsValue:v80 forKey:@"cachedInferenceAvailableAOI"];
+  bluePOIMetricManager14 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v80 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentAOI3 != 0];
+  [bluePOIMetricManager14 setEventMetricsValue:v80 forKey:@"cachedInferenceAvailableAOI"];
 
-  v81 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v82 = [MEMORY[0x277CCABB0] numberWithBool:v64 == v75];
-  [v81 setEventMetricsValue:v82 forKey:@"preAggregationMatchesCacheAOI"];
+  bluePOIMetricManager15 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v82 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentAOI2 == mostConfidentAOI4];
+  [bluePOIMetricManager15 setEventMetricsValue:v82 forKey:@"preAggregationMatchesCacheAOI"];
 
-  v83 = [v13 mostConfidentAOI];
-  if (v83)
+  mostConfidentAOI5 = [aggregatedResultCopy mostConfidentAOI];
+  if (mostConfidentAOI5)
   {
-    v84 = [v13 mostConfidentAOI];
-    v85 = [v13 aoiConfidences];
-    v86 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v84];
-    v87 = [v85 objectForKeyedSubscript:v86];
+    mostConfidentAOI6 = [aggregatedResultCopy mostConfidentAOI];
+    aoiConfidences3 = [aggregatedResultCopy aoiConfidences];
+    v86 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mostConfidentAOI6];
+    v87 = [aoiConfidences3 objectForKeyedSubscript:v86];
     [v87 doubleValue];
     v89 = v88;
 
@@ -619,22 +619,22 @@ LABEL_20:
 
   else
   {
-    v84 = 0;
+    mostConfidentAOI6 = 0;
     v90 = -10000.0;
   }
 
-  v91 = v64 == v84;
-  v92 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
-  v93 = [MEMORY[0x277CCABB0] numberWithBool:v83 != 0];
-  [v92 setEventMetricsValue:v93 forKey:@"postAggregatedInferenceAvailableAOI"];
+  v91 = mostConfidentAOI2 == mostConfidentAOI6;
+  bluePOIMetricManager16 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  v93 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentAOI5 != 0];
+  [bluePOIMetricManager16 setEventMetricsValue:v93 forKey:@"postAggregatedInferenceAvailableAOI"];
 
-  v94 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager17 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v95 = [MEMORY[0x277CCABB0] numberWithBool:v91];
-  [v94 setEventMetricsValue:v95 forKey:@"preAggregationMatchesPostAggregationAOI"];
+  [bluePOIMetricManager17 setEventMetricsValue:v95 forKey:@"preAggregationMatchesPostAggregationAOI"];
 
-  v96 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
+  bluePOIMetricManager18 = [(RTBluePOIAggregator *)self bluePOIMetricManager];
   v97 = [MEMORY[0x277CCABB0] numberWithDouble:round(v90)];
-  [v96 setEventMetricsValue:v97 forKey:@"postAggregationConfidenceAOI"];
+  [bluePOIMetricManager18 setEventMetricsValue:v97 forKey:@"postAggregationConfidenceAOI"];
 }
 
 @end

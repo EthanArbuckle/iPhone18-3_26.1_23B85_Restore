@@ -1,20 +1,20 @@
 @interface NTKUtilityFaceTypefaceEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForLocale:(id)a3 device:(id)a4;
-+ (id)localeForTypeface:(unint64_t)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForLocale:(id)locale device:(id)device;
++ (id)localeForTypeface:(unint64_t)typeface;
 - (id)_valueToFaceBundleStringDict;
 - (id)locale;
 @end
 
 @implementation NTKUtilityFaceTypefaceEditOption
 
-+ (id)defaultOptionForLocale:(id)a3 device:(id)a4
++ (id)defaultOptionForLocale:(id)locale device:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CLKLocaleCurrentNumberSystem();
   if (v6 == 2)
   {
@@ -26,48 +26,48 @@
     v7 = v6 == 1;
   }
 
-  v8 = [a1 optionWithTypeface:v7 forDevice:v5];
+  v8 = [self optionWithTypeface:v7 forDevice:deviceCopy];
 
   return v8;
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [NTKUtilityFaceTypefaceEditOption _nameLocalizationKeyForValue:a3 forDevice:a4];
+  v4 = [NTKUtilityFaceTypefaceEditOption _nameLocalizationKeyForValue:value forDevice:device];
   v5 = [NTKUtilityFaceTypefaceEditOption localizedStringForKey:v4];
 
   return v5;
 }
 
-+ (id)localeForTypeface:(unint64_t)a3
++ (id)localeForTypeface:(unint64_t)typeface
 {
-  if (a3 <= 0xE)
+  if (typeface <= 0xE)
   {
-    a1 = [NSLocale localeWithLocaleIdentifier:off_10640[a3], v3];
+    self = [NSLocale localeWithLocaleIdentifier:off_10640[typeface], v3];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6168;
   v5[3] = &unk_10600;
-  v5[4] = a1;
-  v3 = sub_6168(v5, a3);
+  v5[4] = self;
+  v3 = sub_6168(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = _EnumValueRange();
   if (NTKShowIndicScriptNumerals())
   {
-    v5 = [NTKUtilityFaceTypefaceEditOption _orderedIndicNumeralsEditOptionsForDevice:v3];
+    v5 = [NTKUtilityFaceTypefaceEditOption _orderedIndicNumeralsEditOptionsForDevice:deviceCopy];
     v6 = [v4 arrayByAddingObjectsFromArray:v5];
 
     v4 = v6;
@@ -76,29 +76,29 @@
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 0xE)
+  if (value > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_106B8[a3];
+    return off_106B8[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = _os_feature_enabled_impl();
   if (v6)
   {
-    v6 = [v5 supportsPDRCapability:270936181];
+    v6 = [deviceCopy supportsPDRCapability:270936181];
   }
 
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       v7 = @"EDIT_OPTION_LABEL_UTILITY_TYPEFACE_WESTERN_ARABIC_COMPATIBILITY";
@@ -180,9 +180,9 @@ LABEL_15:
 
 - (id)locale
 {
-  v2 = [(NTKUtilityFaceTypefaceEditOption *)self typeface];
+  typeface = [(NTKUtilityFaceTypefaceEditOption *)self typeface];
 
-  return [NTKUtilityFaceTypefaceEditOption localeForTypeface:v2];
+  return [NTKUtilityFaceTypefaceEditOption localeForTypeface:typeface];
 }
 
 @end

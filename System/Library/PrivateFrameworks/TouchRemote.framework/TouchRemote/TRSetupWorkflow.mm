@@ -1,6 +1,6 @@
 @interface TRSetupWorkflow
-- (TRSetupWorkflow)initWithNearbyDevice:(id)a3 presentingViewController:(id)a4;
-- (void)_abortSetupWithErrorCode:(int64_t)a3 userInfo:(id)a4;
+- (TRSetupWorkflow)initWithNearbyDevice:(id)device presentingViewController:(id)controller;
+- (void)_abortSetupWithErrorCode:(int64_t)code userInfo:(id)info;
 - (void)_performActivationOperation;
 - (void)_performAuthenticationOperation;
 - (void)_performCompletionOperation;
@@ -14,18 +14,18 @@
 
 @implementation TRSetupWorkflow
 
-- (TRSetupWorkflow)initWithNearbyDevice:(id)a3 presentingViewController:(id)a4
+- (TRSetupWorkflow)initWithNearbyDevice:(id)device presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = TRSetupWorkflow;
   v9 = [(TRSetupWorkflow *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nearbyDevice, a3);
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v9->_nearbyDevice, device);
+    objc_storeStrong(&v10->_presentingViewController, controller);
     v10->_state = 1;
     v11 = objc_alloc_init(TROperationQueue);
     operationQueue = v10->_operationQueue;
@@ -48,23 +48,23 @@
   [(TRSetupWorkflow *)self setSession:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(TRSetupWorkflow *)self session];
+  session = [(TRSetupWorkflow *)self session];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __24__TRSetupWorkflow_start__block_invoke;
   v10[3] = &unk_279DCEF68;
   objc_copyWeak(&v11, &location);
-  [v4 setDisconnectHandler:v10];
+  [session setDisconnectHandler:v10];
 
   v5 = objc_alloc_init(TRNearbyDeviceScanner);
-  v6 = [(TRSetupWorkflow *)self session];
+  session2 = [(TRSetupWorkflow *)self session];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __24__TRSetupWorkflow_start__block_invoke_2;
   v8[3] = &unk_279DCEF90;
   objc_copyWeak(&v9, &location);
   v8[4] = self;
-  [(TRNearbyDeviceScanner *)v5 openSession:v6 withCompletion:v8];
+  [(TRNearbyDeviceScanner *)v5 openSession:session2 withCompletion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -163,8 +163,8 @@ LABEL_16:
     }
   }
 
-  v4 = [(TRSetupWorkflow *)self operationQueue];
-  [v4 invalidate];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue invalidate];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -172,8 +172,8 @@ LABEL_16:
 - (void)_performHandshakeOperation
 {
   v3 = [TRHandshakeOperation alloc];
-  v4 = [(TRSetupWorkflow *)self session];
-  v5 = [(TROperation *)v3 initWithSession:v4];
+  session = [(TRSetupWorkflow *)self session];
+  v5 = [(TROperation *)v3 initWithSession:session];
 
   [(TRHandshakeOperation *)v5 setProtocolVersion:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -182,23 +182,23 @@ LABEL_16:
   v7[3] = &unk_279DCEBF8;
   v7[4] = self;
   [(TRHandshakeOperation *)v5 setCompletionBlock:v7];
-  v6 = [(TRSetupWorkflow *)self operationQueue];
-  [v6 addOperation:v5];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue addOperation:v5];
 }
 
 - (void)_performConfigurationOperation
 {
-  v3 = [(TRSetupWorkflow *)self configurationStageStartedHandler];
+  configurationStageStartedHandler = [(TRSetupWorkflow *)self configurationStageStartedHandler];
 
-  if (v3)
+  if (configurationStageStartedHandler)
   {
-    v4 = [(TRSetupWorkflow *)self configurationStageStartedHandler];
-    v4[2]();
+    configurationStageStartedHandler2 = [(TRSetupWorkflow *)self configurationStageStartedHandler];
+    configurationStageStartedHandler2[2]();
   }
 
   v5 = [TRSetupConfigurationOperation alloc];
-  v6 = [(TRSetupWorkflow *)self session];
-  v7 = [(TROperation *)v5 initWithSession:v6];
+  session = [(TRSetupWorkflow *)self session];
+  v7 = [(TROperation *)v5 initWithSession:session];
 
   objc_initWeak(&location, v7);
   v9[0] = MEMORY[0x277D85DD0];
@@ -208,8 +208,8 @@ LABEL_16:
   objc_copyWeak(&v10, &location);
   v9[4] = self;
   [(TRSetupConfigurationOperation *)v7 setCompletionBlock:v9];
-  v8 = [(TRSetupWorkflow *)self operationQueue];
-  [v8 addOperation:v7];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue addOperation:v7];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -251,8 +251,8 @@ void __49__TRSetupWorkflow__performConfigurationOperation__block_invoke(uint64_t
 - (void)_performNetworkOperation
 {
   v3 = [TRNetworkOperation alloc];
-  v4 = [(TRSetupWorkflow *)self session];
-  v5 = [(TROperation *)v3 initWithSession:v4];
+  session = [(TRSetupWorkflow *)self session];
+  v5 = [(TROperation *)v3 initWithSession:session];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -266,7 +266,7 @@ void __49__TRSetupWorkflow__performConfigurationOperation__block_invoke(uint64_t
   v9 = __43__TRSetupWorkflow__performNetworkOperation__block_invoke_2;
   v10 = &unk_279DCEFB8;
   objc_copyWeak(&v12, &location);
-  v11 = self;
+  selfCopy = self;
   [(TRNetworkOperation *)v5 setCompletionBlock:&v7];
   v6 = [(TRSetupWorkflow *)self operationQueue:v7];
   [v6 addOperation:v5];
@@ -307,17 +307,17 @@ void __43__TRSetupWorkflow__performNetworkOperation__block_invoke_2(uint64_t a1)
 
 - (void)_performActivationOperation
 {
-  v3 = [(TRSetupWorkflow *)self activationStageStartedHandler];
+  activationStageStartedHandler = [(TRSetupWorkflow *)self activationStageStartedHandler];
 
-  if (v3)
+  if (activationStageStartedHandler)
   {
-    v4 = [(TRSetupWorkflow *)self activationStageStartedHandler];
-    v4[2]();
+    activationStageStartedHandler2 = [(TRSetupWorkflow *)self activationStageStartedHandler];
+    activationStageStartedHandler2[2]();
   }
 
   v5 = [TRActivationOperation alloc];
-  v6 = [(TRSetupWorkflow *)self session];
-  v7 = [(TROperation *)v5 initWithSession:v6];
+  session = [(TRSetupWorkflow *)self session];
+  v7 = [(TROperation *)v5 initWithSession:session];
 
   objc_initWeak(&location, v7);
   v9[0] = MEMORY[0x277D85DD0];
@@ -327,8 +327,8 @@ void __43__TRSetupWorkflow__performNetworkOperation__block_invoke_2(uint64_t a1)
   objc_copyWeak(&v10, &location);
   v9[4] = self;
   [(TRActivationOperation *)v7 setCompletionBlock:v9];
-  v8 = [(TRSetupWorkflow *)self operationQueue];
-  [v8 addOperation:v7];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue addOperation:v7];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -356,14 +356,14 @@ void __46__TRSetupWorkflow__performActivationOperation__block_invoke(uint64_t a1
 - (void)_performAuthenticationOperation
 {
   v3 = [TRAuthenticationOperation alloc];
-  v4 = [(TRSetupWorkflow *)self session];
-  v5 = [(TROperation *)v3 initWithSession:v4];
+  session = [(TRSetupWorkflow *)self session];
+  v5 = [(TROperation *)v3 initWithSession:session];
 
-  v6 = [(TRSetupWorkflow *)self unauthenticatedAccountServices];
-  [(TRAuthenticationOperation *)v5 setTargetedServices:v6];
+  unauthenticatedAccountServices = [(TRSetupWorkflow *)self unauthenticatedAccountServices];
+  [(TRAuthenticationOperation *)v5 setTargetedServices:unauthenticatedAccountServices];
 
-  v7 = [(TRSetupWorkflow *)self presentingViewController];
-  [(TRAuthenticationOperation *)v5 setPresentingViewController:v7];
+  presentingViewController = [(TRSetupWorkflow *)self presentingViewController];
+  [(TRAuthenticationOperation *)v5 setPresentingViewController:presentingViewController];
 
   objc_initWeak(&location, v5);
   v9[0] = MEMORY[0x277D85DD0];
@@ -373,8 +373,8 @@ void __46__TRSetupWorkflow__performActivationOperation__block_invoke(uint64_t a1
   objc_copyWeak(&v10, &location);
   v9[4] = self;
   [(TRAuthenticationOperation *)v5 setCompletionBlock:v9];
-  v8 = [(TRSetupWorkflow *)self operationQueue];
-  [v8 addOperation:v5];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue addOperation:v5];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -411,8 +411,8 @@ void __50__TRSetupWorkflow__performAuthenticationOperation__block_invoke(uint64_
   }
 
   v4 = [TRCompletionOperation alloc];
-  v5 = [(TRSetupWorkflow *)self session];
-  v6 = [(TROperation *)v4 initWithSession:v5];
+  session = [(TRSetupWorkflow *)self session];
+  v6 = [(TROperation *)v4 initWithSession:session];
 
   [(TRCompletionOperation *)v6 setSuccess:1];
   objc_initWeak(buf, self);
@@ -422,8 +422,8 @@ void __50__TRSetupWorkflow__performAuthenticationOperation__block_invoke(uint64_
   v9[3] = &unk_279DCEF68;
   objc_copyWeak(&v10, buf);
   [(TRCompletionOperation *)v6 setCompletionBlock:v9];
-  v7 = [(TRSetupWorkflow *)self operationQueue];
-  [v7 addOperation:v6];
+  operationQueue = [(TRSetupWorkflow *)self operationQueue];
+  [operationQueue addOperation:v6];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -452,10 +452,10 @@ void __46__TRSetupWorkflow__performCompletionOperation__block_invoke(uint64_t a1
   [WeakRetained setSession:0];
 }
 
-- (void)_abortSetupWithErrorCode:(int64_t)a3 userInfo:(id)a4
+- (void)_abortSetupWithErrorCode:(int64_t)code userInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   if ([(TRSetupWorkflow *)self state]== 2)
   {
     [(TRSetupWorkflow *)self setState:3];
@@ -467,59 +467,59 @@ void __46__TRSetupWorkflow__performCompletionOperation__block_invoke(uint64_t a1
         *buf = 136315394;
         v22 = "[TRSetupWorkflow _abortSetupWithErrorCode:userInfo:]";
         v23 = 2048;
-        v24 = a3;
+        codeCopy = code;
         _os_log_impl(&dword_26F2A2000, v7, OS_LOG_TYPE_DEFAULT, "%s Aborting setup with error code: %ld", buf, 0x16u);
       }
     }
 
-    if (a3 == -10001)
+    if (code == -10001)
     {
       [(TRSetupWorkflow *)self _releaseHandlers];
-      v8 = -10001;
+      codeCopy2 = -10001;
 LABEL_15:
       v12 = [TRCompletionOperation alloc];
-      v13 = [(TRSetupWorkflow *)self session];
-      v14 = [(TROperation *)v12 initWithSession:v13];
+      session = [(TRSetupWorkflow *)self session];
+      v14 = [(TROperation *)v12 initWithSession:session];
 
       [(TRCompletionOperation *)v14 setSuccess:0];
-      [(TRCompletionOperation *)v14 setErrorCode:v8];
-      v15 = [(TRSetupWorkflow *)self session];
-      [v15 setDisconnectHandler:0];
+      [(TRCompletionOperation *)v14 setErrorCode:codeCopy2];
+      session2 = [(TRSetupWorkflow *)self session];
+      [session2 setDisconnectHandler:0];
       [(TRSetupWorkflow *)self setSession:0];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __53__TRSetupWorkflow__abortSetupWithErrorCode_userInfo___block_invoke;
       v19[3] = &unk_279DCEBF8;
-      v20 = v15;
-      v16 = v15;
+      v20 = session2;
+      v16 = session2;
       [(TRCompletionOperation *)v14 setCompletionBlock:v19];
-      v17 = [(TRSetupWorkflow *)self operationQueue];
-      [v17 addOperation:v14];
+      operationQueue = [(TRSetupWorkflow *)self operationQueue];
+      [operationQueue addOperation:v14];
 
       goto LABEL_16;
     }
 
-    if (a3 == -11000)
+    if (code == -11000)
     {
-      v8 = -8003;
+      codeCopy2 = -8003;
     }
 
     else
     {
-      v8 = a3;
+      codeCopy2 = code;
     }
 
-    v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:v8 userInfo:v6];
-    v10 = [(TRSetupWorkflow *)self failureHandler];
+    v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:codeCopy2 userInfo:infoCopy];
+    failureHandler = [(TRSetupWorkflow *)self failureHandler];
 
-    if (v10)
+    if (failureHandler)
     {
-      v11 = [(TRSetupWorkflow *)self failureHandler];
-      (v11)[2](v11, v9);
+      failureHandler2 = [(TRSetupWorkflow *)self failureHandler];
+      (failureHandler2)[2](failureHandler2, v9);
     }
 
     [(TRSetupWorkflow *)self _releaseHandlers];
-    if ((a3 | 4) != 0xFFFFFFFFFFFFDC74)
+    if ((code | 4) != 0xFFFFFFFFFFFFDC74)
     {
       goto LABEL_15;
     }

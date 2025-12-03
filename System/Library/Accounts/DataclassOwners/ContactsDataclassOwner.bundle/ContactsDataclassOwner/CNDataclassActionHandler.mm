@@ -1,20 +1,20 @@
 @interface CNDataclassActionHandler
 + (OS_os_log)os_log;
-+ (id)actionHandlerSuitableForParameters:(id)a3;
-+ (id)appleAccountActionHandlerWithParameters:(id)a3;
-+ (id)delegatesFromAccounts:(id)a3;
-+ (id)genericAccountActionHandlerWithParameters:(id)a3;
-- (BOOL)createContactsAccountForACAccount:(id)a3 withChildren:(id)a4;
++ (id)actionHandlerSuitableForParameters:(id)parameters;
++ (id)appleAccountActionHandlerWithParameters:(id)parameters;
++ (id)delegatesFromAccounts:(id)accounts;
++ (id)genericAccountActionHandlerWithParameters:(id)parameters;
+- (BOOL)createContactsAccountForACAccount:(id)account withChildren:(id)children;
 - (BOOL)drainLocalStore;
-- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)a3;
-- (BOOL)mergeContactsIntoLocalSourceFromABAccount:(id)a3;
+- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)source;
+- (BOOL)mergeContactsIntoLocalSourceFromABAccount:(id)account;
 - (BOOL)perform;
-- (BOOL)removeContactsAccount:(id)a3;
-- (BOOL)removeContactsAccountForACAccount:(id)a3 withChildren:(id)a4;
-- (CNDataclassActionHandler)initWithParameters:(id)a3;
-- (id)copyABAccountForACAccount:(id)a3 withChildren:(id)a4;
-- (void)disableLocalSourceIfNeededAddingAccount:(id)a3;
-- (void)enableLocalSourceIfNecessaryIgnoringAccount:(id)a3;
+- (BOOL)removeContactsAccount:(id)account;
+- (BOOL)removeContactsAccountForACAccount:(id)account withChildren:(id)children;
+- (CNDataclassActionHandler)initWithParameters:(id)parameters;
+- (id)copyABAccountForACAccount:(id)account withChildren:(id)children;
+- (void)disableLocalSourceIfNeededAddingAccount:(id)account;
+- (void)enableLocalSourceIfNecessaryIgnoringAccount:(id)account;
 @end
 
 @implementation CNDataclassActionHandler
@@ -31,26 +31,26 @@
   return v3;
 }
 
-+ (id)actionHandlerSuitableForParameters:(id)a3
++ (id)actionHandlerSuitableForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 account];
-  v6 = [CNACAccountTypeAnalyzer isAccountAppleAccount:v5];
+  parametersCopy = parameters;
+  account = [parametersCopy account];
+  v6 = [CNACAccountTypeAnalyzer isAccountAppleAccount:account];
 
   if (v6)
   {
-    v7 = [a1 appleAccountActionHandlerWithParameters:v4];
+    v7 = [self appleAccountActionHandlerWithParameters:parametersCopy];
 LABEL_5:
     v10 = v7;
     goto LABEL_7;
   }
 
-  v8 = [v4 account];
-  v9 = [CNACAccountTypeAnalyzer isAccountGenericContactsSyncingOrDirectoryAccount:v8];
+  account2 = [parametersCopy account];
+  v9 = [CNACAccountTypeAnalyzer isAccountGenericContactsSyncingOrDirectoryAccount:account2];
 
   if (v9)
   {
-    v7 = [a1 genericAccountActionHandlerWithParameters:v4];
+    v7 = [self genericAccountActionHandlerWithParameters:parametersCopy];
     goto LABEL_5;
   }
 
@@ -60,24 +60,24 @@ LABEL_7:
   return v10;
 }
 
-+ (id)appleAccountActionHandlerWithParameters:(id)a3
++ (id)appleAccountActionHandlerWithParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 action];
+  parametersCopy = parameters;
+  action = [parametersCopy action];
   v5 = +[CNDataclassActionDefinition createSyncDataStore];
-  v6 = [v4 isEqual:v5];
+  v6 = [action isEqual:v5];
 
   if (v6)
   {
     v7 = off_101B8;
 LABEL_9:
-    v17 = [objc_alloc(*v7) initWithParameters:v3];
+    v17 = [objc_alloc(*v7) initWithParameters:parametersCopy];
     goto LABEL_10;
   }
 
-  v8 = [v3 action];
+  action2 = [parametersCopy action];
   v9 = +[CNDataclassActionDefinition mergeLocalDataIntoSyncData];
-  v10 = [v8 isEqual:v9];
+  v10 = [action2 isEqual:v9];
 
   if (v10)
   {
@@ -85,9 +85,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [v3 action];
+  action3 = [parametersCopy action];
   v12 = +[CNDataclassActionDefinition mergeSyncDataIntoLocalData];
-  v13 = [v11 isEqual:v12];
+  v13 = [action3 isEqual:v12];
 
   if (v13)
   {
@@ -95,9 +95,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v14 = [v3 action];
+  action4 = [parametersCopy action];
   v15 = +[CNDataclassActionDefinition deleteSyncData];
-  v16 = [v14 isEqual:v15];
+  v16 = [action4 isEqual:v15];
 
   if (v16)
   {
@@ -111,24 +111,24 @@ LABEL_10:
   return v17;
 }
 
-+ (id)genericAccountActionHandlerWithParameters:(id)a3
++ (id)genericAccountActionHandlerWithParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 action];
+  parametersCopy = parameters;
+  action = [parametersCopy action];
   v5 = +[CNDataclassActionDefinition createSyncDataStore];
-  v6 = [v4 isEqual:v5];
+  v6 = [action isEqual:v5];
 
   if (v6)
   {
     v7 = off_101D8;
 LABEL_9:
-    v17 = [objc_alloc(*v7) initWithParameters:v3];
+    v17 = [objc_alloc(*v7) initWithParameters:parametersCopy];
     goto LABEL_10;
   }
 
-  v8 = [v3 action];
+  action2 = [parametersCopy action];
   v9 = +[CNDataclassActionDefinition createSyncDataStoreDeleteLocalData];
-  v10 = [v8 isEqual:v9];
+  v10 = [action2 isEqual:v9];
 
   if (v10)
   {
@@ -136,9 +136,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [v3 action];
+  action3 = [parametersCopy action];
   v12 = +[CNDataclassActionDefinition createSyncDataStoreKeepLocalData];
-  v13 = [v11 isEqual:v12];
+  v13 = [action3 isEqual:v12];
 
   if (v13)
   {
@@ -146,9 +146,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v14 = [v3 action];
+  action4 = [parametersCopy action];
   v15 = +[CNDataclassActionDefinition deleteSyncData];
-  v16 = [v14 isEqual:v15];
+  v16 = [action4 isEqual:v15];
 
   if (v16)
   {
@@ -162,29 +162,29 @@ LABEL_10:
   return v17;
 }
 
-- (CNDataclassActionHandler)initWithParameters:(id)a3
+- (CNDataclassActionHandler)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v16.receiver = self;
   v16.super_class = CNDataclassActionHandler;
   v5 = [(CNDataclassActionHandler *)&v16 init];
   if (v5)
   {
-    v6 = [v4 account];
+    account = [parametersCopy account];
     account = v5->_account;
-    v5->_account = v6;
+    v5->_account = account;
 
-    v8 = [v4 childAccounts];
+    childAccounts = [parametersCopy childAccounts];
     childAccounts = v5->_childAccounts;
-    v5->_childAccounts = v8;
+    v5->_childAccounts = childAccounts;
 
-    v10 = [v4 accountProvider];
+    accountProvider = [parametersCopy accountProvider];
     accountProvider = v5->_accountProvider;
-    v5->_accountProvider = v10;
+    v5->_accountProvider = accountProvider;
 
-    v12 = [v4 implementation];
+    implementation = [parametersCopy implementation];
     implementation = v5->_implementation;
-    v5->_implementation = v12;
+    v5->_implementation = implementation;
 
     v14 = v5;
   }
@@ -194,35 +194,35 @@ LABEL_10:
 
 - (BOOL)perform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (BOOL)createContactsAccountForACAccount:(id)a3 withChildren:(id)a4
+- (BOOL)createContactsAccountForACAccount:(id)account withChildren:(id)children
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDataclassActionHandler *)self implementation];
-  v9 = [v8 createContactsAccountForParentAccount:v7 withChildAccounts:v6];
+  childrenCopy = children;
+  accountCopy = account;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v9 = [implementation createContactsAccountForParentAccount:accountCopy withChildAccounts:childrenCopy];
 
   return v9;
 }
 
-- (BOOL)removeContactsAccountForACAccount:(id)a3 withChildren:(id)a4
+- (BOOL)removeContactsAccountForACAccount:(id)account withChildren:(id)children
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDataclassActionHandler *)self implementation];
-  v9 = [objc_opt_class() delegatesFromAccounts:v6];
-  v10 = [v8 removeContactsAccountForParentAccount:v7 delegates:v9 withChildAccounts:v6];
+  childrenCopy = children;
+  accountCopy = account;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v9 = [objc_opt_class() delegatesFromAccounts:childrenCopy];
+  v10 = [implementation removeContactsAccountForParentAccount:accountCopy delegates:v9 withChildAccounts:childrenCopy];
 
   return v10;
 }
 
-+ (id)delegatesFromAccounts:(id)a3
++ (id)delegatesFromAccounts:(id)accounts
 {
-  v3 = [a3 _cn_filter:&stru_10368];
+  v3 = [accounts _cn_filter:&stru_10368];
   v4 = [v3 _cn_flatMap:&stru_103A8];
   v5 = [v4 _cn_map:&stru_103E8];
 
@@ -231,77 +231,77 @@ LABEL_10:
 
 - (BOOL)drainLocalStore
 {
-  v2 = [(CNDataclassActionHandler *)self implementation];
-  v3 = [v2 emptyLocalContainer];
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  emptyLocalContainer = [implementation emptyLocalContainer];
 
-  return v3;
+  return emptyLocalContainer;
 }
 
-- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)a3
+- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)source
 {
-  v4 = a3;
-  v5 = [(CNDataclassActionHandler *)self implementation];
-  v6 = [v5 mergeContactsFromLocalContainerToContainer:v4];
+  sourceCopy = source;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v6 = [implementation mergeContactsFromLocalContainerToContainer:sourceCopy];
 
   return v6;
 }
 
-- (BOOL)mergeContactsIntoLocalSourceFromABAccount:(id)a3
+- (BOOL)mergeContactsIntoLocalSourceFromABAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNDataclassActionHandler *)self implementation];
-  v6 = [v5 mergeContactsIntoLocalContainerFromContainersOfContactsAccount:v4];
+  accountCopy = account;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v6 = [implementation mergeContactsIntoLocalContainerFromContainersOfContactsAccount:accountCopy];
 
   return v6;
 }
 
-- (BOOL)removeContactsAccount:(id)a3
+- (BOOL)removeContactsAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNDataclassActionHandler *)self implementation];
-  v6 = [v5 removeContactsAccount:v4];
+  accountCopy = account;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v6 = [implementation removeContactsAccount:accountCopy];
 
   return v6;
 }
 
-- (id)copyABAccountForACAccount:(id)a3 withChildren:(id)a4
+- (id)copyABAccountForACAccount:(id)account withChildren:(id)children
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDataclassActionHandler *)self implementation];
-  v9 = [v8 contactsAccountForParentAccount:v7 withChildAccounts:v6];
+  childrenCopy = children;
+  accountCopy = account;
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  v9 = [implementation contactsAccountForParentAccount:accountCopy withChildAccounts:childrenCopy];
 
   return v9;
 }
 
-- (void)disableLocalSourceIfNeededAddingAccount:(id)a3
+- (void)disableLocalSourceIfNeededAddingAccount:(id)account
 {
-  if (([a3 MCIsManaged] & 1) == 0)
+  if (([account MCIsManaged] & 1) == 0)
   {
-    v4 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "It is necessary to disable the Contacts local container", v5, 2u);
+      _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "It is necessary to disable the Contacts local container", v5, 2u);
     }
 
     [(CNDataclassActionHandler *)self setLocalSourceEnabled:0];
   }
 }
 
-- (void)enableLocalSourceIfNecessaryIgnoringAccount:(id)a3
+- (void)enableLocalSourceIfNecessaryIgnoringAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNDataclassActionHandler *)self accountProvider];
-  v6 = [v5 isAnyAccountSyncableIgnoringAccount:v4];
+  accountCopy = account;
+  accountProvider = [(CNDataclassActionHandler *)self accountProvider];
+  v6 = [accountProvider isAnyAccountSyncableIgnoringAccount:accountCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "It is necessary to enable the Contacts local container", v8, 2u);
+      _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "It is necessary to enable the Contacts local container", v8, 2u);
     }
 
     [(CNDataclassActionHandler *)self setLocalSourceEnabled:1];

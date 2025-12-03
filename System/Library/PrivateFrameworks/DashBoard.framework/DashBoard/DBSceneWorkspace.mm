@@ -1,23 +1,23 @@
 @interface DBSceneWorkspace
-- (DBSceneWorkspace)initWithIdentifier:(id)a3;
+- (DBSceneWorkspace)initWithIdentifier:(id)identifier;
 - (FBSceneWorkspaceDelegate)delegate;
-- (id)createScene:(id)a3;
-- (id)sceneWithIdentifier:(id)a3;
+- (id)createScene:(id)scene;
+- (id)sceneWithIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DBSceneWorkspace
 
-- (DBSceneWorkspace)initWithIdentifier:(id)a3
+- (DBSceneWorkspace)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = DBSceneWorkspace;
   v5 = [(DBSceneWorkspace *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D0AAE8]) initWithIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x277D0AAE8]) initWithIdentifier:identifierCopy];
     workspace = v5->_workspace;
     v5->_workspace = v6;
 
@@ -29,32 +29,32 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DBSceneWorkspace *)self workspace];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  workspace = [(DBSceneWorkspace *)self workspace];
+  [workspace setDelegate:delegateCopy];
 }
 
-- (id)sceneWithIdentifier:(id)a3
+- (id)sceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBSceneWorkspace *)self workspace];
-  v6 = [v5 sceneWithIdentifier:v4];
+  identifierCopy = identifier;
+  workspace = [(DBSceneWorkspace *)self workspace];
+  v6 = [workspace sceneWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)createScene:(id)a3
+- (id)createScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(DBSceneWorkspace *)self workspace];
-  v6 = [v5 createScene:v4];
+  sceneCopy = scene;
+  workspace = [(DBSceneWorkspace *)self workspace];
+  v6 = [workspace createScene:sceneCopy];
 
   if (v6)
   {
-    v7 = [(DBSceneWorkspace *)self assertionManager];
-    [v6 addObserver:v7];
+    assertionManager = [(DBSceneWorkspace *)self assertionManager];
+    [v6 addObserver:assertionManager];
   }
 
   return v6;
@@ -62,11 +62,11 @@
 
 - (void)invalidate
 {
-  v3 = [(DBSceneWorkspace *)self assertionManager];
-  [v3 invalidate];
+  assertionManager = [(DBSceneWorkspace *)self assertionManager];
+  [assertionManager invalidate];
 
-  v4 = [(DBSceneWorkspace *)self workspace];
-  [v4 invalidate];
+  workspace = [(DBSceneWorkspace *)self workspace];
+  [workspace invalidate];
 }
 
 - (FBSceneWorkspaceDelegate)delegate

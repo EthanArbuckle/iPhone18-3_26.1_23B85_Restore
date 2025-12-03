@@ -1,35 +1,35 @@
 @interface MTSDeviceSetupTopology
-- (BOOL)isEqual:(id)a3;
-- (MTSDeviceSetupTopology)initWithCoder:(id)a3;
-- (MTSDeviceSetupTopology)initWithHomes:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSDeviceSetupTopology)initWithCoder:(id)coder;
+- (MTSDeviceSetupTopology)initWithHomes:(id)homes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDeviceSetupTopology
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDeviceSetupTopology *)self homes];
-  [v4 encodeObject:v5 forKey:@"MTSDST.homes"];
+  coderCopy = coder;
+  homes = [(MTSDeviceSetupTopology *)self homes];
+  [coderCopy encodeObject:homes forKey:@"MTSDST.homes"];
 }
 
-- (MTSDeviceSetupTopology)initWithCoder:(id)a3
+- (MTSDeviceSetupTopology)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"MTSDST.homes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"MTSDST.homes"];
   if (v5)
   {
-    v6 = [(MTSDeviceSetupTopology *)self initWithHomes:v5];
-    v7 = v6;
+    selfCopy = [(MTSDeviceSetupTopology *)self initWithHomes:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -51,19 +51,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDeviceSetupTopology *)self homes];
-  v3 = [v2 hash];
+  homes = [(MTSDeviceSetupTopology *)self homes];
+  v3 = [homes hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -74,9 +74,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDeviceSetupTopology *)self homes];
-    v8 = [v6 homes];
-    v9 = [v7 isEqual:v8];
+    homes = [(MTSDeviceSetupTopology *)self homes];
+    homes2 = [v6 homes];
+    v9 = [homes isEqual:homes2];
   }
 
   else
@@ -87,12 +87,12 @@
   return v9;
 }
 
-- (MTSDeviceSetupTopology)initWithHomes:(id)a3
+- (MTSDeviceSetupTopology)initWithHomes:(id)homes
 {
-  v4 = a3;
-  if (v4)
+  homesCopy = homes;
+  if (homesCopy)
   {
-    v5 = v4;
+    v5 = homesCopy;
     v12.receiver = self;
     v12.super_class = MTSDeviceSetupTopology;
     v6 = [(MTSDeviceSetupTopology *)&v12 init];

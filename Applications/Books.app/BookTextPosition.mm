@@ -1,52 +1,52 @@
 @interface BookTextPosition
-+ (id)textPositionWithCharIndex:(unint64_t)a3;
-+ (id)textPositionWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (BookTextPosition)initWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)distanceFromPosition:(id)a3;
-- (int64_t)compare:(id)a3;
++ (id)textPositionWithCharIndex:(unint64_t)index;
++ (id)textPositionWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start;
+- (BOOL)isEqual:(id)equal;
+- (BookTextPosition)initWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)distanceFromPosition:(id)position;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BookTextPosition
 
-+ (id)textPositionWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6
++ (id)textPositionWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = [a1 alloc];
-  *&v11 = a5;
-  v12 = [v10 initWithCharIndex:a3 eolAffinity:v8 preferredPosition:v6 isPreferredStart:v11];
+  startCopy = start;
+  affinityCopy = affinity;
+  v10 = [self alloc];
+  *&v11 = position;
+  v12 = [v10 initWithCharIndex:index eolAffinity:affinityCopy preferredPosition:startCopy isPreferredStart:v11];
 
   return v12;
 }
 
-+ (id)textPositionWithCharIndex:(unint64_t)a3
++ (id)textPositionWithCharIndex:(unint64_t)index
 {
-  v3 = [[a1 alloc] initWithCharIndex:a3];
+  v3 = [[self alloc] initWithCharIndex:index];
 
   return v3;
 }
 
-- (BookTextPosition)initWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6
+- (BookTextPosition)initWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start
 {
   v11.receiver = self;
   v11.super_class = BookTextPosition;
   result = [(BookTextPosition *)&v11 init];
   if (result)
   {
-    result->_charIndex = a3;
-    result->_eolAffinity = a4;
-    result->_preferredPosition = a5;
-    result->_isPreferredStart = a6;
+    result->_charIndex = index;
+    result->_eolAffinity = affinity;
+    result->_preferredPosition = position;
+    result->_isPreferredStart = start;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   charIndex = self->_charIndex;
   eolAffinity = self->_eolAffinity;
   *&v7 = self->_preferredPosition;
@@ -55,14 +55,14 @@
   return [v4 initWithCharIndex:charIndex eolAffinity:eolAffinity preferredPosition:isPreferredStart isPreferredStart:v7];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = __IMAccessibilityCastAsClass();
-  v6 = [v5 charIndex];
+  charIndex = [v5 charIndex];
   charIndex = self->_charIndex;
-  if (charIndex == v6)
+  if (charIndex == charIndex)
   {
     eolAffinity = self->_eolAffinity;
     if (eolAffinity == [v5 endOfLineAffinity])
@@ -81,7 +81,7 @@
     }
   }
 
-  else if (charIndex > v6)
+  else if (charIndex > charIndex)
   {
     v9 = 1;
   }
@@ -94,9 +94,9 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = __IMAccessibilityCastAsClass();
   v6 = v5 && self->_charIndex == *(v5 + 8) && self->_eolAffinity == *(v5 + 16);
@@ -104,9 +104,9 @@
   return v6;
 }
 
-- (int)distanceFromPosition:(id)a3
+- (int)distanceFromPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   objc_opt_class();
   v5 = __IMAccessibilityCastAsClass();
   LODWORD(self) = self->_charIndex;

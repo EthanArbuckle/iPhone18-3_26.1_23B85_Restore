@@ -8,14 +8,14 @@
 {
   v0 = objc_opt_new();
   v1 = +[TRISystemConfiguration sharedInstance];
-  v2 = [v1 deviceClass];
-  [v0 setDeviceClass:v2];
+  deviceClass = [v1 deviceClass];
+  [v0 setDeviceClass:deviceClass];
 
-  v3 = [v1 trialVersionTag];
-  [v0 setVersionTag:v3];
+  trialVersionTag = [v1 trialVersionTag];
+  [v0 setVersionTag:trialVersionTag];
 
-  v4 = [v1 osBuild];
-  [v0 setOsBuild:v4];
+  osBuild = [v1 osBuild];
+  [v0 setOsBuild:osBuild];
 
   v19 = 0;
   v5 = [v1 isBetaUserWithIsStale:&v19];
@@ -54,29 +54,29 @@
     [v7 setTargetedPopulation:v8];
   }
 
-  v9 = [v1 userSettingsBCP47DeviceLocale];
-  [v0 setUserSettingsBcp47DeviceLocale:v9];
+  userSettingsBCP47DeviceLocale = [v1 userSettingsBCP47DeviceLocale];
+  [v0 setUserSettingsBcp47DeviceLocale:userSettingsBCP47DeviceLocale];
 
-  v10 = [v1 carrierBundleIdentifier];
-  [v0 setCarrierBundleIdentifier:v10];
+  carrierBundleIdentifier = [v1 carrierBundleIdentifier];
+  [v0 setCarrierBundleIdentifier:carrierBundleIdentifier];
 
-  v11 = [v1 carrierCountryIsoCode];
-  [v0 setCarrierCountryIsoCode:v11];
+  carrierCountryIsoCode = [v1 carrierCountryIsoCode];
+  [v0 setCarrierCountryIsoCode:carrierCountryIsoCode];
 
-  v12 = [v1 systemInfo];
-  v13 = [v12 logUserKeyboardEnabledInputMode];
+  systemInfo = [v1 systemInfo];
+  logUserKeyboardEnabledInputMode = [systemInfo logUserKeyboardEnabledInputMode];
 
-  if (v13)
+  if (logUserKeyboardEnabledInputMode)
   {
-    v14 = [v1 enabledInputModeIdentifiers];
-    v15 = [v14 mutableCopy];
+    enabledInputModeIdentifiers = [v1 enabledInputModeIdentifiers];
+    v15 = [enabledInputModeIdentifiers mutableCopy];
     [v0 setUserKeyboardEnabledInputModeIdentifiers:v15];
   }
 
   if ([v1 hasAne])
   {
-    v16 = [v1 aneVersion];
-    [v0 setAneVersion:v16];
+    aneVersion = [v1 aneVersion];
+    [v0 setAneVersion:aneVersion];
   }
 
   else

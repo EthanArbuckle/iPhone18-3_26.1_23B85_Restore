@@ -1,7 +1,7 @@
 @interface PXMusicCurationConcreteResult
 - (PXMusicCurationConcreteResult)init;
-- (PXMusicCurationConcreteResult)initWithAppleMusicCuration:(id)a3 flexMusicCuration:(id)a4 fallbackAsset:(id)a5 requestedCategories:(id)a6 error:(id)a7;
-- (PXMusicCurationConcreteResult)initWithSongsByCategory:(id)a3;
+- (PXMusicCurationConcreteResult)initWithAppleMusicCuration:(id)curation flexMusicCuration:(id)musicCuration fallbackAsset:(id)asset requestedCategories:(id)categories error:(id)error;
+- (PXMusicCurationConcreteResult)initWithSongsByCategory:(id)category;
 - (id)description;
 @end
 
@@ -12,17 +12,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXMusicCurationConcreteResult *)self isComplete];
+  isComplete = [(PXMusicCurationConcreteResult *)self isComplete];
   v7 = @"NO";
-  if (v6)
+  if (isComplete)
   {
     v7 = @"YES";
   }
 
   v8 = v7;
-  v9 = [(PXMusicCurationConcreteResult *)self error];
-  v10 = [(PXMusicCurationConcreteResult *)self songsByCategory];
-  v11 = [v3 stringWithFormat:@"<%@:%p isComplete:%@, error:%@, songsByCategory:%@", v5, self, v8, v9, v10];;
+  error = [(PXMusicCurationConcreteResult *)self error];
+  songsByCategory = [(PXMusicCurationConcreteResult *)self songsByCategory];
+  v11 = [v3 stringWithFormat:@"<%@:%p isComplete:%@, error:%@, songsByCategory:%@", v5, self, v8, error, songsByCategory];;
 
   return v11;
 }
@@ -35,74 +35,74 @@
   return v4;
 }
 
-- (PXMusicCurationConcreteResult)initWithSongsByCategory:(id)a3
+- (PXMusicCurationConcreteResult)initWithSongsByCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = [MEMORY[0x1E695DFD8] set];
   v6 = [(PXMusicCurationConcreteResult *)self initWithAppleMusicCuration:0 flexMusicCuration:0 fallbackAsset:0 requestedCategories:v5 error:0];
 
   songsByCategory = v6->_songsByCategory;
-  v6->_songsByCategory = v4;
+  v6->_songsByCategory = categoryCopy;
 
   v6->_isComplete = 1;
   return v6;
 }
 
-- (PXMusicCurationConcreteResult)initWithAppleMusicCuration:(id)a3 flexMusicCuration:(id)a4 fallbackAsset:(id)a5 requestedCategories:(id)a6 error:(id)a7
+- (PXMusicCurationConcreteResult)initWithAppleMusicCuration:(id)curation flexMusicCuration:(id)musicCuration fallbackAsset:(id)asset requestedCategories:(id)categories error:(id)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  curationCopy = curation;
+  musicCurationCopy = musicCuration;
+  assetCopy = asset;
+  categoriesCopy = categories;
+  errorCopy = error;
   v44.receiver = self;
   v44.super_class = PXMusicCurationConcreteResult;
   v17 = [(PXMusicCurationConcreteResult *)&v44 init];
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
-    if (v12)
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(categoriesCopy, "count")}];
+    if (curationCopy)
     {
-      v19 = [v12 bestMusicSuggestions];
-      [(NSDictionary *)v18 setObject:v19 forKeyedSubscript:@"AppleMusicBest"];
+      bestMusicSuggestions = [curationCopy bestMusicSuggestions];
+      [(NSDictionary *)v18 setObject:bestMusicSuggestions forKeyedSubscript:@"AppleMusicBest"];
 
-      v20 = [v12 musicForYou];
-      [(NSDictionary *)v18 setObject:v20 forKeyedSubscript:@"AppleMusicForYou"];
+      musicForYou = [curationCopy musicForYou];
+      [(NSDictionary *)v18 setObject:musicForYou forKeyedSubscript:@"AppleMusicForYou"];
 
-      v21 = [v12 musicForPerformer];
-      [(NSDictionary *)v18 setObject:v21 forKeyedSubscript:@"AppleMusicPerformer"];
+      musicForPerformer = [curationCopy musicForPerformer];
+      [(NSDictionary *)v18 setObject:musicForPerformer forKeyedSubscript:@"AppleMusicPerformer"];
 
-      v22 = [v12 musicForTime];
-      [(NSDictionary *)v18 setObject:v22 forKeyedSubscript:@"AppleMusicTime"];
+      musicForTime = [curationCopy musicForTime];
+      [(NSDictionary *)v18 setObject:musicForTime forKeyedSubscript:@"AppleMusicTime"];
 
-      v23 = [v12 musicForLocation];
-      [(NSDictionary *)v18 setObject:v23 forKeyedSubscript:@"AppleMusicLocation"];
+      musicForLocation = [curationCopy musicForLocation];
+      [(NSDictionary *)v18 setObject:musicForLocation forKeyedSubscript:@"AppleMusicLocation"];
     }
 
-    if (v13)
+    if (musicCurationCopy)
     {
-      v24 = [v13 bestSongSuggestions];
-      [(NSDictionary *)v18 setObject:v24 forKeyedSubscript:@"FlexMusicBest"];
+      bestSongSuggestions = [musicCurationCopy bestSongSuggestions];
+      [(NSDictionary *)v18 setObject:bestSongSuggestions forKeyedSubscript:@"FlexMusicBest"];
 
-      v25 = [v13 secondarySongSuggestions];
-      [(NSDictionary *)v18 setObject:v25 forKeyedSubscript:@"FlexMusicSecondary"];
+      secondarySongSuggestions = [musicCurationCopy secondarySongSuggestions];
+      [(NSDictionary *)v18 setObject:secondarySongSuggestions forKeyedSubscript:@"FlexMusicSecondary"];
     }
 
-    if (v14)
+    if (assetCopy)
     {
-      v26 = PXAudioAssetFetchResultWithAsset(v14);
+      v26 = PXAudioAssetFetchResultWithAsset(assetCopy);
       [(NSDictionary *)v18 setObject:v26 forKeyedSubscript:@"FlexMusicFallback"];
     }
 
-    v37 = v16;
-    v38 = v14;
-    obj = a7;
+    v37 = errorCopy;
+    v38 = assetCopy;
+    obj = error;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v27 = v15;
+    v27 = categoriesCopy;
     v28 = [v27 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v28)
     {
@@ -150,8 +150,8 @@ LABEL_18:
     v17->_isComplete = v33;
     objc_storeStrong(&v17->_error, obj);
 
-    v16 = v37;
-    v14 = v38;
+    errorCopy = v37;
+    assetCopy = v38;
   }
 
   return v17;

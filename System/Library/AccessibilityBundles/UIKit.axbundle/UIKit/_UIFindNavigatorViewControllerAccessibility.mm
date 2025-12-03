@@ -1,26 +1,26 @@
 @interface _UIFindNavigatorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnounceCurrentSearchResult;
-- (void)_axAnnounceReplacementWithPreviousResultCount:(int64_t)a3 previousIndex:(int64_t)a4;
-- (void)_axReloadElementRelations:(BOOL)a3;
-- (void)_didEnterReplacementString:(id)a3;
-- (void)_handleDone:(id)a3;
-- (void)_handleHighlightPreviousResult:(id)a3;
-- (void)_handleSearchReturn:(id)a3;
-- (void)_performSearchWithQuery:(id)a3 options:(id)a4;
+- (void)_axAnnounceReplacementWithPreviousResultCount:(int64_t)count previousIndex:(int64_t)index;
+- (void)_axReloadElementRelations:(BOOL)relations;
+- (void)_didEnterReplacementString:(id)string;
+- (void)_handleDone:(id)done;
+- (void)_handleHighlightPreviousResult:(id)result;
+- (void)_handleSearchReturn:(id)return;
+- (void)_performSearchWithQuery:(id)query options:(id)options;
 @end
 
 @implementation _UIFindNavigatorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIFindNavigatorViewController";
   [location[0] validateClass:? isKindOfClass:?];
   v5 = "@";
@@ -42,118 +42,118 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(_UIFindNavigatorViewControllerAccessibility *)v4 _axReloadElementRelations:1];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axReloadElementRelations:1];
 }
 
-- (void)_handleSearchReturn:(id)a3
+- (void)_handleSearchReturn:(id)return
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, return);
+  v3.receiver = selfCopy;
   v3.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v3 _handleSearchReturn:location[0]];
-  [(_UIFindNavigatorViewControllerAccessibility *)v5 _axReloadElementRelations:1];
-  [(_UIFindNavigatorViewControllerAccessibility *)v5 _axAnnounceCurrentSearchResult];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axReloadElementRelations:1];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axAnnounceCurrentSearchResult];
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleHighlightPreviousResult:(id)a3
+- (void)_handleHighlightPreviousResult:(id)result
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, result);
+  v3.receiver = selfCopy;
   v3.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v3 _handleHighlightPreviousResult:location[0]];
-  [(_UIFindNavigatorViewControllerAccessibility *)v5 _axReloadElementRelations:1];
-  [(_UIFindNavigatorViewControllerAccessibility *)v5 _axAnnounceCurrentSearchResult];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axReloadElementRelations:1];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axAnnounceCurrentSearchResult];
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSearchWithQuery:(id)a3 options:(id)a4
+- (void)_performSearchWithQuery:(id)query options:(id)options
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, query);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, options);
+  v5.receiver = selfCopy;
   v5.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v5 _performSearchWithQuery:location[0] options:v6];
-  [(_UIFindNavigatorViewControllerAccessibility *)v8 _axReloadElementRelations:1];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axReloadElementRelations:1];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleDone:(id)a3
+- (void)_handleDone:(id)done
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, done);
+  v3.receiver = selfCopy;
   v3.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v3 _handleDone:location[0]];
-  [(_UIFindNavigatorViewControllerAccessibility *)v5 _axReloadElementRelations:0];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axReloadElementRelations:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)_didEnterReplacementString:(id)a3
+- (void)_didEnterReplacementString:(id)string
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v9 = 0;
   objc_opt_class();
-  v3 = [(_UIFindNavigatorViewControllerAccessibility *)v12 safeValueForKey:@"findSession"];
+  v3 = [(_UIFindNavigatorViewControllerAccessibility *)selfCopy safeValueForKey:@"findSession"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v7 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   v10 = v7;
-  v6 = [v7 resultCount];
-  v5 = [v10 highlightedResultIndex];
-  v4.receiver = v12;
+  resultCount = [v7 resultCount];
+  highlightedResultIndex = [v10 highlightedResultIndex];
+  v4.receiver = selfCopy;
   v4.super_class = _UIFindNavigatorViewControllerAccessibility;
   [(_UIFindNavigatorViewControllerAccessibility *)&v4 _didEnterReplacementString:location[0]];
-  [(_UIFindNavigatorViewControllerAccessibility *)v12 _axAnnounceReplacementWithPreviousResultCount:v6 previousIndex:v5];
+  [(_UIFindNavigatorViewControllerAccessibility *)selfCopy _axAnnounceReplacementWithPreviousResultCount:resultCount previousIndex:highlightedResultIndex];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_axAnnounceReplacementWithPreviousResultCount:(int64_t)a3 previousIndex:(int64_t)a4
+- (void)_axAnnounceReplacementWithPreviousResultCount:(int64_t)count previousIndex:(int64_t)index
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
-  v28 = a4;
+  countCopy = count;
+  indexCopy = index;
   v26 = 0;
   objc_opt_class();
-  v17 = [(_UIFindNavigatorViewControllerAccessibility *)v31 safeValueForKey:@"findSession"];
+  v17 = [(_UIFindNavigatorViewControllerAccessibility *)selfCopy safeValueForKey:@"findSession"];
   v25 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v17);
   v24 = MEMORY[0x29EDC9748](v25);
   objc_storeStrong(&v25, 0);
   v27 = v24;
-  v23 = [v24 replacementText];
-  v22 = [v27 searchText];
-  v21 = [v27 resultCount];
-  if ([v23 length] && objc_msgSend(v22, "length"))
+  replacementText = [v24 replacementText];
+  searchText = [v27 searchText];
+  resultCount = [v27 resultCount];
+  if ([replacementText length] && objc_msgSend(searchText, "length"))
   {
     v20 = 0;
-    if (v29 <= 0 || v21 != v29 - 1 || v28 < 0)
+    if (countCopy <= 0 || resultCount != countCopy - 1 || indexCopy < 0)
     {
-      if (v29 > 0 && !v21)
+      if (countCopy > 0 && !resultCount)
       {
         v7 = accessibilityUIKitLocalizedString();
         v8 = v20;
@@ -165,8 +165,8 @@
     else
     {
       v16 = accessibilityUIKitLocalizedString();
-      v12 = v28 + 1;
-      v14 = v29;
+      v12 = indexCopy + 1;
+      v14 = countCopy;
       v5 = AXCFormattedString();
       v6 = v20;
       v20 = v5;
@@ -195,45 +195,45 @@
     objc_storeStrong(&v20, 0);
   }
 
-  objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&searchText, 0);
+  objc_storeStrong(&replacementText, 0);
   objc_storeStrong(&v27, 0);
 }
 
 - (void)_axAnnounceCurrentSearchResult
 {
-  v81 = self;
+  selfCopy = self;
   v80[1] = a2;
   v79 = 0;
   objc_opt_class();
-  v18 = [(_UIFindNavigatorViewControllerAccessibility *)v81 safeValueForKey:@"findSession"];
+  v18 = [(_UIFindNavigatorViewControllerAccessibility *)selfCopy safeValueForKey:@"findSession"];
   v78 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v18);
   v77 = MEMORY[0x29EDC9748](v78);
   objc_storeStrong(&v78, 0);
   v80[0] = v77;
-  v76 = [v77 searchText];
-  v75 = [v80[0] resultCount];
-  v74 = [v80[0] highlightedResultIndex];
-  if ([v76 length] && v75 > 0 && (v74 & 0x8000000000000000) == 0)
+  searchText = [v77 searchText];
+  resultCount = [v80[0] resultCount];
+  highlightedResultIndex = [v80[0] highlightedResultIndex];
+  if ([searchText length] && resultCount > 0 && (highlightedResultIndex & 0x8000000000000000) == 0)
   {
-    v73 = [v80[0] _accessibilityElementForFindSessionResult];
+    _accessibilityElementForFindSessionResult = [v80[0] _accessibilityElementForFindSessionResult];
     v72 = 0;
     v16 = MEMORY[0x29ED3D4A0](@"UITextInput_Internal");
     v17 = 0;
-    if ([v73 conformsToProtocol:?])
+    if ([_accessibilityElementForFindSessionResult conformsToProtocol:?])
     {
-      v17 = [v73 conformsToProtocol:&unk_2A23BD4B8];
+      v17 = [_accessibilityElementForFindSessionResult conformsToProtocol:&unk_2A23BD4B8];
     }
 
     *&v2 = MEMORY[0x29EDC9740](v16).n128_u64[0];
     if (v17)
     {
-      v71 = MEMORY[0x29EDC9748](v73);
-      v70 = [v71 selectedTextRange];
-      if (v70 && ([v70 isEmpty] & 1) == 0)
+      v71 = MEMORY[0x29EDC9748](_accessibilityElementForFindSessionResult);
+      selectedTextRange = [v71 selectedTextRange];
+      if (selectedTextRange && ([selectedTextRange isEmpty] & 1) == 0)
       {
-        v69 = [v70 start];
+        start = [selectedTextRange start];
         v67 = 0;
         objc_opt_class();
         v59 = 0;
@@ -249,8 +249,8 @@
         v55 = __77___UIFindNavigatorViewControllerAccessibility__axAnnounceCurrentSearchResult__block_invoke;
         v56 = &unk_29F30C860;
         v58[1] = &v59;
-        v57 = MEMORY[0x29EDC9748](v73);
-        v58[0] = MEMORY[0x29EDC9748](v69);
+        v57 = MEMORY[0x29EDC9748](_accessibilityElementForFindSessionResult);
+        v58[0] = MEMORY[0x29EDC9748](start);
         AXPerformSafeBlock();
         v51 = MEMORY[0x29EDC9748](v60[5]);
         objc_storeStrong(v58, 0);
@@ -273,21 +273,21 @@
         LOBYTE(v15) = 0;
         if ([v49 length])
         {
-          v48 = [v49 lowercaseString];
+          lowercaseString = [v49 lowercaseString];
           v47 = 1;
-          v46 = [v76 lowercaseString];
+          lowercaseString2 = [searchText lowercaseString];
           v45 = 1;
-          v15 = [v48 isEqualToString:?] ^ 1;
+          v15 = [lowercaseString isEqualToString:?] ^ 1;
         }
 
         if (v45)
         {
-          MEMORY[0x29EDC9740](v46);
+          MEMORY[0x29EDC9740](lowercaseString2);
         }
 
         if (v47)
         {
-          MEMORY[0x29EDC9740](v48);
+          MEMORY[0x29EDC9740](lowercaseString);
         }
 
         if (v15)
@@ -312,8 +312,8 @@
           v31 = __77___UIFindNavigatorViewControllerAccessibility__axAnnounceCurrentSearchResult__block_invoke_2;
           v32 = &unk_29F30C860;
           v34[1] = &v35;
-          v33 = MEMORY[0x29EDC9748](v73);
-          v34[0] = MEMORY[0x29EDC9748](v69);
+          v33 = MEMORY[0x29EDC9748](_accessibilityElementForFindSessionResult);
+          v34[0] = MEMORY[0x29EDC9748](start);
           AXPerformSafeBlock();
           v27 = MEMORY[0x29EDC9748](v36[5]);
           objc_storeStrong(v34, 0);
@@ -342,16 +342,16 @@
 
         objc_storeStrong(&v49, 0);
         objc_storeStrong(&v68, 0);
-        objc_storeStrong(&v69, 0);
+        objc_storeStrong(&start, 0);
       }
 
-      objc_storeStrong(&v70, 0);
+      objc_storeStrong(&selectedTextRange, 0);
       objc_storeStrong(&v71, 0);
     }
 
     if (!v72)
     {
-      v23 = [v73 _accessibilitySelectedTextRange];
+      _accessibilitySelectedTextRange = [_accessibilityElementForFindSessionResult _accessibilitySelectedTextRange];
       v24 = v3;
       v95 = 0x7FFFFFFFLL;
       v94 = 0;
@@ -361,17 +361,17 @@
       v22[3] = 0;
       v88 = 0x7FFFFFFFLL;
       v89 = 0;
-      v86 = v23;
+      v86 = _accessibilitySelectedTextRange;
       v87 = v3;
       v14 = 0;
-      if (0x7FFFFFFF == v23)
+      if (0x7FFFFFFF == _accessibilitySelectedTextRange)
       {
         v14 = v89 == v87;
       }
 
       if (!v14 && v24)
       {
-        v22[0] = [v73 _accessibilityLineRangeForPosition:v23];
+        v22[0] = [_accessibilityElementForFindSessionResult _accessibilityLineRangeForPosition:_accessibilitySelectedTextRange];
         v22[1] = v4;
         v91 = 0x7FFFFFFFLL;
         v90 = 0;
@@ -391,12 +391,12 @@
 
         if (!v13)
         {
-          v21[0] = [v73 _accessibilityAttributedValueForRange:v22];
+          v21[0] = [_accessibilityElementForFindSessionResult _accessibilityAttributedValueForRange:v22];
           if ([v21[0] length])
           {
-            v5 = [v21[0] string];
+            string = [v21[0] string];
             v6 = v72;
-            v72 = v5;
+            v72 = string;
             MEMORY[0x29EDC9740](v6);
           }
 
@@ -424,25 +424,25 @@
 
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v72, 0);
-    objc_storeStrong(&v73, 0);
+    objc_storeStrong(&_accessibilityElementForFindSessionResult, 0);
   }
 
-  objc_storeStrong(&v76, 0);
+  objc_storeStrong(&searchText, 0);
   objc_storeStrong(v80, 0);
 }
 
-- (void)_axReloadElementRelations:(BOOL)a3
+- (void)_axReloadElementRelations:(BOOL)relations
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  relationsCopy = relations;
   v5 = [(_UIFindNavigatorViewControllerAccessibility *)self safeValueForKeyPath:@"findNavigatorView.searchTextField"];
   if (v5)
   {
     UIAccessibilityUnrelateAllElements();
-    if (v6)
+    if (relationsCopy)
     {
-      v3 = [(_UIFindNavigatorViewControllerAccessibility *)v8 safeValueForKey:@"findSession"];
+      v3 = [(_UIFindNavigatorViewControllerAccessibility *)selfCopy safeValueForKey:@"findSession"];
       location = [v3 _accessibilityElementForFindSessionResult];
       MEMORY[0x29EDC9740](v3);
       if (location)

@@ -7,7 +7,7 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008F794();
 }
 

@@ -1,29 +1,29 @@
 @interface RTDiagnostics
-+ (BOOL)createArchiveSourceURL:(id)a3 destinationURL:(id)a4 error:(id *)a5;
-+ (BOOL)fileNameEligibleForCollection:(id)a3;
-+ (id)createDiagnosticsURLWithError:(id *)a3;
++ (BOOL)createArchiveSourceURL:(id)l destinationURL:(id)rL error:(id *)error;
++ (BOOL)fileNameEligibleForCollection:(id)collection;
++ (id)createDiagnosticsURLWithError:(id *)error;
 + (id)stringFromDateWithFormat;
-- (RTDiagnostics)initWithDefaultsManager:(id)a3 platform:(id)a4;
-- (id)_collectBackupWithError:(id *)a3;
-- (id)_collectDiagnosticFilesWithOptions:(id)a3 error:(id *)a4;
-- (void)_fetchPathToBackupWithHandler:(id)a3;
-- (void)_fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)addDiagnosticProvider:(id)a3;
-- (void)fetchPathToBackupWithHandler:(id)a3;
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4;
-- (void)logDiagnosticStateWithReason:(id)a3;
+- (RTDiagnostics)initWithDefaultsManager:(id)manager platform:(id)platform;
+- (id)_collectBackupWithError:(id *)error;
+- (id)_collectDiagnosticFilesWithOptions:(id)options error:(id *)error;
+- (void)_fetchPathToBackupWithHandler:(id)handler;
+- (void)_fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)addDiagnosticProvider:(id)provider;
+- (void)fetchPathToBackupWithHandler:(id)handler;
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler;
+- (void)logDiagnosticStateWithReason:(id)reason;
 - (void)logProcessDiagnosticInformation;
 @end
 
 @implementation RTDiagnostics
 
-+ (BOOL)fileNameEligibleForCollection:(id)a3
++ (BOOL)fileNameEligibleForCollection:(id)collection
 {
-  v3 = a3;
-  if (([v3 containsString:@"routined"] & 1) != 0 || objc_msgSend(v3, "containsString:", @"CoreRoutineHelperService"))
+  collectionCopy = collection;
+  if (([collectionCopy containsString:@"routined"] & 1) != 0 || objc_msgSend(collectionCopy, "containsString:", @"CoreRoutineHelperService"))
   {
-    v4 = [v3 containsString:@"Sandbox"] ^ 1;
+    v4 = [collectionCopy containsString:@"Sandbox"] ^ 1;
   }
 
   else
@@ -34,7 +34,7 @@
   return v4;
 }
 
-+ (id)createDiagnosticsURLWithError:(id *)a3
++ (id)createDiagnosticsURLWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v4 = NSTemporaryDirectory();
@@ -42,13 +42,13 @@
   {
     v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:1];
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    v9 = [v6 fileURLWithPath:v8 isDirectory:1 relativeToURL:v5];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v9 = [v6 fileURLWithPath:uUIDString isDirectory:1 relativeToURL:v5];
 
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v23 = 0;
-    v11 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v11 = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v23];
     v12 = v23;
 
     if (v11)
@@ -68,7 +68,7 @@
 
     else
     {
-      if (a3)
+      if (error)
       {
         v14 = MEMORY[0x277CCA9B8];
         v15 = *MEMORY[0x277D01448];
@@ -76,7 +76,7 @@
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to create diagnostic url at path, %@, error, %@", v5, v12];
         v25 = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-        *a3 = [v14 errorWithDomain:v15 code:1 userInfo:v17];
+        *error = [v14 errorWithDomain:v15 code:1 userInfo:v17];
       }
 
       v18 = 0;
@@ -95,7 +95,7 @@
     _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Temporary diagnostics parent path was nil. (in %s:%d)", buf, 0x12u);
   }
 
-  if (a3)
+  if (error)
   {
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277D01448];
@@ -103,7 +103,7 @@
     v27 = @"failed to create diagnostic url, parent path was nil.";
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     [v20 errorWithDomain:v21 code:1 userInfo:v5];
-    *a3 = v18 = 0;
+    *error = v18 = 0;
 LABEL_15:
 
     goto LABEL_16;
@@ -115,22 +115,22 @@ LABEL_16:
   return v18;
 }
 
-+ (BOOL)createArchiveSourceURL:(id)a3 destinationURL:(id)a4 error:(id *)a5
++ (BOOL)createArchiveSourceURL:(id)l destinationURL:(id)rL error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTArchiver *)v8 path];
-  v10 = [v9 stringByDeletingLastPathComponent];
+  lCopy = l;
+  rLCopy = rL;
+  path = [(RTArchiver *)rLCopy path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 fileExistsAtPath:v10];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v22 = 0;
-    v14 = [v13 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v22];
+    v14 = [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v22];
     v15 = v22;
 
     if (!v14 || v15)
@@ -143,11 +143,11 @@ LABEL_16:
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "error while creating archive destination directory, %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v20 = v15;
         v17 = 0;
-        *a5 = v15;
+        *error = v15;
         goto LABEL_16;
       }
 
@@ -155,22 +155,22 @@ LABEL_16:
     }
   }
 
-  v16 = [[RTArchiver alloc] initWithOutputURL:v8 compress:1];
+  v16 = [[RTArchiver alloc] initWithOutputURL:rLCopy compress:1];
   if (!v16)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v8;
+      v24 = rLCopy;
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "error while creating archive at destination url, %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:MEMORY[0x277CBEC10]];
       v15 = 0;
-      *a5 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_16;
     }
 
@@ -181,7 +181,7 @@ LABEL_15:
   }
 
   v15 = v16;
-  [(RTArchiver *)v16 addDirectoryToArchive:v7];
+  [(RTArchiver *)v16 addDirectoryToArchive:lCopy];
   [(RTArchiver *)v15 closeArchive];
   v17 = 1;
 LABEL_16:
@@ -193,27 +193,27 @@ LABEL_16:
 {
   v2 = objc_opt_new();
   [v2 setDateFormat:@"MM-dd-YYYY-HHmmss"];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 stringFromDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [v2 stringFromDate:date];
 
   return v4;
 }
 
-- (RTDiagnostics)initWithDefaultsManager:(id)a3 platform:(id)a4
+- (RTDiagnostics)initWithDefaultsManager:(id)manager platform:(id)platform
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  platformCopy = platform;
   v14.receiver = self;
   v14.super_class = RTDiagnostics;
   v9 = [(RTNotifier *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_defaultsManager, a3);
-    objc_storeStrong(&v10->_platform, a4);
-    v11 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_defaultsManager, manager);
+    objc_storeStrong(&v10->_platform, platform);
+    array = [MEMORY[0x277CBEB18] array];
     diagnosticProviders = v10->_diagnosticProviders;
-    v10->_diagnosticProviders = v11;
+    v10->_diagnosticProviders = array;
   }
 
   return v10;
@@ -221,13 +221,13 @@ LABEL_16:
 
 - (void)logProcessDiagnosticInformation
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__RTDiagnostics_logProcessDiagnosticInformation__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __48__RTDiagnostics_logProcessDiagnosticInformation__block_invoke(uint64_t a1)
@@ -305,19 +305,19 @@ void __48__RTDiagnostics_logProcessDiagnosticInformation__block_invoke(uint64_t 
   }
 }
 
-- (void)logDiagnosticStateWithReason:(id)a3
+- (void)logDiagnosticStateWithReason:(id)reason
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  reasonCopy = reason;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RTDiagnostics_logDiagnosticStateWithReason___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
+  v9 = reasonCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = reasonCopy;
+  dispatch_async(queue, block);
 }
 
 void __46__RTDiagnostics_logDiagnosticStateWithReason___block_invoke(uint64_t a1)
@@ -488,18 +488,18 @@ void __46__RTDiagnostics_logDiagnosticStateWithReason___block_invoke_4(uint64_t 
   }
 }
 
-- (void)addDiagnosticProvider:(id)a3
+- (void)addDiagnosticProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  providerCopy = provider;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__RTDiagnostics_addDiagnosticProvider___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __39__RTDiagnostics_addDiagnosticProvider___block_invoke(uint64_t result)
@@ -512,33 +512,33 @@ uint64_t __39__RTDiagnostics_addDiagnosticProvider___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(NSMutableArray *)self->_diagnosticProviders removeAllObjects];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
-- (id)_collectDiagnosticFilesWithOptions:(id)a3 error:(id *)a4
+- (id)_collectDiagnosticFilesWithOptions:(id)options error:(id *)error
 {
   v132[1] = *MEMORY[0x277D85DE8];
-  v103 = a3;
-  v92 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v122 = 0;
   v97 = [objc_opt_class() createDiagnosticsURLWithError:&v122];
   v91 = v122;
   if (v91)
   {
-    if (a4)
+    if (error)
     {
       v6 = v91;
       v7 = 0;
-      *a4 = v91;
+      *error = v91;
     }
 
     else
@@ -579,7 +579,7 @@ uint64_t __39__RTDiagnostics_addDiagnosticProvider___block_invoke(uint64_t resul
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v92->_diagnosticProviders;
+  obj = selfCopy->_diagnosticProviders;
   v104 = [(NSMutableArray *)obj countByEnumeratingWithState:&v118 objects:v131 count:16];
   if (v104)
   {
@@ -612,7 +612,7 @@ uint64_t __39__RTDiagnostics_addDiagnosticProvider___block_invoke(uint64_t resul
           v117 = v127;
           v18 = v17;
           v116 = v18;
-          [v16 flushToCacheWithOptions:v103 handler:v115];
+          [v16 flushToCacheWithOptions:optionsCopy handler:v115];
           v19 = v18;
           v20 = [MEMORY[0x277CBEAA8] now];
           v21 = dispatch_time(0, 300000000000);
@@ -623,11 +623,11 @@ uint64_t __39__RTDiagnostics_addDiagnosticProvider___block_invoke(uint64_t resul
             v24 = v23;
             v25 = objc_opt_new();
             v26 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_132];
-            v27 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v28 = [v27 filteredArrayUsingPredicate:v26];
-            v29 = [v28 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v28 = [callStackSymbols filteredArrayUsingPredicate:v26];
+            firstObject = [v28 firstObject];
 
-            [v25 submitToCoreAnalytics:v29 type:1 duration:v24];
+            [v25 submitToCoreAnalytics:firstObject type:1 duration:v24];
             v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
             {
@@ -697,7 +697,7 @@ LABEL_21:
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obja = v92->_diagnosticProviders;
+  obja = selfCopy->_diagnosticProviders;
   v105 = [(NSMutableArray *)obja countByEnumeratingWithState:&v111 objects:v123 count:16];
   if (!v105)
   {
@@ -733,7 +733,7 @@ LABEL_21:
         v110 = v127;
         v44 = v43;
         v109 = v44;
-        [v42 sendDiagnosticsToURL:v97 options:v103 handler:v108];
+        [v42 sendDiagnosticsToURL:v97 options:optionsCopy handler:v108];
         v45 = v44;
         v46 = [MEMORY[0x277CBEAA8] now];
         v47 = dispatch_time(0, 300000000000);
@@ -744,11 +744,11 @@ LABEL_21:
           v50 = v49;
           v51 = objc_opt_new();
           v52 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_132];
-          v53 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v54 = [v53 filteredArrayUsingPredicate:v52];
-          v55 = [v54 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v54 = [callStackSymbols2 filteredArrayUsingPredicate:v52];
+          firstObject2 = [v54 firstObject];
 
-          [v51 submitToCoreAnalytics:v55 type:1 duration:v50];
+          [v51 submitToCoreAnalytics:firstObject2 type:1 duration:v50];
           v56 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v56, OS_LOG_TYPE_FAULT))
           {
@@ -814,10 +814,10 @@ LABEL_43:
   while (v105);
 LABEL_52:
 
-  v67 = [MEMORY[0x277CCAA00] crashReporterPath];
-  v68 = [v67 stringByAppendingPathComponent:@"CoreRoutineDiagnosticFiles"];
-  v69 = [objc_opt_class() stringFromDateWithFormat];
-  v70 = [v68 stringByAppendingFormat:@"-%@", v69];
+  crashReporterPath = [MEMORY[0x277CCAA00] crashReporterPath];
+  v68 = [crashReporterPath stringByAppendingPathComponent:@"CoreRoutineDiagnosticFiles"];
+  stringFromDateWithFormat = [objc_opt_class() stringFromDateWithFormat];
+  v70 = [v68 stringByAppendingFormat:@"-%@", stringFromDateWithFormat];
   v7 = [v70 stringByAppendingPathExtension:@"tar.gz"];
 
   v71 = objc_opt_class();
@@ -854,10 +854,10 @@ LABEL_52:
     v7 = 0;
   }
 
-  v77 = [MEMORY[0x277CCAA00] defaultManager];
-  v78 = [v97 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v97 path];
   v106 = 0;
-  v79 = [v77 removeItemAtPath:v78 error:&v106];
+  v79 = [defaultManager removeItemAtPath:path error:&v106];
   v80 = v106;
 
   if (v80)
@@ -875,19 +875,19 @@ LABEL_52:
     v82 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
-      v88 = [v97 path];
+      path2 = [v97 path];
       *v127 = 138412546;
-      *&v127[4] = v88;
+      *&v127[4] = path2;
       *&v127[12] = 2112;
       *&v127[14] = v80;
       _os_log_error_impl(&dword_2304B3000, v82, OS_LOG_TYPE_ERROR, "failed to remove temporary directory, %@, error, %@", v127, 0x16u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v83 = _RTSafeArray();
-    *a4 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
 LABEL_72:
@@ -909,20 +909,20 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = objc_opt_new();
     if (v8)
     {
       v13 = 0;
-      v9 = [(RTDiagnostics *)self _collectDiagnosticFilesWithOptions:v6 error:&v13];
+      v9 = [(RTDiagnostics *)self _collectDiagnosticFilesWithOptions:optionsCopy error:&v13];
       v10 = v13;
-      v7[2](v7, v9, v10);
+      handlerCopy[2](handlerCopy, v9, v10);
     }
 
     else
@@ -933,41 +933,41 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
       v15[0] = @"encrypetd data unavailable - please ensure the device is unlocked and try again.";
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       v10 = [v11 errorWithDomain:v12 code:5 userInfo:v9];
-      v7[2](v7, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
     }
   }
 }
 
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTDiagnostics_fetchPathToDiagnosticFilesWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)_collectBackupWithError:(id *)a3
+- (id)_collectBackupWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAA00] crashReporterPath];
-  v5 = [v4 stringByAppendingPathComponent:@"CoreRoutineBackup"];
-  v6 = [objc_opt_class() stringFromDateWithFormat];
-  v7 = [v5 stringByAppendingFormat:@"-%@", v6];
+  crashReporterPath = [MEMORY[0x277CCAA00] crashReporterPath];
+  v5 = [crashReporterPath stringByAppendingPathComponent:@"CoreRoutineBackup"];
+  stringFromDateWithFormat = [objc_opt_class() stringFromDateWithFormat];
+  v7 = [v5 stringByAppendingFormat:@"-%@", stringFromDateWithFormat];
   v8 = [v7 stringByAppendingPathExtension:@"tar.gz"];
 
   v9 = objc_opt_class();
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v12 = [v10 fileURLWithPath:v11 isDirectory:1];
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v12 = [v10 fileURLWithPath:routineCacheDirectoryPath isDirectory:1];
   v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
   v19 = 0;
   LODWORD(v7) = [v9 createArchiveSourceURL:v12 destinationURL:v13 error:&v19];
@@ -983,11 +983,11 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "failed to create archive, error, %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v17 = v14;
       v15 = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -1004,11 +1004,11 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
   return v15;
 }
 
-- (void)_fetchPathToBackupWithHandler:(id)a3
+- (void)_fetchPathToBackupWithHandler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = objc_opt_new();
     if (v5)
@@ -1016,7 +1016,7 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
       v10 = 0;
       v6 = [(RTDiagnostics *)self _collectBackupWithError:&v10];
       v7 = v10;
-      v4[2](v4, v6, v7);
+      handlerCopy[2](handlerCopy, v6, v7);
     }
 
     else
@@ -1027,23 +1027,23 @@ void __58__RTDiagnostics__collectDiagnosticFilesWithOptions_error___block_invoke
       v12[0] = @"encrypetd data unavailable - please ensure the device is unlocked and try again.";
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
       v6 = [v8 errorWithDomain:v9 code:5 userInfo:v7];
-      v4[2](v4, 0, v6);
+      handlerCopy[2](handlerCopy, 0, v6);
     }
   }
 }
 
-- (void)fetchPathToBackupWithHandler:(id)a3
+- (void)fetchPathToBackupWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RTDiagnostics_fetchPathToBackupWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

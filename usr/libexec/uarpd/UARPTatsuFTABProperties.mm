@@ -1,19 +1,19 @@
 @interface UARPTatsuFTABProperties
-- (UARPTatsuFTABProperties)initWithFTABPropertyDictionary:(id)a3;
+- (UARPTatsuFTABProperties)initWithFTABPropertyDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation UARPTatsuFTABProperties
 
-- (UARPTatsuFTABProperties)initWithFTABPropertyDictionary:(id)a3
+- (UARPTatsuFTABProperties)initWithFTABPropertyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = UARPTatsuFTABProperties;
   v5 = [(UARPTatsuFTABProperties *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Payload 4CC"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Payload 4CC"];
     if (v6)
     {
       objc_opt_class();
@@ -27,7 +27,7 @@
       v5->_componentTag = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"Property Name"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Property Name"];
     if (v9)
     {
       objc_opt_class();
@@ -41,7 +41,7 @@
           if (objc_opt_isKindOfClass())
           {
             v5->_infoProperty = [v11 unsignedLongValue];
-            v12 = [v4 objectForKeyedSubscript:@"Property Value"];
+            v12 = [dictionaryCopy objectForKeyedSubscript:@"Property Value"];
             v13 = v12;
             if (v12)
             {

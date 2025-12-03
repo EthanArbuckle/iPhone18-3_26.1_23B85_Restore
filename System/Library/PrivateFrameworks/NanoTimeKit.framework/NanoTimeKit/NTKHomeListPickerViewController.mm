@@ -1,25 +1,25 @@
 @interface NTKHomeListPickerViewController
-- (NTKHomeListPickerViewController)initWithDetailConfiguration:(id)a3;
+- (NTKHomeListPickerViewController)initWithDetailConfiguration:(id)configuration;
 - (NTKHomeListPickerViewControllerDelegate)delegate;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKHomeListPickerViewController
 
-- (NTKHomeListPickerViewController)initWithDetailConfiguration:(id)a3
+- (NTKHomeListPickerViewController)initWithDetailConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = NTKHomeListPickerViewController;
   v6 = [(NTKHomeListPickerViewController *)&v10 initWithNibName:0 bundle:0];
   if (v6)
   {
-    v7 = [v5 title];
+    title = [configurationCopy title];
     parentSectionName = v6->_parentSectionName;
-    v6->_parentSectionName = v7;
+    v6->_parentSectionName = title;
 
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v6;
@@ -30,8 +30,8 @@
   v19.receiver = self;
   v19.super_class = NTKHomeListPickerViewController;
   [(NTKHomeListPickerViewController *)&v19 viewDidLoad];
-  v3 = [(NTKHomeListPickerViewController *)self view];
-  [v3 bounds];
+  view = [(NTKHomeListPickerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -42,14 +42,14 @@
   self->_tableView = v12;
 
   [(UITableView *)self->_tableView setAutoresizingMask:18];
-  v14 = [MEMORY[0x277D75348] blackColor];
-  [(UITableView *)self->_tableView setBackgroundColor:v14];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UITableView *)self->_tableView setBackgroundColor:blackColor];
 
   [(UITableView *)self->_tableView setDelegate:self];
   v15 = [[NTKHomeListPickerDataSource alloc] initWithTableView:self->_tableView detailConfiguration:self->_configuration];
   [(UITableView *)self->_tableView setDataSource:v15];
-  v16 = [(NTKHomeListPickerViewController *)self view];
-  [v16 addSubview:self->_tableView];
+  view2 = [(NTKHomeListPickerViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   dataSource = self->_dataSource;
   self->_dataSource = v15;
@@ -58,17 +58,17 @@
   [(NTKHomeListPickerViewController *)self setTitle:self->_parentSectionName];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 visibleCells];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v9 = [visibleCells countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -80,26 +80,26 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v17 + 1) + 8 * v12++) ntk_setPickerSelected:0];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [v6 cellForRowAtIndexPath:v7];
+  v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v13 ntk_setPickerSelected:1];
-  v14 = [(NTKHomeListPickerViewController *)self dataSource];
-  v15 = [v14 pickerItemForIndexPath:v7];
+  dataSource = [(NTKHomeListPickerViewController *)self dataSource];
+  v15 = [dataSource pickerItemForIndexPath:pathCopy];
 
-  v16 = [(NTKHomeListPickerViewController *)self delegate];
-  [v16 homeListPickerViewController:self didSelectItem:v15];
+  delegate = [(NTKHomeListPickerViewController *)self delegate];
+  [delegate homeListPickerViewController:self didSelectItem:v15];
 }
 
 - (NTKHomeListPickerViewControllerDelegate)delegate

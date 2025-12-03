@@ -29,11 +29,11 @@
 
   v2 = APSUseMultiIdentityProvider;
   v3 = sub_100004328(APSUseMultiIdentityProvider, 1);
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 != 2)
+  if (intValue != 2)
   {
-    if (v4 == 1)
+    if (intValue == 1)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -42,7 +42,7 @@
       }
     }
 
-    else if (!v4)
+    else if (!intValue)
     {
       v5 = arc4random_uniform(0x64u);
       v6 = v5 < 0x32;
@@ -108,38 +108,38 @@ LABEL_17:
 
 - (BOOL)baaPushIdentityEnabled
 {
-  v2 = [(APSIdentityUtilities *)self deviceIdentitySupported];
-  if (v2)
+  deviceIdentitySupported = [(APSIdentityUtilities *)self deviceIdentitySupported];
+  if (deviceIdentitySupported)
   {
-    v2 = _os_feature_enabled_impl();
-    if (v2)
+    deviceIdentitySupported = _os_feature_enabled_impl();
+    if (deviceIdentitySupported)
     {
       if ([APSBAAClientIdentityProvider supportsFetchingVMHostCerts]_0())
       {
         goto LABEL_4;
       }
 
-      v2 = _os_feature_enabled_impl();
-      if (!v2)
+      deviceIdentitySupported = _os_feature_enabled_impl();
+      if (!deviceIdentitySupported)
       {
-        return v2;
+        return deviceIdentitySupported;
       }
 
       if (sub_10000712C())
       {
 LABEL_4:
-        LOBYTE(v2) = 1;
+        LOBYTE(deviceIdentitySupported) = 1;
       }
 
       else
       {
 
-        LOBYTE(v2) = _os_feature_enabled_impl();
+        LOBYTE(deviceIdentitySupported) = _os_feature_enabled_impl();
       }
     }
   }
 
-  return v2;
+  return deviceIdentitySupported;
 }
 
 - (NSNumber)forcedProviderDefault

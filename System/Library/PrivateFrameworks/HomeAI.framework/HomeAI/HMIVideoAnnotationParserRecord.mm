@@ -1,16 +1,16 @@
 @interface HMIVideoAnnotationParserRecord
 - (CGRect)boundingBox;
-- (HMIVideoAnnotationParserRecord)initWithBoundingBox:(CGRect)a3 timeStamp:(double)a4;
+- (HMIVideoAnnotationParserRecord)initWithBoundingBox:(CGRect)box timeStamp:(double)stamp;
 @end
 
 @implementation HMIVideoAnnotationParserRecord
 
-- (HMIVideoAnnotationParserRecord)initWithBoundingBox:(CGRect)a3 timeStamp:(double)a4
+- (HMIVideoAnnotationParserRecord)initWithBoundingBox:(CGRect)box timeStamp:(double)stamp
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v10.receiver = self;
   v10.super_class = HMIVideoAnnotationParserRecord;
   result = [(HMIVideoAnnotationParserRecord *)&v10 init];
@@ -19,7 +19,7 @@
     result->_boundingBox.origin.y = y;
     result->_boundingBox.size.width = width;
     result->_boundingBox.size.height = height;
-    result->_timeStamp = a4;
+    result->_timeStamp = stamp;
     result->_boundingBox.origin.x = x;
   }
 

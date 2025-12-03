@@ -1,28 +1,28 @@
 @interface PPFeedback
-- (PPFeedback)initWithExplicitlyEngagedString:(id)a3;
-- (PPFeedback)initWithExplicitlyEngagedStrings:(id)a3 explicitlyRejectedStrings:(id)a4 implicitlyEngagedStrings:(id)a5 implicitlyRejectedStrings:(id)a6 offeredStrings:(id)a7;
-- (PPFeedback)initWithExplicitlyRejectedString:(id)a3;
-- (PPFeedback)initWithImplicitlyEngagedString:(id)a3;
-- (PPFeedback)initWithImplicitlyRejectedString:(id)a3;
-- (PPFeedback)initWithOfferedString:(id)a3;
+- (PPFeedback)initWithExplicitlyEngagedString:(id)string;
+- (PPFeedback)initWithExplicitlyEngagedStrings:(id)strings explicitlyRejectedStrings:(id)rejectedStrings implicitlyEngagedStrings:(id)engagedStrings implicitlyRejectedStrings:(id)implicitlyRejectedStrings offeredStrings:(id)offeredStrings;
+- (PPFeedback)initWithExplicitlyRejectedString:(id)string;
+- (PPFeedback)initWithImplicitlyEngagedString:(id)string;
+- (PPFeedback)initWithImplicitlyRejectedString:(id)string;
+- (PPFeedback)initWithOfferedString:(id)string;
 @end
 
 @implementation PPFeedback
 
-- (PPFeedback)initWithExplicitlyEngagedStrings:(id)a3 explicitlyRejectedStrings:(id)a4 implicitlyEngagedStrings:(id)a5 implicitlyRejectedStrings:(id)a6 offeredStrings:(id)a7
+- (PPFeedback)initWithExplicitlyEngagedStrings:(id)strings explicitlyRejectedStrings:(id)rejectedStrings implicitlyEngagedStrings:(id)engagedStrings implicitlyRejectedStrings:(id)implicitlyRejectedStrings offeredStrings:(id)offeredStrings
 {
   v79 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v50 = a7;
+  stringsCopy = strings;
+  rejectedStringsCopy = rejectedStrings;
+  engagedStringsCopy = engagedStrings;
+  implicitlyRejectedStringsCopy = implicitlyRejectedStrings;
+  offeredStringsCopy = offeredStrings;
   v15 = objc_opt_new();
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v16 = v11;
+  v16 = stringsCopy;
   v17 = [v16 countByEnumeratingWithState:&v70 objects:v78 count:16];
   if (v17)
   {
@@ -55,7 +55,7 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v22 = v12;
+  v22 = rejectedStringsCopy;
   v23 = [v22 countByEnumeratingWithState:&v66 objects:v77 count:16];
   if (v23)
   {
@@ -88,7 +88,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v28 = v13;
+  v28 = engagedStringsCopy;
   v29 = [v28 countByEnumeratingWithState:&v62 objects:v76 count:16];
   if (v29)
   {
@@ -123,7 +123,7 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v34 = v14;
+  v34 = implicitlyRejectedStringsCopy;
   v35 = [v34 countByEnumeratingWithState:&v58 objects:v75 count:16];
   if (v35)
   {
@@ -156,7 +156,7 @@
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v40 = v50;
+  v40 = offeredStringsCopy;
   v41 = [v40 countByEnumeratingWithState:&v54 objects:v74 count:16];
   if (v41)
   {
@@ -194,67 +194,67 @@
   return v47;
 }
 
-- (PPFeedback)initWithOfferedString:(id)a3
+- (PPFeedback)initWithOfferedString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  stringCopy2 = string;
+  v6 = [v4 arrayWithObjects:&stringCopy count:1];
 
-  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:v6, v10, v11];
+  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:v6, stringCopy, v11];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (PPFeedback)initWithImplicitlyRejectedString:(id)a3
+- (PPFeedback)initWithImplicitlyRejectedString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  stringCopy2 = string;
+  v6 = [v4 arrayWithObjects:&stringCopy count:1];
 
-  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:v6 offeredStrings:0, v10, v11];
+  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:v6 offeredStrings:0, stringCopy, v11];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (PPFeedback)initWithImplicitlyEngagedString:(id)a3
+- (PPFeedback)initWithImplicitlyEngagedString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  stringCopy2 = string;
+  v6 = [v4 arrayWithObjects:&stringCopy count:1];
 
-  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:v6 implicitlyRejectedStrings:0 offeredStrings:0, v10, v11];
+  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:v6 implicitlyRejectedStrings:0 offeredStrings:0, stringCopy, v11];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (PPFeedback)initWithExplicitlyRejectedString:(id)a3
+- (PPFeedback)initWithExplicitlyRejectedString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  stringCopy2 = string;
+  v6 = [v4 arrayWithObjects:&stringCopy count:1];
 
-  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:v6 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:0, v10, v11];
+  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:0 explicitlyRejectedStrings:v6 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:0, stringCopy, v11];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (PPFeedback)initWithExplicitlyEngagedString:(id)a3
+- (PPFeedback)initWithExplicitlyEngagedString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  stringCopy2 = string;
+  v6 = [v4 arrayWithObjects:&stringCopy count:1];
 
-  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:v6 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:0, v10, v11];
+  v7 = [(PPFeedback *)self initWithExplicitlyEngagedStrings:v6 explicitlyRejectedStrings:0 implicitlyEngagedStrings:0 implicitlyRejectedStrings:0 offeredStrings:0, stringCopy, v11];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }

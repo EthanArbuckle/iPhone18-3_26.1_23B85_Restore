@@ -1,40 +1,40 @@
 @interface HAP2AccessoryServerDiscoveryHAPAccessoryInfo
-- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)a3 rawDiscoveryInfo:(id)a4;
-- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)a3 rawDiscoveryInfo:(id)a4 name:(id)a5 model:(id)a6 status:(unsigned __int8)a7 category:(unint64_t)a8 configurationNumber:(unint64_t)a9 stateNumber:(unint64_t)a10 protocolVersion:(id)a11 featureFlags:(unint64_t)a12 setupHash:(id)a13;
+- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)d rawDiscoveryInfo:(id)info;
+- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)d rawDiscoveryInfo:(id)info name:(id)name model:(id)model status:(unsigned __int8)status category:(unint64_t)category configurationNumber:(unint64_t)number stateNumber:(unint64_t)self0 protocolVersion:(id)self1 featureFlags:(unint64_t)self2 setupHash:(id)self3;
 @end
 
 @implementation HAP2AccessoryServerDiscoveryHAPAccessoryInfo
 
-- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)a3 rawDiscoveryInfo:(id)a4 name:(id)a5 model:(id)a6 status:(unsigned __int8)a7 category:(unint64_t)a8 configurationNumber:(unint64_t)a9 stateNumber:(unint64_t)a10 protocolVersion:(id)a11 featureFlags:(unint64_t)a12 setupHash:(id)a13
+- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)d rawDiscoveryInfo:(id)info name:(id)name model:(id)model status:(unsigned __int8)status category:(unint64_t)category configurationNumber:(unint64_t)number stateNumber:(unint64_t)self0 protocolVersion:(id)self1 featureFlags:(unint64_t)self2 setupHash:(id)self3
 {
-  v18 = a5;
-  v19 = a6;
-  v26 = a11;
-  v20 = a13;
+  nameCopy = name;
+  modelCopy = model;
+  versionCopy = version;
+  hashCopy = hash;
   v27.receiver = self;
   v27.super_class = HAP2AccessoryServerDiscoveryHAPAccessoryInfo;
-  v21 = [(HAP2AccessoryServerDiscoveryAccessoryInfo *)&v27 initWithDeviceID:a3 rawDiscoveryInfo:a4];
+  v21 = [(HAP2AccessoryServerDiscoveryAccessoryInfo *)&v27 initWithDeviceID:d rawDiscoveryInfo:info];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_name, a5);
-    objc_storeStrong(&v22->_model, a6);
-    v22->_status = a7;
-    v22->_category = a8;
-    v22->_configurationNumber = a9;
-    v22->_stateNumber = a10;
-    objc_storeStrong(&v22->_protocolVersion, a11);
-    v22->_featureFlags = a12;
-    objc_storeStrong(&v22->_setupHash, a13);
+    objc_storeStrong(&v21->_name, name);
+    objc_storeStrong(&v22->_model, model);
+    v22->_status = status;
+    v22->_category = category;
+    v22->_configurationNumber = number;
+    v22->_stateNumber = stateNumber;
+    objc_storeStrong(&v22->_protocolVersion, version);
+    v22->_featureFlags = flags;
+    objc_storeStrong(&v22->_setupHash, hash);
   }
 
   return v22;
 }
 
-- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)a3 rawDiscoveryInfo:(id)a4
+- (HAP2AccessoryServerDiscoveryHAPAccessoryInfo)initWithDeviceID:(id)d rawDiscoveryInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  infoCopy = info;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];

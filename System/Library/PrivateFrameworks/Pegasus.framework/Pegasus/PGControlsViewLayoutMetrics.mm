@@ -2,9 +2,9 @@
 + (CGSize)defaultActionButtonSize;
 + (CGSize)defaultRestoreCancelButtonsSize;
 + (CGSize)defaultSkipButtonsSize;
-+ (double)concentricCornerRadiusForViewSize:(CGSize)a3;
-+ (double)scaleForViewSize:(CGSize)a3;
-+ (double)spacingScaleForViewSize:(CGSize)a3;
++ (double)concentricCornerRadiusForViewSize:(CGSize)size;
++ (double)scaleForViewSize:(CGSize)size;
++ (double)spacingScaleForViewSize:(CGSize)size;
 @end
 
 @implementation PGControlsViewLayoutMetrics
@@ -36,25 +36,25 @@
   return result;
 }
 
-+ (double)concentricCornerRadiusForViewSize:(CGSize)a3
++ (double)concentricCornerRadiusForViewSize:(CGSize)size
 {
-  [a1 scaleForViewSize:{a3.width, a3.height}];
+  [self scaleForViewSize:{size.width, size.height}];
   v5 = v4;
-  [a1 defaultRestoreCancelButtonsSize];
+  [self defaultRestoreCancelButtonsSize];
   v7 = v6;
-  [a1 defaultControlsViewPadding];
+  [self defaultControlsViewPadding];
   return v5 * (v8 + v7 * 0.5);
 }
 
-+ (double)scaleForViewSize:(CGSize)a3
++ (double)scaleForViewSize:(CGSize)size
 {
-  result = a3.width / 278.0;
+  result = size.width / 278.0;
   if (result > 1.0)
   {
     result = 1.0;
   }
 
-  v4 = a3.height / 208.0;
+  v4 = size.height / 208.0;
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -78,15 +78,15 @@
   return result;
 }
 
-+ (double)spacingScaleForViewSize:(CGSize)a3
++ (double)spacingScaleForViewSize:(CGSize)size
 {
-  result = a3.width / 278.0;
+  result = size.width / 278.0;
   if (result > 1.0)
   {
     result = 1.0;
   }
 
-  v4 = a3.height / 208.0;
+  v4 = size.height / 208.0;
   if (v4 > 1.0)
   {
     v4 = 1.0;

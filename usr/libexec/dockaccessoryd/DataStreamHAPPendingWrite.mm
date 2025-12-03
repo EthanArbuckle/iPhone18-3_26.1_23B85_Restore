@@ -1,25 +1,25 @@
 @interface DataStreamHAPPendingWrite
 - (BOOL)isComplete;
-- (DataStreamHAPPendingWrite)initWithData:(id)a3 completion:(id)a4;
-- (id)popNextFrameUpToMaxLength:(unint64_t)a3;
+- (DataStreamHAPPendingWrite)initWithData:(id)data completion:(id)completion;
+- (id)popNextFrameUpToMaxLength:(unint64_t)length;
 @end
 
 @implementation DataStreamHAPPendingWrite
 
-- (DataStreamHAPPendingWrite)initWithData:(id)a3 completion:(id)a4
+- (DataStreamHAPPendingWrite)initWithData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = DataStreamHAPPendingWrite;
   v8 = [(DataStreamHAPPendingWrite *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     data = v8->_data;
     v8->_data = v9;
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(completionCopy);
     completion = v8->_completion;
     v8->_completion = v11;
   }
@@ -29,29 +29,29 @@
 
 - (BOOL)isComplete
 {
-  v2 = self;
-  v3 = [(DataStreamHAPPendingWrite *)self data];
-  v4 = [v3 length];
-  LOBYTE(v2) = v4 <= [(DataStreamHAPPendingWrite *)v2 bytesWritten];
+  selfCopy = self;
+  data = [(DataStreamHAPPendingWrite *)self data];
+  v4 = [data length];
+  LOBYTE(selfCopy) = v4 <= [(DataStreamHAPPendingWrite *)selfCopy bytesWritten];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)popNextFrameUpToMaxLength:(unint64_t)a3
+- (id)popNextFrameUpToMaxLength:(unint64_t)length
 {
-  v5 = [(DataStreamHAPPendingWrite *)self data];
-  v6 = [v5 length];
+  data = [(DataStreamHAPPendingWrite *)self data];
+  v6 = [data length];
   v7 = v6 - [(DataStreamHAPPendingWrite *)self bytesWritten];
 
-  if (v7 < a3)
+  if (v7 < length)
   {
-    a3 = v7;
+    length = v7;
   }
 
-  v8 = [(DataStreamHAPPendingWrite *)self data];
-  v9 = [v8 subdataWithRange:{-[DataStreamHAPPendingWrite bytesWritten](self, "bytesWritten"), a3}];
+  data2 = [(DataStreamHAPPendingWrite *)self data];
+  v9 = [data2 subdataWithRange:{-[DataStreamHAPPendingWrite bytesWritten](self, "bytesWritten"), length}];
 
-  [(DataStreamHAPPendingWrite *)self setBytesWritten:[(DataStreamHAPPendingWrite *)self bytesWritten]+ a3];
+  [(DataStreamHAPPendingWrite *)self setBytesWritten:[(DataStreamHAPPendingWrite *)self bytesWritten]+ length];
 
   return v9;
 }

@@ -1,33 +1,33 @@
 @interface AVVideoCompositionInstruction
 + (void)initialize;
 - (AVVideoCompositionInstruction)init;
-- (AVVideoCompositionInstruction)initWithCoder:(id)a3;
+- (AVVideoCompositionInstruction)initWithCoder:(id)coder;
 - (BOOL)containsTweening;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (NSArray)requiredSourceTrackIDs;
 - (id)_deepCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_setValuesFromDictionary:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_setValuesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setBlendingTransferFunction:(id)a3;
-- (void)setLayerInstructions:(id)a3;
-- (void)setRequiredSourceSampleDataTrackIDs:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setBlendingTransferFunction:(id)function;
+- (void)setLayerInstructions:(id)instructions;
+- (void)setRequiredSourceSampleDataTrackIDs:(id)ds;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation AVVideoCompositionInstruction
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
@@ -61,7 +61,7 @@
   return v2;
 }
 
-- (AVVideoCompositionInstruction)initWithCoder:(id)a3
+- (AVVideoCompositionInstruction)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = AVVideoCompositionInstruction;
@@ -78,7 +78,7 @@
       v8 = objc_opt_class();
       v9 = objc_opt_class();
       v10 = objc_opt_class();
-      -[AVVideoCompositionInstruction _setValuesFromDictionary:](v4, "_setValuesFromDictionary:", [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, v10, objc_opt_class(), 0), @"AVVideoCompositionInstruction"}]);
+      -[AVVideoCompositionInstruction _setValuesFromDictionary:](v4, "_setValuesFromDictionary:", [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, v10, objc_opt_class(), 0), @"AVVideoCompositionInstruction"}]);
     }
 
     else
@@ -91,14 +91,14 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(AVVideoCompositionInstruction *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(AVVideoCompositionInstruction *)self dictionaryRepresentation];
 
-  [a3 encodeObject:v4 forKey:@"AVVideoCompositionInstruction"];
+  [coder encodeObject:dictionaryRepresentation forKey:@"AVVideoCompositionInstruction"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -107,9 +107,9 @@
   }
 
   instruction = self->_instruction;
-  if (a3)
+  if (equal)
   {
-    [a3 timeRange];
+    [equal timeRange];
   }
 
   else
@@ -126,34 +126,34 @@
   if (v8)
   {
     backgroundColor = self->_instruction->backgroundColor;
-    v10 = [a3 backgroundColor];
+    backgroundColor = [equal backgroundColor];
     if (backgroundColor)
     {
-      if (!CGColorEqualToColor(backgroundColor, v10))
+      if (!CGColorEqualToColor(backgroundColor, backgroundColor))
       {
         goto LABEL_14;
       }
     }
 
-    else if (v10)
+    else if (backgroundColor)
     {
       goto LABEL_14;
     }
 
     layerInstructions = self->_instruction->layerInstructions;
-    v12 = [a3 layerInstructions];
+    layerInstructions = [equal layerInstructions];
     if (layerInstructions)
     {
-      if (([(NSArray *)layerInstructions isEqual:v12]& 1) != 0)
+      if (([(NSArray *)layerInstructions isEqual:layerInstructions]& 1) != 0)
       {
 LABEL_12:
         enablePostProcessing = self->_instruction->enablePostProcessing;
-        LOBYTE(v8) = enablePostProcessing == [a3 enablePostProcessing];
+        LOBYTE(v8) = enablePostProcessing == [equal enablePostProcessing];
         return v8;
       }
     }
 
-    else if (!v12)
+    else if (!layerInstructions)
     {
       goto LABEL_12;
     }
@@ -165,7 +165,7 @@ LABEL_14:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(AVVideoCompositionInstruction *)self isMemberOfClass:objc_opt_class()])
   {
@@ -199,7 +199,7 @@ LABEL_14:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVVideoCompositionInstruction *)[AVMutableVideoCompositionInstruction allocWithZone:?]];
   if (v4)
@@ -228,14 +228,14 @@ LABEL_14:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [(AVVideoCompositionInstruction *)self mutableCopy];
-  v4 = [(AVVideoCompositionInstruction *)self layerInstructions];
-  v5 = [(AVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs];
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v4, "count")}];
+  layerInstructions = [(AVVideoCompositionInstruction *)self layerInstructions];
+  requiredSourceSampleDataTrackIDs = [(AVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](layerInstructions, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v7 = [(NSArray *)layerInstructions countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -247,14 +247,14 @@ LABEL_14:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layerInstructions);
         }
 
         [v6 addObject:{objc_msgSend(*(*(&v21 + 1) + 8 * v10++), "copy")}];
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [(NSArray *)layerInstructions countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
@@ -263,12 +263,12 @@ LABEL_14:
   [v3 setLayerInstructions:v6];
   if ([(AVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs])
   {
-    v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v5, "count")}];
+    v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](requiredSourceSampleDataTrackIDs, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v12 = [(NSArray *)requiredSourceSampleDataTrackIDs countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -280,14 +280,14 @@ LABEL_14:
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredSourceSampleDataTrackIDs);
           }
 
           [v11 addObject:{objc_msgSend(*(*(&v17 + 1) + 8 * v15++), "copy")}];
         }
 
         while (v13 != v15);
-        v13 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v13 = [(NSArray *)requiredSourceSampleDataTrackIDs countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v13);
@@ -322,7 +322,7 @@ LABEL_14:
 - (NSArray)requiredSourceTrackIDs
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -343,8 +343,8 @@ LABEL_14:
           objc_enumerationMutation(layerInstructions);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) trackID];
-        -[NSArray addObject:](v3, "addObject:", [MEMORY[0x1E696AD98] numberWithInt:v9]);
+        trackID = [*(*(&v11 + 1) + 8 * v8) trackID];
+        -[NSArray addObject:](array, "addObject:", [MEMORY[0x1E696AD98] numberWithInt:trackID]);
         ++v8;
       }
 
@@ -355,7 +355,7 @@ LABEL_14:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)containsTweening
@@ -414,21 +414,21 @@ LABEL_14:
   return self;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
   instruction = self->_instruction;
-  v4 = *&a3->var0.var0;
-  v5 = *&a3->var0.var3;
-  *&instruction->timeRange.duration.timescale = *&a3->var1.var1;
+  v4 = *&range->var0.var0;
+  v5 = *&range->var0.var3;
+  *&instruction->timeRange.duration.timescale = *&range->var1.var1;
   *&instruction->timeRange.start.epoch = v5;
   *&instruction->timeRange.start.value = v4;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  if (a3)
+  if (color)
   {
-    CFRetain(a3);
+    CFRetain(color);
   }
 
   instruction = self->_instruction;
@@ -439,24 +439,24 @@ LABEL_14:
     instruction = self->_instruction;
   }
 
-  instruction->backgroundColor = a3;
+  instruction->backgroundColor = color;
 }
 
-- (void)setLayerInstructions:(id)a3
+- (void)setLayerInstructions:(id)instructions
 {
   layerInstructions = self->_instruction->layerInstructions;
-  if (layerInstructions != a3)
+  if (layerInstructions != instructions)
   {
 
-    self->_instruction->layerInstructions = [a3 copy];
+    self->_instruction->layerInstructions = [instructions copy];
   }
 }
 
-- (void)setBlendingTransferFunction:(id)a3
+- (void)setBlendingTransferFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
-    CFRetain(a3);
+    CFRetain(function);
   }
 
   instruction = self->_instruction;
@@ -467,16 +467,16 @@ LABEL_14:
     instruction = self->_instruction;
   }
 
-  instruction->blendingTransferFunction = a3;
+  instruction->blendingTransferFunction = function;
 }
 
-- (void)setRequiredSourceSampleDataTrackIDs:(id)a3
+- (void)setRequiredSourceSampleDataTrackIDs:(id)ds
 {
   requiredSourceSampleDataTrackIDs = self->_instruction->requiredSourceSampleDataTrackIDs;
-  if (requiredSourceSampleDataTrackIDs != a3)
+  if (requiredSourceSampleDataTrackIDs != ds)
   {
 
-    self->_instruction->requiredSourceSampleDataTrackIDs = [a3 copy];
+    self->_instruction->requiredSourceSampleDataTrackIDs = [ds copy];
   }
 }
 
@@ -554,7 +554,7 @@ LABEL_14:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v30 = self;
+    selfCopy = self;
     layerInstructions = self->_instruction->layerInstructions;
     v21 = [(NSArray *)layerInstructions countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v21)
@@ -603,7 +603,7 @@ LABEL_14:
       [v31 setObject:v19 forKey:@"LayerStack"];
     }
 
-    self = v30;
+    self = selfCopy;
     if (v23)
     {
       [v31 setObject:*MEMORY[0x1E695E4D0] forKey:@"ContainsTweening"];
@@ -618,7 +618,7 @@ LABEL_14:
   return v3;
 }
 
-- (void)_setValuesFromDictionary:(id)a3
+- (void)_setValuesFromDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
   v5 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
@@ -634,8 +634,8 @@ LABEL_14:
   [(AVVideoCompositionInstruction *)self setLayerInstructions:0];
   [(AVVideoCompositionInstruction *)self setEnablePostProcessing:1];
   [(AVVideoCompositionInstruction *)self setRequiredSourceSampleDataTrackIDs:MEMORY[0x1E695E0F0]];
-  v7 = [a3 objectForKey:@"StartTime"];
-  v8 = [a3 objectForKey:@"EndTime"];
+  v7 = [dictionary objectForKey:@"StartTime"];
+  v8 = [dictionary objectForKey:@"EndTime"];
   if (v7)
   {
     v9 = v8;
@@ -655,7 +655,7 @@ LABEL_14:
     }
   }
 
-  v10 = [a3 objectForKey:@"BackgroundColorICCProfile"];
+  v10 = [dictionary objectForKey:@"BackgroundColorICCProfile"];
   if (v10)
   {
     v11 = CGColorSpaceCreateWithICCData(v10);
@@ -681,7 +681,7 @@ LABEL_14:
     v12 = v5;
   }
 
-  v13 = [a3 objectForKey:@"BackgroundColorARGB"];
+  v13 = [dictionary objectForKey:@"BackgroundColorARGB"];
   if (v13)
   {
     memset(v37, 0, sizeof(v37));
@@ -699,7 +699,7 @@ LABEL_14:
     }
   }
 
-  v16 = [a3 objectForKey:@"LayerStack"];
+  v16 = [dictionary objectForKey:@"LayerStack"];
   v17 = [v16 count];
   if (v17 >= 1)
   {
@@ -745,13 +745,13 @@ LABEL_14:
     v12 = v27;
   }
 
-  v25 = [a3 objectForKey:@"EnablePostProcessing"];
+  v25 = [dictionary objectForKey:@"EnablePostProcessing"];
   if (v25)
   {
     -[AVVideoCompositionInstruction setEnablePostProcessing:](self, "setEnablePostProcessing:", [v25 BOOLValue]);
   }
 
-  v26 = [a3 objectForKey:@"RequiredSampleDataTrackIDArray"];
+  v26 = [dictionary objectForKey:@"RequiredSampleDataTrackIDArray"];
   if (v26)
   {
     [(AVVideoCompositionInstruction *)self setRequiredSourceSampleDataTrackIDs:v26];

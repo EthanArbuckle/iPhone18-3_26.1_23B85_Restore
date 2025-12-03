@@ -1,31 +1,31 @@
 @interface _MapsApplication
-- (void)failedTest:(id)a3;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
+- (void)failedTest:(id)test;
+- (void)finishedTest:(id)test extraResults:(id)results;
 @end
 
 @implementation _MapsApplication
 
-- (void)failedTest:(id)a3
+- (void)failedTest:(id)test
 {
   v6.receiver = self;
   v6.super_class = _MapsApplication;
-  v4 = a3;
-  [(_MapsApplication *)&v6 failedTest:v4];
+  testCopy = test;
+  [(_MapsApplication *)&v6 failedTest:testCopy];
   v5 = [(_MapsApplication *)self delegate:v6.receiver];
-  [_MapsApplicationTestSideEffectDelegate failedTest:v4 applicationTestingDelegate:v5];
+  [_MapsApplicationTestSideEffectDelegate failedTest:testCopy applicationTestingDelegate:v5];
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
-  if (a3)
+  if (test)
   {
     v9.receiver = self;
     v9.super_class = _MapsApplication;
-    v6 = a4;
-    v7 = a3;
-    [(_MapsApplication *)&v9 finishedTest:v7 extraResults:v6];
+    resultsCopy = results;
+    testCopy = test;
+    [(_MapsApplication *)&v9 finishedTest:testCopy extraResults:resultsCopy];
     v8 = [(_MapsApplication *)self delegate:v9.receiver];
-    [_MapsApplicationTestSideEffectDelegate finishedTest:v7 extraResults:v6 applicationTestingDelegate:v8];
+    [_MapsApplicationTestSideEffectDelegate finishedTest:testCopy extraResults:resultsCopy applicationTestingDelegate:v8];
   }
 }
 

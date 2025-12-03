@@ -1,11 +1,11 @@
 @interface CAGainMapLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (NSString)renderMode;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setRenderMode:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)setRenderMode:(id)mode;
 @end
 
 @implementation CAGainMapLayer
@@ -18,33 +18,33 @@
   return v3[0];
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAGainMapLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setRenderMode:(id)a3
+- (void)setRenderMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->super._attr.layer, 0x25A, 3, v3);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CAGainMapLayer;
-  v7 = [(CALayer *)&v13 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v13 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
@@ -65,8 +65,8 @@
     *v8 = &unk_1EF2017B8;
   }
 
-  v10 = [(CAGainMapLayer *)self renderMode];
-  if ([(NSString *)v10 isEqualToString:@"gainBorder"])
+  renderMode = [(CAGainMapLayer *)self renderMode];
+  if ([(NSString *)renderMode isEqualToString:@"gainBorder"])
   {
     v11 = 1;
 LABEL_13:
@@ -74,13 +74,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([(NSString *)v10 isEqualToString:@"gainFill"])
+  if ([(NSString *)renderMode isEqualToString:@"gainFill"])
   {
     v11 = 2;
     goto LABEL_13;
   }
 
-  if ([(NSString *)v10 isEqualToString:@"gainBorderRenderFill"])
+  if ([(NSString *)renderMode isEqualToString:@"gainBorderRenderFill"])
   {
     v11 = 3;
     goto LABEL_13;
@@ -97,10 +97,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a3 == 602)
+  if (property == 602)
   {
     return 1;
   }
@@ -110,10 +110,10 @@ LABEL_14:
   return [(CALayer *)&v4 _renderLayerDefinesProperty:?];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 == 602)
   {
     v6 = CA::Transaction::ensure_compat(v5);
@@ -122,20 +122,20 @@ LABEL_14:
 
   v7.receiver = self;
   v7.super_class = CAGainMapLayer;
-  [(CAGainMapLayer *)&v7 didChangeValueForKey:a3];
+  [(CAGainMapLayer *)&v7 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"renderMode"])
+  if ([key isEqualToString:@"renderMode"])
   {
     return @"gainBorder";
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAGainMapLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 @end

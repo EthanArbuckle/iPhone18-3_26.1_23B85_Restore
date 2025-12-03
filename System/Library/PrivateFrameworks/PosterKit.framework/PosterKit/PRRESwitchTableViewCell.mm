@@ -1,16 +1,16 @@
 @interface PRRESwitchTableViewCell
-- (PRRESwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PRRESwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_currentValue;
-- (void)_setCurrentValue:(id)a3;
+- (void)_setCurrentValue:(id)value;
 @end
 
 @implementation PRRESwitchTableViewCell
 
-- (PRRESwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PRRESwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PRRESwitchTableViewCell;
-  v4 = [(PRRESwitchTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PRRESwitchTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -27,16 +27,16 @@
 - (id)_currentValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(UISwitch *)self->_switch isOn];
+  isOn = [(UISwitch *)self->_switch isOn];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isOn];
 }
 
-- (void)_setCurrentValue:(id)a3
+- (void)_setCurrentValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v10 = v4;
+  v10 = valueCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -58,9 +58,9 @@
   v7 = v6;
 
   v8 = self->_switch;
-  v9 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  [(UISwitch *)v8 setOn:v9];
+  [(UISwitch *)v8 setOn:bOOLValue];
 }
 
 @end

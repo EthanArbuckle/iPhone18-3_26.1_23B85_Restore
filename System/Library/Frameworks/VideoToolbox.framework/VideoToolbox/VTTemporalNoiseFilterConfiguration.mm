@@ -2,16 +2,16 @@
 + (CFIndex)_loadCapabilities;
 + (void)_loadCapabilities;
 - (BOOL)loadProperties;
-- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4;
-- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 sourcePixelFormat:(unsigned int)a5;
+- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height;
+- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height sourcePixelFormat:(unsigned int)format;
 - (void)dealloc;
 @end
 
 @implementation VTTemporalNoiseFilterConfiguration
 
-- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 sourcePixelFormat:(unsigned int)a5
+- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height sourcePixelFormat:(unsigned int)format
 {
-  v5 = *&a5;
+  v5 = *&format;
   v12.receiver = self;
   v12.super_class = VTTemporalNoiseFilterConfiguration;
   v8 = [(VTTemporalNoiseFilterConfiguration *)&v12 init];
@@ -23,25 +23,25 @@
 
   v9 = v8;
   +[VTTemporalNoiseFilterConfiguration _loadCapabilities];
-  if (a3 > +[VTTemporalNoiseFilterConfiguration maximumDimensions])
+  if (width > +[VTTemporalNoiseFilterConfiguration maximumDimensions])
   {
     NSLog(&cfstr_FramewidthIsGr.isa);
     return 0;
   }
 
-  if (a4 > +[VTTemporalNoiseFilterConfiguration maximumDimensions]>> 32)
+  if (height > +[VTTemporalNoiseFilterConfiguration maximumDimensions]>> 32)
   {
     NSLog(&cfstr_FrameheightIsG.isa);
     return 0;
   }
 
-  if (a3 < +[VTTemporalNoiseFilterConfiguration minimumDimensions])
+  if (width < +[VTTemporalNoiseFilterConfiguration minimumDimensions])
   {
     NSLog(&cfstr_FramewidthIsLe.isa);
     return 0;
   }
 
-  if (a4 < +[VTTemporalNoiseFilterConfiguration minimumDimensions]>> 32)
+  if (height < +[VTTemporalNoiseFilterConfiguration minimumDimensions]>> 32)
   {
     NSLog(&cfstr_FrameheightIsL.isa);
     return 0;
@@ -54,8 +54,8 @@
     return 0;
   }
 
-  v9->_frameWidth = a3;
-  v9->_frameHeight = a4;
+  v9->_frameWidth = width;
+  v9->_frameHeight = height;
   v9->_sourcePixelFormat = v5;
   if (![(VTTemporalNoiseFilterConfiguration *)v9 loadProperties])
   {
@@ -66,7 +66,7 @@
   return v9;
 }
 
-- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4
+- (VTTemporalNoiseFilterConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height
 {
   v9.receiver = self;
   v9.super_class = VTTemporalNoiseFilterConfiguration;
@@ -79,32 +79,32 @@
 
   v7 = v6;
   +[VTTemporalNoiseFilterConfiguration _loadCapabilities];
-  if (a3 > +[VTTemporalNoiseFilterConfiguration maximumDimensions])
+  if (width > +[VTTemporalNoiseFilterConfiguration maximumDimensions])
   {
     NSLog(&cfstr_FramewidthIsGr.isa);
     return 0;
   }
 
-  if (a4 > +[VTTemporalNoiseFilterConfiguration maximumDimensions]>> 32)
+  if (height > +[VTTemporalNoiseFilterConfiguration maximumDimensions]>> 32)
   {
     NSLog(&cfstr_FrameheightIsG.isa);
     return 0;
   }
 
-  if (a3 < +[VTTemporalNoiseFilterConfiguration minimumDimensions])
+  if (width < +[VTTemporalNoiseFilterConfiguration minimumDimensions])
   {
     NSLog(&cfstr_FramewidthIsLe.isa);
     return 0;
   }
 
-  if (a4 < +[VTTemporalNoiseFilterConfiguration minimumDimensions]>> 32)
+  if (height < +[VTTemporalNoiseFilterConfiguration minimumDimensions]>> 32)
   {
     NSLog(&cfstr_FrameheightIsL.isa);
     return 0;
   }
 
-  v7->_frameWidth = a3;
-  v7->_frameHeight = a4;
+  v7->_frameWidth = width;
+  v7->_frameHeight = height;
   v7->_sourcePixelFormat = 0;
   if (![(VTTemporalNoiseFilterConfiguration *)v7 loadProperties])
   {
@@ -346,7 +346,7 @@ LABEL_18:
 
 + (CFIndex)_loadCapabilities
 {
-  result = CFArrayGetCount(a1);
+  result = CFArrayGetCount(self);
   if (result > 0)
   {
     CFArrayGetValueAtIndex(*a2, 0);

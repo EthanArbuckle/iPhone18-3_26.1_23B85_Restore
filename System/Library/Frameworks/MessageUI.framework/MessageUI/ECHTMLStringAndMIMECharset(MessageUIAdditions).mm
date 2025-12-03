@@ -8,11 +8,11 @@
 - (void)encodeWithCoder:()MessageUIAdditions
 {
   v6 = a3;
-  v4 = [a1 string];
-  [v6 encodeObject:v4 forKey:@"String"];
+  string = [self string];
+  [v6 encodeObject:string forKey:@"String"];
 
-  v5 = [a1 charset];
-  [v6 encodeObject:v5 forKey:@"Charset"];
+  charset = [self charset];
+  [v6 encodeObject:charset forKey:@"Charset"];
 }
 
 - (uint64_t)initWithCoder:()MessageUIAdditions
@@ -20,7 +20,7 @@
   v4 = a3;
   v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"String"];
   v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Charset"];
-  v7 = [a1 initWithString:v5 charset:v6];
+  v7 = [self initWithString:v5 charset:v6];
 
   return v7;
 }

@@ -1,24 +1,24 @@
 @interface FigCoreWiFi
-- (FigCoreWiFi)initWithError:(id *)a3;
+- (FigCoreWiFi)initWithError:(id *)error;
 - (id)getLatestWiFiStats;
 - (void)dealloc;
 - (void)initializeWifiStatsFromCachedData;
 - (void)refreshSSIDFromCoreWifiInterface;
-- (void)updateWifiStatsWithLinkQualityData:(id)a3;
-- (void)withWifiStatsLock:(id)a3;
+- (void)updateWifiStatsWithLinkQualityData:(id)data;
+- (void)withWifiStatsLock:(id)lock;
 @end
 
 @implementation FigCoreWiFi
 
-- (void)withWifiStatsLock:(id)a3
+- (void)withWifiStatsLock:(id)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   if (FigSimpleMutexLock())
   {
     [FigCoreWiFi withWifiStatsLock:];
   }
 
-  v3[2]();
+  lockCopy[2]();
   if (FigSimpleMutexUnlock())
   {
     [FigCoreWiFi withWifiStatsLock:];
@@ -46,23 +46,23 @@
   return v2;
 }
 
-- (void)updateWifiStatsWithLinkQualityData:(id)a3
+- (void)updateWifiStatsWithLinkQualityData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__FigCoreWiFi_updateWifiStatsWithLinkQualityData___block_invoke;
   v6[3] = &unk_1E7491400;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dataCopy;
+  selfCopy = self;
+  v5 = dataCopy;
   [(FigCoreWiFi *)self withWifiStatsLock:v6];
 }
 
 - (void)refreshSSIDFromCoreWifiInterface
 {
-  v3 = [(CWFInterface *)self->cwfInterface SSID];
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
+  sSID = [(CWFInterface *)self->cwfInterface SSID];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:sSID encoding:4];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__FigCoreWiFi_refreshSSIDFromCoreWifiInterface__block_invoke;
@@ -101,19 +101,19 @@ void __48__FigCoreWiFi_initializeWifiStatsFromCachedData__block_invoke(uint64_t 
   *(v8 + 32) = v7;
 }
 
-- (FigCoreWiFi)initWithError:(id *)a3
+- (FigCoreWiFi)initWithError:(id *)error
 {
   v16.receiver = self;
   v16.super_class = FigCoreWiFi;
   v4 = [(FigCoreWiFi *)&v16 init];
   if (!v4)
   {
-    [FigCoreWiFi initWithError:a3];
+    [FigCoreWiFi initWithError:error];
     v12 = 0;
     v10 = 0;
 LABEL_8:
     v10 = v10;
-    *a3 = v10;
+    *error = v10;
     goto LABEL_9;
   }
 
@@ -147,7 +147,7 @@ LABEL_8:
     v10 = v17;
   }
 
-  if (a3)
+  if (error)
   {
     goto LABEL_8;
   }

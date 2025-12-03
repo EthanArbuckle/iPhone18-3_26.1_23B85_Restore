@@ -13,8 +13,8 @@
   }
 
   v2 = _IS_extensionsCanProvideIcon_extensionPointsWithIcons;
-  v3 = [a1 identifier];
-  v4 = [v2 containsObject:v3];
+  identifier = [self identifier];
+  v4 = [v2 containsObject:identifier];
 
   return v4;
 }
@@ -27,8 +27,8 @@
   }
 
   v2 = _IS_extensionsShouldFallbackToContainerIcon_extensionPointsHavingExtensionThatMustProvideIcons;
-  v3 = [a1 identifier];
-  LODWORD(v2) = [v2 containsObject:v3];
+  identifier = [self identifier];
+  LODWORD(v2) = [v2 containsObject:identifier];
 
   return v2 ^ 1;
 }

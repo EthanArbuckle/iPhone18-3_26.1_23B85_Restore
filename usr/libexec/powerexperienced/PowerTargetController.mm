@@ -8,14 +8,14 @@
 - (BOOL)isDeviceInUse;
 - (BOOL)isHighSOCCharging;
 - (BOOL)isOBCTopOff;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)shouldOverrideCPMMode;
 - (PowerTargetController)init;
 - (unint64_t)getDeviceInUseReasons;
 - (void)clearState;
 - (void)evaluatePowerTargets;
 - (void)logStatusToPowerLog;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForTrial;
 - (void)removeMitigations;
 - (void)restoreState;
@@ -47,16 +47,16 @@
     return;
   }
 
-  v3 = [(PowerTargetController *)self resourceManager];
-  v4 = [v3 resourceHints];
+  resourceManager = [(PowerTargetController *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  v5 = [(PowerTargetController *)self deviceContext];
-  v6 = [v5 objectForKeyedSubscript:@"kWirelessChargerContext"];
-  v7 = [v6 BOOLValue];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  v6 = [deviceContext objectForKeyedSubscript:@"kWirelessChargerContext"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"USBDeviceMode"];
-  v9 = [v8 state];
-  v10 = [v4 objectForKeyedSubscript:@"DataMigrationInProgress"];
+  v8 = [resourceHints objectForKeyedSubscript:@"USBDeviceMode"];
+  state = [v8 state];
+  v10 = [resourceHints objectForKeyedSubscript:@"DataMigrationInProgress"];
 
   if ([v10 state] == 1)
   {
@@ -110,7 +110,7 @@
     }
   }
 
-  if (MGGetBoolAnswer() && ![(PowerTargetController *)self ignoreUSBDeviceMode]&& v9 == 1)
+  if (MGGetBoolAnswer() && ![(PowerTargetController *)self ignoreUSBDeviceMode]&& state == 1)
   {
     v13 = qword_100036CB8;
     if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
@@ -149,26 +149,26 @@ LABEL_18:
     {
       if (v12 == 5)
       {
-        v18 = self;
+        selfCopy3 = self;
         v17 = 4;
         goto LABEL_35;
       }
 
       if (v12 != 6)
       {
-        v18 = self;
+        selfCopy3 = self;
         v17 = 5;
         goto LABEL_35;
       }
 
       [(PowerTargetController *)self updatePackagePowerTargets:1 options:[(PowerTargetController *)self prePickupWarm]];
-      if (!v7)
+      if (!bOOLValue)
       {
         goto LABEL_36;
       }
 
-      v24 = [(PowerTargetController *)self prePickupWarm];
-      if (v24 == [(PowerTargetController *)self wirelessWarm])
+      prePickupWarm = [(PowerTargetController *)self prePickupWarm];
+      if (prePickupWarm == [(PowerTargetController *)self wirelessWarm])
       {
         goto LABEL_36;
       }
@@ -180,7 +180,7 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Wireless Charger has different targets", &v26, 2u);
       }
 
-      v16 = [(PowerTargetController *)self wirelessWarm];
+      wirelessWarm = [(PowerTargetController *)self wirelessWarm];
     }
 
     else
@@ -206,13 +206,13 @@ LABEL_36:
       if (v12 == 2)
       {
         [(PowerTargetController *)self updatePackagePowerTargets:1 options:[(PowerTargetController *)self prePickupDefault]];
-        if (!v7)
+        if (!bOOLValue)
         {
           goto LABEL_36;
         }
 
-        v22 = [(PowerTargetController *)self prePickupDefault];
-        if (v22 == [(PowerTargetController *)self wirelessDefault])
+        prePickupDefault = [(PowerTargetController *)self prePickupDefault];
+        if (prePickupDefault == [(PowerTargetController *)self wirelessDefault])
         {
           goto LABEL_36;
         }
@@ -224,19 +224,19 @@ LABEL_36:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Wireless Charger has different targets", &v26, 2u);
         }
 
-        v16 = [(PowerTargetController *)self wirelessDefault];
+        wirelessWarm = [(PowerTargetController *)self wirelessDefault];
       }
 
       else
       {
-        v16 = [(PowerTargetController *)self prePickupWarm];
+        wirelessWarm = [(PowerTargetController *)self prePickupWarm];
       }
     }
 
-    v17 = v16;
-    v18 = self;
+    v17 = wirelessWarm;
+    selfCopy3 = self;
 LABEL_35:
-    [(PowerTargetController *)v18 updatePackagePowerTargets:1 options:v17];
+    [(PowerTargetController *)selfCopy3 updatePackagePowerTargets:1 options:v17];
     goto LABEL_36;
   }
 
@@ -249,13 +249,13 @@ LABEL_39:
 
 - (BOOL)isActiveWarm
 {
-  v3 = [(PowerTargetController *)self deviceContext];
-  v4 = [v3 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v5 = [v4 objectForKeyedSubscript:@"kEarlyThermalContext"];
-  v6 = [v5 BOOLValue];
+  v5 = [currentContext objectForKeyedSubscript:@"kEarlyThermalContext"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(PowerTargetController *)self isDeviceInUse]& v6;
+  v7 = [(PowerTargetController *)self isDeviceInUse]& bOOLValue;
   if (v7 == 1)
   {
     v8 = qword_100036CB8;
@@ -271,58 +271,58 @@ LABEL_39:
 
 - (BOOL)isDeviceInUse
 {
-  v3 = [(PowerTargetController *)self deviceContext];
-  v34 = [v3 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v4 = [(PowerTargetController *)self resourceManager];
-  v5 = [v4 resourceHints];
+  resourceManager = [(PowerTargetController *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  v6 = [v5 objectForKeyedSubscript:@"Display"];
-  v7 = [v6 state];
-  v8 = [v5 objectForKeyedSubscript:@"CarPlay"];
+  v6 = [resourceHints objectForKeyedSubscript:@"Display"];
+  state = [v6 state];
+  v8 = [resourceHints objectForKeyedSubscript:@"CarPlay"];
 
-  v9 = [v8 state];
-  v10 = [v5 objectForKeyedSubscript:@"Camera"];
+  state2 = [v8 state];
+  v10 = [resourceHints objectForKeyedSubscript:@"Camera"];
 
-  v33 = [v10 state];
-  v11 = [v5 objectForKeyedSubscript:@"PersonalHotspot"];
+  state3 = [v10 state];
+  v11 = [resourceHints objectForKeyedSubscript:@"PersonalHotspot"];
 
-  v12 = [v11 state];
-  v13 = [v5 objectForKeyedSubscript:@"AudioSession"];
+  state4 = [v11 state];
+  v13 = [resourceHints objectForKeyedSubscript:@"AudioSession"];
 
-  v14 = [v13 state];
-  v15 = [v5 objectForKeyedSubscript:@"PhoneCall"];
+  state5 = [v13 state];
+  v15 = [resourceHints objectForKeyedSubscript:@"PhoneCall"];
 
-  v16 = [v15 state];
-  v17 = [v5 objectForKeyedSubscript:@"OnenessSession"];
+  state6 = [v15 state];
+  v17 = [resourceHints objectForKeyedSubscript:@"OnenessSession"];
 
-  v18 = [v17 state];
-  v19 = [v5 objectForKeyedSubscript:@"SiriAudio"];
+  state7 = [v17 state];
+  v19 = [resourceHints objectForKeyedSubscript:@"SiriAudio"];
 
-  v20 = [v19 state];
-  v32 = v7;
-  v27 = v7 == 101 || v9 == 1 || v33 == 1 || v12 == 1 || v14 == 1 || v16 == 1 || v18 == 1 || v20 == 1;
+  state8 = [v19 state];
+  v32 = state;
+  v27 = state == 101 || state2 == 1 || state3 == 1 || state4 == 1 || state5 == 1 || state6 == 1 || state7 == 1 || state8 == 1;
   v28 = v27;
   if (v27)
   {
-    v29 = v20;
+    v29 = state8;
     log = qword_100036CB8;
     if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67110912;
       v36 = v32 == 101;
       v37 = 1024;
-      v38 = v9 == 1;
+      v38 = state2 == 1;
       v39 = 1024;
-      v40 = v33 == 1;
+      v40 = state3 == 1;
       v41 = 1024;
-      v42 = v12 == 1;
+      v42 = state4 == 1;
       v43 = 1024;
-      v44 = v14 == 1;
+      v44 = state5 == 1;
       v45 = 1024;
-      v46 = v16 == 1;
+      v46 = state6 == 1;
       v47 = 1024;
-      v48 = v18 == 1;
+      v48 = state7 == 1;
       v49 = 1024;
       v50 = v29 == 1;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "inUse displayOn %d, carPlaySession %d, cameraActive %d, hotspotActive %d, audioSession %d, phoneCall %d, onenessActive %d, siriAudio %d", buf, 0x32u);
@@ -339,18 +339,18 @@ LABEL_39:
     return 0;
   }
 
-  v4 = [(PowerTargetController *)self deviceContext];
-  v5 = [v4 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v6 = [(PowerTargetController *)self resourceManager];
-  v7 = [v6 resourceHints];
+  resourceManager = [(PowerTargetController *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  v8 = [v5 objectForKeyedSubscript:@"kPluggedInContext"];
-  v9 = [v8 BOOLValue];
+  v8 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [v7 objectForKeyedSubscript:@"OBCTopOff"];
+    v10 = [resourceHints objectForKeyedSubscript:@"OBCTopOff"];
     v3 = [v10 state] == 1;
   }
 
@@ -369,22 +369,22 @@ LABEL_39:
     return 0;
   }
 
-  v4 = [(PowerTargetController *)self deviceContext];
-  v5 = [v4 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v6 = [v5 objectForKeyedSubscript:@"kPluggedInContext"];
-  v7 = [v6 BOOLValue];
+  v6 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v5 objectForKeyedSubscript:@"kEarlyThermalContext"];
-    v9 = [v8 BOOLValue];
+    v8 = [currentContext objectForKeyedSubscript:@"kEarlyThermalContext"];
+    bOOLValue2 = [v8 BOOLValue];
 
-    v10 = [v5 objectForKeyedSubscript:@"kCSPNStateContext"];
-    v11 = [v10 unsignedIntValue];
+    v10 = [currentContext objectForKeyedSubscript:@"kCSPNStateContext"];
+    unsignedIntValue = [v10 unsignedIntValue];
 
     v3 = 0;
-    if (v11 == 2 && v9)
+    if (unsignedIntValue == 2 && bOOLValue2)
     {
       v12 = qword_100036CB8;
       if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
@@ -412,20 +412,20 @@ LABEL_39:
     return 0;
   }
 
-  v4 = [(PowerTargetController *)self deviceContext];
-  v5 = [v4 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v6 = [v5 objectForKeyedSubscript:@"kPluggedInContext"];
-  v7 = [v6 BOOLValue];
+  v6 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v5 objectForKeyedSubscript:@"kThermalPressureContext"];
-    v9 = [v8 unsignedIntValue];
+    v8 = [currentContext objectForKeyedSubscript:@"kThermalPressureContext"];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    v10 = [(PowerTargetController *)self shouldOverrideCPMMode];
+    shouldOverrideCPMMode = [(PowerTargetController *)self shouldOverrideCPMMode];
     v3 = 0;
-    if (v10 && v9 >= 0xA)
+    if (shouldOverrideCPMMode && unsignedIntValue >= 0xA)
     {
       v11 = qword_100036CB8;
       if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
@@ -453,20 +453,20 @@ LABEL_39:
     return 0;
   }
 
-  v4 = [(PowerTargetController *)self deviceContext];
-  v5 = [v4 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v6 = [v5 objectForKeyedSubscript:@"kPluggedInContext"];
-  v7 = [v6 BOOLValue];
+  v6 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v5 objectForKeyedSubscript:@"kThermalPressureContext"];
-    v9 = [v8 unsignedIntValue];
+    v8 = [currentContext objectForKeyedSubscript:@"kThermalPressureContext"];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    v10 = [(PowerTargetController *)self shouldOverrideCPMMode];
+    shouldOverrideCPMMode = [(PowerTargetController *)self shouldOverrideCPMMode];
     v3 = 0;
-    if (v10 && !v9)
+    if (shouldOverrideCPMMode && !unsignedIntValue)
     {
       v11 = qword_100036CB8;
       if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
@@ -512,17 +512,17 @@ LABEL_39:
   }
 
   [(PowerTargetController *)self removeMitigations];
-  v4 = [(PowerTargetController *)self defaults];
-  [v4 removeObjectForKey:@"mitigation"];
+  defaults = [(PowerTargetController *)self defaults];
+  [defaults removeObjectForKey:@"mitigation"];
 
-  v5 = [(PowerTargetController *)self defaults];
-  [v5 removeObjectForKey:@"mitigationDescription"];
+  defaults2 = [(PowerTargetController *)self defaults];
+  [defaults2 removeObjectForKey:@"mitigationDescription"];
 }
 
 - (BOOL)shouldOverrideCPMMode
 {
-  v2 = [(PowerTargetController *)self currentMode];
-  v3 = [v2 isEqualToString:@"AcceleratedChargingMode"];
+  currentMode = [(PowerTargetController *)self currentMode];
+  v3 = [currentMode isEqualToString:@"AcceleratedChargingMode"];
 
   return v3 ^ 1;
 }
@@ -586,8 +586,8 @@ LABEL_7:
   if ([(PowerTargetController *)self supportedPlatform])
   {
     [(PowerTargetController *)self activate];
-    v3 = [(PowerTargetController *)self deviceContext];
-    [v3 addObserver:self forKeyPath:@"currentContext" options:3 context:0];
+    deviceContext = [(PowerTargetController *)self deviceContext];
+    [deviceContext addObserver:self forKeyPath:@"currentContext" options:3 context:0];
 
     v4 = objc_alloc_init(ContextualPowerModesClient);
     v5 = sub_100001600();
@@ -644,7 +644,7 @@ LABEL_7:
   [(PowerTargetController *)self setUtilityPowerTarget:v4];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
@@ -662,20 +662,20 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(PowerTargetController *)self deviceContext];
-  v5 = [v4 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v6 = [v5 objectForKeyedSubscript:@"kPluggedInContext"];
-  v7 = [v6 BOOLValue];
+  v6 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v5 objectForKeyedSubscript:@"kEarlyThermalContext"];
-    v9 = [v8 BOOLValue];
+    v8 = [currentContext objectForKeyedSubscript:@"kEarlyThermalContext"];
+    bOOLValue2 = [v8 BOOLValue];
 
-    v10 = [(PowerTargetController *)self shouldOverrideCPMMode];
+    shouldOverrideCPMMode = [(PowerTargetController *)self shouldOverrideCPMMode];
     v3 = 0;
-    if (v10 && v9)
+    if (shouldOverrideCPMMode && bOOLValue2)
     {
       v11 = qword_100036CB8;
       if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
@@ -703,29 +703,29 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(PowerTargetController *)self deviceContext];
-  v4 = [v3 objectForKeyedSubscript:@"kWirelessChargerContext"];
-  v5 = [v4 BOOLValue];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  v4 = [deviceContext objectForKeyedSubscript:@"kWirelessChargerContext"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (!v5)
+  if (!bOOLValue)
   {
     return 0;
   }
 
-  v6 = [(PowerTargetController *)self deviceContext];
-  v7 = [v6 currentContext];
+  deviceContext2 = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext2 currentContext];
 
-  v8 = [v7 objectForKeyedSubscript:@"kBatteryLevelContext"];
-  v9 = [v8 intValue];
+  v8 = [currentContext objectForKeyedSubscript:@"kBatteryLevelContext"];
+  intValue = [v8 intValue];
 
-  if (v9 - 80 > 0x13)
+  if (intValue - 80 > 0x13)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [v7 objectForKeyedSubscript:@"kIsChargingContext"];
+    v10 = [currentContext objectForKeyedSubscript:@"kIsChargingContext"];
 
     if (v10)
     {
@@ -734,7 +734,7 @@ LABEL_7:
 
     else
     {
-      v12 = [v7 objectForKeyedSubscript:@"kBatteryPropertiesContext"];
+      v12 = [currentContext objectForKeyedSubscript:@"kBatteryPropertiesContext"];
       v13 = [v12 objectForKeyedSubscript:@"ChargerData"];
       v14 = [v13 objectForKeyedSubscript:@"NotChargingReason"];
 
@@ -752,7 +752,7 @@ LABEL_7:
     if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 67109120;
-      LODWORD(v19) = v9;
+      LODWORD(v19) = intValue;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "batterylevel is between 80 and 100. Applying 0.4W target, level %d", &v18, 8u);
     }
   }
@@ -764,20 +764,20 @@ LABEL_7:
 {
   if ([(PowerTargetController *)self currentMitigation])
   {
-    v3 = [(PowerTargetController *)self defaults];
+    defaults = [(PowerTargetController *)self defaults];
     v4 = [NSNumber numberWithUnsignedInteger:[(PowerTargetController *)self currentMitigation]];
-    [v3 setValue:v4 forKey:@"mitigation"];
+    [defaults setValue:v4 forKey:@"mitigation"];
 
-    v6 = [(PowerTargetController *)self defaults];
+    defaults2 = [(PowerTargetController *)self defaults];
     v5 = sub_100016438([(PowerTargetController *)self currentMitigation]);
-    [v6 setValue:v5 forKey:@"mitigationDescription"];
+    [defaults2 setValue:v5 forKey:@"mitigationDescription"];
   }
 }
 
 - (void)restoreState
 {
-  v3 = [(PowerTargetController *)self defaults];
-  v4 = [v3 valueForKey:@"mitigation"];
+  defaults = [(PowerTargetController *)self defaults];
+  v4 = [defaults valueForKey:@"mitigation"];
 
   if (v4)
   {
@@ -787,19 +787,19 @@ LABEL_7:
     {
       v6 = v5;
       v7 = 134217984;
-      v8 = [(PowerTargetController *)self currentMitigation];
+      currentMitigation = [(PowerTargetController *)self currentMitigation];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Restoring mitigation %lu", &v7, 0xCu);
     }
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PowerTargetControllerProtocolPrivate];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [v5 valueForEntitlement:@"com.apple.powerexperience.powertargetcontroller.update"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.powerexperience.powertargetcontroller.update"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 BOOLValue])
   {
     v8 = qword_100036CB8;
@@ -807,12 +807,12 @@ LABEL_7:
     {
       v9 = v8;
       v13[0] = 67109120;
-      v13[1] = [v5 processIdentifier];
+      v13[1] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PowerTargetControllerService: listener: accpeted new connection from pid %d", v13, 8u);
     }
 
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v10 = 1;
   }
 
@@ -821,7 +821,7 @@ LABEL_7:
     v11 = qword_100036CB8;
     if (os_log_type_enabled(qword_100036CB8, OS_LOG_TYPE_ERROR))
     {
-      sub_100019BFC(v11, v5);
+      sub_100019BFC(v11, connectionCopy);
     }
 
     v10 = 0;
@@ -832,34 +832,34 @@ LABEL_7:
 
 - (unint64_t)getDeviceInUseReasons
 {
-  v3 = [(PowerTargetController *)self deviceContext];
-  v4 = [v3 currentContext];
+  deviceContext = [(PowerTargetController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v5 = [(PowerTargetController *)self resourceManager];
-  v6 = [v5 resourceHints];
+  resourceManager = [(PowerTargetController *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  v7 = [v6 objectForKeyedSubscript:@"Display"];
-  v8 = [v7 state];
-  v9 = [v6 objectForKeyedSubscript:@"CarPlay"];
+  v7 = [resourceHints objectForKeyedSubscript:@"Display"];
+  state = [v7 state];
+  v9 = [resourceHints objectForKeyedSubscript:@"CarPlay"];
 
-  v10 = [v9 state];
+  state2 = [v9 state];
   v11 = 2;
-  if (v8 == 101)
+  if (state == 101)
   {
     v11 = 3;
   }
 
-  if (v10 == 1)
+  if (state2 == 1)
   {
     v12 = v11;
   }
 
   else
   {
-    v12 = v8 == 101;
+    v12 = state == 101;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"Camera"];
+  v13 = [resourceHints objectForKeyedSubscript:@"Camera"];
 
   if ([v13 state] == 1)
   {
@@ -871,35 +871,35 @@ LABEL_7:
     v14 = v12;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"PersonalHotspot"];
+  v15 = [resourceHints objectForKeyedSubscript:@"PersonalHotspot"];
 
   if ([v15 state] == 1)
   {
     v14 |= 8uLL;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"AudioSession"];
+  v16 = [resourceHints objectForKeyedSubscript:@"AudioSession"];
 
   if ([v16 state] == 1)
   {
     v14 |= 0x10uLL;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"PhoneCall"];
+  v17 = [resourceHints objectForKeyedSubscript:@"PhoneCall"];
 
   if ([v17 state] == 1)
   {
     v14 |= 0x20uLL;
   }
 
-  v18 = [v6 objectForKeyedSubscript:@"OnenessSession"];
+  v18 = [resourceHints objectForKeyedSubscript:@"OnenessSession"];
 
   if ([v18 state] == 1)
   {
     v14 |= 0x40uLL;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"SiriAudio"];
+  v19 = [resourceHints objectForKeyedSubscript:@"SiriAudio"];
 
   if ([v19 state] == 1)
   {
@@ -923,7 +923,7 @@ LABEL_7:
 
   if ([(PowerTargetController *)self powerlogIdentifier])
   {
-    v3 = [(PowerTargetController *)self getDeviceInUseReasons];
+    getDeviceInUseReasons = [(PowerTargetController *)self getDeviceInUseReasons];
     v12[0] = @"status";
     v4 = [NSNumber numberWithBool:[(PowerTargetController *)self state]];
     v13[0] = v4;
@@ -931,7 +931,7 @@ LABEL_7:
     v5 = [NSNumber numberWithUnsignedLongLong:[(PowerTargetController *)self option]];
     v13[1] = v5;
     v12[2] = @"client";
-    v6 = [NSNumber numberWithUnsignedInteger:v3];
+    v6 = [NSNumber numberWithUnsignedInteger:getDeviceInUseReasons];
     v13[2] = v6;
     v7 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
 
@@ -1004,9 +1004,9 @@ LABEL_7:
     if (v10)
     {
       v11 = v9;
-      v12 = [v8 longValue];
+      longValue = [v8 longValue];
       v40 = 134217984;
-      v41 = v12;
+      v41 = longValue;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Trial:Regulate Package Power Target Default = %lld", &v40, 0xCu);
     }
 
@@ -1027,9 +1027,9 @@ LABEL_7:
     if (v15)
     {
       v16 = v14;
-      v17 = [v13 longValue];
+      longValue2 = [v13 longValue];
       v40 = 134217984;
-      v41 = v17;
+      v41 = longValue2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Trial:Regulate Package Power Target Warm = %lld", &v40, 0xCu);
     }
 
@@ -1100,9 +1100,9 @@ LABEL_7:
     if (v32)
     {
       v33 = v31;
-      v34 = [v30 longValue];
+      longValue3 = [v30 longValue];
       v40 = 134217984;
-      v41 = v34;
+      v41 = longValue3;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Trial: Regulate wireless Power Target Default = %lld", &v40, 0xCu);
     }
 
@@ -1123,9 +1123,9 @@ LABEL_7:
     if (v37)
     {
       v38 = v36;
-      v39 = [v35 longValue];
+      longValue4 = [v35 longValue];
       v40 = 134217984;
-      v41 = v39;
+      v41 = longValue4;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Trial: Regulate wireless Power Target Warm = %lld", &v40, 0xCu);
     }
 

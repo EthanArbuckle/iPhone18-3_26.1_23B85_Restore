@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupID];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupID:v5];
+  groupID = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupID];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupID:groupID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setFriendlyName:v6];
+  friendlyName = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setFriendlyName:friendlyName];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupKeySetID];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupKeySetID:v7];
+  groupKeySetID = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupKeySetID];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupKeySetID:groupKeySetID];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupCAT];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupCAT:v8];
+  groupCAT = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupCAT];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupCAT:groupCAT];
 
-  v9 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupCATVersion];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupCATVersion:v9];
+  groupCATVersion = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupCATVersion];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupCATVersion:groupCATVersion];
 
-  v10 = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupPermission];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupPermission:v10];
+  groupPermission = [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)self groupPermission];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupInformationEntryStruct *)v4 setGroupPermission:groupPermission];
 
   return v4;
 }

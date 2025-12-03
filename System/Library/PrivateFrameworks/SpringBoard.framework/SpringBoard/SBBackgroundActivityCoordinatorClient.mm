@@ -1,31 +1,31 @@
 @interface SBBackgroundActivityCoordinatorClient
-- (SBBackgroundActivityCoordinatorClient)initWithConnection:(id)a3 andBackgroundActivityIdentifiers:(id)a4;
-- (void)acquireAssertionAndDeliverTapContextToClient:(id)a3;
+- (SBBackgroundActivityCoordinatorClient)initWithConnection:(id)connection andBackgroundActivityIdentifiers:(id)identifiers;
+- (void)acquireAssertionAndDeliverTapContextToClient:(id)client;
 @end
 
 @implementation SBBackgroundActivityCoordinatorClient
 
-- (SBBackgroundActivityCoordinatorClient)initWithConnection:(id)a3 andBackgroundActivityIdentifiers:(id)a4
+- (SBBackgroundActivityCoordinatorClient)initWithConnection:(id)connection andBackgroundActivityIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  identifiersCopy = identifiers;
   v11.receiver = self;
   v11.super_class = SBBackgroundActivityCoordinatorClient;
   v8 = [(SBBackgroundActivityCoordinatorClient *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SBBackgroundActivityCoordinatorClient *)v8 setConnection:v6];
-    [(SBBackgroundActivityCoordinatorClient *)v9 setRegisteredBackgroundActivityIdentifiers:v7];
+    [(SBBackgroundActivityCoordinatorClient *)v8 setConnection:connectionCopy];
+    [(SBBackgroundActivityCoordinatorClient *)v9 setRegisteredBackgroundActivityIdentifiers:identifiersCopy];
   }
 
   return v9;
 }
 
-- (void)acquireAssertionAndDeliverTapContextToClient:(id)a3
+- (void)acquireAssertionAndDeliverTapContextToClient:(id)client
 {
   v4 = MEMORY[0x277CEEEA8];
-  v5 = a3;
+  clientCopy = client;
   v6 = [[v4 alloc] initWithPID:-[NSXPCConnection processIdentifier](self->_connection flags:"processIdentifier") reason:3 name:{10002, @"SBSStatusBarStyleOverridesCoordinatorTapEventDeliveryAssertion"}];
   if (([v6 acquire] & 1) == 0)
   {
@@ -60,7 +60,7 @@
   v14[3] = &unk_2783A8C18;
   v15 = v12;
   v13 = v12;
-  [v9 statusBarTappedWithContext:v5 reply:v14];
+  [v9 statusBarTappedWithContext:clientCopy reply:v14];
 }
 
 void __86__SBBackgroundActivityCoordinatorClient_acquireAssertionAndDeliverTapContextToClient___block_invoke(uint64_t a1)

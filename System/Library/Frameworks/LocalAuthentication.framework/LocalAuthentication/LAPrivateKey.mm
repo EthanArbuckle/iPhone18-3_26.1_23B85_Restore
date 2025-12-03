@@ -2,7 +2,7 @@
 - (BOOL)canDecryptUsingSecKeyAlgorithm:(SecKeyAlgorithm)algorithm;
 - (BOOL)canExchangeKeysUsingSecKeyAlgorithm:(SecKeyAlgorithm)algorithm;
 - (BOOL)canSignUsingSecKeyAlgorithm:(SecKeyAlgorithm)algorithm;
-- (LAPrivateKey)initWithKey:(id)a3;
+- (LAPrivateKey)initWithKey:(id)key;
 - (LAPublicKey)publicKey;
 - (id)context;
 - (id)right;
@@ -14,22 +14,22 @@
 
 @implementation LAPrivateKey
 
-- (LAPrivateKey)initWithKey:(id)a3
+- (LAPrivateKey)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = LAPrivateKey;
   v6 = [(LAPrivateKey *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, key);
     v8 = [MEMORY[0x1E69AD238] createDefaultSerialQueueWithIdentifier:@"LAPrivateKey"];
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
 
-    v10 = [MEMORY[0x1E696EE90] sharedInstance];
-    v7->_instanceID = [v10 nextInstanceIDInDomain:@"LAPrivateKey"];
+    mEMORY[0x1E696EE90] = [MEMORY[0x1E696EE90] sharedInstance];
+    v7->_instanceID = [mEMORY[0x1E696EE90] nextInstanceIDInDomain:@"LAPrivateKey"];
 
     v11 = LA_LOG_5();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -635,18 +635,18 @@ uint64_t __52__LAPrivateKey_canExchangeKeysUsingSecKeyAlgorithm___block_invoke(v
 
 - (id)context
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v2 = [WeakRetained context];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    context = [WeakRetained context];
   }
 
   else
   {
-    v2 = 0;
+    context = 0;
   }
 
-  return v2;
+  return context;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface _UIWindowSceneCoordinateSpace
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 - (UIWindowScene)windowScene;
-- (_UIWindowSceneCoordinateSpace)initWithWindowScene:(id)a3 effectiveSettings:(id)a4;
+- (_UIWindowSceneCoordinateSpace)initWithWindowScene:(id)scene effectiveSettings:(id)settings;
 @end
 
 @implementation _UIWindowSceneCoordinateSpace
@@ -20,63 +20,63 @@
   return result;
 }
 
-- (_UIWindowSceneCoordinateSpace)initWithWindowScene:(id)a3 effectiveSettings:(id)a4
+- (_UIWindowSceneCoordinateSpace)initWithWindowScene:(id)scene effectiveSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = _UIWindowSceneCoordinateSpace;
   v8 = [(_UIWindowSceneCoordinateSpace *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_windowScene, v6);
-    objc_storeStrong(&v9->_effectiveSettings, a4);
+    objc_storeWeak(&v8->_windowScene, sceneCopy);
+    objc_storeStrong(&v9->_effectiveSettings, settings);
   }
 
   return v9;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  [(_UIWindowSceneCoordinateSpace *)self convertRect:a4 toCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(_UIWindowSceneCoordinateSpace *)self convertRect:space toCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  [(_UIWindowSceneCoordinateSpace *)self convertRect:a4 fromCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(_UIWindowSceneCoordinateSpace *)self convertRect:space fromCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v82 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
   if (WeakRetained)
   {
     v11 = objc_loadWeakRetained(&self->_windowScene);
-    v12 = [v11 screen];
-    v13 = [v12 fixedCoordinateSpace];
+    screen = [v11 screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
     v14 = objc_loadWeakRetained(&self->_windowScene);
-    v15 = [v14 screen];
-    v16 = [v15 coordinateSpace];
+    screen2 = [v14 screen];
+    coordinateSpace = [screen2 coordinateSpace];
 
-    if (a4 && a4 != self)
+    if (space && space != self)
     {
       v17 = objc_loadWeakRetained(&self->_windowScene);
       v18 = v17;
-      if (v13 == a4)
+      if (fixedCoordinateSpace == space)
       {
         v29 = __UISceneEffectiveSettings(v17);
 
@@ -96,36 +96,36 @@
 
       else
       {
-        v19 = [v17 screen];
+        screen3 = [v17 screen];
 
-        if (v19 != a4)
+        if (screen3 != space)
         {
           v20 = objc_opt_self();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [a4 windowScene];
+            windowScene = [space windowScene];
             v22 = objc_loadWeakRetained(&self->_windowScene);
             v23 = v22;
-            if (v21 == v22)
+            if (windowScene == v22)
             {
-              v64 = [a4 _isExternallyPlaced];
+              _isExternallyPlaced = [space _isExternallyPlaced];
 
-              if ((v64 & 1) == 0)
+              if ((_isExternallyPlaced & 1) == 0)
               {
                 v65 = objc_loadWeakRetained(&self->_windowScene);
                 [v65 _referenceBounds];
                 v67 = v66;
                 v69 = v68;
                 v70 = objc_loadWeakRetained(&self->_windowScene);
-                v71 = [v70 _effectiveSettings];
-                v72 = _UIWindowConvertRectFromOrientationToOrientation([v71 interfaceOrientation], objc_msgSend(a4, "interfaceOrientation"), x, y, width, height, v67, v69);
+                _effectiveSettings = [v70 _effectiveSettings];
+                v72 = _UIWindowConvertRectFromOrientationToOrientation([_effectiveSettings interfaceOrientation], objc_msgSend(space, "interfaceOrientation"), x, y, width, height, v67, v69);
                 v74 = v73;
                 width = v75;
                 height = v76;
 
-                [a4 frame];
+                [space frame];
                 x = v72 - v77;
-                [a4 frame];
+                [space frame];
                 y = v74 - v78;
                 goto LABEL_21;
               }
@@ -135,8 +135,8 @@
           }
 
 LABEL_10:
-          [(_UIWindowSceneCoordinateSpace *)self convertRect:v16 toCoordinateSpace:x, y, width, height];
-          [v16 convertRect:a4 toCoordinateSpace:?];
+          [(_UIWindowSceneCoordinateSpace *)self convertRect:coordinateSpace toCoordinateSpace:x, y, width, height];
+          [coordinateSpace convertRect:space toCoordinateSpace:?];
 LABEL_20:
           x = v24;
           y = v25;
@@ -151,13 +151,13 @@ LABEL_20:
         [v43 frame];
         if (v45 != *MEMORY[0x1E695EFF8] || v44 != *(MEMORY[0x1E695EFF8] + 8) || (v46 = objc_loadWeakRetained(&self->_windowScene), [v46 screen], v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "_interfaceOrientation"), v49 = objc_msgSend(v43, "interfaceOrientation"), v47, v46, v48 != v49))
         {
-          [(_UIWindowSceneCoordinateSpace *)self convertRect:v13 toCoordinateSpace:x, y, width, height];
+          [(_UIWindowSceneCoordinateSpace *)self convertRect:fixedCoordinateSpace toCoordinateSpace:x, y, width, height];
           v51 = v50;
           v53 = v52;
           v55 = v54;
           v57 = v56;
-          [a4 _referenceBounds];
-          v24 = _UIWindowConvertRectFromOrientationToOrientation(1, [a4 _interfaceOrientation], v51, v53, v55, v57, v58, v59);
+          [space _referenceBounds];
+          v24 = _UIWindowConvertRectFromOrientationToOrientation(1, [space _interfaceOrientation], v51, v53, v55, v57, v58, v59);
           goto LABEL_20;
         }
       }
@@ -201,12 +201,12 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v74 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
@@ -244,21 +244,21 @@ LABEL_16:
   }
 
   v11 = objc_loadWeakRetained(&self->_windowScene);
-  v12 = [v11 screen];
-  v13 = [v12 fixedCoordinateSpace];
+  screen = [v11 screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
   v14 = objc_loadWeakRetained(&self->_windowScene);
-  v15 = [v14 screen];
-  v16 = [v15 coordinateSpace];
+  screen2 = [v14 screen];
+  coordinateSpace = [screen2 coordinateSpace];
 
-  if (!a4 || a4 == self)
+  if (!space || space == self)
   {
     goto LABEL_22;
   }
 
   v17 = objc_loadWeakRetained(&self->_windowScene);
   v18 = v17;
-  if (v13 == a4)
+  if (fixedCoordinateSpace == space)
   {
     v27 = __UISceneEffectiveSettings(v17);
 
@@ -274,34 +274,34 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v19 = [v17 screen];
+  screen3 = [v17 screen];
 
-  if (v19 != a4)
+  if (screen3 != space)
   {
     v20 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [a4 windowScene];
+      windowScene = [space windowScene];
       v22 = objc_loadWeakRetained(&self->_windowScene);
       v23 = v22;
-      if (v21 == v22)
+      if (windowScene == v22)
       {
-        v56 = [a4 _isExternallyPlaced];
+        _isExternallyPlaced = [space _isExternallyPlaced];
 
-        if ((v56 & 1) == 0)
+        if ((_isExternallyPlaced & 1) == 0)
         {
-          [a4 frame];
+          [space frame];
           v58 = x + v57;
-          [a4 frame];
+          [space frame];
           v60 = y + v59;
           v61 = objc_loadWeakRetained(&self->_windowScene);
           [v61 _referenceBounds];
           v63 = v62;
           v65 = v64;
-          v66 = [a4 interfaceOrientation];
+          interfaceOrientation = [space interfaceOrientation];
           v67 = objc_loadWeakRetained(&self->_windowScene);
-          v68 = [v67 _effectiveSettings];
-          x = _UIWindowConvertRectFromOrientationToOrientation(v66, [v68 interfaceOrientation], v58, v60, width, height, v63, v65);
+          _effectiveSettings = [v67 _effectiveSettings];
+          x = _UIWindowConvertRectFromOrientationToOrientation(interfaceOrientation, [_effectiveSettings interfaceOrientation], v58, v60, width, height, v63, v65);
           y = v69;
           width = v70;
           height = v71;
@@ -314,11 +314,11 @@ LABEL_16:
     }
 
 LABEL_10:
-    [v16 convertRect:a4 fromCoordinateSpace:{x, y, width, height}];
-    v24 = self;
-    v25 = v16;
+    [coordinateSpace convertRect:space fromCoordinateSpace:{x, y, width, height}];
+    selfCopy2 = self;
+    v25 = coordinateSpace;
 LABEL_21:
-    [(_UIWindowSceneCoordinateSpace *)v24 convertRect:v25 fromCoordinateSpace:?];
+    [(_UIWindowSceneCoordinateSpace *)selfCopy2 convertRect:v25 fromCoordinateSpace:?];
     x = v48;
     y = v49;
     width = v50;
@@ -332,10 +332,10 @@ LABEL_21:
   [v39 frame];
   if (v41 != *MEMORY[0x1E695EFF8] || v40 != *(MEMORY[0x1E695EFF8] + 8) || (v42 = objc_loadWeakRetained(&self->_windowScene), [v42 screen], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "_interfaceOrientation"), v45 = objc_msgSend(v39, "interfaceOrientation"), v43, v42, v44 != v45))
   {
-    [a4 _referenceBounds];
-    _UIWindowConvertRectFromOrientationToOrientation([a4 _interfaceOrientation], 1, x, y, width, height, v46, v47);
-    v24 = self;
-    v25 = v13;
+    [space _referenceBounds];
+    _UIWindowConvertRectFromOrientationToOrientation([space _interfaceOrientation], 1, x, y, width, height, v46, v47);
+    selfCopy2 = self;
+    v25 = fixedCoordinateSpace;
     goto LABEL_21;
   }
 

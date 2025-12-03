@@ -1,22 +1,22 @@
 @interface AVTImageTransitioningContainerView
-+ (CGRect)imageViewRectForContentRect:(CGRect)a3 liveViewRect:(CGRect)a4 imageSize:(CGSize)a5 scale:(double)a6;
-+ (CGRect)liveViewRectForContentRect:(CGRect)a3 aspectRatio:(CGSize)a4 layoutMode:(int64_t)a5 scale:(double)a6;
-- (AVTImageTransitioningContainerView)initWithFrame:(CGRect)a3 layoutMode:(int64_t)a4;
++ (CGRect)imageViewRectForContentRect:(CGRect)rect liveViewRect:(CGRect)viewRect imageSize:(CGSize)size scale:(double)scale;
++ (CGRect)liveViewRectForContentRect:(CGRect)rect aspectRatio:(CGSize)ratio layoutMode:(int64_t)mode scale:(double)scale;
+- (AVTImageTransitioningContainerView)initWithFrame:(CGRect)frame layoutMode:(int64_t)mode;
 - (CGSize)aspectRatio;
 - (void)layoutSubviews;
-- (void)setAspectRatio:(CGSize)a3;
-- (void)setLiveView:(id)a3;
-- (void)setStaticImage:(id)a3 animated:(BOOL)a4;
-- (void)setStaticViewVisible:(BOOL)a3;
+- (void)setAspectRatio:(CGSize)ratio;
+- (void)setLiveView:(id)view;
+- (void)setStaticImage:(id)image animated:(BOOL)animated;
+- (void)setStaticViewVisible:(BOOL)visible;
 - (void)transitionLiveViewToFront;
 - (void)transitionStaticViewToFront;
 @end
 
 @implementation AVTImageTransitioningContainerView
 
-+ (CGRect)liveViewRectForContentRect:(CGRect)a3 aspectRatio:(CGSize)a4 layoutMode:(int64_t)a5 scale:(double)a6
++ (CGRect)liveViewRectForContentRect:(CGRect)rect aspectRatio:(CGSize)ratio layoutMode:(int64_t)mode scale:(double)scale
 {
-  if (a5 == 1)
+  if (mode == 1)
   {
     _UIScaleTransformForAspectFitOfSizeInTargetSize();
   }
@@ -35,7 +35,7 @@
   return result;
 }
 
-+ (CGRect)imageViewRectForContentRect:(CGRect)a3 liveViewRect:(CGRect)a4 imageSize:(CGSize)a5 scale:(double)a6
++ (CGRect)imageViewRectForContentRect:(CGRect)rect liveViewRect:(CGRect)viewRect imageSize:(CGSize)size scale:(double)scale
 {
   _UIScaleTransformForAspectFitOfSizeInTargetSize();
   UIRectGetCenter();
@@ -47,18 +47,18 @@
   return result;
 }
 
-- (AVTImageTransitioningContainerView)initWithFrame:(CGRect)a3 layoutMode:(int64_t)a4
+- (AVTImageTransitioningContainerView)initWithFrame:(CGRect)frame layoutMode:(int64_t)mode
 {
   v43.receiver = self;
   v43.super_class = AVTImageTransitioningContainerView;
-  v5 = [(AVTImageTransitioningContainerView *)&v43 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AVTImageTransitioningContainerView *)&v43 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     __asm { FMOV            V0.2D, #1.0 }
 
     v5->_aspectRatio = _Q0;
-    v5->_layoutMode = a4;
+    v5->_layoutMode = mode;
     v12 = objc_opt_class();
     [(AVTImageTransitioningContainerView *)v6 bounds];
     v14 = v13;
@@ -72,11 +72,11 @@
     v6->_imageViewsContainer = v29;
 
     [(AVTImageTransitioningContainerView *)v6 addSubview:v6->_imageViewsContainer];
-    v31 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v31 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v33 = v32;
-    v34 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v34 nativeScale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 nativeScale];
     v36 = v35;
 
     if (v33 != v36)
@@ -89,8 +89,8 @@
       borderMaskView = v6->_borderMaskView;
       v6->_borderMaskView = v39;
 
-      v41 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)v6->_borderMaskView setBackgroundColor:v41];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)v6->_borderMaskView setBackgroundColor:whiteColor];
 
       [(AVTImageTransitioningContainerView *)v6 setMaskView:v6->_borderMaskView];
     }
@@ -99,14 +99,14 @@
   return v6;
 }
 
-- (void)setStaticImage:(id)a3 animated:(BOOL)a4
+- (void)setStaticImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_staticImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_staticImage != imageCopy)
   {
-    v16 = v7;
-    [(UIImage *)v7 size];
+    v16 = imageCopy;
+    [(UIImage *)imageCopy size];
     v9 = v8;
     v11 = v10;
     [(UIImage *)self->_staticImage size];
@@ -115,54 +115,54 @@
       [(AVTImageTransitioningContainerView *)self setNeedsLayout];
     }
 
-    objc_storeStrong(&self->_staticImage, a3);
-    v15 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-    [v15 setImage:v16 animated:v4];
+    objc_storeStrong(&self->_staticImage, image);
+    imageViewsContainer = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+    [imageViewsContainer setImage:v16 animated:animatedCopy];
 
-    v7 = v16;
+    imageCopy = v16;
   }
 }
 
-- (void)setLiveView:(id)a3
+- (void)setLiveView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   liveView = self->_liveView;
-  if (liveView != v5)
+  if (liveView != viewCopy)
   {
-    v10 = v5;
-    v7 = [(UIView *)liveView superview];
+    v10 = viewCopy;
+    superview = [(UIView *)liveView superview];
 
     v8 = self->_liveView;
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)v8 removeFromSuperview];
     }
 
     else
     {
-      v9 = [(UIView *)v8 superview];
+      superview2 = [(UIView *)v8 superview];
 
-      if (v9)
+      if (superview2)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Live view wasn't removed from superview!"];
       }
     }
 
-    objc_storeStrong(&self->_liveView, a3);
+    objc_storeStrong(&self->_liveView, view);
     [(AVTImageTransitioningContainerView *)self addSubview:self->_liveView];
     [(AVTImageTransitioningContainerView *)self transitionStaticViewToFront];
     liveView = [(AVTImageTransitioningContainerView *)self setNeedsLayout];
-    v5 = v10;
+    viewCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](liveView, v5);
+  MEMORY[0x1EEE66BB8](liveView, viewCopy);
 }
 
-- (void)setAspectRatio:(CGSize)a3
+- (void)setAspectRatio:(CGSize)ratio
 {
-  if (self->_aspectRatio.width != a3.width || self->_aspectRatio.height != a3.height)
+  if (self->_aspectRatio.width != ratio.width || self->_aspectRatio.height != ratio.height)
   {
-    self->_aspectRatio = a3;
+    self->_aspectRatio = ratio;
     [(AVTImageTransitioningContainerView *)self setNeedsLayout];
   }
 }
@@ -181,23 +181,23 @@
   [(AVTImageTransitioningContainerView *)self aspectRatio];
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTImageTransitioningContainerView *)self layoutMode];
-  v17 = [(AVTImageTransitioningContainerView *)self window];
-  v18 = [v17 screen];
-  [v18 scale];
+  layoutMode = [(AVTImageTransitioningContainerView *)self layoutMode];
+  window = [(AVTImageTransitioningContainerView *)self window];
+  screen = [window screen];
+  [screen scale];
   v61 = v10;
   v62 = v8;
-  [v11 liveViewRectForContentRect:v16 aspectRatio:v4 layoutMode:v6 scale:{v8, v10, v13, v15, v19}];
+  [v11 liveViewRectForContentRect:layoutMode aspectRatio:v4 layoutMode:v6 scale:{v8, v10, v13, v15, v19}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(AVTImageTransitioningContainerView *)self staticImage];
-  if (v28)
+  staticImage = [(AVTImageTransitioningContainerView *)self staticImage];
+  if (staticImage)
   {
-    v29 = [(AVTImageTransitioningContainerView *)self staticImage];
-    [v29 size];
+    staticImage2 = [(AVTImageTransitioningContainerView *)self staticImage];
+    [staticImage2 size];
     v31 = v30;
     v33 = v32;
   }
@@ -209,9 +209,9 @@
   }
 
   v34 = objc_opt_class();
-  v35 = [(AVTImageTransitioningContainerView *)self window];
-  v36 = [v35 screen];
-  [v36 scale];
+  window2 = [(AVTImageTransitioningContainerView *)self window];
+  screen2 = [window2 screen];
+  [screen2 scale];
   v59 = v6;
   v60 = v4;
   [v34 imageViewRectForContentRect:v4 liveViewRect:v6 imageSize:v62 scale:{v61, v21, v23, v25, v27, *&v31, *&v33, v37}];
@@ -220,8 +220,8 @@
   v43 = v42;
   v45 = v44;
 
-  v46 = [(AVTImageTransitioningContainerView *)self liveView];
-  [v46 frame];
+  liveView = [(AVTImageTransitioningContainerView *)self liveView];
+  [liveView frame];
   v66.origin.x = v47;
   v66.origin.y = v48;
   v66.size.width = v49;
@@ -230,16 +230,16 @@
   v64.origin.y = v23;
   v64.size.width = v25;
   v64.size.height = v27;
-  LOBYTE(v35) = CGRectEqualToRect(v64, v66);
+  LOBYTE(window2) = CGRectEqualToRect(v64, v66);
 
-  if ((v35 & 1) == 0)
+  if ((window2 & 1) == 0)
   {
-    v51 = [(AVTImageTransitioningContainerView *)self liveView];
-    [v51 setFrame:{v21, v23, v25, v27}];
+    liveView2 = [(AVTImageTransitioningContainerView *)self liveView];
+    [liveView2 setFrame:{v21, v23, v25, v27}];
   }
 
-  v52 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-  [v52 frame];
+  imageViewsContainer = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+  [imageViewsContainer frame];
   v67.origin.x = v53;
   v67.origin.y = v54;
   v67.size.width = v55;
@@ -252,8 +252,8 @@
 
   if (!v57)
   {
-    v58 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-    [v58 setFrame:{v39, v41, v43, v45}];
+    imageViewsContainer2 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+    [imageViewsContainer2 setFrame:{v39, v41, v43, v45}];
   }
 
   [objc_opt_class() borderMaskRectForContentRect:{v60, v59, v62, v61}];
@@ -262,40 +262,40 @@
 
 - (void)transitionStaticViewToFront
 {
-  v3 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-  [(AVTImageTransitioningContainerView *)self bringSubviewToFront:v3];
+  imageViewsContainer = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+  [(AVTImageTransitioningContainerView *)self bringSubviewToFront:imageViewsContainer];
 
-  v4 = [(AVTImageTransitioningContainerView *)self liveView];
-  [v4 setAlpha:0.0];
+  liveView = [(AVTImageTransitioningContainerView *)self liveView];
+  [liveView setAlpha:0.0];
 
-  v5 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-  [v5 setAlpha:1.0];
+  imageViewsContainer2 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+  [imageViewsContainer2 setAlpha:1.0];
 }
 
 - (void)transitionLiveViewToFront
 {
-  v3 = [(AVTImageTransitioningContainerView *)self liveView];
-  [(AVTImageTransitioningContainerView *)self bringSubviewToFront:v3];
+  liveView = [(AVTImageTransitioningContainerView *)self liveView];
+  [(AVTImageTransitioningContainerView *)self bringSubviewToFront:liveView];
 
-  v4 = [(AVTImageTransitioningContainerView *)self liveView];
-  [v4 setAlpha:1.0];
+  liveView2 = [(AVTImageTransitioningContainerView *)self liveView];
+  [liveView2 setAlpha:1.0];
 
-  v5 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-  [v5 setAlpha:0.0];
+  imageViewsContainer = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+  [imageViewsContainer setAlpha:0.0];
 }
 
-- (void)setStaticViewVisible:(BOOL)a3
+- (void)setStaticViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
-  v6 = v4;
+  visibleCopy = visible;
+  imageViewsContainer = [(AVTImageTransitioningContainerView *)self imageViewsContainer];
+  v6 = imageViewsContainer;
   v5 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v5 = 1.0;
   }
 
-  [v4 setAlpha:v5];
+  [imageViewsContainer setAlpha:v5];
 }
 
 - (CGSize)aspectRatio

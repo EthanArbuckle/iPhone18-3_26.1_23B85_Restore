@@ -1,23 +1,23 @@
 @interface HMIPersonDataSourceDisk
 + (id)getStoragePath;
-- (HMIPersonDataSourceDisk)initWithHomeUUID:(id)a3 sourceUUID:(id)a4 error:(id *)a5;
-- (void)addFaceprints:(id)a3 completion:(id)a4;
-- (void)fetchAllFaceprintsWithCompletion:(id)a3;
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3;
-- (void)fetchAllPersonsWithCompletion:(id)a3;
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)performCloudPullWithCompletion:(id)a3;
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4;
+- (HMIPersonDataSourceDisk)initWithHomeUUID:(id)d sourceUUID:(id)iD error:(id *)error;
+- (void)addFaceprints:(id)faceprints completion:(id)completion;
+- (void)fetchAllFaceprintsWithCompletion:(id)completion;
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion;
+- (void)fetchAllPersonsWithCompletion:(id)completion;
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)performCloudPullWithCompletion:(id)completion;
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HMIPersonDataSourceDisk
 
-- (HMIPersonDataSourceDisk)initWithHomeUUID:(id)a3 sourceUUID:(id)a4 error:(id *)a5
+- (HMIPersonDataSourceDisk)initWithHomeUUID:(id)d sourceUUID:(id)iD error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v36.receiver = self;
   v36.super_class = HMIPersonDataSourceDisk;
   v11 = [(HMIPersonDataSourceDisk *)&v36 init];
@@ -28,29 +28,29 @@
   }
 
   v13 = HMIDispatchQueueNameString(v11, 0);
-  v14 = [v13 UTF8String];
+  uTF8String = [v13 UTF8String];
   v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v16 = dispatch_queue_create(v14, v15);
+  v16 = dispatch_queue_create(uTF8String, v15);
   workQueue = v12->_workQueue;
   v12->_workQueue = v16;
 
-  objc_storeStrong(&v12->_homeUUID, a3);
-  objc_storeStrong(&v12->_sourceUUID, a4);
+  objc_storeStrong(&v12->_homeUUID, d);
+  objc_storeStrong(&v12->_sourceUUID, iD);
   v18 = MEMORY[0x277CBEBC0];
-  v19 = [objc_opt_class() getStoragePath];
-  v20 = [v18 fileURLWithPath:v19];
+  getStoragePath = [objc_opt_class() getStoragePath];
+  v20 = [v18 fileURLWithPath:getStoragePath];
 
-  v21 = [v9 UUIDString];
-  v22 = [v20 URLByAppendingPathComponent:v21];
-  v23 = [v10 UUIDString];
-  v24 = [v22 URLByAppendingPathComponent:v23];
+  uUIDString = [dCopy UUIDString];
+  v22 = [v20 URLByAppendingPathComponent:uUIDString];
+  uUIDString2 = [iDCopy UUIDString];
+  v24 = [v22 URLByAppendingPathComponent:uUIDString2];
   sourceURL = v12->_sourceURL;
   v12->_sourceURL = v24;
 
-  v26 = [MEMORY[0x277CCAA00] defaultManager];
-  v27 = [(NSURL *)v12->_sourceURL path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)v12->_sourceURL path];
   v35 = 0;
-  LOBYTE(v15) = [v26 createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v35];
+  LOBYTE(v15) = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v35];
   v28 = v35;
 
   if (v15)
@@ -61,13 +61,13 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error initializing with home UUID: %@ source UUID:%@", v9, v10];
-  v31 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1031 description:v30 underlyingError:v28];
+  iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Error initializing with home UUID: %@ source UUID:%@", dCopy, iDCopy];
+  v31 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1031 description:iDCopy underlyingError:v28];
   v32 = v31;
-  if (a5)
+  if (error)
   {
     v33 = v31;
-    *a5 = v32;
+    *error = v32;
   }
 
   HMIErrorLog(v12, v32);
@@ -78,18 +78,18 @@ LABEL_8:
   return v29;
 }
 
-- (void)fetchAllPersonsWithCompletion:(id)a3
+- (void)fetchAllPersonsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIPersonDataSourceDisk *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIPersonDataSourceDisk *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HMIPersonDataSourceDisk_fetchAllPersonsWithCompletion___block_invoke;
   v7[3] = &unk_278752DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __57__HMIPersonDataSourceDisk_fetchAllPersonsWithCompletion___block_invoke(uint64_t a1)
@@ -180,21 +180,21 @@ LABEL_12:
   }
 }
 
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIPersonDataSourceDisk *)self workQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  workQueue = [(HMIPersonDataSourceDisk *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HMIPersonDataSourceDisk_fetchFaceCropsForPersonsWithUUIDs_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __72__HMIPersonDataSourceDisk_fetchFaceCropsForPersonsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -393,60 +393,60 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)fetchAllFaceprintsWithCompletion:(id)a3
+- (void)fetchAllFaceprintsWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 hmfErrorWithCode:5];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(completion + 2))(completionCopy, 0, v6);
 }
 
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 hmfErrorWithCode:5];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(completion + 2))(completionCopy, 0, v6);
 }
 
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 hmfErrorWithCode:5];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 hmfErrorWithCode:5];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
-- (void)performCloudPullWithCompletion:(id)a3
+- (void)performCloudPullWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 hmfErrorWithCode:5];
-  (*(a3 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)addFaceprints:(id)a3 completion:(id)a4
+- (void)addFaceprints:(id)faceprints completion:(id)completion
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 hmfErrorWithCode:5];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 hmfErrorWithCode:5];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 + (id)getStoragePath

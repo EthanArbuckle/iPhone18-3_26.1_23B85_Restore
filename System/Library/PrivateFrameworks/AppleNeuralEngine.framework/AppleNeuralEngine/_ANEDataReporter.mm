@@ -1,17 +1,17 @@
 @interface _ANEDataReporter
-+ (id)analyticsKey:(id)a3;
-+ (id)reportClient:(id)a3 modelName:(id)a4;
-+ (void)addValue:(int64_t)a3 forScalarKey:(id)a4;
-+ (void)reportTelemetryToPPS:(id)a3 playload:(id)a4;
++ (id)analyticsKey:(id)key;
++ (id)reportClient:(id)client modelName:(id)name;
++ (void)addValue:(int64_t)value forScalarKey:(id)key;
++ (void)reportTelemetryToPPS:(id)s playload:(id)playload;
 @end
 
 @implementation _ANEDataReporter
 
-+ (void)addValue:(int64_t)a3 forScalarKey:(id)a4
++ (void)addValue:(int64_t)value forScalarKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 analyticsKey:v5];
+  v7 = [self analyticsKey:keyCopy];
   v8 = +[_ANEStrings coreAnalyticsANEUsageKeyGroup];
   v9 = v7;
   AnalyticsSendEventLazy();
@@ -19,19 +19,19 @@
   objc_autoreleasePoolPop(v6);
 }
 
-+ (id)reportClient:(id)a3 modelName:(id)a4
++ (id)reportClient:(id)client modelName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  nameCopy = name;
   v7 = +[_ANEStrings coreAnalyticsANEUsageDefaultReportedClient];
   v8 = v7;
-  if (v5 && v6)
+  if (clientCopy && nameCopy)
   {
-    v9 = [&unk_1F2254438 objectForKeyedSubscript:v5];
+    v9 = [&unk_1F2254438 objectForKeyedSubscript:clientCopy];
     if (!v9)
     {
       v10 = +[_ANEStrings systemLibraryPath];
-      v11 = [v6 stringByReplacingOccurrencesOfString:v10 withString:&stru_1F224D6A0];
+      v11 = [nameCopy stringByReplacingOccurrencesOfString:v10 withString:&stru_1F224D6A0];
 
       v12 = [v11 stringByReplacingOccurrencesOfString:@"PrivateFrameworks/" withString:&stru_1F224D6A0];
       v13 = [v12 stringByReplacingOccurrencesOfString:@"Frameworks/" withString:&stru_1F224D6A0];
@@ -54,20 +54,20 @@
   return v9;
 }
 
-+ (id)analyticsKey:(id)a3
++ (id)analyticsKey:(id)key
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  keyCopy = key;
   v5 = +[_ANEStrings coreAnalyticsANEUsageKeyGroup];
-  v6 = [v3 stringWithFormat:@"%@.%@", v5, v4];
+  keyCopy = [v3 stringWithFormat:@"%@.%@", v5, keyCopy];
 
-  return v6;
+  return keyCopy;
 }
 
-+ (void)reportTelemetryToPPS:(id)a3 playload:(id)a4
++ (void)reportTelemetryToPPS:(id)s playload:(id)playload
 {
-  v5 = a3;
-  v6 = a4;
+  sCopy = s;
+  playloadCopy = playload;
   v7 = objc_autoreleasePoolPush();
   if (MEMORY[0x1EEE905B8] && MEMORY[0x1EEE905C0])
   {
@@ -76,7 +76,7 @@
       +[_ANEDataReporter reportTelemetryToPPS:playload:];
     }
 
-    v8 = [reportTelemetryToPPS_playload__ppsIDMapping objectForKey:v5];
+    v8 = [reportTelemetryToPPS_playload__ppsIDMapping objectForKey:sCopy];
     v9 = v8;
     if (v8)
     {
@@ -89,7 +89,7 @@
       {
         if (v12)
         {
-          [_ANEDataReporter reportTelemetryToPPS:v5 playload:v11];
+          [_ANEDataReporter reportTelemetryToPPS:sCopy playload:v11];
         }
 
         PPSSendTelemetry();
@@ -98,7 +98,7 @@
 
       if (v12)
       {
-        [_ANEDataReporter reportTelemetryToPPS:v5 playload:v11];
+        [_ANEDataReporter reportTelemetryToPPS:sCopy playload:v11];
       }
     }
 
@@ -107,7 +107,7 @@
       v11 = +[_ANELog common];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [_ANEDataReporter reportTelemetryToPPS:v5 playload:v11];
+        [_ANEDataReporter reportTelemetryToPPS:sCopy playload:v11];
       }
     }
 

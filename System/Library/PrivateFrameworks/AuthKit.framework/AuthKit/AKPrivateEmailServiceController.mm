@@ -1,68 +1,68 @@
 @interface AKPrivateEmailServiceController
-- (AKPrivateEmailServiceController)initWithClient:(id)a3 altDSID:(id)a4;
-- (id)_constructRequestProviderForClient:(id)a3 altDSID:(id)a4;
-- (void)executeFetchHmeListRequestWithCompletion:(id)a3;
+- (AKPrivateEmailServiceController)initWithClient:(id)client altDSID:(id)d;
+- (id)_constructRequestProviderForClient:(id)client altDSID:(id)d;
+- (void)executeFetchHmeListRequestWithCompletion:(id)completion;
 @end
 
 @implementation AKPrivateEmailServiceController
 
-- (AKPrivateEmailServiceController)initWithClient:(id)a3 altDSID:(id)a4
+- (AKPrivateEmailServiceController)initWithClient:(id)client altDSID:(id)d
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [v13 _constructRequestProviderForClient:location[0] altDSID:v11];
-  if (v10 && (v4 = v13, v13 = 0, v9.receiver = v4, v9.super_class = AKPrivateEmailServiceController, v7 = [(AKServiceControllerImpl *)&v9 initWithRequestProvider:v10], v13 = v7, objc_storeStrong(&v13, v7), v7))
+  objc_storeStrong(&v11, d);
+  v10 = [selfCopy _constructRequestProviderForClient:location[0] altDSID:v11];
+  if (v10 && (v4 = selfCopy, selfCopy = 0, v9.receiver = v4, v9.super_class = AKPrivateEmailServiceController, v7 = [(AKServiceControllerImpl *)&v9 initWithRequestProvider:v10], selfCopy = v7, objc_storeStrong(&selfCopy, v7), v7))
   {
-    objc_storeStrong(v13 + 4, location[0]);
-    objc_storeStrong(v13 + 5, v11);
-    *(v13 + 48) = 0;
+    objc_storeStrong(selfCopy + 4, location[0]);
+    objc_storeStrong(selfCopy + 5, v11);
+    *(selfCopy + 48) = 0;
   }
 
   else
   {
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&selfCopy, 0);
   }
 
-  v6 = _objc_retain(v13);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)executeFetchHmeListRequestWithCompletion:(id)a3
+- (void)executeFetchHmeListRequestWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000D92EC;
   v8 = &unk_100321898;
   v10 = _objc_retain(location[0]);
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   [(AKServiceControllerImpl *)v3 executeRequestWithCompletion:?];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_constructRequestProviderForClient:(id)a3 altDSID:(id)a4
+- (id)_constructRequestProviderForClient:(id)client altDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, d);
   v9 = objc_opt_new();
   [v9 setAltDSID:v10];
   v4 = [AKPrivateEmailRequestProvider alloc];

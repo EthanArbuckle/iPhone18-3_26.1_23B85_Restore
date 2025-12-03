@@ -1,6 +1,6 @@
 @interface UARPMetaDataDeviceCompressedHeaders
 - (UARPMetaDataDeviceCompressedHeaders)init;
-- (UARPMetaDataDeviceCompressedHeaders)initWithLength:(unint64_t)a3 value:(void *)a4;
+- (UARPMetaDataDeviceCompressedHeaders)initWithLength:(unint64_t)length value:(void *)value;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,17 +24,17 @@
   return v3;
 }
 
-- (UARPMetaDataDeviceCompressedHeaders)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDeviceCompressedHeaders)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDeviceCompressedHeaders *)self init];
   v7 = v6;
   v8 = 0;
-  if (a3 == 10 && v6)
+  if (length == 10 && v6)
   {
-    v6->_hashAlgorithm = uarpNtohs(*a4);
-    v7->_actualOffset = uarpNtohl(*(a4 + 2));
-    v7->_compressedLength = uarpNtohs(*(a4 + 3));
-    v7->_uncompressedLength = uarpNtohs(*(a4 + 4));
+    v6->_hashAlgorithm = uarpNtohs(*value);
+    v7->_actualOffset = uarpNtohl(*(value + 2));
+    v7->_compressedLength = uarpNtohs(*(value + 3));
+    v7->_uncompressedLength = uarpNtohs(*(value + 4));
     v8 = v7;
   }
 
@@ -59,8 +59,8 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [NSString stringWithFormat:@"<%@: Algorithm %u, Actual Offset %u, Compressed Length %u, Uncompressed Length %u>", v3, [(UARPMetaDataDeviceCompressedHeaders *)self hashAlgorithm], [(UARPMetaDataDeviceCompressedHeaders *)self actualOffset], [(UARPMetaDataDeviceCompressedHeaders *)self compressedLength], [(UARPMetaDataDeviceCompressedHeaders *)self uncompressedLength]];
+  tlvName = [(UARPMetaData *)self tlvName];
+  v4 = [NSString stringWithFormat:@"<%@: Algorithm %u, Actual Offset %u, Compressed Length %u, Uncompressed Length %u>", tlvName, [(UARPMetaDataDeviceCompressedHeaders *)self hashAlgorithm], [(UARPMetaDataDeviceCompressedHeaders *)self actualOffset], [(UARPMetaDataDeviceCompressedHeaders *)self compressedLength], [(UARPMetaDataDeviceCompressedHeaders *)self uncompressedLength]];
 
   return v4;
 }

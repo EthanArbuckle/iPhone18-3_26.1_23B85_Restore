@@ -1,14 +1,14 @@
 @interface ScreeningSoundAndHapticsManager
-- (void)announcementFinishedNotification:(id)a3;
+- (void)announcementFinishedNotification:(id)notification;
 @end
 
 @implementation ScreeningSoundAndHapticsManager
 
-- (void)announcementFinishedNotification:(id)a3
+- (void)announcementFinishedNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  ScreeningSoundAndHapticsManager.announcementFinishedNotification(_:)(v3);
+  ScreeningSoundAndHapticsManager.announcementFinishedNotification(_:)(notificationCopy);
 }
 
 @end

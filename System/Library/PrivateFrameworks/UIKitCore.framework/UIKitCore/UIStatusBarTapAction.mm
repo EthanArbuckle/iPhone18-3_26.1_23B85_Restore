@@ -1,19 +1,19 @@
 @interface UIStatusBarTapAction
-- (UIStatusBarTapAction)initWithType:(int64_t)a3 xPosition:(double)a4;
+- (UIStatusBarTapAction)initWithType:(int64_t)type xPosition:(double)position;
 - (double)xPosition;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (int64_t)type;
 @end
 
 @implementation UIStatusBarTapAction
 
-- (UIStatusBarTapAction)initWithType:(int64_t)a3 xPosition:(double)a4
+- (UIStatusBarTapAction)initWithType:(int64_t)type xPosition:(double)position
 {
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v7 setObject:v8 forSetting:1];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:position];
   [v7 setObject:v9 forSetting:2];
 
   v12.receiver = self;
@@ -25,32 +25,32 @@
 
 - (int64_t)type
 {
-  v2 = [(UIStatusBarTapAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(UIStatusBarTapAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (double)xPosition
 {
-  v2 = [(UIStatusBarTapAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(UIStatusBarTapAction *)self info];
+  v3 = [info objectForSetting:2];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"xPosition";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"type";
   }

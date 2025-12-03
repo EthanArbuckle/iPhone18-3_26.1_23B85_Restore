@@ -5,22 +5,22 @@
 - (CGRect)effectiveDockFrame;
 - (CGRect)effectiveTouchpadFrame;
 - (CGRect)touchpadFrame;
-- (TVRUIDockLayoutManager)initWithDockHostingView:(id)a3 dockInfoProvider:(id)a4;
+- (TVRUIDockLayoutManager)initWithDockHostingView:(id)view dockInfoProvider:(id)provider;
 - (double)dockHeight;
 - (id)dockContainerView;
-- (unint64_t)_placementForPosition:(CGPoint)a3;
+- (unint64_t)_placementForPosition:(CGPoint)position;
 - (void)_computeFrames;
-- (void)_didPan:(id)a3;
+- (void)_didPan:(id)pan;
 - (void)_invokeLayoutHandlerIfNeeded;
-- (void)updateWithTouchpadFrame:(CGRect)a3 controlPanelFrame:(CGRect)a4 placement:(unint64_t)a5;
+- (void)updateWithTouchpadFrame:(CGRect)frame controlPanelFrame:(CGRect)panelFrame placement:(unint64_t)placement;
 @end
 
 @implementation TVRUIDockLayoutManager
 
-- (TVRUIDockLayoutManager)initWithDockHostingView:(id)a3 dockInfoProvider:(id)a4
+- (TVRUIDockLayoutManager)initWithDockHostingView:(id)view dockInfoProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = TVRUIDockLayoutManager;
   v9 = [(TVRUIDockLayoutManager *)&v12 init];
@@ -28,19 +28,19 @@
   if (v9)
   {
     v9->_placement = 1;
-    objc_storeStrong(&v9->_dockHostingView, a3);
-    objc_storeStrong(&v10->_dockInfoProvider, a4);
+    objc_storeStrong(&v9->_dockHostingView, view);
+    objc_storeStrong(&v10->_dockInfoProvider, provider);
     [(TVRUIDockLayoutManager *)v10 _configurePlacementDragRecognizer];
   }
 
   return v10;
 }
 
-- (void)updateWithTouchpadFrame:(CGRect)a3 controlPanelFrame:(CGRect)a4 placement:(unint64_t)a5
+- (void)updateWithTouchpadFrame:(CGRect)frame controlPanelFrame:(CGRect)panelFrame placement:(unint64_t)placement
 {
-  self->_touchpadFrame = a3;
-  self->_controlPanelFrame = a4;
-  if (a5)
+  self->_touchpadFrame = frame;
+  self->_controlPanelFrame = panelFrame;
+  if (placement)
   {
     v6 = 1.0;
   }
@@ -50,51 +50,51 @@
     v6 = 0.0;
   }
 
-  self->_placement = a5;
-  v7 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  v8 = [v7 dockContainerView];
-  [v8 setAlpha:v6];
+  self->_placement = placement;
+  dockInfoProvider = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  dockContainerView = [dockInfoProvider dockContainerView];
+  [dockContainerView setAlpha:v6];
 
   [(TVRUIDockLayoutManager *)self _computeFrames];
 }
 
 - (id)dockContainerView
 {
-  v2 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  v3 = [v2 dockContainerView];
+  dockInfoProvider = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  dockContainerView = [dockInfoProvider dockContainerView];
 
-  return v3;
+  return dockContainerView;
 }
 
 - (double)dockHeight
 {
-  v2 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  [v2 dockPreferredHeight];
+  dockInfoProvider = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  [dockInfoProvider dockPreferredHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_didPan:(id)a3
+- (void)_didPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(TVRUIDockLayoutManager *)self dockHostingView];
-  v6 = [(TVRUIDockLayoutManager *)self dockContainerView];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  dockHostingView = [(TVRUIDockLayoutManager *)self dockHostingView];
+  dockContainerView = [(TVRUIDockLayoutManager *)self dockContainerView];
+  [panCopy locationInView:dockHostingView];
   v8 = v7;
   v10 = v9;
-  if ([v4 state] == 1)
+  if ([panCopy state] == 1)
   {
     [(TVRUIDockLayoutManager *)self setIsReordering:1];
     [(TVRUIDockLayoutManager *)self setReorderingStartPosition:v8, v10];
   }
 
-  else if ([v4 state] == 2)
+  else if ([panCopy state] == 2)
   {
     [(TVRUIDockLayoutManager *)self reorderingStartPosition];
     CGAffineTransformMakeTranslation(&v19, 0.0, v10 - v11);
     v18 = v19;
-    [v6 setTransform:&v18];
+    [dockContainerView setTransform:&v18];
     v12 = [(TVRUIDockLayoutManager *)self _placementForPosition:v8, v10];
     if ([(TVRUIDockLayoutManager *)self placement]!= v12)
     {
@@ -108,7 +108,7 @@
     }
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  else if ([panCopy state] == 3 || objc_msgSend(panCopy, "state") == 4)
   {
     [(TVRUIDockLayoutManager *)self setIsReordering:0];
     v13 = MEMORY[0x277D75D18];
@@ -116,8 +116,8 @@
     v14[1] = 3221225472;
     v14[2] = __34__TVRUIDockLayoutManager__didPan___block_invoke_2;
     v14[3] = &unk_279D88230;
-    v15 = v6;
-    v16 = self;
+    v15 = dockContainerView;
+    selfCopy = self;
     [v13 animateWithDuration:v14 animations:0.25];
   }
 }
@@ -148,22 +148,22 @@ void __34__TVRUIDockLayoutManager__didPan___block_invoke_2(uint64_t a1)
 
 - (void)_invokeLayoutHandlerIfNeeded
 {
-  v3 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  v4 = [v3 dockLayoutHandler];
+  dockInfoProvider = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  dockLayoutHandler = [dockInfoProvider dockLayoutHandler];
 
-  if (v4)
+  if (dockLayoutHandler)
   {
-    v6 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-    v5 = [v6 dockLayoutHandler];
-    v5[2]();
+    dockInfoProvider2 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+    dockLayoutHandler2 = [dockInfoProvider2 dockLayoutHandler];
+    dockLayoutHandler2[2]();
   }
 }
 
-- (unint64_t)_placementForPosition:(CGPoint)a3
+- (unint64_t)_placementForPosition:(CGPoint)position
 {
-  y = a3.y;
-  v5 = [(TVRUIDockLayoutManager *)self dockHostingView];
-  [v5 bounds];
+  y = position.y;
+  dockHostingView = [(TVRUIDockLayoutManager *)self dockHostingView];
+  [dockHostingView bounds];
   v38 = v7;
   v39 = v6;
   v36 = v9;
@@ -229,25 +229,25 @@ void __34__TVRUIDockLayoutManager__didPan___block_invoke_2(uint64_t a1)
 
 - (void)_computeFrames
 {
-  v3 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  [v3 dockPreferredHeight];
+  dockInfoProvider = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  [dockInfoProvider dockPreferredHeight];
   v5 = v4;
 
-  v6 = [(TVRUIDockLayoutManager *)self dockHostingView];
-  [v6 bounds];
+  dockHostingView = [(TVRUIDockLayoutManager *)self dockHostingView];
+  [dockHostingView bounds];
   Width = CGRectGetWidth(v46);
 
-  v8 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
-  v9 = [v8 dockIsCollapsed];
+  dockInfoProvider2 = [(TVRUIDockLayoutManager *)self dockInfoProvider];
+  dockIsCollapsed = [dockInfoProvider2 dockIsCollapsed];
 
   if (![(TVRUIDockLayoutManager *)self placement])
   {
     [(TVRUIDockLayoutManager *)self touchpadFrame];
     [(TVRUIDockLayoutManager *)self setEffectiveDockFrame:-Width, CGRectGetMinY(v52), Width, v5];
     [(TVRUIDockLayoutManager *)self touchpadFrame];
-    v20 = self;
+    selfCopy3 = self;
 LABEL_15:
-    [(TVRUIDockLayoutManager *)v20 setEffectiveTouchpadFrame:v18, v15, v19];
+    [(TVRUIDockLayoutManager *)selfCopy3 setEffectiveTouchpadFrame:v18, v15, v19];
     [(TVRUIDockLayoutManager *)self controlPanelFrame];
 
     [(TVRUIDockLayoutManager *)self setEffectiveControlPanelFrame:?];
@@ -267,7 +267,7 @@ LABEL_15:
     v13 = CGRectGetWidth(v50);
     [(TVRUIDockLayoutManager *)self touchpadFrame];
     Height = CGRectGetHeight(v51);
-    if (v9)
+    if (dockIsCollapsed)
     {
       [(TVRUIDockLayoutManager *)self touchpadFrame];
       MinX = v16;
@@ -279,7 +279,7 @@ LABEL_15:
       v15 = v10 + MinY;
     }
 
-    v20 = self;
+    selfCopy3 = self;
     v18 = MinX;
     v19 = v13;
     goto LABEL_15;
@@ -297,7 +297,7 @@ LABEL_15:
     v23 = CGRectGetWidth(v56);
     [(TVRUIDockLayoutManager *)self touchpadFrame];
     v24 = CGRectGetHeight(v57);
-    if (v9)
+    if (dockIsCollapsed)
     {
       [(TVRUIDockLayoutManager *)self touchpadFrame];
       v21 = v25;
@@ -305,7 +305,7 @@ LABEL_15:
       v23 = v27;
     }
 
-    v20 = self;
+    selfCopy3 = self;
     v18 = v21;
     v15 = v22;
     v19 = v23;
@@ -322,7 +322,7 @@ LABEL_15:
     v30 = CGRectGetWidth(v60);
     [(TVRUIDockLayoutManager *)self touchpadFrame];
     v31 = CGRectGetHeight(v61);
-    if (v9)
+    if (dockIsCollapsed)
     {
       [(TVRUIDockLayoutManager *)self touchpadFrame];
       v28 = v33;
@@ -348,7 +348,7 @@ LABEL_15:
     v41 = v38;
     v42 = v37;
     v43 = v36;
-    if (v9)
+    if (dockIsCollapsed)
     {
       [(TVRUIDockLayoutManager *)self controlPanelFrame:v36];
     }

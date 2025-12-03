@@ -2,10 +2,10 @@
 + (MSDPushService)sharedService;
 - (MSDPushService)init;
 - (id)_determinePushEnvironment;
-- (void)_statConnectionWithEnvironment:(id)a3;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_statConnectionWithEnvironment:(id)environment;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_100021E4C;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059AA0 != -1)
   {
     dispatch_once(&qword_100059AA0, block);
@@ -61,9 +61,9 @@
   [(MSDPushService *)&v4 dealloc];
 }
 
-- (void)_statConnectionWithEnvironment:(id)a3
+- (void)_statConnectionWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   objc_initWeak(&location, self);
   connectionQueue = self->_connectionQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -71,9 +71,9 @@
   v7[2] = sub_100021FA8;
   v7[3] = &unk_100051ED8;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = environmentCopy;
+  selfCopy = self;
+  v6 = environmentCopy;
   dispatch_async(connectionQueue, v7);
 
   objc_destroyWeak(&v10);
@@ -118,41 +118,41 @@
   return v8;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 base64EncodedStringWithOptions:0];
+    v6 = [tokenCopy base64EncodedStringWithOptions:0];
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did receive public token %@", &v7, 0xCu);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = sub_100030FE4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = messageCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Did receive push notification %@", buf, 0xCu);
   }
 
-  v7 = [v5 topic];
-  v8 = [v7 isEqualToString:kAPSTopic];
+  topic = [messageCopy topic];
+  v8 = [topic isEqualToString:kAPSTopic];
 
   if (v8)
   {
-    v9 = [v5 userInfo];
+    userInfo = [messageCopy userInfo];
     v10 = sub_100030FE4();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v9;
+      v21 = userInfo;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Receive push notification with info %@", buf, 0xCu);
     }
   }
@@ -163,8 +163,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(MSDPushService *)self consumers];
-    v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    userInfo = [(MSDPushService *)self consumers];
+    v11 = [userInfo countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -176,15 +176,15 @@
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(userInfo);
           }
 
-          [*(*(&v15 + 1) + 8 * v14) handlePushNotification:v5];
+          [*(*(&v15 + 1) + 8 * v14) handlePushNotification:messageCopy];
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [userInfo countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v12);
@@ -192,17 +192,17 @@
   }
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v4 = a4;
-  v5 = a3;
+  statusCopy = status;
+  connectionCopy = connection;
   v6 = sub_100030FE4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v5;
+    v8 = connectionCopy;
     v9 = 1024;
-    v10 = v4;
+    v10 = statusCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Connection status changed %@ %d", &v7, 0x12u);
   }
 }

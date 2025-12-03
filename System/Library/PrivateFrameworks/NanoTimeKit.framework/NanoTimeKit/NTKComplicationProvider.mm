@@ -1,19 +1,19 @@
 @interface NTKComplicationProvider
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4;
-- (BOOL)isComplicationConfigurable:(id)a3;
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families;
+- (BOOL)isComplicationConfigurable:(id)configurable;
 - (NSIndexSet)disabledComplicationTypes;
-- (NTKComplicationProvider)initWithDevice:(id)a3;
-- (id)_bundleComplicationsWithOptions:(id)a3;
-- (id)_dateComplicationsWithOptions:(id)a3;
-- (id)_remoteComplicationsWithOptions:(id)a3;
-- (id)_widgetComplicationsWithOptions:(id)a3;
-- (id)complicationsOfType:(unint64_t)a3 withOptions:(id)a4;
-- (id)complicationsWithOptions:(id)a3;
+- (NTKComplicationProvider)initWithDevice:(id)device;
+- (id)_bundleComplicationsWithOptions:(id)options;
+- (id)_dateComplicationsWithOptions:(id)options;
+- (id)_remoteComplicationsWithOptions:(id)options;
+- (id)_widgetComplicationsWithOptions:(id)options;
+- (id)complicationsOfType:(unint64_t)type withOptions:(id)options;
+- (id)complicationsWithOptions:(id)options;
 - (void)_handleAvailableComplicationsChange;
 - (void)_resetDisabledTypes;
-- (void)appendOrReplaceConfigurableDefaultComplication:(id)a3 toComplications:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)appendOrReplaceConfigurableDefaultComplication:(id)complication toComplications:(id)complications;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation NTKComplicationProvider
@@ -55,9 +55,9 @@ NTKComplicationProvider *__45__NTKComplicationProvider_providerForDevice___block
   return v3;
 }
 
-- (NTKComplicationProvider)initWithDevice:(id)a3
+- (NTKComplicationProvider)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKComplicationProvider;
   v6 = [(NTKComplicationProvider *)&v15 init];
@@ -65,73 +65,73 @@ NTKComplicationProvider *__45__NTKComplicationProvider_providerForDevice___block
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v7->_lock_observers;
-    v7->_lock_observers = v8;
+    v7->_lock_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v7->_device, a3);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel__resetDisabledTypes name:@"NTKSystemAppStateChangedNotification" object:0];
+    objc_storeStrong(&v7->_device, device);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__resetDisabledTypes name:@"NTKSystemAppStateChangedNotification" object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKRemoteComplicationProviderComplicationsDidChange" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKRemoteComplicationProviderComplicationsDidChange" object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKWidgetComplicationProviderComplicationsDidChange" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKWidgetComplicationProviderComplicationsDidChange" object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKComplicationDidChangeNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel__handleAvailableComplicationsChange name:@"NTKComplicationDidChangeNotification" object:0];
   }
 
   return v7;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)complicationsWithOptions:(id)a3
+- (id)complicationsWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NTKComplicationProvider *)self disabledComplicationTypes];
+  optionsCopy = options;
+  disabledComplicationTypes = [(NTKComplicationProvider *)self disabledComplicationTypes];
   v6 = objc_opt_new();
-  if (([v4 includeDisabledTypes] & 1) == 0)
+  if (([optionsCopy includeDisabledTypes] & 1) == 0)
   {
-    v7 = [v4 allowedComplicationTypes];
-    v8 = [v7 mutableCopy];
+    allowedComplicationTypes = [optionsCopy allowedComplicationTypes];
+    v8 = [allowedComplicationTypes mutableCopy];
 
-    [v8 removeIndexes:v5];
-    v9 = [v4 copy];
+    [v8 removeIndexes:disabledComplicationTypes];
+    v9 = [optionsCopy copy];
 
     [v9 setAllowedComplicationTypes:v8];
-    v4 = v9;
+    optionsCopy = v9;
   }
 
-  v10 = [v4 allowedComplicationTypes];
+  allowedComplicationTypes2 = [optionsCopy allowedComplicationTypes];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__NTKComplicationProvider_complicationsWithOptions___block_invoke;
   v16[3] = &unk_278783570;
   v16[4] = self;
-  v17 = v4;
+  v17 = optionsCopy;
   v11 = v6;
   v18 = v11;
-  v12 = v4;
-  [v10 enumerateIndexesUsingBlock:v16];
+  v12 = optionsCopy;
+  [allowedComplicationTypes2 enumerateIndexesUsingBlock:v16];
 
   v13 = v18;
   v14 = v11;
@@ -145,25 +145,25 @@ void __52__NTKComplicationProvider_complicationsWithOptions___block_invoke(uint6
   [*(a1 + 48) addObjectsFromArray:v3];
 }
 
-- (id)complicationsOfType:(unint64_t)a3 withOptions:(id)a4
+- (id)complicationsOfType:(unint64_t)type withOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v7 = objc_opt_new();
-  if (a3 <= 30)
+  if (type <= 30)
   {
-    if (!a3)
+    if (!type)
     {
       v10 = +[NTKComplication nullComplication];
       [v7 addObject:v10];
       goto LABEL_17;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v9 = [(NTKComplicationProvider *)self _dateComplicationsWithOptions:v6];
+      v9 = [(NTKComplicationProvider *)self _dateComplicationsWithOptions:optionsCopy];
       [v7 addObjectsFromArray:v9];
 
-      if (([v6 allowGenericDateComplication] & 1) == 0)
+      if (([optionsCopy allowGenericDateComplication] & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -172,18 +172,18 @@ void __52__NTKComplicationProvider_complicationsWithOptions___block_invoke(uint6
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0x1FuLL:
-        v8 = [(NTKComplicationProvider *)self _remoteComplicationsWithOptions:v6];
+        v8 = [(NTKComplicationProvider *)self _remoteComplicationsWithOptions:optionsCopy];
         goto LABEL_11;
       case 0x30uLL:
-        v11 = [(NTKComplicationProvider *)self _bundleComplicationsWithOptions:v6];
+        v11 = [(NTKComplicationProvider *)self _bundleComplicationsWithOptions:optionsCopy];
         [v7 addObjectsFromArray:v11];
 
         break;
       case 0x38uLL:
-        v8 = [(NTKComplicationProvider *)self _widgetComplicationsWithOptions:v6];
+        v8 = [(NTKComplicationProvider *)self _widgetComplicationsWithOptions:optionsCopy];
 LABEL_11:
         v10 = v8;
         [v7 addObjectsFromArray:v8];
@@ -199,19 +199,19 @@ LABEL_18:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v12 = [v6 rankedFamilies];
+  rankedFamilies = [optionsCopy rankedFamilies];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __59__NTKComplicationProvider_complicationsOfType_withOptions___block_invoke;
   v17[3] = &unk_278783B18;
   v17[5] = &v18;
-  v17[6] = a3;
+  v17[6] = type;
   v17[4] = self;
-  [v12 enumerateObjectsUsingBlock:v17];
+  [rankedFamilies enumerateObjectsUsingBlock:v17];
 
   if (*(v19 + 24) == 1)
   {
-    v13 = [NTKComplication allComplicationsOfType:a3];
+    v13 = [NTKComplication allComplicationsOfType:type];
     [v7 addObjectsFromArray:v13];
   }
 
@@ -232,20 +232,20 @@ void __59__NTKComplicationProvider_complicationsOfType_withOptions___block_invok
   *a4 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)appendOrReplaceConfigurableDefaultComplication:(id)a3 toComplications:(id)a4
+- (void)appendOrReplaceConfigurableDefaultComplication:(id)complication toComplications:(id)complications
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  complicationsCopy = complications;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v8 = v6;
-  v9 = [(NTKComplicationProvider *)self device];
-  v10 = NTKSharedWidgetComplicationProvider(v9);
+  v8 = complicationCopy;
+  device = [(NTKComplicationProvider *)self device];
+  v10 = NTKSharedWidgetComplicationProvider(device);
   v11 = [v10 isComplicationConfigurable:v8];
 
   if (!v11)
@@ -254,13 +254,13 @@ void __59__NTKComplicationProvider_complicationsOfType_withOptions___block_invok
     goto LABEL_23;
   }
 
-  v30 = v7;
-  v31 = v6;
+  v30 = complicationsCopy;
+  v31 = complicationCopy;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = v7;
+  v12 = complicationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
   v14 = v8;
   if (!v13)
@@ -291,16 +291,16 @@ LABEL_5:
     }
 
     v19 = v18;
-    v20 = [v19 extensionBundleIdentifier];
-    v21 = [v14 extensionBundleIdentifier];
-    if (![v20 isEqualToString:v21])
+    extensionBundleIdentifier = [v19 extensionBundleIdentifier];
+    extensionBundleIdentifier2 = [v14 extensionBundleIdentifier];
+    if (![extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2])
     {
       goto LABEL_14;
     }
 
-    v22 = [v19 containerBundleIdentifier];
-    v23 = [v14 containerBundleIdentifier];
-    if (![v22 isEqualToString:v23])
+    containerBundleIdentifier = [v19 containerBundleIdentifier];
+    containerBundleIdentifier2 = [v14 containerBundleIdentifier];
+    if (![containerBundleIdentifier isEqualToString:containerBundleIdentifier2])
     {
 
       v15 = v34;
@@ -309,11 +309,11 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v24 = [v19 kind];
+    kind = [v19 kind];
     [v14 kind];
     v25 = v12;
     v27 = v26 = v14;
-    v33 = [v24 isEqualToString:v27];
+    v33 = [kind isEqualToString:v27];
 
     v14 = v26;
     v12 = v25;
@@ -347,34 +347,34 @@ LABEL_16:
     [v12 removeObject:v19];
     [v12 insertObject:v28 atIndex:v29];
 
-    v7 = v30;
-    v6 = v31;
+    complicationsCopy = v30;
+    complicationCopy = v31;
     goto LABEL_24;
   }
 
 LABEL_22:
 
-  v7 = v30;
-  v6 = v31;
+  complicationsCopy = v30;
+  complicationCopy = v31;
 LABEL_23:
-  [v7 addObject:v6];
+  [complicationsCopy addObject:complicationCopy];
 LABEL_24:
 }
 
-- (id)_dateComplicationsWithOptions:(id)a3
+- (id)_dateComplicationsWithOptions:(id)options
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 supportedDateStyles];
+  optionsCopy = options;
+  array = [v3 array];
+  supportedDateStyles = [optionsCopy supportedDateStyles];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__NTKComplicationProvider__dateComplicationsWithOptions___block_invoke;
   v9[3] = &unk_278783B40;
-  v7 = v5;
+  v7 = array;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [supportedDateStyles enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -387,20 +387,20 @@ void __57__NTKComplicationProvider__dateComplicationsWithOptions___block_invoke(
   [v4 addObject:v5];
 }
 
-- (id)_remoteComplicationsWithOptions:(id)a3
+- (id)_remoteComplicationsWithOptions:(id)options
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 rankedFamilies];
+  optionsCopy = options;
+  array = [v3 array];
+  rankedFamilies = [optionsCopy rankedFamilies];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__NTKComplicationProvider__remoteComplicationsWithOptions___block_invoke;
   v9[3] = &unk_278783B40;
-  v7 = v5;
+  v7 = array;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [rankedFamilies enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -446,19 +446,19 @@ void __59__NTKComplicationProvider__remoteComplicationsWithOptions___block_invok
   }
 }
 
-- (id)_bundleComplicationsWithOptions:(id)a3
+- (id)_bundleComplicationsWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  optionsCopy = options;
+  array = [v4 array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__NTKComplicationProvider__bundleComplicationsWithOptions___block_invoke;
   aBlock[3] = &unk_278783BB8;
-  v7 = v6;
+  v7 = array;
   v17 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [v5 rankedFamilies];
+  rankedFamilies = [optionsCopy rankedFamilies];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -467,7 +467,7 @@ void __59__NTKComplicationProvider__remoteComplicationsWithOptions___block_invok
   v14[4] = self;
   v15 = v8;
   v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [rankedFamilies enumerateObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v7;
@@ -532,23 +532,23 @@ void __59__NTKComplicationProvider__bundleComplicationsWithOptions___block_invok
   [v5 enumerateBundlesForComplicationFamily:v3 device:v4 withBlock:*(a1 + 40)];
 }
 
-- (id)_widgetComplicationsWithOptions:(id)a3
+- (id)_widgetComplicationsWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [(NTKComplicationProvider *)self device];
-  v8 = NTKSharedWidgetComplicationProvider(v7);
-  v9 = [v5 rankedFamilies];
-  v10 = [v5 locationStyle];
+  optionsCopy = options;
+  array = [v4 array];
+  device = [(NTKComplicationProvider *)self device];
+  v8 = NTKSharedWidgetComplicationProvider(device);
+  rankedFamilies = [optionsCopy rankedFamilies];
+  locationStyle = [optionsCopy locationStyle];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__NTKComplicationProvider__widgetComplicationsWithOptions___block_invoke;
   v14[3] = &unk_278783C08;
-  v15 = v6;
-  v11 = v6;
-  [v8 enumerateDescriptorsCompatibleWithFamilies:v9 locationStyle:v10 withBlock:v14];
+  v15 = array;
+  v11 = array;
+  [v8 enumerateDescriptorsCompatibleWithFamilies:rankedFamilies locationStyle:locationStyle withBlock:v14];
 
   v12 = [v11 copy];
 
@@ -568,9 +568,9 @@ void __59__NTKComplicationProvider__widgetComplicationsWithOptions___block_invok
   if (!lock_disabledComplicationTypes)
   {
     v4 = +[NTKCompanionAppLibrary sharedAppLibrary];
-    v5 = [v4 disabledComplicationTypes];
+    disabledComplicationTypes = [v4 disabledComplicationTypes];
     v6 = self->_lock_disabledComplicationTypes;
-    self->_lock_disabledComplicationTypes = v5;
+    self->_lock_disabledComplicationTypes = disabledComplicationTypes;
 
     lock_disabledComplicationTypes = self->_lock_disabledComplicationTypes;
   }
@@ -588,14 +588,14 @@ void __59__NTKComplicationProvider__widgetComplicationsWithOptions___block_invok
   lock_disabledComplicationTypes = self->_lock_disabledComplicationTypes;
   self->_lock_disabledComplicationTypes = 0;
 
-  v4 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__NTKComplicationProvider__resetDisabledTypes__block_invoke;
   v5[3] = &unk_278783C30;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [allObjects enumerateObjectsUsingBlock:v5];
   [(NTKComplicationProvider *)self _handleAvailableComplicationsChange];
 }
 
@@ -608,10 +608,10 @@ void __46__NTKComplicationProvider__resetDisabledTypes__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families
 {
-  v6 = a3;
-  v7 = a4;
+  availableCopy = available;
+  familiesCopy = families;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
@@ -620,9 +620,9 @@ void __46__NTKComplicationProvider__resetDisabledTypes__block_invoke(uint64_t a1
   v10 = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v11 = v6;
-    v12 = NTKSharedRemoteComplicationProvider();
-    v13 = [v12 isComplicationAvailable:v11 forFamilies:v7];
+    v11 = availableCopy;
+    device = NTKSharedRemoteComplicationProvider();
+    v13 = [device isComplicationAvailable:v11 forFamilies:familiesCopy];
 
 LABEL_3:
     goto LABEL_4;
@@ -636,24 +636,24 @@ LABEL_3:
       goto LABEL_4;
     }
 
-    v20 = v6;
-    v12 = [(NTKComplicationProvider *)self device];
-    v21 = NTKSharedWidgetComplicationProvider(v12);
-    v13 = [v21 isComplicationAvailable:v20 forFamilies:v7];
+    v20 = availableCopy;
+    device = [(NTKComplicationProvider *)self device];
+    v21 = NTKSharedWidgetComplicationProvider(device);
+    v13 = [v21 isComplicationAvailable:v20 forFamilies:familiesCopy];
 
     goto LABEL_3;
   }
 
   if (v10)
   {
-    v15 = v6;
-    v16 = [v15 complication];
-    v17 = [v16 appBundleIdentifier];
+    v15 = availableCopy;
+    complication = [v15 complication];
+    appBundleIdentifier = [complication appBundleIdentifier];
 
-    v18 = [v15 complication];
-    v19 = [v18 bundleIdentifier];
+    complication2 = [v15 complication];
+    bundleIdentifier = [complication2 bundleIdentifier];
 
-    if ([v17 length] && (NTKIsSystemAppRestrictedOrRemoved(v17) & 1) != 0)
+    if ([appBundleIdentifier length] && (NTKIsSystemAppRestrictedOrRemoved(appBundleIdentifier) & 1) != 0)
     {
       v13 = 0;
     }
@@ -669,9 +669,9 @@ LABEL_3:
       v28[2] = __63__NTKComplicationProvider_isComplicationAvailable_forFamilies___block_invoke;
       v28[3] = &unk_278783C80;
       v28[4] = self;
-      v29 = v19;
+      v29 = bundleIdentifier;
       v30 = &v31;
-      [v7 enumerateObjectsUsingBlock:v28];
+      [familiesCopy enumerateObjectsUsingBlock:v28];
       v13 = *(v32 + 24);
 
       _Block_object_dispose(&v31, 8);
@@ -680,8 +680,8 @@ LABEL_3:
 
   else
   {
-    v22 = [(NTKComplicationProvider *)self disabledComplicationTypes];
-    v23 = [v22 containsIndex:{objc_msgSend(v6, "complicationType")}];
+    disabledComplicationTypes = [(NTKComplicationProvider *)self disabledComplicationTypes];
+    v23 = [disabledComplicationTypes containsIndex:{objc_msgSend(availableCopy, "complicationType")}];
 
     if (v23)
     {
@@ -698,10 +698,10 @@ LABEL_3:
       v24[1] = 3221225472;
       v24[2] = __63__NTKComplicationProvider_isComplicationAvailable_forFamilies___block_invoke_3;
       v24[3] = &unk_278783C80;
-      v25 = v6;
-      v26 = self;
+      v25 = availableCopy;
+      selfCopy = self;
       v27 = &v31;
-      [v7 enumerateObjectsUsingBlock:v24];
+      [familiesCopy enumerateObjectsUsingBlock:v24];
       v13 = *(v32 + 24);
 
       _Block_object_dispose(&v31, 8);
@@ -758,15 +758,15 @@ void __63__NTKComplicationProvider_isComplicationAvailable_forFamilies___block_i
   }
 }
 
-- (BOOL)isComplicationConfigurable:(id)a3
+- (BOOL)isComplicationConfigurable:(id)configurable
 {
-  v4 = a3;
+  configurableCopy = configurable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(NTKComplicationProvider *)self device];
-    v7 = NTKSharedWidgetComplicationProvider(v6);
+    v5 = configurableCopy;
+    device = [(NTKComplicationProvider *)self device];
+    v7 = NTKSharedWidgetComplicationProvider(device);
     v8 = [v7 isComplicationConfigurable:v5];
   }
 
@@ -784,14 +784,14 @@ void __63__NTKComplicationProvider_isComplicationAvailable_forFamilies___block_i
   lock_disabledComplicationTypes = self->_lock_disabledComplicationTypes;
   self->_lock_disabledComplicationTypes = 0;
 
-  v4 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__NTKComplicationProvider__handleAvailableComplicationsChange__block_invoke;
   v5[3] = &unk_278783C30;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [allObjects enumerateObjectsUsingBlock:v5];
 }
 
 void __62__NTKComplicationProvider__handleAvailableComplicationsChange__block_invoke(uint64_t a1, void *a2)

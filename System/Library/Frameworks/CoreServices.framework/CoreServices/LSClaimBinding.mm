@@ -1,65 +1,65 @@
 @interface LSClaimBinding
-+ (id)_claimBindingsForBindingEvaluator:(const void *)a3 error:(id *)a4;
-+ (id)claimBindingsWithConfiguration:(id)a3 error:(id *)a4;
-+ (id)claimBindingsWithTypeIdentifier:(id)a3 error:(id *)a4;
-+ (id)claimBindingsWithURL:(id)a3 error:(id *)a4;
-- (LSClaimBinding)initWithCoder:(id)a3;
-- (LSClaimBinding)initWithConfiguration:(id)a3 error:(id *)a4;
-- (LSClaimBinding)initWithTypeIdentifier:(id)a3 error:(id *)a4;
-- (LSClaimBinding)initWithURL:(id)a3 error:(id *)a4;
-- (id)_initWithBindingEvaluator:(const void *)a3 error:(id *)a4;
-- (id)_initWithClaimRecord:(id)a3 typeRecord:(id)a4 bundleRecord:(id)a5 provenance:(unint64_t)a6;
-- (id)_initWithContext:(LSContext *)a3 binding:(const LSBinding *)a4 coreTypesBundleRecord:(id *)a5 typeRecord:(id)a6 error:(id *)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_claimBindingsForBindingEvaluator:(const void *)evaluator error:(id *)error;
++ (id)claimBindingsWithConfiguration:(id)configuration error:(id *)error;
++ (id)claimBindingsWithTypeIdentifier:(id)identifier error:(id *)error;
++ (id)claimBindingsWithURL:(id)l error:(id *)error;
+- (LSClaimBinding)initWithCoder:(id)coder;
+- (LSClaimBinding)initWithConfiguration:(id)configuration error:(id *)error;
+- (LSClaimBinding)initWithTypeIdentifier:(id)identifier error:(id *)error;
+- (LSClaimBinding)initWithURL:(id)l error:(id *)error;
+- (id)_initWithBindingEvaluator:(const void *)evaluator error:(id *)error;
+- (id)_initWithClaimRecord:(id)record typeRecord:(id)typeRecord bundleRecord:(id)bundleRecord provenance:(unint64_t)provenance;
+- (id)_initWithContext:(LSContext *)context binding:(const LSBinding *)binding coreTypesBundleRecord:(id *)record typeRecord:(id)typeRecord error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)detach;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSClaimBinding
 
-- (LSClaimBinding)initWithTypeIdentifier:(id)a3 error:(id *)a4
+- (LSClaimBinding)initWithTypeIdentifier:(id)identifier error:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  LaunchServices::BindingEvaluator::CreateWithUTI(a3, 0, v9);
-  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:a4];
+  LaunchServices::BindingEvaluator::CreateWithUTI(identifier, 0, v9);
+  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-+ (id)claimBindingsWithTypeIdentifier:(id)a3 error:(id *)a4
++ (id)claimBindingsWithTypeIdentifier:(id)identifier error:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  LaunchServices::BindingEvaluator::CreateWithUTI(a3, 0, v9);
-  v6 = [a1 _claimBindingsForBindingEvaluator:v9 error:a4];
+  LaunchServices::BindingEvaluator::CreateWithUTI(identifier, 0, v9);
+  v6 = [self _claimBindingsForBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (LSClaimBinding)initWithURL:(id)a3 error:(id *)a4
+- (LSClaimBinding)initWithURL:(id)l error:(id *)error
 {
   v9[22] = *MEMORY[0x1E69E9840];
-  LaunchServices::BindingEvaluator::CreateWithURL(a3, v9);
-  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:a4];
+  LaunchServices::BindingEvaluator::CreateWithURL(l, v9);
+  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-+ (id)claimBindingsWithURL:(id)a3 error:(id *)a4
++ (id)claimBindingsWithURL:(id)l error:(id *)error
 {
   v9[22] = *MEMORY[0x1E69E9840];
-  LaunchServices::BindingEvaluator::CreateWithURL(a3, v9);
-  v6 = [a1 _claimBindingsForBindingEvaluator:v9 error:a4];
+  LaunchServices::BindingEvaluator::CreateWithURL(l, v9);
+  v6 = [self _claimBindingsForBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (id)_initWithClaimRecord:(id)a3 typeRecord:(id)a4 bundleRecord:(id)a5 provenance:(unint64_t)a6
+- (id)_initWithClaimRecord:(id)record typeRecord:(id)typeRecord bundleRecord:(id)bundleRecord provenance:(unint64_t)provenance
 {
   v13.receiver = self;
   v13.super_class = LSClaimBinding;
@@ -67,28 +67,28 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_claimRecord, a3);
-    objc_storeStrong(&v11->_typeRecord, a4);
-    objc_storeStrong(&v11->_bundleRecord, a5);
-    v11->_provenance = a6;
+    objc_storeStrong(&v10->_claimRecord, record);
+    objc_storeStrong(&v11->_typeRecord, typeRecord);
+    objc_storeStrong(&v11->_bundleRecord, bundleRecord);
+    v11->_provenance = provenance;
   }
 
   return v11;
 }
 
-- (id)_initWithContext:(LSContext *)a3 binding:(const LSBinding *)a4 coreTypesBundleRecord:(id *)a5 typeRecord:(id)a6 error:(id *)a7
+- (id)_initWithContext:(LSContext *)context binding:(const LSBinding *)binding coreTypesBundleRecord:(id *)record typeRecord:(id)typeRecord error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (binding)
     {
       goto LABEL_3;
     }
 
 LABEL_22:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LSClaimRecord.mm" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"binding != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSClaimRecord.mm" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"binding != NULL"}];
 
     if (!self)
     {
@@ -98,10 +98,10 @@ LABEL_22:
     goto LABEL_4;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LSClaimRecord.mm" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LSClaimRecord.mm" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
 
-  if (!a4)
+  if (!binding)
   {
     goto LABEL_22;
   }
@@ -111,12 +111,12 @@ LABEL_3:
   {
 LABEL_23:
 
-    if (a7)
+    if (error)
     {
       v31 = *MEMORY[0x1E696A278];
       v32[0] = @"The claim record was bound to an unknown bundle record.";
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-      *a7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10817, v25, "[LSClaimBinding _initWithContext:binding:coreTypesBundleRecord:typeRecord:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimRecord.mm", 292);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10817, v25, "[LSClaimBinding _initWithContext:binding:coreTypesBundleRecord:typeRecord:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimRecord.mm", 292);
     }
 
     v20 = 0;
@@ -125,7 +125,7 @@ LABEL_23:
   }
 
 LABEL_4:
-  bundleData = a4->bundleData;
+  bundleData = binding->bundleData;
   if (!bundleData)
   {
     goto LABEL_23;
@@ -133,25 +133,25 @@ LABEL_4:
 
   if (bundleData->_clas == 11)
   {
-    v15 = *a5;
+    v15 = *record;
     if (v15)
     {
       goto LABEL_12;
     }
 
     v16 = +[LSBundleRecord coreTypesBundleRecord];
-    objc_storeStrong(a5, v16);
+    objc_storeStrong(record, v16);
   }
 
   else
   {
     v17 = objc_opt_class();
-    if (a4->bundleData->_clas == 2)
+    if (binding->bundleData->_clas == 2)
     {
       v17 = objc_opt_class();
     }
 
-    v16 = [[v17 alloc] _initWithNode:0 bundleIdentifier:0 context:a3 tableID:*(-[_LSDatabase schema](a3->db) + 4) unitID:a4->bundle bundleBaseData:a4->bundleData error:a7];
+    v16 = [[v17 alloc] _initWithNode:0 bundleIdentifier:0 context:context tableID:*(-[_LSDatabase schema](context->db) + 4) unitID:binding->bundle bundleBaseData:binding->bundleData error:error];
   }
 
   v15 = v16;
@@ -166,23 +166,23 @@ LABEL_26:
   }
 
 LABEL_12:
-  if (!a4->claimData)
+  if (!binding->claimData)
   {
     v20 = 0;
     goto LABEL_16;
   }
 
-  v18 = [(LSRecord *)[LSClaimRecord alloc] _initWithContext:a3 tableID:*([(_LSDatabase *)a3->db schema]+ 8) unitID:a4->claim];
+  v18 = [(LSRecord *)[LSClaimRecord alloc] _initWithContext:context tableID:*([(_LSDatabase *)context->db schema]+ 8) unitID:binding->claim];
   v19 = v18;
   if (!v18)
   {
 
-    if (a7)
+    if (error)
     {
       v29 = *MEMORY[0x1E696A278];
       v30 = @"Unable to find this claim record in the Launch Services database.";
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-      *a7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10810, v22, "[LSClaimBinding _initWithContext:binding:coreTypesBundleRecord:typeRecord:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimRecord.mm", 305);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10810, v22, "[LSClaimBinding _initWithContext:binding:coreTypesBundleRecord:typeRecord:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimRecord.mm", 305);
     }
 
     goto LABEL_20;
@@ -191,7 +191,7 @@ LABEL_12:
   objc_storeWeak(v18 + 4, v15);
   v20 = v19;
 LABEL_16:
-  v21 = [(LSClaimBinding *)self _initWithClaimRecord:v20 typeRecord:a6 bundleRecord:v15 provenance:a4->provenance];
+  v21 = [(LSClaimBinding *)self _initWithClaimRecord:v20 typeRecord:typeRecord bundleRecord:v15 provenance:binding->provenance];
 LABEL_27:
   v26 = v21;
 
@@ -199,9 +199,9 @@ LABEL_27:
   return v26;
 }
 
-+ (id)_claimBindingsForBindingEvaluator:(const void *)a3 error:(id *)a4
++ (id)_claimBindingsForBindingEvaluator:(const void *)evaluator error:(id *)error
 {
-  CurrentContext = _LSDatabaseContextGetCurrentContext(a1);
+  CurrentContext = _LSDatabaseContextGetCurrentContext(self);
   v25 = 0;
   v26 = 0;
   v27 = 0;
@@ -212,7 +212,7 @@ LABEL_27:
   {
     v22 = 0;
     v23 = 0;
-    LaunchServices::BindingEvaluator::evaluateBindings(a3, v7, &v22, a4, &v20);
+    LaunchServices::BindingEvaluator::evaluateBindings(evaluator, v7, &v22, error, &v20);
     if (v20 == v21)
     {
       v13 = 0;
@@ -239,7 +239,7 @@ LABEL_27:
     std::vector<LSBinding>::__destroy_vector::operator()[abi:nn200100](&v28);
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = +[_LSDServiceDomain defaultServiceDomain];
     v15 = LaunchServices::Database::Context::_get(&CurrentContext, v14, 0);
@@ -255,7 +255,7 @@ LABEL_27:
     }
 
     v13 = 0;
-    *a4 = v16;
+    *error = v16;
   }
 
   else
@@ -279,7 +279,7 @@ LABEL_27:
   return v13;
 }
 
-- (id)_initWithBindingEvaluator:(const void *)a3 error:(id *)a4
+- (id)_initWithBindingEvaluator:(const void *)evaluator error:(id *)error
 {
   CurrentContext = _LSDatabaseContextGetCurrentContext(self);
   v22 = 0;
@@ -292,10 +292,10 @@ LABEL_27:
   {
     v19 = 0;
     v20 = 0;
-    LaunchServices::BindingEvaluator::getBestBinding(v17, a3, v8, &v19, a4);
+    LaunchServices::BindingEvaluator::getBestBinding(v17, evaluator, v8, &v19, error);
     if (v18 == 1)
     {
-      v9 = [(LSClaimBinding *)self _initWithContext:v8 binding:v17 coreTypesBundleRecord:&v20 typeRecord:v19 error:a4];
+      v9 = [(LSClaimBinding *)self _initWithContext:v8 binding:v17 coreTypesBundleRecord:&v20 typeRecord:v19 error:error];
     }
 
     else
@@ -312,7 +312,7 @@ LABEL_27:
   else
   {
 
-    if (a4)
+    if (error)
     {
       v10 = +[_LSDServiceDomain defaultServiceDomain];
       v11 = LaunchServices::Database::Context::_get(&CurrentContext, v10, 0);
@@ -328,7 +328,7 @@ LABEL_27:
       }
 
       v9 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -363,42 +363,42 @@ LABEL_27:
   [(LSRecord *)bundleRecord detach];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_claimRecord forKey:@"claimRecord"];
-  [a3 encodeObject:self->_typeRecord forKey:@"typeRecord"];
-  [a3 encodeObject:self->_bundleRecord forKey:@"bundleRecord"];
+  [coder encodeObject:self->_claimRecord forKey:@"claimRecord"];
+  [coder encodeObject:self->_typeRecord forKey:@"typeRecord"];
+  [coder encodeObject:self->_bundleRecord forKey:@"bundleRecord"];
   provenance = self->_provenance;
 
-  [a3 encodeInteger:provenance forKey:@"provenance"];
+  [coder encodeInteger:provenance forKey:@"provenance"];
 }
 
-- (LSClaimBinding)initWithCoder:(id)a3
+- (LSClaimBinding)initWithCoder:(id)coder
 {
-  v5 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"claimRecord"];
-  v6 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeRecord"];
-  v7 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleRecord"];
-  v8 = -[LSClaimBinding _initWithClaimRecord:typeRecord:bundleRecord:provenance:](self, "_initWithClaimRecord:typeRecord:bundleRecord:provenance:", v5, v6, v7, [a3 decodeIntegerForKey:@"provenance"]);
+  v5 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"claimRecord"];
+  v6 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeRecord"];
+  v7 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleRecord"];
+  v8 = -[LSClaimBinding _initWithClaimRecord:typeRecord:bundleRecord:provenance:](self, "_initWithClaimRecord:typeRecord:bundleRecord:provenance:", v5, v6, v7, [coder decodeIntegerForKey:@"provenance"]);
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(LSClaimRecord *)self->_claimRecord copyWithZone:?];
-  v6 = [(LSRecord *)self->_typeRecord copyWithZone:a3];
-  v7 = [(LSBundleRecord *)self->_bundleRecord copyWithZone:a3];
+  v6 = [(LSRecord *)self->_typeRecord copyWithZone:zone];
+  v7 = [(LSBundleRecord *)self->_bundleRecord copyWithZone:zone];
   v8 = [[LSClaimBinding allocWithZone:?]typeRecord:"_initWithClaimRecord:typeRecord:bundleRecord:provenance:" bundleRecord:v5 provenance:v6, v7, self->_provenance];
 
   return v8;
 }
 
-- (LSClaimBinding)initWithConfiguration:(id)a3 error:(id *)a4
+- (LSClaimBinding)initWithConfiguration:(id)configuration error:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
-    [a3 bindingEvaluatorForAuditToken:0];
+    [configuration bindingEvaluatorForAuditToken:0];
   }
 
   else
@@ -406,18 +406,18 @@ LABEL_27:
     memset(v9, 0, sizeof(v9));
   }
 
-  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:a4];
+  v6 = [(LSClaimBinding *)self _initWithBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-+ (id)claimBindingsWithConfiguration:(id)a3 error:(id *)a4
++ (id)claimBindingsWithConfiguration:(id)configuration error:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
-    [a3 bindingEvaluatorForAuditToken:0];
+    [configuration bindingEvaluatorForAuditToken:0];
   }
 
   else
@@ -425,7 +425,7 @@ LABEL_27:
     memset(v9, 0, sizeof(v9));
   }
 
-  v6 = [a1 _claimBindingsForBindingEvaluator:v9 error:a4];
+  v6 = [self _claimBindingsForBindingEvaluator:v9 error:error];
   LaunchServices::BindingEvaluator::~BindingEvaluator(v9);
   v7 = *MEMORY[0x1E69E9840];
 

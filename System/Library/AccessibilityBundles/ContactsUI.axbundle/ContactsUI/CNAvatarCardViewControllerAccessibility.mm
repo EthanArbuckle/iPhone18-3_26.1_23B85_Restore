@@ -1,6 +1,6 @@
 @interface CNAvatarCardViewControllerAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CNAvatarCardViewControllerAccessibility
@@ -11,9 +11,9 @@
   v8.super_class = CNAvatarCardViewControllerAccessibility;
   [(CNAvatarCardViewControllerAccessibility *)&v8 _accessibilityLoadAccessibilityInformation];
   v3 = [(CNAvatarCardViewControllerAccessibility *)self safeUIViewForKey:@"view"];
-  v4 = [v3 superview];
+  superview = [v3 superview];
 
-  v5 = [v4 _accessibilityFindSubviewDescendant:&__block_literal_global_6];
+  v5 = [superview _accessibilityFindSubviewDescendant:&__block_literal_global_6];
   v6 = v5;
   if (v5)
   {
@@ -34,11 +34,11 @@ uint64_t __85__CNAvatarCardViewControllerAccessibility__accessibilityLoadAccessi
   return isKindOfClass & 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNAvatarCardViewControllerAccessibility;
-  [(CNAvatarCardViewControllerAccessibility *)&v4 viewDidAppear:a3];
+  [(CNAvatarCardViewControllerAccessibility *)&v4 viewDidAppear:appear];
   [(CNAvatarCardViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

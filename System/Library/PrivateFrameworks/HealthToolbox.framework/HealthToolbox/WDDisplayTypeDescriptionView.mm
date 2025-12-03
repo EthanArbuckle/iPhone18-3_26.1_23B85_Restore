@@ -1,40 +1,40 @@
 @interface WDDisplayTypeDescriptionView
-+ (double)minimumHeightForStyle:(unint64_t)a3;
-+ (id)_descriptionHeadingColorForStyle:(unint64_t)a3;
-+ (id)_descriptionHeadingFontForStyle:(unint64_t)a3;
-+ (id)_descriptionTextColorForStyle:(unint64_t)a3;
-+ (id)_descriptionTextFontForStyle:(unint64_t)a3;
-+ (id)_metricsForStyle:(unint64_t)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (WDDisplayTypeDescriptionView)initWithCoder:(id)a3;
-- (WDDisplayTypeDescriptionView)initWithDisplayType:(id)a3 showAttributionText:(BOOL)a4 style:(unint64_t)a5;
-- (WDDisplayTypeDescriptionView)initWithFrame:(CGRect)a3;
++ (double)minimumHeightForStyle:(unint64_t)style;
++ (id)_descriptionHeadingColorForStyle:(unint64_t)style;
++ (id)_descriptionHeadingFontForStyle:(unint64_t)style;
++ (id)_descriptionTextColorForStyle:(unint64_t)style;
++ (id)_descriptionTextFontForStyle:(unint64_t)style;
++ (id)_metricsForStyle:(unint64_t)style;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (WDDisplayTypeDescriptionView)initWithCoder:(id)coder;
+- (WDDisplayTypeDescriptionView)initWithDisplayType:(id)type showAttributionText:(BOOL)text style:(unint64_t)style;
+- (WDDisplayTypeDescriptionView)initWithFrame:(CGRect)frame;
 - (void)_setupUI;
 - (void)_updateFont;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WDDisplayTypeDescriptionView
 
-- (WDDisplayTypeDescriptionView)initWithDisplayType:(id)a3 showAttributionText:(BOOL)a4 style:(unint64_t)a5
+- (WDDisplayTypeDescriptionView)initWithDisplayType:(id)type showAttributionText:(BOOL)text style:(unint64_t)style
 {
-  v9 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = WDDisplayTypeDescriptionView;
   v10 = [(WDDisplayTypeDescriptionView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_displayType, a3);
-    v11->_showAttributionText = a4;
-    v11->_style = a5;
+    objc_storeStrong(&v10->_displayType, type);
+    v11->_showAttributionText = text;
+    v11->_style = style;
     [(WDDisplayTypeDescriptionView *)v11 _setupUI];
   }
 
   return v11;
 }
 
-- (WDDisplayTypeDescriptionView)initWithFrame:(CGRect)a3
+- (WDDisplayTypeDescriptionView)initWithFrame:(CGRect)frame
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -44,21 +44,21 @@
   return 0;
 }
 
-- (WDDisplayTypeDescriptionView)initWithCoder:(id)a3
+- (WDDisplayTypeDescriptionView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = WDDisplayTypeDescriptionView;
-  return [(WDDisplayTypeDescriptionView *)&v4 initWithCoder:a3];
+  return [(WDDisplayTypeDescriptionView *)&v4 initWithCoder:coder];
 }
 
-+ (double)minimumHeightForStyle:(unint64_t)a3
++ (double)minimumHeightForStyle:(unint64_t)style
 {
-  v4 = [a1 _metricsForStyle:?];
+  v4 = [self _metricsForStyle:?];
   v5 = v4;
   v6 = 0.0;
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_8;
     }
@@ -99,18 +99,18 @@ LABEL_8:
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = WDDisplayTypeDescriptionView;
-  [(WDDisplayTypeDescriptionView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(WDDisplayTypeDescriptionView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(WDDisplayTypeDescriptionView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDDisplayTypeDescriptionView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -153,8 +153,8 @@ LABEL_8:
     [(UILabel *)self->_descriptionHeadingLabel setTextColor:v8];
 
     [(UILabel *)self->_descriptionHeadingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_descriptionHeadingLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_descriptionHeadingLabel setBackgroundColor:clearColor];
 
     [(WDDisplayTypeDescriptionView *)self addSubview:self->_descriptionHeadingLabel];
     [v3 setObject:self->_descriptionHeadingLabel forKeyedSubscript:@"_descriptionHeadingLabel"];
@@ -162,16 +162,16 @@ LABEL_8:
     [(WDDisplayTypeDescriptionView *)self addConstraints:v10];
   }
 
-  v11 = [(HKDisplayType *)self->_displayType localization];
-  v12 = [v11 summaryForPairedWatch];
-  if ([v12 length])
+  localization = [(HKDisplayType *)self->_displayType localization];
+  summaryForPairedWatch = [localization summaryForPairedWatch];
+  if ([summaryForPairedWatch length])
   {
-    v13 = [MEMORY[0x277CCDD30] hasPairedWatch];
+    hasPairedWatch = [MEMORY[0x277CCDD30] hasPairedWatch];
   }
 
   else
   {
-    v13 = 0;
+    hasPairedWatch = 0;
   }
 
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -182,23 +182,23 @@ LABEL_8:
   v16 = [objc_opt_class() _descriptionTextColorForStyle:self->_style];
   [(UILabel *)self->_descriptionLabel setTextColor:v16];
 
-  v17 = [(HKDisplayType *)self->_displayType localization];
-  v18 = v17;
-  if (v13)
+  localization2 = [(HKDisplayType *)self->_displayType localization];
+  v18 = localization2;
+  if (hasPairedWatch)
   {
-    [v17 summaryForPairedWatch];
+    [localization2 summaryForPairedWatch];
   }
 
   else
   {
-    [v17 summary];
+    [localization2 summary];
   }
   v19 = ;
   [(UILabel *)self->_descriptionLabel setText:v19];
 
   [(UILabel *)self->_descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_descriptionLabel setBackgroundColor:v20];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_descriptionLabel setBackgroundColor:clearColor2];
 
   [(WDDisplayTypeDescriptionView *)self addSubview:self->_descriptionLabel];
   [v3 setObject:self->_descriptionLabel forKeyedSubscript:@"_descriptionLabel"];
@@ -212,11 +212,11 @@ LABEL_8:
     [v22 appendString:@"-T-[_descriptionHeadingLabel]"];
   }
 
-  v24 = [(HKDisplayType *)self->_displayType detailImage];
-  v25 = v24;
-  if (v24)
+  detailImage = [(HKDisplayType *)self->_displayType detailImage];
+  v25 = detailImage;
+  if (detailImage)
   {
-    [v24 size];
+    [detailImage size];
     v28 = v27 / v26;
     v29 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v25];
     [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -237,27 +237,27 @@ LABEL_8:
     [v23 appendString:@"-M-[_descriptionLabel]"];
   }
 
-  v33 = [(HKDisplayType *)self->_displayType presentation];
-  v34 = [v33 summaryAttribution];
-  v35 = [v34 attribution];
-  if ([v35 length])
+  presentation = [(HKDisplayType *)self->_displayType presentation];
+  summaryAttribution = [presentation summaryAttribution];
+  attribution = [summaryAttribution attribution];
+  if ([attribution length])
   {
-    v36 = [(WDDisplayTypeDescriptionView *)self showAttributionText];
+    showAttributionText = [(WDDisplayTypeDescriptionView *)self showAttributionText];
 
-    if (!v36)
+    if (!showAttributionText)
     {
       goto LABEL_19;
     }
 
     v37 = objc_alloc(MEMORY[0x277D127B0]);
-    v38 = [(HKDisplayType *)self->_displayType presentation];
-    v39 = [v38 summaryAttribution];
-    v40 = [v39 attribution];
+    presentation2 = [(HKDisplayType *)self->_displayType presentation];
+    summaryAttribution2 = [presentation2 summaryAttribution];
+    attribution2 = [summaryAttribution2 attribution];
     [(HKDisplayType *)self->_displayType presentation];
     v56 = v25;
     v42 = v41 = v3;
-    v43 = [v42 summaryAttribution];
-    v44 = [v37 initWithAttributedText:v40 selectable:{objc_msgSend(v43, "hasLink")}];
+    summaryAttribution3 = [v42 summaryAttribution];
+    v44 = [v37 initWithAttributedText:attribution2 selectable:{objc_msgSend(summaryAttribution3, "hasLink")}];
     attributionTextView = self->_attributionTextView;
     self->_attributionTextView = v44;
 
@@ -269,8 +269,8 @@ LABEL_8:
     [(WDDisplayTypeDescriptionView *)self addSubview:self->_attributionTextView];
     [v23 appendString:@"-A-[_attributionTextView]"];
     [v3 setValue:self->_attributionTextView forKey:@"_attributionTextView"];
-    v33 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_attributionTextView]|" options:0 metrics:v57 views:v3];
-    [(WDDisplayTypeDescriptionView *)self addConstraints:v33];
+    presentation = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_attributionTextView]|" options:0 metrics:v57 views:v3];
+    [(WDDisplayTypeDescriptionView *)self addConstraints:presentation];
   }
 
   else
@@ -278,9 +278,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  v46 = [(HKDisplayType *)self->_displayType localization];
-  v47 = [v46 cautionaryText];
-  v48 = [v47 length];
+  localization3 = [(HKDisplayType *)self->_displayType localization];
+  cautionaryText = [localization3 cautionaryText];
+  v48 = [cautionaryText length];
 
   if (v48)
   {
@@ -289,13 +289,13 @@ LABEL_19:
     self->_cautionaryLabel = v49;
 
     [(UILabel *)self->_cautionaryLabel setNumberOfLines:0];
-    v51 = [(HKDisplayType *)self->_displayType localization];
-    v52 = [v51 cautionaryText];
-    [(UILabel *)self->_cautionaryLabel setText:v52];
+    localization4 = [(HKDisplayType *)self->_displayType localization];
+    cautionaryText2 = [localization4 cautionaryText];
+    [(UILabel *)self->_cautionaryLabel setText:cautionaryText2];
 
     [(UILabel *)self->_cautionaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v53 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_cautionaryLabel setBackgroundColor:v53];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_cautionaryLabel setBackgroundColor:clearColor3];
 
     [(WDDisplayTypeDescriptionView *)self addSubview:self->_cautionaryLabel];
     [v23 appendString:@"-A-[_cautionaryLabel]-M-|"];
@@ -315,9 +315,9 @@ LABEL_19:
   [(WDDisplayTypeDescriptionView *)self _updateFont];
 }
 
-+ (id)_metricsForStyle:(unint64_t)a3
++ (id)_metricsForStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
     return &unk_28642E108;
   }
@@ -328,36 +328,36 @@ LABEL_19:
   }
 }
 
-+ (id)_descriptionHeadingFontForStyle:(unint64_t)a3
++ (id)_descriptionHeadingFontForStyle:(unint64_t)style
 {
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:{objc_msgSend(v4, "symbolicTraits") | 2}];
+  fontDescriptor = [v3 fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:{objc_msgSend(fontDescriptor, "symbolicTraits") | 2}];
   v6 = [MEMORY[0x277D74300] fontWithDescriptor:v5 size:0.0];
 
   return v6;
 }
 
-+ (id)_descriptionHeadingColorForStyle:(unint64_t)a3
++ (id)_descriptionHeadingColorForStyle:(unint64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    a1 = [MEMORY[0x277D75348] secondaryLabelColor];
+    self = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  else if (!a3)
+  else if (!style)
   {
-    a1 = [MEMORY[0x277D75348] labelColor];
+    self = [MEMORY[0x277D75348] labelColor];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_descriptionTextFontForStyle:(unint64_t)a3
++ (id)_descriptionTextFontForStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_6;
     }
@@ -370,37 +370,37 @@ LABEL_19:
     v5 = MEMORY[0x277D76918];
   }
 
-  a1 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*v5, v3}];
+  self = [MEMORY[0x277D74300] preferredFontForTextStyle:{*v5, v3}];
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)_descriptionTextColorForStyle:(unint64_t)a3
++ (id)_descriptionTextColorForStyle:(unint64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    a1 = [MEMORY[0x277D75348] secondaryLabelColor];
+    self = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  else if (!a3)
+  else if (!style)
   {
-    a1 = [MEMORY[0x277D75348] labelColor];
+    self = [MEMORY[0x277D75348] labelColor];
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
-  v8 = [v7 scheme];
-  v9 = [v8 isEqualToString:@"bridge"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v9 = [scheme isEqualToString:@"bridge"];
 
-  if (!a6 && v9)
+  if (!interaction && v9)
   {
-    v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v10 openSensitiveURL:v7 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 
   return v9 ^ 1;

@@ -1,17 +1,17 @@
 @interface CKInvalidPackage
-- (id)invalidPackageError:(id *)a3;
+- (id)invalidPackageError:(id *)error;
 - (id)itemEnumerator;
 @end
 
 @implementation CKInvalidPackage
 
-- (id)invalidPackageError:(id *)a3
+- (id)invalidPackageError:(id *)error
 {
   v4 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, a2, @"CKErrorDomain", 12, @"Package object %p is invalid due to earlier database error", self);
-  if (a3)
+  if (error)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   return v4;

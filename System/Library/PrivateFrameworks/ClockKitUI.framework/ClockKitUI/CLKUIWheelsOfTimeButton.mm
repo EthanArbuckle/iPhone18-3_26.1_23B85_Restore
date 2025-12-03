@@ -1,40 +1,40 @@
 @interface CLKUIWheelsOfTimeButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_getMaxTextBounds;
-- (CLKUIWheelsOfTimeButton)initWithFrame:(CGRect)a3;
+- (CLKUIWheelsOfTimeButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchEdgeInsets;
-- (__CFAttributedString)_newAttributedString:(id)a3 withFont:(id)a4 usingKerning:(double)a5 textColor:(id)a6;
-- (id)_createButtonImage:(__CFAttributedString *)a3;
-- (void)setButtonText:(id)a3 selectedFont:(id)a4 selectedTextColor:(id)a5 unselectedFont:(id)a6 unselectedTextColor:(id)a7 kerning:(double)a8;
+- (__CFAttributedString)_newAttributedString:(id)string withFont:(id)font usingKerning:(double)kerning textColor:(id)color;
+- (id)_createButtonImage:(__CFAttributedString *)image;
+- (void)setButtonText:(id)text selectedFont:(id)font selectedTextColor:(id)color unselectedFont:(id)unselectedFont unselectedTextColor:(id)textColor kerning:(double)kerning;
 @end
 
 @implementation CLKUIWheelsOfTimeButton
 
-- (CLKUIWheelsOfTimeButton)initWithFrame:(CGRect)a3
+- (CLKUIWheelsOfTimeButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CLKUIWheelsOfTimeButton;
-  v3 = [(CLKUIWheelsOfTimeButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKUIWheelsOfTimeButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CLKUIWheelsOfTimeButton *)v3 layer];
-    [v5 setCornerRadius:3.0];
+    layer = [(CLKUIWheelsOfTimeButton *)v3 layer];
+    [layer setCornerRadius:3.0];
 
-    v6 = [(CLKUIWheelsOfTimeButton *)v4 layer];
-    [v6 setBorderWidth:0.0];
+    layer2 = [(CLKUIWheelsOfTimeButton *)v4 layer];
+    [layer2 setBorderWidth:0.0];
 
-    v7 = [(CLKUIWheelsOfTimeButton *)v4 titleLabel];
-    [v7 setHidden:1];
+    titleLabel = [(CLKUIWheelsOfTimeButton *)v4 titleLabel];
+    [titleLabel setHidden:1];
   }
 
   return v4;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CLKUIWheelsOfTimeButton *)self bounds];
   top = self->_touchEdgeInsets.top;
   left = self->_touchEdgeInsets.left;
@@ -55,24 +55,24 @@
   return CGRectInset(*&v2, 0.5, 0.5);
 }
 
-- (__CFAttributedString)_newAttributedString:(id)a3 withFont:(id)a4 usingKerning:(double)a5 textColor:(id)a6
+- (__CFAttributedString)_newAttributedString:(id)string withFont:(id)font usingKerning:(double)kerning textColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  valuePtr = a5;
-  v12 = a6;
+  stringCopy = string;
+  fontCopy = font;
+  valuePtr = kerning;
+  colorCopy = color;
   v13 = *MEMORY[0x1E695E480];
   Mutable = CFAttributedStringCreateMutable(*MEMORY[0x1E695E480], 0);
   v37.location = 0;
   v37.length = 0;
-  CFAttributedStringReplaceString(Mutable, v37, v10);
+  CFAttributedStringReplaceString(Mutable, v37, stringCopy);
   Length = CFAttributedStringGetLength(Mutable);
   v16 = *MEMORY[0x1E69659D8];
-  v17 = [v12 CGColor];
+  cGColor = [colorCopy CGColor];
   v38.location = 0;
   v38.length = Length;
-  CFAttributedStringSetAttribute(Mutable, v38, v16, v17);
-  if (a5 != 0.0)
+  CFAttributedStringSetAttribute(Mutable, v38, v16, cGColor);
+  if (kerning != 0.0)
   {
     v18 = CFNumberCreate(v13, kCFNumberFloatType, &valuePtr);
     v39.length = CFAttributedStringGetLength(Mutable);
@@ -81,13 +81,13 @@
     CFRelease(v18);
   }
 
-  [v11 pointSize];
+  [fontCopy pointSize];
   v20 = v19;
   v21 = v19 * 0.5;
   [(CLKUIWheelsOfTimeButton *)self _getMaxTextBounds];
   v23 = v22;
   v25 = v24;
-  v26 = v11;
+  v26 = fontCopy;
   v27 = *MEMORY[0x1E6965658];
   for (i = v26; ; i = v34)
   {
@@ -112,34 +112,34 @@
   return Mutable;
 }
 
-- (void)setButtonText:(id)a3 selectedFont:(id)a4 selectedTextColor:(id)a5 unselectedFont:(id)a6 unselectedTextColor:(id)a7 kerning:(double)a8
+- (void)setButtonText:(id)text selectedFont:(id)font selectedTextColor:(id)color unselectedFont:(id)unselectedFont unselectedTextColor:(id)textColor kerning:(double)kerning
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  [(CLKUIWheelsOfTimeButton *)self setAccessibilityLabel:v18];
-  v19 = [(CLKUIWheelsOfTimeButton *)self _newAttributedString:v18 withFont:v17 usingKerning:v16 textColor:a8];
+  textColorCopy = textColor;
+  unselectedFontCopy = unselectedFont;
+  colorCopy = color;
+  fontCopy = font;
+  textCopy = text;
+  [(CLKUIWheelsOfTimeButton *)self setAccessibilityLabel:textCopy];
+  v19 = [(CLKUIWheelsOfTimeButton *)self _newAttributedString:textCopy withFont:fontCopy usingKerning:colorCopy textColor:kerning];
 
   v22 = [(CLKUIWheelsOfTimeButton *)self _createButtonImage:v19];
   [(CLKUIWheelsOfTimeButton *)self setImage:v22 forState:4];
   CFRelease(v19);
-  v20 = [(CLKUIWheelsOfTimeButton *)self _newAttributedString:v18 withFont:v15 usingKerning:v14 textColor:a8];
+  v20 = [(CLKUIWheelsOfTimeButton *)self _newAttributedString:textCopy withFont:unselectedFontCopy usingKerning:textColorCopy textColor:kerning];
 
   v21 = [(CLKUIWheelsOfTimeButton *)self _createButtonImage:v20];
   [(CLKUIWheelsOfTimeButton *)self setImage:v21 forState:0];
   CFRelease(v20);
 }
 
-- (id)_createButtonImage:(__CFAttributedString *)a3
+- (id)_createButtonImage:(__CFAttributedString *)image
 {
   [(CLKUIWheelsOfTimeButton *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x1E695B530] sharedRenderingContext];
-  v10 = [v9 device];
-  [v10 screenScale];
+  mEMORY[0x1E695B530] = [MEMORY[0x1E695B530] sharedRenderingContext];
+  device = [mEMORY[0x1E695B530] device];
+  [device screenScale];
   v12 = v11;
   v28.width = v6;
   v28.height = v8;
@@ -154,7 +154,7 @@
   [(CLKUIWheelsOfTimeButton *)self bounds];
   CGContextTranslateCTM(CurrentContext, 0.0, v15);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  v16 = CTLineCreateWithAttributedString(a3);
+  v16 = CTLineCreateWithAttributedString(image);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v16, 8uLL);
   x = BoundsWithOptions.origin.x;
   y = BoundsWithOptions.origin.y;

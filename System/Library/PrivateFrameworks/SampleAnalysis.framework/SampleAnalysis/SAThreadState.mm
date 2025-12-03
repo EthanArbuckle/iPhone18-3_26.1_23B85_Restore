@@ -1,29 +1,29 @@
 @interface SAThreadState
-+ (SAThreadState)stateWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (id)stateWithKCDataDeltaThreadV2:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 oldThreadState:waitInfo:turnstileInfo:;
-+ (id)stateWithKCDataDeltaThreadV3:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 oldThreadState:(int)a12 waitInfo:turnstileInfo:threadPolicyVersion:;
-+ (id)stateWithKCDataThreadV2:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 machTimebase:waitInfo:turnstileInfo:;
-+ (id)stateWithKCDataThreadV4:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 machTimebase:(int)a12 waitInfo:(uint64_t)a13 turnstileInfo:threadPolicyVersion:threadInstructionCycles:;
-+ (id)stateWithoutReferencesFromPAStyleSerializedThread:(uint64_t)a1;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (SAThreadState)stateWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (id)stateWithKCDataDeltaThreadV2:(uint64_t)v2 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 oldThreadState:waitInfo:turnstileInfo:;
++ (id)stateWithKCDataDeltaThreadV3:(uint64_t)v3 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 oldThreadState:(int)self2 waitInfo:turnstileInfo:threadPolicyVersion:;
++ (id)stateWithKCDataThreadV2:(uint64_t)v2 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 machTimebase:waitInfo:turnstileInfo:;
++ (id)stateWithKCDataThreadV4:(uint64_t)v4 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 machTimebase:(int)self2 waitInfo:(uint64_t)self3 turnstileInfo:threadPolicyVersion:threadInstructionCycles:;
++ (id)stateWithoutReferencesFromPAStyleSerializedThread:(uint64_t)thread;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (BOOL)hasDispatchQueue;
-- (BOOL)hasSameStackAs:(id)a3;
+- (BOOL)hasSameStackAs:(id)as;
 - (BOOL)hasSwiftTask;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (SADispatchQueue)dispatchQueue;
 - (SASwiftTask)swiftTask;
 - (SAThreadState)init;
-- (SAThreadState)initWithKCDataDeltaThreadV2:(const thread_delta_snapshot_v2 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 oldThreadState:(id)a12 waitInfo:(id)a13 turnstileInfo:(id)a14;
-- (SAThreadState)initWithKCDataDeltaThreadV3:(const thread_delta_snapshot_v3 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 oldThreadState:(id)a12 waitInfo:(id)a13 turnstileInfo:(id)a14 threadPolicyVersion:(unsigned int)a15;
-- (SAThreadState)initWithKCDataThreadV2:(const thread_snapshot_v2 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 machTimebase:(mach_timebase_info)a12 waitInfo:(id)a13 turnstileInfo:(id)a14;
-- (SAThreadState)initWithKCDataThreadV4:(const thread_snapshot_v4 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 machTimebase:(mach_timebase_info)a12 waitInfo:(id)a13 turnstileInfo:(id)a14 threadPolicyVersion:(unsigned int)a15 threadInstructionCycles:(const instrs_cycles_snapshot *)a16;
-- (SAThreadState)initWithStackshotThreadV1:(const thread_snapshot *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 leafUserFrame:(id)a8 leafOfCRootFramesReplacedBySwiftAsync:(id)a9 leafKernelFrame:(id)a10 machTimebase:(mach_timebase_info)a11;
-- (SAThreadState)initWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithThread:(id *)a1;
-- (id)stackWithBacktraceStyle:(unint64_t)a3 ignoringKernelStackWithLeafFrame:(id)a4;
+- (SAThreadState)initWithKCDataDeltaThreadV2:(const thread_delta_snapshot_v2 *)v2 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 oldThreadState:(id)self2 waitInfo:(id)self3 turnstileInfo:(id)self4;
+- (SAThreadState)initWithKCDataDeltaThreadV3:(const thread_delta_snapshot_v3 *)v3 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 oldThreadState:(id)self2 waitInfo:(id)self3 turnstileInfo:(id)self4 threadPolicyVersion:(unsigned int)self5;
+- (SAThreadState)initWithKCDataThreadV2:(const thread_snapshot_v2 *)v2 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 machTimebase:(mach_timebase_info)self2 waitInfo:(id)self3 turnstileInfo:(id)self4;
+- (SAThreadState)initWithKCDataThreadV4:(const thread_snapshot_v4 *)v4 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 machTimebase:(mach_timebase_info)self2 waitInfo:(id)self3 turnstileInfo:(id)self4 threadPolicyVersion:(unsigned int)self5 threadInstructionCycles:(const instrs_cycles_snapshot *)self6;
+- (SAThreadState)initWithStackshotThreadV1:(const thread_snapshot *)v1 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)async leafKernelFrame:(id)self0 machTimebase:(mach_timebase_info)self1;
+- (SAThreadState)initWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithThread:(id *)thread;
+- (id)stackWithBacktraceStyle:(unint64_t)style ignoringKernelStackWithLeafFrame:(id)frame;
 - (int)basePriority;
 - (int)scheduledPriority;
 - (int)setBasePriority:(int *)result;
@@ -39,7 +39,7 @@
 - (uint64_t)setThreadRequestedQos:(uint64_t)result;
 - (uint64_t)setThreadRequestedQosOverride:(uint64_t)result;
 - (unint64_t)endSampleIndex;
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4;
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end;
 - (unint64_t)startSampleIndex;
 - (unsigned)threadQos;
 - (unsigned)threadQosKEventOverride;
@@ -48,17 +48,17 @@
 - (unsigned)threadQosWorkloopServicerOverride;
 - (unsigned)threadRequestedQos;
 - (unsigned)threadRequestedQosOverride;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)applyPAStyleSampleTimestamp:(uint64_t)a1;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)populateReferencesUsingPAStyleSerializedThread:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:;
-- (void)setFilledCyclesInstructions:(BOOL)a3;
-- (void)setFilledName:(BOOL)a3;
-- (void)setFilledScheduling:(BOOL)a3;
-- (void)setFilledSnapshot:(BOOL)a3;
-- (void)setFilledSwiftTask:(BOOL)a3;
-- (void)setFilledUserStack:(BOOL)a3;
-- (void)setNeedsExclave:(BOOL)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)applyPAStyleSampleTimestamp:(uint64_t)timestamp;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)populateReferencesUsingPAStyleSerializedThread:(void *)thread andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:;
+- (void)setFilledCyclesInstructions:(BOOL)instructions;
+- (void)setFilledName:(BOOL)name;
+- (void)setFilledScheduling:(BOOL)scheduling;
+- (void)setFilledSnapshot:(BOOL)snapshot;
+- (void)setFilledSwiftTask:(BOOL)task;
+- (void)setFilledUserStack:(BOOL)stack;
+- (void)setNeedsExclave:(BOOL)exclave;
 @end
 
 @implementation SAThreadState
@@ -150,9 +150,9 @@
   }
 }
 
-- (void)setFilledName:(BOOL)a3
+- (void)setFilledName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 0x80;
   }
@@ -165,9 +165,9 @@
   *(self + 19) = v3 & 0x80 | *(self + 19) & 0x7F;
 }
 
-- (void)setFilledSwiftTask:(BOOL)a3
+- (void)setFilledSwiftTask:(BOOL)task
 {
-  if (a3)
+  if (task)
   {
     v3 = 2;
   }
@@ -180,9 +180,9 @@
   *(self + 20) = *(self + 20) & 0xFD | v3;
 }
 
-- (void)setFilledUserStack:(BOOL)a3
+- (void)setFilledUserStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     v3 = 4;
   }
@@ -195,9 +195,9 @@
   *(self + 20) = *(self + 20) & 0xFB | v3;
 }
 
-- (void)setFilledScheduling:(BOOL)a3
+- (void)setFilledScheduling:(BOOL)scheduling
 {
-  if (a3)
+  if (scheduling)
   {
     v3 = 8;
   }
@@ -210,9 +210,9 @@
   *(self + 20) = *(self + 20) & 0xF7 | v3;
 }
 
-- (void)setFilledCyclesInstructions:(BOOL)a3
+- (void)setFilledCyclesInstructions:(BOOL)instructions
 {
-  if (a3)
+  if (instructions)
   {
     v3 = 16;
   }
@@ -225,9 +225,9 @@
   *(self + 20) = *(self + 20) & 0xEF | v3;
 }
 
-- (void)setFilledSnapshot:(BOOL)a3
+- (void)setFilledSnapshot:(BOOL)snapshot
 {
-  if (a3)
+  if (snapshot)
   {
     v3 = 32;
   }
@@ -789,97 +789,97 @@
   return v3;
 }
 
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4 != 0x7FFFFFFFFFFFFFFFLL && a3 > a4)
+  if (start != 0x7FFFFFFFFFFFFFFFLL && end != 0x7FFFFFFFFFFFFFFFLL && start > end)
   {
     v20 = *__error();
     p_super = _sa_logt();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v38 = a3;
+      startCopy = start;
       v39 = 2048;
-      v40 = a4;
+      endCopy = end;
       _os_log_error_impl(&dword_1E0E2F000, p_super, OS_LOG_TYPE_ERROR, "startSampleIndexCap %lu > endSampleIndexCap %lu", buf, 0x16u);
     }
 
     *__error() = v20;
-    _SASetCrashLogMessage(1057, "startSampleIndexCap %lu > endSampleIndexCap %lu", v21, v22, v23, v24, v25, v26, a3);
+    _SASetCrashLogMessage(1057, "startSampleIndexCap %lu > endSampleIndexCap %lu", v21, v22, v23, v24, v25, v26, start);
     _os_crash();
     __break(1u);
     goto LABEL_29;
   }
 
   p_super = &self->super;
-  v9 = [(SAThreadState *)self startSampleIndex];
-  v10 = [p_super endSampleIndex];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  startSampleIndex = [(SAThreadState *)self startSampleIndex];
+  endSampleIndex = [p_super endSampleIndex];
+  if (startSampleIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    result = v10 == 0x7FFFFFFFFFFFFFFFLL;
+    result = endSampleIndex == 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_25;
   }
 
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+  if (endSampleIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_29:
     v27 = *__error();
     v28 = _sa_logt();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [p_super startSampleIndex];
+      startSampleIndex2 = [p_super startSampleIndex];
       *buf = 134217984;
-      v38 = v29;
+      startCopy = startSampleIndex2;
       _os_log_error_impl(&dword_1E0E2F000, v28, OS_LOG_TYPE_ERROR, "endSampleIndex NSNotFound, startSampleIndex %lu", buf, 0xCu);
     }
 
     *__error() = v27;
-    v30 = [p_super startSampleIndex];
-    _SASetCrashLogMessage(1060, "endSampleIndex NSNotFound, startSampleIndex %lu", v31, v32, v33, v34, v35, v36, v30);
+    startSampleIndex3 = [p_super startSampleIndex];
+    _SASetCrashLogMessage(1060, "endSampleIndex NSNotFound, startSampleIndex %lu", v31, v32, v33, v34, v35, v36, startSampleIndex3);
     _os_crash();
     __break(1u);
   }
 
-  v12 = [p_super endSampleIndex];
-  if (v12 >= a4)
+  endSampleIndex2 = [p_super endSampleIndex];
+  if (endSampleIndex2 >= end)
   {
-    v13 = a4;
+    endCopy2 = end;
   }
 
   else
   {
-    v13 = v12;
+    endCopy2 = endSampleIndex2;
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (end == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = v12;
+    v14 = endSampleIndex2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = endCopy2;
   }
 
-  v15 = [p_super startSampleIndex];
-  if (v15 <= a3)
+  startSampleIndex4 = [p_super startSampleIndex];
+  if (startSampleIndex4 <= start)
   {
-    v16 = a3;
+    startCopy2 = start;
   }
 
   else
   {
-    v16 = v15;
+    startCopy2 = startSampleIndex4;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (start == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = v15;
+    startCopy2 = startSampleIndex4;
   }
 
-  v17 = v14 >= v16;
-  v18 = v14 - v16;
+  v17 = v14 >= startCopy2;
+  v18 = v14 - startCopy2;
   if (v17)
   {
     result = v18 + 1;
@@ -895,16 +895,16 @@ LABEL_25:
   return result;
 }
 
-- (SAThreadState)initWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6
+- (SAThreadState)initWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex
 {
   v10 = [(SAThreadState *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startTimestamp, a3);
-    objc_storeStrong((v11 + 56), a4);
-    [(SAThreadState *)v11 setStartSampleIndex:a5];
-    [(SAThreadState *)v11 setEndSampleIndex:a6];
+    objc_storeStrong(&v10->_startTimestamp, timestamp);
+    objc_storeStrong((v11 + 56), endTimestamp);
+    [(SAThreadState *)v11 setStartSampleIndex:index];
+    [(SAThreadState *)v11 setEndSampleIndex:sampleIndex];
     *(v11 + 21) |= 0x38u;
     *(v11 + 22) |= 0x3Fu;
     *(v11 + 23) |= 7u;
@@ -913,31 +913,31 @@ LABEL_25:
   return v11;
 }
 
-+ (SAThreadState)stateWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6
++ (SAThreadState)stateWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex
 {
-  v6 = [[a1 alloc] initWithStartTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6];
+  v6 = [[self alloc] initWithStartTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex];
 
   return v6;
 }
 
-- (SAThreadState)initWithKCDataThreadV4:(const thread_snapshot_v4 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 machTimebase:(mach_timebase_info)a12 waitInfo:(id)a13 turnstileInfo:(id)a14 threadPolicyVersion:(unsigned int)a15 threadInstructionCycles:(const instrs_cycles_snapshot *)a16
+- (SAThreadState)initWithKCDataThreadV4:(const thread_snapshot_v4 *)v4 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 machTimebase:(mach_timebase_info)self2 waitInfo:(id)self3 turnstileInfo:(id)self4 threadPolicyVersion:(unsigned int)self5 threadInstructionCycles:(const instrs_cycles_snapshot *)self6
 {
-  v17 = [(SAThreadState *)self initWithKCDataThreadV2:a3 startTimestamp:a4 endTimestamp:a5 startSampleIndex:a6 endSampleIndex:a7 name:a8 leafUserFrame:a9 leafOfCRootFramesReplacedBySwiftAsync:a10 leafKernelFrame:a11 machTimebase:a12 waitInfo:a13 turnstileInfo:a14];
+  v17 = [(SAThreadState *)self initWithKCDataThreadV2:v4 startTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex name:name leafUserFrame:frame leafOfCRootFramesReplacedBySwiftAsync:async leafKernelFrame:kernelFrame machTimebase:timebase waitInfo:info turnstileInfo:turnstileInfo];
   if (v17)
   {
-    if (a16)
+    if (cycles)
     {
-      *&v17->_instructions = *a16;
+      *&v17->_instructions = *cycles;
     }
 
-    if (a15 <= 4)
+    if (version <= 4)
     {
-      if (!a15)
+      if (!version)
       {
         return v17;
       }
 
-      if (a15 == 4)
+      if (version == 4)
       {
         [(SAThreadState *)v17 setThreadQosPromote:?];
         return v17;
@@ -946,18 +946,18 @@ LABEL_25:
 
     else
     {
-      if (a15 == 5)
+      if (version == 5)
       {
-        ths_requested_policy = a3->ths_requested_policy;
+        ths_requested_policy = v4->ths_requested_policy;
         [(SAThreadState *)v17 setThreadQosPromote:?];
         [(SAThreadState *)v17 setThreadQosWorkQueueOverride:?];
         return v17;
       }
 
-      if (a15 == 6 || a15 == 7)
+      if (version == 6 || version == 7)
       {
-        v18 = a3->ths_requested_policy;
-        ths_effective_policy = a3->ths_effective_policy;
+        v18 = v4->ths_requested_policy;
+        ths_effective_policy = v4->ths_effective_policy;
         [(SAThreadState *)v17 setThreadQosPromote:?];
         [(SAThreadState *)v17 setThreadQosKEventOverride:?];
         [(SAThreadState *)v17 setThreadQosWorkQueueOverride:?];
@@ -967,30 +967,30 @@ LABEL_25:
       }
     }
 
-    SAComplainAboutUnknownThreadPolicyVersion(a15);
+    SAComplainAboutUnknownThreadPolicyVersion(version);
   }
 
   return v17;
 }
 
-+ (id)stateWithKCDataThreadV4:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 machTimebase:(int)a12 waitInfo:(uint64_t)a13 turnstileInfo:threadPolicyVersion:threadInstructionCycles:
++ (id)stateWithKCDataThreadV4:(uint64_t)v4 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 machTimebase:(int)self2 waitInfo:(uint64_t)self3 turnstileInfo:threadPolicyVersion:threadInstructionCycles:
 {
-  LODWORD(v15) = a12;
-  v13 = [objc_alloc(objc_opt_self()) initWithKCDataThreadV4:a2 startTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6 name:a7 leafUserFrame:a8 leafOfCRootFramesReplacedBySwiftAsync:a9 leafKernelFrame:a10 machTimebase:a11 waitInfo:v15 turnstileInfo:a13 threadPolicyVersion:? threadInstructionCycles:?];
+  LODWORD(v15) = timebase;
+  v13 = [objc_alloc(objc_opt_self()) initWithKCDataThreadV4:a2 startTimestamp:v4 endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index name:sampleIndex leafUserFrame:name leafOfCRootFramesReplacedBySwiftAsync:frame leafKernelFrame:async machTimebase:kernelFrame waitInfo:v15 turnstileInfo:info threadPolicyVersion:? threadInstructionCycles:?];
 
   return v13;
 }
 
-- (SAThreadState)initWithKCDataThreadV2:(const thread_snapshot_v2 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 machTimebase:(mach_timebase_info)a12 waitInfo:(id)a13 turnstileInfo:(id)a14
+- (SAThreadState)initWithKCDataThreadV2:(const thread_snapshot_v2 *)v2 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 machTimebase:(mach_timebase_info)self2 waitInfo:(id)self3 turnstileInfo:(id)self4
 {
-  v17 = [(SAThreadState *)self initWithStartTimestamp:a4 endTimestamp:a5 startSampleIndex:a6 endSampleIndex:a7];
+  v17 = [(SAThreadState *)self initWithStartTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex];
   v18 = v17;
   if (v17)
   {
-    v17->_voucherIdentifier = a3->ths_voucher_identifier;
-    if (HIDWORD(*&a12))
+    v17->_voucherIdentifier = v2->ths_voucher_identifier;
+    if (HIDWORD(*&timebase))
     {
-      v19 = a12.numer == 0;
+      v19 = timebase.numer == 0;
     }
 
     else
@@ -1004,59 +1004,59 @@ LABEL_25:
       *(v18 + 144) = 0;
     }
 
-    else if (a12.numer == a12.denom)
+    else if (timebase.numer == timebase.denom)
     {
-      v17->_systemTimeInNs = a3->ths_sys_time;
-      ths_user_time = a3->ths_user_time;
+      v17->_systemTimeInNs = v2->ths_sys_time;
+      ths_user_time = v2->ths_user_time;
     }
 
     else
     {
       v17->_systemTimeInNs = __udivti3();
-      v21 = a3->ths_user_time;
+      v21 = v2->ths_user_time;
       ths_user_time = __udivti3();
     }
 
     *(v18 + 136) = ths_user_time;
     *(v18 + 152) = 0;
     *(v18 + 160) = 0;
-    *(v18 + 40) = a3->ths_state;
+    *(v18 + 40) = v2->ths_state;
     [(SAThreadState *)v18 setBasePriority:?];
     [(SAThreadState *)v18 setScheduledPriority:?];
-    *(v18 + 36) = a3->ths_sched_flags;
+    *(v18 + 36) = v2->ths_sched_flags;
     [(SAThreadState *)v18 setThreadQos:?];
     [(SAThreadState *)v18 setThreadRequestedQos:?];
     [(SAThreadState *)v18 setThreadRequestedQosOverride:?];
     *(v18 + 23) &= ~8u;
-    *(v18 + 24) = a3->ths_io_tier;
-    if (a3->ths_last_run_time + 1 >= 2)
+    *(v18 + 24) = v2->ths_io_tier;
+    if (v2->ths_last_run_time + 1 >= 2)
     {
       v22 = [SATimestamp timestampWithMachAbsTime:"timestampWithMachAbsTime:machAbsTimeSec:machContTime:machContTimeSec:wallTime:" machAbsTimeSec:0.0 machContTime:0.0 machContTimeSec:0.0 wallTime:?];
       v23 = *(v18 + 168);
       *(v18 + 168) = v22;
 
-      [*(v18 + 168) guessMissingTimesBasedOnTimestamp:a4];
+      [*(v18 + 168) guessMissingTimesBasedOnTimestamp:timestamp];
     }
 
-    if (a3->ths_last_made_runnable_time + 1 >= 2)
+    if (v2->ths_last_made_runnable_time + 1 >= 2)
     {
       v24 = [SATimestamp timestampWithMachAbsTime:"timestampWithMachAbsTime:machAbsTimeSec:machContTime:machContTimeSec:wallTime:" machAbsTimeSec:0.0 machContTime:0.0 machContTimeSec:0.0 wallTime:?];
       v25 = *(v18 + 176);
       *(v18 + 176) = v24;
 
-      [*(v18 + 176) guessMissingTimesBasedOnTimestamp:a4];
+      [*(v18 + 176) guessMissingTimesBasedOnTimestamp:timestamp];
     }
 
-    objc_storeStrong((v18 + 64), a9);
-    objc_storeStrong((v18 + 72), a10);
-    objc_storeStrong((v18 + 80), a11);
-    objc_storeStrong((v18 + 88), a13);
-    objc_storeStrong((v18 + 96), a14);
-    ths_ss_flags = a3->ths_ss_flags;
+    objc_storeStrong((v18 + 64), frame);
+    objc_storeStrong((v18 + 72), async);
+    objc_storeStrong((v18 + 80), kernelFrame);
+    objc_storeStrong((v18 + 88), info);
+    objc_storeStrong((v18 + 96), turnstileInfo);
+    ths_ss_flags = v2->ths_ss_flags;
     if ((ths_ss_flags & 0x40) != 0)
     {
       *(v18 + 11) |= 0x40u;
-      ths_ss_flags = a3->ths_ss_flags;
+      ths_ss_flags = v2->ths_ss_flags;
       if ((ths_ss_flags & 0x20) == 0)
       {
 LABEL_17:
@@ -1075,7 +1075,7 @@ LABEL_17:
     }
 
     *(v18 + 11) |= 0x80u;
-    ths_ss_flags = a3->ths_ss_flags;
+    ths_ss_flags = v2->ths_ss_flags;
     if ((ths_ss_flags & 0x10) == 0)
     {
 LABEL_18:
@@ -1089,14 +1089,14 @@ LABEL_18:
 
 LABEL_25:
     *(v18 + 15) |= 0x40u;
-    ths_ss_flags = a3->ths_ss_flags;
+    ths_ss_flags = v2->ths_ss_flags;
     if ((ths_ss_flags & 0x1000) == 0)
     {
 LABEL_19:
       if ((ths_ss_flags & 0x800) == 0)
       {
 LABEL_21:
-        v27 = [a8 copy];
+        v27 = [name copy];
         v28 = *(v18 + 104);
         *(v18 + 104) = v27;
 
@@ -1110,7 +1110,7 @@ LABEL_20:
 
 LABEL_26:
     *(v18 + 15) |= 0x80u;
-    if ((a3->ths_ss_flags & 0x800) == 0)
+    if ((v2->ths_ss_flags & 0x800) == 0)
     {
       goto LABEL_21;
     }
@@ -1121,43 +1121,43 @@ LABEL_26:
   return v18;
 }
 
-+ (id)stateWithKCDataThreadV2:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 machTimebase:waitInfo:turnstileInfo:
++ (id)stateWithKCDataThreadV2:(uint64_t)v2 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 machTimebase:waitInfo:turnstileInfo:
 {
-  v11 = [objc_alloc(objc_opt_self()) initWithKCDataThreadV2:a2 startTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6 name:a7 leafUserFrame:a8 leafOfCRootFramesReplacedBySwiftAsync:a9 leafKernelFrame:a10 machTimebase:a11 waitInfo:? turnstileInfo:?];
+  v11 = [objc_alloc(objc_opt_self()) initWithKCDataThreadV2:a2 startTimestamp:v2 endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index name:sampleIndex leafUserFrame:name leafOfCRootFramesReplacedBySwiftAsync:frame leafKernelFrame:async machTimebase:kernelFrame waitInfo:? turnstileInfo:?];
 
   return v11;
 }
 
-- (SAThreadState)initWithKCDataDeltaThreadV2:(const thread_delta_snapshot_v2 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 oldThreadState:(id)a12 waitInfo:(id)a13 turnstileInfo:(id)a14
+- (SAThreadState)initWithKCDataDeltaThreadV2:(const thread_delta_snapshot_v2 *)v2 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 oldThreadState:(id)self2 waitInfo:(id)self3 turnstileInfo:(id)self4
 {
-  v16 = [(SAThreadState *)self initWithStartTimestamp:a4 endTimestamp:a5 startSampleIndex:a6 endSampleIndex:a7];
+  v16 = [(SAThreadState *)self initWithStartTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex];
   v17 = v16;
   if (v16)
   {
-    v16->_voucherIdentifier = a3->tds_voucher_identifier;
-    v16->_systemTimeInNs = *(a12 + 18);
-    v16->_userTimeInNs = *(a12 + 17);
-    v16->_instructions = *(a12 + 19);
-    v16->_cycles = *(a12 + 20);
-    v16->_state = a3->tds_state;
+    v16->_voucherIdentifier = v2->tds_voucher_identifier;
+    v16->_systemTimeInNs = *(state + 18);
+    v16->_userTimeInNs = *(state + 17);
+    v16->_instructions = *(state + 19);
+    v16->_cycles = *(state + 20);
+    v16->_state = v2->tds_state;
     [(SAThreadState *)v16 setBasePriority:?];
     [(SAThreadState *)v17 setScheduledPriority:?];
-    *(v17 + 36) = a3->tds_sched_flags;
+    *(v17 + 36) = v2->tds_sched_flags;
     [(SAThreadState *)v17 setThreadQos:?];
     [(SAThreadState *)v17 setThreadRequestedQos:?];
     [(SAThreadState *)v17 setThreadRequestedQosOverride:?];
     *(v17 + 23) &= ~8u;
-    *(v17 + 24) = a3->tds_io_tier;
-    objc_storeStrong((v17 + 64), a9);
-    objc_storeStrong((v17 + 72), a10);
-    objc_storeStrong((v17 + 80), a11);
-    objc_storeStrong((v17 + 88), a13);
-    objc_storeStrong((v17 + 96), a14);
-    tds_ss_flags = a3->tds_ss_flags;
+    *(v17 + 24) = v2->tds_io_tier;
+    objc_storeStrong((v17 + 64), frame);
+    objc_storeStrong((v17 + 72), async);
+    objc_storeStrong((v17 + 80), kernelFrame);
+    objc_storeStrong((v17 + 88), info);
+    objc_storeStrong((v17 + 96), turnstileInfo);
+    tds_ss_flags = v2->tds_ss_flags;
     if ((tds_ss_flags & 0x40) != 0)
     {
       *(v17 + 11) |= 0x40u;
-      tds_ss_flags = a3->tds_ss_flags;
+      tds_ss_flags = v2->tds_ss_flags;
       if ((tds_ss_flags & 0x20) == 0)
       {
 LABEL_4:
@@ -1176,7 +1176,7 @@ LABEL_4:
     }
 
     *(v17 + 11) |= 0x80u;
-    tds_ss_flags = a3->tds_ss_flags;
+    tds_ss_flags = v2->tds_ss_flags;
     if ((tds_ss_flags & 0x10) == 0)
     {
 LABEL_5:
@@ -1190,14 +1190,14 @@ LABEL_5:
 
 LABEL_12:
     *(v17 + 15) |= 0x40u;
-    tds_ss_flags = a3->tds_ss_flags;
+    tds_ss_flags = v2->tds_ss_flags;
     if ((tds_ss_flags & 0x1000) == 0)
     {
 LABEL_6:
       if ((tds_ss_flags & 0x800) == 0)
       {
 LABEL_8:
-        v19 = [a8 copy];
+        v19 = [name copy];
         v20 = *(v17 + 104);
         *(v17 + 104) = v19;
 
@@ -1211,7 +1211,7 @@ LABEL_7:
 
 LABEL_13:
     *(v17 + 15) |= 0x80u;
-    if ((a3->tds_ss_flags & 0x800) == 0)
+    if ((v2->tds_ss_flags & 0x800) == 0)
     {
       goto LABEL_8;
     }
@@ -1222,26 +1222,26 @@ LABEL_13:
   return v17;
 }
 
-+ (id)stateWithKCDataDeltaThreadV2:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 oldThreadState:waitInfo:turnstileInfo:
++ (id)stateWithKCDataDeltaThreadV2:(uint64_t)v2 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 oldThreadState:waitInfo:turnstileInfo:
 {
-  v11 = [objc_alloc(objc_opt_self()) initWithKCDataDeltaThreadV2:a2 startTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6 name:a7 leafUserFrame:a8 leafOfCRootFramesReplacedBySwiftAsync:a9 leafKernelFrame:a10 oldThreadState:a11 waitInfo:? turnstileInfo:?];
+  v11 = [objc_alloc(objc_opt_self()) initWithKCDataDeltaThreadV2:a2 startTimestamp:v2 endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index name:sampleIndex leafUserFrame:name leafOfCRootFramesReplacedBySwiftAsync:frame leafKernelFrame:async oldThreadState:kernelFrame waitInfo:? turnstileInfo:?];
 
   return v11;
 }
 
-- (SAThreadState)initWithKCDataDeltaThreadV3:(const thread_delta_snapshot_v3 *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 name:(id)a8 leafUserFrame:(id)a9 leafOfCRootFramesReplacedBySwiftAsync:(id)a10 leafKernelFrame:(id)a11 oldThreadState:(id)a12 waitInfo:(id)a13 turnstileInfo:(id)a14 threadPolicyVersion:(unsigned int)a15
+- (SAThreadState)initWithKCDataDeltaThreadV3:(const thread_delta_snapshot_v3 *)v3 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex name:(id)name leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)self0 leafKernelFrame:(id)self1 oldThreadState:(id)self2 waitInfo:(id)self3 turnstileInfo:(id)self4 threadPolicyVersion:(unsigned int)self5
 {
-  v16 = [(SAThreadState *)self initWithKCDataDeltaThreadV2:a3 startTimestamp:a4 endTimestamp:a5 startSampleIndex:a6 endSampleIndex:a7 name:a8 leafUserFrame:a9 leafOfCRootFramesReplacedBySwiftAsync:a10 leafKernelFrame:a11 oldThreadState:a12 waitInfo:a13 turnstileInfo:a14];
+  v16 = [(SAThreadState *)self initWithKCDataDeltaThreadV2:v3 startTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex name:name leafUserFrame:frame leafOfCRootFramesReplacedBySwiftAsync:async leafKernelFrame:kernelFrame oldThreadState:state waitInfo:info turnstileInfo:turnstileInfo];
   if (v16)
   {
-    if (a15 <= 4)
+    if (version <= 4)
     {
-      if (!a15)
+      if (!version)
       {
         return v16;
       }
 
-      if (a15 == 4)
+      if (version == 4)
       {
         [(SAThreadState *)v16 setThreadQosPromote:?];
         return v16;
@@ -1250,18 +1250,18 @@ LABEL_13:
 
     else
     {
-      if (a15 == 5)
+      if (version == 5)
       {
-        tds_requested_policy = a3->tds_requested_policy;
+        tds_requested_policy = v3->tds_requested_policy;
         [(SAThreadState *)v16 setThreadQosPromote:?];
         [(SAThreadState *)v16 setThreadQosWorkQueueOverride:?];
         return v16;
       }
 
-      if (a15 == 6 || a15 == 7)
+      if (version == 6 || version == 7)
       {
-        v17 = a3->tds_requested_policy;
-        tds_effective_policy = a3->tds_effective_policy;
+        v17 = v3->tds_requested_policy;
+        tds_effective_policy = v3->tds_effective_policy;
         [(SAThreadState *)v16 setThreadQosPromote:?];
         [(SAThreadState *)v16 setThreadQosKEventOverride:?];
         [(SAThreadState *)v16 setThreadQosWorkQueueOverride:?];
@@ -1271,33 +1271,33 @@ LABEL_13:
       }
     }
 
-    SAComplainAboutUnknownThreadPolicyVersion(a15);
+    SAComplainAboutUnknownThreadPolicyVersion(version);
   }
 
   return v16;
 }
 
-+ (id)stateWithKCDataDeltaThreadV3:(uint64_t)a3 startTimestamp:(uint64_t)a4 endTimestamp:(uint64_t)a5 startSampleIndex:(uint64_t)a6 endSampleIndex:(uint64_t)a7 name:(uint64_t)a8 leafUserFrame:(__int128)a9 leafOfCRootFramesReplacedBySwiftAsync:(__int128)a10 leafKernelFrame:(uint64_t)a11 oldThreadState:(int)a12 waitInfo:turnstileInfo:threadPolicyVersion:
++ (id)stateWithKCDataDeltaThreadV3:(uint64_t)v3 startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex name:(uint64_t)name leafUserFrame:(__int128)frame leafOfCRootFramesReplacedBySwiftAsync:(__int128)self0 leafKernelFrame:(uint64_t)self1 oldThreadState:(int)self2 waitInfo:turnstileInfo:threadPolicyVersion:
 {
-  LODWORD(v14) = a12;
-  v12 = [objc_alloc(objc_opt_self()) initWithKCDataDeltaThreadV3:a2 startTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6 name:a7 leafUserFrame:a8 leafOfCRootFramesReplacedBySwiftAsync:a9 leafKernelFrame:a10 oldThreadState:a11 waitInfo:v14 turnstileInfo:? threadPolicyVersion:?];
+  LODWORD(v14) = state;
+  v12 = [objc_alloc(objc_opt_self()) initWithKCDataDeltaThreadV3:a2 startTimestamp:v3 endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index name:sampleIndex leafUserFrame:name leafOfCRootFramesReplacedBySwiftAsync:frame leafKernelFrame:async oldThreadState:kernelFrame waitInfo:v14 turnstileInfo:? threadPolicyVersion:?];
 
   return v12;
 }
 
-- (SAThreadState)initWithStackshotThreadV1:(const thread_snapshot *)a3 startTimestamp:(id)a4 endTimestamp:(id)a5 startSampleIndex:(unint64_t)a6 endSampleIndex:(unint64_t)a7 leafUserFrame:(id)a8 leafOfCRootFramesReplacedBySwiftAsync:(id)a9 leafKernelFrame:(id)a10 machTimebase:(mach_timebase_info)a11
+- (SAThreadState)initWithStackshotThreadV1:(const thread_snapshot *)v1 startTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex leafUserFrame:(id)frame leafOfCRootFramesReplacedBySwiftAsync:(id)async leafKernelFrame:(id)self0 machTimebase:(mach_timebase_info)self1
 {
-  v13 = [(SAThreadState *)self initWithStartTimestamp:a4 endTimestamp:a5 startSampleIndex:a6 endSampleIndex:a7];
+  v13 = [(SAThreadState *)self initWithStartTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex];
   v14 = v13;
   if (!v13)
   {
     return v14;
   }
 
-  v13->_voucherIdentifier = *(&a3->var31 + 4);
-  if (HIDWORD(*&a11))
+  v13->_voucherIdentifier = *(&v1->var31 + 4);
+  if (HIDWORD(*&timebase))
   {
-    v15 = a11.numer == 0;
+    v15 = timebase.numer == 0;
   }
 
   else
@@ -1311,45 +1311,45 @@ LABEL_13:
     *(v14 + 144) = 0;
   }
 
-  else if (a11.numer == a11.denom)
+  else if (timebase.numer == timebase.denom)
   {
-    v13->_systemTimeInNs = *(&a3->var6 + 4);
-    v16 = *(&a3->var5 + 4);
+    v13->_systemTimeInNs = *(&v1->var6 + 4);
+    v16 = *(&v1->var5 + 4);
   }
 
   else
   {
     v13->_systemTimeInNs = __udivti3();
-    v17 = *(&a3->var5 + 4);
+    v17 = *(&v1->var5 + 4);
     v16 = __udivti3();
   }
 
   *(v14 + 136) = v16;
   *(v14 + 152) = 0;
   *(v14 + 160) = 0;
-  *(v14 + 40) = HIDWORD(a3->var7);
+  *(v14 + 40) = HIDWORD(v1->var7);
   [(SAThreadState *)v14 setBasePriority:?];
   [(SAThreadState *)v14 setScheduledPriority:?];
-  *(v14 + 36) = a3->var10;
+  *(v14 + 36) = v1->var10;
   [(SAThreadState *)v14 setThreadQos:?];
   [(SAThreadState *)v14 setThreadRequestedQos:?];
   [(SAThreadState *)v14 setThreadRequestedQosOverride:?];
   *(v14 + 23) &= ~8u;
-  *(v14 + 24) = a3->var12;
-  objc_storeStrong((v14 + 64), a8);
-  objc_storeStrong((v14 + 72), a9);
-  objc_storeStrong((v14 + 80), a10);
-  LOBYTE(var11_low) = a3->var11;
+  *(v14 + 24) = v1->var12;
+  objc_storeStrong((v14 + 64), frame);
+  objc_storeStrong((v14 + 72), async);
+  objc_storeStrong((v14 + 80), kernelFrame);
+  LOBYTE(var11_low) = v1->var11;
   if ((var11_low & 0x40) == 0)
   {
-    if ((a3->var11 & 0x20) == 0)
+    if ((v1->var11 & 0x20) == 0)
     {
       goto LABEL_13;
     }
 
 LABEL_23:
     *(v14 + 11) |= 0x80u;
-    LOBYTE(var11_low) = a3->var11;
+    LOBYTE(var11_low) = v1->var11;
     if ((var11_low & 0x10) == 0)
     {
       goto LABEL_15;
@@ -1359,7 +1359,7 @@ LABEL_23:
   }
 
   *(v14 + 11) |= 0x40u;
-  LOBYTE(var11_low) = a3->var11;
+  LOBYTE(var11_low) = v1->var11;
   if ((var11_low & 0x20) != 0)
   {
     goto LABEL_23;
@@ -1370,7 +1370,7 @@ LABEL_13:
   {
 LABEL_14:
     *(v14 + 15) |= 0x40u;
-    LOBYTE(var11_low) = a3->var11;
+    LOBYTE(var11_low) = v1->var11;
   }
 
 LABEL_15:
@@ -1378,7 +1378,7 @@ LABEL_15:
   if ((var11_low & 0x1000) != 0)
   {
     *(v14 + 15) |= 0x80u;
-    var11_low = SLOBYTE(a3->var11);
+    var11_low = SLOBYTE(v1->var11);
   }
 
   if ((var11_low & 0x800) != 0)
@@ -1386,8 +1386,8 @@ LABEL_15:
     *(v14 + 19) |= 0x40u;
   }
 
-  v20 = BYTE4(a3->var33);
-  v19 = &a3->var33 + 4;
+  v20 = BYTE4(v1->var33);
+  v19 = &v1->var33 + 4;
   if (v20)
   {
     v21 = SANSStringForCString(v19);
@@ -1398,9 +1398,9 @@ LABEL_15:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 48), self->_startTimestamp);
   objc_storeStrong((v4 + 56), self->_endTimestamp);
   v5 = *(v4 + 16);
@@ -1459,38 +1459,38 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = a3;
-  if (self->_systemTimeInNs == v5[18] && self->_userTimeInNs == v5[17] && self->_state == *(v5 + 10) && self->_basePriority == *(v5 + 9) && self->_scheduledPriority == *(v5 + 10) && self->_schedulerFlags == *(v5 + 9) && self->_voucherIdentifier == v5[16] && self->_originPid == *(v5 + 7) && self->_proximatePid == *(v5 + 8))
+  equalCopy = equal;
+  if (self->_systemTimeInNs == equalCopy[18] && self->_userTimeInNs == equalCopy[17] && self->_state == *(equalCopy + 10) && self->_basePriority == *(equalCopy + 9) && self->_scheduledPriority == *(equalCopy + 10) && self->_schedulerFlags == *(equalCopy + 9) && self->_voucherIdentifier == equalCopy[16] && self->_originPid == *(equalCopy + 7) && self->_proximatePid == *(equalCopy + 8))
   {
     v6 = *(self + 11);
-    v7 = *(v5 + 11);
-    if (((v7 ^ v6) & 0x3F) == 0 && ((*(v5 + 21) ^ *(self + 21)) & 7) == 0 && ((*(v5 + 22) ^ *(self + 22)) & 0x3F) == 0)
+    v7 = *(equalCopy + 11);
+    if (((v7 ^ v6) & 0x3F) == 0 && ((*(equalCopy + 21) ^ *(self + 21)) & 7) == 0 && ((*(equalCopy + 22) ^ *(self + 22)) & 0x3F) == 0)
     {
-      v10 = v5;
-      if ((*(v5 + 21) ^ *(self + 21)) & 0x38 | (*(v5 + 23) ^ self->_ioTier) & 7)
+      v10 = equalCopy;
+      if ((*(equalCopy + 21) ^ *(self + 21)) & 0x38 | (*(equalCopy + 23) ^ self->_ioTier) & 7)
       {
         goto LABEL_21;
       }
 
       v8 = 0;
-      if (v6 != v7 || self->_threadQosIpcOverride != *(v5 + 24))
+      if (v6 != v7 || self->_threadQosIpcOverride != *(equalCopy + 24))
       {
         goto LABEL_16;
       }
 
-      if (((*(v5 + 19) ^ *(self + 19)) & 0x40) != 0 || (*(v5 + 15) ^ *(self + 15)) > 0x3F || self->_leafUserFrame != v5[8] || self->_leafOfCRootFramesReplacedBySwiftAsync != v5[9] || self->_leafKernelFrame != v5[10] || self->_exclavesInfo != v5[23])
+      if (((*(equalCopy + 19) ^ *(self + 19)) & 0x40) != 0 || (*(equalCopy + 15) ^ *(self + 15)) > 0x3F || self->_leafUserFrame != equalCopy[8] || self->_leafOfCRootFramesReplacedBySwiftAsync != equalCopy[9] || self->_leafKernelFrame != equalCopy[10] || self->_exclavesInfo != equalCopy[23])
       {
 LABEL_21:
         v8 = 0;
@@ -1504,7 +1504,7 @@ LABEL_21:
         v13 = 0;
 LABEL_36:
 
-        v5 = v10;
+        equalCopy = v10;
         v8 = v13;
         goto LABEL_16;
       }
@@ -1569,36 +1569,36 @@ LABEL_16:
   return v8;
 }
 
-- (id)stackWithBacktraceStyle:(unint64_t)a3 ignoringKernelStackWithLeafFrame:(id)a4
+- (id)stackWithBacktraceStyle:(unint64_t)style ignoringKernelStackWithLeafFrame:(id)frame
 {
   v80 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ((a3 & 0x19) == 0 && self->_leafKernelFrame != a4)
+  if ((style & 0x19) == 0 && self->_leafKernelFrame != frame)
   {
-    v17 = [a4 instruction];
-    if (!v17)
+    instruction = [frame instruction];
+    if (!instruction)
     {
       goto LABEL_24;
     }
 
-    v18 = v17;
-    v19 = [a4 instruction];
-    v20 = [(SAFrame *)self->_leafKernelFrame instruction];
+    v18 = instruction;
+    instruction2 = [frame instruction];
+    instruction3 = [(SAFrame *)self->_leafKernelFrame instruction];
 
-    if (v19 != v20)
+    if (instruction2 != instruction3)
     {
 LABEL_24:
       v21 = self->_leafKernelFrame;
       if (v21)
       {
         v22 = v21;
-        v70 = self;
-        v72 = a3;
+        selfCopy = self;
+        styleCopy = style;
         do
         {
           if ([(SAFrame *)v22 isExclave])
           {
-            if ((a3 & 0x20) == 0)
+            if ((style & 0x20) == 0)
             {
               v24 = objc_getProperty(self, v23, 184, 1);
               v26 = v24;
@@ -1610,9 +1610,9 @@ LABEL_24:
                 v74 = 0u;
                 v71 = v26;
                 v30 = objc_getProperty(v26, v29, 16, 1);
-                v31 = [v30 reverseObjectEnumerator];
+                reverseObjectEnumerator = [v30 reverseObjectEnumerator];
 
-                v32 = [v31 countByEnumeratingWithState:&v73 objects:v79 count:16];
+                v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v73 objects:v79 count:16];
                 if (v32)
                 {
                   v34 = v32;
@@ -1624,7 +1624,7 @@ LABEL_24:
                     {
                       if (*v74 != v35)
                       {
-                        objc_enumerationMutation(v31);
+                        objc_enumerationMutation(reverseObjectEnumerator);
                       }
 
                       v37 = *(*(&v73 + 1) + 8 * v36);
@@ -1690,14 +1690,14 @@ LABEL_24:
                     }
 
                     while (v36 != v34);
-                    v49 = [v31 countByEnumeratingWithState:&v73 objects:v79 count:16];
+                    v49 = [reverseObjectEnumerator countByEnumeratingWithState:&v73 objects:v79 count:16];
                     v34 = v49;
                   }
 
                   while (v49);
                 }
 
-                self = v70;
+                self = selfCopy;
                 v26 = v71;
               }
 
@@ -1706,7 +1706,7 @@ LABEL_24:
                 [v7 insertObject:v22 atIndex:0];
               }
 
-              a3 = v72;
+              style = styleCopy;
             }
           }
 
@@ -1726,33 +1726,33 @@ LABEL_24:
     }
   }
 
-  if ((a3 & 2) == 0)
+  if ((style & 2) == 0)
   {
-    if ((a3 & 8) != 0 && (a3 & 0x14) != 0)
+    if ((style & 8) != 0 && (style & 0x14) != 0)
     {
       v62 = *__error();
       v63 = _sa_logt();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v78 = a3;
+        styleCopy2 = style;
         _os_log_error_impl(&dword_1E0E2F000, v63, OS_LOG_TYPE_ERROR, "backtrace style specified both swift async only and prefer/only C root frames: 0x%llx", buf, 0xCu);
       }
 
       *__error() = v62;
-      _SASetCrashLogMessage(1736, "backtrace style specified both swift async only and prefer/only C root frames: 0x%llx", v64, v65, v66, v67, v68, v69, a3);
+      _SASetCrashLogMessage(1736, "backtrace style specified both swift async only and prefer/only C root frames: 0x%llx", v64, v65, v66, v67, v68, v69, style);
       _os_crash();
       __break(1u);
     }
 
-    v8 = [(SAThreadState *)self hasSwiftTask];
+    hasSwiftTask = [(SAThreadState *)self hasSwiftTask];
     v9 = 1;
-    if ((a3 & 0x10) == 0 && v8)
+    if ((style & 0x10) == 0 && hasSwiftTask)
     {
-      v9 = (self->_leafOfCRootFramesReplacedBySwiftAsync != 0) & (a3 >> 2);
+      v9 = (self->_leafOfCRootFramesReplacedBySwiftAsync != 0) & (style >> 2);
     }
 
-    v10 = (a3 & 0x18) != 0 && v8;
+    v10 = (style & 0x18) != 0 && hasSwiftTask;
     v11 = self->_leafUserFrame;
     if (v11)
     {
@@ -1851,15 +1851,15 @@ LABEL_62:
   return v7;
 }
 
-- (BOOL)hasSameStackAs:(id)a3
+- (BOOL)hasSameStackAs:(id)as
 {
-  if (self->_leafUserFrame != *(a3 + 8) || self->_leafOfCRootFramesReplacedBySwiftAsync != *(a3 + 9) || self->_leafKernelFrame != *(a3 + 10))
+  if (self->_leafUserFrame != *(as + 8) || self->_leafOfCRootFramesReplacedBySwiftAsync != *(as + 9) || self->_leafKernelFrame != *(as + 10))
   {
     return 0;
   }
 
   exclavesInfo = self->_exclavesInfo;
-  v5 = *(a3 + 23);
+  v5 = *(as + 23);
   result = (exclavesInfo | v5) == 0;
   if (exclavesInfo)
   {
@@ -1872,51 +1872,51 @@ LABEL_62:
   return result;
 }
 
-- (id)debugDescriptionWithThread:(id *)a1
+- (id)debugDescriptionWithThread:(id *)thread
 {
-  v2 = a1;
-  if (a1)
+  threadCopy = thread;
+  if (thread)
   {
     v3 = [a2 debugDescription];
     v4 = [v3 mutableCopy];
 
-    WeakRetained = objc_loadWeakRetained(v2 + 15);
+    WeakRetained = objc_loadWeakRetained(threadCopy + 15);
     if (WeakRetained)
     {
-      v6 = objc_loadWeakRetained(v2 + 15);
+      v6 = objc_loadWeakRetained(threadCopy + 15);
       v7 = [v6 debugDescription];
       [v4 appendFormat:@" (%@)", v7];
     }
 
-    v8 = objc_loadWeakRetained(v2 + 14);
+    v8 = objc_loadWeakRetained(threadCopy + 14);
 
     if (v8)
     {
-      v9 = objc_loadWeakRetained(v2 + 14);
+      v9 = objc_loadWeakRetained(threadCopy + 14);
       v10 = [v9 debugDescription];
       [v4 appendFormat:@" (%@)", v10];
     }
 
-    v11 = v2[6];
-    if (v11 == v2[7])
+    v11 = threadCopy[6];
+    if (v11 == threadCopy[7])
     {
       v14 = [v11 debugDescription];
-      [v4 appendFormat:@" at %@ sample index %lu", v14, objc_msgSend(v2, "startSampleIndex")];
+      [v4 appendFormat:@" at %@ sample index %lu", v14, objc_msgSend(threadCopy, "startSampleIndex")];
     }
 
     else
     {
-      v12 = [v2 startSampleIndex];
-      v13 = [v2 endSampleIndex];
-      v14 = [v2[6] debugDescription];
-      v15 = [v2[7] debugDescription];
-      [v4 appendFormat:@" at sample indexes %lu-%lu\nstart:%@\n  end:%@", v12, v13, v14, v15];
+      startSampleIndex = [threadCopy startSampleIndex];
+      endSampleIndex = [threadCopy endSampleIndex];
+      v14 = [threadCopy[6] debugDescription];
+      v15 = [threadCopy[7] debugDescription];
+      [v4 appendFormat:@" at sample indexes %lu-%lu\nstart:%@\n  end:%@", startSampleIndex, endSampleIndex, v14, v15];
     }
 
-    v2 = [v4 copy];
+    threadCopy = [v4 copy];
   }
 
-  return v2;
+  return threadCopy;
 }
 
 - (NSString)debugDescription
@@ -1942,19 +1942,19 @@ LABEL_62:
 
   startTimestamp = self->_startTimestamp;
   endTimestamp = self->_endTimestamp;
-  v12 = [(SAThreadState *)self startSampleIndex];
+  startSampleIndex = [(SAThreadState *)self startSampleIndex];
   if (startTimestamp == endTimestamp)
   {
     v14 = [(SATimestamp *)self->_startTimestamp debugDescription];
-    [v3 appendFormat:@" at sample index %lu\n%@", v12, v14];
+    [v3 appendFormat:@" at sample index %lu\n%@", startSampleIndex, v14];
   }
 
   else
   {
-    v13 = [(SAThreadState *)self endSampleIndex];
+    endSampleIndex = [(SAThreadState *)self endSampleIndex];
     v14 = [(SATimestamp *)self->_startTimestamp debugDescription];
     v15 = [(SATimestamp *)self->_endTimestamp debugDescription];
-    [v3 appendFormat:@" at sample indexes %lu-%lu\nstart:%@\n  end:%@", v12, v13, v14, v15];
+    [v3 appendFormat:@" at sample indexes %lu-%lu\nstart:%@\n  end:%@", startSampleIndex, endSampleIndex, v14, v15];
   }
 
   v16 = [v3 copy];
@@ -1962,9 +1962,9 @@ LABEL_62:
   return v16;
 }
 
-- (void)setNeedsExclave:(BOOL)a3
+- (void)setNeedsExclave:(BOOL)exclave
 {
-  if (a3)
+  if (exclave)
   {
     v3 = 64;
   }
@@ -1977,10 +1977,10 @@ LABEL_62:
   *(self + 20) = *(self + 20) & 0xBF | v3;
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  if ([(SAThreadState *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SAThreadState *)self sizeInBytesForSerializedVersion]!= length)
   {
     v18 = *__error();
     v19 = _sa_logt();
@@ -1988,74 +1988,74 @@ LABEL_62:
     {
       v20 = [(SAThreadState *)self debugDescription];
       *buf = 136315650;
-      v30 = [v20 UTF8String];
+      uTF8String = [v20 UTF8String];
       v31 = 2048;
-      v32 = [(SAThreadState *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SAThreadState *)self sizeInBytesForSerializedVersion];
       v33 = 2048;
-      v34 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v19, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v18;
     v21 = [(SAThreadState *)self debugDescription];
-    v22 = [v21 UTF8String];
+    uTF8String2 = [v21 UTF8String];
     [(SAThreadState *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(4857, "%s: size %lu != buffer length %lu", v23, v24, v25, v26, v27, v28, v22);
+    _SASetCrashLogMessage(4857, "%s: size %lu != buffer length %lu", v23, v24, v25, v26, v27, v28, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  *&a3->var0 = 2561;
-  *(&a3->var3 + 2) = [(SAThreadState *)self startSampleIndex];
-  *(&a3->var4 + 2) = [(SAThreadState *)self endSampleIndex];
-  *(&a3->var10 + 2) = self->_voucherIdentifier;
-  *(&a3->var11 + 2) = self->_userTimeInNs;
-  *(&a3->var12 + 2) = self->_systemTimeInNs;
-  *(&a3->var13 + 2) = self->_instructions;
-  *(&a3->var14 + 2) = self->_cycles;
-  *(&a3->var15 + 2) = [(SAThreadState *)self basePriority];
-  *(&a3->var15 + 6) = [(SAThreadState *)self scheduledPriority];
-  *(&a3->var16 + 2) = self->_schedulerFlags;
-  *(&a3->var18 + 6) = *(self + 11) & 7;
-  *(&a3->var18 + 7) = (*(self + 11) >> 3) & 7;
-  LOBYTE(a3->var19) = *(self + 21) & 7;
-  BYTE1(a3->var19) = (*(self + 21) >> 3) & 7;
-  WORD1(a3->var19) = 1799;
-  BYTE4(a3->var19) = self->_threadQosIpcOverride;
-  *(&a3->var19 + 5) = self->_state;
-  a3->var21 = [(SAThreadState *)self microstackshotFlags];
-  v9 = a3->var22 & 0xFE | (*(self + 11) >> 7);
-  a3->var22 = v9;
+  *&buffer->var0 = 2561;
+  *(&buffer->var3 + 2) = [(SAThreadState *)self startSampleIndex];
+  *(&buffer->var4 + 2) = [(SAThreadState *)self endSampleIndex];
+  *(&buffer->var10 + 2) = self->_voucherIdentifier;
+  *(&buffer->var11 + 2) = self->_userTimeInNs;
+  *(&buffer->var12 + 2) = self->_systemTimeInNs;
+  *(&buffer->var13 + 2) = self->_instructions;
+  *(&buffer->var14 + 2) = self->_cycles;
+  *(&buffer->var15 + 2) = [(SAThreadState *)self basePriority];
+  *(&buffer->var15 + 6) = [(SAThreadState *)self scheduledPriority];
+  *(&buffer->var16 + 2) = self->_schedulerFlags;
+  *(&buffer->var18 + 6) = *(self + 11) & 7;
+  *(&buffer->var18 + 7) = (*(self + 11) >> 3) & 7;
+  LOBYTE(buffer->var19) = *(self + 21) & 7;
+  BYTE1(buffer->var19) = (*(self + 21) >> 3) & 7;
+  WORD1(buffer->var19) = 1799;
+  BYTE4(buffer->var19) = self->_threadQosIpcOverride;
+  *(&buffer->var19 + 5) = self->_state;
+  buffer->var21 = [(SAThreadState *)self microstackshotFlags];
+  v9 = buffer->var22 & 0xFE | (*(self + 11) >> 7);
+  buffer->var22 = v9;
   v10 = v9 & 0xFFFFFFFD | (2 * ((*(self + 11) >> 6) & 1));
-  a3->var22 = v10;
+  buffer->var22 = v10;
   v11 = v10 & 0xFFFFFFFB | (4 * ((*(self + 15) >> 6) & 1));
-  a3->var22 = v11;
+  buffer->var22 = v11;
   v12 = v11 & 0xFFFFFFF7 | (8 * ((*(self + 15) >> 7) & 1));
-  a3->var22 = v12;
-  a3->var22 = v12 & 0xEF | (*(self + 19) >> 2) & 0x10;
-  *(&a3->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_startTimestamp, a5);
-  *(&a3->var2 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_endTimestamp, a5);
-  *(&a3->var5 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafUserFrame, a5);
-  *(&a3->var30 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafOfCRootFramesReplacedBySwiftAsync, a5);
-  *(&a3->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafKernelFrame, a5);
-  *(&a3->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_waitInfo, a5);
-  *(&a3->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_name, a5);
+  buffer->var22 = v12;
+  buffer->var22 = v12 & 0xEF | (*(self + 19) >> 2) & 0x10;
+  *(&buffer->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_startTimestamp, dictionary);
+  *(&buffer->var2 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_endTimestamp, dictionary);
+  *(&buffer->var5 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafUserFrame, dictionary);
+  *(&buffer->var30 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafOfCRootFramesReplacedBySwiftAsync, dictionary);
+  *(&buffer->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_leafKernelFrame, dictionary);
+  *(&buffer->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_waitInfo, dictionary);
+  *(&buffer->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_name, dictionary);
   WeakRetained = objc_loadWeakRetained(&self->_dispatchQueue);
-  *(&a3->var9 + 2) = SASerializableIndexForPointerFromSerializationDictionary(WeakRetained, a5);
+  *(&buffer->var9 + 2) = SASerializableIndexForPointerFromSerializationDictionary(WeakRetained, dictionary);
 
   v14 = objc_loadWeakRetained(&self->_swiftTask);
-  *(&a3->var29 + 7) = SASerializableIndexForPointerFromSerializationDictionary(v14, a5);
+  *(&buffer->var29 + 7) = SASerializableIndexForPointerFromSerializationDictionary(v14, dictionary);
 
-  *(&a3->var36 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_timestampLastRan, a5);
-  *(&a3->var17 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_timestampLastMadeRunnable, a5);
-  *&a3->var24 = SASerializableIndexForPointerFromSerializationDictionary(self->_turnstileInfo, a5);
-  *&a3->var28 = [(SAThreadState *)self cpuNum];
-  a3->var29.var1 = [(SAThreadState *)self cpuSpeedMhz];
-  *(&a3->var37 + 7) = [(SAThreadState *)self pmiCycleInterval];
-  *(&a3->var29 + 4) = [(SAThreadState *)self threadQosKEventOverride];
-  *(&a3->var29 + 5) = [(SAThreadState *)self threadQosWorkQueueOverride];
-  *(&a3->var29 + 6) = [(SAThreadState *)self threadQosWorkloopServicerOverride];
+  *(&buffer->var36 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_timestampLastRan, dictionary);
+  *(&buffer->var17 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_timestampLastMadeRunnable, dictionary);
+  *&buffer->var24 = SASerializableIndexForPointerFromSerializationDictionary(self->_turnstileInfo, dictionary);
+  *&buffer->var28 = [(SAThreadState *)self cpuNum];
+  buffer->var29.var1 = [(SAThreadState *)self cpuSpeedMhz];
+  *(&buffer->var37 + 7) = [(SAThreadState *)self pmiCycleInterval];
+  *(&buffer->var29 + 4) = [(SAThreadState *)self threadQosKEventOverride];
+  *(&buffer->var29 + 5) = [(SAThreadState *)self threadQosWorkQueueOverride];
+  *(&buffer->var29 + 6) = [(SAThreadState *)self threadQosWorkloopServicerOverride];
   if ([(SAThreadState *)self isPromotedAboveTask])
   {
     v15 = 32;
@@ -2066,66 +2066,66 @@ LABEL_62:
     v15 = 0;
   }
 
-  a3->var22 = a3->var22 & 0xDF | v15;
-  *(&a3->var32 + 3) = [(SAThreadState *)self originPid];
-  *(&a3->var35 + 1) = [(SAThreadState *)self proximatePid];
-  *(&a3->var35 + 5) = SASerializableIndexForPointerFromSerializationDictionary(self->_exclavesInfo, a5);
+  buffer->var22 = buffer->var22 & 0xDF | v15;
+  *(&buffer->var32 + 3) = [(SAThreadState *)self originPid];
+  *(&buffer->var35 + 1) = [(SAThreadState *)self proximatePid];
+  *(&buffer->var35 + 5) = SASerializableIndexForPointerFromSerializationDictionary(self->_exclavesInfo, dictionary);
   v16 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(SATimestamp *)self->_startTimestamp addSelfToSerializationDictionary:a3];
-    [(SATimestamp *)self->_endTimestamp addSelfToSerializationDictionary:a3];
-    [(SAFrame *)self->_leafUserFrame addSelfToSerializationDictionary:a3];
-    [(SAFrame *)self->_leafOfCRootFramesReplacedBySwiftAsync addSelfToSerializationDictionary:a3];
-    [(SAFrame *)self->_leafKernelFrame addSelfToSerializationDictionary:a3];
-    [(SAWaitInfo *)self->_waitInfo addSelfToSerializationDictionary:a3];
-    [(SATurnstileInfo *)self->_turnstileInfo addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_name addSelfToSerializationDictionary:a3];
+    [(SATimestamp *)self->_startTimestamp addSelfToSerializationDictionary:dictionary];
+    [(SATimestamp *)self->_endTimestamp addSelfToSerializationDictionary:dictionary];
+    [(SAFrame *)self->_leafUserFrame addSelfToSerializationDictionary:dictionary];
+    [(SAFrame *)self->_leafOfCRootFramesReplacedBySwiftAsync addSelfToSerializationDictionary:dictionary];
+    [(SAFrame *)self->_leafKernelFrame addSelfToSerializationDictionary:dictionary];
+    [(SAWaitInfo *)self->_waitInfo addSelfToSerializationDictionary:dictionary];
+    [(SATurnstileInfo *)self->_turnstileInfo addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_name addSelfToSerializationDictionary:dictionary];
     WeakRetained = objc_loadWeakRetained(&self->_dispatchQueue);
-    [WeakRetained addSelfToSerializationDictionary:a3];
+    [WeakRetained addSelfToSerializationDictionary:dictionary];
 
     v8 = objc_loadWeakRetained(&self->_swiftTask);
-    [v8 addSelfToSerializationDictionary:a3];
+    [v8 addSelfToSerializationDictionary:dictionary];
 
-    [(SATimestamp *)self->_timestampLastRan addSelfToSerializationDictionary:a3];
-    [(SATimestamp *)self->_timestampLastMadeRunnable addSelfToSerializationDictionary:a3];
+    [(SATimestamp *)self->_timestampLastRan addSelfToSerializationDictionary:dictionary];
+    [(SATimestamp *)self->_timestampLastMadeRunnable addSelfToSerializationDictionary:dictionary];
     exclavesInfo = self->_exclavesInfo;
 
-    [(SAThreadExclavesInfo *)exclavesInfo addSelfToSerializationDictionary:a3];
+    [(SAThreadExclavesInfo *)exclavesInfo addSelfToSerializationDictionary:dictionary];
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v82 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 0xBu)
+  if (*buffer >= 0xBu)
   {
     goto LABEL_52;
   }
 
-  if (a4 <= 0x93)
+  if (length <= 0x93)
   {
     v24 = *__error();
     v25 = _sa_logt();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *v81 = 134218240;
-      *&v81[4] = a4;
+      *&v81[4] = length;
       *&v81[12] = 2048;
       *&v81[14] = 148;
       _os_log_error_impl(&dword_1E0E2F000, v25, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState struct %lu", v81, 0x16u);
     }
 
     *__error() = v24;
-    _SASetCrashLogMessage(4956, "bufferLength %lu < serialized SAThreadState struct %lu", v26, v27, v28, v29, v30, v31, a4);
+    _SASetCrashLogMessage(4956, "bufferLength %lu < serialized SAThreadState struct %lu", v26, v27, v28, v29, v30, v31, length);
     _os_crash();
     __break(1u);
 LABEL_34:
@@ -2134,26 +2134,26 @@ LABEL_34:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *v81 = 134218240;
-      *&v81[4] = a4;
+      *&v81[4] = length;
       *&v81[12] = 2048;
       *&v81[14] = 164;
       _os_log_error_impl(&dword_1E0E2F000, v33, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v81, 0x16u);
     }
 
     *__error() = v32;
-    _SASetCrashLogMessage(5019, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v34, v35, v36, v37, v38, v39, a4);
+    _SASetCrashLogMessage(5019, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v34, v35, v36, v37, v38, v39, length);
     _os_crash();
     __break(1u);
     goto LABEL_37;
   }
 
-  if ((*(a3 + 145) & 1) == 0)
+  if ((*(buffer + 145) & 1) == 0)
   {
     v6 = objc_alloc_init(SAThreadState);
     goto LABEL_15;
   }
 
-  v7 = *(a3 + 1);
+  v7 = *(buffer + 1);
   if (v7 < 3)
   {
     v8 = 0;
@@ -2161,7 +2161,7 @@ LABEL_34:
 
   else
   {
-    if (a4 <= 0xA3)
+    if (length <= 0xA3)
     {
 LABEL_37:
       v40 = *__error();
@@ -2169,14 +2169,14 @@ LABEL_37:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         *v81 = 134218240;
-        *&v81[4] = a4;
+        *&v81[4] = length;
         *&v81[12] = 2048;
         *&v81[14] = 164;
         _os_log_error_impl(&dword_1E0E2F000, v41, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v81, 0x16u);
       }
 
       *__error() = v40;
-      _SASetCrashLogMessage(4967, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v42, v43, v44, v45, v46, v47, a4);
+      _SASetCrashLogMessage(4967, "bufferLength %lu < serialized SAThreadState v3 struct %lu", v42, v43, v44, v45, v46, v47, length);
       _os_crash();
       __break(1u);
 LABEL_40:
@@ -2185,23 +2185,23 @@ LABEL_40:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
         *v81 = 134218240;
-        *&v81[4] = a4;
+        *&v81[4] = length;
         *&v81[12] = 2048;
         *&v81[14] = 167;
         _os_log_error_impl(&dword_1E0E2F000, v49, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v4 struct %lu", v81, 0x16u);
       }
 
       *__error() = v48;
-      _SASetCrashLogMessage(5026, "bufferLength %lu < serialized SAThreadState v4 struct %lu", v50, v51, v52, v53, v54, v55, a4);
+      _SASetCrashLogMessage(5026, "bufferLength %lu < serialized SAThreadState v4 struct %lu", v50, v51, v52, v53, v54, v55, length);
       _os_crash();
       __break(1u);
       goto LABEL_43;
     }
 
-    v8 = *(a3 + 40);
+    v8 = *(buffer + 40);
     if (v7 >= 0xA)
     {
-      if (a4 <= 0xD6)
+      if (length <= 0xD6)
       {
 LABEL_43:
         v56 = *__error();
@@ -2209,20 +2209,20 @@ LABEL_43:
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
           *v81 = 134218240;
-          *&v81[4] = a4;
+          *&v81[4] = length;
           *&v81[12] = 2048;
           *&v81[14] = 215;
           _os_log_error_impl(&dword_1E0E2F000, v57, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v10 struct %lu", v81, 0x16u);
         }
 
         *__error() = v56;
-        _SASetCrashLogMessage(4974, "bufferLength %lu < serialized SAThreadState v10 struct %lu", v58, v59, v60, v61, v62, v63, a4);
+        _SASetCrashLogMessage(4974, "bufferLength %lu < serialized SAThreadState v10 struct %lu", v58, v59, v60, v61, v62, v63, length);
         _os_crash();
         __break(1u);
         goto LABEL_46;
       }
 
-      v9 = *(a3 + 207);
+      v9 = *(buffer + 207);
       goto LABEL_12;
     }
   }
@@ -2232,7 +2232,7 @@ LABEL_12:
   v10 = [SAThreadStateMicrostackshot alloc];
   if (v10)
   {
-    v11 = *(a3 + 145);
+    v11 = *(buffer + 145);
     *v81 = v10;
     *&v81[8] = SAThreadStateMicrostackshot;
     v12 = objc_msgSendSuper2(v81, sel_init);
@@ -2251,63 +2251,63 @@ LABEL_12:
   }
 
 LABEL_15:
-  v13 = *(a3 + 18);
+  v13 = *(buffer + 18);
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   if (v13 != 0x7FFFFFFF && v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = *(a3 + 18);
+    v14 = *(buffer + 18);
   }
 
   [(SAThreadState *)v6 setStartSampleIndex:v14];
-  v15 = *(a3 + 26);
+  v15 = *(buffer + 26);
   v16 = 0x7FFFFFFFFFFFFFFFLL;
   if (v15 != 0x7FFFFFFF && v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = *(a3 + 26);
+    v16 = *(buffer + 26);
   }
 
   [(SAThreadState *)v6 setEndSampleIndex:v16];
-  v6->_voucherIdentifier = *(a3 + 74);
-  v6->_userTimeInNs = *(a3 + 82);
-  v6->_systemTimeInNs = *(a3 + 90);
-  v6->_instructions = *(a3 + 98);
-  v6->_cycles = *(a3 + 106);
+  v6->_voucherIdentifier = *(buffer + 74);
+  v6->_userTimeInNs = *(buffer + 82);
+  v6->_systemTimeInNs = *(buffer + 90);
+  v6->_instructions = *(buffer + 98);
+  v6->_cycles = *(buffer + 106);
   [(SAThreadState *)v6 setBasePriority:?];
   [(SAThreadState *)v6 setScheduledPriority:?];
-  v6->_schedulerFlags = *(a3 + 122);
-  v17 = *(v6 + 11) & 0xF8 | *(a3 + 134) & 7;
+  v6->_schedulerFlags = *(buffer + 122);
+  v17 = *(v6 + 11) & 0xF8 | *(buffer + 134) & 7;
   *(v6 + 11) = v17;
-  v18 = v17 & 0xC7 | (8 * (*(a3 + 135) & 7));
+  v18 = v17 & 0xC7 | (8 * (*(buffer + 135) & 7));
   *(v6 + 11) = v18;
-  v19 = *(v6 + 21) & 0xF8 | *(a3 + 136) & 7;
+  v19 = *(v6 + 21) & 0xF8 | *(buffer + 136) & 7;
   *(v6 + 21) = v19;
-  *(v6 + 21) = (8 * (*(a3 + 137) & 7)) | v19 & 0xC7;
-  v6->_threadQosIpcOverride = *(a3 + 140);
-  v6->_state = *(a3 + 141);
-  v20 = v18 & 0x7F | (*(a3 + 146) << 7);
+  *(v6 + 21) = (8 * (*(buffer + 137) & 7)) | v19 & 0xC7;
+  v6->_threadQosIpcOverride = *(buffer + 140);
+  v6->_state = *(buffer + 141);
+  v20 = v18 & 0x7F | (*(buffer + 146) << 7);
   *(v6 + 11) = v20;
-  *(v6 + 11) = (32 * *(a3 + 146)) & 0x40 | v20 & 0xBF;
-  v21 = *(v6 + 15) & 0xBF | (((*(a3 + 146) >> 2) & 1) << 6);
+  *(v6 + 11) = (32 * *(buffer + 146)) & 0x40 | v20 & 0xBF;
+  v21 = *(v6 + 15) & 0xBF | (((*(buffer + 146) >> 2) & 1) << 6);
   *(v6 + 15) = v21;
-  *(v6 + 15) = v21 & 0x7F | (((*(a3 + 146) & 8) != 0) << 7);
-  *(v6 + 19) = *(v6 + 19) & 0xBF | (4 * *(a3 + 146)) & 0x40;
-  if (*(a3 + 1) < 3u)
+  *(v6 + 15) = v21 & 0x7F | (((*(buffer + 146) & 8) != 0) << 7);
+  *(v6 + 19) = *(v6 + 19) & 0xBF | (4 * *(buffer + 146)) & 0x40;
+  if (*(buffer + 1) < 3u)
   {
     goto LABEL_30;
   }
 
-  if (a4 <= 0xA3)
+  if (length <= 0xA3)
   {
     goto LABEL_34;
   }
 
   [(SAThreadState *)v6 setCpuNum:?];
-  if (*(a3 + 1) < 4u)
+  if (*(buffer + 1) < 4u)
   {
     goto LABEL_30;
   }
 
-  if (a4 <= 0xA6)
+  if (length <= 0xA6)
   {
     goto LABEL_40;
   }
@@ -2315,13 +2315,13 @@ LABEL_15:
   [(SAThreadState *)v6 setThreadQosKEventOverride:?];
   [(SAThreadState *)v6 setThreadQosWorkQueueOverride:?];
   [(SAThreadState *)v6 setThreadQosWorkloopServicerOverride:?];
-  v6->_ioTier = v6->_ioTier & 0xF7 | (*(a3 + 146) >> 2) & 8;
-  if (*(a3 + 1) < 6u)
+  v6->_ioTier = v6->_ioTier & 0xF7 | (*(buffer + 146) >> 2) & 8;
+  if (*(buffer + 1) < 6u)
   {
     goto LABEL_30;
   }
 
-  if (a4 <= 0xBA)
+  if (length <= 0xBA)
   {
 LABEL_46:
     v64 = *__error();
@@ -2329,14 +2329,14 @@ LABEL_46:
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
     {
       *v81 = 134218240;
-      *&v81[4] = a4;
+      *&v81[4] = length;
       *&v81[12] = 2048;
       *&v81[14] = 187;
       _os_log_error_impl(&dword_1E0E2F000, v65, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v6 struct %lu", v81, 0x16u);
     }
 
     *__error() = v64;
-    _SASetCrashLogMessage(5036, "bufferLength %lu < serialized SAThreadState v6 struct %lu", v66, v67, v68, v69, v70, v71, a4);
+    _SASetCrashLogMessage(5036, "bufferLength %lu < serialized SAThreadState v6 struct %lu", v66, v67, v68, v69, v70, v71, length);
     _os_crash();
     __break(1u);
 LABEL_49:
@@ -2345,14 +2345,14 @@ LABEL_49:
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
     {
       *v81 = 134218240;
-      *&v81[4] = a4;
+      *&v81[4] = length;
       *&v81[12] = 2048;
       *&v81[14] = 191;
       _os_log_error_impl(&dword_1E0E2F000, v73, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v7 struct %lu", v81, 0x16u);
     }
 
     *__error() = v72;
-    _SASetCrashLogMessage(5043, "bufferLength %lu < serialized SAThreadState v7 struct %lu", v74, v75, v76, v77, v78, v79, a4);
+    _SASetCrashLogMessage(5043, "bufferLength %lu < serialized SAThreadState v7 struct %lu", v74, v75, v76, v77, v78, v79, length);
     _os_crash();
     __break(1u);
 LABEL_52:
@@ -2360,12 +2360,12 @@ LABEL_52:
     objc_exception_throw(v80);
   }
 
-  v6->_originPid = *(a3 + 183);
-  if (*(a3 + 1) >= 7u)
+  v6->_originPid = *(buffer + 183);
+  if (*(buffer + 1) >= 7u)
   {
-    if (a4 > 0xBE)
+    if (length > 0xBE)
     {
-      v6->_proximatePid = *(a3 + 187);
+      v6->_proximatePid = *(buffer + 187);
       goto LABEL_30;
     }
 
@@ -2377,89 +2377,89 @@ LABEL_30:
   return v6;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v108 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 0xBu)
+  if (*buffer >= 0xBu)
   {
     goto LABEL_30;
   }
 
-  if (a4 <= 0x93)
+  if (length <= 0x93)
   {
     v63 = *__error();
     v64 = _sa_logt();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v105 = a4;
+      lengthCopy5 = length;
       v106 = 2048;
       v107 = 148;
       _os_log_error_impl(&dword_1E0E2F000, v64, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState struct %lu", buf, 0x16u);
     }
 
     *__error() = v63;
-    _SASetCrashLogMessage(5056, "bufferLength %lu < serialized SAThreadState struct %lu", v65, v66, v67, v68, v69, v70, a4);
+    _SASetCrashLogMessage(5056, "bufferLength %lu < serialized SAThreadState struct %lu", v65, v66, v67, v68, v69, v70, length);
     _os_crash();
     __break(1u);
     goto LABEL_18;
   }
 
-  v11 = *(a3 + 2);
+  v11 = *(buffer + 2);
   v12 = objc_opt_class();
-  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12);
+  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12);
   startTimestamp = self->_startTimestamp;
   self->_startTimestamp = v13;
 
-  v15 = *(a3 + 10);
+  v15 = *(buffer + 10);
   v16 = objc_opt_class();
-  v17 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, a5, a6, v16);
+  v17 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, dictionary, bufferDictionary, v16);
   endTimestamp = self->_endTimestamp;
   self->_endTimestamp = v17;
 
-  v19 = *(a3 + 34);
+  v19 = *(buffer + 34);
   v20 = objc_opt_class();
-  v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, a5, a6, v20, 0);
+  v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, dictionary, bufferDictionary, v20, 0);
   leafUserFrame = self->_leafUserFrame;
   self->_leafUserFrame = v21;
 
-  v23 = *(a3 + 42);
+  v23 = *(buffer + 42);
   v24 = objc_opt_class();
-  v25 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v23, a5, a6, v24, 0);
+  v25 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v23, dictionary, bufferDictionary, v24, 0);
   leafKernelFrame = self->_leafKernelFrame;
   self->_leafKernelFrame = v25;
 
-  v27 = *(a3 + 50);
+  v27 = *(buffer + 50);
   v28 = objc_opt_class();
-  v29 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v27, a5, a6, v28, 0);
+  v29 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v27, dictionary, bufferDictionary, v28, 0);
   waitInfo = self->_waitInfo;
   self->_waitInfo = v29;
 
-  v31 = *(a3 + 58);
+  v31 = *(buffer + 58);
   v32 = objc_opt_class();
-  v33 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v31, a5, a6, v32, 0);
+  v33 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v31, dictionary, bufferDictionary, v32, 0);
   name = self->_name;
   self->_name = v33;
 
-  v35 = *(a3 + 66);
+  v35 = *(buffer + 66);
   v36 = objc_opt_class();
-  v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v35, a5, a6, v36, 0);
+  v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v35, dictionary, bufferDictionary, v36, 0);
   objc_storeWeak(&self->_dispatchQueue, v37);
 
-  v38 = *(a3 + 126);
+  v38 = *(buffer + 126);
   v39 = objc_opt_class();
-  v40 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v38, a5, a6, v39, 0);
+  v40 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v38, dictionary, bufferDictionary, v39, 0);
   timestampLastMadeRunnable = self->_timestampLastMadeRunnable;
   self->_timestampLastMadeRunnable = v40;
 
-  if (*(a3 + 1) < 2u)
+  if (*(buffer + 1) < 2u)
   {
 LABEL_14:
     v62 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  if (a4 <= 0x9B)
+  if (length <= 0x9B)
   {
 LABEL_18:
     v71 = *__error();
@@ -2467,31 +2467,31 @@ LABEL_18:
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v105 = a4;
+      lengthCopy5 = length;
       v106 = 2048;
       v107 = 156;
       _os_log_error_impl(&dword_1E0E2F000, v72, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v2 struct %lu", buf, 0x16u);
     }
 
     *__error() = v71;
-    _SASetCrashLogMessage(5073, "bufferLength %lu < serialized SAThreadState v2 struct %lu", v73, v74, v75, v76, v77, v78, a4);
+    _SASetCrashLogMessage(5073, "bufferLength %lu < serialized SAThreadState v2 struct %lu", v73, v74, v75, v76, v77, v78, length);
     _os_crash();
     __break(1u);
     goto LABEL_21;
   }
 
-  v42 = *(a3 + 148);
+  v42 = *(buffer + 148);
   v43 = objc_opt_class();
-  v44 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v42, a5, a6, v43, 0);
+  v44 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v42, dictionary, bufferDictionary, v43, 0);
   turnstileInfo = self->_turnstileInfo;
   self->_turnstileInfo = v44;
 
-  if (*(a3 + 1) < 5u)
+  if (*(buffer + 1) < 5u)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0xB6)
+  if (length <= 0xB6)
   {
 LABEL_21:
     v79 = *__error();
@@ -2499,36 +2499,36 @@ LABEL_21:
     if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v105 = a4;
+      lengthCopy5 = length;
       v106 = 2048;
       v107 = 183;
       _os_log_error_impl(&dword_1E0E2F000, v80, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v5 struct %lu", buf, 0x16u);
     }
 
     *__error() = v79;
-    _SASetCrashLogMessage(5079, "bufferLength %lu < serialized SAThreadState v5 struct %lu", v81, v82, v83, v84, v85, v86, a4);
+    _SASetCrashLogMessage(5079, "bufferLength %lu < serialized SAThreadState v5 struct %lu", v81, v82, v83, v84, v85, v86, length);
     _os_crash();
     __break(1u);
     goto LABEL_24;
   }
 
-  v46 = *(a3 + 167);
+  v46 = *(buffer + 167);
   v47 = objc_opt_class();
-  v48 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v46, a5, a6, v47, 0);
+  v48 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v46, dictionary, bufferDictionary, v47, 0);
   objc_storeWeak(&self->_swiftTask, v48);
 
-  v49 = *(a3 + 175);
+  v49 = *(buffer + 175);
   v50 = objc_opt_class();
-  v51 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v49, a5, a6, v50, 0);
+  v51 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v49, dictionary, bufferDictionary, v50, 0);
   leafOfCRootFramesReplacedBySwiftAsync = self->_leafOfCRootFramesReplacedBySwiftAsync;
   self->_leafOfCRootFramesReplacedBySwiftAsync = v51;
 
-  if (*(a3 + 1) < 8u)
+  if (*(buffer + 1) < 8u)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0xC6)
+  if (length <= 0xC6)
   {
 LABEL_24:
     v87 = *__error();
@@ -2536,31 +2536,31 @@ LABEL_24:
     if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v105 = a4;
+      lengthCopy5 = length;
       v106 = 2048;
       v107 = 199;
       _os_log_error_impl(&dword_1E0E2F000, v88, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v8 struct %lu", buf, 0x16u);
     }
 
     *__error() = v87;
-    _SASetCrashLogMessage(5087, "bufferLength %lu < serialized SAThreadState v8 struct %lu", v89, v90, v91, v92, v93, v94, a4);
+    _SASetCrashLogMessage(5087, "bufferLength %lu < serialized SAThreadState v8 struct %lu", v89, v90, v91, v92, v93, v94, length);
     _os_crash();
     __break(1u);
     goto LABEL_27;
   }
 
-  v53 = *(a3 + 191);
+  v53 = *(buffer + 191);
   v54 = objc_opt_class();
-  v55 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v53, a5, a6, v54, 0);
+  v55 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v53, dictionary, bufferDictionary, v54, 0);
   exclavesInfo = self->_exclavesInfo;
   self->_exclavesInfo = v55;
 
-  if (*(a3 + 1) < 9u)
+  if (*(buffer + 1) < 9u)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0xCE)
+  if (length <= 0xCE)
   {
 LABEL_27:
     v95 = *__error();
@@ -2568,14 +2568,14 @@ LABEL_27:
     if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v105 = a4;
+      lengthCopy5 = length;
       v106 = 2048;
       v107 = 207;
       _os_log_error_impl(&dword_1E0E2F000, v96, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThreadState v9 struct %lu", buf, 0x16u);
     }
 
     *__error() = v95;
-    _SASetCrashLogMessage(5093, "bufferLength %lu < serialized SAThreadState v9 struct %lu", v97, v98, v99, v100, v101, v102, a4);
+    _SASetCrashLogMessage(5093, "bufferLength %lu < serialized SAThreadState v9 struct %lu", v97, v98, v99, v100, v101, v102, length);
     _os_crash();
     __break(1u);
 LABEL_30:
@@ -2583,15 +2583,15 @@ LABEL_30:
     objc_exception_throw(v103);
   }
 
-  v57 = *(a3 + 199);
+  v57 = *(buffer + 199);
   v58 = objc_opt_class();
-  v59 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v57, a5, a6, v58, 0);
+  v59 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v57, dictionary, bufferDictionary, v58, 0);
   timestampLastRan = self->_timestampLastRan;
   self->_timestampLastRan = v59;
   v61 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)stateWithoutReferencesFromPAStyleSerializedThread:(uint64_t)a1
++ (id)stateWithoutReferencesFromPAStyleSerializedThread:(uint64_t)thread
 {
   objc_opt_self();
   v3 = objc_alloc_init(SAThreadState);
@@ -2988,15 +2988,15 @@ LABEL_45:
   return v4;
 }
 
-- (void)populateReferencesUsingPAStyleSerializedThread:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:
+- (void)populateReferencesUsingPAStyleSerializedThread:(void *)thread andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v8 = *(a1 + 96);
-  *(a1 + 96) = 0;
+  v8 = *(self + 96);
+  *(self + 96) = 0;
 
   if (*a2 <= 0x11235816uLL)
   {
@@ -3011,7 +3011,7 @@ LABEL_45:
       else
       {
         v45 = objc_opt_class();
-        v46 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, a3, a4, v45, 0);
+        v46 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, thread, dictionary, v45, 0);
         if (v46)
         {
           self = v46;
@@ -3020,11 +3020,11 @@ LABEL_45:
           if (!v48)
           {
             v50 = objc_getProperty(self, v49, 8, 1);
-            v51 = *(a1 + 64);
-            *(a1 + 64) = v50;
+            v51 = *(self + 64);
+            *(self + 64) = v50;
 
-            v52 = *(a1 + 80);
-            *(a1 + 80) = 0;
+            v52 = *(self + 80);
+            *(self + 80) = 0;
 
             v53 = 0;
             if (*a2 > 0x11235814uLL)
@@ -3038,14 +3038,14 @@ LABEL_34:
               }
 
               v55 = objc_opt_class();
-              v53 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v54, a3, a4, v55, 0);
+              v53 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v54, thread, dictionary, v55, 0);
             }
 
-            v56 = *(a1 + 104);
-            *(a1 + 104) = v53;
+            v56 = *(self + 104);
+            *(self + 104) = v53;
 
-            v18 = *(a1 + 88);
-            *(a1 + 88) = 0;
+            v18 = *(self + 88);
+            *(self + 88) = 0;
             goto LABEL_30;
           }
         }
@@ -3061,7 +3061,7 @@ LABEL_43:
     if (v30 != -2)
     {
       v31 = objc_opt_class();
-      v32 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, a3, a4, v31, 0);
+      v32 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, thread, dictionary, v31, 0);
       self = v32;
       if (v32)
       {
@@ -3073,12 +3073,12 @@ LABEL_43:
         Property = 0;
       }
 
-      objc_storeStrong((a1 + 64), Property);
+      objc_storeStrong((self + 64), Property);
       v35 = a2[2];
       if (v35 != -2)
       {
         v36 = objc_opt_class();
-        v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v35, a3, a4, v36, 0);
+        v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v35, thread, dictionary, v36, 0);
         v18 = v37;
         if (v37)
         {
@@ -3090,17 +3090,17 @@ LABEL_43:
           v39 = 0;
         }
 
-        objc_storeStrong((a1 + 80), v39);
+        objc_storeStrong((self + 80), v39);
         v40 = a2[3];
         if (v40 != -2)
         {
           v41 = objc_opt_class();
-          v42 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v40, a3, a4, v41, 0);
-          v43 = *(a1 + 104);
-          *(a1 + 104) = v42;
+          v42 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v40, thread, dictionary, v41, 0);
+          v43 = *(self + 104);
+          *(self + 104) = v42;
 
-          v44 = *(a1 + 88);
-          *(a1 + 88) = 0;
+          v44 = *(self + 88);
+          *(self + 88) = 0;
 
           goto LABEL_30;
         }
@@ -3123,7 +3123,7 @@ LABEL_35:
   }
 
   v10 = objc_opt_class();
-  v11 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v9, a3, a4, v10, 0);
+  v11 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v9, thread, dictionary, v10, 0);
   self = v11;
   if (v11)
   {
@@ -3135,7 +3135,7 @@ LABEL_35:
     v13 = 0;
   }
 
-  objc_storeStrong((a1 + 64), v13);
+  objc_storeStrong((self + 64), v13);
   v14 = a2[2];
   if (v14 == -2)
   {
@@ -3145,7 +3145,7 @@ LABEL_36:
   }
 
   v15 = objc_opt_class();
-  v16 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, a3, a4, v15, 0);
+  v16 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, thread, dictionary, v15, 0);
   v18 = v16;
   if (v16)
   {
@@ -3157,7 +3157,7 @@ LABEL_36:
     v19 = 0;
   }
 
-  objc_storeStrong((a1 + 80), v19);
+  objc_storeStrong((self + 80), v19);
   v20 = a2[3];
   if (v20 == -2)
   {
@@ -3166,7 +3166,7 @@ LABEL_36:
   }
 
   v21 = objc_opt_class();
-  v22 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v20, a3, a4, v21, 0);
+  v22 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v20, thread, dictionary, v21, 0);
   v24 = v22;
   if (v22)
   {
@@ -3178,7 +3178,7 @@ LABEL_36:
     v25 = 0;
   }
 
-  objc_storeStrong((a1 + 88), v25);
+  objc_storeStrong((self + 88), v25);
   v26 = a2[4];
   if (v26 == -2)
   {
@@ -3186,25 +3186,25 @@ LABEL_36:
   }
 
   v27 = objc_opt_class();
-  v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v26, a3, a4, v27, 0);
-  v29 = *(a1 + 104);
-  *(a1 + 104) = v28;
+  v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v26, thread, dictionary, v27, 0);
+  v29 = *(self + 104);
+  *(self + 104) = v28;
 
 LABEL_30:
 }
 
-- (void)applyPAStyleSampleTimestamp:(uint64_t)a1
+- (void)applyPAStyleSampleTimestamp:(uint64_t)timestamp
 {
-  if (a1)
+  if (timestamp)
   {
-    v5 = *(a1 + 48);
-    v4 = (a1 + 48);
+    v5 = *(timestamp + 48);
+    v4 = (timestamp + 48);
     if (!v5)
     {
       objc_storeStrong(v4, obj);
     }
 
-    objc_storeStrong((a1 + 56), obj);
+    objc_storeStrong((timestamp + 56), obj);
   }
 }
 

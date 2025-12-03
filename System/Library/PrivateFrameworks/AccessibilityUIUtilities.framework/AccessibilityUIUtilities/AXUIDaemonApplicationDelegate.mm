@@ -4,13 +4,13 @@
 + (NSString)featureEnabledStatusDidChangeNotification;
 + (OS_os_log)loggingFacility;
 - (AXUIDaemonApplicationDelegate)init;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)_didUpdateToOrientation:(int64_t)a3 duration:(double)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (void)_didUpdateToOrientation:(int64_t)orientation duration:(double)duration;
 - (void)_exitIfNotEnabled;
 - (void)_systemAppDidBecomeReady;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)dealloc;
-- (void)setKeepAlive:(BOOL)a3;
+- (void)setKeepAlive:(BOOL)alive;
 @end
 
 @implementation AXUIDaemonApplicationDelegate
@@ -22,9 +22,9 @@
   v2 = [(AXUIDaemonApplicationDelegate *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [objc_opt_class() featureEnabledStatusDidChangeNotification];
-    [v3 addObserver:v2 selector:sel__enabledPreferenceDidChange_ name:v4 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    featureEnabledStatusDidChangeNotification = [objc_opt_class() featureEnabledStatusDidChangeNotification];
+    [defaultCenter addObserver:v2 selector:sel__enabledPreferenceDidChange_ name:featureEnabledStatusDidChangeNotification object:0];
 
     [(AXUIDaemonApplicationDelegate *)v2 _exitIfNotEnabled];
     [(AXUIDaemonApplicationDelegate *)v2 setKeepAlive:1];
@@ -38,9 +38,9 @@
 - (void)dealloc
 {
   [(FBSOrientationObserver *)self->_orientationObserver invalidate];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [objc_opt_class() featureEnabledStatusDidChangeNotification];
-  [v3 removeObserver:self name:v4 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  featureEnabledStatusDidChangeNotification = [objc_opt_class() featureEnabledStatusDidChangeNotification];
+  [defaultCenter removeObserver:self name:featureEnabledStatusDidChangeNotification object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x1E6989808], 0);
@@ -49,18 +49,18 @@
   [(AXUIDaemonApplicationDelegate *)&v6 dealloc];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() loggingFacility];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  applicationCopy = application;
+  optionsCopy = options;
+  loggingFacility = [objc_opt_class() loggingFacility];
+  if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [objc_opt_class() debugFeatureName];
+    debugFeatureName = [objc_opt_class() debugFeatureName];
     *buf = 138412290;
-    v17 = v9;
-    _os_log_impl(&dword_1C0DFB000, v8, OS_LOG_TYPE_DEFAULT, "Launched %@.", buf, 0xCu);
+    v17 = debugFeatureName;
+    _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_DEFAULT, "Launched %@.", buf, 0xCu);
   }
 
   [(AXUIDaemonApplicationDelegate *)self didFinishLaunching];
@@ -107,44 +107,44 @@ uint64_t __75__AXUIDaemonApplicationDelegate_application_didFinishLaunchingWithO
   return [v2 _didUpdateToOrientation:v3 duration:?];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [objc_opt_class() loggingFacility];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  loggingFacility = [objc_opt_class() loggingFacility];
+  if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [objc_opt_class() debugFeatureName];
+    debugFeatureName = [objc_opt_class() debugFeatureName];
     v6 = 138412290;
-    v7 = v5;
-    _os_log_impl(&dword_1C0DFB000, v4, OS_LOG_TYPE_DEFAULT, "Will terminate %@.", &v6, 0xCu);
+    v7 = debugFeatureName;
+    _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_DEFAULT, "Will terminate %@.", &v6, 0xCu);
   }
 
   [(AXUIDaemonApplicationDelegate *)self willTerminate];
 }
 
-- (void)_didUpdateToOrientation:(int64_t)a3 duration:(double)a4
+- (void)_didUpdateToOrientation:(int64_t)orientation duration:(double)duration
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [objc_opt_class() loggingFacility];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  loggingFacility = [objc_opt_class() loggingFacility];
+  if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v15 = a3;
+    orientationCopy = orientation;
     v16 = 2048;
-    v17 = a4;
-    _os_log_impl(&dword_1C0DFB000, v7, OS_LOG_TYPE_DEFAULT, "Update orientation to %ld with duration %g", buf, 0x16u);
+    durationCopy = duration;
+    _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_DEFAULT, "Update orientation to %ld with duration %g", buf, 0x16u);
   }
 
   AXPerformSafeBlock();
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  [v8 setOrientation:a3 animated:a4 > 0.0];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  [currentDevice setOrientation:orientation animated:duration > 0.0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = @"Duration";
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v13 = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  [v9 postNotificationName:@"AXUIDaemonOrientationDidUpdateNotification" object:0 userInfo:v11];
+  [defaultCenter postNotificationName:@"AXUIDaemonOrientationDidUpdateNotification" object:0 userInfo:v11];
 
   [(AXUIDaemonApplicationDelegate *)self didUpdateOrientation];
 }
@@ -160,18 +160,18 @@ void __66__AXUIDaemonApplicationDelegate__didUpdateToOrientation_duration___bloc
   v8 = *MEMORY[0x1E69E9840];
   if (([objc_opt_class() isFeatureEnabled] & 1) == 0)
   {
-    v3 = [objc_opt_class() loggingFacility];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    loggingFacility = [objc_opt_class() loggingFacility];
+    if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [objc_opt_class() debugFeatureName];
+      debugFeatureName = [objc_opt_class() debugFeatureName];
       v6 = 138412290;
-      v7 = v4;
-      _os_log_impl(&dword_1C0DFB000, v3, OS_LOG_TYPE_DEFAULT, "Exiting %@.", &v6, 0xCu);
+      v7 = debugFeatureName;
+      _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_DEFAULT, "Exiting %@.", &v6, 0xCu);
     }
 
     [(AXUIDaemonApplicationDelegate *)self setKeepAlive:0];
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 terminateWithSuccess];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] terminateWithSuccess];
   }
 }
 
@@ -179,26 +179,26 @@ void __66__AXUIDaemonApplicationDelegate__didUpdateToOrientation_duration___bloc
 {
   if (!+[AXUIDaemonApplication usesScenes])
   {
-    v2 = [objc_opt_class() loggingFacility];
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    loggingFacility = [objc_opt_class() loggingFacility];
+    if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_DEFAULT))
     {
       *v4 = 0;
-      _os_log_impl(&dword_1C0DFB000, v2, OS_LOG_TYPE_DEFAULT, "Restarting because SpringBoard just became active.", v4, 2u);
+      _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_DEFAULT, "Restarting because SpringBoard just became active.", v4, 2u);
     }
 
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v3 terminateWithSuccess];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] terminateWithSuccess];
   }
 }
 
-- (void)setKeepAlive:(BOOL)a3
+- (void)setKeepAlive:(BOOL)alive
 {
   if (vproc_swap_integer())
   {
-    v4 = [objc_opt_class() loggingFacility];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    loggingFacility = [objc_opt_class() loggingFacility];
+    if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_ERROR))
     {
-      [(AXUIDaemonApplicationDelegate *)a3 setKeepAlive:v4];
+      [(AXUIDaemonApplicationDelegate *)alive setKeepAlive:loggingFacility];
     }
   }
 }

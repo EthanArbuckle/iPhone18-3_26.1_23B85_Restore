@@ -1,15 +1,15 @@
 @interface CNPhotoPickerViewController
 + (id)log;
-+ (id)photoPickerForGameCenterWithContact:(id)a3;
-- (CNPhotoPickerViewController)initWithContact:(id)a3 style:(id)a4 configuration:(id)a5;
++ (id)photoPickerForGameCenterWithContact:(id)contact;
+- (CNPhotoPickerViewController)initWithContact:(id)contact style:(id)style configuration:(id)configuration;
 - (CNPhotoPickerViewControllerDelegate)delegate;
 - (id)contactViewCache;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
 - (void)setUpViews;
 - (void)updateHeaderViewAvatar;
 - (void)updatePendingEditContact;
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3;
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing;
 @end
 
 @implementation CNPhotoPickerViewController
@@ -21,94 +21,94 @@
   return WeakRetained;
 }
 
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing
 {
   v4 = objc_alloc(MEMORY[0x1E695CD88]);
-  v5 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  v6 = [v5 imageData];
-  v7 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v7 cropRect];
+  pendingEditContact = [(CNPhotoPickerViewController *)self pendingEditContact];
+  imageData = [pendingEditContact imageData];
+  pendingEditContact2 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact2 cropRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v16 = [MEMORY[0x1E695DF00] now];
-  v19 = [v4 initWithImageData:v6 cropRect:v16 lastUsedDate:{v9, v11, v13, v15}];
+  v19 = [v4 initWithImageData:imageData cropRect:v16 lastUsedDate:{v9, v11, v13, v15}];
 
-  v17 = [(CNPhotoPickerViewController *)self delegate];
-  v18 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v17 photoPicker:self didUpdatePhotoForContact:v18 withContactImage:v19];
+  delegate = [(CNPhotoPickerViewController *)self delegate];
+  pendingEditContact3 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [delegate photoPicker:self didUpdatePhotoForContact:pendingEditContact3 withContactImage:v19];
 }
 
 - (id)contactViewCache
 {
-  v2 = [(CNVisualIdentityPickerViewController *)self dataSource];
-  v3 = [v2 contactViewCache];
+  dataSource = [(CNVisualIdentityPickerViewController *)self dataSource];
+  contactViewCache = [dataSource contactViewCache];
 
-  return v3;
+  return contactViewCache;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   [(CNPhotoPickerViewController *)self updatePendingEditContact];
-  v6 = [(CNVisualIdentityPickerViewController *)self contactImageForCurrentActiveItem];
-  v4 = [(CNPhotoPickerViewController *)self delegate];
-  v5 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v4 photoPicker:self didUpdatePhotoForContact:v5 withContactImage:v6];
+  contactImageForCurrentActiveItem = [(CNVisualIdentityPickerViewController *)self contactImageForCurrentActiveItem];
+  delegate = [(CNPhotoPickerViewController *)self delegate];
+  pendingEditContact = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [delegate photoPicker:self didUpdatePhotoForContact:pendingEditContact withContactImage:contactImageForCurrentActiveItem];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(CNPhotoPickerViewController *)self delegate];
-  [v4 photoPickerDidCancel:self];
+  delegate = [(CNPhotoPickerViewController *)self delegate];
+  [delegate photoPickerDidCancel:self];
 }
 
 - (void)updatePendingEditContact
 {
-  v3 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v4 = [v3 imageData];
-  v5 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v5 setImageData:v4];
+  pendingVisualIdentity = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  imageData = [pendingVisualIdentity imageData];
+  pendingEditContact = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact setImageData:imageData];
 
-  v6 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v7 = [v6 imageData];
-  v8 = [v7 _cn_md5Hash];
-  v9 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v9 setImageHash:v8];
+  pendingVisualIdentity2 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  imageData2 = [pendingVisualIdentity2 imageData];
+  _cn_md5Hash = [imageData2 _cn_md5Hash];
+  pendingEditContact2 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact2 setImageHash:_cn_md5Hash];
 
-  v10 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  [v10 cropRect];
+  pendingVisualIdentity3 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  [pendingVisualIdentity3 cropRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v19 setCropRect:{v12, v14, v16, v18}];
+  pendingEditContact3 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact3 setCropRect:{v12, v14, v16, v18}];
 
-  v20 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v21 = [v20 thumbnailImageData];
-  v22 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v22 setThumbnailImageData:v21];
+  pendingVisualIdentity4 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  thumbnailImageData = [pendingVisualIdentity4 thumbnailImageData];
+  pendingEditContact4 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact4 setThumbnailImageData:thumbnailImageData];
 
-  v23 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v24 = [v23 fullscreenImageData];
-  v25 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v25 setFullscreenImageData:v24];
+  pendingVisualIdentity5 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  fullscreenImageData = [pendingVisualIdentity5 fullscreenImageData];
+  pendingEditContact5 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact5 setFullscreenImageData:fullscreenImageData];
 
-  v26 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v27 = [v26 imageType];
-  v28 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v28 setImageType:v27];
+  pendingVisualIdentity6 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  imageType = [pendingVisualIdentity6 imageType];
+  pendingEditContact6 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact6 setImageType:imageType];
 
-  v29 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v30 = [v29 memojiMetadata];
-  v31 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v31 setMemojiMetadata:v30];
+  pendingVisualIdentity7 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  memojiMetadata = [pendingVisualIdentity7 memojiMetadata];
+  pendingEditContact7 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact7 setMemojiMetadata:memojiMetadata];
 
-  v34 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
-  v32 = [v34 wallpaper];
-  v33 = [(CNPhotoPickerViewController *)self pendingEditContact];
-  [v33 setWallpaper:v32];
+  pendingVisualIdentity8 = [(CNVisualIdentityPickerViewController *)self pendingVisualIdentity];
+  wallpaper = [pendingVisualIdentity8 wallpaper];
+  pendingEditContact8 = [(CNPhotoPickerViewController *)self pendingEditContact];
+  [pendingEditContact8 setWallpaper:wallpaper];
 }
 
 - (void)updateHeaderViewAvatar
@@ -122,77 +122,77 @@
 - (void)setUpViews
 {
   v50[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  if ([v4 isFeatureEnabled:6])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:6])
   {
-    v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v6 = [v5 featureFlags];
-    v7 = [v6 isFeatureEnabled:7];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags2 = [currentEnvironment2 featureFlags];
+    v7 = [featureFlags2 isFeatureEnabled:7];
 
     if (v7)
     {
-      v8 = [(CNVisualIdentityPickerViewController *)self visualIdentity];
-      v9 = [v8 contacts];
-      v10 = [v9 count];
+      visualIdentity = [(CNVisualIdentityPickerViewController *)self visualIdentity];
+      contacts = [visualIdentity contacts];
+      v10 = [contacts count];
 
       if (v10)
       {
         v11 = [CNUIVisualIdentityEditorViewController alloc];
-        v12 = [(CNPhotoPickerViewController *)self pendingEditContact];
-        v13 = [(CNPhotoPickerViewController *)self configuration];
-        v14 = [(CNUIVisualIdentityEditorViewController *)v11 initWithContact:v12 configuration:v13];
+        pendingEditContact = [(CNPhotoPickerViewController *)self pendingEditContact];
+        configuration = [(CNPhotoPickerViewController *)self configuration];
+        v14 = [(CNUIVisualIdentityEditorViewController *)v11 initWithContact:pendingEditContact configuration:configuration];
         [(CNPhotoPickerViewController *)self setVisualIdentityEditor:v14];
 
-        v15 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        [v15 setDelegate:self];
+        visualIdentityEditor = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        [visualIdentityEditor setDelegate:self];
 
-        v16 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        [(CNPhotoPickerViewController *)self addChildViewController:v16];
+        visualIdentityEditor2 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        [(CNPhotoPickerViewController *)self addChildViewController:visualIdentityEditor2];
 
-        v17 = [(CNPhotoPickerViewController *)self view];
-        v18 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v19 = [v18 view];
-        [v17 addSubview:v19];
+        view = [(CNPhotoPickerViewController *)self view];
+        visualIdentityEditor3 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view2 = [visualIdentityEditor3 view];
+        [view addSubview:view2];
 
-        v20 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v21 = [v20 view];
-        [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+        visualIdentityEditor4 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view3 = [visualIdentityEditor4 view];
+        [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
         v37 = MEMORY[0x1E696ACD8];
-        v48 = [(CNPhotoPickerViewController *)self view];
-        v46 = [v48 leadingAnchor];
-        v47 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v45 = [v47 view];
-        v44 = [v45 leadingAnchor];
-        v43 = [v46 constraintEqualToAnchor:v44];
+        view4 = [(CNPhotoPickerViewController *)self view];
+        leadingAnchor = [view4 leadingAnchor];
+        visualIdentityEditor5 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view5 = [visualIdentityEditor5 view];
+        leadingAnchor2 = [view5 leadingAnchor];
+        v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v50[0] = v43;
-        v42 = [(CNPhotoPickerViewController *)self view];
-        v40 = [v42 trailingAnchor];
-        v41 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v39 = [v41 view];
-        v38 = [v39 trailingAnchor];
-        v36 = [v40 constraintEqualToAnchor:v38];
+        view6 = [(CNPhotoPickerViewController *)self view];
+        trailingAnchor = [view6 trailingAnchor];
+        visualIdentityEditor6 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view7 = [visualIdentityEditor6 view];
+        trailingAnchor2 = [view7 trailingAnchor];
+        v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v50[1] = v36;
-        v35 = [(CNPhotoPickerViewController *)self view];
-        v33 = [v35 topAnchor];
-        v34 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v32 = [v34 view];
-        v22 = [v32 topAnchor];
-        v23 = [v33 constraintEqualToAnchor:v22];
+        view8 = [(CNPhotoPickerViewController *)self view];
+        topAnchor = [view8 topAnchor];
+        visualIdentityEditor7 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view9 = [visualIdentityEditor7 view];
+        topAnchor2 = [view9 topAnchor];
+        v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v50[2] = v23;
-        v24 = [(CNPhotoPickerViewController *)self view];
-        v25 = [v24 bottomAnchor];
-        v26 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
-        v27 = [v26 view];
-        v28 = [v27 bottomAnchor];
-        v29 = [v25 constraintEqualToAnchor:v28];
+        view10 = [(CNPhotoPickerViewController *)self view];
+        bottomAnchor = [view10 bottomAnchor];
+        visualIdentityEditor8 = [(CNPhotoPickerViewController *)self visualIdentityEditor];
+        view11 = [visualIdentityEditor8 view];
+        bottomAnchor2 = [view11 bottomAnchor];
+        v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v50[3] = v29;
         v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
         [v37 activateConstraints:v30];
 
-        v31 = [(CNPhotoPickerViewController *)self navigationController];
-        [v31 setNavigationBarHidden:1];
+        navigationController = [(CNPhotoPickerViewController *)self navigationController];
+        [navigationController setNavigationBarHidden:1];
 
         return;
       }
@@ -208,30 +208,30 @@
   [(CNVisualIdentityPickerViewController *)&v49 setUpViews];
 }
 
-- (CNPhotoPickerViewController)initWithContact:(id)a3 style:(id)a4 configuration:(id)a5
+- (CNPhotoPickerViewController)initWithContact:(id)contact style:(id)style configuration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  configurationCopy = configuration;
+  styleCopy = style;
+  contactCopy = contact;
   v11 = objc_alloc_init(CNContactViewCache);
-  v12 = [[CNVisualIdentity alloc] initWithContact:v10];
-  v13 = [[CNPhotoPickerDataSource alloc] initWithVisualIdentity:v12 contactViewCache:v11 photoPickerConfiguration:v8];
+  v12 = [[CNVisualIdentity alloc] initWithContact:contactCopy];
+  v13 = [[CNPhotoPickerDataSource alloc] initWithVisualIdentity:v12 contactViewCache:v11 photoPickerConfiguration:configurationCopy];
   v17.receiver = self;
   v17.super_class = CNPhotoPickerViewController;
-  v14 = -[CNVisualIdentityPickerViewController initWithPhotosDataSource:style:allowRotation:](&v17, sel_initWithPhotosDataSource_style_allowRotation_, v13, v9, [v8 allowRotation]);
+  v14 = -[CNVisualIdentityPickerViewController initWithPhotosDataSource:style:allowRotation:](&v17, sel_initWithPhotosDataSource_style_allowRotation_, v13, styleCopy, [configurationCopy allowRotation]);
 
-  v15 = [v10 mutableCopy];
+  v15 = [contactCopy mutableCopy];
   [(CNPhotoPickerViewController *)v14 setPendingEditContact:v15];
 
-  [(CNPhotoPickerViewController *)v14 setConfiguration:v8];
+  [(CNPhotoPickerViewController *)v14 setConfiguration:configurationCopy];
   return v14;
 }
 
-+ (id)photoPickerForGameCenterWithContact:(id)a3
++ (id)photoPickerForGameCenterWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 mutableCopy];
+  contactCopy = contact;
+  v5 = [self alloc];
+  v6 = [contactCopy mutableCopy];
 
   v7 = +[CNContactStyle currentStyle];
   v8 = +[CNPhotoPickerConfiguration gameCenterConfiguration];

@@ -1,15 +1,15 @@
 @interface ManagedAppsCredentialRef
 - (_TtC20ManagedAppsInterface24ManagedAppsCredentialRef)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ManagedAppsCredentialRef
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_258063CC4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_258063CC4(coderCopy);
 }
 
 - (_TtC20ManagedAppsInterface24ManagedAppsCredentialRef)init

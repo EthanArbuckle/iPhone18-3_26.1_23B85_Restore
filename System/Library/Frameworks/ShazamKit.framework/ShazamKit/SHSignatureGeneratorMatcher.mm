@@ -1,55 +1,55 @@
 @interface SHSignatureGeneratorMatcher
 - (BOOL)shouldGenerateSpectralOutput;
 - (SHMatcherDelegate)delegate;
-- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4;
-- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)a3 sessionDriver:(id)a4 audioRecordingManager:(id)a5;
-- (id)responseSignatureForRequest:(id)a3;
+- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager;
+- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)tap sessionDriver:(id)driver audioRecordingManager:(id)manager;
+- (id)responseSignatureForRequest:(id)request;
 - (void)_stop;
-- (void)matchSignature:(id)a3;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)sessionDriverEncounteredUnrecoverableError:(id)a3 forSignature:(id)a4;
-- (void)startRecognitionForRequest:(id)a3;
+- (void)matchSignature:(id)signature;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)sessionDriverEncounteredUnrecoverableError:(id)error forSignature:(id)signature;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
+- (void)stopRecognitionForRequestID:(id)d;
 @end
 
 @implementation SHSignatureGeneratorMatcher
 
-- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4
+- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager
 {
-  v6 = a4;
-  v7 = a3;
+  managerCopy = manager;
+  tapCopy = tap;
   v8 = objc_alloc_init(SHCustomCatalog);
   v9 = [SHStreamingSessionDriver alloc];
   [v8 minimumQuerySignatureDuration];
   v11 = v10;
   [v8 maximumQuerySignatureDuration];
   v13 = v12;
-  v14 = [v8 _configuration];
-  [v14 streamingBufferDuration];
+  _configuration = [v8 _configuration];
+  [_configuration streamingBufferDuration];
   v16 = v15;
-  v17 = [v8 _configuration];
-  v18 = [v17 musicalFeaturesConfiguration];
-  v19 = [v9 initWithMinimumSignatureDuration:v18 maximumSignatureDuration:v11 bufferDuration:v13 musicalFeaturesConfiguration:v16];
+  _configuration2 = [v8 _configuration];
+  musicalFeaturesConfiguration = [_configuration2 musicalFeaturesConfiguration];
+  v19 = [v9 initWithMinimumSignatureDuration:musicalFeaturesConfiguration maximumSignatureDuration:v11 bufferDuration:v13 musicalFeaturesConfiguration:v16];
 
-  v20 = [(SHSignatureGeneratorMatcher *)self initWithAudioTap:v7 sessionDriver:v19 audioRecordingManager:v6];
+  v20 = [(SHSignatureGeneratorMatcher *)self initWithAudioTap:tapCopy sessionDriver:v19 audioRecordingManager:managerCopy];
   return v20;
 }
 
-- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)a3 sessionDriver:(id)a4 audioRecordingManager:(id)a5
+- (SHSignatureGeneratorMatcher)initWithAudioTap:(id)tap sessionDriver:(id)driver audioRecordingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tapCopy = tap;
+  driverCopy = driver;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = SHSignatureGeneratorMatcher;
   v12 = [(SHSignatureGeneratorMatcher *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_audioRecordingManager, a5);
-    objc_storeStrong(&v13->_tap, a3);
-    objc_storeStrong(&v13->_sessionDriver, a4);
+    objc_storeStrong(&v12->_audioRecordingManager, manager);
+    objc_storeStrong(&v13->_tap, tap);
+    objc_storeStrong(&v13->_sessionDriver, driver);
     [(SHSessionDriver *)v13->_sessionDriver setSessionDriverDelegate:v13];
     objc_initWeak(&location, v13);
     v15[0] = _NSConcreteStackBlock;
@@ -65,95 +65,95 @@
   return v13;
 }
 
-- (void)matchSignature:(id)a3
+- (void)matchSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v5 = [(SHSignatureGeneratorMatcher *)self tap];
-  v6 = [v5 recordingSource];
-  v7 = [v4 metrics];
-  [v7 setRecordingSource:v6];
+  recordingSource = [v5 recordingSource];
+  metrics = [signatureCopy metrics];
+  [metrics setRecordingSource:recordingSource];
 
   v8 = [SHMatcherResponse alloc];
-  v9 = [(SHSignatureGeneratorMatcher *)self request];
-  v10 = [v9 requestID];
-  v12 = [v8 initWithRecordingIntermission:0 recordingSignatureOffset:v4 retrySeconds:v10 match:0 signature:0.0 runningAssociatedRequestID:0.0 error:0.0];
+  request = [(SHSignatureGeneratorMatcher *)self request];
+  requestID = [request requestID];
+  v12 = [v8 initWithRecordingIntermission:0 recordingSignatureOffset:signatureCopy retrySeconds:requestID match:0 signature:0.0 runningAssociatedRequestID:0.0 error:0.0];
 
-  v11 = [(SHSignatureGeneratorMatcher *)self delegate];
-  [v11 matcher:self didProduceResponse:v12];
+  delegate = [(SHSignatureGeneratorMatcher *)self delegate];
+  [delegate matcher:self didProduceResponse:v12];
 }
 
-- (void)sessionDriverEncounteredUnrecoverableError:(id)a3 forSignature:(id)a4
+- (void)sessionDriverEncounteredUnrecoverableError:(id)error forSignature:(id)signature
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHSignatureGeneratorMatcher *)self delegate];
-  v9 = [SHMatcherResponse errorResponseForSignature:v6 error:v7];
+  signatureCopy = signature;
+  errorCopy = error;
+  delegate = [(SHSignatureGeneratorMatcher *)self delegate];
+  v9 = [SHMatcherResponse errorResponseForSignature:signatureCopy error:errorCopy];
 
-  [v8 matcher:self didProduceResponse:v9];
+  [delegate matcher:self didProduceResponse:v9];
 
   [(SHSignatureGeneratorMatcher *)self _stop];
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(SHSignatureGeneratorMatcher *)self request];
+  requestCopy = request;
+  request = [(SHSignatureGeneratorMatcher *)self request];
 
-  if (v6)
+  if (request)
   {
     v14 = NSLocalizedFailureReasonErrorKey;
     v15 = @"Signature generator worker passed multiple requests";
     v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v8 = [SHError errorWithCode:202 underlyingError:0 keyOverrides:v7];
+    audioRecordingManager = [SHError errorWithCode:202 underlyingError:0 keyOverrides:v7];
 
-    v9 = [(SHSignatureGeneratorMatcher *)self delegate];
-    v10 = [(SHSignatureGeneratorMatcher *)self request];
-    v11 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:v10];
-    v12 = [SHMatcherResponse errorResponseForSignature:v11 error:v8];
-    [v9 matcher:self didProduceResponse:v12];
+    delegate = [(SHSignatureGeneratorMatcher *)self delegate];
+    request2 = [(SHSignatureGeneratorMatcher *)self request];
+    v11 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:request2];
+    v12 = [SHMatcherResponse errorResponseForSignature:v11 error:audioRecordingManager];
+    [delegate matcher:self didProduceResponse:v12];
 
     [(SHSignatureGeneratorMatcher *)self _stop];
   }
 
   else
   {
-    objc_storeStrong(&self->_request, a3);
-    v8 = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
+    objc_storeStrong(&self->_request, request);
+    audioRecordingManager = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
     v13 = [(SHSignatureGeneratorMatcher *)self tap];
-    [v8 attachTap:v13];
+    [audioRecordingManager attachTap:v13];
   }
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v24 = a4;
-  v5 = [(SHSignatureGeneratorMatcher *)self sessionDriver];
-  [v5 matcher:self didProduceResponse:v24];
+  responseCopy = response;
+  sessionDriver = [(SHSignatureGeneratorMatcher *)self sessionDriver];
+  [sessionDriver matcher:self didProduceResponse:responseCopy];
 
-  v6 = [(SHSignatureGeneratorMatcher *)self request];
-  v7 = [v6 deadline];
-  if (v7)
+  request = [(SHSignatureGeneratorMatcher *)self request];
+  deadline = [request deadline];
+  if (deadline)
   {
     v8 = 0;
   }
 
   else
   {
-    [v24 retrySeconds];
+    [responseCopy retrySeconds];
     v8 = v9 <= 0.0;
   }
 
-  v10 = [(SHSignatureGeneratorMatcher *)self request];
-  v11 = [v10 deadline];
-  if (v11)
+  request2 = [(SHSignatureGeneratorMatcher *)self request];
+  deadline2 = [request2 deadline];
+  if (deadline2)
   {
-    v12 = [(SHSignatureGeneratorMatcher *)self request];
-    v13 = [v12 deadline];
+    request3 = [(SHSignatureGeneratorMatcher *)self request];
+    deadline3 = [request3 deadline];
     v14 = +[NSDate date];
-    v15 = [v13 earlierDate:v14];
-    v16 = [(SHSignatureGeneratorMatcher *)self request];
-    v17 = [v16 deadline];
-    v18 = v15 == v17;
+    v15 = [deadline3 earlierDate:v14];
+    request4 = [(SHSignatureGeneratorMatcher *)self request];
+    deadline4 = [request4 deadline];
+    v18 = v15 == deadline4;
   }
 
   else
@@ -164,11 +164,11 @@
   if (v8 || v18)
   {
     v19 = [SHError privateErrorWithCode:203 underlyingError:0];
-    v20 = [(SHSignatureGeneratorMatcher *)self delegate];
-    v21 = [(SHSignatureGeneratorMatcher *)self request];
-    v22 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:v21];
+    delegate = [(SHSignatureGeneratorMatcher *)self delegate];
+    request5 = [(SHSignatureGeneratorMatcher *)self request];
+    v22 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:request5];
     v23 = [SHMatcherResponse errorResponseForSignature:v22 error:v19];
-    [v20 matcher:self didProduceResponse:v23];
+    [delegate matcher:self didProduceResponse:v23];
 
     [(SHSignatureGeneratorMatcher *)self _stop];
   }
@@ -180,21 +180,21 @@
 
   if (v3)
   {
-    v4 = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
+    audioRecordingManager = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
     v5 = [(SHSignatureGeneratorMatcher *)self tap];
-    [v4 detachTap:v5];
+    [audioRecordingManager detachTap:v5];
 
     tap = self->_tap;
     self->_tap = 0;
   }
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHSignatureGeneratorMatcher *)self request];
-  v6 = [v5 requestID];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  request = [(SHSignatureGeneratorMatcher *)self request];
+  requestID = [request requestID];
+  v7 = [requestID isEqual:dCopy];
 
   if (v7)
   {
@@ -203,54 +203,54 @@
     if (v8)
     {
       [(SHSignatureGeneratorMatcher *)self _stop];
-      v9 = [(SHSignatureGeneratorMatcher *)self request];
-      v10 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:v9];
+      request2 = [(SHSignatureGeneratorMatcher *)self request];
+      v10 = [(SHSignatureGeneratorMatcher *)self responseSignatureForRequest:request2];
       v11 = [SHError privateErrorWithCode:203 underlyingError:0];
       v13 = [SHMatcherResponse errorResponseForSignature:v10 error:v11];
 
-      v12 = [(SHSignatureGeneratorMatcher *)self delegate];
-      [v12 matcher:self didProduceResponse:v13];
+      delegate = [(SHSignatureGeneratorMatcher *)self delegate];
+      [delegate matcher:self didProduceResponse:v13];
     }
   }
 }
 
 - (void)stopRecognition
 {
-  v4 = [(SHSignatureGeneratorMatcher *)self request];
-  v3 = [v4 requestID];
-  [(SHSignatureGeneratorMatcher *)self stopRecognitionForRequestID:v3];
+  request = [(SHSignatureGeneratorMatcher *)self request];
+  requestID = [request requestID];
+  [(SHSignatureGeneratorMatcher *)self stopRecognitionForRequestID:requestID];
 }
 
-- (id)responseSignatureForRequest:(id)a3
+- (id)responseSignatureForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 signature];
+  requestCopy = request;
+  signature = [requestCopy signature];
 
-  if (v5)
+  if (signature)
   {
-    v6 = [v4 signature];
+    signature2 = [requestCopy signature];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    signature2 = objc_opt_new();
     v7 = [(SHSignatureGeneratorMatcher *)self tap];
-    v8 = [v7 recordingSource];
-    v9 = [v6 metrics];
-    [v9 setRecordingSource:v8];
+    recordingSource = [v7 recordingSource];
+    metrics = [signature2 metrics];
+    [metrics setRecordingSource:recordingSource];
   }
 
-  return v6;
+  return signature2;
 }
 
 - (BOOL)shouldGenerateSpectralOutput
 {
   v3 = [(SHSignatureGeneratorMatcher *)self tap];
-  v4 = [v3 recordingSource];
-  v5 = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
-  LOBYTE(v4) = v4 == [v5 suggestedAudioRecordingSource];
+  recordingSource = [v3 recordingSource];
+  audioRecordingManager = [(SHSignatureGeneratorMatcher *)self audioRecordingManager];
+  LOBYTE(recordingSource) = recordingSource == [audioRecordingManager suggestedAudioRecordingSource];
 
-  return v4;
+  return recordingSource;
 }
 
 - (SHMatcherDelegate)delegate

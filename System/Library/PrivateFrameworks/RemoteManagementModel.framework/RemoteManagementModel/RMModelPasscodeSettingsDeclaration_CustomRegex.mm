@@ -1,11 +1,11 @@
 @interface RMModelPasscodeSettingsDeclaration_CustomRegex
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithRegex:(id)a3;
-+ (id)buildWithRegex:(id)a3 description:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
++ (id)buildRequiredOnlyWithRegex:(id)regex;
++ (id)buildWithRegex:(id)regex description:(id)description;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelPasscodeSettingsDeclaration_CustomRegex
@@ -24,33 +24,33 @@
   return v4;
 }
 
-+ (id)buildWithRegex:(id)a3 description:(id)a4
++ (id)buildWithRegex:(id)regex description:(id)description
 {
-  v5 = a4;
-  v6 = a3;
+  descriptionCopy = description;
+  regexCopy = regex;
   v7 = objc_opt_new();
-  [v7 setPayloadRegex:v6];
+  [v7 setPayloadRegex:regexCopy];
 
-  [v7 setPayloadDescription:v5];
+  [v7 setPayloadDescription:descriptionCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithRegex:(id)a3
++ (id)buildRequiredOnlyWithRegex:(id)regex
 {
-  v3 = a3;
+  regexCopy = regex;
   v4 = objc_opt_new();
-  [v4 setPayloadRegex:v3];
+  [v4 setPayloadRegex:regexCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelPasscodeSettingsDeclaration_CustomRegex allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -58,10 +58,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Regex" forKeyPath:@"payloadRegex" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Regex" forKeyPath:@"payloadRegex" isRequired:1 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Description" forKeyPath:@"payloadDescription" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Description" forKeyPath:@"payloadDescription" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -72,45 +72,45 @@
   return v14;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadRegex];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Regex" value:v6 isRequired:1 defaultValue:0];
+  payloadRegex = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadRegex];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Regex" value:payloadRegex isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadDescription];
+  payloadDescription = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadDescription];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__RMModelPasscodeSettingsDeclaration_CustomRegex_serializeWithType___block_invoke;
   v10[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v11 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Description" value:v7 dictSerializer:v10 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Description" value:payloadDescription dictSerializer:v10 isRequired:0 defaultValue:0];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadRegex];
-  v6 = [v4 payloadRegex];
-  v7 = [RMModelConfigurationBase combineFirst:v5 other:v6];
+  otherCopy = other;
+  payloadRegex = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadRegex];
+  payloadRegex2 = [otherCopy payloadRegex];
+  v7 = [RMModelConfigurationBase combineFirst:payloadRegex other:payloadRegex2];
   [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self setPayloadRegex:v7];
 
-  v10 = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadDescription];
-  v8 = [v4 payloadDescription];
+  payloadDescription = [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self payloadDescription];
+  payloadDescription2 = [otherCopy payloadDescription];
 
-  v9 = [RMModelConfigurationBase combineDictionary:v10 other:v8];
+  v9 = [RMModelConfigurationBase combineDictionary:payloadDescription other:payloadDescription2];
   [(RMModelPasscodeSettingsDeclaration_CustomRegex *)self setPayloadDescription:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelPasscodeSettingsDeclaration_CustomRegex;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadRegex copy];
   v6 = v4[2];
   v4[2] = v5;

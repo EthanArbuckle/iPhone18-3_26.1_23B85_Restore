@@ -1,12 +1,12 @@
 @interface SKUIUber
-- (SKUIUber)initWithUberDictionary:(id)a3;
+- (SKUIUber)initWithUberDictionary:(id)dictionary;
 @end
 
 @implementation SKUIUber
 
-- (SKUIUber)initWithUberDictionary:(id)a3
+- (SKUIUber)initWithUberDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -24,12 +24,12 @@
   v13 = [(SKUIUber *)&v23 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"masterArt"];
+    v14 = [dictionaryCopy objectForKey:@"masterArt"];
     v15 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v14];
     artworkProvider = v13->_artworkProvider;
     v13->_artworkProvider = v15;
 
-    v17 = [v4 objectForKey:@"description"];
+    v17 = [dictionaryCopy objectForKey:@"description"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -39,7 +39,7 @@
       v13->_text = v18;
     }
 
-    v20 = [[SKUIColorScheme alloc] initWithColorSchemeDictionary:v4];
+    v20 = [[SKUIColorScheme alloc] initWithColorSchemeDictionary:dictionaryCopy];
     colorScheme = v13->_colorScheme;
     v13->_colorScheme = v20;
   }

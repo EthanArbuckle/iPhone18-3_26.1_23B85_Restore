@@ -1,27 +1,27 @@
 @interface NTKExtraLargeFaceView
 - (NSArray)smallTimeLabelFontScaleFactorForNumberSystemOverrides;
-- (NTKExtraLargeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
-- (double)_smallTimeAlphaForEditMode:(int64_t)a3;
+- (NTKExtraLargeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
+- (double)_smallTimeAlphaForEditMode:(int64_t)mode;
 - (double)_statusBarOffsetForComplication;
 - (double)_statusBarOffsetForComplicationBackground;
 - (double)_statusBarOffsetForSmallTime;
 - (id)_complicationView;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)_smallTimeLabelFont;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyColor:(id)a3 toRichComplicationView:(id)a4 withFraction:(double)a5 isMonochrome:(BOOL)a6;
-- (void)_applyComplicationTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyColor:(id)color toRichComplicationView:(id)view withFraction:(double)fraction isMonochrome:(BOOL)monochrome;
+- (void)_applyComplicationTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
 - (void)_applyDataMode;
-- (void)_applyFaceColorToRichComplicationView:(id)a3;
+- (void)_applyFaceColorToRichComplicationView:(id)view;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowContentForUnadornedSnapshot;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_configureLargeTimeLabelColors;
 - (void)_configureSmallTimeLabelColors;
 - (void)_configureSmallTimeLabelStyle;
@@ -37,20 +37,20 @@
 - (void)_prepareForEditing;
 - (void)_prepareWristRaiseAnimation;
 - (void)_removeTimeViews;
-- (void)_setNumerals:(unint64_t)a3;
+- (void)_setNumerals:(unint64_t)numerals;
 - (void)_updateComplicationVisibility;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKExtraLargeFaceView
 
-- (NTKExtraLargeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKExtraLargeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKExtraLargeFaceView;
-  result = [(NTKExtraLargeFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  result = [(NTKExtraLargeFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (result)
   {
     result->_numberSystem = -1;
@@ -85,17 +85,17 @@
   [(NTKExtraLargeFaceView *)&v3 layoutSubviews];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NTKExtraLargeFaceView;
-  v4 = a3;
-  [(NTKExtraLargeFaceView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKExtraLargeFaceView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NTKExtraLargeFaceView *)self traitCollection:v8.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     [(NTKExtraLargeFaceView *)self _configureSmallTimeLabelStyle];
     [(NTKExtraLargeFaceView *)self setNeedsLayout];
@@ -114,8 +114,8 @@
   v2 = 0.0;
   if (self->_viewsOffsetForStatusBar)
   {
-    v3 = [(NTKExtraLargeFaceView *)self device];
-    sub_6A8C(v3, v5);
+    device = [(NTKExtraLargeFaceView *)self device];
+    sub_6A8C(device, v5);
     v2 = v6;
   }
 
@@ -127,8 +127,8 @@
   v2 = 0.0;
   if (self->_viewsOffsetForStatusBar)
   {
-    v3 = [(NTKExtraLargeFaceView *)self device];
-    sub_6A8C(v3, v5);
+    device = [(NTKExtraLargeFaceView *)self device];
+    sub_6A8C(device, v5);
     v2 = v6;
   }
 
@@ -140,8 +140,8 @@
   v2 = 0.0;
   if (self->_viewsOffsetForStatusBar)
   {
-    v3 = [(NTKExtraLargeFaceView *)self device];
-    sub_6A8C(v3, v5);
+    device = [(NTKExtraLargeFaceView *)self device];
+    sub_6A8C(device, v5);
     v2 = v6;
   }
 
@@ -157,8 +157,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NTKExtraLargeFaceView *)self device];
-  sub_6A8C(v3, &v23);
+  device = [(NTKExtraLargeFaceView *)self device];
+  sub_6A8C(device, &v23);
 
   v4 = v24;
   v21 = *(&v24 + 1);
@@ -169,46 +169,46 @@
   [(NTKExtraLargeFaceView *)self _statusBarOffsetForComplicationBackground];
   v9 = v7 - v8;
   v10 = *&v25;
-  v11 = [(NTKExtraLargeFaceView *)self device];
+  device2 = [(NTKExtraLargeFaceView *)self device];
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v22 = [NTKComplicationLayoutRule layoutRuleForDevice:v11 withReferenceFrame:3 horizontalLayout:3 verticalLayout:*&v4 keylinePadding:v6, v10, v9, UIEdgeInsetsZero.top, left, bottom, right];
+  right = [NTKComplicationLayoutRule layoutRuleForDevice:device2 withReferenceFrame:3 horizontalLayout:3 verticalLayout:*&v4 keylinePadding:v6, v10, v9, UIEdgeInsetsZero.top, left, bottom, right];
 
   v15 = NTKComplicationSlotCenter;
   v16 = [(NTKExtraLargeFaceView *)self complicationLayoutforSlot:NTKComplicationSlotCenter];
-  [v16 setDefaultLayoutRule:v22 forState:0];
+  [v16 setDefaultLayoutRule:right forState:0];
 
-  v17 = [(NTKExtraLargeFaceView *)self device];
-  v18 = [NTKComplicationLayoutRule layoutRuleForDevice:v17 withReferenceFrame:3 horizontalLayout:3 verticalLayout:*&v4 keylinePadding:v21, v10, v20, UIEdgeInsetsZero.top, left, bottom, right];
+  device3 = [(NTKExtraLargeFaceView *)self device];
+  right2 = [NTKComplicationLayoutRule layoutRuleForDevice:device3 withReferenceFrame:3 horizontalLayout:3 verticalLayout:*&v4 keylinePadding:v21, v10, v20, UIEdgeInsetsZero.top, left, bottom, right];
 
   v19 = [(NTKExtraLargeFaceView *)self complicationLayoutforSlot:v15];
-  [v19 setDefaultLayoutRule:v18 forState:1];
+  [v19 setDefaultLayoutRule:right2 forState:1];
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v7 = a5;
-  v8 = +[NTKComplicationModuleView smallModuleViewForComplicationType:](NTKComplicationModuleView, "smallModuleViewForComplicationType:", [a3 complicationType]);
-  [(NTKExtraLargeFaceView *)self _configureComplicationView:v8 forSlot:v7];
+  slotCopy = slot;
+  v8 = +[NTKComplicationModuleView smallModuleViewForComplicationType:](NTKComplicationModuleView, "smallModuleViewForComplicationType:", [complication complicationType]);
+  [(NTKExtraLargeFaceView *)self _configureComplicationView:v8 forSlot:slotCopy];
 
   return v8;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v8 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v8;
-    v6 = [(NTKExtraLargeFaceView *)self device];
-    sub_6A8C(v6, v9);
+    v5 = viewCopy;
+    device = [(NTKExtraLargeFaceView *)self device];
+    sub_6A8C(device, v9);
     [v5 setContentHeight:v10];
 
     [v5 setIsXL:1];
-    v7 = [(NTKExtraLargeFaceView *)self faceColorPalette];
-    [v5 applyFaceColorPalette:v7 units:71];
+    faceColorPalette = [(NTKExtraLargeFaceView *)self faceColorPalette];
+    [v5 applyFaceColorPalette:faceColorPalette units:71];
   }
 
   else
@@ -216,66 +216,66 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NTKExtraLargeFaceView *)self _applyFaceColorToRichComplicationView:v8];
+      [(NTKExtraLargeFaceView *)self _applyFaceColorToRichComplicationView:viewCopy];
       [(NTKExtraLargeFaceView *)self _updateComplicationVisibility];
     }
   }
 }
 
-- (void)_applyFaceColorToRichComplicationView:(id)a3
+- (void)_applyFaceColorToRichComplicationView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKExtraLargeFaceView *)self faceColorPalette];
-  v6 = [v5 isMulticolor];
+  viewCopy = view;
+  faceColorPalette = [(NTKExtraLargeFaceView *)self faceColorPalette];
+  isMulticolor = [faceColorPalette isMulticolor];
 
-  v8 = [(NTKExtraLargeFaceView *)self faceColorPalette];
-  v7 = [v8 primaryColor];
-  [(NTKExtraLargeFaceView *)self _applyColor:v7 toRichComplicationView:v4 withFraction:v6 ^ 1 isMonochrome:0.0];
+  faceColorPalette2 = [(NTKExtraLargeFaceView *)self faceColorPalette];
+  primaryColor = [faceColorPalette2 primaryColor];
+  [(NTKExtraLargeFaceView *)self _applyColor:primaryColor toRichComplicationView:viewCopy withFraction:isMulticolor ^ 1 isMonochrome:0.0];
 }
 
-- (void)_applyColor:(id)a3 toRichComplicationView:(id)a4 withFraction:(double)a5 isMonochrome:(BOOL)a6
+- (void)_applyColor:(id)color toRichComplicationView:(id)view withFraction:(double)fraction isMonochrome:(BOOL)monochrome
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a3;
-  v13 = [(NTKExtraLargeFaceView *)self _richComplicationSecondaryColor];
-  [(NTKExtraLargeFaceView *)self setComplicationColor:v11];
+  monochromeCopy = monochrome;
+  viewCopy = view;
+  colorCopy = color;
+  _richComplicationSecondaryColor = [(NTKExtraLargeFaceView *)self _richComplicationSecondaryColor];
+  [(NTKExtraLargeFaceView *)self setComplicationColor:colorCopy];
 
-  v12 = [(NTKExtraLargeFaceView *)self complicationColor];
-  [(NTKExtraLargeFaceView *)self setInterpolatedComplicationColor:v12];
+  complicationColor = [(NTKExtraLargeFaceView *)self complicationColor];
+  [(NTKExtraLargeFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-  [(NTKExtraLargeFaceView *)self setAlternateComplicationColor:v13];
-  if (v6)
+  [(NTKExtraLargeFaceView *)self setAlternateComplicationColor:_richComplicationSecondaryColor];
+  if (monochromeCopy)
   {
-    [v10 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 
   else
   {
-    [v10 transitionToMonochromeWithFraction:a5];
+    [viewCopy transitionToMonochromeWithFraction:fraction];
   }
 }
 
 - (void)_layoutForegroundContainerView
 {
   [(NTKExtraLargeFaceView *)self layoutComplicationViews];
-  v10 = [(NTKExtraLargeFaceView *)self _complicationView];
+  _complicationView = [(NTKExtraLargeFaceView *)self _complicationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v10;
+    v3 = _complicationView;
     [(NTKExtraLargeFaceView *)self _statusBarOffsetForComplication];
     v5 = v4;
     [(NTKExtraLargeFaceView *)self _statusBarOffsetForComplicationBackground];
     [v3 setContentHeightOffset:v5 + v6 * -0.5];
   }
 
-  v7 = [(NTKExtraLargeFaceView *)self _complicationView];
-  [v7 setNeedsLayout];
+  _complicationView2 = [(NTKExtraLargeFaceView *)self _complicationView];
+  [_complicationView2 setNeedsLayout];
 
   largeTimeLabel = self->_largeTimeLabel;
-  v9 = [(NTKExtraLargeFaceView *)self rootContainerView];
-  [v9 bounds];
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
+  [rootContainerView bounds];
   [(NTKExtraLargeTimeView *)largeTimeLabel ntk_setBoundsAndPositionFromFrame:?];
 
   [(NTKExtraLargeFaceView *)self _layoutSmallTimeLabel];
@@ -289,11 +289,11 @@
     [(NTKDigitalTimeLabel *)smallTimeLabel setFrameUsingCurrentStyle];
     [(NTKDigitalTimeLabel *)self->_smallTimeLabel bounds];
     v5 = v4;
-    v13 = [(NTKDigitalTimeLabel *)self->_smallTimeLabel font];
-    v6 = [(NTKExtraLargeFaceView *)self device];
-    sub_6A8C(v6, v14);
+    font = [(NTKDigitalTimeLabel *)self->_smallTimeLabel font];
+    device = [(NTKExtraLargeFaceView *)self device];
+    sub_6A8C(device, v14);
     v7 = v15;
-    [v13 ascender];
+    [font ascender];
     v9 = v7 - v8;
     [(NTKExtraLargeFaceView *)self _statusBarOffsetForSmallTime];
     v11 = v9 + v10;
@@ -314,16 +314,16 @@
   [(NTKExtraLargeTimeView *)self->_largeTimeLabel setFrozen:[(NTKExtraLargeFaceView *)self isFrozen]];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKExtraLargeFaceView;
-  v6 = a3;
-  [(NTKExtraLargeFaceView *)&v7 setOverrideDate:v6 duration:a4];
+  dateCopy = date;
+  [(NTKExtraLargeFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
   [(NTKExtraLargeFaceView *)self _initSmallTimeLabelIfNecessary:v7.receiver];
   [(NTKExtraLargeFaceView *)self _initLargeTimeLabelIfNecessary];
-  [(NTKDigitalTimeLabel *)self->_smallTimeLabel setOverrideDate:v6 duration:a4];
-  [(NTKExtraLargeTimeView *)self->_largeTimeLabel setOverrideDate:v6 duration:a4];
+  [(NTKDigitalTimeLabel *)self->_smallTimeLabel setOverrideDate:dateCopy duration:duration];
+  [(NTKExtraLargeTimeView *)self->_largeTimeLabel setOverrideDate:dateCopy duration:duration];
 }
 
 - (void)_applyDataMode
@@ -357,17 +357,17 @@
   [(NTKExtraLargeFaceView *)&v5 _prepareForEditing];
   [(NTKExtraLargeFaceView *)self _initSmallTimeLabelIfNecessary];
   [(NTKExtraLargeFaceView *)self _initLargeTimeLabelIfNecessary];
-  v3 = [(NTKExtraLargeFaceView *)self rootContainerView];
-  v4 = v3;
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
+  v4 = rootContainerView;
   if (self->_complicationIsVisible)
   {
-    [v3 addSubview:self->_largeTimeLabel];
+    [rootContainerView addSubview:self->_largeTimeLabel];
     [(NTKExtraLargeTimeView *)self->_largeTimeLabel setHidden:1];
   }
 
   else
   {
-    [v3 addSubview:self->_smallTimeLabel];
+    [rootContainerView addSubview:self->_smallTimeLabel];
     [(NTKDigitalTimeLabel *)self->_smallTimeLabel setAlpha:0.0];
   }
 
@@ -409,32 +409,32 @@
   [*&self->NTKFaceView_opaque[*v4] setAlpha:1.0];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v13.receiver = self;
   v13.super_class = NTKExtraLargeFaceView;
   [NTKExtraLargeFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  if (a4 != a5)
+  if (mode != editMode)
   {
-    if (a4 == 1 || (v9 = -1.0, a5 == 1))
+    if (mode == 1 || (v9 = -1.0, editMode == 1))
     {
-      [NTKFaceViewController _complicationPickerAlphaForTransitionFraction:a3];
+      [NTKFaceViewController _complicationPickerAlphaForTransitionFraction:fraction];
       v9 = v10;
       [(NTKExtraLargeFaceView *)self _updateComplicationVisibility];
     }
 
-    [(NTKExtraLargeFaceView *)self _smallTimeAlphaForEditMode:a4];
-    [(NTKExtraLargeFaceView *)self _smallTimeAlphaForEditMode:a5];
+    [(NTKExtraLargeFaceView *)self _smallTimeAlphaForEditMode:mode];
+    [(NTKExtraLargeFaceView *)self _smallTimeAlphaForEditMode:editMode];
     CLKInterpolateBetweenFloatsClipped();
     [(NTKDigitalTimeLabel *)self->_smallTimeLabel setAlpha:?];
-    if (a5)
+    if (editMode)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = a4 == 1;
+      v11 = mode == 1;
     }
 
     v12 = -v9;
@@ -449,17 +449,17 @@
 
 - (void)_noteComplicationVisibilityChanged
 {
-  v4 = [(NTKExtraLargeFaceView *)self rootContainerView];
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
   if (self->_complicationIsVisible)
   {
     [(NTKExtraLargeFaceView *)self _initSmallTimeLabelIfNecessary];
-    [v4 addSubview:self->_smallTimeLabel];
+    [rootContainerView addSubview:self->_smallTimeLabel];
   }
 
   else
   {
     [(NTKExtraLargeFaceView *)self _initLargeTimeLabelIfNecessary];
-    [v4 addSubview:self->_largeTimeLabel];
+    [rootContainerView addSubview:self->_largeTimeLabel];
   }
 
   [(NTKExtraLargeTimeView *)self->_largeTimeLabel setHidden:self->_complicationIsVisible];
@@ -467,14 +467,14 @@
   [(NTKDigitalTimeLabel *)self->_smallTimeLabel setHidden:v3];
 }
 
-- (double)_smallTimeAlphaForEditMode:(int64_t)a3
+- (double)_smallTimeAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3 <= 9)
+  if (mode <= 9)
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         return NTKEditModeDimmedAlpha;
       }
@@ -487,7 +487,7 @@ LABEL_7:
     return *&result;
   }
 
-  if (a3 == 10 || a3 == 19)
+  if (mode == 10 || mode == 19)
   {
     goto LABEL_7;
   }
@@ -495,29 +495,29 @@ LABEL_7:
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [(NTKExtraLargeFaceView *)self faceColorPalette:a3];
-  v7 = [v6 primaryColor];
-  [(NTKExtraLargeFaceView *)self setInterpolatedComplicationColor:v7];
+  v6 = [(NTKExtraLargeFaceView *)self faceColorPalette:option];
+  primaryColor = [v6 primaryColor];
+  [(NTKExtraLargeFaceView *)self setInterpolatedComplicationColor:primaryColor];
 
-  v8 = [(NTKExtraLargeFaceView *)self device];
-  v9 = [(NTKExtraLargeFaceView *)self faceColorPalette];
-  v10 = [NTKFaceColorScheme colorSchemeForDevice:v8 withFaceColorPalette:v9 units:1];
+  device = [(NTKExtraLargeFaceView *)self device];
+  faceColorPalette = [(NTKExtraLargeFaceView *)self faceColorPalette];
+  v10 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:faceColorPalette units:1];
   colorScheme = self->_colorScheme;
   self->_colorScheme = v10;
 
   [(NTKExtraLargeFaceView *)self _configureLargeTimeLabelColors];
   [(NTKExtraLargeFaceView *)self _configureSmallTimeLabelColors];
-  v12 = [(NTKExtraLargeFaceView *)self _complicationView];
+  _complicationView = [(NTKExtraLargeFaceView *)self _complicationView];
   objc_opt_class();
-  LOBYTE(v8) = objc_opt_isKindOfClass();
+  LOBYTE(device) = objc_opt_isKindOfClass();
 
-  v15 = [(NTKExtraLargeFaceView *)self _complicationView];
-  if (v8)
+  _complicationView2 = [(NTKExtraLargeFaceView *)self _complicationView];
+  if (device)
   {
-    v13 = [(NTKExtraLargeFaceView *)self faceColorPalette];
-    [v15 applyFaceColorPalette:v13 units:71];
+    faceColorPalette2 = [(NTKExtraLargeFaceView *)self faceColorPalette];
+    [_complicationView2 applyFaceColorPalette:faceColorPalette2 units:71];
   }
 
   else
@@ -530,12 +530,12 @@ LABEL_7:
       return;
     }
 
-    v15 = [(NTKExtraLargeFaceView *)self _complicationView];
+    _complicationView2 = [(NTKExtraLargeFaceView *)self _complicationView];
     [(NTKExtraLargeFaceView *)self _applyFaceColorToRichComplicationView:?];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -543,88 +543,88 @@ LABEL_7:
   v38[3] = &unk_10478;
   v38[4] = self;
   v9 = objc_retainBlock(v38);
-  v10 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
-  v11 = [v10 fromPalette];
-  v12 = (v9[2])(v9, v11, 0);
+  interpolatedColorPalette = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
+  fromPalette = [interpolatedColorPalette fromPalette];
+  v12 = (v9[2])(v9, fromPalette, 0);
 
-  v13 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
-  v14 = [v13 toPalette];
-  v15 = (v9[2])(v9, v14, 0);
+  interpolatedColorPalette2 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
+  toPalette = [interpolatedColorPalette2 toPalette];
+  v15 = (v9[2])(v9, toPalette, 0);
 
   CLKCompressFraction();
   v17 = v16;
   v37 = [NTKFaceColorScheme interpolationFrom:v12 to:v15 fraction:1 brightenUnits:?];
   largeTimeLabel = self->_largeTimeLabel;
-  v19 = [v37 foregroundColor];
-  [(NTKExtraLargeTimeView *)largeTimeLabel setTopColor:v19];
+  foregroundColor = [v37 foregroundColor];
+  [(NTKExtraLargeTimeView *)largeTimeLabel setTopColor:foregroundColor];
 
   CLKCompressFraction();
   v20 = v12;
   v36 = v12;
   v21 = [NTKFaceColorScheme interpolationFrom:v12 to:v15 fraction:1 brightenUnits:?];
   v22 = self->_largeTimeLabel;
-  v23 = [v21 foregroundColor];
-  [(NTKExtraLargeTimeView *)v22 setBottomColor:v23];
+  foregroundColor2 = [v21 foregroundColor];
+  [(NTKExtraLargeTimeView *)v22 setBottomColor:foregroundColor2];
 
-  v24 = [v20 faceColorPalette];
-  v25 = [v15 faceColorPalette];
-  [(NTKExtraLargeFaceView *)self _applyComplicationTransitionFraction:v24 fromColorPalette:v25 toColorPalette:a3];
+  faceColorPalette = [v20 faceColorPalette];
+  faceColorPalette2 = [v15 faceColorPalette];
+  [(NTKExtraLargeFaceView *)self _applyComplicationTransitionFraction:faceColorPalette fromColorPalette:faceColorPalette2 toColorPalette:fraction];
 
   v26 = +[UIColor whiteColor];
-  v27 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
-  v28 = [v27 fromPalette];
-  v29 = (v9[2])(v9, v28, v26);
+  interpolatedColorPalette3 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
+  fromPalette2 = [interpolatedColorPalette3 fromPalette];
+  v29 = (v9[2])(v9, fromPalette2, v26);
 
-  v30 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
-  v31 = [v30 toPalette];
-  v32 = (v9[2])(v9, v31, v26);
+  interpolatedColorPalette4 = [(NTKExtraLargeFaceView *)self interpolatedColorPalette];
+  toPalette2 = [interpolatedColorPalette4 toPalette];
+  v32 = (v9[2])(v9, toPalette2, v26);
 
   v33 = [NTKFaceColorScheme interpolationFrom:v29 to:v32 fraction:1 brightenUnits:v17];
   smallTimeLabel = self->_smallTimeLabel;
-  v35 = [v33 foregroundColor];
-  [(NTKDigitalTimeLabel *)smallTimeLabel setTextColor:v35];
+  foregroundColor3 = [v33 foregroundColor];
+  [(NTKDigitalTimeLabel *)smallTimeLabel setTextColor:foregroundColor3];
 }
 
-- (void)_applyComplicationTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)_applyComplicationTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v19 = a4;
-  v8 = a5;
-  v9 = [(NTKExtraLargeFaceView *)self _complicationView];
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  _complicationView = [(NTKExtraLargeFaceView *)self _complicationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = _complicationView;
     CLKCompressFraction();
-    [v10 applyTransitionFraction:v19 fromFaceColorPalette:v8 toFaceColorPalette:71 units:1 brightenedUnits:?];
+    [v10 applyTransitionFraction:paletteCopy fromFaceColorPalette:colorPaletteCopy toFaceColorPalette:71 units:1 brightenedUnits:?];
 LABEL_3:
 
     goto LABEL_6;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v19 isEqual:v8] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([paletteCopy isEqual:colorPaletteCopy] & 1) == 0)
   {
-    v11 = v9;
-    v12 = [v19 primaryColor];
-    v13 = [v8 primaryColor];
+    v11 = _complicationView;
+    primaryColor = [paletteCopy primaryColor];
+    primaryColor2 = [colorPaletteCopy primaryColor];
     v14 = NTKInterpolateBetweenColors();
-    if (([v19 isMulticolor] & 1) != 0 || objc_msgSend(v8, "isMulticolor"))
+    if (([paletteCopy isMulticolor] & 1) != 0 || objc_msgSend(colorPaletteCopy, "isMulticolor"))
     {
-      v15 = [v8 isMulticolor];
+      isMulticolor = [colorPaletteCopy isMulticolor];
       v16 = 0;
-      if (v15)
+      if (isMulticolor)
       {
-        v17 = v12;
+        v17 = primaryColor;
       }
 
       else
       {
-        v17 = v13;
+        v17 = primaryColor2;
       }
 
-      if (v15)
+      if (isMulticolor)
       {
-        a3 = 1.0 - a3;
+        fraction = 1.0 - fraction;
       }
     }
 
@@ -635,7 +635,7 @@ LABEL_3:
     }
 
     v18 = v17;
-    [(NTKExtraLargeFaceView *)self _applyColor:v18 toRichComplicationView:v11 withFraction:v16 isMonochrome:a3];
+    [(NTKExtraLargeFaceView *)self _applyColor:v18 toRichComplicationView:v11 withFraction:v16 isMonochrome:fraction];
 
     goto LABEL_3;
   }
@@ -643,57 +643,57 @@ LABEL_3:
 LABEL_6:
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v3 = [(NTKExtraLargeFaceView *)self device];
-  sub_6A8C(v3, v6);
+  device = [(NTKExtraLargeFaceView *)self device];
+  sub_6A8C(device, v6);
   v4 = v7;
 
   return v4;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   NTKLargeElementScaleForBreathingFraction();
   v7 = v6;
-  v8 = [(NTKExtraLargeFaceView *)self rootContainerView];
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
   CGAffineTransformMakeScale(&v9, v7, v7);
-  [v8 setTransform:&v9];
+  [rootContainerView setTransform:&v9];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   NTKScaleForRubberBandingFraction();
   v7 = v6;
   NTKAlphaForRubberBandingFraction();
   v9 = v8;
-  v10 = [(NTKExtraLargeFaceView *)self rootContainerView];
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
   CGAffineTransformMakeScale(&v12, v7, v7);
   CGAffineTransformTranslate(&v13, &v12, 0.0, 1.0);
-  [v10 setTransform:&v13];
+  [rootContainerView setTransform:&v13];
 
-  v11 = [(NTKExtraLargeFaceView *)self rootContainerView];
-  [v11 setAlpha:v9];
+  rootContainerView2 = [(NTKExtraLargeFaceView *)self rootContainerView];
+  [rootContainerView2 setAlpha:v9];
 }
 
 - (id)_complicationView
 {
   v2 = [(NTKExtraLargeFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotCenter];
-  v3 = [v2 display];
+  display = [v2 display];
 
-  return v3;
+  return display;
 }
 
 - (void)_configureSmallTimeLabelStyle
 {
-  v14 = [(NTKExtraLargeFaceView *)self _smallTimeLabelFont];
+  _smallTimeLabelFont = [(NTKExtraLargeFaceView *)self _smallTimeLabelFont];
   [(NTKExtraLargeFaceView *)self bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKExtraLargeFaceView *)self device];
-  v12 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v14 applyAdvanceFudge:v11 font:v4 forDevice:v6, v8, v10, 0.0];
+  device = [(NTKExtraLargeFaceView *)self device];
+  v12 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:_smallTimeLabelFont applyAdvanceFudge:device font:v4 forDevice:v6, v8, v10, 0.0];
   smallTimeLabelStyle = self->_smallTimeLabelStyle;
   self->_smallTimeLabelStyle = v12;
 
@@ -702,22 +702,22 @@ LABEL_6:
 
 - (id)_smallTimeLabelFont
 {
-  v3 = [(NTKExtraLargeFaceView *)self device];
-  sub_6A8C(v3, v13);
+  device = [(NTKExtraLargeFaceView *)self device];
+  sub_6A8C(device, v13);
   v4 = v14;
 
-  v5 = [(NTKExtraLargeFaceView *)self device];
+  device2 = [(NTKExtraLargeFaceView *)self device];
   v6 = NTKShowIndicScriptNumerals();
 
   if (v6)
   {
     if (self->_numberSystem != -1)
     {
-      v7 = [(NTKExtraLargeFaceView *)self smallTimeLabelFontScaleFactorForNumberSystemOverrides];
-      v8 = [v7 objectAtIndexedSubscript:self->_numberSystem];
+      smallTimeLabelFontScaleFactorForNumberSystemOverrides = [(NTKExtraLargeFaceView *)self smallTimeLabelFontScaleFactorForNumberSystemOverrides];
+      v8 = [smallTimeLabelFontScaleFactorForNumberSystemOverrides objectAtIndexedSubscript:self->_numberSystem];
       [v8 doubleValue];
 
-      v9 = [(NTKExtraLargeFaceView *)self device];
+      device3 = [(NTKExtraLargeFaceView *)self device];
       CLKRoundForDevice();
       v4 = v10;
     }
@@ -735,9 +735,9 @@ LABEL_6:
 
 - (void)_configureSmallTimeLabelColors
 {
-  v3 = [(NTKFaceColorScheme *)self->_colorScheme containsOverrideFaceColor];
+  containsOverrideFaceColor = [(NTKFaceColorScheme *)self->_colorScheme containsOverrideFaceColor];
   smallTimeLabel = self->_smallTimeLabel;
-  if (v3)
+  if (containsOverrideFaceColor)
   {
     +[UIColor whiteColor];
   }
@@ -753,19 +753,19 @@ LABEL_6:
 - (void)_configureLargeTimeLabelColors
 {
   largeTimeLabel = self->_largeTimeLabel;
-  v4 = [(NTKFaceColorScheme *)self->_colorScheme foregroundColor];
-  [(NTKExtraLargeTimeView *)largeTimeLabel setTopColor:v4];
+  foregroundColor = [(NTKFaceColorScheme *)self->_colorScheme foregroundColor];
+  [(NTKExtraLargeTimeView *)largeTimeLabel setTopColor:foregroundColor];
 
   v5 = self->_largeTimeLabel;
-  v6 = [(NTKFaceColorScheme *)self->_colorScheme foregroundColor];
-  [(NTKExtraLargeTimeView *)v5 setBottomColor:v6];
+  foregroundColor2 = [(NTKFaceColorScheme *)self->_colorScheme foregroundColor];
+  [(NTKExtraLargeTimeView *)v5 setBottomColor:foregroundColor2];
 }
 
 - (void)_updateComplicationVisibility
 {
   complicationIsVisible = self->_complicationIsVisible;
-  v4 = [(NTKExtraLargeFaceView *)self delegate];
-  self->_complicationIsVisible = [v4 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotCenter] ^ 1;
+  delegate = [(NTKExtraLargeFaceView *)self delegate];
+  self->_complicationIsVisible = [delegate faceViewComplicationIsEmptyForSlot:NTKComplicationSlotCenter] ^ 1;
 
   if (self->_complicationIsVisible != complicationIsVisible)
   {
@@ -778,17 +778,17 @@ LABEL_6:
 {
   [(NTKExtraLargeTimeView *)self->_largeTimeLabel setHidden:[(NTKExtraLargeFaceView *)self showContentForUnadornedSnapshot]];
   smallTimeLabel = self->_smallTimeLabel;
-  v4 = [(NTKExtraLargeFaceView *)self showContentForUnadornedSnapshot];
+  showContentForUnadornedSnapshot = [(NTKExtraLargeFaceView *)self showContentForUnadornedSnapshot];
 
-  [(NTKDigitalTimeLabel *)smallTimeLabel setHidden:v4];
+  [(NTKDigitalTimeLabel *)smallTimeLabel setHidden:showContentForUnadornedSnapshot];
 }
 
 - (void)_initSmallTimeLabelIfNecessary
 {
   if (!self->_smallTimeLabel)
   {
-    v3 = [(NTKExtraLargeFaceView *)self device];
-    v4 = [NTKDigitalTimeLabel labelWithOptions:9 forDevice:v3];
+    device = [(NTKExtraLargeFaceView *)self device];
+    v4 = [NTKDigitalTimeLabel labelWithOptions:9 forDevice:device];
     smallTimeLabel = self->_smallTimeLabel;
     self->_smallTimeLabel = v4;
 
@@ -804,8 +804,8 @@ LABEL_6:
   if (!self->_largeTimeLabel)
   {
     v3 = [NTKExtraLargeTimeView alloc];
-    v4 = [(NTKExtraLargeFaceView *)self device];
-    v5 = [v3 initWithFrame:v4 forDevice:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    device = [(NTKExtraLargeFaceView *)self device];
+    v5 = [v3 initWithFrame:device forDevice:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     largeTimeLabel = self->_largeTimeLabel;
     self->_largeTimeLabel = v5;
 
@@ -831,8 +831,8 @@ LABEL_6:
 
   v5 = *&self->NTKFaceView_opaque[*v3];
   [(NTKExtraLargeFaceView *)self setTimeView:v5];
-  v4 = [(NTKExtraLargeFaceView *)self rootContainerView];
-  [v4 addSubview:v5];
+  rootContainerView = [(NTKExtraLargeFaceView *)self rootContainerView];
+  [rootContainerView addSubview:v5];
 }
 
 - (void)_removeTimeViews
@@ -846,23 +846,23 @@ LABEL_6:
   self->_smallTimeLabel = 0;
 }
 
-- (void)_setNumerals:(unint64_t)a3
+- (void)_setNumerals:(unint64_t)numerals
 {
   v4 = CLKLocaleNumberSystemFromNumeralOption();
   if (self->_numberSystem != v4)
   {
     v5 = v4;
     self->_numberSystem = v4;
-    v6 = [(NTKExtraLargeFaceView *)self device];
+    device = [(NTKExtraLargeFaceView *)self device];
     v7 = NTKShowIndicScriptNumerals();
 
     if (v7)
     {
-      v8 = [(NTKExtraLargeFaceView *)self largeTimeLabel];
-      [v8 setForcedNumberSystem:v5];
+      largeTimeLabel = [(NTKExtraLargeFaceView *)self largeTimeLabel];
+      [largeTimeLabel setForcedNumberSystem:v5];
 
-      v9 = [(NTKExtraLargeFaceView *)self smallTimeLabel];
-      [v9 setForcedNumberSystem:v5];
+      smallTimeLabel = [(NTKExtraLargeFaceView *)self smallTimeLabel];
+      [smallTimeLabel setForcedNumberSystem:v5];
 
       [(NTKExtraLargeFaceView *)self _configureSmallTimeLabelStyle];
 

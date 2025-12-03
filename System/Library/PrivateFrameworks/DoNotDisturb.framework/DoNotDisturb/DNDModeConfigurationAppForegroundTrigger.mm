@@ -1,33 +1,33 @@
 @interface DNDModeConfigurationAppForegroundTrigger
-- (BOOL)isEqual:(id)a3;
-- (DNDModeConfigurationAppForegroundTrigger)initWithApplicationIdentifier:(id)a3 enabledSetting:(unint64_t)a4;
-- (DNDModeConfigurationAppForegroundTrigger)initWithBundleIdentifier:(id)a3 enabledSetting:(unint64_t)a4;
-- (DNDModeConfigurationAppForegroundTrigger)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeConfigurationAppForegroundTrigger)initWithApplicationIdentifier:(id)identifier enabledSetting:(unint64_t)setting;
+- (DNDModeConfigurationAppForegroundTrigger)initWithBundleIdentifier:(id)identifier enabledSetting:(unint64_t)setting;
+- (DNDModeConfigurationAppForegroundTrigger)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeConfigurationAppForegroundTrigger
 
-- (DNDModeConfigurationAppForegroundTrigger)initWithBundleIdentifier:(id)a3 enabledSetting:(unint64_t)a4
+- (DNDModeConfigurationAppForegroundTrigger)initWithBundleIdentifier:(id)identifier enabledSetting:(unint64_t)setting
 {
-  v6 = a3;
-  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:v6];
+  identifierCopy = identifier;
+  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:identifierCopy];
 
-  v8 = [(DNDModeConfigurationAppForegroundTrigger *)self initWithApplicationIdentifier:v7 enabledSetting:a4];
+  v8 = [(DNDModeConfigurationAppForegroundTrigger *)self initWithApplicationIdentifier:v7 enabledSetting:setting];
   return v8;
 }
 
-- (DNDModeConfigurationAppForegroundTrigger)initWithApplicationIdentifier:(id)a3 enabledSetting:(unint64_t)a4
+- (DNDModeConfigurationAppForegroundTrigger)initWithApplicationIdentifier:(id)identifier enabledSetting:(unint64_t)setting
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = DNDModeConfigurationAppForegroundTrigger;
-  v7 = [(DNDModeConfigurationTrigger *)&v11 initWithEnabledSetting:a4];
+  v7 = [(DNDModeConfigurationTrigger *)&v11 initWithEnabledSetting:setting];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     applicationIdentifier = v7->_applicationIdentifier;
     v7->_applicationIdentifier = v8;
   }
@@ -43,10 +43,10 @@
   return [(DNDApplicationIdentifier *)self->_applicationIdentifier hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -56,29 +56,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v14.receiver = self;
       v14.super_class = DNDModeConfigurationAppForegroundTrigger;
       if ([(DNDModeConfigurationTrigger *)&v14 isEqual:v5])
       {
-        v6 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
-        v7 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
-        if (v6 == v7)
+        applicationIdentifier = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
+        applicationIdentifier2 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
+        if (applicationIdentifier == applicationIdentifier2)
         {
           v12 = 1;
         }
 
         else
         {
-          v8 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
-          if (v8)
+          applicationIdentifier3 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
+          if (applicationIdentifier3)
           {
-            v9 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
-            if (v9)
+            applicationIdentifier4 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
+            if (applicationIdentifier4)
             {
-              v10 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
-              v11 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
-              v12 = [v10 isEqual:v11];
+              applicationIdentifier5 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
+              applicationIdentifier6 = [(DNDModeConfigurationAppForegroundTrigger *)v5 applicationIdentifier];
+              v12 = [applicationIdentifier5 isEqual:applicationIdentifier6];
             }
 
             else
@@ -113,22 +113,22 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeConfigurationTrigger *)self enabledSetting];
-  v6 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p enabledSetting: %llu; applicationIdentifier: %@>", v4, self, v5, v6];;
+  enabledSetting = [(DNDModeConfigurationTrigger *)self enabledSetting];
+  applicationIdentifier = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p enabledSetting: %llu; applicationIdentifier: %@>", v4, self, enabledSetting, applicationIdentifier];;
 
   return v7;
 }
 
-- (DNDModeConfigurationAppForegroundTrigger)initWithCoder:(id)a3
+- (DNDModeConfigurationAppForegroundTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DNDModeConfigurationAppForegroundTrigger;
-  v5 = [(DNDModeConfigurationTrigger *)&v9 initWithCoder:v4];
+  v5 = [(DNDModeConfigurationTrigger *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
   }
@@ -136,14 +136,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DNDModeConfigurationAppForegroundTrigger;
-  v4 = a3;
-  [(DNDModeConfigurationTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DNDModeConfigurationTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DNDModeConfigurationAppForegroundTrigger *)self applicationIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"applicationIdentifier"];
 }
 
 @end

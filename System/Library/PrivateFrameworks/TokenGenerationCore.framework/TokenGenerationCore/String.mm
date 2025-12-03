@@ -1,5 +1,5 @@
 @interface String
-- (uint64_t):(unint64_t *)a1;
+- (uint64_t):(unint64_t *)self;
 - (unint64_t):;
 @end
 
@@ -19,28 +19,15 @@
   return result;
 }
 
+- (uint64_t):(unint64_t *)self
 {
-  result = lazy protocol witness table cache variable for type [String : [String]] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [String : [String]] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySSSaySSGGMd, &_sSDySSSaySSGGMR);
-    lazy protocol witness table accessor for type [String] and conformance <A> [A](&lazy protocol witness table cache variable for type [String] and conformance <A> [A]);
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [String : [String]] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
-- (uint64_t):(unint64_t *)a1
-{
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySSSay19TokenGenerationCore14AutomationJSONV19RichVariableBindingOGGMd, &_sSDySSSay19TokenGenerationCore14AutomationJSONV19RichVariableBindingOGGMR);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

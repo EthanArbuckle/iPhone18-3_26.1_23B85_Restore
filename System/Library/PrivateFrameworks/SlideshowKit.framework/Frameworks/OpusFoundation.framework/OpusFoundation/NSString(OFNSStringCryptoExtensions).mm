@@ -10,35 +10,35 @@
 
 - (uint64_t)md5Hash
 {
-  v1 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v1 = [self dataUsingEncoding:4 allowLossyConversion:0];
 
   return [v1 md5Hash];
 }
 
 - (uint64_t)md5HashString
 {
-  v1 = [a1 md5Hash];
+  md5Hash = [self md5Hash];
 
-  return [v1 hexaStringRepresentation];
+  return [md5Hash hexaStringRepresentation];
 }
 
 - (uint64_t)sha1HashData
 {
-  v1 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v1 = [self dataUsingEncoding:4 allowLossyConversion:0];
 
   return [v1 sha1Hash];
 }
 
 - (uint64_t)sha1HashString
 {
-  v1 = [a1 sha1HashData];
+  sha1HashData = [self sha1HashData];
 
-  return [v1 hexaStringRepresentation];
+  return [sha1HashData hexaStringRepresentation];
 }
 
 - (uint64_t)hmacSha1Hash:()OFNSStringCryptoExtensions
 {
-  v4 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v4 = [self dataUsingEncoding:4 allowLossyConversion:0];
   v5 = [a3 dataUsingEncoding:4 allowLossyConversion:0];
 
   return [v4 hmacSha1Hash:v5];

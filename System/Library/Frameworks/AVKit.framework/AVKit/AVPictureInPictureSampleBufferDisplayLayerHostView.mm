@@ -1,5 +1,5 @@
 @interface AVPictureInPictureSampleBufferDisplayLayerHostView
-- (AVPictureInPictureSampleBufferDisplayLayerHostView)initWithFrame:(CGRect)a3;
+- (AVPictureInPictureSampleBufferDisplayLayerHostView)initWithFrame:(CGRect)frame;
 - (CGRect)lastKnownBounds;
 - (CGRect)lastKnownFrame;
 - (CGSize)contentDimensions;
@@ -8,9 +8,9 @@
 - (unsigned)contextId;
 - (void)_updateGeometryIfNeeded;
 - (void)layoutSubviews;
-- (void)setBeginTime:(double)a3;
-- (void)setContextId:(unsigned int)a3;
-- (void)setFrame:(CGRect)a3 contentDimensions:(CGSize)a4 imageQueueSize:(CGSize)a5;
+- (void)setBeginTime:(double)time;
+- (void)setContextId:(unsigned int)id;
+- (void)setFrame:(CGRect)frame contentDimensions:(CGSize)dimensions imageQueueSize:(CGSize)size;
 @end
 
 @implementation AVPictureInPictureSampleBufferDisplayLayerHostView
@@ -64,9 +64,9 @@
   if ([(AVPictureInPictureSampleBufferDisplayLayerHostView *)self needsGeometryUpdate]&& ![(AVPictureInPictureSampleBufferDisplayLayerHostView *)self isDeferringGeometryUpdates])
   {
     [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self setNeedsGeometryUpdate:0];
-    v3 = [MEMORY[0x1E69DC888] blackColor];
-    v4 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-    [v4 setBackgroundColor:v3];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    hostView = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+    [hostView setBackgroundColor:blackColor];
 
     [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self bounds];
     x = v61.origin.x;
@@ -80,25 +80,25 @@
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-      [v17 setFrame:{v10, v12, v14, v16}];
+      hostView2 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      [hostView2 setFrame:{v10, v12, v14, v16}];
 
-      v18 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      hostView3 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
       v19 = *(MEMORY[0x1E695EFD0] + 16);
       *&v59.a = *MEMORY[0x1E695EFD0];
       *&v59.c = v19;
       *&v59.tx = *(MEMORY[0x1E695EFD0] + 32);
-      [v18 setTransform:&v59];
+      [hostView3 setTransform:&v59];
     }
 
     else
     {
-      v41 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      hostView4 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
       v42 = *(MEMORY[0x1E695EFD0] + 16);
       *&v59.a = *MEMORY[0x1E695EFD0];
       *&v59.c = v42;
       *&v59.tx = *(MEMORY[0x1E695EFD0] + 32);
-      [v41 setTransform:&v59];
+      [hostView4 setTransform:&v59];
 
       [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self contentDimensions];
       v68.size.width = 1600.0;
@@ -132,20 +132,20 @@
 
       *&v59.a = 0uLL;
       CGAffineTransformMakeScale(&v59, v50, v50);
-      v51 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-      [v51 setFrame:{v43, v44, v45, v46}];
+      hostView5 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      [hostView5 setFrame:{v43, v44, v45, v46}];
 
       v58 = v59;
-      v52 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      hostView6 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
       v57 = v58;
-      [v52 setTransform:&v57];
+      [hostView6 setTransform:&v57];
 
       [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self bounds];
       UIRectGetCenter();
       v54 = v53;
       v56 = v55;
-      v18 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-      [v18 setCenter:{v54, v56}];
+      hostView3 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+      [hostView3 setCenter:{v54, v56}];
     }
   }
 }
@@ -180,16 +180,16 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3 contentDimensions:(CGSize)a4 imageQueueSize:(CGSize)a5
+- (void)setFrame:(CGRect)frame contentDimensions:(CGSize)dimensions imageQueueSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = dimensions.height;
+  v8 = dimensions.width;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self imageQueueSize];
   v16 = height == v15 && width == v14;
   [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self setDeferringGeometryUpdates:1];
@@ -221,45 +221,45 @@
   }
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
-  v5 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-  v4 = [v5 layer];
-  [v4 setBeginTime:a3];
+  hostView = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+  layer = [hostView layer];
+  [layer setBeginTime:time];
 }
 
 - (double)beginTime
 {
-  v2 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-  v3 = [v2 layer];
-  [v3 beginTime];
+  hostView = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+  layer = [hostView layer];
+  [layer beginTime];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setContextId:(unsigned int)a3
+- (void)setContextId:(unsigned int)id
 {
-  v3 = *&a3;
-  v5 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-  v4 = [v5 layer];
-  [v4 setContextId:v3];
+  v3 = *&id;
+  hostView = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+  layer = [hostView layer];
+  [layer setContextId:v3];
 }
 
 - (unsigned)contextId
 {
-  v2 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
-  v3 = [v2 layer];
-  v4 = [v3 contextId];
+  hostView = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)self hostView];
+  layer = [hostView layer];
+  contextId = [layer contextId];
 
-  return v4;
+  return contextId;
 }
 
-- (AVPictureInPictureSampleBufferDisplayLayerHostView)initWithFrame:(CGRect)a3
+- (AVPictureInPictureSampleBufferDisplayLayerHostView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AVPictureInPictureSampleBufferDisplayLayerHostView;
-  v3 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVPictureInPictureSampleBufferDisplayLayerHostView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [AVPictureInPictureCALayerHostView alloc];

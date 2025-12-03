@@ -1,40 +1,40 @@
 @interface PXPlacesMapLayoutResultImpl
 - (NSString)description;
 - (PXPlacesMapLayoutResultImpl)init;
-- (void)addItem:(id)a3;
-- (void)addItems:(id)a3;
-- (void)removeItem:(id)a3;
+- (void)addItem:(id)item;
+- (void)addItems:(id)items;
+- (void)removeItem:(id)item;
 @end
 
 @implementation PXPlacesMapLayoutResultImpl
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapLayoutResultImpl *)self items];
-  [v5 removeObject:v4];
+  itemCopy = item;
+  items = [(PXPlacesMapLayoutResultImpl *)self items];
+  [items removeObject:itemCopy];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapLayoutResultImpl *)self items];
-  [v5 unionOrderedSet:v4];
+  itemsCopy = items;
+  items = [(PXPlacesMapLayoutResultImpl *)self items];
+  [items unionOrderedSet:itemsCopy];
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapLayoutResultImpl *)self items];
-  [v5 addObject:v4];
+  itemCopy = item;
+  items = [(PXPlacesMapLayoutResultImpl *)self items];
+  [items addObject:itemCopy];
 }
 
 - (NSString)description
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PXPlacesMapLayoutResultImpl *)self viewPort];
-  [v3 appendFormat:@"Viewport %@\n", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  viewPort = [(PXPlacesMapLayoutResultImpl *)self viewPort];
+  [string appendFormat:@"Viewport %@\n", viewPort];
 
   v19 = 0u;
   v20 = 0u;
@@ -60,8 +60,8 @@
         v12 = v11;
         [v10 coordinate];
         v14 = v13;
-        v15 = [v10 geotaggables];
-        [v3 appendFormat:@"Item %f, %f has %ld children\n", v12, v14, objc_msgSend(v15, "count")];
+        geotaggables = [v10 geotaggables];
+        [string appendFormat:@"Item %f, %f has %ld children\n", v12, v14, objc_msgSend(geotaggables, "count")];
       }
 
       v7 = [(NSMutableOrderedSet *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -70,7 +70,7 @@
     while (v7);
   }
 
-  return v3;
+  return string;
 }
 
 - (PXPlacesMapLayoutResultImpl)init

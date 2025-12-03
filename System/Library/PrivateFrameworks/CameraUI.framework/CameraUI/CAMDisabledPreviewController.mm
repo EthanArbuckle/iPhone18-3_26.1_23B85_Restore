@@ -2,10 +2,10 @@
 - (BOOL)isPreviewDisabled;
 - (CAMDisabledPreviewController)init;
 - (CAMDisabledPreviewControllerDelegate)delegate;
-- (id)_descriptionForReasons:(id)a3;
-- (id)_descriptionStringForReason:(int64_t)a3;
-- (void)addDisabledPreviewReason:(int64_t)a3;
-- (void)removeDisabledPreviewReason:(int64_t)a3;
+- (id)_descriptionForReasons:(id)reasons;
+- (id)_descriptionStringForReason:(int64_t)reason;
+- (void)addDisabledPreviewReason:(int64_t)reason;
+- (void)removeDisabledPreviewReason:(int64_t)reason;
 @end
 
 @implementation CAMDisabledPreviewController
@@ -29,21 +29,21 @@
 
 - (BOOL)isPreviewDisabled
 {
-  v2 = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
-  v3 = [v2 count] != 0;
+  _reasonsForDisablingPreview = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
+  v3 = [_reasonsForDisablingPreview count] != 0;
 
   return v3;
 }
 
-- (void)addDisabledPreviewReason:(int64_t)a3
+- (void)addDisabledPreviewReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
-  v6 = [v5 count];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 addObject:v7];
+  _reasonsForDisablingPreview = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
+  v6 = [_reasonsForDisablingPreview count];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
+  [_reasonsForDisablingPreview addObject:v7];
 
-  v8 = [v5 count];
+  v8 = [_reasonsForDisablingPreview count];
   if (v6 || !v8)
   {
     if (v6 == v8)
@@ -51,16 +51,16 @@
       goto LABEL_8;
     }
 
-    v11 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    delegate = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:a3];
-      v13 = [(CAMDisabledPreviewController *)self _descriptionForReasons:v5];
+      v12 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:reason];
+      v13 = [(CAMDisabledPreviewController *)self _descriptionForReasons:_reasonsForDisablingPreview];
       v14 = 138543618;
       v15 = v12;
       v16 = 2114;
       v17 = v13;
-      _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "Added disabled preview reason %{public}@: %{public}@", &v14, 0x16u);
+      _os_log_impl(&dword_1A3640000, delegate, OS_LOG_TYPE_DEFAULT, "Added disabled preview reason %{public}@: %{public}@", &v14, 0x16u);
     }
   }
 
@@ -69,28 +69,28 @@
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:a3];
+      v10 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:reason];
       v14 = 138543362;
       v15 = v10;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Disabled preview for reason %{public}@", &v14, 0xCu);
     }
 
-    v11 = [(CAMDisabledPreviewController *)self delegate];
-    [v11 disabledPreviewController:self wantsPreviewDisabledForReason:a3];
+    delegate = [(CAMDisabledPreviewController *)self delegate];
+    [delegate disabledPreviewController:self wantsPreviewDisabledForReason:reason];
   }
 
 LABEL_8:
 }
 
-- (void)removeDisabledPreviewReason:(int64_t)a3
+- (void)removeDisabledPreviewReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
-  v6 = [v5 count];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 removeObject:v7];
+  _reasonsForDisablingPreview = [(CAMDisabledPreviewController *)self _reasonsForDisablingPreview];
+  v6 = [_reasonsForDisablingPreview count];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
+  [_reasonsForDisablingPreview removeObject:v7];
 
-  v8 = [v5 count];
+  v8 = [_reasonsForDisablingPreview count];
   if (!v6 || v8)
   {
     if (v6 == v8)
@@ -98,16 +98,16 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v11 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    delegate = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:a3];
-      v13 = [(CAMDisabledPreviewController *)self _descriptionForReasons:v5];
+      v12 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:reason];
+      v13 = [(CAMDisabledPreviewController *)self _descriptionForReasons:_reasonsForDisablingPreview];
       v14 = 138543618;
       v15 = v12;
       v16 = 2114;
       v17 = v13;
-      _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "Removed disabled preview reason %{public}@: %{public}@", &v14, 0x16u);
+      _os_log_impl(&dword_1A3640000, delegate, OS_LOG_TYPE_DEFAULT, "Removed disabled preview reason %{public}@: %{public}@", &v14, 0x16u);
     }
   }
 
@@ -116,36 +116,36 @@ LABEL_8:
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:a3];
+      v10 = [(CAMDisabledPreviewController *)self _descriptionStringForReason:reason];
       v14 = 138543362;
       v15 = v10;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Enabling disabled preview for final reason %{public}@", &v14, 0xCu);
     }
 
-    v11 = [(CAMDisabledPreviewController *)self delegate];
-    [v11 disabledPreviewController:self wantsPreviewEnabledForReason:a3];
+    delegate = [(CAMDisabledPreviewController *)self delegate];
+    [delegate disabledPreviewController:self wantsPreviewEnabledForReason:reason];
   }
 
 LABEL_8:
 }
 
-- (id)_descriptionStringForReason:(int64_t)a3
+- (id)_descriptionStringForReason:(int64_t)reason
 {
-  if (a3 > 2)
+  if (reason > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FB288[a3];
+    return off_1E76FB288[reason];
   }
 }
 
-- (id)_descriptionForReasons:(id)a3
+- (id)_descriptionForReasons:(id)reasons
 {
-  v4 = a3;
-  if ([v4 count])
+  reasonsCopy = reasons;
+  if ([reasonsCopy count])
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v21[0] = MEMORY[0x1E69E9820];
@@ -153,11 +153,11 @@ LABEL_8:
     v21[2] = __55__CAMDisabledPreviewController__descriptionForReasons___block_invoke;
     v21[3] = &unk_1E76FA878;
     v22 = v5;
-    v23 = self;
+    selfCopy = self;
     v6 = v5;
-    [v4 enumerateObjectsUsingBlock:v21];
-    v7 = [v6 allObjects];
-    v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_27];
+    [reasonsCopy enumerateObjectsUsingBlock:v21];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects sortedArrayUsingComparator:&__block_literal_global_27];
 
     v9 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"(");
     v15 = MEMORY[0x1E69E9820];

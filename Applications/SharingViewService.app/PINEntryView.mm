@@ -3,10 +3,10 @@
 - (int64_t)keyboardType;
 - (void)_updateLabels;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)insertText:(id)text;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setText:(id)text;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation PINEntryView
@@ -24,9 +24,9 @@
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (!self->_text)
   {
     v4 = objc_alloc_init(NSMutableString);
@@ -38,8 +38,8 @@
   if (v6 != [(NSMutableString *)self->_text length])
   {
     v7 = self->_text;
-    v8 = [v9 uppercaseString];
-    [(NSMutableString *)v7 appendString:v8];
+    uppercaseString = [textCopy uppercaseString];
+    [(NSMutableString *)v7 appendString:uppercaseString];
 
     [(PINEntryView *)self _updateLabels];
   }
@@ -127,7 +127,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v33 = self;
+  selfCopy = self;
   v19 = self->_wells;
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v20)
@@ -176,12 +176,12 @@
     while (v21);
   }
 
-  textChangedHandler = v33->_textChangedHandler;
+  textChangedHandler = selfCopy->_textChangedHandler;
   if (textChangedHandler)
   {
-    if (v33->_text)
+    if (selfCopy->_text)
     {
-      text = v33->_text;
+      text = selfCopy->_text;
     }
 
     else
@@ -193,21 +193,21 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PINEntryView;
-  [(PINEntryView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(PINEntryView *)&v5 touchesBegan:began withEvent:event];
   if (!self->_disabled)
   {
     [(PINEntryView *)self becomeFirstResponder];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 uppercaseString];
-  v5 = [v4 mutableCopy];
+  uppercaseString = [text uppercaseString];
+  v5 = [uppercaseString mutableCopy];
   text = self->_text;
   self->_text = v5;
 
@@ -230,10 +230,10 @@
   return v4;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  self->_disabled = a3;
-  if (a3)
+  self->_disabled = disabled;
+  if (disabled)
   {
     [(PINEntryView *)self resignFirstResponder];
   }

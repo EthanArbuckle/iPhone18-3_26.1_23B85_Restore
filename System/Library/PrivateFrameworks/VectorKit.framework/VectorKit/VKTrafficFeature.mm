@@ -1,20 +1,20 @@
 @interface VKTrafficFeature
-+ (id)newTrafficFeatureForEnrouteNotice:(id)a3 onRoute:(id)a4;
-+ (id)stringForFeatureType:(int64_t)a3;
-+ (id)stringForNavState:(int64_t)a3;
++ (id)newTrafficFeatureForEnrouteNotice:(id)notice onRoute:(id)route;
++ (id)stringForFeatureType:(int64_t)type;
++ (id)stringForNavState:(int64_t)state;
 - ($1AB5FA073B851C12C2339EC22442E995)position;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GEOFeatureStyleAttributes)styleAttributes;
 - (Mercator3<double>)mercatorPoint;
-- (VKTrafficFeature)initWithEnrouteNotice:(id)a3 onRoute:(id)a4;
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 direction:(double)a6 routeOffset:(PolylineCoordinate)a7 routeOffsetInMeters:(double)a8;
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 onRoute:(id)a6;
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 routeOffset:(PolylineCoordinate)a5 onRoute:(id)a6;
+- (VKTrafficFeature)initWithEnrouteNotice:(id)notice onRoute:(id)route;
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position direction:(double)direction routeOffset:(PolylineCoordinate)offset routeOffsetInMeters:(double)meters;
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position onRoute:(id)route;
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier routeOffset:(PolylineCoordinate)offset onRoute:(id)route;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (vector<GeoCodecsFeatureStylePair,)attributes;
-- (void)populateDebugNode:(void *)a3;
-- (void)updateNavigationStateForRouteUserOffset:(const PolylineCoordinate *)a3;
+- (void)populateDebugNode:(void *)node;
+- (void)updateNavigationStateForRouteUserOffset:(const PolylineCoordinate *)offset;
 @end
 
 @implementation VKTrafficFeature
@@ -49,23 +49,23 @@
   return result;
 }
 
-- (void)populateDebugNode:(void *)a3
+- (void)populateDebugNode:(void *)node
 {
   v20 = *MEMORY[0x1E69E9840];
   std::string::basic_string[abi:nn200100]<0>(&v17, "Identifer");
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    v6 = [(NSString *)uniqueIdentifier UTF8String];
+    uTF8String = [(NSString *)uniqueIdentifier UTF8String];
   }
 
   else
   {
-    v6 = "";
+    uTF8String = "";
   }
 
-  gdc::DebugTreeValue::DebugTreeValue(v14, v6);
-  gdc::DebugTreeNode::addProperty(a3, &v17, v14);
+  gdc::DebugTreeValue::DebugTreeValue(v14, uTF8String);
+  gdc::DebugTreeNode::addProperty(node, &v17, v14);
   if (v16 < 0)
   {
     operator delete(v15);
@@ -80,7 +80,7 @@
   v7 = [VKTrafficFeature stringForFeatureType:self->_trafficFeatureType];
   v8 = v7;
   gdc::DebugTreeValue::DebugTreeValue(v11, [v7 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v17, v11);
+  gdc::DebugTreeNode::addProperty(node, &v17, v11);
   if (v13 < 0)
   {
     operator delete(__p);
@@ -98,14 +98,14 @@
   std::vector<gdc::DebugTreeValue>::__init_with_size[abi:nn200100]<gdc::DebugTreeValue const*,gdc::DebugTreeValue const*>(v9, &v17, &v20, 2uLL);
 }
 
-- (void)updateNavigationStateForRouteUserOffset:(const PolylineCoordinate *)a3
+- (void)updateNavigationStateForRouteUserOffset:(const PolylineCoordinate *)offset
 {
-  v5 = [(VKTrafficFeature *)self routeOffset];
-  index = a3->index;
-  if (a3->index < v5.index || (index == v5.index ? (v7 = a3->offset <= v5.offset) : (v7 = 0), v7))
+  routeOffset = [(VKTrafficFeature *)self routeOffset];
+  index = offset->index;
+  if (offset->index < routeOffset.index || (index == routeOffset.index ? (v7 = offset->offset <= routeOffset.offset) : (v7 = 0), v7))
   {
     v9 = self->_approachingRouteOffset.index;
-    if ((v9 != *MEMORY[0x1E69A1918] || vabds_f32(self->_approachingRouteOffset.offset, *(MEMORY[0x1E69A1918] + 4)) >= 0.00000011921) && (index > v9 || index == v9 && a3->offset > self->_approachingRouteOffset.offset))
+    if ((v9 != *MEMORY[0x1E69A1918] || vabds_f32(self->_approachingRouteOffset.offset, *(MEMORY[0x1E69A1918] + 4)) >= 0.00000011921) && (index > v9 || index == v9 && offset->offset > self->_approachingRouteOffset.offset))
     {
       v8 = 2;
     }
@@ -149,19 +149,19 @@
   v179 = var0;
   std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v178);
   retstr->var1 = v7;
-  v12 = self;
+  selfCopy = self;
   if ([(VKTrafficFeature *)self navigationState])
   {
-    v13 = self;
-    v14 = [(VKTrafficFeature *)self navigationState];
-    if (v14 > 4)
+    selfCopy2 = self;
+    navigationState = [(VKTrafficFeature *)self navigationState];
+    if (navigationState > 4)
     {
       v15 = -4294901751;
     }
 
     else
     {
-      v15 = qword_1B3418138[v14];
+      v15 = qword_1B3418138[navigationState];
     }
 
     var1 = retstr->var1;
@@ -194,7 +194,7 @@
       v182 = v177;
       if (v22)
       {
-        v23 = mdm::zone_mallocator::instance(v14);
+        v23 = mdm::zone_mallocator::instance(navigationState);
         v24 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v23, v22);
       }
 
@@ -228,11 +228,11 @@
       v18 = var1 + 1;
     }
 
-    v12 = v13;
+    selfCopy = selfCopy2;
     retstr->var1 = v18;
   }
 
-  trafficFeatureType = v12->_trafficFeatureType;
+  trafficFeatureType = selfCopy->_trafficFeatureType;
   if (trafficFeatureType <= 2)
   {
     if (trafficFeatureType != 1)
@@ -242,17 +242,17 @@
         goto LABEL_160;
       }
 
-      v176 = v12;
-      v9 = v12;
-      v31 = [(GeoCodecsFeatureStylePair *)v9 type];
-      if (v31 >= 3)
+      v176 = selfCopy;
+      v9 = selfCopy;
+      type = [(GeoCodecsFeatureStylePair *)v9 type];
+      if (type >= 3)
       {
         v32 = -4294901682;
       }
 
       else
       {
-        v32 = ((v31 << 32) | 0x10008) + 70;
+        v32 = ((type << 32) | 0x10008) + 70;
       }
 
       v34 = retstr->var1;
@@ -285,7 +285,7 @@
         v182 = v177;
         if (v78)
         {
-          v79 = mdm::zone_mallocator::instance(v31);
+          v79 = mdm::zone_mallocator::instance(type);
           v80 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v79, v78);
         }
 
@@ -325,8 +325,8 @@
         goto LABEL_159;
       }
 
-      v110 = [(GeoCodecsFeatureStylePair *)v9 countryCode];
-      v111 = v110;
+      countryCode = [(GeoCodecsFeatureStylePair *)v9 countryCode];
+      v111 = countryCode;
       v67 = retstr->var1;
       v112 = retstr->var2;
       if (v67 >= v112)
@@ -358,7 +358,7 @@
         if (v116)
         {
 LABEL_108:
-          v117 = mdm::zone_mallocator::instance(v110);
+          v117 = mdm::zone_mallocator::instance(countryCode);
           v118 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v117, v116);
 LABEL_156:
           v132 = &v118[8 * v113];
@@ -393,8 +393,8 @@ LABEL_146:
       goto LABEL_147;
     }
 
-    v176 = v12;
-    v38 = v12;
+    v176 = selfCopy;
+    v38 = selfCopy;
     v9 = v38;
     v40 = retstr->var1;
     v39 = retstr->var2;
@@ -461,17 +461,17 @@ LABEL_146:
     }
 
     retstr->var1 = v41;
-    v101 = [(GeoCodecsFeatureStylePair *)v9 type];
-    v102 = [(GeoCodecsFeatureStylePair *)v9 isAboveSpeedThreshold];
-    if (v101 <= 2)
+    type2 = [(GeoCodecsFeatureStylePair *)v9 type];
+    isAboveSpeedThreshold = [(GeoCodecsFeatureStylePair *)v9 isAboveSpeedThreshold];
+    if (type2 <= 2)
     {
-      switch(v101)
+      switch(type2)
       {
         case 0:
           v103 = 65602;
           goto LABEL_132;
         case 1:
-          if (v102)
+          if (isAboveSpeedThreshold)
           {
             v103 = 0x100010042;
           }
@@ -512,7 +512,7 @@ LABEL_132:
             v182 = v177;
             if (v141)
             {
-              v142 = mdm::zone_mallocator::instance(v102);
+              v142 = mdm::zone_mallocator::instance(isAboveSpeedThreshold);
               v143 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v142, v141);
             }
 
@@ -552,8 +552,8 @@ LABEL_132:
             goto LABEL_159;
           }
 
-          v110 = [(GeoCodecsFeatureStylePair *)v9 countryCode];
-          v111 = v110;
+          countryCode = [(GeoCodecsFeatureStylePair *)v9 countryCode];
+          v111 = countryCode;
           v67 = retstr->var1;
           v150 = retstr->var2;
           if (v67 >= v150)
@@ -599,9 +599,9 @@ LABEL_132:
 
     else
     {
-      if (v101 <= 4)
+      if (type2 <= 4)
       {
-        if (v101 == 3)
+        if (type2 == 3)
         {
           v103 = 0x400010042;
         }
@@ -614,13 +614,13 @@ LABEL_132:
         goto LABEL_132;
       }
 
-      if (v101 == 5)
+      if (type2 == 5)
       {
         v103 = 0x600010042;
         goto LABEL_132;
       }
 
-      if (v101 == 6)
+      if (type2 == 6)
       {
         v103 = 0x700010042;
         goto LABEL_132;
@@ -633,24 +633,24 @@ LABEL_132:
 
   if (trafficFeatureType == 3)
   {
-    v176 = v12;
-    v9 = v12;
+    v176 = selfCopy;
+    v9 = selfCopy;
     for (i = 0; ; ++i)
     {
-      v43 = [(GeoCodecsFeatureStylePair *)v9 _originalStyleAttributes];
-      v44 = [v43 attributesCount];
+      _originalStyleAttributes = [(GeoCodecsFeatureStylePair *)v9 _originalStyleAttributes];
+      attributesCount = [_originalStyleAttributes attributesCount];
 
-      if (i >= v44)
+      if (i >= attributesCount)
       {
         break;
       }
 
-      v46 = [(GeoCodecsFeatureStylePair *)v9 _originalStyleAttributes];
-      v47 = [v46 attributeAtIndex:i];
+      _originalStyleAttributes2 = [(GeoCodecsFeatureStylePair *)v9 _originalStyleAttributes];
+      v47 = [_originalStyleAttributes2 attributeAtIndex:i];
 
       v48 = [v47 key];
-      v49 = [v47 value];
-      v50 = v49;
+      value = [v47 value];
+      v50 = value;
       v52 = retstr->var1;
       v51 = retstr->var2;
       if (v52 >= v51)
@@ -681,7 +681,7 @@ LABEL_132:
         v182 = v177;
         if (v57)
         {
-          v58 = mdm::zone_mallocator::instance(v49);
+          v58 = mdm::zone_mallocator::instance(value);
           v59 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v58, v57);
         }
 
@@ -711,7 +711,7 @@ LABEL_132:
 
       else
       {
-        *v52 = (v48 | (v49 << 32));
+        *v52 = (v48 | (value << 32));
         v53 = v52 + 1;
       }
 
@@ -773,17 +773,17 @@ LABEL_132:
       goto LABEL_160;
     }
 
-    v176 = v12;
-    v9 = v12;
-    v36 = [(GeoCodecsFeatureStylePair *)v9 type];
-    if (v36 >= 0xF)
+    v176 = selfCopy;
+    v9 = selfCopy;
+    type3 = [(GeoCodecsFeatureStylePair *)v9 type];
+    if (type3 >= 0xF)
     {
-      v37 = v36;
+      v37 = type3;
     }
 
     else
     {
-      v37 = dword_1B34180F8[v36];
+      v37 = dword_1B34180F8[type3];
     }
 
     v82 = retstr->var1;
@@ -816,7 +816,7 @@ LABEL_132:
       v182 = v177;
       if (v86)
       {
-        v87 = mdm::zone_mallocator::instance(v36);
+        v87 = mdm::zone_mallocator::instance(type3);
         v88 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v87, v86);
       }
 
@@ -841,7 +841,7 @@ LABEL_132:
       v181 = v124;
       v178 = v123;
       v179 = v123;
-      v36 = std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v178);
+      type3 = std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v178);
     }
 
     else
@@ -880,7 +880,7 @@ LABEL_132:
       v182 = v177;
       if (v129)
       {
-        v130 = mdm::zone_mallocator::instance(v36);
+        v130 = mdm::zone_mallocator::instance(type3);
         v131 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v130, v129);
       }
 
@@ -905,15 +905,15 @@ LABEL_158:
   retstr->var1 = v151;
 LABEL_159:
 
-  v12 = v176;
+  selfCopy = v176;
 LABEL_160:
-  result = [(VKTrafficFeature *)v12 routeLegWhen];
+  result = [(VKTrafficFeature *)selfCopy routeLegWhen];
   if ((result & 0x100) == 0)
   {
     return result;
   }
 
-  result = [(VKTrafficFeature *)v12 routeLegWhen];
+  result = [(VKTrafficFeature *)selfCopy routeLegWhen];
   if ((result & 0x100) == 0)
   {
     v175 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -993,11 +993,11 @@ LABEL_174:
 - (GEOFeatureStyleAttributes)styleAttributes
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    [(VKTrafficFeature *)v2 attributes];
+    [(VKTrafficFeature *)selfCopy attributes];
   }
 
   else
@@ -1012,10 +1012,10 @@ LABEL_174:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -1025,10 +1025,10 @@ LABEL_174:
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       uniqueIdentifier = self->_uniqueIdentifier;
-      v9 = [(VKTrafficFeature *)v7 uniqueIdentifier];
-      LOBYTE(uniqueIdentifier) = [(NSString *)uniqueIdentifier isEqualToString:v9];
+      uniqueIdentifier = [(VKTrafficFeature *)v7 uniqueIdentifier];
+      LOBYTE(uniqueIdentifier) = [(NSString *)uniqueIdentifier isEqualToString:uniqueIdentifier];
 
       v6 = 0;
       if (uniqueIdentifier)
@@ -1042,11 +1042,11 @@ LABEL_174:
             groupItemHorizontalDisplayOrder = self->_groupItemHorizontalDisplayOrder;
             if (groupItemHorizontalDisplayOrder == [(VKTrafficFeature *)v7 groupItemHorizontalDisplayOrder])
             {
-              v13 = [(VKTrafficFeature *)v7 routeOffset];
-              if (self->_routeOffset.index == v13 && vabds_f32(self->_routeOffset.offset, *(&v13 + 1)) < 0.00000011921)
+              routeOffset = [(VKTrafficFeature *)v7 routeOffset];
+              if (self->_routeOffset.index == routeOffset && vabds_f32(self->_routeOffset.offset, *(&routeOffset + 1)) < 0.00000011921)
               {
-                v14 = [(VKTrafficFeature *)v7 approachingRouteOffset];
-                if (self->_approachingRouteOffset.index == v14 && fabsf(self->_approachingRouteOffset.offset - *(&v14 + 1)) < 0.00000011921)
+                approachingRouteOffset = [(VKTrafficFeature *)v7 approachingRouteOffset];
+                if (self->_approachingRouteOffset.index == approachingRouteOffset && fabsf(self->_approachingRouteOffset.offset - *(&approachingRouteOffset + 1)) < 0.00000011921)
                 {
                   v6 = 1;
                 }
@@ -1066,7 +1066,7 @@ LABEL_174:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -1096,12 +1096,12 @@ LABEL_174:
   return v5;
 }
 
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 direction:(double)a6 routeOffset:(PolylineCoordinate)a7 routeOffsetInMeters:(double)a8
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position direction:(double)direction routeOffset:(PolylineCoordinate)offset routeOffsetInMeters:(double)meters
 {
-  var2 = a5.var2;
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v16 = a4;
+  var2 = position.var2;
+  var1 = position.var1;
+  var0 = position.var0;
+  identifierCopy = identifier;
   v30.receiver = self;
   v30.super_class = VKTrafficFeature;
   v17 = [(VKTrafficFeature *)&v30 init];
@@ -1109,15 +1109,15 @@ LABEL_174:
   if (v17)
   {
     v17->_shouldUpdateStyle = 0;
-    v17->_trafficFeatureType = a3;
+    v17->_trafficFeatureType = type;
     *&v17->_minZoom = 0x42C8000000000000;
-    objc_storeStrong(&v17->_uniqueIdentifier, a4);
+    objc_storeStrong(&v17->_uniqueIdentifier, identifier);
     v18[6].index = 0;
     LOBYTE(v18[17].index) = 0;
     v18[14] = 0;
     v18[12] = *MEMORY[0x1E69A1918];
-    v18[13] = a7;
-    *&v18[7] = a8;
+    v18[13] = offset;
+    *&v18[7] = meters;
     v18[5].index = -1;
     v18[5].offset = 0.0;
     *&v18[9] = var0;
@@ -1131,28 +1131,28 @@ LABEL_174:
 
     *&v18[2].index = vmlaq_f64(_Q1, xmmword_1B33B0700, v21);
     *&v18[4] = var2;
-    *&v18[8] = a6;
+    *&v18[8] = direction;
     v27 = v18;
   }
 
   return v18;
 }
 
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 routeOffset:(PolylineCoordinate)a5 onRoute:(id)a6
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier routeOffset:(PolylineCoordinate)offset onRoute:(id)route
 {
-  v24 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  offsetCopy = offset;
+  identifierCopy = identifier;
+  routeCopy = route;
+  v12 = routeCopy;
+  if (routeCopy)
   {
-    [v11 pointWithAltitudeCorrectionAtRouteCoordinate:a5];
+    [routeCopy pointWithAltitudeCorrectionAtRouteCoordinate:offset];
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v12 distanceFromPoint:0 toPoint:a5];
+    [v12 distanceFromPoint:0 toPoint:offset];
     v20 = v19;
-    v21 = VKTrafficFeatureDirection(&v24, v12);
+    v21 = VKTrafficFeatureDirection(&offsetCopy, v12);
   }
 
   else
@@ -1164,22 +1164,22 @@ LABEL_174:
     v14 = -180.0;
   }
 
-  v22 = [(VKTrafficFeature *)self initWithFeatureType:a3 uniqueIdentifier:v10 position:a5 direction:v14 routeOffset:v16 routeOffsetInMeters:v18, v21, v20];
+  v22 = [(VKTrafficFeature *)self initWithFeatureType:type uniqueIdentifier:identifierCopy position:offset direction:v14 routeOffset:v16 routeOffsetInMeters:v18, v21, v20];
 
   return v22;
 }
 
-- (VKTrafficFeature)initWithFeatureType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 onRoute:(id)a6
+- (VKTrafficFeature)initWithFeatureType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position onRoute:(id)route
 {
-  var2 = a5.var2;
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  var2 = position.var2;
+  var1 = position.var1;
+  var0 = position.var0;
+  identifierCopy = identifier;
+  routeCopy = route;
+  v14 = routeCopy;
+  if (routeCopy)
   {
-    v15 = [v13 closestPointOnRoute:{var0, var1}];
+    v15 = [routeCopy closestPointOnRoute:{var0, var1}];
     v22 = v15;
     [v14 distanceFromPoint:0 toPoint:v15];
     v17 = v16;
@@ -1198,48 +1198,48 @@ LABEL_174:
     v18 = -1.0;
   }
 
-  v20 = [(VKTrafficFeature *)self initWithFeatureType:a3 uniqueIdentifier:v12 position:v15 direction:var0 routeOffset:var1 routeOffsetInMeters:var2, v18, v17];
+  v20 = [(VKTrafficFeature *)self initWithFeatureType:type uniqueIdentifier:identifierCopy position:v15 direction:var0 routeOffset:var1 routeOffsetInMeters:var2, v18, v17];
 
   return v20;
 }
 
-- (VKTrafficFeature)initWithEnrouteNotice:(id)a3 onRoute:(id)a4
+- (VKTrafficFeature)initWithEnrouteNotice:(id)notice onRoute:(id)route
 {
-  v6 = a3;
-  v7 = a4;
+  noticeCopy = notice;
+  routeCopy = route;
   v42.receiver = self;
   v42.super_class = VKTrafficFeature;
   v8 = [(VKTrafficFeature *)&v42 init];
   if (v8)
   {
-    v9 = [v6 trafficSignal];
-    if (v9 || ([v6 trafficCamera], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    trafficSignal = [noticeCopy trafficSignal];
+    if (trafficSignal || ([noticeCopy trafficCamera], (trafficSignal = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v12 = [v6 routeAnnotation];
+      routeAnnotation = [noticeCopy routeAnnotation];
 
-      if (!v12)
+      if (!routeAnnotation)
       {
         goto LABEL_37;
       }
     }
 
     v8->_shouldUpdateStyle = 0;
-    v10 = [v6 trafficSignal];
+    trafficSignal2 = [noticeCopy trafficSignal];
 
-    if (v10)
+    if (trafficSignal2)
     {
       v11 = 2;
     }
 
     else
     {
-      v13 = [v6 trafficCamera];
+      trafficCamera = [noticeCopy trafficCamera];
 
-      if (v13)
+      if (trafficCamera)
       {
         v11 = 1;
       }
@@ -1253,59 +1253,59 @@ LABEL_174:
     v8->_trafficFeatureType = v11;
     *&v8->_minZoom = 0x42C8000000000000;
     v8->_state = 0;
-    v14 = [v6 identifier];
+    identifier = [noticeCopy identifier];
     uniqueIdentifier = v8->_uniqueIdentifier;
-    v8->_uniqueIdentifier = v14;
+    v8->_uniqueIdentifier = identifier;
 
-    if ([v6 hasGroupIdentifier])
+    if ([noticeCopy hasGroupIdentifier])
     {
-      v16 = [v6 groupIdentifier];
+      groupIdentifier = [noticeCopy groupIdentifier];
     }
 
     else
     {
-      v16 = -1;
+      groupIdentifier = -1;
     }
 
-    v8->_groupIdentifier = v16;
-    v17 = [v6 hasGroupItemVerticalDisplayOrder];
-    if (v17)
+    v8->_groupIdentifier = groupIdentifier;
+    hasGroupItemVerticalDisplayOrder = [noticeCopy hasGroupItemVerticalDisplayOrder];
+    if (hasGroupItemVerticalDisplayOrder)
     {
-      v17 = [v6 groupItemVerticalDisplayOrder];
+      hasGroupItemVerticalDisplayOrder = [noticeCopy groupItemVerticalDisplayOrder];
     }
 
-    v8->_groupItemVerticalDisplayOrder = v17;
-    v18 = [v6 hasGroupItemHorizontalDisplayOrder];
-    if (v18)
+    v8->_groupItemVerticalDisplayOrder = hasGroupItemVerticalDisplayOrder;
+    hasGroupItemHorizontalDisplayOrder = [noticeCopy hasGroupItemHorizontalDisplayOrder];
+    if (hasGroupItemHorizontalDisplayOrder)
     {
-      v18 = [v6 groupItemHorizontalDisplayOrder];
+      hasGroupItemHorizontalDisplayOrder = [noticeCopy groupItemHorizontalDisplayOrder];
     }
 
-    v8->_groupItemHorizontalDisplayOrder = v18;
-    v19 = [v6 hasHighlightDistance];
-    if (v19)
+    v8->_groupItemHorizontalDisplayOrder = hasGroupItemHorizontalDisplayOrder;
+    hasHighlightDistance = [noticeCopy hasHighlightDistance];
+    if (hasHighlightDistance)
     {
-      v19 = [v6 highlightDistance];
+      hasHighlightDistance = [noticeCopy highlightDistance];
     }
 
-    v8->_approachingDistanceInMeters = v19;
+    v8->_approachingDistanceInMeters = hasHighlightDistance;
     v8->_approachingRouteOffset = *MEMORY[0x1E69A1918];
-    if (v7 && v19)
+    if (routeCopy && hasHighlightDistance)
     {
-      v8->_approachingRouteOffset = [v7 routeCoordinateAtDistance:objc_msgSend(v6 beforeRouteCoordinate:{"routeCoordinate"), v19}];
+      v8->_approachingRouteOffset = [routeCopy routeCoordinateAtDistance:objc_msgSend(noticeCopy beforeRouteCoordinate:{"routeCoordinate"), hasHighlightDistance}];
     }
 
-    if ([v6 hasPriority])
+    if ([noticeCopy hasPriority])
     {
-      v20 = [v6 priority];
-      if (v20 >= 0xFF)
+      priority = [noticeCopy priority];
+      if (priority >= 0xFF)
       {
         v21 = -1;
       }
 
       else
       {
-        v21 = v20;
+        v21 = priority;
       }
     }
 
@@ -1315,11 +1315,11 @@ LABEL_174:
     }
 
     v8->_collisionPriority = v21;
-    v22 = [v6 routeCoordinate];
-    v8->_routeOffset = v22;
-    if (v7)
+    routeCoordinate = [noticeCopy routeCoordinate];
+    v8->_routeOffset = routeCoordinate;
+    if (routeCopy)
     {
-      [v7 pointWithAltitudeCorrectionAtRouteCoordinate:v22];
+      [routeCopy pointWithAltitudeCorrectionAtRouteCoordinate:routeCoordinate];
       v24 = v23;
     }
 
@@ -1328,11 +1328,11 @@ LABEL_174:
       v24 = 0x7FEFFFFFFFFFFFFFLL;
     }
 
-    v25 = [v6 position];
-    [v25 lat];
+    position = [noticeCopy position];
+    [position lat];
     v27 = v26;
-    v28 = [v6 position];
-    [v28 lng];
+    position2 = [noticeCopy position];
+    [position2 lng];
     v8->_position.latitude = v27;
     v8->_position.longitude = v29;
     *&v8->_position.altitude = v24;
@@ -1346,11 +1346,11 @@ LABEL_174:
 
     *&v8->_worldPoint.x = vmlaq_f64(_Q1, xmmword_1B33B0700, v32);
     *&v8->_worldPoint.z = v24;
-    if (v7)
+    if (routeCopy)
     {
-      [v7 distanceFromPoint:0 toPoint:*&v8->_routeOffset];
+      [routeCopy distanceFromPoint:0 toPoint:*&v8->_routeOffset];
       v8->_routeOffsetInMeters = v38;
-      v39 = VKTrafficFeatureDirection(&v8->_routeOffset, v7);
+      v39 = VKTrafficFeatureDirection(&v8->_routeOffset, routeCopy);
     }
 
     else
@@ -1360,82 +1360,82 @@ LABEL_174:
     }
 
     v8->_facingAzimuth = v39;
-    v12 = v8;
+    routeAnnotation = v8;
   }
 
   else
   {
-    v12 = 0;
+    routeAnnotation = 0;
   }
 
 LABEL_37:
 
-  return v12;
+  return routeAnnotation;
 }
 
-+ (id)stringForNavState:(int64_t)a3
++ (id)stringForNavState:(int64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B3D520[a3];
+    return off_1E7B3D520[state];
   }
 }
 
-+ (id)stringForFeatureType:(int64_t)a3
++ (id)stringForFeatureType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B3D4F8[a3];
+    return off_1E7B3D4F8[type];
   }
 }
 
-+ (id)newTrafficFeatureForEnrouteNotice:(id)a3 onRoute:(id)a4
++ (id)newTrafficFeatureForEnrouteNotice:(id)notice onRoute:(id)route
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 trafficCamera];
+  noticeCopy = notice;
+  routeCopy = route;
+  trafficCamera = [noticeCopy trafficCamera];
 
-  if (v7)
+  if (trafficCamera)
   {
     v8 = [VKTrafficCameraFeature alloc];
-    v9 = [v5 trafficCamera];
-    v10 = [(VKTrafficCameraFeature *)v8 initWithTrafficCamera:v9 onRoute:v6];
+    trafficCamera2 = [noticeCopy trafficCamera];
+    v10 = [(VKTrafficCameraFeature *)v8 initWithTrafficCamera:trafficCamera2 onRoute:routeCopy];
   }
 
   else
   {
-    v11 = [v5 trafficSignal];
+    trafficSignal = [noticeCopy trafficSignal];
 
-    if (v11)
+    if (trafficSignal)
     {
       v12 = [VKTrafficSignalFeature alloc];
-      v9 = [v5 trafficSignal];
-      v10 = [(VKTrafficSignalFeature *)v12 initWithTrafficSignal:v9 onRoute:v6];
+      trafficCamera2 = [noticeCopy trafficSignal];
+      v10 = [(VKTrafficSignalFeature *)v12 initWithTrafficSignal:trafficCamera2 onRoute:routeCopy];
     }
 
     else
     {
-      v13 = [v5 routeAnnotation];
+      routeAnnotation = [noticeCopy routeAnnotation];
 
-      if (!v13)
+      if (!routeAnnotation)
       {
         v15 = 0;
         goto LABEL_8;
       }
 
       v14 = [VKRouteAnnotation alloc];
-      v9 = [v5 routeAnnotation];
-      v10 = [(VKRouteAnnotation *)v14 initWithRouteAnnotation:v9 onRoute:v6];
+      trafficCamera2 = [noticeCopy routeAnnotation];
+      v10 = [(VKRouteAnnotation *)v14 initWithRouteAnnotation:trafficCamera2 onRoute:routeCopy];
     }
   }
 

@@ -1,109 +1,109 @@
 @interface ACAccountStore
 + (ACAccountStore)defaultStore;
-+ (BOOL)canSaveAccountsOfAccountTypeIdentifier:(id)a3;
++ (BOOL)canSaveAccountsOfAccountTypeIdentifier:(id)identifier;
 + (id)_obsoleteAccountTypeIDsToRemove;
-+ (int)accountsWithAccountTypeIdentifierExist:(id)a3;
-+ (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)a3;
-- (ACAccountStore)initWithRemoteEndpoint:(id)a3 effectiveBundleID:(id)a4;
++ (int)accountsWithAccountTypeIdentifierExist:(id)exist;
++ (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)identifier;
+- (ACAccountStore)initWithRemoteEndpoint:(id)endpoint effectiveBundleID:(id)d;
 - (ACRemoteAccountStoreSession)longLivedRemoteAccountStoreSession;
 - (ACRemoteAccountStoreSession)remoteAccountStoreSession;
-- (BOOL)addClientToken:(id)a3 forAccount:(id)a4;
-- (BOOL)hasAccountWithDescription:(id)a3;
-- (BOOL)isPerformingDataclassActionsForAccount:(id)a3 error:(id *)a4;
-- (BOOL)isPushSupportedForAccount:(id)a3;
-- (BOOL)isTetheredSyncingEnabledForDataclass:(id)a3;
-- (BOOL)permissionForAccountType:(id)a3;
-- (BOOL)saveVerifiedAccount:(id)a3 error:(id *)a4;
-- (BOOL)triggerKeychainMigrationIfNecessary:(id *)a3;
+- (BOOL)addClientToken:(id)token forAccount:(id)account;
+- (BOOL)hasAccountWithDescription:(id)description;
+- (BOOL)isPerformingDataclassActionsForAccount:(id)account error:(id *)error;
+- (BOOL)isPushSupportedForAccount:(id)account;
+- (BOOL)isTetheredSyncingEnabledForDataclass:(id)dataclass;
+- (BOOL)permissionForAccountType:(id)type;
+- (BOOL)saveVerifiedAccount:(id)account error:(id *)error;
+- (BOOL)triggerKeychainMigrationIfNecessary:(id *)necessary;
 - (NSArray)accounts;
 - (NSArray)accountsWithAccountType:(ACAccountType *)accountType;
 - (id)_cache;
-- (id)_createSMTPAccountForServerAccount:(id)a3;
-- (id)_removeObsoleteOSXServerAccountForMacOS:(id)a3;
-- (id)_sanitizeOptionsDictionary:(id)a3;
-- (id)_unsanitizeError:(id)a3;
-- (id)accessKeysForAccountType:(id)a3;
-- (id)accountIdentifiersEnabledForDataclass:(id)a3;
-- (id)accountIdentifiersEnabledToSyncDataclass:(id)a3;
-- (id)accountTypeWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
-- (id)accountWithIdentifier:(id)a3 error:(id *)a4;
-- (id)accountsWithAccountType:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 error:(id *)a5;
+- (id)_createSMTPAccountForServerAccount:(id)account;
+- (id)_removeObsoleteOSXServerAccountForMacOS:(id)s;
+- (id)_sanitizeOptionsDictionary:(id)dictionary;
+- (id)_unsanitizeError:(id)error;
+- (id)accessKeysForAccountType:(id)type;
+- (id)accountIdentifiersEnabledForDataclass:(id)dataclass;
+- (id)accountIdentifiersEnabledToSyncDataclass:(id)dataclass;
+- (id)accountTypeWithAccountTypeIdentifier:(id)identifier error:(id *)error;
+- (id)accountWithIdentifier:(id)identifier error:(id *)error;
+- (id)accountsWithAccountType:(id)type options:(unint64_t)options error:(id *)error;
+- (id)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties error:(id *)error;
 - (id)allAccountTypes;
 - (id)allCredentialItems;
 - (id)allDataclasses;
-- (id)appPermissionsForAccountType:(id)a3;
-- (id)childAccountsForAccount:(id)a3 error:(id *)a4;
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4;
-- (id)clientTokenForAccount:(id)a3;
-- (id)credentialForAccount:(id)a3 error:(id *)a4;
-- (id)credentialForAccount:(id)a3 serviceID:(id)a4 error:(id *)a5;
-- (id)credentialItemForAccount:(id)a3 serviceName:(id)a4;
-- (id)dataclassActionsForAccountDeletion:(id)a3 error:(id *)a4;
-- (id)dataclassActionsForAccountSave:(id)a3 error:(id *)a4;
-- (id)displayTypeForAccountWithIdentifier:(id)a3;
-- (id)enabledDataclassesForAccount:(id)a3 error:(id *)a4;
-- (id)grantedPermissionsForAccountType:(id)a3;
-- (id)parentAccountForAccount:(id)a3 error:(id *)a4;
-- (id)provisionedDataclassesForAccount:(id)a3 error:(id *)a4;
-- (id)supportedDataclassesForAccountType:(id)a3;
-- (id)syncableDataclassesForAccountType:(id)a3;
-- (id)tetheredSyncSourceTypeForDataclass:(id)a3;
-- (unint64_t)generationForCacheSuffix:(id)a3;
+- (id)appPermissionsForAccountType:(id)type;
+- (id)childAccountsForAccount:(id)account error:(id *)error;
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier;
+- (id)clientTokenForAccount:(id)account;
+- (id)credentialForAccount:(id)account error:(id *)error;
+- (id)credentialForAccount:(id)account serviceID:(id)d error:(id *)error;
+- (id)credentialItemForAccount:(id)account serviceName:(id)name;
+- (id)dataclassActionsForAccountDeletion:(id)deletion error:(id *)error;
+- (id)dataclassActionsForAccountSave:(id)save error:(id *)error;
+- (id)displayTypeForAccountWithIdentifier:(id)identifier;
+- (id)enabledDataclassesForAccount:(id)account error:(id *)error;
+- (id)grantedPermissionsForAccountType:(id)type;
+- (id)parentAccountForAccount:(id)account error:(id *)error;
+- (id)provisionedDataclassesForAccount:(id)account error:(id *)error;
+- (id)supportedDataclassesForAccountType:(id)type;
+- (id)syncableDataclassesForAccountType:(id)type;
+- (id)tetheredSyncSourceTypeForDataclass:(id)dataclass;
+- (unint64_t)generationForCacheSuffix:(id)suffix;
 - (unsigned)_uidOfAccountsd;
-- (void)_checkSaveRateLimitForAccountType:(id)a3;
+- (void)_checkSaveRateLimitForAccountType:(id)type;
 - (void)_clearAccountCaches;
-- (void)_removeObsoleteAccountsInternal:(id)a3 completion:(id)a4;
-- (void)_removeObsoleteOSXServerAccountForiOS:(id)a3;
-- (void)_saveAccount:(id)a3 verify:(BOOL)a4 dataclassActions:(id)a5 completion:(id)a6;
-- (void)accountIdentifiersEnabledForDataclasses:(id)a3 withAccountTypeIdentifiers:(id)a4 completion:(id)a5;
-- (void)accountTypeWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_removeObsoleteAccountsInternal:(id)internal completion:(id)completion;
+- (void)_removeObsoleteOSXServerAccountForiOS:(id)s;
+- (void)_saveAccount:(id)account verify:(BOOL)verify dataclassActions:(id)actions completion:(id)completion;
+- (void)accountIdentifiersEnabledForDataclasses:(id)dataclasses withAccountTypeIdentifiers:(id)identifiers completion:(id)completion;
+- (void)accountTypeWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion;
 - (void)accounts;
-- (void)accountsOnPairedDeviceWithAccountType:(id)a3 completion:(id)a4;
-- (void)accountsOnPairedDeviceWithAccountTypes:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)accountsWithAccountType:(id)a3 completion:(id)a4;
-- (void)accountsWithAccountType:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 completion:(id)a5;
+- (void)accountsOnPairedDeviceWithAccountType:(id)type completion:(id)completion;
+- (void)accountsOnPairedDeviceWithAccountTypes:(id)types withOptions:(id)options completion:(id)completion;
+- (void)accountsWithAccountType:(id)type completion:(id)completion;
+- (void)accountsWithAccountType:(id)type options:(unint64_t)options completion:(id)completion;
+- (void)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties completion:(id)completion;
 - (void)allAccountTypes;
 - (void)allCredentialItems;
 - (void)allDataclasses;
-- (void)cachedAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)canSaveAccount:(id)a3 withCompletionHandler:(id)a4;
-- (void)clearAllPermissionsGrantedForAccountType:(id)a3;
-- (void)clearGrantedPermissionsForAccountType:(id)a3;
+- (void)cachedAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)canSaveAccount:(id)account withCompletionHandler:(id)handler;
+- (void)clearAllPermissionsGrantedForAccountType:(id)type;
+- (void)clearGrantedPermissionsForAccountType:(id)type;
 - (void)dealloc;
-- (void)discoverPropertiesForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)handleURL:(id)a3;
-- (void)insertAccountType:(id)a3 withCompletionHandler:(id)a4;
-- (void)insertCredentialItem:(id)a3 withCompletionHandler:(id)a4;
-- (void)kerberosAccountsForDomainFromURL:(id)a3 completion:(id)a4;
-- (void)migrateCredentialForAccount:(id)a3 completion:(id)a4;
-- (void)notifyRemoteDevicesOfModifiedAccount:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)notifyRemoteDevicesOfUpdatedCredentials:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)openAuthenticationURL:(id)a3 forAccount:(id)a4 shouldConfirm:(BOOL)a5 completion:(id)a6;
-- (void)openAuthenticationURLForAccount:(id)a3 withDelegateClassName:(id)a4 fromBundleAtPath:(id)a5 shouldConfirm:(BOOL)a6 completion:(id)a7;
-- (void)preloadDataclassOwnersWithCompletion:(id)a3;
-- (void)removeAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5;
-- (void)removeAccountFromPairedDevice:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)removeAccountType:(id)a3 withCompletionHandler:(id)a4;
-- (void)removeAccountsFromPairedDeviceWithOptions:(id)a3 completion:(id)a4;
-- (void)removeCredentialItem:(id)a3 withCompletionHandler:(id)a4;
-- (void)removeObsoleteAccounts:(id)a3;
-- (void)renewCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)renewCredentialsForAccount:(id)a3 services:(id)a4 completion:(id)a5;
-- (void)reportTelemetryForLandmarkEvent:(id)a3;
+- (void)discoverPropertiesForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)handleURL:(id)l;
+- (void)insertAccountType:(id)type withCompletionHandler:(id)handler;
+- (void)insertCredentialItem:(id)item withCompletionHandler:(id)handler;
+- (void)kerberosAccountsForDomainFromURL:(id)l completion:(id)completion;
+- (void)migrateCredentialForAccount:(id)account completion:(id)completion;
+- (void)notifyRemoteDevicesOfModifiedAccount:(id)account withOptions:(id)options completion:(id)completion;
+- (void)notifyRemoteDevicesOfUpdatedCredentials:(id)credentials withOptions:(id)options completion:(id)completion;
+- (void)openAuthenticationURL:(id)l forAccount:(id)account shouldConfirm:(BOOL)confirm completion:(id)completion;
+- (void)openAuthenticationURLForAccount:(id)account withDelegateClassName:(id)name fromBundleAtPath:(id)path shouldConfirm:(BOOL)confirm completion:(id)completion;
+- (void)preloadDataclassOwnersWithCompletion:(id)completion;
+- (void)removeAccount:(id)account withDataclassActions:(id)actions completion:(id)completion;
+- (void)removeAccountFromPairedDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (void)removeAccountType:(id)type withCompletionHandler:(id)handler;
+- (void)removeAccountsFromPairedDeviceWithOptions:(id)options completion:(id)completion;
+- (void)removeCredentialItem:(id)item withCompletionHandler:(id)handler;
+- (void)removeObsoleteAccounts:(id)accounts;
+- (void)renewCredentialsForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)renewCredentialsForAccount:(id)account services:(id)services completion:(id)completion;
+- (void)reportTelemetryForLandmarkEvent:(id)event;
 - (void)requestAccessToAccountsWithType:(ACAccountType *)accountType options:(NSDictionary *)options completion:(ACAccountStoreRequestAccessCompletionHandler)completion;
-- (void)resetDatabaseToVersion:(id)a3 withCompletion:(id)a4;
-- (void)runAccountMigrationPlugins:(id)a3;
-- (void)saveAccount:(id)a3 toPairedDeviceWithOptions:(id)a4 completion:(id)a5;
-- (void)saveCredentialItem:(id)a3 withCompletionHandler:(id)a4;
-- (void)scheduleBackupIfNonexistent:(id)a3;
-- (void)setCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5 error:(id *)a6;
-- (void)setPermissionGranted:(BOOL)a3 forBundleID:(id)a4 onAccountType:(id)a5;
-- (void)shutdownAccountsD:(id)a3;
-- (void)verifyCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)a3 completion:(id)a4;
+- (void)resetDatabaseToVersion:(id)version withCompletion:(id)completion;
+- (void)runAccountMigrationPlugins:(id)plugins;
+- (void)saveAccount:(id)account toPairedDeviceWithOptions:(id)options completion:(id)completion;
+- (void)saveCredentialItem:(id)item withCompletionHandler:(id)handler;
+- (void)scheduleBackupIfNonexistent:(id)nonexistent;
+- (void)setCredential:(id)credential forAccount:(id)account serviceID:(id)d error:(id *)error;
+- (void)setPermissionGranted:(BOOL)granted forBundleID:(id)d onAccountType:(id)type;
+- (void)shutdownAccountsD:(id)d;
+- (void)verifyCredentialsForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation ACAccountStore
@@ -132,9 +132,9 @@ void __30__ACAccountStore_defaultStore__block_invoke()
 
 - (id)_cache
 {
-  v3 = [(ACAccountStore *)self _testCache];
+  _testCache = [(ACAccountStore *)self _testCache];
 
-  if (v3)
+  if (_testCache)
   {
     [(ACAccountStore *)self _testCache];
   }
@@ -195,8 +195,8 @@ id __43__ACAccountStore_remoteAccountStoreSession__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_daemonAccountStoreDidChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_daemonAccountStoreDidChangeObserver];
 
   v4.receiver = self;
   v4.super_class = ACAccountStore;
@@ -228,10 +228,10 @@ void __43__ACAccountStore_remoteAccountStoreSession__block_invoke_3(uint64_t a1)
   *(v1 + 32) = 0;
 }
 
-- (ACAccountStore)initWithRemoteEndpoint:(id)a3 effectiveBundleID:(id)a4
+- (ACAccountStore)initWithRemoteEndpoint:(id)endpoint effectiveBundleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  dCopy = d;
   v27.receiver = self;
   v27.super_class = ACAccountStore;
   v9 = [(ACAccountStore *)&v27 init];
@@ -242,8 +242,8 @@ void __43__ACAccountStore_remoteAccountStoreSession__block_invoke_3(uint64_t a1)
     replyQueue = v9->_replyQueue;
     v9->_replyQueue = v11;
 
-    objc_storeStrong(&v9->_effectiveBundleID, a4);
-    objc_storeStrong(&v9->_endpoint, a3);
+    objc_storeStrong(&v9->_effectiveBundleID, d);
+    objc_storeStrong(&v9->_endpoint, endpoint);
     v9->_remoteAccountStoreSessionLock._os_unfair_lock_opaque = 0;
     v13 = [ACTimedExpirer expirerWithTimeout:ACRemoteConnectionTimeout];
     remoteAccountStoreSessionExpirer = v9->_remoteAccountStoreSessionExpirer;
@@ -259,14 +259,14 @@ void __43__ACAccountStore_remoteAccountStoreSession__block_invoke_3(uint64_t a1)
     v9->_accountCache = v17;
 
     objc_initWeak(&location, v9);
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = +[ACNotificationRebroadcaster sharedRebroadcaster];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __59__ACAccountStore_initWithRemoteEndpoint_effectiveBundleID___block_invoke;
     v24[3] = &unk_1E79755E0;
     objc_copyWeak(&v25, &location);
-    v21 = [v19 addObserverForName:@"ACDAccountStoreDidChangeNotification" object:v20 queue:0 usingBlock:v24];
+    v21 = [defaultCenter addObserverForName:@"ACDAccountStoreDidChangeNotification" object:v20 queue:0 usingBlock:v24];
     daemonAccountStoreDidChangeObserver = v9->_daemonAccountStoreDidChangeObserver;
     v9->_daemonAccountStoreDidChangeObserver = v21;
 
@@ -384,10 +384,10 @@ void __52__ACAccountStore_longLivedRemoteAccountStoreSession__block_invoke_3(uin
   *(v1 + 56) = 0;
 }
 
-- (id)accountWithIdentifier:(id)a3 error:(id *)a4
+- (id)accountWithIdentifier:(id)identifier error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/account-with-identifier-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -401,7 +401,7 @@ void __52__ACAccountStore_longLivedRemoteAccountStoreSession__block_invoke_3(uin
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "AccountWithIdentifierSync", "%@", &buf, 0xCu);
   }
 
@@ -423,12 +423,12 @@ void __52__ACAccountStore_longLivedRemoteAccountStoreSession__block_invoke_3(uin
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __46__ACAccountStore_accountWithIdentifier_error___block_invoke;
   v30[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = identifierCopy;
   v31 = v16;
   p_buf = &buf;
   v33 = &v34;
@@ -438,12 +438,12 @@ void __52__ACAccountStore_longLivedRemoteAccountStoreSession__block_invoke_3(uin
   v29[3] = &unk_1E7975BA0;
   v29[4] = self;
   v29[5] = &v34;
-  ac_dispatch_remote_sync(v15, v30, v29);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v30, v29);
 
   [*(*(&buf + 1) + 40) _setAccountStore:self];
-  if (a4)
+  if (error)
   {
-    *a4 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -546,16 +546,16 @@ uint64_t __46__ACAccountStore_accountWithIdentifier_error___block_invoke_66(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/account-with-identifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (v7)
+  if (completionCopy)
   {
     v9 = _ACSignpostLogSystem();
     v10 = _ACSignpostCreate(v9);
@@ -566,7 +566,7 @@ uint64_t __46__ACAccountStore_accountWithIdentifier_error___block_invoke_66(uint
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       *buf = 138412290;
-      v32 = v6;
+      v32 = identifierCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "AccountWithIdentifier", "%@", buf, 0xCu);
     }
 
@@ -583,15 +583,15 @@ uint64_t __46__ACAccountStore_accountWithIdentifier_error___block_invoke_66(uint
     v26[4] = self;
     v28 = v10;
     v29 = v12;
-    v27 = v7;
+    v27 = completionCopy;
     v16 = MEMORY[0x1AC5B3C70](v26);
-    v17 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __51__ACAccountStore_accountWithIdentifier_completion___block_invoke_71;
     v22[3] = &unk_1E7975C40;
-    v23 = v6;
-    v24 = self;
+    v23 = identifierCopy;
+    selfCopy = self;
     v25 = v16;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -600,7 +600,7 @@ uint64_t __46__ACAccountStore_accountWithIdentifier_error___block_invoke_66(uint
     v18 = v25;
     v20[4] = self;
     v21 = v18;
-    ac_dispatch_remote(v17, v22, v20);
+    ac_dispatch_remote(remoteAccountStoreSession, v22, v20);
   }
 
   os_activity_scope_leave(&state);
@@ -720,11 +720,11 @@ void __51__ACAccountStore_accountWithIdentifier_completion___block_invoke_73(uin
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)cachedAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)cachedAccountWithIdentifier:(id)identifier completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/cached-account-with-identifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -738,7 +738,7 @@ void __51__ACAccountStore_accountWithIdentifier_completion___block_invoke_73(uin
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "CachedAccountWithIdentifier", "%@", buf, 0xCu);
   }
 
@@ -755,12 +755,12 @@ void __51__ACAccountStore_accountWithIdentifier_completion___block_invoke_73(uin
   v24[4] = self;
   v26 = v10;
   v27 = v12;
-  v16 = v7;
+  v16 = completionCopy;
   v25 = v16;
   v17 = MEMORY[0x1AC5B3C70](v24);
   v18 = self->_accountCache;
   objc_sync_enter(v18);
-  v19 = [(NSMutableDictionary *)self->_accountCache objectForKeyedSubscript:v6];
+  v19 = [(NSMutableDictionary *)self->_accountCache objectForKeyedSubscript:identifierCopy];
   objc_sync_exit(v18);
 
   if (v19)
@@ -775,7 +775,7 @@ void __51__ACAccountStore_accountWithIdentifier_completion___block_invoke_73(uin
     v21[2] = __57__ACAccountStore_cachedAccountWithIdentifier_completion___block_invoke_74;
     v21[3] = &unk_1E7975C68;
     v21[4] = self;
-    v22 = v6;
+    v22 = identifierCopy;
     v23 = v17;
     [(ACAccountStore *)self accountWithIdentifier:v22 completion:v21];
   }
@@ -873,9 +873,9 @@ void __57__ACAccountStore_cachedAccountWithIdentifier_completion___block_invoke_
   (*(a1[6] + 16))();
 }
 
-- (id)accountTypeWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)accountTypeWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/account-type-with-identifier-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -885,8 +885,8 @@ void __57__ACAccountStore_cachedAccountWithIdentifier_completion___block_invoke_
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__0;
   v29 = __Block_byref_object_dispose__0;
-  v8 = [(ACAccountStore *)self _cache];
-  v30 = [v8 cachedAccountTypeWithIdentifier:v6];
+  _cache = [(ACAccountStore *)self _cache];
+  v30 = [_cache cachedAccountTypeWithIdentifier:identifierCopy];
 
   v19 = 0;
   v20 = &v19;
@@ -897,13 +897,13 @@ void __57__ACAccountStore_cachedAccountWithIdentifier_completion___block_invoke_
   v9 = v26[5];
   if (!v9)
   {
-    v10 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __61__ACAccountStore_accountTypeWithAccountTypeIdentifier_error___block_invoke;
     v14[3] = &unk_1E7975CB8;
-    v15 = v6;
-    v16 = self;
+    v15 = identifierCopy;
+    selfCopy = self;
     v17 = &v25;
     v18 = &v19;
     v13[0] = MEMORY[0x1E69E9820];
@@ -912,15 +912,15 @@ void __57__ACAccountStore_cachedAccountWithIdentifier_completion___block_invoke_
     v13[3] = &unk_1E7975BA0;
     v13[4] = self;
     v13[5] = &v19;
-    ac_dispatch_remote_sync(v10, v14, v13);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v14, v13);
 
     v9 = v26[5];
   }
 
   [v9 setAccountStore:self];
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v11 = v26[5];
@@ -979,25 +979,25 @@ uint64_t __61__ACAccountStore_accountTypeWithAccountTypeIdentifier_error___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)accountTypeWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountTypeWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/account-type-with-identifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (v7)
+  if (completionCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __55__ACAccountStore_accountTypeWithIdentifier_completion___block_invoke;
     v20[3] = &unk_1E7975CE0;
     v20[4] = self;
-    v21 = v7;
+    v21 = completionCopy;
     v9 = MEMORY[0x1AC5B3C70](v20);
-    v10 = [(ACAccountStore *)self _cache];
-    v11 = [v10 cachedAccountTypeWithIdentifier:v6];
+    _cache = [(ACAccountStore *)self _cache];
+    v11 = [_cache cachedAccountTypeWithIdentifier:identifierCopy];
 
     if (v11)
     {
@@ -1007,13 +1007,13 @@ uint64_t __61__ACAccountStore_accountTypeWithAccountTypeIdentifier_error___block
 
     else
     {
-      v12 = [(ACAccountStore *)self remoteAccountStoreSession];
+      remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __55__ACAccountStore_accountTypeWithIdentifier_completion___block_invoke_3;
       v15[3] = &unk_1E7975D30;
-      v16 = v6;
-      v17 = self;
+      v16 = identifierCopy;
+      selfCopy = self;
       v18 = 0;
       v19 = v9;
       v13[0] = MEMORY[0x1E69E9820];
@@ -1022,7 +1022,7 @@ uint64_t __61__ACAccountStore_accountTypeWithAccountTypeIdentifier_error___block
       v13[3] = &unk_1E79754F0;
       v13[4] = self;
       v14 = v19;
-      ac_dispatch_remote(v12, v15, v13);
+      ac_dispatch_remote(remoteAccountStoreSession, v15, v13);
     }
   }
 
@@ -1122,13 +1122,13 @@ void __55__ACAccountStore_accountTypeWithIdentifier_completion___block_invoke_77
   v33 = __Block_byref_object_copy__0;
   v34 = __Block_byref_object_dispose__0;
   v35 = 0;
-  v11 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __26__ACAccountStore_accounts__block_invoke;
   v29[3] = &unk_1E7975D80;
   v29[4] = buf;
-  ac_dispatch_remote_sync(v11, v29, &__block_literal_global_81);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v29, &__block_literal_global_81);
 
   v27 = 0u;
   v28 = 0u;
@@ -1240,16 +1240,16 @@ void __26__ACAccountStore_accounts__block_invoke_79()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
-  v6 = [(ACAccountType *)v4 identifier];
-  v7 = [ACNotifyAccountCache suffixForAccountsForAccountType:v6 fetchOptions:1];
+  identifier = [(ACAccountType *)v4 identifier];
+  v7 = [ACNotifyAccountCache suffixForAccountsForAccountType:identifier fetchOptions:1];
 
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__0;
   v44 = __Block_byref_object_dispose__0;
-  v8 = [(ACAccountStore *)self _cache];
-  v45 = [v8 cachedAccountsForSuffix:v7];
+  _cache = [(ACAccountStore *)self _cache];
+  v45 = [_cache cachedAccountsForSuffix:v7];
 
   if (v41[5])
   {
@@ -1283,16 +1283,16 @@ void __26__ACAccountStore_accounts__block_invoke_79()
       [ACAccountStore accountsWithAccountType:];
     }
 
-    v17 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __42__ACAccountStore_accountsWithAccountType___block_invoke;
     v35[3] = &unk_1E7975DF0;
     v39 = &v40;
     v36 = v4;
-    v37 = self;
+    selfCopy = self;
     v38 = v7;
-    ac_dispatch_remote_sync(v17, v35, &__block_literal_global_85);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v35, &__block_literal_global_85);
 
     Nanoseconds = _ACSignpostGetNanoseconds(v11, v13);
     v19 = _ACSignpostLogSystem();
@@ -1405,24 +1405,24 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
   }
 }
 
-- (id)accountsWithAccountType:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)accountsWithAccountType:(id)type options:(unint64_t)options error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  typeCopy = type;
   v9 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-type-with-options-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [v8 identifier];
-  v11 = [ACNotifyAccountCache suffixForAccountsForAccountType:v10 fetchOptions:a4];
+  identifier = [typeCopy identifier];
+  v11 = [ACNotifyAccountCache suffixForAccountsForAccountType:identifier fetchOptions:options];
 
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
   v59 = __Block_byref_object_copy__0;
   v60 = __Block_byref_object_dispose__0;
-  v12 = [(ACAccountStore *)self _cache];
-  v61 = [v12 cachedAccountsForSuffix:v11];
+  _cache = [(ACAccountStore *)self _cache];
+  v61 = [_cache cachedAccountsForSuffix:v11];
 
   v50 = 0;
   v51 = &v50;
@@ -1435,7 +1435,7 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
     v13 = _ACLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [v8 identifier];
+      [typeCopy identifier];
       objc_claimAutoreleasedReturnValue();
       [ACAccountStore accountsWithAccountType:];
     }
@@ -1452,9 +1452,9 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
     if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
       *buf = 138412546;
-      v65 = v8;
+      v65 = typeCopy;
       v66 = 2048;
-      v67 = a4;
+      optionsCopy = options;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v15, "AccountsWithTypeSync", "%@: %lu", buf, 0x16u);
     }
 
@@ -1464,22 +1464,22 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
       *buf = 134218498;
       v65 = v15;
       v66 = 2112;
-      v67 = v8;
+      optionsCopy = typeCopy;
       v68 = 2048;
-      v69 = a4;
+      optionsCopy2 = options;
       _os_log_debug_impl(&dword_1AC3CD000, v20, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsWithTypeSync %@: %lu", buf, 0x20u);
     }
 
-    v21 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __56__ACAccountStore_accountsWithAccountType_options_error___block_invoke;
     v43[3] = &unk_1E7975E40;
-    v49 = a4;
+    optionsCopy3 = options;
     v47 = &v50;
     v48 = &v56;
-    v44 = v8;
-    v45 = self;
+    v44 = typeCopy;
+    selfCopy = self;
     v46 = v11;
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
@@ -1487,7 +1487,7 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
     v42[3] = &unk_1E7975BA0;
     v42[4] = self;
     v42[5] = &v50;
-    ac_dispatch_remote_sync(v21, v43, v42);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v43, v42);
 
     Nanoseconds = _ACSignpostGetNanoseconds(v15, v17);
     v23 = _ACSignpostLogSystem();
@@ -1504,7 +1504,7 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
       *buf = 138412546;
       v65 = v25;
       v66 = 2112;
-      v67 = v26;
+      optionsCopy = v26;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v24, OS_SIGNPOST_INTERVAL_END, v15, "AccountsWithTypeSync", "%@%@", buf, 0x16u);
     }
 
@@ -1516,9 +1516,9 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
       *buf = 134218754;
       v65 = v15;
       v66 = 2048;
-      *&v67 = Nanoseconds / 1000000000.0;
+      *&optionsCopy = Nanoseconds / 1000000000.0;
       v68 = 2112;
-      v69 = v35;
+      optionsCopy2 = v35;
       if (v36)
       {
         v37 = v36;
@@ -1564,9 +1564,9 @@ void __42__ACAccountStore_accountsWithAccountType___block_invoke_83()
     while (v29);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v51[5];
+    *error = v51[5];
   }
 
   v32 = v57[5];
@@ -1630,36 +1630,36 @@ uint64_t __56__ACAccountStore_accountsWithAccountType_options_error___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)accountsWithAccountType:(id)a3 completion:(id)a4
+- (void)accountsWithAccountType:(id)type completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (v7)
+  if (completionCopy)
   {
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __53__ACAccountStore_accountsWithAccountType_completion___block_invoke;
     v35[3] = &unk_1E79754A0;
     v35[4] = self;
-    v36 = v7;
+    v36 = completionCopy;
     v9 = MEMORY[0x1AC5B3C70](v35);
-    v10 = [v6 identifier];
-    v11 = [ACNotifyAccountCache suffixForAccountsForAccountType:v10 fetchOptions:1];
+    identifier = [typeCopy identifier];
+    v11 = [ACNotifyAccountCache suffixForAccountsForAccountType:identifier fetchOptions:1];
 
-    v12 = [(ACAccountStore *)self _cache];
-    v13 = [v12 cachedAccountsForSuffix:v11];
+    _cache = [(ACAccountStore *)self _cache];
+    v13 = [_cache cachedAccountsForSuffix:v11];
 
     if (v13)
     {
       v14 = _ACLogSystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        [v6 identifier];
+        [typeCopy identifier];
         objc_claimAutoreleasedReturnValue();
         [ACAccountStore accountsWithAccountType:completion:];
       }
@@ -1678,7 +1678,7 @@ uint64_t __56__ACAccountStore_accountsWithAccountType_options_error___block_invo
       if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
       {
         *buf = 138412290;
-        v39 = v6;
+        v39 = typeCopy;
         _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v16, "AccountsWithType", "%@", buf, 0xCu);
       }
 
@@ -1688,13 +1688,13 @@ uint64_t __56__ACAccountStore_accountsWithAccountType_options_error___block_invo
         [ACAccountStore accountsWithAccountType:completion:];
       }
 
-      v22 = [(ACAccountStore *)self remoteAccountStoreSession];
+      remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __53__ACAccountStore_accountsWithAccountType_completion___block_invoke_87;
       v28[3] = &unk_1E7975E90;
-      v29 = v6;
-      v30 = self;
+      v29 = typeCopy;
+      selfCopy = self;
       v31 = v11;
       v33 = v16;
       v34 = v18;
@@ -1707,7 +1707,7 @@ uint64_t __56__ACAccountStore_accountsWithAccountType_options_error___block_invo
       v27 = v18;
       v24[4] = self;
       v25 = v32;
-      ac_dispatch_remote(v22, v28, v24);
+      ac_dispatch_remote(remoteAccountStoreSession, v28, v24);
     }
   }
 
@@ -1893,36 +1893,36 @@ void __53__ACAccountStore_accountsWithAccountType_completion___block_invoke_89(u
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountsWithAccountType:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)accountsWithAccountType:(id)type options:(unint64_t)options completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-type-with-options", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  if (v9)
+  if (completionCopy)
   {
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __61__ACAccountStore_accountsWithAccountType_options_completion___block_invoke;
     v39[3] = &unk_1E79754A0;
     v39[4] = self;
-    v40 = v9;
+    v40 = completionCopy;
     v11 = MEMORY[0x1AC5B3C70](v39);
-    v12 = [v8 identifier];
-    v13 = [ACNotifyAccountCache suffixForAccountsForAccountType:v12 fetchOptions:a4];
+    identifier = [typeCopy identifier];
+    v13 = [ACNotifyAccountCache suffixForAccountsForAccountType:identifier fetchOptions:options];
 
-    v14 = [(ACAccountStore *)self _cache];
-    v15 = [v14 cachedAccountsForSuffix:v13];
+    _cache = [(ACAccountStore *)self _cache];
+    v15 = [_cache cachedAccountsForSuffix:v13];
 
     if (v15)
     {
       v16 = _ACLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        [v8 identifier];
+        [typeCopy identifier];
         objc_claimAutoreleasedReturnValue();
         [ACAccountStore accountsWithAccountType:completion:];
       }
@@ -1942,9 +1942,9 @@ void __53__ACAccountStore_accountsWithAccountType_completion___block_invoke_89(u
       if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
       {
         *buf = 138412546;
-        v43 = v8;
+        v43 = typeCopy;
         v44 = 2048;
-        v45 = a4;
+        optionsCopy = options;
         _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "AccountsWithType", "%@: %lu", buf, 0x16u);
       }
 
@@ -1954,20 +1954,20 @@ void __53__ACAccountStore_accountsWithAccountType_completion___block_invoke_89(u
         *buf = 134218498;
         v43 = v20;
         v44 = 2112;
-        v45 = v8;
+        optionsCopy = typeCopy;
         v46 = 2048;
-        v47 = a4;
+        optionsCopy2 = options;
         _os_log_debug_impl(&dword_1AC3CD000, v23, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsWithType %@: %lu", buf, 0x20u);
       }
 
-      v24 = [(ACAccountStore *)self remoteAccountStoreSession];
+      remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __61__ACAccountStore_accountsWithAccountType_options_completion___block_invoke_90;
       v31[3] = &unk_1E7975EE0;
-      v36 = a4;
-      v32 = v8;
-      v33 = self;
+      optionsCopy3 = options;
+      v32 = typeCopy;
+      selfCopy = self;
       v34 = v13;
       v37 = v20;
       v38 = v26;
@@ -1980,7 +1980,7 @@ void __53__ACAccountStore_accountsWithAccountType_completion___block_invoke_89(u
       v30 = v26;
       v27[4] = self;
       v28 = v35;
-      ac_dispatch_remote(v24, v31, v27);
+      ac_dispatch_remote(remoteAccountStoreSession, v31, v27);
     }
   }
 
@@ -2167,39 +2167,39 @@ void __61__ACAccountStore_accountsWithAccountType_options_completion___block_inv
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 completion:(id)a5
+- (void)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-types", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (v10)
+  if (completionCopy)
   {
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_completion___block_invoke;
     v39[3] = &unk_1E79754A0;
     v39[4] = self;
-    v40 = v10;
+    v40 = completionCopy;
     v26 = MEMORY[0x1AC5B3C70](v39);
-    if ([v8 count] == 1 && !objc_msgSend(v9, "count"))
+    if ([identifiersCopy count] == 1 && !objc_msgSend(propertiesCopy, "count"))
     {
-      v23 = [v8 firstObject];
-      v12 = [ACNotifyAccountCache suffixForAccountsForAccountType:v23 fetchOptions:1];
+      firstObject = [identifiersCopy firstObject];
+      v12 = [ACNotifyAccountCache suffixForAccountsForAccountType:firstObject fetchOptions:1];
 
-      v24 = [(ACAccountStore *)self _cache];
-      v21 = [v24 cachedAccountsForSuffix:v12];
+      _cache = [(ACAccountStore *)self _cache];
+      v21 = [_cache cachedAccountsForSuffix:v12];
 
       if (v21)
       {
         v25 = _ACLogSystem();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          [v8 firstObject];
+          [identifiersCopy firstObject];
           objc_claimAutoreleasedReturnValue();
           [ACAccountStore accountsWithAccountType:completion:];
         }
@@ -2223,9 +2223,9 @@ void __61__ACAccountStore_accountsWithAccountType_options_completion___block_inv
     if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
     {
       *buf = 138412546;
-      v43 = v8;
+      v43 = identifiersCopy;
       v44 = 2112;
-      v45 = v9;
+      v45 = propertiesCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v14, "AccountsWithTypesWithProperties", "%@: %@", buf, 0x16u);
     }
 
@@ -2235,22 +2235,22 @@ void __61__ACAccountStore_accountsWithAccountType_options_completion___block_inv
       *buf = 134218498;
       v43 = v14;
       v44 = 2112;
-      v45 = v8;
+      v45 = identifiersCopy;
       v46 = 2112;
-      v47 = v9;
+      v47 = propertiesCopy;
       _os_log_debug_impl(&dword_1AC3CD000, v19, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsWithTypesWithProperties %@: %@", buf, 0x20u);
     }
 
-    v20 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_completion___block_invoke_93;
     v31[3] = &unk_1E7975F08;
-    v32 = v8;
-    v33 = v9;
+    v32 = identifiersCopy;
+    v33 = propertiesCopy;
     v12 = v12;
     v34 = v12;
-    v35 = self;
+    selfCopy = self;
     v37 = v14;
     v38 = v16;
     v36 = v26;
@@ -2262,7 +2262,7 @@ void __61__ACAccountStore_accountsWithAccountType_options_completion___block_inv
     v30 = v16;
     v27[4] = self;
     v28 = v36;
-    ac_dispatch_remote(v20, v31, v27);
+    ac_dispatch_remote(remoteAccountStoreSession, v31, v27);
 
     v21 = 0;
 LABEL_11:
@@ -2467,11 +2467,11 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 error:(id *)a5
+- (id)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  *&v8 = COERCE_DOUBLE(a3);
-  *&v40 = COERCE_DOUBLE(a4);
+  *&v8 = COERCE_DOUBLE(identifiers);
+  *&v40 = COERCE_DOUBLE(properties);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v39 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-types-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2490,11 +2490,11 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
   v58 = 0;
   if ([(__CFString *)v8 count]== 1 && ![(__CFString *)v40 count])
   {
-    v32 = [(__CFString *)v8 firstObject];
-    v9 = [ACNotifyAccountCache suffixForAccountsForAccountType:v32 fetchOptions:1];
+    firstObject = [(__CFString *)v8 firstObject];
+    v9 = [ACNotifyAccountCache suffixForAccountsForAccountType:firstObject fetchOptions:1];
 
-    v33 = [(ACAccountStore *)self _cache];
-    v34 = [v33 cachedAccountsForSuffix:v9];
+    _cache = [(ACAccountStore *)self _cache];
+    v34 = [_cache cachedAccountsForSuffix:v9];
     v35 = v60[5];
     v60[5] = v34;
   }
@@ -2544,7 +2544,7 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
       _os_log_debug_impl(&dword_1AC3CD000, v17, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsWithTypesWithPropertiesSync %@: %@", buf, 0x20u);
     }
 
-    v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_error___block_invoke;
@@ -2554,7 +2554,7 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
     v51 = &v53;
     v52 = &v59;
     v49 = v9;
-    v50 = self;
+    selfCopy = self;
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_error___block_invoke_96;
@@ -2562,7 +2562,7 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
     v45[5] = &v59;
     v45[6] = &v53;
     v45[4] = self;
-    ac_dispatch_remote_sync(v18, v46, v45);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v46, v45);
 
     Nanoseconds = _ACSignpostGetNanoseconds(v12, v14);
     v20 = _ACSignpostLogSystem();
@@ -2639,9 +2639,9 @@ void __84__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties
     while (v26);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v54[5];
+    *error = v54[5];
   }
 
   v29 = v60[5];
@@ -2717,26 +2717,26 @@ uint64_t __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProper
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)accountsOnPairedDeviceWithAccountType:(id)a3 completion:(id)a4
+- (void)accountsOnPairedDeviceWithAccountType:(id)type completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v9 = [a3 identifier];
-  v8 = [v6 setWithObject:v9];
-  [(ACAccountStore *)self accountsOnPairedDeviceWithAccountTypes:v8 withOptions:0 completion:v7];
+  completionCopy = completion;
+  identifier = [type identifier];
+  v8 = [v6 setWithObject:identifier];
+  [(ACAccountStore *)self accountsOnPairedDeviceWithAccountTypes:v8 withOptions:0 completion:completionCopy];
 }
 
-- (void)accountsOnPairedDeviceWithAccountTypes:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)accountsOnPairedDeviceWithAccountTypes:(id)types withOptions:(id)options completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-on-paired-device-with-types", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (v10)
+  if (completionCopy)
   {
     v12 = _ACSignpostLogSystem();
     v13 = _ACSignpostCreate(v12);
@@ -2747,9 +2747,9 @@ uint64_t __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProper
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       *buf = 138412546;
-      v36 = v8;
+      v36 = typesCopy;
       v37 = 2112;
-      v38 = v9;
+      v38 = optionsCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "AccountsOnPairedDeviceWithTypes", "%@ (options: %@)", buf, 0x16u);
     }
 
@@ -2759,9 +2759,9 @@ uint64_t __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProper
       *buf = 134218498;
       v36 = v13;
       v37 = 2112;
-      v38 = v8;
+      v38 = typesCopy;
       v39 = 2112;
-      v40 = v9;
+      v40 = optionsCopy;
       _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsOnPairedDeviceWithTypes %@ (options: %@)", buf, 0x20u);
     }
 
@@ -2772,16 +2772,16 @@ uint64_t __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProper
     v30[4] = self;
     v32 = v13;
     v33 = v15;
-    v31 = v10;
+    v31 = completionCopy;
     v19 = MEMORY[0x1AC5B3C70](v30);
-    v20 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __80__ACAccountStore_accountsOnPairedDeviceWithAccountTypes_withOptions_completion___block_invoke_98;
     v25[3] = &unk_1E7975D30;
-    v26 = v8;
-    v27 = v9;
-    v28 = self;
+    v26 = typesCopy;
+    v27 = optionsCopy;
+    selfCopy = self;
     v29 = v19;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -2790,7 +2790,7 @@ uint64_t __79__ACAccountStore_accountsWithAccountTypeIdentifiers_preloadedProper
     v21 = v29;
     v23[4] = self;
     v24 = v21;
-    ac_dispatch_remote(v20, v25, v23);
+    ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
   }
 
   os_activity_scope_leave(&state);
@@ -2970,13 +2970,13 @@ void __80__ACAccountStore_accountsOnPairedDeviceWithAccountTypes_withOptions_com
   v25 = __Block_byref_object_copy__0;
   v26 = __Block_byref_object_dispose__0;
   v27 = 0;
-  v11 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __32__ACAccountStore_allDataclasses__block_invoke;
   v21[3] = &unk_1E7975D80;
   v21[4] = buf;
-  ac_dispatch_remote_sync(v11, v21, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v21, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v5, v7);
   v13 = _ACSignpostLogSystem();
@@ -3056,8 +3056,8 @@ void __32__ACAccountStore_allDataclasses__block_invoke_2(uint64_t a1, void *a2, 
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__0;
   v36 = __Block_byref_object_dispose__0;
-  v4 = [(ACAccountStore *)self _cache];
-  v37 = [v4 cachedAllAccountTypes];
+  _cache = [(ACAccountStore *)self _cache];
+  cachedAllAccountTypes = [_cache cachedAllAccountTypes];
 
   v5 = v33[5];
   if (!v5)
@@ -3080,14 +3080,14 @@ void __32__ACAccountStore_allDataclasses__block_invoke_2(uint64_t a1, void *a2, 
       [ACAccountStore allAccountTypes];
     }
 
-    v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __33__ACAccountStore_allAccountTypes__block_invoke;
     v31[3] = &unk_1E7975FD0;
     v31[4] = self;
     v31[5] = &v32;
-    ac_dispatch_remote_sync(v13, v31, 0);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v31, 0);
 
     Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
     v15 = _ACSignpostLogSystem();
@@ -3190,22 +3190,22 @@ void __33__ACAccountStore_allAccountTypes__block_invoke_2(uint64_t a1, void *a2,
   }
 }
 
-- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)a3 completion:(id)a4
+- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)identifiers completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/all-account-types", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!identifiersCopy)
   {
     v21 = @"accountTypeIDs must be non-nil";
     goto LABEL_13;
   }
 
-  if (![v6 count])
+  if (![identifiersCopy count])
   {
     v21 = @"accountTypeIDs must not be empty";
 LABEL_13:
@@ -3213,7 +3213,7 @@ LABEL_13:
     objc_exception_throw(v22);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = _ACSignpostLogSystem();
     v10 = _ACSignpostCreate(v9);
@@ -3224,7 +3224,7 @@ LABEL_13:
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       *buf = 138412290;
-      v36 = v6;
+      v36 = identifiersCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "VisibleAccountsWithTypes", "%@", buf, 0xCu);
     }
 
@@ -3241,17 +3241,17 @@ LABEL_13:
     v29[4] = self;
     v32 = v10;
     v33 = v12;
-    v16 = v6;
+    v16 = identifiersCopy;
     v30 = v16;
-    v31 = v7;
+    v31 = completionCopy;
     v17 = MEMORY[0x1AC5B3C70](v29);
-    v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __79__ACAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_completion___block_invoke_108;
     v25[3] = &unk_1E7975C40;
     v26 = v16;
-    v27 = self;
+    selfCopy = self;
     v28 = v17;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -3260,7 +3260,7 @@ LABEL_13:
     v19 = v28;
     v23[4] = self;
     v24 = v19;
-    ac_dispatch_remote(v18, v25, v23);
+    ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
   }
 
   os_activity_scope_leave(&state);
@@ -3410,10 +3410,10 @@ void __79__ACAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_comp
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)hasAccountWithDescription:(id)a3
+- (BOOL)hasAccountWithDescription:(id)description
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/has-account-with-description", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3427,7 +3427,7 @@ void __79__ACAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_comp
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = descriptionCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "HasAccountWithDescription", "%@", &buf, 0xCu);
   }
 
@@ -3441,15 +3441,15 @@ void __79__ACAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_comp
   *(&buf + 1) = &buf;
   v36 = 0x2020000000;
   v37 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __44__ACAccountStore_hasAccountWithDescription___block_invoke;
   v25[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = descriptionCopy;
   v26 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v25, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v25, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -3513,16 +3513,16 @@ uint64_t __44__ACAccountStore_hasAccountWithDescription___block_invoke(uint64_t 
   return [a2 accountExistsWithDescription:v2 completion:v4];
 }
 
-- (void)kerberosAccountsForDomainFromURL:(id)a3 completion:(id)a4
+- (void)kerberosAccountsForDomainFromURL:(id)l completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/kerberos-accounts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (v7)
+  if (completionCopy)
   {
     v9 = _ACSignpostLogSystem();
     v10 = _ACSignpostCreate(v9);
@@ -3533,7 +3533,7 @@ uint64_t __44__ACAccountStore_hasAccountWithDescription___block_invoke(uint64_t 
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       *buf = 138412290;
-      v31 = v6;
+      v31 = lCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "KerberosAccounts", "%@", buf, 0xCu);
     }
 
@@ -3550,14 +3550,14 @@ uint64_t __44__ACAccountStore_hasAccountWithDescription___block_invoke(uint64_t 
     v25[4] = self;
     v27 = v10;
     v28 = v12;
-    v26 = v7;
+    v26 = completionCopy;
     v16 = MEMORY[0x1AC5B3C70](v25);
-    v17 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __62__ACAccountStore_kerberosAccountsForDomainFromURL_completion___block_invoke_119;
     v22[3] = &unk_1E79754C8;
-    v23 = v6;
+    v23 = lCopy;
     v24 = v16;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -3566,7 +3566,7 @@ uint64_t __44__ACAccountStore_hasAccountWithDescription___block_invoke(uint64_t 
     v18 = v24;
     v20[4] = self;
     v21 = v18;
-    ac_dispatch_remote(v17, v22, v20);
+    ac_dispatch_remote(remoteAccountStoreSession, v22, v20);
   }
 
   os_activity_scope_leave(&state);
@@ -3694,10 +3694,10 @@ void __62__ACAccountStore_kerberosAccountsForDomainFromURL_completion___block_in
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)isPushSupportedForAccount:(id)a3
+- (BOOL)isPushSupportedForAccount:(id)account
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/push-supported", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3711,7 +3711,7 @@ void __62__ACAccountStore_kerberosAccountsForDomainFromURL_completion___block_in
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PushSupported", "%@", &buf, 0xCu);
   }
 
@@ -3725,15 +3725,15 @@ void __62__ACAccountStore_kerberosAccountsForDomainFromURL_completion___block_in
   *(&buf + 1) = &buf;
   v36 = 0x2020000000;
   v37 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __44__ACAccountStore_isPushSupportedForAccount___block_invoke;
   v25[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = accountCopy;
   v26 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v25, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v25, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -3797,10 +3797,10 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   return [a2 isPushSupportedForAccount:v2 completion:v4];
 }
 
-+ (int)accountsWithAccountTypeIdentifierExist:(id)a3
++ (int)accountsWithAccountTypeIdentifierExist:(id)exist
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  existCopy = exist;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-type-exist", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v22.opaque[0] = 0;
   v22.opaque[1] = 0;
@@ -3814,7 +3814,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = existCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AccountsWithTypeExist", "%@", buf, 0xCu);
   }
 
@@ -3824,7 +3824,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
     +[ACAccountStore accountsWithAccountTypeIdentifierExist:];
   }
 
-  if ([a1 countOfAccountsWithAccountTypeIdentifier:v4] > 0)
+  if ([self countOfAccountsWithAccountTypeIdentifier:existCopy] > 0)
   {
     v13 = 1;
   }
@@ -3867,10 +3867,10 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   return v13;
 }
 
-+ (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)a3
++ (int64_t)countOfAccountsWithAccountTypeIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-with-type-count", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v24.opaque[0] = 0;
   v24.opaque[1] = 0;
@@ -3884,7 +3884,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 138412290;
-    v26 = v3;
+    v26 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v6, "AccountsWithTypeCount", "%@", buf, 0xCu);
   }
 
@@ -3895,7 +3895,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   }
 
   v12 = objc_alloc_init(ACAccountStore);
-  v13 = [(ACAccountStore *)v12 accountTypeWithAccountTypeIdentifier:v3];
+  v13 = [(ACAccountStore *)v12 accountTypeWithAccountTypeIdentifier:identifierCopy];
   v14 = [(ACAccountStore *)v12 accountsWithAccountType:v13];
   v15 = [v14 count];
 
@@ -3932,16 +3932,16 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   return v15;
 }
 
-- (void)insertAccountType:(id)a3 withCompletionHandler:(id)a4
+- (void)insertAccountType:(id)type withCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/insert-account-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!typeCopy)
   {
     v22 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account type must be non-nil" userInfo:0];
     objc_exception_throw(v22);
@@ -3956,7 +3956,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "InsertAccountType", "%@", buf, 0xCu);
   }
 
@@ -3973,15 +3973,15 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   v28[4] = self;
   v30 = v10;
   v31 = v12;
-  v16 = v7;
+  v16 = handlerCopy;
   v29 = v16;
   v17 = MEMORY[0x1AC5B3C70](v28);
-  v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __58__ACAccountStore_insertAccountType_withCompletionHandler___block_invoke_124;
   v25[3] = &unk_1E79754C8;
-  v19 = v6;
+  v19 = typeCopy;
   v26 = v19;
   v27 = v17;
   v23[0] = MEMORY[0x1E69E9820];
@@ -3991,7 +3991,7 @@ uint64_t __44__ACAccountStore_isPushSupportedForAccount___block_invoke(uint64_t 
   v20 = v27;
   v23[4] = self;
   v24 = v20;
-  ac_dispatch_remote(v18, v25, v23);
+  ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
 
   os_activity_scope_leave(&state);
   v21 = *MEMORY[0x1E69E9840];
@@ -4121,16 +4121,16 @@ void __58__ACAccountStore_insertAccountType_withCompletionHandler___block_invoke
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)removeAccountType:(id)a3 withCompletionHandler:(id)a4
+- (void)removeAccountType:(id)type withCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/remove-account-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!typeCopy)
   {
     v22 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account type must be non-nil" userInfo:0];
     objc_exception_throw(v22);
@@ -4145,7 +4145,7 @@ void __58__ACAccountStore_insertAccountType_withCompletionHandler___block_invoke
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "RemoveAccountType", "%@", buf, 0xCu);
   }
 
@@ -4162,15 +4162,15 @@ void __58__ACAccountStore_insertAccountType_withCompletionHandler___block_invoke
   v28[4] = self;
   v30 = v10;
   v31 = v12;
-  v16 = v7;
+  v16 = handlerCopy;
   v29 = v16;
   v17 = MEMORY[0x1AC5B3C70](v28);
-  v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke_126;
   v25[3] = &unk_1E79754C8;
-  v19 = v6;
+  v19 = typeCopy;
   v26 = v19;
   v27 = v17;
   v23[0] = MEMORY[0x1E69E9820];
@@ -4180,7 +4180,7 @@ void __58__ACAccountStore_insertAccountType_withCompletionHandler___block_invoke
   v20 = v27;
   v23[4] = self;
   v24 = v20;
-  ac_dispatch_remote(v18, v25, v23);
+  ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
 
   os_activity_scope_leave(&state);
   v21 = *MEMORY[0x1E69E9840];
@@ -4269,17 +4269,17 @@ void __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)removeAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5
+- (void)removeAccount:(id)account withDataclassActions:(id)actions completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  actionsCopy = actions;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/remove-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!accountCopy)
   {
     v31 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v31);
@@ -4293,22 +4293,22 @@ void __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke
   v17 = v16;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v8 accountType];
-    v19 = [v18 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     *buf = 138543362;
-    v44 = v19;
+    v44 = identifier;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "RemoveAccount", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ ", buf, 0xCu);
   }
 
   v20 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v29 = [v8 accountType];
-    v30 = [v29 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     *buf = 134218242;
     v44 = v13;
     v45 = 2114;
-    v46 = v30;
+    v46 = identifier2;
     _os_log_debug_impl(&dword_1AC3CD000, v20, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: RemoveAccount  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ ", buf, 0x16u);
   }
 
@@ -4316,7 +4316,7 @@ void __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v8;
+    v44 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v21, OS_LOG_TYPE_DEFAULT, "Starting removal of account %@.", buf, 0xCu);
   }
 
@@ -4327,17 +4327,17 @@ void __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke
   v38[4] = self;
   v40 = v13;
   v41 = v15;
-  v22 = v10;
+  v22 = completionCopy;
   v39 = v22;
   v23 = MEMORY[0x1AC5B3C70](v38);
-  v24 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __64__ACAccountStore_removeAccount_withDataclassActions_completion___block_invoke_135;
   v34[3] = &unk_1E7975C40;
-  v25 = v8;
+  v25 = accountCopy;
   v35 = v25;
-  v26 = v9;
+  v26 = actionsCopy;
   v36 = v26;
   v37 = v23;
   v32[0] = MEMORY[0x1E69E9820];
@@ -4347,7 +4347,7 @@ void __58__ACAccountStore_removeAccountType_withCompletionHandler___block_invoke
   v27 = v37;
   v32[4] = self;
   v33 = v27;
-  ac_dispatch_remote(v24, v34, v32);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v34, v32);
 
   os_activity_scope_leave(&state);
   v28 = *MEMORY[0x1E69E9840];
@@ -4454,16 +4454,16 @@ void __64__ACAccountStore_removeAccount_withDataclassActions_completion___block_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)canSaveAccount:(id)a3 withCompletionHandler:(id)a4
+- (void)canSaveAccount:(id)account withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/can-save-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!accountCopy)
   {
     v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v21);
@@ -4491,7 +4491,7 @@ void __64__ACAccountStore_removeAccount_withDataclassActions_completion___block_
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v16, OS_LOG_TYPE_DEFAULT, "Checking save eligibility of account %@.", buf, 0xCu);
   }
 
@@ -4502,17 +4502,17 @@ void __64__ACAccountStore_removeAccount_withDataclassActions_completion___block_
   v27[4] = self;
   v29 = v10;
   v30 = v12;
-  v17 = v7;
+  v17 = handlerCopy;
   v28 = v17;
   v18 = MEMORY[0x1AC5B3C70](v27);
-  if ([v6 isDirty])
+  if ([accountCopy isDirty])
   {
-    v19 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_137;
     v24[3] = &unk_1E79754C8;
-    v25 = v6;
+    v25 = accountCopy;
     v26 = v18;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -4520,7 +4520,7 @@ void __64__ACAccountStore_removeAccount_withDataclassActions_completion___block_
     v22[3] = &unk_1E79754F0;
     v22[4] = self;
     v23 = v26;
-    ac_dispatch_remote(v19, v24, v22);
+    ac_dispatch_remote(remoteAccountStoreSession, v24, v22);
   }
 
   else
@@ -4633,10 +4633,10 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   (*(v1 + 16))(v1, 0, v2);
 }
 
-+ (BOOL)canSaveAccountsOfAccountTypeIdentifier:(id)a3
++ (BOOL)canSaveAccountsOfAccountTypeIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _os_activity_create(&dword_1AC3CD000, "accounts/can-save-accounts-with-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v24.opaque[0] = 0;
   v24.opaque[1] = 0;
@@ -4650,7 +4650,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 138412290;
-    v26 = v3;
+    v26 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v6, "CanSaveAccountsWithType", "%@", buf, 0xCu);
   }
 
@@ -4661,7 +4661,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   }
 
   v12 = objc_alloc_init(ACAccountStore);
-  v13 = [(ACAccountStore *)v12 accountTypeWithAccountTypeIdentifier:v3];
+  v13 = [(ACAccountStore *)v12 accountTypeWithAccountTypeIdentifier:identifierCopy];
   if ([v13 supportsMultipleAccounts])
   {
     v14 = 1;
@@ -4669,8 +4669,8 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
 
   else
   {
-    v15 = [v13 identifier];
-    v14 = [ACAccountStore countOfAccountsWithAccountTypeIdentifier:v15]< 1;
+    identifier = [v13 identifier];
+    v14 = [ACAccountStore countOfAccountsWithAccountTypeIdentifier:identifier]< 1;
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v6, v8);
@@ -4712,17 +4712,17 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   return v14;
 }
 
-- (void)_saveAccount:(id)a3 verify:(BOOL)a4 dataclassActions:(id)a5 completion:(id)a6
+- (void)_saveAccount:(id)account verify:(BOOL)verify dataclassActions:(id)actions completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v37 = a5;
-  v10 = a6;
+  accountCopy = account;
+  actionsCopy = actions;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/save-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v9)
+  if (!accountCopy)
   {
     v35 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v35);
@@ -4736,26 +4736,26 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   v17 = v16;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v9 accountType];
-    v19 = [v18 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     *buf = 138543618;
-    v54 = v19;
+    v54 = identifier;
     v55 = 2112;
-    v56 = v9;
+    v56 = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "SaveAccount", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ (account: %@)", buf, 0x16u);
   }
 
   v20 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [v9 accountType];
-    v34 = [v33 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     *buf = 134218498;
     v54 = v13;
     v55 = 2114;
-    v56 = v34;
+    v56 = identifier2;
     v57 = 2112;
-    v58 = v9;
+    v58 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v20, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: SaveAccount  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ (account: %@)", buf, 0x20u);
   }
 
@@ -4763,7 +4763,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v54 = v9;
+    v54 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v21, OS_LOG_TYPE_DEFAULT, "Starting save for account %@.", buf, 0xCu);
   }
 
@@ -4774,7 +4774,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   v48[4] = self;
   v50 = v13;
   v51 = v15;
-  v22 = v10;
+  v22 = completionCopy;
   v49 = v22;
   v23 = MEMORY[0x1AC5B3C70](v48);
   v45[0] = MEMORY[0x1E69E9820];
@@ -4784,7 +4784,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
   v24 = v23;
   v47 = v24;
   v45[4] = self;
-  v25 = v9;
+  v25 = accountCopy;
   v46 = v25;
   v26 = MEMORY[0x1AC5B3C70](v45);
   if ([v25 isDirty])
@@ -4795,18 +4795,18 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
       [ACAccountStore _saveAccount:verify:dataclassActions:completion:];
     }
 
-    v28 = [v25 accountType];
-    v29 = [v28 identifier];
-    [(ACAccountStore *)self _checkSaveRateLimitForAccountType:v29];
+    accountType3 = [v25 accountType];
+    identifier3 = [accountType3 identifier];
+    [(ACAccountStore *)self _checkSaveRateLimitForAccountType:identifier3];
 
-    v30 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+    longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___block_invoke_141;
     v40[3] = &unk_1E7976160;
     v41 = v25;
-    v44 = a4;
-    v42 = v37;
+    verifyCopy = verify;
+    v42 = actionsCopy;
     v43 = v26;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
@@ -4814,7 +4814,7 @@ void __55__ACAccountStore_canSaveAccount_withCompletionHandler___block_invoke_2(
     v38[3] = &unk_1E79754F0;
     v38[4] = self;
     v39 = v24;
-    ac_dispatch_remote(v30, v40, v38);
+    ac_dispatch_remote(longLivedRemoteAccountStoreSession, v40, v38);
   }
 
   else
@@ -4962,15 +4962,15 @@ void __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)saveVerifiedAccount:(id)a3 error:(id *)a4
+- (BOOL)saveVerifiedAccount:(id)account error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/save-verified-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  if (!v6)
+  if (!accountCopy)
   {
     v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v34);
@@ -4984,26 +4984,26 @@ void __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___bloc
   v13 = v12;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v14 = [v6 accountType];
-    v15 = [v14 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     *buf = 138543618;
-    *&buf[4] = v15;
+    *&buf[4] = identifier;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "SaveAccount", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ (account: %@)", buf, 0x16u);
   }
 
   v16 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v6 accountType];
-    v31 = [v30 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     *buf = 134218498;
     *&buf[4] = v9;
     *&buf[12] = 2114;
-    *&buf[14] = v31;
+    *&buf[14] = identifier2;
     *&buf[22] = 2112;
-    v55 = v6;
+    v55 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v16, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: SaveAccount  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@ (account: %@)", buf, 0x20u);
   }
 
@@ -5017,21 +5017,21 @@ void __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___bloc
   v55 = __Block_byref_object_copy__0;
   v56 = __Block_byref_object_dispose__0;
   v57 = 0;
-  if ([v6 isDirty])
+  if ([accountCopy isDirty])
   {
-    v17 = [v6 accountType];
-    v18 = [v17 identifier];
-    [(ACAccountStore *)self _checkSaveRateLimitForAccountType:v18];
+    accountType3 = [accountCopy accountType];
+    identifier3 = [accountType3 identifier];
+    [(ACAccountStore *)self _checkSaveRateLimitForAccountType:identifier3];
 
-    v19 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+    longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __44__ACAccountStore_saveVerifiedAccount_error___block_invoke;
     v36[3] = &unk_1E79761B0;
     v39 = &v41;
     v40 = buf;
-    v37 = v6;
-    v38 = self;
+    v37 = accountCopy;
+    selfCopy = self;
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __44__ACAccountStore_saveVerifiedAccount_error___block_invoke_3;
@@ -5039,7 +5039,7 @@ void __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___bloc
     v35[5] = &v41;
     v35[6] = buf;
     v35[4] = self;
-    ac_dispatch_remote_sync(v19, v36, v35);
+    ac_dispatch_remote_sync(longLivedRemoteAccountStoreSession, v36, v35);
 
     v20 = v37;
   }
@@ -5053,9 +5053,9 @@ void __66__ACAccountStore__saveAccount_verify_dataclassActions_completion___bloc
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -5175,20 +5175,20 @@ uint64_t __44__ACAccountStore_saveVerifiedAccount_error___block_invoke_3(uint64_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_checkSaveRateLimitForAccountType:(id)a3
+- (void)_checkSaveRateLimitForAccountType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (_checkSaveRateLimitForAccountType__onceToken != -1)
   {
     [ACAccountStore _checkSaveRateLimitForAccountType:];
   }
 
-  if (_checkSaveRateLimitForAccountType__saveRateLimiter && ([_checkSaveRateLimitForAccountType__saveRateLimiter reservePerformActionForKey:v3] & 1) == 0)
+  if (_checkSaveRateLimitForAccountType__saveRateLimiter && ([_checkSaveRateLimitForAccountType__saveRateLimiter reservePerformActionForKey:typeCopy] & 1) == 0)
   {
     v4 = _ACLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
     {
-      [(ACAccountStore *)v3 _checkSaveRateLimitForAccountType:v4];
+      [(ACAccountStore *)typeCopy _checkSaveRateLimitForAccountType:v4];
     }
   }
 }
@@ -5216,8 +5216,8 @@ uint64_t __52__ACAccountStore__checkSaveRateLimitForAccountType___block_invoke()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  v12 = [(ACAccountType *)v8 accessKeys];
-  v13 = [v12 count];
+  accessKeys = [(ACAccountType *)v8 accessKeys];
+  v13 = [accessKeys count];
 
   if (v9 != 0 && v13 == 0)
   {
@@ -5271,7 +5271,7 @@ LABEL_7:
   v22 = v10;
   v36 = v22;
   v23 = MEMORY[0x1AC5B3C70](v35);
-  v24 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __69__ACAccountStore_requestAccessToAccountsWithType_options_completion___block_invoke_153;
@@ -5288,7 +5288,7 @@ LABEL_7:
   v27 = v34;
   v29[4] = self;
   v30 = v27;
-  ac_dispatch_remote(v24, v31, v29);
+  ac_dispatch_remote(remoteAccountStoreSession, v31, v29);
 
   os_activity_scope_leave(&state);
   v28 = *MEMORY[0x1E69E9840];
@@ -5422,10 +5422,10 @@ void __69__ACAccountStore_requestAccessToAccountsWithType_options_completion___b
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)accessKeysForAccountType:(id)a3
+- (id)accessKeysForAccountType:(id)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/request-access", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5439,7 +5439,7 @@ void __69__ACAccountStore_requestAccessToAccountsWithType_options_completion___b
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AccessKeysForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -5455,15 +5455,15 @@ void __69__ACAccountStore_requestAccessToAccountsWithType_options_completion___b
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __43__ACAccountStore_accessKeysForAccountType___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -5532,10 +5532,10 @@ void __43__ACAccountStore_accessKeysForAccountType___block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)appPermissionsForAccountType:(id)a3
+- (id)appPermissionsForAccountType:(id)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/app-permissions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5549,7 +5549,7 @@ void __43__ACAccountStore_accessKeysForAccountType___block_invoke_2(uint64_t a1,
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AppPermissionsForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -5565,15 +5565,15 @@ void __43__ACAccountStore_accessKeysForAccountType___block_invoke_2(uint64_t a1,
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __47__ACAccountStore_appPermissionsForAccountType___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -5642,12 +5642,12 @@ void __47__ACAccountStore_appPermissionsForAccountType___block_invoke_2(uint64_t
   }
 }
 
-- (void)setPermissionGranted:(BOOL)a3 forBundleID:(id)a4 onAccountType:(id)a5
+- (void)setPermissionGranted:(BOOL)granted forBundleID:(id)d onAccountType:(id)type
 {
-  v6 = a3;
+  grantedCopy = granted;
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  typeCopy = type;
   v10 = _os_activity_create(&dword_1AC3CD000, "accounts/set-permission-granted", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5662,16 +5662,16 @@ void __47__ACAccountStore_appPermissionsForAccountType___block_invoke_2(uint64_t
   {
     v17 = @"NO";
     *buf = 138412802;
-    if (v6)
+    if (grantedCopy)
     {
       v17 = @"YES";
     }
 
     v38 = v17;
     v39 = 2112;
-    v40 = v8;
+    v40 = dCopy;
     v41 = 2112;
-    v42 = v9;
+    v42 = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PermitBundleWithAccountType", "%@: %@ -> %@", buf, 0x20u);
   }
 
@@ -5681,7 +5681,7 @@ void __47__ACAccountStore_appPermissionsForAccountType___block_invoke_2(uint64_t
     v28 = @"NO";
     *buf = 134218754;
     v38 = v12;
-    if (v6)
+    if (grantedCopy)
     {
       v28 = @"YES";
     }
@@ -5689,22 +5689,22 @@ void __47__ACAccountStore_appPermissionsForAccountType___block_invoke_2(uint64_t
     v39 = 2112;
     v40 = v28;
     v41 = 2112;
-    v42 = v8;
+    v42 = dCopy;
     v43 = 2112;
-    v44 = v9;
+    v44 = typeCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: PermitBundleWithAccountType %@: %@ -> %@", buf, 0x2Au);
   }
 
   v19 = dispatch_semaphore_create(0);
-  v20 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __65__ACAccountStore_setPermissionGranted_forBundleID_onAccountType___block_invoke;
   v31[3] = &unk_1E7976250;
-  v35 = v6;
-  v21 = v8;
+  v35 = grantedCopy;
+  v21 = dCopy;
   v32 = v21;
-  v22 = v9;
+  v22 = typeCopy;
   v33 = v22;
   v34 = v19;
   v29[0] = MEMORY[0x1E69E9820];
@@ -5713,7 +5713,7 @@ void __47__ACAccountStore_appPermissionsForAccountType___block_invoke_2(uint64_t
   v29[3] = &unk_1E7976278;
   v23 = v34;
   v30 = v23;
-  ac_dispatch_remote(v20, v31, v29);
+  ac_dispatch_remote(remoteAccountStoreSession, v31, v29);
 
   dispatch_semaphore_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
   _ACSignpostGetNanoseconds(v12, v14);
@@ -5766,10 +5766,10 @@ void __65__ACAccountStore_setPermissionGranted_forBundleID_onAccountType___block
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)clearAllPermissionsGrantedForAccountType:(id)a3
+- (void)clearAllPermissionsGrantedForAccountType:(id)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/clear-permission-granted", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5783,7 +5783,7 @@ void __65__ACAccountStore_setPermissionGranted_forBundleID_onAccountType___block
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ClearPermissionsForAccountType", "%@", buf, 0xCu);
   }
 
@@ -5794,12 +5794,12 @@ void __65__ACAccountStore_setPermissionGranted_forBundleID_onAccountType___block
   }
 
   v13 = dispatch_semaphore_create(0);
-  v14 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __59__ACAccountStore_clearAllPermissionsGrantedForAccountType___block_invoke;
   v23[3] = &unk_1E79762A0;
-  v15 = v4;
+  v15 = typeCopy;
   v24 = v15;
   v25 = v13;
   v21[0] = MEMORY[0x1E69E9820];
@@ -5808,7 +5808,7 @@ void __65__ACAccountStore_setPermissionGranted_forBundleID_onAccountType___block
   v21[3] = &unk_1E7976278;
   v16 = v25;
   v22 = v16;
-  ac_dispatch_remote(v14, v23, v21);
+  ac_dispatch_remote(remoteAccountStoreSession, v23, v21);
 
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   _ACSignpostGetNanoseconds(v7, v9);
@@ -5856,10 +5856,10 @@ void __59__ACAccountStore_clearAllPermissionsGrantedForAccountType___block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)permissionForAccountType:(id)a3
+- (BOOL)permissionForAccountType:(id)type
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/permission-for-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5873,7 +5873,7 @@ void __59__ACAccountStore_clearAllPermissionsGrantedForAccountType___block_invok
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PermissionForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -5887,15 +5887,15 @@ void __59__ACAccountStore_clearAllPermissionsGrantedForAccountType___block_invok
   *(&buf + 1) = &buf;
   v36 = 0x2020000000;
   v37 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __43__ACAccountStore_permissionForAccountType___block_invoke;
   v25[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v26 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v25, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v25, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -5977,10 +5977,10 @@ void __43__ACAccountStore_permissionForAccountType___block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)grantedPermissionsForAccountType:(id)a3
+- (id)grantedPermissionsForAccountType:(id)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/granted-permissions-for-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -5994,7 +5994,7 @@ void __43__ACAccountStore_permissionForAccountType___block_invoke_2(uint64_t a1,
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "GrantedPermissionsForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -6010,15 +6010,15 @@ void __43__ACAccountStore_permissionForAccountType___block_invoke_2(uint64_t a1,
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __51__ACAccountStore_grantedPermissionsForAccountType___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -6087,10 +6087,10 @@ void __51__ACAccountStore_grantedPermissionsForAccountType___block_invoke_2(uint
   }
 }
 
-- (void)clearGrantedPermissionsForAccountType:(id)a3
+- (void)clearGrantedPermissionsForAccountType:(id)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/clear-granted-permissions-for-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -6104,7 +6104,7 @@ void __51__ACAccountStore_grantedPermissionsForAccountType___block_invoke_2(uint
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ClearGrantedPermissionsForAccountType", "%@", buf, 0xCu);
   }
 
@@ -6115,12 +6115,12 @@ void __51__ACAccountStore_grantedPermissionsForAccountType___block_invoke_2(uint
   }
 
   v13 = dispatch_semaphore_create(0);
-  v14 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke;
   v23[3] = &unk_1E79762A0;
-  v15 = v4;
+  v15 = typeCopy;
   v24 = v15;
   v25 = v13;
   v21[0] = MEMORY[0x1E69E9820];
@@ -6129,7 +6129,7 @@ void __51__ACAccountStore_grantedPermissionsForAccountType___block_invoke_2(uint
   v21[3] = &unk_1E7976278;
   v16 = v25;
   v22 = v16;
-  ac_dispatch_remote(v14, v23, v21);
+  ac_dispatch_remote(remoteAccountStoreSession, v23, v21);
 
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   _ACSignpostGetNanoseconds(v7, v9);
@@ -6177,25 +6177,25 @@ void __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke_2
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)verifyCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)verifyCredentialsForAccount:(id)account options:(id)options completion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/verify-credentials", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!accountCopy)
   {
     v36 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v36);
   }
 
-  v37 = v10;
-  [v8 _setAccountStore:self];
-  v12 = [(ACAccountStore *)self _sanitizeOptionsDictionary:v9];
+  v37 = completionCopy;
+  [accountCopy _setAccountStore:self];
+  v12 = [(ACAccountStore *)self _sanitizeOptionsDictionary:optionsCopy];
 
   v13 = _ACSignpostLogSystem();
   v14 = _ACSignpostCreate(v13);
@@ -6205,34 +6205,34 @@ void __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke_2
   v18 = v17;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    v19 = [v8 accountType];
-    v20 = [v19 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     v21 = [v12 objectForKeyedSubscript:@"ACShouldSave"];
-    v22 = [v21 BOOLValue];
+    bOOLValue = [v21 BOOLValue];
     *buf = 138543874;
-    v51 = v20;
+    v51 = identifier;
     v52 = 1026;
-    *v53 = v22;
+    *v53 = bOOLValue;
     *&v53[4] = 2112;
-    *&v53[6] = v8;
+    *&v53[6] = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v14, "VerifyCredentials", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  ShouldSave=%{public,signpost.telemetry:number1,name=ShouldSave}d  enableTelemetry=YES (account: %@)", buf, 0x1Cu);
   }
 
   v23 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v32 = [v8 accountType];
-    v33 = [v32 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     v34 = [v12 objectForKeyedSubscript:@"ACShouldSave"];
-    v35 = [v34 BOOLValue];
+    bOOLValue2 = [v34 BOOLValue];
     *buf = 134218754;
     v51 = v14;
     v52 = 2114;
-    *v53 = v33;
+    *v53 = identifier2;
     *&v53[8] = 1026;
-    *&v53[10] = v35;
+    *&v53[10] = bOOLValue2;
     v54 = 2112;
-    v55 = v8;
+    v55 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v23, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: VerifyCredentials  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  ShouldSave=%{public,signpost.telemetry:number1,name=ShouldSave}d  enableTelemetry=YES (account: %@)", buf, 0x26u);
   }
 
@@ -6240,7 +6240,7 @@ void __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke_2
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v8;
+    v51 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v24, OS_LOG_TYPE_DEFAULT, "Starting credential verification for account %@.", buf, 0xCu);
   }
 
@@ -6254,16 +6254,16 @@ void __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke_2
   v25 = v37;
   v46 = v25;
   v26 = MEMORY[0x1AC5B3C70](v45);
-  v27 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block_invoke_163;
   v40[3] = &unk_1E7975D30;
-  v28 = v8;
+  v28 = accountCopy;
   v41 = v28;
   v29 = v12;
   v42 = v29;
-  v43 = self;
+  selfCopy = self;
   v44 = v26;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -6272,7 +6272,7 @@ void __56__ACAccountStore_clearGrantedPermissionsForAccountType___block_invoke_2
   v30 = v44;
   v38[4] = self;
   v39 = v30;
-  ac_dispatch_remote(v27, v40, v38);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v40, v38);
 
   os_activity_scope_leave(&state);
   v31 = *MEMORY[0x1E69E9840];
@@ -6412,38 +6412,38 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)renewCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)renewCredentialsForAccount:(id)account options:(id)options completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v46 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v44 = _os_activity_create(&dword_1AC3CD000, "accounts/renew-credentials", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v44, &state);
-  if (!v8)
+  if (!accountCopy)
   {
     v43 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v43);
   }
 
-  v10 = [v8 accountStore];
-  if (v10)
+  accountStore = [accountCopy accountStore];
+  if (accountStore)
   {
-    v11 = [v8 accountStore];
-    v12 = [v11 isEqual:self];
+    accountStore2 = [accountCopy accountStore];
+    v12 = [accountStore2 isEqual:self];
 
     if ((v12 & 1) == 0)
     {
       v13 = _ACLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v42 = [v8 accountStore];
+        accountStore3 = [accountCopy accountStore];
         *buf = 138412802;
-        v60 = v8;
+        v60 = accountCopy;
         v61 = 2112;
-        *v62 = v42;
+        *v62 = accountStore3;
         *&v62[8] = 2112;
         *v63 = self;
         _os_log_error_impl(&dword_1AC3CD000, v13, OS_LOG_TYPE_ERROR, "Account %@ associated with store %@, renewing credentials on store %@", buf, 0x20u);
@@ -6451,8 +6451,8 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
     }
   }
 
-  [v8 _setAccountStore:self];
-  v14 = [(ACAccountStore *)self _sanitizeOptionsDictionary:v9];
+  [accountCopy _setAccountStore:self];
+  v14 = [(ACAccountStore *)self _sanitizeOptionsDictionary:optionsCopy];
 
   v15 = _ACSignpostLogSystem();
   v16 = _ACSignpostCreate(v15);
@@ -6463,42 +6463,42 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
   v20 = v19;
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
-    v21 = [v8 accountType];
-    v22 = [v21 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     v23 = [v14 objectForKeyedSubscript:@"ShouldForce"];
-    v24 = [v23 BOOLValue];
+    bOOLValue = [v23 BOOLValue];
     v25 = [v14 objectForKeyedSubscript:@"ShouldAvoidUI"];
-    v26 = [v25 BOOLValue];
+    bOOLValue2 = [v25 BOOLValue];
     *buf = 138544130;
-    v60 = v22;
+    v60 = identifier;
     v61 = 1026;
-    *v62 = v24;
+    *v62 = bOOLValue;
     *&v62[4] = 1026;
-    *&v62[6] = v26;
+    *&v62[6] = bOOLValue2;
     *v63 = 2112;
-    *&v63[2] = v8;
+    *&v63[2] = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "RenewCredentials", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  ShouldForce=%{public,signpost.telemetry:number1,name=ShouldForce}d  ShouldAvoidUI=%{public,signpost.telemetry:number2,name=ShouldAvoidUI}d  enableTelemetry=YES (account: %@)", buf, 0x22u);
   }
 
   v27 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [v8 accountType];
-    v37 = [v36 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     v38 = [v14 objectForKeyedSubscript:@"ShouldForce"];
-    v39 = [v38 BOOLValue];
+    bOOLValue3 = [v38 BOOLValue];
     v40 = [v14 objectForKeyedSubscript:@"ShouldAvoidUI"];
-    v41 = [v40 BOOLValue];
+    bOOLValue4 = [v40 BOOLValue];
     *buf = 134219010;
     v60 = v18;
     v61 = 2114;
-    *v62 = v37;
+    *v62 = identifier2;
     *&v62[8] = 1026;
-    *v63 = v39;
+    *v63 = bOOLValue3;
     *&v63[4] = 1026;
-    *&v63[6] = v41;
+    *&v63[6] = bOOLValue4;
     v64 = 2112;
-    v65 = v8;
+    v65 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v27, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: RenewCredentials  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  ShouldForce=%{public,signpost.telemetry:number1,name=ShouldForce}d  ShouldAvoidUI=%{public,signpost.telemetry:number2,name=ShouldAvoidUI}d  enableTelemetry=YES (account: %@)", buf, 0x2Cu);
   }
 
@@ -6506,7 +6506,7 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v60 = v8;
+    v60 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v28, OS_LOG_TYPE_DEFAULT, "Starting credential renewal for account %@.", buf, 0xCu);
   }
 
@@ -6517,19 +6517,19 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
   v54[4] = self;
   v56 = v18;
   v57 = v45;
-  v29 = v46;
+  v29 = completionCopy;
   v55 = v29;
   v30 = MEMORY[0x1AC5B3C70](v54);
-  v31 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __64__ACAccountStore_renewCredentialsForAccount_options_completion___block_invoke_166;
   v49[3] = &unk_1E7976390;
-  v32 = v8;
+  v32 = accountCopy;
   v50 = v32;
   v33 = v14;
   v51 = v33;
-  v52 = self;
+  selfCopy = self;
   v53 = v30;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -6538,7 +6538,7 @@ void __65__ACAccountStore_verifyCredentialsForAccount_options_completion___block
   v34 = v53;
   v47[4] = self;
   v48 = v34;
-  ac_dispatch_remote(v31, v49, v47);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v49, v47);
 
   os_activity_scope_leave(&state);
   v35 = *MEMORY[0x1E69E9840];
@@ -6668,61 +6668,61 @@ void __64__ACAccountStore_renewCredentialsForAccount_options_completion___block_
   (*(v1 + 16))(v1, 2, v2);
 }
 
-- (void)renewCredentialsForAccount:(id)a3 services:(id)a4 completion:(id)a5
+- (void)renewCredentialsForAccount:(id)account services:(id)services completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  servicesCopy = services;
+  accountCopy = account;
   v11 = objc_opt_new();
-  [v11 setObject:v9 forKey:@"Services"];
+  [v11 setObject:servicesCopy forKey:@"Services"];
 
-  [(ACAccountStore *)self renewCredentialsForAccount:v10 options:v11 completion:v8];
+  [(ACAccountStore *)self renewCredentialsForAccount:accountCopy options:v11 completion:completionCopy];
 }
 
-- (void)migrateCredentialForAccount:(id)a3 completion:(id)a4
+- (void)migrateCredentialForAccount:(id)account completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/migrate-credentials", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!accountCopy)
   {
     v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v21);
   }
 
-  v9 = [v6 accountStore];
-  if (v9)
+  accountStore = [accountCopy accountStore];
+  if (accountStore)
   {
-    v10 = [v6 accountStore];
-    v11 = [v10 isEqual:self];
+    accountStore2 = [accountCopy accountStore];
+    v11 = [accountStore2 isEqual:self];
 
     if ((v11 & 1) == 0)
     {
       v12 = _ACLogSystem();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 accountStore];
+        accountStore3 = [accountCopy accountStore];
         *buf = 138412802;
-        v32 = v6;
+        v32 = accountCopy;
         v33 = 2112;
-        v34 = v20;
+        v34 = accountStore3;
         v35 = 2112;
-        v36 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1AC3CD000, v12, OS_LOG_TYPE_ERROR, "Account %@ associated with store %@, renewing credentials on store %@", buf, 0x20u);
       }
     }
   }
 
-  [v6 _setAccountStore:self];
+  [accountCopy _setAccountStore:self];
   v13 = _ACLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = accountCopy;
     _os_log_impl(&dword_1AC3CD000, v13, OS_LOG_TYPE_DEFAULT, "Starting credential migration for account %@.", buf, 0xCu);
   }
 
@@ -6731,17 +6731,17 @@ void __64__ACAccountStore_renewCredentialsForAccount_options_completion___block_
   v28[2] = __57__ACAccountStore_migrateCredentialForAccount_completion___block_invoke;
   v28[3] = &unk_1E79763E0;
   v28[4] = self;
-  v14 = v7;
+  v14 = completionCopy;
   v29 = v14;
   v15 = MEMORY[0x1AC5B3C70](v28);
-  v16 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __57__ACAccountStore_migrateCredentialForAccount_completion___block_invoke_2;
   v24[3] = &unk_1E7976430;
-  v17 = v6;
+  v17 = accountCopy;
   v25 = v17;
-  v26 = self;
+  selfCopy2 = self;
   v27 = v15;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -6750,7 +6750,7 @@ void __64__ACAccountStore_renewCredentialsForAccount_options_completion___block_
   v18 = v27;
   v22[4] = self;
   v23 = v18;
-  ac_dispatch_remote(v16, v24, v22);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v24, v22);
 
   os_activity_scope_leave(&state);
   v19 = *MEMORY[0x1E69E9840];
@@ -6825,9 +6825,9 @@ void __57__ACAccountStore_migrateCredentialForAccount_completion___block_invoke_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)runAccountMigrationPlugins:(id)a3
+- (void)runAccountMigrationPlugins:(id)plugins
 {
-  v4 = a3;
+  pluginsCopy = plugins;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/migrate-accounts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -6844,10 +6844,10 @@ void __57__ACAccountStore_migrateCredentialForAccount_completion___block_invoke_
   v15[2] = __45__ACAccountStore_runAccountMigrationPlugins___block_invoke;
   v15[3] = &unk_1E79763E0;
   v15[4] = self;
-  v7 = v4;
+  v7 = pluginsCopy;
   v16 = v7;
   v8 = MEMORY[0x1AC5B3C70](v15);
-  v9 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_2;
@@ -6860,7 +6860,7 @@ void __57__ACAccountStore_migrateCredentialForAccount_completion___block_invoke_
   v10 = v14;
   v11[4] = self;
   v12 = v10;
-  ac_dispatch_remote(v9, v13, v11);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v13, v11);
 
   os_activity_scope_leave(&state);
 }
@@ -6919,10 +6919,10 @@ void __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_4(uint64_t a
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)credentialForAccount:(id)a3 error:(id *)a4
+- (id)credentialForAccount:(id)account error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/credential-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -6936,7 +6936,7 @@ void __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_4(uint64_t a
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "CredentialForAccount", "%@", &buf, 0xCu);
   }
 
@@ -6951,9 +6951,9 @@ void __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_4(uint64_t a
   v54 = 0x3032000000;
   v55 = __Block_byref_object_copy__0;
   v56 = __Block_byref_object_dispose__0;
-  v15 = [(ACAccountStore *)self _cache];
-  v16 = [v15 credentialCache];
-  v57 = [v16 cachedCredentialForAccount:v6 serviceID:0];
+  _cache = [(ACAccountStore *)self _cache];
+  credentialCache = [_cache credentialCache];
+  v57 = [credentialCache cachedCredentialForAccount:accountCopy serviceID:0];
 
   v38 = 0;
   v39 = &v38;
@@ -6972,12 +6972,12 @@ void __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_4(uint64_t a
 
   else
   {
-    v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __45__ACAccountStore_credentialForAccount_error___block_invoke;
     v34[3] = &unk_1E7975B78;
-    v35 = v6;
+    v35 = accountCopy;
     v36 = &v38;
     p_buf = &buf;
     v33[0] = MEMORY[0x1E69E9820];
@@ -6986,22 +6986,22 @@ void __45__ACAccountStore_runAccountMigrationPlugins___block_invoke_4(uint64_t a
     v33[3] = &unk_1E7975BA0;
     v33[4] = self;
     v33[5] = &v38;
-    ac_dispatch_remote_sync(v18, v34, v33);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v34, v33);
 
     v17 = v35;
   }
 
-  [*(*(&buf + 1) + 40) _setOwningAccount:v6];
+  [*(*(&buf + 1) + 40) _setOwningAccount:accountCopy];
   if (*(*(&buf + 1) + 40))
   {
-    v19 = [(ACAccountStore *)self _cache];
-    v20 = [v19 credentialCache];
-    [v20 cacheCredential:*(*(&buf + 1) + 40) forAccount:v6 serviceID:0];
+    _cache2 = [(ACAccountStore *)self _cache];
+    credentialCache2 = [_cache2 credentialCache];
+    [credentialCache2 cacheCredential:*(*(&buf + 1) + 40) forAccount:accountCopy serviceID:0];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v39[5];
+    *error = v39[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -7107,11 +7107,11 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)credentialForAccount:(id)a3 serviceID:(id)a4 error:(id *)a5
+- (id)credentialForAccount:(id)account serviceID:(id)d error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  *&v8 = COERCE_DOUBLE(a3);
-  v9 = a4;
+  *&v8 = COERCE_DOUBLE(account);
+  dCopy = d;
   v10 = _os_activity_create(&dword_1AC3CD000, "accounts/credential-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -7127,7 +7127,7 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
     *buf = 138412546;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v12, "CredentialForAccountWithServiceID", "%@ : %@", buf, 0x16u);
   }
 
@@ -7139,7 +7139,7 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
     *&buf[12] = 2112;
     *&buf[14] = v8;
     *&buf[22] = 2112;
-    v59 = v9;
+    v59 = dCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v17, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: CredentialForAccountWithServiceID %@ : %@", buf, 0x20u);
   }
 
@@ -7148,9 +7148,9 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
   *&buf[16] = 0x3032000000;
   v59 = __Block_byref_object_copy__0;
   v60 = __Block_byref_object_dispose__0;
-  v18 = [(ACAccountStore *)self _cache];
-  v19 = [v18 credentialCache];
-  v61 = [v19 cachedCredentialForAccount:v8 serviceID:v9];
+  _cache = [(ACAccountStore *)self _cache];
+  credentialCache = [_cache credentialCache];
+  v61 = [credentialCache cachedCredentialForAccount:v8 serviceID:dCopy];
 
   v43 = 0;
   v44 = &v43;
@@ -7169,20 +7169,20 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
       v52 = 2112;
       v53 = *&v8;
       v54 = 2112;
-      v55 = v9;
+      v55 = dCopy;
       _os_log_debug_impl(&dword_1AC3CD000, v20, OS_LOG_TYPE_DEBUG, "@Returning cached credential %@ for account %@, serviceID %@", v50, 0x20u);
     }
   }
 
   else
   {
-    v22 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __55__ACAccountStore_credentialForAccount_serviceID_error___block_invoke;
     v38[3] = &unk_1E79764D0;
     v39 = v8;
-    v40 = v9;
+    v40 = dCopy;
     v41 = &v43;
     v42 = buf;
     v37[0] = MEMORY[0x1E69E9820];
@@ -7191,7 +7191,7 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
     v37[3] = &unk_1E7975BA0;
     v37[4] = self;
     v37[5] = &v43;
-    ac_dispatch_remote_sync(v22, v38, v37);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v38, v37);
 
     v20 = v39;
   }
@@ -7199,14 +7199,14 @@ uint64_t __45__ACAccountStore_credentialForAccount_error___block_invoke_170(uint
   [*(*&buf[8] + 40) _setOwningAccount:v8];
   if (*(*&buf[8] + 40))
   {
-    v23 = [(ACAccountStore *)self _cache];
-    v24 = [v23 credentialCache];
-    [v24 cacheCredential:*(*&buf[8] + 40) forAccount:v8 serviceID:v9];
+    _cache2 = [(ACAccountStore *)self _cache];
+    credentialCache2 = [_cache2 credentialCache];
+    [credentialCache2 cacheCredential:*(*&buf[8] + 40) forAccount:v8 serviceID:dCopy];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v44[5];
+    *error = v44[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v12, v14);
@@ -7311,12 +7311,12 @@ uint64_t __55__ACAccountStore_credentialForAccount_serviceID_error___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5 error:(id *)a6
+- (void)setCredential:(id)credential forAccount:(id)account serviceID:(id)d error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  credentialCopy = credential;
+  accountCopy = account;
+  dCopy = d;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v36 = _os_activity_create(&dword_1AC3CD000, "accounts/set-credential-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -7330,11 +7330,11 @@ uint64_t __55__ACAccountStore_credentialForAccount_serviceID_error___block_invok
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = credentialCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = accountCopy;
     *&buf[22] = 2112;
-    v56 = v12;
+    v56 = dCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v14, "SetCredentialForAccountWithServiceID", "%@ -> %@ : %@", buf, 0x20u);
   }
 
@@ -7344,11 +7344,11 @@ uint64_t __55__ACAccountStore_credentialForAccount_serviceID_error___block_invok
     *buf = 134218754;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = credentialCopy;
     *&buf[22] = 2112;
-    v56 = v11;
+    v56 = accountCopy;
     LOWORD(v57) = 2112;
-    *(&v57 + 2) = v12;
+    *(&v57 + 2) = dCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v19, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: SetCredentialForAccountWithServiceID %@ -> %@ : %@", buf, 0x2Au);
   }
 
@@ -7358,31 +7358,31 @@ uint64_t __55__ACAccountStore_credentialForAccount_serviceID_error___block_invok
   v56 = __Block_byref_object_copy__0;
   *&v57 = __Block_byref_object_dispose__0;
   *(&v57 + 1) = 0;
-  v20 = [v11 accountType];
-  v21 = [v20 identifier];
-  v22 = v21 == 0;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v22 = identifier == 0;
 
   if (v22)
   {
     v23 = _ACLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      [ACAccountStore setCredential:v24 forAccount:v54 serviceID:v23 error:?];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      [ACAccountStore setCredential:callStackSymbols forAccount:v54 serviceID:v23 error:?];
     }
   }
 
-  v25 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __59__ACAccountStore_setCredential_forAccount_serviceID_error___block_invoke;
   v39[3] = &unk_1E79764F8;
-  v26 = v10;
+  v26 = credentialCopy;
   v40 = v26;
-  v27 = v11;
+  v27 = accountCopy;
   v41 = v27;
-  v28 = v12;
-  v43 = self;
+  v28 = dCopy;
+  selfCopy = self;
   v44 = buf;
   v42 = v28;
   v38[0] = MEMORY[0x1E69E9820];
@@ -7391,11 +7391,11 @@ uint64_t __55__ACAccountStore_credentialForAccount_serviceID_error___block_invok
   v38[3] = &unk_1E7975BA0;
   v38[4] = self;
   v38[5] = buf;
-  ac_dispatch_remote_sync(v25, v39, v38);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v39, v38);
 
-  if (a6)
+  if (error)
   {
-    *a6 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v14, v16);
@@ -7514,13 +7514,13 @@ uint64_t __59__ACAccountStore_setCredential_forAccount_serviceID_error___block_i
   v25 = __Block_byref_object_copy__0;
   v26 = __Block_byref_object_dispose__0;
   v27 = 0;
-  v11 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __36__ACAccountStore_allCredentialItems__block_invoke;
   v21[3] = &unk_1E7975D80;
   v21[4] = buf;
-  ac_dispatch_remote_sync(v11, v21, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v21, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v5, v7);
   v13 = _ACSignpostLogSystem();
@@ -7588,11 +7588,11 @@ void __36__ACAccountStore_allCredentialItems__block_invoke_2(uint64_t a1, void *
   }
 }
 
-- (id)credentialItemForAccount:(id)a3 serviceName:(id)a4
+- (id)credentialItemForAccount:(id)account serviceName:(id)name
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  nameCopy = name;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/credential-item-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -7606,9 +7606,9 @@ void __36__ACAccountStore_allCredentialItems__block_invoke_2(uint64_t a1, void *
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = accountCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = nameCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "CredentialItemsForAccountWithServiceName", "%@ : %@", buf, 0x16u);
   }
 
@@ -7618,9 +7618,9 @@ void __36__ACAccountStore_allCredentialItems__block_invoke_2(uint64_t a1, void *
     *buf = 134218498;
     *&buf[4] = v10;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = accountCopy;
     *&buf[22] = 2112;
-    v43 = v7;
+    v43 = nameCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v15, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: CredentialItemsForAccountWithServiceName %@ : %@", buf, 0x20u);
   }
 
@@ -7630,18 +7630,18 @@ void __36__ACAccountStore_allCredentialItems__block_invoke_2(uint64_t a1, void *
   v43 = __Block_byref_object_copy__0;
   v44 = __Block_byref_object_dispose__0;
   v45 = 0;
-  v16 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke;
   v28[3] = &unk_1E7976548;
-  v17 = v6;
+  v17 = accountCopy;
   v29 = v17;
-  v18 = v7;
-  v31 = self;
+  v18 = nameCopy;
+  selfCopy = self;
   v32 = buf;
   v30 = v18;
-  ac_dispatch_remote_sync(v16, v28, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v28, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v10, v12);
   v20 = _ACSignpostLogSystem();
@@ -7712,11 +7712,11 @@ void __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke_2(
   }
 }
 
-- (void)insertCredentialItem:(id)a3 withCompletionHandler:(id)a4
+- (void)insertCredentialItem:(id)item withCompletionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/insert-credential-item", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -7730,7 +7730,7 @@ void __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke_2(
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v39 = v6;
+    v39 = itemCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "InsertCredentialItem", "%@", buf, 0xCu);
   }
 
@@ -7740,30 +7740,30 @@ void __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke_2(
     [ACAccountStore insertCredentialItem:withCompletionHandler:];
   }
 
-  if (!v6)
+  if (!itemCopy)
   {
     v27 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Credential item must be non-nil" userInfo:0];
     objc_exception_throw(v27);
   }
 
-  v16 = [v6 accountStore];
-  if (v16)
+  accountStore = [itemCopy accountStore];
+  if (accountStore)
   {
-    v17 = [v6 accountStore];
-    v18 = [v17 isEqual:self];
+    accountStore2 = [itemCopy accountStore];
+    v18 = [accountStore2 isEqual:self];
 
     if ((v18 & 1) == 0)
     {
       v19 = _ACLogSystem();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v6 accountStore];
+        accountStore3 = [itemCopy accountStore];
         *buf = 138412802;
-        v39 = v6;
+        v39 = itemCopy;
         v40 = 2112;
-        v41 = v26;
+        v41 = accountStore3;
         v42 = 2112;
-        v43 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1AC3CD000, v19, OS_LOG_TYPE_ERROR, "Credential item %@ associated with store %@, inserting credential item on store %@", buf, 0x20u);
       }
     }
@@ -7776,16 +7776,16 @@ void __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke_2(
   v33[4] = self;
   v35 = v10;
   v36 = v12;
-  v20 = v7;
+  v20 = handlerCopy;
   v34 = v20;
   v21 = MEMORY[0x1AC5B3C70](v33);
-  [v6 setAccountStore:self];
-  v22 = [(ACAccountStore *)self remoteAccountStoreSession];
+  [itemCopy setAccountStore:self];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_invoke_181;
   v30[3] = &unk_1E79754C8;
-  v23 = v6;
+  v23 = itemCopy;
   v31 = v23;
   v32 = v21;
   v28[0] = MEMORY[0x1E69E9820];
@@ -7795,7 +7795,7 @@ void __55__ACAccountStore_credentialItemForAccount_serviceName___block_invoke_2(
   v24 = v32;
   v28[4] = self;
   v29 = v24;
-  ac_dispatch_remote(v22, v30, v28);
+  ac_dispatch_remote(remoteAccountStoreSession, v30, v28);
 
   os_activity_scope_leave(&state);
   v25 = *MEMORY[0x1E69E9840];
@@ -7905,16 +7905,16 @@ void __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_inv
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)saveCredentialItem:(id)a3 withCompletionHandler:(id)a4
+- (void)saveCredentialItem:(id)item withCompletionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/save-credential-item", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!itemCopy)
   {
     v22 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Credential item must be non-nil" userInfo:0];
     objc_exception_throw(v22);
@@ -7929,7 +7929,7 @@ void __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_inv
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = itemCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "SaveCredentialItem", "%@", buf, 0xCu);
   }
 
@@ -7946,9 +7946,9 @@ void __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_inv
   v28[4] = self;
   v31 = v10;
   v32 = v12;
-  v16 = v7;
+  v16 = handlerCopy;
   v30 = v16;
-  v17 = v6;
+  v17 = itemCopy;
   v29 = v17;
   v18 = MEMORY[0x1AC5B3C70](v28);
   if ([v17 isDirty])
@@ -7959,7 +7959,7 @@ void __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_inv
       [ACAccountStore saveCredentialItem:withCompletionHandler:];
     }
 
-    v20 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __59__ACAccountStore_saveCredentialItem_withCompletionHandler___block_invoke_183;
@@ -7972,7 +7972,7 @@ void __61__ACAccountStore_insertCredentialItem_withCompletionHandler___block_inv
     v23[3] = &unk_1E79754F0;
     v23[4] = self;
     v24 = v16;
-    ac_dispatch_remote(v20, v25, v23);
+    ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
   }
 
   else if (v16)
@@ -8082,16 +8082,16 @@ void __59__ACAccountStore_saveCredentialItem_withCompletionHandler___block_invok
   }
 }
 
-- (void)removeCredentialItem:(id)a3 withCompletionHandler:(id)a4
+- (void)removeCredentialItem:(id)item withCompletionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/remove-credential-item", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v6)
+  if (!itemCopy)
   {
     v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Credential item must be non-nil" userInfo:0];
     objc_exception_throw(v23);
@@ -8106,7 +8106,7 @@ void __59__ACAccountStore_saveCredentialItem_withCompletionHandler___block_invok
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = itemCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "RemoveCredentialItem", "%@", buf, 0xCu);
   }
 
@@ -8121,17 +8121,17 @@ void __59__ACAccountStore_saveCredentialItem_withCompletionHandler___block_invok
   v29[2] = __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_invoke;
   v29[3] = &unk_1E7976098;
   v29[4] = self;
-  v16 = v7;
+  v16 = handlerCopy;
   v30 = v16;
   v31 = v10;
   v32 = v12;
   v17 = MEMORY[0x1AC5B3C70](v29);
-  v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_invoke_184;
   v26[3] = &unk_1E79754C8;
-  v19 = v6;
+  v19 = itemCopy;
   v27 = v19;
   v20 = v17;
   v28 = v20;
@@ -8142,7 +8142,7 @@ void __59__ACAccountStore_saveCredentialItem_withCompletionHandler___block_invok
   v21 = v16;
   v24[4] = self;
   v25 = v21;
-  ac_dispatch_remote(v18, v26, v24);
+  ac_dispatch_remote(remoteAccountStoreSession, v26, v24);
 
   os_activity_scope_leave(&state);
   v22 = *MEMORY[0x1E69E9840];
@@ -8223,10 +8223,10 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
   }
 }
 
-- (id)parentAccountForAccount:(id)a3 error:(id *)a4
+- (id)parentAccountForAccount:(id)account error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/parent-account-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8243,8 +8243,8 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v8 = [v6 identifier];
-  if (v8)
+  identifier = [accountCopy identifier];
+  if (identifier)
   {
     v9 = _ACSignpostLogSystem();
     v10 = _ACSignpostCreate(v9);
@@ -8255,7 +8255,7 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       *buf = 138412290;
-      v49 = v6;
+      v49 = accountCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "ParentAccountForAccount", "%@", buf, 0xCu);
     }
 
@@ -8265,12 +8265,12 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
       [ACAccountStore parentAccountForAccount:error:];
     }
 
-    v16 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __48__ACAccountStore_parentAccountForAccount_error___block_invoke;
     v31[3] = &unk_1E7975B78;
-    v32 = v8;
+    v32 = identifier;
     v33 = &v41;
     v34 = &v35;
     v30[0] = MEMORY[0x1E69E9820];
@@ -8279,12 +8279,12 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
     v30[3] = &unk_1E7975BA0;
     v30[4] = self;
     v30[5] = &v35;
-    ac_dispatch_remote_sync(v16, v31, v30);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v31, v30);
 
     [v42[5] _setAccountStore:self];
-    if (a4)
+    if (error)
     {
-      *a4 = v36[5];
+      *error = v36[5];
     }
 
     Nanoseconds = _ACSignpostGetNanoseconds(v10, v12);
@@ -8343,10 +8343,10 @@ void __61__ACAccountStore_removeCredentialItem_withCompletionHandler___block_inv
       [ACAccountStore parentAccountForAccount:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.accounts" code:6 userInfo:0];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -8408,10 +8408,10 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)childAccountsForAccount:(id)a3 error:(id *)a4
+- (id)childAccountsForAccount:(id)account error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/child-accounts-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8428,8 +8428,8 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
   v49 = __Block_byref_object_copy__0;
   v50 = __Block_byref_object_dispose__0;
   v51 = 0;
-  v8 = [v6 identifier];
-  if (v8)
+  identifier = [accountCopy identifier];
+  if (identifier)
   {
     v9 = _ACSignpostLogSystem();
     spid = _ACSignpostCreate(v9);
@@ -8441,7 +8441,7 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138412290;
-      v60 = v6;
+      v60 = accountCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, spid, "ChildAccountForAccounts", "%@", buf, 0xCu);
     }
 
@@ -8451,12 +8451,12 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
       [ACAccountStore childAccountsForAccount:error:];
     }
 
-    v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __48__ACAccountStore_childAccountsForAccount_error___block_invoke;
     v42[3] = &unk_1E7975B78;
-    v43 = v8;
+    v43 = identifier;
     v44 = &v52;
     v45 = &v46;
     v41[0] = MEMORY[0x1E69E9820];
@@ -8465,9 +8465,9 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
     v41[3] = &unk_1E7975BA0;
     v41[4] = self;
     v41[5] = &v46;
-    ac_dispatch_remote_sync(v15, v42, v41);
+    ac_dispatch_remote_sync(remoteAccountStoreSession, v42, v41);
 
-    v16 = v6;
+    v16 = accountCopy;
     v17 = v7;
     v39 = 0u;
     v40 = 0u;
@@ -8497,10 +8497,10 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
     }
 
     v7 = v17;
-    v6 = v16;
-    if (a4)
+    accountCopy = v16;
+    if (error)
     {
-      *a4 = v47[5];
+      *error = v47[5];
     }
 
     Nanoseconds = _ACSignpostGetNanoseconds(spid, v11);
@@ -8559,10 +8559,10 @@ uint64_t __48__ACAccountStore_parentAccountForAccount_error___block_invoke_185(u
       [ACAccountStore parentAccountForAccount:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.accounts" code:6 userInfo:0];
-      *a4 = v28 = 0;
+      *error = v28 = 0;
     }
 
     else
@@ -8624,12 +8624,12 @@ uint64_t __48__ACAccountStore_childAccountsForAccount_error___block_invoke_186(u
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v28[0] = v7;
+  accountCopy = account;
+  identifierCopy = identifier;
+  v28[0] = identifierCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   v9 = [(ACAccountStore *)self accountsWithAccountTypeIdentifiers:v8 error:0];
 
@@ -8638,7 +8638,7 @@ uint64_t __48__ACAccountStore_childAccountsForAccount_error___block_invoke_186(u
   v25[1] = 3221225472;
   v25[2] = __61__ACAccountStore_childAccountsForAccount_withTypeIdentifier___block_invoke;
   v25[3] = &unk_1E79765E8;
-  v11 = v6;
+  v11 = accountCopy;
   v26 = v11;
   v12 = [v10 predicateWithBlock:v25];
   v13 = [v9 filteredArrayUsingPredicate:v12];
@@ -8685,10 +8685,10 @@ uint64_t __61__ACAccountStore_childAccountsForAccount_withTypeIdentifier___block
   return v5;
 }
 
-- (id)enabledDataclassesForAccount:(id)a3 error:(id *)a4
+- (id)enabledDataclassesForAccount:(id)account error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/enabled-dataclasses-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8702,7 +8702,7 @@ uint64_t __61__ACAccountStore_childAccountsForAccount_withTypeIdentifier___block
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "EnabledDataclassesForAccount", "%@", &buf, 0xCu);
   }
 
@@ -8724,12 +8724,12 @@ uint64_t __61__ACAccountStore_childAccountsForAccount_withTypeIdentifier___block
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __53__ACAccountStore_enabledDataclassesForAccount_error___block_invoke;
   v30[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = accountCopy;
   v31 = v16;
   p_buf = &buf;
   v33 = &v34;
@@ -8739,11 +8739,11 @@ uint64_t __61__ACAccountStore_childAccountsForAccount_withTypeIdentifier___block
   v29[3] = &unk_1E7975BA0;
   v29[4] = self;
   v29[5] = &v34;
-  ac_dispatch_remote_sync(v15, v30, v29);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v30, v29);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -8848,10 +8848,10 @@ uint64_t __53__ACAccountStore_enabledDataclassesForAccount_error___block_invoke_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)provisionedDataclassesForAccount:(id)a3 error:(id *)a4
+- (id)provisionedDataclassesForAccount:(id)account error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/provisioned-dataclasses-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8865,7 +8865,7 @@ uint64_t __53__ACAccountStore_enabledDataclassesForAccount_error___block_invoke_
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "ProvisionedDataclassesForAccount", "%@", &buf, 0xCu);
   }
 
@@ -8887,12 +8887,12 @@ uint64_t __53__ACAccountStore_enabledDataclassesForAccount_error___block_invoke_
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __57__ACAccountStore_provisionedDataclassesForAccount_error___block_invoke;
   v30[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = accountCopy;
   v31 = v16;
   p_buf = &buf;
   v33 = &v34;
@@ -8902,11 +8902,11 @@ uint64_t __53__ACAccountStore_enabledDataclassesForAccount_error___block_invoke_
   v29[3] = &unk_1E7975BA0;
   v29[4] = self;
   v29[5] = &v34;
-  ac_dispatch_remote_sync(v15, v30, v29);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v30, v29);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -9011,10 +9011,10 @@ uint64_t __57__ACAccountStore_provisionedDataclassesForAccount_error___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)supportedDataclassesForAccountType:(id)a3
+- (id)supportedDataclassesForAccountType:(id)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/supported-dataclasses-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9028,7 +9028,7 @@ uint64_t __57__ACAccountStore_provisionedDataclassesForAccount_error___block_inv
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SupportedDataclassesForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -9044,15 +9044,15 @@ uint64_t __57__ACAccountStore_provisionedDataclassesForAccount_error___block_inv
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __53__ACAccountStore_supportedDataclassesForAccountType___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -9121,10 +9121,10 @@ void __53__ACAccountStore_supportedDataclassesForAccountType___block_invoke_2(ui
   }
 }
 
-- (id)syncableDataclassesForAccountType:(id)a3
+- (id)syncableDataclassesForAccountType:(id)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/syncable-dataclasses-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9138,7 +9138,7 @@ void __53__ACAccountStore_supportedDataclassesForAccountType___block_invoke_2(ui
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = typeCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SyncableDataclassesForAccountType", "%@", &buf, 0xCu);
   }
 
@@ -9154,15 +9154,15 @@ void __53__ACAccountStore_supportedDataclassesForAccountType___block_invoke_2(ui
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __52__ACAccountStore_syncableDataclassesForAccountType___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = typeCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -9231,10 +9231,10 @@ void __52__ACAccountStore_syncableDataclassesForAccountType___block_invoke_2(uin
   }
 }
 
-- (id)displayTypeForAccountWithIdentifier:(id)a3
+- (id)displayTypeForAccountWithIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/display-type-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9248,7 +9248,7 @@ void __52__ACAccountStore_syncableDataclassesForAccountType___block_invoke_2(uin
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DisplayTypeForAccount", "%@", &buf, 0xCu);
   }
 
@@ -9264,16 +9264,16 @@ void __52__ACAccountStore_syncableDataclassesForAccountType___block_invoke_2(uin
   v39 = __Block_byref_object_copy__0;
   v40 = __Block_byref_object_dispose__0;
   v41 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __54__ACAccountStore_displayTypeForAccountWithIdentifier___block_invoke;
   v24[3] = &unk_1E7976660;
-  v14 = v4;
-  v26 = self;
+  v14 = identifierCopy;
+  selfCopy = self;
   p_buf = &buf;
   v25 = v14;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -9343,10 +9343,10 @@ void __54__ACAccountStore_displayTypeForAccountWithIdentifier___block_invoke_2(u
   }
 }
 
-- (id)accountIdentifiersEnabledForDataclass:(id)a3
+- (id)accountIdentifiersEnabledForDataclass:(id)dataclass
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataclassCopy = dataclass;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/account-identifiers-enabled-for-dataclass", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9360,7 +9360,7 @@ void __54__ACAccountStore_displayTypeForAccountWithIdentifier___block_invoke_2(u
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = dataclassCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AccountsEnabledForDataclass", "%@", &buf, 0xCu);
   }
 
@@ -9376,15 +9376,15 @@ void __54__ACAccountStore_displayTypeForAccountWithIdentifier___block_invoke_2(u
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __56__ACAccountStore_accountIdentifiersEnabledForDataclass___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = dataclassCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -9453,10 +9453,10 @@ void __56__ACAccountStore_accountIdentifiersEnabledForDataclass___block_invoke_2
   }
 }
 
-- (id)accountIdentifiersEnabledToSyncDataclass:(id)a3
+- (id)accountIdentifiersEnabledToSyncDataclass:(id)dataclass
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataclassCopy = dataclass;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/account-identifiers-enabled-sync-dataclass", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9470,7 +9470,7 @@ void __56__ACAccountStore_accountIdentifiersEnabledForDataclass___block_invoke_2
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = dataclassCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AccountsEnabledToSyncDataclass", "%@", &buf, 0xCu);
   }
 
@@ -9486,15 +9486,15 @@ void __56__ACAccountStore_accountIdentifiersEnabledForDataclass___block_invoke_2
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __59__ACAccountStore_accountIdentifiersEnabledToSyncDataclass___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = dataclassCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -9563,9 +9563,9 @@ void __59__ACAccountStore_accountIdentifiersEnabledToSyncDataclass___block_invok
   }
 }
 
-- (void)preloadDataclassOwnersWithCompletion:(id)a3
+- (void)preloadDataclassOwnersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/preload-dataclass-owners", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9588,7 +9588,7 @@ void __59__ACAccountStore_accountIdentifiersEnabledToSyncDataclass___block_invok
     [ACAccountStore preloadDataclassOwnersWithCompletion:];
   }
 
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke;
@@ -9596,7 +9596,7 @@ void __59__ACAccountStore_accountIdentifiersEnabledToSyncDataclass___block_invok
   v19[4] = self;
   v21 = v7;
   v22 = v9;
-  v20 = v4;
+  v20 = completionCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke_192;
@@ -9606,7 +9606,7 @@ void __59__ACAccountStore_accountIdentifiersEnabledToSyncDataclass___block_invok
   v18 = v9;
   v14 = v20;
   v16 = v14;
-  ac_dispatch_remote(v13, v19, v15);
+  ac_dispatch_remote(remoteAccountStoreSession, v19, v15);
 
   os_activity_scope_leave(&state);
 }
@@ -9761,10 +9761,10 @@ void __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke_2_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataclassActionsForAccountSave:(id)a3 error:(id *)a4
+- (id)dataclassActionsForAccountSave:(id)save error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  saveCopy = save;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/dataclass-actions-for-account-save", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9778,7 +9778,7 @@ void __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke_2_
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = saveCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "DataclassActionsForAccountSave", "%@", &buf, 0xCu);
   }
 
@@ -9800,12 +9800,12 @@ void __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke_2_
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __55__ACAccountStore_dataclassActionsForAccountSave_error___block_invoke;
   v30[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = saveCopy;
   v31 = v16;
   p_buf = &buf;
   v33 = &v34;
@@ -9815,11 +9815,11 @@ void __55__ACAccountStore_preloadDataclassOwnersWithCompletion___block_invoke_2_
   v29[3] = &unk_1E7975BA0;
   v29[4] = self;
   v29[5] = &v34;
-  ac_dispatch_remote_sync(v15, v30, v29);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v30, v29);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -9922,10 +9922,10 @@ uint64_t __55__ACAccountStore_dataclassActionsForAccountSave_error___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)dataclassActionsForAccountDeletion:(id)a3 error:(id *)a4
+- (id)dataclassActionsForAccountDeletion:(id)deletion error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deletionCopy = deletion;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/dataclass-actions-for-account-deletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -9939,7 +9939,7 @@ uint64_t __55__ACAccountStore_dataclassActionsForAccountSave_error___block_invok
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = deletionCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "DataclassActionsForAccountDeletion", "%@", &buf, 0xCu);
   }
 
@@ -9961,12 +9961,12 @@ uint64_t __55__ACAccountStore_dataclassActionsForAccountSave_error___block_invok
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __59__ACAccountStore_dataclassActionsForAccountDeletion_error___block_invoke;
   v30[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = deletionCopy;
   v31 = v16;
   p_buf = &buf;
   v33 = &v34;
@@ -9976,11 +9976,11 @@ uint64_t __55__ACAccountStore_dataclassActionsForAccountSave_error___block_invok
   v29[3] = &unk_1E7975BA0;
   v29[4] = self;
   v29[5] = &v34;
-  ac_dispatch_remote_sync(v15, v30, v29);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v30, v29);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -10083,10 +10083,10 @@ uint64_t __59__ACAccountStore_dataclassActionsForAccountDeletion_error___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isPerformingDataclassActionsForAccount:(id)a3 error:(id *)a4
+- (BOOL)isPerformingDataclassActionsForAccount:(id)account error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = _os_activity_create(&dword_1AC3CD000, "accounts/is-performingdataclass-actions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10100,7 +10100,7 @@ uint64_t __59__ACAccountStore_dataclassActionsForAccountDeletion_error___block_i
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "IsPerformingDataclassActions", "%@", &buf, 0xCu);
   }
 
@@ -10120,12 +10120,12 @@ uint64_t __59__ACAccountStore_dataclassActionsForAccountDeletion_error___block_i
   v48 = __Block_byref_object_copy__0;
   v49 = __Block_byref_object_dispose__0;
   v50 = 0;
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __63__ACAccountStore_isPerformingDataclassActionsForAccount_error___block_invoke;
   v29[3] = &unk_1E7975B78;
-  v16 = v6;
+  v16 = accountCopy;
   v30 = v16;
   v31 = &v33;
   p_buf = &buf;
@@ -10135,11 +10135,11 @@ uint64_t __59__ACAccountStore_dataclassActionsForAccountDeletion_error___block_i
   v28[3] = &unk_1E7975BA0;
   v28[4] = self;
   v28[5] = &buf;
-  ac_dispatch_remote_sync(v15, v29, v28);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v29, v28);
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v9, v11);
@@ -10245,10 +10245,10 @@ uint64_t __63__ACAccountStore_isPerformingDataclassActionsForAccount_error___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isTetheredSyncingEnabledForDataclass:(id)a3
+- (BOOL)isTetheredSyncingEnabledForDataclass:(id)dataclass
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataclassCopy = dataclass;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/is-tethered-syncing-enabled-for-dataclasse", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10262,7 +10262,7 @@ uint64_t __63__ACAccountStore_isPerformingDataclassActionsForAccount_error___blo
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138412290;
-    v34 = v4;
+    v34 = dataclassCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "IsThetheredSyncingEnabledForDataclass", "%@", buf, 0xCu);
   }
 
@@ -10276,15 +10276,15 @@ uint64_t __63__ACAccountStore_isPerformingDataclassActionsForAccount_error___blo
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __55__ACAccountStore_isTetheredSyncingEnabledForDataclass___block_invoke;
   v25[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = dataclassCopy;
   v26 = v14;
   v27 = &v28;
-  ac_dispatch_remote_sync(v13, v25, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v25, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -10352,10 +10352,10 @@ uint64_t __55__ACAccountStore_isTetheredSyncingEnabledForDataclass___block_invok
   return [a2 isTetheredSyncingEnabledForDataclass:v2 completion:v4];
 }
 
-- (id)tetheredSyncSourceTypeForDataclass:(id)a3
+- (id)tetheredSyncSourceTypeForDataclass:(id)dataclass
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataclassCopy = dataclass;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/is-tethered-syncing-enabled-for-dataclass", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10369,7 +10369,7 @@ uint64_t __55__ACAccountStore_isTetheredSyncingEnabledForDataclass___block_invok
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = dataclassCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ThetheredSyncSourceTypeForDataclass", "%@", &buf, 0xCu);
   }
 
@@ -10385,15 +10385,15 @@ uint64_t __55__ACAccountStore_isTetheredSyncingEnabledForDataclass___block_invok
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke;
   v24[3] = &unk_1E7976048;
-  v14 = v4;
+  v14 = dataclassCopy;
   v25 = v14;
   p_buf = &buf;
-  ac_dispatch_remote_sync(v13, v24, 0);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, 0);
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
   v16 = _ACSignpostLogSystem();
@@ -10443,27 +10443,27 @@ uint64_t __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke(
   return [a2 tetheredSyncSourceTypeForDataclass:v2 completion:v4];
 }
 
-- (void)accountIdentifiersEnabledForDataclasses:(id)a3 withAccountTypeIdentifiers:(id)a4 completion:(id)a5
+- (void)accountIdentifiersEnabledForDataclasses:(id)dataclasses withAccountTypeIdentifiers:(id)identifiers completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataclassesCopy = dataclasses;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/accounts-enabled-for-dataclasses-of-type", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!dataclassesCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The dataclasses argument cannot be nil"];
   }
 
-  if (!v9)
+  if (!identifiersCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The accountTypes argument cannot be nil"];
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = _ACSignpostLogSystem();
     v13 = _ACSignpostCreate(v12);
@@ -10474,9 +10474,9 @@ uint64_t __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke(
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       *buf = 138412546;
-      v35 = v8;
+      v35 = dataclassesCopy;
       v36 = 2112;
-      v37 = v9;
+      v37 = identifiersCopy;
       _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "AccountsEnabledForDataclasses", "%@ : %@", buf, 0x16u);
     }
 
@@ -10486,9 +10486,9 @@ uint64_t __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke(
       *buf = 134218498;
       v35 = v13;
       v36 = 2112;
-      v37 = v8;
+      v37 = dataclassesCopy;
       v38 = 2112;
-      v39 = v9;
+      v39 = identifiersCopy;
       _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountsEnabledForDataclasses %@ : %@", buf, 0x20u);
     }
 
@@ -10499,15 +10499,15 @@ uint64_t __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke(
     v29[4] = self;
     v31 = v13;
     v32 = v15;
-    v30 = v10;
+    v30 = completionCopy;
     v19 = MEMORY[0x1AC5B3C70](v29);
-    v20 = [(ACAccountStore *)self remoteAccountStoreSession];
+    remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __96__ACAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTypeIdentifiers_completion___block_invoke_204;
     v25[3] = &unk_1E7975C40;
-    v26 = v8;
-    v27 = v9;
+    v26 = dataclassesCopy;
+    v27 = identifiersCopy;
     v28 = v19;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -10516,7 +10516,7 @@ uint64_t __53__ACAccountStore_tetheredSyncSourceTypeForDataclass___block_invoke(
     v21 = v28;
     v23[4] = self;
     v24 = v21;
-    ac_dispatch_remote(v20, v25, v23);
+    ac_dispatch_remote(remoteAccountStoreSession, v25, v23);
   }
 
   os_activity_scope_leave(&state);
@@ -10602,10 +10602,10 @@ void __96__ACAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTyp
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)clientTokenForAccount:(id)a3
+- (id)clientTokenForAccount:(id)account
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/client-token-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10619,7 +10619,7 @@ void __96__ACAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTyp
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ClientTokenForAccount", "%@", &buf, 0xCu);
   }
 
@@ -10636,12 +10636,12 @@ void __96__ACAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTyp
   v44 = __Block_byref_object_dispose__0;
   v45 = 0;
   v13 = dispatch_semaphore_create(0);
-  v14 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __40__ACAccountStore_clientTokenForAccount___block_invoke;
   v28[3] = &unk_1E7976660;
-  v15 = v4;
+  v15 = accountCopy;
   v29 = v15;
   p_buf = &buf;
   v30 = v13;
@@ -10651,7 +10651,7 @@ void __96__ACAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTyp
   v26[3] = &unk_1E7976278;
   v16 = v30;
   v27 = v16;
-  ac_dispatch_remote(v14, v28, v26);
+  ac_dispatch_remote(remoteAccountStoreSession, v28, v26);
 
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
@@ -10713,11 +10713,11 @@ void __40__ACAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1, vo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)addClientToken:(id)a3 forAccount:(id)a4
+- (BOOL)addClientToken:(id)token forAccount:(id)account
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  accountCopy = account;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/add-client-token", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10731,9 +10731,9 @@ void __40__ACAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1, vo
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = tokenCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "AddClientTokenForAccount", "%@ -> %@", buf, 0x16u);
   }
 
@@ -10743,9 +10743,9 @@ void __40__ACAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1, vo
     *buf = 134218498;
     *&buf[4] = v10;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = tokenCopy;
     *&buf[22] = 2112;
-    v46 = v7;
+    v46 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v15, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AddClientTokenForAccount %@ -> %@", buf, 0x20u);
   }
 
@@ -10754,14 +10754,14 @@ void __40__ACAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1, vo
   *&buf[16] = 0x2020000000;
   LOBYTE(v46) = 0;
   v16 = dispatch_semaphore_create(0);
-  v17 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __44__ACAccountStore_addClientToken_forAccount___block_invoke;
   v33[3] = &unk_1E7976548;
-  v18 = v6;
+  v18 = tokenCopy;
   v34 = v18;
-  v19 = v7;
+  v19 = accountCopy;
   v35 = v19;
   v37 = buf;
   v36 = v16;
@@ -10771,7 +10771,7 @@ void __40__ACAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1, vo
   v31[3] = &unk_1E7976278;
   v20 = v36;
   v32 = v20;
-  ac_dispatch_remote(v17, v33, v31);
+  ac_dispatch_remote(remoteAccountStoreSession, v33, v31);
 
   dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
   Nanoseconds = _ACSignpostGetNanoseconds(v10, v12);
@@ -10841,23 +10841,23 @@ void __44__ACAccountStore_addClientToken_forAccount___block_invoke(uint64_t a1, 
   [v5 addClientToken:v3 forAccountIdentifier:v6 completion:v9];
 }
 
-- (void)discoverPropertiesForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)discoverPropertiesForAccount:(id)account options:(id)options completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/discover-properties-for-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!accountCopy)
   {
     v31 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v31);
   }
 
-  v12 = [(ACAccountStore *)self _sanitizeOptionsDictionary:v9];
+  v12 = [(ACAccountStore *)self _sanitizeOptionsDictionary:optionsCopy];
 
   v13 = _ACSignpostLogSystem();
   v14 = _ACSignpostCreate(v13);
@@ -10867,26 +10867,26 @@ void __44__ACAccountStore_addClientToken_forAccount___block_invoke(uint64_t a1, 
   v18 = v17;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    v19 = [v8 accountType];
-    v20 = [v19 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     *buf = 138543618;
-    v45 = v20;
+    v45 = identifier;
     v46 = 2112;
-    v47 = v8;
+    v47 = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v14, "DiscoverProperties", " AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  enableTelemetry=YES (account: %@)", buf, 0x16u);
   }
 
   v21 = _ACSignpostLogSystem();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v29 = [v8 accountType];
-    v30 = [v29 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     *buf = 134218498;
     v45 = v14;
     v46 = 2114;
-    v47 = v30;
+    v47 = identifier2;
     v48 = 2112;
-    v49 = v8;
+    v49 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v21, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: DiscoverProperties  AccountType=%{public,signpost.telemetry:string1,name=AccountType}@  enableTelemetry=YES (account: %@)", buf, 0x20u);
   }
 
@@ -10896,20 +10896,20 @@ void __44__ACAccountStore_addClientToken_forAccount___block_invoke(uint64_t a1, 
   v39[3] = &unk_1E79767C8;
   v41 = v14;
   v42 = v16;
-  v22 = v10;
+  v22 = completionCopy;
   v39[4] = self;
   v40 = v22;
   v23 = MEMORY[0x1AC5B3C70](v39);
-  v24 = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
+  longLivedRemoteAccountStoreSession = [(ACAccountStore *)self longLivedRemoteAccountStoreSession];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __66__ACAccountStore_discoverPropertiesForAccount_options_completion___block_invoke_2;
   v34[3] = &unk_1E7976390;
-  v25 = v8;
+  v25 = accountCopy;
   v35 = v25;
   v26 = v12;
   v36 = v26;
-  v37 = self;
+  selfCopy = self;
   v38 = v23;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -10918,7 +10918,7 @@ void __44__ACAccountStore_addClientToken_forAccount___block_invoke(uint64_t a1, 
   v27 = v38;
   v32[4] = self;
   v33 = v27;
-  ac_dispatch_remote(v24, v34, v32);
+  ac_dispatch_remote(longLivedRemoteAccountStoreSession, v34, v32);
 
   os_activity_scope_leave(&state);
   v28 = *MEMORY[0x1E69E9840];
@@ -11016,23 +11016,23 @@ void __66__ACAccountStore_discoverPropertiesForAccount_options_completion___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)openAuthenticationURL:(id)a3 forAccount:(id)a4 shouldConfirm:(BOOL)a5 completion:(id)a6
+- (void)openAuthenticationURL:(id)l forAccount:(id)account shouldConfirm:(BOOL)confirm completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  accountCopy = account;
+  completionCopy = completion;
   v13 = _os_activity_create(&dword_1AC3CD000, "accounts/open-authentication-url", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v13, &state);
-  if (!v11)
+  if (!accountCopy)
   {
     v28 = @"Account must be non-nil";
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     v28 = @"URL must be non-nil";
 LABEL_11:
@@ -11049,9 +11049,9 @@ LABEL_11:
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     *buf = 138412546;
-    v43 = v10;
+    v43 = lCopy;
     v44 = 2112;
-    v45 = v11;
+    v45 = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v15, "OpenAuthURLForAccount", "%@ -> %@", buf, 0x16u);
   }
 
@@ -11061,9 +11061,9 @@ LABEL_11:
     *buf = 134218498;
     v43 = v15;
     v44 = 2112;
-    v45 = v10;
+    v45 = lCopy;
     v46 = 2112;
-    v47 = v11;
+    v47 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v20, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: OpenAuthURLForAccount %@ -> %@", buf, 0x20u);
   }
 
@@ -11074,19 +11074,19 @@ LABEL_11:
   v37[4] = self;
   v39 = v15;
   v40 = v17;
-  v21 = v12;
+  v21 = completionCopy;
   v38 = v21;
   v22 = MEMORY[0x1AC5B3C70](v37);
-  v23 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __76__ACAccountStore_openAuthenticationURL_forAccount_shouldConfirm_completion___block_invoke_210;
   v32[3] = &unk_1E7976160;
-  v24 = v10;
+  v24 = lCopy;
   v33 = v24;
-  v25 = v11;
+  v25 = accountCopy;
   v34 = v25;
-  v36 = a5;
+  confirmCopy = confirm;
   v35 = v22;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -11095,7 +11095,7 @@ LABEL_11:
   v26 = v35;
   v30[4] = self;
   v31 = v26;
-  ac_dispatch_remote(v23, v32, v30);
+  ac_dispatch_remote(remoteAccountStoreSession, v32, v30);
 
   os_activity_scope_leave(&state);
   v27 = *MEMORY[0x1E69E9840];
@@ -11194,31 +11194,31 @@ void __76__ACAccountStore_openAuthenticationURL_forAccount_shouldConfirm_complet
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)openAuthenticationURLForAccount:(id)a3 withDelegateClassName:(id)a4 fromBundleAtPath:(id)a5 shouldConfirm:(BOOL)a6 completion:(id)a7
+- (void)openAuthenticationURLForAccount:(id)account withDelegateClassName:(id)name fromBundleAtPath:(id)path shouldConfirm:(BOOL)confirm completion:(id)completion
 {
-  v35 = a6;
+  confirmCopy = confirm;
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  accountCopy = account;
+  nameCopy = name;
+  pathCopy = path;
+  completionCopy = completion;
   v15 = _os_activity_create(&dword_1AC3CD000, "accounts/open-authentication-url-with-info", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v15, &state);
-  if (!v11)
+  if (!accountCopy)
   {
     v33 = @"Account must be non-nil";
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!nameCopy)
   {
     v33 = @"Auth delegate class name must be non-nil";
     goto LABEL_17;
   }
 
-  if (!v13)
+  if (!pathCopy)
   {
     v33 = @"Bundle path must be non-nil";
 LABEL_17:
@@ -11236,18 +11236,18 @@ LABEL_17:
   {
     v22 = @"NO";
     *buf = 138413058;
-    v50 = v12;
-    if (v35)
+    v50 = nameCopy;
+    if (confirmCopy)
     {
       v22 = @"YES";
     }
 
     v51 = 2112;
-    v52 = v13;
+    v52 = pathCopy;
     v53 = 2112;
     v54 = v22;
     v55 = 2112;
-    v56 = v11;
+    v56 = accountCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v17, "OpenAuthURLForAccount", "%@,%@,%@ -> %@", buf, 0x2Au);
   }
 
@@ -11257,19 +11257,19 @@ LABEL_17:
     v32 = @"NO";
     *buf = 134219010;
     v50 = v17;
-    if (v35)
+    if (confirmCopy)
     {
       v32 = @"YES";
     }
 
     v51 = 2112;
-    v52 = v12;
+    v52 = nameCopy;
     v53 = 2112;
-    v54 = v13;
+    v54 = pathCopy;
     v55 = 2112;
     v56 = v32;
     v57 = 2112;
-    v58 = v11;
+    v58 = accountCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v23, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: OpenAuthURLForAccount %@,%@,%@ -> %@", buf, 0x34u);
   }
 
@@ -11280,21 +11280,21 @@ LABEL_17:
   v44[4] = self;
   v46 = v17;
   v47 = v19;
-  v24 = v14;
+  v24 = completionCopy;
   v45 = v24;
   v25 = MEMORY[0x1AC5B3C70](v44);
-  v26 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __114__ACAccountStore_openAuthenticationURLForAccount_withDelegateClassName_fromBundleAtPath_shouldConfirm_completion___block_invoke_219;
   v38[3] = &unk_1E7976868;
-  v27 = v11;
+  v27 = accountCopy;
   v39 = v27;
-  v28 = v12;
+  v28 = nameCopy;
   v40 = v28;
-  v29 = v13;
+  v29 = pathCopy;
   v41 = v29;
-  v43 = v35;
+  v43 = confirmCopy;
   v42 = v25;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -11303,7 +11303,7 @@ LABEL_17:
   v30 = v42;
   v36[4] = self;
   v37 = v30;
-  ac_dispatch_remote(v26, v38, v36);
+  ac_dispatch_remote(remoteAccountStoreSession, v38, v36);
 
   os_activity_scope_leave(&state);
   v31 = *MEMORY[0x1E69E9840];
@@ -11406,12 +11406,12 @@ void __114__ACAccountStore_openAuthenticationURLForAccount_withDelegateClassName
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)notifyRemoteDevicesOfModifiedAccount:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)notifyRemoteDevicesOfModifiedAccount:(id)account withOptions:(id)options completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/paired-update-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -11425,9 +11425,9 @@ void __114__ACAccountStore_openAuthenticationURLForAccount_withDelegateClassName
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 138412546;
-    v34 = v8;
+    v34 = accountCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "NotifyRemoteOfModifiedAccount", "%@ (%@)", buf, 0x16u);
   }
 
@@ -11437,25 +11437,25 @@ void __114__ACAccountStore_openAuthenticationURLForAccount_withDelegateClassName
     *buf = 134218498;
     v34 = v13;
     v35 = 2112;
-    v36 = v8;
+    v36 = accountCopy;
     v37 = 2112;
-    v38 = v9;
+    v38 = optionsCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: NotifyRemoteOfModifiedAccount %@ (%@)", buf, 0x20u);
   }
 
-  v19 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __78__ACAccountStore_notifyRemoteDevicesOfModifiedAccount_withOptions_completion___block_invoke;
   v25[3] = &unk_1E7975E90;
-  v20 = v8;
+  v20 = accountCopy;
   v26 = v20;
-  v21 = v9;
+  v21 = optionsCopy;
   v27 = v21;
-  v28 = self;
+  selfCopy = self;
   v30 = v13;
   v31 = v15;
-  v22 = v10;
+  v22 = completionCopy;
   v29 = v22;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -11463,7 +11463,7 @@ void __114__ACAccountStore_openAuthenticationURLForAccount_withDelegateClassName
   v24[3] = &__block_descriptor_48_e17_v16__0__NSError_8l;
   v24[4] = v13;
   v24[5] = v15;
-  ac_dispatch_remote(v19, v25, v24);
+  ac_dispatch_remote(remoteAccountStoreSession, v25, v24);
 
   os_activity_scope_leave(&state);
   v23 = *MEMORY[0x1E69E9840];
@@ -11618,12 +11618,12 @@ void __78__ACAccountStore_notifyRemoteDevicesOfModifiedAccount_withOptions_compl
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyRemoteDevicesOfUpdatedCredentials:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)notifyRemoteDevicesOfUpdatedCredentials:(id)credentials withOptions:(id)options completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialsCopy = credentials;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/notify-remote-updated-credentials", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -11637,9 +11637,9 @@ void __78__ACAccountStore_notifyRemoteDevicesOfModifiedAccount_withOptions_compl
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 138412546;
-    v34 = v8;
+    v34 = credentialsCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "NotifyRemoteOfUpdatedCredentials", "%@ (%@)", buf, 0x16u);
   }
 
@@ -11649,25 +11649,25 @@ void __78__ACAccountStore_notifyRemoteDevicesOfModifiedAccount_withOptions_compl
     *buf = 134218498;
     v34 = v13;
     v35 = 2112;
-    v36 = v8;
+    v36 = credentialsCopy;
     v37 = 2112;
-    v38 = v9;
+    v38 = optionsCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: NotifyRemoteOfUpdatedCredentials %@ (%@)", buf, 0x20u);
   }
 
-  v19 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_completion___block_invoke;
   v25[3] = &unk_1E7975E90;
-  v20 = v8;
+  v20 = credentialsCopy;
   v26 = v20;
-  v21 = v9;
+  v21 = optionsCopy;
   v27 = v21;
-  v28 = self;
+  selfCopy = self;
   v30 = v13;
   v31 = v15;
-  v22 = v10;
+  v22 = completionCopy;
   v29 = v22;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -11675,7 +11675,7 @@ void __78__ACAccountStore_notifyRemoteDevicesOfModifiedAccount_withOptions_compl
   v24[3] = &__block_descriptor_48_e17_v16__0__NSError_8l;
   v24[4] = v13;
   v24[5] = v15;
-  ac_dispatch_remote(v19, v25, v24);
+  ac_dispatch_remote(remoteAccountStoreSession, v25, v24);
 
   os_activity_scope_leave(&state);
   v23 = *MEMORY[0x1E69E9840];
@@ -11830,17 +11830,17 @@ void __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_co
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveAccount:(id)a3 toPairedDeviceWithOptions:(id)a4 completion:(id)a5
+- (void)saveAccount:(id)account toPairedDeviceWithOptions:(id)options completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/paired-save-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!accountCopy)
   {
     v26 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Account must be non-nil" userInfo:0];
     objc_exception_throw(v26);
@@ -11855,9 +11855,9 @@ void __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_co
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 138412546;
-    v39 = v8;
+    v39 = accountCopy;
     v40 = 2112;
-    v41 = v9;
+    v41 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "SaveAccountToPairedDevice", "%@ (%@)", buf, 0x16u);
   }
 
@@ -11867,9 +11867,9 @@ void __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_co
     *buf = 134218498;
     v39 = v13;
     v40 = 2112;
-    v41 = v8;
+    v41 = accountCopy;
     v42 = 2112;
-    v43 = v9;
+    v43 = optionsCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: SaveAccountToPairedDevice %@ (%@)", buf, 0x20u);
   }
 
@@ -11880,17 +11880,17 @@ void __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_co
   v33[4] = self;
   v35 = v13;
   v36 = v15;
-  v19 = v10;
+  v19 = completionCopy;
   v34 = v19;
   v20 = MEMORY[0x1AC5B3C70](v33);
-  v21 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __67__ACAccountStore_saveAccount_toPairedDeviceWithOptions_completion___block_invoke_223;
   v29[3] = &unk_1E7975C40;
-  v22 = v8;
+  v22 = accountCopy;
   v30 = v22;
-  v23 = v9;
+  v23 = optionsCopy;
   v31 = v23;
   v32 = v20;
   v27[0] = MEMORY[0x1E69E9820];
@@ -11900,7 +11900,7 @@ void __81__ACAccountStore_notifyRemoteDevicesOfUpdatedCredentials_withOptions_co
   v24 = v32;
   v27[4] = self;
   v28 = v24;
-  ac_dispatch_remote(v21, v29, v27);
+  ac_dispatch_remote(remoteAccountStoreSession, v29, v27);
 
   os_activity_scope_leave(&state);
   v25 = *MEMORY[0x1E69E9840];
@@ -12033,11 +12033,11 @@ void __67__ACAccountStore_saveAccount_toPairedDeviceWithOptions_completion___blo
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)removeAccountsFromPairedDeviceWithOptions:(id)a3 completion:(id)a4
+- (void)removeAccountsFromPairedDeviceWithOptions:(id)options completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/paired-remove-accounts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -12051,7 +12051,7 @@ void __67__ACAccountStore_saveAccount_toPairedDeviceWithOptions_completion___blo
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "RemoveAccountsFromPairedDevice", "(%@)", buf, 0xCu);
   }
 
@@ -12068,15 +12068,15 @@ void __67__ACAccountStore_saveAccount_toPairedDeviceWithOptions_completion___blo
   v27[4] = self;
   v29 = v10;
   v30 = v12;
-  v16 = v7;
+  v16 = completionCopy;
   v28 = v16;
   v17 = MEMORY[0x1AC5B3C70](v27);
-  v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion___block_invoke_226;
   v24[3] = &unk_1E79754C8;
-  v19 = v6;
+  v19 = optionsCopy;
   v25 = v19;
   v26 = v17;
   v22[0] = MEMORY[0x1E69E9820];
@@ -12086,7 +12086,7 @@ void __67__ACAccountStore_saveAccount_toPairedDeviceWithOptions_completion___blo
   v20 = v26;
   v22[4] = self;
   v23 = v20;
-  ac_dispatch_remote(v18, v24, v22);
+  ac_dispatch_remote(remoteAccountStoreSession, v24, v22);
 
   os_activity_scope_leave(&state);
   v21 = *MEMORY[0x1E69E9840];
@@ -12218,12 +12218,12 @@ void __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion__
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)removeAccountFromPairedDevice:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)removeAccountFromPairedDevice:(id)device withOptions:(id)options completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1AC3CD000, "accounts/paired-remove-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -12237,9 +12237,9 @@ void __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion__
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 138412546;
-    v38 = v8;
+    v38 = deviceCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v13, "RemoveAccountFromPairedDevice", "%@ (%@)", buf, 0x16u);
   }
 
@@ -12249,9 +12249,9 @@ void __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion__
     *buf = 134218498;
     v38 = v13;
     v39 = 2112;
-    v40 = v8;
+    v40 = deviceCopy;
     v41 = 2112;
-    v42 = v9;
+    v42 = optionsCopy;
     _os_log_debug_impl(&dword_1AC3CD000, v18, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: RemoveAccountFromPairedDevice %@ (%@)", buf, 0x20u);
   }
 
@@ -12262,17 +12262,17 @@ void __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion__
   v32[4] = self;
   v34 = v13;
   v35 = v15;
-  v19 = v10;
+  v19 = completionCopy;
   v33 = v19;
   v20 = MEMORY[0x1AC5B3C70](v32);
-  v21 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __71__ACAccountStore_removeAccountFromPairedDevice_withOptions_completion___block_invoke_229;
   v28[3] = &unk_1E7975C40;
-  v22 = v8;
+  v22 = deviceCopy;
   v29 = v22;
-  v23 = v9;
+  v23 = optionsCopy;
   v30 = v23;
   v31 = v20;
   v26[0] = MEMORY[0x1E69E9820];
@@ -12282,7 +12282,7 @@ void __71__ACAccountStore_removeAccountsFromPairedDeviceWithOptions_completion__
   v24 = v31;
   v26[4] = self;
   v27 = v24;
-  ac_dispatch_remote(v21, v28, v26);
+  ac_dispatch_remote(remoteAccountStoreSession, v28, v26);
 
   os_activity_scope_leave(&state);
   v25 = *MEMORY[0x1E69E9840];
@@ -12415,7 +12415,7 @@ void __71__ACAccountStore_removeAccountFromPairedDevice_withOptions_completion__
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)triggerKeychainMigrationIfNecessary:(id *)a3
+- (BOOL)triggerKeychainMigrationIfNecessary:(id *)necessary
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/trigger-keychain-migration", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -12450,7 +12450,7 @@ void __71__ACAccountStore_removeAccountFromPairedDevice_withOptions_completion__
   v30 = __Block_byref_object_copy__0;
   v31 = __Block_byref_object_dispose__0;
   v32 = 0;
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __54__ACAccountStore_triggerKeychainMigrationIfNecessary___block_invoke;
@@ -12464,11 +12464,11 @@ void __71__ACAccountStore_removeAccountFromPairedDevice_withOptions_completion__
   v25[5] = &v33;
   v25[6] = buf;
   v25[4] = self;
-  ac_dispatch_remote_sync(v13, v26, v25);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v26, v25);
 
-  if (a3)
+  if (necessary)
   {
-    *a3 = *(v28 + 5);
+    *necessary = *(v28 + 5);
   }
 
   Nanoseconds = _ACSignpostGetNanoseconds(v7, v9);
@@ -12614,10 +12614,10 @@ void __49__ACAccountStore__obsoleteAccountTypeIDsToRemove__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObsoleteAccounts:(id)a3
+- (void)removeObsoleteAccounts:(id)accounts
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/remove-obsolete-accounts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -12656,7 +12656,7 @@ void __49__ACAccountStore__obsoleteAccountTypeIDsToRemove__block_invoke()
   v17[4] = self;
   v19 = v7;
   v20 = v9;
-  v15 = v4;
+  v15 = accountsCopy;
   v18 = v15;
   [(ACAccountStore *)self accountsWithAccountTypeIdentifiers:v13 completion:v17];
 
@@ -12778,22 +12778,22 @@ uint64_t __41__ACAccountStore_removeObsoleteAccounts___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)_removeObsoleteAccountsInternal:(id)a3 completion:(id)a4
+- (void)_removeObsoleteAccountsInternal:(id)internal completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  if (v8)
+  internalCopy = internal;
+  completionCopy = completion;
+  firstObject = [internalCopy firstObject];
+  if (firstObject)
   {
     v30 = 0;
-    v9 = [(ACAccountStore *)self dataclassActionsForAccountDeletion:v8 error:&v30];
+    v9 = [(ACAccountStore *)self dataclassActionsForAccountDeletion:firstObject error:&v30];
     v10 = v30;
     v11 = _ACLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v32 = v8;
+      v32 = firstObject;
       v33 = 2112;
       v34 = v9;
       v35 = 2112;
@@ -12810,12 +12810,12 @@ uint64_t __41__ACAccountStore_removeObsoleteAccounts___block_invoke_2(uint64_t a
     v27[3] = &unk_1E79768D8;
     v13 = v12;
     v28 = v13;
-    v14 = v8;
+    v14 = firstObject;
     v29 = v14;
     [v9 enumerateKeysAndObjectsUsingBlock:v27];
-    v15 = [v14 accountType];
-    v16 = [v15 identifier];
-    v17 = [v16 isEqualToString:@"com.apple.account.osxserver"];
+    accountType = [v14 accountType];
+    identifier = [accountType identifier];
+    v17 = [identifier isEqualToString:@"com.apple.account.osxserver"];
 
     if (v17)
     {
@@ -12838,15 +12838,15 @@ uint64_t __41__ACAccountStore_removeObsoleteAccounts___block_invoke_2(uint64_t a
     v21[3] = &unk_1E7976900;
     v22 = v14;
     v23 = 0;
-    v24 = self;
-    v25 = v6;
-    v26 = v7;
+    selfCopy = self;
+    v25 = internalCopy;
+    v26 = completionCopy;
     [(ACAccountStore *)self removeAccount:v22 withDataclassActions:v13 completion:v21];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -13004,21 +13004,21 @@ void __61__ACAccountStore__removeObsoleteAccountsInternal_completion___block_inv
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_removeObsoleteOSXServerAccountForMacOS:(id)a3
+- (id)_removeObsoleteOSXServerAccountForMacOS:(id)s
 {
   v131 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sCopy = s;
   v85 = objc_opt_new();
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  obj = [v3 childAccounts];
+  obj = [sCopy childAccounts];
   v89 = [obj countByEnumeratingWithState:&v115 objects:v130 count:16];
   if (v89)
   {
     v87 = *v116;
-    v91 = v3;
+    v91 = sCopy;
     do
     {
       for (i = 0; i != v89; i = v60 + 1)
@@ -13039,13 +13039,13 @@ void __61__ACAccountStore__removeObsoleteAccountsInternal_completion___block_inv
 
         else
         {
-          v7 = [v3 objectForKeyedSubscript:@"Hostname"];
+          v7 = [sCopy objectForKeyedSubscript:@"Hostname"];
         }
 
         v8 = v7;
 
-        v9 = [v94 accountType];
-        v10 = [(ACAccountStore *)self accountsWithAccountType:v9];
+        accountType = [v94 accountType];
+        v10 = [(ACAccountStore *)self accountsWithAccountType:accountType];
 
         v113 = 0u;
         v114 = 0u;
@@ -13070,39 +13070,39 @@ void __61__ACAccountStore__removeObsoleteAccountsInternal_completion___block_inv
               }
 
               v16 = *(*(&v111 + 1) + 8 * v15);
-              v17 = [v16 parentAccount];
-              if (v17 || ([v16 objectForKeyedSubscript:@"Hostname"], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "compare:options:", v8, 1)))
+              parentAccount = [v16 parentAccount];
+              if (parentAccount || ([v16 objectForKeyedSubscript:@"Hostname"], parentAccount = objc_claimAutoreleasedReturnValue(), objc_msgSend(parentAccount, "compare:options:", v8, 1)))
               {
               }
 
               else
               {
-                v18 = [v16 username];
-                v19 = [v94 username];
-                if (![v18 compare:v19 options:1])
+                username = [v16 username];
+                username2 = [v94 username];
+                if (![username compare:username2 options:1])
                 {
 
                   v8 = v92;
                   v11 = v93;
 LABEL_41:
-                  v52 = _ACLogSystem();
-                  if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+                  identifier2 = _ACLogSystem();
+                  if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
                   {
-                    v59 = [v16 identifier];
+                    identifier = [v16 identifier];
                     *buf = 138412290;
-                    v128 = v59;
-                    _os_log_impl(&dword_1AC3CD000, v52, OS_LOG_TYPE_DEFAULT, "Found a matching existing account %@", buf, 0xCu);
+                    v128 = identifier;
+                    _os_log_impl(&dword_1AC3CD000, identifier2, OS_LOG_TYPE_DEFAULT, "Found a matching existing account %@", buf, 0xCu);
                   }
 
-                  v24 = v11;
-                  v3 = v91;
+                  portableCopy = v11;
+                  sCopy = v91;
                   v60 = v90;
                   goto LABEL_71;
                 }
 
-                v20 = [v16 username];
-                v21 = [v91 qualifiedUsername];
-                v22 = [v20 compare:v21 options:1];
+                username3 = [v16 username];
+                qualifiedUsername = [v91 qualifiedUsername];
+                v22 = [username3 compare:qualifiedUsername options:1];
 
                 v8 = v92;
                 v11 = v93;
@@ -13127,48 +13127,48 @@ LABEL_41:
           }
         }
 
-        v24 = [v94 portableCopy];
-        [v24 setAuthenticationType:0];
-        [v24 setParentAccount:0];
-        v25 = [MEMORY[0x1E696AFB0] UUID];
-        v26 = [v25 UUIDString];
-        [v24 setIdentifier:v26];
+        portableCopy = [v94 portableCopy];
+        [portableCopy setAuthenticationType:0];
+        [portableCopy setParentAccount:0];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        [portableCopy setIdentifier:uUIDString];
 
-        v3 = v91;
-        v27 = [v91 internalCredential];
-        v28 = [v27 copy];
-        [v24 setCredential:v28];
+        sCopy = v91;
+        internalCredential = [v91 internalCredential];
+        v28 = [internalCredential copy];
+        [portableCopy setCredential:v28];
 
-        v29 = [v91 internalCredential];
-        v30 = [v29 credentialType];
-        v31 = [v30 copy];
-        [v24 setCredentialType:v31];
+        internalCredential2 = [v91 internalCredential];
+        credentialType = [internalCredential2 credentialType];
+        v31 = [credentialType copy];
+        [portableCopy setCredentialType:v31];
 
-        v32 = [v91 authenticationType];
-        v33 = [v32 copy];
-        [v24 setAuthenticationType:v33];
+        authenticationType = [v91 authenticationType];
+        v33 = [authenticationType copy];
+        [portableCopy setAuthenticationType:v33];
 
-        [v24 setSupportsAuthentication:{objc_msgSend(v91, "supportsAuthentication")}];
-        [v24 setAuthenticated:{objc_msgSend(v91, "isAuthenticated")}];
-        v34 = [v91 username];
-        v35 = [v34 copy];
-        [v24 setUsername:v35];
+        [portableCopy setSupportsAuthentication:{objc_msgSend(v91, "supportsAuthentication")}];
+        [portableCopy setAuthenticated:{objc_msgSend(v91, "isAuthenticated")}];
+        username4 = [v91 username];
+        v35 = [username4 copy];
+        [portableCopy setUsername:v35];
 
-        v36 = [v91 accountDescription];
-        v37 = [v36 copy];
-        [v24 setAccountDescription:v37];
+        accountDescription = [v91 accountDescription];
+        v37 = [accountDescription copy];
+        [portableCopy setAccountDescription:v37];
 
         v38 = MEMORY[0x1E696AEC0];
-        v39 = [v91 owningBundleID];
-        v40 = [v38 stringWithFormat:@"%@.migrator", v39];
-        [v24 setOwningBundleID:v40];
+        owningBundleID = [v91 owningBundleID];
+        v40 = [v38 stringWithFormat:@"%@.migrator", owningBundleID];
+        [portableCopy setOwningBundleID:v40];
 
         v109 = 0u;
         v110 = 0u;
         v107 = 0u;
         v108 = 0u;
-        v41 = [v94 enabledDataclasses];
-        v42 = [v41 countByEnumeratingWithState:&v107 objects:v126 count:16];
+        enabledDataclasses = [v94 enabledDataclasses];
+        v42 = [enabledDataclasses countByEnumeratingWithState:&v107 objects:v126 count:16];
         if (v42)
         {
           v43 = v42;
@@ -13179,13 +13179,13 @@ LABEL_41:
             {
               if (*v108 != v44)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(enabledDataclasses);
               }
 
-              [v24 setEnabled:1 forDataclass:*(*(&v107 + 1) + 8 * j)];
+              [portableCopy setEnabled:1 forDataclass:*(*(&v107 + 1) + 8 * j)];
             }
 
-            v43 = [v41 countByEnumeratingWithState:&v107 objects:v126 count:16];
+            v43 = [enabledDataclasses countByEnumeratingWithState:&v107 objects:v126 count:16];
           }
 
           while (v43);
@@ -13195,8 +13195,8 @@ LABEL_41:
         v106 = 0u;
         v103 = 0u;
         v104 = 0u;
-        v46 = [v94 provisionedDataclasses];
-        v47 = [v46 countByEnumeratingWithState:&v103 objects:v125 count:16];
+        provisionedDataclasses = [v94 provisionedDataclasses];
+        v47 = [provisionedDataclasses countByEnumeratingWithState:&v103 objects:v125 count:16];
         if (v47)
         {
           v48 = v47;
@@ -13207,22 +13207,22 @@ LABEL_41:
             {
               if (*v104 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(provisionedDataclasses);
               }
 
-              [v24 setProvisioned:1 forDataclass:*(*(&v103 + 1) + 8 * k)];
+              [portableCopy setProvisioned:1 forDataclass:*(*(&v103 + 1) + 8 * k)];
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v103 objects:v125 count:16];
+            v48 = [provisionedDataclasses countByEnumeratingWithState:&v103 objects:v125 count:16];
           }
 
           while (v48);
         }
 
-        v51 = [v94 accountType];
-        v52 = [v51 identifier];
+        accountType2 = [v94 accountType];
+        identifier2 = [accountType2 identifier];
 
-        if ([v52 isEqualToString:@"com.apple.account.IMAP"])
+        if ([identifier2 isEqualToString:@"com.apple.account.IMAP"])
         {
           v123[0] = @"ACPropertyFullName";
           v123[1] = @"EmailAliases";
@@ -13233,12 +13233,12 @@ LABEL_41:
           v124[2] = @"Hostname";
           v124[3] = @"IdentityEmailAddress";
           v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:v123 count:4];
-          v54 = [v91 dataclassProperties];
-          v55 = [v54 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+          dataclassProperties = [v91 dataclassProperties];
+          v55 = [dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
           if (v55)
           {
-            v56 = [v91 dataclassProperties];
-            v57 = [v56 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+            dataclassProperties2 = [v91 dataclassProperties];
+            v57 = [dataclassProperties2 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
             v58 = [v57 mutableCopy];
           }
 
@@ -13273,7 +13273,7 @@ LABEL_41:
                 {
                   v73 = [v58 objectForKeyedSubscript:v71];
                   v74 = [v66 objectForKeyedSubscript:v71];
-                  [v24 setAccountProperty:v73 forKey:v74];
+                  [portableCopy setAccountProperty:v73 forKey:v74];
                 }
               }
 
@@ -13289,7 +13289,7 @@ LABEL_41:
 
         v60 = v90;
         v11 = v93;
-        if ([v52 isEqualToString:@"com.apple.account.SMTP"])
+        if ([identifier2 isEqualToString:@"com.apple.account.SMTP"])
         {
           v120[0] = @"EmailAddress";
           v120[1] = @"smtpHostname";
@@ -13298,12 +13298,12 @@ LABEL_41:
           v120[2] = @"smtpRequiresSSL";
           v121[2] = @"SSLEnabled";
           v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v121 forKeys:v120 count:3];
-          v62 = [v91 dataclassProperties];
-          v63 = [v62 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+          dataclassProperties3 = [v91 dataclassProperties];
+          v63 = [dataclassProperties3 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
           if (v63)
           {
-            v64 = [v91 dataclassProperties];
-            v65 = [v64 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+            dataclassProperties4 = [v91 dataclassProperties];
+            v65 = [dataclassProperties4 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
             v58 = [v65 mutableCopy];
           }
 
@@ -13338,7 +13338,7 @@ LABEL_41:
                 {
                   v81 = [v58 objectForKeyedSubscript:v79];
                   v82 = [v66 objectForKeyedSubscript:v79];
-                  [v24 setAccountProperty:v81 forKey:v82];
+                  [portableCopy setAccountProperty:v81 forKey:v82];
                 }
               }
 
@@ -13347,7 +13347,7 @@ LABEL_41:
 
             while (v76);
 LABEL_68:
-            v3 = v91;
+            sCopy = v91;
           }
 
 LABEL_69:
@@ -13357,7 +13357,7 @@ LABEL_69:
           v11 = v93;
         }
 
-        [v85 addObject:v24];
+        [v85 addObject:portableCopy];
 LABEL_71:
       }
 
@@ -13372,22 +13372,22 @@ LABEL_71:
   return v85;
 }
 
-- (void)_removeObsoleteOSXServerAccountForiOS:(id)a3
+- (void)_removeObsoleteOSXServerAccountForiOS:(id)s
 {
   v106 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 accountPropertyForKey:@"MCAccountIsManaged"];
-  v5 = [v4 BOOLValue];
+  sCopy = s;
+  v4 = [sCopy accountPropertyForKey:@"MCAccountIsManaged"];
+  bOOLValue = [v4 BOOLValue];
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v72 = objc_opt_new();
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
-    obj = [v3 childAccounts];
-    v67 = v3;
+    obj = [sCopy childAccounts];
+    v67 = sCopy;
     v71 = [obj countByEnumeratingWithState:&v95 objects:v105 count:16];
     if (v71)
     {
@@ -13404,40 +13404,40 @@ LABEL_71:
 
           v73 = v6;
           v7 = *(*(&v95 + 1) + 8 * v6);
-          v8 = [v7 enabledDataclasses];
-          v9 = [v8 copy];
+          enabledDataclasses = [v7 enabledDataclasses];
+          v9 = [enabledDataclasses copy];
 
-          v10 = [v7 provisionedDataclasses];
-          v11 = [v10 copy];
+          provisionedDataclasses = [v7 provisionedDataclasses];
+          v11 = [provisionedDataclasses copy];
 
           [v7 setAuthenticationType:0];
           [v7 setParentAccount:0];
-          v12 = [v3 internalCredential];
-          v13 = [v12 copy];
+          internalCredential = [sCopy internalCredential];
+          v13 = [internalCredential copy];
           [v7 setCredential:v13];
 
-          v14 = [v3 internalCredential];
-          v15 = [v14 credentialType];
-          v16 = [v15 copy];
+          internalCredential2 = [sCopy internalCredential];
+          credentialType = [internalCredential2 credentialType];
+          v16 = [credentialType copy];
           [v7 setCredentialType:v16];
 
-          v17 = [v3 authenticationType];
-          v18 = [v17 copy];
+          authenticationType = [sCopy authenticationType];
+          v18 = [authenticationType copy];
           [v7 setAuthenticationType:v18];
 
-          [v7 setSupportsAuthentication:{objc_msgSend(v3, "supportsAuthentication")}];
-          [v7 setAuthenticated:{objc_msgSend(v3, "isAuthenticated")}];
-          v19 = [v3 username];
-          v20 = [v19 copy];
+          [v7 setSupportsAuthentication:{objc_msgSend(sCopy, "supportsAuthentication")}];
+          [v7 setAuthenticated:{objc_msgSend(sCopy, "isAuthenticated")}];
+          username = [sCopy username];
+          v20 = [username copy];
           [v7 setUsername:v20];
 
-          v21 = [v3 accountDescription];
-          v22 = [v21 copy];
+          accountDescription = [sCopy accountDescription];
+          v22 = [accountDescription copy];
           [v7 setAccountDescription:v22];
 
           v23 = MEMORY[0x1E696AEC0];
-          v24 = [v3 owningBundleID];
-          v25 = [v23 stringWithFormat:@"%@.migrator", v24];
+          owningBundleID = [sCopy owningBundleID];
+          v25 = [v23 stringWithFormat:@"%@.migrator", owningBundleID];
           [v7 setOwningBundleID:v25];
 
           v93 = 0u;
@@ -13496,10 +13496,10 @@ LABEL_71:
             while (v33);
           }
 
-          v36 = [v7 accountType];
-          v37 = [v36 identifier];
+          accountType = [v7 accountType];
+          identifier = [accountType identifier];
 
-          if ([v37 isEqualToString:@"com.apple.account.IMAPMail"])
+          if ([identifier isEqualToString:@"com.apple.account.IMAPMail"])
           {
             v38 = [(ACAccountStore *)self accountTypeWithAccountTypeIdentifier:@"com.apple.account.IMAP"];
             [v7 setAccountType:v38];
@@ -13513,65 +13513,65 @@ LABEL_71:
 
             else
             {
-              v41 = [v3 objectForKeyedSubscript:@"Hostname"];
+              v41 = [sCopy objectForKeyedSubscript:@"Hostname"];
             }
 
             v42 = v41;
 
             v43 = MEMORY[0x1E696AEC0];
-            v44 = [v3 username];
-            v45 = [v43 stringWithFormat:@"%@:%@", v42, v44];
+            username2 = [sCopy username];
+            v45 = [v43 stringWithFormat:@"%@:%@", v42, username2];
 
             [v7 setAccountProperty:v45 forKey:@"SMTPIdentifier"];
             [v7 setAccountProperty:@"IMAPAccount" forKey:@"Class"];
             [v7 setAccountProperty:@"IMAP" forKey:@"Protocol"];
             [v7 setAccountProperty:&unk_1F2118928 forKey:@"SSLEnabled"];
-            if ([v3 isEnabledForDataclass:@"com.apple.Dataclass.Notes"])
+            if ([sCopy isEnabledForDataclass:@"com.apple.Dataclass.Notes"])
             {
               [v7 setEnabled:1 forDataclass:@"com.apple.Dataclass.Notes"];
             }
 
-            if ([v3 isProvisionedForDataclass:@"com.apple.Dataclass.Notes"])
+            if ([sCopy isProvisionedForDataclass:@"com.apple.Dataclass.Notes"])
             {
               [v7 setProvisioned:1 forDataclass:@"com.apple.Dataclass.Notes"];
             }
 
-            v46 = [(ACAccountStore *)self _createSMTPAccountForServerAccount:v3];
+            v46 = [(ACAccountStore *)self _createSMTPAccountForServerAccount:sCopy];
             [v72 addObject:v46];
           }
 
-          if ([v37 isEqualToString:@"com.apple.account.IMAPNotes"])
+          if ([identifier isEqualToString:@"com.apple.account.IMAPNotes"])
           {
             v85 = 0u;
             v86 = 0u;
             v83 = 0u;
             v84 = 0u;
-            v75 = [v3 childAccounts];
-            v77 = [v75 countByEnumeratingWithState:&v83 objects:v102 count:16];
+            childAccounts = [sCopy childAccounts];
+            v77 = [childAccounts countByEnumeratingWithState:&v83 objects:v102 count:16];
             if (v77)
             {
               v76 = *v84;
-              v69 = v37;
+              v69 = identifier;
               while (2)
               {
                 for (k = 0; k != v77; ++k)
                 {
                   if (*v84 != v76)
                   {
-                    objc_enumerationMutation(v75);
+                    objc_enumerationMutation(childAccounts);
                   }
 
                   v48 = *(*(&v83 + 1) + 8 * k);
-                  v49 = [v48 accountType];
-                  v50 = [v49 identifier];
-                  if ([v50 isEqualToString:@"com.apple.account.IMAPMail"])
+                  accountType2 = [v48 accountType];
+                  identifier2 = [accountType2 identifier];
+                  if ([identifier2 isEqualToString:@"com.apple.account.IMAPMail"])
                   {
 
 LABEL_42:
                     [v7 setParentAccount:v48];
                     [v7 setAuthenticationType:@"parent"];
-                    v3 = v67;
-                    v37 = v69;
+                    sCopy = v67;
+                    identifier = v69;
                     if ([v67 isProvisionedForDataclass:@"com.apple.Dataclass.Notes"])
                     {
                       [v7 setProvisioned:1 forDataclass:@"com.apple.Dataclass.Notes"];
@@ -13580,9 +13580,9 @@ LABEL_42:
                     goto LABEL_44;
                   }
 
-                  v51 = [v48 accountType];
-                  v52 = [v51 identifier];
-                  v53 = [v52 isEqualToString:@"com.apple.account.IMAP"];
+                  accountType3 = [v48 accountType];
+                  identifier3 = [accountType3 identifier];
+                  v53 = [identifier3 isEqualToString:@"com.apple.account.IMAP"];
 
                   if (v53)
                   {
@@ -13590,9 +13590,9 @@ LABEL_42:
                   }
                 }
 
-                v3 = v67;
-                v37 = v69;
-                v77 = [v75 countByEnumeratingWithState:&v83 objects:v102 count:16];
+                sCopy = v67;
+                identifier = v69;
+                v77 = [childAccounts countByEnumeratingWithState:&v83 objects:v102 count:16];
                 if (v77)
                 {
                   continue;
@@ -13646,10 +13646,10 @@ LABEL_44:
           {
             if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [v59 accountType];
-              v65 = [v64 identifier];
+              accountType4 = [v59 accountType];
+              identifier4 = [accountType4 identifier];
               *buf = 138412290;
-              v100 = v65;
+              v100 = identifier4;
               _os_log_impl(&dword_1AC3CD000, v63, OS_LOG_TYPE_DEFAULT, "Successfully saved macOSServer child account: %@", buf, 0xCu);
             }
           }
@@ -13668,43 +13668,43 @@ LABEL_44:
       while (v56);
     }
 
-    v3 = v67;
+    sCopy = v67;
   }
 
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createSMTPAccountForServerAccount:(id)a3
+- (id)_createSMTPAccountForServerAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [ACAccount alloc];
   v6 = [(ACAccountStore *)self accountTypeWithAccountTypeIdentifier:@"com.apple.account.SMTP"];
   v7 = [(ACAccount *)v5 initWithAccountType:v6];
 
-  v8 = [v4 internalCredential];
-  v9 = [v8 copy];
+  internalCredential = [accountCopy internalCredential];
+  v9 = [internalCredential copy];
   [(ACAccount *)v7 setCredential:v9];
 
-  v10 = [v4 credentialType];
-  [(ACAccount *)v7 setCredentialType:v10];
+  credentialType = [accountCopy credentialType];
+  [(ACAccount *)v7 setCredentialType:credentialType];
 
-  v11 = [v4 username];
-  [(ACAccount *)v7 setUsername:v11];
+  username = [accountCopy username];
+  [(ACAccount *)v7 setUsername:username];
 
   [(ACAccount *)v7 setAuthenticated:1];
   [(ACAccount *)v7 setSupportsAuthentication:1];
-  v12 = [v4 accountDescription];
-  [(ACAccount *)v7 setAccountDescription:v12];
+  accountDescription = [accountCopy accountDescription];
+  [(ACAccount *)v7 setAccountDescription:accountDescription];
 
   [(ACAccount *)v7 setActive:1];
   [(ACAccount *)v7 setEnabled:1 forDataclass:@"com.apple.Dataclass.Mail"];
   [(ACAccount *)v7 setProvisioned:1 forDataclass:@"com.apple.Dataclass.Mail"];
-  v13 = [v4 dataclassProperties];
-  v14 = [v13 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+  dataclassProperties = [accountCopy dataclassProperties];
+  v14 = [dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
   if (v14)
   {
-    v15 = [v4 dataclassProperties];
-    v16 = [v15 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+    dataclassProperties2 = [accountCopy dataclassProperties];
+    v16 = [dataclassProperties2 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
     v17 = [v16 mutableCopy];
   }
 
@@ -13732,10 +13732,10 @@ LABEL_44:
   return v7;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/handle-url", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -13749,7 +13749,7 @@ LABEL_44:
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = lCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v7, "HandleURL", "%@", buf, 0xCu);
   }
 
@@ -13759,12 +13759,12 @@ LABEL_44:
     [ACAccountStore handleURL:];
   }
 
-  v13 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __28__ACAccountStore_handleURL___block_invoke;
   v20[3] = &unk_1E7976928;
-  v21 = v4;
+  v21 = lCopy;
   v22 = v7;
   v23 = v9;
   v16[0] = MEMORY[0x1E69E9820];
@@ -13775,7 +13775,7 @@ LABEL_44:
   v17 = v14;
   v18 = v7;
   v19 = v9;
-  ac_dispatch_remote(v13, v20, v16);
+  ac_dispatch_remote(remoteAccountStoreSession, v20, v16);
 
   os_activity_scope_leave(&state);
   v15 = *MEMORY[0x1E69E9840];
@@ -13832,22 +13832,22 @@ void __28__ACAccountStore_handleURL___block_invoke_252(uint64_t a1)
   }
 }
 
-- (void)reportTelemetryForLandmarkEvent:(id)a3
+- (void)reportTelemetryForLandmarkEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [ACAccountStore reportTelemetryForLandmarkEvent:];
   }
 
-  v6 = [(ACAccountStore *)self _connectionFailureError];
-  v4[2](v4, 0, v6);
+  _connectionFailureError = [(ACAccountStore *)self _connectionFailureError];
+  eventCopy[2](eventCopy, 0, _connectionFailureError);
 }
 
-- (void)scheduleBackupIfNonexistent:(id)a3
+- (void)scheduleBackupIfNonexistent:(id)nonexistent
 {
-  v4 = a3;
+  nonexistentCopy = nonexistent;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/schedule-backup", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -13877,10 +13877,10 @@ void __28__ACAccountStore_handleURL___block_invoke_252(uint64_t a1)
   v21[4] = self;
   v23 = v7;
   v24 = v9;
-  v13 = v4;
+  v13 = nonexistentCopy;
   v22 = v13;
   v14 = MEMORY[0x1AC5B3C70](v21);
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __46__ACAccountStore_scheduleBackupIfNonexistent___block_invoke_253;
@@ -13893,7 +13893,7 @@ void __28__ACAccountStore_handleURL___block_invoke_252(uint64_t a1)
   v16 = v20;
   v17[4] = self;
   v18 = v16;
-  ac_dispatch_remote(v15, v19, v17);
+  ac_dispatch_remote(remoteAccountStoreSession, v19, v17);
 
   os_activity_scope_leave(&state);
 }
@@ -14023,11 +14023,11 @@ void __46__ACAccountStore_scheduleBackupIfNonexistent___block_invoke_255(uint64_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)resetDatabaseToVersion:(id)a3 withCompletion:(id)a4
+- (void)resetDatabaseToVersion:(id)version withCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1AC3CD000, "accounts/reset-database-to-version", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -14041,7 +14041,7 @@ void __46__ACAccountStore_scheduleBackupIfNonexistent___block_invoke_255(uint64_
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = versionCopy;
     _os_signpost_emit_with_name_impl(&dword_1AC3CD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "ResetDatabaseToVersion", "%@", buf, 0xCu);
   }
 
@@ -14058,15 +14058,15 @@ void __46__ACAccountStore_scheduleBackupIfNonexistent___block_invoke_255(uint64_
   v27[4] = self;
   v29 = v10;
   v30 = v12;
-  v16 = v7;
+  v16 = completionCopy;
   v28 = v16;
   v17 = MEMORY[0x1AC5B3C70](v27);
-  v18 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __56__ACAccountStore_resetDatabaseToVersion_withCompletion___block_invoke_256;
   v24[3] = &unk_1E79754C8;
-  v19 = v6;
+  v19 = versionCopy;
   v25 = v19;
   v26 = v17;
   v22[0] = MEMORY[0x1E69E9820];
@@ -14076,7 +14076,7 @@ void __46__ACAccountStore_scheduleBackupIfNonexistent___block_invoke_255(uint64_
   v20 = v26;
   v22[4] = self;
   v23 = v20;
-  ac_dispatch_remote_sync(v18, v24, v22);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v24, v22);
 
   os_activity_scope_leave(&state);
   v21 = *MEMORY[0x1E69E9840];
@@ -14175,9 +14175,9 @@ void __56__ACAccountStore_resetDatabaseToVersion_withCompletion___block_invoke_2
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)shutdownAccountsD:(id)a3
+- (void)shutdownAccountsD:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/shutdown-accountsd", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -14207,10 +14207,10 @@ void __56__ACAccountStore_resetDatabaseToVersion_withCompletion___block_invoke_2
   v21[4] = self;
   v23 = v7;
   v24 = v9;
-  v13 = v4;
+  v13 = dCopy;
   v22 = v13;
   v14 = MEMORY[0x1AC5B3C70](v21);
-  v15 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __36__ACAccountStore_shutdownAccountsD___block_invoke_258;
@@ -14223,7 +14223,7 @@ void __56__ACAccountStore_resetDatabaseToVersion_withCompletion___block_invoke_2
   v16 = v20;
   v17[4] = self;
   v18 = v16;
-  ac_dispatch_remote_sync(v15, v19, v17);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v19, v17);
 
   os_activity_scope_leave(&state);
 }
@@ -14321,11 +14321,11 @@ void __36__ACAccountStore_shutdownAccountsD___block_invoke_2_259(uint64_t a1)
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (unint64_t)generationForCacheSuffix:(id)a3
+- (unint64_t)generationForCacheSuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = [(ACAccountStore *)self _cache];
-  v6 = [v5 generationForCacheSuffix:v4];
+  suffixCopy = suffix;
+  _cache = [(ACAccountStore *)self _cache];
+  v6 = [_cache generationForCacheSuffix:suffixCopy];
 
   return v6;
 }
@@ -14336,17 +14336,17 @@ void __36__ACAccountStore_shutdownAccountsD___block_invoke_2_259(uint64_t a1)
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __33__ACAccountStore__uidOfAccountsd__block_invoke;
   v4[3] = &unk_1E7975D80;
   v4[4] = &v5;
-  ac_dispatch_remote_sync(v2, v4, &__block_literal_global_262);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v4, &__block_literal_global_262);
 
-  LODWORD(v2) = *(v6 + 6);
+  LODWORD(remoteAccountStoreSession) = *(v6 + 6);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return remoteAccountStoreSession;
 }
 
 uint64_t __33__ACAccountStore__uidOfAccountsd__block_invoke(uint64_t a1, void *a2)
@@ -14359,34 +14359,34 @@ uint64_t __33__ACAccountStore__uidOfAccountsd__block_invoke(uint64_t a1, void *a
   return [a2 uidOfAccountsd:v3];
 }
 
-- (id)_sanitizeOptionsDictionary:(id)a3
+- (id)_sanitizeOptionsDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"AllowedSSLCertificates"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"AllowedSSLCertificates"];
   if (v4)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [dictionaryCopy mutableCopy];
     v6 = serializeSecCertificates(v4);
     [v5 setObject:v6 forKeyedSubscript:@"AllowedSSLCertificates"];
   }
 
   else
   {
-    v5 = v3;
+    v5 = dictionaryCopy;
   }
 
   return v5;
 }
 
-- (id)_unsanitizeError:(id)a3
+- (id)_unsanitizeError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"NSURLErrorFailingURLPeerTrustErrorKey_AC_SANITIZED"];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"NSURLErrorFailingURLPeerTrustErrorKey_AC_SANITIZED"];
 
-  v6 = [v3 domain];
+  domain = [errorCopy domain];
   v7 = *MEMORY[0x1E696A978];
-  v8 = [v6 isEqualToString:*MEMORY[0x1E696A978]];
+  v8 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v8)
   {
@@ -14400,13 +14400,13 @@ uint64_t __33__ACAccountStore__uidOfAccountsd__block_invoke(uint64_t a1, void *a
 
   if (v9)
   {
-    v10 = v3;
+    v10 = errorCopy;
   }
 
   else
   {
-    v11 = [v3 userInfo];
-    v12 = [v11 mutableCopy];
+    userInfo2 = [errorCopy userInfo];
+    v12 = [userInfo2 mutableCopy];
 
     [v12 setObject:0 forKeyedSubscript:@"NSURLErrorFailingURLPeerTrustErrorKey_AC_SANITIZED"];
     v13 = SecTrustDeserialize();
@@ -14431,7 +14431,7 @@ uint64_t __33__ACAccountStore__uidOfAccountsd__block_invoke(uint64_t a1, void *a
       [v12 setObject:v20 forKeyedSubscript:@"NSErrorClientCertificateChainKey"];
     }
 
-    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v7 code:objc_msgSend(v3 userInfo:{"code"), v12}];
+    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v7 code:objc_msgSend(errorCopy userInfo:{"code"), v12}];
   }
 
   return v10;

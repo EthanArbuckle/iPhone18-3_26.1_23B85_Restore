@@ -1,30 +1,30 @@
 @interface SECBackgroundAssertion.AppStateObserverDelegate
-- (void)didAppEnterBackground:(id)a3;
-- (void)didAppEnterForeground:(id)a3;
-- (void)didAppGetSuspended:(id)a3;
+- (void)didAppEnterBackground:(id)background;
+- (void)didAppEnterForeground:(id)foreground;
+- (void)didAppGetSuspended:(id)suspended;
 @end
 
 @implementation SECBackgroundAssertion.AppStateObserverDelegate
 
-- (void)didAppGetSuspended:(id)a3
+- (void)didAppGetSuspended:(id)suspended
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001CA608(v4);
+  suspendedCopy = suspended;
+  selfCopy = self;
+  sub_1001CA608(suspendedCopy);
 }
 
-- (void)didAppEnterBackground:(id)a3
+- (void)didAppEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001CA680(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_1001CA680(backgroundCopy);
 }
 
-- (void)didAppEnterForeground:(id)a3
+- (void)didAppEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001CA6F8(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1001CA6F8(foregroundCopy);
 }
 
 @end

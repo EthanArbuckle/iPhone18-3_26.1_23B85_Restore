@@ -1,15 +1,15 @@
 @interface HealthDataListItemProvider
 - (_TtC26PrivacyAndSecuritySettings26HealthDataListItemProvider)init;
-- (void)sourceListDataSourceDidUpdate:(id)a3;
+- (void)sourceListDataSourceDidUpdate:(id)update;
 @end
 
 @implementation HealthDataListItemProvider
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_159C4(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_159C4(updateCopy);
 }
 
 - (_TtC26PrivacyAndSecuritySettings26HealthDataListItemProvider)init

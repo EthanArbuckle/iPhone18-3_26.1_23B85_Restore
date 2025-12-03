@@ -1,17 +1,17 @@
 @interface AWDMETRICSKCellularPowerLogProtocolStateHistMBin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBinId:(id)a3;
+- (int)StringAsBinId:(id)id;
 - (int)binId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasDurationBinIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasDurationBinIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogProtocolStateHistMBin
@@ -29,115 +29,115 @@
   }
 }
 
-- (int)StringAsBinId:(id)a3
+- (int)StringAsBinId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AIRPLANE_MODE"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"AIRPLANE_MODE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TX_RX_SUSPENDED"])
+  else if ([idCopy isEqualToString:@"TX_RX_SUSPENDED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OOS_IDLE"])
+  else if ([idCopy isEqualToString:@"OOS_IDLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"OOS_3GPP_NETWORK_SCAN"])
+  else if ([idCopy isEqualToString:@"OOS_3GPP_NETWORK_SCAN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GSM_IDLE"])
+  else if ([idCopy isEqualToString:@"GSM_IDLE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GSM_CONNECTED"])
+  else if ([idCopy isEqualToString:@"GSM_CONNECTED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA_IDLE"])
+  else if ([idCopy isEqualToString:@"WCDMA_IDLE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA_PCH"])
+  else if ([idCopy isEqualToString:@"WCDMA_PCH"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA_FACH"])
+  else if ([idCopy isEqualToString:@"WCDMA_FACH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA_DCH"])
+  else if ([idCopy isEqualToString:@"WCDMA_DCH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"WCDMA_INACTIVE"])
+  else if ([idCopy isEqualToString:@"WCDMA_INACTIVE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LTE_IDLE"])
+  else if ([idCopy isEqualToString:@"LTE_IDLE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"LTE_CONNECTED"])
+  else if ([idCopy isEqualToString:@"LTE_CONNECTED"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NR_SUB6_IDLE"])
+  else if ([idCopy isEqualToString:@"NR_SUB6_IDLE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"NR_SUB6_CONNECTED"])
+  else if ([idCopy isEqualToString:@"NR_SUB6_CONNECTED"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"NR_SUB6_INACTIVE"])
+  else if ([idCopy isEqualToString:@"NR_SUB6_INACTIVE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"NR_SUB6_ENDC_ON"])
+  else if ([idCopy isEqualToString:@"NR_SUB6_ENDC_ON"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NR_MMWAVE_IDLE"])
+  else if ([idCopy isEqualToString:@"NR_MMWAVE_IDLE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"NR_MMWAVE_CONNECTED"])
+  else if ([idCopy isEqualToString:@"NR_MMWAVE_CONNECTED"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"NR_MMWAVE_INACTIVE"])
+  else if ([idCopy isEqualToString:@"NR_MMWAVE_INACTIVE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"NR_MMWAVE_ENDC_ON"])
+  else if ([idCopy isEqualToString:@"NR_MMWAVE_ENDC_ON"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"OTHER"])
+  else if ([idCopy isEqualToString:@"OTHER"])
   {
     v4 = 21;
   }
@@ -150,9 +150,9 @@
   return v4;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -165,9 +165,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -180,9 +180,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDurationBinIndex:(BOOL)a3
+- (void)setHasDurationBinIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -201,15 +201,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogProtocolStateHistMBin;
   v4 = [(AWDMETRICSKCellularPowerLogProtocolStateHistMBin *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogProtocolStateHistMBin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogProtocolStateHistMBin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -224,7 +224,7 @@
       v6 = off_279A0FE20[binId];
     }
 
-    [v3 setObject:v6 forKey:@"bin_id"];
+    [dictionary setObject:v6 forKey:@"bin_id"];
 
     has = self->_has;
   }
@@ -232,7 +232,7 @@
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v9 forKey:@"duration"];
+    [dictionary setObject:v9 forKey:@"duration"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -253,23 +253,23 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count];
-  [v3 setObject:v10 forKey:@"count"];
+  [dictionary setObject:v10 forKey:@"count"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationBinIndex];
-    [v3 setObject:v7 forKey:@"duration_bin_index"];
+    [dictionary setObject:v7 forKey:@"duration_bin_index"];
   }
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -320,14 +320,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_binId;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_binId;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -346,8 +346,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_duration;
-  *(v4 + 24) |= 4u;
+  toCopy[4] = self->_duration;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -361,21 +361,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[3] = self->_count;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_count;
+  *(toCopy + 24) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    v4[5] = self->_durationBinIndex;
-    *(v4 + 24) |= 8u;
+    toCopy[5] = self->_durationBinIndex;
+    *(toCopy + 24) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -427,23 +427,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_binId != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_binId != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_21:
     v5 = 0;
@@ -452,34 +452,34 @@ LABEL_21:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_count != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_count != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 24) & 8) == 0;
+  v5 = (*(equalCopy + 24) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0 || self->_durationBinIndex != *(v4 + 5))
+    if ((*(equalCopy + 24) & 8) == 0 || self->_durationBinIndex != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
@@ -546,15 +546,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_binId = *(v4 + 2);
+    self->_binId = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -567,14 +567,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 4) == 0)
+  else if ((*(fromCopy + 24) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 4);
+  self->_duration = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -587,12 +587,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_count = *(v4 + 3);
+  self->_count = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 24) & 8) != 0)
+  if ((*(fromCopy + 24) & 8) != 0)
   {
 LABEL_5:
-    self->_durationBinIndex = *(v4 + 5);
+    self->_durationBinIndex = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

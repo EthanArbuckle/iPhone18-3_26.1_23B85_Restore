@@ -1,13 +1,13 @@
 @interface MPCQueueControllerBehaviorMusicIdentifierComponents
-+ (id)itemComponentsWithSectionID:(id)a3 itemID:(id)a4;
-+ (id)placeholderComponentsWithLoadingSectionID:(id)a3;
++ (id)itemComponentsWithSectionID:(id)d itemID:(id)iD;
++ (id)placeholderComponentsWithLoadingSectionID:(id)d;
 - (NSString)description;
 - (id)_copy;
-- (id)_initWithContentItemID:(id)a3 sectionID:(id)a4 itemID:(id)a5 repeatIteration:(int64_t)a6 type:(int64_t)a7 loadingSectionID:(id)a8 itemSpecificContentItemID:(id)a9 deferredNextContentItemID:(id)a10;
-- (id)copyAsDeferredWithLoadingSectionID:(id)a3;
+- (id)_initWithContentItemID:(id)d sectionID:(id)iD itemID:(id)itemID repeatIteration:(int64_t)iteration type:(int64_t)type loadingSectionID:(id)sectionID itemSpecificContentItemID:(id)contentItemID deferredNextContentItemID:(id)self0;
+- (id)copyAsDeferredWithLoadingSectionID:(id)d;
 - (id)copyAsPlaceholder;
-- (id)copyWithBehaviorFlags:(unsigned __int16)a3;
-- (id)copyWithRepeatIteration:(int64_t)a3;
+- (id)copyWithBehaviorFlags:(unsigned __int16)flags;
+- (id)copyWithRepeatIteration:(int64_t)iteration;
 - (unint64_t)uid;
 @end
 
@@ -48,7 +48,7 @@
     v175 = 0u;
     v176 = 0;
     v12 = v8;
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = [v12 length];
     v15 = v14;
     if (v170 > 3000)
@@ -58,13 +58,13 @@
         switch(v170)
         {
           case 0xFA1:
-            CC_SHA1_Update((&v170 + 8), v13, v14);
+            CC_SHA1_Update((&v170 + 8), uTF8String, v14);
             break;
           case 0x10A0:
-            CC_SHA256_Update((&v170 + 8), v13, v14);
+            CC_SHA256_Update((&v170 + 8), uTF8String, v14);
             break;
           case 0x11A0:
-            CC_SHA512_Update((&v170 + 8), v13, v14);
+            CC_SHA512_Update((&v170 + 8), uTF8String, v14);
             break;
         }
 
@@ -75,13 +75,13 @@
       {
         if (v170 == 4000)
         {
-          CC_MD5_Update((&v170 + 8), v13, v14);
+          CC_MD5_Update((&v170 + 8), uTF8String, v14);
         }
 
         goto LABEL_99;
       }
 
-      if (!v13)
+      if (!uTF8String)
       {
         goto LABEL_99;
       }
@@ -89,26 +89,26 @@
       *(&v170 + 1) += v14;
       if (v14 + v176 <= 0x1F)
       {
-        memcpy(&v174 + v176, v13, v14);
+        memcpy(&v174 + v176, uTF8String, v14);
         v57 = v176 + v15;
 LABEL_73:
         LODWORD(v176) = v57;
         goto LABEL_99;
       }
 
-      v70 = &v13[v14];
+      v70 = &uTF8String[v14];
       if (v176)
       {
-        memcpy(&v174 + v176, v13, (32 - v176));
+        memcpy(&v174 + v176, uTF8String, (32 - v176));
         v171.i64[0] = 0x9E3779B185EBCA87 * __ROR8__(v171.i64[0] - 0x3D4D51C2D82B14B1 * v174, 33);
         v171.i64[1] = 0x9E3779B185EBCA87 * __ROR8__(v171.i64[1] - 0x3D4D51C2D82B14B1 * *(&v174 + 1), 33);
         v172 = 0x9E3779B185EBCA87 * __ROR8__(v172 - 0x3D4D51C2D82B14B1 * v175, 33);
         v173 = 0x9E3779B185EBCA87 * __ROR8__(v173 - 0x3D4D51C2D82B14B1 * *(&v175 + 1), 33);
-        v13 += (32 - v176);
+        uTF8String += (32 - v176);
         LODWORD(v176) = 0;
       }
 
-      if ((v13 + 32) <= v70)
+      if ((uTF8String + 32) <= v70)
       {
         v72 = v171.u64[1];
         v71 = v171.i64[0];
@@ -116,23 +116,23 @@ LABEL_73:
         v73 = v173;
         do
         {
-          v71 = 0x9E3779B185EBCA87 * __ROR8__(v71 - 0x3D4D51C2D82B14B1 * *v13, 33);
-          v72 = 0x9E3779B185EBCA87 * __ROR8__(v72 - 0x3D4D51C2D82B14B1 * *(v13 + 1), 33);
-          v74 = 0x9E3779B185EBCA87 * __ROR8__(v74 - 0x3D4D51C2D82B14B1 * *(v13 + 2), 33);
-          v73 = 0x9E3779B185EBCA87 * __ROR8__(v73 - 0x3D4D51C2D82B14B1 * *(v13 + 3), 33);
-          v13 += 32;
+          v71 = 0x9E3779B185EBCA87 * __ROR8__(v71 - 0x3D4D51C2D82B14B1 * *uTF8String, 33);
+          v72 = 0x9E3779B185EBCA87 * __ROR8__(v72 - 0x3D4D51C2D82B14B1 * *(uTF8String + 1), 33);
+          v74 = 0x9E3779B185EBCA87 * __ROR8__(v74 - 0x3D4D51C2D82B14B1 * *(uTF8String + 2), 33);
+          v73 = 0x9E3779B185EBCA87 * __ROR8__(v73 - 0x3D4D51C2D82B14B1 * *(uTF8String + 3), 33);
+          uTF8String += 32;
         }
 
-        while (v13 <= v70 - 32);
+        while (uTF8String <= v70 - 32);
         v171.i64[0] = v71;
         v171.i64[1] = v72;
         v172 = v74;
         v173 = v73;
       }
 
-      if (v13 < v70)
+      if (uTF8String < v70)
       {
-        v57 = v70 - v13;
+        v57 = v70 - uTF8String;
         __memcpy_chk();
         goto LABEL_73;
       }
@@ -209,9 +209,9 @@ LABEL_173:
             }
 
 LABEL_175:
-            v168 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v169 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"uint64_t _MSVHashGetUInt64Hash(MSVHash)"];
-            [v168 handleFailureInFunction:v169 file:@"MSVHasher+Algorithms.h" lineNumber:327 description:@"Cannot obtain hash from unknown hasher algorithm"];
+            [currentHandler handleFailureInFunction:v169 file:@"MSVHasher+Algorithms.h" lineNumber:327 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
             v147 = 0;
             goto LABEL_173;
@@ -358,9 +358,9 @@ LABEL_133:
       {
         if (!v170)
         {
-          v118 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v119 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-          [v118 handleFailureInFunction:v119 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+          [currentHandler2 handleFailureInFunction:v119 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
           goto LABEL_146;
         }
@@ -486,9 +486,9 @@ LABEL_145:
     {
       if (!v170)
       {
-        v52 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-        [v52 handleFailureInFunction:v53 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+        [currentHandler3 handleFailureInFunction:v53 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
         goto LABEL_99;
       }
@@ -515,7 +515,7 @@ LABEL_21:
             v46 = v15;
             do
             {
-              v47 = *v13++;
+              v47 = *uTF8String++;
               v45 |= v47 << v44;
               v44 += 8;
               --v46;
@@ -548,7 +548,7 @@ LABEL_21:
         }
 
         v22 = 8 * v19;
-        v23 = v13;
+        v23 = uTF8String;
         v24 = v173 & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -568,7 +568,7 @@ LABEL_21:
         v172 = v30;
         *(&v170 + 1) = v29 ^ v24;
         v171.i64[0] = v31 ^ __ROR8__(v26, 47);
-        v13 += v20;
+        uTF8String += v20;
         v173 = (v20 + v17) << 56;
         v15 = v21;
       }
@@ -581,8 +581,8 @@ LABEL_21:
         v33 = v172;
         do
         {
-          v36 = *v13;
-          v13 += 8;
+          v36 = *uTF8String;
+          uTF8String += 8;
           v37 = v33 ^ v36;
           v38 = v32 + v34;
           v39 = v38 ^ __ROR8__(v34, 51);
@@ -611,7 +611,7 @@ LABEL_21:
 
     if (v170 != 2000)
     {
-      if (v170 != 3000 || !v13)
+      if (v170 != 3000 || !uTF8String)
       {
         goto LABEL_99;
       }
@@ -621,10 +621,10 @@ LABEL_21:
       HIDWORD(v170) |= v50;
       if (v14 + v174 > 0xF)
       {
-        v62 = &v13[v14];
+        v62 = &uTF8String[v14];
         if (v174)
         {
-          memcpy(&v172 + v174, v13, (16 - v174));
+          memcpy(&v172 + v174, uTF8String, (16 - v174));
           HIDWORD(v63) = v171.i32[0] - 2048144777 * v172;
           LODWORD(v63) = HIDWORD(v63);
           v64 = -1640531535 * (v63 >> 19);
@@ -637,12 +637,12 @@ LABEL_21:
           v171.i32[2] = -1640531535 * (v63 >> 19);
           HIDWORD(v63) = v171.i32[3] - 2048144777 * HIDWORD(v173);
           LODWORD(v63) = HIDWORD(v63);
-          v13 += (16 - v174);
+          uTF8String += (16 - v174);
           v171.i32[3] = -1640531535 * (v63 >> 19);
           LODWORD(v174) = 0;
         }
 
-        if (v13 <= v62 - 16)
+        if (uTF8String <= v62 - 16)
         {
           v65 = v171.i32[0];
           v66 = v171.i32[1];
@@ -650,38 +650,38 @@ LABEL_21:
           v68 = v171.i32[3];
           do
           {
-            HIDWORD(v69) = v65 - 2048144777 * *v13;
+            HIDWORD(v69) = v65 - 2048144777 * *uTF8String;
             LODWORD(v69) = HIDWORD(v69);
             v65 = -1640531535 * (v69 >> 19);
-            HIDWORD(v69) = v66 - 2048144777 * *(v13 + 1);
+            HIDWORD(v69) = v66 - 2048144777 * *(uTF8String + 1);
             LODWORD(v69) = HIDWORD(v69);
             v66 = -1640531535 * (v69 >> 19);
-            HIDWORD(v69) = v67 - 2048144777 * *(v13 + 2);
+            HIDWORD(v69) = v67 - 2048144777 * *(uTF8String + 2);
             LODWORD(v69) = HIDWORD(v69);
             v67 = -1640531535 * (v69 >> 19);
-            HIDWORD(v69) = v68 - 2048144777 * *(v13 + 3);
+            HIDWORD(v69) = v68 - 2048144777 * *(uTF8String + 3);
             LODWORD(v69) = HIDWORD(v69);
             v68 = -1640531535 * (v69 >> 19);
-            v13 += 16;
+            uTF8String += 16;
           }
 
-          while (v13 <= v62 - 16);
+          while (uTF8String <= v62 - 16);
           v171.i64[0] = __PAIR64__(v66, v65);
           v171.i64[1] = __PAIR64__(v68, v67);
         }
 
-        if (v13 >= v62)
+        if (uTF8String >= v62)
         {
           goto LABEL_99;
         }
 
-        v51 = v62 - v13;
+        v51 = v62 - uTF8String;
         __memcpy_chk();
       }
 
       else
       {
-        memcpy(&v172 + v174, v13, v14);
+        memcpy(&v172 + v174, uTF8String, v14);
         v51 = v174 + v15;
       }
 
@@ -705,18 +705,18 @@ LABEL_98:
 
         if (v56 == 1)
         {
-          *v55 = *v13;
+          *v55 = *uTF8String;
           goto LABEL_98;
         }
 
 LABEL_82:
-        memcpy(v55, v13, (v54 - v171.i8[3]));
+        memcpy(v55, uTF8String, (v54 - v171.i8[3]));
         goto LABEL_98;
       }
 
       if (v56 == 2)
       {
-        v75 = *v13;
+        v75 = *uTF8String;
       }
 
       else
@@ -726,8 +726,8 @@ LABEL_82:
           goto LABEL_82;
         }
 
-        v75 = *v13;
-        v55[2] = v13[2];
+        v75 = *uTF8String;
+        v55[2] = uTF8String[2];
       }
 
       *v55 = v75;
@@ -748,7 +748,7 @@ LABEL_82:
           LOBYTE(v60) = v171.i8[0];
           v58 = HIBYTE(v171.u16[0]);
           LOBYTE(v61) = v171.i8[2];
-          v76 = *v13;
+          v76 = *uTF8String;
         }
 
         goto LABEL_88;
@@ -756,23 +756,23 @@ LABEL_82:
 
       LOBYTE(v60) = v171.i8[0];
       v58 = HIBYTE(v171.u16[0]);
-      v61 = *v13;
+      v61 = *uTF8String;
     }
 
     else
     {
       if (!v171.i8[3])
       {
-        v60 = *v13;
-        v58 = *v13 >> 8;
-        v61 = HIWORD(*v13);
-        v76 = HIBYTE(*v13);
+        v60 = *uTF8String;
+        v58 = *uTF8String >> 8;
+        v61 = HIWORD(*uTF8String);
+        v76 = HIBYTE(*uTF8String);
         goto LABEL_88;
       }
 
       LOBYTE(v60) = v171.i8[0];
-      LOBYTE(v58) = *v13;
-      v61 = *(v13 + 1);
+      LOBYTE(v58) = *uTF8String;
+      v61 = *(uTF8String + 1);
     }
 
     v76 = v61 >> 8;
@@ -783,8 +783,8 @@ LABEL_88:
     LODWORD(v79) = HIDWORD(v79);
     v80 = 5 * (v79 >> 19) - 430675100;
     DWORD2(v170) = v80;
-    v81 = &v13[-v171.u8[3] + 4];
-    v82 = &v13[v59 - v171.u8[3]];
+    v81 = &uTF8String[-v171.u8[3] + 4];
+    v82 = &uTF8String[v59 - v171.u8[3]];
     while (v81 < v82)
     {
       v83 = *v81;
@@ -822,7 +822,7 @@ LABEL_88:
   return 0;
 }
 
-- (id)copyWithRepeatIteration:(int64_t)a3
+- (id)copyWithRepeatIteration:(int64_t)iteration
 {
   v49 = *MEMORY[0x1E69E9840];
   type = self->_type;
@@ -830,11 +830,11 @@ LABEL_88:
   {
     if (type == 2)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      v18 = v17;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v18 = currentHandler;
       v19 = @"Cannot change repeatIteration for SectionPlaceholder";
       v20 = a2;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 201;
     }
 
@@ -842,18 +842,18 @@ LABEL_88:
     {
       if (type != 3)
       {
-        return v3;
+        return _copy;
       }
 
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      v18 = v17;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v18 = currentHandler;
       v19 = @"Cannot change repeatIteration for EndOfQueuePlaceholder";
       v20 = a2;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 198;
     }
 
-    [v17 handleFailureInMethod:v20 object:v21 file:@"MPCQueueControllerBehaviorMusicIdentifierComponents.m" lineNumber:v22 description:v19];
+    [currentHandler handleFailureInMethod:v20 object:selfCopy2 file:@"MPCQueueControllerBehaviorMusicIdentifierComponents.m" lineNumber:v22 description:v19];
 
     return 0;
   }
@@ -866,10 +866,10 @@ LABEL_88:
       v8 = self->_sectionID;
       v9 = itemID;
       v45 = v8;
-      if (a3)
+      if (iteration)
       {
         v10 = &v49 + 1;
-        quot = a3;
+        quot = iteration;
         do
         {
           v12 = ldiv(quot, 10);
@@ -890,7 +890,7 @@ LABEL_88:
         }
 
         while (v12.quot);
-        if (a3 < 0)
+        if (iteration < 0)
         {
           *(v10 - 2) = 45;
           v14 = (v10 - 2);
@@ -909,7 +909,7 @@ LABEL_88:
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:3];
       v33 = [v32 componentsJoinedByString:@":"];
 
-      if (a3)
+      if (iteration)
       {
       }
 
@@ -921,14 +921,14 @@ LABEL_88:
 
       v37 = [v36 componentsJoinedByString:@"="];
 
-      v3 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
-      v38 = v3[2];
-      v3[2] = v37;
+      _copy = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
+      v38 = _copy[2];
+      _copy[2] = v37;
       v39 = v37;
 
-      v3[9] = a3;
-      v40 = v3[7];
-      v3[7] = v35;
+      _copy[9] = iteration;
+      v40 = _copy[7];
+      _copy[7] = v35;
     }
   }
 
@@ -938,14 +938,14 @@ LABEL_88:
     v24 = self->_sectionID;
     v25 = v23;
     v45 = v24;
-    if (a3)
+    if (iteration)
     {
       v26 = &v49 + 1;
-      v27 = a3;
+      iterationCopy = iteration;
       do
       {
-        v28 = ldiv(v27, 10);
-        v27 = v28.quot;
+        v28 = ldiv(iterationCopy, 10);
+        iterationCopy = v28.quot;
         if (v28.rem >= 0)
         {
           LOBYTE(v29) = v28.rem;
@@ -962,7 +962,7 @@ LABEL_88:
       }
 
       while (v28.quot);
-      if (a3 < 0)
+      if (iteration < 0)
       {
         *(v26 - 2) = 45;
         v30 = (v26 - 2);
@@ -981,24 +981,24 @@ LABEL_88:
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:3];
     v42 = [v41 componentsJoinedByString:@":"];
 
-    if (a3)
+    if (iteration)
     {
     }
 
-    v3 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
-    v43 = v3[2];
-    v3[2] = v42;
+    _copy = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
+    v43 = _copy[2];
+    _copy[2] = v42;
 
-    v3[9] = a3;
+    _copy[9] = iteration;
   }
 
-  return v3;
+  return _copy;
 }
 
-- (id)copyAsDeferredWithLoadingSectionID:(id)a3
+- (id)copyAsDeferredWithLoadingSectionID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   type = self->_type;
   if ((type - 1) >= 3)
   {
@@ -1056,7 +1056,7 @@ LABEL_88:
       {
       }
 
-      v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"PLACEHOLDER", v6, v20, 0, v28[0]}];
+      v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"PLACEHOLDER", dCopy, v20, 0, v28[0]}];
       v22 = [v21 componentsJoinedByString:@"@"];
 
       a2 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
@@ -1064,12 +1064,12 @@ LABEL_88:
       *(a2 + 2) = v22;
       v24 = v22;
 
-      objc_storeStrong(a2 + 3, a3);
+      objc_storeStrong(a2 + 3, d);
       v25 = *(a2 + 4);
       *(a2 + 4) = @"PLACEHOLDER_DEFERRED_NEXT_ITEM";
 
       *(a2 + 5) = 3;
-      objc_storeStrong(a2 + 6, a3);
+      objc_storeStrong(a2 + 6, d);
       v26 = *(a2 + 8);
       *(a2 + 8) = v20;
     }
@@ -1077,8 +1077,8 @@ LABEL_88:
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPCQueueControllerBehaviorMusicIdentifierComponents.m" lineNumber:174 description:@"Cannot copy a placeholder as deferred"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueControllerBehaviorMusicIdentifierComponents.m" lineNumber:174 description:@"Cannot copy a placeholder as deferred"];
 
     a2 = 0;
   }
@@ -1154,17 +1154,17 @@ LABEL_88:
 
       v20 = [v19 componentsJoinedByString:@"="];
 
-      v2 = [v25 _copy];
-      v21 = v2[2];
-      v2[2] = v20;
+      _copy = [v25 _copy];
+      v21 = _copy[2];
+      _copy[2] = v20;
       v22 = v20;
 
-      v2[5] = 1;
-      v23 = v2[7];
-      v2[7] = v18;
+      _copy[5] = 1;
+      v23 = _copy[7];
+      _copy[7] = v18;
     }
 
-    return v2;
+    return _copy;
   }
 
   else
@@ -1174,9 +1174,9 @@ LABEL_88:
   }
 }
 
-- (id)copyWithBehaviorFlags:(unsigned __int16)a3
+- (id)copyWithBehaviorFlags:(unsigned __int16)flags
 {
-  if (self->_behaviorFlags == a3)
+  if (self->_behaviorFlags == flags)
   {
 
     return self;
@@ -1185,7 +1185,7 @@ LABEL_88:
   else
   {
     result = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)self _copy];
-    *(result + 4) = a3;
+    *(result + 4) = flags;
   }
 
   return result;
@@ -1208,86 +1208,86 @@ LABEL_88:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"section=%@", self->_sectionID];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item=%@", self->_itemID];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   if (self->_repeatIteration >= 1)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"repeatIteration=%ld", self->_repeatIteration];
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
   if ([(NSString *)self->_loadingSectionID length])
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"loadingSection=%@", self->_loadingSectionID];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
   if ([(NSString *)self->_itemSpecificContentItemID length])
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"itemSpecificContentItemID=%@", self->_itemSpecificContentItemID];
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
   if ([(NSString *)self->_deferredNextContentItemID length])
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deferredNextContentItemID=%@", self->_deferredNextContentItemID];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   type = self->_type;
   if (type <= 3)
   {
-    [v3 addObject:off_1E8233268[type]];
+    [array addObject:off_1E8233268[type]];
   }
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v3 componentsJoinedByString:@" "];
+  v12 = [array componentsJoinedByString:@" "];
   v13 = [v11 stringWithFormat:@"<MPCQueueControllerBehaviorMusicIdentifierComponents: %p %@>", self, v12];
 
   return v13;
 }
 
-- (id)_initWithContentItemID:(id)a3 sectionID:(id)a4 itemID:(id)a5 repeatIteration:(int64_t)a6 type:(int64_t)a7 loadingSectionID:(id)a8 itemSpecificContentItemID:(id)a9 deferredNextContentItemID:(id)a10
+- (id)_initWithContentItemID:(id)d sectionID:(id)iD itemID:(id)itemID repeatIteration:(int64_t)iteration type:(int64_t)type loadingSectionID:(id)sectionID itemSpecificContentItemID:(id)contentItemID deferredNextContentItemID:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  sectionIDCopy = sectionID;
+  contentItemIDCopy = contentItemID;
+  nextContentItemIDCopy = nextContentItemID;
   v36.receiver = self;
   v36.super_class = MPCQueueControllerBehaviorMusicIdentifierComponents;
   v22 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [dCopy copy];
     contentItemID = v22->_contentItemID;
     v22->_contentItemID = v23;
 
-    v25 = [v17 copy];
+    v25 = [iDCopy copy];
     sectionID = v22->_sectionID;
     v22->_sectionID = v25;
 
-    v27 = [v18 copy];
+    v27 = [itemIDCopy copy];
     itemID = v22->_itemID;
     v22->_itemID = v27;
 
-    v22->_repeatIteration = a6;
-    v22->_type = a7;
-    v29 = [v19 copy];
+    v22->_repeatIteration = iteration;
+    v22->_type = type;
+    v29 = [sectionIDCopy copy];
     loadingSectionID = v22->_loadingSectionID;
     v22->_loadingSectionID = v29;
 
-    v31 = [v20 copy];
+    v31 = [contentItemIDCopy copy];
     itemSpecificContentItemID = v22->_itemSpecificContentItemID;
     v22->_itemSpecificContentItemID = v31;
 
-    v33 = [v21 copy];
+    v33 = [nextContentItemIDCopy copy];
     deferredNextContentItemID = v22->_deferredNextContentItemID;
     v22->_deferredNextContentItemID = v33;
   }
@@ -1295,29 +1295,29 @@ LABEL_88:
   return v22;
 }
 
-+ (id)placeholderComponentsWithLoadingSectionID:(id)a3
++ (id)placeholderComponentsWithLoadingSectionID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"PLACEHOLDER", v3, 0, 0}];
+  dCopy = d;
+  v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"PLACEHOLDER", dCopy, 0, 0}];
   v5 = [v4 componentsJoinedByString:@"@"];
 
-  v6 = [[MPCQueueControllerBehaviorMusicIdentifierComponents alloc] _initWithContentItemID:v5 sectionID:v3 itemID:@"PLACEHOLDER_HEAD" repeatIteration:0 type:2 loadingSectionID:v3 itemSpecificContentItemID:0 deferredNextContentItemID:0];
+  v6 = [[MPCQueueControllerBehaviorMusicIdentifierComponents alloc] _initWithContentItemID:v5 sectionID:dCopy itemID:@"PLACEHOLDER_HEAD" repeatIteration:0 type:2 loadingSectionID:dCopy itemSpecificContentItemID:0 deferredNextContentItemID:0];
 
   return v6;
 }
 
-+ (id)itemComponentsWithSectionID:(id)a3 itemID:(id)a4
++ (id)itemComponentsWithSectionID:(id)d itemID:(id)iD
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v11[0] = v5;
+  dCopy = d;
+  iDCopy = iD;
+  v11[0] = dCopy;
   v11[1] = &stru_1F454A698;
-  v11[2] = v6;
+  v11[2] = iDCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
   v8 = [v7 componentsJoinedByString:@":"];
 
-  v9 = [[MPCQueueControllerBehaviorMusicIdentifierComponents alloc] _initWithContentItemID:v8 sectionID:v5 itemID:v6 repeatIteration:0 type:0 loadingSectionID:0 itemSpecificContentItemID:0 deferredNextContentItemID:0];
+  v9 = [[MPCQueueControllerBehaviorMusicIdentifierComponents alloc] _initWithContentItemID:v8 sectionID:dCopy itemID:iDCopy repeatIteration:0 type:0 loadingSectionID:0 itemSpecificContentItemID:0 deferredNextContentItemID:0];
 
   return v9;
 }

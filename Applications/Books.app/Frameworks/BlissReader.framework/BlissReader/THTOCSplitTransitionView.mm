@@ -1,17 +1,17 @@
 @interface THTOCSplitTransitionView
-- (CATransform3D)_scaleInstanceTransformForOpen:(SEL)a3;
-- (CATransform3D)_splitInstanceTransformForOpen:(SEL)a3;
-- (CGPoint)_shadowLayerPositionForOpen:(BOOL)a3 top:(BOOL)a4;
-- (CGPoint)_splitReplicatorLayerPositionForOpen:(BOOL)a3;
+- (CATransform3D)_scaleInstanceTransformForOpen:(SEL)open;
+- (CATransform3D)_splitInstanceTransformForOpen:(SEL)open;
+- (CGPoint)_shadowLayerPositionForOpen:(BOOL)open top:(BOOL)top;
+- (CGPoint)_splitReplicatorLayerPositionForOpen:(BOOL)open;
 - (double)slideAnimationDuration;
-- (void)_adjustScaleReplicatorLayers:(CGRect)a3;
-- (void)_adjustSplitReplicatorLayers:(CGRect)a3;
+- (void)_adjustScaleReplicatorLayers:(CGRect)layers;
+- (void)_adjustSplitReplicatorLayers:(CGRect)layers;
 - (void)_animate;
 - (void)_animateInteractive;
 - (void)_animationDidStop;
 - (void)_setupAnimation;
 - (void)_setupLayers;
-- (void)_setupQuickAnimationToLayer:(id)a3 withKeyPath:(id)a4 toValue:(id)a5;
+- (void)_setupQuickAnimationToLayer:(id)layer withKeyPath:(id)path toValue:(id)value;
 - (void)_setupScaleAnimationLayers;
 - (void)_setupSplitAnimationLayers;
 - (void)beginInteractiveTransition;
@@ -40,7 +40,7 @@
   return animationDuration * v3;
 }
 
-- (CGPoint)_splitReplicatorLayerPositionForOpen:(BOOL)a3
+- (CGPoint)_splitReplicatorLayerPositionForOpen:(BOOL)open
 {
   x = self->_splitLayerOriginalPosition.x;
   y = self->_splitLayerOriginalPosition.y;
@@ -50,7 +50,7 @@
     scale = self->_scale;
     v7 = splitPositionY - splitPositionY * scale;
     v8 = splitPositionY * scale;
-    if (a3)
+    if (open)
     {
       v8 = v7;
     }
@@ -58,7 +58,7 @@
     goto LABEL_7;
   }
 
-  if (a3)
+  if (open)
   {
     v8 = self->_splitPositionY;
 LABEL_7:
@@ -70,7 +70,7 @@ LABEL_7:
   return result;
 }
 
-- (CATransform3D)_splitInstanceTransformForOpen:(SEL)a3
+- (CATransform3D)_splitInstanceTransformForOpen:(SEL)open
 {
   v4 = a4;
   [(CAReplicatorLayer *)self->_splitReplicatorLayer bounds];
@@ -101,18 +101,18 @@ LABEL_7:
   return CATransform3DMakeTranslation(retstr, 0.0, v9, 0.0);
 }
 
-- (CGPoint)_shadowLayerPositionForOpen:(BOOL)a3 top:(BOOL)a4
+- (CGPoint)_shadowLayerPositionForOpen:(BOOL)open top:(BOOL)top
 {
-  v4 = a3;
+  openCopy = open;
   x = self->_splitLayerOriginalPosition.x;
   y = self->_splitLayerOriginalPosition.y;
-  if (a4)
+  if (top)
   {
     [(CALayer *)self->_topShadowLayer bounds];
     if (self->_isInteractive)
     {
       scale = self->_scale;
-      if (v4)
+      if (openCopy)
       {
         scale = 1.0 - scale;
       }
@@ -123,7 +123,7 @@ LABEL_7:
 
     v13 = y - v8;
 LABEL_12:
-    if (v4)
+    if (openCopy)
     {
       v10 = v13;
     }
@@ -145,7 +145,7 @@ LABEL_12:
   }
 
   v12 = self->_scale;
-  if (v4)
+  if (openCopy)
   {
     v12 = 1.0 - v12;
   }
@@ -209,9 +209,9 @@ LABEL_15:
   LODWORD(v20) = 0.5;
   [(CALayer *)self->_topShadowLayer setShadowOpacity:v20];
   [-[THTOCSplitTransitionView layer](self "layer")];
-  v21 = [(THTOCSplitTransitionView *)self layer];
+  layer = [(THTOCSplitTransitionView *)self layer];
   [(CALayer *)[(UIView *)self->_splitAnimationView layer] bounds];
-  [v21 convertPoint:-[UIView layer](self->_splitAnimationView fromLayer:{"layer"), v22, v23}];
+  [layer convertPoint:-[UIView layer](self->_splitAnimationView fromLayer:{"layer"), v22, v23}];
   self->_splitLayerOriginalPosition.x = v24;
   self->_splitLayerOriginalPosition.y = v25;
   v26 = +[CAReplicatorLayer layer];
@@ -259,12 +259,12 @@ LABEL_15:
   [-[THTOCSplitTransitionView layer](self "layer")];
 }
 
-- (void)_adjustSplitReplicatorLayers:(CGRect)a3
+- (void)_adjustSplitReplicatorLayers:(CGRect)layers
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = layers.size.height;
+  width = layers.size.width;
+  y = layers.origin.y;
+  x = layers.origin.x;
   [(THTOCSplitTransitionView *)self _setupQuickAnimationToLayer:self->_shadowedLayer withKeyPath:@"position" toValue:[NSValue valueWithCGPoint:CGPointZero.x, CGPointZero.y]];
   [(THTOCSplitTransitionView *)self _setupQuickAnimationToLayer:self->_shadowedLayer withKeyPath:@"bounds" toValue:[NSValue valueWithCGRect:x, y, width, height]];
   [(THTOCSplitTransitionView *)self _setupQuickAnimationToLayer:self->_maskLayer withKeyPath:@"bounds" toValue:[NSValue valueWithCGRect:x, y, width, height]];
@@ -284,7 +284,7 @@ LABEL_15:
   [(THTOCSplitTransitionView *)self _setupQuickAnimationToLayer:maskLayer withKeyPath:@"sublayerTransform" toValue:[NSValue valueWithCATransform3D:v13]];
 }
 
-- (CATransform3D)_scaleInstanceTransformForOpen:(SEL)a3
+- (CATransform3D)_scaleInstanceTransformForOpen:(SEL)open
 {
   if (self->_isInteractive)
   {
@@ -354,9 +354,9 @@ LABEL_15:
   [(CALayer *)self->_blackBackgroundLayer addSublayer:self->_scaleReplicatorLayer];
 }
 
-- (void)_adjustScaleReplicatorLayers:(CGRect)a3
+- (void)_adjustScaleReplicatorLayers:(CGRect)layers
 {
-  v4 = [(UIView *)self->_scaleAnimationView layer:a3.origin.x];
+  v4 = [(UIView *)self->_scaleAnimationView layer:layers.origin.x];
   v5 = [NSNumber numberWithFloat:0.0];
 
   [(THTOCSplitTransitionView *)self _setupQuickAnimationToLayer:v4 withKeyPath:@"opacity" toValue:v5];
@@ -576,17 +576,17 @@ LABEL_15:
   self->_scaleAnimationView = 0;
 }
 
-- (void)_setupQuickAnimationToLayer:(id)a3 withKeyPath:(id)a4 toValue:(id)a5
+- (void)_setupQuickAnimationToLayer:(id)layer withKeyPath:(id)path toValue:(id)value
 {
-  v8 = [CABasicAnimation animationWithKeyPath:a4];
+  v8 = [CABasicAnimation animationWithKeyPath:path];
   [(CABasicAnimation *)v8 setDuration:0.00100000005];
   [(CABasicAnimation *)v8 setBeginTime:0.0];
   [(CABasicAnimation *)v8 setBeginTimeMode:kCAAnimationRelative];
   [(CABasicAnimation *)v8 setFillMode:kCAFillModeBoth];
   [(CABasicAnimation *)v8 setRemovedOnCompletion:0];
-  [(CABasicAnimation *)v8 setToValue:a5];
+  [(CABasicAnimation *)v8 setToValue:value];
 
-  [a3 addAnimation:v8 forKey:a4];
+  [layer addAnimation:v8 forKey:path];
 }
 
 @end

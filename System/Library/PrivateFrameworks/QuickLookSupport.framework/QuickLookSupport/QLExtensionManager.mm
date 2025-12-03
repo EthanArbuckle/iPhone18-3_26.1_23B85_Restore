@@ -1,16 +1,16 @@
 @interface QLExtensionManager
-+ (BOOL)extension:(id)a3 supportsExactType:(id)a4;
++ (BOOL)extension:(id)extension supportsExactType:(id)type;
 + (id)sharedManager;
 + (void)_resetSharedManager;
-- (BOOL)existsExtensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9;
-- (id)_applicationPathForBundleId:(id)a3;
-- (id)_cachesForExtensionType:(unint64_t)a3 shouldUseRestrictedExtension:(BOOL)a4;
-- (id)_extensionPointNameForExtensionType:(unint64_t)a3;
-- (id)extensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 shouldUseRestrictedExtension:(BOOL)a10;
-- (id)qlExtensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 shouldUseRestrictedExtension:(BOOL)a10;
-- (void)_addQueryAttributesToExtensionQuery:(id)a3 withContentType:(id)a4 appBundleIdentifier:(id)a5 extensionType:(unint64_t)a6 generationType:(unint64_t)a7;
+- (BOOL)existsExtensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType;
+- (id)_applicationPathForBundleId:(id)id;
+- (id)_cachesForExtensionType:(unint64_t)type shouldUseRestrictedExtension:(BOOL)extension;
+- (id)_extensionPointNameForExtensionType:(unint64_t)type;
+- (id)extensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType shouldUseRestrictedExtension:(BOOL)self0;
+- (id)qlExtensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType shouldUseRestrictedExtension:(BOOL)self0;
+- (void)_addQueryAttributesToExtensionQuery:(id)query withContentType:(id)type appBundleIdentifier:(id)identifier extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType;
 - (void)_setupCache;
-- (void)extensionContextForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtensionOnly:(BOOL)a5 appBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 withCompletionHandler:(id)a10;
+- (void)extensionContextForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtensionOnly:(BOOL)only appBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType withCompletionHandler:(id)self0;
 @end
 
 @implementation QLExtensionManager
@@ -49,29 +49,29 @@ uint64_t __35__QLExtensionManager_sharedManager__block_invoke()
   [v4 _setupCache];
 }
 
-+ (BOOL)extension:(id)a3 supportsExactType:(id)a4
++ (BOOL)extension:(id)extension supportsExactType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  extensionCopy = extension;
+  typeCopy = type;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [v5 attributes];
-  v8 = [v7 objectForKeyedSubscript:@"QLSupportedContentTypes"];
+  attributes = [extensionCopy attributes];
+  v8 = [attributes objectForKeyedSubscript:@"QLSupportedContentTypes"];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__QLExtensionManager_extension_supportsExactType___block_invoke;
   v11[3] = &unk_279ADB550;
   v13 = &v14;
-  v9 = v6;
+  v9 = typeCopy;
   v12 = v9;
   [v8 enumerateObjectsUsingBlock:v11];
-  LOBYTE(v7) = *(v15 + 24);
+  LOBYTE(attributes) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return v7;
+  return attributes;
 }
 
 uint64_t __50__QLExtensionManager_extension_supportsExactType___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -137,7 +137,7 @@ uint64_t __50__QLExtensionManager_extension_supportsExactType___block_invoke(uin
   [(QLExtensionManagerCache *)self->_thumbnailSecureExtensionCache beginMatchingExtensions];
 }
 
-- (id)_cachesForExtensionType:(unint64_t)a3 shouldUseRestrictedExtension:(BOOL)a4
+- (id)_cachesForExtensionType:(unint64_t)type shouldUseRestrictedExtension:(BOOL)extension
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -151,9 +151,9 @@ uint64_t __50__QLExtensionManager_extension_supportsExactType___block_invoke(uin
 
   v6 = _os_feature_enabled_impl();
   v7 = _os_feature_enabled_impl();
-  if (a3)
+  if (type)
   {
-    if ((v7 | v6 & a4))
+    if ((v7 | v6 & extension))
     {
       v8 = &_cachesForExtensionType_shouldUseRestrictedExtension__restrictedThumbnailExtensionCaches;
     }
@@ -206,31 +206,31 @@ void __75__QLExtensionManager__cachesForExtensionType_shouldUseRestrictedExtensi
   _cachesForExtensionType_shouldUseRestrictedExtension__thumbnailExtensionCaches = v14;
 }
 
-- (BOOL)existsExtensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9
+- (BOOL)existsExtensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType
 {
   LOBYTE(v12) = 0;
-  v9 = [(QLExtensionManager *)self extensionForContentType:a3 allowExtensionsForParentTypes:a4 firstPartyExtension:a5 applicationBundleIdentifier:a6 extensionPath:a7 extensionType:a8 generationType:a9 shouldUseRestrictedExtension:v12];
+  v9 = [(QLExtensionManager *)self extensionForContentType:type allowExtensionsForParentTypes:types firstPartyExtension:extension applicationBundleIdentifier:identifier extensionPath:path extensionType:extensionType generationType:generationType shouldUseRestrictedExtension:v12];
   v10 = v9 != 0;
 
   return v10;
 }
 
-- (void)extensionContextForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtensionOnly:(BOOL)a5 appBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 withCompletionHandler:(id)a10
+- (void)extensionContextForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtensionOnly:(BOOL)only appBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType withCompletionHandler:(id)self0
 {
-  v13 = a5;
-  v14 = a4;
-  v17 = a10;
+  onlyCopy = only;
+  typesCopy = types;
+  handlerCopy = handler;
   LOBYTE(v21) = 0;
-  v18 = [(QLExtensionManager *)self extensionForContentType:a3 allowExtensionsForParentTypes:v14 firstPartyExtension:v13 applicationBundleIdentifier:a6 extensionPath:a7 extensionType:a8 generationType:a9 shouldUseRestrictedExtension:v21];
+  v18 = [(QLExtensionManager *)self extensionForContentType:type allowExtensionsForParentTypes:typesCopy firstPartyExtension:onlyCopy applicationBundleIdentifier:identifier extensionPath:path extensionType:extensionType generationType:generationType shouldUseRestrictedExtension:v21];
   v19 = v18;
   if (!v18)
   {
 LABEL_9:
-    (*(v17 + 2))(v17, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     goto LABEL_10;
   }
 
-  if (a8 != 1 && ([v18 isGenerationPreview] & 1) == 0)
+  if (extensionType != 1 && ([v18 isGenerationPreview] & 1) == 0)
   {
     v20 = _qlsLogHandle;
     if (!_qlsLogHandle)
@@ -253,7 +253,7 @@ LABEL_9:
   v22[2] = __192__QLExtensionManager_extensionContextForContentType_allowExtensionsForParentTypes_firstPartyExtensionOnly_appBundleIdentifier_extensionPath_extensionType_generationType_withCompletionHandler___block_invoke;
   v22[3] = &unk_279ADB578;
   v23 = v19;
-  v24 = v17;
+  v24 = handlerCopy;
   [v23 beginExtensionRequestWithInputItems:0 completion:v22];
 
 LABEL_10:
@@ -285,38 +285,38 @@ void __192__QLExtensionManager_extensionContextForContentType_allowExtensionsFor
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)qlExtensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 shouldUseRestrictedExtension:(BOOL)a10
+- (id)qlExtensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType shouldUseRestrictedExtension:(BOOL)self0
 {
-  v13 = a5;
-  v14 = a4;
+  extensionCopy = extension;
+  typesCopy = types;
   v50 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = v18;
-  v20 = v16 != 0;
-  v21 = a9 == 1 && v16 != 0;
-  if (a8 != 1)
+  typeCopy = type;
+  identifierCopy = identifier;
+  pathCopy = path;
+  v19 = pathCopy;
+  v20 = typeCopy != 0;
+  v21 = generationType == 1 && typeCopy != 0;
+  if (extensionType != 1)
   {
     v20 = 0;
   }
 
-  if (!v20 && !v18 && !v17 && !v21)
+  if (!v20 && !pathCopy && !identifierCopy && !v21)
   {
     v22 = 0;
     goto LABEL_35;
   }
 
   v23 = objc_opt_new();
-  v36 = v17;
-  v37 = v16;
-  [(QLExtensionManager *)self _addQueryAttributesToExtensionQuery:v23 withContentType:v16 appBundleIdentifier:v17 extensionType:a8 generationType:a9];
+  v36 = identifierCopy;
+  v37 = typeCopy;
+  [(QLExtensionManager *)self _addQueryAttributesToExtensionQuery:v23 withContentType:typeCopy appBundleIdentifier:identifierCopy extensionType:extensionType generationType:generationType];
   v38 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v24 = [(QLExtensionManager *)self _cachesForExtensionType:a8 shouldUseRestrictedExtension:a10];
+  v24 = [(QLExtensionManager *)self _cachesForExtensionType:extensionType shouldUseRestrictedExtension:restrictedExtension];
   v25 = [v24 countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v25)
   {
@@ -331,10 +331,10 @@ void __192__QLExtensionManager_extensionContextForContentType_allowExtensionsFor
           objc_enumerationMutation(v24);
         }
 
-        v22 = [*(*(&v39 + 1) + 8 * i) extensionWithMatchingAttributes:v23 allowExtensionsForParentTypes:v14 extensionPath:v19 firstPartyExtension:v13];
+        v22 = [*(*(&v39 + 1) + 8 * i) extensionWithMatchingAttributes:v23 allowExtensionsForParentTypes:typesCopy extensionPath:v19 firstPartyExtension:extensionCopy];
         if (v22)
         {
-          if (!a10)
+          if (!restrictedExtension)
           {
 
             goto LABEL_28;
@@ -354,10 +354,10 @@ void __192__QLExtensionManager_extensionContextForContentType_allowExtensionsFor
     }
   }
 
-  if (a10)
+  if (restrictedExtension)
   {
     v29 = [v23 objectForKeyedSubscript:@"QLSupportedContentTypes"];
-    v22 = [QLExtensionManagerCache bestMatchingExtensionsFromSupportingExtensions:v38 includingExtensionsWithSupportingParentTypes:v14 byContentType:v29];
+    v22 = [QLExtensionManagerCache bestMatchingExtensionsFromSupportingExtensions:v38 includingExtensionsWithSupportingParentTypes:typesCopy byContentType:v29];
 
     if (v22)
     {
@@ -369,16 +369,16 @@ LABEL_28:
         v31 = _qlsLogHandle;
       }
 
-      v17 = v36;
+      identifierCopy = v36;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         v32 = v31;
-        v33 = [v22 extension];
-        v34 = [v33 identifier];
+        extension = [v22 extension];
+        identifier = [extension identifier];
         *buf = 138412802;
-        v44 = v34;
+        v44 = identifier;
         v45 = 2112;
-        v16 = v37;
+        typeCopy = v37;
         v46 = v37;
         v47 = 2112;
         v48 = v36;
@@ -388,7 +388,7 @@ LABEL_28:
       }
 
 LABEL_33:
-      v16 = v37;
+      typeCopy = v37;
       goto LABEL_34;
     }
   }
@@ -400,7 +400,7 @@ LABEL_33:
     v30 = _qlsLogHandle;
   }
 
-  v17 = v36;
+  identifierCopy = v36;
   if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     v22 = 0;
@@ -408,7 +408,7 @@ LABEL_33:
   }
 
   *buf = 138412802;
-  v16 = v37;
+  typeCopy = v37;
   v44 = v37;
   v45 = 2112;
   v46 = v36;
@@ -423,18 +423,18 @@ LABEL_35:
   return v22;
 }
 
-- (id)extensionForContentType:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 firstPartyExtension:(BOOL)a5 applicationBundleIdentifier:(id)a6 extensionPath:(id)a7 extensionType:(unint64_t)a8 generationType:(unint64_t)a9 shouldUseRestrictedExtension:(BOOL)a10
+- (id)extensionForContentType:(id)type allowExtensionsForParentTypes:(BOOL)types firstPartyExtension:(BOOL)extension applicationBundleIdentifier:(id)identifier extensionPath:(id)path extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType shouldUseRestrictedExtension:(BOOL)self0
 {
-  LOBYTE(v13) = a10;
-  v10 = [(QLExtensionManager *)self qlExtensionForContentType:a3 allowExtensionsForParentTypes:a4 firstPartyExtension:a5 applicationBundleIdentifier:a6 extensionPath:a7 extensionType:a8 generationType:a9 shouldUseRestrictedExtension:v13];
-  v11 = [v10 extension];
+  LOBYTE(v13) = restrictedExtension;
+  v10 = [(QLExtensionManager *)self qlExtensionForContentType:type allowExtensionsForParentTypes:types firstPartyExtension:extension applicationBundleIdentifier:identifier extensionPath:path extensionType:extensionType generationType:generationType shouldUseRestrictedExtension:v13];
+  extension = [v10 extension];
 
-  return v11;
+  return extension;
 }
 
-- (id)_extensionPointNameForExtensionType:(unint64_t)a3
+- (id)_extensionPointNameForExtensionType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return @"com.apple.quicklook.thumbnail";
   }
@@ -445,44 +445,44 @@ LABEL_35:
   }
 }
 
-- (void)_addQueryAttributesToExtensionQuery:(id)a3 withContentType:(id)a4 appBundleIdentifier:(id)a5 extensionType:(unint64_t)a6 generationType:(unint64_t)a7
+- (void)_addQueryAttributesToExtensionQuery:(id)query withContentType:(id)type appBundleIdentifier:(id)identifier extensionType:(unint64_t)extensionType generationType:(unint64_t)generationType
 {
   v21 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v12)
+  queryCopy = query;
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (typeCopy)
   {
-    [v11 setObject:v12 forKeyedSubscript:@"QLSupportedContentTypes"];
+    [queryCopy setObject:typeCopy forKeyedSubscript:@"QLSupportedContentTypes"];
   }
 
-  if (!v13)
+  if (!identifierCopy)
   {
     goto LABEL_9;
   }
 
-  v14 = [(QLExtensionManager *)self _applicationPathForBundleId:v13];
+  v14 = [(QLExtensionManager *)self _applicationPathForBundleId:identifierCopy];
   if (v14)
   {
-    [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x277CCA0B8]];
+    [queryCopy setObject:v14 forKeyedSubscript:*MEMORY[0x277CCA0B8]];
 LABEL_8:
 
 LABEL_9:
-    if (a7 == 2)
+    if (generationType == 2)
     {
-      [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"QLSupportsSearchableItems"];
+      [queryCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"QLSupportsSearchableItems"];
     }
 
     goto LABEL_11;
   }
 
-  v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:v13];
-  v16 = [v15 bundlePath];
+  v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:identifierCopy];
+  bundlePath = [v15 bundlePath];
 
-  if (v16)
+  if (bundlePath)
   {
-    v17 = [v15 bundlePath];
-    [v11 setObject:v17 forKeyedSubscript:@"kQLExtensionFrameworkPath"];
+    bundlePath2 = [v15 bundlePath];
+    [queryCopy setObject:bundlePath2 forKeyedSubscript:@"kQLExtensionFrameworkPath"];
 
     goto LABEL_8;
   }
@@ -497,18 +497,18 @@ LABEL_9:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
-    v20 = v13;
+    v20 = identifierCopy;
     _os_log_impl(&dword_2615AE000, v18, OS_LOG_TYPE_ERROR, "Could not retrieve application extension because Quick Look could not figure out the path from the bundle identifier: %@. #Remote", &v19, 0xCu);
   }
 
 LABEL_11:
 }
 
-- (id)_applicationPathForBundleId:(id)a3
+- (id)_applicationPathForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v11 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v11];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:idCopy allowPlaceholder:1 error:&v11];
   v5 = v11;
   if (!v4)
   {
@@ -522,14 +522,14 @@ LABEL_11:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(QLExtensionManager *)v3 _applicationPathForBundleId:v5, v7];
+      [(QLExtensionManager *)idCopy _applicationPathForBundleId:v5, v7];
     }
   }
 
   v8 = [v4 URL];
-  v9 = [v8 path];
+  path = [v8 path];
 
-  return v9;
+  return path;
 }
 
 - (void)_applicationPathForBundleId:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

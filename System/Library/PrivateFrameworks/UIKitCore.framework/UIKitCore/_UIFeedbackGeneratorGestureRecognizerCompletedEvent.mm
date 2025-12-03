@@ -1,20 +1,20 @@
 @interface _UIFeedbackGeneratorGestureRecognizerCompletedEvent
-+ (id)completedEventFromEvent:(id)a3 inView:(id)a4;
++ (id)completedEventFromEvent:(id)event inView:(id)view;
 - (CGPoint)locationInView;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 @end
 
 @implementation _UIFeedbackGeneratorGestureRecognizerCompletedEvent
 
-+ (id)completedEventFromEvent:(id)a3 inView:(id)a4
++ (id)completedEventFromEvent:(id)event inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
+  viewCopy = view;
+  eventCopy = event;
+  v8 = objc_alloc_init(self);
   v9 = v8;
-  if (v7)
+  if (eventCopy)
   {
-    v10 = v7[11];
+    v10 = eventCopy[11];
   }
 
   else
@@ -23,7 +23,7 @@
   }
 
   v8[1] = v10;
-  [v7 locationInView:v6];
+  [eventCopy locationInView:viewCopy];
   v12 = v11;
   v14 = v13;
 
@@ -33,7 +33,7 @@
   return v9;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   x = self->_locationInView.x;
   y = self->_locationInView.y;

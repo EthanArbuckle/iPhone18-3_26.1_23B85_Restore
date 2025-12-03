@@ -1,10 +1,10 @@
 @interface HUAccessoryHearingSettings
 + (id)sharedInstance;
-- (BOOL)activeHearingProtectionAvailableForAddress:(id)a3;
-- (BOOL)activeHearingProtectionEnabledForAddress:(id)a3;
+- (BOOL)activeHearingProtectionAvailableForAddress:(id)address;
+- (BOOL)activeHearingProtectionEnabledForAddress:(id)address;
 - (NSDictionary)activeHearingProtectionAvailable;
 - (NSDictionary)activeHearingProtectionEnabled;
-- (void)logMessage:(id)a3;
+- (void)logMessage:(id)message;
 @end
 
 @implementation HUAccessoryHearingSettings
@@ -35,15 +35,15 @@ uint64_t __44__HUAccessoryHearingSettings_sharedInstance__block_invoke()
   return [(HCSettings *)self objectValueForKey:@"activeHearingProtectionEnabled" withClass:v3 andDefaultValue:0];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = HCLogHearingProtection();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
@@ -57,68 +57,68 @@ uint64_t __44__HUAccessoryHearingSettings_sharedInstance__block_invoke()
   return [(HCSettings *)self objectValueForKey:@"activeHearingProtectionAvailable" withClass:v3 andDefaultValue:0];
 }
 
-- (BOOL)activeHearingProtectionEnabledForAddress:(id)a3
+- (BOOL)activeHearingProtectionEnabledForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(HUAccessoryHearingSettings *)self activeHearingProtectionEnabled];
-    v6 = [v5 valueForKey:v4];
+    activeHearingProtectionEnabled = [(HUAccessoryHearingSettings *)self activeHearingProtectionEnabled];
+    v6 = [activeHearingProtectionEnabled valueForKey:addressCopy];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)activeHearingProtectionAvailableForAddress:(id)a3
+- (BOOL)activeHearingProtectionAvailableForAddress:(id)address
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(HUAccessoryHearingSettings *)self activeHearingProtectionAvailable];
+    activeHearingProtectionAvailable = [(HUAccessoryHearingSettings *)self activeHearingProtectionAvailable];
     v6 = HCLogHearingProtection();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v4;
+      v12 = addressCopy;
       v13 = 2112;
-      v14 = v5;
+      v14 = activeHearingProtectionAvailable;
       _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "Checking available for %@ = %@", &v11, 0x16u);
     }
 
-    v7 = [v5 valueForKey:v4];
+    v7 = [activeHearingProtectionAvailable valueForKey:addressCopy];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 @end

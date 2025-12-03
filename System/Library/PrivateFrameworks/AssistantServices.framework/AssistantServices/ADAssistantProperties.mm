@@ -15,7 +15,7 @@
 - (id)_getODDHomeKitProperties;
 - (id)_getODDOptInProperties;
 - (id)_getODDVoiceProperties;
-- (id)_getVoiceAccentWithVoiceInfo:(id)a3;
+- (id)_getVoiceAccentWithVoiceInfo:(id)info;
 - (id)_getVoiceTriggerSettings;
 - (id)getODDAssistantProperties;
 - (int)_getChatGPTAccountType;
@@ -23,8 +23,8 @@
 - (int)_getListenForSettings;
 - (int)_getLocationAccessPermission;
 - (int)_getSiriDataSharingOptInStatus;
-- (int)_getVoiceGenderWithVoiceInfo:(id)a3;
-- (int)_getVoiceNameWithVoiceInfo:(id)a3;
+- (int)_getVoiceGenderWithVoiceInfo:(id)info;
+- (int)_getVoiceNameWithVoiceInfo:(id)info;
 - (uint64_t)_getIsServerUserDataSyncEnabled;
 @end
 
@@ -37,7 +37,7 @@
   v25 = v0;
   if ([v1 dictationIsEnabled])
   {
-    v2 = [v1 siriDataSharingOptInStatus];
+    siriDataSharingOptInStatus = [v1 siriDataSharingOptInStatus];
     v3 = +[AFUtilitiesWrapper deviceSupportsOnDeviceDictation];
     v4 = sub_100214E4C(v1);
     v5 = AFSiriLogContextSync;
@@ -46,7 +46,7 @@
       *buf = 136315906;
       v27 = "ADShouldAllowDictationOnlySync";
       v28 = 1024;
-      v29 = v2 != 1;
+      v29 = siriDataSharingOptInStatus != 1;
       v30 = 1024;
       v31 = v3;
       v32 = 1024;
@@ -54,7 +54,7 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s optedOut: %d, deviceSupportsOnDeviceDictation: %d, serverDictationRequired: %d", buf, 0x1Eu);
     }
 
-    v6 = (v2 == 1) | v4 | v3 ^ 1;
+    v6 = (siriDataSharingOptInStatus == 1) | v4 | v3 ^ 1;
   }
 
   else
@@ -64,23 +64,23 @@
 
   v7 = +[AFPreferences sharedPreferences];
   v8 = +[ADPreferences sharedPreferences];
-  v9 = [v8 languageCode];
+  languageCode = [v8 languageCode];
 
-  v10 = [v7 siriDataSharingOptInStatus];
+  siriDataSharingOptInStatus2 = [v7 siriDataSharingOptInStatus];
   v11 = sub_10000A500();
-  v12 = sub_10000ABF4(v9);
+  v12 = sub_10000ABF4(languageCode);
   if (AFIsIOS())
   {
-    v13 = [v7 isSyncNeededForWatch];
-    v14 = [v7 deviceHasAtvInHome];
-    v15 = [v7 deviceHasHomePodInHome];
+    isSyncNeededForWatch = [v7 isSyncNeededForWatch];
+    deviceHasAtvInHome = [v7 deviceHasAtvInHome];
+    deviceHasHomePodInHome = [v7 deviceHasHomePodInHome];
   }
 
   else
   {
-    v15 = 0;
-    v14 = 0;
-    v13 = 0;
+    deviceHasHomePodInHome = 0;
+    deviceHasAtvInHome = 0;
+    isSyncNeededForWatch = 0;
   }
 
   v16 = AFSiriLogContextSync;
@@ -89,30 +89,30 @@
     *buf = 136316930;
     v27 = "ADShouldAllowAssistantSync";
     v28 = 1024;
-    v29 = v10 != 1;
+    v29 = siriDataSharingOptInStatus2 != 1;
     v30 = 1024;
     v31 = v11;
     v32 = 1024;
-    v33 = v14;
+    v33 = deviceHasAtvInHome;
     v34 = 1024;
-    v35 = v15;
+    v35 = deviceHasHomePodInHome;
     v36 = 1024;
-    v37 = v13;
+    v37 = isSyncNeededForWatch;
     v38 = 1024;
     v39 = v12;
     v40 = 2112;
-    v41 = v9;
+    v41 = languageCode;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s optedOut: %d, fullUodCapable: %d, deviceHasAtvInHome: %d, deviceHasHomePodInHome: %d, isSyncNeededForWatch: %d, syncDisabledViaTrial: %d siriLocale: %@", buf, 0x3Au);
   }
 
-  if ((v10 == 1 || (v11 & 1) == 0) | (v13 | v14) & 1)
+  if ((siriDataSharingOptInStatus2 == 1 || (v11 & 1) == 0) | (isSyncNeededForWatch | deviceHasAtvInHome) & 1)
   {
   }
 
   else
   {
 
-    if (!(v15 & 1 | ((v12 & 1) == 0)))
+    if (!(deviceHasHomePodInHome & 1 | ((v12 & 1) == 0)))
     {
       v17 = 0;
       if (v6)
@@ -146,16 +146,16 @@ LABEL_17:
     if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
     {
       v21 = v20;
-      v22 = [v25 dictationIsEnabled];
-      v23 = [v25 assistantIsEnabled];
+      dictationIsEnabled = [v25 dictationIsEnabled];
+      assistantIsEnabled = [v25 assistantIsEnabled];
       *buf = 136316162;
       v27 = "ADIsSyncEnabled";
       v28 = 1024;
-      v29 = v22;
+      v29 = dictationIsEnabled;
       v30 = 1024;
       v31 = 0;
       v32 = 1024;
-      v33 = v23;
+      v33 = assistantIsEnabled;
       v34 = 1024;
       v35 = v17;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s Sync disallowed dictation enabled=%d, dictation only sync allowed=%d, assistant enabled=%d, assistant sync enabled=%d", buf, 0x24u);
@@ -193,9 +193,9 @@ LABEL_22:
 - (BOOL)_getIsPreciseLocationEnabled
 {
   v2 = objc_alloc_init(PreciseLocationManager);
-  v3 = [(PreciseLocationManager *)v2 isPreciseLocationEnabled];
+  isPreciseLocationEnabled = [(PreciseLocationManager *)v2 isPreciseLocationEnabled];
 
-  return v3;
+  return isPreciseLocationEnabled;
 }
 
 - (int)_getSiriDataSharingOptInStatus
@@ -219,9 +219,9 @@ LABEL_22:
   [v2 setIsHeySiriTriggerPhraseEnabled:0];
   [v2 setIsJustSiriTriggerPhraseEnabled:0];
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [v3 voiceTriggerEnabled];
+  voiceTriggerEnabled = [v3 voiceTriggerEnabled];
 
-  if (v4)
+  if (voiceTriggerEnabled)
   {
     v5 = +[VTPreferences sharedPreferences];
     v8 = 0;
@@ -239,8 +239,8 @@ LABEL_22:
 
 - (int)_getListenForSettings
 {
-  v2 = [(ADAssistantProperties *)self _getVoiceTriggerSettings];
-  v3 = [ADAssistantPropertiesUtils ODDSiriSchemaODDListenForFrom:v2];
+  _getVoiceTriggerSettings = [(ADAssistantProperties *)self _getVoiceTriggerSettings];
+  v3 = [ADAssistantPropertiesUtils ODDSiriSchemaODDListenForFrom:_getVoiceTriggerSettings];
 
   return v3;
 }
@@ -248,8 +248,8 @@ LABEL_22:
 - (id)_getGradingOptInStateChanges
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 siriDataSharingOptInStatusHistory];
-  v4 = [v3 count];
+  siriDataSharingOptInStatusHistory = [v2 siriDataSharingOptInStatusHistory];
+  v4 = [siriDataSharingOptInStatusHistory count];
   if (v4 >= 5)
   {
     v5 = 5;
@@ -272,7 +272,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Fetching %lu most recent siri data sharing opt-in status change entries from preferences %@", buf, 0x20u);
   }
 
-  v7 = [v3 subarrayWithRange:{0, v5}];
+  v7 = [siriDataSharingOptInStatusHistory subarrayWithRange:{0, v5}];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -295,19 +295,19 @@ LABEL_22:
 - (BOOL)_getIsMteUploadEnabled
 {
   v2 = +[AFSiriDataSharingSensitivityManager shared];
-  v3 = [v2 isOptedOutOfMTE];
+  isOptedOutOfMTE = [v2 isOptedOutOfMTE];
 
-  return v3 ^ 1;
+  return isOptedOutOfMTE ^ 1;
 }
 
-- (int)_getVoiceNameWithVoiceInfo:(id)a3
+- (int)_getVoiceNameWithVoiceInfo:(id)info
 {
-  v3 = [a3 name];
-  v4 = v3;
-  if (v3)
+  name = [info name];
+  v4 = name;
+  if (name)
   {
-    v5 = [v3 uppercaseString];
-    v6 = [NSString stringWithFormat:@"VOICENAME_%@", v5];
+    uppercaseString = [name uppercaseString];
+    v6 = [NSString stringWithFormat:@"VOICENAME_%@", uppercaseString];
   }
 
   else
@@ -854,30 +854,30 @@ LABEL_22:
   return v8;
 }
 
-- (id)_getVoiceAccentWithVoiceInfo:(id)a3
+- (id)_getVoiceAccentWithVoiceInfo:(id)info
 {
-  v3 = [a3 languageCode];
-  v4 = [SIUtilities convertLanguageCodeToSchemaLocale:v3];
+  languageCode = [info languageCode];
+  v4 = [SIUtilities convertLanguageCodeToSchemaLocale:languageCode];
 
   return [ADAssistantPropertiesUtils SISchemaLocaleToSISchemaISOLocale:v4];
 }
 
-- (int)_getVoiceGenderWithVoiceInfo:(id)a3
+- (int)_getVoiceGenderWithVoiceInfo:(id)info
 {
-  v3 = [a3 gender];
+  gender = [info gender];
 
-  return [ADAssistantPropertiesUtils SISchemaVoiceGenderFromAFVoiceGender:v3];
+  return [ADAssistantPropertiesUtils SISchemaVoiceGenderFromAFVoiceGender:gender];
 }
 
 - (id)_getInputLocale
 {
   v2 = objc_alloc_init(SISchemaISOLocale);
   v3 = +[ADPreferences sharedPreferences];
-  v4 = [v3 languageCode];
+  languageCode = [v3 languageCode];
 
-  if (v4)
+  if (languageCode)
   {
-    v5 = [ADAssistantPropertiesUtils SISchemaLocaleToSISchemaISOLocale:[SIUtilities convertLanguageCodeToSchemaLocale:v4]];
+    v5 = [ADAssistantPropertiesUtils SISchemaLocaleToSISchemaISOLocale:[SIUtilities convertLanguageCodeToSchemaLocale:languageCode]];
 
     v2 = v5;
   }
@@ -888,9 +888,9 @@ LABEL_22:
 - (BOOL)_getIsAssistantEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 - (int)_getGenAIAgent
@@ -988,7 +988,7 @@ LABEL_22:
 
 - (BOOL)_getIsAppleIntelligenceAvailable
 {
-  v2 = [sub_100138F44() isDeviceEligible];
+  isDeviceEligible = [sub_100138F44() isDeviceEligible];
   v6 = 2;
   v3 = [sub_100138F44() shouldBeShownInSettingsReturningAvailabilityStatus:&v6];
   v4 = AFSiriLogContextDaemon;
@@ -1001,7 +1001,7 @@ LABEL_22:
     v11 = 2048;
     v12 = v6;
     v13 = 1024;
-    v14 = v2;
+    v14 = isDeviceEligible;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%s #ODD: isAvailableInSettings=%d availabilityStatus=%ld isDeviceEligible=%d", buf, 0x22u);
   }
 
@@ -1035,18 +1035,18 @@ LABEL_22:
 - (BOOL)_getIsAppleIntelligenceEnabled
 {
   v2 = objc_alloc_init(CSFGMOptIn);
-  v3 = [v2 isOptedIn];
+  isOptedIn = [v2 isOptedIn];
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[ADAssistantProperties _getIsAppleIntelligenceEnabled]";
     v8 = 1024;
-    v9 = v3;
+    v9 = isOptedIn;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%s #ODD: %d", &v6, 0x12u);
   }
 
-  return v3;
+  return isOptedIn;
 }
 
 - (id)_getODDHomeKitProperties
@@ -1078,8 +1078,8 @@ LABEL_22:
   v4 = objc_alloc_init(ODDSiriSchemaODDOptInProperties);
   [v4 setIsMteUploadEnabled:{-[ADAssistantProperties _getIsMteUploadEnabled](self, "_getIsMteUploadEnabled")}];
   [v4 setDataSharingOptInStatus:{-[ADAssistantProperties _getSiriDataSharingOptInStatus](self, "_getSiriDataSharingOptInStatus")}];
-  v5 = [(ADAssistantProperties *)self _getGradingOptInStateChanges];
-  [v4 setGradingOptInStateChanges:v5];
+  _getGradingOptInStateChanges = [(ADAssistantProperties *)self _getGradingOptInStateChanges];
+  [v4 setGradingOptInStateChanges:_getGradingOptInStateChanges];
 
   [v4 setIsServerUserDataSyncEnabled:{-[ADAssistantProperties _getIsServerUserDataSyncEnabled](self, "_getIsServerUserDataSyncEnabled")}];
 
@@ -1098,13 +1098,13 @@ LABEL_22:
 
   v4 = objc_alloc_init(ODDSiriSchemaODDVoiceProperties);
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 outputVoice];
+  outputVoice = [v5 outputVoice];
 
-  [v4 setGender:{-[ADAssistantProperties _getVoiceGenderWithVoiceInfo:](self, "_getVoiceGenderWithVoiceInfo:", v6)}];
-  v7 = [(ADAssistantProperties *)self _getVoiceAccentWithVoiceInfo:v6];
+  [v4 setGender:{-[ADAssistantProperties _getVoiceGenderWithVoiceInfo:](self, "_getVoiceGenderWithVoiceInfo:", outputVoice)}];
+  v7 = [(ADAssistantProperties *)self _getVoiceAccentWithVoiceInfo:outputVoice];
   [v4 setAccent:v7];
 
-  [v4 setName:{-[ADAssistantProperties _getVoiceNameWithVoiceInfo:](self, "_getVoiceNameWithVoiceInfo:", v6)}];
+  [v4 setName:{-[ADAssistantProperties _getVoiceNameWithVoiceInfo:](self, "_getVoiceNameWithVoiceInfo:", outputVoice)}];
 
   return v4;
 }
@@ -1112,15 +1112,15 @@ LABEL_22:
 - (id)_getAppleIntelligenceProperties
 {
   v3 = objc_alloc_init(ODDSiriSchemaODDAppleIntelligenceProperties);
-  v4 = [(ADAssistantProperties *)self _getIsAppleIntelligenceEnabled];
-  [v3 setIsAppleIntelligenceEnabled:v4];
+  _getIsAppleIntelligenceEnabled = [(ADAssistantProperties *)self _getIsAppleIntelligenceEnabled];
+  [v3 setIsAppleIntelligenceEnabled:_getIsAppleIntelligenceEnabled];
   [v3 setIsAppleIntelligenceHardwareCapable:{-[ADAssistantProperties _getIsAppleIntelligenceHardwareCapable](self, "_getIsAppleIntelligenceHardwareCapable")}];
   [v3 setIsAppleIntelligenceAvailable:{-[ADAssistantProperties _getIsAppleIntelligenceAvailable](self, "_getIsAppleIntelligenceAvailable")}];
-  if (v4)
+  if (_getIsAppleIntelligenceEnabled)
   {
-    v5 = [(ADAssistantProperties *)self _getIsGenAIEnabled];
-    [v3 setIsChatGPTEnabled:v5];
-    if (v5)
+    _getIsGenAIEnabled = [(ADAssistantProperties *)self _getIsGenAIEnabled];
+    [v3 setIsChatGPTEnabled:_getIsGenAIEnabled];
+    if (_getIsGenAIEnabled)
     {
       [v3 addGenAIAgentsEnabled:{-[ADAssistantProperties _getGenAIAgent](self, "_getGenAIAgent")}];
       [v3 setIsGenAIConfirmationAlwaysRequired:{-[ADAssistantProperties _getIsChatGPTConfirmationAlwaysRequired](self, "_getIsChatGPTConfirmationAlwaysRequired")}];
@@ -1156,22 +1156,22 @@ LABEL_6:
 
   v4 = objc_alloc_init(ODDSiriSchemaODDAssistantProperties);
   [v4 setIsAssistantEnabled:{-[ADAssistantProperties _getIsAssistantEnabled](self, "_getIsAssistantEnabled")}];
-  v5 = [(ADAssistantProperties *)self _getInputLocale];
-  [v4 setInputLocale:v5];
+  _getInputLocale = [(ADAssistantProperties *)self _getInputLocale];
+  [v4 setInputLocale:_getInputLocale];
 
   [v4 setListenFor:{-[ADAssistantProperties _getListenForSettings](self, "_getListenForSettings")}];
   [v4 setIsPreciseLocationEnabled:{-[ADAssistantProperties _getIsPreciseLocationEnabled](self, "_getIsPreciseLocationEnabled")}];
-  v6 = [(ADAssistantProperties *)self _getODDVoiceProperties];
-  [v4 setVoice:v6];
+  _getODDVoiceProperties = [(ADAssistantProperties *)self _getODDVoiceProperties];
+  [v4 setVoice:_getODDVoiceProperties];
 
-  v7 = [(ADAssistantProperties *)self _getAppleIntelligenceProperties];
-  [v4 setAppleIntelligence:v7];
+  _getAppleIntelligenceProperties = [(ADAssistantProperties *)self _getAppleIntelligenceProperties];
+  [v4 setAppleIntelligence:_getAppleIntelligenceProperties];
 
-  v8 = [(ADAssistantProperties *)self _getODDOptInProperties];
-  [v4 setOptIn:v8];
+  _getODDOptInProperties = [(ADAssistantProperties *)self _getODDOptInProperties];
+  [v4 setOptIn:_getODDOptInProperties];
 
-  v9 = [(ADAssistantProperties *)self _getODDHomeKitProperties];
-  [v4 setHomeKit:v9];
+  _getODDHomeKitProperties = [(ADAssistantProperties *)self _getODDHomeKitProperties];
+  [v4 setHomeKit:_getODDHomeKitProperties];
 
   [v4 setLocationAccessPermission:{-[ADAssistantProperties _getLocationAccessPermission](self, "_getLocationAccessPermission")}];
 

@@ -1,18 +1,18 @@
 @interface ProductRatingsCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductRatingsCollectionViewCell
 
-- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC22SubscribePageExtension32ProductRatingsCollectionViewCell_itemLayoutContext;
   v10 = sub_1007469A4();
@@ -21,14 +21,14 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ProductRatingsCollectionViewCell_productNoRatingsView) = 0;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v11 = [(ProductRatingsCollectionViewCell *)&v14 initWithFrame:x, y, width, height];
-  v12 = [(ProductRatingsCollectionViewCell *)v11 contentView];
-  [v12 setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  height = [(ProductRatingsCollectionViewCell *)&v14 initWithFrame:x, y, width, height];
+  contentView = [(ProductRatingsCollectionViewCell *)height contentView];
+  [contentView setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
-  return v11;
+  return height;
 }
 
-- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension32ProductRatingsCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension32ProductRatingsCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -42,13 +42,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017C5B8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_10017C6E4();
   v5 = v4;
   v7 = v6;

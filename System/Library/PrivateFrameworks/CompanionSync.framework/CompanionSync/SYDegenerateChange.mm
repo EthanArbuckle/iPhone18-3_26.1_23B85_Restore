@@ -1,5 +1,5 @@
 @interface SYDegenerateChange
-+ (BOOL)isDegenerate:(id)a3;
++ (BOOL)isDegenerate:(id)degenerate;
 + (id)degenerateChange;
 @end
 
@@ -26,12 +26,12 @@ uint64_t __38__SYDegenerateChange_degenerateChange__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)isDegenerate:(id)a3
++ (BOOL)isDegenerate:(id)degenerate
 {
-  v3 = a3;
+  degenerateCopy = degenerate;
   v4 = +[SYDegenerateChange degenerateChange];
 
-  return v4 == v3;
+  return v4 == degenerateCopy;
 }
 
 @end

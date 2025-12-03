@@ -1,15 +1,15 @@
 @interface CAFUIStatusTableView
-- (CAFUIStatusTableView)initWithFrame:(CGRect)a3;
+- (CAFUIStatusTableView)initWithFrame:(CGRect)frame;
 - (void)update;
 @end
 
 @implementation CAFUIStatusTableView
 
-- (CAFUIStatusTableView)initWithFrame:(CGRect)a3
+- (CAFUIStatusTableView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CAFUIStatusTableView;
-  return [(CAFUIStatusTableView *)&v4 initWithFrame:0 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CAFUIStatusTableView *)&v4 initWithFrame:0 style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)update

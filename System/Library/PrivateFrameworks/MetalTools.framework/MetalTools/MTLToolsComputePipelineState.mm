@@ -6,21 +6,21 @@
 - (MTLDevice)device;
 - (MTLResourceID)gpuResourceID;
 - (NSString)label;
-- (id)functionHandleWithBinaryFunction:(id)a3;
-- (id)functionHandleWithFunction:(id)a3;
-- (id)functionHandleWithName:(id)a3;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
+- (id)functionHandleWithBinaryFunction:(id)function;
+- (id)functionHandleWithFunction:(id)function;
+- (id)functionHandleWithName:(id)name;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error;
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
 - (id)pipelineBinaries;
 - (int64_t)textureWriteRoundingMode;
 - (unint64_t)allocatedSize;
 - (unint64_t)gpuAddress;
 - (unint64_t)gpuHandle;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)maxTotalThreadsPerThreadgroup;
 - (unint64_t)resourceIndex;
 - (unint64_t)staticThreadgroupMemoryLength;
@@ -41,9 +41,9 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (MTLDevice)device
@@ -78,22 +78,22 @@
   return [(MTLToolsObject *)v5 device];
 }
 
-- (id)functionHandleWithFunction:(id)a3
+- (id)functionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [functions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -105,14 +105,14 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(functions);
         }
 
         [v7 addObject:{objc_msgSend(*(*(&v17 + 1) + 8 * v11++), "baseObject")}];
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [functions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -134,15 +134,15 @@
   return v14;
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [functions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -154,14 +154,14 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(functions);
         }
 
         [v9 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v13++), "baseObject")}];
       }
 
       while (v11 != v13);
-      v11 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [functions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -183,7 +183,7 @@
   return v16;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -197,7 +197,7 @@
   return result;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -213,107 +213,107 @@
 
 - (BOOL)supportIndirectCommandBuffers
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 supportIndirectCommandBuffers];
+  return [baseObject supportIndirectCommandBuffers];
 }
 
 - (int64_t)textureWriteRoundingMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 textureWriteRoundingMode];
+  return [baseObject textureWriteRoundingMode];
 }
 
 - (unint64_t)maxTotalThreadsPerThreadgroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxTotalThreadsPerThreadgroup];
+  return [baseObject maxTotalThreadsPerThreadgroup];
 }
 
 - (unint64_t)threadExecutionWidth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 threadExecutionWidth];
+  return [baseObject threadExecutionWidth];
 }
 
 - (unint64_t)staticThreadgroupMemoryLength
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 staticThreadgroupMemoryLength];
+  return [baseObject staticThreadgroupMemoryLength];
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v6 = *a3;
-  return [v4 imageblockMemoryLengthForDimensions:&v6];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = *dimensions;
+  return [baseObject imageblockMemoryLengthForDimensions:&v6];
 }
 
 - (unsigned)getComputeKernelTelemetryID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getComputeKernelTelemetryID];
+  return [baseObject getComputeKernelTelemetryID];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (MTLDebugInstrumentationData)debugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 debugInstrumentationData];
+  return [baseObject debugInstrumentationData];
 }
 
 - (id)pipelineBinaries
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pipelineBinaries];
+  return [baseObject pipelineBinaries];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerThreadgroup
@@ -337,12 +337,12 @@
 
 - (MTLComputePipelineReflection)reflection
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 reflection];
+  return [baseObject reflection];
 }
 
-- (id)functionHandleWithName:(id)a3
+- (id)functionHandleWithName:(id)name
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -361,13 +361,13 @@
   return v7;
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3
+- (id)functionHandleWithBinaryFunction:(id)function
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = MTLFunctionHandleToToolsFunctionHandleWithBinaryFunction(v6, a3, self);
+    v7 = MTLFunctionHandleToToolsFunctionHandleWithBinaryFunction(v6, function, self);
   }
 
   else
@@ -380,19 +380,19 @@
   return v7;
 }
 
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
   v21.receiver = self;
   v21.super_class = MTLToolsComputePipelineState;
   [(MTLToolsObject *)&v21 device];
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(functions, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v9 = [functions countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -403,13 +403,13 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(functions);
         }
 
         [v8 addObject:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "baseObject")}];
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v10 = [functions countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v10);
@@ -431,12 +431,12 @@
   return v14;
 }
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v9.receiver = self;
   v9.super_class = MTLToolsComputePipelineState;
-  v6 = [(MTLDevice *)[(MTLToolsObject *)&v9 device] newUnwrappedMTL4FunctionDescriptor:a3];
+  v6 = [(MTLDevice *)[(MTLToolsObject *)&v9 device] newUnwrappedMTL4FunctionDescriptor:descriptor];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   objc_autoreleasePoolPop(v5);

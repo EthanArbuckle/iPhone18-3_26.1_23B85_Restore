@@ -1,126 +1,126 @@
 @interface UICollectionViewCompositionalLayout
 + (UICollectionViewCompositionalLayout)layoutWithListConfiguration:(UICollectionLayoutListConfiguration *)configuration;
-- (BOOL)_adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:(unint64_t)a3 container:(id)a4;
+- (BOOL)_adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:(unint64_t)needed container:(id)container;
 - (BOOL)_allowsItemInteractionsToBegin;
-- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:(int64_t)a3;
+- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:(int64_t)section;
 - (BOOL)_estimatesSizes;
 - (BOOL)_hasOrthogonalScrollingSections;
-- (BOOL)_invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:(CGRect)a3 preparingLayout:(BOOL)a4;
-- (BOOL)_orthogonalScrollingElementShouldAppearAboveForAttributes:(id)a3;
-- (BOOL)_orthogonalScrollingElementShouldAppearBelowForAttributes:(id)a3;
-- (BOOL)_shouldAddElementToSectionContainer:(id)a3;
-- (BOOL)_shouldInvalidateLayoutForOldInsets:(UIEdgeInsets)a3 newInsets:(UIEdgeInsets)a4;
-- (BOOL)_shouldInvalidateLayoutForUpdatedLayoutMargins:(UIEdgeInsets)a3 fromOldMargins:(UIEdgeInsets)a4;
-- (BOOL)_shouldInvalidateLayoutForUpdatedSafeAreaInsets:(UIEdgeInsets)a3 fromOldInsets:(UIEdgeInsets)a4;
-- (BOOL)_shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:(id)a3 elementKind:(id)a4;
-- (BOOL)_shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:(id)a3 elementKind:(id)a4;
-- (BOOL)_shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:(BOOL)a3;
-- (BOOL)_supportsSwipeActionsForIndexPath:(id)a3;
-- (BOOL)_viewBoundsPermitsLayout:(CGRect)a3;
-- (BOOL)_wantsBandSelectionVisualsInSection:(int64_t)a3;
+- (BOOL)_invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:(CGRect)bounds preparingLayout:(BOOL)layout;
+- (BOOL)_orthogonalScrollingElementShouldAppearAboveForAttributes:(id)attributes;
+- (BOOL)_orthogonalScrollingElementShouldAppearBelowForAttributes:(id)attributes;
+- (BOOL)_shouldAddElementToSectionContainer:(id)container;
+- (BOOL)_shouldInvalidateLayoutForOldInsets:(UIEdgeInsets)insets newInsets:(UIEdgeInsets)newInsets;
+- (BOOL)_shouldInvalidateLayoutForUpdatedLayoutMargins:(UIEdgeInsets)margins fromOldMargins:(UIEdgeInsets)oldMargins;
+- (BOOL)_shouldInvalidateLayoutForUpdatedSafeAreaInsets:(UIEdgeInsets)insets fromOldInsets:(UIEdgeInsets)oldInsets;
+- (BOOL)_shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:(id)path elementKind:(id)kind;
+- (BOOL)_shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:(id)path elementKind:(id)kind;
+- (BOOL)_shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:(BOOL)items;
+- (BOOL)_supportsSwipeActionsForIndexPath:(id)path;
+- (BOOL)_viewBoundsPermitsLayout:(CGRect)layout;
+- (BOOL)_wantsBandSelectionVisualsInSection:(int64_t)section;
 - (BOOL)_wantsCustomSectionContainers;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (CGPoint)_offsetForOrthogonalScrollingSection:(int64_t)a3;
-- (CGPoint)_targetPositionForInteractiveMovementOfItemAtIndexPath:(id)a3 withProposedTargetPosition:(CGPoint)a4;
-- (CGRect)_contentFrameForSection:(int64_t)a3;
-- (CGRect)_frameForScrollingToFirstElementInSectionAtIndex:(int64_t)a3;
-- (CGRect)_layoutFrameForSection:(int64_t)a3;
-- (CGRect)_orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:(id)a3 frame:(CGRect)a4;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (CGPoint)_offsetForOrthogonalScrollingSection:(int64_t)section;
+- (CGPoint)_targetPositionForInteractiveMovementOfItemAtIndexPath:(id)path withProposedTargetPosition:(CGPoint)position;
+- (CGRect)_contentFrameForSection:(int64_t)section;
+- (CGRect)_frameForScrollingToFirstElementInSectionAtIndex:(int64_t)index;
+- (CGRect)_layoutFrameForSection:(int64_t)section;
+- (CGRect)_orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:(id)attributes frame:(CGRect)frame;
 - (CGRect)contentFrame;
 - (CGRect)memoizedPreviousSolvedCollectionViewBounds;
 - (CGSize)collectionViewContentSize;
-- (NSDirectionalEdgeInsets)_supplementaryViewInsetsForScrollingToItemAtIndexPath:(id)a3;
-- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)a3;
-- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)a3 scrollDirection:(int64_t)a4;
+- (NSDirectionalEdgeInsets)_supplementaryViewInsetsForScrollingToItemAtIndexPath:(id)path;
+- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)section;
+- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)section scrollDirection:(int64_t)direction;
 - (UICollectionViewCompositionalLayout)initWithSection:(NSCollectionLayoutSection *)section;
 - (UICollectionViewCompositionalLayout)initWithSection:(NSCollectionLayoutSection *)section configuration:(UICollectionViewCompositionalLayoutConfiguration *)configuration;
-- (UICollectionViewCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
+- (UICollectionViewCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
 - (UICollectionViewCompositionalLayout)initWithSectionProvider:(UICollectionViewCompositionalLayoutSectionProvider)sectionProvider;
 - (UICollectionViewCompositionalLayout)initWithSectionProvider:(UICollectionViewCompositionalLayoutSectionProvider)sectionProvider configuration:(UICollectionViewCompositionalLayoutConfiguration *)configuration;
 - (UICollectionViewCompositionalLayoutConfiguration)configuration;
 - (UIEdgeInsets)memoizedDynamicAnimatorWorldAdjustingInsets;
 - (UIEdgeInsets)memoizedPreviousLayoutMargins;
-- (double)_alignedContentMarginGivenMargin:(double)a3;
+- (double)_alignedContentMarginGivenMargin:(double)margin;
 - (id)_boundsChangeResolve;
 - (id)_containerFromCollectionView;
 - (id)_customContainerSectionIndexes;
 - (id)_dataSourceSnapshotter;
-- (id)_extendedAttributesQueryIncludingOrthogonalScrollingRegions:(CGRect)a3;
-- (id)_invalidationContextForUpdatedLayoutMargins:(UIEdgeInsets)a3;
-- (id)_invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:(CGRect)a3;
+- (id)_extendedAttributesQueryIncludingOrthogonalScrollingRegions:(CGRect)regions;
+- (id)_invalidationContextForUpdatedLayoutMargins:(UIEdgeInsets)margins;
+- (id)_invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:(CGRect)bounds;
 - (id)_layoutAttributesForIndelibleElements;
-- (id)_layoutSectionForSectionIndex:(unint64_t)a3;
-- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)a3;
+- (id)_layoutSectionForSectionIndex:(unint64_t)index;
+- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)path;
 - (id)_marginsChangeResolve;
 - (id)_orthogonalScrollingSections;
-- (id)_preferredAttributesResolveWithInvalidatedPreferredAttributes:(id)a3 layoutOffset:(CGPoint)a4 visibleRect:(CGRect)a5;
-- (id)_propertyAnimatorForCollectionViewUpdates:(id)a3 withCustomAnimator:(id)a4;
+- (id)_preferredAttributesResolveWithInvalidatedPreferredAttributes:(id)attributes layoutOffset:(CGPoint)offset visibleRect:(CGRect)rect;
+- (id)_propertyAnimatorForCollectionViewUpdates:(id)updates withCustomAnimator:(id)animator;
 - (id)_scrollViewAdjustmentsChangeResolve;
 - (id)_sectionDefinitionsUpdateResolve;
-- (id)_sectionDescriptorForSectionIndex:(int64_t)a3;
+- (id)_sectionDescriptorForSectionIndex:(int64_t)index;
 - (id)_sectionsDescription;
-- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)a3;
+- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)path;
 - (id)_updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds;
 - (id)_updateResolve;
-- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3;
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3;
-- (id)indexPathsToInsertForDecorationViewOfKind:(id)a3;
-- (id)indexPathsToInsertForSupplementaryViewOfKind:(id)a3;
-- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_anchorForAuxiliaryElementOfKind:(id)a3;
-- (int64_t)_layoutTypeForSection:(int64_t)a3;
+- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind;
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind;
+- (id)indexPathsToInsertForDecorationViewOfKind:(id)kind;
+- (id)indexPathsToInsertForSupplementaryViewOfKind:(id)kind;
+- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)_anchorForAuxiliaryElementOfKind:(id)kind;
+- (int64_t)_layoutTypeForSection:(int64_t)section;
 - (int64_t)developmentLayoutDirection;
 - (unint64_t)_layoutAxis;
 - (unint64_t)_orthogonalScrollingAxis;
-- (void)_cellBackgroundOrBottomSeparatorChangedAtIndexPath:(id)a3 separatorOnly:(BOOL)a4;
+- (void)_cellBackgroundOrBottomSeparatorChangedAtIndexPath:(id)path separatorOnly:(BOOL)only;
 - (void)_collectionViewWillPerformPendingLayoutBeforeUpdate;
 - (void)_computeAndUpdateAdjustedContentFrame;
 - (void)_createSwipeActionsModuleIfNeeded;
 - (void)_didEndSwiping;
-- (void)_didPerformUpdateVisibleCellsPassWithLayoutOffset:(CGPoint)a3;
-- (void)_finalizeCollectionViewUpdate:(id)a3;
+- (void)_didPerformUpdateVisibleCellsPassWithLayoutOffset:(CGPoint)offset;
+- (void)_finalizeCollectionViewUpdate:(id)update;
 - (void)_fullResolve;
-- (void)_handleEndInteractiveReorderingWithContext:(id)a3;
-- (void)_handlePreferredSizingDataInvalidation:(id)a3;
-- (void)_handleSwipeActionsInvalidationWithContext:(id)a3;
+- (void)_handleEndInteractiveReorderingWithContext:(id)context;
+- (void)_handlePreferredSizingDataInvalidation:(id)invalidation;
+- (void)_handleSwipeActionsInvalidationWithContext:(id)context;
 - (void)_performDeferredResolveIfNecessary;
-- (void)_postProcessPreferredAttributes:(id)a3 forView:(id)a4;
-- (void)_prepareForCollectionViewUpdates:(id)a3 withDataSourceTranslator:(id)a4;
-- (void)_prepareForPreferredAttributesQueryForView:(id)a3 withLayoutAttributes:(id)a4;
-- (void)_prepareForTransitionToLayout:(id)a3;
+- (void)_postProcessPreferredAttributes:(id)attributes forView:(id)view;
+- (void)_prepareForCollectionViewUpdates:(id)updates withDataSourceTranslator:(id)translator;
+- (void)_prepareForPreferredAttributesQueryForView:(id)view withLayoutAttributes:(id)attributes;
+- (void)_prepareForTransitionToLayout:(id)layout;
 - (void)_prepareLayout;
-- (void)_queueDeferredResolveForInvalidationWithContext:(id)a3;
-- (void)_resolveImmediatelyForInvalidationWithContext:(id)a3;
+- (void)_queueDeferredResolveForInvalidationWithContext:(id)context;
+- (void)_resolveImmediatelyForInvalidationWithContext:(id)context;
 - (void)_scrollViewLayoutAdjustmentsChanged;
-- (void)_setCollectionView:(id)a3;
-- (void)_setOffset:(CGPoint)a3 forOrthogonalScrollingSection:(int64_t)a4;
-- (void)_setRecomputesLayoutForEmptyUpdates:(BOOL)a3;
-- (void)_solveForPinnedSupplementaryItemsIfNeededWithContext:(id)a3;
-- (void)_transformCellLayoutAttributes:(id)a3;
-- (void)_transformDecorationLayoutAttributes:(id)a3;
-- (void)_transformSupplementaryLayoutAttributes:(id)a3;
+- (void)_setCollectionView:(id)view;
+- (void)_setOffset:(CGPoint)offset forOrthogonalScrollingSection:(int64_t)section;
+- (void)_setRecomputesLayoutForEmptyUpdates:(BOOL)updates;
+- (void)_solveForPinnedSupplementaryItemsIfNeededWithContext:(id)context;
+- (void)_transformCellLayoutAttributes:(id)attributes;
+- (void)_transformDecorationLayoutAttributes:(id)attributes;
+- (void)_transformSupplementaryLayoutAttributes:(id)attributes;
 - (void)_updateCollectionViewBackgroundColor;
-- (void)_updateStyleForSwipeActionsConfiguration:(id)a3 indexPath:(id)a4;
+- (void)_updateStyleForSwipeActionsConfiguration:(id)configuration indexPath:(id)path;
 - (void)_willBeginSwiping;
 - (void)_willPerformUpdateVisibleCellsPass;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setBoundarySupplementaryItems:(id)a3;
-- (void)setCollectionViewTraitChangeRegistration:(uint64_t)a1;
+- (void)setBoundarySupplementaryItems:(id)items;
+- (void)setCollectionViewTraitChangeRegistration:(uint64_t)registration;
 - (void)setConfiguration:(UICollectionViewCompositionalLayoutConfiguration *)configuration;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation UICollectionViewCompositionalLayout
@@ -139,10 +139,10 @@
 
 - (BOOL)_estimatesSizes
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver)
   {
-    v3 = v2[12];
+    v3 = solver[12];
   }
 
   else
@@ -155,11 +155,11 @@
 
 - (id)_customContainerSectionIndexes
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  v3 = v2;
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v3 = solver;
+  if (solver)
   {
-    v4 = *(v2 + 96);
+    v4 = *(solver + 96);
   }
 
   else
@@ -174,10 +174,10 @@
 
 - (unint64_t)_layoutAxis
 {
-  v2 = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration scrollDirection];
-  if (v2)
+  scrollDirection = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration scrollDirection];
+  if (scrollDirection)
   {
-    return v2 == UICollectionViewScrollDirectionHorizontal;
+    return scrollDirection == UICollectionViewScrollDirectionHorizontal;
   }
 
   else
@@ -188,11 +188,11 @@
 
 - (id)_orthogonalScrollingSections
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  v3 = v2;
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v3 = solver;
+  if (solver)
   {
-    v4 = *(v2 + 88);
+    v4 = *(solver + 88);
   }
 
   else
@@ -223,10 +223,10 @@
 
 - (BOOL)_hasOrthogonalScrollingSections
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver)
   {
-    v3 = v2[13];
+    v3 = solver[13];
   }
 
   else
@@ -240,12 +240,12 @@
 - (void)_performDeferredResolveIfNecessary
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 296);
+    v2 = *(self + 296);
     if (v2)
     {
-      if ((*(a1 + 288) & 8) != 0)
+      if ((*(self + 288) & 8) != 0)
       {
         CategoryCachedImpl = __UILogGetCategoryCachedImpl("UICollectionLayout", &_MergedGlobals_177);
         if (*CategoryCachedImpl)
@@ -254,10 +254,10 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             v17 = v16;
-            v18 = [a1 collectionView];
+            collectionView = [self collectionView];
             v19 = _UIStringFromCompositionalLayoutResolveType(v2);
             *buf = 134218242;
-            v53 = v18;
+            v53 = collectionView;
             v54 = 2112;
             v55 = v19;
             _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_ERROR, "_performDeferredResolveIfNecessary: cv==%p; skipping deferred resolve (%@) until update or reload data", buf, 0x16u);
@@ -269,17 +269,17 @@ LABEL_17:
 
       else
       {
-        v3 = [a1 collectionView];
-        [v3 _visibleBounds];
+        collectionView2 = [self collectionView];
+        [collectionView2 _visibleBounds];
         v5 = v4;
         v7 = v6;
         v9 = v8;
         v11 = v10;
 
-        if ([a1 _viewBoundsPermitsLayout:{v5, v7, v9, v11}])
+        if ([self _viewBoundsPermitsLayout:{v5, v7, v9, v11}])
         {
           kdebug_trace();
-          *(a1 + 296) = 0;
+          *(self + 296) = 0;
           v12 = __UILogGetCategoryCachedImpl("UICollectionLayout", &qword_1EA969758);
           if (*v12)
           {
@@ -287,10 +287,10 @@ LABEL_17:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
               v42 = v41;
-              v43 = [a1 collectionView];
+              collectionView3 = [self collectionView];
               v44 = _UIStringFromCompositionalLayoutResolveType(v2);
               *buf = 134218242;
-              v53 = v43;
+              v53 = collectionView3;
               v54 = 2112;
               v55 = v44;
               _os_log_impl(&dword_188A29000, v42, OS_LOG_TYPE_ERROR, "_performDeferredResolve: cv == %p; Performing deferred resolve %@", buf, 0x16u);
@@ -305,22 +305,22 @@ LABEL_17:
             {
               if (v2 == 4)
               {
-                [a1 _scrollViewAdjustmentsChangeResolve];
+                [self _scrollViewAdjustmentsChangeResolve];
               }
 
               else
               {
-                [a1 _sectionDefinitionsUpdateResolve];
+                [self _sectionDefinitionsUpdateResolve];
               }
-              v14 = ;
+              _boundsChangeResolve = ;
 LABEL_44:
-              v37 = v14;
-              if (v14)
+              v37 = _boundsChangeResolve;
+              if (_boundsChangeResolve)
               {
-                [v13 setContentOffsetAdjustment:{*(v14 + 48), *(v14 + 56)}];
+                [v13 setContentOffsetAdjustment:{*(_boundsChangeResolve + 48), *(_boundsChangeResolve + 56)}];
                 [v13 _setShouldInvalidateCollectionViewContentSize:1];
                 v38 = v37[40];
-                [a1 _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
+                [self _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
                 if (v38 != 1)
                 {
                   v39 = 0;
@@ -331,7 +331,7 @@ LABEL_44:
               }
 
 LABEL_47:
-              [a1 _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
+              [self _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
               v39 = 0;
               v37 = 0;
               goto LABEL_49;
@@ -339,30 +339,30 @@ LABEL_47:
 
             if (v2 == 6)
             {
-              v14 = [a1 _boundsChangeResolve];
+              _boundsChangeResolve = [self _boundsChangeResolve];
               goto LABEL_44;
             }
 
             if (v2 == 7)
             {
-              [a1 _fullResolve];
-              [a1 _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
+              [self _fullResolve];
+              [self _solveForPinnedSupplementaryItemsIfNeededWithContext:v13];
               v37 = 0;
 LABEL_46:
-              [a1 _updateCollectionViewBackgroundColor];
+              [self _updateCollectionViewBackgroundColor];
               v39 = 1;
 LABEL_49:
-              [*(a1 + 136) processLayoutInvalidationWithContext:v13 updateConfigurations:v39];
-              v40 = [a1 collectionView];
-              [v40 _invalidateLayoutWithContext:v13];
+              [*(self + 136) processLayoutInvalidationWithContext:v13 updateConfigurations:v39];
+              collectionView4 = [self collectionView];
+              [collectionView4 _invalidateLayoutWithContext:v13];
 
               kdebug_trace();
               return;
             }
 
 LABEL_39:
-            v28 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v28 handleFailureInMethod:sel__performDeferredResolveIfNecessary object:a1 file:@"UICollectionViewCompositionalLayout.m" lineNumber:834 description:{@"Attempting to process an invalid or unknown resolve type. Type: %ld", v2}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel__performDeferredResolveIfNecessary object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:834 description:{@"Attempting to process an invalid or unknown resolve type. Type: %ld", v2}];
 LABEL_40:
 
             goto LABEL_47;
@@ -375,7 +375,7 @@ LABEL_40:
 
           if (v2 == 2)
           {
-            v14 = [a1 _marginsChangeResolve];
+            _boundsChangeResolve = [self _marginsChangeResolve];
             goto LABEL_44;
           }
 
@@ -384,30 +384,30 @@ LABEL_40:
             goto LABEL_39;
           }
 
-          v24 = [a1 solver];
-          if (!v24)
+          solver = [self solver];
+          if (!solver)
           {
-            v28 = 0;
+            currentHandler = 0;
             goto LABEL_40;
           }
 
-          v25 = v24[36];
+          v25 = solver[36];
 
           if (v25 < 1)
           {
             goto LABEL_47;
           }
 
-          v26 = [a1 collectionView];
-          [v26 bounds];
-          v27 = [a1 _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
+          collectionView5 = [self collectionView];
+          [collectionView5 bounds];
+          v27 = [self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
 
           v47 = 0u;
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v28 = v27;
-          v29 = [v28 countByEnumeratingWithState:&v45 objects:v51 count:16];
+          currentHandler = v27;
+          v29 = [currentHandler countByEnumeratingWithState:&v45 objects:v51 count:16];
           if (!v29)
           {
             goto LABEL_35;
@@ -421,7 +421,7 @@ LABEL_25:
           {
             if (*v46 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(currentHandler);
             }
 
             v33 = *(*(&v45 + 1) + 8 * v32);
@@ -432,18 +432,18 @@ LABEL_25:
 
             if ([v33 representedElementCategory] == 1)
             {
-              v34 = [v33 representedElementKind];
-              v35 = [v33 indexPath];
-              v49 = v35;
+              representedElementKind = [v33 representedElementKind];
+              indexPath = [v33 indexPath];
+              v49 = indexPath;
               v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-              [v13 invalidateSupplementaryElementsOfKind:v34 atIndexPaths:v36];
+              [v13 invalidateSupplementaryElementsOfKind:representedElementKind atIndexPaths:v36];
 
 LABEL_32:
             }
 
             if (v30 == ++v32)
             {
-              v30 = [v28 countByEnumeratingWithState:&v45 objects:v51 count:16];
+              v30 = [currentHandler countByEnumeratingWithState:&v45 objects:v51 count:16];
               if (!v30)
               {
 LABEL_35:
@@ -455,10 +455,10 @@ LABEL_35:
             }
           }
 
-          v34 = [v33 indexPath];
-          v50 = v34;
-          v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
-          [v13 invalidateItemsAtIndexPaths:v35];
+          representedElementKind = [v33 indexPath];
+          v50 = representedElementKind;
+          indexPath = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
+          [v13 invalidateItemsAtIndexPaths:indexPath];
           goto LABEL_32;
         }
 
@@ -469,7 +469,7 @@ LABEL_35:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v17 = v21;
-            v22 = [a1 collectionView];
+            collectionView6 = [self collectionView];
             v19 = _UIStringFromCompositionalLayoutResolveType(v2);
             v59.origin.x = v5;
             v59.origin.y = v7;
@@ -477,7 +477,7 @@ LABEL_35:
             v59.size.height = v11;
             v23 = NSStringFromCGRect(v59);
             *buf = 134218498;
-            v53 = v22;
+            v53 = collectionView6;
             v54 = 2112;
             v55 = v19;
             v56 = 2112;
@@ -530,8 +530,8 @@ LABEL_35:
   [(UICollectionViewLayout *)&v7 prepareLayout];
   if (*&self->_compositionalLayoutFlags)
   {
-    v3 = [(UICollectionViewLayout *)self collectionView];
-    [v3 _visibleBounds];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    [collectionView _visibleBounds];
     v4 = [(UICollectionViewCompositionalLayout *)self _viewBoundsPermitsLayout:?];
 
     if (v4)
@@ -557,10 +557,10 @@ LABEL_35:
 {
   if (!self->super._swipeActionsModule)
   {
-    v3 = [(UICollectionViewCompositionalLayout *)self solver];
-    v4 = [(_UICollectionCompositionalLayoutSolver *)v3 _wantsSwipeActions];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    _wantsSwipeActions = [(_UICollectionCompositionalLayoutSolver *)solver _wantsSwipeActions];
 
-    if (v4)
+    if (_wantsSwipeActions)
     {
       v5 = [[_UICollectionViewLayoutSwipeActionsModule alloc] initWithHost:self];
       swipeActionsModule = self->super._swipeActionsModule;
@@ -575,13 +575,13 @@ LABEL_35:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(UICollectionViewCompositionalLayout *)self solver];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChanged__block_invoke;
   v5[3] = &unk_1E70FA630;
   v5[4] = &v6;
-  [(_UICollectionCompositionalLayoutSolver *)v3 enumerateSectionDefinitionsWithBlock:v5];
+  [(_UICollectionCompositionalLayoutSolver *)solver enumerateSectionDefinitionsWithBlock:v5];
 
   if (*(v7 + 24) == 1)
   {
@@ -626,23 +626,23 @@ LABEL_35:
 
 - (id)_updateResolve
 {
-  v4 = [(UICollectionViewLayout *)self collectionView];
-  if (v4)
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if (collectionView)
   {
-    v5 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+    currentUpdate = [(UICollectionViewCompositionalLayout *)self currentUpdate];
 
-    if (!v5)
+    if (!currentUpdate)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1591 description:{@"Invalid parameter not satisfying: %@", @"self.currentUpdate != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1591 description:{@"Invalid parameter not satisfying: %@", @"self.currentUpdate != nil"}];
     }
 
     kdebug_trace();
-    v6 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-    v7 = v6;
-    if (v6)
+    currentUpdate2 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+    v7 = currentUpdate2;
+    if (currentUpdate2)
     {
-      v8 = *(v6 + 24);
+      v8 = *(currentUpdate2 + 24);
     }
 
     else
@@ -653,12 +653,12 @@ LABEL_35:
     v9 = v8;
     [(UICollectionViewCompositionalLayout *)self setDataSourceSnapshotter:v9];
 
-    [v4 bounds];
+    [collectionView bounds];
     [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
-    v10 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+    _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
     if ([(UICollectionViewCompositionalLayout *)self _recomputesLayoutForEmptyUpdates])
     {
-      if ([v4 _isReordering])
+      if ([collectionView _isReordering])
       {
         v11 = dyld_program_sdk_at_least();
       }
@@ -674,28 +674,28 @@ LABEL_35:
       v11 = 1;
     }
 
-    v13 = [(UICollectionViewCompositionalLayout *)self solver];
-    v14 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-    v15 = [(_UICollectionCompositionalLayoutSolver *)v13 resolveSolutionForUpdate:v14 container:v10 ignoreEmptyUpdate:v11];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    currentUpdate3 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+    v15 = [(_UICollectionCompositionalLayoutSolver *)solver resolveSolutionForUpdate:currentUpdate3 container:_containerFromCollectionView ignoreEmptyUpdate:v11];
     [(UICollectionViewCompositionalLayout *)self setCurrentResolveResult:v15];
 
     [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
     if (dyld_program_sdk_at_least())
     {
-      [v4 visibleBounds];
+      [collectionView visibleBounds];
       v16 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
     }
 
     kdebug_trace();
-    v12 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+    currentResolveResult = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
   }
 
   else
   {
-    v12 = 0;
+    currentResolveResult = 0;
   }
 
-  return v12;
+  return currentResolveResult;
 }
 
 void *__51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_5(uint64_t a1)
@@ -723,11 +723,11 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
 
 - (void)_computeAndUpdateAdjustedContentFrame
 {
-  v3 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v3)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver)
   {
-    v16 = v3;
-    v4 = [(_UICollectionCompositionalLayoutSolver *)v3 contentSize];
+    v16 = solver;
+    contentSize = [(_UICollectionCompositionalLayoutSolver *)solver contentSize];
     v6 = v5;
     v7 = v16[6];
     [v7 contentSize];
@@ -745,18 +745,18 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
       v13 = v12 == 2;
     }
 
-    v14 = _UISizeClampToMinimumSizeForAxis(v13, v4, v6, v9, v11);
+    v14 = _UISizeClampToMinimumSizeForAxis(v13, contentSize, v6, v9, v11);
     [(UICollectionViewCompositionalLayout *)self setContentFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v14, v15];
-    v3 = v16;
+    solver = v16;
   }
 }
 
 - (void)_updateCollectionViewBackgroundColor
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  v4 = [v3 _hasCustomBackground];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  _hasCustomBackground = [collectionView _hasCustomBackground];
 
-  if ((v4 & 1) == 0)
+  if ((_hasCustomBackground & 1) == 0)
   {
     v7 = 0;
     v8 = &v7;
@@ -764,13 +764,13 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
     v10 = __Block_byref_object_copy__26;
     v11 = __Block_byref_object_dispose__26;
     v12 = 0;
-    v5 = [(UICollectionViewCompositionalLayout *)self solver];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __75__UICollectionViewCompositionalLayout__updateCollectionViewBackgroundColor__block_invoke;
     v6[3] = &unk_1E70FA630;
     v6[4] = &v7;
-    [(_UICollectionCompositionalLayoutSolver *)v5 enumerateSectionDefinitionsWithBlock:v6];
+    [(_UICollectionCompositionalLayoutSolver *)solver enumerateSectionDefinitionsWithBlock:v6];
 
     [(UICollectionViewLayout *)self _setPreferredBackgroundColor:v8[5]];
     _Block_object_dispose(&v7, 8);
@@ -780,15 +780,15 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
 - (id)_layoutAttributesForIndelibleElements
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule indexPathsWithActiveSwipes];
-  if ([v3 count])
+  indexPathsWithActiveSwipes = [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule indexPathsWithActiveSwipes];
+  if ([indexPathsWithActiveSwipes count])
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(indexPathsWithActiveSwipes, "count")}];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = indexPathsWithActiveSwipes;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -827,17 +827,17 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
 
 - (id)_containerFromCollectionView
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  v4 = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration contentInsetsReference];
-  [v3 safeAreaInsets];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  contentInsetsReference = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration contentInsetsReference];
+  [collectionView safeAreaInsets];
   v58 = v6;
   v59 = v5;
   v8 = v7;
   v10 = v9;
-  if (v3)
+  if (collectionView)
   {
-    v11 = [v3 effectiveUserInterfaceLayoutDirection];
-    if (v11 == 1)
+    effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v12 = v8;
     }
@@ -847,7 +847,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
       v12 = v10;
     }
 
-    if (v11 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v8 = v10;
     }
@@ -855,23 +855,23 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
     v10 = v12;
   }
 
-  [v3 directionalLayoutMargins];
+  [collectionView directionalLayoutMargins];
   v56 = v14;
   v57 = v13;
   v16 = v15;
   v18 = v17;
-  *&v19 = [(UIView *)v3 _directionalReadableContentInsets];
+  *&v19 = [(UIView *)collectionView _directionalReadableContentInsets];
   v54 = v20;
   v55 = v19;
   v22 = v21;
   v24 = v23;
-  [v3 _directionalAccessoryEdgeInsets];
+  [collectionView _directionalAccessoryEdgeInsets];
   v53 = v25;
   v27 = v26;
   v51 = v28;
   v30 = v29;
-  v31 = [v3 _isRenderedHorizontallyFlipped];
-  if (v31)
+  _isRenderedHorizontallyFlipped = [collectionView _isRenderedHorizontallyFlipped];
+  if (_isRenderedHorizontallyFlipped)
   {
     v32 = v27;
   }
@@ -882,7 +882,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
   }
 
   v50 = v32;
-  if (v31)
+  if (_isRenderedHorizontallyFlipped)
   {
     v33 = v22;
   }
@@ -893,7 +893,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
     v33 = v24;
   }
 
-  if (v31)
+  if (_isRenderedHorizontallyFlipped)
   {
     v34 = v16;
   }
@@ -905,7 +905,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
   }
 
   v52 = v34;
-  if (v31)
+  if (_isRenderedHorizontallyFlipped)
   {
     v35 = v18;
   }
@@ -915,7 +915,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
     v35 = v16;
   }
 
-  if (v31)
+  if (_isRenderedHorizontallyFlipped)
   {
     v36 = v8;
   }
@@ -925,15 +925,15 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6(uint
     v36 = v10;
   }
 
-  if (v31)
+  if (_isRenderedHorizontallyFlipped)
   {
     v8 = v10;
   }
 
   v37 = [_UIContentInsetsEnvironment alloc];
-  v44 = [(_UIContentInsetsEnvironment *)v37 initWithInsetsReference:v4 safeAreaInsets:v59 layoutMarginsInsets:v8 readableContentInsets:v58 scrollAccessoryInsets:v36 minimumInsets:v57, v35, v56, v52, v38, v39, v40, v41, v42, v43, v55, v24, v54, v33, v53, v30, v51, v50, 0, 0, 0, 0];
+  v44 = [(_UIContentInsetsEnvironment *)v37 initWithInsetsReference:contentInsetsReference safeAreaInsets:v59 layoutMarginsInsets:v8 readableContentInsets:v58 scrollAccessoryInsets:v36 minimumInsets:v57, v35, v56, v52, v38, v39, v40, v41, v42, v43, v55, v24, v54, v33, v53, v30, v51, v50, 0, 0, 0, 0];
   v45 = [_UICollectionLayoutContainer alloc];
-  [v3 bounds];
+  [collectionView bounds];
   v48 = [(_UICollectionLayoutContainer *)v45 initWithContentSize:v44 contentInsets:v46 insetsEnvironment:v47, 0.0, 0.0, 0.0, 0.0];
 
   return v48;
@@ -987,26 +987,26 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_3(uint
 - (id)_updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds
 {
   kdebug_trace();
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  [v3 visibleBounds];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView visibleBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UICollectionViewLayout *)self collectionView];
-  [v12 _contentInsetIncludingDecorations];
+  collectionView2 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView2 _contentInsetIncludingDecorations];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(UICollectionViewLayout *)self collectionView];
-  v22 = v21;
-  if (v21)
+  collectionView3 = [(UICollectionViewLayout *)self collectionView];
+  v22 = collectionView3;
+  if (collectionView3)
   {
-    v23 = [v21 effectiveUserInterfaceLayoutDirection];
-    if (v23 == 1)
+    effectiveUserInterfaceLayoutDirection = [collectionView3 effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v24 = v16;
     }
@@ -1016,7 +1016,7 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_3(uint
       v24 = v20;
     }
 
-    if (v23 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = v20;
     }
@@ -1024,8 +1024,8 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_3(uint
     v20 = v24;
   }
 
-  v25 = [(UICollectionViewCompositionalLayout *)self solver];
-  v26 = [(_UICollectionCompositionalLayoutSolver *)v25 updatePinnedSectionSupplementaryItemsForVisibleBounds:v7 + v14, v9 - (v20 + v16), v11 - (v14 + v18)];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v26 = [(_UICollectionCompositionalLayoutSolver *)solver updatePinnedSectionSupplementaryItemsForVisibleBounds:v7 + v14, v9 - (v20 + v16), v11 - (v14 + v18)];
 
   kdebug_trace();
 
@@ -1063,10 +1063,10 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
   kdebug_trace();
   if (![(UICollectionViewCompositionalLayout *)self layoutRTL])
   {
-    v3 = [(UICollectionViewLayout *)self collectionView];
-    v4 = [v3 effectiveUserInterfaceLayoutDirection];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
 
-    if (v4 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(UICollectionViewCompositionalLayout *)self setLayoutRTL:1];
     }
@@ -1095,12 +1095,12 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
   v76[3] = &unk_1E70FA568;
   objc_copyWeak(&v77, location);
   v7 = _Block_copy(v76);
-  v8 = [(UICollectionViewLayout *)self collectionView];
-  v9 = [(UICollectionViewCompositionalLayout *)self _dataSourceSnapshotter];
-  [(UICollectionViewCompositionalLayout *)self setDataSourceSnapshotter:v9];
-  v63 = v9;
-  v10 = [(UICollectionViewCompositionalLayout *)self solver];
-  v62 = [(_UICollectionCompositionalLayoutSolver *)v10 restorableState];
+  collectionView2 = [(UICollectionViewLayout *)self collectionView];
+  _dataSourceSnapshotter = [(UICollectionViewCompositionalLayout *)self _dataSourceSnapshotter];
+  [(UICollectionViewCompositionalLayout *)self setDataSourceSnapshotter:_dataSourceSnapshotter];
+  v63 = _dataSourceSnapshotter;
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  restorableState = [(_UICollectionCompositionalLayoutSolver *)solver restorableState];
 
   v11 = +[_UICollectionCompositionalLayoutSolverOptions defaultOptions];
   [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration interSectionSpacing];
@@ -1109,27 +1109,27 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
     *(v11 + 16) = v12;
   }
 
-  v13 = [objc_opt_class() layoutAttributesClass];
-  [(_UIHomeAffordanceObservationRecord *)v11 setLegacyViewServiceSessionIdentifier:v13];
-  v14 = [objc_opt_class() invalidationContextClass];
-  [(UIContentUnavailableImageProperties *)v11 _setTintColor:v14];
-  v15 = [(UICollectionViewCompositionalLayout *)self layoutRTL];
+  layoutAttributesClass = [objc_opt_class() layoutAttributesClass];
+  [(_UIHomeAffordanceObservationRecord *)v11 setLegacyViewServiceSessionIdentifier:layoutAttributesClass];
+  invalidationContextClass = [objc_opt_class() invalidationContextClass];
+  [(UIContentUnavailableImageProperties *)v11 _setTintColor:invalidationContextClass];
+  layoutRTL = [(UICollectionViewCompositionalLayout *)self layoutRTL];
   if (v11)
   {
-    *(v11 + 8) = v15;
+    *(v11 + 8) = layoutRTL;
   }
 
-  v16 = [(UICollectionViewCompositionalLayout *)self roundsToScreenScale];
+  roundsToScreenScale = [(UICollectionViewCompositionalLayout *)self roundsToScreenScale];
   if (v11)
   {
-    *(v11 + 9) = v16;
+    *(v11 + 9) = roundsToScreenScale;
     objc_setProperty_nonatomic_copy(v11, v17, v7, 40);
   }
 
-  v19 = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration boundarySupplementaryItems];
+  boundarySupplementaryItems = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration boundarySupplementaryItems];
   if (v11)
   {
-    objc_setProperty_nonatomic_copy(v11, v18, v19, 48);
+    objc_setProperty_nonatomic_copy(v11, v18, boundarySupplementaryItems, 48);
   }
 
   newValue[0] = MEMORY[0x1E69E9820];
@@ -1162,19 +1162,19 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
     objc_setProperty_nonatomic_copy(v11, v22, v70, 72);
   }
 
-  v23 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+  _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
   v24 = [_UICollectionCompositionalLayoutSolver alloc];
-  v25 = [v8 traitCollection];
-  v26 = [(_UICollectionCompositionalLayoutSolver *)v24 initWithContainer:v23 traitCollection:v25 layoutAxis:v5 dataSourceSnapshot:v63 options:v11 sectionProvider:v6];
+  traitCollection = [collectionView2 traitCollection];
+  v26 = [(_UICollectionCompositionalLayoutSolver *)v24 initWithContainer:_containerFromCollectionView traitCollection:traitCollection layoutAxis:v5 dataSourceSnapshot:v63 options:v11 sectionProvider:v6];
   [(UICollectionViewCompositionalLayout *)self setSolver:v26];
 
-  v27 = [(UICollectionViewCompositionalLayout *)self solver];
-  [v62 applyToSolver:v27];
+  solver2 = [(UICollectionViewCompositionalLayout *)self solver];
+  [restorableState applyToSolver:solver2];
 
-  v28 = [(UICollectionViewCompositionalLayout *)self dynamicsConfigurationHandler];
-  v29 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v29 setDynamicsConfigurationHandler:v28];
-  v59 = v8;
+  dynamicsConfigurationHandler = [(UICollectionViewCompositionalLayout *)self dynamicsConfigurationHandler];
+  solver3 = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver3 setDynamicsConfigurationHandler:dynamicsConfigurationHandler];
+  v59 = collectionView2;
   v61 = v7;
 
   v68[0] = MEMORY[0x1E69E9820];
@@ -1182,11 +1182,11 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
   v68[2] = __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_6;
   v68[3] = &unk_1E70FA608;
   objc_copyWeak(&v69, location);
-  v30 = [(UICollectionViewCompositionalLayout *)self solver];
-  v32 = v30;
-  if (v30)
+  solver4 = [(UICollectionViewCompositionalLayout *)self solver];
+  v32 = solver4;
+  if (solver4)
   {
-    objc_setProperty_nonatomic_copy(v30, v31, v68, 24);
+    objc_setProperty_nonatomic_copy(solver4, v31, v68, 24);
   }
 
   v66[0] = MEMORY[0x1E69E9820];
@@ -1194,11 +1194,11 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
   v66[2] = __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_7;
   v66[3] = &unk_1E70FA608;
   objc_copyWeak(&v67, location);
-  v33 = [(UICollectionViewCompositionalLayout *)self solver];
-  v35 = v33;
-  if (v33)
+  solver5 = [(UICollectionViewCompositionalLayout *)self solver];
+  v35 = solver5;
+  if (solver5)
   {
-    objc_setProperty_nonatomic_copy(v33, v34, v66, 32);
+    objc_setProperty_nonatomic_copy(solver5, v34, v66, 32);
   }
 
   v64[0] = MEMORY[0x1E69E9820];
@@ -1206,26 +1206,26 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
   v64[2] = __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_8;
   v64[3] = &unk_1E70FA608;
   objc_copyWeak(&v65, location);
-  v36 = [(UICollectionViewCompositionalLayout *)self solver];
-  v38 = v36;
-  if (v36)
+  solver6 = [(UICollectionViewCompositionalLayout *)self solver];
+  v38 = solver6;
+  if (solver6)
   {
-    objc_setProperty_nonatomic_copy(v36, v37, v64, 40);
+    objc_setProperty_nonatomic_copy(solver6, v37, v64, 40);
   }
 
   [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
-  v39 = [(UICollectionViewLayout *)self collectionView];
-  [v39 visibleBounds];
+  collectionView3 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView3 visibleBounds];
   v40 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
 
-  v41 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v41)
+  solver7 = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver7)
   {
-    v42 = v41[13];
+    v42 = solver7[13];
 
     if (v42)
     {
-      v43 = [(UICollectionViewLayout *)self collectionView:v8];
+      v43 = [(UICollectionViewLayout *)self collectionView:collectionView2];
       [v43 bounds];
       v45 = v44;
       v47 = v46;
@@ -1236,10 +1236,10 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
     }
   }
 
-  v52 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v52)
+  solver8 = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver8)
   {
-    v53 = v52[15];
+    v53 = solver8[15];
 
     if (v53 != 1)
     {
@@ -1247,17 +1247,17 @@ uint64_t __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block
     }
 
     [(UICollectionViewLayout *)self _setWantsRightToLeftHorizontalMirroringIfNeeded:1];
-    v54 = [(UICollectionViewLayout *)self collectionView];
-    [v54 _setFlipsHorizontalAxis:1];
+    collectionView4 = [(UICollectionViewLayout *)self collectionView];
+    [collectionView4 _setFlipsHorizontalAxis:1];
   }
 
   else
   {
-    v54 = 0;
+    collectionView4 = 0;
   }
 
 LABEL_34:
-  v55 = [(UICollectionViewCompositionalLayout *)self _adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:v5 container:v23];
+  v55 = [(UICollectionViewCompositionalLayout *)self _adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:v5 container:_containerFromCollectionView];
   if (v55)
   {
     v56 = 2;
@@ -1276,8 +1276,8 @@ LABEL_34:
   }
 
   self->_edgesForSafeAreaPropagation = v57;
-  v58 = [(UICollectionViewLayout *)self collectionView];
-  [v58 bounds];
+  collectionView5 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView5 bounds];
   [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
 
   *&self->_compositionalLayoutFlags &= ~4u;
@@ -1297,25 +1297,25 @@ LABEL_34:
 
 - (id)_dataSourceSnapshotter
 {
-  v2 = [(UICollectionViewLayout *)self collectionView];
-  v3 = [v2 dataSource];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
-  if (v3)
+  if (dataSource)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __61__UICollectionViewCompositionalLayout__dataSourceSnapshotter__block_invoke;
     v6[3] = &unk_1E70FA518;
-    v7 = v2;
-    v4 = [off_1E70ECC48 snapshotterForSectionCountsProvider:v6];
+    v7 = collectionView;
+    snapshotterForNoDataSource = [off_1E70ECC48 snapshotterForSectionCountsProvider:v6];
   }
 
   else
   {
-    v4 = [off_1E70ECC48 snapshotterForNoDataSource];
+    snapshotterForNoDataSource = [off_1E70ECC48 snapshotterForNoDataSource];
   }
 
-  return v4;
+  return snapshotterForNoDataSource;
 }
 
 void __75__UICollectionViewCompositionalLayout__updateCollectionViewBackgroundColor__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1363,18 +1363,18 @@ LABEL_10:
 
 - (id)_boundsChangeResolve
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  if (v3)
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if (collectionView)
   {
     kdebug_trace();
-    [v3 bounds];
+    [collectionView bounds];
     [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
-    v4 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
-    v5 = [(UICollectionViewCompositionalLayout *)self solver];
-    v6 = [(_UICollectionCompositionalLayoutSolver *)v5 resolveForContainerChange:v4];
+    _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    v6 = [(_UICollectionCompositionalLayoutSolver *)solver resolveForContainerChange:_containerFromCollectionView];
 
     [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
-    [v3 visibleBounds];
+    [collectionView visibleBounds];
     v7 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
     kdebug_trace();
   }
@@ -1387,7 +1387,7 @@ LABEL_10:
   return v6;
 }
 
-- (UICollectionViewCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (UICollectionViewCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = UICollectionViewCompositionalLayout;
@@ -1395,7 +1395,7 @@ LABEL_10:
   v9 = v8;
   if (v8)
   {
-    _UICollectionViewCompositionalLayoutCommonInit(v8, a3, a4, a5);
+    _UICollectionViewCompositionalLayoutCommonInit(v8, section, provider, configuration);
   }
 
   return v9;
@@ -1462,8 +1462,8 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"[configuration isKindOfClass:[UICollectionViewCompositionalLayoutConfiguration class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"[configuration isKindOfClass:[UICollectionViewCompositionalLayoutConfiguration class]]"}];
   }
 
   v6 = [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration differencesFromConfiguration:configuration];
@@ -1485,9 +1485,9 @@ LABEL_10:
 
     else
     {
-      v9 = [(UICollectionViewCompositionalLayout *)self solver];
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
 
-      if (v6 != 8 || v9 == 0)
+      if (v6 != 8 || solver == 0)
       {
         [(UICollectionViewCompositionalLayout *)self _fullResolve];
         [(UICollectionViewCompositionalLayout *)self _updateCollectionViewBackgroundColor];
@@ -1496,9 +1496,9 @@ LABEL_10:
 
       else
       {
-        v11 = [(UICollectionViewCompositionalLayout *)self solver];
-        v12 = [(UICollectionViewCompositionalLayoutConfiguration *)configuration boundarySupplementaryItems];
-        v13 = [(_UICollectionCompositionalLayoutSolver *)v11 resolveForUpdatedGlobalSupplementaries:v12];
+        solver2 = [(UICollectionViewCompositionalLayout *)self solver];
+        boundarySupplementaryItems = [(UICollectionViewCompositionalLayoutConfiguration *)configuration boundarySupplementaryItems];
+        v13 = [(_UICollectionCompositionalLayoutSolver *)solver2 resolveForUpdatedGlobalSupplementaries:boundarySupplementaryItems];
       }
 
       [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
@@ -1518,24 +1518,24 @@ LABEL_10:
   }
 }
 
-- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)a3
+- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)section
 {
   v5 = +[UICollectionViewCompositionalLayoutConfiguration defaultConfiguration];
-  v6 = [(UICollectionViewCompositionalLayout *)self initWithSection:a3 sectionProvider:0 configuration:v5];
+  v6 = [(UICollectionViewCompositionalLayout *)self initWithSection:section sectionProvider:0 configuration:v5];
 
   return v6;
 }
 
-- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)a3 scrollDirection:(int64_t)a4
+- (UICollectionViewCompositionalLayout)initWithLayoutSection:(id)section scrollDirection:(int64_t)direction
 {
   v7 = +[UICollectionViewCompositionalLayoutConfiguration defaultConfiguration];
-  [v7 setScrollDirection:a4];
-  v8 = [(UICollectionViewCompositionalLayout *)self initWithSection:a3 sectionProvider:0 configuration:v7];
+  [v7 setScrollDirection:direction];
+  v8 = [(UICollectionViewCompositionalLayout *)self initWithSection:section sectionProvider:0 configuration:v7];
 
   return v8;
 }
 
-- (void)setBoundarySupplementaryItems:(id)a3
+- (void)setBoundarySupplementaryItems:(id)items
 {
   v3 = *(__UILogGetCategoryCachedImpl("CompositionalLayout", &setBoundarySupplementaryItems____s_category) + 8);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1545,9 +1545,9 @@ LABEL_10:
   }
 }
 
-- (void)_setRecomputesLayoutForEmptyUpdates:(BOOL)a3
+- (void)_setRecomputesLayoutForEmptyUpdates:(BOOL)updates
 {
-  if (a3)
+  if (updates)
   {
     v3 = 16;
   }
@@ -1560,9 +1560,9 @@ LABEL_10:
   *&self->_compositionalLayoutFlags = *&self->_compositionalLayoutFlags & 0xEF | v3;
 }
 
-- (void)_setCollectionView:(id)a3
+- (void)_setCollectionView:(id)view
 {
-  v5 = [(UICollectionViewLayout *)self collectionView];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
   if (self)
   {
     collectionViewTraitChangeRegistration = self->_collectionViewTraitChangeRegistration;
@@ -1575,33 +1575,33 @@ LABEL_10:
 
   v7 = collectionViewTraitChangeRegistration;
   [(UICollectionViewCompositionalLayout *)self setCollectionViewTraitChangeRegistration:?];
-  if (v5 && v7)
+  if (collectionView && v7)
   {
-    [v5 unregisterForTraitChanges:v7];
+    [collectionView unregisterForTraitChanges:v7];
   }
 
   v10.receiver = self;
   v10.super_class = UICollectionViewCompositionalLayout;
-  [(UICollectionViewLayout *)&v10 _setCollectionView:a3];
+  [(UICollectionViewLayout *)&v10 _setCollectionView:view];
   v8 = +[_UICollectionCompositionalLayoutSolver traitsRequiringInvalidationForChanges];
   if ([v8 count])
   {
-    v9 = [a3 _registerForTraitTokenChanges:v8 withTarget:self action:sel__solverObservedTraitsDidChange];
+    v9 = [view _registerForTraitTokenChanges:v8 withTarget:self action:sel__solverObservedTraitsDidChange];
     [(UICollectionViewCompositionalLayout *)self setCollectionViewTraitChangeRegistration:v9];
   }
 
-  _UIUpdateCollectionViewForScrollDirection(a3, [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration scrollDirection]);
+  _UIUpdateCollectionViewForScrollDirection(view, [(UICollectionViewCompositionalLayoutConfiguration *)self->_configuration scrollDirection]);
 }
 
-- (void)setCollectionViewTraitChangeRegistration:(uint64_t)a1
+- (void)setCollectionViewTraitChangeRegistration:(uint64_t)registration
 {
-  if (a1)
+  if (registration)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((registration + 376), a2);
   }
 }
 
-- (void)_prepareForTransitionToLayout:(id)a3
+- (void)_prepareForTransitionToLayout:(id)layout
 {
   [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule teardown];
   swipeActionsModule = self->super._swipeActionsModule;
@@ -1609,58 +1609,58 @@ LABEL_10:
 
   v6.receiver = self;
   v6.super_class = UICollectionViewCompositionalLayout;
-  [(UICollectionViewLayout *)&v6 _prepareForTransitionToLayout:a3];
+  [(UICollectionViewLayout *)&v6 _prepareForTransitionToLayout:layout];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
   kdebug_trace();
-  v8 = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForElementsInRect:y, width, height];
+  height = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForElementsInRect:y, width, height];
   kdebug_trace();
 
-  return v8;
+  return height;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
   solver = self->_solver;
 
-  return [(_UICollectionCompositionalLayoutSolver *)solver layoutAttributesForItemAtIndexPath:a3];
+  return [(_UICollectionCompositionalLayoutSolver *)solver layoutAttributesForItemAtIndexPath:path];
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
   solver = self->_solver;
 
-  return [(_UICollectionCompositionalLayoutSolver *)&solver->super.isa layoutAttributesForSupplementaryViewOfKind:a3 withIndexPath:a4];
+  return [(_UICollectionCompositionalLayoutSolver *)&solver->super.isa layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:path];
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
   solver = self->_solver;
 
-  return [(_UICollectionCompositionalLayoutSolver *)solver layoutAttributesForDecorationViewOfKind:a3 withIndexPath:a4];
+  return [(_UICollectionCompositionalLayoutSolver *)solver layoutAttributesForDecorationViewOfKind:kind withIndexPath:path];
 }
 
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
-  v8 = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForInteractivelyMovingItemAtIndexPath:a3 withTargetPosition:x, y];
+  v8 = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForInteractivelyMovingItemAtIndexPath:path withTargetPosition:x, y];
   if (!v8)
   {
     v10.receiver = self;
     v10.super_class = UICollectionViewCompositionalLayout;
-    v8 = [(UICollectionViewLayout *)&v10 layoutAttributesForInteractivelyMovingItemAtIndexPath:a3 withTargetPosition:x, y];
+    v8 = [(UICollectionViewLayout *)&v10 layoutAttributesForInteractivelyMovingItemAtIndexPath:path withTargetPosition:x, y];
   }
 
   return v8;
@@ -1678,15 +1678,15 @@ LABEL_10:
   return [(UICollectionViewLayout *)&v4 _allowsItemInteractionsToBegin];
 }
 
-- (NSDirectionalEdgeInsets)_supplementaryViewInsetsForScrollingToItemAtIndexPath:(id)a3
+- (NSDirectionalEdgeInsets)_supplementaryViewInsetsForScrollingToItemAtIndexPath:(id)path
 {
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
-  v5 = [a3 item];
+  item = [path item];
   v6 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (item != 0x7FFFFFFFFFFFFFFFLL)
   {
     v21 = 0;
     v22 = &v21;
@@ -1699,24 +1699,24 @@ LABEL_10:
     v20[1] = 3221225472;
     v20[2] = __93__UICollectionViewCompositionalLayout__supplementaryViewInsetsForScrollingToItemAtIndexPath___block_invoke;
     v20[3] = &unk_1E70FA4C8;
-    v20[4] = a3;
+    v20[4] = path;
     v20[5] = &v21;
     [(_UICollectionCompositionalLayoutSolver *)solver enumeratePinnedSupplementaryItems:v20];
     if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v22[2]), vceqzq_f64(v22[3]))))))
     {
-      v11 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [a3 section]);
+      v11 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [path section]);
       if ([v11 _extensionBehavior] == 2)
       {
-        v12 = [(UICollectionViewLayout *)self collectionView];
-        [v12 _currentScreenScale];
+        collectionView = [(UICollectionViewLayout *)self collectionView];
+        [collectionView _currentScreenScale];
         v14 = v13;
-        if (![a3 item])
+        if (![path item])
         {
           v22[2] = vsubq_f64(v22[2], vdupq_lane_s64(COERCE__INT64(1.0 / v14), 0));
         }
 
-        v15 = [a3 item];
-        if (v15 == [v12 numberOfItemsInSection:{objc_msgSend(a3, "section")}] - 1)
+        item2 = [path item];
+        if (item2 == [collectionView numberOfItemsInSection:{objc_msgSend(path, "section")}] - 1)
         {
           v22[3] = vsubq_f64(v22[3], vdupq_lane_s64(COERCE__INT64(1.0 / v14), 0));
         }
@@ -1843,16 +1843,16 @@ LABEL_6:
 LABEL_13:
 }
 
-- (CGRect)_frameForScrollingToFirstElementInSectionAtIndex:(int64_t)a3
+- (CGRect)_frameForScrollingToFirstElementInSectionAtIndex:(int64_t)index
 {
-  v5 = [(UICollectionViewCompositionalLayout *)self dataSourceSnapshotter];
-  v6 = [v5 numberOfSections];
+  dataSourceSnapshotter = [(UICollectionViewCompositionalLayout *)self dataSourceSnapshotter];
+  numberOfSections = [dataSourceSnapshotter numberOfSections];
 
-  if (v6 <= a3)
+  if (numberOfSections <= index)
   {
     v61.receiver = self;
     v61.super_class = UICollectionViewCompositionalLayout;
-    [(UICollectionViewLayout *)&v61 _frameForScrollingToFirstElementInSectionAtIndex:a3];
+    [(UICollectionViewLayout *)&v61 _frameForScrollingToFirstElementInSectionAtIndex:index];
     v17 = v33;
     v19 = v34;
     v21 = v35;
@@ -1861,18 +1861,18 @@ LABEL_13:
 
   else
   {
-    v7 = [(UICollectionViewCompositionalLayout *)self _layoutSectionForSectionIndex:a3];
+    v7 = [(UICollectionViewCompositionalLayout *)self _layoutSectionForSectionIndex:index];
     v55 = 0;
     v56 = &v55;
     v57 = 0x3032000000;
     v58 = __Block_byref_object_copy__26;
     v59 = __Block_byref_object_dispose__26;
     v60 = 0;
-    v8 = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
-    v9 = [v7 boundarySupplementaryItems];
-    v10 = v9;
+    _layoutAxis = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
+    boundarySupplementaryItems = [v7 boundarySupplementaryItems];
+    v10 = boundarySupplementaryItems;
     v11 = 3;
-    if (v8 == 2)
+    if (_layoutAxis == 2)
     {
       v11 = 1;
     }
@@ -1883,14 +1883,14 @@ LABEL_13:
     v54[3] = &unk_1E70FA4F0;
     v54[4] = &v55;
     v54[5] = v11;
-    [v9 enumerateObjectsUsingBlock:v54];
+    [boundarySupplementaryItems enumerateObjectsUsingBlock:v54];
 
     v12 = v56[5];
     if (v12)
     {
-      v13 = [v12 elementKind];
-      v14 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:a3];
-      v15 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForSupplementaryViewOfKind:v13 atIndexPath:v14];
+      elementKind = [v12 elementKind];
+      v14 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:index];
+      v15 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:v14];
       [v15 frame];
       v17 = v16;
       v19 = v18;
@@ -1900,8 +1900,8 @@ LABEL_13:
       {
         if (v15 && (v15[289] & 0x80) != 0)
         {
-          v24 = [(UICollectionViewCompositionalLayout *)self solver];
-          v17 = [(_UICollectionCompositionalLayoutSolver *)v24 unpinnedFrameOfBoundarySupplementaryElementOfKind:v13 withIndexPath:v14];
+          solver = [(UICollectionViewCompositionalLayout *)self solver];
+          v17 = [(_UICollectionCompositionalLayoutSolver *)solver unpinnedFrameOfBoundarySupplementaryElementOfKind:elementKind withIndexPath:v14];
           v19 = v25;
           v21 = v26;
           v23 = v27;
@@ -1913,15 +1913,15 @@ LABEL_13:
         v62.size.height = v23;
         if (!CGRectIsNull(v62))
         {
-          v28 = [(UICollectionViewLayout *)self collectionView];
+          collectionView = [(UICollectionViewLayout *)self collectionView];
 
-          if (v28)
+          if (collectionView)
           {
-            v29 = [(UICollectionViewLayout *)self collectionView];
-            [v29 _currentScreenScale];
+            collectionView2 = [(UICollectionViewLayout *)self collectionView];
+            [collectionView2 _currentScreenScale];
             v31 = v30;
 
-            v17 = v17 + _UISetPointValueForAxis(v8, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 1.0 / v31);
+            v17 = v17 + _UISetPointValueForAxis(_layoutAxis, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 1.0 / v31);
             v19 = v19 + v32;
           }
         }
@@ -1930,14 +1930,14 @@ LABEL_13:
 
     else
     {
-      v37 = [(UICollectionViewCompositionalLayout *)self dataSourceSnapshotter];
-      v38 = [v37 numberOfItemsInSection:a3];
+      dataSourceSnapshotter2 = [(UICollectionViewCompositionalLayout *)self dataSourceSnapshotter];
+      v38 = [dataSourceSnapshotter2 numberOfItemsInSection:index];
 
       if (v38 < 1)
       {
         v53.receiver = self;
         v53.super_class = UICollectionViewCompositionalLayout;
-        [(UICollectionViewLayout *)&v53 _frameForScrollingToFirstElementInSectionAtIndex:a3];
+        [(UICollectionViewLayout *)&v53 _frameForScrollingToFirstElementInSectionAtIndex:index];
         v17 = v45;
         v19 = v46;
         v21 = v47;
@@ -1946,7 +1946,7 @@ LABEL_13:
 
       else
       {
-        v39 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:a3];
+        v39 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:index];
         v40 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForItemAtIndexPath:v39];
 
         [v40 frame];
@@ -1980,24 +1980,24 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
   }
 }
 
-- (CGPoint)_targetPositionForInteractiveMovementOfItemAtIndexPath:(id)a3 withProposedTargetPosition:(CGPoint)a4
+- (CGPoint)_targetPositionForInteractiveMovementOfItemAtIndexPath:(id)path withProposedTargetPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [a3 section]);
+  y = position.y;
+  x = position.x;
+  v8 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [path section]);
   v9 = v8;
   if (v8 && [v8 shouldRestrictOrthogonalAxisDuringInteractiveMovement])
   {
-    v10 = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForItemAtIndexPath:a3];
-    v11 = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
-    if (v11 == 1)
+    v10 = [(_UICollectionCompositionalLayoutSolver *)self->_solver layoutAttributesForItemAtIndexPath:path];
+    _layoutAxis = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
+    if (_layoutAxis == 1)
     {
       v12 = 2;
     }
 
     else
     {
-      v12 = v11 == 2;
+      v12 = _layoutAxis == 2;
     }
 
     [v10 center];
@@ -2013,15 +2013,15 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UICollectionViewCompositionalLayout *)self solver];
-  v9 = v8;
-  if (!v8 || *(v8 + 104) && [(UICollectionViewCompositionalLayout *)self _invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:0 preparingLayout:x, y, width, height]|| (*&self->_compositionalLayoutFlags & 4) != 0)
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v9 = solver;
+  if (!solver || *(solver + 104) && [(UICollectionViewCompositionalLayout *)self _invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:0 preparingLayout:x, y, width, height]|| (*&self->_compositionalLayoutFlags & 4) != 0)
   {
     v11 = 1;
   }
@@ -2029,9 +2029,9 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
   else
   {
     v15 = 0;
-    v10 = [(_UICollectionCompositionalLayoutSolver *)v9 shouldInvalidateForBoundsChange:x requiresContainerUpdate:y, width, height];
-    v11 = v10;
-    if (v15 == 1 && !v10)
+    height = [(_UICollectionCompositionalLayoutSolver *)v9 shouldInvalidateForBoundsChange:x requiresContainerUpdate:y, width, height];
+    v11 = height;
+    if (v15 == 1 && !height)
     {
       v12 = v9[6];
       v13 = [(_UICollectionLayoutContainer *)v12 containerUpdatingContentSize:height];
@@ -2043,12 +2043,12 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
   return v11;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v36 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = UICollectionViewCompositionalLayout;
@@ -2074,19 +2074,19 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
   [v8 _setIntent:v15];
   if (v14 && (_UICollectionViewCompositionalLayoutShouldDeferResolvesUntilQueried() & 1) == 0)
   {
-    v16 = [(UICollectionViewCompositionalLayout *)self solver];
-    if (v16)
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    if (solver)
     {
-      v17 = v16[36];
+      v17 = solver[36];
 
       if (v17 >= 1)
       {
-        v18 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:x, y, width, height];
+        height = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:x, y, width, height];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v19 = [v18 countByEnumeratingWithState:&v28 objects:v35 count:16];
+        v19 = [height countByEnumeratingWithState:&v28 objects:v35 count:16];
         if (!v19)
         {
           goto LABEL_25;
@@ -2100,7 +2100,7 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
           {
             if (*v29 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(height);
             }
 
             v23 = *(*(&v28 + 1) + 8 * i);
@@ -2111,23 +2111,23 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
                 continue;
               }
 
-              v24 = [v23 representedElementKind];
-              v25 = [v23 indexPath];
-              v33 = v25;
+              representedElementKind = [v23 representedElementKind];
+              indexPath = [v23 indexPath];
+              v33 = indexPath;
               v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-              [v8 invalidateSupplementaryElementsOfKind:v24 atIndexPaths:v26];
+              [v8 invalidateSupplementaryElementsOfKind:representedElementKind atIndexPaths:v26];
             }
 
             else
             {
-              v24 = [v23 indexPath];
-              v34 = v24;
-              v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-              [v8 invalidateItemsAtIndexPaths:v25];
+              representedElementKind = [v23 indexPath];
+              v34 = representedElementKind;
+              indexPath = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
+              [v8 invalidateItemsAtIndexPaths:indexPath];
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v28 objects:v35 count:16];
+          v20 = [height countByEnumeratingWithState:&v28 objects:v35 count:16];
           if (!v20)
           {
             goto LABEL_25;
@@ -2138,7 +2138,7 @@ void __88__UICollectionViewCompositionalLayout__frameForScrollingToFirstElementI
 
     else
     {
-      v18 = 0;
+      height = 0;
 LABEL_25:
     }
   }
@@ -2146,20 +2146,20 @@ LABEL_25:
   return v8;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
   if (*&self->_compositionalLayoutFlags)
   {
     v26.receiver = self;
     v26.super_class = UICollectionViewCompositionalLayout;
-    [(UICollectionViewLayout *)&v26 invalidateLayoutWithContext:a3];
+    [(UICollectionViewLayout *)&v26 invalidateLayoutWithContext:context];
   }
 
   else
   {
-    v5 = [(UICollectionViewLayout *)self collectionView];
-    [v5 _visibleBounds];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    [collectionView _visibleBounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -2168,12 +2168,12 @@ LABEL_25:
     if ([(UICollectionViewCompositionalLayout *)self _viewBoundsPermitsLayout:v7, v9, v11, v13])
     {
       kdebug_trace();
-      v14 = [a3 _intent];
+      _intent = [context _intent];
       if (_UICollectionViewCompositionalLayoutShouldDeferResolvesUntilQueried())
       {
-        if (([a3 invalidateEverything] & 1) == 0)
+        if (([context invalidateEverything] & 1) == 0)
         {
-          if (v14 == 3)
+          if (_intent == 3)
           {
             v15 = 1;
           }
@@ -2183,20 +2183,20 @@ LABEL_25:
             v15 = (*&self->_compositionalLayoutFlags >> 2) & 1;
           }
 
-          [a3 _setInvalidateEverything:v15];
+          [context _setInvalidateEverything:v15];
         }
 
-        [(UICollectionViewCompositionalLayout *)self _queueDeferredResolveForInvalidationWithContext:a3];
+        [(UICollectionViewCompositionalLayout *)self _queueDeferredResolveForInvalidationWithContext:context];
       }
 
       else
       {
-        [(UICollectionViewCompositionalLayout *)self _resolveImmediatelyForInvalidationWithContext:a3];
+        [(UICollectionViewCompositionalLayout *)self _resolveImmediatelyForInvalidationWithContext:context];
       }
 
       v24.receiver = self;
       v24.super_class = UICollectionViewCompositionalLayout;
-      [(UICollectionViewLayout *)&v24 invalidateLayoutWithContext:a3];
+      [(UICollectionViewLayout *)&v24 invalidateLayoutWithContext:context];
       kdebug_trace();
     }
 
@@ -2209,18 +2209,18 @@ LABEL_25:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v18 = v17;
-          v19 = [(UICollectionViewLayout *)self collectionView];
-          v20 = _UICollectionViewLayoutInvalidationContextIntentDescription([a3 _intent]);
+          collectionView2 = [(UICollectionViewLayout *)self collectionView];
+          v20 = _UICollectionViewLayoutInvalidationContextIntentDescription([context _intent]);
           v36.origin.x = v7;
           v36.origin.y = v9;
           v36.size.width = v11;
           v36.size.height = v13;
           v21 = NSStringFromCGRect(v36);
-          v22 = [(UICollectionViewLayout *)self collectionView];
-          [v22 _effectiveContentInset];
+          collectionView3 = [(UICollectionViewLayout *)self collectionView];
+          [collectionView3 _effectiveContentInset];
           v23 = NSStringFromUIEdgeInsets(v37);
           *buf = 134218754;
-          v28 = v19;
+          v28 = collectionView2;
           v29 = 2112;
           v30 = v20;
           v31 = 2112;
@@ -2234,20 +2234,20 @@ LABEL_25:
       *&self->_compositionalLayoutFlags |= 4u;
       v25.receiver = self;
       v25.super_class = UICollectionViewCompositionalLayout;
-      [(UICollectionViewLayout *)&v25 invalidateLayoutWithContext:a3];
+      [(UICollectionViewLayout *)&v25 invalidateLayoutWithContext:context];
     }
   }
 }
 
-- (void)_queueDeferredResolveForInvalidationWithContext:(id)a3
+- (void)_queueDeferredResolveForInvalidationWithContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = [a3 _intent];
+  _intent = [context _intent];
   deferredResolveType = self->_deferredResolveType;
   compositionalLayoutFlags = self->_compositionalLayoutFlags;
   if ((compositionalLayoutFlags & 8) != 0)
   {
-    if (v6 != 3 && v6 != 8 && (*&self->_compositionalLayoutFlags & 4) == 0)
+    if (_intent != 3 && _intent != 8 && (*&self->_compositionalLayoutFlags & 4) == 0)
     {
       goto LABEL_8;
     }
@@ -2272,10 +2272,10 @@ LABEL_8:
   v9 = 0;
   v10 = 0;
   v11 = 1;
-  switch(v6)
+  switch(_intent)
   {
     case 0:
-      [a3 _setRequiresFullCacheInvalidation];
+      [context _setRequiresFullCacheInvalidation];
       goto LABEL_20;
     case 1:
       v9 = 0;
@@ -2309,10 +2309,10 @@ LABEL_8:
         goto LABEL_36;
       }
 
-      v12 = [(UICollectionViewCompositionalLayout *)self _updateResolve];
-      if (v12)
+      _updateResolve = [(UICollectionViewCompositionalLayout *)self _updateResolve];
+      if (_updateResolve)
       {
-        v9 = v12[40];
+        v9 = _updateResolve[40];
       }
 
       else
@@ -2322,13 +2322,13 @@ LABEL_8:
 
       goto LABEL_37;
     case 9:
-      [(UICollectionViewCompositionalLayout *)self _handleSwipeActionsInvalidationWithContext:a3];
+      [(UICollectionViewCompositionalLayout *)self _handleSwipeActionsInvalidationWithContext:context];
       goto LABEL_36;
     case 10:
-      [(UICollectionViewCompositionalLayout *)self _handlePreferredSizingDataInvalidation:a3];
+      [(UICollectionViewCompositionalLayout *)self _handlePreferredSizingDataInvalidation:context];
       goto LABEL_36;
     case 11:
-      [(UICollectionViewCompositionalLayout *)self _handleEndInteractiveReorderingWithContext:a3];
+      [(UICollectionViewCompositionalLayout *)self _handleEndInteractiveReorderingWithContext:context];
 LABEL_36:
       v9 = 0;
 LABEL_37:
@@ -2345,14 +2345,14 @@ LABEL_37:
       v10 = 5;
       break;
     case 15:
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      v14 = [(UICollectionViewLayout *)self collectionView];
-      [v13 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:726 description:{@"Compositional Layout internal bug: Attempting to queue a invalidation for an already deferred invalidation context. Collection View: %@, Layout: %@", v14, self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      collectionView = [(UICollectionViewLayout *)self collectionView];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:726 description:{@"Compositional Layout internal bug: Attempting to queue a invalidation for an already deferred invalidation context. Collection View: %@, Layout: %@", collectionView, self}];
 
       goto LABEL_40;
     default:
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:732 description:{@"Compositional Layout internal bug: Attempting to process invalidation context with unknown intent. Intent: %lld; Context: %@; Layout: %@", objc_msgSend(a3, "_intent"), a3, self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:732 description:{@"Compositional Layout internal bug: Attempting to process invalidation context with unknown intent. Intent: %lld; Context: %@; Layout: %@", objc_msgSend(context, "_intent"), context, self}];
 LABEL_40:
 
       v9 = 0;
@@ -2369,12 +2369,12 @@ LABEL_21:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       log = v18;
-      v19 = [(UICollectionViewLayout *)self collectionView];
+      collectionView2 = [(UICollectionViewLayout *)self collectionView];
       v22 = _UIStringFromCompositionalLayoutResolveType(v10);
-      v20 = _UICollectionViewLayoutInvalidationContextIntentDescription([a3 _intent]);
+      v20 = _UICollectionViewLayoutInvalidationContextIntentDescription([context _intent]);
       v21 = _UIStringFromCompositionalLayoutResolveType(self->_deferredResolveType);
       *buf = 134218754;
-      v25 = v19;
+      v25 = collectionView2;
       v26 = 2112;
       v27 = v22;
       v28 = 2112;
@@ -2392,7 +2392,7 @@ LABEL_21:
     v16 = v10;
   }
 
-  if (a3)
+  if (context)
   {
     v17 = v11;
   }
@@ -2404,28 +2404,28 @@ LABEL_21:
 
   if ((v17 & 1) == 0)
   {
-    *(a3 + 112) |= 8u;
+    *(context + 112) |= 8u;
     v16 = self->_deferredResolveType;
   }
 
   if (!v16)
   {
-    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:a3];
+    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:context];
     if (v9)
     {
       [(UICollectionViewCompositionalLayout *)self _updateCollectionViewBackgroundColor];
     }
   }
 
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule processLayoutInvalidationWithContext:a3 updateConfigurations:v9 & 1];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule processLayoutInvalidationWithContext:context updateConfigurations:v9 & 1];
 }
 
-- (void)_resolveImmediatelyForInvalidationWithContext:(id)a3
+- (void)_resolveImmediatelyForInvalidationWithContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (([a3 invalidateEverything] & 1) == 0 && (objc_msgSend(a3, "_intent") == 3 || !objc_msgSend(a3, "_intent") || objc_msgSend(a3, "_intent") == 2 || objc_msgSend(a3, "_intent") == 7 || (*&self->_compositionalLayoutFlags & 4) != 0))
+  if (([context invalidateEverything] & 1) == 0 && (objc_msgSend(context, "_intent") == 3 || !objc_msgSend(context, "_intent") || objc_msgSend(context, "_intent") == 2 || objc_msgSend(context, "_intent") == 7 || (*&self->_compositionalLayoutFlags & 4) != 0))
   {
-    [a3 _setInvalidateEverything:1];
+    [context _setInvalidateEverything:1];
   }
 
   if ((*&self->_compositionalLayoutFlags & 4) != 0)
@@ -2437,13 +2437,13 @@ LABEL_21:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [(UICollectionViewLayout *)self collectionView];
-        v16 = _UICollectionViewLayoutInvalidationContextIntentDescription([a3 _intent]);
-        v17 = [(UICollectionViewLayout *)self collectionView];
-        [v17 _effectiveContentInset];
+        collectionView = [(UICollectionViewLayout *)self collectionView];
+        v16 = _UICollectionViewLayoutInvalidationContextIntentDescription([context _intent]);
+        collectionView2 = [(UICollectionViewLayout *)self collectionView];
+        [collectionView2 _effectiveContentInset];
         v18 = NSStringFromUIEdgeInsets(v26);
         v19 = 134218498;
-        v20 = v15;
+        v20 = collectionView;
         v21 = 2112;
         v22 = v16;
         v23 = 2112;
@@ -2454,15 +2454,15 @@ LABEL_21:
 
 LABEL_13:
     [(UICollectionViewCompositionalLayout *)self _fullResolve];
-    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:a3];
+    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:context];
     goto LABEL_14;
   }
 
-  if ([a3 _intent] == 2)
+  if ([context _intent] == 2)
   {
-    v5 = [(UICollectionViewCompositionalLayout *)self _boundsChangeResolve];
-    [a3 _setInvalidateEverything:1];
-    if (!v5)
+    _boundsChangeResolve = [(UICollectionViewCompositionalLayout *)self _boundsChangeResolve];
+    [context _setInvalidateEverything:1];
+    if (!_boundsChangeResolve)
     {
       goto LABEL_29;
     }
@@ -2470,46 +2470,46 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if ([a3 _intent] == 7)
+  if ([context _intent] == 7)
   {
-    v8 = [(UICollectionViewCompositionalLayout *)self _marginsChangeResolve];
+    _marginsChangeResolve = [(UICollectionViewCompositionalLayout *)self _marginsChangeResolve];
     goto LABEL_17;
   }
 
-  if ([a3 _intent] == 9)
+  if ([context _intent] == 9)
   {
-    [(UICollectionViewCompositionalLayout *)self _handleSwipeActionsInvalidationWithContext:a3];
+    [(UICollectionViewCompositionalLayout *)self _handleSwipeActionsInvalidationWithContext:context];
     goto LABEL_29;
   }
 
-  v10 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-  if (v10)
+  currentUpdate = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+  if (currentUpdate)
   {
-    v11 = v10;
-    v12 = [a3 _intent];
+    v11 = currentUpdate;
+    _intent = [context _intent];
 
-    if (v12 == 8)
+    if (_intent == 8)
     {
-      v8 = [(UICollectionViewCompositionalLayout *)self _updateResolve];
+      _marginsChangeResolve = [(UICollectionViewCompositionalLayout *)self _updateResolve];
       goto LABEL_17;
     }
   }
 
-  if ([a3 _intent] == 10)
+  if ([context _intent] == 10)
   {
-    [(UICollectionViewCompositionalLayout *)self _handlePreferredSizingDataInvalidation:a3];
+    [(UICollectionViewCompositionalLayout *)self _handlePreferredSizingDataInvalidation:context];
     goto LABEL_29;
   }
 
-  if ([a3 _intent] == 11)
+  if ([context _intent] == 11)
   {
-    [(UICollectionViewCompositionalLayout *)self _handleEndInteractiveReorderingWithContext:a3];
+    [(UICollectionViewCompositionalLayout *)self _handleEndInteractiveReorderingWithContext:context];
     goto LABEL_29;
   }
 
-  if ([a3 _intent] != 13)
+  if ([context _intent] != 13)
   {
-    if (([a3 invalidateEverything] & 1) == 0)
+    if (([context invalidateEverything] & 1) == 0)
     {
       goto LABEL_29;
     }
@@ -2517,24 +2517,24 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v8 = [(UICollectionViewCompositionalLayout *)self _scrollViewAdjustmentsChangeResolve];
+  _marginsChangeResolve = [(UICollectionViewCompositionalLayout *)self _scrollViewAdjustmentsChangeResolve];
 LABEL_17:
-  v5 = v8;
-  if (!v8)
+  _boundsChangeResolve = _marginsChangeResolve;
+  if (!_marginsChangeResolve)
   {
 LABEL_29:
-    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:a3];
+    [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:context];
 LABEL_30:
     v7 = 0;
     goto LABEL_31;
   }
 
 LABEL_18:
-  [a3 setContentOffsetAdjustment:{*(v5 + 48), *(v5 + 56)}];
-  [a3 _setShouldInvalidateCollectionViewContentSize:1];
-  v9 = *(v5 + 40);
+  [context setContentOffsetAdjustment:{*(_boundsChangeResolve + 48), *(_boundsChangeResolve + 56)}];
+  [context _setShouldInvalidateCollectionViewContentSize:1];
+  v9 = *(_boundsChangeResolve + 40);
 
-  [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:a3];
+  [(UICollectionViewCompositionalLayout *)self _solveForPinnedSupplementaryItemsIfNeededWithContext:context];
   if ((v9 & 1) == 0)
   {
     goto LABEL_30;
@@ -2544,10 +2544,10 @@ LABEL_14:
   [(UICollectionViewCompositionalLayout *)self _updateCollectionViewBackgroundColor];
   v7 = 1;
 LABEL_31:
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule processLayoutInvalidationWithContext:a3 updateConfigurations:v7];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule processLayoutInvalidationWithContext:context updateConfigurations:v7];
 }
 
-- (id)indexPathsToInsertForSupplementaryViewOfKind:(id)a3
+- (id)indexPathsToInsertForSupplementaryViewOfKind:(id)kind
 {
   v15.receiver = self;
   v15.super_class = UICollectionViewCompositionalLayout;
@@ -2561,17 +2561,17 @@ LABEL_31:
 
   v8 = v7;
 
-  v9 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+  currentResolveResult = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
 
-  if (v9)
+  if (currentResolveResult)
   {
-    v10 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
-    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)v10 indexPathsForInsertedSupplememtariesForElementKind:a3];
-    v12 = [v11 allObjects];
+    currentResolveResult2 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)currentResolveResult2 indexPathsForInsertedSupplememtariesForElementKind:kind];
+    allObjects = [v11 allObjects];
 
-    if ([v12 count])
+    if ([allObjects count])
     {
-      v13 = [v8 arrayByAddingObjectsFromArray:v12];
+      v13 = [v8 arrayByAddingObjectsFromArray:allObjects];
 
       v8 = v13;
     }
@@ -2580,7 +2580,7 @@ LABEL_31:
   return v8;
 }
 
-- (id)indexPathsToInsertForDecorationViewOfKind:(id)a3
+- (id)indexPathsToInsertForDecorationViewOfKind:(id)kind
 {
   v15.receiver = self;
   v15.super_class = UICollectionViewCompositionalLayout;
@@ -2594,17 +2594,17 @@ LABEL_31:
 
   v8 = v7;
 
-  v9 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+  currentResolveResult = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
 
-  if (v9)
+  if (currentResolveResult)
   {
-    v10 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
-    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)v10 indexPathsForInsertedDecorationsForElementKind:a3];
-    v12 = [v11 allObjects];
+    currentResolveResult2 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)currentResolveResult2 indexPathsForInsertedDecorationsForElementKind:kind];
+    allObjects = [v11 allObjects];
 
-    if ([v12 count])
+    if ([allObjects count])
     {
-      v13 = [v8 arrayByAddingObjectsFromArray:v12];
+      v13 = [v8 arrayByAddingObjectsFromArray:allObjects];
 
       v8 = v13;
     }
@@ -2613,7 +2613,7 @@ LABEL_31:
   return v8;
 }
 
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind
 {
   v15.receiver = self;
   v15.super_class = UICollectionViewCompositionalLayout;
@@ -2627,17 +2627,17 @@ LABEL_31:
 
   v8 = v7;
 
-  v9 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+  currentResolveResult = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
 
-  if (v9)
+  if (currentResolveResult)
   {
-    v10 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
-    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)v10 indexPathsForDeletedSupplememtariesForElementKind:a3];
-    v12 = [v11 allObjects];
+    currentResolveResult2 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)currentResolveResult2 indexPathsForDeletedSupplememtariesForElementKind:kind];
+    allObjects = [v11 allObjects];
 
-    if ([v12 count])
+    if ([allObjects count])
     {
-      v13 = [v8 arrayByAddingObjectsFromArray:v12];
+      v13 = [v8 arrayByAddingObjectsFromArray:allObjects];
 
       v8 = v13;
     }
@@ -2646,7 +2646,7 @@ LABEL_31:
   return v8;
 }
 
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind
 {
   v15.receiver = self;
   v15.super_class = UICollectionViewCompositionalLayout;
@@ -2660,17 +2660,17 @@ LABEL_31:
 
   v8 = v7;
 
-  v9 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+  currentResolveResult = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
 
-  if (v9)
+  if (currentResolveResult)
   {
-    v10 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
-    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)v10 indexPathsForDeletedDecorationsForElementKind:a3];
-    v12 = [v11 allObjects];
+    currentResolveResult2 = [(UICollectionViewCompositionalLayout *)self currentResolveResult];
+    v11 = [(_UICollectionCompositionalLayoutSolverResolveResult *)currentResolveResult2 indexPathsForDeletedDecorationsForElementKind:kind];
+    allObjects = [v11 allObjects];
 
-    if ([v12 count])
+    if ([allObjects count])
     {
-      v13 = [v8 arrayByAddingObjectsFromArray:v12];
+      v13 = [v8 arrayByAddingObjectsFromArray:allObjects];
 
       v8 = v13;
     }
@@ -2679,13 +2679,13 @@ LABEL_31:
   return v8;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v5 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-  v6 = v5;
-  if (v5)
+  currentUpdate = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+  v6 = currentUpdate;
+  if (currentUpdate)
   {
-    v7 = *(v5 + 16);
+    v7 = *(currentUpdate + 16);
   }
 
   else
@@ -2697,11 +2697,11 @@ LABEL_31:
 
   if (v8 && _CompositionalLayoutShouldOverrideInitialAttributesDuringUpdates())
   {
-    v9 = [v8 initialIndexPathForFinalIndexPath:a3];
+    v9 = [v8 initialIndexPathForFinalIndexPath:path];
     if (v9)
     {
-      v10 = [(UICollectionViewCompositionalLayout *)self solver];
-      v11 = [(_UICollectionCompositionalLayoutSolver *)v10 preUpdateFrameForItemAtInitialIndexPath:v9];
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
+      v11 = [(_UICollectionCompositionalLayoutSolver *)solver preUpdateFrameForItemAtInitialIndexPath:v9];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -2712,7 +2712,7 @@ LABEL_31:
       v23.size.height = v17;
       if (!CGRectIsNull(v23))
       {
-        v18 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForItemAtIndexPath:a3];
+        v18 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForItemAtIndexPath:path];
         v19 = [v18 copy];
 
         if (v19)
@@ -2727,19 +2727,19 @@ LABEL_31:
 
   v21.receiver = self;
   v21.super_class = UICollectionViewCompositionalLayout;
-  v19 = [(UICollectionViewLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:a3];
+  v19 = [(UICollectionViewLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:path];
 LABEL_11:
 
   return v19;
 }
 
-- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-  v8 = v7;
-  if (v7)
+  currentUpdate = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+  v8 = currentUpdate;
+  if (currentUpdate)
   {
-    v9 = *(v7 + 16);
+    v9 = *(currentUpdate + 16);
   }
 
   else
@@ -2751,11 +2751,11 @@ LABEL_11:
 
   if (v10 && _CompositionalLayoutShouldOverrideInitialAttributesDuringUpdates())
   {
-    v11 = [v10 initialIndexPathForSupplementaryElementOfKind:a3 forFinalIndexPath:a4];
+    v11 = [v10 initialIndexPathForSupplementaryElementOfKind:kind forFinalIndexPath:path];
     if (v11)
     {
-      v12 = [(UICollectionViewCompositionalLayout *)self solver];
-      v13 = [(_UICollectionCompositionalLayoutSolver *)v12 preUpdateFrameForDecorationViewOfKind:a3 withInitialIndexPath:v11];
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
+      v13 = [(_UICollectionCompositionalLayoutSolver *)solver preUpdateFrameForDecorationViewOfKind:kind withInitialIndexPath:v11];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -2766,7 +2766,7 @@ LABEL_11:
       v25.size.height = v19;
       if (!CGRectIsNull(v25))
       {
-        v20 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForDecorationViewOfKind:a3 atIndexPath:a4];
+        v20 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForDecorationViewOfKind:kind atIndexPath:path];
         v21 = [v20 copy];
 
         if (v21)
@@ -2781,19 +2781,19 @@ LABEL_11:
 
   v23.receiver = self;
   v23.super_class = UICollectionViewCompositionalLayout;
-  v21 = [(UICollectionViewLayout *)&v23 initialLayoutAttributesForAppearingDecorationElementOfKind:a3 atIndexPath:a4];
+  v21 = [(UICollectionViewLayout *)&v23 initialLayoutAttributesForAppearingDecorationElementOfKind:kind atIndexPath:path];
 LABEL_11:
 
   return v21;
 }
 
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = [(UICollectionViewCompositionalLayout *)self currentUpdate];
-  v8 = v7;
-  if (v7)
+  currentUpdate = [(UICollectionViewCompositionalLayout *)self currentUpdate];
+  v8 = currentUpdate;
+  if (currentUpdate)
   {
-    v9 = *(v7 + 16);
+    v9 = *(currentUpdate + 16);
   }
 
   else
@@ -2805,11 +2805,11 @@ LABEL_11:
 
   if (v10 && _CompositionalLayoutShouldOverrideInitialAttributesDuringUpdates())
   {
-    v11 = [v10 initialIndexPathForSupplementaryElementOfKind:a3 forFinalIndexPath:a4];
+    v11 = [v10 initialIndexPathForSupplementaryElementOfKind:kind forFinalIndexPath:path];
     if (v11)
     {
-      v12 = [(UICollectionViewCompositionalLayout *)self solver];
-      v13 = [(_UICollectionCompositionalLayoutSolver *)v12 preUpdateFrameForSupplementaryViewOfKind:a3 withInitialIndexPath:v11];
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
+      v13 = [(_UICollectionCompositionalLayoutSolver *)solver preUpdateFrameForSupplementaryViewOfKind:kind withInitialIndexPath:v11];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -2820,7 +2820,7 @@ LABEL_11:
       v25.size.height = v19;
       if (!CGRectIsNull(v25))
       {
-        v20 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:a4];
+        v20 = [(UICollectionViewCompositionalLayout *)self layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:path];
         v21 = [v20 copy];
 
         if (v21)
@@ -2835,26 +2835,26 @@ LABEL_11:
 
   v23.receiver = self;
   v23.super_class = UICollectionViewCompositionalLayout;
-  v21 = [(UICollectionViewLayout *)&v23 initialLayoutAttributesForAppearingSupplementaryElementOfKind:a3 atIndexPath:a4];
+  v21 = [(UICollectionViewLayout *)&v23 initialLayoutAttributesForAppearingSupplementaryElementOfKind:kind atIndexPath:path];
 LABEL_11:
 
   return v21;
 }
 
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
-  if (a4)
+  if (originalAttributes)
   {
-    if (a3)
+    if (attributes)
     {
       goto LABEL_3;
     }
 
 LABEL_17:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1067 description:{@"Invalid parameter not satisfying: %@", @"preferredAttributes != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1067 description:{@"Invalid parameter not satisfying: %@", @"preferredAttributes != nil"}];
 
-    if (a4)
+    if (originalAttributes)
     {
       goto LABEL_4;
     }
@@ -2862,29 +2862,29 @@ LABEL_17:
     return 0;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1066 description:{@"Invalid parameter not satisfying: %@", @"originalAttributes != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1066 description:{@"Invalid parameter not satisfying: %@", @"originalAttributes != nil"}];
 
-  if (!a3)
+  if (!attributes)
   {
     goto LABEL_17;
   }
 
 LABEL_3:
-  if (a4)
+  if (originalAttributes)
   {
 LABEL_4:
-    v8 = *(a4 + 72);
+    v8 = *(originalAttributes + 72);
     if ((v8 & 1) == 0 && (v8 & 3) != 0)
     {
       return 0;
     }
 
-    v10 = [(UICollectionViewLayout *)self collectionView];
-    v11 = v10;
-    if (v10)
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    v11 = collectionView;
+    if (collectionView)
     {
-      v12 = *(v10 + 3352);
+      v12 = *(collectionView + 3352);
     }
 
     else
@@ -2894,12 +2894,12 @@ LABEL_4:
 
     v13 = v12;
 
-    v14 = [(UICollectionViewCompositionalLayout *)self solver];
-    v15 = [(_UICollectionCompositionalLayoutSolver *)v14 updatePreferredSizeIfNeededForPreferredLayoutAttributes:a3 withOriginalAttributes:a4 debugger:v13];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    v15 = [(_UICollectionCompositionalLayoutSolver *)solver updatePreferredSizeIfNeededForPreferredLayoutAttributes:attributes withOriginalAttributes:originalAttributes debugger:v13];
 
     if (v15)
     {
-      [(_UIUpdateVisibleCellsContext *)self->_updateVisibleCellsContext addPreferredAttributes:a3];
+      [(_UIUpdateVisibleCellsContext *)self->_updateVisibleCellsContext addPreferredAttributes:attributes];
       if (dyld_program_sdk_at_least())
       {
         v9 = self->_updateVisibleCellsContext == 0;
@@ -2921,47 +2921,47 @@ LABEL_14:
   return 0;
 }
 
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  [(UICollectionView *)self->super._collectionView _visibleBounds:a3];
+  [(UICollectionView *)self->super._collectionView _visibleBounds:attributes];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v17[0] = a3;
+  v17[0] = attributes;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v15 = [(UICollectionViewCompositionalLayout *)self _preferredAttributesResolveWithInvalidatedPreferredAttributes:v14 layoutOffset:*MEMORY[0x1E695EFF8] visibleRect:*(MEMORY[0x1E695EFF8] + 8), v7, v9, v11, v13];
 
   return v15;
 }
 
-- (id)_preferredAttributesResolveWithInvalidatedPreferredAttributes:(id)a3 layoutOffset:(CGPoint)a4 visibleRect:(CGRect)a5
+- (id)_preferredAttributesResolveWithInvalidatedPreferredAttributes:(id)attributes layoutOffset:(CGPoint)offset visibleRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = offset.y;
+  v10 = offset.x;
   kdebug_trace();
-  v13 = [(UICollectionViewCompositionalLayout *)self solver];
-  v14 = [(_UICollectionCompositionalLayoutSolver *)v13 resolveForInvalidatedPreferredAttributes:a3 scrollOffset:v10 visibleRect:v9, x, y, width, height];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  height = [(_UICollectionCompositionalLayoutSolver *)solver resolveForInvalidatedPreferredAttributes:attributes scrollOffset:v10 visibleRect:v9, x, y, width, height];
 
   [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
   kdebug_trace();
 
-  return v14;
+  return height;
 }
 
-- (void)_didPerformUpdateVisibleCellsPassWithLayoutOffset:(CGPoint)a3
+- (void)_didPerformUpdateVisibleCellsPassWithLayoutOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v57 = *MEMORY[0x1E69E9840];
-  v6 = [(UICollectionViewCompositionalLayout *)self _estimatesSizes];
+  _estimatesSizes = [(UICollectionViewCompositionalLayout *)self _estimatesSizes];
   updateVisibleCellsContext = self->_updateVisibleCellsContext;
-  if (v6)
+  if (_estimatesSizes)
   {
     if (updateVisibleCellsContext)
     {
@@ -2976,7 +2976,7 @@ LABEL_14:
           v12 = v11;
           v14 = v13;
           v16 = v15;
-          v17 = [(UICollectionViewCompositionalLayout *)self solver];
+          solver = [(UICollectionViewCompositionalLayout *)self solver];
           v18 = self->_updateVisibleCellsContext;
           if (v18)
           {
@@ -2984,10 +2984,10 @@ LABEL_14:
           }
 
           v19 = v18;
-          v20 = [(_UICollectionCompositionalLayoutSolver *)v17 itemsWithoutPreferredSizesInGroupsWithItemsAtIndexPaths:v19];
+          v20 = [(_UICollectionCompositionalLayoutSolver *)solver itemsWithoutPreferredSizesInGroupsWithItemsAtIndexPaths:v19];
 
-          v21 = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
-          v22 = [(UICollectionViewCompositionalLayout *)self _preferredAttributesResolveWithInvalidatedPreferredAttributes:v21 layoutOffset:x visibleRect:y, v10, v12, v14, v16];
+          _disabledTextColor = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
+          v22 = [(UICollectionViewCompositionalLayout *)self _preferredAttributesResolveWithInvalidatedPreferredAttributes:_disabledTextColor layoutOffset:x visibleRect:y, v10, v12, v14, v16];
 
           if (v22)
           {
@@ -3001,18 +3001,18 @@ LABEL_14:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
               v37 = v36;
-              v38 = [(UICollectionViewLayout *)self collectionView];
+              collectionView = [(UICollectionViewLayout *)self collectionView];
               v59.x = x;
               v59.y = y;
               v39 = NSStringFromCGPoint(v59);
-              v40 = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
+              _disabledTextColor2 = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
               v41 = [v20 valueForKey:@"_ui_shortDescription"];
               *buf = 134218754;
-              v50 = v38;
+              v50 = collectionView;
               v51 = 2112;
               v52 = v39;
               v53 = 2112;
-              v54 = v40;
+              v54 = _disabledTextColor2;
               v55 = 2112;
               v56 = v41;
               _os_log_impl(&dword_188A29000, v37, OS_LOG_TYPE_ERROR, "_didPerformUpdateVisibleCellsPassWithLayoutOffset: cv == %p; layoutOffset == %@; preferredSizes == %@; dependentItems == %@", buf, 0x2Au);
@@ -3023,8 +3023,8 @@ LABEL_14:
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v25 = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
-          v26 = [v25 countByEnumeratingWithState:&v42 objects:v48 count:16];
+          _disabledTextColor3 = [(_UILabelConfigurationInternal *)&self->_updateVisibleCellsContext->super.isa _disabledTextColor];
+          v26 = [_disabledTextColor3 countByEnumeratingWithState:&v42 objects:v48 count:16];
           if (v26)
           {
             v27 = v26;
@@ -3035,7 +3035,7 @@ LABEL_14:
               {
                 if (*v43 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(_disabledTextColor3);
                 }
 
                 v30 = *(*(&v42 + 1) + 8 * i);
@@ -3044,10 +3044,10 @@ LABEL_14:
                   v31 = v30[72];
                   if (v31)
                   {
-                    v32 = [*(*(&v42 + 1) + 8 * i) indexPath];
-                    v47 = v32;
-                    v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-                    [v22 invalidateItemsAtIndexPaths:v33];
+                    indexPath = [*(*(&v42 + 1) + 8 * i) indexPath];
+                    v47 = indexPath;
+                    indexPath2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
+                    [v22 invalidateItemsAtIndexPaths:indexPath2];
                   }
 
                   else
@@ -3057,16 +3057,16 @@ LABEL_14:
                       continue;
                     }
 
-                    v32 = [(_UILabelConfiguration *)*(*(&v42 + 1) + 8 * i) _content];
-                    v33 = [v30 indexPath];
-                    v46 = v33;
+                    indexPath = [(_UILabelConfiguration *)*(*(&v42 + 1) + 8 * i) _content];
+                    indexPath2 = [v30 indexPath];
+                    v46 = indexPath2;
                     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-                    [v22 invalidateSupplementaryElementsOfKind:v32 atIndexPaths:v34];
+                    [v22 invalidateSupplementaryElementsOfKind:indexPath atIndexPaths:v34];
                   }
                 }
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v42 objects:v48 count:16];
+              v27 = [_disabledTextColor3 countByEnumeratingWithState:&v42 objects:v48 count:16];
             }
 
             while (v27);
@@ -3094,27 +3094,27 @@ LABEL_14:
   }
 }
 
-- (void)_prepareForPreferredAttributesQueryForView:(id)a3 withLayoutAttributes:(id)a4
+- (void)_prepareForPreferredAttributesQueryForView:(id)view withLayoutAttributes:(id)attributes
 {
   if ([(UICollectionViewCompositionalLayout *)self _estimatesSizes])
   {
-    v7 = [(UICollectionViewCompositionalLayout *)self solver];
-    [(_UICollectionCompositionalLayoutSolver *)v7 prepareForPreferredAttributesQueryForView:a3 withLayoutAttributes:a4];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    [(_UICollectionCompositionalLayoutSolver *)solver prepareForPreferredAttributesQueryForView:view withLayoutAttributes:attributes];
 
-    v8 = [a4 indexPath];
-    if ([v8 item] != 0x7FFFFFFFFFFFFFFFLL)
+    indexPath = [attributes indexPath];
+    if ([indexPath item] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [v8 section]);
+      v9 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [indexPath section]);
       interactionStateModule = self->_interactionStateModule;
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __103__UICollectionViewCompositionalLayout__prepareForPreferredAttributesQueryForView_withLayoutAttributes___block_invoke;
       v12[3] = &unk_1E70F6228;
       v13 = v9;
-      v14 = a4;
-      v15 = self;
+      attributesCopy = attributes;
+      selfCopy = self;
       v11 = v9;
-      [(_UICollectionViewLayoutInteractionStateModule *)interactionStateModule performPreferredAttributesProcessingBlock:v12 withLayoutAttributes:a4 forView:a3];
+      [(_UICollectionViewLayoutInteractionStateModule *)interactionStateModule performPreferredAttributesProcessingBlock:v12 withLayoutAttributes:attributes forView:view];
     }
   }
 }
@@ -3125,13 +3125,13 @@ void __103__UICollectionViewCompositionalLayout__prepareForPreferredAttributesQu
   [v2 _transformFittingLayoutAttributes:*(a1 + 40) interactionState:*(*(a1 + 48) + 280)];
 }
 
-- (void)_postProcessPreferredAttributes:(id)a3 forView:(id)a4
+- (void)_postProcessPreferredAttributes:(id)attributes forView:(id)view
 {
-  v7 = [a3 indexPath];
-  if ([v7 item] != 0x7FFFFFFFFFFFFFFFLL)
+  indexPath = [attributes indexPath];
+  if ([indexPath item] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [a3 indexPath];
-    v9 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [v8 section]);
+    indexPath2 = [attributes indexPath];
+    v9 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [indexPath2 section]);
 
     interactionStateModule = self->_interactionStateModule;
     v12[0] = MEMORY[0x1E69E9820];
@@ -3139,10 +3139,10 @@ void __103__UICollectionViewCompositionalLayout__prepareForPreferredAttributesQu
     v12[2] = __79__UICollectionViewCompositionalLayout__postProcessPreferredAttributes_forView___block_invoke;
     v12[3] = &unk_1E70F6228;
     v13 = v9;
-    v14 = a3;
-    v15 = self;
+    attributesCopy = attributes;
+    selfCopy = self;
     v11 = v9;
-    [(_UICollectionViewLayoutInteractionStateModule *)interactionStateModule performPreferredAttributesProcessingBlock:v12 withLayoutAttributes:a3 forView:a4];
+    [(_UICollectionViewLayoutInteractionStateModule *)interactionStateModule performPreferredAttributesProcessingBlock:v12 withLayoutAttributes:attributes forView:view];
   }
 }
 
@@ -3152,40 +3152,40 @@ void __79__UICollectionViewCompositionalLayout__postProcessPreferredAttributes_f
   [v2 _transformPreferredLayoutAttributes:*(a1 + 40) interactionState:*(*(a1 + 48) + 280)];
 }
 
-- (BOOL)_shouldInvalidateLayoutForOldInsets:(UIEdgeInsets)a3 newInsets:(UIEdgeInsets)a4
+- (BOOL)_shouldInvalidateLayoutForOldInsets:(UIEdgeInsets)insets newInsets:(UIEdgeInsets)newInsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v8 = a3.right;
-  v9 = a3.bottom;
-  v10 = a3.left;
-  v11 = a3.top;
-  v12 = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
-  if (v12 == 1)
+  right = newInsets.right;
+  bottom = newInsets.bottom;
+  left = newInsets.left;
+  top = newInsets.top;
+  v8 = insets.right;
+  v9 = insets.bottom;
+  v10 = insets.left;
+  v11 = insets.top;
+  _layoutAxis = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
+  if (_layoutAxis == 1)
   {
     v13 = 2;
   }
 
   else
   {
-    v13 = v12 == 2;
+    v13 = _layoutAxis == 2;
   }
 
   return !_UIEdgeInsetsEqualToInsetsAlongAxis(v13, v11, v10, v9, v8, top, left, bottom, right);
 }
 
-- (BOOL)_shouldInvalidateLayoutForUpdatedSafeAreaInsets:(UIEdgeInsets)a3 fromOldInsets:(UIEdgeInsets)a4
+- (BOOL)_shouldInvalidateLayoutForUpdatedSafeAreaInsets:(UIEdgeInsets)insets fromOldInsets:(UIEdgeInsets)oldInsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v8 = a3.right;
-  v9 = a3.bottom;
-  v10 = a3.left;
-  v11 = a3.top;
+  right = oldInsets.right;
+  bottom = oldInsets.bottom;
+  left = oldInsets.left;
+  top = oldInsets.top;
+  v8 = insets.right;
+  v9 = insets.bottom;
+  v10 = insets.left;
+  v11 = insets.top;
   if (!_UISupportsShouldInvalidateForInsets())
   {
     return 1;
@@ -3194,16 +3194,16 @@ void __79__UICollectionViewCompositionalLayout__postProcessPreferredAttributes_f
   return [(UICollectionViewCompositionalLayout *)self _shouldInvalidateLayoutForOldInsets:top newInsets:left, bottom, right, v11, v10, v9, v8];
 }
 
-- (BOOL)_shouldInvalidateLayoutForUpdatedLayoutMargins:(UIEdgeInsets)a3 fromOldMargins:(UIEdgeInsets)a4
+- (BOOL)_shouldInvalidateLayoutForUpdatedLayoutMargins:(UIEdgeInsets)margins fromOldMargins:(UIEdgeInsets)oldMargins
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v8 = a3.right;
-  v9 = a3.bottom;
-  v10 = a3.left;
-  v11 = a3.top;
+  right = oldMargins.right;
+  bottom = oldMargins.bottom;
+  left = oldMargins.left;
+  top = oldMargins.top;
+  v8 = margins.right;
+  v9 = margins.bottom;
+  v10 = margins.left;
+  v11 = margins.top;
   if (!_UISupportsShouldInvalidateForInsets())
   {
     return 1;
@@ -3212,23 +3212,23 @@ void __79__UICollectionViewCompositionalLayout__postProcessPreferredAttributes_f
   return [(UICollectionViewCompositionalLayout *)self _shouldInvalidateLayoutForOldInsets:top newInsets:left, bottom, right, v11, v10, v9, v8];
 }
 
-- (id)_invalidationContextForUpdatedLayoutMargins:(UIEdgeInsets)a3
+- (id)_invalidationContextForUpdatedLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   if (_UISupportsShouldInvalidateForInsets())
   {
     v32.receiver = self;
     v32.super_class = UICollectionViewCompositionalLayout;
-    v8 = [(UICollectionViewLayout *)&v32 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
-    [v8 _setIntent:2];
+    right = [(UICollectionViewLayout *)&v32 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
+    [right _setIntent:2];
     goto LABEL_23;
   }
 
-  v9 = [(UICollectionViewLayout *)self collectionView];
-  [v9 bounds];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v11 = v10;
   v13 = v12;
   [(UICollectionViewCompositionalLayout *)self memoizedPreviousSolvedCollectionViewBounds];
@@ -3245,8 +3245,8 @@ void __79__UICollectionViewCompositionalLayout__postProcessPreferredAttributes_f
 LABEL_18:
     v31.receiver = self;
     v31.super_class = UICollectionViewCompositionalLayout;
-    v27 = [(UICollectionViewLayout *)&v31 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
-    v8 = v27;
+    right2 = [(UICollectionViewLayout *)&v31 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
+    right = right2;
     goto LABEL_20;
   }
 
@@ -3260,49 +3260,49 @@ LABEL_18:
 LABEL_13:
     v30.receiver = self;
     v30.super_class = UICollectionViewCompositionalLayout;
-    v8 = [(UICollectionViewLayout *)&v30 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
-    v21 = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
-    if (v21 == 1)
+    right = [(UICollectionViewLayout *)&v30 _invalidationContextForUpdatedLayoutMargins:top, left, bottom, right];
+    _layoutAxis = [(UICollectionViewCompositionalLayout *)self _layoutAxis];
+    if (_layoutAxis == 1)
     {
       v22 = 2;
     }
 
     else
     {
-      v22 = v21 == 2;
+      v22 = _layoutAxis == 2;
     }
 
     [(UICollectionViewCompositionalLayout *)self memoizedPreviousLayoutMargins];
     if (_UIEdgeInsetsEqualToInsetsAlongAxis(v22, v23, v24, v25, v26, top, left, bottom, right))
     {
-      v27 = v8;
+      right2 = right;
       v28 = 7;
 LABEL_21:
-      [v27 _setIntent:v28];
+      [right2 _setIntent:v28];
       goto LABEL_22;
     }
 
-    v27 = v8;
+    right2 = right;
 LABEL_20:
     v28 = 2;
     goto LABEL_21;
   }
 
-  v8 = 0;
+  right = 0;
 LABEL_22:
   [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousLayoutMargins:top, left, bottom, right];
 LABEL_23:
 
-  return v8;
+  return right;
 }
 
-- (void)_prepareForCollectionViewUpdates:(id)a3 withDataSourceTranslator:(id)a4
+- (void)_prepareForCollectionViewUpdates:(id)updates withDataSourceTranslator:(id)translator
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpdates_withDataSourceTranslator___block_invoke;
   aBlock[3] = &unk_1E70FA518;
-  aBlock[4] = a4;
+  aBlock[4] = translator;
   v7 = _Block_copy(aBlock);
   [(UICollectionView *)self->super._collectionView _visibleBounds];
   v9 = v8;
@@ -3310,13 +3310,13 @@ LABEL_23:
   v13 = v12;
   v15 = v14;
   v16 = [off_1E70ECC48 snapshotterForSectionCountsProvider:v7];
-  v17 = [(_UICollectionCompositionalLayoutSolverUpdate *)v9 solverUpdateForVisibleBounds:v11 updateItems:v13 updateTranslator:v15 finalDataSourceSnapshot:_UICollectionCompositionalLayoutSolverUpdate, a3, a4, v16];
+  v17 = [(_UICollectionCompositionalLayoutSolverUpdate *)v9 solverUpdateForVisibleBounds:v11 updateItems:v13 updateTranslator:v15 finalDataSourceSnapshot:_UICollectionCompositionalLayoutSolverUpdate, updates, translator, v16];
   [(UICollectionViewCompositionalLayout *)self setCurrentUpdate:v17];
 
-  v18 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v18 prepareForCollectionViewUpdates];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver prepareForCollectionViewUpdates];
 
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule updateWithDataSourceTranslator:a4];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule updateWithDataSourceTranslator:translator];
 }
 
 uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpdates_withDataSourceTranslator___block_invoke(uint64_t a1, uint64_t a2)
@@ -3335,9 +3335,9 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
   }
 }
 
-- (BOOL)_shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:(BOOL)a3
+- (BOOL)_shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   if ([(UICollectionViewCompositionalLayout *)self _estimatesSizes])
   {
     return 0;
@@ -3345,25 +3345,25 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
 
   v6.receiver = self;
   v6.super_class = UICollectionViewCompositionalLayout;
-  return [(UICollectionViewLayout *)&v6 _shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:v3];
+  return [(UICollectionViewLayout *)&v6 _shouldPopulateInitialAndFinalLayoutAttributesForAllUpdateItems:itemsCopy];
 }
 
-- (void)_finalizeCollectionViewUpdate:(id)a3
+- (void)_finalizeCollectionViewUpdate:(id)update
 {
-  v5 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v5 finalizeCollectionViewUpdates];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver finalizeCollectionViewUpdates];
 
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule finalizeCollectionViewUpdate:a3];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule finalizeCollectionViewUpdate:update];
   [(UICollectionViewCompositionalLayout *)self setCurrentUpdate:0];
   [(UICollectionViewCompositionalLayout *)self setCurrentResolveResult:0];
   v6.receiver = self;
   v6.super_class = UICollectionViewCompositionalLayout;
-  [(UICollectionViewLayout *)&v6 _finalizeCollectionViewUpdate:a3];
+  [(UICollectionViewLayout *)&v6 _finalizeCollectionViewUpdate:update];
 }
 
-- (CGRect)_contentFrameForSection:(int64_t)a3
+- (CGRect)_contentFrameForSection:(int64_t)section
 {
-  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:a3];
+  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:section];
   v4 = MEMORY[0x1E695F050];
   v5 = (MEMORY[0x1E695F050] + 24);
   v6 = (MEMORY[0x1E695F050] + 16);
@@ -3392,9 +3392,9 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
   return result;
 }
 
-- (CGRect)_layoutFrameForSection:(int64_t)a3
+- (CGRect)_layoutFrameForSection:(int64_t)section
 {
-  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:a3];
+  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:section];
   v4 = MEMORY[0x1E695F050];
   v5 = (MEMORY[0x1E695F050] + 24);
   v6 = (MEMORY[0x1E695F050] + 16);
@@ -3425,10 +3425,10 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
 
 - (BOOL)_wantsCustomSectionContainers
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver)
   {
-    v3 = v2[14];
+    v3 = solver[14];
   }
 
   else
@@ -3439,21 +3439,21 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
   return v3 & 1;
 }
 
-- (id)_sectionDescriptorForSectionIndex:(int64_t)a3
+- (id)_sectionDescriptorForSectionIndex:(int64_t)index
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 sectionDescriptorForSectionIndex:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver sectionDescriptorForSectionIndex:index];
 
   return v5;
 }
 
-- (BOOL)_shouldAddElementToSectionContainer:(id)a3
+- (BOOL)_shouldAddElementToSectionContainer:(id)container
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = v4;
-  if (v4)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = solver;
+  if (solver)
   {
-    v6 = [(_UICollectionCompositionalLayoutSolver *)v4 shouldEmplaceElementOutsideSectionContainer:a3]^ 1;
+    v6 = [(_UICollectionCompositionalLayoutSolver *)solver shouldEmplaceElementOutsideSectionContainer:container]^ 1;
   }
 
   else
@@ -3464,41 +3464,41 @@ uint64_t __97__UICollectionViewCompositionalLayout__prepareForCollectionViewUpda
   return v6;
 }
 
-- (int64_t)_anchorForAuxiliaryElementOfKind:(id)a3
+- (int64_t)_anchorForAuxiliaryElementOfKind:(id)kind
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _anchorForAuxiliaryElementOfKind:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _anchorForAuxiliaryElementOfKind:kind];
 
   return v5;
 }
 
-- (BOOL)_wantsBandSelectionVisualsInSection:(int64_t)a3
+- (BOOL)_wantsBandSelectionVisualsInSection:(int64_t)section
 {
   v5 = [(UICollectionViewCompositionalLayout *)self _layoutSectionForSectionIndex:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 _wantsBandSelectionVisuals];
+    _wantsBandSelectionVisuals = [v5 _wantsBandSelectionVisuals];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UICollectionViewCompositionalLayout;
-    v7 = [(UICollectionViewLayout *)&v10 _wantsBandSelectionVisualsInSection:a3];
+    _wantsBandSelectionVisuals = [(UICollectionViewLayout *)&v10 _wantsBandSelectionVisualsInSection:section];
   }
 
-  v8 = v7;
+  v8 = _wantsBandSelectionVisuals;
 
   return v8;
 }
 
-- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:(int64_t)a3
+- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:(int64_t)section
 {
-  v3 = [(UICollectionViewCompositionalLayout *)self _layoutSectionForSectionIndex:a3];
-  v4 = [v3 shouldRestrictOrthogonalAxisDuringInteractiveMovement];
+  v3 = [(UICollectionViewCompositionalLayout *)self _layoutSectionForSectionIndex:section];
+  shouldRestrictOrthogonalAxisDuringInteractiveMovement = [v3 shouldRestrictOrthogonalAxisDuringInteractiveMovement];
 
-  return v4 ^ 1;
+  return shouldRestrictOrthogonalAxisDuringInteractiveMovement ^ 1;
 }
 
 void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_2(uint64_t a1, uint64_t a2)
@@ -3523,38 +3523,38 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_4(uint
   }
 }
 
-- (void)_handleEndInteractiveReorderingWithContext:(id)a3
+- (void)_handleEndInteractiveReorderingWithContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1579 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:1579 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v9 = [a3 targetIndexPathsForInteractivelyMovingItems];
-  [a3 invalidateItemsAtIndexPaths:?];
-  v5 = [(UICollectionViewCompositionalLayout *)self solver];
-  v6 = v5;
-  if (v5)
+  targetIndexPathsForInteractivelyMovingItems = [context targetIndexPathsForInteractivelyMovingItems];
+  [context invalidateItemsAtIndexPaths:?];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v6 = solver;
+  if (solver)
   {
-    [*(v5 + 208) removeObjectsForKeys:v9];
+    [*(solver + 208) removeObjectsForKeys:targetIndexPathsForInteractivelyMovingItems];
   }
 }
 
 - (id)_sectionDefinitionsUpdateResolve
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  if (v3)
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if (collectionView)
   {
     kdebug_trace();
-    [v3 bounds];
+    [collectionView bounds];
     [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
-    v4 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
-    v5 = [(UICollectionViewCompositionalLayout *)self solver];
-    v6 = [(_UICollectionCompositionalLayoutSolver *)v5 resolveForUpdatingSectionDefinitionsWithContainer:v4];
+    _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    v6 = [(_UICollectionCompositionalLayoutSolver *)solver resolveForUpdatingSectionDefinitionsWithContainer:_containerFromCollectionView];
 
     [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
-    [v3 visibleBounds];
+    [collectionView visibleBounds];
     v7 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
     kdebug_trace();
   }
@@ -3569,20 +3569,20 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_4(uint
 
 - (id)_marginsChangeResolve
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  if (v3)
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if (collectionView)
   {
     kdebug_trace();
-    [v3 bounds];
+    [collectionView bounds];
     [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
-    v4 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
-    v5 = [(UICollectionViewCompositionalLayout *)self solver];
-    v6 = [(_UICollectionCompositionalLayoutSolver *)v5 resolveForMarginsChange:v4];
+    _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    v6 = [(_UICollectionCompositionalLayoutSolver *)solver resolveForMarginsChange:_containerFromCollectionView];
 
     [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
-    [v3 visibleBounds];
+    [collectionView visibleBounds];
     v7 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
-    v8 = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
+    _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
     kdebug_trace();
   }
 
@@ -3596,20 +3596,20 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_4(uint
 
 - (id)_scrollViewAdjustmentsChangeResolve
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  if (v3)
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if (collectionView)
   {
     kdebug_trace();
-    [v3 bounds];
+    [collectionView bounds];
     [(UICollectionViewCompositionalLayout *)self setMemoizedPreviousSolvedCollectionViewBounds:?];
-    v4 = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
-    v5 = [(UICollectionViewCompositionalLayout *)self solver];
-    v6 = [(_UICollectionCompositionalLayoutSolver *)v5 resolveForScrollViewLayoutAdjustmentsChange:v4];
+    _containerFromCollectionView = [(UICollectionViewCompositionalLayout *)self _containerFromCollectionView];
+    solver = [(UICollectionViewCompositionalLayout *)self solver];
+    v6 = [(_UICollectionCompositionalLayoutSolver *)solver resolveForScrollViewLayoutAdjustmentsChange:_containerFromCollectionView];
 
     [(UICollectionViewCompositionalLayout *)self _computeAndUpdateAdjustedContentFrame];
-    [v3 visibleBounds];
+    [collectionView visibleBounds];
     v7 = [(UICollectionViewCompositionalLayout *)self _invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:?];
-    v8 = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
+    _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
     kdebug_trace();
   }
 
@@ -3621,30 +3621,30 @@ void __51__UICollectionViewCompositionalLayout__fullResolve__block_invoke_4(uint
   return v6;
 }
 
-- (void)_handleSwipeActionsInvalidationWithContext:(id)a3
+- (void)_handleSwipeActionsInvalidationWithContext:(id)context
 {
-  v5 = [(UICollectionViewLayout *)self collectionView];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
 
-  if (v5)
+  if (collectionView)
   {
-    v6 = [a3 invalidatedItemIndexPaths];
-    if ([v6 count])
+    invalidatedItemIndexPaths = [context invalidatedItemIndexPaths];
+    if ([invalidatedItemIndexPaths count])
     {
-      v7 = [(UICollectionViewCompositionalLayout *)self solver];
-      v8 = v7;
-      if (v7)
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
+      v8 = solver;
+      if (solver)
       {
-        [*(v7 + 208) removeObjectsForKeys:v6];
+        [*(solver + 208) removeObjectsForKeys:invalidatedItemIndexPaths];
       }
     }
 
-    v9 = [a3 invalidatedDecorationIndexPaths];
+    invalidatedDecorationIndexPaths = [context invalidatedDecorationIndexPaths];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__UICollectionViewCompositionalLayout__handleSwipeActionsInvalidationWithContext___block_invoke;
     v10[3] = &unk_1E70FA680;
     v10[4] = self;
-    [v9 enumerateKeysAndObjectsUsingBlock:v10];
+    [invalidatedDecorationIndexPaths enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
 
@@ -3654,21 +3654,21 @@ void __82__UICollectionViewCompositionalLayout__handleSwipeActionsInvalidationWi
   [(_UICollectionCompositionalLayoutSolver *)v5 invalidateCachedDecorationAttributesForElementKind:a2 atIndexPaths:a3];
 }
 
-- (void)_handlePreferredSizingDataInvalidation:(id)a3
+- (void)_handlePreferredSizingDataInvalidation:(id)invalidation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(UICollectionViewLayout *)self collectionView];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
 
-  if (v5)
+  if (collectionView)
   {
-    v6 = [a3 invalidatedItemIndexPaths];
-    if ([v6 count])
+    invalidatedItemIndexPaths = [invalidation invalidatedItemIndexPaths];
+    if ([invalidatedItemIndexPaths count])
     {
-      v7 = [(UICollectionViewCompositionalLayout *)self solver];
-      v8 = v7;
-      if (v7)
+      solver = [(UICollectionViewCompositionalLayout *)self solver];
+      v8 = solver;
+      if (solver)
       {
-        [*(v7 + 208) removeObjectsForKeys:v6];
+        [*(solver + 208) removeObjectsForKeys:invalidatedItemIndexPaths];
       }
 
       if ((dyld_program_sdk_at_least() & 1) == 0)
@@ -3677,7 +3677,7 @@ void __82__UICollectionViewCompositionalLayout__handleSwipeActionsInvalidationWi
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = v6;
+        v9 = invalidatedItemIndexPaths;
         v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v10)
         {
@@ -3694,8 +3694,8 @@ void __82__UICollectionViewCompositionalLayout__handleSwipeActionsInvalidationWi
               }
 
               v14 = *(*(&v19 + 1) + 8 * v13);
-              v15 = [(UICollectionViewLayout *)self collectionView];
-              v16 = [v15 cellForItemAtIndexPath:v14];
+              collectionView2 = [(UICollectionViewLayout *)self collectionView];
+              v16 = [collectionView2 cellForItemAtIndexPath:v14];
 
               [v16 _invalidatePreferredAttributes];
               ++v13;
@@ -3710,13 +3710,13 @@ void __82__UICollectionViewCompositionalLayout__handleSwipeActionsInvalidationWi
       }
     }
 
-    v17 = [a3 invalidatedDecorationIndexPaths];
+    invalidatedDecorationIndexPaths = [invalidation invalidatedDecorationIndexPaths];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __78__UICollectionViewCompositionalLayout__handlePreferredSizingDataInvalidation___block_invoke;
     v18[3] = &unk_1E70FA680;
     v18[4] = self;
-    [v17 enumerateKeysAndObjectsUsingBlock:v18];
+    [invalidatedDecorationIndexPaths enumerateKeysAndObjectsUsingBlock:v18];
   }
 }
 
@@ -3729,16 +3729,16 @@ void __78__UICollectionViewCompositionalLayout__handlePreferredSizingDataInvalid
   }
 }
 
-- (BOOL)_invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:(CGRect)a3 preparingLayout:(BOOL)a4
+- (BOOL)_invokeVisibleBoundsUpdateForDynamicAnimatorForNewVisibleBounds:(CGRect)bounds preparingLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 || (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(*&self->_memoizedDynamicAnimatorWorldAdjustingInsets.top), vceqzq_f64(*&self->_memoizedDynamicAnimatorWorldAdjustingInsets.bottom))))) & 1) == 0)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (layout || (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(*&self->_memoizedDynamicAnimatorWorldAdjustingInsets.top), vceqzq_f64(*&self->_memoizedDynamicAnimatorWorldAdjustingInsets.bottom))))) & 1) == 0)
   {
     p_memoizedDynamicAnimatorWorldAdjustingInsets = &self->_memoizedDynamicAnimatorWorldAdjustingInsets;
-    v54 = CGRectGetHeight(a3);
+    v54 = CGRectGetHeight(bounds);
     v55.origin.x = x;
     v55.origin.y = y;
     v55.size.width = width;
@@ -3763,8 +3763,8 @@ void __78__UICollectionViewCompositionalLayout__handlePreferredSizingDataInvalid
 
     *p_memoizedDynamicAnimatorWorldAdjustingInsets = vmulq_f64(v15, _Q0);
     p_memoizedDynamicAnimatorWorldAdjustingInsets[1] = vmulq_f64(v16, _Q0);
-    v22 = [(UICollectionViewLayout *)self collectionView];
-    [v22 _visibleRectEdgeInsets];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    [collectionView _visibleRectEdgeInsets];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -3772,38 +3772,38 @@ void __78__UICollectionViewCompositionalLayout__handlePreferredSizingDataInvalid
 
     if (v26 == 0.0 && v24 == 0.0 && v30 == 0.0 && v28 == 0.0)
     {
-      v31 = [(UICollectionViewLayout *)self collectionView];
-      [v31 _setVisibleRectEdgeInsets:{p_memoizedDynamicAnimatorWorldAdjustingInsets->f64[0], p_memoizedDynamicAnimatorWorldAdjustingInsets->f64[1], p_memoizedDynamicAnimatorWorldAdjustingInsets[1].f64[0], p_memoizedDynamicAnimatorWorldAdjustingInsets[1].f64[1]}];
+      collectionView2 = [(UICollectionViewLayout *)self collectionView];
+      [collectionView2 _setVisibleRectEdgeInsets:{p_memoizedDynamicAnimatorWorldAdjustingInsets->f64[0], p_memoizedDynamicAnimatorWorldAdjustingInsets->f64[1], p_memoizedDynamicAnimatorWorldAdjustingInsets[1].f64[0], p_memoizedDynamicAnimatorWorldAdjustingInsets[1].f64[1]}];
     }
   }
 
-  v32 = [(UICollectionViewLayout *)self collectionView];
-  [v32 _visibleBounds];
+  collectionView3 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView3 _visibleBounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
 
-  v41 = [(UICollectionViewLayout *)self collectionView];
-  [v41 _effectiveVisibleBoundsForBounds:{x, y, width, height}];
+  collectionView4 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView4 _effectiveVisibleBoundsForBounds:{x, y, width, height}];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
 
-  v50 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(v41) = [(_UICollectionCompositionalLayoutSolver *)v50 updateVisibleBoundsForDynamicAnimator:v43 previousVisibleBounds:v45, v47, v49, v34, v36, v38, v40];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(collectionView4) = [(_UICollectionCompositionalLayoutSolver *)solver updateVisibleBoundsForDynamicAnimator:v43 previousVisibleBounds:v45, v47, v49, v34, v36, v38, v40];
 
-  return v41;
+  return collectionView4;
 }
 
-- (BOOL)_adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:(unint64_t)a3 container:(id)a4
+- (BOOL)_adjustCollectionViewContentInsetBehaviorForLayoutAxisIfNeeded:(unint64_t)needed container:(id)container
 {
-  v7 = [(UIScrollView *)self->super._collectionView _compatibleContentInsetAdjustmentBehavior];
-  if (a3 != 1 || (-[UICollectionViewCompositionalLayout collectionViewContentSize](self, "collectionViewContentSize"), v9 = v8, [a4 contentSize], v9 >= v10 + 0.5))
+  _compatibleContentInsetAdjustmentBehavior = [(UIScrollView *)self->super._collectionView _compatibleContentInsetAdjustmentBehavior];
+  if (needed != 1 || (-[UICollectionViewCompositionalLayout collectionViewContentSize](self, "collectionViewContentSize"), v9 = v8, [container contentSize], v9 >= v10 + 0.5))
   {
     v11 = 0;
-    if (v7 != 102)
+    if (_compatibleContentInsetAdjustmentBehavior != 102)
     {
       return v11;
     }
@@ -3816,7 +3816,7 @@ LABEL_8:
 
   v11 = 1;
   v12 = 102;
-  if (!v7 || v7 == 102)
+  if (!_compatibleContentInsetAdjustmentBehavior || _compatibleContentInsetAdjustmentBehavior == 102)
   {
     goto LABEL_8;
   }
@@ -3824,17 +3824,17 @@ LABEL_8:
   return 0;
 }
 
-- (void)_setOffset:(CGPoint)a3 forOrthogonalScrollingSection:(int64_t)a4
+- (void)_setOffset:(CGPoint)offset forOrthogonalScrollingSection:(int64_t)section
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v7 setOrthogonalOffset:a4 forSection:x, y];
+  y = offset.y;
+  x = offset.x;
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver setOrthogonalOffset:section forSection:x, y];
 }
 
-- (CGPoint)_offsetForOrthogonalScrollingSection:(int64_t)a3
+- (CGPoint)_offsetForOrthogonalScrollingSection:(int64_t)section
 {
-  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:a3];
+  v3 = [(UICollectionViewCompositionalLayout *)self _sectionDescriptorForSectionIndex:section];
   if (v3)
   {
     v5 = v3[12];
@@ -3856,10 +3856,10 @@ LABEL_8:
 
 - (unint64_t)_orthogonalScrollingAxis
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v2)
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver)
   {
-    v3 = v2[8];
+    v3 = solver[8];
     if (v3 == 1)
     {
       v4 = 2;
@@ -3879,48 +3879,48 @@ LABEL_8:
   return v4;
 }
 
-- (id)_extendedAttributesQueryIncludingOrthogonalScrollingRegions:(CGRect)a3
+- (id)_extendedAttributesQueryIncludingOrthogonalScrollingRegions:(CGRect)regions
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = regions.size.height;
+  width = regions.size.width;
+  y = regions.origin.y;
+  x = regions.origin.x;
   [(UICollectionViewCompositionalLayout *)self _performDeferredResolveIfNecessary];
-  v8 = [(UICollectionViewCompositionalLayout *)self solver];
-  v9 = [(_UICollectionCompositionalLayoutSolver *)v8 extendedAttributesQueryIncludingOrthogonalScrollingRegions:y, width, height];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  height = [(_UICollectionCompositionalLayoutSolver *)solver extendedAttributesQueryIncludingOrthogonalScrollingRegions:y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (BOOL)_shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:(id)a3 elementKind:(id)a4
+- (BOOL)_shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:(id)path elementKind:(id)kind
 {
-  v6 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(a4) = [(_UICollectionCompositionalLayoutSolver *)v6 orthogonalScrollingSectionSupplementaryShouldScrollWithContentForIndexPath:a3 elementKind:a4];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(kind) = [(_UICollectionCompositionalLayoutSolver *)solver orthogonalScrollingSectionSupplementaryShouldScrollWithContentForIndexPath:path elementKind:kind];
 
-  return a4;
+  return kind;
 }
 
-- (BOOL)_shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:(id)a3 elementKind:(id)a4
+- (BOOL)_shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:(id)path elementKind:(id)kind
 {
-  v6 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(a4) = [(_UICollectionCompositionalLayoutSolver *)v6 orthogonalScrollingSectionDecorationShouldScrollWithContentForIndexPath:a3 elementKind:a4];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(kind) = [(_UICollectionCompositionalLayoutSolver *)solver orthogonalScrollingSectionDecorationShouldScrollWithContentForIndexPath:path elementKind:kind];
 
-  return a4;
+  return kind;
 }
 
-- (CGRect)_orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:(id)a3 frame:(CGRect)a4
+- (CGRect)_orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:(id)attributes frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(UICollectionViewCompositionalLayout *)self solver];
-  v10 = [(_UICollectionCompositionalLayoutSolver *)v9 orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:a3 frame:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  height = [(_UICollectionCompositionalLayoutSolver *)solver orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:attributes frame:x, y, width, height];
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = v10;
+  v17 = height;
   v18 = v12;
   v19 = v14;
   v20 = v16;
@@ -3931,53 +3931,53 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_orthogonalScrollingElementShouldAppearAboveForAttributes:(id)a3
+- (BOOL)_orthogonalScrollingElementShouldAppearAboveForAttributes:(id)attributes
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(a3) = [(_UICollectionCompositionalLayoutSolver *)v4 elementShouldAppearAboveOrthogonalScrollingContainer:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(attributes) = [(_UICollectionCompositionalLayoutSolver *)solver elementShouldAppearAboveOrthogonalScrollingContainer:attributes];
 
-  return a3;
+  return attributes;
 }
 
-- (BOOL)_orthogonalScrollingElementShouldAppearBelowForAttributes:(id)a3
+- (BOOL)_orthogonalScrollingElementShouldAppearBelowForAttributes:(id)attributes
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(a3) = [(_UICollectionCompositionalLayoutSolver *)v4 elementShouldAppearBelowOrthogonalScrollingContainer:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(attributes) = [(_UICollectionCompositionalLayoutSolver *)solver elementShouldAppearBelowOrthogonalScrollingContainer:attributes];
 
-  return a3;
+  return attributes;
 }
 
-- (id)_invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:(CGRect)a3
+- (id)_invokeVisibleItemsInvalidationHandlerIfNeededForVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UICollectionViewCompositionalLayout *)self solver];
-  if (v8 && (v9 = v8[36], v8, v9 >= 1))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  if (solver && (v9 = solver[36], solver, v9 >= 1))
   {
     kdebug_trace();
-    v10 = [(UICollectionViewCompositionalLayout *)self solver];
-    v11 = [(_UICollectionCompositionalLayoutSolver *)v10 mutatedVisibleItemsForElementsForVisibleBounds:y, width, height];
+    solver2 = [(UICollectionViewCompositionalLayout *)self solver];
+    height = [(_UICollectionCompositionalLayoutSolver *)solver2 mutatedVisibleItemsForElementsForVisibleBounds:y, width, height];
 
     kdebug_trace();
   }
 
   else
   {
-    v11 = 0;
+    height = 0;
   }
 
-  return v11;
+  return height;
 }
 
-- (BOOL)_viewBoundsPermitsLayout:(CGRect)a3
+- (BOOL)_viewBoundsPermitsLayout:(CGRect)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3);
+  height = layout.size.height;
+  width = layout.size.width;
+  y = layout.origin.y;
+  x = layout.origin.x;
+  v7 = CGRectGetWidth(layout);
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;
@@ -3985,23 +3985,23 @@ LABEL_8:
   return v7 * CGRectGetHeight(v9) > 0.0;
 }
 
-- (void)_solveForPinnedSupplementaryItemsIfNeededWithContext:(id)a3
+- (void)_solveForPinnedSupplementaryItemsIfNeededWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(UICollectionViewCompositionalLayout *)self solver];
-  v6 = [(_UICollectionCompositionalLayoutSolver *)v5 hasPinnedSupplementaryItems];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  hasPinnedSupplementaryItems = [(_UICollectionCompositionalLayoutSolver *)solver hasPinnedSupplementaryItems];
 
-  if (v6)
+  if (hasPinnedSupplementaryItems)
   {
-    v7 = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
-    if (a3 && ([a3 invalidateEverything] & 1) == 0)
+    _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds = [(UICollectionViewCompositionalLayout *)self _updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds];
+    if (context && ([context invalidateEverything] & 1) == 0)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [v7 invalidatedAuxillaryKinds];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      invalidatedAuxillaryKinds = [_updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds invalidatedAuxillaryKinds];
+      v9 = [invalidatedAuxillaryKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -4012,15 +4012,15 @@ LABEL_8:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(invalidatedAuxillaryKinds);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
-            v14 = [v7 indexPathsForInvalidatedSupplementariesOfKind:v13];
-            [a3 invalidateSupplementaryElementsOfKind:v13 atIndexPaths:v14];
+            v14 = [_updatePinnedSectionSupplementaryItemsForCurrentVisibleBounds indexPathsForInvalidatedSupplementariesOfKind:v13];
+            [context invalidateSupplementaryElementsOfKind:v13 atIndexPaths:v14];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [invalidatedAuxillaryKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -4029,87 +4029,87 @@ LABEL_8:
   }
 }
 
-- (id)_layoutSectionForSectionIndex:(unint64_t)a3
+- (id)_layoutSectionForSectionIndex:(unint64_t)index
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _existingSectionDefinitionForSectionIndex:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _existingSectionDefinitionForSectionIndex:index];
 
   return v5;
 }
 
-- (void)_transformCellLayoutAttributes:(id)a3
+- (void)_transformCellLayoutAttributes:(id)attributes
 {
-  v5 = [a3 indexPath];
-  v7 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [v5 section]);
+  indexPath = [attributes indexPath];
+  v7 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [indexPath section]);
 
   if (v7)
   {
-    v6 = [v7 _callback];
-    [v6 _enrichLayoutAttributes:a3 interactionState:self->_interactionStateModule];
+    _callback = [v7 _callback];
+    [_callback _enrichLayoutAttributes:attributes interactionState:self->_interactionStateModule];
   }
 
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformCellLayoutAttributes:a3 isDisappearing:0];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformCellLayoutAttributes:attributes isDisappearing:0];
 }
 
-- (void)_transformDecorationLayoutAttributes:(id)a3
+- (void)_transformDecorationLayoutAttributes:(id)attributes
 {
-  v7 = [a3 indexPath];
-  if ([v7 length] >= 2)
+  indexPath = [attributes indexPath];
+  if ([indexPath length] >= 2)
   {
-    v5 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [v7 section]);
-    v6 = [v5 _callback];
-    [v6 _enrichLayoutAttributes:a3 interactionState:self->_interactionStateModule];
+    v5 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [indexPath section]);
+    _callback = [v5 _callback];
+    [_callback _enrichLayoutAttributes:attributes interactionState:self->_interactionStateModule];
   }
 
-  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformDecorationLayoutAttributes:a3 isDisappearing:0];
+  [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformDecorationLayoutAttributes:attributes isDisappearing:0];
 }
 
-- (void)_transformSupplementaryLayoutAttributes:(id)a3
+- (void)_transformSupplementaryLayoutAttributes:(id)attributes
 {
-  v7 = [a3 indexPath];
-  if ([v7 length] >= 2)
+  indexPath = [attributes indexPath];
+  if ([indexPath length] >= 2)
   {
-    v5 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [v7 section]);
-    v6 = [v5 _callback];
-    [v6 _enrichLayoutAttributes:a3 interactionState:self->_interactionStateModule];
+    v5 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [indexPath section]);
+    _callback = [v5 _callback];
+    [_callback _enrichLayoutAttributes:attributes interactionState:self->_interactionStateModule];
   }
 }
 
-- (void)_cellBackgroundOrBottomSeparatorChangedAtIndexPath:(id)a3 separatorOnly:(BOOL)a4
+- (void)_cellBackgroundOrBottomSeparatorChangedAtIndexPath:(id)path separatorOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!path)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:2049 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionalLayout.m" lineNumber:2049 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  v7 = [(UICollectionViewLayout *)self collectionView];
-  v8 = [v7 _currentUpdate];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  _currentUpdate = [collectionView _currentUpdate];
 
-  if (!v8)
+  if (!_currentUpdate)
   {
-    v9 = [v7 _collectionViewData];
-    v10 = v9;
-    if (v9 && ([(UICollectionViewData *)v9 _isIndexPathValid:a3 validateItemCounts:1]& 1) != 0)
+    _collectionViewData = [collectionView _collectionViewData];
+    v10 = _collectionViewData;
+    if (_collectionViewData && ([(UICollectionViewData *)_collectionViewData _isIndexPathValid:path validateItemCounts:1]& 1) != 0)
     {
-      v11 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [a3 section]);
+      v11 = -[UICollectionViewCompositionalLayout _layoutSectionForSectionIndex:](self, "_layoutSectionForSectionIndex:", [path section]);
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 _callback];
-        v14 = [v13 _invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:a3 interactionState:self->_interactionStateModule separatorOnly:v4];
+        _callback = [v11 _callback];
+        v14 = [_callback _invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:path interactionState:self->_interactionStateModule separatorOnly:onlyCopy];
 
         if (v14)
         {
-          if (!v4)
+          if (!onlyCopy)
           {
-            v15 = [v7 _selectionController];
-            v16 = v15;
-            if (v15)
+            _selectionController = [collectionView _selectionController];
+            v16 = _selectionController;
+            if (_selectionController)
             {
-              v17 = [*(v15 + 8) copy];
+              v17 = [*(_selectionController + 8) copy];
             }
 
             else
@@ -4117,8 +4117,8 @@ LABEL_8:
               v17 = 0;
             }
 
-            v18 = [v17 allObjects];
-            [v14 invalidateItemsAtIndexPaths:v18];
+            allObjects = [v17 allObjects];
+            [v14 invalidateItemsAtIndexPaths:allObjects];
           }
 
           [(UICollectionViewCompositionalLayout *)self invalidateLayoutWithContext:v14];
@@ -4132,7 +4132,7 @@ LABEL_8:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
         v24 = @"background";
-        if (v4)
+        if (onlyCopy)
         {
           v24 = @"separator";
         }
@@ -4140,7 +4140,7 @@ LABEL_8:
         *buf = 138412546;
         v26 = v24;
         v27 = 2112;
-        v28 = a3;
+        pathCopy2 = path;
         _os_log_fault_impl(&dword_188A29000, v23, OS_LOG_TYPE_FAULT, "Ignoring cell %@ change notification received for invalid index path: %@", buf, 0x16u);
       }
     }
@@ -4151,7 +4151,7 @@ LABEL_8:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = @"background";
-        if (v4)
+        if (onlyCopy)
         {
           v20 = @"separator";
         }
@@ -4159,7 +4159,7 @@ LABEL_8:
         *buf = 138412546;
         v26 = v20;
         v27 = 2112;
-        v28 = a3;
+        pathCopy2 = path;
         _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "Ignoring cell %@ change notification received for invalid index path: %@", buf, 0x16u);
       }
     }
@@ -4183,12 +4183,12 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   layoutFlags = self->super._layoutFlags;
-  if (((((layoutFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((layoutFlags & 0x10) == 0) ^ editing) & 1) == 0)
   {
-    if (a3)
+    if (editing)
     {
       v4 = 16;
     }
@@ -4203,11 +4203,11 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
   }
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = UICollectionViewCompositionalLayout;
-  v4 = [(UICollectionViewLayout *)&v6 finalLayoutAttributesForDisappearingItemAtIndexPath:a3];
+  v4 = [(UICollectionViewLayout *)&v6 finalLayoutAttributesForDisappearingItemAtIndexPath:path];
   if (v4)
   {
     [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformCellLayoutAttributes:v4 isDisappearing:1];
@@ -4216,11 +4216,11 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
   return v4;
 }
 
-- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = UICollectionViewCompositionalLayout;
-  v5 = [(UICollectionViewLayout *)&v7 finalLayoutAttributesForDisappearingDecorationElementOfKind:a3 atIndexPath:a4];
+  v5 = [(UICollectionViewLayout *)&v7 finalLayoutAttributesForDisappearingDecorationElementOfKind:kind atIndexPath:path];
   if (v5)
   {
     [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule transformDecorationLayoutAttributes:v5 isDisappearing:1];
@@ -4229,69 +4229,69 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
   return v5;
 }
 
-- (BOOL)_supportsSwipeActionsForIndexPath:(id)a3
+- (BOOL)_supportsSwipeActionsForIndexPath:(id)path
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  LOBYTE(a3) = [(_UICollectionCompositionalLayoutSolver *)v4 _supportsSwipeActionsForIndexPath:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  LOBYTE(path) = [(_UICollectionCompositionalLayoutSolver *)solver _supportsSwipeActionsForIndexPath:path];
 
-  return a3;
+  return path;
 }
 
-- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)a3
+- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)path
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _leadingSwipeActionsConfigurationForIndexPath:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _leadingSwipeActionsConfigurationForIndexPath:path];
 
   return v5;
 }
 
-- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)a3
+- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)path
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _trailingSwipeActionsConfigurationForIndexPath:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _trailingSwipeActionsConfigurationForIndexPath:path];
 
   return v5;
 }
 
-- (void)_updateStyleForSwipeActionsConfiguration:(id)a3 indexPath:(id)a4
+- (void)_updateStyleForSwipeActionsConfiguration:(id)configuration indexPath:(id)path
 {
-  v6 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v6 _updateStyleForSwipeActionsConfiguration:a3 indexPath:a4];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver _updateStyleForSwipeActionsConfiguration:configuration indexPath:path];
 }
 
 - (void)_willBeginSwiping
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v2 _willBeginSwiping];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver _willBeginSwiping];
 }
 
 - (void)_didEndSwiping
 {
-  v2 = [(UICollectionViewCompositionalLayout *)self solver];
-  [(_UICollectionCompositionalLayoutSolver *)v2 _didEndSwiping];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  [(_UICollectionCompositionalLayoutSolver *)solver _didEndSwiping];
 }
 
-- (id)_propertyAnimatorForCollectionViewUpdates:(id)a3 withCustomAnimator:(id)a4
+- (id)_propertyAnimatorForCollectionViewUpdates:(id)updates withCustomAnimator:(id)animator
 {
   if (self->super._swipeActionsModule)
   {
-    v4 = [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule propertyAnimatorForCollectionViewUpdates:a3 withCustomAnimator:a4];
+    v4 = [(_UICollectionViewLayoutSwipeActionsModule *)self->super._swipeActionsModule propertyAnimatorForCollectionViewUpdates:updates withCustomAnimator:animator];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UICollectionViewCompositionalLayout;
-    v4 = [(UICollectionViewLayout *)&v6 _propertyAnimatorForCollectionViewUpdates:a3 withCustomAnimator:a4];
+    v4 = [(UICollectionViewLayout *)&v6 _propertyAnimatorForCollectionViewUpdates:updates withCustomAnimator:animator];
   }
 
   return v4;
 }
 
-- (int64_t)_layoutTypeForSection:(int64_t)a3
+- (int64_t)_layoutTypeForSection:(int64_t)section
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _existingSectionDefinitionForSectionIndex:a3];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _existingSectionDefinitionForSectionIndex:section];
 
   if ([v5 prefersListSolver])
   {
@@ -4306,18 +4306,18 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
   return v6;
 }
 
-- (double)_alignedContentMarginGivenMargin:(double)a3
+- (double)_alignedContentMarginGivenMargin:(double)margin
 {
-  v4 = [(UICollectionViewCompositionalLayout *)self solver];
-  v5 = [(_UICollectionCompositionalLayoutSolver *)v4 _existingSectionDefinitionForSectionIndex:?];
+  solver = [(UICollectionViewCompositionalLayout *)self solver];
+  v5 = [(_UICollectionCompositionalLayoutSolver *)solver _existingSectionDefinitionForSectionIndex:?];
 
   if (v5)
   {
-    [v5 _alignedContentMarginGivenMargin:a3];
-    a3 = v6;
+    [v5 _alignedContentMarginGivenMargin:margin];
+    margin = v6;
   }
 
-  return a3;
+  return margin;
 }
 
 - (id)_sectionsDescription
@@ -4364,7 +4364,7 @@ void __74__UICollectionViewCompositionalLayout__scrollViewLayoutAdjustmentsChang
 + (UICollectionViewCompositionalLayout)layoutWithListConfiguration:(UICollectionLayoutListConfiguration *)configuration
 {
   v4 = [(UICollectionLayoutListConfiguration *)configuration copy];
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __98__UICollectionViewCompositionalLayout_UICollectionLayoutListSection__layoutWithListConfiguration___block_invoke;

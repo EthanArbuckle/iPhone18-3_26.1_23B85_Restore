@@ -1,13 +1,13 @@
 @interface SKUIURLResolverResponse
-- (SKUIURLResolverResponse)initWithData:(id)a3 URLResponse:(id)a4;
+- (SKUIURLResolverResponse)initWithData:(id)data URLResponse:(id)response;
 @end
 
 @implementation SKUIURLResolverResponse
 
-- (SKUIURLResolverResponse)initWithData:(id)a3 URLResponse:(id)a4
+- (SKUIURLResolverResponse)initWithData:(id)data URLResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIURLResolverResponse initWithData:URLResponse:];
@@ -19,8 +19,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_response, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_response, response);
   }
 
   return v10;

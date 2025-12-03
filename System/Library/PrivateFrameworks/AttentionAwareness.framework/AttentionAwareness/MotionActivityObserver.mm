@@ -1,31 +1,31 @@
 @interface MotionActivityObserver
-- (MotionActivityObserver)initWithCallbackQueue:(id)a3 observer:(id)a4;
+- (MotionActivityObserver)initWithCallbackQueue:(id)queue observer:(id)observer;
 @end
 
 @implementation MotionActivityObserver
 
-- (MotionActivityObserver)initWithCallbackQueue:(id)a3 observer:(id)a4
+- (MotionActivityObserver)initWithCallbackQueue:(id)queue observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  observerCopy = observer;
   v24.receiver = self;
   v24.super_class = MotionActivityObserver;
   v9 = [(MotionActivityObserver *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!queueCopy)
     {
       __assert_rtn("[MotionActivityObserver initWithCallbackQueue:observer:]", "MotionActivityObserver.m", 30, "callbackQueue != nil");
     }
 
-    if (!v8)
+    if (!observerCopy)
     {
       __assert_rtn("[MotionActivityObserver initWithCallbackQueue:observer:]", "MotionActivityObserver.m", 31, "observer != nil");
     }
 
-    objc_storeStrong(&v9->_callbackQueue, a3);
-    objc_storeStrong(&v10->_observer, a4);
+    objc_storeStrong(&v9->_callbackQueue, queue);
+    objc_storeStrong(&v10->_observer, observer);
     v10->_isDeviceStationary = 0;
     v11 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     operationQueue = v10->_operationQueue;

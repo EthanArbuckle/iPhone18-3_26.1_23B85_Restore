@@ -1,43 +1,43 @@
 @interface BLPurchaseDAAPParser
-+ (id)decodeData:(id)a3;
-+ (id)decodeHexString:(id)a3;
++ (id)decodeData:(id)data;
++ (id)decodeHexString:(id)string;
 + (id)sharedInstance;
-+ (id)typeForDRCPValueType:(int64_t)a3;
-- (id)parseBookletItem:(const char *)a3 count:(int64_t)a4;
-- (id)parseBookletListing:(const char *)a3 count:(int64_t)a4;
-- (id)parseBrowseResults:(const char *)a3 count:(int64_t)a4;
-- (id)parseContentCodes:(const char *)a3 count:(int64_t)a4;
-- (id)parseControlPromptCollection:(const char *)a3 count:(int64_t)a4;
-- (id)parseControlPromptResponse:(const char *)a3 count:(int64_t)a4;
-- (id)parseDACPPropertyResponse:(const char *)a3 count:(int64_t)a4;
-- (id)parseDeletedIDsList:(const char *)a3 count:(int64_t)a4;
-- (id)parseError:(const char *)a3 count:(int64_t)a4;
-- (id)parseFlavor:(const char *)a3 size:(int64_t)a4;
-- (id)parseFlavorListing:(const char *)a3 size:(int64_t)a4;
-- (id)parseGetSpeakersResponse:(const char *)a3 count:(int64_t)a4;
-- (id)parseListingCollection:(const char *)a3 count:(int64_t)a4 capacity:(int)a5;
-- (id)parseListingHeader:(const char *)a3 count:(int64_t)a4;
-- (id)parseListingItem:(const char *)a3 count:(int64_t)a4;
-- (id)parseLogin:(const char *)a3 count:(int64_t)a4;
-- (id)parseMACAddressListing:(const char *)a3 count:(int64_t)a4;
-- (id)parseServerInfo:(const char *)a3 count:(int64_t)a4;
-- (id)parseUTF8String:(const char *)a3 length:(int64_t)a4;
-- (id)parseUnicodeCharacter:(const char *)a3 count:(int64_t)a4;
-- (id)parseXMLContent:(const char *)a3 count:(int64_t)a4;
-- (id)processResponseCode:(unsigned int)a3 bytes:(const char *)a4 count:(int64_t)a5;
-- (unint64_t)SwapInt64BigToHost:(const char *)a3 size:(int64_t)a4;
-- (void)parseDict:(const char *)a3 size:(int64_t)a4 intoDict:(id)a5;
-- (void)setBool:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setDate:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setFloat32:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setSInt16:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setSInt8:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setString:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt16:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt32:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt64:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt8:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)unknownCode:(unsigned int)a3 bytes:(const char *)a4 size:(int64_t)a5 context:(const char *)a6;
++ (id)typeForDRCPValueType:(int64_t)type;
+- (id)parseBookletItem:(const char *)item count:(int64_t)count;
+- (id)parseBookletListing:(const char *)listing count:(int64_t)count;
+- (id)parseBrowseResults:(const char *)results count:(int64_t)count;
+- (id)parseContentCodes:(const char *)codes count:(int64_t)count;
+- (id)parseControlPromptCollection:(const char *)collection count:(int64_t)count;
+- (id)parseControlPromptResponse:(const char *)response count:(int64_t)count;
+- (id)parseDACPPropertyResponse:(const char *)response count:(int64_t)count;
+- (id)parseDeletedIDsList:(const char *)list count:(int64_t)count;
+- (id)parseError:(const char *)error count:(int64_t)count;
+- (id)parseFlavor:(const char *)flavor size:(int64_t)size;
+- (id)parseFlavorListing:(const char *)listing size:(int64_t)size;
+- (id)parseGetSpeakersResponse:(const char *)response count:(int64_t)count;
+- (id)parseListingCollection:(const char *)collection count:(int64_t)count capacity:(int)capacity;
+- (id)parseListingHeader:(const char *)header count:(int64_t)count;
+- (id)parseListingItem:(const char *)item count:(int64_t)count;
+- (id)parseLogin:(const char *)login count:(int64_t)count;
+- (id)parseMACAddressListing:(const char *)listing count:(int64_t)count;
+- (id)parseServerInfo:(const char *)info count:(int64_t)count;
+- (id)parseUTF8String:(const char *)string length:(int64_t)length;
+- (id)parseUnicodeCharacter:(const char *)character count:(int64_t)count;
+- (id)parseXMLContent:(const char *)content count:(int64_t)count;
+- (id)processResponseCode:(unsigned int)code bytes:(const char *)bytes count:(int64_t)count;
+- (unint64_t)SwapInt64BigToHost:(const char *)host size:(int64_t)size;
+- (void)parseDict:(const char *)dict size:(int64_t)size intoDict:(id)intoDict;
+- (void)setBool:(const char *)bool size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setDate:(const char *)date size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setFloat32:(const char *)float32 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setSInt16:(const char *)int16 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setSInt8:(const char *)int8 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setString:(const char *)string size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt16:(const char *)int16 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt32:(const char *)int32 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt64:(const char *)int64 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt8:(const char *)int8 size:(int64_t)size inDict:(id)dict forKey:(id)key;
+- (void)unknownCode:(unsigned int)code bytes:(const char *)bytes size:(int64_t)size context:(const char *)context;
 @end
 
 @implementation BLPurchaseDAAPParser
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = sub_241D3D9AC;
   block[3] = &unk_278D16940;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280BC59B8 != -1)
   {
     dispatch_once(&qword_280BC59B8, block);
@@ -59,9 +59,9 @@
   return v2;
 }
 
-+ (id)decodeHexString:(id)a3
++ (id)decodeHexString:(id)string
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_2853E2EC8];
+  v4 = [string stringByReplacingOccurrencesOfString:@" " withString:&stru_2853E2EC8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v11 = 0;
   if ([v4 length] >= 2)
@@ -81,17 +81,17 @@
     while (v6 < [v4 length] >> 1);
   }
 
-  v8 = [a1 decodeData:v5];
+  v8 = [self decodeData:v5];
 
   return v8;
 }
 
-+ (id)decodeData:(id)a3
++ (id)decodeData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = +[BLPurchaseDAAPParser sharedInstance];
-  v5 = [v3 length];
+  v5 = [dataCopy length];
   if (v5 <= 7)
   {
     v6 = BLJaliscoLog();
@@ -110,8 +110,8 @@ LABEL_7:
   }
 
   v10 = v5;
-  v11 = [v3 bytes];
-  v12 = bswap32(v11[1]);
+  bytes = [dataCopy bytes];
+  v12 = bswap32(bytes[1]);
   v13 = v10 - 8;
   if (v10 - 8 < v12)
   {
@@ -136,7 +136,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v14 = [v4 processResponseCode:bswap32(*v11) bytes:v11 + 2 count:v12];
+  v14 = [v4 processResponseCode:bswap32(*bytes) bytes:bytes + 2 count:v12];
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
@@ -144,43 +144,43 @@ LABEL_10:
   return v14;
 }
 
-- (unint64_t)SwapInt64BigToHost:(const char *)a3 size:(int64_t)a4
+- (unint64_t)SwapInt64BigToHost:(const char *)host size:(int64_t)size
 {
-  v6 = malloc_type_malloc(a4, 0xF3FEAAB4uLL);
-  memcpy(v6, a3, a4);
+  v6 = malloc_type_malloc(size, 0xF3FEAAB4uLL);
+  memcpy(v6, host, size);
   v7 = bswap64(*v6);
   free(v6);
   return v7;
 }
 
-- (id)parseUTF8String:(const char *)a3 length:(int64_t)a4
+- (id)parseUTF8String:(const char *)string length:(int64_t)length
 {
-  if (a4 < 1)
+  if (length < 1)
   {
     v5 = &stru_2853E2EC8;
   }
 
   else
   {
-    if (a4 == 1 && !*a3)
+    if (length == 1 && !*string)
     {
       v5 = &stru_2853E2EC8;
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:a4 encoding:4];
+      v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:string length:length encoding:4];
     }
   }
 
   return v5;
 }
 
-- (id)parseUnicodeCharacter:(const char *)a3 count:(int64_t)a4
+- (id)parseUnicodeCharacter:(const char *)character count:(int64_t)count
 {
-  if (a4 == 2)
+  if (count == 2)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:2 encoding:2415919360];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:character length:2 encoding:2415919360];
   }
 
   else
@@ -191,17 +191,17 @@ LABEL_10:
   return v5;
 }
 
-- (id)parseXMLContent:(const char *)a3 count:(int64_t)a4
+- (id)parseXMLContent:(const char *)content count:(int64_t)count
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a4 < 1)
+  if (count < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:?];
+    v4 = [MEMORY[0x277CBEA90] dataWithBytes:content length:?];
     v11 = 0;
     v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:&v11];
     v6 = v11;
@@ -223,22 +223,22 @@ LABEL_10:
   return v5;
 }
 
-- (id)parseFlavorListing:(const char *)a3 size:(int64_t)a4
+- (id)parseFlavorListing:(const char *)listing size:(int64_t)size
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (a4 < 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (size < 1)
   {
 LABEL_12:
-    v16 = v7;
+    v16 = array;
   }
 
   else
   {
-    while (a4 > 3)
+    while (size > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = size - 4;
+      if ((size - 4) <= 3)
       {
         v18 = BLJaliscoLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_12:
           v24 = 2048;
           v25 = 4;
           v26 = 2048;
-          v27 = v8;
+          sizeCopy = v8;
           goto LABEL_20;
         }
 
@@ -257,10 +257,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(listing + 1));
+      v10 = size - 8;
+      v11 = size - 8 >= v9;
+      size = size - 8 - v9;
       if (!v11)
       {
         v18 = BLJaliscoLog();
@@ -271,7 +271,7 @@ LABEL_21:
           v24 = 2048;
           v25 = v9;
           v26 = 2048;
-          v27 = v10;
+          sizeCopy = v10;
 LABEL_20:
           _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
         }
@@ -279,15 +279,15 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *listing;
+      v13 = listing + 8;
       v12 = v14;
       if (v14 == 1718183265)
       {
         v15 = [(BLPurchaseDAAPParser *)self parseFlavor:v13 size:v9];
         if (v15)
         {
-          [v7 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -296,8 +296,8 @@ LABEL_20:
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v12) bytes:v13 size:v9 context:"[BLPurchaseDAAPParser parseFlavorListing:size:]"];
       }
 
-      a3 = &v13[v9];
-      if (a4 <= 0)
+      listing = &v13[v9];
+      if (size <= 0)
       {
         goto LABEL_12;
       }
@@ -311,7 +311,7 @@ LABEL_20:
       v24 = 2048;
       v25 = 4;
       v26 = 2048;
-      v27 = a4;
+      sizeCopy = size;
       _os_log_impl(&dword_241D1F000, v17, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
     }
 
@@ -324,21 +324,21 @@ LABEL_22:
   return v16;
 }
 
-- (id)parseFlavor:(const char *)a3 size:(int64_t)a4
+- (id)parseFlavor:(const char *)flavor size:(int64_t)size
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 < 1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (size < 1)
   {
 LABEL_32:
-    v25 = v7;
+    v25 = dictionary;
     goto LABEL_43;
   }
 
-  while (a4 > 3)
+  while (size > 3)
   {
-    v8 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v8 = size - 4;
+    if ((size - 4) <= 3)
     {
       v27 = BLJaliscoLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -348,7 +348,7 @@ LABEL_32:
         v33 = 2048;
         v34 = 4;
         v35 = 2048;
-        v36 = v8;
+        sizeCopy = v8;
         goto LABEL_40;
       }
 
@@ -357,10 +357,10 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(flavor + 1));
+    v10 = size - 8;
+    v11 = size - 8 >= v9;
+    size = size - 8 - v9;
     if (!v11)
     {
       v27 = BLJaliscoLog();
@@ -371,7 +371,7 @@ LABEL_41:
         v33 = 2048;
         v34 = v9;
         v35 = 2048;
-        v36 = v10;
+        sizeCopy = v10;
 LABEL_40:
         _os_log_impl(&dword_241D1F000, v27, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v31, 0x20u);
       }
@@ -379,8 +379,8 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v13 = *a3;
-    v12 = a3 + 8;
+    v13 = *flavor;
+    v12 = flavor + 8;
     v14 = bswap32(v13);
     if (v14 > 1634952298)
     {
@@ -388,19 +388,19 @@ LABEL_40:
       {
         if (v14 == 1634952299)
         {
-          [(BLPurchaseDAAPParser *)self setUInt8:v12 size:v9 inDict:v7 forKey:@"daap.songdatakind"];
+          [(BLPurchaseDAAPParser *)self setUInt8:v12 size:v9 inDict:dictionary forKey:@"daap.songdatakind"];
           goto LABEL_31;
         }
 
         if (v14 == 1634952813)
         {
-          v20 = self;
+          selfCopy4 = self;
           v21 = v12;
           v22 = v9;
-          v23 = v7;
+          v23 = dictionary;
           v24 = @"daap.songformat";
 LABEL_24:
-          [(BLPurchaseDAAPParser *)v20 setString:v21 size:v22 inDict:v23 forKey:v24];
+          [(BLPurchaseDAAPParser *)selfCopy4 setString:v21 size:v22 inDict:v23 forKey:v24];
         }
       }
 
@@ -409,20 +409,20 @@ LABEL_24:
         switch(v14)
         {
           case 1634954355:
-            [(BLPurchaseDAAPParser *)self setUInt64:v12 size:v9 inDict:v7 forKey:@"daap.songlongsize"];
+            [(BLPurchaseDAAPParser *)self setUInt64:v12 size:v9 inDict:dictionary forKey:@"daap.songlongsize"];
             break;
           case 1634956146:
-            v15 = self;
+            selfCopy7 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"daap.songsamplerate";
             goto LABEL_30;
           case 1634956397:
-            v15 = self;
+            selfCopy7 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"daap.songtime";
             goto LABEL_30;
         }
@@ -433,20 +433,20 @@ LABEL_24:
     {
       if (v14 == 1634030192)
       {
-        v20 = self;
+        selfCopy4 = self;
         v21 = v12;
         v22 = v9;
-        v23 = v7;
+        v23 = dictionary;
         v24 = @"com.apple.itunes.item-redownload-param-2";
         goto LABEL_24;
       }
 
       if (v14 == 1634035300)
       {
-        v15 = self;
+        selfCopy7 = self;
         v16 = v12;
         v17 = v9;
-        v18 = v7;
+        v18 = dictionary;
         v19 = @"com.apple.itunes.item-flavor-id";
         goto LABEL_30;
       }
@@ -457,30 +457,30 @@ LABEL_24:
       switch(v14)
       {
         case 1634951794:
-          [(BLPurchaseDAAPParser *)self setUInt16:v12 size:v9 inDict:v7 forKey:@"daap.songbitrate"];
+          [(BLPurchaseDAAPParser *)self setUInt16:v12 size:v9 inDict:dictionary forKey:@"daap.songbitrate"];
           break;
         case 1634952036:
-          v15 = self;
+          selfCopy7 = self;
           v16 = v12;
           v17 = v9;
-          v18 = v7;
+          v18 = dictionary;
           v19 = @"daap.songcodectype";
           goto LABEL_30;
         case 1634952051:
-          v15 = self;
+          selfCopy7 = self;
           v16 = v12;
           v17 = v9;
-          v18 = v7;
+          v18 = dictionary;
           v19 = @"daap.songcodecsubtype";
 LABEL_30:
-          [(BLPurchaseDAAPParser *)v15 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
+          [(BLPurchaseDAAPParser *)selfCopy7 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
           break;
       }
     }
 
 LABEL_31:
-    a3 = &v12[v9];
-    if (a4 <= 0)
+    flavor = &v12[v9];
+    if (size <= 0)
     {
       goto LABEL_32;
     }
@@ -494,7 +494,7 @@ LABEL_31:
     v33 = 2048;
     v34 = 4;
     v35 = 2048;
-    v36 = a4;
+    sizeCopy = size;
     _os_log_impl(&dword_241D1F000, v26, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v31, 0x20u);
   }
 
@@ -507,26 +507,26 @@ LABEL_43:
   return v25;
 }
 
-- (void)setBool:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setBool:(const char *)bool size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 > 3)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size > 3)
   {
-    if (a4 == 4)
+    if (size == 4)
     {
-      v11 = *a3;
+      v11 = *bool;
       goto LABEL_13;
     }
 
-    if (a4 == 8)
+    if (size == 8)
     {
-      v12 = *a3 == 0;
+      v12 = *bool == 0;
 LABEL_14:
       v14 = !v12;
       v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:v14];
-      [v9 setObject:v15 forKey:v10];
+      [dictCopy setObject:v15 forKey:keyCopy];
 
       goto LABEL_18;
     }
@@ -534,15 +534,15 @@ LABEL_14:
 
   else
   {
-    if (a4 == 1)
+    if (size == 1)
     {
-      v11 = *a3;
+      v11 = *bool;
       goto LABEL_13;
     }
 
-    if (a4 == 2)
+    if (size == 2)
     {
-      v11 = *a3;
+      v11 = *bool;
 LABEL_13:
       v12 = v11 == 0;
       goto LABEL_14;
@@ -553,9 +553,9 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v17 = 134218242;
-    v18 = a4;
+    sizeCopy = size;
     v19 = 2112;
-    v20 = v10;
+    v20 = keyCopy;
     _os_log_impl(&dword_241D1F000, v13, OS_LOG_TYPE_ERROR, "setBool being passed a %ld byte value for: <%@>!", &v17, 0x16u);
   }
 
@@ -563,15 +563,15 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSInt8:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setSInt8:(const char *)int8 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 1)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithChar:*a3];
-    [v9 setObject:v11 forKey:v10];
+    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithChar:*int8];
+    [dictCopy setObject:v11 forKey:keyCopy];
   }
 
   else
@@ -580,9 +580,9 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218242;
-      v15 = a4;
+      sizeCopy = size;
       v16 = 2112;
-      v17 = v10;
+      v17 = keyCopy;
       _os_log_impl(&dword_241D1F000, v12, OS_LOG_TYPE_ERROR, "setSInt8 being passed a %ld byte value for: <%@>!", &v14, 0x16u);
     }
   }
@@ -590,15 +590,15 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUInt8:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt8:(const char *)int8 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 1)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*a3];
-    [v9 setValue:v11 forKey:v10];
+    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*int8];
+    [dictCopy setValue:v11 forKey:keyCopy];
   }
 
   else
@@ -607,9 +607,9 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218242;
-      v15 = a4;
+      sizeCopy = size;
       v16 = 2112;
-      v17 = v10;
+      v17 = keyCopy;
       _os_log_impl(&dword_241D1F000, v12, OS_LOG_TYPE_ERROR, "setUInt8 being passed a %ld byte value for: <%@>!", &v14, 0x16u);
     }
   }
@@ -617,15 +617,15 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSInt16:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setSInt16:(const char *)int16 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 2)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 2)
   {
-    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithShort:(bswap32(*a3) >> 16)];
-    [v9 setObject:v11 forKey:v10];
+    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithShort:(bswap32(*int16) >> 16)];
+    [dictCopy setObject:v11 forKey:keyCopy];
   }
 
   else
@@ -634,9 +634,9 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218242;
-      v15 = a4;
+      sizeCopy = size;
       v16 = 2112;
-      v17 = v10;
+      v17 = keyCopy;
       _os_log_impl(&dword_241D1F000, v12, OS_LOG_TYPE_ERROR, "setSInt16 being passed a %ld byte value for: <%@>!", &v14, 0x16u);
     }
   }
@@ -644,15 +644,15 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUInt16:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt16:(const char *)int16 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 2)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 2)
   {
-    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bswap32(*a3) >> 16];
-    [v9 setObject:v11 forKey:v10];
+    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bswap32(*int16) >> 16];
+    [dictCopy setObject:v11 forKey:keyCopy];
   }
 
   else
@@ -661,9 +661,9 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218242;
-      v15 = a4;
+      sizeCopy = size;
       v16 = 2112;
-      v17 = v10;
+      v17 = keyCopy;
       _os_log_impl(&dword_241D1F000, v12, OS_LOG_TYPE_ERROR, "setUInt16 being passed a %ld byte value for: <%@>!", &v14, 0x16u);
     }
   }
@@ -671,44 +671,44 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDate:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setDate:(const char *)date size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
-  if (a4 == 4)
+  if (size == 4)
   {
     v8 = MEMORY[0x277CBEAA8];
-    v9 = bswap32(*a3);
-    v10 = a6;
-    v11 = a5;
+    v9 = bswap32(*date);
+    keyCopy = key;
+    dictCopy = dict;
     v12 = [v8 dateWithTimeIntervalSince1970:v9];
-    [v11 setObject:v12 forKey:v10];
+    [dictCopy setObject:v12 forKey:keyCopy];
   }
 }
 
-- (void)setUInt32:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt32:(const char *)int32 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
-  if (a4 == 4)
+  if (size == 4)
   {
-    v8 = bswap32(*a3);
+    v8 = bswap32(*int32);
     v9 = MEMORY[0x277CCABB0];
-    v10 = a6;
-    v11 = a5;
+    keyCopy = key;
+    dictCopy = dict;
     v12 = [[v9 alloc] initWithUnsignedInt:v8];
-    [v11 setObject:v12 forKey:v10];
+    [dictCopy setObject:v12 forKey:keyCopy];
   }
 }
 
-- (void)setFloat32:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setFloat32:(const char *)float32 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 4)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 4)
   {
-    v11 = *a3;
+    v11 = *float32;
     v12 = objc_alloc(MEMORY[0x277CCABB0]);
     LODWORD(v13) = v11;
     v14 = [v12 initWithFloat:v13];
-    [v9 setObject:v14 forKey:v10];
+    [dictCopy setObject:v14 forKey:keyCopy];
   }
 
   else
@@ -717,9 +717,9 @@ LABEL_18:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218242;
-      v18 = a4;
+      sizeCopy = size;
       v19 = 2112;
-      v20 = v10;
+      v20 = keyCopy;
       _os_log_impl(&dword_241D1F000, v15, OS_LOG_TYPE_ERROR, "setFloat32 being passed a %ld byte value for: <%@>!", &v17, 0x16u);
     }
   }
@@ -727,16 +727,16 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUInt64:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt64:(const char *)int64 size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 8)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 8)
   {
-    v12 = [(BLPurchaseDAAPParser *)self SwapInt64BigToHost:a3 size:8];
+    v12 = [(BLPurchaseDAAPParser *)self SwapInt64BigToHost:int64 size:8];
     v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:v12];
-    [v10 setObject:v13 forKey:v11];
+    [dictCopy setObject:v13 forKey:keyCopy];
   }
 
   else
@@ -745,9 +745,9 @@ LABEL_18:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v16 = 134218242;
-      v17 = a4;
+      sizeCopy = size;
       v18 = 2112;
-      v19 = v11;
+      v19 = keyCopy;
       _os_log_impl(&dword_241D1F000, v14, OS_LOG_TYPE_ERROR, "setUInt64 being passed a %ld byte value for: <%@>!", &v16, 0x16u);
     }
   }
@@ -755,25 +755,25 @@ LABEL_18:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setString:(const char *)a3 size:(int64_t)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setString:(const char *)string size:(int64_t)size inDict:(id)dict forKey:(id)key
 {
-  if (a4 >= 1)
+  if (size >= 1)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = [(BLPurchaseDAAPParser *)self parseUTF8String:a3 length:a4];
-    [v12 setValue:v13 forKey:v11];
+    keyCopy = key;
+    dictCopy = dict;
+    v13 = [(BLPurchaseDAAPParser *)self parseUTF8String:string length:size];
+    [dictCopy setValue:v13 forKey:keyCopy];
   }
 }
 
-- (void)unknownCode:(unsigned int)a3 bytes:(const char *)a4 size:(int64_t)a5 context:(const char *)a6
+- (void)unknownCode:(unsigned int)code bytes:(const char *)bytes size:(int64_t)size context:(const char *)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a3 != 1634028888)
+  if (code != 1634028888)
   {
-    if (a5 <= 1)
+    if (size <= 1)
     {
-      if (!a5)
+      if (!size)
       {
         v7 = BLJaliscoLog();
         if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -782,40 +782,40 @@ LABEL_18:
         }
 
         v19 = 136316418;
-        v20 = a6;
+        contextCopy7 = context;
         v21 = 1024;
-        v22 = a3 >> 24;
+        v22 = code >> 24;
         v23 = 1024;
-        v24 = (a3 << 8) >> 24;
+        v24 = (code << 8) >> 24;
         v25 = 1024;
-        v26 = a3 >> 8;
+        v26 = code >> 8;
         v27 = 1024;
-        v28 = a3;
+        codeCopy6 = code;
         v29 = 2048;
-        v30 = 0;
+        sizeCopy = 0;
         v8 = "Unknown code at %s: '%c%c%c%c', size=%ld";
         goto LABEL_21;
       }
 
-      if (a5 != 1)
+      if (size != 1)
       {
 LABEL_24:
-        v7 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a5];
+        v7 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:size];
         v18 = BLJaliscoLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           v19 = 136316674;
-          v20 = a6;
+          contextCopy7 = context;
           v21 = 1024;
-          v22 = a3 >> 24;
+          v22 = code >> 24;
           v23 = 1024;
-          v24 = (a3 << 8) >> 24;
+          v24 = (code << 8) >> 24;
           v25 = 1024;
-          v26 = a3 >> 8;
+          v26 = code >> 8;
           v27 = 1024;
-          v28 = a3;
+          codeCopy6 = code;
           v29 = 2048;
-          v30 = a5;
+          sizeCopy = size;
           v31 = 2112;
           v32 = v7;
           _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "Unknown code at %s: '%c%c%c%c', size=%ld, value=%@", &v19, 0x38u);
@@ -830,19 +830,19 @@ LABEL_24:
         goto LABEL_23;
       }
 
-      v14 = *a4;
+      v14 = *bytes;
       v19 = 136316674;
-      v20 = a6;
+      contextCopy7 = context;
       v21 = 1024;
-      v22 = a3 >> 24;
+      v22 = code >> 24;
       v23 = 1024;
-      v24 = (a3 << 8) >> 24;
+      v24 = (code << 8) >> 24;
       v25 = 1024;
-      v26 = a3 >> 8;
+      v26 = code >> 8;
       v27 = 1024;
-      v28 = a3;
+      codeCopy6 = code;
       v29 = 2048;
-      v30 = 1;
+      sizeCopy = 1;
       v31 = 1024;
       LODWORD(v32) = v14;
       v8 = "Unknown code at %s: '%c%c%c%c', size=%ld, value=%u";
@@ -850,7 +850,7 @@ LABEL_24:
 
     else
     {
-      switch(a5)
+      switch(size)
       {
         case 2:
           v7 = BLJaliscoLog();
@@ -859,19 +859,19 @@ LABEL_24:
             goto LABEL_23;
           }
 
-          v15 = *a4;
+          v15 = *bytes;
           v19 = 136316674;
-          v20 = a6;
+          contextCopy7 = context;
           v21 = 1024;
-          v22 = a3 >> 24;
+          v22 = code >> 24;
           v23 = 1024;
-          v24 = (a3 << 8) >> 24;
+          v24 = (code << 8) >> 24;
           v25 = 1024;
-          v26 = a3 >> 8;
+          v26 = code >> 8;
           v27 = 1024;
-          v28 = a3;
+          codeCopy6 = code;
           v29 = 2048;
-          v30 = 2;
+          sizeCopy = 2;
           v31 = 1024;
           LODWORD(v32) = v15;
           v8 = "Unknown code at %s: '%c%c%c%c', size=%ld, value=%u";
@@ -883,19 +883,19 @@ LABEL_24:
             goto LABEL_23;
           }
 
-          v16 = *a4;
+          v16 = *bytes;
           v19 = 136316674;
-          v20 = a6;
+          contextCopy7 = context;
           v21 = 1024;
-          v22 = a3 >> 24;
+          v22 = code >> 24;
           v23 = 1024;
-          v24 = (a3 << 8) >> 24;
+          v24 = (code << 8) >> 24;
           v25 = 1024;
-          v26 = a3 >> 8;
+          v26 = code >> 8;
           v27 = 1024;
-          v28 = a3;
+          codeCopy6 = code;
           v29 = 2048;
-          v30 = 4;
+          sizeCopy = 4;
           v31 = 1024;
           LODWORD(v32) = v16;
           v8 = "Unknown code at %s: '%c%c%c%c', size=%ld, value=0x%x";
@@ -908,17 +908,17 @@ LABEL_24:
           }
 
           v19 = 136316418;
-          v20 = a6;
+          contextCopy7 = context;
           v21 = 1024;
-          v22 = a3 >> 24;
+          v22 = code >> 24;
           v23 = 1024;
-          v24 = (a3 << 8) >> 24;
+          v24 = (code << 8) >> 24;
           v25 = 1024;
-          v26 = a3 >> 8;
+          v26 = code >> 8;
           v27 = 1024;
-          v28 = a3;
+          codeCopy6 = code;
           v29 = 2048;
-          v30 = 8;
+          sizeCopy = 8;
           v8 = "Unknown code at %s: '%c%c%c%c', size=%ld";
 LABEL_21:
           v9 = v7;
@@ -938,7 +938,7 @@ LABEL_21:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v19 = 136315138;
-    v20 = a6;
+    contextCopy7 = context;
     v8 = "Unexpected xmlcode! at %s";
     v9 = v7;
     v10 = 12;
@@ -951,22 +951,22 @@ LABEL_23:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseMACAddressListing:(const char *)a3 count:(int64_t)a4
+- (id)parseMACAddressListing:(const char *)listing count:(int64_t)count
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (a4 < 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (count < 1)
   {
 LABEL_10:
-    v17 = v7;
+    v17 = array;
   }
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = count - 4;
+      if ((count - 4) <= 3)
       {
         v19 = BLJaliscoLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -976,7 +976,7 @@ LABEL_10:
           v25 = 2048;
           v26 = 4;
           v27 = 2048;
-          v28 = v8;
+          countCopy = v8;
           goto LABEL_18;
         }
 
@@ -985,10 +985,10 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(listing + 1));
+      v10 = count - 8;
+      v11 = count - 8 >= v9;
+      count = count - 8 - v9;
       if (!v11)
       {
         v19 = BLJaliscoLog();
@@ -999,7 +999,7 @@ LABEL_19:
           v25 = 2048;
           v26 = v9;
           v27 = 2048;
-          v28 = v10;
+          countCopy = v10;
 LABEL_18:
           _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
         }
@@ -1007,14 +1007,14 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *listing;
+      v13 = listing + 8;
       v12 = v14;
       if (v14 == 1634562925)
       {
         v15 = [(BLPurchaseDAAPParser *)self SwapInt64BigToHost:v13 size:v9];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
-        [v7 addObject:v16];
+        [array addObject:v16];
       }
 
       else
@@ -1022,8 +1022,8 @@ LABEL_18:
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v12) bytes:v13 size:v9 context:"[BLPurchaseDAAPParser parseMACAddressListing:count:]"];
       }
 
-      a3 = &v13[v9];
-      if (a4 <= 0)
+      listing = &v13[v9];
+      if (count <= 0)
       {
         goto LABEL_10;
       }
@@ -1037,7 +1037,7 @@ LABEL_18:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
     }
 
@@ -1050,21 +1050,21 @@ LABEL_20:
   return v17;
 }
 
-- (id)parseServerInfo:(const char *)a3 count:(int64_t)a4
+- (id)parseServerInfo:(const char *)info count:(int64_t)count
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 < 1 || !a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (count < 1 || !info)
   {
 LABEL_111:
-    v46 = v7;
+    v46 = dictionary;
     goto LABEL_122;
   }
 
-  while (a4 > 3)
+  while (count > 3)
   {
-    v8 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v8 = count - 4;
+    if ((count - 4) <= 3)
     {
       v48 = BLJaliscoLog();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1074,7 +1074,7 @@ LABEL_111:
         v54 = 2048;
         v55 = 4;
         v56 = 2048;
-        v57 = v8;
+        countCopy = v8;
         goto LABEL_119;
       }
 
@@ -1083,10 +1083,10 @@ LABEL_120:
       goto LABEL_121;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(info + 1));
+    v10 = count - 8;
+    v11 = count - 8 >= v9;
+    count = count - 8 - v9;
     if (!v11)
     {
       v48 = BLJaliscoLog();
@@ -1097,7 +1097,7 @@ LABEL_120:
         v54 = 2048;
         v55 = v9;
         v56 = 2048;
-        v57 = v10;
+        countCopy = v10;
 LABEL_119:
         _os_log_impl(&dword_241D1F000, v48, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v52, 0x20u);
       }
@@ -1105,8 +1105,8 @@ LABEL_119:
       goto LABEL_120;
     }
 
-    v13 = *a3;
-    v12 = a3 + 8;
+    v13 = *info;
+    v12 = info + 8;
     v14 = bswap32(v13);
     if (v14 > 1836278130)
     {
@@ -1118,10 +1118,10 @@ LABEL_119:
           {
             if (v14 == 1836279160)
             {
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.supportsextensions";
               goto LABEL_107;
             }
@@ -1131,10 +1131,10 @@ LABEL_119:
               goto LABEL_110;
             }
 
-            v20 = self;
+            selfCopy33 = self;
             v21 = v12;
             v22 = v9;
-            v23 = v7;
+            v23 = dictionary;
             v24 = @"dmap.supportsinlinecontaineritems";
           }
 
@@ -1142,10 +1142,10 @@ LABEL_119:
           {
             if (v14 == 1836280184)
             {
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.supportsindex";
               goto LABEL_107;
             }
@@ -1157,18 +1157,18 @@ LABEL_119:
                 goto LABEL_110;
               }
 
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.loginrequired";
               goto LABEL_107;
             }
 
-            v20 = self;
+            selfCopy33 = self;
             v21 = v12;
             v22 = v9;
-            v23 = v7;
+            v23 = dictionary;
             v24 = @"dmap.supportslongitemid";
           }
         }
@@ -1179,10 +1179,10 @@ LABEL_119:
           {
             if (v14 == 1836278131)
             {
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.authenticationschemes";
             }
 
@@ -1193,10 +1193,10 @@ LABEL_119:
                 goto LABEL_110;
               }
 
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.authenticationmethod";
             }
 
@@ -1205,22 +1205,22 @@ LABEL_119:
 
           if (v14 == 1836278386)
           {
-            v30 = self;
+            selfCopy37 = self;
             v31 = v12;
             v32 = v9;
-            v33 = v7;
+            v33 = dictionary;
             v34 = @"dmap.supportsbrowse";
 LABEL_107:
-            [(BLPurchaseDAAPParser *)v30 setUInt8:v31 size:v32 inDict:v33 forKey:v34];
+            [(BLPurchaseDAAPParser *)selfCopy37 setUInt8:v31 size:v32 inDict:v33 forKey:v34];
             goto LABEL_108;
           }
 
           if (v14 == 1836278883)
           {
-            v15 = self;
+            selfCopy38 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"dmap.databasescount";
             goto LABEL_105;
           }
@@ -1230,10 +1230,10 @@ LABEL_107:
             goto LABEL_110;
           }
 
-          v20 = self;
+          selfCopy33 = self;
           v21 = v12;
           v22 = v9;
-          v23 = v7;
+          v23 = dictionary;
           v24 = @"supportsEditing";
         }
 
@@ -1246,10 +1246,10 @@ LABEL_107:
         {
           if (v14 == 1836282989)
           {
-            v15 = self;
+            selfCopy38 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"dmap.timeoutinterval";
           }
 
@@ -1262,10 +1262,10 @@ LABEL_110:
               goto LABEL_108;
             }
 
-            v15 = self;
+            selfCopy38 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"dmap.utcoffset";
           }
         }
@@ -1275,24 +1275,24 @@ LABEL_110:
           switch(v14)
           {
             case 0x7070726F:
-              v15 = self;
+              selfCopy38 = self;
               v16 = v12;
               v17 = v9;
-              v18 = v7;
+              v18 = dictionary;
               v19 = @"ppro";
               break;
             case 0x6D737570:
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"dmap.supportsupdate";
               goto LABEL_107;
             case 0x6D737474:
-              v15 = self;
+              selfCopy38 = self;
               v16 = v12;
               v17 = v9;
-              v18 = v7;
+              v18 = dictionary;
               v19 = @"dmap.status";
               break;
             default:
@@ -1307,20 +1307,20 @@ LABEL_110:
       {
         if (v14 == 1836282233)
         {
-          v30 = self;
+          selfCopy37 = self;
           v31 = v12;
           v32 = v9;
-          v33 = v7;
+          v33 = dictionary;
           v34 = @"dmap.supportsquery";
           goto LABEL_107;
         }
 
         if (v14 == 1836282483)
         {
-          v30 = self;
+          selfCopy37 = self;
           v31 = v12;
           v32 = v9;
-          v33 = v7;
+          v33 = dictionary;
           v34 = @"dmap.supportsresolve";
           goto LABEL_107;
         }
@@ -1330,10 +1330,10 @@ LABEL_110:
           goto LABEL_110;
         }
 
-        v15 = self;
+        selfCopy38 = self;
         v16 = v12;
         v17 = v9;
-        v18 = v7;
+        v18 = dictionary;
         v19 = @"dmap.utctime";
         goto LABEL_105;
       }
@@ -1345,16 +1345,16 @@ LABEL_110:
           goto LABEL_110;
         }
 
-        v30 = self;
+        selfCopy37 = self;
         v31 = v12;
         v32 = v9;
-        v33 = v7;
+        v33 = dictionary;
         v34 = @"dmap.supportspersistentids";
         goto LABEL_107;
       }
 
       v45 = [(BLPurchaseDAAPParser *)self parseMACAddressListing:v12 count:v9];
-      [v7 setValue:v45 forKey:@"macAddresses"];
+      [dictionary setValue:v45 forKey:@"macAddresses"];
     }
 
     else
@@ -1372,18 +1372,18 @@ LABEL_110:
                 goto LABEL_110;
               }
 
-              v30 = self;
+              selfCopy37 = self;
               v31 = v12;
               v32 = v9;
-              v33 = v7;
+              v33 = dictionary;
               v34 = @"com.apple.itunes.req-fplay";
               goto LABEL_107;
             }
 
-            v20 = self;
+            selfCopy33 = self;
             v21 = v12;
             v22 = v9;
-            v23 = v7;
+            v23 = dictionary;
             v24 = @"supportsPurchases";
           }
 
@@ -1392,24 +1392,24 @@ LABEL_110:
             switch(v14)
             {
               case 0x61654652:
-                v20 = self;
+                selfCopy33 = self;
                 v21 = v12;
                 v22 = v9;
-                v23 = v7;
+                v23 = dictionary;
                 v24 = @"com.apple.itunes.supports-fprap";
                 break;
               case 0x61654D51:
-                v20 = self;
+                selfCopy33 = self;
                 v21 = v12;
                 v22 = v9;
-                v23 = v7;
+                v23 = dictionary;
                 v24 = @"com.apple.itunes.playlist-contains-media-type";
                 break;
               case 0x61655356:
-                v15 = self;
+                selfCopy38 = self;
                 v16 = v12;
                 v17 = v9;
-                v18 = v7;
+                v18 = dictionary;
                 v19 = @"com.apple.itunes.music-sharing-version";
                 goto LABEL_105;
               default:
@@ -1424,13 +1424,13 @@ LABEL_110:
         {
           if (v14 == 1634759279)
           {
-            v15 = self;
+            selfCopy38 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"daap.protocolversion";
 LABEL_105:
-            [(BLPurchaseDAAPParser *)v15 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
+            [(BLPurchaseDAAPParser *)selfCopy38 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
             goto LABEL_108;
           }
 
@@ -1441,18 +1441,18 @@ LABEL_105:
               goto LABEL_110;
             }
 
-            v20 = self;
+            selfCopy33 = self;
             v21 = v12;
             v22 = v9;
-            v23 = v7;
+            v23 = dictionary;
             v24 = @"daap.supportssetproperty";
             goto LABEL_103;
           }
 
-          v35 = self;
+          selfCopy31 = self;
           v36 = v12;
           v37 = v9;
-          v38 = v7;
+          v38 = dictionary;
           v39 = @"daap.supportsgroups";
           goto LABEL_101;
         }
@@ -1464,21 +1464,21 @@ LABEL_105:
             goto LABEL_110;
           }
 
-          v15 = self;
+          selfCopy38 = self;
           v16 = v12;
           v17 = v9;
-          v18 = v7;
+          v18 = dictionary;
           v19 = @"com.apple.itunes.cloud-purchase-token";
           goto LABEL_105;
         }
 
-        v25 = self;
+        selfCopy34 = self;
         v26 = v12;
         v27 = v9;
-        v28 = v7;
+        v28 = dictionary;
         v29 = @"com.apple.itunes.supportedextensions";
 LABEL_91:
-        [(BLPurchaseDAAPParser *)v25 setUInt64:v26 size:v27 inDict:v28 forKey:v29];
+        [(BLPurchaseDAAPParser *)selfCopy34 setUInt64:v26 size:v27 inDict:v28 forKey:v29];
         goto LABEL_108;
       }
 
@@ -1488,10 +1488,10 @@ LABEL_91:
         {
           if (v14 == 1635013462)
           {
-            v15 = self;
+            selfCopy38 = self;
             v16 = v12;
             v17 = v9;
-            v18 = v7;
+            v18 = dictionary;
             v19 = @"Client-ATV-Sharing-Version";
             goto LABEL_105;
           }
@@ -1501,35 +1501,35 @@ LABEL_91:
             goto LABEL_110;
           }
 
-          v35 = self;
+          selfCopy31 = self;
           v36 = v12;
           v37 = v9;
-          v38 = v7;
+          v38 = dictionary;
           v39 = @"daap.supportsextradata";
 LABEL_101:
-          [(BLPurchaseDAAPParser *)v35 setUInt16:v36 size:v37 inDict:v38 forKey:v39];
+          [(BLPurchaseDAAPParser *)selfCopy31 setUInt16:v36 size:v37 inDict:v38 forKey:v39];
           goto LABEL_108;
         }
 
         if (v14 == 1685484665)
         {
-          v30 = self;
+          selfCopy37 = self;
           v31 = v12;
           v32 = v9;
-          v33 = v7;
+          v33 = dictionary;
           v34 = @"deviceType";
           goto LABEL_107;
         }
 
         if (v14 == 1835361395)
         {
-          v20 = self;
+          selfCopy33 = self;
           v21 = v12;
           v22 = v9;
-          v23 = v7;
+          v23 = dictionary;
           v24 = @"dmap.editcommandssupported";
 LABEL_103:
-          [(BLPurchaseDAAPParser *)v20 setBool:v21 size:v22 inDict:v23 forKey:v24];
+          [(BLPurchaseDAAPParser *)selfCopy33 setBool:v21 size:v22 inDict:v23 forKey:v24];
           goto LABEL_108;
         }
 
@@ -1538,10 +1538,10 @@ LABEL_103:
           goto LABEL_110;
         }
 
-        v25 = self;
+        selfCopy34 = self;
         v26 = v12;
         v27 = v9;
-        v28 = v7;
+        v28 = dictionary;
         v29 = @"dmap.longitemid";
         goto LABEL_91;
       }
@@ -1550,10 +1550,10 @@ LABEL_103:
       {
         if (v14 == 1835626093)
         {
-          v40 = self;
+          selfCopy39 = self;
           v41 = v12;
           v42 = v9;
-          v43 = v7;
+          v43 = dictionary;
           v44 = @"dmap.itemname";
         }
 
@@ -1564,10 +1564,10 @@ LABEL_103:
             goto LABEL_110;
           }
 
-          v40 = self;
+          selfCopy39 = self;
           v41 = v12;
           v42 = v9;
-          v43 = v7;
+          v43 = dictionary;
           v44 = @"model";
         }
       }
@@ -1583,35 +1583,35 @@ LABEL_103:
               goto LABEL_110;
             }
 
-            v30 = self;
+            selfCopy37 = self;
             v31 = v12;
             v32 = v9;
-            v33 = v7;
+            v33 = dictionary;
             v34 = @"dmap.supportsautologout";
             goto LABEL_107;
           }
 
-          v15 = self;
+          selfCopy38 = self;
           v16 = v12;
           v17 = v9;
-          v18 = v7;
+          v18 = dictionary;
           v19 = @"dmap.protocolversion";
           goto LABEL_105;
         }
 
-        v40 = self;
+        selfCopy39 = self;
         v41 = v12;
         v42 = v9;
-        v43 = v7;
+        v43 = dictionary;
         v44 = @"manufacturer";
       }
 
-      [(BLPurchaseDAAPParser *)v40 setString:v41 size:v42 inDict:v43 forKey:v44];
+      [(BLPurchaseDAAPParser *)selfCopy39 setString:v41 size:v42 inDict:v43 forKey:v44];
     }
 
 LABEL_108:
-    a3 = &v12[v9];
-    if (a4 <= 0)
+    info = &v12[v9];
+    if (count <= 0)
     {
       goto LABEL_111;
     }
@@ -1625,7 +1625,7 @@ LABEL_108:
     v54 = 2048;
     v55 = 4;
     v56 = 2048;
-    v57 = a4;
+    countCopy = count;
     _os_log_impl(&dword_241D1F000, v47, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v52, 0x20u);
   }
 
@@ -1638,11 +1638,11 @@ LABEL_122:
   return v46;
 }
 
-- (id)parseContentCodes:(const char *)a3 count:(int64_t)a4
+- (id)parseContentCodes:(const char *)codes count:(int64_t)count
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_9:
     v15 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
@@ -1650,10 +1650,10 @@ LABEL_9:
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = count - 4;
+      if ((count - 4) <= 3)
       {
         v17 = BLJaliscoLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1663,7 +1663,7 @@ LABEL_9:
           v23 = 2048;
           v24 = 4;
           v25 = 2048;
-          v26 = v8;
+          countCopy = v8;
           goto LABEL_17;
         }
 
@@ -1672,10 +1672,10 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(codes + 1));
+      v10 = count - 8;
+      v11 = count - 8 >= v9;
+      count = count - 8 - v9;
       if (!v11)
       {
         v17 = BLJaliscoLog();
@@ -1686,7 +1686,7 @@ LABEL_18:
           v23 = 2048;
           v24 = v9;
           v25 = 2048;
-          v26 = v10;
+          countCopy = v10;
 LABEL_17:
           _os_log_impl(&dword_241D1F000, v17, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v21, 0x20u);
         }
@@ -1694,16 +1694,16 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *codes;
+      v13 = codes + 8;
       v12 = v14;
       if (v14 != 1953788781)
       {
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v12) bytes:v13 size:v9 context:"[BLPurchaseDAAPParser parseContentCodes:count:]"];
       }
 
-      a3 = &v13[v9];
-      if (a4 <= 0)
+      codes = &v13[v9];
+      if (count <= 0)
       {
         goto LABEL_9;
       }
@@ -1717,7 +1717,7 @@ LABEL_17:
       v23 = 2048;
       v24 = 4;
       v25 = 2048;
-      v26 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v16, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v21, 0x20u);
     }
 
@@ -1730,19 +1730,19 @@ LABEL_19:
   return v15;
 }
 
-- (id)parseError:(const char *)a3 count:(int64_t)a4
+- (id)parseError:(const char *)error count:(int64_t)count
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a4 < 9)
+  if (count < 9)
   {
     goto LABEL_23;
   }
 
-  v4 = a4;
+  countCopy = count;
   v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   while (1)
   {
-    if (v4 <= 3)
+    if (countCopy <= 3)
     {
       v19 = BLJaliscoLog();
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1755,11 +1755,11 @@ LABEL_19:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = v4;
+      v28 = countCopy;
       goto LABEL_21;
     }
 
-    if ((v4 - 4) <= 3)
+    if ((countCopy - 4) <= 3)
     {
       v19 = BLJaliscoLog();
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1772,21 +1772,21 @@ LABEL_19:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = v4 - 4;
+      v28 = countCopy - 4;
       goto LABEL_21;
     }
 
-    v8 = bswap32(*(a3 + 1));
-    v9 = v4 - 8;
-    v10 = v4 - 8 >= v8;
-    v4 = v4 - 8 - v8;
+    v8 = bswap32(*(error + 1));
+    v9 = countCopy - 8;
+    v10 = countCopy - 8 >= v8;
+    countCopy = countCopy - 8 - v8;
     if (!v10)
     {
       break;
     }
 
-    v12 = *a3;
-    v11 = a3 + 8;
+    v12 = *error;
+    v11 = error + 8;
     v13 = bswap32(v12);
     if (v13 == 1634030147)
     {
@@ -1812,8 +1812,8 @@ LABEL_19:
 
     [(BLPurchaseDAAPParser *)self setUInt32:v14 size:v15 inDict:v16 forKey:v17];
 LABEL_13:
-    a3 = &v11[v8];
-    if (v4 < 1)
+    error = &v11[v8];
+    if (countCopy < 1)
     {
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v7];
 
@@ -1844,10 +1844,10 @@ LABEL_24:
   return v18;
 }
 
-- (id)parseLogin:(const char *)a3 count:(int64_t)a4
+- (id)parseLogin:(const char *)login count:(int64_t)count
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a4 < 1)
+  if (count < 1)
   {
     v6 = 0;
 LABEL_12:
@@ -1857,12 +1857,12 @@ LABEL_12:
 
   else
   {
-    v4 = a4;
+    countCopy = count;
     v6 = 0;
-    while (v4 > 3)
+    while (countCopy > 3)
     {
-      v7 = v4 - 4;
-      if ((v4 - 4) <= 3)
+      v7 = countCopy - 4;
+      if ((countCopy - 4) <= 3)
       {
         v14 = BLJaliscoLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1879,9 +1879,9 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v8 = bswap32(*a3);
-      v9 = bswap32(*(a3 + 1));
-      v10 = (a3 + 8);
+      v8 = bswap32(*login);
+      v9 = bswap32(*(login + 1));
+      v10 = (login + 8);
       if (v8 != 1836282996)
       {
         if (v8 == 1835821412)
@@ -1897,9 +1897,9 @@ LABEL_12:
         }
       }
 
-      a3 = v10 + v9;
-      v4 = v4 - 8 - v9;
-      if (v4 <= 0)
+      login = v10 + v9;
+      countCopy = countCopy - 8 - v9;
+      if (countCopy <= 0)
       {
         goto LABEL_12;
       }
@@ -1913,7 +1913,7 @@ LABEL_12:
       v19 = 2048;
       v20 = 4;
       v21 = 2048;
-      v22 = v4;
+      v22 = countCopy;
       _os_log_impl(&dword_241D1F000, v13, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v17, 0x20u);
     }
 
@@ -1926,11 +1926,11 @@ LABEL_19:
   return v12;
 }
 
-- (id)parseListingItem:(const char *)a3 count:(int64_t)a4
+- (id)parseListingItem:(const char *)item count:(int64_t)count
 {
   v80 = *MEMORY[0x277D85DE8];
   v7 = +[BLPurchaseDAAPItem item];
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_414:
     [v7 freeze];
@@ -1940,10 +1940,10 @@ LABEL_414:
 
   v71 = 0;
   v8 = @"booklets";
-  while (a4 > 3)
+  while (count > 3)
   {
-    v9 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v9 = count - 4;
+    if ((count - 4) <= 3)
     {
       v68 = BLJaliscoLog();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
@@ -1953,16 +1953,16 @@ LABEL_414:
         v76 = 2048;
         v77 = 4;
         v78 = 2048;
-        v79 = v9;
+        countCopy = v9;
         _os_log_impl(&dword_241D1F000, v68, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", buf, 0x20u);
       }
 
       goto LABEL_421;
     }
 
-    v11 = *a3;
-    v10 = *(a3 + 1);
-    v12 = (a3 + 8);
+    v11 = *item;
+    v10 = *(item + 1);
+    v12 = (item + 8);
     v13 = bswap32(v11);
     v14 = bswap32(v10);
     if (v13 > 1634952812)
@@ -1981,7 +1981,7 @@ LABEL_414:
                 {
                   if (v13 == 1634954096)
                   {
-                    v29 = self;
+                    selfCopy129 = self;
                     v30 = v12;
                     v31 = v14;
                     v32 = v7;
@@ -1992,7 +1992,7 @@ LABEL_414:
                   goto LABEL_391;
                 }
 
-                v39 = self;
+                selfCopy117 = self;
                 v40 = v12;
                 v41 = v14;
                 v42 = v7;
@@ -2002,7 +2002,7 @@ LABEL_414:
 
               if (v13 == 1634952813)
               {
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
@@ -2016,7 +2016,7 @@ LABEL_414:
                   goto LABEL_391;
                 }
 
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
@@ -2030,7 +2030,7 @@ LABEL_414:
               {
                 if (v13 == 1634955363)
                 {
-                  v29 = self;
+                  selfCopy129 = self;
                   v30 = v12;
                   v31 = v14;
                   v32 = v7;
@@ -2041,7 +2041,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
@@ -2053,21 +2053,21 @@ LABEL_414:
               switch(v13)
               {
                 case 1634955381:
-                  v23 = self;
+                  selfCopy125 = self;
                   v24 = v12;
                   v25 = v14;
                   v26 = v7;
                   v27 = @"daap.songpodcasturl";
                   break;
                 case 1634956129:
-                  v23 = self;
+                  selfCopy125 = self;
                   v24 = v12;
                   v25 = v14;
                   v26 = v7;
                   v27 = @"daap.sortartist";
                   break;
                 case 1634956142:
-                  v23 = self;
+                  selfCopy125 = self;
                   v24 = v12;
                   v25 = v14;
                   v26 = v7;
@@ -2087,7 +2087,7 @@ LABEL_414:
             {
               if (v13 == 1634956397)
               {
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
@@ -2100,7 +2100,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v50 = self;
+              selfCopy109 = self;
               v51 = v12;
               v52 = v14;
               v53 = v7;
@@ -2111,7 +2111,7 @@ LABEL_414:
             {
               if (v13 == 1634956149)
               {
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
@@ -2124,7 +2124,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v50 = self;
+              selfCopy109 = self;
               v51 = v12;
               v52 = v14;
               v53 = v7;
@@ -2143,7 +2143,7 @@ LABEL_414:
                   goto LABEL_391;
                 }
 
-                v39 = self;
+                selfCopy117 = self;
                 v40 = v12;
                 v41 = v14;
                 v42 = v7;
@@ -2151,7 +2151,7 @@ LABEL_414:
                 goto LABEL_384;
               }
 
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
@@ -2163,7 +2163,7 @@ LABEL_414:
             {
               if (v13 == 1667328112)
               {
-                v39 = self;
+                selfCopy117 = self;
                 v40 = v12;
                 v41 = v14;
                 v42 = v7;
@@ -2176,7 +2176,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2184,7 +2184,7 @@ LABEL_414:
               goto LABEL_382;
             }
 
-            v50 = self;
+            selfCopy109 = self;
             v51 = v12;
             v52 = v14;
             v53 = v7;
@@ -2204,7 +2204,7 @@ LABEL_414:
               {
                 if (v13 == 1667330162)
                 {
-                  v29 = self;
+                  selfCopy129 = self;
                   v30 = v12;
                   v31 = v14;
                   v32 = v7;
@@ -2215,7 +2215,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2224,7 +2224,7 @@ LABEL_414:
 
             else if (v13 == 1667328368)
             {
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2238,7 +2238,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2250,7 +2250,7 @@ LABEL_414:
           {
             if (v13 == 1667330931)
             {
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2264,7 +2264,7 @@ LABEL_414:
                 goto LABEL_391;
               }
 
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2277,21 +2277,21 @@ LABEL_414:
             switch(v13)
             {
               case 1667331684:
-                v18 = self;
+                selfCopy128 = self;
                 v19 = v12;
                 v20 = v14;
                 v21 = v7;
                 v22 = @"selectedForVideo";
                 break;
               case 1667584343:
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
                 v33 = @"com.apple.itunes.playqueue-warning-threshold";
                 goto LABEL_404;
               case 1667584839:
-                v18 = self;
+                selfCopy128 = self;
                 v19 = v12;
                 v20 = v14;
                 v21 = v7;
@@ -2311,7 +2311,7 @@ LABEL_414:
           {
             if (v13 == 1667584856)
             {
-              v34 = self;
+              selfCopy123 = self;
               v35 = v12;
               v36 = v14;
               v37 = v7;
@@ -2324,7 +2324,7 @@ LABEL_414:
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -2336,21 +2336,21 @@ LABEL_414:
             switch(v13)
             {
               case 1668113005:
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
                 v27 = @"libraryServiceDomain";
                 break;
               case 1668113011:
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
                 v27 = @"libraryServiceName";
                 break;
               case 1668113012:
-                v23 = self;
+                selfCopy125 = self;
                 v24 = v12;
                 v25 = v14;
                 v26 = v7;
@@ -2368,7 +2368,7 @@ LABEL_414:
         {
           if (v13 == 1668115822)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -2378,7 +2378,7 @@ LABEL_414:
 
           if (v13 == 1668115832)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -2391,7 +2391,7 @@ LABEL_414:
             goto LABEL_391;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -2401,7 +2401,7 @@ LABEL_414:
 
         if (v13 == 1668114788)
         {
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -2429,7 +2429,7 @@ LABEL_262:
             {
               if (v13 == 1836216434)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -2442,7 +2442,7 @@ LABEL_262:
                 goto LABEL_391;
               }
 
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -2464,20 +2464,20 @@ LABEL_262:
 
                 if (v13 == 1836279913)
                 {
-                  v29 = self;
+                  selfCopy129 = self;
                   v30 = v12;
                   v31 = v14;
                   v32 = v7;
                   v33 = @"headerItemIndex";
 LABEL_404:
-                  [(BLPurchaseDAAPParser *)v29 setUInt32:v30 size:v31 inDict:v32 forKey:v33];
+                  [(BLPurchaseDAAPParser *)selfCopy129 setUInt32:v30 size:v31 inDict:v32 forKey:v33];
                   goto LABEL_407;
                 }
 
                 goto LABEL_391;
               }
 
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -2491,7 +2491,7 @@ LABEL_404:
           {
             if (v13 == 1836279918)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -2501,7 +2501,7 @@ LABEL_404:
 
             if (v13 == 1836281185)
             {
-              v34 = self;
+              selfCopy123 = self;
               v35 = v12;
               v36 = v14;
               v37 = v7;
@@ -2514,7 +2514,7 @@ LABEL_404:
 
           if (v13 == 1836282996)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -2538,7 +2538,7 @@ LABEL_399:
             goto LABEL_391;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -2554,7 +2554,7 @@ LABEL_399:
             {
               if (v13 == 1835625572)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -2565,7 +2565,7 @@ LABEL_399:
               goto LABEL_391;
             }
 
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -2575,13 +2575,13 @@ LABEL_399:
 
           if (v13 == 1835624553)
           {
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
             v22 = @"dmap.itemhidden";
 LABEL_382:
-            [(BLPurchaseDAAPParser *)v18 setBool:v19 size:v20 inDict:v21 forKey:v22];
+            [(BLPurchaseDAAPParser *)selfCopy128 setBool:v19 size:v20 inDict:v21 forKey:v22];
             goto LABEL_407;
           }
 
@@ -2608,7 +2608,7 @@ LABEL_402:
         {
           if (v13 == 1835625827)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -2635,7 +2635,7 @@ LABEL_402:
           {
             if (v13 == 1836082546)
             {
-              v34 = self;
+              selfCopy123 = self;
               v35 = v12;
               v36 = v14;
               v37 = v7;
@@ -2648,7 +2648,7 @@ LABEL_402:
 
           if (v14 == 8)
           {
-            v34 = self;
+            selfCopy123 = self;
             v35 = v12;
             v36 = 8;
             v37 = v7;
@@ -2658,7 +2658,7 @@ LABEL_402:
 
           if (v14 == 4)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = 4;
             v32 = v7;
@@ -2676,7 +2676,7 @@ LABEL_402:
           {
             if (v13 == 1668117346)
             {
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2690,7 +2690,7 @@ LABEL_402:
                 goto LABEL_391;
               }
 
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -2702,7 +2702,7 @@ LABEL_402:
           {
             if (v13 == 1668116594)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -2715,7 +2715,7 @@ LABEL_402:
               goto LABEL_391;
             }
 
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -2729,7 +2729,7 @@ LABEL_402:
         {
           if (v13 == 1668117360)
           {
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -2743,7 +2743,7 @@ LABEL_402:
               goto LABEL_391;
             }
 
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -2798,7 +2798,7 @@ LABEL_393:
         {
           if (v13 == 1835295339)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -2820,7 +2820,7 @@ LABEL_393:
           {
             if (v13 == 1835364978)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -2833,7 +2833,7 @@ LABEL_393:
               goto LABEL_391;
             }
 
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -2849,7 +2849,7 @@ LABEL_393:
       {
         if (v13 == 1668444012)
         {
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -2887,13 +2887,13 @@ LABEL_413:
         {
           if ((v71 - 5) < 3)
           {
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
             v27 = @"value";
 LABEL_379:
-            [(BLPurchaseDAAPParser *)v23 setString:v24 size:v25 inDict:v26 forKey:v27];
+            [(BLPurchaseDAAPParser *)selfCopy125 setString:v24 size:v25 inDict:v26 forKey:v27];
             goto LABEL_407;
           }
 
@@ -2910,7 +2910,7 @@ LABEL_379:
       {
         if (v13 == 1835103852)
         {
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -2920,7 +2920,7 @@ LABEL_379:
 
         if (v13 == 1835234403)
         {
-          v29 = self;
+          selfCopy129 = self;
           v30 = v12;
           v31 = v14;
           v32 = v7;
@@ -2949,7 +2949,7 @@ LABEL_379:
             {
               if (v13 == 1634025801)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -2959,7 +2959,7 @@ LABEL_379:
 
               if (v13 == 1634025833)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -2976,7 +2976,7 @@ LABEL_391:
             {
               if (v13 == 1634025796)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -2987,7 +2987,7 @@ LABEL_391:
               goto LABEL_391;
             }
 
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -2999,7 +2999,7 @@ LABEL_391:
           {
             if (v13 == 1634026308)
             {
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
@@ -3013,7 +3013,7 @@ LABEL_391:
                 goto LABEL_391;
               }
 
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
@@ -3048,20 +3048,20 @@ LABEL_332:
             {
               if (v13 == 1634026325)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
                 v38 = @"com.apple.itunes.cloud-user-id";
 LABEL_406:
-                [(BLPurchaseDAAPParser *)v34 setUInt64:v35 size:v36 inDict:v37 forKey:v38];
+                [(BLPurchaseDAAPParser *)selfCopy123 setUInt64:v35 size:v36 inDict:v37 forKey:v38];
                 goto LABEL_407;
               }
 
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3079,7 +3079,7 @@ LABEL_406:
             {
               if (v13 == 1634026355)
               {
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
@@ -3090,7 +3090,7 @@ LABEL_406:
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3103,7 +3103,7 @@ LABEL_406:
             {
               if (v13 == 1634026340)
               {
-                v34 = self;
+                selfCopy123 = self;
                 v35 = v12;
                 v36 = v14;
                 v37 = v7;
@@ -3114,7 +3114,7 @@ LABEL_406:
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3128,7 +3128,7 @@ LABEL_406:
         {
           if (v13 == 1634026357)
           {
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3142,7 +3142,7 @@ LABEL_406:
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3154,7 +3154,7 @@ LABEL_406:
 
         if (v13 == 1634026835)
         {
-          v29 = self;
+          selfCopy129 = self;
           v30 = v12;
           v31 = v14;
           v32 = v7;
@@ -3164,7 +3164,7 @@ LABEL_406:
 
         if (v13 == 1634027090)
         {
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -3179,13 +3179,13 @@ LABEL_406:
 
         if (*v12 == 1)
         {
-          v39 = self;
+          selfCopy117 = self;
           v40 = v12;
           v41 = v14;
           v42 = v7;
           v43 = @"com.apple.itunes.has-chapter-data";
 LABEL_384:
-          [(BLPurchaseDAAPParser *)v39 setUInt8:v40 size:v41 inDict:v42 forKey:v43];
+          [(BLPurchaseDAAPParser *)selfCopy117 setUInt8:v40 size:v41 inDict:v42 forKey:v43];
         }
       }
 
@@ -3197,7 +3197,7 @@ LABEL_384:
           {
             if (v13 == 1634027588)
             {
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -3210,7 +3210,7 @@ LABEL_384:
               goto LABEL_391;
             }
 
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -3222,7 +3222,7 @@ LABEL_384:
           {
             if (v13 == 1634027853)
             {
-              v34 = self;
+              selfCopy123 = self;
               v35 = v12;
               v36 = v14;
               v37 = v7;
@@ -3235,7 +3235,7 @@ LABEL_384:
 
           if (*v12 == 1)
           {
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -3255,7 +3255,7 @@ LABEL_384:
                 goto LABEL_391;
               }
 
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -3263,7 +3263,7 @@ LABEL_384:
               goto LABEL_384;
             }
 
-            v18 = self;
+            selfCopy128 = self;
             v19 = v12;
             v20 = v14;
             v21 = v7;
@@ -3298,7 +3298,7 @@ LABEL_384:
               goto LABEL_391;
             }
 
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -3308,7 +3308,7 @@ LABEL_384:
 
           if (v14 == 4)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = 4;
             v32 = v7;
@@ -3318,7 +3318,7 @@ LABEL_384:
 
           if (v14 == 1)
           {
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = 1;
             v42 = v7;
@@ -3336,7 +3336,7 @@ LABEL_384:
           {
             if (v13 == 1634030148)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -3346,7 +3346,7 @@ LABEL_384:
 
             if (v13 == 1634030157)
             {
-              v34 = self;
+              selfCopy123 = self;
               v35 = v12;
               v36 = v14;
               v37 = v7;
@@ -3360,21 +3360,21 @@ LABEL_384:
             switch(v13)
             {
               case 1634030160:
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
                 v33 = @"com.apple.itunes.rental-pb-start";
                 goto LABEL_404;
               case 1634030163:
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
                 v33 = @"com.apple.itunes.rental-start";
                 goto LABEL_404;
               case 1634030165:
-                v29 = self;
+                selfCopy129 = self;
                 v30 = v12;
                 v31 = v14;
                 v32 = v7;
@@ -3391,21 +3391,21 @@ LABEL_384:
           switch(v13)
           {
             case 1634029665:
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
               v22 = @"com.apple.itunes.publication-contains-audio";
               break;
             case 1634029676:
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
               v22 = @"com.apple.itunes.publication-is-read-aloud";
               break;
             case 1634029680:
-              v18 = self;
+              selfCopy128 = self;
               v19 = v12;
               v20 = v14;
               v21 = v7;
@@ -3425,7 +3425,7 @@ LABEL_384:
             goto LABEL_391;
           }
 
-          v39 = self;
+          selfCopy117 = self;
           v40 = v12;
           v41 = v14;
           v42 = v7;
@@ -3445,19 +3445,19 @@ LABEL_384:
           {
             if (v13 == 1634952304)
             {
-              v59 = self;
+              selfCopy114 = self;
               v60 = v12;
               v61 = v14;
               v62 = v7;
               v63 = @"daap.songdatepurchased";
 LABEL_389:
-              [(BLPurchaseDAAPParser *)v59 setDate:v60 size:v61 inDict:v62 forKey:v63];
+              [(BLPurchaseDAAPParser *)selfCopy114 setDate:v60 size:v61 inDict:v62 forKey:v63];
               goto LABEL_407;
             }
 
             if (v13 == 1634952306)
             {
-              v59 = self;
+              selfCopy114 = self;
               v60 = v12;
               v61 = v14;
               v62 = v7;
@@ -3470,7 +3470,7 @@ LABEL_389:
               goto LABEL_391;
             }
 
-            v23 = self;
+            selfCopy125 = self;
             v24 = v12;
             v25 = v14;
             v26 = v7;
@@ -3480,7 +3480,7 @@ LABEL_389:
 
           if (v13 == 1634952301)
           {
-            v59 = self;
+            selfCopy114 = self;
             v60 = v12;
             v61 = v14;
             v62 = v7;
@@ -3493,7 +3493,7 @@ LABEL_389:
             goto LABEL_391;
           }
 
-          v50 = self;
+          selfCopy109 = self;
           v51 = v12;
           v52 = v14;
           v53 = v7;
@@ -3505,7 +3505,7 @@ LABEL_389:
         {
           if (v13 == 1634952050)
           {
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -3518,7 +3518,7 @@ LABEL_389:
             goto LABEL_391;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -3528,7 +3528,7 @@ LABEL_389:
 
         if (v13 == 1634952290)
         {
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -3538,13 +3538,13 @@ LABEL_389:
 
         if (v13 == 1634952291)
         {
-          v50 = self;
+          selfCopy109 = self;
           v51 = v12;
           v52 = v14;
           v53 = v7;
           v54 = @"daap.songdisccount";
 LABEL_370:
-          [(BLPurchaseDAAPParser *)v50 setUInt16:v51 size:v52 inDict:v53 forKey:v54];
+          [(BLPurchaseDAAPParser *)selfCopy109 setUInt16:v51 size:v52 inDict:v53 forKey:v54];
           goto LABEL_407;
         }
 
@@ -3586,7 +3586,7 @@ LABEL_400:
               goto LABEL_391;
             }
 
-            v50 = self;
+            selfCopy109 = self;
             v51 = v12;
             v52 = v14;
             v53 = v7;
@@ -3610,21 +3610,21 @@ LABEL_400:
           switch(v13)
           {
             case 1634951791:
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
               v33 = @"daap.songbookmark";
               goto LABEL_404;
             case 1634952046:
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
               v27 = @"daap.songcontentdescription";
               break;
             case 1634952048:
-              v23 = self;
+              selfCopy125 = self;
               v24 = v12;
               v25 = v14;
               v26 = v7;
@@ -3644,7 +3644,7 @@ LABEL_400:
             goto LABEL_391;
           }
 
-          v39 = self;
+          selfCopy117 = self;
           v40 = v12;
           v41 = v14;
           v42 = v7;
@@ -3671,7 +3671,7 @@ LABEL_400:
           {
             if (v13 == 1634354532)
             {
-              v59 = self;
+              selfCopy114 = self;
               v60 = v12;
               v61 = v14;
               v62 = v7;
@@ -3684,7 +3684,7 @@ LABEL_400:
               goto LABEL_391;
             }
 
-            v39 = self;
+            selfCopy117 = self;
             v40 = v12;
             v41 = v14;
             v42 = v7;
@@ -3696,7 +3696,7 @@ LABEL_400:
           {
             if (v13 == 1634759277)
             {
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -3710,7 +3710,7 @@ LABEL_400:
                 goto LABEL_391;
               }
 
-              v39 = self;
+              selfCopy117 = self;
               v40 = v12;
               v41 = v14;
               v42 = v7;
@@ -3720,7 +3720,7 @@ LABEL_400:
             goto LABEL_384;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -3733,7 +3733,7 @@ LABEL_400:
           {
             if (v13 == 1634165091)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -3743,7 +3743,7 @@ LABEL_400:
 
             if (v13 == 1634168161)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -3756,7 +3756,7 @@ LABEL_400:
 
           if (v13 == 1634168169)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -3780,7 +3780,7 @@ LABEL_400:
             goto LABEL_391;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -3796,7 +3796,7 @@ LABEL_400:
         {
           if (v13 == 1634030405)
           {
-            v34 = self;
+            selfCopy123 = self;
             v35 = v12;
             v36 = v14;
             v37 = v7;
@@ -3809,7 +3809,7 @@ LABEL_400:
             goto LABEL_391;
           }
 
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -3824,7 +3824,7 @@ LABEL_400:
             goto LABEL_391;
           }
 
-          v23 = self;
+          selfCopy125 = self;
           v24 = v12;
           v25 = v14;
           v26 = v7;
@@ -3844,7 +3844,7 @@ LABEL_400:
 
         if (v14 == 4)
         {
-          v29 = self;
+          selfCopy129 = self;
           v30 = v12;
           v31 = 4;
           v32 = v7;
@@ -3861,7 +3861,7 @@ LABEL_400:
           {
             if (v13 == 1634030421)
             {
-              v29 = self;
+              selfCopy129 = self;
               v30 = v12;
               v31 = v14;
               v32 = v7;
@@ -3872,7 +3872,7 @@ LABEL_400:
             goto LABEL_391;
           }
 
-          v18 = self;
+          selfCopy128 = self;
           v19 = v12;
           v20 = v14;
           v21 = v7;
@@ -3893,7 +3893,7 @@ LABEL_400:
 
           if (v13 == 1634038895)
           {
-            v29 = self;
+            selfCopy129 = self;
             v30 = v12;
             v31 = v14;
             v32 = v7;
@@ -3907,9 +3907,9 @@ LABEL_400:
     }
 
 LABEL_407:
-    a3 = v12 + v14;
-    a4 = a4 - 8 - v14;
-    if (a4 <= 0)
+    item = v12 + v14;
+    count = count - 8 - v14;
+    if (count <= 0)
     {
       goto LABEL_414;
     }
@@ -3923,7 +3923,7 @@ LABEL_407:
     v76 = 2048;
     v77 = 4;
     v78 = 2048;
-    v79 = a4;
+    countCopy = count;
     _os_log_impl(&dword_241D1F000, v67, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", buf, 0x20u);
   }
 
@@ -3936,11 +3936,11 @@ LABEL_422:
   return v66;
 }
 
-- (id)parseBookletListing:(const char *)a3 count:(int64_t)a4
+- (id)parseBookletListing:(const char *)listing count:(int64_t)count
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_10:
     v16 = v7;
@@ -3948,10 +3948,10 @@ LABEL_10:
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = count - 4;
+      if ((count - 4) <= 3)
       {
         v18 = BLJaliscoLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3961,7 +3961,7 @@ LABEL_10:
           v24 = 2048;
           v25 = 4;
           v26 = 2048;
-          v27 = v8;
+          countCopy = v8;
           goto LABEL_18;
         }
 
@@ -3970,10 +3970,10 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(listing + 1));
+      v10 = count - 8;
+      v11 = count - 8 >= v9;
+      count = count - 8 - v9;
       if (!v11)
       {
         v18 = BLJaliscoLog();
@@ -3984,7 +3984,7 @@ LABEL_19:
           v24 = 2048;
           v25 = v9;
           v26 = 2048;
-          v27 = v10;
+          countCopy = v10;
 LABEL_18:
           _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
         }
@@ -3992,8 +3992,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *listing;
+      v13 = listing + 8;
       v12 = v14;
       if (v14 == 1765960289)
       {
@@ -4006,8 +4006,8 @@ LABEL_18:
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v12) bytes:v13 size:v9 context:"[BLPurchaseDAAPParser parseBookletListing:count:]"];
       }
 
-      a3 = &v13[v9];
-      if (a4 <= 0)
+      listing = &v13[v9];
+      if (count <= 0)
       {
         goto LABEL_10;
       }
@@ -4021,7 +4021,7 @@ LABEL_18:
       v24 = 2048;
       v25 = 4;
       v26 = 2048;
-      v27 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v17, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
     }
 
@@ -4034,21 +4034,21 @@ LABEL_20:
   return v16;
 }
 
-- (id)parseBookletItem:(const char *)a3 count:(int64_t)a4
+- (id)parseBookletItem:(const char *)item count:(int64_t)count
 {
   v37 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_19:
     v25 = v7;
     goto LABEL_30;
   }
 
-  while (a4 > 3)
+  while (count > 3)
   {
-    v8 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v8 = count - 4;
+    if ((count - 4) <= 3)
     {
       v27 = BLJaliscoLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -4058,7 +4058,7 @@ LABEL_19:
         v33 = 2048;
         v34 = 4;
         v35 = 2048;
-        v36 = v8;
+        countCopy = v8;
         goto LABEL_27;
       }
 
@@ -4067,10 +4067,10 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(item + 1));
+    v10 = count - 8;
+    v11 = count - 8 >= v9;
+    count = count - 8 - v9;
     if (!v11)
     {
       v27 = BLJaliscoLog();
@@ -4081,7 +4081,7 @@ LABEL_28:
         v33 = 2048;
         v34 = v9;
         v35 = 2048;
-        v36 = v10;
+        countCopy = v10;
 LABEL_27:
         _os_log_impl(&dword_241D1F000, v27, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v31, 0x20u);
       }
@@ -4089,14 +4089,14 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v13 = *a3;
-    v12 = a3 + 8;
+    v13 = *item;
+    v12 = item + 8;
     v14 = bswap32(v13);
     if (v14 > 1634353773)
     {
       if (v14 == 1634353779)
       {
-        v20 = self;
+        selfCopy3 = self;
         v21 = v12;
         v22 = v9;
         v23 = v7;
@@ -4111,7 +4111,7 @@ LABEL_14:
         goto LABEL_18;
       }
 
-      v15 = self;
+      selfCopy4 = self;
       v16 = v12;
       v17 = v9;
       v18 = v7;
@@ -4122,13 +4122,13 @@ LABEL_14:
     {
       if (v14 == 1634353761)
       {
-        v20 = self;
+        selfCopy3 = self;
         v21 = v12;
         v22 = v9;
         v23 = v7;
         v24 = @"com.apple.itunes.store.booklet-item-store-id";
 LABEL_17:
-        [(BLPurchaseDAAPParser *)v20 setUInt64:v21 size:v22 inDict:v23 forKey:v24];
+        [(BLPurchaseDAAPParser *)selfCopy3 setUInt64:v21 size:v22 inDict:v23 forKey:v24];
         goto LABEL_18;
       }
 
@@ -4137,17 +4137,17 @@ LABEL_17:
         goto LABEL_14;
       }
 
-      v15 = self;
+      selfCopy4 = self;
       v16 = v12;
       v17 = v9;
       v18 = v7;
       v19 = @"com.apple.itunes.store.booklet-item-redownload-param";
     }
 
-    [(BLPurchaseDAAPParser *)v15 setString:v16 size:v17 inDict:v18 forKey:v19];
+    [(BLPurchaseDAAPParser *)selfCopy4 setString:v16 size:v17 inDict:v18 forKey:v19];
 LABEL_18:
-    a3 = &v12[v9];
-    if (a4 <= 0)
+    item = &v12[v9];
+    if (count <= 0)
     {
       goto LABEL_19;
     }
@@ -4161,7 +4161,7 @@ LABEL_18:
     v33 = 2048;
     v34 = 4;
     v35 = 2048;
-    v36 = a4;
+    countCopy = count;
     _os_log_impl(&dword_241D1F000, v26, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v31, 0x20u);
   }
 
@@ -4174,11 +4174,11 @@ LABEL_30:
   return v25;
 }
 
-- (id)parseListingCollection:(const char *)a3 count:(int64_t)a4 capacity:(int)a5
+- (id)parseListingCollection:(const char *)collection count:(int64_t)count capacity:(int)capacity
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
-  if (a4 < 1)
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:capacity];
+  if (count < 1)
   {
 LABEL_11:
     v17 = v8;
@@ -4186,10 +4186,10 @@ LABEL_11:
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v9 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v9 = count - 4;
+      if ((count - 4) <= 3)
       {
         v19 = BLJaliscoLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4199,7 +4199,7 @@ LABEL_11:
           v25 = 2048;
           v26 = 4;
           v27 = 2048;
-          v28 = v9;
+          countCopy = v9;
           goto LABEL_19;
         }
 
@@ -4208,10 +4208,10 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v10 = bswap32(*(a3 + 1));
-      v11 = a4 - 8;
-      v12 = a4 - 8 >= v10;
-      a4 = a4 - 8 - v10;
+      v10 = bswap32(*(collection + 1));
+      v11 = count - 8;
+      v12 = count - 8 >= v10;
+      count = count - 8 - v10;
       if (!v12)
       {
         v19 = BLJaliscoLog();
@@ -4222,7 +4222,7 @@ LABEL_20:
           v25 = 2048;
           v26 = v10;
           v27 = 2048;
-          v28 = v11;
+          countCopy = v11;
 LABEL_19:
           _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
         }
@@ -4230,8 +4230,8 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *collection;
+      v13 = collection + 8;
       v15 = bswap32(v14);
       if (v15 != 1836282996)
       {
@@ -4247,8 +4247,8 @@ LABEL_19:
         }
       }
 
-      a3 = &v13[v10];
-      if (a4 <= 0)
+      collection = &v13[v10];
+      if (count <= 0)
       {
         goto LABEL_11;
       }
@@ -4262,7 +4262,7 @@ LABEL_19:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
     }
 
@@ -4275,22 +4275,22 @@ LABEL_21:
   return v17;
 }
 
-- (id)parseBrowseResults:(const char *)a3 count:(int64_t)a4
+- (id)parseBrowseResults:(const char *)results count:(int64_t)count
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (a4 < 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (count < 1)
   {
 LABEL_10:
-    v17 = v7;
+    v17 = array;
   }
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = count - 4;
+      if ((count - 4) <= 3)
       {
         v19 = BLJaliscoLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4300,7 +4300,7 @@ LABEL_10:
           v25 = 2048;
           v26 = 4;
           v27 = 2048;
-          v28 = v8;
+          countCopy = v8;
           goto LABEL_18;
         }
 
@@ -4309,10 +4309,10 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(results + 1));
+      v10 = count - 8;
+      v11 = count - 8 >= v9;
+      count = count - 8 - v9;
       if (!v11)
       {
         v19 = BLJaliscoLog();
@@ -4323,7 +4323,7 @@ LABEL_19:
           v25 = 2048;
           v26 = v9;
           v27 = 2048;
-          v28 = v10;
+          countCopy = v10;
 LABEL_18:
           _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
         }
@@ -4331,8 +4331,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = *a3;
-      v13 = a3 + 8;
+      v14 = *results;
+      v13 = results + 8;
       v12 = v14;
       if (v14 == 1953066093)
       {
@@ -4340,7 +4340,7 @@ LABEL_18:
         v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v13 length:v9 encoding:4];
         [(BLPurchaseDAAPItem *)v15 setName:v16];
         [(BLPurchaseDAAPItem *)v15 freeze];
-        [v7 addObject:v15];
+        [array addObject:v15];
       }
 
       else
@@ -4348,8 +4348,8 @@ LABEL_18:
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v12) bytes:v13 size:v9 context:"[BLPurchaseDAAPParser parseBrowseResults:count:]"];
       }
 
-      a3 = &v13[v9];
-      if (a4 <= 0)
+      results = &v13[v9];
+      if (count <= 0)
       {
         goto LABEL_10;
       }
@@ -4363,7 +4363,7 @@ LABEL_18:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
     }
 
@@ -4376,11 +4376,11 @@ LABEL_20:
   return v17;
 }
 
-- (id)parseListingHeader:(const char *)a3 count:(int64_t)a4
+- (id)parseListingHeader:(const char *)header count:(int64_t)count
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_40:
     v24 = v7;
@@ -4390,7 +4390,7 @@ LABEL_40:
   v8 = 0;
   while (1)
   {
-    if (a4 <= 3)
+    if (count <= 3)
     {
       v25 = BLJaliscoLog();
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -4403,11 +4403,11 @@ LABEL_40:
       v31 = 2048;
       v32 = 4;
       v33 = 2048;
-      v34 = a4;
+      countCopy = count;
       goto LABEL_47;
     }
 
-    if ((a4 - 4) <= 3)
+    if ((count - 4) <= 3)
     {
       v25 = BLJaliscoLog();
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -4420,21 +4420,21 @@ LABEL_40:
       v31 = 2048;
       v32 = 4;
       v33 = 2048;
-      v34 = a4 - 4;
+      countCopy = count - 4;
       goto LABEL_47;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(header + 1));
+    v10 = count - 8;
+    v11 = count - 8 >= v9;
+    count = count - 8 - v9;
     if (!v11)
     {
       break;
     }
 
-    v13 = *a3;
-    v12 = (a3 + 8);
+    v13 = *header;
+    v12 = (header + 8);
     v14 = bswap32(v13);
     if (v14 <= 1836213102)
     {
@@ -4447,7 +4447,7 @@ LABEL_40:
 
         if (v14 == 1668113010)
         {
-          v19 = self;
+          selfCopy4 = self;
           v20 = v12;
           v21 = v9;
           v22 = v7;
@@ -4504,7 +4504,7 @@ LABEL_27:
           goto LABEL_39;
         }
 
-        v19 = self;
+        selfCopy4 = self;
         v20 = v12;
         v21 = v9;
         v22 = v7;
@@ -4523,13 +4523,13 @@ LABEL_27:
     {
       if (v14 == 1836344175)
       {
-        v19 = self;
+        selfCopy4 = self;
         v20 = v12;
         v21 = v9;
         v22 = v7;
         v23 = @"dmap.specifiedtotalcount";
 LABEL_36:
-        [(BLPurchaseDAAPParser *)v19 setUInt32:v20 size:v21 inDict:v22 forKey:v23];
+        [(BLPurchaseDAAPParser *)selfCopy4 setUInt32:v20 size:v21 inDict:v22 forKey:v23];
         goto LABEL_37;
       }
 
@@ -4547,7 +4547,7 @@ LABEL_36:
 
     if (v14 == 1836413810)
     {
-      v19 = self;
+      selfCopy4 = self;
       v20 = v12;
       v21 = v9;
       v22 = v7;
@@ -4562,8 +4562,8 @@ LABEL_36:
 
     [(BLPurchaseDAAPParser *)self setUInt8:v12 size:v9 inDict:v7 forKey:@"dmap.updatetype"];
 LABEL_37:
-    a3 = v12 + v9;
-    if (a4 <= 0)
+    header = v12 + v9;
+    if (count <= 0)
     {
       goto LABEL_40;
     }
@@ -4577,7 +4577,7 @@ LABEL_37:
     v31 = 2048;
     v32 = v9;
     v33 = 2048;
-    v34 = v10;
+    countCopy = v10;
 LABEL_47:
     _os_log_impl(&dword_241D1F000, v25, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v29, 0x20u);
   }
@@ -4592,19 +4592,19 @@ LABEL_49:
   return v24;
 }
 
-- (void)parseDict:(const char *)a3 size:(int64_t)a4 intoDict:(id)a5
+- (void)parseDict:(const char *)dict size:(int64_t)size intoDict:(id)intoDict
 {
   v32 = *MEMORY[0x277D85DE8];
-  v25 = a5;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 < 1)
+  intoDictCopy = intoDict;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (size < 1)
   {
     goto LABEL_24;
   }
 
   while (1)
   {
-    if (a4 <= 3)
+    if (size <= 3)
     {
       v21 = BLJaliscoLog();
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4617,11 +4617,11 @@ LABEL_49:
       v28 = 2048;
       v29 = 4;
       v30 = 2048;
-      v31 = a4;
+      sizeCopy = size;
       goto LABEL_22;
     }
 
-    if ((a4 - 4) <= 3)
+    if ((size - 4) <= 3)
     {
       v21 = BLJaliscoLog();
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4634,21 +4634,21 @@ LABEL_49:
       v28 = 2048;
       v29 = 4;
       v30 = 2048;
-      v31 = a4 - 4;
+      sizeCopy = size - 4;
       goto LABEL_22;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(dict + 1));
+    v10 = size - 8;
+    v11 = size - 8 >= v9;
+    size = size - 8 - v9;
     if (!v11)
     {
       break;
     }
 
-    v13 = *a3;
-    v12 = a3 + 8;
+    v13 = *dict;
+    v12 = dict + 8;
     v14 = bswap32(v13);
     if (v14 == 1835297657)
     {
@@ -4665,26 +4665,26 @@ LABEL_49:
       v15 = @"value";
     }
 
-    [(BLPurchaseDAAPParser *)self setString:v12 size:v9 inDict:v8 forKey:v15];
+    [(BLPurchaseDAAPParser *)self setString:v12 size:v9 inDict:dictionary forKey:v15];
 LABEL_11:
-    v16 = [v8 objectForKey:@"key"];
+    v16 = [dictionary objectForKey:@"key"];
     if (v16)
     {
       v17 = v16;
-      v18 = [v8 objectForKey:@"value"];
+      v18 = [dictionary objectForKey:@"value"];
 
       if (v18)
       {
-        v19 = [v8 objectForKey:@"value"];
-        v20 = [v8 objectForKey:@"key"];
-        [v25 setValue:v19 forKey:v20];
+        v19 = [dictionary objectForKey:@"value"];
+        v20 = [dictionary objectForKey:@"key"];
+        [intoDictCopy setValue:v19 forKey:v20];
 
-        [v8 removeAllObjects];
+        [dictionary removeAllObjects];
       }
     }
 
-    a3 = &v12[v9];
-    if (a4 <= 0)
+    dict = &v12[v9];
+    if (size <= 0)
     {
       goto LABEL_24;
     }
@@ -4698,7 +4698,7 @@ LABEL_11:
     v28 = 2048;
     v29 = v9;
     v30 = 2048;
-    v31 = v10;
+    sizeCopy = v10;
 LABEL_22:
     _os_log_impl(&dword_241D1F000, v21, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", buf, 0x20u);
   }
@@ -4710,23 +4710,23 @@ LABEL_24:
   return 0;
 }
 
-- (id)parseDeletedIDsList:(const char *)a3 count:(int64_t)a4
+- (id)parseDeletedIDsList:(const char *)list count:(int64_t)count
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB18] array];
-  if (a4 < 1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  if (count < 1)
   {
 LABEL_12:
-    v17 = v8;
+    v17 = array;
   }
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v9 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v9 = count - 4;
+      if ((count - 4) <= 3)
       {
         v19 = BLJaliscoLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4736,7 +4736,7 @@ LABEL_12:
           v25 = 2048;
           v26 = 4;
           v27 = 2048;
-          v28 = v9;
+          countCopy = v9;
           goto LABEL_20;
         }
 
@@ -4745,10 +4745,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v10 = bswap32(*(a3 + 1));
-      v11 = a4 - 8;
-      v12 = a4 - 8 >= v10;
-      a4 = a4 - 8 - v10;
+      v10 = bswap32(*(list + 1));
+      v11 = count - 8;
+      v12 = count - 8 >= v10;
+      count = count - 8 - v10;
       if (!v12)
       {
         v19 = BLJaliscoLog();
@@ -4759,7 +4759,7 @@ LABEL_21:
           v25 = 2048;
           v26 = v10;
           v27 = 2048;
-          v28 = v11;
+          countCopy = v11;
 LABEL_20:
           _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
         }
@@ -4767,12 +4767,12 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v15 = *a3;
-      v14 = a3 + 8;
+      v15 = *list;
+      v14 = list + 8;
       v13 = v15;
       if (v15 == 1684826477)
       {
-        [(BLPurchaseDAAPParser *)self setUInt64:v14 size:v10 inDict:v7 forKey:@"dmap.longitemid"];
+        [(BLPurchaseDAAPParser *)self setUInt64:v14 size:v10 inDict:dictionary forKey:@"dmap.longitemid"];
       }
 
       else
@@ -4780,16 +4780,16 @@ LABEL_20:
         [(BLPurchaseDAAPParser *)self unknownCode:bswap32(v13) bytes:v14 size:v10 context:"[BLPurchaseDAAPParser parseDeletedIDsList:count:]"];
       }
 
-      v16 = [v7 objectForKey:@"dmap.longitemid"];
+      v16 = [dictionary objectForKey:@"dmap.longitemid"];
       if (v16)
       {
-        [v8 addObject:v16];
+        [array addObject:v16];
       }
 
-      [v7 removeAllObjects];
-      a3 = &v14[v10];
+      [dictionary removeAllObjects];
+      list = &v14[v10];
 
-      if (a4 <= 0)
+      if (count <= 0)
       {
         goto LABEL_12;
       }
@@ -4803,7 +4803,7 @@ LABEL_20:
       v25 = 2048;
       v26 = 4;
       v27 = 2048;
-      v28 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v23, 0x20u);
     }
 
@@ -4816,21 +4816,21 @@ LABEL_22:
   return v17;
 }
 
-- (id)parseControlPromptCollection:(const char *)a3 count:(int64_t)a4
+- (id)parseControlPromptCollection:(const char *)collection count:(int64_t)count
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 < 1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (count < 1)
   {
 LABEL_15:
-    v19 = v7;
+    v19 = dictionary;
     goto LABEL_26;
   }
 
-  while (a4 > 3)
+  while (count > 3)
   {
-    v8 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v8 = count - 4;
+    if ((count - 4) <= 3)
     {
       v21 = BLJaliscoLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4840,7 +4840,7 @@ LABEL_15:
         v27 = 2048;
         v28 = 4;
         v29 = 2048;
-        v30 = v8;
+        countCopy = v8;
         goto LABEL_23;
       }
 
@@ -4849,10 +4849,10 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v9 = bswap32(*(a3 + 1));
-    v10 = a4 - 8;
-    v11 = a4 - 8 >= v9;
-    a4 = a4 - 8 - v9;
+    v9 = bswap32(*(collection + 1));
+    v10 = count - 8;
+    v11 = count - 8 >= v9;
+    count = count - 8 - v9;
     if (!v11)
     {
       v21 = BLJaliscoLog();
@@ -4863,7 +4863,7 @@ LABEL_24:
         v27 = 2048;
         v28 = v9;
         v29 = 2048;
-        v30 = v10;
+        countCopy = v10;
 LABEL_23:
         _os_log_impl(&dword_241D1F000, v21, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v25, 0x20u);
       }
@@ -4871,27 +4871,27 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v13 = *a3;
-    v12 = a3 + 8;
+    v13 = *collection;
+    v12 = collection + 8;
     v14 = bswap32(v13);
     switch(v14)
     {
       case 0x636D6361:
         v15 = v12;
         v16 = v9;
-        v17 = v7;
+        v17 = dictionary;
         v18 = @"attributes";
         break;
       case 0x636D6376:
         v15 = v12;
         v16 = v9;
-        v17 = v7;
+        v17 = dictionary;
         v18 = @"value";
         break;
       case 0x636D6365:
         v15 = v12;
         v16 = v9;
-        v17 = v7;
+        v17 = dictionary;
         v18 = @"name";
         break;
       default:
@@ -4901,8 +4901,8 @@ LABEL_23:
 
     [(BLPurchaseDAAPParser *)self setString:v15 size:v16 inDict:v17 forKey:v18];
 LABEL_14:
-    a3 = &v12[v9];
-    if (a4 <= 0)
+    collection = &v12[v9];
+    if (count <= 0)
     {
       goto LABEL_15;
     }
@@ -4916,7 +4916,7 @@ LABEL_14:
     v27 = 2048;
     v28 = 4;
     v29 = 2048;
-    v30 = a4;
+    countCopy = count;
     _os_log_impl(&dword_241D1F000, v20, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v25, 0x20u);
   }
 
@@ -4929,28 +4929,28 @@ LABEL_26:
   return v19;
 }
 
-- (id)parseControlPromptResponse:(const char *)a3 count:(int64_t)a4
+- (id)parseControlPromptResponse:(const char *)response count:(int64_t)count
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_15:
     if ([v8 count])
     {
-      [v7 setObject:v8 forKey:@"items"];
+      [dictionary setObject:v8 forKey:@"items"];
     }
 
-    v18 = v7;
+    v18 = dictionary;
   }
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v9 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v9 = count - 4;
+      if ((count - 4) <= 3)
       {
         v20 = BLJaliscoLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -4960,7 +4960,7 @@ LABEL_15:
           v26 = 2048;
           v27 = 4;
           v28 = 2048;
-          v29 = v9;
+          countCopy = v9;
           goto LABEL_25;
         }
 
@@ -4969,11 +4969,11 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v10 = *(a3 + 1);
+      v10 = *(response + 1);
       v11 = bswap32(v10);
-      v12 = a4 - 8;
-      v13 = a4 - 8 >= v11;
-      a4 = a4 - 8 - v11;
+      v12 = count - 8;
+      v13 = count - 8 >= v11;
+      count = count - 8 - v11;
       if (!v13)
       {
         v20 = BLJaliscoLog();
@@ -4984,7 +4984,7 @@ LABEL_26:
           v26 = 2048;
           v27 = v11;
           v28 = 2048;
-          v29 = v12;
+          countCopy = v12;
 LABEL_25:
           _os_log_impl(&dword_241D1F000, v20, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v24, 0x20u);
         }
@@ -4992,8 +4992,8 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v15 = *a3;
-      v14 = a3 + 8;
+      v15 = *response;
+      v14 = response + 8;
       v16 = bswap32(v15);
       if (v16 == 1835295596)
       {
@@ -5007,12 +5007,12 @@ LABEL_25:
         {
           if (v10 == 0x4000000)
           {
-            [(BLPurchaseDAAPParser *)self setUInt32:v14 size:4 inDict:v7 forKey:@"dmap.itemid"];
+            [(BLPurchaseDAAPParser *)self setUInt32:v14 size:4 inDict:dictionary forKey:@"dmap.itemid"];
           }
 
           else
           {
-            [(BLPurchaseDAAPParser *)self setUInt64:v14 size:v11 inDict:v7 forKey:@"dmap.itemid"];
+            [(BLPurchaseDAAPParser *)self setUInt64:v14 size:v11 inDict:dictionary forKey:@"dmap.itemid"];
           }
         }
 
@@ -5022,8 +5022,8 @@ LABEL_25:
         }
       }
 
-      a3 = &v14[v11];
-      if (a4 <= 0)
+      response = &v14[v11];
+      if (count <= 0)
       {
         goto LABEL_15;
       }
@@ -5037,7 +5037,7 @@ LABEL_25:
       v26 = 2048;
       v27 = 4;
       v28 = 2048;
-      v29 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v24, 0x20u);
     }
 
@@ -5050,22 +5050,22 @@ LABEL_27:
   return v18;
 }
 
-- (id)parseGetSpeakersResponse:(const char *)a3 count:(int64_t)a4
+- (id)parseGetSpeakersResponse:(const char *)response count:(int64_t)count
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (a4 < 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (count < 1)
   {
 LABEL_11:
-    v16 = v7;
+    v16 = array;
   }
 
   else
   {
-    while (a4 > 3)
+    while (count > 3)
     {
-      v8 = a4 - 4;
-      if ((a4 - 4) <= 3)
+      v8 = count - 4;
+      if ((count - 4) <= 3)
       {
         v18 = BLJaliscoLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -5075,7 +5075,7 @@ LABEL_11:
           v24 = 2048;
           v25 = 4;
           v26 = 2048;
-          v27 = v8;
+          countCopy = v8;
           goto LABEL_19;
         }
 
@@ -5084,10 +5084,10 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v9 = bswap32(*(a3 + 1));
-      v10 = a4 - 8;
-      v11 = a4 - 8 >= v9;
-      a4 = a4 - 8 - v9;
+      v9 = bswap32(*(response + 1));
+      v10 = count - 8;
+      v11 = count - 8 >= v9;
+      count = count - 8 - v9;
       if (!v11)
       {
         v18 = BLJaliscoLog();
@@ -5098,7 +5098,7 @@ LABEL_20:
           v24 = 2048;
           v25 = v9;
           v26 = 2048;
-          v27 = v10;
+          countCopy = v10;
 LABEL_19:
           _os_log_impl(&dword_241D1F000, v18, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
         }
@@ -5106,15 +5106,15 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v13 = *a3;
-      v12 = a3 + 8;
+      v13 = *response;
+      v12 = response + 8;
       v14 = bswap32(v13);
       if (v14 != 1836282996)
       {
         if (v14 == 1835295596)
         {
           v15 = [(BLPurchaseDAAPParser *)self parseListingItem:v12 count:v9];
-          [v7 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -5123,8 +5123,8 @@ LABEL_19:
         }
       }
 
-      a3 = &v12[v9];
-      if (a4 <= 0)
+      response = &v12[v9];
+      if (count <= 0)
       {
         goto LABEL_11;
       }
@@ -5138,7 +5138,7 @@ LABEL_19:
       v24 = 2048;
       v25 = 4;
       v26 = 2048;
-      v27 = a4;
+      countCopy = count;
       _os_log_impl(&dword_241D1F000, v17, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v22, 0x20u);
     }
 
@@ -5151,21 +5151,21 @@ LABEL_21:
   return v16;
 }
 
-- (id)parseDACPPropertyResponse:(const char *)a3 count:(int64_t)a4
+- (id)parseDACPPropertyResponse:(const char *)response count:(int64_t)count
 {
   v61 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
-  if (a4 < 1)
+  if (count < 1)
   {
 LABEL_121:
     v49 = v7;
     goto LABEL_132;
   }
 
-  while (a4 > 3)
+  while (count > 3)
   {
-    v8 = a4 - 4;
-    if ((a4 - 4) <= 3)
+    v8 = count - 4;
+    if ((count - 4) <= 3)
     {
       v51 = BLJaliscoLog();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -5175,7 +5175,7 @@ LABEL_121:
         v57 = 2048;
         v58 = 4;
         v59 = 2048;
-        v60 = v8;
+        countCopy = v8;
         goto LABEL_129;
       }
 
@@ -5184,11 +5184,11 @@ LABEL_130:
       goto LABEL_131;
     }
 
-    v9 = *(a3 + 1);
+    v9 = *(response + 1);
     v10 = bswap32(v9);
-    v11 = a4 - 8;
-    v12 = a4 - 8 >= v10;
-    a4 = a4 - 8 - v10;
+    v11 = count - 8;
+    v12 = count - 8 >= v10;
+    count = count - 8 - v10;
     if (!v12)
     {
       v51 = BLJaliscoLog();
@@ -5199,7 +5199,7 @@ LABEL_130:
         v57 = 2048;
         v58 = v10;
         v59 = 2048;
-        v60 = v11;
+        countCopy = v11;
 LABEL_129:
         _os_log_impl(&dword_241D1F000, v51, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v55, 0x20u);
       }
@@ -5207,8 +5207,8 @@ LABEL_129:
       goto LABEL_130;
     }
 
-    v13 = bswap32(*a3);
-    v14 = (a3 + 8);
+    v13 = bswap32(*response);
+    v14 = (response + 8);
     if (v13 > 1667581778)
     {
       if (v13 > 1667584835)
@@ -5219,8 +5219,8 @@ LABEL_129:
           {
             if (v13 == 1668115819)
             {
-              v15 = self;
-              v16 = a3 + 8;
+              selfCopy35 = self;
+              v16 = response + 8;
               v17 = v10;
               v18 = v7;
               v19 = @"mediaKind";
@@ -5229,8 +5229,8 @@ LABEL_129:
 
             if (v13 == 1668117362)
             {
-              v15 = self;
-              v16 = a3 + 8;
+              selfCopy35 = self;
+              v16 = response + 8;
               v17 = v10;
               v18 = v7;
               v19 = @"dmcp.playstatusrevision";
@@ -5252,15 +5252,15 @@ LABEL_120:
 
                 goto LABEL_116;
               case 1836082546:
-                v37 = self;
-                v36 = a3 + 8;
+                selfCopy25 = self;
+                v36 = response + 8;
                 v38 = v10;
                 v39 = v7;
                 v40 = @"dmap.persistentid";
                 goto LABEL_109;
               case 1836282996:
-                v15 = self;
-                v16 = a3 + 8;
+                selfCopy35 = self;
+                v16 = response + 8;
                 v17 = v10;
                 v18 = v7;
                 v19 = @"dmap.status";
@@ -5273,7 +5273,7 @@ LABEL_120:
         {
           if (v13 == 1667584836)
           {
-            v45 = [(BLPurchaseDAAPParser *)self parseXMLContent:a3 + 8 count:v10];
+            v45 = [(BLPurchaseDAAPParser *)self parseXMLContent:response + 8 count:v10];
             if (v45)
             {
               objc_opt_class();
@@ -5298,8 +5298,8 @@ LABEL_120:
 
           if (v13 == 1668112996)
           {
-            v31 = self;
-            v32 = a3 + 8;
+            selfCopy28 = self;
+            v32 = response + 8;
             v33 = v10;
             v34 = v7;
             v35 = @"libraryDisplayName";
@@ -5312,27 +5312,27 @@ LABEL_120:
           switch(v13)
           {
             case 1668113005:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"libraryServiceDomain";
               goto LABEL_113;
             case 1668113011:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"libraryServiceName";
               goto LABEL_113;
             case 1668113012:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"libraryServiceType";
 LABEL_113:
-              [(BLPurchaseDAAPParser *)v31 setString:v32 size:v33 inDict:v34 forKey:v35];
+              [(BLPurchaseDAAPParser *)selfCopy28 setString:v32 size:v33 inDict:v34 forKey:v35];
               goto LABEL_116;
           }
         }
@@ -5344,8 +5344,8 @@ LABEL_113:
       {
         if (v13 == 1667581779)
         {
-          v26 = self;
-          v27 = a3 + 8;
+          selfCopy33 = self;
+          v27 = response + 8;
           v28 = v10;
           v29 = v7;
           v30 = @"com.apple.itunes.can-be-genius-seed";
@@ -5356,8 +5356,8 @@ LABEL_113:
         {
           if (v13 == 1667583569)
           {
-            v15 = self;
-            v16 = a3 + 8;
+            selfCopy35 = self;
+            v16 = response + 8;
             v17 = v10;
             v18 = v7;
             v19 = @"com.apple.itunes.num-manually-queued";
@@ -5371,8 +5371,8 @@ LABEL_80:
 
         if (*v14 == 1)
         {
-          v21 = self;
-          v22 = a3 + 8;
+          selfCopy34 = self;
+          v22 = response + 8;
           v23 = v10;
           v24 = v7;
           v25 = @"com.apple.itunes.manually-queued";
@@ -5392,8 +5392,8 @@ LABEL_80:
         {
           if (v20 == 14)
           {
-            v15 = self;
-            v16 = a3 + 8;
+            selfCopy35 = self;
+            v16 = response + 8;
             v17 = v10;
             v18 = v7;
             v19 = @"com.apple.itunes.playqueue-warning-threshold";
@@ -5405,8 +5405,8 @@ LABEL_80:
 LABEL_78:
             if (v13 == 1667584326)
             {
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"com.apple.itunes.active-queue-feed-name";
@@ -5418,13 +5418,13 @@ LABEL_78:
 
           if (*v14 == 1)
           {
-            v21 = self;
-            v22 = a3 + 8;
+            selfCopy34 = self;
+            v22 = response + 8;
             v23 = v10;
             v24 = v7;
             v25 = @"com.apple.itunes.playqueue-mode";
 LABEL_93:
-            [(BLPurchaseDAAPParser *)v21 setUInt8:v22 size:v23 inDict:v24 forKey:v25];
+            [(BLPurchaseDAAPParser *)selfCopy34 setUInt8:v22 size:v23 inDict:v24 forKey:v25];
           }
         }
       }
@@ -5439,22 +5439,22 @@ LABEL_93:
           switch(v13)
           {
             case 1667329633:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"daap.songartist";
               goto LABEL_113;
             case 1667329639:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"NPGenre";
               goto LABEL_113;
             case 1667329644:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"daap.songalbum";
@@ -5467,27 +5467,27 @@ LABEL_93:
           switch(v13)
           {
             case 1667326323:
-              v15 = self;
-              v16 = a3 + 8;
+              selfCopy35 = self;
+              v16 = response + 8;
               v17 = v10;
               v18 = v7;
               v19 = @"dacp.availableshufflestates";
               goto LABEL_115;
             case 1667327589:
-              v26 = self;
-              v27 = a3 + 8;
+              selfCopy33 = self;
+              v27 = response + 8;
               v28 = v10;
               v29 = v7;
               v30 = @"dacp.fullscreenenabled";
               goto LABEL_111;
             case 1667327603:
-              v26 = self;
-              v27 = a3 + 8;
+              selfCopy33 = self;
+              v27 = response + 8;
               v28 = v10;
               v29 = v7;
               v30 = @"dacp.fullscreen";
 LABEL_111:
-              [(BLPurchaseDAAPParser *)v26 setBool:v27 size:v28 inDict:v29 forKey:v30];
+              [(BLPurchaseDAAPParser *)selfCopy33 setBool:v27 size:v28 inDict:v29 forKey:v30];
               goto LABEL_116;
           }
         }
@@ -5500,22 +5500,22 @@ LABEL_111:
         switch(v13)
         {
           case 1634030409:
-            v15 = self;
-            v16 = a3 + 8;
+            selfCopy35 = self;
+            v16 = response + 8;
             v17 = v10;
             v18 = v7;
             v19 = @"com.apple.itunes.itms-songid";
             goto LABEL_115;
           case 1634951529:
-            v37 = self;
-            v36 = a3 + 8;
+            selfCopy25 = self;
+            v36 = response + 8;
             v38 = v10;
             v39 = v7;
             v40 = @"daap.songalbumid";
             goto LABEL_109;
           case 1667326322:
-            v15 = self;
-            v16 = a3 + 8;
+            selfCopy35 = self;
+            v16 = response + 8;
             v17 = v10;
             v18 = v7;
             v19 = @"dacp.availablerepeatstates";
@@ -5535,7 +5535,7 @@ LABEL_111:
 
         else
         {
-          v44 = [(BLPurchaseDAAPParser *)self parseUTF8String:a3 + 8 length:v10];
+          v44 = [(BLPurchaseDAAPParser *)self parseUTF8String:response + 8 length:v10];
           [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v44, "longLongValue")}];
         }
         v48 = ;
@@ -5551,8 +5551,8 @@ LABEL_111:
 
       if (*v14 == 1)
       {
-        v21 = self;
-        v22 = a3 + 8;
+        selfCopy34 = self;
+        v22 = response + 8;
         v23 = v10;
         v24 = v7;
         v25 = @"com.apple.itunes.has-chapter-data";
@@ -5569,27 +5569,27 @@ LABEL_111:
           switch(v13)
           {
             case 1667330156:
-              [(BLPurchaseDAAPParser *)self setUInt64:a3 + 8 size:8 inDict:v7 forKey:@"databaseID"];
-              [(BLPurchaseDAAPParser *)self setUInt64:a3 + 16 size:8 inDict:v7 forKey:@"com.apple.itunes.itms-playlistid"];
-              [(BLPurchaseDAAPParser *)self setUInt64:a3 + 24 size:8 inDict:v7 forKey:@"dmap.containeritemid"];
-              v36 = a3 + 32;
-              v37 = self;
+              [(BLPurchaseDAAPParser *)self setUInt64:response + 8 size:8 inDict:v7 forKey:@"databaseID"];
+              [(BLPurchaseDAAPParser *)self setUInt64:response + 16 size:8 inDict:v7 forKey:@"com.apple.itunes.itms-playlistid"];
+              [(BLPurchaseDAAPParser *)self setUInt64:response + 24 size:8 inDict:v7 forKey:@"dmap.containeritemid"];
+              v36 = response + 32;
+              selfCopy25 = self;
               v38 = 8;
               v39 = v7;
               v40 = @"dmap.itemid";
 LABEL_109:
-              [(BLPurchaseDAAPParser *)v37 setUInt64:v36 size:v38 inDict:v39 forKey:v40];
+              [(BLPurchaseDAAPParser *)selfCopy25 setUInt64:v36 size:v38 inDict:v39 forKey:v40];
               goto LABEL_116;
             case 1667330163:
-              v21 = self;
-              v22 = a3 + 8;
+              selfCopy34 = self;
+              v22 = response + 8;
               v23 = v10;
               v24 = v7;
               v25 = @"dacp.playerstate";
               goto LABEL_93;
             case 1667330672:
-              v21 = self;
-              v22 = a3 + 8;
+              selfCopy34 = self;
+              v22 = response + 8;
               v23 = v10;
               v24 = v7;
               v25 = @"dacp.repeatstate";
@@ -5602,30 +5602,30 @@ LABEL_109:
           switch(v13)
           {
             case 1667329646:
-              v31 = self;
-              v32 = a3 + 8;
+              selfCopy28 = self;
+              v32 = response + 8;
               v33 = v10;
               v34 = v7;
               v35 = @"dmap.itemname";
               goto LABEL_113;
             case 1667329648:
-              [(BLPurchaseDAAPParser *)self setUInt32:a3 + 8 size:4 inDict:v7 forKey:@"databaseID"];
-              [(BLPurchaseDAAPParser *)self setUInt32:a3 + 12 size:4 inDict:v7 forKey:@"com.apple.itunes.itms-playlistid"];
-              [(BLPurchaseDAAPParser *)self setUInt32:a3 + 16 size:4 inDict:v7 forKey:@"dmap.containeritemid"];
-              v16 = a3 + 20;
-              v15 = self;
+              [(BLPurchaseDAAPParser *)self setUInt32:response + 8 size:4 inDict:v7 forKey:@"databaseID"];
+              [(BLPurchaseDAAPParser *)self setUInt32:response + 12 size:4 inDict:v7 forKey:@"com.apple.itunes.itms-playlistid"];
+              [(BLPurchaseDAAPParser *)self setUInt32:response + 16 size:4 inDict:v7 forKey:@"dmap.containeritemid"];
+              v16 = response + 20;
+              selfCopy35 = self;
               v17 = 4;
               v18 = v7;
               v19 = @"dmap.itemid";
               goto LABEL_115;
             case 1667329652:
-              v15 = self;
-              v16 = a3 + 8;
+              selfCopy35 = self;
+              v16 = response + 8;
               v17 = v10;
               v18 = v7;
               v19 = @"dacp.playingtime";
 LABEL_115:
-              [(BLPurchaseDAAPParser *)v15 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
+              [(BLPurchaseDAAPParser *)selfCopy35 setUInt32:v16 size:v17 inDict:v18 forKey:v19];
               goto LABEL_116;
           }
         }
@@ -5638,22 +5638,22 @@ LABEL_115:
         switch(v13)
         {
           case 1667331683:
-            v26 = self;
-            v27 = a3 + 8;
+            selfCopy33 = self;
+            v27 = response + 8;
             v28 = v10;
             v29 = v7;
             v30 = @"dacp.volumecontrollable";
             goto LABEL_111;
           case 1667331685:
-            v26 = self;
-            v27 = a3 + 8;
+            selfCopy33 = self;
+            v27 = response + 8;
             v28 = v10;
             v29 = v7;
             v30 = @"dacp.visualizerenabled";
             goto LABEL_111;
           case 1667331699:
-            v26 = self;
-            v27 = a3 + 8;
+            selfCopy33 = self;
+            v27 = response + 8;
             v28 = v10;
             v29 = v7;
             v30 = @"dacp.visualizer";
@@ -5665,8 +5665,8 @@ LABEL_115:
 
       if (v13 == 1667330920)
       {
-        v21 = self;
-        v22 = a3 + 8;
+        selfCopy34 = self;
+        v22 = response + 8;
         v23 = v10;
         v24 = v7;
         v25 = @"dacp.shufflestate";
@@ -5675,8 +5675,8 @@ LABEL_115:
 
       if (v13 == 1667330932)
       {
-        v15 = self;
-        v16 = a3 + 8;
+        selfCopy35 = self;
+        v16 = response + 8;
         v17 = v10;
         v18 = v7;
         v19 = @"daap.songtime";
@@ -5690,8 +5690,8 @@ LABEL_115:
     }
 
 LABEL_116:
-    a3 = v14 + v10;
-    if (a4 <= 0)
+    response = v14 + v10;
+    if (count <= 0)
     {
       goto LABEL_121;
     }
@@ -5705,7 +5705,7 @@ LABEL_116:
     v57 = 2048;
     v58 = 4;
     v59 = 2048;
-    v60 = a4;
+    countCopy = count;
     _os_log_impl(&dword_241D1F000, v50, OS_LOG_TYPE_ERROR, "ERROR: %s, Invalid data in DAAP response: trying to read %ld bytes from a buffer of size %ld", &v55, 0x20u);
   }
 
@@ -5718,17 +5718,17 @@ LABEL_132:
   return v49;
 }
 
-- (id)processResponseCode:(unsigned int)a3 bytes:(const char *)a4 count:(int64_t)a5
+- (id)processResponseCode:(unsigned int)code bytes:(const char *)bytes count:(int64_t)count
 {
-  if (a3 > 1668113012)
+  if (code > 1668113012)
   {
-    if (a3 <= 1835360879)
+    if (code <= 1835360879)
     {
-      if (a3 > 1668117363)
+      if (code > 1668117363)
       {
-        if (a3 != 1668117364)
+        if (code != 1668117364)
         {
-          if (a3 == 1668313712)
+          if (code == 1668313712)
           {
             goto LABEL_36;
           }
@@ -5740,36 +5740,36 @@ LABEL_132:
 
       else
       {
-        if (a3 == 1668113013)
+        if (code == 1668113013)
         {
           goto LABEL_36;
         }
 
-        if (a3 == 1668113264)
+        if (code == 1668113264)
         {
-          v6 = [(BLPurchaseDAAPParser *)self parseControlPromptResponse:a4 count:a5];
+          v6 = [(BLPurchaseDAAPParser *)self parseControlPromptResponse:bytes count:count];
           goto LABEL_37;
         }
 
-        if (a3 != 1668114292)
+        if (code != 1668114292)
         {
           goto LABEL_51;
         }
       }
 
-      v6 = [(BLPurchaseDAAPParser *)self parseDACPPropertyResponse:a4 count:a5];
+      v6 = [(BLPurchaseDAAPParser *)self parseDACPPropertyResponse:bytes count:count];
       goto LABEL_37;
     }
 
-    if (a3 <= 1835822950)
+    if (code <= 1835822950)
     {
-      if (a3 != 1835360880)
+      if (code != 1835360880)
       {
-        if (a3 != 1835361379)
+        if (code != 1835361379)
         {
-          if (a3 == 1835364978)
+          if (code == 1835364978)
           {
-            v6 = [(BLPurchaseDAAPParser *)self parseError:a4 count:a5];
+            v6 = [(BLPurchaseDAAPParser *)self parseError:bytes count:count];
             goto LABEL_37;
           }
 
@@ -5780,17 +5780,17 @@ LABEL_132:
       }
 
 LABEL_36:
-      v6 = [(BLPurchaseDAAPParser *)self parseListingHeader:a4 count:a5];
+      v6 = [(BLPurchaseDAAPParser *)self parseListingHeader:bytes count:count];
       goto LABEL_37;
     }
 
-    if (a3 > 1836282485)
+    if (code > 1836282485)
     {
-      if (a3 != 1836413028)
+      if (code != 1836413028)
       {
-        if (a3 == 1836282486)
+        if (code == 1836282486)
         {
-          v6 = [(BLPurchaseDAAPParser *)self parseServerInfo:a4 count:a5];
+          v6 = [(BLPurchaseDAAPParser *)self parseServerInfo:bytes count:count];
           goto LABEL_37;
         }
 
@@ -5800,15 +5800,15 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    if (a3 == 1835822951)
+    if (code == 1835822951)
     {
-      v6 = [(BLPurchaseDAAPParser *)self parseLogin:a4 count:a5];
+      v6 = [(BLPurchaseDAAPParser *)self parseLogin:bytes count:count];
       goto LABEL_37;
     }
 
     v5 = 1836278642;
 LABEL_35:
-    if (a3 != v5)
+    if (code != v5)
     {
 LABEL_51:
       [BLPurchaseDAAPParser unknownCode:"unknownCode:bytes:size:context:" bytes:? size:? context:?];
@@ -5818,11 +5818,11 @@ LABEL_51:
     goto LABEL_36;
   }
 
-  if (a3 <= 1634759534)
+  if (code <= 1634759534)
   {
-    if (a3 > 1634165099)
+    if (code > 1634165099)
     {
-      if (a3 == 1634165100 || a3 == 1634165106)
+      if (code == 1634165100 || code == 1634165106)
       {
         goto LABEL_36;
       }
@@ -5832,7 +5832,7 @@ LABEL_51:
 
     else
     {
-      if (a3 == 1633841775 || a3 == 1633968755)
+      if (code == 1633841775 || code == 1633968755)
       {
         goto LABEL_36;
       }
@@ -5843,46 +5843,46 @@ LABEL_51:
     goto LABEL_35;
   }
 
-  if (a3 > 1667326824)
+  if (code > 1667326824)
   {
-    if (a3 > 1667330927)
+    if (code > 1667330927)
     {
-      if (a3 == 1667330928)
+      if (code == 1667330928)
       {
-        v6 = [(BLPurchaseDAAPParser *)self parseGetSpeakersResponse:a4 count:a5];
+        v6 = [(BLPurchaseDAAPParser *)self parseGetSpeakersResponse:bytes count:count];
         goto LABEL_37;
       }
 
-      if (a3 == 1667581769)
+      if (code == 1667581769)
       {
-        v6 = [(BLPurchaseDAAPParser *)self parseListingCollection:a4 count:a5 capacity:0];
+        v6 = [(BLPurchaseDAAPParser *)self parseListingCollection:bytes count:count capacity:0];
         goto LABEL_37;
       }
 
       goto LABEL_51;
     }
 
-    if (a3 != 1667326825)
+    if (code != 1667326825)
     {
-      if (a3 != 1667326834)
+      if (code != 1667326834)
       {
         goto LABEL_51;
       }
 
 LABEL_46:
-      v6 = [(BLPurchaseDAAPParser *)self parseListingItem:a4 count:a5];
+      v6 = [(BLPurchaseDAAPParser *)self parseListingItem:bytes count:count];
       goto LABEL_37;
     }
 
     goto LABEL_36;
   }
 
-  if (a3 == 1634759535)
+  if (code == 1634759535)
   {
     goto LABEL_36;
   }
 
-  if (a3 != 1634890614)
+  if (code != 1634890614)
   {
     v5 = 1635148898;
     goto LABEL_35;
@@ -5895,16 +5895,16 @@ LABEL_37:
   return v6;
 }
 
-+ (id)typeForDRCPValueType:(int64_t)a3
++ (id)typeForDRCPValueType:(int64_t)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_278D17650[a3 - 1];
+    return off_278D17650[type - 1];
   }
 }
 

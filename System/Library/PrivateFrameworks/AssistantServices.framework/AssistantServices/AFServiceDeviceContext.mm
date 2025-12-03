@@ -1,45 +1,45 @@
 @interface AFServiceDeviceContext
-+ (id)newWithBuilder:(id)a3;
-- (AFServiceDeviceContext)initWithBuilder:(id)a3;
-- (AFServiceDeviceContext)initWithCoder:(id)a3;
-- (AFServiceDeviceContext)initWithIdentifier:(id)a3 assistantIdentifier:(id)a4 mediaSystemIdentifier:(id)a5 mediaRouteIdentifier:(id)a6 sharedUserID:(id)a7 roomName:(id)a8 proximity:(int64_t)a9 serializedContextByKey:(id)a10 metricsContext:(id)a11;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFServiceDeviceContext)initWithBuilder:(id)builder;
+- (AFServiceDeviceContext)initWithCoder:(id)coder;
+- (AFServiceDeviceContext)initWithIdentifier:(id)identifier assistantIdentifier:(id)assistantIdentifier mediaSystemIdentifier:(id)systemIdentifier mediaRouteIdentifier:(id)routeIdentifier sharedUserID:(id)d roomName:(id)name proximity:(int64_t)proximity serializedContextByKey:(id)self0 metricsContext:(id)self1;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFServiceDeviceContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"AFServiceDeviceContext::identifier"];
-  [v6 encodeObject:self->_assistantIdentifier forKey:@"AFServiceDeviceContext::assistantIdentifier"];
-  [v6 encodeObject:self->_mediaSystemIdentifier forKey:@"AFServiceDeviceContext::mediaSystemIdentifier"];
-  [v6 encodeObject:self->_mediaRouteIdentifier forKey:@"AFServiceDeviceContext::mediaRouteIdentifier"];
-  [v6 encodeObject:self->_sharedUserID forKey:@"AFServiceDeviceContext::sharedUserID"];
-  [v6 encodeObject:self->_roomName forKey:@"AFServiceDeviceContext::roomName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"AFServiceDeviceContext::identifier"];
+  [coderCopy encodeObject:self->_assistantIdentifier forKey:@"AFServiceDeviceContext::assistantIdentifier"];
+  [coderCopy encodeObject:self->_mediaSystemIdentifier forKey:@"AFServiceDeviceContext::mediaSystemIdentifier"];
+  [coderCopy encodeObject:self->_mediaRouteIdentifier forKey:@"AFServiceDeviceContext::mediaRouteIdentifier"];
+  [coderCopy encodeObject:self->_sharedUserID forKey:@"AFServiceDeviceContext::sharedUserID"];
+  [coderCopy encodeObject:self->_roomName forKey:@"AFServiceDeviceContext::roomName"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_proximity];
-  [v6 encodeObject:v5 forKey:@"AFServiceDeviceContext::proximity"];
+  [coderCopy encodeObject:v5 forKey:@"AFServiceDeviceContext::proximity"];
 
-  [v6 encodeObject:self->_serializedContextByKey forKey:@"AFServiceDeviceContext::serializedContextByKey"];
-  [v6 encodeObject:self->_metricsContext forKey:@"AFServiceDeviceContext::metricsContext"];
+  [coderCopy encodeObject:self->_serializedContextByKey forKey:@"AFServiceDeviceContext::serializedContextByKey"];
+  [coderCopy encodeObject:self->_metricsContext forKey:@"AFServiceDeviceContext::metricsContext"];
 }
 
-- (AFServiceDeviceContext)initWithCoder:(id)a3
+- (AFServiceDeviceContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v39 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::identifier"];
-  v38 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::assistantIdentifier"];
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::mediaSystemIdentifier"];
-  v36 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::mediaRouteIdentifier"];
-  v35 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::sharedUserID"];
-  v34 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::roomName"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::proximity"];
-  v33 = [v4 integerValue];
+  coderCopy = coder;
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::identifier"];
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::assistantIdentifier"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::mediaSystemIdentifier"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::mediaRouteIdentifier"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::sharedUserID"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::roomName"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFServiceDeviceContext::proximity"];
+  integerValue = [v4 integerValue];
 
   v31 = MEMORY[0x1E695DFD8];
   v29 = objc_opt_class();
@@ -53,7 +53,7 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v31 setWithObjects:{v29, v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v32 = [v3 decodeObjectOfClasses:v14 forKey:@"AFServiceDeviceContext::serializedContextByKey"];
+  v32 = [coderCopy decodeObjectOfClasses:v14 forKey:@"AFServiceDeviceContext::serializedContextByKey"];
 
   v30 = MEMORY[0x1E695DFD8];
   v28 = objc_opt_class();
@@ -67,16 +67,16 @@
   v22 = objc_opt_class();
   v23 = objc_opt_class();
   v24 = [v30 setWithObjects:{v28, v15, v16, v17, v18, v19, v20, v21, v22, v23, objc_opt_class(), 0}];
-  v25 = [v3 decodeObjectOfClasses:v24 forKey:@"AFServiceDeviceContext::metricsContext"];
+  v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"AFServiceDeviceContext::metricsContext"];
 
-  v26 = [(AFServiceDeviceContext *)self initWithIdentifier:v39 assistantIdentifier:v38 mediaSystemIdentifier:v37 mediaRouteIdentifier:v36 sharedUserID:v35 roomName:v34 proximity:v33 serializedContextByKey:v32 metricsContext:v25];
+  v26 = [(AFServiceDeviceContext *)self initWithIdentifier:v39 assistantIdentifier:v38 mediaSystemIdentifier:v37 mediaRouteIdentifier:v36 sharedUserID:v35 roomName:v34 proximity:integerValue serializedContextByKey:v32 metricsContext:v25];
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -86,44 +86,44 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       proximity = self->_proximity;
       if (proximity == [(AFServiceDeviceContext *)v5 proximity])
       {
-        v7 = [(AFServiceDeviceContext *)v5 identifier];
+        identifier = [(AFServiceDeviceContext *)v5 identifier];
         identifier = self->_identifier;
-        if (identifier == v7 || [(NSUUID *)identifier isEqual:v7])
+        if (identifier == identifier || [(NSUUID *)identifier isEqual:identifier])
         {
-          v9 = [(AFServiceDeviceContext *)v5 assistantIdentifier];
+          assistantIdentifier = [(AFServiceDeviceContext *)v5 assistantIdentifier];
           assistantIdentifier = self->_assistantIdentifier;
-          if (assistantIdentifier == v9 || [(NSString *)assistantIdentifier isEqual:v9])
+          if (assistantIdentifier == assistantIdentifier || [(NSString *)assistantIdentifier isEqual:assistantIdentifier])
           {
-            v11 = [(AFServiceDeviceContext *)v5 mediaSystemIdentifier];
+            mediaSystemIdentifier = [(AFServiceDeviceContext *)v5 mediaSystemIdentifier];
             mediaSystemIdentifier = self->_mediaSystemIdentifier;
-            if (mediaSystemIdentifier == v11 || [(NSString *)mediaSystemIdentifier isEqual:v11])
+            if (mediaSystemIdentifier == mediaSystemIdentifier || [(NSString *)mediaSystemIdentifier isEqual:mediaSystemIdentifier])
             {
-              v13 = [(AFServiceDeviceContext *)v5 mediaRouteIdentifier];
+              mediaRouteIdentifier = [(AFServiceDeviceContext *)v5 mediaRouteIdentifier];
               mediaRouteIdentifier = self->_mediaRouteIdentifier;
-              if (mediaRouteIdentifier == v13 || [(NSString *)mediaRouteIdentifier isEqual:v13])
+              if (mediaRouteIdentifier == mediaRouteIdentifier || [(NSString *)mediaRouteIdentifier isEqual:mediaRouteIdentifier])
               {
-                v15 = [(AFServiceDeviceContext *)v5 sharedUserID];
+                sharedUserID = [(AFServiceDeviceContext *)v5 sharedUserID];
                 sharedUserID = self->_sharedUserID;
-                if (sharedUserID == v15 || [(NSString *)sharedUserID isEqual:v15])
+                if (sharedUserID == sharedUserID || [(NSString *)sharedUserID isEqual:sharedUserID])
                 {
-                  v17 = [(AFServiceDeviceContext *)v5 roomName];
+                  roomName = [(AFServiceDeviceContext *)v5 roomName];
                   roomName = self->_roomName;
-                  if (roomName == v17 || [(NSString *)roomName isEqual:v17])
+                  if (roomName == roomName || [(NSString *)roomName isEqual:roomName])
                   {
-                    v19 = [(AFServiceDeviceContext *)v5 serializedContextByKey];
+                    serializedContextByKey = [(AFServiceDeviceContext *)v5 serializedContextByKey];
                     serializedContextByKey = self->_serializedContextByKey;
-                    if (serializedContextByKey == v19 || [(NSDictionary *)serializedContextByKey isEqual:v19])
+                    if (serializedContextByKey == serializedContextByKey || [(NSDictionary *)serializedContextByKey isEqual:serializedContextByKey])
                     {
-                      v25 = v19;
-                      v21 = [(AFServiceDeviceContext *)v5 metricsContext];
+                      v25 = serializedContextByKey;
+                      metricsContext = [(AFServiceDeviceContext *)v5 metricsContext];
                       metricsContext = self->_metricsContext;
-                      v23 = metricsContext == v21 || [(NSDictionary *)metricsContext isEqual:v21];
+                      v23 = metricsContext == metricsContext || [(NSDictionary *)metricsContext isEqual:metricsContext];
 
-                      v19 = v25;
+                      serializedContextByKey = v25;
                     }
 
                     else
@@ -199,7 +199,7 @@
   return v11 ^ v12;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -210,37 +210,37 @@
   return v6;
 }
 
-- (AFServiceDeviceContext)initWithIdentifier:(id)a3 assistantIdentifier:(id)a4 mediaSystemIdentifier:(id)a5 mediaRouteIdentifier:(id)a6 sharedUserID:(id)a7 roomName:(id)a8 proximity:(int64_t)a9 serializedContextByKey:(id)a10 metricsContext:(id)a11
+- (AFServiceDeviceContext)initWithIdentifier:(id)identifier assistantIdentifier:(id)assistantIdentifier mediaSystemIdentifier:(id)systemIdentifier mediaRouteIdentifier:(id)routeIdentifier sharedUserID:(id)d roomName:(id)name proximity:(int64_t)proximity serializedContextByKey:(id)self0 metricsContext:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
-  v23 = a11;
+  identifierCopy = identifier;
+  assistantIdentifierCopy = assistantIdentifier;
+  systemIdentifierCopy = systemIdentifier;
+  routeIdentifierCopy = routeIdentifier;
+  dCopy = d;
+  nameCopy = name;
+  keyCopy = key;
+  contextCopy = context;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __178__AFServiceDeviceContext_initWithIdentifier_assistantIdentifier_mediaSystemIdentifier_mediaRouteIdentifier_sharedUserID_roomName_proximity_serializedContextByKey_metricsContext___block_invoke;
   v35[3] = &unk_1E7345C88;
-  v36 = v16;
-  v37 = v17;
-  v38 = v18;
-  v39 = v19;
-  v40 = v20;
-  v41 = v21;
-  v43 = v23;
-  v44 = a9;
-  v42 = v22;
-  v24 = v23;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = v17;
-  v31 = v16;
+  v36 = identifierCopy;
+  v37 = assistantIdentifierCopy;
+  v38 = systemIdentifierCopy;
+  v39 = routeIdentifierCopy;
+  v40 = dCopy;
+  v41 = nameCopy;
+  v43 = contextCopy;
+  proximityCopy = proximity;
+  v42 = keyCopy;
+  v24 = contextCopy;
+  v25 = keyCopy;
+  v26 = nameCopy;
+  v27 = dCopy;
+  v28 = routeIdentifierCopy;
+  v29 = systemIdentifierCopy;
+  v30 = assistantIdentifierCopy;
+  v31 = identifierCopy;
   v32 = [(AFServiceDeviceContext *)self initWithBuilder:v35];
 
   return v32;
@@ -261,57 +261,57 @@ void __178__AFServiceDeviceContext_initWithIdentifier_assistantIdentifier_mediaS
   [v4 setMetricsContext:a1[11]];
 }
 
-- (AFServiceDeviceContext)initWithBuilder:(id)a3
+- (AFServiceDeviceContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v33.receiver = self;
   v33.super_class = AFServiceDeviceContext;
   v5 = [(AFServiceDeviceContext *)&v33 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFServiceDeviceContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFServiceDeviceContextMutation *)v7 isDirty])
     {
-      v8 = [(_AFServiceDeviceContextMutation *)v7 getIdentifier];
-      v9 = [v8 copy];
+      getIdentifier = [(_AFServiceDeviceContextMutation *)v7 getIdentifier];
+      v9 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v9;
 
-      v11 = [(_AFServiceDeviceContextMutation *)v7 getAssistantIdentifier];
-      v12 = [v11 copy];
+      getAssistantIdentifier = [(_AFServiceDeviceContextMutation *)v7 getAssistantIdentifier];
+      v12 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v12;
 
-      v14 = [(_AFServiceDeviceContextMutation *)v7 getMediaSystemIdentifier];
-      v15 = [v14 copy];
+      getMediaSystemIdentifier = [(_AFServiceDeviceContextMutation *)v7 getMediaSystemIdentifier];
+      v15 = [getMediaSystemIdentifier copy];
       mediaSystemIdentifier = v6->_mediaSystemIdentifier;
       v6->_mediaSystemIdentifier = v15;
 
-      v17 = [(_AFServiceDeviceContextMutation *)v7 getMediaRouteIdentifier];
-      v18 = [v17 copy];
+      getMediaRouteIdentifier = [(_AFServiceDeviceContextMutation *)v7 getMediaRouteIdentifier];
+      v18 = [getMediaRouteIdentifier copy];
       mediaRouteIdentifier = v6->_mediaRouteIdentifier;
       v6->_mediaRouteIdentifier = v18;
 
-      v20 = [(_AFServiceDeviceContextMutation *)v7 getSharedUserID];
-      v21 = [v20 copy];
+      getSharedUserID = [(_AFServiceDeviceContextMutation *)v7 getSharedUserID];
+      v21 = [getSharedUserID copy];
       sharedUserID = v6->_sharedUserID;
       v6->_sharedUserID = v21;
 
-      v23 = [(_AFServiceDeviceContextMutation *)v7 getRoomName];
-      v24 = [v23 copy];
+      getRoomName = [(_AFServiceDeviceContextMutation *)v7 getRoomName];
+      v24 = [getRoomName copy];
       roomName = v6->_roomName;
       v6->_roomName = v24;
 
       v6->_proximity = [(_AFServiceDeviceContextMutation *)v7 getProximity];
-      v26 = [(_AFServiceDeviceContextMutation *)v7 getSerializedContextByKey];
-      v27 = [v26 copy];
+      getSerializedContextByKey = [(_AFServiceDeviceContextMutation *)v7 getSerializedContextByKey];
+      v27 = [getSerializedContextByKey copy];
       serializedContextByKey = v6->_serializedContextByKey;
       v6->_serializedContextByKey = v27;
 
-      v29 = [(_AFServiceDeviceContextMutation *)v7 getMetricsContext];
-      v30 = [v29 copy];
+      getMetricsContext = [(_AFServiceDeviceContextMutation *)v7 getMetricsContext];
+      v30 = [getMetricsContext copy];
       metricsContext = v6->_metricsContext;
       v6->_metricsContext = v30;
     }
@@ -320,62 +320,62 @@ void __178__AFServiceDeviceContext_initWithIdentifier_assistantIdentifier_mediaS
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFServiceDeviceContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFServiceDeviceContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFServiceDeviceContext);
-      v7 = [(_AFServiceDeviceContextMutation *)v5 getIdentifier];
-      v8 = [v7 copy];
+      getIdentifier = [(_AFServiceDeviceContextMutation *)v5 getIdentifier];
+      v8 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v8;
 
-      v10 = [(_AFServiceDeviceContextMutation *)v5 getAssistantIdentifier];
-      v11 = [v10 copy];
+      getAssistantIdentifier = [(_AFServiceDeviceContextMutation *)v5 getAssistantIdentifier];
+      v11 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v11;
 
-      v13 = [(_AFServiceDeviceContextMutation *)v5 getMediaSystemIdentifier];
-      v14 = [v13 copy];
+      getMediaSystemIdentifier = [(_AFServiceDeviceContextMutation *)v5 getMediaSystemIdentifier];
+      v14 = [getMediaSystemIdentifier copy];
       mediaSystemIdentifier = v6->_mediaSystemIdentifier;
       v6->_mediaSystemIdentifier = v14;
 
-      v16 = [(_AFServiceDeviceContextMutation *)v5 getMediaRouteIdentifier];
-      v17 = [v16 copy];
+      getMediaRouteIdentifier = [(_AFServiceDeviceContextMutation *)v5 getMediaRouteIdentifier];
+      v17 = [getMediaRouteIdentifier copy];
       mediaRouteIdentifier = v6->_mediaRouteIdentifier;
       v6->_mediaRouteIdentifier = v17;
 
-      v19 = [(_AFServiceDeviceContextMutation *)v5 getSharedUserID];
-      v20 = [v19 copy];
+      getSharedUserID = [(_AFServiceDeviceContextMutation *)v5 getSharedUserID];
+      v20 = [getSharedUserID copy];
       sharedUserID = v6->_sharedUserID;
       v6->_sharedUserID = v20;
 
-      v22 = [(_AFServiceDeviceContextMutation *)v5 getRoomName];
-      v23 = [v22 copy];
+      getRoomName = [(_AFServiceDeviceContextMutation *)v5 getRoomName];
+      v23 = [getRoomName copy];
       roomName = v6->_roomName;
       v6->_roomName = v23;
 
       v6->_proximity = [(_AFServiceDeviceContextMutation *)v5 getProximity];
-      v25 = [(_AFServiceDeviceContextMutation *)v5 getSerializedContextByKey];
-      v26 = [v25 copy];
+      getSerializedContextByKey = [(_AFServiceDeviceContextMutation *)v5 getSerializedContextByKey];
+      v26 = [getSerializedContextByKey copy];
       serializedContextByKey = v6->_serializedContextByKey;
       v6->_serializedContextByKey = v26;
 
-      v28 = [(_AFServiceDeviceContextMutation *)v5 getMetricsContext];
-      v29 = [v28 copy];
+      getMetricsContext = [(_AFServiceDeviceContextMutation *)v5 getMetricsContext];
+      v29 = [getMetricsContext copy];
       metricsContext = v6->_metricsContext;
       v6->_metricsContext = v29;
     }

@@ -1,8 +1,8 @@
 @interface HMAccessoryInfoPrimaryUser
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryInfoPrimaryUser)initWithProtoData:(id)a3;
-- (HMAccessoryInfoPrimaryUser)initWithProtoPayload:(id)a3;
-- (HMAccessoryInfoPrimaryUser)initWithUUIDString:(id)a3 selectionType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryInfoPrimaryUser)initWithProtoData:(id)data;
+- (HMAccessoryInfoPrimaryUser)initWithProtoPayload:(id)payload;
+- (HMAccessoryInfoPrimaryUser)initWithUUIDString:(id)string selectionType:(unint64_t)type;
 - (id)description;
 - (id)protoData;
 - (id)protoPayload;
@@ -13,16 +13,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessoryInfoPrimaryUser *)self uuidString];
-  v3 = [v2 hash];
+  uuidString = [(HMAccessoryInfoPrimaryUser *)self uuidString];
+  v3 = [uuidString hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -32,7 +32,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -43,12 +43,12 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryInfoPrimaryUser *)self uuidString];
-      v8 = [(HMAccessoryInfoPrimaryUser *)v6 uuidString];
+      uuidString = [(HMAccessoryInfoPrimaryUser *)self uuidString];
+      uuidString2 = [(HMAccessoryInfoPrimaryUser *)v6 uuidString];
       if (HMFEqualObjects())
       {
-        v9 = [(HMAccessoryInfoPrimaryUser *)self selectionType];
-        v10 = v9 == [(HMAccessoryInfoPrimaryUser *)v6 selectionType];
+        selectionType = [(HMAccessoryInfoPrimaryUser *)self selectionType];
+        v10 = selectionType == [(HMAccessoryInfoPrimaryUser *)v6 selectionType];
       }
 
       else
@@ -66,38 +66,38 @@
   return v10;
 }
 
-- (HMAccessoryInfoPrimaryUser)initWithProtoData:(id)a3
+- (HMAccessoryInfoPrimaryUser)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[HMAccessoryInfoProtoPrimaryUserInfoEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMAccessoryInfoProtoPrimaryUserInfoEvent alloc] initWithData:dataCopy];
 
   v6 = [(HMAccessoryInfoPrimaryUser *)self initWithProtoPayload:v5];
   return v6;
 }
 
-- (HMAccessoryInfoPrimaryUser)initWithProtoPayload:(id)a3
+- (HMAccessoryInfoPrimaryUser)initWithProtoPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 uuidString];
-  v6 = [v4 selectionType];
+  payloadCopy = payload;
+  uuidString = [payloadCopy uuidString];
+  selectionType = [payloadCopy selectionType];
 
-  v7 = [(HMAccessoryInfoPrimaryUser *)self initWithUUIDString:v5 selectionType:v6 != 0];
+  v7 = [(HMAccessoryInfoPrimaryUser *)self initWithUUIDString:uuidString selectionType:selectionType != 0];
   return v7;
 }
 
 - (id)protoData
 {
-  v2 = [(HMAccessoryInfoPrimaryUser *)self protoPayload];
-  v3 = [v2 data];
+  protoPayload = [(HMAccessoryInfoPrimaryUser *)self protoPayload];
+  data = [protoPayload data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoPayload
 {
   v3 = objc_alloc_init(HMAccessoryInfoProtoPrimaryUserInfoEvent);
-  v4 = [(HMAccessoryInfoPrimaryUser *)self uuidString];
-  [(HMAccessoryInfoProtoPrimaryUserInfoEvent *)v3 setUuidString:v4];
+  uuidString = [(HMAccessoryInfoPrimaryUser *)self uuidString];
+  [(HMAccessoryInfoProtoPrimaryUserInfoEvent *)v3 setUuidString:uuidString];
 
   [(HMAccessoryInfoProtoPrimaryUserInfoEvent *)v3 setSelectionType:[(HMAccessoryInfoPrimaryUser *)self _primaryUserInfoEventSelectionType:[(HMAccessoryInfoPrimaryUser *)self selectionType]]];
 
@@ -110,24 +110,24 @@
   v9.receiver = self;
   v9.super_class = HMAccessoryInfoPrimaryUser;
   v4 = [(HMAccessoryInfoPrimaryUser *)&v9 description];
-  v5 = [(HMAccessoryInfoPrimaryUser *)self uuidString];
+  uuidString = [(HMAccessoryInfoPrimaryUser *)self uuidString];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMAccessoryInfoPrimaryUser selectionType](self, "selectionType")}];
-  v7 = [v3 stringWithFormat:@"%@, %@, %@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@, %@, %@", v4, uuidString, v6];
 
   return v7;
 }
 
-- (HMAccessoryInfoPrimaryUser)initWithUUIDString:(id)a3 selectionType:(unint64_t)a4
+- (HMAccessoryInfoPrimaryUser)initWithUUIDString:(id)string selectionType:(unint64_t)type
 {
-  v7 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = HMAccessoryInfoPrimaryUser;
   v8 = [(HMAccessoryInfoPrimaryUser *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uuidString, a3);
-    v9->_selectionType = a4;
+    objc_storeStrong(&v8->_uuidString, string);
+    v9->_selectionType = type;
   }
 
   return v9;

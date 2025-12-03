@@ -1,16 +1,16 @@
 @interface XBUpdatingImageView
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation XBUpdatingImageView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = XBUpdatingImageView;
-  [(XBUpdatingImageView *)&v15 traitCollectionDidChange:a3];
-  v4 = [(XBUpdatingImageView *)self image];
-  [v4 capInsets];
+  [(XBUpdatingImageView *)&v15 traitCollectionDidChange:change];
+  image = [(XBUpdatingImageView *)self image];
+  [image capInsets];
   v11 = v6;
   v12 = v5;
   v13 = v8;

@@ -1,13 +1,13 @@
 @interface DUFileUpdateSpotlightReceiver
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4;
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d;
 @end
 
 @implementation DUFileUpdateSpotlightReceiver
 
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  dCopy = d;
   if (+[_TtC27DocumentUnderstandingClient38DocumentUnderstandingFeatureFlagReader isSearchAndOrganizationDocumentIngestEnabled])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -16,21 +16,21 @@
       _os_log_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DocumentUnderstanding: calling by XPC into textunderstandingd for DUFileUpdateSpotlightReceiver", v13, 2u);
     }
 
-    if ([v5 count])
+    if ([itemsCopy count])
     {
       v7 = 0;
       while (1)
       {
-        v8 = [v5 objectAtIndexedSubscript:v7];
-        v9 = [v8 attributeSet];
-        v10 = [v9 fileProviderID];
-        if (![v10 length])
+        v8 = [itemsCopy objectAtIndexedSubscript:v7];
+        attributeSet = [v8 attributeSet];
+        fileProviderID = [attributeSet fileProviderID];
+        if (![fileProviderID length])
         {
           goto LABEL_9;
         }
 
-        v11 = [v9 fileItemID];
-        v12 = [v11 length];
+        fileItemID = [attributeSet fileItemID];
+        v12 = [fileItemID length];
 
         if (v12)
         {
@@ -39,14 +39,14 @@
 
 LABEL_10:
 
-        if (++v7 >= [v5 count])
+        if (++v7 >= [itemsCopy count])
         {
           goto LABEL_14;
         }
       }
 
-      v10 = +[DUXPCClient sharedInstance];
-      [v10 addOrUpdateSearchableItems:v5 bundleID:v6 completion:&unk_285CF06F0];
+      fileProviderID = +[DUXPCClient sharedInstance];
+      [fileProviderID addOrUpdateSearchableItems:itemsCopy bundleID:dCopy completion:&unk_285CF06F0];
 LABEL_9:
 
       goto LABEL_10;

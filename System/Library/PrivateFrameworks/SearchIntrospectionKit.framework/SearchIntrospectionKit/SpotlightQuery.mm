@@ -1,15 +1,15 @@
 @interface SpotlightQuery
 - (_TtC22SearchIntrospectionKit14SpotlightQuery)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SpotlightQuery
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SpotlightQuery.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SpotlightQuery.encode(with:)(coderCopy);
 }
 
 - (_TtC22SearchIntrospectionKit14SpotlightQuery)init

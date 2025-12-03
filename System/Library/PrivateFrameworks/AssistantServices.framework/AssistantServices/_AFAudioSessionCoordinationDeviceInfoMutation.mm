@@ -1,5 +1,5 @@
 @interface _AFAudioSessionCoordinationDeviceInfoMutation
-- (_AFAudioSessionCoordinationDeviceInfoMutation)initWithBase:(id)a3;
+- (_AFAudioSessionCoordinationDeviceInfoMutation)initWithBase:(id)base;
 - (id)getPeerInfo;
 - (id)getSystemInfo;
 @end
@@ -10,42 +10,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_systemInfo;
+    systemInfo = self->_systemInfo;
   }
 
   else
   {
-    v2 = [(AFAudioSessionCoordinationDeviceInfo *)self->_base systemInfo];
+    systemInfo = [(AFAudioSessionCoordinationDeviceInfo *)self->_base systemInfo];
   }
 
-  return v2;
+  return systemInfo;
 }
 
 - (id)getPeerInfo
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_peerInfo;
+    peerInfo = self->_peerInfo;
   }
 
   else
   {
-    v2 = [(AFAudioSessionCoordinationDeviceInfo *)self->_base peerInfo];
+    peerInfo = [(AFAudioSessionCoordinationDeviceInfo *)self->_base peerInfo];
   }
 
-  return v2;
+  return peerInfo;
 }
 
-- (_AFAudioSessionCoordinationDeviceInfoMutation)initWithBase:(id)a3
+- (_AFAudioSessionCoordinationDeviceInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFAudioSessionCoordinationDeviceInfoMutation;
   v6 = [(_AFAudioSessionCoordinationDeviceInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

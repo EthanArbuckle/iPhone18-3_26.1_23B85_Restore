@@ -2,14 +2,14 @@
 - (GEOSharedNavState)selectedTrip;
 - (SharedTripListContaineeViewController)init;
 - (SharedTripsActionCoordination)delegate;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)applyAlphaToContent:(double)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)applyAlphaToContent:(double)content;
 - (void)dealloc;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
-- (void)setSelectedTrip:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
+- (void)setSelectedTrip:(id)trip;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -22,26 +22,26 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
   [v7 setSelected:0];
 
-  v11 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:v6];
+  v11 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:pathCopy];
 
   [(SharedTripListContaineeViewController *)self setSelectedTrip:v11];
   if ([v11 hasTransportType])
   {
-    v8 = [v11 transportType];
-    if (v8 >= 7)
+    transportType = [v11 transportType];
+    if (transportType >= 7)
     {
-      v9 = [NSString stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
     }
 
     else
     {
-      v9 = off_101626E80[v8];
+      v9 = off_101626E80[transportType];
     }
   }
 
@@ -52,24 +52,24 @@
 
   [GEOAPPortal captureUserAction:9003 target:267 value:v9];
 
-  v10 = [(SharedTripListContaineeViewController *)self delegate];
-  [v10 didSelectSharedTrip:v11];
+  delegate = [(SharedTripListContaineeViewController *)self delegate];
+  [delegate didSelectSharedTrip:v11];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:a5, a4];
-  if ([v7 hasTransportType])
+  cell = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:path, cell];
+  if ([cell hasTransportType])
   {
-    v5 = [v7 transportType];
-    if (v5 >= 7)
+    transportType = [cell transportType];
+    if (transportType >= 7)
     {
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
     }
 
     else
     {
-      v6 = off_101626E80[v5];
+      v6 = off_101626E80[transportType];
     }
   }
 
@@ -81,25 +81,25 @@
   [GEOAPPortal captureUserAction:9002 target:267 value:v6];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 bottomSafeOffset];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController bottomSafeOffset];
   v7 = v6;
 
-  if (a3 == 1)
+  if (layout == 1)
   {
 LABEL_7:
     [(ContaineeViewController *)self headerHeight];
     return v11 + v7;
   }
 
-  if (a3 == 2)
+  if (layout == 2)
   {
-    v8 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource numberOfSharedTrips];
-    if (v8 <= 3)
+    numberOfSharedTrips = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource numberOfSharedTrips];
+    if (numberOfSharedTrips <= 3)
     {
-      v9 = v8;
+      v9 = numberOfSharedTrips;
     }
 
     else
@@ -112,44 +112,44 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [(ContaineeViewController *)self cardPresentationController];
-  [v13 availableHeight];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 availableHeight];
   v15 = v14;
 
   return v15;
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = SharedTripListContaineeViewController;
   [(ContaineeViewController *)&v5 applyAlphaToContent:?];
-  [(ContainerHeaderView *)self->_headerView setHairLineAlpha:a3];
+  [(ContainerHeaderView *)self->_headerView setHairLineAlpha:content];
 }
 
-- (void)setSelectedTrip:(id)a3
+- (void)setSelectedTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   WeakRetained = objc_loadWeakRetained(&self->_selectedTrip);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != tripCopy)
   {
     v6 = sub_1006EB6C4();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v4 groupIdentifier];
+      groupIdentifier = [tripCopy groupIdentifier];
       v9 = 134349314;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v7;
+      v12 = groupIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Selecting trip: %@", &v9, 0x16u);
     }
 
     subscriptionToken = self->_subscriptionToken;
     self->_subscriptionToken = 0;
 
-    objc_storeWeak(&self->_selectedTrip, v4);
-    [(SharedTripsTableDataSource *)self->_sharedTripsDataSource setSelectedTrip:v4];
+    objc_storeWeak(&self->_selectedTrip, tripCopy);
+    [(SharedTripsTableDataSource *)self->_sharedTripsDataSource setSelectedTrip:tripCopy];
   }
 }
 
@@ -159,8 +159,8 @@ LABEL_7:
 
   if (!WeakRetained)
   {
-    v4 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource selectedTrip];
-    objc_storeWeak(&self->_selectedTrip, v4);
+    selectedTrip = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource selectedTrip];
+    objc_storeWeak(&self->_selectedTrip, selectedTrip);
   }
 
   v5 = objc_loadWeakRetained(&self->_selectedTrip);
@@ -168,40 +168,40 @@ LABEL_7:
   return v5;
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = [MSPSharedTripService sharedInstance:a3];
-  v6 = [v5 receivedTrips];
-  v10 = sub_100021DB0(v6, &stru_101626E40);
+  v5 = [MSPSharedTripService sharedInstance:tapped];
+  receivedTrips = [v5 receivedTrips];
+  v10 = sub_100021DB0(receivedTrips, &stru_101626E40);
 
-  v7 = [(SharedTripListContaineeViewController *)self currentUITargetForAnalytics];
+  currentUITargetForAnalytics = [(SharedTripListContaineeViewController *)self currentUITargetForAnalytics];
   v8 = [v10 componentsJoinedByString:{@", "}];
-  [GEOAPPortal captureUserAction:4 target:v7 value:v8];
+  [GEOAPPortal captureUserAction:4 target:currentUITargetForAnalytics value:v8];
 
-  v9 = [(SharedTripListContaineeViewController *)self delegate];
-  [v9 closeSharedTrips];
+  delegate = [(SharedTripListContaineeViewController *)self delegate];
+  [delegate closeSharedTrips];
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if ((v5 - 2) >= 2)
+  if ((containeeLayout - 2) >= 2)
   {
-    if (v5 != 1)
+    if (containeeLayout != 1)
     {
       return;
     }
 
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsExpandLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsExpandLayout];
   }
 
   else
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsMinimizeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsMinimizeLayout];
   }
 }
 
@@ -220,12 +220,12 @@ LABEL_7:
   v6 = [v5 localizedStringForKey:@"Shared Trips [Tray value:Header]" table:{@"localized string not found", 0}];
   [(ContainerHeaderView *)self->_headerView setTitle:v6];
 
-  v7 = [(SharedTripListContaineeViewController *)self view];
-  [v7 addSubview:self->_headerView];
+  view = [(SharedTripListContaineeViewController *)self view];
+  [view addSubview:self->_headerView];
 
   v8 = [UITableView alloc];
-  v9 = [(SharedTripListContaineeViewController *)self view];
-  [v9 bounds];
+  view2 = [(SharedTripListContaineeViewController *)self view];
+  [view2 bounds];
   v10 = [v8 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v10;
@@ -244,8 +244,8 @@ LABEL_7:
   v15 = +[TwoLinesTableViewCell identifier];
   [(UITableView *)v13 registerClass:v14 forCellReuseIdentifier:v15];
 
-  v16 = [(SharedTripListContaineeViewController *)self view];
-  [v16 addSubview:self->_tableView];
+  view3 = [(SharedTripListContaineeViewController *)self view];
+  [view3 addSubview:self->_tableView];
 
   objc_initWeak(&location, self);
   v17 = [SharedTripsTableDataSource alloc];
@@ -265,45 +265,45 @@ LABEL_7:
   self->_sharedTripsDataSource = v19;
 
   v21 = +[NSMutableArray array];
-  v22 = [(ContainerHeaderView *)self->_headerView topAnchor];
-  v23 = [(SharedTripListContaineeViewController *)self view];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  topAnchor = [(ContainerHeaderView *)self->_headerView topAnchor];
+  view4 = [(SharedTripListContaineeViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v21 addObject:v25];
 
-  v26 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
-  v27 = [(SharedTripListContaineeViewController *)self view];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  leadingAnchor = [(ContainerHeaderView *)self->_headerView leadingAnchor];
+  view5 = [(SharedTripListContaineeViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v21 addObject:v29];
 
-  v30 = [(SharedTripListContaineeViewController *)self view];
-  v31 = [v30 trailingAnchor];
-  v32 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  view6 = [(SharedTripListContaineeViewController *)self view];
+  trailingAnchor = [view6 trailingAnchor];
+  trailingAnchor2 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v21 addObject:v33];
 
-  v34 = [(UITableView *)self->_tableView topAnchor];
-  v35 = [(ContainerHeaderView *)self->_headerView bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor = [(ContainerHeaderView *)self->_headerView bottomAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v21 addObject:v36];
 
-  v37 = [(UITableView *)self->_tableView leadingAnchor];
-  v38 = [(SharedTripListContaineeViewController *)self view];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  view7 = [(SharedTripListContaineeViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v21 addObject:v40];
 
-  v41 = [(UITableView *)self->_tableView trailingAnchor];
-  v42 = [(SharedTripListContaineeViewController *)self view];
-  v43 = [v42 trailingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  view8 = [(SharedTripListContaineeViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v44 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v21 addObject:v44];
 
-  v45 = [(UITableView *)self->_tableView bottomAnchor];
-  v46 = [(SharedTripListContaineeViewController *)self view];
-  v47 = [v46 bottomAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  bottomAnchor2 = [(UITableView *)self->_tableView bottomAnchor];
+  view9 = [(SharedTripListContaineeViewController *)self view];
+  bottomAnchor3 = [view9 bottomAnchor];
+  v48 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v21 addObject:v48];
 
   [NSLayoutConstraint activateConstraints:v21];
@@ -318,7 +318,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

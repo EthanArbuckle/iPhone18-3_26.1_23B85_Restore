@@ -1,11 +1,11 @@
 @interface _EXExtensionIdentity
 + (_EXExtensionIdentity)current;
-+ (id)identityFromDataRepresentation:(id)a3 error:(id *)a4;
++ (id)identityFromDataRepresentation:(id)representation error:(id *)error;
 - (BOOL)builtForNSExtension;
 - (BOOL)disableLaunchdCheckinTimeout;
 - (BOOL)enabled;
 - (BOOL)hasSandboxEntitlement;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)launchesViaExtensionKitService;
 - (BOOL)performsUserInteractiveWork;
 - (BOOL)presentsUserInterface;
@@ -49,15 +49,15 @@
 - (NSString)serviceName;
 - (NSURL)url;
 - (_EXExtensionIdentity)init;
-- (_EXExtensionIdentity)initWithPlugInKitProxy:(id)a3;
-- (_EXExtensionIdentity)initWithServiceIdentifier:(id)a3 error:(id *)a4;
-- (id)entitlementNamed:(id)a3 ofClass:(Class)a4;
-- (id)makeXPCConnectionWithError:(id *)a3;
+- (_EXExtensionIdentity)initWithPlugInKitProxy:(id)proxy;
+- (_EXExtensionIdentity)initWithServiceIdentifier:(id)identifier error:(id *)error;
+- (id)entitlementNamed:(id)named ofClass:(Class)class;
+- (id)makeXPCConnectionWithError:(id *)error;
 - (int64_t)hash;
 - (unsigned)defaultUserElection;
 - (unsigned)platform;
 - (unsigned)userElection;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXExtensionIdentity
@@ -155,8 +155,8 @@
   v5 = *(v4 + 64);
   MEMORY[0x1EEE9AC00]();
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(_EXExtensionIdentity *)v8 uniqueIdentifier];
+  selfCopy = self;
+  uniqueIdentifier = [(_EXExtensionIdentity *)selfCopy uniqueIdentifier];
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
 
   v10 = UUID.hashValue.getter();
@@ -164,11 +164,11 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -177,7 +177,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _EXExtensionIdentity.isEqual(_:)(v8);
@@ -210,7 +210,7 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____EXExtensionIdentity__inner;
   swift_beginAccess();
@@ -222,9 +222,9 @@
     v7 = v15;
     __swift_project_boxed_opaque_existential_1(v13, v14);
     v8 = *(v7 + 8);
-    v9 = a3;
-    v10 = self;
-    v8(v9, v6, v7);
+    coderCopy = coder;
+    selfCopy = self;
+    v8(coderCopy, v6, v7);
 
     __swift_destroy_boxed_opaque_existential_0Tm(v13);
   }
@@ -310,15 +310,15 @@
 
 - (NSString)serviceName
 {
-  v2 = self;
-  v3 = [(_EXExtensionIdentity *)v2 bundleIdentifier];
-  if (!v3)
+  selfCopy = self;
+  bundleIdentifier = [(_EXExtensionIdentity *)selfCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v3 = MEMORY[0x1865F36D0](v4);
+    bundleIdentifier = MEMORY[0x1865F36D0](v4);
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)requiresLibXPCConnection
@@ -393,7 +393,7 @@
   return result;
 }
 
-- (id)entitlementNamed:(id)a3 ofClass:(Class)a4
+- (id)entitlementNamed:(id)named ofClass:(Class)class
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -408,7 +408,7 @@
     v12 = v21;
     __swift_project_boxed_opaque_existential_1(v19, v20);
     v13 = *(v12 + 472);
-    v14 = self;
+    selfCopy = self;
     v15 = v13(ObjCClassMetadata, v5, v7, v11, v12);
 
     __swift_destroy_boxed_opaque_existential_0Tm(v19);
@@ -427,9 +427,9 @@
   return result;
 }
 
-+ (id)identityFromDataRepresentation:(id)a3 error:(id *)a4
++ (id)identityFromDataRepresentation:(id)representation error:(id *)error
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -445,7 +445,7 @@
   return v2;
 }
 
-- (_EXExtensionIdentity)initWithPlugInKitProxy:(id)a3
+- (_EXExtensionIdentity)initWithPlugInKitProxy:(id)proxy
 {
   v3 = self + OBJC_IVAR____EXExtensionIdentity__inner;
   *v3 = 0u;
@@ -456,7 +456,7 @@
   return result;
 }
 
-- (_EXExtensionIdentity)initWithServiceIdentifier:(id)a3 error:(id *)a4
+- (_EXExtensionIdentity)initWithServiceIdentifier:(id)identifier error:(id *)error
 {
   v4 = self + OBJC_IVAR____EXExtensionIdentity__inner;
   *v4 = 0u;
@@ -718,7 +718,7 @@
     v6 = v15;
     __swift_project_boxed_opaque_existential_1(v13, v14);
     v7 = *(v6 + 304);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(v5, v6);
     specialized _dictionaryUpCast<A, B, C, D>(_:)(v9);
 
@@ -846,7 +846,7 @@
     v6 = v15;
     __swift_project_boxed_opaque_existential_1(v13, v14);
     v7 = *(v6 + 176);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(v5, v6);
     specialized _dictionaryUpCast<A, B, C, D>(_:)(v9);
 
@@ -876,7 +876,7 @@
     v6 = v14;
     __swift_project_boxed_opaque_existential_1(v12, v13);
     v7 = *(v6 + 416);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(0, v5, v6);
 
     __swift_destroy_boxed_opaque_existential_0Tm(v12);
@@ -903,7 +903,7 @@
     v6 = v14;
     __swift_project_boxed_opaque_existential_1(v12, v13);
     v7 = *(v6 + 424);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(0, v5, v6);
 
     __swift_destroy_boxed_opaque_existential_0Tm(v12);
@@ -918,20 +918,20 @@
   return result;
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v5.super.isa = _EXExtensionIdentity.makeXPCConnection()().super.isa;
 
   if (v6.super.isa)
   {
-    if (a3)
+    if (error)
     {
       v7 = _convertErrorToNSError(_:)();
 
       v8 = v7;
       isa = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -951,7 +951,7 @@
 
 - (NSArray)roles
 {
-  v2 = self;
+  selfCopy = self;
   _EXExtensionIdentity.roles.getter();
 
   type metadata accessor for _EXSceneRole(0);
@@ -1033,7 +1033,7 @@
     v6 = v15;
     __swift_project_boxed_opaque_existential_1(v13, v14);
     v7 = *(v6 + 288);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(v5, v6);
     specialized _dictionaryUpCast<A, B, C, D>(_:)(v9);
 
@@ -1063,7 +1063,7 @@
     v6 = v15;
     __swift_project_boxed_opaque_existential_1(v13, v14);
     v7 = *(v6 + 296);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(v5, v6);
     specialized _dictionaryUpCast<A, B, C, D>(_:)(v9);
 
@@ -1117,7 +1117,7 @@
     v6 = v14;
     __swift_project_boxed_opaque_existential_1(v12, v13);
     v7 = *(v6 + 440);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(0, v5, v6);
 
     __swift_destroy_boxed_opaque_existential_0Tm(v12);

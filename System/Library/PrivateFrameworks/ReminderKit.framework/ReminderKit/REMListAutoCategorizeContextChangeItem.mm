@@ -1,16 +1,16 @@
 @interface REMListAutoCategorizeContextChangeItem
 - (BOOL)shouldAutoCategorizeItems;
 - (NSArray)unsavedReminderIDsForCategorization;
-- (REMListAutoCategorizeContextChangeItem)initWithListChangeItem:(id)a3;
-- (void)categorizeAutoCategorizationItemsWithReminderIDs:(id)a3;
+- (REMListAutoCategorizeContextChangeItem)initWithListChangeItem:(id)item;
+- (void)categorizeAutoCategorizationItemsWithReminderIDs:(id)ds;
 @end
 
 @implementation REMListAutoCategorizeContextChangeItem
 
-- (REMListAutoCategorizeContextChangeItem)initWithListChangeItem:(id)a3
+- (REMListAutoCategorizeContextChangeItem)initWithListChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "listChangeItem");
   }
@@ -21,7 +21,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listChangeItem, a3);
+    objc_storeStrong(&v6->_listChangeItem, item);
   }
 
   return v7;
@@ -29,42 +29,42 @@
 
 - (BOOL)shouldAutoCategorizeItems
 {
-  v2 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
-  v3 = [v2 shouldAutoCategorizeItems];
+  listChangeItem = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
+  shouldAutoCategorizeItems = [listChangeItem shouldAutoCategorizeItems];
 
-  return v3;
+  return shouldAutoCategorizeItems;
 }
 
 - (NSArray)unsavedReminderIDsForCategorization
 {
-  v2 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
-  v3 = [v2 unsavedReminderIDsForCategorization];
+  listChangeItem = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
+  unsavedReminderIDsForCategorization = [listChangeItem unsavedReminderIDsForCategorization];
 
-  return v3;
+  return unsavedReminderIDsForCategorization;
 }
 
-- (void)categorizeAutoCategorizationItemsWithReminderIDs:(id)a3
+- (void)categorizeAutoCategorizationItemsWithReminderIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
-  v6 = [v5 unsavedReminderIDsForCategorization];
+  dsCopy = ds;
+  listChangeItem = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
+  unsavedReminderIDsForCategorization = [listChangeItem unsavedReminderIDsForCategorization];
 
-  v7 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
-  v11 = v7;
-  if (v6)
+  listChangeItem2 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
+  v11 = listChangeItem2;
+  if (unsavedReminderIDsForCategorization)
   {
-    v8 = [v7 unsavedReminderIDsForCategorization];
-    v9 = [v8 arrayByAddingObjectsFromArray:v4];
+    unsavedReminderIDsForCategorization2 = [listChangeItem2 unsavedReminderIDsForCategorization];
+    v9 = [unsavedReminderIDsForCategorization2 arrayByAddingObjectsFromArray:dsCopy];
 
-    v10 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
-    [v10 setUnsavedReminderIDsForCategorization:v9];
+    listChangeItem3 = [(REMListAutoCategorizeContextChangeItem *)self listChangeItem];
+    [listChangeItem3 setUnsavedReminderIDsForCategorization:v9];
 
-    v4 = v8;
+    dsCopy = unsavedReminderIDsForCategorization2;
   }
 
   else
   {
-    [v7 setUnsavedReminderIDsForCategorization:v4];
+    [listChangeItem2 setUnsavedReminderIDsForCategorization:dsCopy];
   }
 }
 

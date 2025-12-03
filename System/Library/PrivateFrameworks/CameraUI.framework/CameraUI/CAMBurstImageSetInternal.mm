@@ -3,22 +3,22 @@
 - (BOOL)isAction;
 - (BOOL)isFaceDetectionForced;
 - (BOOL)isPortrait;
-- (CAMBurstImageSetInternal)initWithOptions:(id)a3;
+- (CAMBurstImageSetInternal)initWithOptions:(id)options;
 - (float)computeActionSelectionThreshold;
 - (float)computeBeginningVsEndAEMatrixDiffVsAverageAdjacent;
 - (float)computeCameraTravelDistance;
 - (id)bestImageIdentifiers;
 - (id)burstDocumentDirectory;
-- (id)findBestImage:(id)a3 useActionScores:(BOOL)a4;
-- (id)imageClusterForIdentifier:(id)a3;
-- (int)computeEmotion:(id)a3;
-- (void)addImageFromIOSurface:(__IOSurface *)a3 properties:(id)a4 identifier:(id)a5 completionBlock:(id)a6;
-- (void)addYUVImage:(id)a3 properties:(id)a4 identifier:(id)a5 imageProps:(id)a6 completionBlock:(id)a7;
+- (id)findBestImage:(id)image useActionScores:(BOOL)scores;
+- (id)imageClusterForIdentifier:(id)identifier;
+- (int)computeEmotion:(id)emotion;
+- (void)addImageFromIOSurface:(__IOSurface *)surface properties:(id)properties identifier:(id)identifier completionBlock:(id)block;
+- (void)addYUVImage:(id)image properties:(id)properties identifier:(id)identifier imageProps:(id)props completionBlock:(id)block;
 - (void)computeAllImageScores;
 - (void)dealloc;
-- (void)performEmotionalRejectionOnCluster:(id)a3;
-- (void)processClusters:(BOOL)a3;
-- (void)selectCoverPhotoFromMultiple:(id)a3 burstSize:(int)a4;
+- (void)performEmotionalRejectionOnCluster:(id)cluster;
+- (void)processClusters:(BOOL)clusters;
+- (void)selectCoverPhotoFromMultiple:(id)multiple burstSize:(int)size;
 @end
 
 @implementation CAMBurstImageSetInternal
@@ -38,14 +38,14 @@
 
 - (id)burstDocumentDirectory
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v6 = 0;
   v4 = [objc_msgSend(@"/var/mobile/Library/Caches/com.apple.camera" stringByAppendingPathComponent:{@"burstSets", "stringByAppendingPathComponent:", -[CAMBurstImageSetInternal burstId](self, "burstId")}];
-  [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v6];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v6];
   return v4;
 }
 
-- (CAMBurstImageSetInternal)initWithOptions:(id)a3
+- (CAMBurstImageSetInternal)initWithOptions:(id)options
 {
   v42 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
@@ -58,9 +58,9 @@
     v4->temporalOrder = 0;
     v4->burstLogFileHandle = 0;
     [(CAMBurstImageSetInternal *)v4 setVersionString:+[CAMBurstImageSetInternal defaultVersionString]];
-    if (a3)
+    if (options)
     {
-      v5 = [a3 objectForKey:kCAMBurstImageSetInit_Version[0]];
+      v5 = [options objectForKey:kCAMBurstImageSetInit_Version[0]];
       if (v5)
       {
         if ([v5 isEqualToString:kCAMBurstImageSetVersion_Latest[0]])
@@ -70,8 +70,8 @@
       }
     }
 
-    v6 = [(CAMBurstImageSetInternal *)v4 versionString];
-    if ([(NSString *)v6 isEqualToString:kCAMBurstImageSet_VersionString_2[0]])
+    versionString = [(CAMBurstImageSetInternal *)v4 versionString];
+    if ([(NSString *)versionString isEqualToString:kCAMBurstImageSet_VersionString_2[0]])
     {
       v7 = 2;
     }
@@ -205,9 +205,9 @@
     {
       v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v4->dq_yuvdump = dispatch_queue_create("com.apple.staccato_dump", v31);
-      v32 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v33 = [-[CAMBurstImageSetInternal burstDocumentDirectory](v4 "burstDocumentDirectory")];
-      if (([v32 fileExistsAtPath:v33] & 1) == 0)
+      if (([defaultManager fileExistsAtPath:v33] & 1) == 0)
       {
         *__ptr = 0;
         v34 = fopen([v33 UTF8String], "w");
@@ -395,8 +395,8 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v13 = [v12 burstImages];
-        v14 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        burstImages = [v12 burstImages];
+        v14 = [burstImages countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v14)
         {
           v15 = v14;
@@ -407,7 +407,7 @@
             {
               if (*v27 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(burstImages);
               }
 
               v18 = *(*(&v26 + 1) + 8 * j);
@@ -427,7 +427,7 @@
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v15 = [burstImages countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v15);
@@ -480,19 +480,19 @@ LABEL_23:
   return v24;
 }
 
-- (void)processClusters:(BOOL)a3
+- (void)processClusters:(BOOL)clusters
 {
-  v167 = a3;
-  v3 = self;
+  clustersCopy = clusters;
+  selfCopy = self;
   v186 = *MEMORY[0x1E69E9840];
   curClusterIndexToProcess = self->curClusterIndexToProcess;
   if ([(NSMutableArray *)self->clusterArray count]<= curClusterIndexToProcess)
   {
 LABEL_52:
-    if (v167)
+    if (clustersCopy)
     {
-      v159 = v3->curClusterIndexToProcess;
-      if ([(NSMutableArray *)v3->clusterArray count]!= v159)
+      v159 = selfCopy->curClusterIndexToProcess;
+      if ([(NSMutableArray *)selfCopy->clusterArray count]!= v159)
       {
         BurstLoggingMessage("Error!  Done adding, but there are still frames left!\n");
       }
@@ -501,37 +501,37 @@ LABEL_52:
 
   else
   {
-    v166 = v3;
+    v166 = selfCopy;
     while (1)
     {
-      v5 = [(NSMutableArray *)v3->clusterArray objectAtIndex:v3->curClusterIndexToProcess];
+      v5 = [(NSMutableArray *)selfCopy->clusterArray objectAtIndex:selfCopy->curClusterIndexToProcess];
       v6 = [objc_msgSend(v5 "burstImages")];
       v7 = [objc_msgSend(v6 "imageId")];
       [v6 timestamp];
-      BurstLoggingMessage("Examining image, id=%s, timestamp = %.6f, done=%d\n", v7, v8, v167);
-      if (!v167)
+      BurstLoggingMessage("Examining image, id=%s, timestamp = %.6f, done=%d\n", v7, v8, clustersCopy);
+      if (!clustersCopy)
       {
         [v6 timestamp];
         v10 = v9;
-        [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext latestFaceTimestamp];
-        if (v10 > v11 && [(NSMutableArray *)v3->clusterArray count]- v3->curClusterIndexToProcess < (v3->maxNumPendingFrames - 1))
+        [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext latestFaceTimestamp];
+        if (v10 > v11 && [(NSMutableArray *)selfCopy->clusterArray count]- selfCopy->curClusterIndexToProcess < (selfCopy->maxNumPendingFrames - 1))
         {
           break;
         }
       }
 
-      v12 = [v5 imageProps];
-      [v12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeStartedAnalysis[0]}];
+      imageProps = [v5 imageProps];
+      [imageProps setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeStartedAnalysis[0]}];
       v13 = [objc_msgSend(v5 "image")];
       v14 = [objc_msgSend(v5 "image")];
-      [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext addFacesToImageStat:v6 imageSize:v13, v14];
-      v15 = [v5 imageProps];
-      [v15 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeStartedFaceDetection[0]}];
-      v16 = [v5 imageProps];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext addFacesToImageStat:v6 imageSize:v13, v14];
+      imageProps2 = [v5 imageProps];
+      [imageProps2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeStartedFaceDetection[0]}];
+      imageProps3 = [v5 imageProps];
       v17 = MEMORY[0x1E696AD98];
       [v6 timestamp];
       v18 = [v17 numberWithDouble:?];
-      [v16 setObject:v18 forKey:kCAMBurstImageProperty_ImageTimestamp[0]];
+      [imageProps3 setObject:v18 forKey:kCAMBurstImageProperty_ImageTimestamp[0]];
       v168 = v6;
       if ([v6 faceStatArray])
       {
@@ -540,8 +540,8 @@ LABEL_52:
         v180 = 0u;
         v181 = 0u;
         v182 = 0u;
-        v20 = [v6 faceStatArray];
-        v21 = [v20 countByEnumeratingWithState:&v179 objects:v185 count:16];
+        faceStatArray = [v6 faceStatArray];
+        v21 = [faceStatArray countByEnumeratingWithState:&v179 objects:v185 count:16];
         if (v21)
         {
           v22 = v21;
@@ -553,7 +553,7 @@ LABEL_52:
             {
               if (*v180 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(faceStatArray);
               }
 
               v25 = *(*(&v179 + 1) + 8 * v24);
@@ -649,50 +649,50 @@ LABEL_52:
             }
 
             while (v22 != v24);
-            v22 = [v20 countByEnumeratingWithState:&v179 objects:v185 count:16];
+            v22 = [faceStatArray countByEnumeratingWithState:&v179 objects:v185 count:16];
           }
 
           while (v22);
         }
 
-        v67 = [v5 imageProps];
-        [v67 setObject:v19 forKey:kCAMBurstImageProperty_ISPFacesArray[0]];
-        v3 = v166;
+        imageProps4 = [v5 imageProps];
+        [imageProps4 setObject:v19 forKey:kCAMBurstImageProperty_ISPFacesArray[0]];
+        selfCopy = v166;
         v6 = v168;
       }
 
-      if (v3->enableFaceCore)
+      if (selfCopy->enableFaceCore)
       {
-        -[CAMBurstImageFaceAnalysisContext findFacesInImage:imageStat:](v3->faceAnalysisContext, "findFacesInImage:imageStat:", [v5 image], v6);
+        -[CAMBurstImageFaceAnalysisContext findFacesInImage:imageStat:](selfCopy->faceAnalysisContext, "findFacesInImage:imageStat:", [v5 image], v6);
       }
 
       else
       {
-        [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext setTimeFaceDetectionDone:timeElapsedSinceInit()];
-        [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext setTimeBlinkDetectionDone:timeElapsedSinceInit()];
+        [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext setTimeFaceDetectionDone:timeElapsedSinceInit()];
+        [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext setTimeBlinkDetectionDone:timeElapsedSinceInit()];
       }
 
-      v68 = [v5 imageProps];
+      imageProps5 = [v5 imageProps];
       v69 = MEMORY[0x1E696AD98];
-      [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext timeFaceDetectionDone];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext timeFaceDetectionDone];
       v70 = [v69 numberWithDouble:?];
-      [v68 setObject:v70 forKey:kCAMBurstImageProperty_TimeDoneFaceDetection[0]];
-      v71 = [v5 imageProps];
+      [imageProps5 setObject:v70 forKey:kCAMBurstImageProperty_TimeDoneFaceDetection[0]];
+      imageProps6 = [v5 imageProps];
       v72 = MEMORY[0x1E696AD98];
-      [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext timeBlinkDetectionDone];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext timeBlinkDetectionDone];
       v73 = [v72 numberWithDouble:?];
-      [v71 setObject:v73 forKey:kCAMBurstImageProperty_TimeDoneFaceBlinkDetection[0]];
-      -[CAMBurstImageFaceAnalysisContext calculateFaceFocusInImage:imageStat:](v3->faceAnalysisContext, "calculateFaceFocusInImage:imageStat:", [v5 image], v6);
-      v74 = [v5 imageProps];
-      [v74 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeDoneFaceFocusScore[0]}];
-      [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext adjustFaceIdsForImageStat:v6];
-      [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext dumpFaceInfoArray];
+      [imageProps6 setObject:v73 forKey:kCAMBurstImageProperty_TimeDoneFaceBlinkDetection[0]];
+      -[CAMBurstImageFaceAnalysisContext calculateFaceFocusInImage:imageStat:](selfCopy->faceAnalysisContext, "calculateFaceFocusInImage:imageStat:", [v5 image], v6);
+      imageProps7 = [v5 imageProps];
+      [imageProps7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeDoneFaceFocusScore[0]}];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext adjustFaceIdsForImageStat:v6];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext dumpFaceInfoArray];
       v177 = 0u;
       v178 = 0u;
       v176 = 0u;
       v175 = 0u;
-      v75 = [v6 faceStatArray];
-      v76 = [v75 countByEnumeratingWithState:&v175 objects:v184 count:16];
+      faceStatArray2 = [v6 faceStatArray];
+      v76 = [faceStatArray2 countByEnumeratingWithState:&v175 objects:v184 count:16];
       if (v76)
       {
         v77 = v76;
@@ -704,31 +704,31 @@ LABEL_52:
           {
             if (*v176 != v78)
             {
-              objc_enumerationMutation(v75);
+              objc_enumerationMutation(faceStatArray2);
             }
 
-            -[NSCountedSet addObject:](v3->faceIDCounts, "addObject:", [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(*(*(&v175 + 1) + 8 * v79++), "faceId")}]);
+            -[NSCountedSet addObject:](selfCopy->faceIDCounts, "addObject:", [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(*(*(&v175 + 1) + 8 * v79++), "faceId")}]);
           }
 
           while (v77 != v79);
-          v77 = [v75 countByEnumeratingWithState:&v175 objects:v184 count:16];
+          v77 = [faceStatArray2 countByEnumeratingWithState:&v175 objects:v184 count:16];
         }
 
         while (v77);
       }
 
-      [v6 computeImageData:objc_msgSend(v5 faceIDCounts:{"image"), v3->faceIDCounts}];
-      v80 = [v5 imageProps];
-      [v80 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeDoneAnalysis[0]}];
-      if (v3->enableFaceCore && [v6 faceStatArray])
+      [v6 computeImageData:objc_msgSend(v5 faceIDCounts:{"image"), selfCopy->faceIDCounts}];
+      imageProps8 = [v5 imageProps];
+      [imageProps8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeDoneAnalysis[0]}];
+      if (selfCopy->enableFaceCore && [v6 faceStatArray])
       {
         v81 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(v6, "faceStatArray"), "count")}];
         v171 = 0u;
         v172 = 0u;
         v173 = 0u;
         v174 = 0u;
-        v82 = [v6 faceStatArray];
-        v83 = [v82 countByEnumeratingWithState:&v171 objects:v183 count:16];
+        faceStatArray3 = [v6 faceStatArray];
+        v83 = [faceStatArray3 countByEnumeratingWithState:&v171 objects:v183 count:16];
         if (v83)
         {
           v84 = v83;
@@ -740,7 +740,7 @@ LABEL_52:
             {
               if (*v172 != v85)
               {
-                objc_enumerationMutation(v82);
+                objc_enumerationMutation(faceStatArray3);
               }
 
               v87 = *(*(&v171 + 1) + 8 * v86);
@@ -829,29 +829,29 @@ LABEL_52:
             }
 
             while (v84 != v86);
-            v84 = [v82 countByEnumeratingWithState:&v171 objects:v183 count:16];
+            v84 = [faceStatArray3 countByEnumeratingWithState:&v171 objects:v183 count:16];
           }
 
           while (v84);
         }
 
-        v133 = [v5 imageProps];
-        [v133 setObject:v81 forKey:kCAMBurstImageProperty_FacesArray[0]];
-        v3 = v166;
+        imageProps9 = [v5 imageProps];
+        [imageProps9 setObject:v81 forKey:kCAMBurstImageProperty_FacesArray[0]];
+        selfCopy = v166;
         v6 = v168;
       }
 
-      if (v3->enableDumpYUV && v3->dq_yuvdump)
+      if (selfCopy->enableDumpYUV && selfCopy->dq_yuvdump)
       {
-        v134 = [(CAMBurstImageSetInternal *)v3 burstDocumentDirectory];
-        v135 = fopen([objc_msgSend(v134 stringByAppendingPathComponent:{@"counter.bin", "UTF8String"}], "r+");
+        burstDocumentDirectory = [(CAMBurstImageSetInternal *)selfCopy burstDocumentDirectory];
+        v135 = fopen([objc_msgSend(burstDocumentDirectory stringByAppendingPathComponent:{@"counter.bin", "UTF8String"}], "r+");
         __ptr = 0;
         fread(&__ptr, 4uLL, 1uLL, v135);
         ++__ptr;
         fseek(v135, 0, 0);
         fwrite(&__ptr, 4uLL, 1uLL, v135);
         fclose(v135);
-        v136 = [v134 stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"burstimage_%06d.yuv", __ptr)}];
+        v136 = [burstDocumentDirectory stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"burstimage_%06d.yuv", __ptr)}];
         v137 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(objc_msgSend(v5 length:{"image"), "Ybuffer"), (objc_msgSend(objc_msgSend(v5, "image"), "height") * objc_msgSend(objc_msgSend(v5, "image"), "bytesPerRow"))}];
         v138 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(objc_msgSend(v5 length:{"image"), "Cbuffer"), ((objc_msgSend(objc_msgSend(v5, "image"), "height") >> 1) * objc_msgSend(objc_msgSend(v5, "image"), "bytesPerRow"))}];
         if (v137)
@@ -870,7 +870,7 @@ LABEL_52:
             v144 = kCAMBurstImageYUVDataProperty_Height[0];
             v145 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(v5, "image"), "bytesPerRow")}];
             v161 = v144;
-            v3 = v166;
+            selfCopy = v166;
             v160 = v143;
             v6 = v142;
             v136 = v141;
@@ -886,59 +886,59 @@ LABEL_52:
           }
         }
 
-        v148 = [v5 imageProps];
-        [v148 setObject:v136 forKey:kCAMBurstImageProperty_ImageYUVData[0]];
+        imageProps10 = [v5 imageProps];
+        [imageProps10 setObject:v136 forKey:kCAMBurstImageProperty_ImageYUVData[0]];
       }
 
       [v6 facesRoiRect];
       DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v195);
       [objc_msgSend(v5 "imageProps")];
       CFRelease(DictionaryRepresentation);
-      v150 = [v5 imageProps];
-      [v150 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(objc_msgSend(v5, "image"), "width")), @"Image_Width"}];
-      v151 = [v5 imageProps];
-      [v151 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(objc_msgSend(v5, "image"), "height")), @"Image_Height"}];
-      v152 = [v5 imageProps];
-      [v152 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "AEAverage")), @"Image_AEAverage"}];
-      v153 = [v5 imageProps];
-      [v153 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "AETarget")), @"Image_AETarget"}];
-      v154 = [v5 imageProps];
-      [v154 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", objc_msgSend(v6, "AEStable")), @"Image_AEStable"}];
-      v155 = [v5 imageProps];
-      [v155 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", objc_msgSend(v6, "AFStable")), @"Image_AFStable"}];
-      v156 = [v5 imageProps];
-      [v156 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "orientation")), @"Image_Orientation"}];
+      imageProps11 = [v5 imageProps];
+      [imageProps11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(objc_msgSend(v5, "image"), "width")), @"Image_Width"}];
+      imageProps12 = [v5 imageProps];
+      [imageProps12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(objc_msgSend(v5, "image"), "height")), @"Image_Height"}];
+      imageProps13 = [v5 imageProps];
+      [imageProps13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "AEAverage")), @"Image_AEAverage"}];
+      imageProps14 = [v5 imageProps];
+      [imageProps14 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "AETarget")), @"Image_AETarget"}];
+      imageProps15 = [v5 imageProps];
+      [imageProps15 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", objc_msgSend(v6, "AEStable")), @"Image_AEStable"}];
+      imageProps16 = [v5 imageProps];
+      [imageProps16 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", objc_msgSend(v6, "AFStable")), @"Image_AFStable"}];
+      imageProps17 = [v5 imageProps];
+      [imageProps17 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(v6, "orientation")), @"Image_Orientation"}];
       [objc_msgSend(v5 "imageProps")];
       [v5 releaseImage];
-      dispatch_semaphore_signal(v3->sem);
-      ++v3->curClusterIndexToProcess;
+      dispatch_semaphore_signal(selfCopy->sem);
+      ++selfCopy->curClusterIndexToProcess;
       if ([v5 completionBlock])
       {
-        v157 = [v5 completionBlock];
-        (*(v157 + 16))(v157, [v6 imageId], 1);
+        completionBlock = [v5 completionBlock];
+        (*(completionBlock + 16))(completionBlock, [v6 imageId], 1);
       }
 
-      v158 = v3->curClusterIndexToProcess;
-      if ([(NSMutableArray *)v3->clusterArray count]<= v158)
+      v158 = selfCopy->curClusterIndexToProcess;
+      if ([(NSMutableArray *)selfCopy->clusterArray count]<= v158)
       {
         goto LABEL_52;
       }
     }
 
     [v6 timestamp];
-    [(CAMBurstImageFaceAnalysisContext *)v3->faceAnalysisContext latestFaceTimestamp];
+    [(CAMBurstImageFaceAnalysisContext *)selfCopy->faceAnalysisContext latestFaceTimestamp];
     BurstLoggingMessage("Not processing frames, imageStat.timestamp = %.6f, latestFaceTimestamp = %.6f\n");
   }
 }
 
-- (void)addYUVImage:(id)a3 properties:(id)a4 identifier:(id)a5 imageProps:(id)a6 completionBlock:(id)a7
+- (void)addYUVImage:(id)image properties:(id)properties identifier:(id)identifier imageProps:(id)props completionBlock:(id)block
 {
   if (self->enableAnalysis)
   {
     v16[18] = v7;
     v16[19] = v8;
     dispatch_semaphore_wait(self->sem, 0xFFFFFFFFFFFFFFFFLL);
-    [a6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeQueued[0]}];
+    [props setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeQueued[0]}];
     [(CAMBurstImageSetInternal *)self version];
     dq = self->dq;
     v16[0] = MEMORY[0x1E69E9820];
@@ -946,11 +946,11 @@ LABEL_52:
     v16[2] = __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageProps_completionBlock___block_invoke;
     v16[3] = &unk_1E76F8150;
     v16[4] = self;
-    v16[5] = a6;
-    v16[6] = a3;
-    v16[7] = a5;
-    v16[8] = a4;
-    v16[9] = a7;
+    v16[5] = props;
+    v16[6] = image;
+    v16[7] = identifier;
+    v16[8] = properties;
+    v16[9] = block;
     dispatch_async(dq, v16);
   }
 }
@@ -1036,10 +1036,10 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
   return result;
 }
 
-- (void)addImageFromIOSurface:(__IOSurface *)a3 properties:(id)a4 identifier:(id)a5 completionBlock:(id)a6
+- (void)addImageFromIOSurface:(__IOSurface *)surface properties:(id)properties identifier:(id)identifier completionBlock:(id)block
 {
   v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
-  v12 = [MEMORY[0x1E696AEC0] stringWithString:a5];
+  v12 = [MEMORY[0x1E696AEC0] stringWithString:identifier];
   [v11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeReceived[0]}];
   overrideImage = self->overrideImage;
   if (overrideImage && self->overrideProps)
@@ -1050,34 +1050,34 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
 
   else
   {
-    v15 = [[CAMBurstYUVImage alloc] initWithIOSurface:a3 maxDimension:852];
-    overrideProps = [MEMORY[0x1E695DF20] dictionaryWithDictionary:a4];
+    v15 = [[CAMBurstYUVImage alloc] initWithIOSurface:surface maxDimension:852];
+    overrideProps = [MEMORY[0x1E695DF20] dictionaryWithDictionary:properties];
   }
 
   [v11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", timeElapsedSinceInit()), kCAMBurstImageProperty_TimeConverted[0]}];
   [(NSMutableArray *)self->allImageIdentifiers addObject:v12];
   [(NSMutableDictionary *)self->statsByImageIdentifier setObject:v11 forKey:v12];
-  [(CAMBurstImageSetInternal *)self addYUVImage:v15 properties:overrideProps identifier:v12 imageProps:v11 completionBlock:a6];
+  [(CAMBurstImageSetInternal *)self addYUVImage:v15 properties:overrideProps identifier:v12 imageProps:v11 completionBlock:block];
 }
 
-- (int)computeEmotion:(id)a3
+- (int)computeEmotion:(id)emotion
 {
   if ([(CAMBurstImageSetInternal *)self version]>= 2)
   {
-    [a3 setSmiling:1];
+    [emotion setSmiling:1];
   }
 
-  [a3 normalizedFocusScore];
+  [emotion normalizedFocusScore];
   if (v4 <= 0.825)
   {
     return -1;
   }
 
-  v5 = [a3 smiling];
-  v6 = [a3 leftEyeOpen];
-  if (v5)
+  smiling = [emotion smiling];
+  leftEyeOpen = [emotion leftEyeOpen];
+  if (smiling)
   {
-    if (v6 && ([a3 rightEyeOpen] & 1) != 0)
+    if (leftEyeOpen && ([emotion rightEyeOpen] & 1) != 0)
     {
       return 10;
     }
@@ -1085,9 +1085,9 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
     else
     {
       v7 = 8;
-      if (([a3 leftEyeOpen] & 1) == 0)
+      if (([emotion leftEyeOpen] & 1) == 0)
       {
-        if ([a3 rightEyeOpen])
+        if ([emotion rightEyeOpen])
         {
           return 8;
         }
@@ -1100,7 +1100,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
     }
   }
 
-  else if (v6 && ([a3 rightEyeOpen] & 1) != 0)
+  else if (leftEyeOpen && ([emotion rightEyeOpen] & 1) != 0)
   {
     return 6;
   }
@@ -1108,9 +1108,9 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
   else
   {
     v7 = 3;
-    if (([a3 leftEyeOpen] & 1) == 0)
+    if (([emotion leftEyeOpen] & 1) == 0)
     {
-      if ([a3 rightEyeOpen])
+      if ([emotion rightEyeOpen])
       {
         return 3;
       }
@@ -1125,14 +1125,14 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
   return v7;
 }
 
-- (void)performEmotionalRejectionOnCluster:(id)a3
+- (void)performEmotionalRejectionOnCluster:(id)cluster
 {
   v56 = *MEMORY[0x1E69E9840];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v48 objects:v55 count:16];
+  v4 = [cluster countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1144,7 +1144,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
       {
         if (*v49 != v33)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cluster);
         }
 
         v8 = *(*(&v48 + 1) + 8 * i);
@@ -1154,8 +1154,8 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v9 = [v8 faceStatArray];
-          v10 = [v9 countByEnumeratingWithState:&v44 objects:v54 count:16];
+          faceStatArray = [v8 faceStatArray];
+          v10 = [faceStatArray countByEnumeratingWithState:&v44 objects:v54 count:16];
           if (v10)
           {
             v11 = v10;
@@ -1167,13 +1167,13 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
               {
                 if (*v45 != v13)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(faceStatArray);
                 }
 
                 v12 += [(CAMBurstImageSetInternal *)self computeEmotion:*(*(&v44 + 1) + 8 * j)];
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v44 objects:v54 count:16];
+              v11 = [faceStatArray countByEnumeratingWithState:&v44 objects:v54 count:16];
             }
 
             while (v11);
@@ -1192,7 +1192,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v48 objects:v55 count:16];
+      v5 = [cluster countByEnumeratingWithState:&v48 objects:v55 count:16];
     }
 
     while (v5);
@@ -1207,7 +1207,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v40 objects:v53 count:16];
+  v15 = [cluster countByEnumeratingWithState:&v40 objects:v53 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1218,7 +1218,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
       {
         if (*v41 != v34)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cluster);
         }
 
         v18 = *(*(&v40 + 1) + 8 * k);
@@ -1267,7 +1267,7 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
         }
       }
 
-      v16 = [a3 countByEnumeratingWithState:&v40 objects:v53 count:16];
+      v16 = [cluster countByEnumeratingWithState:&v40 objects:v53 count:16];
     }
 
     while (v16);
@@ -1368,9 +1368,9 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
               v21 = v24;
             }
 
-            v25 = [v8 isGarbage];
+            isGarbage = [v8 isGarbage];
             v26 = 0.0;
-            if ((v25 & 1) == 0)
+            if ((isGarbage & 1) == 0)
             {
               [v8 tx];
             }
@@ -1423,9 +1423,9 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
               v32 = v34;
             }
 
-            v35 = [v8 isGarbage];
+            isGarbage2 = [v8 isGarbage];
             v36 = 0.0;
-            if ((v35 & 1) == 0)
+            if ((isGarbage2 & 1) == 0)
             {
               [v8 ty];
             }
@@ -1463,10 +1463,10 @@ uint64_t __89__CAMBurstImageSetInternal_addYUVImage_properties_identifier_imageP
           goto LABEL_49;
         }
 
-        v27 = [v5 isGarbage];
+        isGarbage3 = [v5 isGarbage];
         v10 = 0.0;
         v11 = 0.0;
-        if ((v27 & 1) == 0)
+        if ((isGarbage3 & 1) == 0)
         {
           [v5 tx];
           v11 = v28;
@@ -1775,16 +1775,16 @@ LABEL_49:
             {
               v25 = [objc_msgSend(v22 "faceStatArray")];
               v26 = -[NSCountedSet countForObject:](self->faceIDCounts, "countForObject:", [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v25, "faceId")}]);
-              v27 = [v25 faceId];
+              faceId = [v25 faceId];
               if (v26 > 1)
               {
-                BurstLoggingMessage("Keeping face with ID = %d\n", v27);
+                BurstLoggingMessage("Keeping face with ID = %d\n", faceId);
                 ++v24;
               }
 
               else
               {
-                BurstLoggingMessage("REMOVING false-positive face with ID = %d\n", v27);
+                BurstLoggingMessage("REMOVING false-positive face with ID = %d\n", faceId);
                 [objc_msgSend(v22 "faceStatArray")];
               }
 
@@ -2105,21 +2105,21 @@ LABEL_95:
   }
 }
 
-- (id)findBestImage:(id)a3 useActionScores:(BOOL)a4
+- (id)findBestImage:(id)image useActionScores:(BOOL)scores
 {
-  v41 = a4;
+  scoresCopy = scores;
   v55 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 count])
+  if (!image || ![image count])
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 objectAtIndex:{0), "temporalOrder"}];
+  temporalOrder = [objc_msgSend(image objectAtIndex:{0), "temporalOrder"}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  v6 = [image countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2130,28 +2130,28 @@ LABEL_95:
       {
         if (*v50 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(image);
         }
 
         v10 = *(*(&v49 + 1) + 8 * i);
-        if (v5 > [v10 temporalOrder])
+        if (temporalOrder > [v10 temporalOrder])
         {
-          v5 = [v10 temporalOrder];
+          temporalOrder = [v10 temporalOrder];
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v7 = [image countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [a3 count];
+  v11 = [image count];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v42 = [a3 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  v42 = [image countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (!v42)
   {
     return 0;
@@ -2169,12 +2169,12 @@ LABEL_95:
     {
       if (*v46 != v40)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(image);
       }
 
       v17 = *(*(&v45 + 1) + 8 * j);
       v44 = v12;
-      if (v41)
+      if (scoresCopy)
       {
         [v17 actionScore];
       }
@@ -2222,14 +2222,14 @@ LABEL_95:
 
       [v17 registrationErrorIntegral];
       v33 = v32;
-      v34 = ([v17 temporalOrder] - v5) + 1.0;
+      v34 = ([v17 temporalOrder] - temporalOrder) + 1.0;
       if (v34 >= v14)
       {
         v35 = 0.0;
         v12 = v44;
         if (v34 > v39)
         {
-          v35 = (v34 - v39) / ([a3 count] - v39);
+          v35 = (v34 - v39) / ([image count] - v39);
         }
       }
 
@@ -2250,25 +2250,25 @@ LABEL_95:
       }
     }
 
-    v42 = [a3 countByEnumeratingWithState:&v45 objects:v53 count:16];
+    v42 = [image countByEnumeratingWithState:&v45 objects:v53 count:16];
   }
 
   while (v42);
   return v12;
 }
 
-- (void)selectCoverPhotoFromMultiple:(id)a3 burstSize:(int)a4
+- (void)selectCoverPhotoFromMultiple:(id)multiple burstSize:(int)size
 {
   v39 = *MEMORY[0x1E69E9840];
   if (self->isPortrait)
   {
-    v6 = [objc_msgSend(a3 objectAtIndex:{0, *&a4), "temporalOrder"}];
-    v7 = [objc_msgSend(a3 "lastObject")];
+    v6 = [objc_msgSend(multiple objectAtIndex:{0, *&size), "temporalOrder"}];
+    v7 = [objc_msgSend(multiple "lastObject")];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    v8 = [multiple countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2281,7 +2281,7 @@ LABEL_95:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(multiple);
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
@@ -2299,7 +2299,7 @@ LABEL_95:
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v9 = [multiple countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v9);
@@ -2308,13 +2308,13 @@ LABEL_95:
 
 LABEL_19:
     v33 = MEMORY[0x1E696AEC0];
-    v31 = [objc_msgSend(a3 objectAtIndex:{0), "imageId"}];
+    imageId = [objc_msgSend(multiple objectAtIndex:{0), "imageId"}];
     v32 = v33;
     goto LABEL_20;
   }
 
-  v20 = [a3 count] / 3uLL;
-  v21 = [a3 count];
+  v20 = [multiple count] / 3uLL;
+  v21 = [multiple count];
   if (v20 > v21 + ~v20)
   {
     goto LABEL_19;
@@ -2326,7 +2326,7 @@ LABEL_19:
   v24 = v21 - 2 * v20;
   do
   {
-    v25 = [a3 objectAtIndex:v22];
+    v25 = [multiple objectAtIndex:v22];
     [v25 avgHorzDiffY];
     v27 = v26;
     [v25 blurExtent];
@@ -2350,10 +2350,10 @@ LABEL_17:
   }
 
   v30 = MEMORY[0x1E696AEC0];
-  v31 = [v10 imageId];
+  imageId = [v10 imageId];
   v32 = v30;
 LABEL_20:
-  self->burstCoverSelection = [v32 stringWithString:v31];
+  self->burstCoverSelection = [v32 stringWithString:imageId];
 }
 
 - (id)bestImageIdentifiers
@@ -4064,7 +4064,7 @@ LABEL_358:
   }
 }
 
-- (id)imageClusterForIdentifier:(id)a3
+- (id)imageClusterForIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!self->clusterByImageIdentifier)
@@ -4080,8 +4080,8 @@ LABEL_358:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v6 = [v5 burstImages];
-        v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        burstImages = [v5 burstImages];
+        v7 = [burstImages countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v7)
         {
           v8 = v7;
@@ -4092,13 +4092,13 @@ LABEL_358:
             {
               if (*v26 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(burstImages);
               }
 
               -[NSMutableDictionary setObject:forKey:](self->clusterByImageIdentifier, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v4], objc_msgSend(*(*(&v25 + 1) + 8 * i), "imageId"));
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+            v8 = [burstImages countByEnumeratingWithState:&v25 objects:v30 count:16];
           }
 
           while (v8);
@@ -4111,7 +4111,7 @@ LABEL_358:
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->clusterByImageIdentifier objectForKey:a3];
+  v11 = [(NSMutableDictionary *)self->clusterByImageIdentifier objectForKey:identifier];
   if (!v11)
   {
     return 0;
@@ -4123,8 +4123,8 @@ LABEL_358:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v12 burstImages];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  burstImages2 = [v12 burstImages];
+  v15 = [burstImages2 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -4135,13 +4135,13 @@ LABEL_358:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(burstImages2);
         }
 
         [v13 addObject:{objc_msgSend(*(*(&v21 + 1) + 8 * j), "imageId")}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v16 = [burstImages2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v16);

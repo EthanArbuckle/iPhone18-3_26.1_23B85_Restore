@@ -1,7 +1,7 @@
 @interface ContactsUtils
-+ (id)contactForAddress:(id)a3 fullName:(id)a4 firstName:(id)a5 lastName:(id)a6;
-+ (id)contactForAddress:(id)a3 fullName:(id)a4 firstName:(id)a5 lastName:(id)a6 keysToFetch:(id)a7;
-+ (id)contactForContact:(id)a3 keysToFetch:(id)a4;
++ (id)contactForAddress:(id)address fullName:(id)name firstName:(id)firstName lastName:(id)lastName;
++ (id)contactForAddress:(id)address fullName:(id)name firstName:(id)firstName lastName:(id)lastName keysToFetch:(id)fetch;
++ (id)contactForContact:(id)contact keysToFetch:(id)fetch;
 + (id)defaultContactKeysToFetch;
 @end
 
@@ -32,18 +32,18 @@ void __42__ContactsUtils_defaultContactKeysToFetch__block_invoke()
   defaultContactKeysToFetch_keysToFetch = v3;
 }
 
-+ (id)contactForContact:(id)a3 keysToFetch:(id)a4
++ (id)contactForContact:(id)contact keysToFetch:(id)fetch
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  fetchCopy = fetch;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v7 = v5;
-  v8 = v6;
+  v7 = contactCopy;
+  v8 = fetchCopy;
   CalendarFoundationPerformBlockOnSharedContactStore();
   if ([v13[5] count])
   {
@@ -79,26 +79,26 @@ void __47__ContactsUtils_contactForContact_keysToFetch___block_invoke(uint64_t a
   *(v9 + 40) = v8;
 }
 
-+ (id)contactForAddress:(id)a3 fullName:(id)a4 firstName:(id)a5 lastName:(id)a6
++ (id)contactForAddress:(id)address fullName:(id)name firstName:(id)firstName lastName:(id)lastName
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  lastNameCopy = lastName;
+  firstNameCopy = firstName;
+  nameCopy = name;
+  addressCopy = address;
   v14 = +[ContactsUtils defaultContactKeysToFetch];
-  v15 = [a1 contactForAddress:v13 fullName:v12 firstName:v11 lastName:v10 keysToFetch:v14];
+  v15 = [self contactForAddress:addressCopy fullName:nameCopy firstName:firstNameCopy lastName:lastNameCopy keysToFetch:v14];
 
   return v15;
 }
 
-+ (id)contactForAddress:(id)a3 fullName:(id)a4 firstName:(id)a5 lastName:(id)a6 keysToFetch:(id)a7
++ (id)contactForAddress:(id)address fullName:(id)name firstName:(id)firstName lastName:(id)lastName keysToFetch:(id)fetch
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  addressCopy = address;
+  nameCopy = name;
+  firstNameCopy = firstName;
+  lastNameCopy = lastName;
+  fetchCopy = fetch;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -106,10 +106,10 @@ void __47__ContactsUtils_contactForContact_keysToFetch___block_invoke(uint64_t a
   v38 = __Block_byref_object_dispose__4;
   v39 = 0;
   v33 = MEMORY[0x1E69E9820];
-  v16 = v11;
-  v17 = v15;
-  v18 = v12;
-  v19 = v13;
+  v16 = addressCopy;
+  v17 = fetchCopy;
+  v18 = nameCopy;
+  v19 = firstNameCopy;
   CalendarFoundationPerformBlockOnSharedContactStore();
   if ([v35[5] count])
   {
@@ -120,23 +120,23 @@ void __47__ContactsUtils_contactForContact_keysToFetch___block_invoke(uint64_t a
   EKWeakLinkClass();
   v21 = objc_opt_new();
   v20 = v21;
-  if (v19 && v14)
+  if (v19 && lastNameCopy)
   {
     [v21 setGivenName:v19];
-    [v20 setFamilyName:v14];
+    [v20 setFamilyName:lastNameCopy];
     goto LABEL_11;
   }
 
   v22 = [MEMORY[0x1E6993018] personNameComponentsFromString:v18];
-  v23 = [v22 givenName];
-  if (v23)
+  givenName = [v22 givenName];
+  if (givenName)
   {
   }
 
   else
   {
-    v24 = [v22 familyName];
-    v25 = v24 == 0;
+    familyName = [v22 familyName];
+    v25 = familyName == 0;
 
     if (v25)
     {
@@ -145,11 +145,11 @@ void __47__ContactsUtils_contactForContact_keysToFetch___block_invoke(uint64_t a
     }
   }
 
-  v26 = [v22 givenName];
-  [v20 setGivenName:v26];
+  givenName2 = [v22 givenName];
+  [v20 setGivenName:givenName2];
 
-  v27 = [v22 familyName];
-  [v20 setFamilyName:v27];
+  familyName2 = [v22 familyName];
+  [v20 setFamilyName:familyName2];
 
 LABEL_10:
 LABEL_11:

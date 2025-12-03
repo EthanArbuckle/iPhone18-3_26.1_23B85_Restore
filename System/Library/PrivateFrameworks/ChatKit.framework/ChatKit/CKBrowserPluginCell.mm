@@ -1,19 +1,19 @@
 @interface CKBrowserPluginCell
 - (id)iconView;
-- (void)_setImageForPlugin:(id)a3;
+- (void)_setImageForPlugin:(id)plugin;
 - (void)_updateShinyStatus;
 - (void)layoutSubviews;
-- (void)setPlugin:(id)a3 hideShinyStatus:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
+- (void)setPlugin:(id)plugin hideShinyStatus:(BOOL)status;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CKBrowserPluginCell
 
 - (id)iconView
 {
-  v3 = [(CKBrowserPluginCell *)self browserImage];
+  browserImage = [(CKBrowserPluginCell *)self browserImage];
 
-  if (!v3)
+  if (!browserImage)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -23,32 +23,32 @@
   return [(CKBrowserPluginCell *)self browserImage];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(CKBrowserPluginCell *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(CKBrowserPluginCell *)self isSelected]!= selected)
   {
     v15.receiver = self;
     v15.super_class = CKBrowserPluginCell;
-    [(CKBrowserPluginCell *)&v15 setSelected:v3];
+    [(CKBrowserPluginCell *)&v15 setSelected:selectedCopy];
     v5 = 0.0;
-    if (v3)
+    if (selectedCopy)
     {
       v5 = 1.0;
       if (!self->_selectionOutline)
       {
         v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
         v7 = +[CKUIBehavior sharedBehaviors];
-        v8 = [v7 theme];
-        v9 = [v8 appSelectionOutline];
-        v10 = [v6 initWithImage:v9];
+        theme = [v7 theme];
+        appSelectionOutline = [theme appSelectionOutline];
+        v10 = [v6 initWithImage:appSelectionOutline];
         selectionOutline = self->_selectionOutline;
         self->_selectionOutline = v10;
 
         v12 = +[CKUIBehavior sharedBehaviors];
-        v13 = [v12 theme];
-        v14 = [v13 appSelectionOutlineColor];
-        [(UIImageView *)self->_selectionOutline setTintColor:v14];
+        theme2 = [v12 theme];
+        appSelectionOutlineColor = [theme2 appSelectionOutlineColor];
+        [(UIImageView *)self->_selectionOutline setTintColor:appSelectionOutlineColor];
 
         [(CKBrowserPluginCell *)self addSubview:self->_selectionOutline];
         [(CKBrowserPluginCell *)self sendSubviewToBack:self->_selectionOutline];
@@ -70,69 +70,69 @@
   [(UIImageView *)selectionOutline setFrame:?];
 }
 
-- (void)_setImageForPlugin:(id)a3
+- (void)_setImageForPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [(CKBrowserPluginCell *)self traitCollection];
-  v7 = [v4 __ck_browserImageForInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+  pluginCopy = plugin;
+  traitCollection = [(CKBrowserPluginCell *)self traitCollection];
+  v7 = [pluginCopy __ck_browserImageForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v6 = [(CKBrowserPluginCell *)self browserImage];
-  [v6 setImage:v7];
+  browserImage = [(CKBrowserPluginCell *)self browserImage];
+  [browserImage setImage:v7];
 }
 
-- (void)setPlugin:(id)a3 hideShinyStatus:(BOOL)a4
+- (void)setPlugin:(id)plugin hideShinyStatus:(BOOL)status
 {
-  v23 = a3;
-  [(CKBrowserPluginCell *)self _setImageForPlugin:v23];
-  v7 = [v23 identifier];
+  pluginCopy = plugin;
+  [(CKBrowserPluginCell *)self _setImageForPlugin:pluginCopy];
+  identifier = [pluginCopy identifier];
   v8 = IMBalloonExtensionIDWithSuffix();
-  v9 = [v7 isEqualToString:v8];
+  v9 = [identifier isEqualToString:v8];
 
-  v10 = [(CKBrowserCell *)self browserLabel];
+  browserLabel = [(CKBrowserCell *)self browserLabel];
   if (v9)
   {
-    v11 = CKFrameworkBundle();
-    v12 = [v11 localizedStringForKey:@"MEMOJI_STICKERS_SHORT_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
+    browserShortDisplayName = CKFrameworkBundle();
+    browserDisplayName = [browserShortDisplayName localizedStringForKey:@"MEMOJI_STICKERS_SHORT_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 LABEL_6:
-    v13 = v12;
-    [v10 setText:v12];
+    v13 = browserDisplayName;
+    [browserLabel setText:browserDisplayName];
 
     goto LABEL_7;
   }
 
-  v11 = [v23 browserShortDisplayName];
-  if (!v11)
+  browserShortDisplayName = [pluginCopy browserShortDisplayName];
+  if (!browserShortDisplayName)
   {
-    v12 = [v23 browserDisplayName];
+    browserDisplayName = [pluginCopy browserDisplayName];
     goto LABEL_6;
   }
 
-  [v10 setText:v11];
+  [browserLabel setText:browserShortDisplayName];
 LABEL_7:
 
   v14 = +[CKBalloonPluginManager sharedInstance];
-  v15 = [v23 identifier];
-  v16 = [v14 badgeValueForPlugin:v15];
+  identifier2 = [pluginCopy identifier];
+  v16 = [v14 badgeValueForPlugin:identifier2];
 
-  v17 = [(CKBrowserCell *)self badgeView];
-  [v17 setValue:v16];
+  badgeView = [(CKBrowserCell *)self badgeView];
+  [badgeView setValue:v16];
 
-  v18 = [(CKBrowserCell *)self badgeView];
-  [v18 setHidden:v16 == 0];
+  badgeView2 = [(CKBrowserCell *)self badgeView];
+  [badgeView2 setHidden:v16 == 0];
 
-  objc_storeStrong(&self->_plugin, a3);
+  objc_storeStrong(&self->_plugin, plugin);
   [(CKBrowserPluginCell *)self _updateShinyStatus];
-  v19 = [(CKBrowserCell *)self shinyStatusView];
-  [v19 removeFromSuperview];
+  shinyStatusView = [(CKBrowserCell *)self shinyStatusView];
+  [shinyStatusView removeFromSuperview];
 
-  if (!a4 && ([(CKBrowserCell *)self shinyStatus]|| [(CKBrowserCell *)self shinyStatus]!= 3))
+  if (!status && ([(CKBrowserCell *)self shinyStatus]|| [(CKBrowserCell *)self shinyStatus]!= 3))
   {
     v20 = [[CKBrowserSelectionLabelAccessoryView alloc] initWithLabelAccessoryType:[(CKBrowserCell *)self shinyStatus]];
     [(CKBrowserCell *)self setShinyStatusView:v20];
 
-    v21 = [(CKBrowserPluginCell *)self contentView];
-    v22 = [(CKBrowserCell *)self shinyStatusView];
-    [v21 addSubview:v22];
+    contentView = [(CKBrowserPluginCell *)self contentView];
+    shinyStatusView2 = [(CKBrowserCell *)self shinyStatusView];
+    [contentView addSubview:shinyStatusView2];
   }
 
   [(CKBrowserPluginCell *)self setNeedsLayout];
@@ -140,12 +140,12 @@ LABEL_7:
 
 - (void)_updateShinyStatus
 {
-  v3 = [(CKBrowserPluginCell *)self plugin];
-  v4 = [v3 isBetaPlugin];
+  plugin = [(CKBrowserPluginCell *)self plugin];
+  isBetaPlugin = [plugin isBetaPlugin];
 
-  if (v4)
+  if (isBetaPlugin)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 2;
   }
 
@@ -154,7 +154,7 @@ LABEL_7:
     v7 = +[CKBalloonPluginManager sharedInstance];
     v8 = [v7 launchStatusForPlugin:self->_plugin];
 
-    v5 = self;
+    selfCopy2 = self;
     if (v8 == 1)
     {
       v6 = 0;
@@ -171,7 +171,7 @@ LABEL_7:
     }
   }
 
-  [(CKBrowserCell *)v5 setShinyStatus:v6];
+  [(CKBrowserCell *)selfCopy2 setShinyStatus:v6];
 }
 
 @end

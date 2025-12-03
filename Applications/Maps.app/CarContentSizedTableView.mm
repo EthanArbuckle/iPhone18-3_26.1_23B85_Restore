@@ -1,21 +1,21 @@
 @interface CarContentSizedTableView
 - (CGSize)intrinsicContentSize;
-- (CarContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setAlwaysBounceHorizontal:(BOOL)a3;
-- (void)setAlwaysBounceVertical:(BOOL)a3;
-- (void)setContentSize:(CGSize)a3;
+- (CarContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal;
+- (void)setAlwaysBounceVertical:(BOOL)vertical;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation CarContentSizedTableView
 
-- (void)setAlwaysBounceVertical:(BOOL)a3
+- (void)setAlwaysBounceVertical:(BOOL)vertical
 {
   v3.receiver = self;
   v3.super_class = CarContentSizedTableView;
   [(CarContentSizedTableView *)&v3 setAlwaysBounceVertical:0];
 }
 
-- (void)setAlwaysBounceHorizontal:(BOOL)a3
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal
 {
   v3.receiver = self;
   v3.super_class = CarContentSizedTableView;
@@ -32,19 +32,19 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = CarContentSizedTableView;
-  [(CarContentSizedTableView *)&v4 setContentSize:a3.width, a3.height];
+  [(CarContentSizedTableView *)&v4 setContentSize:size.width, size.height];
   [(CarContentSizedTableView *)self invalidateIntrinsicContentSize];
 }
 
-- (CarContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (CarContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CarContentSizedTableView;
-  v4 = [(CarContentSizedTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CarContentSizedTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {

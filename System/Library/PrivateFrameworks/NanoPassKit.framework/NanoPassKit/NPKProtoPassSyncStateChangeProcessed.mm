@@ -1,20 +1,20 @@
 @interface NPKProtoPassSyncStateChangeProcessed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFullPassRequired:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFullPassRequired:(BOOL)required;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassSyncStateChangeProcessed
 
-- (void)setHasFullPassRequired:(BOOL)a3
+- (void)setHasFullPassRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassSyncStateChangeProcessed;
   v4 = [(NPKProtoPassSyncStateChangeProcessed *)&v8 description];
-  v5 = [(NPKProtoPassSyncStateChangeProcessed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassSyncStateChangeProcessed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   acceptedChangeUUID = self->_acceptedChangeUUID;
   if (acceptedChangeUUID)
   {
-    [v3 setObject:acceptedChangeUUID forKey:@"acceptedChangeUUID"];
+    [dictionary setObject:acceptedChangeUUID forKey:@"acceptedChangeUUID"];
   }
 
   has = self->_has;
@@ -67,15 +67,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_acceptedChangeUUID)
   {
     [NPKProtoPassSyncStateChangeProcessed writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteDataField();
   has = self->_has;
   if (has)
@@ -92,29 +92,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setAcceptedChangeUUID:self->_acceptedChangeUUID];
+  toCopy = to;
+  [toCopy setAcceptedChangeUUID:self->_acceptedChangeUUID];
   has = self->_has;
   if (has)
   {
-    v5[16] = self->_changeAccepted;
-    v5[20] |= 1u;
+    toCopy[16] = self->_changeAccepted;
+    toCopy[20] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v5[17] = self->_fullPassRequired;
-    v5[20] |= 2u;
+    toCopy[17] = self->_fullPassRequired;
+    toCopy[20] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_acceptedChangeUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_acceptedChangeUUID copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -135,16 +135,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   acceptedChangeUUID = self->_acceptedChangeUUID;
-  if (acceptedChangeUUID | *(v4 + 1))
+  if (acceptedChangeUUID | *(equalCopy + 1))
   {
     if (![(NSData *)acceptedChangeUUID isEqual:?])
     {
@@ -154,7 +154,7 @@
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -164,40 +164,40 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v8 = *(v4 + 16);
+  v8 = *(equalCopy + 16);
   if (self->_changeAccepted)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  v6 = (*(v4 + 20) & 2) == 0;
+  v6 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) != 0)
+    if ((*(equalCopy + 20) & 2) != 0)
     {
       if (self->_fullPassRequired)
       {
-        if (*(v4 + 17))
+        if (*(equalCopy + 17))
         {
           goto LABEL_20;
         }
       }
 
-      else if (!*(v4 + 17))
+      else if (!*(equalCopy + 17))
       {
 LABEL_20:
         v6 = 1;
@@ -240,27 +240,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NPKProtoPassSyncStateChangeProcessed *)self setAcceptedChangeUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[20];
+  v5 = fromCopy[20];
   if (v5)
   {
-    self->_changeAccepted = v4[16];
+    self->_changeAccepted = fromCopy[16];
     *&self->_has |= 1u;
-    v5 = v4[20];
+    v5 = fromCopy[20];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_fullPassRequired = v4[17];
+    self->_fullPassRequired = fromCopy[17];
     *&self->_has |= 2u;
   }
 }

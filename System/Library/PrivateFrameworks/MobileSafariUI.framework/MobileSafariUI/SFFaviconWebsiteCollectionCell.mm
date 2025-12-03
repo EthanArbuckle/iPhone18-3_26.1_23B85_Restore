@@ -1,19 +1,19 @@
 @interface SFFaviconWebsiteCollectionCell
 - (void)_requestFavicon;
 - (void)_updateContentConfiguration;
-- (void)setURL:(id)a3 withTitle:(id)a4;
+- (void)setURL:(id)l withTitle:(id)title;
 @end
 
 @implementation SFFaviconWebsiteCollectionCell
 
-- (void)setURL:(id)a3 withTitle:(id)a4
+- (void)setURL:(id)l withTitle:(id)title
 {
-  v10 = a3;
-  v7 = a4;
-  if (![(NSURL *)self->_siteURL isEqual:v10]|| ![(NSString *)self->_title isEqualToString:v7])
+  lCopy = l;
+  titleCopy = title;
+  if (![(NSURL *)self->_siteURL isEqual:lCopy]|| ![(NSString *)self->_title isEqualToString:titleCopy])
   {
-    objc_storeStrong(&self->_siteURL, a3);
-    v8 = [v7 copy];
+    objc_storeStrong(&self->_siteURL, l);
+    v8 = [titleCopy copy];
     title = self->_title;
     self->_title = v8;
 
@@ -24,48 +24,48 @@
 
 - (void)_updateContentConfiguration
 {
-  v14 = [(SFFaviconWebsiteCollectionCell *)self defaultContentConfiguration];
-  [v14 setText:self->_title];
-  v3 = [v14 textProperties];
-  [v3 setLineBreakMode:4];
+  defaultContentConfiguration = [(SFFaviconWebsiteCollectionCell *)self defaultContentConfiguration];
+  [defaultContentConfiguration setText:self->_title];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setLineBreakMode:4];
 
-  v4 = [v14 textProperties];
-  [v4 setNumberOfLines:1];
+  textProperties2 = [defaultContentConfiguration textProperties];
+  [textProperties2 setNumberOfLines:1];
 
-  v5 = [v14 secondaryTextProperties];
-  [v5 setLineBreakMode:4];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setLineBreakMode:4];
 
-  v6 = [v14 secondaryTextProperties];
-  [v6 setNumberOfLines:1];
+  secondaryTextProperties2 = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setNumberOfLines:1];
 
-  v7 = [(NSURL *)self->_siteURL safari_stringForListDisplay];
-  [v14 setSecondaryText:v7];
+  safari_stringForListDisplay = [(NSURL *)self->_siteURL safari_stringForListDisplay];
+  [defaultContentConfiguration setSecondaryText:safari_stringForListDisplay];
 
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v9 = [v14 secondaryTextProperties];
-  [v9 setColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties3 = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties3 setColor:secondaryLabelColor];
 
   if (self->_favicon)
   {
-    [v14 setImage:?];
+    [defaultContentConfiguration setImage:?];
   }
 
   else
   {
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"globe"];
-    [v14 setImage:v10];
+    [defaultContentConfiguration setImage:v10];
   }
 
-  v11 = [v14 imageProperties];
-  [v11 setCornerRadius:2.0];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setCornerRadius:2.0];
 
-  v12 = [v14 imageProperties];
-  [v12 setReservedLayoutSize:{24.0, 24.0}];
+  imageProperties2 = [defaultContentConfiguration imageProperties];
+  [imageProperties2 setReservedLayoutSize:{24.0, 24.0}];
 
-  v13 = [v14 imageProperties];
-  [v13 setMaximumSize:{24.0, 24.0}];
+  imageProperties3 = [defaultContentConfiguration imageProperties];
+  [imageProperties3 setMaximumSize:{24.0, 24.0}];
 
-  [(SFFaviconWebsiteCollectionCell *)self setContentConfiguration:v14];
+  [(SFFaviconWebsiteCollectionCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 - (void)_requestFavicon
@@ -73,18 +73,18 @@
   favicon = self->_favicon;
   self->_favicon = 0;
 
-  v4 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  [v4 cancelRequestWithToken:self->_faviconRequestToken];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  [mEMORY[0x277D28F58] cancelRequestWithToken:self->_faviconRequestToken];
 
   v5 = [objc_alloc(MEMORY[0x277D4A730]) initWithURL:self->_siteURL iconSize:0 fallbackType:{24.0, 24.0}];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  mEMORY[0x277D28F58]2 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__SFFaviconWebsiteCollectionCell__requestFavicon__block_invoke;
   v9[3] = &unk_2781D5D78;
   objc_copyWeak(&v10, &location);
-  v7 = [v6 registerRequest:v5 priority:2 responseHandler:v9];
+  v7 = [mEMORY[0x277D28F58]2 registerRequest:v5 priority:2 responseHandler:v9];
   faviconRequestToken = self->_faviconRequestToken;
   self->_faviconRequestToken = v7;
 

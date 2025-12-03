@@ -1,16 +1,16 @@
 @interface RCRecorderAppDelegateDependencyContainer
-- (void)applicationWillTerminateWithApplication:(id)a3;
+- (void)applicationWillTerminateWithApplication:(id)application;
 - (void)defaultSceneDidEnterBackground;
 - (void)defaultSceneWillResignActive;
 @end
 
 @implementation RCRecorderAppDelegateDependencyContainer
 
-- (void)applicationWillTerminateWithApplication:(id)a3
+- (void)applicationWillTerminateWithApplication:(id)application
 {
-  v5 = self;
+  selfCopy = self;
   sub_1000EE2C0();
-  if (*((*(&v5->super.isa + OBJC_IVAR___RCRecorderAppDelegateDependencyContainer_activityManagerStateCoordinator))[2] + 16))
+  if (*((*(&selfCopy->super.isa + OBJC_IVAR___RCRecorderAppDelegateDependencyContainer_activityManagerStateCoordinator))[2] + 16))
   {
 
     v3 = Activity.id.getter();
@@ -24,13 +24,13 @@
 
 - (void)defaultSceneDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EDEC8();
 }
 
 - (void)defaultSceneWillResignActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EE478();
 }
 

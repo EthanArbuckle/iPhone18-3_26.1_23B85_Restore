@@ -1,17 +1,17 @@
 @interface WFParameterEditorHostingCell
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIViewController)containingViewController;
-- (WFParameterEditorHostingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFParameterEditorHostingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (WFParameterEditorHostingCellDelegate)delegate;
 - (void)layoutSubviews;
-- (void)parameterAttributesDidChange:(id)a3;
+- (void)parameterAttributesDidChange:(id)change;
 - (void)reconfigureModernView;
-- (void)setContainingViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContainingViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateContext;
-- (void)updateModel:(id)a3;
-- (void)updatedParameterState:(id)a3 isUIUpdate:(BOOL)a4;
+- (void)updateModel:(id)model;
+- (void)updatedParameterState:(id)state isUIUpdate:(BOOL)update;
 @end
 
 @implementation WFParameterEditorHostingCell
@@ -30,32 +30,32 @@
   return WeakRetained;
 }
 
-- (void)parameterAttributesDidChange:(id)a3
+- (void)parameterAttributesDidChange:(id)change
 {
-  v4 = [(WFParameterEditorHostingCell *)self delegate];
-  [v4 parameterEditorCellDidInvalidateSize:self];
+  delegate = [(WFParameterEditorHostingCell *)self delegate];
+  [delegate parameterEditorCellDidInvalidateSize:self];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WFParameterEditorHostingCell;
-  v4 = a3;
-  [(WFParameterEditorHostingCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFParameterEditorHostingCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(WFParameterEditorHostingCell *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(WFParameterEditorHostingCell *)self updateContext];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(WFParameterEditorHostingCell *)self contentView:a3.width];
+  width = fits.width;
+  v5 = [(WFParameterEditorHostingCell *)self contentView:fits.width];
   [v5 bounds];
   v7 = v6;
 
@@ -64,8 +64,8 @@
     width = v7;
   }
 
-  v8 = [(WFParameterEditorHostingCell *)self modernHostingView];
-  [v8 sizeThatFits:{width, 1.79769313e308}];
+  modernHostingView = [(WFParameterEditorHostingCell *)self modernHostingView];
+  [modernHostingView sizeThatFits:{width, 1.79769313e308}];
   v10 = v9;
   v12 = v11;
 
@@ -76,13 +76,13 @@
   return result;
 }
 
-- (void)updatedParameterState:(id)a3 isUIUpdate:(BOOL)a4
+- (void)updatedParameterState:(id)state isUIUpdate:(BOOL)update
 {
-  if (!a4)
+  if (!update)
   {
-    v5 = a3;
-    v6 = [(WFParameterEditorHostingCell *)self delegate];
-    [v6 parameterEditorCell:self didUpdateParameterState:v5];
+    stateCopy = state;
+    delegate = [(WFParameterEditorHostingCell *)self delegate];
+    [delegate parameterEditorCell:self didUpdateParameterState:stateCopy];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -99,10 +99,10 @@ void __65__WFParameterEditorHostingCell_updatedParameterState_isUIUpdate___block
   [v2 parameterEditorCellDidInvalidateSize:*(a1 + 32)];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_isEqual(a3, sel_updatedParameterState_isUIUpdate_))
+  senderCopy = sender;
+  if (sel_isEqual(action, sel_updatedParameterState_isUIUpdate_))
   {
     v7 = 1;
   }
@@ -111,7 +111,7 @@ void __65__WFParameterEditorHostingCell_updatedParameterState_isUIUpdate___block
   {
     v9.receiver = self;
     v9.super_class = WFParameterEditorHostingCell;
-    v7 = [(WFParameterEditorHostingCell *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(WFParameterEditorHostingCell *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
@@ -119,64 +119,64 @@ void __65__WFParameterEditorHostingCell_updatedParameterState_isUIUpdate___block
 
 - (void)reconfigureModernView
 {
-  v3 = [(WFParameterEditorHostingCell *)self model];
-  if (v3)
+  model = [(WFParameterEditorHostingCell *)self model];
+  if (model)
   {
-    v4 = [(WFParameterEditorHostingCell *)self modernHostingView];
-    v5 = [v3 parameter];
-    v6 = [v3 state];
-    v7 = [v3 becomeFirstResponder];
+    modernHostingView = [(WFParameterEditorHostingCell *)self modernHostingView];
+    parameter = [model parameter];
+    state = [model state];
+    becomeFirstResponder = [model becomeFirstResponder];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__WFParameterEditorHostingCell_reconfigureModernView__block_invoke;
     v8[3] = &unk_279EDBA68;
     v8[4] = self;
-    [v4 configureViewForRuntimeUIWithParameter:v5 state:v6 processing:1 shouldFocus:v7 variableProvider:0 updateBlock:v8];
+    [modernHostingView configureViewForRuntimeUIWithParameter:parameter state:state processing:1 shouldFocus:becomeFirstResponder variableProvider:0 updateBlock:v8];
   }
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   model = self->_model;
-  if (model != v5)
+  if (model != modelCopy)
   {
-    v9 = v5;
-    v7 = [(WFParameterEditorModel *)model parameter];
-    [v7 removeEventObserver:self];
+    v9 = modelCopy;
+    parameter = [(WFParameterEditorModel *)model parameter];
+    [parameter removeEventObserver:self];
 
-    objc_storeStrong(&self->_model, a3);
-    v8 = [(WFParameterEditorModel *)v9 parameter];
-    [v8 addEventObserver:self];
+    objc_storeStrong(&self->_model, model);
+    parameter2 = [(WFParameterEditorModel *)v9 parameter];
+    [parameter2 addEventObserver:self];
 
     [(WFParameterEditorHostingCell *)self reconfigureModernView];
-    v5 = v9;
+    modelCopy = v9;
   }
 }
 
 - (void)updateContext
 {
-  v3 = [(WFParameterEditorHostingCell *)self containingViewController];
+  containingViewController = [(WFParameterEditorHostingCell *)self containingViewController];
 
-  v4 = [(WFParameterEditorHostingCell *)self modernHostingView];
-  v5 = v4;
-  if (v3)
+  modernHostingView = [(WFParameterEditorHostingCell *)self modernHostingView];
+  v5 = modernHostingView;
+  if (containingViewController)
   {
-    v6 = [(WFParameterEditorHostingCell *)self containingViewController];
-    [v5 attachToParentViewController:v6];
+    containingViewController2 = [(WFParameterEditorHostingCell *)self containingViewController];
+    [v5 attachToParentViewController:containingViewController2];
   }
 
   else
   {
-    [v4 detachFromParentViewController];
+    [modernHostingView detachFromParentViewController];
   }
 
   [(WFParameterEditorHostingCell *)self reconfigureModernView];
 }
 
-- (void)setContainingViewController:(id)a3
+- (void)setContainingViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_containingViewController);
 
   v5 = obj;
@@ -193,8 +193,8 @@ void __65__WFParameterEditorHostingCell_updatedParameterState_isUIUpdate___block
   v18.receiver = self;
   v18.super_class = WFParameterEditorHostingCell;
   [(WFParameterEditorHostingCell *)&v18 layoutSubviews];
-  v3 = [(WFParameterEditorHostingCell *)self contentView];
-  [v3 bounds];
+  contentView = [(WFParameterEditorHostingCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -209,27 +209,27 @@ void __65__WFParameterEditorHostingCell_updatedParameterState_isUIUpdate___block
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  v16 = [(WFParameterEditorHostingCell *)self modernHostingView];
-  [v16 setFrame:{x, y, width, height}];
+  modernHostingView = [(WFParameterEditorHostingCell *)self modernHostingView];
+  [modernHostingView setFrame:{x, y, width, height}];
 
   if (v9 != self->_lastWidth)
   {
     self->_lastWidth = v9;
-    v17 = [(WFParameterEditorHostingCell *)self delegate];
-    [v17 parameterEditorCellDidInvalidateSize:self];
+    delegate = [(WFParameterEditorHostingCell *)self delegate];
+    [delegate parameterEditorCellDidInvalidateSize:self];
   }
 }
 
-- (WFParameterEditorHostingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFParameterEditorHostingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WFParameterEditorHostingCell;
-  v4 = [(WFParameterEditorHostingCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WFParameterEditorHostingCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(WFParameterHostingView);
-    v6 = [(WFParameterEditorHostingCell *)v4 contentView];
-    [v6 addSubview:v5];
+    contentView = [(WFParameterEditorHostingCell *)v4 contentView];
+    [contentView addSubview:v5];
 
     [(WFParameterEditorHostingCell *)v4 setModernHostingView:v5];
     v7 = v4;

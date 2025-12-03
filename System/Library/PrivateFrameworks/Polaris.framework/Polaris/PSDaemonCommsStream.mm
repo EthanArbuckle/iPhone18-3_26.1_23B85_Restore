@@ -1,7 +1,7 @@
 @interface PSDaemonCommsStream
-- (BOOL)isAck:(id *)a3;
-- (BOOL)sendMessageWithType:(int)a3;
-- (PSDaemonCommsStream)initWithKey:(id)a3;
+- (BOOL)isAck:(id *)ack;
+- (BOOL)sendMessageWithType:(int)type;
+- (PSDaemonCommsStream)initWithKey:(id)key;
 - (uint64_t)start;
 - (uint64_t)stop;
 - (void)dealloc;
@@ -11,14 +11,14 @@
 
 @implementation PSDaemonCommsStream
 
-- (PSDaemonCommsStream)initWithKey:(id)a3
+- (PSDaemonCommsStream)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = PSDaemonCommsStream;
   v6 = [(PSDaemonCommsStream *)&v12 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_key, a3), v7->_comms = ps_create_comms_client(), ![(PSDaemonCommsStream *)v7 sendMessageWithType:0]))
+  if (v6 && (objc_storeStrong(&v6->_key, key), v7->_comms = ps_create_comms_client(), ![(PSDaemonCommsStream *)v7 sendMessageWithType:0]))
   {
     v9 = [(PSDaemonCommsStream *)&v11 initWithKey:?];
     [(PSDaemonCommsStream *)v9 start];
@@ -37,8 +37,8 @@
 {
   if (![(PSDaemonCommsStream *)self sendMessageWithType:2])
   {
-    v3 = [(PSDaemonCommsStream *)&v5 start];
-    [(PSDaemonCommsStream *)v3 stop];
+    start = [(PSDaemonCommsStream *)&v5 start];
+    [(PSDaemonCommsStream *)start stop];
   }
 }
 
@@ -53,16 +53,16 @@
   if (![(PSDaemonCommsStream *)self sendMessageWithType:1])
   {
 LABEL_5:
-    v3 = [(PSDaemonCommsStream *)&v6 stop];
-    [(PSDaemonCommsStream *)v3 isAck:v4, v5];
+    stop = [(PSDaemonCommsStream *)&v6 stop];
+    [(PSDaemonCommsStream *)stop isAck:v4, v5];
   }
 }
 
-- (BOOL)isAck:(id *)a3
+- (BOOL)isAck:(id *)ack
 {
-  if (MEMORY[0x25F8C8EC0](a3, a2))
+  if (MEMORY[0x25F8C8EC0](ack, a2))
   {
-    var5 = a3->var0.var0.var2.var1.var5;
+    var5 = ack->var0.var0.var2.var1.var5;
     if (var5 != 1)
     {
       v5 = __PLSLogSharedInstance();
@@ -83,13 +83,13 @@ LABEL_5:
   }
 }
 
-- (BOOL)sendMessageWithType:(int)a3
+- (BOOL)sendMessageWithType:(int)type
 {
   v10 = *MEMORY[0x277D85DE8];
   bzero(v8, 0x430uLL);
   [(NSString *)self->_key cStringUsingEncoding:4, 0, 0, 0, 0, 0, 0, 0];
   __strlcpy_chk();
-  v9 = a3;
+  typeCopy = type;
   MEMORY[0x25F8C8EE0](self->_comms, v8, 1072, &v7, 56, 2);
   result = [(PSDaemonCommsStream *)self isAck:&v7];
   v6 = *MEMORY[0x277D85DE8];
@@ -155,8 +155,8 @@ LABEL_5:
 
 - (uint64_t)start
 {
-  v5 = OUTLINED_FUNCTION_3_2(a1, a2, *MEMORY[0x277D85DE8]);
-  asprintf(a1, "Could not start source node for key (%s). Check polarisd logs for more info", v5);
+  v5 = OUTLINED_FUNCTION_3_2(self, a2, *MEMORY[0x277D85DE8]);
+  asprintf(self, "Could not start source node for key (%s). Check polarisd logs for more info", v5);
   v6 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v6))
   {
@@ -185,8 +185,8 @@ LABEL_5:
 
 - (uint64_t)stop
 {
-  v5 = OUTLINED_FUNCTION_3_2(a1, a2, *MEMORY[0x277D85DE8]);
-  asprintf(a1, "Could not close source node for key (%s). Check polarisd logs for more info", v5);
+  v5 = OUTLINED_FUNCTION_3_2(self, a2, *MEMORY[0x277D85DE8]);
+  asprintf(self, "Could not close source node for key (%s). Check polarisd logs for more info", v5);
   v6 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v6))
   {

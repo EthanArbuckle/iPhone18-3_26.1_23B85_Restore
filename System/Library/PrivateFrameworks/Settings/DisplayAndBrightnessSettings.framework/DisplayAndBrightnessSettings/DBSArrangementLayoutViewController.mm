@@ -1,28 +1,28 @@
 @interface DBSArrangementLayoutViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)unitDragPoint;
 - (CGSize)externalDisplaySize;
 - (CGSize)nativeDisplaySize;
-- (DBSArrangementLayoutViewController)initWithNativeDisplaySize:(CGSize)a3 nativeDisplayName:(id)a4 externalDisplaySize:(CGSize)a5 externalDisplayName:(id)a6 currentNativeDisplayLocation:(unint64_t)a7;
+- (DBSArrangementLayoutViewController)initWithNativeDisplaySize:(CGSize)size nativeDisplayName:(id)name externalDisplaySize:(CGSize)displaySize externalDisplayName:(id)displayName currentNativeDisplayLocation:(unint64_t)location;
 - (id)currentDisplayIconView;
-- (id)nativeDisplayImageWithWidth:(double)a3;
-- (void)didDrag:(id)a3;
-- (void)didTap:(id)a3;
+- (id)nativeDisplayImageWithWidth:(double)width;
+- (void)didDrag:(id)drag;
+- (void)didTap:(id)tap;
 - (void)loadView;
-- (void)updateCurrentDisplayLocation:(unint64_t)a3;
-- (void)updateOrientationTo:(int64_t)a3 withNativeDisplaySize:(CGSize)a4;
+- (void)updateCurrentDisplayLocation:(unint64_t)location;
+- (void)updateOrientationTo:(int64_t)to withNativeDisplaySize:(CGSize)size;
 @end
 
 @implementation DBSArrangementLayoutViewController
 
-- (DBSArrangementLayoutViewController)initWithNativeDisplaySize:(CGSize)a3 nativeDisplayName:(id)a4 externalDisplaySize:(CGSize)a5 externalDisplayName:(id)a6 currentNativeDisplayLocation:(unint64_t)a7
+- (DBSArrangementLayoutViewController)initWithNativeDisplaySize:(CGSize)size nativeDisplayName:(id)name externalDisplaySize:(CGSize)displaySize externalDisplayName:(id)displayName currentNativeDisplayLocation:(unint64_t)location
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3.height;
-  v13 = a3.width;
-  v15 = a4;
-  v16 = a6;
+  height = displaySize.height;
+  width = displaySize.width;
+  v12 = size.height;
+  v13 = size.width;
+  nameCopy = name;
+  displayNameCopy = displayName;
   v20.receiver = self;
   v20.super_class = DBSArrangementLayoutViewController;
   v17 = [(DBSArrangementLayoutViewController *)&v20 init];
@@ -31,30 +31,30 @@
   {
     v17->_nativeDisplaySize.width = v13;
     v17->_nativeDisplaySize.height = v12;
-    objc_storeStrong(&v17->_nativeDisplayName, a4);
+    objc_storeStrong(&v17->_nativeDisplayName, name);
     v18->_externalDisplaySize.width = width;
     v18->_externalDisplaySize.height = height;
-    objc_storeStrong(&v18->_externalDisplayName, a6);
-    v18->_nativeDisplayLocation = a7;
+    objc_storeStrong(&v18->_externalDisplayName, displayName);
+    v18->_nativeDisplayLocation = location;
   }
 
   return v18;
 }
 
-- (void)updateCurrentDisplayLocation:(unint64_t)a3
+- (void)updateCurrentDisplayLocation:(unint64_t)location
 {
-  if (self->_nativeDisplayLocation != a3)
+  if (self->_nativeDisplayLocation != location)
   {
-    self->_nativeDisplayLocation = a3;
-    v5 = [(DBSArrangementLayoutViewController *)self view];
-    [v5 placeCurrentDisplayAtLocation:a3];
+    self->_nativeDisplayLocation = location;
+    view = [(DBSArrangementLayoutViewController *)self view];
+    [view placeCurrentDisplayAtLocation:location];
   }
 }
 
-- (id)nativeDisplayImageWithWidth:(double)a3
+- (id)nativeDisplayImageWithWidth:(double)width
 {
-  v4 = [(DBSArrangementLayoutViewController *)self delegate];
-  v5 = [v4 nativeDisplayImageWithWidth:a3];
+  delegate = [(DBSArrangementLayoutViewController *)self delegate];
+  v5 = [delegate nativeDisplayImageWithWidth:width];
 
   return v5;
 }
@@ -65,69 +65,69 @@
   [(DBSArrangementLayoutViewController *)self setView:v18];
   [(DBSArrangementLayoutView *)v18 setDataSource:self];
   v3 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_didDrag_];
-  v4 = [(DBSArrangementLayoutViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(DBSArrangementLayoutViewController *)self view];
+  [view addGestureRecognizer:v3];
 
   [v3 setDelegate:self];
   [(DBSArrangementLayoutViewController *)self setDragGestureRecognizer:v3];
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_didTap_];
-  v6 = [(DBSArrangementLayoutViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view2 = [(DBSArrangementLayoutViewController *)self view];
+  [view2 addGestureRecognizer:v5];
 
   [v5 setDelegate:self];
   [(DBSArrangementLayoutViewController *)self setTapGestureRecogniser:v5];
-  v7 = [(DBSArrangementLayoutViewController *)self view];
-  [v7 placeCurrentDisplayAtLocation:{-[DBSArrangementLayoutViewController nativeDisplayLocation](self, "nativeDisplayLocation")}];
+  view3 = [(DBSArrangementLayoutViewController *)self view];
+  [view3 placeCurrentDisplayAtLocation:{-[DBSArrangementLayoutViewController nativeDisplayLocation](self, "nativeDisplayLocation")}];
 
   v8 = [DBSNativeDisplayIconView alloc];
-  v9 = [(DBSArrangementLayoutViewController *)self nativeDisplayName];
-  v10 = [(DBSNativeDisplayIconView *)v8 initWithFrame:v9 displayName:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  nativeDisplayName = [(DBSArrangementLayoutViewController *)self nativeDisplayName];
+  v10 = [(DBSNativeDisplayIconView *)v8 initWithFrame:nativeDisplayName displayName:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(DBSArrangementLayoutViewController *)self setDragView:v10];
 
-  v11 = [(DBSArrangementLayoutViewController *)self dragView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:1];
+  dragView = [(DBSArrangementLayoutViewController *)self dragView];
+  [dragView setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v12 = [(DBSArrangementLayoutViewController *)self dragView];
-  [v12 setIsCurrentDisplayLocation:1];
+  dragView2 = [(DBSArrangementLayoutViewController *)self dragView];
+  [dragView2 setIsCurrentDisplayLocation:1];
 
-  v13 = [(DBSArrangementLayoutView *)v18 northDisplay];
-  v14 = [v13 imageView];
-  v15 = [v14 image];
-  v16 = [(DBSArrangementLayoutViewController *)self dragView];
-  v17 = [v16 imageView];
-  [v17 setImage:v15];
+  northDisplay = [(DBSArrangementLayoutView *)v18 northDisplay];
+  imageView = [northDisplay imageView];
+  image = [imageView image];
+  dragView3 = [(DBSArrangementLayoutViewController *)self dragView];
+  imageView2 = [dragView3 imageView];
+  [imageView2 setImage:image];
 }
 
-- (void)didDrag:(id)a3
+- (void)didDrag:(id)drag
 {
-  v58 = a3;
-  v4 = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
-  if ([v58 state] == 1)
+  dragCopy = drag;
+  currentDisplayIconView = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
+  if ([dragCopy state] == 1)
   {
-    [v4 frame];
+    [currentDisplayIconView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(DBSArrangementLayoutViewController *)self dragView];
-    v14 = [v13 superview];
+    dragView = [(DBSArrangementLayoutViewController *)self dragView];
+    superview = [dragView superview];
 
-    if (!v14)
+    if (!superview)
     {
-      v15 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      v16 = [v15 northDisplay];
-      v17 = [v16 imageView];
-      v18 = [v17 image];
-      v19 = [(DBSArrangementLayoutViewController *)self dragView];
-      v20 = [v19 imageView];
-      [v20 setImage:v18];
+      arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+      northDisplay = [arrangementView northDisplay];
+      imageView = [northDisplay imageView];
+      image = [imageView image];
+      dragView2 = [(DBSArrangementLayoutViewController *)self dragView];
+      imageView2 = [dragView2 imageView];
+      [imageView2 setImage:image];
 
-      v21 = [(DBSArrangementLayoutViewController *)self view];
-      v22 = [(DBSArrangementLayoutViewController *)self dragView];
-      [v21 addSubview:v22];
+      view = [(DBSArrangementLayoutViewController *)self view];
+      dragView3 = [(DBSArrangementLayoutViewController *)self dragView];
+      [view addSubview:dragView3];
     }
 
-    [v58 locationInView:v4];
+    [dragCopy locationInView:currentDisplayIconView];
     v24 = v23;
     v26 = v25;
     v60.origin.x = v6;
@@ -140,22 +140,22 @@
     v61.size.width = v10;
     v61.size.height = v12;
     [(DBSArrangementLayoutViewController *)self setUnitDragPoint:v27, v26 / CGRectGetHeight(v61)];
-    [v4 frame];
+    [currentDisplayIconView frame];
     [(DBSNativeDisplayIconView *)self->_dragView setFrame:?];
-    v28 = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
-    [v28 setIsCurrentDisplayLocation:0];
+    currentDisplayIconView2 = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
+    [currentDisplayIconView2 setIsCurrentDisplayLocation:0];
     goto LABEL_5;
   }
 
-  if ([v58 state] == 2)
+  if ([dragCopy state] == 2)
   {
     [(DBSNativeDisplayIconView *)self->_dragView frame];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [(DBSArrangementLayoutViewController *)self view];
-    [v58 locationInView:v37];
+    view2 = [(DBSArrangementLayoutViewController *)self view];
+    [dragCopy locationInView:view2];
     v39 = v38;
     v41 = v40;
 
@@ -187,82 +187,82 @@
 
   else
   {
-    if ([v58 state] == 3)
+    if ([dragCopy state] == 3)
     {
       [(DBSArrangementLayoutViewController *)self setUnitDragPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-      v49 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      v50 = [(DBSArrangementLayoutViewController *)self dragView];
-      [v50 frame];
+      arrangementView2 = [(DBSArrangementLayoutViewController *)self arrangementView];
+      dragView4 = [(DBSArrangementLayoutViewController *)self dragView];
+      [dragView4 frame];
       MidX = CGRectGetMidX(v66);
-      v52 = [(DBSArrangementLayoutViewController *)self dragView];
-      [v52 frame];
-      v53 = [v49 displayLocationForPointInView:{MidX, CGRectGetMidY(v67)}];
+      dragView5 = [(DBSArrangementLayoutViewController *)self dragView];
+      [dragView5 frame];
+      v53 = [arrangementView2 displayLocationForPointInView:{MidX, CGRectGetMidY(v67)}];
 
-      v54 = [(DBSArrangementLayoutViewController *)self dragView];
-      [v54 removeFromSuperview];
+      dragView6 = [(DBSArrangementLayoutViewController *)self dragView];
+      [dragView6 removeFromSuperview];
 
       [(DBSArrangementLayoutViewController *)self setNativeDisplayLocation:v53];
-      v55 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      [v55 placeCurrentDisplayAtLocation:v53];
+      arrangementView3 = [(DBSArrangementLayoutViewController *)self arrangementView];
+      [arrangementView3 placeCurrentDisplayAtLocation:v53];
 
-      v28 = [(DBSArrangementLayoutViewController *)self delegate];
-      [v28 nativeDisplayLocationDidChange:v53];
+      currentDisplayIconView2 = [(DBSArrangementLayoutViewController *)self delegate];
+      [currentDisplayIconView2 nativeDisplayLocationDidChange:v53];
 LABEL_5:
 
       goto LABEL_8;
     }
 
-    if ([v58 state] == 4)
+    if ([dragCopy state] == 4)
     {
       [(DBSArrangementLayoutViewController *)self setUnitDragPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-      v56 = [(DBSArrangementLayoutViewController *)self dragView];
-      [v56 removeFromSuperview];
+      dragView7 = [(DBSArrangementLayoutViewController *)self dragView];
+      [dragView7 removeFromSuperview];
 
-      v57 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      [v57 placeCurrentDisplayAtLocation:{-[DBSArrangementLayoutViewController nativeDisplayLocation](self, "nativeDisplayLocation")}];
+      arrangementView4 = [(DBSArrangementLayoutViewController *)self arrangementView];
+      [arrangementView4 placeCurrentDisplayAtLocation:{-[DBSArrangementLayoutViewController nativeDisplayLocation](self, "nativeDisplayLocation")}];
     }
   }
 
 LABEL_8:
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v48 = [(DBSArrangementLayoutViewController *)self arrangementView];
-  [v4 locationInView:v48];
+  tapCopy = tap;
+  arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+  [tapCopy locationInView:arrangementView];
   v6 = v5;
   v8 = v7;
 
-  v9 = [v48 northDisplay];
-  [v9 bounds];
-  [v9 convertRect:v48 toView:?];
+  northDisplay = [arrangementView northDisplay];
+  [northDisplay bounds];
+  [northDisplay convertRect:arrangementView toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v48 eastDisplay];
-  [v18 bounds];
-  [v18 convertRect:v48 toView:?];
+  eastDisplay = [arrangementView eastDisplay];
+  [eastDisplay bounds];
+  [eastDisplay convertRect:arrangementView toView:?];
   v20 = v19;
   v22 = v21;
   v46 = v24;
   v47 = v23;
-  v25 = [v48 southDisplay];
-  [v25 bounds];
-  [v25 convertRect:v48 toView:?];
+  southDisplay = [arrangementView southDisplay];
+  [southDisplay bounds];
+  [southDisplay convertRect:arrangementView toView:?];
   v44 = v27;
   v45 = v26;
   v42 = v29;
   v43 = v28;
-  v30 = [v48 westDisplay];
-  [v30 bounds];
-  [v30 convertRect:v48 toView:?];
+  westDisplay = [arrangementView westDisplay];
+  [westDisplay bounds];
+  [westDisplay convertRect:arrangementView toView:?];
   v40 = v32;
   v41 = v31;
   v38 = v34;
   v39 = v33;
-  v35 = [(DBSArrangementLayoutViewController *)self nativeDisplayLocation];
+  nativeDisplayLocation = [(DBSArrangementLayoutViewController *)self nativeDisplayLocation];
   v54.origin.x = v11;
   v54.origin.y = v13;
   v54.size.width = v15;
@@ -271,7 +271,7 @@ LABEL_8:
   v50.y = v8;
   if (CGRectContainsPoint(v54, v50))
   {
-    v35 = 0;
+    nativeDisplayLocation = 0;
   }
 
   else
@@ -284,7 +284,7 @@ LABEL_8:
     v51.y = v8;
     if (CGRectContainsPoint(v55, v51))
     {
-      v35 = 1;
+      nativeDisplayLocation = 1;
     }
 
     else
@@ -297,7 +297,7 @@ LABEL_8:
       v52.y = v8;
       if (CGRectContainsPoint(v56, v52))
       {
-        v35 = 2;
+        nativeDisplayLocation = 2;
       }
 
       else
@@ -310,103 +310,103 @@ LABEL_8:
         v53.y = v8;
         if (CGRectContainsPoint(v57, v53))
         {
-          v35 = 3;
+          nativeDisplayLocation = 3;
         }
       }
     }
   }
 
-  [(DBSArrangementLayoutViewController *)self setNativeDisplayLocation:v35];
-  v36 = [(DBSArrangementLayoutViewController *)self arrangementView];
-  [v36 placeCurrentDisplayAtLocation:v35];
+  [(DBSArrangementLayoutViewController *)self setNativeDisplayLocation:nativeDisplayLocation];
+  arrangementView2 = [(DBSArrangementLayoutViewController *)self arrangementView];
+  [arrangementView2 placeCurrentDisplayAtLocation:nativeDisplayLocation];
 
-  v37 = [(DBSArrangementLayoutViewController *)self delegate];
-  [v37 nativeDisplayLocationDidChange:v35];
+  delegate = [(DBSArrangementLayoutViewController *)self delegate];
+  [delegate nativeDisplayLocationDidChange:nativeDisplayLocation];
 }
 
 - (id)currentDisplayIconView
 {
-  v3 = [(DBSArrangementLayoutViewController *)self nativeDisplayLocation];
+  nativeDisplayLocation = [(DBSArrangementLayoutViewController *)self nativeDisplayLocation];
   v4 = 0;
-  if (v3 > 1)
+  if (nativeDisplayLocation > 1)
   {
-    if (v3 == 2)
+    if (nativeDisplayLocation == 2)
     {
-      v5 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      v6 = [v5 southDisplay];
+      arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+      southDisplay = [arrangementView southDisplay];
     }
 
     else
     {
-      if (v3 != 3)
+      if (nativeDisplayLocation != 3)
       {
         goto LABEL_11;
       }
 
-      v5 = [(DBSArrangementLayoutViewController *)self arrangementView];
-      v6 = [v5 westDisplay];
+      arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+      southDisplay = [arrangementView westDisplay];
     }
   }
 
-  else if (v3)
+  else if (nativeDisplayLocation)
   {
-    if (v3 != 1)
+    if (nativeDisplayLocation != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = [(DBSArrangementLayoutViewController *)self arrangementView];
-    v6 = [v5 eastDisplay];
+    arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+    southDisplay = [arrangementView eastDisplay];
   }
 
   else
   {
-    v5 = [(DBSArrangementLayoutViewController *)self arrangementView];
-    v6 = [v5 northDisplay];
+    arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+    southDisplay = [arrangementView northDisplay];
   }
 
-  v4 = v6;
+  v4 = southDisplay;
 
 LABEL_11:
 
   return v4;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(DBSArrangementLayoutViewController *)self dragGestureRecognizer];
+  beginCopy = begin;
+  dragGestureRecognizer = [(DBSArrangementLayoutViewController *)self dragGestureRecognizer];
 
-  if (v5 == v4)
+  if (dragGestureRecognizer == beginCopy)
   {
-    v13 = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
-    [v4 locationInView:v13];
+    currentDisplayIconView = [(DBSArrangementLayoutViewController *)self currentDisplayIconView];
+    [beginCopy locationInView:currentDisplayIconView];
     v9 = v14;
     v11 = v15;
-    v12 = v13;
+    arrangementView2 = currentDisplayIconView;
   }
 
   else
   {
-    v6 = [(DBSArrangementLayoutViewController *)self tapGestureRecogniser];
+    tapGestureRecogniser = [(DBSArrangementLayoutViewController *)self tapGestureRecogniser];
 
-    if (v6 != v4)
+    if (tapGestureRecogniser != beginCopy)
     {
 LABEL_7:
       v17 = 0;
       goto LABEL_8;
     }
 
-    v7 = [(DBSArrangementLayoutViewController *)self arrangementView];
-    [v4 locationInView:v7];
+    arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+    [beginCopy locationInView:arrangementView];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(DBSArrangementLayoutViewController *)self arrangementView];
-    v13 = v12;
+    arrangementView2 = [(DBSArrangementLayoutViewController *)self arrangementView];
+    currentDisplayIconView = arrangementView2;
   }
 
-  [v12 bounds];
+  [arrangementView2 bounds];
   v19.x = v9;
   v19.y = v11;
   v16 = CGRectContainsPoint(v20, v19);
@@ -422,11 +422,11 @@ LABEL_8:
   return v17;
 }
 
-- (void)updateOrientationTo:(int64_t)a3 withNativeDisplaySize:(CGSize)a4
+- (void)updateOrientationTo:(int64_t)to withNativeDisplaySize:(CGSize)size
 {
-  [(DBSArrangementLayoutViewController *)self setNativeDisplaySize:a4.width, a4.height];
-  v6 = [(DBSArrangementLayoutViewController *)self arrangementView];
-  [v6 updateForOrientation:a3];
+  [(DBSArrangementLayoutViewController *)self setNativeDisplaySize:size.width, size.height];
+  arrangementView = [(DBSArrangementLayoutViewController *)self arrangementView];
+  [arrangementView updateForOrientation:to];
 }
 
 - (CGSize)nativeDisplaySize

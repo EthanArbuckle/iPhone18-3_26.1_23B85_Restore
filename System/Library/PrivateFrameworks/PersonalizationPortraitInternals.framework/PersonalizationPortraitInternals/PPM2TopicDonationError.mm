@@ -1,49 +1,49 @@
 @interface PPM2TopicDonationError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsReason:(id)a3;
-- (int)StringAsSource:(id)a3;
+- (int)StringAsReason:(id)reason;
+- (int)StringAsSource:(id)source;
 - (int)reason;
 - (int)source;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2TopicDonationError
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 32) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_reason = *(v4 + 6);
+    self->_reason = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(PPM2TopicDonationError *)self setActiveTreatments:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_source = *(v4 + 7);
+    self->_source = *(fromCopy + 7);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_code = *(v4 + 1);
+    self->_code = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -85,31 +85,31 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_reason != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_reason != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 2))
+  if (activeTreatments | *(equalCopy + 2))
   {
     if (![(NSString *)activeTreatments isEqual:?])
     {
@@ -119,12 +119,12 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = *(v4 + 32);
+    v6 = *(equalCopy + 32);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_source != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_source != *(equalCopy + 7))
     {
       goto LABEL_19;
     }
@@ -138,7 +138,7 @@ LABEL_19:
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_code != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_code != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -151,9 +151,9 @@ LABEL_20:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -161,7 +161,7 @@ LABEL_20:
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v7 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -182,40 +182,40 @@ LABEL_20:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[6] = self->_reason;
-    *(v4 + 32) |= 2u;
+    toCopy[6] = self->_reason;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_activeTreatments)
   {
-    v6 = v4;
-    [v4 setActiveTreatments:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setActiveTreatments:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[7] = self->_source;
-    *(v4 + 32) |= 4u;
+    toCopy[7] = self->_source;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_code;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = self->_code;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     reason = self->_reason;
@@ -244,7 +244,7 @@ LABEL_20:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     reason = self->_reason;
@@ -258,13 +258,13 @@ LABEL_20:
       v5 = off_278971D40[reason];
     }
 
-    [v3 setObject:v5 forKey:@"reason"];
+    [dictionary setObject:v5 forKey:@"reason"];
   }
 
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
   has = self->_has;
@@ -281,7 +281,7 @@ LABEL_20:
       v9 = off_278971D90[source];
     }
 
-    [v3 setObject:v9 forKey:@"source"];
+    [dictionary setObject:v9 forKey:@"source"];
 
     has = self->_has;
   }
@@ -289,10 +289,10 @@ LABEL_20:
   if (has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_code];
-    [v3 setObject:v10 forKey:@"code"];
+    [dictionary setObject:v10 forKey:@"code"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -301,136 +301,136 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = PPM2TopicDonationError;
   v4 = [(PPM2TopicDonationError *)&v8 description];
-  v5 = [(PPM2TopicDonationError *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2TopicDonationError *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsSource:(id)a3
+- (int)StringAsSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Safari"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Safari"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([sourceCopy isEqualToString:@"News"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([sourceCopy isEqualToString:@"Mail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([sourceCopy isEqualToString:@"Messages"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([sourceCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Siri"])
+  else if ([sourceCopy isEqualToString:@"Siri"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Photos"])
+  else if ([sourceCopy isEqualToString:@"Photos"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Health"])
+  else if ([sourceCopy isEqualToString:@"Health"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Podcasts"])
+  else if ([sourceCopy isEqualToString:@"Podcasts"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Calendar"])
+  else if ([sourceCopy isEqualToString:@"Calendar"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Parsec"])
+  else if ([sourceCopy isEqualToString:@"Parsec"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NowPlaying"])
+  else if ([sourceCopy isEqualToString:@"NowPlaying"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Notes"])
+  else if ([sourceCopy isEqualToString:@"Notes"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Maps"])
+  else if ([sourceCopy isEqualToString:@"Maps"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ContactsSource"])
+  else if ([sourceCopy isEqualToString:@"ContactsSource"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Reminders"])
+  else if ([sourceCopy isEqualToString:@"Reminders"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"UnknownFirstParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownFirstParty"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"UnknownThirdParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownThirdParty"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"UnknownSource"])
+  else if ([sourceCopy isEqualToString:@"UnknownSource"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([sourceCopy isEqualToString:@"Music"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Wallet"])
+  else if ([sourceCopy isEqualToString:@"Wallet"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Facetime"])
+  else if ([sourceCopy isEqualToString:@"Facetime"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"Camera"])
+  else if ([sourceCopy isEqualToString:@"Camera"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"TVRemoteNotifications"])
+  else if ([sourceCopy isEqualToString:@"TVRemoteNotifications"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TVApp"])
+  else if ([sourceCopy isEqualToString:@"TVApp"])
   {
     v4 = 24;
   }
@@ -443,9 +443,9 @@ LABEL_20:
   return v4;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -471,55 +471,55 @@ LABEL_20:
   }
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ZeroTopic"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"ZeroTopic"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ZeroSafariReader"])
+  else if ([reasonCopy isEqualToString:@"ZeroSafariReader"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ZeroSafariHTML"])
+  else if ([reasonCopy isEqualToString:@"ZeroSafariHTML"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Context"])
+  else if ([reasonCopy isEqualToString:@"Context"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Donation"])
+  else if ([reasonCopy isEqualToString:@"Donation"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HTML"])
+  else if ([reasonCopy isEqualToString:@"HTML"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Delete"])
+  else if ([reasonCopy isEqualToString:@"Delete"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DeleteBlocklist"])
+  else if ([reasonCopy isEqualToString:@"DeleteBlocklist"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"UnknownTopicError"])
+  else if ([reasonCopy isEqualToString:@"UnknownTopicError"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"TopicOverflow"])
+  else if ([reasonCopy isEqualToString:@"TopicOverflow"])
   {
     v4 = 9;
   }
@@ -532,9 +532,9 @@ LABEL_20:
   return v4;
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }

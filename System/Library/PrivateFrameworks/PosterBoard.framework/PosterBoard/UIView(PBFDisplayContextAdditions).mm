@@ -7,12 +7,12 @@
 
 - (uint64_t)pbf_layoutOrientation
 {
-  v1 = [a1 window];
-  v2 = [v1 pbf_layoutOrientation];
+  window = [self window];
+  pbf_layoutOrientation = [window pbf_layoutOrientation];
 
-  if (v2)
+  if (pbf_layoutOrientation)
   {
-    return v2;
+    return pbf_layoutOrientation;
   }
 
   return PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
@@ -20,20 +20,20 @@
 
 - (id)pbf_displayContext
 {
-  v2 = [a1 _screen];
-  v3 = [a1 _screen];
+  _screen = [self _screen];
+  _screen2 = [self _screen];
 
-  if (!v3)
+  if (!_screen2)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
 
-    v2 = v4;
+    _screen = mainScreen;
   }
 
-  v5 = [a1 traitCollection];
-  v6 = [PBFGenericDisplayContext displayContextForScreen:v2 traitCollection:v5];
+  traitCollection = [self traitCollection];
+  v6 = [PBFGenericDisplayContext displayContextForScreen:_screen traitCollection:traitCollection];
 
-  v7 = [v6 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(a1, "pbf_layoutOrientation")}];
+  v7 = [v6 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(self, "pbf_layoutOrientation")}];
 
   return v7;
 }

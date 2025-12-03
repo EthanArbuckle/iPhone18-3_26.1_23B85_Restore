@@ -2,28 +2,28 @@
 - (CGRect)croppedRect;
 - (CGRect)rect;
 - (VUIOverlayWithMaterialRendering)init;
-- (VUIOverlayWithMaterialRendering)initWithIdentifier:(id)a3 rect:(CGRect)a4 croppedRect:(CGRect)a5;
+- (VUIOverlayWithMaterialRendering)initWithIdentifier:(id)identifier rect:(CGRect)rect croppedRect:(CGRect)croppedRect;
 @end
 
 @implementation VUIOverlayWithMaterialRendering
 
-- (VUIOverlayWithMaterialRendering)initWithIdentifier:(id)a3 rect:(CGRect)a4 croppedRect:(CGRect)a5
+- (VUIOverlayWithMaterialRendering)initWithIdentifier:(id)identifier rect:(CGRect)rect croppedRect:(CGRect)croppedRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
+  height = croppedRect.size.height;
+  width = croppedRect.size.width;
+  y = croppedRect.origin.y;
+  x = croppedRect.origin.x;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  v11 = rect.origin.y;
+  v12 = rect.origin.x;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = VUIOverlayWithMaterialRendering;
   v15 = [(VUIOverlayWithMaterialRendering *)&v19 init];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 

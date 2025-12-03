@@ -1,9 +1,9 @@
 @interface DCBAASigner
 + (DCBAASigner)sharedSigner;
-- (id)_attestationWithCertificates:(id)a3 error:(id *)a4;
-- (id)_signatureForData:(id)a3 withReferenceKey:(__SecKey *)a4 error:(id *)a5;
-- (void)signatureForData:(id)a3 completion:(id)a4;
-- (void)signaturesForData:(id)a3 completion:(id)a4;
+- (id)_attestationWithCertificates:(id)certificates error:(id *)error;
+- (id)_signatureForData:(id)data withReferenceKey:(__SecKey *)key error:(id *)error;
+- (void)signatureForData:(id)data completion:(id)completion;
+- (void)signaturesForData:(id)data completion:(id)completion;
 @end
 
 @implementation DCBAASigner
@@ -27,18 +27,18 @@ uint64_t __27__DCBAASigner_sharedSigner__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)signatureForData:(id)a3 completion:(id)a4
+- (void)signatureForData:(id)data completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  dataCopy = data;
+  completionCopy = completion;
+  if ([dataCopy length])
   {
     if (DeviceIdentityIsSupported())
     {
       v7 = +[DCCryptoUtilities identityCertificateOptions];
-      v13 = v5;
-      v14 = v6;
+      v13 = dataCopy;
+      v14 = completionCopy;
       DeviceIdentityIssueClientCertificateWithCompletion();
     }
 
@@ -60,7 +60,7 @@ uint64_t __27__DCBAASigner_sharedSigner__block_invoke()
       }
 
       v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
-      (*(v6 + 2))(v6, 0, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v11);
     }
   }
 
@@ -80,11 +80,11 @@ uint64_t __27__DCBAASigner_sharedSigner__block_invoke()
       v17 = 1024;
       v18 = 51;
       v19 = 2048;
-      v20 = [v5 length];
+      v20 = [dataCopy length];
       _os_log_impl(&dword_2488FB000, v9, OS_LOG_TYPE_DEBUG, "%25s:%-5d Cannot sign empty data. { length=%lu }", buf, 0x1Cu);
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -217,18 +217,18 @@ void __43__DCBAASigner_signatureForData_completion___block_invoke(void *a1, uint
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signaturesForData:(id)a3 completion:(id)a4
+- (void)signaturesForData:(id)data completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dataCopy = data;
+  completionCopy = completion;
+  if ([dataCopy count])
   {
     if (DeviceIdentityIsSupported())
     {
       v7 = +[DCCryptoUtilities identityCertificateOptions];
-      v12 = v5;
-      v13 = v6;
+      v12 = dataCopy;
+      v13 = completionCopy;
       DeviceIdentityIssueClientCertificateWithCompletion();
     }
 
@@ -250,7 +250,7 @@ void __43__DCBAASigner_signatureForData_completion___block_invoke(void *a1, uint
       }
 
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
-      (*(v6 + 2))(v6, 0, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v10);
     }
   }
 
@@ -271,7 +271,7 @@ void __43__DCBAASigner_signatureForData_completion___block_invoke(void *a1, uint
       _os_log_impl(&dword_2488FB000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d Cannot sign empty data.", buf, 0x12u);
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -541,13 +541,13 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_signatureForData:(id)a3 withReferenceKey:(__SecKey *)a4 error:(id *)a5
+- (id)_signatureForData:(id)data withReferenceKey:(__SecKey *)key error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
   error = 0;
-  v6 = SecKeyCreateSignature(a4, *MEMORY[0x277CDC300], a3, &error);
+  v6 = SecKeyCreateSignature(key, *MEMORY[0x277CDC300], data, &error);
   v7 = v6;
-  v8 = error;
+  errorCopy = error;
   if (v6)
   {
     v9 = v6;
@@ -564,26 +564,26 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
     if (os_log_type_enabled(DCInternalLogSystem_log_0, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [(__CFError *)v8 localizedDescription];
+      localizedDescription = [(__CFError *)errorCopy localizedDescription];
       *buf = 136315650;
       *&buf[4] = "DCBAASigner.m";
       v24 = 1024;
       v25 = 184;
       v26 = 2112;
-      v27 = v12;
+      v27 = localizedDescription;
       _os_log_impl(&dword_2488FB000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to sign key. { error=%@ }", buf, 0x1Cu);
     }
 
     v13 = MEMORY[0x277CCA9B8];
     v28[0] = *MEMORY[0x277CCA7E8];
-    *buf = v8;
+    *buf = errorCopy;
     v14 = MEMORY[0x277CBEAC0];
-    v15 = v8;
+    v15 = errorCopy;
     v16 = [v14 dictionaryWithObjects:buf forKeys:v28 count:1];
     v17 = [v13 errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10001 userInfo:v16];
 
     v18 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   else
@@ -603,9 +603,9 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
       _os_log_impl(&dword_2488FB000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to sign key.", buf, 0x12u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10001 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10001 userInfo:0];
     }
   }
 
@@ -614,17 +614,17 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
   return v7;
 }
 
-- (id)_attestationWithCertificates:(id)a3 error:(id *)a4
+- (id)_attestationWithCertificates:(id)certificates error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  certificatesCopy = certificates;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 objectAtIndexedSubscript:0];
+  v7 = [certificatesCopy objectAtIndexedSubscript:0];
   v8 = SecCertificateCopyData(v7);
   v9 = [(__CFData *)v8 base64EncodedStringWithOptions:0];
   [v6 addObject:v9];
 
-  v10 = [v5 objectAtIndexedSubscript:1];
+  v10 = [certificatesCopy objectAtIndexedSubscript:1];
   v11 = SecCertificateCopyData(v10);
   v12 = [(__CFData *)v11 base64EncodedStringWithOptions:0];
   [v6 addObject:v12];
@@ -668,13 +668,13 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
       if (os_log_type_enabled(DCInternalLogSystem_log_0, OS_LOG_TYPE_ERROR))
       {
         v19 = v18;
-        v20 = [v15 localizedDescription];
+        localizedDescription = [v15 localizedDescription];
         *buf = 136315650;
         *&buf[4] = "DCBAASigner.m";
         v32 = 1024;
         v33 = 223;
         v34 = 2112;
-        v35 = v20;
+        v35 = localizedDescription;
         _os_log_impl(&dword_2488FB000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to serialize attestation dictionary. { error=%@ }", buf, 0x1Cu);
       }
 
@@ -688,7 +688,7 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
 
       v26 = v25;
       v16 = 0;
-      *a4 = v25;
+      *error = v25;
     }
 
     else
@@ -708,10 +708,10 @@ void __44__DCBAASigner_signaturesForData_completion___block_invoke_6(uint64_t a1
         _os_log_impl(&dword_2488FB000, v27, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to serialize attestation dictionary.", buf, 0x12u);
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10001 userInfo:0];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else

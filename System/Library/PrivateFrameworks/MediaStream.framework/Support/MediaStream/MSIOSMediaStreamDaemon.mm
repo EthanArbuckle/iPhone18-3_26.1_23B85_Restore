@@ -1,112 +1,112 @@
 @interface MSIOSMediaStreamDaemon
 - (BOOL)isWaitingForAuth;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)mayDownloadPersonID:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)mayDownloadPersonID:(id)d;
 - (MSIOSMediaStreamDaemon)init;
 - (NSMutableDictionary)personIDToPowerBudgetMap;
 - (NSMutableDictionary)personIDToPowerBudgetPersistedValuesMap;
-- (id)MSPowerBudgetDidRequestPersistedValues:(id)a3;
-- (id)_powerBudgetForPersonID:(id)a3;
-- (void)MSPowerBudget:(id)a3 didRequestStorageOfPersistedValues:(id)a4;
-- (void)MSPowerBudgetGotSignificantEvent:(id)a3;
-- (void)_readPowerBudgetParametersForPersonID:(id)a3;
-- (void)_serverSideConfigurationDidChange:(id)a3;
-- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)a3 outListenToDevelopment:(BOOL *)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (id)MSPowerBudgetDidRequestPersistedValues:(id)values;
+- (id)_powerBudgetForPersonID:(id)d;
+- (void)MSPowerBudget:(id)budget didRequestStorageOfPersistedValues:(id)values;
+- (void)MSPowerBudgetGotSignificantEvent:(id)event;
+- (void)_readPowerBudgetParametersForPersonID:(id)d;
+- (void)_serverSideConfigurationDidChange:(id)change;
+- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)production outListenToDevelopment:(BOOL *)development;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)deleteAssetCollections:(id)a3 personID:(id)a4;
-- (void)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 reply:(id)a5;
-- (void)didBeginForegroundFocusForPersonID:(id)a3;
-- (void)didEndForegroundFocusForPersonID:(id)a3;
-- (void)didExceedPublishQuotaForPersonID:(id)a3 retryDate:(id)a4;
+- (void)deleteAssetCollections:(id)collections personID:(id)d;
+- (void)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d reply:(id)reply;
+- (void)didBeginForegroundFocusForPersonID:(id)d;
+- (void)didEndForegroundFocusForPersonID:(id)d;
+- (void)didExceedPublishQuotaForPersonID:(id)d retryDate:(id)date;
 - (void)didIdle;
-- (void)didReceiveAuthenticationFailureForPersonID:(id)a3;
-- (void)didReceiveAuthenticationSuccessForPersonID:(id)a3;
-- (void)didReceiveGlobalResetSyncForPersonID:(id)a3;
-- (void)didReceivePushNotificationForPersonID:(id)a3;
+- (void)didReceiveAuthenticationFailureForPersonID:(id)d;
+- (void)didReceiveAuthenticationSuccessForPersonID:(id)d;
+- (void)didReceiveGlobalResetSyncForPersonID:(id)d;
+- (void)didReceivePushNotificationForPersonID:(id)d;
 - (void)didUnidle;
-- (void)enqueueAssetCollections:(id)a3 personID:(id)a4 reply:(id)a5;
-- (void)forgetEverythingForPersonID:(id)a3;
-- (void)pauseForUUID:(id)a3;
-- (void)pauseManagerDidPause:(id)a3;
-- (void)pauseManagerDidUnpause:(id)a3;
-- (void)resetServerStateForPersonID:(id)a3;
-- (void)serverSideConfigurationForPersonID:(id)a3 reply:(id)a4;
+- (void)enqueueAssetCollections:(id)collections personID:(id)d reply:(id)reply;
+- (void)forgetEverythingForPersonID:(id)d;
+- (void)pauseForUUID:(id)d;
+- (void)pauseManagerDidPause:(id)pause;
+- (void)pauseManagerDidUnpause:(id)unpause;
+- (void)resetServerStateForPersonID:(id)d;
+- (void)serverSideConfigurationForPersonID:(id)d reply:(id)reply;
 - (void)start;
 - (void)stop;
-- (void)unpauseForUUID:(id)a3;
+- (void)unpauseForUUID:(id)d;
 @end
 
 @implementation MSIOSMediaStreamDaemon
 
-- (BOOL)mayDownloadPersonID:(id)a3
+- (BOOL)mayDownloadPersonID:(id)d
 {
-  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:a3];
-  v4 = [v3 isFileTransferAllowed];
+  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:d];
+  isFileTransferAllowed = [v3 isFileTransferAllowed];
 
-  return v4;
+  return isFileTransferAllowed;
 }
 
-- (void)didReceivePushNotificationForPersonID:(id)a3
+- (void)didReceivePushNotificationForPersonID:(id)d
 {
-  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:a3];
+  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:d];
   [v3 didReceivePushNotification];
 }
 
-- (void)didEndForegroundFocusForPersonID:(id)a3
+- (void)didEndForegroundFocusForPersonID:(id)d
 {
-  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:a3];
+  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:d];
   [v3 didEndForegroundFocus];
 }
 
-- (void)didBeginForegroundFocusForPersonID:(id)a3
+- (void)didBeginForegroundFocusForPersonID:(id)d
 {
-  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:a3];
+  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:d];
   [v3 didBeginForegroundFocus];
 }
 
-- (void)didReceiveGlobalResetSyncForPersonID:(id)a3
+- (void)didReceiveGlobalResetSyncForPersonID:(id)d
 {
-  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:a3];
+  v3 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:d];
   [v3 didReceiveGlobalResetSync];
 }
 
-- (void)_serverSideConfigurationDidChange:(id)a3
+- (void)_serverSideConfigurationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[NSThread currentThread];
   v6 = +[NSThread mainThread];
 
   if (v5 == v6)
   {
-    v7 = [v4 userInfo];
+    userInfo = [changeCopy userInfo];
 
-    v4 = [v7 objectForKey:kMSSSCCNPersonIDKey];
+    changeCopy = [userInfo objectForKey:kMSSSCCNPersonIDKey];
 
-    if (v4)
+    if (changeCopy)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *v9 = 138412546;
         *&v9[4] = objc_opt_class();
         *&v9[12] = 2112;
-        *&v9[14] = v4;
+        *&v9[14] = changeCopy;
         v8 = *&v9[4];
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ Server-side configuration has changed for personID %@. Reading new values.", v9, 0x16u);
       }
 
-      [(MSIOSMediaStreamDaemon *)self _readPowerBudgetParametersForPersonID:v4, *v9, *&v9[16]];
+      [(MSIOSMediaStreamDaemon *)self _readPowerBudgetParametersForPersonID:changeCopy, *v9, *&v9[16]];
     }
   }
 
   else
   {
-    [(MSIOSMediaStreamDaemon *)self performSelectorOnMainThread:"_serverSideConfigurationDidChange:" withObject:v4 waitUntilDone:0];
+    [(MSIOSMediaStreamDaemon *)self performSelectorOnMainThread:"_serverSideConfigurationDidChange:" withObject:changeCopy waitUntilDone:0];
   }
 }
 
-- (void)MSPowerBudgetGotSignificantEvent:(id)a3
+- (void)MSPowerBudgetGotSignificantEvent:(id)event
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -116,36 +116,36 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)MSPowerBudget:(id)a3 didRequestStorageOfPersistedValues:(id)a4
+- (void)MSPowerBudget:(id)budget didRequestStorageOfPersistedValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
-  v9 = [v6 personID];
-  v10 = [v8 objectForKey:v9];
+  budgetCopy = budget;
+  valuesCopy = values;
+  personIDToPowerBudgetPersistedValuesMap = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
+  personID = [budgetCopy personID];
+  v10 = [personIDToPowerBudgetPersistedValuesMap objectForKey:personID];
 
-  if (v10 && ([v10 isEqualToDictionary:v7] & 1) != 0)
+  if (v10 && ([v10 isEqualToDictionary:valuesCopy] & 1) != 0)
   {
     v11 = v10;
   }
 
   else
   {
-    v11 = v7;
+    v11 = valuesCopy;
 
-    v12 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
-    v13 = [v6 personID];
+    personIDToPowerBudgetPersistedValuesMap2 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
+    personID2 = [budgetCopy personID];
     if (v11)
     {
-      [v12 setObject:v11 forKey:v13];
+      [personIDToPowerBudgetPersistedValuesMap2 setObject:v11 forKey:personID2];
 
       v24 = 0;
       v14 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v24];
       v15 = v24;
       if (v14)
       {
-        v16 = [v6 personID];
-        v17 = sub_10000368C(v16);
+        personID3 = [budgetCopy personID];
+        v17 = sub_10000368C(personID3);
         v23 = v15;
         v18 = [v14 writeToFile:v17 options:1 error:&v23];
         v19 = v23;
@@ -170,11 +170,11 @@
 
     else
     {
-      [v12 removeObjectForKey:v13];
+      [personIDToPowerBudgetPersistedValuesMap2 removeObjectForKey:personID2];
 
       v20 = +[NSFileManager defaultManager];
-      v21 = [v6 personID];
-      v22 = sub_10000368C(v21);
+      personID4 = [budgetCopy personID];
+      v22 = sub_10000368C(personID4);
       [v20 removeItemAtPath:v22 error:0];
 
       v11 = 0;
@@ -182,26 +182,26 @@
   }
 }
 
-- (id)MSPowerBudgetDidRequestPersistedValues:(id)a3
+- (id)MSPowerBudgetDidRequestPersistedValues:(id)values
 {
-  v4 = a3;
-  v5 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
-  v6 = [v4 personID];
-  v7 = [v5 objectForKey:v6];
+  valuesCopy = values;
+  personIDToPowerBudgetPersistedValuesMap = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
+  personID = [valuesCopy personID];
+  v7 = [personIDToPowerBudgetPersistedValuesMap objectForKey:personID];
 
   if (!v7)
   {
-    v8 = [v4 personID];
-    v9 = sub_10000368C(v8);
+    personID2 = [valuesCopy personID];
+    v9 = sub_10000368C(personID2);
     v14 = 0;
     v7 = [NSKeyedUnarchiver MSSafeUnarchiveObjectWithFile:v9 outError:&v14];
     v10 = v14;
 
     if (v7)
     {
-      v11 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
-      v12 = [v4 personID];
-      [v11 setObject:v7 forKey:v12];
+      personIDToPowerBudgetPersistedValuesMap2 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
+      personID3 = [valuesCopy personID];
+      [personIDToPowerBudgetPersistedValuesMap2 setObject:v7 forKey:personID3];
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -230,36 +230,36 @@
   return personIDToPowerBudgetPersistedValuesMap;
 }
 
-- (id)_powerBudgetForPersonID:(id)a3
+- (id)_powerBudgetForPersonID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
-    v6 = [v5 objectForKey:v4];
+    personIDToPowerBudgetMap = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
+    v6 = [personIDToPowerBudgetMap objectForKey:dCopy];
 
     if (!v6)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
         v10 = 138543618;
-        v11 = self;
+        selfCopy = self;
         v12 = 2112;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Creating power budget object for person ID %@", &v10, 0x16u);
       }
 
       v6 = objc_alloc_init(MSPowerBudget);
-      v7 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
-      [v7 setObject:v6 forKey:v4];
+      personIDToPowerBudgetMap2 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
+      [personIDToPowerBudgetMap2 setObject:v6 forKey:dCopy];
 
-      [v6 setPersonID:v4];
+      [v6 setPersonID:dCopy];
       [v6 setDelegate:self];
-      [(MSIOSMediaStreamDaemon *)self _readPowerBudgetParametersForPersonID:v4];
+      [(MSIOSMediaStreamDaemon *)self _readPowerBudgetParametersForPersonID:dCopy];
       v8 = +[MSBatteryPowerMonitor defaultMonitor];
-      LODWORD(v7) = [v8 isExternalPowerConnected];
+      LODWORD(personIDToPowerBudgetMap2) = [v8 isExternalPowerConnected];
 
-      if (v7)
+      if (personIDToPowerBudgetMap2)
       {
         [v6 didBeginExternalPower];
       }
@@ -274,17 +274,17 @@
   return v6;
 }
 
-- (void)_readPowerBudgetParametersForPersonID:(id)a3
+- (void)_readPowerBudgetParametersForPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = [(MSIOSMediaStreamDaemon *)self _powerBudgetForPersonID:?];
   if (v4)
   {
-    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterPush forPersonID:v5 defaultValue:60.0];
+    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterPush forPersonID:dCopy defaultValue:60.0];
     [v4 setMaxActiveTimeAfterPush:?];
-    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterLossOfForeground forPersonID:v5 defaultValue:600.0];
+    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterLossOfForeground forPersonID:dCopy defaultValue:600.0];
     [v4 setMaxActiveTimeAfterLossOfForeground:?];
-    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterGlobalResetSync forPersonID:v5 defaultValue:1800.0];
+    [MSServerSideConfigManager doubleValueForParameter:kMSSSCKMaxActiveTimeAfterGlobalResetSync forPersonID:dCopy defaultValue:1800.0];
     [v4 setMaxActiveTimeAfterGlobalResetSync:?];
   }
 }
@@ -304,11 +304,11 @@
   return personIDToPowerBudgetMap;
 }
 
-- (void)didExceedPublishQuotaForPersonID:(id)a3 retryDate:(id)a4
+- (void)didExceedPublishQuotaForPersonID:(id)d retryDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 timeIntervalSinceNow];
+  dCopy = d;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   LODWORD(v4) = vcvtpd_s64_f64(v8 / 86400.0);
   if (v4 > 1)
   {
@@ -323,20 +323,20 @@
     v15 = [NSDictionary dictionaryWithObjectsAndKeys:v11, kCFUserNotificationAlertHeaderKey, v17, kCFUserNotificationAlertMessageKey, v12, kCFUserNotificationDefaultButtonTitleKey, v13, kCFUserNotificationAlertTopMostKey, v14, SBUserNotificationDontDismissOnUnlock, 0];
 
     v16 = +[MSAlertManager sharedAlertManager];
-    [v16 displayAlertForPersonID:v6 notificationDict:v15 completionBlock:0];
+    [v16 displayAlertForPersonID:dCopy notificationDict:v15 completionBlock:0];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = dCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = dateCopy;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Received quota excess failure for person ID %@. Next retry date: %{public}@", buf, 0x16u);
   }
 }
 
-- (void)pauseManagerDidUnpause:(id)a3
+- (void)pauseManagerDidUnpause:(id)unpause
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -347,7 +347,7 @@
   [(MSIOSMediaStreamDaemon *)self retryOutstandingActivities];
 }
 
-- (void)pauseManagerDidPause:(id)a3
+- (void)pauseManagerDidPause:(id)pause
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -361,38 +361,38 @@
 - (BOOL)isWaitingForAuth
 {
   v2 = +[MSAuthenticationManager sharedManager];
-  v3 = [v2 isWaitingForAuth];
+  isWaitingForAuth = [v2 isWaitingForAuth];
 
-  return v3;
+  return isWaitingForAuth;
 }
 
-- (void)didReceiveAuthenticationSuccessForPersonID:(id)a3
+- (void)didReceiveAuthenticationSuccessForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSAuthenticationManager sharedManager];
-  [v4 didEncounterAuthenticationSuccessForPersonID:v3];
+  [v4 didEncounterAuthenticationSuccessForPersonID:dCopy];
 }
 
-- (void)didReceiveAuthenticationFailureForPersonID:(id)a3
+- (void)didReceiveAuthenticationFailureForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSAuthenticationManager sharedManager];
-  [v4 didEncounterAuthenticationFailureForPersonID:v3];
+  [v4 didEncounterAuthenticationFailureForPersonID:dCopy];
 }
 
-- (void)forgetEverythingForPersonID:(id)a3
+- (void)forgetEverythingForPersonID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
-  if (v7)
+  if (dCopy)
   {
-    [(MSIOSMediaStreamDaemon *)self forgetPersonID:v7];
+    [(MSIOSMediaStreamDaemon *)self forgetPersonID:dCopy];
     [(MSIOSMediaStreamDaemon *)self _updatePushNotificationTopicsOutListenToProduction:0 outListenToDevelopment:0];
-    v4 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
-    [v4 removeObjectForKey:v7];
+    personIDToPowerBudgetMap = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetMap];
+    [personIDToPowerBudgetMap removeObjectForKey:dCopy];
 
-    v5 = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
-    [v5 removeObjectForKey:v7];
+    personIDToPowerBudgetPersistedValuesMap = [(MSIOSMediaStreamDaemon *)self personIDToPowerBudgetPersistedValuesMap];
+    [personIDToPowerBudgetPersistedValuesMap removeObjectForKey:dCopy];
   }
 
   v6 = +[MSAuthenticationManager sharedManager];
@@ -401,86 +401,86 @@
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)unpauseForUUID:(id)a3
+- (void)unpauseForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   v5 = +[MSPauseManager sharedManager];
-  [v5 unpauseUUID:v4];
+  [v5 unpauseUUID:dCopy];
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)pauseForUUID:(id)a3
+- (void)pauseForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   v5 = +[MSPauseManager sharedManager];
-  [v5 pingPauseUUID:v4];
+  [v5 pingPauseUUID:dCopy];
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)resetServerStateForPersonID:(id)a3
+- (void)resetServerStateForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   v5 = MSPlatform();
-  v6 = [v5 baseURLForPersonID:v4];
-  v7 = [MSResetServer resetServerObjectWithPersonID:v4 baseURL:v6];
+  v6 = [v5 baseURLForPersonID:dCopy];
+  v7 = [MSResetServer resetServerObjectWithPersonID:dCopy baseURL:v6];
 
   [v7 setDaemon:self];
   [v7 resetServer];
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)serverSideConfigurationForPersonID:(id)a3 reply:(id)a4
+- (void)serverSideConfigurationForPersonID:(id)d reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
-  v9 = [(MSIOSMediaStreamDaemon *)self serverSideConfigurationForPersonID:v7];
+  v9 = [(MSIOSMediaStreamDaemon *)self serverSideConfigurationForPersonID:dCopy];
 
   v8 = [NSDictionary dictionaryWithObjectsAndKeys:v9, kMSCXPCReplyRetval, 0];
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
-  v6[2](v6, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
-  v6 = [v5 topic];
-  v7 = [v5 userInfo];
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    selfCopy = topic;
     v11 = 2112;
-    v12 = v7;
+    v12 = userInfo;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received push notification for invitations topic: %@ userInfo: %@", &v9, 0x16u);
   }
 
-  if ([(MSIOSMediaStreamDaemon *)v6 isEqualToString:@"com.apple.mediastream.subscription.push"])
+  if ([(MSIOSMediaStreamDaemon *)topic isEqualToString:@"com.apple.mediastream.subscription.push"])
   {
-    v8 = [v7 objectForKey:@"r"];
+    v8 = [userInfo objectForKey:@"r"];
     [(MSIOSMediaStreamDaemon *)self pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:v8];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%{public}@: Received unknown push notification, ignoring", &v9, 0xCu);
   }
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -489,34 +489,34 @@
   }
 
   v6 = +[MSMSPlatform thePlatform];
-  [v6 setPushToken:v5];
+  [v6 setPushToken:tokenCopy];
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)a3 outListenToDevelopment:(BOOL *)a4
+- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)production outListenToDevelopment:(BOOL *)development
 {
   v7 = MSPlatform();
-  v8 = [v7 subscriberPluginClass];
+  subscriberPluginClass = [v7 subscriberPluginClass];
 
-  v9 = [v8 personIDForPollingTriggeredByPushNotification];
-  if ([v9 length])
+  personIDForPollingTriggeredByPushNotification = [subscriberPluginClass personIDForPollingTriggeredByPushNotification];
+  if ([personIDForPollingTriggeredByPushNotification length])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v9;
+      v14 = personIDForPollingTriggeredByPushNotification;
       _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "personID waiting for push: %@", &v13, 0xCu);
     }
 
     v10 = MSPlatform();
-    v11 = [v10 personIDUsesProductionPushEnvironment:v9];
+    v11 = [v10 personIDUsesProductionPushEnvironment:personIDForPollingTriggeredByPushNotification];
     v12 = v11 ^ 1;
 
-    if (a4)
+    if (development)
     {
 LABEL_5:
-      *a4 = v12;
+      *development = v12;
     }
   }
 
@@ -538,36 +538,36 @@ LABEL_5:
     [self->_devAPSConnection _setEnabledTopics:0];
     v12 = 0;
     v11 = 0;
-    if (a4)
+    if (development)
     {
       goto LABEL_5;
     }
   }
 
-  if (a3)
+  if (production)
   {
-    *a3 = v11;
+    *production = v11;
   }
 }
 
-- (void)deleteAssetCollections:(id)a3 personID:(id)a4
+- (void)deleteAssetCollections:(id)collections personID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  collectionsCopy = collections;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
-  [(MSIOSMediaStreamDaemon *)self deleteAssetCollections:v7 forPersonID:v6];
+  [(MSIOSMediaStreamDaemon *)self deleteAssetCollections:collectionsCopy forPersonID:dCopy];
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
 }
 
-- (void)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 reply:(id)a5
+- (void)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  dCopy = d;
+  dsCopy = ds;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   v15 = 0;
-  v11 = [(MSIOSMediaStreamDaemon *)self dequeueAssetCollectionWithGUIDs:v10 personID:v9 outError:&v15];
+  v11 = [(MSIOSMediaStreamDaemon *)self dequeueAssetCollectionWithGUIDs:dsCopy personID:dCopy outError:&v15];
 
   v12 = v15;
   v13 = [NSNumber numberWithBool:v11];
@@ -579,17 +579,17 @@ LABEL_5:
   }
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
-  v8[2](v8, v14);
+  replyCopy[2](replyCopy, v14);
 }
 
-- (void)enqueueAssetCollections:(id)a3 personID:(id)a4 reply:(id)a5
+- (void)enqueueAssetCollections:(id)collections personID:(id)d reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  dCopy = d;
+  collectionsCopy = collections;
   [(MSIOSMediaStreamDaemon *)self retainBusy];
   v15 = 0;
-  v11 = [(MSIOSMediaStreamDaemon *)self enqueueAssetCollection:v10 personID:v9 outError:&v15];
+  v11 = [(MSIOSMediaStreamDaemon *)self enqueueAssetCollection:collectionsCopy personID:dCopy outError:&v15];
 
   v12 = v15;
   v13 = [NSNumber numberWithBool:v11];
@@ -601,7 +601,7 @@ LABEL_5:
   }
 
   [(MSIOSMediaStreamDaemon *)self releaseBusy];
-  v8[2](v8, v14);
+  replyCopy[2](replyCopy, v14);
 }
 
 - (void)stop
@@ -647,16 +647,16 @@ LABEL_5:
       v11 = [NSArray arrayWithObjects:&v35 count:1];
       [(APSConnection *)v10 _setEnabledTopics:v11];
 
-      v12 = [(APSConnection *)v10 publicToken];
+      publicToken = [(APSConnection *)v10 publicToken];
       v13 = +[MSMSPlatform thePlatform];
-      [v13 setPushToken:v12];
+      [v13 setPushToken:publicToken];
 
-      if (v12)
+      if (publicToken)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          *v34 = v12;
+          *v34 = publicToken;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Retrieved push tokens %{public}@.", buf, 0xCu);
         }
       }
@@ -676,8 +676,8 @@ LABEL_5:
         while (1)
         {
           v15 = +[MSMSPlatform thePlatform];
-          v16 = [v15 pushToken];
-          if (v16)
+          pushToken = [v15 pushToken];
+          if (pushToken)
           {
             break;
           }
@@ -702,9 +702,9 @@ LABEL_5:
 
 LABEL_20:
         v22 = +[MSMSPlatform thePlatform];
-        v23 = [v22 pushToken];
+        pushToken2 = [v22 pushToken];
 
-        if (v23)
+        if (pushToken2)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
           {
@@ -781,14 +781,14 @@ LABEL_20:
   [(MSIOSMediaStreamDaemon *)&v4 didIdle];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.mediastream.mstreamd-access"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.mediastream.mstreamd-access"];
   v7 = v6;
   if (v6 && [v6 BOOLValue])
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MSDaemonProtocols];
     v19 = objc_opt_class();
     v9 = objc_opt_class();
@@ -802,9 +802,9 @@ LABEL_20:
     [v8 setClasses:v16 forSelector:"enqueueAssetCollections:personID:reply:" argumentIndex:0 ofReply:0];
     [v8 setClasses:v16 forSelector:"dequeueAssetCollectionWithGUIDs:personID:reply:" argumentIndex:0 ofReply:0];
     [v8 setClasses:v16 forSelector:"deleteAssetCollections:personID:" argumentIndex:0 ofReply:0];
-    [v5 setExportedInterface:v8];
-    [v5 _setQueue:&_dispatch_main_q];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy _setQueue:&_dispatch_main_q];
+    [connectionCopy resume];
 
     v17 = 1;
   }

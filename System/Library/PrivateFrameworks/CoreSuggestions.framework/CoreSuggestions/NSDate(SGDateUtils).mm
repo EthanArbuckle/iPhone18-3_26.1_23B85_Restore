@@ -11,7 +11,7 @@
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v2 setLocale:v3];
 
-  v4 = [v2 stringFromDate:a1];
+  v4 = [v2 stringFromDate:self];
 
   return v4;
 }

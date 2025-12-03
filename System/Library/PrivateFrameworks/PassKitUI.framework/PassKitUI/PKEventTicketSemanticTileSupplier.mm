@@ -1,18 +1,18 @@
 @interface PKEventTicketSemanticTileSupplier
-+ (id)createSupplierForPass:(id)a3;
++ (id)createSupplierForPass:(id)pass;
 - (CLLocation)location;
 - (MKLocalSearchRequest)mapsSearchRequest;
 - (MKMapItemRequest)mapsItemRequest;
-- (PKEventTicketSemanticTileSupplier)initWithPass:(id)a3;
-- (id)weatherFetchDateForDate:(id)a3;
+- (PKEventTicketSemanticTileSupplier)initWithPass:(id)pass;
+- (id)weatherFetchDateForDate:(id)date;
 @end
 
 @implementation PKEventTicketSemanticTileSupplier
 
-+ (id)createSupplierForPass:(id)a3
++ (id)createSupplierForPass:(id)pass
 {
-  v3 = a3;
-  result = [v3 style];
+  passCopy = pass;
+  result = [passCopy style];
   if (result < 9 || result == 10)
   {
     v6 = 0;
@@ -26,22 +26,22 @@
       return result;
     }
 
-    v6 = [[PKEventTicketSemanticTileSupplier alloc] initWithPass:v3];
+    v6 = [[PKEventTicketSemanticTileSupplier alloc] initWithPass:passCopy];
   }
 
   return v6;
 }
 
-- (PKEventTicketSemanticTileSupplier)initWithPass:(id)a3
+- (PKEventTicketSemanticTileSupplier)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKEventTicketSemanticTileSupplier;
   v6 = [(PKEventTicketSemanticTileSupplier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
@@ -67,16 +67,16 @@
 
 - (MKLocalSearchRequest)mapsSearchRequest
 {
-  v3 = [(PKEventTicketSemanticTileSupplier *)self venueName];
-  if (v3)
+  venueName = [(PKEventTicketSemanticTileSupplier *)self venueName];
+  if (venueName)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696F260]);
-    [v4 setNaturalLanguageQuery:v3];
-    v5 = [(PKEventTicketSemanticTileSupplier *)self location];
-    v6 = v5;
-    if (v5)
+    [v4 setNaturalLanguageQuery:venueName];
+    location = [(PKEventTicketSemanticTileSupplier *)self location];
+    v6 = location;
+    if (location)
     {
-      MEMORY[0x1BFB41730]([v5 coordinate]);
+      MEMORY[0x1BFB41730]([location coordinate]);
       [v4 setRegion:?];
     }
   }
@@ -91,18 +91,18 @@
 
 - (CLLocation)location
 {
-  v2 = [(PKPass *)self->_pass eventLocation];
-  v3 = [v2 CLLocation];
+  eventLocation = [(PKPass *)self->_pass eventLocation];
+  cLLocation = [eventLocation CLLocation];
 
-  return v3;
+  return cLLocation;
 }
 
-- (id)weatherFetchDateForDate:(id)a3
+- (id)weatherFetchDateForDate:(id)date
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPass *)self->_pass relevantDates];
-  if (![v5 count])
+  dateCopy = date;
+  relevantDates = [(PKPass *)self->_pass relevantDates];
+  if (![relevantDates count])
   {
     v18 = 0;
     goto LABEL_25;
@@ -112,7 +112,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = relevantDates;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v7)
   {
@@ -121,7 +121,7 @@
   }
 
   v8 = v7;
-  v23 = v5;
+  v23 = relevantDates;
   v9 = 0;
   v10 = *v25;
   do
@@ -134,27 +134,27 @@
       }
 
       v12 = *(*(&v24 + 1) + 8 * i);
-      v13 = [v12 interval];
-      v14 = v13;
-      if (v13)
+      interval = [v12 interval];
+      v14 = interval;
+      if (interval)
       {
-        if (![v13 containsDate:v4])
+        if (![interval containsDate:dateCopy])
         {
           goto LABEL_14;
         }
 
-        v15 = v9;
-        v9 = v4;
+        earliestDate = v9;
+        v9 = dateCopy;
       }
 
       else
       {
-        v15 = [v12 earliestDate];
-        if ([v4 compare:v15] == -1 || (objc_msgSend(MEMORY[0x1E695DEE8], "autoupdatingCurrentCalendar"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isDate:inSameDayAsDate:", v15, v4), v16, v17))
+        earliestDate = [v12 earliestDate];
+        if ([dateCopy compare:earliestDate] == -1 || (objc_msgSend(MEMORY[0x1E695DEE8], "autoupdatingCurrentCalendar"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isDate:inSameDayAsDate:", earliestDate, dateCopy), v16, v17))
         {
-          v15 = v15;
+          earliestDate = earliestDate;
 
-          v9 = v15;
+          v9 = earliestDate;
         }
       }
 
@@ -166,13 +166,13 @@ LABEL_14:
 
   while (v8);
 
-  v5 = v23;
+  relevantDates = v23;
   if (!v9)
   {
 LABEL_20:
     v19 = [MEMORY[0x1E69B8A68] findDateFromDates:v6 option:0];
     v20 = [MEMORY[0x1E69B8A68] findDateFromDates:v6 option:3];
-    if ([v4 compare:v19] == -1)
+    if ([dateCopy compare:v19] == -1)
     {
       v21 = v19;
     }

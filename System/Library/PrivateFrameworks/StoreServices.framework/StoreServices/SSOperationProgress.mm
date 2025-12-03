@@ -2,10 +2,10 @@
 - (BOOL)canPause;
 - (NSString)description;
 - (SSOperationProgress)init;
-- (SSOperationProgress)initWithXPCEncoding:(id)a3;
+- (SSOperationProgress)initWithXPCEncoding:(id)encoding;
 - (double)changeRate;
 - (double)estimatedTimeRemaining;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (int64_t)currentValue;
 - (int64_t)maxValue;
@@ -16,15 +16,15 @@
 - (void)_updateStatisticsFromSnapshots;
 - (void)dealloc;
 - (void)resetSnapshots;
-- (void)setCanPause:(BOOL)a3;
-- (void)setChangeRate:(double)a3;
-- (void)setCurrentValue:(int64_t)a3;
-- (void)setEstimatedTimeRemaining:(double)a3;
-- (void)setMaxValue:(int64_t)a3;
-- (void)setNormalizedCurrentValue:(int64_t)a3;
-- (void)setNormalizedMaxValue:(int64_t)a3;
-- (void)setOperationType:(int64_t)a3;
-- (void)setUnits:(int64_t)a3;
+- (void)setCanPause:(BOOL)pause;
+- (void)setChangeRate:(double)rate;
+- (void)setCurrentValue:(int64_t)value;
+- (void)setEstimatedTimeRemaining:(double)remaining;
+- (void)setMaxValue:(int64_t)value;
+- (void)setNormalizedCurrentValue:(int64_t)value;
+- (void)setNormalizedMaxValue:(int64_t)value;
+- (void)setOperationType:(int64_t)type;
+- (void)setUnits:(int64_t)units;
 - (void)snapshot;
 @end
 
@@ -56,9 +56,9 @@
   [(SSOperationProgress *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -296,7 +296,7 @@ uint64_t __37__SSOperationProgress_resetSnapshots__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)setCanPause:(BOOL)a3
+- (void)setCanPause:(BOOL)pause
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -304,11 +304,11 @@ uint64_t __37__SSOperationProgress_resetSnapshots__block_invoke(uint64_t a1)
   v4[2] = __35__SSOperationProgress_setCanPause___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  pauseCopy = pause;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setChangeRate:(double)a3
+- (void)setChangeRate:(double)rate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -316,7 +316,7 @@ uint64_t __37__SSOperationProgress_resetSnapshots__block_invoke(uint64_t a1)
   v4[2] = __37__SSOperationProgress_setChangeRate___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = rate;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -327,7 +327,7 @@ double __37__SSOperationProgress_setChangeRate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCurrentValue:(int64_t)a3
+- (void)setCurrentValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -335,11 +335,11 @@ double __37__SSOperationProgress_setChangeRate___block_invoke(uint64_t a1)
   v4[2] = __39__SSOperationProgress_setCurrentValue___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setEstimatedTimeRemaining:(double)a3
+- (void)setEstimatedTimeRemaining:(double)remaining
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -347,7 +347,7 @@ double __37__SSOperationProgress_setChangeRate___block_invoke(uint64_t a1)
   v4[2] = __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = remaining;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -358,7 +358,7 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   return result;
 }
 
-- (void)setMaxValue:(int64_t)a3
+- (void)setMaxValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -366,11 +366,11 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   v4[2] = __35__SSOperationProgress_setMaxValue___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setNormalizedCurrentValue:(int64_t)a3
+- (void)setNormalizedCurrentValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -378,11 +378,11 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   v4[2] = __49__SSOperationProgress_setNormalizedCurrentValue___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setNormalizedMaxValue:(int64_t)a3
+- (void)setNormalizedMaxValue:(int64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -390,11 +390,11 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   v4[2] = __45__SSOperationProgress_setNormalizedMaxValue___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setOperationType:(int64_t)a3
+- (void)setOperationType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -402,11 +402,11 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   v4[2] = __40__SSOperationProgress_setOperationType___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setUnits:(int64_t)a3
+- (void)setUnits:(int64_t)units
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -414,7 +414,7 @@ double __49__SSOperationProgress_setEstimatedTimeRemaining___block_invoke(uint64
   v4[2] = __32__SSOperationProgress_setUnits___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = units;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -520,24 +520,24 @@ uint64_t __34__SSOperationProgress_description__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (SSOperationProgress)initWithXPCEncoding:(id)a3
+- (SSOperationProgress)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSOperationProgress;
     v5 = [(SSOperationProgress *)&v7 init];
     if (v5)
     {
-      v5->_canPause = xpc_dictionary_get_BOOL(a3, "0");
-      v5->_changeRate = xpc_dictionary_get_double(a3, "1");
-      v5->_currentValue = xpc_dictionary_get_int64(a3, "2");
-      v5->_estimatedTimeRemaining = xpc_dictionary_get_double(a3, "3");
-      v5->_maxValue = xpc_dictionary_get_int64(a3, "4");
-      v5->_normalizedCurrentValue = xpc_dictionary_get_int64(a3, "5");
-      v5->_normalizedMaxValue = xpc_dictionary_get_int64(a3, "6");
-      v5->_operationType = xpc_dictionary_get_int64(a3, "7");
-      v5->_units = xpc_dictionary_get_int64(a3, "8");
+      v5->_canPause = xpc_dictionary_get_BOOL(encoding, "0");
+      v5->_changeRate = xpc_dictionary_get_double(encoding, "1");
+      v5->_currentValue = xpc_dictionary_get_int64(encoding, "2");
+      v5->_estimatedTimeRemaining = xpc_dictionary_get_double(encoding, "3");
+      v5->_maxValue = xpc_dictionary_get_int64(encoding, "4");
+      v5->_normalizedCurrentValue = xpc_dictionary_get_int64(encoding, "5");
+      v5->_normalizedMaxValue = xpc_dictionary_get_int64(encoding, "6");
+      v5->_operationType = xpc_dictionary_get_int64(encoding, "7");
+      v5->_units = xpc_dictionary_get_int64(encoding, "8");
     }
   }
 

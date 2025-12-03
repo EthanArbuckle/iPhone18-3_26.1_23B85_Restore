@@ -1,40 +1,40 @@
 @interface ATXCandidateRelevanceModelDatasetGeneratorConfigAction
-+ (id)activityPublisherFromStartTime:(double)a3;
-+ (id)candidatePublisherFromStartTime:(double)a3;
-+ (id)intentPublisherFromStartTime:(double)a3;
++ (id)activityPublisherFromStartTime:(double)time;
++ (id)candidatePublisherFromStartTime:(double)time;
++ (id)intentPublisherFromStartTime:(double)time;
 @end
 
 @implementation ATXCandidateRelevanceModelDatasetGeneratorConfigAction
 
-+ (id)activityPublisherFromStartTime:(double)a3
++ (id)activityPublisherFromStartTime:(double)time
 {
   v4 = BiomeLibrary();
-  v5 = [v4 UniversalRecents];
-  v6 = [v5 UserActivity];
-  v7 = [v6 Metadata];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v9 = [v7 atx_publisherFromStartTime:v8];
+  universalRecents = [v4 UniversalRecents];
+  userActivity = [universalRecents UserActivity];
+  metadata = [userActivity Metadata];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  v9 = [metadata atx_publisherFromStartTime:v8];
 
   return v9;
 }
 
-+ (id)intentPublisherFromStartTime:(double)a3
++ (id)intentPublisherFromStartTime:(double)time
 {
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 Intent];
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v8 = [v6 atx_publisherFromStartTime:v7];
+  intent = [v5 Intent];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  v8 = [intent atx_publisherFromStartTime:v7];
 
   return v8;
 }
 
-+ (id)candidatePublisherFromStartTime:(double)a3
++ (id)candidatePublisherFromStartTime:(double)time
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() activityPublisherFromStartTime:a3];
+  v4 = [objc_opt_class() activityPublisherFromStartTime:time];
   v5 = [v4 flatMapWithTransform:&__block_literal_global_76_1];
-  v6 = [objc_opt_class() intentPublisherFromStartTime:a3];
+  v6 = [objc_opt_class() intentPublisherFromStartTime:time];
   v7 = [v6 flatMapWithTransform:&__block_literal_global_83_1];
   v12[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];

@@ -1,8 +1,8 @@
 @interface CMLXPC
-+ (id)asyncProxyToConnection:(id)a3 dispatchQueue:(id)a4 errorHandler:(id)a5;
++ (id)asyncProxyToConnection:(id)connection dispatchQueue:(id)queue errorHandler:(id)handler;
 + (id)createConnection;
 + (id)interfaceDescription;
-+ (id)syncProxyToConnection:(id)a3 error:(id *)a4;
++ (id)syncProxyToConnection:(id)connection error:(id *)error;
 @end
 
 @implementation CMLXPC
@@ -12,8 +12,8 @@
   v2 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ciphermld" options:0];
   if (v2)
   {
-    v3 = [objc_opt_class() interfaceDescription];
-    [v2 setRemoteObjectInterface:v3];
+    interfaceDescription = [objc_opt_class() interfaceDescription];
+    [v2 setRemoteObjectInterface:interfaceDescription];
 
     [v2 resume];
     v4 = v2;
@@ -53,14 +53,14 @@
   return v2;
 }
 
-+ (id)syncProxyToConnection:(id)a3 error:(id *)a4
++ (id)syncProxyToConnection:(id)connection error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__CMLXPC_syncProxyToConnection_error___block_invoke;
   v6[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v6[4] = a4;
-  v4 = [a3 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v6[4] = error;
+  v4 = [connection synchronousRemoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -80,19 +80,19 @@ void __38__CMLXPC_syncProxyToConnection_error___block_invoke(uint64_t a1, void *
   *v6 = v5;
 }
 
-+ (id)asyncProxyToConnection:(id)a3 dispatchQueue:(id)a4 errorHandler:(id)a5
++ (id)asyncProxyToConnection:(id)connection dispatchQueue:(id)queue errorHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__CMLXPC_asyncProxyToConnection_dispatchQueue_errorHandler___block_invoke;
   v13[3] = &unk_278541BB8;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [a3 remoteObjectProxyWithErrorHandler:v13];
+  v14 = queueCopy;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
+  v11 = [connection remoteObjectProxyWithErrorHandler:v13];
 
   return v11;
 }

@@ -1,11 +1,11 @@
 @interface ETPaletteCircleView
 + (double)paletteCircleDiameter;
 + (double)selectionMarkerDiameter;
-- (ETPaletteCircleView)initWithFrame:(CGRect)a3;
+- (ETPaletteCircleView)initWithFrame:(CGRect)frame;
 - (void)_updateSelectionMarkerFrame;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation ETPaletteCircleView
@@ -30,11 +30,11 @@
   return 9.0;
 }
 
-- (ETPaletteCircleView)initWithFrame:(CGRect)a3
+- (ETPaletteCircleView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = ETPaletteCircleView;
-  v3 = [(ETPaletteCircleView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETPaletteCircleView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && SetupSpecValuesIfNeeded_onceToken_1 != -1)
   {
     [ETPaletteCircleView initWithFrame:];
@@ -48,9 +48,9 @@
   v4.receiver = self;
   v4.super_class = ETPaletteCircleView;
   [(ETPaletteCircleView *)&v4 layoutSubviews];
-  v3 = [(ETPaletteCircleView *)self layer];
+  layer = [(ETPaletteCircleView *)self layer];
   [(ETPaletteCircleView *)self bounds];
-  [v3 setCornerRadius:CGRectGetWidth(v5) * 0.5];
+  [layer setCornerRadius:CGRectGetWidth(v5) * 0.5];
 
   [(ETPaletteCircleView *)self _updateSelectionMarkerFrame];
 }
@@ -76,16 +76,16 @@
   v19.size.width = v8;
   v19.size.height = v10;
   [(UIView *)self->_selectionMarker setFrame:v14, CGRectGetMidY(v19) - v13, v11, v11];
-  v15 = [(UIView *)self->_selectionMarker layer];
-  [v15 setCornerRadius:v13];
+  layer = [(UIView *)self->_selectionMarker layer];
+  [layer setCornerRadius:v13];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
-    if (a3)
+    self->_selected = selected;
+    if (selected)
     {
       v4 = objc_alloc_init(MEMORY[0x277D75D18]);
       selectionMarker = self->_selectionMarker;
@@ -109,12 +109,12 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (v5)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -122,7 +122,7 @@
     v16[3] = &unk_278F79ED0;
     v16[4] = self;
     v9 = MEMORY[0x24C1E9BB0](v16);
-    if (v6)
+    if (selectedCopy)
     {
       [(ETPaletteCircleView *)self setSelected:1];
       v9[2](v9);
@@ -131,7 +131,7 @@
       v15[2] = __55__ETPaletteCircleView_setSelected_animated_completion___block_invoke_2;
       v15[3] = &unk_278F79ED0;
       v15[4] = self;
-      [MEMORY[0x277D75D18] animateWithDuration:v15 animations:v8 completion:0.3];
+      [MEMORY[0x277D75D18] animateWithDuration:v15 animations:completionCopy completion:0.3];
     }
 
     else
@@ -149,14 +149,14 @@
       v11[2] = __55__ETPaletteCircleView_setSelected_animated_completion___block_invoke_4;
       v11[3] = &unk_278F79FD8;
       v11[4] = self;
-      v12 = v8;
+      v12 = completionCopy;
       [v10 animateWithDuration:v13 animations:v11 completion:0.3];
     }
   }
 
   else
   {
-    [(ETPaletteCircleView *)self setSelected:v6];
+    [(ETPaletteCircleView *)self setSelected:selectedCopy];
   }
 }
 

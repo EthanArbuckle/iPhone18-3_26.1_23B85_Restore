@@ -1,28 +1,28 @@
 @interface CPShape
-- (BOOL)canCombineWith:(id)a3;
-- (BOOL)hasSamePathAs:(id)a3;
-- (BOOL)isStrokeFor:(id)a3;
+- (BOOL)canCombineWith:(id)with;
+- (BOOL)hasSamePathAs:(id)as;
+- (BOOL)isStrokeFor:(id)for;
 - (BOOL)isVisible;
 - (CGAffineTransform)paintTransform;
 - (CGRect)bounds;
 - (CGRect)innerBounds;
 - (CGRect)renderedBounds;
 - (CPShape)init;
-- (CPShape)initWithPDFShape:(CPPDFShape *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPShape)initWithPDFShape:(CPPDFShape *)shape;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)pathElementCount;
-- (void)addShape:(id)a3;
+- (void)addShape:(id)shape;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)makeLineFromVertex:(CGPoint)a3 toVertex:(CGPoint)a4;
+- (void)makeLineFromVertex:(CGPoint)vertex toVertex:(CGPoint)toVertex;
 - (void)recomputeBounds;
 - (void)recomputeRenderedBounds;
-- (void)setFillColor:(CGColor *)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setPaintTransform:(CGAffineTransform *)a3;
-- (void)setPath:(CGPath *)a3;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setFillColor:(CGColor *)color;
+- (void)setLineWidth:(double)width;
+- (void)setPaintTransform:(CGAffineTransform *)transform;
+- (void)setPath:(CGPath *)path;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation CPShape
@@ -40,12 +40,12 @@
   return path;
 }
 
-- (void)makeLineFromVertex:(CGPoint)a3 toVertex:(CGPoint)a4
+- (void)makeLineFromVertex:(CGPoint)vertex toVertex:(CGPoint)toVertex
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = toVertex.y;
+  x = toVertex.x;
+  v6 = vertex.y;
+  v7 = vertex.x;
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, v7, v6);
   CGPathAddLineToPoint(Mutable, 0, x, y);
@@ -58,41 +58,41 @@
   self->super.clipIndex = 0;
 }
 
-- (void)addShape:(id)a3
+- (void)addShape:(id)shape
 {
-  v5 = a3;
-  [a3 remove];
-  [(CPChunk *)self addChildrenOf:a3];
-  v6 = [a3 zOrder];
-  if (v6 > [(CPShape *)self zOrder])
+  shapeCopy = shape;
+  [shape remove];
+  [(CPChunk *)self addChildrenOf:shape];
+  zOrder = [shape zOrder];
+  if (zOrder > [(CPShape *)self zOrder])
   {
-    -[CPChunk setInsertionOrder:](self, "setInsertionOrder:", [a3 zOrder]);
+    -[CPChunk setInsertionOrder:](self, "setInsertionOrder:", [shape zOrder]);
   }
 
-  if ([a3 hasFill])
+  if ([shape hasFill])
   {
-    -[CPShape setWindingRule:](self, "setWindingRule:", [a3 windingRule]);
-    -[CPShape setFillColor:](self, "setFillColor:", [a3 fillColor]);
-    -[CPShape setFillObject:](self, "setFillObject:", [a3 fillObject]);
+    -[CPShape setWindingRule:](self, "setWindingRule:", [shape windingRule]);
+    -[CPShape setFillColor:](self, "setFillColor:", [shape fillColor]);
+    -[CPShape setFillObject:](self, "setFillObject:", [shape fillObject]);
   }
 
-  if ([a3 hasStroke])
+  if ([shape hasStroke])
   {
-    [a3 lineWidth];
+    [shape lineWidth];
     [(CPShape *)self setLineWidth:?];
-    [a3 miterLimit];
+    [shape miterLimit];
     [(CPShape *)self setMiterLimit:?];
-    -[CPShape setLineCap:](self, "setLineCap:", [a3 lineCap]);
-    -[CPShape setLineJoin:](self, "setLineJoin:", [a3 lineJoin]);
-    -[CPShape setStrokeColor:](self, "setStrokeColor:", [a3 strokeColor]);
-    -[CPShape setStrokeObject:](self, "setStrokeObject:", [a3 strokeObject]);
+    -[CPShape setLineCap:](self, "setLineCap:", [shape lineCap]);
+    -[CPShape setLineJoin:](self, "setLineJoin:", [shape lineJoin]);
+    -[CPShape setStrokeColor:](self, "setStrokeColor:", [shape strokeColor]);
+    -[CPShape setStrokeObject:](self, "setStrokeObject:", [shape strokeObject]);
   }
 
-  if ([a3 fillObject] || objc_msgSend(a3, "strokeObject"))
+  if ([shape fillObject] || objc_msgSend(shape, "strokeObject"))
   {
-    if (a3)
+    if (shape)
     {
-      [a3 paintTransform];
+      [shape paintTransform];
     }
 
     else
@@ -104,23 +104,23 @@
   }
 }
 
-- (BOOL)canCombineWith:(id)a3
+- (BOOL)canCombineWith:(id)with
 {
   clipIndex = self->super.clipIndex;
-  if (clipIndex != [a3 clipIndex])
+  if (clipIndex != [with clipIndex])
   {
     goto LABEL_15;
   }
 
-  if (![(CPShape *)self isStrokeFor:a3])
+  if (![(CPShape *)self isStrokeFor:with])
   {
-    v6 = [a3 isStrokeFor:self];
+    v6 = [with isStrokeFor:self];
     if (!v6)
     {
       return v6;
     }
 
-    if (!self->fillObject || ![a3 strokeObject])
+    if (!self->fillObject || ![with strokeObject])
     {
       goto LABEL_11;
     }
@@ -128,13 +128,13 @@
     goto LABEL_9;
   }
 
-  if (self->strokeObject && [a3 fillObject])
+  if (self->strokeObject && [with fillObject])
   {
 LABEL_9:
     p_paintTransform = &self->paintTransform;
-    if (a3)
+    if (with)
     {
-      [a3 paintTransform];
+      [with paintTransform];
       v8 = v10[0].f64[0];
     }
 
@@ -167,55 +167,55 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isStrokeFor:(id)a3
+- (BOOL)isStrokeFor:(id)for
 {
-  if (-[CPShape hasFill](self, "hasFill") || ([a3 hasStroke] & 1) != 0)
+  if (-[CPShape hasFill](self, "hasFill") || ([for hasStroke] & 1) != 0)
   {
     return 0;
   }
 
-  return [(CPShape *)self hasSamePathAs:a3];
+  return [(CPShape *)self hasSamePathAs:for];
 }
 
-- (BOOL)hasSamePathAs:(id)a3
+- (BOOL)hasSamePathAs:(id)as
 {
-  if (CGPathEqualToPath(self->path, *(a3 + 23)))
+  if (CGPathEqualToPath(self->path, *(as + 23)))
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isUprightRectangle) = 1;
   }
 
   else
   {
-    v5 = [(CPShape *)self isUprightRectangle];
-    if (v5)
+    isUprightRectangle = [(CPShape *)self isUprightRectangle];
+    if (isUprightRectangle)
     {
-      v5 = [a3 isUprightRectangle];
-      if (v5)
+      isUprightRectangle = [as isUprightRectangle];
+      if (isUprightRectangle)
       {
         [(CPShape *)self bounds];
         v7 = v6;
         v9 = v8;
         v11 = v10;
         v13 = v12;
-        [a3 bounds];
-        LOBYTE(v5) = 0;
+        [as bounds];
+        LOBYTE(isUprightRectangle) = 0;
         if (vabdd_f64(v7, v17) <= 0.001 && vabdd_f64(v9, v14) <= 0.001)
         {
           v18 = vabdd_f64(v11, v15) <= 0.001;
-          LOBYTE(v5) = vabdd_f64(v13, v16) <= 0.001 && v18;
+          LOBYTE(isUprightRectangle) = vabdd_f64(v13, v16) <= 0.001 && v18;
         }
       }
     }
   }
 
-  return v5;
+  return isUprightRectangle;
 }
 
-- (void)setPaintTransform:(CGAffineTransform *)a3
+- (void)setPaintTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->paintTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->paintTransform.a = *&transform->a;
   *&self->paintTransform.c = v4;
   *&self->paintTransform.tx = v3;
 }
@@ -229,50 +229,50 @@ LABEL_11:
   return self;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  if (self->lineWidth != a3)
+  if (self->lineWidth != width)
   {
-    self->lineWidth = a3;
+    self->lineWidth = width;
     self->super.renderedBounds = CGRectNull;
     self->renderedBoundsComputed = 0;
   }
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
   strokeColor = self->strokeColor;
-  if (strokeColor != a3)
+  if (strokeColor != color)
   {
     if (strokeColor)
     {
       CFRelease(strokeColor);
     }
 
-    self->strokeColor = a3;
-    if (a3)
+    self->strokeColor = color;
+    if (color)
     {
 
-      CFRetain(a3);
+      CFRetain(color);
     }
   }
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
   fillColor = self->fillColor;
-  if (fillColor != a3)
+  if (fillColor != color)
   {
     if (fillColor)
     {
       CFRelease(fillColor);
     }
 
-    self->fillColor = a3;
-    if (a3)
+    self->fillColor = color;
+    if (color)
     {
 
-      CFRetain(a3);
+      CFRetain(color);
     }
   }
 }
@@ -440,22 +440,22 @@ LABEL_11:
   return result;
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   path = self->path;
-  if (path != a3)
+  if (path != path)
   {
     if (path)
     {
       CFRelease(path);
     }
 
-    if (a3)
+    if (path)
     {
-      CFRetain(a3);
+      CFRetain(path);
     }
 
-    self->path = a3;
+    self->path = path;
     self->super.super.bounds = CGRectNull;
     self->super.renderedBounds = CGRectNull;
     self->boundsComputed = 0;
@@ -495,11 +495,11 @@ LABEL_11:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CPShape;
-  v4 = [(CPChunk *)&v9 copyWithZone:a3];
+  v4 = [(CPChunk *)&v9 copyWithZone:zone];
   if (v4)
   {
     path = self->path;
@@ -587,35 +587,35 @@ LABEL_11:
   return v3;
 }
 
-- (CPShape)initWithPDFShape:(CPPDFShape *)a3
+- (CPShape)initWithPDFShape:(CPPDFShape *)shape
 {
   v4 = [(CPShape *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->mcid = a3->var8;
-    v4->pdfObjectID = a3->var1;
-    var4 = a3->var4;
+    v4->mcid = shape->var8;
+    v4->pdfObjectID = shape->var1;
+    var4 = shape->var4;
     if (var4)
     {
-      CFRetain(a3->var4);
+      CFRetain(shape->var4);
     }
 
     v5->path = var4;
-    [(CPChunk *)v5 setBounds:a3->var0.var0.origin.x, a3->var0.var0.origin.y, a3->var0.var0.size.width, a3->var0.var0.size.height];
+    [(CPChunk *)v5 setBounds:shape->var0.var0.origin.x, shape->var0.var0.origin.y, shape->var0.var0.size.width, shape->var0.var0.size.height];
     v5->isUprightRectangle = CGPathIsCongruentToARect(v5->path);
-    [(CPChunk *)v5 setInsertionOrder:a3->var0.var3];
-    var2 = a3->var2;
-    v8 = *&a3->var7.a;
-    v9 = *&a3->var7.tx;
-    *&v5->paintTransform.c = *&a3->var7.c;
+    [(CPChunk *)v5 setInsertionOrder:shape->var0.var3];
+    var2 = shape->var2;
+    v8 = *&shape->var7.a;
+    v9 = *&shape->var7.tx;
+    *&v5->paintTransform.c = *&shape->var7.c;
     *&v5->paintTransform.tx = v9;
     *&v5->paintTransform.a = v8;
-    if ((a3->var3 & 2) != 0)
+    if ((shape->var3 & 2) != 0)
     {
       [(CPShape *)v5 setStrokeColor:var2->var2];
       [(CPShape *)v5 setStrokeObject:var2->var13];
-      [(CPShape *)v5 setLineWidth:sqrt(fabs(a3->var6.a * a3->var6.d - a3->var6.b * a3->var6.c)) * var2->var5];
+      [(CPShape *)v5 setLineWidth:sqrt(fabs(shape->var6.a * shape->var6.d - shape->var6.b * shape->var6.c)) * var2->var5];
       [(CPShape *)v5 setMiterLimit:var2->var4];
       if (var2->var6 <= 2u)
       {
@@ -628,11 +628,11 @@ LABEL_11:
       }
     }
 
-    if (a3->var3)
+    if (shape->var3)
     {
       [(CPShape *)v5 setFillColor:var2->var0];
       [(CPShape *)v5 setFillObject:var2->var12];
-      [(CPShape *)v5 setWindingRule:!a3->var5];
+      [(CPShape *)v5 setWindingRule:!shape->var5];
     }
   }
 

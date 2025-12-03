@@ -1,17 +1,17 @@
 @interface C2MPGenericEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addMetric:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestampStart:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMetric:(id)metric;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestampStart:(BOOL)start;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation C2MPGenericEvent
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"none"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"none"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"cloudkit"])
+  else if ([typeCopy isEqualToString:@"cloudkit"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"cloudkit_client"])
+  else if ([typeCopy isEqualToString:@"cloudkit_client"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"server"])
+  else if ([typeCopy isEqualToString:@"server"])
   {
     v4 = 301;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setHasTimestampStart:(BOOL)a3
+- (void)setHasTimestampStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -90,22 +90,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   metrics = self->_metrics;
-  v8 = v4;
+  v8 = metricCopy;
   if (!metrics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_metrics;
     self->_metrics = v6;
 
-    v4 = v8;
+    metricCopy = v8;
     metrics = self->_metrics;
   }
 
-  [(NSMutableArray *)metrics addObject:v4];
+  [(NSMutableArray *)metrics addObject:metricCopy];
 }
 
 - (id)description
@@ -114,8 +114,8 @@
   v8.receiver = self;
   v8.super_class = C2MPGenericEvent;
   v4 = [(C2MPGenericEvent *)&v8 description];
-  v5 = [(C2MPGenericEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(C2MPGenericEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -123,7 +123,7 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
@@ -154,7 +154,7 @@
       {
         v5 = @"cloudkit";
 LABEL_12:
-        [v3 setObject:v5 forKey:@"type"];
+        [dictionary setObject:v5 forKey:@"type"];
 
         goto LABEL_13;
       }
@@ -168,14 +168,14 @@ LABEL_13:
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestampStart];
-    [v3 setObject:v8 forKey:@"timestamp_start"];
+    [dictionary setObject:v8 forKey:@"timestamp_start"];
 
     has = self->_has;
   }
@@ -183,7 +183,7 @@ LABEL_13:
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestampEnd];
-    [v3 setObject:v9 forKey:@"timestamp_end"];
+    [dictionary setObject:v9 forKey:@"timestamp_end"];
   }
 
   if ([(NSMutableArray *)self->_metrics count])
@@ -208,8 +208,8 @@ LABEL_13:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -218,18 +218,18 @@ LABEL_13:
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"metric"];
+    [dictionary setObject:v10 forKey:@"metric"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
@@ -287,43 +287,43 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[10] = self->_type;
-    *(v4 + 44) |= 4u;
+    toCopy[10] = self->_type;
+    *(toCopy + 44) |= 4u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v10;
+    [toCopy setName:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_timestampStart;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 2) = self->_timestampStart;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_timestampEnd;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_timestampEnd;
+    *(toCopy + 44) |= 1u;
   }
 
   if ([(C2MPGenericEvent *)self metricsCount])
   {
     [v10 clearMetrics];
-    v6 = [(C2MPGenericEvent *)self metricsCount];
-    if (v6)
+    metricsCount = [(C2MPGenericEvent *)self metricsCount];
+    if (metricsCount)
     {
-      v7 = v6;
+      v7 = metricsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(C2MPGenericEvent *)self metricAtIndex:i];
@@ -333,10 +333,10 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -344,7 +344,7 @@ LABEL_13:
     *(v5 + 44) |= 4u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -381,7 +381,7 @@ LABEL_13:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addMetric:v15];
       }
 
@@ -395,31 +395,31 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -431,35 +431,35 @@ LABEL_22:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_timestampStart != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_timestampStart != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestampEnd != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestampEnd != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_22;
   }
 
   metrics = self->_metrics;
-  if (metrics | *(v4 + 3))
+  if (metrics | *(equalCopy + 3))
   {
     v10 = [(NSMutableArray *)metrics isEqual:?];
   }
@@ -511,18 +511,18 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSMutableArray *)self->_metrics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[11] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[11] & 4) != 0)
   {
-    self->_type = v4[10];
+    self->_type = fromCopy[10];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(C2MPGenericEvent *)self setName:?];
   }

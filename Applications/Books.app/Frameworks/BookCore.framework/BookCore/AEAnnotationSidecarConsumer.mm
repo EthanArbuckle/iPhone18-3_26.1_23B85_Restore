@@ -1,25 +1,25 @@
 @interface AEAnnotationSidecarConsumer
-+ (id)annotationUuidsFromDictionaryRepresentations:(id)a3;
-+ (id)modificationDatesFromDictionaryRepresentations:(id)a3;
-- (BOOL)acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)a3 assetID:(id)a4 provider:(id)a5;
++ (id)annotationUuidsFromDictionaryRepresentations:(id)representations;
++ (id)modificationDatesFromDictionaryRepresentations:(id)representations;
+- (BOOL)acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d provider:(id)provider;
 - (id)fileTimestamp;
 - (id)timestampCacheKey;
 - (void)cacheTimestamp;
-- (void)mergeIntoAnnotationProvider:(id)a3 completionBlock:(id)a4;
+- (void)mergeIntoAnnotationProvider:(id)provider completionBlock:(id)block;
 - (void)read;
 @end
 
 @implementation AEAnnotationSidecarConsumer
 
-+ (id)annotationUuidsFromDictionaryRepresentations:(id)a3
++ (id)annotationUuidsFromDictionaryRepresentations:(id)representations
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  representationsCopy = representations;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [representationsCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = representationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -59,15 +59,15 @@
   return v4;
 }
 
-+ (id)modificationDatesFromDictionaryRepresentations:(id)a3
++ (id)modificationDatesFromDictionaryRepresentations:(id)representations
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  representationsCopy = representations;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [representationsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = representationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -104,10 +104,10 @@
   return v4;
 }
 
-- (void)mergeIntoAnnotationProvider:(id)a3 completionBlock:(id)a4
+- (void)mergeIntoAnnotationProvider:(id)provider completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  blockCopy = block;
   generation = self->super._generation;
   self->super._generation = 0;
 
@@ -117,15 +117,15 @@
   acknowledgedMismatchingAssetIDs = self->_acknowledgedMismatchingAssetIDs;
   self->_acknowledgedMismatchingAssetIDs = 0;
 
-  if (v6)
+  if (providerCopy)
   {
     [(AEAnnotationSidecarConsumer *)self read];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_D74FC;
     v15 = &unk_2CCD58;
-    v16 = self;
-    v17 = v6;
+    selfCopy = self;
+    v17 = providerCopy;
     [v17 performBlockOnUserSideQueueAndWait:&v12];
     [(AEAnnotationSidecarConsumer *)self cacheTimestamp:v12];
   }
@@ -133,16 +133,16 @@
   v11 = self->_bookmarks;
   self->_bookmarks = 0;
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 }
 
 - (id)timestampCacheKey
 {
-  v2 = [(NSString *)self->super._filePath lastPathComponent];
-  v3 = [v2 stringByAppendingString:@"-Timestamp"];
+  lastPathComponent = [(NSString *)self->super._filePath lastPathComponent];
+  v3 = [lastPathComponent stringByAppendingString:@"-Timestamp"];
 
   return v3;
 }
@@ -184,16 +184,16 @@
     self->super._userDefaultsChanged = 1;
     v7 = +[NSUserDefaults standardUserDefaults];
     timestamp = self->_timestamp;
-    v5 = [(AEAnnotationSidecarConsumer *)self timestampCacheKey];
-    [v7 setObject:timestamp forKey:v5];
+    timestampCacheKey = [(AEAnnotationSidecarConsumer *)self timestampCacheKey];
+    [v7 setObject:timestamp forKey:timestampCacheKey];
   }
 
   else
   {
     self->super._userDefaultsChanged = 1;
     v7 = +[NSUserDefaults standardUserDefaults];
-    v5 = [(AEAnnotationSidecarConsumer *)self timestampCacheKey];
-    [v7 removeObjectForKey:v5];
+    timestampCacheKey = [(AEAnnotationSidecarConsumer *)self timestampCacheKey];
+    [v7 removeObjectForKey:timestampCacheKey];
   }
 }
 
@@ -205,14 +205,14 @@
   bookmarks = self->_bookmarks;
   self->_bookmarks = 0;
 
-  v5 = self->_timestamp;
-  if (!v5)
+  fileTimestamp = self->_timestamp;
+  if (!fileTimestamp)
   {
-    v5 = [(AEAnnotationSidecarConsumer *)self fileTimestamp];
+    fileTimestamp = [(AEAnnotationSidecarConsumer *)self fileTimestamp];
   }
 
   v6 = +[AEAnnotationSidecarConsumer doesNotExistTimestamp];
-  v7 = [(NSString *)v5 isEqualToString:v6];
+  v7 = [(NSString *)fileTimestamp isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -229,8 +229,8 @@
         v13 = self->super._generation;
         self->super._generation = v12;
 
-        v14 = [objc_opt_class() defaultWrapperRevisionKey];
-        v15 = [v10 objectForKey:v14];
+        defaultWrapperRevisionKey = [objc_opt_class() defaultWrapperRevisionKey];
+        v15 = [v10 objectForKey:defaultWrapperRevisionKey];
 
         if (v15)
         {
@@ -279,17 +279,17 @@
   }
 }
 
-- (BOOL)acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)a3 assetID:(id)a4 provider:(id)a5
+- (BOOL)acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d provider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mismatchCopy = mismatch;
+  dCopy = d;
+  providerCopy = provider;
   if (self->_acknowledgedMismatchingAssetIDs)
   {
-    if (v8)
+    if (mismatchCopy)
     {
 LABEL_3:
-      v11 = [v9 stringByAppendingFormat:@":%@", v8];
+      mismatchCopy = [dCopy stringByAppendingFormat:@":%@", mismatchCopy];
       goto LABEL_6;
     }
   }
@@ -300,18 +300,18 @@ LABEL_3:
     acknowledgedMismatchingAssetIDs = self->_acknowledgedMismatchingAssetIDs;
     self->_acknowledgedMismatchingAssetIDs = v12;
 
-    if (v8)
+    if (mismatchCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = v9;
+  mismatchCopy = dCopy;
 LABEL_6:
-  v14 = v11;
-  if (([(NSMutableSet *)self->_acknowledgedMismatchingAssetIDs containsObject:v11]& 1) == 0)
+  v14 = mismatchCopy;
+  if (([(NSMutableSet *)self->_acknowledgedMismatchingAssetIDs containsObject:mismatchCopy]& 1) == 0)
   {
-    if (![v10 acknowledgeMergingAnnotationsWithAssetVersionMismatch:v8 assetID:v9])
+    if (![providerCopy acknowledgeMergingAnnotationsWithAssetVersionMismatch:mismatchCopy assetID:dCopy])
     {
       v15 = 0;
       goto LABEL_11;

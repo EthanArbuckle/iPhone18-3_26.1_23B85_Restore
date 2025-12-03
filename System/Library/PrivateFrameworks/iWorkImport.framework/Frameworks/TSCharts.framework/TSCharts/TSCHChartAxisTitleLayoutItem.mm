@@ -1,25 +1,25 @@
 @interface TSCHChartAxisTitleLayoutItem
 - (BOOL)isTitleOn;
-- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)a3 outElementSize:(_NSRange *)a4 outClipRect:(CGSize *)a5;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGRect)calcDrawingRect;
 - (CGSize)calcMinSize;
 - (CGSize)chartBodySize;
-- (TSCHChartAxisTitleLayoutItem)initWithParent:(id)a3;
-- (double)titlePaddingForAxis:(id)a3;
+- (TSCHChartAxisTitleLayoutItem)initWithParent:(id)parent;
+- (double)titlePaddingForAxis:(id)axis;
 - (id)axisLayoutItem;
-- (id)subselectionHaloPositionsForSelections:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (id)subselectionHaloPositionsForSelections:(id)selections;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 @end
 
 @implementation TSCHChartAxisTitleLayoutItem
 
-- (TSCHChartAxisTitleLayoutItem)initWithParent:(id)a3
+- (TSCHChartAxisTitleLayoutItem)initWithParent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = TSCHChartAxisTitleLayoutItem;
-  v3 = [(TSCHChartLayoutItem *)&v5 initWithParent:a3];
+  v3 = [(TSCHChartLayoutItem *)&v5 initWithParent:parent];
   if (v3)
   {
     v3->_minHitSize = sub_276277000();
@@ -177,7 +177,7 @@
   return result;
 }
 
-- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)a3 outElementSize:(_NSRange *)a4 outClipRect:(CGSize *)a5
+- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect
 {
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
@@ -202,14 +202,14 @@
   v38 = objc_msgSend_axisForID_(v28, v34, v35, v36, v37);
   if (!objc_msgSend_intValueForProperty_defaultValue_(v38, v39, v40, v41, v42, 1060, 0))
   {
-    v95 = a5;
-    v96 = self;
+    rectCopy3 = rect;
+    selfCopy = self;
     v97 = v33;
     goto LABEL_46;
   }
 
   v148 = a6;
-  v149 = self;
+  selfCopy2 = self;
   v144 = v17;
   v145 = v16;
   v150 = v28;
@@ -247,7 +247,7 @@
   objc_msgSend_measureText_paragraphStyle_wrapWidth_outErasableFrame_(v85, v78, width, v79, v80, v54, v69, &v158);
   height = v89;
   v143 = width;
-  if (a4)
+  if (size)
   {
     width = v88;
   }
@@ -256,8 +256,8 @@
   {
     height = v11;
     width = v10;
-    v95 = a5;
-    v96 = v149;
+    rectCopy3 = rect;
+    selfCopy = selfCopy2;
     v28 = v150;
     v97 = v33;
 LABEL_44:
@@ -267,16 +267,16 @@ LABEL_44:
   }
 
   v97 = v33;
-  if (a4)
+  if (size)
   {
-    location = a4->location;
-    length = a4->length;
-    v100 = a4;
+    location = size->location;
+    length = size->length;
+    sizeCopy = size;
   }
 
   else
   {
-    v100 = 0;
+    sizeCopy = 0;
     location = 0;
     length = -1;
   }
@@ -343,7 +343,7 @@ LABEL_31:
 
   v108 = v108 * v103;
 LABEL_35:
-  v95 = a5;
+  rectCopy3 = rect;
   v28 = v150;
   v110 = objc_msgSend_type(v97, v102, v108, v103, v104);
   TSUCenterOfRect();
@@ -377,7 +377,7 @@ LABEL_35:
   *&retstr->a = *&v157.a;
   *&retstr->c = v121;
   *&retstr->tx = *&v157.tx;
-  if (v100 || v101.location || v140 != v101.length)
+  if (sizeCopy || v101.location || v140 != v101.length)
   {
     v155.origin = v142;
     v155.size = v141;
@@ -386,7 +386,7 @@ LABEL_35:
     y = v161.origin.y;
     width = v161.size.width;
     height = v161.size.height;
-    v96 = v149;
+    selfCopy = selfCopy2;
     if (!CGRectIsNull(v161) && !CGRectIsNull(v155))
     {
       v130 = *&retstr->c;
@@ -421,7 +421,7 @@ LABEL_35:
   v14 = v158.origin.x;
   v17 = v158.size.height;
   v16 = v158.size.width;
-  v96 = v149;
+  selfCopy = selfCopy2;
 LABEL_45:
 
   v11 = height;
@@ -442,7 +442,7 @@ LABEL_46:
     *&v156.c = v124;
     *&v156.tx = *&retstr->tx;
     CGAffineTransformInvert(&v157, &v156);
-    objc_msgSend_rootedDrawingRect(v96, v125, v126, v127, v128);
+    objc_msgSend_rootedDrawingRect(selfCopy, v125, v126, v127, v128);
     v156 = v157;
     v164 = CGRectApplyAffineTransform(v163, &v156);
     v14 = v164.origin.x;
@@ -459,22 +459,22 @@ LABEL_46:
     a6->size.height = v17;
   }
 
-  if (v95)
+  if (rectCopy3)
   {
-    v95->width = v10;
-    v95->height = v11;
+    rectCopy3->width = v10;
+    rectCopy3->height = v11;
   }
 
   return result;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  y = a3.y;
-  point = a3.x;
+  y = elements.y;
+  point = elements.x;
   v67[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     objc_opt_class();
     v10 = objc_msgSend_parent(self, v6, v7, v8, v9);
@@ -511,21 +511,21 @@ LABEL_46:
           v53 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v49, v50, v51, v52, v67, 1);
           v58 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v54, v55, v56, v57, v48, v53);
 
-          v5[2](v5, v58, 0);
+          blockCopy[2](blockCopy, v58, 0);
         }
       }
     }
   }
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
   v104 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v88 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   v102.receiver = self;
   v102.super_class = TSCHChartAxisTitleLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v102 subselectionKnobPositionsForSelection:v4];
+  v5 = [(TSCHChartLayoutItem *)&v102 subselectionKnobPositionsForSelection:selectionCopy];
   v86 = v5;
   if (v5)
   {
@@ -548,7 +548,7 @@ LABEL_46:
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = v4;
+  obj = selectionCopy;
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, v22, v23, v24, &v98, v103, 16);
   if (v25)
   {
@@ -586,7 +586,7 @@ LABEL_46:
             v95 = v59;
             v92 = 0u;
             v93 = 0u;
-            objc_msgSend_transformForRenderingOutElementSize_outClipRect_(v88, v26, 0.0, *&v59, v29, &v95, &v96);
+            objc_msgSend_transformForRenderingOutElementSize_outClipRect_(selfCopy, v26, 0.0, *&v59, v29, &v95, &v96);
             objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v60, *&v96, *(&v96 + 1), *&v97, *(&v97 + 1), v95);
             v62 = v61;
             v64 = v63;
@@ -617,14 +617,14 @@ LABEL_46:
   return v87;
 }
 
-- (id)subselectionHaloPositionsForSelections:(id)a3
+- (id)subselectionHaloPositionsForSelections:(id)selections
 {
   v104 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v88 = self;
+  selectionsCopy = selections;
+  selfCopy = self;
   v102.receiver = self;
   v102.super_class = TSCHChartAxisTitleLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v102 subselectionHaloPositionsForSelections:v4];
+  v5 = [(TSCHChartLayoutItem *)&v102 subselectionHaloPositionsForSelections:selectionsCopy];
   v86 = v5;
   if (v5)
   {
@@ -647,7 +647,7 @@ LABEL_46:
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = v4;
+  obj = selectionsCopy;
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, v22, v23, v24, &v98, v103, 16);
   if (v25)
   {
@@ -685,7 +685,7 @@ LABEL_46:
             v95 = v59;
             v92 = 0u;
             v93 = 0u;
-            objc_msgSend_transformForRenderingOutElementSize_outClipRect_(v88, v26, 0.0, *&v59, v29, &v95, &v96);
+            objc_msgSend_transformForRenderingOutElementSize_outClipRect_(selfCopy, v26, 0.0, *&v59, v29, &v95, &v96);
             objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v60, *&v96, *(&v96 + 1), *&v97, *(&v97 + 1), v95);
             v62 = v61;
             v64 = v63;
@@ -716,9 +716,9 @@ LABEL_46:
   return v87;
 }
 
-- (double)titlePaddingForAxis:(id)a3
+- (double)titlePaddingForAxis:(id)axis
 {
-  v7 = objc_msgSend_intValueForProperty_defaultValue_(a3, a2, v3, v4, v5, 1034, 0);
+  v7 = objc_msgSend_intValueForProperty_defaultValue_(axis, a2, v3, v4, v5, 1034, 0);
   v12 = objc_msgSend_chartInfo(self, v8, v9, v10, v11);
   v17 = objc_msgSend_paragraphStyleAtIndex_(v12, v13, v14, v15, v16, v7);
 
@@ -729,15 +729,15 @@ LABEL_46:
   return v28;
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v61 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   v67.receiver = self;
   v67.super_class = TSCHChartAxisTitleLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v67 newDragAndDropHighlightPathForSelection:v4];
-  if (objc_msgSend_count(v4, v6, v7, v8, v9))
+  v5 = [(TSCHChartLayoutItem *)&v67 newDragAndDropHighlightPathForSelection:selectionCopy];
+  if (objc_msgSend_count(selectionCopy, v6, v7, v8, v9))
   {
     if (v5)
     {
@@ -755,8 +755,8 @@ LABEL_46:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v59 = v4;
-    obj = v4;
+    v59 = selectionCopy;
+    obj = selectionCopy;
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, v12, v13, v14, &v63, v68, 16);
     if (v15)
     {
@@ -777,14 +777,14 @@ LABEL_46:
           v29 = objc_msgSend_pathType(v23, v25, v26, v27, v28);
           if (objc_msgSend_isEqual_(v24, v30, v31, v32, v33, v29) && objc_msgSend_argumentsCount(v23, v34, v35, v36, v37))
           {
-            v42 = objc_msgSend_axisLayoutItem(v61, v38, v39, v40, v41);
+            v42 = objc_msgSend_axisLayoutItem(selfCopy, v38, v39, v40, v41);
             v47 = objc_msgSend_axisID(v42, v43, v44, v45, v46);
             v52 = objc_msgSend_argumentAtIndex_(v23, v48, v49, v50, v51, 0);
             isEqual = objc_msgSend_isEqual_(v47, v53, v54, v55, v56, v52);
 
             if (isEqual)
             {
-              objc_msgSend_rootedDrawingRect(v61, v16, v17, v18, v19);
+              objc_msgSend_rootedDrawingRect(selfCopy, v16, v17, v18, v19);
               CGPathAddRectSafe();
             }
           }
@@ -803,7 +803,7 @@ LABEL_46:
       while (v20);
     }
 
-    v4 = v59;
+    selectionCopy = v59;
     v5 = Mutable;
   }
 

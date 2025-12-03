@@ -3,7 +3,7 @@
 - (void)cleanup;
 - (void)releaseResourceAccess;
 - (void)requestResourceAccess;
-- (void)resourceAccessResult:(BOOL)a3;
+- (void)resourceAccessResult:(BOOL)result;
 - (void)resourceAccessRevoked;
 @end
 
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)resourceAccessResult:(BOOL)a3
+- (void)resourceAccessResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v4 = off_10041DC78;
     if (off_10041DC78 == &_os_log_default)

@@ -1,22 +1,22 @@
 @interface SUControllerSUCore
-+ (id)errorFromCoreError:(id)a3;
-+ (id)newDescriptorFromCoreDescriptor:(id)a3 corePolicy:(id)a4;
-+ (id)newProgressFromCoreProgress:(id)a3;
-+ (id)newSafeErrorDescription:(id)a3;
++ (id)errorFromCoreError:(id)error;
++ (id)newDescriptorFromCoreDescriptor:(id)descriptor corePolicy:(id)policy;
++ (id)newProgressFromCoreProgress:(id)progress;
++ (id)newSafeErrorDescription:(id)description;
 @end
 
 @implementation SUControllerSUCore
 
-+ (id)newDescriptorFromCoreDescriptor:(id)a3 corePolicy:(id)a4
++ (id)newDescriptorFromCoreDescriptor:(id)descriptor corePolicy:(id)policy
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  descriptorCopy = descriptor;
+  policyCopy = policy;
+  v7 = policyCopy;
+  if (!descriptorCopy)
   {
     v8 = 0;
-    if (!v6)
+    if (!policyCopy)
     {
       goto LABEL_17;
     }
@@ -25,22 +25,22 @@
   }
 
   v8 = objc_alloc_init(SUControllerDescriptor);
-  v9 = [v5 documentation];
+  documentation = [descriptorCopy documentation];
 
-  if (v9)
+  if (documentation)
   {
     v38 = [SUControllerDocumentation alloc];
-    v39 = [v5 documentation];
-    v37 = [v39 localBundleURL];
-    v10 = [v5 documentation];
-    [v10 serverAssetURL];
+    documentation2 = [descriptorCopy documentation];
+    localBundleURL = [documentation2 localBundleURL];
+    documentation3 = [descriptorCopy documentation];
+    [documentation3 serverAssetURL];
     v11 = v40 = v7;
-    v12 = [v5 documentation];
-    v13 = [v12 serverAssetMeasurement];
-    v14 = [v5 documentation];
-    v15 = [v14 serverAssetAlgorithm];
-    v16 = [v5 documentation];
-    v17 = -[SUControllerDocumentation initWithDocumentationBundleURL:serverAssetURL:serverAssetMeasurement:serverAssetAlgorithm:serverAssetChunkSize:](v38, "initWithDocumentationBundleURL:serverAssetURL:serverAssetMeasurement:serverAssetAlgorithm:serverAssetChunkSize:", v37, v11, v13, v15, [v16 serverAssetChunkSize]);
+    documentation4 = [descriptorCopy documentation];
+    serverAssetMeasurement = [documentation4 serverAssetMeasurement];
+    documentation5 = [descriptorCopy documentation];
+    serverAssetAlgorithm = [documentation5 serverAssetAlgorithm];
+    documentation6 = [descriptorCopy documentation];
+    v17 = -[SUControllerDocumentation initWithDocumentationBundleURL:serverAssetURL:serverAssetMeasurement:serverAssetAlgorithm:serverAssetChunkSize:](v38, "initWithDocumentationBundleURL:serverAssetURL:serverAssetMeasurement:serverAssetAlgorithm:serverAssetChunkSize:", localBundleURL, v11, serverAssetMeasurement, serverAssetAlgorithm, [documentation6 serverAssetChunkSize]);
     [(SUControllerDescriptor *)v8 setDocumentation:v17];
 
     v7 = v40;
@@ -49,81 +49,81 @@
   else
   {
     updated = updateRequiresDocAsset();
-    v19 = [MEMORY[0x277D64460] sharedLogger];
-    v20 = [v19 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
     if (updated)
     {
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        [SUControllerSUCore newDescriptorFromCoreDescriptor:v20 corePolicy:?];
+        [SUControllerSUCore newDescriptorFromCoreDescriptor:oslog corePolicy:?];
       }
     }
 
-    else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    else if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [MEMORY[0x277D64418] sharedDevice];
-      v22 = [v21 deviceClass];
+      mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+      deviceClass = [mEMORY[0x277D64418] deviceClass];
       *buf = 138412290;
-      v42 = v22;
-      _os_log_impl(&dword_26AB15000, v20, OS_LOG_TYPE_DEFAULT, "[DESCRIPTOR_FROM_CORE] SUCore descriptor is missing documentation information, allowed for %@ devices", buf, 0xCu);
+      v42 = deviceClass;
+      _os_log_impl(&dword_26AB15000, oslog, OS_LOG_TYPE_DEFAULT, "[DESCRIPTOR_FROM_CORE] SUCore descriptor is missing documentation information, allowed for %@ devices", buf, 0xCu);
     }
   }
 
-  v23 = [v5 productVersion];
-  [(SUControllerDescriptor *)v8 setProductVersion:v23];
+  productVersion = [descriptorCopy productVersion];
+  [(SUControllerDescriptor *)v8 setProductVersion:productVersion];
 
-  v24 = [v5 productBuildVersion];
-  [(SUControllerDescriptor *)v8 setProductBuildVersion:v24];
+  productBuildVersion = [descriptorCopy productBuildVersion];
+  [(SUControllerDescriptor *)v8 setProductBuildVersion:productBuildVersion];
 
-  v25 = [v5 documentationID];
-  [(SUControllerDescriptor *)v8 setDocumentationID:v25];
+  documentationID = [descriptorCopy documentationID];
+  [(SUControllerDescriptor *)v8 setDocumentationID:documentationID];
 
-  v26 = [v5 publisher];
-  [(SUControllerDescriptor *)v8 setPublisher:v26];
+  publisher = [descriptorCopy publisher];
+  [(SUControllerDescriptor *)v8 setPublisher:publisher];
 
-  v27 = [v5 productSystemName];
-  [(SUControllerDescriptor *)v8 setProductSystemName:v27];
+  productSystemName = [descriptorCopy productSystemName];
+  [(SUControllerDescriptor *)v8 setProductSystemName:productSystemName];
 
-  -[SUControllerDescriptor setDownloadSize:](v8, "setDownloadSize:", [v5 downloadSize]);
-  -[SUControllerDescriptor setUnarchivedSize:](v8, "setUnarchivedSize:", [v5 unarchivedSize]);
-  -[SUControllerDescriptor setMsuPrepareSize:](v8, "setMsuPrepareSize:", [v5 msuPrepareSize]);
-  -[SUControllerDescriptor setInstallationSize:](v8, "setInstallationSize:", [v5 installationSize]);
-  -[SUControllerDescriptor setTotalRequiredFreeSpace:](v8, "setTotalRequiredFreeSpace:", [v5 totalRequiredFreeSpace]);
+  -[SUControllerDescriptor setDownloadSize:](v8, "setDownloadSize:", [descriptorCopy downloadSize]);
+  -[SUControllerDescriptor setUnarchivedSize:](v8, "setUnarchivedSize:", [descriptorCopy unarchivedSize]);
+  -[SUControllerDescriptor setMsuPrepareSize:](v8, "setMsuPrepareSize:", [descriptorCopy msuPrepareSize]);
+  -[SUControllerDescriptor setInstallationSize:](v8, "setInstallationSize:", [descriptorCopy installationSize]);
+  -[SUControllerDescriptor setTotalRequiredFreeSpace:](v8, "setTotalRequiredFreeSpace:", [descriptorCopy totalRequiredFreeSpace]);
   [(SUControllerDescriptor *)v8 setUserDidAcceptTermsAndConditions:0];
-  -[SUControllerDescriptor setFullReplacement:](v8, "setFullReplacement:", [v5 fullReplacement]);
-  -[SUControllerDescriptor setRampEnabled:](v8, "setRampEnabled:", [v5 rampEnabled]);
+  -[SUControllerDescriptor setFullReplacement:](v8, "setFullReplacement:", [descriptorCopy fullReplacement]);
+  -[SUControllerDescriptor setRampEnabled:](v8, "setRampEnabled:", [descriptorCopy rampEnabled]);
   [(SUControllerDescriptor *)v8 setDenialReasons:0];
-  v28 = [v5 getMASoftwareUpdateAsset];
-  [(SUControllerDescriptor *)v8 setSoftwareUpdateAsset:v28];
+  getMASoftwareUpdateAsset = [descriptorCopy getMASoftwareUpdateAsset];
+  [(SUControllerDescriptor *)v8 setSoftwareUpdateAsset:getMASoftwareUpdateAsset];
 
-  v29 = [v5 getMADocumentationAsset];
-  [(SUControllerDescriptor *)v8 setDocumentationAsset:v29];
+  getMADocumentationAsset = [descriptorCopy getMADocumentationAsset];
+  [(SUControllerDescriptor *)v8 setDocumentationAsset:getMADocumentationAsset];
 
-  v30 = [v5 releaseType];
-  [(SUControllerDescriptor *)v8 setReleaseType:v30];
+  releaseType = [descriptorCopy releaseType];
+  [(SUControllerDescriptor *)v8 setReleaseType:releaseType];
 
-  v31 = [v5 releaseDate];
-  [(SUControllerDescriptor *)v8 setReleaseDate:v31];
+  releaseDate = [descriptorCopy releaseDate];
+  [(SUControllerDescriptor *)v8 setReleaseDate:releaseDate];
 
-  -[SUControllerDescriptor setMandatoryUpdateEligible:](v8, "setMandatoryUpdateEligible:", [v5 mandatoryUpdateEligible]);
-  v32 = [v5 mandatoryUpdateVersionMin];
-  [(SUControllerDescriptor *)v8 setMandatoryUpdateVersionMin:v32];
+  -[SUControllerDescriptor setMandatoryUpdateEligible:](v8, "setMandatoryUpdateEligible:", [descriptorCopy mandatoryUpdateEligible]);
+  mandatoryUpdateVersionMin = [descriptorCopy mandatoryUpdateVersionMin];
+  [(SUControllerDescriptor *)v8 setMandatoryUpdateVersionMin:mandatoryUpdateVersionMin];
 
-  v33 = [v5 mandatoryUpdateVersionMax];
-  [(SUControllerDescriptor *)v8 setMandatoryUpdateVersionMax:v33];
+  mandatoryUpdateVersionMax = [descriptorCopy mandatoryUpdateVersionMax];
+  [(SUControllerDescriptor *)v8 setMandatoryUpdateVersionMax:mandatoryUpdateVersionMax];
 
-  -[SUControllerDescriptor setMandatoryUpdateOptional:](v8, "setMandatoryUpdateOptional:", [v5 mandatoryUpdateOptional]);
-  -[SUControllerDescriptor setMandatoryUpdateRestrictedToOutOfTheBox:](v8, "setMandatoryUpdateRestrictedToOutOfTheBox:", [v5 mandatoryUpdateRestrictedToOutOfTheBox]);
-  [(SUControllerDescriptor *)v8 setCoreDescriptor:v5];
+  -[SUControllerDescriptor setMandatoryUpdateOptional:](v8, "setMandatoryUpdateOptional:", [descriptorCopy mandatoryUpdateOptional]);
+  -[SUControllerDescriptor setMandatoryUpdateRestrictedToOutOfTheBox:](v8, "setMandatoryUpdateRestrictedToOutOfTheBox:", [descriptorCopy mandatoryUpdateRestrictedToOutOfTheBox]);
+  [(SUControllerDescriptor *)v8 setCoreDescriptor:descriptorCopy];
   if (v7)
   {
 LABEL_13:
     -[SUControllerDescriptor setIsSupervisedPolicy:](v8, "setIsSupervisedPolicy:", [v7 isSupervisedPolicy]);
     if ([v7 isRequestedPMVSupervisedPolicy])
     {
-      v34 = [v7 requestedProductMarketingVersion];
-      [(SUControllerDescriptor *)v8 setRequestedPMV:v34];
+      requestedProductMarketingVersion = [v7 requestedProductMarketingVersion];
+      [(SUControllerDescriptor *)v8 setRequestedPMV:requestedProductMarketingVersion];
     }
 
     else
@@ -140,46 +140,46 @@ LABEL_17:
   return v8;
 }
 
-+ (id)newProgressFromCoreProgress:(id)a3
++ (id)newProgressFromCoreProgress:(id)progress
 {
-  if (!a3)
+  if (!progress)
   {
     return 0;
   }
 
-  v3 = a3;
+  progressCopy = progress;
   v4 = objc_alloc_init(SUControllerProgress);
-  v5 = [v3 phase];
-  [(SUControllerProgress *)v4 setPhase:v5];
+  phase = [progressCopy phase];
+  [(SUControllerProgress *)v4 setPhase:phase];
 
-  [v3 portionComplete];
+  [progressCopy portionComplete];
   [(SUControllerProgress *)v4 setPortionComplete:?];
-  [v3 estimatedTimeRemaining];
+  [progressCopy estimatedTimeRemaining];
   [(SUControllerProgress *)v4 setEstimatedTimeRemaining:?];
-  v6 = [v3 isStalled];
+  isStalled = [progressCopy isStalled];
 
-  [(SUControllerProgress *)v4 setIsStalled:v6];
+  [(SUControllerProgress *)v4 setIsStalled:isStalled];
   [(SUControllerProgress *)v4 setIsDone:0];
   return v4;
 }
 
-+ (id)errorFromCoreError:(id)a3
++ (id)errorFromCoreError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v14 = 0;
     goto LABEL_34;
   }
 
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D646E8]];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277D646E8]];
 
   if (!v6)
   {
-    v15 = [v4 domain];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D292C8]];
+    domain2 = [v4 domain];
+    v16 = [domain2 isEqualToString:*MEMORY[0x277D292C8]];
 
     if (v16)
     {
@@ -189,8 +189,8 @@ LABEL_11:
       goto LABEL_33;
     }
 
-    v17 = [v4 domain];
-    v18 = [v17 isEqualToString:*MEMORY[0x277D292D0]];
+    domain3 = [v4 domain];
+    v18 = [domain3 isEqualToString:*MEMORY[0x277D292D0]];
 
     if (v18)
     {
@@ -205,10 +205,10 @@ LABEL_23:
     goto LABEL_33;
   }
 
-  v7 = [v4 code];
-  if (v7 <= 8249)
+  code = [v4 code];
+  if (code <= 8249)
   {
-    switch(v7)
+    switch(code)
     {
       case 8100:
         v12 = @"allocation failed";
@@ -271,12 +271,12 @@ LABEL_23:
       case 8124:
         goto LABEL_30;
       default:
-        if ((v7 - 8200) < 7)
+        if ((code - 8200) < 7)
         {
           goto LABEL_32;
         }
 
-        if (v7)
+        if (code)
         {
           goto LABEL_60;
         }
@@ -289,27 +289,27 @@ LABEL_23:
     goto LABEL_33;
   }
 
-  if (v7 <= 8499)
+  if (code <= 8499)
   {
-    if (v7 > 8401)
+    if (code > 8401)
     {
-      if (v7 > 8406)
+      if (code > 8406)
       {
-        if ((v7 - 8408) < 2)
+        if ((code - 8408) < 2)
         {
           v12 = @"newer update found";
           v13 = 13;
           goto LABEL_33;
         }
 
-        if (v7 == 8407)
+        if (code == 8407)
         {
           v12 = @"no documentation found";
           v13 = 6;
           goto LABEL_33;
         }
 
-        if (v7 == 8410)
+        if (code == 8410)
         {
           v12 = @"scan postponed";
           v13 = 59;
@@ -319,7 +319,7 @@ LABEL_23:
         goto LABEL_60;
       }
 
-      if ((v7 - 8403) < 3)
+      if ((code - 8403) < 3)
       {
 LABEL_30:
         v12 = @"operation canceled";
@@ -327,9 +327,9 @@ LABEL_30:
         goto LABEL_33;
       }
 
-      if (v7 != 8402)
+      if (code != 8402)
       {
-        if (v7 == 8406)
+        if (code == 8406)
         {
           v12 = @"up to date";
           v13 = 4;
@@ -342,14 +342,14 @@ LABEL_30:
 
     else
     {
-      if ((v7 - 8250) <= 0x32 && ((1 << (v7 - 58)) & 0x400000000003FLL) != 0)
+      if ((code - 8250) <= 0x32 && ((1 << (code - 58)) & 0x400000000003FLL) != 0)
       {
         goto LABEL_32;
       }
 
-      if (v7 != 8400)
+      if (code != 8400)
       {
-        if (v7 == 8401)
+        if (code == 8401)
         {
           v12 = @"query failed";
           v13 = 3;
@@ -366,16 +366,16 @@ LABEL_53:
     goto LABEL_33;
   }
 
-  if (v7 <= 8799)
+  if (code <= 8799)
   {
-    if (v7 <= 8600)
+    if (code <= 8600)
     {
-      if ((v7 - 8500) < 4)
+      if ((code - 8500) < 4)
       {
         goto LABEL_32;
       }
 
-      if (v7 == 8600)
+      if (code == 8600)
       {
         v12 = @"insufficient disk space";
         v13 = 25;
@@ -387,16 +387,16 @@ LABEL_60:
       goto LABEL_23;
     }
 
-    if ((v7 - 8701) >= 3)
+    if ((code - 8701) >= 3)
     {
-      if (v7 == 8601)
+      if (code == 8601)
       {
         v12 = @"failed disk space check";
         v13 = 47;
         goto LABEL_33;
       }
 
-      if (v7 == 8700)
+      if (code == 8700)
       {
         v12 = @"download failed";
         v13 = 8;
@@ -409,15 +409,15 @@ LABEL_60:
     goto LABEL_53;
   }
 
-  if ((v7 - 8900) >= 7)
+  if ((code - 8900) >= 7)
   {
-    if ((v7 - 8800) < 3)
+    if ((code - 8800) < 3)
     {
       v12 = @"MSU operation failed";
       goto LABEL_11;
     }
 
-    if (v7 != 9900)
+    if (code != 9900)
     {
       goto LABEL_60;
     }
@@ -437,20 +437,20 @@ LABEL_34:
   return v14;
 }
 
-+ (id)newSafeErrorDescription:(id)a3
++ (id)newSafeErrorDescription:(id)description
 {
-  if (!a3)
+  if (!description)
   {
     return @"SUCCESS";
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v4 code];
-  v7 = [v4 localizedDescription];
+  descriptionCopy = description;
+  domain = [descriptionCopy domain];
+  code = [descriptionCopy code];
+  localizedDescription = [descriptionCopy localizedDescription];
 
-  v8 = [v3 stringWithFormat:@"domain=%@, code=%llu, description=%@", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"domain=%@, code=%llu, description=%@", domain, code, localizedDescription];
 
   return v8;
 }

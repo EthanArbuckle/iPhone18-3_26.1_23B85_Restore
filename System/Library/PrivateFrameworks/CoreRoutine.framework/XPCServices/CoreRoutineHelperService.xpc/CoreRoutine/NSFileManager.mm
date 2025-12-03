@@ -1,15 +1,15 @@
 @interface NSFileManager
 + (id)crashReporterPath;
 + (id)frameworkDirectoryPath;
-+ (id)pathInCacheDirectory:(id)a3;
++ (id)pathInCacheDirectory:(id)directory;
 + (id)routineBluePOIQueryPath;
 + (id)routineCacheDirectoryPath;
 + (id)routinePreferencesPath;
-+ (id)sortedContentsOfDirectoryAtURL:(id)a3 withExtension:(id)a4;
++ (id)sortedContentsOfDirectoryAtURL:(id)l withExtension:(id)extension;
 + (id)userCacheDirectoryPath;
 + (id)userLibraryPath;
 + (id)userPreferencesPath;
-+ (unint64_t)directorySizeAtPath:(id)a3;
++ (unint64_t)directorySizeAtPath:(id)path;
 @end
 
 @implementation NSFileManager
@@ -17,10 +17,10 @@
 + (id)frameworkDirectoryPath
 {
   v2 = +[NSFileManager frameworkBundle];
-  v3 = [v2 bundleURL];
-  v4 = [v3 absoluteString];
+  bundleURL = [v2 bundleURL];
+  absoluteString = [bundleURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 + (id)userCacheDirectoryPath
@@ -28,23 +28,23 @@
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 + (id)routineCacheDirectoryPath
 {
-  v2 = [a1 userCacheDirectoryPath];
-  if (v2)
+  userCacheDirectoryPath = [self userCacheDirectoryPath];
+  if (userCacheDirectoryPath)
   {
-    v3 = v2;
+    v3 = userCacheDirectoryPath;
     v4 = +[NSFileManager defaultsDomain];
     v5 = [v3 stringByAppendingPathComponent:v4];
 
@@ -94,10 +94,10 @@ LABEL_13:
   return v5;
 }
 
-+ (id)pathInCacheDirectory:(id)a3
++ (id)pathInCacheDirectory:(id)directory
 {
-  v3 = a3;
-  if (!v3)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
     v4 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -112,17 +112,17 @@ LABEL_13:
 
   v5 = +[NSFileManager routineCacheDirectoryPath];
   v6 = v5;
-  if (v3)
+  if (directoryCopy)
   {
     if (v5)
     {
-      v7 = [v5 stringByAppendingPathComponent:v3];
+      v7 = [v5 stringByAppendingPathComponent:directoryCopy];
       v8 = [NSURL fileURLWithPath:v7];
 
-      v9 = [v8 standardizedURL];
-      v10 = [v8 absoluteString];
-      v11 = [v9 absoluteString];
-      v12 = [v10 isEqualToString:v11];
+      standardizedURL = [v8 standardizedURL];
+      absoluteString = [v8 absoluteString];
+      absoluteString2 = [standardizedURL absoluteString];
+      v12 = [absoluteString isEqualToString:absoluteString2];
 
       if (v12)
       {
@@ -131,19 +131,19 @@ LABEL_13:
           v13 = sub_1000011A0(&qword_1000B2958);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [v9 path];
+            path = [standardizedURL path];
             v21 = 138412290;
-            v22 = v20;
+            v22 = path;
             _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "path in cache directory, %@", &v21, 0xCu);
           }
         }
 
-        v14 = [v9 path];
+        path2 = [standardizedURL path];
       }
 
       else
       {
-        v14 = 0;
+        path2 = 0;
       }
     }
 
@@ -166,7 +166,7 @@ LABEL_13:
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Cache path was nil", &v21, 2u);
       }
 
-      v14 = 0;
+      path2 = 0;
     }
   }
 
@@ -192,10 +192,10 @@ LABEL_13:
       }
     }
 
-    v14 = v6;
+    path2 = v6;
   }
 
-  return v14;
+  return path2;
 }
 
 + (id)userLibraryPath
@@ -203,24 +203,24 @@ LABEL_13:
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 + (id)userPreferencesPath
 {
-  v2 = [a1 userLibraryPath];
-  v3 = v2;
-  if (v2)
+  userLibraryPath = [self userLibraryPath];
+  v3 = userLibraryPath;
+  if (userLibraryPath)
   {
-    v4 = [v2 stringByAppendingPathComponent:@"Preferences"];
+    v4 = [userLibraryPath stringByAppendingPathComponent:@"Preferences"];
   }
 
   else
@@ -233,11 +233,11 @@ LABEL_13:
 
 + (id)routinePreferencesPath
 {
-  v3 = [a1 userPreferencesPath];
-  if (v3)
+  userPreferencesPath = [self userPreferencesPath];
+  if (userPreferencesPath)
   {
-    v4 = [a1 defaultsDomain];
-    v5 = [v3 stringByAppendingPathComponent:v4];
+    defaultsDomain = [self defaultsDomain];
+    v5 = [userPreferencesPath stringByAppendingPathComponent:defaultsDomain];
     v6 = [v5 stringByAppendingPathExtension:@"plist"];
   }
 
@@ -251,11 +251,11 @@ LABEL_13:
 
 + (id)routineBluePOIQueryPath
 {
-  v2 = [a1 userLibraryPath];
-  v3 = v2;
-  if (v2)
+  userLibraryPath = [self userLibraryPath];
+  v3 = userLibraryPath;
+  if (userLibraryPath)
   {
-    v4 = [v2 stringByAppendingPathComponent:@"BluePOIQueries"];
+    v4 = [userLibraryPath stringByAppendingPathComponent:@"BluePOIQueries"];
     v5 = [v4 stringByAppendingPathExtension:@"json"];
   }
 
@@ -269,11 +269,11 @@ LABEL_13:
 
 + (id)crashReporterPath
 {
-  v2 = [a1 userLibraryPath];
-  if (v2)
+  userLibraryPath = [self userLibraryPath];
+  if (userLibraryPath)
   {
     v3 = [&off_1000AB930 componentsJoinedByString:@"/"];
-    v4 = [v2 stringByAppendingPathComponent:v3];
+    v4 = [userLibraryPath stringByAppendingPathComponent:v3];
   }
 
   else
@@ -284,21 +284,21 @@ LABEL_13:
   return v4;
 }
 
-+ (id)sortedContentsOfDirectoryAtURL:(id)a3 withExtension:(id)a4
++ (id)sortedContentsOfDirectoryAtURL:(id)l withExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  extensionCopy = extension;
   v8 = +[NSFileManager defaultManager];
   v15 = 0;
-  v9 = [v8 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:3 error:&v15];
+  v9 = [v8 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:3 error:&v15];
   v10 = v15;
 
   if (!v10)
   {
-    v11 = [NSPredicate predicateWithFormat:@"%K = %@", @"pathExtension", v7];
-    v13 = [v9 filteredArrayUsingPredicate:v11];
+    extensionCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"pathExtension", extensionCopy];
+    v13 = [v9 filteredArrayUsingPredicate:extensionCopy];
 
-    v12 = [a1 sortFilesByName:v13];
+    v12 = [self sortFilesByName:v13];
     v9 = v13;
 LABEL_7:
 
@@ -307,14 +307,14 @@ LABEL_7:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
-    v11 = sub_1000011A0(&qword_1000B2958);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    extensionCopy = sub_1000011A0(&qword_1000B2958);
+    if (os_log_type_enabled(extensionCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = lCopy;
       v18 = 2112;
       v19 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "encountered error getting contents of directory, %@, error, %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, extensionCopy, OS_LOG_TYPE_INFO, "encountered error getting contents of directory, %@, error, %@", buf, 0x16u);
     }
 
     v12 = 0;
@@ -327,12 +327,12 @@ LABEL_9:
   return v12;
 }
 
-+ (unint64_t)directorySizeAtPath:(id)a3
++ (unint64_t)directorySizeAtPath:(id)path
 {
   aSelector = a2;
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 subpathsOfDirectoryAtPath:v3 error:0];
+  v5 = [v4 subpathsOfDirectoryAtPath:pathCopy error:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -352,7 +352,7 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [v3 stringByAppendingPathComponent:{*(*(&v18 + 1) + 8 * i), aSelector}];
+        v11 = [pathCopy stringByAppendingPathComponent:{*(*(&v18 + 1) + 8 * i), aSelector}];
         buf[0] = 0;
         if ([v4 fileExistsAtPath:v11 isDirectory:buf] && (buf[0] & 1) == 0)
         {
@@ -382,7 +382,7 @@ LABEL_9:
       *buf = 138412802;
       v23 = v15;
       v24 = 2112;
-      v25 = v3;
+      v25 = pathCopy;
       v26 = 2048;
       v27 = v8;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@, path, %@, size, %lu", buf, 0x20u);

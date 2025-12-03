@@ -1,32 +1,32 @@
 @interface WFTriggerManager
 - (NSXPCConnection)connection;
-- (WFTriggerManager)initWithDatabase:(id)a3;
+- (WFTriggerManager)initWithDatabase:(id)database;
 - (id)allConfiguredTriggers;
-- (id)configuredTriggerWithID:(id)a3;
-- (void)associateWorkflowToTriggerID:(id)a3 deletingExistingReference:(BOOL)a4 notifyDaemon:(BOOL)a5 workflowReference:(id)a6 completion:(id)a7;
-- (void)deleteTriggerWithIdentifier:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5;
-- (void)deleteTriggersWithIdentifiers:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5;
+- (id)configuredTriggerWithID:(id)d;
+- (void)associateWorkflowToTriggerID:(id)d deletingExistingReference:(BOOL)reference notifyDaemon:(BOOL)daemon workflowReference:(id)workflowReference completion:(id)completion;
+- (void)deleteTriggerWithIdentifier:(id)identifier notifyDaemon:(BOOL)daemon completion:(id)completion;
+- (void)deleteTriggersWithIdentifiers:(id)identifiers notifyDaemon:(BOOL)daemon completion:(id)completion;
 - (void)disableAllTriggers;
-- (void)disableTriggersWithIdentifiers:(id)a3 withReason:(id)a4;
-- (void)saveNewConfiguredTrigger:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5;
-- (void)saveNewConfiguredTrigger:(id)a3 workflow:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6;
-- (void)saveNewConfiguredTrigger:(id)a3 workflowReference:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6;
-- (void)updateConfiguredTrigger:(id)a3 triggerID:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6;
+- (void)disableTriggersWithIdentifiers:(id)identifiers withReason:(id)reason;
+- (void)saveNewConfiguredTrigger:(id)trigger notifyDaemon:(BOOL)daemon completion:(id)completion;
+- (void)saveNewConfiguredTrigger:(id)trigger workflow:(id)workflow notifyDaemon:(BOOL)daemon completion:(id)completion;
+- (void)saveNewConfiguredTrigger:(id)trigger workflowReference:(id)reference notifyDaemon:(BOOL)daemon completion:(id)completion;
+- (void)updateConfiguredTrigger:(id)trigger triggerID:(id)d notifyDaemon:(BOOL)daemon completion:(id)completion;
 @end
 
 @implementation WFTriggerManager
 
-- (void)disableTriggersWithIdentifiers:(id)a3 withReason:(id)a4
+- (void)disableTriggersWithIdentifiers:(id)identifiers withReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__WFTriggerManager_disableTriggersWithIdentifiers_withReason___block_invoke;
   v8[3] = &unk_1E8380168;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateObjectsUsingBlock:v8];
+  v9 = reasonCopy;
+  v7 = reasonCopy;
+  [identifiers enumerateObjectsUsingBlock:v8];
 }
 
 void __62__WFTriggerManager_disableTriggersWithIdentifiers_withReason___block_invoke(uint64_t a1, void *a2)
@@ -91,8 +91,8 @@ LABEL_10:
 
 - (void)disableAllTriggers
 {
-  v3 = [(WFTriggerManager *)self allConfiguredTriggers];
-  v4 = [v3 if_compactMap:&__block_literal_global_283_41488];
+  allConfiguredTriggers = [(WFTriggerManager *)self allConfiguredTriggers];
+  v4 = [allConfiguredTriggers if_compactMap:&__block_literal_global_283_41488];
 
   [(WFTriggerManager *)self disableTriggersWithIdentifiers:v4];
 }
@@ -113,40 +113,40 @@ id __38__WFTriggerManager_disableAllTriggers__block_invoke(uint64_t a1, void *a2
   return v3;
 }
 
-- (id)configuredTriggerWithID:(id)a3
+- (id)configuredTriggerWithID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
   }
 
-  v6 = [(WFTriggerManager *)self database];
-  v7 = [v6 configuredTriggerForTriggerID:v5];
+  database = [(WFTriggerManager *)self database];
+  v7 = [database configuredTriggerForTriggerID:dCopy];
 
   return v7;
 }
 
 - (id)allConfiguredTriggers
 {
-  v2 = [(WFTriggerManager *)self database];
-  v3 = [v2 allConfiguredTriggers];
+  database = [(WFTriggerManager *)self database];
+  allConfiguredTriggers = [database allConfiguredTriggers];
 
-  v4 = [v3 descriptors];
+  descriptors = [allConfiguredTriggers descriptors];
 
-  return v4;
+  return descriptors;
 }
 
-- (void)deleteTriggersWithIdentifiers:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5
+- (void)deleteTriggersWithIdentifiers:(id)identifiers notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  daemonCopy = daemon;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifiersCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -154,8 +154,8 @@ id __38__WFTriggerManager_disableAllTriggers__block_invoke(uint64_t a1, void *a2
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"triggerIDs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"triggerIDs"}];
 
     if (v11)
     {
@@ -163,8 +163,8 @@ id __38__WFTriggerManager_disableAllTriggers__block_invoke(uint64_t a1, void *a2
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -174,20 +174,20 @@ LABEL_3:
   v28 = __Block_byref_object_copy__41507;
   v29 = __Block_byref_object_dispose__41508;
   v30 = 0;
-  v13 = [(WFTriggerManager *)self database];
+  database = [(WFTriggerManager *)self database];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __74__WFTriggerManager_deleteTriggersWithIdentifiers_notifyDaemon_completion___block_invoke;
   v20[3] = &unk_1E8379B98;
-  v14 = v9;
+  v14 = identifiersCopy;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v15 = v12;
   v23 = v15;
   v24 = &v25;
   v16 = (v26 + 5);
   obj = v26[5];
-  [v13 performTransactionWithReason:@"delete triggers" block:v20 error:&obj];
+  [database performTransactionWithReason:@"delete triggers" block:v20 error:&obj];
   objc_storeStrong(v16, obj);
 
   if (v26[5])
@@ -197,7 +197,7 @@ LABEL_3:
 
   else
   {
-    if (v6)
+    if (daemonCopy)
     {
       [v15 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_277_41510];
     }
@@ -337,16 +337,16 @@ void __74__WFTriggerManager_deleteTriggersWithIdentifiers_notifyDaemon_completio
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteTriggerWithIdentifier:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5
+- (void)deleteTriggerWithIdentifier:(id)identifier notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v6 = a4;
+  daemonCopy = daemon;
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -354,8 +354,8 @@ void __74__WFTriggerManager_deleteTriggersWithIdentifiers_notifyDaemon_completio
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
 
     if (v11)
     {
@@ -363,18 +363,18 @@ void __74__WFTriggerManager_deleteTriggersWithIdentifiers_notifyDaemon_completio
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v12 = [(WFTriggerManager *)self database];
-  v13 = [v12 configuredTriggerForTriggerID:v9];
+  database = [(WFTriggerManager *)self database];
+  v13 = [database configuredTriggerForTriggerID:identifierCopy];
 
   if (v13)
   {
-    v14 = [(WFTriggerManager *)self database];
+    database2 = [(WFTriggerManager *)self database];
     v24 = 0;
-    v15 = [v14 deleteReference:v13 error:&v24];
+    v15 = [database2 deleteReference:v13 error:&v24];
     v16 = v24;
 
     if ((v15 & 1) == 0)
@@ -392,20 +392,20 @@ LABEL_3:
       *buf = 136315394;
       v26 = "[WFTriggerManager deleteTriggerWithIdentifier:notifyDaemon:completion:]";
       v27 = 2112;
-      v28 = v9;
+      v28 = identifierCopy;
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_ERROR, "%s No configuredTrigger for triggerID %@", buf, 0x16u);
     }
 
     v16 = 0;
   }
 
-  if (v6)
+  if (daemonCopy)
   {
-    v18 = [v13 trigger];
-    v19 = [objc_opt_class() triggerBacking];
+    trigger = [v13 trigger];
+    triggerBacking = [objc_opt_class() triggerBacking];
 
-    v20 = [MEMORY[0x1E69E0938] standardClient];
-    [v20 unregisterTriggerWithIdentifier:v9 triggerBacking:v19 completion:v11];
+    standardClient = [MEMORY[0x1E69E0938] standardClient];
+    [standardClient unregisterTriggerWithIdentifier:identifierCopy triggerBacking:triggerBacking completion:v11];
   }
 
   else
@@ -418,16 +418,16 @@ LABEL_12:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateWorkflowToTriggerID:(id)a3 deletingExistingReference:(BOOL)a4 notifyDaemon:(BOOL)a5 workflowReference:(id)a6 completion:(id)a7
+- (void)associateWorkflowToTriggerID:(id)d deletingExistingReference:(BOOL)reference notifyDaemon:(BOOL)daemon workflowReference:(id)workflowReference completion:(id)completion
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v13)
+  daemonCopy = daemon;
+  dCopy = d;
+  workflowReferenceCopy = workflowReference;
+  completionCopy = completion;
+  v16 = completionCopy;
+  if (dCopy)
   {
-    if (v15)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -435,8 +435,8 @@ LABEL_12:
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
 
     if (v16)
     {
@@ -444,8 +444,8 @@ LABEL_12:
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v31 = 0;
@@ -454,37 +454,37 @@ LABEL_3:
   v34 = __Block_byref_object_copy__41507;
   v35 = __Block_byref_object_dispose__41508;
   v36 = 0;
-  v17 = [(WFTriggerManager *)self database];
+  database = [(WFTriggerManager *)self database];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __117__WFTriggerManager_associateWorkflowToTriggerID_deletingExistingReference_notifyDaemon_workflowReference_completion___block_invoke;
   v26[3] = &unk_1E8379B70;
   v26[4] = self;
-  v18 = v13;
+  v18 = dCopy;
   v27 = v18;
   v29 = &v31;
-  v30 = a4;
-  v19 = v14;
+  referenceCopy = reference;
+  v19 = workflowReferenceCopy;
   v28 = v19;
   v20 = (v32 + 5);
   obj = v32[5];
-  [v17 performTransactionWithReason:@"associate workflow to trigger block:possibly deleting existing reference" error:{v26, &obj}];
+  [database performTransactionWithReason:@"associate workflow to trigger block:possibly deleting existing reference" error:{v26, &obj}];
   objc_storeStrong(v20, obj);
 
-  if (v9)
+  if (daemonCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v21 = [(WFTriggerManager *)self connection];
-      v22 = [v21 remoteObjectProxy];
+      connection = [(WFTriggerManager *)self connection];
+      remoteObjectProxy = [connection remoteObjectProxy];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E69E0938] standardClient];
+      remoteObjectProxy = [MEMORY[0x1E69E0938] standardClient];
     }
 
-    [v22 refreshTriggerWithIdentifier:v18 completion:v16];
+    [remoteObjectProxy refreshTriggerWithIdentifier:v18 completion:v16];
   }
 
   else
@@ -539,25 +539,25 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)updateConfiguredTrigger:(id)a3 triggerID:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6
+- (void)updateConfiguredTrigger:(id)trigger triggerID:(id)d notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v7 = a5;
+  daemonCopy = daemon;
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  triggerCopy = trigger;
+  dCopy = d;
+  completionCopy = completion;
+  if (triggerCopy)
   {
-    if (v12)
+    if (dCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_21:
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
 
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -565,56 +565,56 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"newRecord"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"newRecord"}];
 
-  if (!v12)
+  if (!dCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_3:
-  if (v13)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_22:
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v14 = [(WFTriggerManager *)self database];
-  v15 = [v14 configuredTriggerForTriggerID:v12];
+  database = [(WFTriggerManager *)self database];
+  v15 = [database configuredTriggerForTriggerID:dCopy];
 
   if (v15)
   {
-    v16 = [(WFTriggerManager *)self database];
+    database2 = [(WFTriggerManager *)self database];
     v35 = 0;
-    v17 = [v16 recordWithDescriptor:v15 error:&v35];
+    v17 = [database2 recordWithDescriptor:v15 error:&v35];
     v18 = v35;
 
     if (v17)
     {
-      v33 = v7;
-      v19 = [v11 triggerData];
-      [v17 setTriggerData:v19];
+      v33 = daemonCopy;
+      triggerData = [triggerCopy triggerData];
+      [v17 setTriggerData:triggerData];
 
-      [v17 setShouldNotify:{objc_msgSend(v11, "shouldNotify")}];
-      [v17 setShouldPrompt:{objc_msgSend(v11, "shouldPrompt")}];
-      [v17 setShouldRecur:{objc_msgSend(v11, "shouldRecur")}];
-      [v17 setPotentialLoopDetected:{objc_msgSend(v11, "potentialLoopDetected")}];
-      [v17 setEnabled:{objc_msgSend(v11, "isEnabled")}];
-      v20 = [v11 disablementReason];
-      [v17 setDisablementReason:v20];
+      [v17 setShouldNotify:{objc_msgSend(triggerCopy, "shouldNotify")}];
+      [v17 setShouldPrompt:{objc_msgSend(triggerCopy, "shouldPrompt")}];
+      [v17 setShouldRecur:{objc_msgSend(triggerCopy, "shouldRecur")}];
+      [v17 setPotentialLoopDetected:{objc_msgSend(triggerCopy, "potentialLoopDetected")}];
+      [v17 setEnabled:{objc_msgSend(triggerCopy, "isEnabled")}];
+      disablementReason = [triggerCopy disablementReason];
+      [v17 setDisablementReason:disablementReason];
 
-      [v17 setEditableShortcut:{objc_msgSend(v11, "editableShortcut")}];
-      v21 = [v11 selectedEntryMetadata];
-      [v17 setSelectedEntryMetadata:v21];
+      [v17 setEditableShortcut:{objc_msgSend(triggerCopy, "editableShortcut")}];
+      selectedEntryMetadata = [triggerCopy selectedEntryMetadata];
+      [v17 setSelectedEntryMetadata:selectedEntryMetadata];
 
-      v22 = [(WFTriggerManager *)self database];
+      database3 = [(WFTriggerManager *)self database];
       v34 = v18;
-      v23 = [v22 saveRecord:v17 withDescriptor:v15 error:&v34];
+      v23 = [database3 saveRecord:v17 withDescriptor:v15 error:&v34];
       v24 = v34;
 
       if (v23)
@@ -623,28 +623,28 @@ LABEL_4:
         {
           if (_os_feature_enabled_impl())
           {
-            v25 = [(WFTriggerManager *)self connection];
-            v26 = [v25 remoteObjectProxy];
+            connection = [(WFTriggerManager *)self connection];
+            remoteObjectProxy = [connection remoteObjectProxy];
 
-            [v26 refreshTriggerWithIdentifier:v12 completion:v13];
+            [remoteObjectProxy refreshTriggerWithIdentifier:dCopy completion:completionCopy];
           }
 
           else
           {
-            v29 = [MEMORY[0x1E69E0938] standardClient];
-            [v29 refreshTriggerWithIdentifier:v12 completion:v13];
+            standardClient = [MEMORY[0x1E69E0938] standardClient];
+            [standardClient refreshTriggerWithIdentifier:dCopy completion:completionCopy];
           }
         }
 
         else
         {
-          v13[2](v13, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
       }
 
       else
       {
-        (v13)[2](v13, 0, v24);
+        (completionCopy)[2](completionCopy, 0, v24);
       }
 
       v18 = v24;
@@ -652,7 +652,7 @@ LABEL_4:
 
     else
     {
-      (v13)[2](v13, 0, v18);
+      (completionCopy)[2](completionCopy, 0, v18);
     }
   }
 
@@ -664,24 +664,24 @@ LABEL_4:
       *buf = 136315394;
       v37 = "[WFTriggerManager updateConfiguredTrigger:triggerID:notifyDaemon:completion:]";
       v38 = 2112;
-      v39 = v12;
+      v39 = dCopy;
       _os_log_impl(&dword_1CA256000, v27, OS_LOG_TYPE_ERROR, "%s Couldn't find trigger to update for triggerID (%@)", buf, 0x16u);
     }
 
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFTriggerErrorDomain" code:1001 userInfo:0];
-    (v13)[2](v13, 0, v18);
+    (completionCopy)[2](completionCopy, 0, v18);
   }
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveNewConfiguredTrigger:(id)a3 workflowReference:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6
+- (void)saveNewConfiguredTrigger:(id)trigger workflowReference:(id)reference notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v7 = a5;
+  daemonCopy = daemon;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -700,43 +700,43 @@ LABEL_4:
     *buf = 136315394;
     v42 = "[WFTriggerManager saveNewConfiguredTrigger:workflowReference:notifyDaemon:completion:]";
     v43 = 2112;
-    v44 = v10;
+    v44 = triggerCopy;
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_DEFAULT, "%s Saving new configured trigger: %@", buf, 0x16u);
   }
 
-  v14 = [(WFTriggerManager *)self database];
+  database = [(WFTriggerManager *)self database];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __87__WFTriggerManager_saveNewConfiguredTrigger_workflowReference_notifyDaemon_completion___block_invoke;
   v24[3] = &unk_1E8379B48;
   v27 = &v29;
   v24[4] = self;
-  v15 = v10;
+  v15 = triggerCopy;
   v25 = v15;
-  v16 = v11;
+  v16 = referenceCopy;
   v26 = v16;
   v28 = &v35;
   v17 = v36;
   obj = v36[5];
-  [v14 performTransactionWithReason:@"save trigger with workflow" block:v24 error:&obj];
+  [database performTransactionWithReason:@"save trigger with workflow" block:v24 error:&obj];
   objc_storeStrong(v17 + 5, obj);
 
   v18 = v30[5];
-  if (v18 && v7)
+  if (v18 && daemonCopy)
   {
-    v19 = [MEMORY[0x1E69E0938] standardClient];
-    v20 = [v30[5] identifier];
+    standardClient = [MEMORY[0x1E69E0938] standardClient];
+    identifier = [v30[5] identifier];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __87__WFTriggerManager_saveNewConfiguredTrigger_workflowReference_notifyDaemon_completion___block_invoke_2;
     v22[3] = &unk_1E8379AF8;
     v22[4] = &v29;
-    [v19 refreshTriggerWithIdentifier:v20 completion:v22];
+    [standardClient refreshTriggerWithIdentifier:identifier completion:v22];
 
     v18 = v30[5];
   }
 
-  (v12)[2](v12, v18, v36[5]);
+  (completionCopy)[2](completionCopy, v18, v36[5]);
 
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(&v35, 8);
@@ -784,58 +784,58 @@ void __87__WFTriggerManager_saveNewConfiguredTrigger_workflowReference_notifyDae
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveNewConfiguredTrigger:(id)a3 workflow:(id)a4 notifyDaemon:(BOOL)a5 completion:(id)a6
+- (void)saveNewConfiguredTrigger:(id)trigger workflow:(id)workflow notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  daemonCopy = daemon;
+  triggerCopy = trigger;
+  workflowCopy = workflow;
+  completionCopy = completion;
+  if (triggerCopy)
   {
-    if (v12)
+    if (workflowCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
 
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_13:
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"record"}];
 
-  if (!v12)
+  if (!workflowCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (!v13)
+  if (!completionCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  [v12 setHiddenFromLibraryAndSync:1];
+  [workflowCopy setHiddenFromLibraryAndSync:1];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v14 stringWithFormat:@"Automation %@", v16];
-  [v12 setName:v17];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [v14 stringWithFormat:@"Automation %@", uUIDString];
+  [workflowCopy setName:v17];
 
-  v18 = [[WFWorkflowCreationOptions alloc] initWithRecord:v12];
+  v18 = [[WFWorkflowCreationOptions alloc] initWithRecord:workflowCopy];
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -854,7 +854,7 @@ LABEL_4:
   v42 = __Block_byref_object_copy__41507;
   v43 = __Block_byref_object_dispose__41508;
   v44 = 0;
-  v19 = [(WFTriggerManager *)self database];
+  database = [(WFTriggerManager *)self database];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __78__WFTriggerManager_saveNewConfiguredTrigger_workflow_notifyDaemon_completion___block_invoke;
@@ -865,46 +865,46 @@ LABEL_4:
   v34 = v20;
   v37 = &v51;
   v38 = &v45;
-  v21 = v11;
+  v21 = triggerCopy;
   v35 = v21;
   v22 = v52;
   obj = v52[5];
-  [v19 performTransactionWithReason:@"save trigger with workflow" block:v33 error:&obj];
+  [database performTransactionWithReason:@"save trigger with workflow" block:v33 error:&obj];
   objc_storeStrong(v22 + 5, obj);
 
   v23 = v46[5];
-  if (v23 && v7)
+  if (v23 && daemonCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v24 = [(WFTriggerManager *)self connection];
-      v25 = [v24 remoteObjectProxy];
+      connection = [(WFTriggerManager *)self connection];
+      remoteObjectProxy = [connection remoteObjectProxy];
 
-      v26 = [v46[5] identifier];
+      identifier = [v46[5] identifier];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __78__WFTriggerManager_saveNewConfiguredTrigger_workflow_notifyDaemon_completion___block_invoke_2;
       v31[3] = &unk_1E8379AF8;
       v31[4] = &v45;
-      [v25 refreshTriggerWithIdentifier:v26 completion:v31];
+      [remoteObjectProxy refreshTriggerWithIdentifier:identifier completion:v31];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E69E0938] standardClient];
-      v26 = [v46[5] identifier];
+      remoteObjectProxy = [MEMORY[0x1E69E0938] standardClient];
+      identifier = [v46[5] identifier];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __78__WFTriggerManager_saveNewConfiguredTrigger_workflow_notifyDaemon_completion___block_invoke_258;
       v30[3] = &unk_1E8379AF8;
       v30[4] = &v45;
-      [v25 refreshTriggerWithIdentifier:v26 completion:v30];
+      [remoteObjectProxy refreshTriggerWithIdentifier:identifier completion:v30];
     }
 
     v23 = v46[5];
   }
 
-  v13[2](v13, v23, v40[5], v52[5]);
+  completionCopy[2](completionCopy, v23, v40[5], v52[5]);
 
   _Block_object_dispose(&v39, 8);
   _Block_object_dispose(&v45, 8);
@@ -989,16 +989,16 @@ void __78__WFTriggerManager_saveNewConfiguredTrigger_workflow_notifyDaemon_compl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveNewConfiguredTrigger:(id)a3 notifyDaemon:(BOOL)a4 completion:(id)a5
+- (void)saveNewConfiguredTrigger:(id)trigger notifyDaemon:(BOOL)daemon completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  daemonCopy = daemon;
+  triggerCopy = trigger;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!triggerCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"record"}];
 
     if (v11)
     {
@@ -1006,13 +1006,13 @@ void __78__WFTriggerManager_saveNewConfiguredTrigger_workflow_notifyDaemon_compl
     }
 
 LABEL_11:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_11;
   }
@@ -1030,48 +1030,48 @@ LABEL_3:
   v31 = __Block_byref_object_copy__41507;
   v32 = __Block_byref_object_dispose__41508;
   v33 = 0;
-  v12 = [(WFTriggerManager *)self database];
+  database = [(WFTriggerManager *)self database];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __69__WFTriggerManager_saveNewConfiguredTrigger_notifyDaemon_completion___block_invoke;
   v24[3] = &unk_1E8379AD0;
   v26 = &v28;
   v24[4] = self;
-  v13 = v9;
+  v13 = triggerCopy;
   v25 = v13;
   v27 = &v34;
   v14 = v35;
   obj = v35[5];
-  [v12 performTransactionWithReason:@"save trigger" block:v24 error:&obj];
+  [database performTransactionWithReason:@"save trigger" block:v24 error:&obj];
   objc_storeStrong(v14 + 5, obj);
 
   v15 = v29[5];
-  if (v15 && v6)
+  if (v15 && daemonCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v16 = [(WFTriggerManager *)self connection];
-      v17 = [v16 remoteObjectProxy];
+      connection = [(WFTriggerManager *)self connection];
+      remoteObjectProxy = [connection remoteObjectProxy];
 
-      v18 = [v29[5] identifier];
+      identifier = [v29[5] identifier];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __69__WFTriggerManager_saveNewConfiguredTrigger_notifyDaemon_completion___block_invoke_2;
       v22[3] = &unk_1E8379AF8;
       v22[4] = &v28;
-      [v17 refreshTriggerWithIdentifier:v18 completion:v22];
+      [remoteObjectProxy refreshTriggerWithIdentifier:identifier completion:v22];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E69E0938] standardClient];
-      v18 = [v29[5] identifier];
+      remoteObjectProxy = [MEMORY[0x1E69E0938] standardClient];
+      identifier = [v29[5] identifier];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __69__WFTriggerManager_saveNewConfiguredTrigger_notifyDaemon_completion___block_invoke_245;
       v21[3] = &unk_1E8379AF8;
       v21[4] = &v28;
-      [v17 refreshTriggerWithIdentifier:v18 completion:v21];
+      [remoteObjectProxy refreshTriggerWithIdentifier:identifier completion:v21];
     }
 
     v15 = v29[5];
@@ -1195,13 +1195,13 @@ void __30__WFTriggerManager_connection__block_invoke()
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (WFTriggerManager)initWithDatabase:(id)a3
+- (WFTriggerManager)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerManager.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v12.receiver = self;
@@ -1210,7 +1210,7 @@ void __30__WFTriggerManager_connection__block_invoke()
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_database, a3);
+    objc_storeStrong(&v7->_database, database);
     v9 = v8;
   }
 

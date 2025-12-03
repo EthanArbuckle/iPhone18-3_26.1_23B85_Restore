@@ -1,10 +1,10 @@
 @interface SBDismissForEmptySwitcherSwitcherEventResponse
-- (SBDismissForEmptySwitcherSwitcherEventResponse)initWithHIDEventSenderID:(unint64_t)a3;
+- (SBDismissForEmptySwitcherSwitcherEventResponse)initWithHIDEventSenderID:(unint64_t)d;
 @end
 
 @implementation SBDismissForEmptySwitcherSwitcherEventResponse
 
-- (SBDismissForEmptySwitcherSwitcherEventResponse)initWithHIDEventSenderID:(unint64_t)a3
+- (SBDismissForEmptySwitcherSwitcherEventResponse)initWithHIDEventSenderID:(unint64_t)d
 {
   v12.receiver = self;
   v12.super_class = SBDismissForEmptySwitcherSwitcherEventResponse;
@@ -15,7 +15,7 @@
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v5];
 
     v6 = [[SBHapticSwitcherEventResponse alloc] initWithHapticType:1 phase:1];
-    [(SBHapticSwitcherEventResponse *)v6 setHidEventSenderID:a3];
+    [(SBHapticSwitcherEventResponse *)v6 setHidEventSenderID:d];
     v7 = [SBPerformTransitionSwitcherEventResponse alloc];
     v8 = +[SBSwitcherTransitionRequest requestForActivatingHomeScreen];
     v9 = [(SBPerformTransitionSwitcherEventResponse *)v7 initWithTransitionRequest:v8 gestureInitiated:0];

@@ -1,14 +1,14 @@
 @interface NTKKaleidoscopeRichFaceView
-- (id)_newComplicationFactoryForDevice:(id)a3;
+- (id)_newComplicationFactoryForDevice:(id)device;
 - (void)_updateComplicationColors;
 @end
 
 @implementation NTKKaleidoscopeRichFaceView
 
-- (id)_newComplicationFactoryForDevice:(id)a3
+- (id)_newComplicationFactoryForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[NTKColorCircularUtilitarianFaceViewComplicationFactory alloc] initWithFaceView:self device:v4 graphicCornerComplications:1];
+  deviceCopy = device;
+  v5 = [[NTKColorCircularUtilitarianFaceViewComplicationFactory alloc] initWithFaceView:self device:deviceCopy graphicCornerComplications:1];
 
   [v5 setFaceView:self];
   return v5;

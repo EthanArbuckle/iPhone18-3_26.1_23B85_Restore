@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMMindfulnessSession_v0;
-  v2 = [(BMMindfulnessSession *)&v4 sessionMode];
-  if (v2 < 3)
+  sessionMode = [(BMMindfulnessSession *)&v4 sessionMode];
+  if (sessionMode < 3)
   {
-    return v2 + 1;
+    return sessionMode + 1;
   }
 
   else

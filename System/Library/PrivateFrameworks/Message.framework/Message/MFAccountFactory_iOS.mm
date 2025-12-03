@@ -1,14 +1,14 @@
 @interface MFAccountFactory_iOS
-- (id)accountWithIdentifier:(id)a3;
-- (id)accountWithSystemAccount:(id)a3;
+- (id)accountWithIdentifier:(id)identifier;
+- (id)accountWithSystemAccount:(id)account;
 @end
 
 @implementation MFAccountFactory_iOS
 
-- (id)accountWithIdentifier:(id)a3
+- (id)accountWithIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v4 = [MailAccount activeAccountsWithError:&v23];
   v5 = v23;
@@ -41,8 +41,8 @@
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:v3];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:identifierCopy];
 
           if (v13)
           {
@@ -65,10 +65,10 @@
   return v6;
 }
 
-- (id)accountWithSystemAccount:(id)a3
+- (id)accountWithSystemAccount:(id)account
 {
-  v4 = [a3 identifier];
-  v5 = [(MFAccountFactory_iOS *)self accountWithIdentifier:v4];
+  identifier = [account identifier];
+  v5 = [(MFAccountFactory_iOS *)self accountWithIdentifier:identifier];
 
   return v5;
 }

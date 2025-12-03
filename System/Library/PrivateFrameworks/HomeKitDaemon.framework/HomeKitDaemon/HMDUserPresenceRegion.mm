@@ -1,15 +1,15 @@
 @interface HMDUserPresenceRegion
-+ (HMDUserPresenceRegion)regionWithCoder:(id)a3;
-+ (HMDUserPresenceRegion)regionWithDict:(id)a3;
-+ (HMDUserPresenceRegion)regionWithMessage:(id)a3;
-+ (HMDUserPresenceRegion)regionWithNumber:(id)a3;
-+ (HMDUserPresenceRegion)regionWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDUserPresenceRegion)initWithNumber:(id)a3;
++ (HMDUserPresenceRegion)regionWithCoder:(id)coder;
++ (HMDUserPresenceRegion)regionWithDict:(id)dict;
++ (HMDUserPresenceRegion)regionWithMessage:(id)message;
++ (HMDUserPresenceRegion)regionWithNumber:(id)number;
++ (HMDUserPresenceRegion)regionWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMDUserPresenceRegion)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMDUserPresenceRegion
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,8 +47,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDUserPresenceRegion *)self value];
-      v8 = v7 == [(HMDUserPresenceRegion *)v6 value];
+      value = [(HMDUserPresenceRegion *)self value];
+      v8 = value == [(HMDUserPresenceRegion *)v6 value];
     }
 
     else
@@ -63,88 +63,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HMDUserPresenceRegion *)self value];
+  value = [(HMDUserPresenceRegion *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMDUserPresenceRegion *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"kUserPresenceRegionStatusKey"];
+  payloadCopy = payload;
+  number = [(HMDUserPresenceRegion *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"kUserPresenceRegionStatusKey"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDUserPresenceRegion *)self number];
-  [v4 encodeObject:v5 forKey:@"kUserPresenceRegionStatusKey"];
+  coderCopy = coder;
+  number = [(HMDUserPresenceRegion *)self number];
+  [coderCopy encodeObject:number forKey:@"kUserPresenceRegionStatusKey"];
 }
 
-- (HMDUserPresenceRegion)initWithNumber:(id)a3
+- (HMDUserPresenceRegion)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMDUserPresenceRegion;
     v5 = [(HMDUserPresenceRegion *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (HMDUserPresenceRegion)regionWithCoder:(id)a3
++ (HMDUserPresenceRegion)regionWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceRegionStatusKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceRegionStatusKey"];
 
   v5 = [HMDUserPresenceRegion regionWithNumber:v4];
 
   return v5;
 }
 
-+ (HMDUserPresenceRegion)regionWithDict:(id)a3
++ (HMDUserPresenceRegion)regionWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"kUserPresenceRegionStatusKey"];
+  v3 = [dict hmf_numberForKey:@"kUserPresenceRegionStatusKey"];
   v4 = [HMDUserPresenceRegion regionWithNumber:v3];
 
   return v4;
 }
 
-+ (HMDUserPresenceRegion)regionWithMessage:(id)a3
++ (HMDUserPresenceRegion)regionWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"kUserPresenceRegionStatusKey"];
+  v3 = [message numberForKey:@"kUserPresenceRegionStatusKey"];
   v4 = [HMDUserPresenceRegion regionWithNumber:v3];
 
   return v4;
 }
 
-+ (HMDUserPresenceRegion)regionWithNumber:(id)a3
++ (HMDUserPresenceRegion)regionWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMDUserPresenceRegion alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMDUserPresenceRegion alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (HMDUserPresenceRegion)regionWithValue:(unint64_t)a3
++ (HMDUserPresenceRegion)regionWithValue:(unint64_t)value
 {
   v4 = [HMDUserPresenceRegion alloc];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   v6 = [(HMDUserPresenceRegion *)v4 initWithNumber:v5];
 
   return v6;

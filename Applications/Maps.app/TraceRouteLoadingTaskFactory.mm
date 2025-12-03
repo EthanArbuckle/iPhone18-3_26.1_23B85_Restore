@@ -2,39 +2,39 @@
 - (GEOCountryConfiguration)countryConfiguration;
 - (NSSet)supportedTransportTypes;
 - (TraceRouteLoadingTask)traceLoadingTask;
-- (TraceRouteLoadingTaskFactory)initWithTracePath:(id)a3 outError:(id *)a4;
-- (id)taskForRoutes:(id)a3;
-- (id)taskForTransportType:(int64_t)a3 waypointSet:(id)a4;
-- (void)setCountryConfiguration:(id)a3;
+- (TraceRouteLoadingTaskFactory)initWithTracePath:(id)path outError:(id *)error;
+- (id)taskForRoutes:(id)routes;
+- (id)taskForTransportType:(int64_t)type waypointSet:(id)set;
+- (void)setCountryConfiguration:(id)configuration;
 @end
 
 @implementation TraceRouteLoadingTaskFactory
 
-- (id)taskForRoutes:(id)a3
+- (id)taskForRoutes:(id)routes
 {
-  v3 = a3;
-  v4 = [[RouteUpdatingNavigationServiceTask alloc] initWithRoutes:v3];
+  routesCopy = routes;
+  v4 = [[RouteUpdatingNavigationServiceTask alloc] initWithRoutes:routesCopy];
 
   return v4;
 }
 
-- (id)taskForTransportType:(int64_t)a3 waypointSet:(id)a4
+- (id)taskForTransportType:(int64_t)type waypointSet:(id)set
 {
-  v6 = [(TraceRouteLoadingTaskFactory *)self supportedTransportTypes:a3];
-  v7 = [NSNumber numberWithInteger:a3];
+  v6 = [(TraceRouteLoadingTaskFactory *)self supportedTransportTypes:type];
+  v7 = [NSNumber numberWithInteger:type];
   v8 = [v6 containsObject:v7];
 
   if (v8)
   {
-    v9 = [(TraceRouteLoadingTaskFactory *)self traceLoadingTask];
+    traceLoadingTask = [(TraceRouteLoadingTaskFactory *)self traceLoadingTask];
   }
 
   else
   {
-    v9 = 0;
+    traceLoadingTask = 0;
   }
 
-  return v9;
+  return traceLoadingTask;
 }
 
 - (GEOCountryConfiguration)countryConfiguration
@@ -53,16 +53,16 @@
   return v3;
 }
 
-- (void)setCountryConfiguration:(id)a3
+- (void)setCountryConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   countryConfiguration = self->_countryConfiguration;
   p_countryConfiguration = &self->_countryConfiguration;
-  if (countryConfiguration != v5)
+  if (countryConfiguration != configurationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_countryConfiguration, a3);
-    v5 = v8;
+    v8 = configurationCopy;
+    objc_storeStrong(p_countryConfiguration, configuration);
+    configurationCopy = v8;
   }
 }
 
@@ -71,8 +71,8 @@
   traceLoadingTask = self->_traceLoadingTask;
   if (!traceLoadingTask)
   {
-    v4 = [(TraceRouteLoadingTaskFactory *)self tracePath];
-    v5 = [[TraceRouteLoadingTask alloc] initWithTracePath:v4];
+    tracePath = [(TraceRouteLoadingTaskFactory *)self tracePath];
+    v5 = [[TraceRouteLoadingTask alloc] initWithTracePath:tracePath];
     v6 = self->_traceLoadingTask;
     self->_traceLoadingTask = v5;
 
@@ -90,9 +90,9 @@
   return v3;
 }
 
-- (TraceRouteLoadingTaskFactory)initWithTracePath:(id)a3 outError:(id *)a4
+- (TraceRouteLoadingTaskFactory)initWithTracePath:(id)path outError:(id *)error
 {
-  v7 = a3;
+  pathCopy = path;
   v40.receiver = self;
   v40.super_class = TraceRouteLoadingTaskFactory;
   v8 = [(TraceRouteLoadingTaskFactory *)&v40 init];
@@ -104,7 +104,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v8->_tracePath, a3);
+  objc_storeStrong(&v8->_tracePath, path);
   v10 = objc_opt_new();
   tracePath = v9->_tracePath;
   v39 = 0;
@@ -113,7 +113,7 @@ LABEL_17:
   if (!v13)
   {
     v21 = [v12 mainTransportType] - 1;
-    v34 = v7;
+    v34 = pathCopy;
     if (v21 > 5)
     {
       v22 = 1;
@@ -130,11 +130,11 @@ LABEL_17:
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [v12 directions];
-    v25 = [v24 firstObject];
-    v26 = [v25 waypoints];
+    directions = [v12 directions];
+    firstObject = [directions firstObject];
+    waypoints = [firstObject waypoints];
 
-    v27 = [v26 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    v27 = [waypoints countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v27)
     {
       v28 = v27;
@@ -146,7 +146,7 @@ LABEL_17:
         {
           if (*v36 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(waypoints);
           }
 
           v31 = [[TraceWaypointRequest alloc] initWithWaypoint:*(*(&v35 + 1) + 8 * v30)];
@@ -156,7 +156,7 @@ LABEL_17:
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v35 objects:v42 count:16];
+        v28 = [waypoints countByEnumeratingWithState:&v35 objects:v42 count:16];
       }
 
       while (v28);
@@ -165,7 +165,7 @@ LABEL_17:
     waypointRequests = v9->_waypointRequests;
     v9->_waypointRequests = v23;
 
-    v7 = v34;
+    pathCopy = v34;
     goto LABEL_17;
   }
 
@@ -179,10 +179,10 @@ LABEL_17:
   v18 = v9->_waypointRequests;
   v9->_waypointRequests = v17;
 
-  if (a4)
+  if (error)
   {
     v19 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v20 = 0;

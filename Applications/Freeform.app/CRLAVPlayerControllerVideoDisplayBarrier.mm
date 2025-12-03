@@ -1,18 +1,18 @@
 @interface CRLAVPlayerControllerVideoDisplayBarrier
-- (BOOL)p_allVideoFramesDisplayedAtHostTime:(id *)a3;
-- (CRLAVPlayerControllerVideoDisplayBarrier)initWithPlayer:(id)a3;
+- (BOOL)p_allVideoFramesDisplayedAtHostTime:(id *)time;
+- (CRLAVPlayerControllerVideoDisplayBarrier)initWithPlayer:(id)player;
 - (void)dealloc;
-- (void)p_outputForDisplayLink:(id)a3;
-- (void)setLastItemTime:(id *)a3;
+- (void)p_outputForDisplayLink:(id)link;
+- (void)setLastItemTime:(id *)time;
 - (void)waitUntilAllVideoFramesAreDisplayed;
 @end
 
 @implementation CRLAVPlayerControllerVideoDisplayBarrier
 
-- (CRLAVPlayerControllerVideoDisplayBarrier)initWithPlayer:(id)a3
+- (CRLAVPlayerControllerVideoDisplayBarrier)initWithPlayer:(id)player
 {
-  v5 = a3;
-  if (!v5)
+  playerCopy = player;
+  if (!playerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -47,7 +47,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_player, a3);
+    objc_storeStrong(&v9->_player, player);
   }
 
   return v10;
@@ -101,13 +101,13 @@
   [(AVPlayer *)self->_player rate];
   if (v7 == 0.0)
   {
-    v8 = [(AVPlayer *)self->_player currentItem];
+    currentItem = [(AVPlayer *)self->_player currentItem];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [v8 tracks];
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    tracks = [currentItem tracks];
+    v10 = [tracks countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v10)
     {
       v11 = v10;
@@ -118,11 +118,11 @@
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(tracks);
           }
 
-          v14 = [*(*(&v27 + 1) + 8 * i) assetTrack];
-          v15 = [v14 hasMediaCharacteristic:AVMediaCharacteristicVisual];
+          assetTrack = [*(*(&v27 + 1) + 8 * i) assetTrack];
+          v15 = [assetTrack hasMediaCharacteristic:AVMediaCharacteristicVisual];
 
           if (v15)
           {
@@ -131,7 +131,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v11 = [tracks countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v11)
         {
           continue;
@@ -144,12 +144,12 @@
     v16 = 0;
 LABEL_22:
 
-    v17 = [v8 timebase];
+    timebase = [currentItem timebase];
     if (v16)
     {
-      if (v17)
+      if (timebase)
       {
-        [(CRLAVPlayerControllerVideoDisplayBarrier *)self setTimebase:v17];
+        [(CRLAVPlayerControllerVideoDisplayBarrier *)self setTimebase:timebase];
         v18 = dispatch_semaphore_create(0);
         v19 = [CADisplayLink displayLinkWithTarget:self selector:"p_outputForDisplayLink:"];
         v20 = dispatch_get_global_queue(0, 0);
@@ -158,7 +158,7 @@ LABEL_22:
         block[2] = sub_1003E7E2C;
         block[3] = &unk_10183AE00;
         v24 = v19;
-        v25 = self;
+        selfCopy = self;
         v21 = v18;
         v26 = v21;
         v22 = v19;
@@ -171,15 +171,15 @@ LABEL_22:
   }
 }
 
-- (BOOL)p_allVideoFramesDisplayedAtHostTime:(id *)a3
+- (BOOL)p_allVideoFramesDisplayedAtHostTime:(id *)time
 {
   v15 = kCMTimeInvalid;
-  v5 = [(CRLAVPlayerControllerVideoDisplayBarrier *)self timebase];
-  if (v5)
+  timebase = [(CRLAVPlayerControllerVideoDisplayBarrier *)self timebase];
+  if (timebase)
   {
-    v6 = v5;
+    v6 = timebase;
     HostTimeClock = CMClockGetHostTimeClock();
-    time = *a3;
+    time = *time;
     CMSyncConvertTime(&v15, &time, HostTimeClock, v6);
   }
 
@@ -220,24 +220,24 @@ LABEL_22:
   return v11;
 }
 
-- (void)p_outputForDisplayLink:(id)a3
+- (void)p_outputForDisplayLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   memset(&v7, 0, sizeof(v7));
-  [v4 timestamp];
+  [linkCopy timestamp];
   CMTimeMakeWithSeconds(&v7, v5, 1000000000);
   v6 = v7;
   if ([(CRLAVPlayerControllerVideoDisplayBarrier *)self p_allVideoFramesDisplayedAtHostTime:&v6])
   {
     [(CRLAVPlayerControllerVideoDisplayBarrier *)self setAllVideoFramesDisplayed:1];
-    [v4 invalidate];
+    [linkCopy invalidate];
   }
 }
 
-- (void)setLastItemTime:(id *)a3
+- (void)setLastItemTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastItemTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastItemTime.epoch = time->var3;
   *&self->_lastItemTime.value = v3;
 }
 

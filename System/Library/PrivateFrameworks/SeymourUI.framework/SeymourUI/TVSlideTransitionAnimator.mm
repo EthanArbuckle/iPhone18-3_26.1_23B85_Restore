@@ -1,7 +1,7 @@
 @interface TVSlideTransitionAnimator
 - (_TtC9SeymourUI25TVSlideTransitionAnimator)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation TVSlideTransitionAnimator
@@ -17,16 +17,16 @@
   return [(TVSlideTransitionAnimator *)&v4 init];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  if (!a3)
+  if (!duration)
   {
     return 0.0;
   }
 
-  v3 = [a3 isAnimated];
+  isAnimated = [duration isAnimated];
   result = 0.666666667;
-  if (!v3)
+  if (!isAnimated)
   {
     return 0.0;
   }
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_20BC1C34C(a3);
+  selfCopy = self;
+  sub_20BC1C34C(transition);
   swift_unknownObjectRelease();
 }
 

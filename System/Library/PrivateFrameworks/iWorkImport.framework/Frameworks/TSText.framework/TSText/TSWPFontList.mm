@@ -6,32 +6,32 @@
 - (TSWPFontList)init;
 - (id)availableFontDescriptorsForAllFamilies;
 - (id)availableFontFamilies;
-- (id)baseFontWithDescriptor:(id)a3;
-- (id)cacheKeyForFontDescriptor:(id)a3;
-- (id)cachedFacesOfFontFamily:(id)a3;
+- (id)baseFontWithDescriptor:(id)descriptor;
+- (id)cacheKeyForFontDescriptor:(id)descriptor;
+- (id)cachedFacesOfFontFamily:(id)family;
 - (id)description;
-- (id)familiesForFontsInCollection:(__CTFontCollection *)a3;
-- (id)familyNameFromFontDescriptor:(__CTFontDescriptor *)a3;
-- (id)fontFacesForFontFamily:(id)a3;
-- (id)fontForKey:(id)a3;
-- (id)fontForPostscriptName:(id)a3;
-- (id)fontForPostscriptName:(id)a3 atSize:(double)a4;
-- (id)fontForPostscriptName:(id)a3 atSize:(double)a4 bold:(BOOL)a5 italic:(BOOL)a6;
-- (id)fontForStyles:(id)a3;
-- (id)fontFromStyle:(id)a3;
+- (id)familiesForFontsInCollection:(__CTFontCollection *)collection;
+- (id)familyNameFromFontDescriptor:(__CTFontDescriptor *)descriptor;
+- (id)fontFacesForFontFamily:(id)family;
+- (id)fontForKey:(id)key;
+- (id)fontForPostscriptName:(id)name;
+- (id)fontForPostscriptName:(id)name atSize:(double)size;
+- (id)fontForPostscriptName:(id)name atSize:(double)size bold:(BOOL)bold italic:(BOOL)italic;
+- (id)fontForStyles:(id)styles;
+- (id)fontFromStyle:(id)style;
 - (id)fontsForAvailableFamilies;
-- (id)normalizeChangedFontUrlsToStrings:(id)a3 forKey:(id)a4;
+- (id)normalizeChangedFontUrlsToStrings:(id)strings forKey:(id)key;
 - (id)sortedFontFamilies;
-- (id)sortedFontsInStylesheet:(id)a3;
-- (void)cacheFaces:(id)a3 forFontFamily:(id)a4;
-- (void)cacheFont:(id)a3 withKey:(id)a4;
-- (void)downloadableFontsChanged:(id)a3;
-- (void)dropFontsWithPSNamesInSet:(id)a3;
-- (void)fontsChanged:(id)a3;
+- (id)sortedFontsInStylesheet:(id)stylesheet;
+- (void)cacheFaces:(id)faces forFontFamily:(id)family;
+- (void)cacheFont:(id)font withKey:(id)key;
+- (void)downloadableFontsChanged:(id)changed;
+- (void)dropFontsWithPSNamesInSet:(id)set;
+- (void)fontsChanged:(id)changed;
 - (void)loadRecentFonts;
-- (void)registerRecentFont:(id)a3;
+- (void)registerRecentFont:(id)font;
 - (void)reset;
-- (void)saveRecentFontNames:(id)a3;
+- (void)saveRecentFontNames:(id)names;
 @end
 
 @implementation TSWPFontList
@@ -129,15 +129,15 @@
   return v3;
 }
 
-- (id)familiesForFontsInCollection:(__CTFontCollection *)a3
+- (id)familiesForFontsInCollection:(__CTFontCollection *)collection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, collection);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = CTFontCollectionCreateMatchingFontDescriptors(a3);
+  v6 = CTFontCollectionCreateMatchingFontDescriptors(collection);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v16, v20, 16);
   if (v8)
   {
@@ -344,9 +344,9 @@
   return v38;
 }
 
-- (id)familyNameFromFontDescriptor:(__CTFontDescriptor *)a3
+- (id)familyNameFromFontDescriptor:(__CTFontDescriptor *)descriptor
 {
-  v3 = CTFontDescriptorCopyAttribute(a3, *MEMORY[0x277CC48B8]);
+  v3 = CTFontDescriptorCopyAttribute(descriptor, *MEMORY[0x277CC48B8]);
   v4 = v3;
   if (v3 && CFStringHasPrefix(v3, @"."))
   {
@@ -367,9 +367,9 @@
   return v12;
 }
 
-- (void)downloadableFontsChanged:(id)a3
+- (void)downloadableFontsChanged:(id)changed
 {
-  v13 = objc_msgSend_object(a3, a2, a3);
+  v13 = objc_msgSend_object(changed, a2, changed);
   v5 = objc_msgSend_objectForKeyedSubscript_(v13, v4, @"TSWPFontRegisteredByURLFamilyNames");
   objc_msgSend_registerDownloadedFontPostScriptNames_(self, v6, v5);
 
@@ -379,11 +379,11 @@
   objc_msgSend_dropFontsWithPSNamesInSet_(self, v12, v11);
 }
 
-- (void)fontsChanged:(id)a3
+- (void)fontsChanged:(id)changed
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACC8];
-  v5 = a3;
+  changedCopy = changed;
   if ((objc_msgSend_isMainThread(v4, v6, v7) & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
@@ -395,8 +395,8 @@
   }
 
   objc_msgSend_setCachedAvailableFamilyFonts_(self, v8, 0);
-  v17 = objc_msgSend_normalizeChangedFontUrlsToStrings_forKey_(self, v16, v5, @"CTFontManagerAvailableFontURLsAdded");
-  v19 = objc_msgSend_normalizeChangedFontUrlsToStrings_forKey_(self, v18, v5, @"CTFontManagerAvailableFontURLsRemoved");
+  v17 = objc_msgSend_normalizeChangedFontUrlsToStrings_forKey_(self, v16, changedCopy, @"CTFontManagerAvailableFontURLsAdded");
+  v19 = objc_msgSend_normalizeChangedFontUrlsToStrings_forKey_(self, v18, changedCopy, @"CTFontManagerAvailableFontURLsRemoved");
 
   objc_msgSend_dropFontsWithPSNamesInSet_(self, v20, v17);
   objc_msgSend_dropFontsWithPSNamesInSet_(self, v21, v19);
@@ -409,19 +409,19 @@
   objc_msgSend_postNotificationName_object_userInfo_(v26, v27, @"TSWPAvailableFontsChanged", 0, v23);
 }
 
-- (id)normalizeChangedFontUrlsToStrings:(id)a3 forKey:(id)a4
+- (id)normalizeChangedFontUrlsToStrings:(id)strings forKey:(id)key
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stringsCopy = strings;
+  keyCopy = key;
   v39 = objc_msgSend_set(MEMORY[0x277CBEB58], v7, v8);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = objc_msgSend_userInfo(v5, v9, v10);
-  v38 = v6;
-  v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, v6);
+  v11 = objc_msgSend_userInfo(stringsCopy, v9, v10);
+  v38 = keyCopy;
+  v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, keyCopy);
 
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v40, v44, 16);
   if (v15)
@@ -495,36 +495,36 @@ LABEL_10:
   return v39;
 }
 
-- (id)fontFacesForFontFamily:(id)a3
+- (id)fontFacesForFontFamily:(id)family
 {
-  v4 = a3;
-  v7 = objc_msgSend_cachedFacesOfFontFamily_(self, v5, v4);
+  familyCopy = family;
+  v7 = objc_msgSend_cachedFacesOfFontFamily_(self, v5, familyCopy);
   if (!v7)
   {
-    v7 = objc_msgSend_facesOfFontFamily_(TSWPFont, v6, v4);
-    objc_msgSend_cacheFaces_forFontFamily_(self, v8, v7, v4);
+    v7 = objc_msgSend_facesOfFontFamily_(TSWPFont, v6, familyCopy);
+    objc_msgSend_cacheFaces_forFontFamily_(self, v8, v7, familyCopy);
   }
 
   return v7;
 }
 
-- (id)cachedFacesOfFontFamily:(id)a3
+- (id)cachedFacesOfFontFamily:(id)family
 {
-  v4 = a3;
+  familyCopy = family;
   v7 = objc_msgSend_knownFontFamilyFaces(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, familyCopy);
 
   return v9;
 }
 
-- (void)cacheFaces:(id)a3 forFontFamily:(id)a4
+- (void)cacheFaces:(id)faces forFontFamily:(id)family
 {
-  v6 = a4;
-  v7 = a3;
+  familyCopy = family;
+  facesCopy = faces;
   v10 = objc_msgSend_knownFontFamilyFaces(self, v8, v9);
   v15 = objc_msgSend_mutableCopy(v10, v11, v12);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v15, v13, v7, v6);
+  objc_msgSend_setObject_forKeyedSubscript_(v15, v13, facesCopy, familyCopy);
   objc_msgSend_setKnownFontFamilyFaces_(self, v14, v15);
 }
 
@@ -540,15 +540,15 @@ LABEL_10:
   objc_msgSend_setCachedAvailableFamilyFonts_(self, v4, 0);
 }
 
-- (id)fontForPostscriptName:(id)a3
+- (id)fontForPostscriptName:(id)name
 {
-  v4 = a3;
-  v6 = objc_msgSend_cacheKeyForFontWithPostScriptName_atSize_bold_italic_(self, v5, v4, 0, 0, 0.0);
+  nameCopy = name;
+  v6 = objc_msgSend_cacheKeyForFontWithPostScriptName_atSize_bold_italic_(self, v5, nameCopy, 0, 0, 0.0);
   v8 = objc_msgSend_fontForKey_(self, v7, v6);
   if (!v8)
   {
     v9 = [TSWPFont alloc];
-    v8 = objc_msgSend_initWithDesiredPostScriptName_size_(v9, v10, v4, 0.0);
+    v8 = objc_msgSend_initWithDesiredPostScriptName_size_(v9, v10, nameCopy, 0.0);
     if ((objc_msgSend_isSystemProxyFont(v8, v11, v12) & 1) == 0)
     {
       objc_msgSend_cacheFont_withKey_(self, v13, v8, v6);
@@ -558,25 +558,25 @@ LABEL_10:
   return v8;
 }
 
-- (id)fontForPostscriptName:(id)a3 atSize:(double)a4
+- (id)fontForPostscriptName:(id)name atSize:(double)size
 {
-  v5 = objc_msgSend_fontForPostscriptName_(self, a2, a3);
-  v8 = objc_msgSend_copyWithSize_(v5, v6, v7, a4);
+  v5 = objc_msgSend_fontForPostscriptName_(self, a2, name);
+  v8 = objc_msgSend_copyWithSize_(v5, v6, v7, size);
 
   return v8;
 }
 
-- (id)fontForPostscriptName:(id)a3 atSize:(double)a4 bold:(BOOL)a5 italic:(BOOL)a6
+- (id)fontForPostscriptName:(id)name atSize:(double)size bold:(BOOL)bold italic:(BOOL)italic
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v12 = objc_msgSend_cacheKeyForFontWithPostScriptName_atSize_bold_italic_(self, v11, v10, v7, v6, a4);
+  italicCopy = italic;
+  boldCopy = bold;
+  nameCopy = name;
+  v12 = objc_msgSend_cacheKeyForFontWithPostScriptName_atSize_bold_italic_(self, v11, nameCopy, boldCopy, italicCopy, size);
   v15 = objc_msgSend_fontForKey_(self, v13, v12);
   if (!v15)
   {
-    v16 = objc_msgSend_fontForPostscriptName_(self, v14, v10);
-    v15 = objc_msgSend_copyWithSize_bold_italic_(v16, v17, v7, v6, a4);
+    v16 = objc_msgSend_fontForPostscriptName_(self, v14, nameCopy);
+    v15 = objc_msgSend_copyWithSize_bold_italic_(v16, v17, boldCopy, italicCopy, size);
     if ((objc_msgSend_isSystemProxyFont(v16, v18, v19) & 1) == 0)
     {
       objc_msgSend_cacheFont_withKey_(self, v20, v15, v12);
@@ -586,38 +586,38 @@ LABEL_10:
   return v15;
 }
 
-- (void)cacheFont:(id)a3 withKey:(id)a4
+- (void)cacheFont:(id)font withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  fontCopy = font;
+  keyCopy = key;
   knownFontsAccessQueue = self->_knownFontsAccessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_276E37EC8;
   block[3] = &unk_27A6F59D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = fontCopy;
+  v9 = fontCopy;
+  v10 = keyCopy;
   dispatch_async(knownFontsAccessQueue, block);
 }
 
-- (id)fontForKey:(id)a3
+- (id)fontForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_knownFonts(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, keyCopy);
 
   return v9;
 }
 
-- (id)cacheKeyForFontDescriptor:(id)a3
+- (id)cacheKeyForFontDescriptor:(id)descriptor
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v7 = objc_msgSend_postscriptName(v4, v5, v6);
-  objc_msgSend_pointSize(v4, v8, v9);
+  descriptorCopy = descriptor;
+  v7 = objc_msgSend_postscriptName(descriptorCopy, v5, v6);
+  objc_msgSend_pointSize(descriptorCopy, v8, v9);
   v11 = v10;
 
   v13 = objc_msgSend_stringWithFormat_(v3, v12, @"%@|%f|%d|%d", v7, v11, 0, 0);
@@ -625,24 +625,24 @@ LABEL_10:
   return v13;
 }
 
-- (void)dropFontsWithPSNamesInSet:(id)a3
+- (void)dropFontsWithPSNamesInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   knownFontsAccessQueue = self->_knownFontsAccessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276E380B4;
   v7[3] = &unk_27A6F5A28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   dispatch_async(knownFontsAccessQueue, v7);
 }
 
-- (id)sortedFontsInStylesheet:(id)a3
+- (id)sortedFontsInStylesheet:(id)stylesheet
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stylesheetCopy = stylesheet;
   v7 = objc_msgSend_fontsForAvailableFamilies(self, v5, v6);
   v10 = objc_msgSend_mutableCopy(v7, v8, v9);
 
@@ -689,7 +689,7 @@ LABEL_10:
   v24 = v14;
   v33 = v24;
   v25 = v13;
-  objc_msgSend_enumerateStylesUsingBlock_(v4, v26, v31);
+  objc_msgSend_enumerateStylesUsingBlock_(stylesheetCopy, v26, v31);
   objc_msgSend_sortUsingComparator_(v24, v27, &unk_2885FF958);
   v28 = v33;
   v29 = v24;
@@ -697,14 +697,14 @@ LABEL_10:
   return v24;
 }
 
-- (id)fontFromStyle:(id)a3
+- (id)fontFromStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   objc_opt_class();
-  v6 = objc_msgSend_valueForProperty_(v4, v5, 46);
+  v6 = objc_msgSend_valueForProperty_(styleCopy, v5, 46);
   v7 = TSUDynamicCast();
 
-  if (v7 || (objc_opt_class(), objc_msgSend_valueForProperty_(v4, v9, 16), v10 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v7 = objc_claimAutoreleasedReturnValue(), v10, v7))
+  if (v7 || (objc_opt_class(), objc_msgSend_valueForProperty_(styleCopy, v9, 16), v10 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v7 = objc_claimAutoreleasedReturnValue(), v10, v7))
   {
     v11 = objc_msgSend_fontForPostscriptName_(self, v8, v7);
   }
@@ -766,14 +766,14 @@ LABEL_10:
   return v20;
 }
 
-- (id)baseFontWithDescriptor:(id)a3
+- (id)baseFontWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v6 = objc_msgSend_cacheKeyForFontDescriptor_(self, v5, v4);
+  descriptorCopy = descriptor;
+  v6 = objc_msgSend_cacheKeyForFontDescriptor_(self, v5, descriptorCopy);
   v9 = objc_msgSend_fontForKey_(self, v7, v6);
   if (!v9)
   {
-    v9 = objc_msgSend_baseFontWithDescriptor_(TSWPFont, v8, v4);
+    v9 = objc_msgSend_baseFontWithDescriptor_(TSWPFont, v8, descriptorCopy);
     if ((objc_msgSend_isSystemProxyFont(v9, v10, v11) & 1) == 0)
     {
       objc_msgSend_cacheFont_withKey_(self, v12, v9, v6);
@@ -783,24 +783,24 @@ LABEL_10:
   return v9;
 }
 
-- (id)fontForStyles:(id)a3
+- (id)fontForStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   v7 = objc_msgSend_fontPropertyResolver(self, v5, v6);
-  v8 = (v7)[2](v7, v4, 46);
+  v8 = (v7)[2](v7, stylesCopy, 46);
 
   if (v8)
   {
     v13 = v8;
 LABEL_4:
     v15 = objc_msgSend_fontPropertyResolver(self, v11, v12);
-    v16 = (v15)[2](v15, v4, 19);
+    v16 = (v15)[2](v15, stylesCopy, 19);
 
     v19 = objc_msgSend_fontPropertyResolver(self, v17, v18);
-    v20 = (v19)[2](v19, v4, 20);
+    v20 = (v19)[2](v19, stylesCopy, 20);
 
     v23 = objc_msgSend_fontPropertyResolver(self, v21, v22);
-    v24 = (v23)[2](v23, v4, 17);
+    v24 = (v23)[2](v23, stylesCopy, 17);
 
     v26 = objc_msgSend_fontForPostscriptName_(self, v25, v13);
     objc_msgSend_doubleValue(v24, v27, v28);
@@ -813,7 +813,7 @@ LABEL_4:
   }
 
   v14 = objc_msgSend_fontPropertyResolver(self, v9, v10);
-  v13 = (v14)[2](v14, v4, 16);
+  v13 = (v14)[2](v14, stylesCopy, 16);
 
   if (v13)
   {
@@ -839,13 +839,13 @@ LABEL_5:
   return v38;
 }
 
-- (void)registerRecentFont:(id)a3
+- (void)registerRecentFont:(id)font
 {
-  v4 = a3;
-  v37 = v4;
-  if (v4)
+  fontCopy = font;
+  v37 = fontCopy;
+  if (fontCopy)
   {
-    if ((objc_msgSend_isFallbackFont(v4, v5, v6) & 1) == 0)
+    if ((objc_msgSend_isFallbackFont(fontCopy, v5, v6) & 1) == 0)
     {
       v7 = [TSWPOpaqueFontID alloc];
       v9 = objc_msgSend_initWithFont_(v7, v8, v37);
@@ -931,9 +931,9 @@ LABEL_5:
   return v9;
 }
 
-- (void)saveRecentFontNames:(id)a3
+- (void)saveRecentFontNames:(id)names
 {
-  v7 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(a3, a2, &unk_2885FF9B8);
+  v7 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(names, a2, &unk_2885FF9B8);
   v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v3, v4);
   objc_msgSend_setObject_forKey_(v5, v6, v7, @"TSWPFontRecentFontNames");
 }

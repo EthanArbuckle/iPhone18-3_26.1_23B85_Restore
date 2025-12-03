@@ -1,26 +1,26 @@
 @interface PNRODSchemaPNRODSearch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODSearch)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODSearch)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODSearch)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODSearch)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODSearch
 
-- (PNRODSchemaPNRODSearch)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODSearch)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = PNRODSchemaPNRODSearch;
   v5 = [(PNRODSchemaPNRODSearch *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchToolId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchToolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setSearchToolId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"searchTotalHandleTime"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"searchTotalHandleTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setSearchTotalHandleTime:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"spotlightTotalTime"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"spotlightTotalTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     }
 
     v32 = v8;
-    v12 = [v4 objectForKeyedSubscript:@"answerSynthesisTime"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
     }
 
     v31 = v10;
-    v14 = [v4 objectForKeyedSubscript:{@"searchGlobalSearchTime", v12}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"searchGlobalSearchTime", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setSearchGlobalSearchTime:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"searchHallucinationTime"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"searchHallucinationTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setSearchHallucinationTime:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"searchStartToSpotlightEnd"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"searchStartToSpotlightEnd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
     }
 
     v33 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"searchStartToGlobalSearchEnd"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"searchStartToGlobalSearchEnd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setSearchStartToGlobalSearchEnd:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"preSearchTime"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"preSearchTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setPreSearchTime:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"postSearchTime"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"postSearchTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       [(PNRODSchemaPNRODSearch *)v5 setPostSearchTime:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODSearch)initWithJSON:(id)a3
+- (PNRODSchemaPNRODSearch)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODSearch *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODSearch *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODSearch *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -153,186 +153,186 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_answerSynthesisTime)
   {
-    v4 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    answerSynthesisTime = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+    dictionaryRepresentation = [answerSynthesisTime dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"answerSynthesisTime"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"answerSynthesisTime"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"answerSynthesisTime"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"answerSynthesisTime"];
     }
   }
 
   if (self->_failureInfo)
   {
-    v7 = [(PNRODSchemaPNRODSearch *)self failureInfo];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failureInfo = [(PNRODSchemaPNRODSearch *)self failureInfo];
+    dictionaryRepresentation2 = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failureInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failureInfo"];
     }
   }
 
   if (self->_postSearchTime)
   {
-    v10 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    postSearchTime = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+    dictionaryRepresentation3 = [postSearchTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"postSearchTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"postSearchTime"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"postSearchTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"postSearchTime"];
     }
   }
 
   if (self->_preSearchTime)
   {
-    v13 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    preSearchTime = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+    dictionaryRepresentation4 = [preSearchTime dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"preSearchTime"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"preSearchTime"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"preSearchTime"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"preSearchTime"];
     }
   }
 
   if (self->_searchGlobalSearchTime)
   {
-    v16 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    searchGlobalSearchTime = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+    dictionaryRepresentation5 = [searchGlobalSearchTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"searchGlobalSearchTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"searchGlobalSearchTime"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"searchGlobalSearchTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"searchGlobalSearchTime"];
     }
   }
 
   if (self->_searchHallucinationTime)
   {
-    v19 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    searchHallucinationTime = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+    dictionaryRepresentation6 = [searchHallucinationTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"searchHallucinationTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"searchHallucinationTime"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"searchHallucinationTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"searchHallucinationTime"];
     }
   }
 
   if (self->_searchStartToGlobalSearchEnd)
   {
-    v22 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    searchStartToGlobalSearchEnd = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+    dictionaryRepresentation7 = [searchStartToGlobalSearchEnd dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"searchStartToGlobalSearchEnd"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"searchStartToGlobalSearchEnd"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"searchStartToGlobalSearchEnd"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"searchStartToGlobalSearchEnd"];
     }
   }
 
   if (self->_searchStartToSpotlightEnd)
   {
-    v25 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    searchStartToSpotlightEnd = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+    dictionaryRepresentation8 = [searchStartToSpotlightEnd dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"searchStartToSpotlightEnd"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"searchStartToSpotlightEnd"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"searchStartToSpotlightEnd"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"searchStartToSpotlightEnd"];
     }
   }
 
   if (self->_searchToolId)
   {
-    v28 = [(PNRODSchemaPNRODSearch *)self searchToolId];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    searchToolId = [(PNRODSchemaPNRODSearch *)self searchToolId];
+    dictionaryRepresentation9 = [searchToolId dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"searchToolId"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"searchToolId"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"searchToolId"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"searchToolId"];
     }
   }
 
   if (self->_searchTotalHandleTime)
   {
-    v31 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    searchTotalHandleTime = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+    dictionaryRepresentation10 = [searchTotalHandleTime dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"searchTotalHandleTime"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"searchTotalHandleTime"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"searchTotalHandleTime"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"searchTotalHandleTime"];
     }
   }
 
   if (self->_spotlightTotalTime)
   {
-    v34 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    spotlightTotalTime = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+    dictionaryRepresentation11 = [spotlightTotalTime dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"spotlightTotalTime"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"spotlightTotalTime"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"spotlightTotalTime"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"spotlightTotalTime"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -350,28 +350,28 @@
   return v9 ^ v12 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchToolId];
-  v6 = [v4 searchToolId];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchToolId];
+  searchToolId2 = [equalCopy searchToolId];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v7 = [(PNRODSchemaPNRODSearch *)self searchToolId];
-  if (v7)
+  searchToolId3 = [(PNRODSchemaPNRODSearch *)self searchToolId];
+  if (searchToolId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODSearch *)self searchToolId];
-    v10 = [v4 searchToolId];
-    v11 = [v9 isEqual:v10];
+    v8 = searchToolId3;
+    searchToolId4 = [(PNRODSchemaPNRODSearch *)self searchToolId];
+    searchToolId5 = [equalCopy searchToolId];
+    v11 = [searchToolId4 isEqual:searchToolId5];
 
     if (!v11)
     {
@@ -383,20 +383,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
-  v6 = [v4 searchTotalHandleTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+  searchToolId2 = [equalCopy searchTotalHandleTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v12 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
-  if (v12)
+  searchTotalHandleTime = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+  if (searchTotalHandleTime)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
-    v15 = [v4 searchTotalHandleTime];
-    v16 = [v14 isEqual:v15];
+    v13 = searchTotalHandleTime;
+    searchTotalHandleTime2 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+    searchTotalHandleTime3 = [equalCopy searchTotalHandleTime];
+    v16 = [searchTotalHandleTime2 isEqual:searchTotalHandleTime3];
 
     if (!v16)
     {
@@ -408,20 +408,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
-  v6 = [v4 spotlightTotalTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+  searchToolId2 = [equalCopy spotlightTotalTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v17 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
-  if (v17)
+  spotlightTotalTime = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+  if (spotlightTotalTime)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
-    v20 = [v4 spotlightTotalTime];
-    v21 = [v19 isEqual:v20];
+    v18 = spotlightTotalTime;
+    spotlightTotalTime2 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+    spotlightTotalTime3 = [equalCopy spotlightTotalTime];
+    v21 = [spotlightTotalTime2 isEqual:spotlightTotalTime3];
 
     if (!v21)
     {
@@ -433,20 +433,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
-  v6 = [v4 answerSynthesisTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+  searchToolId2 = [equalCopy answerSynthesisTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v22 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
-  if (v22)
+  answerSynthesisTime = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+  if (answerSynthesisTime)
   {
-    v23 = v22;
-    v24 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
-    v25 = [v4 answerSynthesisTime];
-    v26 = [v24 isEqual:v25];
+    v23 = answerSynthesisTime;
+    answerSynthesisTime2 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+    answerSynthesisTime3 = [equalCopy answerSynthesisTime];
+    v26 = [answerSynthesisTime2 isEqual:answerSynthesisTime3];
 
     if (!v26)
     {
@@ -458,20 +458,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
-  v6 = [v4 searchGlobalSearchTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+  searchToolId2 = [equalCopy searchGlobalSearchTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v27 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
-  if (v27)
+  searchGlobalSearchTime = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+  if (searchGlobalSearchTime)
   {
-    v28 = v27;
-    v29 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
-    v30 = [v4 searchGlobalSearchTime];
-    v31 = [v29 isEqual:v30];
+    v28 = searchGlobalSearchTime;
+    searchGlobalSearchTime2 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+    searchGlobalSearchTime3 = [equalCopy searchGlobalSearchTime];
+    v31 = [searchGlobalSearchTime2 isEqual:searchGlobalSearchTime3];
 
     if (!v31)
     {
@@ -483,20 +483,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
-  v6 = [v4 searchHallucinationTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+  searchToolId2 = [equalCopy searchHallucinationTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v32 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
-  if (v32)
+  searchHallucinationTime = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+  if (searchHallucinationTime)
   {
-    v33 = v32;
-    v34 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
-    v35 = [v4 searchHallucinationTime];
-    v36 = [v34 isEqual:v35];
+    v33 = searchHallucinationTime;
+    searchHallucinationTime2 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+    searchHallucinationTime3 = [equalCopy searchHallucinationTime];
+    v36 = [searchHallucinationTime2 isEqual:searchHallucinationTime3];
 
     if (!v36)
     {
@@ -508,20 +508,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
-  v6 = [v4 searchStartToSpotlightEnd];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+  searchToolId2 = [equalCopy searchStartToSpotlightEnd];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v37 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
-  if (v37)
+  searchStartToSpotlightEnd = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+  if (searchStartToSpotlightEnd)
   {
-    v38 = v37;
-    v39 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
-    v40 = [v4 searchStartToSpotlightEnd];
-    v41 = [v39 isEqual:v40];
+    v38 = searchStartToSpotlightEnd;
+    searchStartToSpotlightEnd2 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+    searchStartToSpotlightEnd3 = [equalCopy searchStartToSpotlightEnd];
+    v41 = [searchStartToSpotlightEnd2 isEqual:searchStartToSpotlightEnd3];
 
     if (!v41)
     {
@@ -533,20 +533,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
-  v6 = [v4 searchStartToGlobalSearchEnd];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+  searchToolId2 = [equalCopy searchStartToGlobalSearchEnd];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v42 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
-  if (v42)
+  searchStartToGlobalSearchEnd = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+  if (searchStartToGlobalSearchEnd)
   {
-    v43 = v42;
-    v44 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
-    v45 = [v4 searchStartToGlobalSearchEnd];
-    v46 = [v44 isEqual:v45];
+    v43 = searchStartToGlobalSearchEnd;
+    searchStartToGlobalSearchEnd2 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+    searchStartToGlobalSearchEnd3 = [equalCopy searchStartToGlobalSearchEnd];
+    v46 = [searchStartToGlobalSearchEnd2 isEqual:searchStartToGlobalSearchEnd3];
 
     if (!v46)
     {
@@ -558,20 +558,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
-  v6 = [v4 preSearchTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+  searchToolId2 = [equalCopy preSearchTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v47 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
-  if (v47)
+  preSearchTime = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+  if (preSearchTime)
   {
-    v48 = v47;
-    v49 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
-    v50 = [v4 preSearchTime];
-    v51 = [v49 isEqual:v50];
+    v48 = preSearchTime;
+    preSearchTime2 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+    preSearchTime3 = [equalCopy preSearchTime];
+    v51 = [preSearchTime2 isEqual:preSearchTime3];
 
     if (!v51)
     {
@@ -583,20 +583,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
-  v6 = [v4 postSearchTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+  searchToolId2 = [equalCopy postSearchTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_56;
   }
 
-  v52 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
-  if (v52)
+  postSearchTime = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+  if (postSearchTime)
   {
-    v53 = v52;
-    v54 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
-    v55 = [v4 postSearchTime];
-    v56 = [v54 isEqual:v55];
+    v53 = postSearchTime;
+    postSearchTime2 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+    postSearchTime3 = [equalCopy postSearchTime];
+    v56 = [postSearchTime2 isEqual:postSearchTime3];
 
     if (!v56)
     {
@@ -608,12 +608,12 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSearch *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) != (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODSearch *)self failureInfo];
+  searchToolId2 = [equalCopy failureInfo];
+  if ((searchToolId != 0) != (searchToolId2 == 0))
   {
-    v57 = [(PNRODSchemaPNRODSearch *)self failureInfo];
-    if (!v57)
+    failureInfo = [(PNRODSchemaPNRODSearch *)self failureInfo];
+    if (!failureInfo)
     {
 
 LABEL_60:
@@ -621,10 +621,10 @@ LABEL_60:
       goto LABEL_58;
     }
 
-    v58 = v57;
-    v59 = [(PNRODSchemaPNRODSearch *)self failureInfo];
-    v60 = [v4 failureInfo];
-    v61 = [v59 isEqual:v60];
+    v58 = failureInfo;
+    failureInfo2 = [(PNRODSchemaPNRODSearch *)self failureInfo];
+    failureInfo3 = [equalCopy failureInfo];
+    v61 = [failureInfo2 isEqual:failureInfo3];
 
     if (v61)
     {
@@ -644,202 +644,202 @@ LABEL_58:
   return v62;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v27 = a3;
-  v4 = [(PNRODSchemaPNRODSearch *)self searchToolId];
+  toCopy = to;
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchToolId];
 
-  if (v4)
+  if (searchToolId)
   {
-    v5 = [(PNRODSchemaPNRODSearch *)self searchToolId];
+    searchToolId2 = [(PNRODSchemaPNRODSearch *)self searchToolId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+  searchTotalHandleTime = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
 
-  if (v6)
+  if (searchTotalHandleTime)
   {
-    v7 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+    searchTotalHandleTime2 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+  spotlightTotalTime = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
 
-  if (v8)
+  if (spotlightTotalTime)
   {
-    v9 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+    spotlightTotalTime2 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+  answerSynthesisTime = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
 
-  if (v10)
+  if (answerSynthesisTime)
   {
-    v11 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+    answerSynthesisTime2 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+  searchGlobalSearchTime = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
 
-  if (v12)
+  if (searchGlobalSearchTime)
   {
-    v13 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+    searchGlobalSearchTime2 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+  searchHallucinationTime = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
 
-  if (v14)
+  if (searchHallucinationTime)
   {
-    v15 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+    searchHallucinationTime2 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+  searchStartToSpotlightEnd = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
 
-  if (v16)
+  if (searchStartToSpotlightEnd)
   {
-    v17 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+    searchStartToSpotlightEnd2 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+  searchStartToGlobalSearchEnd = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
 
-  if (v18)
+  if (searchStartToGlobalSearchEnd)
   {
-    v19 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+    searchStartToGlobalSearchEnd2 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+  preSearchTime = [(PNRODSchemaPNRODSearch *)self preSearchTime];
 
-  if (v20)
+  if (preSearchTime)
   {
-    v21 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+    preSearchTime2 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+  postSearchTime = [(PNRODSchemaPNRODSearch *)self postSearchTime];
 
-  if (v22)
+  if (postSearchTime)
   {
-    v23 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+    postSearchTime2 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(PNRODSchemaPNRODSearch *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODSearch *)self failureInfo];
 
-  v25 = v27;
-  if (v24)
+  v25 = toCopy;
+  if (failureInfo)
   {
-    v26 = [(PNRODSchemaPNRODSearch *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODSearch *)self failureInfo];
     PBDataWriterWriteSubmessage();
 
-    v25 = v27;
+    v25 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v40.receiver = self;
   v40.super_class = PNRODSchemaPNRODSearch;
-  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODSearch *)self searchToolId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:policyCopy];
+  searchToolId = [(PNRODSchemaPNRODSearch *)self searchToolId];
+  v7 = [searchToolId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchToolId];
   }
 
-  v9 = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  searchTotalHandleTime = [(PNRODSchemaPNRODSearch *)self searchTotalHandleTime];
+  v10 = [searchTotalHandleTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchTotalHandleTime];
   }
 
-  v12 = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  spotlightTotalTime = [(PNRODSchemaPNRODSearch *)self spotlightTotalTime];
+  v13 = [spotlightTotalTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSpotlightTotalTime];
   }
 
-  v15 = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  answerSynthesisTime = [(PNRODSchemaPNRODSearch *)self answerSynthesisTime];
+  v16 = [answerSynthesisTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODSearch *)self deleteAnswerSynthesisTime];
   }
 
-  v18 = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  searchGlobalSearchTime = [(PNRODSchemaPNRODSearch *)self searchGlobalSearchTime];
+  v19 = [searchGlobalSearchTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchGlobalSearchTime];
   }
 
-  v21 = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  searchHallucinationTime = [(PNRODSchemaPNRODSearch *)self searchHallucinationTime];
+  v22 = [searchHallucinationTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchHallucinationTime];
   }
 
-  v24 = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  searchStartToSpotlightEnd = [(PNRODSchemaPNRODSearch *)self searchStartToSpotlightEnd];
+  v25 = [searchStartToSpotlightEnd applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchStartToSpotlightEnd];
   }
 
-  v27 = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  searchStartToGlobalSearchEnd = [(PNRODSchemaPNRODSearch *)self searchStartToGlobalSearchEnd];
+  v28 = [searchStartToGlobalSearchEnd applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODSearch *)self deleteSearchStartToGlobalSearchEnd];
   }
 
-  v30 = [(PNRODSchemaPNRODSearch *)self preSearchTime];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  preSearchTime = [(PNRODSchemaPNRODSearch *)self preSearchTime];
+  v31 = [preSearchTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODSearch *)self deletePreSearchTime];
   }
 
-  v33 = [(PNRODSchemaPNRODSearch *)self postSearchTime];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  postSearchTime = [(PNRODSchemaPNRODSearch *)self postSearchTime];
+  v34 = [postSearchTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PNRODSchemaPNRODSearch *)self deletePostSearchTime];
   }
 
-  v36 = [(PNRODSchemaPNRODSearch *)self failureInfo];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODSearch *)self failureInfo];
+  v37 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PNRODSchemaPNRODSearch *)self deleteFailureInfo];
   }

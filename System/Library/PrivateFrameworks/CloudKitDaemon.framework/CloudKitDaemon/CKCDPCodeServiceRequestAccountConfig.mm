@@ -1,22 +1,22 @@
 @interface CKCDPCodeServiceRequestAccountConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCorporateSharingEnabled:(BOOL)a3;
-- (void)setHasLastWebActivityUTCMills:(BOOL)a3;
-- (void)setHasPhotosWebAccessTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCorporateSharingEnabled:(BOOL)enabled;
+- (void)setHasLastWebActivityUTCMills:(BOOL)mills;
+- (void)setHasPhotosWebAccessTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequestAccountConfig
 
-- (void)setHasCorporateSharingEnabled:(BOOL)a3
+- (void)setHasCorporateSharingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLastWebActivityUTCMills:(BOOL)a3
+- (void)setHasLastWebActivityUTCMills:(BOOL)mills
 {
-  if (a3)
+  if (mills)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPhotosWebAccessTimestamp:(BOOL)a3
+- (void)setHasPhotosWebAccessTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -113,9 +113,9 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -150,50 +150,50 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[40] = self->_corporateSharingEnabled;
-    v4[44] |= 8u;
+    toCopy[40] = self->_corporateSharingEnabled;
+    toCopy[44] |= 8u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_lastWebActivityUTCMills;
-    v4[44] |= 2u;
+    *(toCopy + 2) = self->_lastWebActivityUTCMills;
+    toCopy[44] |= 2u;
   }
 
   countryCode = self->_countryCode;
   if (countryCode)
   {
-    v9 = v4;
-    objc_msgSend_setCountryCode_(v4, v5, countryCode);
-    v4 = v9;
+    v9 = toCopy;
+    objc_msgSend_setCountryCode_(toCopy, v5, countryCode);
+    toCopy = v9;
   }
 
   v8 = self->_has;
   if ((v8 & 4) != 0)
   {
-    *(v4 + 3) = self->_photosWebAccessTimestamp;
-    v4[44] |= 4u;
+    *(toCopy + 3) = self->_photosWebAccessTimestamp;
+    toCopy[44] |= 4u;
     v8 = self->_has;
   }
 
   if (v8)
   {
-    *(v4 + 1) = self->_accountFlags;
-    v4[44] |= 1u;
+    *(toCopy + 1) = self->_accountFlags;
+    toCopy[44] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   has = self->_has;
@@ -210,7 +210,7 @@
     *(v10 + 44) |= 2u;
   }
 
-  v14 = objc_msgSend_copyWithZone_(self->_countryCode, v11, a3);
+  v14 = objc_msgSend_copyWithZone_(self->_countryCode, v11, zone);
   v15 = *(v12 + 32);
   *(v12 + 32) = v14;
 
@@ -231,65 +231,65 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v9 = *(v4 + 44);
+  v9 = *(equalCopy + 44);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_27;
     }
 
-    v10 = *(v4 + 40);
+    v10 = *(equalCopy + 40);
     if (self->_corporateSharingEnabled)
     {
-      if ((v4[5] & 1) == 0)
+      if ((equalCopy[5] & 1) == 0)
       {
         goto LABEL_27;
       }
     }
 
-    else if (v4[5])
+    else if (equalCopy[5])
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_lastWebActivityUTCMills != v4[2])
+    if ((*(equalCopy + 44) & 2) == 0 || self->_lastWebActivityUTCMills != equalCopy[2])
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   countryCode = self->_countryCode;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (countryCode | v12)
   {
     if (objc_msgSend_isEqual_(countryCode, v7, v12))
     {
       has = self->_has;
-      v9 = *(v4 + 44);
+      v9 = *(equalCopy + 44);
       goto LABEL_16;
     }
 
@@ -301,7 +301,7 @@ LABEL_27:
 LABEL_16:
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_photosWebAccessTimestamp != v4[3])
+    if ((v9 & 4) == 0 || self->_photosWebAccessTimestamp != equalCopy[3])
     {
       goto LABEL_27;
     }
@@ -315,7 +315,7 @@ LABEL_16:
   v13 = (v9 & 1) == 0;
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_accountFlags != v4[1])
+    if ((v9 & 1) == 0 || self->_accountFlags != equalCopy[1])
     {
       goto LABEL_27;
     }
@@ -377,42 +377,42 @@ LABEL_8:
   return v5 ^ v4 ^ v7 ^ v8 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 44);
+  fromCopy = from;
+  v6 = *(fromCopy + 44);
   if ((v6 & 8) != 0)
   {
-    self->_corporateSharingEnabled = *(v4 + 40);
+    self->_corporateSharingEnabled = *(fromCopy + 40);
     *&self->_has |= 8u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_lastWebActivityUTCMills = *(v4 + 2);
+    self->_lastWebActivityUTCMills = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (v7)
   {
-    v9 = v4;
+    v9 = fromCopy;
     objc_msgSend_setCountryCode_(self, v5, v7);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(fromCopy + 44);
   if ((v8 & 4) != 0)
   {
-    self->_photosWebAccessTimestamp = *(v4 + 3);
+    self->_photosWebAccessTimestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v8 = *(v4 + 44);
+    v8 = *(fromCopy + 44);
   }
 
   if (v8)
   {
-    self->_accountFlags = *(v4 + 1);
+    self->_accountFlags = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

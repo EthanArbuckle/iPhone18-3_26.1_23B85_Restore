@@ -1,63 +1,63 @@
 @interface RTAuthorizedLocationZDRLocationManager
 - (BOOL)_fetchStoredZDRLocations;
-- (BOOL)_isDeviceCurrentlyAtZDRLocation:(id)a3 handler:(id)a4;
-- (BOOL)_isDistanceBetween2PointsInRange:(id)a3 aLoi:(id)a4 range:(double)a5;
-- (BOOL)_isZdrLocationTrusted:(id)a3;
-- (BOOL)_mergeCRClassifiedLOIWithZDRDb:(id)a3;
-- (BOOL)_storeZDRLocationEntryToDb:(id)a3;
+- (BOOL)_isDeviceCurrentlyAtZDRLocation:(id)location handler:(id)handler;
+- (BOOL)_isDistanceBetween2PointsInRange:(id)range aLoi:(id)loi range:(double)a5;
+- (BOOL)_isZdrLocationTrusted:(id)trusted;
+- (BOOL)_mergeCRClassifiedLOIWithZDRDb:(id)db;
+- (BOOL)_storeZDRLocationEntryToDb:(id)db;
 - (id)_deduceSetupLocation;
 - (id)_fetchCurrentLocation;
-- (id)_fetchLatestLocationFromListOfLocations:(id)a3;
+- (id)_fetchLatestLocationFromListOfLocations:(id)locations;
 - (id)_fetchRecentLocations;
 - (id)_getHomeWorkSchoolLois;
-- (id)initZDRLocationManager:(id)a3 visitManager:(id)a4 distanceCalculator:(id)a5 locationManager:(id)a6 learnedLocationManager:(id)a7 defaultsManager:(id)a8 confirmationStatus:(id)a9 zdrLocationsStore:(id)a10 platform:(id)a11 metrics:(id)a12;
+- (id)initZDRLocationManager:(id)manager visitManager:(id)visitManager distanceCalculator:(id)calculator locationManager:(id)locationManager learnedLocationManager:(id)learnedLocationManager defaultsManager:(id)defaultsManager confirmationStatus:(id)status zdrLocationsStore:(id)self0 platform:(id)self1 metrics:(id)self2;
 - (id)trustedTimeNow;
 - (int)_getSetupLocationValidAgeSeconds;
-- (int64_t)_assertWeAreAtAnyZDRLocation:(id)a3;
-- (int64_t)_assertWeAreAtSpecificZDRLocation:(id)a3 recentLocations:(id)a4;
-- (int64_t)_assertWeAreAtZDRLocationWithVisit:(id)a3;
-- (int64_t)_isDeviceCurrentlyAtAuthorizedLocation:(id)a3;
+- (int64_t)_assertWeAreAtAnyZDRLocation:(id)location;
+- (int64_t)_assertWeAreAtSpecificZDRLocation:(id)location recentLocations:(id)locations;
+- (int64_t)_assertWeAreAtZDRLocationWithVisit:(id)visit;
+- (int64_t)_isDeviceCurrentlyAtAuthorizedLocation:(id)location;
 - (void)_collectCurationMetric;
-- (void)_collectMetric:(int64_t)a3 reasonCode:(int64_t)a4 zdrComputationTime_s:(double)a5;
-- (void)_collectZdrConfirmationMetric:(double)a3 zdrLoc:(id)a4;
-- (void)_computeALOIMetrics:(id)a3 reasonCode:(int64_t)a4;
-- (void)_deleteZDRLocationEntryFromDb:(id)a3;
+- (void)_collectMetric:(int64_t)metric reasonCode:(int64_t)code zdrComputationTime_s:(double)time_s;
+- (void)_collectZdrConfirmationMetric:(double)metric zdrLoc:(id)loc;
+- (void)_computeALOIMetrics:(id)metrics reasonCode:(int64_t)code;
+- (void)_deleteZDRLocationEntryFromDb:(id)db;
 - (void)_determineSetupLocation;
 - (void)_disableNewSetupLocationGeneration;
-- (void)_getSetupLocationFromZDRLocations:(id)a3;
+- (void)_getSetupLocationFromZDRLocations:(id)locations;
 - (void)_initMetric;
 - (void)_purgeExtraSetupLocations;
 - (void)_readDefaultsValues;
-- (void)_refreshSetupLocationToDb:(id)a3 locToStore:(id)a4;
+- (void)_refreshSetupLocationToDb:(id)db locToStore:(id)store;
 - (void)_removeStaleEntriesFromDatabase;
-- (void)_storeClassifiedLocationToDB:(id)a3;
-- (void)_updateALOILiveMetrics:(id)a3 aLoi:(id)a4 reasonCode:(int64_t)a5;
-- (void)_updateSetupLocationToDb:(id)a3;
-- (void)fetchAuthorizedLocationZDRLocations:(id)a3;
-- (void)fetchZDRLocationStatus:(id)a3 fullSecurityAloiList:(id)a4 handler:(id)a5;
-- (void)onFirstUnlock:(BOOL)a3;
+- (void)_storeClassifiedLocationToDB:(id)b;
+- (void)_updateALOILiveMetrics:(id)metrics aLoi:(id)loi reasonCode:(int64_t)code;
+- (void)_updateSetupLocationToDb:(id)db;
+- (void)fetchAuthorizedLocationZDRLocations:(id)locations;
+- (void)fetchZDRLocationStatus:(id)status fullSecurityAloiList:(id)list handler:(id)handler;
+- (void)onFirstUnlock:(BOOL)unlock;
 @end
 
 @implementation RTAuthorizedLocationZDRLocationManager
 
-- (id)initZDRLocationManager:(id)a3 visitManager:(id)a4 distanceCalculator:(id)a5 locationManager:(id)a6 learnedLocationManager:(id)a7 defaultsManager:(id)a8 confirmationStatus:(id)a9 zdrLocationsStore:(id)a10 platform:(id)a11 metrics:(id)a12
+- (id)initZDRLocationManager:(id)manager visitManager:(id)visitManager distanceCalculator:(id)calculator locationManager:(id)locationManager learnedLocationManager:(id)learnedLocationManager defaultsManager:(id)defaultsManager confirmationStatus:(id)status zdrLocationsStore:(id)self0 platform:(id)self1 metrics:(id)self2
 {
   v69 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = v17;
-  v22 = v20;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
+  managerCopy = manager;
+  visitManagerCopy = visitManager;
+  calculatorCopy = calculator;
+  locationManagerCopy = locationManager;
+  learnedLocationManagerCopy = learnedLocationManager;
+  v21 = visitManagerCopy;
+  v22 = learnedLocationManagerCopy;
+  defaultsManagerCopy = defaultsManager;
+  statusCopy = status;
+  storeCopy = store;
+  platformCopy = platform;
+  metricsCopy = metrics;
   if (v21)
   {
-    if (v18)
+    if (calculatorCopy)
     {
       goto LABEL_3;
     }
@@ -75,10 +75,10 @@
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visitManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v18)
+    if (calculatorCopy)
     {
 LABEL_3:
-      if (v19)
+      if (locationManagerCopy)
       {
         goto LABEL_4;
       }
@@ -97,7 +97,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceCalculator (in %s:%d)", buf, 0x12u);
   }
 
-  if (v19)
+  if (locationManagerCopy)
   {
 LABEL_4:
     if (v22)
@@ -122,7 +122,7 @@ LABEL_17:
   if (v22)
   {
 LABEL_5:
-    if (v23)
+    if (defaultsManagerCopy)
     {
       goto LABEL_6;
     }
@@ -141,10 +141,10 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedLocationManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (v23)
+  if (defaultsManagerCopy)
   {
 LABEL_6:
-    if (v24)
+    if (statusCopy)
     {
       goto LABEL_7;
     }
@@ -163,10 +163,10 @@ LABEL_23:
     _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (v24)
+  if (statusCopy)
   {
 LABEL_7:
-    if (v25)
+    if (storeCopy)
     {
       goto LABEL_8;
     }
@@ -185,10 +185,10 @@ LABEL_26:
     _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: confirmationStatus (in %s:%d)", buf, 0x12u);
   }
 
-  if (v25)
+  if (storeCopy)
   {
 LABEL_8:
-    if (v26)
+    if (platformCopy)
     {
       goto LABEL_9;
     }
@@ -207,10 +207,10 @@ LABEL_29:
     _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: zdrLocationsStore (in %s:%d)", buf, 0x12u);
   }
 
-  if (v26)
+  if (platformCopy)
   {
 LABEL_9:
-    if (v27)
+    if (metricsCopy)
     {
       goto LABEL_38;
     }
@@ -229,7 +229,7 @@ LABEL_32:
     _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: platform (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v27)
+  if (!metricsCopy)
   {
 LABEL_35:
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -250,16 +250,16 @@ LABEL_38:
   v38 = v37;
   if (v37)
   {
-    objc_storeStrong(&v37->_queue, a3);
+    objc_storeStrong(&v37->_queue, manager);
     [(RTAuthorizedLocationZDRLocationManager *)v38 queue];
-    v51 = v27;
-    v39 = v26;
-    v40 = v25;
-    v41 = v24;
-    v42 = v23;
+    v51 = metricsCopy;
+    v39 = platformCopy;
+    v40 = storeCopy;
+    v41 = statusCopy;
+    v42 = defaultsManagerCopy;
     v43 = v22;
-    v44 = v19;
-    v45 = v18;
+    v44 = locationManagerCopy;
+    v45 = calculatorCopy;
     v47 = v46 = v21;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -278,14 +278,14 @@ LABEL_38:
     dispatch_async(v47, block);
 
     v21 = v46;
-    v18 = v45;
-    v19 = v44;
+    calculatorCopy = v45;
+    locationManagerCopy = v44;
     v22 = v43;
-    v23 = v42;
-    v24 = v41;
-    v25 = v40;
-    v26 = v39;
-    v27 = v51;
+    defaultsManagerCopy = v42;
+    statusCopy = v41;
+    storeCopy = v40;
+    platformCopy = v39;
+    metricsCopy = v51;
   }
 
   return v38;
@@ -327,25 +327,25 @@ uint64_t __206__RTAuthorizedLocationZDRLocationManager_initZDRLocationManager_vi
 {
   if (self->_relaxTrustedTimeRequirement)
   {
-    v2 = [MEMORY[0x277CBEAA8] now];
+    getApproximateTrustedDateNowWithUnsecureFallback = [MEMORY[0x277CBEAA8] now];
   }
 
   else if (self->_allowUnsecureTimeFallback)
   {
-    v2 = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNowWithUnsecureFallback];
+    getApproximateTrustedDateNowWithUnsecureFallback = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNowWithUnsecureFallback];
   }
 
   else if (self->_forceTrustedTimeUnavailability)
   {
-    v2 = 0;
+    getApproximateTrustedDateNowWithUnsecureFallback = 0;
   }
 
   else
   {
-    v2 = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNow];
+    getApproximateTrustedDateNowWithUnsecureFallback = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNow];
   }
 
-  return v2;
+  return getApproximateTrustedDateNowWithUnsecureFallback;
 }
 
 - (void)_readDefaultsValues
@@ -394,13 +394,13 @@ uint64_t __206__RTAuthorizedLocationZDRLocationManager_initZDRLocationManager_vi
   }
 }
 
-- (void)_updateSetupLocationToDb:(id)a3
+- (void)_updateSetupLocationToDb:(id)db
 {
   v76 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dbCopy = db;
   v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v5)
+  if (!dbCopy)
   {
     if (!v7)
     {
@@ -433,9 +433,9 @@ LABEL_26:
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@,storeInvoked", buf, 0x16u);
   }
 
-  v11 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
+  zdrLocationsStore = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
 
-  if (!v11)
+  if (!zdrLocationsStore)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -454,14 +454,14 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v12 = [v5 sourceInformation];
-  v13 = ([v12 isProducedByAccessory] & 1) != 0 || objc_msgSend(v5, "type") == 3;
+  sourceInformation = [dbCopy sourceInformation];
+  v13 = ([sourceInformation isProducedByAccessory] & 1) != 0 || objc_msgSend(dbCopy, "type") == 3;
 
-  v19 = [v5 sourceInformation];
-  v20 = [v19 isSimulatedBySoftware];
+  sourceInformation2 = [dbCopy sourceInformation];
+  isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
 
-  [v5 horizontalAccuracy];
-  v22 = (v21 >= 0.0) & ((v20 | v13) ^ 1);
+  [dbCopy horizontalAccuracy];
+  v22 = (v21 >= 0.0) & ((isSimulatedBySoftware | v13) ^ 1);
   v23 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
@@ -475,7 +475,7 @@ LABEL_26:
     v63 = 1026;
     *v64 = v13;
     *&v64[4] = 1026;
-    *&v64[6] = v20 & 1;
+    *&v64[6] = isSimulatedBySoftware & 1;
     LOWORD(v65) = 1026;
     *(&v65 + 2) = v22;
     _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_DEFAULT, "%@:%@,isAccessory,%{public}d,isSimulated,%{public}d,isValidLoc,%{public}d", buf, 0x28u);
@@ -502,13 +502,13 @@ LABEL_26:
 
   v27 = [RTAuthorizedLocationZDRLocations alloc];
   v28 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v29 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  [v5 coordinate];
+  trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  [dbCopy coordinate];
   v31 = v30;
-  [v5 coordinate];
+  [dbCopy coordinate];
   v33 = v32;
-  v34 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  v6 = [(RTAuthorizedLocationZDRLocations *)v27 initWithZDRLocation:v28 zdrLocationDbEntryTimeCfatSec:v29 zdrLocationType:4 zdrLocationLatitudeDeg:v34 zdrLocationLongitudeDeg:v31 zdrLocationLastSeenTimeCfatSec:v33];
+  trustedTimeNow2 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  v6 = [(RTAuthorizedLocationZDRLocations *)v27 initWithZDRLocation:v28 zdrLocationDbEntryTimeCfatSec:trustedTimeNow zdrLocationType:4 zdrLocationLatitudeDeg:trustedTimeNow2 zdrLocationLongitudeDeg:v31 zdrLocationLastSeenTimeCfatSec:v33];
 
   v35 = [(RTAuthorizedLocationZDRLocationManager *)self _storeZDRLocationEntryToDb:v6];
   if (v35)
@@ -524,10 +524,10 @@ LABEL_26:
       v37 = objc_opt_class();
       v58 = NSStringFromClass(v37);
       v38 = NSStringFromSelector(a2);
-      v39 = [v6 zdrLocationUUID];
-      v40 = [v6 zdrLocationDbEntryTimeCfatSec];
-      v57 = [v6 zdrLocationType];
-      v56 = [v6 zdrLocationLastSeenTimeCfatSec];
+      zdrLocationUUID = [v6 zdrLocationUUID];
+      zdrLocationDbEntryTimeCfatSec = [v6 zdrLocationDbEntryTimeCfatSec];
+      zdrLocationType = [v6 zdrLocationType];
+      zdrLocationLastSeenTimeCfatSec = [v6 zdrLocationLastSeenTimeCfatSec];
       [v6 zdrLocationLatitudeDeg];
       v42 = v41;
       [v6 zdrLocationLongitudeDeg];
@@ -541,13 +541,13 @@ LABEL_26:
       v61 = 2112;
       v62 = v38;
       v63 = 2114;
-      *v64 = v39;
+      *v64 = zdrLocationUUID;
       *&v64[8] = 2114;
-      v65 = v40;
+      v65 = zdrLocationDbEntryTimeCfatSec;
       v66 = 1026;
-      v67 = v57;
+      v67 = zdrLocationType;
       v68 = 2114;
-      v69 = v56;
+      v69 = zdrLocationLastSeenTimeCfatSec;
       v70 = 2053;
       v71 = v42;
       v72 = 2053;
@@ -564,12 +564,12 @@ LABEL_26:
     v50 = objc_opt_class();
     v51 = NSStringFromClass(v50);
     v52 = NSStringFromSelector(a2);
-    v53 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-    v54 = v53;
-    if (v53)
+    zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+    v54 = zdrLocationsMemoryCopy;
+    if (zdrLocationsMemoryCopy)
     {
       self = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-      LODWORD(v53) = [(RTAuthorizedLocationZDRLocationManager *)self count];
+      LODWORD(zdrLocationsMemoryCopy) = [(RTAuthorizedLocationZDRLocationManager *)self count];
     }
 
     *buf = 138413058;
@@ -579,7 +579,7 @@ LABEL_26:
     v63 = 1026;
     *v64 = v35;
     *&v64[4] = 1026;
-    *&v64[6] = v53;
+    *&v64[6] = zdrLocationsMemoryCopy;
     _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_DEFAULT, "%@:%@,storeSuccess,%{public}d,storeCount,%{public}u,", buf, 0x22u);
     if (v54)
     {
@@ -589,11 +589,11 @@ LABEL_26:
 LABEL_31:
 }
 
-- (void)_refreshSetupLocationToDb:(id)a3 locToStore:(id)a4
+- (void)_refreshSetupLocationToDb:(id)db locToStore:(id)store
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dbCopy = db;
+  storeCopy = store;
   v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -607,7 +607,7 @@ LABEL_31:
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@,storeInvoked", &v40, 0x16u);
   }
 
-  if (!v7 || !v8)
+  if (!dbCopy || !storeCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -629,9 +629,9 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  v13 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
+  zdrLocationsStore = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
 
-  if (!v13)
+  if (!zdrLocationsStore)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -650,14 +650,14 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v14 = [v8 sourceInformation];
-  v15 = ([v14 isProducedByAccessory] & 1) != 0 || objc_msgSend(v8, "type") == 3;
+  sourceInformation = [storeCopy sourceInformation];
+  v15 = ([sourceInformation isProducedByAccessory] & 1) != 0 || objc_msgSend(storeCopy, "type") == 3;
 
-  v22 = [v8 sourceInformation];
-  v23 = [v22 isSimulatedBySoftware];
+  sourceInformation2 = [storeCopy sourceInformation];
+  isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
 
-  [v8 horizontalAccuracy];
-  v25 = (v24 >= 0.0) & ((v23 | v15) ^ 1);
+  [storeCopy horizontalAccuracy];
+  v25 = (v24 >= 0.0) & ((isSimulatedBySoftware | v15) ^ 1);
   v26 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
@@ -671,7 +671,7 @@ LABEL_23:
     v44 = 1026;
     v45 = v15;
     v46 = 1026;
-    v47 = v23 & 1;
+    v47 = isSimulatedBySoftware & 1;
     v48 = 1026;
     v49 = v25;
     _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEFAULT, "%@:%@,isAccessory,%{public}d,isSimulated,%{public}d,isValidLoc,%{public}d", &v40, 0x28u);
@@ -696,14 +696,14 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v16 = v7;
+  v16 = dbCopy;
   [(RTAuthorizedLocationZDRLocationManager *)self _deleteZDRLocationEntryFromDb:v16];
-  [v8 coordinate];
+  [storeCopy coordinate];
   [v16 setZdrLocationLatitudeDeg:?];
-  [v8 coordinate];
+  [storeCopy coordinate];
   [v16 setZdrLocationLongitudeDeg:v30];
-  v31 = [v8 timestamp];
-  [v16 setZdrLocationLastSeenTimeCfatSec:v31];
+  timestamp = [storeCopy timestamp];
+  [v16 setZdrLocationLastSeenTimeCfatSec:timestamp];
 
   v32 = [(RTAuthorizedLocationZDRLocationManager *)self _storeZDRLocationEntryToDb:v16];
   if (v32)
@@ -717,12 +717,12 @@ LABEL_23:
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
     v36 = NSStringFromSelector(a2);
-    v37 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-    v38 = v37;
-    if (v37)
+    zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+    v38 = zdrLocationsMemoryCopy;
+    if (zdrLocationsMemoryCopy)
     {
       self = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-      LODWORD(v37) = [(RTAuthorizedLocationZDRLocationManager *)self count];
+      LODWORD(zdrLocationsMemoryCopy) = [(RTAuthorizedLocationZDRLocationManager *)self count];
     }
 
     v40 = 138413058;
@@ -732,7 +732,7 @@ LABEL_23:
     v44 = 1026;
     v45 = v32;
     v46 = 1026;
-    v47 = v37;
+    v47 = zdrLocationsMemoryCopy;
     _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_DEFAULT, "%@:%@,storeSuccess,%{public}d,storeCount,%{public}u", &v40, 0x22u);
     if (v38)
     {
@@ -742,14 +742,14 @@ LABEL_23:
 LABEL_28:
 }
 
-- (void)_deleteZDRLocationEntryFromDb:(id)a3
+- (void)_deleteZDRLocationEntryFromDb:(id)db
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  dbCopy = db;
+  if (dbCopy)
   {
     v6 = dispatch_semaphore_create(0);
-    v7 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
+    zdrLocationsStore = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __72__RTAuthorizedLocationZDRLocationManager__deleteZDRLocationEntryFromDb___block_invoke;
@@ -758,7 +758,7 @@ LABEL_28:
     v36 = a2;
     v8 = v6;
     v35 = v8;
-    [v7 deleteZDRLocation:v5 handler:v34];
+    [zdrLocationsStore deleteZDRLocation:dbCopy handler:v34];
 
     v9 = v8;
     v10 = [MEMORY[0x277CBEAA8] now];
@@ -771,11 +771,11 @@ LABEL_28:
       v13 = v12;
       v14 = objc_opt_new();
       v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 filteredArrayUsingPredicate:v15];
-      v18 = [v17 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+      firstObject = [v17 firstObject];
 
-      [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+      [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -853,18 +853,18 @@ void __72__RTAuthorizedLocationZDRLocationManager__deleteZDRLocationEntryFromDb_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_storeZDRLocationEntryToDb:(id)a3
+- (BOOL)_storeZDRLocationEntryToDb:(id)db
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dbCopy = db;
+  if (dbCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v47 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
+    zdrLocationsStore = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __69__RTAuthorizedLocationZDRLocationManager__storeZDRLocationEntryToDb___block_invoke;
@@ -872,7 +872,7 @@ void __72__RTAuthorizedLocationZDRLocationManager__deleteZDRLocationEntryFromDb_
     v42 = buf;
     v7 = v5;
     v41 = v7;
-    [v6 storeZDRLocation:v4 handler:v40];
+    [zdrLocationsStore storeZDRLocation:dbCopy handler:v40];
 
     v8 = v7;
     v9 = [MEMORY[0x277CBEAA8] now];
@@ -884,11 +884,11 @@ void __72__RTAuthorizedLocationZDRLocationManager__deleteZDRLocationEntryFromDb_
       v13 = v12;
       v14 = objc_opt_new();
       v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 filteredArrayUsingPredicate:v15];
-      v18 = [v17 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+      firstObject = [v17 firstObject];
 
-      [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+      [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -993,13 +993,13 @@ intptr_t __69__RTAuthorizedLocationZDRLocationManager__storeZDRLocationEntryToDb
     v47 = 0x3032000000;
     v48 = __Block_byref_object_copy__185;
     v49 = __Block_byref_object_dispose__185;
-    v50 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = 0;
     v42 = &v41;
     v43 = 0x2020000000;
     v44 = 0;
     v4 = dispatch_semaphore_create(0);
-    v5 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
+    zdrLocationsStore = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsStore];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __66__RTAuthorizedLocationZDRLocationManager__fetchStoredZDRLocations__block_invoke;
@@ -1010,7 +1010,7 @@ intptr_t __69__RTAuthorizedLocationZDRLocationManager__storeZDRLocationEntryToDb
     v39 = &v45;
     v6 = v4;
     v37 = v6;
-    [v5 fetchZDRLocationWithOptions:v35 handler:v36];
+    [zdrLocationsStore fetchZDRLocationWithOptions:v35 handler:v36];
 
     v7 = v6;
     v8 = [MEMORY[0x277CBEAA8] now];
@@ -1022,11 +1022,11 @@ intptr_t __69__RTAuthorizedLocationZDRLocationManager__storeZDRLocationEntryToDb
       v12 = v11;
       v13 = objc_opt_new();
       v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-      v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v16 = [v15 filteredArrayUsingPredicate:v14];
-      v17 = [v16 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+      firstObject = [v16 firstObject];
 
-      [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+      [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
       v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
       {
@@ -1186,10 +1186,10 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_getSetupLocationFromZDRLocations:(id)a3
+- (void)_getSetupLocationFromZDRLocations:(id)locations
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationsCopy = locations;
   if (![(RTAuthorizedLocationZDRLocationManager *)self isUnlockedSinceBoot])
   {
     v18 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -1204,13 +1204,13 @@ LABEL_4:
 LABEL_19:
     v25 = [v22 initWithDomain:v23 code:v24 userInfo:v21];
 
-    v5[2](v5, 0, v25);
+    locationsCopy[2](locationsCopy, 0, v25);
     goto LABEL_21;
   }
 
-  v6 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
 
-  if (!v6)
+  if (!zdrLocationsMemoryCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1244,8 +1244,8 @@ LABEL_19:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  zdrLocationsMemoryCopy2 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  v9 = [zdrLocationsMemoryCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1256,21 +1256,21 @@ LABEL_19:
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(zdrLocationsMemoryCopy2);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
         if ([v13 zdrLocationType] == 4 || objc_msgSend(v13, "zdrLocationType") == 5)
         {
-          v26 = [MEMORY[0x277CBEB18] array];
-          [v26 addObject:v13];
-          (v5)[2](v5, v26, 0);
+          array = [MEMORY[0x277CBEB18] array];
+          [array addObject:v13];
+          (locationsCopy)[2](locationsCopy, array, 0);
 
           goto LABEL_21;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v10 = [zdrLocationsMemoryCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v10)
       {
         continue;
@@ -1293,15 +1293,15 @@ LABEL_19:
     _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@,SetupLocation not present", buf, 0x16u);
   }
 
-  v5[2](v5, 0, 0);
+  locationsCopy[2](locationsCopy, 0, 0);
 LABEL_21:
 }
 
 - (id)_deduceSetupLocation
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  if (!v4)
+  trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  if (!trustedTimeNow)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1319,17 +1319,17 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v5 = [(RTAuthorizedLocationZDRLocationManager *)self _fetchCurrentLocation];
-  v6 = v5;
-  if (!v5)
+  _fetchCurrentLocation = [(RTAuthorizedLocationZDRLocationManager *)self _fetchCurrentLocation];
+  v6 = _fetchCurrentLocation;
+  if (!_fetchCurrentLocation)
   {
 LABEL_10:
     v17 = 0;
     goto LABEL_11;
   }
 
-  v7 = [v5 timestamp];
-  [v4 timeIntervalSinceDate:v7];
+  timestamp = [_fetchCurrentLocation timestamp];
+  [trustedTimeNow timeIntervalSinceDate:timestamp];
   v9 = v8;
 
   [v6 horizontalAccuracy];
@@ -1368,14 +1368,14 @@ LABEL_11:
   return v17;
 }
 
-- (id)_fetchLatestLocationFromListOfLocations:(id)a3
+- (id)_fetchLatestLocationFromListOfLocations:(id)locations
 {
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
+  obj = locations;
   v3 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v3)
   {
@@ -1396,18 +1396,18 @@ LABEL_11:
         v10 = objc_autoreleasePoolPush();
         if (v9)
         {
-          v11 = [v9 sourceInformation];
-          v12 = ([v11 isProducedByAccessory] & 1) == 0 && objc_msgSend(v9, "type") != 3;
+          sourceInformation = [v9 sourceInformation];
+          v12 = ([sourceInformation isProducedByAccessory] & 1) == 0 && objc_msgSend(v9, "type") != 3;
 
-          v13 = [v9 sourceInformation];
-          v14 = [v13 isSimulatedBySoftware];
+          sourceInformation2 = [v9 sourceInformation];
+          isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
 
-          v15 = [v9 integrity];
+          integrity = [v9 integrity];
           [v9 horizontalAccuracy];
           if (v12)
           {
-            v17 = v16 >= 0.0 && v14 == 0;
-            if (v17 && v15 != v7)
+            v17 = v16 >= 0.0 && isSimulatedBySoftware == 0;
+            if (v17 && integrity != v7)
             {
               if (!v5 || ([v9 timestamp], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "timestamp"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "compare:", v20), v20, v19, v21 == -1))
               {
@@ -1466,11 +1466,11 @@ LABEL_11:
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1506,16 +1506,16 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchCurrentLocation__block_i
 - (id)_fetchRecentLocations
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v44 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  if (v44)
+  trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  if (trustedTimeNow)
   {
     v49 = 0;
     v50 = &v49;
     v51 = 0x3032000000;
     v52 = __Block_byref_object_copy__185;
     v53 = __Block_byref_object_dispose__185;
-    v54 = [MEMORY[0x277CBEB18] array];
-    v3 = v44;
+    array = [MEMORY[0x277CBEB18] array];
+    v3 = trustedTimeNow;
     v43 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v3 sinceDate:-3600.0];
     v4 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1568,11 +1568,11 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchCurrentLocation__block_i
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -1683,7 +1683,7 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchRecentLocations__block_i
   *&buf[16] = 0x3032000000;
   v57 = __Block_byref_object_copy__185;
   v58 = __Block_byref_object_dispose__185;
-  v59 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = 1;
   v44 = *MEMORY[0x277D01448];
   v45 = *MEMORY[0x277CCA450];
@@ -1705,7 +1705,7 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchRecentLocations__block_i
     }
 
     v12 = dispatch_semaphore_create(0);
-    v13 = [(RTAuthorizedLocationZDRLocationManager *)self learnedLocationManager];
+    learnedLocationManager = [(RTAuthorizedLocationZDRLocationManager *)self learnedLocationManager];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_invoke;
@@ -1715,7 +1715,7 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchRecentLocations__block_i
     v14 = v12;
     v48 = v14;
     v49 = buf;
-    [v13 fetchLocationsOfInterestWithPlaceType:v7 handler:v47];
+    [learnedLocationManager fetchLocationsOfInterestWithPlaceType:v7 handler:v47];
 
     v15 = v14;
     v16 = [MEMORY[0x277CBEAA8] now];
@@ -1727,11 +1727,11 @@ void __63__RTAuthorizedLocationZDRLocationManager__fetchRecentLocations__block_i
       v20 = v19;
       v21 = objc_opt_new();
       v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_146];
-      v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v24 = [v23 filteredArrayUsingPredicate:v22];
-      v25 = [v24 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+      firstObject = [v24 firstObject];
 
-      [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+      [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
       v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
@@ -1901,22 +1901,22 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_isZdrLocationTrusted:(id)a3
+- (BOOL)_isZdrLocationTrusted:(id)trusted
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  v7 = [v5 zdrLocationDbEntryTimeCfatSec];
-  [v6 timeIntervalSinceDate:v7];
+  trustedCopy = trusted;
+  trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  zdrLocationDbEntryTimeCfatSec = [trustedCopy zdrLocationDbEntryTimeCfatSec];
+  [trustedTimeNow timeIntervalSinceDate:zdrLocationDbEntryTimeCfatSec];
   v9 = v8;
 
-  [v5 zdrLocationLatitudeDeg];
+  [trustedCopy zdrLocationLatitudeDeg];
   v11 = v10;
-  [v5 zdrLocationLongitudeDeg];
+  [trustedCopy zdrLocationLongitudeDeg];
   v13 = [(RTAuthorizedLocationZDRLocationManager *)self _isNullLocation:v11 lon:v12];
-  v14 = [v5 zdrLocationType];
+  zdrLocationType = [trustedCopy zdrLocationType];
 
-  v15 = v14 == 4;
+  v15 = zdrLocationType == 4;
   if (v9 >= 604800.0)
   {
     v15 = 0;
@@ -1924,7 +1924,7 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
 
   v16 = !v13;
   v17 = v15 & v16;
-  v18 = v9 > 3600.0 && v14 != 4;
+  v18 = v9 > 3600.0 && zdrLocationType != 4;
   v19 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -1946,7 +1946,7 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
     v37 = 1026;
     v38 = v9 < 604800.0;
     v39 = 1026;
-    v40 = v14 == 4;
+    v40 = zdrLocationType == 4;
     v41 = 1026;
     v42 = v18 & v16;
     _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrAge,%{public}.3lf,zdrLocationPassTrustAgeCriteria,%{public}d,isSetupLocationTrusted,%{public}d,isValidLoc,%{public}d,isZdrAgeWithinExemptLimit,%{public}d,isSetupLoc,%{public}d,isZdrLocTrusted,%{public}d", buf, 0x44u);
@@ -1965,10 +1965,10 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
   return v23;
 }
 
-- (int64_t)_assertWeAreAtZDRLocationWithVisit:(id)a3
+- (int64_t)_assertWeAreAtZDRLocationWithVisit:(id)visit
 {
   v138 = *MEMORY[0x277D85DE8];
-  v112 = a3;
+  visitCopy = visit;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   v109 = a2;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1976,19 +1976,19 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    v9 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+    zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
     *buf = 138412802;
     v124 = v7;
     v125 = 2112;
     v126 = v8;
     v127 = 1026;
-    *v128 = [v9 count];
+    *v128 = [zdrLocationsMemoryCopy count];
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrLocationsMemoryCopy.count,%{public}u", buf, 0x1Cu);
 
     a2 = v109;
   }
 
-  if (!v112 || ![v112 type] || objc_msgSend(v112, "type") == 3 || (objc_msgSend(v112, "entry"), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if (!visitCopy || ![visitCopy type] || objc_msgSend(visitCopy, "type") == 3 || (objc_msgSend(visitCopy, "entry"), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -2027,39 +2027,39 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
   }
 
   v122 = CLLocationCoordinate2DMake(0.0, 0.0);
-  v11 = [v112 location];
-  [v11 latitude];
+  location = [visitCopy location];
+  [location latitude];
   v13 = v12;
-  v14 = [v112 location];
-  [v14 longitude];
+  location2 = [visitCopy location];
+  [location2 longitude];
   v121 = CLLocationCoordinate2DMake(v13, v15);
 
-  v16 = [v112 placeInference];
-  if (v16)
+  placeInference = [visitCopy placeInference];
+  if (placeInference)
   {
-    v17 = v16;
-    v18 = [v112 placeInference];
-    v19 = [v18 mapItem];
+    v17 = placeInference;
+    placeInference2 = [visitCopy placeInference];
+    mapItem = [placeInference2 mapItem];
 
-    if (v19)
+    if (mapItem)
     {
-      v20 = self;
-      v21 = [v112 placeInference];
-      v22 = [v21 mapItem];
-      v23 = [v22 location];
-      [v23 latitude];
+      selfCopy = self;
+      placeInference3 = [visitCopy placeInference];
+      mapItem2 = [placeInference3 mapItem];
+      location3 = [mapItem2 location];
+      [location3 latitude];
       v25 = v24;
-      v26 = [v112 placeInference];
-      v27 = [v26 mapItem];
-      v28 = [v27 location];
-      [v28 longitude];
+      placeInference4 = [visitCopy placeInference];
+      mapItem3 = [placeInference4 mapItem];
+      location4 = [mapItem3 location];
+      [location4 longitude];
       v122 = CLLocationCoordinate2DMake(v25, v29);
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v30 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
         a2 = v109;
-        self = v20;
+        self = selfCopy;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
           v102 = objc_opt_class();
@@ -2085,7 +2085,7 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
       {
         v106 = 1;
         a2 = v109;
-        self = v20;
+        self = selfCopy;
       }
     }
 
@@ -2112,7 +2112,7 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
     v125 = 2112;
     v126 = v43;
     v127 = 2117;
-    *v128 = v112;
+    *v128 = visitCopy;
     _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_DEFAULT, "%@:%@,curVisit,%{sensitive}@", buf, 0x20u);
 
     a2 = v109;
@@ -2157,11 +2157,11 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
           NSStringFromClass(v51);
           v53 = v52 = self;
           v54 = NSStringFromSelector(a2);
-          v55 = [v48 zdrLocationUUID];
+          zdrLocationUUID = [v48 zdrLocationUUID];
           [v48 zdrLocationDbEntryTimeCfatSec];
           v56 = v111 = v49;
-          v57 = [v48 zdrLocationType];
-          v58 = [v48 zdrLocationLastSeenTimeCfatSec];
+          zdrLocationType = [v48 zdrLocationType];
+          zdrLocationLastSeenTimeCfatSec = [v48 zdrLocationLastSeenTimeCfatSec];
           [v48 zdrLocationLatitudeDeg];
           v60 = v59;
           [v48 zdrLocationLongitudeDeg];
@@ -2175,13 +2175,13 @@ void __64__RTAuthorizedLocationZDRLocationManager__getHomeWorkSchoolLois__block_
           v125 = 2112;
           v126 = v54;
           v127 = 2114;
-          *v128 = v55;
+          *v128 = zdrLocationUUID;
           *&v128[8] = 2114;
           *&v128[10] = v56;
           *&v128[18] = 1026;
-          *&v128[20] = v57;
+          *&v128[20] = zdrLocationType;
           v129 = 2114;
-          v130 = v58;
+          v130 = zdrLocationLastSeenTimeCfatSec;
           v131 = 2053;
           v132 = v60;
           v133 = 2053;
@@ -2221,8 +2221,8 @@ LABEL_42:
         goto LABEL_60;
       }
 
-      v67 = [v112 location];
-      [v67 horizontalUncertainty];
+      location5 = [visitCopy location];
+      [location5 horizontalUncertainty];
       v69 = v68;
 
       if (v69 > 100.0)
@@ -2256,9 +2256,9 @@ LABEL_41:
       v79 = v78;
       [v48 zdrLocationLongitudeDeg];
       v116 = CLLocationCoordinate2DMake(v79, v80);
-      v81 = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
+      distanceCalculator = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
       v115 = v108;
-      [v81 distanceFromLocationCoordinate:&v116 toLocationCoordinate:&v121 error:&v115];
+      [distanceCalculator distanceFromLocationCoordinate:&v116 toLocationCoordinate:&v121 error:&v115];
       v83 = v82;
       v31 = v115;
 
@@ -2387,10 +2387,10 @@ LABEL_17:
   return v35;
 }
 
-- (int64_t)_assertWeAreAtAnyZDRLocation:(id)a3
+- (int64_t)_assertWeAreAtAnyZDRLocation:(id)location
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2402,16 +2402,16 @@ LABEL_17:
     v46 = 2112;
     v47 = v8;
     v48 = 1026;
-    LODWORD(v49) = [v4 count];
+    LODWORD(v49) = [locationCopy count];
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrLocations count,%{public}u", buf, 0x1Cu);
   }
 
-  v36 = [(RTAuthorizedLocationZDRLocationManager *)self _fetchRecentLocations];
+  _fetchRecentLocations = [(RTAuthorizedLocationZDRLocationManager *)self _fetchRecentLocations];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = locationCopy;
   v9 = [obj countByEnumeratingWithState:&v40 objects:v62 count:16];
   if (v9)
   {
@@ -2442,10 +2442,10 @@ LABEL_17:
             v17 = objc_opt_class();
             v18 = NSStringFromClass(v17);
             v19 = NSStringFromSelector(a2);
-            v20 = [v14 zdrLocationUUID];
-            v21 = [v14 zdrLocationDbEntryTimeCfatSec];
-            v39 = [v14 zdrLocationType];
-            v22 = [v14 zdrLocationLastSeenTimeCfatSec];
+            zdrLocationUUID = [v14 zdrLocationUUID];
+            zdrLocationDbEntryTimeCfatSec = [v14 zdrLocationDbEntryTimeCfatSec];
+            zdrLocationType = [v14 zdrLocationType];
+            zdrLocationLastSeenTimeCfatSec = [v14 zdrLocationLastSeenTimeCfatSec];
             [v14 zdrLocationLatitudeDeg];
             v24 = v23;
             [v14 zdrLocationLongitudeDeg];
@@ -2459,13 +2459,13 @@ LABEL_17:
             v46 = 2112;
             v47 = v19;
             v48 = 2114;
-            v49 = v20;
+            v49 = zdrLocationUUID;
             v50 = 2114;
-            v51 = v21;
+            v51 = zdrLocationDbEntryTimeCfatSec;
             v52 = 1026;
-            v53 = v39;
+            v53 = zdrLocationType;
             v54 = 2114;
-            v55 = v22;
+            v55 = zdrLocationLastSeenTimeCfatSec;
             v56 = 2053;
             v57 = v24;
             v58 = 2053;
@@ -2481,7 +2481,7 @@ LABEL_17:
 
         if ([(RTAuthorizedLocationZDRLocationManager *)self _isZdrLocationTrusted:v14, v32])
         {
-          v37 = [(RTAuthorizedLocationZDRLocationManager *)self _assertWeAreAtSpecificZDRLocation:v14 recentLocations:v36];
+          v37 = [(RTAuthorizedLocationZDRLocationManager *)self _assertWeAreAtSpecificZDRLocation:v14 recentLocations:_fetchRecentLocations];
           if (v37 == 1)
           {
             objc_autoreleasePoolPop(v15);
@@ -2515,49 +2515,49 @@ LABEL_19:
   return v37;
 }
 
-- (int64_t)_assertWeAreAtSpecificZDRLocation:(id)a3 recentLocations:(id)a4
+- (int64_t)_assertWeAreAtSpecificZDRLocation:(id)location recentLocations:(id)locations
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  locationsCopy = locations;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector(a2);
-    v12 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+    zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
     *buf = 138413058;
     v81 = v10;
     v82 = 2112;
     v83 = v11;
     v84 = 1026;
-    *v85 = [v12 count];
+    *v85 = [zdrLocationsMemoryCopy count];
     *&v85[4] = 1026;
-    *&v85[6] = [v7 count];
+    *&v85[6] = [locationsCopy count];
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrLocationsMemoryCopy.count,%{public}u,recentLocations.count,%{public}u", buf, 0x22u);
   }
 
-  if (v6)
+  if (locationCopy)
   {
-    if (v7 && [v7 count])
+    if (locationsCopy && [locationsCopy count])
     {
-      [v6 zdrLocationLatitudeDeg];
+      [locationCopy zdrLocationLatitudeDeg];
       v14 = v13;
-      v73 = v6;
-      [v6 zdrLocationLongitudeDeg];
+      v73 = locationCopy;
+      [locationCopy zdrLocationLongitudeDeg];
       v79 = CLLocationCoordinate2DMake(v14, v15);
-      v16 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-      if ([v7 count] >= 1)
+      trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+      if ([locationsCopy count] >= 1)
       {
         v18 = 0;
         v75 = 0;
         *&v17 = 138412802;
         v72 = v17;
-        v74 = self;
+        selfCopy = self;
         while (1)
         {
-          v19 = [v7 objectAtIndexedSubscript:{v18, v72}];
+          v19 = [locationsCopy objectAtIndexedSubscript:{v18, v72}];
           v20 = v19;
           if (!v19)
           {
@@ -2577,13 +2577,13 @@ LABEL_19:
             goto LABEL_22;
           }
 
-          v21 = [v19 sourceInformation];
-          v22 = ([v21 isProducedByAccessory] & 1) != 0 || objc_msgSend(v20, "type") == 3;
+          sourceInformation = [v19 sourceInformation];
+          v22 = ([sourceInformation isProducedByAccessory] & 1) != 0 || objc_msgSend(v20, "type") == 3;
 
-          v27 = [v20 sourceInformation];
-          v28 = [v27 isSimulatedBySoftware];
+          sourceInformation2 = [v20 sourceInformation];
+          isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
 
-          if (v22 || v28)
+          if (v22 || isSimulatedBySoftware)
           {
             break;
           }
@@ -2609,8 +2609,8 @@ LABEL_19:
             goto LABEL_22;
           }
 
-          v36 = [v20 timestamp];
-          [v16 timeIntervalSinceDate:v36];
+          timestamp = [v20 timestamp];
+          [trustedTimeNow timeIntervalSinceDate:timestamp];
           v38 = v37;
 
           v39 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -2619,7 +2619,7 @@ LABEL_19:
             v40 = objc_opt_class();
             v41 = NSStringFromClass(v40);
             v42 = NSStringFromSelector(a2);
-            v43 = [v20 timestamp];
+            timestamp2 = [v20 timestamp];
             *buf = 138413314;
             v81 = v41;
             v82 = 2112;
@@ -2627,9 +2627,9 @@ LABEL_19:
             v84 = 1026;
             *v85 = v38 > 3600.0;
             *&v85[4] = 2114;
-            *&v85[6] = v16;
+            *&v85[6] = trustedTimeNow;
             *&v85[14] = 2114;
-            *&v85[16] = v43;
+            *&v85[16] = timestamp2;
             _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_DEFAULT, "%@:%@,Location isLocationStale,%{public}d,trustedNow,%{public}@,loc.timestamp,%{public}@", buf, 0x30u);
           }
 
@@ -2637,7 +2637,7 @@ LABEL_19:
           {
 
             v65 = 6;
-            v6 = v73;
+            locationCopy = v73;
             goto LABEL_45;
           }
 
@@ -2647,10 +2647,10 @@ LABEL_19:
           v45 = v44;
           [v20 coordinate];
           v78 = CLLocationCoordinate2DMake(v45, v46);
-          self = v74;
-          v47 = [(RTAuthorizedLocationZDRLocationManager *)v74 distanceCalculator];
+          self = selfCopy;
+          distanceCalculator = [(RTAuthorizedLocationZDRLocationManager *)selfCopy distanceCalculator];
           v77 = v75;
-          [v47 distanceFromLocationCoordinate:&v79 toLocationCoordinate:&v78 error:&v77];
+          [distanceCalculator distanceFromLocationCoordinate:&v79 toLocationCoordinate:&v78 error:&v77];
           v49 = v48;
           v50 = v77;
 
@@ -2688,7 +2688,7 @@ LABEL_19:
               v83 = v57;
               v84 = 1026;
               *v85 = v49 <= 400.0;
-              self = v74;
+              self = selfCopy;
               *&v85[4] = 1026;
               *&v85[6] = v49 > v53;
               *&v85[10] = 2050;
@@ -2708,7 +2708,7 @@ LABEL_19:
                 v65 = 5;
               }
 
-              v6 = v73;
+              locationCopy = v73;
               [(RTAuthorizedLocationZDRLocationManager *)self _collectZdrConfirmationMetric:v73 zdrLoc:v49];
 
               v70 = 0;
@@ -2719,7 +2719,7 @@ LABEL_19:
           v75 = v50;
 LABEL_23:
 
-          if (++v18 >= [v7 count])
+          if (++v18 >= [locationsCopy count])
           {
             goto LABEL_44;
           }
@@ -2748,7 +2748,7 @@ LABEL_22:
 
       v75 = 0;
 LABEL_44:
-      v6 = v73;
+      locationCopy = v73;
       [(RTAuthorizedLocationZDRLocationManager *)self _collectZdrConfirmationMetric:v73 zdrLoc:-1.0];
       v65 = 5;
 LABEL_45:
@@ -2799,18 +2799,18 @@ LABEL_46:
 - (int)_getSetupLocationValidAgeSeconds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = 4838400;
-  v5 = [(RTAuthorizedLocationZDRLocationManager *)self platform];
-  v6 = [v5 internalInstall];
+  integerValue = 4838400;
+  platform = [(RTAuthorizedLocationZDRLocationManager *)self platform];
+  internalInstall = [platform internalInstall];
 
-  if (v6)
+  if (internalInstall)
   {
     v7 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTAuthorizedLocationManagerZDRSetupLocationAgeToBeStaleSeconds"];
 
     if (v7)
     {
       v8 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTAuthorizedLocationManagerZDRSetupLocationAgeToBeStaleSeconds"];
-      v4 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -2824,12 +2824,12 @@ LABEL_46:
       v16 = 2112;
       v17 = v12;
       v18 = 1026;
-      v19 = v4;
+      v19 = integerValue;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@,setupAge,%{public}d", &v14, 0x1Cu);
     }
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_purgeExtraSetupLocations
@@ -2873,9 +2873,9 @@ LABEL_46:
             v12 = NSStringFromSelector(a2);
             [v7 zdrLocationUUID];
             v13 = v91 = v4;
-            v14 = [v7 zdrLocationDbEntryTimeCfatSec];
-            v15 = [v7 zdrLocationType];
-            v16 = [v7 zdrLocationLastSeenTimeCfatSec];
+            zdrLocationDbEntryTimeCfatSec = [v7 zdrLocationDbEntryTimeCfatSec];
+            zdrLocationType = [v7 zdrLocationType];
+            zdrLocationLastSeenTimeCfatSec = [v7 zdrLocationLastSeenTimeCfatSec];
             [v7 zdrLocationLatitudeDeg];
             v18 = v17;
             [v7 zdrLocationLongitudeDeg];
@@ -2891,11 +2891,11 @@ LABEL_46:
             v114 = 2114;
             *v115 = v13;
             *&v115[8] = 2114;
-            *&v115[10] = v14;
+            *&v115[10] = zdrLocationDbEntryTimeCfatSec;
             *&v115[18] = 1026;
-            *&v115[20] = v15;
+            *&v115[20] = zdrLocationType;
             v116 = 2114;
-            v117 = v16;
+            v117 = zdrLocationLastSeenTimeCfatSec;
             v118 = 2053;
             v119 = v18;
             v120 = 2053;
@@ -2913,15 +2913,15 @@ LABEL_46:
 
         if ([v7 zdrLocationType] == 4 || objc_msgSend(v7, "zdrLocationType") == 5)
         {
-          v25 = [v7 zdrLocationDbEntryTimeCfatSec];
+          zdrLocationDbEntryTimeCfatSec2 = [v7 zdrLocationDbEntryTimeCfatSec];
 
-          if (v25)
+          if (zdrLocationDbEntryTimeCfatSec2)
           {
             if (v3)
             {
-              v26 = [v3 zdrLocationLastSeenTimeCfatSec];
-              v27 = [v7 zdrLocationLastSeenTimeCfatSec];
-              if ([v26 compare:v27] == -1)
+              zdrLocationLastSeenTimeCfatSec2 = [v3 zdrLocationLastSeenTimeCfatSec];
+              zdrLocationLastSeenTimeCfatSec3 = [v7 zdrLocationLastSeenTimeCfatSec];
+              if ([zdrLocationLastSeenTimeCfatSec2 compare:zdrLocationLastSeenTimeCfatSec3] == -1)
               {
                 v28 = v3;
               }
@@ -2950,9 +2950,9 @@ LABEL_46:
             {
               if (v98 != 0 && !v41)
               {
-                v42 = [v3 zdrLocationLastSeenTimeCfatSec];
-                v43 = [v7 zdrLocationLastSeenTimeCfatSec];
-                if ([v42 compare:v43] == -1)
+                zdrLocationLastSeenTimeCfatSec4 = [v3 zdrLocationLastSeenTimeCfatSec];
+                zdrLocationLastSeenTimeCfatSec5 = [v7 zdrLocationLastSeenTimeCfatSec];
+                if ([zdrLocationLastSeenTimeCfatSec4 compare:zdrLocationLastSeenTimeCfatSec5] == -1)
                 {
                   v44 = v98;
                 }
@@ -3049,9 +3049,9 @@ LABEL_46:
     if (v98)
     {
       v50 = v98;
-      v51 = [v50 zdrLocationDbEntryTimeCfatSec];
-      v52 = [v3 zdrLocationDbEntryTimeCfatSec];
-      v53 = [v51 earlierDate:v52];
+      zdrLocationDbEntryTimeCfatSec3 = [v50 zdrLocationDbEntryTimeCfatSec];
+      zdrLocationDbEntryTimeCfatSec4 = [v3 zdrLocationDbEntryTimeCfatSec];
+      v53 = [zdrLocationDbEntryTimeCfatSec3 earlierDate:zdrLocationDbEntryTimeCfatSec4];
       [v50 setZdrLocationDbEntryTimeCfatSec:v53];
     }
 
@@ -3061,12 +3061,12 @@ LABEL_46:
     }
 
     v94 = v3;
-    v54 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-    v55 = [v50 zdrLocationDbEntryTimeCfatSec];
-    [v54 timeIntervalSinceDate:v55];
+    trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    zdrLocationDbEntryTimeCfatSec5 = [v50 zdrLocationDbEntryTimeCfatSec];
+    [trustedTimeNow timeIntervalSinceDate:zdrLocationDbEntryTimeCfatSec5];
     v57 = v56;
 
-    v58 = [(RTAuthorizedLocationZDRLocationManager *)self _getSetupLocationValidAgeSeconds];
+    _getSetupLocationValidAgeSeconds = [(RTAuthorizedLocationZDRLocationManager *)self _getSetupLocationValidAgeSeconds];
     v59 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
@@ -3078,13 +3078,13 @@ LABEL_46:
       v112 = 2112;
       v113 = v62;
       v114 = 1026;
-      *v115 = v57 >= v58;
+      *v115 = v57 >= _getSetupLocationValidAgeSeconds;
       *&v115[4] = 2050;
       *&v115[6] = v57;
       _os_log_impl(&dword_2304B3000, v59, OS_LOG_TYPE_DEFAULT, "%@:%@,isLocationAgedOut,%{public}d,setupLocAge,%{public}.3lf", buf, 0x26u);
     }
 
-    if (v57 >= v58)
+    if (v57 >= _getSetupLocationValidAgeSeconds)
     {
       [v50 setZdrLocationLatitudeDeg:0.0];
       [v50 setZdrLocationLongitudeDeg:0.0];
@@ -3092,23 +3092,23 @@ LABEL_46:
     }
 
     v63 = [RTAuthorizedLocationZDRLocations alloc];
-    v64 = [v50 zdrLocationUUID];
-    v65 = [v50 zdrLocationDbEntryTimeCfatSec];
-    v66 = [v50 zdrLocationType];
+    zdrLocationUUID = [v50 zdrLocationUUID];
+    zdrLocationDbEntryTimeCfatSec6 = [v50 zdrLocationDbEntryTimeCfatSec];
+    zdrLocationType2 = [v50 zdrLocationType];
     [v50 zdrLocationLatitudeDeg];
     v68 = v67;
     [v50 zdrLocationLongitudeDeg];
     v70 = v69;
     v97 = v50;
-    v71 = [v50 zdrLocationLastSeenTimeCfatSec];
-    v92 = [(RTAuthorizedLocationZDRLocations *)v63 initWithZDRLocation:v64 zdrLocationDbEntryTimeCfatSec:v65 zdrLocationType:v66 zdrLocationLatitudeDeg:v71 zdrLocationLongitudeDeg:v68 zdrLocationLastSeenTimeCfatSec:v70];
+    zdrLocationLastSeenTimeCfatSec6 = [v50 zdrLocationLastSeenTimeCfatSec];
+    v92 = [(RTAuthorizedLocationZDRLocations *)v63 initWithZDRLocation:zdrLocationUUID zdrLocationDbEntryTimeCfatSec:zdrLocationDbEntryTimeCfatSec6 zdrLocationType:zdrLocationType2 zdrLocationLatitudeDeg:zdrLocationLastSeenTimeCfatSec6 zdrLocationLongitudeDeg:v68 zdrLocationLastSeenTimeCfatSec:v70];
 
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v72 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-    v73 = [v72 countByEnumeratingWithState:&v101 objects:v109 count:16];
+    zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+    v73 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v101 objects:v109 count:16];
     if (v73)
     {
       v74 = v73;
@@ -3120,7 +3120,7 @@ LABEL_46:
         {
           if (*v102 != v76)
           {
-            objc_enumerationMutation(v72);
+            objc_enumerationMutation(zdrLocationsMemoryCopy);
           }
 
           v78 = *(*(&v101 + 1) + 8 * j);
@@ -3150,7 +3150,7 @@ LABEL_46:
           objc_autoreleasePoolPop(v79);
         }
 
-        v74 = [v72 countByEnumeratingWithState:&v101 objects:v109 count:16];
+        v74 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v101 objects:v109 count:16];
       }
 
       while (v74);
@@ -3183,15 +3183,15 @@ LABEL_46:
   }
 }
 
-- (BOOL)_isDeviceCurrentlyAtZDRLocation:(id)a3 handler:(id)a4
+- (BOOL)_isDeviceCurrentlyAtZDRLocation:(id)location handler:(id)handler
 {
   v88 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  handlerCopy = handler;
   [(RTAuthorizedLocationZDRLocationManager *)self _purgeExtraSetupLocations];
-  v8 = [(RTAuthorizedLocationZDRLocationManager *)self _getHomeWorkSchoolLois];
-  v9 = v8;
-  if (v8 && [v8 count])
+  _getHomeWorkSchoolLois = [(RTAuthorizedLocationZDRLocationManager *)self _getHomeWorkSchoolLois];
+  v9 = _getHomeWorkSchoolLois;
+  if (_getHomeWorkSchoolLois && [_getHomeWorkSchoolLois count])
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3227,17 +3227,17 @@ LABEL_46:
 
   [(RTAuthorizedLocationZDRLocationManager *)self _removeStaleEntriesFromDatabase];
   [(RTAuthorizedLocationZDRLocationManager *)self _fetchStoredZDRLocations];
-  v15 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
 
-  if (v15)
+  if (zdrLocationsMemoryCopy)
   {
     v59 = v9;
-    v60 = v7;
+    v60 = handlerCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v62 = self;
+    selfCopy = self;
     obj = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
     v16 = [obj countByEnumeratingWithState:&v66 objects:v87 count:16];
     if (v16)
@@ -3265,10 +3265,10 @@ LABEL_46:
               v22 = objc_opt_class();
               v23 = NSStringFromClass(v22);
               v24 = NSStringFromSelector(a2);
-              v25 = [v20 zdrLocationUUID];
-              v26 = [v20 zdrLocationDbEntryTimeCfatSec];
-              v27 = [v20 zdrLocationType];
-              v28 = [v20 zdrLocationLastSeenTimeCfatSec];
+              zdrLocationUUID = [v20 zdrLocationUUID];
+              zdrLocationDbEntryTimeCfatSec = [v20 zdrLocationDbEntryTimeCfatSec];
+              zdrLocationType = [v20 zdrLocationType];
+              zdrLocationLastSeenTimeCfatSec = [v20 zdrLocationLastSeenTimeCfatSec];
               [v20 zdrLocationLatitudeDeg];
               v30 = v29;
               [v20 zdrLocationLongitudeDeg];
@@ -3276,19 +3276,19 @@ LABEL_46:
               [v20 zdrLocationLatitudeDeg];
               v34 = v33;
               [v20 zdrLocationLongitudeDeg];
-              v36 = [(RTAuthorizedLocationZDRLocationManager *)v62 _isNullLocation:v34 lon:v35];
+              v36 = [(RTAuthorizedLocationZDRLocationManager *)selfCopy _isNullLocation:v34 lon:v35];
               *buf = 138414339;
               v71 = v23;
               v72 = 2112;
               v73 = v24;
               v74 = 2114;
-              v75 = v25;
+              v75 = zdrLocationUUID;
               v76 = 2114;
-              *v77 = v26;
+              *v77 = zdrLocationDbEntryTimeCfatSec;
               *&v77[8] = 1026;
-              v78 = v27;
+              v78 = zdrLocationType;
               v79 = 2114;
-              v80 = v28;
+              v80 = zdrLocationLastSeenTimeCfatSec;
               v81 = 2053;
               v82 = v30;
               v83 = 2053;
@@ -3312,30 +3312,30 @@ LABEL_46:
       while (v17);
     }
 
-    if (v6)
+    if (locationCopy)
     {
-      v37 = v62;
-      v38 = [(RTAuthorizedLocationZDRLocationManager *)v62 _assertWeAreAtZDRLocationWithVisit:v6];
+      v37 = selfCopy;
+      v38 = [(RTAuthorizedLocationZDRLocationManager *)selfCopy _assertWeAreAtZDRLocationWithVisit:locationCopy];
       v9 = v59;
-      v7 = v60;
+      handlerCopy = v60;
     }
 
     else
     {
       v38 = 0;
       v9 = v59;
-      v7 = v60;
-      v37 = v62;
+      handlerCopy = v60;
+      v37 = selfCopy;
     }
 
-    v44 = [(RTAuthorizedLocationZDRLocationManager *)v37 metrics];
-    v45 = [v44 zdrLocationsLiveMetrics];
+    metrics = [(RTAuthorizedLocationZDRLocationManager *)v37 metrics];
+    zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
 
-    if (v45)
+    if (zdrLocationsLiveMetrics)
     {
-      v46 = [(RTAuthorizedLocationZDRLocationManager *)v37 metrics];
-      v47 = [v46 zdrLocationsLiveMetrics];
-      [v47 setIsVisitUsedForZdrConfirmation:v38 != 0];
+      metrics2 = [(RTAuthorizedLocationZDRLocationManager *)v37 metrics];
+      zdrLocationsLiveMetrics2 = [metrics2 zdrLocationsLiveMetrics];
+      [zdrLocationsLiveMetrics2 setIsVisitUsedForZdrConfirmation:v38 != 0];
     }
 
     if (v38 == 1)
@@ -3345,8 +3345,8 @@ LABEL_46:
 
     else
     {
-      v49 = [(RTAuthorizedLocationZDRLocationManager *)v37 zdrLocationsMemoryCopy];
-      v48 = [(RTAuthorizedLocationZDRLocationManager *)v37 _assertWeAreAtAnyZDRLocation:v49];
+      zdrLocationsMemoryCopy2 = [(RTAuthorizedLocationZDRLocationManager *)v37 zdrLocationsMemoryCopy];
+      v48 = [(RTAuthorizedLocationZDRLocationManager *)v37 _assertWeAreAtAnyZDRLocation:zdrLocationsMemoryCopy2];
     }
 
     v43 = v48 == 1;
@@ -3360,7 +3360,7 @@ LABEL_46:
       v50 = 2;
     }
 
-    v7[2](v7, v50, v48);
+    handlerCopy[2](handlerCopy, v50, v48);
     v51 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
@@ -3396,37 +3396,37 @@ LABEL_46:
       _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_DEFAULT, "%@:%@,no possible ZDR locations", buf, 0x16u);
     }
 
-    v7[2](v7, 2, 3);
+    handlerCopy[2](handlerCopy, 2, 3);
     v43 = 0;
   }
 
   return v43;
 }
 
-- (void)_storeClassifiedLocationToDB:(id)a3
+- (void)_storeClassifiedLocationToDB:(id)b
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 place];
-  if (v6)
+  bCopy = b;
+  place = [bCopy place];
+  if (place)
   {
-    v7 = [v5 place];
-    v8 = [v7 type];
+    place2 = [bCopy place];
+    type = [place2 type];
 
-    if ((v8 - 1) >= 3)
+    if ((type - 1) >= 3)
     {
-      v6 = 0;
+      place = 0;
     }
 
     else
     {
-      v6 = v8;
+      place = type;
     }
   }
 
   else
   {
-    v8 = 0;
+    type = 0;
   }
 
   v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -3440,13 +3440,13 @@ LABEL_46:
     v49 = 2112;
     v50 = v12;
     v51 = 2050;
-    v52 = v6;
+    v52 = place;
     v53 = 2050;
-    v54 = v8;
+    v54 = type;
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrType,%{public}lu,PlaceType,%{public}lu", buf, 0x2Au);
   }
 
-  if ((v8 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -3468,19 +3468,19 @@ LABEL_46:
   {
     aSelector = a2;
     v13 = [RTAuthorizedLocationZDRLocations alloc];
-    v14 = [v5 identifier];
-    v15 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-    v16 = [v5 location];
-    v17 = [v16 location];
-    [v17 latitude];
+    identifier = [bCopy identifier];
+    trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    location = [bCopy location];
+    v16Location = [location location];
+    [v16Location latitude];
     v19 = v18;
-    v20 = [v5 location];
-    v21 = [v20 location];
-    [v21 longitude];
+    location2 = [bCopy location];
+    v20Location = [location2 location];
+    [v20Location longitude];
     v23 = v22;
-    v46 = self;
-    v24 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-    v25 = [(RTAuthorizedLocationZDRLocations *)v13 initWithZDRLocation:v14 zdrLocationDbEntryTimeCfatSec:v15 zdrLocationType:v6 zdrLocationLatitudeDeg:v24 zdrLocationLongitudeDeg:v19 zdrLocationLastSeenTimeCfatSec:v23];
+    selfCopy = self;
+    trustedTimeNow2 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    v25 = [(RTAuthorizedLocationZDRLocations *)v13 initWithZDRLocation:identifier zdrLocationDbEntryTimeCfatSec:trustedTimeNow zdrLocationType:place zdrLocationLatitudeDeg:trustedTimeNow2 zdrLocationLongitudeDeg:v19 zdrLocationLastSeenTimeCfatSec:v23];
 
     if (v25)
     {
@@ -3490,10 +3490,10 @@ LABEL_46:
         v27 = objc_opt_class();
         v28 = NSStringFromClass(v27);
         v29 = NSStringFromSelector(aSelector);
-        v30 = [v25 zdrLocationUUID];
-        v31 = [v25 zdrLocationDbEntryTimeCfatSec];
-        v32 = [v25 zdrLocationType];
-        v33 = [v25 zdrLocationLastSeenTimeCfatSec];
+        zdrLocationUUID = [v25 zdrLocationUUID];
+        zdrLocationDbEntryTimeCfatSec = [v25 zdrLocationDbEntryTimeCfatSec];
+        zdrLocationType = [v25 zdrLocationType];
+        zdrLocationLastSeenTimeCfatSec = [v25 zdrLocationLastSeenTimeCfatSec];
         [v25 zdrLocationLatitudeDeg];
         v35 = v34;
         [v25 zdrLocationLongitudeDeg];
@@ -3501,19 +3501,19 @@ LABEL_46:
         [v25 zdrLocationLatitudeDeg];
         v39 = v38;
         [v25 zdrLocationLongitudeDeg];
-        v41 = [(RTAuthorizedLocationZDRLocationManager *)v46 _isNullLocation:v39 lon:v40];
+        v41 = [(RTAuthorizedLocationZDRLocationManager *)selfCopy _isNullLocation:v39 lon:v40];
         *buf = 138414339;
         v48 = v28;
         v49 = 2112;
         v50 = v29;
         v51 = 2114;
-        v52 = v30;
+        v52 = zdrLocationUUID;
         v53 = 2114;
-        v54 = v31;
+        v54 = zdrLocationDbEntryTimeCfatSec;
         v55 = 1026;
-        v56 = v32;
+        v56 = zdrLocationType;
         v57 = 2114;
-        v58 = v33;
+        v58 = zdrLocationLastSeenTimeCfatSec;
         v59 = 2053;
         v60 = v35;
         v61 = 2053;
@@ -3524,16 +3524,16 @@ LABEL_46:
       }
     }
 
-    if ([(RTAuthorizedLocationZDRLocationManager *)v46 _storeZDRLocationEntryToDb:v25, aSelector])
+    if ([(RTAuthorizedLocationZDRLocationManager *)selfCopy _storeZDRLocationEntryToDb:v25, aSelector])
     {
-      [(RTAuthorizedLocationZDRLocationManager *)v46 _fetchStoredZDRLocations];
+      [(RTAuthorizedLocationZDRLocationManager *)selfCopy _fetchStoredZDRLocations];
     }
   }
 }
 
 - (void)_removeStaleEntriesFromDatabase
 {
-  v2 = self;
+  selfCopy = self;
   v61 = *MEMORY[0x277D85DE8];
   v39 = 0u;
   v40 = 0u;
@@ -3546,7 +3546,7 @@ LABEL_46:
     v37 = *v40;
     *&v3 = 138414339;
     v33 = v3;
-    v35 = v2;
+    v35 = selfCopy;
     do
     {
       for (i = 0; i != v38; ++i)
@@ -3566,10 +3566,10 @@ LABEL_46:
             v8 = objc_opt_class();
             v9 = NSStringFromClass(v8);
             v10 = NSStringFromSelector(a2);
-            v11 = [v5 zdrLocationUUID];
-            v12 = [v5 zdrLocationDbEntryTimeCfatSec];
-            v13 = [v5 zdrLocationType];
-            v14 = [v5 zdrLocationLastSeenTimeCfatSec];
+            zdrLocationUUID = [v5 zdrLocationUUID];
+            zdrLocationDbEntryTimeCfatSec = [v5 zdrLocationDbEntryTimeCfatSec];
+            zdrLocationType = [v5 zdrLocationType];
+            zdrLocationLastSeenTimeCfatSec = [v5 zdrLocationLastSeenTimeCfatSec];
             [v5 zdrLocationLatitudeDeg];
             v16 = v15;
             [v5 zdrLocationLongitudeDeg];
@@ -3583,13 +3583,13 @@ LABEL_46:
             v45 = 2112;
             v46 = v10;
             v47 = 2114;
-            v48 = *&v11;
+            v48 = *&zdrLocationUUID;
             v49 = 2114;
-            *v50 = v12;
+            *v50 = zdrLocationDbEntryTimeCfatSec;
             *&v50[8] = 1026;
-            v51 = v13;
+            v51 = zdrLocationType;
             v52 = 2114;
-            v53 = v14;
+            v53 = zdrLocationLastSeenTimeCfatSec;
             v54 = 2053;
             v55 = v16;
             v56 = 2053;
@@ -3598,20 +3598,20 @@ LABEL_46:
             v59 = !v22;
             _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrLoc,UUID,%{public}@,entryTime,%{public}@,locationType,%{public}d,lastSeenTime,%{public}@,lat,%{sensitive}.7lf,lon,%{sensitive}.7lf,isValid,%{public}d", buf, 0x54u);
 
-            v2 = v35;
+            selfCopy = v35;
           }
         }
 
-        v23 = [(RTAuthorizedLocationZDRLocationManager *)v2 trustedTimeNow];
-        v24 = [v5 zdrLocationLastSeenTimeCfatSec];
+        trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)selfCopy trustedTimeNow];
+        zdrLocationLastSeenTimeCfatSec2 = [v5 zdrLocationLastSeenTimeCfatSec];
 
-        if (!v24)
+        if (!zdrLocationLastSeenTimeCfatSec2)
         {
           goto LABEL_17;
         }
 
-        v25 = [v5 zdrLocationLastSeenTimeCfatSec];
-        [v23 timeIntervalSinceDate:v25];
+        zdrLocationLastSeenTimeCfatSec3 = [v5 zdrLocationLastSeenTimeCfatSec];
+        [trustedTimeNow timeIntervalSinceDate:zdrLocationLastSeenTimeCfatSec3];
         v27 = v26;
 
         v28 = [v5 zdrLocationType] == 4 || objc_msgSend(v5, "zdrLocationType") == 5;
@@ -3637,7 +3637,7 @@ LABEL_46:
         if (((v27 > 604800.0) & ~v28) != 0)
         {
 LABEL_17:
-          [(RTAuthorizedLocationZDRLocationManager *)v2 _deleteZDRLocationEntryFromDb:v5];
+          [(RTAuthorizedLocationZDRLocationManager *)selfCopy _deleteZDRLocationEntryFromDb:v5];
         }
 
         objc_autoreleasePoolPop(v6);
@@ -3650,23 +3650,23 @@ LABEL_17:
   }
 }
 
-- (BOOL)_mergeCRClassifiedLOIWithZDRDb:(id)a3
+- (BOOL)_mergeCRClassifiedLOIWithZDRDb:(id)db
 {
   v120 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v77 = v4;
-  if (v4)
+  dbCopy = db;
+  v77 = dbCopy;
+  if (dbCopy)
   {
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v5 = v4;
+    v5 = dbCopy;
     v80 = [v5 countByEnumeratingWithState:&v99 objects:v119 count:16];
     if (v80)
     {
       v78 = *v100;
-      v86 = self;
+      selfCopy = self;
       v79 = v5;
       do
       {
@@ -3695,7 +3695,7 @@ LABEL_17:
             v108 = *&v7;
             _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@,for Loi,%{sensitive}@", buf, 0x20u);
 
-            self = v86;
+            self = selfCopy;
           }
 
           v83 = v7;
@@ -3730,9 +3730,9 @@ LABEL_11:
                   v18 = NSStringFromSelector(a2);
                   [v13 zdrLocationUUID];
                   v19 = v90 = v14;
-                  v20 = [v13 zdrLocationDbEntryTimeCfatSec];
-                  v21 = [v13 zdrLocationType];
-                  v22 = [v13 zdrLocationLastSeenTimeCfatSec];
+                  zdrLocationDbEntryTimeCfatSec = [v13 zdrLocationDbEntryTimeCfatSec];
+                  zdrLocationType = [v13 zdrLocationType];
+                  zdrLocationLastSeenTimeCfatSec = [v13 zdrLocationLastSeenTimeCfatSec];
                   [v13 zdrLocationLatitudeDeg];
                   v24 = v23;
                   [v13 zdrLocationLongitudeDeg];
@@ -3740,7 +3740,7 @@ LABEL_11:
                   [v13 zdrLocationLatitudeDeg];
                   v28 = v27;
                   [v13 zdrLocationLongitudeDeg];
-                  v30 = [(RTAuthorizedLocationZDRLocationManager *)v86 _isNullLocation:v28 lon:v29];
+                  v30 = [(RTAuthorizedLocationZDRLocationManager *)selfCopy _isNullLocation:v28 lon:v29];
                   *buf = 138414339;
                   v104 = v17;
                   v105 = 2112;
@@ -3748,16 +3748,16 @@ LABEL_11:
                   v107 = 2114;
                   v108 = *&v19;
                   v109 = 2114;
-                  *v110 = v20;
+                  *v110 = zdrLocationDbEntryTimeCfatSec;
                   *&v110[8] = 1026;
-                  *v111 = v21;
+                  *v111 = zdrLocationType;
                   *&v111[4] = 2114;
-                  *&v111[6] = v22;
+                  *&v111[6] = zdrLocationLastSeenTimeCfatSec;
                   v112 = 2053;
                   v113 = v24;
                   v114 = 2053;
                   v115 = v26;
-                  self = v86;
+                  self = selfCopy;
                   v116 = 1026;
                   v117 = !v30;
                   _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrLoc,UUID,%{public}@,entryTime,%{public}@,locationType,%{public}d,lastSeenTime,%{public}@,lat,%{sensitive}.7lf,lon,%{sensitive}.7lf,isValid,%{public}d", buf, 0x54u);
@@ -3766,7 +3766,7 @@ LABEL_11:
                 }
               }
 
-              v31 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+              trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
               if ([v13 zdrLocationType] == 4 || objc_msgSend(v13, "zdrLocationType") == 5)
               {
                 v32 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -3794,30 +3794,30 @@ LABEL_11:
                 v94 = CLLocationCoordinate2DMake(v37, v38);
                 v93.latitude = 0.0;
                 v93.longitude = 0.0;
-                v39 = [v83 location];
-                v40 = [v39 location];
-                [v40 latitude];
+                location = [v83 location];
+                v39Location = [location location];
+                [v39Location latitude];
                 v42 = v41;
-                v43 = [v83 location];
-                v44 = [v43 location];
-                [v44 longitude];
+                location2 = [v83 location];
+                v43Location = [location2 location];
+                [v43Location longitude];
                 v93 = CLLocationCoordinate2DMake(v42, v45);
 
-                v46 = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
+                distanceCalculator = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
                 v92 = 0;
-                [v46 distanceFromLocationCoordinate:&v94 toLocationCoordinate:&v93 error:&v92];
+                [distanceCalculator distanceFromLocationCoordinate:&v94 toLocationCoordinate:&v93 error:&v92];
                 v48 = v47;
                 v32 = v92;
 
                 if (!v32)
                 {
-                  v50 = [v13 zdrLocationUUID];
-                  v51 = [v50 UUIDString];
+                  zdrLocationUUID = [v13 zdrLocationUUID];
+                  uUIDString = [zdrLocationUUID UUIDString];
 
-                  v52 = [v83 identifier];
-                  v53 = [v52 UUIDString];
+                  identifier = [v83 identifier];
+                  uUIDString2 = [identifier UUIDString];
 
-                  v54 = [v51 isEqualToString:v53];
+                  v54 = [uUIDString isEqualToString:uUIDString2];
                   v55 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
                   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
                   {
@@ -3835,20 +3835,20 @@ LABEL_11:
                     *&v110[4] = 1026;
                     *&v110[6] = v54;
                     *v111 = 2114;
-                    *&v111[2] = v53;
+                    *&v111[2] = uUIDString2;
                     _os_log_impl(&dword_2304B3000, v55, OS_LOG_TYPE_DEFAULT, "%@:%@,distanceBetweenLoiAndZdrLoc_m,%{public}f,isLOIAndZDRLocSame,%{public}d,isLOIAndZDRLocSameBasedOnUUID,%{public}d,loiUUID,%{public}@", buf, 0x36u);
                   }
 
                   if (v48 < 100.0)
                   {
-                    v89 = v51;
+                    v89 = uUIDString;
                     v67 = v13;
-                    [v67 setZdrLocationLastSeenTimeCfatSec:v31];
-                    self = v86;
-                    [(RTAuthorizedLocationZDRLocationManager *)v86 _deleteZDRLocationEntryFromDb:v67];
+                    [v67 setZdrLocationLastSeenTimeCfatSec:trustedTimeNow];
+                    self = selfCopy;
+                    [(RTAuthorizedLocationZDRLocationManager *)selfCopy _deleteZDRLocationEntryFromDb:v67];
                     v5 = v79;
                     v68 = v91;
-                    if (![(RTAuthorizedLocationZDRLocationManager *)v86 _storeZDRLocationEntryToDb:v67])
+                    if (![(RTAuthorizedLocationZDRLocationManager *)selfCopy _storeZDRLocationEntryToDb:v67])
                     {
                       v69 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
                       if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
@@ -3872,7 +3872,7 @@ LABEL_11:
                     goto LABEL_42;
                   }
 
-                  self = v86;
+                  self = selfCopy;
                   v14 = v91;
                   goto LABEL_27;
                 }
@@ -3923,7 +3923,7 @@ LABEL_27:
             v108 = *&v83;
             _os_log_impl(&dword_2304B3000, v63, OS_LOG_TYPE_DEFAULT, "%@:%@,Adding new location to db,%{sensitive}@", buf, 0x20u);
 
-            self = v86;
+            self = selfCopy;
           }
 
           [(RTAuthorizedLocationZDRLocationManager *)self _storeClassifiedLocationToDB:v83];
@@ -3999,27 +3999,27 @@ LABEL_42:
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEFAULT, "%@:%@,first time setup detected", buf, 0x16u);
     }
 
-    v25 = [(RTAuthorizedLocationZDRLocationManager *)self _deduceSetupLocation];
-    if (!v25)
+    _deduceSetupLocation = [(RTAuthorizedLocationZDRLocationManager *)self _deduceSetupLocation];
+    if (!_deduceSetupLocation)
     {
-      v25 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:0.0 longitude:0.0];
+      _deduceSetupLocation = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:0.0 longitude:0.0];
     }
 
-    [(RTAuthorizedLocationZDRLocationManager *)self _updateSetupLocationToDb:v25];
-    v30 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v31 = [v30 zdrLocationsLiveMetrics];
-    [v31 setTimeSinceEraseInstall_s:0.0];
+    [(RTAuthorizedLocationZDRLocationManager *)self _updateSetupLocationToDb:_deduceSetupLocation];
+    metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics setTimeSinceEraseInstall_s:0.0];
 
     goto LABEL_10;
   }
 
-  v4 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-  v5 = [v40[5] zdrLocationDbEntryTimeCfatSec];
-  [v4 timeIntervalSinceDate:v5];
+  trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+  zdrLocationDbEntryTimeCfatSec = [v40[5] zdrLocationDbEntryTimeCfatSec];
+  [trustedTimeNow timeIntervalSinceDate:zdrLocationDbEntryTimeCfatSec];
   v7 = v6;
-  v8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v9 = [v8 zdrLocationsLiveMetrics];
-  [v9 setTimeSinceEraseInstall_s:v7];
+  metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics2 = [metrics2 zdrLocationsLiveMetrics];
+  [zdrLocationsLiveMetrics2 setTimeSinceEraseInstall_s:v7];
 
   v10 = v40[5];
   if (!v10)
@@ -4031,9 +4031,9 @@ LABEL_42:
   v12 = v11;
   [v40[5] zdrLocationLongitudeDeg];
   v14 = [(RTAuthorizedLocationZDRLocationManager *)self _isNullLocation:v12 lon:v13];
-  v15 = [v40[5] zdrLocationType];
+  zdrLocationType = [v40[5] zdrLocationType];
   v16 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
-  v17 = v14 ^ (v15 == 5);
+  v17 = v14 ^ (zdrLocationType == 5);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_opt_class();
@@ -4046,7 +4046,7 @@ LABEL_42:
     v49 = 1026;
     v50 = v14;
     v51 = 1026;
-    v52 = v15 == 5;
+    v52 = zdrLocationType == 5;
     v53 = 1026;
     v54 = v17 ^ 1;
     _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@,isSetupLocationNull,%{public}d,isSetupLocationOld,%{public}d,isSetupLocationValid,%{public}d", buf, 0x28u);
@@ -4068,8 +4068,8 @@ LABEL_7:
       _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEFAULT, "%@:%@,Update Setup location", buf, 0x16u);
     }
 
-    v25 = [(RTAuthorizedLocationZDRLocationManager *)self _deduceSetupLocation];
-    [(RTAuthorizedLocationZDRLocationManager *)self _refreshSetupLocationToDb:v40[5] locToStore:v25];
+    _deduceSetupLocation = [(RTAuthorizedLocationZDRLocationManager *)self _deduceSetupLocation];
+    [(RTAuthorizedLocationZDRLocationManager *)self _refreshSetupLocationToDb:v40[5] locToStore:_deduceSetupLocation];
 LABEL_10:
   }
 
@@ -4110,10 +4110,10 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
   }
 }
 
-- (int64_t)_isDeviceCurrentlyAtAuthorizedLocation:(id)a3
+- (int64_t)_isDeviceCurrentlyAtAuthorizedLocation:(id)location
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4125,20 +4125,20 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
     v44 = 2112;
     v45 = v8;
     v46 = 1026;
-    v47 = [v4 count];
+    v47 = [locationCopy count];
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@,fullSecurityAloiList count,%{public}u", buf, 0x1Cu);
   }
 
-  if (v4 && [v4 count])
+  if (locationCopy && [locationCopy count])
   {
-    v30 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-    v29 = [MEMORY[0x277CBEB18] array];
+    trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    array = [MEMORY[0x277CBEB18] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v26 = v4;
-    obj = v4;
+    v26 = locationCopy;
+    obj = locationCopy;
     v32 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v32)
     {
@@ -4155,24 +4155,24 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
 
           v10 = *(*(&v37 + 1) + 8 * v9);
           context = objc_autoreleasePoolPush();
-          v33 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v30 sinceDate:-3660.0];
+          v33 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:trustedTimeNow sinceDate:-3660.0];
           v34 = [RTAuthorizedLocationZDRLocations alloc];
           v35 = [v10 loi];
-          v11 = [v35 identifier];
+          identifier = [v35 identifier];
           v12 = [v10 loi];
-          v13 = [v12 location];
-          v14 = [v13 location];
-          [v14 latitude];
+          location = [v12 location];
+          v13Location = [location location];
+          [v13Location latitude];
           v16 = v15;
           v17 = [v10 loi];
-          v18 = [v17 location];
-          v19 = [v18 location];
-          [v19 longitude];
+          location2 = [v17 location];
+          v18Location = [location2 location];
+          [v18Location longitude];
           v21 = v20;
-          v22 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-          v23 = [(RTAuthorizedLocationZDRLocations *)v34 initWithZDRLocation:v11 zdrLocationDbEntryTimeCfatSec:v33 zdrLocationType:6 zdrLocationLatitudeDeg:v22 zdrLocationLongitudeDeg:v16 zdrLocationLastSeenTimeCfatSec:v21];
+          trustedTimeNow2 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+          v23 = [(RTAuthorizedLocationZDRLocations *)v34 initWithZDRLocation:identifier zdrLocationDbEntryTimeCfatSec:v33 zdrLocationType:6 zdrLocationLatitudeDeg:trustedTimeNow2 zdrLocationLongitudeDeg:v16 zdrLocationLastSeenTimeCfatSec:v21];
 
-          [v29 addObject:v23];
+          [array addObject:v23];
           objc_autoreleasePoolPop(context);
           ++v9;
         }
@@ -4184,10 +4184,10 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
       while (v32);
     }
 
-    v24 = [(RTAuthorizedLocationZDRLocationManager *)self _assertWeAreAtAnyZDRLocation:v29];
+    v24 = [(RTAuthorizedLocationZDRLocationManager *)self _assertWeAreAtAnyZDRLocation:array];
     [(RTAuthorizedLocationZDRLocationManager *)self _computeALOIMetrics:obj reasonCode:v24];
 
-    v4 = v26;
+    locationCopy = v26;
   }
 
   else
@@ -4198,17 +4198,17 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
   return v24;
 }
 
-- (void)fetchZDRLocationStatus:(id)a3 fullSecurityAloiList:(id)a4 handler:(id)a5
+- (void)fetchZDRLocationStatus:(id)status fullSecurityAloiList:(id)list handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  statusCopy = status;
+  listCopy = list;
+  handlerCopy = handler;
   if ([(RTAuthorizedLocationZDRLocationManager *)self isUnlockedSinceBoot])
   {
     [(RTAuthorizedLocationZDRLocationManager *)self _initMetric];
     [(RTAuthorizedLocationZDRLocationManager *)self _determineSetupLocation];
-    v12 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    trustedTimeNow = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -4217,7 +4217,7 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    if ([(RTAuthorizedLocationZDRLocationManager *)self _isDeviceCurrentlyAtAuthorizedLocation:v10]== 1)
+    if ([(RTAuthorizedLocationZDRLocationManager *)self _isDeviceCurrentlyAtAuthorizedLocation:listCopy]== 1)
     {
       *(*&buf[8] + 24) = 1;
       v21[3] = 1;
@@ -4231,24 +4231,24 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
       v19[3] = &unk_2788D2518;
       v19[4] = buf;
       v19[5] = &v20;
-      [(RTAuthorizedLocationZDRLocationManager *)self _isDeviceCurrentlyAtZDRLocation:v9 handler:v19];
+      [(RTAuthorizedLocationZDRLocationManager *)self _isDeviceCurrentlyAtZDRLocation:statusCopy handler:v19];
     }
 
-    v16 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
-    [v16 timeIntervalSinceDate:v12];
+    trustedTimeNow2 = [(RTAuthorizedLocationZDRLocationManager *)self trustedTimeNow];
+    [trustedTimeNow2 timeIntervalSinceDate:trustedTimeNow];
     v18 = v17;
 
     [(RTAuthorizedLocationZDRLocationManager *)self _collectMetric:*(*&buf[8] + 24) reasonCode:v21[3] zdrComputationTime_s:v18];
     [(RTAuthorizedLocationZDRLocationManager *)self _collectCurationMetric];
-    v11[2](v11, *(*&buf[8] + 24), v21[3]);
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 24), v21[3]);
     _Block_object_dispose(&v20, 8);
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    trustedTimeNow = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
+    if (os_log_type_enabled(trustedTimeNow, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
@@ -4257,7 +4257,7 @@ void __65__RTAuthorizedLocationZDRLocationManager__determineSetupLocation__block
       *&buf[4] = v14;
       *&buf[12] = 2112;
       *&buf[14] = v15;
-      _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%@:%@,Device not unlocked", buf, 0x16u);
+      _os_log_error_impl(&dword_2304B3000, trustedTimeNow, OS_LOG_TYPE_ERROR, "%@:%@,Device not unlocked", buf, 0x16u);
     }
   }
 }
@@ -4271,63 +4271,63 @@ uint64_t __94__RTAuthorizedLocationZDRLocationManager_fetchZDRLocationStatus_ful
 
 - (void)_initMetric
 {
-  v3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  if (v3)
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  if (metrics)
   {
-    v4 = v3;
-    v5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v6 = [v5 zdrLocationsLiveMetrics];
+    v4 = metrics;
+    metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics = [metrics2 zdrLocationsLiveMetrics];
 
-    if (!v6)
+    if (!zdrLocationsLiveMetrics)
     {
       v7 = objc_alloc_init(RTAuthorizedLocationZDRLocationLiveMetrics);
-      v8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      [v8 setZdrLocationsLiveMetrics:v7];
+      metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      [metrics3 setZdrLocationsLiveMetrics:v7];
     }
   }
 
-  v9 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  if (v9)
+  metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  if (metrics4)
   {
-    v10 = v9;
-    v11 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v12 = [v11 zdrLocationsCurationMetrics];
+    v10 = metrics4;
+    metrics5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsCurationMetrics = [metrics5 zdrLocationsCurationMetrics];
 
-    if (!v12)
+    if (!zdrLocationsCurationMetrics)
     {
       v14 = objc_alloc_init(RTAuthorizedLocationZDRLocationCurationMetrics);
-      v13 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      [v13 setZdrLocationsCurationMetrics:v14];
+      metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      [metrics6 setZdrLocationsCurationMetrics:v14];
     }
   }
 }
 
-- (BOOL)_isDistanceBetween2PointsInRange:(id)a3 aLoi:(id)a4 range:(double)a5
+- (BOOL)_isDistanceBetween2PointsInRange:(id)range aLoi:(id)loi range:(double)a5
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 loi];
-  v12 = [v11 location];
-  v13 = [v12 location];
-  [v13 latitude];
+  loiCopy = loi;
+  rangeCopy = range;
+  v11 = [loiCopy loi];
+  location = [v11 location];
+  v12Location = [location location];
+  [v12Location latitude];
   v15 = v14;
-  v16 = [v9 loi];
+  v16 = [loiCopy loi];
 
-  v17 = [v16 location];
-  v18 = [v17 location];
-  [v18 longitude];
+  location2 = [v16 location];
+  v17Location = [location2 location];
+  [v17Location longitude];
   v36 = CLLocationCoordinate2DMake(v15, v19);
 
-  [v10 zdrLocationLatitudeDeg];
+  [rangeCopy zdrLocationLatitudeDeg];
   v21 = v20;
-  [v10 zdrLocationLongitudeDeg];
+  [rangeCopy zdrLocationLongitudeDeg];
   v23 = v22;
 
   v35 = CLLocationCoordinate2DMake(v21, v23);
-  v24 = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
+  distanceCalculator = [(RTAuthorizedLocationZDRLocationManager *)self distanceCalculator];
   v34 = 0;
-  [v24 distanceFromLocationCoordinate:&v35 toLocationCoordinate:&v36 error:&v34];
+  [distanceCalculator distanceFromLocationCoordinate:&v35 toLocationCoordinate:&v36 error:&v34];
   v26 = v25;
   v27 = v34;
 
@@ -4359,15 +4359,15 @@ uint64_t __94__RTAuthorizedLocationZDRLocationManager_fetchZDRLocationStatus_ful
   return v29;
 }
 
-- (void)_updateALOILiveMetrics:(id)a3 aLoi:(id)a4 reasonCode:(int64_t)a5
+- (void)_updateALOILiveMetrics:(id)metrics aLoi:(id)loi reasonCode:(int64_t)code
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v12 = [v11 zdrLocationsLiveMetrics];
+  metricsCopy = metrics;
+  loiCopy = loi;
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
 
-  if (!v12)
+  if (!zdrLocationsLiveMetrics)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -4388,7 +4388,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a5 != 1)
+  if (code != 1)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4412,11 +4412,11 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v13 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v14 = [v13 zdrLocationsLiveMetrics];
-  v15 = [v14 confirmedALOIMatchedWithZDRType];
+  metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics2 = [metrics2 zdrLocationsLiveMetrics];
+  confirmedALOIMatchedWithZDRType = [zdrLocationsLiveMetrics2 confirmedALOIMatchedWithZDRType];
 
-  if (v15)
+  if (confirmedALOIMatchedWithZDRType)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4426,14 +4426,14 @@ LABEL_13:
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
         v19 = NSStringFromSelector(a2);
-        v20 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-        v21 = [v20 zdrLocationsLiveMetrics];
+        metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+        zdrLocationsLiveMetrics3 = [metrics3 zdrLocationsLiveMetrics];
         v29 = 138412802;
         v30 = v18;
         v31 = 2112;
         v32 = v19;
         v33 = 1026;
-        v34 = [v21 confirmedALOIMatchedWithZDRType];
+        confirmedALOIMatchedWithZDRType2 = [zdrLocationsLiveMetrics3 confirmedALOIMatchedWithZDRType];
         _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@:%@, ALOI is already confirmed,%{public}d", &v29, 0x1Cu);
       }
 
@@ -4441,24 +4441,24 @@ LABEL_13:
     }
   }
 
-  else if ([(RTAuthorizedLocationZDRLocationManager *)self _isDistanceBetween2PointsInRange:v9 aLoi:v10 range:100.0])
+  else if ([(RTAuthorizedLocationZDRLocationManager *)self _isDistanceBetween2PointsInRange:metricsCopy aLoi:loiCopy range:100.0])
   {
-    v26 = [v9 zdrLocationType];
-    v27 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v28 = [v27 zdrLocationsLiveMetrics];
-    [v28 setConfirmedALOIMatchedWithZDRType:v26];
+    zdrLocationType = [metricsCopy zdrLocationType];
+    metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics4 = [metrics4 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics4 setConfirmedALOIMatchedWithZDRType:zdrLocationType];
   }
 
 LABEL_14:
 }
 
-- (void)_computeALOIMetrics:(id)a3 reasonCode:(int64_t)a4
+- (void)_computeALOIMetrics:(id)metrics reasonCode:(int64_t)code
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v9 = [v8 zdrLocationsLiveMetrics];
-  if (!v9)
+  metricsCopy = metrics;
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
+  if (!zdrLocationsLiveMetrics)
   {
 
 LABEL_32:
@@ -4478,22 +4478,22 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  v10 = v9;
-  v11 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v12 = [v11 zdrLocationsCurationMetrics];
+  v10 = zdrLocationsLiveMetrics;
+  metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics = [metrics2 zdrLocationsCurationMetrics];
 
-  if (!v12)
+  if (!zdrLocationsCurationMetrics)
   {
     goto LABEL_32;
   }
 
   aSelector = a2;
-  v46 = v7;
+  v46 = metricsCopy;
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v7;
+  obj = metricsCopy;
   v51 = [obj countByEnumeratingWithState:&v63 objects:v82 count:16];
   if (v51)
   {
@@ -4515,8 +4515,8 @@ LABEL_32:
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v57 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-        v15 = [v57 countByEnumeratingWithState:&v59 objects:v81 count:16];
+        zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+        v15 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v59 objects:v81 count:16];
         if (v15)
         {
           v16 = v15;
@@ -4528,12 +4528,12 @@ LABEL_32:
             {
               if (*v60 != v17)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(zdrLocationsMemoryCopy);
               }
 
               v19 = *(*(&v59 + 1) + 8 * v18);
               v20 = objc_autoreleasePoolPush();
-              if (a4 == 1)
+              if (code == 1)
               {
                 [(RTAuthorizedLocationZDRLocationManager *)self _updateALOILiveMetrics:v19 aLoi:v14 reasonCode:1];
               }
@@ -4542,30 +4542,30 @@ LABEL_32:
               {
                 if ([v19 zdrLocationType] == 1)
                 {
-                  v21 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-                  v22 = [v21 zdrLocationsCurationMetrics];
-                  [v22 setIsZDRHomeLearnedALoi:1];
+                  metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+                  zdrLocationsCurationMetrics2 = [metrics3 zdrLocationsCurationMetrics];
+                  [zdrLocationsCurationMetrics2 setIsZDRHomeLearnedALoi:1];
                 }
 
                 if ([v19 zdrLocationType] == 2)
                 {
-                  v23 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-                  v24 = [v23 zdrLocationsCurationMetrics];
-                  [v24 setIsZDRWorkLearnedALoi:1];
+                  metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+                  zdrLocationsCurationMetrics3 = [metrics4 zdrLocationsCurationMetrics];
+                  [zdrLocationsCurationMetrics3 setIsZDRWorkLearnedALoi:1];
                 }
 
                 if ([v19 zdrLocationType] == 3)
                 {
-                  v25 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-                  v26 = [v25 zdrLocationsCurationMetrics];
-                  [v26 setIsZDRSchoolLearnedALoi:1];
+                  metrics5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+                  zdrLocationsCurationMetrics4 = [metrics5 zdrLocationsCurationMetrics];
+                  [zdrLocationsCurationMetrics4 setIsZDRSchoolLearnedALoi:1];
                 }
 
                 if ([v19 zdrLocationType] == 4)
                 {
-                  v27 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-                  v28 = [v27 zdrLocationsCurationMetrics];
-                  [v28 setIsZDRSetupLearnedALoi:1];
+                  metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+                  zdrLocationsCurationMetrics5 = [metrics6 zdrLocationsCurationMetrics];
+                  [zdrLocationsCurationMetrics5 setIsZDRSetupLearnedALoi:1];
                 }
               }
 
@@ -4574,7 +4574,7 @@ LABEL_32:
             }
 
             while (v16 != v18);
-            v16 = [v57 countByEnumeratingWithState:&v59 objects:v81 count:16];
+            v16 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v59 objects:v81 count:16];
           }
 
           while (v16);
@@ -4591,7 +4591,7 @@ LABEL_32:
     while (v51);
   }
 
-  v7 = v46;
+  metricsCopy = v46;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -4600,21 +4600,21 @@ LABEL_32:
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
       aSelectora = NSStringFromSelector(aSelector);
-      v58 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v56 = [v58 zdrLocationsCurationMetrics];
-      obja = [v56 isZDRHomeLearnedALoi];
+      metrics7 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics6 = [metrics7 zdrLocationsCurationMetrics];
+      obja = [zdrLocationsCurationMetrics6 isZDRHomeLearnedALoi];
       contexta = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v52 = [contexta zdrLocationsCurationMetrics];
-      v43 = [v52 isZDRWorkLearnedALoi];
-      v50 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v32 = [v50 zdrLocationsCurationMetrics];
-      v33 = [v32 isZDRSchoolLearnedALoi];
-      v34 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v35 = [v34 zdrLocationsCurationMetrics];
-      v36 = [v35 isZDRSetupLearnedALoi];
-      v37 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v38 = [v37 zdrLocationsLiveMetrics];
-      v39 = [v38 confirmedALOIMatchedWithZDRType];
+      zdrLocationsCurationMetrics7 = [contexta zdrLocationsCurationMetrics];
+      isZDRWorkLearnedALoi = [zdrLocationsCurationMetrics7 isZDRWorkLearnedALoi];
+      metrics8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics8 = [metrics8 zdrLocationsCurationMetrics];
+      isZDRSchoolLearnedALoi = [zdrLocationsCurationMetrics8 isZDRSchoolLearnedALoi];
+      metrics9 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics9 = [metrics9 zdrLocationsCurationMetrics];
+      isZDRSetupLearnedALoi = [zdrLocationsCurationMetrics9 isZDRSetupLearnedALoi];
+      metrics10 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics2 = [metrics10 zdrLocationsLiveMetrics];
+      confirmedALOIMatchedWithZDRType = [zdrLocationsLiveMetrics2 confirmedALOIMatchedWithZDRType];
       *buf = 138413826;
       v68 = v31;
       v69 = 2112;
@@ -4622,14 +4622,14 @@ LABEL_32:
       v71 = 1026;
       v72 = obja;
       v73 = 1026;
-      v74 = v43;
-      v7 = v46;
+      v74 = isZDRWorkLearnedALoi;
+      metricsCopy = v46;
       v75 = 1026;
-      v76 = v33;
+      v76 = isZDRSchoolLearnedALoi;
       v77 = 1026;
-      v78 = v36;
+      v78 = isZDRSetupLearnedALoi;
       v79 = 1026;
-      v80 = v39;
+      v80 = confirmedALOIMatchedWithZDRType;
       _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "%@:%@,number of isZDRHomeLearnedALoi,%{public}d,isZDRWorkLearnedALoi,%{public}d,isZDRSchoolLearnedALoi,%{public}d,isZDRSetupLearnedALoi,%{public}d,confirmedALOIMatchedWithZDRType,%{public}d", buf, 0x34u);
     }
 
@@ -4637,63 +4637,63 @@ LABEL_34:
   }
 }
 
-- (void)_collectZdrConfirmationMetric:(double)a3 zdrLoc:(id)a4
+- (void)_collectZdrConfirmationMetric:(double)metric zdrLoc:(id)loc
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v11 = [v10 zdrLocationsLiveMetrics];
+  locCopy = loc;
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
 
-  if (v11)
+  if (zdrLocationsLiveMetrics)
   {
-    v12 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v13 = [v12 zdrLocationsLiveMetrics];
-    [v13 distanceBetweenZDRToUserLocation_m];
+    metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics2 = [metrics2 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics2 distanceBetweenZDRToUserLocation_m];
     v15 = v14;
 
-    v16 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v17 = [v16 zdrLocationsLiveMetrics];
-    v18 = v17;
+    metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics3 = [metrics3 zdrLocationsLiveMetrics];
+    v18 = zdrLocationsLiveMetrics3;
     if (v15 == 0.0)
     {
-      [v17 setDistanceBetweenZDRToUserLocation_m:a3];
+      [zdrLocationsLiveMetrics3 setDistanceBetweenZDRToUserLocation_m:metric];
     }
 
     else
     {
-      [v17 distanceBetweenZDRToUserLocation_m];
+      [zdrLocationsLiveMetrics3 distanceBetweenZDRToUserLocation_m];
       v20 = v19;
-      v21 = a3;
-      if (v19 <= a3)
+      metricCopy = metric;
+      if (v19 <= metric)
       {
-        v4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-        v5 = [v4 zdrLocationsLiveMetrics];
-        [v5 distanceBetweenZDRToUserLocation_m];
-        v21 = v22;
+        metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+        zdrLocationsLiveMetrics4 = [metrics4 zdrLocationsLiveMetrics];
+        [zdrLocationsLiveMetrics4 distanceBetweenZDRToUserLocation_m];
+        metricCopy = v22;
       }
 
-      v23 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v24 = [v23 zdrLocationsLiveMetrics];
-      [v24 setDistanceBetweenZDRToUserLocation_m:v21];
+      metrics5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics5 = [metrics5 zdrLocationsLiveMetrics];
+      [zdrLocationsLiveMetrics5 setDistanceBetweenZDRToUserLocation_m:metricCopy];
 
-      if (v20 <= a3)
+      if (v20 <= metric)
       {
       }
     }
 
-    if (v9)
+    if (locCopy)
     {
-      v25 = [v9 zdrLocationType];
+      zdrLocationType = [locCopy zdrLocationType];
     }
 
     else
     {
-      v25 = 0;
+      zdrLocationType = 0;
     }
 
-    v26 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v27 = [v26 zdrLocationsLiveMetrics];
-    [v27 setZdrConfirmationPlaceType:v25];
+    metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics6 = [metrics6 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics6 setZdrConfirmationPlaceType:zdrLocationType];
 
     v28 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -4701,12 +4701,12 @@ LABEL_34:
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
       v31 = NSStringFromSelector(a2);
-      v32 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v33 = [v32 zdrLocationsLiveMetrics];
-      [v33 distanceBetweenZDRToUserLocation_m];
+      metrics7 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics7 = [metrics7 zdrLocationsLiveMetrics];
+      [zdrLocationsLiveMetrics7 distanceBetweenZDRToUserLocation_m];
       v35 = v34;
-      v36 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v37 = [v36 zdrLocationsLiveMetrics];
+      metrics8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics8 = [metrics8 zdrLocationsLiveMetrics];
       v38 = 138413058;
       v39 = v30;
       v40 = 2112;
@@ -4714,31 +4714,31 @@ LABEL_34:
       v42 = 2050;
       v43 = v35;
       v44 = 1026;
-      v45 = [v37 zdrConfirmationPlaceType];
+      zdrConfirmationPlaceType = [zdrLocationsLiveMetrics8 zdrConfirmationPlaceType];
       _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_DEFAULT, "%@:%@,ZDRConfirmed,distanceBetweenZDRToUserLocation_m,%{public}.3lf,zdrConfirmationPlaceType,%{public}d", &v38, 0x26u);
     }
   }
 }
 
-- (void)_collectMetric:(int64_t)a3 reasonCode:(int64_t)a4 zdrComputationTime_s:(double)a5
+- (void)_collectMetric:(int64_t)metric reasonCode:(int64_t)code zdrComputationTime_s:(double)time_s
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v11 = [v10 zdrLocationsLiveMetrics];
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsLiveMetrics = [metrics zdrLocationsLiveMetrics];
 
-  if (v11)
+  if (zdrLocationsLiveMetrics)
   {
-    v12 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v13 = [v12 zdrLocationsLiveMetrics];
-    [v13 setZdrConfirmationStatus:a3];
+    metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics2 = [metrics2 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics2 setZdrConfirmationStatus:metric];
 
-    v14 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v15 = [v14 zdrLocationsLiveMetrics];
-    [v15 setZdrConfirmationStatusCode:a4];
+    metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics3 = [metrics3 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics3 setZdrConfirmationStatusCode:code];
 
-    v16 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-    v17 = [v16 zdrLocationsLiveMetrics];
-    [v17 setZdrComputationTime_s:a5];
+    metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+    zdrLocationsLiveMetrics4 = [metrics4 zdrLocationsLiveMetrics];
+    [zdrLocationsLiveMetrics4 setZdrComputationTime_s:time_s];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -4746,21 +4746,21 @@ LABEL_34:
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
-      v22 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v23 = [v22 zdrLocationsLiveMetrics];
-      v24 = [v23 zdrConfirmationStatus];
-      v25 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v26 = [v25 zdrLocationsLiveMetrics];
+      metrics5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics5 = [metrics5 zdrLocationsLiveMetrics];
+      zdrConfirmationStatus = [zdrLocationsLiveMetrics5 zdrConfirmationStatus];
+      metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsLiveMetrics6 = [metrics6 zdrLocationsLiveMetrics];
       v27 = 138413314;
       v28 = v20;
       v29 = 2112;
       v30 = v21;
       v31 = 2050;
-      v32 = a5;
+      time_sCopy = time_s;
       v33 = 1026;
-      v34 = v24;
+      v34 = zdrConfirmationStatus;
       v35 = 1026;
-      v36 = [v26 zdrConfirmationStatusCode];
+      zdrConfirmationStatusCode = [zdrLocationsLiveMetrics6 zdrConfirmationStatusCode];
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "%@:%@,zdrComputationTime_s,%{public}.3lf,zdrConfirmationStatus,%{public}d,zdrConfirmationStatus,%{public}d", &v27, 0x2Cu);
     }
   }
@@ -4769,36 +4769,36 @@ LABEL_34:
 - (void)_collectCurationMetric
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v4 = [v3 zdrLocationsCurationMetrics];
+  metrics = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics = [metrics zdrLocationsCurationMetrics];
 
-  if (!v4)
+  if (!zdrLocationsCurationMetrics)
   {
     return;
   }
 
-  v5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v6 = [v5 zdrLocationsCurationMetrics];
-  [v6 setNumberOfZDRLocationsHome:0];
+  metrics2 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics2 = [metrics2 zdrLocationsCurationMetrics];
+  [zdrLocationsCurationMetrics2 setNumberOfZDRLocationsHome:0];
 
-  v7 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v8 = [v7 zdrLocationsCurationMetrics];
-  [v8 setNumberOfZDRLocationsWork:0];
+  metrics3 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics3 = [metrics3 zdrLocationsCurationMetrics];
+  [zdrLocationsCurationMetrics3 setNumberOfZDRLocationsWork:0];
 
-  v9 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v10 = [v9 zdrLocationsCurationMetrics];
-  [v10 setNumberOfZDRLocationsSchool:0];
+  metrics4 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics4 = [metrics4 zdrLocationsCurationMetrics];
+  [zdrLocationsCurationMetrics4 setNumberOfZDRLocationsSchool:0];
 
-  v11 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v12 = [v11 zdrLocationsCurationMetrics];
-  [v12 setTotalZDRLocations:0];
+  metrics5 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics5 = [metrics5 zdrLocationsCurationMetrics];
+  [zdrLocationsCurationMetrics5 setTotalZDRLocations:0];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v13 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-  v14 = [v13 countByEnumeratingWithState:&v60 objects:v80 count:16];
+  zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  v14 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v60 objects:v80 count:16];
   if (!v14)
   {
     v16 = 0;
@@ -4816,21 +4816,21 @@ LABEL_34:
     {
       if (*v61 != v18)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(zdrLocationsMemoryCopy);
       }
 
-      v20 = [*(*(&v60 + 1) + 8 * i) zdrLocationType];
-      if (v20 > 2)
+      zdrLocationType = [*(*(&v60 + 1) + 8 * i) zdrLocationType];
+      if (zdrLocationType > 2)
       {
-        if ((v20 - 4) < 2)
+        if ((zdrLocationType - 4) < 2)
         {
           ++v16;
           continue;
         }
 
-        if (v20 != 3)
+        if (zdrLocationType != 3)
         {
-          if (v20 != 6)
+          if (zdrLocationType != 6)
           {
             continue;
           }
@@ -4840,26 +4840,26 @@ LABEL_15:
           continue;
         }
 
-        v21 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-        v22 = [v21 zdrLocationsCurationMetrics];
-        [v22 setNumberOfZDRLocationsSchool:{objc_msgSend(v22, "numberOfZDRLocationsSchool") + 1}];
+        metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+        zdrLocationsCurationMetrics6 = [metrics6 zdrLocationsCurationMetrics];
+        [zdrLocationsCurationMetrics6 setNumberOfZDRLocationsSchool:{objc_msgSend(zdrLocationsCurationMetrics6, "numberOfZDRLocationsSchool") + 1}];
       }
 
       else
       {
-        switch(v20)
+        switch(zdrLocationType)
         {
           case 0:
             goto LABEL_15;
           case 1:
-            v21 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-            v22 = [v21 zdrLocationsCurationMetrics];
-            [v22 setNumberOfZDRLocationsHome:{objc_msgSend(v22, "numberOfZDRLocationsHome") + 1}];
+            metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+            zdrLocationsCurationMetrics6 = [metrics6 zdrLocationsCurationMetrics];
+            [zdrLocationsCurationMetrics6 setNumberOfZDRLocationsHome:{objc_msgSend(zdrLocationsCurationMetrics6, "numberOfZDRLocationsHome") + 1}];
             break;
           case 2:
-            v21 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-            v22 = [v21 zdrLocationsCurationMetrics];
-            [v22 setNumberOfZDRLocationsWork:{objc_msgSend(v22, "numberOfZDRLocationsWork") + 1}];
+            metrics6 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+            zdrLocationsCurationMetrics6 = [metrics6 zdrLocationsCurationMetrics];
+            [zdrLocationsCurationMetrics6 setNumberOfZDRLocationsWork:{objc_msgSend(zdrLocationsCurationMetrics6, "numberOfZDRLocationsWork") + 1}];
             break;
           default:
             continue;
@@ -4867,25 +4867,25 @@ LABEL_15:
       }
     }
 
-    v15 = [v13 countByEnumeratingWithState:&v60 objects:v80 count:16];
+    v15 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v60 objects:v80 count:16];
   }
 
   while (v15);
 LABEL_24:
 
-  v58 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v56 = [v58 zdrLocationsCurationMetrics];
-  v23 = [v56 numberOfZDRLocationsHome];
-  v54 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v24 = [v54 zdrLocationsCurationMetrics];
-  v25 = [v24 numberOfZDRLocationsWork];
-  v26 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v27 = [v26 zdrLocationsCurationMetrics];
-  v28 = v17 + v16 + v23;
-  v29 = v25 + [v27 numberOfZDRLocationsSchool];
-  v30 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-  v31 = [v30 zdrLocationsCurationMetrics];
-  [v31 setTotalZDRLocations:(v28 + v29)];
+  metrics7 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics7 = [metrics7 zdrLocationsCurationMetrics];
+  numberOfZDRLocationsHome = [zdrLocationsCurationMetrics7 numberOfZDRLocationsHome];
+  metrics8 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics8 = [metrics8 zdrLocationsCurationMetrics];
+  numberOfZDRLocationsWork = [zdrLocationsCurationMetrics8 numberOfZDRLocationsWork];
+  metrics9 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics9 = [metrics9 zdrLocationsCurationMetrics];
+  v28 = v17 + v16 + numberOfZDRLocationsHome;
+  v29 = numberOfZDRLocationsWork + [zdrLocationsCurationMetrics9 numberOfZDRLocationsSchool];
+  metrics10 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+  zdrLocationsCurationMetrics10 = [metrics10 zdrLocationsCurationMetrics];
+  [zdrLocationsCurationMetrics10 setTotalZDRLocations:(v28 + v29)];
 
   if (v17)
   {
@@ -4931,30 +4931,30 @@ LABEL_24:
       v35 = objc_opt_class();
       v36 = NSStringFromClass(v35);
       v37 = NSStringFromSelector(a2);
-      v59 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v57 = [v59 zdrLocationsCurationMetrics];
-      v51 = [v57 totalZDRLocations];
-      v55 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      aSelectora = [v55 zdrLocationsCurationMetrics];
-      v50 = [aSelectora numberOfZDRLocationsHome];
-      v38 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v39 = [v38 zdrLocationsCurationMetrics];
-      v40 = [v39 numberOfZDRLocationsWork];
-      v41 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
-      v42 = [v41 zdrLocationsCurationMetrics];
-      v43 = [v42 numberOfZDRLocationsSchool];
+      metrics11 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics11 = [metrics11 zdrLocationsCurationMetrics];
+      totalZDRLocations = [zdrLocationsCurationMetrics11 totalZDRLocations];
+      metrics12 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      aSelectora = [metrics12 zdrLocationsCurationMetrics];
+      numberOfZDRLocationsHome2 = [aSelectora numberOfZDRLocationsHome];
+      metrics13 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics12 = [metrics13 zdrLocationsCurationMetrics];
+      numberOfZDRLocationsWork2 = [zdrLocationsCurationMetrics12 numberOfZDRLocationsWork];
+      metrics14 = [(RTAuthorizedLocationZDRLocationManager *)self metrics];
+      zdrLocationsCurationMetrics13 = [metrics14 zdrLocationsCurationMetrics];
+      numberOfZDRLocationsSchool = [zdrLocationsCurationMetrics13 numberOfZDRLocationsSchool];
       *buf = 138414082;
       v65 = v36;
       v66 = 2112;
       v67 = v37;
       v68 = 1026;
-      v69 = v51;
+      v69 = totalZDRLocations;
       v70 = 1026;
-      v71 = v50;
+      v71 = numberOfZDRLocationsHome2;
       v72 = 1026;
-      v73 = v40;
+      v73 = numberOfZDRLocationsWork2;
       v74 = 1026;
-      v75 = v43;
+      v75 = numberOfZDRLocationsSchool;
       v76 = 1026;
       v77 = v16;
       v78 = 1026;
@@ -4964,10 +4964,10 @@ LABEL_24:
   }
 }
 
-- (void)fetchAuthorizedLocationZDRLocations:(id)a3
+- (void)fetchAuthorizedLocationZDRLocations:(id)locations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationsCopy = locations;
   [(RTAuthorizedLocationZDRLocationManager *)self _fetchStoredZDRLocations];
   v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4982,8 +4982,8 @@ LABEL_24:
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@,", &v11, 0x16u);
   }
 
-  v10 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-  v5[2](v5, v10, 0);
+  zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  locationsCopy[2](locationsCopy, zdrLocationsMemoryCopy, 0);
 }
 
 - (void)_disableNewSetupLocationGeneration
@@ -4993,8 +4993,8 @@ LABEL_24:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  zdrLocationsMemoryCopy = [(RTAuthorizedLocationZDRLocationManager *)self zdrLocationsMemoryCopy];
+  v4 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v4)
   {
 
@@ -5019,7 +5019,7 @@ LABEL_14:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(zdrLocationsMemoryCopy);
       }
 
       v9 = *(*(&v15 + 1) + 8 * i);
@@ -5027,7 +5027,7 @@ LABEL_14:
       v6 = v10 | v6 & 1;
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v5 = [zdrLocationsMemoryCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v5);
@@ -5038,11 +5038,11 @@ LABEL_14:
   }
 }
 
-- (void)onFirstUnlock:(BOOL)a3
+- (void)onFirstUnlock:(BOOL)unlock
 {
   [(RTAuthorizedLocationZDRLocationManager *)self setIsUnlockedSinceBoot:1];
   [(RTAuthorizedLocationZDRLocationManager *)self _fetchStoredZDRLocations];
-  if (!a3)
+  if (!unlock)
   {
 
     [(RTAuthorizedLocationZDRLocationManager *)self _disableNewSetupLocationGeneration];

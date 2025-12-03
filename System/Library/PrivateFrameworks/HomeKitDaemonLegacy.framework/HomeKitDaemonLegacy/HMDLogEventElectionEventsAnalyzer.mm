@@ -1,9 +1,9 @@
 @interface HMDLogEventElectionEventsAnalyzer
 + (id)managedEventCounterRequestGroups;
-- (HMDLogEventElectionEventsAnalyzer)initWithDataSource:(id)a3;
-- (void)handlePrimaryResidentChangedNotification:(id)a3;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (HMDLogEventElectionEventsAnalyzer)initWithDataSource:(id)source;
+- (void)handlePrimaryResidentChangedNotification:(id)notification;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)resetAggregationAnalysisContext;
 @end
 
@@ -11,47 +11,47 @@
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v2 resetEventCounters];
+  counterGroup = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [counterGroup resetEventCounters];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v6 = a4;
-  v24 = a3;
-  v7 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setCurrentDeviceStartedLegacyElectionCount:{objc_msgSend(v7, "fetchEventCounterForEventName:forDate:", @"currentDeviceStartedElectionCount", v6)}];
+  dateCopy = date;
+  eventCopy = event;
+  counterGroup = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setCurrentDeviceStartedLegacyElectionCount:{objc_msgSend(counterGroup, "fetchEventCounterForEventName:forDate:", @"currentDeviceStartedElectionCount", dateCopy)}];
 
-  v8 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionCoordinationMeshUpdateCount:{objc_msgSend(v8, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshUpdateCount", v6)}];
+  counterGroup2 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionCoordinationMeshUpdateCount:{objc_msgSend(counterGroup2, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshUpdateCount", dateCopy)}];
 
-  v9 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionCoordinationMeshLeaderElectedCount:{objc_msgSend(v9, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshLeaderElectedCount", v6)}];
+  counterGroup3 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionCoordinationMeshLeaderElectedCount:{objc_msgSend(counterGroup3, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshLeaderElectedCount", dateCopy)}];
 
-  v10 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionCoordinationMeshLeaderChangedCount:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshLeaderChangedCount", v6)}];
+  counterGroup4 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionCoordinationMeshLeaderChangedCount:{objc_msgSend(counterGroup4, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationMeshLeaderChangedCount", dateCopy)}];
 
-  v11 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionPrimaryResidentElectionRunCount:{objc_msgSend(v11, "fetchEventCounterForEventName:forDate:", @"v2ElectionPrimaryResidentElectionRunCount", v6)}];
+  counterGroup5 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionPrimaryResidentElectionRunCount:{objc_msgSend(counterGroup5, "fetchEventCounterForEventName:forDate:", @"v2ElectionPrimaryResidentElectionRunCount", dateCopy)}];
 
-  v12 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionPrimaryResidentChangedCount:{objc_msgSend(v12, "fetchEventCounterForEventName:forDate:", @"v2ElectionPrimaryResidentChangedCount", v6)}];
+  counterGroup6 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionPrimaryResidentChangedCount:{objc_msgSend(counterGroup6, "fetchEventCounterForEventName:forDate:", @"v2ElectionPrimaryResidentChangedCount", dateCopy)}];
 
-  [v24 setV2ElectionCurrentDeviceInSecondaryCoordinationMesh:{-[HMDLogEventElectionEventsAnalyzer isCurrentDeviceInSecondaryResidentCoordinationMesh](self, "isCurrentDeviceInSecondaryResidentCoordinationMesh")}];
-  v13 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v24 setV2ElectionCoordinationCurrentDeviceFlapCount:{objc_msgSend(v13, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationCurrentDeviceFlapCount", v6)}];
+  [eventCopy setV2ElectionCurrentDeviceInSecondaryCoordinationMesh:{-[HMDLogEventElectionEventsAnalyzer isCurrentDeviceInSecondaryResidentCoordinationMesh](self, "isCurrentDeviceInSecondaryResidentCoordinationMesh")}];
+  counterGroup7 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [eventCopy setV2ElectionCoordinationCurrentDeviceFlapCount:{objc_msgSend(counterGroup7, "fetchEventCounterForEventName:forDate:", @"v2ElectionCoordinationCurrentDeviceFlapCount", dateCopy)}];
 
-  v14 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v14 durationForCounter:@"PrimaryResidentDurationSeconds" forDate:v6];
+  counterGroup8 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [counterGroup8 durationForCounter:@"PrimaryResidentDurationSeconds" forDate:dateCopy];
   v16 = v15;
 
-  [v24 setPrimaryResidentDurationMinutes:((v16 + 59.0) / 60.0)];
-  v17 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v17 durationForCounter:@"v2CurrentDeviceInPrimaryMeshDurationSeconds" forDate:v6];
+  [eventCopy setPrimaryResidentDurationMinutes:((v16 + 59.0) / 60.0)];
+  counterGroup9 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [counterGroup9 durationForCounter:@"v2CurrentDeviceInPrimaryMeshDurationSeconds" forDate:dateCopy];
   v19 = v18;
 
-  v20 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-  [v20 durationForCounter:@"v2CurrentDeviceInSecondaryMeshDurationSeconds" forDate:v6];
+  counterGroup10 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+  [counterGroup10 durationForCounter:@"v2CurrentDeviceInSecondaryMeshDurationSeconds" forDate:dateCopy];
   v22 = v21;
 
   if (v19 + v22 <= 0.0)
@@ -64,15 +64,15 @@
     v23 = llround(v19 * 100.0 / (v19 + v22));
   }
 
-  [v24 setV2ElectionPercentageDurationCurrentDeviceIsInPrimaryMesh:v23];
+  [eventCopy setV2ElectionPercentageDurationCurrentDeviceIsInPrimaryMesh:v23];
 }
 
-- (void)handlePrimaryResidentChangedNotification:(id)a3
+- (void)handlePrimaryResidentChangedNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -88,12 +88,12 @@
 
   if (v8)
   {
-    v9 = [v8 home];
-    v10 = v9;
-    if (v9 && ([v9 isCurrentDeviceAvailableResident] & 1) == 0)
+    home = [v8 home];
+    v10 = home;
+    if (home && ([home isCurrentDeviceAvailableResident] & 1) == 0)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -108,17 +108,17 @@
 
     else
     {
-      v11 = [v8 isCurrentDevice];
-      v12 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-      v13 = v12;
-      if (v11)
+      isCurrentDevice = [v8 isCurrentDevice];
+      counterGroup = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+      v13 = counterGroup;
+      if (isCurrentDevice)
       {
-        [v12 resumeDurationCounter:@"PrimaryResidentDurationSeconds"];
+        [counterGroup resumeDurationCounter:@"PrimaryResidentDurationSeconds"];
       }
 
       else
       {
-        [v12 pauseDurationCounter:@"PrimaryResidentDurationSeconds"];
+        [counterGroup pauseDurationCounter:@"PrimaryResidentDurationSeconds"];
       }
     }
   }
@@ -126,7 +126,7 @@
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -142,13 +142,13 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v25 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v25;
+    v4 = eventCopy;
   }
 
   else
@@ -159,13 +159,13 @@
   v5 = v4;
   if (v5)
   {
-    v6 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-    [v6 incrementEventCounterForEventName:@"currentDeviceStartedElectionCount"];
+    counterGroup = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+    [counterGroup incrementEventCounterForEventName:@"currentDeviceStartedElectionCount"];
   }
 
   else
   {
-    v7 = v25;
+    v7 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,38 +177,38 @@
       v8 = 0;
     }
 
-    v6 = v8;
+    counterGroup = v8;
 
-    if (v6)
+    if (counterGroup)
     {
-      v9 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-      [v9 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshUpdateCount"];
+      counterGroup2 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+      [counterGroup2 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshUpdateCount"];
 
-      if ([v6 didElectLeader])
+      if ([counterGroup didElectLeader])
       {
-        v10 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        [v10 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshLeaderElectedCount"];
+        counterGroup3 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        [counterGroup3 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshLeaderElectedCount"];
       }
 
-      if ([v6 didChangeLeader])
+      if ([counterGroup didChangeLeader])
       {
-        v11 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        [v11 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshLeaderChangedCount"];
+        counterGroup4 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        [counterGroup4 incrementEventCounterForEventName:@"v2ElectionCoordinationMeshLeaderChangedCount"];
       }
 
-      if ([v6 didCurrentDeviceLeavePrimaryMesh])
+      if ([counterGroup didCurrentDeviceLeavePrimaryMesh])
       {
-        v12 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        [v12 incrementEventCounterForEventName:@"v2ElectionCoordinationCurrentDeviceFlapCount"];
+        counterGroup5 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        [counterGroup5 incrementEventCounterForEventName:@"v2ElectionCoordinationCurrentDeviceFlapCount"];
       }
 
-      v13 = [(HMDLogEventElectionEventsAnalyzer *)self isCurrentDeviceInSecondaryResidentCoordinationMesh];
-      if (v13 != [v6 isInSecondaryMesh])
+      isCurrentDeviceInSecondaryResidentCoordinationMesh = [(HMDLogEventElectionEventsAnalyzer *)self isCurrentDeviceInSecondaryResidentCoordinationMesh];
+      if (isCurrentDeviceInSecondaryResidentCoordinationMesh != [counterGroup isInSecondaryMesh])
       {
-        v14 = [v6 isInSecondaryMesh];
-        v15 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        v16 = v15;
-        if (v14)
+        isInSecondaryMesh = [counterGroup isInSecondaryMesh];
+        counterGroup6 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        v16 = counterGroup6;
+        if (isInSecondaryMesh)
         {
           v17 = @"v2CurrentDeviceInPrimaryMeshDurationSeconds";
         }
@@ -218,7 +218,7 @@
           v17 = @"v2CurrentDeviceInSecondaryMeshDurationSeconds";
         }
 
-        if (v14)
+        if (isInSecondaryMesh)
         {
           v18 = @"v2CurrentDeviceInSecondaryMeshDurationSeconds";
         }
@@ -228,12 +228,12 @@
           v18 = @"v2CurrentDeviceInPrimaryMeshDurationSeconds";
         }
 
-        [v15 pauseDurationCounter:v17];
+        [counterGroup6 pauseDurationCounter:v17];
 
-        v19 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        [v19 resumeDurationCounter:v18];
+        counterGroup7 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        [counterGroup7 resumeDurationCounter:v18];
 
-        -[HMDLogEventElectionEventsAnalyzer setIsCurrentDeviceInSecondaryResidentCoordinationMesh:](self, "setIsCurrentDeviceInSecondaryResidentCoordinationMesh:", [v6 isInSecondaryMesh]);
+        -[HMDLogEventElectionEventsAnalyzer setIsCurrentDeviceInSecondaryResidentCoordinationMesh:](self, "setIsCurrentDeviceInSecondaryResidentCoordinationMesh:", [counterGroup isInSecondaryMesh]);
       }
     }
 
@@ -255,49 +255,49 @@
 
       if (v22)
       {
-        v23 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-        [v23 incrementEventCounterForEventName:@"v2ElectionPrimaryResidentElectionRunCount"];
+        counterGroup8 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+        [counterGroup8 incrementEventCounterForEventName:@"v2ElectionPrimaryResidentElectionRunCount"];
 
         if ([v22 didChangePrimary])
         {
-          v24 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
-          [v24 incrementEventCounterForEventName:@"v2ElectionPrimaryResidentChangedCount"];
+          counterGroup9 = [(HMDLogEventElectionEventsAnalyzer *)self counterGroup];
+          [counterGroup9 incrementEventCounterForEventName:@"v2ElectionPrimaryResidentChangedCount"];
         }
       }
 
-      v6 = 0;
+      counterGroup = 0;
     }
   }
 }
 
-- (HMDLogEventElectionEventsAnalyzer)initWithDataSource:(id)a3
+- (HMDLogEventElectionEventsAnalyzer)initWithDataSource:(id)source
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HMDLogEventElectionEventsAnalyzer;
   v5 = [(HMDLogEventElectionEventsAnalyzer *)&v14 init];
   if (v5)
   {
-    v6 = [v4 legacyCountersManager];
-    v7 = [v6 counterGroupForName:@"HMDLogEventElectionEventsAnalyzerRequestGroup"];
+    legacyCountersManager = [sourceCopy legacyCountersManager];
+    v7 = [legacyCountersManager counterGroupForName:@"HMDLogEventElectionEventsAnalyzerRequestGroup"];
     counterGroup = v5->_counterGroup;
     v5->_counterGroup = v7;
 
     v5->_isCurrentDeviceInSecondaryResidentCoordinationMesh = 0;
-    v9 = [v4 logEventDispatcher];
+    logEventDispatcher = [sourceCopy logEventDispatcher];
     v15[0] = objc_opt_class();
     v15[1] = objc_opt_class();
     v15[2] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
-    [v9 addObserver:v5 forEventClasses:v10];
+    [logEventDispatcher addObserver:v5 forEventClasses:v10];
 
-    v11 = [v4 notificationCenter];
-    [v11 addObserver:v5 selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+    notificationCenter = [sourceCopy notificationCenter];
+    [notificationCenter addObserver:v5 selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
 
-    [v4 addThresholdTrigger:@"legacyElectionStartCount" forEventName:@"currentDeviceStartedElectionCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
-    [v4 addThresholdTrigger:@"electionV2PrimaryElectionCount" forEventName:@"v2ElectionPrimaryResidentElectionRunCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
-    [v4 addThresholdTrigger:@"electionV2PrimaryChangedCount" forEventName:@"v2ElectionPrimaryResidentChangedCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
+    [sourceCopy addThresholdTrigger:@"legacyElectionStartCount" forEventName:@"currentDeviceStartedElectionCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
+    [sourceCopy addThresholdTrigger:@"electionV2PrimaryElectionCount" forEventName:@"v2ElectionPrimaryResidentElectionRunCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
+    [sourceCopy addThresholdTrigger:@"electionV2PrimaryChangedCount" forEventName:@"v2ElectionPrimaryResidentChangedCount" requestGroup:@"HMDLogEventElectionEventsAnalyzerRequestGroup" atThreshold:10];
     [(HMDEventCounterGroup *)v5->_counterGroup resumeDurationCounter:@"v2CurrentDeviceInPrimaryMeshDurationSeconds"];
   }
 

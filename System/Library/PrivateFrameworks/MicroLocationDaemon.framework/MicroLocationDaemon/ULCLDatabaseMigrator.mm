@@ -1,15 +1,15 @@
 @interface ULCLDatabaseMigrator
-- (BOOL)_migrateTableUsingPaging:(ULSqliteDatabase *)a3 tableName:(const char *)a4 migrationLimit:(unsigned int)a5 pageSize:(unsigned int)a6 copyPageBlock:(id)a7;
-- (BOOL)migrateCLDatabaseFromPath:(id)a3;
-- (ULCLDatabaseMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3;
-- (unique_ptr<CLSqliteDatabase,)_connectToLocationdDatabase:(const void *)a3;
-- (void)_logStatsForExportedDatabase:(ULSqliteDatabase *)a3;
+- (BOOL)_migrateTableUsingPaging:(ULSqliteDatabase *)paging tableName:(const char *)name migrationLimit:(unsigned int)limit pageSize:(unsigned int)size copyPageBlock:(id)block;
+- (BOOL)migrateCLDatabaseFromPath:(id)path;
+- (ULCLDatabaseMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store;
+- (unique_ptr<CLSqliteDatabase,)_connectToLocationdDatabase:(const void *)database;
+- (void)_logStatsForExportedDatabase:(ULSqliteDatabase *)database;
 - (void)_logStatsForLocalDatabase;
 @end
 
 @implementation ULCLDatabaseMigrator
 
-- (ULCLDatabaseMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3
+- (ULCLDatabaseMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store
 {
   v7.receiver = self;
   v7.super_class = ULCLDatabaseMigrator;
@@ -17,20 +17,20 @@
   v5 = v4;
   if (v4)
   {
-    [(ULCLDatabaseMigrator *)v4 setDbStore:a3];
+    [(ULCLDatabaseMigrator *)v4 setDbStore:store];
   }
 
   return v5;
 }
 
-- (BOOL)migrateCLDatabaseFromPath:(id)a3
+- (BOOL)migrateCLDatabaseFromPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = v5;
-  if (v5)
+  pathCopy = path;
+  path = [pathCopy path];
+  v6 = path;
+  if (path)
   {
-    [v5 stdString];
+    [path stdString];
   }
 
   else
@@ -78,35 +78,35 @@
   return 0;
 }
 
-- (unique_ptr<CLSqliteDatabase,)_connectToLocationdDatabase:(const void *)a3
+- (unique_ptr<CLSqliteDatabase,)_connectToLocationdDatabase:(const void *)database
 {
   v6 = *MEMORY[0x277D85DE8];
   v3 = 0x100000002;
   v4 = 257;
-  if (*(a3 + 23) < 0)
+  if (*(database + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&__p, *a3, *(a3 + 1));
+    std::string::__init_copy_ctor_external(&__p, *database, *(database + 1));
   }
 
   else
   {
-    __p = *a3;
+    __p = *database;
   }
 
   operator new();
 }
 
-- (BOOL)_migrateTableUsingPaging:(ULSqliteDatabase *)a3 tableName:(const char *)a4 migrationLimit:(unsigned int)a5 pageSize:(unsigned int)a6 copyPageBlock:(id)a7
+- (BOOL)_migrateTableUsingPaging:(ULSqliteDatabase *)paging tableName:(const char *)name migrationLimit:(unsigned int)limit pageSize:(unsigned int)size copyPageBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  blockCopy = block;
   v13 = ![(ULCLDatabaseMigrator *)self migrateAllData];
-  if (a5)
+  if (limit)
   {
     v13 = 0;
   }
 
-  if (!a6 || v13)
+  if (!size || v13)
   {
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -120,11 +120,11 @@
       v22 = 2082;
       v23 = "";
       v24 = 1026;
-      *v25 = a5;
+      *v25 = limit;
       *&v25[4] = 1026;
-      *&v25[6] = a6;
+      *&v25[6] = size;
       v26 = 2082;
-      v27 = a4;
+      nameCopy = name;
       v15 = "{msg%{public}.0s:#dataMigrator, migrationLimit or pageSize is 0. skipping migration for table, migrationLimit:%{public}u, pageSize:%{public}u, tableName:%{public, location:escape_only}s}";
       v16 = v14;
       v17 = 40;
@@ -135,9 +135,9 @@ LABEL_15:
 
   else
   {
-    if (ULSqliteDatabase::tableExists(a3, a4))
+    if (ULSqliteDatabase::tableExists(paging, name))
     {
-      ULSqliteDatabase::numEntries(a3, a4);
+      ULSqliteDatabase::numEntries(paging, name);
     }
 
     if (onceToken_MicroLocation_Default != -1)
@@ -152,7 +152,7 @@ LABEL_15:
       v22 = 2082;
       v23 = "";
       v24 = 2082;
-      *v25 = a4;
+      *v25 = name;
       v15 = "{msg%{public}.0s:#dataMigrator, table is missing in imported db, tableName:%{public, location:escape_only}s}";
       v16 = v18;
       v17 = 28;
@@ -164,7 +164,7 @@ LABEL_15:
   return 1;
 }
 
-- (void)_logStatsForExportedDatabase:(ULSqliteDatabase *)a3
+- (void)_logStatsForExportedDatabase:(ULSqliteDatabase *)database
 {
   v6 = *MEMORY[0x277D85DE8];
   if (onceToken_MicroLocation_Default != -1)
@@ -175,7 +175,7 @@ LABEL_15:
   v4 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    ULSqliteDatabase::numEntries(a3, "MicroLocationRecordingEvents");
+    ULSqliteDatabase::numEntries(database, "MicroLocationRecordingEvents");
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -192,41 +192,41 @@ LABEL_15:
   v3 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(ULCLDatabaseMigrator *)self dbStore];
-    v39 = (*(v4->var0 + 12))(v4);
+    dbStore = [(ULCLDatabaseMigrator *)self dbStore];
+    v39 = (*(dbStore->var0 + 12))(dbStore);
     v34 = [v39 count];
-    v5 = [(ULCLDatabaseMigrator *)self dbStore];
-    v38 = (*(v5->var0 + 9))(v5);
+    dbStore2 = [(ULCLDatabaseMigrator *)self dbStore];
+    v38 = (*(dbStore2->var0 + 9))(dbStore2);
     v32 = [v38 count];
-    v6 = [(ULCLDatabaseMigrator *)self dbStore];
-    v37 = (*(v6->var0 + 6))(v6);
+    dbStore3 = [(ULCLDatabaseMigrator *)self dbStore];
+    v37 = (*(dbStore3->var0 + 6))(dbStore3);
     v31 = [v37 count];
-    v7 = [(ULCLDatabaseMigrator *)self dbStore];
-    v36 = (*(v7->var0 + 13))(v7);
+    dbStore4 = [(ULCLDatabaseMigrator *)self dbStore];
+    v36 = (*(dbStore4->var0 + 13))(dbStore4);
     v29 = [v36 count];
-    v8 = [(ULCLDatabaseMigrator *)self dbStore];
-    v35 = (*(v8->var0 + 8))(v8);
+    dbStore5 = [(ULCLDatabaseMigrator *)self dbStore];
+    v35 = (*(dbStore5->var0 + 8))(dbStore5);
     v28 = [v35 count];
-    v9 = [(ULCLDatabaseMigrator *)self dbStore];
-    v33 = (*(v9->var0 + 11))(v9);
+    dbStore6 = [(ULCLDatabaseMigrator *)self dbStore];
+    v33 = (*(dbStore6->var0 + 11))(dbStore6);
     v27 = [v33 count];
-    v10 = [(ULCLDatabaseMigrator *)self dbStore];
-    v30 = (*(v10->var0 + 3))(v10);
+    dbStore7 = [(ULCLDatabaseMigrator *)self dbStore];
+    v30 = (*(dbStore7->var0 + 3))(dbStore7);
     v26 = [v30 count];
-    v11 = [(ULCLDatabaseMigrator *)self dbStore];
-    v12 = (*(v11->var0 + 4))(v11);
+    dbStore8 = [(ULCLDatabaseMigrator *)self dbStore];
+    v12 = (*(dbStore8->var0 + 4))(dbStore8);
     v13 = [v12 count];
-    v14 = [(ULCLDatabaseMigrator *)self dbStore];
-    v15 = (*(v14->var0 + 5))(v14);
+    dbStore9 = [(ULCLDatabaseMigrator *)self dbStore];
+    v15 = (*(dbStore9->var0 + 5))(dbStore9);
     v16 = [v15 count];
-    v17 = [(ULCLDatabaseMigrator *)self dbStore];
-    v18 = (*(v17->var0 + 10))(v17);
+    dbStore10 = [(ULCLDatabaseMigrator *)self dbStore];
+    v18 = (*(dbStore10->var0 + 10))(dbStore10);
     v19 = [v18 count];
-    v20 = [(ULCLDatabaseMigrator *)self dbStore];
-    v21 = (*(v20->var0 + 14))(v20);
+    dbStore11 = [(ULCLDatabaseMigrator *)self dbStore];
+    v21 = (*(dbStore11->var0 + 14))(dbStore11);
     v22 = [v21 count];
-    v23 = [(ULCLDatabaseMigrator *)self dbStore];
-    v24 = (*(v23->var0 + 7))(v23);
+    dbStore12 = [(ULCLDatabaseMigrator *)self dbStore];
+    v24 = (*(dbStore12->var0 + 7))(dbStore12);
     *buf = 68292099;
     v41 = 0;
     v42 = 2082;

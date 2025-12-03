@@ -1,15 +1,15 @@
 @interface SBFloorDodgingLayerModifier
-- (id)_framesForIdentifiersInModel:(id)a3;
-- (id)_identifierIfAnyIllegallyClippingOtherIdentifiers:(id)a3 model:(id)a4 intersectionSize:(CGSize *)a5 intersectingFrame:(CGRect *)a6;
-- (id)_identifierIfAnyIllegallyOutsideContentViewBounds:(id)a3 model:(id)a4;
-- (id)_modelByClampingOverhangingIdentifiers:(id)a3;
-- (id)_modelByPerformingDodgingInModel:(id)a3;
-- (id)_modelsByResizingOverlappingIdentifiers:(id)a3;
-- (id)_modelsByTranslatingOverlappingIdentifiers:(id)a3 allowedEdges:(unint64_t)a4;
+- (id)_framesForIdentifiersInModel:(id)model;
+- (id)_identifierIfAnyIllegallyClippingOtherIdentifiers:(id)identifiers model:(id)model intersectionSize:(CGSize *)size intersectingFrame:(CGRect *)frame;
+- (id)_identifierIfAnyIllegallyOutsideContentViewBounds:(id)bounds model:(id)model;
+- (id)_modelByClampingOverhangingIdentifiers:(id)identifiers;
+- (id)_modelByPerformingDodgingInModel:(id)model;
+- (id)_modelsByResizingOverlappingIdentifiers:(id)identifiers;
+- (id)_modelsByTranslatingOverlappingIdentifiers:(id)identifiers allowedEdges:(unint64_t)edges;
 - (id)framesForIdentifiers;
-- (id)layoutSettingsForIdentifier:(id)a3;
+- (id)layoutSettingsForIdentifier:(id)identifier;
 - (id)model;
-- (id)modelForInvalidatedModel:(id)a3;
+- (id)modelForInvalidatedModel:(id)model;
 - (id)zOrderedIdentifiers;
 @end
 
@@ -20,29 +20,29 @@
   overridingModel = self->_overridingModel;
   if (overridingModel)
   {
-    v3 = overridingModel;
+    model = overridingModel;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFloorDodgingLayerModifier;
-    v3 = [(SBFloorDodgingLayerModifier *)&v5 model];
+    model = [(SBFloorDodgingLayerModifier *)&v5 model];
   }
 
-  return v3;
+  return model;
 }
 
-- (id)modelForInvalidatedModel:(id)a3
+- (id)modelForInvalidatedModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke;
   v15 = &unk_2783B8AD8;
-  v16 = v4;
-  v17 = self;
-  v5 = v4;
+  v16 = modelCopy;
+  selfCopy = self;
+  v5 = modelCopy;
   v6 = [v5 modelByModifyingModelWithBlock:&v12];
   v7 = [(SBFloorDodgingLayerModifier *)self _modelByPerformingDodgingInModel:v6, v12, v13, v14, v15];
   v8 = v7;
@@ -117,14 +117,14 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
 - (id)framesForIdentifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(SBFloorDodgingLayerModifier *)self model];
-  v3 = [v2 identifiers];
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  model = [(SBFloorDodgingLayerModifier *)self model];
+  identifiers = [model identifiers];
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(identifiers, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = identifiers;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
@@ -140,8 +140,8 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        [v2 sizeForIdentifier:{v10, v14}];
-        [v2 centerForIdentifier:v10];
+        [model sizeForIdentifier:{v10, v14}];
+        [model centerForIdentifier:v10];
         SBRectWithSize();
         UIRectCenteredAboutPoint();
         v18 = v10;
@@ -163,26 +163,26 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
 - (id)zOrderedIdentifiers
 {
   v2 = MEMORY[0x277CBEB70];
-  v3 = [(SBFloorDodgingLayerModifier *)self model];
-  v4 = [v3 identifiers];
-  v5 = [v4 bs_reverse];
-  v6 = [v2 orderedSetWithArray:v5];
+  model = [(SBFloorDodgingLayerModifier *)self model];
+  identifiers = [model identifiers];
+  bs_reverse = [identifiers bs_reverse];
+  v6 = [v2 orderedSetWithArray:bs_reverse];
 
   return v6;
 }
 
-- (id)layoutSettingsForIdentifier:(id)a3
+- (id)layoutSettingsForIdentifier:(id)identifier
 {
-  v3 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
 
-  return v3;
+  return initWithDefaultValues;
 }
 
-- (id)_modelByPerformingDodgingInModel:(id)a3
+- (id)_modelByPerformingDodgingInModel:(id)model
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v52 = [(SBFloorDodgingLayerModifier *)self _modelByClampingOverhangingIdentifiers:v4];
+  modelCopy = model;
+  v52 = [(SBFloorDodgingLayerModifier *)self _modelByClampingOverhangingIdentifiers:modelCopy];
   v5 = [v52 mutableCopy];
   v6 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v5 allowedEdges:15];
 
@@ -225,8 +225,8 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
 
   v51 = v9;
 
-  v53 = v4;
-  v15 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:v4];
+  v53 = modelCopy;
+  v15 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:modelCopy];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -236,7 +236,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
   if (v16)
   {
     v17 = v16;
-    v55 = self;
+    selfCopy = self;
     v56 = 0;
     v18 = *v68;
     v54 = *v68;
@@ -265,8 +265,8 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v24 = [v20 identifiers];
-          v25 = [v24 countByEnumeratingWithState:&v62 objects:v76 count:16];
+          identifiers = [v20 identifiers];
+          v25 = [identifiers countByEnumeratingWithState:&v62 objects:v76 count:16];
           if (v25)
           {
             v26 = v25;
@@ -279,7 +279,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
                 v61 = v28;
                 if (*v63 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(identifiers);
                 }
 
                 v30 = *(*(&v62 + 1) + 8 * j);
@@ -301,7 +301,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
                 v28 = v47 + hypot(v38 - v33, v40 - v35);
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v62 objects:v76 count:16];
+              v26 = [identifiers countByEnumeratingWithState:&v62 objects:v76 count:16];
             }
 
             while (v26);
@@ -315,7 +315,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
           }
 
           v18 = v54;
-          self = v55;
+          self = selfCopy;
           v17 = v57;
           v23 = v59;
           v22 = v60;
@@ -340,22 +340,22 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
   return v56;
 }
 
-- (id)_modelsByTranslatingOverlappingIdentifiers:(id)a3 allowedEdges:(unint64_t)a4
+- (id)_modelsByTranslatingOverlappingIdentifiers:(id)identifiers allowedEdges:(unint64_t)edges
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:v6];
+  identifiersCopy = identifiers;
+  v7 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:identifiersCopy];
   v67 = 0u;
   *v68 = 0u;
   v66[0] = 0;
   v66[1] = 0;
-  v8 = [(SBFloorDodgingLayerModifier *)self _identifierIfAnyIllegallyClippingOtherIdentifiers:v7 model:v6 intersectionSize:v66 intersectingFrame:&v67];
+  v8 = [(SBFloorDodgingLayerModifier *)self _identifierIfAnyIllegallyClippingOtherIdentifiers:v7 model:identifiersCopy intersectionSize:v66 intersectingFrame:&v67];
   if (v8)
   {
     [(SBFloorDodgingLayerModifier *)self spaceBetweenIdentifiers];
     v10 = v9;
     v11 = [(SBFloorDodgingLayerModifier *)self preferenceForIdentifier:v8];
-    v12 = [v11 dodgingAxisMask];
+    dodgingAxisMask = [v11 dodgingAxisMask];
 
     v13 = [v7 objectForKey:v8];
     [v13 CGRectValue];
@@ -374,7 +374,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
     width = v73.size.width;
     height = v73.size.height;
     v26 = objc_opt_new();
-    if ((a4 & 2) != 0 && SBDodgingAxisMaskContainsAxis(v12, 0))
+    if ((edges & 2) != 0 && SBDodgingAxisMaskContainsAxis(dodgingAxisMask, 0))
     {
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
@@ -385,13 +385,13 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
       v64 = width;
       v65 = height;
       v61 = v8;
-      v27 = [v6 modelByModifyingModelWithBlock:v60];
-      v28 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v27 allowedEdges:a4 & 0xFFFFFFFFFFFFFFF7];
-      [v26 addObjectsFromArray:v28];
+      v27 = [identifiersCopy modelByModifyingModelWithBlock:v60];
+      0xFFFFFFFFFFFFFFF7 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v27 allowedEdges:edges & 0xFFFFFFFFFFFFFFF7];
+      [v26 addObjectsFromArray:0xFFFFFFFFFFFFFFF7];
     }
 
     v29 = v10 * 0.5;
-    if ((a4 & 8) != 0 && SBDodgingAxisMaskContainsAxis(v12, 0))
+    if ((edges & 8) != 0 && SBDodgingAxisMaskContainsAxis(dodgingAxisMask, 0))
     {
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
@@ -402,12 +402,12 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
       v58 = width;
       v59 = height;
       v55 = v8;
-      v30 = [v6 modelByModifyingModelWithBlock:v54];
-      v31 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v30 allowedEdges:a4 & 0xFFFFFFFFFFFFFFFDLL];
-      [v26 addObjectsFromArray:v31];
+      v30 = [identifiersCopy modelByModifyingModelWithBlock:v54];
+      0xFFFFFFFFFFFFFFFDLL = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v30 allowedEdges:edges & 0xFFFFFFFFFFFFFFFDLL];
+      [v26 addObjectsFromArray:0xFFFFFFFFFFFFFFFDLL];
     }
 
-    if ((a4 & 1) != 0 && SBDodgingAxisMaskContainsAxis(v12, 1))
+    if ((edges & 1) != 0 && SBDodgingAxisMaskContainsAxis(dodgingAxisMask, 1))
     {
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
@@ -418,12 +418,12 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
       v52 = width;
       v53 = height;
       v49 = v8;
-      v32 = [v6 modelByModifyingModelWithBlock:v48];
-      v33 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v32 allowedEdges:a4 & 0xFFFFFFFFFFFFFFFBLL];
-      [v26 addObjectsFromArray:v33];
+      v32 = [identifiersCopy modelByModifyingModelWithBlock:v48];
+      0xFFFFFFFFFFFFFFFBLL = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v32 allowedEdges:edges & 0xFFFFFFFFFFFFFFFBLL];
+      [v26 addObjectsFromArray:0xFFFFFFFFFFFFFFFBLL];
     }
 
-    if ((a4 & 4) != 0 && SBDodgingAxisMaskContainsAxis(v12, 1))
+    if ((edges & 4) != 0 && SBDodgingAxisMaskContainsAxis(dodgingAxisMask, 1))
     {
       v39 = MEMORY[0x277D85DD0];
       v40 = 3221225472;
@@ -434,8 +434,8 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
       v46 = width;
       v47 = height;
       v43 = v8;
-      v34 = [v6 modelByModifyingModelWithBlock:&v39];
-      v35 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v34 allowedEdges:a4 & 0xFFFFFFFFFFFFFFFELL, v39, v40, v41, v42];
+      v34 = [identifiersCopy modelByModifyingModelWithBlock:&v39];
+      v35 = [(SBFloorDodgingLayerModifier *)self _modelsByTranslatingOverlappingIdentifiers:v34 allowedEdges:edges & 0xFFFFFFFFFFFFFFFELL, v39, v40, v41, v42];
       [v26 addObjectsFromArray:v35];
     }
 
@@ -446,7 +446,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
 
     else
     {
-      v70[0] = v6;
+      v70[0] = identifiersCopy;
       v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:1];
     }
 
@@ -455,7 +455,7 @@ void __56__SBFloorDodgingLayerModifier_modelForInvalidatedModel___block_invoke(u
 
   else
   {
-    v69 = v6;
+    v69 = identifiersCopy;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
   }
 
@@ -490,9 +490,9 @@ void __87__SBFloorDodgingLayerModifier__modelsByTranslatingOverlappingIdentifier
   [v3 setCenter:*(a1 + 32) forIdentifier:?];
 }
 
-- (id)_modelByClampingOverhangingIdentifiers:(id)a3
+- (id)_modelByClampingOverhangingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(SBFloorDodgingLayerModifier *)self contentViewBounds];
   v6 = v5;
   v8 = v7;
@@ -509,7 +509,7 @@ void __87__SBFloorDodgingLayerModifier__modelsByTranslatingOverlappingIdentifier
   v16[7] = v10;
   v16[8] = v12;
   v16[9] = v13;
-  v14 = [v4 modelByModifyingModelWithBlock:v16];
+  v14 = [identifiersCopy modelByModifyingModelWithBlock:v16];
 
   return v14;
 }
@@ -559,14 +559,14 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
   }
 }
 
-- (id)_modelsByResizingOverlappingIdentifiers:(id)a3
+- (id)_modelsByResizingOverlappingIdentifiers:(id)identifiers
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:v4];
+  identifiersCopy = identifiers;
+  v5 = [(SBFloorDodgingLayerModifier *)self _framesForIdentifiersInModel:identifiersCopy];
   v52 = 0.0;
   v53 = 0.0;
-  v6 = [(SBFloorDodgingLayerModifier *)self _identifierIfAnyIllegallyClippingOtherIdentifiers:v5 model:v4 intersectionSize:&v52 intersectingFrame:0];
+  v6 = [(SBFloorDodgingLayerModifier *)self _identifierIfAnyIllegallyClippingOtherIdentifiers:v5 model:identifiersCopy intersectionSize:&v52 intersectingFrame:0];
   if (v6)
   {
     v7 = [v5 objectForKey:v6];
@@ -604,7 +604,7 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
         v50 = v11 - v17;
         v51 = v13;
         v47 = v6;
-        v19 = [v4 modelByModifyingModelWithBlock:v46];
+        v19 = [identifiersCopy modelByModifyingModelWithBlock:v46];
         [v14 addObject:v19];
       }
 
@@ -630,7 +630,7 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
         v44 = v11;
         v45 = v13 - v20;
         v41 = v6;
-        v22 = [v4 modelByModifyingModelWithBlock:v40];
+        v22 = [identifiersCopy modelByModifyingModelWithBlock:v40];
         [v14 addObject:v22];
       }
 
@@ -670,7 +670,7 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
           v38 = v27;
           v39 = v26;
           v35 = v6;
-          v28 = [v4 modelByModifyingModelWithBlock:v34];
+          v28 = [identifiersCopy modelByModifyingModelWithBlock:v34];
           [v14 addObject:v28];
         }
       }
@@ -683,7 +683,7 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
 
     else
     {
-      v55[0] = v4;
+      v55[0] = identifiersCopy;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
     }
 
@@ -692,7 +692,7 @@ void __70__SBFloorDodgingLayerModifier__modelByClampingOverhangingIdentifiers___
 
   else
   {
-    v54 = v4;
+    v54 = identifiersCopy;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
   }
 
@@ -732,25 +732,25 @@ void __71__SBFloorDodgingLayerModifier__modelsByResizingOverlappingIdentifiers__
   [v6 setCenter:*(a1 + 4) forIdentifier:?];
 }
 
-- (id)_framesForIdentifiersInModel:(id)a3
+- (id)_framesForIdentifiersInModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = self->_overridingModel;
   overridingModel = self->_overridingModel;
-  self->_overridingModel = v4;
-  v7 = v4;
+  self->_overridingModel = modelCopy;
+  v7 = modelCopy;
 
-  v8 = [(SBFloorDodgingLayerModifier *)self framesForIdentifiers];
+  framesForIdentifiers = [(SBFloorDodgingLayerModifier *)self framesForIdentifiers];
   v9 = self->_overridingModel;
   self->_overridingModel = v5;
 
-  return v8;
+  return framesForIdentifiers;
 }
 
-- (id)_identifierIfAnyIllegallyOutsideContentViewBounds:(id)a3 model:(id)a4
+- (id)_identifierIfAnyIllegallyOutsideContentViewBounds:(id)bounds model:(id)model
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  boundsCopy = bounds;
   [(SBFloorDodgingLayerModifier *)self contentViewBounds];
   rect1[0] = v6;
   v8 = v7;
@@ -761,8 +761,8 @@ void __71__SBFloorDodgingLayerModifier__modelsByResizingOverlappingIdentifiers__
   memset(&rect1[1], 0, 32);
   v36 = 0u;
   v37 = 0u;
-  v15 = [v5 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&rect1[1] objects:v38 count:16];
+  allKeys = [boundsCopy allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&rect1[1] objects:v38 count:16];
   if (v16)
   {
     v17 = v16;
@@ -774,16 +774,16 @@ void __71__SBFloorDodgingLayerModifier__modelsByResizingOverlappingIdentifiers__
       {
         if (*rect1[3] != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(rect1[2] + 8 * i);
         v22 = [(SBFloorDodgingLayerModifier *)self preferenceForIdentifier:v21];
-        v23 = [v22 canBePositionedOutsideContainerBounds];
+        canBePositionedOutsideContainerBounds = [v22 canBePositionedOutsideContainerBounds];
 
-        if ((v23 & 1) == 0)
+        if ((canBePositionedOutsideContainerBounds & 1) == 0)
         {
-          v24 = [v5 objectForKey:v21];
+          v24 = [boundsCopy objectForKey:v21];
           [v24 CGRectValue];
           v26 = v25;
           v28 = v27;
@@ -807,7 +807,7 @@ void __71__SBFloorDodgingLayerModifier__modelsByResizingOverlappingIdentifiers__
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&rect1[1] objects:v38 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&rect1[1] objects:v38 count:16];
       if (v17)
       {
         continue;
@@ -823,26 +823,26 @@ LABEL_12:
   return v33;
 }
 
-- (id)_identifierIfAnyIllegallyClippingOtherIdentifiers:(id)a3 model:(id)a4 intersectionSize:(CGSize *)a5 intersectingFrame:(CGRect *)a6
+- (id)_identifierIfAnyIllegallyClippingOtherIdentifiers:(id)identifiers model:(id)model intersectionSize:(CGSize *)size intersectingFrame:(CGRect *)frame
 {
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  identifiersCopy = identifiers;
+  modelCopy = model;
   [(SBFloorDodgingLayerModifier *)self spaceBetweenIdentifiers];
   v13 = v12;
-  v14 = [v11 identifiers];
-  v15 = malloc_type_malloc(32 * [v14 count], 0x1000040E0EAB150uLL);
+  identifiers = [modelCopy identifiers];
+  v15 = malloc_type_malloc(32 * [identifiers count], 0x1000040E0EAB150uLL);
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = [v11 identifiers];
+  obj = [modelCopy identifiers];
   v57 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
   if (v57)
   {
-    v49 = a5;
-    v50 = a6;
+    sizeCopy = size;
+    frameCopy = frame;
     v16 = 0;
     v56 = *v67;
     v60 = *(MEMORY[0x277CBF398] + 8);
@@ -852,7 +852,7 @@ LABEL_12:
     dx = v13 * -0.5;
     v51 = (v15 + 16);
     v52 = v15;
-    v53 = v10;
+    v53 = identifiersCopy;
     while (2)
     {
       for (i = 0; i != v57; ++i)
@@ -863,12 +863,12 @@ LABEL_12:
         }
 
         v18 = *(*(&v66 + 1) + 8 * i);
-        v19 = [v10 allKeys];
-        v20 = [v19 containsObject:v18];
+        allKeys = [identifiersCopy allKeys];
+        v20 = [allKeys containsObject:v18];
 
         if (v20)
         {
-          v21 = [v10 objectForKey:v18];
+          v21 = [identifiersCopy objectForKey:v18];
           [v21 CGRectValue];
           v23 = v22;
           v25 = v24;
@@ -906,13 +906,13 @@ LABEL_12:
               v30 = *(v39 - 1);
               v35 = *v39;
               v34 = v39[1];
-              v40 = [v11 identifiers];
-              v41 = [v40 objectAtIndex:v38];
+              identifiers2 = [modelCopy identifiers];
+              v41 = [identifiers2 objectAtIndex:v38];
 
               v42 = [(SBFloorDodgingLayerModifier *)self preferenceForIdentifier:v18];
-              v43 = [v42 excludedDodgingIdentifiers];
+              excludedDodgingIdentifiers = [v42 excludedDodgingIdentifiers];
 
-              if (([v43 containsObject:v41] & 1) == 0)
+              if (([excludedDodgingIdentifiers containsObject:v41] & 1) == 0)
               {
                 v75.origin.y = y;
                 v75.origin.x = x;
@@ -959,7 +959,7 @@ LABEL_12:
 
 LABEL_17:
             v15 = v52;
-            v10 = v53;
+            identifiersCopy = v53;
           }
 
           v78.origin.x = v32;
@@ -969,20 +969,20 @@ LABEL_17:
           if (!CGRectIsNull(v78))
           {
             v45 = v18;
-            if (v49)
+            if (sizeCopy)
             {
               v46 = v36;
               v47 = v37;
-              v49->width = ceilf(v46);
-              v49->height = ceilf(v47);
+              sizeCopy->width = ceilf(v46);
+              sizeCopy->height = ceilf(v47);
             }
 
-            if (v50)
+            if (frameCopy)
             {
-              v50->origin.x = v31;
-              v50->origin.y = v30;
-              v50->size.width = v35;
-              v50->size.height = v34;
+              frameCopy->origin.x = v31;
+              frameCopy->origin.y = v30;
+              frameCopy->size.width = v35;
+              frameCopy->size.height = v34;
             }
 
             goto LABEL_27;

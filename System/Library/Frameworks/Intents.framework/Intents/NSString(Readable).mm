@@ -7,16 +7,16 @@
 
 - (id)_intents_localizedCopyWithLocalizer:()Readable
 {
-  v4 = [a3 languageCode];
-  v5 = [a1 localizeForLanguage:v4];
+  languageCode = [a3 languageCode];
+  v5 = [self localizeForLanguage:languageCode];
 
   return v5;
 }
 
 - (id)_intents_readableTitleWithLocalizer:()Readable metadata:
 {
-  v4 = [a3 languageCode];
-  v5 = [a1 localizeForLanguage:v4];
+  languageCode = [a3 languageCode];
+  v5 = [self localizeForLanguage:languageCode];
 
   return v5;
 }

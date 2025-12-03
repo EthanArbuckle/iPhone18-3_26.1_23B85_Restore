@@ -1,44 +1,44 @@
 @interface ADJasperPearlInFieldCalibrationExecutor
-- (ADJasperPearlInFieldCalibrationExecutor)initWithParameters:(id)a3 pceCalib:(id)a4;
-- (ADJasperPearlInFieldCalibrationExecutor)initWithPceCalib:(id)a3;
-- (BOOL)shouldExecuteWithInterSessionDataRun:(int64_t *)a3;
+- (ADJasperPearlInFieldCalibrationExecutor)initWithParameters:(id)parameters pceCalib:(id)calib;
+- (ADJasperPearlInFieldCalibrationExecutor)initWithPceCalib:(id)calib;
+- (BOOL)shouldExecuteWithInterSessionDataRun:(int64_t *)run;
 - (__n128)extractJasperToPearlCalibFromLastSyncMatch;
 - (__n128)extractPearlPrevPoseFromLastSyncMatch;
 - (id)extractIRSensorCalibFromLastSyncMatch;
 - (id)extractPearlInputsFromLastSyncMatch;
-- (id)overrideCVCalIntrinsicsWithPCECalibIntrinsics:(id)a3 temperature:(float)a4;
-- (int64_t)executeWithInterSessionData:(id)a3 outResult:(id)a4;
-- (int64_t)executeWithInterSessionData:(id)a3 result:(id *)a4;
-- (int64_t)executeWithJasperPearlInterSessionData:(id)a3 result:(id)a4;
+- (id)overrideCVCalIntrinsicsWithPCECalibIntrinsics:(id)intrinsics temperature:(float)temperature;
+- (int64_t)executeWithInterSessionData:(id)data outResult:(id)result;
+- (int64_t)executeWithInterSessionData:(id)data result:(id *)result;
+- (int64_t)executeWithJasperPearlInterSessionData:(id)data result:(id)result;
 - (int64_t)prepare;
-- (uint64_t)pushJasperPointCloud:(double)a3 timestamp:(double)a4 pose:(double)a5 jasperToPearlTransform:(double)a6;
+- (uint64_t)pushJasperPointCloud:(double)cloud timestamp:(double)timestamp pose:(double)pose jasperToPearlTransform:(double)transform;
 - (uint64_t)pushJasperPointCloud:timestamp:pose:jasperToPearlOperationalTransform:;
-- (uint64_t)pushPearlDepth:(__n128)a3 pearlDx:(__n128)a4 pearlDy:(__n128)a5 pearlScore:(__n128)a6 timestamp:(uint64_t)a7 metadata:(uint64_t)a8 pose:(uint64_t)a9 prevPose:(uint64_t)a10;
+- (uint64_t)pushPearlDepth:(__n128)depth pearlDx:(__n128)dx pearlDy:(__n128)dy pearlScore:(__n128)score timestamp:(uint64_t)timestamp metadata:(uint64_t)metadata pose:(uint64_t)pose prevPose:(uint64_t)self0;
 - (uint64_t)pushPearlDepth:pearlDx:pearlDy:pearlScore:timestamp:pose:pearlSensorCalibration:;
 - (uint64_t)pushPearlDepth:timestamp:pose:temperature:irSensorOperationalCalibration:;
 - (void)dealloc;
-- (void)logJPCInputs:(id)a3;
-- (void)logJasperAggPC:(id)a3 timestamp:(double)a4;
-- (void)logPose:(__n128)a3 logMessagePrefix:(__n128)a4;
-- (void)printOutResults:(id)a3;
-- (void)setPceCalib:(id)a3;
-- (void)setPearlInfraredCameraCalibration:(id)a3;
+- (void)logJPCInputs:(id)inputs;
+- (void)logJasperAggPC:(id)c timestamp:(double)timestamp;
+- (void)logPose:(__n128)pose logMessagePrefix:(__n128)prefix;
+- (void)printOutResults:(id)results;
+- (void)setPceCalib:(id)calib;
+- (void)setPearlInfraredCameraCalibration:(id)calibration;
 @end
 
 @implementation ADJasperPearlInFieldCalibrationExecutor
 
-- (id)overrideCVCalIntrinsicsWithPCECalibIntrinsics:(id)a3 temperature:(float)a4
+- (id)overrideCVCalIntrinsicsWithPCECalibIntrinsics:(id)intrinsics temperature:(float)temperature
 {
-  v6 = a3;
-  v7 = [(NSData *)self->_pceCalib bytes];
-  memcpy(__dst, v7 + 1101, sizeof(__dst));
+  intrinsicsCopy = intrinsics;
+  bytes = [(NSData *)self->_pceCalib bytes];
+  memcpy(__dst, bytes + 1101, sizeof(__dst));
   v9 = jpc::PearlUtils::getIrCameraCalibration(__dst, v8);
   v10 = [v9 mutableCopy];
   [v9 intrinsicMatrix];
-  v11 = v7[1096] + v7[1097] * a4;
-  *&v12 = v11 / v7[1101];
+  v11 = bytes[1096] + bytes[1097] * temperature;
+  *&v12 = v11 / bytes[1101];
   [v10 setIntrinsicMatrix:{COERCE_DOUBLE(__PAIR64__(v13, v12)), COERCE_DOUBLE(__PAIR64__(v12, v14)), v15}];
-  [v6 cameraToPlatformTransform];
+  [intrinsicsCopy cameraToPlatformTransform];
   [v10 setCameraToPlatformTransform:?];
 
   return v10;
@@ -46,11 +46,11 @@
 
 - (__n128)extractPearlPrevPoseFromLastSyncMatch
 {
-  v1 = [*(a1 + 144) matchedObjectsForStream:0];
-  v2 = [v1 firstObject];
-  v3 = [v2 metadata];
+  v1 = [*(self + 144) matchedObjectsForStream:0];
+  firstObject = [v1 firstObject];
+  metadata = [firstObject metadata];
 
-  v4 = [v3 objectForKeyedSubscript:@"IRSensorPreviousPose"];
+  v4 = [metadata objectForKeyedSubscript:@"IRSensorPreviousPose"];
   v6 = ADCommonUtils::matrixNxMFromArrayColumnFirst<4ul,4ul,simd_float4x4>(v4);
 
   return v6;
@@ -59,21 +59,21 @@
 - (id)extractIRSensorCalibFromLastSyncMatch
 {
   v2 = [(ADStreamSyncMatch *)self->_lastSyncMatch matchedObjectsForStream:0];
-  v3 = [v2 firstObject];
-  v4 = [v3 metadata];
+  firstObject = [v2 firstObject];
+  metadata = [firstObject metadata];
 
-  v5 = [v4 objectForKeyedSubscript:@"IRSensorOpCalibration"];
+  v5 = [metadata objectForKeyedSubscript:@"IRSensorOpCalibration"];
 
   return v5;
 }
 
 - (__n128)extractJasperToPearlCalibFromLastSyncMatch
 {
-  v1 = [*(a1 + 144) matchedObjectsForStream:1];
+  v1 = [*(self + 144) matchedObjectsForStream:1];
   v2 = [v1 objectAtIndexedSubscript:0];
-  v3 = [v2 metadata];
+  metadata = [v2 metadata];
 
-  v4 = [v3 objectForKeyedSubscript:@"JasperToPearlOpCalib"];
+  v4 = [metadata objectForKeyedSubscript:@"JasperToPearlOpCalib"];
   v6 = ADCommonUtils::matrixNxMFromArrayColumnFirst<4ul,3ul,simd_float4x3>(v4);
 
   return v6;
@@ -83,32 +83,32 @@
 {
   v3 = objc_opt_new();
   v4 = [(ADStreamSyncMatch *)self->_lastSyncMatch matchedObjectsForStream:0];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 data];
-  [v3 setDepth:{objc_msgSend(v6, "pearlDepth")}];
-  [v3 setDx:{objc_msgSend(v6, "pearlDx")}];
-  [v3 setDy:{objc_msgSend(v6, "pearlDy")}];
-  [v3 setScore:{objc_msgSend(v6, "pearlScore")}];
-  [v5 pose];
+  data = [firstObject data];
+  [v3 setDepth:{objc_msgSend(data, "pearlDepth")}];
+  [v3 setDx:{objc_msgSend(data, "pearlDx")}];
+  [v3 setDy:{objc_msgSend(data, "pearlDy")}];
+  [v3 setScore:{objc_msgSend(data, "pearlScore")}];
+  [firstObject pose];
   [v3 setPose:?];
   [(ADJasperPearlInFieldCalibrationExecutor *)self extractPearlPrevPoseFromLastSyncMatch];
   [v3 setPrevPose:?];
-  [v5 timestamp];
+  [firstObject timestamp];
   [v3 setTimestamp:?];
-  v7 = [v5 metadata];
-  v8 = [v7 objectForKeyedSubscript:@"Temperature"];
+  metadata = [firstObject metadata];
+  v8 = [metadata objectForKeyedSubscript:@"Temperature"];
   [v8 floatValue];
   [v3 setTemperature:?];
 
   return v3;
 }
 
-- (BOOL)shouldExecuteWithInterSessionDataRun:(int64_t *)a3
+- (BOOL)shouldExecuteWithInterSessionDataRun:(int64_t *)run
 {
   if (!self->_isPrepared)
   {
-    *a3 = -22953;
+    *run = -22953;
     v3 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (!v3)
     {
@@ -124,7 +124,7 @@ LABEL_12:
 
   if (!self->_lastSyncMatch)
   {
-    *a3 = 0;
+    *run = 0;
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
     {
       v3 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
@@ -161,7 +161,7 @@ LABEL_12:
   return v3;
 }
 
-- (int64_t)executeWithInterSessionData:(id)a3 result:(id *)a4
+- (int64_t)executeWithInterSessionData:(id)data result:(id *)result
 {
   v11 = *MEMORY[0x277D85DE8];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -193,7 +193,7 @@ LABEL_6:
   return -22950;
 }
 
-- (int64_t)executeWithJasperPearlInterSessionData:(id)a3 result:(id)a4
+- (int64_t)executeWithJasperPearlInterSessionData:(id)data result:(id)result
 {
   v11 = *MEMORY[0x277D85DE8];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -225,20 +225,20 @@ LABEL_6:
   return -22950;
 }
 
-- (void)printOutResults:(id)a3
+- (void)printOutResults:(id)results
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v3 efl];
+    v4 = [resultsCopy efl];
     [v4 floatValue];
     v6 = v5;
-    v7 = [v3 principalPointX];
-    [v7 floatValue];
+    principalPointX = [resultsCopy principalPointX];
+    [principalPointX floatValue];
     v9 = v8;
-    v10 = [v3 principalPointY];
-    [v10 floatValue];
+    principalPointY = [resultsCopy principalPointY];
+    [principalPointY floatValue];
     *buf = 134218496;
     *&buf[4] = v6;
     *&buf[12] = 2048;
@@ -248,14 +248,14 @@ LABEL_6:
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "JasperPearlInFieldCalibration: Executor: executeWithInterSessionData result: efl = %f principal point = [%f, %f]", buf, 0x20u);
   }
 
-  v12 = [v3 pceCalib];
-  v13 = v12;
-  v14 = [v12 bytes];
+  pceCalib = [resultsCopy pceCalib];
+  v13 = pceCalib;
+  bytes = [pceCalib bytes];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v15 = *(v14 + 8768);
-    v16 = *(v14 + 8776);
+    v15 = *(bytes + 8768);
+    v16 = *(bytes + 8776);
     *buf = 134218240;
     *&buf[4] = v15;
     *&buf[12] = 2048;
@@ -265,15 +265,15 @@ LABEL_6:
 
   memset(buf, 0, sizeof(buf));
   v26 = 0u;
-  v17.f64[0] = *(v14 + 13072);
-  v17.f64[1] = *(v14 + 13096);
-  v18 = *(v14 + 13120);
-  v19.f64[0] = *(v14 + 13080);
-  v19.f64[1] = *(v14 + 13104);
-  v20.f64[0] = *(v14 + 13088);
-  v20.f64[1] = *(v14 + 13112);
-  v21 = *(v14 + 13128);
-  v22 = *(v14 + 13136);
+  v17.f64[0] = *(bytes + 13072);
+  v17.f64[1] = *(bytes + 13096);
+  v18 = *(bytes + 13120);
+  v19.f64[0] = *(bytes + 13080);
+  v19.f64[1] = *(bytes + 13104);
+  v20.f64[0] = *(bytes + 13088);
+  v20.f64[1] = *(bytes + 13112);
+  v21 = *(bytes + 13128);
+  v22 = *(bytes + 13136);
   *&buf[8] = v18;
   *buf = vcvt_f32_f64(v17);
   *&buf[24] = v21;
@@ -294,18 +294,18 @@ LABEL_6:
   }
 }
 
-- (void)logJasperAggPC:(id)a3 timestamp:(double)a4
+- (void)logJasperAggPC:(id)c timestamp:(double)timestamp
 {
-  v24 = a3;
-  v6 = [(ADExecutor *)self executorParameters];
-  v7 = [v6 logger];
-  v8 = [v7 enabled];
+  cCopy = c;
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  enabled = [logger enabled];
 
-  if ((v8 & 1) != 0 && self->_pearlInfraredCameraCalibration)
+  if ((enabled & 1) != 0 && self->_pearlInfraredCameraCalibration)
   {
-    v9 = [(ADExecutor *)self executorParameters];
-    v10 = [v9 logger];
-    [v10 logPointCloud:v24 name:"jasperPearlInFieldCalibrationJasperAggReprojected" timestamp:a4];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    logger2 = [executorParameters2 logger];
+    [logger2 logPointCloud:cCopy name:"jasperPearlInFieldCalibrationJasperAggReprojected" timestamp:timestamp];
 
     if (!self->_processedJasper)
     {
@@ -330,33 +330,33 @@ LABEL_6:
     [(ADCameraCalibration *)self->_pearlInfraredCameraCalibration referenceDimensions];
     v20 = v19;
     [(ADCameraCalibration *)self->_pearlInfraredCameraCalibration referenceDimensions];
-    if (![v24 projectJasperPointsCroppedBy:0 rotatedBy:self->_processedJasper andScaledInto:{0.0, 0.0, v20, v21}])
+    if (![cCopy projectJasperPointsCroppedBy:0 rotatedBy:self->_processedJasper andScaledInto:{0.0, 0.0, v20, v21}])
     {
-      v22 = [(ADExecutor *)self executorParameters];
-      v23 = [v22 logger];
-      [v23 logPixelBuffer:self->_processedJasper name:"jasperPearlInFieldCalibrationJasperAggReprojected" timestamp:a4];
+      executorParameters3 = [(ADExecutor *)self executorParameters];
+      logger3 = [executorParameters3 logger];
+      [logger3 logPixelBuffer:self->_processedJasper name:"jasperPearlInFieldCalibrationJasperAggReprojected" timestamp:timestamp];
     }
   }
 }
 
-- (void)logPose:(__n128)a3 logMessagePrefix:(__n128)a4
+- (void)logPose:(__n128)pose logMessagePrefix:(__n128)prefix
 {
   v31 = *MEMORY[0x277D85DE8];
   v7 = a7;
-  v16[1] = a1.n128_u32[2];
+  v16[1] = self.n128_u32[2];
   v16[3] = a2.n128_u32[2];
-  v16[0] = a1.n128_u64[0];
+  v16[0] = self.n128_u64[0];
   v16[2] = a2.n128_u64[0];
-  v16[5] = a3.n128_u32[2];
-  v16[4] = a3.n128_u64[0];
+  v16[5] = pose.n128_u32[2];
+  v16[4] = pose.n128_u64[0];
   [ADUtils calcRotationAngle:v16];
   v15 = v8;
   if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v7;
-    v10 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     *buf = 136316674;
-    v18 = v10;
+    v18 = uTF8String;
     v19 = 2048;
     v20 = (0.057296 * v15.f32[0]);
     v21 = 2048;
@@ -364,75 +364,75 @@ LABEL_6:
     v23 = 2048;
     v24 = vmuls_lane_f32(0.057296, v15, 2);
     v25 = 2048;
-    v26 = a4.n128_f32[0];
+    v26 = prefix.n128_f32[0];
     v27 = 2048;
-    v28 = a4.n128_f32[1];
+    v28 = prefix.n128_f32[1];
     v29 = 2048;
-    v30 = a4.n128_f32[2];
+    v30 = prefix.n128_f32[2];
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: R = [%f, %f, %f]degrees, T = [%f, %f, %f] mm", buf, 0x48u);
   }
 }
 
-- (void)logJPCInputs:(id)a3
+- (void)logJPCInputs:(id)inputs
 {
-  v47 = a3;
-  v4 = [(ADExecutor *)self executorParameters];
-  v5 = [v4 logger];
-  v6 = [v5 enabled];
+  inputsCopy = inputs;
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  enabled = [logger enabled];
 
-  if (v6)
+  if (enabled)
   {
-    v48 = [(ADJasperPearlInFieldCalibrationExecutor *)self extractPearlInputsFromLastSyncMatch];
-    v7 = [(ADExecutor *)self executorParameters];
-    v8 = [v7 logger];
-    v9 = [v48 depth];
-    [v48 timestamp];
-    [v8 logPixelBuffer:v9 name:"jasperPearlInFieldCalibrationInputPearlDepth" timestamp:?];
+    extractPearlInputsFromLastSyncMatch = [(ADJasperPearlInFieldCalibrationExecutor *)self extractPearlInputsFromLastSyncMatch];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    logger2 = [executorParameters2 logger];
+    depth = [extractPearlInputsFromLastSyncMatch depth];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger2 logPixelBuffer:depth name:"jasperPearlInFieldCalibrationInputPearlDepth" timestamp:?];
 
-    v10 = [(ADExecutor *)self executorParameters];
-    v11 = [v10 logger];
-    v12 = [v48 dx];
-    [v48 timestamp];
-    [v11 logPixelBuffer:v12 name:"jasperPearlInFieldCalibrationInputPearlDx" timestamp:?];
+    executorParameters3 = [(ADExecutor *)self executorParameters];
+    logger3 = [executorParameters3 logger];
+    v12 = [extractPearlInputsFromLastSyncMatch dx];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger3 logPixelBuffer:v12 name:"jasperPearlInFieldCalibrationInputPearlDx" timestamp:?];
 
-    v13 = [(ADExecutor *)self executorParameters];
-    v14 = [v13 logger];
-    v15 = [v48 dy];
-    [v48 timestamp];
-    [v14 logPixelBuffer:v15 name:"jasperPearlInFieldCalibrationInputPearlDy" timestamp:?];
+    executorParameters4 = [(ADExecutor *)self executorParameters];
+    logger4 = [executorParameters4 logger];
+    v15 = [extractPearlInputsFromLastSyncMatch dy];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger4 logPixelBuffer:v15 name:"jasperPearlInFieldCalibrationInputPearlDy" timestamp:?];
 
-    v16 = [(ADExecutor *)self executorParameters];
-    v17 = [v16 logger];
-    v18 = [v48 score];
-    [v48 timestamp];
-    [v17 logPixelBuffer:v18 name:"jasperPearlInFieldCalibrationInputPearlScore" timestamp:?];
+    executorParameters5 = [(ADExecutor *)self executorParameters];
+    logger5 = [executorParameters5 logger];
+    score = [extractPearlInputsFromLastSyncMatch score];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger5 logPixelBuffer:score name:"jasperPearlInFieldCalibrationInputPearlScore" timestamp:?];
 
-    [v48 pose];
+    [extractPearlInputsFromLastSyncMatch pose];
     [(ADJasperPearlInFieldCalibrationExecutor *)self logPose:@"Pearl Frame VIO" logMessagePrefix:?];
-    v19 = [(ADExecutor *)self executorParameters];
-    v20 = [v19 logger];
+    executorParameters6 = [(ADExecutor *)self executorParameters];
+    logger6 = [executorParameters6 logger];
     v21 = MEMORY[0x277CCACA8];
-    [v48 temperature];
+    [extractPearlInputsFromLastSyncMatch temperature];
     v23 = [v21 stringWithFormat:@"%f", v22];
-    [v48 timestamp];
-    [v20 logString:v23 name:"jasperPearlFrameTemperature" priority:0 timestamp:?];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger6 logString:v23 name:"jasperPearlFrameTemperature" priority:0 timestamp:?];
 
-    v24 = [(ADJasperPearlInFieldCalibrationExecutor *)self extractIRSensorCalibFromLastSyncMatch];
-    v25 = [(ADExecutor *)self executorParameters];
-    v26 = [v25 logger];
-    [v48 timestamp];
-    [v26 logCalibration:v24 name:"irSensorCalibration" timestamp:?];
+    extractIRSensorCalibFromLastSyncMatch = [(ADJasperPearlInFieldCalibrationExecutor *)self extractIRSensorCalibFromLastSyncMatch];
+    executorParameters7 = [(ADExecutor *)self executorParameters];
+    logger7 = [executorParameters7 logger];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger7 logCalibration:extractIRSensorCalibFromLastSyncMatch name:"irSensorCalibration" timestamp:?];
 
     [(ADJasperPearlInFieldCalibrationExecutor *)self extractJasperToPearlCalibFromLastSyncMatch];
     v53 = v28;
     v55 = v27;
     v49 = v30;
     v51 = v29;
-    v31 = [(ADExecutor *)self executorParameters];
-    v32 = [v31 logger];
-    [v48 timestamp];
-    [v32 logMatrix4x3:"jasperToPearlTransform" name:v55 timestamp:{v53, v51, v49, v33}];
-    v46 = v24;
+    executorParameters8 = [(ADExecutor *)self executorParameters];
+    logger8 = [executorParameters8 logger];
+    [extractPearlInputsFromLastSyncMatch timestamp];
+    [logger8 logMatrix4x3:"jasperToPearlTransform" name:v55 timestamp:{v53, v51, v49, v33}];
+    v46 = extractIRSensorCalibFromLastSyncMatch;
 
     v34 = [(ADStreamSyncMatch *)self->_lastSyncMatch matchedObjectsForStream:1];
     for (i = 0; ; i = v36 + 1)
@@ -444,11 +444,11 @@ LABEL_6:
       }
 
       v37 = [v34 objectAtIndexedSubscript:i];
-      v38 = [(ADExecutor *)self executorParameters];
-      v39 = [v38 logger];
-      v40 = [v37 data];
+      executorParameters9 = [(ADExecutor *)self executorParameters];
+      logger9 = [executorParameters9 logger];
+      data = [v37 data];
       [v37 timestamp];
-      [v39 logPointCloud:v40 name:"jasperPearlInFieldCalibrationInputJasper" timestamp:?];
+      [logger9 logPointCloud:data name:"jasperPearlInFieldCalibrationInputJasper" timestamp:?];
 
       [v37 pose];
       v54 = v42;
@@ -461,27 +461,27 @@ LABEL_6:
   }
 }
 
-- (int64_t)executeWithInterSessionData:(id)a3 outResult:(id)a4
+- (int64_t)executeWithInterSessionData:(id)data outResult:(id)result
 {
   v88 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v74 = a4;
+  dataCopy = data;
+  resultCopy = result;
   obj = self->_lastStreamSyncMatchLock;
   objc_sync_enter(obj);
-  v6 = [(ADExecutor *)self executorParameters];
-  v7 = [v6 stepsToExecute];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  stepsToExecute = [executorParameters stepsToExecute];
 
-  v8 = [(ADExecutor *)self executorParameters];
-  v9 = [v8 timeProfiler];
+  executorParameters2 = [(ADExecutor *)self executorParameters];
+  timeProfiler = [executorParameters2 timeProfiler];
 
-  if (v7 < 1)
+  if (stepsToExecute < 1)
   {
     v12 = -22977;
     goto LABEL_40;
   }
 
   kdebug_trace();
-  [v9 startWithUTFString:"executor execute"];
+  [timeProfiler startWithUTFString:"executor execute"];
   [(ADExecutor *)self frameExecutionStart];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
   {
@@ -519,15 +519,15 @@ LABEL_9:
     goto LABEL_40;
   }
 
-  v70 = v9;
-  v13 = [(ADJasperPearlInFieldCalibrationExecutor *)self extractPearlInputsFromLastSyncMatch];
+  v70 = timeProfiler;
+  extractPearlInputsFromLastSyncMatch = [(ADJasperPearlInFieldCalibrationExecutor *)self extractPearlInputsFromLastSyncMatch];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      [v13 timestamp];
+      [extractPearlInputsFromLastSyncMatch timestamp];
       v15 = v14;
-      [v13 temperature];
+      [extractPearlInputsFromLastSyncMatch temperature];
       *buf = 134218240;
       v85 = v15;
       v86 = 2048;
@@ -541,9 +541,9 @@ LABEL_16:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    [v13 timestamp];
+    [extractPearlInputsFromLastSyncMatch timestamp];
     v21 = v20;
-    [v13 temperature];
+    [extractPearlInputsFromLastSyncMatch temperature];
     *buf = 134218240;
     v85 = v21;
     v86 = 2048;
@@ -553,7 +553,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v71 = [(ADJasperPearlInFieldCalibrationExecutor *)self extractIRSensorCalibFromLastSyncMatch];
+  extractIRSensorCalibFromLastSyncMatch = [(ADJasperPearlInFieldCalibrationExecutor *)self extractIRSensorCalibFromLastSyncMatch];
   [(ADJasperPearlInFieldCalibrationExecutor *)self extractJasperToPearlCalibFromLastSyncMatch];
   v69 = v23;
   v82 = v23;
@@ -566,24 +566,24 @@ LABEL_16:
   if (!self->_pcAggregator)
   {
     v27 = objc_alloc(MEMORY[0x277CED0F8]);
-    v28 = [(ADExecutor *)self executorParameters];
-    v29 = [v28 pipelineParameters];
-    v30 = [v29 pointCloudAggregationParameters];
-    v31 = [v27 initWithAggregationParameters:v30 jasperToColorTransform:v71 colorCamera:{v82, v81, v80, v79}];
+    executorParameters3 = [(ADExecutor *)self executorParameters];
+    pipelineParameters = [executorParameters3 pipelineParameters];
+    pointCloudAggregationParameters = [pipelineParameters pointCloudAggregationParameters];
+    v31 = [v27 initWithAggregationParameters:pointCloudAggregationParameters jasperToColorTransform:extractIRSensorCalibFromLastSyncMatch colorCamera:{v82, v81, v80, v79}];
     pcAggregator = self->_pcAggregator;
     self->_pcAggregator = v31;
 
-    v33 = [(ADExecutor *)self executorParameters];
-    v34 = [v33 pipelineParameters];
-    v35 = [v34 pointCloudFilterParameters];
-    [(ADPointCloudAggregator *)self->_pcAggregator setPointCloudFilterParameters:v35];
+    executorParameters4 = [(ADExecutor *)self executorParameters];
+    pipelineParameters2 = [executorParameters4 pipelineParameters];
+    pointCloudFilterParameters = [pipelineParameters2 pointCloudFilterParameters];
+    [(ADPointCloudAggregator *)self->_pcAggregator setPointCloudFilterParameters:pointCloudFilterParameters];
   }
 
   v36 = [(ADStreamSyncMatch *)self->_lastSyncMatch matchedObjectsForStream:1];
-  [v71 cameraToPlatformTransform];
+  [extractIRSensorCalibFromLastSyncMatch cameraToPlatformTransform];
   [(ADJasperPearlInFieldCalibrationExecutor *)self logJPCInputs:self->_lastSyncMatch];
   [(ADPointCloudAggregator *)self->_pcAggregator setJasperToCameraTransform:v82, v81, v80, v79];
-  [(ADPointCloudAggregator *)self->_pcAggregator setColorCameraCalibration:v71];
+  [(ADPointCloudAggregator *)self->_pcAggregator setColorCameraCalibration:extractIRSensorCalibFromLastSyncMatch];
   v37 = 0;
   v77 = *(MEMORY[0x277D860B8] + 16);
   v78 = *MEMORY[0x277D860B8];
@@ -596,32 +596,32 @@ LABEL_16:
     if ([v36 count] <= v37)
     {
       v51 = [(ADStreamSyncMatch *)self->_lastSyncMatch matchedObjectsForStream:0];
-      v40 = [v51 firstObject];
+      firstObject = [v51 firstObject];
 
-      [v40 pose];
+      [firstObject pose];
       v52 = self->_pcAggregator;
-      [v40 timestamp];
+      [firstObject timestamp];
       v53 = [ADPointCloudAggregator aggregateForTime:v52 worldToCameraTransform:"aggregateForTime:worldToCameraTransform:"];
       aggregatedPointCloud = self->_aggregatedPointCloud;
       self->_aggregatedPointCloud = v53;
 
       v55 = self->_aggregatedPointCloud;
-      [v13 timestamp];
+      [extractPearlInputsFromLastSyncMatch timestamp];
       [(ADJasperPearlInFieldCalibrationExecutor *)self logJasperAggPC:v55 timestamp:?];
-      v56 = [(ADExecutor *)self executorParameters];
-      v57 = [v56 stepsToExecute];
-      v58 = [(ADJasperPearlInFieldCalibrationPipeline *)self->_pipeline pipelineParameters];
-      [v58 setStepsToExecute:v57];
+      executorParameters5 = [(ADExecutor *)self executorParameters];
+      stepsToExecute2 = [executorParameters5 stepsToExecute];
+      pipelineParameters3 = [(ADJasperPearlInFieldCalibrationPipeline *)self->_pipeline pipelineParameters];
+      [pipelineParameters3 setStepsToExecute:stepsToExecute2];
 
-      v12 = [(ADJasperPearlInFieldCalibrationPipeline *)self->_pipeline processWithPearl:v13 jasperAggregatedPointCloud:self->_aggregatedPointCloud farthestJasperBankPose:v71 irSensorCalibration:v73 jasperToPearlTransform:v74 interSessionData:*&v78 result:*&v77, *&v76, *&v75, v69, v68, v67, v66];
+      v12 = [(ADJasperPearlInFieldCalibrationPipeline *)self->_pipeline processWithPearl:extractPearlInputsFromLastSyncMatch jasperAggregatedPointCloud:self->_aggregatedPointCloud farthestJasperBankPose:extractIRSensorCalibFromLastSyncMatch irSensorCalibration:dataCopy jasperToPearlTransform:resultCopy interSessionData:*&v78 result:*&v77, *&v76, *&v75, v69, v68, v67, v66];
       if (!v12)
       {
-        v59 = [v74 pceCalib];
-        v60 = v59 == 0;
+        pceCalib = [resultCopy pceCalib];
+        v60 = pceCalib == 0;
 
         if (!v60)
         {
-          [(ADJasperPearlInFieldCalibrationExecutor *)self printOutResults:v74];
+          [(ADJasperPearlInFieldCalibrationExecutor *)self printOutResults:resultCopy];
         }
       }
 
@@ -658,7 +658,7 @@ LABEL_16:
 LABEL_36:
       [v62 stopWithUTFString:"executor execute"];
       kdebug_trace();
-      if (v7 == 1)
+      if (stepsToExecute == 1)
       {
         v12 = -22977;
       }
@@ -671,25 +671,25 @@ LABEL_36:
       goto LABEL_39;
     }
 
-    v40 = [v36 objectAtIndexedSubscript:v37];
-    [v40 pose];
+    firstObject = [v36 objectAtIndexedSubscript:v37];
+    [firstObject pose];
     v41 = self->_pcAggregator;
-    v42 = [v40 data];
-    [v40 timestamp];
-    v12 = [ADPointCloudAggregator pushPointCloud:v41 timestamp:"pushPointCloud:timestamp:worldToCameraTransform:" worldToCameraTransform:v42];
+    data = [firstObject data];
+    [firstObject timestamp];
+    v12 = [ADPointCloudAggregator pushPointCloud:v41 timestamp:"pushPointCloud:timestamp:worldToCameraTransform:" worldToCameraTransform:data];
 
     if (v12)
     {
       break;
     }
 
-    [v40 timestamp];
+    [firstObject timestamp];
     v44 = v43;
-    [v13 timestamp];
+    [extractPearlInputsFromLastSyncMatch timestamp];
     v46 = vabdd_f64(v44, v45);
     if (v46 > v38)
     {
-      [v40 pose];
+      [firstObject pose];
       *&v77 = v48;
       *&v78 = v47;
       *&v75 = v50;
@@ -708,14 +708,14 @@ LABEL_36:
 
 LABEL_39:
 
-  v9 = v70;
+  timeProfiler = v70;
 LABEL_40:
 
   objc_sync_exit(obj);
   return v12;
 }
 
-- (uint64_t)pushJasperPointCloud:(double)a3 timestamp:(double)a4 pose:(double)a5 jasperToPearlTransform:(double)a6
+- (uint64_t)pushJasperPointCloud:(double)cloud timestamp:(double)timestamp pose:(double)pose jasperToPearlTransform:(double)transform
 {
   v40 = *MEMORY[0x277D85DE8];
   v35[0] = a14;
@@ -724,7 +724,7 @@ LABEL_40:
   v35[3] = a17;
   v19 = a8;
   kdebug_trace();
-  if ((*(a1 + 136) & 1) == 0)
+  if ((*(self + 136) & 1) == 0)
   {
     v22 = -22970;
     goto LABEL_13;
@@ -768,15 +768,15 @@ LABEL_9:
   v37 = v23;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
 
-  v25 = *(a1 + 168);
+  v25 = *(self + 168);
   objc_sync_enter(v25);
-  v26 = [*(a1 + 168) pushData:v19 streamIndex:1 timestamp:v24 pose:a2 meta:{a3, a4, a5, a6}];
+  v26 = [*(self + 168) pushData:v19 streamIndex:1 timestamp:v24 pose:a2 meta:{cloud, timestamp, pose, transform}];
   objc_sync_exit(v25);
 
-  v27 = *(a1 + 152);
+  v27 = *(self + 152);
   objc_sync_enter(v27);
-  v28 = *(a1 + 144);
-  *(a1 + 144) = v26;
+  v28 = *(self + 144);
+  *(self + 144) = v26;
   v29 = v26;
 
   objc_sync_exit(v27);
@@ -798,7 +798,7 @@ LABEL_13:
   return -22950;
 }
 
-- (uint64_t)pushPearlDepth:(__n128)a3 pearlDx:(__n128)a4 pearlDy:(__n128)a5 pearlScore:(__n128)a6 timestamp:(uint64_t)a7 metadata:(uint64_t)a8 pose:(uint64_t)a9 prevPose:(uint64_t)a10
+- (uint64_t)pushPearlDepth:(__n128)depth pearlDx:(__n128)dx pearlDy:(__n128)dy pearlScore:(__n128)score timestamp:(uint64_t)timestamp metadata:(uint64_t)metadata pose:(uint64_t)pose prevPose:(uint64_t)self0
 {
   v55 = *MEMORY[0x277D85DE8];
   v50[0] = a14;
@@ -833,13 +833,13 @@ LABEL_13:
 
   _os_log_impl(&dword_2402F6000, v24, v25, "JasperPearlInFieldCalibration: Executor: pushPearlDepth.", buf, 2u);
 LABEL_7:
-  v26 = *(a1 + 208);
+  v26 = *(self + 208);
   [v23 sensorTemperature];
-  v27 = [a1 overrideCVCalIntrinsicsWithPCECalibIntrinsics:v26 temperature:?];
-  v28 = *(a1 + 208);
-  *(a1 + 208) = v27;
+  v27 = [self overrideCVCalIntrinsicsWithPCECalibIntrinsics:v26 temperature:?];
+  v28 = *(self + 208);
+  *(self + 208) = v27;
 
-  if (*(a1 + 136) == 1)
+  if (*(self + 136) == 1)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -848,12 +848,12 @@ LABEL_7:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "JasperPearlInFieldCalibration: pushed pearl frame for ts:%f into streamSync", buf, 0xCu);
     }
 
-    v29 = [[CVPixelBufferARCWrapper alloc] initWithPearlDepth:a8 pearlDx:a9 pearlDy:a10 pearlScore:a11];
+    v29 = [[CVPixelBufferARCWrapper alloc] initWithPearlDepth:metadata pearlDx:pose pearlDy:prevPose pearlScore:a11];
     v51[0] = @"Temperature";
     v30 = MEMORY[0x277CCABB0];
     [v23 sensorTemperature];
     v31 = [v30 numberWithFloat:?];
-    v32 = *(a1 + 208);
+    v32 = *(self + 208);
     v52[0] = v31;
     v52[1] = v32;
     v51[1] = @"IRSensorOpCalibration";
@@ -862,15 +862,15 @@ LABEL_7:
     v52[2] = v33;
     v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
-    v35 = *(a1 + 168);
+    v35 = *(self + 168);
     objc_sync_enter(v35);
-    v36 = [*(a1 + 168) pushData:v29 streamIndex:0 timestamp:v34 pose:a2 meta:{v43, v45, v47, v49}];
+    v36 = [*(self + 168) pushData:v29 streamIndex:0 timestamp:v34 pose:a2 meta:{v43, v45, v47, v49}];
     objc_sync_exit(v35);
 
-    v37 = *(a1 + 152);
+    v37 = *(self + 152);
     objc_sync_enter(v37);
-    v38 = *(a1 + 144);
-    *(a1 + 144) = v36;
+    v38 = *(self + 144);
+    *(self + 144) = v36;
     v39 = v36;
 
     objc_sync_exit(v37);
@@ -951,13 +951,13 @@ LABEL_6:
   return -22950;
 }
 
-- (void)setPearlInfraredCameraCalibration:(id)a3
+- (void)setPearlInfraredCameraCalibration:(id)calibration
 {
-  v9 = a3;
+  calibrationCopy = calibration;
   pearlInfraredCameraCalibration = self->_pearlInfraredCameraCalibration;
-  if (!pearlInfraredCameraCalibration || (-[ADCameraCalibration dictionaryRepresentation](pearlInfraredCameraCalibration, "dictionaryRepresentation"), v6 = objc_claimAutoreleasedReturnValue(), [v9 dictionaryRepresentation], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, (v8 & 1) == 0))
+  if (!pearlInfraredCameraCalibration || (-[ADCameraCalibration dictionaryRepresentation](pearlInfraredCameraCalibration, "dictionaryRepresentation"), v6 = objc_claimAutoreleasedReturnValue(), [calibrationCopy dictionaryRepresentation], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, (v8 & 1) == 0))
   {
-    objc_storeStrong(&self->_pearlInfraredCameraCalibration, a3);
+    objc_storeStrong(&self->_pearlInfraredCameraCalibration, calibration);
   }
 }
 
@@ -994,10 +994,10 @@ LABEL_6:
   _os_log_impl(&dword_2402F6000, v3, v4, "JasperPearlInFieldCalibration: Executor: Prepare.", v18, 2u);
 LABEL_7:
   v5 = [ADJasperPearlInFieldCalibrationPipeline alloc];
-  v6 = [(ADExecutor *)self executorParameters];
-  v7 = [v6 pipelineParameters];
-  v8 = [(ADJasperPearlInFieldCalibrationExecutor *)self pceCalib];
-  v9 = [(ADJasperPearlInFieldCalibrationPipeline *)v5 initWithParameters:v7 pceCalib:v8];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  pipelineParameters = [executorParameters pipelineParameters];
+  pceCalib = [(ADJasperPearlInFieldCalibrationExecutor *)self pceCalib];
+  v9 = [(ADJasperPearlInFieldCalibrationPipeline *)v5 initWithParameters:pipelineParameters pceCalib:pceCalib];
   pipeline = self->_pipeline;
   self->_pipeline = v9;
 
@@ -1052,9 +1052,9 @@ LABEL_10:
   return v14;
 }
 
-- (void)setPceCalib:(id)a3
+- (void)setPceCalib:(id)calib
 {
-  v5 = a3;
+  calibCopy = calib;
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1070,11 +1070,11 @@ LABEL_10:
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "JasperPearlInFieldCalibration: Executor: PCECalib was set.", v7, 2u);
   }
 
-  objc_storeStrong(&self->_pceCalib, a3);
+  objc_storeStrong(&self->_pceCalib, calib);
   pipeline = self->_pipeline;
   if (pipeline)
   {
-    [(ADJasperPearlInFieldCalibrationPipeline *)pipeline setPceCalib:v5];
+    [(ADJasperPearlInFieldCalibrationPipeline *)pipeline setPceCalib:calibCopy];
   }
 }
 
@@ -1092,10 +1092,10 @@ LABEL_10:
   [(ADExecutor *)&v4 dealloc];
 }
 
-- (ADJasperPearlInFieldCalibrationExecutor)initWithParameters:(id)a3 pceCalib:(id)a4
+- (ADJasperPearlInFieldCalibrationExecutor)initWithParameters:(id)parameters pceCalib:(id)calib
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  calibCopy = calib;
   v21 = 335680240;
   v22 = 0u;
   v23 = 0u;
@@ -1132,8 +1132,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    [(ADExecutor *)v10 setExecutorParameters:v6];
-    objc_storeStrong(&v11->_pceCalib, a4);
+    [(ADExecutor *)v10 setExecutorParameters:parametersCopy];
+    objc_storeStrong(&v11->_pceCalib, calib);
     v11->_isPrepared = 0;
     lastSyncMatch = v11->_lastSyncMatch;
     v11->_lastSyncMatch = 0;
@@ -1157,11 +1157,11 @@ LABEL_7:
   return v17;
 }
 
-- (ADJasperPearlInFieldCalibrationExecutor)initWithPceCalib:(id)a3
+- (ADJasperPearlInFieldCalibrationExecutor)initWithPceCalib:(id)calib
 {
-  v4 = a3;
+  calibCopy = calib;
   v5 = objc_opt_new();
-  v6 = [(ADJasperPearlInFieldCalibrationExecutor *)self initWithParameters:v5 pceCalib:v4];
+  v6 = [(ADJasperPearlInFieldCalibrationExecutor *)self initWithParameters:v5 pceCalib:calibCopy];
 
   return v6;
 }

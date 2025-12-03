@@ -1,23 +1,23 @@
 @interface WFBooksSydneyEActionIdentifiersMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFBooksSydneyEActionIdentifiersMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1400"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1400"))
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.OpenRecentBookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.PlayRecentAudiobookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.OpenRecentBookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.PlayRecentAudiobookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.OpenBookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.PlayAudiobookIntent", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.OpenBookIntent", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.OpenRecentBookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.PlayRecentAudiobookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.OpenRecentBookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.PlayRecentAudiobookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.OpenBookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooks.PlayAudiobookIntent", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.OpenBookIntent", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.PlayAudiobookIntent", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.apple.iBooksX.PlayAudiobookIntent", migrationCopy);
     }
   }
 
@@ -53,19 +53,19 @@
         }
 
         v6 = *(*(&v27 + 1) + 8 * v5);
-        v7 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v8 = [v6 objectForKeyedSubscript:v7];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v8 = [v6 objectForKeyedSubscript:actionIdentifierKey];
 
         if (([v8 isEqualToString:@"com.apple.iBooks.OpenBookIntent"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"com.apple.iBooks.PlayAudiobookIntent") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"com.apple.iBooksX.OpenBookIntent") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.iBooksX.PlayAudiobookIntent"))
         {
-          v9 = [(WFWorkflowMigration *)self actionParametersKey];
-          v10 = [v6 objectForKeyedSubscript:v9];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v10 = [v6 objectForKeyedSubscript:actionParametersKey];
           v11 = [v10 objectForKeyedSubscript:@"target"];
 
           if (v11)
           {
-            v12 = [(WFWorkflowMigration *)self actionParametersKey];
-            v13 = [v6 objectForKeyedSubscript:v12];
+            actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+            v13 = [v6 objectForKeyedSubscript:actionParametersKey2];
             [v13 setObject:@"specific" forKeyedSubscript:@"mode"];
           }
         }
@@ -75,16 +75,16 @@
           v14 = @"com.apple.iBooks.OpenBookIntent";
           v15 = @"OpenBookIntent";
 LABEL_15:
-          v16 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v6 setObject:v14 forKeyedSubscript:v16];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v6 setObject:v14 forKeyedSubscript:actionIdentifierKey2];
 
-          v17 = [(WFWorkflowMigration *)self actionParametersKey];
-          v18 = [v6 objectForKeyedSubscript:v17];
+          actionParametersKey3 = [(WFWorkflowMigration *)self actionParametersKey];
+          v18 = [v6 objectForKeyedSubscript:actionParametersKey3];
           v19 = [v18 objectForKeyedSubscript:@"AppIntentDescriptor"];
           [v19 setObject:v15 forKeyedSubscript:@"AppIntentIdentifier"];
 
-          v20 = [(WFWorkflowMigration *)self actionParametersKey];
-          v21 = [v6 objectForKeyedSubscript:v20];
+          actionParametersKey4 = [(WFWorkflowMigration *)self actionParametersKey];
+          v21 = [v6 objectForKeyedSubscript:actionParametersKey4];
           v22 = [v21 objectForKeyedSubscript:@"AppIntentDescriptor"];
           [v22 setObject:@"com.apple.iBooks" forKeyedSubscript:@"BundleIdentifier"];
 

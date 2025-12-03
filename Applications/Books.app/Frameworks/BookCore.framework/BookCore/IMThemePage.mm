@@ -1,32 +1,32 @@
 @interface IMThemePage
-+ (id)themeForEPUBTheme:(int64_t)a3;
++ (id)themeForEPUBTheme:(int64_t)theme;
 - (IMThemePage)init;
 - (NSDictionary)backgroundsByLevel;
 - (UITraitCollection)_traitCollection;
-- (id)_themeNormalizedTraitCollection:(id)a3;
-- (id)backgroundColorForTraitCollection:(id)a3;
-- (id)backgroundColorForTraitEnvironment:(id)a3;
-- (id)colorForElement:(unint64_t)a3;
+- (id)_themeNormalizedTraitCollection:(id)collection;
+- (id)backgroundColorForTraitCollection:(id)collection;
+- (id)backgroundColorForTraitEnvironment:(id)environment;
+- (id)colorForElement:(unint64_t)element;
 - (id)finishedCheckmarkColor;
 - (id)tableViewSeparatorColor;
 - (int64_t)userInterfaceStyle;
-- (void)_colorsInTraitCollectionContext:(id)a3 block:(id)a4;
-- (void)styleMenuCell:(id)a3 withTraitCollection:(id)a4;
-- (void)stylizeSegmentedControl:(id)a3;
+- (void)_colorsInTraitCollectionContext:(id)context block:(id)block;
+- (void)styleMenuCell:(id)cell withTraitCollection:(id)collection;
+- (void)stylizeSegmentedControl:(id)control;
 @end
 
 @implementation IMThemePage
 
-+ (id)themeForEPUBTheme:(int64_t)a3
++ (id)themeForEPUBTheme:(int64_t)theme
 {
-  if (a3 > 5)
+  if (theme > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 themeWithIdentifier:{*off_2CA770[a3], v3}];
+    v5 = [self themeWithIdentifier:{*off_2CA770[theme], v3}];
   }
 
   return v5;
@@ -47,7 +47,7 @@
   return v3;
 }
 
-- (id)colorForElement:(unint64_t)a3
+- (id)colorForElement:(unint64_t)element
 {
   v10 = 0;
   v11 = &v10;
@@ -62,14 +62,14 @@
     v9[2] = sub_6B420;
     v9[3] = &unk_2CA6F0;
     v9[5] = &v10;
-    v9[6] = a3;
+    v9[6] = element;
     v9[4] = self;
     [(IMThemePage *)self _colorsInTraitCollectionContext:0 block:v9];
   }
 
   else
   {
-    v5 = sub_6B4D4(a3, [(IMThemePage *)self epubTheme]);
+    v5 = sub_6B4D4(element, [(IMThemePage *)self epubTheme]);
     v6 = v11[5];
     v11[5] = v5;
   }
@@ -80,17 +80,17 @@
   return v7;
 }
 
-- (id)backgroundColorForTraitEnvironment:(id)a3
+- (id)backgroundColorForTraitEnvironment:(id)environment
 {
-  v4 = [a3 traitCollection];
-  v5 = [(IMThemePage *)self backgroundColorForTraitCollection:v4];
+  traitCollection = [environment traitCollection];
+  v5 = [(IMThemePage *)self backgroundColorForTraitCollection:traitCollection];
 
   return v5;
 }
 
-- (id)backgroundColorForTraitCollection:(id)a3
+- (id)backgroundColorForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -103,7 +103,7 @@
   v7[3] = &unk_2C7AE0;
   v7[4] = self;
   v7[5] = &v8;
-  [(IMThemePage *)self _colorsInTraitCollectionContext:v4 block:v7];
+  [(IMThemePage *)self _colorsInTraitCollectionContext:collectionCopy block:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -112,81 +112,81 @@
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(IMThemePage *)self epubTheme];
-  if ((v2 - 2) > 3)
+  epubTheme = [(IMThemePage *)self epubTheme];
+  if ((epubTheme - 2) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_2A3B98[v2 - 2];
+    return qword_2A3B98[epubTheme - 2];
   }
 }
 
-- (void)stylizeSegmentedControl:(id)a3
+- (void)stylizeSegmentedControl:(id)control
 {
   v12 = NSForegroundColorAttributeName;
-  v4 = a3;
-  v5 = [(IMThemePage *)self primaryTextColor];
-  v13 = v5;
+  controlCopy = control;
+  primaryTextColor = [(IMThemePage *)self primaryTextColor];
+  v13 = primaryTextColor;
   v6 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  [v4 setTitleTextAttributes:v6 forState:0];
+  [controlCopy setTitleTextAttributes:v6 forState:0];
 
   v10 = NSForegroundColorAttributeName;
   v7 = +[UIColor bc_booksLabelColor];
   v11 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v4 setTitleTextAttributes:v8 forState:4];
+  [controlCopy setTitleTextAttributes:v8 forState:4];
 
-  v9 = [(IMThemePage *)self tintColor];
-  [v4 setTintColor:v9];
+  tintColor = [(IMThemePage *)self tintColor];
+  [controlCopy setTintColor:tintColor];
 }
 
-- (void)styleMenuCell:(id)a3 withTraitCollection:(id)a4
+- (void)styleMenuCell:(id)cell withTraitCollection:(id)collection
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_6C284;
   v6[3] = &unk_2C7BE8;
-  v7 = self;
-  v8 = a3;
-  v5 = v8;
-  [(IMThemePage *)v7 _colorsInTraitCollectionContext:a4 block:v6];
+  selfCopy = self;
+  cellCopy = cell;
+  v5 = cellCopy;
+  [(IMThemePage *)selfCopy _colorsInTraitCollectionContext:collection block:v6];
 }
 
-- (id)_themeNormalizedTraitCollection:(id)a3
+- (id)_themeNormalizedTraitCollection:(id)collection
 {
-  v4 = a3;
-  if (v4)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v5 = v4;
-    v10[0] = v4;
-    v6 = [(IMThemePage *)self _traitCollection];
-    v10[1] = v6;
+    v5 = collectionCopy;
+    v10[0] = collectionCopy;
+    _traitCollection = [(IMThemePage *)self _traitCollection];
+    v10[1] = _traitCollection;
     v7 = [NSArray arrayWithObjects:v10 count:2];
-    v8 = [UITraitCollection traitCollectionWithTraitsFromCollections:v7];
+    _traitCollection2 = [UITraitCollection traitCollectionWithTraitsFromCollections:v7];
   }
 
   else
   {
-    v8 = [(IMThemePage *)self _traitCollection];
+    _traitCollection2 = [(IMThemePage *)self _traitCollection];
   }
 
-  return v8;
+  return _traitCollection2;
 }
 
-- (void)_colorsInTraitCollectionContext:(id)a3 block:(id)a4
+- (void)_colorsInTraitCollectionContext:(id)context block:(id)block
 {
-  v6 = a4;
-  v10 = [(IMThemePage *)self _themeNormalizedTraitCollection:a3];
+  blockCopy = block;
+  v10 = [(IMThemePage *)self _themeNormalizedTraitCollection:context];
   v7 = +[UITraitCollection _currentTraitCollection];
   if (v10)
   {
     [UITraitCollection _setCurrentTraitCollection:v10];
   }
 
-  v8 = objc_retainBlock(v6);
+  v8 = objc_retainBlock(blockCopy);
   v9 = v8;
   if (v8)
   {
@@ -232,13 +232,13 @@
 
 - (id)tableViewSeparatorColor
 {
-  v2 = [(IMThemePage *)self epubTheme];
-  v3 = v2 + 1;
-  if (v2 + 1 <= 6)
+  epubTheme = [(IMThemePage *)self epubTheme];
+  v3 = epubTheme + 1;
+  if (epubTheme + 1 <= 6)
   {
     if (((1 << v3) & 7) != 0)
     {
-      v2 = +[UIColor bc_booksSeparatorColor];
+      epubTheme = +[UIColor bc_booksSeparatorColor];
     }
 
     else
@@ -255,11 +255,11 @@
         v5 = 1.0;
       }
 
-      v2 = [UIColor colorWithWhite:v5 alpha:v4];
+      epubTheme = [UIColor colorWithWhite:v5 alpha:v4];
     }
   }
 
-  return v2;
+  return epubTheme;
 }
 
 - (NSDictionary)backgroundsByLevel

@@ -1,21 +1,21 @@
 @interface GMEnrollmentTextModel
 - (_TtC14VoiceTriggerUI21GMEnrollmentTextModel)init;
-- (_TtC14VoiceTriggerUI21GMEnrollmentTextModel)initWithFont:(id)a3 label:(id)a4 hidden:(BOOL)a5;
+- (_TtC14VoiceTriggerUI21GMEnrollmentTextModel)initWithFont:(id)font label:(id)label hidden:(BOOL)hidden;
 @end
 
 @implementation GMEnrollmentTextModel
 
-- (_TtC14VoiceTriggerUI21GMEnrollmentTextModel)initWithFont:(id)a3 label:(id)a4 hidden:(BOOL)a5
+- (_TtC14VoiceTriggerUI21GMEnrollmentTextModel)initWithFont:(id)font label:(id)label hidden:(BOOL)hidden
 {
   v8 = sub_27292E254();
   v10 = v9;
-  v11 = a3;
+  fontCopy = font;
   sub_27292D674();
-  *(&self->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI21GMEnrollmentTextModel__font) = v11;
+  *(&self->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI21GMEnrollmentTextModel__font) = fontCopy;
   v12 = (self + OBJC_IVAR____TtC14VoiceTriggerUI21GMEnrollmentTextModel__label);
   *v12 = v8;
   v12[1] = v10;
-  *(&self->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI21GMEnrollmentTextModel__hidden) = a5;
+  *(&self->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI21GMEnrollmentTextModel__hidden) = hidden;
   v14.receiver = self;
   v14.super_class = type metadata accessor for GMEnrollmentTextModel(0);
   return [(GMEnrollmentTextModel *)&v14 init];

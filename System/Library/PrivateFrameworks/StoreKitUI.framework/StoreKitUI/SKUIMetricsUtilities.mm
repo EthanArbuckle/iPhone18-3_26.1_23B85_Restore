@@ -2,8 +2,8 @@
 + (BOOL)shouldLogTimingMetrics;
 + (BOOL)showEventNotifications;
 + (BOOL)trackAllEvents;
-+ (double)timeIntervalFromJSTime:(id)a3;
-+ (id)jsTimeFromTimeInterval:(double)a3;
++ (double)timeIntervalFromJSTime:(id)time;
++ (id)jsTimeFromTimeInterval:(double)interval;
 + (id)newErrorPageEvent;
 + (id)newErrorRetryClickEvent;
 + (void)newErrorPageEvent;
@@ -89,9 +89,9 @@ uint64_t __38__SKUIMetricsUtilities_trackAllEvents__block_invoke()
   return SSDebugShouldLogNetworkTimingMetrics();
 }
 
-+ (double)timeIntervalFromJSTime:(id)a3
++ (double)timeIntervalFromJSTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -104,13 +104,13 @@ uint64_t __38__SKUIMetricsUtilities_trackAllEvents__block_invoke()
     }
   }
 
-  [v3 doubleValue];
+  [timeCopy doubleValue];
   v13 = v12 / 1000.0;
 
   return v13;
 }
 
-+ (id)jsTimeFromTimeInterval:(double)a3
++ (id)jsTimeFromTimeInterval:(double)interval
 {
   if (os_variant_has_internal_content())
   {
@@ -124,7 +124,7 @@ uint64_t __38__SKUIMetricsUtilities_trackAllEvents__block_invoke()
     }
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:(a3 * 1000.0)];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:(interval * 1000.0)];
 
   return v12;
 }

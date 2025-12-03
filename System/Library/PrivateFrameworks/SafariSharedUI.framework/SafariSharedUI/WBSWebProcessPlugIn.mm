@@ -2,100 +2,100 @@
 - (BOOL)isABTestingEnabled;
 - (NSArray)searchEnginesForRedirectToSafeSearch;
 - (WBSSearchProvider)defaultSearchProvider;
-- (id)pageControllerWithBrowserContextController:(id)a3;
+- (id)pageControllerWithBrowserContextController:(id)controller;
 - (unint64_t)abGroupIdentifier;
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4;
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4;
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4;
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller;
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object;
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation WBSWebProcessPlugIn
 
 - (NSArray)searchEnginesForRedirectToSafeSearch
 {
-  v2 = [(WKWebProcessPlugInController *)self->_plugInController parameters];
-  v3 = [v2 valueForKey:@"searchEnginesForRedirectToSafeSearch"];
+  parameters = [(WKWebProcessPlugInController *)self->_plugInController parameters];
+  v3 = [parameters valueForKey:@"searchEnginesForRedirectToSafeSearch"];
 
   return v3;
 }
 
 - (WBSSearchProvider)defaultSearchProvider
 {
-  v2 = [(WKWebProcessPlugInController *)self->_plugInController parameters];
-  v3 = [v2 valueForKey:@"defaultSearchEngine"];
+  parameters = [(WKWebProcessPlugInController *)self->_plugInController parameters];
+  v3 = [parameters valueForKey:@"defaultSearchEngine"];
 
   return v3;
 }
 
 - (BOOL)isABTestingEnabled
 {
-  v2 = [(WKWebProcessPlugInController *)self->_plugInController parameters];
-  v3 = [v2 valueForKey:@"abTestingEnabled"];
-  v4 = [v3 BOOLValue];
+  parameters = [(WKWebProcessPlugInController *)self->_plugInController parameters];
+  v3 = [parameters valueForKey:@"abTestingEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)abGroupIdentifier
 {
-  v2 = [(WKWebProcessPlugInController *)self->_plugInController parameters];
-  v3 = [v2 valueForKey:@"abGroupIdentifier"];
-  v4 = [v3 unsignedIntegerValue];
+  parameters = [(WKWebProcessPlugInController *)self->_plugInController parameters];
+  v3 = [parameters valueForKey:@"abGroupIdentifier"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)pageControllerWithBrowserContextController:(id)a3
+- (id)pageControllerWithBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 _groupIdentifier];
+    _groupIdentifier = [controllerCopy _groupIdentifier];
   }
 
   else
   {
-    v6 = [v4 pageGroup];
-    v5 = [v6 identifier];
+    pageGroup = [controllerCopy pageGroup];
+    _groupIdentifier = [pageGroup identifier];
   }
 
-  v7 = [v5 isEqualToString:@"TouchIconExtractor"];
+  v7 = [_groupIdentifier isEqualToString:@"TouchIconExtractor"];
   v8 = off_1E8281B70;
   if (!v7)
   {
     v8 = off_1E8281C10;
   }
 
-  v9 = [objc_alloc(*v8) initWithPlugIn:self contextController:v4];
+  v9 = [objc_alloc(*v8) initWithPlugIn:self contextController:controllerCopy];
 
   return v9;
 }
 
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object
 {
-  objc_storeStrong(&self->_plugInController, a3);
-  v8 = a3;
-  v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  objc_storeStrong(&self->_plugInController, in);
+  inCopy = in;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   browserContextControllersToWebProcessPlugInPageControllers = self->_browserContextControllersToWebProcessPlugInPageControllers;
-  self->_browserContextControllersToWebProcessPlugInPageControllers = v6;
+  self->_browserContextControllersToWebProcessPlugInPageControllers = strongToStrongObjectsMapTable;
 }
 
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller
 {
-  v5 = a4;
-  v6 = [(WBSWebProcessPlugIn *)self pageControllerWithBrowserContextController:v5];
-  [(NSMapTable *)self->_browserContextControllersToWebProcessPlugInPageControllers setObject:v6 forKey:v5];
-  [(WBSWebProcessPlugIn *)self didCreatePageController:v6 forBrowserContextController:v5];
+  controllerCopy = controller;
+  v6 = [(WBSWebProcessPlugIn *)self pageControllerWithBrowserContextController:controllerCopy];
+  [(NSMapTable *)self->_browserContextControllersToWebProcessPlugInPageControllers setObject:v6 forKey:controllerCopy];
+  [(WBSWebProcessPlugIn *)self didCreatePageController:v6 forBrowserContextController:controllerCopy];
 }
 
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller
 {
   browserContextControllersToWebProcessPlugInPageControllers = self->_browserContextControllersToWebProcessPlugInPageControllers;
-  v6 = a4;
-  v7 = [(NSMapTable *)browserContextControllersToWebProcessPlugInPageControllers objectForKey:v6];
-  [v7 willDestroyBrowserContextController:v6];
-  [(WBSWebProcessPlugIn *)self willDestroyPageController:v7 forBrowserContextController:v6];
-  [(NSMapTable *)self->_browserContextControllersToWebProcessPlugInPageControllers removeObjectForKey:v6];
+  controllerCopy = controller;
+  v7 = [(NSMapTable *)browserContextControllersToWebProcessPlugInPageControllers objectForKey:controllerCopy];
+  [v7 willDestroyBrowserContextController:controllerCopy];
+  [(WBSWebProcessPlugIn *)self willDestroyPageController:v7 forBrowserContextController:controllerCopy];
+  [(NSMapTable *)self->_browserContextControllersToWebProcessPlugInPageControllers removeObjectForKey:controllerCopy];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface BMPBSemanticLocationEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPlaceType:(id)a3;
-- (int)StringAsUserSpecificPlaceType:(id)a3;
+- (int)StringAsPlaceType:(id)type;
+- (int)StringAsUserSpecificPlaceType:(id)type;
 - (int)placeType;
 - (int)userSpecificPlaceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStarting:(BOOL)a3;
-- (void)setHasUserSpecificPlaceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStarting:(BOOL)starting;
+- (void)setHasUserSpecificPlaceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSemanticLocationEvent
 
-- (void)setHasStarting:(BOOL)a3
+- (void)setHasStarting:(BOOL)starting
 {
-  if (a3)
+  if (starting)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)setHasUserSpecificPlaceType:(BOOL)a3
+- (void)setHasUserSpecificPlaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -60,30 +60,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsUserSpecificPlaceType:(id)a3
+- (int)StringAsUserSpecificPlaceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unkown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unkown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([typeCopy isEqualToString:@"Home"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Work"])
+  else if ([typeCopy isEqualToString:@"Work"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"School"])
+  else if ([typeCopy isEqualToString:@"School"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Gym"])
+  else if ([typeCopy isEqualToString:@"Gym"])
   {
     v4 = 4;
   }
@@ -109,25 +109,25 @@
   }
 }
 
-- (int)StringAsPlaceType:(id)a3
+- (int)StringAsPlaceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AreaOfInterest"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AreaOfInterest"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PointOfInterest"])
+  else if ([typeCopy isEqualToString:@"PointOfInterest"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Address"])
+  else if ([typeCopy isEqualToString:@"Address"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Unknown"])
+  else if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 3;
   }
@@ -146,20 +146,20 @@
   v8.receiver = self;
   v8.super_class = BMPBSemanticLocationEvent;
   v4 = [(BMPBSemanticLocationEvent *)&v8 description];
-  v5 = [(BMPBSemanticLocationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSemanticLocationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_starting];
-    [v3 setObject:v5 forKey:@"starting"];
+    [dictionary setObject:v5 forKey:@"starting"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -190,7 +190,7 @@ LABEL_3:
     v7 = off_1E6E53BC8[userSpecificPlaceType];
   }
 
-  [v3 setObject:v7 forKey:@"userSpecificPlaceType"];
+  [dictionary setObject:v7 forKey:@"userSpecificPlaceType"];
 
   if (*&self->_has)
   {
@@ -206,29 +206,29 @@ LABEL_10:
       v9 = off_1E6E53BF0[placeType];
     }
 
-    [v3 setObject:v9 forKey:@"placeType"];
+    [dictionary setObject:v9 forKey:@"placeType"];
   }
 
 LABEL_14:
   loiIdentifier = self->_loiIdentifier;
   if (loiIdentifier)
   {
-    [v3 setObject:loiIdentifier forKey:@"loiIdentifier"];
+    [dictionary setObject:loiIdentifier forKey:@"loiIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     starting = self->_starting;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -249,31 +249,31 @@ LABEL_3:
 
   userSpecificPlaceType = self->_userSpecificPlaceType;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     placeType = self->_placeType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_loiIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[24] = self->_starting;
-    v4[28] |= 4u;
+    toCopy[24] = self->_starting;
+    toCopy[28] |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -292,27 +292,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 5) = self->_userSpecificPlaceType;
-  v4[28] |= 2u;
+  *(toCopy + 5) = self->_userSpecificPlaceType;
+  toCopy[28] |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 4) = self->_placeType;
-    v4[28] |= 1u;
+    *(toCopy + 4) = self->_placeType;
+    toCopy[28] |= 1u;
   }
 
 LABEL_5:
   if (self->_loiIdentifier)
   {
-    v6 = v4;
-    [v4 setLoiIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLoiIdentifier:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -350,25 +350,25 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_loiIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_loiIdentifier copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_4;
     }
@@ -378,21 +378,21 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 28) & 4) == 0)
+  if ((*(equalCopy + 28) & 4) == 0)
   {
     goto LABEL_22;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (self->_starting)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_22;
   }
@@ -400,32 +400,32 @@ LABEL_22:
 LABEL_4:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_userSpecificPlaceType != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_userSpecificPlaceType != *(equalCopy + 5))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_placeType != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_placeType != *(equalCopy + 4))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_22;
   }
 
   loiIdentifier = self->_loiIdentifier;
-  if (loiIdentifier | *(v4 + 1))
+  if (loiIdentifier | *(equalCopy + 1))
   {
     v8 = [(NSString *)loiIdentifier isEqual:?];
   }
@@ -480,15 +480,15 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_loiIdentifier hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_starting = *(v4 + 24);
+    self->_starting = *(fromCopy + 24);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -501,26 +501,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_userSpecificPlaceType = *(v4 + 5);
+  self->_userSpecificPlaceType = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_4:
-    self->_placeType = *(v4 + 4);
+    self->_placeType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(BMPBSemanticLocationEvent *)self setLoiIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

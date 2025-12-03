@@ -1,39 +1,39 @@
 @interface PFParallaxLayoutConfiguration
-+ (id)_fallbackTimeRectCollectionForSBSFetchingFailureWithOrientation:(int64_t)a3;
-+ (id)_timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:(CGRect)a3 orientation:(int64_t)a4;
-+ (id)bestConfigurationForScreenSize:(CGSize)a3 screenScale:(double)a4 startingWithConfiguration:(id)a5 orientation:(int64_t)a6;
-+ (id)deviceConfigurationForOrientation:(int64_t)a3;
-+ (id)genericConfigurationForOrientation:(int64_t)a3;
-+ (id)genericPadConfigurationForOrientation:(int64_t)a3;
-+ (id)layoutConfigurationFromDictionary:(id)a3 error:(id *)a4;
++ (id)_fallbackTimeRectCollectionForSBSFetchingFailureWithOrientation:(int64_t)orientation;
++ (id)_timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:(CGRect)bounds orientation:(int64_t)orientation;
++ (id)bestConfigurationForScreenSize:(CGSize)size screenScale:(double)scale startingWithConfiguration:(id)configuration orientation:(int64_t)orientation;
++ (id)deviceConfigurationForOrientation:(int64_t)orientation;
++ (id)genericConfigurationForOrientation:(int64_t)orientation;
++ (id)genericPadConfigurationForOrientation:(int64_t)orientation;
++ (id)layoutConfigurationFromDictionary:(id)dictionary error:(id *)error;
 + (id)timeRectCollectionLandscape;
 + (id)timeRectCollectionPortrait;
 + (void)_loadDeviceTimeRectCollectionIfNeeded;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration;
 - (BOOL)isPortrait;
 - (CGRect)inactiveTimeRect;
-- (CGRect)stretchedTimeOverlapCheckBottom:(double)a3 visibleFrame:(CGRect)a4;
-- (CGRect)stretchedTimeOverlapCheckTop:(double)a3 visibleFrame:(CGRect)a4;
+- (CGRect)stretchedTimeOverlapCheckBottom:(double)bottom visibleFrame:(CGRect)frame;
+- (CGRect)stretchedTimeOverlapCheckTop:(double)top visibleFrame:(CGRect)frame;
 - (CGRect)timeOverlapCheckBottom;
-- (CGRect)timeOverlapCheckBottomForTimeRect:(CGRect)a3;
+- (CGRect)timeOverlapCheckBottomForTimeRect:(CGRect)rect;
 - (CGRect)timeOverlapCheckTop;
-- (CGRect)timeOverlapCheckTopForTimeRect:(CGRect)a3;
+- (CGRect)timeOverlapCheckTopForTimeRect:(CGRect)rect;
 - (CGRect)timeRect;
-- (CGRect)timeRectForNormalizedHeight:(double)a3;
+- (CGRect)timeRectForNormalizedHeight:(double)height;
 - (CGRect)unsafeRect;
 - (CGSize)parallaxPadding;
 - (CGSize)parallaxPaddingPct;
 - (CGSize)screenSize;
-- (PFParallaxLayoutConfiguration)initWithCoder:(id)a3;
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 screenScale:(double)a4 denormalizedYDownTimeRect:(CGRect)a5 parallaxPadding:(CGSize)a6;
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 screenScale:(double)a4 timeRect:(CGRect)a5 inactiveTimeRect:(CGRect)a6 parallaxPadding:(CGSize)a7;
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 timeRect:(CGRect)a4 inactiveTimeRect:(CGRect)a5 parallaxPadding:(CGSize)a6;
+- (PFParallaxLayoutConfiguration)initWithCoder:(id)coder;
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size screenScale:(double)scale denormalizedYDownTimeRect:(CGRect)rect parallaxPadding:(CGSize)padding;
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size screenScale:(double)scale timeRect:(CGRect)rect inactiveTimeRect:(CGRect)timeRect parallaxPadding:(CGSize)padding;
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size timeRect:(CGRect)rect inactiveTimeRect:(CGRect)timeRect parallaxPadding:(CGSize)padding;
 - (double)maxStrechAmountNormalized;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFParallaxLayoutConfiguration
@@ -82,23 +82,23 @@
   return result;
 }
 
-- (PFParallaxLayoutConfiguration)initWithCoder:(id)a3
+- (PFParallaxLayoutConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeSizeForKey:@"screenSize"];
+  coderCopy = coder;
+  [coderCopy decodeSizeForKey:@"screenSize"];
   v31 = v6;
   v32 = v5;
-  [v4 decodeRectForKey:@"timeRect"];
+  [coderCopy decodeRectForKey:@"timeRect"];
   v29 = v8;
   v30 = v7;
   v28 = v9;
   v11 = v10;
-  [v4 decodeRectForKey:@"inactiveTimeRect"];
+  [coderCopy decodeRectForKey:@"inactiveTimeRect"];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v4 decodeSizeForKey:@"parallaxPadding"];
+  [coderCopy decodeSizeForKey:@"parallaxPadding"];
   v21 = v20;
   v23 = v22;
   if (+[PFWallpaperCompoundDeviceConfiguration deviceSupportsLandscapeConfiguration])
@@ -111,9 +111,9 @@
     v24 = 3.0;
   }
 
-  if ([v4 containsValueForKey:@"version"])
+  if ([coderCopy containsValueForKey:@"version"])
   {
-    [v4 decodeDoubleForKey:@"screenScale"];
+    [coderCopy decodeDoubleForKey:@"screenScale"];
     v24 = v25;
   }
 
@@ -122,23 +122,23 @@
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:2 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInt:2 forKey:@"version"];
   [(PFParallaxLayoutConfiguration *)self screenSize];
-  [v4 encodeSize:@"screenSize" forKey:?];
+  [coderCopy encodeSize:@"screenSize" forKey:?];
   [(PFParallaxLayoutConfiguration *)self timeRect];
-  [v4 encodeRect:@"timeRect" forKey:?];
+  [coderCopy encodeRect:@"timeRect" forKey:?];
   [(PFParallaxLayoutConfiguration *)self inactiveTimeRect];
-  [v4 encodeRect:@"inactiveTimeRect" forKey:?];
+  [coderCopy encodeRect:@"inactiveTimeRect" forKey:?];
   [(PFParallaxLayoutConfiguration *)self parallaxPadding];
-  [v4 encodeSize:@"parallaxPadding" forKey:?];
+  [coderCopy encodeSize:@"parallaxPadding" forKey:?];
   [(PFParallaxLayoutConfiguration *)self screenScale];
-  [v4 encodeDouble:@"screenScale" forKey:?];
+  [coderCopy encodeDouble:@"screenScale" forKey:?];
 }
 
-- (CGRect)timeRectForNormalizedHeight:(double)a3
+- (CGRect)timeRectForNormalizedHeight:(double)height
 {
   if ([(PFParallaxLayoutConfiguration *)self isPortrait])
   {
@@ -152,7 +152,7 @@
   v5 = ;
   width = self->_screenSize.width;
   height = self->_screenSize.height;
-  [v5 rectForPointSpaceHeight:height * a3 / self->_screenScale];
+  [v5 rectForPointSpaceHeight:height * height / self->_screenScale];
   screenScale = self->_screenScale;
   v13 = screenScale * v12;
   v14 = 0.0;
@@ -211,19 +211,19 @@
   return v4 < v5;
 }
 
-- (BOOL)isEqualToLayoutConfiguration:(id)a3
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 screenSize];
+  configurationCopy = configuration;
+  [configurationCopy screenSize];
   v6 = v5;
   v8 = v7;
   [(PFParallaxLayoutConfiguration *)self screenSize];
   v11 = v6 == v10 && v8 == v9;
-  if (v11 && ([v4 timeRect], v13 = v12, v15 = v14, v17 = v16, v19 = v18, -[PFParallaxLayoutConfiguration timeRect](self, "timeRect"), vabdd_f64(v13, v23) <= 0.00000999999975) && vabdd_f64(v15, v20) <= 0.00000999999975 && vabdd_f64(v17, v21) <= 0.00000999999975 && vabdd_f64(v19, v22) <= 0.00000999999975)
+  if (v11 && ([configurationCopy timeRect], v13 = v12, v15 = v14, v17 = v16, v19 = v18, -[PFParallaxLayoutConfiguration timeRect](self, "timeRect"), vabdd_f64(v13, v23) <= 0.00000999999975) && vabdd_f64(v15, v20) <= 0.00000999999975 && vabdd_f64(v17, v21) <= 0.00000999999975 && vabdd_f64(v19, v22) <= 0.00000999999975)
   {
     [(PFParallaxLayoutConfiguration *)self screenScale];
     v27 = v26;
-    [v4 screenScale];
+    [configurationCopy screenScale];
     v24 = vabdd_f64(v27, v28) <= 0.1;
   }
 
@@ -235,10 +235,10 @@
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -246,7 +246,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxLayoutConfiguration *)self isEqualToLayoutConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxLayoutConfiguration *)self isEqualToLayoutConfiguration:equalCopy];
   }
 
   return v5;
@@ -340,11 +340,11 @@
   return result;
 }
 
-- (CGRect)stretchedTimeOverlapCheckBottom:(double)a3 visibleFrame:(CGRect)a4
+- (CGRect)stretchedTimeOverlapCheckBottom:(double)bottom visibleFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  [(PFParallaxLayoutConfiguration *)self timeRect:a3];
-  if (v8 - a3 / height <= 0.0)
+  height = frame.size.height;
+  [(PFParallaxLayoutConfiguration *)self timeRect:bottom];
+  if (v8 - bottom / height <= 0.0)
   {
     v20 = *MEMORY[0x1E695F050];
     v21 = *(MEMORY[0x1E695F050] + 8);
@@ -354,7 +354,7 @@
 
   else
   {
-    [(PFParallaxLayoutConfiguration *)self timeRectForNormalizedHeight:a3 / height + v7];
+    [(PFParallaxLayoutConfiguration *)self timeRectForNormalizedHeight:bottom / height + v7];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -376,11 +376,11 @@
   return result;
 }
 
-- (CGRect)stretchedTimeOverlapCheckTop:(double)a3 visibleFrame:(CGRect)a4
+- (CGRect)stretchedTimeOverlapCheckTop:(double)top visibleFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  [(PFParallaxLayoutConfiguration *)self timeRect:a3];
-  [(PFParallaxLayoutConfiguration *)self timeRectForNormalizedHeight:a3 / height + v7];
+  height = frame.size.height;
+  [(PFParallaxLayoutConfiguration *)self timeRect:top];
+  [(PFParallaxLayoutConfiguration *)self timeRectForNormalizedHeight:top / height + v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -400,12 +400,12 @@
   return result;
 }
 
-- (CGRect)timeOverlapCheckTopForTimeRect:(CGRect)a3
+- (CGRect)timeOverlapCheckTopForTimeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = +[PFParallaxLayoutTextOverlapParameters systemParameters];
   [v7 bottomAreaHeight];
   v9 = v8;
@@ -421,12 +421,12 @@
   return result;
 }
 
-- (CGRect)timeOverlapCheckBottomForTimeRect:(CGRect)a3
+- (CGRect)timeOverlapCheckBottomForTimeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = +[PFParallaxLayoutTextOverlapParameters systemParameters];
   [v7 bottomAreaHeight];
   v9 = v8;
@@ -487,18 +487,18 @@
   return result;
 }
 
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 screenScale:(double)a4 timeRect:(CGRect)a5 inactiveTimeRect:(CGRect)a6 parallaxPadding:(CGSize)a7
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size screenScale:(double)scale timeRect:(CGRect)rect inactiveTimeRect:(CGRect)timeRect parallaxPadding:(CGSize)padding
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3.height;
-  v13 = a3.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = size.height;
+  v13 = size.width;
   v15.receiver = self;
   v15.super_class = PFParallaxLayoutConfiguration;
-  result = [(PFParallaxLayoutConfiguration *)&v15 init:*&a7.width];
-  result->_screenScale = a4;
+  result = [(PFParallaxLayoutConfiguration *)&v15 init:*&padding.width];
+  result->_screenScale = scale;
   result->_screenSize.width = v13;
   result->_timeRect.origin.y = y;
   result->_timeRect.size.width = width;
@@ -514,41 +514,41 @@
   return result;
 }
 
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 timeRect:(CGRect)a4 inactiveTimeRect:(CGRect)a5 parallaxPadding:(CGSize)a6
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size timeRect:(CGRect)rect inactiveTimeRect:(CGRect)timeRect parallaxPadding:(CGSize)padding
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = PFDeviceScreenScale();
 
-  return [(PFParallaxLayoutConfiguration *)self initWithScreenSize:width screenScale:height timeRect:v9 inactiveTimeRect:a4.origin.x parallaxPadding:a4.origin.y, a4.size.width, a4.size.height];
+  return [(PFParallaxLayoutConfiguration *)self initWithScreenSize:width screenScale:height timeRect:v9 inactiveTimeRect:rect.origin.x parallaxPadding:rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)a3 screenScale:(double)a4 denormalizedYDownTimeRect:(CGRect)a5 parallaxPadding:(CGSize)a6
+- (PFParallaxLayoutConfiguration)initWithScreenSize:(CGSize)size screenScale:(double)scale denormalizedYDownTimeRect:(CGRect)rect parallaxPadding:(CGSize)padding
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v8 = a5.origin.x - *MEMORY[0x1E695EFF8];
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.x - *MEMORY[0x1E695EFF8];
   v9 = 0.0;
   v10 = 0.0;
-  if (a3.width != 0.0)
+  if (size.width != 0.0)
   {
-    v8 = v8 / a3.width;
-    v10 = width / a3.width;
+    v8 = v8 / size.width;
+    v10 = width / size.width;
   }
 
-  v11 = a5.origin.y - *(MEMORY[0x1E695EFF8] + 8);
-  if (a3.height != 0.0)
+  v11 = rect.origin.y - *(MEMORY[0x1E695EFF8] + 8);
+  if (size.height != 0.0)
   {
-    v11 = v11 / a3.height;
-    v9 = height / a3.height;
+    v11 = v11 / size.height;
+    v9 = height / size.height;
   }
 
-  return [(PFParallaxLayoutConfiguration *)self initWithScreenSize:*&v8 screenScale:*(MEMORY[0x1E69BDDA8] + 8) + *(MEMORY[0x1E69BDDA8] + 24) - (v9 + v11) timeRect:*&v10 inactiveTimeRect:*&v9 parallaxPadding:*&a6.width, *&a6.height];
+  return [(PFParallaxLayoutConfiguration *)self initWithScreenSize:*&v8 screenScale:*(MEMORY[0x1E69BDDA8] + 8) + *(MEMORY[0x1E69BDDA8] + 24) - (v9 + v11) timeRect:*&v10 inactiveTimeRect:*&v9 parallaxPadding:*&padding.width, *&padding.height];
 }
 
 + (id)timeRectCollectionLandscape
 {
-  [a1 _loadDeviceTimeRectCollectionIfNeeded];
+  [self _loadDeviceTimeRectCollectionIfNeeded];
   v2 = s_timeRectCollectionLandscape;
 
   return v2;
@@ -556,23 +556,23 @@
 
 + (id)timeRectCollectionPortrait
 {
-  [a1 _loadDeviceTimeRectCollectionIfNeeded];
+  [self _loadDeviceTimeRectCollectionIfNeeded];
   v2 = s_timeRectCollectionPortrait;
 
   return v2;
 }
 
-+ (id)_timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:(CGRect)a3 orientation:(int64_t)a4
++ (id)_timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:(CGRect)bounds orientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v31[2] = *MEMORY[0x1E69E9840];
   v9 = PFDeviceScreenSize();
   v11 = v10;
   v12 = PFDeviceScreenScale();
-  v13 = (v9 > v11) ^ (a4 == 1);
+  v13 = (v9 > v11) ^ (orientation == 1);
   if (v13)
   {
     v14 = v11;
@@ -620,14 +620,14 @@
   return v27;
 }
 
-+ (id)_fallbackTimeRectCollectionForSBSFetchingFailureWithOrientation:(int64_t)a3
++ (id)_fallbackTimeRectCollectionForSBSFetchingFailureWithOrientation:(int64_t)orientation
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v4 = PFDeviceScreenSize();
   v6 = v5;
   v7 = PFDeviceScreenScale();
-  v8 = PFDeviceLockScreenApproximateTimeRectNormalized(a3);
-  v12 = (v4 > v6) ^ (a3 == 1);
+  v8 = PFDeviceLockScreenApproximateTimeRectNormalized(orientation);
+  v12 = (v4 > v6) ^ (orientation == 1);
   if (v12)
   {
     v13 = v6;
@@ -679,7 +679,7 @@
     block[1] = 3221225472;
     block[2] = __70__PFParallaxLayoutConfiguration__loadDeviceTimeRectCollectionIfNeeded__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_loadDeviceTimeRectCollectionIfNeeded_onceToken[0] != -1)
     {
       dispatch_once(_loadDeviceTimeRectCollectionIfNeeded_onceToken, block);
@@ -721,19 +721,19 @@ uint64_t __70__PFParallaxLayoutConfiguration__loadDeviceTimeRectCollectionIfNeed
   return result;
 }
 
-+ (id)layoutConfigurationFromDictionary:(id)a3 error:(id *)a4
++ (id)layoutConfigurationFromDictionary:(id)dictionary error:(id *)error
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v6 = v5;
+  v6 = dictionaryCopy;
   size.width = 0.0;
   size.height = 0.0;
-  v7 = [v5 objectForKeyedSubscript:@"screenSize"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"screenSize"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = CGSizeMakeWithDictionaryRepresentation(v7, &size);
@@ -816,7 +816,7 @@ LABEL_32:
           {
           }
 
-          if (a4)
+          if (error)
           {
             v23 = MEMORY[0x1E696ABC0];
             v35[0] = @"PFNonLocalizedFailureReason";
@@ -834,7 +834,7 @@ LABEL_32:
             v36[0] = @"Invalid inactive time rect";
             v36[1] = v24;
             v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-            *a4 = [v23 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v25];
+            *error = [v23 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v25];
           }
 
           v18 = 0;
@@ -846,7 +846,7 @@ LABEL_32:
       {
       }
 
-      if (a4)
+      if (error)
       {
         v20 = MEMORY[0x1E696ABC0];
         v37[0] = @"PFNonLocalizedFailureReason";
@@ -864,7 +864,7 @@ LABEL_32:
         v38[0] = @"Invalid time rect";
         v38[1] = v21;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
-        *a4 = [v20 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v22];
+        *error = [v20 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v22];
       }
 
       v18 = 0;
@@ -876,7 +876,7 @@ LABEL_32:
   {
   }
 
-  if (a4)
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v39[0] = @"PFNonLocalizedFailureReason";
@@ -894,7 +894,7 @@ LABEL_32:
     v40[0] = @"Invalid screen size";
     v40[1] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-    *a4 = [v15 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v17];
+    *error = [v15 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v17];
   }
 
   v18 = 0;
@@ -903,16 +903,16 @@ LABEL_22:
   return v18;
 }
 
-+ (id)bestConfigurationForScreenSize:(CGSize)a3 screenScale:(double)a4 startingWithConfiguration:(id)a5 orientation:(int64_t)a6
++ (id)bestConfigurationForScreenSize:(CGSize)size screenScale:(double)scale startingWithConfiguration:(id)configuration orientation:(int64_t)orientation
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v73 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  configurationCopy = configuration;
   v11 = MEMORY[0x1E695DFD8];
   v12 = +[PFWallpaperCompoundDeviceConfiguration knownDeviceConfigurations];
-  v13 = [v12 allValues];
-  v14 = [v11 setWithArray:v13];
+  allValues = [v12 allValues];
+  v14 = [v11 setWithArray:allValues];
 
   v64 = 0u;
   v65 = 0u;
@@ -920,12 +920,12 @@ LABEL_22:
   v63 = 0u;
   v15 = v14;
   v16 = [v15 countByEnumeratingWithState:&v62 objects:v72 count:16];
-  v17 = v10;
+  v17 = configurationCopy;
   if (v16)
   {
     v18 = v16;
     v19 = *v63;
-    v17 = v10;
+    v17 = configurationCopy;
     do
     {
       for (i = 0; i != v18; ++i)
@@ -936,12 +936,12 @@ LABEL_22:
         }
 
         v21 = *(*(&v62 + 1) + 8 * i);
-        switch(a6)
+        switch(orientation)
         {
           case 1:
             if (!v17 || ([v17 screenSize], v32 = v31, v34 = v33, objc_msgSend(v21, "portraitConfiguration"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "screenSize"), v38 = __114__PFParallaxLayoutConfiguration_bestConfigurationForScreenSize_screenScale_startingWithConfiguration_orientation___block_invoke(width, height, v32, v34, v36, v37), v35, v38))
             {
-              v30 = [v21 portraitConfiguration];
+              portraitConfiguration = [v21 portraitConfiguration];
               goto LABEL_16;
             }
 
@@ -949,9 +949,9 @@ LABEL_22:
           case 2:
             if (!v17 || ([v17 screenSize], v23 = v22, v25 = v24, objc_msgSend(v21, "landscapeConfiguration"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "screenSize"), v29 = __114__PFParallaxLayoutConfiguration_bestConfigurationForScreenSize_screenScale_startingWithConfiguration_orientation___block_invoke(width, height, v23, v25, v27, v28), v26, v29))
             {
-              v30 = [v21 landscapeConfiguration];
+              portraitConfiguration = [v21 landscapeConfiguration];
 LABEL_16:
-              v39 = v30;
+              v39 = portraitConfiguration;
 
               v17 = v39;
               continue;
@@ -970,7 +970,7 @@ LABEL_16:
     while (v18);
   }
 
-  v40 = [a1 alloc];
+  v40 = [self alloc];
   [v17 timeRect];
   v59 = v42;
   v61 = v41;
@@ -982,7 +982,7 @@ LABEL_16:
   v51 = v50;
   v53 = v52;
   [v17 parallaxPadding];
-  v56 = [v40 initWithScreenSize:width screenScale:height timeRect:a4 inactiveTimeRect:*&v61 parallaxPadding:{v59, v58, v45, v47, v49, v51, v53, v54, v55}];
+  v56 = [v40 initWithScreenSize:width screenScale:height timeRect:scale inactiveTimeRect:*&v61 parallaxPadding:{v59, v58, v45, v47, v49, v51, v53, v54, v55}];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
@@ -1011,19 +1011,19 @@ BOOL __114__PFParallaxLayoutConfiguration_bestConfigurationForScreenSize_screenS
   return vabdd_f64(v13, hypot(a5 - v11, a6 - v12)) < vabdd_f64(v13, v14);
 }
 
-+ (id)deviceConfigurationForOrientation:(int64_t)a3
++ (id)deviceConfigurationForOrientation:(int64_t)orientation
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v4 = +[PFWallpaperCompoundDeviceConfiguration deviceConfiguration];
-    v5 = [v4 portraitConfiguration];
+    portraitConfiguration = [v4 portraitConfiguration];
   }
 
   else
   {
-    if (a3 != 2)
+    if (orientation != 2)
     {
-      if (a3)
+      if (orientation)
       {
         goto LABEL_8;
       }
@@ -1032,19 +1032,19 @@ BOOL __114__PFParallaxLayoutConfiguration_bestConfigurationForScreenSize_screenS
     }
 
     v4 = +[PFWallpaperCompoundDeviceConfiguration deviceConfiguration];
-    v5 = [v4 landscapeConfiguration];
+    portraitConfiguration = [v4 landscapeConfiguration];
   }
 
-  v3 = v5;
+  v3 = portraitConfiguration;
 
 LABEL_8:
 
   return v3;
 }
 
-+ (id)genericPadConfigurationForOrientation:(int64_t)a3
++ (id)genericPadConfigurationForOrientation:(int64_t)orientation
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v3 = 1668.0;
     v4 = 2388.0;
@@ -1056,14 +1056,14 @@ LABEL_8:
     v4 = 1668.0;
   }
 
-  v5 = [a1 bestConfigurationForScreenSize:v3 screenScale:v4 orientation:2.0];
+  v5 = [self bestConfigurationForScreenSize:v3 screenScale:v4 orientation:2.0];
 
   return v5;
 }
 
-+ (id)genericConfigurationForOrientation:(int64_t)a3
++ (id)genericConfigurationForOrientation:(int64_t)orientation
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v3 = 1170.0;
     v4 = 2532.0;
@@ -1075,7 +1075,7 @@ LABEL_8:
     v4 = 1668.0;
   }
 
-  v5 = [a1 bestConfigurationForScreenSize:v3 screenScale:v4 orientation:3.0];
+  v5 = [self bestConfigurationForScreenSize:v3 screenScale:v4 orientation:3.0];
 
   return v5;
 }

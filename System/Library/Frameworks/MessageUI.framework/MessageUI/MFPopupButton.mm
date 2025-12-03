@@ -1,31 +1,31 @@
 @interface MFPopupButton
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (MFPopupButton)initWithFrame:(CGRect)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (MFPopupButton)initWithFrame:(CGRect)frame;
 - (MFPopupButtonDelegate)delegate;
 - (NSArray)combinedItems;
 - (UIFont)font;
-- (id)actionForItem:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)_didSelectItem:(id)a3;
+- (id)actionForItem:(id)item;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)_didSelectItem:(id)item;
 - (void)_updateUI;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)dismissMenu;
-- (void)setDeferredItems:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setItems:(id)a3;
-- (void)setSelectedItem:(id)a3;
+- (void)setDeferredItems:(id)items;
+- (void)setFont:(id)font;
+- (void)setItems:(id)items;
+- (void)setSelectedItem:(id)item;
 - (void)sizeToFit;
-- (void)updateItem:(id)a3;
+- (void)updateItem:(id)item;
 @end
 
 @implementation MFPopupButton
 
-- (MFPopupButton)initWithFrame:(CGRect)a3
+- (MFPopupButton)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MFPopupButton;
-  v3 = [(MFPopupButton *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFPopupButton *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,8 +42,8 @@
 
     [(MFPopupButton *)v4 bounds];
     [(MFActivityIndicatorLabel *)v4->_label setFrame:?];
-    v10 = [(MFActivityIndicatorLabel *)v4->_label textLabel];
-    [v10 setTextAlignment:4];
+    textLabel = [(MFActivityIndicatorLabel *)v4->_label textLabel];
+    [textLabel setTextAlignment:4];
 
     [(MFPopupButton *)v4 addSubview:v4->_label];
     [(UIView *)v4->_label mf_pinToView:v4 layoutMarginEdges:0 flexibleEdges:13];
@@ -54,24 +54,24 @@
   return v4;
 }
 
-- (void)setSelectedItem:(id)a3
+- (void)setSelectedItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   if (![(MFPopupButtonItem *)self->_selectedItem isEqual:?])
   {
-    v4 = [v6 copy];
+    v4 = [itemCopy copy];
     selectedItem = self->_selectedItem;
     self->_selectedItem = v4;
 
-    [(MFPopupButton *)self updateItem:v6];
+    [(MFPopupButton *)self updateItem:itemCopy];
     [(MFPopupButton *)self _updateUI];
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  itemsCopy = items;
+  v5 = [itemsCopy copy];
   v6 = v5;
   if (v5)
   {
@@ -94,10 +94,10 @@
   }
 }
 
-- (void)setDeferredItems:(id)a3
+- (void)setDeferredItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  itemsCopy = items;
+  v5 = [itemsCopy copy];
   v6 = v5;
   if (v5)
   {
@@ -121,20 +121,20 @@
 - (NSArray)combinedItems
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MFPopupButton *)self items];
-  v8[0] = v3;
-  v4 = [(MFPopupButton *)self deferredItems];
-  v8[1] = v4;
+  items = [(MFPopupButton *)self items];
+  v8[0] = items;
+  deferredItems = [(MFPopupButton *)self deferredItems];
+  v8[1] = deferredItems;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-  v6 = [v5 ef_flatten];
+  ef_flatten = [v5 ef_flatten];
 
-  return v6;
+  return ef_flatten;
 }
 
-- (void)updateItem:(id)a3
+- (void)updateItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -154,18 +154,18 @@
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 popupTitle];
-        v10 = [v4 popupTitle];
-        if ([v9 isEqualToString:v10])
+        popupTitle = [v8 popupTitle];
+        popupTitle2 = [itemCopy popupTitle];
+        if ([popupTitle isEqualToString:popupTitle2])
         {
-          v11 = [v8 title];
-          v12 = [v4 title];
-          v13 = [v11 isEqualToString:v12];
+          title = [v8 title];
+          title2 = [itemCopy title];
+          v13 = [title isEqualToString:title2];
 
           if ((v13 & 1) == 0)
           {
-            v14 = [v4 title];
-            [v8 setTitle:v14];
+            title3 = [itemCopy title];
+            [v8 setTitle:title3];
 
             goto LABEL_12;
           }
@@ -187,25 +187,25 @@ LABEL_12:
 
 - (UIFont)font
 {
-  v2 = [(MFPopupButton *)self label];
-  v3 = [v2 textLabel];
-  v4 = [v3 font];
+  label = [(MFPopupButton *)self label];
+  textLabel = [label textLabel];
+  font = [textLabel font];
 
-  return v4;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  v4 = [(MFPopupButton *)self label];
-  v5 = [v4 textLabel];
-  [v5 setFont:v6];
+  fontCopy = font;
+  label = [(MFPopupButton *)self label];
+  textLabel = [label textLabel];
+  [textLabel setFont:fontCopy];
 }
 
 - (void)dismissMenu
 {
-  v2 = [(MFPopupButton *)self contextMenuInteraction];
-  [v2 dismissMenu];
+  contextMenuInteraction = [(MFPopupButton *)self contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
 - (void)sizeToFit
@@ -213,83 +213,83 @@ LABEL_12:
   v5.receiver = self;
   v5.super_class = MFPopupButton;
   [(MFPopupButton *)&v5 sizeToFit];
-  v3 = [(MFPopupButton *)self label];
-  [v3 sizeToFit];
+  label = [(MFPopupButton *)self label];
+  [label sizeToFit];
 
-  v4 = [(MFPopupButton *)self label];
-  [v4 frame];
+  label2 = [(MFPopupButton *)self label];
+  [label2 frame];
   [(MFPopupButton *)self setBounds:?];
 }
 
 - (void)_updateUI
 {
-  v3 = [MEMORY[0x1E69DC888] mailSenderAddressPickerColorNormalTextColor];
-  v4 = [(MFPopupButton *)self selectedItem];
-  [(MFPopupButton *)self updateItem:v4];
-  if (v4 && (-[MFPopupButton combinedItems](self, "combinedItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, v6))
+  mailSenderAddressPickerColorNormalTextColor = [MEMORY[0x1E69DC888] mailSenderAddressPickerColorNormalTextColor];
+  selectedItem = [(MFPopupButton *)self selectedItem];
+  [(MFPopupButton *)self updateItem:selectedItem];
+  if (selectedItem && (-[MFPopupButton combinedItems](self, "combinedItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:selectedItem], v5, v6))
   {
-    v7 = [(MFPopupButton *)self selectedItem];
-    v13 = [v7 title];
+    selectedItem2 = [(MFPopupButton *)self selectedItem];
+    title = [selectedItem2 title];
 
-    if ([v4 style] == 1)
+    if ([selectedItem style] == 1)
     {
-      v8 = [MEMORY[0x1E69DC888] mailSenderAddressPickerUnsafeDomainColorTextColor];
+      mailSenderAddressPickerUnsafeDomainColorTextColor = [MEMORY[0x1E69DC888] mailSenderAddressPickerUnsafeDomainColorTextColor];
 
-      v3 = v8;
+      mailSenderAddressPickerColorNormalTextColor = mailSenderAddressPickerUnsafeDomainColorTextColor;
     }
   }
 
   else
   {
-    v13 = &stru_1F3CF3758;
+    title = &stru_1F3CF3758;
   }
 
-  v9 = [(MFPopupButton *)self label];
-  v10 = [v9 textLabel];
-  [v10 setText:v13];
+  label = [(MFPopupButton *)self label];
+  textLabel = [label textLabel];
+  [textLabel setText:title];
 
-  v11 = [(MFPopupButton *)self label];
-  v12 = [v11 textLabel];
-  [v12 setTextColor:v3];
+  label2 = [(MFPopupButton *)self label];
+  textLabel2 = [label2 textLabel];
+  [textLabel2 setTextColor:mailSenderAddressPickerColorNormalTextColor];
 }
 
-- (void)_didSelectItem:(id)a3
+- (void)_didSelectItem:(id)item
 {
-  v7 = a3;
-  v4 = [(MFPopupButton *)self delegate];
-  v5 = [(MFPopupButton *)self combinedItems];
-  v6 = [v5 containsObject:v7];
+  itemCopy = item;
+  delegate = [(MFPopupButton *)self delegate];
+  combinedItems = [(MFPopupButton *)self combinedItems];
+  v6 = [combinedItems containsObject:itemCopy];
 
   if (v6)
   {
-    [(MFPopupButton *)self setSelectedItem:v7];
+    [(MFPopupButton *)self setSelectedItem:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      [v4 popupButton:self didSelectItem:v7];
+      [delegate popupButton:self didSelectItem:itemCopy];
     }
   }
 }
 
-- (id)actionForItem:(id)a3
+- (id)actionForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MFPopupButton *)self selectedItem];
-  v6 = [v4 isEqual:v5];
+  itemCopy = item;
+  selectedItem = [(MFPopupButton *)self selectedItem];
+  v6 = [itemCopy isEqual:selectedItem];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69DC628];
-  v8 = [v4 popupTitle];
+  popupTitle = [itemCopy popupTitle];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __31__MFPopupButton_actionForItem___block_invoke;
   v14[3] = &unk_1E806F490;
   objc_copyWeak(&v16, &location);
-  v9 = v4;
+  v9 = itemCopy;
   v15 = v9;
-  v10 = [v7 actionWithTitle:v8 image:0 identifier:0 handler:v14];
+  v10 = [v7 actionWithTitle:popupTitle image:0 identifier:0 handler:v14];
 
-  v11 = [v9 subtitle];
-  [v10 setSubtitle:v11];
+  subtitle = [v9 subtitle];
+  [v10 setSubtitle:subtitle];
 
   if ([v9 style] == 1)
   {
@@ -322,7 +322,7 @@ void __31__MFPopupButton_actionForItem___block_invoke(uint64_t a1)
   [WeakRetained _didSelectItem:*(a1 + 32)];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E69DC8D8];
@@ -347,42 +347,42 @@ id __71__MFPopupButton_contextMenuInteraction_configurationForMenuAtLocation___b
   return v3;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v10.receiver = self;
   v10.super_class = MFPopupButton;
-  [(MFPopupButton *)&v10 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:v8];
-  v9 = [(MFPopupButton *)self delegate];
+  [(MFPopupButton *)&v10 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animatorCopy];
+  delegate = [(MFPopupButton *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 popupButtonWillPresentMenu:self animator:v8];
+    [delegate popupButtonWillPresentMenu:self animator:animatorCopy];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v10.receiver = self;
   v10.super_class = MFPopupButton;
-  [(MFPopupButton *)&v10 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:v8];
-  v9 = [(MFPopupButton *)self delegate];
+  [(MFPopupButton *)&v10 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animatorCopy];
+  delegate = [(MFPopupButton *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 popupButtonWillDismissMenu:self animator:v8];
+    [delegate popupButtonWillDismissMenu:self animator:animatorCopy];
   }
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = [(MFPopupButton *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MFPopupButton *)self effectiveUserInterfaceLayoutDirection];
   [(MFPopupButton *)self bounds];
   v9 = v5;
   v10 = v6;
   v11 = v7;
   v12 = v8;
   MaxX = v5;
-  if (v4 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     MaxX = CGRectGetMaxX(*&v5);
   }

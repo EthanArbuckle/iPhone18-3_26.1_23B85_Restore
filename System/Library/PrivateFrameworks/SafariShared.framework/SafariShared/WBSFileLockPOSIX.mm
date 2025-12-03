@@ -1,12 +1,12 @@
 @interface WBSFileLockPOSIX
-- (WBSFileLockPOSIX)initWithFileDescriptor:(int)a3;
+- (WBSFileLockPOSIX)initWithFileDescriptor:(int)descriptor;
 - (void)dealloc;
 - (void)releaseLock;
 @end
 
 @implementation WBSFileLockPOSIX
 
-- (WBSFileLockPOSIX)initWithFileDescriptor:(int)a3
+- (WBSFileLockPOSIX)initWithFileDescriptor:(int)descriptor
 {
   v8.receiver = self;
   v8.super_class = WBSFileLockPOSIX;
@@ -14,13 +14,13 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fileDescriptor = a3;
+    v4->_fileDescriptor = descriptor;
     v6 = v4;
   }
 
   else
   {
-    close(a3);
+    close(descriptor);
   }
 
   return v5;
@@ -28,7 +28,7 @@
 
 - (void)releaseLock
 {
-  v1 = a1;
+  selfCopy = self;
   __error();
   OUTLINED_FUNCTION_1_7(&dword_1BB6F3000, v2, v3, "Failed to close coordination lock: %{errno}d", v4, v5, v6, v7, 0);
 }

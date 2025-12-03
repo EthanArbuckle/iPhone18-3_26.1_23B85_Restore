@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerPersonBirthday
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerPersonBirthday
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,41 +27,41 @@
 
   else
   {
-    v11 = [v7 localDate];
-    v12 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:v11 inGraph:v8];
+    localDate = [contextCopy localDate];
+    v12 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:localDate inGraph:graphCopy];
 
-    v13 = [v12 birthdayPersonNodes];
+    birthdayPersonNodes = [v12 birthdayPersonNodes];
     v14 = MEMORY[0x277D22BF8];
     v15 = +[PGGraphFeatureNodeCollection memoryOfFeature];
-    v16 = [v14 adjacencyWithSources:v13 relation:v15 targetsClass:objc_opt_class()];
+    v16 = [v14 adjacencyWithSources:birthdayPersonNodes relation:v15 targetsClass:objc_opt_class()];
 
     if ([v16 sourcesCount])
     {
-      v17 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:3 inGraph:v8];
+      v17 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:3 inGraph:graphCopy];
       v18 = [v16 intersectingTargetsWith:v17];
 
       if ([v18 sourcesCount])
       {
         v29 = v17;
-        v28 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:v8];
-        v19 = [v28 featureNodeCollection];
-        v20 = [v19 memoryNodes];
+        v28 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:graphCopy];
+        featureNodeCollection = [v28 featureNodeCollection];
+        memoryNodes = [featureNodeCollection memoryNodes];
 
         v21 = objc_alloc_init(MEMORY[0x277D22BD0]);
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __86__PGMemoryTriggerPersonBirthday_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
         v30[3] = &unk_278884B88;
-        v27 = v20;
+        v27 = memoryNodes;
         v31 = v27;
         v22 = v21;
         v32 = v22;
         [v18 enumerateTargetsBySourceWithBlock:v30];
         if ([v22 count])
         {
-          v23 = [objc_opt_class() singleDayValidityIntervalWithContext:v7];
-          v24 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:v8 elementIdentifiers:v22];
-          if ([v9 isCancelledWithProgress:1.0])
+          v23 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+          v24 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:graphCopy elementIdentifiers:v22];
+          if ([reporterCopy isCancelledWithProgress:1.0])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -83,7 +83,7 @@
 
         else
         {
-          if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+          if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             *buf = 67109378;
             v34 = 65;
@@ -100,7 +100,7 @@
 
       else
       {
-        if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+        if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 67109378;
           v34 = 46;
@@ -115,7 +115,7 @@
 
     else
     {
-      if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         v34 = 39;
@@ -151,12 +151,12 @@ void __86__PGMemoryTriggerPersonBirthday_resultsTriggeredWithContext_inGraph_pro
   [v6 unionWithIdentifierSet:v9];
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:a3];
-  v4 = [v3 featureNodeCollection];
+  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:nodes];
+  featureNodeCollection = [v3 featureNodeCollection];
 
-  return v4;
+  return featureNodeCollection;
 }
 
 @end

@@ -20,11 +20,11 @@
 
 - (id)localizedDescription
 {
-  v3 = [(GTError_capture *)self userInfo];
-  if (!v3 || (result = [v3 objectForKey:NSLocalizedDescriptionKey]) == 0)
+  userInfo = [(GTError_capture *)self userInfo];
+  if (!userInfo || (result = [userInfo objectForKey:NSLocalizedDescriptionKey]) == 0)
   {
-    v5 = [(GTError_capture *)self code];
-    if (![-[GTError_capture domain](self "domain")] || (result = _StringForError(v5)) == 0)
+    code = [(GTError_capture *)self code];
+    if (![-[GTError_capture domain](self "domain")] || (result = _StringForError(code)) == 0)
     {
       v6.receiver = self;
       v6.super_class = GTError_capture;

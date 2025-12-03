@@ -1,21 +1,21 @@
 @interface RapportOverBLEQueuedMessage
-- (RapportOverBLEQueuedMessage)initWithMessage:(id)a3 withCompletion:(id)a4;
+- (RapportOverBLEQueuedMessage)initWithMessage:(id)message withCompletion:(id)completion;
 @end
 
 @implementation RapportOverBLEQueuedMessage
 
-- (RapportOverBLEQueuedMessage)initWithMessage:(id)a3 withCompletion:(id)a4
+- (RapportOverBLEQueuedMessage)initWithMessage:(id)message withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = RapportOverBLEQueuedMessage;
   v9 = [(RapportOverBLEQueuedMessage *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_message, message);
+    v11 = _Block_copy(completionCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }

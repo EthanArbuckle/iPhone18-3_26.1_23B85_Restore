@@ -1,39 +1,39 @@
 @interface SFBonjourEndpoint
 + (id)createConnectionParameters;
-- (SFBonjourEndpoint)initWithConnection:(id)a3 isAdvToBrowserConnection:(BOOL)a4 localUniqueID:(id)a5 withQueue:(id)a6;
-- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)a3 isAdvToBrowserConnection:(BOOL)a4;
+- (SFBonjourEndpoint)initWithConnection:(id)connection isAdvToBrowserConnection:(BOOL)browserConnection localUniqueID:(id)d withQueue:(id)queue;
+- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)metadata isAdvToBrowserConnection:(BOOL)connection;
 - (void)_handleUUIDHeaders;
 - (void)_startConnection;
 - (void)cancel;
 - (void)receiveNextMessage;
-- (void)sendDataMessage:(id)a3 completion:(id)a4;
+- (void)sendDataMessage:(id)message completion:(id)completion;
 @end
 
 @implementation SFBonjourEndpoint
 
-- (SFBonjourEndpoint)initWithConnection:(id)a3 isAdvToBrowserConnection:(BOOL)a4 localUniqueID:(id)a5 withQueue:(id)a6
+- (SFBonjourEndpoint)initWithConnection:(id)connection isAdvToBrowserConnection:(BOOL)browserConnection localUniqueID:(id)d withQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  dCopy = d;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = SFBonjourEndpoint;
   v14 = [(SFBonjourEndpoint *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    if (v12 && v11 && v13)
+    if (dCopy && connectionCopy && queueCopy)
     {
-      objc_storeStrong(&v14->_queue, a6);
-      objc_storeStrong(&v15->_connection, a3);
+      objc_storeStrong(&v14->_queue, queue);
+      objc_storeStrong(&v15->_connection, connection);
       v16 = nw_connection_copy_endpoint(v15->_connection);
       remoteEndpoint = v15->_remoteEndpoint;
       v15->_remoteEndpoint = v16;
 
       if (v15->_remoteEndpoint)
       {
-        v15->_isAdvToBrowserConnection = a4;
-        objc_storeStrong(&v15->_localUniqueIDString, a5);
+        v15->_isAdvToBrowserConnection = browserConnection;
+        objc_storeStrong(&v15->_localUniqueIDString, d);
         [(SFBonjourEndpoint *)v15 _startConnection];
         if (!v15->_isAdvToBrowserConnection)
         {
@@ -103,7 +103,7 @@ LABEL_15:
   v9 = __37__SFBonjourEndpoint__startConnection__block_invoke;
   v10 = &unk_1E7890B50;
   objc_copyWeak(&v13, &location);
-  v11 = self;
+  selfCopy = self;
   p_buf = &buf;
   nw_connection_set_state_changed_handler(v5, &v7);
   [(SFBonjourEndpoint *)self _handleUUIDHeaders:v7];
@@ -263,11 +263,11 @@ void __37__SFBonjourEndpoint__startConnection__block_invoke(uint64_t a1, int a2,
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)a3 isAdvToBrowserConnection:(BOOL)a4
+- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)metadata isAdvToBrowserConnection:(BOOL)connection
 {
-  v6 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  if (a4)
+  if (connection)
   {
     v7 = 0;
   }
@@ -281,7 +281,7 @@ void __37__SFBonjourEndpoint__startConnection__block_invoke(uint64_t a1, int a2,
     v20 = __Block_byref_object_dispose__17;
     v21 = 0;
     v8 = nw_protocol_copy_ws_definition();
-    v9 = nw_connection_copy_protocol_metadata(v6, v8);
+    v9 = nw_connection_copy_protocol_metadata(metadataCopy, v8);
 
     v10 = nw_ws_metadata_copy_server_response(v9);
     v11 = v10;
@@ -529,15 +529,15 @@ void __39__SFBonjourEndpoint_receiveNextMessage__block_invoke(uint64_t a1, void 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendDataMessage:(id)a3 completion:(id)a4
+- (void)sendDataMessage:(id)message completion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_connection)
   {
-    v8 = dispatch_data_create([v6 bytes], objc_msgSend(v6, "length"), 0, 0);
+    v8 = dispatch_data_create([messageCopy bytes], objc_msgSend(messageCopy, "length"), 0, 0);
     metadata = nw_ws_create_metadata(nw_ws_opcode_binary);
     v10 = nw_content_context_create("send");
     nw_content_context_set_metadata_for_protocol(v10, metadata);
@@ -546,15 +546,15 @@ void __39__SFBonjourEndpoint_receiveNextMessage__block_invoke(uint64_t a1, void 
     completion[1] = 3221225472;
     completion[2] = __48__SFBonjourEndpoint_sendDataMessage_completion___block_invoke;
     completion[3] = &unk_1E7890C40;
-    v17 = v6;
-    v18 = v7;
+    v17 = messageCopy;
+    v18 = completionCopy;
     nw_connection_send(connection, v8, v10, 1, completion);
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E696A768];
@@ -563,7 +563,7 @@ LABEL_5:
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v8 = [v12 errorWithDomain:v13 code:-6700 userInfo:v14];
 
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
     goto LABEL_5;
   }
 

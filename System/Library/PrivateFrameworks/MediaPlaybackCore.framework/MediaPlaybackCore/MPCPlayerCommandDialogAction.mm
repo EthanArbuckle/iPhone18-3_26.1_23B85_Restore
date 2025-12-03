@@ -1,5 +1,5 @@
 @interface MPCPlayerCommandDialogAction
-- (MPCPlayerCommandDialogAction)initWithMPAction:(id)a3 request:(id)a4;
+- (MPCPlayerCommandDialogAction)initWithMPAction:(id)action request:(id)request;
 - (id)commandRequest;
 - (id)description;
 - (int64_t)type;
@@ -9,20 +9,20 @@
 
 - (id)commandRequest
 {
-  v3 = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
+  event = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
 
-  if (v3)
+  if (event)
   {
     v4 = [MPCPlayerCommandRequest alloc];
-    v5 = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
-    v6 = [v5 mediaRemoteCommandType];
-    v7 = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
-    v8 = [v7 mediaRemoteOptions];
+    event2 = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
+    mediaRemoteCommandType = [event2 mediaRemoteCommandType];
+    event3 = [(MPRemoteCommandHandlerDialogAction *)self->_action event];
+    mediaRemoteOptions = [event3 mediaRemoteOptions];
     v9 = MEMORY[0x1E696AEC0];
     controller = self->_controller;
-    v11 = [(MPRemoteCommandHandlerDialogAction *)self->_action title];
-    v12 = [v9 stringWithFormat:@"DialogAction:%@", v11];
-    v13 = [(MPCPlayerCommandRequest *)v4 initWithMediaRemoteCommand:v6 options:v8 controller:controller label:v12];
+    title = [(MPRemoteCommandHandlerDialogAction *)self->_action title];
+    v12 = [v9 stringWithFormat:@"DialogAction:%@", title];
+    v13 = [(MPCPlayerCommandRequest *)v4 initWithMediaRemoteCommand:mediaRemoteCommandType options:mediaRemoteOptions controller:controller label:v12];
   }
 
   else
@@ -48,29 +48,29 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPRemoteCommandHandlerDialogAction *)self->_action title];
+  title = [(MPRemoteCommandHandlerDialogAction *)self->_action title];
   [(MPRemoteCommandHandlerDialogAction *)self->_action type];
   v6 = NSStringFromMPRemoteCommandHandlerDialogActionType();
-  v7 = [(MPCPlayerCommandDialogAction *)self commandRequest];
-  v8 = [v3 stringWithFormat:@"<%@: %p title=%@ type=%@ commandRequest=%@>", v4, self, v5, v6, v7];
+  commandRequest = [(MPCPlayerCommandDialogAction *)self commandRequest];
+  v8 = [v3 stringWithFormat:@"<%@: %p title=%@ type=%@ commandRequest=%@>", v4, self, title, v6, commandRequest];
 
   return v8;
 }
 
-- (MPCPlayerCommandDialogAction)initWithMPAction:(id)a3 request:(id)a4
+- (MPCPlayerCommandDialogAction)initWithMPAction:(id)action request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = MPCPlayerCommandDialogAction;
   v9 = [(MPCPlayerCommandDialogAction *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_action, a3);
-    v11 = [v8 controller];
+    objc_storeStrong(&v9->_action, action);
+    controller = [requestCopy controller];
     controller = v10->_controller;
-    v10->_controller = v11;
+    v10->_controller = controller;
   }
 
   return v10;

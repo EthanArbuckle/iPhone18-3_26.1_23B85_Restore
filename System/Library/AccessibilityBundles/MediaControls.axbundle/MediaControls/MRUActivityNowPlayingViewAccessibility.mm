@@ -1,24 +1,24 @@
 @interface MRUActivityNowPlayingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)updateVisibilty;
 @end
 
 @implementation MRUActivityNowPlayingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"trailingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUActivityNowPlayingViewController"];
-  [v3 validateClass:@"MRUActivityNowPlayingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateProtocol:@"SBUISystemApertureElementContextProviding" hasMethod:@"systemApertureElementContext" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"SBUISystemApertureElementContext" hasMethod:@"setElementNeedsUpdate" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"SBUISA_layoutMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MRUActivityNowPlayingView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"updateVisibilty" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MRUActivityTrailingAccessoryView" hasInstanceMethod:@"routeImage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"trailingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingViewController"];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateProtocol:@"SBUISystemApertureElementContextProviding" hasMethod:@"systemApertureElementContext" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"SBUISystemApertureElementContext" hasMethod:@"setElementNeedsUpdate" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"SBUISA_layoutMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingView" hasInstanceMethod:@"updateVisibilty" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MRUActivityTrailingAccessoryView" hasInstanceMethod:@"routeImage" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,14 +31,14 @@
     v4 = [v3 safeValueForKey:@"routeImage"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 accessibilityLabel];
-    [v3 setAccessibilityLabel:v6];
+    accessibilityLabel = [v5 accessibilityLabel];
+    [v3 setAccessibilityLabel:accessibilityLabel];
   }
 
-  v7 = [MEMORY[0x29EDBB2A0] sharedManager];
-  v8 = [v7 musicHapticsEnabled];
+  mEMORY[0x29EDBB2A0] = [MEMORY[0x29EDBB2A0] sharedManager];
+  musicHapticsEnabled = [mEMORY[0x29EDBB2A0] musicHapticsEnabled];
 
-  if (v8)
+  if (musicHapticsEnabled)
   {
     v9 = [(MRUActivityNowPlayingViewAccessibility *)self safeValueForKey:@"trailingView"];
     [v9 setAccessibilityLabelBlock:&__block_literal_global];
@@ -51,11 +51,11 @@
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 _accessibilityViewController];
-    v13 = v12;
-    if (v12)
+    _accessibilityViewController = [v10 _accessibilityViewController];
+    v13 = _accessibilityViewController;
+    if (_accessibilityViewController)
     {
-      v15 = [v12 safeValueForKey:@"systemApertureElementContext"];
+      v15 = [_accessibilityViewController safeValueForKey:@"systemApertureElementContext"];
       v14 = v15;
       AXPerformSafeBlock();
     }

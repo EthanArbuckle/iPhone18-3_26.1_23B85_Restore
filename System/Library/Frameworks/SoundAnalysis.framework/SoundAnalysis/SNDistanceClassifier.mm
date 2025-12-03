@@ -1,7 +1,7 @@
 @interface SNDistanceClassifier
-+ (id)createRequestWithError:(id *)a3;
++ (id)createRequestWithError:(id *)error;
 + (id)modelURLForCurrentProduct;
-+ (id)modelURLForProductType:(int)a3 acousticID:(id)a4 withFileExistenceCheck:(BOOL)a5;
++ (id)modelURLForProductType:(int)type acousticID:(id)d withFileExistenceCheck:(BOOL)check;
 @end
 
 @implementation SNDistanceClassifier
@@ -24,17 +24,17 @@
   return v6;
 }
 
-+ (id)modelURLForProductType:(int)a3 acousticID:(id)a4 withFileExistenceCheck:(BOOL)a5
++ (id)modelURLForProductType:(int)type acousticID:(id)d withFileExistenceCheck:(BOOL)check
 {
-  v5 = a5;
-  v7 = *&a3;
+  checkCopy = check;
+  v7 = *&type;
   v8 = sub_1C97A2CEC(&qword_1EC3C7FE0);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (d)
   {
     v11 = sub_1C9A924A8();
-    a4 = v12;
+    d = v12;
   }
 
   else
@@ -42,7 +42,7 @@
     v11 = 0;
   }
 
-  sub_1C9A06FA0(v7, v11, a4, v5, v10);
+  sub_1C9A06FA0(v7, v11, d, checkCopy, v10);
 
   v13 = sub_1C9A91558();
   v14 = 0;
@@ -55,7 +55,7 @@
   return v14;
 }
 
-+ (id)createRequestWithError:(id *)a3
++ (id)createRequestWithError:(id *)error
 {
   v3 = sub_1C9A07A68();
 

@@ -1,17 +1,17 @@
 @interface CPUIAbridgableLabel
-+ (id)sanitizedTextForText:(id)a3;
++ (id)sanitizedTextForText:(id)text;
 - (CPUIAbridgableLabel)init;
 - (id)_variantsList;
-- (id)sanitizedAttributedStringForString:(id)a3;
-- (int64_t)_compareBoundsSizeToLayoutSizeForString:(id)a3;
+- (id)sanitizedAttributedStringForString:(id)string;
+- (int64_t)_compareBoundsSizeToLayoutSizeForString:(id)string;
 - (unint64_t)_numberOfVariants;
 - (void)_updateVariant;
-- (void)setAttributedText:(id)a3;
-- (void)setAttributedTextVariants:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setText:(id)a3;
-- (void)setTextVariants:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setAttributedTextVariants:(id)variants;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setText:(id)text;
+- (void)setTextVariants:(id)variants;
 @end
 
 @implementation CPUIAbridgableLabel
@@ -37,17 +37,17 @@
   return v3;
 }
 
-+ (id)sanitizedTextForText:(id)a3
++ (id)sanitizedTextForText:(id)text
 {
   v3 = sanitizedTextForText__onceToken;
-  v4 = a3;
+  textCopy = text;
   if (v3 != -1)
   {
     +[CPUIAbridgableLabel sanitizedTextForText:];
   }
 
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 componentsSeparatedByCharactersInSet:sanitizedTextForText____disallowedCharacterSet];
   v8 = [v7 componentsJoinedByString:&stru_2855CA368];
@@ -69,11 +69,11 @@ void __44__CPUIAbridgableLabel_sanitizedTextForText___block_invoke()
   sanitizedTextForText____disallowedCharacterSet = v2;
 }
 
-- (id)sanitizedAttributedStringForString:(id)a3
+- (id)sanitizedAttributedStringForString:(id)string
 {
   v4 = MEMORY[0x277CCAB48];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithAttributedString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithAttributedString:stringCopy];
 
   v7 = [v6 length];
   v12 = MEMORY[0x277D85DD0];
@@ -81,7 +81,7 @@ void __44__CPUIAbridgableLabel_sanitizedTextForText___block_invoke()
   v14 = __58__CPUIAbridgableLabel_sanitizedAttributedStringForString___block_invoke;
   v15 = &unk_278D9C180;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   v8 = v6;
   [v8 enumerateAttributesInRange:0 options:v7 usingBlock:{0, &v12}];
   v9 = objc_alloc(MEMORY[0x277CCA898]);
@@ -143,7 +143,7 @@ void __58__CPUIAbridgableLabel_sanitizedAttributedStringForString___block_invoke
   }
 }
 
-- (void)setTextVariants:(id)a3
+- (void)setTextVariants:(id)variants
 {
   self->_useAttributedTextVariants = 0;
   v8[0] = MEMORY[0x277D85DD0];
@@ -151,13 +151,13 @@ void __58__CPUIAbridgableLabel_sanitizedAttributedStringForString___block_invoke
   v8[2] = __39__CPUIAbridgableLabel_setTextVariants___block_invoke;
   v8[3] = &unk_278D9C1A8;
   v8[4] = self;
-  v4 = [a3 bs_mapNoNulls:v8];
+  v4 = [variants bs_mapNoNulls:v8];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_67];
   textVariants = self->_textVariants;
   self->_textVariants = v5;
 
-  v7 = [(NSArray *)self->_textVariants firstObject];
-  [(CPUIAbridgableLabel *)self setText:v7];
+  firstObject = [(NSArray *)self->_textVariants firstObject];
+  [(CPUIAbridgableLabel *)self setText:firstObject];
 
   [(CPUIAbridgableLabel *)self _updateVariant];
 }
@@ -170,7 +170,7 @@ id __39__CPUIAbridgableLabel_setTextVariants___block_invoke(uint64_t a1, void *a
   return v3;
 }
 
-- (void)setAttributedTextVariants:(id)a3
+- (void)setAttributedTextVariants:(id)variants
 {
   self->_useAttributedTextVariants = 1;
   v8[0] = MEMORY[0x277D85DD0];
@@ -178,56 +178,56 @@ id __39__CPUIAbridgableLabel_setTextVariants___block_invoke(uint64_t a1, void *a
   v8[2] = __49__CPUIAbridgableLabel_setAttributedTextVariants___block_invoke;
   v8[3] = &unk_278D9C1D0;
   v8[4] = self;
-  v4 = [a3 bs_mapNoNulls:v8];
+  v4 = [variants bs_mapNoNulls:v8];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_67];
   attributedTextVariants = self->_attributedTextVariants;
   self->_attributedTextVariants = v5;
 
-  v7 = [(NSArray *)self->_attributedTextVariants firstObject];
-  [(CPUIAbridgableLabel *)self setAttributedText:v7];
+  firstObject = [(NSArray *)self->_attributedTextVariants firstObject];
+  [(CPUIAbridgableLabel *)self setAttributedText:firstObject];
 
   [(CPUIAbridgableLabel *)self _updateVariant];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [(CPUIAbridgableLabel *)self sanitizedAttributedStringForString:a3];
+  v4 = [(CPUIAbridgableLabel *)self sanitizedAttributedStringForString:text];
   v5.receiver = self;
   v5.super_class = CPUIAbridgableLabel;
   [(CPUIAbridgableLabel *)&v5 setAttributedText:v4];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [objc_opt_class() sanitizedTextForText:v4];
+  textCopy = text;
+  v5 = [objc_opt_class() sanitizedTextForText:textCopy];
 
   v6.receiver = self;
   v6.super_class = CPUIAbridgableLabel;
   [(CPUIAbridgableLabel *)&v6 setText:v5];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CPUIAbridgableLabel;
-  [(CPUIAbridgableLabel *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CPUIAbridgableLabel *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CPUIAbridgableLabel *)self _updateVariant];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = CPUIAbridgableLabel;
-  [(CPUIAbridgableLabel *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CPUIAbridgableLabel *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(CPUIAbridgableLabel *)self _updateVariant];
 }
 
 - (id)_variantsList
 {
-  v3 = [(CPUIAbridgableLabel *)self useAttributedTextVariants];
+  useAttributedTextVariants = [(CPUIAbridgableLabel *)self useAttributedTextVariants];
   v4 = &OBJC_IVAR___CPUIAbridgableLabel__textVariants;
-  if (v3)
+  if (useAttributedTextVariants)
   {
     v4 = &OBJC_IVAR___CPUIAbridgableLabel__attributedTextVariants;
   }
@@ -239,8 +239,8 @@ id __39__CPUIAbridgableLabel_setTextVariants___block_invoke(uint64_t a1, void *a
 
 - (unint64_t)_numberOfVariants
 {
-  v2 = [(CPUIAbridgableLabel *)self _variantsList];
-  v3 = [v2 count];
+  _variantsList = [(CPUIAbridgableLabel *)self _variantsList];
+  v3 = [_variantsList count];
 
   return v3;
 }
@@ -267,18 +267,18 @@ id __39__CPUIAbridgableLabel_setTextVariants___block_invoke(uint64_t a1, void *a
     [(CPUIAbridgableLabel *)self text];
   }
   v7 = ;
-  v8 = [(CPUIAbridgableLabel *)self _variantsList];
-  v9 = v8;
-  if (v8)
+  _variantsList = [(CPUIAbridgableLabel *)self _variantsList];
+  v9 = _variantsList;
+  if (_variantsList)
   {
-    v10 = [v8 indexOfObject:v7];
+    v10 = [_variantsList indexOfObject:v7];
     v11 = v10;
     v12 = v10 == 0x7FFFFFFFFFFFFFFFLL ? 0 : v10;
-    v13 = [(CPUIAbridgableLabel *)self _numberOfVariants];
-    if (v13 >= 2)
+    _numberOfVariants = [(CPUIAbridgableLabel *)self _numberOfVariants];
+    if (_numberOfVariants >= 2)
     {
-      v14 = v13;
-      if (v12 < v13 && [(CPUIAbridgableLabel *)self variantsIndex]< v13)
+      v14 = _numberOfVariants;
+      if (v12 < _numberOfVariants && [(CPUIAbridgableLabel *)self variantsIndex]< _numberOfVariants)
       {
         v15 = [(CPUIAbridgableLabel *)self _compareBoundsSizeToLayoutSizeForString:v7];
         if (v15 == -1)
@@ -364,17 +364,17 @@ LABEL_33:
 LABEL_21:
 }
 
-- (int64_t)_compareBoundsSizeToLayoutSizeForString:(id)a3
+- (int64_t)_compareBoundsSizeToLayoutSizeForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(CPUIAbridgableLabel *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(CPUIAbridgableLabel *)self font];
-  v10 = [(CPUIAbridgableLabel *)self numberOfLines];
+  font = [(CPUIAbridgableLabel *)self font];
+  numberOfLines = [(CPUIAbridgableLabel *)self numberOfLines];
   v11 = objc_alloc_init(MEMORY[0x277D74260]);
-  [v11 setWrapsForTruncationMode:v10 != 1];
-  if (v10 == 1)
+  [v11 setWrapsForTruncationMode:numberOfLines != 1];
+  if (numberOfLines == 1)
   {
     v12 = 1.79769313e308;
   }
@@ -384,35 +384,35 @@ LABEL_21:
     v12 = v6;
   }
 
-  if (v10 == 1)
+  if (numberOfLines == 1)
   {
-    v13 = 1;
+    numberOfLines2 = 1;
   }
 
   else
   {
-    v13 = [(CPUIAbridgableLabel *)self numberOfLines];
+    numberOfLines2 = [(CPUIAbridgableLabel *)self numberOfLines];
   }
 
-  [v11 setMaximumNumberOfLines:v13];
+  [v11 setMaximumNumberOfLines:numberOfLines2];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v15 = [(CPUIAbridgableLabel *)self traitCollection];
-  [v15 displayScale];
+  traitCollection = [(CPUIAbridgableLabel *)self traitCollection];
+  [traitCollection displayScale];
   if (isKindOfClass)
   {
-    v16 = CPUISizeForAttributedText(v4, v11, v12);
+    v16 = CPUISizeForAttributedText(stringCopy, v11, v12);
   }
 
   else
   {
-    v16 = CPUISizeForText(v4, v9, v11, v12);
+    v16 = CPUISizeForText(stringCopy, font, v11, v12);
   }
 
   v18 = v16;
   v19 = v17;
 
-  if (v10 == 1)
+  if (numberOfLines == 1)
   {
     v20 = v6;
   }
@@ -422,7 +422,7 @@ LABEL_21:
     v20 = v8;
   }
 
-  if (v10 == 1)
+  if (numberOfLines == 1)
   {
     v21 = v18;
   }

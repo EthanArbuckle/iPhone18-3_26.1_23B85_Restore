@@ -1,37 +1,37 @@
 @interface MapsSuggestionsTracker
-- (BOOL)_q_hasTitleFormatterForType:(uint64_t)a1;
-- (MapsSuggestionsTracker)initWithManager:(id)a3 requirements:(id)a4 network:(id)a5 flightUpdater:(id)a6 virtualGarage:(id)a7;
+- (BOOL)_q_hasTitleFormatterForType:(uint64_t)type;
+- (MapsSuggestionsTracker)initWithManager:(id)manager requirements:(id)requirements network:(id)network flightUpdater:(id)updater virtualGarage:(id)garage;
 - (NSString)uniqueName;
-- (id)_q_bestValidOfflineETAForEntry:(void *)a3 destinationKey:;
-- (id)_q_distanceTitleFormatterForType:(uint64_t)a1;
-- (id)_q_etaChargeTitleFormatterForType:(uint64_t)a1;
-- (id)_q_etaTitleFormatterForType:(uint64_t)a1;
-- (uint64_t)_q_isUnusableETA:(uint64_t)a1;
+- (id)_q_bestValidOfflineETAForEntry:(void *)entry destinationKey:;
+- (id)_q_distanceTitleFormatterForType:(uint64_t)type;
+- (id)_q_etaChargeTitleFormatterForType:(uint64_t)type;
+- (id)_q_etaTitleFormatterForType:(uint64_t)type;
+- (uint64_t)_q_isUnusableETA:(uint64_t)a;
 - (uint64_t)_q_scheduleRefresh;
-- (void)_q_captureSignalsFromEntries:(uint64_t)a1;
-- (void)_q_decorateETA:(void *)a3 forEntry:;
-- (void)_q_decorateEntry:(void *)a3 eta:(void *)a4 requiredChargeLevel:(void *)a5 currentChargeLevel:;
-- (void)_q_decorateFlightInfoForEntry:(dispatch_queue_t *)a1;
+- (void)_q_captureSignalsFromEntries:(uint64_t)entries;
+- (void)_q_decorateETA:(void *)a forEntry:;
+- (void)_q_decorateEntry:(void *)entry eta:(void *)eta requiredChargeLevel:(void *)level currentChargeLevel:;
+- (void)_q_decorateFlightInfoForEntry:(dispatch_queue_t *)entry;
 - (void)_q_prunePreviousETAs;
 - (void)_q_refresh;
-- (void)_q_rememberETA:(void *)a3 forEntry:;
-- (void)_q_requestChargeInfoAndDecorateEntry:(void *)a3 eta:;
+- (void)_q_rememberETA:(void *)a forEntry:;
+- (void)_q_requestChargeInfoAndDecorateEntry:(void *)entry eta:;
 - (void)_q_requestDistances;
 - (void)_q_requestETAs;
 - (void)_q_requestFlightInfo;
 - (void)_q_resetAllTitleFormatting;
-- (void)_q_scheduleRefreshIfCurrentLocationIsMuchBetterThanLocation:(uint64_t)a1;
+- (void)_q_scheduleRefreshIfCurrentLocationIsMuchBetterThanLocation:(uint64_t)location;
 - (void)_unschedule;
 - (void)clearLocationAndETAs;
 - (void)dealloc;
 - (void)rescheduleRefreshOnlyIfAlreadyRunning;
 - (void)resetAllTitleFormatting;
 - (void)scheduleRefresh;
-- (void)setAutomobileOptions:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setMapType:(int)a3;
-- (void)setTitleFormatter:(id)a3 forType:(int64_t)a4;
-- (void)trackSuggestionEntries:(id)a3 transportType:(int)a4;
+- (void)setAutomobileOptions:(id)options;
+- (void)setLocation:(id)location;
+- (void)setMapType:(int)type;
+- (void)setTitleFormatter:(id)formatter forType:(int64_t)type;
+- (void)trackSuggestionEntries:(id)entries transportType:(int)type;
 - (void)unschedule;
 @end
 
@@ -39,9 +39,9 @@
 
 - (void)_q_prunePreviousETAs
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_22(a1);
+    OUTLINED_FUNCTION_22(self);
     v2 = *(v1 + 128);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -120,13 +120,13 @@ void __41__MapsSuggestionsTracker_scheduleRefresh__block_invoke(uint64_t a1)
   return result;
 }
 
-- (MapsSuggestionsTracker)initWithManager:(id)a3 requirements:(id)a4 network:(id)a5 flightUpdater:(id)a6 virtualGarage:(id)a7
+- (MapsSuggestionsTracker)initWithManager:(id)manager requirements:(id)requirements network:(id)network flightUpdater:(id)updater virtualGarage:(id)garage
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  managerCopy = manager;
+  requirementsCopy = requirements;
+  networkCopy = network;
+  updaterCopy = updater;
+  garageCopy = garage;
   v60.receiver = self;
   v60.super_class = MapsSuggestionsTracker;
   v17 = [(MapsSuggestionsTracker *)&v60 init];
@@ -137,8 +137,8 @@ void __41__MapsSuggestionsTracker_scheduleRefresh__block_invoke(uint64_t a1)
     queue = v17->_queue;
     v17->_queue = v19;
 
-    objc_storeWeak(&v17->_manager, v12);
-    v21 = [v13 copy];
+    objc_storeWeak(&v17->_manager, managerCopy);
+    v21 = [requirementsCopy copy];
     requirements = v17->_requirements;
     v17->_requirements = v21;
 
@@ -182,17 +182,17 @@ void __41__MapsSuggestionsTracker_scheduleRefresh__block_invoke(uint64_t a1)
     transportTypeChangedListener = v17->_transportTypeChangedListener;
     v17->_transportTypeChangedListener = v38;
 
-    objc_storeStrong(&v17->_networkRequester, a5);
+    objc_storeStrong(&v17->_networkRequester, network);
     v40 = +[MapsSuggestionsPredictor sharedPredictor];
     predictor = v17->_predictor;
     v17->_predictor = v40;
 
-    v42 = [[MapsSuggestionsETARequester alloc] initWithNetworkRequester:v17->_networkRequester transportModePredictor:v17->_predictor requirements:v13];
+    v42 = [[MapsSuggestionsETARequester alloc] initWithNetworkRequester:v17->_networkRequester transportModePredictor:v17->_predictor requirements:requirementsCopy];
     etaRequester = v17->_etaRequester;
     v17->_etaRequester = v42;
 
-    objc_storeStrong(&v17->_virtualGarage, a7);
-    objc_storeStrong(&v17->_flightUpdater, a6);
+    objc_storeStrong(&v17->_virtualGarage, garage);
+    objc_storeStrong(&v17->_flightUpdater, updater);
     v44 = [MapsSuggestionsGCDTimer alloc];
     v45 = v17->_queue;
     v56[0] = MEMORY[0x1E69E9820];
@@ -329,21 +329,21 @@ void __91__MapsSuggestionsTracker_initWithManager_requirements_network_flightUpd
   return [v2 description];
 }
 
-- (void)setTitleFormatter:(id)a3 forType:(int64_t)a4
+- (void)setTitleFormatter:(id)formatter forType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  formatterCopy = formatter;
+  v7 = formatterCopy;
+  if (formatterCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__MapsSuggestionsTracker_setTitleFormatter_forType___block_invoke;
     block[3] = &unk_1E81F6838;
-    v11 = v6;
-    v12 = self;
-    v13 = a4;
+    v11 = formatterCopy;
+    selfCopy = self;
+    typeCopy = type;
     dispatch_sync(queue, block);
     v9 = v11;
   }
@@ -393,9 +393,9 @@ void __52__MapsSuggestionsTracker_setTitleFormatter_forType___block_invoke(uint6
   }
 }
 
-- (void)trackSuggestionEntries:(id)a3 transportType:(int)a4
+- (void)trackSuggestionEntries:(id)entries transportType:(int)type
 {
-  v6 = a3;
+  entriesCopy = entries;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -406,8 +406,8 @@ void __52__MapsSuggestionsTracker_setTitleFormatter_forType___block_invoke(uint6
   block[2] = __63__MapsSuggestionsTracker_trackSuggestionEntries_transportType___block_invoke;
   block[3] = &unk_1E81F6888;
   block[4] = self;
-  v8 = v6;
-  v14 = a4;
+  v8 = entriesCopy;
+  typeCopy = type;
   v12 = v8;
   v13 = &v15;
   dispatch_sync(queue, block);
@@ -435,7 +435,7 @@ void __52__MapsSuggestionsTracker_setTitleFormatter_forType___block_invoke(uint6
     OUTLINED_FUNCTION_7(&dword_1C5126000, v4, v5, "No current location, can't make an ETA request.", v6);
   }
 
-  *a1 = v1;
+  *self = v1;
 }
 
 void __40__MapsSuggestionsTracker__q_requestETAs__block_invoke_309(uint64_t a1, void *a2)
@@ -552,28 +552,28 @@ LABEL_19:
   }
 }
 
-- (void)_q_requestChargeInfoAndDecorateEntry:(void *)a3 eta:
+- (void)_q_requestChargeInfoAndDecorateEntry:(void *)entry eta:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     v7 = [v5 numberForKey:@"MapsSuggestionsRequiredChargeForEVKey"];
     v8 = [v5 stringForKey:@"MapsSuggestionsVehicleIdentifierKey"];
     v9 = v8;
     if (v7 && v8)
     {
-      [*(a1 + 144) openConnection];
-      objc_initWeak(&location, a1);
-      v10 = *(a1 + 144);
+      [*(self + 144) openConnection];
+      objc_initWeak(&location, self);
+      v10 = *(self + 144);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __67__MapsSuggestionsTracker__q_requestChargeInfoAndDecorateEntry_eta___block_invoke;
       v11[3] = &unk_1E81F6900;
       objc_copyWeak(&v15, &location);
       v12 = v5;
-      v13 = v6;
+      v13 = entryCopy;
       v14 = v7;
       [v10 stateOfChargeForVehicleWithIdentifier:v9 handler:v11];
 
@@ -671,7 +671,7 @@ void __67__MapsSuggestionsTracker__q_requestChargeInfoAndDecorateEntry_eta___blo
     _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_INFO, "Live flight updates have been disabled", v3, 2u);
   }
 
-  *a1 = v2;
+  *self = v2;
 }
 
 void __46__MapsSuggestionsTracker__q_requestFlightInfo__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -774,17 +774,17 @@ void __46__MapsSuggestionsTracker__q_requestFlightInfo__block_invoke_315(uint64_
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MapsSuggestionsTracker_setLocation___block_invoke;
   v7[3] = &unk_1E81F60A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = locationCopy;
+  selfCopy = self;
+  v6 = locationCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -857,7 +857,7 @@ void __38__MapsSuggestionsTracker_setLocation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMapType:(int)a3
+- (void)setMapType:(int)type
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -865,7 +865,7 @@ void __38__MapsSuggestionsTracker_setLocation___block_invoke(uint64_t a1)
   v4[2] = __37__MapsSuggestionsTracker_setMapType___block_invoke;
   v4[3] = &unk_1E81F5100;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_sync(queue, v4);
 }
 
@@ -893,17 +893,17 @@ uint64_t __37__MapsSuggestionsTracker_setMapType___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setAutomobileOptions:(id)a3
+- (void)setAutomobileOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__MapsSuggestionsTracker_setAutomobileOptions___block_invoke;
   v7[3] = &unk_1E81F60A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1195,15 +1195,15 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
 - (void)_q_refresh
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_22(a1);
+    OUTLINED_FUNCTION_22(self);
     v3 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_21(v3))
     {
-      v4 = [v1 uniqueName];
+      uniqueName = [v1 uniqueName];
       *location = 138412546;
-      *&location[4] = v4;
+      *&location[4] = uniqueName;
       v12 = 2080;
       v13 = "_refresh";
       OUTLINED_FUNCTION_9_2(&dword_1C5126000, v2, v5, "{MSgDebug} OBJECT{%@} %s BEGIN", location);
@@ -1251,15 +1251,15 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)_q_hasTitleFormatterForType:(uint64_t)a1
+- (BOOL)_q_hasTitleFormatterForType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  v4 = *(a1 + 72);
+  dispatch_assert_queue_V2(*(type + 8));
+  v4 = *(type + 72);
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
   v6 = [v4 objectForKeyedSubscript:v5];
   if (v6)
@@ -1269,7 +1269,7 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
 
   else
   {
-    v8 = *(a1 + 80);
+    v8 = *(type + 80);
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
     v10 = [v8 objectForKeyedSubscript:v9];
     if (v10)
@@ -1279,7 +1279,7 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
 
     else
     {
-      v11 = *(a1 + 88);
+      v11 = *(type + 88);
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
       v13 = [v11 objectForKeyedSubscript:v12];
       v7 = v13 != 0;
@@ -1289,11 +1289,11 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   return v7;
 }
 
-- (id)_q_etaTitleFormatterForType:(uint64_t)a1
+- (id)_q_etaTitleFormatterForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_15(a1);
+    OUTLINED_FUNCTION_15(type);
     [MEMORY[0x1E696AD98] numberWithInteger:v1];
     objc_claimAutoreleasedReturnValue();
     v3 = [OUTLINED_FUNCTION_11_2() objectForKeyedSubscript:?];
@@ -1307,11 +1307,11 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   return v3;
 }
 
-- (id)_q_distanceTitleFormatterForType:(uint64_t)a1
+- (id)_q_distanceTitleFormatterForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_15(a1);
+    OUTLINED_FUNCTION_15(type);
     [MEMORY[0x1E696AD98] numberWithInteger:v1];
     objc_claimAutoreleasedReturnValue();
     v3 = [OUTLINED_FUNCTION_11_2() objectForKeyedSubscript:?];
@@ -1325,11 +1325,11 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   return v3;
 }
 
-- (id)_q_etaChargeTitleFormatterForType:(uint64_t)a1
+- (id)_q_etaChargeTitleFormatterForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_15(a1);
+    OUTLINED_FUNCTION_15(type);
     [MEMORY[0x1E696AD98] numberWithInteger:v1];
     objc_claimAutoreleasedReturnValue();
     v3 = [OUTLINED_FUNCTION_11_2() objectForKeyedSubscript:?];
@@ -1343,18 +1343,18 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   return v3;
 }
 
-- (void)_q_rememberETA:(void *)a3 forEntry:
+- (void)_q_rememberETA:(void *)a forEntry:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  aCopy = a;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (v6)
+    dispatch_assert_queue_V2(*(self + 8));
+    if (aCopy)
     {
-      [v6 setETA:v5 forKey:@"MapsSuggestionsETAKey"];
-      v7 = MapsSuggestionsDestinationKey(v6);
-      v8 = *(a1 + 128);
+      [aCopy setETA:v5 forKey:@"MapsSuggestionsETAKey"];
+      v7 = MapsSuggestionsDestinationKey(aCopy);
+      v8 = *(self + 128);
       if (v5)
       {
         [v8 setObject:v5 forKeyedSubscript:v7];
@@ -1381,36 +1381,36 @@ void __49__MapsSuggestionsTracker_resetAllTitleFormatting__block_invoke(uint64_t
   }
 }
 
-- (uint64_t)_q_isUnusableETA:(uint64_t)a1
+- (uint64_t)_q_isUnusableETA:(uint64_t)a
 {
   v3 = a2;
-  if (a1)
+  if (a)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [v3 transportType];
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v5 = *(a1 + 56);
-    if (v5 == 4 || v5 == v4)
+    dispatch_assert_queue_V2(*(a + 8));
+    transportType = [v3 transportType];
+    dispatch_assert_queue_V2(*(a + 8));
+    v5 = *(a + 56);
+    if (v5 == 4 || v5 == transportType)
     {
-      a1 = [v3 isValidForLocation:*(a1 + 176) requirements:*(a1 + 16)] ^ 1;
+      a = [v3 isValidForLocation:*(a + 176) requirements:*(a + 16)] ^ 1;
     }
 
     else
     {
-      a1 = 0;
+      a = 0;
     }
   }
 
-  return a1;
+  return a;
 }
 
-- (id)_q_bestValidOfflineETAForEntry:(void *)a3 destinationKey:
+- (id)_q_bestValidOfflineETAForEntry:(void *)entry destinationKey:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 1));
+    dispatch_assert_queue_V2(*(self + 1));
     if (!v5)
     {
       v8 = GEOFindOrCreateLog();
@@ -1426,11 +1426,11 @@ LABEL_7:
 
 LABEL_8:
 
-      a1 = 0;
+      self = 0;
       goto LABEL_9;
     }
 
-    if (!v6)
+    if (!entryCopy)
     {
       v7 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_14(v7))
@@ -1441,8 +1441,8 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v15 = [*(a1 + 16) objectForKeyedSubscript:v6];
-    if ([(MapsSuggestionsTracker *)a1 _q_isUnusableETA:v15])
+    v15 = [*(self + 16) objectForKeyedSubscript:entryCopy];
+    if ([(MapsSuggestionsTracker *)self _q_isUnusableETA:v15])
     {
 
       v15 = 0;
@@ -1451,7 +1451,7 @@ LABEL_8:
     if ([v5 containsKey:@"MapsSuggestionsETAKey"])
     {
       v16 = [v5 ETAForKey:@"MapsSuggestionsETAKey"];
-      if (![(MapsSuggestionsTracker *)a1 _q_isUnusableETA:v16])
+      if (![(MapsSuggestionsTracker *)self _q_isUnusableETA:v16])
       {
         goto LABEL_16;
       }
@@ -1459,7 +1459,7 @@ LABEL_8:
 
     v16 = 0;
 LABEL_16:
-    if ([v15 isBetterThanETA:v16 requirements:*(a1 + 2)])
+    if ([v15 isBetterThanETA:v16 requirements:*(self + 2)])
     {
       v17 = v15;
     }
@@ -1469,21 +1469,21 @@ LABEL_16:
       v17 = v16;
     }
 
-    a1 = v17;
+    self = v17;
   }
 
 LABEL_9:
 
-  return a1;
+  return self;
 }
 
-- (void)_q_captureSignalsFromEntries:(uint64_t)a1
+- (void)_q_captureSignalsFromEntries:(uint64_t)entries
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (entries)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(entries + 8));
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -1505,18 +1505,18 @@ LABEL_9:
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 geoMapItem];
+          geoMapItem = [v9 geoMapItem];
 
-          if (v10)
+          if (geoMapItem)
           {
-            v11 = [a1 currentLocation];
-            [v11 coordinate];
+            currentLocation = [entries currentLocation];
+            [currentLocation coordinate];
             v12 = [MapsSuggestionsSignalPack extractFromDestinationEntry:v9 originCoordinate:?];
 
-            v13 = *(a1 + 200);
+            v13 = *(entries + 200);
             v14 = [v12 copy];
-            v15 = [v9 geoMapItem];
-            [v13 storeSignalPack:v14 forMapItem:v15 andEntry:v9];
+            geoMapItem2 = [v9 geoMapItem];
+            [v13 storeSignalPack:v14 forMapItem:geoMapItem2 andEntry:v9];
           }
         }
 
@@ -1647,15 +1647,15 @@ void __63__MapsSuggestionsTracker_trackSuggestionEntries_transportType___block_i
   [*(a1 + 32) setTrackedEntries:v28];
 }
 
-- (void)_q_decorateETA:(void *)a3 forEntry:
+- (void)_q_decorateETA:(void *)a forEntry:
 {
   v63 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  aCopy = a;
+  v9 = aCopy;
+  if (self)
   {
-    if (!v8)
+    if (!aCopy)
     {
       v11 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_14(v11))
@@ -1692,10 +1692,10 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     GEOConfigGetDouble();
     v3 = MapsSuggestionsNowWithOffset(v17);
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    WeakRetained = objc_loadWeakRetained((self + 64));
     [WeakRetained trackerRefreshedETAsUntil:v3];
 
     v19 = GEOFindOrCreateLog();
@@ -1710,7 +1710,7 @@ LABEL_8:
     v26 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_5_0(v26))
     {
-      v27 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       OUTLINED_FUNCTION_0_3();
       v60 = "_decorateETA";
       OUTLINED_FUNCTION_4_3();
@@ -1726,7 +1726,7 @@ LABEL_8:
     }
 
     [v9 type];
-    v40 = [MapsSuggestionsTracker _q_etaTitleFormatterForType:a1];
+    v40 = [MapsSuggestionsTracker _q_etaTitleFormatterForType:self];
     if (v40)
     {
       [v9 setBoolean:1 forKey:@"MapsSuggestionsNeedsETATrackingKey"];
@@ -1736,24 +1736,24 @@ LABEL_8:
         v41 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
         {
-          v42 = [a1 uniqueName];
+          uniqueName2 = [self uniqueName];
           IsVerbose = MapsSuggestionsLoggingIsVerbose();
           if (IsVerbose)
           {
-            v44 = [v9 serializedBase64String];
+            serializedBase64String = [v9 serializedBase64String];
           }
 
           else
           {
-            v44 = &stru_1F444C108;
+            serializedBase64String = &stru_1F444C108;
           }
 
           v57 = 138413058;
-          v58 = v42;
+          v58 = uniqueName2;
           v59 = 2048;
           v60 = v9;
           v61 = 2112;
-          *v62 = v44;
+          *v62 = serializedBase64String;
           *&v62[8] = 2112;
           *&v62[10] = v9;
           _os_log_impl(&dword_1C5126000, v41, OS_LOG_TYPE_DEBUG, "{MSgDebug} ETA UPDATE by TRACKER{%@} {%p:%@}:\n%@", &v57, 0x2Au);
@@ -1766,7 +1766,7 @@ LABEL_8:
       v49 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
       {
-        v50 = [a1 uniqueName];
+        uniqueName3 = [self uniqueName];
         OUTLINED_FUNCTION_0_3();
         v60 = "_decorateETA";
         OUTLINED_FUNCTION_9_2(&dword_1C5126000, v49, v51, "{MSgDebug} OBJECT{%@} %s END", &v57);
@@ -1786,7 +1786,7 @@ LABEL_8:
       v45 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
       {
-        v46 = [a1 uniqueName];
+        uniqueName4 = [self uniqueName];
         OUTLINED_FUNCTION_0_3();
         v60 = "_decorateETA";
         OUTLINED_FUNCTION_9_2(&dword_1C5126000, v45, v47, "{MSgDebug} OBJECT{%@} %s END", &v57);
@@ -1811,12 +1811,12 @@ LABEL_36:
 LABEL_10:
 }
 
-- (void)_q_decorateFlightInfoForEntry:(dispatch_queue_t *)a1
+- (void)_q_decorateFlightInfoForEntry:(dispatch_queue_t *)entry
 {
   v64 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (entry)
   {
     if (!v4)
     {
@@ -1834,7 +1834,7 @@ LABEL_10:
       goto LABEL_5;
     }
 
-    dispatch_assert_queue_V2(a1[1]);
+    dispatch_assert_queue_V2(entry[1]);
     if ([v5 containsKey:@"MapsSuggestionsETAKey"])
     {
       v6 = [v5 ETAForKey:@"MapsSuggestionsETAKey"];
@@ -1848,7 +1848,7 @@ LABEL_10:
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v2 = [v5 stringForKey:@"MapsSuggestionsFullFlightNumberKey"];
+      uniqueName = [v5 stringForKey:@"MapsSuggestionsFullFlightNumberKey"];
       OUTLINED_FUNCTION_5_4();
       OUTLINED_FUNCTION_19();
       _os_log_impl(v8, v9, OS_LOG_TYPE_DEBUG, v10, v11, 0xCu);
@@ -1857,7 +1857,7 @@ LABEL_10:
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v2 = [(dispatch_queue_t *)a1 uniqueName];
+      uniqueName = [(dispatch_queue_t *)entry uniqueName];
       OUTLINED_FUNCTION_0_3();
       v61 = "_decorateFlightInfoForEntry";
       OUTLINED_FUNCTION_19();
@@ -1873,7 +1873,7 @@ LABEL_10:
     }
 
     [v5 type];
-    v25 = [MapsSuggestionsTracker _q_etaTitleFormatterForType:a1];
+    v25 = [MapsSuggestionsTracker _q_etaTitleFormatterForType:entry];
     v26 = v25;
     if (v25)
     {
@@ -1882,24 +1882,24 @@ LABEL_10:
         v27 = GEOFindOrCreateLog();
         if (OUTLINED_FUNCTION_5_0(v27))
         {
-          v28 = [(dispatch_queue_t *)a1 uniqueName];
+          uniqueName2 = [(dispatch_queue_t *)entry uniqueName];
           IsVerbose = MapsSuggestionsLoggingIsVerbose();
           if (IsVerbose)
           {
-            v30 = [v5 serializedBase64String];
+            serializedBase64String = [v5 serializedBase64String];
           }
 
           else
           {
-            v30 = &stru_1F444C108;
+            serializedBase64String = &stru_1F444C108;
           }
 
           v58 = 138413058;
-          v59 = v28;
+          v59 = uniqueName2;
           v60 = 2048;
           v61 = v5;
           v62 = 2112;
-          *v63 = v30;
+          *v63 = serializedBase64String;
           *&v63[8] = 2112;
           *&v63[10] = v5;
           OUTLINED_FUNCTION_4_3();
@@ -1913,7 +1913,7 @@ LABEL_10:
       v44 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_5_0(v44))
       {
-        v45 = [(dispatch_queue_t *)a1 uniqueName];
+        uniqueName3 = [(dispatch_queue_t *)entry uniqueName];
         OUTLINED_FUNCTION_0_3();
         v61 = "_decorateFlightInfoForEntry";
         OUTLINED_FUNCTION_4_3();
@@ -1934,7 +1934,7 @@ LABEL_10:
       v31 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_5_0(v31))
       {
-        v32 = [(dispatch_queue_t *)a1 uniqueName];
+        uniqueName4 = [(dispatch_queue_t *)entry uniqueName];
         OUTLINED_FUNCTION_0_3();
         v61 = "_decorateFlightInfoForEntry";
         OUTLINED_FUNCTION_4_3();
@@ -1959,14 +1959,14 @@ LABEL_5:
   }
 }
 
-- (void)_q_decorateEntry:(void *)a3 eta:(void *)a4 requiredChargeLevel:(void *)a5 currentChargeLevel:
+- (void)_q_decorateEntry:(void *)entry eta:(void *)eta requiredChargeLevel:(void *)level currentChargeLevel:
 {
   v50 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  entryCopy = entry;
+  etaCopy = eta;
+  levelCopy = level;
+  if (self)
   {
     if (!v9)
     {
@@ -1985,11 +1985,11 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    dispatch_assert_queue_V2(a1[1]);
+    dispatch_assert_queue_V2(self[1]);
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [(dispatch_queue_t *)a1 uniqueName];
+      uniqueName = [(dispatch_queue_t *)self uniqueName];
       OUTLINED_FUNCTION_0_3();
       v48 = "_decorateEntryEV";
       OUTLINED_FUNCTION_19();
@@ -2005,16 +2005,16 @@ LABEL_5:
     }
 
     [v9 type];
-    v32 = [MapsSuggestionsTracker _q_etaChargeTitleFormatterForType:a1];
+    v32 = [MapsSuggestionsTracker _q_etaChargeTitleFormatterForType:self];
     v13 = v32;
     if (v32)
     {
-      if ([v32 formatTitlesForEntry:v9 eta:v10 requiredChargeLevel:v11 currentChargeLevel:v12])
+      if ([v32 formatTitlesForEntry:v9 eta:entryCopy requiredChargeLevel:etaCopy currentChargeLevel:levelCopy])
       {
         v33 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = [v9 title];
+          title = [v9 title];
           OUTLINED_FUNCTION_5_4();
           _os_log_impl(&dword_1C5126000, v33, OS_LOG_TYPE_INFO, "Update EV Resume Route entry title to %@", v47, 0xCu);
         }
@@ -2023,7 +2023,7 @@ LABEL_5:
       v35 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
-        v36 = [(dispatch_queue_t *)a1 uniqueName];
+        uniqueName2 = [(dispatch_queue_t *)self uniqueName];
         OUTLINED_FUNCTION_0_3();
         v48 = "_decorateEntryEV";
         OUTLINED_FUNCTION_9_2(&dword_1C5126000, v35, v37, "{MSgDebug} OBJECT{%@} %s END", v47);
@@ -2043,7 +2043,7 @@ LABEL_5:
       v39 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
       {
-        v40 = [(dispatch_queue_t *)a1 uniqueName];
+        uniqueName3 = [(dispatch_queue_t *)self uniqueName];
         OUTLINED_FUNCTION_0_3();
         v48 = "_decorateEntryEV";
         OUTLINED_FUNCTION_9_2(&dword_1C5126000, v39, v41, "{MSgDebug} OBJECT{%@} %s END", v47);
@@ -2069,12 +2069,12 @@ LABEL_5:
 - (void)_q_requestDistances
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_22(a1);
-    v2 = [v1 currentLocation];
+    OUTLINED_FUNCTION_22(self);
+    currentLocation = [v1 currentLocation];
 
-    if (!v2)
+    if (!currentLocation)
     {
       v25 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_17(v25))
@@ -2086,22 +2086,22 @@ LABEL_5:
       goto LABEL_25;
     }
 
-    v3 = [v1 currentLocation];
-    [v3 coordinate];
+    currentLocation2 = [v1 currentLocation];
+    [currentLocation2 coordinate];
     v4 = CLLocationCoordinate2DIsValid(v32);
 
     if (v4 && [v1[10] count])
     {
-      v5 = [v1 currentLocation];
-      [v5 coordinate];
-      v6 = [v1 currentLocation];
-      [v6 coordinate];
+      currentLocation3 = [v1 currentLocation];
+      [currentLocation3 coordinate];
+      currentLocation4 = [v1 currentLocation];
+      [currentLocation4 coordinate];
 
-      v7 = [v1 trackedEntries];
-      v8 = [v7 strongArray];
+      trackedEntries = [v1 trackedEntries];
+      strongArray = [trackedEntries strongArray];
 
       OUTLINED_FUNCTION_10_1();
-      v2 = v8;
+      currentLocation = strongArray;
       OUTLINED_FUNCTION_18();
       v10 = [v9 countByEnumeratingWithState:? objects:? count:?];
       if (v10)
@@ -2116,7 +2116,7 @@ LABEL_5:
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v2);
+              objc_enumerationMutation(currentLocation);
             }
 
             v15 = *(v28 + 8 * v14);
@@ -2157,7 +2157,7 @@ LABEL_5:
 
           while (v11 != v14);
           OUTLINED_FUNCTION_18();
-          v24 = [v2 countByEnumeratingWithState:? objects:? count:?];
+          v24 = [currentLocation countByEnumeratingWithState:? objects:? count:?];
           v11 = v24;
         }
 
@@ -2169,21 +2169,21 @@ LABEL_25:
   }
 }
 
-- (void)_q_scheduleRefreshIfCurrentLocationIsMuchBetterThanLocation:(uint64_t)a1
+- (void)_q_scheduleRefreshIfCurrentLocationIsMuchBetterThanLocation:(uint64_t)location
 {
   v3 = a2;
-  if (a1)
+  if (location)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 96))
+    dispatch_assert_queue_V2(*(location + 8));
+    if (*(location + 96))
     {
-      v4 = [a1 currentLocation];
-      IsUsableLocation = MapsSuggestionsTrackerIsUsableLocation(v4);
+      currentLocation = [location currentLocation];
+      IsUsableLocation = MapsSuggestionsTrackerIsUsableLocation(currentLocation);
 
       if (IsUsableLocation)
       {
-        v6 = [a1 currentLocation];
-        [v6 distanceFromLocation:v3];
+        currentLocation2 = [location currentLocation];
+        [currentLocation2 distanceFromLocation:v3];
         v8 = v7;
         GEOConfigGetDouble();
         v10 = v9;
@@ -2197,7 +2197,7 @@ LABEL_25:
             _os_log_impl(v12, v13, v14, v15, v16, 2u);
           }
 
-          [(MapsSuggestionsTracker *)a1 _q_scheduleRefresh];
+          [(MapsSuggestionsTracker *)location _q_scheduleRefresh];
         }
       }
     }
@@ -2207,7 +2207,7 @@ LABEL_25:
 - (void)_q_resetAllTitleFormatting
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v3 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_17(v3))
@@ -2216,8 +2216,8 @@ LABEL_25:
       OUTLINED_FUNCTION_7(&dword_1C5126000, v4, v5, "_resetAllTitleFormatting", v21);
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v6 = [*(a1 + 184) strongArray];
+    dispatch_assert_queue_V2(*(self + 8));
+    strongArray = [*(self + 184) strongArray];
     OUTLINED_FUNCTION_18();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -2230,24 +2230,24 @@ LABEL_25:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(strongArray);
           }
 
           v12 = *(v19 + 8 * i);
           [v12 setETA:0 forKey:@"MapsSuggestionsETAKey"];
-          v13 = *(a1 + 72);
+          v13 = *(self + 72);
           v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "type")}];
           v15 = [v13 objectForKeyedSubscript:v14];
           [v15 resetTitlesForEntry:v12];
 
-          v16 = *(a1 + 80);
+          v16 = *(self + 80);
           v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "type")}];
           v18 = [v16 objectForKeyedSubscript:v17];
           [v18 resetTitlesForEntry:v12];
         }
 
         OUTLINED_FUNCTION_18();
-        v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v9 = [strongArray countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v9);

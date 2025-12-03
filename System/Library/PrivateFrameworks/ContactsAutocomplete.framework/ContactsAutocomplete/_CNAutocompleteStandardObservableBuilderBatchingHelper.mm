@@ -1,17 +1,17 @@
 @interface _CNAutocompleteStandardObservableBuilderBatchingHelper
 - (_CNAutocompleteStandardObservableBuilderBatchingHelper)init;
 - (id)batchedObservables;
-- (void)addCachedCalendarServerObservable:(id)a3;
-- (void)addCachedDirectoryServerObservable:(id)a3;
-- (void)addCalendarServerObservable:(id)a3;
-- (void)addContactsObservable:(id)a3;
-- (void)addCoreRecentsObservable:(id)a3;
-- (void)addDirectoryServerObservable:(id)a3;
-- (void)addLocalExtensionObservable:(id)a3;
-- (void)addPredictionObservable:(id)a3;
-- (void)addStewieObservable:(id)a3;
-- (void)addSuggestionsObservable:(id)a3;
-- (void)addSupplementalObservable:(id)a3;
+- (void)addCachedCalendarServerObservable:(id)observable;
+- (void)addCachedDirectoryServerObservable:(id)observable;
+- (void)addCalendarServerObservable:(id)observable;
+- (void)addContactsObservable:(id)observable;
+- (void)addCoreRecentsObservable:(id)observable;
+- (void)addDirectoryServerObservable:(id)observable;
+- (void)addLocalExtensionObservable:(id)observable;
+- (void)addPredictionObservable:(id)observable;
+- (void)addStewieObservable:(id)observable;
+- (void)addSuggestionsObservable:(id)observable;
+- (void)addSupplementalObservable:(id)observable;
 @end
 
 @implementation _CNAutocompleteStandardObservableBuilderBatchingHelper
@@ -35,76 +35,76 @@
 
 - (id)batchedObservables
 {
-  v2 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  v3 = [v2 batchedObservables];
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  batchedObservables = [helper batchedObservables];
 
-  return v3;
+  return batchedObservables;
 }
 
-- (void)addContactsObservable:(id)a3
+- (void)addContactsObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addCoreRecentsObservable:(id)a3
+- (void)addCoreRecentsObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addStewieObservable:(id)a3
+- (void)addStewieObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addSuggestionsObservable:(id)a3
+- (void)addSuggestionsObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:1];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:1];
 }
 
-- (void)addLocalExtensionObservable:(id)a3
+- (void)addLocalExtensionObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addPredictionObservable:(id)a3
+- (void)addPredictionObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addSupplementalObservable:(id)a3
+- (void)addSupplementalObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addCachedDirectoryServerObservable:(id)a3
+- (void)addCachedDirectoryServerObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:0];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:0];
 }
 
-- (void)addDirectoryServerObservable:(id)a3
+- (void)addDirectoryServerObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
-  [v5 addObservable:v4 toBatchAtIndex:1];
+  observableCopy = observable;
+  helper = [(_CNAutocompleteStandardObservableBuilderBatchingHelper *)self helper];
+  [helper addObservable:observableCopy toBatchAtIndex:1];
 }
 
-- (void)addCachedCalendarServerObservable:(id)a3
+- (void)addCachedCalendarServerObservable:(id)observable
 {
   v3 = CNALoggingContextDebug();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -114,7 +114,7 @@
   }
 }
 
-- (void)addCalendarServerObservable:(id)a3
+- (void)addCalendarServerObservable:(id)observable
 {
   v3 = CNALoggingContextDebug();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

@@ -3,30 +3,30 @@
 + (BOOL)isTVApp;
 + (BOOL)runningAnInternalBuild;
 + (BOOL)runningUiTest;
-+ (CGPath)createPathForRadii:(_VUICornerRadii)a3 inRect:(CGRect)a4 isContinuous:(BOOL)a5;
-+ (CGPath)shadowPathWithCornerRadii:(_VUICornerRadii)a3 andScaledSize:(CGSize)a4;
-+ (CGRect)centerRect:(CGRect)result inRect:(CGRect)a4;
-+ (_VUICornerRadii)radiiFromRadius:(double)a3;
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4;
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4;
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4 maximumContentSizeCategory:(unint64_t)a5;
++ (CGPath)createPathForRadii:(_VUICornerRadii)radii inRect:(CGRect)rect isContinuous:(BOOL)continuous;
++ (CGPath)shadowPathWithCornerRadii:(_VUICornerRadii)radii andScaledSize:(CGSize)size;
++ (CGRect)centerRect:(CGRect)result inRect:(CGRect)rect;
++ (_VUICornerRadii)radiiFromRadius:(double)radius;
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor;
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection;
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection maximumContentSizeCategory:(unint64_t)category;
 + (id)TVUIKitBundle;
-+ (id)URLForResource:(id)a3;
++ (id)URLForResource:(id)resource;
 + (id)VideosUIBundle;
 + (id)VideosUICoreBundle;
-+ (id)_URLForResource:(id)a3 inBundle:(id)a4;
-+ (id)_getImageFromURLorBundle:(id)a3;
-+ (id)_imageForResource:(id)a3;
++ (id)_URLForResource:(id)resource inBundle:(id)bundle;
++ (id)_getImageFromURLorBundle:(id)bundle;
++ (id)_imageForResource:(id)resource;
 + (id)_vuiCoreResourceMap;
-+ (id)defaultPlaceholderImageForUserInterfaceStyle:(unint64_t)a3;
++ (id)defaultPlaceholderImageForUserInterfaceStyle:(unint64_t)style;
 + (id)formatForOpaqueImage;
 + (id)formatForTransparentImage;
-+ (id)imageForResource:(id)a3 accessibilityDescription:(id)a4;
-+ (id)mobileGestaltStringForKey:(__CFString *)a3;
++ (id)imageForResource:(id)resource accessibilityDescription:(id)description;
++ (id)mobileGestaltStringForKey:(__CFString *)key;
 + (id)randomColor;
-+ (id)uiContentSizeCategoryFor:(unint64_t)a3;
-+ (unint64_t)vuiContentSizeCategoryFor:(id)a3;
-+ (unint64_t)vuiUserInterfaceStyleForInterfaceStyle:(int64_t)a3;
++ (id)uiContentSizeCategoryFor:(unint64_t)for;
++ (unint64_t)vuiContentSizeCategoryFor:(id)for;
++ (unint64_t)vuiUserInterfaceStyleForInterfaceStyle:(int64_t)style;
 @end
 
 @implementation VUICoreUtilities
@@ -45,23 +45,23 @@
 
 + (BOOL)isTVApp
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.TVWatchList"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.tv"))
+  if ([bundleIdentifier isEqualToString:@"com.apple.TVWatchList"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.tv"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.TV"];
+    v4 = [bundleIdentifier isEqualToString:@"com.apple.TV"];
   }
 
   return v4;
 }
 
-+ (id)mobileGestaltStringForKey:(__CFString *)a3
++ (id)mobileGestaltStringForKey:(__CFString *)key
 {
   v3 = MGCopyAnswer();
   if (v3)
@@ -89,36 +89,36 @@
   return v6;
 }
 
-+ (double)focusedSizeIncreaseForSize:(CGSize)a3 upscaleFactor:(double)a4
++ (double)focusedSizeIncreaseForSize:(CGSize)size upscaleFactor:(double)factor
 {
-  width = a3.width;
-  v5 = a3.width < 180.0;
+  width = size.width;
+  v5 = size.width < 180.0;
   result = 70.0;
   if (v5)
   {
     result = 60.0;
   }
 
-  if (a4 > 1.0)
+  if (factor > 1.0)
   {
-    return result + floor(fmax(width, a3.height) * (a4 + -1.0));
+    return result + floor(fmax(width, size.height) * (factor + -1.0));
   }
 
   return result;
 }
 
-+ (CGPath)createPathForRadii:(_VUICornerRadii)a3 inRect:(CGRect)a4 isContinuous:(BOOL)a5
++ (CGPath)createPathForRadii:(_VUICornerRadii)radii inRect:(CGRect)rect isContinuous:(BOOL)continuous
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  radius = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
-  MinX = CGRectGetMinX(a4);
+  continuousCopy = continuous;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  radius = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  MinX = CGRectGetMinX(rect);
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -134,7 +134,7 @@
   v25.size.width = width;
   v25.size.height = height;
   MaxY = CGRectGetMaxY(v25);
-  if (v5)
+  if (continuousCopy)
   {
     [objc_opt_class() radiusFromCornerRadii:{topLeft, topRight, bottomLeft, radius}];
     v16 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:MinX cornerRadius:{MinY, MaxX - MinX, MaxY - MinY, v15}];
@@ -155,24 +155,24 @@
   }
 }
 
-+ (_VUICornerRadii)radiiFromRadius:(double)a3
++ (_VUICornerRadii)radiiFromRadius:(double)radius
 {
-  result.bottomRight = a3;
-  result.bottomLeft = a3;
-  result.topRight = a3;
-  result.topLeft = a3;
+  result.bottomRight = radius;
+  result.bottomLeft = radius;
+  result.topRight = radius;
+  result.topLeft = radius;
   return result;
 }
 
-+ (CGPath)shadowPathWithCornerRadii:(_VUICornerRadii)a3 andScaledSize:(CGSize)a4
++ (CGPath)shadowPathWithCornerRadii:(_VUICornerRadii)radii andScaledSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.1lf, %.1lf}[%.1f %.1f %.1f %.1f]", *&a4.width, *&a4.height, *&a3.topLeft, *&a3.topRight, *&a3.bottomRight, *&a3.bottomLeft];
+  height = size.height;
+  width = size.width;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.1lf, %.1lf}[%.1f %.1f %.1f %.1f]", *&size.width, *&size.height, *&radii.topLeft, *&radii.topRight, *&radii.bottomRight, *&radii.bottomLeft];
   Mutable = [shadowPathWithCornerRadii_andScaledSize__pathsByShape objectForKeyedSubscript:v10];
 
   if (!Mutable)
@@ -220,13 +220,13 @@
   return Mutable;
 }
 
-+ (id)URLForResource:(id)a3
++ (id)URLForResource:(id)resource
 {
-  v4 = a3;
-  if ([v4 length])
+  resourceCopy = resource;
+  if ([resourceCopy length])
   {
-    v5 = [MEMORY[0x277CCA8D8] vui_videosUIBundle];
-    v6 = [a1 _URLForResource:v4 inBundle:v5];
+    vui_videosUIBundle = [MEMORY[0x277CCA8D8] vui_videosUIBundle];
+    v6 = [self _URLForResource:resourceCopy inBundle:vui_videosUIBundle];
     if (v6)
     {
       v7 = v6;
@@ -235,17 +235,17 @@
     else
     {
       v8 = +[VUICoreUtilities VideosUICoreBundle];
-      v7 = [a1 _URLForResource:v4 inBundle:v8];
+      v7 = [self _URLForResource:resourceCopy inBundle:v8];
 
       if (!v7)
       {
         v9 = +[VUICoreUtilities TVUIKitBundle];
-        v7 = [a1 _URLForResource:v4 inBundle:v9];
+        v7 = [self _URLForResource:resourceCopy inBundle:v9];
 
         if (!v7)
         {
-          v10 = [MEMORY[0x277CCA8D8] mainBundle];
-          v7 = [a1 _URLForResource:v4 inBundle:v10];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v7 = [self _URLForResource:resourceCopy inBundle:mainBundle];
         }
       }
     }
@@ -259,24 +259,24 @@
   return v7;
 }
 
-+ (id)imageForResource:(id)a3 accessibilityDescription:(id)a4
++ (id)imageForResource:(id)resource accessibilityDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [VUICoreUtilities _imageForResource:v5];
+  resourceCopy = resource;
+  descriptionCopy = description;
+  v7 = [VUICoreUtilities _imageForResource:resourceCopy];
   if (!v7)
   {
-    v7 = [VUICoreUtilities _getImageFromURLorBundle:v5];
+    v7 = [VUICoreUtilities _getImageFromURLorBundle:resourceCopy];
     if (!v7)
     {
-      v7 = [MEMORY[0x277D755B8] systemImageNamed:v5];
+      v7 = [MEMORY[0x277D755B8] systemImageNamed:resourceCopy];
     }
   }
 
   v8 = v7;
-  if (v6)
+  if (descriptionCopy)
   {
-    [v7 setAccessibilityLabel:v6];
+    [v7 setAccessibilityLabel:descriptionCopy];
   }
 
   return v8;
@@ -339,22 +339,22 @@ uint64_t __33__VUICoreUtilities_TVUIKitBundle__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (unint64_t)vuiUserInterfaceStyleForInterfaceStyle:(int64_t)a3
++ (unint64_t)vuiUserInterfaceStyleForInterfaceStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (style == 2);
   }
 }
 
-+ (id)defaultPlaceholderImageForUserInterfaceStyle:(unint64_t)a3
++ (id)defaultPlaceholderImageForUserInterfaceStyle:(unint64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     if (defaultPlaceholderImageForUserInterfaceStyle____once != -1)
     {
@@ -419,19 +419,19 @@ void __65__VUICoreUtilities_defaultPlaceholderImageForUserInterfaceStyle___block
   UIGraphicsEndImageContext();
 }
 
-+ (unint64_t)vuiContentSizeCategoryFor:(id)a3
++ (unint64_t)vuiContentSizeCategoryFor:(id)for
 {
   v3 = vuiContentSizeCategoryFor__onceToken;
-  v4 = a3;
+  forCopy = for;
   if (v3 != -1)
   {
     +[VUICoreUtilities vuiContentSizeCategoryFor:];
   }
 
-  v5 = [vuiContentSizeCategoryFor__sContentSizeCategoryVui objectForKeyedSubscript:v4];
+  v5 = [vuiContentSizeCategoryFor__sContentSizeCategoryVui objectForKeyedSubscript:forCopy];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 void __46__VUICoreUtilities_vuiContentSizeCategoryFor___block_invoke()
@@ -474,7 +474,7 @@ void __46__VUICoreUtilities_vuiContentSizeCategoryFor___block_invoke()
   vuiContentSizeCategoryFor__sContentSizeCategoryVui = v6;
 }
 
-+ (id)uiContentSizeCategoryFor:(unint64_t)a3
++ (id)uiContentSizeCategoryFor:(unint64_t)for
 {
   if (uiContentSizeCategoryFor__onceToken != -1)
   {
@@ -482,7 +482,7 @@ void __46__VUICoreUtilities_vuiContentSizeCategoryFor___block_invoke()
   }
 
   v4 = uiContentSizeCategoryFor__sVuiContentSizeCategory;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:for];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -534,49 +534,49 @@ void __45__VUICoreUtilities_uiContentSizeCategoryFor___block_invoke()
   uiContentSizeCategoryFor__sVuiContentSizeCategory = v12;
 }
 
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection
 {
-  v5 = a4;
-  [objc_opt_class() scaleContentSizeValue:v5 forTraitCollection:0 maximumContentSizeCategory:a3];
+  collectionCopy = collection;
+  [objc_opt_class() scaleContentSizeValue:collectionCopy forTraitCollection:0 maximumContentSizeCategory:value];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4 maximumContentSizeCategory:(unint64_t)a5
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection maximumContentSizeCategory:(unint64_t)category
 {
-  v7 = a4;
+  collectionCopy = collection;
   if (scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory__onceToken != -1)
   {
     +[VUICoreUtilities scaleContentSizeValue:forTraitCollection:maximumContentSizeCategory:];
   }
 
-  v8 = [v7 vuiPreferredContentSizeCategory];
-  if (!v8)
+  vuiPreferredContentSizeCategory = [collectionCopy vuiPreferredContentSizeCategory];
+  if (!vuiPreferredContentSizeCategory)
   {
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    v10 = [v9 vuiTraitCollection];
-    v8 = [v10 vuiPreferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    vuiTraitCollection = [mainScreen vuiTraitCollection];
+    vuiPreferredContentSizeCategory = [vuiTraitCollection vuiPreferredContentSizeCategory];
   }
 
-  if (v8 >= a5)
+  if (vuiPreferredContentSizeCategory >= category)
   {
-    v11 = a5;
-  }
-
-  else
-  {
-    v11 = v8;
-  }
-
-  if (a5)
-  {
-    v12 = v11;
+    categoryCopy = category;
   }
 
   else
   {
-    v12 = v8;
+    categoryCopy = vuiPreferredContentSizeCategory;
+  }
+
+  if (category)
+  {
+    v12 = categoryCopy;
+  }
+
+  else
+  {
+    v12 = vuiPreferredContentSizeCategory;
   }
 
   v13 = scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory__sContentSizeCategoryScale;
@@ -594,7 +594,7 @@ void __45__VUICoreUtilities_uiContentSizeCategoryFor___block_invoke()
   [v18 floatValue];
   v20 = v19;
 
-  return ceil(v20 * a3);
+  return ceil(v20 * value);
 }
 
 void __88__VUICoreUtilities_scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory___block_invoke()
@@ -617,10 +617,10 @@ void __88__VUICoreUtilities_scaleContentSizeValue_forTraitCollection_maximumCont
   scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory__sContentSizeCategoryScale = v0;
 }
 
-+ (CGRect)centerRect:(CGRect)result inRect:(CGRect)a4
++ (CGRect)centerRect:(CGRect)result inRect:(CGRect)rect
 {
-  v4 = round(a4.origin.x + (a4.size.width - result.size.width) * 0.5);
-  v5 = round(a4.origin.y + (a4.size.height - result.size.height) * 0.5);
+  v4 = round(rect.origin.x + (rect.size.width - result.size.width) * 0.5);
+  v5 = round(rect.origin.y + (rect.size.height - result.size.height) * 0.5);
   result.origin.y = v5;
   result.origin.x = v4;
   return result;
@@ -734,11 +734,11 @@ uint64_t __39__VUICoreUtilities__vuiCoreResourceMap__block_invoke()
   return [v2 setObject:@"dolbyatmos_mask" forKeyedSubscript:@"dolby-atmos"];
 }
 
-+ (id)_getImageFromURLorBundle:(id)a3
++ (id)_getImageFromURLorBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[VUICoreUtilities _vuiCoreResourceMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:bundleCopy];
   v7 = v6;
   if (v6)
   {
@@ -747,7 +747,7 @@ uint64_t __39__VUICoreUtilities__vuiCoreResourceMap__block_invoke()
 
   else
   {
-    v8 = v4;
+    v8 = bundleCopy;
   }
 
   v9 = v8;
@@ -759,17 +759,17 @@ uint64_t __39__VUICoreUtilities__vuiCoreResourceMap__block_invoke()
   if (!v12)
   {
     v13 = MEMORY[0x277D755B8];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v13 vuiImageNamed:v4 inBundle:v14];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [v13 vuiImageNamed:bundleCopy inBundle:mainBundle];
   }
 
-  v15 = [a1 URLForResource:v4];
+  v15 = [self URLForResource:bundleCopy];
   v16 = v15;
   if (v15 && [v15 isFileURL])
   {
     v17 = MEMORY[0x277D755B8];
-    v18 = [v16 path];
-    v19 = [v17 imageWithContentsOfFile:v18];
+    path = [v16 path];
+    v19 = [v17 imageWithContentsOfFile:path];
 
     v12 = v19;
   }
@@ -779,35 +779,35 @@ uint64_t __39__VUICoreUtilities__vuiCoreResourceMap__block_invoke()
     v20 = VUICDefaultLogObject();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(VUICoreUtilities *)v4 _getImageFromURLorBundle:v20];
+      [(VUICoreUtilities *)bundleCopy _getImageFromURLorBundle:v20];
     }
   }
 
   return v12;
 }
 
-+ (id)_imageForResource:(id)a3
++ (id)_imageForResource:(id)resource
 {
-  v3 = a3;
-  if (![v3 length])
+  resourceCopy = resource;
+  if (![resourceCopy length])
   {
     v6 = 0;
     goto LABEL_7;
   }
 
   v4 = +[VUICoreUtilities VideosUIBundle];
-  v5 = [MEMORY[0x277D755B8] vuiImageNamed:v3 inBundle:v4];
+  v5 = [MEMORY[0x277D755B8] vuiImageNamed:resourceCopy inBundle:v4];
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [MEMORY[0x277D755B8] vuiImageNamed:v3 inBundle:v7];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [MEMORY[0x277D755B8] vuiImageNamed:resourceCopy inBundle:mainBundle];
 
     if (v6)
     {
       goto LABEL_6;
     }
 
-    v5 = [MEMORY[0x277D755B8] vuiSystemImageNamed:v3 withConfiguration:0 accessibilityDescription:0];
+    v5 = [MEMORY[0x277D755B8] vuiSystemImageNamed:resourceCopy withConfiguration:0 accessibilityDescription:0];
   }
 
   v6 = v5;
@@ -818,14 +818,14 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_URLForResource:(id)a3 inBundle:(id)a4
++ (id)_URLForResource:(id)resource inBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 pathForResource:v5 ofType:@"png"];
+  resourceCopy = resource;
+  bundleCopy = bundle;
+  v7 = [bundleCopy pathForResource:resourceCopy ofType:@"png"];
   if (!v7)
   {
-    v7 = [v6 pathForResource:v5 ofType:@"jpeg"];
+    v7 = [bundleCopy pathForResource:resourceCopy ofType:@"jpeg"];
   }
 
   if ([v7 length])

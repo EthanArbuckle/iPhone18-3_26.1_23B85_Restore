@@ -1,21 +1,21 @@
 @interface AMSMarketingItemParser
-+ (id)_rawMarketingItemSelectionFromRawMarketingItems:(id)a3 serviceType:(id)a4 placement:(id)a5 engagementService:(id)a6;
-+ (id)selectionFromMarketingItems:(id)a3;
-+ (id)selectionFromRawMarketingItems:(id)a3 serviceType:(id)a4 placement:(id)a5;
++ (id)_rawMarketingItemSelectionFromRawMarketingItems:(id)items serviceType:(id)type placement:(id)placement engagementService:(id)service;
++ (id)selectionFromMarketingItems:(id)items;
++ (id)selectionFromRawMarketingItems:(id)items serviceType:(id)type placement:(id)placement;
 @end
 
 @implementation AMSMarketingItemParser
 
-+ (id)selectionFromMarketingItems:(id)a3
++ (id)selectionFromMarketingItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -30,8 +30,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) rawValues];
-        [v5 addObject:v11];
+        rawValues = [*(*(&v14 + 1) + 8 * i) rawValues];
+        [v5 addObject:rawValues];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -40,37 +40,37 @@
     while (v8);
   }
 
-  v12 = [a1 selectionFromRawMarketingItems:v5];
+  v12 = [self selectionFromRawMarketingItems:v5];
 
   return v12;
 }
 
-+ (id)selectionFromRawMarketingItems:(id)a3 serviceType:(id)a4 placement:(id)a5
++ (id)selectionFromRawMarketingItems:(id)items serviceType:(id)type placement:(id)placement
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  placementCopy = placement;
+  typeCopy = type;
+  itemsCopy = items;
   v11 = objc_alloc_init(AMSEngagement);
-  v12 = [a1 _rawMarketingItemSelectionFromRawMarketingItems:v10 serviceType:v9 placement:v8 engagementService:v11];
+  v12 = [self _rawMarketingItemSelectionFromRawMarketingItems:itemsCopy serviceType:typeCopy placement:placementCopy engagementService:v11];
 
   return v12;
 }
 
-+ (id)_rawMarketingItemSelectionFromRawMarketingItems:(id)a3 serviceType:(id)a4 placement:(id)a5 engagementService:(id)a6
++ (id)_rawMarketingItemSelectionFromRawMarketingItems:(id)items serviceType:(id)type placement:(id)placement engagementService:(id)service
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  itemsCopy = items;
+  typeCopy = type;
+  placementCopy = placement;
+  serviceCopy = service;
+  if ([itemsCopy count])
   {
     v35[0] = @"kind";
     v35[1] = @"serviceType";
     v14 = &stru_1F071BA78;
-    if (v11)
+    if (typeCopy)
     {
-      v15 = v11;
+      v15 = typeCopy;
     }
 
     else
@@ -80,15 +80,15 @@
 
     v36[0] = @"AMSMarketingItemParser";
     v36[1] = v15;
-    if (v12)
+    if (placementCopy)
     {
-      v14 = v12;
+      v14 = placementCopy;
     }
 
     v35[2] = @"placement";
     v35[3] = @"items";
     v36[2] = v14;
-    v36[3] = v10;
+    v36[3] = itemsCopy;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
     v17 = +[AMSLogConfig sharedConfig];
     if (!v17)
@@ -96,8 +96,8 @@
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -105,17 +105,17 @@
       v32 = v19;
       v33 = 2114;
       v34 = v20;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Parsing marketing items", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Parsing marketing items", buf, 0x16u);
     }
 
-    v21 = [v13 enqueueData:v16];
+    v21 = [serviceCopy enqueueData:v16];
     v22 = objc_alloc_init(AMSMutablePromise);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __114__AMSMarketingItemParser__rawMarketingItemSelectionFromRawMarketingItems_serviceType_placement_engagementService___block_invoke;
     v27[3] = &unk_1E73B8C28;
-    v28 = v10;
-    v30 = a1;
+    v28 = itemsCopy;
+    selfCopy = self;
     v23 = v22;
     v29 = v23;
     [v21 addFinishBlock:v27];

@@ -1,28 +1,28 @@
 @interface VCPMADVISceneClassificationTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADVISceneClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADVISceneClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
-- (void)configureRequest:(id)a3;
-- (void)configureRequest:(id)a3 withRevision:(unint64_t)a4;
+- (void)configureRequest:(id)request;
+- (void)configureRequest:(id)request withRevision:(unint64_t)revision;
 @end
 
 @implementation VCPMADVISceneClassificationTask
 
-- (VCPMADVISceneClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVISceneClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVISceneClassificationTask;
   v12 = [(VCPMADVISceneClassificationTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVISceneClassificationTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -31,15 +31,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -113,22 +113,22 @@ void __41__VCPMADVISceneClassificationTask_cancel__block_invoke(uint64_t a1)
   atomic_store(1u, (*(a1 + 32) + 48));
 }
 
-- (void)configureRequest:(id)a3
+- (void)configureRequest:(id)request
 {
-  v4 = a3;
-  [v4 setMetalContextPriority:0];
+  requestCopy = request;
+  [requestCopy setMetalContextPriority:0];
   if (DeviceHasANE())
   {
-    v3 = [MEMORY[0x1E6984608] defaultANEDevice];
-    [v4 setProcessingDevice:v3];
+    defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+    [requestCopy setProcessingDevice:defaultANEDevice];
   }
 }
 
-- (void)configureRequest:(id)a3 withRevision:(unint64_t)a4
+- (void)configureRequest:(id)request withRevision:(unint64_t)revision
 {
-  v6 = a3;
-  [v6 setRevision:a4];
-  [(VCPMADVISceneClassificationTask *)self configureRequest:v6];
+  requestCopy = request;
+  [requestCopy setRevision:revision];
+  [(VCPMADVISceneClassificationTask *)self configureRequest:requestCopy];
 }
 
 - (int)run
@@ -169,7 +169,7 @@ void __41__VCPMADVISceneClassificationTask_cancel__block_invoke(uint64_t a1)
     v9 = +[VCPMADResourceManager sharedManager];
     v110 = [v9 activateResource:v113];
 
-    v111 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = objc_alloc_init(MEMORY[0x1E6984668]);
     v112 = v10;
     if (!v10)
@@ -190,17 +190,17 @@ void __41__VCPMADVISceneClassificationTask_cancel__block_invoke(uint64_t a1)
     [(VCPMADVISceneClassificationTask *)self configureRequest:v10];
     [v112 setMaximumLeafObservations:{-[MADVISceneClassificationRequest maximumLeafObservations](self->_request, "maximumLeafObservations")}];
     [v112 setMaximumHierarchicalObservations:{-[MADVISceneClassificationRequest maximumHierarchicalObservations](self->_request, "maximumHierarchicalObservations")}];
-    v11 = [(MADVISceneClassificationRequest *)self->_request classificationRevision];
+    classificationRevision = [(MADVISceneClassificationRequest *)self->_request classificationRevision];
     v132 = 0;
-    v12 = [v112 setRevision:v11 error:&v132];
+    v12 = [v112 setRevision:classificationRevision error:&v132];
     v7 = v132;
     if ((v12 & 1) == 0)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v44 = [(MADVISceneClassificationRequest *)self->_request classificationRevision];
+        classificationRevision2 = [(MADVISceneClassificationRequest *)self->_request classificationRevision];
         *buf = 134218242;
-        v140 = v44;
+        v140 = classificationRevision2;
         v141 = 2112;
         v142 = v7;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to set VNSceneClassificationRequest::setRevision %lu: %@", buf, 0x16u);
@@ -219,7 +219,7 @@ void __41__VCPMADVISceneClassificationTask_cancel__block_invoke(uint64_t a1)
       goto LABEL_100;
     }
 
-    [v111 addObject:v112];
+    [array addObject:v112];
     cancelQueue = self->_cancelQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -262,7 +262,7 @@ LABEL_98:
 
     v109 = v15;
     [(VCPMADVISceneClassificationTask *)self configureRequest:v15 withRevision:[(MADVISceneClassificationRequest *)self->_request nsfwRevision]];
-    [v111 addObject:v15];
+    [array addObject:v15];
     v16 = self->_cancelQueue;
     v128[0] = MEMORY[0x1E69E9820];
     v128[1] = 3221225472;
@@ -290,18 +290,18 @@ LABEL_98:
     v106 = v14;
     v108 = v17;
     [(VCPMADVISceneClassificationTask *)self configureRequest:v17];
-    v18 = [(MADVISceneClassificationRequest *)self->_request significantEventRevision];
+    significantEventRevision = [(MADVISceneClassificationRequest *)self->_request significantEventRevision];
     v127 = v7;
-    v19 = [v17 setRevision:v18 error:&v127];
+    v19 = [v17 setRevision:significantEventRevision error:&v127];
     v20 = v127;
 
     if ((v19 & 1) == 0)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v52 = [(MADVISceneClassificationRequest *)self->_request significantEventRevision];
+        significantEventRevision2 = [(MADVISceneClassificationRequest *)self->_request significantEventRevision];
         *buf = 134218242;
-        v140 = v52;
+        v140 = significantEventRevision2;
         v141 = 2112;
         v142 = v20;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to set VNClassifySignificantEventRequest::setRevision %lu: %@", buf, 0x16u);
@@ -312,7 +312,7 @@ LABEL_98:
       goto LABEL_97;
     }
 
-    [v111 addObject:v17];
+    [array addObject:v17];
     v21 = self->_cancelQueue;
     v125[0] = MEMORY[0x1E69E9820];
     v125[1] = 3221225472;
@@ -339,18 +339,18 @@ LABEL_98:
 
     v105 = v22;
     [(VCPMADVISceneClassificationTask *)self configureRequest:v22];
-    v23 = [(MADVISceneClassificationRequest *)self->_request recognizeObjectsRevision];
+    recognizeObjectsRevision = [(MADVISceneClassificationRequest *)self->_request recognizeObjectsRevision];
     v124 = v20;
-    v24 = [v22 setRevision:v23 error:&v124];
+    v24 = [v22 setRevision:recognizeObjectsRevision error:&v124];
     v25 = v124;
 
     if ((v24 & 1) == 0)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v54 = [(MADVISceneClassificationRequest *)self->_request recognizeObjectsRevision];
+        recognizeObjectsRevision2 = [(MADVISceneClassificationRequest *)self->_request recognizeObjectsRevision];
         *buf = 134218242;
-        v140 = v54;
+        v140 = recognizeObjectsRevision2;
         v141 = 2112;
         v142 = v25;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to set VNRecognizeObjectsRequest::setRevision %lu: %@", buf, 0x16u);
@@ -361,7 +361,7 @@ LABEL_98:
       goto LABEL_96;
     }
 
-    [v111 addObject:v22];
+    [array addObject:v22];
     v26 = self->_cancelQueue;
     v122[0] = MEMORY[0x1E69E9820];
     v122[1] = 3221225472;
@@ -378,14 +378,14 @@ LABEL_98:
       v101 = v27;
       v102 = v28;
       [(VCPMADVISceneClassificationTask *)self configureRequest:v28];
-      v30 = [(MADVISceneClassificationRequest *)self->_request saliencyRevision];
+      saliencyRevision = [(MADVISceneClassificationRequest *)self->_request saliencyRevision];
       v121 = v25;
-      v31 = [v29 setRevision:v30 error:&v121];
+      v31 = [v29 setRevision:saliencyRevision error:&v121];
       v103 = v121;
 
       if (v31)
       {
-        [v111 addObject:v102];
+        [array addObject:v102];
         v32 = self->_cancelQueue;
         v119[0] = MEMORY[0x1E69E9820];
         v119[1] = 3221225472;
@@ -401,7 +401,7 @@ LABEL_98:
           v118 = 0u;
           v115 = 0u;
           v116 = 0u;
-          v33 = v111;
+          v33 = array;
           v34 = [v33 countByEnumeratingWithState:&v115 objects:v136 count:16];
           if (v34)
           {
@@ -422,10 +422,10 @@ LABEL_98:
 
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
                 {
-                  v40 = [v38 processingDevice];
+                  processingDevice = [v38 processingDevice];
                   preferredMetalDevice = self->_preferredMetalDevice;
                   *buf = 138412546;
-                  v140 = v40;
+                  v140 = processingDevice;
                   v141 = 2112;
                   v142 = preferredMetalDevice;
                   _os_log_impl(&dword_1C9B70000, v36, OS_LOG_TYPE_DEBUG, "[SceneClassification] Set VNProcessingDevice: %@ (%@)", buf, 0x16u);
@@ -466,8 +466,8 @@ LABEL_94:
         v65 = objc_alloc(MEMORY[0x1E69845B8]);
         v66 = v134;
         v67 = v133;
-        v68 = [v113 session];
-        v69 = [v65 initWithCVPixelBuffer:v66 orientation:v67 options:MEMORY[0x1E695E0F8] session:v68];
+        session = [v113 session];
+        v69 = [v65 initWithCVPixelBuffer:v66 orientation:v67 options:MEMORY[0x1E695E0F8] session:session];
 
         v70 = VCPSignPostLog();
         v71 = v70;
@@ -493,7 +493,7 @@ LABEL_94:
         }
 
         v114 = v103;
-        v78 = [v69 performRequests:v111 error:&v114];
+        v78 = [v69 performRequests:array error:&v114];
         v79 = v114;
 
         v103 = v79;
@@ -510,34 +510,34 @@ LABEL_94:
         if (v78)
         {
           v83 = objc_alloc_init(MEMORY[0x1E69AE450]);
-          v84 = [v106 results];
-          [v83 setClassificationObservations:v84];
+          results = [v106 results];
+          [v83 setClassificationObservations:results];
 
-          v85 = [v107 results];
-          [v83 setNSFWObservations:v85];
+          results2 = [v107 results];
+          [v83 setNSFWObservations:results2];
 
-          v86 = [v104 results];
-          [v83 setSignificantEventObservations:v86];
+          results3 = [v104 results];
+          [v83 setSignificantEventObservations:results3];
 
-          v87 = [v101 results];
-          [v83 setRecognizedObjectObservations:v87];
+          results4 = [v101 results];
+          [v83 setRecognizedObjectObservations:results4];
 
-          v88 = [v100 results];
-          [v83 setSaliencyObservations:v88];
+          results5 = [v100 results];
+          [v83 setSaliencyObservations:results5];
 
           v89 = self->_request;
           v135 = v83;
           v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v135 count:1];
           [(MADVISceneClassificationRequest *)v89 setResults:v90];
 
-          v91 = [v106 executionNanoseconds];
-          v92 = [v107 executionNanoseconds];
-          v93 = [v104 executionNanoseconds];
-          v94 = [v101 executionNanoseconds];
-          v95 = [v100 executionNanoseconds];
-          v96 = [(MADVISceneClassificationRequest *)self->_request results];
-          v97 = [v96 firstObject];
-          [v97 setExecutionNanoseconds:v92 + v91 + v93 + v94 + v95];
+          executionNanoseconds = [v106 executionNanoseconds];
+          executionNanoseconds2 = [v107 executionNanoseconds];
+          executionNanoseconds3 = [v104 executionNanoseconds];
+          executionNanoseconds4 = [v101 executionNanoseconds];
+          executionNanoseconds5 = [v100 executionNanoseconds];
+          results6 = [(MADVISceneClassificationRequest *)self->_request results];
+          firstObject = [results6 firstObject];
+          [firstObject setExecutionNanoseconds:executionNanoseconds2 + executionNanoseconds + executionNanoseconds3 + executionNanoseconds4 + executionNanoseconds5];
         }
 
         else
@@ -573,9 +573,9 @@ LABEL_93:
         goto LABEL_95;
       }
 
-      v59 = [(MADVISceneClassificationRequest *)self->_request saliencyRevision];
+      saliencyRevision2 = [(MADVISceneClassificationRequest *)self->_request saliencyRevision];
       *buf = 134218242;
-      v140 = v59;
+      v140 = saliencyRevision2;
       v141 = 2112;
       v25 = v103;
       v142 = v103;

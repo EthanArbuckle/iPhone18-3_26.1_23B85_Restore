@@ -1,14 +1,14 @@
 @interface ASDTNonSecurePathEnableProperty
 + (id)createForInput;
-- (ASDTNonSecurePathEnableProperty)initWithConfig:(id)a3;
+- (ASDTNonSecurePathEnableProperty)initWithConfig:(id)config;
 @end
 
 @implementation ASDTNonSecurePathEnableProperty
 
-- (ASDTNonSecurePathEnableProperty)initWithConfig:(id)a3
+- (ASDTNonSecurePathEnableProperty)initWithConfig:(id)config
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 mutableCopy];
+  v4 = [config mutableCopy];
   [v4 setObject:&unk_285354858 forKey:@"Selector"];
   v10[0] = @"Scope";
   v10[1] = @"Value";

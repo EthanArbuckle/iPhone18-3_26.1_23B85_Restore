@@ -1,7 +1,7 @@
 @interface NSXPCStoreManagedObjectArchivingToken
-- (BOOL)isEqual:(id)a3;
-- (NSXPCStoreManagedObjectArchivingToken)initWithCoder:(id)a3;
-- (NSXPCStoreManagedObjectArchivingToken)initWithURI:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSXPCStoreManagedObjectArchivingToken)initWithCoder:(id)coder;
+- (NSXPCStoreManagedObjectArchivingToken)initWithURI:(id)i;
 - (void)dealloc;
 @end
 
@@ -15,28 +15,28 @@
   [(NSXPCStoreManagedObjectArchivingToken *)&v3 dealloc];
 }
 
-- (NSXPCStoreManagedObjectArchivingToken)initWithURI:(id)a3
+- (NSXPCStoreManagedObjectArchivingToken)initWithURI:(id)i
 {
   v6.receiver = self;
   v6.super_class = NSXPCStoreManagedObjectArchivingToken;
   v4 = [(NSXPCStoreManagedObjectArchivingToken *)&v6 init];
   if (v4)
   {
-    v4->_managedObjectReferenceURI = a3;
+    v4->_managedObjectReferenceURI = i;
   }
 
   return v4;
 }
 
-- (NSXPCStoreManagedObjectArchivingToken)initWithCoder:(id)a3
+- (NSXPCStoreManagedObjectArchivingToken)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSManagedObjectIDURI"];
-  v7 = [a3 delegate];
-  if ([a3 requiresSecureCoding])
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSManagedObjectIDURI"];
+  delegate = [coder delegate];
+  if ([coder requiresSecureCoding])
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && (v8 = [a3 userInfo]) != 0)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && (v8 = [coder userInfo]) != 0)
     {
       v9 = v8;
       v10 = [objc_msgSend(objc_msgSend(v8 valueForKey:{@"NSConnectionContext", "managedObjectContext"), "persistentStoreCoordinator"}];
@@ -57,13 +57,13 @@
       v10 = 0;
     }
 
-    if (!v7)
+    if (!delegate)
     {
       goto LABEL_16;
     }
   }
 
-  else if (!v7)
+  else if (!delegate)
   {
     goto LABEL_20;
   }
@@ -71,7 +71,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [objc_msgSend(v7 "managedObjectContext")];
+    _persistentStoreCoordinator = [objc_msgSend(delegate "managedObjectContext")];
   }
 
   else
@@ -80,17 +80,17 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_20:
-      NSLog(@"NSMOIDArchivingToken escaping un-de-tokenized (secured %d).", [a3 requiresSecureCoding]);
+      NSLog(@"NSMOIDArchivingToken escaping un-de-tokenized (secured %d).", [coder requiresSecureCoding]);
 LABEL_32:
-      v14 = [(NSXPCStoreManagedObjectArchivingToken *)self init];
-      v14->_managedObjectReferenceURI = v6;
+      null = [(NSXPCStoreManagedObjectArchivingToken *)self init];
+      null->_managedObjectReferenceURI = v6;
       goto LABEL_33;
     }
 
-    v11 = [v7 _persistentStoreCoordinator];
+    _persistentStoreCoordinator = [delegate _persistentStoreCoordinator];
   }
 
-  v10 = v11;
+  v10 = _persistentStoreCoordinator;
 LABEL_16:
   if (!v10)
   {
@@ -137,8 +137,8 @@ LABEL_39:
     {
 LABEL_36:
 
-      v14 = [MEMORY[0x1E695DFB0] null];
-      if (v14)
+      null = [MEMORY[0x1E695DFB0] null];
+      if (null)
       {
         goto LABEL_33;
       }
@@ -178,21 +178,21 @@ LABEL_41:
     goto LABEL_36;
   }
 
-  v14 = v13;
+  null = v13;
 
 LABEL_33:
   objc_autoreleasePoolPop(v5);
   v23 = *MEMORY[0x1E69E9840];
-  return v14;
+  return null;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     managedObjectReferenceURI = self->_managedObjectReferenceURI;
-    v7 = *(a3 + 1);
+    v7 = *(equal + 1);
 
     LOBYTE(v5) = [(NSURL *)managedObjectReferenceURI isEqual:v7];
   }

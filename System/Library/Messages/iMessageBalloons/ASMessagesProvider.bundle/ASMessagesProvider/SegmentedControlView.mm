@@ -1,13 +1,13 @@
 @interface SegmentedControlView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider20SegmentedControlView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider20SegmentedControlView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)selectedIndexChangedIn:(id)a3;
+- (void)selectedIndexChangedIn:(id)in;
 @end
 
 @implementation SegmentedControlView
 
-- (_TtC18ASMessagesProvider20SegmentedControlView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider20SegmentedControlView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20SegmentedControlView_segmentDidChangeHandler);
   *v3 = 0;
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  [(SegmentedControlView *)v4 layoutMargins];
+  width = fits.width;
+  selfCopy = self;
+  [(SegmentedControlView *)selfCopy layoutMargins];
   sub_769DA0();
-  [*(&v4->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20SegmentedControlView_segmentedControl) sizeThatFits:?];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20SegmentedControlView_segmentedControl) sizeThatFits:?];
   sub_769DC0();
   v6 = v5;
 
@@ -54,15 +54,15 @@
   [v10 setFrame:{MinX, (CGRectGetHeight(v15) - v9) * 0.5, Width, v9}];
 }
 
-- (void)selectedIndexChangedIn:(id)a3
+- (void)selectedIndexChangedIn:(id)in
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20SegmentedControlView_segmentDidChangeHandler);
   if (v3)
   {
-    v5 = a3;
-    v6 = self;
+    inCopy = in;
+    selfCopy = self;
     sub_F714(v3);
-    v3(v5);
+    v3(inCopy);
 
     sub_F704(v3);
   }

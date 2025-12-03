@@ -1,15 +1,15 @@
 @interface DevicePairingMonitor
 - (DevicePairingMonitor)init;
-- (void)_deviceDidBecomeActiveNotification:(id)a3;
-- (void)_deviceDidBecomeInactiveNotification:(id)a3;
-- (void)_deviceDidPairNotification:(id)a3;
-- (void)_deviceDidUnpairNotification:(id)a3;
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)_deviceDidBecomeActiveNotification:(id)notification;
+- (void)_deviceDidBecomeInactiveNotification:(id)notification;
+- (void)_deviceDidPairNotification:(id)notification;
+- (void)_deviceDidUnpairNotification:(id)notification;
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d;
 - (void)dealloc;
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5;
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4;
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase;
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state;
 @end
 
 @implementation DevicePairingMonitor
@@ -26,9 +26,9 @@
 
   v3 = v2;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 supportsPairedDevice];
+  supportsPairedDevice = [v4 supportsPairedDevice];
 
-  if (v5)
+  if (supportsPairedDevice)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     observers = v3->_observers;
@@ -96,133 +96,133 @@
   [(DevicePairingMonitor *)&v4 dealloc];
 }
 
-- (void)_deviceDidBecomeActiveNotification:(id)a3
+- (void)_deviceDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100394C68;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   if (notificationQueue)
   {
     dispatch_async(notificationQueue->_queue, v7);
   }
 }
 
-- (void)_deviceDidBecomeInactiveNotification:(id)a3
+- (void)_deviceDidBecomeInactiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100394E00;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   if (notificationQueue)
   {
     dispatch_async(notificationQueue->_queue, v7);
   }
 }
 
-- (void)_deviceDidPairNotification:(id)a3
+- (void)_deviceDidPairNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100394F98;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   if (notificationQueue)
   {
     dispatch_async(notificationQueue->_queue, v7);
   }
 }
 
-- (void)_deviceDidUnpairNotification:(id)a3
+- (void)_deviceDidUnpairNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100395130;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   if (notificationQueue)
   {
     dispatch_async(notificationQueue->_queue, v7);
   }
 }
 
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100395558;
   v5[3] = &unk_100526348;
-  v6 = a3;
-  v4 = v6;
+  dCopy = d;
+  v4 = dCopy;
   sub_100394A68(self, "applicationDatabaseResyncedForDeviceWithPairingID:", v5);
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10039562C;
   v8[3] = &unk_100526320;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  installedCopy = installed;
+  dCopy = d;
+  v6 = dCopy;
+  v7 = installedCopy;
   sub_100394A68(self, "applicationsInstalled:onDeviceWithPairingID:", v8);
 }
 
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10039570C;
   v8[3] = &unk_100526320;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  updatedCopy = updated;
+  dCopy = d;
+  v6 = dCopy;
+  v7 = updatedCopy;
   sub_100394A68(self, "applicationsUpdated:onDeviceWithPairingID:", v8);
 }
 
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1003957D8;
   v9[3] = &unk_100526370;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v10;
+  applicationCopy = application;
+  progressCopy = progress;
+  phaseCopy = phase;
+  v8 = applicationCopy;
   sub_100394A68(self, "updateInstallProgressForApplication:progress:installPhase:", v9);
 }
 
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100395898;
   v7[3] = &unk_100526398;
-  v8 = a3;
-  v9 = a4;
-  v6 = v8;
+  applicationCopy = application;
+  stateCopy = state;
+  v6 = applicationCopy;
   sub_100394A68(self, "updateInstallStateForApplication:installState:", v7);
 }
 

@@ -1,66 +1,66 @@
 @interface IMFMFSession
 + (id)sharedInstance;
-- (BOOL)allChatParticipantsFollowingMyLocation:(id)a3;
-- (BOOL)allChatParticipantsSharingLocationWithMe:(id)a3;
-- (BOOL)chatHasParticipantsFollowingMyLocation:(id)a3;
-- (BOOL)chatHasParticipantsSharingLocationWithMe:(id)a3;
-- (BOOL)chatHasSiblingParticipantsSharingLocationWithMe:(id)a3;
+- (BOOL)allChatParticipantsFollowingMyLocation:(id)location;
+- (BOOL)allChatParticipantsSharingLocationWithMe:(id)me;
+- (BOOL)chatHasParticipantsFollowingMyLocation:(id)location;
+- (BOOL)chatHasParticipantsSharingLocationWithMe:(id)me;
+- (BOOL)chatHasSiblingParticipantsSharingLocationWithMe:(id)me;
 - (BOOL)disableLocationSharing;
-- (BOOL)findMyHandleIsFollowingMyLocation:(id)a3;
-- (BOOL)findMyHandleIsSharingLocationWithMe:(id)a3;
-- (BOOL)handleIsFollowingMyLocation:(id)a3;
-- (BOOL)handleIsSharingLocationWithMe:(id)a3;
+- (BOOL)findMyHandleIsFollowingMyLocation:(id)location;
+- (BOOL)findMyHandleIsSharingLocationWithMe:(id)me;
+- (BOOL)handleIsFollowingMyLocation:(id)location;
+- (BOOL)handleIsSharingLocationWithMe:(id)me;
 - (BOOL)imIsProvisionedForLocationSharing;
 - (BOOL)restrictLocationSharing;
 - (Class)__FMFSessionClass;
 - (Class)__FMLSessionClass;
 - (IMFMFSession)init;
 - (id)_accountStore;
-- (id)_bestAccountForAddresses:(id)a3;
-- (id)_callerIDForChat:(id)a3;
-- (id)_dateFromShareDuration:(int64_t)a3;
-- (id)allSiblingFindMyHandlesForChat:(id)a3;
-- (id)findMyHandlesForChat:(id)a3;
+- (id)_bestAccountForAddresses:(id)addresses;
+- (id)_callerIDForChat:(id)chat;
+- (id)_dateFromShareDuration:(int64_t)duration;
+- (id)allSiblingFindMyHandlesForChat:(id)chat;
+- (id)findMyHandlesForChat:(id)chat;
 - (id)findMyHandlesSharingLocationWithMe;
-- (id)findMyLocationForFindMyHandle:(id)a3;
-- (id)findMyLocationForHandle:(id)a3;
-- (id)findMyLocationForHandleOrSibling:(id)a3;
-- (id)findMyURLForChat:(id)a3;
+- (id)findMyLocationForFindMyHandle:(id)handle;
+- (id)findMyLocationForHandle:(id)handle;
+- (id)findMyLocationForHandleOrSibling:(id)sibling;
+- (id)findMyURLForChat:(id)chat;
 - (id)fmfGroupIdGroup;
 - (id)fmfGroupIdOneToOne;
-- (id)timedOfferExpirationForChat:(id)a3;
-- (void)_accountStoreDidChangeNotification:(id)a3;
+- (id)timedOfferExpirationForChat:(id)chat;
+- (void)_accountStoreDidChangeNotification:(id)notification;
 - (void)_configureFindMyLocateSession;
 - (void)_initializeFindMySessionIfInAllowedProcess;
-- (void)_postNotification:(id)a3 object:(id)a4 userInfo:(id)a5;
+- (void)_postNotification:(id)notification object:(id)object userInfo:(id)info;
 - (void)_setUpFindMyLocateSessionCallbacks;
 - (void)_startFMLSessionMonitoring;
-- (void)_startSharingWithFMFHandles:(id)a3 inChat:(id)a4 untilDate:(id)a5;
-- (void)_startSharingWithFMLHandles:(id)a3 inChat:(id)a4 withDuration:(int64_t)a5;
-- (void)_stopSharingWithFMFHandles:(id)a3 inChat:(id)a4;
-- (void)_stopSharingWithFMLHandles:(id)a3 inChat:(id)a4;
+- (void)_startSharingWithFMFHandles:(id)handles inChat:(id)chat untilDate:(id)date;
+- (void)_startSharingWithFMLHandles:(id)handles inChat:(id)chat withDuration:(int64_t)duration;
+- (void)_stopSharingWithFMFHandles:(id)handles inChat:(id)chat;
+- (void)_stopSharingWithFMLHandles:(id)handles inChat:(id)chat;
 - (void)_updateActiveDevice;
 - (void)dealloc;
-- (void)didChangeActiveLocationSharingDevice:(id)a3;
-- (void)didReceiveLocation:(id)a3;
-- (void)didStartAbilityToGetLocationForHandle:(id)a3;
-- (void)didStartSharingMyLocationWithHandle:(id)a3;
-- (void)didStopAbilityToGetLocationForHandle:(id)a3;
-- (void)didStopSharingMyLocationWithHandle:(id)a3;
-- (void)friendshipRequestReceived:(id)a3;
-- (void)friendshipWasRemoved:(id)a3;
+- (void)didChangeActiveLocationSharingDevice:(id)device;
+- (void)didReceiveLocation:(id)location;
+- (void)didStartAbilityToGetLocationForHandle:(id)handle;
+- (void)didStartSharingMyLocationWithHandle:(id)handle;
+- (void)didStopAbilityToGetLocationForHandle:(id)handle;
+- (void)didStopSharingMyLocationWithHandle:(id)handle;
+- (void)friendshipRequestReceived:(id)received;
+- (void)friendshipWasRemoved:(id)removed;
 - (void)makeThisDeviceActiveDevice;
-- (void)refreshLocationForChat:(id)a3;
-- (void)refreshLocationForHandle:(id)a3 inChat:(id)a4;
-- (void)sendMappingPacket:(id)a3 toHandle:(id)a4;
-- (void)startSharingWithChat:(id)a3 withDuration:(int64_t)a4;
-- (void)startSharingWithHandle:(id)a3 inChat:(id)a4 withDuration:(int64_t)a5;
-- (void)startTrackingLocationForChat:(id)a3;
-- (void)startTrackingLocationForHandle:(id)a3;
-- (void)stopSharingWithChat:(id)a3;
-- (void)stopSharingWithHandle:(id)a3 inChat:(id)a4;
-- (void)stopTrackingLocationForChat:(id)a3;
-- (void)stopTrackingLocationForHandle:(id)a3;
+- (void)refreshLocationForChat:(id)chat;
+- (void)refreshLocationForHandle:(id)handle inChat:(id)chat;
+- (void)sendMappingPacket:(id)packet toHandle:(id)handle;
+- (void)startSharingWithChat:(id)chat withDuration:(int64_t)duration;
+- (void)startSharingWithHandle:(id)handle inChat:(id)chat withDuration:(int64_t)duration;
+- (void)startTrackingLocationForChat:(id)chat;
+- (void)startTrackingLocationForHandle:(id)handle;
+- (void)stopSharingWithChat:(id)chat;
+- (void)stopSharingWithHandle:(id)handle inChat:(id)chat;
+- (void)stopTrackingLocationForChat:(id)chat;
+- (void)stopTrackingLocationForHandle:(id)handle;
 @end
 
 @implementation IMFMFSession
@@ -564,9 +564,9 @@ LABEL_4:
   return v3;
 }
 
-- (void)_accountStoreDidChangeNotification:(id)a3
+- (void)_accountStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -580,10 +580,10 @@ LABEL_4:
   objc_msgSend_setFmfProvisionedState_(self, v5, 0);
 }
 
-- (id)findMyHandlesForChat:(id)a3
+- (id)findMyHandlesForChat:(id)chat
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_participants(a3, a2, a3);
+  v3 = objc_msgSend_participants(chat, a2, chat);
   v4 = objc_alloc(MEMORY[0x1E695DFA8]);
   v7 = objc_msgSend_count(v3, v5, v6);
   v9 = objc_msgSend_initWithCapacity_(v4, v8, v7);
@@ -626,10 +626,10 @@ LABEL_4:
   return v9;
 }
 
-- (id)findMyURLForChat:(id)a3
+- (id)findMyURLForChat:(id)chat
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_findMyHandlesForChat_(self, a2, a3);
+  v3 = objc_msgSend_findMyHandlesForChat_(self, a2, chat);
   v4 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
@@ -689,10 +689,10 @@ LABEL_4:
   return v32;
 }
 
-- (id)allSiblingFindMyHandlesForChat:(id)a3
+- (id)allSiblingFindMyHandlesForChat:(id)chat
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_participants(a3, a2, a3);
+  v3 = objc_msgSend_participants(chat, a2, chat);
   v4 = objc_alloc(MEMORY[0x1E695DFA8]);
   v7 = objc_msgSend_count(v3, v5, v6);
   v9 = objc_msgSend_initWithCapacity_(v4, v8, v7);
@@ -730,34 +730,34 @@ LABEL_4:
   return v9;
 }
 
-- (void)sendMappingPacket:(id)a3 toHandle:(id)a4
+- (void)sendMappingPacket:(id)packet toHandle:(id)handle
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  handleCopy = handle;
   v8 = IMLocationLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    v24 = v6;
+    v24 = packetCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = handleCopy;
     _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_DEFAULT, "Forwarding mapping packet: %@ to daemon for ID: %@", &v23, 0x16u);
   }
 
   v11 = objc_msgSend_sharedController(IMDaemonController, v9, v10);
   v14 = objc_msgSend_remoteDaemon(v11, v12, v13);
-  v17 = objc_msgSend_identifier(v7, v15, v16);
+  v17 = objc_msgSend_identifier(handleCopy, v15, v16);
   v20 = objc_msgSend_establishingAccountID(self, v18, v19);
-  objc_msgSend_sendMappingPacket_toHandle_account_(v14, v21, v6, v17, v20);
+  objc_msgSend_sendMappingPacket_toHandle_account_(v14, v21, packetCopy, v17, v20);
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTrackingLocationForHandle:(id)a3
+- (void)startTrackingLocationForHandle:(id)handle
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_findMyHandle(a3, a2, a3);
+  v4 = objc_msgSend_findMyHandle(handle, a2, handle);
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v7, v8, v9);
 
@@ -791,9 +791,9 @@ LABEL_4:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTrackingLocationForChat:(id)a3
+- (void)startTrackingLocationForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -804,14 +804,14 @@ LABEL_4:
     }
   }
 
-  v7 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v5, v4);
+  v7 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v5, chatCopy);
   v10 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v8, v9);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v10, v11, v12);
 
   if (SessionEnabled)
   {
     v16 = objc_msgSend___im_fmlHandles(v7, v14, v15);
-    v19 = objc_msgSend_chatStyle(v4, v17, v18);
+    v19 = objc_msgSend_chatStyle(chatCopy, v17, v18);
     if (objc_msgSend_count(v16, v20, v21))
     {
       v24 = v19 != 45;
@@ -833,10 +833,10 @@ LABEL_10:
   }
 }
 
-- (void)stopTrackingLocationForHandle:(id)a3
+- (void)stopTrackingLocationForHandle:(id)handle
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_findMyHandle(a3, a2, a3);
+  v4 = objc_msgSend_findMyHandle(handle, a2, handle);
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v7, v8, v9);
 
@@ -870,10 +870,10 @@ LABEL_10:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopTrackingLocationForChat:(id)a3
+- (void)stopTrackingLocationForChat:(id)chat
 {
-  v34 = a3;
-  v5 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v4, v34);
+  chatCopy = chat;
+  v5 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v4, chatCopy);
   v8 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v6, v7);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v8, v9, v10);
 
@@ -891,7 +891,7 @@ LABEL_10:
   }
 
   v14 = objc_msgSend___im_fmlHandles(v5, v12, v13);
-  v17 = objc_msgSend_chatStyle(v34, v15, v16);
+  v17 = objc_msgSend_chatStyle(chatCopy, v15, v16);
   if (objc_msgSend_count(v14, v18, v19))
   {
     v22 = objc_msgSend_fmlSession(self, v20, v21);
@@ -909,16 +909,16 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_dateFromShareDuration:(int64_t)a3
+- (id)_dateFromShareDuration:(int64_t)duration
 {
-  if (a3 == 1)
+  if (duration == 1)
   {
     v4 = objc_msgSend_currentCalendar(MEMORY[0x1E695DEE8], a2, 1);
     v7 = objc_msgSend_date(MEMORY[0x1E695DF00], v5, v6);
     v3 = objc_msgSend_nextDateAfterDate_matchingUnit_value_options_(v4, v8, v7, 32, 4, 1024);
   }
 
-  else if (a3)
+  else if (duration)
   {
     v3 = 0;
   }
@@ -931,17 +931,17 @@ LABEL_8:
   return v3;
 }
 
-- (void)startSharingWithHandle:(id)a3 inChat:(id)a4 withDuration:(int64_t)a5
+- (void)startSharingWithHandle:(id)handle inChat:(id)chat withDuration:(int64_t)duration
 {
-  v35 = a3;
+  handleCopy = handle;
   v8 = MEMORY[0x1E69A8070];
-  v9 = a4;
+  chatCopy = chat;
   v12 = objc_msgSend_sharedFeatureFlags(v8, v10, v11);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v12, v13, v14);
 
   if (SessionEnabled)
   {
-    v18 = objc_msgSend_findMyHandle(v35, v16, v17);
+    v18 = objc_msgSend_findMyHandle(handleCopy, v16, v17);
     v21 = objc_msgSend_fmlHandle(v18, v19, v20);
 
     if (v21)
@@ -954,13 +954,13 @@ LABEL_8:
       objc_msgSend_set(MEMORY[0x1E695DFD8], v22, v23);
     }
     v29 = ;
-    objc_msgSend__startSharingWithFMLHandles_inChat_withDuration_(self, v32, v29, v9, a5);
+    objc_msgSend__startSharingWithFMLHandles_inChat_withDuration_(self, v32, v29, chatCopy, duration);
   }
 
   else
   {
-    v21 = objc_msgSend__dateFromShareDuration_(self, v16, a5);
-    v26 = objc_msgSend_findMyHandle(v35, v24, v25);
+    v21 = objc_msgSend__dateFromShareDuration_(self, v16, duration);
+    v26 = objc_msgSend_findMyHandle(handleCopy, v24, v25);
     v29 = objc_msgSend_fmfHandle(v26, v27, v28);
 
     if (v29)
@@ -973,22 +973,22 @@ LABEL_8:
       objc_msgSend_set(MEMORY[0x1E695DFD8], v30, v31);
     }
     v33 = ;
-    objc_msgSend__startSharingWithFMFHandles_inChat_untilDate_(self, v34, v33, v9, v21);
+    objc_msgSend__startSharingWithFMFHandles_inChat_untilDate_(self, v34, v33, chatCopy, v21);
 
-    v9 = v33;
+    chatCopy = v33;
   }
 }
 
-- (void)stopSharingWithHandle:(id)a3 inChat:(id)a4
+- (void)stopSharingWithHandle:(id)handle inChat:(id)chat
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  chatCopy = chat;
   v7 = MEMORY[0x1E69A8070];
-  v8 = a3;
+  handleCopy = handle;
   v11 = objc_msgSend_sharedFeatureFlags(v7, v9, v10);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v11, v12, v13);
 
-  v17 = objc_msgSend_findMyHandle(v8, v15, v16);
+  v17 = objc_msgSend_findMyHandle(handleCopy, v15, v16);
 
   if (SessionEnabled)
   {
@@ -998,13 +998,13 @@ LABEL_8:
     {
       v28[0] = v20;
       v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v21, v28, 1);
-      objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v23, v22, v6);
+      objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v23, v22, chatCopy);
     }
 
     else
     {
       v22 = MEMORY[0x1E695E0F0];
-      objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v21, MEMORY[0x1E695E0F0], v6);
+      objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v21, MEMORY[0x1E695E0F0], chatCopy);
     }
   }
 
@@ -1022,25 +1022,25 @@ LABEL_8:
       objc_msgSend_set(MEMORY[0x1E695DFD8], v24, v25);
     }
     v22 = ;
-    objc_msgSend__stopSharingWithFMFHandles_inChat_(self, v26, v22, v6);
+    objc_msgSend__stopSharingWithFMFHandles_inChat_(self, v26, v22, chatCopy);
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startSharingWithChat:(id)a3 withDuration:(int64_t)a4
+- (void)startSharingWithChat:(id)chat withDuration:(int64_t)duration
 {
-  v24 = a3;
+  chatCopy = chat;
   v8 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v6, v7);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v8, v9, v10);
 
-  v13 = objc_msgSend_findMyHandlesForChat_(self, v12, v24);
+  v13 = objc_msgSend_findMyHandlesForChat_(self, v12, chatCopy);
   v16 = v13;
   if (SessionEnabled)
   {
     v17 = objc_msgSend___im_fmlHandles(v13, v14, v15);
 
-    objc_msgSend__startSharingWithFMLHandles_inChat_withDuration_(self, v18, v17, v24, a4);
+    objc_msgSend__startSharingWithFMLHandles_inChat_withDuration_(self, v18, v17, chatCopy, duration);
   }
 
   else
@@ -1049,26 +1049,26 @@ LABEL_8:
 
     if (objc_msgSend_count(v17, v19, v20))
     {
-      v22 = objc_msgSend__dateFromShareDuration_(self, v21, a4);
-      objc_msgSend__startSharingWithFMFHandles_inChat_untilDate_(self, v23, v17, v24, v22);
+      v22 = objc_msgSend__dateFromShareDuration_(self, v21, duration);
+      objc_msgSend__startSharingWithFMFHandles_inChat_untilDate_(self, v23, v17, chatCopy, v22);
     }
   }
 }
 
-- (void)stopSharingWithChat:(id)a3
+- (void)stopSharingWithChat:(id)chat
 {
-  v23 = a3;
+  chatCopy = chat;
   v6 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v4, v5);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v6, v7, v8);
 
-  v11 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v10, v23);
+  v11 = objc_msgSend_allSiblingFindMyHandlesForChat_(self, v10, chatCopy);
   v14 = v11;
   if (SessionEnabled)
   {
     v15 = objc_msgSend___im_fmlHandles(v11, v12, v13);
 
     v18 = objc_msgSend_allObjects(v15, v16, v17);
-    objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v19, v18, v23);
+    objc_msgSend__stopSharingWithFMLHandles_inChat_(self, v19, v18, chatCopy);
   }
 
   else
@@ -1077,28 +1077,28 @@ LABEL_8:
 
     if (objc_msgSend_count(v15, v20, v21))
     {
-      objc_msgSend__stopSharingWithFMFHandles_inChat_(self, v22, v15, v23);
+      objc_msgSend__stopSharingWithFMFHandles_inChat_(self, v22, v15, chatCopy);
     }
   }
 }
 
-- (id)findMyLocationForHandle:(id)a3
+- (id)findMyLocationForHandle:(id)handle
 {
-  v4 = objc_msgSend_findMyHandle(a3, a2, a3);
+  v4 = objc_msgSend_findMyHandle(handle, a2, handle);
   v6 = objc_msgSend_findMyLocationForFindMyHandle_(self, v5, v4);
 
   return v6;
 }
 
-- (id)findMyLocationForFindMyHandle:(id)a3
+- (id)findMyLocationForFindMyHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v7, v8, v9);
 
   if (SessionEnabled)
   {
-    v13 = objc_msgSend_fmlHandle(v4, v11, v12);
+    v13 = objc_msgSend_fmlHandle(handleCopy, v11, v12);
 
     if (v13)
     {
@@ -1108,7 +1108,7 @@ LABEL_8:
       if (v17)
       {
         v20 = objc_msgSend_fmlSession(self, v18, v19);
-        v23 = objc_msgSend_fmlHandle(v4, v21, v22);
+        v23 = objc_msgSend_fmlHandle(handleCopy, v21, v22);
         v25 = objc_msgSend_cachedLocationForHandle_(v20, v24, v23);
 
         if (v25)
@@ -1143,12 +1143,12 @@ LABEL_8:
 
   else
   {
-    v28 = objc_msgSend_fmfHandle(v4, v11, v12);
+    v28 = objc_msgSend_fmfHandle(handleCopy, v11, v12);
 
     if (v28)
     {
       v31 = objc_msgSend_session(self, v29, v30);
-      v34 = objc_msgSend_fmfHandle(v4, v32, v33);
+      v34 = objc_msgSend_fmfHandle(handleCopy, v32, v33);
       v36 = objc_msgSend_cachedLocationForHandle_(v31, v35, v34);
       v27 = objc_msgSend_locationWithFMFLocation_(IMFindMyLocation, v37, v36);
 
@@ -1168,16 +1168,16 @@ LABEL_17:
   return v27;
 }
 
-- (id)findMyLocationForHandleOrSibling:(id)a3
+- (id)findMyLocationForHandleOrSibling:(id)sibling
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  siblingCopy = sibling;
   v7 = objc_msgSend_findMyHandlesSharingLocationWithMe(self, v5, v6);
-  v9 = objc_msgSend_cnContactWithKeys_(v4, v8, MEMORY[0x1E695E0F0]);
+  v9 = objc_msgSend_cnContactWithKeys_(siblingCopy, v8, MEMORY[0x1E695E0F0]);
   v11 = v9;
   if (!v9)
   {
-    v63 = objc_msgSend_findMyLocationForHandle_(self, v10, v4);
+    v63 = objc_msgSend_findMyLocationForHandle_(self, v10, siblingCopy);
     v66 = objc_msgSend_fmfLocation(v63, v64, v65);
     v69 = objc_msgSend_location(v66, v67, v68);
     if (v69)
@@ -1201,7 +1201,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v75 = v4;
+  v75 = siblingCopy;
   v76 = v9;
   v85 = 0u;
   v86 = 0u;
@@ -1209,7 +1209,7 @@ LABEL_40:
   v84 = 0u;
   obj = objc_msgSend_phoneNumbersForCNContact_(MEMORY[0x1E69A7FD0], v10, v9);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v83, v88, 16);
-  v78 = self;
+  selfCopy = self;
   if (!v13)
   {
     goto LABEL_18;
@@ -1260,7 +1260,7 @@ LABEL_12:
       v37 = 0;
 LABEL_13:
 
-      self = v78;
+      self = selfCopy;
       v16 = v25;
       v7 = v24;
       if (v37)
@@ -1329,7 +1329,7 @@ LABEL_28:
           v37 = 0;
         }
 
-        self = v78;
+        self = selfCopy;
         if (v37)
         {
           goto LABEL_35;
@@ -1362,7 +1362,7 @@ LABEL_34:
   v37 = 0;
 LABEL_35:
 
-  v4 = v75;
+  siblingCopy = v75;
   v11 = v76;
 LABEL_41:
 
@@ -1371,21 +1371,21 @@ LABEL_41:
   return v37;
 }
 
-- (void)refreshLocationForHandle:(id)a3 inChat:(id)a4
+- (void)refreshLocationForHandle:(id)handle inChat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  chatCopy = chat;
   v10 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v8, v9);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v10, v11, v12);
 
   if ((SessionEnabled & 1) == 0)
   {
-    v15 = objc_msgSend__callerIDForChat_(self, v14, v7);
-    v20 = objc_msgSend_fmfHandle(v6, v16, v17);
+    v15 = objc_msgSend__callerIDForChat_(self, v14, chatCopy);
+    v20 = objc_msgSend_fmfHandle(handleCopy, v16, v17);
     if (v20)
     {
       v21 = MEMORY[0x1E695DFD8];
-      v22 = objc_msgSend_fmfHandle(v6, v18, v19);
+      v22 = objc_msgSend_fmfHandle(handleCopy, v18, v19);
       v24 = objc_msgSend_setWithObject_(v21, v23, v22);
 
       v27 = objc_msgSend_session(self, v25, v26);
@@ -1395,8 +1395,8 @@ LABEL_41:
       v30[3] = &unk_1E78143D0;
       v31 = v24;
       v32 = v15;
-      v33 = self;
-      v34 = v6;
+      selfCopy = self;
+      v34 = handleCopy;
       v28 = v24;
       objc_msgSend_refreshLocationForHandles_callerId_priority_completion_(v27, v29, v28, v32, 1, v30);
     }
@@ -1412,16 +1412,16 @@ LABEL_41:
   }
 }
 
-- (void)refreshLocationForChat:(id)a3
+- (void)refreshLocationForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v7, v8, v9);
 
   if ((SessionEnabled & 1) == 0)
   {
-    v12 = objc_msgSend__callerIDForChat_(self, v11, v4);
-    v15 = objc_msgSend_allSiblingFindMyHandles(v4, v13, v14);
+    v12 = objc_msgSend__callerIDForChat_(self, v11, chatCopy);
+    v15 = objc_msgSend_allSiblingFindMyHandles(chatCopy, v13, v14);
     v18 = objc_msgSend___im_fmfHandles(v15, v16, v17);
 
     v21 = objc_msgSend_session(self, v19, v20);
@@ -1431,17 +1431,17 @@ LABEL_41:
     v25[3] = &unk_1E78143D0;
     v26 = v18;
     v27 = v12;
-    v28 = self;
-    v29 = v4;
+    selfCopy = self;
+    v29 = chatCopy;
     v22 = v12;
     v23 = v18;
     objc_msgSend_refreshLocationForHandles_callerId_priority_completion_(v21, v24, v23, v22, 1, v25);
   }
 }
 
-- (BOOL)handleIsSharingLocationWithMe:(id)a3
+- (BOOL)handleIsSharingLocationWithMe:(id)me
 {
-  v4 = objc_msgSend_findMyHandle(a3, a2, a3);
+  v4 = objc_msgSend_findMyHandle(me, a2, me);
   LOBYTE(self) = objc_msgSend_findMyHandleIsSharingLocationWithMe_(self, v5, v4);
 
   return self;
@@ -1506,30 +1506,30 @@ LABEL_41:
   return v34;
 }
 
-- (BOOL)findMyHandleIsSharingLocationWithMe:(id)a3
+- (BOOL)findMyHandleIsSharingLocationWithMe:(id)me
 {
-  if (!a3)
+  if (!me)
   {
     return 0;
   }
 
-  v4 = a3;
+  meCopy = me;
   v7 = objc_msgSend_findMyHandlesSharingLocationWithMe(self, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  v9 = objc_msgSend_containsObject_(v7, v8, meCopy);
 
   return v9;
 }
 
-- (BOOL)chatHasParticipantsSharingLocationWithMe:(id)a3
+- (BOOL)chatHasParticipantsSharingLocationWithMe:(id)me
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  meCopy = me;
   v7 = objc_msgSend_findMyHandlesSharingLocationWithMe(self, v5, v6);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = objc_msgSend_findMyHandles(v4, v8, v9, 0);
+  v10 = objc_msgSend_findMyHandles(meCopy, v8, v9, 0);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v18, v22, 16);
   if (v13)
   {
@@ -1566,16 +1566,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)chatHasSiblingParticipantsSharingLocationWithMe:(id)a3
+- (BOOL)chatHasSiblingParticipantsSharingLocationWithMe:(id)me
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  meCopy = me;
   v7 = objc_msgSend_findMyHandlesSharingLocationWithMe(self, v5, v6);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = objc_msgSend_allSiblingFindMyHandles(v4, v8, v9, 0);
+  v10 = objc_msgSend_allSiblingFindMyHandles(meCopy, v8, v9, 0);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v18, v22, 16);
   if (v13)
   {
@@ -1612,16 +1612,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)allChatParticipantsSharingLocationWithMe:(id)a3
+- (BOOL)allChatParticipantsSharingLocationWithMe:(id)me
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  meCopy = me;
   v7 = objc_msgSend_findMyHandlesSharingLocationWithMe(self, v5, v6);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = objc_msgSend_findMyHandles(v4, v8, v9, 0);
+  v10 = objc_msgSend_findMyHandles(meCopy, v8, v9, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v20, v24, 16);
   if (v12)
   {
@@ -1660,17 +1660,17 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)handleIsFollowingMyLocation:(id)a3
+- (BOOL)handleIsFollowingMyLocation:(id)location
 {
-  v4 = objc_msgSend_findMyHandle(a3, a2, a3);
+  v4 = objc_msgSend_findMyHandle(location, a2, location);
   LOBYTE(self) = objc_msgSend_findMyHandleIsFollowingMyLocation_(self, v5, v4);
 
   return self;
 }
 
-- (BOOL)findMyHandleIsFollowingMyLocation:(id)a3
+- (BOOL)findMyHandleIsFollowingMyLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v7, v8, v9);
 
@@ -1679,10 +1679,10 @@ LABEL_11:
     v26 = objc_msgSend_session(self, v11, v12);
     v23 = objc_msgSend_getHandlesFollowingMyLocation(v26, v27, v28);
 
-    v33 = objc_msgSend_fmfHandle(v4, v29, v30);
+    v33 = objc_msgSend_fmfHandle(locationCopy, v29, v30);
     if (v33)
     {
-      v34 = objc_msgSend_fmfHandle(v4, v31, v32);
+      v34 = objc_msgSend_fmfHandle(locationCopy, v31, v32);
       v36 = objc_msgSend_containsObject_(v23, v35, v34);
     }
 
@@ -1696,7 +1696,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v4)
+  if (locationCopy)
   {
     v13 = objc_msgSend_fmlSession(self, v11, v12);
     v14 = objc_opt_respondsToSelector();
@@ -1718,7 +1718,7 @@ LABEL_12:
         objc_msgSend_set(MEMORY[0x1E695DFD8], v24, v25);
       }
       v33 = ;
-      v36 = objc_msgSend_containsObject_(v33, v37, v4);
+      v36 = objc_msgSend_containsObject_(v33, v37, locationCopy);
       goto LABEL_12;
     }
   }
@@ -1729,11 +1729,11 @@ LABEL_13:
   return v36;
 }
 
-- (BOOL)chatHasParticipantsFollowingMyLocation:(id)a3
+- (BOOL)chatHasParticipantsFollowingMyLocation:(id)location
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9 = objc_msgSend_chatStyle(v4, v5, v6);
+  locationCopy = location;
+  v9 = objc_msgSend_chatStyle(locationCopy, v5, v6);
   if (v9 == 45)
   {
     v10 = 0;
@@ -1744,17 +1744,17 @@ LABEL_13:
     v10 = objc_msgSend_fmfGroupIdGroup(self, v7, v8);
   }
 
-  v11 = objc_msgSend__callerIDForChat_(self, v7, v4);
+  v11 = objc_msgSend__callerIDForChat_(self, v7, locationCopy);
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = objc_msgSend_participants(v4, v12, v13);
+  obj = objc_msgSend_participants(locationCopy, v12, v13);
   v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v56, v61, 16);
   if (v49)
   {
     v50 = *v57;
-    v47 = v4;
+    v47 = locationCopy;
     v48 = v11;
     while (2)
     {
@@ -1799,7 +1799,7 @@ LABEL_13:
 
                   v44 = 1;
                   v10 = v25;
-                  v4 = v47;
+                  locationCopy = v47;
                   v11 = v48;
                   goto LABEL_26;
                 }
@@ -1832,7 +1832,7 @@ LABEL_13:
             if (canShareLocationWithHandle_groupId_callerId)
             {
               v44 = 1;
-              v4 = v47;
+              locationCopy = v47;
               goto LABEL_26;
             }
           }
@@ -1840,7 +1840,7 @@ LABEL_13:
       }
 
       v44 = 0;
-      v4 = v47;
+      locationCopy = v47;
       v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v56, v61, 16);
       if (v49)
       {
@@ -1862,11 +1862,11 @@ LABEL_26:
   return v44;
 }
 
-- (BOOL)allChatParticipantsFollowingMyLocation:(id)a3
+- (BOOL)allChatParticipantsFollowingMyLocation:(id)location
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9 = objc_msgSend_chatStyle(v4, v5, v6);
+  locationCopy = location;
+  v9 = objc_msgSend_chatStyle(locationCopy, v5, v6);
   if (v9 == 45)
   {
     v53 = 0;
@@ -1877,19 +1877,19 @@ LABEL_26:
     v53 = objc_msgSend_fmfGroupIdGroup(self, v7, v8);
   }
 
-  v52 = objc_msgSend__callerIDForChat_(self, v7, v4);
+  v52 = objc_msgSend__callerIDForChat_(self, v7, locationCopy);
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = objc_msgSend_participants(v4, v10, v11);
+  obj = objc_msgSend_participants(locationCopy, v10, v11);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v59, v64, 16);
   if (v13)
   {
     v16 = v13;
     v17 = *v60;
     v18 = 0x1E69A8000uLL;
-    v50 = v4;
+    v50 = locationCopy;
     while (2)
     {
       v19 = 0;
@@ -1953,7 +1953,7 @@ LABEL_26:
 LABEL_28:
           LOBYTE(v42) = 0;
 LABEL_29:
-          v4 = v50;
+          locationCopy = v50;
           goto LABEL_30;
         }
 
@@ -1980,7 +1980,7 @@ LABEL_23:
       while (v19 != v16);
       v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v59, v64, 16);
       LOBYTE(v42) = 1;
-      v4 = v50;
+      locationCopy = v50;
       if (v16)
       {
         continue;
@@ -2001,11 +2001,11 @@ LABEL_30:
   return v42;
 }
 
-- (id)timedOfferExpirationForChat:(id)a3
+- (id)timedOfferExpirationForChat:(id)chat
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_chatStyle(v4, v5, v6) == 45)
+  chatCopy = chat;
+  if (objc_msgSend_chatStyle(chatCopy, v5, v6) == 45)
   {
     objc_msgSend_fmfGroupIdOneToOne(self, v7, v8);
   }
@@ -2015,13 +2015,13 @@ LABEL_30:
     objc_msgSend_fmfGroupIdGroup(self, v7, v8);
   }
   v9 = ;
-  v51 = objc_msgSend__callerIDForChat_(self, v10, v4);
+  v51 = objc_msgSend__callerIDForChat_(self, v10, chatCopy);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v50 = v4;
-  obj = objc_msgSend_participants(v4, v11, v12);
+  v50 = chatCopy;
+  obj = objc_msgSend_participants(chatCopy, v11, v12);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v53, v57, 16);
   if (!v14)
   {
@@ -2174,143 +2174,143 @@ LABEL_23:
   }
 }
 
-- (void)didReceiveLocation:(id)a3
+- (void)didReceiveLocation:(id)location
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = locationCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didReceiveLocation %@", &v13, 0xCu);
   }
 
-  v8 = objc_msgSend_handle(v4, v6, v7);
+  v8 = objc_msgSend_handle(locationCopy, v6, v7);
   v10 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v9, v8);
 
   objc_msgSend_didReceiveLocationForHandle_(self, v11, v10);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)friendshipRequestReceived:(id)a3
+- (void)friendshipRequestReceived:(id)received
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  receivedCopy = received;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = receivedCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF friendshipRequestReceived %@", &v13, 0xCu);
   }
 
-  v8 = objc_msgSend_fromHandle(v4, v6, v7);
+  v8 = objc_msgSend_fromHandle(receivedCopy, v6, v7);
   v10 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v9, v8);
 
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v11, v10);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)friendshipWasRemoved:(id)a3
+- (void)friendshipWasRemoved:(id)removed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = removedCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF friendshipWasRemoved %@", &v10, 0xCu);
   }
 
-  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, v4);
+  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, removedCopy);
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v8, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStartSharingMyLocationWithHandle:(id)a3
+- (void)didStartSharingMyLocationWithHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = handleCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didStartSharingMyLocationWithHandle %@", &v10, 0xCu);
   }
 
-  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, v4);
+  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, handleCopy);
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v8, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStopSharingMyLocationWithHandle:(id)a3
+- (void)didStopSharingMyLocationWithHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = handleCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didStopSharingMyLocationWithHandle %@", &v10, 0xCu);
   }
 
-  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, v4);
+  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, handleCopy);
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v8, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStartAbilityToGetLocationForHandle:(id)a3
+- (void)didStartAbilityToGetLocationForHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = handleCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didStartAbilityToGetLocationForHandle %@", &v10, 0xCu);
   }
 
-  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, v4);
+  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, handleCopy);
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v8, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStopAbilityToGetLocationForHandle:(id)a3
+- (void)didStopAbilityToGetLocationForHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = handleCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didStopAbilityToGetLocationForHandle %@", &v10, 0xCu);
   }
 
-  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, v4);
+  v7 = objc_msgSend_handleWithFMFHandle_(IMFindMyHandle, v6, handleCopy);
   objc_msgSend__postRelationshipStatusDidChangeNotificationWithIMFindMyHandle_(self, v8, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeActiveLocationSharingDevice:(id)a3
+- (void)didChangeActiveLocationSharingDevice:(id)device
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v5 = IMLocationLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = deviceCopy;
     _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_DEFAULT, "FMF didChangeActiveLocationSharingDevice %@", &v9, 0xCu);
   }
 
@@ -2318,11 +2318,11 @@ LABEL_23:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_bestAccountForAddresses:(id)a3
+- (id)_bestAccountForAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v6 = objc_msgSend_iMessageService(IMServiceImpl, v4, v5);
-  v7 = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService(v3, 1, v6);
+  v7 = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService(addressesCopy, 1, v6);
 
   if ((objc_msgSend__isUsableForSending(v7, v8, v9) & 1) == 0)
   {
@@ -2340,12 +2340,12 @@ LABEL_23:
   return v7;
 }
 
-- (void)_startSharingWithFMLHandles:(id)a3 inChat:(id)a4 withDuration:(int64_t)a5
+- (void)_startSharingWithFMLHandles:(id)handles inChat:(id)chat withDuration:(int64_t)duration
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!objc_msgSend_joinState(v9, v10, v11))
+  handlesCopy = handles;
+  chatCopy = chat;
+  if (!objc_msgSend_joinState(chatCopy, v10, v11))
   {
     v34 = IMLocationLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -2357,18 +2357,18 @@ LABEL_23:
     goto LABEL_8;
   }
 
-  v14 = objc_msgSend_account(v9, v12, v13);
+  v14 = objc_msgSend_account(chatCopy, v12, v13);
   v17 = objc_msgSend_uniqueID(v14, v15, v16);
   objc_msgSend_setEstablishingAccountID_(self, v18, v17);
 
-  v21 = objc_msgSend_chatStyle(v9, v19, v20);
+  v21 = objc_msgSend_chatStyle(chatCopy, v19, v20);
   v22 = IMLocationLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v8;
+    v40 = handlesCopy;
     v41 = 2048;
-    v42 = a5;
+    durationCopy = duration;
     _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_DEFAULT, "_startSharingWithFMLHandles calling sendFriendshipOfferToHandles: %@, with duration: %ld", buf, 0x16u);
   }
 
@@ -2378,14 +2378,14 @@ LABEL_23:
   if (v26)
   {
     v29 = objc_msgSend_fmlSession(self, v27, v28);
-    v32 = objc_msgSend_allObjects(v8, v30, v31);
+    v32 = objc_msgSend_allObjects(handlesCopy, v30, v31);
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = sub_1A83B24B4;
     v36[3] = &unk_1E7814448;
-    v37 = v8;
-    v38 = a5;
-    objc_msgSend_sendFriendshipOfferToHandles_expiration_isFromGroup_completion_(v29, v33, v32, a5, v21 != 45, v36);
+    v37 = handlesCopy;
+    durationCopy2 = duration;
+    objc_msgSend_sendFriendshipOfferToHandles_expiration_isFromGroup_completion_(v29, v33, v32, duration, v21 != 45, v36);
 
     v34 = v37;
 LABEL_8:
@@ -2394,19 +2394,19 @@ LABEL_8:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startSharingWithFMFHandles:(id)a3 inChat:(id)a4 untilDate:(id)a5
+- (void)_startSharingWithFMFHandles:(id)handles inChat:(id)chat untilDate:(id)date
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (objc_msgSend_joinState(v9, v11, v12))
+  handlesCopy = handles;
+  chatCopy = chat;
+  dateCopy = date;
+  if (objc_msgSend_joinState(chatCopy, v11, v12))
   {
-    v15 = objc_msgSend_account(v9, v13, v14);
+    v15 = objc_msgSend_account(chatCopy, v13, v14);
     v18 = objc_msgSend_uniqueID(v15, v16, v17);
     objc_msgSend_setEstablishingAccountID_(self, v19, v18);
 
-    if (objc_msgSend_chatStyle(v9, v20, v21) == 45)
+    if (objc_msgSend_chatStyle(chatCopy, v20, v21) == 45)
     {
       objc_msgSend_fmfGroupIdOneToOne(self, v22, v23);
     }
@@ -2416,14 +2416,14 @@ LABEL_8:
       objc_msgSend_fmfGroupIdGroup(self, v22, v23);
     }
     v25 = ;
-    v27 = objc_msgSend__callerIDForChat_(self, v26, v9);
+    v27 = objc_msgSend__callerIDForChat_(self, v26, chatCopy);
     v28 = IMLocationLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v41 = v8;
+      v41 = handlesCopy;
       v42 = 2112;
-      v43 = v10;
+      v43 = dateCopy;
       v44 = 2112;
       v45 = v27;
       v46 = 2112;
@@ -2436,8 +2436,8 @@ LABEL_8:
     v35[1] = 3221225472;
     v35[2] = sub_1A83B284C;
     v35[3] = &unk_1E7814470;
-    v36 = v8;
-    v37 = v10;
+    v36 = handlesCopy;
+    v37 = dateCopy;
     v38 = v27;
     v39 = v25;
     v32 = v25;
@@ -2458,12 +2458,12 @@ LABEL_8:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopSharingWithFMFHandles:(id)a3 inChat:(id)a4
+- (void)_stopSharingWithFMFHandles:(id)handles inChat:(id)chat
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_chatStyle(v7, v8, v9) == 45)
+  handlesCopy = handles;
+  chatCopy = chat;
+  if (objc_msgSend_chatStyle(chatCopy, v8, v9) == 45)
   {
     objc_msgSend_fmfGroupIdOneToOne(self, v10, v11);
   }
@@ -2473,13 +2473,13 @@ LABEL_8:
     objc_msgSend_fmfGroupIdGroup(self, v10, v11);
   }
   v12 = ;
-  v14 = objc_msgSend__callerIDForChat_(self, v13, v7);
+  v14 = objc_msgSend__callerIDForChat_(self, v13, chatCopy);
 
   v15 = IMLocationLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v6;
+    v29 = handlesCopy;
     v30 = 2112;
     v31 = v14;
     v32 = 2112;
@@ -2492,34 +2492,34 @@ LABEL_8:
   v24[1] = 3221225472;
   v24[2] = sub_1A83B2B1C;
   v24[3] = &unk_1E7814498;
-  v25 = v6;
+  v25 = handlesCopy;
   v26 = v14;
   v27 = v12;
   v19 = v12;
   v20 = v14;
-  v21 = v6;
+  v21 = handlesCopy;
   objc_msgSend_stopSharingMyLocationWithHandles_groupId_callerId_completion_(v18, v22, v21, v19, v20, v24);
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopSharingWithFMLHandles:(id)a3 inChat:(id)a4
+- (void)_stopSharingWithFMLHandles:(id)handles inChat:(id)chat
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  chatCopy = chat;
   v8 = IMLocationLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v6;
+    v27 = handlesCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = chatCopy;
     _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_DEFAULT, "_stopSharingWithFMLHandles %@ inChat: %@", buf, 0x16u);
   }
 
-  v11 = objc_msgSend_chatStyle(v7, v9, v10);
-  if (objc_msgSend_count(v6, v12, v13))
+  v11 = objc_msgSend_chatStyle(chatCopy, v9, v10);
+  if (objc_msgSend_count(handlesCopy, v12, v13))
   {
     v16 = objc_msgSend_fmlSession(self, v14, v15);
     v17 = objc_opt_respondsToSelector();
@@ -2531,7 +2531,7 @@ LABEL_8:
       v23[1] = 3221225472;
       v23[2] = sub_1A83B2DC4;
       v23[3] = &unk_1E78144C0;
-      v24 = v6;
+      v24 = handlesCopy;
       v25 = v11 != 45;
       objc_msgSend_stopSharingLocationWith_isFromGroup_completion_(v20, v21, v24, v11 != 45, v23);
     }
@@ -2540,13 +2540,13 @@ LABEL_8:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_callerIDForChat:(id)a3
+- (id)_callerIDForChat:(id)chat
 {
-  v3 = a3;
-  v8 = objc_msgSend_lastAddressedHandleID(v3, v4, v5);
+  chatCopy = chat;
+  v8 = objc_msgSend_lastAddressedHandleID(chatCopy, v4, v5);
   if (!v8)
   {
-    v9 = objc_msgSend_account(v3, v6, v7);
+    v9 = objc_msgSend_account(chatCopy, v6, v7);
     v8 = objc_msgSend_displayName(v9, v10, v11);
   }
 
@@ -2560,26 +2560,26 @@ LABEL_8:
   return v14;
 }
 
-- (void)_postNotification:(id)a3 object:(id)a4 userInfo:(id)a5
+- (void)_postNotification:(id)notification object:(id)object userInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  notificationCopy = notification;
+  objectCopy = object;
+  infoCopy = info;
   v10 = IMLocationLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v7;
+    v17 = notificationCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = objectCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = infoCopy;
     _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_DEFAULT, "Posting FMF notification: %@  object: %@ userInfo: %@", &v16, 0x20u);
   }
 
   v13 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v11, v12);
-  objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v13, v14, v7, v8, v9);
+  objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v13, v14, notificationCopy, objectCopy, infoCopy);
 
   v15 = *MEMORY[0x1E69E9840];
 }

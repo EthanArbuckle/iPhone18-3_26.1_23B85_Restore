@@ -1,19 +1,19 @@
 @interface SOAnalytics
-+ (void)analyticsForMDMProfiles:(id)a3 reason:(id)a4;
++ (void)analyticsForMDMProfiles:(id)profiles reason:(id)reason;
 @end
 
 @implementation SOAnalytics
 
-+ (void)analyticsForMDMProfiles:(id)a3 reason:(id)a4
++ (void)analyticsForMDMProfiles:(id)profiles reason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  profilesCopy = profiles;
+  reasonCopy = reason;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [profilesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -24,16 +24,16 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profilesCopy);
         }
 
         v12 = MEMORY[0x1E69E9820];
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = v6;
+        v14 = reasonCopy;
         AnalyticsSendEventLazy();
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:{16, v12, 3221225472, __46__SOAnalytics_analyticsForMDMProfiles_reason___block_invoke, &unk_1E813EE48, v13}];
+      v8 = [profilesCopy countByEnumeratingWithState:&v15 objects:v19 count:{16, v12, 3221225472, __46__SOAnalytics_analyticsForMDMProfiles_reason___block_invoke, &unk_1E813EE48, v13}];
     }
 
     while (v8);

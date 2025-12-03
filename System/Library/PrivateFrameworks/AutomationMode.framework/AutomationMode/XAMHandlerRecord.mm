@@ -1,20 +1,20 @@
 @interface XAMHandlerRecord
-- (id)initWithQueue:(void *)a3 block:;
+- (id)initWithQueue:(void *)queue block:;
 @end
 
 @implementation XAMHandlerRecord
 
-- (id)initWithQueue:(void *)a3 block:
+- (id)initWithQueue:(void *)queue block:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = XAMHandlerRecord;
-    v7 = a3;
+    queueCopy = queue;
     v8 = objc_msgSendSuper2(&v12, sel_init);
     objc_storeStrong(v8 + 1, a2);
-    v9 = [v7 copy];
+    v9 = [queueCopy copy];
 
     v10 = v8[2];
     v8[2] = v9;

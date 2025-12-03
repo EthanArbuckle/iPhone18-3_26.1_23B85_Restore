@@ -1,23 +1,23 @@
 @interface TSPPackageWriterCopyDataResult
 - (TSPPackageWriterCopyDataResult)init;
-- (TSPPackageWriterCopyDataResult)initWithFilename:(id)a3 encryptionInfo:(id)a4 encodedLength:(unint64_t)a5;
+- (TSPPackageWriterCopyDataResult)initWithFilename:(id)filename encryptionInfo:(id)info encodedLength:(unint64_t)length;
 @end
 
 @implementation TSPPackageWriterCopyDataResult
 
-- (TSPPackageWriterCopyDataResult)initWithFilename:(id)a3 encryptionInfo:(id)a4 encodedLength:(unint64_t)a5
+- (TSPPackageWriterCopyDataResult)initWithFilename:(id)filename encryptionInfo:(id)info encodedLength:(unint64_t)length
 {
-  v9 = a3;
-  v10 = a4;
+  filenameCopy = filename;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = TSPPackageWriterCopyDataResult;
   v11 = [(TSPPackageWriterCopyDataResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_filename, a3);
-    objc_storeStrong(&v12->_encryptionInfo, a4);
-    v12->_encodedLength = a5;
+    objc_storeStrong(&v11->_filename, filename);
+    objc_storeStrong(&v12->_encryptionInfo, info);
+    v12->_encodedLength = length;
   }
 
   return v12;

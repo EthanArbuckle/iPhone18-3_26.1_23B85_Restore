@@ -1,17 +1,17 @@
 @interface VUISecureInvalidationManager
 + (id)sharedInstance;
-- (BOOL)_getParamsForDeletionInfo:(id)a3 keyServerURL:(id *)a4 nonceURL:(id *)a5 keyIdentifier:(id *)a6 offlineKeyData:(id *)a7 dsid:(id *)a8 additionalRequestParams:(id *)a9 contentID:(id *)a10;
-- (BOOL)storeFPSKeyLoader:(id)a3 shouldKeyRequestContinueInvalidationAfterLoadingNonce:(id)a4;
+- (BOOL)_getParamsForDeletionInfo:(id)info keyServerURL:(id *)l nonceURL:(id *)rL keyIdentifier:(id *)identifier offlineKeyData:(id *)data dsid:(id *)dsid additionalRequestParams:(id *)params contentID:(id *)self0;
+- (BOOL)storeFPSKeyLoader:(id)loader shouldKeyRequestContinueInvalidationAfterLoadingNonce:(id)nonce;
 - (VUISecureInvalidationManager)init;
 - (id)_invalidateKeysForDeletedVideos;
-- (void)_networkReachbilityDidChange:(id)a3;
+- (void)_networkReachbilityDidChange:(id)change;
 - (void)_registerStateMachineHandlers;
-- (void)_sendInvalidationRequestsForDeletionInfoArrays:(id)a3 completion:(id)a4;
-- (void)_sendInvalidationRequestsForFirstArray:(id)a3 completion:(id)a4;
-- (void)addDeletionInfoToPenaltyBox:(id)a3;
+- (void)_sendInvalidationRequestsForDeletionInfoArrays:(id)arrays completion:(id)completion;
+- (void)_sendInvalidationRequestsForFirstArray:(id)array completion:(id)completion;
+- (void)addDeletionInfoToPenaltyBox:(id)box;
 - (void)dealloc;
 - (void)invalidateKeysForDeletedVideos;
-- (void)removeDeletionInfoFromPenaltyBox:(id)a3;
+- (void)removeDeletionInfoFromPenaltyBox:(id)box;
 @end
 
 @implementation VUISecureInvalidationManager
@@ -63,9 +63,9 @@ void __46__VUISecureInvalidationManager_sharedInstance__block_invoke()
     v2->_penaltyBox = v8;
 
     v2->_backgroundTaskIdentifier = *MEMORY[0x1E69DDBE8];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v11 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy networkReachabilityDidChangeNotificationName];
-    [v10 addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v11 object:0];
+    [defaultCenter addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v11 object:0];
   }
 
   return v2;
@@ -75,22 +75,22 @@ void __46__VUISecureInvalidationManager_sharedInstance__block_invoke()
 {
   v20[2] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(VUISecureInvalidationManager *)self stateMachine];
+  stateMachine = [(VUISecureInvalidationManager *)self stateMachine];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke;
   v16[3] = &unk_1E872FAD8;
   objc_copyWeak(&v17, &location);
-  [v3 registerHandlerForEvent:@"Invalidation requested" onState:@"Idle" withBlock:v16];
-  [v3 registerHandlerForEvent:@"Invalidation requested" onState:@"Invalidation in progress" withBlock:&__block_literal_global_69];
-  [v3 registerHandlerForEvent:@"Invalidation requested" onState:@"Invalidation in progress refresh when done" withBlock:&__block_literal_global_71];
-  [v3 registerHandlerForEvent:@"Invalidation requested" onState:@"Waiting for network reachability to invalidate keys" withBlock:&__block_literal_global_73];
+  [stateMachine registerHandlerForEvent:@"Invalidation requested" onState:@"Idle" withBlock:v16];
+  [stateMachine registerHandlerForEvent:@"Invalidation requested" onState:@"Invalidation in progress" withBlock:&__block_literal_global_69];
+  [stateMachine registerHandlerForEvent:@"Invalidation requested" onState:@"Invalidation in progress refresh when done" withBlock:&__block_literal_global_71];
+  [stateMachine registerHandlerForEvent:@"Invalidation requested" onState:@"Waiting for network reachability to invalidate keys" withBlock:&__block_literal_global_73];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_4;
   v14[3] = &unk_1E872FAD8;
   objc_copyWeak(&v15, &location);
-  [v3 registerHandlerForEvent:@"Network reachability did change" onState:@"Waiting for network reachability to invalidate keys" withBlock:v14];
+  [stateMachine registerHandlerForEvent:@"Network reachability did change" onState:@"Waiting for network reachability to invalidate keys" withBlock:v14];
   v20[0] = @"Invalidation in progress";
   v20[1] = @"Invalidation in progress refresh when done";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
@@ -99,7 +99,7 @@ void __46__VUISecureInvalidationManager_sharedInstance__block_invoke()
   v12[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_5;
   v12[3] = &unk_1E872FAD8;
   objc_copyWeak(&v13, &location);
-  [v3 registerHandlerForEvent:@"Network reachability did change" onStates:v4 withBlock:v12];
+  [stateMachine registerHandlerForEvent:@"Network reachability did change" onStates:v4 withBlock:v12];
 
   v19[0] = @"Invalidation in progress";
   v19[1] = @"Invalidation in progress refresh when done";
@@ -109,20 +109,20 @@ void __46__VUISecureInvalidationManager_sharedInstance__block_invoke()
   v10[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_6;
   v10[3] = &unk_1E872FAD8;
   objc_copyWeak(&v11, &location);
-  [v3 registerHandlerForEvent:@"Network error did occur" onStates:v5 withBlock:v10];
+  [stateMachine registerHandlerForEvent:@"Network error did occur" onStates:v5 withBlock:v10];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_7;
   v8[3] = &unk_1E872FAD8;
   objc_copyWeak(&v9, &location);
-  [v3 registerHandlerForEvent:@"Invalidation did finish" onState:@"Invalidation in progress" withBlock:v8];
+  [stateMachine registerHandlerForEvent:@"Invalidation did finish" onState:@"Invalidation in progress" withBlock:v8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_75;
   v6[3] = &unk_1E872FAD8;
   objc_copyWeak(&v7, &location);
-  [v3 registerHandlerForEvent:@"Invalidation did finish" onState:@"Invalidation in progress refresh when done" withBlock:v6];
+  [stateMachine registerHandlerForEvent:@"Invalidation did finish" onState:@"Invalidation in progress refresh when done" withBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -135,8 +135,8 @@ void __46__VUISecureInvalidationManager_sharedInstance__block_invoke()
 
 - (void)invalidateKeysForDeletedVideos
 {
-  v2 = [(VUISecureInvalidationManager *)self stateMachine];
-  [v2 postEvent:@"Invalidation requested"];
+  stateMachine = [(VUISecureInvalidationManager *)self stateMachine];
+  [stateMachine postEvent:@"Invalidation requested"];
 }
 
 __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke(uint64_t a1)
@@ -169,8 +169,8 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
 {
   v83 = *MEMORY[0x1E69E9840];
   v2 = +[VUIMediaLibraryManager defaultManager];
-  v3 = [v2 sidebandMediaLibrary];
-  v4 = [v3 allFpsKeyDeletionInfos];
+  sidebandMediaLibrary = [v2 sidebandMediaLibrary];
+  allFpsKeyDeletionInfos = [sidebandMediaLibrary allFpsKeyDeletionInfos];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -180,7 +180,7 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
   {
     v7 = v6;
     *buf = 134217984;
-    v82 = [v4 count];
+    v82 = [allFpsKeyDeletionInfos count];
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Found %lu key(s) to consider for invalidation", buf, 0xCu);
   }
 
@@ -188,7 +188,7 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v4;
+  obj = allFpsKeyDeletionInfos;
   v8 = [obj countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (v8)
   {
@@ -204,9 +204,9 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
         }
 
         v11 = *(*(&v75 + 1) + 8 * v10);
-        v12 = [v11 expirationDate];
-        v13 = v12;
-        if (v12 && ([v12 vui_isInTheFuture] & 1) == 0 && (objc_msgSend(v11, "playbackExpirationStartDate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
+        expirationDate = [v11 expirationDate];
+        v13 = expirationDate;
+        if (expirationDate && ([expirationDate vui_isInTheFuture] & 1) == 0 && (objc_msgSend(v11, "playbackExpirationStartDate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
         {
           v22 = sLogObject_6;
           if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_DEFAULT))
@@ -221,12 +221,12 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
 
         else
         {
-          v16 = [v11 objectID];
+          objectID = [v11 objectID];
           v17 = v5;
-          if (v16)
+          if (objectID)
           {
-            v18 = [(VUISecureInvalidationManager *)self penaltyBox];
-            v19 = [v18 containsObject:v16];
+            penaltyBox = [(VUISecureInvalidationManager *)self penaltyBox];
+            v19 = [penaltyBox containsObject:objectID];
 
             v17 = v5;
             if (v19)
@@ -291,13 +291,13 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
   if ([v62 count])
   {
     v33 = +[VUIMediaLibraryManager defaultManager];
-    v34 = [v33 sidebandMediaLibrary];
-    [v34 deleteFPSKeyDeletionInfos:v62];
+    sidebandMediaLibrary2 = [v33 sidebandMediaLibrary];
+    [sidebandMediaLibrary2 deleteFPSKeyDeletionInfos:v62];
   }
 
   if ([v5 count])
   {
-    v65 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    defaultCenter2 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v74 = 0u;
     v72 = 0u;
     v73 = 0u;
@@ -328,19 +328,19 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
           if ([(VUISecureInvalidationManager *)self _validateParamsForDeletionInfo:v39])
           {
             v41 = MEMORY[0x1E696AEC0];
-            v42 = [v39 fpsNonceURL];
-            v43 = [v39 fpsKeyServerURL];
-            v44 = [v39 dsid];
-            v45 = [v41 stringWithFormat:@"%@:%@:%@", v42, v43, v44];
+            fpsNonceURL = [v39 fpsNonceURL];
+            fpsKeyServerURL = [v39 fpsKeyServerURL];
+            dsid = [v39 dsid];
+            v45 = [v41 stringWithFormat:@"%@:%@:%@", fpsNonceURL, fpsKeyServerURL, dsid];
 
-            v46 = [v65 objectForKey:v45];
-            if (!v46)
+            sidebandMediaLibrary3 = [defaultCenter2 objectForKey:v45];
+            if (!sidebandMediaLibrary3)
             {
-              v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
+              sidebandMediaLibrary3 = objc_alloc_init(MEMORY[0x1E695DF70]);
             }
 
-            [v46 addObject:v39];
-            [v65 setObject:v46 forKey:v45];
+            [sidebandMediaLibrary3 addObject:v39];
+            [defaultCenter2 setObject:sidebandMediaLibrary3 forKey:v45];
           }
 
           else
@@ -354,8 +354,8 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
             }
 
             v45 = +[VUIMediaLibraryManager defaultManager];
-            v46 = [v45 sidebandMediaLibrary];
-            [v46 deleteFPSKeyDeletionInfo:v39];
+            sidebandMediaLibrary3 = [v45 sidebandMediaLibrary];
+            [sidebandMediaLibrary3 deleteFPSKeyDeletionInfo:v39];
           }
         }
 
@@ -366,8 +366,8 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
     }
 
     objc_initWeak(&location, self);
-    v48 = [v65 allValues];
-    v49 = [v48 count] == 0;
+    allValues = [defaultCenter2 allValues];
+    v49 = [allValues count] == 0;
 
     if (v49)
     {
@@ -378,27 +378,27 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
         _os_log_impl(&dword_1E323F000, v57, OS_LOG_TYPE_DEFAULT, "Posting secure invalidation complete notification because there are no tuples to invalidate", buf, 2u);
       }
 
-      v58 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v58 postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
 
       v56 = @"Idle";
     }
 
     else
     {
-      v50 = [(VUISecureInvalidationManager *)self backgroundTaskIdentifier];
-      if (v50 == *MEMORY[0x1E69DDBE8])
+      backgroundTaskIdentifier = [(VUISecureInvalidationManager *)self backgroundTaskIdentifier];
+      if (backgroundTaskIdentifier == *MEMORY[0x1E69DDBE8])
       {
-        v51 = [MEMORY[0x1E69DC668] sharedApplication];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_invoke;
         v69[3] = &unk_1E872D768;
         v69[4] = self;
-        v52 = [v51 beginBackgroundTaskWithName:@"VUISecureInvalidationManager" expirationHandler:v69];
+        v52 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"VUISecureInvalidationManager" expirationHandler:v69];
 
         v53 = sLogObject_6;
-        if (v52 == v50)
+        if (v52 == backgroundTaskIdentifier)
         {
           if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
           {
@@ -426,13 +426,13 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
         }
       }
 
-      v60 = [v65 allValues];
+      allValues2 = [defaultCenter2 allValues];
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_invoke_54;
       v67[3] = &unk_1E872E4B8;
       objc_copyWeak(&v68, &location);
-      [(VUISecureInvalidationManager *)self _sendInvalidationRequestsForDeletionInfoArrays:v60 completion:v67];
+      [(VUISecureInvalidationManager *)self _sendInvalidationRequestsForDeletionInfoArrays:allValues2 completion:v67];
 
       objc_destroyWeak(&v68);
       v56 = @"Invalidation in progress";
@@ -457,8 +457,8 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
       _os_log_impl(&dword_1E323F000, v55, OS_LOG_TYPE_DEFAULT, "Posting secure invalidation complete notification because no keys need invalidating", buf, 2u);
     }
 
-    v65 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v65 postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
     v56 = @"Idle";
   }
 
@@ -467,40 +467,40 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUISecureInvalidationManager;
   [(VUISecureInvalidationManager *)&v4 dealloc];
 }
 
-- (void)addDeletionInfoToPenaltyBox:(id)a3
+- (void)addDeletionInfoToPenaltyBox:(id)box
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  if (v5)
+  boxCopy = box;
+  objectID = [boxCopy objectID];
+  if (objectID)
   {
     v6 = sLogObject_6;
     if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
     {
-      [(VUISecureInvalidationManager *)v4 addDeletionInfoToPenaltyBox:v6];
+      [(VUISecureInvalidationManager *)boxCopy addDeletionInfoToPenaltyBox:v6];
     }
 
-    v7 = [(VUISecureInvalidationManager *)self penaltyBox];
-    [v7 addObject:v5];
+    penaltyBox = [(VUISecureInvalidationManager *)self penaltyBox];
+    [penaltyBox addObject:objectID];
   }
 }
 
-- (void)removeDeletionInfoFromPenaltyBox:(id)a3
+- (void)removeDeletionInfoFromPenaltyBox:(id)box
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectID];
-  if (v5)
+  boxCopy = box;
+  objectID = [boxCopy objectID];
+  if (objectID)
   {
-    v6 = [(VUISecureInvalidationManager *)self penaltyBox];
-    v7 = [v6 containsObject:v5];
+    penaltyBox = [(VUISecureInvalidationManager *)self penaltyBox];
+    v7 = [penaltyBox containsObject:objectID];
 
     if (v7)
     {
@@ -508,24 +508,24 @@ __CFString *__61__VUISecureInvalidationManager__registerStateMachineHandlers__bl
       if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = boxCopy;
         _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Removing deletion info from penalty box: %@", &v10, 0xCu);
       }
 
-      v9 = [(VUISecureInvalidationManager *)self penaltyBox];
-      [v9 removeObject:v5];
+      penaltyBox2 = [(VUISecureInvalidationManager *)self penaltyBox];
+      [penaltyBox2 removeObject:objectID];
     }
   }
 }
 
-- (BOOL)storeFPSKeyLoader:(id)a3 shouldKeyRequestContinueInvalidationAfterLoadingNonce:(id)a4
+- (BOOL)storeFPSKeyLoader:(id)loader shouldKeyRequestContinueInvalidationAfterLoadingNonce:(id)nonce
 {
-  v4 = [a4 keyIdentifier];
-  if (v4)
+  keyIdentifier = [nonce keyIdentifier];
+  if (keyIdentifier)
   {
     v5 = +[VUIMediaLibraryManager defaultManager];
-    v6 = [v5 sidebandMediaLibrary];
-    v7 = [v6 existingFpsKeyInfoForKeyURI:v4];
+    sidebandMediaLibrary = [v5 sidebandMediaLibrary];
+    v7 = [sidebandMediaLibrary existingFpsKeyInfoForKeyURI:keyIdentifier];
 
     v8 = v7 == 0;
     if (v7)
@@ -586,39 +586,39 @@ void __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_i
   [v4 postEvent:@"Invalidation did finish"];
 }
 
-- (void)_sendInvalidationRequestsForDeletionInfoArrays:(id)a3 completion:(id)a4
+- (void)_sendInvalidationRequestsForDeletionInfoArrays:(id)arrays completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  arraysCopy = arrays;
+  completionCopy = completion;
   v8 = sLogObject_6;
   if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v10 = 134217984;
-    v11 = [v6 count];
+    v11 = [arraysCopy count];
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "Will invalidate %lu tuple(s) of (keyServerURL, nonceURL, dsid)", &v10, 0xCu);
   }
 
-  [(VUISecureInvalidationManager *)self _sendInvalidationRequestsForFirstArray:v6 completion:v7];
+  [(VUISecureInvalidationManager *)self _sendInvalidationRequestsForFirstArray:arraysCopy completion:completionCopy];
 }
 
-- (void)_sendInvalidationRequestsForFirstArray:(id)a3 completion:(id)a4
+- (void)_sendInvalidationRequestsForFirstArray:(id)array completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v30 = v5;
-  if ([v5 count])
+  arrayCopy = array;
+  completionCopy = completion;
+  v30 = arrayCopy;
+  if ([arrayCopy count])
   {
-    v29 = v6;
-    v7 = [v5 firstObject];
+    v29 = completionCopy;
+    firstObject = [arrayCopy firstObject];
     v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = v7;
+    obj = firstObject;
     v35 = [obj countByEnumeratingWithState:&v49 objects:v61 count:16];
     if (v35)
     {
@@ -702,8 +702,8 @@ void __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_i
     [(VUIStoreFPSKeyLoader *)v25 setDelegate:self];
     [(VUIStoreFPSKeyLoader *)v25 setSecureInvalidationNonceURL:v9];
     [(VUIStoreFPSKeyLoader *)v25 setSecureInvalidationDSID:v8];
-    v26 = [(VUISecureInvalidationManager *)self keyLoaders];
-    [v26 addObject:v25];
+    keyLoaders = [(VUISecureInvalidationManager *)self keyLoaders];
+    [keyLoaders addObject:v25];
 
     objc_initWeak(buf, self);
     v36[0] = MEMORY[0x1E69E9820];
@@ -722,7 +722,7 @@ void __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_i
     objc_destroyWeak(&v41);
     objc_destroyWeak(buf);
 
-    v6 = v29;
+    completionCopy = v29;
   }
 
   else
@@ -734,9 +734,9 @@ void __63__VUISecureInvalidationManager__invalidateKeysForDeletedVideos__block_i
       _os_log_impl(&dword_1E323F000, v21, OS_LOG_TYPE_DEFAULT, "Done making invalidation requests", buf, 2u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -854,15 +854,15 @@ void __82__VUISecureInvalidationManager__sendInvalidationRequestsForFirstArray_c
   [WeakRetained _sendInvalidationRequestsForFirstArray:v25 completion:*(v26 + 56)];
 }
 
-- (BOOL)_getParamsForDeletionInfo:(id)a3 keyServerURL:(id *)a4 nonceURL:(id *)a5 keyIdentifier:(id *)a6 offlineKeyData:(id *)a7 dsid:(id *)a8 additionalRequestParams:(id *)a9 contentID:(id *)a10
+- (BOOL)_getParamsForDeletionInfo:(id)info keyServerURL:(id *)l nonceURL:(id *)rL keyIdentifier:(id *)identifier offlineKeyData:(id *)data dsid:(id *)dsid additionalRequestParams:(id *)params contentID:(id *)self0
 {
-  v15 = a3;
-  v16 = [v15 keyData];
-  v17 = [v16 length];
+  infoCopy = info;
+  keyData = [infoCopy keyData];
+  v17 = [keyData length];
   v18 = v17 != 0;
   if (v17 || !os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
   {
-    if (!a7)
+    if (!data)
     {
       goto LABEL_5;
     }
@@ -871,16 +871,16 @@ void __82__VUISecureInvalidationManager__sendInvalidationRequestsForFirstArray_c
   }
 
   [VUISecureInvalidationManager _getParamsForDeletionInfo:keyServerURL:nonceURL:keyIdentifier:offlineKeyData:dsid:additionalRequestParams:contentID:];
-  if (a7)
+  if (data)
   {
 LABEL_4:
-    v19 = v16;
-    *a7 = v16;
+    v19 = keyData;
+    *data = keyData;
   }
 
 LABEL_5:
-  v20 = [v15 fpsKeyServerURL];
-  if (!v20)
+  fpsKeyServerURL = [infoCopy fpsKeyServerURL];
+  if (!fpsKeyServerURL)
   {
     if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
     {
@@ -890,31 +890,14 @@ LABEL_5:
     v18 = 0;
   }
 
-  if (a4)
+  if (l)
   {
-    v21 = v20;
-    *a4 = v20;
+    v21 = fpsKeyServerURL;
+    *l = fpsKeyServerURL;
   }
 
-  v22 = [v15 fpsNonceURL];
-  if (!v22)
-  {
-    if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
-    {
-      [VUISecureInvalidationManager _getParamsForDeletionInfo:keyServerURL:nonceURL:keyIdentifier:offlineKeyData:dsid:additionalRequestParams:contentID:];
-    }
-
-    v18 = 0;
-  }
-
-  if (a5)
-  {
-    v23 = v22;
-    *a5 = v22;
-  }
-
-  v24 = [v15 keyURI];
-  if (!v24)
+  fpsNonceURL = [infoCopy fpsNonceURL];
+  if (!fpsNonceURL)
   {
     if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
     {
@@ -924,15 +907,14 @@ LABEL_5:
     v18 = 0;
   }
 
-  if (a6)
+  if (rL)
   {
-    v25 = v24;
-    *a6 = v24;
+    v23 = fpsNonceURL;
+    *rL = fpsNonceURL;
   }
 
-  v26 = [v15 dsid];
-  v27 = v26;
-  if (!v26 || [v26 isEqualToNumber:&unk_1F5E5D0E0])
+  keyURI = [infoCopy keyURI];
+  if (!keyURI)
   {
     if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
     {
@@ -942,22 +924,40 @@ LABEL_5:
     v18 = 0;
   }
 
-  if (a8)
+  if (identifier)
+  {
+    v25 = keyURI;
+    *identifier = keyURI;
+  }
+
+  dsid = [infoCopy dsid];
+  v27 = dsid;
+  if (!dsid || [dsid isEqualToNumber:&unk_1F5E5D0E0])
+  {
+    if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
+    {
+      [VUISecureInvalidationManager _getParamsForDeletionInfo:keyServerURL:nonceURL:keyIdentifier:offlineKeyData:dsid:additionalRequestParams:contentID:];
+    }
+
+    v18 = 0;
+  }
+
+  if (dsid)
   {
     v28 = v27;
-    *a8 = v27;
+    *dsid = v27;
   }
 
-  v29 = [v15 additionalFPSRequestParamsJSONData];
-  v39 = v16;
-  if (![v29 length])
+  additionalFPSRequestParamsJSONData = [infoCopy additionalFPSRequestParamsJSONData];
+  v39 = keyData;
+  if (![additionalFPSRequestParamsJSONData length])
   {
     v32 = MEMORY[0x1E695E0F8];
     goto LABEL_41;
   }
 
   v40 = 0;
-  v30 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v29 options:0 error:&v40];
+  v30 = [MEMORY[0x1E696ACB0] JSONObjectWithData:additionalFPSRequestParamsJSONData options:0 error:&v40];
   v31 = v40;
   if (!v30)
   {
@@ -997,14 +997,14 @@ LABEL_41:
     v18 = 0;
   }
 
-  if (a9)
+  if (params)
   {
     v34 = v32;
-    *a9 = v32;
+    *params = v32;
   }
 
-  v35 = [v15 contentID];
-  if (![v35 length])
+  contentID = [infoCopy contentID];
+  if (![contentID length])
   {
     if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_ERROR))
     {
@@ -1014,16 +1014,16 @@ LABEL_41:
     v18 = 0;
   }
 
-  if (a10)
+  if (d)
   {
-    v36 = v35;
-    *a10 = v35;
+    v36 = contentID;
+    *d = contentID;
   }
 
   return v18;
 }
 
-- (void)_networkReachbilityDidChange:(id)a3
+- (void)_networkReachbilityDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = sLogObject_6;
@@ -1042,8 +1042,8 @@ LABEL_41:
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Network reachability did change.  Is reachable: %@", &v9, 0xCu);
   }
 
-  v8 = [(VUISecureInvalidationManager *)self stateMachine];
-  [v8 postEvent:@"Network reachability did change"];
+  stateMachine = [(VUISecureInvalidationManager *)self stateMachine];
+  [stateMachine postEvent:@"Network reachability did change"];
 }
 
 id __61__VUISecureInvalidationManager__registerStateMachineHandlers__block_invoke_4(uint64_t a1, void *a2)

@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerSameDayInHistory
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerSameDayInHistory
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -26,24 +26,24 @@
 
   else
   {
-    v11 = [v7 localDate];
-    v12 = [v7 localDate];
-    v13 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:v12 inGraph:v8];
+    localDate = [contextCopy localDate];
+    localDate2 = [contextCopy localDate];
+    v13 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:localDate2 inGraph:graphCopy];
 
     v25 = v13;
-    v14 = [v13 featureNodeCollection];
-    v15 = [v14 memoryNodes];
+    featureNodeCollection = [v13 featureNodeCollection];
+    memoryNodes = [featureNodeCollection memoryNodes];
 
-    v26 = v11;
-    v16 = [MEMORY[0x277D27690] components:4 fromDate:v11];
-    v17 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v16 year], v8);
-    v18 = [v17 dateNodes];
-    v19 = [v18 momentNodes];
-    v20 = [v19 memoryNodes];
+    v26 = localDate;
+    v16 = [MEMORY[0x277D27690] components:4 fromDate:localDate];
+    v17 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v16 year], graphCopy);
+    dateNodes = [v17 dateNodes];
+    momentNodes = [dateNodes momentNodes];
+    memoryNodes2 = [momentNodes memoryNodes];
 
-    v21 = [v15 collectionBySubtracting:v20];
-    v22 = [objc_opt_class() singleDayValidityIntervalWithContext:v7];
-    if ([v9 isCancelledWithProgress:1.0])
+    v21 = [memoryNodes collectionBySubtracting:memoryNodes2];
+    v22 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {

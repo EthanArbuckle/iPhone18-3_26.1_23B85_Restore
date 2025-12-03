@@ -1,52 +1,52 @@
 @interface NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addConflictingExpressPassIdentifiers:(id)a3;
-- (void)addConflictingReferenceExpressPassIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConflictingExpressPassIdentifiers:(id)identifiers;
+- (void)addConflictingReferenceExpressPassIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse
 
-- (void)addConflictingExpressPassIdentifiers:(id)a3
+- (void)addConflictingExpressPassIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   conflictingExpressPassIdentifiers = self->_conflictingExpressPassIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!conflictingExpressPassIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_conflictingExpressPassIdentifiers;
     self->_conflictingExpressPassIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     conflictingExpressPassIdentifiers = self->_conflictingExpressPassIdentifiers;
   }
 
-  [(NSMutableArray *)conflictingExpressPassIdentifiers addObject:v4];
+  [(NSMutableArray *)conflictingExpressPassIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addConflictingReferenceExpressPassIdentifiers:(id)a3
+- (void)addConflictingReferenceExpressPassIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   conflictingReferenceExpressPassIdentifiers = self->_conflictingReferenceExpressPassIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!conflictingReferenceExpressPassIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_conflictingReferenceExpressPassIdentifiers;
     self->_conflictingReferenceExpressPassIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     conflictingReferenceExpressPassIdentifiers = self->_conflictingReferenceExpressPassIdentifiers;
   }
 
-  [(NSMutableArray *)conflictingReferenceExpressPassIdentifiers addObject:v4];
+  [(NSMutableArray *)conflictingReferenceExpressPassIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -55,40 +55,40 @@
   v8.receiver = self;
   v8.super_class = NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse;
   v4 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)&v8 description];
-  v5 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v4 forKey:@"pending"];
+    [dictionary setObject:v4 forKey:@"pending"];
   }
 
   conflictingExpressPassIdentifiers = self->_conflictingExpressPassIdentifiers;
   if (conflictingExpressPassIdentifiers)
   {
-    [v3 setObject:conflictingExpressPassIdentifiers forKey:@"conflictingExpressPassIdentifiers"];
+    [dictionary setObject:conflictingExpressPassIdentifiers forKey:@"conflictingExpressPassIdentifiers"];
   }
 
   conflictingReferenceExpressPassIdentifiers = self->_conflictingReferenceExpressPassIdentifiers;
   if (conflictingReferenceExpressPassIdentifiers)
   {
-    [v3 setObject:conflictingReferenceExpressPassIdentifiers forKey:@"conflictingReferenceExpressPassIdentifiers"];
+    [dictionary setObject:conflictingReferenceExpressPassIdentifiers forKey:@"conflictingReferenceExpressPassIdentifiers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     pending = self->_pending;
@@ -162,23 +162,23 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_pending;
-    v4[28] |= 1u;
+    toCopy[24] = self->_pending;
+    toCopy[28] |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingExpressPassIdentifiersCount])
   {
     [v13 clearConflictingExpressPassIdentifiers];
-    v5 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingExpressPassIdentifiersCount];
-    if (v5)
+    conflictingExpressPassIdentifiersCount = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingExpressPassIdentifiersCount];
+    if (conflictingExpressPassIdentifiersCount)
     {
-      v6 = v5;
+      v6 = conflictingExpressPassIdentifiersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingExpressPassIdentifiersAtIndex:i];
@@ -190,10 +190,10 @@
   if ([(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingReferenceExpressPassIdentifiersCount])
   {
     [v13 clearConflictingReferenceExpressPassIdentifiers];
-    v9 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingReferenceExpressPassIdentifiersCount];
-    if (v9)
+    conflictingReferenceExpressPassIdentifiersCount = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingReferenceExpressPassIdentifiersCount];
+    if (conflictingReferenceExpressPassIdentifiersCount)
     {
-      v10 = v9;
+      v10 = conflictingReferenceExpressPassIdentifiersCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NPKProtoConflictingExpressPassIdentifiersForPassInformationResponse *)self conflictingReferenceExpressPassIdentifiersAtIndex:j];
@@ -203,10 +203,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -234,7 +234,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addConflictingExpressPassIdentifiers:v12];
 
         ++v11;
@@ -267,7 +267,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addConflictingReferenceExpressPassIdentifiers:v18];
 
         ++v17;
@@ -284,26 +284,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_pending)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -321,13 +321,13 @@ LABEL_9:
 
 LABEL_4:
   conflictingExpressPassIdentifiers = self->_conflictingExpressPassIdentifiers;
-  if (conflictingExpressPassIdentifiers | *(v4 + 1) && ![(NSMutableArray *)conflictingExpressPassIdentifiers isEqual:?])
+  if (conflictingExpressPassIdentifiers | *(equalCopy + 1) && ![(NSMutableArray *)conflictingExpressPassIdentifiers isEqual:?])
   {
     goto LABEL_9;
   }
 
   conflictingReferenceExpressPassIdentifiers = self->_conflictingReferenceExpressPassIdentifiers;
-  if (conflictingReferenceExpressPassIdentifiers | *(v4 + 2))
+  if (conflictingReferenceExpressPassIdentifiers | *(equalCopy + 2))
   {
     v8 = [(NSMutableArray *)conflictingReferenceExpressPassIdentifiers isEqual:?];
   }
@@ -358,14 +358,14 @@ LABEL_10:
   return v4 ^ [(NSMutableArray *)self->_conflictingReferenceExpressPassIdentifiers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_pending = *(v4 + 24);
+    self->_pending = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -373,7 +373,7 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

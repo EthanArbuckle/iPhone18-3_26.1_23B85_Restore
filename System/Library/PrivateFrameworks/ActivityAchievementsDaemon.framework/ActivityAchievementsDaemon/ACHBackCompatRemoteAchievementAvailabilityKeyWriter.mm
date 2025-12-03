@@ -1,21 +1,21 @@
 @interface ACHBackCompatRemoteAchievementAvailabilityKeyWriter
-- (ACHBackCompatRemoteAchievementAvailabilityKeyWriter)initWithHealthStore:(id)a3 creatorDevice:(unsigned __int8)a4;
-- (BOOL)markTemplateAvailable:(id)a3 error:(id *)a4;
+- (ACHBackCompatRemoteAchievementAvailabilityKeyWriter)initWithHealthStore:(id)store creatorDevice:(unsigned __int8)device;
+- (BOOL)markTemplateAvailable:(id)available error:(id *)error;
 @end
 
 @implementation ACHBackCompatRemoteAchievementAvailabilityKeyWriter
 
-- (ACHBackCompatRemoteAchievementAvailabilityKeyWriter)initWithHealthStore:(id)a3 creatorDevice:(unsigned __int8)a4
+- (ACHBackCompatRemoteAchievementAvailabilityKeyWriter)initWithHealthStore:(id)store creatorDevice:(unsigned __int8)device
 {
-  v6 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ACHBackCompatRemoteAchievementAvailabilityKeyWriter;
   v7 = [(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_creatorDevice = a4;
-    v9 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:4 domainName:@"HDKeyValueEntityDefaultDomain" healthStore:v6];
+    v7->_creatorDevice = device;
+    v9 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:4 domainName:@"HDKeyValueEntityDefaultDomain" healthStore:storeCopy];
     keyValueDomain = v8->_keyValueDomain;
     v8->_keyValueDomain = v9;
   }
@@ -23,10 +23,10 @@
   return v8;
 }
 
-- (BOOL)markTemplateAvailable:(id)a3 error:(id *)a4
+- (BOOL)markTemplateAvailable:(id)available error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  availableCopy = available;
   if ([(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)self creatorDevice]== 1)
   {
     v7 = 1;
@@ -34,13 +34,13 @@
 
   else
   {
-    v8 = [v6 uniqueName];
-    v9 = [(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)self companionAvailabilityStateKeyFromUniqueName:v8];
+    uniqueName = [availableCopy uniqueName];
+    v9 = [(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)self companionAvailabilityStateKeyFromUniqueName:uniqueName];
 
     if (v9)
     {
-      v10 = [(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)self keyValueDomain];
-      v7 = [v10 setNumber:MEMORY[0x277CBEC38] forKey:v9 error:a4];
+      keyValueDomain = [(ACHBackCompatRemoteAchievementAvailabilityKeyWriter *)self keyValueDomain];
+      v7 = [keyValueDomain setNumber:MEMORY[0x277CBEC38] forKey:v9 error:error];
     }
 
     else
@@ -54,10 +54,10 @@
       v14 = v13;
       if (v14)
       {
-        if (a4)
+        if (error)
         {
           v15 = v14;
-          *a4 = v14;
+          *error = v14;
         }
 
         else

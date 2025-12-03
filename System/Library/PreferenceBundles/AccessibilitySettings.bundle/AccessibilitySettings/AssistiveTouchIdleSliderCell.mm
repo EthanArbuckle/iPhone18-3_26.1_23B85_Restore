@@ -1,35 +1,35 @@
 @interface AssistiveTouchIdleSliderCell
 - (double)initialValue;
-- (void)_updateRightLabelWithValue:(double)a3;
-- (void)handleSliderBeingDragged:(id)a3;
-- (void)handleSliderDidFinishDrag:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)_updateRightLabelWithValue:(double)value;
+- (void)handleSliderBeingDragged:(id)dragged;
+- (void)handleSliderDidFinishDrag:(id)drag;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AssistiveTouchIdleSliderCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = AssistiveTouchIdleSliderCell;
-  [(AssistiveTouchIdleSliderCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(AssistiveTouchIdleSliderCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(AssistiveTouchIdleSliderCell *)self initialValue];
   [(AssistiveTouchIdleSliderCell *)self _updateRightLabelWithValue:?];
 }
 
-- (void)_updateRightLabelWithValue:(double)a3
+- (void)_updateRightLabelWithValue:(double)value
 {
   v4 = AXFormatFloatWithPercentage();
   [(AssistiveTouchIdleSliderCell *)self setLabelText:v4];
 
   v5 = objc_initWeak(&location, self);
-  v6 = [(AssistiveTouchIdleSliderCell *)self slider];
+  slider = [(AssistiveTouchIdleSliderCell *)self slider];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __59__AssistiveTouchIdleSliderCell__updateRightLabelWithValue___block_invoke;
   v7[3] = &unk_255F00;
   objc_copyWeak(&v8, &location);
-  [v6 _setAccessibilityValueBlock:v7];
+  [slider _setAccessibilityValueBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -44,25 +44,25 @@ id __59__AssistiveTouchIdleSliderCell__updateRightLabelWithValue___block_invoke(
   return v2;
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
-  [v4 value];
-  [v4 setValue:0 animated:?];
-  [v4 value];
+  draggedCopy = dragged;
+  [draggedCopy value];
+  [draggedCopy setValue:0 animated:?];
+  [draggedCopy value];
   v6 = v5;
   v7 = +[AXSettings sharedInstance];
   [v7 setAssistiveTouchIdleOpacity:v6];
 
-  [v4 value];
+  [draggedCopy value];
   v9 = v8;
 
   [(AssistiveTouchIdleSliderCell *)self _updateRightLabelWithValue:v9];
 }
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  [a3 value];
+  [drag value];
   v4 = v3;
   v5 = +[AXSettings sharedInstance];
   [v5 setAssistiveTouchIdleOpacity:v4];

@@ -1,31 +1,31 @@
 @interface PTPHostUSBTransport
-- (BOOL)sendRequest:(id)a3;
+- (BOOL)sendRequest:(id)request;
 - (BOOL)startInitiator;
-- (BOOL)writeBulkData:(id)a3;
-- (PTPHostUSBTransport)initWithLocationID:(unsigned int)a3 delegate:(id)a4;
+- (BOOL)writeBulkData:(id)data;
+- (PTPHostUSBTransport)initWithLocationID:(unsigned int)d delegate:(id)delegate;
 - (id)delegate;
-- (id)getTransaction:(id)a3;
+- (id)getTransaction:(id)transaction;
 - (int)readInterruptData;
-- (int)readResponseData:(id)a3 withTimeout:(unsigned int)a4;
-- (unsigned)cancelRequest:(id)a3;
+- (int)readResponseData:(id)data withTimeout:(unsigned int)timeout;
+- (unsigned)cancelRequest:(id)request;
 - (unsigned)deviceStatus;
 - (void)abortPendingIO;
-- (void)addTransaction:(id)a3;
+- (void)addTransaction:(id)transaction;
 - (void)clearBulkInPipeStall;
 - (void)dealloc;
 - (void)deviceReset;
-- (void)handleInterruptData:(unint64_t)a3;
-- (void)removeTransaction:(id)a3;
-- (void)sendData:(id)a3;
-- (void)sendDataPackets:(id)a3;
+- (void)handleInterruptData:(unint64_t)data;
+- (void)removeTransaction:(id)transaction;
+- (void)sendData:(id)data;
+- (void)sendDataPackets:(id)packets;
 - (void)stop;
 @end
 
 @implementation PTPHostUSBTransport
 
-- (PTPHostUSBTransport)initWithLocationID:(unsigned int)a3 delegate:(id)a4
+- (PTPHostUSBTransport)initWithLocationID:(unsigned int)d delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PTPHostUSBTransport;
   v7 = [(PTPHostUSBTransport *)&v19 init];
@@ -36,8 +36,8 @@
     v7->_machRecvSemaphore = v8;
 
     v7->_type = 2;
-    objc_storeWeak(&v7->_delegate, v6);
-    v7->_locationID = a3;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v7->_locationID = d;
     v10 = [[NSMutableData alloc] initWithCapacity:0];
     eventData = v7->_eventData;
     v7->_eventData = v10;
@@ -77,7 +77,7 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v15 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v16 = 2114;
     v17 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -108,7 +108,7 @@
 
 - (BOOL)startInitiator
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_role)
   {
     v3 = 0;
@@ -117,7 +117,7 @@
 
   existing = 0;
   v4 = IOServiceMatching("IOUSBInterface");
-  v5 = [NSNumber numberWithUnsignedInt:v2->_locationID];
+  v5 = [NSNumber numberWithUnsignedInt:selfCopy->_locationID];
   v6 = [NSDictionary dictionaryWithObject:v5 forKey:@"locationID"];
   [(__CFDictionary *)v4 setObject:v6 forKey:@"IOPropertyMatch"];
 
@@ -127,7 +127,7 @@
     goto LABEL_13;
   }
 
-  v103 = v2;
+  v103 = selfCopy;
   v7 = IOIteratorNext(existing);
   if (!v7)
   {
@@ -157,25 +157,25 @@ LABEL_11:
 
   v9 = *properties;
   v10 = [*properties objectForKey:@"bInterfaceClass"];
-  v11 = [v10 unsignedCharValue];
+  unsignedCharValue = [v10 unsignedCharValue];
 
   v12 = [v9 objectForKey:@"bInterfaceSubClass"];
-  v13 = [v12 unsignedCharValue];
+  unsignedCharValue2 = [v12 unsignedCharValue];
 
   v14 = [v9 objectForKey:@"bInterfaceProtocol"];
-  v15 = [v14 unsignedCharValue];
+  unsignedCharValue3 = [v14 unsignedCharValue];
 
-  if (v11 != 6 || v13 != 1 || v15 != 1)
+  if (unsignedCharValue != 6 || unsignedCharValue2 != 1 || unsignedCharValue3 != 1)
   {
 
     goto LABEL_11;
   }
 
   v17 = [v9 objectForKey:@"idVendor"];
-  -[PTPHostUSBTransport setVendorID:](v2, "setVendorID:", [v17 unsignedShortValue]);
+  -[PTPHostUSBTransport setVendorID:](selfCopy, "setVendorID:", [v17 unsignedShortValue]);
 
   v18 = [v9 objectForKey:@"idProduct"];
-  -[PTPHostUSBTransport setProductID:](v2, "setProductID:", [v18 unsignedShortValue]);
+  -[PTPHostUSBTransport setProductID:](selfCopy, "setProductID:", [v18 unsignedShortValue]);
 
   parent = 0;
   if (!IORegistryEntryGetParentEntry(v8, "IOService", &parent))
@@ -187,7 +187,7 @@ LABEL_11:
       {
         v19 = v109;
         v20 = [(__CFDictionary *)v109 objectForKey:@"USB Serial Number"];
-        [(PTPHostUSBTransport *)v2 setUsbSerialNumberString:v20];
+        [(PTPHostUSBTransport *)selfCopy setUsbSerialNumberString:v20];
       }
     }
   }
@@ -204,19 +204,19 @@ LABEL_11:
     v33 = *(*v109 + 8);
     v34 = CFUUIDGetConstantUUIDWithBytes(0, 0xBCu, 0xEAu, 0xADu, 0xDCu, 0x88u, 0x4Du, 0x4Fu, 0x27u, 0x83u, 0x40u, 0x36u, 0xD6u, 0x9Fu, 0xABu, 0x90u, 0xF6u);
     v35 = CFUUIDGetUUIDBytes(v34);
-    v33(v32, *&v35.byte0, *&v35.byte8, &v2->_interfaceInterfaceRef);
+    v33(v32, *&v35.byte0, *&v35.byte8, &selfCopy->_interfaceInterfaceRef);
     IODestroyPlugInInterface(v109);
-    interfaceInterfaceRef = v2->_interfaceInterfaceRef;
+    interfaceInterfaceRef = selfCopy->_interfaceInterfaceRef;
     if (!interfaceInterfaceRef || ((*interfaceInterfaceRef)->USBInterfaceOpen)(interfaceInterfaceRef))
     {
       goto LABEL_29;
     }
 
     v108 = 0;
-    if (((*v2->_interfaceInterfaceRef)->GetNumEndpoints)(v2->_interfaceInterfaceRef, &v108))
+    if (((*selfCopy->_interfaceInterfaceRef)->GetNumEndpoints)(selfCopy->_interfaceInterfaceRef, &v108))
     {
 LABEL_28:
-      ((*v2->_interfaceInterfaceRef)->USBInterfaceClose)(v2->_interfaceInterfaceRef);
+      ((*selfCopy->_interfaceInterfaceRef)->USBInterfaceClose)(selfCopy->_interfaceInterfaceRef);
 LABEL_29:
       v3 = 0;
       goto LABEL_30;
@@ -229,9 +229,9 @@ LABEL_29:
     if (!v108)
     {
 LABEL_84:
-      if (((*v2->_interfaceInterfaceRef)->CreateInterfaceAsyncPort)(v2->_interfaceInterfaceRef, &v2->_asyncPort))
+      if (((*selfCopy->_interfaceInterfaceRef)->CreateInterfaceAsyncPort)(selfCopy->_interfaceInterfaceRef, &selfCopy->_asyncPort))
       {
-        ((*v2->_interfaceInterfaceRef)->USBInterfaceClose)(v2->_interfaceInterfaceRef);
+        ((*selfCopy->_interfaceInterfaceRef)->USBInterfaceClose)(selfCopy->_interfaceInterfaceRef);
         v3 = 0;
         goto LABEL_30;
       }
@@ -250,15 +250,15 @@ LABEL_84:
       {
         v99 = v95;
         v100 = v98;
-        v101 = [(__CFString *)v95 UTF8String];
+        uTF8String = [(__CFString *)v95 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v101;
+        *&properties[4] = uTF8String;
         v113 = 2114;
         v114 = v97;
         _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
       }
 
-      v2 = v103;
+      selfCopy = v103;
       v102 = ((*v103->_interfaceInterfaceRef)->GetEndpointPropertiesV3)(v103->_interfaceInterfaceRef);
       v103->_notificationPort = v102;
       IONotificationPortSetDispatchQueue(v102, v103->_transportQueue);
@@ -273,7 +273,7 @@ LABEL_84:
     }
 
     v37 = 0;
-    while (((*v2->_interfaceInterfaceRef)->GetPipeProperties)(v2->_interfaceInterfaceRef, ++v37, &v107, &v106 + 1, &v106, &v104, &v105))
+    while (((*selfCopy->_interfaceInterfaceRef)->GetPipeProperties)(selfCopy->_interfaceInterfaceRef, ++v37, &v107, &v106 + 1, &v106, &v104, &v105))
     {
 LABEL_67:
       if (v108 <= v37)
@@ -284,8 +284,8 @@ LABEL_67:
 
     if (v107 == 1 && v106 == 2)
     {
-      v2->_bulkPipeIn = v37;
-      v2->_maxPacketSizeBulkIn = v104;
+      selfCopy->_bulkPipeIn = v37;
+      selfCopy->_maxPacketSizeBulkIn = v104;
       __ICOSLogCreate();
       v59 = @"HostUSB";
       if ([@"HostUSB" length] >= 0x15)
@@ -294,21 +294,21 @@ LABEL_67:
         v59 = [v60 stringByAppendingString:@".."];
       }
 
-      v61 = [NSString stringWithFormat:@"_maxPacketSizeBulkIn: %d", v2->_maxPacketSizeBulkIn];
+      v61 = [NSString stringWithFormat:@"_maxPacketSizeBulkIn: %d", selfCopy->_maxPacketSizeBulkIn];
       v62 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
         v63 = v59;
         v64 = v62;
-        v65 = [(__CFString *)v59 UTF8String];
+        uTF8String2 = [(__CFString *)v59 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v65;
+        *&properties[4] = uTF8String2;
         v113 = 2114;
         v114 = v61;
         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
       }
 
-      v2 = v103;
+      selfCopy = v103;
       if (((*v103->_interfaceInterfaceRef)->GetPipeStatus)(v103->_interfaceInterfaceRef, v103->_bulkPipeIn) != -536854449)
       {
         goto LABEL_67;
@@ -328,9 +328,9 @@ LABEL_67:
       {
         v70 = v66;
         v71 = v69;
-        v72 = [(__CFString *)v66 UTF8String];
+        uTF8String3 = [(__CFString *)v66 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v72;
+        *&properties[4] = uTF8String3;
         v113 = 2114;
         v114 = v68;
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
@@ -360,9 +360,9 @@ LABEL_67:
         goto LABEL_67;
       }
 
-      v2->_interruptPipeIn = v37;
-      v2->_maxPacketSizeInterruptIn = v104;
-      v78 = ((*v2->_interfaceInterfaceRef)->GetPipeStatus)(v2->_interfaceInterfaceRef, v37);
+      selfCopy->_interruptPipeIn = v37;
+      selfCopy->_maxPacketSizeInterruptIn = v104;
+      v78 = ((*selfCopy->_interfaceInterfaceRef)->GetPipeStatus)(selfCopy->_interfaceInterfaceRef, v37);
       __ICOSLogCreate();
       v79 = @"HostUSB";
       if ([@"HostUSB" length] >= 0x15)
@@ -377,15 +377,15 @@ LABEL_67:
       {
         v83 = v79;
         v84 = v82;
-        v85 = [(__CFString *)v79 UTF8String];
+        uTF8String4 = [(__CFString *)v79 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v85;
+        *&properties[4] = uTF8String4;
         v113 = 2114;
         v114 = v81;
         _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
       }
 
-      v2 = v103;
+      selfCopy = v103;
       if (v78 != -536854449)
       {
         goto LABEL_67;
@@ -405,9 +405,9 @@ LABEL_67:
       {
         v90 = v86;
         v91 = v89;
-        v92 = [(__CFString *)v86 UTF8String];
+        uTF8String5 = [(__CFString *)v86 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v92;
+        *&properties[4] = uTF8String5;
         v113 = 2114;
         v114 = v88;
         _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
@@ -432,9 +432,9 @@ LABEL_67:
 
     else
     {
-      v2->_bulkPipeOut = v37;
-      v2->_maxPacketSizeBulkOut = v104;
-      v39 = ((*v2->_interfaceInterfaceRef)->GetPipeStatus)(v2->_interfaceInterfaceRef, v37);
+      selfCopy->_bulkPipeOut = v37;
+      selfCopy->_maxPacketSizeBulkOut = v104;
+      v39 = ((*selfCopy->_interfaceInterfaceRef)->GetPipeStatus)(selfCopy->_interfaceInterfaceRef, v37);
       __ICOSLogCreate();
       v40 = @"HostUSB";
       if ([@"HostUSB" length] >= 0x15)
@@ -449,15 +449,15 @@ LABEL_67:
       {
         v44 = v40;
         v45 = v43;
-        v46 = [(__CFString *)v40 UTF8String];
+        uTF8String6 = [(__CFString *)v40 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v46;
+        *&properties[4] = uTF8String6;
         v113 = 2114;
         v114 = v42;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
       }
 
-      v2 = v103;
+      selfCopy = v103;
       if (v39 != -536854449)
       {
         goto LABEL_67;
@@ -477,9 +477,9 @@ LABEL_67:
       {
         v51 = v47;
         v52 = v50;
-        v53 = [(__CFString *)v47 UTF8String];
+        uTF8String7 = [(__CFString *)v47 UTF8String];
         *properties = 136446466;
-        *&properties[4] = v53;
+        *&properties[4] = uTF8String7;
         v113 = 2114;
         v114 = v49;
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
@@ -504,15 +504,15 @@ LABEL_67:
 
     v75 = v55;
     v76 = v58;
-    v77 = [(__CFString *)v55 UTF8String];
+    uTF8String8 = [(__CFString *)v55 UTF8String];
     *properties = 136446466;
-    *&properties[4] = v77;
+    *&properties[4] = uTF8String8;
     v113 = 2114;
     v114 = v57;
     _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
 
 LABEL_66:
-    v2 = v103;
+    selfCopy = v103;
     goto LABEL_67;
   }
 
@@ -531,22 +531,22 @@ LABEL_66:
   {
     v29 = v25;
     v30 = v28;
-    v31 = [(__CFString *)v25 UTF8String];
+    uTF8String9 = [(__CFString *)v25 UTF8String];
     *properties = 136446466;
-    *&properties[4] = v31;
+    *&properties[4] = uTF8String9;
     v113 = 2114;
     v114 = v27;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", properties, 0x16u);
   }
 
   v3 = 0;
-  v2 = v103;
+  selfCopy = v103;
 LABEL_30:
   IOObjectRelease(v8);
 LABEL_13:
 
 LABEL_14:
-  v2->_connected = v3;
+  selfCopy->_connected = v3;
   return v3;
 }
 
@@ -567,7 +567,7 @@ LABEL_14:
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v12 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v13 = 2114;
     v14 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -614,28 +614,28 @@ LABEL_14:
   }
 }
 
-- (BOOL)sendRequest:(id)a3
+- (BOOL)sendRequest:(id)request
 {
-  v3 = self;
-  v4 = [a3 contentForUSBUsingBuffer:self->_writeBuffer capacity:self->_writeBufferSize];
-  LOBYTE(v3) = [(PTPHostUSBTransport *)v3 writeBulkData:v4];
+  selfCopy = self;
+  v4 = [request contentForUSBUsingBuffer:self->_writeBuffer capacity:self->_writeBufferSize];
+  LOBYTE(selfCopy) = [(PTPHostUSBTransport *)selfCopy writeBulkData:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v12 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
   if (self->_connected && !self->_busy)
   {
-    [v12 range];
+    [dataCopy range];
     v6 = v5;
-    [v12 setBytesTransferred:0];
+    [dataCopy setBytesTransferred:0];
     if (v6)
     {
       self->_busy = 1;
-      [(PTPHostUSBTransport *)self performSelector:"sendDataPackets:" withObject:v12];
+      [(PTPHostUSBTransport *)self performSelector:"sendDataPackets:" withObject:dataCopy];
     }
 
     else
@@ -650,7 +650,7 @@ LABEL_14:
         if (v10)
         {
           v11 = objc_loadWeakRetained(&self->_delegate);
-          [v11 performSelector:"sentData:" withObject:v12];
+          [v11 performSelector:"sentData:" withObject:dataCopy];
         }
       }
     }
@@ -659,24 +659,24 @@ LABEL_14:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)sendDataPackets:(id)a3
+- (void)sendDataPackets:(id)packets
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  packetsCopy = packets;
+  transactionID = [packetsCopy transactionID];
   v6 = [[PTPWrappedBytes alloc] initWithBytes:self->_writeBuffer capacity:self->_writeBufferSize];
-  [v4 range];
+  [packetsCopy range];
   v45 = v7;
   if (self->_connected)
   {
     v8 = 0;
     while (1)
     {
-      if (v5 && v5 == self->_canceledTransactionID)
+      if (transactionID && transactionID == self->_canceledTransactionID)
       {
         goto LABEL_31;
       }
 
-      v9 = [v4 copyToWrappedBytes:v6 forTransport:2];
+      v9 = [packetsCopy copyToWrappedBytes:v6 forTransport:2];
       v10 = [v6 length];
       if (v10 != self->_writeBufferSize)
       {
@@ -702,9 +702,9 @@ LABEL_14:
           {
             v15 = v11;
             v16 = v14;
-            v17 = [(__CFString *)v11 UTF8String];
+            uTF8String = [(__CFString *)v11 UTF8String];
             *buf = 136446466;
-            v47 = v17;
+            v47 = uTF8String;
             v48 = 2114;
             v49 = v13;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -745,9 +745,9 @@ LABEL_14:
         {
           v23 = v19;
           v24 = v22;
-          v25 = [(__CFString *)v19 UTF8String];
+          uTF8String2 = [(__CFString *)v19 UTF8String];
           *buf = 136446466;
-          v47 = v25;
+          v47 = uTF8String2;
           v48 = 2114;
           v49 = v21;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -771,9 +771,9 @@ LABEL_14:
       {
         v30 = v26;
         v31 = v29;
-        v32 = [(__CFString *)v26 UTF8String];
+        uTF8String3 = [(__CFString *)v26 UTF8String];
         *buf = 136446466;
-        v47 = v32;
+        v47 = uTF8String3;
         v48 = 2114;
         v49 = v28;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -783,7 +783,7 @@ LABEL_14:
     if (v18 % self->_maxPacketSizeBulkOut)
     {
 LABEL_30:
-      [v4 setBytesTransferred:v8];
+      [packetsCopy setBytesTransferred:v8];
       goto LABEL_31;
     }
 
@@ -806,9 +806,9 @@ LABEL_30:
         {
           v42 = v38;
           v43 = v41;
-          v44 = [(__CFString *)v38 UTF8String];
+          uTF8String4 = [(__CFString *)v38 UTF8String];
           *buf = 136446466;
-          v47 = v44;
+          v47 = uTF8String4;
           v48 = 2114;
           v49 = v40;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -830,7 +830,7 @@ LABEL_31:
     if (v36)
     {
       v37 = objc_loadWeakRetained(&self->_delegate);
-      [v37 performSelector:"sentData:" withObject:v4];
+      [v37 performSelector:"sentData:" withObject:packetsCopy];
     }
   }
 
@@ -864,9 +864,9 @@ LABEL_31:
   {
     v8 = v4;
     v9 = v7;
-    v10 = [(__CFString *)v4 UTF8String];
+    uTF8String = [(__CFString *)v4 UTF8String];
     *buf = 136446466;
-    v25 = v10;
+    v25 = uTF8String;
     v26 = 2114;
     v27 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -888,9 +888,9 @@ LABEL_31:
     {
       v15 = v11;
       v16 = v14;
-      v17 = [(__CFString *)v11 UTF8String];
+      uTF8String2 = [(__CFString *)v11 UTF8String];
       *buf = 136446466;
-      v25 = v17;
+      v25 = uTF8String2;
       v26 = 2114;
       v27 = v13;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -900,20 +900,20 @@ LABEL_31:
   return HIWORD(v20);
 }
 
-- (unsigned)cancelRequest:(id)a3
+- (unsigned)cancelRequest:(id)request
 {
   v23 = 0;
   v24 = 0;
   v25 = 0;
   v20 = 0;
   v21 = 16385;
-  v22 = [a3 unsignedIntValue];
+  unsignedIntValue = [request unsignedIntValue];
   ((*self->_interfaceInterfaceRef)->GetInterfaceNumber)(self->_interfaceInterfaceRef, &v20);
-  WORD2(v22) = 25761;
+  WORD2(unsignedIntValue) = 25761;
   LOWORD(v23) = v20;
   HIWORD(v23) = 6;
   v24 = &v21;
-  v4 = ((*self->_interfaceInterfaceRef)->ControlRequest)(self->_interfaceInterfaceRef, 0, &v22 + 4);
+  v4 = ((*self->_interfaceInterfaceRef)->ControlRequest)(self->_interfaceInterfaceRef, 0, &unsignedIntValue + 4);
   __ICOSLogCreate();
   v5 = @"HostUSB";
   if ([@"HostUSB" length] >= 0x15)
@@ -928,9 +928,9 @@ LABEL_31:
   {
     v9 = v5;
     v10 = v8;
-    v11 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     *buf = 136446466;
-    v27 = v11;
+    v27 = uTF8String;
     v28 = 2114;
     v29 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -946,22 +946,22 @@ LABEL_31:
       v12 = [v13 stringByAppendingString:@".."];
     }
 
-    v14 = [NSString stringWithFormat:@"returned size: %d, buffer[0]: 0x%04x, buffer[1]: 0x%04x\n, buffer[2]: 0x%04x", HIWORD(v23), v21, v22, WORD1(v22)];
+    v14 = [NSString stringWithFormat:@"returned size: %d, buffer[0]: 0x%04x, buffer[1]: 0x%04x\n, buffer[2]: 0x%04x", HIWORD(v23), v21, unsignedIntValue, WORD1(unsignedIntValue)];
     v15 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v12;
       v17 = v15;
-      v18 = [(__CFString *)v12 UTF8String];
+      uTF8String2 = [(__CFString *)v12 UTF8String];
       *buf = 136446466;
-      v27 = v18;
+      v27 = uTF8String2;
       v28 = 2114;
       v29 = v14;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
   }
 
-  return v22;
+  return unsignedIntValue;
 }
 
 - (void)deviceReset
@@ -985,9 +985,9 @@ LABEL_31:
   {
     v7 = v3;
     v8 = v6;
-    v9 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     *buf = 136446466;
-    v21 = v9;
+    v21 = uTF8String;
     v22 = 2114;
     v23 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1008,24 +1008,24 @@ LABEL_31:
   {
     v15 = v11;
     v16 = v14;
-    v17 = [(__CFString *)v11 UTF8String];
+    uTF8String2 = [(__CFString *)v11 UTF8String];
     *buf = 136446466;
-    v21 = v17;
+    v21 = uTF8String2;
     v22 = 2114;
     v23 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 }
 
-- (BOOL)writeBulkData:(id)a3
+- (BOOL)writeBulkData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (self->_connected)
   {
     if (v5)
     {
-      v6 = ((*self->_interfaceInterfaceRef)->WritePipeTO)(self->_interfaceInterfaceRef, self->_bulkPipeOut, [v4 bytes], v5, 5000, 60000);
+      v6 = ((*self->_interfaceInterfaceRef)->WritePipeTO)(self->_interfaceInterfaceRef, self->_bulkPipeOut, [dataCopy bytes], v5, 5000, 60000);
     }
 
     else
@@ -1071,9 +1071,9 @@ LABEL_41:
           {
             v14 = v10;
             v15 = v13;
-            v16 = [(__CFString *)v10 UTF8String];
+            uTF8String = [(__CFString *)v10 UTF8String];
             *buf = 136446466;
-            v38 = v16;
+            v38 = uTF8String;
             v39 = 2114;
             v40 = v12;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1100,9 +1100,9 @@ LABEL_21:
           {
             v22 = v18;
             v23 = v21;
-            v24 = [(__CFString *)v18 UTF8String];
+            uTF8String2 = [(__CFString *)v18 UTF8String];
             *buf = 136446466;
-            v38 = v24;
+            v38 = uTF8String2;
             v39 = 2114;
             v40 = v20;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1124,9 +1124,9 @@ LABEL_21:
             {
               v30 = v26;
               v31 = v29;
-              v32 = [(__CFString *)v26 UTF8String];
+              uTF8String3 = [(__CFString *)v26 UTF8String];
               *buf = 136446466;
-              v38 = v32;
+              v38 = uTF8String3;
               v39 = 2114;
               v40 = v28;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1186,27 +1186,27 @@ LABEL_42:
   return eventDataBufferSize;
 }
 
-- (void)handleInterruptData:(unint64_t)a3
+- (void)handleInterruptData:(unint64_t)data
 {
   if (self->_connected)
   {
-    [(NSMutableData *)self->_eventData appendBytes:self->_eventDataBuffer length:a3];
+    [(NSMutableData *)self->_eventData appendBytes:self->_eventDataBuffer length:data];
     v4 = [(NSMutableData *)self->_eventData length];
     if (v4)
     {
       v5 = v4;
       do
       {
-        v6 = [(NSMutableData *)self->_eventData mutableBytes];
-        v7 = *v6;
+        mutableBytes = [(NSMutableData *)self->_eventData mutableBytes];
+        v7 = *mutableBytes;
         if (v5 < v7)
         {
           break;
         }
 
-        if (v6[2] == 4)
+        if (mutableBytes[2] == 4)
         {
-          v8 = [[PTPEventPacket alloc] initWithUSBBuffer:v6];
+          v8 = [[PTPEventPacket alloc] initWithUSBBuffer:mutableBytes];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           if (WeakRetained)
           {
@@ -1242,9 +1242,9 @@ LABEL_42:
           {
             v19 = v15;
             v20 = v18;
-            v21 = [(__CFString *)v15 UTF8String];
+            uTF8String = [(__CFString *)v15 UTF8String];
             *buf = 136446466;
-            v23 = v21;
+            v23 = uTF8String;
             v24 = 2114;
             v25 = v17;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1263,18 +1263,18 @@ LABEL_42:
   }
 }
 
-- (int)readResponseData:(id)a3 withTimeout:(unsigned int)a4
+- (int)readResponseData:(id)data withTimeout:(unsigned int)timeout
 {
-  v6 = a3;
+  dataCopy = data;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x2020000000;
   v44 = 1;
   [(PTPHostUSBTransport *)self setTimedOut:0];
-  v36 = v6;
-  v35 = [v6 txID];
-  v7 = 1000 * a4;
-  delta = 2000000000 * a4;
+  v36 = dataCopy;
+  txID = [dataCopy txID];
+  v7 = 1000 * timeout;
+  delta = 2000000000 * timeout;
   while (-[PTPHostUSBTransport connected](self, "connected") && !-[PTPHostUSBTransport timedOut](self, "timedOut") && ([v36 txComplete] & 1) == 0)
   {
     v8 = dispatch_semaphore_create(0);
@@ -1284,14 +1284,14 @@ LABEL_42:
     v37[2] = sub_100011704;
     v37[3] = &unk_10002CA18;
     objc_copyWeak(&v41, &location);
-    v38 = v35;
+    v38 = txID;
     v40 = v43;
     v9 = v8;
     v39 = v9;
     v10 = [v37 copy];
-    v11 = [v36 bufMutableBytes];
-    v12 = [v36 bufSize];
-    if (!v11)
+    bufMutableBytes = [v36 bufMutableBytes];
+    bufSize = [v36 bufSize];
+    if (!bufMutableBytes)
     {
       __ICOSLogCreate();
       if ([@"HostUSB" length] < 0x15)
@@ -1322,7 +1322,7 @@ LABEL_30:
       break;
     }
 
-    v13 = v12;
+    v13 = bufSize;
     __ICOSLogCreate();
     if (__ICLogTypeEnabled())
     {
@@ -1338,9 +1338,9 @@ LABEL_30:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v14;
-        v19 = [(__CFString *)v14 UTF8String];
+        uTF8String = [(__CFString *)v14 UTF8String];
         *buf = 136446466;
-        v46 = v19;
+        v46 = uTF8String;
         v47 = 2114;
         v48 = v16;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1351,7 +1351,7 @@ LABEL_30:
     ReadPipeAsyncTO = (*interfaceInterfaceRef)->ReadPipeAsyncTO;
     bulkPipeIn = self->_bulkPipeIn;
     v23 = objc_retainBlock(v10);
-    v24 = (ReadPipeAsyncTO)(interfaceInterfaceRef, bulkPipeIn, v11, v13, v7, v7, sub_100011B88, v23);
+    v24 = (ReadPipeAsyncTO)(interfaceInterfaceRef, bulkPipeIn, bufMutableBytes, v13, v7, v7, sub_100011B88, v23);
 
     if (v24)
     {
@@ -1410,40 +1410,40 @@ LABEL_30:
   return 0;
 }
 
-- (id)getTransaction:(id)a3
+- (id)getTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PTPHostUSBTransport *)self transactions];
-  objc_sync_enter(v5);
-  v6 = [(PTPHostUSBTransport *)self transactions];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  transactionCopy = transaction;
+  transactions = [(PTPHostUSBTransport *)self transactions];
+  objc_sync_enter(transactions);
+  transactions2 = [(PTPHostUSBTransport *)self transactions];
+  v7 = [transactions2 objectForKeyedSubscript:transactionCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(transactions);
 
   return v7;
 }
 
-- (void)addTransaction:(id)a3
+- (void)addTransaction:(id)transaction
 {
-  v7 = a3;
-  v4 = [(PTPHostUSBTransport *)self transactions];
-  objc_sync_enter(v4);
-  v5 = [(PTPHostUSBTransport *)self transactions];
-  v6 = [v7 txID];
-  [v5 setObject:v7 forKeyedSubscript:v6];
+  transactionCopy = transaction;
+  transactions = [(PTPHostUSBTransport *)self transactions];
+  objc_sync_enter(transactions);
+  transactions2 = [(PTPHostUSBTransport *)self transactions];
+  txID = [transactionCopy txID];
+  [transactions2 setObject:transactionCopy forKeyedSubscript:txID];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(transactions);
 }
 
-- (void)removeTransaction:(id)a3
+- (void)removeTransaction:(id)transaction
 {
-  v6 = a3;
-  v4 = [(PTPHostUSBTransport *)self transactions];
-  objc_sync_enter(v4);
-  v5 = [(PTPHostUSBTransport *)self transactions];
-  [v5 removeObjectForKey:v6];
+  transactionCopy = transaction;
+  transactions = [(PTPHostUSBTransport *)self transactions];
+  objc_sync_enter(transactions);
+  transactions2 = [(PTPHostUSBTransport *)self transactions];
+  [transactions2 removeObjectForKey:transactionCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(transactions);
 }
 
 - (void)clearBulkInPipeStall
@@ -1463,7 +1463,7 @@ LABEL_30:
     v7 = v3;
     v8 = v6;
     v10 = 136446466;
-    v11 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v12 = 2114;
     v13 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v10, 0x16u);
@@ -1496,7 +1496,7 @@ LABEL_30:
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v11 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v12 = 2114;
     v13 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);

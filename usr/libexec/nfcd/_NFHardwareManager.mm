@@ -1,157 +1,157 @@
 @interface _NFHardwareManager
 + (id)sharedHardwareManager;
-- (BOOL)_syncResumeSession:(id)a3 field:(id)a4;
+- (BOOL)_syncResumeSession:(id)session field:(id)field;
 - (BOOL)canStop;
-- (BOOL)configureExpressFelicaEntry:(int)a3;
+- (BOOL)configureExpressFelicaEntry:(int)entry;
 - (BOOL)hasSession;
 - (BOOL)isFirstInQueue;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)refreshSecureElementInfo;
 - (NFRoutingConfig)lastKnownRoutingConfig;
 - (_NFHardwareManager)init;
 - (id)_updateAllPowerCounters;
-- (id)combineFlashWriteCounters:(id)a3 with:(id)a4 overflow:(BOOL)a5;
-- (id)openStackAndUpdateAllWriteCounters:(id *)a3;
-- (id)powerCycleSE:(id)a3;
-- (id)secureElementDidExitRestrictedMode:(id)a3 os:(int64_t)a4 reason:(unsigned int)a5;
-- (id)setRoutingConfig:(id)a3;
-- (id)softResetSE:(id)a3;
-- (id)switchToSession:(id)a3 withToken:(id)a4;
+- (id)combineFlashWriteCounters:(id)counters with:(id)with overflow:(BOOL)overflow;
+- (id)openStackAndUpdateAllWriteCounters:(id *)counters;
+- (id)powerCycleSE:(id)e;
+- (id)secureElementDidExitRestrictedMode:(id)mode os:(int64_t)os reason:(unsigned int)reason;
+- (id)setRoutingConfig:(id)config;
+- (id)softResetSE:(id)e;
+- (id)switchToSession:(id)session withToken:(id)token;
 - (id)updateAllPowerCounters;
-- (int64_t)nfcRadioEnabled:(id *)a3 showUIPopup:(BOOL)a4;
-- (void)_sync_getFlashWriteCountersForConnection:(id)a3 completion:(id)a4;
-- (void)_sync_getPowerCountersForConnection:(id)a3 completion:(id)a4;
-- (void)actOnUserInitiatedSystemShutDown:(unsigned int)a3 completion:(id)a4;
-- (void)areFeaturesSupported:(unint64_t)a3 completion:(id)a4;
-- (void)areSessionsAllowedWithCompletion:(id)a3;
-- (void)cachedEmbeddedSecureElementSerialNumber:(id)a3;
-- (void)canResume:(unint64_t)a3 status:(id)a4;
-- (void)cancelSinglePollExpressModeAssertionWithCompletion:(id)a3;
-- (void)checkExpressPassCompatibility:(id)a3 callback:(id)a4;
-- (void)checkExpressPassCompatibilityDeprecated:(id)a3 callback:(id)a4;
-- (void)clientAppStateUpdate:(id)a3 appState:(unint64_t)a4;
-- (void)configureHeadlessFactoryMode:(BOOL)a3 completion:(id)a4;
-- (void)configureReaderModeRFForTransitPartner:(BOOL)a3 transitPartner:(unsigned int)a4 completion:(id)a5;
-- (void)controllerInfoWithCompletion:(id)a3;
-- (void)currentInMetroStatus:(id)a3;
+- (int64_t)nfcRadioEnabled:(id *)enabled showUIPopup:(BOOL)popup;
+- (void)_sync_getFlashWriteCountersForConnection:(id)connection completion:(id)completion;
+- (void)_sync_getPowerCountersForConnection:(id)connection completion:(id)completion;
+- (void)actOnUserInitiatedSystemShutDown:(unsigned int)down completion:(id)completion;
+- (void)areFeaturesSupported:(unint64_t)supported completion:(id)completion;
+- (void)areSessionsAllowedWithCompletion:(id)completion;
+- (void)cachedEmbeddedSecureElementSerialNumber:(id)number;
+- (void)canResume:(unint64_t)resume status:(id)status;
+- (void)cancelSinglePollExpressModeAssertionWithCompletion:(id)completion;
+- (void)checkExpressPassCompatibility:(id)compatibility callback:(id)callback;
+- (void)checkExpressPassCompatibilityDeprecated:(id)deprecated callback:(id)callback;
+- (void)clientAppStateUpdate:(id)update appState:(unint64_t)state;
+- (void)configureHeadlessFactoryMode:(BOOL)mode completion:(id)completion;
+- (void)configureReaderModeRFForTransitPartner:(BOOL)partner transitPartner:(unsigned int)transitPartner completion:(id)completion;
+- (void)controllerInfoWithCompletion:(id)completion;
+- (void)currentInMetroStatus:(id)status;
 - (void)dealloc;
-- (void)dequeueSession:(id)a3;
-- (void)didCameraStateChange:(BOOL)a3;
-- (void)disableHeadlessMiniNVWithCompletion:(id)a3;
-- (void)disableLPEMFeature:(unint64_t)a3 completion:(id)a4;
-- (void)dumpLPMDebugLogWithCompletion:(id)a3;
-- (void)enableHeadlessTestMode:(unsigned __int16)a3 completion:(id)a4;
-- (void)enableRadio:(BOOL)a3 completion:(id)a4;
-- (void)expressModesInfoWithOption:(unsigned int)a3 completion:(id)a4;
-- (void)getDieIDWithCompletion:(id)a3;
-- (void)getFlashWriteCountersWithCompletion:(id)a3;
-- (void)getHostCardEmulationLogWithCompletion:(id)a3;
-- (void)getLPEMFTALoggingWithCompletion:(id)a3;
-- (void)getPowerCountersWithCompletion:(id)a3;
-- (void)getReaderProhibitTimer:(id)a3;
-- (void)getTemperatureWithCompletion:(id)a3;
-- (void)getUniqueFDRKeyWithCompletion:(id)a3;
-- (void)handlMFWNotification:(id)a3;
-- (void)handleAppletInactivityTimeout:(id)a3 atlData:(id)a4 caData:(id)a5;
+- (void)dequeueSession:(id)session;
+- (void)didCameraStateChange:(BOOL)change;
+- (void)disableHeadlessMiniNVWithCompletion:(id)completion;
+- (void)disableLPEMFeature:(unint64_t)feature completion:(id)completion;
+- (void)dumpLPMDebugLogWithCompletion:(id)completion;
+- (void)enableHeadlessTestMode:(unsigned __int16)mode completion:(id)completion;
+- (void)enableRadio:(BOOL)radio completion:(id)completion;
+- (void)expressModesInfoWithOption:(unsigned int)option completion:(id)completion;
+- (void)getDieIDWithCompletion:(id)completion;
+- (void)getFlashWriteCountersWithCompletion:(id)completion;
+- (void)getHostCardEmulationLogWithCompletion:(id)completion;
+- (void)getLPEMFTALoggingWithCompletion:(id)completion;
+- (void)getPowerCountersWithCompletion:(id)completion;
+- (void)getReaderProhibitTimer:(id)timer;
+- (void)getTemperatureWithCompletion:(id)completion;
+- (void)getUniqueFDRKeyWithCompletion:(id)completion;
+- (void)handlMFWNotification:(id)notification;
+- (void)handleAppletInactivityTimeout:(id)timeout atlData:(id)data caData:(id)caData;
 - (void)handleEraseCounterExceeded;
 - (void)handleExpressModeExited;
 - (void)handleExpressModeStarted;
 - (void)handleExpressModeTimeout;
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4;
-- (void)handleFieldNotification:(id)a3;
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d;
+- (void)handleFieldNotification:(id)notification;
 - (void)handleFieldReset;
-- (void)handleFilteredFieldNotification:(id)a3;
+- (void)handleFilteredFieldNotification:(id)notification;
 - (void)handleForceExpressModeEndEvent;
-- (void)handleHWRecoveryCompletion:(BOOL)a3;
-- (void)handleHardwareReset:(const char *)a3;
+- (void)handleHWRecoveryCompletion:(BOOL)completion;
+- (void)handleHardwareReset:(const char *)reset;
 - (void)handleHceTargetLost;
-- (void)handleHostCardReaderDetected:(id)a3;
+- (void)handleHostCardReaderDetected:(id)detected;
 - (void)handleReaderBurnoutCleared;
 - (void)handleReaderBurnoutTimer;
-- (void)handleReaderModeProhibitTimerEvent:(unint64_t)a3;
-- (void)handleRemoteTagsDetected:(id)a3 dropAndRestartDiscovery:(BOOL)a4;
+- (void)handleReaderModeProhibitTimerEvent:(unint64_t)event;
+- (void)handleRemoteTagsDetected:(id)detected dropAndRestartDiscovery:(BOOL)discovery;
 - (void)handleRestartDiscovery;
 - (void)handleSecureElementEndOfOperation;
-- (void)handleSecureElementEnteredRestrictedMode:(int)a3 os:(int64_t)a4;
-- (void)handleSecureElementReaderModeEnded:(id)a3;
-- (void)handleSecureElementReaderModeStarted:(id)a3;
-- (void)handleSecureElementRemoved:(int)a3 withReason:(unsigned int)a4;
-- (void)handleSecureElementTransactionData:(id)a3 appletIdentifier:(id)a4;
-- (void)handleSelectEvent:(id)a3;
+- (void)handleSecureElementEnteredRestrictedMode:(int)mode os:(int64_t)os;
+- (void)handleSecureElementReaderModeEnded:(id)ended;
+- (void)handleSecureElementReaderModeStarted:(id)started;
+- (void)handleSecureElementRemoved:(int)removed withReason:(unsigned int)reason;
+- (void)handleSecureElementTransactionData:(id)data appletIdentifier:(id)identifier;
+- (void)handleSelectEvent:(id)event;
 - (void)handleStackLoad;
 - (void)handleStackUnload;
-- (void)handleStepUpEvent:(id)a3 forApplet:(id)a4;
-- (void)handleTemperatureChange:(double)a3;
-- (void)handleTimerExpiredEvent:(id)a3;
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4 caData:(id)a5;
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4 caData:(id)a5;
-- (void)headlessFactoryModeWithCompletion:(id)a3;
-- (void)isCardSessionEligibleWithCompletion:(id)a3;
-- (void)isHWSupportedWithCompletion:(id)a3;
-- (void)markApplicationForDelete:(id)a3;
-- (void)mustStop:(unint64_t)a3;
+- (void)handleStepUpEvent:(id)event forApplet:(id)applet;
+- (void)handleTemperatureChange:(double)change;
+- (void)handleTimerExpiredEvent:(id)event;
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data caData:(id)caData;
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data caData:(id)caData;
+- (void)headlessFactoryModeWithCompletion:(id)completion;
+- (void)isCardSessionEligibleWithCompletion:(id)completion;
+- (void)isHWSupportedWithCompletion:(id)completion;
+- (void)markApplicationForDelete:(id)delete;
+- (void)mustStop:(unint64_t)stop;
 - (void)notifyReaderModeActivityEnd;
 - (void)notifyReaderModeActivityStart;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openSinglePollExpressModeAssertion:(double)a3 completion:(id)a4;
-- (void)postEventForPublisher:(id)a3 event:(const char *)a4 additionalData:(id)a5;
-- (void)postEventForPublisher:(id)a3 event:(const char *)a4 objectString:(id)a5;
-- (void)powerObserverSystemHasPoweredOn:(id)a3;
-- (void)powerObserverSystemWillSleep:(id)a3;
-- (void)preWarmWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openSinglePollExpressModeAssertion:(double)assertion completion:(id)completion;
+- (void)postEventForPublisher:(id)publisher event:(const char *)event additionalData:(id)data;
+- (void)postEventForPublisher:(id)publisher event:(const char *)event objectString:(id)string;
+- (void)powerObserverSystemHasPoweredOn:(id)on;
+- (void)powerObserverSystemWillSleep:(id)sleep;
+- (void)preWarmWithCompletion:(id)completion;
 - (void)preferencesDidChange;
-- (void)prioritizeSession:(id)a3;
-- (void)pushSignedRF:(id)a3 completion:(id)a4;
-- (void)queueCardFieldDetectSession:(id)a3 completion:(id)a4;
-- (void)queueCardMigrationPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueCardSession:(id)a3 sessionConfig:(id)a4 completion:(id)a5;
-- (void)queueContactlessPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueContactlessSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueCredentialSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueECommercePaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueFieldDetectSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueHostEmulationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueInternalConfigurationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueLPEMConfigSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueLoyaltyAndPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueNdefTagSession:(id)a3 sessionAttribute:(id)a4 data:(id)a5 completion:(id)a6;
-- (void)queuePeerPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueReaderSession:(id)a3 sessionConfig:(id)a4 completion:(id)a5;
-- (void)queueReaderSessionInternal:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureElementAndHostEmulationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureElementLoggingSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureElementManagerSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureElementReaderSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureTransactionServicesHybridSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSecureTransactionServicesSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSeshatSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueSession:(id)a3;
-- (void)queueTrustSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)queueUnifiedAccessSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5;
-- (void)radioEnableStateWithCompletion:(id)a3;
-- (void)reconfigureDynamicTransitRF:(unint64_t)a3 withOverride:(BOOL)a4;
-- (void)registerForCallbacks:(id)a3 withUUID:(id)a4 completion:(id)a5;
-- (void)releaseAssertion:(id)a3 waitOnComplete:(BOOL)a4 completion:(id)a5;
-- (void)releaseSuppressPresentmentAssertion:(id)a3 completion:(id)a4;
-- (void)requestAssertion:(id)a3 waitOnComplete:(BOOL)a4 completion:(id)a5;
-- (void)requestSuppressPresentmentWithCompletion:(id)a3;
-- (void)rfSettingsWithCompletion:(id)a3;
-- (void)secureElementReturnedRestrictedMode:(id)a3 os:(int64_t)a4;
-- (void)secureElementsWithCompletion:(id)a3;
-- (void)setAntiRelayRID:(id)a3 completion:(id)a4;
-- (void)setChipscope:(BOOL)a3 completion:(id)a4;
-- (void)setFieldDetectEnabled:(BOOL)a3 completion:(id)a4;
+- (void)prioritizeSession:(id)session;
+- (void)pushSignedRF:(id)f completion:(id)completion;
+- (void)queueCardFieldDetectSession:(id)session completion:(id)completion;
+- (void)queueCardMigrationPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueCardSession:(id)session sessionConfig:(id)config completion:(id)completion;
+- (void)queueContactlessPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueContactlessSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueCredentialSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueECommercePaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueFieldDetectSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueHostEmulationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueInternalConfigurationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueLPEMConfigSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueLoyaltyAndPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueNdefTagSession:(id)session sessionAttribute:(id)attribute data:(id)data completion:(id)completion;
+- (void)queuePeerPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueReaderSession:(id)session sessionConfig:(id)config completion:(id)completion;
+- (void)queueReaderSessionInternal:(id)internal sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureElementAndHostEmulationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureElementLoggingSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureElementManagerSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureElementReaderSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureTransactionServicesHybridSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSecureTransactionServicesSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSeshatSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueSession:(id)session;
+- (void)queueTrustSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)queueUnifiedAccessSession:(id)session sessionAttribute:(id)attribute completion:(id)completion;
+- (void)radioEnableStateWithCompletion:(id)completion;
+- (void)reconfigureDynamicTransitRF:(unint64_t)f withOverride:(BOOL)override;
+- (void)registerForCallbacks:(id)callbacks withUUID:(id)d completion:(id)completion;
+- (void)releaseAssertion:(id)assertion waitOnComplete:(BOOL)complete completion:(id)completion;
+- (void)releaseSuppressPresentmentAssertion:(id)assertion completion:(id)completion;
+- (void)requestAssertion:(id)assertion waitOnComplete:(BOOL)complete completion:(id)completion;
+- (void)requestSuppressPresentmentWithCompletion:(id)completion;
+- (void)rfSettingsWithCompletion:(id)completion;
+- (void)secureElementReturnedRestrictedMode:(id)mode os:(int64_t)os;
+- (void)secureElementsWithCompletion:(id)completion;
+- (void)setAntiRelayRID:(id)d completion:(id)completion;
+- (void)setChipscope:(BOOL)chipscope completion:(id)completion;
+- (void)setFieldDetectEnabled:(BOOL)enabled completion:(id)completion;
 - (void)start;
-- (void)stateInfoWithCompletion:(id)a3;
+- (void)stateInfoWithCompletion:(id)completion;
 - (void)stop;
-- (void)toggleGPIO:(unsigned __int16)a3 completion:(id)a4;
-- (void)triggerCoreDumpWithCompletion:(id)a3;
-- (void)triggerCrash:(unsigned __int16)a3 completion:(id)a4;
-- (void)triggerDelayedWake:(unsigned __int8)a3 completion:(id)a4;
-- (void)unregisterForCallbacks:(id)a3;
-- (void)updateBackgroundTagReading:(unsigned int)a3 params:(id)a4 completion:(id)a5;
-- (void)updateSeInfo:(id)a3;
-- (void)waitForHWSupportedWithCompletion:(id)a3;
+- (void)toggleGPIO:(unsigned __int16)o completion:(id)completion;
+- (void)triggerCoreDumpWithCompletion:(id)completion;
+- (void)triggerCrash:(unsigned __int16)crash completion:(id)completion;
+- (void)triggerDelayedWake:(unsigned __int8)wake completion:(id)completion;
+- (void)unregisterForCallbacks:(id)callbacks;
+- (void)updateBackgroundTagReading:(unsigned int)reading params:(id)params completion:(id)completion;
+- (void)updateSeInfo:(id)info;
+- (void)waitForHWSupportedWithCompletion:(id)completion;
 @end
 
 @implementation _NFHardwareManager
@@ -190,29 +190,29 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = qword_10035DB88;
   v8 = 1;
-  if (qword_10035DB88 == a3)
+  if (qword_10035DB88 == listener)
   {
     v8 = 2;
   }
 
   v135 = v8;
-  v9 = [[NFServiceWhitelistChecker alloc] initWithConnection:v6 coreNFCConnection:qword_10035DB88 == a3];
+  listener = [[NFServiceWhitelistChecker alloc] initWithConnection:connectionCopy coreNFCConnection:qword_10035DB88 == listener];
   kdebug_trace();
   v10 = NFSharedSignpostLog();
   if (os_signpost_enabled(v10))
   {
-    v11 = [v9 clientName];
+    clientName = [listener clientName];
     *buf = 138412290;
-    *&buf[4] = v11;
+    *&buf[4] = clientName;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "XPC_CONNECT", "XPC connection from %@", buf, 0xCu);
   }
 
-  if (v7 != a3 && ([v9 internalAccess] & 1) == 0)
+  if (v7 != listener && ([listener internalAccess] & 1) == 0)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -223,15 +223,15 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v34 = [v6 processIdentifier];
-      v35 = [v9 clientName];
+      processIdentifier = [connectionCopy processIdentifier];
+      clientName2 = [listener clientName];
       v36 = 43;
       if (!isMetaClass)
       {
         v36 = 45;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) missing entitlement: %s", v36, ClassName, Name, 137, v34, v35, "com.apple.nfcd.hwmanager");
+      v29(3, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) missing entitlement: %s", v36, ClassName, Name, 137, processIdentifier, clientName2, "com.apple.nfcd.hwmanager");
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -251,8 +251,8 @@
 
       v40 = object_getClassName(self);
       v41 = sel_getName(a2);
-      v42 = [v6 processIdentifier];
-      v43 = [v9 clientName];
+      processIdentifier2 = [connectionCopy processIdentifier];
+      clientName3 = [listener clientName];
       *buf = 67110658;
       *&buf[4] = v39;
       *&buf[8] = 2082;
@@ -262,9 +262,9 @@
       *&buf[28] = 1024;
       *&buf[30] = 137;
       *&buf[34] = 1024;
-      *&buf[36] = v42;
+      *&buf[36] = processIdentifier2;
       *&buf[40] = 2114;
-      *&buf[42] = v43;
+      *&buf[42] = clientName3;
       *&buf[50] = 2080;
       *&buf[52] = "com.apple.nfcd.hwmanager";
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) missing entitlement: %s", buf, 0x3Cu);
@@ -282,14 +282,14 @@
     v15 = class_isMetaClass(v14);
     v16 = object_getClassName(self);
     v17 = sel_getName(a2);
-    v18 = [v9 clientName];
+    clientName4 = [listener clientName];
     v19 = 45;
     if (v15)
     {
       v19 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", v19, v16, v17, 141, v18, v6);
+    v13(6, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", v19, v16, v17, 141, clientName4, connectionCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -309,7 +309,7 @@
 
     v23 = object_getClassName(self);
     v24 = sel_getName(a2);
-    v25 = [v9 clientName];
+    clientName5 = [listener clientName];
     *buf = 67110402;
     *&buf[4] = v22;
     *&buf[8] = 2082;
@@ -319,17 +319,17 @@
     *&buf[28] = 1024;
     *&buf[30] = 141;
     *&buf[34] = 2114;
-    *&buf[36] = v25;
+    *&buf[36] = clientName5;
     *&buf[44] = 2114;
-    *&buf[46] = v6;
+    *&buf[46] = connectionCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", buf, 0x36u);
   }
 
-  if (v7 == a3)
+  if (v7 == listener)
   {
-    if (v6)
+    if (connectionCopy)
     {
-      [v6 auditToken];
+      [connectionCopy auditToken];
       if (!self)
       {
         goto LABEL_47;
@@ -618,27 +618,27 @@ LABEL_27:
     }
 
     v105 = +[NFCHardwareManagerCallbacks interface];
-    [v6 setRemoteObjectInterface:v105];
+    [connectionCopy setRemoteObjectInterface:v105];
 
     v106 = +[NFCHardwareManagerInterface interface];
-    [v6 setExportedInterface:v106];
+    [connectionCopy setExportedInterface:v106];
 
-    v27 = [v6 remoteObjectProxy];
-    sub_1001263B0(self, v27);
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    sub_1001263B0(self, remoteObjectProxy);
     goto LABEL_90;
   }
 
   v26 = sub_10000692C();
-  [v6 setRemoteObjectInterface:v26];
+  [connectionCopy setRemoteObjectInterface:v26];
 
-  v27 = sub_100006984();
-  [v6 setExportedInterface:v27];
+  remoteObjectProxy = sub_100006984();
+  [connectionCopy setExportedInterface:remoteObjectProxy];
 LABEL_90:
 
-  [v6 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v107 = [NFXPCConnectionUserInfoDictionary alloc];
-  v108 = [v9 clientName];
-  v37 = [v107 initWithServiceWhitelist:v9 clientName:v108];
+  clientName6 = [listener clientName];
+  v37 = [v107 initWithServiceWhitelist:listener clientName:clientName6];
 
   v109 = +[NSDate now];
   [v37 setObject:v109 forKeyedSubscript:@"ConnectTime"];
@@ -651,7 +651,7 @@ LABEL_90:
 
   LOBYTE(v140) = 0;
   v139 = 0;
-  v112 = sub_100044E78(NFClientAppStateObserver, v6, &v139, &v140);
+  v112 = sub_100044E78(NFClientAppStateObserver, connectionCopy, &v139, &v140);
   v113 = v139;
   if ([v113 lengthOfBytesUsingEncoding:4])
   {
@@ -664,13 +664,13 @@ LABEL_90:
     [v37 setObject:v114 forKey:@"RBSApp"];
   }
 
-  [v6 setUserInfo:v37];
+  [connectionCopy setUserInfo:v37];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   *&buf[24] = sub_1000069EC;
   *&buf[32] = sub_100019640;
-  v115 = v6;
+  v115 = connectionCopy;
   *&buf[40] = v115;
   v138[0] = _NSConcreteStackBlock;
   v138[1] = 3221225472;
@@ -997,46 +997,46 @@ LABEL_101:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HWMANAGER_START", &unk_1002E8B7A, state, 2u);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  if (v17->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isRunning)
   {
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v18 = sub_1000185C8(v17, v17->_xpcConnectionQueue);
+    v18 = sub_1000185C8(selfCopy, selfCopy->_xpcConnectionQueue);
     [v18 resume];
-    v19 = sub_10001866C(v17, v17->_xpcConnectionQueue);
+    v19 = sub_10001866C(selfCopy, selfCopy->_xpcConnectionQueue);
     [v19 resume];
 
-    v17->_isRunning = 1;
+    selfCopy->_isRunning = 1;
     block[5] = _NSConcreteStackBlock;
     block[6] = 3221225472;
     block[7] = sub_1000DE678;
     block[8] = &unk_100318408;
-    block[9] = v17;
-    v17->_stateCaptureHandle = os_state_add_handler();
-    objc_sync_exit(v17);
+    block[9] = selfCopy;
+    selfCopy->_stateCaptureHandle = os_state_add_handler();
+    objc_sync_exit(selfCopy);
 
-    v20 = v17->_secureElementSessionQueue;
+    v20 = selfCopy->_secureElementSessionQueue;
     objc_sync_enter(v20);
-    sub_1000DE998(v17, 0);
+    sub_1000DE998(selfCopy, 0);
     objc_sync_exit(v20);
 
     v21 = sub_100210FEC();
-    sub_100212EFC(v21, v17, 1, v17->_workQueue);
+    sub_100212EFC(v21, selfCopy, 1, selfCopy->_workQueue);
 
     v22 = +[NFPowerAssertion sharedPowerAssertion];
     [v22 setEnableDebug:NFIsInternalBuild()];
 
-    workQueue = v17->_workQueue;
+    workQueue = selfCopy->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000DEE30;
     block[3] = &unk_100315F30;
-    block[4] = v17;
+    block[4] = selfCopy;
     dispatch_async(workQueue, block);
   }
 }
@@ -1102,19 +1102,19 @@ LABEL_101:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HWMANAGER_STOP", &unk_1002E8B7A, state, 2u);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  if (v17->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isRunning)
   {
-    v17->_isRunning = 0;
+    selfCopy->_isRunning = 0;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v18 = NFLogGetLogger();
     if (v18)
     {
       v19 = v18;
-      v20 = object_getClass(v17);
+      v20 = object_getClass(selfCopy);
       v21 = class_isMetaClass(v20);
-      v22 = object_getClassName(v17);
+      v22 = object_getClassName(selfCopy);
       v46 = sel_getName("_unloadService");
       v23 = 45;
       if (v21)
@@ -1129,7 +1129,7 @@ LABEL_101:
     v24 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = object_getClass(v17);
+      v25 = object_getClass(selfCopy);
       if (class_isMetaClass(v25))
       {
         v26 = 43;
@@ -1140,7 +1140,7 @@ LABEL_101:
         v26 = 45;
       }
 
-      v27 = object_getClassName(v17);
+      v27 = object_getClassName(selfCopy);
       v28 = sel_getName("_unloadService");
       *state = 67109890;
       *&state[4] = v26;
@@ -1163,15 +1163,15 @@ LABEL_101:
     v30 = qword_10035DB88;
     qword_10035DB88 = 0;
 
-    powerCountersTimer = v17->_powerCountersTimer;
+    powerCountersTimer = selfCopy->_powerCountersTimer;
     if (powerCountersTimer)
     {
       [(NFTimer *)powerCountersTimer stopTimer];
     }
 
-    sub_100207470(v17->_keyBag);
-    [(NFPowerObserver *)v17->_powerObserver unregisterForEvents];
-    objc_sync_exit(v17);
+    sub_100207470(selfCopy->_keyBag);
+    [(NFPowerObserver *)selfCopy->_powerObserver unregisterForEvents];
+    objc_sync_exit(selfCopy);
 
     v50[0] = 0;
     v50[1] = v50;
@@ -1184,9 +1184,9 @@ LABEL_101:
     block[3] = &unk_100318430;
     block[5] = v50;
     block[6] = &v49;
-    block[4] = v17;
+    block[4] = selfCopy;
     v32 = dispatch_block_create_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0, block);
-    dispatch_async(v17->_workQueue, v32);
+    dispatch_async(selfCopy->_workQueue, v32);
     v33 = dispatch_time(0, 5000000000);
     if (dispatch_block_wait(v32, v33))
     {
@@ -1199,9 +1199,9 @@ LABEL_101:
     if (v34)
     {
       v35 = v34;
-      v36 = object_getClass(v17);
+      v36 = object_getClass(selfCopy);
       v37 = class_isMetaClass(v36);
-      v38 = object_getClassName(v17);
+      v38 = object_getClassName(selfCopy);
       v47 = sel_getName(a2);
       v39 = 45;
       if (v37)
@@ -1216,7 +1216,7 @@ LABEL_101:
     v40 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = object_getClass(v17);
+      v41 = object_getClass(selfCopy);
       if (class_isMetaClass(v41))
       {
         v42 = 43;
@@ -1227,7 +1227,7 @@ LABEL_101:
         v42 = 45;
       }
 
-      v43 = object_getClassName(v17);
+      v43 = object_getClassName(selfCopy);
       v44 = sel_getName(a2);
       *state = 67109890;
       *&state[4] = v42;
@@ -1245,7 +1245,7 @@ LABEL_101:
 
   else
   {
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1266,8 +1266,8 @@ LABEL_101:
     os_unfair_lock_lock(&self->_secureElementInfoLock);
     objc_storeStrong(&self->_secureElementInfo, v6);
     secureElementInfo = self->_secureElementInfo;
-    v11 = [(NFSecureElementWrapper *)self->_secureElementWrapper handle];
-    [v11 setInfo:secureElementInfo];
+    handle = [(NFSecureElementWrapper *)self->_secureElementWrapper handle];
+    [handle setInfo:secureElementInfo];
 
     os_unfair_lock_unlock(&self->_secureElementInfoLock);
   }
@@ -1324,15 +1324,15 @@ LABEL_101:
   return v5;
 }
 
-- (int64_t)nfcRadioEnabled:(id *)a3 showUIPopup:(BOOL)a4
+- (int64_t)nfcRadioEnabled:(id *)enabled showUIPopup:(BOOL)popup
 {
-  v4 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  nfcRadioEnabled = v6->_nfcRadioEnabled;
+  popupCopy = popup;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nfcRadioEnabled = selfCopy->_nfcRadioEnabled;
   if (nfcRadioEnabled)
   {
-    if (!v4)
+    if (!popupCopy)
     {
       goto LABEL_18;
     }
@@ -1345,9 +1345,9 @@ LABEL_101:
     if (Logger)
     {
       v9 = Logger;
-      Class = object_getClass(v6);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v6);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v14 = 45;
       if (isMetaClass)
@@ -1355,14 +1355,14 @@ LABEL_101:
         v14 = 43;
       }
 
-      v9(6, "%c[%{public}s %{public}s]:%i _nfcRadioEnabled = %d", v14, ClassName, Name, 1591, v6->_nfcRadioEnabled);
+      v9(6, "%c[%{public}s %{public}s]:%i _nfcRadioEnabled = %d", v14, ClassName, Name, 1591, selfCopy->_nfcRadioEnabled);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v15 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = object_getClass(v6);
+      v16 = object_getClass(selfCopy);
       if (class_isMetaClass(v16))
       {
         v17 = 43;
@@ -1373,9 +1373,9 @@ LABEL_101:
         v17 = 45;
       }
 
-      v18 = object_getClassName(v6);
+      v18 = object_getClassName(selfCopy);
       v19 = sel_getName(a2);
-      v20 = v6->_nfcRadioEnabled;
+      v20 = selfCopy->_nfcRadioEnabled;
       *buf = 67110146;
       *&buf[4] = v17;
       *v38 = 2082;
@@ -1389,11 +1389,11 @@ LABEL_101:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i _nfcRadioEnabled = %d", buf, 0x28u);
     }
 
-    nfcRadioEnabled = v6->_nfcRadioEnabled;
-    if (!v4)
+    nfcRadioEnabled = selfCopy->_nfcRadioEnabled;
+    if (!popupCopy)
     {
 LABEL_18:
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
 
       if (nfcRadioEnabled == 1)
       {
@@ -1409,7 +1409,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v21 = v6;
+  v21 = selfCopy;
   objc_sync_enter(v21);
   objc_initWeak(&location, v21);
   if (!v21->_radioDisabledNotificationPopup)
@@ -1436,9 +1436,9 @@ LABEL_19:
   if (v23)
   {
     v24 = v23;
-    v25 = object_getClass(v6);
+    v25 = object_getClass(selfCopy);
     v26 = class_isMetaClass(v25);
-    v34 = object_getClassName(v6);
+    v34 = object_getClassName(selfCopy);
     v35 = sel_getName(a2);
     v27 = 45;
     if (v26)
@@ -1453,7 +1453,7 @@ LABEL_19:
   v28 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = object_getClass(v6);
+    v29 = object_getClass(selfCopy);
     if (class_isMetaClass(v29))
     {
       v30 = 43;
@@ -1464,7 +1464,7 @@ LABEL_19:
       v30 = 45;
     }
 
-    v31 = object_getClassName(v6);
+    v31 = object_getClassName(selfCopy);
     v32 = sel_getName(a2);
     *buf = 67110146;
     *&buf[4] = v30;
@@ -1482,9 +1482,9 @@ LABEL_19:
   return nfcRadioEnabled;
 }
 
-- (void)isHWSupportedWithCompletion:(id)a3
+- (void)isHWSupportedWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_100003384(self);
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1497,14 +1497,14 @@ LABEL_19:
     Name = sel_getName(a2);
     +[NSXPCConnection currentConnection];
     v14 = v13 = a2;
-    v15 = [v14 NF_clientName];
+    nF_clientName = [v14 NF_clientName];
     v16 = 45;
     if (isMetaClass)
     {
       v16 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@ : HW state = %u", v16, ClassName, Name, 1742, v15, v6);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@ : HW state = %u", v16, ClassName, Name, 1742, nF_clientName, v6);
 
     a2 = v13;
   }
@@ -1527,7 +1527,7 @@ LABEL_19:
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
     v22 = +[NSXPCConnection currentConnection];
-    v23 = [v22 NF_clientName];
+    nF_clientName2 = [v22 NF_clientName];
     *buf = 67110402;
     v25 = v19;
     v26 = 2082;
@@ -1537,18 +1537,18 @@ LABEL_19:
     v30 = 1024;
     v31 = 1742;
     v32 = 2114;
-    v33 = v23;
+    v33 = nF_clientName2;
     v34 = 1024;
     v35 = v6;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ : HW state = %u", buf, 0x32u);
   }
 
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)waitForHWSupportedWithCompletion:(id)a3
+- (void)waitForHWSupportedWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1559,14 +1559,14 @@ LABEL_19:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1771, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1771, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1586,7 +1586,7 @@ LABEL_19:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v38 = v17;
     v39 = 2082;
@@ -1596,7 +1596,7 @@ LABEL_19:
     v43 = 1024;
     v44 = 1771;
     v45 = 2114;
-    v46 = v20;
+    v46 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1613,14 +1613,14 @@ LABEL_19:
       v26 = class_isMetaClass(v25);
       v27 = object_getClassName(self);
       v28 = sel_getName(a2);
-      v29 = [v6 NF_clientName];
+      nF_clientName3 = [v6 NF_clientName];
       v30 = 45;
       if (v26)
       {
         v30 = 43;
       }
 
-      v24(6, "%c[%{public}s %{public}s]:%i Processing %{public}@ : Known HW state = %u", v30, v27, v28, 1775, v29, v22);
+      v24(6, "%c[%{public}s %{public}s]:%i Processing %{public}@ : Known HW state = %u", v30, v27, v28, 1775, nF_clientName3, v22);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1640,7 +1640,7 @@ LABEL_19:
 
       v34 = object_getClassName(self);
       v35 = sel_getName(a2);
-      v36 = [v6 NF_clientName];
+      nF_clientName4 = [v6 NF_clientName];
       *buf = 67110402;
       v38 = v33;
       v39 = 2082;
@@ -1650,18 +1650,18 @@ LABEL_19:
       v43 = 1024;
       v44 = 1775;
       v45 = 2114;
-      v46 = v36;
+      v46 = nF_clientName4;
       v47 = 1024;
       v48 = v22;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Processing %{public}@ : Known HW state = %u", buf, 0x32u);
     }
 
-    v5[2](v5, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   else
   {
-    sub_1000E925C(self, v6, 16, v5);
+    sub_1000E925C(self, v6, 16, completionCopy);
   }
 }
 
@@ -1684,10 +1684,10 @@ LABEL_19:
   return v4;
 }
 
-- (id)secureElementDidExitRestrictedMode:(id)a3 os:(int64_t)a4 reason:(unsigned int)a5
+- (id)secureElementDidExitRestrictedMode:(id)mode os:(int64_t)os reason:(unsigned int)reason
 {
-  v7 = a3;
-  v8 = [v7 isEqual:self->_secureElementWrapper];
+  modeCopy = mode;
+  v8 = [modeCopy isEqual:self->_secureElementWrapper];
   if (v8)
   {
     v9 = @"embedded";
@@ -1698,7 +1698,7 @@ LABEL_19:
     v9 = 0;
   }
 
-  v10 = [(_NFHardwareManager *)self powerCycleSE:v7];
+  v10 = [(_NFHardwareManager *)self powerCycleSE:modeCopy];
   v11 = v10;
   if (v8)
   {
@@ -1754,8 +1754,8 @@ LABEL_15:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v23 = [v22 allValues];
-  v24 = [v23 countByEnumeratingWithState:&v43 objects:v55 count:16];
+  allValues = [v22 allValues];
+  v24 = [allValues countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v24)
   {
     v25 = v24;
@@ -1766,13 +1766,13 @@ LABEL_15:
       {
         if (*v44 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v43 + 1) + 8 * i) secureElementWithIdentifier:v9 didChangeRestrictedMode:0];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v43 objects:v55 count:16];
+      v25 = [allValues countByEnumeratingWithState:&v43 objects:v55 count:16];
     }
 
     while (v25);
@@ -1833,21 +1833,21 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Device exited Restricted Mode and we are posting events", buf, 0x22u);
     }
 
-    [NFExceptionsCALogger postAnalyticsSERestrictedModeExited:sub_1000E1E20(self) exitReason:a5];
+    [NFExceptionsCALogger postAnalyticsSERestrictedModeExited:sub_1000E1E20(self) exitReason:reason];
     self->_restrictedModeBroadcasted = 0;
   }
 
   return v11;
 }
 
-- (void)postEventForPublisher:(id)a3 event:(const char *)a4 objectString:(id)a5
+- (void)postEventForPublisher:(id)publisher event:(const char *)event objectString:(id)string
 {
-  v9 = a3;
-  v10 = a5;
+  publisherCopy = publisher;
+  stringCopy = string;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   v12 = Logger;
-  if (v9)
+  if (publisherCopy)
   {
     if (Logger)
     {
@@ -1861,7 +1861,7 @@ LABEL_15:
         v15 = 43;
       }
 
-      v12(6, "%c[%{public}s %{public}s]:%i posting notification: %s", v15, ClassName, Name, 3044, a4);
+      v12(6, "%c[%{public}s %{public}s]:%i posting notification: %s", v15, ClassName, Name, 3044, event);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1888,22 +1888,22 @@ LABEL_15:
       v36 = 1024;
       v37 = 3044;
       v38 = 2080;
-      v39 = a4;
+      eventCopy = event;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i posting notification: %s", buf, 0x2Cu);
     }
 
-    v19 = [[NSString alloc] initWithUTF8String:a4];
+    v19 = [[NSString alloc] initWithUTF8String:event];
     v20 = +[NSDistributedNotificationCenter defaultCenter];
-    [v20 postNotificationName:v19 object:v10 userInfo:0 options:3];
+    [v20 postNotificationName:v19 object:stringCopy userInfo:0 options:3];
 
-    if (v10)
+    if (stringCopy)
     {
-      sub_100235448(v9, v19, v10, 1);
+      sub_100235448(publisherCopy, v19, stringCopy, 1);
     }
 
     else
     {
-      sub_100235394(v9, v19, 1);
+      sub_100235394(publisherCopy, v19, 1);
     }
   }
 
@@ -1952,18 +1952,18 @@ LABEL_15:
   }
 }
 
-- (void)postEventForPublisher:(id)a3 event:(const char *)a4 additionalData:(id)a5
+- (void)postEventForPublisher:(id)publisher event:(const char *)event additionalData:(id)data
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  publisherCopy = publisher;
+  dataCopy = data;
+  if (publisherCopy)
   {
-    v11 = [[NSString alloc] initWithUTF8String:a4];
+    v11 = [[NSString alloc] initWithUTF8String:event];
     sel = a2;
-    if ([v10 count])
+    if ([dataCopy count])
     {
-      v12 = [v10 mutableCopy];
-      v13 = [v10 description];
+      v12 = [dataCopy mutableCopy];
+      v13 = [dataCopy description];
     }
 
     else
@@ -2022,7 +2022,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i XpcPayload %{public}@", buf, 0x2Cu);
     }
 
-    sub_100235634(v9, v12, 1);
+    sub_100235634(publisherCopy, v12, 1);
   }
 
   else
@@ -2073,11 +2073,11 @@ LABEL_15:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a5;
-  v12 = v11;
-  if (off_10035C9B8 == a6)
+  changeCopy = change;
+  v12 = changeCopy;
+  if (off_10035C9B8 == context)
   {
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
@@ -2086,7 +2086,7 @@ LABEL_15:
     block[3] = &unk_100315F80;
     block[4] = self;
     v17 = a2;
-    v16 = v11;
+    v16 = changeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -2094,44 +2094,44 @@ LABEL_15:
   {
     v14.receiver = self;
     v14.super_class = _NFHardwareManager;
-    [(_NFHardwareManager *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:v11 context:a6];
+    [(_NFHardwareManager *)&v14 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)controllerInfoWithCompletion:(id)a3
+- (void)controllerInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F1BDC;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)expressModesInfoWithOption:(unsigned int)a3 completion:(id)a4
+- (void)expressModesInfoWithOption:(unsigned int)option completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F1E18;
   block[3] = &unk_100318828;
-  v11 = a3;
+  optionCopy = option;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)checkExpressPassCompatibilityDeprecated:(id)a3 callback:(id)a4
+- (void)checkExpressPassCompatibilityDeprecated:(id)deprecated callback:(id)callback
 {
   v22 = 0;
-  v7 = a4;
-  v8 = sub_1002638D0(NFSecureElementWrapper, a3, &v22);
+  callbackCopy = callback;
+  v8 = sub_1002638D0(NFSecureElementWrapper, deprecated, &v22);
   v9 = v22;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -2181,14 +2181,14 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i incompatibles: %{public}@", buf, 0x2Cu);
   }
 
-  v7[2](v7, v8, v9);
+  callbackCopy[2](callbackCopy, v8, v9);
 }
 
-- (void)checkExpressPassCompatibility:(id)a3 callback:(id)a4
+- (void)checkExpressPassCompatibility:(id)compatibility callback:(id)callback
 {
   v22 = 0;
-  v7 = a4;
-  v8 = sub_100263CFC(NFSecureElementWrapper, a3, &v22);
+  callbackCopy = callback;
+  v8 = sub_100263CFC(NFSecureElementWrapper, compatibility, &v22);
   v9 = v22;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -2238,13 +2238,13 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i incompatibles: %{public}@", buf, 0x2Cu);
   }
 
-  v7[2](v7, v8, v9);
+  callbackCopy[2](callbackCopy, v8, v9);
 }
 
-- (void)currentInMetroStatus:(id)a3
+- (void)currentInMetroStatus:(id)status
 {
   v20 = 0;
-  v5 = a3;
+  statusCopy = status;
   v6 = sub_100264164(NFSecureElementWrapper, &v20);
   v7 = v20;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2297,43 +2297,43 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i currentInMetroStatus %d (error %@)", buf, 0x32u);
   }
 
-  v5[2](v5, v6, v7);
+  statusCopy[2](statusCopy, v6, v7);
 }
 
-- (void)setAntiRelayRID:(id)a3 completion:(id)a4
+- (void)setAntiRelayRID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F2CBC;
   block[3] = &unk_1003188A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)rfSettingsWithCompletion:(id)a3
+- (void)rfSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F2EC8;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)getDieIDWithCompletion:(id)a3
+- (void)getDieIDWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
@@ -2342,88 +2342,88 @@ LABEL_15:
   v10[3] = &unk_100316078;
   v10[4] = self;
   v11 = v6;
-  v12 = v5;
+  v12 = completionCopy;
   v13 = a2;
-  v8 = v5;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(workQueue, v10);
 }
 
-- (void)getUniqueFDRKeyWithCompletion:(id)a3
+- (void)getUniqueFDRKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F42E0;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)stateInfoWithCompletion:(id)a3
+- (void)stateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F4908;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)pushSignedRF:(id)a3 completion:(id)a4
+- (void)pushSignedRF:(id)f completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fCopy = f;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F5B54;
   block[3] = &unk_1003188A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = fCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)setFieldDetectEnabled:(BOOL)a3 completion:(id)a4
+- (void)setFieldDetectEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000F62EC;
   v11[3] = &unk_100318940;
-  v14 = a3;
+  enabledCopy = enabled;
   v11[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
   dispatch_async(workQueue, v11);
 }
 
-- (void)registerForCallbacks:(id)a3 withUUID:(id)a4 completion:(id)a5
+- (void)registerForCallbacks:(id)callbacks withUUID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v56 = a5;
-  v9 = a3;
+  dCopy = d;
+  completionCopy = completion;
+  callbacksCopy = callbacks;
   v10 = +[NSXPCConnection currentConnection];
-  v57 = v8;
+  v57 = dCopy;
   if (self)
   {
-    v55 = v9;
-    v54 = v9;
-    v11 = [v10 NF_whitelistChecker];
+    v55 = callbacksCopy;
+    v54 = callbacksCopy;
+    nF_whitelistChecker = [v10 NF_whitelistChecker];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
@@ -2433,19 +2433,19 @@ LABEL_15:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName("_registerForCallbacks:connection:callbackUUID:");
-      v18 = [v10 processIdentifier];
-      [v11 clientName];
+      processIdentifier = [v10 processIdentifier];
+      [nF_whitelistChecker clientName];
       v19 = v10;
-      v21 = v20 = v11;
+      v21 = v20 = nF_whitelistChecker;
       v22 = 43;
       if (!isMetaClass)
       {
         v22 = 45;
       }
 
-      v13(6, "%c[%{public}s %{public}s]:%i Client %d (%{public}@) registered callback [%@]", v22, ClassName, Name, 3535, v18, v21, v57);
+      v13(6, "%c[%{public}s %{public}s]:%i Client %d (%{public}@) registered callback [%@]", v22, ClassName, Name, 3535, processIdentifier, v21, v57);
 
-      v11 = v20;
+      nF_whitelistChecker = v20;
       v10 = v19;
     }
 
@@ -2466,8 +2466,8 @@ LABEL_15:
 
       v26 = object_getClassName(self);
       v27 = sel_getName("_registerForCallbacks:connection:callbackUUID:");
-      v28 = [v10 processIdentifier];
-      v29 = [v11 clientName];
+      processIdentifier2 = [v10 processIdentifier];
+      clientName = [nF_whitelistChecker clientName];
       *buf = 67110658;
       v63 = v25;
       v64 = 2082;
@@ -2477,18 +2477,18 @@ LABEL_15:
       v68 = 1024;
       v69 = 3535;
       v70 = 1024;
-      v71 = v28;
+      v71 = processIdentifier2;
       v72 = 2114;
-      v73 = v29;
+      v73 = clientName;
       v74 = 2112;
       v75 = v57;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Client %d (%{public}@) registered callback [%@]", buf, 0x3Cu);
     }
 
-    v30 = [v57 UUIDString];
+    uUIDString = [v57 UUIDString];
     v31 = self->_callbackHandlers;
     objc_sync_enter(v31);
-    [(NSMutableDictionary *)self->_callbackHandlers setObject:v54 forKeyedSubscript:v30];
+    [(NSMutableDictionary *)self->_callbackHandlers setObject:v54 forKeyedSubscript:uUIDString];
 
     if (!self->_keepAliveTransaction)
     {
@@ -2499,12 +2499,12 @@ LABEL_15:
       {
         v34 = v33;
         v35 = object_getClass(self);
-        v36 = v11;
+        v36 = nF_whitelistChecker;
         v37 = class_isMetaClass(v35);
         v38 = object_getClassName(self);
         v53 = sel_getName("_registerForCallbacks:connection:callbackUUID:");
         v39 = !v37;
-        v11 = v36;
+        nF_whitelistChecker = v36;
         v40 = 45;
         if (!v39)
         {
@@ -2529,14 +2529,14 @@ LABEL_15:
           v43 = 45;
         }
 
-        v44 = v11;
+        v44 = nF_whitelistChecker;
         v45 = object_getClassName(self);
         v46 = sel_getName("_registerForCallbacks:connection:callbackUUID:");
         *buf = 67109890;
         v63 = v43;
         v64 = 2082;
         v65 = v45;
-        v11 = v44;
+        nF_whitelistChecker = v44;
         v66 = 2082;
         v67 = v46;
         v68 = 1024;
@@ -2553,11 +2553,11 @@ LABEL_15:
 
     objc_sync_exit(v31);
 
-    v9 = v55;
+    callbacksCopy = v55;
   }
 
   v49 = sub_100003384(self);
-  v56[2](v56, v49);
+  completionCopy[2](completionCopy, v49);
 
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2566,17 +2566,17 @@ LABEL_15:
   block[3] = &unk_100318968;
   v59 = v10;
   v60 = v57;
-  v61 = self;
+  selfCopy = self;
   v51 = v57;
   v52 = v10;
   dispatch_async(workQueue, block);
 }
 
-- (void)unregisterForCallbacks:(id)a3
+- (void)unregisterForCallbacks:(id)callbacks
 {
-  v4 = a3;
+  callbacksCopy = callbacks;
   v5 = +[NSXPCConnection currentConnection];
-  sub_1000E8904(self, v5, v4);
+  sub_1000E8904(self, v5, callbacksCopy);
 
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2588,16 +2588,16 @@ LABEL_15:
   dispatch_async(workQueue, block);
 }
 
-- (void)secureElementsWithCompletion:(id)a3
+- (void)secureElementsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100003384(self);
   os_unfair_lock_lock(&self->_secureElementInfoLock);
   if (self->_secureElementInfo)
   {
     secureElementInfo = self->_secureElementInfo;
     v6 = [NSArray arrayWithObjects:&secureElementInfo count:1];
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 
   else if (v5 == 2 || v5 == 5)
@@ -2608,35 +2608,35 @@ LABEL_15:
     v8[2] = sub_1000F70BC;
     v8[3] = &unk_100316700;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(workQueue, v8);
   }
 
   else
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   os_unfair_lock_unlock(&self->_secureElementInfoLock);
 }
 
-- (void)cachedEmbeddedSecureElementSerialNumber:(id)a3
+- (void)cachedEmbeddedSecureElementSerialNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
   if (self && (seSerialFromFDR = self->_seSerialFromFDR) != 0)
   {
-    v7 = [(NSData *)seSerialFromFDR NF_asHexString];
-    v5[2](v5, v7, 0);
+    nF_asHexString = [(NSData *)seSerialFromFDR NF_asHexString];
+    numberCopy[2](numberCopy, nF_asHexString, 0);
   }
 
   else
   {
     v16 = 0;
     v8 = sub_100015AE4(NFDriverWrapper, &v16);
-    v7 = v16;
+    nF_asHexString = v16;
     if (v8)
     {
-      v5[2](v5, v7, 0);
+      numberCopy[2](numberCopy, nF_asHexString, 0);
     }
 
     else
@@ -2652,77 +2652,77 @@ LABEL_15:
       v12 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
       v18[2] = v12;
       v17[3] = NSDebugDescriptionErrorKey;
-      v13 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 3635];
-      v18[3] = v13;
+      3635 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 3635];
+      v18[3] = 3635;
       v14 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:4];
       v15 = [v9 initWithDomain:v10 code:65 userInfo:v14];
-      (v5)[2](v5, v7, v15);
+      (numberCopy)[2](numberCopy, nF_asHexString, v15);
     }
   }
 }
 
-- (void)triggerDelayedWake:(unsigned __int8)a3 completion:(id)a4
+- (void)triggerDelayedWake:(unsigned __int8)wake completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F7478;
   block[3] = &unk_100318990;
-  v11 = a3;
+  wakeCopy = wake;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)triggerCrash:(unsigned __int16)a3 completion:(id)a4
+- (void)triggerCrash:(unsigned __int16)crash completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F7F44;
   block[3] = &unk_100318A00;
-  v11 = a3;
+  crashCopy = crash;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)triggerCoreDumpWithCompletion:(id)a3
+- (void)triggerCoreDumpWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F89C0;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)toggleGPIO:(unsigned __int16)a3 completion:(id)a4
+- (void)toggleGPIO:(unsigned __int16)o completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F94AC;
   block[3] = &unk_100318A00;
-  v11 = a3;
+  oCopy = o;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)getHostCardEmulationLogWithCompletion:(id)a3
+- (void)getHostCardEmulationLogWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2731,15 +2731,15 @@ LABEL_15:
   block[3] = &unk_1003188A0;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   dispatch_async(workQueue, block);
 }
 
-- (id)powerCycleSE:(id)a3
+- (id)powerCycleSE:(id)e
 {
-  v5 = a3;
+  eCopy = e;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -2796,9 +2796,9 @@ LABEL_15:
   v37 = 3221225472;
   v38 = sub_1000FA6A0;
   v39 = &unk_100318C70;
-  v17 = v5;
+  v17 = eCopy;
   v40 = v17;
-  v41 = self;
+  selfCopy = self;
   v42 = &v43;
   v18 = sub_10004C224(NFRoutingConfig, 0);
   v19 = sub_1000E6BE4(&self->super.isa, &v36, @"PowerCycleSE", v18);
@@ -2820,7 +2820,7 @@ LABEL_15:
         v26 = 43;
       }
 
-      v21(3, "%c[%{public}s %{public}s]:%i Failed to powercycle SE: %{public}@", v26, v24, v25, 4250, v44[5], v36, v37, v38, v39, v40, v41, v42);
+      v21(3, "%c[%{public}s %{public}s]:%i Failed to powercycle SE: %{public}@", v26, v24, v25, 4250, v44[5], v36, v37, v38, v39, v40, selfCopy, v42);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2862,51 +2862,51 @@ LABEL_15:
   return v33;
 }
 
-- (void)openSinglePollExpressModeAssertion:(double)a3 completion:(id)a4
+- (void)openSinglePollExpressModeAssertion:(double)assertion completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000FA8A4;
   v8[3] = &unk_100316700;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(workQueue, v8);
 }
 
-- (void)cancelSinglePollExpressModeAssertionWithCompletion:(id)a3
+- (void)cancelSinglePollExpressModeAssertionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FAB1C;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)radioEnableStateWithCompletion:(id)a3
+- (void)radioEnableStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FAD94;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)enableRadio:(BOOL)a3 completion:(id)a4
+- (void)enableRadio:(BOOL)radio completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v8 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2915,108 +2915,108 @@ LABEL_15:
   block[3] = &unk_100318AB8;
   block[4] = self;
   v13 = v8;
-  v14 = v7;
+  v14 = completionCopy;
   v15 = a2;
-  v16 = a3;
+  radioCopy = radio;
   v10 = v8;
-  v11 = v7;
+  v11 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)getTemperatureWithCompletion:(id)a3
+- (void)getTemperatureWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FBC74;
   block[3] = &unk_100316050;
   block[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)getReaderProhibitTimer:(id)a3
+- (void)getReaderProhibitTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FC460;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timerCopy;
+  v6 = timerCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)dumpLPMDebugLogWithCompletion:(id)a3
+- (void)dumpLPMDebugLogWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FCC78;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)setChipscope:(BOOL)a3 completion:(id)a4
+- (void)setChipscope:(BOOL)chipscope completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FCFC0;
   block[3] = &unk_100318990;
-  v11 = a3;
+  chipscopeCopy = chipscope;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)getLPEMFTALoggingWithCompletion:(id)a3
+- (void)getLPEMFTALoggingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FD488;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)requestAssertion:(id)a3 waitOnComplete:(BOOL)a4 completion:(id)a5
+- (void)requestAssertion:(id)assertion waitOnComplete:(BOOL)complete completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  assertionCopy = assertion;
   v10 = +[NSXPCConnection currentConnection];
-  sub_10017AEE8(&self->super.isa, v9, v10, a4, v8);
+  sub_10017AEE8(&self->super.isa, assertionCopy, v10, complete, completionCopy);
 }
 
-- (void)releaseAssertion:(id)a3 waitOnComplete:(BOOL)a4 completion:(id)a5
+- (void)releaseAssertion:(id)assertion waitOnComplete:(BOOL)complete completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  assertionCopy = assertion;
   v10 = +[NSXPCConnection currentConnection];
-  sub_10017CAB8(&self->super.isa, v9, v10, a4, v8);
+  sub_10017CAB8(&self->super.isa, assertionCopy, v10, complete, completionCopy);
 }
 
-- (void)requestSuppressPresentmentWithCompletion:(id)a3
+- (void)requestSuppressPresentmentWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
-  v7 = [v6 NF_whitelistChecker];
-  v8 = [_NFCardSession validateEntitlements:v7];
+  nF_whitelistChecker = [v6 NF_whitelistChecker];
+  v8 = [_NFCardSession validateEntitlements:nF_whitelistChecker];
 
   if (v8)
   {
@@ -3029,15 +3029,15 @@ LABEL_15:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v15 = [v6 NF_clientName];
-      v23 = [v6 processIdentifier];
+      nF_clientName = [v6 NF_clientName];
+      processIdentifier = [v6 processIdentifier];
       v16 = 45;
       if (isMetaClass)
       {
         v16 = 43;
       }
 
-      v10(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v16, ClassName, Name, 4583, v15, v23);
+      v10(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v16, ClassName, Name, 4583, nF_clientName, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3057,7 +3057,7 @@ LABEL_15:
 
       v20 = object_getClassName(self);
       v21 = sel_getName(a2);
-      v22 = [v6 NF_clientName];
+      nF_clientName2 = [v6 NF_clientName];
       *buf = 67110402;
       *&buf[4] = v19;
       *&buf[8] = 2082;
@@ -3067,13 +3067,13 @@ LABEL_15:
       *&buf[28] = 1024;
       *&buf[30] = 4583;
       v29 = 2114;
-      v30 = v22;
+      v30 = nF_clientName2;
       v31 = 1026;
-      v32 = [v6 processIdentifier];
+      processIdentifier2 = [v6 processIdentifier];
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", buf, 0x32u);
     }
 
-    v5[2](v5, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 
   else
@@ -3092,7 +3092,7 @@ LABEL_15:
     v24[1] = 3221225472;
     v24[2] = sub_1000FDA58;
     v24[3] = &unk_100318AE0;
-    v26 = v5;
+    v26 = completionCopy;
     v27 = a2;
     v24[4] = self;
     v25 = v6;
@@ -3100,14 +3100,14 @@ LABEL_15:
   }
 }
 
-- (void)releaseSuppressPresentmentAssertion:(id)a3 completion:(id)a4
+- (void)releaseSuppressPresentmentAssertion:(id)assertion completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
-  if (v7 && ([v7 assertionTime], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (assertionCopy && ([assertionCopy assertionTime], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    sub_10017CAB8(&self->super.isa, v7, v9, 0, v8);
+    sub_10017CAB8(&self->super.isa, assertionCopy, v9, 0, completionCopy);
   }
 
   else
@@ -3167,19 +3167,19 @@ LABEL_15:
     v23 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v29[2] = v23;
     v28[3] = NSDebugDescriptionErrorKey;
-    v24 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4616];
-    v29[3] = v24;
+    4616 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4616];
+    v29[3] = 4616;
     v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
     v26 = [v20 initWithDomain:v21 code:10 userInfo:v25];
-    (*(v8 + 2))(v8, v26);
+    (*(completionCopy + 2))(completionCopy, v26);
   }
 }
 
-- (void)queueFieldDetectSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueFieldDetectSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v105 = a3;
-  v104 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -3190,14 +3190,14 @@ LABEL_15:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v17 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v18 = 45;
     if (isMetaClass)
     {
       v18 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 4630, v17);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 4630, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3217,7 +3217,7 @@ LABEL_15:
 
     v22 = object_getClassName(self);
     v23 = sel_getName(a2);
-    v24 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v109 = v21;
     v110 = 2082;
@@ -3227,7 +3227,7 @@ LABEL_15:
     v114 = 1024;
     v115 = 4630;
     v116 = 2114;
-    v117 = v24;
+    v117 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -3244,7 +3244,7 @@ LABEL_15:
     v47 = 58;
 LABEL_46:
     v75 = [v45 initWithDomain:v46 code:v47 userInfo:v44];
-    v9[2](v9, 0, v75);
+    completionCopy[2](completionCopy, 0, v75);
 
     goto LABEL_47;
   }
@@ -3261,14 +3261,14 @@ LABEL_46:
       v51 = class_isMetaClass(v50);
       v52 = object_getClassName(self);
       v53 = sel_getName(a2);
-      v54 = [v10 NF_clientName];
+      nF_clientName3 = [v10 NF_clientName];
       v55 = 45;
       if (v51)
       {
         v55 = 43;
       }
 
-      v49(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v55, v52, v53, 4638, v54);
+      v49(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v55, v52, v53, 4638, nF_clientName3);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3288,7 +3288,7 @@ LABEL_46:
 
       v59 = object_getClassName(self);
       v60 = sel_getName(a2);
-      v61 = [v10 NF_clientName];
+      nF_clientName4 = [v10 NF_clientName];
       *buf = 67110146;
       v109 = v58;
       v110 = 2082;
@@ -3298,7 +3298,7 @@ LABEL_46:
       v114 = 1024;
       v115 = 4638;
       v116 = 2114;
-      v117 = v61;
+      v117 = nF_clientName4;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -3374,8 +3374,8 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v26 = [v10 NF_whitelistChecker];
-  v27 = [_NFFieldDetectSession validateEntitlements:v26];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v27 = [_NFFieldDetectSession validateEntitlements:nF_whitelistChecker];
 
   if (v27)
   {
@@ -3388,15 +3388,15 @@ LABEL_46:
       v31 = class_isMetaClass(v30);
       v103 = object_getClassName(self);
       v32 = sel_getName(a2);
-      v33 = [v10 NF_clientName];
-      v102 = [v10 processIdentifier];
+      nF_clientName5 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v34 = 45;
       if (v31)
       {
         v34 = 43;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v34, v103, v32, 4651, v33, v102);
+      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v34, v103, v32, 4651, nF_clientName5, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3416,8 +3416,8 @@ LABEL_46:
 
       v38 = object_getClassName(self);
       v39 = sel_getName(a2);
-      v40 = [v10 NF_clientName];
-      v41 = [v10 processIdentifier];
+      nF_clientName6 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v109 = v37;
       v110 = 2082;
@@ -3427,18 +3427,18 @@ LABEL_46:
       v114 = 1024;
       v115 = 4651;
       v116 = 2114;
-      v117 = v40;
+      v117 = nF_clientName6;
       v118 = 1024;
-      v119 = v41;
+      v119 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v9[2](v9, 0, v27);
+    completionCopy[2](completionCopy, 0, v27);
   }
 
   else
   {
-    v76 = [[_NFFieldDetectSession alloc] initWithRemoteObject:v105 workQueue:self->_workQueue];
+    v76 = [[_NFFieldDetectSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
     v77 = v76;
     if (v76)
     {
@@ -3448,25 +3448,25 @@ LABEL_46:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v78 = [v104 objectForKey:@"session.fd.unfiltered"];
+        v78 = [attributeCopy objectForKey:@"session.fd.unfiltered"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v80 = [v104 objectForKey:@"session.fd.unfiltered"];
+          v80 = [attributeCopy objectForKey:@"session.fd.unfiltered"];
           -[_NFFieldDetectSession setUnfiltered:](v77, "setUnfiltered:", [v80 BOOLValue]);
         }
       }
 
       v81 = self->_secureElementSessionQueue;
       objc_sync_enter(v81);
-      v82 = [v10 NF_userInfo];
-      v83 = [v82 objectForKeyedSubscript:@"ProxyObjects"];
+      nF_userInfo = [v10 NF_userInfo];
+      v83 = [nF_userInfo objectForKeyedSubscript:@"ProxyObjects"];
       [v83 addObject:v77];
 
       objc_sync_exit(v81);
-      (v9)[2](v9, v77, 0);
+      (completionCopy)[2](completionCopy, v77, 0);
       sub_100095F8C(self, v77, 0, [v10 processIdentifier], 0);
     }
 
@@ -3525,7 +3525,7 @@ LABEL_46:
       v107 = v97;
       v98 = [NSDictionary dictionaryWithObjects:&v107 forKeys:&v106 count:1];
       v99 = [v95 initWithDomain:v96 code:13 userInfo:v98];
-      v9[2](v9, 0, v99);
+      completionCopy[2](completionCopy, 0, v99);
     }
 
     v27 = 0;
@@ -3534,11 +3534,11 @@ LABEL_46:
 LABEL_47:
 }
 
-- (void)queueECommercePaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueECommercePaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v76 = a4;
-  v75 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -3548,18 +3548,18 @@ LABEL_47:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v16 = v9;
+    v16 = sessionCopy;
     Name = sel_getName(a2);
-    v18 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v71 = Name;
-    v9 = v16;
+    sessionCopy = v16;
     v19 = 45;
     if (isMetaClass)
     {
       v19 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v71, 4692, v18);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v71, 4692, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3579,7 +3579,7 @@ LABEL_47:
 
     v23 = object_getClassName(self);
     v24 = sel_getName(a2);
-    v25 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v85 = v22;
     v86 = 2082;
@@ -3589,7 +3589,7 @@ LABEL_47:
     v90 = 1024;
     v91 = 4692;
     v92 = 2114;
-    v93 = v25;
+    v93 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -3602,16 +3602,16 @@ LABEL_47:
     v97 = v52;
     v53 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
     v54 = [v51 initWithDomain:v27 code:58 userInfo:v53];
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v54);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v54);
 
 LABEL_26:
-    v50 = v76;
+    v50 = attributeCopy;
     goto LABEL_38;
   }
 
-  v26 = [v10 NF_whitelistChecker];
-  v27 = [_NFECommercePaymentSession validateEntitlements:v26];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v27 = [_NFECommercePaymentSession validateEntitlements:nF_whitelistChecker];
 
   if (v27)
   {
@@ -3625,12 +3625,12 @@ LABEL_26:
       v32 = object_getClassName(self);
       v33 = sel_getName(a2);
       v34 = a2;
-      v35 = v9;
+      v35 = sessionCopy;
       v36 = v33;
-      v37 = [v10 NF_clientName];
-      v74 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v72 = v36;
-      v9 = v35;
+      sessionCopy = v35;
       a2 = v34;
       v38 = 45;
       if (v31)
@@ -3638,7 +3638,7 @@ LABEL_26:
         v38 = 43;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v72, 4701, v37, v74);
+      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v72, 4701, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3658,8 +3658,8 @@ LABEL_26:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v10 NF_clientName];
-      v45 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v85 = v41;
       v86 = 2082;
@@ -3669,26 +3669,26 @@ LABEL_26:
       v90 = 1024;
       v91 = 4701;
       v92 = 2114;
-      v93 = v44;
+      v93 = nF_clientName4;
       v94 = 1024;
-      v95 = v45;
+      v95 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v27);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v27);
     goto LABEL_26;
   }
 
-  v47 = [(_NFXPCSession *)[_NFECommercePaymentSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v47 = [(_NFXPCSession *)[_NFECommercePaymentSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v48 = v47;
   if (v47)
   {
     [(_NFSession *)v47 setQueue:self];
     [(_NFXPCSession *)v48 setConnection:v10];
     [(_NFSession *)v48 setUid:0xFFFFFFFFLL];
-    v46 = v75;
-    (*(v75 + 2))(v75, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -3698,8 +3698,8 @@ LABEL_26:
     v78 = v48;
     v81 = a2;
     v79 = v10;
-    v50 = v76;
-    v80 = v76;
+    v50 = attributeCopy;
+    v80 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -3758,21 +3758,21 @@ LABEL_26:
     v83 = v68;
     v69 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     v70 = [v66 initWithDomain:v67 code:13 userInfo:v69];
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v70);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v70);
 
-    v50 = v76;
+    v50 = attributeCopy;
   }
 
   v27 = 0;
 LABEL_38:
 }
 
-- (void)queueCardMigrationPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueCardMigrationPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v81 = a4;
-  v80 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -3782,18 +3782,18 @@ LABEL_38:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v16 = v9;
+    v16 = sessionCopy;
     Name = sel_getName(a2);
-    v18 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v75 = Name;
-    v9 = v16;
+    sessionCopy = v16;
     v19 = 45;
     if (isMetaClass)
     {
       v19 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v75, 4759, v18);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v75, 4759, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3813,7 +3813,7 @@ LABEL_38:
 
     v23 = object_getClassName(self);
     v24 = sel_getName(a2);
-    v25 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v90 = v22;
     v91 = 2082;
@@ -3823,7 +3823,7 @@ LABEL_38:
     v95 = 1024;
     v96 = 4759;
     v97 = 2114;
-    v98 = v25;
+    v98 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -3840,20 +3840,20 @@ LABEL_38:
     v53 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v102[2] = v53;
     v101[3] = NSDebugDescriptionErrorKey;
-    v54 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4762];
-    v102[3] = v54;
+    4762 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4762];
+    v102[3] = 4762;
     v55 = [NSDictionary dictionaryWithObjects:v102 forKeys:v101 count:4];
     v56 = [v51 initWithDomain:v27 code:58 userInfo:v55];
-    v46 = v80;
-    (*(v80 + 2))(v80, 0, 0, v56);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v56);
 
 LABEL_26:
-    v50 = v81;
+    v50 = attributeCopy;
     goto LABEL_38;
   }
 
-  v26 = [v10 NF_whitelistChecker];
-  v27 = [_NFCardMigrationPaymentSession validateEntitlements:v26];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v27 = [_NFCardMigrationPaymentSession validateEntitlements:nF_whitelistChecker];
 
   if (v27)
   {
@@ -3867,12 +3867,12 @@ LABEL_26:
       v32 = object_getClassName(self);
       v33 = sel_getName(a2);
       v34 = a2;
-      v35 = v9;
+      v35 = sessionCopy;
       v36 = v33;
-      v37 = [v10 NF_clientName];
-      v78 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v76 = v36;
-      v9 = v35;
+      sessionCopy = v35;
       a2 = v34;
       v38 = 45;
       if (v31)
@@ -3880,7 +3880,7 @@ LABEL_26:
         v38 = 43;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v76, 4768, v37, v78);
+      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v76, 4768, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3900,8 +3900,8 @@ LABEL_26:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v10 NF_clientName];
-      v45 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v90 = v41;
       v91 = 2082;
@@ -3911,26 +3911,26 @@ LABEL_26:
       v95 = 1024;
       v96 = 4768;
       v97 = 2114;
-      v98 = v44;
+      v98 = nF_clientName4;
       v99 = 1024;
-      v100 = v45;
+      v100 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v46 = v80;
-    (*(v80 + 2))(v80, 0, 0, v27);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v27);
     goto LABEL_26;
   }
 
-  v47 = [(_NFXPCSession *)[_NFCardMigrationPaymentSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v47 = [(_NFXPCSession *)[_NFCardMigrationPaymentSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v48 = v47;
   if (v47)
   {
     [(_NFSession *)v47 setQueue:self];
     [(_NFXPCSession *)v48 setConnection:v10];
     [(_NFSession *)v48 setUid:0xFFFFFFFFLL];
-    v46 = v80;
-    (*(v80 + 2))(v80, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -3940,8 +3940,8 @@ LABEL_26:
     v83 = v48;
     v86 = a2;
     v84 = v10;
-    v50 = v81;
-    v85 = v81;
+    v50 = attributeCopy;
+    v85 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -3965,7 +3965,7 @@ LABEL_26:
       v58(3, "%c[%{public}s %{public}s]:%i Session creation failed.", v62, v61, v77, 4775);
     }
 
-    v79 = v9;
+    v79 = sessionCopy;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v63 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -4005,28 +4005,28 @@ LABEL_26:
     v71 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v88[2] = v71;
     v87[3] = NSDebugDescriptionErrorKey;
-    v72 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4776];
-    v88[3] = v72;
+    4776 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 4776];
+    v88[3] = 4776;
     v73 = [NSDictionary dictionaryWithObjects:v88 forKeys:v87 count:4];
     v74 = [v68 initWithDomain:v69 code:13 userInfo:v73];
-    v46 = v80;
-    (*(v80 + 2))(v80, 0, 0, v74);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v74);
 
-    v9 = v79;
-    v50 = v81;
+    sessionCopy = v79;
+    v50 = attributeCopy;
   }
 
   v27 = 0;
 LABEL_38:
 }
 
-- (void)queueContactlessPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueContactlessPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v115 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v11 = a2;
-  v114 = v10;
+  v114 = completionCopy;
   v12 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -4036,18 +4036,18 @@ LABEL_38:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v18 = v9;
+    v18 = sessionCopy;
     Name = sel_getName(a2);
-    v20 = [v12 NF_clientName];
+    nF_clientName = [v12 NF_clientName];
     v108 = Name;
-    v9 = v18;
+    sessionCopy = v18;
     v21 = 45;
     if (isMetaClass)
     {
       v21 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v108, 4826, v20);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v108, 4826, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4067,7 +4067,7 @@ LABEL_38:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(v11);
-    v27 = [v12 NF_clientName];
+    nF_clientName2 = [v12 NF_clientName];
     *buf = 67110146;
     v129 = v24;
     v130 = 2082;
@@ -4077,7 +4077,7 @@ LABEL_38:
     v134 = 1024;
     v135 = 4826;
     v136 = 2114;
-    v137 = v27;
+    v137 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -4099,8 +4099,8 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  v28 = [v12 NF_whitelistChecker];
-  v29 = [(_NFContactlessSession *)_NFContactlessPaymentSession validateEntitlements:v28];
+  nF_whitelistChecker = [v12 NF_whitelistChecker];
+  v29 = [(_NFContactlessSession *)_NFContactlessPaymentSession validateEntitlements:nF_whitelistChecker];
 
   if (v29)
   {
@@ -4112,19 +4112,19 @@ LABEL_49:
       v32 = object_getClass(self);
       v33 = class_isMetaClass(v32);
       v113 = object_getClassName(self);
-      v34 = v9;
+      v34 = sessionCopy;
       v35 = sel_getName(v11);
-      v36 = [v12 NF_clientName];
-      v112 = [v12 processIdentifier];
+      nF_clientName3 = [v12 NF_clientName];
+      processIdentifier = [v12 processIdentifier];
       v109 = v35;
-      v9 = v34;
+      sessionCopy = v34;
       v37 = 45;
       if (v33)
       {
         v37 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v37, v113, v109, 4835, v36, v112);
+      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v37, v113, v109, 4835, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4145,8 +4145,8 @@ LABEL_49:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(v40);
-      v44 = [v12 NF_clientName];
-      v45 = [v116 processIdentifier];
+      nF_clientName4 = [v12 NF_clientName];
+      processIdentifier2 = [v116 processIdentifier];
       *buf = 67110402;
       v129 = v41;
       v130 = 2082;
@@ -4156,9 +4156,9 @@ LABEL_49:
       v134 = 1024;
       v135 = 4835;
       v136 = 2114;
-      v137 = v44;
+      v137 = nF_clientName4;
       v138 = 1024;
-      v139 = v45;
+      v139 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
@@ -4179,14 +4179,14 @@ LABEL_49:
       v60 = class_isMetaClass(v59);
       v61 = object_getClassName(self);
       v62 = sel_getName(v11);
-      v63 = [v12 NF_clientName];
+      nF_clientName5 = [v12 NF_clientName];
       v64 = 45;
       if (v60)
       {
         v64 = 43;
       }
 
-      v58(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v64, v61, v62, 4841, v63);
+      v58(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v64, v61, v62, 4841, nF_clientName5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4207,7 +4207,7 @@ LABEL_49:
 
       v69 = object_getClassName(self);
       v70 = sel_getName(v67);
-      v71 = [v12 NF_clientName];
+      nF_clientName6 = [v12 NF_clientName];
       *buf = 67110146;
       v129 = v68;
       v130 = 2082;
@@ -4217,7 +4217,7 @@ LABEL_49:
       v134 = 1024;
       v135 = 4841;
       v136 = 2114;
-      v137 = v71;
+      v137 = nF_clientName6;
       _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -4233,7 +4233,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v115)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v79 = NFLogGetLogger();
@@ -4299,15 +4299,15 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v52 = [(_NFXPCSession *)[_NFContactlessPaymentSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v52 = [(_NFXPCSession *)[_NFContactlessPaymentSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v53 = v52;
   if (v52)
   {
     [(_NFSession *)v52 setQueue:self];
     [(_NFXPCSession *)v53 setConnection:v12];
     [(_NFSession *)v53 setUid:0xFFFFFFFFLL];
-    v54 = [v12 exportedInterface];
-    sub_10006066C(NFHardwareManagerInterface, v54);
+    exportedInterface = [v12 exportedInterface];
+    sub_10006066C(NFHardwareManagerInterface, exportedInterface);
 
     v55 = v11;
     v46 = v114;
@@ -4321,7 +4321,7 @@ LABEL_48:
     v118 = v53;
     v121 = v55;
     v119 = v12;
-    v120 = v115;
+    v120 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -4390,13 +4390,13 @@ LABEL_48:
 LABEL_50:
 }
 
-- (void)queueContactlessSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueContactlessSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v114 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v11 = a2;
-  v113 = v10;
+  v113 = completionCopy;
   v12 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -4406,18 +4406,18 @@ LABEL_50:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v18 = v9;
+    v18 = sessionCopy;
     Name = sel_getName(a2);
-    v20 = [v12 NF_clientName];
+    nF_clientName = [v12 NF_clientName];
     v107 = Name;
-    v9 = v18;
+    sessionCopy = v18;
     v21 = 45;
     if (isMetaClass)
     {
       v21 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v107, 4909, v20);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v107, 4909, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4437,7 +4437,7 @@ LABEL_50:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(v11);
-    v27 = [v12 NF_clientName];
+    nF_clientName2 = [v12 NF_clientName];
     *buf = 67110146;
     v128 = v24;
     v129 = 2082;
@@ -4447,7 +4447,7 @@ LABEL_50:
     v133 = 1024;
     v134 = 4909;
     v135 = 2114;
-    v136 = v27;
+    v136 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -4469,8 +4469,8 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  v28 = [v12 NF_whitelistChecker];
-  v29 = [_NFContactlessSession validateEntitlements:v28];
+  nF_whitelistChecker = [v12 NF_whitelistChecker];
+  v29 = [_NFContactlessSession validateEntitlements:nF_whitelistChecker];
 
   if (v29)
   {
@@ -4482,19 +4482,19 @@ LABEL_49:
       v32 = object_getClass(self);
       v33 = class_isMetaClass(v32);
       v112 = object_getClassName(self);
-      v34 = v9;
+      v34 = sessionCopy;
       v35 = sel_getName(v11);
-      v36 = [v12 NF_clientName];
-      v111 = [v12 processIdentifier];
+      nF_clientName3 = [v12 NF_clientName];
+      processIdentifier = [v12 processIdentifier];
       v108 = v35;
-      v9 = v34;
+      sessionCopy = v34;
       v37 = 45;
       if (v33)
       {
         v37 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v37, v112, v108, 4918, v36, v111);
+      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v37, v112, v108, 4918, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4515,8 +4515,8 @@ LABEL_49:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(v40);
-      v44 = [v12 NF_clientName];
-      v45 = [v115 processIdentifier];
+      nF_clientName4 = [v12 NF_clientName];
+      processIdentifier2 = [v115 processIdentifier];
       *buf = 67110402;
       v128 = v41;
       v129 = 2082;
@@ -4526,9 +4526,9 @@ LABEL_49:
       v133 = 1024;
       v134 = 4918;
       v135 = 2114;
-      v136 = v44;
+      v136 = nF_clientName4;
       v137 = 1024;
-      v138 = v45;
+      v138 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
@@ -4549,14 +4549,14 @@ LABEL_49:
       v59 = class_isMetaClass(v58);
       v60 = object_getClassName(self);
       v61 = sel_getName(v11);
-      v62 = [v12 NF_clientName];
+      nF_clientName5 = [v12 NF_clientName];
       v63 = 45;
       if (v59)
       {
         v63 = 43;
       }
 
-      v57(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v63, v60, v61, 4924, v62);
+      v57(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v63, v60, v61, 4924, nF_clientName5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4577,7 +4577,7 @@ LABEL_49:
 
       v68 = object_getClassName(self);
       v69 = sel_getName(v66);
-      v70 = [v12 NF_clientName];
+      nF_clientName6 = [v12 NF_clientName];
       *buf = 67110146;
       v128 = v67;
       v129 = 2082;
@@ -4587,7 +4587,7 @@ LABEL_49:
       v133 = 1024;
       v134 = 4924;
       v135 = 2114;
-      v136 = v70;
+      v136 = nF_clientName6;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -4603,7 +4603,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v114)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v78 = NFLogGetLogger();
@@ -4669,7 +4669,7 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v52 = [(_NFXPCSession *)[_NFContactlessSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v52 = [(_NFXPCSession *)[_NFContactlessSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v53 = v52;
   if (v52)
   {
@@ -4688,7 +4688,7 @@ LABEL_48:
     v117 = v53;
     v120 = v54;
     v118 = v12;
-    v119 = v114;
+    v119 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -4757,13 +4757,13 @@ LABEL_48:
 LABEL_50:
 }
 
-- (void)queueSecureElementManagerSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureElementManagerSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v89 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v11 = a2;
-  v12 = v10;
+  v12 = completionCopy;
   v13 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -4773,18 +4773,18 @@ LABEL_50:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v19 = v9;
+    v19 = sessionCopy;
     Name = sel_getName(a2);
-    v21 = [v13 NF_clientName];
+    nF_clientName = [v13 NF_clientName];
     v84 = Name;
-    v9 = v19;
+    sessionCopy = v19;
     v22 = 45;
     if (isMetaClass)
     {
       v22 = 43;
     }
 
-    v15(6, "%c[%{public}s %{public}s]:%i %{public}@", v22, ClassName, v84, 4993, v21);
+    v15(6, "%c[%{public}s %{public}s]:%i %{public}@", v22, ClassName, v84, 4993, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4804,7 +4804,7 @@ LABEL_50:
 
     v26 = object_getClassName(self);
     v27 = sel_getName(v11);
-    v28 = [v13 NF_clientName];
+    nF_clientName2 = [v13 NF_clientName];
     *buf = 67110146;
     v99 = v25;
     v100 = 2082;
@@ -4814,7 +4814,7 @@ LABEL_50:
     v104 = 1024;
     v105 = 4993;
     v106 = 2114;
-    v107 = v28;
+    v107 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -4832,12 +4832,12 @@ LABEL_50:
 
     v12 = v65;
 LABEL_29:
-    v56 = v89;
+    v56 = attributeCopy;
     goto LABEL_41;
   }
 
-  v29 = [v13 NF_whitelistChecker];
-  v30 = [_NFSecureElementManagerSession validateEntitlements:v29];
+  nF_whitelistChecker = [v13 NF_whitelistChecker];
+  v30 = [_NFSecureElementManagerSession validateEntitlements:nF_whitelistChecker];
 
   if (v30)
   {
@@ -4852,12 +4852,12 @@ LABEL_29:
       v35 = sel_getName(v11);
       v36 = v11;
       v37 = v12;
-      v38 = v9;
+      v38 = sessionCopy;
       v39 = v35;
-      v40 = [v13 NF_clientName];
-      v87 = [v13 processIdentifier];
+      nF_clientName3 = [v13 NF_clientName];
+      processIdentifier = [v13 processIdentifier];
       v85 = v39;
-      v9 = v38;
+      sessionCopy = v38;
       v12 = v37;
       v11 = v36;
       v41 = 45;
@@ -4866,7 +4866,7 @@ LABEL_29:
         v41 = 43;
       }
 
-      v32(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v41, v88, v85, 5002, v40, v87);
+      v32(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v41, v88, v85, 5002, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4889,7 +4889,7 @@ LABEL_29:
       v47 = sel_getName(v44);
       [v13 NF_clientName];
       v49 = v48 = v12;
-      v50 = [v13 processIdentifier];
+      processIdentifier2 = [v13 processIdentifier];
       *buf = 67110402;
       v99 = v45;
       v100 = 2082;
@@ -4901,7 +4901,7 @@ LABEL_29:
       v106 = 2114;
       v107 = v49;
       v108 = 1024;
-      v109 = v50;
+      v109 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
 
       v12 = v48;
@@ -4911,10 +4911,10 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v51 = [v13 NF_whitelistChecker];
-  v52 = [v51 allowBackgroundedSession];
+  nF_whitelistChecker2 = [v13 NF_whitelistChecker];
+  allowBackgroundedSession = [nF_whitelistChecker2 allowBackgroundedSession];
 
-  v53 = [[_NFSecureElementManagerSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue allowsBackgroundMode:v52];
+  v53 = [[_NFSecureElementManagerSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue allowsBackgroundMode:allowBackgroundedSession];
   v54 = v53;
   if (v53)
   {
@@ -4922,24 +4922,24 @@ LABEL_29:
     [(_NFSession *)v53 setQueue:self];
     [(_NFXPCSession *)v54 setConnection:v13];
     objc_opt_class();
-    v56 = v89;
+    v56 = attributeCopy;
     if (objc_opt_isKindOfClass())
     {
-      v57 = [v89 objectForKey:@"session.high.priority"];
+      v57 = [attributeCopy objectForKey:@"session.high.priority"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v59 = [v89 objectForKeyedSubscript:@"session.high.priority"];
+        v59 = [attributeCopy objectForKeyedSubscript:@"session.high.priority"];
         -[_NFSession setPriority:](v54, "setPriority:", [v59 BOOLValue]);
       }
     }
 
     [(_NFSession *)v54 setUid:0xFFFFFFFFLL];
     [(_NFSecureElementManagerSession *)v54 setDriverWrapper:self->_driverWrapper];
-    v60 = [v13 exportedInterface];
-    sub_1000604EC(NFHardwareManagerInterface, v60);
+    exportedInterface = [v13 exportedInterface];
+    sub_1000604EC(NFHardwareManagerInterface, exportedInterface);
 
     v61 = v12;
     (*(v12 + 2))(v12, v54, [(_NFHardwareManager *)self isFirstInQueue], 0);
@@ -4948,8 +4948,8 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = sub_100103BA4;
     block[3] = &unk_100318B08;
-    v91 = v89;
-    v92 = self;
+    v91 = attributeCopy;
+    selfCopy = self;
     v93 = v54;
     v95 = v55;
     v94 = v13;
@@ -5016,7 +5016,7 @@ LABEL_29:
     v83 = [v80 initWithDomain:v63 code:13 userInfo:v82];
     (*(v61 + 2))(v61, 0, 0, v83);
 
-    v56 = v89;
+    v56 = attributeCopy;
   }
 
   v30 = 0;
@@ -5024,11 +5024,11 @@ LABEL_29:
 LABEL_41:
 }
 
-- (void)queueLoyaltyAndPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueLoyaltyAndPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v108 = a3;
-  v109 = a4;
-  v107 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v8 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -5039,14 +5039,14 @@ LABEL_41:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v15 = [v8 NF_clientName];
+    nF_clientName = [v8 NF_clientName];
     v16 = 45;
     if (isMetaClass)
     {
       v16 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i %{public}@", v16, ClassName, Name, 5066, v15);
+    v10(6, "%c[%{public}s %{public}s]:%i %{public}@", v16, ClassName, Name, 5066, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5066,7 +5066,7 @@ LABEL_41:
 
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
-    v22 = [v8 NF_clientName];
+    nF_clientName2 = [v8 NF_clientName];
     *buf = 67110146;
     v123 = v19;
     v124 = 2082;
@@ -5076,7 +5076,7 @@ LABEL_41:
     v128 = 1024;
     v129 = 5066;
     v130 = 2114;
-    v131 = v22;
+    v131 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -5089,16 +5089,16 @@ LABEL_41:
     v135 = v42;
     v43 = [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
     v44 = [v41 initWithDomain:v24 code:58 userInfo:v43];
-    v40 = v107;
-    (*(v107 + 2))(v107, 0, 0, v44);
+    v40 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v44);
 
 LABEL_52:
-    v48 = v109;
+    v48 = attributeCopy;
     goto LABEL_53;
   }
 
-  v23 = [v8 NF_whitelistChecker];
-  v24 = [_NFLoyaltyAndPaymentSession validateEntitlements:v23];
+  nF_whitelistChecker = [v8 NF_whitelistChecker];
+  v24 = [_NFLoyaltyAndPaymentSession validateEntitlements:nF_whitelistChecker];
 
   if (v24)
   {
@@ -5111,15 +5111,15 @@ LABEL_52:
       v28 = class_isMetaClass(v27);
       v29 = object_getClassName(self);
       v30 = sel_getName(a2);
-      v31 = [v8 NF_clientName];
-      v106 = [v8 processIdentifier];
+      nF_clientName3 = [v8 NF_clientName];
+      processIdentifier = [v8 processIdentifier];
       v32 = 45;
       if (v28)
       {
         v32 = 43;
       }
 
-      v26(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v32, v29, v30, 5075, v31, v106);
+      v26(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v32, v29, v30, 5075, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5139,8 +5139,8 @@ LABEL_52:
 
       v36 = object_getClassName(self);
       v37 = sel_getName(a2);
-      v38 = [v8 NF_clientName];
-      v39 = [v8 processIdentifier];
+      nF_clientName4 = [v8 NF_clientName];
+      processIdentifier2 = [v8 processIdentifier];
       *buf = 67110402;
       v123 = v35;
       v124 = 2082;
@@ -5150,14 +5150,14 @@ LABEL_52:
       v128 = 1024;
       v129 = 5075;
       v130 = 2114;
-      v131 = v38;
+      v131 = nF_clientName4;
       v132 = 1024;
-      v133 = v39;
+      v133 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v40 = v107;
-    (*(v107 + 2))(v107, 0, 0, v24);
+    v40 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v24);
     goto LABEL_52;
   }
 
@@ -5173,14 +5173,14 @@ LABEL_52:
       v57 = class_isMetaClass(v56);
       v58 = object_getClassName(self);
       v59 = sel_getName(a2);
-      v60 = [v8 NF_clientName];
+      nF_clientName5 = [v8 NF_clientName];
       v61 = 45;
       if (v57)
       {
         v61 = 43;
       }
 
-      v55(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v61, v58, v59, 5081, v60);
+      v55(6, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v61, v58, v59, 5081, nF_clientName5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5200,7 +5200,7 @@ LABEL_52:
 
       v65 = object_getClassName(self);
       v66 = sel_getName(a2);
-      v67 = [v8 NF_clientName];
+      nF_clientName6 = [v8 NF_clientName];
       *buf = 67110146;
       v123 = v64;
       v124 = 2082;
@@ -5210,7 +5210,7 @@ LABEL_52:
       v128 = 1024;
       v129 = 5081;
       v130 = 2114;
-      v131 = v67;
+      v131 = nF_clientName6;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -5226,7 +5226,7 @@ LABEL_52:
     goto LABEL_51;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v109)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v75 = NFLogGetLogger();
@@ -5285,14 +5285,14 @@ LABEL_52:
     v74 = 50;
 LABEL_51:
     v87 = [v72 initWithDomain:v73 code:v74 userInfo:v71];
-    (*(v107 + 2))(v107, 0, 0, v87);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v87);
 
-    v40 = v107;
+    v40 = completionCopy;
     v24 = 0;
     goto LABEL_52;
   }
 
-  v46 = [(_NFXPCSession *)[_NFLoyaltyAndPaymentSession alloc] initWithRemoteObject:v108 workQueue:self->_workQueue];
+  v46 = [(_NFXPCSession *)[_NFLoyaltyAndPaymentSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v47 = v46;
   if (v46)
   {
@@ -5300,25 +5300,25 @@ LABEL_51:
     [(_NFXPCSession *)v47 setConnection:v8];
     [(_NFSession *)v47 setUid:0xFFFFFFFFLL];
     objc_opt_class();
-    v48 = v109;
+    v48 = attributeCopy;
     if (objc_opt_isKindOfClass())
     {
-      v49 = [v109 objectForKey:@"session.force.express.exit"];
+      v49 = [attributeCopy objectForKey:@"session.force.express.exit"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v51 = [v109 objectForKeyedSubscript:@"session.force.express.exit"];
+        v51 = [attributeCopy objectForKeyedSubscript:@"session.force.express.exit"];
         -[_NFSession setForceExpressExit:](v47, "setForceExpressExit:", [v51 BOOLValue]);
       }
     }
 
-    v52 = [v8 exportedInterface];
-    sub_10006066C(NFHardwareManagerInterface, v52);
+    exportedInterface = [v8 exportedInterface];
+    sub_10006066C(NFHardwareManagerInterface, exportedInterface);
 
-    v40 = v107;
-    (*(v107 + 2))(v107, v47, [(_NFHardwareManager *)self isFirstInQueue], 0);
+    v40 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v47, [(_NFHardwareManager *)self isFirstInQueue], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -5328,7 +5328,7 @@ LABEL_51:
     v112 = v47;
     v115 = a2;
     v113 = v8;
-    v114 = v109;
+    v114 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -5387,35 +5387,35 @@ LABEL_51:
     v117 = v101;
     v102 = [NSDictionary dictionaryWithObjects:&v117 forKeys:&v116 count:1];
     v103 = [v99 initWithDomain:v100 code:13 userInfo:v102];
-    (*(v107 + 2))(v107, 0, 0, v103);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v103);
 
-    v40 = v107;
-    v48 = v109;
+    v40 = completionCopy;
+    v48 = attributeCopy;
   }
 
   v24 = 0;
 LABEL_53:
 }
 
-- (void)queueReaderSession:(id)a3 sessionConfig:(id)a4 completion:(id)a5
+- (void)queueReaderSession:(id)session sessionConfig:(id)config completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  configCopy = config;
+  completionCopy = completion;
   v11 = +[NSXPCConnection currentConnection];
-  if (v9)
+  if (configCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v37 = [NSError alloc];
-      v30 = [NSString stringWithUTF8String:"nfcd"];
+      nF_whitelistChecker = [NSString stringWithUTF8String:"nfcd"];
       v229 = NSLocalizedDescriptionKey;
-      v31 = [NSString stringWithUTF8String:"Invalid Parameter"];
-      v230 = v31;
+      nF_serviceType = [NSString stringWithUTF8String:"Invalid Parameter"];
+      v230 = nF_serviceType;
       v32 = [NSDictionary dictionaryWithObjects:&v230 forKeys:&v229 count:1];
-      v38 = [v37 initWithDomain:v30 code:10 userInfo:v32];
-      (*(v10 + 2))(v10, 0, 0, v38);
+      v38 = [v37 initWithDomain:nF_whitelistChecker code:10 userInfo:v32];
+      (*(completionCopy + 2))(completionCopy, 0, 0, v38);
 
       goto LABEL_49;
     }
@@ -5423,7 +5423,7 @@ LABEL_53:
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
-  v201 = v8;
+  v201 = sessionCopy;
   v202 = v11;
   if (Logger)
   {
@@ -5432,17 +5432,17 @@ LABEL_53:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v18 = [v11 NF_clientName];
-    v19 = +[NFReaderSessionConfig sessionTypeString:](NFReaderSessionConfig, "sessionTypeString:", [v9 sessionType]);
+    nF_clientName = [v11 NF_clientName];
+    v19 = +[NFReaderSessionConfig sessionTypeString:](NFReaderSessionConfig, "sessionTypeString:", [configCopy sessionType]);
     v187 = Name;
-    v8 = v201;
+    sessionCopy = v201;
     v20 = 45;
     if (isMetaClass)
     {
       v20 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i %{public}@, type:%{public}@", v20, ClassName, v187, 5196, v18, v19);
+    v13(6, "%c[%{public}s %{public}s]:%i %{public}@, type:%{public}@", v20, ClassName, v187, 5196, nF_clientName, v19);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5462,11 +5462,11 @@ LABEL_53:
 
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
-    v26 = [v202 NF_clientName];
-    v27 = +[NFReaderSessionConfig sessionTypeString:](NFReaderSessionConfig, "sessionTypeString:", [v9 sessionType]);
+    nF_clientName2 = [v202 NF_clientName];
+    v27 = +[NFReaderSessionConfig sessionTypeString:](NFReaderSessionConfig, "sessionTypeString:", [configCopy sessionType]);
     *buf = 67110402;
     *&buf[4] = v23;
-    v8 = v201;
+    sessionCopy = v201;
     *&buf[8] = 2082;
     *&buf[10] = v24;
     *&buf[18] = 2082;
@@ -5474,7 +5474,7 @@ LABEL_53:
     *&buf[28] = 1024;
     *&buf[30] = 5196;
     v219 = 2114;
-    *v220 = v26;
+    *v220 = nF_clientName2;
     *&v220[8] = 2114;
     *&v220[10] = v27;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@, type:%{public}@", buf, 0x36u);
@@ -5484,17 +5484,17 @@ LABEL_53:
   if ((v28 & 0xFFFFFFFD) == 1)
   {
     v29 = [NSError alloc];
-    v30 = [NSString stringWithUTF8String:"nfcd"];
+    nF_whitelistChecker = [NSString stringWithUTF8String:"nfcd"];
     v227 = NSLocalizedDescriptionKey;
-    v31 = [NSString stringWithUTF8String:"Unresponsive hardware"];
-    v228 = v31;
+    nF_serviceType = [NSString stringWithUTF8String:"Unresponsive hardware"];
+    v228 = nF_serviceType;
     v32 = [NSDictionary dictionaryWithObjects:&v228 forKeys:&v227 count:1];
     v33 = v29;
-    v34 = v30;
+    v34 = nF_whitelistChecker;
     v35 = 58;
 LABEL_47:
     v69 = [v33 initWithDomain:v34 code:v35 userInfo:v32];
-    (*(v10 + 2))(v10, 0, 0, v69);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v69);
 
 LABEL_48:
     v11 = v202;
@@ -5504,13 +5504,13 @@ LABEL_48:
   if (v28 == 4)
   {
     v36 = [NSError alloc];
-    v30 = [NSString stringWithUTF8String:"nfcd"];
+    nF_whitelistChecker = [NSString stringWithUTF8String:"nfcd"];
     v225 = NSLocalizedDescriptionKey;
-    v31 = [NSString stringWithUTF8String:"No NFC on device"];
-    v226 = v31;
+    nF_serviceType = [NSString stringWithUTF8String:"No NFC on device"];
+    v226 = nF_serviceType;
     v32 = [NSDictionary dictionaryWithObjects:&v226 forKeys:&v225 count:1];
     v33 = v36;
-    v34 = v30;
+    v34 = nF_whitelistChecker;
     v35 = 57;
     goto LABEL_47;
   }
@@ -5564,19 +5564,19 @@ LABEL_48:
     }
 
     v68 = [NSError alloc];
-    v30 = [NSString stringWithUTF8String:"nfcd"];
+    nF_whitelistChecker = [NSString stringWithUTF8String:"nfcd"];
     v223 = NSLocalizedDescriptionKey;
-    v31 = [NSString stringWithUTF8String:"Feature Not Supported"];
-    v224 = v31;
+    nF_serviceType = [NSString stringWithUTF8String:"Feature Not Supported"];
+    v224 = nF_serviceType;
     v32 = [NSDictionary dictionaryWithObjects:&v224 forKeys:&v223 count:1];
     v33 = v68;
-    v34 = v30;
+    v34 = nF_whitelistChecker;
     v35 = 14;
     goto LABEL_47;
   }
 
-  v30 = [v202 NF_whitelistChecker];
-  if (([v30 externalReaderAccessAllow] & 1) == 0)
+  nF_whitelistChecker = [v202 NF_whitelistChecker];
+  if (([nF_whitelistChecker externalReaderAccessAllow] & 1) == 0)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v70 = NFLogGetLogger();
@@ -5587,15 +5587,15 @@ LABEL_48:
       v73 = class_isMetaClass(v72);
       v74 = object_getClassName(self);
       v75 = sel_getName(a2);
-      v76 = [v202 processIdentifier];
-      v77 = [v30 clientName];
+      processIdentifier = [v202 processIdentifier];
+      clientName = [nF_whitelistChecker clientName];
       v78 = 45;
       if (v73)
       {
         v78 = 43;
       }
 
-      v71(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", v78, v74, v75, 5216, v76, v77);
+      v71(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", v78, v74, v75, 5216, processIdentifier, clientName);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5615,8 +5615,8 @@ LABEL_48:
 
       v82 = object_getClassName(self);
       v83 = sel_getName(a2);
-      v84 = [v202 processIdentifier];
-      v85 = [v30 clientName];
+      processIdentifier2 = [v202 processIdentifier];
+      clientName2 = [nF_whitelistChecker clientName];
       *buf = 67110402;
       *&buf[4] = v81;
       *&buf[8] = 2082;
@@ -5626,26 +5626,26 @@ LABEL_48:
       *&buf[28] = 1024;
       *&buf[30] = 5216;
       v219 = 1024;
-      *v220 = v84;
+      *v220 = processIdentifier2;
       *&v220[4] = 2114;
-      *&v220[6] = v85;
+      *&v220[6] = clientName2;
       _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", buf, 0x32u);
     }
 
     v86 = [NSError alloc];
-    v31 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v221 = NSLocalizedDescriptionKey;
     v32 = [NSString stringWithUTF8String:"Not entitled"];
     v222 = v32;
     v87 = [NSDictionary dictionaryWithObjects:&v222 forKeys:&v221 count:1];
-    v88 = [v86 initWithDomain:v31 code:32 userInfo:v87];
-    (*(v10 + 2))(v10, 0, 0, v88);
+    v88 = [v86 initWithDomain:nF_serviceType code:32 userInfo:v87];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v88);
 
     goto LABEL_70;
   }
 
-  v39 = [v30 readerPurposeString];
-  v40 = [v39 length];
+  readerPurposeString = [nF_whitelistChecker readerPurposeString];
+  v40 = [readerPurposeString length];
 
   if (!v40)
   {
@@ -5658,15 +5658,15 @@ LABEL_48:
       v92 = class_isMetaClass(v91);
       v197 = object_getClassName(self);
       v93 = sel_getName(a2);
-      v94 = [v202 processIdentifier];
-      v95 = [v30 clientName];
+      processIdentifier3 = [v202 processIdentifier];
+      clientName3 = [nF_whitelistChecker clientName];
       v96 = 43;
       if (!v92)
       {
         v96 = 45;
       }
 
-      v90(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required %{public}@ key.", v96, v197, v93, 5222, v94, v95, NFReaderPurposeStringKey);
+      v90(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required %{public}@ key.", v96, v197, v93, 5222, processIdentifier3, clientName3, NFReaderPurposeStringKey);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5686,8 +5686,8 @@ LABEL_48:
 
       v100 = object_getClassName(self);
       v101 = sel_getName(a2);
-      v102 = [v202 processIdentifier];
-      v103 = [v30 clientName];
+      processIdentifier4 = [v202 processIdentifier];
+      clientName4 = [nF_whitelistChecker clientName];
       *buf = 67110658;
       *&buf[4] = v99;
       *&buf[8] = 2082;
@@ -5697,21 +5697,21 @@ LABEL_48:
       *&buf[28] = 1024;
       *&buf[30] = 5222;
       v219 = 1024;
-      *v220 = v102;
+      *v220 = processIdentifier4;
       *&v220[4] = 2114;
-      *&v220[6] = v103;
+      *&v220[6] = clientName4;
       *&v220[14] = 2114;
       *&v220[16] = NFReaderPurposeStringKey;
       _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required %{public}@ key.", buf, 0x3Cu);
     }
 
     v104 = [NSError alloc];
-    v31 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v216 = NSLocalizedDescriptionKey;
     v217 = @"This app has crashed because it attempted to access NFC NDEF reader without a usage description.  The app's Info.plist must contain an NFCReaderUsageDescription key with a string value explaining to the user how the app uses the NFC NDEF reader.";
     v32 = [NSDictionary dictionaryWithObjects:&v217 forKeys:&v216 count:1];
-    v105 = [v104 initWithDomain:v31 code:36 userInfo:v32];
-    (*(v10 + 2))(v10, 0, 0, v105);
+    v105 = [v104 initWithDomain:nF_serviceType code:36 userInfo:v32];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v105);
 
     goto LABEL_70;
   }
@@ -5765,19 +5765,19 @@ LABEL_48:
     }
 
     v117 = [NSError alloc];
-    v31 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v214 = NSLocalizedDescriptionKey;
     v32 = [NSString stringWithUTF8String:"NFC radio disabled"];
     v215 = v32;
     v118 = [NSDictionary dictionaryWithObjects:&v215 forKeys:&v214 count:1];
-    v119 = [v117 initWithDomain:v31 code:50 userInfo:v118];
-    (*(v10 + 2))(v10, 0, 0, v119);
+    v119 = [v117 initWithDomain:nF_serviceType code:50 userInfo:v118];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v119);
 
     goto LABEL_92;
   }
 
-  v31 = [v202 NF_serviceType];
-  if (!v31 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v31 unsignedIntegerValue] != 2)
+  nF_serviceType = [v202 NF_serviceType];
+  if (!nF_serviceType || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [nF_serviceType unsignedIntegerValue] != 2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v120 = NFLogGetLogger();
@@ -5794,7 +5794,7 @@ LABEL_48:
         v124 = 43;
       }
 
-      v121(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v124, v186, v190, 5237, v31);
+      v121(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v124, v186, v190, 5237, nF_serviceType);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5823,7 +5823,7 @@ LABEL_48:
       *&buf[28] = 1024;
       *&buf[30] = 5237;
       v219 = 2114;
-      *v220 = v31;
+      *v220 = nF_serviceType;
       _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", buf, 0x2Cu);
     }
 
@@ -5839,10 +5839,10 @@ LABEL_48:
     goto LABEL_91;
   }
 
-  if ([v9 sessionType] == 4)
+  if ([configCopy sessionType] == 4)
   {
-    v41 = [v9 vasPasses];
-    v42 = [v41 count];
+    vasPasses = [configCopy vasPasses];
+    v42 = [vasPasses count];
 
     if (!v42)
     {
@@ -5903,14 +5903,14 @@ LABEL_48:
       v134 = 10;
 LABEL_91:
       v135 = [v132 initWithDomain:v133 code:v134 userInfo:v131];
-      (*(v10 + 2))(v10, 0, 0, v135);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v135);
 
 LABEL_92:
       goto LABEL_48;
     }
   }
 
-  v43 = [(_NFSession *)_NFReaderSession validateEntitlements:v30];
+  v43 = [(_NFSession *)_NFReaderSession validateEntitlements:nF_whitelistChecker];
   if (v43)
   {
     v32 = v43;
@@ -5923,15 +5923,15 @@ LABEL_92:
       v193 = class_isMetaClass(v46);
       v195 = object_getClassName(self);
       v47 = sel_getName(a2);
-      v48 = [v202 NF_clientName];
-      v192 = [v202 processIdentifier];
+      nF_clientName3 = [v202 NF_clientName];
+      processIdentifier5 = [v202 processIdentifier];
       v49 = 45;
       if (v193)
       {
         v49 = 43;
       }
 
-      v45(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v49, v195, v47, 5252, v48, v192);
+      v45(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v49, v195, v47, 5252, nF_clientName3, processIdentifier5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5952,8 +5952,8 @@ LABEL_92:
       v196 = v52;
       v53 = object_getClassName(self);
       v54 = sel_getName(a2);
-      v55 = [v202 NF_clientName];
-      v56 = [v202 processIdentifier];
+      nF_clientName4 = [v202 NF_clientName];
+      processIdentifier6 = [v202 processIdentifier];
       *buf = 67110402;
       *&buf[4] = v196;
       *&buf[8] = 2082;
@@ -5963,26 +5963,26 @@ LABEL_92:
       *&buf[28] = 1024;
       *&buf[30] = 5252;
       v219 = 2114;
-      *v220 = v55;
+      *v220 = nF_clientName4;
       *&v220[8] = 1024;
-      *&v220[10] = v56;
+      *&v220[10] = processIdentifier6;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v10 + 2))(v10, 0, 0, v32);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v32);
     goto LABEL_70;
   }
 
-  if ([v9 sessionType] != 5)
+  if ([configCopy sessionType] != 5)
   {
-    v148 = [v31 unsignedIntegerValue];
-    v149 = self;
-    v150 = v8;
-    v151 = v9;
-    v152 = v30;
+    unsignedIntegerValue = [nF_serviceType unsignedIntegerValue];
+    selfCopy2 = self;
+    v150 = sessionCopy;
+    v151 = configCopy;
+    v152 = nF_whitelistChecker;
     v11 = v202;
 LABEL_107:
-    sub_100105460(v149, v150, v151, v148, v152, v11, v10);
+    sub_100105460(selfCopy2, v150, v151, unsignedIntegerValue, v152, v11, completionCopy);
     v32 = 0;
     goto LABEL_49;
   }
@@ -6015,8 +6015,8 @@ LABEL_107:
       v156 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
       v207[2] = v156;
       v206[3] = NSDebugDescriptionErrorKey;
-      v157 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5281];
-      v207[3] = v157;
+      5281 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5281];
+      v207[3] = 5281;
       v158 = [NSDictionary dictionaryWithObjects:v207 forKeys:v206 count:4];
       v159 = v200;
       v160 = v154;
@@ -6028,7 +6028,7 @@ LABEL_107:
       if (v153 != 3)
       {
 LABEL_70:
-        v8 = v201;
+        sessionCopy = v201;
         v11 = v202;
         goto LABEL_49;
       }
@@ -6044,8 +6044,8 @@ LABEL_70:
       v156 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
       v205[2] = v156;
       v204[3] = NSDebugDescriptionErrorKey;
-      v157 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5284];
-      v205[3] = v157;
+      5281 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5284];
+      v205[3] = 5281;
       v158 = [NSDictionary dictionaryWithObjects:v205 forKeys:v204 count:4];
       v159 = v198;
       v160 = v154;
@@ -6053,7 +6053,7 @@ LABEL_70:
     }
 
     v185 = [v159 initWithDomain:v160 code:v161 userInfo:v158];
-    (*(v10 + 2))(v10, 0, 0, v185);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v185);
 
     v32 = 0;
     goto LABEL_70;
@@ -6066,15 +6066,15 @@ LABEL_70:
       goto LABEL_49;
     }
 
-    v148 = [v31 unsignedIntegerValue];
-    v149 = self;
-    v150 = v8;
-    v151 = v9;
-    v152 = v30;
+    unsignedIntegerValue = [nF_serviceType unsignedIntegerValue];
+    selfCopy2 = self;
+    v150 = sessionCopy;
+    v151 = configCopy;
+    v152 = nF_whitelistChecker;
     goto LABEL_107;
   }
 
-  v194 = v9;
+  v194 = configCopy;
   v199 = [NSError alloc];
   v162 = [NSString stringWithUTF8String:"nfcd"];
   v208[0] = NSLocalizedDescriptionKey;
@@ -6086,12 +6086,12 @@ LABEL_70:
   v164 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
   v209[2] = v164;
   v208[3] = NSDebugDescriptionErrorKey;
-  v165 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5263];
-  v209[3] = v165;
+  5263 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5263];
+  v209[3] = 5263;
   v166 = [NSDictionary dictionaryWithObjects:v209 forKeys:v208 count:4];
   v167 = v162;
   v168 = [v199 initWithDomain:v162 code:74 userInfo:v166];
-  (*(v10 + 2))(v10, 0, 0, v168);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v168);
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v169 = NFLogGetLogger();
@@ -6102,14 +6102,14 @@ LABEL_70:
     v172 = class_isMetaClass(v171);
     v173 = object_getClassName(self);
     v174 = sel_getName(a2);
-    v175 = [v30 bundleIdentifier];
+    bundleIdentifier = [nF_whitelistChecker bundleIdentifier];
     v176 = 45;
     if (v172)
     {
       v176 = 43;
     }
 
-    v170(6, "%c[%{public}s %{public}s]:%i [PaymentReader] Prompting for bundle %@", v176, v173, v174, 5265, v175);
+    v170(6, "%c[%{public}s %{public}s]:%i [PaymentReader] Prompting for bundle %@", v176, v173, v174, 5265, bundleIdentifier);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6129,7 +6129,7 @@ LABEL_70:
 
     v180 = object_getClassName(self);
     v181 = sel_getName(a2);
-    v182 = [v30 bundleIdentifier];
+    bundleIdentifier2 = [nF_whitelistChecker bundleIdentifier];
     *buf = 67110146;
     *&buf[4] = v179;
     *&buf[8] = 2082;
@@ -6139,65 +6139,65 @@ LABEL_70:
     *&buf[28] = 1024;
     *&buf[30] = 5265;
     v219 = 2112;
-    *v220 = v182;
+    *v220 = bundleIdentifier2;
     _os_log_impl(&_mh_execute_header, v177, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i [PaymentReader] Prompting for bundle %@", buf, 0x2Cu);
   }
 
   v183 = objc_opt_new();
-  v184 = [v30 bundleIdentifier];
-  [v183 coreNFCShowPaymentSessionGoToSettingsPrompt:v184];
+  bundleIdentifier3 = [nF_whitelistChecker bundleIdentifier];
+  [v183 coreNFCShowPaymentSessionGoToSettingsPrompt:bundleIdentifier3];
 
   [v183 disconnect];
   v32 = 0;
-  v8 = v201;
+  sessionCopy = v201;
   v11 = v202;
-  v9 = v194;
+  configCopy = v194;
 LABEL_49:
 }
 
-- (void)areFeaturesSupported:(unint64_t)a3 completion:(id)a4
+- (void)areFeaturesSupported:(unint64_t)supported completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v8 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100106F98;
   block[3] = &unk_100318B30;
-  v14 = v7;
-  v15 = a3;
+  v14 = completionCopy;
+  supportedCopy = supported;
   block[4] = self;
   v13 = v8;
   v16 = a2;
   v10 = v8;
-  v11 = v7;
+  v11 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)configureReaderModeRFForTransitPartner:(BOOL)a3 transitPartner:(unsigned int)a4 completion:(id)a5
+- (void)configureReaderModeRFForTransitPartner:(BOOL)partner transitPartner:(unsigned int)transitPartner completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001075EC;
   v13[3] = &unk_100318B58;
-  v17 = a3;
-  v16 = a4;
+  partnerCopy = partner;
+  transitPartnerCopy = transitPartner;
   v13[4] = self;
   v14 = v9;
-  v15 = v8;
-  v11 = v8;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = v9;
   dispatch_async(workQueue, v13);
 }
 
-- (void)queueReaderSessionInternal:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueReaderSessionInternal:(id)internal sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v136 = a5;
+  internalCopy = internal;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v11 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -6209,22 +6209,22 @@ LABEL_49:
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
     [v11 NF_clientName];
-    v19 = v18 = v9;
+    v19 = v18 = internalCopy;
     v20 = 45;
     if (isMetaClass)
     {
       v20 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", v20, ClassName, Name, 5413, v19, v10);
+    v13(6, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", v20, ClassName, Name, 5413, v19, attributeCopy);
 
-    v9 = v18;
+    internalCopy = v18;
   }
 
   v138 = v11;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v21 = NFSharedLogGetLogger();
-  v22 = v10;
+  v22 = attributeCopy;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v23 = object_getClass(self);
@@ -6240,7 +6240,7 @@ LABEL_49:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(a2);
-    v27 = [v138 NF_clientName];
+    nF_clientName = [v138 NF_clientName];
     *buf = 67110402;
     v159 = v24;
     v160 = 2082;
@@ -6250,15 +6250,15 @@ LABEL_49:
     v164 = 1024;
     v165 = 5413;
     v166 = 2114;
-    *v167 = v27;
+    *v167 = nF_clientName;
     *&v167[8] = 2114;
-    *&v167[10] = v10;
+    *&v167[10] = attributeCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", buf, 0x36u);
   }
 
   v28 = v138;
-  v29 = [v138 NF_whitelistChecker];
-  v137 = v29;
+  nF_whitelistChecker = [v138 NF_whitelistChecker];
+  v137 = nF_whitelistChecker;
   if (sub_100003384(self) != 2)
   {
     v50 = [NSError alloc];
@@ -6272,8 +6272,8 @@ LABEL_49:
     v55 = 58;
 LABEL_30:
     v57 = [v53 initWithDomain:v54 code:v55 userInfo:v52];
-    v49 = v136;
-    (*(v136 + 2))(v136, 0, 0, v57);
+    v49 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v57);
 
     goto LABEL_31;
   }
@@ -6292,7 +6292,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (([v29 readerInternalAccess] & 1) == 0)
+  if (([nF_whitelistChecker readerInternalAccess] & 1) == 0)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v58 = NFLogGetLogger();
@@ -6303,12 +6303,12 @@ LABEL_30:
       v61 = class_isMetaClass(v60);
       v134 = object_getClassName(self);
       v62 = v22;
-      v63 = v9;
+      v63 = internalCopy;
       v64 = sel_getName(a2);
-      v65 = [v138 processIdentifier];
-      v66 = [v29 clientName];
+      processIdentifier = [v138 processIdentifier];
+      clientName = [nF_whitelistChecker clientName];
       v126 = v64;
-      v9 = v63;
+      internalCopy = v63;
       v22 = v62;
       v67 = 45;
       if (v61)
@@ -6316,7 +6316,7 @@ LABEL_30:
         v67 = 43;
       }
 
-      v59(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", v67, v134, v126, 5428, v65, v66);
+      v59(5, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", v67, v134, v126, 5428, processIdentifier, clientName);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6336,8 +6336,8 @@ LABEL_30:
 
       v71 = object_getClassName(self);
       v72 = sel_getName(a2);
-      v73 = [v138 processIdentifier];
-      v74 = [v137 clientName];
+      processIdentifier2 = [v138 processIdentifier];
+      clientName2 = [v137 clientName];
       *buf = 67110402;
       v159 = v70;
       v160 = 2082;
@@ -6347,9 +6347,9 @@ LABEL_30:
       v164 = 1024;
       v165 = 5428;
       v166 = 1024;
-      *v167 = v73;
+      *v167 = processIdentifier2;
       *&v167[4] = 2114;
-      *&v167[6] = v74;
+      *&v167[6] = clientName2;
       _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) is missing the required entitlement.", buf, 0x32u);
     }
 
@@ -6424,22 +6424,22 @@ LABEL_30:
     v79 = 50;
 LABEL_52:
     v92 = [v77 initWithDomain:v78 code:v79 userInfo:v76];
-    v49 = v136;
-    (*(v136 + 2))(v136, 0, 0, v92);
+    v49 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v92);
 
     v28 = v138;
     goto LABEL_31;
   }
 
-  v30 = [v138 NF_serviceType];
-  v132 = v30;
-  if (v30 && (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v31 unsignedIntegerValue] == 1)
+  nF_serviceType = [v138 NF_serviceType];
+  v132 = nF_serviceType;
+  if (nF_serviceType && (v31 = nF_serviceType, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v31 unsignedIntegerValue] == 1)
   {
-    v32 = [(_NFSession *)_NFReaderSession validateEntitlements:v29];
+    v32 = [(_NFSession *)_NFReaderSession validateEntitlements:nF_whitelistChecker];
     if (v32)
     {
       v33 = v32;
-      v34 = v9;
+      v34 = internalCopy;
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v35 = NFLogGetLogger();
       if (v35)
@@ -6449,15 +6449,15 @@ LABEL_52:
         v38 = class_isMetaClass(v37);
         v133 = object_getClassName(self);
         v39 = sel_getName(a2);
-        v40 = [v138 NF_clientName];
-        v129 = [v138 processIdentifier];
+        nF_clientName2 = [v138 NF_clientName];
+        processIdentifier3 = [v138 processIdentifier];
         v41 = 45;
         if (v38)
         {
           v41 = 43;
         }
 
-        v36(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v41, v133, v39, 5449, v40, v129);
+        v36(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v41, v133, v39, 5449, nF_clientName2, processIdentifier3);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6477,8 +6477,8 @@ LABEL_52:
 
         v45 = object_getClassName(self);
         v46 = sel_getName(a2);
-        v47 = [v138 NF_clientName];
-        v48 = [v138 processIdentifier];
+        nF_clientName3 = [v138 NF_clientName];
+        processIdentifier4 = [v138 processIdentifier];
         *buf = 67110402;
         v159 = v44;
         v160 = 2082;
@@ -6488,15 +6488,15 @@ LABEL_52:
         v164 = 1024;
         v165 = 5449;
         v166 = 2114;
-        *v167 = v47;
+        *v167 = nF_clientName3;
         *&v167[8] = 1024;
-        *&v167[10] = v48;
+        *&v167[10] = processIdentifier4;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
       }
 
-      v49 = v136;
-      (*(v136 + 2))(v136, 0, 0, v33);
-      v9 = v34;
+      v49 = completionCopy;
+      (*(completionCopy + 2))(completionCopy, 0, 0, v33);
+      internalCopy = v34;
       v28 = v138;
     }
 
@@ -6562,7 +6562,7 @@ LABEL_52:
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v49 = v136;
+        v49 = completionCopy;
         if (isKindOfClass)
         {
           v118 = [v22 objectForKeyedSubscript:@"session.show.corenfc.ui"];
@@ -6586,12 +6586,12 @@ LABEL_52:
       else
       {
         v119 = 0;
-        v49 = v136;
+        v49 = completionCopy;
       }
 
       v120 = [NFReaderSessionConfig sessionConfigWithUIMode:v119 sessionType:0 initialScanText:0 vasPass:0];
       v140 = 0;
-      v33 = sub_1000ED4AC(self, v9, v120, [v132 unsignedIntegerValue], v137, v28, buf, &v140);
+      v33 = sub_1000ED4AC(self, internalCopy, v120, [v132 unsignedIntegerValue], v137, v28, buf, &v140);
       v121 = v140;
       v122 = v121;
       if (!v33)
@@ -6599,8 +6599,8 @@ LABEL_52:
         [(_NFSession *)v121 setSuspendOnFieldList:v135];
       }
 
-      v123 = [v28 exportedInterface];
-      sub_1000605EC(NFHardwareManagerInterface, v123);
+      exportedInterface = [v28 exportedInterface];
+      sub_1000605EC(NFHardwareManagerInterface, exportedInterface);
 
       (v49)[2](v49, v122, buf[0], v33);
       workQueue = self->_workQueue;
@@ -6670,18 +6670,18 @@ LABEL_52:
     v149 = v104;
     v105 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
     v106 = [v103 initWithDomain:v33 code:12 userInfo:v105];
-    v49 = v136;
-    (*(v136 + 2))(v136, 0, 0, v106);
+    v49 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v106);
   }
 
   v51 = v132;
 LABEL_31:
 }
 
-- (void)queueSeshatSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSeshatSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v72 = a3;
-  v71 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   v7 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -6692,14 +6692,14 @@ LABEL_31:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v14 = [v7 NF_clientName];
+    nF_clientName = [v7 NF_clientName];
     v15 = 45;
     if (isMetaClass)
     {
       v15 = 43;
     }
 
-    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v15, ClassName, Name, 5516, v14);
+    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v15, ClassName, Name, 5516, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6719,7 +6719,7 @@ LABEL_31:
 
     v19 = object_getClassName(self);
     v20 = sel_getName(a2);
-    v21 = [v7 NF_clientName];
+    nF_clientName2 = [v7 NF_clientName];
     *buf = 67110146;
     v78 = v18;
     v79 = 2082;
@@ -6729,14 +6729,14 @@ LABEL_31:
     v83 = 1024;
     v84 = 5516;
     v85 = 2114;
-    v86 = v21;
+    v86 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
   if (sub_100003384(self) == 2 || sub_100003384(self) == 5)
   {
-    v22 = [v7 NF_whitelistChecker];
-    v23 = [_NFSeshatSession validateEntitlements:v22];
+    nF_whitelistChecker = [v7 NF_whitelistChecker];
+    v23 = [_NFSeshatSession validateEntitlements:nF_whitelistChecker];
 
     if (v23)
     {
@@ -6749,15 +6749,15 @@ LABEL_31:
         v27 = class_isMetaClass(v26);
         v28 = object_getClassName(self);
         v29 = sel_getName(a2);
-        v30 = [v7 NF_clientName];
-        v70 = [v7 processIdentifier];
+        nF_clientName3 = [v7 NF_clientName];
+        processIdentifier = [v7 processIdentifier];
         v31 = 45;
         if (v27)
         {
           v31 = 43;
         }
 
-        v25(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v31, v28, v29, 5525, v30, v70);
+        v25(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v31, v28, v29, 5525, nF_clientName3, processIdentifier);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6777,8 +6777,8 @@ LABEL_31:
 
         v35 = object_getClassName(self);
         v36 = sel_getName(a2);
-        v37 = [v7 NF_clientName];
-        v38 = [v7 processIdentifier];
+        nF_clientName4 = [v7 NF_clientName];
+        processIdentifier2 = [v7 processIdentifier];
         *buf = 67110402;
         v78 = v34;
         v79 = 2082;
@@ -6788,19 +6788,19 @@ LABEL_31:
         v83 = 1024;
         v84 = 5525;
         v85 = 2114;
-        v86 = v37;
+        v86 = nF_clientName4;
         v87 = 1024;
-        v88 = v38;
+        v88 = processIdentifier2;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
       }
 
-      v39 = v71;
-      (*(v71 + 2))(v71, 0, v23);
+      v39 = completionCopy;
+      (*(completionCopy + 2))(completionCopy, 0, v23);
     }
 
     else
     {
-      v40 = [(_NFXPCSession *)[_NFSeshatSession alloc] initWithRemoteObject:v72 workQueue:self->_workQueue];
+      v40 = [(_NFXPCSession *)[_NFSeshatSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
       v41 = v40;
       if (v40)
       {
@@ -6810,8 +6810,8 @@ LABEL_31:
         [(_NFSeshatSession *)v41 setDriverWrapper:self->_driverWrapper];
         v42 = self->_secureElementSessionQueue;
         objc_sync_enter(v42);
-        v43 = [v7 NF_userInfo];
-        v44 = [v43 objectForKeyedSubscript:@"ProxyObjects"];
+        nF_userInfo = [v7 NF_userInfo];
+        v44 = [nF_userInfo objectForKeyedSubscript:@"ProxyObjects"];
         [v44 addObject:v41];
 
         if (!self->_currentSecureElementSession && ![(NSMutableArray *)self->_secureElementSessionQueue count])
@@ -6822,11 +6822,11 @@ LABEL_31:
         [(NSMutableArray *)self->_secureElementSessionQueue insertObject:v41 atIndex:0];
         objc_sync_exit(v42);
 
-        v45 = [v7 exportedInterface];
-        sub_10006056C(NFHardwareManagerInterface, v45);
+        exportedInterface = [v7 exportedInterface];
+        sub_10006056C(NFHardwareManagerInterface, exportedInterface);
 
-        v39 = v71;
-        (*(v71 + 2))(v71, v41, 0);
+        v39 = completionCopy;
+        (*(completionCopy + 2))(completionCopy, v41, 0);
         workQueue = self->_workQueue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -6895,12 +6895,12 @@ LABEL_31:
         v65 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
         v76[2] = v65;
         v75[3] = NSDebugDescriptionErrorKey;
-        v66 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5533];
-        v76[3] = v66;
+        5533 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 5533];
+        v76[3] = 5533;
         v67 = [NSDictionary dictionaryWithObjects:v76 forKeys:v75 count:4];
         v68 = [v62 initWithDomain:v63 code:13 userInfo:v67];
-        v39 = v71;
-        (*(v71 + 2))(v71, 0, v68);
+        v39 = completionCopy;
+        (*(completionCopy + 2))(completionCopy, 0, v68);
       }
 
       v23 = 0;
@@ -6916,34 +6916,34 @@ LABEL_31:
     v90 = v48;
     v49 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
     v50 = [v47 initWithDomain:v23 code:58 userInfo:v49];
-    v39 = v71;
-    (*(v71 + 2))(v71, 0, v50);
+    v39 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v50);
   }
 }
 
-- (void)areSessionsAllowedWithCompletion:(id)a3
+- (void)areSessionsAllowedWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001096DC;
   v10[3] = &unk_1003165E8;
-  v12 = v5;
+  v12 = completionCopy;
   v13 = a2;
   v10[4] = self;
   v11 = v6;
   v8 = v6;
-  v9 = v5;
+  v9 = completionCopy;
   dispatch_async(workQueue, v10);
 }
 
-- (void)queuePeerPaymentSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queuePeerPaymentSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v76 = a4;
-  v75 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -6953,18 +6953,18 @@ LABEL_31:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v16 = v9;
+    v16 = sessionCopy;
     Name = sel_getName(a2);
-    v18 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v71 = Name;
-    v9 = v16;
+    sessionCopy = v16;
     v19 = 45;
     if (isMetaClass)
     {
       v19 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v71, 5595, v18);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v71, 5595, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -6984,7 +6984,7 @@ LABEL_31:
 
     v23 = object_getClassName(self);
     v24 = sel_getName(a2);
-    v25 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v85 = v22;
     v86 = 2082;
@@ -6994,7 +6994,7 @@ LABEL_31:
     v90 = 1024;
     v91 = 5595;
     v92 = 2114;
-    v93 = v25;
+    v93 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -7007,16 +7007,16 @@ LABEL_31:
     v97 = v52;
     v53 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
     v54 = [v51 initWithDomain:v27 code:58 userInfo:v53];
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v54);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v54);
 
 LABEL_26:
-    v50 = v76;
+    v50 = attributeCopy;
     goto LABEL_38;
   }
 
-  v26 = [v10 NF_whitelistChecker];
-  v27 = [_NFPeerPaymentSession validateEntitlements:v26];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v27 = [_NFPeerPaymentSession validateEntitlements:nF_whitelistChecker];
 
   if (v27)
   {
@@ -7030,12 +7030,12 @@ LABEL_26:
       v32 = object_getClassName(self);
       v33 = sel_getName(a2);
       v34 = a2;
-      v35 = v9;
+      v35 = sessionCopy;
       v36 = v33;
-      v37 = [v10 NF_clientName];
-      v74 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v72 = v36;
-      v9 = v35;
+      sessionCopy = v35;
       a2 = v34;
       v38 = 45;
       if (v31)
@@ -7043,7 +7043,7 @@ LABEL_26:
         v38 = 43;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v72, 5604, v37, v74);
+      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v72, 5604, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7063,8 +7063,8 @@ LABEL_26:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v10 NF_clientName];
-      v45 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v85 = v41;
       v86 = 2082;
@@ -7074,26 +7074,26 @@ LABEL_26:
       v90 = 1024;
       v91 = 5604;
       v92 = 2114;
-      v93 = v44;
+      v93 = nF_clientName4;
       v94 = 1024;
-      v95 = v45;
+      v95 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v27);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v27);
     goto LABEL_26;
   }
 
-  v47 = [(_NFXPCSession *)[_NFPeerPaymentSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v47 = [(_NFXPCSession *)[_NFPeerPaymentSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v48 = v47;
   if (v47)
   {
     [(_NFSession *)v47 setQueue:self];
     [(_NFXPCSession *)v48 setConnection:v10];
     [(_NFSession *)v48 setUid:0xFFFFFFFFLL];
-    v46 = v75;
-    (*(v75 + 2))(v75, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -7103,8 +7103,8 @@ LABEL_26:
     v78 = v48;
     v81 = a2;
     v79 = v10;
-    v50 = v76;
-    v80 = v76;
+    v50 = attributeCopy;
+    v80 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -7163,21 +7163,21 @@ LABEL_26:
     v83 = v68;
     v69 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     v70 = [v66 initWithDomain:v67 code:13 userInfo:v69];
-    v46 = v75;
-    (*(v75 + 2))(v75, 0, 0, v70);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v70);
 
-    v50 = v76;
+    v50 = attributeCopy;
   }
 
   v27 = 0;
 LABEL_38:
 }
 
-- (void)queueTrustSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueTrustSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v66 = a4;
-  v65 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -7187,18 +7187,18 @@ LABEL_38:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v16 = v9;
+    v16 = sessionCopy;
     Name = sel_getName(a2);
-    v18 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v62 = Name;
-    v9 = v16;
+    sessionCopy = v16;
     v19 = 45;
     if (isMetaClass)
     {
       v19 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v62, 5662, v18);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v19, ClassName, v62, 5662, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7218,7 +7218,7 @@ LABEL_38:
 
     v23 = object_getClassName(self);
     v24 = sel_getName(a2);
-    v25 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v75 = v22;
     v76 = 2082;
@@ -7228,7 +7228,7 @@ LABEL_38:
     v80 = 1024;
     v81 = 5662;
     v82 = 2114;
-    v83 = v25;
+    v83 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -7241,16 +7241,16 @@ LABEL_38:
     v87 = v54;
     v55 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
     v56 = [v53 initWithDomain:v27 code:58 userInfo:v55];
-    v46 = v65;
-    (*(v65 + 2))(v65, 0, 0, v56);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v56);
 
 LABEL_26:
-    v52 = v66;
+    v52 = attributeCopy;
     goto LABEL_29;
   }
 
-  v26 = [v10 NF_whitelistChecker];
-  v27 = [_NFTrustSession validateEntitlements:v26];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v27 = [_NFTrustSession validateEntitlements:nF_whitelistChecker];
 
   if (v27)
   {
@@ -7264,12 +7264,12 @@ LABEL_26:
       v32 = object_getClassName(self);
       v33 = sel_getName(a2);
       v34 = a2;
-      v35 = v9;
+      v35 = sessionCopy;
       v36 = v33;
-      v37 = [v10 NF_clientName];
-      v64 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v63 = v36;
-      v9 = v35;
+      sessionCopy = v35;
       a2 = v34;
       v38 = 45;
       if (v31)
@@ -7277,7 +7277,7 @@ LABEL_26:
         v38 = 43;
       }
 
-      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v63, 5671, v37, v64);
+      v29(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v32, v63, 5671, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7297,8 +7297,8 @@ LABEL_26:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v10 NF_clientName];
-      v45 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v75 = v41;
       v76 = 2082;
@@ -7308,30 +7308,30 @@ LABEL_26:
       v80 = 1024;
       v81 = 5671;
       v82 = 2114;
-      v83 = v44;
+      v83 = nF_clientName4;
       v84 = 1024;
-      v85 = v45;
+      v85 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v46 = v65;
-    (*(v65 + 2))(v65, 0, 0, v27);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v27);
     goto LABEL_26;
   }
 
-  v47 = [[_NFTrustSession alloc] initWithRemoteObject:v9 workQueue:self->_workQueue];
+  v47 = [[_NFTrustSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v48 = v47;
   if (v47)
   {
     [(_NFSession *)v47 setQueue:self];
     [(_NFXPCSession *)v48 setConnection:v10];
-    v49 = [v10 NF_whitelistChecker];
-    v50 = [v49 applicationIdentifier];
-    [(_NFTrustSession *)v48 setApplicationIdentifier:v50];
+    nF_whitelistChecker2 = [v10 NF_whitelistChecker];
+    applicationIdentifier = [nF_whitelistChecker2 applicationIdentifier];
+    [(_NFTrustSession *)v48 setApplicationIdentifier:applicationIdentifier];
 
     [(_NFSession *)v48 setUid:0xFFFFFFFFLL];
-    v46 = v65;
-    (*(v65 + 2))(v65, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v48, [(_NFHardwareManager *)self isFirstInQueue], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -7341,8 +7341,8 @@ LABEL_26:
     v68 = v48;
     v71 = a2;
     v69 = v10;
-    v52 = v66;
-    v70 = v66;
+    v52 = attributeCopy;
+    v70 = attributeCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -7355,30 +7355,30 @@ LABEL_26:
     v73 = v59;
     v60 = [NSDictionary dictionaryWithObjects:&v73 forKeys:&v72 count:1];
     v61 = [v57 initWithDomain:v58 code:6 userInfo:v60];
-    v46 = v65;
-    (*(v65 + 2))(v65, 0, 0, v61);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v61);
 
-    v52 = v66;
+    v52 = attributeCopy;
   }
 
   v27 = 0;
 LABEL_29:
 }
 
-- (void)queueNdefTagSession:(id)a3 sessionAttribute:(id)a4 data:(id)a5 completion:(id)a6
+- (void)queueNdefTagSession:(id)session sessionAttribute:(id)attribute data:(id)data completion:(id)completion
 {
-  v89 = a3;
-  v90 = a4;
-  v88 = a5;
-  v11 = a6;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  dataCopy = data;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   kdebug_trace();
   v13 = NFSharedSignpostLog();
   if (os_signpost_enabled(v13))
   {
-    v14 = [v12 NF_clientName];
+    nF_clientName = [v12 NF_clientName];
     *buf = 138412290;
-    *v93 = v14;
+    *v93 = nF_clientName;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_REQUESTED", "Tag session requested from %@", buf, 0xCu);
   }
 
@@ -7391,14 +7391,14 @@ LABEL_29:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v21 = [v12 NF_clientName];
+    nF_clientName2 = [v12 NF_clientName];
     v22 = 45;
     if (isMetaClass)
     {
       v22 = 43;
     }
 
-    v16(6, "%c[%{public}s %{public}s]:%i %{public}@", v22, ClassName, Name, 5738, v21);
+    v16(6, "%c[%{public}s %{public}s]:%i %{public}@", v22, ClassName, Name, 5738, nF_clientName2);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7418,7 +7418,7 @@ LABEL_29:
 
     v26 = object_getClassName(self);
     v27 = sel_getName(a2);
-    v28 = [v12 NF_clientName];
+    nF_clientName3 = [v12 NF_clientName];
     *buf = 67110146;
     *v93 = v25;
     *&v93[4] = 2082;
@@ -7428,7 +7428,7 @@ LABEL_29:
     v96 = 1024;
     v97 = 5738;
     v98 = 2114;
-    v99 = v28;
+    v99 = nF_clientName3;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -7445,11 +7445,11 @@ LABEL_29:
     v51 = 58;
 LABEL_48:
     v79 = [v49 initWithDomain:v50 code:v51 userInfo:v48];
-    (*(v11 + 2))(v11, 0, 0, v79);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v79);
 
 LABEL_49:
-    v81 = v88;
-    v80 = v89;
+    v81 = dataCopy;
+    v80 = sessionCopy;
     goto LABEL_50;
   }
 
@@ -7465,14 +7465,14 @@ LABEL_49:
       v55 = class_isMetaClass(v54);
       v56 = object_getClassName(self);
       v57 = sel_getName(a2);
-      v58 = [v12 NF_clientName];
+      nF_clientName4 = [v12 NF_clientName];
       v59 = 45;
       if (v55)
       {
         v59 = 43;
       }
 
-      v53(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v59, v56, v57, 5746, v58);
+      v53(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v59, v56, v57, 5746, nF_clientName4);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7492,7 +7492,7 @@ LABEL_49:
 
       v63 = object_getClassName(self);
       v64 = sel_getName(a2);
-      v65 = [v12 NF_clientName];
+      nF_clientName5 = [v12 NF_clientName];
       *buf = 67110146;
       *v93 = v62;
       *&v93[4] = 2082;
@@ -7502,7 +7502,7 @@ LABEL_49:
       v96 = 1024;
       v97 = 5746;
       v98 = 2114;
-      v99 = v65;
+      v99 = nF_clientName5;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -7518,7 +7518,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v90)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v67 = NFLogGetLogger();
@@ -7578,8 +7578,8 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  v30 = [v12 NF_whitelistChecker];
-  v31 = [_NFTagSession validateEntitlements:v30];
+  nF_whitelistChecker = [v12 NF_whitelistChecker];
+  v31 = [_NFTagSession validateEntitlements:nF_whitelistChecker];
 
   if (v31)
   {
@@ -7592,15 +7592,15 @@ LABEL_49:
       v35 = class_isMetaClass(v34);
       v87 = object_getClassName(self);
       v36 = sel_getName(a2);
-      v37 = [v12 NF_clientName];
-      v86 = [v12 processIdentifier];
+      nF_clientName6 = [v12 NF_clientName];
+      processIdentifier = [v12 processIdentifier];
       v38 = 45;
       if (v35)
       {
         v38 = 43;
       }
 
-      v33(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v87, v36, 5760, v37, v86);
+      v33(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v87, v36, 5760, nF_clientName6, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7620,8 +7620,8 @@ LABEL_49:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v12 NF_clientName];
-      v45 = [v12 processIdentifier];
+      nF_clientName7 = [v12 NF_clientName];
+      processIdentifier2 = [v12 processIdentifier];
       *buf = 67110402;
       *v93 = v41;
       *&v93[4] = 2082;
@@ -7631,37 +7631,37 @@ LABEL_49:
       v96 = 1024;
       v97 = 5760;
       v98 = 2114;
-      v99 = v44;
+      v99 = nF_clientName7;
       v100 = 1024;
-      v101 = v45;
+      v101 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v11 + 2))(v11, 0, 0, v31);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v31);
     goto LABEL_49;
   }
 
-  v80 = v89;
-  v82 = [(_NFXPCSession *)[_NFTagSession alloc] initWithRemoteObject:v89 workQueue:self->_workQueue];
+  v80 = sessionCopy;
+  v82 = [(_NFXPCSession *)[_NFTagSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   [(_NFSession *)v82 setQueue:self];
   [(_NFXPCSession *)v82 setConnection:v12];
-  v81 = v88;
-  if (v88)
+  v81 = dataCopy;
+  if (dataCopy)
   {
-    [(_NFTagSession *)v82 setInitialPayload:v88];
+    [(_NFTagSession *)v82 setInitialPayload:dataCopy];
   }
 
   [(_NFSession *)v82 setUid:0xFFFFFFFFLL];
   buf[0] = 0;
-  v83 = sub_1001DC138(self, v82, v12, v90, buf);
+  v83 = sub_1001DC138(self, v82, v12, attributeCopy, buf);
   if (v83)
   {
-    (*(v11 + 2))(v11, 0, 0, v83);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v83);
   }
 
   else
   {
-    (*(v11 + 2))(v11, v82, buf[0], 0);
+    (*(completionCopy + 2))(completionCopy, v82, buf[0], 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -7675,20 +7675,20 @@ LABEL_49:
 LABEL_50:
 }
 
-- (void)queueHostEmulationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueHostEmulationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v177 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v181 = objc_opt_new();
   v10 = +[NSXPCConnection currentConnection];
   kdebug_trace();
   v11 = NFSharedSignpostLog();
   if (os_signpost_enabled(v11))
   {
-    v12 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     *buf = 138412290;
-    *v202 = v12;
+    *v202 = nF_clientName;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_REQUESTED", "HCE session requested from %@", buf, 0xCu);
   }
 
@@ -7702,14 +7702,14 @@ LABEL_50:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v19 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     v20 = 45;
     if (isMetaClass)
     {
       v20 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", v20, ClassName, Name, 5817, v19, v9);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", v20, ClassName, Name, 5817, nF_clientName2, attributeCopy);
 
     v10 = v180;
   }
@@ -7731,7 +7731,7 @@ LABEL_50:
 
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
-    v26 = [v10 NF_clientName];
+    nF_clientName3 = [v10 NF_clientName];
     *buf = 67110402;
     *v202 = v23;
     *&v202[4] = 2082;
@@ -7741,9 +7741,9 @@ LABEL_50:
     v205 = 1024;
     v206 = 5817;
     v207 = 2114;
-    v208 = v26;
+    v208 = nF_clientName3;
     v209 = 2114;
-    v210 = v9;
+    v210 = attributeCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ %{public}@", buf, 0x36u);
   }
 
@@ -7760,8 +7760,8 @@ LABEL_50:
     v52 = 58;
 LABEL_48:
     v80 = [v50 initWithDomain:v51 code:v52 userInfo:v49];
-    v46 = v177;
-    (*(v177 + 2))(v177, 0, 0, v80);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v80);
 
     goto LABEL_49;
   }
@@ -7778,14 +7778,14 @@ LABEL_48:
       v56 = class_isMetaClass(v55);
       v57 = object_getClassName(self);
       v58 = sel_getName(a2);
-      v59 = [v10 NF_clientName];
+      nF_clientName4 = [v10 NF_clientName];
       v60 = 45;
       if (v56)
       {
         v60 = 43;
       }
 
-      v54(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v60, v57, v58, 5825, v59);
+      v54(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v60, v57, v58, 5825, nF_clientName4);
 
       v10 = v180;
     }
@@ -7807,7 +7807,7 @@ LABEL_48:
 
       v64 = object_getClassName(self);
       v65 = sel_getName(a2);
-      v66 = [v10 NF_clientName];
+      nF_clientName5 = [v10 NF_clientName];
       *buf = 67110146;
       *v202 = v63;
       *&v202[4] = 2082;
@@ -7817,7 +7817,7 @@ LABEL_48:
       v205 = 1024;
       v206 = 5825;
       v207 = 2114;
-      v208 = v66;
+      v208 = nF_clientName5;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -7833,7 +7833,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v9)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v68 = NFLogGetLogger();
@@ -7893,8 +7893,8 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  v28 = [v10 NF_whitelistChecker];
-  v29 = [_NFHCESession validateEntitlements:v28];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v29 = [_NFHCESession validateEntitlements:nF_whitelistChecker];
 
   if (v29)
   {
@@ -7908,17 +7908,17 @@ LABEL_48:
       v34 = object_getClassName(self);
       v35 = sel_getName(a2);
       [v180 NF_clientName];
-      v37 = v36 = v9;
-      v160 = [v180 processIdentifier];
+      v37 = v36 = attributeCopy;
+      processIdentifier = [v180 processIdentifier];
       v38 = 45;
       if (v33)
       {
         v38 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v34, v35, 5839, v37, v160);
+      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v38, v34, v35, 5839, v37, processIdentifier);
 
-      v9 = v36;
+      attributeCopy = v36;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -7938,8 +7938,8 @@ LABEL_48:
 
       v42 = object_getClassName(self);
       v43 = sel_getName(a2);
-      v44 = [v180 NF_clientName];
-      v45 = [v180 processIdentifier];
+      nF_clientName6 = [v180 NF_clientName];
+      processIdentifier2 = [v180 processIdentifier];
       *buf = 67110402;
       *v202 = v41;
       *&v202[4] = 2082;
@@ -7949,14 +7949,14 @@ LABEL_48:
       v205 = 1024;
       v206 = 5839;
       v207 = 2114;
-      v208 = v44;
+      v208 = nF_clientName6;
       v209 = 1024;
-      LODWORD(v210) = v45;
+      LODWORD(v210) = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    v46 = v177;
-    (*(v177 + 2))(v177, 0, 0, v29);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v29);
     goto LABEL_49;
   }
 
@@ -7977,15 +7977,15 @@ LABEL_48:
     goto LABEL_88;
   }
 
-  v81 = [v9 NF_arrayForKey:@"StartOnECP"];
+  v81 = [attributeCopy NF_arrayForKey:@"StartOnECP"];
   v169 = v81;
   if (![v81 count])
   {
     goto LABEL_74;
   }
 
-  v163 = v9;
-  v175 = v8;
+  v163 = attributeCopy;
+  v175 = sessionCopy;
   v188 = 0u;
   v189 = 0u;
   v186 = 0u;
@@ -8088,18 +8088,18 @@ LABEL_48:
   while (v84);
 LABEL_73:
 
-  v8 = v175;
-  v9 = v163;
+  sessionCopy = v175;
+  attributeCopy = v163;
 LABEL_74:
-  v174 = [v9 NF_numberForKey:@"EmulationOnSessionStart"];
-  v99 = [v9 NF_numberForKey:@"ReadOnReaderConnected"];
-  v173 = [v9 NF_numberForKey:@"SuspendOnDisconnect"];
-  v100 = [v9 NF_numberForKey:@"BackgroundTagReadingECP"];
-  v101 = [v9 NF_numberForKey:@"ListenOnAllField"];
-  v102 = [v9 NF_numberForKey:@"FDRestartOnMatchingECPTermInfo"];
-  v176 = [v9 NF_dataForKey:@"ECPBroadcast"];
-  v172 = [v9 NF_numberForKey:@"disableAutostartOnField"];
-  v103 = [v9 NF_dataForKey:@"bkgTagReadECPOverride"];
+  v174 = [attributeCopy NF_numberForKey:@"EmulationOnSessionStart"];
+  v99 = [attributeCopy NF_numberForKey:@"ReadOnReaderConnected"];
+  v173 = [attributeCopy NF_numberForKey:@"SuspendOnDisconnect"];
+  v100 = [attributeCopy NF_numberForKey:@"BackgroundTagReadingECP"];
+  v101 = [attributeCopy NF_numberForKey:@"ListenOnAllField"];
+  v102 = [attributeCopy NF_numberForKey:@"FDRestartOnMatchingECPTermInfo"];
+  v176 = [attributeCopy NF_dataForKey:@"ECPBroadcast"];
+  v172 = [attributeCopy NF_numberForKey:@"disableAutostartOnField"];
+  v103 = [attributeCopy NF_dataForKey:@"bkgTagReadECPOverride"];
   v104 = v103;
   v105 = v180;
   if (v103 && (![v103 length] || objc_msgSend(v104, "length") >= 0x15))
@@ -8172,7 +8172,7 @@ LABEL_74:
 
 LABEL_88:
   v179 = v104;
-  v122 = [(_NFXPCSession *)[_NFHCESession alloc] initWithRemoteObject:v8 workQueue:self->_workQueue];
+  v122 = [(_NFXPCSession *)[_NFHCESession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v123 = v122;
   v171 = v101;
   if (v122)
@@ -8224,7 +8224,7 @@ LABEL_88:
     if ([v176 length])
     {
       v164 = v100;
-      v126 = [v9 NF_arrayForKey:@"ECPBroadcastFieldMatch"];
+      v126 = [attributeCopy NF_arrayForKey:@"ECPBroadcastFieldMatch"];
       v167 = v99;
       if (v126)
       {
@@ -8237,30 +8237,30 @@ LABEL_88:
       }
 
       v162 = v102;
-      v144 = [v9 NF_numberForKey:@"ECPBroadcastInterval"];
-      v145 = [v9 NF_numberForKey:@"ECPBroadcastPollDuration"];
+      v144 = [attributeCopy NF_numberForKey:@"ECPBroadcastInterval"];
+      v145 = [attributeCopy NF_numberForKey:@"ECPBroadcastPollDuration"];
       v146 = v145;
       if (v145)
       {
-        v147 = [v145 unsignedLongValue];
+        unsignedLongValue = [v145 unsignedLongValue];
       }
 
       else
       {
-        v147 = 0;
+        unsignedLongValue = 0;
       }
 
       if (v144)
       {
-        v148 = [v144 unsignedLongValue];
+        unsignedLongValue2 = [v144 unsignedLongValue];
       }
 
       else
       {
-        v148 = 3000;
+        unsignedLongValue2 = 3000;
       }
 
-      v149 = sub_10007FF38(NFHCEBroadcastECPConfig, v176, v147, v148, v127);
+      v149 = sub_10007FF38(NFHCEBroadcastECPConfig, v176, unsignedLongValue, unsignedLongValue2, v127);
       [(_NFHCESession *)v123 setEcpBroadcastConfig:v149];
 
       v100 = v164;
@@ -8271,16 +8271,16 @@ LABEL_88:
 
     [(_NFSession *)v123 setUid:0xFFFFFFFFLL];
     buf[0] = 0;
-    v150 = sub_1001DC138(self, v123, v105, v9, buf);
-    v46 = v177;
+    v150 = sub_1001DC138(self, v123, v105, attributeCopy, buf);
+    v46 = completionCopy;
     if (v150)
     {
-      (*(v177 + 2))(v177, 0, 0, v150);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v150);
     }
 
     else
     {
-      (*(v177 + 2))(v177, v123, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v123, buf[0], 0);
       v151 = v100;
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
@@ -8353,8 +8353,8 @@ LABEL_88:
     v191 = v141;
     v142 = [NSDictionary dictionaryWithObjects:&v191 forKeys:&v190 count:1];
     v143 = [v139 initWithDomain:v140 code:13 userInfo:v142];
-    v46 = v177;
-    (*(v177 + 2))(v177, 0, 0, v143);
+    v46 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v143);
 
     v100 = v165;
     v99 = v168;
@@ -8364,19 +8364,19 @@ LABEL_88:
 LABEL_49:
 }
 
-- (void)queueSecureElementAndHostEmulationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureElementAndHostEmulationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v104 = a3;
-  v105 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   kdebug_trace();
   v11 = NFSharedSignpostLog();
   if (os_signpost_enabled(v11))
   {
-    v12 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     *buf = 138412290;
-    *v110 = v12;
+    *v110 = nF_clientName;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_REQUESTED", "SE+HCE session requested from %@", buf, 0xCu);
   }
 
@@ -8389,14 +8389,14 @@ LABEL_49:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v19 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     v20 = 45;
     if (isMetaClass)
     {
       v20 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v20, ClassName, Name, 5988, v19);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v20, ClassName, Name, 5988, nF_clientName2);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8416,7 +8416,7 @@ LABEL_49:
 
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
-    v26 = [v10 NF_clientName];
+    nF_clientName3 = [v10 NF_clientName];
     *buf = 67110146;
     *v110 = v23;
     *&v110[4] = 2082;
@@ -8426,7 +8426,7 @@ LABEL_49:
     v113 = 1024;
     v114 = 5988;
     v115 = 2114;
-    v116 = v26;
+    v116 = nF_clientName3;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -8443,10 +8443,10 @@ LABEL_49:
     v49 = 58;
 LABEL_48:
     v77 = [v47 initWithDomain:v48 code:v49 userInfo:v46];
-    (*(v9 + 2))(v9, 0, 0, v77);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v77);
 
 LABEL_49:
-    v78 = v105;
+    v78 = attributeCopy;
     goto LABEL_50;
   }
 
@@ -8462,14 +8462,14 @@ LABEL_49:
       v53 = class_isMetaClass(v52);
       v54 = object_getClassName(self);
       v55 = sel_getName(a2);
-      v56 = [v10 NF_clientName];
+      nF_clientName4 = [v10 NF_clientName];
       v57 = 45;
       if (v53)
       {
         v57 = 43;
       }
 
-      v51(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v57, v54, v55, 5996, v56);
+      v51(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v57, v54, v55, 5996, nF_clientName4);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8489,7 +8489,7 @@ LABEL_49:
 
       v61 = object_getClassName(self);
       v62 = sel_getName(a2);
-      v63 = [v10 NF_clientName];
+      nF_clientName5 = [v10 NF_clientName];
       *buf = 67110146;
       *v110 = v60;
       *&v110[4] = 2082;
@@ -8499,7 +8499,7 @@ LABEL_49:
       v113 = 1024;
       v114 = 5996;
       v115 = 2114;
-      v116 = v63;
+      v116 = nF_clientName5;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -8515,7 +8515,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v105)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v65 = NFLogGetLogger();
@@ -8575,8 +8575,8 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  v28 = [v10 NF_whitelistChecker];
-  v29 = [_NFSecureElementAndHostCardEmulationSession validateEntitlements:v28];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v29 = [_NFSecureElementAndHostCardEmulationSession validateEntitlements:nF_whitelistChecker];
 
   if (v29)
   {
@@ -8589,15 +8589,15 @@ LABEL_49:
       v33 = class_isMetaClass(v32);
       v103 = object_getClassName(self);
       v34 = sel_getName(a2);
-      v35 = [v10 NF_clientName];
-      v102 = [v10 processIdentifier];
+      nF_clientName6 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v36 = 45;
       if (v33)
       {
         v36 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v36, v103, v34, 6010, v35, v102);
+      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v36, v103, v34, 6010, nF_clientName6, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8617,8 +8617,8 @@ LABEL_49:
 
       v40 = object_getClassName(self);
       v41 = sel_getName(a2);
-      v42 = [v10 NF_clientName];
-      v43 = [v10 processIdentifier];
+      nF_clientName7 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       *v110 = v39;
       *&v110[4] = 2082;
@@ -8628,20 +8628,20 @@ LABEL_49:
       v113 = 1024;
       v114 = 6010;
       v115 = 2114;
-      v116 = v42;
+      v116 = nF_clientName7;
       v117 = 1024;
-      v118 = v43;
+      v118 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, v29);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v29);
     goto LABEL_49;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v79 = [v105 NF_numberForKey:@"EmulationOnSessionStart"];
+    v79 = [attributeCopy NF_numberForKey:@"EmulationOnSessionStart"];
   }
 
   else
@@ -8649,7 +8649,7 @@ LABEL_49:
     v79 = 0;
   }
 
-  v80 = [(_NFXPCSession *)[_NFSecureElementAndHostCardEmulationSession alloc] initWithRemoteObject:v104 workQueue:self->_workQueue];
+  v80 = [(_NFXPCSession *)[_NFSecureElementAndHostCardEmulationSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v81 = v80;
   if (v80)
   {
@@ -8658,16 +8658,16 @@ LABEL_49:
     -[_NFHCESession setEmulationOnSessionStart:](v81, "setEmulationOnSessionStart:", [v79 BOOLValue]);
     [(_NFSession *)v81 setUid:0xFFFFFFFFLL];
     buf[0] = 0;
-    v78 = v105;
-    v82 = sub_1001DC138(self, v81, v10, v105, buf);
+    v78 = attributeCopy;
+    v82 = sub_1001DC138(self, v81, v10, attributeCopy, buf);
     if (v82)
     {
-      (*(v9 + 2))(v9, 0, 0, v82);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v82);
     }
 
     else
     {
-      (*(v9 + 2))(v9, v81, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v81, buf[0], 0);
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -8733,28 +8733,28 @@ LABEL_49:
     v108 = v96;
     v97 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
     v98 = [v94 initWithDomain:v95 code:13 userInfo:v97];
-    (*(v9 + 2))(v9, 0, 0, v98);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v98);
 
-    v78 = v105;
+    v78 = attributeCopy;
   }
 
   v29 = 0;
 LABEL_50:
 }
 
-- (void)queueSecureElementReaderSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureElementReaderSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v103 = a3;
-  v104 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   kdebug_trace();
   v11 = NFSharedSignpostLog();
   if (os_signpost_enabled(v11))
   {
-    v12 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     *buf = 138412290;
-    *v109 = v12;
+    *v109 = nF_clientName;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_REQUESTED", "SE+Reader session requested from %@", buf, 0xCu);
   }
 
@@ -8767,14 +8767,14 @@ LABEL_50:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v19 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     v20 = 45;
     if (isMetaClass)
     {
       v20 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v20, ClassName, Name, 6064, v19);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v20, ClassName, Name, 6064, nF_clientName2);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8794,7 +8794,7 @@ LABEL_50:
 
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
-    v26 = [v10 NF_clientName];
+    nF_clientName3 = [v10 NF_clientName];
     *buf = 67110146;
     *v109 = v23;
     *&v109[4] = 2082;
@@ -8804,7 +8804,7 @@ LABEL_50:
     v112 = 1024;
     v113 = 6064;
     v114 = 2114;
-    v115 = v26;
+    v115 = nF_clientName3;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -8821,7 +8821,7 @@ LABEL_50:
     v49 = 58;
 LABEL_48:
     v77 = [v47 initWithDomain:v48 code:v49 userInfo:v46];
-    (*(v9 + 2))(v9, 0, 0, v77);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v77);
 
     goto LABEL_49;
   }
@@ -8838,14 +8838,14 @@ LABEL_48:
       v53 = class_isMetaClass(v52);
       v54 = object_getClassName(self);
       v55 = sel_getName(a2);
-      v56 = [v10 NF_clientName];
+      nF_clientName4 = [v10 NF_clientName];
       v57 = 45;
       if (v53)
       {
         v57 = 43;
       }
 
-      v51(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v57, v54, v55, 6072, v56);
+      v51(3, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", v57, v54, v55, 6072, nF_clientName4);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8865,7 +8865,7 @@ LABEL_48:
 
       v61 = object_getClassName(self);
       v62 = sel_getName(a2);
-      v63 = [v10 NF_clientName];
+      nF_clientName5 = [v10 NF_clientName];
       *buf = 67110146;
       *v109 = v60;
       *&v109[4] = 2082;
@@ -8875,7 +8875,7 @@ LABEL_48:
       v112 = 1024;
       v113 = 6072;
       v114 = 2114;
-      v115 = v63;
+      v115 = nF_clientName5;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i API not supported on this platform, client = %{public}@", buf, 0x2Cu);
     }
 
@@ -8891,7 +8891,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v104)]!= 1)
+  if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]!= 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v65 = NFLogGetLogger();
@@ -8951,8 +8951,8 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  v28 = [v10 NF_whitelistChecker];
-  v29 = [_NFSecureElementReaderSession validateEntitlements:v28];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v29 = [_NFSecureElementReaderSession validateEntitlements:nF_whitelistChecker];
 
   if (v29)
   {
@@ -8965,15 +8965,15 @@ LABEL_48:
       v33 = class_isMetaClass(v32);
       v102 = object_getClassName(self);
       v34 = sel_getName(a2);
-      v35 = [v10 NF_clientName];
-      v101 = [v10 processIdentifier];
+      nF_clientName6 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v36 = 45;
       if (v33)
       {
         v36 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v36, v102, v34, 6086, v35, v101);
+      v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v36, v102, v34, 6086, nF_clientName6, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -8993,8 +8993,8 @@ LABEL_48:
 
       v40 = object_getClassName(self);
       v41 = sel_getName(a2);
-      v42 = [v10 NF_clientName];
-      v43 = [v10 processIdentifier];
+      nF_clientName7 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       *v109 = v39;
       *&v109[4] = 2082;
@@ -9004,18 +9004,18 @@ LABEL_48:
       v112 = 1024;
       v113 = 6086;
       v114 = 2114;
-      v115 = v42;
+      v115 = nF_clientName7;
       v116 = 1024;
-      v117 = v43;
+      v117 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, v29);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v29);
   }
 
   else
   {
-    v78 = [(_NFXPCSession *)[_NFSecureElementReaderSession alloc] initWithRemoteObject:v103 workQueue:self->_workQueue];
+    v78 = [(_NFXPCSession *)[_NFSecureElementReaderSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
     v79 = v78;
     if (v78)
     {
@@ -9027,15 +9027,15 @@ LABEL_48:
       [(_NFSecureElementReaderSession *)v79 setPowerConsumptionReporter:v80];
 
       buf[0] = 0;
-      v81 = sub_1001DC138(self, v79, v10, v104, buf);
+      v81 = sub_1001DC138(self, v79, v10, attributeCopy, buf);
       if (v81)
       {
-        (*(v9 + 2))(v9, 0, 0, v81);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v81);
       }
 
       else
       {
-        (*(v9 + 2))(v9, v79, buf[0], 0);
+        (*(completionCopy + 2))(completionCopy, v79, buf[0], 0);
         workQueue = self->_workQueue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -9101,7 +9101,7 @@ LABEL_48:
       v107 = v95;
       v96 = [NSDictionary dictionaryWithObjects:&v107 forKeys:&v106 count:1];
       v97 = [v93 initWithDomain:v94 code:13 userInfo:v96];
-      (*(v9 + 2))(v9, 0, 0, v97);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v97);
     }
 
     v29 = 0;
@@ -9110,11 +9110,11 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)queueSecureTransactionServicesSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureTransactionServicesSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   if (sub_100003384(self) != 2)
   {
@@ -9125,59 +9125,59 @@ LABEL_49:
     v128 = v35;
     v36 = [NSDictionary dictionaryWithObjects:&v128 forKeys:&v127 count:1];
     v37 = [v34 initWithDomain:v14 code:58 userInfo:v36];
-    (*(v11 + 2))(v11, 0, 0, v37);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v37);
 
     goto LABEL_62;
   }
 
-  v13 = [v12 NF_whitelistChecker];
-  v14 = [_NFSecureTransactionServicesHandoverSession validateEntitlements:v13];
+  nF_whitelistChecker = [v12 NF_whitelistChecker];
+  v14 = [_NFSecureTransactionServicesHandoverSession validateEntitlements:nF_whitelistChecker];
 
   if (!v14)
   {
-    if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v10)]== 1)
+    if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]== 1)
     {
       sel = a2;
       objc_opt_class();
-      v101 = v10;
+      v101 = attributeCopy;
       v103 = v12;
       if (objc_opt_isKindOfClass())
       {
-        v38 = [v10 objectForKeyedSubscript:@"session.sts.handover.role"];
+        v38 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.role"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v40 = [v10 objectForKeyedSubscript:@"session.sts.handover.role"];
-          v107 = [v40 unsignedIntegerValue];
+          v40 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.role"];
+          unsignedIntegerValue = [v40 unsignedIntegerValue];
         }
 
         else
         {
-          v107 = -1;
+          unsignedIntegerValue = -1;
         }
 
-        v58 = [v10 objectForKeyedSubscript:@"session.sts.handover.type"];
+        v58 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.type"];
         objc_opt_class();
         v59 = objc_opt_isKindOfClass();
 
         if (v59)
         {
-          v60 = [v10 objectForKeyedSubscript:@"session.sts.handover.type"];
-          v105 = [v60 unsignedIntegerValue];
+          v60 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.type"];
+          unsignedIntegerValue2 = [v60 unsignedIntegerValue];
         }
 
         else
         {
-          v105 = 0;
+          unsignedIntegerValue2 = 0;
         }
       }
 
       else
       {
-        v105 = 0;
-        v107 = -1;
+        unsignedIntegerValue2 = 0;
+        unsignedIntegerValue = -1;
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9188,18 +9188,18 @@ LABEL_49:
         Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
-        v66 = v9;
+        v66 = sessionCopy;
         Name = sel_getName(sel);
-        v68 = [v103 NF_clientName];
+        nF_clientName = [v103 NF_clientName];
         v98 = Name;
-        v9 = v66;
+        sessionCopy = v66;
         v69 = 43;
         if (!isMetaClass)
         {
           v69 = 45;
         }
 
-        v62(6, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", v69, ClassName, v98, 6161, v68, v107, v105);
+        v62(6, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", v69, ClassName, v98, 6161, nF_clientName, unsignedIntegerValue, unsignedIntegerValue2);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9219,7 +9219,7 @@ LABEL_49:
 
         v73 = object_getClassName(self);
         v74 = sel_getName(sel);
-        v75 = [v103 NF_clientName];
+        nF_clientName2 = [v103 NF_clientName];
         *buf = 67110658;
         v112 = v72;
         v113 = 2082;
@@ -9229,19 +9229,19 @@ LABEL_49:
         v117 = 1024;
         v118 = 6161;
         v119 = 2114;
-        v120 = v75;
+        v120 = nF_clientName2;
         v121 = 2048;
-        v122 = v107;
+        v122 = unsignedIntegerValue;
         v123 = 2048;
-        v124 = v105;
+        v124 = unsignedIntegerValue2;
         _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", buf, 0x40u);
       }
 
       objc_opt_self();
-      v10 = v101;
-      if (v107 <= 4 && v105)
+      attributeCopy = v101;
+      if (unsignedIntegerValue <= 4 && unsignedIntegerValue2)
       {
-        v76 = sub_10004CA40([_NFSecureTransactionServicesHandoverSession alloc], v9, v107, v105, self->_driverWrapper, self->_workQueue);
+        v76 = sub_10004CA40([_NFSecureTransactionServicesHandoverSession alloc], sessionCopy, unsignedIntegerValue, unsignedIntegerValue2, self->_driverWrapper, self->_workQueue);
         v12 = v103;
         [v76 setConnection:v103];
         [v76 setQueue:self];
@@ -9252,19 +9252,19 @@ LABEL_49:
           objc_setProperty_atomic(v76, v77, v78, 192);
         }
 
-        v79 = [v103 exportedInterface];
-        sub_100060754(NFHardwareManagerInterface, v79);
+        exportedInterface = [v103 exportedInterface];
+        sub_100060754(NFHardwareManagerInterface, exportedInterface);
 
         buf[0] = 0;
         v80 = sub_1001DC138(self, v76, v103, v101, buf);
         if (v80)
         {
-          (*(v11 + 2))(v11, 0, 0, v80);
+          (*(completionCopy + 2))(completionCopy, 0, 0, v80);
         }
 
         else
         {
-          (*(v11 + 2))(v11, v76, buf[0], 0);
+          (*(completionCopy + 2))(completionCopy, v76, buf[0], 0);
           workQueue = self->_workQueue;
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -9394,7 +9394,7 @@ LABEL_49:
     }
 
     v93 = [v55 initWithDomain:v56 code:v57 userInfo:v54];
-    (*(v11 + 2))(v11, 0, 0, v93);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v93);
 
 LABEL_61:
     v14 = 0;
@@ -9408,15 +9408,15 @@ LABEL_61:
     v16 = v15;
     v17 = object_getClass(self);
     v18 = class_isMetaClass(v17);
-    v104 = v11;
-    v106 = self;
-    v19 = v10;
-    v20 = v9;
+    v104 = completionCopy;
+    selfCopy = self;
+    v19 = attributeCopy;
+    v20 = sessionCopy;
     v21 = object_getClassName(self);
     v22 = a2;
     v23 = sel_getName(a2);
-    v24 = [v12 NF_clientName];
-    v100 = [v12 processIdentifier];
+    nF_clientName3 = [v12 NF_clientName];
+    processIdentifier = [v12 processIdentifier];
     v96 = v23;
     a2 = v22;
     v25 = 45;
@@ -9426,11 +9426,11 @@ LABEL_61:
     }
 
     v95 = v21;
-    v9 = v20;
-    v10 = v19;
-    v11 = v104;
-    self = v106;
-    v16(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v25, v95, v96, 6139, v24, v100);
+    sessionCopy = v20;
+    attributeCopy = v19;
+    completionCopy = v104;
+    self = selfCopy;
+    v16(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v25, v95, v96, 6139, nF_clientName3, processIdentifier);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9452,7 +9452,7 @@ LABEL_61:
     v30 = a2;
     v31 = v29;
     v32 = sel_getName(v30);
-    v33 = [v12 NF_clientName];
+    nF_clientName4 = [v12 NF_clientName];
     *buf = 67110402;
     v112 = v28;
     v113 = 2082;
@@ -9462,21 +9462,21 @@ LABEL_61:
     v117 = 1024;
     v118 = 6139;
     v119 = 2114;
-    v120 = v33;
+    v120 = nF_clientName4;
     v121 = 1024;
     LODWORD(v122) = [v12 processIdentifier];
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
   }
 
-  (*(v11 + 2))(v11, 0, 0, v14);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v14);
 LABEL_62:
 }
 
-- (void)queueSecureTransactionServicesHybridSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureTransactionServicesHybridSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   if (sub_100003384(self) != 2)
   {
@@ -9487,52 +9487,52 @@ LABEL_62:
     v131 = v36;
     v37 = [NSDictionary dictionaryWithObjects:&v131 forKeys:&v130 count:1];
     v38 = [v35 initWithDomain:v15 code:58 userInfo:v37];
-    (*(v11 + 2))(v11, 0, 0, v38);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v38);
 
     goto LABEL_61;
   }
 
   p_cache = &OBJC_METACLASS___NFCoreTelephonyConnection.cache;
-  v14 = [v12 NF_whitelistChecker];
-  v15 = [_NFSecureTransactionServicesHandoverHybridSession validateEntitlements:v14];
+  nF_whitelistChecker = [v12 NF_whitelistChecker];
+  v15 = [_NFSecureTransactionServicesHandoverHybridSession validateEntitlements:nF_whitelistChecker];
 
   if (!v15)
   {
-    if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v10)]== 1)
+    if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]== 1)
     {
       sela = a2;
       objc_opt_class();
       v106 = v12;
       if (objc_opt_isKindOfClass())
       {
-        v39 = [v10 objectForKeyedSubscript:@"session.sts.handover.role"];
+        v39 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.role"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v41 = [v10 objectForKeyedSubscript:@"session.sts.handover.role"];
-          v110 = [v41 unsignedIntegerValue];
+          v41 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.role"];
+          unsignedIntegerValue = [v41 unsignedIntegerValue];
         }
 
         else
         {
-          v110 = -1;
+          unsignedIntegerValue = -1;
         }
 
-        v60 = [v10 objectForKeyedSubscript:@"session.sts.handover.type"];
+        v60 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.type"];
         objc_opt_class();
         v61 = objc_opt_isKindOfClass();
 
         if (v61)
         {
-          v62 = [v10 objectForKeyedSubscript:@"session.sts.handover.type"];
-          v59 = [v62 unsignedIntegerValue];
+          v62 = [attributeCopy objectForKeyedSubscript:@"session.sts.handover.type"];
+          unsignedIntegerValue2 = [v62 unsignedIntegerValue];
         }
 
         else
         {
-          v59 = 0;
+          unsignedIntegerValue2 = 0;
         }
 
         p_cache = (&OBJC_METACLASS___NFCoreTelephonyConnection + 16);
@@ -9540,8 +9540,8 @@ LABEL_62:
 
       else
       {
-        v59 = 0;
-        v110 = -1;
+        unsignedIntegerValue2 = 0;
+        unsignedIntegerValue = -1;
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9552,17 +9552,17 @@ LABEL_62:
         Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
-        v68 = self;
-        v69 = v11;
-        v70 = v10;
-        v71 = v9;
+        selfCopy = self;
+        v69 = completionCopy;
+        v70 = attributeCopy;
+        v71 = sessionCopy;
         Name = sel_getName(sela);
-        v73 = [v106 NF_clientName];
+        nF_clientName = [v106 NF_clientName];
         v103 = Name;
-        v9 = v71;
-        v10 = v70;
-        v11 = v69;
-        self = v68;
+        sessionCopy = v71;
+        attributeCopy = v70;
+        completionCopy = v69;
+        self = selfCopy;
         v74 = 43;
         if (!isMetaClass)
         {
@@ -9571,7 +9571,7 @@ LABEL_62:
 
         v100 = ClassName;
         p_cache = (&OBJC_METACLASS___NFCoreTelephonyConnection + 16);
-        v64(6, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", v74, v100, v103, 6234, v73, v110, v59);
+        v64(6, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", v74, v100, v103, 6234, nF_clientName, unsignedIntegerValue, unsignedIntegerValue2);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9591,7 +9591,7 @@ LABEL_62:
 
         v78 = object_getClassName(self);
         v79 = sel_getName(sela);
-        v80 = [v106 NF_clientName];
+        nF_clientName2 = [v106 NF_clientName];
         *buf = 67110658;
         v115 = v77;
         v116 = 2082;
@@ -9602,17 +9602,17 @@ LABEL_62:
         v120 = 1024;
         v121 = 6234;
         v122 = 2114;
-        v123 = v80;
+        v123 = nF_clientName2;
         v124 = 2048;
-        v125 = v110;
+        v125 = unsignedIntegerValue;
         v126 = 2048;
-        v127 = v59;
+        v127 = unsignedIntegerValue2;
         _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@, role=0x%lx, type=0x%lx", buf, 0x40u);
       }
 
-      if ([p_cache + 278 isRoleValid:v110] && v59)
+      if ([p_cache + 278 isRoleValid:unsignedIntegerValue] && unsignedIntegerValue2)
       {
-        v81 = [objc_alloc((p_cache + 278)) initWithRemoteObject:v9 role:v110 type:v59 driverWrapper:self->_driverWrapper workQueue:self->_workQueue];
+        v81 = [objc_alloc((p_cache + 278)) initWithRemoteObject:sessionCopy role:unsignedIntegerValue type:unsignedIntegerValue2 driverWrapper:self->_driverWrapper workQueue:self->_workQueue];
         v12 = v106;
         [v81 setConnection:v106];
         [v81 setQueue:self];
@@ -9620,19 +9620,19 @@ LABEL_62:
         v82 = sub_1001AE20C();
         [v81 setPowerConsumptionReporter:v82];
 
-        v83 = [v106 exportedInterface];
-        sub_100060754(NFHardwareManagerInterface, v83);
+        exportedInterface = [v106 exportedInterface];
+        sub_100060754(NFHardwareManagerInterface, exportedInterface);
 
         buf[0] = 0;
-        v84 = sub_1001DC138(self, v81, v106, v10, buf);
+        v84 = sub_1001DC138(self, v81, v106, attributeCopy, buf);
         if (v84)
         {
-          (*(v11 + 2))(v11, 0, 0, v84);
+          (*(completionCopy + 2))(completionCopy, 0, 0, v84);
         }
 
         else
         {
-          (*(v11 + 2))(v11, v81, buf[0], 0);
+          (*(completionCopy + 2))(completionCopy, v81, buf[0], 0);
           workQueue = self->_workQueue;
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -9762,7 +9762,7 @@ LABEL_62:
     }
 
     v97 = [v56 initWithDomain:v57 code:v58 userInfo:v55];
-    (*(v11 + 2))(v11, 0, 0, v97);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v97);
 
 LABEL_60:
     v15 = 0;
@@ -9776,15 +9776,15 @@ LABEL_60:
     v17 = v16;
     v18 = object_getClass(self);
     v19 = class_isMetaClass(v18);
-    sel = v11;
-    v109 = self;
-    v20 = v10;
-    v21 = v9;
+    sel = completionCopy;
+    selfCopy2 = self;
+    v20 = attributeCopy;
+    v21 = sessionCopy;
     v22 = object_getClassName(self);
     v23 = a2;
     v24 = sel_getName(a2);
-    v25 = [v12 NF_clientName];
-    v105 = [v12 processIdentifier];
+    nF_clientName3 = [v12 NF_clientName];
+    processIdentifier = [v12 processIdentifier];
     v101 = v24;
     a2 = v23;
     v26 = 45;
@@ -9794,11 +9794,11 @@ LABEL_60:
     }
 
     v99 = v22;
-    v9 = v21;
-    v10 = v20;
-    v11 = sel;
-    self = v109;
-    v17(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v26, v99, v101, 6212, v25, v105);
+    sessionCopy = v21;
+    attributeCopy = v20;
+    completionCopy = sel;
+    self = selfCopy2;
+    v17(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v26, v99, v101, 6212, nF_clientName3, processIdentifier);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9820,7 +9820,7 @@ LABEL_60:
     v31 = a2;
     v32 = v30;
     v33 = sel_getName(v31);
-    v34 = [v12 NF_clientName];
+    nF_clientName4 = [v12 NF_clientName];
     *buf = 67110402;
     v115 = v29;
     v116 = 2082;
@@ -9830,21 +9830,21 @@ LABEL_60:
     v120 = 1024;
     v121 = 6212;
     v122 = 2114;
-    v123 = v34;
+    v123 = nF_clientName4;
     v124 = 1024;
     LODWORD(v125) = [v12 processIdentifier];
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
   }
 
-  (*(v11 + 2))(v11, 0, 0, v15);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v15);
 LABEL_61:
 }
 
-- (void)queueUnifiedAccessSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueUnifiedAccessSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -9855,18 +9855,18 @@ LABEL_61:
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
-    v18 = v9;
+    v18 = sessionCopy;
     Name = sel_getName(a2);
-    v20 = [v12 NF_clientName];
+    nF_clientName = [v12 NF_clientName];
     v94 = Name;
-    v9 = v18;
+    sessionCopy = v18;
     v21 = 45;
     if (isMetaClass)
     {
       v21 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v94, 6279, v20);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, v94, 6279, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9886,7 +9886,7 @@ LABEL_61:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(sel);
-    v27 = [v12 NF_clientName];
+    nF_clientName2 = [v12 NF_clientName];
     *buf = 67110146;
     v114 = v24;
     v115 = 2082;
@@ -9896,14 +9896,14 @@ LABEL_61:
     v119 = 1024;
     v120 = 6279;
     v121 = 2114;
-    v122 = v27;
+    v122 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
   if (sub_100003384(self) == 2)
   {
-    v28 = [v12 NF_whitelistChecker];
-    v29 = [_NFUnifiedAccessSession validateEntitlements:v28];
+    nF_whitelistChecker = [v12 NF_whitelistChecker];
+    v29 = [_NFUnifiedAccessSession validateEntitlements:nF_whitelistChecker];
 
     if (v29)
     {
@@ -9916,23 +9916,23 @@ LABEL_61:
         v32 = object_getClass(self);
         v33 = class_isMetaClass(v32);
         v99 = object_getClassName(self);
-        v34 = v11;
-        v35 = v10;
-        v36 = v9;
+        v34 = completionCopy;
+        v35 = attributeCopy;
+        v36 = sessionCopy;
         v37 = sel_getName(sel);
-        v38 = [v100 NF_clientName];
-        v98 = [v100 processIdentifier];
+        nF_clientName3 = [v100 NF_clientName];
+        processIdentifier = [v100 processIdentifier];
         v95 = v37;
-        v9 = v36;
-        v10 = v35;
-        v11 = v34;
+        sessionCopy = v36;
+        attributeCopy = v35;
+        completionCopy = v34;
         v39 = 45;
         if (v33)
         {
           v39 = 43;
         }
 
-        v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v39, v99, v95, 6288, v38, v98);
+        v31(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v39, v99, v95, 6288, nF_clientName3, processIdentifier);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -9953,8 +9953,8 @@ LABEL_61:
         v43 = object_getClassName(self);
         v44 = sel_getName(sel);
         [v100 NF_clientName];
-        v46 = v45 = v10;
-        v47 = [v100 processIdentifier];
+        v46 = v45 = attributeCopy;
+        processIdentifier2 = [v100 processIdentifier];
         *buf = 67110402;
         v114 = v42;
         v115 = 2082;
@@ -9966,19 +9966,19 @@ LABEL_61:
         v121 = 2114;
         v122 = v46;
         v123 = 1024;
-        v124 = v47;
+        v124 = processIdentifier2;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
 
-        v10 = v45;
+        attributeCopy = v45;
       }
 
-      (*(v11 + 2))(v11, 0, 0, v29);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v29);
       v12 = v100;
     }
 
-    else if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, v10)]== 1)
+    else if ([(_NFHardwareManager *)self nfcRadioEnabled:0 showUIPopup:sub_1000F15E0(self, attributeCopy)]== 1)
     {
-      v53 = [[_NFUnifiedAccessSession alloc] initWithRemoteObject:v9 driverWrapper:self->_driverWrapper workQueue:self->_workQueue];
+      v53 = [[_NFUnifiedAccessSession alloc] initWithRemoteObject:sessionCopy driverWrapper:self->_driverWrapper workQueue:self->_workQueue];
       v54 = v53;
       if (v53)
       {
@@ -9988,31 +9988,31 @@ LABEL_61:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v55 = [v10 objectForKeyedSubscript:@"session.force.express.exit"];
+          v55 = [attributeCopy objectForKeyedSubscript:@"session.force.express.exit"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v57 = [v10 objectForKeyedSubscript:@"session.force.express.exit"];
+            v57 = [attributeCopy objectForKeyedSubscript:@"session.force.express.exit"];
             -[_NFSession setForceExpressExit:](v54, "setForceExpressExit:", [v57 BOOLValue]);
           }
         }
 
-        v58 = [v12 exportedInterface];
-        sub_10006066C(NFHardwareManagerInterface, v58);
+        exportedInterface = [v12 exportedInterface];
+        sub_10006066C(NFHardwareManagerInterface, exportedInterface);
 
-        (*(v11 + 2))(v11, v54, [(_NFHardwareManager *)self isFirstInQueue], 0);
+        (*(completionCopy + 2))(completionCopy, v54, [(_NFHardwareManager *)self isFirstInQueue], 0);
         workQueue = self->_workQueue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100110F40;
         block[3] = &unk_100318BA8;
         v103 = v54;
-        v104 = self;
+        selfCopy = self;
         v105 = v12;
-        v60 = v10;
-        v106 = v10;
+        v60 = attributeCopy;
+        v106 = attributeCopy;
         v107 = sel;
         v108 = 0;
         dispatch_async(workQueue, block);
@@ -10040,7 +10040,7 @@ LABEL_61:
           v80(3, "%c[%{public}s %{public}s]:%i Session creation failed.", v84, v83, v97, 6303);
         }
 
-        v60 = v10;
+        v60 = attributeCopy;
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v85 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -10076,11 +10076,11 @@ LABEL_61:
         v110 = v91;
         v92 = [NSDictionary dictionaryWithObjects:&v110 forKeys:&v109 count:1];
         v93 = [v90 initWithDomain:v61 code:13 userInfo:v92];
-        (*(v11 + 2))(v11, 0, 0, v93);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v93);
       }
 
       v29 = 0;
-      v10 = v60;
+      attributeCopy = v60;
     }
 
     else
@@ -10103,7 +10103,7 @@ LABEL_61:
         v63(3, "%c[%{public}s %{public}s]:%i NFC radio is disabled", v67, v66, v96, 6294);
       }
 
-      v68 = v10;
+      v68 = attributeCopy;
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v69 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
@@ -10139,10 +10139,10 @@ LABEL_61:
       v112 = v76;
       v77 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
       v78 = [v74 initWithDomain:v75 code:50 userInfo:v77];
-      (*(v11 + 2))(v11, 0, 0, v78);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v78);
 
       v29 = 0;
-      v10 = v68;
+      attributeCopy = v68;
     }
   }
 
@@ -10152,21 +10152,21 @@ LABEL_61:
     v29 = [NSString stringWithUTF8String:"nfcd"];
     v125 = NSLocalizedDescriptionKey;
     [NSString stringWithUTF8String:"Unresponsive hardware"];
-    v50 = v49 = v10;
+    v50 = v49 = attributeCopy;
     v126 = v50;
     v51 = [NSDictionary dictionaryWithObjects:&v126 forKeys:&v125 count:1];
     v52 = [v48 initWithDomain:v29 code:58 userInfo:v51];
-    (*(v11 + 2))(v11, 0, 0, v52);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v52);
 
-    v10 = v49;
+    attributeCopy = v49;
   }
 }
 
-- (void)queueSecureElementLoggingSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueSecureElementLoggingSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v69 = a3;
-  v68 = a4;
-  v70 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -10177,14 +10177,14 @@ LABEL_61:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v16 = [v9 NF_clientName];
+    nF_clientName = [v9 NF_clientName];
     v17 = 45;
     if (isMetaClass)
     {
       v17 = 43;
     }
 
-    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 6352, v16);
+    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 6352, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10204,7 +10204,7 @@ LABEL_61:
 
     v21 = object_getClassName(self);
     v22 = sel_getName(a2);
-    v23 = [v9 NF_clientName];
+    nF_clientName2 = [v9 NF_clientName];
     *buf = 67110146;
     v75 = v20;
     v76 = 2082;
@@ -10214,7 +10214,7 @@ LABEL_61:
     v80 = 1024;
     v81 = 6352;
     v82 = 2114;
-    v83 = v23;
+    v83 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -10227,15 +10227,15 @@ LABEL_61:
     v87 = v45;
     v46 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
     v47 = [v44 initWithDomain:v25 code:58 userInfo:v46];
-    (*(v70 + 2))(v70, 0, 0, v47);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v47);
 
 LABEL_27:
-    v42 = v68;
+    v42 = attributeCopy;
     goto LABEL_41;
   }
 
-  v24 = [v9 NF_whitelistChecker];
-  v25 = [_NFSecureElementLoggingSession validateEntitlements:v24];
+  nF_whitelistChecker = [v9 NF_whitelistChecker];
+  v25 = [_NFSecureElementLoggingSession validateEntitlements:nF_whitelistChecker];
 
   if (v25)
   {
@@ -10248,15 +10248,15 @@ LABEL_27:
       v29 = class_isMetaClass(v28);
       v67 = object_getClassName(self);
       v30 = sel_getName(a2);
-      v31 = [v9 NF_clientName];
-      v66 = [v9 processIdentifier];
+      nF_clientName3 = [v9 NF_clientName];
+      processIdentifier = [v9 processIdentifier];
       v32 = 45;
       if (v29)
       {
         v32 = 43;
       }
 
-      v27(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v32, v67, v30, 6361, v31, v66);
+      v27(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v32, v67, v30, 6361, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10276,8 +10276,8 @@ LABEL_27:
 
       v36 = object_getClassName(self);
       v37 = sel_getName(a2);
-      v38 = [v9 NF_clientName];
-      v39 = [v9 processIdentifier];
+      nF_clientName4 = [v9 NF_clientName];
+      processIdentifier2 = [v9 processIdentifier];
       *buf = 67110402;
       v75 = v35;
       v76 = 2082;
@@ -10287,17 +10287,17 @@ LABEL_27:
       v80 = 1024;
       v81 = 6361;
       v82 = 2114;
-      v83 = v38;
+      v83 = nF_clientName4;
       v84 = 1024;
-      v85 = v39;
+      v85 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v70 + 2))(v70, 0, 0, v25);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v25);
     goto LABEL_27;
   }
 
-  v40 = [(_NFXPCSession *)[_NFSecureElementLoggingSession alloc] initWithRemoteObject:v69 workQueue:self->_workQueue];
+  v40 = [(_NFXPCSession *)[_NFSecureElementLoggingSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   v41 = v40;
   if (v40)
   {
@@ -10306,16 +10306,16 @@ LABEL_27:
     [(_NFSession *)v41 setUid:0xFFFFFFFFLL];
     [(_NFSecureElementLoggingSession *)v41 setDriverWrapper:self->_driverWrapper];
     buf[0] = 0;
-    v42 = v68;
-    v43 = sub_1001DC138(self, v41, v9, v68, buf);
+    v42 = attributeCopy;
+    v43 = sub_1001DC138(self, v41, v9, attributeCopy, buf);
     if (v43)
     {
-      (*(v70 + 2))(v70, 0, 0, v43);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v43);
     }
 
     else
     {
-      (*(v70 + 2))(v70, v41, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v41, buf[0], 0);
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -10381,20 +10381,20 @@ LABEL_27:
     v73 = v61;
     v62 = [NSDictionary dictionaryWithObjects:&v73 forKeys:&v72 count:1];
     v63 = [v59 initWithDomain:v60 code:13 userInfo:v62];
-    (*(v70 + 2))(v70, 0, 0, v63);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v63);
 
-    v42 = v68;
+    v42 = attributeCopy;
   }
 
   v25 = 0;
 LABEL_41:
 }
 
-- (void)queueLPEMConfigSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueLPEMConfigSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v49 = a3;
-  v48 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -10405,14 +10405,14 @@ LABEL_41:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v17 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v18 = 45;
     if (isMetaClass)
     {
       v18 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 6404, v17);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 6404, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10432,7 +10432,7 @@ LABEL_41:
 
     v22 = object_getClassName(self);
     v23 = sel_getName(a2);
-    v24 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v52 = v21;
     v53 = 2082;
@@ -10442,12 +10442,12 @@ LABEL_41:
     v57 = 1024;
     v58 = 6404;
     v59 = 2114;
-    v60 = v24;
+    v60 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v25 = [v10 NF_whitelistChecker];
-  v26 = [_NFLPEMConfigSession validateEntitlements:v25];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v26 = [_NFLPEMConfigSession validateEntitlements:nF_whitelistChecker];
 
   if (v26)
   {
@@ -10460,15 +10460,15 @@ LABEL_41:
       v30 = class_isMetaClass(v29);
       v47 = object_getClassName(self);
       v31 = sel_getName(a2);
-      v32 = [v10 NF_clientName];
-      v46 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v33 = 45;
       if (v30)
       {
         v33 = 43;
       }
 
-      v28(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v33, v47, v31, 6408, v32, v46);
+      v28(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v33, v47, v31, 6408, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10488,8 +10488,8 @@ LABEL_41:
 
       v37 = object_getClassName(self);
       v38 = sel_getName(a2);
-      v39 = [v10 NF_clientName];
-      v40 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v52 = v36;
       v53 = 2082;
@@ -10499,36 +10499,36 @@ LABEL_41:
       v57 = 1024;
       v58 = 6408;
       v59 = 2114;
-      v60 = v39;
+      v60 = nF_clientName4;
       v61 = 1024;
-      v62 = v40;
+      v62 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, v26);
-    v42 = v48;
-    v41 = v49;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v26);
+    v42 = attributeCopy;
+    v41 = sessionCopy;
   }
 
   else
   {
-    v41 = v49;
-    v43 = [(_NFXPCSession *)[_NFLPEMConfigSession alloc] initWithRemoteObject:v49 workQueue:self->_workQueue];
+    v41 = sessionCopy;
+    v43 = [(_NFXPCSession *)[_NFLPEMConfigSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
     [(_NFSession *)v43 setQueue:self];
     [(_NFXPCSession *)v43 setConnection:v10];
     [(_NFSession *)v43 setUid:0xFFFFFFFFLL];
     [(_NFLPEMConfigSession *)v43 setDriverWrapper:self->_driverWrapper];
     buf[0] = 0;
-    v42 = v48;
-    v44 = sub_1001DC138(self, v43, v10, v48, buf);
+    v42 = attributeCopy;
+    v44 = sub_1001DC138(self, v43, v10, attributeCopy, buf);
     if (v44)
     {
-      (*(v9 + 2))(v9, 0, 0, v44);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v44);
     }
 
     else
     {
-      (*(v9 + 2))(v9, v43, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v43, buf[0], 0);
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -10540,11 +10540,11 @@ LABEL_41:
   }
 }
 
-- (void)queueCredentialSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueCredentialSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v60 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v11 = +[NSXPCConnection currentConnection];
   v62 = -1;
   v12 = sub_1001DB5E0(self, v11, 1, &v62);
@@ -10552,12 +10552,12 @@ LABEL_41:
   {
     v13 = v12;
 LABEL_14:
-    (*(v10 + 2))(v10, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
     goto LABEL_15;
   }
 
-  v14 = [v11 NF_whitelistChecker];
-  v13 = [_NFCredentialSession validateEntitlements:v14];
+  nF_whitelistChecker = [v11 NF_whitelistChecker];
+  v13 = [_NFCredentialSession validateEntitlements:nF_whitelistChecker];
 
   if (v13)
   {
@@ -10568,21 +10568,21 @@ LABEL_14:
     {
       v16 = Logger;
       Class = object_getClass(self);
-      v18 = v9;
+      v18 = attributeCopy;
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(sel);
-      v22 = [v11 NF_clientName];
-      v57 = [v11 processIdentifier];
+      nF_clientName = [v11 NF_clientName];
+      processIdentifier = [v11 processIdentifier];
       v23 = !isMetaClass;
-      v9 = v18;
+      attributeCopy = v18;
       v24 = 45;
       if (!v23)
       {
         v24 = 43;
       }
 
-      v16(3, "%c[%{public}s %{public}s]:%i Session not allowed from %@ (pid %d)", v24, ClassName, Name, 6462, v22, v57);
+      v16(3, "%c[%{public}s %{public}s]:%i Session not allowed from %@ (pid %d)", v24, ClassName, Name, 6462, nF_clientName, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10590,7 +10590,7 @@ LABEL_14:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = object_getClass(self);
-      v27 = v9;
+      v27 = attributeCopy;
       if (class_isMetaClass(v26))
       {
         v28 = 43;
@@ -10603,11 +10603,11 @@ LABEL_14:
 
       v29 = object_getClassName(self);
       v30 = sel_getName(sel);
-      v31 = [v11 NF_clientName];
-      v32 = [v11 processIdentifier];
+      nF_clientName2 = [v11 NF_clientName];
+      processIdentifier2 = [v11 processIdentifier];
       *buf = 67110402;
       v66 = v28;
-      v9 = v27;
+      attributeCopy = v27;
       v67 = 2082;
       v68 = v29;
       v69 = 2082;
@@ -10615,9 +10615,9 @@ LABEL_14:
       v71 = 1024;
       v72 = 6462;
       v73 = 2112;
-      v74 = v31;
+      v74 = nF_clientName2;
       v75 = 1024;
-      v76 = v32;
+      v76 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %@ (pid %d)", buf, 0x32u);
     }
 
@@ -10626,26 +10626,26 @@ LABEL_14:
 
   v33 = [_NFCredentialSession alloc];
   v34 = sub_100007D90(&self->super.isa);
-  v13 = [(_NFXPCSession *)v33 initWithRemoteObject:v60 workQueue:v34];
+  v13 = [(_NFXPCSession *)v33 initWithRemoteObject:sessionCopy workQueue:v34];
 
   if (v13)
   {
     [v13 setQueue:self];
     [v13 setConnection:v11];
-    v35 = [(_NFHardwareManager *)self driverWrapper];
-    objc_storeStrong(v13 + 23, v35);
+    driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+    objc_storeStrong(v13 + 23, driverWrapper);
 
     [v13 setUid:v62];
     buf[0] = 0;
-    v36 = sub_1001DC138(self, v13, v11, v9, buf);
+    v36 = sub_1001DC138(self, v13, v11, attributeCopy, buf);
     if (v36)
     {
-      (*(v10 + 2))(v10, 0, 0, v36);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v36);
     }
 
     else
     {
-      (*(v10 + 2))(v10, v13, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v13, buf[0], 0);
       v55 = sub_100007D90(&self->super.isa);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -10676,7 +10676,7 @@ LABEL_14:
       v38(3, "%c[%{public}s %{public}s]:%i Session creation failed.", v42, v41, v56, 6471);
     }
 
-    sela = v9;
+    sela = attributeCopy;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v43 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -10716,39 +10716,39 @@ LABEL_14:
     v51 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v64[2] = v51;
     v63[3] = NSDebugDescriptionErrorKey;
-    v52 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6472];
-    v64[3] = v52;
+    6472 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6472];
+    v64[3] = 6472;
     v53 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:4];
     v54 = [v48 initWithDomain:v49 code:13 userInfo:v53];
-    (*(v10 + 2))(v10, 0, 0, v54);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v54);
 
     v13 = 0;
-    v9 = sela;
+    attributeCopy = sela;
   }
 
 LABEL_15:
 }
 
-- (void)queueCardSession:(id)a3 sessionConfig:(id)a4 completion:(id)a5
+- (void)queueCardSession:(id)session sessionConfig:(id)config completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  configCopy = config;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   v83 = -1;
   v13 = sub_1001DB5E0(self, v12, 0, &v83);
   if (v13)
   {
-    v14 = v13;
-    (*(v11 + 2))(v11, 0, 0, v13);
+    nF_serviceType = v13;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
     goto LABEL_43;
   }
 
-  v15 = [(_NFHardwareManager *)self driverWrapper];
-  if (!v15 || (v16 = v15[173], v15, (v16 & 1) == 0))
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+  if (!driverWrapper || (v16 = driverWrapper[173], driverWrapper, (v16 & 1) == 0))
   {
     v31 = [NSError alloc];
-    v14 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v93[0] = NSLocalizedDescriptionKey;
     v32 = [NSString stringWithUTF8String:"Feature Not Supported"];
     v94[0] = v32;
@@ -10758,11 +10758,11 @@ LABEL_15:
     v33 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v94[2] = v33;
     v93[3] = NSDebugDescriptionErrorKey;
-    v34 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6516];
-    v94[3] = v34;
+    6516 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6516];
+    v94[3] = 6516;
     v35 = [NSDictionary dictionaryWithObjects:v94 forKeys:v93 count:4];
-    v36 = [v31 initWithDomain:v14 code:14 userInfo:v35];
-    (*(v11 + 2))(v11, 0, 0, v36);
+    v36 = [v31 initWithDomain:nF_serviceType code:14 userInfo:v35];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v36);
 
 LABEL_31:
     goto LABEL_43;
@@ -10817,22 +10817,22 @@ LABEL_31:
     }
 
     v48 = [NSError alloc];
-    v14 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v91 = NSLocalizedDescriptionKey;
     v32 = [NSString stringWithUTF8String:"NFC radio disabled"];
     v92 = v32;
     v49 = [NSDictionary dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-    v50 = [v48 initWithDomain:v14 code:50 userInfo:v49];
-    (*(v11 + 2))(v11, 0, 0, v50);
+    v50 = [v48 initWithDomain:nF_serviceType code:50 userInfo:v49];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v50);
 
     goto LABEL_31;
   }
 
-  v14 = [v12 NF_serviceType];
-  if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v14 unsignedIntegerValue] == 2)
+  nF_serviceType = [v12 NF_serviceType];
+  if (nF_serviceType && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [nF_serviceType unsignedIntegerValue] == 2)
   {
-    v17 = [v12 NF_whitelistChecker];
-    v18 = [_NFCardSession validateEntitlements:v17];
+    nF_whitelistChecker = [v12 NF_whitelistChecker];
+    v18 = [_NFCardSession validateEntitlements:nF_whitelistChecker];
 
     if (v18)
     {
@@ -10845,15 +10845,15 @@ LABEL_31:
         v71 = class_isMetaClass(v21);
         v72 = object_getClassName(self);
         v70 = sel_getName(a2);
-        v22 = [v12 NF_clientName];
-        v69 = [v12 processIdentifier];
+        nF_clientName = [v12 NF_clientName];
+        processIdentifier = [v12 processIdentifier];
         v23 = 45;
         if (v71)
         {
           v23 = 43;
         }
 
-        v20(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v23, v72, v70, 6537, v22, v69);
+        v20(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v23, v72, v70, 6537, nF_clientName, processIdentifier);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10874,8 +10874,8 @@ LABEL_31:
         v73 = v26;
         v27 = object_getClassName(self);
         v28 = sel_getName(a2);
-        v29 = [v12 NF_clientName];
-        v30 = [v12 processIdentifier];
+        nF_clientName2 = [v12 NF_clientName];
+        processIdentifier2 = [v12 processIdentifier];
         *buf = 67110402;
         *&buf[4] = v73;
         *&buf[8] = 2082;
@@ -10885,18 +10885,18 @@ LABEL_31:
         *&buf[28] = 1024;
         *&buf[30] = 6537;
         v85 = 2114;
-        v86 = v29;
+        v86 = nF_clientName2;
         v87 = 1026;
-        v88 = v30;
+        v88 = processIdentifier2;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", buf, 0x32u);
       }
 
-      (*(v11 + 2))(v11, 0, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v18);
     }
 
     else
     {
-      v66 = [v12 NF_whitelistChecker];
+      nF_whitelistChecker2 = [v12 NF_whitelistChecker];
       if (v12)
       {
         [v12 auditToken];
@@ -10911,16 +10911,16 @@ LABEL_31:
       v74[1] = 3221225472;
       v74[2] = sub_100112FC8;
       v74[3] = &unk_100318BD0;
-      v80 = v11;
+      v80 = completionCopy;
       v81 = a2;
       v74[4] = self;
-      v75 = v10;
-      v76 = v66;
-      v77 = v9;
+      v75 = configCopy;
+      v76 = nF_whitelistChecker2;
+      v77 = sessionCopy;
       v78 = v12;
       v82 = v83;
-      v79 = v14;
-      v18 = v66;
+      v79 = nF_serviceType;
+      v18 = nF_whitelistChecker2;
       [_NFCardSession isEligibleWithUserPrompt:1 auditToken:buf completion:v74];
     }
   }
@@ -10942,7 +10942,7 @@ LABEL_31:
         v56 = 43;
       }
 
-      v52(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v56, v55, v68, 6528, v14);
+      v52(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v56, v55, v68, 6528, nF_serviceType);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -10971,7 +10971,7 @@ LABEL_31:
       *&buf[28] = 1024;
       *&buf[30] = 6528;
       v85 = 2114;
-      v86 = v14;
+      v86 = nF_serviceType;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", buf, 0x2Cu);
     }
 
@@ -10982,31 +10982,31 @@ LABEL_31:
     v90 = v63;
     v64 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
     v65 = [v62 initWithDomain:v18 code:12 userInfo:v64];
-    (*(v11 + 2))(v11, 0, 0, v65);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v65);
   }
 
 LABEL_43:
 }
 
-- (void)queueCardFieldDetectSession:(id)a3 completion:(id)a4
+- (void)queueCardFieldDetectSession:(id)session completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   v78 = -1;
   v10 = sub_1001DB5E0(self, v9, 0, &v78);
   if (v10)
   {
-    v11 = v10;
-    v8[2](v8, 0, v10);
+    nF_serviceType = v10;
+    completionCopy[2](completionCopy, 0, v10);
     goto LABEL_43;
   }
 
-  v12 = [(_NFHardwareManager *)self driverWrapper];
-  if (!v12 || (v13 = v12[173], v12, (v13 & 1) == 0))
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+  if (!driverWrapper || (v13 = driverWrapper[173], driverWrapper, (v13 & 1) == 0))
   {
     v29 = [NSError alloc];
-    v11 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v88[0] = NSLocalizedDescriptionKey;
     v30 = [NSString stringWithUTF8String:"Feature Not Supported"];
     v89[0] = v30;
@@ -11016,11 +11016,11 @@ LABEL_43:
     v31 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v89[2] = v31;
     v88[3] = NSDebugDescriptionErrorKey;
-    v32 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6607];
-    v89[3] = v32;
+    6607 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 6607];
+    v89[3] = 6607;
     v33 = [NSDictionary dictionaryWithObjects:v89 forKeys:v88 count:4];
-    v34 = [v29 initWithDomain:v11 code:14 userInfo:v33];
-    v8[2](v8, 0, v34);
+    v34 = [v29 initWithDomain:nF_serviceType code:14 userInfo:v33];
+    completionCopy[2](completionCopy, 0, v34);
 
 LABEL_31:
     goto LABEL_43;
@@ -11075,22 +11075,22 @@ LABEL_31:
     }
 
     v46 = [NSError alloc];
-    v11 = [NSString stringWithUTF8String:"nfcd"];
+    nF_serviceType = [NSString stringWithUTF8String:"nfcd"];
     v86 = NSLocalizedDescriptionKey;
     v30 = [NSString stringWithUTF8String:"NFC radio disabled"];
     v87 = v30;
     v47 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-    v48 = [v46 initWithDomain:v11 code:50 userInfo:v47];
-    v8[2](v8, 0, v48);
+    v48 = [v46 initWithDomain:nF_serviceType code:50 userInfo:v47];
+    completionCopy[2](completionCopy, 0, v48);
 
     goto LABEL_31;
   }
 
-  v11 = [v9 NF_serviceType];
-  if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v11 unsignedIntegerValue] == 2)
+  nF_serviceType = [v9 NF_serviceType];
+  if (nF_serviceType && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [nF_serviceType unsignedIntegerValue] == 2)
   {
-    v14 = [v9 NF_whitelistChecker];
-    v15 = [_NFCardSession validateEntitlements:v14];
+    nF_whitelistChecker = [v9 NF_whitelistChecker];
+    v15 = [_NFCardSession validateEntitlements:nF_whitelistChecker];
 
     if (v15)
     {
@@ -11103,15 +11103,15 @@ LABEL_31:
         v68 = class_isMetaClass(v18);
         v69 = object_getClassName(self);
         v19 = sel_getName(a2);
-        v20 = [v9 NF_clientName];
-        v67 = [v9 processIdentifier];
+        nF_clientName = [v9 NF_clientName];
+        processIdentifier = [v9 processIdentifier];
         v21 = 45;
         if (v68)
         {
           v21 = 43;
         }
 
-        v17(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v21, v69, v19, 6628, v20, v67);
+        v17(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v21, v69, v19, 6628, nF_clientName, processIdentifier);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11131,8 +11131,8 @@ LABEL_31:
 
         v25 = object_getClassName(self);
         v26 = sel_getName(a2);
-        v27 = [v9 NF_clientName];
-        v28 = [v9 processIdentifier];
+        nF_clientName2 = [v9 NF_clientName];
+        processIdentifier2 = [v9 processIdentifier];
         *buf = 67110402;
         *&buf[4] = v24;
         *&buf[8] = 2082;
@@ -11142,18 +11142,18 @@ LABEL_31:
         *&buf[28] = 1024;
         *&buf[30] = 6628;
         v80 = 2114;
-        v81 = v27;
+        v81 = nF_clientName2;
         v82 = 1026;
-        v83 = v28;
+        v83 = processIdentifier2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", buf, 0x32u);
       }
 
-      v8[2](v8, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
 
     else
     {
-      v63 = [v9 processIdentifier];
+      processIdentifier3 = [v9 processIdentifier];
       if (v9)
       {
         [v9 auditToken];
@@ -11168,14 +11168,14 @@ LABEL_31:
       v70[1] = 3221225472;
       v70[2] = sub_100114100;
       v70[3] = &unk_100318BF8;
-      v74 = v8;
+      v74 = completionCopy;
       v75 = a2;
       v70[4] = self;
-      v71 = v7;
+      v71 = sessionCopy;
       v72 = v9;
       v76 = v78;
-      v73 = v11;
-      v77 = v63;
+      v73 = nF_serviceType;
+      v77 = processIdentifier3;
       [_NFCardSession isEligibleWithUserPrompt:1 auditToken:buf completion:v70];
 
       v15 = v74;
@@ -11199,7 +11199,7 @@ LABEL_31:
         v53 = 43;
       }
 
-      v50(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v53, v64, v66, 6619, v11);
+      v50(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v53, v64, v66, 6619, nF_serviceType);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11228,7 +11228,7 @@ LABEL_31:
       *&buf[28] = 1024;
       *&buf[30] = 6619;
       v80 = 2114;
-      v81 = v11;
+      v81 = nF_serviceType;
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", buf, 0x2Cu);
     }
 
@@ -11239,21 +11239,21 @@ LABEL_31:
     v85 = v60;
     v61 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
     v62 = [v59 initWithDomain:v15 code:12 userInfo:v61];
-    v8[2](v8, 0, v62);
+    completionCopy[2](completionCopy, 0, v62);
   }
 
 LABEL_43:
 }
 
-- (void)isCardSessionEligibleWithCompletion:(id)a3
+- (void)isCardSessionEligibleWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
-  v7 = [v6 NF_serviceType];
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 unsignedIntegerValue] == 2)
+  nF_serviceType = [v6 NF_serviceType];
+  if (nF_serviceType && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [nF_serviceType unsignedIntegerValue] == 2)
   {
-    v8 = [v6 NF_whitelistChecker];
-    v9 = [_NFCardSession validateEntitlements:v8];
+    nF_whitelistChecker = [v6 NF_whitelistChecker];
+    v9 = [_NFCardSession validateEntitlements:nF_whitelistChecker];
 
     if (v9)
     {
@@ -11266,15 +11266,15 @@ LABEL_43:
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
         Name = sel_getName(a2);
-        v15 = [v6 NF_clientName];
-        v37 = [v6 processIdentifier];
+        nF_clientName = [v6 NF_clientName];
+        processIdentifier = [v6 processIdentifier];
         v16 = 45;
         if (isMetaClass)
         {
           v16 = 43;
         }
 
-        v11(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v16, ClassName, Name, 6685, v15, v37);
+        v11(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", v16, ClassName, Name, 6685, nF_clientName, processIdentifier);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11294,7 +11294,7 @@ LABEL_43:
 
         v20 = object_getClassName(self);
         v21 = sel_getName(a2);
-        v22 = [v6 NF_clientName];
+        nF_clientName2 = [v6 NF_clientName];
         *buf = 67110402;
         *&buf[4] = v19;
         *&buf[8] = 2082;
@@ -11304,13 +11304,13 @@ LABEL_43:
         *&buf[28] = 1024;
         *&buf[30] = 6685;
         v43 = 2114;
-        v44 = v22;
+        v44 = nF_clientName2;
         v45 = 1026;
-        v46 = [v6 processIdentifier];
+        processIdentifier2 = [v6 processIdentifier];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %{public}d)", buf, 0x32u);
       }
 
-      v5[2](v5, 3, v9);
+      completionCopy[2](completionCopy, 3, v9);
     }
 
     else
@@ -11331,7 +11331,7 @@ LABEL_43:
       v39[3] = &unk_100318C20;
       v39[4] = self;
       v41 = a2;
-      v40 = v5;
+      v40 = completionCopy;
       [_NFCardSession isEligibleWithUserPrompt:0 auditToken:buf completion:v39];
 
       v9 = 0;
@@ -11355,7 +11355,7 @@ LABEL_43:
         v27 = 43;
       }
 
-      v24(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v27, v35, v36, 6676, v7);
+      v24(4, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", v27, v35, v36, 6676, nF_serviceType);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11382,7 +11382,7 @@ LABEL_43:
       *&buf[28] = 1024;
       *&buf[30] = 6676;
       v43 = 2114;
-      v44 = v7;
+      v44 = nF_serviceType;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid service type: %{public}@", buf, 0x2Cu);
     }
 
@@ -11393,15 +11393,15 @@ LABEL_43:
     v48 = v32;
     v33 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v34 = [v31 initWithDomain:v9 code:12 userInfo:v33];
-    v5[2](v5, 3, v34);
+    completionCopy[2](completionCopy, 3, v34);
   }
 }
 
-- (void)queueInternalConfigurationSession:(id)a3 sessionAttribute:(id)a4 completion:(id)a5
+- (void)queueInternalConfigurationSession:(id)session sessionAttribute:(id)attribute completion:(id)completion
 {
-  v49 = a3;
-  v48 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  attributeCopy = attribute;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -11412,14 +11412,14 @@ LABEL_43:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v17 = [v10 NF_clientName];
+    nF_clientName = [v10 NF_clientName];
     v18 = 45;
     if (isMetaClass)
     {
       v18 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 6756, v17);
+    v12(6, "%c[%{public}s %{public}s]:%i %{public}@", v18, ClassName, Name, 6756, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11439,7 +11439,7 @@ LABEL_43:
 
     v22 = object_getClassName(self);
     v23 = sel_getName(a2);
-    v24 = [v10 NF_clientName];
+    nF_clientName2 = [v10 NF_clientName];
     *buf = 67110146;
     v52 = v21;
     v53 = 2082;
@@ -11449,12 +11449,12 @@ LABEL_43:
     v57 = 1024;
     v58 = 6756;
     v59 = 2114;
-    v60 = v24;
+    v60 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v25 = [v10 NF_whitelistChecker];
-  v26 = [_NFInternalConfigurationSession validateEntitlements:v25];
+  nF_whitelistChecker = [v10 NF_whitelistChecker];
+  v26 = [_NFInternalConfigurationSession validateEntitlements:nF_whitelistChecker];
 
   if (v26)
   {
@@ -11467,15 +11467,15 @@ LABEL_43:
       v30 = class_isMetaClass(v29);
       v47 = object_getClassName(self);
       v31 = sel_getName(a2);
-      v32 = [v10 NF_clientName];
-      v46 = [v10 processIdentifier];
+      nF_clientName3 = [v10 NF_clientName];
+      processIdentifier = [v10 processIdentifier];
       v33 = 45;
       if (v30)
       {
         v33 = 43;
       }
 
-      v28(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v33, v47, v31, 6760, v32, v46);
+      v28(3, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", v33, v47, v31, 6760, nF_clientName3, processIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -11495,8 +11495,8 @@ LABEL_43:
 
       v37 = object_getClassName(self);
       v38 = sel_getName(a2);
-      v39 = [v10 NF_clientName];
-      v40 = [v10 processIdentifier];
+      nF_clientName4 = [v10 NF_clientName];
+      processIdentifier2 = [v10 processIdentifier];
       *buf = 67110402;
       v52 = v36;
       v53 = 2082;
@@ -11506,36 +11506,36 @@ LABEL_43:
       v57 = 1024;
       v58 = 6760;
       v59 = 2114;
-      v60 = v39;
+      v60 = nF_clientName4;
       v61 = 1024;
-      v62 = v40;
+      v62 = processIdentifier2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session not allowed from %{public}@ (pid %d)", buf, 0x32u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, v26);
-    v42 = v48;
-    v41 = v49;
+    (*(completionCopy + 2))(completionCopy, 0, 0, v26);
+    v42 = attributeCopy;
+    v41 = sessionCopy;
   }
 
   else
   {
-    v41 = v49;
-    v43 = [(_NFXPCSession *)[_NFInternalConfigurationSession alloc] initWithRemoteObject:v49 workQueue:self->_workQueue];
+    v41 = sessionCopy;
+    v43 = [(_NFXPCSession *)[_NFInternalConfigurationSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
     [(_NFSession *)v43 setQueue:self];
     [(_NFXPCSession *)v43 setConnection:v10];
     [(_NFSession *)v43 setUid:0xFFFFFFFFLL];
     [(_NFInternalConfigurationSession *)v43 setDriverWrapper:self->_driverWrapper];
     buf[0] = 0;
-    v42 = v48;
-    v44 = sub_1001DC138(self, v43, v10, v48, buf);
+    v42 = attributeCopy;
+    v44 = sub_1001DC138(self, v43, v10, attributeCopy, buf);
     if (v44)
     {
-      (*(v9 + 2))(v9, 0, 0, v44);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v44);
     }
 
     else
     {
-      (*(v9 + 2))(v9, v43, buf[0], 0);
+      (*(completionCopy + 2))(completionCopy, v43, buf[0], 0);
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -11547,9 +11547,9 @@ LABEL_43:
   }
 }
 
-- (void)preWarmWithCompletion:(id)a3
+- (void)preWarmWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -11558,45 +11558,45 @@ LABEL_43:
   block[3] = &unk_1003188A0;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   dispatch_async(workQueue, block);
 }
 
-- (void)updateBackgroundTagReading:(unsigned int)a3 params:(id)a4 completion:(id)a5
+- (void)updateBackgroundTagReading:(unsigned int)reading params:(id)params completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  paramsCopy = params;
+  completionCopy = completion;
   v10 = +[NSXPCConnection currentConnection];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100115E94;
   block[3] = &unk_100318C48;
-  v19 = a3;
+  readingCopy = reading;
   block[4] = self;
-  v16 = v8;
+  v16 = paramsCopy;
   v17 = v10;
-  v18 = v9;
-  v12 = v9;
+  v18 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  v14 = v8;
+  v14 = paramsCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)actOnUserInitiatedSystemShutDown:(unsigned int)a3 completion:(id)a4
+- (void)actOnUserInitiatedSystemShutDown:(unsigned int)down completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100116898;
   block[3] = &unk_100318828;
-  v11 = a3;
+  downCopy = down;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -11656,7 +11656,7 @@ LABEL_43:
   dispatch_async(workQueue, block);
 }
 
-- (void)handleHardwareReset:(const char *)a3
+- (void)handleHardwareReset:(const char *)reset
 {
   workQueue = self->_workQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -11664,7 +11664,7 @@ LABEL_43:
   v4[2] = sub_1001177B0;
   v4[3] = &unk_100315F58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reset;
   dispatch_async(workQueue, v4);
 }
 
@@ -11928,9 +11928,9 @@ LABEL_43:
   [(NFPreferenceObserver *)v62 start:v68];
 }
 
-- (void)handleHWRecoveryCompletion:(BOOL)a3
+- (void)handleHWRecoveryCompletion:(BOOL)completion
 {
-  if (a3)
+  if (completion)
   {
     v4 = sub_100003384(self);
 
@@ -12000,10 +12000,10 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: nfcd", buf, 0x22u);
   }
 
-  v15 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-  v16 = [v15 wantsExpress];
+  lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+  wantsExpress = [lastKnownRoutingConfig wantsExpress];
 
-  if (v16)
+  if (wantsExpress)
   {
     kdebug_trace();
     v17 = NFSharedSignpostLog();
@@ -12097,12 +12097,12 @@ LABEL_43:
       if ([v46 notificationType] == 3)
       {
         v47 = v46;
-        v48 = [v47 tciArray];
-        if (v48)
+        tciArray = [v47 tciArray];
+        if (tciArray)
         {
-          v49 = v48;
-          v50 = [v47 tciArray];
-          v51 = [v50 count];
+          v49 = tciArray;
+          tciArray2 = [v47 tciArray];
+          v51 = [tciArray2 count];
 
           if (v51)
           {
@@ -12110,8 +12110,8 @@ LABEL_43:
             v73 = 0u;
             v70 = 0u;
             v71 = 0u;
-            v52 = [v47 tciArray];
-            v53 = [v52 countByEnumeratingWithState:&v70 objects:v76 count:16];
+            tciArray3 = [v47 tciArray];
+            v53 = [tciArray3 countByEnumeratingWithState:&v70 objects:v76 count:16];
             if (v53)
             {
               v54 = v53;
@@ -12122,7 +12122,7 @@ LABEL_43:
                 {
                   if (*v71 != v55)
                   {
-                    objc_enumerationMutation(v52);
+                    objc_enumerationMutation(tciArray3);
                   }
 
                   v57 = *(*(&v70 + 1) + 8 * i);
@@ -12131,11 +12131,11 @@ LABEL_43:
                     [v31 appendString:{@", "}];
                   }
 
-                  v58 = [v57 NF_asHexString];
-                  [v31 appendString:v58];
+                  nF_asHexString = [v57 NF_asHexString];
+                  [v31 appendString:nF_asHexString];
                 }
 
-                v54 = [v52 countByEnumeratingWithState:&v70 objects:v76 count:16];
+                v54 = [tciArray3 countByEnumeratingWithState:&v70 objects:v76 count:16];
               }
 
               while (v54);
@@ -12167,11 +12167,11 @@ LABEL_43:
       }
 
       v64 = +[NFSecureXPCEventPublisherManager sharedManager];
-      v65 = [v64 wallet];
-      v66 = v65;
-      if (v65)
+      wallet = [v64 wallet];
+      v66 = wallet;
+      if (wallet)
       {
-        sub_100235634(v65, v63, 1);
+        sub_100235634(wallet, v63, 1);
       }
     }
   }
@@ -12428,14 +12428,14 @@ LABEL_27:
     v33 = object_getClassName(self);
     v34 = sel_getName(a2);
     v58 = self->_inSessionExpressSessionID;
-    v59 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID = [(_NFSession *)self->_currentSecureElementSession sessionID];
     v35 = 45;
     if (v32)
     {
       v35 = 43;
     }
 
-    v30(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - dropping", v35, v33, v34, 7307, v58, v59);
+    v30(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - dropping", v35, v33, v34, 7307, v58, sessionID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -12456,7 +12456,7 @@ LABEL_27:
     v39 = object_getClassName(self);
     v40 = sel_getName(a2);
     v41 = self->_inSessionExpressSessionID;
-    v42 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID2 = [(_NFSession *)self->_currentSecureElementSession sessionID];
     *buf = 67110402;
     v61 = v38;
     v62 = 2082;
@@ -12468,7 +12468,7 @@ LABEL_27:
     v68 = 1024;
     v69 = v41;
     v70 = 1024;
-    v71 = v42;
+    v71 = sessionID2;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - dropping", buf, 0x2Eu);
   }
 
@@ -12648,14 +12648,14 @@ LABEL_18:
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
     v46 = self->_inSessionExpressSessionID;
-    v47 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID = [(_NFSession *)self->_currentSecureElementSession sessionID];
     v26 = 45;
     if (v23)
     {
       v26 = 43;
     }
 
-    v21(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v26, v24, v25, 7360, v46, v47);
+    v21(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v26, v24, v25, 7360, v46, sessionID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -12676,7 +12676,7 @@ LABEL_18:
     v30 = object_getClassName(self);
     v31 = sel_getName(a2);
     v32 = self->_inSessionExpressSessionID;
-    v33 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID2 = [(_NFSession *)self->_currentSecureElementSession sessionID];
     *buf = 67110402;
     v49 = v29;
     v50 = 2082;
@@ -12688,16 +12688,16 @@ LABEL_18:
     v56 = 1024;
     v57 = v32;
     v58 = 1024;
-    v59 = v33;
+    v59 = sessionID2;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", buf, 0x2Eu);
   }
 }
 
-- (void)handleAppletInactivityTimeout:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleAppletInactivityTimeout:(id)timeout atlData:(id)data caData:(id)caData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  timeoutCopy = timeout;
+  dataCopy = data;
+  caDataCopy = caData;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -12713,7 +12713,7 @@ LABEL_18:
       v16 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i Applet Inactivity Timeout : %{public}@", v16, ClassName, Name, 7371, v9);
+    v13(6, "%c[%{public}s %{public}s]:%i Applet Inactivity Timeout : %{public}@", v16, ClassName, Name, 7371, timeoutCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -12740,13 +12740,13 @@ LABEL_18:
     v67 = 1024;
     v68 = 7371;
     v69 = 2114;
-    v70[0] = v9;
+    v70[0] = timeoutCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Applet Inactivity Timeout : %{public}@", buf, 0x2Cu);
   }
 
-  if (v9)
+  if (timeoutCopy)
   {
-    v20 = [v9 objectForKeyedSubscript:@"applet"];
+    v20 = [timeoutCopy objectForKeyedSubscript:@"applet"];
   }
 
   else
@@ -12757,8 +12757,8 @@ LABEL_18:
   currentSecureElementSession = self->_currentSecureElementSession;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v27 = [v20 identifier];
-    sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", v27);
+    identifier = [v20 identifier];
+    sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", identifier);
 
     v28 = NFSharedSignpostLog();
     if (!os_signpost_enabled(v28))
@@ -12769,11 +12769,11 @@ LABEL_22:
     }
 
 LABEL_21:
-    v29 = [v20 identifier];
+    identifier2 = [v20 identifier];
     *buf = 136315394;
     *v66 = "com.apple.stockholm.express.transaction.timeout";
     *&v66[8] = 2112;
-    *&v66[10] = v29;
+    *&v66[10] = identifier2;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v28, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EXPRESS_APPLET_INACTIVITY_TIMEOUT_NOTIFICATION", "%s, aid: %@", buf, 0x16u);
 
     goto LABEL_22;
@@ -12783,16 +12783,16 @@ LABEL_21:
   if (!expressModeManager || !expressModeManager->_expressModeInProgress || (inSessionExpressSessionID = self->_inSessionExpressSessionID, inSessionExpressSessionID == [(_NFSession *)self->_currentSecureElementSession sessionID]))
   {
     v24 = self->_currentSecureElementSession;
-    v25 = [v9 objectForKeyedSubscript:@"result"];
+    v25 = [timeoutCopy objectForKeyedSubscript:@"result"];
     [(_NFSession *)v24 handleAppletInactivityTimeout:v25];
 
     if ([(_NFSession *)self->_currentSecureElementSession isMemberOfClass:objc_opt_class()])
     {
-      v26 = [v20 identifier];
-      sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", v26);
+      identifier3 = [v20 identifier];
+      sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", identifier3);
 
-      sub_1000A5CEC(NFUnifiedAccessTransactionCALogger, v10);
-      if (!v11)
+      sub_1000A5CEC(NFUnifiedAccessTransactionCALogger, dataCopy);
+      if (!caDataCopy)
       {
         goto LABEL_30;
       }
@@ -12801,7 +12801,7 @@ LABEL_21:
     }
 
 LABEL_23:
-    if (!v11)
+    if (!caDataCopy)
     {
       goto LABEL_30;
     }
@@ -12861,8 +12861,8 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in session but express started before (sessionID:%d)", buf, 0x28u);
     }
 
-    v58 = [v20 identifier];
-    sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", v58);
+    identifier4 = [v20 identifier];
+    sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.timeout", identifier4);
 
     v28 = NFSharedSignpostLog();
     if (!os_signpost_enabled(v28))
@@ -12880,14 +12880,14 @@ LABEL_23:
     v64 = object_getClassName(self);
     v38 = sel_getName(a2);
     v61 = self->_inSessionExpressSessionID;
-    v62 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID = [(_NFSession *)self->_currentSecureElementSession sessionID];
     v39 = 45;
     if (v63)
     {
       v39 = 43;
     }
 
-    v36(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v39, v64, v38, 7399, v61, v62);
+    v36(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v39, v64, v38, 7399, v61, sessionID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -12908,7 +12908,7 @@ LABEL_23:
     v43 = object_getClassName(self);
     v44 = sel_getName(a2);
     v45 = self->_inSessionExpressSessionID;
-    v46 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID2 = [(_NFSession *)self->_currentSecureElementSession sessionID];
     *buf = 67110402;
     *v66 = v42;
     *&v66[4] = 2082;
@@ -12920,25 +12920,25 @@ LABEL_23:
     v69 = 1024;
     LODWORD(v70[0]) = v45;
     WORD2(v70[0]) = 1024;
-    *(v70 + 6) = v46;
+    *(v70 + 6) = sessionID2;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", buf, 0x2Eu);
   }
 
-  if (v11)
+  if (caDataCopy)
   {
 LABEL_24:
-    v30 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-    v31 = [v30 embeddedMode];
+    lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+    embeddedMode = [lastKnownRoutingConfig embeddedMode];
 
-    if (v31 != 1)
+    if (embeddedMode != 1)
     {
       v32 = self->_expressModeManager;
       if (v32)
       {
         if (v32->_expressModeInProgress)
         {
-          v33 = [v20 identifier];
-          LOBYTE(v32) = sub_1000354C4(v32, v33);
+          identifier5 = [v20 identifier];
+          LOBYTE(v32) = sub_1000354C4(v32, identifier5);
         }
 
         else
@@ -12947,7 +12947,7 @@ LABEL_24:
         }
       }
 
-      sub_10024EB60(NFHciTransactionEventCALogger, v11, v10, v32, 1);
+      sub_10024EB60(NFHciTransactionEventCALogger, caDataCopy, dataCopy, v32, 1);
     }
   }
 
@@ -13110,9 +13110,9 @@ LABEL_30:
   }
 }
 
-- (id)softResetSE:(id)a3
+- (id)softResetSE:(id)e
 {
-  v5 = a3;
+  eCopy = e;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -13165,7 +13165,7 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Soft reset of SE :(", buf, 0x22u);
   }
 
-  if ([v5 isEqual:self->_secureElementWrapper])
+  if ([eCopy isEqual:self->_secureElementWrapper])
   {
     v17 = sub_10004BF60(NFRoutingConfig, 0);
     v39 = _NSConcreteStackBlock;
@@ -13173,8 +13173,8 @@ LABEL_30:
     v41 = sub_10011A804;
     v42 = &unk_100318C70;
     v45 = &v46;
-    v43 = self;
-    v44 = v5;
+    selfCopy = self;
+    v44 = eCopy;
     if ((sub_1000E6BE4(&self->super.isa, &v39, @"SoftResetSE", v17) & 1) == 0)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -13192,7 +13192,7 @@ LABEL_30:
           v24 = 43;
         }
 
-        v19(3, "%c[%{public}s %{public}s]:%i Failed to soft reset SE: %{public}@", v24, v22, v23, 7487, v47[5], v39, v40, v41, v42, v43);
+        v19(3, "%c[%{public}s %{public}s]:%i Failed to soft reset SE: %{public}@", v24, v22, v23, 7487, v47[5], v39, v40, v41, v42, selfCopy);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -13243,8 +13243,8 @@ LABEL_30:
     v34 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
     v63[2] = v34;
     v62[3] = NSDebugDescriptionErrorKey;
-    v35 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 7478];
-    v63[3] = v35;
+    7478 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 7478];
+    v63[3] = 7478;
     v36 = [NSDictionary dictionaryWithObjects:v63 forKeys:v62 count:4];
     v31 = [v32 initWithDomain:v17 code:35 userInfo:v36];
   }
@@ -13254,33 +13254,33 @@ LABEL_30:
   return v31;
 }
 
-- (void)handleFilteredFieldNotification:(id)a3
+- (void)handleFilteredFieldNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011B074;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = notificationCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = notificationCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011B8CC;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = notificationCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = notificationCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -13295,35 +13295,35 @@ LABEL_30:
   dispatch_async(workQueue, block);
 }
 
-- (void)handleSecureElementEnteredRestrictedMode:(int)a3 os:(int64_t)a4
+- (void)handleSecureElementEnteredRestrictedMode:(int)mode os:(int64_t)os
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011C654;
   block[3] = &unk_100318D10;
-  v6 = a3;
+  modeCopy = mode;
   block[4] = self;
-  block[5] = a4;
+  block[5] = os;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleSelectEvent:(id)a3
+- (void)handleSelectEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011CCA0;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = eventCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = eventCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleTemperatureChange:(double)a3
+- (void)handleTemperatureChange:(double)change
 {
   workQueue = self->_workQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -13331,16 +13331,16 @@ LABEL_30:
   v4[2] = sub_10011CF14;
   v4[3] = &unk_100315F58;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = change;
   dispatch_async(workQueue, v4);
 }
 
 - (void)handleEraseCounterExceeded
 {
-  v3 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-  if (!v3)
+  lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+  if (!lastKnownRoutingConfig)
   {
-    v3 = [(_NFHardwareManager *)self defaultRoutingConfig:3];
+    lastKnownRoutingConfig = [(_NFHardwareManager *)self defaultRoutingConfig:3];
   }
 
   workQueue = self->_workQueue;
@@ -13349,57 +13349,57 @@ LABEL_30:
   v6[2] = sub_10011D0F8;
   v6[3] = &unk_100318738;
   v6[4] = self;
-  v5 = [_NFBuiltinSession createSession:@"Erase Counter" workQueue:workQueue routing:v3 sessionQueuer:self didStartWork:v6];
+  v5 = [_NFBuiltinSession createSession:@"Erase Counter" workQueue:workQueue routing:lastKnownRoutingConfig sessionQueuer:self didStartWork:v6];
 }
 
-- (void)handlMFWNotification:(id)a3
+- (void)handlMFWNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011D270;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = notificationCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = notificationCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleSecureElementReaderModeStarted:(id)a3
+- (void)handleSecureElementReaderModeStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011D514;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = startedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = startedCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleSecureElementReaderModeEnded:(id)a3
+- (void)handleSecureElementReaderModeEnded:(id)ended
 {
-  v5 = a3;
+  endedCopy = ended;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011D7B8;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = endedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = endedCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleReaderModeProhibitTimerEvent:(unint64_t)a3
+- (void)handleReaderModeProhibitTimerEvent:(unint64_t)event
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((event & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     block[5] = v3;
     block[6] = v4;
@@ -13413,31 +13413,31 @@ LABEL_30:
   }
 }
 
-- (void)handleSecureElementTransactionData:(id)a3 appletIdentifier:(id)a4
+- (void)handleSecureElementTransactionData:(id)data appletIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   workQueue = self->_workQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10011DC08;
   v12[3] = &unk_100315FD0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = dataCopy;
+  v14 = identifierCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = dataCopy;
   dispatch_async(workQueue, v12);
 }
 
-- (void)handleTimerExpiredEvent:(id)a3
+- (void)handleTimerExpiredEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   currentSecureElementSession = self->_currentSecureElementSession;
   if (objc_opt_respondsToSelector())
   {
-    [(_NFSession *)self->_currentSecureElementSession handleTimerExpiredEvent:v5];
+    [(_NFSession *)self->_currentSecureElementSession handleTimerExpiredEvent:eventCopy];
   }
 
   else
@@ -13493,11 +13493,11 @@ LABEL_30:
   }
 }
 
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data caData:(id)caData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  eventCopy = event;
+  dataCopy = data;
+  caDataCopy = caData;
   expressModeManager = self->_expressModeManager;
   if (expressModeManager && expressModeManager->_expressModeInProgress && !expressModeManager->_didPerformExpressTransaction)
   {
@@ -13510,19 +13510,19 @@ LABEL_30:
     }
   }
 
-  v14 = [v9 keyIdentifier];
+  keyIdentifier = [eventCopy keyIdentifier];
 
-  if (v14)
+  if (keyIdentifier)
   {
     v15 = [NSString alloc];
-    v16 = [v9 appletIdentifier];
-    v17 = [v9 keyIdentifier];
-    v18 = [v15 initWithFormat:@"%@:%@", v16, v17];
+    appletIdentifier = [eventCopy appletIdentifier];
+    keyIdentifier2 = [eventCopy keyIdentifier];
+    appletIdentifier2 = [v15 initWithFormat:@"%@:%@", appletIdentifier, keyIdentifier2];
   }
 
   else
   {
-    v18 = [v9 appletIdentifier];
+    appletIdentifier2 = [eventCopy appletIdentifier];
   }
 
   currentSecureElementSession = self->_currentSecureElementSession;
@@ -13531,7 +13531,7 @@ LABEL_30:
     if (!self->_currentSecureElementSession)
     {
 LABEL_32:
-      sub_10011DFD8(self, v9, v18);
+      sub_10011DFD8(self, eventCopy, appletIdentifier2);
       goto LABEL_33;
     }
 
@@ -13598,7 +13598,7 @@ LABEL_30:
   v20 = self->_expressModeManager;
   if (!v20 || !v20->_expressModeInProgress || (inSessionExpressSessionID = self->_inSessionExpressSessionID, inSessionExpressSessionID == [(_NFSession *)self->_currentSecureElementSession sessionID]))
   {
-    [(_NFSession *)self->_currentSecureElementSession handleTransactionStartEvent:v9 atlData:v10];
+    [(_NFSession *)self->_currentSecureElementSession handleTransactionStartEvent:eventCopy atlData:dataCopy];
     if ([(_NFSession *)self->_currentSecureElementSession isMemberOfClass:objc_opt_class()])
     {
       v22 = self->_expressModeManager;
@@ -13606,8 +13606,8 @@ LABEL_30:
       {
         if (v22->_expressModeInProgress && !v22->_didPerformExpressTransaction)
         {
-          sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.start", v18);
-          if (!v10)
+          sub_1000E7BDC(self, "com.apple.stockholm.express.transaction.start", appletIdentifier2);
+          if (!dataCopy)
           {
             goto LABEL_36;
           }
@@ -13618,7 +13618,7 @@ LABEL_30:
     }
 
 LABEL_33:
-    if (!v10)
+    if (!dataCopy)
     {
       goto LABEL_36;
     }
@@ -13692,14 +13692,14 @@ LABEL_33:
     v77 = object_getClassName(self);
     v56 = sel_getName(a2);
     v75 = self->_inSessionExpressSessionID;
-    v76 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID = [(_NFSession *)self->_currentSecureElementSession sessionID];
     v57 = 45;
     if (v55)
     {
       v57 = 43;
     }
 
-    v53(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - drop", v57, v77, v56, 7968, v75, v76);
+    v53(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - drop", v57, v77, v56, 7968, v75, sessionID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -13720,7 +13720,7 @@ LABEL_33:
     v61 = object_getClassName(self);
     v62 = sel_getName(a2);
     v63 = self->_inSessionExpressSessionID;
-    v64 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID2 = [(_NFSession *)self->_currentSecureElementSession sessionID];
     *buf = 67110402;
     v79 = v60;
     v80 = 2082;
@@ -13732,37 +13732,37 @@ LABEL_33:
     v86 = 1024;
     LODWORD(v87[0]) = v63;
     WORD2(v87[0]) = 1024;
-    *(v87 + 6) = v64;
+    *(v87 + 6) = sessionID2;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d) - drop", buf, 0x2Eu);
   }
 
-  if (v10)
+  if (dataCopy)
   {
 LABEL_34:
-    v40 = [v10 objectForKey:@"RequiresPowerCycle"];
-    v41 = [v40 BOOLValue];
+    v40 = [dataCopy objectForKey:@"RequiresPowerCycle"];
+    bOOLValue = [v40 BOOLValue];
 
-    if (v41)
+    if (bOOLValue)
     {
       self->_powerCycleAfterThisSession = 1;
     }
   }
 
 LABEL_36:
-  if (v11)
+  if (caDataCopy)
   {
-    v42 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-    v43 = [v42 embeddedMode];
+    lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+    embeddedMode = [lastKnownRoutingConfig embeddedMode];
 
-    if (v43 != 1)
+    if (embeddedMode != 1)
     {
       v44 = self->_expressModeManager;
       if (v44)
       {
         if (v44->_expressModeInProgress)
         {
-          v45 = [v9 appletIdentifier];
-          LOBYTE(v44) = sub_1000354C4(v44, v45);
+          appletIdentifier3 = [eventCopy appletIdentifier];
+          LOBYTE(v44) = sub_1000354C4(v44, appletIdentifier3);
         }
 
         else
@@ -13775,32 +13775,32 @@ LABEL_36:
       v47 = v46;
       if (v46 && [v46 notificationType] == 3)
       {
-        v48 = [v11 mutableCopy];
+        v48 = [caDataCopy mutableCopy];
         v49 = v47;
         v50 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v49 terminalSubType] | (objc_msgSend(v49, "terminalType") << 8));
         [v48 setObject:v50 forKeyedSubscript:@"terminalType"];
 
-        if (v10)
+        if (dataCopy)
         {
-          sub_10024EB60(NFHciTransactionEventCALogger, v48, v10, v44, 1);
+          sub_10024EB60(NFHciTransactionEventCALogger, v48, dataCopy, v44, 1);
         }
       }
 
-      else if (v10)
+      else if (dataCopy)
       {
-        sub_10024EB60(NFHciTransactionEventCALogger, v11, v10, v44, 1);
+        sub_10024EB60(NFHciTransactionEventCALogger, caDataCopy, dataCopy, v44, 1);
       }
     }
   }
 }
 
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data caData:(id)caData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-  v123 = [v11 embeddedMode];
+  eventCopy = event;
+  dataCopy = data;
+  caDataCopy = caData;
+  lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+  embeddedMode = [lastKnownRoutingConfig embeddedMode];
 
   expressModeManager = self->_expressModeManager;
   if (expressModeManager && expressModeManager->_expressModeInProgress && !expressModeManager->_didPerformExpressTransaction)
@@ -13814,13 +13814,13 @@ LABEL_36:
     }
   }
 
-  v14 = [v9 objectForKeyedSubscript:@"appletIdentifier"];
-  v15 = [v9 objectForKeyedSubscript:@"endPointIdentifier"];
-  v16 = [v9 objectForKeyedSubscript:@"readerIdentifier"];
+  v14 = [dataCopy objectForKeyedSubscript:@"appletIdentifier"];
+  v15 = [dataCopy objectForKeyedSubscript:@"endPointIdentifier"];
+  v16 = [dataCopy objectForKeyedSubscript:@"readerIdentifier"];
   v130 = sub_100032938(self->_expressModeManager, v14);
   v131 = v15;
   v129 = v16;
-  v127 = v10;
+  v127 = caDataCopy;
   if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v17 = [NSData NF_dataWithHexString:v14];
@@ -13839,11 +13839,11 @@ LABEL_36:
   }
 
   v132 = objc_opt_new();
-  if (v9)
+  if (dataCopy)
   {
     if (v125)
     {
-      v20 = [v9 objectForKeyedSubscript:@"endPointIdentifier"];
+      v20 = [dataCopy objectForKeyedSubscript:@"endPointIdentifier"];
 
       if (v20)
       {
@@ -13874,11 +13874,11 @@ LABEL_36:
           }
         }
 
-        if (v8)
+        if (eventCopy)
         {
-          if ([v8 didError])
+          if ([eventCopy didError])
           {
-            v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 didError]);
+            v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [eventCopy didError]);
             [v132 setObject:v21 forKeyedSubscript:@"didError"];
           }
 
@@ -13900,23 +13900,23 @@ LABEL_36:
     }
   }
 
-  if ([v8 didError])
+  if ([eventCopy didError])
   {
-    if ([v8 result] == 61444)
+    if ([eventCopy result] == 61444)
     {
       v24 = "com.apple.stockholm.express.transaction.end.incompatible";
     }
 
-    else if ([v8 result] == 61446)
+    else if ([eventCopy result] == 61446)
     {
       v24 = "com.apple.stockholm.express.transaction.end.keypairingmode";
     }
 
     else
     {
-      v82 = [v8 result];
+      result = [eventCopy result];
       v24 = "com.apple.stockholm.express.transaction.end.failed";
-      if (v82 == 61445)
+      if (result == 61445)
       {
         v24 = "com.apple.stockholm.express.transaction.notfound";
       }
@@ -13929,61 +13929,61 @@ LABEL_36:
   }
 
   v121 = v24;
-  v25 = [v8 keyIdentifier];
+  keyIdentifier = [eventCopy keyIdentifier];
 
-  if (v25)
+  if (keyIdentifier)
   {
     v26 = [NSString alloc];
-    v27 = [v8 appletIdentifier];
-    v28 = [v8 keyIdentifier];
-    v128 = [v26 initWithFormat:@"%@:%@", v27, v28];
+    appletIdentifier = [eventCopy appletIdentifier];
+    keyIdentifier2 = [eventCopy keyIdentifier];
+    appletIdentifier2 = [v26 initWithFormat:@"%@:%@", appletIdentifier, keyIdentifier2];
   }
 
   else
   {
-    v128 = [v8 appletIdentifier];
+    appletIdentifier2 = [eventCopy appletIdentifier];
   }
 
-  v29 = [v8 parsedInfo];
-  if (v29)
+  parsedInfo = [eventCopy parsedInfo];
+  if (parsedInfo)
   {
-    v30 = v29;
-    v31 = [v8 parsedInfo];
-    v32 = [v31 objectForKeyedSubscript:@"PairingModeBrandCode"];
+    v30 = parsedInfo;
+    parsedInfo2 = [eventCopy parsedInfo];
+    v32 = [parsedInfo2 objectForKeyedSubscript:@"PairingModeBrandCode"];
 
     if (v32)
     {
-      v33 = [v8 parsedInfo];
-      v34 = [v33 objectForKeyedSubscript:@"PairingModeBrandCode"];
+      parsedInfo3 = [eventCopy parsedInfo];
+      v34 = [parsedInfo3 objectForKeyedSubscript:@"PairingModeBrandCode"];
       [0 setObject:v34 forKeyedSubscript:@"PairingModeBrandCode"];
     }
   }
 
-  v35 = [NSMutableDictionary dictionaryWithDictionary:v9];
+  v35 = [NSMutableDictionary dictionaryWithDictionary:dataCopy];
   v36 = [[NSData alloc] initWithBytes:&unk_100297764 length:9];
-  v37 = [v36 NF_asHexString];
-  v38 = [v14 hasPrefix:v37];
+  nF_asHexString = [v36 NF_asHexString];
+  v38 = [v14 hasPrefix:nF_asHexString];
 
   if (v38)
   {
-    v39 = [NSNumber numberWithUnsignedInt:sub_1000A5614(NFUnifiedAccessTransactionCALogger, v130, v9)];
+    v39 = [NSNumber numberWithUnsignedInt:sub_1000A5614(NFUnifiedAccessTransactionCALogger, v130, dataCopy)];
     [v35 setObject:v39 forKeyedSubscript:@"keyType"];
 
-    if ([v8 didError])
+    if ([eventCopy didError])
     {
-      v40 = [v9 objectForKeyedSubscript:@"command"];
-      v41 = [v40 unsignedIntValue];
+      v40 = [dataCopy objectForKeyedSubscript:@"command"];
+      unsignedIntValue = [v40 unsignedIntValue];
 
-      if (v41 == 22)
+      if (unsignedIntValue == 22)
       {
-        v42 = [v9 objectForKeyedSubscript:@"informative"];
+        v42 = [dataCopy objectForKeyedSubscript:@"informative"];
 
         if (v42)
         {
-          v43 = [v9 objectForKeyedSubscript:@"command"];
+          v43 = [dataCopy objectForKeyedSubscript:@"command"];
           [0 setObject:v43 forKeyedSubscript:@"command"];
 
-          v44 = [v9 objectForKeyedSubscript:@"informative"];
+          v44 = [dataCopy objectForKeyedSubscript:@"informative"];
           [0 setObject:v44 forKeyedSubscript:@"informative"];
         }
       }
@@ -14102,7 +14102,7 @@ LABEL_36:
       goto LABEL_75;
     }
 
-    sub_10011EAE0(self, v8, v35, v128, v121, v122);
+    sub_10011EAE0(self, eventCopy, v35, appletIdentifier2, v121, v122);
     if (!v125)
     {
       goto LABEL_107;
@@ -14112,8 +14112,8 @@ LABEL_36:
 LABEL_81:
     [v132 setObject:v79 forKeyedSubscript:@"TxType"];
     v80 = +[NFSecureXPCEventPublisherManager sharedManager];
-    v81 = [v80 homed];
-    [(_NFHardwareManager *)self postEventForPublisher:v81 event:"com.apple.stockholm.forHome.transaction.end" additionalData:v132];
+    homed = [v80 homed];
+    [(_NFHardwareManager *)self postEventForPublisher:homed event:"com.apple.stockholm.forHome.transaction.end" additionalData:v132];
 
     goto LABEL_107;
   }
@@ -14121,13 +14121,13 @@ LABEL_81:
   v46 = self->_expressModeManager;
   if (!v46 || !v46->_expressModeInProgress || (v47 = self->_inSessionExpressSessionID, v47 == [(_NFSession *)self->_currentSecureElementSession sessionID]))
   {
-    v10 = v127;
+    caDataCopy = v127;
     if ([(_NFSession *)self->_currentSecureElementSession isMemberOfClass:objc_opt_class()])
     {
       v48 = self->_expressModeManager;
       if (v48 && v48->_expressModeInProgress && !v48->_didPerformExpressTransaction)
       {
-        sub_1000F0B88(self, v121, v128);
+        sub_1000F0B88(self, v121, appletIdentifier2);
         v49 = 3;
       }
 
@@ -14153,8 +14153,8 @@ LABEL_81:
                 [v132 setObject:v98 forKeyedSubscript:@"TxType"];
 
                 v99 = +[NFSecureXPCEventPublisherManager sharedManager];
-                v100 = [v99 homed];
-                [(_NFHardwareManager *)self postEventForPublisher:v100 event:"com.apple.stockholm.forHome.transaction.end" additionalData:v132];
+                homed2 = [v99 homed];
+                [(_NFHardwareManager *)self postEventForPublisher:homed2 event:"com.apple.stockholm.forHome.transaction.end" additionalData:v132];
 
                 v49 = v126;
               }
@@ -14173,7 +14173,7 @@ LABEL_81:
       }
     }
 
-    [(_NFSession *)self->_currentSecureElementSession handleTransactionEndEvent:v8 atlData:v9];
+    [(_NFSession *)self->_currentSecureElementSession handleTransactionEndEvent:eventCopy atlData:dataCopy];
     goto LABEL_107;
   }
 
@@ -14190,14 +14190,14 @@ LABEL_81:
       v88 = object_getClassName(self);
       v89 = sel_getName(a2);
       v119 = self->_inSessionExpressSessionID;
-      v120 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+      sessionID = [(_NFSession *)self->_currentSecureElementSession sessionID];
       v90 = 45;
       if (v87)
       {
         v90 = 43;
       }
 
-      v85(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v90, v88, v89, 8228, v119, v120);
+      v85(5, "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)", v90, v88, v89, 8228, v119, sessionID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -14221,7 +14221,7 @@ LABEL_81:
     v93 = object_getClassName(self);
     v94 = sel_getName(a2);
     v95 = self->_inSessionExpressSessionID;
-    v96 = [(_NFSession *)self->_currentSecureElementSession sessionID];
+    sessionID2 = [(_NFSession *)self->_currentSecureElementSession sessionID];
     *buf = 67110402;
     v134 = v92;
     v135 = 2082;
@@ -14233,7 +14233,7 @@ LABEL_81:
     v141 = 1024;
     *v142 = v95;
     *&v142[4] = 1024;
-    *&v142[6] = v96;
+    *&v142[6] = sessionID2;
     v76 = "%c[%{public}s %{public}s]:%i in-session express but wrong session ID (%d vs %d)";
     v77 = v70;
     v78 = 46;
@@ -14241,7 +14241,7 @@ LABEL_75:
     _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, v76, buf, v78);
 LABEL_76:
 
-    v10 = v127;
+    caDataCopy = v127;
     goto LABEL_107;
   }
 
@@ -14291,8 +14291,8 @@ LABEL_76:
     _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i in session but express started before (%d)", buf, 0x28u);
   }
 
-  sub_10011EAE0(self, v8, v35, v128, v121, v122);
-  v10 = v127;
+  sub_10011EAE0(self, eventCopy, v35, appletIdentifier2, v121, v122);
+  caDataCopy = v127;
   if (v125)
   {
     v79 = &off_100331E48;
@@ -14300,10 +14300,10 @@ LABEL_76:
   }
 
 LABEL_107:
-  if (v10 && v123 != 1)
+  if (caDataCopy && embeddedMode != 1)
   {
     v102 = sub_100034A8C(self->_expressModeManager, v14, v131);
-    v103 = [v10 mutableCopy];
+    v103 = [caDataCopy mutableCopy];
     v104 = v103;
     if (v102)
     {
@@ -14311,20 +14311,20 @@ LABEL_107:
     }
 
     v105 = self->_expressModeManager;
-    v106 = [v8 appletIdentifier];
-    v107 = sub_1000354C4(v105, v106);
-    sub_10024EB60(NFHciTransactionEventCALogger, v104, v9, v107, 0);
+    appletIdentifier3 = [eventCopy appletIdentifier];
+    v107 = sub_1000354C4(v105, appletIdentifier3);
+    sub_10024EB60(NFHciTransactionEventCALogger, v104, dataCopy, v107, 0);
   }
 }
 
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  dCopy = d;
   currentSecureElementSession = self->_currentSecureElementSession;
   if (objc_opt_respondsToSelector())
   {
-    [(_NFSession *)self->_currentSecureElementSession handleFelicaStateEvent:v7 appletAID:v8];
+    [(_NFSession *)self->_currentSecureElementSession handleFelicaStateEvent:eventCopy appletAID:dCopy];
   }
 
   else
@@ -14380,10 +14380,10 @@ LABEL_107:
   }
 }
 
-- (void)handleStepUpEvent:(id)a3 forApplet:(id)a4
+- (void)handleStepUpEvent:(id)event forApplet:(id)applet
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  appletCopy = applet;
   currentSecureElementSession = self->_currentSecureElementSession;
   if (objc_opt_respondsToSelector())
   {
@@ -14402,7 +14402,7 @@ LABEL_107:
       }
     }
 
-    [(_NFSession *)self->_currentSecureElementSession handleStepUpEvent:v7 transactionType:v11 forApplet:v8];
+    [(_NFSession *)self->_currentSecureElementSession handleStepUpEvent:eventCopy transactionType:v11 forApplet:appletCopy];
   }
 
   else
@@ -14458,9 +14458,9 @@ LABEL_107:
   }
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -14511,24 +14511,24 @@ LABEL_107:
   block[2] = sub_100120448;
   block[3] = &unk_100315FA8;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
+  v19 = detectedCopy;
+  v16 = detectedCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleRemoteTagsDetected:(id)a3 dropAndRestartDiscovery:(BOOL)a4
+- (void)handleRemoteTagsDetected:(id)detected dropAndRestartDiscovery:(BOOL)discovery
 {
-  v7 = a3;
+  detectedCopy = detected;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012057C;
   v10[3] = &unk_100318D38;
-  v13 = a4;
-  v11 = v7;
+  discoveryCopy = discovery;
+  v11 = detectedCopy;
   v12 = a2;
   v10[4] = self;
-  v9 = v7;
+  v9 = detectedCopy;
   dispatch_async(workQueue, v10);
 }
 
@@ -14677,7 +14677,7 @@ LABEL_107:
   }
 }
 
-- (void)handleSecureElementRemoved:(int)a3 withReason:(unsigned int)a4
+- (void)handleSecureElementRemoved:(int)removed withReason:(unsigned int)reason
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -14686,7 +14686,7 @@ LABEL_107:
   block[3] = &unk_100318D10;
   block[4] = self;
   block[5] = a2;
-  v6 = a3;
+  removedCopy = removed;
   dispatch_async(workQueue, block);
 }
 
@@ -14744,10 +14744,10 @@ LABEL_107:
       goto LABEL_21;
     }
 
-    v25 = self;
-    objc_sync_enter(v25);
-    v22 = v25->_currentSecureElementSession;
-    objc_sync_exit(v25);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v22 = selfCopy->_currentSecureElementSession;
+    objc_sync_exit(selfCopy);
 
     if (!v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -14756,8 +14756,8 @@ LABEL_27:
       goto LABEL_24;
     }
 
-    v26 = [(_NFSession *)v22 clientName];
-    v27 = [v26 isEqualToString:@"seld"];
+    clientName = [(_NFSession *)v22 clientName];
+    v27 = [clientName isEqualToString:@"seld"];
 
     if (v27)
     {
@@ -14766,9 +14766,9 @@ LABEL_27:
       if (v28)
       {
         v29 = v28;
-        v30 = object_getClass(v25);
+        v30 = object_getClass(selfCopy);
         v31 = class_isMetaClass(v30);
-        v32 = object_getClassName(v25);
+        v32 = object_getClassName(selfCopy);
         v61 = sel_getName(a2);
         v33 = 45;
         if (v31)
@@ -14786,7 +14786,7 @@ LABEL_27:
         goto LABEL_23;
       }
 
-      v34 = object_getClass(v25);
+      v34 = object_getClass(selfCopy);
       if (class_isMetaClass(v34))
       {
         v35 = 43;
@@ -14800,7 +14800,7 @@ LABEL_27:
       *buf = 67109890;
       v65 = v35;
       v66 = 2082;
-      v67 = object_getClassName(v25);
+      v67 = object_getClassName(selfCopy);
       v68 = 2082;
       v69 = sel_getName(a2);
       v70 = 1024;
@@ -14810,8 +14810,8 @@ LABEL_27:
 
     else
     {
-      v37 = [(_NFSession *)v22 clientName];
-      v38 = [v37 isEqualToString:@"seserviced"];
+      clientName2 = [(_NFSession *)v22 clientName];
+      v38 = [clientName2 isEqualToString:@"seserviced"];
 
       if (v38)
       {
@@ -14820,9 +14820,9 @@ LABEL_27:
         if (v39)
         {
           v40 = v39;
-          v41 = object_getClass(v25);
+          v41 = object_getClass(selfCopy);
           v42 = class_isMetaClass(v41);
-          v43 = object_getClassName(v25);
+          v43 = object_getClassName(selfCopy);
           v62 = sel_getName(a2);
           v44 = 45;
           if (v42)
@@ -14840,7 +14840,7 @@ LABEL_27:
           goto LABEL_23;
         }
 
-        v45 = object_getClass(v25);
+        v45 = object_getClass(selfCopy);
         if (class_isMetaClass(v45))
         {
           v46 = 43;
@@ -14854,7 +14854,7 @@ LABEL_27:
         *buf = 67109890;
         v65 = v46;
         v66 = 2082;
-        v67 = object_getClassName(v25);
+        v67 = object_getClassName(selfCopy);
         v68 = 2082;
         v69 = sel_getName(a2);
         v70 = 1024;
@@ -14865,8 +14865,8 @@ LABEL_27:
       else
       {
         v47 = +[NSDate now];
-        v48 = [(_NFSession *)v22 dequeueDate];
-        [v47 timeIntervalSinceDate:v48];
+        dequeueDate = [(_NFSession *)v22 dequeueDate];
+        [v47 timeIntervalSinceDate:dequeueDate];
         v50 = v49;
 
         if (v50 <= 30.0)
@@ -14879,9 +14879,9 @@ LABEL_27:
         if (v51)
         {
           v52 = v51;
-          v53 = object_getClass(v25);
+          v53 = object_getClass(selfCopy);
           v54 = class_isMetaClass(v53);
-          v55 = object_getClassName(v25);
+          v55 = object_getClassName(selfCopy);
           v63 = sel_getName(a2);
           v56 = 45;
           if (v54)
@@ -14899,7 +14899,7 @@ LABEL_27:
           goto LABEL_23;
         }
 
-        v57 = object_getClass(v25);
+        v57 = object_getClass(selfCopy);
         if (class_isMetaClass(v57))
         {
           v58 = 43;
@@ -14913,7 +14913,7 @@ LABEL_27:
         *buf = 67109890;
         v65 = v58;
         v66 = 2082;
-        v67 = object_getClassName(v25);
+        v67 = object_getClassName(selfCopy);
         v68 = 2082;
         v69 = sel_getName(a2);
         v70 = 1024;
@@ -14983,7 +14983,7 @@ LABEL_24:
   return v23;
 }
 
-- (void)mustStop:(unint64_t)a3
+- (void)mustStop:(unint64_t)stop
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -15055,7 +15055,7 @@ LABEL_24:
   [(_NFHardwareManager *)self maybeStartNextSession];
 }
 
-- (void)canResume:(unint64_t)a3 status:(id)a4
+- (void)canResume:(unint64_t)resume status:(id)status
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -15108,7 +15108,7 @@ LABEL_24:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HWRecovery", "can resume", buf, 2u);
   }
 
-  if (a4)
+  if (status)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v17 = NFLogGetLogger();
@@ -15250,7 +15250,7 @@ LABEL_24:
   dispatch_async(workQueue, block);
 }
 
-- (void)secureElementReturnedRestrictedMode:(id)a3 os:(int64_t)a4
+- (void)secureElementReturnedRestrictedMode:(id)mode os:(int64_t)os
 {
   workQueue = self->_workQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -15258,11 +15258,11 @@ LABEL_24:
   v5[2] = sub_100122944;
   v5[3] = &unk_100315F58;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = os;
   dispatch_async(workQueue, v5);
 }
 
-- (void)updateSeInfo:(id)a3
+- (void)updateSeInfo:(id)info
 {
   sub_100007EE0(self->_expressModeManager);
   v5 = sub_10004BF60(NFRoutingConfig, 0);
@@ -15321,14 +15321,14 @@ LABEL_24:
   }
 }
 
-- (void)markApplicationForDelete:(id)a3
+- (void)markApplicationForDelete:(id)delete
 {
-  v3 = a3;
+  deleteCopy = delete;
   v4 = sub_10001F6E4();
-  sub_10001D234(v4, v3);
+  sub_10001D234(v4, deleteCopy);
 }
 
-- (void)powerObserverSystemWillSleep:(id)a3
+- (void)powerObserverSystemWillSleep:(id)sleep
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -15396,7 +15396,7 @@ LABEL_24:
   dispatch_async_and_wait(workQueue, block);
 }
 
-- (void)powerObserverSystemHasPoweredOn:(id)a3
+- (void)powerObserverSystemHasPoweredOn:(id)on
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -15452,11 +15452,11 @@ LABEL_24:
   dispatch_async(workQueue, block);
 }
 
-- (void)clientAppStateUpdate:(id)a3 appState:(unint64_t)a4
+- (void)clientAppStateUpdate:(id)update appState:(unint64_t)state
 {
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = [v8 NF_clientName];
+  updateCopy = update;
+  firstObject = [updateCopy firstObject];
+  nF_clientName = [firstObject NF_clientName];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -15472,7 +15472,7 @@ LABEL_24:
       v15 = 43;
     }
 
-    v11(6, "%c[%{public}s %{public}s]:%i %{public}@, appState=%lu", v15, ClassName, Name, 8849, v9, a4);
+    v11(6, "%c[%{public}s %{public}s]:%i %{public}@, appState=%lu", v15, ClassName, Name, 8849, nF_clientName, state);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -15499,21 +15499,21 @@ LABEL_24:
     v33 = 1024;
     v34 = 8849;
     v35 = 2114;
-    v36 = v9;
+    v36 = nF_clientName;
     v37 = 2048;
-    v38 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@, appState=%lu", buf, 0x36u);
   }
 
-  [v8 processIdentifier];
+  [firstObject processIdentifier];
   kdebug_trace();
   v19 = NFSharedSignpostLog();
   if (os_signpost_enabled(v19))
   {
     *buf = 138412546;
-    *v32 = v9;
+    *v32 = nF_clientName;
     *&v32[8] = 2048;
-    *&v32[10] = a4;
+    *&v32[10] = state;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CLIENT_APP_SUSPENDED", "client app %@ state update=%lu", buf, 0x16u);
   }
 
@@ -15522,14 +15522,14 @@ LABEL_24:
   block[2] = sub_100124294;
   block[3] = &unk_100318D60;
   block[4] = self;
-  v26 = v8;
-  v29 = a4;
+  v26 = firstObject;
+  stateCopy2 = state;
   v30 = a2;
-  v27 = v9;
-  v28 = v7;
-  v20 = v7;
-  v21 = v9;
-  v22 = v8;
+  v27 = nF_clientName;
+  v28 = updateCopy;
+  v20 = updateCopy;
+  v21 = nF_clientName;
+  v22 = firstObject;
   v23 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
   dispatch_async(self->_workQueue, v23);
 }
@@ -15546,9 +15546,9 @@ LABEL_24:
   dispatch_async(workQueue, v3);
 }
 
-- (void)reconfigureDynamicTransitRF:(unint64_t)a3 withOverride:(BOOL)a4
+- (void)reconfigureDynamicTransitRF:(unint64_t)f withOverride:(BOOL)override
 {
-  v4 = a4;
+  overrideCopy = override;
   v8 = sub_10003B984(&self->_expressModeManager->super.isa);
   expressModeManager = self->_expressModeManager;
   if (expressModeManager)
@@ -15563,10 +15563,10 @@ LABEL_24:
 
   if ([(NFHardwareControllerInfo *)self->_controllerInfo hasAntenna]&& ([(NFHardwareControllerInfo *)self->_controllerInfo siliconName]== 8 || [(NFHardwareControllerInfo *)self->_controllerInfo siliconName]>= 0xA))
   {
-    if (v4)
+    if (overrideCopy)
     {
-      v11 = dynamicTransitConfiguration != a3;
-      v12 = a3 == 2;
+      v11 = dynamicTransitConfiguration != f;
+      v12 = f == 2;
     }
 
     else
@@ -15590,7 +15590,7 @@ LABEL_24:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      if (v4)
+      if (overrideCopy)
       {
         v20 = @"YES";
       }
@@ -15649,7 +15649,7 @@ LABEL_24:
       v28 = sel_getName(a2);
       *buf = 67110658;
       v29 = @"YES";
-      if (v4)
+      if (overrideCopy)
       {
         v30 = @"YES";
       }
@@ -15694,7 +15694,7 @@ LABEL_24:
     {
       if ([(NFHardwareControllerInfo *)self->_controllerInfo hasAntenna]&& [(NFHardwareControllerInfo *)self->_controllerInfo siliconName]>= 8)
       {
-        if (!v4)
+        if (!overrideCopy)
         {
           return;
         }
@@ -15717,25 +15717,25 @@ LABEL_24:
   }
 }
 
-- (id)setRoutingConfig:(id)a3
+- (id)setRoutingConfig:(id)config
 {
-  v5 = a3;
-  v6 = [v5 fieldDetectType];
+  configCopy = config;
+  fieldDetectType = [configCopy fieldDetectType];
   v7 = NFSharedSignpostLog();
   if (os_signpost_enabled(v7))
   {
     *buf = 138412290;
-    *v48 = v5;
+    *v48 = configCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SetRoutingConfig", "begin; config = %@", buf, 0xCu);
   }
 
-  if (![v5 wantsExpress])
+  if (![configCopy wantsExpress])
   {
     goto LABEL_37;
   }
 
-  v8 = [(_NFHardwareManager *)self lastKnownRoutingConfig];
-  v9 = sub_10004B630(v5, v8);
+  lastKnownRoutingConfig = [(_NFHardwareManager *)self lastKnownRoutingConfig];
+  v9 = sub_10004B630(configCopy, lastKnownRoutingConfig);
 
   if ((v9 & 1) == 0)
   {
@@ -15785,12 +15785,12 @@ LABEL_24:
   }
 
 LABEL_14:
-  v13 = [v5 embeddedMode] == 2 || objc_msgSend(v5, "embeddedMode") == 1;
-  v14 = [(NFSecureElementWrapper *)self->_secureElementWrapper handle];
-  v15 = [v14 info];
-  v16 = [v15 restrictedMode];
+  v13 = [configCopy embeddedMode] == 2 || objc_msgSend(configCopy, "embeddedMode") == 1;
+  handle = [(NFSecureElementWrapper *)self->_secureElementWrapper handle];
+  info = [handle info];
+  restrictedMode = [info restrictedMode];
 
-  if (v16)
+  if (restrictedMode)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -15864,22 +15864,22 @@ LABEL_14:
     }
   }
 
-  else if ([v5 hostMode] != 2)
+  else if ([configCopy hostMode] != 2)
   {
     v31 = 1;
 LABEL_36:
-    v32 = [v5 wantsLPCD];
+    wantsLPCD = [configCopy wantsLPCD];
     v33 = sub_100006544(self->_expressModeManager);
-    v34 = [v5 lpcdEcpFrame];
-    v35 = sub_10004C2B0(NFRoutingConfig, v32, v28, v33, v31, v6, v34);
+    lpcdEcpFrame = [configCopy lpcdEcpFrame];
+    v35 = sub_10004C2B0(NFRoutingConfig, wantsLPCD, v28, v33, v31, fieldDetectType, lpcdEcpFrame);
 
-    v5 = v35;
+    configCopy = v35;
   }
 
 LABEL_37:
-  if ([v5 cardEmulationType] || !objc_msgSend(v5, "contactlessOnAny"))
+  if ([configCopy cardEmulationType] || !objc_msgSend(configCopy, "contactlessOnAny"))
   {
-    v41 = sub_10012535C(self, v5);
+    v41 = sub_10012535C(self, configCopy);
     v38 = NFSharedSignpostLog();
     if (os_signpost_enabled(v38))
     {
@@ -15898,7 +15898,7 @@ LABEL_37:
   else
   {
     v36 = +[NSAssertionHandler currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"_NFHardwareManager.m" lineNumber:9482 description:{@"Unexpected config: %@", v5}];
+    [v36 handleFailureInMethod:a2 object:self file:@"_NFHardwareManager.m" lineNumber:9482 description:{@"Unexpected config: %@", configCopy}];
 
     v37 = [NSError alloc];
     v38 = [NSString stringWithUTF8String:"nfcd"];
@@ -15930,29 +15930,29 @@ LABEL_37:
   }
 }
 
-- (BOOL)configureExpressFelicaEntry:(int)a3
+- (BOOL)configureExpressFelicaEntry:(int)entry
 {
-  v3 = self;
+  selfCopy = self;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100126004;
   v6[3] = &unk_100318D88;
-  v7 = a3;
+  entryCopy = entry;
   v6[4] = self;
   v6[5] = a2;
   v4 = sub_10004C224(NFRoutingConfig, 0);
-  LOBYTE(v3) = sub_1000E6BE4(&v3->super.isa, v6, @"Configure ExpressFelica entry", v4);
+  LOBYTE(selfCopy) = sub_1000E6BE4(&selfCopy->super.isa, v6, @"Configure ExpressFelica entry", v4);
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)didCameraStateChange:(BOOL)a3
+- (void)didCameraStateChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   v7 = Logger;
-  if (v3)
+  if (changeCopy)
   {
     if (Logger)
     {
@@ -16045,9 +16045,9 @@ LABEL_37:
   }
 }
 
-- (void)disableLPEMFeature:(unint64_t)a3 completion:(id)a4
+- (void)disableLPEMFeature:(unint64_t)feature completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -16060,34 +16060,34 @@ LABEL_37:
   block[2] = sub_10019C2E4;
   block[3] = &unk_10031B080;
   block[4] = self;
-  v11 = v7;
+  v11 = completionCopy;
   v13 = a2;
-  v14 = a3;
+  featureCopy = feature;
   v12 = v15;
-  v9 = v7;
+  v9 = completionCopy;
   dispatch_async(v8, block);
 
   _Block_object_dispose(v15, 8);
 }
 
-- (void)enableHeadlessTestMode:(unsigned __int16)a3 completion:(id)a4
+- (void)enableHeadlessTestMode:(unsigned __int16)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = sub_100007D90(&self->super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019E714;
   block[3] = &unk_100318A00;
-  v11 = a3;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
-- (void)configureHeadlessFactoryMode:(BOOL)a3 completion:(id)a4
+- (void)configureHeadlessFactoryMode:(BOOL)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -16099,19 +16099,19 @@ LABEL_37:
   v9[1] = 3221225472;
   v9[2] = sub_10019F01C;
   v9[3] = &unk_10031B0F8;
-  v12 = a3;
-  v10 = v6;
+  modeCopy = mode;
+  v10 = completionCopy;
   v11 = v13;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 
   _Block_object_dispose(v13, 8);
 }
 
-- (void)headlessFactoryModeWithCompletion:(id)a3
+- (void)headlessFactoryModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -16123,18 +16123,18 @@ LABEL_37:
   block[1] = 3221225472;
   block[2] = sub_1001A002C;
   block[3] = &unk_10031B120;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   _Block_object_dispose(v10, 8);
 }
 
-- (void)disableHeadlessMiniNVWithCompletion:(id)a3
+- (void)disableHeadlessMiniNVWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -16146,10 +16146,10 @@ LABEL_37:
   block[1] = 3221225472;
   block[2] = sub_1001A0CBC;
   block[3] = &unk_10031B120;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   _Block_object_dispose(v10, 8);
@@ -16196,10 +16196,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_syncResumeSession:(id)a3 field:(id)a4
+- (BOOL)_syncResumeSession:(id)session field:(id)field
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  fieldCopy = field;
   if (self)
   {
     suspendedSessionQueue = self->_suspendedSessionQueue;
@@ -16211,7 +16211,7 @@ LABEL_8:
   }
 
   v10 = suspendedSessionQueue;
-  v11 = [(NSMutableArray *)v10 indexOfObject:v7];
+  v11 = [(NSMutableArray *)v10 indexOfObject:sessionCopy];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -16230,7 +16230,7 @@ LABEL_8:
         v16 = 43;
       }
 
-      v13(6, "%c[%{public}s %{public}s]:%i %{public}@ is not in suspended state", v16, ClassName, Name, 457, v7);
+      v13(6, "%c[%{public}s %{public}s]:%i %{public}@ is not in suspended state", v16, ClassName, Name, 457, sessionCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -16257,16 +16257,16 @@ LABEL_8:
       v56 = 1024;
       v57 = 457;
       v58 = 2114;
-      v59 = v7;
+      v59 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ is not in suspended state", buf, 0x2Cu);
     }
 
     goto LABEL_36;
   }
 
-  v20 = [v7 isSessionSEOnly];
-  v21 = [(_NFHardwareManager *)self driverWrapper];
-  v17 = sub_10021A4A0(v21, @"Session", v20 ^ 1);
+  isSessionSEOnly = [sessionCopy isSessionSEOnly];
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+  v17 = sub_10021A4A0(driverWrapper, @"Session", isSessionSEOnly ^ 1);
 
   if (v17)
   {
@@ -16314,11 +16314,11 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Error - failed to restart parent session", buf, 0x22u);
     }
 
-    v31 = [(_NFHardwareManager *)self driverWrapper];
-    v32 = v31;
-    if (v31)
+    driverWrapper2 = [(_NFHardwareManager *)self driverWrapper];
+    v32 = driverWrapper2;
+    if (driverWrapper2)
     {
-      v33 = *(v31 + 8);
+      v33 = *(driverWrapper2 + 8);
       NFDriverSimulateCrash();
     }
 
@@ -16330,22 +16330,22 @@ LABEL_8:
     v34 = self->_suspendedSessionQueue;
     [(NSMutableArray *)v34 removeObjectAtIndex:v11];
 
-    sub_1001263C0(self, v7);
+    sub_1001263C0(self, sessionCopy);
     currentSecureElementSession = self->_currentSecureElementSession;
   }
 
   else
   {
     [0 removeObjectAtIndex:v11];
-    sub_1001263C0(0, v7);
+    sub_1001263C0(0, sessionCopy);
     currentSecureElementSession = 0;
   }
 
   v36 = currentSecureElementSession;
-  v37 = [(_NFSession *)v36 initialRoutingConfigWithField:v8];
+  v37 = [(_NFSession *)v36 initialRoutingConfigWithField:fieldCopy];
   v38 = [(_NFHardwareManager *)self setRoutingConfig:v37];
 
-  if (([v7 resume] & 1) == 0)
+  if (([sessionCopy resume] & 1) == 0)
   {
     if (self)
     {
@@ -16363,8 +16363,8 @@ LABEL_8:
     [(NSMutableArray *)v42 insertObject:v44 atIndex:0];
 
     sub_1001263C0(self, 0);
-    v45 = [(_NFHardwareManager *)self driverWrapper];
-    sub_10021CC94(v45, @"Session");
+    driverWrapper3 = [(_NFHardwareManager *)self driverWrapper];
+    sub_10021CC94(driverWrapper3, @"Session");
 
     v17 = 0;
 LABEL_36:
@@ -16404,32 +16404,32 @@ LABEL_37:
   return v41;
 }
 
-- (void)dequeueSession:(id)a3
+- (void)dequeueSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v4 = sub_100007D90(&self->super.isa);
   dispatch_assert_queue_V2(v4);
 
-  sub_1000EE388(&self->super.isa, v5, 1);
+  sub_1000EE388(&self->super.isa, sessionCopy, 1);
 }
 
-- (void)queueSession:(id)a3
+- (void)queueSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100007D90(&self->super.isa);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DFE3C;
   v7[3] = &unk_100315FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)prioritizeSession:(id)a3
+- (void)prioritizeSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (self)
   {
     secureElementSessionQueue = self->_secureElementSessionQueue;
@@ -16454,7 +16454,7 @@ LABEL_37:
 
   v9 = currentSecureElementSession;
 
-  if (v9 == v5)
+  if (v9 == sessionCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -16517,7 +16517,7 @@ LABEL_37:
     }
 
     v11 = v10;
-    v12 = [(NSMutableArray *)v11 containsObject:v5];
+    v12 = [(NSMutableArray *)v11 containsObject:sessionCopy];
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v13 = NFLogGetLogger();
@@ -16550,7 +16550,7 @@ LABEL_37:
         }
 
         v20 = v19;
-        v14(6, "%c[%{public}s %{public}s]:%i Prioritizing session from %d to 0", v16, v17, v18, 597, [(NSMutableArray *)v20 indexOfObject:v5]);
+        v14(6, "%c[%{public}s %{public}s]:%i Prioritizing session from %d to 0", v16, v17, v18, 597, [(NSMutableArray *)v20 indexOfObject:sessionCopy]);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -16590,26 +16590,26 @@ LABEL_37:
         v56 = 1024;
         v57 = 597;
         v58 = 1024;
-        v59 = [(NSMutableArray *)v27 indexOfObject:v5];
+        v59 = [(NSMutableArray *)v27 indexOfObject:sessionCopy];
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Prioritizing session from %d to 0", buf, 0x28u);
       }
 
       if (self)
       {
         v28 = self->_secureElementSessionQueue;
-        [(NSMutableArray *)v28 removeObject:v5];
+        [(NSMutableArray *)v28 removeObject:sessionCopy];
 
         v29 = self->_secureElementSessionQueue;
       }
 
       else
       {
-        [0 removeObject:v5];
+        [0 removeObject:sessionCopy];
         v29 = 0;
       }
 
       v30 = v29;
-      [v30 insertObject:v5 atIndex:0];
+      [v30 insertObject:sessionCopy atIndex:0];
       goto LABEL_45;
     }
 
@@ -16664,10 +16664,10 @@ LABEL_45:
   objc_sync_exit(v7);
 }
 
-- (id)switchToSession:(id)a3 withToken:(id)a4
+- (id)switchToSession:(id)session withToken:(id)token
 {
-  v7 = a3;
-  v86 = a4;
+  sessionCopy = session;
+  tokenCopy = token;
   if (self)
   {
     secureElementSessionQueue = self->_secureElementSessionQueue;
@@ -16691,8 +16691,8 @@ LABEL_45:
   }
 
   v10 = currentSecureElementSession;
-  v11 = [(_NFSession *)v10 token];
-  v12 = [v11 isEqualToData:v86];
+  token = [(_NFSession *)v10 token];
+  v12 = [token isEqualToData:tokenCopy];
 
   if (v12)
   {
@@ -16707,9 +16707,9 @@ LABEL_45:
     }
 
     v14 = v13;
-    v15 = [(NSMutableArray *)v14 containsObject:v7];
+    v15 = [(NSMutableArray *)v14 containsObject:sessionCopy];
 
-    v84 = v7;
+    v84 = sessionCopy;
     if (v15)
     {
       if (self)
@@ -16732,14 +16732,14 @@ LABEL_45:
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
         Name = sel_getName(a2);
-        v24 = [v7 sessionUID];
+        sessionUID = [sessionCopy sessionUID];
         v25 = 45;
         if (isMetaClass)
         {
           v25 = 43;
         }
 
-        v19(6, "%c[%{public}s %{public}s]:%i Assigning parent token %{public}@ to %{public}@", v25, ClassName, Name, 620, v86, v24);
+        v19(6, "%c[%{public}s %{public}s]:%i Assigning parent token %{public}@ to %{public}@", v25, ClassName, Name, 620, tokenCopy, sessionUID);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -16759,10 +16759,10 @@ LABEL_45:
 
         v29 = object_getClassName(self);
         v30 = sel_getName(a2);
-        v31 = [v84 sessionUID];
+        sessionUID2 = [v84 sessionUID];
         *buf = 67110402;
         v90 = v28;
-        v7 = v84;
+        sessionCopy = v84;
         v91 = 2082;
         v92 = v29;
         v93 = 2082;
@@ -16770,13 +16770,13 @@ LABEL_45:
         v95 = 1024;
         v96 = 620;
         v97 = 2114;
-        v98 = v86;
+        v98 = tokenCopy;
         v99 = 2114;
-        v100 = v31;
+        v100 = sessionUID2;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Assigning parent token %{public}@ to %{public}@", buf, 0x36u);
       }
 
-      [v7 setParentToken:v86];
+      [sessionCopy setParentToken:tokenCopy];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v32 = NFLogGetLogger();
       if (v32)
@@ -16786,15 +16786,15 @@ LABEL_45:
         v35 = class_isMetaClass(v34);
         v36 = object_getClassName(self);
         v37 = sel_getName(a2);
-        v38 = [(_NFSession *)v17 sessionUID];
-        v39 = [v7 sessionUID];
+        sessionUID3 = [(_NFSession *)v17 sessionUID];
+        sessionUID4 = [sessionCopy sessionUID];
         v40 = 45;
         if (v35)
         {
           v40 = 43;
         }
 
-        v33(6, "%c[%{public}s %{public}s]:%i Switching from %{public}@ to %{public}@", v40, v36, v37, 623, v38, v39);
+        v33(6, "%c[%{public}s %{public}s]:%i Switching from %{public}@ to %{public}@", v40, v36, v37, 623, sessionUID3, sessionUID4);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -16815,7 +16815,7 @@ LABEL_45:
         v44 = object_getClassName(self);
         v45 = sel_getName(a2);
         a2 = [(_NFSession *)v17 sessionUID];
-        v46 = [v84 sessionUID];
+        sessionUID5 = [v84 sessionUID];
         *buf = 67110402;
         v90 = v43;
         v91 = 2082;
@@ -16827,14 +16827,14 @@ LABEL_45:
         v97 = 2114;
         v98 = a2;
         v99 = 2114;
-        v100 = v46;
+        v100 = sessionUID5;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Switching from %{public}@ to %{public}@", buf, 0x36u);
       }
 
       if (self)
       {
         v47 = self->_secureElementSessionQueue;
-        v7 = v84;
+        sessionCopy = v84;
         [(NSMutableArray *)v47 removeObject:v84];
 
         v48 = self->_secureElementSessionQueue;
@@ -16842,13 +16842,13 @@ LABEL_45:
 
       else
       {
-        v7 = v84;
+        sessionCopy = v84;
         [0 removeObject:v84];
         v48 = 0;
       }
 
       v49 = v48;
-      [(NSMutableArray *)v49 insertObject:v7 atIndex:0];
+      [(NSMutableArray *)v49 insertObject:sessionCopy atIndex:0];
 
       sub_1001263C0(self, 0);
       if (self)
@@ -16867,7 +16867,7 @@ LABEL_45:
       v87[0] = @"ReasonCode";
       v87[1] = @"Token";
       v88[0] = &off_100335760;
-      v88[1] = v86;
+      v88[1] = tokenCopy;
       v52 = [NSDictionary dictionaryWithObjects:v88 forKeys:v87 count:2];
       [(_NFSession *)v17 suspendWithInfo:v52];
       v53 = 1;
@@ -16936,7 +16936,7 @@ LABEL_45:
       a2 = [v75 initWithDomain:v17 code:12 userInfo:v78];
 
       v53 = 0;
-      v7 = v84;
+      sessionCopy = v84;
     }
   }
 
@@ -16957,7 +16957,7 @@ LABEL_45:
         v58 = 43;
       }
 
-      v55(3, "%c[%{public}s %{public}s]:%i Current session token doesn't match %{public}@", v58, v81, v82, 610, v86);
+      v55(3, "%c[%{public}s %{public}s]:%i Current session token doesn't match %{public}@", v58, v81, v82, 610, tokenCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -16984,7 +16984,7 @@ LABEL_45:
       v95 = 1024;
       v96 = 610;
       v97 = 2114;
-      v98 = v86;
+      v98 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Current session token doesn't match %{public}@", buf, 0x2Cu);
     }
 
@@ -17011,8 +17011,8 @@ LABEL_45:
   if (v53)
   {
     [(_NFHardwareManager *)self maybeStartNextSession];
-    v79 = [(_NFHardwareManager *)self driverWrapper];
-    sub_10021CC94(v79, @"Session");
+    driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+    sub_10021CC94(driverWrapper, @"Session");
 
     a2 = 0;
   }
@@ -17022,9 +17022,9 @@ LABEL_45:
 
 - (id)_updateAllPowerCounters
 {
-  v3 = [(_NFHardwareManager *)self driverWrapper];
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
   v39 = 0;
-  v4 = sub_1001E78F8(v3, &v39);
+  v4 = sub_1001E78F8(driverWrapper, &v39);
   v32 = v39;
 
   if (v4)
@@ -17092,46 +17092,46 @@ LABEL_10:
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [v12 NF_userInfo];
-        v14 = [v13 objectForKeyedSubscript:@"powerCounters"];
+        nF_userInfo = [v12 NF_userInfo];
+        v14 = [nF_userInfo objectForKeyedSubscript:@"powerCounters"];
 
         if (v14)
         {
-          v15 = [(_NFHardwareManager *)self controllerInfo];
-          if ([v15 siliconName] == 14)
+          controllerInfo = [(_NFHardwareManager *)self controllerInfo];
+          if ([controllerInfo siliconName] == 14)
           {
             v16 = 1;
           }
 
           else
           {
-            v17 = [(_NFHardwareManager *)self controllerInfo];
-            if ([v17 siliconName] == 15)
+            controllerInfo2 = [(_NFHardwareManager *)self controllerInfo];
+            if ([controllerInfo2 siliconName] == 15)
             {
               v16 = 1;
             }
 
             else
             {
-              v18 = [(_NFHardwareManager *)self controllerInfo];
-              if ([v18 siliconName] == 16)
+              controllerInfo3 = [(_NFHardwareManager *)self controllerInfo];
+              if ([controllerInfo3 siliconName] == 16)
               {
                 v16 = 1;
               }
 
               else
               {
-                v19 = [(_NFHardwareManager *)self controllerInfo];
-                v16 = [v19 siliconName] == 17;
+                controllerInfo4 = [(_NFHardwareManager *)self controllerInfo];
+                v16 = [controllerInfo4 siliconName] == 17;
               }
             }
           }
 
-          v20 = [(_NFHardwareManager *)self secureElementInfo];
-          v21 = [v20 sequenceCounter];
-          v22 = [v21 unsignedIntValue];
+          secureElementInfo = [(_NFHardwareManager *)self secureElementInfo];
+          sequenceCounter = [secureElementInfo sequenceCounter];
+          unsignedIntValue = [sequenceCounter unsignedIntValue];
 
-          v23 = [(_NFHardwareManager *)self driverWrapper];
+          driverWrapper2 = [(_NFHardwareManager *)self driverWrapper];
           if (v4)
           {
             v24 = [v4 code] == 45;
@@ -17142,13 +17142,13 @@ LABEL_10:
             v24 = 0;
           }
 
-          v25 = v22 < 0x212 && v16;
-          v26 = sub_1001E88BC(v23, v14, v32, v24, v25);
+          v25 = unsignedIntValue < 0x212 && v16;
+          v26 = sub_1001E88BC(driverWrapper2, v14, v32, v24, v25);
 
           if (v26)
           {
-            v27 = [v12 NF_userInfo];
-            [v27 setObject:v26 forKeyedSubscript:@"powerCounters"];
+            nF_userInfo2 = [v12 NF_userInfo];
+            [nF_userInfo2 setObject:v26 forKeyedSubscript:@"powerCounters"];
           }
         }
       }
@@ -17215,7 +17215,7 @@ LABEL_39:
     }
 
     v13 = [NSError alloc];
-    v14 = [NSString stringWithUTF8String:"nfcd"];
+    driverWrapper2 = [NSString stringWithUTF8String:"nfcd"];
     v79[0] = NSLocalizedDescriptionKey;
     v15 = [NSString stringWithUTF8String:"Busy"];
     v80[0] = v15;
@@ -17228,16 +17228,16 @@ LABEL_39:
     v17 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 95];
     v80[3] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:4];
-    v19 = [v13 initWithDomain:v14 code:2 userInfo:v18];
+    v19 = [v13 initWithDomain:driverWrapper2 code:2 userInfo:v18];
 
 LABEL_39:
     goto LABEL_40;
   }
 
-  v20 = [(_NFHardwareManager *)self driverWrapper];
-  v14 = sub_10021A4A0(v20, @"Power Counters", 1uLL);
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+  driverWrapper2 = sub_10021A4A0(driverWrapper, @"Power Counters", 1uLL);
 
-  if (v14)
+  if (driverWrapper2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v21 = NFLogGetLogger();
@@ -17254,7 +17254,7 @@ LABEL_39:
         v25 = 43;
       }
 
-      v22(3, "%c[%{public}s %{public}s]:%i Failed to open session : %@", v25, v59, v61, 100, v14);
+      v22(3, "%c[%{public}s %{public}s]:%i Failed to open session : %@", v25, v59, v61, 100, driverWrapper2);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -17281,27 +17281,27 @@ LABEL_39:
       v75 = 1024;
       v76 = 100;
       v77 = 2112;
-      v78 = v14;
+      v78 = driverWrapper2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open session : %@", buf, 0x2Cu);
     }
 
     v29 = [NSError alloc];
     v15 = [NSString stringWithUTF8String:"nfcd"];
-    v30 = [v14 code];
+    code = [driverWrapper2 code];
     v67[0] = NSLocalizedDescriptionKey;
-    if ([v14 code] > 75)
+    if ([driverWrapper2 code] > 75)
     {
-      v31 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v31 = [v14 code];
+      code2 = [driverWrapper2 code];
     }
 
-    v49 = [NSString stringWithUTF8String:(&off_10031BC90)[v31]];
+    v49 = [NSString stringWithUTF8String:(&off_10031BC90)[code2]];
     v68[0] = v49;
-    v68[1] = v14;
+    v68[1] = driverWrapper2;
     v67[1] = NSUnderlyingErrorKey;
     v67[2] = @"Line";
     v68[2] = &off_100335DF0;
@@ -17312,15 +17312,15 @@ LABEL_39:
     v51 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 101];
     v68[4] = v51;
     v52 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:5];
-    v19 = [v29 initWithDomain:v15 code:v30 userInfo:v52];
+    v19 = [v29 initWithDomain:v15 code:code userInfo:v52];
 
     goto LABEL_39;
   }
 
-  v32 = [(_NFHardwareManager *)self expressModeManager];
-  if (v32)
+  expressModeManager = [(_NFHardwareManager *)self expressModeManager];
+  if (expressModeManager)
   {
-    v33 = v32[181];
+    v33 = expressModeManager[181];
 
     if (v33 == 1)
     {
@@ -17387,25 +17387,25 @@ LABEL_39:
     }
   }
 
-  v54 = [(_NFHardwareManager *)self _updateAllPowerCounters];
-  if (v54)
+  _updateAllPowerCounters = [(_NFHardwareManager *)self _updateAllPowerCounters];
+  if (_updateAllPowerCounters)
   {
-    v55 = v54;
+    v55 = _updateAllPowerCounters;
     v56 = [NSError alloc];
     v44 = [NSString stringWithUTF8String:"nfcd"];
-    v57 = [v55 code];
+    code3 = [v55 code];
     v63[0] = NSLocalizedDescriptionKey;
     if ([v55 code] > 75)
     {
-      v58 = 76;
+      code4 = 76;
     }
 
     else
     {
-      v58 = [v55 code];
+      code4 = [v55 code];
     }
 
-    v45 = [NSString stringWithUTF8String:(&off_10031BC90)[v58]];
+    v45 = [NSString stringWithUTF8String:(&off_10031BC90)[code4]];
     v64[0] = v45;
     v64[1] = v55;
     v63[1] = NSUnderlyingErrorKey;
@@ -17418,7 +17418,7 @@ LABEL_39:
     v47 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 111];
     v64[4] = v47;
     v48 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:5];
-    v19 = [v56 initWithDomain:v44 code:v57 userInfo:v48];
+    v19 = [v56 initWithDomain:v44 code:code3 userInfo:v48];
 
 LABEL_49:
     goto LABEL_50;
@@ -17426,16 +17426,16 @@ LABEL_49:
 
   v19 = 0;
 LABEL_50:
-  v14 = [(_NFHardwareManager *)self driverWrapper];
-  sub_10021CC94(v14, @"Power Counters");
+  driverWrapper2 = [(_NFHardwareManager *)self driverWrapper];
+  sub_10021CC94(driverWrapper2, @"Power Counters");
 LABEL_40:
 
   return v19;
 }
 
-- (void)getPowerCountersWithCompletion:(id)a3
+- (void)getPowerCountersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
   v6 = sub_100007D90(&self->super.isa);
   block[0] = _NSConcreteStackBlock;
@@ -17444,77 +17444,77 @@ LABEL_40:
   block[3] = &unk_1003188A0;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   dispatch_async(v6, block);
 }
 
-- (void)_sync_getPowerCountersForConnection:(id)a3 completion:(id)a4
+- (void)_sync_getPowerCountersForConnection:(id)connection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   if (sub_100003384(self) == 2)
   {
-    v8 = [v6 NF_userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"powerCounters"];
+    nF_userInfo = [connectionCopy NF_userInfo];
+    v9 = [nF_userInfo objectForKeyedSubscript:@"powerCounters"];
 
     if (!v9)
     {
       v10 = objc_opt_new();
-      v11 = [v6 NF_userInfo];
-      [v11 setObject:v10 forKeyedSubscript:@"powerCounters"];
+      nF_userInfo2 = [connectionCopy NF_userInfo];
+      [nF_userInfo2 setObject:v10 forKeyedSubscript:@"powerCounters"];
     }
 
-    v12 = [(_NFHardwareManager *)self updateAllPowerCounters];
-    if (v12)
+    updateAllPowerCounters = [(_NFHardwareManager *)self updateAllPowerCounters];
+    if (updateAllPowerCounters)
     {
       v13 = 0;
     }
 
     else
     {
-      v18 = [v6 NF_userInfo];
-      v13 = [v18 objectForKeyedSubscript:@"powerCounters"];
+      nF_userInfo3 = [connectionCopy NF_userInfo];
+      v13 = [nF_userInfo3 objectForKeyedSubscript:@"powerCounters"];
 
       v19 = objc_opt_new();
-      v20 = [v6 NF_userInfo];
-      [v20 setObject:v19 forKeyedSubscript:@"powerCounters"];
+      nF_userInfo4 = [connectionCopy NF_userInfo];
+      [nF_userInfo4 setObject:v19 forKeyedSubscript:@"powerCounters"];
     }
 
-    v7[2](v7, v12, v13);
+    completionCopy[2](completionCopy, updateAllPowerCounters, v13);
   }
 
   else
   {
     v14 = [NSError alloc];
-    v12 = [NSString stringWithUTF8String:"nfcd"];
+    updateAllPowerCounters = [NSString stringWithUTF8String:"nfcd"];
     v21 = NSLocalizedDescriptionKey;
     v15 = [NSString stringWithUTF8String:"Unresponsive hardware"];
     v22 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v17 = [v14 initWithDomain:v12 code:58 userInfo:v16];
-    v7[2](v7, v17, 0);
+    v17 = [v14 initWithDomain:updateAllPowerCounters code:58 userInfo:v16];
+    completionCopy[2](completionCopy, v17, 0);
   }
 }
 
-- (id)combineFlashWriteCounters:(id)a3 with:(id)a4 overflow:(BOOL)a5
+- (id)combineFlashWriteCounters:(id)counters with:(id)with overflow:(BOOL)overflow
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  overflowCopy = overflow;
+  countersCopy = counters;
+  withCopy = with;
   v9 = +[NSMutableDictionary dictionary];
-  if ([v7 count])
+  if ([countersCopy count])
   {
-    v10 = [v7 objectForKeyedSubscript:@"NFCC Write Counters"];
-    v11 = [v10 intValue];
-    v12 = [v8 objectForKeyedSubscript:@"NFCC Write Counters"];
-    v13 = [v12 intValue];
+    v10 = [countersCopy objectForKeyedSubscript:@"NFCC Write Counters"];
+    intValue = [v10 intValue];
+    v12 = [withCopy objectForKeyedSubscript:@"NFCC Write Counters"];
+    intValue2 = [v12 intValue];
 
-    v14 = [NSNumber numberWithUnsignedInt:v13 + v11];
+    v14 = [NSNumber numberWithUnsignedInt:intValue2 + intValue];
     [v9 setObject:v14 forKeyedSubscript:@"NFCC Write Counters"];
 
-    if (v5)
+    if (overflowCopy)
     {
       v15 = [NSNumber numberWithBool:1];
       [v9 setObject:v15 forKeyedSubscript:@"NFCC Write Counters Overflow"];
@@ -17525,9 +17525,9 @@ LABEL_40:
 
   else
   {
-    if (v5)
+    if (overflowCopy)
     {
-      [v9 addEntriesFromDictionary:v8];
+      [v9 addEntriesFromDictionary:withCopy];
       v17 = [NSNumber numberWithBool:1];
       [v9 setObject:v17 forKeyedSubscript:@"NFCC Write Counters Overflow"];
 
@@ -17536,7 +17536,7 @@ LABEL_40:
 
     else
     {
-      v18 = v8;
+      v18 = withCopy;
     }
 
     v16 = [NSDictionary dictionaryWithDictionary:v18];
@@ -17547,7 +17547,7 @@ LABEL_40:
   return v19;
 }
 
-- (id)openStackAndUpdateAllWriteCounters:(id *)a3
+- (id)openStackAndUpdateAllWriteCounters:(id *)counters
 {
   if (self && self->_systemWillSleep)
   {
@@ -17595,7 +17595,7 @@ LABEL_40:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Cannot fetch write counters when device is going to sleep", buf, 0x22u);
     }
 
-    if (!a3)
+    if (!counters)
     {
       v21 = 0;
       v22 = 0;
@@ -17616,17 +17616,17 @@ LABEL_40:
     v19 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 266];
     v90[3] = v19;
     v20 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:4];
-    *a3 = [v15 initWithDomain:v16 code:2 userInfo:v20];
+    *counters = [v15 initWithDomain:v16 code:2 userInfo:v20];
 
     v21 = 0;
     v22 = 0;
 LABEL_53:
-    a3 = 0;
+    counters = 0;
     goto LABEL_54;
   }
 
-  v23 = [(_NFHardwareManager *)self driverWrapper];
-  v22 = sub_10021A4A0(v23, @"Write Counters", 1uLL);
+  driverWrapper = [(_NFHardwareManager *)self driverWrapper];
+  v22 = sub_10021A4A0(driverWrapper, @"Write Counters", 1uLL);
 
   if (v22)
   {
@@ -17676,7 +17676,7 @@ LABEL_53:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open session : %@", buf, 0x2Cu);
     }
 
-    if (!a3)
+    if (!counters)
     {
       v21 = 0;
       goto LABEL_54;
@@ -17684,19 +17684,19 @@ LABEL_53:
 
     v32 = [NSError alloc];
     v33 = [NSString stringWithUTF8String:"nfcd"];
-    v34 = [v22 code];
+    code = [v22 code];
     v77[0] = NSLocalizedDescriptionKey;
     if ([v22 code] > 75)
     {
-      v35 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v35 = [v22 code];
+      code2 = [v22 code];
     }
 
-    v53 = [NSString stringWithUTF8String:(&off_10031BC90)[v35]];
+    v53 = [NSString stringWithUTF8String:(&off_10031BC90)[code2]];
     v78[0] = v53;
     v78[1] = v22;
     v77[1] = NSUnderlyingErrorKey;
@@ -17709,14 +17709,14 @@ LABEL_53:
     v55 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 273];
     v78[4] = v55;
     v56 = [NSDictionary dictionaryWithObjects:v78 forKeys:v77 count:5];
-    *a3 = [v32 initWithDomain:v33 code:v34 userInfo:v56];
+    *counters = [v32 initWithDomain:v33 code:code userInfo:v56];
 
     v21 = 0;
     goto LABEL_53;
   }
 
-  v36 = [(_NFHardwareManager *)self expressModeManager];
-  if (v36 && (v37 = v36[181], v36, v37 == 1))
+  expressModeManager = [(_NFHardwareManager *)self expressModeManager];
+  if (expressModeManager && (v37 = expressModeManager[181], expressModeManager, v37 == 1))
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v38 = NFLogGetLogger();
@@ -17763,7 +17763,7 @@ LABEL_53:
     }
 
     v47 = [NSError alloc];
-    v48 = [NSString stringWithUTF8String:"nfcd"];
+    driverWrapper2 = [NSString stringWithUTF8String:"nfcd"];
     v75[0] = NSLocalizedDescriptionKey;
     v49 = [NSString stringWithUTF8String:"Busy"];
     v76[0] = v49;
@@ -17776,7 +17776,7 @@ LABEL_53:
     v51 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 280];
     v76[3] = v51;
     v52 = [NSDictionary dictionaryWithObjects:v76 forKeys:v75 count:4];
-    v22 = [v47 initWithDomain:v48 code:2 userInfo:v52];
+    v22 = [v47 initWithDomain:driverWrapper2 code:2 userInfo:v52];
 
     v21 = 0;
   }
@@ -17784,37 +17784,37 @@ LABEL_53:
   else
   {
     v57 = sub_10020D030(self);
-    v48 = [(_NFHardwareManager *)self driverWrapper];
+    driverWrapper2 = [(_NFHardwareManager *)self driverWrapper];
     v72 = 0;
-    v22 = sub_1001E9340(v48, &v72);
+    v22 = sub_1001E9340(driverWrapper2, &v72);
     v21 = v72;
   }
 
-  v58 = [(_NFHardwareManager *)self driverWrapper];
-  sub_10021CC94(v58, @"Write Counters");
+  driverWrapper3 = [(_NFHardwareManager *)self driverWrapper];
+  sub_10021CC94(driverWrapper3, @"Write Counters");
 
   if (v22)
   {
-    if (!a3)
+    if (!counters)
     {
       goto LABEL_54;
     }
 
     v59 = [NSError alloc];
     v60 = [NSString stringWithUTF8String:"nfcd"];
-    v61 = [v22 code];
+    code3 = [v22 code];
     v73[0] = NSLocalizedDescriptionKey;
     if ([v22 code] > 75)
     {
-      v62 = 76;
+      code4 = 76;
     }
 
     else
     {
-      v62 = [v22 code];
+      code4 = [v22 code];
     }
 
-    v63 = [NSString stringWithUTF8String:(&off_10031BC90)[v62]];
+    v63 = [NSString stringWithUTF8String:(&off_10031BC90)[code4]];
     v74[0] = v63;
     v74[1] = v22;
     v73[1] = NSUnderlyingErrorKey;
@@ -17827,27 +17827,27 @@ LABEL_53:
     v65 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 289];
     v74[4] = v65;
     v66 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:5];
-    *a3 = [v59 initWithDomain:v60 code:v61 userInfo:v66];
+    *counters = [v59 initWithDomain:v60 code:code3 userInfo:v66];
 
     goto LABEL_53;
   }
 
-  if (a3)
+  if (counters)
   {
-    *a3 = 0;
+    *counters = 0;
   }
 
   v21 = v21;
   v22 = 0;
-  a3 = v21;
+  counters = v21;
 LABEL_54:
 
-  return a3;
+  return counters;
 }
 
-- (void)getFlashWriteCountersWithCompletion:(id)a3
+- (void)getFlashWriteCountersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
   v6 = sub_100007D90(&self->super.isa);
   block[0] = _NSConcreteStackBlock;
@@ -17856,16 +17856,16 @@ LABEL_54:
   block[3] = &unk_1003188A0;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   dispatch_async(v6, block);
 }
 
-- (void)_sync_getFlashWriteCountersForConnection:(id)a3 completion:(id)a4
+- (void)_sync_getFlashWriteCountersForConnection:(id)connection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -17875,14 +17875,14 @@ LABEL_54:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v15 = [v7 NF_clientName];
+    nF_clientName = [connectionCopy NF_clientName];
     v16 = 45;
     if (isMetaClass)
     {
       v16 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i %{public}@ requesting write counters", v16, ClassName, Name, 309, v15);
+    v10(6, "%c[%{public}s %{public}s]:%i %{public}@ requesting write counters", v16, ClassName, Name, 309, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -17902,7 +17902,7 @@ LABEL_54:
 
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
-    v22 = [v7 NF_clientName];
+    nF_clientName2 = [connectionCopy NF_clientName];
     *buf = 67110146;
     v40 = v19;
     v41 = 2082;
@@ -17912,20 +17912,20 @@ LABEL_54:
     v45 = 1024;
     v46 = 309;
     v47 = 2114;
-    v48 = v22;
+    v48 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ requesting write counters", buf, 0x2Cu);
   }
 
   if (sub_100003384(self) == 2)
   {
-    v23 = [v7 NF_userInfo];
-    v24 = [v23 objectForKeyedSubscript:@"flashWriteCounters"];
+    nF_userInfo = [connectionCopy NF_userInfo];
+    v24 = [nF_userInfo objectForKeyedSubscript:@"flashWriteCounters"];
 
     if (!v24)
     {
       v25 = +[NSDictionary dictionary];
-      v26 = [v7 NF_userInfo];
-      [v26 setObject:v25 forKeyedSubscript:@"flashWriteCounters"];
+      nF_userInfo2 = [connectionCopy NF_userInfo];
+      [nF_userInfo2 setObject:v25 forKeyedSubscript:@"flashWriteCounters"];
     }
 
     v27 = objc_opt_new();
@@ -17934,13 +17934,13 @@ LABEL_54:
     v29 = v36;
     if (!v29)
     {
-      v30 = [v7 NF_userInfo];
-      v31 = [v30 objectForKeyedSubscript:@"flashWriteCounters"];
+      nF_userInfo3 = [connectionCopy NF_userInfo];
+      v31 = [nF_userInfo3 objectForKeyedSubscript:@"flashWriteCounters"];
       [v27 addEntriesFromDictionary:v31];
 
       v32 = +[NSDictionary dictionary];
-      v33 = [v7 NF_userInfo];
-      [v33 setObject:v32 forKeyedSubscript:@"flashWriteCounters"];
+      nF_userInfo4 = [connectionCopy NF_userInfo];
+      [nF_userInfo4 setObject:v32 forKeyedSubscript:@"flashWriteCounters"];
 
       if ([v28 count])
       {
@@ -17948,7 +17948,7 @@ LABEL_54:
       }
     }
 
-    v8[2](v8, v29, v27);
+    completionCopy[2](completionCopy, v29, v27);
   }
 
   else
@@ -17960,7 +17960,7 @@ LABEL_54:
     v38 = v27;
     v28 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v35 = [v34 initWithDomain:v29 code:58 userInfo:v28];
-    v8[2](v8, v35, 0);
+    completionCopy[2](completionCopy, v35, 0);
   }
 }
 

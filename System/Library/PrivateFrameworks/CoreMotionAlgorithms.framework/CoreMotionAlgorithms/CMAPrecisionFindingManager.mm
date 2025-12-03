@@ -1,21 +1,21 @@
 @interface CMAPrecisionFindingManager
-- (CMAPrecisionFindingManager)initWithDelegate:(id)a3 dispatchQueue:(id)a4;
-- (CMAPrecisionFindingManager)initWithDelegate:(id)a3 dispatchQueue:(id)a4 findeeType:(int)a5;
+- (CMAPrecisionFindingManager)initWithDelegate:(id)delegate dispatchQueue:(id)queue;
+- (CMAPrecisionFindingManager)initWithDelegate:(id)delegate dispatchQueue:(id)queue findeeType:(int)type;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)startDeviceFindingUpdates;
 - (void)stopDeviceFindingUpdates;
-- (void)updateAltimeterData:(id)a3;
+- (void)updateAltimeterData:(id)data;
 - (void)updateAnalytics;
-- (void)updateDeviceMotion:(id)a3;
-- (void)updatePeerState:(id)a3;
-- (void)updateRanging:(id)a3;
-- (void)updateWatchOrientation:(id)a3;
+- (void)updateDeviceMotion:(id)motion;
+- (void)updatePeerState:(id)state;
+- (void)updateRanging:(id)ranging;
+- (void)updateWatchOrientation:(id)orientation;
 @end
 
 @implementation CMAPrecisionFindingManager
 
-- (CMAPrecisionFindingManager)initWithDelegate:(id)a3 dispatchQueue:(id)a4
+- (CMAPrecisionFindingManager)initWithDelegate:(id)delegate dispatchQueue:(id)queue
 {
   v27.receiver = self;
   v27.super_class = CMAPrecisionFindingManager;
@@ -23,9 +23,9 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, a3);
-    dispatch_retain(a4);
-    v7->_delegateQueue = a4;
+    objc_storeWeak(&v6->_delegate, delegate);
+    dispatch_retain(queue);
+    v7->_delegateQueue = queue;
     v7->_analyticsManager = objc_alloc_init(CMAPrecisionFindingAnalytics);
     v8 = objc_alloc(MEMORY[0x277CBEBD0]);
     v11 = objc_msgSend_initWithSuiteName_(v8, v9, @"com.apple.CoreMotionAlgorithms.Msl.nearbyd", v10);
@@ -54,7 +54,7 @@
   return v7;
 }
 
-- (CMAPrecisionFindingManager)initWithDelegate:(id)a3 dispatchQueue:(id)a4 findeeType:(int)a5
+- (CMAPrecisionFindingManager)initWithDelegate:(id)delegate dispatchQueue:(id)queue findeeType:(int)type
 {
   v16.receiver = self;
   v16.super_class = CMAPrecisionFindingManager;
@@ -62,8 +62,8 @@
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_initWithDelegate_dispatchQueue_(v8, v9, a3, a4);
-    v10->_findeeType = a5;
+    objc_msgSend_initWithDelegate_dispatchQueue_(v8, v9, delegate, queue);
+    v10->_findeeType = type;
     v14 = objc_msgSend_findeeType(v10, v11, v12, v13);
     sub_245F231E4(&v10->_positionEstimator, v14);
   }
@@ -119,32 +119,32 @@
   objc_msgSend_setDeviceFindingClient_(self, v4, 0, v5);
 }
 
-- (void)updateDeviceMotion:(id)a3
+- (void)updateDeviceMotion:(id)motion
 {
   v101 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_deviceFindingClient(self, a2, a3, v3))
+  if (objc_msgSend_deviceFindingClient(self, a2, motion, v3))
   {
-    objc_msgSend_timestamp(a3, v6, v7, v8);
+    objc_msgSend_timestamp(motion, v6, v7, v8);
     *&v88 = v9;
-    objc_msgSend_quaternion(a3, v10, v11, v12);
+    objc_msgSend_quaternion(motion, v10, v11, v12);
     *(&v88 + 1) = v13;
-    objc_msgSend_quaternion(a3, v14, v15, v16);
+    objc_msgSend_quaternion(motion, v14, v15, v16);
     *&v89 = v17;
-    objc_msgSend_quaternion(a3, v18, v19, v20);
+    objc_msgSend_quaternion(motion, v18, v19, v20);
     *(&v89 + 1) = v21;
-    objc_msgSend_quaternion(a3, v22, v23, v24);
+    objc_msgSend_quaternion(motion, v22, v23, v24);
     *&v90 = v25;
-    objc_msgSend_rotationRate(a3, v26, v27, v28);
+    objc_msgSend_rotationRate(motion, v26, v27, v28);
     *(&v90 + 1) = v29;
-    objc_msgSend_rotationRate(a3, v30, v31, v32);
+    objc_msgSend_rotationRate(motion, v30, v31, v32);
     *&v91 = v33;
-    objc_msgSend_rotationRate(a3, v34, v35, v36);
+    objc_msgSend_rotationRate(motion, v34, v35, v36);
     *(&v91 + 1) = v37;
-    objc_msgSend_acceleration(a3, v38, v39, v40);
+    objc_msgSend_acceleration(motion, v38, v39, v40);
     *&v92 = v41;
-    objc_msgSend_acceleration(a3, v42, v43, v44);
+    objc_msgSend_acceleration(motion, v42, v43, v44);
     *(&v92 + 1) = v45;
-    objc_msgSend_acceleration(a3, v46, v47, v48);
+    objc_msgSend_acceleration(motion, v46, v47, v48);
     v93 = v49;
     sub_245F231F0(&self->_positionEstimator, &v88);
     sub_245F225E8(&v88);
@@ -156,7 +156,7 @@
     *buf = v88;
     *&buf[16] = v89;
     objc_msgSend_feedDeviceMotion_(v53, v54, buf, v55);
-    objc_msgSend_timestamp(a3, v56, v57, v58);
+    objc_msgSend_timestamp(motion, v56, v57, v58);
     v60 = (v59 * 1000000.0);
     fMinimumToleratedDt = self->_deviceMotionDownsampler.fMinimumToleratedDt;
     if (fMinimumToleratedDt && self->_deviceMotionDownsampler.fLastTimestamp + fMinimumToleratedDt > v60)
@@ -178,7 +178,7 @@
     v63 = off_27EE374E8;
     if (os_log_type_enabled(off_27EE374E8, v62))
     {
-      objc_msgSend_timestamp(a3, v64, v65, v66);
+      objc_msgSend_timestamp(motion, v64, v65, v66);
       *buf = 134351616;
       *&buf[4] = v67;
       *&buf[12] = 2050;
@@ -223,11 +223,11 @@
       v84 = v86;
       v85 = v87;
       v81[4] = self;
-      v81[5] = a3;
+      v81[5] = motion;
       dispatch_async(v73, v81);
     }
 
-    objc_msgSend_timestamp(a3, v68, v69, v70);
+    objc_msgSend_timestamp(motion, v68, v69, v70);
     v78 = (v77 * 1000000.0);
     v79 = self->_analyticsDownsampler.fMinimumToleratedDt;
     if (!v79 || self->_analyticsDownsampler.fLastTimestamp + v79 <= v78)
@@ -240,12 +240,12 @@
   v80 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePeerState:(id)a3
+- (void)updatePeerState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  objc_msgSend_timestamp(a3, a2, a3, v3);
+  objc_msgSend_timestamp(state, a2, state, v3);
   v12 = v6;
-  v13 = objc_msgSend_motionState(a3, v7, v8, v9);
+  v13 = objc_msgSend_motionState(state, v7, v8, v9);
   sub_245F23EB8(&self->_positionEstimator, &v12);
   sub_245F227B8(&v12);
   if (qword_27EE374E0 != -1)
@@ -266,18 +266,18 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRanging:(id)a3
+- (void)updateRanging:(id)ranging
 {
   v36 = *MEMORY[0x277D85DE8];
-  objc_msgSend_timestamp(a3, a2, a3, v3);
+  objc_msgSend_timestamp(ranging, a2, ranging, v3);
   *&v31 = v6;
-  objc_msgSend_range(a3, v7, v8, v9);
+  objc_msgSend_range(ranging, v7, v8, v9);
   *(&v31 + 1) = v10;
-  objc_msgSend_rangeError(a3, v11, v12, v13);
+  objc_msgSend_rangeError(ranging, v11, v12, v13);
   *&v32 = v14;
-  objc_msgSend_rssi(a3, v15, v16, v17);
+  objc_msgSend_rssi(ranging, v15, v16, v17);
   *(&v32 + 1) = v18;
-  v33 = objc_msgSend_cycleIndex(a3, v19, v20, v21);
+  v33 = objc_msgSend_cycleIndex(ranging, v19, v20, v21);
   *&v22 = sub_245F23B80(&self->_positionEstimator, &v31).u64[0];
   v26 = objc_msgSend_analyticsManager(self, v23, v24, v25, v22);
   *buf = v31;
@@ -307,13 +307,13 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWatchOrientation:(id)a3
+- (void)updateWatchOrientation:(id)orientation
 {
   v29 = *MEMORY[0x277D85DE8];
-  objc_msgSend_timestamp(a3, a2, a3, v3);
+  objc_msgSend_timestamp(orientation, a2, orientation, v3);
   v21 = v6;
-  LODWORD(v22) = objc_msgSend_wrist(a3, v7, v8, v9);
-  HIDWORD(v22) = objc_msgSend_crown(a3, v10, v11, v12);
+  LODWORD(v22) = objc_msgSend_wrist(orientation, v7, v8, v9);
+  HIDWORD(v22) = objc_msgSend_crown(orientation, v10, v11, v12);
   v13 = sub_245F23F14(&self->_positionEstimator, &v21);
   v17 = objc_msgSend_analyticsManager(self, v14, v15, v16, v13);
   objc_msgSend_feedWatchOrientation_(v17, v18, v21, v22);
@@ -338,14 +338,14 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAltimeterData:(id)a3
+- (void)updateAltimeterData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  objc_msgSend_machAbsoluteTimestamp(a3, a2, a3, v3, 0);
+  objc_msgSend_machAbsoluteTimestamp(data, a2, data, v3, 0);
   v18 = v6;
-  objc_msgSend_relativeAltitude(a3, v7, v8, v9);
+  objc_msgSend_relativeAltitude(data, v7, v8, v9);
   v19 = v10;
-  objc_msgSend_pressure(a3, v11, v12, v13);
+  objc_msgSend_pressure(data, v11, v12, v13);
   v20 = v14;
   sub_245F23FF4(&self->_positionEstimator, &v17);
   sub_245F22B34(&v17);

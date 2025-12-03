@@ -1,7 +1,7 @@
 @interface NTKUpNextNewsSampleDataSource
 + (id)_newCircularTemplate;
 - (id)supportedSections;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation NTKUpNextNewsSampleDataSource
@@ -58,10 +58,10 @@ void __53__NTKUpNextNewsSampleDataSource__newCircularTemplate__block_invoke()
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = REUISampleRelevanceProviderForSamplePosition();
   v6 = objc_alloc(MEMORY[0x277D443F8]);
   v7 = +[NTKUpNextNewsSampleDataSource sampleContent];
@@ -71,7 +71,7 @@ void __53__NTKUpNextNewsSampleDataSource__newCircularTemplate__block_invoke()
 
   v11 = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-  v4[2](v4, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
 @end

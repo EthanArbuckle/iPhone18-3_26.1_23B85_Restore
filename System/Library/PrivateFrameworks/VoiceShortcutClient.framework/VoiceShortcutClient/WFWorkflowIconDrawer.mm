@@ -1,14 +1,14 @@
 @interface WFWorkflowIconDrawer
-+ (id)glyphImageWithIcon:(id)a3 size:(CGSize)a4;
-+ (id)pngDataForImageWithIcon:(id)a3 size:(CGSize)a4;
-- (CGSize)calculatedSizeForSize:(CGSize)a3 scale:(double)a4;
++ (id)glyphImageWithIcon:(id)icon size:(CGSize)size;
++ (id)pngDataForImageWithIcon:(id)icon size:(CGSize)size;
+- (CGSize)calculatedSizeForSize:(CGSize)size scale:(double)scale;
 - (CGSize)glyphSize;
 - (WFColor)glyphColor;
-- (WFWorkflowIconDrawer)initWithDrawerContext:(id)a3;
-- (WFWorkflowIconDrawer)initWithIcon:(id)a3 drawerContext:(id)a4;
-- (id)imageWithSize:(CGSize)a3 scale:(double)a4 padding:(CGSize)a5;
-- (void)drawInContext:(id)a3 inRect:(CGRect)a4;
-- (void)setIcon:(id)a3;
+- (WFWorkflowIconDrawer)initWithDrawerContext:(id)context;
+- (WFWorkflowIconDrawer)initWithIcon:(id)icon drawerContext:(id)context;
+- (id)imageWithSize:(CGSize)size scale:(double)scale padding:(CGSize)padding;
+- (void)drawInContext:(id)context inRect:(CGRect)rect;
+- (void)setIcon:(id)icon;
 @end
 
 @implementation WFWorkflowIconDrawer
@@ -22,17 +22,17 @@
   return result;
 }
 
-- (id)imageWithSize:(CGSize)a3 scale:(double)a4 padding:(CGSize)a5
+- (id)imageWithSize:(CGSize)size scale:(double)scale padding:(CGSize)padding
 {
-  width = a5.width;
-  if (a3.width == *MEMORY[0x1E695F060] && a3.height == *(MEMORY[0x1E695F060] + 8))
+  width = padding.width;
+  if (size.width == *MEMORY[0x1E695F060] && size.height == *(MEMORY[0x1E695F060] + 8))
   {
-    v16 = 0;
+    image = 0;
   }
 
   else
   {
-    height = a5.height;
+    height = padding.height;
     [WFWorkflowIconDrawer calculatedSizeForSize:"calculatedSizeForSize:scale:" scale:?];
     v10 = v9;
     v12 = v11;
@@ -42,44 +42,44 @@
       v14 = ceil(width);
       v15 = ceil(height);
       [(WFWorkflowIconDrawer *)self drawInContext:v13 inRect:v14, v15, v10 - v14 * 2.0, v12 - v15 * 2.0];
-      v16 = [v13 image];
+      image = [v13 image];
     }
 
     else
     {
-      v16 = 0;
+      image = 0;
     }
   }
 
-  return v16;
+  return image;
 }
 
-- (CGSize)calculatedSizeForSize:(CGSize)a3 scale:(double)a4
+- (CGSize)calculatedSizeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v82 = *MEMORY[0x1E69E9840];
-  if (a3.width == 0.0 || a3.height == 0.0)
+  if (size.width == 0.0 || size.height == 0.0)
   {
-    v10 = [(WFWorkflowIconDrawer *)self customImageData];
-    if (-[WFWorkflowIconDrawer useCustomImage](self, "useCustomImage") && [v10 length])
+    customImageData = [(WFWorkflowIconDrawer *)self customImageData];
+    if (-[WFWorkflowIconDrawer useCustomImage](self, "useCustomImage") && [customImageData length])
     {
-      v11 = [WFImage imageWithData:v10 scale:0 allowAnimated:a4];
+      v11 = [WFImage imageWithData:customImageData scale:0 allowAnimated:scale];
       [v11 sizeInPoints];
       v13 = v12;
       v15 = v14;
 
-      v8 = WFWorkflowIconDrawerScaledSizeWithTargetSize(width, height, v13, v15, a4);
+      v8 = WFWorkflowIconDrawerScaledSizeWithTargetSize(width, height, v13, v15, scale);
       v9 = v16;
     }
 
     else
     {
-      v17 = [(WFWorkflowIconDrawer *)self drawerContext];
-      v18 = [(WFWorkflowIconDrawer *)self glyphCharacter];
-      v19 = [(WFWorkflowIconDrawer *)self outline];
-      v20 = v17;
-      theChar = v18;
+      drawerContext = [(WFWorkflowIconDrawer *)self drawerContext];
+      glyphCharacter = [(WFWorkflowIconDrawer *)self glyphCharacter];
+      outline = [(WFWorkflowIconDrawer *)self outline];
+      v20 = drawerContext;
+      theChar = glyphCharacter;
       v8 = *MEMORY[0x1E695F060];
       v9 = *(MEMORY[0x1E695F060] + 8);
       if (width == *MEMORY[0x1E695F060] && height == v9)
@@ -94,22 +94,22 @@
         [v22 screenScale];
         v24 = v23;
 
-        if (v19)
+        if (outline)
         {
-          WFSystemImageNameForOutlineGlyphCharacter(v18);
+          WFSystemImageNameForOutlineGlyphCharacter(glyphCharacter);
         }
 
         else
         {
-          WFSystemImageNameForGlyphCharacter(v18);
+          WFSystemImageNameForGlyphCharacter(glyphCharacter);
         }
         v25 = ;
         v26 = v25;
         if (v25)
         {
           v27 = v25;
-          v28 = [v20 coreGlyphsCatalogs];
-          v29 = [WFImage glyphNamed:v27 pointSize:6 symbolWeight:v28 scaleFactor:height inCatalogs:v24];
+          coreGlyphsCatalogs = [v20 coreGlyphsCatalogs];
+          v29 = [WFImage glyphNamed:v27 pointSize:6 symbolWeight:coreGlyphsCatalogs scaleFactor:height inCatalogs:v24];
 
           if (v29)
           {
@@ -134,9 +134,9 @@
 
         else
         {
-          theChar = WFReplacementGlyphCharacterForCharacter(v18);
-          v33 = [v20 glyphTestFont];
-          WFCTFontCopyCharacterSet(v33);
+          theChar = WFReplacementGlyphCharacterForCharacter(glyphCharacter);
+          glyphTestFont = [v20 glyphTestFont];
+          WFCTFontCopyCharacterSet(glyphTestFont);
           v35 = v34;
           *aBlock = MEMORY[0x1E69E9820];
           *&aBlock[8] = 3221225472;
@@ -151,7 +151,7 @@
             v37 = objc_alloc(MEMORY[0x1E696AAB0]);
             getkCTFontAttributeName();
             v77 = v38;
-            v78 = v33;
+            v78 = glyphTestFont;
             v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
             v40 = [v37 initWithString:v36 attributes:v39];
 
@@ -246,8 +246,8 @@
 
   else
   {
-    v8 = a3.width;
-    v9 = a3.height;
+    v8 = size.width;
+    v9 = size.height;
   }
 
   v65 = *MEMORY[0x1E69E9840];
@@ -258,18 +258,18 @@
   return result;
 }
 
-- (void)drawInContext:(id)a3 inRect:(CGRect)a4
+- (void)drawInContext:(id)context inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v200[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [v9 CGContext];
-  CGContextSaveGState(v10);
-  v11 = [(WFWorkflowIconDrawer *)self drawBackground];
-  if ([(WFWorkflowIconDrawer *)self rounded]&& v11)
+  contextCopy = context;
+  cGContext = [contextCopy CGContext];
+  CGContextSaveGState(cGContext);
+  drawBackground = [(WFWorkflowIconDrawer *)self drawBackground];
+  if ([(WFWorkflowIconDrawer *)self rounded]&& drawBackground)
   {
     [(WFWorkflowIconDrawer *)self cornerRadius];
     v13 = v12;
@@ -335,28 +335,28 @@
       }
     }
 
-    CGContextAddPath(v10, Mutable);
-    CGContextClip(v10);
+    CGContextAddPath(cGContext, Mutable);
+    CGContextClip(cGContext);
     CGPathRelease(Mutable);
   }
 
-  if (v11)
+  if (drawBackground)
   {
-    v18 = [(WFWorkflowIconDrawer *)self drawGradient];
-    v19 = [(WFWorkflowIconDrawer *)self backgroundColor];
-    v20 = v19;
-    if (v18)
+    drawGradient = [(WFWorkflowIconDrawer *)self drawGradient];
+    backgroundColor = [(WFWorkflowIconDrawer *)self backgroundColor];
+    v20 = backgroundColor;
+    if (drawGradient)
     {
-      v21 = [v19 gradient];
+      gradient = [backgroundColor gradient];
 
-      v22 = [v21 baseColorForDarkMode:-[WFWorkflowIconDrawer dark](self highContrast:{"dark"), -[WFWorkflowIconDrawer highContrast](self, "highContrast")}];
-      CGContextSetFillColorWithColor(v10, [v22 CGColor]);
+      v22 = [gradient baseColorForDarkMode:-[WFWorkflowIconDrawer dark](self highContrast:{"dark"), -[WFWorkflowIconDrawer highContrast](self, "highContrast")}];
+      CGContextSetFillColorWithColor(cGContext, [v22 CGColor]);
       v211.origin.x = x;
       v211.origin.y = y;
       v211.size.width = width;
       v211.size.height = height;
-      CGContextFillRect(v10, v211);
-      v23 = [v21 CGGradient];
+      CGContextFillRect(cGContext, v211);
+      cGGradient = [gradient CGGradient];
       v212.origin.x = x;
       v212.origin.y = y;
       v212.size.width = width;
@@ -380,38 +380,38 @@
       v205.x = MidX;
       v205.y = MinY;
       v207.x = v26;
-      CGContextDrawLinearGradient(v10, v23, v205, v207, 2u);
+      CGContextDrawLinearGradient(cGContext, cGGradient, v205, v207, 2u);
     }
 
     else
     {
-      CGContextSetFillColorWithColor(v10, [v19 CGColor]);
+      CGContextSetFillColorWithColor(cGContext, [backgroundColor CGColor]);
 
       v216.origin.x = x;
       v216.origin.y = y;
       v216.size.width = width;
       v216.size.height = height;
-      CGContextFillRect(v10, v216);
+      CGContextFillRect(cGContext, v216);
     }
   }
 
   if ([(WFWorkflowIconDrawer *)self drawShadowBehindGlyph])
   {
-    CGContextSaveGState(v10);
+    CGContextSaveGState(cGContext);
     v27 = +[WFColor blackColor];
     v28 = [v27 colorWithAlphaComponent:0.3];
 
-    v29 = [v28 CGColor];
+    cGColor = [v28 CGColor];
     v206.width = 0.0;
     v206.height = 2.0;
-    CGContextSetShadowWithColor(v10, v206, 2.0, v29);
+    CGContextSetShadowWithColor(cGContext, v206, 2.0, cGColor);
   }
 
-  v30 = [(WFWorkflowIconDrawer *)self customImageData];
-  if (-[WFWorkflowIconDrawer useCustomImage](self, "useCustomImage") && [v30 length])
+  customImageData = [(WFWorkflowIconDrawer *)self customImageData];
+  if (-[WFWorkflowIconDrawer useCustomImage](self, "useCustomImage") && [customImageData length])
   {
-    v31 = [WFImage imageWithData:v30 scale:0 allowAnimated:1.0];
-    [v31 drawInContext:v9 inRect:{x, y, width, height}];
+    v31 = [WFImage imageWithData:customImageData scale:0 allowAnimated:1.0];
+    [v31 drawInContext:contextCopy inRect:{x, y, width, height}];
   }
 
   else
@@ -422,7 +422,7 @@
     if (v32 == *MEMORY[0x1E695F060] && v33 == v34)
     {
       v41 = 0.0;
-      if (v11)
+      if (drawBackground)
       {
         v217.origin.x = x;
         v217.origin.y = y;
@@ -450,38 +450,38 @@
       v40 = (height - v33) * 0.5;
     }
 
-    v177 = [(WFWorkflowIconDrawer *)self symbolName];
-    v42 = [(WFWorkflowIconDrawer *)self drawerContext];
-    if (v177)
+    symbolName = [(WFWorkflowIconDrawer *)self symbolName];
+    drawerContext = [(WFWorkflowIconDrawer *)self drawerContext];
+    if (symbolName)
     {
-      v43 = [(WFWorkflowIconDrawer *)self glyphColor];
-      v44 = v177;
-      WFDrawGlyphForVectorIdentifier(v42, v9, v177, v43, v39, v40, v37, v38);
+      glyphColor = [(WFWorkflowIconDrawer *)self glyphColor];
+      v44 = symbolName;
+      WFDrawGlyphForVectorIdentifier(drawerContext, contextCopy, symbolName, glyphColor, v39, v40, v37, v38);
     }
 
     else
     {
-      v45 = [(WFWorkflowIconDrawer *)self glyphCharacter];
-      v46 = [(WFWorkflowIconDrawer *)self glyphColor];
-      v47 = [(WFWorkflowIconDrawer *)self outline];
-      v176 = v42;
-      v173 = v9;
-      theChar = v45;
-      v175 = v46;
+      glyphCharacter = [(WFWorkflowIconDrawer *)self glyphCharacter];
+      glyphColor2 = [(WFWorkflowIconDrawer *)self glyphColor];
+      outline = [(WFWorkflowIconDrawer *)self outline];
+      v176 = drawerContext;
+      v173 = contextCopy;
+      theChar = glyphCharacter;
+      v175 = glyphColor2;
       v220.origin.x = v39;
       v220.origin.y = v40;
       v220.size.width = v37;
       v220.size.height = v38;
       if (!CGRectIsEmpty(v220))
       {
-        if (v47)
+        if (outline)
         {
-          WFSystemImageNameForOutlineGlyphCharacter(v45);
+          WFSystemImageNameForOutlineGlyphCharacter(glyphCharacter);
         }
 
         else
         {
-          WFSystemImageNameForGlyphCharacter(v45);
+          WFSystemImageNameForGlyphCharacter(glyphCharacter);
         }
         v48 = ;
         if (v48)
@@ -491,9 +491,9 @@
 
         else
         {
-          theChar = WFReplacementGlyphCharacterForCharacter(v45);
-          v51 = [v176 glyphTestFont];
-          WFCTFontCopyCharacterSet(v51);
+          theChar = WFReplacementGlyphCharacterForCharacter(glyphCharacter);
+          glyphTestFont = [v176 glyphTestFont];
+          WFCTFontCopyCharacterSet(glyphTestFont);
           v53 = v52;
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
@@ -508,7 +508,7 @@
             v55 = objc_alloc(MEMORY[0x1E696AAB0]);
             getkCTFontAttributeName();
             v199 = v56;
-            v200[0] = v51;
+            v200[0] = glyphTestFont;
             v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v200 forKeys:&v199 count:1];
             v169 = [v55 initWithString:v171 attributes:v57];
 
@@ -574,7 +574,7 @@
                   v151 = v54;
                   v72 = objc_alloc(MEMORY[0x1E696AAB0]);
                   getkCTFontAttributeName();
-                  v152 = v30;
+                  v152 = customImageData;
                   v197[0] = v73;
                   v198[0] = v71;
                   *&buf = 0;
@@ -599,9 +599,9 @@
                   _Block_object_dispose(&buf, 8);
                   if (!v74)
                   {
-                    v141 = [MEMORY[0x1E696AAA8] currentHandler];
+                    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                     v142 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCTForegroundColorAttributeName(void)"];
-                    [v141 handleFailureInFunction:v142 file:@"WFWorkflowIconDrawer.m" lineNumber:36 description:{@"%s", dlerror()}];
+                    [currentHandler handleFailureInFunction:v142 file:@"WFWorkflowIconDrawer.m" lineNumber:36 description:{@"%s", dlerror()}];
 
                     __break(1u);
                   }
@@ -811,7 +811,7 @@
 
                       v122 = CGDataProviderCreateWithData(0, cp2xa, size, WFDrawGlyphFreeCallback);
                       v164 = CGImageCreate(v100, v167, 8uLL, 0x20uLL, v163, space, 1u, v122, 0, 0, kCGRenderingIntentDefault);
-                      v30 = v152;
+                      customImageData = v152;
                       CGDataProviderRelease(v122);
                       CGColorSpaceRelease(space);
                       v201.location = 0;
@@ -911,10 +911,10 @@
 
   if ([(WFWorkflowIconDrawer *)self drawShadowBehindGlyph])
   {
-    CGContextRestoreGState(v10);
+    CGContextRestoreGState(cGContext);
   }
 
-  CGContextRestoreGState(v10);
+  CGContextRestoreGState(cGContext);
 
   v140 = *MEMORY[0x1E69E9840];
 }
@@ -934,17 +934,17 @@
   return glyphColor;
 }
 
-- (WFWorkflowIconDrawer)initWithDrawerContext:(id)a3
+- (WFWorkflowIconDrawer)initWithDrawerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = WFWorkflowIconDrawer;
   v5 = [(WFWorkflowIconDrawer *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      v6 = contextCopy;
     }
 
     else
@@ -963,43 +963,43 @@
   return v5;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
-  -[WFWorkflowIconDrawer setGlyphCharacter:](self, "setGlyphCharacter:", [v4 glyphCharacter]);
-  v5 = [v4 backgroundColor];
+  iconCopy = icon;
+  -[WFWorkflowIconDrawer setGlyphCharacter:](self, "setGlyphCharacter:", [iconCopy glyphCharacter]);
+  backgroundColor = [iconCopy backgroundColor];
 
-  [(WFWorkflowIconDrawer *)self setBackgroundColor:v5];
+  [(WFWorkflowIconDrawer *)self setBackgroundColor:backgroundColor];
 }
 
-- (WFWorkflowIconDrawer)initWithIcon:(id)a3 drawerContext:(id)a4
+- (WFWorkflowIconDrawer)initWithIcon:(id)icon drawerContext:(id)context
 {
-  v6 = a3;
-  v7 = [(WFWorkflowIconDrawer *)self initWithDrawerContext:a4];
+  iconCopy = icon;
+  v7 = [(WFWorkflowIconDrawer *)self initWithDrawerContext:context];
   v8 = v7;
   if (v7)
   {
-    [(WFWorkflowIconDrawer *)v7 setIcon:v6];
+    [(WFWorkflowIconDrawer *)v7 setIcon:iconCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (id)pngDataForImageWithIcon:(id)a3 size:(CGSize)a4
++ (id)pngDataForImageWithIcon:(id)icon size:(CGSize)size
 {
-  v4 = [a1 imageWithIcon:a3 size:{a4.width, a4.height}];
-  v5 = [v4 PNGRepresentation];
+  v4 = [self imageWithIcon:icon size:{size.width, size.height}];
+  pNGRepresentation = [v4 PNGRepresentation];
 
-  return v5;
+  return pNGRepresentation;
 }
 
-+ (id)glyphImageWithIcon:(id)a3 size:(CGSize)a4
++ (id)glyphImageWithIcon:(id)icon size:(CGSize)size
 {
-  v4 = [a1 imageWithIcon:a3 size:0 background:{a4.width, a4.height}];
-  v5 = [v4 platformImage];
+  v4 = [self imageWithIcon:icon size:0 background:{size.width, size.height}];
+  platformImage = [v4 platformImage];
 
-  return v5;
+  return platformImage;
 }
 
 @end

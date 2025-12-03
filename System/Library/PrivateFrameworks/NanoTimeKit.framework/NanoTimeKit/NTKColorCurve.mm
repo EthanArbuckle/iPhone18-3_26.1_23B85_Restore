@@ -1,19 +1,19 @@
 @interface NTKColorCurve
-- (NTKColorCurve)initWithColorCurveElements:(id)a3;
-- (id)colorForFraction:(float)a3;
+- (NTKColorCurve)initWithColorCurveElements:(id)elements;
+- (id)colorForFraction:(float)fraction;
 @end
 
 @implementation NTKColorCurve
 
-- (NTKColorCurve)initWithColorCurveElements:(id)a3
+- (NTKColorCurve)initWithColorCurveElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v10.receiver = self;
   v10.super_class = NTKColorCurve;
   v5 = [(NTKColorCurve *)&v10 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_156];
+    v6 = [elementsCopy sortedArrayUsingComparator:&__block_literal_global_156];
     colorCurveElements = v5->_colorCurveElements;
     v5->_colorCurveElements = v6;
 
@@ -54,32 +54,32 @@ uint64_t __44__NTKColorCurve_initWithColorCurveElements___block_invoke(uint64_t 
   return v9;
 }
 
-- (id)colorForFraction:(float)a3
+- (id)colorForFraction:(float)fraction
 {
   if ([(NSArray *)self->_colorCurveElements count])
   {
     v5 = [(NSArray *)self->_colorCurveElements count];
-    v6 = [(NSArray *)self->_colorCurveElements firstObject];
-    v7 = v6;
+    firstObject = [(NSArray *)self->_colorCurveElements firstObject];
+    v7 = firstObject;
     if (v5 != 1)
     {
-      [v6 fraction];
+      [firstObject fraction];
       v9 = v8;
 
       colorCurveElements = self->_colorCurveElements;
-      if (v9 >= a3)
+      if (v9 >= fraction)
       {
-        v6 = [(NSArray *)colorCurveElements firstObject];
+        firstObject = [(NSArray *)colorCurveElements firstObject];
       }
 
       else
       {
-        v11 = [(NSArray *)colorCurveElements lastObject];
-        [v11 fraction];
+        lastObject = [(NSArray *)colorCurveElements lastObject];
+        [lastObject fraction];
         v13 = v12;
 
         v14 = self->_colorCurveElements;
-        if (v13 > a3)
+        if (v13 > fraction)
         {
           v15 = [(NSArray *)v14 objectAtIndex:0];
           v16 = [(NSArray *)self->_colorCurveElements objectAtIndex:1];
@@ -98,10 +98,10 @@ LABEL_10:
               v18 = [(NSArray *)self->_colorCurveElements objectAtIndexedSubscript:v17 - 1];
               v19 = [(NSArray *)self->_colorCurveElements objectAtIndexedSubscript:v17];
               [v18 fraction];
-              if (v20 <= a3)
+              if (v20 <= fraction)
               {
                 [v19 fraction];
-                if (v21 >= a3)
+                if (v21 >= fraction)
                 {
                   break;
                 }
@@ -115,14 +115,14 @@ LABEL_10:
           }
 
           [v18 fraction];
-          v23 = a3 - v22;
+          v23 = fraction - v22;
           [v19 fraction];
           v25 = v24;
           [v18 fraction];
           v27 = v23 / (v25 - v26);
-          v28 = [v19 timingFunction];
+          timingFunction = [v19 timingFunction];
           *&v29 = v27;
-          [v28 _solveForInput:v29];
+          [timingFunction _solveForInput:v29];
 
           [v18 color];
           objc_claimAutoreleasedReturnValue();
@@ -131,21 +131,21 @@ LABEL_10:
           CLKUIInterpolateBetweenColors();
         }
 
-        v6 = [(NSArray *)v14 lastObject];
+        firstObject = [(NSArray *)v14 lastObject];
       }
 
-      v7 = v6;
+      v7 = firstObject;
     }
 
-    v30 = [v6 color];
+    color = [firstObject color];
   }
 
   else
   {
-    v30 = [MEMORY[0x277D75348] blackColor];
+    color = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v30;
+  return color;
 }
 
 @end

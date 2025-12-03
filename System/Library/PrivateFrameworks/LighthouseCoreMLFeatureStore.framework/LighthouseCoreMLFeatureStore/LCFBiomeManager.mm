@@ -1,20 +1,20 @@
 @interface LCFBiomeManager
-- (BOOL)writeData:(id)a3;
-- (id)init:(id)a3;
+- (BOOL)writeData:(id)data;
+- (id)init:(id)init;
 @end
 
 @implementation LCFBiomeManager
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v9.receiver = self;
   v9.super_class = LCFBiomeManager;
   v6 = [(LCFBiomeManager *)&v9 init];
   if (v6)
   {
     LCFLoggingUtilsInit();
-    objc_storeStrong(&v6->_biomeStream, a3);
+    objc_storeStrong(&v6->_biomeStream, init);
     biomeSource = v6->_biomeSource;
     v6->_biomeSource = 0;
   }
@@ -22,9 +22,9 @@
   return v6;
 }
 
-- (BOOL)writeData:(id)a3
+- (BOOL)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__LCFBiomeManager_writeData___block_invoke;
@@ -37,7 +37,7 @@
 
   v5 = self->_biomeSource;
   objc_sync_enter(v5);
-  [(BMSource *)self->_biomeSource sendEvent:v4];
+  [(BMSource *)self->_biomeSource sendEvent:dataCopy];
   objc_sync_exit(v5);
 
   return 1;

@@ -3,27 +3,27 @@
 - (CGRect)backgroundTargetFrame;
 - (CGRect)sourceContentsRect;
 - (CGRect)targetContentsRect;
-- (THWImageCropAnimationController)initWithImageContentLayer:(id)a3;
+- (THWImageCropAnimationController)initWithImageContentLayer:(id)layer;
 - (id)backgroundShadowPath;
 - (id)sourceShadowPath;
-- (void)addAnimationWithDuration:(double)a3 targetScale:(double)a4;
-- (void)addBackgroundAnimationWithDuration:(double)a3 targetScale:(double)a4;
+- (void)addAnimationWithDuration:(double)duration targetScale:(double)scale;
+- (void)addBackgroundAnimationWithDuration:(double)duration targetScale:(double)scale;
 - (void)dealloc;
-- (void)setBackgroundLayer:(id)a3;
+- (void)setBackgroundLayer:(id)layer;
 - (void)setupWrapperLayer;
 - (void)teardownWrapperLayer;
 @end
 
 @implementation THWImageCropAnimationController
 
-- (THWImageCropAnimationController)initWithImageContentLayer:(id)a3
+- (THWImageCropAnimationController)initWithImageContentLayer:(id)layer
 {
   v11.receiver = self;
   v11.super_class = THWImageCropAnimationController;
   v4 = [(THWImageCropAnimationController *)&v11 init];
   if (v4)
   {
-    *(v4 + 9) = a3;
+    *(v4 + 9) = layer;
     __asm { FMOV            V0.2D, #1.0 }
 
     *(v4 + 40) = _Q0;
@@ -80,10 +80,10 @@
   [(CALayer *)self->_imageContentLayer removeAllAnimations];
 }
 
-- (void)setBackgroundLayer:(id)a3
+- (void)setBackgroundLayer:(id)layer
 {
   backgroundLayer = self->_backgroundLayer;
-  if (backgroundLayer != a3)
+  if (backgroundLayer != layer)
   {
     if (backgroundLayer)
     {
@@ -97,11 +97,11 @@
       v6 = 0;
     }
 
-    v7 = a3;
-    self->_backgroundLayer = v7;
-    if (v7)
+    layerCopy = layer;
+    self->_backgroundLayer = layerCopy;
+    if (layerCopy)
     {
-      [(CALayer *)self->_wrapperLayer insertSublayer:v7 atIndex:0];
+      [(CALayer *)self->_wrapperLayer insertSublayer:layerCopy atIndex:0];
       v8 = self->_backgroundLayer;
 
       [(CALayer *)v8 removeAllAnimations];
@@ -118,9 +118,9 @@
   v10 = v9;
   if ([(CALayer *)self->_imageContentLayer superlayer]== self->_cropLayer)
   {
-    v11 = [(CALayer *)self->_wrapperLayer superlayer];
+    superlayer = [(CALayer *)self->_wrapperLayer superlayer];
     [(CALayer *)self->_imageContentLayer setFrame:v4, v6, v8, v10];
-    [(CALayer *)v11 replaceSublayer:self->_wrapperLayer with:self->_imageContentLayer];
+    [(CALayer *)superlayer replaceSublayer:self->_wrapperLayer with:self->_imageContentLayer];
   }
 
   [(CALayer *)self->_wrapperLayer removeFromSuperlayer];
@@ -131,12 +131,12 @@
   self->_cropLayer = 0;
 }
 
-- (void)addAnimationWithDuration:(double)a3 targetScale:(double)a4
+- (void)addAnimationWithDuration:(double)duration targetScale:(double)scale
 {
   if (!self->_animationDisabled)
   {
-    v5 = self->_cropDurationScale * a3;
-    v31 = self->_cornerRadiusDurationScale * a3;
+    v5 = self->_cropDurationScale * duration;
+    v31 = self->_cornerRadiusDurationScale * duration;
     [(CALayer *)self->_imageContentLayer bounds];
     v7 = v6;
     v9 = v8;
@@ -176,27 +176,27 @@
     sourceCornerRadius = self->_sourceCornerRadius;
     *&sourceCornerRadius = sourceCornerRadius;
     [(CABasicAnimation *)v18 setFromValue:[NSNumber numberWithFloat:sourceCornerRadius]];
-    v20 = self->_targetCornerRadius / a4;
+    v20 = self->_targetCornerRadius / scale;
     *&v20 = v20;
     [(CABasicAnimation *)v18 setToValue:[NSNumber numberWithFloat:v20]];
     [(CABasicAnimation *)v18 setRemovedOnCompletion:0];
     [(CABasicAnimation *)v18 setFillMode:kCAFillModeForwards];
     [(CABasicAnimation *)v18 setDuration:v31];
-    [(CABasicAnimation *)v18 setBeginTime:a3 - v31];
+    [(CABasicAnimation *)v18 setBeginTime:duration - v31];
     v21 = +[CAAnimationGroup animation];
     [v21 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v15, v16, v18, v17, 0)}];
-    [v21 setDuration:a3];
+    [v21 setDuration:duration];
     [v21 setRemovedOnCompletion:0];
     [v21 setFillMode:kCAFillModeForwards];
     [(CALayer *)self->_cropLayer addAnimation:v21 forKey:@"cropAnimation"];
   }
 }
 
-- (void)addBackgroundAnimationWithDuration:(double)a3 targetScale:(double)a4
+- (void)addBackgroundAnimationWithDuration:(double)duration targetScale:(double)scale
 {
   if (!self->_animationDisabled && self->_backgroundLayer)
   {
-    v5 = self->_backgroundDurationScale * a3;
+    v5 = self->_backgroundDurationScale * duration;
     x = self->_backgroundSourceFrame.origin.x;
     y = self->_backgroundSourceFrame.origin.y;
     TSDMultiplyRectScalar();

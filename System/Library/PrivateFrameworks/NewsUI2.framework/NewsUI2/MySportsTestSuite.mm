@@ -1,16 +1,16 @@
 @interface MySportsTestSuite
 - (_TtC7NewsUI217MySportsTestSuite)init;
-- (void)setupTestWithContext:(id)a3 completion:(id)a4;
+- (void)setupTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation MySportsTestSuite
 
-- (void)setupTestWithContext:(id)a3 completion:(id)a4
+- (void)setupTestWithContext:(id)context completion:(id)completion
 {
   sub_218760638();
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = sub_219BF5BF4();
@@ -19,11 +19,11 @@
   v13[2] = 0;
   v13[3] = 0;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = context;
   v13[6] = sub_218967168;
   v13[7] = v11;
-  v14 = a3;
-  v15 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_218AB3D80(0, 0, v9, &unk_219C85E40, v13);
 }
 

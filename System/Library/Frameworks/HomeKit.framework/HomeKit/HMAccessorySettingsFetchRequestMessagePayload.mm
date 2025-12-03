@@ -1,9 +1,9 @@
 @interface HMAccessorySettingsFetchRequestMessagePayload
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessorySettingsFetchRequestMessagePayload)initWithAccessoryUUID:(id)a3 keyPaths:(id)a4;
-- (HMAccessorySettingsFetchRequestMessagePayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessorySettingsFetchRequestMessagePayload)initWithAccessoryUUID:(id)d keyPaths:(id)paths;
+- (HMAccessorySettingsFetchRequestMessagePayload)initWithPayload:(id)payload;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)payloadCopy;
@@ -14,16 +14,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
-  v3 = [v2 hash];
+  accessoryUUID = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
+  v3 = [accessoryUUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -44,22 +44,22 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
-      v8 = [(HMAccessorySettingsFetchRequestMessagePayload *)v6 accessoryUUID];
-      if ([v7 hmf_isEqualToUUID:v8])
+      accessoryUUID = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
+      accessoryUUID2 = [(HMAccessorySettingsFetchRequestMessagePayload *)v6 accessoryUUID];
+      if ([accessoryUUID hmf_isEqualToUUID:accessoryUUID2])
       {
-        v9 = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
-        v10 = [v9 count];
-        v11 = [(HMAccessorySettingsFetchRequestMessagePayload *)v6 keyPaths];
-        if (v10 == [v11 count])
+        keyPaths = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
+        v10 = [keyPaths count];
+        keyPaths2 = [(HMAccessorySettingsFetchRequestMessagePayload *)v6 keyPaths];
+        if (v10 == [keyPaths2 count])
         {
-          v12 = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
+          keyPaths3 = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_invoke;
           v15[3] = &unk_1E7548550;
           v16 = v6;
-          v13 = [v12 na_allObjectsPassTest:v15];
+          v13 = [keyPaths3 na_allObjectsPassTest:v15];
         }
 
         else
@@ -97,12 +97,12 @@ uint64_t __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_inv
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
-  v5 = [v3 initWithName:@"accessoryUUID" value:v4];
+  accessoryUUID = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
+  v5 = [v3 initWithName:@"accessoryUUID" value:accessoryUUID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
-  v8 = [v6 initWithName:@"keyPaths" value:v7];
+  keyPaths = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
+  v8 = [v6 initWithName:@"keyPaths" value:keyPaths];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -122,12 +122,12 @@ uint64_t __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_inv
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"HMAccessoryUUIDPayloadKey";
-  v3 = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
-  v4 = [v3 UUIDString];
+  accessoryUUID = [(HMAccessorySettingsFetchRequestMessagePayload *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
   v9[1] = @"HMImmutableSettingKeyPathsPayloadKey";
-  v10[0] = v4;
-  v5 = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
-  v10[1] = v5;
+  v10[0] = uUIDString;
+  keyPaths = [(HMAccessorySettingsFetchRequestMessagePayload *)self keyPaths];
+  v10[1] = keyPaths;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -135,23 +135,23 @@ uint64_t __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_inv
   return v6;
 }
 
-- (HMAccessorySettingsFetchRequestMessagePayload)initWithPayload:(id)a3
+- (HMAccessorySettingsFetchRequestMessagePayload)initWithPayload:(id)payload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
-  v6 = [v4 hmf_arrayForKey:@"HMImmutableSettingKeyPathsPayloadKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
+  v6 = [payloadCopy hmf_arrayForKey:@"HMImmutableSettingKeyPathsPayloadKey"];
   v7 = v6;
   if (v5 && v6)
   {
-    v8 = [(HMAccessorySettingsFetchRequestMessagePayload *)self initWithAccessoryUUID:v5 keyPaths:v6];
-    v9 = v8;
+    selfCopy = [(HMAccessorySettingsFetchRequestMessagePayload *)self initWithAccessoryUUID:v5 keyPaths:v6];
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -159,7 +159,7 @@ uint64_t __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_inv
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory settings fetch request message payload: %@", &v15, 0x16u);
     }
 
@@ -171,18 +171,18 @@ uint64_t __57__HMAccessorySettingsFetchRequestMessagePayload_isEqual___block_inv
   return v9;
 }
 
-- (HMAccessorySettingsFetchRequestMessagePayload)initWithAccessoryUUID:(id)a3 keyPaths:(id)a4
+- (HMAccessorySettingsFetchRequestMessagePayload)initWithAccessoryUUID:(id)d keyPaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  pathsCopy = paths;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = pathsCopy;
+  if (!pathsCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -195,8 +195,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_accessoryUUID, a3);
-    objc_storeStrong(&v11->_keyPaths, a4);
+    objc_storeStrong(&v10->_accessoryUUID, d);
+    objc_storeStrong(&v11->_keyPaths, paths);
   }
 
   return v11;

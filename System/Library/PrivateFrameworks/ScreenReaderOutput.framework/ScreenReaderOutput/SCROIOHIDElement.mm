@@ -1,8 +1,8 @@
 @interface SCROIOHIDElement
 - (BOOL)isBluetoothLowEnergy;
-- (SCROIOHIDElement)initWithIOObject:(unsigned int)a3;
+- (SCROIOHIDElement)initWithIOObject:(unsigned int)object;
 - (id)bluetoothAddress;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)transport;
 - (unsigned)productId;
 - (unsigned)vendorId;
@@ -11,13 +11,13 @@
 
 @implementation SCROIOHIDElement
 
-- (SCROIOHIDElement)initWithIOObject:(unsigned int)a3
+- (SCROIOHIDElement)initWithIOObject:(unsigned int)object
 {
   v9.receiver = self;
   v9.super_class = SCROIOHIDElement;
   v4 = [(SCROIOElement *)&v9 initWithIOObject:?];
   v5 = v4;
-  if (a3 && v4 && (!IOObjectConformsTo(a3, "IOHIDDevice") || (v6 = IOHIDDeviceCreate(*MEMORY[0x277CBECE8], a3), (v5->_hidDevice = v6) == 0)))
+  if (object && v4 && (!IOObjectConformsTo(object, "IOHIDDevice") || (v6 = IOHIDDeviceCreate(*MEMORY[0x277CBECE8], object), (v5->_hidDevice = v6) == 0)))
   {
     v7 = 0;
   }
@@ -43,11 +43,11 @@
   [(SCROIOElement *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SCROIOHIDElement;
-  v4 = [(SCROIOElement *)&v7 copyWithZone:a3];
+  v4 = [(SCROIOElement *)&v7 copyWithZone:zone];
   if (v4)
   {
     hidDevice = self->_hidDevice;
@@ -127,10 +127,10 @@
 {
   v3 = IOHIDDeviceGetProperty(self->_hidDevice, @"SerialNumber");
   v4 = IOHIDDeviceGetProperty(self->_hidDevice, @"PhysicalDeviceUniqueID");
-  v5 = [(SCROIOHIDElement *)self isBluetoothLowEnergy];
+  isBluetoothLowEnergy = [(SCROIOHIDElement *)self isBluetoothLowEnergy];
   if (v3)
   {
-    v6 = v5;
+    v6 = isBluetoothLowEnergy;
   }
 
   else

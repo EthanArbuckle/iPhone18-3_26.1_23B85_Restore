@@ -1,29 +1,29 @@
 @interface REMAccountsDataViewInvocation_fetchAll
-- (BOOL)isEqual:(id)a3;
-- (REMAccountsDataViewInvocation_fetchAll)initWithCoder:(id)a3;
-- (REMAccountsDataViewInvocation_fetchAll)initWithPurpose:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMAccountsDataViewInvocation_fetchAll)initWithCoder:(id)coder;
+- (REMAccountsDataViewInvocation_fetchAll)initWithPurpose:(int64_t)purpose;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAccountsDataViewInvocation_fetchAll
 
-- (REMAccountsDataViewInvocation_fetchAll)initWithPurpose:(int64_t)a3
+- (REMAccountsDataViewInvocation_fetchAll)initWithPurpose:(int64_t)purpose
 {
   v5.receiver = self;
   v5.super_class = REMAccountsDataViewInvocation_fetchAll;
   result = [(REMStoreInvocationValueStorage *)&v5 init];
   if (result)
   {
-    result->_purpose = a3;
+    result->_purpose = purpose;
   }
 
   return result;
 }
 
-- (REMAccountsDataViewInvocation_fetchAll)initWithCoder:(id)a3
+- (REMAccountsDataViewInvocation_fetchAll)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"purpose"];
+  v4 = [coder decodeIntegerForKey:@"purpose"];
   if (v4 >= 3)
   {
     v5 = os_log_create("com.apple.reminderkit", "default");
@@ -38,20 +38,20 @@
   return [(REMAccountsDataViewInvocation_fetchAll *)self initWithPurpose:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMAccountsDataViewInvocation_fetchAll purpose](self forKey:{"purpose"), @"purpose"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMAccountsDataViewInvocation_fetchAll purpose](self forKey:{"purpose"), @"purpose"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMAccountsDataViewInvocation_fetchAll *)self purpose];
-    v6 = v5 == [v4 purpose];
+    purpose = [(REMAccountsDataViewInvocation_fetchAll *)self purpose];
+    v6 = purpose == [equalCopy purpose];
   }
 
   else

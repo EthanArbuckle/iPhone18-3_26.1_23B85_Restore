@@ -1,43 +1,43 @@
 @interface CLSPersonIdentityResult
-+ (id)personResultWithPerson:(id)a3 andConfidence:(float)a4;
-- (BOOL)isSamePersonAsResult:(id)a3;
-- (void)mergeWithResult:(id)a3;
++ (id)personResultWithPerson:(id)person andConfidence:(float)confidence;
+- (BOOL)isSamePersonAsResult:(id)result;
+- (void)mergeWithResult:(id)result;
 @end
 
 @implementation CLSPersonIdentityResult
 
-- (void)mergeWithResult:(id)a3
+- (void)mergeWithResult:(id)result
 {
-  v8 = a3;
-  v4 = [(CLSPersonIdentityResult *)self person];
-  v5 = [v8 person];
-  [v4 mergeWithPerson:v5];
+  resultCopy = result;
+  person = [(CLSPersonIdentityResult *)self person];
+  person2 = [resultCopy person];
+  [person mergeWithPerson:person2];
 
-  [v8 confidence];
+  [resultCopy confidence];
   if (v6 > self->_confidence)
   {
-    [v8 confidence];
+    [resultCopy confidence];
     self->_confidence = v7;
   }
 }
 
-- (BOOL)isSamePersonAsResult:(id)a3
+- (BOOL)isSamePersonAsResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CLSPersonIdentityResult *)self person];
-  v6 = [v4 person];
+  resultCopy = result;
+  person = [(CLSPersonIdentityResult *)self person];
+  person2 = [resultCopy person];
 
-  LOBYTE(v4) = [v5 isSamePersonAs:v6];
-  return v4;
+  LOBYTE(resultCopy) = [person isSamePersonAs:person2];
+  return resultCopy;
 }
 
-+ (id)personResultWithPerson:(id)a3 andConfidence:(float)a4
++ (id)personResultWithPerson:(id)person andConfidence:(float)confidence
 {
-  v5 = a3;
+  personCopy = person;
   v6 = objc_alloc_init(CLSPersonIdentityResult);
-  [(CLSPersonIdentityResult *)v6 setPerson:v5];
+  [(CLSPersonIdentityResult *)v6 setPerson:personCopy];
 
-  *&v7 = a4;
+  *&v7 = confidence;
   [(CLSPersonIdentityResult *)v6 setConfidence:v7];
 
   return v6;

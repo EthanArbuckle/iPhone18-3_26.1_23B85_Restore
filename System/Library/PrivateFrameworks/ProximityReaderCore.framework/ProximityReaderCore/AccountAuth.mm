@@ -1,15 +1,15 @@
 @interface AccountAuth
 - (_TtC19ProximityReaderCore11AccountAuth)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AccountAuth
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2611D51EC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2611D51EC(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore11AccountAuth)init

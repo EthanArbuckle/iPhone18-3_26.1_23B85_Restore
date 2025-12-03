@@ -1,20 +1,20 @@
 @interface PDURLSessionProxyMessageInfo
-- (PDURLSessionProxyMessageInfo)initWithMessage:(id)a3 type:(unsigned __int16)a4;
+- (PDURLSessionProxyMessageInfo)initWithMessage:(id)message type:(unsigned __int16)type;
 @end
 
 @implementation PDURLSessionProxyMessageInfo
 
-- (PDURLSessionProxyMessageInfo)initWithMessage:(id)a3 type:(unsigned __int16)a4
+- (PDURLSessionProxyMessageInfo)initWithMessage:(id)message type:(unsigned __int16)type
 {
-  v7 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = PDURLSessionProxyMessageInfo;
   v8 = [(PDURLSessionProxyMessageInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_message, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_message, message);
+    v9->_type = type;
   }
 
   return v9;

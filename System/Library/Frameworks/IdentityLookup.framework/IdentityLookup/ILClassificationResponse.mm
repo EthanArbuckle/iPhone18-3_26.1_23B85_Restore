@@ -1,11 +1,11 @@
 @interface ILClassificationResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResponse:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResponse:(id)response;
 - (ILClassificationResponse)initWithClassificationAction:(ILClassificationAction)action;
-- (ILClassificationResponse)initWithCoder:(id)a3;
+- (ILClassificationResponse)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ILClassificationResponse
@@ -27,43 +27,43 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ILClassificationResponse *)self action];
-  v6 = [(ILClassificationResponse *)self userInfo];
-  v7 = [(ILClassificationResponse *)self userString];
-  v8 = [v3 stringWithFormat:@"<%@ %p action=%ld, userInfo=%@, userString=%@>", v4, self, v5, v6, v7];
+  action = [(ILClassificationResponse *)self action];
+  userInfo = [(ILClassificationResponse *)self userInfo];
+  userString = [(ILClassificationResponse *)self userString];
+  v8 = [v3 stringWithFormat:@"<%@ %p action=%ld, userInfo=%@, userString=%@>", v4, self, action, userInfo, userString];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILClassificationResponse *)self isEqualToResponse:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILClassificationResponse *)self isEqualToResponse:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(ILClassificationResponse *)self action];
-  if (v5 == [v4 action])
+  responseCopy = response;
+  action = [(ILClassificationResponse *)self action];
+  if (action == [responseCopy action])
   {
-    v6 = [(ILClassificationResponse *)self userInfo];
-    v7 = [v4 userInfo];
-    if (v6 | v7 && ![v6 isEqual:v7])
+    userInfo = [(ILClassificationResponse *)self userInfo];
+    userInfo2 = [responseCopy userInfo];
+    if (userInfo | userInfo2 && ![userInfo isEqual:userInfo2])
     {
       v10 = 0;
     }
 
     else
     {
-      v8 = [(ILClassificationResponse *)self userString];
-      v9 = [v4 userString];
-      if (v8 | v9)
+      userString = [(ILClassificationResponse *)self userString];
+      userString2 = [responseCopy userString];
+      if (userString | userString2)
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [userString isEqual:userString2];
       }
 
       else
@@ -83,20 +83,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ILClassificationResponse *)self action];
-  v4 = [(ILClassificationResponse *)self userInfo];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(ILClassificationResponse *)self userString];
-  v7 = [v6 hash];
+  action = [(ILClassificationResponse *)self action];
+  userInfo = [(ILClassificationResponse *)self userInfo];
+  v5 = [userInfo hash] ^ action;
+  userString = [(ILClassificationResponse *)self userString];
+  v7 = [userString hash];
 
   return v5 ^ v7;
 }
 
-- (ILClassificationResponse)initWithCoder:(id)a3
+- (ILClassificationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_action);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
@@ -105,11 +105,11 @@
   v11 = objc_opt_class();
   v12 = [v7 setWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
   v13 = NSStringFromSelector(sel_userInfo);
-  v14 = [v4 decodeObjectOfClasses:v12 forKey:v13];
+  v14 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
 
   v15 = objc_opt_class();
   v16 = NSStringFromSelector(sel_userString);
-  v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
+  v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
 
   v18 = [(ILClassificationResponse *)self initWithClassificationAction:v6];
   v19 = v18;
@@ -122,20 +122,20 @@
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ILClassificationResponse *)self action];
+  coderCopy = coder;
+  action = [(ILClassificationResponse *)self action];
   v6 = NSStringFromSelector(sel_action);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:action forKey:v6];
 
-  v7 = [(ILClassificationResponse *)self userInfo];
+  userInfo = [(ILClassificationResponse *)self userInfo];
   v8 = NSStringFromSelector(sel_userInfo);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:userInfo forKey:v8];
 
-  v10 = [(ILClassificationResponse *)self userString];
+  userString = [(ILClassificationResponse *)self userString];
   v9 = NSStringFromSelector(sel_userString);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:userString forKey:v9];
 }
 
 @end

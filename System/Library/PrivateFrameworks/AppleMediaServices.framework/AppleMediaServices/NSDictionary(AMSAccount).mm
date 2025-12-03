@@ -16,7 +16,7 @@
 
 - (id)ams_accountFlags
 {
-  v1 = [a1 objectForKeyedSubscript:@"accountFlags"];
+  v1 = [self objectForKeyedSubscript:@"accountFlags"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -33,7 +33,7 @@
 
 - (id)ams_username
 {
-  v2 = [a1 valueForKeyPath:@"accountInfo.appleId"];
+  v2 = [self valueForKeyPath:@"accountInfo.appleId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -49,13 +49,13 @@
   {
   }
 
-  v4 = [a1 valueForKeyPath:@"accountInfo.accountName"];
+  v4 = [self valueForKeyPath:@"accountInfo.accountName"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_9:
-    v5 = [a1 valueForKeyPath:@"personInfo.acAccountName"];
+    v5 = [self valueForKeyPath:@"personInfo.acAccountName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@ LABEL_13:
 
 - (id)ams_altDSID
 {
-  v1 = [a1 objectForKeyedSubscript:@"altDsPersonId"];
+  v1 = [self objectForKeyedSubscript:@"altDsPersonId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -101,7 +101,7 @@ LABEL_13:
 
 - (id)ams_creditsString
 {
-  v1 = [a1 objectForKeyedSubscript:@"creditDisplay"];
+  v1 = [self objectForKeyedSubscript:@"creditDisplay"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,7 +118,7 @@ LABEL_13:
 
 - (id)ams_DSID
 {
-  v1 = [a1 objectForKeyedSubscript:@"dsPersonId"];
+  v1 = [self objectForKeyedSubscript:@"dsPersonId"];
   if (objc_opt_respondsToSelector())
   {
     v2 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v1, "longLongValue")}];
@@ -134,23 +134,23 @@ LABEL_13:
 
 - (uint64_t)ams_errorCode
 {
-  v1 = [a1 objectForKeyedSubscript:@"failureType"];
+  v1 = [self objectForKeyedSubscript:@"failureType"];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0;
+    integerValue = 0;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (id)ams_firstName
 {
-  v1 = [a1 valueForKeyPath:@"accountInfo.address.firstName"];
+  v1 = [self valueForKeyPath:@"accountInfo.address.firstName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -167,23 +167,23 @@ LABEL_13:
 
 - (uint64_t)ams_isManagedAppleID
 {
-  v1 = [a1 objectForKeyedSubscript:@"isManagedStudent"];
+  v1 = [self objectForKeyedSubscript:@"isManagedStudent"];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)ams_lastName
 {
-  v1 = [a1 valueForKeyPath:@"accountInfo.address.lastName"];
+  v1 = [self valueForKeyPath:@"accountInfo.address.lastName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -200,7 +200,7 @@ LABEL_13:
 
 - (id)ams_privacyAcknowledgement
 {
-  v1 = [a1 objectForKeyedSubscript:@"privacyAcknowledgement"];
+  v1 = [self objectForKeyedSubscript:@"privacyAcknowledgement"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -217,7 +217,7 @@ LABEL_13:
 
 - (id)ams_secureToken
 {
-  v1 = [a1 objectForKeyedSubscript:@"passwordToken"];
+  v1 = [self objectForKeyedSubscript:@"passwordToken"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

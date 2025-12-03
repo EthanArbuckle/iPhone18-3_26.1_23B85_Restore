@@ -1,16 +1,16 @@
 @interface MTLDebugIntersectionFunctionTable
-- (MTLDebugIntersectionFunctionTable)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 pipelineState:(id)a6 stage:(unint64_t)a7;
-- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 stage:(unint64_t)a6;
-- (id)formattedDescription:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (MTLDebugIntersectionFunctionTable)initWithBaseObject:(id)object parent:(id)parent;
+- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor pipelineState:(id)state stage:(unint64_t)stage;
+- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)formattedDescription:(unint64_t)description;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (void)dealloc;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
 @end
 
 @implementation MTLDebugIntersectionFunctionTable
@@ -22,46 +22,46 @@
   [(MTLToolsIntersectionFunctionTable *)&v3 dealloc];
 }
 
-- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 stage:(unint64_t)a6
+- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor stage:(unint64_t)stage
 {
   v11.receiver = self;
   v11.super_class = MTLDebugIntersectionFunctionTable;
-  v8 = [(MTLToolsResource *)&v11 initWithBaseObject:a3 parent:a4];
+  v8 = [(MTLToolsResource *)&v11 initWithBaseObject:table parent:parent];
   v9 = v8;
   if (v8)
   {
     atomic_store(0, &v8->_purgeableStateToken);
     v8->_purgeableStateHasBeenSet = 0;
-    v8->_functionCount = [a5 functionCount];
-    v9->_stage = a6;
+    v8->_functionCount = [descriptor functionCount];
+    v9->_stage = stage;
   }
 
   return v9;
 }
 
-- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 pipelineState:(id)a6 stage:(unint64_t)a7
+- (MTLDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor pipelineState:(id)state stage:(unint64_t)stage
 {
   v13.receiver = self;
   v13.super_class = MTLDebugIntersectionFunctionTable;
-  v10 = [(MTLToolsResource *)&v13 initWithBaseObject:a3 parent:a4];
+  v10 = [(MTLToolsResource *)&v13 initWithBaseObject:table parent:parent];
   v11 = v10;
   if (v10)
   {
     atomic_store(0, &v10->_purgeableStateToken);
     v10->_purgeableStateHasBeenSet = 0;
-    v10->_functionCount = [a5 functionCount];
-    v11->_pipelineState = a6;
-    v11->_stage = a7;
+    v10->_functionCount = [descriptor functionCount];
+    v11->_pipelineState = state;
+    v11->_stage = stage;
   }
 
   return v11;
 }
 
-- (MTLDebugIntersectionFunctionTable)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLDebugIntersectionFunctionTable)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLDebugIntersectionFunctionTable;
-  result = [(MTLToolsResource *)&v5 initWithBaseObject:a3 parent:a4];
+  result = [(MTLToolsResource *)&v5 initWithBaseObject:object parent:parent];
   if (result)
   {
     atomic_store(0, &result->_purgeableStateToken);
@@ -71,16 +71,16 @@
   return result;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   if ([-[MTLToolsObject baseObject](self "baseObject")])
   {
     [MTLDebugIntersectionFunctionTable setPurgeableState:];
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       if (atomic_load(&self->_purgeableStateToken))
       {
@@ -91,25 +91,25 @@
     self->_purgeableStateHasBeenSet = 1;
   }
 
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 setPurgeableState:a3];
+  return [baseObject setPurgeableState:state];
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  if (self->_functionCount <= a4)
+  if (self->_functionCount <= index)
   {
-    v17 = a4;
+    indexCopy = index;
     functionCount = self->_functionCount;
     MTLReportFailure();
-    if (!a3)
+    if (!function)
     {
       goto LABEL_19;
     }
   }
 
-  else if (!a3)
+  else if (!function)
   {
     goto LABEL_19;
   }
@@ -117,9 +117,9 @@
   if (self->_pipelineState)
   {
     stage = self->_stage;
-    if (stage && stage != [a3 stage])
+    if (stage && stage != [function stage])
     {
-      [MTLDebugIntersectionFunctionTable setFunction:a3 atIndex:&self->_stage];
+      [MTLDebugIntersectionFunctionTable setFunction:function atIndex:&self->_stage];
     }
 
     pipelineState = self->_pipelineState;
@@ -148,39 +148,39 @@
     {
       v12 = self->_pipelineState;
 LABEL_13:
-      [(MTLToolsObject *)v12 validateHandleForSetFunction:a3, v17, functionCount];
+      [(MTLToolsObject *)v12 validateHandleForSetFunction:function, indexCopy, functionCount];
     }
   }
 
-  if ([a3 functionType] != 6)
+  if ([function functionType] != 6)
   {
-    [MTLDebugIntersectionFunctionTable setFunction:a3 atIndex:?];
+    [MTLDebugIntersectionFunctionTable setFunction:function atIndex:?];
   }
 
-  v13 = [a3 function];
-  if (v13)
+  function = [function function];
+  if (function)
   {
-    v14 = v13;
-    if (([v13 intersectionFunctionSignature] & 0x100) != 0)
+    v14 = function;
+    if (([function intersectionFunctionSignature] & 0x100) != 0)
     {
       [MTLDebugIntersectionFunctionTable setFunction:v14 atIndex:?];
     }
   }
 
 LABEL_19:
-  v15 = [(MTLToolsObject *)self baseObject:v17];
-  v16 = [a3 baseObject];
+  v15 = [(MTLToolsObject *)self baseObject:indexCopy];
+  baseObject = [function baseObject];
 
-  [v15 setFunction:v16 atIndex:a4];
+  [v15 setFunction:baseObject atIndex:index];
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_functionCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_functionCount)
   {
-    v9 = a4.location + a4.length;
+    v9 = range.location + range.length;
     functionCount = self->_functionCount;
     MTLReportFailure();
     if (!length)
@@ -189,14 +189,14 @@ LABEL_19:
     }
   }
 
-  else if (!a4.length)
+  else if (!range.length)
   {
     return;
   }
 
   do
   {
-    v8 = *a3++;
+    v8 = *functions++;
     [(MTLDebugIntersectionFunctionTable *)self setFunction:v8 atIndex:location++, v9, functionCount];
     --length;
   }
@@ -204,70 +204,70 @@ LABEL_19:
   while (length);
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
-  if (self->_functionCount <= a4)
+  if (self->_functionCount <= index)
   {
-    v8 = a4;
+    indexCopy = index;
     functionCount = self->_functionCount;
     MTLReportFailure();
   }
 
-  v7 = [(MTLToolsObject *)self baseObject:v8];
+  v7 = [(MTLToolsObject *)self baseObject:indexCopy];
 
-  [v7 setOpaqueTriangleIntersectionFunctionWithSignature:a3 atIndex:a4];
+  [v7 setOpaqueTriangleIntersectionFunctionWithSignature:signature atIndex:index];
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_functionCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_functionCount)
   {
-    v9 = a4.location + a4.length;
-    functionCount = self->_functionCount;
-    MTLReportFailure();
-  }
-
-  v8 = [(MTLToolsObject *)self baseObject:v9];
-
-  [v8 setOpaqueTriangleIntersectionFunctionWithSignature:a3 withRange:{location, length}];
-}
-
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
-{
-  if (self->_functionCount <= a4)
-  {
-    v8 = a4;
-    functionCount = self->_functionCount;
-    MTLReportFailure();
-  }
-
-  v7 = [(MTLToolsObject *)self baseObject:v8];
-
-  [v7 setOpaqueCurveIntersectionFunctionWithSignature:a3 atIndex:a4];
-}
-
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
-{
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_functionCount)
-  {
-    v9 = a4.location + a4.length;
+    v9 = range.location + range.length;
     functionCount = self->_functionCount;
     MTLReportFailure();
   }
 
   v8 = [(MTLToolsObject *)self baseObject:v9];
 
-  [v8 setOpaqueCurveIntersectionFunctionWithSignature:a3 withRange:{location, length}];
+  [v8 setOpaqueTriangleIntersectionFunctionWithSignature:signature withRange:{location, length}];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
+{
+  if (self->_functionCount <= index)
+  {
+    indexCopy = index;
+    functionCount = self->_functionCount;
+    MTLReportFailure();
+  }
+
+  v7 = [(MTLToolsObject *)self baseObject:indexCopy];
+
+  [v7 setOpaqueCurveIntersectionFunctionWithSignature:signature atIndex:index];
+}
+
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
+{
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_functionCount)
+  {
+    v9 = range.location + range.length;
+    functionCount = self->_functionCount;
+    MTLReportFailure();
+  }
+
+  v8 = [(MTLToolsObject *)self baseObject:v9];
+
+  [v8 setOpaqueCurveIntersectionFunctionWithSignature:signature withRange:{location, length}];
+}
+
+- (id)formattedDescription:(unint64_t)description
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x277CCACA8];
   v9.receiver = self;
   v9.super_class = MTLDebugIntersectionFunctionTable;

@@ -1,6 +1,6 @@
 @interface SUScriptNotificationObserverAccessibility
 - (SUScriptNotificationObserverAccessibility)init;
-- (void)_axActionOccurredForWeb:(id)a3;
+- (void)_axActionOccurredForWeb:(id)web;
 - (void)dealloc;
 @end
 
@@ -11,16 +11,16 @@
   v5.receiver = self;
   v5.super_class = SUScriptNotificationObserverAccessibility;
   v2 = [(SUScriptNotificationObserverAccessibility *)&v5 init];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:v2 selector:sel__axActionOccurredForWeb_ name:@"AXActionForWebNotification" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel__axActionOccurredForWeb_ name:@"AXActionForWebNotification" object:0];
 
   return v2;
 }
 
-- (void)_axActionOccurredForWeb:(id)a3
+- (void)_axActionOccurredForWeb:(id)web
 {
-  v4 = a3;
-  v3 = v4;
+  webCopy = web;
+  v3 = webCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -62,8 +62,8 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:@"AXActionForWebNotification" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AXActionForWebNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SUScriptNotificationObserverAccessibility;

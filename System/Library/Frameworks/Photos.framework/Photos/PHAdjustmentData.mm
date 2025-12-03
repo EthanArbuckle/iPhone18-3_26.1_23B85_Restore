@@ -1,35 +1,35 @@
 @interface PHAdjustmentData
 + (id)opaqueAdjustmentData;
-+ (int64_t)adjustmentBaseVersionFromImageRequestVersion:(int64_t)a3;
-+ (int64_t)adjustmentBaseVersionFromVideoRequestVersion:(int64_t)a3;
-+ (int64_t)imageRequestVersionFromAdjustmentBaseVersion:(int64_t)a3;
-+ (int64_t)videoRequestVersionFromAdjustmentBaseVersion:(int64_t)a3;
++ (int64_t)adjustmentBaseVersionFromImageRequestVersion:(int64_t)version;
++ (int64_t)adjustmentBaseVersionFromVideoRequestVersion:(int64_t)version;
++ (int64_t)imageRequestVersionFromAdjustmentBaseVersion:(int64_t)version;
++ (int64_t)videoRequestVersionFromAdjustmentBaseVersion:(int64_t)version;
 - (BOOL)_contentEditing_containsValidAdjustment;
-- (BOOL)_contentEditing_readableByClientWithVerificationBlock:(id)a3;
+- (BOOL)_contentEditing_readableByClientWithVerificationBlock:(id)block;
 - (BOOL)_hasAdjustments;
 - (BOOL)isOpaque;
-- (PHAdjustmentData)initWithCoder:(id)a3;
-- (PHAdjustmentData)initWithDataUsingAssetResourceEncoding:(id)a3 error:(id *)a4;
-- (PHAdjustmentData)initWithFormatIdentifier:(id)a3 formatVersion:(id)a4 adjustmentRenderType:(id)a5 data:(id)a6;
-- (id)dataUsingAssetResourceEncoding:(id *)a3;
+- (PHAdjustmentData)initWithCoder:(id)coder;
+- (PHAdjustmentData)initWithDataUsingAssetResourceEncoding:(id)encoding error:(id *)error;
+- (PHAdjustmentData)initWithFormatIdentifier:(id)identifier formatVersion:(id)version adjustmentRenderType:(id)type data:(id)data;
+- (id)dataUsingAssetResourceEncoding:(id *)encoding;
 - (id)description;
-- (int64_t)_contentEditing_requiredBaseVersionReadableByClient:(BOOL *)a3 verificationBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_contentEditing_requiredBaseVersionReadableByClient:(BOOL *)client verificationBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHAdjustmentData
 
 - (BOOL)_hasAdjustments
 {
-  v3 = [(PHAdjustmentData *)self formatIdentifier];
+  formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
 
-  if (!v3)
+  if (!formatIdentifier)
   {
     return 0;
   }
 
-  v4 = [(PHAdjustmentData *)self data];
-  v5 = [v4 length] != 0;
+  data = [(PHAdjustmentData *)self data];
+  v5 = [data length] != 0;
 
   return v5;
 }
@@ -39,24 +39,24 @@
   v11.receiver = self;
   v11.super_class = PHAdjustmentData;
   v3 = [(PHAdjustmentData *)&v11 description];
-  v4 = [(PHAdjustmentData *)self formatIdentifier];
-  v5 = [(PHAdjustmentData *)self formatVersion];
-  v6 = [(PHAdjustmentData *)self adjustmentRenderTypes];
-  v7 = [(PHAdjustmentData *)self data];
-  v8 = [(PHAdjustmentData *)self data];
-  v9 = [v3 stringByAppendingFormat:@" identifier=%@ version=%@ renderType=%u data=%p (%lu)", v4, v5, v6, v7, objc_msgSend(v8, "length")];
+  formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
+  formatVersion = [(PHAdjustmentData *)self formatVersion];
+  adjustmentRenderTypes = [(PHAdjustmentData *)self adjustmentRenderTypes];
+  data = [(PHAdjustmentData *)self data];
+  data2 = [(PHAdjustmentData *)self data];
+  v9 = [v3 stringByAppendingFormat:@" identifier=%@ version=%@ renderType=%u data=%p (%lu)", formatIdentifier, formatVersion, adjustmentRenderTypes, data, objc_msgSend(data2, "length")];
 
   return v9;
 }
 
-- (id)dataUsingAssetResourceEncoding:(id *)a3
+- (id)dataUsingAssetResourceEncoding:(id *)encoding
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PHAdjustmentData *)self formatIdentifier];
-  [v5 setObject:v6 forKey:*MEMORY[0x1E69BF380]];
+  formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
+  [v5 setObject:formatIdentifier forKey:*MEMORY[0x1E69BF380]];
 
-  v7 = [(PHAdjustmentData *)self formatVersion];
-  [v5 setObject:v7 forKey:*MEMORY[0x1E69BF388]];
+  formatVersion = [(PHAdjustmentData *)self formatVersion];
+  [v5 setObject:formatVersion forKey:*MEMORY[0x1E69BF388]];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHAdjustmentData baseVersion](self, "baseVersion")}];
   [v5 setObject:v8 forKey:*MEMORY[0x1E69BF368]];
@@ -64,47 +64,47 @@
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PHAdjustmentData adjustmentRenderTypes](self, "adjustmentRenderTypes")}];
   [v5 setObject:v9 forKey:*MEMORY[0x1E69BF390]];
 
-  v10 = [(PHAdjustmentData *)self editorBundleID];
+  editorBundleID = [(PHAdjustmentData *)self editorBundleID];
 
-  if (v10)
+  if (editorBundleID)
   {
-    v11 = [(PHAdjustmentData *)self editorBundleID];
-    [v5 setObject:v11 forKey:*MEMORY[0x1E69BF378]];
+    editorBundleID2 = [(PHAdjustmentData *)self editorBundleID];
+    [v5 setObject:editorBundleID2 forKey:*MEMORY[0x1E69BF378]];
   }
 
-  v12 = [(PHAdjustmentData *)self adjustmentTimestamp];
+  adjustmentTimestamp = [(PHAdjustmentData *)self adjustmentTimestamp];
 
-  if (v12)
+  if (adjustmentTimestamp)
   {
-    v13 = [(PHAdjustmentData *)self adjustmentTimestamp];
-    [v5 setObject:v13 forKey:*MEMORY[0x1E69BF398]];
+    adjustmentTimestamp2 = [(PHAdjustmentData *)self adjustmentTimestamp];
+    [v5 setObject:adjustmentTimestamp2 forKey:*MEMORY[0x1E69BF398]];
   }
 
-  v14 = [(PHAdjustmentData *)self data];
+  data = [(PHAdjustmentData *)self data];
 
-  if (v14)
+  if (data)
   {
-    v15 = [(PHAdjustmentData *)self data];
-    [v5 setObject:v15 forKey:*MEMORY[0x1E69BF370]];
+    data2 = [(PHAdjustmentData *)self data];
+    [v5 setObject:data2 forKey:*MEMORY[0x1E69BF370]];
   }
 
   v21 = 0;
   v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:100 options:0 error:&v21];
   v17 = v21;
   v18 = v17;
-  if (!v16 && a3)
+  if (!v16 && encoding)
   {
     v19 = v17;
-    *a3 = v18;
+    *encoding = v18;
   }
 
   return v16;
 }
 
-- (PHAdjustmentData)initWithDataUsingAssetResourceEncoding:(id)a3 error:(id *)a4
+- (PHAdjustmentData)initWithDataUsingAssetResourceEncoding:(id)encoding error:(id *)error
 {
   v21 = 0;
-  v6 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v21];
+  v6 = [MEMORY[0x1E696AE40] propertyListWithData:encoding options:0 format:0 error:&v21];
   v7 = v21;
   v8 = v7;
   if (v6)
@@ -131,21 +131,21 @@
     {
       v18 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
       v16 = v18;
-      if (a4)
+      if (error)
       {
         v19 = v18;
-        *a4 = v16;
+        *error = v16;
       }
     }
 
     self = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = v7;
     v13 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -156,46 +156,46 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   formatIdentifier = self->_formatIdentifier;
-  v5 = a3;
-  [v5 encodeObject:formatIdentifier forKey:@"formatIdentifier"];
-  [v5 encodeObject:self->_formatVersion forKey:@"formatVersion"];
-  [v5 encodeObject:self->_data forKey:@"data"];
-  [v5 encodeInteger:self->_baseVersion forKey:@"baseVersion"];
-  [v5 encodeInteger:self->_adjustmentRenderTypes forKey:@"adjustmentRenderTypes"];
-  [v5 encodeObject:self->_editorBundleID forKey:@"editorBundleID"];
-  [v5 encodeObject:self->_adjustmentTimestamp forKey:@"adjustmentTimestamp"];
+  coderCopy = coder;
+  [coderCopy encodeObject:formatIdentifier forKey:@"formatIdentifier"];
+  [coderCopy encodeObject:self->_formatVersion forKey:@"formatVersion"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeInteger:self->_baseVersion forKey:@"baseVersion"];
+  [coderCopy encodeInteger:self->_adjustmentRenderTypes forKey:@"adjustmentRenderTypes"];
+  [coderCopy encodeObject:self->_editorBundleID forKey:@"editorBundleID"];
+  [coderCopy encodeObject:self->_adjustmentTimestamp forKey:@"adjustmentTimestamp"];
 }
 
-- (PHAdjustmentData)initWithCoder:(id)a3
+- (PHAdjustmentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PHAdjustmentData;
   v5 = [(PHAdjustmentData *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatIdentifier"];
     formatIdentifier = v5->_formatIdentifier;
     v5->_formatIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatVersion"];
     formatVersion = v5->_formatVersion;
     v5->_formatVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v10;
 
-    v5->_baseVersion = [v4 decodeIntegerForKey:@"baseVersion"];
-    v5->_adjustmentRenderTypes = [v4 decodeIntegerForKey:@"adjustmentRenderTypes"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editorBundleID"];
+    v5->_baseVersion = [coderCopy decodeIntegerForKey:@"baseVersion"];
+    v5->_adjustmentRenderTypes = [coderCopy decodeIntegerForKey:@"adjustmentRenderTypes"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editorBundleID"];
     editorBundleID = v5->_editorBundleID;
     v5->_editorBundleID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentTimestamp"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentTimestamp"];
     adjustmentTimestamp = v5->_adjustmentTimestamp;
     v5->_adjustmentTimestamp = v14;
   }
@@ -205,57 +205,57 @@
 
 - (BOOL)isOpaque
 {
-  v2 = [(PHAdjustmentData *)self formatIdentifier];
-  v3 = [v2 isEqualToString:PHAdjustmentDataOpaqueFormatIdentifier];
+  formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
+  v3 = [formatIdentifier isEqualToString:PHAdjustmentDataOpaqueFormatIdentifier];
 
   return v3;
 }
 
-- (PHAdjustmentData)initWithFormatIdentifier:(id)a3 formatVersion:(id)a4 adjustmentRenderType:(id)a5 data:(id)a6
+- (PHAdjustmentData)initWithFormatIdentifier:(id)identifier formatVersion:(id)version adjustmentRenderType:(id)type data:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  typeCopy = type;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = PHAdjustmentData;
   v14 = [(PHAdjustmentData *)&v23 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     formatIdentifier = v14->_formatIdentifier;
     v14->_formatIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [versionCopy copy];
     formatVersion = v14->_formatVersion;
     v14->_formatVersion = v17;
 
-    objc_storeStrong(&v14->_data, a6);
+    objc_storeStrong(&v14->_data, data);
     v14->_baseVersion = 0;
-    if (v12)
+    if (typeCopy)
     {
-      v19 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [typeCopy unsignedIntegerValue];
     }
 
     else
     {
-      v19 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v14->_adjustmentRenderTypes = v19;
-    v20 = [MEMORY[0x1E695DF00] date];
+    v14->_adjustmentRenderTypes = unsignedIntegerValue;
+    date = [MEMORY[0x1E695DF00] date];
     adjustmentTimestamp = v14->_adjustmentTimestamp;
-    v14->_adjustmentTimestamp = v20;
+    v14->_adjustmentTimestamp = date;
   }
 
   return v14;
 }
 
-+ (int64_t)adjustmentBaseVersionFromVideoRequestVersion:(int64_t)a3
++ (int64_t)adjustmentBaseVersionFromVideoRequestVersion:(int64_t)version
 {
-  if (a3)
+  if (version)
   {
-    return a3 == 8;
+    return version == 8;
   }
 
   else
@@ -264,24 +264,24 @@
   }
 }
 
-+ (int64_t)videoRequestVersionFromAdjustmentBaseVersion:(int64_t)a3
++ (int64_t)videoRequestVersionFromAdjustmentBaseVersion:(int64_t)version
 {
-  if (a3 > 2)
+  if (version > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_19CB29A80[a3];
+    return qword_19CB29A80[version];
   }
 }
 
-+ (int64_t)adjustmentBaseVersionFromImageRequestVersion:(int64_t)a3
++ (int64_t)adjustmentBaseVersionFromImageRequestVersion:(int64_t)version
 {
-  if (a3)
+  if (version)
   {
-    return a3 == 8;
+    return version == 8;
   }
 
   else
@@ -290,16 +290,16 @@
   }
 }
 
-+ (int64_t)imageRequestVersionFromAdjustmentBaseVersion:(int64_t)a3
++ (int64_t)imageRequestVersionFromAdjustmentBaseVersion:(int64_t)version
 {
-  if (a3 > 2)
+  if (version > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_19CB29A80[a3];
+    return qword_19CB29A80[version];
   }
 }
 
@@ -307,9 +307,9 @@
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACC8];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v10 = 0;
-  v4 = [v2 archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v10];
+  v4 = [v2 archivedDataWithRootObject:date requiringSecureCoding:1 error:&v10];
   v5 = v10;
 
   if (v4)
@@ -334,17 +334,17 @@
   return v7;
 }
 
-- (int64_t)_contentEditing_requiredBaseVersionReadableByClient:(BOOL *)a3 verificationBlock:(id)a4
+- (int64_t)_contentEditing_requiredBaseVersionReadableByClient:(BOOL *)client verificationBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if ([(PHAdjustmentData *)self _contentEditing_containsValidAdjustment])
   {
-    v7 = [(PHAdjustmentData *)self _contentEditing_readableByClientWithVerificationBlock:v6];
+    v7 = [(PHAdjustmentData *)self _contentEditing_readableByClientWithVerificationBlock:blockCopy];
     v8 = MEMORY[0x1E69C0910];
-    v9 = [(PHAdjustmentData *)self formatIdentifier];
-    v10 = [(PHAdjustmentData *)self formatVersion];
-    v11 = [v8 isRecognizedSlowMotionFormatWithIdentifier:v9 version:v10];
+    formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
+    formatVersion = [(PHAdjustmentData *)self formatVersion];
+    v11 = [v8 isRecognizedSlowMotionFormatWithIdentifier:formatIdentifier version:formatVersion];
 
     if (v11)
     {
@@ -361,9 +361,9 @@
       v12 = [(PHAdjustmentData *)self baseVersion]!= 0;
     }
 
-    if (a3)
+    if (client)
     {
-      *a3 = v7;
+      *client = v7;
     }
   }
 
@@ -372,12 +372,12 @@
     v13 = PLImageManagerGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PHAdjustmentData *)self formatIdentifier];
-      v15 = [(PHAdjustmentData *)self data];
+      formatIdentifier2 = [(PHAdjustmentData *)self formatIdentifier];
+      data = [(PHAdjustmentData *)self data];
       v17 = 138412546;
-      v18 = v14;
+      v18 = formatIdentifier2;
       v19 = 2048;
-      v20 = [v15 length];
+      v20 = [data length];
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_ERROR, "[RM] Inavlid adjustment data, format ID: %@, data length :%lu", &v17, 0x16u);
     }
 
@@ -387,10 +387,10 @@
   return v12;
 }
 
-- (BOOL)_contentEditing_readableByClientWithVerificationBlock:(id)a3
+- (BOOL)_contentEditing_readableByClientWithVerificationBlock:(id)block
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if ([(PHAdjustmentData *)self isOpaque])
   {
     v5 = PLImageManagerGetLog();
@@ -406,7 +406,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!blockCopy)
   {
     v5 = PLImageManagerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -421,7 +421,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = v4[2](v4, self);
+  v7 = blockCopy[2](blockCopy, self);
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -443,11 +443,11 @@ LABEL_13:
 
 - (BOOL)_contentEditing_containsValidAdjustment
 {
-  v3 = [(PHAdjustmentData *)self formatIdentifier];
-  if (v3)
+  formatIdentifier = [(PHAdjustmentData *)self formatIdentifier];
+  if (formatIdentifier)
   {
-    v4 = [(PHAdjustmentData *)self data];
-    v5 = [v4 length] != 0;
+    data = [(PHAdjustmentData *)self data];
+    v5 = [data length] != 0;
   }
 
   else

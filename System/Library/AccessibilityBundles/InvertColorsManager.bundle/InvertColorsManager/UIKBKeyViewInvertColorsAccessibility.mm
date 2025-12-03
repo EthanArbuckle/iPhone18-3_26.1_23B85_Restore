@@ -1,7 +1,7 @@
 @interface UIKBKeyViewInvertColorsAccessibility
 - (BOOL)_accessibilityIsEmojiPopupKey;
 - (void)_accessibilityLoadInvertColors;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 @end
 
 @implementation UIKBKeyViewInvertColorsAccessibility
@@ -48,7 +48,7 @@
     v7 = 3221225472;
     v8 = sub_B0D8;
     v9 = &unk_44728;
-    v10 = self;
+    selfCopy = self;
     v11 = &v12;
     AXPerformSafeBlock();
     v3 = v13[5];
@@ -65,7 +65,7 @@
         [v3 setShadowOpacity:v5];
       }
 
-      [AXInvertColorsAppHelper toggleInvertColors:v3, v6, v7, v8, v9, v10, v11];
+      [AXInvertColorsAppHelper toggleInvertColors:v3, v6, v7, v8, v9, selfCopy, v11];
     }
   }
 
@@ -76,11 +76,11 @@
   }
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = UIKBKeyViewInvertColorsAccessibility;
-  [(UIKBKeyViewInvertColorsAccessibility *)&v4 displayLayer:a3];
+  [(UIKBKeyViewInvertColorsAccessibility *)&v4 displayLayer:layer];
   [(UIKBKeyViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

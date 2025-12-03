@@ -19,9 +19,9 @@
 
 + (IDSCKDatabase)alloc
 {
-  v2 = [a1 __class];
+  __class = [self __class];
 
-  return [v2 alloc];
+  return [__class alloc];
 }
 
 @end

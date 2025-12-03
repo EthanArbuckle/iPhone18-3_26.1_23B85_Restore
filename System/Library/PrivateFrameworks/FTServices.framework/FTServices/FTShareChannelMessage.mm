@@ -1,57 +1,57 @@
 @interface FTShareChannelMessage
-- (FTShareChannelMessage)initWithProtoData:(id)a3 messageType:(int)a4;
+- (FTShareChannelMessage)initWithProtoData:(id)data messageType:(int)type;
 - (id)additionalMessageHeadersForOutgoingPush;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (int64_t)command;
 - (int64_t)responseCommand;
-- (void)handleResponseDictionary:(id)a3;
-- (void)handleResponseHeaders:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
+- (void)handleResponseHeaders:(id)headers;
 @end
 
 @implementation FTShareChannelMessage
 
-- (FTShareChannelMessage)initWithProtoData:(id)a3 messageType:(int)a4
+- (FTShareChannelMessage)initWithProtoData:(id)data messageType:(int)type
 {
-  v7 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = FTShareChannelMessage;
   v8 = [(FTIDSMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_protoData, a3);
-    v9->_messageType = a4;
+    objc_storeStrong(&v8->_protoData, data);
+    v9->_messageType = type;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = FTShareChannelMessage;
-  v4 = [(FTIDSMessage *)&v8 copyWithZone:a3];
-  v5 = [(FTShareChannelMessage *)self messageID];
-  [v4 setMessageID:v5];
+  v4 = [(FTIDSMessage *)&v8 copyWithZone:zone];
+  messageID = [(FTShareChannelMessage *)self messageID];
+  [v4 setMessageID:messageID];
 
   [v4 setVersion:{-[FTShareChannelMessage version](self, "version")}];
-  v6 = [(FTShareChannelMessage *)self protoData];
-  [v4 setProtoData:v6];
+  protoData = [(FTShareChannelMessage *)self protoData];
+  [v4 setProtoData:protoData];
 
   return v4;
 }
 
 - (int64_t)command
 {
-  v2 = [(FTShareChannelMessage *)self messageType];
+  messageType = [(FTShareChannelMessage *)self messageType];
   v3 = 224;
-  if (v2 == 2)
+  if (messageType == 2)
   {
     v3 = 225;
   }
 
-  if (v2 == 3)
+  if (messageType == 3)
   {
     return 226;
   }
@@ -64,14 +64,14 @@
 
 - (int64_t)responseCommand
 {
-  v2 = [(FTShareChannelMessage *)self messageType];
+  messageType = [(FTShareChannelMessage *)self messageType];
   v3 = 224;
-  if (v2 == 2)
+  if (messageType == 2)
   {
     v3 = 225;
   }
 
-  if (v2 == 3)
+  if (messageType == 3)
   {
     return 226;
   }
@@ -86,8 +86,8 @@
 {
   v5.receiver = self;
   v5.super_class = FTShareChannelMessage;
-  v2 = [(FTIDSMessage *)&v5 additionalMessageHeaders];
-  v3 = [v2 mutableCopy];
+  additionalMessageHeaders = [(FTIDSMessage *)&v5 additionalMessageHeaders];
+  v3 = [additionalMessageHeaders mutableCopy];
 
   return v3;
 }
@@ -97,11 +97,11 @@
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = FTShareChannelMessage;
-  v3 = [(IDSBaseMessage *)&v19 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSBaseMessage *)&v19 messageBody];
+  v4 = [messageBody mutableCopy];
 
-  v5 = [(FTShareChannelMessage *)self messageID];
-  if (v5)
+  messageID = [(FTShareChannelMessage *)self messageID];
+  if (messageID)
   {
     [(FTShareChannelMessage *)self messageID];
   }
@@ -111,21 +111,21 @@
     [MEMORY[0x1E696AEC0] stringGUID];
   }
   v6 = ;
-  v7 = [v6 UTF8String];
+  uTF8String = [v6 UTF8String];
 
   memset(uu, 170, sizeof(uu));
-  uuid_parse(v7, uu);
+  uuid_parse(uTF8String, uu);
   jw_uuid_to_data();
   v8 = 0;
-  v9 = [(FTShareChannelMessage *)self version];
-  if (v9 <= 1)
+  version = [(FTShareChannelMessage *)self version];
+  if (version <= 1)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v9;
+    v10 = version;
   }
 
   v11 = v8;
@@ -150,16 +150,16 @@
     sub_195962E4C();
   }
 
-  v13 = [(FTShareChannelMessage *)self messageType];
-  v14 = [(FTShareChannelMessage *)self protoData];
-  v15 = v14;
-  if (v13 == 3)
+  messageType = [(FTShareChannelMessage *)self messageType];
+  protoData = [(FTShareChannelMessage *)self protoData];
+  v15 = protoData;
+  if (messageType == 3)
   {
-    if (v14)
+    if (protoData)
     {
       v16 = @"scPrReq";
 LABEL_20:
-      CFDictionarySetValue(v4, v16, v14);
+      CFDictionarySetValue(v4, v16, protoData);
       goto LABEL_25;
     }
 
@@ -171,7 +171,7 @@ LABEL_20:
 
   else
   {
-    if (v14)
+    if (protoData)
     {
       v16 = @"scReq";
       goto LABEL_20;
@@ -190,9 +190,9 @@ LABEL_25:
   return v4;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   if ([(FTShareChannelMessage *)self messageType]== 3)
   {
     v4 = @"scPrRes";
@@ -203,25 +203,25 @@ LABEL_25:
     v4 = @"scRes";
   }
 
-  v5 = [v8 _dataForKey:v4];
+  v5 = [dictionaryCopy _dataForKey:v4];
   [(FTShareChannelMessage *)self setProtoResponse:v5];
 
-  v6 = [v8 _stringForKey:@"U"];
+  v6 = [dictionaryCopy _stringForKey:@"U"];
   [(FTShareChannelMessage *)self setMessageID:v6];
 
-  v7 = [v8 _numberForKey:@"s"];
+  v7 = [dictionaryCopy _numberForKey:@"s"];
   -[FTShareChannelMessage setResponseValue:](self, "setResponseValue:", [v7 intValue]);
 }
 
-- (void)handleResponseHeaders:(id)a3
+- (void)handleResponseHeaders:(id)headers
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  headersCopy = headers;
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = headersCopy;
     _os_log_impl(&dword_195925000, v4, OS_LOG_TYPE_DEFAULT, "Web Tunnel Message Completed With Respone Headers %@", buf, 0xCu);
   }
 

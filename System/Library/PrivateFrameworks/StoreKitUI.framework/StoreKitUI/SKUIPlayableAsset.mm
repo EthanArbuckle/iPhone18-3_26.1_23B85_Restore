@@ -1,8 +1,8 @@
 @interface SKUIPlayableAsset
 - (SKUIPlayableAsset)init;
-- (SKUIPlayableAsset)initWithContentURL:(id)a3;
-- (SKUIPlayableAsset)initWithVideo:(id)a3;
-- (SKUIPlayableAsset)initWithVideoViewElement:(id)a3 assetViewElement:(id)a4;
+- (SKUIPlayableAsset)initWithContentURL:(id)l;
+- (SKUIPlayableAsset)initWithVideo:(id)video;
+- (SKUIPlayableAsset)initWithVideoViewElement:(id)element assetViewElement:(id)viewElement;
 @end
 
 @implementation SKUIPlayableAsset
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (SKUIPlayableAsset)initWithContentURL:(id)a3
+- (SKUIPlayableAsset)initWithContentURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -52,16 +52,16 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contentURL, a3);
+    objc_storeStrong(&v14->_contentURL, l);
   }
 
   return v15;
 }
 
-- (SKUIPlayableAsset)initWithVideoViewElement:(id)a3 assetViewElement:(id)a4
+- (SKUIPlayableAsset)initWithVideoViewElement:(id)element assetViewElement:(id)viewElement
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  viewElementCopy = viewElement;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,43 +76,43 @@
 
   v16 = [(SKUIPlayableAsset *)self init];
   v17 = v16;
-  if (v7 && v16)
+  if (viewElementCopy && v16)
   {
-    v18 = [v7 URL];
+    v18 = [viewElementCopy URL];
     contentURL = v17->_contentURL;
     v17->_contentURL = v18;
 
-    [v7 initialPlaybackTime];
+    [viewElementCopy initialPlaybackTime];
     v17->_initialPlaybackTime = v20;
-    v21 = [v7 itemIdentifier];
-    v17->_storeItemIdentifier = v21;
-    if (!v21)
+    itemIdentifier = [viewElementCopy itemIdentifier];
+    v17->_storeItemIdentifier = itemIdentifier;
+    if (!itemIdentifier)
     {
-      v17->_storeItemIdentifier = [v6 itemIdentifier];
+      v17->_storeItemIdentifier = [elementCopy itemIdentifier];
     }
 
-    v22 = [v7 secureKeyDeliveryType];
-    v17->_shouldUseITunesStoreSecureKeyDelivery = [v22 isEqualToString:0x282813D68];
+    secureKeyDeliveryType = [viewElementCopy secureKeyDeliveryType];
+    v17->_shouldUseITunesStoreSecureKeyDelivery = [secureKeyDeliveryType isEqualToString:0x282813D68];
 
-    v17->_ITunesStream = [v7 isITunesStream];
-    v23 = [v7 keyCertificateURL];
+    v17->_ITunesStream = [viewElementCopy isITunesStream];
+    keyCertificateURL = [viewElementCopy keyCertificateURL];
     keyCertificateURL = v17->_keyCertificateURL;
-    v17->_keyCertificateURL = v23;
+    v17->_keyCertificateURL = keyCertificateURL;
 
-    v25 = [v7 keyServerURL];
+    keyServerURL = [viewElementCopy keyServerURL];
     keyServerURL = v17->_keyServerURL;
-    v17->_keyServerURL = v25;
+    v17->_keyServerURL = keyServerURL;
 
-    [v7 playbackDuration];
+    [viewElementCopy playbackDuration];
     v17->_playbackDuration = v27;
   }
 
   return v17;
 }
 
-- (SKUIPlayableAsset)initWithVideo:(id)a3
+- (SKUIPlayableAsset)initWithVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -127,9 +127,9 @@
 
   v13 = [(SKUIPlayableAsset *)self init];
   v14 = v13;
-  if (v4 && v13)
+  if (videoCopy && v13)
   {
-    v15 = [v4 URL];
+    v15 = [videoCopy URL];
     contentURL = v14->_contentURL;
     v14->_contentURL = v15;
   }

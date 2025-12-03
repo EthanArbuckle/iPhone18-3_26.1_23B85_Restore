@@ -1,8 +1,8 @@
 @interface _SBHardwareButtonHintDropletState
-- (id)initWithButton:(void *)a3 dropletContextView:(void *)a4 contentView:(void *)a5 groupState:;
+- (id)initWithButton:(void *)button dropletContextView:(void *)view contentView:(void *)contentView groupState:;
 - (uint64_t)setPresentedStage:(uint64_t)result;
 - (void)isIdle;
-- (void)setLayoutCallback:(void *)a1;
+- (void)setLayoutCallback:(void *)callback;
 - (void)stage;
 @end
 
@@ -18,42 +18,42 @@
   return result;
 }
 
-- (void)setLayoutCallback:(void *)a1
+- (void)setLayoutCallback:(void *)callback
 {
-  if (a1)
+  if (callback)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 40);
+    objc_setProperty_nonatomic_copy(callback, newValue, newValue, 40);
   }
 }
 
-- (id)initWithButton:(void *)a3 dropletContextView:(void *)a4 contentView:(void *)a5 groupState:
+- (id)initWithButton:(void *)button dropletContextView:(void *)view contentView:(void *)contentView groupState:
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  buttonCopy = button;
+  viewCopy = view;
+  contentViewCopy = contentView;
+  if (self)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = _SBHardwareButtonHintDropletState;
     v12 = objc_msgSendSuper2(&v16, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
-      objc_storeStrong(v12 + 2, a5);
-      a1[1] = a2;
-      a1[8] = 1;
+      objc_storeStrong(v12 + 2, contentView);
+      self[1] = a2;
+      self[8] = 1;
       if (a2 != 10)
       {
-        v13 = [v9 addContainerWithContentView:v10];
-        v14 = a1[3];
-        a1[3] = v13;
+        v13 = [buttonCopy addContainerWithContentView:viewCopy];
+        v14 = self[3];
+        self[3] = v13;
       }
 
-      objc_storeStrong(a1 + 4, a4);
+      objc_storeStrong(self + 4, view);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)stage

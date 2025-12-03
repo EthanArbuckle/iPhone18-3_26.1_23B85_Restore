@@ -6,50 +6,50 @@
 - (NSDictionary)placeCacheResultsDict;
 - (id)getRecvBytesForAllApps;
 - (id)getXmitBytesForAllApps;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)getTotalRequestCountFor:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)getTotalRequestCountFor:(id)for;
 - (int64_t)getTotalRequestCountForAllApps;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_getCacheTotal:(unsigned __int8)a3 forApp:(id)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_getCacheTotal:(unsigned __int8)total forApp:(id)app;
 - (void)_fetchPlaceCacheReults;
 - (void)_reloadData;
 - (void)_resetLogs;
 - (void)_toggleLogging;
-- (void)requestLogs:(id)a3;
-- (void)setAppRequestDict:(id)a3;
-- (void)setIsLoggingEnabled:(BOOL)a3;
-- (void)setPlaceCachePerAppCountsDict:(id)a3;
-- (void)setPlaceCacheResultsDict:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)requestLogs:(id)logs;
+- (void)setAppRequestDict:(id)dict;
+- (void)setIsLoggingEnabled:(BOOL)enabled;
+- (void)setPlaceCachePerAppCountsDict:(id)dict;
+- (void)setPlaceCacheResultsDict:(id)dict;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GeoRequestCounterTableViewController
 
-- (unint64_t)_getCacheTotal:(unsigned __int8)a3 forApp:(id)a4
+- (unint64_t)_getCacheTotal:(unsigned __int8)total forApp:(id)app
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_placeCachePerAppCountsDict objectForKeyedSubscript:a4];
-  v6 = [NSNumber numberWithUnsignedChar:v4];
+  totalCopy = total;
+  v5 = [(NSDictionary *)self->_placeCachePerAppCountsDict objectForKeyedSubscript:app];
+  v6 = [NSNumber numberWithUnsignedChar:totalCopy];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (id)getRecvBytesForAllApps
 {
-  v2 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-  v3 = [v2 allValues];
+  appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
+  allValues = [appRequestDict allValues];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -86,14 +86,14 @@
 
 - (id)getXmitBytesForAllApps
 {
-  v2 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-  v3 = [v2 allValues];
+  appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
+  allValues = [appRequestDict allValues];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -130,14 +130,14 @@
 
 - (int64_t)getTotalRequestCountForAllApps
 {
-  v3 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-  v4 = [v3 allValues];
+  appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
+  allValues = [appRequestDict allValues];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -170,7 +170,7 @@
   return v8;
 }
 
-- (int64_t)getTotalRequestCountFor:(id)a3
+- (int64_t)getTotalRequestCountFor:(id)for
 {
   v9 = 0;
   v10 = &v9;
@@ -181,9 +181,9 @@
   v6[2] = sub_100DF3570;
   v6[3] = &unk_101655428;
   v8 = &v9;
-  v3 = a3;
-  v7 = v3;
-  [v3 enumerateRequestTypes:v6];
+  forCopy = for;
+  v7 = forCopy;
+  [forCopy enumerateRequestTypes:v6];
   v4 = v10[3];
 
   _Block_object_dispose(&v9, 8);
@@ -210,14 +210,14 @@
   placeCacheCountsOrderedKeys = self->_placeCacheCountsOrderedKeys;
   self->_placeCacheCountsOrderedKeys = 0;
 
-  v9 = [(GeoRequestCounterTableViewController *)self tableView];
-  [v9 reloadData];
+  tableView = [(GeoRequestCounterTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_resetLogs
 {
-  v3 = [(GeoRequestCounterTableViewController *)self reqCounter];
-  [v3 clearCounters];
+  reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
+  [reqCounter clearCounters];
 
   [(GeoRequestCounterTableViewController *)self _reloadData];
   v5 = objc_alloc_init(UIAlertController);
@@ -236,68 +236,68 @@
   [(GeoRequestCounterTableViewController *)self setIsLoggingEnabled:v3];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v23 = a4;
-  v5 = [v23 section];
-  if (v5 > 2)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section > 2)
   {
-    if (v5 == 3)
+    if (section == 3)
     {
-      v12 = [(GeoRequestCounterTableViewController *)self appRequestOrderedKeys];
-      v7 = [v12 objectAtIndexedSubscript:{objc_msgSend(v23, "row")}];
+      appRequestOrderedKeys = [(GeoRequestCounterTableViewController *)self appRequestOrderedKeys];
+      v7 = [appRequestOrderedKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v13 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-      v14 = [v13 objectForKeyedSubscript:v7];
+      appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
+      v14 = [appRequestDict objectForKeyedSubscript:v7];
 
       v15 = [[GeoRequestDetailTableViewController alloc] initWithGEORequestCounterInfo:v14];
     }
 
     else
     {
-      if (v5 != 4)
+      if (section != 4)
       {
-        if (v5 == 5)
+        if (section == 5)
         {
-          v8 = [(GeoRequestCounterTableViewController *)self tableView];
-          [v8 deselectRowAtIndexPath:v23 animated:1];
+          tableView = [(GeoRequestCounterTableViewController *)self tableView];
+          [tableView deselectRowAtIndexPath:pathCopy animated:1];
         }
 
         goto LABEL_23;
       }
 
-      v18 = [(GeoRequestCounterTableViewController *)self placeCacheCountsOrderedKeys];
-      v7 = [v18 objectAtIndexedSubscript:{objc_msgSend(v23, "row")}];
+      placeCacheCountsOrderedKeys = [(GeoRequestCounterTableViewController *)self placeCacheCountsOrderedKeys];
+      v7 = [placeCacheCountsOrderedKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v19 = [(GeoRequestCounterTableViewController *)self placeCacheResultsDict];
-      v14 = [v19 objectForKeyedSubscript:v7];
+      placeCacheResultsDict = [(GeoRequestCounterTableViewController *)self placeCacheResultsDict];
+      v14 = [placeCacheResultsDict objectForKeyedSubscript:v7];
 
       v15 = [[GeoPlaceCacheDetailTableViewController alloc] initWithGEORequestCounterCacheResults:v14];
     }
 
     v20 = v15;
     [(GeoRequestDetailTableViewController *)v15 setTitle:v7];
-    v21 = [(GeoRequestCounterTableViewController *)self navigationController];
-    [v21 pushViewController:v20 animated:1];
+    navigationController = [(GeoRequestCounterTableViewController *)self navigationController];
+    [navigationController pushViewController:v20 animated:1];
 
 LABEL_22:
     goto LABEL_23;
   }
 
-  if (v5)
+  if (section)
   {
-    if (v5 == 1)
+    if (section == 1)
     {
       v16 = [GeoTotalRequestCountTableViewController alloc];
-      v17 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-      v7 = [(GeoTotalRequestCountTableViewController *)v16 initWithDictionary:v17];
+      appRequestDict2 = [(GeoRequestCounterTableViewController *)self appRequestDict];
+      v7 = [(GeoTotalRequestCountTableViewController *)v16 initWithDictionary:appRequestDict2];
 
       v6 = v7;
     }
 
     else
     {
-      if (v5 != 2)
+      if (section != 2)
       {
         goto LABEL_23;
       }
@@ -308,13 +308,13 @@ LABEL_22:
 
     [(GeoPlaceCacheDetailTableViewController *)v6 setTitle:@"Total Request"];
 LABEL_21:
-    v22 = [(GeoRequestCounterTableViewController *)self navigationController];
-    [v22 pushViewController:v7 animated:1];
+    navigationController2 = [(GeoRequestCounterTableViewController *)self navigationController];
+    [navigationController2 pushViewController:v7 animated:1];
 
     goto LABEL_22;
   }
 
-  v9 = [v23 row];
+  v9 = [pathCopy row];
   if (v9 != 3)
   {
     if (v9 == 2)
@@ -342,138 +342,138 @@ LABEL_21:
 LABEL_23:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v66 = a4;
-  v7 = [v66 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v8 = 0;
-  if (v7 > 2)
+  if (section > 2)
   {
-    switch(v7)
+    switch(section)
     {
       case 3:
-        v8 = [v6 dequeueReusableCellWithIdentifier:@"AppRequests"];
+        v8 = [viewCopy dequeueReusableCellWithIdentifier:@"AppRequests"];
         if (!v8)
         {
           v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"AppRequests"];
         }
 
-        v24 = [(GeoRequestCounterTableViewController *)self appRequestOrderedKeys];
-        v13 = [v24 objectAtIndex:{objc_msgSend(v66, "row")}];
+        appRequestOrderedKeys = [(GeoRequestCounterTableViewController *)self appRequestOrderedKeys];
+        v13 = [appRequestOrderedKeys objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v25 = [(GeoRequestCounterTableViewController *)self view];
-        v26 = [v25 window];
-        if (v26)
+        view = [(GeoRequestCounterTableViewController *)self view];
+        window = [view window];
+        if (window)
         {
-          v27 = [(GeoRequestCounterTableViewController *)self view];
-          [v27 window];
-          v29 = v28 = v6;
-          v30 = [v29 screen];
-          [v30 scale];
+          view2 = [(GeoRequestCounterTableViewController *)self view];
+          [view2 window];
+          v29 = v28 = viewCopy;
+          screen = [v29 screen];
+          [screen scale];
           v31 = [UIImage _applicationIconImageForBundleIdentifier:v13 format:0 scale:?];
 
-          v6 = v28;
+          viewCopy = v28;
         }
 
         else
         {
-          v27 = +[UIScreen mainScreen];
-          [v27 scale];
+          view2 = +[UIScreen mainScreen];
+          [view2 scale];
           v31 = [UIImage _applicationIconImageForBundleIdentifier:v13 format:0 scale:?];
         }
 
-        v48 = [v8 imageView];
-        [v48 setImage:v31];
+        imageView = [v8 imageView];
+        [imageView setImage:v31];
 
-        v49 = [(GeoRequestCounterTableViewController *)self appRequestDict];
-        v50 = [v49 objectForKeyedSubscript:v13];
+        appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
+        v50 = [appRequestDict objectForKeyedSubscript:v13];
 
-        v51 = [v8 textLabel];
-        [v51 setText:v13];
+        textLabel = [v8 textLabel];
+        [textLabel setText:v13];
 
         v52 = [(GeoRequestCounterTableViewController *)self getTotalRequestCountFor:v50];
         v53 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v50 xmitBytes], 3);
         v54 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v50 recvBytes], 3);
         v55 = [NSString stringWithFormat:@"%ld requests : xmit:%@ / recv:%@", v52, v53, v54];
-        v56 = [v8 detailTextLabel];
-        [v56 setText:v55];
+        detailTextLabel = [v8 detailTextLabel];
+        [detailTextLabel setText:v55];
 
         [v8 setAccessoryType:1];
         break;
       case 4:
-        v8 = [v6 dequeueReusableCellWithIdentifier:@"CacheRequests"];
+        v8 = [viewCopy dequeueReusableCellWithIdentifier:@"CacheRequests"];
         if (!v8)
         {
           v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"CacheRequests"];
         }
 
-        v38 = [(GeoRequestCounterTableViewController *)self placeCacheCountsOrderedKeys];
-        v13 = [v38 objectAtIndex:{objc_msgSend(v66, "row")}];
+        placeCacheCountsOrderedKeys = [(GeoRequestCounterTableViewController *)self placeCacheCountsOrderedKeys];
+        v13 = [placeCacheCountsOrderedKeys objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v39 = [(GeoRequestCounterTableViewController *)self view];
-        v40 = [v39 window];
-        if (v40)
+        view3 = [(GeoRequestCounterTableViewController *)self view];
+        window2 = [view3 window];
+        if (window2)
         {
-          v41 = [(GeoRequestCounterTableViewController *)self view];
-          v42 = [v41 window];
-          [v42 screen];
-          v44 = v43 = v6;
+          view4 = [(GeoRequestCounterTableViewController *)self view];
+          window3 = [view4 window];
+          [window3 screen];
+          v44 = v43 = viewCopy;
           [v44 scale];
           v31 = [UIImage _applicationIconImageForBundleIdentifier:v13 format:0 scale:?];
 
-          v6 = v43;
+          viewCopy = v43;
         }
 
         else
         {
-          v41 = +[UIScreen mainScreen];
-          [v41 scale];
+          view4 = +[UIScreen mainScreen];
+          [view4 scale];
           v31 = [UIImage _applicationIconImageForBundleIdentifier:v13 format:0 scale:?];
         }
 
-        v57 = [v8 imageView];
-        [v57 setImage:v31];
+        imageView2 = [v8 imageView];
+        [imageView2 setImage:v31];
 
-        v58 = [v8 textLabel];
-        [v58 setText:v13];
+        textLabel2 = [v8 textLabel];
+        [textLabel2 setText:v13];
 
         v59 = [NSString stringWithFormat:@"%ld hits / %ld misses / %ld expired", [(GeoRequestCounterTableViewController *)self getCacheHitsForApp:v13], [(GeoRequestCounterTableViewController *)self getCacheMissesForApp:v13], [(GeoRequestCounterTableViewController *)self getCacheExpiredForApp:v13]];
-        v60 = [v8 detailTextLabel];
-        [v60 setText:v59];
+        detailTextLabel2 = [v8 detailTextLabel];
+        [detailTextLabel2 setText:v59];
 
         [v8 setAccessoryType:1];
         break;
       case 5:
-        v8 = [v6 dequeueReusableCellWithIdentifier:@"RoutePreloadSession"];
+        v8 = [viewCopy dequeueReusableCellWithIdentifier:@"RoutePreloadSession"];
         if (!v8)
         {
           v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"RoutePreloadSession"];
         }
 
-        v12 = [(GeoRequestCounterTableViewController *)self routePreloadSessions];
-        v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v66, "row")}];
+        routePreloadSessions = [(GeoRequestCounterTableViewController *)self routePreloadSessions];
+        v13 = [routePreloadSessions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
         dateIntervalFormatter = self->_dateIntervalFormatter;
-        v15 = [v13 dateInterval];
-        v16 = [(NSDateIntervalFormatter *)dateIntervalFormatter stringFromDateInterval:v15];
-        v17 = [v8 textLabel];
-        [v17 setText:v16];
+        dateInterval = [v13 dateInterval];
+        v16 = [(NSDateIntervalFormatter *)dateIntervalFormatter stringFromDateInterval:dateInterval];
+        textLabel3 = [v8 textLabel];
+        [textLabel3 setText:v16];
 
-        v18 = [v13 transportType];
-        if (v18 >= 7)
+        transportType = [v13 transportType];
+        if (transportType >= 7)
         {
-          v19 = [NSString stringWithFormat:@"(unknown: %i)", v18];
+          v19 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
         }
 
         else
         {
-          v19 = *(&off_101655478 + (v18 & 7));
+          v19 = *(&off_101655478 + (transportType & 7));
         }
 
         v46 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@: Preloaded: %llu - Missed: %llu / %llu", v19, [v13 tilesPreloaded], objc_msgSend(v13, "tilesMissed"), objc_msgSend(v13, "tilesUsed"));
-        v47 = [v8 detailTextLabel];
-        [v47 setText:v46];
+        detailTextLabel3 = [v8 detailTextLabel];
+        [detailTextLabel3 setText:v46];
 
         [v8 setAccessoryType:0];
         [v8 setSelectionStyle:0];
@@ -487,19 +487,19 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  switch(v7)
+  switch(section)
   {
     case 0:
       v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-      v20 = [v66 row];
+      v20 = [pathCopy row];
       if (v20 > 1)
       {
         if (v20 != 2)
         {
           if (v20 == 3)
           {
-            v45 = [v8 textLabel];
-            [v45 setText:@"Clear Logs"];
+            textLabel4 = [v8 textLabel];
+            [textLabel4 setText:@"Clear Logs"];
           }
 
           goto LABEL_38;
@@ -508,14 +508,14 @@ LABEL_37:
         v21 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
 
         [v21 setSelectionStyle:3];
-        v63 = [v21 textLabel];
-        [v63 setText:@"Interface Filters"];
+        textLabel5 = [v21 textLabel];
+        [textLabel5 setText:@"Interface Filters"];
 
         v23 = 104;
 LABEL_43:
-        v64 = [*(&self->super.super.super.super.isa + v23) currentSelectionString];
-        v65 = [v21 detailTextLabel];
-        [v65 setText:v64];
+        currentSelectionString = [*(&self->super.super.super.super.isa + v23) currentSelectionString];
+        detailTextLabel4 = [v21 detailTextLabel];
+        [detailTextLabel4 setText:currentSelectionString];
 
         [v21 setAccessoryType:1];
         v8 = v21;
@@ -532,15 +532,15 @@ LABEL_43:
         v21 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
 
         [v21 setSelectionStyle:3];
-        v22 = [v21 textLabel];
-        [v22 setText:@"Duration"];
+        textLabel6 = [v21 textLabel];
+        [textLabel6 setText:@"Duration"];
 
         v23 = 88;
         goto LABEL_43;
       }
 
-      v62 = [v8 textLabel];
-      [v62 setText:@"Enable Counter"];
+      textLabel7 = [v8 textLabel];
+      [textLabel7 setText:@"Enable Counter"];
 
       v13 = objc_alloc_init(UISwitch);
       [v13 setOn:{-[GeoRequestCounterTableViewController isLoggingEnabled](self, "isLoggingEnabled")}];
@@ -550,25 +550,25 @@ LABEL_43:
       goto LABEL_37;
     case 1:
       v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-      v32 = [v8 textLabel];
-      [v32 setText:@"Total Counts"];
+      textLabel8 = [v8 textLabel];
+      [textLabel8 setText:@"Total Counts"];
 
-      v33 = [(GeoRequestCounterTableViewController *)self getTotalRequestCountForAllApps];
-      v34 = [(GeoRequestCounterTableViewController *)self getXmitBytesForAllApps];
-      v35 = [(GeoRequestCounterTableViewController *)self getRecvBytesForAllApps];
-      v36 = [NSString stringWithFormat:@"%ld requests : xmit:%@ / recv:%@", v33, v34, v35];
-      v37 = [v8 detailTextLabel];
-      [v37 setText:v36];
+      getTotalRequestCountForAllApps = [(GeoRequestCounterTableViewController *)self getTotalRequestCountForAllApps];
+      getXmitBytesForAllApps = [(GeoRequestCounterTableViewController *)self getXmitBytesForAllApps];
+      getRecvBytesForAllApps = [(GeoRequestCounterTableViewController *)self getRecvBytesForAllApps];
+      v36 = [NSString stringWithFormat:@"%ld requests : xmit:%@ / recv:%@", getTotalRequestCountForAllApps, getXmitBytesForAllApps, getRecvBytesForAllApps];
+      detailTextLabel5 = [v8 detailTextLabel];
+      [detailTextLabel5 setText:v36];
 
       break;
     case 2:
       v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-      v9 = [v8 textLabel];
-      [v9 setText:@"Total Counts"];
+      textLabel9 = [v8 textLabel];
+      [textLabel9 setText:@"Total Counts"];
 
       v10 = [NSString stringWithFormat:@"%ld hits / %ld misses / %ld expired", self->_totalCacheHits, self->_totalCacheMisses, self->_totalCacheExpired];
-      v11 = [v8 detailTextLabel];
-      [v11 setText:v10];
+      detailTextLabel6 = [v8 detailTextLabel];
+      [detailTextLabel6 setText:v10];
 
       break;
     default:
@@ -581,52 +581,52 @@ LABEL_38:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 > 5)
+  if (section > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_101655448 + a4);
+    return *(&off_101655448 + section);
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 > 2)
+  viewCopy = view;
+  if (section > 2)
   {
-    switch(a4)
+    switch(section)
     {
       case 3:
-        v8 = [(GeoRequestCounterTableViewController *)self appRequestDict];
+        appRequestDict = [(GeoRequestCounterTableViewController *)self appRequestDict];
         break;
       case 4:
-        v8 = [(GeoRequestCounterTableViewController *)self placeCacheResultsDict];
+        appRequestDict = [(GeoRequestCounterTableViewController *)self placeCacheResultsDict];
         break;
       case 5:
-        v8 = [(GeoRequestCounterTableViewController *)self routePreloadSessions];
+        appRequestDict = [(GeoRequestCounterTableViewController *)self routePreloadSessions];
         break;
       default:
         goto LABEL_13;
     }
 
-    v9 = v8;
-    v7 = [v8 count];
+    v9 = appRequestDict;
+    v7 = [appRequestDict count];
 
     goto LABEL_16;
   }
 
-  if ((a4 - 1) < 2)
+  if ((section - 1) < 2)
   {
     v7 = 1;
     goto LABEL_16;
   }
 
-  if (a4)
+  if (section)
   {
 LABEL_13:
     v7 = 0;
@@ -648,7 +648,7 @@ LABEL_16:
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(GeoRequestCounterTableViewController *)self isLoggingEnabled])
   {
@@ -663,11 +663,11 @@ LABEL_16:
 
 - (NSArray)routePreloadSessions
 {
-  v3 = [(GeoRequestCounterTableViewController *)self isLoggingEnabled];
+  isLoggingEnabled = [(GeoRequestCounterTableViewController *)self isLoggingEnabled];
   routePreloadSessions = self->_routePreloadSessions;
-  if (v3 && !routePreloadSessions)
+  if (isLoggingEnabled && !routePreloadSessions)
   {
-    v5 = [(GeoRequestCounterTableViewController *)self reqCounter];
+    reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
     [(GeoRequestCounterDurations *)self->_durations currentDurationInterval];
     v7 = [NSDate dateWithTimeIntervalSinceNow:-v6];
     v9[0] = _NSConcreteStackBlock;
@@ -675,7 +675,7 @@ LABEL_16:
     v9[2] = sub_100DF460C;
     v9[3] = &unk_101655400;
     v9[4] = self;
-    [v5 fetchRoutePreloadSessionsFrom:v7 completion:v9 completionQueue:&_dispatch_main_q];
+    [reqCounter fetchRoutePreloadSessionsFrom:v7 completion:v9 completionQueue:&_dispatch_main_q];
 
     routePreloadSessions = self->_routePreloadSessions;
   }
@@ -683,19 +683,19 @@ LABEL_16:
   return routePreloadSessions;
 }
 
-- (void)requestLogs:(id)a3
+- (void)requestLogs:(id)logs
 {
-  v4 = a3;
-  v5 = v4;
+  logsCopy = logs;
+  v5 = logsCopy;
   requestLogs = self->_requestLogs;
   if (requestLogs)
   {
-    (*(v4 + 2))(v4, requestLogs);
+    (*(logsCopy + 2))(logsCopy, requestLogs);
   }
 
   else if ([(GeoRequestCounterTableViewController *)self isLoggingEnabled])
   {
-    v7 = [(GeoRequestCounterTableViewController *)self reqCounter];
+    reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
     [(GeoRequestCounterDurations *)self->_durations currentDurationInterval];
     v9 = [NSDate dateWithTimeIntervalSinceNow:-v8];
     v10[0] = _NSConcreteStackBlock;
@@ -704,7 +704,7 @@ LABEL_16:
     v10[3] = &unk_1016601F0;
     v10[4] = self;
     v11 = v5;
-    [v7 readRequestLogsSince:v9 handler:v10];
+    [reqCounter readRequestLogsSince:v9 handler:v10];
   }
 
   else
@@ -713,11 +713,11 @@ LABEL_16:
   }
 }
 
-- (void)setPlaceCachePerAppCountsDict:(id)a3
+- (void)setPlaceCachePerAppCountsDict:(id)dict
 {
-  if (self->_placeCachePerAppCountsDict != a3)
+  if (self->_placeCachePerAppCountsDict != dict)
   {
-    v4 = [a3 copy];
+    v4 = [dict copy];
     placeCachePerAppCountsDict = self->_placeCachePerAppCountsDict;
     self->_placeCachePerAppCountsDict = v4;
   }
@@ -735,16 +735,16 @@ LABEL_16:
   return placeCachePerAppCountsDict;
 }
 
-- (void)setPlaceCacheResultsDict:(id)a3
+- (void)setPlaceCacheResultsDict:(id)dict
 {
-  if (self->_placeCacheResultsDict != a3)
+  if (self->_placeCacheResultsDict != dict)
   {
-    v4 = [a3 copy];
+    v4 = [dict copy];
     placeCacheResultsDict = self->_placeCacheResultsDict;
     self->_placeCacheResultsDict = v4;
 
-    v6 = [(NSDictionary *)self->_placeCacheResultsDict allKeys];
-    v9 = [v6 sortedArrayUsingSelector:"compare:"];
+    allKeys = [(NSDictionary *)self->_placeCacheResultsDict allKeys];
+    v9 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     if (v9)
     {
@@ -780,35 +780,35 @@ LABEL_16:
 
 - (void)_fetchPlaceCacheReults
 {
-  v3 = [(GeoRequestCounterTableViewController *)self reqCounter];
+  reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100DF4BB8;
   v4[3] = &unk_101660FB0;
   v4[4] = self;
-  [v3 placeCacheGetCounts:0 forApp:0 inTimeRange:0 ofType:0 handler:v4];
+  [reqCounter placeCacheGetCounts:0 forApp:0 inTimeRange:0 ofType:0 handler:v4];
 }
 
-- (void)setAppRequestDict:(id)a3
+- (void)setAppRequestDict:(id)dict
 {
-  if (self->_appRequestDict != a3)
+  if (self->_appRequestDict != dict)
   {
-    v4 = a3;
-    +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    dictCopy = dict;
+    +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dictCopy count]);
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_100DF521C;
     v14 = &unk_1016553B0;
     v5 = v15 = self;
     v16 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v11];
+    [dictCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
     v6 = [v5 copy];
     appRequestDict = self->_appRequestDict;
     self->_appRequestDict = v6;
 
-    v8 = [(NSDictionary *)self->_appRequestDict allKeys];
-    v9 = [v8 sortedArrayUsingSelector:"compare:"];
+    allKeys = [(NSDictionary *)self->_appRequestDict allKeys];
+    v9 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     if (v9)
     {
@@ -831,7 +831,7 @@ LABEL_16:
 {
   if (!self->_appRequestDict && [(GeoRequestCounterTableViewController *)self isLoggingEnabled])
   {
-    v3 = [(GeoRequestCounterTableViewController *)self reqCounter];
+    reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
     [(GeoRequestCounterDurations *)self->_durations currentDurationInterval];
     v5 = [NSDate dateWithTimeIntervalSinceNow:-v4];
     v8[0] = _NSConcreteStackBlock;
@@ -839,7 +839,7 @@ LABEL_16:
     v8[2] = sub_100DF5398;
     v8[3] = &unk_101655388;
     v8[4] = self;
-    [v3 readRequestsPerAppSince:v5 handler:v8];
+    [reqCounter readRequestsPerAppSince:v5 handler:v8];
   }
 
   appRequestDict = self->_appRequestDict;
@@ -862,14 +862,14 @@ LABEL_16:
   return reqCounter;
 }
 
-- (void)setIsLoggingEnabled:(BOOL)a3
+- (void)setIsLoggingEnabled:(BOOL)enabled
 {
-  self->_isLoggingEnabled = a3;
-  v4 = [(GeoRequestCounterTableViewController *)self reqCounter];
-  [v4 setCountersEnabled:self->_isLoggingEnabled];
+  self->_isLoggingEnabled = enabled;
+  reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
+  [reqCounter setCountersEnabled:self->_isLoggingEnabled];
 
-  v5 = [(GeoRequestCounterTableViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(GeoRequestCounterTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -881,20 +881,20 @@ LABEL_16:
   durations = self->_durations;
   self->_durations = v3;
 
-  v5 = [(GeoRequestCounterDurations *)self->_durations currentSelection];
-  self->_currentDuration = [v5 firstIndex];
+  currentSelection = [(GeoRequestCounterDurations *)self->_durations currentSelection];
+  self->_currentDuration = [currentSelection firstIndex];
 
   v6 = objc_alloc_init(GeoRequestCounterInterfaces);
   interfaces = self->_interfaces;
   self->_interfaces = v6;
 
   [(GeoRequestCounterTableViewController *)self setTitle:@"geod Counters"];
-  v8 = [(GeoRequestCounterTableViewController *)self reqCounter];
-  self->_isLoggingEnabled = [v8 countersEnabled];
+  reqCounter = [(GeoRequestCounterTableViewController *)self reqCounter];
+  self->_isLoggingEnabled = [reqCounter countersEnabled];
 
   v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:13 target:self action:"_reloadData"];
-  v10 = [(GeoRequestCounterTableViewController *)self navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(GeoRequestCounterTableViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   v11 = objc_alloc_init(NSDateIntervalFormatter);
   dateIntervalFormatter = self->_dateIntervalFormatter;
@@ -904,28 +904,28 @@ LABEL_16:
   [(NSDateIntervalFormatter *)self->_dateIntervalFormatter setTimeStyle:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = GeoRequestCounterTableViewController;
-  [(GeoRequestCounterTableViewController *)&v8 viewWillAppear:a3];
-  v4 = [(GeoRequestCounterDurations *)self->_durations currentSelection];
-  v5 = [v4 firstIndex];
+  [(GeoRequestCounterTableViewController *)&v8 viewWillAppear:appear];
+  currentSelection = [(GeoRequestCounterDurations *)self->_durations currentSelection];
+  firstIndex = [currentSelection firstIndex];
 
   currentDuration = self->_currentDuration;
-  if (currentDuration != v5)
+  if (currentDuration != firstIndex)
   {
-    self->_currentDuration = v5;
+    self->_currentDuration = firstIndex;
   }
 
-  v7 = [(GeoRequestCounterInterfaces *)self->_interfaces currentInterfaces];
-  if (self->_currentInterfaces != v7)
+  currentInterfaces = [(GeoRequestCounterInterfaces *)self->_interfaces currentInterfaces];
+  if (self->_currentInterfaces != currentInterfaces)
   {
-    self->_currentInterfaces = v7;
+    self->_currentInterfaces = currentInterfaces;
     goto LABEL_7;
   }
 
-  if (currentDuration != v5)
+  if (currentDuration != firstIndex)
   {
 LABEL_7:
     [(GeoRequestCounterTableViewController *)self _reloadData];

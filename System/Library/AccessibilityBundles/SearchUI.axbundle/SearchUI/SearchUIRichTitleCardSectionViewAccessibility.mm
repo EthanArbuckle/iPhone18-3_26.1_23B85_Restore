@@ -1,21 +1,21 @@
 @interface SearchUIRichTitleCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIRichTitleCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKHeaderView"];
-  [v3 validateClass:@"SearchUIButtonItemView"];
-  [v3 validateClass:@"SearchUIRichTitleCardSectionView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKHeaderView" hasInstanceMethod:@"trailingText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKHeaderView" hasInstanceMethod:@"footnote" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKHeaderView" hasInstanceMethod:@"roundedBorderText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKHeaderView"];
+  [validationsCopy validateClass:@"SearchUIButtonItemView"];
+  [validationsCopy validateClass:@"SearchUIRichTitleCardSectionView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKHeaderView" hasInstanceMethod:@"trailingText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKHeaderView" hasInstanceMethod:@"footnote" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKHeaderView" hasInstanceMethod:@"roundedBorderText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

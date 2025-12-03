@@ -1,22 +1,22 @@
 @interface HDCodableWorkoutZone
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasObjectType:(BOOL)a3;
-- (void)setHasStartQuantity:(BOOL)a3;
-- (void)setHasTimeInZone:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasObjectType:(BOOL)type;
+- (void)setHasStartQuantity:(BOOL)quantity;
+- (void)setHasTimeInZone:(BOOL)zone;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableWorkoutZone
 
-- (void)setHasStartQuantity:(BOOL)a3
+- (void)setHasStartQuantity:(BOOL)quantity
 {
-  if (a3)
+  if (quantity)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasObjectType:(BOOL)a3
+- (void)setHasObjectType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimeInZone:(BOOL)a3
+- (void)setHasTimeInZone:(BOOL)zone
 {
-  if (a3)
+  if (zone)
   {
     v3 = 8;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableWorkoutZone;
   v4 = [(HDCodableWorkoutZone *)&v8 description];
-  v5 = [(HDCodableWorkoutZone *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableWorkoutZone *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
@@ -136,14 +136,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     startQuantity = self->_startQuantity;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   endQuantity = self->_endQuantity;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   objectType = self->_objectType;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     timeInZone = self->_timeInZone;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    v6 = v4;
-    [v4 setUuid:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_startQuantity;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 3) = *&self->_startQuantity;
+    *(toCopy + 48) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_endQuantity;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = *&self->_endQuantity;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 2) = self->_objectType;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = self->_objectType;
+  *(toCopy + 48) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = self->_timeInZone;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 4) = self->_timeInZone;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 5))
+  if (uuid | *(equalCopy + 5))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -336,13 +336,13 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_startQuantity != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_startQuantity != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
 LABEL_23:
     v6 = 0;
@@ -351,34 +351,34 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_endQuantity != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_endQuantity != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_objectType != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_objectType != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 48) & 8) == 0;
+  v6 = (*(equalCopy + 48) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_timeInZone != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_timeInZone != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
@@ -485,22 +485,22 @@ LABEL_19:
   return v6 ^ v3 ^ v10 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HDCodableWorkoutZone *)self setUuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) != 0)
   {
-    self->_startQuantity = *(v4 + 3);
+    self->_startQuantity = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -513,14 +513,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 48) & 1) == 0)
+  else if ((*(fromCopy + 48) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_endQuantity = *(v4 + 1);
+  self->_endQuantity = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -533,12 +533,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_objectType = *(v4 + 2);
+  self->_objectType = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_7:
-    self->_timeInZone = *(v4 + 4);
+    self->_timeInZone = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 

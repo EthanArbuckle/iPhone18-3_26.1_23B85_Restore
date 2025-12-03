@@ -1,26 +1,26 @@
 @interface VOTUIBrailleView
-- (VOTUIBrailleView)initWithDotNumberPositions:(id)a3 typingMode:(int64_t)a4;
-- (id)_constraintsToCenterItem:(id)a3 withItem:(id)a4;
-- (id)_dotCircleImageFilled:(BOOL)a3;
+- (VOTUIBrailleView)initWithDotNumberPositions:(id)positions typingMode:(int64_t)mode;
+- (id)_constraintsToCenterItem:(id)item withItem:(id)withItem;
+- (id)_dotCircleImageFilled:(BOOL)filled;
 - (id)_generateAndStoreConstraintsForDotNumbers;
 - (id)_generateAndStoreTypingModeConstraintsForInsertedTextLabel;
-- (id)_xConstraintForDotNumber:(unint64_t)a3;
-- (id)_yConstraintForDotNumber:(unint64_t)a3;
+- (id)_xConstraintForDotNumber:(unint64_t)number;
+- (id)_yConstraintForDotNumber:(unint64_t)number;
 - (unint64_t)_numberOfDots;
 - (void)_addSubviews;
 - (void)_updateConstantsForDotNumberConstraints;
 - (void)_updateDotsSevenAndEightVisibility;
-- (void)displayDotNumbersWithReversed:(BOOL)a3;
-- (void)flashInsertedText:(id)a3;
-- (void)highlightBrailleDots:(id)a3;
-- (void)setDotNumberPositions:(id)a3 typingMode:(int64_t)a4;
+- (void)displayDotNumbersWithReversed:(BOOL)reversed;
+- (void)flashInsertedText:(id)text;
+- (void)highlightBrailleDots:(id)dots;
+- (void)setDotNumberPositions:(id)positions typingMode:(int64_t)mode;
 @end
 
 @implementation VOTUIBrailleView
 
-- (VOTUIBrailleView)initWithDotNumberPositions:(id)a3 typingMode:(int64_t)a4
+- (VOTUIBrailleView)initWithDotNumberPositions:(id)positions typingMode:(int64_t)mode
 {
-  v7 = a3;
+  positionsCopy = positions;
   v11.receiver = self;
   v11.super_class = VOTUIBrailleView;
   v8 = [(VOTUIBrailleView *)&v11 init];
@@ -29,50 +29,50 @@
     v9 = [UIColor colorWithWhite:0.0 alpha:0.7];
     [(VOTUIBrailleView *)v8 setBackgroundColor:v9];
 
-    v8->_typingMode = a4;
-    objc_storeStrong(&v8->_dotNumberPositions, a3);
+    v8->_typingMode = mode;
+    objc_storeStrong(&v8->_dotNumberPositions, positions);
     [(VOTUIBrailleView *)v8 _addSubviews];
   }
 
   return v8;
 }
 
-- (void)setDotNumberPositions:(id)a3 typingMode:(int64_t)a4
+- (void)setDotNumberPositions:(id)positions typingMode:(int64_t)mode
 {
-  v10 = a3;
-  if (self->_typingMode != a4)
+  positionsCopy = positions;
+  if (self->_typingMode != mode)
   {
-    v7 = [(VOTUIBrailleView *)self typingModeConstraintsForInsertedTextLabel];
+    typingModeConstraintsForInsertedTextLabel = [(VOTUIBrailleView *)self typingModeConstraintsForInsertedTextLabel];
 
-    if (v7)
+    if (typingModeConstraintsForInsertedTextLabel)
     {
-      v8 = [(VOTUIBrailleView *)self typingModeConstraintsForInsertedTextLabel];
-      [(VOTUIBrailleView *)self removeConstraints:v8];
+      typingModeConstraintsForInsertedTextLabel2 = [(VOTUIBrailleView *)self typingModeConstraintsForInsertedTextLabel];
+      [(VOTUIBrailleView *)self removeConstraints:typingModeConstraintsForInsertedTextLabel2];
     }
   }
 
-  if (self->_dotNumberPositions != v10)
+  if (self->_dotNumberPositions != positionsCopy)
   {
-    objc_storeStrong(&self->_dotNumberPositions, a3);
+    objc_storeStrong(&self->_dotNumberPositions, positions);
     [(VOTUIBrailleView *)self _updateConstantsForDotNumberConstraints];
     [(VOTUIBrailleView *)self _updateDotsSevenAndEightVisibility];
     [(VOTUIBrailleView *)self setNeedsLayout];
   }
 
-  if (self->_typingMode != a4)
+  if (self->_typingMode != mode)
   {
-    self->_typingMode = a4;
-    v9 = [(VOTUIBrailleView *)self _generateAndStoreTypingModeConstraintsForInsertedTextLabel];
-    [(VOTUIBrailleView *)self addConstraints:v9];
+    self->_typingMode = mode;
+    _generateAndStoreTypingModeConstraintsForInsertedTextLabel = [(VOTUIBrailleView *)self _generateAndStoreTypingModeConstraintsForInsertedTextLabel];
+    [(VOTUIBrailleView *)self addConstraints:_generateAndStoreTypingModeConstraintsForInsertedTextLabel];
   }
 }
 
-- (void)flashInsertedText:(id)a3
+- (void)flashInsertedText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    [(UILabel *)self->_insertedTextLabel setText:v4];
+    [(UILabel *)self->_insertedTextLabel setText:textCopy];
     [(UILabel *)self->_insertedTextLabel setAlpha:1.0];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -83,16 +83,16 @@
   }
 }
 
-- (void)highlightBrailleDots:(id)a3
+- (void)highlightBrailleDots:(id)dots
 {
-  v4 = a3;
+  dotsCopy = dots;
   if ([(VOTUIBrailleView *)self _numberOfDots])
   {
     v5 = 1;
     do
     {
       v6 = [NSNumber numberWithUnsignedInteger:v5];
-      v7 = [v4 containsObject:v6];
+      v7 = [dotsCopy containsObject:v6];
 
       v8 = [(VOTUIBrailleView *)self _circleViewForDotNumber:v5];
       v9 = v8;
@@ -128,9 +128,9 @@
   }
 }
 
-- (void)displayDotNumbersWithReversed:(BOOL)a3
+- (void)displayDotNumbersWithReversed:(BOOL)reversed
 {
-  v3 = a3;
+  reversedCopy = reversed;
   v13[0] = &off_400D8;
   v13[1] = &off_40108;
   v14[0] = &off_400F0;
@@ -153,15 +153,15 @@
     v6 = 1;
     do
     {
-      v7 = v6;
-      if (v3)
+      unsignedIntegerValue = v6;
+      if (reversedCopy)
       {
         v8 = [NSNumber numberWithUnsignedInteger:v6];
         v9 = [v5 objectForKeyedSubscript:v8];
-        v7 = [v9 unsignedIntegerValue];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
       }
 
-      v10 = [NSNumber numberWithUnsignedInteger:v7];
+      v10 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
       v11 = AXFormatNumber();
       v12 = [(VOTUIBrailleView *)self _dotNumberViewForDotNumber:v6];
       [v12 setText:v11];
@@ -175,8 +175,8 @@
 
 - (unint64_t)_numberOfDots
 {
-  v2 = [(VOTUIBrailleView *)self dotNumberPositions];
-  v3 = [v2 count];
+  dotNumberPositions = [(VOTUIBrailleView *)self dotNumberPositions];
+  v3 = [dotNumberPositions count];
 
   if (v3 != (&dword_4 + 2) && v3 != &dword_8)
   {
@@ -190,16 +190,16 @@
   return v3;
 }
 
-- (id)_dotCircleImageFilled:(BOOL)a3
+- (id)_dotCircleImageFilled:(BOOL)filled
 {
-  v3 = a3;
+  filledCopy = filled;
   if (qword_4B310 != -1)
   {
     sub_25DCC();
   }
 
   v4 = &qword_4B308;
-  if (!v3)
+  if (!filledCopy)
   {
     v4 = &qword_4B300;
   }
@@ -212,16 +212,16 @@
 - (void)_addSubviews
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VOTUIBrailleView *)self _numberOfDots];
-  v5 = [[NSMutableArray alloc] initWithCapacity:v4];
+  _numberOfDots = [(VOTUIBrailleView *)self _numberOfDots];
+  v5 = [[NSMutableArray alloc] initWithCapacity:_numberOfDots];
   dotNumberCircleViews = self->_dotNumberCircleViews;
   self->_dotNumberCircleViews = v5;
 
-  v7 = [[NSMutableArray alloc] initWithCapacity:v4];
+  v7 = [[NSMutableArray alloc] initWithCapacity:_numberOfDots];
   dotNumberViews = self->_dotNumberViews;
   self->_dotNumberViews = v7;
 
-  v9 = [[NSMutableArray alloc] initWithCapacity:v4];
+  v9 = [[NSMutableArray alloc] initWithCapacity:_numberOfDots];
   dotNumberHighlightedCircleViews = self->_dotNumberHighlightedCircleViews;
   self->_dotNumberHighlightedCircleViews = v9;
 
@@ -283,8 +283,8 @@
   }
 
   while (v27 != 1);
-  v30 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
-  if (v30)
+  xConstraintsForDotNumbers = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
+  if (xConstraintsForDotNumbers)
   {
 
 LABEL_8:
@@ -292,16 +292,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v31 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
+  yConstraintsForDotNumbers = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
 
-  if (v31)
+  if (yConstraintsForDotNumbers)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v32 = [(VOTUIBrailleView *)self _generateAndStoreConstraintsForDotNumbers];
-  [v3 addObjectsFromArray:v32];
+  _generateAndStoreConstraintsForDotNumbers = [(VOTUIBrailleView *)self _generateAndStoreConstraintsForDotNumbers];
+  [v3 addObjectsFromArray:_generateAndStoreConstraintsForDotNumbers];
 
   v33 = objc_alloc_init(UILabel);
   insertedTextLabel = self->_insertedTextLabel;
@@ -321,8 +321,8 @@ LABEL_9:
   v37 = [NSLayoutConstraint constraintWithItem:self->_insertedTextLabel attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [v3 addObject:v37];
 
-  v38 = [(VOTUIBrailleView *)self _generateAndStoreTypingModeConstraintsForInsertedTextLabel];
-  [v3 addObjectsFromArray:v38];
+  _generateAndStoreTypingModeConstraintsForInsertedTextLabel = [(VOTUIBrailleView *)self _generateAndStoreTypingModeConstraintsForInsertedTextLabel];
+  [v3 addObjectsFromArray:_generateAndStoreTypingModeConstraintsForInsertedTextLabel];
 
   [(VOTUIBrailleView *)self addConstraints:v3];
   [(VOTUIBrailleView *)self _updateDotsSevenAndEightVisibility];
@@ -362,29 +362,29 @@ LABEL_9:
   }
 }
 
-- (id)_xConstraintForDotNumber:(unint64_t)a3
+- (id)_xConstraintForDotNumber:(unint64_t)number
 {
-  v4 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
-  v5 = [v4 objectAtIndexedSubscript:a3 - 1];
+  xConstraintsForDotNumbers = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
+  v5 = [xConstraintsForDotNumbers objectAtIndexedSubscript:number - 1];
 
   return v5;
 }
 
-- (id)_yConstraintForDotNumber:(unint64_t)a3
+- (id)_yConstraintForDotNumber:(unint64_t)number
 {
-  v4 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
-  v5 = [v4 objectAtIndexedSubscript:a3 - 1];
+  yConstraintsForDotNumbers = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
+  v5 = [yConstraintsForDotNumbers objectAtIndexedSubscript:number - 1];
 
   return v5;
 }
 
-- (id)_constraintsToCenterItem:(id)a3 withItem:(id)a4
+- (id)_constraintsToCenterItem:(id)item withItem:(id)withItem
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSLayoutConstraint constraintWithItem:v6 attribute:9 relatedBy:0 toItem:v5 attribute:9 multiplier:1.0 constant:0.0];
+  withItemCopy = withItem;
+  itemCopy = item;
+  v7 = [NSLayoutConstraint constraintWithItem:itemCopy attribute:9 relatedBy:0 toItem:withItemCopy attribute:9 multiplier:1.0 constant:0.0];
   v11[0] = v7;
-  v8 = [NSLayoutConstraint constraintWithItem:v6 attribute:10 relatedBy:0 toItem:v5 attribute:10 multiplier:1.0 constant:0.0];
+  v8 = [NSLayoutConstraint constraintWithItem:itemCopy attribute:10 relatedBy:0 toItem:withItemCopy attribute:10 multiplier:1.0 constant:0.0];
 
   v11[1] = v8;
   v9 = [NSArray arrayWithObjects:v11 count:2];
@@ -395,17 +395,17 @@ LABEL_9:
 - (id)_generateAndStoreTypingModeConstraintsForInsertedTextLabel
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VOTUIBrailleView *)self typingMode];
-  if (v4 <= 2)
+  typingMode = [(VOTUIBrailleView *)self typingMode];
+  if (typingMode <= 2)
   {
-    if (v4)
+    if (typingMode)
     {
-      if (v4 != 1)
+      if (typingMode != 1)
       {
-        if (v4 != 2)
+        if (typingMode != 2)
         {
 LABEL_5:
-          v39 = [(VOTUIBrailleView *)self typingMode];
+          typingMode2 = [(VOTUIBrailleView *)self typingMode];
           _AXAssert();
           goto LABEL_22;
         }
@@ -469,13 +469,13 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  if ((v4 - 3) < 2)
+  if ((typingMode - 3) < 2)
   {
     v5 = self->_insertedTextLabel;
     goto LABEL_13;
   }
 
-  if (v4 != 5)
+  if (typingMode != 5)
   {
     goto LABEL_5;
   }
@@ -510,7 +510,7 @@ LABEL_9:
   [v3 addObject:v20];
 
 LABEL_22:
-  [(VOTUIBrailleView *)self setTypingModeConstraintsForInsertedTextLabel:v3, v39];
+  [(VOTUIBrailleView *)self setTypingModeConstraintsForInsertedTextLabel:v3, typingMode2];
 
   return v3;
 }
@@ -523,8 +523,8 @@ LABEL_22:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(VOTUIBrailleView *)self dotNumberPositions];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  dotNumberPositions = [(VOTUIBrailleView *)self dotNumberPositions];
+  v6 = [dotNumberPositions countByEnumeratingWithState:&v25 objects:v29 count:16];
   v7 = &_AXSGuidedAccessEnabled_ptr;
   if (!v6)
   {
@@ -553,7 +553,7 @@ LABEL_11:
     {
       if (*v26 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(dotNumberPositions);
       }
 
       [*(*(&v25 + 1) + 8 * j) CGPointValue];
@@ -569,7 +569,7 @@ LABEL_11:
       ++i;
     }
 
-    v8 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v8 = [dotNumberPositions countByEnumeratingWithState:&v25 objects:v29 count:16];
   }
 
   while (v8);
@@ -591,28 +591,28 @@ LABEL_12:
 
 - (void)_updateConstantsForDotNumberConstraints
 {
-  v3 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
-  v4 = [v3 count];
-  v5 = [(VOTUIBrailleView *)self dotNumberPositions];
-  if (v4 < [v5 count])
+  xConstraintsForDotNumbers = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
+  v4 = [xConstraintsForDotNumbers count];
+  dotNumberPositions = [(VOTUIBrailleView *)self dotNumberPositions];
+  if (v4 < [dotNumberPositions count])
   {
 
 LABEL_4:
-    v26 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
-    [v26 count];
-    v10 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
-    [v10 count];
-    v11 = [(VOTUIBrailleView *)self dotNumberPositions];
-    [v11 count];
+    xConstraintsForDotNumbers2 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
+    [xConstraintsForDotNumbers2 count];
+    yConstraintsForDotNumbers = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
+    [yConstraintsForDotNumbers count];
+    dotNumberPositions2 = [(VOTUIBrailleView *)self dotNumberPositions];
+    [dotNumberPositions2 count];
     _AXAssert();
 
     return;
   }
 
-  v6 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
-  v7 = [v6 count];
-  v8 = [(VOTUIBrailleView *)self dotNumberPositions];
-  v9 = [v8 count];
+  yConstraintsForDotNumbers2 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
+  v7 = [yConstraintsForDotNumbers2 count];
+  dotNumberPositions3 = [(VOTUIBrailleView *)self dotNumberPositions];
+  v9 = [dotNumberPositions3 count];
 
   if (v7 < v9)
   {
@@ -623,8 +623,8 @@ LABEL_4:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(VOTUIBrailleView *)self dotNumberPositions];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  dotNumberPositions4 = [(VOTUIBrailleView *)self dotNumberPositions];
+  v13 = [dotNumberPositions4 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -636,24 +636,24 @@ LABEL_4:
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dotNumberPositions4);
         }
 
         [*(*(&v27 + 1) + 8 * i) CGPointValue];
         v19 = v18;
         v21 = v20;
-        v22 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
-        v23 = [v22 objectAtIndexedSubscript:v15];
+        xConstraintsForDotNumbers3 = [(VOTUIBrailleView *)self xConstraintsForDotNumbers];
+        v23 = [xConstraintsForDotNumbers3 objectAtIndexedSubscript:v15];
 
         [v23 setConstant:v19];
-        v24 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
-        v25 = [v24 objectAtIndexedSubscript:v15];
+        yConstraintsForDotNumbers3 = [(VOTUIBrailleView *)self yConstraintsForDotNumbers];
+        v25 = [yConstraintsForDotNumbers3 objectAtIndexedSubscript:v15];
 
         [v25 setConstant:v21];
         ++v15;
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [dotNumberPositions4 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);

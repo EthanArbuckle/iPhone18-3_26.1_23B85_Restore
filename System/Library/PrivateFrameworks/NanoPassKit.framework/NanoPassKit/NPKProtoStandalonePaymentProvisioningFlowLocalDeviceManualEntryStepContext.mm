@@ -1,10 +1,10 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext
@@ -15,54 +15,54 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
   if (secondaryManualEntryStepContext)
   {
-    v5 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"secondaryManualEntryStepContext"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"secondaryManualEntryStepContext"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_secondaryManualEntryStepContext)
   {
     [NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self->_secondaryManualEntryStepContext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self->_secondaryManualEntryStepContext copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
-    if (secondaryManualEntryStepContext | v4[1])
+    if (secondaryManualEntryStepContext | equalCopy[1])
     {
       v6 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext isEqual:?];
     }
@@ -81,11 +81,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (secondaryManualEntryStepContext)
   {
     if (!v6)
@@ -93,7 +93,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext mergeFrom:?];
   }
 
@@ -104,11 +104,11 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)self setSecondaryManualEntryStepContext:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 

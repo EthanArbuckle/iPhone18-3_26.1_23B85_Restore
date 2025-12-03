@@ -1,42 +1,42 @@
 @interface _UIPointerInteractionPressGestureRecognizer
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3;
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3;
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer;
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
 @end
 
 @implementation _UIPointerInteractionPressGestureRecognizer
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) != 0 && [(UIGestureRecognizer *)self state]< UIGestureRecognizerStateEnded;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

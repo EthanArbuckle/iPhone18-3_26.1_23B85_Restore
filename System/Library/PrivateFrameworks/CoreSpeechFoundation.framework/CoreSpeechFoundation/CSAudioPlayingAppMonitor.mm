@@ -2,43 +2,43 @@
 + (id)sharedMonitor;
 - (CSAudioPlayingAppMonitor)init;
 - (id)playingApps;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingAudioPlayingState;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
-- (void)handleAudioPlayingStateChange:(id)a3;
+- (void)_systemControllerDied:(id)died;
+- (void)handleAudioPlayingStateChange:(id)change;
 @end
 
 @implementation CSAudioPlayingAppMonitor
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel__systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel__systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSAudioPlayingAppMonitor _systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -51,21 +51,21 @@
 
 - (void)_startObservingAudioPlayingState
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECD0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECD0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECD0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel_handleAudioPlayingStateChange_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_handleAudioPlayingStateChange_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)handleAudioPlayingStateChange:(id)a3
+- (void)handleAudioPlayingStateChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -77,11 +77,11 @@
 
 - (void)_stopMonitoring
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CSAudioPlayingAppMonitor *)self _startObservingSystemControllerLifecycle];
 
@@ -91,9 +91,9 @@
 - (id)playingApps
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = [MEMORY[0x1E695DF70] array];
-  v2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEB10]];
+  array = [MEMORY[0x1E695DF70] array];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEB10]];
 
   if (v3)
   {
@@ -122,16 +122,16 @@
           v11 = v10;
           if (v10)
           {
-            v12 = [v10 integerValue];
-            v13 = [MEMORY[0x1E696AE30] processInfo];
-            v14 = [v13 processIdentifier];
+            integerValue = [v10 integerValue];
+            processInfo = [MEMORY[0x1E696AE30] processInfo];
+            processIdentifier = [processInfo processIdentifier];
 
-            if (v14 != v12)
+            if (processIdentifier != integerValue)
             {
-              v15 = [[CSAudioPlayingApp alloc] initWithPid:v12];
+              v15 = [[CSAudioPlayingApp alloc] initWithPid:integerValue];
               if (v15)
               {
-                [v19 addObject:v15];
+                [array addObject:v15];
               }
             }
           }
@@ -148,14 +148,14 @@
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return array;
 }
 
 - (CSAudioPlayingAppMonitor)init
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -163,10 +163,10 @@
     v5.receiver = self;
     v5.super_class = CSAudioPlayingAppMonitor;
     self = [(CSEventMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedMonitor

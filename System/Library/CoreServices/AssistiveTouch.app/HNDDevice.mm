@@ -1,25 +1,25 @@
 @interface HNDDevice
-+ (id)createNewDevice:(__IOHIDDevice *)a3;
++ (id)createNewDevice:(__IOHIDDevice *)device;
 - (BOOL)load;
 - (HNDDeviceDelegate)delegate;
-- (id)_initWithHIDDevice:(__IOHIDDevice *)a3;
+- (id)_initWithHIDDevice:(__IOHIDDevice *)device;
 - (id)description;
 - (void)dealloc;
-- (void)handleUsagePage:(unsigned int)a3 usage:(unsigned int)a4 value:(int64_t)a5;
-- (void)handleValueCallback:(__IOHIDValue *)a3;
+- (void)handleUsagePage:(unsigned int)page usage:(unsigned int)usage value:(int64_t)value;
+- (void)handleValueCallback:(__IOHIDValue *)callback;
 - (void)unload;
 @end
 
 @implementation HNDDevice
 
-- (id)_initWithHIDDevice:(__IOHIDDevice *)a3
+- (id)_initWithHIDDevice:(__IOHIDDevice *)device
 {
   v4 = [(HNDDevice *)self init];
   v5 = v4;
-  if (a3 && v4)
+  if (device && v4)
   {
-    v4->_hidDevice = a3;
-    CFRetain(a3);
+    v4->_hidDevice = device;
+    CFRetain(device);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = [HNDVirtualHIDMouse addActiveClientWithReason:v7];
@@ -40,7 +40,7 @@
   return v4;
 }
 
-+ (id)createNewDevice:(__IOHIDDevice *)a3
++ (id)createNewDevice:(__IOHIDDevice *)device
 {
   IsSwitchControlRunning = UIAccessibilityIsSwitchControlRunning();
   v5 = ASTLogMouse();
@@ -50,7 +50,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v53 = a3;
+      deviceCopy2 = device;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Switch Control is running. Ignoring device: %@", buf, 0xCu);
     }
 
@@ -60,20 +60,20 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = a3;
+    deviceCopy2 = device;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Attempting to create new HNDDevice from %@", buf, 0xCu);
   }
 
-  v7 = IOHIDDeviceGetProperty(a3, @"DeviceUsagePairs");
+  v7 = IOHIDDeviceGetProperty(device, @"DeviceUsagePairs");
   v8 = ASTLogMouse();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = v7;
+    deviceCopy2 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "device usagePairs: %@", buf, 0xCu);
   }
 
-  device = a3;
+  device = device;
 
   v50 = 0u;
   v51 = 0u;
@@ -106,13 +106,13 @@
         v19 = [NSString stringWithUTF8String:"DeviceUsagePage"];
         v20 = [v16 objectForKeyedSubscript:v19];
 
-        v21 = [v20 intValue];
+        intValue = [v20 intValue];
         if ([v20 intValue] == 96)
         {
           v46 |= [v18 intValue] == 1;
         }
 
-        if (v21 == 1)
+        if (intValue == 1)
         {
           v22 = [v18 intValue] == 2;
           v23 = [v18 intValue] == 6 || objc_msgSend(v18, "intValue") == 7;
@@ -138,8 +138,8 @@
     v12 = 0;
   }
 
-  v24 = a3;
-  v25 = [IOHIDDeviceGetProperty(a3 @"IAPHIDAccessoryCategory")];
+  deviceCopy4 = device;
+  v25 = [IOHIDDeviceGetProperty(device @"IAPHIDAccessoryCategory")];
   v26 = ASTLogMouse();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
@@ -151,7 +151,7 @@
     v31 = NSStringFromBOOL();
     v32 = NSStringFromBOOL();
     *buf = 138413570;
-    v53 = v27;
+    deviceCopy2 = v27;
     v54 = 2112;
     v55 = v28;
     v56 = 2112;
@@ -164,7 +164,7 @@
     v63 = v32;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "\n                \t - hasMouseCapabilities: %@\n                \t - hasMouseKeysCapabilities: %@\n                \t - hasJoystickCapabilities: %@\n                \t - hasGamePadCapabilities: %@\n                \t - hasTadmorCapabilities: %@\n                \t - isIAPDevice: %@", buf, 0x3Eu);
 
-    v24 = device;
+    deviceCopy4 = device;
     v25 = v44;
   }
 
@@ -176,7 +176,7 @@
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v53 = v24;
+        deviceCopy2 = deviceCopy4;
         v34 = "let the system handle mouse devices. skipping %@";
 LABEL_46:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, v34, buf, 0xCu);
@@ -218,7 +218,7 @@ LABEL_44:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v53 = v24;
+          deviceCopy2 = deviceCopy4;
           v34 = "Unsupported device: %@";
           goto LABEL_46;
         }
@@ -244,11 +244,11 @@ LABEL_40:
   if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = v40;
+    deviceCopy2 = v40;
     _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "making device: %@", buf, 0xCu);
   }
 
-  v42 = [objc_allocWithZone(v40) _initWithHIDDevice:v24];
+  v42 = [objc_allocWithZone(v40) _initWithHIDDevice:deviceCopy4];
 LABEL_49:
 
   return v42;
@@ -269,74 +269,74 @@ LABEL_49:
   [(HNDDevice *)&v4 dealloc];
 }
 
-- (void)handleValueCallback:(__IOHIDValue *)a3
+- (void)handleValueCallback:(__IOHIDValue *)callback
 {
   v5 = ASTLogMouse();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = a3;
+    callbackCopy = callback;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[device: %@] handleValueCallback: %@", &v9, 0x16u);
   }
 
-  Element = IOHIDValueGetElement(a3);
+  Element = IOHIDValueGetElement(callback);
   UsagePage = IOHIDElementGetUsagePage(Element);
   Usage = IOHIDElementGetUsage(Element);
-  [(HNDDevice *)self handleUsagePage:UsagePage usage:Usage value:IOHIDValueGetIntegerValue(a3)];
+  [(HNDDevice *)self handleUsagePage:UsagePage usage:Usage value:IOHIDValueGetIntegerValue(callback)];
 }
 
-- (void)handleUsagePage:(unsigned int)a3 usage:(unsigned int)a4 value:(int64_t)a5
+- (void)handleUsagePage:(unsigned int)page usage:(unsigned int)usage value:(int64_t)value
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  if (a3 == 1)
+  v5 = *&usage;
+  v6 = *&page;
+  if (page == 1)
   {
-    if (a4 != 56)
+    if (usage != 56)
     {
-      if (a4 == 49)
+      if (usage == 49)
       {
-        v10 = a5;
+        valueCopy = value;
         v9 = 3;
-        v11 = 0.0;
+        valueCopy2 = 0.0;
       }
 
       else
       {
-        if (a4 != 48)
+        if (usage != 48)
         {
           return;
         }
 
-        v11 = a5;
+        valueCopy2 = value;
         v9 = 3;
-        v10 = 0.0;
+        valueCopy = 0.0;
       }
 
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      usageCopy = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_14;
     }
 
-    if (!a5)
+    if (!value)
     {
       return;
     }
 
     v9 = 4;
-    v10 = 0.0;
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    valueCopy = 0.0;
+    usageCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    if (a3 != 9)
+    if (page != 9)
     {
       return;
     }
 
-    v8 = a4;
-    if (a5 > 0)
+    usageCopy = usage;
+    if (value > 0)
     {
       v9 = 1;
     }
@@ -346,21 +346,21 @@ LABEL_49:
       v9 = 2;
     }
 
-    v10 = 0.0;
+    valueCopy = 0.0;
   }
 
-  v11 = 0.0;
+  valueCopy2 = 0.0;
 LABEL_14:
   v14 = [objc_allocWithZone(HNDEvent) init];
   [v14 setType:v9];
-  [v14 setDeltaX:v11];
-  [v14 setDeltaY:v10];
-  [v14 setButtonNumber:v8];
+  [v14 setDeltaX:valueCopy2];
+  [v14 setDeltaY:valueCopy];
+  [v14 setButtonNumber:usageCopy];
   v12 = [(HNDDevice *)self actionOverrideForUsagePage:v6 usage:v5];
   [v14 setActionOverride:v12];
 
-  v13 = [(HNDDevice *)self delegate];
-  [v13 device:self didPostEvent:v14];
+  delegate = [(HNDDevice *)self delegate];
+  [delegate device:self didPostEvent:v14];
 }
 
 - (BOOL)load
@@ -512,7 +512,7 @@ LABEL_14:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v59 = LogicalMin;
+        selfCopy = LogicalMin;
         v60 = 2048;
         v61 = LogicalMax;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Min wheel: %ld Max wheel: %ld", buf, 0x16u);
@@ -565,7 +565,7 @@ LABEL_14:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v59 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "loaded: %@", buf, 0xCu);
       }
 
@@ -588,7 +588,7 @@ LABEL_43:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Unload device: %@", &v10, 0xCu);
   }
 
@@ -606,9 +606,9 @@ LABEL_43:
       self->_hidReportBuffer = 0;
     }
 
-    v7 = self;
-    WeakRetained = objc_loadWeakRetained(&v7->_delegate);
-    [WeakRetained device:v7 didUnload:1];
+    selfCopy2 = self;
+    WeakRetained = objc_loadWeakRetained(&selfCopy2->_delegate);
+    [WeakRetained device:selfCopy2 didUnload:1];
 
     v9 = self->_hidDevice;
     if (v9)
@@ -617,7 +617,7 @@ LABEL_43:
       self->_hidDevice = 0;
     }
 
-    [(BSInvalidatable *)v7->_activeHIDVirtualMouseClientAssertion invalidate];
+    [(BSInvalidatable *)selfCopy2->_activeHIDVirtualMouseClientAssertion invalidate];
   }
 }
 

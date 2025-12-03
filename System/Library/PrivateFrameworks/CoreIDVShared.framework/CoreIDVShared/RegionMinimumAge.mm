@@ -1,28 +1,28 @@
 @interface RegionMinimumAge
 - (_TtC13CoreIDVShared16RegionMinimumAge)init;
-- (_TtC13CoreIDVShared16RegionMinimumAge)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared16RegionMinimumAge)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RegionMinimumAge
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_225CCE444();
   v7 = sub_225CCE444();
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
-  v8 = *(&v5->super.isa + OBJC_IVAR____TtC13CoreIDVShared16RegionMinimumAge_age);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13CoreIDVShared16RegionMinimumAge_age);
   v9 = sub_225CCE444();
-  [v4 encodeInteger:v8 forKey:v9];
+  [coderCopy encodeInteger:v8 forKey:v9];
 }
 
-- (_TtC13CoreIDVShared16RegionMinimumAge)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared16RegionMinimumAge)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B752D0(v3);
+  coderCopy = coder;
+  v4 = sub_225B752D0(coderCopy);
 
   return v4;
 }

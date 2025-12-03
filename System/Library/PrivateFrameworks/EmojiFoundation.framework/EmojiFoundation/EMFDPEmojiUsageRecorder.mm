@@ -1,7 +1,7 @@
 @interface EMFDPEmojiUsageRecorder
 + (id)_defaultUsageModeIdentifier;
 - (BOOL)report;
-- (EMFDPEmojiUsageRecorder)initWithEmoji:(id)a3 usageModeIdentifier:(id)a4;
+- (EMFDPEmojiUsageRecorder)initWithEmoji:(id)emoji usageModeIdentifier:(id)identifier;
 - (id)delegate;
 - (id)recordingKey;
 - (void)report;
@@ -9,44 +9,44 @@
 
 @implementation EMFDPEmojiUsageRecorder
 
-- (EMFDPEmojiUsageRecorder)initWithEmoji:(id)a3 usageModeIdentifier:(id)a4
+- (EMFDPEmojiUsageRecorder)initWithEmoji:(id)emoji usageModeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  emojiCopy = emoji;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = EMFDPEmojiUsageRecorder;
-  v8 = [(EMFDPRecorder *)&v18 initWithEmoji:v6];
+  v8 = [(EMFDPRecorder *)&v18 initWithEmoji:emojiCopy];
   if (v8)
   {
-    v9 = [v6 localeData];
-    v10 = [v9 localeIdentifier];
-    v11 = v10;
-    if (v10)
+    localeData = [emojiCopy localeData];
+    localeIdentifier = [localeData localeIdentifier];
+    v11 = localeIdentifier;
+    if (localeIdentifier)
     {
-      v12 = v10;
+      localeIdentifier2 = localeIdentifier;
     }
 
     else
     {
-      v12 = [v6 localeIdentifier];
+      localeIdentifier2 = [emojiCopy localeIdentifier];
     }
 
-    v13 = v12;
+    v13 = localeIdentifier2;
 
     v14 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v13];
     objc_storeStrong(&v8->_locale, v14);
-    if (v7)
+    if (identifierCopy)
     {
-      v15 = [v7 copy];
+      _defaultUsageModeIdentifier = [identifierCopy copy];
     }
 
     else
     {
-      v15 = [objc_opt_class() _defaultUsageModeIdentifier];
+      _defaultUsageModeIdentifier = [objc_opt_class() _defaultUsageModeIdentifier];
     }
 
-    v16 = v15;
-    objc_storeStrong(&v8->_usageModeIdentifier, v15);
+    v16 = _defaultUsageModeIdentifier;
+    objc_storeStrong(&v8->_usageModeIdentifier, _defaultUsageModeIdentifier);
   }
 
   return v8;
@@ -55,10 +55,10 @@
 - (id)recordingKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EMFDPEmojiUsageRecorder *)self locale];
-  v5 = [v4 localeIdentifier];
-  v6 = [(EMFDPEmojiUsageRecorder *)self usageModeIdentifier];
-  v7 = [v3 stringWithFormat:@"com.apple.keyboard.Emoji.%@.%@", v5, v6];
+  locale = [(EMFDPEmojiUsageRecorder *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  usageModeIdentifier = [(EMFDPEmojiUsageRecorder *)self usageModeIdentifier];
+  v7 = [v3 stringWithFormat:@"com.apple.keyboard.Emoji.%@.%@", localeIdentifier, usageModeIdentifier];
 
   return v7;
 }
@@ -67,13 +67,13 @@
 {
   v11.receiver = self;
   v11.super_class = EMFDPEmojiUsageRecorder;
-  v3 = [(EMFDPRecorder *)&v11 delegate];
+  delegate = [(EMFDPRecorder *)&v11 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc(MEMORY[0x1E699A0E0]);
-    v5 = [(EMFDPEmojiUsageRecorder *)self recordingKey];
-    v6 = [v4 initWithKey:v5];
+    recordingKey = [(EMFDPEmojiUsageRecorder *)self recordingKey];
+    v6 = [v4 initWithKey:recordingKey];
 
     v10.receiver = self;
     v10.super_class = EMFDPEmojiUsageRecorder;
@@ -82,30 +82,30 @@
 
   v9.receiver = self;
   v9.super_class = EMFDPEmojiUsageRecorder;
-  v7 = [(EMFDPRecorder *)&v9 delegate];
+  delegate2 = [(EMFDPRecorder *)&v9 delegate];
 
-  return v7;
+  return delegate2;
 }
 
 - (BOOL)report
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EMFDPRecorder *)self emoji];
-  v4 = [v3 string];
+  emoji = [(EMFDPRecorder *)self emoji];
+  string = [emoji string];
 
   v5 = emf_logging_get_default_log();
-  v6 = v5;
-  if (v4)
+  delegate = v5;
+  if (string)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(EMFDPEmojiUsageRecorder *)v4 report];
+      [(EMFDPEmojiUsageRecorder *)string report];
     }
 
-    v6 = [(EMFDPEmojiUsageRecorder *)self delegate];
-    v10[0] = v4;
+    delegate = [(EMFDPEmojiUsageRecorder *)self delegate];
+    v10[0] = string;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v8 = [v6 record:v7];
+    v8 = [delegate record:v7];
   }
 
   else
@@ -142,9 +142,9 @@ void __54__EMFDPEmojiUsageRecorder__defaultUsageModeIdentifier__block_invoke()
 - (void)report
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 emoji];
+  emoji = [self emoji];
   v4[0] = 67109120;
-  v4[1] = [v3 _emojiIndex];
+  v4[1] = [emoji _emojiIndex];
   _os_log_error_impl(&dword_1AF04E000, a2, OS_LOG_TYPE_ERROR, "Failed to donate emoji to dprivacyd: '%hu'", v4, 8u);
 }
 

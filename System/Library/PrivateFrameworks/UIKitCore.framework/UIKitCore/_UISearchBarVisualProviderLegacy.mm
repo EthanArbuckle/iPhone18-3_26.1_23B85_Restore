@@ -1,5 +1,5 @@
 @interface _UISearchBarVisualProviderLegacy
-- (BOOL)_getNavigationTitleLeadingInset:(double *)a3 trailingInset:(double *)a4 isRTL:(BOOL)a5;
+- (BOOL)_getNavigationTitleLeadingInset:(double *)inset trailingInset:(double *)trailingInset isRTL:(BOOL)l;
 - (BOOL)containsScopeBar;
 - (BOOL)drawsBackground;
 - (BOOL)hasDarkUIAppearance;
@@ -7,33 +7,33 @@
 - (BOOL)isInBarButNotHosted;
 - (BOOL)scopeBarIsVisible;
 - (BOOL)searchFieldWidthShouldBeFlexible;
-- (BOOL)shouldCombineLandscapeBarsForOrientation:(int64_t)a3;
+- (BOOL)shouldCombineLandscapeBarsForOrientation:(int64_t)orientation;
 - (BOOL)shouldDisplayShadow;
 - (BOOL)useRelaxedScopeLayout;
-- (BOOL)wouldCombineLandscapeBarsForSize:(CGSize)a3;
+- (BOOL)wouldCombineLandscapeBarsForSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)effectiveContentInset;
 - (UIEdgeInsets)minimumContentInset;
 - (UIEdgeInsets)scopeBarInsets;
 - (UIOffset)searchFieldBackgroundPositionAdjustment;
 - (double)_defaultWidth;
 - (double)availableBoundsWidth;
-- (double)availableBoundsWidthForSize:(CGSize)a3;
-- (double)barHeightForBarMetrics:(int64_t)a3 barPosition:(int64_t)a4;
-- (double)barHeightForBarMetrics:(int64_t)a3 withEffectiveInsets:(UIEdgeInsets)a4;
+- (double)availableBoundsWidthForSize:(CGSize)size;
+- (double)barHeightForBarMetrics:(int64_t)metrics barPosition:(int64_t)position;
+- (double)barHeightForBarMetrics:(int64_t)metrics withEffectiveInsets:(UIEdgeInsets)insets;
 - (double)defaultHeight;
-- (double)defaultHeightForOrientation:(int64_t)a3;
+- (double)defaultHeightForOrientation:(int64_t)orientation;
 - (double)landscapeScopeBarWidth;
 - (double)landscapeSearchFieldWidth;
 - (double)navigationBarContentHeight;
 - (double)scopeBarHeight;
 - (double)searchFieldHeight;
 - (id)cancelBarButtonItem;
-- (id)colorForComponent:(unint64_t)a3 disabled:(BOOL)a4;
+- (id)colorForComponent:(unint64_t)component disabled:(BOOL)disabled;
 - (id)currentSeparatorImage;
-- (id)imageForSearchBarIcon:(int64_t)a3 state:(unint64_t)a4;
-- (id)internalImageForSearchBarIcon:(int64_t)a3 state:(unint64_t)a4 customImage:(BOOL *)a5;
+- (id)imageForSearchBarIcon:(int64_t)icon state:(unint64_t)state;
+- (id)internalImageForSearchBarIcon:(int64_t)icon state:(unint64_t)state customImage:(BOOL *)image;
 - (id)leftButton;
 - (id)makeShadowView;
 - (id)navBarTitleViewDataSource;
@@ -43,89 +43,89 @@
 - (id)searchField;
 - (id)searchNavigationItem;
 - (id)textColor;
-- (int64_t)barMetricsForOrientation:(int64_t)a3;
+- (int64_t)barMetricsForOrientation:(int64_t)orientation;
 - (int64_t)barPosition;
 - (void)_removeBackdropVisualEffectView;
 - (void)_removeLegacyBackdropView;
-- (void)_setAutoDisableCancelButton:(BOOL)a3;
-- (void)_setBarTintColor:(id)a3;
-- (void)_setHideBackground:(BOOL)a3;
-- (void)_setSearchResultsButtonSelected:(BOOL)a3;
-- (void)_setShowsBookmarkButton:(BOOL)a3;
-- (void)_setShowsCancelButton:(BOOL)a3;
-- (void)_setShowsScopeBar:(BOOL)a3;
-- (void)_setShowsSearchResultsButton:(BOOL)a3;
-- (void)allowCursorToAppear:(BOOL)a3;
+- (void)_setAutoDisableCancelButton:(BOOL)button;
+- (void)_setBarTintColor:(id)color;
+- (void)_setHideBackground:(BOOL)background;
+- (void)_setSearchResultsButtonSelected:(BOOL)selected;
+- (void)_setShowsBookmarkButton:(BOOL)button;
+- (void)_setShowsCancelButton:(BOOL)button;
+- (void)_setShowsScopeBar:(BOOL)bar;
+- (void)_setShowsSearchResultsButton:(BOOL)button;
+- (void)allowCursorToAppear:(BOOL)appear;
 - (void)applySearchBarStyle;
 - (void)destroyCancelButton;
 - (void)destroyPromptLabel;
-- (void)displayNavBarCancelButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)effectiveBarTintColorDidChange:(BOOL)a3;
-- (void)getOverrideContentInsets:(UIEdgeInsets *)a3 overriddenEdges:(unint64_t *)a4;
-- (void)getScopeBarHeight:(double *)a3 containerHeight:(double *)a4;
-- (void)getTopInset:(double *)a3 bottomInset:(double *)a4 forBarMetrics:(int64_t)a5 barPosition:(int64_t)a6;
-- (void)layoutBackgroundViewConsideringTopBarStatusAndChangedHeight:(BOOL)a3;
+- (void)displayNavBarCancelButton:(BOOL)button animated:(BOOL)animated;
+- (void)effectiveBarTintColorDidChange:(BOOL)change;
+- (void)getOverrideContentInsets:(UIEdgeInsets *)insets overriddenEdges:(unint64_t *)edges;
+- (void)getScopeBarHeight:(double *)height containerHeight:(double *)containerHeight;
+- (void)getTopInset:(double *)inset bottomInset:(double *)bottomInset forBarMetrics:(int64_t)metrics barPosition:(int64_t)position;
+- (void)layoutBackgroundViewConsideringTopBarStatusAndChangedHeight:(BOOL)height;
 - (void)layoutSubviews;
-- (void)layoutSubviewsInBounds:(CGRect)a3;
-- (void)navigationBarTransitionCompleted:(int64_t)a3 willBeDisplayed:(BOOL)a4;
-- (void)navigationBarTransitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4;
+- (void)layoutSubviewsInBounds:(CGRect)bounds;
+- (void)navigationBarTransitionCompleted:(int64_t)completed willBeDisplayed:(BOOL)displayed;
+- (void)navigationBarTransitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed;
 - (void)prepare;
-- (void)prepareFromAbandonedVisualProvider:(id)a3;
-- (void)setAllowsInlineScopeBar:(BOOL)a3;
-- (void)setAutoDisableCancelButton:(BOOL)a3;
-- (void)setBackdropStyle:(int64_t)a3;
-- (void)setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5;
-- (void)setBarPosition:(int64_t)a3;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setBarTintColor:(id)a3 forceUpdate:(BOOL)a4;
-- (void)setBarTranslucence:(int64_t)a3;
-- (void)setCancelButton:(id)a3;
-- (void)setCenterPlaceholder:(BOOL)a3;
-- (void)setClippingViewActive:(BOOL)a3;
-- (void)setClippingViewBounds:(CGRect)a3;
-- (void)setDrawsBackground:(BOOL)a3;
-- (void)setDrawsBackgroundInPalette:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHostedByNavigationBar:(BOOL)a3;
-- (void)setImage:(id)a3 forSearchBarIcon:(int64_t)a4 state:(unint64_t)a5;
-- (void)setInNavigationPalette:(BOOL)a3;
-- (void)setMinimumContentInset:(UIEdgeInsets)a3;
-- (void)setOverrideContentInsets:(UIEdgeInsets)a3 forRectEdges:(unint64_t)a4;
-- (void)setPlacedInNavigationBar:(BOOL)a3;
-- (void)setPlacedInToolbar:(BOOL)a3;
-- (void)setPrompt:(id)a3;
-- (void)setReliesOnNavigationBarBackdrop:(BOOL)a3;
-- (void)setScopeBarBackgroundImage:(id)a3;
-- (void)setScopeTitles:(id)a3;
-- (void)setSearchBarStyle:(unint64_t)a3;
-- (void)setSearchDisplayController:(id)a3;
-- (void)setSearchDisplayControllerShowsCancelButton:(BOOL)a3;
-- (void)setSearchFieldBackgroundImage:(id)a3 forState:(unint64_t)a4;
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3;
-- (void)setSearchFieldLeftViewMode:(int64_t)a3;
-- (void)setSearchResultsButtonSelected:(BOOL)a3;
-- (void)setSeparatorImage:(id)a3;
-- (void)setShadowVisibleIfNecessary:(BOOL)a3;
-- (void)setShowsBookmarkButton:(BOOL)a3;
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsDeleteButton:(BOOL)a3;
-- (void)setShowsScopeBar:(BOOL)a3 animateOpacity:(BOOL)a4;
-- (void)setShowsSearchResultsButton:(BOOL)a3;
-- (void)setShowsSeparator:(BOOL)a3;
-- (void)setUpCancelButtonWithAppearance:(id)a3;
+- (void)prepareFromAbandonedVisualProvider:(id)provider;
+- (void)setAllowsInlineScopeBar:(BOOL)bar;
+- (void)setAutoDisableCancelButton:(BOOL)button;
+- (void)setBackdropStyle:(int64_t)style;
+- (void)setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics;
+- (void)setBarPosition:(int64_t)position;
+- (void)setBarStyle:(int64_t)style;
+- (void)setBarTintColor:(id)color forceUpdate:(BOOL)update;
+- (void)setBarTranslucence:(int64_t)translucence;
+- (void)setCancelButton:(id)button;
+- (void)setCenterPlaceholder:(BOOL)placeholder;
+- (void)setClippingViewActive:(BOOL)active;
+- (void)setClippingViewBounds:(CGRect)bounds;
+- (void)setDrawsBackground:(BOOL)background;
+- (void)setDrawsBackgroundInPalette:(BOOL)palette;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setHostedByNavigationBar:(BOOL)bar;
+- (void)setImage:(id)image forSearchBarIcon:(int64_t)icon state:(unint64_t)state;
+- (void)setInNavigationPalette:(BOOL)palette;
+- (void)setMinimumContentInset:(UIEdgeInsets)inset;
+- (void)setOverrideContentInsets:(UIEdgeInsets)insets forRectEdges:(unint64_t)edges;
+- (void)setPlacedInNavigationBar:(BOOL)bar;
+- (void)setPlacedInToolbar:(BOOL)toolbar;
+- (void)setPrompt:(id)prompt;
+- (void)setReliesOnNavigationBarBackdrop:(BOOL)backdrop;
+- (void)setScopeBarBackgroundImage:(id)image;
+- (void)setScopeTitles:(id)titles;
+- (void)setSearchBarStyle:(unint64_t)style;
+- (void)setSearchDisplayController:(id)controller;
+- (void)setSearchDisplayControllerShowsCancelButton:(BOOL)button;
+- (void)setSearchFieldBackgroundImage:(id)image forState:(unint64_t)state;
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment;
+- (void)setSearchFieldLeftViewMode:(int64_t)mode;
+- (void)setSearchResultsButtonSelected:(BOOL)selected;
+- (void)setSeparatorImage:(id)image;
+- (void)setShadowVisibleIfNecessary:(BOOL)necessary;
+- (void)setShowsBookmarkButton:(BOOL)button;
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated;
+- (void)setShowsDeleteButton:(BOOL)button;
+- (void)setShowsScopeBar:(BOOL)bar animateOpacity:(BOOL)opacity;
+- (void)setShowsSearchResultsButton:(BOOL)button;
+- (void)setShowsSeparator:(BOOL)separator;
+- (void)setUpCancelButtonWithAppearance:(id)appearance;
 - (void)setUpLeftButton;
 - (void)setUpPromptLabel;
 - (void)setUpScopeBar;
 - (void)setUpSearchField;
-- (void)setUpSearchNavigationItemWithSizingOption:(unint64_t)a3;
-- (void)setUsesEmbeddedAppearance:(BOOL)a3;
+- (void)setUpSearchNavigationItemWithSizingOption:(unint64_t)option;
+- (void)setUsesEmbeddedAppearance:(BOOL)appearance;
 - (void)teardown;
-- (void)updateBackgroundToBackdropStyle:(int64_t)a3;
+- (void)updateBackgroundToBackdropStyle:(int64_t)style;
 - (void)updateEffectiveContentInset;
 - (void)updateForDrawsBackgroundInPalette;
-- (void)updateIfNecessaryForOldSize:(CGSize)a3;
+- (void)updateIfNecessaryForOldSize:(CGSize)size;
 - (void)updateMagnifyingGlassView;
-- (void)updateNavigationBarLayoutInsertDataForSearchBar:(id)a3 collapsibleScopeBar:(id)a4 forLayoutState:(int64_t)a5;
+- (void)updateNavigationBarLayoutInsertDataForSearchBar:(id)bar collapsibleScopeBar:(id)scopeBar forLayoutState:(int64_t)state;
 - (void)updateNeedForBackdrop;
 - (void)updatePlaceholderColor;
 - (void)updateRightView;
@@ -137,17 +137,17 @@
 
 @implementation _UISearchBarVisualProviderLegacy
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v6 = v5;
-  if (v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v6 = searchBar;
+  if (searchBar)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-    if ((*&searchBarVisualProviderFlags & 7) != a3)
+    if ((*&searchBarVisualProviderFlags & 7) != style)
     {
-      v15 = v5;
-      if (a3)
+      v15 = searchBar;
+      if (style)
       {
         v8 = (*&self->_searchBarVisualProviderFlags & 7) == 0;
       }
@@ -157,9 +157,9 @@
         v8 = 1;
       }
 
-      self->_searchBarVisualProviderFlags = (*&searchBarVisualProviderFlags & 0xFFFFFFF8 | a3 & 7);
+      self->_searchBarVisualProviderFlags = (*&searchBarVisualProviderFlags & 0xFFFFFFF8 | style & 7);
       v9 = v8;
-      [(UISearchBarBackground *)self->_searchBarBackground setBarStyle:a3];
+      [(UISearchBarBackground *)self->_searchBarBackground setBarStyle:style];
       if (!self->_barTintColor)
       {
         if (self->_cancelButton)
@@ -182,11 +182,11 @@
         separator = self->_separator;
         if (separator)
         {
-          v11 = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
-          [(UIImageView *)separator setImage:v11];
+          currentSeparatorImage = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
+          [(UIImageView *)separator setImage:currentSeparatorImage];
         }
 
-        [(UISegmentedControl *)self->_scopeBar setBarStyle:a3];
+        [(UISegmentedControl *)self->_scopeBar setBarStyle:style];
         [(_UISearchBarVisualProviderLegacy *)self updateScopeBarBackground];
         [(_UISearchBarVisualProviderLegacy *)self updateSearchBarOpacity];
       }
@@ -197,13 +197,13 @@
         [(_UISearchBarVisualProviderLegacy *)self updatePlaceholderColor];
         [(_UISearchBarVisualProviderLegacy *)self updateRightView];
         [(_UISearchBarVisualProviderLegacy *)self updateMagnifyingGlassView];
-        v12 = [(UISearchBarBackground *)self->_searchBarBackground _hasCustomBackgroundImage];
+        _hasCustomBackgroundImage = [(UISearchBarBackground *)self->_searchBarBackground _hasCustomBackgroundImage];
         v6 = v15;
-        if (!v12 && !self->_backdropStyle)
+        if (!_hasCustomBackgroundImage && !self->_backdropStyle)
         {
-          v13 = [v15 _searchBarTextField];
-          v14 = [(_UISearchBarVisualProviderLegacy *)self textColor];
-          [v13 setTextColor:v14];
+          _searchBarTextField = [v15 _searchBarTextField];
+          textColor = [(_UISearchBarVisualProviderLegacy *)self textColor];
+          [_searchBarTextField setTextColor:textColor];
 
           v6 = v15;
         }
@@ -212,15 +212,15 @@
   }
 }
 
-- (void)setSearchBarStyle:(unint64_t)a3
+- (void)setSearchBarStyle:(unint64_t)style
 {
   if (!self->_backdropStyle)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
     v4 = (searchBarVisualProviderFlags >> 3) & 7;
-    if (v4 != a3)
+    if (v4 != style)
     {
-      if (a3 == 2 && v4 != 2)
+      if (style == 2 && v4 != 2)
       {
         self->_searchBarVisualProviderFlags = (searchBarVisualProviderFlags & 0xFFFFFFC7 | 0x10);
 LABEL_8:
@@ -232,8 +232,8 @@ LABEL_8:
         return;
       }
 
-      self->_searchBarVisualProviderFlags = (searchBarVisualProviderFlags & 0xFFFFFFC7 | (8 * (a3 & 7)));
-      if (a3 != 2 && v4 == 2)
+      self->_searchBarVisualProviderFlags = (searchBarVisualProviderFlags & 0xFFFFFFC7 | (8 * (style & 7)));
+      if (style != 2 && v4 == 2)
       {
         goto LABEL_8;
       }
@@ -241,39 +241,39 @@ LABEL_8:
   }
 }
 
-- (void)setBarTranslucence:(int64_t)a3
+- (void)setBarTranslucence:(int64_t)translucence
 {
   searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-  if (((searchBarVisualProviderFlags >> 6) & 7) != a3)
+  if (((searchBarVisualProviderFlags >> 6) & 7) != translucence)
   {
-    self->_searchBarVisualProviderFlags = (searchBarVisualProviderFlags & 0xFFFFFE3F | ((a3 & 7) << 6));
+    self->_searchBarVisualProviderFlags = (searchBarVisualProviderFlags & 0xFFFFFE3F | ((translucence & 7) << 6));
     [(UISearchBarBackground *)self->_searchBarBackground setTranslucent:[(_UISearchBarVisualProviderLegacy *)self isTranslucent]];
 
     [(_UISearchBarVisualProviderLegacy *)self updateSearchBarOpacity];
   }
 }
 
-- (void)setSearchFieldLeftViewMode:(int64_t)a3
+- (void)setSearchFieldLeftViewMode:(int64_t)mode
 {
-  self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFFF9FF | ((a3 & 3) << 9));
+  self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFFF9FF | ((mode & 3) << 9));
   searchField = self->_searchField;
   if (searchField)
   {
-    [(UITextField *)searchField setLeftViewMode:a3 & 3];
+    [(UITextField *)searchField setLeftViewMode:mode & 3];
   }
 }
 
-- (void)setCenterPlaceholder:(BOOL)a3
+- (void)setCenterPlaceholder:(BOOL)placeholder
 {
-  v3 = a3;
+  placeholderCopy = placeholder;
   WeakRetained = self;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5 && ((((*(WeakRetained + 26) & 0x800) == 0) ^ v3) & 1) == 0)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && ((((*(WeakRetained + 26) & 0x800) == 0) ^ placeholderCopy) & 1) == 0)
   {
-    v6 = v3 ? 2048 : 0;
+    v6 = placeholderCopy ? 2048 : 0;
     *(WeakRetained + 26) = *(WeakRetained + 26) & 0xFFFFF7FF | v6;
-    v9 = v5;
-    if (v3)
+    v9 = searchBar;
+    if (placeholderCopy)
     {
       WeakRetained = objc_loadWeakRetained(WeakRetained + 12);
       v7 = WeakRetained == 0;
@@ -284,27 +284,27 @@ LABEL_8:
       v7 = 0;
     }
 
-    v8 = [v9 textInputTraits];
-    [v8 setDeferBecomingResponder:v7];
+    textInputTraits = [v9 textInputTraits];
+    [textInputTraits setDeferBecomingResponder:v7];
 
-    v5 = v9;
-    if (v3)
+    searchBar = v9;
+    if (placeholderCopy)
     {
 
-      v5 = v9;
+      searchBar = v9;
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v8 = v7;
-  if (v7 && v5 == (*&self->_searchBarVisualProviderFlags & 0x1000u) >> 12)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v8 = searchBar;
+  if (searchBar && enabledCopy == (*&self->_searchBarVisualProviderFlags & 0x1000u) >> 12)
   {
-    if (v5)
+    if (enabledCopy)
     {
       v9 = 0;
     }
@@ -315,20 +315,20 @@ LABEL_8:
     }
 
     self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFFEFFF | v9);
-    [v7 setUserInteractionEnabled:v5];
-    v10 = [v8 _searchBarTextField];
-    [v10 _setEnabled:v5 animated:v4];
+    [searchBar setUserInteractionEnabled:enabledCopy];
+    _searchBarTextField = [v8 _searchBarTextField];
+    [_searchBarTextField _setEnabled:enabledCopy animated:animatedCopy];
 
-    [(UIButton *)self->_cancelButton setEnabled:v5];
+    [(UIButton *)self->_cancelButton setEnabled:enabledCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56___UISearchBarVisualProviderLegacy_setEnabled_animated___block_invoke;
     v13[3] = &unk_1E70F35E0;
     v13[4] = self;
-    v14 = v5;
+    v14 = enabledCopy;
     v11 = _Block_copy(v13);
     v12 = v11;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v11 animations:0.35];
     }
@@ -340,9 +340,9 @@ LABEL_8:
   }
 }
 
-- (void)setReliesOnNavigationBarBackdrop:(BOOL)a3
+- (void)setReliesOnNavigationBarBackdrop:(BOOL)backdrop
 {
-  if (a3)
+  if (backdrop)
   {
     v3 = 0x2000;
   }
@@ -355,9 +355,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFFDFFF | v3);
 }
 
-- (void)setDrawsBackgroundInPalette:(BOOL)a3
+- (void)setDrawsBackgroundInPalette:(BOOL)palette
 {
-  if (a3)
+  if (palette)
   {
     v3 = 0x4000;
   }
@@ -371,11 +371,11 @@ LABEL_8:
   [(_UISearchBarVisualProviderLegacy *)self updateForDrawsBackgroundInPalette];
 }
 
-- (void)setDrawsBackground:(BOOL)a3
+- (void)setDrawsBackground:(BOOL)background
 {
-  if (((*&self->_searchBarVisualProviderFlags & 0x8000) == 0) != a3)
+  if (((*&self->_searchBarVisualProviderFlags & 0x8000) == 0) != background)
   {
-    if (a3)
+    if (background)
     {
       v3 = 0;
     }
@@ -386,13 +386,13 @@ LABEL_8:
     }
 
     self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFF7FFF | v3);
-    [(UIImageView *)self->_searchBarBackground setHidden:!a3];
+    [(UIImageView *)self->_searchBarBackground setHidden:!background];
   }
 }
 
-- (void)_setHideBackground:(BOOL)a3
+- (void)_setHideBackground:(BOOL)background
 {
-  if (a3)
+  if (background)
   {
     v3 = 0x8000;
   }
@@ -409,33 +409,33 @@ LABEL_8:
 {
   if ((*(&self->_searchBarVisualProviderFlags + 1) & 0x80) != 0)
   {
-    v2 = [(_UISearchBarVisualProviderLegacy *)self isInNavigationPalette];
-    if (v2)
+    isInNavigationPalette = [(_UISearchBarVisualProviderLegacy *)self isInNavigationPalette];
+    if (isInNavigationPalette)
     {
 
-      LOBYTE(v2) = [(_UISearchBarVisualProviderLegacy *)self drawsBackgroundInPalette];
+      LOBYTE(isInNavigationPalette) = [(_UISearchBarVisualProviderLegacy *)self drawsBackgroundInPalette];
     }
   }
 
   else
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isInNavigationPalette) = 1;
   }
 
-  return v2;
+  return isInNavigationPalette;
 }
 
-- (void)setUsesEmbeddedAppearance:(BOOL)a3
+- (void)setUsesEmbeddedAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  appearanceCopy = appearance;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-    if (((*&searchBarVisualProviderFlags & 0x20000) == 0) == v3)
+    if (((*&searchBarVisualProviderFlags & 0x20000) == 0) == appearanceCopy)
     {
-      v9 = v5;
-      if (v3)
+      v9 = searchBar;
+      if (appearanceCopy)
       {
         v7 = 0x20000;
       }
@@ -446,7 +446,7 @@ LABEL_8:
       }
 
       self->_searchBarVisualProviderFlags = (*&searchBarVisualProviderFlags & 0xFFFDFFFF | v7);
-      [(UISearchBarBackground *)self->_searchBarBackground setUsesEmbeddedAppearance:v3];
+      [(UISearchBarBackground *)self->_searchBarBackground setUsesEmbeddedAppearance:appearanceCopy];
       barTintColor = self->_barTintColor;
       if (barTintColor)
       {
@@ -454,33 +454,33 @@ LABEL_8:
       }
 
       [v9 setNeedsLayout];
-      v5 = v9;
+      searchBar = v9;
     }
   }
 }
 
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v8 = v7;
-  if (v7 && ((((*(&self->_searchBarVisualProviderFlags + 2) & 4) == 0) ^ v5) & 1) == 0)
+  animatedCopy = animated;
+  buttonCopy = button;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v8 = searchBar;
+  if (searchBar && ((((*(&self->_searchBarVisualProviderFlags + 2) & 4) == 0) ^ buttonCopy) & 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __66___UISearchBarVisualProviderLegacy_setShowsCancelButton_animated___block_invoke;
     aBlock[3] = &unk_1E70F67F8;
-    v26 = v5;
+    v26 = buttonCopy;
     aBlock[4] = self;
-    v27 = v4;
-    v9 = v7;
+    v27 = animatedCopy;
+    v9 = searchBar;
     v25 = v9;
     v10 = _Block_copy(aBlock);
-    v11 = [v9 _searchController];
-    v12 = [v11 _managedPalette];
+    _searchController = [v9 _searchController];
+    _managedPalette = [_searchController _managedPalette];
 
-    if (v12)
+    if (_managedPalette)
     {
       v10[2](v10);
     }
@@ -490,7 +490,7 @@ LABEL_8:
       [UIView performWithoutAnimation:v10];
     }
 
-    if (v5)
+    if (buttonCopy)
     {
       v13 = 0x40000;
     }
@@ -506,15 +506,15 @@ LABEL_8:
     {
       WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController);
 
-      if (!WeakRetained && v4 && (*(&self->_searchBarVisualProviderFlags + 2) & 4) != 0)
+      if (!WeakRetained && animatedCopy && (*(&self->_searchBarVisualProviderFlags + 2) & 4) != 0)
       {
         [(_UISearchBarVisualProviderLegacy *)self allowCursorToAppear:0];
-        v15 = [v9 textInputTraits];
-        [v15 setDeferBecomingResponder:0];
+        textInputTraits = [v9 textInputTraits];
+        [textInputTraits setDeferBecomingResponder:0];
       }
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -525,7 +525,7 @@ LABEL_8:
       v17 = 3221225472;
       v18 = __66___UISearchBarVisualProviderLegacy_setShowsCancelButton_animated___block_invoke_3;
       v19 = &unk_1E70F3C60;
-      v20 = self;
+      selfCopy = self;
       v21 = v23;
       [UIView animateWithDuration:4 delay:v22 options:&v16 animations:0.3833 completion:0.0];
     }
@@ -537,14 +537,14 @@ LABEL_8:
 
     if ([(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted:v16])
     {
-      [(_UISearchBarVisualProviderLegacy *)self displayNavBarCancelButton:(*&self->_searchBarVisualProviderFlags >> 18) & 1 animated:v4];
+      [(_UISearchBarVisualProviderLegacy *)self displayNavBarCancelButton:(*&self->_searchBarVisualProviderFlags >> 18) & 1 animated:animatedCopy];
     }
   }
 }
 
-- (void)_setShowsCancelButton:(BOOL)a3
+- (void)_setShowsCancelButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 0x40000;
   }
@@ -557,9 +557,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFBFFFF | v3);
 }
 
-- (void)setAutoDisableCancelButton:(BOOL)a3
+- (void)setAutoDisableCancelButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 0x80000;
   }
@@ -570,15 +570,15 @@ LABEL_8:
   }
 
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFF7FFFF | v3);
-  if (!a3)
+  if (!button)
   {
     [(UIButton *)self->_cancelButton setEnabled:1];
   }
 }
 
-- (void)_setAutoDisableCancelButton:(BOOL)a3
+- (void)_setAutoDisableCancelButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 0x80000;
   }
@@ -591,12 +591,12 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFF7FFFF | v3);
 }
 
-- (void)setShowsSearchResultsButton:(BOOL)a3
+- (void)setShowsSearchResultsButton:(BOOL)button
 {
   searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-  if (((((*&searchBarVisualProviderFlags & 0x200000) == 0) ^ a3) & 1) == 0)
+  if (((((*&searchBarVisualProviderFlags & 0x200000) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v4 = 0x200000;
     }
@@ -611,9 +611,9 @@ LABEL_8:
   }
 }
 
-- (void)_setShowsSearchResultsButton:(BOOL)a3
+- (void)_setShowsSearchResultsButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 0x200000;
   }
@@ -626,12 +626,12 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFDFFFFF | v3);
 }
 
-- (void)setSearchResultsButtonSelected:(BOOL)a3
+- (void)setSearchResultsButtonSelected:(BOOL)selected
 {
   searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-  if (((((*&searchBarVisualProviderFlags & 0x400000) == 0) ^ a3) & 1) == 0)
+  if (((((*&searchBarVisualProviderFlags & 0x400000) == 0) ^ selected) & 1) == 0)
   {
-    if (a3)
+    if (selected)
     {
       v4 = 0x400000;
     }
@@ -646,9 +646,9 @@ LABEL_8:
   }
 }
 
-- (void)_setSearchResultsButtonSelected:(BOOL)a3
+- (void)_setSearchResultsButtonSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 0x400000;
   }
@@ -661,12 +661,12 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFBFFFFF | v3);
 }
 
-- (void)setShowsBookmarkButton:(BOOL)a3
+- (void)setShowsBookmarkButton:(BOOL)button
 {
   searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-  if (((((*&searchBarVisualProviderFlags & 0x800000) == 0) ^ a3) & 1) == 0)
+  if (((((*&searchBarVisualProviderFlags & 0x800000) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v4 = 0x800000;
     }
@@ -681,9 +681,9 @@ LABEL_8:
   }
 }
 
-- (void)_setShowsBookmarkButton:(BOOL)a3
+- (void)_setShowsBookmarkButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 0x800000;
   }
@@ -696,18 +696,18 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFF7FFFFF | v3);
 }
 
-- (void)setShowsScopeBar:(BOOL)a3 animateOpacity:(BOOL)a4
+- (void)setShowsScopeBar:(BOOL)bar animateOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v8 = v7;
-  if (v7)
+  opacityCopy = opacity;
+  barCopy = bar;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v8 = searchBar;
+  if (searchBar)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-    if (((((*&searchBarVisualProviderFlags & 0x10000000) == 0) ^ v5) & 1) == 0)
+    if (((((*&searchBarVisualProviderFlags & 0x10000000) == 0) ^ barCopy) & 1) == 0)
     {
-      if ((v5 & v4) != 0)
+      if ((barCopy & opacityCopy) != 0)
       {
         v10 = 0x40000000;
       }
@@ -718,7 +718,7 @@ LABEL_8:
       }
 
       v11 = *&searchBarVisualProviderFlags & 0x2FFFFFFF;
-      if ((v4 & ~v5) != 0)
+      if ((opacityCopy & ~barCopy) != 0)
       {
         v12 = 0x80000000;
       }
@@ -728,7 +728,7 @@ LABEL_8:
         v12 = 0;
       }
 
-      if (v5)
+      if (barCopy)
       {
         v13 = 0x10000000;
       }
@@ -739,12 +739,12 @@ LABEL_8:
       }
 
       self->_searchBarVisualProviderFlags = (v10 | v13 | v12 | v11);
-      [v7 invalidateIntrinsicContentSize];
+      [searchBar invalidateIntrinsicContentSize];
       [v8 setNeedsLayout];
-      if (v4)
+      if (opacityCopy)
       {
         v14 = 1.0;
-        if (v5)
+        if (barCopy)
         {
           v14 = 0.0;
         }
@@ -755,7 +755,7 @@ LABEL_8:
         v17[1] = 3221225472;
         v17[2] = __68___UISearchBarVisualProviderLegacy_setShowsScopeBar_animateOpacity___block_invoke;
         v17[3] = &unk_1E70F35E0;
-        v18 = v5;
+        v18 = barCopy;
         v17[4] = self;
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -766,7 +766,7 @@ LABEL_8:
 
       if (self->_scopeBarContainerView)
       {
-        v15 = v5;
+        v15 = barCopy;
       }
 
       else
@@ -779,9 +779,9 @@ LABEL_8:
   }
 }
 
-- (void)_setShowsScopeBar:(BOOL)a3
+- (void)_setShowsScopeBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     v3 = 0x10000000;
   }
@@ -794,9 +794,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xEFFFFFFF | v3);
 }
 
-- (void)setAllowsInlineScopeBar:(BOOL)a3
+- (void)setAllowsInlineScopeBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     v3 = 0x20000000;
   }
@@ -809,9 +809,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xDFFFFFFF | v3);
 }
 
-- (void)setPlacedInNavigationBar:(BOOL)a3
+- (void)setPlacedInNavigationBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     v3 = 0x1000000;
   }
@@ -824,9 +824,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFEFFFFFF | v3);
 }
 
-- (void)setPlacedInToolbar:(BOOL)a3
+- (void)setPlacedInToolbar:(BOOL)toolbar
 {
-  if (a3)
+  if (toolbar)
   {
     v3 = 0x2000000;
   }
@@ -839,9 +839,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFDFFFFFF | v3);
 }
 
-- (void)setInNavigationPalette:(BOOL)a3
+- (void)setInNavigationPalette:(BOOL)palette
 {
-  if (a3)
+  if (palette)
   {
     v3 = 0x4000000;
   }
@@ -854,9 +854,9 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFBFFFFFF | v3);
 }
 
-- (void)setHostedByNavigationBar:(BOOL)a3
+- (void)setHostedByNavigationBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     v3 = 0x8000000;
   }
@@ -869,26 +869,26 @@ LABEL_8:
   self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xF7FFFFFF | v3);
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   cancelButton = self->_cancelButton;
-  if (cancelButton != v5)
+  if (cancelButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(UIView *)cancelButton removeFromSuperview];
-    objc_storeStrong(&self->_cancelButton, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_cancelButton, button);
+    buttonCopy = v7;
   }
 }
 
-- (void)setScopeTitles:(id)a3
+- (void)setScopeTitles:(id)titles
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_scopeTitles isEqualToArray:v4]|| v4 && !self->_scopeTitles)
+  titlesCopy = titles;
+  if (![(NSArray *)self->_scopeTitles isEqualToArray:titlesCopy]|| titlesCopy && !self->_scopeTitles)
   {
-    v5 = [v4 copy];
+    v5 = [titlesCopy copy];
     scopeTitles = self->_scopeTitles;
     self->_scopeTitles = v5;
 
@@ -901,7 +901,7 @@ LABEL_8:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v4;
+      v8 = titlesCopy;
       v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
@@ -945,67 +945,67 @@ LABEL_8:
   }
 }
 
-- (void)setMinimumContentInset:(UIEdgeInsets)a3
+- (void)setMinimumContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_minimumContentInsetPrivate.top, v3), vceqq_f64(*&self->_minimumContentInsetPrivate.bottom, v4)))) & 1) == 0)
   {
-    self->_minimumContentInsetPrivate = a3;
+    self->_minimumContentInsetPrivate = inset;
     [(_UISearchBarVisualProviderLegacy *)self updateEffectiveContentInset];
   }
 }
 
-- (void)setBackdropStyle:(int64_t)a3
+- (void)setBackdropStyle:(int64_t)style
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5 && self->_backdropStyle != a3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && self->_backdropStyle != style)
   {
-    self->_backdropStyle = a3;
+    self->_backdropStyle = style;
     self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFFFFFC7 | 0x10);
-    v12 = v5;
+    v12 = searchBar;
     [(_UISearchBarVisualProviderLegacy *)self updateNeedForBackdrop];
     [(UISearchBarBackground *)self->_searchBarBackground setSearchBarStyle:(self->_searchBarVisualProviderFlags >> 3) & 7];
-    v6 = [v12 _searchBarTextField];
-    v7 = [v6 _systemBackgroundView];
-    v8 = [v12 layer];
-    [v8 setAllowsGroupBlending:0];
+    _searchBarTextField = [v12 _searchBarTextField];
+    _systemBackgroundView = [_searchBarTextField _systemBackgroundView];
+    layer = [v12 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v9 = [v12 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer2 = [v12 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v10 = [v7 layer];
-    [v10 setAllowsGroupBlending:0];
+    layer3 = [_systemBackgroundView layer];
+    [layer3 setAllowsGroupBlending:0];
 
-    [v7 setBackgroundContainer:1];
-    [v6 updateForBackdropStyle:self->_backdropStyle];
+    [_systemBackgroundView setBackgroundContainer:1];
+    [_searchBarTextField updateForBackdropStyle:self->_backdropStyle];
     v11 = [(_UISearchBarVisualProviderLegacy *)self colorForComponent:4 disabled:0];
-    [v6 setTextColor:v11];
+    [_searchBarTextField setTextColor:v11];
 
     [(_UISearchBarVisualProviderLegacy *)self updatePlaceholderColor];
     [(_UISearchBarVisualProviderLegacy *)self updateMagnifyingGlassView];
     [(_UISearchBarVisualProviderLegacy *)self updateRightView];
     [v12 setNeedsLayout];
 
-    v5 = v12;
+    searchBar = v12;
   }
 }
 
-- (void)setBarPosition:(int64_t)a3
+- (void)setBarPosition:(int64_t)position
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5 && self->_barPosition != a3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && self->_barPosition != position)
   {
-    v9 = v5;
-    if (!a3)
+    v9 = searchBar;
+    if (!position)
     {
-      a3 = 2;
+      position = 2;
     }
 
-    [(UISearchBarBackground *)self->_searchBarBackground _setBarPosition:a3];
-    self->_barPosition = a3;
+    [(UISearchBarBackground *)self->_searchBarBackground _setBarPosition:position];
+    self->_barPosition = position;
     *&self->_searchBarVisualProviderFlags |= 0x10000u;
     WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController);
     if (!WeakRetained && ([v9 _searchController], (WeakRetained = objc_claimAutoreleasedReturnValue()) == 0) || (barPosition = self->_barPosition, WeakRetained, barPosition == 3))
@@ -1016,7 +1016,7 @@ LABEL_8:
 
     [(_UISearchBarVisualProviderLegacy *)self updateEffectiveContentInset];
     [v9 setNeedsLayout];
-    v5 = v9;
+    searchBar = v9;
   }
 }
 
@@ -1033,21 +1033,21 @@ LABEL_8:
   }
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v8 = a3;
-  v4 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v4)
+  promptCopy = prompt;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     v5 = self->_promptLabel;
     v6 = v5;
-    if (v8)
+    if (promptCopy)
     {
       if (!v5)
       {
         [(_UISearchBarVisualProviderLegacy *)self setUpPromptLabel];
         v6 = self->_promptLabel;
-        [v4 invalidateIntrinsicContentSize];
+        [searchBar invalidateIntrinsicContentSize];
       }
 
       [(UILabel *)v6 setText:?];
@@ -1064,7 +1064,7 @@ LABEL_8:
       promptLabel = self->_promptLabel;
       self->_promptLabel = 0;
 
-      [v4 invalidateIntrinsicContentSize];
+      [searchBar invalidateIntrinsicContentSize];
     }
   }
 
@@ -1093,8 +1093,8 @@ LABEL_9:
 
 - (id)cancelBarButtonItem
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     if (!self->_cancelBarButtonItem)
     {
@@ -1106,7 +1106,7 @@ LABEL_9:
         v6 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
       }
 
-      v7 = [(UIBarButtonItem *)v4 initWithTitle:v6 style:2 target:v3 action:sel__performCancelAction];
+      v7 = [(UIBarButtonItem *)v4 initWithTitle:v6 style:2 target:searchBar action:sel__performCancelAction];
       cancelBarButtonItem = self->_cancelBarButtonItem;
       self->_cancelBarButtonItem = v7;
 
@@ -1131,11 +1131,11 @@ LABEL_9:
   v12.receiver = self;
   v12.super_class = _UISearchBarVisualProviderLegacy;
   [(_UISearchBarVisualProviderBase *)&v12 prepare];
-  v4 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v4)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:790 description:@"visual provider can not prepare without delegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:790 description:@"visual provider can not prepare without delegate"];
   }
 
   self->_tableViewIndexWidth = 0.0;
@@ -1144,22 +1144,22 @@ LABEL_9:
   *&self->_searchBarVisualProviderFlags |= 0x80000u;
   [(_UISearchBarVisualProviderLegacy *)self updateEffectiveContentInset];
   v5 = [UIView alloc];
-  [v4 bounds];
+  [searchBar bounds];
   v6 = [(UIView *)v5 initWithFrame:?];
   searchBarClippingView = self->_searchBarClippingView;
   self->_searchBarClippingView = v6;
 
   [(UIView *)self->_searchBarClippingView setAutoresizingMask:18];
   [(UIView *)self->_searchBarClippingView setClipsToBounds:1];
-  [v4 addSubview:self->_searchBarClippingView];
+  [searchBar addSubview:self->_searchBarClippingView];
   *&self->_searchBarVisualProviderFlags |= 0x14E00u;
   v8 = [UISearchBarBackground alloc];
-  [v4 bounds];
+  [searchBar bounds];
   v9 = [(UISearchBarBackground *)v8 initWithFrame:?];
   searchBarBackground = self->_searchBarBackground;
   self->_searchBarBackground = v9;
 
-  [v4 insertSubview:self->_searchBarBackground atIndex:0];
+  [searchBar insertSubview:self->_searchBarBackground atIndex:0];
 }
 
 - (id)runtimeOnlyViews
@@ -1208,15 +1208,15 @@ LABEL_9:
 
 - (void)teardown
 {
-  v4 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v4)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:835 description:@"visual provider can not clean up without delegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:835 description:@"visual provider can not clean up without delegate"];
   }
 
-  [(UIControl *)self->_scopeBar removeTarget:v4 action:0 forControlEvents:0xFFFFFFFFLL];
-  [(UISearchTextField *)self->_searchField removeTarget:v4 action:0 forControlEvents:0xFFFFFFFFLL];
+  [(UIControl *)self->_scopeBar removeTarget:searchBar action:0 forControlEvents:0xFFFFFFFFLL];
+  [(UISearchTextField *)self->_searchField removeTarget:searchBar action:0 forControlEvents:0xFFFFFFFFLL];
   [(UISearchTextField *)self->_searchField setDelegate:0];
   [(UITextField *)self->_searchField removeFromSuperview];
   [(UIView *)self->_promptLabel removeFromSuperview];
@@ -1246,19 +1246,19 @@ LABEL_9:
 
 - (id)currentSeparatorImage
 {
-  v3 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage separatorImage];
+  separatorImage = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage separatorImage];
 
-  if (v3)
+  if (separatorImage)
   {
-    v4 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage separatorImage];
+    separatorImage2 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage separatorImage];
   }
 
   else
   {
     if ((*&self->_searchBarVisualProviderFlags & 7) != 0 || ([(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v6 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      if ((v6 || (*&self->_searchBarVisualProviderFlags & 7) == 1) && (v7 = *&self->_searchBarVisualProviderFlags & 0x1C0, v6, v7 != 64))
+      effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      if ((effectiveBarTintColor || (*&self->_searchBarVisualProviderFlags & 7) == 1) && (v7 = *&self->_searchBarVisualProviderFlags & 0x1C0, effectiveBarTintColor, v7 != 64))
       {
         v8 = @"UISearchBarBlackSeparator.png";
       }
@@ -1274,18 +1274,18 @@ LABEL_9:
       v8 = @"UISearchBarDefaultSeparator.png";
     }
 
-    v4 = _UIImageWithName(v8);
+    separatorImage2 = _UIImageWithName(v8);
   }
 
-  return v4;
+  return separatorImage2;
 }
 
-- (void)setSeparatorImage:(id)a3
+- (void)setSeparatorImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   appearanceStorage = self->_appearanceStorage;
-  v11 = v4;
-  if (v4)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!appearanceStorage)
     {
@@ -1302,28 +1302,28 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v8 = [(_UISearchBarAppearanceStorage *)appearanceStorage separatorImage];
+  separatorImage = [(_UISearchBarAppearanceStorage *)appearanceStorage separatorImage];
 
-  v4 = v11;
-  if (v8 != v11)
+  imageCopy = v11;
+  if (separatorImage != v11)
   {
     [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setSeparatorImage:v11];
     separator = self->_separator;
-    v10 = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
-    [(UIImageView *)separator setImage:v10];
+    currentSeparatorImage = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
+    [(UIImageView *)separator setImage:currentSeparatorImage];
 
-    v4 = v11;
+    imageCopy = v11;
   }
 
 LABEL_7:
 }
 
-- (void)setSearchFieldBackgroundImage:(id)a3 forState:(unint64_t)a4
+- (void)setSearchFieldBackgroundImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
+  imageCopy = image;
   appearanceStorage = self->_appearanceStorage;
-  v11 = v6;
-  if (v6)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!appearanceStorage)
     {
@@ -1340,37 +1340,37 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [(_UISearchBarAppearanceStorage *)appearanceStorage searchFieldBackgroundImageForState:a4];
+  v10 = [(_UISearchBarAppearanceStorage *)appearanceStorage searchFieldBackgroundImageForState:state];
 
-  v6 = v11;
+  imageCopy = v11;
   if (v10 != v11)
   {
-    [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setSearchFieldBackgroundImage:v11 forState:2 * (a4 != 0)];
+    [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setSearchFieldBackgroundImage:v11 forState:2 * (state != 0)];
     [(_UISearchBarVisualProviderLegacy *)self updateSearchFieldArt];
-    v6 = v11;
+    imageCopy = v11;
   }
 
 LABEL_7:
 }
 
-- (id)internalImageForSearchBarIcon:(int64_t)a3 state:(unint64_t)a4 customImage:(BOOL *)a5
+- (id)internalImageForSearchBarIcon:(int64_t)icon state:(unint64_t)state customImage:(BOOL *)image
 {
-  v9 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v9)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
     v12 = objc_alloc_init(UIImage);
     goto LABEL_6;
   }
 
-  v10 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage imageForIcon:a3 state:a4];
+  v10 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage imageForIcon:icon state:state];
   if (!v10)
   {
-    if (a5)
+    if (image)
     {
-      *a5 = 0;
+      *image = 0;
     }
 
-    if (a3 == 3)
+    if (icon == 3)
     {
       if (!internalImageForSearchBarIcon_state_customImage__searchBarIcons)
       {
@@ -1379,10 +1379,10 @@ LABEL_7:
         internalImageForSearchBarIcon_state_customImage__searchBarIcons = v21;
       }
 
-      v23 = [v9 _searchBarTextField];
-      v17 = [v23 _partsShouldBeMini];
+      _searchBarTextField = [searchBar _searchBarTextField];
+      _partsShouldBeMini = [_searchBarTextField _partsShouldBeMini];
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SearchBarResults_state:%lu_mini:%d_barStyle:%d_searchBarStyle:%lu_backdropStyle:%lu", a4, v17, *&self->_searchBarVisualProviderFlags & 7, (self->_searchBarVisualProviderFlags >> 3) & 7, self->_backdropStyle];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SearchBarResults_state:%lu_mini:%d_barStyle:%d_searchBarStyle:%lu_backdropStyle:%lu", state, _partsShouldBeMini, *&self->_searchBarVisualProviderFlags & 7, (self->_searchBarVisualProviderFlags >> 3) & 7, self->_backdropStyle];
       v11 = [internalImageForSearchBarIcon_state_customImage__searchBarIcons objectForKey:v18];
       if (v11)
       {
@@ -1395,9 +1395,9 @@ LABEL_7:
 
     else
     {
-      if (a3 != 2)
+      if (icon != 2)
       {
-        if (a3)
+        if (icon)
         {
           v11 = 0;
           goto LABEL_33;
@@ -1426,10 +1426,10 @@ LABEL_6:
         internalImageForSearchBarIcon_state_customImage__searchBarIcons = v14;
       }
 
-      v16 = [v9 _searchBarTextField];
-      v17 = [v16 _partsShouldBeMini];
+      _searchBarTextField2 = [searchBar _searchBarTextField];
+      _partsShouldBeMini = [_searchBarTextField2 _partsShouldBeMini];
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SearchBarBookmark_state:%lu_mini:%d_barStyle:%d_searchBarStyle:%lu_backdropStyle:%lu", a4, v17, *&self->_searchBarVisualProviderFlags & 7, (self->_searchBarVisualProviderFlags >> 3) & 7, self->_backdropStyle];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SearchBarBookmark_state:%lu_mini:%d_barStyle:%d_searchBarStyle:%lu_backdropStyle:%lu", state, _partsShouldBeMini, *&self->_searchBarVisualProviderFlags & 7, (self->_searchBarVisualProviderFlags >> 3) & 7, self->_backdropStyle];
       v11 = [internalImageForSearchBarIcon_state_customImage__searchBarIcons objectForKey:v18];
       if (v11)
       {
@@ -1442,7 +1442,7 @@ LABEL_32:
       v20 = @"UISearchBarBookmarks.png";
     }
 
-    if (v17)
+    if (_partsShouldBeMini)
     {
       v24 = v20;
     }
@@ -1453,14 +1453,14 @@ LABEL_32:
     }
 
     v25 = _UIImageWithName(v24);
-    if (a4 == 1)
+    if (state == 1)
     {
       [UIColor colorWithRed:0.047 green:0.455 blue:0.867 alpha:1.0];
     }
 
     else
     {
-      [(_UISearchBarVisualProviderLegacy *)self colorForComponent:0 disabled:a4 == 2];
+      [(_UISearchBarVisualProviderLegacy *)self colorForComponent:0 disabled:state == 2];
     }
     v26 = ;
     [v25 size];
@@ -1471,9 +1471,9 @@ LABEL_32:
   }
 
   v11 = v10;
-  if (a5)
+  if (image)
   {
-    *a5 = 1;
+    *image = 1;
   }
 
 LABEL_33:
@@ -1481,14 +1481,14 @@ LABEL_33:
   return v11;
 }
 
-- (void)setImage:(id)a3 forSearchBarIcon:(int64_t)a4 state:(unint64_t)a5
+- (void)setImage:(id)image forSearchBarIcon:(int64_t)icon state:(unint64_t)state
 {
-  v14 = a3;
-  v8 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v8)
+  imageCopy = image;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (v14)
+    if (imageCopy)
     {
       if (!appearanceStorage)
       {
@@ -1505,25 +1505,25 @@ LABEL_33:
       goto LABEL_14;
     }
 
-    if (a5 >= 3)
+    if (state >= 3)
     {
-      a5 = 1;
+      state = 1;
     }
 
-    v12 = [(_UISearchBarAppearanceStorage *)appearanceStorage imageForIcon:a4 state:a5];
+    v12 = [(_UISearchBarAppearanceStorage *)appearanceStorage imageForIcon:icon state:state];
 
-    if (v12 != v14)
+    if (v12 != imageCopy)
     {
-      [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setImage:v14 forIcon:a4 state:a5];
-      if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setImage:imageCopy forIcon:icon state:state];
+      if ((icon & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
         [(_UISearchBarVisualProviderLegacy *)self updateRightView];
       }
 
-      else if (a4)
+      else if (icon)
       {
-        v13 = [v8 _searchBarTextField];
-        [v13 _setClearButtonImage:v14 forState:a5];
+        _searchBarTextField = [searchBar _searchBarTextField];
+        [_searchBarTextField _setClearButtonImage:imageCopy forState:state];
       }
 
       else
@@ -1536,23 +1536,23 @@ LABEL_33:
 LABEL_14:
 }
 
-- (id)imageForSearchBarIcon:(int64_t)a3 state:(unint64_t)a4
+- (id)imageForSearchBarIcon:(int64_t)icon state:(unint64_t)state
 {
   appearanceStorage = self->_appearanceStorage;
-  if (a4 >= 3)
+  if (state >= 3)
   {
-    a4 = 1;
+    state = 1;
   }
 
-  return [(_UISearchBarAppearanceStorage *)appearanceStorage imageForIcon:a3 state:a4];
+  return [(_UISearchBarAppearanceStorage *)appearanceStorage imageForIcon:icon state:state];
 }
 
-- (void)setScopeBarBackgroundImage:(id)a3
+- (void)setScopeBarBackgroundImage:(id)image
 {
-  v4 = a3;
-  if (v4 || self->_scopeBar)
+  imageCopy = image;
+  if (imageCopy || self->_scopeBar)
   {
-    v9 = v4;
+    v9 = imageCopy;
     appearanceStorage = self->_appearanceStorage;
     if (!appearanceStorage)
     {
@@ -1563,24 +1563,24 @@ LABEL_14:
       appearanceStorage = self->_appearanceStorage;
     }
 
-    v8 = [(_UISearchBarAppearanceStorage *)appearanceStorage scopeBarBackgroundImage];
+    scopeBarBackgroundImage = [(_UISearchBarAppearanceStorage *)appearanceStorage scopeBarBackgroundImage];
 
-    if (v8 != v9)
+    if (scopeBarBackgroundImage != v9)
     {
       [(_UISearchBarAppearanceStorage *)self->_appearanceStorage setScopeBarBackgroundImage:v9];
     }
 
     [(_UISearchBarVisualProviderLegacy *)self setUpScopeBar];
-    v4 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  v6 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v6)
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     appearanceStorage = self->_appearanceStorage;
     if (!appearanceStorage)
@@ -1597,11 +1597,11 @@ LABEL_14:
       appearanceStorage = self->_appearanceStorage;
     }
 
-    v10 = [(_UISearchBarAppearanceStorage *)appearanceStorage searchFieldPositionAdjustment];
-    v11 = v10;
-    if (v10)
+    searchFieldPositionAdjustment = [(_UISearchBarAppearanceStorage *)appearanceStorage searchFieldPositionAdjustment];
+    v11 = searchFieldPositionAdjustment;
+    if (searchFieldPositionAdjustment)
     {
-      [v10 UIOffsetValue];
+      [searchFieldPositionAdjustment UIOffsetValue];
     }
 
     else
@@ -1618,7 +1618,7 @@ LABEL_14:
       v16 = [MEMORY[0x1E696B098] valueWithBytes:v17 objCType:"{UIOffset=dd}"];
       [(_UISearchBarAppearanceStorage *)v15 setSearchFieldPositionAdjustment:v16];
 
-      [v6 setNeedsLayout];
+      [searchBar setNeedsLayout];
     }
   }
 
@@ -1627,11 +1627,11 @@ LABEL_15:
 
 - (UIOffset)searchFieldBackgroundPositionAdjustment
 {
-  v2 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage searchFieldPositionAdjustment];
-  v3 = v2;
-  if (v2)
+  searchFieldPositionAdjustment = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage searchFieldPositionAdjustment];
+  v3 = searchFieldPositionAdjustment;
+  if (searchFieldPositionAdjustment)
   {
-    [v2 UIOffsetValue];
+    [searchFieldPositionAdjustment UIOffsetValue];
     v5 = v4;
     v7 = v6;
   }
@@ -1649,29 +1649,29 @@ LABEL_15:
   return result;
 }
 
-- (void)setBackgroundImage:(id)a3 forBarPosition:(int64_t)a4 barMetrics:(int64_t)a5
+- (void)setBackgroundImage:(id)image forBarPosition:(int64_t)position barMetrics:(int64_t)metrics
 {
-  [(UISearchBarBackground *)self->_searchBarBackground _setBackgroundImage:a3 forBarPosition:a4 barMetrics:a5];
+  [(UISearchBarBackground *)self->_searchBarBackground _setBackgroundImage:image forBarPosition:position barMetrics:metrics];
 
   [(_UISearchBarVisualProviderLegacy *)self updateNeedForBackdrop];
 }
 
 - (BOOL)hasDarkUIAppearance
 {
-  v2 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v3 = v2;
-  if (v2)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v3 = searchBar;
+  if (searchBar)
   {
-    v4 = [v2 traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [searchBar traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v6 = [v3 keyboardAppearance];
+    keyboardAppearance = [v3 keyboardAppearance];
     v7 = 0;
-    if (v6 <= 8)
+    if (keyboardAppearance <= 8)
     {
-      if (v6)
+      if (keyboardAppearance)
       {
-        if (v6 != 1)
+        if (keyboardAppearance != 1)
         {
           goto LABEL_11;
         }
@@ -1680,16 +1680,16 @@ LABEL_15:
       }
 
 LABEL_10:
-      v7 = v5 == 2;
+      v7 = userInterfaceStyle == 2;
       goto LABEL_11;
     }
 
-    if (v6 == 10)
+    if (keyboardAppearance == 10)
     {
       goto LABEL_10;
     }
 
-    if (v6 == 9)
+    if (keyboardAppearance == 9)
     {
 LABEL_9:
       v7 = 1;
@@ -1706,11 +1706,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)colorForComponent:(unint64_t)a3 disabled:(BOOL)a4
+- (id)colorForComponent:(unint64_t)component disabled:(BOOL)disabled
 {
-  v4 = a4;
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v7)
+  disabledCopy = disabled;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
     v9 = +[UIColor labelColor];
 LABEL_24:
@@ -1721,7 +1721,7 @@ LABEL_24:
   backdropStyle = self->_backdropStyle;
   if (backdropStyle == 2030)
   {
-    if (v4)
+    if (disabledCopy)
     {
 LABEL_8:
       v10 = 0.35;
@@ -1732,7 +1732,7 @@ LABEL_23:
     }
 
     v11 = 1.0;
-    if (a3 != 4)
+    if (component != 4)
     {
       v10 = 0.5;
       goto LABEL_23;
@@ -1745,7 +1745,7 @@ LABEL_22:
 
   if (backdropStyle == 2020)
   {
-    if (!v4)
+    if (!disabledCopy)
     {
       goto LABEL_20;
     }
@@ -1755,14 +1755,14 @@ LABEL_22:
 
   if ([(_UISearchBarVisualProviderLegacy *)self barStyle])
   {
-    if (v4)
+    if (disabledCopy)
     {
       v11 = 0.47;
       v10 = 0.35;
       goto LABEL_23;
     }
 
-    if (a3 == 4)
+    if (component == 4)
     {
 LABEL_20:
       v9 = +[UIColor whiteColor];
@@ -1774,7 +1774,7 @@ LABEL_20:
   }
 
   v12 = self->_backdropStyle;
-  if ((v12 == 2010 || v12 == 2005) && ((v13 = UISearchBarUsesModernAppearance(), a3 == 4) || !v13))
+  if ((v12 == 2010 || v12 == 2005) && ((v13 = UISearchBarUsesModernAppearance(), component == 4) || !v13))
   {
     v14 = +[UIColor labelColor];
   }
@@ -1785,7 +1785,7 @@ LABEL_20:
   }
 
   v15 = v14;
-  if (v4)
+  if (disabledCopy)
   {
     v17 = [v14 colorWithAlphaComponent:0.35];
 
@@ -1799,8 +1799,8 @@ LABEL_25:
 
 - (id)textColor
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
     v4 = +[UIColor labelColor];
     goto LABEL_7;
@@ -1810,7 +1810,7 @@ LABEL_25:
   {
     v4 = [(_UISearchBarVisualProviderLegacy *)self colorForComponent:4 disabled:0];
 LABEL_7:
-    v5 = v4;
+    defaultTextColor = v4;
     goto LABEL_8;
   }
 
@@ -1820,18 +1820,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [v3 _searchBarTextField];
-  v8 = [v7 visualStyle];
-  v5 = [v8 defaultTextColor];
+  _searchBarTextField = [searchBar _searchBarTextField];
+  visualStyle = [_searchBarTextField visualStyle];
+  defaultTextColor = [visualStyle defaultTextColor];
 
 LABEL_8:
 
-  return v5;
+  return defaultTextColor;
 }
 
-- (void)_setBarTintColor:(id)a3
+- (void)_setBarTintColor:(id)color
 {
-  obj = a3;
+  obj = color;
   v4 = dyld_program_sdk_at_least();
   v5 = obj;
   if (v4)
@@ -1845,9 +1845,9 @@ LABEL_8:
   }
 }
 
-- (void)setBarTintColor:(id)a3 forceUpdate:(BOOL)a4
+- (void)setBarTintColor:(id)color forceUpdate:(BOOL)update
 {
-  if (self->_barTintColor != a3 || a4)
+  if (self->_barTintColor != color || update)
   {
     [(_UISearchBarVisualProviderLegacy *)self _setBarTintColor:?];
 
@@ -1855,47 +1855,47 @@ LABEL_8:
   }
 }
 
-- (void)effectiveBarTintColorDidChange:(BOOL)a3
+- (void)effectiveBarTintColorDidChange:(BOOL)change
 {
-  v3 = a3;
-  v11 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v11)
+  changeCopy = change;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-    v6 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-    v7 = v6;
+    effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+    v7 = effectiveBarTintColor;
     if ((*&searchBarVisualProviderFlags & 0x20000) != 0)
     {
-      v8 = _GetLightenedTintColor(v6);
+      v8 = _GetLightenedTintColor(effectiveBarTintColor);
       [(UISearchBarBackground *)self->_searchBarBackground setBarTintColor:v8];
     }
 
     else
     {
-      [(UISearchBarBackground *)self->_searchBarBackground setBarTintColor:v6];
+      [(UISearchBarBackground *)self->_searchBarBackground setBarTintColor:effectiveBarTintColor];
     }
 
     if (self->_cancelButton)
     {
       [(_UISearchBarVisualProviderLegacy *)self setUpCancelButtonWithAppearance:0];
-      [v11 setNeedsLayout];
+      [searchBar setNeedsLayout];
     }
 
     if (self->_promptLabel)
     {
       [(_UISearchBarVisualProviderLegacy *)self setUpPromptLabel];
-      [v11 setNeedsLayout];
+      [searchBar setNeedsLayout];
     }
 
-    if (v3)
+    if (changeCopy)
     {
       [(_UISearchBarVisualProviderLegacy *)self updateSearchFieldArt];
       [(_UISearchBarVisualProviderLegacy *)self updateMagnifyingGlassView];
       separator = self->_separator;
       if (separator)
       {
-        v10 = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
-        [(UIImageView *)separator setImage:v10];
+        currentSeparatorImage = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
+        [(UIImageView *)separator setImage:currentSeparatorImage];
       }
     }
 
@@ -1905,26 +1905,26 @@ LABEL_8:
 
 - (void)applySearchBarStyle
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v15 = v3;
-    v4 = [v3 _searchBarTextField];
-    v5 = [v4 _systemBackgroundView];
+    v15 = searchBar;
+    _searchBarTextField = [searchBar _searchBarTextField];
+    _systemBackgroundView = [_searchBarTextField _systemBackgroundView];
     v6 = *&self->_searchBarVisualProviderFlags & 0x38;
-    v7 = [v15 layer];
-    v8 = v7;
+    layer = [v15 layer];
+    v8 = layer;
     if (v6 == 16)
     {
-      [v7 setAllowsGroupBlending:0];
+      [layer setAllowsGroupBlending:0];
 
-      v9 = [v15 layer];
-      [v9 setAllowsGroupOpacity:0];
+      layer2 = [v15 layer];
+      [layer2 setAllowsGroupOpacity:0];
 
-      v10 = [v5 layer];
-      [v10 setAllowsGroupBlending:0];
+      layer3 = [_systemBackgroundView layer];
+      [layer3 setAllowsGroupBlending:0];
 
-      [v5 setBackgroundContainer:1];
+      [_systemBackgroundView setBackgroundContainer:1];
       if (dyld_program_sdk_at_least())
       {
         backdropStyle = self->_backdropStyle;
@@ -1935,22 +1935,22 @@ LABEL_8:
         backdropStyle = 2;
       }
 
-      [v4 updateForBackdropStyle:backdropStyle];
+      [_searchBarTextField updateForBackdropStyle:backdropStyle];
     }
 
     else
     {
-      [v7 setAllowsGroupBlending:1];
+      [layer setAllowsGroupBlending:1];
 
-      v12 = [v15 layer];
-      [v12 setAllowsGroupOpacity:1];
+      layer4 = [v15 layer];
+      [layer4 setAllowsGroupOpacity:1];
 
-      v13 = [v5 layer];
-      [v13 setAllowsGroupBlending:1];
+      layer5 = [_systemBackgroundView layer];
+      [layer5 setAllowsGroupBlending:1];
 
-      [v5 setBackgroundContainer:0];
-      [v4 _removeEffectsBackgroundViews];
-      [v5 updateView];
+      [_systemBackgroundView setBackgroundContainer:0];
+      [_searchBarTextField _removeEffectsBackgroundViews];
+      [_systemBackgroundView updateView];
     }
 
     [(_UISearchBarVisualProviderLegacy *)self updateNeedForBackdrop];
@@ -1970,62 +1970,62 @@ LABEL_8:
     [(_UISearchBarVisualProviderLegacy *)self updateRightView];
     [v15 setNeedsLayout];
 
-    v3 = v15;
+    searchBar = v15;
   }
 }
 
 - (void)updateForDrawsBackgroundInPalette
 {
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v7 && [(_UISearchBarVisualProviderLegacy *)self isInNavigationPalette])
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && [(_UISearchBarVisualProviderLegacy *)self isInNavigationPalette])
   {
     [(_UISearchBarVisualProviderLegacy *)self setDrawsBackground:(*&self->_searchBarVisualProviderFlags >> 14) & 1];
-    v3 = [v7 _containingNavigationPalette];
+    _containingNavigationPalette = [searchBar _containingNavigationPalette];
     v4 = (*&self->_searchBarVisualProviderFlags >> 14) & 1;
-    v5 = [v3 _backgroundView];
-    [v5 setHidden:v4];
+    _backgroundView = [_containingNavigationPalette _backgroundView];
+    [_backgroundView setHidden:v4];
 
-    v6 = [v3 _backgroundView];
-    LODWORD(v5) = [v6 isHidden];
+    _backgroundView2 = [_containingNavigationPalette _backgroundView];
+    LODWORD(_backgroundView) = [_backgroundView2 isHidden];
 
-    if (v5)
+    if (_backgroundView)
     {
       [(UISearchBarBackground *)self->_searchBarBackground _updateBackgroundImage];
     }
   }
 }
 
-- (void)updateIfNecessaryForOldSize:(CGSize)a3
+- (void)updateIfNecessaryForOldSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v10 = v6;
-    [v6 bounds];
-    v6 = v10;
+    v10 = searchBar;
+    [searchBar bounds];
+    searchBar = v10;
     if (width != v8 || height != v7)
     {
       [(_UISearchBarVisualProviderLegacy *)self layoutBackgroundViewConsideringTopBarStatusAndChangedHeight:v7 != height];
-      v6 = v10;
+      searchBar = v10;
     }
   }
 }
 
 - (void)updateMagnifyingGlassView
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     if ((dyld_program_sdk_at_least() & 1) == 0)
     {
-      v4 = [v3 _searchBarTextField];
-      v5 = [v4 leftView];
-      if (v5)
+      _searchBarTextField = [searchBar _searchBarTextField];
+      leftView = [_searchBarTextField leftView];
+      if (leftView)
       {
-        v6 = v5;
-        v7 = [v4 leftView];
+        v6 = leftView;
+        leftView2 = [_searchBarTextField leftView];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2054,25 +2054,25 @@ LABEL_8:
         v10 = v12;
       }
 
-      v13 = [v3 _searchBarTextField];
-      v14 = [v13 leftView];
+      _searchBarTextField2 = [searchBar _searchBarTextField];
+      leftView3 = [_searchBarTextField2 leftView];
 
-      if (v14)
+      if (leftView3)
       {
-        v15 = [v13 leftView];
-        [v15 setImage:v10];
+        leftView4 = [_searchBarTextField2 leftView];
+        [leftView4 setImage:v10];
 
-        v16 = [v13 leftView];
-        [(UIView *)v16 sizeToFit];
+        leftView5 = [_searchBarTextField2 leftView];
+        [(UIView *)leftView5 sizeToFit];
       }
 
       else
       {
-        v16 = [[UIImageView alloc] initWithImage:v10];
-        [v13 setLeftView:v16];
+        leftView5 = [[UIImageView alloc] initWithImage:v10];
+        [_searchBarTextField2 setLeftView:leftView5];
       }
 
-      [v3 setNeedsLayout];
+      [searchBar setNeedsLayout];
     }
   }
 
@@ -2095,8 +2095,8 @@ LABEL_14:
 
 - (void)updateNeedForBackdrop
 {
-  v12 = [(UISearchBarBackground *)self->_searchBarBackground backgroundImage];
-  if (v12 || (*&self->_searchBarVisualProviderFlags & 0x2038) != 0x10)
+  backgroundImage = [(UISearchBarBackground *)self->_searchBarBackground backgroundImage];
+  if (backgroundImage || (*&self->_searchBarVisualProviderFlags & 0x2038) != 0x10)
   {
     [(_UISearchBarVisualProviderLegacy *)self _removeLegacyBackdropView];
     [(_UISearchBarVisualProviderLegacy *)self _removeBackdropVisualEffectView];
@@ -2154,27 +2154,27 @@ LABEL_14:
 
 - (void)updatePlaceholderColor
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v7 = v3;
+    v7 = searchBar;
     v4 = [(_UISearchBarVisualProviderLegacy *)self colorForComponent:3 disabled:0];
-    v5 = [v7 _searchBarTextField];
-    v6 = [v5 _placeholderLabel];
-    [v6 setTextColor:v4];
+    _searchBarTextField = [v7 _searchBarTextField];
+    _placeholderLabel = [_searchBarTextField _placeholderLabel];
+    [_placeholderLabel setTextColor:v4];
 
-    v3 = v7;
+    searchBar = v7;
   }
 }
 
 - (void)updateRightView
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
+  if (searchBar)
   {
-    v5 = [v3 _searchBarTextField];
-    v6 = v5;
+    _searchBarTextField = [searchBar _searchBarTextField];
+    v6 = _searchBarTextField;
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
     if ((*&searchBarVisualProviderFlags & 0x200000) != 0)
     {
@@ -2186,7 +2186,7 @@ LABEL_14:
       v8 = (*&searchBarVisualProviderFlags >> 22) & 2;
     }
 
-    [v5 setRightViewMode:v8];
+    [_searchBarTextField setRightViewMode:v8];
     v9 = self->_searchBarVisualProviderFlags;
     if ((*&v9 & 0x200000) != 0)
     {
@@ -2258,17 +2258,17 @@ LABEL_11:
 
 - (void)updateScopeBarBackground
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3 && self->_scopeBarContainerView)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && self->_scopeBarContainerView)
   {
-    v14 = v3;
-    v4 = [(_UISearchBarVisualProviderLegacy *)self scopeBarBackgroundImage];
+    v14 = searchBar;
+    scopeBarBackgroundImage = [(_UISearchBarVisualProviderLegacy *)self scopeBarBackgroundImage];
 
-    if (v4)
+    if (scopeBarBackgroundImage)
     {
       scopeBarBackgroundView = self->_scopeBarBackgroundView;
-      v6 = [(_UISearchBarVisualProviderLegacy *)self scopeBarBackgroundImage];
-      [(UIImageView *)scopeBarBackgroundView setImage:v6];
+      scopeBarBackgroundImage2 = [(_UISearchBarVisualProviderLegacy *)self scopeBarBackgroundImage];
+      [(UIImageView *)scopeBarBackgroundView setImage:scopeBarBackgroundImage2];
 
       [(UIImageView *)self->_scopeBarBackgroundView setBackgroundColor:0];
     }
@@ -2282,12 +2282,12 @@ LABEL_11:
     {
       [(UIImageView *)self->_scopeBarBackgroundView setHidden:0];
       searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-      v8 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      v9 = v8;
-      v10 = v8;
+      effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      v9 = effectiveBarTintColor;
+      v10 = effectiveBarTintColor;
       if ((*&searchBarVisualProviderFlags & 0x20000) != 0)
       {
-        v10 = _GetLightenedTintColor(v8);
+        v10 = _GetLightenedTintColor(effectiveBarTintColor);
       }
 
       v11 = _UISearchBarBackgroundFillColor(*&searchBarVisualProviderFlags & 7, v10);
@@ -2300,36 +2300,36 @@ LABEL_11:
       [(UIImageView *)self->_scopeBarBackgroundView setImage:0];
     }
 
-    v12 = [(_UISearchBarVisualProviderLegacy *)self isTranslucent];
+    isTranslucent = [(_UISearchBarVisualProviderLegacy *)self isTranslucent];
     v13 = 0.96;
-    if (!v12)
+    if (!isTranslucent)
     {
       v13 = 1.0;
     }
 
     [(UIView *)self->_scopeBarBackgroundView setAlpha:v13];
-    v3 = v14;
+    searchBar = v14;
   }
 }
 
 - (void)updateSearchBarOpacity
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v4 = v3;
-    [v3 setOpaque:{-[_UISearchBarVisualProviderLegacy isTranslucent](self, "isTranslucent") ^ 1}];
-    v3 = v4;
+    v4 = searchBar;
+    [searchBar setOpaque:{-[_UISearchBarVisualProviderLegacy isTranslucent](self, "isTranslucent") ^ 1}];
+    searchBar = v4;
   }
 }
 
 - (void)updateScopeBarFrame
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
   if (self->_scopeBar)
   {
-    v5 = v3 == 0;
+    v5 = searchBar == 0;
   }
 
   else
@@ -2437,20 +2437,20 @@ LABEL_11:
 
 - (void)updateSearchFieldArt
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v19 = v3;
-    v4 = [v3 _searchBarTextField];
+    v19 = searchBar;
+    _searchBarTextField = [searchBar _searchBarTextField];
     v5 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage searchFieldBackgroundImageForState:0];
     if (!v5)
     {
-      [v4 setBorderStyle:3];
-      v9 = [v4 _systemBackgroundView];
-      [v9 setBarStyle:{-[_UISearchBarVisualProviderLegacy barStyle](self, "barStyle")}];
+      [_searchBarTextField setBorderStyle:3];
+      _systemBackgroundView = [_searchBarTextField _systemBackgroundView];
+      [_systemBackgroundView setBarStyle:{-[_UISearchBarVisualProviderLegacy barStyle](self, "barStyle")}];
 LABEL_16:
 
-      v3 = v19;
+      searchBar = v19;
       goto LABEL_17;
     }
 
@@ -2466,23 +2466,23 @@ LABEL_16:
       v8 = v5;
     }
 
-    v9 = v8;
+    _systemBackgroundView = v8;
 
     if ([v5 _isResizable])
     {
-      [v4 setBackground:v5];
-      if (![v9 _isResizable])
+      [_searchBarTextField setBackground:v5];
+      if (![_systemBackgroundView _isResizable])
       {
-        v10 = [v5 leftCapWidth];
-        v11 = [v5 topCapHeight];
-        v12 = v9;
-        v13 = v10;
+        leftCapWidth = [v5 leftCapWidth];
+        topCapHeight = [v5 topCapHeight];
+        v12 = _systemBackgroundView;
+        v13 = leftCapWidth;
 LABEL_13:
-        v17 = [v12 stretchableImageWithLeftCapWidth:v13 topCapHeight:v11];
-        [v4 setDisabledBackground:v17];
+        v17 = [v12 stretchableImageWithLeftCapWidth:v13 topCapHeight:topCapHeight];
+        [_searchBarTextField setDisabledBackground:v17];
 
 LABEL_14:
-        [v4 setBorderStyle:0];
+        [_searchBarTextField setBorderStyle:0];
         [v5 size];
         if (v18 != 28.0)
         {
@@ -2498,84 +2498,84 @@ LABEL_14:
       [v5 size];
       v15 = ((v14 + -1.0) * 0.5);
       v16 = [v5 stretchableImageWithLeftCapWidth:v15 topCapHeight:0];
-      [v4 setBackground:v16];
+      [_searchBarTextField setBackground:v16];
 
-      if (![v9 _isResizable])
+      if (![_systemBackgroundView _isResizable])
       {
-        v12 = v9;
+        v12 = _systemBackgroundView;
         v13 = v15;
-        v11 = 0;
+        topCapHeight = 0;
         goto LABEL_13;
       }
     }
 
-    [v4 setDisabledBackground:v9];
+    [_searchBarTextField setDisabledBackground:_systemBackgroundView];
     goto LABEL_14;
   }
 
 LABEL_17:
 }
 
-- (void)setUpCancelButtonWithAppearance:(id)a3
+- (void)setUpCancelButtonWithAppearance:(id)appearance
 {
-  v12 = a3;
-  v4 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v4)
+  appearanceCopy = appearance;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     cancelButton = self->_cancelButton;
     if (cancelButton)
     {
       [(UIButton *)cancelButton setBarStyle:*&self->_searchBarVisualProviderFlags & 7];
-      v6 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      [(UIButton *)self->_cancelButton _setTintColor:v6];
+      effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      [(UIButton *)self->_cancelButton _setTintColor:effectiveBarTintColor];
     }
 
     else
     {
-      v6 = self->_cancelButtonText;
-      if (!v6)
+      effectiveBarTintColor = self->_cancelButtonText;
+      if (!effectiveBarTintColor)
       {
-        v6 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
+        effectiveBarTintColor = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
       }
 
       v7 = [UINavigationButton alloc];
-      v8 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      v9 = [(UINavigationButton *)v7 initWithValue:v6 width:3 style:0 barStyle:0 possibleTitles:v8 tintColor:0.0];
+      effectiveBarTintColor2 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      v9 = [(UINavigationButton *)v7 initWithValue:effectiveBarTintColor width:3 style:0 barStyle:0 possibleTitles:effectiveBarTintColor2 tintColor:0.0];
       v10 = self->_cancelButton;
       self->_cancelButton = v9;
 
       [(UIButton *)self->_cancelButton _setAppearanceGuideClass:objc_opt_class()];
-      [(UIControl *)self->_cancelButton addTarget:v4 action:sel__performCancelAction forControlEvents:64];
-      [v4 addSubview:self->_cancelButton];
-      v11 = ([v4 isFirstResponder] & 1) != 0 || (*(&self->_searchBarVisualProviderFlags + 2) & 8) == 0;
+      [(UIControl *)self->_cancelButton addTarget:searchBar action:sel__performCancelAction forControlEvents:64];
+      [searchBar addSubview:self->_cancelButton];
+      v11 = ([searchBar isFirstResponder] & 1) != 0 || (*(&self->_searchBarVisualProviderFlags + 2) & 8) == 0;
       [(UIButton *)self->_cancelButton setEnabled:v11];
-      [v4 setNeedsLayout];
+      [searchBar setNeedsLayout];
     }
 
-    if (v12)
+    if (appearanceCopy)
     {
-      [(UIButton *)self->_cancelButton _applyBarButtonAppearanceStorage:v12 withTaggedSelectors:0];
+      [(UIButton *)self->_cancelButton _applyBarButtonAppearanceStorage:appearanceCopy withTaggedSelectors:0];
     }
   }
 }
 
 - (void)setUpLeftButton
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v9 = v3;
+    v9 = searchBar;
     if (self->_leftButton)
     {
-      v4 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      [(UINavigationButton *)self->_leftButton _setTintColor:v4];
+      effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      [(UINavigationButton *)self->_leftButton _setTintColor:effectiveBarTintColor];
     }
 
     else
     {
       v5 = [UINavigationButton alloc];
-      v6 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      v7 = [(UINavigationButton *)v5 initWithValue:@"<configure>" width:3 style:0 barStyle:0 possibleTitles:v6 tintColor:0.0];
+      effectiveBarTintColor2 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      v7 = [(UINavigationButton *)v5 initWithValue:@"<configure>" width:3 style:0 barStyle:0 possibleTitles:effectiveBarTintColor2 tintColor:0.0];
       leftButton = self->_leftButton;
       self->_leftButton = v7;
 
@@ -2584,16 +2584,16 @@ LABEL_17:
       [v9 setNeedsLayout];
     }
 
-    v3 = v9;
+    searchBar = v9;
   }
 }
 
 - (void)setUpPromptLabel
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v24 = v3;
+    v24 = searchBar;
     if (!_MergedGlobals_27_0)
     {
       v4 = [[UIColor alloc] initWithRed:0.168 green:0.243 blue:0.353 alpha:1.0];
@@ -2640,12 +2640,12 @@ LABEL_17:
 
     v15 = _MergedGlobals_27_0;
     v16 = qword_1ED49A450;
-    v17 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+    effectiveBarTintColor = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
 
-    if (v17)
+    if (effectiveBarTintColor)
     {
-      v18 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
-      v19 = _GetLightenedTintColor(v18);
+      effectiveBarTintColor2 = [(_UISearchBarVisualProviderLegacy *)self effectiveBarTintColor];
+      v19 = _GetLightenedTintColor(effectiveBarTintColor2);
       v20 = GetTintedPromptTextColor(v19);
 
       v21 = 1.0;
@@ -2655,10 +2655,10 @@ LABEL_17:
     {
       if ((*&self->_searchBarVisualProviderFlags & 7) == 0)
       {
-        v22 = [v24 traitCollection];
-        v23 = [v22 userInterfaceStyle];
+        traitCollection = [v24 traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-        if (v23 != 2)
+        if (userInterfaceStyle != 2)
         {
           v21 = 1.0;
           goto LABEL_18;
@@ -2667,7 +2667,7 @@ LABEL_17:
 
       v20 = qword_1ED49A458;
 
-      v18 = v16;
+      effectiveBarTintColor2 = v16;
       v21 = -1.0;
       v16 = qword_1ED49A460;
     }
@@ -2678,19 +2678,19 @@ LABEL_18:
     [(UILabel *)self->_promptLabel setShadowColor:v16];
     [(UILabel *)self->_promptLabel setShadowOffset:0.0, v21];
 
-    v3 = v24;
+    searchBar = v24;
   }
 }
 
 - (void)setUpScopeBar
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
+  if (searchBar)
   {
     if (!self->_scopeBar)
     {
-      [v3 sizeToFit];
+      [searchBar sizeToFit];
       [v4 bounds];
       v6 = v5;
       v8 = v7;
@@ -2745,16 +2745,16 @@ LABEL_18:
 
 - (void)setUpSearchField
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v4 = [(UISearchTextField *)[UISearchBarTextField alloc] _initWithDeferredSearchIconImageConfiguration];
+    _initWithDeferredSearchIconImageConfiguration = [(UISearchTextField *)[UISearchBarTextField alloc] _initWithDeferredSearchIconImageConfiguration];
     searchField = self->_searchField;
-    self->_searchField = v4;
+    self->_searchField = _initWithDeferredSearchIconImageConfiguration;
 
-    [(UISearchTextField *)self->_searchField _setSearchBar:v3];
+    [(UISearchTextField *)self->_searchField _setSearchBar:searchBar];
     [(UIView *)self->_searchField setOpaque:0];
-    -[UITextField setSemanticContentAttribute:](self->_searchField, "setSemanticContentAttribute:", [v3 semanticContentAttribute]);
+    -[UITextField setSemanticContentAttribute:](self->_searchField, "setSemanticContentAttribute:", [searchBar semanticContentAttribute]);
     v6 = UISearchBarUsesModernAppearance();
     v7 = 14.0;
     if (v6)
@@ -2779,8 +2779,8 @@ LABEL_18:
     [UIView _performSystemAppearanceModifications:v15];
     if ([(_UISearchBarVisualProviderLegacy *)self centerPlaceholder])
     {
-      v9 = [v3 textInputTraits];
-      [v9 setDeferBecomingResponder:1];
+      textInputTraits = [searchBar textInputTraits];
+      [textInputTraits setDeferBecomingResponder:1];
     }
 
     v14 = 0;
@@ -2805,16 +2805,16 @@ LABEL_18:
     }
 
     [(_UISearchBarVisualProviderLegacy *)self updateSearchFieldArt];
-    [(UISearchTextField *)self->_searchField addTarget:v3 action:sel__searchFieldBeginEditing forControlEvents:0x10000];
-    [(UISearchTextField *)self->_searchField addTarget:v3 action:sel__searchFieldEditingChanged forControlEvents:0x20000];
-    [(UISearchTextField *)self->_searchField addTarget:v3 action:sel__searchFieldEndEditing forControlEvents:0x40000];
-    [(UISearchTextField *)self->_searchField addTarget:v3 action:sel__searchFieldReturnPressed forControlEvents:0x80000];
-    [v3 addSubview:self->_searchField];
+    [(UISearchTextField *)self->_searchField addTarget:searchBar action:sel__searchFieldBeginEditing forControlEvents:0x10000];
+    [(UISearchTextField *)self->_searchField addTarget:searchBar action:sel__searchFieldEditingChanged forControlEvents:0x20000];
+    [(UISearchTextField *)self->_searchField addTarget:searchBar action:sel__searchFieldEndEditing forControlEvents:0x40000];
+    [(UISearchTextField *)self->_searchField addTarget:searchBar action:sel__searchFieldReturnPressed forControlEvents:0x80000];
+    [searchBar addSubview:self->_searchField];
     if (UISearchBarUsesModernAppearance())
     {
       [(UITextField *)self->_searchField _setRoundedRectBackgroundCornerRadius:10.0];
-      v13 = [(UIView *)self->_searchField layer];
-      [v13 setAllowsGroupOpacity:0];
+      layer = [(UIView *)self->_searchField layer];
+      [layer setAllowsGroupOpacity:0];
     }
 
     if ((*&self->_searchBarVisualProviderFlags & 0x38) == 0x10)
@@ -2824,24 +2824,24 @@ LABEL_18:
   }
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  separatorCopy = separator;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     separator = self->_separator;
-    if (v3)
+    if (separatorCopy)
     {
       if (separator)
       {
         goto LABEL_8;
       }
 
-      v12 = v5;
+      v12 = searchBar;
       v7 = [UIImageView alloc];
-      v8 = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
-      v9 = [(UIImageView *)v7 initWithImage:v8];
+      currentSeparatorImage = [(_UISearchBarVisualProviderLegacy *)self currentSeparatorImage];
+      v9 = [(UIImageView *)v7 initWithImage:currentSeparatorImage];
       v10 = self->_separator;
       self->_separator = v9;
 
@@ -2856,26 +2856,26 @@ LABEL_18:
         goto LABEL_8;
       }
 
-      v12 = v5;
+      v12 = searchBar;
       [(UIView *)separator removeFromSuperview];
       v11 = self->_separator;
       self->_separator = 0;
     }
 
-    v5 = v12;
+    searchBar = v12;
   }
 
 LABEL_8:
 }
 
-- (void)setShowsDeleteButton:(BOOL)a3
+- (void)setShowsDeleteButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  buttonCopy = button;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v13 = v5;
-    if (v3)
+    v13 = searchBar;
+    if (buttonCopy)
     {
       v6 = 0x100000;
     }
@@ -2886,12 +2886,12 @@ LABEL_8:
     }
 
     self->_searchBarVisualProviderFlags = (*&self->_searchBarVisualProviderFlags & 0xFFEFFFFF | v6);
-    if (v3)
+    if (buttonCopy)
     {
       [(_UISearchBarVisualProviderLegacy *)self destroyCancelButton];
       v7 = [UINavigationButton alloc];
-      v8 = [v13 traitCollection];
-      v9 = _UIImageWithNameAndTraitCollection(@"delete-on", v8);
+      traitCollection = [v13 traitCollection];
+      v9 = _UIImageWithNameAndTraitCollection(@"delete-on", traitCollection);
       v10 = [(UINavigationButton *)v7 initWithImage:v9 style:3];
       cancelButton = self->_cancelButton;
       self->_cancelButton = v10;
@@ -2909,54 +2909,54 @@ LABEL_8:
       [(_UISearchBarVisualProviderLegacy *)self setUpCancelButton];
     }
 
-    v5 = v13;
+    searchBar = v13;
   }
 }
 
-- (void)setClippingViewActive:(BOOL)a3
+- (void)setClippingViewActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  activeCopy = active;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v6 = v5;
-    [(UIView *)self->_searchBarClippingView setClipsToBounds:v3];
-    v5 = v6;
-    if (!v3)
+    v6 = searchBar;
+    [(UIView *)self->_searchBarClippingView setClipsToBounds:activeCopy];
+    searchBar = v6;
+    if (!activeCopy)
     {
       [v6 bounds];
       [(_UISearchBarVisualProviderLegacy *)self setClippingViewBounds:?];
-      v5 = v6;
+      searchBar = v6;
     }
   }
 }
 
-- (void)setClippingViewBounds:(CGRect)a3
+- (void)setClippingViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v8)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     searchBarClippingView = self->_searchBarClippingView;
     if (searchBarClippingView)
     {
-      v11 = v8;
+      v11 = searchBar;
       [(UIView *)searchBarClippingView frame];
       v14.origin.x = x;
       v14.origin.y = y;
       v14.size.width = width;
       v14.size.height = height;
       v10 = CGRectEqualToRect(v13, v14);
-      v8 = v11;
+      searchBar = v11;
       if (!v10)
       {
         [v11 frame];
         [(UIView *)self->_searchBarClippingView setBounds:x, y];
         [(UIView *)self->_searchBarClippingView setFrame:x, y, width, height];
-        v8 = v11;
+        searchBar = v11;
       }
     }
   }
@@ -2982,22 +2982,22 @@ LABEL_8:
   return v3;
 }
 
-- (void)navigationBarTransitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)navigationBarTransitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed
 {
-  v4 = a4;
-  v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v7)
+  displayedCopy = displayed;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     v8 = 1.0;
-    if (v4)
+    if (displayedCopy)
     {
       v8 = 0.0;
     }
 
-    v21 = v7;
-    [v7 setAlpha:v8];
-    v7 = v21;
-    if (a3 == 2)
+    v21 = searchBar;
+    [searchBar setAlpha:v8];
+    searchBar = v21;
+    if (begin == 2)
     {
       v9 = self->_searchBarClippingView;
       [v21 bounds];
@@ -3021,20 +3021,20 @@ LABEL_8:
       v20 = v19;
 
       [(_UISearchBarVisualProviderLegacy *)self layoutSubviewsInBounds:v14, v16, v18, v20];
-      v7 = v21;
+      searchBar = v21;
     }
   }
 }
 
-- (void)navigationBarTransitionCompleted:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)navigationBarTransitionCompleted:(int64_t)completed willBeDisplayed:(BOOL)displayed
 {
-  v6 = [(_UISearchBarVisualProviderBase *)self searchBar:a3];
+  v6 = [(_UISearchBarVisualProviderBase *)self searchBar:completed];
   if (v6)
   {
     v7 = v6;
     [v6 setAlpha:1.0];
     v6 = v7;
-    if (a3 == 2)
+    if (completed == 2)
     {
       [v7 bounds];
       [(UIView *)self->_searchBarClippingView setFrame:?];
@@ -3045,14 +3045,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)_getNavigationTitleLeadingInset:(double *)a3 trailingInset:(double *)a4 isRTL:(BOOL)a5
+- (BOOL)_getNavigationTitleLeadingInset:(double *)inset trailingInset:(double *)trailingInset isRTL:(BOOL)l
 {
-  v5 = a5;
-  v9 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v10 = v9;
-  if (v9 && self->_navBarTitleViewLocation && self->_navBarTitleViewOverlayRects)
+  lCopy = l;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v10 = searchBar;
+  if (searchBar && self->_navBarTitleViewLocation && self->_navBarTitleViewOverlayRects)
   {
-    [v9 bounds];
+    [searchBar bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -3066,7 +3066,7 @@ LABEL_8:
     aBlock[1] = 3221225472;
     aBlock[2] = __88___UISearchBarVisualProviderLegacy__getNavigationTitleLeadingInset_trailingInset_isRTL___block_invoke;
     aBlock[3] = &__block_descriptor_65_e39_d40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-    v56 = v5;
+    v56 = lCopy;
     aBlock[4] = v12;
     aBlock[5] = v14;
     aBlock[6] = v16;
@@ -3076,7 +3076,7 @@ LABEL_8:
     v53[1] = 3221225472;
     v53[2] = __88___UISearchBarVisualProviderLegacy__getNavigationTitleLeadingInset_trailingInset_isRTL___block_invoke_2;
     v53[3] = &__block_descriptor_65_e39_d40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-    v54 = v5;
+    v54 = lCopy;
     v53[4] = v12;
     v53[5] = v14;
     v53[6] = v16;
@@ -3099,7 +3099,7 @@ LABEL_8:
     if (CGRectIsNull(v57) && (v58.origin.x = v33, v58.origin.y = v35, v58.size.width = v37, v58.size.height = v39, CGRectIsNull(v58)))
     {
       v40 = v51;
-      if (v5)
+      if (lCopy)
       {
         v40 = v50;
       }
@@ -3148,7 +3148,7 @@ LABEL_8:
       v41 = v22[2](v22, x, y, width, height) + 8.0;
     }
 
-    *a3 = v41;
+    *inset = v41;
     [(_UINavigationBarTitleViewOverlayRects *)self->_navBarTitleViewOverlayRects trailingItemsRect];
     v43 = v63.origin.x;
     v44 = v63.origin.y;
@@ -3157,7 +3157,7 @@ LABEL_8:
     if (CGRectIsNull(v63))
     {
       v47 = v51;
-      if (!v5)
+      if (!lCopy)
       {
         v47 = v50;
       }
@@ -3170,7 +3170,7 @@ LABEL_8:
       v48 = v23[2](v23, v43, v44, v45, v46) + 8.0;
     }
 
-    *a4 = v48;
+    *trailingInset = v48;
 
     v42 = 1;
   }
@@ -3183,33 +3183,33 @@ LABEL_8:
   return v42;
 }
 
-- (void)getTopInset:(double *)a3 bottomInset:(double *)a4 forBarMetrics:(int64_t)a5 barPosition:(int64_t)a6
+- (void)getTopInset:(double *)inset bottomInset:(double *)bottomInset forBarMetrics:(int64_t)metrics barPosition:(int64_t)position
 {
-  v11 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v11)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v16 = v11;
+    v16 = searchBar;
     if ((UISearchBarUsesModernAppearance() & 1) == 0)
     {
-      *a3 = 0.0;
-      *a4 = 0.0;
+      *inset = 0.0;
+      *bottomInset = 0.0;
 LABEL_16:
-      v11 = v16;
+      searchBar = v16;
       goto LABEL_17;
     }
 
-    if (a6 == 3)
+    if (position == 3)
     {
-      if (a5 != 102 && a5 != 1 && !_UIBarsUseNewPadHeights())
+      if (metrics != 102 && metrics != 1 && !_UIBarsUseNewPadHeights())
       {
-        *a3 = 4.0;
-        v13 = [v16 _screen];
-        if (![v13 _isEmbeddedScreen] || (objc_msgSend(v13, "_peripheryInsets"), v14 = 15.0, v15 <= 0.0))
+        *inset = 4.0;
+        _screen = [v16 _screen];
+        if (![_screen _isEmbeddedScreen] || (objc_msgSend(_screen, "_peripheryInsets"), v14 = 15.0, v15 <= 0.0))
         {
           v14 = 10.0;
         }
 
-        *a4 = v14;
+        *bottomInset = v14;
 
         goto LABEL_16;
       }
@@ -3221,16 +3221,16 @@ LABEL_16:
     {
       if ((*(&self->_searchBarVisualProviderFlags + 3) & 0xC) != 0)
       {
-        if (a5 == 102 || a5 == 1)
+        if (metrics == 102 || metrics == 1)
         {
-          *a3 = 0.0;
+          *inset = 0.0;
           v12 = 0x4020000000000000;
         }
 
         else
         {
           _UIBarsUseNewPadHeights();
-          *a3 = 1.0;
+          *inset = 1.0;
           v12 = 0x402E000000000000;
         }
 
@@ -3240,16 +3240,16 @@ LABEL_16:
       v12 = 0x4024000000000000;
     }
 
-    *a3 = v12;
+    *inset = v12;
 LABEL_15:
-    *a4 = v12;
+    *bottomInset = v12;
     goto LABEL_16;
   }
 
 LABEL_17:
 }
 
-- (void)setOverrideContentInsets:(UIEdgeInsets)a3 forRectEdges:(unint64_t)a4
+- (void)setOverrideContentInsets:(UIEdgeInsets)insets forRectEdges:(unint64_t)edges
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -3272,7 +3272,7 @@ LABEL_17:
   }
 }
 
-- (void)getOverrideContentInsets:(UIEdgeInsets *)a3 overriddenEdges:(unint64_t *)a4
+- (void)getOverrideContentInsets:(UIEdgeInsets *)insets overriddenEdges:(unint64_t *)edges
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -3283,7 +3283,7 @@ LABEL_17:
       _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "overrideContentInsets SPI is not supported in the legacy visual provider", buf, 2u);
     }
 
-    if (a3)
+    if (insets)
     {
       goto LABEL_5;
     }
@@ -3298,30 +3298,30 @@ LABEL_17:
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "overrideContentInsets SPI is not supported in the legacy visual provider", v8, 2u);
     }
 
-    if (a3)
+    if (insets)
     {
 LABEL_5:
-      *&a3->top = 0u;
-      *&a3->bottom = 0u;
+      *&insets->top = 0u;
+      *&insets->bottom = 0u;
     }
   }
 
-  if (a4)
+  if (edges)
   {
-    *a4 = 0;
+    *edges = 0;
   }
 }
 
 - (void)updateEffectiveContentInset
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
+  if (searchBar)
   {
     v28 = 0.0;
     v29 = 0.0;
-    v5 = [v3 effectiveUserInterfaceLayoutDirection];
-    if (![(_UISearchBarVisualProviderLegacy *)self _getNavigationTitleLeadingInset:&v29 trailingInset:&v28 isRTL:v5 == 1])
+    effectiveUserInterfaceLayoutDirection = [searchBar effectiveUserInterfaceLayoutDirection];
+    if (![(_UISearchBarVisualProviderLegacy *)self _getNavigationTitleLeadingInset:&v29 trailingInset:&v28 isRTL:effectiveUserInterfaceLayoutDirection == 1])
     {
       searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
       if ((*&searchBarVisualProviderFlags & 0x3000000) == 0)
@@ -3334,11 +3334,11 @@ LABEL_5:
 
         else if ((*&searchBarVisualProviderFlags & 0x8000000) != 0)
         {
-          v10 = [v4 superview];
+          superview = [v4 superview];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && v10)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && superview)
           {
-            [v10 _resolvedLayoutMargins];
+            [superview _resolvedLayoutMargins];
           }
 
           else
@@ -3358,7 +3358,7 @@ LABEL_5:
           if (tableViewIndexWidth <= 0.0)
           {
             [v4 safeAreaInsets];
-            if (v5 == 1)
+            if (effectiveUserInterfaceLayoutDirection == 1)
             {
               v14 = v8;
             }
@@ -3369,7 +3369,7 @@ LABEL_5:
             }
 
             v29 = v14;
-            if (v5 == 1)
+            if (effectiveUserInterfaceLayoutDirection == 1)
             {
               v8 = v13;
             }
@@ -3407,7 +3407,7 @@ LABEL_5:
     }
 
     -[_UISearchBarVisualProviderLegacy getTopInset:bottomInset:forBarMetrics:barPosition:](self, "getTopInset:bottomInset:forBarMetrics:barPosition:", &v27, &v26, -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [v4 _expectedInterfaceOrientation]), self->_barPosition);
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v17 = v28;
     }
@@ -3417,7 +3417,7 @@ LABEL_5:
       v17 = v29;
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v18 = v29;
     }
@@ -3453,8 +3453,8 @@ LABEL_5:
     if ((*(&self->_searchBarVisualProviderFlags + 3) & 4) != 0)
     {
       bottom = self->_effectiveContentInset.bottom;
-      v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
-      -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [v7 _expectedInterfaceOrientation]);
+      searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+      -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [searchBar _expectedInterfaceOrientation]);
 
       v3 = 2.0;
     }
@@ -3484,21 +3484,21 @@ LABEL_5:
   return v3;
 }
 
-- (void)getScopeBarHeight:(double *)a3 containerHeight:(double *)a4
+- (void)getScopeBarHeight:(double *)height containerHeight:(double *)containerHeight
 {
   if (UISearchBarUsesModernAppearance() && ([(_UISearchBarVisualProviderLegacy *)self isInNavigationPalette]|| [(_UISearchBarVisualProviderLegacy *)self isHostedByNavigationBar]))
   {
-    v15 = [(_UISearchBarVisualProviderBase *)self searchBar];
-    v7 = -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [v15 _expectedInterfaceOrientation]);
+    searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+    v7 = -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [searchBar _expectedInterfaceOrientation]);
     if (v7 == 102 || v7 == 1)
     {
-      if (a3)
+      if (height)
       {
         [UISegmentedControl defaultHeightForStyle:7 size:1];
-        *a3 = v8;
+        *height = v8;
       }
 
-      if (!a4)
+      if (!containerHeight)
       {
         goto LABEL_20;
       }
@@ -3508,13 +3508,13 @@ LABEL_5:
 
     else
     {
-      if (a3)
+      if (height)
       {
         [UISegmentedControl defaultHeightForStyle:7 size:0];
-        *a3 = v14;
+        *height = v14;
       }
 
-      if (!a4)
+      if (!containerHeight)
       {
         goto LABEL_20;
       }
@@ -3522,7 +3522,7 @@ LABEL_5:
       v9 = 0x4046000000000000;
     }
 
-    *a4 = v9;
+    *containerHeight = v9;
 LABEL_20:
 
     return;
@@ -3531,35 +3531,35 @@ LABEL_20:
   [UISegmentedControl defaultHeightForStyle:7 size:0];
   v11 = v10;
   [(_UISearchBarVisualProviderLegacy *)self scopeBarInsets];
-  if (a4)
+  if (containerHeight)
   {
-    *a4 = v13 + v11 + v12;
+    *containerHeight = v13 + v11 + v12;
   }
 
-  if (a3)
+  if (height)
   {
-    *a3 = v11;
+    *height = v11;
   }
 }
 
 - (BOOL)useRelaxedScopeLayout
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3 && UISearchBarUsesModernAppearance() && (self->_scopeBarPosition == 1 || ([v3 bounds], -[_UISearchBarVisualProviderLegacy wouldCombineLandscapeBarsForSize:](self, "wouldCombineLandscapeBarsForSize:", v4, v5))))
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar && UISearchBarUsesModernAppearance() && (self->_scopeBarPosition == 1 || ([searchBar bounds], -[_UISearchBarVisualProviderLegacy wouldCombineLandscapeBarsForSize:](self, "wouldCombineLandscapeBarsForSize:", v4, v5))))
   {
-    v6 = [v3 _searchController];
-    if (v6)
+    _searchController = [searchBar _searchController];
+    if (_searchController)
     {
-      v7 = [v3 _searchController];
-      v8 = [v7 traitCollection];
+      _searchController2 = [searchBar _searchController];
+      traitCollection = [_searchController2 traitCollection];
     }
 
     else
     {
-      v8 = [v3 traitCollection];
+      traitCollection = [searchBar traitCollection];
     }
 
-    v9 = [v8 verticalSizeClass] == 2;
+    v9 = [traitCollection verticalSizeClass] == 2;
   }
 
   else
@@ -3572,10 +3572,10 @@ LABEL_20:
 
 - (BOOL)containsScopeBar
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v4 = [(UIView *)self->_scopeBarContainerView isDescendantOfView:v3];
+    v4 = [(UIView *)self->_scopeBarContainerView isDescendantOfView:searchBar];
   }
 
   else
@@ -3606,9 +3606,9 @@ LABEL_20:
   if ([(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted])
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 0;
     }
@@ -3617,14 +3617,14 @@ LABEL_20:
   return [(_UISearchBarVisualProviderLegacy *)self containsScopeBar];
 }
 
-- (double)barHeightForBarMetrics:(int64_t)a3 withEffectiveInsets:(UIEdgeInsets)a4
+- (double)barHeightForBarMetrics:(int64_t)metrics withEffectiveInsets:(UIEdgeInsets)insets
 {
-  bottom = a4.bottom;
-  top = a4.top;
+  bottom = insets.bottom;
+  top = insets.top;
   if (UISearchBarUsesModernAppearance())
   {
     v7 = _UIBarsUseNewPadHeights();
-    v8 = a3 == 102 || a3 == 1;
+    v8 = metrics == 102 || metrics == 1;
     v9 = 36.0;
     v10 = 30.0;
     if (!v8)
@@ -3638,12 +3638,12 @@ LABEL_20:
     }
 
     result = top + bottom + v9;
-    if (a3 == 102)
+    if (metrics == 102)
     {
       return result + 22.0;
     }
 
-    else if (a3 == 101)
+    else if (metrics == 101)
     {
       return result + 34.0;
     }
@@ -3652,17 +3652,17 @@ LABEL_20:
   else
   {
     result = 44.0;
-    if (a3 == 101)
+    if (metrics == 101)
     {
       result = 75.0;
     }
 
-    if (a3 == 1)
+    if (metrics == 1)
     {
       result = 32.0;
     }
 
-    if (a3 == 102)
+    if (metrics == 102)
     {
       return 54.0;
     }
@@ -3683,10 +3683,10 @@ LABEL_20:
 
   else
   {
-    v7 = [(_UISearchBarVisualProviderBase *)self searchBar];
+    searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
     if (dyld_program_sdk_at_least())
     {
-      v8 = -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [v7 _expectedInterfaceOrientation]);
+      v8 = -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [searchBar _expectedInterfaceOrientation]);
       if (v8 == 102 || v8 == 1)
       {
         if (UISearchBarUsesModernAppearance())
@@ -3720,7 +3720,7 @@ LABEL_20:
     {
       v9 = +[UIDevice currentDevice];
       v6 = 28.0;
-      if (![v9 userInterfaceIdiom] && (objc_msgSend(v7, "_expectedInterfaceOrientation") - 3) <= 1)
+      if (![v9 userInterfaceIdiom] && (objc_msgSend(searchBar, "_expectedInterfaceOrientation") - 3) <= 1)
       {
         v6 = 24.0;
         if (!self->_searchNavigationItem)
@@ -3748,22 +3748,22 @@ LABEL_20:
   return v6;
 }
 
-- (double)barHeightForBarMetrics:(int64_t)a3 barPosition:(int64_t)a4
+- (double)barHeightForBarMetrics:(int64_t)metrics barPosition:(int64_t)position
 {
   top = self->_effectiveContentInset.top;
   left = self->_effectiveContentInset.left;
   right = self->_effectiveContentInset.right;
   bottom = self->_effectiveContentInset.bottom;
   v11 = top;
-  [(_UISearchBarVisualProviderLegacy *)self getTopInset:&v11 bottomInset:&bottom forBarMetrics:a3 barPosition:a4];
-  [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:a3 withEffectiveInsets:v11, left, bottom, right];
+  [(_UISearchBarVisualProviderLegacy *)self getTopInset:&v11 bottomInset:&bottom forBarMetrics:metrics barPosition:position];
+  [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:metrics withEffectiveInsets:v11, left, bottom, right];
   return result;
 }
 
 - (double)defaultHeight
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  -[_UISearchBarVisualProviderLegacy defaultHeightForOrientation:](self, "defaultHeightForOrientation:", [v3 _expectedInterfaceOrientation]);
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  -[_UISearchBarVisualProviderLegacy defaultHeightForOrientation:](self, "defaultHeightForOrientation:", [searchBar _expectedInterfaceOrientation]);
   v5 = v4;
 
   return v5;
@@ -3771,14 +3771,14 @@ LABEL_20:
 
 - (double)_defaultWidth
 {
-  v2 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v3 = v2;
-  if (v2)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v3 = searchBar;
+  if (searchBar)
   {
-    v4 = [v2 traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [searchBar traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v5 == 2)
+    if (userInterfaceIdiom == 2)
     {
       v6 = 600.0;
     }
@@ -3797,20 +3797,20 @@ LABEL_20:
   return v6;
 }
 
-- (double)defaultHeightForOrientation:(int64_t)a3
+- (double)defaultHeightForOrientation:(int64_t)orientation
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v6 = v5;
-  if (!v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v6 = searchBar;
+  if (!searchBar)
   {
     v10 = 0.0;
     goto LABEL_18;
   }
 
-  v7 = [v5 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [searchBar traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 2)
+  if (userInterfaceIdiom == 2)
   {
     *&v9 = 60.0;
 LABEL_4:
@@ -3820,7 +3820,7 @@ LABEL_4:
 
   if (dyld_program_sdk_at_least())
   {
-    [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:a3]];
+    [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:orientation]];
     v10 = v11;
   }
 
@@ -3829,17 +3829,17 @@ LABEL_4:
     if ([(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted])
     {
       v12 = +[UIDevice currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      userInterfaceIdiom2 = [v12 userInterfaceIdiom];
 
-      if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         *&v9 = 44.0;
         goto LABEL_4;
       }
     }
 
-    v14 = [(UILabel *)self->_promptLabel text];
-    v15 = [v14 length];
+    text = [(UILabel *)self->_promptLabel text];
+    v15 = [text length];
 
     if (v15)
     {
@@ -3852,7 +3852,7 @@ LABEL_4:
     }
   }
 
-  if ((*(&self->_searchBarVisualProviderFlags + 3) & 0x10) != 0 && [(NSArray *)self->_scopeTitles count]>= 2 && ![(_UISearchBarVisualProviderLegacy *)self shouldCombineLandscapeBarsForOrientation:a3])
+  if ((*(&self->_searchBarVisualProviderFlags + 3) & 0x10) != 0 && [(NSArray *)self->_scopeTitles count]>= 2 && ![(_UISearchBarVisualProviderLegacy *)self shouldCombineLandscapeBarsForOrientation:orientation])
   {
     [(_UISearchBarVisualProviderLegacy *)self scopeBarHeight];
     v10 = v10 + v16;
@@ -3875,28 +3875,28 @@ LABEL_18:
   return result;
 }
 
-- (void)updateNavigationBarLayoutInsertDataForSearchBar:(id)a3 collapsibleScopeBar:(id)a4 forLayoutState:(int64_t)a5
+- (void)updateNavigationBarLayoutInsertDataForSearchBar:(id)bar collapsibleScopeBar:(id)scopeBar forLayoutState:(int64_t)state
 {
-  v7 = a4;
-  v8 = a3;
-  v14 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  -[_UISearchBarVisualProviderLegacy barHeightForBarMetrics:](self, "barHeightForBarMetrics:", -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [v14 _expectedInterfaceOrientation]));
+  scopeBarCopy = scopeBar;
+  barCopy = bar;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  -[_UISearchBarVisualProviderLegacy barHeightForBarMetrics:](self, "barHeightForBarMetrics:", -[_UISearchBarVisualProviderLegacy barMetricsForOrientation:](self, "barMetricsForOrientation:", [searchBar _expectedInterfaceOrientation]));
   v10 = v9;
   [(_UISearchBarVisualProviderLegacy *)self defaultHeight];
   v12 = v11;
-  [v8 setPreferredHeight:v10];
-  [v8 setMinimumHeight:v10];
+  [barCopy setPreferredHeight:v10];
+  [barCopy setMinimumHeight:v10];
 
   v13 = v12 - v10;
-  [v7 setPreferredHeight:v13];
-  [v7 setMinimumHeight:v13];
-  [v7 setCollapsible:0];
+  [scopeBarCopy setPreferredHeight:v13];
+  [scopeBarCopy setMinimumHeight:v13];
+  [scopeBarCopy setCollapsible:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v6 = [(_UISearchBarVisualProviderBase *)self searchBar:a3.width];
+  width = fits.width;
+  v6 = [(_UISearchBarVisualProviderBase *)self searchBar:fits.width];
   if (v6)
   {
     [(_UISearchBarVisualProviderLegacy *)self defaultHeight];
@@ -3905,11 +3905,11 @@ LABEL_18:
     {
       if ((*&width & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21.width = width;
         v21.height = v8;
         v10 = NSStringFromCGSize(v21);
-        [v9 handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:2371 description:{@"-[UISearchBar sizeThatFits:] does not support passing non-finite values (%@)", v10}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderLegacy.m" lineNumber:2371 description:{@"-[UISearchBar sizeThatFits:] does not support passing non-finite values (%@)", v10}];
       }
     }
 
@@ -3922,18 +3922,18 @@ LABEL_18:
     {
       if (width == 0.0)
       {
-        v13 = [v6 superview];
-        v14 = v13;
-        if (v13)
+        superview = [v6 superview];
+        v14 = superview;
+        if (superview)
         {
-          [v13 bounds];
+          [superview bounds];
           width = v15;
         }
 
         else if (fabs(width) < 2.22044605e-16)
         {
-          v16 = [v6 _screen];
-          [v16 bounds];
+          _screen = [v6 _screen];
+          [_screen bounds];
           width = v17;
         }
       }
@@ -3961,8 +3961,8 @@ LABEL_18:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     [(_UISearchBarVisualProviderLegacy *)self _defaultWidth];
     v5 = v4;
@@ -4001,30 +4001,30 @@ LABEL_18:
   return result;
 }
 
-- (void)displayNavBarCancelButton:(BOOL)a3 animated:(BOOL)a4
+- (void)displayNavBarCancelButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v13 = [(_UISearchBarVisualProviderLegacy *)self searchNavigationItem];
-  if (v5)
+  animatedCopy = animated;
+  buttonCopy = button;
+  searchNavigationItem = [(_UISearchBarVisualProviderLegacy *)self searchNavigationItem];
+  if (buttonCopy)
   {
-    v7 = [(_UISearchBarVisualProviderLegacy *)self cancelBarButtonItem];
+    cancelBarButtonItem = [(_UISearchBarVisualProviderLegacy *)self cancelBarButtonItem];
     v8 = MEMORY[0x1E695DF70];
-    v9 = [v13 rightBarButtonItems];
-    cancelBarButtonItem = [v8 arrayWithArray:v9];
+    rightBarButtonItems = [searchNavigationItem rightBarButtonItems];
+    cancelBarButtonItem = [v8 arrayWithArray:rightBarButtonItems];
 
-    [cancelBarButtonItem addObject:v7];
-    [v13 setRightBarButtonItems:cancelBarButtonItem animated:v4];
+    [cancelBarButtonItem addObject:cancelBarButtonItem];
+    [searchNavigationItem setRightBarButtonItems:cancelBarButtonItem animated:animatedCopy];
   }
 
   else
   {
     v11 = MEMORY[0x1E695DF70];
-    v12 = [v13 rightBarButtonItems];
-    v7 = [v11 arrayWithArray:v12];
+    rightBarButtonItems2 = [searchNavigationItem rightBarButtonItems];
+    cancelBarButtonItem = [v11 arrayWithArray:rightBarButtonItems2];
 
-    [v7 removeObjectIdenticalTo:self->_cancelBarButtonItem];
-    [v13 setRightBarButtonItems:v7 animated:v4];
+    [cancelBarButtonItem removeObjectIdenticalTo:self->_cancelBarButtonItem];
+    [searchNavigationItem setRightBarButtonItems:cancelBarButtonItem animated:animatedCopy];
     cancelBarButtonItem = self->_cancelBarButtonItem;
     self->_cancelBarButtonItem = 0;
   }
@@ -4067,11 +4067,11 @@ LABEL_18:
 
 - (double)availableBoundsWidth
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
+  if (searchBar)
   {
-    [v3 bounds];
+    [searchBar bounds];
     [(_UISearchBarVisualProviderLegacy *)self availableBoundsWidthForSize:v5, v6];
     v8 = v7;
   }
@@ -4111,10 +4111,10 @@ LABEL_18:
   return v8 - v9 + -13.0 - v4 - v6;
 }
 
-- (double)availableBoundsWidthForSize:(CGSize)a3
+- (double)availableBoundsWidthForSize:(CGSize)size
 {
-  width = a3.width;
-  if ([(_UISearchBarVisualProviderLegacy *)self searchFieldWidthShouldBeFlexible:a3.width])
+  width = size.width;
+  if ([(_UISearchBarVisualProviderLegacy *)self searchFieldWidthShouldBeFlexible:size.width])
   {
     v5 = width - self->_effectiveContentInset.left - self->_effectiveContentInset.right;
     leftButton = self->_leftButton;
@@ -4162,7 +4162,7 @@ LABEL_18:
   }
 }
 
-- (BOOL)shouldCombineLandscapeBarsForOrientation:(int64_t)a3
+- (BOOL)shouldCombineLandscapeBarsForOrientation:(int64_t)orientation
 {
   if ([(_UISearchBarVisualProviderLegacy *)self useRelaxedScopeLayout])
   {
@@ -4176,12 +4176,12 @@ LABEL_18:
   }
 
   result = 0;
-  if ((a3 - 1) >= 2 && (*&self->_searchBarVisualProviderFlags & 0x20000000) != 0)
+  if ((orientation - 1) >= 2 && (*&self->_searchBarVisualProviderFlags & 0x20000000) != 0)
   {
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-    if (v8)
+    if (userInterfaceIdiom)
     {
       if (self->_scopeBarContainerView)
       {
@@ -4207,12 +4207,12 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)wouldCombineLandscapeBarsForSize:(CGSize)a3
+- (BOOL)wouldCombineLandscapeBarsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     if (self->_scopeBarContainerView)
     {
@@ -4254,34 +4254,34 @@ LABEL_18:
 
 - (void)layoutSubviews
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = searchBar;
+    [searchBar bounds];
     [(_UISearchBarVisualProviderLegacy *)self layoutSubviewsInBounds:?];
-    v3 = v4;
+    searchBar = v4;
   }
 }
 
-- (void)layoutSubviewsInBounds:(CGRect)a3
+- (void)layoutSubviewsInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v9 = v8;
-  if (!v8)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v9 = searchBar;
+  if (!searchBar)
   {
     goto LABEL_136;
   }
 
   if (!self->_searchField)
   {
-    v10 = [v8 _searchBarTextField];
+    _searchBarTextField = [searchBar _searchBarTextField];
     searchField = self->_searchField;
-    self->_searchField = v10;
+    self->_searchField = _searchBarTextField;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_navBarTitleViewDataSource);
@@ -4304,43 +4304,43 @@ LABEL_18:
 
     [v13 titleView:v9 needsUpdatedContentOverlayRects:self->_navBarTitleViewOverlayRects];
     [(_UISearchBarVisualProviderLegacy *)self updateEffectiveContentInset];
-    v15 = 1;
+    isInBarButNotHosted = 1;
   }
 
   else
   {
-    v15 = [(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted];
+    isInBarButNotHosted = [(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted];
   }
 
-  v18 = [v9 window];
-  v19 = [v18 windowScene];
-  v20 = [v19 _interfaceOrientation];
+  window = [v9 window];
+  windowScene = [window windowScene];
+  _interfaceOrientation = [windowScene _interfaceOrientation];
 
-  v21 = [(_UISearchBarVisualProviderLegacy *)self shouldCombineLandscapeBarsForOrientation:v20];
-  if (v21 && v15)
+  v21 = [(_UISearchBarVisualProviderLegacy *)self shouldCombineLandscapeBarsForOrientation:_interfaceOrientation];
+  if (v21 && isInBarButNotHosted)
   {
     v22 = +[UIDevice currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    userInterfaceIdiom = [v22 userInterfaceIdiom];
 
-    v21 = (v23 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    v21 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
   }
 
-  v165 = [(_UISearchBarVisualProviderLegacy *)self useRelaxedScopeLayout];
-  v24 = [(_UISearchBarVisualProviderLegacy *)self scopeBarIsVisible];
-  v25 = [(_UISearchBarVisualProviderLegacy *)self containsScopeBar];
+  useRelaxedScopeLayout = [(_UISearchBarVisualProviderLegacy *)self useRelaxedScopeLayout];
+  scopeBarIsVisible = [(_UISearchBarVisualProviderLegacy *)self scopeBarIsVisible];
+  containsScopeBar = [(_UISearchBarVisualProviderLegacy *)self containsScopeBar];
   [(_UISearchBarVisualProviderLegacy *)self scopeBarHeight];
   v27 = v26;
   v170 = v9[13];
-  v169 = v15;
-  if (v15)
+  v169 = isInBarButNotHosted;
+  if (isInBarButNotHosted)
   {
-    v28 = [v9 superview];
+    superview = [v9 superview];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [v28 topItem];
-      v30 = [v29 titleView];
-      if (v30 == v9)
+      topItem = [superview topItem];
+      titleView = [topItem titleView];
+      if (titleView == v9)
       {
       }
 
@@ -4350,7 +4350,7 @@ LABEL_18:
 
         if ((*&searchBarVisualProviderFlags & 0x8000000) == 0)
         {
-          [v28 frame];
+          [superview frame];
           height = v32;
           [v9 setBounds:{x, y, width}];
         }
@@ -4360,12 +4360,12 @@ LABEL_18:
     [(UIImageView *)self->_searchBarBackground setHidden:1];
     [(_UISearchBarVisualProviderLegacy *)self updateSearchBarOpacity];
 
-    if (v25)
+    if (containsScopeBar)
     {
       v33 = +[UIDevice currentDevice];
-      v34 = [v33 userInterfaceIdiom];
+      userInterfaceIdiom2 = [v33 userInterfaceIdiom];
 
-      if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         [(UIView *)self->_scopeBarContainerView removeFromSuperview];
         v35 = 0;
@@ -4384,7 +4384,7 @@ LABEL_25:
 
   [(UIImageView *)self->_searchBarBackground setHidden:[(_UISearchBarVisualProviderLegacy *)self drawsBackground]^ 1];
   [(_UISearchBarVisualProviderLegacy *)self updateSearchBarOpacity];
-  if (!v25)
+  if (!containsScopeBar)
   {
     goto LABEL_25;
   }
@@ -4392,7 +4392,7 @@ LABEL_25:
 LABEL_26:
   v36 = self->_scopeBarContainerView;
   v37 = v36;
-  if (v24)
+  if (scopeBarIsVisible)
   {
     if (v21)
     {
@@ -4428,7 +4428,7 @@ LABEL_26:
 
     if (UISearchBarUsesModernAppearance())
     {
-      [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:v20]];
+      [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:_interfaceOrientation]];
       v43 = v42;
     }
 
@@ -4469,7 +4469,7 @@ LABEL_26:
     v35 = 0;
   }
 
-  [(UISearchBarBackground *)self->_searchBarBackground setUsesContiguousBarBackground:v24 && !v21];
+  [(UISearchBarBackground *)self->_searchBarBackground setUsesContiguousBarBackground:scopeBarIsVisible && !v21];
 
   v164 = 1;
 LABEL_44:
@@ -4490,8 +4490,8 @@ LABEL_44:
   v54 = v53;
   [(UIButton *)self->_cancelButton sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   [(UIButton *)self->_cancelButton setBounds:v52, v54, v55, v56];
-  v57 = [(UILabel *)self->_promptLabel text];
-  v58 = [v57 length] == 0 || v169;
+  text = [(UILabel *)self->_promptLabel text];
+  v58 = [text length] == 0 || v169;
 
   v163 = v27;
   if (v58)
@@ -4501,7 +4501,7 @@ LABEL_44:
 
   else
   {
-    v59 = [(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:v20];
+    v59 = [(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:_interfaceOrientation];
     [v9 addSubview:self->_promptLabel];
     [(UIView *)self->_promptLabel sizeToFit];
     [(UIView *)self->_promptLabel frame];
@@ -4603,7 +4603,7 @@ LABEL_44:
   v89 = v88;
   if ((*(&self->_searchBarVisualProviderFlags + 3) & 0xC) != 0)
   {
-    [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:v20]];
+    [(_UISearchBarVisualProviderLegacy *)self barHeightForBarMetrics:[(_UISearchBarVisualProviderLegacy *)self barMetricsForOrientation:_interfaceOrientation]];
     v91 = v90;
     [v9 bounds];
     v93 = fmax(v91 - v92, 0.0);
@@ -4620,12 +4620,12 @@ LABEL_44:
     v183[3] = &__block_descriptor_40_e11_d24__0d8d16l;
     *&v183[4] = v94;
     v95 = 1.0 - fmin(fmax(v94 / 0.2, 0.0), 1.0);
-    v96 = [v9 _searchBarTextField];
-    [v96 _setForegroundViewsAlpha:v95];
+    _searchBarTextField2 = [v9 _searchBarTextField];
+    [_searchBarTextField2 _setForegroundViewsAlpha:v95];
 
     v97 = __59___UISearchBarVisualProviderLegacy_layoutSubviewsInBounds___block_invoke_2(v183, 0.8, 0.95);
-    v98 = [v9 _searchBarTextField];
-    [v98 _setBackgroundViewsAlpha:v97];
+    _searchBarTextField3 = [v9 _searchBarTextField];
+    [_searchBarTextField3 _setBackgroundViewsAlpha:v97];
   }
 
   v99 = v47;
@@ -4650,10 +4650,10 @@ LABEL_44:
   {
     v104 = v48 + (rect - v89) * 0.5;
     v105 = +[UIDevice currentDevice];
-    v106 = [v105 userInterfaceIdiom];
+    userInterfaceIdiom3 = [v105 userInterfaceIdiom];
     v107 = ceil(v104);
     v108 = floor(v104);
-    if (v106 == 1)
+    if (userInterfaceIdiom3 == 1)
     {
       v103 = v107;
     }
@@ -4664,7 +4664,7 @@ LABEL_44:
     }
   }
 
-  if (v24 && v21)
+  if (scopeBarIsVisible && v21)
   {
     [(_UISearchBarVisualProviderLegacy *)self landscapeSearchFieldWidth];
   }
@@ -4675,12 +4675,12 @@ LABEL_44:
   }
 
   v110 = v109;
-  v111 = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage searchFieldPositionAdjustment];
-  v112 = v111;
-  if (v111)
+  searchFieldPositionAdjustment = [(_UISearchBarAppearanceStorage *)self->_appearanceStorage searchFieldPositionAdjustment];
+  v112 = searchFieldPositionAdjustment;
+  if (searchFieldPositionAdjustment)
   {
     v113 = v9[13];
-    [v111 UIOffsetValue];
+    [searchFieldPositionAdjustment UIOffsetValue];
     if ((v113 & 0x400000) != 0)
     {
       v114 = -v114;
@@ -4701,7 +4701,7 @@ LABEL_44:
     [(_UISearchBarVisualProviderLegacy *)self updateRightView];
   }
 
-  if (v24 && v165)
+  if (scopeBarIsVisible && useRelaxedScopeLayout)
   {
     v117 = _UIViewReadableWidthForView(v9);
     v199.origin.x = v99;
@@ -4752,10 +4752,10 @@ LABEL_44:
     }
   }
 
-  v122 = [v9 delegate];
-  if (v122 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [v9 delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v122 _searchBar:v9 proposedSearchFieldFrame:{v99, v103, v110, v89}];
+    [delegate _searchBar:v9 proposedSearchFieldFrame:{v99, v103, v110, v89}];
     v124 = v123;
     v103 = v125;
     v127 = v126;
@@ -4772,7 +4772,7 @@ LABEL_44:
   if ((v21 & v164) != 1)
   {
     v129 = rect;
-    if (v24 && v165)
+    if (scopeBarIsVisible && useRelaxedScopeLayout)
     {
       [(_UISearchBarVisualProviderLegacy *)self updateScopeBarFrame];
     }
@@ -4780,7 +4780,7 @@ LABEL_44:
     goto LABEL_105;
   }
 
-  if (v24)
+  if (scopeBarIsVisible)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -4802,7 +4802,7 @@ LABEL_44:
     v130[2]();
 
 LABEL_105:
-    v131 = !v24;
+    v131 = !scopeBarIsVisible;
     if ((*&self->_searchBarVisualProviderFlags & 0xC0000000) != 0)
     {
       v131 = 1;
@@ -4835,11 +4835,11 @@ LABEL_110:
     cancelButton = self->_cancelButton;
     if (cancelButton)
     {
-      v140 = [(UIView *)cancelButton superview];
-      v141 = [v9 _viewForChildViews];
+      superview2 = [(UIView *)cancelButton superview];
+      _viewForChildViews = [v9 _viewForChildViews];
 
       v142 = self->_cancelButton;
-      if (v140 != v141)
+      if (superview2 != _viewForChildViews)
       {
         [v9 addSubview:v142];
         v142 = self->_cancelButton;
@@ -4856,7 +4856,7 @@ LABEL_110:
     v146 = v145;
     if ((v170 & 0x400000) != 0)
     {
-      if (v24)
+      if (scopeBarIsVisible)
       {
         scopeBarContainerView = self->_scopeBarContainerView;
         if (scopeBarContainerView != 0 && v21)
@@ -4872,7 +4872,7 @@ LABEL_110:
 
     else
     {
-      if (v24)
+      if (scopeBarIsVisible)
       {
         v147 = self->_scopeBarContainerView;
         if (v147 != 0 && v21)
@@ -4931,34 +4931,34 @@ LABEL_136:
 
 - (BOOL)isAtTop
 {
-  v2 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v3 = v2;
-  if (v2)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v3 = searchBar;
+  if (searchBar)
   {
-    v4 = [v2 window];
-    if (v4 && ([v3 _containingScrollView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+    window = [searchBar window];
+    if (window && ([v3 _containingScrollView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
     {
       if ([UIApp _appAdoptsUISceneLifecycle])
       {
-        v7 = [UIApp _sceneInterfaceOrientationFromWindow:v4];
-        v8 = __UIStatusBarManagerForWindow(v4);
-        v9 = [v8 isStatusBarHidden];
+        v7 = [UIApp _sceneInterfaceOrientationFromWindow:window];
+        v8 = __UIStatusBarManagerForWindow(window);
+        isStatusBarHidden = [v8 isStatusBarHidden];
 
-        if (v9)
+        if (isStatusBarHidden)
         {
           v10 = 1;
         }
 
         else
         {
-          v20 = __UIStatusBarManagerForWindow(v4);
+          v20 = __UIStatusBarManagerForWindow(window);
           [v20 defaultStatusBarHeightInOrientation:v7];
           v22 = v21;
 
           v10 = v22 == 0.0;
         }
 
-        [v4 _referenceFrameFromSceneUsingScreenBounds:v10];
+        [window _referenceFrameFromSceneUsingScreenBounds:v10];
         v13 = v23;
         v15 = v24;
         v17 = v25;
@@ -4967,21 +4967,21 @@ LABEL_136:
 
       else
       {
-        v11 = [v3 _screen];
-        [v11 _applicationFrame];
+        _screen = [v3 _screen];
+        [_screen _applicationFrame];
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
       }
 
-      [v4 convertRect:0 fromWindow:{v13, v15, v17, v19}];
+      [window convertRect:0 fromWindow:{v13, v15, v17, v19}];
       v28 = v27;
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      v35 = [v3 superview];
-      [v35 convertRect:0 fromView:{v28, v30, v32, v34}];
+      superview = [v3 superview];
+      [superview convertRect:0 fromView:{v28, v30, v32, v34}];
       v37 = v36;
 
       [v3 frame];
@@ -5002,24 +5002,24 @@ LABEL_136:
   return v6;
 }
 
-- (void)layoutBackgroundViewConsideringTopBarStatusAndChangedHeight:(BOOL)a3
+- (void)layoutBackgroundViewConsideringTopBarStatusAndChangedHeight:(BOOL)height
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     *&self->_searchBarVisualProviderFlags &= ~0x10000u;
-    v23 = v5;
-    [v5 bounds];
+    v23 = searchBar;
+    [searchBar bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v23 window];
-    if (v14)
+    window = [v23 window];
+    if (window)
     {
       if (self->_barPosition == 3 || [(_UISearchBarVisualProviderLegacy *)self isAtTop])
       {
-        v15 = __UIStatusBarManagerForWindow(v14);
+        v15 = __UIStatusBarManagerForWindow(window);
         [v15 statusBarHeight];
         v17 = v16;
 
@@ -5034,7 +5034,7 @@ LABEL_136:
     }
 
     [(UIView *)self->_searchBarBackground frame];
-    if (a3 || (v25.origin.x = v7, v25.origin.y = v9, v25.size.width = v11, v25.size.height = v13, !CGRectEqualToRect(*&v18, v25)))
+    if (height || (v25.origin.x = v7, v25.origin.y = v9, v25.size.width = v11, v25.size.height = v13, !CGRectEqualToRect(*&v18, v25)))
     {
       if (-[_UISearchBarVisualProviderLegacy scopeBarIsVisible](self, "scopeBarIsVisible") && !-[_UISearchBarVisualProviderLegacy shouldCombineLandscapeBarsForOrientation:](self, "shouldCombineLandscapeBarsForOrientation:", [v23 _expectedInterfaceOrientation]))
       {
@@ -5045,25 +5045,25 @@ LABEL_136:
       [(UISearchBarBackground *)self->_searchBarBackground setFrame:v7, v9, v11, v13];
     }
 
-    v5 = v23;
+    searchBar = v23;
   }
 }
 
-- (void)updateBackgroundToBackdropStyle:(int64_t)a3
+- (void)updateBackgroundToBackdropStyle:(int64_t)style
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v6 = v5;
-  if (v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v6 = searchBar;
+  if (searchBar)
   {
-    if (a3)
+    if (style)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __68___UISearchBarVisualProviderLegacy_updateBackgroundToBackdropStyle___block_invoke;
       v11[3] = &unk_1E70F36D0;
       v11[4] = self;
-      v13 = a3;
-      v12 = v5;
+      styleCopy = style;
+      v12 = searchBar;
       [UIView performWithoutAnimation:v11];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -5077,8 +5077,8 @@ LABEL_136:
     {
       if (!self->_backdropStyle && (*&self->_searchBarVisualProviderFlags & 0x38) == 0x10)
       {
-        v7 = [v5 _searchBarTextField];
-        [v7 _setBottomEffectBackgroundVisible:0];
+        _searchBarTextField = [searchBar _searchBarTextField];
+        [_searchBarTextField _setBottomEffectBackgroundVisible:0];
       }
 
       if (![(UIView *)self->_backdrop isHidden])
@@ -5101,20 +5101,20 @@ LABEL_136:
 
 - (id)navigationBarForShadow
 {
-  v2 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v3 = v2;
-  if (!v2)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v3 = searchBar;
+  if (!searchBar)
   {
     v6 = 0;
     goto LABEL_11;
   }
 
-  v4 = [v2 _viewControllerForAncestor];
+  _viewControllerForAncestor = [searchBar _viewControllerForAncestor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 navigationBar];
-    if (!v5)
+    navigationBar = [_viewControllerForAncestor navigationBar];
+    if (!navigationBar)
     {
       goto LABEL_9;
     }
@@ -5122,18 +5122,18 @@ LABEL_136:
 
   else
   {
-    v7 = [v4 navigationController];
-    v5 = [v7 navigationBar];
+    navigationController = [_viewControllerForAncestor navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    if (!v5)
+    if (!navigationBar)
     {
       goto LABEL_9;
     }
   }
 
-  if (([v5 isHidden] & 1) == 0 && (objc_msgSend(v5, "containsView:", v3) & 1) == 0)
+  if (([navigationBar isHidden] & 1) == 0 && (objc_msgSend(navigationBar, "containsView:", v3) & 1) == 0)
   {
-    v6 = v5;
+    v6 = navigationBar;
     goto LABEL_10;
   }
 
@@ -5148,26 +5148,26 @@ LABEL_11:
 
 - (BOOL)shouldDisplayShadow
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v4 = [(_UISearchBarVisualProviderLegacy *)self navigationBarForShadow];
-    v5 = v4;
-    if (!v4 || ([v4 _hidesShadow] & 1) != 0 || (WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController), v7 = objc_msgSend(WeakRetained, "isActive"), WeakRetained, (v7 & 1) != 0))
+    navigationBarForShadow = [(_UISearchBarVisualProviderLegacy *)self navigationBarForShadow];
+    v5 = navigationBarForShadow;
+    if (!navigationBarForShadow || ([navigationBarForShadow _hidesShadow] & 1) != 0 || (WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController), v7 = objc_msgSend(WeakRetained, "isActive"), WeakRetained, (v7 & 1) != 0))
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = v3;
+      superview = searchBar;
       do
       {
-        v11 = v10;
-        v10 = [v10 superview];
+        v11 = superview;
+        superview = [superview superview];
 
-        v8 = v10 == 0;
-        if (!v10)
+        v8 = superview == 0;
+        if (!superview)
         {
           break;
         }
@@ -5189,11 +5189,11 @@ LABEL_11:
 
 - (id)makeShadowView
 {
-  v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  v4 = v3;
-  if (v3)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  v4 = searchBar;
+  if (searchBar)
   {
-    [v3 bounds];
+    [searchBar bounds];
     x = v19.origin.x;
     y = v19.origin.y;
     width = v19.size.width;
@@ -5209,8 +5209,8 @@ LABEL_11:
     v21.size.width = width;
     v21.size.height = height;
     v11 = CGRectGetWidth(v21);
-    v12 = [v4 _screen];
-    [v12 scale];
+    _screen = [v4 _screen];
+    [_screen scale];
     v14 = 1.0 / v13;
 
     v15 = [(UIImageView *)[_UISearchBarShadowView alloc] initWithFrame:MinX, MaxY, v11, v14];
@@ -5229,24 +5229,24 @@ LABEL_11:
   return v15;
 }
 
-- (void)setShadowVisibleIfNecessary:(BOOL)a3
+- (void)setShadowVisibleIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  necessaryCopy = necessary;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v20 = v5;
-    v6 = [(_UISearchBarVisualProviderLegacy *)self navigationBarForShadow];
-    [v6 _setDeferShadowToSearchBar:v3];
-    v7 = [(_UISearchBarVisualProviderLegacy *)self shouldDisplayShadow];
+    v20 = searchBar;
+    navigationBarForShadow = [(_UISearchBarVisualProviderLegacy *)self navigationBarForShadow];
+    [navigationBarForShadow _setDeferShadowToSearchBar:necessaryCopy];
+    shouldDisplayShadow = [(_UISearchBarVisualProviderLegacy *)self shouldDisplayShadow];
     shadowView = self->_shadowView;
-    if (v7 && v3)
+    if (shouldDisplayShadow && necessaryCopy)
     {
       if (!shadowView)
       {
-        v9 = [(_UISearchBarVisualProviderLegacy *)self makeShadowView];
+        makeShadowView = [(_UISearchBarVisualProviderLegacy *)self makeShadowView];
         v10 = self->_shadowView;
-        self->_shadowView = v9;
+        self->_shadowView = makeShadowView;
 
         [v20 addSubview:self->_shadowView];
       }
@@ -5279,24 +5279,24 @@ LABEL_11:
       self->_shadowView = 0;
     }
 
-    v5 = v20;
+    searchBar = v20;
   }
 }
 
-- (void)setSearchDisplayControllerShowsCancelButton:(BOOL)a3
+- (void)setSearchDisplayControllerShowsCancelButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  buttonCopy = button;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
-    if (((((*&searchBarVisualProviderFlags & 0x40000) == 0) ^ v3) & 1) == 0)
+    if (((((*&searchBarVisualProviderFlags & 0x40000) == 0) ^ buttonCopy) & 1) == 0)
     {
-      v7 = v3 ? 0x40000 : 0;
+      v7 = buttonCopy ? 0x40000 : 0;
       self->_searchBarVisualProviderFlags = (*&searchBarVisualProviderFlags & 0xFFFBFFFF | v7);
-      v8 = v3 ? 0.0 : 1.0;
-      v9 = v3 ? 1.0 : 0.0;
-      v12 = v5;
+      v8 = buttonCopy ? 0.0 : 1.0;
+      v9 = buttonCopy ? 1.0 : 0.0;
+      v12 = searchBar;
       v10 = +[UIView areAnimationsEnabled];
       [UIView setAnimationsEnabled:0];
       [(UIView *)self->_cancelButton setAlpha:v8];
@@ -5304,33 +5304,33 @@ LABEL_11:
       [v12 setNeedsLayout];
       [v12 layoutBelowIfNeeded];
       [(UIView *)self->_cancelButton setAlpha:v9];
-      v11 = [(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted];
-      v5 = v12;
-      if (v11)
+      isInBarButNotHosted = [(_UISearchBarVisualProviderLegacy *)self isInBarButNotHosted];
+      searchBar = v12;
+      if (isInBarButNotHosted)
       {
         [(_UISearchBarVisualProviderLegacy *)self displayNavBarCancelButton:(*&self->_searchBarVisualProviderFlags >> 18) & 1 animated:1];
-        v5 = v12;
+        searchBar = v12;
       }
     }
   }
 }
 
-- (void)allowCursorToAppear:(BOOL)a3
+- (void)allowCursorToAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  appearCopy = appear;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v9 = v5;
-    v6 = [(_UISearchBarVisualProviderLegacy *)self centerPlaceholder];
-    v5 = v9;
-    if (v6)
+    v9 = searchBar;
+    centerPlaceholder = [(_UISearchBarVisualProviderLegacy *)self centerPlaceholder];
+    searchBar = v9;
+    if (centerPlaceholder)
     {
-      v7 = [v9 _searchBarTextField];
-      v8 = v7;
-      if (v3)
+      _searchBarTextField = [v9 _searchBarTextField];
+      v8 = _searchBarTextField;
+      if (appearCopy)
       {
-        [v7 _setPreventSelectionViewActivation:0];
+        [_searchBarTextField _setPreventSelectionViewActivation:0];
         if ([v8 isFirstResponder])
         {
           [v8 __resumeBecomeFirstResponder];
@@ -5340,27 +5340,27 @@ LABEL_11:
 
       else
       {
-        [v7 _setPreventSelectionViewActivation:1];
+        [_searchBarTextField _setPreventSelectionViewActivation:1];
       }
 
-      v5 = v9;
+      searchBar = v9;
     }
   }
 }
 
-- (int64_t)barMetricsForOrientation:(int64_t)a3
+- (int64_t)barMetricsForOrientation:(int64_t)orientation
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (!v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (!searchBar)
   {
     v9 = 0;
     goto LABEL_21;
   }
 
-  v6 = [(UILabel *)self->_promptLabel text];
-  v7 = [v6 length];
+  text = [(UILabel *)self->_promptLabel text];
+  v7 = [text length];
 
-  if ((a3 - 1) <= 1)
+  if ((orientation - 1) <= 1)
   {
     goto LABEL_18;
   }
@@ -5368,8 +5368,8 @@ LABEL_11:
   searchBarVisualProviderFlags = self->_searchBarVisualProviderFlags;
   if ((*&searchBarVisualProviderFlags & 0x4000000) != 0)
   {
-    a3 = [v5 _searchController];
-    if (([a3 isActive] & 1) == 0 && (*(&self->_searchBarVisualProviderFlags + 3) & 1) == 0)
+    orientation = [searchBar _searchController];
+    if (([orientation isActive] & 1) == 0 && (*(&self->_searchBarVisualProviderFlags + 3) & 1) == 0)
     {
 LABEL_11:
 
@@ -5393,8 +5393,8 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v10 = [v5 traitCollection];
-  if ([v10 userInterfaceIdiom] == 1)
+  traitCollection = [searchBar traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
 
     if ((*&searchBarVisualProviderFlags & 0x4000000) == 0)
@@ -5405,14 +5405,14 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  v11 = [v5 traitCollection];
-  v12 = [v11 horizontalSizeClass];
+  traitCollection2 = [searchBar traitCollection];
+  horizontalSizeClass = [traitCollection2 horizontalSizeClass];
 
   if ((*&searchBarVisualProviderFlags & 0x4000000) != 0)
   {
   }
 
-  if (v12 != 1)
+  if (horizontalSizeClass != 1)
   {
     goto LABEL_18;
   }
@@ -5432,17 +5432,17 @@ LABEL_21:
   return v9;
 }
 
-- (void)setSearchDisplayController:(id)a3
+- (void)setSearchDisplayController:(id)controller
 {
-  obj = a3;
-  v4 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v4)
+  obj = controller;
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
     objc_storeWeak(&self->_searchDisplayController, obj);
     if ([(_UISearchBarVisualProviderLegacy *)self centerPlaceholder])
     {
-      v5 = [v4 textInputTraits];
-      [v5 setDeferBecomingResponder:obj == 0];
+      textInputTraits = [searchBar textInputTraits];
+      [textInputTraits setDeferBecomingResponder:obj == 0];
     }
   }
 }
@@ -5458,14 +5458,14 @@ LABEL_21:
 {
   if (!self->_searchNavigationItem)
   {
-    v3 = [(_UISearchBarVisualProviderBase *)self searchBar];
+    searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
 
-    if (v3)
+    if (searchBar)
     {
       WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController);
-      v5 = [WeakRetained navigationBarSearchFieldSizing];
+      navigationBarSearchFieldSizing = [WeakRetained navigationBarSearchFieldSizing];
       v6 = [_UISearchBarNavigationItem alloc];
-      if (v5 == 3)
+      if (navigationBarSearchFieldSizing == 3)
       {
         v7 = &stru_1EFB14550;
       }
@@ -5479,11 +5479,11 @@ LABEL_21:
       searchNavigationItem = self->_searchNavigationItem;
       self->_searchNavigationItem = v8;
 
-      if (v5 != 3)
+      if (navigationBarSearchFieldSizing != 3)
       {
       }
 
-      [(_UISearchBarVisualProviderLegacy *)self setUpSearchNavigationItemWithSizingOption:v5];
+      [(_UISearchBarVisualProviderLegacy *)self setUpSearchNavigationItemWithSizingOption:navigationBarSearchFieldSizing];
     }
   }
 
@@ -5492,37 +5492,37 @@ LABEL_21:
   return v10;
 }
 
-- (void)setUpSearchNavigationItemWithSizingOption:(unint64_t)a3
+- (void)setUpSearchNavigationItemWithSizingOption:(unint64_t)option
 {
-  v5 = [(_UISearchBarVisualProviderBase *)self searchBar];
-  if (v5)
+  searchBar = [(_UISearchBarVisualProviderBase *)self searchBar];
+  if (searchBar)
   {
-    v37 = v5;
+    v37 = searchBar;
     WeakRetained = objc_loadWeakRetained(&self->_searchDisplayController);
     v7 = self->_searchNavigationItem;
-    v8 = [v37 _searchBarTextField];
-    v9 = v8;
-    if (a3)
+    _searchBarTextField = [v37 _searchBarTextField];
+    v9 = _searchBarTextField;
+    if (option)
     {
-      if (a3 > 2)
+      if (option > 2)
       {
-        if (a3 == 3)
+        if (option == 3)
         {
-          v16 = [v37 window];
+          window = [v37 window];
           v17 = [UIView alloc];
           [(_UISearchBarVisualProviderLegacy *)self searchFieldHeight];
-          UIRoundToViewScale(v16);
+          UIRoundToViewScale(window);
           v19 = [(UIView *)v17 initWithFrame:0.0, 0.0, 36.0, v18];
           [(_UISearchBarVisualProviderLegacy *)self updateMagnifyingGlassView];
           v20 = [UIButton buttonWithType:1];
-          UIRoundToViewScale(v16);
+          UIRoundToViewScale(window);
           v22 = v21;
           [(_UISearchBarVisualProviderLegacy *)self searchFieldHeight];
           [v20 setFrame:{0.0, v22, 36.0, v23}];
           [v20 setAutoresizingMask:4];
-          v24 = [v9 leftView];
-          v25 = [v24 image];
-          [v20 setImage:v25 forState:0];
+          leftView = [v9 leftView];
+          image = [leftView image];
+          [v20 setImage:image forState:0];
 
           [v20 addTarget:WeakRetained action:sel__animateNavigationBarSearchBarAppearance_ forControlEvents:64];
           [v20 sizeToFit];
@@ -5552,7 +5552,7 @@ LABEL_17:
           searchBarBackground = self->_searchBarBackground;
           self->_searchBarBackground = 0;
 
-          v5 = v37;
+          searchBar = v37;
           goto LABEL_18;
         }
 
@@ -5563,12 +5563,12 @@ LABEL_14:
           [(_UISearchBarVisualProviderLegacy *)self displayNavBarCancelButton:1 animated:0];
         }
 
-        v16 = [(_UISearchBarVisualProviderLegacy *)self prompt];
-        [(UINavigationItem *)v7 setPrompt:v16];
+        window = [(_UISearchBarVisualProviderLegacy *)self prompt];
+        [(UINavigationItem *)v7 setPrompt:window];
         goto LABEL_17;
       }
 
-      [v8 frame];
+      [_searchBarTextField frame];
       if (CGRectGetWidth(v39) >= 1.0)
       {
         [v9 frame];
@@ -5580,10 +5580,10 @@ LABEL_14:
 
       if (WeakRetained)
       {
-        v10 = [WeakRetained searchContentsController];
-        v11 = [v10 navigationController];
-        v12 = [v11 navigationBar];
-        [v12 frame];
+        searchContentsController = [WeakRetained searchContentsController];
+        navigationController = [searchContentsController navigationController];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar frame];
         v13 = CGRectGetWidth(v41) * 0.5;
       }
 
@@ -5610,94 +5610,94 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)prepareFromAbandonedVisualProvider:(id)a3
+- (void)prepareFromAbandonedVisualProvider:(id)provider
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providerCopy = provider;
   [(_UISearchBarVisualProviderLegacy *)self prepare];
-  if (v4)
+  if (providerCopy)
   {
-    v5 = [v4 barTintColor];
-    [(_UISearchBarVisualProviderLegacy *)self _setBarTintColor:v5];
+    barTintColor = [providerCopy barTintColor];
+    [(_UISearchBarVisualProviderLegacy *)self _setBarTintColor:barTintColor];
 
-    -[_UISearchBarVisualProviderLegacy _setBarStyle:](self, "_setBarStyle:", [v4 barStyle]);
-    -[_UISearchBarVisualProviderLegacy _setShowsScopeBar:](self, "_setShowsScopeBar:", [v4 showsScopeBar]);
-    -[_UISearchBarVisualProviderLegacy _setAutoDisableCancelButton:](self, "_setAutoDisableCancelButton:", [v4 autoDisableCancelButton]);
-    -[_UISearchBarVisualProviderLegacy _setShowsCancelButton:](self, "_setShowsCancelButton:", [v4 showsCancelButton]);
-    -[_UISearchBarVisualProviderLegacy _setShowsBookmarkButton:](self, "_setShowsBookmarkButton:", [v4 showsBookmarkButton]);
-    -[_UISearchBarVisualProviderLegacy _setShowsSearchResultsButton:](self, "_setShowsSearchResultsButton:", [v4 showsSearchResultsButton]);
-    -[_UISearchBarVisualProviderLegacy _setSearchResultsButtonSelected:](self, "_setSearchResultsButtonSelected:", [v4 isSearchResultsButtonSelected]);
-    -[_UISearchBarVisualProviderLegacy setAllowsInlineScopeBar:](self, "setAllowsInlineScopeBar:", [v4 allowsInlineScopeBar]);
-    -[_UISearchBarVisualProviderLegacy _setBarTranslucence:](self, "_setBarTranslucence:", [v4 barTranslucence]);
-    -[_UISearchBarVisualProviderLegacy _setHideBackground:](self, "_setHideBackground:", [v4 drawsBackground] ^ 1);
-    v6 = [v4 searchBar];
-    [(_UISearchBarVisualProviderBase *)self setSearchBar:v6];
+    -[_UISearchBarVisualProviderLegacy _setBarStyle:](self, "_setBarStyle:", [providerCopy barStyle]);
+    -[_UISearchBarVisualProviderLegacy _setShowsScopeBar:](self, "_setShowsScopeBar:", [providerCopy showsScopeBar]);
+    -[_UISearchBarVisualProviderLegacy _setAutoDisableCancelButton:](self, "_setAutoDisableCancelButton:", [providerCopy autoDisableCancelButton]);
+    -[_UISearchBarVisualProviderLegacy _setShowsCancelButton:](self, "_setShowsCancelButton:", [providerCopy showsCancelButton]);
+    -[_UISearchBarVisualProviderLegacy _setShowsBookmarkButton:](self, "_setShowsBookmarkButton:", [providerCopy showsBookmarkButton]);
+    -[_UISearchBarVisualProviderLegacy _setShowsSearchResultsButton:](self, "_setShowsSearchResultsButton:", [providerCopy showsSearchResultsButton]);
+    -[_UISearchBarVisualProviderLegacy _setSearchResultsButtonSelected:](self, "_setSearchResultsButtonSelected:", [providerCopy isSearchResultsButtonSelected]);
+    -[_UISearchBarVisualProviderLegacy setAllowsInlineScopeBar:](self, "setAllowsInlineScopeBar:", [providerCopy allowsInlineScopeBar]);
+    -[_UISearchBarVisualProviderLegacy _setBarTranslucence:](self, "_setBarTranslucence:", [providerCopy barTranslucence]);
+    -[_UISearchBarVisualProviderLegacy _setHideBackground:](self, "_setHideBackground:", [providerCopy drawsBackground] ^ 1);
+    searchBar = [providerCopy searchBar];
+    [(_UISearchBarVisualProviderBase *)self setSearchBar:searchBar];
 
-    v7 = [v4 searchFieldIfExists];
+    searchFieldIfExists = [providerCopy searchFieldIfExists];
     searchField = self->_searchField;
-    self->_searchField = v7;
+    self->_searchField = searchFieldIfExists;
 
     [(UIView *)self->_searchBarBackground removeFromSuperview];
-    v9 = [v4 searchBarBackground];
+    searchBarBackground = [providerCopy searchBarBackground];
     searchBarBackground = self->_searchBarBackground;
-    self->_searchBarBackground = v9;
+    self->_searchBarBackground = searchBarBackground;
 
-    v11 = [v4 backdrop];
+    backdrop = [providerCopy backdrop];
     backdrop = self->_backdrop;
-    self->_backdrop = v11;
+    self->_backdrop = backdrop;
 
-    v13 = [v4 backdropVisualEffectView];
+    backdropVisualEffectView = [providerCopy backdropVisualEffectView];
     backdropVisualEffectView = self->_backdropVisualEffectView;
-    self->_backdropVisualEffectView = v13;
+    self->_backdropVisualEffectView = backdropVisualEffectView;
 
-    v15 = [v4 searchBarClippingView];
+    searchBarClippingView = [providerCopy searchBarClippingView];
     searchBarClippingView = self->_searchBarClippingView;
-    self->_searchBarClippingView = v15;
+    self->_searchBarClippingView = searchBarClippingView;
 
-    v17 = [v4 cancelButton];
+    cancelButton = [providerCopy cancelButton];
     cancelButton = self->_cancelButton;
-    self->_cancelButton = v17;
+    self->_cancelButton = cancelButton;
 
-    v19 = [v4 cancelBarButtonItemIfExists];
+    cancelBarButtonItemIfExists = [providerCopy cancelBarButtonItemIfExists];
     cancelBarButtonItem = self->_cancelBarButtonItem;
-    self->_cancelBarButtonItem = v19;
+    self->_cancelBarButtonItem = cancelBarButtonItemIfExists;
 
-    v21 = [v4 cancelButtonText];
+    cancelButtonText = [providerCopy cancelButtonText];
     cancelButtonText = self->_cancelButtonText;
-    self->_cancelButtonText = v21;
+    self->_cancelButtonText = cancelButtonText;
 
-    v23 = [v4 leftButtonIfExists];
+    leftButtonIfExists = [providerCopy leftButtonIfExists];
     leftButton = self->_leftButton;
-    self->_leftButton = v23;
+    self->_leftButton = leftButtonIfExists;
 
-    v25 = [v4 promptLabel];
+    promptLabel = [providerCopy promptLabel];
     promptLabel = self->_promptLabel;
-    self->_promptLabel = v25;
+    self->_promptLabel = promptLabel;
 
-    v27 = [v4 separator];
+    separator = [providerCopy separator];
     separator = self->_separator;
-    self->_separator = v27;
+    self->_separator = separator;
 
-    v29 = [v4 scopeBar];
+    scopeBar = [providerCopy scopeBar];
     scopeBar = self->_scopeBar;
-    self->_scopeBar = v29;
+    self->_scopeBar = scopeBar;
 
-    v31 = [v4 scopeBarContainerView];
+    scopeBarContainerView = [providerCopy scopeBarContainerView];
     v32 = [UIView alloc];
-    [v31 frame];
+    [scopeBarContainerView frame];
     v33 = [(UIView *)v32 initWithFrame:?];
     scopeBarContainerView = self->_scopeBarContainerView;
     self->_scopeBarContainerView = v33;
 
-    v35 = [v31 superview];
-    [v35 addSubview:self->_scopeBarContainerView];
+    superview = [scopeBarContainerView superview];
+    [superview addSubview:self->_scopeBarContainerView];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v36 = [v31 subviews];
-    v37 = [v36 countByEnumeratingWithState:&v59 objects:v63 count:16];
+    subviews = [scopeBarContainerView subviews];
+    v37 = [subviews countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v37)
     {
       v38 = v37;
@@ -5708,56 +5708,56 @@ LABEL_18:
         {
           if (*v60 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(subviews);
           }
 
           [(UIView *)self->_scopeBarContainerView addSubview:*(*(&v59 + 1) + 8 * i)];
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v59 objects:v63 count:16];
+        v38 = [subviews countByEnumeratingWithState:&v59 objects:v63 count:16];
       }
 
       while (v38);
     }
 
-    [v31 removeFromSuperview];
-    v41 = [v4 scopeBarBackgroundView];
+    [scopeBarContainerView removeFromSuperview];
+    scopeBarBackgroundView = [providerCopy scopeBarBackgroundView];
     scopeBarBackgroundView = self->_scopeBarBackgroundView;
-    self->_scopeBarBackgroundView = v41;
+    self->_scopeBarBackgroundView = scopeBarBackgroundView;
 
-    v43 = [v4 scopeTitles];
+    scopeTitles = [providerCopy scopeTitles];
     scopeTitles = self->_scopeTitles;
-    self->_scopeTitles = v43;
+    self->_scopeTitles = scopeTitles;
 
-    self->_selectedScope = [v4 selectedScope];
-    self->_backdropStyle = [v4 backdropStyle];
-    self->_barPosition = [v4 barPosition];
-    self->_scopeBarPosition = [v4 scopeBarPosition];
-    [v4 effectiveContentInset];
+    self->_selectedScope = [providerCopy selectedScope];
+    self->_backdropStyle = [providerCopy backdropStyle];
+    self->_barPosition = [providerCopy barPosition];
+    self->_scopeBarPosition = [providerCopy scopeBarPosition];
+    [providerCopy effectiveContentInset];
     self->_effectiveContentInset.top = v45;
     self->_effectiveContentInset.left = v46;
     self->_effectiveContentInset.bottom = v47;
     self->_effectiveContentInset.right = v48;
-    [v4 minimumContentInset];
+    [providerCopy minimumContentInset];
     self->_minimumContentInsetPrivate.top = v49;
     self->_minimumContentInsetPrivate.left = v50;
     self->_minimumContentInsetPrivate.bottom = v51;
     self->_minimumContentInsetPrivate.right = v52;
-    [v4 tableViewIndexWidth];
+    [providerCopy tableViewIndexWidth];
     self->_tableViewIndexWidth = v53;
-    self->_navBarTitleViewLocation = [v4 navBarTitleViewLocation];
-    v54 = [v4 navBarTitleViewOverlayRects];
+    self->_navBarTitleViewLocation = [providerCopy navBarTitleViewLocation];
+    navBarTitleViewOverlayRects = [providerCopy navBarTitleViewOverlayRects];
     navBarTitleViewOverlayRects = self->_navBarTitleViewOverlayRects;
-    self->_navBarTitleViewOverlayRects = v54;
+    self->_navBarTitleViewOverlayRects = navBarTitleViewOverlayRects;
 
-    v56 = [v4 navBarTitleViewDataSource];
-    objc_storeWeak(&self->_navBarTitleViewDataSource, v56);
+    navBarTitleViewDataSource = [providerCopy navBarTitleViewDataSource];
+    objc_storeWeak(&self->_navBarTitleViewDataSource, navBarTitleViewDataSource);
 
-    v57 = [v4 animatedAppearanceBarButtonItem];
+    animatedAppearanceBarButtonItem = [providerCopy animatedAppearanceBarButtonItem];
     animatedAppearanceBarButtonItem = self->_animatedAppearanceBarButtonItem;
-    self->_animatedAppearanceBarButtonItem = v57;
+    self->_animatedAppearanceBarButtonItem = animatedAppearanceBarButtonItem;
 
-    [v4 revertViewHierarchyIfNecessary];
+    [providerCopy revertViewHierarchyIfNecessary];
   }
 
   [(_UISearchBarVisualProviderLegacy *)self updateSearchBarOpacity];

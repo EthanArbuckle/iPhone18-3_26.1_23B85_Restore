@@ -1,16 +1,16 @@
 @interface AVMIDIPitchBendEvent
 - (AVMIDIPitchBendEvent)initWithChannel:(UInt32)channel value:(UInt32)value;
-- (AVMIDIPitchBendEvent)initWithMessage:(MIDIChannelMessage *)a3;
+- (AVMIDIPitchBendEvent)initWithMessage:(MIDIChannelMessage *)message;
 - (void)setValue:(UInt32)value;
 @end
 
 @implementation AVMIDIPitchBendEvent
 
-- (AVMIDIPitchBendEvent)initWithMessage:(MIDIChannelMessage *)a3
+- (AVMIDIPitchBendEvent)initWithMessage:(MIDIChannelMessage *)message
 {
   v4.receiver = self;
   v4.super_class = AVMIDIPitchBendEvent;
-  return [(AVMIDIChannelEvent *)&v4 initWithMessage:a3];
+  return [(AVMIDIChannelEvent *)&v4 initWithMessage:message];
 }
 
 - (void)setValue:(UInt32)value

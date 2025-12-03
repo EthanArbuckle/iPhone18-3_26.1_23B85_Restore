@@ -1,39 +1,39 @@
 @interface QLSqliteDatabase
 - (BOOL)beginTransaction;
-- (BOOL)stepStatement:(sqlite3_stmt *)a3 didReturnData:(BOOL *)a4;
+- (BOOL)stepStatement:(sqlite3_stmt *)statement didReturnData:(BOOL *)data;
 - (QLSqliteDatabase)init;
-- (__CFURL)newCFURLFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4;
-- (double)doubleFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4;
-- (id)_cacheStatement:(sqlite3_stmt *)a3 forKey:(id)a4;
-- (id)_cachedStatementForKey:(id)a3;
-- (id)lastCrapWithDate:(id *)a3;
-- (id)newColumnName:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5;
-- (id)newDataFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 copyBytes:(BOOL)a5;
-- (id)newPathFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5;
-- (id)newStringFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5;
-- (int)intFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4;
+- (__CFURL)newCFURLFromColumn:(int)column inStatement:(sqlite3_stmt *)statement;
+- (double)doubleFromColumn:(int)column inStatement:(sqlite3_stmt *)statement;
+- (id)_cacheStatement:(sqlite3_stmt *)statement forKey:(id)key;
+- (id)_cachedStatementForKey:(id)key;
+- (id)lastCrapWithDate:(id *)date;
+- (id)newColumnName:(int)name inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table;
+- (id)newDataFromColumn:(int)column inStatement:(sqlite3_stmt *)statement copyBytes:(BOOL)bytes;
+- (id)newPathFromColumn:(int)column inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table;
+- (id)newStringFromColumn:(int)column inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table;
+- (int)intFromColumn:(int)column inStatement:(sqlite3_stmt *)statement;
 - (int64_t)lastInsertRowId;
-- (sqlite3_stmt)prepareStatement:(const char *)a3;
-- (unint64_t)unsignedLongLongFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4;
+- (sqlite3_stmt)prepareStatement:(const char *)statement;
+- (unint64_t)unsignedLongLongFromColumn:(int)column inStatement:(sqlite3_stmt *)statement;
 - (void)_databaseCorrupted;
 - (void)_dropStatementCache;
-- (void)_finalizeStatement:(sqlite3_stmt *)a3;
+- (void)_finalizeStatement:(sqlite3_stmt *)statement;
 - (void)checkpoint;
 - (void)closeDatabase;
 - (void)dealloc;
 - (void)disableSqliteTracing;
-- (void)do:(id)a3;
-- (void)enableSqliteTracing:(id)a3;
+- (void)do:(id)do;
+- (void)enableSqliteTracing:(id)tracing;
 - (void)endTransaction;
-- (void)executeWithBlob:(const void *)a3 length:(int)a4 format:(const char *)a5;
-- (void)executeWithCallback:(void *)a3 context:(void *)a4 rollbackOnError:(BOOL)a5 sql:(const char *)a6 arguments:(char *)a7;
-- (void)finalizeStatement:(sqlite3_stmt *)a3;
-- (void)newBufferFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 length:(unsigned int *)a5;
-- (void)openDatabaseAtPath:(id)a3;
-- (void)runStatement:(sqlite3_stmt *)a3 stepHandler:(id)a4;
-- (void)runStatement:(sqlite3_stmt *)a3 withBoundObjects:(id)a4 startingAtIndex:(int)a5 stepHandler:(id)a6;
-- (void)setSqliteCacheSize:(int64_t)a3;
-- (void)sqliteCrappedOut:(int)a3 message:(id)a4;
+- (void)executeWithBlob:(const void *)blob length:(int)length format:(const char *)format;
+- (void)executeWithCallback:(void *)callback context:(void *)context rollbackOnError:(BOOL)error sql:(const char *)sql arguments:(char *)arguments;
+- (void)finalizeStatement:(sqlite3_stmt *)statement;
+- (void)newBufferFromColumn:(int)column inStatement:(sqlite3_stmt *)statement length:(unsigned int *)length;
+- (void)openDatabaseAtPath:(id)path;
+- (void)runStatement:(sqlite3_stmt *)statement stepHandler:(id)handler;
+- (void)runStatement:(sqlite3_stmt *)statement withBoundObjects:(id)objects startingAtIndex:(int)index stepHandler:(id)handler;
+- (void)setSqliteCacheSize:(int64_t)size;
+- (void)sqliteCrappedOut:(int)out message:(id)message;
 - (void)vacuum;
 @end
 
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)_finalizeStatement:(sqlite3_stmt *)a3
+- (void)_finalizeStatement:(sqlite3_stmt *)statement
 {
-  v5 = sqlite3_finalize(*a3);
+  v5 = sqlite3_finalize(*statement);
   if (!pLogSql)
   {
     goto LABEL_5;
@@ -136,7 +136,7 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [QLSqliteDatabase(SqliteHelpers_Internal) _finalizeStatement:a3];
+    [QLSqliteDatabase(SqliteHelpers_Internal) _finalizeStatement:statement];
     if (!v5)
     {
       goto LABEL_20;
@@ -189,7 +189,7 @@ LABEL_5:
   }
 
 LABEL_20:
-  *a3 = 0;
+  *statement = 0;
 }
 
 - (void)_databaseCorrupted
@@ -231,16 +231,16 @@ LABEL_20:
   return v2;
 }
 
-- (void)do:(id)a3
+- (void)do:(id)do
 {
-  v4 = a3;
+  doCopy = do;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__QLSqliteDatabase_do___block_invoke;
   block[3] = &unk_279ADD038;
-  v8 = v4;
-  v6 = v4;
+  v8 = doCopy;
+  v6 = doCopy;
   dispatch_sync(queue, block);
 }
 
@@ -251,12 +251,12 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)openDatabaseAtPath:(id)a3
+- (void)openDatabaseAtPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
-  objc_storeStrong(&self->_path, a3);
-  if (sqlite3_open([v5 fileSystemRepresentation], &self->_db))
+  objc_storeStrong(&self->_path, path);
+  if (sqlite3_open([pathCopy fileSystemRepresentation], &self->_db))
   {
     sqlite3_close(self->_db);
     self->_db = 0;
@@ -292,7 +292,7 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
 
 - (void)closeDatabase
 {
-  OUTLINED_FUNCTION_6(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_5(&dword_2615D3000, v1, v2, "End transaction error at close time: %s (%i)", v4, v5);
   v3 = *MEMORY[0x277D85DE8];
@@ -305,8 +305,8 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_statementCache objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_statementCache objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -317,21 +317,21 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if (([v8 isInUse] & 1) == 0)
         {
-          v10 = [v8 stmt];
-          if (v10)
+          stmt = [v8 stmt];
+          if (stmt)
           {
-            [(QLSqliteDatabase *)self _finalizeStatement:&v10];
+            [(QLSqliteDatabase *)self _finalizeStatement:&stmt];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -342,13 +342,13 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableSqliteTracing:(id)a3
+- (void)enableSqliteTracing:(id)tracing
 {
-  v6 = a3;
+  tracingCopy = tracing;
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (tracingCopy)
   {
-    v4 = v6;
+    v4 = tracingCopy;
   }
 
   else
@@ -370,12 +370,12 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
   sqlite3_trace_v2(db, 0, 0, 0);
 }
 
-- (void)executeWithCallback:(void *)a3 context:(void *)a4 rollbackOnError:(BOOL)a5 sql:(const char *)a6 arguments:(char *)a7
+- (void)executeWithCallback:(void *)callback context:(void *)context rollbackOnError:(BOOL)error sql:(const char *)sql arguments:(char *)arguments
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isCorrupted)
   {
-    v12 = sqlite3_vmprintf(a6, a7);
+    v12 = sqlite3_vmprintf(sql, arguments);
     if (pLogSql)
     {
       v13 = MEMORY[0x277CDAB78];
@@ -393,7 +393,7 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
     }
 
     errmsg = 0;
-    v15 = sqlite3_exec(self->_db, v12, a3, a4, &errmsg);
+    v15 = sqlite3_exec(self->_db, v12, callback, context, &errmsg);
     if ((v15 & 0xFFFFFFFB) != 0)
     {
       v16 = v15;
@@ -411,7 +411,7 @@ void __23__QLSqliteDatabase_do___block_invoke(uint64_t a1)
 
 LABEL_16:
         errmsg = 0;
-        v16 = sqlite3_exec(self->_db, v12, a3, a4, &errmsg);
+        v16 = sqlite3_exec(self->_db, v12, callback, context, &errmsg);
         if ((v16 & 0xFFFFFFFB) == 0)
         {
           goto LABEL_19;
@@ -434,13 +434,13 @@ LABEL_19:
   }
 }
 
-- (void)executeWithBlob:(const void *)a3 length:(int)a4 format:(const char *)a5
+- (void)executeWithBlob:(const void *)blob length:(int)length format:(const char *)format
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isCorrupted)
   {
     ppStmt[1] = &v24;
-    v9 = sqlite3_vmprintf(a5, &v24);
+    v9 = sqlite3_vmprintf(format, &v24);
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
     v11 = [(QLSqliteDatabase *)self _cachedStatementForKey:v10];
     ppStmt[0] = [v11 stmt];
@@ -530,7 +530,7 @@ LABEL_29:
       goto LABEL_12;
     }
 
-    v14 = sqlite3_bind_blob(ppStmt[0], 1, a3, a4, 0);
+    v14 = sqlite3_bind_blob(ppStmt[0], 1, blob, length, 0);
     if (!v14)
     {
       goto LABEL_12;
@@ -551,21 +551,21 @@ LABEL_30:
   }
 }
 
-- (void)sqliteCrappedOut:(int)a3 message:(id)a4
+- (void)sqliteCrappedOut:(int)out message:(id)message
 {
   v36 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v7 = a4;
+  messageCopy = message;
   dispatch_assert_queue_V2(queue);
   v27[1] = &v37;
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v7 arguments:&v37];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:messageCopy arguments:&v37];
 
   v27[0] = 0;
   v9 = [(QLSqliteDatabase *)self lastCrapWithDate:v27];
   v10 = v27[0];
   v11 = MEMORY[0x277CCACA8];
   v12 = sqlite3_errcode(self->_db);
-  v13 = [v11 stringWithFormat:@"unexpected behavior of sqllite bridge: (triggered by %ld - database errcode: %ld - %s)", a3, v12, sqlite3_errmsg(self->_db)];
+  v13 = [v11 stringWithFormat:@"unexpected behavior of sqllite bridge: (triggered by %ld - database errcode: %ld - %s)", out, v12, sqlite3_errmsg(self->_db)];
   v14 = [v9 componentsSeparatedByString:@"\n"];
   if ([v14 count])
   {
@@ -580,17 +580,17 @@ LABEL_30:
   if ([v13 isEqual:v15])
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v9, v8];
-    v17 = [(QLSqliteDatabase *)self _crapPath];
-    [v16 writeToFile:v17 atomically:1 encoding:4 error:0];
+    _crapPath = [(QLSqliteDatabase *)self _crapPath];
+    [v16 writeToFile:_crapPath atomically:1 encoding:4 error:0];
   }
 
   else
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v13, v8];
-    v18 = [(QLSqliteDatabase *)self _crapPath];
-    [v16 writeToFile:v18 atomically:1 encoding:4 error:0];
+    _crapPath2 = [(QLSqliteDatabase *)self _crapPath];
+    [v16 writeToFile:_crapPath2 atomically:1 encoding:4 error:0];
 
-    if (a3 == 14)
+    if (out == 14)
     {
       sqlite3_errcode(self->_db);
     }
@@ -627,22 +627,22 @@ LABEL_30:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastCrapWithDate:(id *)a3
+- (id)lastCrapWithDate:(id *)date
 {
-  v4 = [(QLSqliteDatabase *)self _crapPath];
-  if (v4)
+  _crapPath = [(QLSqliteDatabase *)self _crapPath];
+  if (_crapPath)
   {
-    v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:0];
-    if ([v5 getResourceValue:a3 forKey:*MEMORY[0x277CBE7B0] error:0])
+    v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:_crapPath isDirectory:0];
+    if ([v5 getResourceValue:date forKey:*MEMORY[0x277CBE7B0] error:0])
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v4 encoding:4 error:0];
+      v6 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:_crapPath encoding:4 error:0];
 
       goto LABEL_6;
     }
   }
 
   v6 = 0;
-  *a3 = 0;
+  *date = 0;
 LABEL_6:
 
   return v6;
@@ -656,13 +656,13 @@ LABEL_6:
   return sqlite3_last_insert_rowid(db);
 }
 
-- (sqlite3_stmt)prepareStatement:(const char *)a3
+- (sqlite3_stmt)prepareStatement:(const char *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isCorrupted)
   {
     ppStmt = 0;
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:statement];
     v7 = [(QLSqliteDatabase *)self _cachedStatementForKey:v6];
     v8 = v7;
     if (v7)
@@ -681,7 +681,7 @@ LABEL_33:
 
     for (i = -599; ; ++i)
     {
-      v10 = sqlite3_prepare_v2(self->_db, a3, -1, &ppStmt, 0);
+      v10 = sqlite3_prepare_v2(self->_db, statement, -1, &ppStmt, 0);
       if (v10 != 5)
       {
         break;
@@ -728,7 +728,7 @@ LABEL_33:
       if (v10 != 101)
       {
 LABEL_36:
-        [(QLSqliteDatabase *)self sqliteCrappedOut:v10 message:@"error while preparing '%s'", a3];
+        [(QLSqliteDatabase *)self sqliteCrappedOut:v10 message:@"error while preparing '%s'", statement];
         v5 = 0;
         goto LABEL_33;
       }
@@ -779,9 +779,9 @@ LABEL_26:
   return 0;
 }
 
-- (id)_cachedStatementForKey:(id)a3
+- (id)_cachedStatementForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_statementCache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_statementCache objectForKey:key];
   v4 = v3;
   if (v3)
   {
@@ -806,12 +806,12 @@ LABEL_26:
   return v4;
 }
 
-- (id)_cacheStatement:(sqlite3_stmt *)a3 forKey:(id)a4
+- (id)_cacheStatement:(sqlite3_stmt *)statement forKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [[QLSqliteDatabaseStatementWrapper alloc] initWithStatement:a3 key:v6 inUseTable:self->_statementsInUseTable];
-  [(NSMutableDictionary *)self->_statementCache setObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [[QLSqliteDatabaseStatementWrapper alloc] initWithStatement:statement key:keyCopy inUseTable:self->_statementsInUseTable];
+  [(NSMutableDictionary *)self->_statementCache setObject:v7 forKey:keyCopy];
   if ([(NSMutableDictionary *)self->_statementCache count]>= 0x33)
   {
     v8 = MEMORY[0x277CDAB78];
@@ -833,7 +833,7 @@ LABEL_26:
       v18 = 2112;
       v19 = v13;
       v20 = 2112;
-      v21 = v6;
+      v21 = keyCopy;
       _os_log_impl(&dword_2615D3000, v11, OS_LOG_TYPE_INFO, "[Warning] We are caching too many statements (%lu), we are expecting to cache only a few (50 max). Cached statements: %@. Last statement cached: %@.", &v16, 0x20u);
     }
   }
@@ -843,7 +843,7 @@ LABEL_26:
   return v7;
 }
 
-- (BOOL)stepStatement:(sqlite3_stmt *)a3 didReturnData:(BOOL *)a4
+- (BOOL)stepStatement:(sqlite3_stmt *)statement didReturnData:(BOOL *)data
 {
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -852,15 +852,15 @@ LABEL_26:
     goto LABEL_40;
   }
 
-  if (a4)
+  if (data)
   {
-    *a4 = 0;
+    *data = 0;
   }
 
   v7 = MEMORY[0x277CDAB78];
   for (i = 599; ; --i)
   {
-    v9 = sqlite3_step(a3);
+    v9 = sqlite3_step(statement);
     v10 = v9;
     if (v9 != 5)
     {
@@ -882,7 +882,7 @@ LABEL_26:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v21 = a3;
+      statementCopy = statement;
       v22 = 1024;
       v23 = i;
       _os_log_debug_impl(&dword_2615D3000, v11, OS_LOG_TYPE_DEBUG, "failed to step %p because sql was busy, retry count %d", buf, 0x12u);
@@ -920,8 +920,8 @@ LABEL_35:
           [QLSqliteDatabase(SqliteHelpers) stepStatement:v16 didReturnData:v10];
         }
 
-        sqlite3_reset(a3);
-        [(QLSqliteDatabase *)self sqliteCrappedOut:v10 message:@"can't execute statement (%s) retval %d", sqlite3_sql(a3), v10];
+        sqlite3_reset(statement);
+        [(QLSqliteDatabase *)self sqliteCrappedOut:v10 message:@"can't execute statement (%s) retval %d", sqlite3_sql(statement), v10];
         goto LABEL_40;
       }
 
@@ -941,9 +941,9 @@ LABEL_35:
       }
 
       LOBYTE(v14) = 1;
-      if (a4)
+      if (data)
       {
-        *a4 = 1;
+        *data = 1;
       }
 
       goto LABEL_41;
@@ -965,7 +965,7 @@ LABEL_27:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       [QLSqliteDatabase(SqliteHelpers) stepStatement:didReturnData:];
-      if (!a4)
+      if (!data)
       {
         goto LABEL_33;
       }
@@ -974,7 +974,7 @@ LABEL_27:
     else
     {
 LABEL_31:
-      if (!a4)
+      if (!data)
       {
 LABEL_33:
         LOBYTE(v14) = 1;
@@ -982,7 +982,7 @@ LABEL_33:
       }
     }
 
-    *a4 = 0;
+    *data = 0;
     goto LABEL_33;
   }
 
@@ -1025,34 +1025,34 @@ LABEL_41:
   return v14;
 }
 
-- (void)finalizeStatement:(sqlite3_stmt *)a3
+- (void)finalizeStatement:(sqlite3_stmt *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isCorrupted)
   {
-    v5 = NSMapGet(self->_statementsInUseTable, *a3);
+    v5 = NSMapGet(self->_statementsInUseTable, *statement);
     v9 = v5;
     if (v5)
     {
       [v5 setInUse:0];
-      [(QLSqliteDatabase *)self resetStatement:*a3 unbindValuesThroughIndex:0];
+      [(QLSqliteDatabase *)self resetStatement:*statement unbindValuesThroughIndex:0];
       statementCache = self->_statementCache;
       v7 = [v9 key];
       v8 = [(NSMutableDictionary *)statementCache objectForKey:v7];
 
       if (!v8)
       {
-        [(QLSqliteDatabase *)self _finalizeStatement:a3];
+        [(QLSqliteDatabase *)self _finalizeStatement:statement];
         [v9 setStmt:0];
       }
     }
 
     else
     {
-      [(QLSqliteDatabase *)self _finalizeStatement:a3];
+      [(QLSqliteDatabase *)self _finalizeStatement:statement];
     }
 
-    *a3 = 0;
+    *statement = 0;
   }
 }
 
@@ -1088,17 +1088,17 @@ LABEL_41:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newColumnName:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5
+- (id)newColumnName:(int)name inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table
 {
-  v8 = a5;
+  tableCopy = table;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = sqlite3_column_name(a4, a3);
+  v9 = sqlite3_column_name(statement, name);
   if (v9)
   {
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v9];
-    if (v8)
+    if (tableCopy)
     {
-      v10 = [v8 member:v9];
+      v10 = [tableCopy member:v9];
       v11 = v10;
       if (v10)
       {
@@ -1109,7 +1109,7 @@ LABEL_41:
 
       else
       {
-        [v8 addObject:v9];
+        [tableCopy addObject:v9];
       }
     }
   }
@@ -1117,10 +1117,10 @@ LABEL_41:
   return v9;
 }
 
-- (__CFURL)newCFURLFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4
+- (__CFURL)newCFURLFromColumn:(int)column inStatement:(sqlite3_stmt *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
-  result = sqlite3_column_text(a4, a3);
+  result = sqlite3_column_text(statement, column);
   if (result)
   {
     v7 = result;
@@ -1132,17 +1132,17 @@ LABEL_41:
   return result;
 }
 
-- (id)newStringFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5
+- (id)newStringFromColumn:(int)column inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table
 {
-  v8 = a5;
+  tableCopy = table;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = sqlite3_column_text(a4, a3);
+  v9 = sqlite3_column_text(statement, column);
   if (v9)
   {
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v9];
-    if (v8)
+    if (tableCopy)
     {
-      v10 = [v8 member:v9];
+      v10 = [tableCopy member:v9];
       v11 = v10;
       if (v10)
       {
@@ -1153,7 +1153,7 @@ LABEL_41:
 
       else
       {
-        [v8 addObject:v9];
+        [tableCopy addObject:v9];
       }
     }
   }
@@ -1161,21 +1161,21 @@ LABEL_41:
   return v9;
 }
 
-- (id)newPathFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 uniqueInStringTable:(id)a5
+- (id)newPathFromColumn:(int)column inStatement:(sqlite3_stmt *)statement uniqueInStringTable:(id)table
 {
-  v8 = a5;
+  tableCopy = table;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = sqlite3_column_text(a4, a3);
+  v9 = sqlite3_column_text(statement, column);
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v10 stringWithFileSystemRepresentation:v9 length:strlen(v9)];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = [defaultManager stringWithFileSystemRepresentation:v9 length:strlen(v9)];
 
-    if (v8)
+    if (tableCopy)
     {
       if (v9)
       {
-        v11 = [v8 member:v9];
+        v11 = [tableCopy member:v9];
         v12 = v11;
         if (v11)
         {
@@ -1186,7 +1186,7 @@ LABEL_41:
 
         else
         {
-          [v8 addObject:v9];
+          [tableCopy addObject:v9];
         }
       }
     }
@@ -1195,14 +1195,14 @@ LABEL_41:
   return v9;
 }
 
-- (void)newBufferFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 length:(unsigned int *)a5
+- (void)newBufferFromColumn:(int)column inStatement:(sqlite3_stmt *)statement length:(unsigned int *)length
 {
   dispatch_assert_queue_V2(self->_queue);
-  v8 = sqlite3_column_blob(a4, a3);
-  v9 = sqlite3_column_bytes(a4, a3);
-  if (a5)
+  v8 = sqlite3_column_blob(statement, column);
+  v9 = sqlite3_column_bytes(statement, column);
+  if (length)
   {
-    *a5 = v9;
+    *length = v9;
   }
 
   v10 = v9;
@@ -1211,11 +1211,11 @@ LABEL_41:
   return memcpy(v11, v8, v10);
 }
 
-- (id)newDataFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4 copyBytes:(BOOL)a5
+- (id)newDataFromColumn:(int)column inStatement:(sqlite3_stmt *)statement copyBytes:(BOOL)bytes
 {
   dispatch_assert_queue_V2(self->_queue);
-  v8 = sqlite3_column_blob(a4, a3);
-  v9 = sqlite3_column_bytes(a4, a3);
+  v8 = sqlite3_column_blob(statement, column);
+  v9 = sqlite3_column_bytes(statement, column);
   if (!v8 || !v9)
   {
     return 0;
@@ -1223,7 +1223,7 @@ LABEL_41:
 
   v10 = v9;
   v11 = objc_alloc(MEMORY[0x277CBEA90]);
-  if (a5)
+  if (bytes)
   {
 
     return [v11 initWithBytes:v8 length:v10];
@@ -1236,51 +1236,51 @@ LABEL_41:
   }
 }
 
-- (unint64_t)unsignedLongLongFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4
+- (unint64_t)unsignedLongLongFromColumn:(int)column inStatement:(sqlite3_stmt *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
 
-  return sqlite3_column_int64(a4, a3);
+  return sqlite3_column_int64(statement, column);
 }
 
-- (int)intFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4
+- (int)intFromColumn:(int)column inStatement:(sqlite3_stmt *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
 
-  return sqlite3_column_int(a4, a3);
+  return sqlite3_column_int(statement, column);
 }
 
-- (double)doubleFromColumn:(int)a3 inStatement:(sqlite3_stmt *)a4
+- (double)doubleFromColumn:(int)column inStatement:(sqlite3_stmt *)statement
 {
   dispatch_assert_queue_V2(self->_queue);
 
-  return sqlite3_column_double(a4, a3);
+  return sqlite3_column_double(statement, column);
 }
 
-- (void)runStatement:(sqlite3_stmt *)a3 stepHandler:(id)a4
+- (void)runStatement:(sqlite3_stmt *)statement stepHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v7 = 0;
-  if ([(QLSqliteDatabase *)self stepStatement:a3 didReturnData:&v7]&& (v7 & 1) != 0)
+  if ([(QLSqliteDatabase *)self stepStatement:statement didReturnData:&v7]&& (v7 & 1) != 0)
   {
       ;
     }
   }
 
-  [(QLSqliteDatabase *)self resetStatement:a3 unbindValuesThroughIndex:0];
+  [(QLSqliteDatabase *)self resetStatement:statement unbindValuesThroughIndex:0];
 }
 
-- (void)runStatement:(sqlite3_stmt *)a3 withBoundObjects:(id)a4 startingAtIndex:(int)a5 stepHandler:(id)a6
+- (void)runStatement:(sqlite3_stmt *)statement withBoundObjects:(id)objects startingAtIndex:(int)index stepHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
+  objectsCopy = objects;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v12 = [v10 count];
-  if (v10)
+  v12 = [objectsCopy count];
+  if (objectsCopy)
   {
-    v22 = a5;
-    v13 = a5 + 20;
+    indexCopy = index;
+    v13 = index + 20;
     v21 = v12;
     if (v12)
     {
@@ -1288,14 +1288,14 @@ LABEL_41:
       v15 = v12;
       do
       {
-        v16 = v22;
+        v16 = indexCopy;
         v17 = v14;
-        if (v22 <= 0xFFFFFFEB)
+        if (indexCopy <= 0xFFFFFFEB)
         {
           do
           {
-            v18 = [v10 objectAtIndex:{v17, v21}];
-            [(QLSqliteDatabase *)self bindObject:v18 atIndex:v16 inStatement:a3];
+            v18 = [objectsCopy objectAtIndex:{v17, v21}];
+            [(QLSqliteDatabase *)self bindObject:v18 atIndex:v16 inStatement:statement];
 
             v16 = (v16 + 1);
             v14 = ++v17;
@@ -1308,7 +1308,7 @@ LABEL_41:
         {
           do
           {
-            [(QLSqliteDatabase *)self bindObject:0 atIndex:v16 inStatement:a3, v21];
+            [(QLSqliteDatabase *)self bindObject:0 atIndex:v16 inStatement:statement, v21];
             v16 = (v16 + 1);
           }
 
@@ -1316,16 +1316,16 @@ LABEL_41:
         }
 
         v23 = 0;
-        while ([(QLSqliteDatabase *)self stepStatement:a3 didReturnData:&v23, v21]&& (v23 & 1) != 0)
+        while ([(QLSqliteDatabase *)self stepStatement:statement didReturnData:&v23, v21]&& (v23 & 1) != 0)
         {
-          if (v11 && (v11[2](v11) & 1) == 0)
+          if (handlerCopy && (handlerCopy[2](handlerCopy) & 1) == 0)
           {
-            [(QLSqliteDatabase *)self resetStatement:a3 unbindValuesThroughIndex:0];
+            [(QLSqliteDatabase *)self resetStatement:statement unbindValuesThroughIndex:0];
             goto LABEL_18;
           }
         }
 
-        [(QLSqliteDatabase *)self resetStatement:a3 unbindValuesThroughIndex:0];
+        [(QLSqliteDatabase *)self resetStatement:statement unbindValuesThroughIndex:0];
       }
 
       while (v14 < v21);
@@ -1334,11 +1334,11 @@ LABEL_41:
 LABEL_18:
     if (v13 >= 2)
     {
-      v19 = v22 + 19;
+      v19 = indexCopy + 19;
       v20 = 1;
       do
       {
-        [(QLSqliteDatabase *)self bindObject:0 atIndex:v20 inStatement:a3, v21];
+        [(QLSqliteDatabase *)self bindObject:0 atIndex:v20 inStatement:statement, v21];
         v20 = (v20 + 1);
         --v19;
       }
@@ -1349,7 +1349,7 @@ LABEL_18:
 
   else
   {
-    [(QLSqliteDatabase *)self runStatement:a3 stepHandler:v11];
+    [(QLSqliteDatabase *)self runStatement:statement stepHandler:handlerCopy];
   }
 }
 
@@ -1364,12 +1364,12 @@ uint64_t __93__QLSqliteDatabase_SqliteHelpers__runStatement_withBoundNumbers_sta
   return result;
 }
 
-- (void)setSqliteCacheSize:(int64_t)a3
+- (void)setSqliteCacheSize:(int64_t)size
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 >= 1 && !self->_isCorrupted)
+  if (size >= 1 && !self->_isCorrupted)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"pragma cache_size=%ld", a3];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"pragma cache_size=%ld", size];
     v6 = MEMORY[0x277CDAB78];
     v7 = *(MEMORY[0x277CDAB78] + 8);
     if (!v7)

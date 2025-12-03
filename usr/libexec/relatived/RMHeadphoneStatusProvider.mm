@@ -1,9 +1,9 @@
 @interface RMHeadphoneStatusProvider
-- (id)startProducingDataWithCallback:(id)a3;
-- (void)notifyClientWithStatusConnected:(BOOL)a3;
+- (id)startProducingDataWithCallback:(id)callback;
+- (void)notifyClientWithStatusConnected:(BOOL)connected;
 - (void)notifyConnectedToClient;
 - (void)notifyDisconnectedToClient;
-- (void)onActiveAudioRouteChanged:(id)a3;
+- (void)onActiveAudioRouteChanged:(id)changed;
 - (void)startMonitoringActiveAudioRoute;
 - (void)stopMonitoringActiveAudioRoute;
 - (void)stopProducingData;
@@ -12,14 +12,14 @@
 
 @implementation RMHeadphoneStatusProvider
 
-- (id)startProducingDataWithCallback:(id)a3
+- (id)startProducingDataWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = objc_opt_new();
   [(RMHeadphoneStatusProvider *)self setAudioAccessoryManager:v5];
 
   +[CMAudioAccessoryManager _isAvailable];
-  [(RMHeadphoneStatusProvider *)self setCallbackBlock:v4];
+  [(RMHeadphoneStatusProvider *)self setCallbackBlock:callbackCopy];
 
   if ([(RMHeadphoneStatusProvider *)self requireActivity])
   {
@@ -33,8 +33,8 @@
   v9[3] = &unk_100024BB0;
   v9[4] = self;
   v6 = objc_retainBlock(v9);
-  v7 = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
-  [v7 startStatusUpdatesWithHandler:v6];
+  audioAccessoryManager = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
+  [audioAccessoryManager startStatusUpdatesWithHandler:v6];
 
   return 0;
 }
@@ -46,8 +46,8 @@
     [(RMHeadphoneStatusProvider *)self stopMonitoringActiveAudioRoute];
   }
 
-  v3 = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
-  [v3 stopStatusUpdates];
+  audioAccessoryManager = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
+  [audioAccessoryManager stopStatusUpdates];
 
   [(RMHeadphoneStatusProvider *)self setAudioAccessoryManager:0];
 }
@@ -86,12 +86,12 @@
   [(RMHeadphoneStatusProvider *)self notifyClientWithStatusConnected:1];
 }
 
-- (void)notifyClientWithStatusConnected:(BOOL)a3
+- (void)notifyClientWithStatusConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v19 = kCMHeadphoneMotionManagerEventTypeKey;
   v5 = &kCMHeadphoneMotionManagerEventTypeConnect;
-  if (!a3)
+  if (!connected)
   {
     v5 = &kCMHeadphoneMotionManagerEventTypeDisconnect;
   }
@@ -101,7 +101,7 @@
   v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:0 error:0];
   if (v7)
   {
-    if ([(RMHeadphoneStatusProvider *)self requireActivity]&& ![(RMHeadphoneStatusProvider *)self activitySupported]&& v3)
+    if ([(RMHeadphoneStatusProvider *)self requireActivity]&& ![(RMHeadphoneStatusProvider *)self activitySupported]&& connectedCopy)
     {
       if (qword_10002C0C8 != -1)
       {
@@ -123,14 +123,14 @@ LABEL_16:
 
     else
     {
-      v13 = [(RMHeadphoneStatusProvider *)self receiverQueue];
+      receiverQueue = [(RMHeadphoneStatusProvider *)self receiverQueue];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100004394;
       v15[3] = &unk_1000248A8;
       v15[4] = self;
       v16 = v7;
-      dispatch_async(v13, v15);
+      dispatch_async(receiverQueue, v15);
     }
   }
 
@@ -167,18 +167,18 @@ LABEL_16:
   [v3 removeObserver:self name:@"RMAudioDeviceChangeCompletedNotification" object:0];
 }
 
-- (void)onActiveAudioRouteChanged:(id)a3
+- (void)onActiveAudioRouteChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"RMAudioDeviceChangeCompletedRouteIDKey"];
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userInfo = [changedCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"RMAudioDeviceChangeCompletedRouteIDKey"];
 
   if (v7)
   {
-    v8 = [(RMHeadphoneStatusProvider *)v5 activeAudioRouteDeviceID];
-    v9 = [v8 isEqualToString:v7];
+    activeAudioRouteDeviceID = [(RMHeadphoneStatusProvider *)selfCopy activeAudioRouteDeviceID];
+    v9 = [activeAudioRouteDeviceID isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -190,16 +190,16 @@ LABEL_16:
       v10 = qword_10002C0D0;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(RMHeadphoneStatusProvider *)v5 activeAudioRouteDeviceID];
+        activeAudioRouteDeviceID2 = [(RMHeadphoneStatusProvider *)selfCopy activeAudioRouteDeviceID];
         v13 = 138478083;
         v14 = v7;
         v15 = 2113;
-        v16 = v11;
+        v16 = activeAudioRouteDeviceID2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[RMHeadphoneStatusProvider] New audio route: %{private}@ (old route: %{private}@). Starting activity check.", &v13, 0x16u);
       }
 
-      [(RMHeadphoneStatusProvider *)v5 setActiveAudioRouteDeviceID:v7];
-      [(RMHeadphoneStatusProvider *)v5 updateActivityForCurrentRoute];
+      [(RMHeadphoneStatusProvider *)selfCopy setActiveAudioRouteDeviceID:v7];
+      [(RMHeadphoneStatusProvider *)selfCopy updateActivityForCurrentRoute];
     }
   }
 
@@ -217,22 +217,22 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[RMHeadphoneStatusProvider] Speaker route. Resetting activity support.", &v13, 2u);
     }
 
-    [(RMHeadphoneStatusProvider *)v5 setActivitySupported:0];
-    [(RMHeadphoneStatusProvider *)v5 setActiveAudioRouteDeviceID:0];
+    [(RMHeadphoneStatusProvider *)selfCopy setActivitySupported:0];
+    [(RMHeadphoneStatusProvider *)selfCopy setActiveAudioRouteDeviceID:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)updateActivityForCurrentRoute
 {
-  v3 = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
+  audioAccessoryManager = [(RMHeadphoneStatusProvider *)self audioAccessoryManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100004764;
   v4[3] = &unk_100024BD8;
   v4[4] = self;
-  [v3 startActivityUpdatesWithHandler:v4];
+  [audioAccessoryManager startActivityUpdatesWithHandler:v4];
 }
 
 @end

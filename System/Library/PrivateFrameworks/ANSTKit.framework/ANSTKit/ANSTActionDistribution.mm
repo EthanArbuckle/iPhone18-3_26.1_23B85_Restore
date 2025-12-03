@@ -1,15 +1,15 @@
 @interface ANSTActionDistribution
 + (id)new;
 - (ANSTActionDistribution)init;
-- (ANSTActionDistribution)initWithAcObject:(id *)a3;
-- (ANSTActionDistribution)initWithCoder:(id)a3;
-- (ANSTActionDistribution)initWithObjectID:(unint64_t)a3 boundingBox:(CGRect)a4 confidence:(unint64_t)a5 distance:(float)a6 distribution:(id)a7;
-- (ANSTActionDistribution)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8;
-- (BOOL)isEqual:(id)a3;
+- (ANSTActionDistribution)initWithAcObject:(id *)object;
+- (ANSTActionDistribution)initWithCoder:(id)coder;
+- (ANSTActionDistribution)initWithObjectID:(unint64_t)d boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance distribution:(id)distribution;
+- (ANSTActionDistribution)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance;
+- (BOOL)isEqual:(id)equal;
 - (NSString)mostLikelyActionType;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTActionDistribution
@@ -23,40 +23,40 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTActionDistribution)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8
+- (ANSTActionDistribution)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance
 {
-  v10 = a5;
+  categoryCopy = category;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v11, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTActionDistribution)initWithAcObject:(id *)a3
+- (ANSTActionDistribution)initWithAcObject:(id *)object
 {
   result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTActionDistribution)initWithObjectID:(unint64_t)a3 boundingBox:(CGRect)a4 confidence:(unint64_t)a5 distance:(float)a6 distribution:(id)a7
+- (ANSTActionDistribution)initWithObjectID:(unint64_t)d boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance distribution:(id)distribution
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  distributionCopy = distribution;
   v23.receiver = self;
   v23.super_class = ANSTActionDistribution;
-  *&v16 = a6;
-  v19 = [(ANSTObject *)&v23 initWithObjectID:a3 groupID:0 category:@"Action" boundingBox:a5 confidence:x distance:y, width, height, v16];
+  *&v16 = distance;
+  v19 = [(ANSTObject *)&v23 initWithObjectID:d groupID:0 category:@"Action" boundingBox:confidence confidence:x distance:y, width, height, v16];
   if (v19)
   {
-    v20 = objc_msgSend_copy(v15, v17, v18);
+    v20 = objc_msgSend_copy(distributionCopy, v17, v18);
     distribution = v19->_distribution;
     v19->_distribution = v20;
   }
@@ -130,10 +130,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqualToDictionary = 1;
   }
@@ -141,9 +141,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v15.receiver = self, v15.super_class = ANSTActionDistribution, [(ANSTObject *)&v15 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v15.receiver = self, v15.super_class = ANSTActionDistribution, [(ANSTObject *)&v15 isEqual:equalCopy]))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_distribution(self, v6, v7);
       v11 = objc_msgSend_distribution(v5, v9, v10);
 
@@ -166,34 +166,34 @@
   return [(ANSTObject *)&v3 hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = ANSTActionDistribution;
-  v4 = a3;
-  [(ANSTObject *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ANSTObject *)&v8 encodeWithCoder:coderCopy];
   distribution = self->_distribution;
   v6 = NSStringFromSelector(sel_distribution);
-  objc_msgSend_encodeObject_forKey_(v4, v7, distribution, v6, v8.receiver, v8.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, distribution, v6, v8.receiver, v8.super_class);
 }
 
-- (ANSTActionDistribution)initWithCoder:(id)a3
+- (ANSTActionDistribution)initWithCoder:(id)coder
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v10 = objc_msgSend_setWithObjects_(v5, v9, v6, v7, v8, 0);
   v11 = NSStringFromSelector(sel_distribution);
-  v13 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, v10, v11);
+  v13 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, v10, v11);
 
   if (v13)
   {
     v26.receiver = self;
     v26.super_class = ANSTActionDistribution;
-    v15 = [(ANSTObject *)&v26 initWithCoder:v4];
+    v15 = [(ANSTObject *)&v26 initWithCoder:coderCopy];
     v16 = v15;
     if (v15)
     {
@@ -201,7 +201,7 @@
     }
 
     self = v16;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -212,13 +212,13 @@
     v28[0] = @"distribution was not encoded.";
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v28, &v27, 1);
     v22 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v21, v19, 4865, v20);
-    objc_msgSend_failWithError_(v4, v23, v22);
+    objc_msgSend_failWithError_(coderCopy, v23, v22);
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
 @end

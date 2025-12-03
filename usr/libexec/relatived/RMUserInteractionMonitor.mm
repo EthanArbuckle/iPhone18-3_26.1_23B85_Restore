@@ -1,7 +1,7 @@
 @interface RMUserInteractionMonitor
 + (id)userInteractionMonitor;
 - (void)sendUserInteractionUpdate;
-- (void)startUserInteractionUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startUserInteractionUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopUserInteractionUpdates;
 @end
 
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (void)startUserInteractionUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startUserInteractionUpdatesToQueue:(id)queue withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (qword_10002C0C8 != -1)
   {
     sub_10001351C();
@@ -30,8 +30,8 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[RMUserInteractionMonitor] Starting user interaction monitoring", v9, 2u);
   }
 
-  [(RMUserInteractionMonitor *)self setQueue:v6];
-  [(RMUserInteractionMonitor *)self setHandler:v7];
+  [(RMUserInteractionMonitor *)self setQueue:queueCopy];
+  [(RMUserInteractionMonitor *)self setHandler:handlerCopy];
 }
 
 - (void)stopUserInteractionUpdates
@@ -51,13 +51,13 @@
 
 - (void)sendUserInteractionUpdate
 {
-  v3 = [(RMUserInteractionMonitor *)self queue];
-  if (v3)
+  queue = [(RMUserInteractionMonitor *)self queue];
+  if (queue)
   {
-    v4 = v3;
-    v5 = [(RMUserInteractionMonitor *)self handler];
+    v4 = queue;
+    handler = [(RMUserInteractionMonitor *)self handler];
 
-    if (v5)
+    if (handler)
     {
       v6 = sub_1000087A8();
       [(RMUserInteractionMonitor *)self lastUserInteractionUpdateTimestamp];
@@ -76,13 +76,13 @@
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[RMUserInteractionMonitor] Sending user interaction update", buf, 2u);
         }
 
-        v9 = [(RMUserInteractionMonitor *)self queue];
+        queue2 = [(RMUserInteractionMonitor *)self queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100008FE8;
         block[3] = &unk_100024948;
         block[4] = self;
-        dispatch_async(v9, block);
+        dispatch_async(queue2, block);
       }
     }
   }

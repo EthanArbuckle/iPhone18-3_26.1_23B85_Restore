@@ -1,16 +1,16 @@
 @interface BPSTapToRadarCoordinator
-+ (BOOL)openTapToRadarWithInitialMetadata:(id)a3;
-+ (id)tapToRadarLaunchURLWithInitialMetadata:(id)a3;
-+ (id)tapToRadarUserActivityWithInitialMetadata:(id)a3;
++ (BOOL)openTapToRadarWithInitialMetadata:(id)metadata;
++ (id)tapToRadarLaunchURLWithInitialMetadata:(id)metadata;
++ (id)tapToRadarUserActivityWithInitialMetadata:(id)metadata;
 @end
 
 @implementation BPSTapToRadarCoordinator
 
-+ (BOOL)openTapToRadarWithInitialMetadata:(id)a3
++ (BOOL)openTapToRadarWithInitialMetadata:(id)metadata
 {
-  v3 = [a1 tapToRadarLaunchURLWithInitialMetadata:a3];
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v4 openURL:v3 configuration:0 completionHandler:&__block_literal_global_5];
+  v3 = [self tapToRadarLaunchURLWithInitialMetadata:metadata];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openURL:v3 configuration:0 completionHandler:&__block_literal_global_5];
 
   return 1;
 }
@@ -32,27 +32,27 @@ void __62__BPSTapToRadarCoordinator_openTapToRadarWithInitialMetadata___block_in
   }
 }
 
-+ (id)tapToRadarLaunchURLWithInitialMetadata:(id)a3
++ (id)tapToRadarLaunchURLWithInitialMetadata:(id)metadata
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(v3);
   [v5 setScheme:@"tap-to-radar"];
   [v5 setHost:@"new"];
-  v6 = [v4 queryItems];
+  queryItems = [metadataCopy queryItems];
 
-  [v5 setQueryItems:v6];
+  [v5 setQueryItems:queryItems];
   v7 = [v5 URL];
 
   return v7;
 }
 
-+ (id)tapToRadarUserActivityWithInitialMetadata:(id)a3
++ (id)tapToRadarUserActivityWithInitialMetadata:(id)metadata
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [a1 tapToRadarLaunchURLWithInitialMetadata:a3];
-  v4 = [v3 absoluteString];
-  if (v4)
+  v3 = [self tapToRadarLaunchURLWithInitialMetadata:metadata];
+  absoluteString = [v3 absoluteString];
+  if (absoluteString)
   {
     v5 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:@"com.apple.Bridge.ttr"];
     [v5 setEligibleForSearch:0];
@@ -60,7 +60,7 @@ void __62__BPSTapToRadarCoordinator_openTapToRadarWithInitialMetadata___block_in
     [v5 setEligibleForPrediction:0];
     [v5 setEligibleForPublicIndexing:0];
     v9 = @"tap-to-radar";
-    v10[0] = v4;
+    v10[0] = absoluteString;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     [v5 setUserInfo:v6];
   }

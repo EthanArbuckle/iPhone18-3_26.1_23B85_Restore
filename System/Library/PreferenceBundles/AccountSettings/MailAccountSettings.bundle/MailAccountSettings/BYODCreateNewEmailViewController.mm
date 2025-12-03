@@ -1,9 +1,9 @@
 @interface BYODCreateNewEmailViewController
 + (id)log;
-- (BYODCreateNewEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6 acAccount:(id)a7 domainName:(id)a8;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_createEmailTapped:(id)a3;
-- (void)_notNowTapped:(id)a3;
+- (BYODCreateNewEmailViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view acAccount:(id)account domainName:(id)name;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_createEmailTapped:(id)tapped;
+- (void)_notNowTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_2F164;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D64F0 != -1)
   {
     dispatch_once(&qword_D64F0, block);
@@ -26,34 +26,34 @@
   return v2;
 }
 
-- (BYODCreateNewEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6 acAccount:(id)a7 domainName:(id)a8
+- (BYODCreateNewEmailViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view acAccount:(id)account domainName:(id)name
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v16 iconType];
-  if (v19)
+  viewCopy = view;
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  accountCopy = account;
+  nameCopy = name;
+  iconType = [iconCopy iconType];
+  if (iconType)
   {
-    if (v19 != &dword_0 + 1)
+    if (iconType != &dword_0 + 1)
     {
       goto LABEL_6;
     }
 
-    v20 = [v16 image];
+    image = [iconCopy image];
     v24.receiver = self;
     v24.super_class = BYODCreateNewEmailViewController;
-    v21 = [(BYODCreateNewEmailViewController *)&v24 initWithTitle:v14 detailText:v15 icon:v20 adoptTableViewScrollView:v10];
+    v21 = [(BYODCreateNewEmailViewController *)&v24 initWithTitle:titleCopy detailText:textCopy icon:image adoptTableViewScrollView:viewCopy];
   }
 
   else
   {
-    v20 = [v16 symbolName];
+    image = [iconCopy symbolName];
     v23.receiver = self;
     v23.super_class = BYODCreateNewEmailViewController;
-    v21 = [(BYODCreateNewEmailViewController *)&v23 initWithTitle:v14 detailText:v15 symbolName:v20 adoptTableViewScrollView:v10];
+    v21 = [(BYODCreateNewEmailViewController *)&v23 initWithTitle:titleCopy detailText:textCopy symbolName:image adoptTableViewScrollView:viewCopy];
   }
 
   self = v21;
@@ -61,8 +61,8 @@
 LABEL_6:
   if (self)
   {
-    objc_storeStrong(&self->_domainName, a8);
-    objc_storeStrong(&self->_loggedInAppleAccount, a7);
+    objc_storeStrong(&self->_domainName, name);
+    objc_storeStrong(&self->_loggedInAppleAccount, account);
   }
 
   return self;
@@ -73,44 +73,44 @@ LABEL_6:
   v19.receiver = self;
   v19.super_class = BYODCreateNewEmailViewController;
   [(BYODCreateNewEmailViewController *)&v19 viewDidLoad];
-  v3 = [(BYODCreateNewEmailViewController *)self navigationItem];
+  navigationItem = [(BYODCreateNewEmailViewController *)self navigationItem];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_notNowTapped:"];
-  [v3 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
 
-  v5 = [(BYODCreateNewEmailViewController *)self navigationItem];
+  navigationItem2 = [(BYODCreateNewEmailViewController *)self navigationItem];
   v6 = [UIBarButtonItem alloc];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"BYOD_CREATE_EMAIL_BUTTON" value:&stru_B9FC8 table:@"AccountPreferences"];
   v9 = [v6 initWithTitle:v8 style:0 target:self action:"_createEmailTapped:"];
-  [v5 setRightBarButtonItem:v9];
+  [navigationItem2 setRightBarButtonItem:v9];
 
   v10 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(BYODCreateNewEmailViewController *)self setTableView:v10];
 
-  v11 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v12 setRowHeight:50.0];
+  tableView2 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView2 setRowHeight:50.0];
 
   v13 = +[UIColor clearColor];
-  v14 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v14 setBackgroundColor:v13];
+  tableView3 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView3 setBackgroundColor:v13];
 
-  v15 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v15 registerClass:objc_opt_class() forCellReuseIdentifier:@"BYODTableViewCellWithEmailField"];
+  tableView4 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"BYODTableViewCellWithEmailField"];
 
-  v16 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v16 setDelegate:self];
+  tableView5 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v17 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v17 setDataSource:self];
+  tableView6 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView6 setDataSource:self];
 
-  v18 = [(BYODCreateNewEmailViewController *)self tableView];
-  [v18 reloadData];
+  tableView7 = [(BYODCreateNewEmailViewController *)self tableView];
+  [tableView7 reloadData];
 }
 
-- (void)_notNowTapped:(id)a3
+- (void)_notNowTapped:(id)tapped
 {
   v4 = +[BYODCreateNewEmailViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -124,7 +124,7 @@ LABEL_6:
   [(BYODCreateNewEmailViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_createEmailTapped:(id)a3
+- (void)_createEmailTapped:(id)tapped
 {
   v4 = +[BYODCreateNewEmailViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -135,17 +135,17 @@ LABEL_6:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "member %@ did create email", buf, 0xCu);
   }
 
-  v6 = [(UITextField *)self->_emailTextField text];
-  v7 = [NSString stringWithFormat:@"%@@%@", v6, self->_domainName];
+  text = [(UITextField *)self->_emailTextField text];
+  v7 = [NSString stringWithFormat:@"%@@%@", text, self->_domainName];
 
   v8 = [BYODAddAliasRequest alloc];
   v9 = self->_loggedInAppleAccount;
-  v10 = [(ACAccount *)v9 accountStore];
+  accountStore = [(ACAccount *)v9 accountStore];
   domainName = self->_domainName;
   v20 = v7;
   v12 = [NSArray arrayWithObjects:&v20 count:1];
-  v13 = [(ACAccount *)self->_loggedInAppleAccount normalizedDSID];
-  v14 = [(BYODAddAliasRequest *)v8 initWithAccount:v9 accountStore:v10 domain:domainName emailArray:v12 dsid:v13];
+  normalizedDSID = [(ACAccount *)self->_loggedInAppleAccount normalizedDSID];
+  v14 = [(BYODAddAliasRequest *)v8 initWithAccount:v9 accountStore:accountStore domain:domainName emailArray:v12 dsid:normalizedDSID];
 
   spinner = self->_spinner;
   if (!spinner)
@@ -169,10 +169,10 @@ LABEL_6:
   objc_destroyWeak(buf);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 dequeueReusableCellWithIdentifier:@"BYODTableViewCellWithEmailField"];
+  viewCopy = view;
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:@"BYODTableViewCellWithEmailField"];
   if (!v6)
   {
     v6 = objc_alloc_init(BYODTextFieldTableViewCell);
@@ -181,14 +181,14 @@ LABEL_6:
   v7 = +[UIColor secondarySystemBackgroundColor];
   [(BYODTextFieldTableViewCell *)v6 setBackgroundColor:v7];
 
-  v8 = [(BYODTextFieldTableViewCell *)v6 textField];
+  textField = [(BYODTextFieldTableViewCell *)v6 textField];
   v9 = [NSString stringWithFormat:@"@%@", self->_domainName];
   v10 = +[UIColor systemGrayColor];
-  [v8 _setSuffix:v9 withColor:v10];
+  [textField _setSuffix:v9 withColor:v10];
 
-  v11 = [(BYODTextFieldTableViewCell *)v6 textField];
+  textField2 = [(BYODTextFieldTableViewCell *)v6 textField];
   emailTextField = self->_emailTextField;
-  self->_emailTextField = v11;
+  self->_emailTextField = textField2;
 
   [(UITextField *)self->_emailTextField becomeFirstResponder];
 

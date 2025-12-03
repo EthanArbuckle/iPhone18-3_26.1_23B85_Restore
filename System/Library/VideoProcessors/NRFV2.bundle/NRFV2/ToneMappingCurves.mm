@@ -1,16 +1,16 @@
 @interface ToneMappingCurves
-- (ToneMappingCurves)initWithWithContext:(id)a3;
-- (int)estimateMaskRegionInTiles:(__CVBuffer *)a3;
-- (int)regularizeLocalToneCurves:(const ltmCurves *)a3 mask:(__CVBuffer *)a4 tcrParams:(id)a5 imageDims:;
-- (uint64_t)setToneCurvesWithLTC:(int32x4_t)a3 GTC:(int32x4_t)a4 colorCorrectionMatrix:(uint64_t)a5 dump:(unsigned __int16 *)a6;
+- (ToneMappingCurves)initWithWithContext:(id)context;
+- (int)estimateMaskRegionInTiles:(__CVBuffer *)tiles;
+- (int)regularizeLocalToneCurves:(const ltmCurves *)curves mask:(__CVBuffer *)mask tcrParams:(id)params imageDims:;
+- (uint64_t)setToneCurvesWithLTC:(int32x4_t)c GTC:(int32x4_t)tC colorCorrectionMatrix:(uint64_t)matrix dump:(unsigned __int16 *)dump;
 - (void)dealloc;
 @end
 
 @implementation ToneMappingCurves
 
-- (ToneMappingCurves)initWithWithContext:(id)a3
+- (ToneMappingCurves)initWithWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v121.receiver = self;
   v121.super_class = ToneMappingCurves;
   v5 = [(ToneMappingCurves *)&v121 init];
@@ -34,7 +34,7 @@ LABEL_18:
   objc_msgSend_setStorageMode_(v6, v7, 0, v8);
   objc_msgSend_setHazardTrackingMode_(v9, v10, 2, v11);
   objc_msgSend_setSize_(v9, v12, 51200, v13);
-  v17 = objc_msgSend_device(v4, v14, v15, v16);
+  v17 = objc_msgSend_device(contextCopy, v14, v15, v16);
   v20 = objc_msgSend_newHeapWithDescriptor_(v17, v18, v9, v19);
   internalHeap = v5->_internalHeap;
   v5->_internalHeap = v20;
@@ -220,17 +220,17 @@ LABEL_14:
   [(ToneMappingCurves *)&v4 dealloc];
 }
 
-- (int)estimateMaskRegionInTiles:(__CVBuffer *)a3
+- (int)estimateMaskRegionInTiles:(__CVBuffer *)tiles
 {
-  if (CVPixelBufferLockBaseAddress(a3, 0))
+  if (CVPixelBufferLockBaseAddress(tiles, 0))
   {
     return -1;
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(tiles);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(tiles);
+  Width = CVPixelBufferGetWidth(tiles);
+  Height = CVPixelBufferGetHeight(tiles);
   v10 = 0;
   offX = self->_offX;
   offY = self->_offY;
@@ -292,15 +292,15 @@ LABEL_14:
   }
 
   while (v10 != ltmBinsY);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(tiles, 0);
   return 0;
 }
 
-- (int)regularizeLocalToneCurves:(const ltmCurves *)a3 mask:(__CVBuffer *)a4 tcrParams:(id)a5 imageDims:
+- (int)regularizeLocalToneCurves:(const ltmCurves *)curves mask:(__CVBuffer *)mask tcrParams:(id)params imageDims:
 {
   v98 = v5;
-  v9 = a5;
-  if (!v9)
+  paramsCopy = params;
+  if (!paramsCopy)
   {
     sub_29587BDC4();
     goto LABEL_52;
@@ -312,34 +312,34 @@ LABEL_14:
     self->_hasBeenRegularized = 1;
   }
 
-  self->_ltmBinsX = sub_29583725C(&a3->ltmLut.version);
-  self->_ltmBinsY = sub_2958372C4(&a3->ltmLut.version);
-  v10 = sub_295837494(&a3->ltmLut.version);
-  v11 = sub_2958373F4(&a3->ltmLut.version);
-  v12 = sub_295837430(&a3->ltmLut.version);
+  self->_ltmBinsX = sub_29583725C(&curves->ltmLut.version);
+  self->_ltmBinsY = sub_2958372C4(&curves->ltmLut.version);
+  v10 = sub_295837494(&curves->ltmLut.version);
+  v11 = sub_2958373F4(&curves->ltmLut.version);
+  v12 = sub_295837430(&curves->ltmLut.version);
   v97 = v11;
-  v13 = sub_295837354(&a3->ltmLut.version) * v11;
-  v14 = sub_29583732C(&a3->ltmLut.version);
-  v15 = sub_29583760C(&a3->ltmLut.version, (v13 + v14 * v12) >> 1);
-  v16 = sub_29583737C(&a3->ltmLut.version);
-  v17 = sub_2958373B8(&a3->ltmLut.version);
+  v13 = sub_295837354(&curves->ltmLut.version) * v11;
+  v14 = sub_29583732C(&curves->ltmLut.version);
+  v15 = sub_29583760C(&curves->ltmLut.version, (v13 + v14 * v12) >> 1);
+  v16 = sub_29583737C(&curves->ltmLut.version);
+  v17 = sub_2958373B8(&curves->ltmLut.version);
   ltmBinsY = self->_ltmBinsY;
   v19 = self->_ltmBinsX * v16;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(mask);
+  Height = CVPixelBufferGetHeight(mask);
   if (v98 >= v19 && SHIDWORD(v98) >= ltmBinsY * v17)
   {
     self->_offX = ((vcvts_n_f32_u64(v98 - v19, 1uLL) * Width) / v98);
     self->_offY = ((vcvts_n_f32_u64(SHIDWORD(v98) - ltmBinsY * v17, 1uLL) * Height) / SHIDWORD(v98));
-    objc_msgSend_estimateMaskRegionInTiles_(self, v22, a4, v23);
+    objc_msgSend_estimateMaskRegionInTiles_(self, v22, mask, v23);
   }
 
   v27 = 1.0;
   v28 = 1.0;
   if (self->_isRegularized)
   {
-    v27 = 1.0 - v9[3];
-    v28 = 1.0 - v9[2];
+    v27 = 1.0 - paramsCopy[3];
+    v28 = 1.0 - paramsCopy[2];
   }
 
   if (self->_ltmBinsX != 8 || self->_ltmBinsY != 6)
@@ -383,7 +383,7 @@ LABEL_52:
       do
       {
         v42 = v38[v40];
-        if (v42 > v9[4])
+        if (v42 > paramsCopy[4])
         {
           LOWORD(v42) = *v41;
           v37 = v37 + (LODWORD(v42) / 65535.0);
@@ -408,7 +408,7 @@ LABEL_52:
 
   while (v29 != v10);
   v43 = 1.0;
-  if (v9[5] < v30)
+  if (paramsCopy[5] < v30)
   {
     v44 = self->_regLocal;
     v45 = v10 & 0x7FFFFFFF;
@@ -434,7 +434,7 @@ LABEL_52:
         v53 = v51;
         do
         {
-          if (v50[v52] > v9[4])
+          if (v50[v52] > paramsCopy[4])
           {
             LOWORD(v24) = *v53;
             v24 = LODWORD(v24) / -65535.0;
@@ -457,8 +457,8 @@ LABEL_52:
     }
 
     while (v46 != (v10 & 0x7FFFFFFF));
-    v54 = fminf(fmaxf((v47 - v9[6]) / (v9[7] - v9[6]), 0.0), 1.0);
-    v43 = ((1.0 - v9[8]) * ((v54 * v54) * ((v54 * -2.0) + 3.0))) + (v27 * (1.0 - ((v54 * v54) * ((v54 * -2.0) + 3.0))));
+    v54 = fminf(fmaxf((v47 - paramsCopy[6]) / (paramsCopy[7] - paramsCopy[6]), 0.0), 1.0);
+    v43 = ((1.0 - paramsCopy[8]) * ((v54 * v54) * ((v54 * -2.0) + 3.0))) + (v27 * (1.0 - ((v54 * v54) * ((v54 * -2.0) + 3.0))));
   }
 
   v55 = 0;
@@ -572,16 +572,16 @@ LABEL_53:
   return v95;
 }
 
-- (uint64_t)setToneCurvesWithLTC:(int32x4_t)a3 GTC:(int32x4_t)a4 colorCorrectionMatrix:(uint64_t)a5 dump:(unsigned __int16 *)a6
+- (uint64_t)setToneCurvesWithLTC:(int32x4_t)c GTC:(int32x4_t)tC colorCorrectionMatrix:(uint64_t)matrix dump:(unsigned __int16 *)dump
 {
-  v10 = sub_295837494(a6);
-  v11 = sub_29583725C(a6);
-  v12 = sub_2958372C4(a6);
-  v13 = sub_2958373F4(a6);
-  v14 = sub_295837430(a6);
-  v15 = sub_295837354(a6) * v13;
-  v16 = sub_29583732C(a6);
-  v17 = sub_29583760C(a6, (v15 + v16 * v14) >> 1);
+  v10 = sub_295837494(dump);
+  v11 = sub_29583725C(dump);
+  v12 = sub_2958372C4(dump);
+  v13 = sub_2958373F4(dump);
+  v14 = sub_295837430(dump);
+  v15 = sub_295837354(dump) * v13;
+  v16 = sub_29583732C(dump);
+  v17 = sub_29583760C(dump, (v15 + v16 * v14) >> 1);
   if (v11 != 8 || v12 != 6)
   {
     sub_29587C250();
@@ -608,12 +608,12 @@ LABEL_50:
   v125 = v13;
   v127 = a7;
   v18 = 2 * v10;
-  if (*(a1 + 160) == 1)
+  if (*(self + 160) == 1)
   {
-    if (!*(a1 + 64))
+    if (!*(self + 64))
     {
       v19 = malloc_type_calloc(48 * v10, 2uLL, 0x1000040BDFB0063uLL);
-      *(a1 + 64) = v19;
+      *(self + 64) = v19;
       if (!v19)
       {
         sub_29587C150(&v143);
@@ -632,12 +632,12 @@ LABEL_50:
       v21 += 8 * v10;
       do
       {
-        v24 = sub_29583760C(a6, 0);
-        v25 = sub_295837354(a6) + v20;
-        v26 = v24 + v25 * sub_2958373F4(a6);
-        v27 = sub_29583732C(a6) + v22;
-        v28 = sub_295837430(a6);
-        memcpy((*(a1 + 64) + v23), &v26[v27 * v28], v18);
+        v24 = sub_29583760C(dump, 0);
+        v25 = sub_295837354(dump) + v20;
+        v26 = v24 + v25 * sub_2958373F4(dump);
+        v27 = sub_29583732C(dump) + v22;
+        v28 = sub_295837430(dump);
+        memcpy((*(self + 64) + v23), &v26[v27 * v28], v18);
         ++v22;
         v23 += v18;
       }
@@ -655,15 +655,15 @@ LABEL_50:
     v29 = 80;
   }
 
-  objc_storeStrong((a1 + 8), *(a1 + v29));
-  v31 = *(a1 + 8);
+  objc_storeStrong((self + 8), *(self + v29));
+  v31 = *(self + 8);
   v32 = v121;
-  if (*(a1 + 128) == 1)
+  if (*(self + 128) == 1)
   {
-    v32 = *(a1 + 72);
+    v32 = *(self + 72);
   }
 
-  if (*(a1 + 128))
+  if (*(self + 128))
   {
     v33 = 2 * v10;
   }
@@ -673,7 +673,7 @@ LABEL_50:
     v33 = v123;
   }
 
-  if (*(a1 + 128))
+  if (*(self + 128))
   {
     v34 = 16 * v10;
   }
@@ -688,23 +688,23 @@ LABEL_50:
   v144.i64[1] = v10;
   v145 = xmmword_2958D5B60;
   objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v31, v30, &v143, 0, 0, v32, v33, v34);
-  v35 = *(a1 + 16);
+  v35 = *(self + 16);
   v143 = 0uLL;
-  v36 = a6[110616];
+  v36 = dump[110616];
   v144.i64[0] = 0;
   v144.i64[1] = v36;
   v129 = vdupq_n_s64(1uLL);
   v145 = v129;
-  objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v35, v37, &v143, 0, 0, a6 + 110617, 0, 0);
-  v38 = *(a1 + 24);
+  objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v35, v37, &v143, 0, 0, dump + 110617, 0, 0);
+  v38 = *(self + 24);
   v143 = 0uLL;
   v39 = *(v127 + 221748);
   v144.i64[0] = 0;
   v144.i64[1] = v39;
   v145 = v129;
   objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v38, v40, &v143, 0, 0, v127 + 221750, 0, 0);
-  v41 = sub_2958375D8(a6 + 55308);
-  *(a1 + 56) = v41 != 0;
+  v41 = sub_2958375D8(dump + 55308);
+  *(self + 56) = v41 != 0;
   if (!v41)
   {
     goto LABEL_48;
@@ -716,8 +716,8 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v42 = sub_29583725C(a6 + 55308);
-  v43 = sub_2958372C4(a6 + 55308);
+  v42 = sub_29583725C(dump + 55308);
+  v43 = sub_2958372C4(dump + 55308);
   v124 = v42;
   if (v42 > 0x20 || (v47 = v43, v43 >= 0x21))
   {
@@ -725,13 +725,13 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v42 != objc_msgSend_height(*(a1 + 48), v44, v45, v46) || v47 != objc_msgSend_depth(*(a1 + 48), v48, v49, v50))
+  if (v42 != objc_msgSend_height(*(self + 48), v44, v45, v46) || v47 != objc_msgSend_depth(*(self + 48), v48, v49, v50))
   {
-    objc_msgSend_makeAliasable(*(a1 + 48), v48, v49, v50);
+    objc_msgSend_makeAliasable(*(self + 48), v48, v49, v50);
     v54 = objc_opt_new();
     if (v54)
     {
-      v55 = objc_msgSend_resourceOptions(*(a1 + 88), v51, v52, v53);
+      v55 = objc_msgSend_resourceOptions(*(self + 88), v51, v52, v53);
       objc_msgSend_setResourceOptions_(v54, v56, v55, v57);
       objc_msgSend_setTextureType_(v54, v58, 7, v59);
       objc_msgSend_setWidth_(v54, v60, 3, v61);
@@ -739,11 +739,11 @@ LABEL_50:
       objc_msgSend_setDepth_(v54, v64, v47, v65);
       objc_msgSend_setPixelFormat_(v54, v66, 115, v67);
       objc_msgSend_setUsage_(v54, v68, 1, v69);
-      v72 = objc_msgSend_newTextureWithDescriptor_(*(a1 + 88), v70, v54, v71);
-      v73 = *(a1 + 48);
-      *(a1 + 48) = v72;
+      v72 = objc_msgSend_newTextureWithDescriptor_(*(self + 88), v70, v54, v71);
+      v73 = *(self + 48);
+      *(self + 48) = v72;
 
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
 
         goto LABEL_32;
@@ -764,11 +764,11 @@ LABEL_50:
   }
 
 LABEL_32:
-  v74 = vzip1q_s32(a2, a4);
-  v146.columns[0] = vzip1q_s32(v74, a3);
-  v146.columns[1] = vzip2q_s32(v74, vdupq_lane_s32(*a3.i8, 1));
+  v74 = vzip1q_s32(a2, tC);
+  v146.columns[0] = vzip1q_s32(v74, c);
+  v146.columns[1] = vzip2q_s32(v74, vdupq_lane_s32(*c.i8, 1));
   v146.columns[0].i32[3] = 0;
-  v146.columns[2] = vzip1q_s32(vzip2q_s32(a2, a4), vdupq_laneq_s32(a3, 2));
+  v146.columns[2] = vzip1q_s32(vzip2q_s32(a2, tC), vdupq_laneq_s32(c, 2));
   v114 = v146.columns[1];
   v146.columns[1].i32[3] = 0;
   v146.columns[2].i32[3] = 0;
@@ -790,7 +790,7 @@ LABEL_32:
   if (!v47)
   {
 LABEL_47:
-    v108 = *(a1 + 48);
+    v108 = *(self + 48);
     v143 = 0uLL;
     v144.i64[0] = 0;
     v144.i64[1] = 3;
@@ -804,10 +804,10 @@ LABEL_48:
   }
 
   v78 = 0;
-  v79 = vzip1q_s32(a2, a3);
-  v79.i32[2] = a4.i32[0];
-  v80 = vzip2q_s32(a2, a3);
-  v80.i32[2] = a4.i32[2];
+  v79 = vzip1q_s32(a2, c);
+  v79.i32[2] = tC.i32[0];
+  v80 = vzip2q_s32(a2, c);
+  v80.i32[2] = tC.i32[2];
   v81 = v119;
   v81.i32[3] = 0;
   v120 = v81;
@@ -834,21 +834,21 @@ LABEL_46:
   v84 = 0;
   while (1)
   {
-    *v85.i64 = sub_295837654(a6 + 55308, v84, v78, 0);
+    *v85.i64 = sub_295837654(dump + 55308, v84, v78, 0);
     v85.i32[3] = 0;
     v86.i32[3] = 0;
     v132 = v86;
     v87.i32[3] = 0;
     v134 = v87;
     v136 = v85;
-    *v88.i64 = sub_295837654(a6 + 55308, v84, v78, 1);
+    *v88.i64 = sub_295837654(dump + 55308, v84, v78, 1);
     v88.i32[3] = 0;
     v89.i32[3] = 0;
     v128 = v89;
     v130 = v88;
     v90.i32[3] = 0;
     v126 = v90;
-    *v91.i64 = sub_295837654(a6 + 55308, v84, v78, 2);
+    *v91.i64 = sub_295837654(dump + 55308, v84, v78, 2);
     v94 = vandq_s8(vandq_s8(vceqq_f32(v136, v130), vceqq_f32(v132, v128)), vceqq_f32(v134, v126));
     v94.i32[3] = v94.i32[2];
     if ((vminvq_u32(v94) & 0x80000000) == 0)
@@ -930,7 +930,7 @@ LABEL_53:
   v41 = v122;
 LABEL_54:
   free(v41);
-  *(a1 + 128) = 0;
+  *(self + 128) = 0;
   return v109;
 }
 

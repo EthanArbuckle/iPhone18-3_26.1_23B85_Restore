@@ -1,33 +1,33 @@
 @interface TSCEGetPivotDataBundle
 - (id).cxx_construct;
 - (unint64_t)firstMissingDataField;
-- (void)addDataField:(id)a3 withValue:(id)a4;
-- (void)enumerateDataKeyValuePairsUsingBlock:(id)a3;
-- (void)setMissingDataFieldAtIndex:(unint64_t)a3;
+- (void)addDataField:(id)field withValue:(id)value;
+- (void)enumerateDataKeyValuePairsUsingBlock:(id)block;
+- (void)setMissingDataFieldAtIndex:(unint64_t)index;
 @end
 
 @implementation TSCEGetPivotDataBundle
 
-- (void)addDataField:(id)a3 withValue:(id)a4
+- (void)addDataField:(id)field withValue:(id)value
 {
-  v9 = a3;
-  v6 = a4;
-  v8 = v6;
-  if (v9)
+  fieldCopy = field;
+  valueCopy = value;
+  v8 = valueCopy;
+  if (fieldCopy)
   {
-    sub_2210C4258(&self->_dataFields.__begin_, &v9);
+    sub_2210C4258(&self->_dataFields.__begin_, &fieldCopy);
     sub_221179A54(&self->_dataValues.__begin_, &v8);
     v7 = 0;
     sub_2213F4AD0(&self->_missingGroupingColumn, &v7);
-    v6 = v8;
+    valueCopy = v8;
   }
 }
 
-- (void)setMissingDataFieldAtIndex:(unint64_t)a3
+- (void)setMissingDataFieldAtIndex:(unint64_t)index
 {
-  if (self->_missingGroupingColumn.__size_ > a3)
+  if (self->_missingGroupingColumn.__size_ > index)
   {
-    *(self->_missingGroupingColumn.__begin_ + ((a3 >> 3) & 0x1FFFFFFFFFFFFFF8)) |= 1 << a3;
+    *(self->_missingGroupingColumn.__begin_ + ((index >> 3) & 0x1FFFFFFFFFFFFFF8)) |= 1 << index;
   }
 }
 
@@ -67,9 +67,9 @@
   return result;
 }
 
-- (void)enumerateDataKeyValuePairsUsingBlock:(id)a3
+- (void)enumerateDataKeyValuePairsUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   begin = self->_dataFields.__begin_;
   var0 = self->_dataFields.var0;
   v10 = self->_dataValues.__begin_;
@@ -92,7 +92,7 @@
     v22 = 0;
     do
     {
-      v7[2](v7, v22, *begin++, *v10, &v23);
+      blockCopy[2](blockCopy, v22, *begin++, *v10, &v23);
       if (begin == self->_dataFields.var0)
       {
         break;

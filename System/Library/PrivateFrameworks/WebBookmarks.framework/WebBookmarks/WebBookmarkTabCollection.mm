@@ -1,89 +1,89 @@
 @interface WebBookmarkTabCollection
-+ (id)collectionWithConfiguration:(id)a3;
++ (id)collectionWithConfiguration:(id)configuration;
 + (id)inMemoryChangesFileURL;
 - (BOOL)_clearAllSyncData;
-- (BOOL)_clearUnnamedTabGroupsInWindowWithID:(int)a3;
+- (BOOL)_clearUnnamedTabGroupsInWindowWithID:(int)d;
 - (BOOL)_deleteAllLocalTabsAndGroups;
 - (BOOL)_deleteAllWindowStates;
 - (BOOL)_deleteDefaultProfileIfSavedAsTabGroup;
 - (BOOL)_deleteDuplicatePersonalProfilesWithInvalidUUID;
-- (BOOL)_deleteMatchingWindows:(id)a3 logAsError:(BOOL)a4;
-- (BOOL)_deleteWindowState:(id)a3;
-- (BOOL)_deleteWindowState:(id)a3 forApplyingInMemoryChanges:(BOOL)a4;
+- (BOOL)_deleteMatchingWindows:(id)windows logAsError:(BOOL)error;
+- (BOOL)_deleteWindowState:(id)state;
+- (BOOL)_deleteWindowState:(id)state forApplyingInMemoryChanges:(BOOL)changes;
 - (BOOL)_deleteWindowsNotInLastSession;
 - (BOOL)_fixLocalBookmarksInSyncableFolders;
-- (BOOL)_generateServerIdIfNeededForTabGroup:(id)a3;
-- (BOOL)_generateServerIdIfNeededForTabGroupBookmark:(id)a3;
-- (BOOL)_markTabsClosed:(id)a3;
-- (BOOL)_markWindowStatesAsLastSession:(id)a3;
-- (BOOL)_performOSVersionUpgradesFromPreviousVersion:(id)a3;
-- (BOOL)_performSafariVersionUpgradesFromPreviousVersion:(id)a3;
-- (BOOL)_performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:(id)a3;
+- (BOOL)_generateServerIdIfNeededForTabGroup:(id)group;
+- (BOOL)_generateServerIdIfNeededForTabGroupBookmark:(id)bookmark;
+- (BOOL)_markTabsClosed:(id)closed;
+- (BOOL)_markWindowStatesAsLastSession:(id)session;
+- (BOOL)_performOSVersionUpgradesFromPreviousVersion:(id)version;
+- (BOOL)_performSafariVersionUpgradesFromPreviousVersion:(id)version;
+- (BOOL)_performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:(id)version;
 - (BOOL)_reEncodeSessionStateDataIfNeeded;
 - (BOOL)_regenerateSyncPositionsIfNeeded;
 - (BOOL)_removeClosedLocallyCreatedUnnamedTabGroups;
 - (BOOL)_removePlaceholderTabGroupRecordsOnUpgrade;
 - (BOOL)_resetSettingsSyncData;
-- (BOOL)_saveActiveTabGroupID:(int)a3 inProfileWithID:(int)a4 windowID:(int)a5;
-- (BOOL)_saveActiveTabID:(int)a3 inTabGroupWithID:(int)a4 windowID:(int)a5;
+- (BOOL)_saveActiveTabGroupID:(int)d inProfileWithID:(int)iD windowID:(int)windowID;
+- (BOOL)_saveActiveTabID:(int)d inTabGroupWithID:(int)iD windowID:(int)windowID;
 - (BOOL)_saveTabGroupRecordsWithMissingCKShareRecord;
-- (BOOL)_saveUnnamedTabGroupID:(int)a3 inWindowWithID:(int)a4;
-- (BOOL)_saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4;
-- (BOOL)_saveWindowState:(id)a3;
-- (BOOL)_saveWindowState:(id)a3 activeTabGroupID:(int)a4 localTabGroupID:(int)a5 privateTabGroupID:(int)a6;
-- (BOOL)_saveWindowState:(id)a3 forApplyingInMemoryChanges:(BOOL)a4;
-- (BOOL)allowsScopedBookmarksInTabGroup:(id)a3;
-- (BOOL)bookmarkRequiresParent:(id)a3 specialID:(int)a4;
-- (BOOL)closeWindowState:(id)a3;
+- (BOOL)_saveUnnamedTabGroupID:(int)d inWindowWithID:(int)iD;
+- (BOOL)_saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string;
+- (BOOL)_saveWindowState:(id)state;
+- (BOOL)_saveWindowState:(id)state activeTabGroupID:(int)d localTabGroupID:(int)iD privateTabGroupID:(int)groupID;
+- (BOOL)_saveWindowState:(id)state forApplyingInMemoryChanges:(BOOL)changes;
+- (BOOL)allowsScopedBookmarksInTabGroup:(id)group;
+- (BOOL)bookmarkRequiresParent:(id)parent specialID:(int)d;
+- (BOOL)closeWindowState:(id)state;
 - (BOOL)containsCKShareRecord;
-- (BOOL)createTopScopedBookmarkListForTabGroup:(id)a3;
+- (BOOL)createTopScopedBookmarkListForTabGroup:(id)group;
 - (BOOL)deleteAllWindowStates;
-- (BOOL)deleteSettingWithIdentifier:(int64_t)a3;
-- (BOOL)deleteSettingsRecordWithServerID:(id)a3;
-- (BOOL)deleteWindowStates:(id)a3;
-- (BOOL)saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4;
+- (BOOL)deleteSettingWithIdentifier:(int64_t)identifier;
+- (BOOL)deleteSettingsRecordWithServerID:(id)d;
+- (BOOL)deleteWindowStates:(id)states;
+- (BOOL)saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string;
 - (BOOL)updateContainsCKShareRecord;
 - (WBWindowState)lastClosedWindowState;
 - (WebBookmarkList)recentlyClosedTabList;
 - (id)_allUnnamedTabGroupUUIDsFromCurrentWindowStates;
-- (id)_listOfScopedBookmarkFoldersInTabGroup:(id)a3;
+- (id)_listOfScopedBookmarkFoldersInTabGroup:(id)group;
 - (id)_specialTabFolderUUIDs;
 - (id)_specialTabFolderUUIDsForQueries;
-- (id)_specialTabsWithUUID:(id)a3 privateBrowsing:(BOOL)a4;
-- (id)_tabGroupForBookmark:(id)a3 kind:(int64_t)a4;
-- (id)_topScopedBookmarkListServerIdForTabGroup:(id)a3;
-- (id)_uuidForQueries:(id)a3;
-- (id)_windowStatesWithFilter:(id)a3;
-- (id)allSettingsChangesWithWhereClause:(id)a3;
-- (id)deviceForBookmark:(id)a3 inProfileWithIdentifier:(id)a4;
-- (id)devicesForProfile:(id)a3;
-- (id)generateNewServerIDForBookmark:(id)a3;
-- (id)generatePositionBeforeFirstRecordInParentWithServerID:(id)a3;
-- (id)pinnedTabsForProfileWithIdentifier:(id)a3;
-- (id)profileForBookmark:(id)a3;
-- (id)remoteDevicesForProfileBookmark:(id)a3;
+- (id)_specialTabsWithUUID:(id)d privateBrowsing:(BOOL)browsing;
+- (id)_tabGroupForBookmark:(id)bookmark kind:(int64_t)kind;
+- (id)_topScopedBookmarkListServerIdForTabGroup:(id)group;
+- (id)_uuidForQueries:(id)queries;
+- (id)_windowStatesWithFilter:(id)filter;
+- (id)allSettingsChangesWithWhereClause:(id)clause;
+- (id)deviceForBookmark:(id)bookmark inProfileWithIdentifier:(id)identifier;
+- (id)devicesForProfile:(id)profile;
+- (id)generateNewServerIDForBookmark:(id)bookmark;
+- (id)generatePositionBeforeFirstRecordInParentWithServerID:(id)d;
+- (id)pinnedTabsForProfileWithIdentifier:(id)identifier;
+- (id)profileForBookmark:(id)bookmark;
+- (id)remoteDevicesForProfileBookmark:(id)bookmark;
 - (id)settingsChangesForAllDeletedSettings;
-- (id)tabGroupForBookmark:(id)a3;
-- (id)tabGroupsChildrenForBookmark:(id)a3;
-- (id)tabsForTabGroupBookmark:(id)a3;
-- (id)topScopedBookmarkListForTabGroup:(id)a3 onQueue:(id)a4;
-- (id)windowStateWithUUID:(id)a3;
-- (int)_cachedPinnedTabsFolderIDForProfileWithIdentifier:(id)a3;
-- (int)_windowIDForUUID:(id)a3;
-- (int)createLegacyPlaceholderTabGroupBookmarksForSharedTabGroup:(id)a3;
-- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)a3;
+- (id)tabGroupForBookmark:(id)bookmark;
+- (id)tabGroupsChildrenForBookmark:(id)bookmark;
+- (id)tabsForTabGroupBookmark:(id)bookmark;
+- (id)topScopedBookmarkListForTabGroup:(id)group onQueue:(id)queue;
+- (id)windowStateWithUUID:(id)d;
+- (int)_cachedPinnedTabsFolderIDForProfileWithIdentifier:(id)identifier;
+- (int)_windowIDForUUID:(id)d;
+- (int)createLegacyPlaceholderTabGroupBookmarksForSharedTabGroup:(id)group;
+- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)identifier;
 - (int)pinnedTabsFolderID;
-- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)a3;
+- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)identifier;
 - (int)privatePinnedTabsFolderID;
-- (int64_t)tabCountForTabGroupWithUUID:(id)a3;
+- (int64_t)tabCountForTabGroupWithUUID:(id)d;
 - (unint64_t)_countOfAllLocalTabsToBeDeleted;
-- (void)_addActiveTabGroupsToWindowState:(id)a3;
-- (void)_addActiveTabsToWindowState:(id)a3;
-- (void)_addUnnamedTabGroupsToWindowState:(id)a3;
+- (void)_addActiveTabGroupsToWindowState:(id)state;
+- (void)_addActiveTabsToWindowState:(id)state;
+- (void)_addUnnamedTabGroupsToWindowState:(id)state;
 - (void)_createParticipantPresenceTable;
 - (void)_createSchema;
 - (void)_deleteDuplicatePersonalProfilesWithInvalidUUID;
-- (void)_logErrorWithMessage:(id)a3 result:(int)a4;
+- (void)_logErrorWithMessage:(id)message result:(int)result;
 - (void)_migrateSchemaVersion43ToVersion44;
 - (void)_migrateSchemaVersion44ToVersion45;
 - (void)_migrateSchemaVersion51ToVersion52;
@@ -91,7 +91,7 @@
 - (void)_migrateSchemaVersion53ToVersion54;
 - (void)_migrateSchemaVersion54ToVersion55;
 - (void)_migrateSchemaVersion55ToVersion56;
-- (void)_migrateWindowBookmark:(id)a3;
+- (void)_migrateWindowBookmark:(id)bookmark;
 - (void)_regenerateSyncPositionsIfNeeded;
 - (void)_setupInMemoryChangeSet;
 - (void)_slowDownFetchingForTabsCycler;
@@ -101,7 +101,7 @@
 - (void)createWindowsTable;
 - (void)createWindowsUnnamedTabGroupsTable;
 - (void)performMaintenance;
-- (void)setContainsCKShareRecord:(BOOL)a3;
+- (void)setContainsCKShareRecord:(BOOL)record;
 @end
 
 @implementation WebBookmarkTabCollection
@@ -135,8 +135,8 @@ void __51__WebBookmarkTabCollection__setupInMemoryChangeSet__block_invoke(uint64
 + (id)inMemoryChangesFileURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [a1 safariDirectoryPath];
-  v4 = [v3 stringByAppendingPathComponent:@"TabChanges.plist"];
+  safariDirectoryPath = [self safariDirectoryPath];
+  v4 = [safariDirectoryPath stringByAppendingPathComponent:@"TabChanges.plist"];
   v5 = [v2 fileURLWithPath:v4];
 
   return v5;
@@ -152,18 +152,18 @@ void __51__WebBookmarkTabCollection__setupInMemoryChangeSet__block_invoke(uint64
   }
 }
 
-+ (id)collectionWithConfiguration:(id)a3
++ (id)collectionWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 storeOwner];
-  if (v4 >= 3)
+  configurationCopy = configuration;
+  storeOwner = [configurationCopy storeOwner];
+  if (storeOwner >= 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [objc_alloc(*off_279E75A90[v4]) initWithConfiguration:v3];
+    v5 = [objc_alloc(*off_279E75A90[storeOwner]) initWithConfiguration:configurationCopy];
   }
 
   return v5;
@@ -242,50 +242,50 @@ uint64_t __46__WebBookmarkTabCollection_performMaintenance__block_invoke(uint64_
   return 1;
 }
 
-- (void)_migrateWindowBookmark:(id)a3
+- (void)_migrateWindowBookmark:(id)bookmark
 {
-  v27 = a3;
-  v4 = [v27 UUID];
-  v5 = [(WebBookmarkTabCollection *)self windowStateWithUUID:v4];
+  bookmarkCopy = bookmark;
+  uUID = [bookmarkCopy UUID];
+  v5 = [(WebBookmarkTabCollection *)self windowStateWithUUID:uUID];
 
   if (!v5)
   {
-    v6 = -[WebBookmarkCollection listWithID:skipOffset:includeHidden:](self, "listWithID:skipOffset:includeHidden:", [v27 identifier], 0, 1);
-    v7 = [v6 bookmarkArray];
+    v6 = -[WebBookmarkCollection listWithID:skipOffset:includeHidden:](self, "listWithID:skipOffset:includeHidden:", [bookmarkCopy identifier], 0, 1);
+    bookmarkArray = [v6 bookmarkArray];
 
-    if ([v7 count] < 2)
+    if ([bookmarkArray count] < 2)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v8 = [v7 objectAtIndexedSubscript:0];
+    v8 = [bookmarkArray objectAtIndexedSubscript:0];
     v9 = [(WebBookmarkTabCollection *)self tabGroupForBookmark:v8];
 
     [v9 setKind:0];
-    v10 = [v7 objectAtIndexedSubscript:1];
+    v10 = [bookmarkArray objectAtIndexedSubscript:1];
     v11 = [(WebBookmarkTabCollection *)self tabGroupForBookmark:v10];
 
     [v11 setKind:1];
-    v12 = [v27 lastSelectedChildID];
-    if (v12 == [v9 identifier])
+    lastSelectedChildID = [bookmarkCopy lastSelectedChildID];
+    if (lastSelectedChildID == [v9 identifier])
     {
       v13 = v9;
     }
 
     else
     {
-      if (v12 != [v11 identifier])
+      if (lastSelectedChildID != [v11 identifier])
       {
-        if (v12 == 0x7FFFFFFF)
+        if (lastSelectedChildID == 0x7FFFFFFF)
         {
           v14 = 0;
         }
 
         else
         {
-          v26 = -[WebBookmarkCollection bookmarkWithID:includingInMemoryChanges:](self, "bookmarkWithID:includingInMemoryChanges:", [v27 lastSelectedChildID], 1);
+          v26 = -[WebBookmarkCollection bookmarkWithID:includingInMemoryChanges:](self, "bookmarkWithID:includingInMemoryChanges:", [bookmarkCopy lastSelectedChildID], 1);
           if (v26)
           {
             v14 = [(WebBookmarkTabCollection *)self tabGroupForBookmark:v26];
@@ -306,19 +306,19 @@ LABEL_9:
     v14 = v13;
 LABEL_8:
     v15 = [WBWindowState alloc];
-    v16 = [v27 UUID];
-    v17 = [v14 uuid];
-    v18 = [v27 extraAttributes];
-    v19 = [v18 objectForKeyedSubscript:@"sceneID"];
-    v20 = [(WBWindowState *)v15 initWithUUID:v16 activeTabGroupUUID:v17 localTabGroup:v9 privateTabGroup:v11 sceneID:v19 windowID:0x7FFFFFFFLL];
+    uUID2 = [bookmarkCopy UUID];
+    uuid = [v14 uuid];
+    extraAttributes = [bookmarkCopy extraAttributes];
+    v19 = [extraAttributes objectForKeyedSubscript:@"sceneID"];
+    v20 = [(WBWindowState *)v15 initWithUUID:uUID2 activeTabGroupUUID:uuid localTabGroup:v9 privateTabGroup:v11 sceneID:v19 windowID:0x7FFFFFFFLL];
 
-    v21 = [v27 extraAttributes];
-    [(WBWindowState *)v20 setExtraAttributes:v21];
+    extraAttributes2 = [bookmarkCopy extraAttributes];
+    [(WBWindowState *)v20 setExtraAttributes:extraAttributes2];
 
     [(WebBookmarkTabCollection *)self saveWindowState:v20];
     v22 = MEMORY[0x277CCACA8];
-    v23 = [(WBWindowState *)v20 uuid];
-    v24 = [(WebBookmarkTabCollection *)self _uuidForQueries:v23];
+    uuid2 = [(WBWindowState *)v20 uuid];
+    v24 = [(WebBookmarkTabCollection *)self _uuidForQueries:uuid2];
     v25 = [v22 stringWithFormat:@"UPDATE windows SET is_last_session = 1 WHERE uuid = %@", v24];
 
     -[WebBookmarkCollection _executeSQLWithCString:](self, "_executeSQLWithCString:", [v25 UTF8String]);
@@ -369,8 +369,8 @@ LABEL_10:
           v8 = *(*(&v19 + 1) + 8 * i);
           if (([v8 isSyncable] & 1) == 0)
           {
-            v9 = [v8 title];
-            if (([v9 isEqualToString:@"Local"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"Private"))
+            title = [v8 title];
+            if (([title isEqualToString:@"Local"] & 1) != 0 || objc_msgSend(title, "isEqualToString:", @"Private"))
             {
               [(WebBookmarkCollection *)self deleteBookmark:v8 leaveTombstone:0];
             }
@@ -388,8 +388,8 @@ LABEL_10:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [v3 bookmarkArray];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  bookmarkArray = [v3 bookmarkArray];
+  v11 = [bookmarkArray countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = *v16;
@@ -399,13 +399,13 @@ LABEL_10:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(bookmarkArray);
         }
 
         [(WebBookmarkTabCollection *)self _migrateWindowBookmark:*(*(&v15 + 1) + 8 * j)];
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v11 = [bookmarkArray countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v11);
@@ -465,22 +465,22 @@ LABEL_10:
   [(WebBookmarkCollection *)self _executeSQLWithCString:"END"];
 }
 
-- (BOOL)_deleteMatchingWindows:(id)a3 logAsError:(BOOL)a4
+- (BOOL)_deleteMatchingWindows:(id)windows logAsError:(BOOL)error
 {
-  v4 = a4;
+  errorCopy = error;
   v36 = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  windowsCopy = windows;
   v6 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v33 = v25;
+    *v33 = windowsCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to delete windows with condition: %@", buf, 0xCu);
   }
 
-  if (v25)
+  if (windowsCopy)
   {
-    v7 = v25;
+    v7 = windowsCopy;
   }
 
   else
@@ -500,7 +500,7 @@ LABEL_10:
       v11 = *&v33[4];
       v12 = sqlite3_column_int64(*&v33[4], 0);
       v13 = WBUTF8StringFromSQLStatement(v11, 1);
-      if (v4)
+      if (errorCopy)
       {
         v14 = WBS_LOG_CHANNEL_PREFIXTabGroup();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -544,7 +544,7 @@ LABEL_10:
           *v26 = 67109378;
           v27 = v10;
           v28 = 2112;
-          v29 = v25;
+          v29 = windowsCopy;
           _os_log_impl(&dword_272C20000, v21, OS_LOG_TYPE_DEFAULT, "%i windows deleted using condition: %@", v26, 0x12u);
         }
 
@@ -576,12 +576,12 @@ LABEL_25:
   return v16;
 }
 
-- (BOOL)_performOSVersionUpgradesFromPreviousVersion:(id)a3
+- (BOOL)_performOSVersionUpgradesFromPreviousVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v7.receiver = self;
   v7.super_class = WebBookmarkTabCollection;
-  if (-[WebBookmarkCollection _performOSVersionUpgradesFromPreviousVersion:](&v7, sel__performOSVersionUpgradesFromPreviousVersion_, v4) && ([@"16.0" compare:v4 options:64] != 1 || -[WebBookmarkTabCollection _removePlaceholderTabGroupRecordsOnUpgrade](self, "_removePlaceholderTabGroupRecordsOnUpgrade")))
+  if (-[WebBookmarkCollection _performOSVersionUpgradesFromPreviousVersion:](&v7, sel__performOSVersionUpgradesFromPreviousVersion_, versionCopy) && ([@"16.0" compare:versionCopy options:64] != 1 || -[WebBookmarkTabCollection _removePlaceholderTabGroupRecordsOnUpgrade](self, "_removePlaceholderTabGroupRecordsOnUpgrade")))
   {
     [(WebBookmarkTabCollection *)self _createParticipantPresenceTable];
     v5 = 1;
@@ -602,17 +602,17 @@ LABEL_25:
   [(WebBookmarkCollection *)self _executeSQL:@"CREATE TABLE participant_presence (id INTEGER PRIMARY KEY, participant_id TEXT, tab_group_server_id TEXT, tab_server_id TEXT, UNIQUE(participant_id))"];
 }
 
-- (BOOL)_performSafariVersionUpgradesFromPreviousVersion:(id)a3
+- (BOOL)_performSafariVersionUpgradesFromPreviousVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v26.receiver = self;
   v26.super_class = WebBookmarkTabCollection;
-  if (![(WebBookmarkCollection *)&v26 _performSafariVersionUpgradesFromPreviousVersion:v4])
+  if (![(WebBookmarkCollection *)&v26 _performSafariVersionUpgradesFromPreviousVersion:versionCopy])
   {
     goto LABEL_54;
   }
 
-  if ([@"614.1.25.0.1" compare:v4 options:64] == 1)
+  if ([@"614.1.25.0.1" compare:versionCopy options:64] == 1)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -639,7 +639,7 @@ LABEL_25:
     }
   }
 
-  if ([@"614.1.25.0.9" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"614.1.25.0.9" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     v7 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -667,7 +667,7 @@ LABEL_25:
     }
   }
 
-  if ([@"616.1.21" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"616.1.21" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     v9 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -695,7 +695,7 @@ LABEL_25:
     }
   }
 
-  if ([@"614.2" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"614.2" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     v11 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -723,7 +723,7 @@ LABEL_25:
     }
   }
 
-  if ([@"616.1.17.10.3" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"616.1.17.10.3" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     v13 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -751,7 +751,7 @@ LABEL_25:
     }
   }
 
-  if ([@"618.1.13" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"618.1.13" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     if (![(WebBookmarkTabCollection *)self _deleteDefaultProfileIfSavedAsTabGroup])
     {
@@ -772,7 +772,7 @@ LABEL_25:
     }
   }
 
-  if ([@"618.2.3" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"618.2.3" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     if ([(WebBookmarkTabCollection *)self _removeClosedLocallyCreatedUnnamedTabGroups])
     {
@@ -804,17 +804,17 @@ LABEL_55:
   return v17;
 }
 
-- (BOOL)_performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:(id)a3
+- (BOOL)_performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v10.receiver = self;
   v10.super_class = WebBookmarkTabCollection;
-  if (![(WebBookmarkCollection *)&v10 _performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:v4])
+  if (![(WebBookmarkCollection *)&v10 _performSafariVersionUpgradesOutsideSafariProcessFromPreviousVersion:versionCopy])
   {
     goto LABEL_9;
   }
 
-  if ([@"618.1.16" safari_isVersionStringGreaterThanVersionString:v4])
+  if ([@"618.1.16" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     if ([(WebBookmarkTabCollection *)self _reEncodeSessionStateDataIfNeeded])
     {
@@ -861,11 +861,11 @@ LABEL_10:
 
     v5 = [WebBookmark alloc];
     v6 = v14;
-    v7 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v8 = [(WebBookmark *)v5 initWithSQLiteStatement:v6 deviceIdentifier:v7 collectionType:1];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v8 = [(WebBookmark *)v5 initWithSQLiteStatement:v6 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
-    v9 = [(WebBookmark *)v8 UUID];
-    LOBYTE(v6) = [v9 isEqualToString:v3];
+    uUID = [(WebBookmark *)v8 UUID];
+    LOBYTE(v6) = [uUID isEqualToString:v3];
 
     if ((v6 & 1) == 0 && ![(WebBookmarkCollection *)self deleteBookmark:v8 leaveTombstone:0])
     {
@@ -899,8 +899,8 @@ LABEL_10:
 
     v4 = [WebBookmark alloc];
     v5 = v11;
-    v6 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v7 = [(WebBookmark *)v4 initWithSQLiteStatement:v5 deviceIdentifier:v6 collectionType:1];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v7 = [(WebBookmark *)v4 initWithSQLiteStatement:v5 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
     if (![(WebBookmarkCollection *)self deleteBookmark:v7 leaveTombstone:0])
     {
@@ -921,7 +921,7 @@ LABEL_10:
 - (BOOL)_removeClosedLocallyCreatedUnnamedTabGroups
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(WebBookmarkTabCollection *)self _allUnnamedTabGroupUUIDsFromCurrentWindowStates];
+  _allUnnamedTabGroupUUIDsFromCurrentWindowStates = [(WebBookmarkTabCollection *)self _allUnnamedTabGroupUUIDsFromCurrentWindowStates];
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v14, [(WebBookmarkCollection *)self _selectBookmarksWhere:@"type = 1 AND subtype = 0 AND parent in (SELECT id FROM bookmarks WHERE type = 1 AND subtype = 3)"]);
   while (1)
   {
@@ -933,20 +933,20 @@ LABEL_10:
 
     v5 = [WebBookmark alloc];
     v6 = v15;
-    v7 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v8 = [(WebBookmark *)v5 initWithSQLiteStatement:v6 deviceIdentifier:v7 collectionType:1];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v8 = [(WebBookmark *)v5 initWithSQLiteStatement:v6 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
-    v9 = [(WebBookmark *)v8 UUID];
-    LOBYTE(v6) = [v3 containsObject:v9];
+    uUID = [(WebBookmark *)v8 UUID];
+    LOBYTE(v6) = [_allUnnamedTabGroupUUIDsFromCurrentWindowStates containsObject:uUID];
 
     if ((v6 & 1) == 0)
     {
       v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(WebBookmark *)v8 privacyPreservingDescription];
+        privacyPreservingDescription = [(WebBookmark *)v8 privacyPreservingDescription];
         *buf = 138543362;
-        v17 = v11;
+        v17 = privacyPreservingDescription;
         _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_DEFAULT, "Removing unnamed tab group bookmark because it wasn't in the current tab state %{public}@.", buf, 0xCu);
       }
 
@@ -991,8 +991,8 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v7) unnamedTabGroupUUIDs];
-        v3 = [v8 setByAddingObjectsFromSet:v9];
+        unnamedTabGroupUUIDs = [*(*(&v12 + 1) + 8 * v7) unnamedTabGroupUUIDs];
+        v3 = [v8 setByAddingObjectsFromSet:unnamedTabGroupUUIDs];
 
         ++v7;
         v8 = v3;
@@ -1012,25 +1012,25 @@ LABEL_10:
 
 - (BOOL)_reEncodeSessionStateDataIfNeeded
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"type = 0 AND subtype = 0 AND LENGTH(local_attributes) > %d", 3145728];
-  WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v13, [(WebBookmarkCollection *)self _selectBookmarksWhere:v3]);
+  3145728 = [MEMORY[0x277CCACA8] stringWithFormat:@"type = 0 AND subtype = 0 AND LENGTH(local_attributes) > %d", 3145728];
+  WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v13, [(WebBookmarkCollection *)self _selectBookmarksWhere:3145728]);
 
   while (sqlite3_step(v14) == 100)
   {
     v4 = [WebBookmark alloc];
     v5 = v14;
-    v6 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v7 = [(WebBookmark *)v4 initWithSQLiteStatement:v5 deviceIdentifier:v6 collectionType:1];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v7 = [(WebBookmark *)v4 initWithSQLiteStatement:v5 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
     v8 = [(WBTab *)[WBMutableTab alloc] initWithBookmark:v7];
     v9 = v8;
     if (v8)
     {
-      v10 = [(WBTab *)v8 localAttributes];
-      [v10 setSessionStateData:0];
-      [(WBMutableTab *)v9 setLocalAttributes:v10];
-      v11 = [(WBTab *)v9 bookmark];
-      [(WebBookmarkCollection *)self _saveBookmark:v11 withSpecialID:0 updateGenerationIfNeeded:1];
+      localAttributes = [(WBTab *)v8 localAttributes];
+      [localAttributes setSessionStateData:0];
+      [(WBMutableTab *)v9 setLocalAttributes:localAttributes];
+      bookmark = [(WBTab *)v9 bookmark];
+      [(WebBookmarkCollection *)self _saveBookmark:bookmark withSpecialID:0 updateGenerationIfNeeded:1];
     }
   }
 
@@ -1064,22 +1064,22 @@ LABEL_10:
 
     v6 = [WebBookmark alloc];
     v7 = v26;
-    v8 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v9 = [(WebBookmark *)v6 initWithSQLiteStatement:v7 deviceIdentifier:v8 collectionType:1];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v9 = [(WebBookmark *)v6 initWithSQLiteStatement:v7 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
     v10 = [WebBookmark alloc];
-    v11 = [(WebBookmark *)v9 title];
-    v12 = [(WebBookmark *)v9 address];
-    v13 = [(WebBookmark *)v9 parentID];
-    v14 = [(WebBookmark *)v9 subtype];
-    v15 = [(WebBookmark *)v9 deviceIdentifier];
-    v16 = [(WebBookmark *)v10 initWithTitle:v11 address:v12 parentID:v13 subtype:v14 deviceIdentifier:v15 collectionType:1];
+    title = [(WebBookmark *)v9 title];
+    address = [(WebBookmark *)v9 address];
+    parentID = [(WebBookmark *)v9 parentID];
+    subtype = [(WebBookmark *)v9 subtype];
+    deviceIdentifier = [(WebBookmark *)v9 deviceIdentifier];
+    v16 = [(WebBookmark *)v10 initWithTitle:title address:address parentID:parentID subtype:subtype deviceIdentifier:deviceIdentifier collectionType:1];
 
-    v17 = [(WebBookmark *)v9 localAttributes];
-    [(WebBookmark *)v16 setLocalAttributes:v17];
+    localAttributes = [(WebBookmark *)v9 localAttributes];
+    [(WebBookmark *)v16 setLocalAttributes:localAttributes];
 
-    v18 = [(WebBookmark *)v9 extraAttributes];
-    [(WebBookmark *)v16 setExtraAttributes:v18];
+    extraAttributes = [(WebBookmark *)v9 extraAttributes];
+    [(WebBookmark *)v16 setExtraAttributes:extraAttributes];
 
     if (![(WebBookmarkCollection *)self _saveAndMoveBookmark:v16 toFolderID:[(WebBookmark *)v9 parentID] orderIndex:[(WebBookmark *)v9 orderIndex]])
     {
@@ -1132,54 +1132,54 @@ LABEL_18:
 
     v38 = [WebBookmarkListQuery initWithBookmarksWhere:"initWithBookmarksWhere:folderID:orderBy:usingFilter:" folderID:@"parent = 0 AND syncable = 1 AND type = 1 AND subtype = 0 AND hidden = 0 AND special_id = 0" orderBy:? usingFilter:?];
     v37 = [[WebBookmarkList alloc] initWithQuery:v38 skipOffset:0 collection:self];
-    v4 = [(WebBookmarkList *)v37 bookmarkArray];
-    v40 = [v4 safari_splitArrayUsingCondition:&__block_literal_global_169];
+    bookmarkArray = [(WebBookmarkList *)v37 bookmarkArray];
+    v40 = [bookmarkArray safari_splitArrayUsingCondition:&__block_literal_global_169];
 
-    v5 = [v40 first];
-    v39 = [v5 sortedArrayUsingComparator:&__block_literal_global_172];
+    first = [v40 first];
+    v39 = [first sortedArrayUsingComparator:&__block_literal_global_172];
 
-    v6 = [v39 lastObject];
-    v7 = [v6 syncPosition];
+    lastObject = [v39 lastObject];
+    syncPosition = [lastObject syncPosition];
 
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v8 = [v40 second];
-    v9 = [v8 countByEnumeratingWithState:&v47 objects:v56 count:16];
+    second = [v40 second];
+    v9 = [second countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v9)
     {
       v41 = *v48;
       while (2)
       {
         v10 = 0;
-        v11 = v7;
+        v11 = syncPosition;
         do
         {
           if (*v48 != v41)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(second);
           }
 
           v12 = *(*(&v47 + 1) + 8 * v10);
           v13 = [objc_opt_class() deviceIdentifierForCloudKitWithCollectionType:-[WBCollectionConfiguration collectionType](self->super._configuration generateIfNeeded:{"collectionType"), 1}];
-          v14 = [v13 UUID];
-          v15 = [v14 UUIDString];
+          uUID = [v13 UUID];
+          uUIDString = [uUID UUIDString];
 
-          v16 = [MEMORY[0x277D49E80] positionBetweenPosition:v11 andPosition:0 withDeviceIdentifier:v15 changeID:{-[WebBookmarkCollection nextDatabaseSyncChangeID](self, "nextDatabaseSyncChangeID")}];
+          v16 = [MEMORY[0x277D49E80] positionBetweenPosition:v11 andPosition:0 withDeviceIdentifier:uUIDString changeID:{-[WebBookmarkCollection nextDatabaseSyncChangeID](self, "nextDatabaseSyncChangeID")}];
           [v12 setSyncPosition:v16];
 
-          v7 = [v12 syncPosition];
+          syncPosition = [v12 syncPosition];
 
           v17 = WBS_LOG_CHANNEL_PREFIXTabGroup();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
-            v18 = [v12 privacyPreservingDescription];
-            v19 = [v12 syncPosition];
+            privacyPreservingDescription = [v12 privacyPreservingDescription];
+            syncPosition2 = [v12 syncPosition];
             *buf = 138543618;
-            *&buf[4] = v18;
+            *&buf[4] = privacyPreservingDescription;
             *&buf[12] = 2114;
-            *&buf[14] = v19;
+            *&buf[14] = syncPosition2;
             _os_log_impl(&dword_272C20000, v17, OS_LOG_TYPE_INFO, "Setting position of tab group %{public}@ to position: %{public}@", buf, 0x16u);
           }
 
@@ -1197,11 +1197,11 @@ LABEL_18:
           }
 
           ++v10;
-          v11 = v7;
+          v11 = syncPosition;
         }
 
         while (v9 != v10);
-        v9 = [v8 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        v9 = [second countByEnumeratingWithState:&v47 objects:v56 count:16];
         if (v9)
         {
           continue;
@@ -1211,15 +1211,15 @@ LABEL_18:
       }
     }
 
-    v20 = [v40 second];
-    v21 = [v39 arrayByAddingObjectsFromArray:v20];
+    second2 = [v40 second];
+    v21 = [v39 arrayByAddingObjectsFromArray:second2];
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v8 = v21;
-    v22 = [v8 countByEnumeratingWithState:&v43 objects:v55 count:16];
+    second = v21;
+    v22 = [second countByEnumeratingWithState:&v43 objects:v55 count:16];
     if (v22)
     {
       v23 = *v44;
@@ -1229,12 +1229,12 @@ LABEL_18:
         {
           if (*v44 != v23)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(second);
           }
 
           v25 = *(*(&v43 + 1) + 8 * i);
-          v26 = [v25 serverID];
-          v27 = v26 == 0;
+          serverID = [v25 serverID];
+          v27 = serverID == 0;
 
           if (v27)
           {
@@ -1242,13 +1242,13 @@ LABEL_18:
           }
         }
 
-        v22 = [v8 countByEnumeratingWithState:&v43 objects:v55 count:16];
+        v22 = [second countByEnumeratingWithState:&v43 objects:v55 count:16];
       }
 
       while (v22);
     }
 
-    v28 = [v8 valueForKey:@"serverID"];
+    v28 = [second valueForKey:@"serverID"];
     v29 = [(WebBookmarkCollection *)self _orderChildrenWithServerIDs:v28 inFolderWithServerID:0 excludeDeletedBookmarks:1];
 
     if (v29)
@@ -1372,13 +1372,13 @@ void __60__WebBookmarkTabCollection__regenerateSyncPositionsIfNeeded__block_invo
 
   v4 = [[WebBookmarkListQuery alloc] initWithBookmarksWhere:@"parent = 0 AND syncable = 1 AND type = 1 AND subtype = 0 AND hidden = 0 AND special_id = 0" folderID:0 orderBy:@"order_index ASC" usingFilter:0];
   v5 = [[WebBookmarkList alloc] initWithQuery:v4 skipOffset:0 collection:self];
-  v6 = [(WebBookmarkList *)v5 bookmarkArray];
+  bookmarkArray = [(WebBookmarkList *)v5 bookmarkArray];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72__WebBookmarkTabCollection__saveTabGroupRecordsWithMissingCKShareRecord__block_invoke;
   v12[3] = &unk_279E75860;
   v12[4] = self;
-  v7 = [v6 safari_mapAndFilterObjectsUsingBlock:v12];
+  v7 = [bookmarkArray safari_mapAndFilterObjectsUsingBlock:v12];
 
   if ([v7 count])
   {
@@ -1529,14 +1529,14 @@ LABEL_17:
 - (BOOL)containsCKShareRecord
 {
   v2 = [(WebBookmarkCollection *)self syncStringForKey:@"DatabaseContainsShareRecord"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setContainsCKShareRecord:(BOOL)a3
+- (void)setContainsCKShareRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = @"1";
   }
@@ -1610,54 +1610,54 @@ LABEL_11:
 {
   v5.receiver = self;
   v5.super_class = WebBookmarkTabCollection;
-  v3 = [(WebBookmarkCollection *)&v5 _clearAllSyncData];
-  if (v3)
+  _clearAllSyncData = [(WebBookmarkCollection *)&v5 _clearAllSyncData];
+  if (_clearAllSyncData)
   {
     [(WebBookmarkCollection *)self syncSetString:0 forKey:@"DatabaseContainsShareRecord"];
     [(WebBookmarkTabCollection *)self _resetSettingsSyncData];
   }
 
-  return v3;
+  return _clearAllSyncData;
 }
 
-- (BOOL)bookmarkRequiresParent:(id)a3 specialID:(int)a4
+- (BOOL)bookmarkRequiresParent:(id)parent specialID:(int)d
 {
-  v4 = a3;
-  if ([v4 isSyncable])
+  parentCopy = parent;
+  if ([parentCopy isSyncable])
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [v4 isFolder] ^ 1;
+    v5 = [parentCopy isFolder] ^ 1;
   }
 
   return v5;
 }
 
-- (id)tabsForTabGroupBookmark:(id)a3
+- (id)tabsForTabGroupBookmark:(id)bookmark
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [v4 identifier], self, 0, 2);
+  bookmarkCopy = bookmark;
+  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [bookmarkCopy identifier], self, 0, 2);
   v6 = [[WebBookmarkList alloc] initWithQuery:v5 skipOffset:0 collection:self];
-  v7 = [(WebBookmarkList *)v6 bookmarkArray];
-  v8 = [v7 count];
+  bookmarkArray = [(WebBookmarkList *)v6 bookmarkArray];
+  v8 = [bookmarkArray count];
 
   if (!v8)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v4 privacyPreservingDescription];
+      [bookmarkCopy privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WebBookmarkTabCollection tabsForTabGroupBookmark:];
     }
   }
 
-  v10 = [(WebBookmarkList *)v6 bookmarkArray];
-  v11 = [v10 safari_mapObjectsUsingBlock:&__block_literal_global_195];
+  bookmarkArray2 = [(WebBookmarkList *)v6 bookmarkArray];
+  v11 = [bookmarkArray2 safari_mapObjectsUsingBlock:&__block_literal_global_195];
   v12 = v11;
   if (v11)
   {
@@ -1683,41 +1683,41 @@ WBMutableTab *__52__WebBookmarkTabCollection_tabsForTabGroupBookmark___block_inv
   return v3;
 }
 
-- (int64_t)tabCountForTabGroupWithUUID:(id)a3
+- (int64_t)tabCountForTabGroupWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(WebBookmarkCollection *)self bookmarkWithUUID:v4];
+    v5 = [(WebBookmarkCollection *)self bookmarkWithUUID:dCopy];
     if (v5)
     {
       v6 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [v5 identifier], self, 0, 2);
       v7 = [[WebBookmarkList alloc] initWithQuery:v6 skipOffset:0 collection:self];
-      v8 = [(WebBookmarkList *)v7 bookmarkCount];
+      bookmarkCount = [(WebBookmarkList *)v7 bookmarkCount];
     }
 
     else
     {
-      v8 = -1;
+      bookmarkCount = -1;
     }
   }
 
   else
   {
-    v8 = -1;
+    bookmarkCount = -1;
   }
 
-  return v8;
+  return bookmarkCount;
 }
 
-- (id)tabGroupForBookmark:(id)a3
+- (id)tabGroupForBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [v4 extraAttributes];
-  v6 = [v5 objectForKeyedSubscript:@"IsUnnamed"];
-  v7 = [v6 BOOLValue];
+  bookmarkCopy = bookmark;
+  extraAttributes = [bookmarkCopy extraAttributes];
+  v6 = [extraAttributes objectForKeyedSubscript:@"IsUnnamed"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 3;
   }
@@ -1727,27 +1727,27 @@ WBMutableTab *__52__WebBookmarkTabCollection_tabsForTabGroupBookmark___block_inv
     v8 = 2;
   }
 
-  v9 = [(WebBookmarkTabCollection *)self _tabGroupForBookmark:v4 kind:v8];
+  v9 = [(WebBookmarkTabCollection *)self _tabGroupForBookmark:bookmarkCopy kind:v8];
 
   return v9;
 }
 
-- (id)_tabGroupForBookmark:(id)a3 kind:(int64_t)a4
+- (id)_tabGroupForBookmark:(id)bookmark kind:(int64_t)kind
 {
-  v6 = a3;
-  if (v6)
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy)
   {
-    v7 = [(WebBookmarkTabCollection *)self tabsForTabGroupBookmark:v6];
+    v7 = [(WebBookmarkTabCollection *)self tabsForTabGroupBookmark:bookmarkCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__WebBookmarkTabCollection__tabGroupForBookmark_kind___block_invoke;
     v14[3] = &unk_279E758F0;
-    v8 = v6;
+    v8 = bookmarkCopy;
     v15 = v8;
     v9 = [v7 safari_firstObjectPassingTest:v14];
     v10 = [WBMutableTabGroup alloc];
-    v11 = [v9 uuid];
-    v12 = [(WBMutableTabGroup *)v10 initWithBookmark:v8 tabs:v7 lastSelectedTabUUID:v11 kind:a4];
+    uuid = [v9 uuid];
+    v12 = [(WBMutableTabGroup *)v10 initWithBookmark:v8 tabs:v7 lastSelectedTabUUID:uuid kind:kind];
   }
 
   else
@@ -1767,49 +1767,49 @@ BOOL __54__WebBookmarkTabCollection__tabGroupForBookmark_kind___block_invoke(uin
   return v5;
 }
 
-- (id)_uuidForQueries:(id)a3
+- (id)_uuidForQueries:(id)queries
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", a3];
+  queries = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", queries];
 
-  return v3;
+  return queries;
 }
 
-- (void)_logErrorWithMessage:(id)a3 result:(int)a4
+- (void)_logErrorWithMessage:(id)message result:(int)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WebBookmarkCollection *)self _errorForMostRecentSQLiteError];
+  messageCopy = message;
+  _errorForMostRecentSQLiteError = [(WebBookmarkCollection *)self _errorForMostRecentSQLiteError];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v7 safari_privacyPreservingDescription];
+    safari_privacyPreservingDescription = [_errorForMostRecentSQLiteError safari_privacyPreservingDescription];
     v11 = 138412802;
-    v12 = v6;
+    v12 = messageCopy;
     v13 = 1024;
-    v14 = a4;
+    resultCopy = result;
     v15 = 2114;
-    v16 = v10;
+    v16 = safari_privacyPreservingDescription;
     _os_log_error_impl(&dword_272C20000, v8, OS_LOG_TYPE_ERROR, "%@ with result: %d error: %{public}@", &v11, 0x1Cu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)profileForBookmark:(id)a3
+- (id)profileForBookmark:(id)bookmark
 {
-  v4 = a3;
-  if (v4)
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy)
   {
     [(WebBookmarkTabCollection *)self _slowDownFetchingForTabsCycler];
-    v5 = [(WebBookmarkTabCollection *)self tabGroupsChildrenForBookmark:v4];
-    v6 = [[WBMutableProfile alloc] initWithBookmark:v4 tabGroups:v5];
+    v5 = [(WebBookmarkTabCollection *)self tabGroupsChildrenForBookmark:bookmarkCopy];
+    v6 = [[WBMutableProfile alloc] initWithBookmark:bookmarkCopy tabGroups:v5];
     if (![(WBProfile *)v6 isDefault])
     {
       v7 = [(WebBookmarkTabCollection *)self devicesForProfile:v6];
       [(WBMutableProfile *)v6 setDevices:v7];
     }
 
-    v8 = -[WebBookmarkTabCollection settingsForBookmarkWithID:](self, "settingsForBookmarkWithID:", [v4 identifier]);
+    v8 = -[WebBookmarkTabCollection settingsForBookmarkWithID:](self, "settingsForBookmarkWithID:", [bookmarkCopy identifier]);
     [(WBMutableProfile *)v6 setSettingsDictionary:v8];
   }
 
@@ -1821,46 +1821,46 @@ BOOL __54__WebBookmarkTabCollection__tabGroupForBookmark_kind___block_invoke(uin
   return v6;
 }
 
-- (id)tabGroupsChildrenForBookmark:(id)a3
+- (id)tabGroupsChildrenForBookmark:(id)bookmark
 {
   v20[8] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v5 = [WebBookmarkListQuery alloc];
-  v6 = [v4 UUID];
-  if ([v6 isEqualToString:*MEMORY[0x277D49BD8]])
+  uUID = [bookmarkCopy UUID];
+  if ([uUID isEqualToString:*MEMORY[0x277D49BD8]])
   {
-    v7 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v7 = [v4 identifier];
+    identifier = [bookmarkCopy identifier];
   }
 
-  v8 = [(WebBookmarkListQuery *)v5 initWithFolderID:v7 inCollection:self usingFilter:0 options:260];
+  v8 = [(WebBookmarkListQuery *)v5 initWithFolderID:identifier inCollection:self usingFilter:0 options:260];
 
   v9 = [[WebBookmarkList alloc] initWithQuery:v8 skipOffset:0 collection:self];
-  v10 = [(WebBookmarkList *)v9 bookmarkArray];
-  v11 = [v10 count];
+  bookmarkArray = [(WebBookmarkList *)v9 bookmarkArray];
+  v11 = [bookmarkArray count];
 
   if (!v11)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v4 privacyPreservingDescription];
+      [bookmarkCopy privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WebBookmarkTabCollection tabGroupsChildrenForBookmark:];
     }
   }
 
-  v13 = [(WebBookmarkList *)v9 bookmarkArray];
+  bookmarkArray2 = [(WebBookmarkList *)v9 bookmarkArray];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__WebBookmarkTabCollection_tabGroupsChildrenForBookmark___block_invoke;
   v20[3] = &unk_279E75918;
   v20[4] = self;
-  v14 = [v13 safari_mapObjectsUsingBlock:v20];
+  v14 = [bookmarkArray2 safari_mapObjectsUsingBlock:v20];
   v15 = v14;
   if (v14)
   {
@@ -1885,20 +1885,20 @@ id __57__WebBookmarkTabCollection_tabGroupsChildrenForBookmark___block_invoke(ui
   return v2;
 }
 
-- (id)devicesForProfile:(id)a3
+- (id)devicesForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [v4 databaseIdentifier], self, 0, 36);
+  profileCopy = profile;
+  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [profileCopy databaseIdentifier], self, 0, 36);
   v6 = [[WebBookmarkList alloc] initWithQuery:v5 skipOffset:0 collection:self];
-  v7 = [(WebBookmarkList *)v6 bookmarkArray];
+  bookmarkArray = [(WebBookmarkList *)v6 bookmarkArray];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__WebBookmarkTabCollection_devicesForProfile___block_invoke;
   v14[3] = &unk_279E75940;
   v14[4] = self;
-  v8 = v4;
+  v8 = profileCopy;
   v15 = v8;
-  v9 = [v7 safari_mapObjectsUsingBlock:v14];
+  v9 = [bookmarkArray safari_mapObjectsUsingBlock:v14];
   v10 = v9;
   if (v9)
   {
@@ -1925,20 +1925,20 @@ id __46__WebBookmarkTabCollection_devicesForProfile___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)remoteDevicesForProfileBookmark:(id)a3
+- (id)remoteDevicesForProfileBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [v4 identifier], self, 0, 68);
+  bookmarkCopy = bookmark;
+  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [bookmarkCopy identifier], self, 0, 68);
   v6 = [[WebBookmarkList alloc] initWithQuery:v5 skipOffset:0 collection:self];
-  v7 = [(WebBookmarkList *)v6 bookmarkArray];
+  bookmarkArray = [(WebBookmarkList *)v6 bookmarkArray];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke;
   v14[3] = &unk_279E75940;
   v14[4] = self;
-  v8 = v4;
+  v8 = bookmarkCopy;
   v15 = v8;
-  v9 = [v7 safari_mapObjectsUsingBlock:v14];
+  v9 = [bookmarkArray safari_mapObjectsUsingBlock:v14];
   v10 = v9;
   if (v9)
   {
@@ -1965,14 +1965,14 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
   return v6;
 }
 
-- (id)deviceForBookmark:(id)a3 inProfileWithIdentifier:(id)a4
+- (id)deviceForBookmark:(id)bookmark inProfileWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  bookmarkCopy = bookmark;
+  identifierCopy = identifier;
+  if (bookmarkCopy)
   {
-    [(WebBookmarkTabCollection *)self tabGroupsChildrenForBookmark:v6];
+    [(WebBookmarkTabCollection *)self tabGroupsChildrenForBookmark:bookmarkCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -1992,8 +1992,8 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
 
           v12 = *(*(&v17 + 1) + 8 * i);
           [v12 setKind:{3, v17}];
-          v13 = [v6 UUID];
-          [v12 setDeviceUUIDString:v13];
+          uUID = [bookmarkCopy UUID];
+          [v12 setDeviceUUIDString:uUID];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -2002,7 +2002,7 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
       while (v9);
     }
 
-    v14 = [[WBDevice alloc] initWithBookmark:v6 unnamedTabGroups:v8 profileIdentifier:v7];
+    v14 = [[WBDevice alloc] initWithBookmark:bookmarkCopy unnamedTabGroups:v8 profileIdentifier:identifierCopy];
   }
 
   else
@@ -2017,8 +2017,8 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
 
 - (id)settingsChangesForAllDeletedSettings
 {
-  v22 = [MEMORY[0x277CBEB18] array];
-  v21 = self;
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v25, self->super._db, [@""SELECT settings.id settings.key];
   while (sqlite3_step(v26) == 100)
   {
@@ -2043,8 +2043,8 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
 
     v12 = [objc_alloc(MEMORY[0x277D49E78]) initWithDeviceIdentifier:v7 generation:v6];
     v13 = objc_alloc(MEMORY[0x277D49E70]);
-    v14 = [(WebBookmarkCollection *)v21 currentDeviceIdentifier];
-    v15 = [v13 initWithValue:v5 generation:v12 deviceIdentifier:v14];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)selfCopy currentDeviceIdentifier];
+    v15 = [v13 initWithValue:v5 generation:v12 deviceIdentifier:currentDeviceIdentifier];
 
     if (v9)
     {
@@ -2057,28 +2057,28 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
     }
 
     v17 = [objc_alloc(MEMORY[0x277CBC5A0]) safari_initWithEncodedRecordData:v8];
-    v18 = [MEMORY[0x277CBEB38] dictionary];
-    [v18 setObject:v23 forKeyedSubscript:@"SettingName"];
-    [v18 setObject:v5 forKeyedSubscript:@"Value"];
-    [v18 setObject:v10 forKeyedSubscript:@"SettingServerID"];
-    v19 = [[WBFieldChangeRecord alloc] initWithField:v15 changeType:v16 attributes:v18 record:v17 identifier:v4];
-    [v22 addObject:v19];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:v23 forKeyedSubscript:@"SettingName"];
+    [dictionary setObject:v5 forKeyedSubscript:@"Value"];
+    [dictionary setObject:v10 forKeyedSubscript:@"SettingServerID"];
+    v19 = [[WBFieldChangeRecord alloc] initWithField:v15 changeType:v16 attributes:dictionary record:v17 identifier:v4];
+    [array addObject:v19];
   }
 
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v25);
 
-  return v22;
+  return array;
 }
 
-- (id)allSettingsChangesWithWhereClause:(id)a3
+- (id)allSettingsChangesWithWhereClause:(id)clause
 {
-  v3 = a3;
-  v27 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT settings.id, settings.key, settings.value, settings.generation, settings.device_identifier, settings.sync_data, settings.deleted, settings.server_id, bookmarks.server_id FROM settings INNER JOIN bookmarks ON settings.parent = bookmarks.id WHERE %@", v3];
+  clauseCopy = clause;
+  array = [MEMORY[0x277CBEB18] array];
+  clauseCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT settings.id, settings.key, settings.value, settings.generation, settings.device_identifier, settings.sync_data, settings.deleted, settings.server_id, bookmarks.server_id FROM settings INNER JOIN bookmarks ON settings.parent = bookmarks.id WHERE %@", clauseCopy];
   db = self->super._db;
-  v25 = v4;
+  v25 = clauseCopy;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v32, db, [v25 UTF8String]);
-  v26 = v3;
+  v26 = clauseCopy;
   while (sqlite3_step(v33) == 100)
   {
     v6 = v33;
@@ -2113,8 +2113,8 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
 
     v16 = [objc_alloc(MEMORY[0x277D49E78]) initWithDeviceIdentifier:v30 generation:v9];
     v17 = objc_alloc(MEMORY[0x277D49E70]);
-    v18 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-    v19 = [v17 initWithValue:v8 generation:v16 deviceIdentifier:v18];
+    currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+    v19 = [v17 initWithValue:v8 generation:v16 deviceIdentifier:currentDeviceIdentifier];
 
     if (v11)
     {
@@ -2127,25 +2127,25 @@ id __60__WebBookmarkTabCollection_remoteDevicesForProfileBookmark___block_invoke
     }
 
     v21 = [objc_alloc(MEMORY[0x277CBC5A0]) safari_initWithEncodedRecordData:v10];
-    v22 = [MEMORY[0x277CBEB38] dictionary];
-    [v22 setObject:v29 forKeyedSubscript:@"SettingName"];
-    [v22 setObject:v8 forKeyedSubscript:@"Value"];
-    [v22 setObject:v14 forKeyedSubscript:@"Parent"];
-    [v22 setObject:v12 forKeyedSubscript:@"SettingServerID"];
-    v23 = [[WBFieldChangeRecord alloc] initWithField:v19 changeType:v20 attributes:v22 record:v21 identifier:v7];
-    [v27 addObject:v23];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:v29 forKeyedSubscript:@"SettingName"];
+    [dictionary setObject:v8 forKeyedSubscript:@"Value"];
+    [dictionary setObject:v14 forKeyedSubscript:@"Parent"];
+    [dictionary setObject:v12 forKeyedSubscript:@"SettingServerID"];
+    v23 = [[WBFieldChangeRecord alloc] initWithField:v19 changeType:v20 attributes:dictionary record:v21 identifier:v7];
+    [array addObject:v23];
 
-    v3 = v26;
+    clauseCopy = v26;
   }
 
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v32);
 
-  return v27;
+  return array;
 }
 
-- (BOOL)deleteSettingsRecordWithServerID:(id)a3
+- (BOOL)deleteSettingsRecordWithServerID:(id)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM settings WHERE server_id = '%@'", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM settings WHERE server_id = '%@'", d];
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v9, self->super._db, [v4 UTF8String]);
   if ((v11 & 1) == 0)
   {
@@ -2171,14 +2171,14 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)deleteSettingWithIdentifier:(int64_t)a3
+- (BOOL)deleteSettingWithIdentifier:(int64_t)identifier
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM settings WHERE id = %zu", a3];
-  WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v10, self->super._db, [v5 UTF8String]);
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM settings WHERE id = %zu", identifier];
+  WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v10, self->super._db, [identifier UTF8String]);
   if ((v12 & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to delete settings for id %zu", a3];
-    [(WebBookmarkTabCollection *)self _logErrorWithMessage:v8 result:v13];
+    identifier2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to delete settings for id %zu", identifier];
+    [(WebBookmarkTabCollection *)self _logErrorWithMessage:identifier2 result:v13];
 
 LABEL_6:
     v7 = 0;
@@ -2223,21 +2223,21 @@ LABEL_7:
   return v4;
 }
 
-- (id)windowStateWithUUID:(id)a3
+- (id)windowStateWithUUID:(id)d
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(WebBookmarkTabCollection *)self _uuidForQueries:a3];
+  v5 = [(WebBookmarkTabCollection *)self _uuidForQueries:d];
   v6 = [v4 stringWithFormat:@"WHERE uuid = %@", v5];
 
   v7 = [(WebBookmarkTabCollection *)self _windowStatesWithFilter:v6];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (int)_windowIDForUUID:(id)a3
+- (int)_windowIDForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v7, self->super._db, [@"SELECT windows.id FROM windows WHERE windows.uuid = ?" UTF8String]);
   if ((v9 & 1) == 0)
   {
@@ -2245,7 +2245,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  sqlite3_bind_text(v8, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(v8, 1, [dCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   if (sqlite3_step(v8) != 100)
   {
 LABEL_5:
@@ -2260,14 +2260,14 @@ LABEL_6:
   return v5;
 }
 
-- (void)_addActiveTabsToWindowState:(id)a3
+- (void)_addActiveTabsToWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v13, self->super._db, [@"SELECT tab_bookmarks.external_uuid tab:"UTF8String" group:? bookmarks.external:? uuid FROM bookmarks AS tab:? bookmarks INNER JOIN windows:? tab:? groups ON tab:? bookmarks.id = windows:? tab:? groups.active:? tab:? id INNER JOIN bookmarks AS tab:? group:? bookmarks ON windows:? tab:? groups.tab:? group:? id = tab:? group:? bookmarks.id WHERE windows:? tab:? groups.window:?id = ?"]);
   if (v15)
   {
-    v5 = [v4 uuid];
-    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:v5];
+    uuid = [stateCopy uuid];
+    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:uuid];
 
     sqlite3_bind_int(v14, 1, v6);
     v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2282,7 +2282,7 @@ LABEL_6:
       v8 = v14;
       v9 = WBUTF8StringFromSQLStatement(v14, 0);
       v10 = WBUTF8StringFromSQLStatement(v8, 1);
-      [v4 setActiveTabUUID:v9 forTabGroupWithUUID:v10];
+      [stateCopy setActiveTabUUID:v9 forTabGroupWithUUID:v10];
       v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -2300,14 +2300,14 @@ LABEL_6:
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v13);
 }
 
-- (void)_addActiveTabGroupsToWindowState:(id)a3
+- (void)_addActiveTabGroupsToWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v13, self->super._db, [@"SELECT tab_group_bookmarks.external_uuid profile:"UTF8String" bookmarks.external:? uuid FROM bookmarks AS tab:? group:? bookmarks INNER JOIN windows:? profiles ON tab:? group:? bookmarks.id = windows:? profiles.active:? tab:? group:? id INNER JOIN bookmarks AS profile:? bookmarks ON windows:? profiles.profile:? id = profile:? bookmarks.id WHERE windows:? profiles.window:?id = ?"]);
   if (v15)
   {
-    v5 = [v4 uuid];
-    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:v5];
+    uuid = [stateCopy uuid];
+    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:uuid];
 
     sqlite3_bind_int(v14, 1, v6);
     v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2322,7 +2322,7 @@ LABEL_6:
       v8 = v14;
       v9 = WBUTF8StringFromSQLStatement(v14, 0);
       v10 = WBUTF8StringFromSQLStatement(v8, 1);
-      [v4 setActiveTabGroupUUID:v9 forProfileWithIdentifier:v10];
+      [stateCopy setActiveTabGroupUUID:v9 forProfileWithIdentifier:v10];
       v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -2340,14 +2340,14 @@ LABEL_6:
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v13);
 }
 
-- (void)_addUnnamedTabGroupsToWindowState:(id)a3
+- (void)_addUnnamedTabGroupsToWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v11, self->super._db, [@"SELECT external_uuid FROM bookmarks INNER JOIN windows_unnamed_tab_groups ON bookmarks.id = windows_unnamed_tab_groups.tab_group_id WHERE windows_unnamed_tab_groups.window_id = ?" UTF8String]);
   if (v13)
   {
-    v5 = [v4 uuid];
-    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:v5];
+    uuid = [stateCopy uuid];
+    v6 = [(WebBookmarkTabCollection *)self _windowIDForUUID:uuid];
 
     sqlite3_bind_int(v12, 1, v6);
     v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2360,7 +2360,7 @@ LABEL_6:
     while (sqlite3_step(v12) == 100)
     {
       v8 = WBUTF8StringFromSQLStatement(v12, 0);
-      [v4 addUnnamedTabGroupUUID:v8];
+      [stateCopy addUnnamedTabGroupUUID:v8];
       v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -2378,19 +2378,19 @@ LABEL_6:
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v11);
 }
 
-- (id)_windowStatesWithFilter:(id)a3
+- (id)_windowStatesWithFilter:(id)filter
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filterCopy = filter;
   v5 = &stru_288259858;
-  if (v4)
+  if (filterCopy)
   {
-    v5 = v4;
+    v5 = filterCopy;
   }
 
-  v34 = v4;
+  v34 = filterCopy;
   v6 = [@"SELECT tab_group_bookmarks.external_uuid profile:windows.local_tab_group_id bookmarks.external:{windows.private_tab_group_id, windows.scene_id, windows.uuid, windows.id, windows.extra_attributes, windows.restoration_archive", "stringByAppendingFormat:", @" FROM windows INNER JOIN bookmarks AS tab_group_bookmarks ON windows.active_tab_group_id = tab_group_bookmarks.id LEFT JOIN bookmarks AS profile_bookmarks ON windows.active_profile_id = profile_bookmarks.id %@", v5}uuid];
-  v40 = self;
+  selfCopy = self;
   db = self->super._db;
   v35 = v6;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v43, db, [v35 UTF8String]);
@@ -2420,19 +2420,19 @@ LABEL_6:
       }
 
       v16 = WBDataFromNullableColumn(v8, 8);
-      v17 = [(WebBookmarkTabCollection *)v40 _tabGroupWithID:v10 kind:0];
+      v17 = [(WebBookmarkTabCollection *)selfCopy _tabGroupWithID:v10 kind:0];
       v18 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v17 tabs];
-        v20 = [v19 count];
+        tabs = [v17 tabs];
+        v20 = [tabs count];
         *buf = 134217984;
         v48 = v20;
         _os_log_impl(&dword_272C20000, v18, OS_LOG_TYPE_DEFAULT, "Window state local tab group count: %zu", buf, 0xCu);
       }
 
-      v21 = [v17 tabs];
-      v22 = [v21 count] == 0;
+      tabs2 = [v17 tabs];
+      v22 = [tabs2 count] == 0;
 
       if (v22)
       {
@@ -2445,7 +2445,7 @@ LABEL_6:
         }
       }
 
-      v24 = [(WebBookmarkTabCollection *)v40 _tabGroupWithID:v11 kind:1];
+      v24 = [(WebBookmarkTabCollection *)selfCopy _tabGroupWithID:v11 kind:1];
       v25 = v24;
       if (v17 && v24)
       {
@@ -2463,9 +2463,9 @@ LABEL_6:
 
         [(WBWindowState *)v26 setActiveProfileIdentifier:v28];
         [(WBWindowState *)v27 setExtraAttributes:v15];
-        [(WebBookmarkTabCollection *)v40 _addActiveTabsToWindowState:v27];
-        [(WebBookmarkTabCollection *)v40 _addActiveTabGroupsToWindowState:v27];
-        [(WebBookmarkTabCollection *)v40 _addUnnamedTabGroupsToWindowState:v27];
+        [(WebBookmarkTabCollection *)selfCopy _addActiveTabsToWindowState:v27];
+        [(WebBookmarkTabCollection *)selfCopy _addActiveTabGroupsToWindowState:v27];
+        [(WebBookmarkTabCollection *)selfCopy _addUnnamedTabGroupsToWindowState:v27];
         [(WBWindowState *)v27 setWindowRestorationArchiveData:v16];
         [v37 addObject:v27];
       }
@@ -2492,7 +2492,7 @@ LABEL_6:
 
   else
   {
-    [(WebBookmarkTabCollection *)v40 _logErrorWithMessage:@"Failed to fetch window states" result:v46];
+    [(WebBookmarkTabCollection *)selfCopy _logErrorWithMessage:@"Failed to fetch window states" result:v46];
     v37 = MEMORY[0x277CBEBF8];
   }
 
@@ -2506,33 +2506,33 @@ LABEL_6:
 - (WBWindowState)lastClosedWindowState
 {
   v2 = [(WebBookmarkTabCollection *)self _windowStatesWithFilter:@"WHERE windows.date_closed = (SELECT MAX(date_closed) from windows)"];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)_saveWindowState:(id)a3 activeTabGroupID:(int)a4 localTabGroupID:(int)a5 privateTabGroupID:(int)a6
+- (BOOL)_saveWindowState:(id)state activeTabGroupID:(int)d localTabGroupID:(int)iD privateTabGroupID:(int)groupID
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  stateCopy = state;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v40, self->super._db, [@"INSERT INTO windows (active_tab_group_id active:date_closed profile:{extra_attributes, is_last_session, local_tab_group_id, private_tab_group_id, scene_id, uuid, restoration_archive) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?, ?) ON CONFLICT (uuid) DO UPDATE SET active_tab_group_id = excluded.active_tab_group_id, active_profile_id = excluded.active_profile_id, date_closed = excluded.date_closed, extra_attributes = excluded.extra_attributes, local_tab_group_id = excluded.local_tab_group_id, private_tab_group_id = excluded.private_tab_group_id, is_last_session = 1, restoration_archive = excluded.restoration_archive, scene_id = excluded.scene_id", "UTF8String"}id]);
   if (v42)
   {
-    if (a4)
+    if (d)
     {
-      v11 = a4;
+      iDCopy = d;
     }
 
     else
     {
-      v11 = a5;
+      iDCopy = iD;
     }
 
-    sqlite3_bind_int(v41, 1, v11);
-    v12 = [v10 activeProfileIdentifier];
-    v13 = v12 == 0;
+    sqlite3_bind_int(v41, 1, iDCopy);
+    activeProfileIdentifier = [stateCopy activeProfileIdentifier];
+    v13 = activeProfileIdentifier == 0;
 
-    if (v13 || ([v10 activeProfileIdentifier], v14 = objc_claimAutoreleasedReturnValue(), -[WebBookmarkCollection bookmarkWithUUID:](self, "bookmarkWithUUID:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+    if (v13 || ([stateCopy activeProfileIdentifier], v14 = objc_claimAutoreleasedReturnValue(), -[WebBookmarkCollection bookmarkWithUUID:](self, "bookmarkWithUUID:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
     {
       v15 = 0;
       sqlite3_bind_null(v41, 2);
@@ -2543,8 +2543,8 @@ LABEL_6:
       sqlite3_bind_int(v41, 2, [v15 identifier]);
     }
 
-    v17 = [v10 dateClosed];
-    v18 = v17 == 0;
+    dateClosed = [stateCopy dateClosed];
+    v18 = dateClosed == 0;
 
     v19 = v41;
     if (v18)
@@ -2554,33 +2554,33 @@ LABEL_6:
 
     else
     {
-      v20 = [v10 dateClosed];
-      [v20 timeIntervalSinceReferenceDate];
+      dateClosed2 = [stateCopy dateClosed];
+      [dateClosed2 timeIntervalSinceReferenceDate];
       sqlite3_bind_double(v19, 3, v21);
     }
 
     v22 = v41;
-    v23 = [v10 extraAttributes];
-    bindAttributesToSQLStatement(v22, 4, v23);
+    extraAttributes = [stateCopy extraAttributes];
+    bindAttributesToSQLStatement(v22, 4, extraAttributes);
 
-    sqlite3_bind_int(v41, 5, a5);
-    sqlite3_bind_int(v41, 6, a6);
+    sqlite3_bind_int(v41, 5, iD);
+    sqlite3_bind_int(v41, 6, groupID);
     v24 = v41;
-    v25 = [v10 sceneID];
-    v26 = v25;
-    sqlite3_bind_text(v24, 7, [v25 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sceneID = [stateCopy sceneID];
+    v26 = sceneID;
+    sqlite3_bind_text(v24, 7, [sceneID UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
     v27 = v41;
-    v28 = [v10 uuid];
-    v29 = v28;
-    sqlite3_bind_text(v27, 8, [v28 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    uuid = [stateCopy uuid];
+    v29 = uuid;
+    sqlite3_bind_text(v27, 8, [uuid UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
-    v30 = [v10 windowRestorationArchiveData];
-    v31 = v30;
+    windowRestorationArchiveData = [stateCopy windowRestorationArchiveData];
+    v31 = windowRestorationArchiveData;
     v32 = v41;
-    if (v30)
+    if (windowRestorationArchiveData)
     {
-      v33 = v30;
+      v33 = windowRestorationArchiveData;
       sqlite3_bind_blob64(v32, 9, [v31 bytes], objc_msgSend(v31, "length"), 0xFFFFFFFFFFFFFFFFLL);
     }
 
@@ -2592,18 +2592,18 @@ LABEL_6:
     v34 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v10 uuid];
-      v36 = [v15 identifier];
+      uuid2 = [stateCopy uuid];
+      identifier = [v15 identifier];
       *buf = 138544386;
-      v45 = v35;
+      v45 = uuid2;
       v46 = 1024;
-      v47 = v11;
+      v47 = iDCopy;
       v48 = 1024;
-      v49 = a5;
+      iDCopy2 = iD;
       v50 = 1024;
-      v51 = a6;
+      groupIDCopy = groupID;
       v52 = 1024;
-      v53 = v36;
+      v53 = identifier;
       _os_log_impl(&dword_272C20000, v34, OS_LOG_TYPE_INFO, "Attempting to save windowState: %{public}@ activeTabGroupID: <%d> localTabGroupID: <%d> privateTabGroupID: <%d> activeProfileID: <%d>", buf, 0x24u);
     }
 
@@ -2627,7 +2627,7 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)_saveActiveTabID:(int)a3 inTabGroupWithID:(int)a4 windowID:(int)a5
+- (BOOL)_saveActiveTabID:(int)d inTabGroupWithID:(int)iD windowID:(int)windowID
 {
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v12, self->super._db, [@"INSERT INTO windows_tab_groups (active_tab_id tab:window_id) VALUES (? group:{?, ?) ON CONFLICT (tab_group_id, window_id) DO UPDATE SET active_tab_id = excluded.active_tab_id", "UTF8String"}id]);
   if ((v14 & 1) == 0)
@@ -2638,9 +2638,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  sqlite3_bind_int(v13, 1, a3);
-  sqlite3_bind_int(v13, 2, a4);
-  sqlite3_bind_int(v13, 3, a5);
+  sqlite3_bind_int(v13, 1, d);
+  sqlite3_bind_int(v13, 2, iD);
+  sqlite3_bind_int(v13, 3, windowID);
   v9 = sqlite3_step(v13);
   if (v9 != 101)
   {
@@ -2654,7 +2654,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_saveActiveTabGroupID:(int)a3 inProfileWithID:(int)a4 windowID:(int)a5
+- (BOOL)_saveActiveTabGroupID:(int)d inProfileWithID:(int)iD windowID:(int)windowID
 {
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v12, self->super._db, [CFSTR(""INSERT INTO windows_profiles (active_tab_group_id profile_id]);
   if ((v14 & 1) == 0)
@@ -2665,9 +2665,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  sqlite3_bind_int(v13, 1, a3);
-  sqlite3_bind_int(v13, 2, a4);
-  sqlite3_bind_int(v13, 3, a5);
+  sqlite3_bind_int(v13, 1, d);
+  sqlite3_bind_int(v13, 2, iD);
+  sqlite3_bind_int(v13, 3, windowID);
   v9 = sqlite3_step(v13);
   if (v9 != 101)
   {
@@ -2681,7 +2681,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_clearUnnamedTabGroupsInWindowWithID:(int)a3
+- (BOOL)_clearUnnamedTabGroupsInWindowWithID:(int)d
 {
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v8, self->super._db, [@"DELETE FROM windows_unnamed_tab_groups WHERE window_id = ?" UTF8String]);
   if ((v10 & 1) == 0)
@@ -2692,7 +2692,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  sqlite3_bind_int(v9, 1, a3);
+  sqlite3_bind_int(v9, 1, d);
   v5 = sqlite3_step(v9);
   if (v5 != 101)
   {
@@ -2706,7 +2706,7 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_saveUnnamedTabGroupID:(int)a3 inWindowWithID:(int)a4
+- (BOOL)_saveUnnamedTabGroupID:(int)d inWindowWithID:(int)iD
 {
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v10, self->super._db, [CFSTR(""INSERT INTO windows_unnamed_tab_groups (tab_group_id window_id) VALUES (?]);
   if ((v12 & 1) == 0)
@@ -2717,8 +2717,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  sqlite3_bind_int(v11, 1, a3);
-  sqlite3_bind_int(v11, 2, a4);
+  sqlite3_bind_int(v11, 1, d);
+  sqlite3_bind_int(v11, 2, iD);
   v7 = sqlite3_step(v11);
   if (v7 != 101)
   {
@@ -2732,20 +2732,20 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_saveWindowState:(id)a3 forApplyingInMemoryChanges:(BOOL)a4
+- (BOOL)_saveWindowState:(id)state forApplyingInMemoryChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  changesCopy = changes;
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __72__WebBookmarkTabCollection__saveWindowState_forApplyingInMemoryChanges___block_invoke;
     v11[3] = &unk_279E75968;
     v11[4] = self;
-    v12 = v6;
-    v8 = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v11 applyInMemoryChanges:!v4 secureDelete:0];
+    v12 = stateCopy;
+    v8 = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v11 applyInMemoryChanges:!changesCopy secureDelete:0];
   }
 
   else
@@ -2762,61 +2762,61 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_saveWindowState:(id)a3
+- (BOOL)_saveWindowState:(id)state
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 localTabGroup];
-  v30 = [v5 bookmark];
+  stateCopy = state;
+  localTabGroup = [stateCopy localTabGroup];
+  bookmark = [localTabGroup bookmark];
 
-  v6 = [v4 localTabGroup];
-  v7 = [v6 allTabs];
-  v8 = [v7 count];
+  localTabGroup2 = [stateCopy localTabGroup];
+  allTabs = [localTabGroup2 allTabs];
+  v8 = [allTabs count];
 
   if (!v8)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v30 privacyPreservingDescription];
+      [bookmark privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WebBookmarkTabCollection _saveWindowState:];
     }
   }
 
-  if ([(WebBookmarkCollection *)self _saveBookmark:v30 withSpecialID:0 updateGenerationIfNeeded:1])
+  if ([(WebBookmarkCollection *)self _saveBookmark:bookmark withSpecialID:0 updateGenerationIfNeeded:1])
   {
-    v10 = [v4 privateTabGroup];
-    v11 = [v10 bookmark];
+    privateTabGroup = [stateCopy privateTabGroup];
+    bookmark2 = [privateTabGroup bookmark];
 
-    if ([(WebBookmarkCollection *)self _saveBookmark:v11 withSpecialID:0 updateGenerationIfNeeded:1])
+    if ([(WebBookmarkCollection *)self _saveBookmark:bookmark2 withSpecialID:0 updateGenerationIfNeeded:1])
     {
-      v12 = [v4 activeTabGroupUUID];
-      v29 = [(WebBookmarkCollection *)self bookmarkWithUUID:v12];
+      activeTabGroupUUID = [stateCopy activeTabGroupUUID];
+      v29 = [(WebBookmarkCollection *)self bookmarkWithUUID:activeTabGroupUUID];
 
-      if (-[WebBookmarkTabCollection _saveWindowState:activeTabGroupID:localTabGroupID:privateTabGroupID:](self, "_saveWindowState:activeTabGroupID:localTabGroupID:privateTabGroupID:", v4, -[NSObject identifier](v29, "identifier"), [v30 identifier], -[NSObject identifier](v11, "identifier")))
+      if (-[WebBookmarkTabCollection _saveWindowState:activeTabGroupID:localTabGroupID:privateTabGroupID:](self, "_saveWindowState:activeTabGroupID:localTabGroupID:privateTabGroupID:", stateCopy, -[NSObject identifier](v29, "identifier"), [bookmark identifier], -[NSObject identifier](bookmark2, "identifier")))
       {
-        v13 = [v4 uuid];
-        v14 = [(WebBookmarkTabCollection *)self _windowIDForUUID:v13];
+        uuid = [stateCopy uuid];
+        v14 = [(WebBookmarkTabCollection *)self _windowIDForUUID:uuid];
 
-        [v4 setIdentifier:v14];
+        [stateCopy setIdentifier:v14];
         v42 = 0;
         v43 = &v42;
         v44 = 0x2020000000;
         v45 = 0;
-        v15 = [v4 tabGroupsToActiveTabs];
+        tabGroupsToActiveTabs = [stateCopy tabGroupsToActiveTabs];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __45__WebBookmarkTabCollection__saveWindowState___block_invoke;
         v37[3] = &unk_279E75990;
         v37[4] = self;
         v40 = v14;
-        v28 = v4;
+        v28 = stateCopy;
         v38 = v28;
         v39 = &v42;
-        [v15 enumerateKeysAndObjectsUsingBlock:v37];
+        [tabGroupsToActiveTabs enumerateKeysAndObjectsUsingBlock:v37];
 
-        v16 = [v28 profilesToActiveTabGroups];
+        profilesToActiveTabGroups = [v28 profilesToActiveTabGroups];
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
         v35[2] = __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394;
@@ -2824,7 +2824,7 @@ LABEL_7:
         v36 = v14;
         v35[4] = self;
         v35[5] = &v42;
-        [v16 enumerateKeysAndObjectsUsingBlock:v35];
+        [profilesToActiveTabGroups enumerateKeysAndObjectsUsingBlock:v35];
 
         if ([(WebBookmarkTabCollection *)self _clearUnnamedTabGroupsInWindowWithID:v14])
         {
@@ -2832,8 +2832,8 @@ LABEL_7:
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v17 = [v28 unnamedTabGroupUUIDs];
-          v18 = [v17 countByEnumeratingWithState:&v31 objects:v41 count:16];
+          unnamedTabGroupUUIDs = [v28 unnamedTabGroupUUIDs];
+          v18 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v31 objects:v41 count:16];
           if (v18)
           {
             v19 = *v32;
@@ -2843,7 +2843,7 @@ LABEL_7:
               {
                 if (*v32 != v19)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(unnamedTabGroupUUIDs);
                 }
 
                 v21 = [(WebBookmarkCollection *)self bookmarkWithUUID:*(*(&v31 + 1) + 8 * i)];
@@ -2862,7 +2862,7 @@ LABEL_7:
                 }
               }
 
-              v18 = [v17 countByEnumeratingWithState:&v31 objects:v41 count:16];
+              v18 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v31 objects:v41 count:16];
               if (v18)
               {
                 continue;
@@ -2895,7 +2895,7 @@ LABEL_34:
       v23 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [v4 uuid];
+        [stateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         [WebBookmarkTabCollection _saveWindowState:];
       }
@@ -2906,9 +2906,9 @@ LABEL_34:
       v29 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        [v11 UUID];
+        [bookmark2 UUID];
         objc_claimAutoreleasedReturnValue();
-        [v4 uuid];
+        [stateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         [WebBookmarkTabCollection _saveWindowState:];
       }
@@ -2920,12 +2920,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v11 = WBS_LOG_CHANNEL_PREFIXTabGroup();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  bookmark2 = WBS_LOG_CHANNEL_PREFIXTabGroup();
+  if (os_log_type_enabled(bookmark2, OS_LOG_TYPE_ERROR))
   {
-    [v30 UUID];
+    [bookmark UUID];
     objc_claimAutoreleasedReturnValue();
-    [v4 uuid];
+    [stateCopy uuid];
     objc_claimAutoreleasedReturnValue();
     [WebBookmarkTabCollection _saveWindowState:];
   }
@@ -2985,39 +2985,39 @@ void __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394(uint64_t
   }
 }
 
-- (BOOL)closeWindowState:(id)a3
+- (BOOL)closeWindowState:(id)state
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v4 setDateClosed:v5];
+  stateCopy = state;
+  date = [MEMORY[0x277CBEAA8] date];
+  [stateCopy setDateClosed:date];
 
-  LOBYTE(self) = [(WebBookmarkTabCollection *)self saveWindowState:v4];
+  LOBYTE(self) = [(WebBookmarkTabCollection *)self saveWindowState:stateCopy];
   return self;
 }
 
-- (BOOL)_deleteWindowState:(id)a3
+- (BOOL)_deleteWindowState:(id)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
+    uuid = [stateCopy uuid];
     *buf = 138543362;
-    v30 = v6;
+    v30 = uuid;
     _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_DEFAULT, "Deleting windowState with UUID: %{public}@", buf, 0xCu);
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 uuid];
-  v9 = [(WebBookmarkTabCollection *)self _uuidForQueries:v8];
+  uuid2 = [stateCopy uuid];
+  v9 = [(WebBookmarkTabCollection *)self _uuidForQueries:uuid2];
   v10 = [v7 stringWithFormat:@"WHERE uuid = %@", v9];
 
   if ([(WebBookmarkTabCollection *)self _deleteMatchingWindows:v10 logAsError:0])
   {
-    v11 = [v4 localTabGroup];
-    v12 = [v11 uuid];
-    v13 = [(WebBookmarkCollection *)self bookmarkWithUUID:v12];
+    localTabGroup = [stateCopy localTabGroup];
+    uuid3 = [localTabGroup uuid];
+    v13 = [(WebBookmarkCollection *)self bookmarkWithUUID:uuid3];
 
     if ([v13 identifier] && !-[WebBookmarkCollection deleteBookmark:leaveTombstone:](self, "deleteBookmark:leaveTombstone:", v13, 0))
     {
@@ -3030,8 +3030,8 @@ void __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394(uint64_t
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v14 = [v4 unnamedTabGroupUUIDs];
-      v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      unnamedTabGroupUUIDs = [stateCopy unnamedTabGroupUUIDs];
+      v15 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v15)
       {
         v16 = *v25;
@@ -3041,7 +3041,7 @@ void __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394(uint64_t
           {
             if (*v25 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(unnamedTabGroupUUIDs);
             }
 
             v18 = [(WebBookmarkCollection *)self bookmarkWithUUID:*(*(&v24 + 1) + 8 * i)];
@@ -3053,7 +3053,7 @@ void __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394(uint64_t
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v15 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v15)
           {
             continue;
@@ -3063,13 +3063,13 @@ void __45__WebBookmarkTabCollection__saveWindowState___block_invoke_394(uint64_t
         }
       }
 
-      v19 = [v4 privateTabGroup];
-      v20 = [v19 uuid];
-      v14 = [(WebBookmarkCollection *)self bookmarkWithUUID:v20];
+      privateTabGroup = [stateCopy privateTabGroup];
+      uuid4 = [privateTabGroup uuid];
+      unnamedTabGroupUUIDs = [(WebBookmarkCollection *)self bookmarkWithUUID:uuid4];
 
-      if ([v14 identifier])
+      if ([unnamedTabGroupUUIDs identifier])
       {
-        v21 = [(WebBookmarkCollection *)self deleteBookmark:v14 leaveTombstone:0];
+        v21 = [(WebBookmarkCollection *)self deleteBookmark:unnamedTabGroupUUIDs leaveTombstone:0];
       }
 
       else
@@ -3090,20 +3090,20 @@ LABEL_21:
   return v21;
 }
 
-- (BOOL)_deleteWindowState:(id)a3 forApplyingInMemoryChanges:(BOOL)a4
+- (BOOL)_deleteWindowState:(id)state forApplyingInMemoryChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  changesCopy = changes;
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __74__WebBookmarkTabCollection__deleteWindowState_forApplyingInMemoryChanges___block_invoke;
     v11[3] = &unk_279E75968;
     v11[4] = self;
-    v12 = v6;
-    v8 = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v11 applyInMemoryChanges:!v4 secureDelete:1];
+    v12 = stateCopy;
+    v8 = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v11 applyInMemoryChanges:!changesCopy secureDelete:1];
   }
 
   else
@@ -3120,16 +3120,16 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)deleteWindowStates:(id)a3
+- (BOOL)deleteWindowStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__WebBookmarkTabCollection_deleteWindowStates___block_invoke;
   v7[3] = &unk_279E75968;
-  v8 = v4;
-  v9 = self;
-  v5 = v4;
+  v8 = statesCopy;
+  selfCopy = self;
+  v5 = statesCopy;
   LOBYTE(self) = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v7 secureDelete:1];
 
   return self;
@@ -3191,8 +3191,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(WebBookmarkTabCollection *)self windowStates];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  windowStates = [(WebBookmarkTabCollection *)self windowStates];
+  v4 = [windowStates countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -3202,7 +3202,7 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(windowStates);
         }
 
         if (![(WebBookmarkTabCollection *)self _deleteWindowState:*(*(&v10 + 1) + 8 * i)])
@@ -3212,7 +3212,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [windowStates countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -3241,36 +3241,36 @@ LABEL_11:
 
 - (BOOL)_deleteWindowsNotInLastSession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(WebBookmarkTabCollection *)self _windowStatesWithFilter:@"WHERE is_last_session = 0"];
-  LOBYTE(v2) = [(WebBookmarkTabCollection *)v2 deleteWindowStates:v3];
+  LOBYTE(selfCopy) = [(WebBookmarkTabCollection *)selfCopy deleteWindowStates:v3];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4
+- (BOOL)saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  stringCopy = string;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__WebBookmarkTabCollection_saveWindowRestorationArchiveData_forWindowUUIDString___block_invoke;
   v11[3] = &unk_279E759E0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = dataCopy;
+  v13 = stringCopy;
+  v8 = stringCopy;
+  v9 = dataCopy;
   LOBYTE(self) = [(WebBookmarkCollection *)self performDatabaseUpdatesWithTransaction:v11 secureDelete:0];
 
   return self;
 }
 
-- (BOOL)_saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4
+- (BOOL)_saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  stringCopy = string;
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v17, self->super._db, [@"UPDATE windows SET restoration_archive = ? WHERE uuid = ?" UTF8String]);
   if ((v19 & 1) == 0)
   {
@@ -3281,11 +3281,11 @@ LABEL_7:
   }
 
   v8 = v18;
-  v9 = v6;
-  sqlite3_bind_blob64(v8, 1, [v6 bytes], objc_msgSend(v6, "length"), 0xFFFFFFFFFFFFFFFFLL);
+  v9 = dataCopy;
+  sqlite3_bind_blob64(v8, 1, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0xFFFFFFFFFFFFFFFFLL);
   v10 = v18;
-  v11 = v7;
-  sqlite3_bind_text(v10, 2, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  v11 = stringCopy;
+  sqlite3_bind_text(v10, 2, [stringCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   v12 = sqlite3_step(v18);
   if (v12 != 101)
   {
@@ -3298,9 +3298,9 @@ LABEL_7:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v22 = v7;
+    v22 = stringCopy;
     v23 = 2048;
-    v24 = v6;
+    v24 = dataCopy;
     _os_log_impl(&dword_272C20000, v13, OS_LOG_TYPE_INFO, "WindowState (%{public}@) saved with restoration archive(%p).", buf, 0x16u);
   }
 
@@ -3337,8 +3337,8 @@ LABEL_7:
 
 - (BOOL)_deleteAllLocalTabsAndGroups
 {
-  v3 = [(WebBookmarkTabCollection *)self _specialTabFolderUUIDsForQueries];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  _specialTabFolderUUIDsForQueries = [(WebBookmarkTabCollection *)self _specialTabFolderUUIDsForQueries];
+  v4 = [_specialTabFolderUUIDsForQueries componentsJoinedByString:{@", "}];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM bookmarks WHERE syncable = 0 AND (parent != 0 OR external_uuid NOT IN (%@))", v4];
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v9, self->super._db, [v5 UTF8String]);
@@ -3364,9 +3364,9 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_markTabsClosed:(id)a3
+- (BOOL)_markTabsClosed:(id)closed
 {
-  v4 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_422];
+  v4 = [closed safari_mapObjectsUsingBlock:&__block_literal_global_422];
   v5 = [v4 componentsJoinedByString:{@", "}];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE bookmarks SET date_closed = %f WHERE id in (%@)", v6, v5];
@@ -3391,14 +3391,14 @@ id __44__WebBookmarkTabCollection__markTabsClosed___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (BOOL)_markWindowStatesAsLastSession:(id)a3
+- (BOOL)_markWindowStatesAsLastSession:(id)session
 {
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__WebBookmarkTabCollection__markWindowStatesAsLastSession___block_invoke;
   v14[3] = &unk_279E75A28;
   v14[4] = self;
-  v4 = [a3 safari_mapObjectsUsingBlock:v14];
+  v4 = [session safari_mapObjectsUsingBlock:v14];
   v5 = [v4 componentsJoinedByString:{@", "}];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE windows SET is_last_session = CASE WHEN uuid in (%@) THEN 1 ELSE 0 END", v5];
   WebBookmarks::BookmarkSQLStatement::BookmarkSQLStatement(v10, self->super._db, [v6 UTF8String]);
@@ -3433,21 +3433,21 @@ id __59__WebBookmarkTabCollection__markWindowStatesAsLastSession___block_invoke(
   return v4;
 }
 
-- (BOOL)allowsScopedBookmarksInTabGroup:(id)a3
+- (BOOL)allowsScopedBookmarksInTabGroup:(id)group
 {
-  v3 = a3;
-  if (([v3 supportsTabGroupFavorites] & 1) != 0 && objc_msgSend(v3, "isSyncable"))
+  groupCopy = group;
+  if (([groupCopy supportsTabGroupFavorites] & 1) != 0 && objc_msgSend(groupCopy, "isSyncable"))
   {
-    v4 = [v3 bookmark];
-    if ([v4 specialID])
+    bookmark = [groupCopy bookmark];
+    if ([bookmark specialID])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v6 = [v3 bookmark];
-      v5 = [v6 isHidden] ^ 1;
+      bookmark2 = [groupCopy bookmark];
+      v5 = [bookmark2 isHidden] ^ 1;
     }
   }
 
@@ -3459,48 +3459,48 @@ id __59__WebBookmarkTabCollection__markWindowStatesAsLastSession___block_invoke(
   return v5;
 }
 
-- (BOOL)_generateServerIdIfNeededForTabGroup:(id)a3
+- (BOOL)_generateServerIdIfNeededForTabGroup:(id)group
 {
-  v4 = [a3 bookmark];
-  LOBYTE(self) = [(WebBookmarkTabCollection *)self _generateServerIdIfNeededForTabGroupBookmark:v4];
+  bookmark = [group bookmark];
+  LOBYTE(self) = [(WebBookmarkTabCollection *)self _generateServerIdIfNeededForTabGroupBookmark:bookmark];
 
   return self;
 }
 
-- (BOOL)_generateServerIdIfNeededForTabGroupBookmark:(id)a3
+- (BOOL)_generateServerIdIfNeededForTabGroupBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [v4 serverID];
+  bookmarkCopy = bookmark;
+  serverID = [bookmarkCopy serverID];
 
-  if (v5)
+  if (serverID)
   {
     v6 = 1;
   }
 
-  else if ([v4 identifier] == 0x7FFFFFFF)
+  else if ([bookmarkCopy identifier] == 0x7FFFFFFF)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = -[WebBookmarkCollection serverIDForBookmarkID:](self, "serverIDForBookmarkID:", [v4 identifier]);
+    v7 = -[WebBookmarkCollection serverIDForBookmarkID:](self, "serverIDForBookmarkID:", [bookmarkCopy identifier]);
     if (v7)
     {
-      [v4 setServerID:v7];
+      [bookmarkCopy setServerID:v7];
       v6 = 1;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCAD78] UUID];
-      v9 = [v8 UUIDString];
-      v10 = [(WebBookmarkCollection *)self setServerID:v9 forBookmark:v4];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v10 = [(WebBookmarkCollection *)self setServerID:uUIDString forBookmark:bookmarkCopy];
 
       if (v10)
       {
-        v11 = -[WebBookmarkCollection serverIDForBookmarkID:](self, "serverIDForBookmarkID:", [v4 identifier]);
-        [v4 setServerID:v11];
+        v11 = -[WebBookmarkCollection serverIDForBookmarkID:](self, "serverIDForBookmarkID:", [bookmarkCopy identifier]);
+        [bookmarkCopy setServerID:v11];
       }
 
       else
@@ -3516,30 +3516,30 @@ id __59__WebBookmarkTabCollection__markWindowStatesAsLastSession___block_invoke(
   return v6;
 }
 
-- (id)generateNewServerIDForBookmark:(id)a3
+- (id)generateNewServerIDForBookmark:(id)bookmark
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 isFolder] || objc_msgSend(v4, "subtype") != 1)
+  bookmarkCopy = bookmark;
+  if (![bookmarkCopy isFolder] || objc_msgSend(bookmarkCopy, "subtype") != 1)
   {
     goto LABEL_12;
   }
 
-  if ([v4 parentID] != 6)
+  if ([bookmarkCopy parentID] != 6)
   {
 LABEL_9:
-    v6 = -[WebBookmarkCollection bookmarkWithID:](self, "bookmarkWithID:", [v4 parentID]);
+    v6 = -[WebBookmarkCollection bookmarkWithID:](self, "bookmarkWithID:", [bookmarkCopy parentID]);
     if ([v6 isFolder] && !objc_msgSend(v6, "subtype"))
     {
-      v8 = [v6 serverID];
-      v9 = [@"TopScopedBookmarkList_" stringByAppendingString:v8];
+      serverID = [v6 serverID];
+      v9 = [@"TopScopedBookmarkList_" stringByAppendingString:serverID];
       goto LABEL_17;
     }
 
 LABEL_12:
     v13.receiver = self;
     v13.super_class = WebBookmarkTabCollection;
-    v10 = [(WebBookmarkCollection *)&v13 generateNewServerIDForBookmark:v4];
+    v10 = [(WebBookmarkCollection *)&v13 generateNewServerIDForBookmark:bookmarkCopy];
     goto LABEL_13;
   }
 
@@ -3547,21 +3547,21 @@ LABEL_12:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v15 = [v4 identifier];
+    identifier = [bookmarkCopy identifier];
     _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_DEFAULT, "Generating new server id for a top scoped bookmark folder with id %d in the recovered folder.", buf, 8u);
   }
 
-  v6 = [(WebBookmarkCollection *)self syncDataForBookmark:v4];
-  v7 = [v6 parentRecordID];
-  v8 = [v7 recordName];
+  v6 = [(WebBookmarkCollection *)self syncDataForBookmark:bookmarkCopy];
+  parentRecordID = [v6 parentRecordID];
+  serverID = [parentRecordID recordName];
 
-  if (!v8)
+  if (!serverID)
   {
 
     goto LABEL_9;
   }
 
-  v9 = [@"TopScopedBookmarkList_" stringByAppendingString:v8];
+  v9 = [@"TopScopedBookmarkList_" stringByAppendingString:serverID];
 LABEL_17:
   v10 = v9;
 
@@ -3571,42 +3571,42 @@ LABEL_13:
   return v10;
 }
 
-- (id)_topScopedBookmarkListServerIdForTabGroup:(id)a3
+- (id)_topScopedBookmarkListServerIdForTabGroup:(id)group
 {
-  v3 = [a3 bookmark];
-  v4 = [v3 serverID];
-  v5 = [@"TopScopedBookmarkList_" stringByAppendingString:v4];
+  bookmark = [group bookmark];
+  serverID = [bookmark serverID];
+  v5 = [@"TopScopedBookmarkList_" stringByAppendingString:serverID];
 
   return v5;
 }
 
-- (BOOL)createTopScopedBookmarkListForTabGroup:(id)a3
+- (BOOL)createTopScopedBookmarkListForTabGroup:(id)group
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(WebBookmarkTabCollection *)self allowsScopedBookmarksInTabGroup:v4])
+  groupCopy = group;
+  if (![(WebBookmarkTabCollection *)self allowsScopedBookmarksInTabGroup:groupCopy])
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 uuid];
-  v6 = [(WebBookmarkCollection *)self identifierOfBookmarkWithUUID:v5];
+  uuid = [groupCopy uuid];
+  v6 = [(WebBookmarkCollection *)self identifierOfBookmarkWithUUID:uuid];
 
   if (v6 == 0x7FFFFFFF)
   {
     goto LABEL_5;
   }
 
-  if (-[WebBookmarkTabCollection _generateServerIdIfNeededForTabGroup:](self, "_generateServerIdIfNeededForTabGroup:", v4) && (-[WebBookmarkTabCollection _listOfScopedBookmarkFoldersInTabGroup:](self, "_listOfScopedBookmarkFoldersInTabGroup:", v4), v7 = objc_claimAutoreleasedReturnValue(), [v7 bookmarkArray], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9))
+  if (-[WebBookmarkTabCollection _generateServerIdIfNeededForTabGroup:](self, "_generateServerIdIfNeededForTabGroup:", groupCopy) && (-[WebBookmarkTabCollection _listOfScopedBookmarkFoldersInTabGroup:](self, "_listOfScopedBookmarkFoldersInTabGroup:", groupCopy), v7 = objc_claimAutoreleasedReturnValue(), [v7 bookmarkArray], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9))
   {
-    v13 = [(WebBookmarkTabCollection *)self _topScopedBookmarkListServerIdForTabGroup:v4];
+    v13 = [(WebBookmarkTabCollection *)self _topScopedBookmarkListServerIdForTabGroup:groupCopy];
     v14 = [(WebBookmarkCollection *)self bookmarkIDForServerID:v13 excludeDeletedBookmarks:0];
     if (v14 == 0x7FFFFFFF)
     {
       v15 = [WebBookmark alloc];
-      v16 = [v4 identifier];
-      v17 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-      v18 = [(WebBookmark *)v15 initFolderWithParentID:v16 subtype:1 deviceIdentifier:v17 collectionType:1];
+      identifier = [groupCopy identifier];
+      currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+      v18 = [(WebBookmark *)v15 initFolderWithParentID:identifier subtype:1 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
       [v18 setTitle:@"TopScopedBookmarkList"];
       [v18 setServerID:v13];
@@ -3618,14 +3618,14 @@ LABEL_13:
       v19 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v4 identifier];
-        v21 = [v4 uuid];
+        identifier2 = [groupCopy identifier];
+        uuid2 = [groupCopy uuid];
         v22[0] = 67109635;
         v22[1] = v14;
         v23 = 1024;
-        v24 = v20;
+        v24 = identifier2;
         v25 = 2113;
-        v26 = v21;
+        v26 = uuid2;
         _os_log_error_impl(&dword_272C20000, v19, OS_LOG_TYPE_ERROR, "Detected orphaned TopScopedBookmarkList %d that belongs to Tab Group %d(%{private}@).", v22, 0x18u);
       }
 
@@ -3643,53 +3643,53 @@ LABEL_5:
   return v10;
 }
 
-- (id)topScopedBookmarkListForTabGroup:(id)a3 onQueue:(id)a4
+- (id)topScopedBookmarkListForTabGroup:(id)group onQueue:(id)queue
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(WebBookmarkTabCollection *)self allowsScopedBookmarksInTabGroup:v6])
+  groupCopy = group;
+  queueCopy = queue;
+  if (![(WebBookmarkTabCollection *)self allowsScopedBookmarksInTabGroup:groupCopy])
   {
     v17 = 0;
     goto LABEL_17;
   }
 
-  v8 = [(WebBookmarkTabCollection *)self _listOfScopedBookmarkFoldersInTabGroup:v6];
-  v9 = [v8 bookmarkArray];
-  v10 = [v9 count];
+  v8 = [(WebBookmarkTabCollection *)self _listOfScopedBookmarkFoldersInTabGroup:groupCopy];
+  bookmarkArray = [v8 bookmarkArray];
+  v10 = [bookmarkArray count];
 
   if (!v10)
   {
-    if (![(WebBookmarkTabCollection *)self createTopScopedBookmarkListForTabGroup:v6])
+    if (![(WebBookmarkTabCollection *)self createTopScopedBookmarkListForTabGroup:groupCopy])
     {
       goto LABEL_14;
     }
 
-    v11 = [(WebBookmarkTabCollection *)self _listOfScopedBookmarkFoldersInTabGroup:v6];
+    v11 = [(WebBookmarkTabCollection *)self _listOfScopedBookmarkFoldersInTabGroup:groupCopy];
 
     v8 = v11;
   }
 
-  v12 = [v8 bookmarkArray];
-  v13 = [v12 count];
+  bookmarkArray2 = [v8 bookmarkArray];
+  v13 = [bookmarkArray2 count];
 
   if (v13)
   {
-    v14 = [v8 bookmarkArray];
-    v15 = [v14 firstObject];
-    v16 = [v15 identifier];
+    bookmarkArray3 = [v8 bookmarkArray];
+    firstObject = [bookmarkArray3 firstObject];
+    identifier = [firstObject identifier];
   }
 
   else
   {
-    v14 = [(WebBookmarkTabCollection *)self _topScopedBookmarkListServerIdForTabGroup:v6];
-    v16 = [(WebBookmarkCollection *)self bookmarkIDForServerID:v14 excludeDeletedBookmarks:0];
+    bookmarkArray3 = [(WebBookmarkTabCollection *)self _topScopedBookmarkListServerIdForTabGroup:groupCopy];
+    identifier = [(WebBookmarkCollection *)self bookmarkIDForServerID:bookmarkArray3 excludeDeletedBookmarks:0];
   }
 
-  if (v16 && v16 != 0x7FFFFFFF)
+  if (identifier && identifier != 0x7FFFFFFF)
   {
-    v19 = [[WebBookmarkListQuery alloc] initWithFolderID:v16 inCollection:self usingFilter:0 options:0];
-    v17 = [[WebBookmarkList alloc] initWithQuery:v19 skipOffset:0 collection:self queue:v7];
+    v19 = [[WebBookmarkListQuery alloc] initWithFolderID:identifier inCollection:self usingFilter:0 options:0];
+    v17 = [[WebBookmarkList alloc] initWithQuery:v19 skipOffset:0 collection:self queue:queueCopy];
 
     goto LABEL_16;
   }
@@ -3697,8 +3697,8 @@ LABEL_5:
   v18 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    [v6 identifier];
-    [v6 uuid];
+    [groupCopy identifier];
+    [groupCopy uuid];
     objc_claimAutoreleasedReturnValue();
     [WebBookmarkTabCollection topScopedBookmarkListForTabGroup:onQueue:];
   }
@@ -3713,10 +3713,10 @@ LABEL_17:
   return v17;
 }
 
-- (id)_listOfScopedBookmarkFoldersInTabGroup:(id)a3
+- (id)_listOfScopedBookmarkFoldersInTabGroup:(id)group
 {
-  v4 = a3;
-  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [v4 identifier], self, 0, 13);
+  groupCopy = group;
+  v5 = -[WebBookmarkListQuery initWithFolderID:inCollection:usingFilter:options:]([WebBookmarkListQuery alloc], "initWithFolderID:inCollection:usingFilter:options:", [groupCopy identifier], self, 0, 13);
   v6 = [[WebBookmarkList alloc] initWithQuery:v5 skipOffset:0 collection:self];
 
   return v6;
@@ -3736,13 +3736,13 @@ LABEL_17:
 
 - (id)_specialTabFolderUUIDsForQueries
 {
-  v3 = [(WebBookmarkTabCollection *)self _specialTabFolderUUIDs];
+  _specialTabFolderUUIDs = [(WebBookmarkTabCollection *)self _specialTabFolderUUIDs];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__WebBookmarkTabCollection__specialTabFolderUUIDsForQueries__block_invoke;
   v6[3] = &unk_279E75A50;
   v6[4] = self;
-  v4 = [v3 safari_mapObjectsUsingBlock:v6];
+  v4 = [_specialTabFolderUUIDs safari_mapObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -3754,20 +3754,20 @@ id __60__WebBookmarkTabCollection__specialTabFolderUUIDsForQueries__block_invoke
   return v2;
 }
 
-- (id)_specialTabsWithUUID:(id)a3 privateBrowsing:(BOOL)a4
+- (id)_specialTabsWithUUID:(id)d privateBrowsing:(BOOL)browsing
 {
-  v6 = [(WebBookmarkCollection *)self bookmarkWithUUID:a3];
+  v6 = [(WebBookmarkCollection *)self bookmarkWithUUID:d];
   v7 = v6;
   if (v6)
   {
     v8 = -[WebBookmarkCollection listWithID:](self, "listWithID:", [v6 identifier]);
-    v9 = [v8 bookmarkArray];
+    bookmarkArray = [v8 bookmarkArray];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__WebBookmarkTabCollection__specialTabsWithUUID_privateBrowsing___block_invoke;
     v12[3] = &__block_descriptor_33_e28___WBTab_16__0__WebBookmark_8l;
-    v13 = a4;
-    v10 = [v9 safari_mapObjectsUsingBlock:v12];
+    browsingCopy = browsing;
+    v10 = [bookmarkArray safari_mapObjectsUsingBlock:v12];
   }
 
   else
@@ -3822,18 +3822,18 @@ WBTab *__65__WebBookmarkTabCollection__specialTabsWithUUID_privateBrowsing___blo
   return v4;
 }
 
-- (int)_cachedPinnedTabsFolderIDForProfileWithIdentifier:(id)a3
+- (int)_cachedPinnedTabsFolderIDForProfileWithIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_cachedPinnedTabsFolderIDByProfileIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_cachedPinnedTabsFolderIDByProfileIdentifier objectForKeyedSubscript:identifier];
   v5 = v4;
   if (v4)
   {
-    v3 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   if (v5)
   {
-    return v3;
+    return intValue;
   }
 
   else
@@ -3842,71 +3842,71 @@ WBTab *__65__WebBookmarkTabCollection__specialTabsWithUUID_privateBrowsing___blo
   }
 }
 
-- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)a3
+- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  LODWORD(v5) = [(WebBookmarkTabCollection *)self _cachedPinnedTabsFolderIDForProfileWithIdentifier:v4];
-  if (v5 == 0x7FFFFFFF)
+  identifierCopy = identifier;
+  LODWORD(identifier) = [(WebBookmarkTabCollection *)self _cachedPinnedTabsFolderIDForProfileWithIdentifier:identifierCopy];
+  if (identifier == 0x7FFFFFFF)
   {
-    v6 = [(WebBookmarkCollection *)self bookmarkWithUUID:v4];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"pinned-%@", v4];
-    -[WebBookmarkTabCollection _createSpecialTabsFolderWithUUIDIfNeeded:withParentID:](self, "_createSpecialTabsFolderWithUUIDIfNeeded:withParentID:", v7, [v6 identifier]);
-    v8 = [(WebBookmarkCollection *)self bookmarkWithUUID:v7];
-    v5 = [v8 identifier];
+    v6 = [(WebBookmarkCollection *)self bookmarkWithUUID:identifierCopy];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"pinned-%@", identifierCopy];
+    -[WebBookmarkTabCollection _createSpecialTabsFolderWithUUIDIfNeeded:withParentID:](self, "_createSpecialTabsFolderWithUUIDIfNeeded:withParentID:", identifierCopy, [v6 identifier]);
+    v8 = [(WebBookmarkCollection *)self bookmarkWithUUID:identifierCopy];
+    identifier = [v8 identifier];
 
-    [(WebBookmarkTabCollection *)self _cachePinnedTabsFolderID:v5 forProfileWithIdentifier:v4];
+    [(WebBookmarkTabCollection *)self _cachePinnedTabsFolderID:identifier forProfileWithIdentifier:identifierCopy];
   }
 
+  return identifier;
+}
+
+- (id)pinnedTabsForProfileWithIdentifier:(id)identifier
+{
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"pinned-%@", identifier];
+  v5 = [(WebBookmarkTabCollection *)self _specialTabsWithUUID:identifier privateBrowsing:0];
+
   return v5;
 }
 
-- (id)pinnedTabsForProfileWithIdentifier:(id)a3
+- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"pinned-%@", a3];
-  v5 = [(WebBookmarkTabCollection *)self _specialTabsWithUUID:v4 privateBrowsing:0];
-
-  return v5;
-}
-
-- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)a3
-{
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D49BD8]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D49BD8]])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(WebBookmarkCollection *)self bookmarkWithUUID:v4];
+    v5 = [(WebBookmarkCollection *)self bookmarkWithUUID:identifierCopy];
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"fvs-%@", v4];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"fvs-%@", identifierCopy];
   if (v5)
   {
-    v7 = [v5 identifier];
+    identifier = [v5 identifier];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFLL;
+    identifier = 0x7FFFFFFFLL;
   }
 
-  [(WebBookmarkTabCollection *)self _createFrequentlyVisitedSitesFolderWithUUIDIfNeeded:v6 withParentID:v7];
-  v8 = [(WebBookmarkCollection *)self bookmarkWithUUID:v6];
-  v9 = [v8 identifier];
+  [(WebBookmarkTabCollection *)self _createFrequentlyVisitedSitesFolderWithUUIDIfNeeded:identifierCopy withParentID:identifier];
+  v8 = [(WebBookmarkCollection *)self bookmarkWithUUID:identifierCopy];
+  identifier2 = [v8 identifier];
 
-  return v9;
+  return identifier2;
 }
 
-- (id)generatePositionBeforeFirstRecordInParentWithServerID:(id)a3
+- (id)generatePositionBeforeFirstRecordInParentWithServerID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v6 = *MEMORY[0x277D49BC0];
-  if (v4)
+  if (dCopy)
   {
-    v7 = v4;
+    v7 = dCopy;
   }
 
   else
@@ -3940,28 +3940,28 @@ WBTab *__65__WebBookmarkTabCollection__specialTabsWithUUID_privateBrowsing___blo
   }
 
   v13 = MEMORY[0x277D49E80];
-  v14 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-  v15 = [v13 positionBetweenPosition:0 andPosition:v9 withDeviceIdentifier:v14 changeID:{-[WebBookmarkCollection nextDatabaseSyncChangeID](self, "nextDatabaseSyncChangeID")}];
+  currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+  v15 = [v13 positionBetweenPosition:0 andPosition:v9 withDeviceIdentifier:currentDeviceIdentifier changeID:{-[WebBookmarkCollection nextDatabaseSyncChangeID](self, "nextDatabaseSyncChangeID")}];
 
   WebBookmarks::BookmarkSQLStatement::~BookmarkSQLStatement(v17);
 
   return v15;
 }
 
-- (int)createLegacyPlaceholderTabGroupBookmarksForSharedTabGroup:(id)a3
+- (int)createLegacyPlaceholderTabGroupBookmarksForSharedTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [WebBookmark alloc];
-  v6 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-  v7 = [(WebBookmark *)v5 initFolderWithParentID:0 deviceIdentifier:v6 collectionType:1];
+  currentDeviceIdentifier = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+  v7 = [(WebBookmark *)v5 initFolderWithParentID:0 deviceIdentifier:currentDeviceIdentifier collectionType:1];
 
-  v8 = [v4 serverID];
+  serverID = [groupCopy serverID];
   v9 = *MEMORY[0x277D4A470];
-  v10 = [*MEMORY[0x277D4A470] stringByAppendingString:v8];
+  v10 = [*MEMORY[0x277D4A470] stringByAppendingString:serverID];
   [v7 setServerID:v10];
 
-  v11 = [v4 title];
-  [v7 setTitle:v11];
+  title = [groupCopy title];
+  [v7 setTitle:title];
 
   [v7 _setHidden:1];
   if (![(WebBookmarkCollection *)self _saveAndMoveBookmark:v7 toFolderID:0])
@@ -3969,40 +3969,40 @@ WBTab *__65__WebBookmarkTabCollection__specialTabsWithUUID_privateBrowsing___blo
     goto LABEL_6;
   }
 
-  if (![(WebBookmarkCollection *)self _reorderBookmark:v7 afterBookmark:v4])
+  if (![(WebBookmarkCollection *)self _reorderBookmark:v7 afterBookmark:groupCopy])
   {
     [(WebBookmarkCollection *)self deleteBookmark:v7 leaveTombstone:0];
 LABEL_6:
-    v21 = 0x7FFFFFFF;
+    identifier2 = 0x7FFFFFFF;
     goto LABEL_9;
   }
 
   v12 = _WBSLocalizedString();
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://www.icloud.com/%@/unsupported-safari-version", *MEMORY[0x277D4A0F0]];
   v14 = [WebBookmark alloc];
-  v15 = [v7 identifier];
-  v16 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
-  v17 = [(WebBookmark *)v14 initWithTitle:v12 address:v13 parentID:v15 deviceIdentifier:v16 collectionType:1];
+  identifier = [v7 identifier];
+  currentDeviceIdentifier2 = [(WebBookmarkCollection *)self currentDeviceIdentifier];
+  v17 = [(WebBookmark *)v14 initWithTitle:v12 address:v13 parentID:identifier deviceIdentifier:currentDeviceIdentifier2 collectionType:1];
 
   v18 = MEMORY[0x277CCACA8];
-  v19 = [v4 serverID];
-  v20 = [v18 stringWithFormat:@"%@TabGroupTab_%@", v9, v19];
+  serverID2 = [groupCopy serverID];
+  v20 = [v18 stringWithFormat:@"%@TabGroupTab_%@", v9, serverID2];
   [(WebBookmark *)v17 setServerID:v20];
 
   [(WebBookmark *)v17 _setHidden:1];
   if (-[WebBookmarkCollection _saveAndMoveBookmark:toFolderID:](self, "_saveAndMoveBookmark:toFolderID:", v17, [v7 identifier]))
   {
-    v21 = [v7 identifier];
+    identifier2 = [v7 identifier];
   }
 
   else
   {
     [(WebBookmarkCollection *)self deleteBookmark:v7 leaveTombstone:0];
-    v21 = 0x7FFFFFFF;
+    identifier2 = 0x7FFFFFFF;
   }
 
 LABEL_9:
-  return v21;
+  return identifier2;
 }
 
 - (BOOL)_removePlaceholderTabGroupRecordsOnUpgrade

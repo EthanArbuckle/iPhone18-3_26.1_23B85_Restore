@@ -1,35 +1,35 @@
 @interface HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager
-- (HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager)initWithProfile:(id)a3 featureIdentifier:(id)a4 onboardingVersion:(unint64_t)a5 pairedFeatureAttributesProvider:(id)a6 disableAndExpiryProvider:(id)a7 regionAvailabilityProvider:(id)a8 deviceSupportedProvider:(id)a9 availabilityRequirementSet:(id)a10 cacheDefaults:(id)a11 isStandalone:(BOOL)a12;
+- (HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager)initWithProfile:(id)profile featureIdentifier:(id)identifier onboardingVersion:(unint64_t)version pairedFeatureAttributesProvider:(id)provider disableAndExpiryProvider:(id)expiryProvider regionAvailabilityProvider:(id)availabilityProvider deviceSupportedProvider:(id)supportedProvider availabilityRequirementSet:(id)self0 cacheDefaults:(id)self1 isStandalone:(BOOL)self2;
 - (NSString)description;
-- (id)_currentOnboardingHistoryDictionaryWithError:(id *)a3;
-- (id)_makeOnboardingHistoryWithOnboardingVersion:(int64_t)a3 countryCode:(id)a4 error:(id *)a5;
-- (id)_onboardedCountryCodeSupportedStateWithOnboardingCompletion:(id)a3 error:(id *)a4;
-- (id)_onboardingCompletionWithError:(id *)a3;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
+- (id)_currentOnboardingHistoryDictionaryWithError:(id *)error;
+- (id)_makeOnboardingHistoryWithOnboardingVersion:(int64_t)version countryCode:(id)code error:(id *)error;
+- (id)_onboardedCountryCodeSupportedStateWithOnboardingCompletion:(id)completion error:(id *)error;
+- (id)_onboardingCompletionWithError:(id *)error;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
 - (id)countryAvailabilityVersion;
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3;
-- (id)featureOnboardingRecordWithError:(id *)a3;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3;
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error;
+- (id)featureOnboardingRecordWithError:(id *)error;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error;
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
 - (id)pairedDeviceProvider;
-- (unint64_t)_ineligibilityReasonsForRescindedStatus:(int64_t)a3;
-- (void)_saveFirstOnboardingCompletionDateIfNeeded:(id)a3;
-- (void)_setOnboardingCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 onboardingVersion:(unint64_t)a5 date:(id)a6 settings:(id)a7 completion:(id)a8;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)resetOnboardingWithCompletion:(id)a3;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (unint64_t)_ineligibilityReasonsForRescindedStatus:(int64_t)status;
+- (void)_saveFirstOnboardingCompletionDateIfNeeded:(id)needed;
+- (void)_setOnboardingCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance onboardingVersion:(unint64_t)version date:(id)date settings:(id)settings completion:(id)completion;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)resetOnboardingWithCompletion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
 @end
 
 @implementation HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager
@@ -39,39 +39,39 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p: %@>", v5, self, v6];
+  featureIdentifier = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p: %@>", v5, self, featureIdentifier];
 
   return v7;
 }
 
-- (HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager)initWithProfile:(id)a3 featureIdentifier:(id)a4 onboardingVersion:(unint64_t)a5 pairedFeatureAttributesProvider:(id)a6 disableAndExpiryProvider:(id)a7 regionAvailabilityProvider:(id)a8 deviceSupportedProvider:(id)a9 availabilityRequirementSet:(id)a10 cacheDefaults:(id)a11 isStandalone:(BOOL)a12
+- (HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager)initWithProfile:(id)profile featureIdentifier:(id)identifier onboardingVersion:(unint64_t)version pairedFeatureAttributesProvider:(id)provider disableAndExpiryProvider:(id)expiryProvider regionAvailabilityProvider:(id)availabilityProvider deviceSupportedProvider:(id)supportedProvider availabilityRequirementSet:(id)self0 cacheDefaults:(id)self1 isStandalone:(BOOL)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v33 = a9;
-  v32 = a10;
-  v31 = a11;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  expiryProviderCopy = expiryProvider;
+  availabilityProviderCopy = availabilityProvider;
+  supportedProviderCopy = supportedProvider;
+  setCopy = set;
+  defaultsCopy = defaults;
   v37.receiver = self;
   v37.super_class = HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager;
   v19 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)&v37 init];
   v20 = v19;
   if (v19)
   {
-    v29 = v18;
-    objc_storeWeak(&v19->_profile, v17);
-    objc_storeStrong(&v20->_featureIdentifier, a4);
-    v20->_onboardingVersion = a5;
-    objc_storeStrong(&v20->_pairedFeatureAttributesProvider, a6);
-    objc_storeStrong(&v20->_disableAndExpiryProvider, a7);
-    objc_storeStrong(&v20->_regionAvailabilityProvider, a8);
-    objc_storeStrong(&v20->_deviceSupportedProvider, a9);
-    objc_storeStrong(&v20->_availabilityRequirementSet, a10);
-    objc_storeStrong(&v20->_cacheDefaults, a11);
-    v20->_isStandalone = a12;
+    v29 = identifierCopy;
+    objc_storeWeak(&v19->_profile, profileCopy);
+    objc_storeStrong(&v20->_featureIdentifier, identifier);
+    v20->_onboardingVersion = version;
+    objc_storeStrong(&v20->_pairedFeatureAttributesProvider, provider);
+    objc_storeStrong(&v20->_disableAndExpiryProvider, expiryProvider);
+    objc_storeStrong(&v20->_regionAvailabilityProvider, availabilityProvider);
+    objc_storeStrong(&v20->_deviceSupportedProvider, supportedProvider);
+    objc_storeStrong(&v20->_availabilityRequirementSet, set);
+    objc_storeStrong(&v20->_cacheDefaults, defaults);
+    v20->_isStandalone = standalone;
     v21 = objc_alloc(MEMORY[0x277CCD738]);
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
@@ -80,10 +80,10 @@
     v20->_observers = v24;
 
     WeakRetained = objc_loadWeakRetained(&v20->_profile);
-    v27 = [WeakRetained daemon];
-    [v27 registerDaemonReadyObserver:v20 queue:0];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v20 queue:0];
 
-    v18 = v29;
+    identifierCopy = v29;
   }
 
   return v20;
@@ -92,13 +92,13 @@
 - (id)pairedDeviceProvider
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained daemon];
-  v4 = [v3 nanoRegistryDeviceCapabilityProvider];
+  daemon = [WeakRetained daemon];
+  nanoRegistryDeviceCapabilityProvider = [daemon nanoRegistryDeviceCapabilityProvider];
 
-  return v4;
+  return nanoRegistryDeviceCapabilityProvider;
 }
 
-- (id)featureOnboardingRecordWithError:(id *)a3
+- (id)featureOnboardingRecordWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0;
@@ -118,7 +118,7 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_229486000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] ECG is not onboarded", buf, 0xCu);
     }
 
@@ -131,24 +131,24 @@ LABEL_2:
     v11 = os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
-      v29 = a3;
+      errorCopy = error;
       if (v11)
       {
         v12 = v10;
         [v8 integerValue];
         v13 = NSStringFromHKFeatureAvailabilityOnboardedCountrySupportedState();
         *buf = 138543618;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2114;
         v36 = v13;
         _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarded country state: %{public}@", buf, 0x16u);
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v15 = [WeakRetained featureSettingsManager];
+      featureSettingsManager = [WeakRetained featureSettingsManager];
       featureIdentifier = self->_featureIdentifier;
       v30 = 0;
-      v17 = [v15 featureSettingsForFeatureIdentifier:featureIdentifier error:&v30];
+      v17 = [featureSettingsManager featureSettingsForFeatureIdentifier:featureIdentifier error:&v30];
       v18 = v30;
 
       if (v17)
@@ -168,10 +168,10 @@ LABEL_2:
         v25 = v24;
         if (v24)
         {
-          if (v29)
+          if (errorCopy)
           {
             v26 = v24;
-            *v29 = v25;
+            *errorCopy = v25;
           }
 
           else
@@ -189,7 +189,7 @@ LABEL_2:
     if (v11)
     {
       *buf = 138543618;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2114;
       v36 = v9;
       _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Can't read ECG onboarding state with error: %{public}@", buf, 0x16u);
@@ -198,11 +198,11 @@ LABEL_2:
     v18 = v9;
     if (v18)
     {
-      if (a3)
+      if (error)
       {
         v23 = v18;
         v19 = 0;
-        *a3 = v18;
+        *error = v18;
 LABEL_30:
 
         goto LABEL_31;
@@ -220,11 +220,11 @@ LABEL_30:
     [HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager featureOnboardingRecordWithError:];
   }
 
-  if (a3)
+  if (error)
   {
     v22 = v6;
     v19 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -240,27 +240,27 @@ LABEL_31:
   return v19;
 }
 
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureOnboardingRecordWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self isCurrentOnboardingVersionCompletedWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
-  v3 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardedCountryCodeSupportedStateWithError:a3];
+  v3 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardedCountryCodeSupportedStateWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -283,9 +283,9 @@ LABEL_31:
   return v5;
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
-  v4 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:a3 error:a4];
+  v4 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:code error:error];
   v5 = v4;
   if (v4)
   {
@@ -300,49 +300,49 @@ LABEL_31:
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDRegionAvailabilityProviding *)self->_regionAvailabilityProvider onboardingEligibilityForCountryCode:v6];
-  v8 = [v7 ineligibilityReasons];
-  v9 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self pairedDeviceProvider];
-  v10 = [v9 activePairedDevice];
+  codeCopy = code;
+  v7 = [(HDRegionAvailabilityProviding *)self->_regionAvailabilityProvider onboardingEligibilityForCountryCode:codeCopy];
+  ineligibilityReasons = [v7 ineligibilityReasons];
+  pairedDeviceProvider = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self pairedDeviceProvider];
+  activePairedDevice = [pairedDeviceProvider activePairedDevice];
 
-  if (!v10)
+  if (!activePairedDevice)
   {
     v21 = objc_alloc(MEMORY[0x277CCD3F8]);
-    v22 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self countryAvailabilityVersion];
-    v13 = [v21 initWithIneligibilityReasons:v8 | 2 countryAvailabilityVersion:v22];
+    countryAvailabilityVersion = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self countryAvailabilityVersion];
+    v13 = [v21 initWithIneligibilityReasons:ineligibilityReasons | 2 countryAvailabilityVersion:countryAvailabilityVersion];
 
-    v18 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
-    v20 = [v13 eligibilityRespectingOverridesForFeatureIdentifier:v18];
+    featureIdentifier = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
+    v20 = [v13 eligibilityRespectingOverridesForFeatureIdentifier:featureIdentifier];
 LABEL_8:
 
     goto LABEL_10;
   }
 
-  v11 = [(HDHRElectrocardiogramDeviceSupportedStateProvider *)self->_deviceSupportedProvider isDeviceSupported:v10];
-  v12 = [(HDFeatureDisableAndExpiryProviding *)self->_disableAndExpiryProvider rescindedStatusForCountryCode:v6 device:v10 error:a4];
+  v11 = [(HDHRElectrocardiogramDeviceSupportedStateProvider *)self->_deviceSupportedProvider isDeviceSupported:activePairedDevice];
+  v12 = [(HDFeatureDisableAndExpiryProviding *)self->_disableAndExpiryProvider rescindedStatusForCountryCode:codeCopy device:activePairedDevice error:error];
   v13 = v12;
   if (v12)
   {
     if (v11)
     {
-      v14 = v8 | (v6 == 0);
+      v14 = ineligibilityReasons | (codeCopy == 0);
     }
 
     else
     {
-      v14 = v8 | (v6 == 0) | 4;
+      v14 = ineligibilityReasons | (codeCopy == 0) | 4;
     }
 
     v15 = -[HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager _ineligibilityReasonsForRescindedStatus:](self, "_ineligibilityReasonsForRescindedStatus:", [v12 integerValue]);
     v16 = objc_alloc(MEMORY[0x277CCD3F8]);
-    v17 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self countryAvailabilityVersion];
-    v18 = [v16 initWithIneligibilityReasons:v15 | v14 countryAvailabilityVersion:v17];
+    countryAvailabilityVersion2 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self countryAvailabilityVersion];
+    featureIdentifier = [v16 initWithIneligibilityReasons:v15 | v14 countryAvailabilityVersion:countryAvailabilityVersion2];
 
-    v19 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
-    v20 = [v18 eligibilityRespectingOverridesForFeatureIdentifier:v19];
+    featureIdentifier2 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self featureIdentifier];
+    v20 = [featureIdentifier eligibilityRespectingOverridesForFeatureIdentifier:featureIdentifier2];
 
     goto LABEL_8;
   }
@@ -353,20 +353,20 @@ LABEL_10:
   return v20;
 }
 
-- (unint64_t)_ineligibilityReasonsForRescindedStatus:(int64_t)a3
+- (unint64_t)_ineligibilityReasonsForRescindedStatus:(int64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     return 64;
   }
 
   else
   {
-    return (a3 == 2) << 7;
+    return (status == 2) << 7;
   }
 }
 
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -375,16 +375,16 @@ LABEL_10:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v6 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v9 = *MEMORY[0x277CCC2D8];
     v10 = *MEMORY[0x277CCC2D8];
-    if (v8)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_229486000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Database is inaccessible; can't read ECG onboarding completion", buf, 0xCu);
       }
     }
@@ -394,11 +394,11 @@ LABEL_10:
       [HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v12 = v7;
       v11 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -410,7 +410,7 @@ LABEL_10:
 
   else
   {
-    v11 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _onboardedCountryCodeSupportedStateWithOnboardingCompletion:v5 error:a3];
+    v11 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _onboardedCountryCodeSupportedStateWithOnboardingCompletion:v5 error:error];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -418,53 +418,53 @@ LABEL_10:
   return v11;
 }
 
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error
 {
   v3 = MEMORY[0x277CCABB0];
   deviceSupportedProvider = self->_deviceSupportedProvider;
-  v5 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self pairedDeviceProvider];
-  v6 = [v5 activePairedDevice];
-  v7 = [v3 numberWithBool:{-[HDHRElectrocardiogramDeviceSupportedStateProvider isDeviceSupported:](deviceSupportedProvider, "isDeviceSupported:", v6)}];
+  pairedDeviceProvider = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self pairedDeviceProvider];
+  activePairedDevice = [pairedDeviceProvider activePairedDevice];
+  v7 = [v3 numberWithBool:{-[HDHRElectrocardiogramDeviceSupportedStateProvider isDeviceSupported:](deviceSupportedProvider, "isDeviceSupported:", activePairedDevice)}];
 
   return v7;
 }
 
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error
 {
   v4 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v6 = [v4 hdhr_heartRhythmProtectedSyncedDomainForProfile:WeakRetained];
 
-  v7 = [v6 hdhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:a3];
+  v7 = [v6 hdhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:error];
 
   return v7;
 }
 
-- (void)_setOnboardingCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 onboardingVersion:(unint64_t)a5 date:(id)a6 settings:(id)a7 completion:(id)a8
+- (void)_setOnboardingCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance onboardingVersion:(unint64_t)version date:(id)date settings:(id)settings completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
+  codeCopy = code;
+  settingsCopy = settings;
+  completionCopy = completion;
   v16 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v18 = [v16 hdhr_heartRhythmProtectedSyncedDomainForProfile:WeakRetained];
 
   v19 = *MEMORY[0x277CCC1E8];
-  if (*MEMORY[0x277CCC1E8] == a5)
+  if (*MEMORY[0x277CCC1E8] == version)
   {
-    v54 = v14;
+    v54 = settingsCopy;
     v20 = MEMORY[0x277CBEC10];
     goto LABEL_8;
   }
 
   v59 = 0;
-  v21 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _makeOnboardingHistoryWithOnboardingVersion:a5 countryCode:v13 error:&v59];
+  v21 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _makeOnboardingHistoryWithOnboardingVersion:version countryCode:codeCopy error:&v59];
   v22 = v59;
   v20 = v22;
   if (v21 || !v22)
   {
-    v54 = v14;
+    v54 = settingsCopy;
 
     v20 = v21;
 LABEL_8:
@@ -480,9 +480,9 @@ LABEL_8:
       if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v63 = self;
+        selfCopy2 = self;
         v64 = 2048;
-        v65 = a5;
+        versionCopy2 = version;
         v66 = 2112;
         v67 = v23;
         v68 = 2112;
@@ -490,25 +490,25 @@ LABEL_8:
         _os_log_error_impl(&dword_229486000, v33, OS_LOG_TYPE_ERROR, "[%{public}@] Couldn't set ECG onboarding history %ld for key [%@]: %@", buf, 0x2Au);
       }
 
-      v14 = v54;
-      if (v15)
+      settingsCopy = v54;
+      if (completionCopy)
       {
-        v15[2](v15, 0, v53);
+        completionCopy[2](completionCopy, 0, v53);
       }
 
       goto LABEL_29;
     }
 
     v25 = *MEMORY[0x277CCBCE0];
-    v52 = v13;
-    v61[0] = v13;
+    v52 = codeCopy;
+    v61[0] = codeCopy;
     v26 = *MEMORY[0x277CCBCF0];
     v60[0] = v25;
     v60[1] = v26;
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
     v61[1] = v27;
     v60[2] = @"HKElectrocardiogramOnboardingCountryCodeProvenance";
-    v28 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v28 = [MEMORY[0x277CCABB0] numberWithInteger:provenance];
     v61[2] = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:3];
 
@@ -524,40 +524,40 @@ LABEL_8:
       if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v63 = self;
+        selfCopy2 = self;
         v64 = 2048;
-        v65 = a5;
+        versionCopy2 = version;
         v66 = 2112;
         v67 = v53;
         _os_log_error_impl(&dword_229486000, v35, OS_LOG_TYPE_ERROR, "[%{public}@] Couldn't set ECG onboarding completion version %ld: %@", buf, 0x20u);
       }
 
-      v13 = v52;
-      v14 = v54;
-      if (v15)
+      codeCopy = v52;
+      settingsCopy = v54;
+      if (completionCopy)
       {
-        v15[2](v15, 0, v53);
+        completionCopy[2](completionCopy, 0, v53);
       }
 
       goto LABEL_28;
     }
 
     cacheDefaults = self->_cacheDefaults;
-    if (v19 == a5)
+    if (v19 == version)
     {
       [(NSUserDefaults *)cacheDefaults removeObjectForKey:v26];
       v31 = *MEMORY[0x277CCBD20];
       v32 = *MEMORY[0x277CCBD18];
-      v13 = v52;
+      codeCopy = v52;
     }
 
     else
     {
-      [(NSUserDefaults *)cacheDefaults setInteger:a5 forKey:v26];
+      [(NSUserDefaults *)cacheDefaults setInteger:version forKey:v26];
       v31 = *MEMORY[0x277CCBD20];
       [(NSUserDefaults *)self->_cacheDefaults setBool:1 forKey:*MEMORY[0x277CCBD20]];
       v32 = *MEMORY[0x277CCBD18];
-      v13 = v52;
+      codeCopy = v52;
       if (v54)
       {
         v36 = [v54 numberForKey:*MEMORY[0x277CCBD18]];
@@ -595,27 +595,27 @@ LABEL_27:
     v56[4] = self;
     [(HKFeatureAvailabilityProvidingObserver *)observers notifyObservers:v56];
     v44 = objc_loadWeakRetained(&self->_profile);
-    v45 = [v44 nanoSyncManager];
+    nanoSyncManager = [v44 nanoSyncManager];
     v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Onboarding completed", objc_opt_class()];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __169__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager__setOnboardingCompletedForCountryCode_countryCodeProvenance_onboardingVersion_date_settings_completion___block_invoke_2;
     v55[3] = &unk_278660408;
     v55[4] = self;
-    [v45 syncHealthDataWithOptions:0 reason:v46 completion:v55];
+    [nanoSyncManager syncHealthDataWithOptions:0 reason:v46 completion:v55];
 
     v34 = v53;
-    v15[2](v15, 1, v53);
-    v14 = v54;
+    completionCopy[2](completionCopy, 1, v53);
+    settingsCopy = v54;
 LABEL_28:
 
 LABEL_29:
     goto LABEL_30;
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
   }
 
 LABEL_30:
@@ -649,17 +649,17 @@ void __169__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager__setO
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  codeCopy = code;
+  dateCopy = date;
+  settingsCopy = settings;
+  completionCopy = completion;
+  if (codeCopy)
   {
     v29 = 0;
-    v16 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:v12 error:&v29];
+    v16 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:codeCopy error:&v29];
     v17 = v29;
     if (v16)
     {
@@ -672,9 +672,9 @@ void __169__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager__setO
         v25[2] = __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCurrentOnboardingVersionCompletedForCountryCode_countryCodeProvenance_date_settings_completion___block_invoke;
         v25[3] = &unk_278660BA8;
         objc_copyWeak(&v28, location);
-        v26 = v13;
-        v27 = v15;
-        [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _setOnboardingCompletedForCountryCode:v12 countryCodeProvenance:a4 onboardingVersion:onboardingVersion date:v26 settings:v14 completion:v25];
+        v26 = dateCopy;
+        v27 = completionCopy;
+        [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _setOnboardingCompletedForCountryCode:codeCopy countryCodeProvenance:provenance onboardingVersion:onboardingVersion date:v26 settings:settingsCopy completion:v25];
 
         objc_destroyWeak(&v28);
         objc_destroyWeak(location);
@@ -683,9 +683,9 @@ void __169__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager__setO
       else
       {
         v21 = MEMORY[0x277CCA9B8];
-        v22 = [v16 ineligibilityReasonsDescription];
-        v23 = [v21 hk_error:110 format:{@"This feature cannot be enabled for country %@: %@", v12, v22}];
-        (*(v15 + 2))(v15, 0, v23);
+        ineligibilityReasonsDescription = [v16 ineligibilityReasonsDescription];
+        v23 = [v21 hk_error:110 format:{@"This feature cannot be enabled for country %@: %@", codeCopy, ineligibilityReasonsDescription}];
+        (*(completionCopy + 2))(completionCopy, 0, v23);
       }
     }
 
@@ -698,20 +698,20 @@ void __169__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager__setO
         *location = 138543874;
         *&location[4] = self;
         v31 = 2114;
-        v32 = v12;
+        v32 = codeCopy;
         v33 = 2114;
         v34 = v17;
         _os_log_error_impl(&dword_229486000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Error checking onboarding completion ability in country %{public}@: %{public}@", location, 0x20u);
       }
 
-      (*(v15 + 2))(v15, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
   }
 
   else
   {
     v19 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"A non-nil country code is required to onboard this feature"];
-    (*(v15 + 2))(v15, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -729,7 +729,7 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
   v6 = a5;
   _HKInitializeLogging();
@@ -743,10 +743,10 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   v6[2](v6, 0, v8);
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -754,13 +754,13 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown data setting for ECG 1.0"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -768,13 +768,13 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown string setting for ECG 1.0"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -782,13 +782,13 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown string setting for ECG 1.0"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -796,14 +796,14 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   }
 
   v7 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Removing settings for ECG 1.0 is not supported"];
-  v6[2](v6, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 }
 
-- (void)resetOnboardingWithCompletion:(id)a3
+- (void)resetOnboardingWithCompletion:(id)completion
 {
   cacheDefaults = self->_cacheDefaults;
   v5 = *MEMORY[0x277CCBCD8];
-  v6 = a3;
+  completionCopy = completion;
   [(NSUserDefaults *)cacheDefaults removeObjectForKey:v5];
   [(NSUserDefaults *)self->_cacheDefaults removeObjectForKey:@"WristConfirmationAlertDate"];
   v7 = *MEMORY[0x277CCBD20];
@@ -823,18 +823,18 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
 
   v15 = 0;
   [v14 hdhr_resetElectrocardiogramRecordingFirstOnboardingCompletedDateWithError:&v15];
-  [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _setOnboardingCompletedForCountryCode:&stru_283CC4740 countryCodeProvenance:0 onboardingVersion:*MEMORY[0x277CCC1E8] date:0 settings:0 completion:v6];
+  [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self _setOnboardingCompletedForCountryCode:&stru_283CC4740 countryCodeProvenance:0 onboardingVersion:*MEMORY[0x277CCC1E8] date:0 settings:0 completion:completionCopy];
 }
 
 - (id)countryAvailabilityVersion
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 currentOSBuild];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
 
-  return v3;
+  return currentOSBuild;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -842,7 +842,7 @@ void __164__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_setCu
   v5[2] = __89__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_27865FD90;
   v5[4] = self;
-  [(HKFeatureAvailabilityProvidingObserver *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKFeatureAvailabilityProvidingObserver *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __89__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_registerObserver_queue___block_invoke(uint64_t a1)
@@ -851,7 +851,7 @@ void __89__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_regist
   [v2 registerObserver:*(a1 + 32) queue:0];
 }
 
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -865,7 +865,7 @@ void __89__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_regist
     {
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HKFeatureAvailabilityProvidingObserver count](self->_observers, "count")}];
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = v7;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_INFO, "[%{public}@] Notifying %{public}@ observers paired device capability changes", buf, 0x16u);
@@ -891,17 +891,17 @@ void __100__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_paire
   }
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (available)
   {
     _HKInitializeLogging();
     v5 = HKLogInfrastructure();
@@ -914,7 +914,7 @@ void __100__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_paire
       {
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HKFeatureAvailabilityProvidingObserver count](self->_observers, "count")}];
         *buf = 138543618;
-        v13 = self;
+        selfCopy = self;
         v14 = 2114;
         v15 = v8;
         _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_INFO, "[%{public}@] Notifying %{public}@ observers for protected database becoming available", buf, 0x16u);
@@ -942,14 +942,14 @@ void __107__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_datab
   }
 }
 
-- (id)_onboardedCountryCodeSupportedStateWithOnboardingCompletion:(id)a3 error:(id *)a4
+- (id)_onboardedCountryCodeSupportedStateWithOnboardingCompletion:(id)completion error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (completion)
   {
-    v6 = [a3 countryCode];
+    countryCode = [completion countryCode];
     v19 = 0;
-    v7 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:v6 error:&v19];
+    v7 = [(HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:countryCode error:&v19];
     v8 = v19;
     v9 = v8;
     if (v7)
@@ -957,10 +957,10 @@ void __107__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_datab
       if (self->_isStandalone)
       {
         [v7 ineligibilityReasons];
-        v10 = [v7 ineligibilityReasons];
+        ineligibilityReasons = [v7 ineligibilityReasons];
         v11 = objc_alloc(MEMORY[0x277CCD3F8]);
-        v12 = [v7 countryAvailabilityVersion];
-        v13 = [v11 initWithIneligibilityReasons:v10 & 0xFFFFFFFFFFFFFFFDLL countryAvailabilityVersion:v12];
+        countryAvailabilityVersion = [v7 countryAvailabilityVersion];
+        v13 = [v11 initWithIneligibilityReasons:ineligibilityReasons & 0xFFFFFFFFFFFFFFFDLL countryAvailabilityVersion:countryAvailabilityVersion];
 
         v7 = v13;
       }
@@ -972,11 +972,11 @@ void __107__HDHRElectrocardiogramRecordingCommonFeatureAvailabilityManager_datab
     v7 = v8;
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         v16 = v7;
         v14 = 0;
-        *a4 = v7;
+        *error = v7;
 LABEL_14:
 
         goto LABEL_15;
@@ -994,7 +994,7 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] No record of onboarding found, assuming not onboarded", buf, 0xCu);
   }
 
@@ -1005,11 +1005,11 @@ LABEL_15:
   return v14;
 }
 
-- (void)_saveFirstOnboardingCompletionDateIfNeeded:(id)a3
+- (void)_saveFirstOnboardingCompletionDateIfNeeded:(id)needed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
     v5 = MEMORY[0x277D10718];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -1021,21 +1021,21 @@ LABEL_15:
     if (!v8)
     {
       v18 = 0;
-      v10 = [v7 hdhr_setElectrocardiogramRecordingFirstOnboardingCompletedDate:v4 error:&v18];
+      v10 = [v7 hdhr_setElectrocardiogramRecordingFirstOnboardingCompletedDate:neededCopy error:&v18];
       v11 = v18;
       v12 = v11;
       if ((v10 & 1) == 0 && v11)
       {
-        v13 = [v11 hk_isDatabaseAccessibilityError];
+        hk_isDatabaseAccessibilityError = [v11 hk_isDatabaseAccessibilityError];
         _HKInitializeLogging();
         v14 = *MEMORY[0x277CCC2D8];
         v15 = *MEMORY[0x277CCC2D8];
-        if (v13)
+        if (hk_isDatabaseAccessibilityError)
         {
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v21 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_229486000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Database is inaccessible; can't save first ECG onboarding completion date", buf, 0xCu);
           }
         }
@@ -1055,7 +1055,7 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] First ECG onboarding completion date is not provided", buf, 0xCu);
     }
   }
@@ -1063,7 +1063,7 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_onboardingCompletionWithError:(id *)a3
+- (id)_onboardingCompletionWithError:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10718];
@@ -1078,11 +1078,11 @@ LABEL_15:
   {
     if (v9)
     {
-      if (a3)
+      if (error)
       {
         v26 = v9;
         v27 = 0;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -1104,8 +1104,8 @@ LABEL_15:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v13 = [v12 allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v47 objects:buf count:16];
+  allKeys = [v12 allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v47 objects:buf count:16];
   if (v14)
   {
     v15 = v14;
@@ -1118,13 +1118,13 @@ LABEL_15:
       {
         if (*v48 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         if ([*(*(&v47 + 1) + 8 * i) integerValue] == onboardingVersion)
         {
-          v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", onboardingVersion];
-          v20 = [v12 objectForKeyedSubscript:v19];
+          onboardingVersion = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", onboardingVersion];
+          v20 = [v12 objectForKeyedSubscript:onboardingVersion];
           v21 = [(__CFString *)v20 length];
           v22 = &stru_283CC4740;
           if (v21)
@@ -1143,7 +1143,7 @@ LABEL_15:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v47 objects:buf count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v47 objects:buf count:16];
       if (v15)
       {
         continue;
@@ -1163,10 +1163,10 @@ LABEL_14:
 
   if ([v17 count])
   {
-    v28 = [v17 allKeys];
-    v29 = [v28 lastObject];
+    allKeys2 = [v17 allKeys];
+    lastObject = [allKeys2 lastObject];
 
-    v30 = [v17 objectForKeyedSubscript:v29];
+    v30 = [v17 objectForKeyedSubscript:lastObject];
     v45 = 0;
     v31 = [v7 hdhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:&v45];
     v43 = v45;
@@ -1180,11 +1180,11 @@ LABEL_14:
     if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v54 = self;
+      selfCopy = self;
       v55 = 2114;
       v56 = v30;
       v57 = 2114;
-      v58 = v29;
+      v58 = lastObject;
       _os_log_impl(&dword_229486000, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] ECG onboarding countryCode: %{public}@, version: %{public}@", buf, 0x20u);
     }
 
@@ -1192,11 +1192,11 @@ LABEL_14:
     v34 = objc_alloc(MEMORY[0x277CCD740]);
     featureIdentifier = self->_featureIdentifier;
     v36 = v7;
-    v37 = [v29 integerValue];
-    v38 = [v33 integerValue];
-    v39 = v37;
+    integerValue = [lastObject integerValue];
+    integerValue2 = [v33 integerValue];
+    v39 = integerValue;
     v7 = v36;
-    v27 = [v34 initWithFeatureIdentifier:featureIdentifier version:v39 completionDate:v31 countryCode:v30 countryCodeProvenance:v38];
+    v27 = [v34 initWithFeatureIdentifier:featureIdentifier version:v39 completionDate:v31 countryCode:v30 countryCodeProvenance:integerValue2];
   }
 
   else
@@ -1212,7 +1212,7 @@ LABEL_27:
   return v27;
 }
 
-- (id)_currentOnboardingHistoryDictionaryWithError:(id *)a3
+- (id)_currentOnboardingHistoryDictionaryWithError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10718];
@@ -1240,19 +1240,19 @@ LABEL_27:
     v13 = v32;
     if (!v12)
     {
-      v22 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v23 = [v22 isAppleWatch];
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-      if (!v23 || (v24 = -[NSUserDefaults integerForKey:](self->_cacheDefaults, "integerForKey:", *MEMORY[0x277CCBCF0]), v24 < 1) || ([MEMORY[0x277CCABB0] numberWithInteger:v24], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!isAppleWatch || (v24 = -[NSUserDefaults integerForKey:](self->_cacheDefaults, "integerForKey:", *MEMORY[0x277CCBCF0]), v24 < 1) || ([MEMORY[0x277CCABB0] numberWithInteger:v24], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v12 = v13;
         if (v12)
         {
-          if (a3)
+          if (error)
           {
             v26 = v12;
             v18 = 0;
-            *a3 = v12;
+            *error = v12;
             goto LABEL_35;
           }
 
@@ -1269,17 +1269,17 @@ LABEL_27:
     v31 = 0;
     v14 = [v7 hdhr_electrocardiogramRecordingOnboardingCountryCodeWithError:&v31];
     v15 = v31;
-    v16 = [v14 hk_copyNonEmptyString];
+    hk_copyNonEmptyString = [v14 hk_copyNonEmptyString];
 
-    if (!v16)
+    if (!hk_copyNonEmptyString)
     {
       if (v15)
       {
-        if (a3)
+        if (error)
         {
           v27 = v15;
           v18 = 0;
-          *a3 = v15;
+          *error = v15;
         }
 
         else
@@ -1298,11 +1298,11 @@ LABEL_35:
       {
         _HKInitializeLogging();
         v28 = *MEMORY[0x277CCC2D8];
-        v16 = @"US";
+        hk_copyNonEmptyString = @"US";
         if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v35 = self;
+          selfCopy = self;
           v36 = 2114;
           v37 = @"US";
           _os_log_impl(&dword_229486000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding region: %{public}@ (Not Present, Assumed)", buf, 0x16u);
@@ -1311,22 +1311,22 @@ LABEL_35:
 
       else
       {
-        v16 = 0;
+        hk_copyNonEmptyString = 0;
       }
     }
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    v18 = v17;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v18 = dictionary;
     if (v8)
     {
-      [v17 addEntriesFromDictionary:v8];
+      [dictionary addEntriesFromDictionary:v8];
     }
 
     if ([v12 integerValue])
     {
-      if (v16)
+      if (hk_copyNonEmptyString)
       {
-        v19 = v16;
+        v19 = hk_copyNonEmptyString;
       }
 
       else
@@ -1341,11 +1341,11 @@ LABEL_35:
     goto LABEL_16;
   }
 
-  if (a3)
+  if (error)
   {
     v21 = v9;
     v18 = 0;
-    *a3 = v10;
+    *error = v10;
   }
 
   else
@@ -1361,12 +1361,12 @@ LABEL_36:
   return v18;
 }
 
-- (id)_makeOnboardingHistoryWithOnboardingVersion:(int64_t)a3 countryCode:(id)a4 error:(id *)a5
+- (id)_makeOnboardingHistoryWithOnboardingVersion:(int64_t)version countryCode:(id)code error:(id *)error
 {
-  v8 = a4;
-  if (v8)
+  codeCopy = code;
+  if (codeCopy)
   {
-    v9 = v8;
+    v9 = codeCopy;
   }
 
   else
@@ -1388,19 +1388,19 @@ LABEL_36:
     v10 = MEMORY[0x277CBEC10];
 LABEL_5:
     v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", a3];
-    [v13 setObject:v9 forKey:v14];
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", version];
+    [v13 setObject:v9 forKey:version];
 
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v13];
 
     goto LABEL_6;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v11;
     v15 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else

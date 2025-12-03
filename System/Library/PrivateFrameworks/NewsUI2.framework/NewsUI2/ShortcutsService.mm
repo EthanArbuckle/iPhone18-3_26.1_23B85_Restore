@@ -1,6 +1,6 @@
 @interface ShortcutsService
 - (_TtC7NewsUI216ShortcutsService)init;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation ShortcutsService
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a4)
+  if (tags)
   {
     v14 = sub_219BF5D44();
-    if (!a5)
+    if (!changeTags)
     {
       goto LABEL_4;
     }
@@ -26,27 +26,27 @@
   }
 
   v14 = 0;
-  if (a5)
+  if (changeTags)
   {
 LABEL_3:
     sub_219BF5D44();
   }
 
 LABEL_4:
-  if (a6)
+  if (moveTags)
   {
     sub_219BF5D44();
   }
 
-  v15 = a3;
-  v16 = a7;
-  v17 = self;
-  if (v16)
+  controllerCopy = controller;
+  removeTagsCopy = removeTags;
+  selfCopy = self;
+  if (removeTagsCopy)
   {
     sub_219BF5D44();
   }
 
-  sub_218B69E70(v14, a8);
+  sub_218B69E70(v14, type);
 }
 
 @end

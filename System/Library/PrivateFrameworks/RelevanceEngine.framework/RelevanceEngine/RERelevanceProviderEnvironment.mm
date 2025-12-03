@@ -1,60 +1,60 @@
 @interface RERelevanceProviderEnvironment
-- (BOOL)addRelevanceProviderDidTriggerException:(id)a3 completion:(id)a4;
-- (BOOL)containsRelevanceProvider:(id)a3;
-- (BOOL)isRelevanceProviderHistoric:(id)a3;
-- (BOOL)isRelevanceProviderLoaded:(id)a3;
-- (BOOL)isSupportedRelevanceProvider:(id)a3;
+- (BOOL)addRelevanceProviderDidTriggerException:(id)exception completion:(id)completion;
+- (BOOL)containsRelevanceProvider:(id)provider;
+- (BOOL)isRelevanceProviderHistoric:(id)historic;
+- (BOOL)isRelevanceProviderLoaded:(id)loaded;
+- (BOOL)isSupportedRelevanceProvider:(id)provider;
 - (NSDictionary)allProviderValues;
-- (RERelevanceProviderEnvironment)initWithRelevanceEngine:(id)a3;
+- (RERelevanceProviderEnvironment)initWithRelevanceEngine:(id)engine;
 - (RERelevanceProviderEnvironmentDelegate)delegate;
-- (id)_histogramForFeature:(id)a3;
-- (id)_histogramForProvider:(id)a3;
-- (id)_providerManagerForProvider:(id)a3;
-- (id)_relevaneProviderWithType:(id)a3 withOptions:(id)a4;
-- (id)createRelevaneProviderWithType:(id)a3 withOptions:(id)a4;
-- (id)encodeRelevaneProvider:(id)a3;
-- (id)featuresForRelevanceProvider:(id)a3;
-- (id)relevancesForRelevanceProvider:(id)a3;
-- (id)relevancesForRelevanceProvider:(id)a3 usingContext:(id)a4;
-- (void)_addRelevanceValue:(id)a3 forProvider:(id)a4;
-- (void)_queue_performUpdate:(id)a3;
-- (void)_removeRelevanceValueForProvider:(id)a3;
-- (void)_scaleRelevanceProviderValues:(id)a3 values:(id)a4;
+- (id)_histogramForFeature:(id)feature;
+- (id)_histogramForProvider:(id)provider;
+- (id)_providerManagerForProvider:(id)provider;
+- (id)_relevaneProviderWithType:(id)type withOptions:(id)options;
+- (id)createRelevaneProviderWithType:(id)type withOptions:(id)options;
+- (id)encodeRelevaneProvider:(id)provider;
+- (id)featuresForRelevanceProvider:(id)provider;
+- (id)relevancesForRelevanceProvider:(id)provider;
+- (id)relevancesForRelevanceProvider:(id)provider usingContext:(id)context;
+- (void)_addRelevanceValue:(id)value forProvider:(id)provider;
+- (void)_queue_performUpdate:(id)update;
+- (void)_removeRelevanceValueForProvider:(id)provider;
+- (void)_scaleRelevanceProviderValues:(id)values values:(id)a4;
 - (void)_setupRelevanceProviderManagers;
-- (void)accessHistogramForFeature:(id)a3 usingBlock:(id)a4;
-- (void)addRelevanceProvider:(id)a3 completion:(id)a4;
+- (void)accessHistogramForFeature:(id)feature usingBlock:(id)block;
+- (void)addRelevanceProvider:(id)provider completion:(id)completion;
 - (void)dealloc;
-- (void)immediateUpdateForRelevanceProviderManager:(id)a3 completion:(id)a4;
+- (void)immediateUpdateForRelevanceProviderManager:(id)manager completion:(id)completion;
 - (void)pause;
-- (void)relateRelevanceProvider:(id)a3 toRelevanceProvider:(id)a4;
-- (void)removeRelevanceProvider:(id)a3 completion:(id)a4;
+- (void)relateRelevanceProvider:(id)provider toRelevanceProvider:(id)relevanceProvider;
+- (void)removeRelevanceProvider:(id)provider completion:(id)completion;
 - (void)resume;
-- (void)scheduleUpdateForRelevanceProvider:(id)a3 completion:(id)a4;
-- (void)scheduleUpdateForRelevanceProviderManager:(id)a3 completion:(id)a4;
-- (void)setAllowsLocationUse:(BOOL)a3;
+- (void)scheduleUpdateForRelevanceProvider:(id)provider completion:(id)completion;
+- (void)scheduleUpdateForRelevanceProviderManager:(id)manager completion:(id)completion;
+- (void)setAllowsLocationUse:(BOOL)use;
 @end
 
 @implementation RERelevanceProviderEnvironment
 
-- (RERelevanceProviderEnvironment)initWithRelevanceEngine:(id)a3
+- (RERelevanceProviderEnvironment)initWithRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v41.receiver = self;
   v41.super_class = RERelevanceProviderEnvironment;
-  v5 = [(RERelevanceEngineSubsystem *)&v41 initWithRelevanceEngine:v4];
+  v5 = [(RERelevanceEngineSubsystem *)&v41 initWithRelevanceEngine:engineCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     relevanceManagers = v5->_relevanceManagers;
-    v5->_relevanceManagers = v6;
+    v5->_relevanceManagers = array;
 
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     relevanceClassManagerMap = v5->_relevanceClassManagerMap;
-    v5->_relevanceClassManagerMap = v8;
+    v5->_relevanceClassManagerMap = strongToStrongObjectsMapTable;
 
-    v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     relevanceHistogramMap = v5->_relevanceHistogramMap;
-    v5->_relevanceHistogramMap = v10;
+    v5->_relevanceHistogramMap = strongToStrongObjectsMapTable2;
 
     v12 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0];
     relevanceValues = v5->_relevanceValues;
@@ -68,8 +68,8 @@
     relevanceValuesLock = v5->_relevanceValuesLock;
     v5->_relevanceValuesLock = v16;
 
-    v18 = [v4 rootFeatures];
-    v19 = [v18 copy];
+    rootFeatures = [engineCopy rootFeatures];
+    v19 = [rootFeatures copy];
     supportedFeatures = v5->_supportedFeatures;
     v5->_supportedFeatures = v19;
 
@@ -89,29 +89,29 @@
     providerManagersToUpdate = v5->_providerManagersToUpdate;
     v5->_providerManagersToUpdate = v27;
 
-    v29 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     updateCompletionBlocks = v5->_updateCompletionBlocks;
-    v5->_updateCompletionBlocks = v29;
+    v5->_updateCompletionBlocks = array2;
 
-    v31 = [v4 configuration];
-    v5->_createDefaultRelevanceProviders = [v31 createDefaultRelevanceProviders];
+    configuration = [engineCopy configuration];
+    v5->_createDefaultRelevanceProviders = [configuration createDefaultRelevanceProviders];
 
-    v32 = [v4 logger];
-    [v32 addLoggable:v5];
+    logger = [engineCopy logger];
+    [logger addLoggable:v5];
 
-    v33 = [v4 configuration];
-    LOBYTE(v32) = [v33 wantsImmutableContent];
+    configuration2 = [engineCopy configuration];
+    LOBYTE(logger) = [configuration2 wantsImmutableContent];
 
     objc_initWeak(&location, v5);
-    v34 = [(RERelevanceEngineSubsystem *)v5 queue];
+    queue = [(RERelevanceEngineSubsystem *)v5 queue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke;
     v36[3] = &unk_2785FC5F8;
     v37 = v5;
-    v39 = v32;
+    v39 = logger;
     objc_copyWeak(&v38, &location);
-    dispatch_sync(v34, v36);
+    dispatch_sync(queue, v36);
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -177,9 +177,9 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
-        v9 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-        v10 = [v9 logger];
-        [v10 removeLoggable:v8];
+        relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+        logger = [relevanceEngine logger];
+        [logger removeLoggable:v8];
 
         ++v7;
       }
@@ -191,9 +191,9 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
     while (v5);
   }
 
-  v11 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v12 = [v11 logger];
-  [v12 removeLoggable:self];
+  relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  logger2 = [relevanceEngine2 logger];
+  [logger2 removeLoggable:self];
 
   v14.receiver = self;
   v14.super_class = RERelevanceProviderEnvironment;
@@ -286,13 +286,13 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAllowsLocationUse:(BOOL)a3
+- (void)setAllowsLocationUse:(BOOL)use
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_allowsLocationUse != a3)
+  if (self->_allowsLocationUse != use)
   {
-    v3 = a3;
-    self->_allowsLocationUse = a3;
+    useCopy = use;
+    self->_allowsLocationUse = use;
     if ([(RERelevanceEngineSubsystem *)self isRunning])
     {
       v15 = 0u;
@@ -317,7 +317,7 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
             v10 = *(*(&v13 + 1) + 8 * i);
             if ([objc_opt_class() _requiresLocationServices])
             {
-              if (v3)
+              if (useCopy)
               {
                 [(RERelevanceEngineSubsystem *)self beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:v10];
                 v12[0] = MEMORY[0x277D85DD0];
@@ -389,13 +389,13 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
     }
   }
 
-  v9 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v10 = [v9 configuration];
-  v11 = [v10 relevanceProviderManagerLoader];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  configuration = [relevanceEngine configuration];
+  relevanceProviderManagerLoader = [configuration relevanceProviderManagerLoader];
 
-  v29 = v11;
+  v29 = relevanceProviderManagerLoader;
   v30 = v3;
-  [v11 enumerationDataSourceClassesWithBlock:v3];
+  [relevanceProviderManagerLoader enumerationDataSourceClassesWithBlock:v3];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -421,8 +421,8 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v14 = [objc_opt_class() _dependencyClasses];
-        v15 = [v14 countByEnumeratingWithState:&v38 objects:v52 count:16];
+        _dependencyClasses = [objc_opt_class() _dependencyClasses];
+        v15 = [_dependencyClasses countByEnumeratingWithState:&v38 objects:v52 count:16];
         if (v15)
         {
           v16 = v15;
@@ -434,7 +434,7 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
             {
               if (*v39 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(_dependencyClasses);
               }
 
               v19 = -[NSMapTable objectForKey:](self->_relevanceClassManagerMap, "objectForKey:", [*(*(&v38 + 1) + 8 * v18) _relevanceProviderClass]);
@@ -447,7 +447,7 @@ void __58__RERelevanceProviderEnvironment_initWithRelevanceEngine___block_invoke
             }
 
             while (v16 != v18);
-            v16 = [v14 countByEnumeratingWithState:&v38 objects:v52 count:16];
+            v16 = [_dependencyClasses countByEnumeratingWithState:&v38 objects:v52 count:16];
           }
 
           while (v16);
@@ -528,10 +528,10 @@ void __65__RERelevanceProviderEnvironment__setupRelevanceProviderManagers__block
   }
 }
 
-- (void)_queue_performUpdate:(id)a3
+- (void)_queue_performUpdate:(id)update
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   [(RERelevanceEngineSubsystem *)self beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -542,7 +542,7 @@ void __65__RERelevanceProviderEnvironment__setupRelevanceProviderManagers__block
   if ([(NSHashTable *)self->_providersToUpdate count]|| [(NSMutableSet *)self->_providerManagersToUpdate count])
   {
     v24 = v5;
-    v25 = v4;
+    v25 = updateCopy;
     v6 = [(NSMutableSet *)self->_providerManagersToUpdate mutableCopy];
     [(NSMutableSet *)self->_providerManagersToUpdate removeAllObjects];
     v40 = 0u;
@@ -619,7 +619,7 @@ void __65__RERelevanceProviderEnvironment__setupRelevanceProviderManagers__block
       while (v17);
     }
 
-    v21 = [(RERelevanceEngineSubsystem *)self queue];
+    queue = [(RERelevanceEngineSubsystem *)self queue];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __55__RERelevanceProviderEnvironment__queue_performUpdate___block_invoke_4;
@@ -628,18 +628,18 @@ void __65__RERelevanceProviderEnvironment__setupRelevanceProviderManagers__block
     v27 = v15;
     v5 = v24;
     v28 = v24;
-    v4 = v25;
+    updateCopy = v25;
     v29 = v25;
     v22 = v15;
-    [(REExpectation *)v14 notifyOperationsCompleteOrPerformUsingQueue:v21 block:v26];
+    [(REExpectation *)v14 notifyOperationsCompleteOrPerformUsingQueue:queue block:v26];
   }
 
   else
   {
     v5[2](v5);
-    if (v4)
+    if (updateCopy)
     {
-      v4[2](v4);
+      updateCopy[2](updateCopy);
     }
   }
 
@@ -1107,38 +1107,38 @@ void __55__RERelevanceProviderEnvironment__queue_performUpdate___block_invoke_5(
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeRelevanceValueForProvider:(id)a3
+- (void)_removeRelevanceValueForProvider:(id)provider
 {
-  v9 = a3;
+  providerCopy = provider;
   v4 = [(NSMapTable *)self->_relevanceValues objectForKey:?];
   v5 = v4;
   if (v4 && ([v4 isHistoric] & 1) == 0)
   {
-    v6 = [v5 values];
-    v7 = [v6 firstFeatureValue];
-    v8 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:v9];
-    [v8 removeValue:v7];
+    values = [v5 values];
+    firstFeatureValue = [values firstFeatureValue];
+    v8 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:providerCopy];
+    [v8 removeValue:firstFeatureValue];
   }
 
-  [(NSMapTable *)self->_relevanceValues removeObjectForKey:v9];
+  [(NSMapTable *)self->_relevanceValues removeObjectForKey:providerCopy];
 }
 
-- (void)_addRelevanceValue:(id)a3 forProvider:(id)a4
+- (void)_addRelevanceValue:(id)value forProvider:(id)provider
 {
-  v10 = a3;
-  v6 = a4;
-  if (([v10 isHistoric] & 1) == 0)
+  valueCopy = value;
+  providerCopy = provider;
+  if (([valueCopy isHistoric] & 1) == 0)
   {
-    v7 = [v10 values];
-    v8 = [v7 firstFeatureValue];
-    v9 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:v6];
-    [v9 addValue:v8];
+    values = [valueCopy values];
+    firstFeatureValue = [values firstFeatureValue];
+    v9 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:providerCopy];
+    [v9 addValue:firstFeatureValue];
   }
 
-  [(NSMapTable *)self->_relevanceValues setObject:v10 forKey:v6];
+  [(NSMapTable *)self->_relevanceValues setObject:valueCopy forKey:providerCopy];
 }
 
-- (id)_providerManagerForProvider:(id)a3
+- (id)_providerManagerForProvider:(id)provider
 {
   relevanceClassManagerMap = self->_relevanceClassManagerMap;
   v4 = objc_opt_class();
@@ -1146,16 +1146,16 @@ void __55__RERelevanceProviderEnvironment__queue_performUpdate___block_invoke_5(
   return [(NSMapTable *)relevanceClassManagerMap objectForKey:v4];
 }
 
-- (id)_histogramForProvider:(id)a3
+- (id)_histogramForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v4];
+  providerCopy = provider;
+  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 effectiveFeatures];
-    v8 = [v7 firstObject];
-    v9 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:v8];
+    effectiveFeatures = [v5 effectiveFeatures];
+    firstObject = [effectiveFeatures firstObject];
+    v9 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:firstObject];
 
 LABEL_5:
     goto LABEL_6;
@@ -1164,8 +1164,8 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 feature];
-    v9 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:v7];
+    effectiveFeatures = [providerCopy feature];
+    v9 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:effectiveFeatures];
     goto LABEL_5;
   }
 
@@ -1175,31 +1175,31 @@ LABEL_6:
   return v9;
 }
 
-- (id)_histogramForFeature:(id)a3
+- (id)_histogramForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_relevanceHistogramMap objectForKey:v4];
+  featureCopy = feature;
+  v5 = [(NSMapTable *)self->_relevanceHistogramMap objectForKey:featureCopy];
   if (!v5)
   {
-    v5 = [[REHistogram alloc] initWithFeature:v4];
-    [(NSMapTable *)self->_relevanceHistogramMap setObject:v5 forKey:v4];
+    v5 = [[REHistogram alloc] initWithFeature:featureCopy];
+    [(NSMapTable *)self->_relevanceHistogramMap setObject:v5 forKey:featureCopy];
   }
 
   return v5;
 }
 
-- (BOOL)addRelevanceProviderDidTriggerException:(id)a3 completion:(id)a4
+- (BOOL)addRelevanceProviderDidTriggerException:(id)exception completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  exceptionCopy = exception;
+  completionCopy = completion;
+  if (exceptionCopy)
   {
-    [v6 setEnvironment:self];
-    v8 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v6];
+    [exceptionCopy setEnvironment:self];
+    v8 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:exceptionCopy];
     v9 = v8;
     if (v8)
     {
-      [v8 addProvider:v6 completion:v7];
+      [v8 addProvider:exceptionCopy completion:completionCopy];
     }
 
     else
@@ -1207,23 +1207,23 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(NSHashTable *)self->_customProviders addObject:v6];
-        v17 = [(RERelevanceProviderEnvironment *)self delegate];
-        [v17 relevanceEnvironment:self didUpdateRelevanceProvider:v6];
+        [(NSHashTable *)self->_customProviders addObject:exceptionCopy];
+        delegate = [(RERelevanceProviderEnvironment *)self delegate];
+        [delegate relevanceEnvironment:self didUpdateRelevanceProvider:exceptionCopy];
 
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7);
+          completionCopy[2](completionCopy);
         }
       }
 
       else
       {
-        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v11, v12, v13, v14, v15, v16, v6);
+        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v11, v12, v13, v14, v15, v16, exceptionCopy);
       }
     }
 
-    v10 = [(REUpNextDisjointSet *)self->_relevanceProviderSet addItemDidTriggerException:v6];
+    v10 = [(REUpNextDisjointSet *)self->_relevanceProviderSet addItemDidTriggerException:exceptionCopy];
   }
 
   else
@@ -1234,18 +1234,18 @@ LABEL_6:
   return v10;
 }
 
-- (void)addRelevanceProvider:(id)a3 completion:(id)a4
+- (void)addRelevanceProvider:(id)provider completion:(id)completion
 {
-  v16 = a3;
-  v6 = a4;
-  if (v16)
+  providerCopy = provider;
+  completionCopy = completion;
+  if (providerCopy)
   {
-    [v16 setEnvironment:self];
-    v7 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v16];
+    [providerCopy setEnvironment:self];
+    v7 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
     v8 = v7;
     if (v7)
     {
-      [v7 addProvider:v16 completion:v6];
+      [v7 addProvider:providerCopy completion:completionCopy];
     }
 
     else
@@ -1253,38 +1253,38 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(NSHashTable *)self->_customProviders addObject:v16];
-        v15 = [(RERelevanceProviderEnvironment *)self delegate];
-        [v15 relevanceEnvironment:self didUpdateRelevanceProvider:v16];
+        [(NSHashTable *)self->_customProviders addObject:providerCopy];
+        delegate = [(RERelevanceProviderEnvironment *)self delegate];
+        [delegate relevanceEnvironment:self didUpdateRelevanceProvider:providerCopy];
 
-        if (v6)
+        if (completionCopy)
         {
-          v6[2](v6);
+          completionCopy[2](completionCopy);
         }
       }
 
       else
       {
-        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v9, v10, v11, v12, v13, v14, v16);
+        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v9, v10, v11, v12, v13, v14, providerCopy);
       }
     }
 
-    [(REUpNextDisjointSet *)self->_relevanceProviderSet addItem:v16];
+    [(REUpNextDisjointSet *)self->_relevanceProviderSet addItem:providerCopy];
   }
 }
 
-- (void)removeRelevanceProvider:(id)a3 completion:(id)a4
+- (void)removeRelevanceProvider:(id)provider completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
-  if (v15)
+  providerCopy = provider;
+  completionCopy = completion;
+  if (providerCopy)
   {
-    [v15 setEnvironment:0];
-    v7 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v15];
+    [providerCopy setEnvironment:0];
+    v7 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
     v8 = v7;
     if (v7)
     {
-      [v7 removeProvider:v15 completion:v6];
+      [v7 removeProvider:providerCopy completion:completionCopy];
     }
 
     else
@@ -1292,43 +1292,43 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(NSHashTable *)self->_customProviders removeObject:v15];
-        if (v6)
+        [(NSHashTable *)self->_customProviders removeObject:providerCopy];
+        if (completionCopy)
         {
-          v6[2](v6);
+          completionCopy[2](completionCopy);
         }
       }
 
       else
       {
-        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v9, v10, v11, v12, v13, v14, v15);
+        RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v9, v10, v11, v12, v13, v14, providerCopy);
       }
     }
 
-    [(REUpNextDisjointSet *)self->_relevanceProviderSet removeItem:v15];
+    [(REUpNextDisjointSet *)self->_relevanceProviderSet removeItem:providerCopy];
     [(NSLock *)self->_relevanceValuesLock lock];
-    [(RERelevanceProviderEnvironment *)self _removeRelevanceValueForProvider:v15];
+    [(RERelevanceProviderEnvironment *)self _removeRelevanceValueForProvider:providerCopy];
     [(NSLock *)self->_relevanceValuesLock unlock];
   }
 }
 
-- (BOOL)containsRelevanceProvider:(id)a3
+- (BOOL)containsRelevanceProvider:(id)provider
 {
-  if (!a3)
+  if (!provider)
   {
     return 0;
   }
 
-  v4 = [a3 environment];
-  v5 = v4 == self;
+  environment = [provider environment];
+  v5 = environment == self;
 
   return v5;
 }
 
-- (BOOL)isRelevanceProviderLoaded:(id)a3
+- (BOOL)isRelevanceProviderLoaded:(id)loaded
 {
-  v4 = a3;
-  if ([(RERelevanceProviderEnvironment *)self containsRelevanceProvider:v4])
+  loadedCopy = loaded;
+  if ([(RERelevanceProviderEnvironment *)self containsRelevanceProvider:loadedCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1339,7 +1339,7 @@ LABEL_6:
     else
     {
       [(NSLock *)self->_relevanceValuesLock lock];
-      v6 = [(NSMapTable *)self->_relevanceValues objectForKey:v4];
+      v6 = [(NSMapTable *)self->_relevanceValues objectForKey:loadedCopy];
       v5 = v6 != 0;
 
       [(NSLock *)self->_relevanceValuesLock unlock];
@@ -1354,66 +1354,66 @@ LABEL_6:
   return v5;
 }
 
-- (void)relateRelevanceProvider:(id)a3 toRelevanceProvider:(id)a4
+- (void)relateRelevanceProvider:(id)provider toRelevanceProvider:(id)relevanceProvider
 {
-  if (a3)
+  if (provider)
   {
-    if (a4)
+    if (relevanceProvider)
     {
       [REUpNextDisjointSet connectItem:"connectItem:withItem:" withItem:?];
     }
   }
 }
 
-- (BOOL)isRelevanceProviderHistoric:(id)a3
+- (BOOL)isRelevanceProviderHistoric:(id)historic
 {
   relevanceValuesLock = self->_relevanceValuesLock;
-  v5 = a3;
+  historicCopy = historic;
   [(NSLock *)relevanceValuesLock lock];
-  v6 = [(NSMapTable *)self->_relevanceValues objectForKey:v5];
+  v6 = [(NSMapTable *)self->_relevanceValues objectForKey:historicCopy];
 
   if (v6)
   {
-    v7 = [v6 isHistoric];
+    isHistoric = [v6 isHistoric];
   }
 
   else
   {
-    v7 = 0;
+    isHistoric = 0;
   }
 
   [(NSLock *)self->_relevanceValuesLock unlock];
 
-  return v7;
+  return isHistoric;
 }
 
-- (id)relevancesForRelevanceProvider:(id)a3 usingContext:(id)a4
+- (id)relevancesForRelevanceProvider:(id)provider usingContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  providerCopy = provider;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v8 = [(RERelevanceProviderEnvironment *)self relevancesForRelevanceProvider:v6];
+    v8 = [(RERelevanceProviderEnvironment *)self relevancesForRelevanceProvider:providerCopy];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v6 value];
-    v8 = [[RETaggedFeatureValueArray alloc] initWithValues:&v13 count:1];
+    value = [providerCopy value];
+    v8 = [[RETaggedFeatureValueArray alloc] initWithValues:&value count:1];
 LABEL_5:
     v9 = v8;
     goto LABEL_9;
   }
 
-  v10 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v6];
-  v11 = [v10 relevanceForProvider:v6 context:v7];
+  v10 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
+  v11 = [v10 relevanceForProvider:providerCopy context:contextCopy];
   v9 = [[RETaggedFeatureValueArray alloc] initWithFeatureValues:v11];
-  if ([v6 relevancePriority] != 2)
+  if ([providerCopy relevancePriority] != 2)
   {
     [(NSLock *)self->_relevanceValuesLock lock];
-    [(RERelevanceProviderEnvironment *)self _scaleRelevanceProviderValues:v6 values:v9];
+    [(RERelevanceProviderEnvironment *)self _scaleRelevanceProviderValues:providerCopy values:v9];
     [(NSLock *)self->_relevanceValuesLock unlock];
   }
 
@@ -1422,75 +1422,75 @@ LABEL_9:
   return v9;
 }
 
-- (id)relevancesForRelevanceProvider:(id)a3
+- (id)relevancesForRelevanceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 value];
-    v5 = [[RETaggedFeatureValueArray alloc] initWithValues:&v9 count:1];
+    value = [providerCopy value];
+    v5 = [[RETaggedFeatureValueArray alloc] initWithValues:&value count:1];
   }
 
   else
   {
     [(NSLock *)self->_relevanceValuesLock lock];
-    v6 = [(NSMapTable *)self->_relevanceValues objectForKey:v4];
-    v7 = [v6 values];
-    v5 = [v7 copy];
+    v6 = [(NSMapTable *)self->_relevanceValues objectForKey:providerCopy];
+    values = [v6 values];
+    v5 = [values copy];
 
-    [(RERelevanceProviderEnvironment *)self _scaleRelevanceProviderValues:v4 values:v5];
+    [(RERelevanceProviderEnvironment *)self _scaleRelevanceProviderValues:providerCopy values:v5];
     [(NSLock *)self->_relevanceValuesLock unlock];
   }
 
   return v5;
 }
 
-- (void)_scaleRelevanceProviderValues:(id)a3 values:(id)a4
+- (void)_scaleRelevanceProviderValues:(id)values values:(id)a4
 {
-  v24 = a3;
+  valuesCopy = values;
   v6 = a4;
-  v7 = [(RERelevanceProviderEnvironment *)self featuresForRelevanceProvider:v24];
-  v8 = [v7 firstObject];
-  v9 = [v8 featureType];
+  v7 = [(RERelevanceProviderEnvironment *)self featuresForRelevanceProvider:valuesCopy];
+  firstObject = [v7 firstObject];
+  featureType = [firstObject featureType];
 
-  if (v9 == 2)
+  if (featureType == 2)
   {
-    v10 = [v6 firstFeatureValue];
-    if (REFeatureValueTypeForTaggedPointer(v10) == 1)
+    firstFeatureValue = [v6 firstFeatureValue];
+    if (REFeatureValueTypeForTaggedPointer(firstFeatureValue) == 1)
     {
-      v12 = REIntegerValueForTaggedPointer(v10);
+      v12 = REIntegerValueForTaggedPointer(firstFeatureValue);
     }
 
     else
     {
-      v12 = REDoubleValueForTaggedPointer(v10, v11);
+      v12 = REDoubleValueForTaggedPointer(firstFeatureValue, v11);
     }
 
-    v13 = [v24 relevancePriority];
-    if (v13 == 3)
+    relevancePriority = [valuesCopy relevancePriority];
+    if (relevancePriority == 3)
     {
-      v14 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:v24];
-      v18 = [v14 mean];
-      if (REFeatureValueTypeForTaggedPointer(v18) == 1)
+      v14 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:valuesCopy];
+      mean = [v14 mean];
+      if (REFeatureValueTypeForTaggedPointer(mean) == 1)
       {
-        v20 = REIntegerValueForTaggedPointer(v18);
+        v20 = REIntegerValueForTaggedPointer(mean);
       }
 
       else
       {
-        v20 = REDoubleValueForTaggedPointer(v18, v19);
+        v20 = REDoubleValueForTaggedPointer(mean, v19);
       }
 
-      REReleaseFeatureValueTaggedPointer(v18);
+      REReleaseFeatureValueTaggedPointer(mean);
       v21 = v20 * 0.5;
     }
 
     else
     {
-      if (v13 != 1)
+      if (relevancePriority != 1)
       {
-        if (!v13)
+        if (!relevancePriority)
         {
           v12 = 0.0;
         }
@@ -1498,26 +1498,26 @@ LABEL_9:
         goto LABEL_19;
       }
 
-      v14 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:v24];
-      v15 = [v14 mean];
-      if (REFeatureValueTypeForTaggedPointer(v15) == 1)
+      v14 = [(RERelevanceProviderEnvironment *)self _histogramForProvider:valuesCopy];
+      mean2 = [v14 mean];
+      if (REFeatureValueTypeForTaggedPointer(mean2) == 1)
       {
-        v17 = REIntegerValueForTaggedPointer(v15);
+        v17 = REIntegerValueForTaggedPointer(mean2);
       }
 
       else
       {
-        v17 = REDoubleValueForTaggedPointer(v15, v16);
+        v17 = REDoubleValueForTaggedPointer(mean2, v16);
       }
 
-      REReleaseFeatureValueTaggedPointer(v15);
+      REReleaseFeatureValueTaggedPointer(mean2);
       v21 = (v17 + 1.0) * 0.5;
     }
 
     v12 = __71__RERelevanceProviderEnvironment__scaleRelevanceProviderValues_values___block_invoke(v12, v21);
 
 LABEL_19:
-    if (REFeatureValueTypeForTaggedPointer(v10) == 1)
+    if (REFeatureValueTypeForTaggedPointer(firstFeatureValue) == 1)
     {
       v22 = RECreateIntegerFeatureValueTaggedPointer(v12);
     }
@@ -1564,15 +1564,15 @@ float __71__RERelevanceProviderEnvironment__scaleRelevanceProviderValues_values_
   return (v6 + a1) * 0.5;
 }
 
-- (id)featuresForRelevanceProvider:(id)a3
+- (id)featuresForRelevanceProvider:(id)provider
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v4];
+  providerCopy = provider;
+  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 effectiveFeatures];
+    effectiveFeatures = [v5 effectiveFeatures];
   }
 
   else
@@ -1580,34 +1580,34 @@ float __71__RERelevanceProviderEnvironment__scaleRelevanceProviderValues_values_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v4 feature];
-      v20[0] = v14;
+      feature = [providerCopy feature];
+      v20[0] = feature;
       v15 = MEMORY[0x277CBEA60];
       v16 = v20;
     }
 
     else
     {
-      RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v8, v9, v10, v11, v12, v13, v4);
-      v14 = [REFeature featureWithName:&stru_283B97458 featureType:0];
-      v19 = v14;
+      RERaiseInternalException(*MEMORY[0x277CBE658], @"Unsupported relevance provider: %@", v8, v9, v10, v11, v12, v13, providerCopy);
+      feature = [REFeature featureWithName:&stru_283B97458 featureType:0];
+      v19 = feature;
       v15 = MEMORY[0x277CBEA60];
       v16 = &v19;
     }
 
-    v7 = [v15 arrayWithObjects:v16 count:1];
+    effectiveFeatures = [v15 arrayWithObjects:v16 count:1];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return effectiveFeatures;
 }
 
-- (id)_relevaneProviderWithType:(id)a3 withOptions:(id)a4
+- (id)_relevaneProviderWithType:(id)type withOptions:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  optionsCopy = options;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1629,13 +1629,13 @@ float __71__RERelevanceProviderEnvironment__scaleRelevanceProviderValues_values_
 
         v13 = *(*(&v28 + 1) + 8 * i);
         v14 = [objc_msgSend(objc_opt_class() "_relevanceProviderClass")];
-        v15 = [v14 isEqualToString:v6];
+        v15 = [v14 isEqualToString:typeCopy];
 
         if (v15)
         {
-          v21 = [objc_opt_class() _relevanceProviderClass];
+          _relevanceProviderClass = [objc_opt_class() _relevanceProviderClass];
 LABEL_20:
-          v16 = [[v21 alloc] initWithDictionary:v7];
+          v16 = [[_relevanceProviderClass alloc] initWithDictionary:optionsCopy];
           goto LABEL_21;
         }
       }
@@ -1668,12 +1668,12 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * j) name];
-        v20 = [v19 isEqualToString:v6];
+        name = [*(*(&v24 + 1) + 8 * j) name];
+        v20 = [name isEqualToString:typeCopy];
 
         if (v20)
         {
-          v21 = RECustomRelevanceProvider;
+          _relevanceProviderClass = RECustomRelevanceProvider;
           goto LABEL_20;
         }
       }
@@ -1695,20 +1695,20 @@ LABEL_21:
   return v16;
 }
 
-- (id)encodeRelevaneProvider:(id)a3
+- (id)encodeRelevaneProvider:(id)provider
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v4];
+  providerCopy = provider;
+  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
   if (v5)
   {
-    v6 = [v4 dictionaryEncoding];
-    v7 = [objc_opt_class() relevanceSimulatorID];
-    v8 = v7;
-    if (v6 && [v7 length])
+    dictionaryEncoding = [providerCopy dictionaryEncoding];
+    relevanceSimulatorID = [objc_opt_class() relevanceSimulatorID];
+    v8 = relevanceSimulatorID;
+    if (dictionaryEncoding && [relevanceSimulatorID length])
     {
       v18 = v8;
-      v19[0] = v6;
+      v19[0] = dictionaryEncoding;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
       goto LABEL_9;
@@ -1720,14 +1720,14 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
-      v11 = [v10 feature];
-      v12 = [v11 name];
+      v10 = providerCopy;
+      feature = [v10 feature];
+      name = [feature name];
 
-      v13 = [v10 dictionaryEncoding];
+      dictionaryEncoding2 = [v10 dictionaryEncoding];
 
-      v16 = v12;
-      v17 = v13;
+      v16 = name;
+      v17 = dictionaryEncoding2;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
       goto LABEL_9;
@@ -1742,9 +1742,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)createRelevaneProviderWithType:(id)a3 withOptions:(id)a4
+- (id)createRelevaneProviderWithType:(id)type withOptions:(id)options
 {
-  v5 = [(RERelevanceProviderEnvironment *)self _relevaneProviderWithType:a3 withOptions:a4];
+  v5 = [(RERelevanceProviderEnvironment *)self _relevaneProviderWithType:type withOptions:options];
   if (v5 && [(RERelevanceProviderEnvironment *)self isSupportedRelevanceProvider:v5])
   {
     v6 = v5;
@@ -1761,14 +1761,14 @@ LABEL_9:
 - (NSDictionary)allProviderValues
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [(NSLock *)self->_relevanceValuesLock lock];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMapTable *)self->_relevanceValues keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keyEnumerator = [(NSMapTable *)self->_relevanceValues keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1779,23 +1779,23 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_relevanceValues objectForKey:v9];
         v11 = [v10 copy];
-        [v3 setObject:v11 forKeyedSubscript:v9];
+        [dictionary setObject:v11 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
   [(NSLock *)self->_relevanceValuesLock unlock];
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -1809,86 +1809,86 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)immediateUpdateForRelevanceProviderManager:(id)a3 completion:(id)a4
+- (void)immediateUpdateForRelevanceProviderManager:(id)manager completion:(id)completion
 {
   providerManagersToUpdate = self->_providerManagersToUpdate;
-  v7 = a4;
-  [(NSMutableSet *)providerManagersToUpdate addObject:a3];
-  [(RERelevanceProviderEnvironment *)self _queue_performUpdate:v7];
+  completionCopy = completion;
+  [(NSMutableSet *)providerManagersToUpdate addObject:manager];
+  [(RERelevanceProviderEnvironment *)self _queue_performUpdate:completionCopy];
 }
 
-- (void)scheduleUpdateForRelevanceProvider:(id)a3 completion:(id)a4
+- (void)scheduleUpdateForRelevanceProvider:(id)provider completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   v8 = RELogForDomain(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = providerCopy;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "Scheduling imminent update for relevance provider %{public}@", &v12, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     updateCompletionBlocks = self->_updateCompletionBlocks;
-    v10 = MEMORY[0x22AABC5E0](v7);
+    v10 = MEMORY[0x22AABC5E0](completionCopy);
     [(NSMutableArray *)updateCompletionBlocks addObject:v10];
   }
 
-  [(NSHashTable *)self->_providersToUpdate addObject:v6];
+  [(NSHashTable *)self->_providersToUpdate addObject:providerCopy];
   [(REUpNextScheduler *)self->_scheduler schedule];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleUpdateForRelevanceProviderManager:(id)a3 completion:(id)a4
+- (void)scheduleUpdateForRelevanceProviderManager:(id)manager completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   v8 = RELogForDomain(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = managerCopy;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "Scheduling imminent update for relevance provider manager %{public}@", &v12, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     updateCompletionBlocks = self->_updateCompletionBlocks;
-    v10 = MEMORY[0x22AABC5E0](v7);
+    v10 = MEMORY[0x22AABC5E0](completionCopy);
     [(NSMutableArray *)updateCompletionBlocks addObject:v10];
   }
 
-  [(NSMutableSet *)self->_providerManagersToUpdate addObject:v6];
+  [(NSMutableSet *)self->_providerManagersToUpdate addObject:managerCopy];
   [(REUpNextScheduler *)self->_scheduler schedule];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessHistogramForFeature:(id)a3 usingBlock:(id)a4
+- (void)accessHistogramForFeature:(id)feature usingBlock:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   relevanceValuesLock = self->_relevanceValuesLock;
-  v7 = a3;
+  featureCopy = feature;
   [(NSLock *)relevanceValuesLock lock];
-  v8 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:v7];
+  v8 = [(RERelevanceProviderEnvironment *)self _histogramForFeature:featureCopy];
 
-  if (v9 && v8)
+  if (blockCopy && v8)
   {
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   [(NSLock *)self->_relevanceValuesLock unlock];
 }
 
-- (BOOL)isSupportedRelevanceProvider:(id)a3
+- (BOOL)isSupportedRelevanceProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:v4];
+  providerCopy = provider;
+  v5 = [(RERelevanceProviderEnvironment *)self _providerManagerForProvider:providerCopy];
   if (v5)
   {
     v6 = 1;
@@ -1899,8 +1899,8 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 feature];
-      v6 = [(REFeatureSet *)self->_supportedFeatures containsFeature:v7];
+      feature = [providerCopy feature];
+      v6 = [(REFeatureSet *)self->_supportedFeatures containsFeature:feature];
     }
 
     else

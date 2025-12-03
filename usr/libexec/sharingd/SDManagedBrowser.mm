@@ -1,7 +1,7 @@
 @interface SDManagedBrowser
 + (id)sharedBrowser;
 - (SDManagedBrowser)init;
-- (void)setServers:(id)a3;
+- (void)setServers:(id)servers;
 - (void)start;
 - (void)stop;
 @end
@@ -38,12 +38,12 @@
   return v3;
 }
 
-- (void)setServers:(id)a3
+- (void)setServers:(id)servers
 {
-  v5 = a3;
-  if (sub_100118058(self->_servers, v5))
+  serversCopy = servers;
+  if (sub_100118058(self->_servers, serversCopy))
   {
-    objc_storeStrong(&self->_servers, a3);
+    objc_storeStrong(&self->_servers, servers);
     self->_sendNotification = 1;
   }
 }

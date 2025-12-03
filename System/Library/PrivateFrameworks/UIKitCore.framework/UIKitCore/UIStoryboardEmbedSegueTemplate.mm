@@ -1,20 +1,20 @@
 @interface UIStoryboardEmbedSegueTemplate
-- (UIStoryboardEmbedSegueTemplate)initWithCoder:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardEmbedSegueTemplate)initWithCoder:(id)coder;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardEmbedSegueTemplate
 
-- (UIStoryboardEmbedSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardEmbedSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIStoryboardEmbedSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v9 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIContainerView"];
+    v6 = [coderCopy decodeObjectForKey:@"UIContainerView"];
     containerView = v5->_containerView;
     v5->_containerView = v6;
   }
@@ -22,21 +22,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIStoryboardEmbedSegueTemplate;
-  v4 = a3;
-  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UIStoryboardEmbedSegueTemplate *)self containerView:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"UIContainerView"];
+  [coderCopy encodeObject:v5 forKey:@"UIContainerView"];
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
-  v5 = a3;
-  v6 = [(UIStoryboardEmbedSegueTemplate *)self containerView];
-  objc_initWeak(&location, v5);
+  segueCopy = segue;
+  containerView = [(UIStoryboardEmbedSegueTemplate *)self containerView];
+  objc_initWeak(&location, segueCopy);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -44,9 +44,9 @@
   aBlock[3] = &unk_1E70F9070;
   objc_copyWeak(v13, &location);
   v13[1] = a2;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
+  v11 = containerView;
+  selfCopy = self;
+  v7 = containerView;
   v8 = _Block_copy(aBlock);
 
   objc_destroyWeak(v13);

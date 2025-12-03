@@ -9,19 +9,19 @@
 - (id)currentDevice
 {
   v40 = *MEMORY[0x277D85DE8];
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"RTPersistenceDriverUserInfoDeviceMOIDKey"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"RTPersistenceDriverUserInfoDeviceMOIDKey"];
 
   if (!v3)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [a1 userInfo];
+      userInfo2 = [self userInfo];
       *buf = 138413058;
       v31 = @"RTPersistenceDriverUserInfoDeviceMOIDKey";
       v32 = 2112;
-      v33 = v13;
+      v33 = userInfo2;
       v34 = 2080;
       v35 = "[NSManagedObjectContext(Cloud) currentDevice]";
       v36 = 1024;
@@ -34,7 +34,7 @@
   }
 
   v27 = 0;
-  v4 = [a1 existingObjectWithID:v3 error:&v27];
+  v4 = [self existingObjectWithID:v3 error:&v27];
   v5 = v27;
   if (v4)
   {
@@ -54,8 +54,8 @@
       v20 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [a1 userInfo];
-        if (v21)
+        userInfo3 = [self userInfo];
+        if (userInfo3)
         {
           v22 = @"YES";
         }
@@ -75,8 +75,8 @@
           v23 = @"NO";
         }
 
-        v24 = [v4 identifier];
-        v25 = [v24 UUIDString];
+        identifier = [v4 identifier];
+        uUIDString = [identifier UUIDString];
         *buf = 138413314;
         v31 = v22;
         v32 = 2112;
@@ -84,7 +84,7 @@
         v34 = 2112;
         v35 = v23;
         v36 = 2112;
-        v37 = v25;
+        v37 = uUIDString;
         v38 = 2112;
         v39 = v18;
         _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "hasUserInfo, %@, hasDeviceRecordID, %@, hasCurrentDeviceMO, %@, currentDeviceMo.identifier, %@, error, %@", buf, 0x34u);
@@ -100,17 +100,17 @@
     objc_exception_throw(v26);
   }
 
-  v7 = [v4 identifier];
+  identifier2 = [v4 identifier];
 
-  if (!v7)
+  if (!identifier2)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v8 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [a1 userInfo];
-        if (v14)
+        userInfo4 = [self userInfo];
+        if (userInfo4)
         {
           v15 = @"YES";
         }
@@ -120,8 +120,8 @@
           v15 = @"NO";
         }
 
-        v16 = [v4 identifier];
-        v17 = [v16 UUIDString];
+        identifier3 = [v4 identifier];
+        uUIDString2 = [identifier3 UUIDString];
         *buf = 138413314;
         v31 = v15;
         v32 = 2112;
@@ -129,16 +129,16 @@
         v34 = 2112;
         v35 = @"YES";
         v36 = 2112;
-        v37 = v17;
+        v37 = uUIDString2;
         v38 = 2112;
         v39 = 0;
         _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "hasUserInfo, %@, hasDeviceRecordID, %@, hasCurrentDeviceMO, %@, currentDeviceMo.identifier, %@, error, %@", buf, 0x34u);
       }
     }
 
-    v9 = [v4 identifier];
+    identifier4 = [v4 identifier];
 
-    if (!v9)
+    if (!identifier4)
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -175,7 +175,7 @@ LABEL_20:
     return 0;
   }
 
-  return [a1 mirroringQualityOfService];
+  return [self mirroringQualityOfService];
 }
 
 - (uint64_t)setMirroringQualityOfService:()Cloud
@@ -185,7 +185,7 @@ LABEL_20:
   if (result)
   {
 
-    return [a1 setMirroringQualityOfService:a3];
+    return [self setMirroringQualityOfService:a3];
   }
 
   return result;

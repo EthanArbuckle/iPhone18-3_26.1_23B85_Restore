@@ -1,17 +1,17 @@
 @interface UIOServer
 + (UIOServer)sharedInstance;
-+ (id)_identifierForSceneType:(int64_t)a3 spaceIdentifier:(id)a4;
-+ (id)displayDelegateIdentifierForScene:(id)a3;
++ (id)_identifierForSceneType:(int64_t)type spaceIdentifier:(id)identifier;
++ (id)displayDelegateIdentifierForScene:(id)scene;
 - (UIOServer)init;
-- (id)displayDelegateForAction:(id)a3 sceneType:(int64_t)a4;
-- (id)displayDelegateForIdentifier:(id)a3;
-- (void)_fulfillAwaitingDisplayDelegate:(id)a3 forIdentifier:(id)a4;
+- (id)displayDelegateForAction:(id)action sceneType:(int64_t)type;
+- (id)displayDelegateForIdentifier:(id)identifier;
+- (void)_fulfillAwaitingDisplayDelegate:(id)delegate forIdentifier:(id)identifier;
 - (void)activate;
-- (void)awaitDisplayDelegateForAction:(id)a3 sceneType:(int64_t)a4 timeout:(double)a5 completion:(id)a6;
+- (void)awaitDisplayDelegateForAction:(id)action sceneType:(int64_t)type timeout:(double)timeout completion:(id)completion;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)registerDisplayDelegate:(id)a3 forIdentifier:(id)a4;
-- (void)unregisterDisplayDelegateForIdentifier:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)registerDisplayDelegate:(id)delegate forIdentifier:(id)identifier;
+- (void)unregisterDisplayDelegateForIdentifier:(id)identifier;
 @end
 
 @implementation UIOServer
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __27__UIOServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1282 != -1)
   {
     dispatch_once(&_MergedGlobals_1282, block);
@@ -40,30 +40,30 @@ void __27__UIOServer_sharedInstance__block_invoke()
   qword_1ED4A0950 = v0;
 }
 
-+ (id)_identifierForSceneType:(int64_t)a3 spaceIdentifier:(id)a4
++ (id)_identifierForSceneType:(int64_t)type spaceIdentifier:(id)identifier
 {
   v4 = @"Unknown";
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"Overlay";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = @"Subterranean";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v4, a4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v4, identifier];
 }
 
-+ (id)displayDelegateIdentifierForScene:(id)a3
++ (id)displayDelegateIdentifierForScene:(id)scene
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 systemShellHostingEnvironment];
-  v6 = [v5 systemShellHostingSpaceIdentifier];
+  sceneCopy = scene;
+  systemShellHostingEnvironment = [sceneCopy systemShellHostingEnvironment];
+  systemShellHostingSpaceIdentifier = [systemShellHostingEnvironment systemShellHostingSpaceIdentifier];
 
-  if (!v6)
+  if (!systemShellHostingSpaceIdentifier)
   {
     v7 = UIOLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -73,14 +73,14 @@ void __27__UIOServer_sharedInstance__block_invoke()
       v12 = 138543618;
       v13 = v9;
       v14 = 2050;
-      v15 = v4;
+      v15 = sceneCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Could not find a systemShellHostingSpaceIdentifier for scene: <%{public}@: %{public}p>", &v12, 0x16u);
     }
 
-    v6 = @"Unspecified";
+    systemShellHostingSpaceIdentifier = @"Unspecified";
   }
 
-  v10 = [a1 _identifierForSceneType:objc_msgSend(objc_opt_class() spaceIdentifier:{"_UIO_sceneType"), v6}];
+  v10 = [self _identifierForSceneType:objc_msgSend(objc_opt_class() spaceIdentifier:{"_UIO_sceneType"), systemShellHostingSpaceIdentifier}];
 
   return v10;
 }
@@ -94,8 +94,8 @@ void __27__UIOServer_sharedInstance__block_invoke()
   {
     if ((_UIApplicationProcessIsOverlayUI() & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v3 file:@"UIOServer.m" lineNumber:87 description:@"Fatal error: a UIOServer instance was initialized outside of OverlayUI"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"UIOServer.m" lineNumber:87 description:@"Fatal error: a UIOServer instance was initialized outside of OverlayUI"];
     }
 
     v4 = dispatch_queue_create("com.apple.UIKit.OverlayUI.service_queue", 0);
@@ -106,9 +106,9 @@ void __27__UIOServer_sharedInstance__block_invoke()
     connections = v3->_connections;
     v3->_connections = v6;
 
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     displayDelegateTable = v3->_displayDelegateTable;
-    v3->_displayDelegateTable = v8;
+    v3->_displayDelegateTable = strongToWeakObjectsMapTable;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     awaitingDisplayDelegateRequests = v3->_awaitingDisplayDelegateRequests;
@@ -146,17 +146,17 @@ void __17__UIOServer_init__block_invoke(uint64_t a1, void *a2)
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   serviceQueue = self->_serviceQueue;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __55__UIOServer_listener_didReceiveConnection_withContext___block_invoke;
   v12 = &unk_1E70F35B8;
-  v13 = v6;
-  v14 = self;
-  v8 = v6;
+  v13 = connectionCopy;
+  selfCopy = self;
+  v8 = connectionCopy;
   dispatch_sync(serviceQueue, &v9);
   [v8 activate];
 }
@@ -237,69 +237,69 @@ void __55__UIOServer_listener_didReceiveConnection_withContext___block_invoke_3(
   }
 }
 
-- (void)registerDisplayDelegate:(id)a3 forIdentifier:(id)a4
+- (void)registerDisplayDelegate:(id)delegate forIdentifier:(id)identifier
 {
-  v7 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   if (pthread_main_np() != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:151 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:151 description:@"Call must be made on main thread"];
   }
 
-  [(NSMapTable *)self->_displayDelegateTable setObject:v9 forKey:v7];
-  [(UIOServer *)self _fulfillAwaitingDisplayDelegate:v9 forIdentifier:v7];
+  [(NSMapTable *)self->_displayDelegateTable setObject:delegateCopy forKey:identifierCopy];
+  [(UIOServer *)self _fulfillAwaitingDisplayDelegate:delegateCopy forIdentifier:identifierCopy];
 }
 
-- (void)unregisterDisplayDelegateForIdentifier:(id)a3
+- (void)unregisterDisplayDelegateForIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (pthread_main_np() != 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:158 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:158 description:@"Call must be made on main thread"];
   }
 
-  [(NSMapTable *)self->_displayDelegateTable removeObjectForKey:v6];
+  [(NSMapTable *)self->_displayDelegateTable removeObjectForKey:identifierCopy];
 }
 
-- (id)displayDelegateForIdentifier:(id)a3
+- (id)displayDelegateForIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (pthread_main_np() != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:164 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:164 description:@"Call must be made on main thread"];
   }
 
-  v6 = [(NSMapTable *)self->_displayDelegateTable objectForKey:v5];
+  v6 = [(NSMapTable *)self->_displayDelegateTable objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)displayDelegateForAction:(id)a3 sceneType:(int64_t)a4
+- (id)displayDelegateForAction:(id)action sceneType:(int64_t)type
 {
-  v6 = [a3 originContext];
-  v7 = [v6 spaceIdentifier];
+  originContext = [action originContext];
+  spaceIdentifier = [originContext spaceIdentifier];
 
-  v8 = [objc_opt_class() _identifierForSceneType:a4 spaceIdentifier:v7];
+  v8 = [objc_opt_class() _identifierForSceneType:type spaceIdentifier:spaceIdentifier];
   v9 = [(UIOServer *)self displayDelegateForIdentifier:v8];
 
   return v9;
 }
 
-- (void)awaitDisplayDelegateForAction:(id)a3 sceneType:(int64_t)a4 timeout:(double)a5 completion:(id)a6
+- (void)awaitDisplayDelegateForAction:(id)action sceneType:(int64_t)type timeout:(double)timeout completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  actionCopy = action;
+  completionCopy = completion;
   if (pthread_main_np() != 1)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:182 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIOServer.m" lineNumber:182 description:@"Call must be made on main thread"];
   }
 
-  v13 = [(UIOServer *)self displayDelegateForAction:v11 sceneType:a4];
+  v13 = [(UIOServer *)self displayDelegateForAction:actionCopy sceneType:type];
   if (v13)
   {
     v14 = UIOLog();
@@ -309,16 +309,16 @@ void __55__UIOServer_listener_didReceiveConnection_withContext___block_invoke_3(
       _os_log_debug_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEBUG, "awaitDisplayDelegateForAction: returning existing display delegate", location, 2u);
     }
 
-    v12[2](v12, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
   {
-    v15 = [v12 copy];
-    v16 = [v11 originContext];
-    v17 = [v16 spaceIdentifier];
+    v15 = [completionCopy copy];
+    originContext = [actionCopy originContext];
+    spaceIdentifier = [originContext spaceIdentifier];
 
-    v18 = [objc_opt_class() _identifierForSceneType:a4 spaceIdentifier:v17];
+    v18 = [objc_opt_class() _identifierForSceneType:type spaceIdentifier:spaceIdentifier];
     v19 = UIOLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -354,7 +354,7 @@ void __55__UIOServer_listener_didReceiveConnection_withContext___block_invoke_3(
     v30 = v25;
     v26 = v15;
     v31 = v26;
-    v27 = [v24 scheduledTimerWithTimeInterval:0 repeats:v29 block:a5];
+    v27 = [v24 scheduledTimerWithTimeInterval:0 repeats:v29 block:timeout];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(location);
@@ -388,20 +388,20 @@ void __72__UIOServer_awaitDisplayDelegateForAction_sceneType_timeout_completion_
   }
 }
 
-- (void)_fulfillAwaitingDisplayDelegate:(id)a3 forIdentifier:(id)a4
+- (void)_fulfillAwaitingDisplayDelegate:(id)delegate forIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v8 = UIOLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v20 = v7;
+    v20 = identifierCopy;
     _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "Fulfilling awaiting display delegates for identifier %{public}@", buf, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_awaitingDisplayDelegateRequests objectForKey:v7];
+  v9 = [(NSMutableDictionary *)self->_awaitingDisplayDelegateRequests objectForKey:identifierCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;

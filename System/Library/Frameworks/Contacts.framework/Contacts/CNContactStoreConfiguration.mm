@@ -39,9 +39,9 @@
   v13 = [v3 appendObject:self->_environment withName:@"environment"];
   v14 = [v3 appendObject:self->_managedConfiguration withName:@"managedConfiguration"];
   v15 = [v3 appendName:@"isContactProvider" BOOLValue:self->_isContactProvider];
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 @end

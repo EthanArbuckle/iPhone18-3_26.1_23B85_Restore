@@ -1,10 +1,10 @@
 @interface CMRecordedRotationRateData
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 @end
 
 @implementation CMRecordedRotationRateData
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
   [(CMRecordedRotationRateData *)self rotationRate];
   v6 = v5;
@@ -19,7 +19,7 @@
     return result;
   }
 
-  return [a3 write:byte_100016A89 maxLength:result];
+  return [stream write:byte_100016A89 maxLength:result];
 }
 
 @end

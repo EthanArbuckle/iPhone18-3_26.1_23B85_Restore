@@ -1,21 +1,21 @@
 @interface PXLayoutPageMap
-- (PXLayoutPageMap)initWithSources:(id)a3 contentRect:(CGRect)a4;
-- (id)_screenPageForPoint:(CGPoint)a3;
+- (PXLayoutPageMap)initWithSources:(id)sources contentRect:(CGRect)rect;
+- (id)_screenPageForPoint:(CGPoint)point;
 - (id)description;
-- (id)sourcesFromRect:(CGRect)a3;
-- (void)_mapSources:(id)a3;
+- (id)sourcesFromRect:(CGRect)rect;
+- (void)_mapSources:(id)sources;
 @end
 
 @implementation PXLayoutPageMap
 
-- (void)_mapSources:(id)a3
+- (void)_mapSources:(id)sources
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __31__PXLayoutPageMap__mapSources___block_invoke;
   v3[3] = &unk_1E7BB83B0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [sources enumerateObjectsUsingBlock:v3];
 }
 
 void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -94,15 +94,15 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
   [v15 addIndex:a3];
 }
 
-- (id)sourcesFromRect:(CGRect)a3
+- (id)sourcesFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
-    v8 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   else
@@ -140,11 +140,11 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
       }
     }
 
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-    v17 = [v9 firstIndex];
-    if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+    array = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    firstIndex = [v9 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = v17;
+      v18 = firstIndex;
       do
       {
         v19 = [(NSArray *)self->_sources objectAtIndexedSubscript:v18];
@@ -162,7 +162,7 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
           v30.size.height = height;
           if (CGRectIntersectsRect(v30, v31))
           {
-            [v8 addObject:v20];
+            [array addObject:v20];
           }
         }
 
@@ -173,16 +173,16 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_screenPageForPoint:(CGPoint)a3
+- (id)_screenPageForPoint:(CGPoint)point
 {
-  v4 = a3.x * 0.0009765625;
+  v4 = point.x * 0.0009765625;
   v10.size.width = 1024.0;
-  v10.origin.x = floor(a3.x * 0.0009765625) * 1024.0;
-  v5 = a3.y * 0.0009765625;
-  v10.origin.y = floor(a3.y * 0.0009765625) * 1024.0;
+  v10.origin.x = floor(point.x * 0.0009765625) * 1024.0;
+  v5 = point.y * 0.0009765625;
+  v10.origin.y = floor(point.y * 0.0009765625) * 1024.0;
   v10.size.height = 1024.0;
   if (CGRectIntersectsRect(v10, self->_contentRect))
   {
@@ -213,13 +213,13 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
   return v4;
 }
 
-- (PXLayoutPageMap)initWithSources:(id)a3 contentRect:(CGRect)a4
+- (PXLayoutPageMap)initWithSources:(id)sources contentRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sourcesCopy = sources;
   v18.receiver = self;
   v18.super_class = PXLayoutPageMap;
   v10 = [(PXLayoutPageMap *)&v18 init];
@@ -235,7 +235,7 @@ void __31__PXLayoutPageMap__mapSources___block_invoke(uint64_t a1, void *a2, uin
     v10->_contentRect.origin.y = y;
     v10->_contentRect.size.width = width;
     v10->_contentRect.size.height = height;
-    v15 = [v9 copy];
+    v15 = [sourcesCopy copy];
     sources = v10->_sources;
     v10->_sources = v15;
 

@@ -1,12 +1,12 @@
 @interface MZKeyValueStoreAuthenticationController
-- (BOOL)isAuthenticationValidForTransaction:(id)a3 error:(id *)a4;
-- (BOOL)shouldForceAuthenticationForTransaction:(id)a3;
+- (BOOL)isAuthenticationValidForTransaction:(id)transaction error:(id *)error;
+- (BOOL)shouldForceAuthenticationForTransaction:(id)transaction;
 - (MZKeyValueStoreAuthenticationController)init;
 - (NSString)DSID;
 - (NSString)DSIDText;
 - (NSString)acceptedDSID;
 - (NSString)acceptedDSIDText;
-- (id)authenticationErrorsForTransaction:(id)a3;
+- (id)authenticationErrorsForTransaction:(id)transaction;
 - (void)resetAcceptedCredentials;
 @end
 
@@ -31,31 +31,31 @@
   return v2;
 }
 
-- (BOOL)isAuthenticationValidForTransaction:(id)a3 error:(id *)a4
+- (BOOL)isAuthenticationValidForTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MZKeyValueStoreAuthenticationController *)self DSID];
-  v8 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSID];
-  if (-[MZKeyValueStoreAuthenticationController shouldAuthenticate](self, "shouldAuthenticate") || v7 && v8 && ([v7 isEqualToString:v8] & 1) != 0 || -[MZKeyValueStoreAuthenticationController shouldForceAuthenticationForTransaction:](self, "shouldForceAuthenticationForTransaction:", v6))
+  transactionCopy = transaction;
+  dSID = [(MZKeyValueStoreAuthenticationController *)self DSID];
+  acceptedDSID = [(MZKeyValueStoreAuthenticationController *)self acceptedDSID];
+  if (-[MZKeyValueStoreAuthenticationController shouldAuthenticate](self, "shouldAuthenticate") || dSID && acceptedDSID && ([dSID isEqualToString:acceptedDSID] & 1) != 0 || -[MZKeyValueStoreAuthenticationController shouldForceAuthenticationForTransaction:](self, "shouldForceAuthenticationForTransaction:", transactionCopy))
   {
     v9 = 1;
   }
 
   else
   {
-    [(MZKeyValueStoreAuthenticationController *)self authenticationErrorsForTransaction:v6];
-    *a4 = v9 = 0;
+    [(MZKeyValueStoreAuthenticationController *)self authenticationErrorsForTransaction:transactionCopy];
+    *error = v9 = 0;
   }
 
   return v9;
 }
 
-- (BOOL)shouldForceAuthenticationForTransaction:(id)a3
+- (BOOL)shouldForceAuthenticationForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   if ([(MZKeyValueStoreAuthenticationController *)self shouldAuthenticate])
   {
-    v5 = [(MZKeyValueStoreAuthenticationController *)self authenticationErrorsForTransaction:v4];
+    v5 = [(MZKeyValueStoreAuthenticationController *)self authenticationErrorsForTransaction:transactionCopy];
     v6 = v5;
     if (v5)
     {
@@ -76,30 +76,30 @@
   return v7;
 }
 
-- (id)authenticationErrorsForTransaction:(id)a3
+- (id)authenticationErrorsForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(MZKeyValueStoreAuthenticationController *)self DSIDText];
-  v6 = [(MZKeyValueStoreAuthenticationController *)self DSID];
-  v7 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSID];
-  v8 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDText];
-  if (v7)
+  transactionCopy = transaction;
+  dSIDText = [(MZKeyValueStoreAuthenticationController *)self DSIDText];
+  dSID = [(MZKeyValueStoreAuthenticationController *)self DSID];
+  acceptedDSID = [(MZKeyValueStoreAuthenticationController *)self acceptedDSID];
+  acceptedDSIDText = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDText];
+  if (acceptedDSID)
   {
-    if (v6)
+    if (dSID)
     {
-      [MZKeyValueStoreError storeAccountMismatchErrorWithPreviousStoreAccountText:v8 currentStoreAccontText:v5 transaction:v4 underlyingError:0];
+      [MZKeyValueStoreError storeAccountMismatchErrorWithPreviousStoreAccountText:acceptedDSIDText currentStoreAccontText:dSIDText transaction:transactionCopy underlyingError:0];
     }
 
     else
     {
-      [MZKeyValueStoreError storeLoggedOutErrorWithPreviousStoreAccountText:v7 transaction:v4 underlyingError:0];
+      [MZKeyValueStoreError storeLoggedOutErrorWithPreviousStoreAccountText:acceptedDSID transaction:transactionCopy underlyingError:0];
     }
     v9 = ;
   }
 
   else
   {
-    v9 = [MZKeyValueStoreError noStoreAccountErrorWithTransaction:v4 underlyingError:0];
+    v9 = [MZKeyValueStoreError noStoreAccountErrorWithTransaction:transactionCopy underlyingError:0];
   }
 
   v10 = v9;
@@ -110,21 +110,21 @@
 - (void)resetAcceptedCredentials
 {
   v3 = +[MZPreferences storeBookkeeperPreferences];
-  v4 = [(MZKeyValueStoreAuthenticationController *)self DSID];
-  v5 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDUserDefaultsKey];
-  [v3 setObject:v4 forKey:v5];
+  dSID = [(MZKeyValueStoreAuthenticationController *)self DSID];
+  acceptedDSIDUserDefaultsKey = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDUserDefaultsKey];
+  [v3 setObject:dSID forKey:acceptedDSIDUserDefaultsKey];
 
   v8 = +[MZPreferences storeBookkeeperPreferences];
-  v6 = [(MZKeyValueStoreAuthenticationController *)self DSIDText];
-  v7 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDTextUserDefaultsKey];
-  [v8 setObject:v6 forKey:v7];
+  dSIDText = [(MZKeyValueStoreAuthenticationController *)self DSIDText];
+  acceptedDSIDTextUserDefaultsKey = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDTextUserDefaultsKey];
+  [v8 setObject:dSIDText forKey:acceptedDSIDTextUserDefaultsKey];
 }
 
 - (NSString)acceptedDSID
 {
   v3 = +[MZPreferences storeBookkeeperPreferences];
-  v4 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDUserDefaultsKey];
-  v5 = [v3 objectForKey:v4 withDefaultValue:0];
+  acceptedDSIDUserDefaultsKey = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDUserDefaultsKey];
+  v5 = [v3 objectForKey:acceptedDSIDUserDefaultsKey withDefaultValue:0];
 
   return v5;
 }
@@ -132,8 +132,8 @@
 - (NSString)acceptedDSIDText
 {
   v3 = +[MZPreferences storeBookkeeperPreferences];
-  v4 = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDTextUserDefaultsKey];
-  v5 = [v3 objectForKey:v4 withDefaultValue:0];
+  acceptedDSIDTextUserDefaultsKey = [(MZKeyValueStoreAuthenticationController *)self acceptedDSIDTextUserDefaultsKey];
+  v5 = [v3 objectForKey:acceptedDSIDTextUserDefaultsKey withDefaultValue:0];
 
   return v5;
 }
@@ -141,19 +141,19 @@
 - (NSString)DSID
 {
   v2 = +[MTAccountController sharedInstance];
-  v3 = [v2 activeDsid];
-  v4 = [v3 stringValue];
+  activeDsid = [v2 activeDsid];
+  stringValue = [activeDsid stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)DSIDText
 {
   v2 = +[MTAccountController sharedInstance];
-  v3 = [v2 activeAccount];
-  v4 = [v3 username];
+  activeAccount = [v2 activeAccount];
+  username = [activeAccount username];
 
-  return v4;
+  return username;
 }
 
 @end

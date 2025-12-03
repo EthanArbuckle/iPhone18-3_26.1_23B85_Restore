@@ -1,7 +1,7 @@
 @interface APNSPackDecoder
-- (APNSPackDecoder)initWithMaxTableSize:(unint64_t)a3;
+- (APNSPackDecoder)initWithMaxTableSize:(unint64_t)size;
 - (APNSPackDecoderDelegate)delegate;
-- (BOOL)decodeMessage:(id)a3 parser:(id)a4 parameters:(id *)a5 isInvalid:(BOOL *)a6 lengthParsed:(unint64_t *)a7;
+- (BOOL)decodeMessage:(id)message parser:(id)parser parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed;
 - (id)errorMessage;
 - (id)keyTable;
 - (id)metrics;
@@ -11,13 +11,13 @@
 
 @implementation APNSPackDecoder
 
-- (APNSPackDecoder)initWithMaxTableSize:(unint64_t)a3
+- (APNSPackDecoder)initWithMaxTableSize:(unint64_t)size
 {
   v5.receiver = self;
   v5.super_class = APNSPackDecoder;
   if ([(APNSPackDecoder *)&v5 init])
   {
-    if (a3)
+    if (size)
     {
       operator new();
     }
@@ -48,23 +48,23 @@
   [(APNSPackDecoder *)&v3 dealloc];
 }
 
-- (BOOL)decodeMessage:(id)a3 parser:(id)a4 parameters:(id *)a5 isInvalid:(BOOL *)a6 lengthParsed:(unint64_t *)a7
+- (BOOL)decodeMessage:(id)message parser:(id)parser parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed
 {
-  v12 = a3;
-  v13 = a4;
-  if (![v12 length])
+  messageCopy = message;
+  parserCopy = parser;
+  if (![messageCopy length])
   {
     goto LABEL_13;
   }
 
-  v14 = [v12 bytes];
+  bytes = [messageCopy bytes];
   v25 = 0;
   v26 = 0;
-  v15 = v14 + 1;
-  if (!sub_1000283B4(self->_decoder, (v14 + 1), [v12 length] - 1, &v26, &v25))
+  v15 = bytes + 1;
+  if (!sub_1000283B4(self->_decoder, (bytes + 1), [messageCopy length] - 1, &v26, &v25))
   {
 LABEL_10:
-    *a6 = 1;
+    *invalid = 1;
     if ([(APNSPackDecoder *)self hasError])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -79,11 +79,11 @@ LABEL_13:
   }
 
   WeakRetained = +[NSMutableDictionary dictionary];
-  sub_1000754A8(v24, v13, WeakRetained);
-  sub_100074E2C(v24, *v14);
+  sub_1000754A8(v24, parserCopy, WeakRetained);
+  sub_100074E2C(v24, *bytes);
   v17 = v25;
   v18 = v26;
-  v19 = [v12 length];
+  v19 = [messageCopy length];
   v20 = v17 + v18 + 1;
   v21 = v20 <= v19;
   if (v20 > v19)
@@ -91,7 +91,7 @@ LABEL_13:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ we don't have entire frame data yet when parsing", buf, 0xCu);
     }
 
@@ -106,8 +106,8 @@ LABEL_13:
   }
 
   v22 = WeakRetained;
-  *a5 = WeakRetained;
-  *a7 = v25 + v26 + 1;
+  *parameters = WeakRetained;
+  *parsed = v25 + v26 + 1;
 LABEL_8:
   sub_100075734(v24);
 LABEL_12:

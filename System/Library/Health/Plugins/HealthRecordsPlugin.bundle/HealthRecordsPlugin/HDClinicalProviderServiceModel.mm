@@ -1,12 +1,12 @@
 @interface HDClinicalProviderServiceModel
-+ (BOOL)validateContent:(id)a3 error:(id *)a4;
++ (BOOL)validateContent:(id)content error:(id *)error;
 + (NSString)schemaName;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDClinicalProviderServiceModel)init;
-- (HDClinicalProviderServiceModel)initWithContent:(id)a3;
-- (id)_initWithoutValidatingContent:(id)a3;
-- (id)createRawContentWithError:(id *)a3;
+- (HDClinicalProviderServiceModel)initWithContent:(id)content;
+- (id)_initWithoutValidatingContent:(id)content;
+- (id)createRawContentWithError:(id *)error;
 - (int64_t)revision;
 - (unint64_t)hash;
 @end
@@ -16,8 +16,8 @@
 + (void)initialize
 {
   v3 = HDHealthRecordsPluginBundle();
-  v2 = [v3 resourceURL];
-  [HKJSONValidator registerSearchPath:v2];
+  resourceURL = [v3 resourceURL];
+  [HKJSONValidator registerSearchPath:resourceURL];
 }
 
 - (HDClinicalProviderServiceModel)init
@@ -28,28 +28,28 @@
   return 0;
 }
 
-- (HDClinicalProviderServiceModel)initWithContent:(id)a3
+- (HDClinicalProviderServiceModel)initWithContent:(id)content
 {
-  v5 = a3;
-  if (([objc_opt_class() validateContent:v5 error:0] & 1) == 0)
+  contentCopy = content;
+  if (([objc_opt_class() validateContent:contentCopy error:0] & 1) == 0)
   {
     sub_9EC5C(a2, self);
   }
 
-  v6 = [(HDClinicalProviderServiceModel *)self _initWithoutValidatingContent:v5];
+  v6 = [(HDClinicalProviderServiceModel *)self _initWithoutValidatingContent:contentCopy];
 
   return v6;
 }
 
-- (id)_initWithoutValidatingContent:(id)a3
+- (id)_initWithoutValidatingContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = HDClinicalProviderServiceModel;
   v5 = [(HDClinicalProviderServiceModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [contentCopy copyWithZone:0];
     content = v5->_content;
     v5->_content = v6;
   }
@@ -57,32 +57,32 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(HDClinicalProviderServiceModel *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HDClinicalProviderServiceModel *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(HDClinicalProviderServiceModel *)self content];
-    v7 = [(HDClinicalProviderServiceModel *)v5 content];
-    if (v6 == v7)
+    v5 = equalCopy;
+    content = [(HDClinicalProviderServiceModel *)self content];
+    content2 = [(HDClinicalProviderServiceModel *)v5 content];
+    if (content == content2)
     {
       v11 = 1;
     }
 
     else
     {
-      v8 = [(HDClinicalProviderServiceModel *)v5 content];
-      if (v8)
+      content3 = [(HDClinicalProviderServiceModel *)v5 content];
+      if (content3)
       {
-        v9 = [(HDClinicalProviderServiceModel *)self content];
-        v10 = [(HDClinicalProviderServiceModel *)v5 content];
-        v11 = [v9 isEqual:v10];
+        content4 = [(HDClinicalProviderServiceModel *)self content];
+        content5 = [(HDClinicalProviderServiceModel *)v5 content];
+        v11 = [content4 isEqual:content5];
       }
 
       else
@@ -102,23 +102,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 hash];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content hash];
 
   return v3;
 }
 
-- (id)createRawContentWithError:(id *)a3
+- (id)createRawContentWithError:(id *)error
 {
-  v4 = [(HDClinicalProviderServiceModel *)self content];
-  v5 = [NSJSONSerialization dataWithJSONObject:v4 options:0 error:a3];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v5 = [NSJSONSerialization dataWithJSONObject:content options:0 error:error];
 
   return v5;
 }
 
-+ (BOOL)validateContent:(id)a3 error:(id *)a4
++ (BOOL)validateContent:(id)content error:(id *)error
 {
-  v6 = a3;
+  contentCopy = content;
   os_unfair_lock_lock(&unk_128828);
   if (!qword_128830)
   {
@@ -127,8 +127,8 @@
     qword_128830 = v7;
   }
 
-  v9 = [a1 schemaName];
-  v10 = [qword_128830 objectForKeyedSubscript:v9];
+  schemaName = [self schemaName];
+  v10 = [qword_128830 objectForKeyedSubscript:schemaName];
   if (v10)
   {
     v11 = v10;
@@ -139,19 +139,19 @@
   {
     v12 = [HKJSONValidator alloc];
     v13 = HDHealthRecordsPluginBundle();
-    v11 = [v12 initWithSchemaNamed:v9 bundle:v13];
+    v11 = [v12 initWithSchemaNamed:schemaName bundle:v13];
 
-    [qword_128830 setObject:v11 forKeyedSubscript:v9];
+    [qword_128830 setObject:v11 forKeyedSubscript:schemaName];
     os_unfair_lock_unlock(&unk_128828);
     if (!v11)
     {
-      [NSError hk_assignError:a4 code:100 format:@"Failed to create validator for %@ with schema named %@", a1, v9];
+      [NSError hk_assignError:error code:100 format:@"Failed to create validator for %@ with schema named %@", self, schemaName];
       v14 = 0;
       goto LABEL_7;
     }
   }
 
-  v14 = [v11 validateJSONObject:v6 error:a4];
+  v14 = [v11 validateJSONObject:contentCopy error:error];
 
 LABEL_7:
   return v14;
@@ -159,11 +159,11 @@ LABEL_7:
 
 - (int64_t)revision
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"updated"];
-  v4 = [v3 longLongValue];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"updated"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 + (NSString)schemaName

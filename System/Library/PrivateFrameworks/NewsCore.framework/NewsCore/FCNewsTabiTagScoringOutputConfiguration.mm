@@ -1,5 +1,5 @@
 @interface FCNewsTabiTagScoringOutputConfiguration
-- (FCNewsTabiTagScoringOutputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiTagScoringOutputConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,18 +8,18 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiTagScoringOutputConfiguration *)self scoredTagsOutputName];
-  [v3 appendFormat:@"\n\tscoredTagsOutputName: %@;", v4];
+  scoredTagsOutputName = [(FCNewsTabiTagScoringOutputConfiguration *)self scoredTagsOutputName];
+  [v3 appendFormat:@"\n\tscoredTagsOutputName: %@;", scoredTagsOutputName];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiTagScoringOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiTagScoringOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"scoredTagsOutputName", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"scoredTagsOutputName", 0);
   v6 = v5;
   if (v5)
   {
@@ -34,7 +34,7 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -43,12 +43,12 @@
     v13[1] = 3221225472;
     v13[2] = __62__FCNewsTabiTagScoringOutputConfiguration_initWithDictionary___block_invoke;
     v13[3] = &unk_1E7C36F98;
-    v14 = v4;
-    v10 = __62__FCNewsTabiTagScoringOutputConfiguration_initWithDictionary___block_invoke(v13);
+    v14 = dictionaryCopy;
+    selfCopy = __62__FCNewsTabiTagScoringOutputConfiguration_initWithDictionary___block_invoke(v13);
     v7 = v14;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __62__FCNewsTabiTagScoringOutputConfiguration_initWithDictionary___block_invoke(uint64_t a1)

@@ -1,55 +1,55 @@
 @interface StaticKeyController
-+ (id)cloudPersistentStoreDescription:(id)a3;
-+ (id)persistentStoreDescriptions:(id)a3;
-- (BOOL)deleteStaticKey:(id)a3 error:(id *)a4;
-- (BOOL)deleteStaticKeyByContactExternalURI:(id)a3 error:(id *)a4;
-- (BOOL)deleteStaticKeyByContactIdentifier:(id)a3 error:(id *)a4;
++ (id)cloudPersistentStoreDescription:(id)description;
++ (id)persistentStoreDescriptions:(id)descriptions;
+- (BOOL)deleteStaticKey:(id)key error:(id *)error;
+- (BOOL)deleteStaticKeyByContactExternalURI:(id)i error:(id *)error;
+- (BOOL)deleteStaticKeyByContactIdentifier:(id)identifier error:(id *)error;
 - (BOOL)exportToCloud;
-- (BOOL)haveContact:(id)a3 error:(id *)a4;
+- (BOOL)haveContact:(id)contact error:(id *)error;
 - (BOOL)importFromCloud;
-- (BOOL)resetCloudZone:(id *)a3;
-- (BOOL)setErrorCode:(int)a3 forMapping:(id)a4 error:(id *)a5;
-- (BOOL)setupCloudSchema:(BOOL)a3 error:(id *)a4;
-- (BOOL)shouldDoInitialCloudSyncing:(id)a3;
-- (BOOL)triggerSync:(id *)a3;
+- (BOOL)resetCloudZone:(id *)zone;
+- (BOOL)setErrorCode:(int)code forMapping:(id)mapping error:(id *)error;
+- (BOOL)setupCloudSchema:(BOOL)schema error:(id *)error;
+- (BOOL)shouldDoInitialCloudSyncing:(id)syncing;
+- (BOOL)triggerSync:(id *)sync;
 - (STCConfigurationStoreDelegate)configurationStore;
 - (StaticKeyIDSDelegate)idsDelegate;
-- (id)dataFromHistoryToken:(id)a3;
+- (id)dataFromHistoryToken:(id)token;
 - (id)fetchContactsSyncToken;
-- (id)fetchHandles:(id)a3 moc:(id)a4 error:(id *)a5;
-- (id)findStaticKeyByContact:(id)a3 error:(id *)a4;
-- (id)findStaticKeyByContactExternalURI:(id)a3 error:(id *)a4;
-- (id)findStaticKeyByContactIdentifier:(id)a3 error:(id *)a4;
-- (id)findStaticKeyByHandle:(id)a3 error:(id *)a4;
-- (id)findStaticKeyByKey:(id)a3 error:(id *)a4;
-- (id)historyTokenFromData:(id)a3;
-- (id)initCloudDataStore:(id)a3 idsDelegate:(id)a4 configurationStore:(id)a5 notificationCenter:(id)a6 dew:(id)a7 complete:(id)a8;
-- (id)initLocalDataStore:(id)a3 idsDelegate:(id)a4 configurationStore:(id)a5 notificationCenter:(id)a6 contactStore:(id)a7 dew:(id)a8 complete:(id)a9;
+- (id)fetchHandles:(id)handles moc:(id)moc error:(id *)error;
+- (id)findStaticKeyByContact:(id)contact error:(id *)error;
+- (id)findStaticKeyByContactExternalURI:(id)i error:(id *)error;
+- (id)findStaticKeyByContactIdentifier:(id)identifier error:(id *)error;
+- (id)findStaticKeyByHandle:(id)handle error:(id *)error;
+- (id)findStaticKeyByKey:(id)key error:(id *)error;
+- (id)historyTokenFromData:(id)data;
+- (id)initCloudDataStore:(id)store idsDelegate:(id)delegate configurationStore:(id)configurationStore notificationCenter:(id)center dew:(id)dew complete:(id)complete;
+- (id)initLocalDataStore:(id)store idsDelegate:(id)delegate configurationStore:(id)configurationStore notificationCenter:(id)center contactStore:(id)contactStore dew:(id)dew complete:(id)complete;
 - (id)lastContactSyncDate;
-- (id)listStaticKey:(id *)a3;
-- (id)mapStaticKeyToStoreEntry:(id)a3 handles:(id)a4 moc:(id)a5 error:(id *)a6;
+- (id)listStaticKey:(id *)key;
+- (id)mapStaticKeyToStoreEntry:(id)entry handles:(id)handles moc:(id)moc error:(id *)error;
 - (id)staticKeyModelURL;
-- (id)storeStaticKey:(id)a3 contactIdentifier:(id)a4 contactExternalIdentifier:(id)a5 mappings:(id)a6 error:(id *)a7;
-- (id)validateStaticKeyStoreMappingByContactExternalURI:(id)a3 error:(id *)a4;
-- (id)validateStaticKeyStoreMappingByContactIdentifer:(id)a3 error:(id *)a4;
-- (id)validateStaticKeyStoreMappingByKey:(id)a3 error:(id *)a4;
-- (id)validateStoreEntry:(id)a3 error:(id *)a4;
+- (id)storeStaticKey:(id)key contactIdentifier:(id)identifier contactExternalIdentifier:(id)externalIdentifier mappings:(id)mappings error:(id *)error;
+- (id)validateStaticKeyStoreMappingByContactExternalURI:(id)i error:(id *)error;
+- (id)validateStaticKeyStoreMappingByContactIdentifer:(id)identifer error:(id *)error;
+- (id)validateStaticKeyStoreMappingByKey:(id)key error:(id *)error;
+- (id)validateStoreEntry:(id)entry error:(id *)error;
 - (void)consumeContactsChangeHistory;
-- (void)deleteContact:(id)a3 contactExternalURI:(id)a4;
+- (void)deleteContact:(id)contact contactExternalURI:(id)i;
 - (void)drainContactsSyncing;
-- (void)fetchPeerHandles:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)launchCloudSyncing:(id)a3 initialDelay:(double)a4;
-- (void)peerVerificationUpdated:(id)a3;
-- (void)postChangeForEntry:(id)a3 publicAccountIdentity:(id)a4;
+- (void)fetchPeerHandles:(id)handles application:(id)application complete:(id)complete;
+- (void)launchCloudSyncing:(id)syncing initialDelay:(double)delay;
+- (void)peerVerificationUpdated:(id)updated;
+- (void)postChangeForEntry:(id)entry publicAccountIdentity:(id)identity;
 - (void)processCoreDataHistory;
 - (void)processDataOnQueue;
-- (void)remoteUpdate:(id)a3;
-- (void)setContactsSyncController:(id)a3;
+- (void)remoteUpdate:(id)update;
+- (void)setContactsSyncController:(id)controller;
 - (void)startContactsSyncing;
-- (void)storeContactsSyncToken:(id)a3;
-- (void)updateContact:(id)a3;
+- (void)storeContactsSyncToken:(id)token;
+- (void)updateContact:(id)contact;
 - (void)updateLastContactSyncDate;
-- (void)validatePeerResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5;
+- (void)validatePeerResult:(id)result uuid:(id)uuid completionBlock:(id)block;
 @end
 
 @implementation StaticKeyController
@@ -62,22 +62,22 @@
   return v3;
 }
 
-- (id)initCloudDataStore:(id)a3 idsDelegate:(id)a4 configurationStore:(id)a5 notificationCenter:(id)a6 dew:(id)a7 complete:(id)a8
+- (id)initCloudDataStore:(id)store idsDelegate:(id)delegate configurationStore:(id)configurationStore notificationCenter:(id)center dew:(id)dew complete:(id)complete
 {
-  v14 = a3;
-  v52 = a4;
-  v53 = a5;
-  v15 = a6;
-  v51 = a7;
-  v16 = a8;
+  storeCopy = store;
+  delegateCopy = delegate;
+  configurationStoreCopy = configurationStore;
+  centerCopy = center;
+  dewCopy = dew;
+  completeCopy = complete;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = storeCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "StaticKeyController: %@", &buf, 0xCu);
   }
 
-  if (v14)
+  if (storeCopy)
   {
     v17 = 0;
 LABEL_5:
@@ -87,9 +87,9 @@ LABEL_5:
     v19 = v18;
     if (v18)
     {
-      if (v15)
+      if (centerCopy)
       {
-        [(StaticKeyController *)v18 setNotificationCenter:v15];
+        [(StaticKeyController *)v18 setNotificationCenter:centerCopy];
       }
 
       else
@@ -98,8 +98,8 @@ LABEL_5:
         [(StaticKeyController *)v19 setNotificationCenter:v26];
       }
 
-      [(StaticKeyController *)v19 setIdsDelegate:v52];
-      [(StaticKeyController *)v19 setConfigurationStore:v53];
+      [(StaticKeyController *)v19 setIdsDelegate:delegateCopy];
+      [(StaticKeyController *)v19 setConfigurationStore:configurationStoreCopy];
       v27 = objc_alloc_init(CNContactStore);
       v28 = [[KTContactsStore alloc] initWithContactStore:v27];
       [(StaticKeyController *)v19 setContactStore:v28];
@@ -107,8 +107,8 @@ LABEL_5:
       v29 = dispatch_queue_create("StaticKeyController", 0);
       [(StaticKeyController *)v19 setQueue:v29];
 
-      v30 = [(StaticKeyController *)v19 queue];
-      dispatch_suspend(v30);
+      queue = [(StaticKeyController *)v19 queue];
+      dispatch_suspend(queue);
 
       v31 = os_log_create("com.apple.Transparency", "StaticKeyDatabase");
       [(StaticKeyController *)v19 setLog:v31];
@@ -117,13 +117,13 @@ LABEL_5:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v14;
+        *(&buf + 4) = storeCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "setup StaticKeyController: %@", &buf, 0xCu);
       }
 
       objc_initWeak(&location, v19);
       v33 = [KTNearFutureScheduler alloc];
-      [v51 coalesceStaticKeyUpdateInterval];
+      [dewCopy coalesceStaticKeyUpdateInterval];
       v35 = v34;
       v59[0] = _NSConcreteStackBlock;
       v59[1] = 3221225472;
@@ -134,22 +134,22 @@ LABEL_5:
       [(StaticKeyController *)v19 setRemoteUpdateNFS:v36];
 
       v37 = [NSManagedObjectModel alloc];
-      v38 = [(StaticKeyController *)v19 staticKeyModelURL];
-      v39 = [v37 initWithContentsOfURL:v38];
+      staticKeyModelURL = [(StaticKeyController *)v19 staticKeyModelURL];
+      v39 = [v37 initWithContentsOfURL:staticKeyModelURL];
 
-      v40 = [StaticKeyController cloudPersistentStoreDescription:v14];
+      v40 = [StaticKeyController cloudPersistentStoreDescription:storeCopy];
       v41 = [NSPersistentCloudKitContainer persistentContainerWithName:@"StaticKey" managedObjectModel:v39];
       [(StaticKeyController *)v19 setCloudContainer:v41];
 
-      v42 = [(StaticKeyController *)v19 cloudContainer];
-      [v42 setPersistentStoreDescriptions:v40];
+      cloudContainer = [(StaticKeyController *)v19 cloudContainer];
+      [cloudContainer setPersistentStoreDescriptions:v40];
 
       *&buf = 0;
       *(&buf + 1) = &buf;
       v66 = 0x2020000000;
       v67 = [v40 count];
-      v43 = [(StaticKeyController *)v19 cloudContainer];
-      [(StaticKeyController *)v19 setPersistentContainer:v43];
+      cloudContainer2 = [(StaticKeyController *)v19 cloudContainer];
+      [(StaticKeyController *)v19 setPersistentContainer:cloudContainer2];
 
       v44 = [(StaticKeyController *)v19 log];
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
@@ -158,7 +158,7 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Load Core Data", v58, 2u);
       }
 
-      v45 = [(StaticKeyController *)v19 persistentContainer];
+      persistentContainer = [(StaticKeyController *)v19 persistentContainer];
       v54[0] = _NSConcreteStackBlock;
       v54[1] = 3221225472;
       v54[2] = sub_10004035C;
@@ -166,8 +166,8 @@ LABEL_5:
       v46 = v19;
       v55 = v46;
       p_buf = &buf;
-      v56 = v16;
-      [v45 loadPersistentStoresWithCompletionHandler:v54];
+      v56 = completeCopy;
+      [persistentContainer loadPersistentStoresWithCompletionHandler:v54];
 
       self = v46;
       _Block_object_dispose(&buf, 8);
@@ -175,7 +175,7 @@ LABEL_5:
       objc_destroyWeak(&v60);
       objc_destroyWeak(&location);
 
-      v47 = self;
+      selfCopy = self;
       goto LABEL_33;
     }
 
@@ -193,7 +193,7 @@ LABEL_5:
 
     self = 0;
 LABEL_27:
-    v47 = 0;
+    selfCopy = 0;
     goto LABEL_33;
   }
 
@@ -215,18 +215,18 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "StaticKeyController: transparencyFilesPath: %@", &buf, 0xCu);
     }
 
-    v14 = 0;
+    storeCopy = 0;
     goto LABEL_27;
   }
 
-  v14 = [v20 URLByAppendingPathComponent:@"StaticKey" isDirectory:1];
+  storeCopy = [v20 URLByAppendingPathComponent:@"StaticKey" isDirectory:1];
 
   v21 = +[NSFileManager defaultManager];
   v68 = NSFileProtectionKey;
   v69 = NSFileProtectionNone;
   v22 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
   v63 = v17;
-  v23 = [v21 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:v22 error:&v63];
+  v23 = [v21 createDirectoryAtURL:storeCopy withIntermediateDirectories:1 attributes:v22 error:&v63];
   v24 = v63;
 
   if (v23)
@@ -248,31 +248,31 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "StaticKeyController: create directory %@", &buf, 0xCu);
   }
 
-  v47 = 0;
+  selfCopy = 0;
   v17 = v24;
 LABEL_33:
 
-  return v47;
+  return selfCopy;
 }
 
-- (id)initLocalDataStore:(id)a3 idsDelegate:(id)a4 configurationStore:(id)a5 notificationCenter:(id)a6 contactStore:(id)a7 dew:(id)a8 complete:(id)a9
+- (id)initLocalDataStore:(id)store idsDelegate:(id)delegate configurationStore:(id)configurationStore notificationCenter:(id)center contactStore:(id)contactStore dew:(id)dew complete:(id)complete
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  storeCopy = store;
+  delegateCopy = delegate;
+  configurationStoreCopy = configurationStore;
+  centerCopy = center;
+  contactStoreCopy = contactStore;
+  dewCopy = dew;
+  completeCopy = complete;
   v51.receiver = self;
   v51.super_class = StaticKeyController;
   v22 = [(StaticKeyController *)&v51 init];
   v23 = v22;
   if (v22)
   {
-    if (v18)
+    if (centerCopy)
     {
-      [(StaticKeyController *)v22 setNotificationCenter:v18];
+      [(StaticKeyController *)v22 setNotificationCenter:centerCopy];
     }
 
     else
@@ -281,9 +281,9 @@ LABEL_33:
       [(StaticKeyController *)v23 setNotificationCenter:v24];
     }
 
-    v44 = v16;
-    [(StaticKeyController *)v23 setIdsDelegate:v16];
-    [(StaticKeyController *)v23 setContactStore:v19];
+    v44 = delegateCopy;
+    [(StaticKeyController *)v23 setIdsDelegate:delegateCopy];
+    [(StaticKeyController *)v23 setContactStore:contactStoreCopy];
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v26 = dispatch_queue_create("StaticKeyController", v25);
     [(StaticKeyController *)v23 setQueue:v26];
@@ -293,7 +293,7 @@ LABEL_33:
 
     objc_initWeak(&location, v23);
     v28 = [KTNearFutureScheduler alloc];
-    [v20 coalesceStaticKeyUpdateInterval];
+    [dewCopy coalesceStaticKeyUpdateInterval];
     v30 = (v29 * 1000000000.0);
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
@@ -302,38 +302,38 @@ LABEL_33:
     objc_copyWeak(&v49, &location);
     v31 = [(KTNearFutureScheduler *)v28 initWithName:@"ProcessCoreDataNFS" delay:v30 keepProcessAlive:0 dependencyDescriptionCode:0 block:v48];
     [(StaticKeyController *)v23 setRemoteUpdateNFS:v31];
-    v43 = v19;
+    v43 = contactStoreCopy;
 
     v32 = [NSManagedObjectModel alloc];
-    v33 = [(StaticKeyController *)v23 staticKeyModelURL];
-    v34 = [v32 initWithContentsOfURL:v33];
+    staticKeyModelURL = [(StaticKeyController *)v23 staticKeyModelURL];
+    v34 = [v32 initWithContentsOfURL:staticKeyModelURL];
 
-    v35 = v15;
-    v36 = [StaticKeyController persistentStoreDescriptions:v15];
+    v35 = storeCopy;
+    v36 = [StaticKeyController persistentStoreDescriptions:storeCopy];
     v37 = [NSPersistentContainer persistentContainerWithName:@"StaticKey" managedObjectModel:v34];
     [(StaticKeyController *)v23 setPersistentContainer:v37];
 
-    v38 = [(StaticKeyController *)v23 persistentContainer];
-    [v38 setPersistentStoreDescriptions:v36];
+    persistentContainer = [(StaticKeyController *)v23 persistentContainer];
+    [persistentContainer setPersistentStoreDescriptions:v36];
 
-    v39 = [(StaticKeyController *)v23 persistentContainer];
+    persistentContainer2 = [(StaticKeyController *)v23 persistentContainer];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_1000409A4;
     v45[3] = &unk_10031A100;
     v40 = v23;
     v46 = v40;
-    v47 = v21;
-    [v39 loadPersistentStoresWithCompletionHandler:v45];
+    v47 = completeCopy;
+    [persistentContainer2 loadPersistentStoresWithCompletionHandler:v45];
 
-    [(StaticKeyController *)v40 setConfigurationStore:v17];
+    [(StaticKeyController *)v40 setConfigurationStore:configurationStoreCopy];
     v41 = v40;
 
     objc_destroyWeak(&v49);
     objc_destroyWeak(&location);
-    v15 = v35;
-    v19 = v43;
-    v16 = v44;
+    storeCopy = v35;
+    contactStoreCopy = v43;
+    delegateCopy = v44;
   }
 
   return v23;
@@ -341,36 +341,36 @@ LABEL_33:
 
 - (void)processDataOnQueue
 {
-  v3 = [(StaticKeyController *)self queue];
+  queue = [(StaticKeyController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040AFC;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)remoteUpdate:(id)a3
+- (void)remoteUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(StaticKeyController *)self queue];
+  updateCopy = update;
+  queue = [(StaticKeyController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040C98;
   v7[3] = &unk_1003180E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)historyTokenFromData:(id)a3
+- (id)historyTokenFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
+    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
   }
 
   else
@@ -381,13 +381,13 @@ LABEL_33:
   return v4;
 }
 
-- (id)dataFromHistoryToken:(id)a3
+- (id)dataFromHistoryToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+    v4 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -400,29 +400,29 @@ LABEL_33:
 
 - (void)processCoreDataHistory
 {
-  v3 = [(StaticKeyController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(StaticKeyController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(StaticKeyController *)self persistentContainer];
-  v5 = [v4 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v6 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v5 setMergePolicy:v6];
+  [newBackgroundContext setMergePolicy:v6];
 
   v7 = +[NSMutableSet set];
-  v8 = [(StaticKeyController *)self configurationStore];
-  v9 = [v8 getSettingsData:@"CoreDataSyncToken"];
+  configurationStore = [(StaticKeyController *)self configurationStore];
+  v9 = [configurationStore getSettingsData:@"CoreDataSyncToken"];
 
   [(StaticKeyController *)self historyTokenFromData:v9];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000410E0;
   v19 = v18 = &unk_10031A148;
-  v20 = v5;
-  v21 = self;
+  v20 = newBackgroundContext;
+  selfCopy = self;
   v10 = v7;
   v22 = v10;
-  v11 = v5;
+  v11 = newBackgroundContext;
   v12 = v19;
   [v11 performBlockAndWait:&v15];
   if ([v10 count])
@@ -434,57 +434,57 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "processCoreDataHistory: updating: %@", buf, 0xCu);
     }
 
-    v13 = [(StaticKeyController *)self idsDelegate];
-    v14 = [v10 allObjects];
-    [v13 didUpdateStaticKeyStore:v14 application:kKTApplicationIdentifierIDS];
+    idsDelegate = [(StaticKeyController *)self idsDelegate];
+    allObjects = [v10 allObjects];
+    [idsDelegate didUpdateStaticKeyStore:allObjects application:kKTApplicationIdentifierIDS];
   }
 }
 
-- (void)setContactsSyncController:(id)a3
+- (void)setContactsSyncController:(id)controller
 {
-  v8 = a3;
-  v4 = [(StaticKeyController *)self contacts];
+  controllerCopy = controller;
+  contacts = [(StaticKeyController *)self contacts];
 
-  if (v4)
+  if (contacts)
   {
-    v5 = [(StaticKeyController *)self contacts];
-    [v5 invalidateContactsSyncing];
+    contacts2 = [(StaticKeyController *)self contacts];
+    [contacts2 invalidateContactsSyncing];
 
     [(StaticKeyController *)self setContacts:0];
   }
 
-  v6 = v8;
-  if (v8)
+  v6 = controllerCopy;
+  if (controllerCopy)
   {
-    [(StaticKeyController *)self setContacts:v8];
-    v7 = [(StaticKeyController *)self contacts];
-    [v7 setDelegate:self];
+    [(StaticKeyController *)self setContacts:controllerCopy];
+    contacts3 = [(StaticKeyController *)self contacts];
+    [contacts3 setDelegate:self];
 
-    v6 = v8;
+    v6 = controllerCopy;
   }
 }
 
 - (void)consumeContactsChangeHistory
 {
-  v2 = [(StaticKeyController *)self contacts];
-  [v2 consumeContactsChangeHistory];
+  contacts = [(StaticKeyController *)self contacts];
+  [contacts consumeContactsChangeHistory];
 }
 
 - (void)startContactsSyncing
 {
-  v2 = [(StaticKeyController *)self contacts];
-  [v2 startContactsSyncing];
+  contacts = [(StaticKeyController *)self contacts];
+  [contacts startContactsSyncing];
 }
 
 - (void)drainContactsSyncing
 {
-  v2 = [(StaticKeyController *)self contacts];
-  [v2 drainContactsSyncing];
+  contacts = [(StaticKeyController *)self contacts];
+  [contacts drainContactsSyncing];
 }
 
-+ (id)persistentStoreDescriptions:(id)a3
++ (id)persistentStoreDescriptions:(id)descriptions
 {
-  v3 = [a3 URLByAppendingPathComponent:@"StaticKey"];
+  v3 = [descriptions URLByAppendingPathComponent:@"StaticKey"];
   v4 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v3];
   [v4 setType:NSSQLiteStoreType];
   [v4 setShouldAddStoreAsynchronously:0];
@@ -496,9 +496,9 @@ LABEL_33:
   return v5;
 }
 
-+ (id)cloudPersistentStoreDescription:(id)a3
++ (id)cloudPersistentStoreDescription:(id)description
 {
-  v3 = [a3 URLByAppendingPathComponent:@"CloudStore"];
+  v3 = [description URLByAppendingPathComponent:@"CloudStore"];
   v4 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v3];
   [v4 setConfiguration:@"Cloud"];
   [v4 setShouldAddStoreAsynchronously:0];
@@ -517,18 +517,18 @@ LABEL_33:
 
 - (BOOL)importFromCloud
 {
-  v3 = [(StaticKeyController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(StaticKeyController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(StaticKeyController *)self persistentContainer];
-  v5 = [v4 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v6 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v5 setMergePolicy:v6];
+  [newBackgroundContext setMergePolicy:v6];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -536,29 +536,29 @@ LABEL_33:
   v9[3] = &unk_10031A198;
   v11 = &v12;
   v9[4] = self;
-  v7 = v5;
+  v7 = newBackgroundContext;
   v10 = v7;
   [v7 performBlockAndWait:v9];
-  LOBYTE(v5) = *(v13 + 24);
+  LOBYTE(newBackgroundContext) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v5;
+  return newBackgroundContext;
 }
 
 - (BOOL)exportToCloud
 {
-  v3 = [(StaticKeyController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(StaticKeyController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(StaticKeyController *)self persistentContainer];
-  v5 = [v4 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v6 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v5 setMergePolicy:v6];
+  [newBackgroundContext setMergePolicy:v6];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -566,28 +566,28 @@ LABEL_33:
   v9[3] = &unk_10031A198;
   v11 = &v12;
   v9[4] = self;
-  v7 = v5;
+  v7 = newBackgroundContext;
   v10 = v7;
   [v7 performBlockAndWait:v9];
-  LOBYTE(v5) = *(v13 + 24);
+  LOBYTE(newBackgroundContext) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v5;
+  return newBackgroundContext;
 }
 
-- (BOOL)triggerSync:(id *)a3
+- (BOOL)triggerSync:(id *)sync
 {
-  v4 = [(StaticKeyController *)self cloudContainer];
+  cloudContainer = [(StaticKeyController *)self cloudContainer];
 
-  if (v4)
+  if (cloudContainer)
   {
-    v5 = [(StaticKeyController *)self queue];
+    queue = [(StaticKeyController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000421D4;
     block[3] = &unk_100316FE0;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
   }
 
   else
@@ -599,17 +599,17 @@ LABEL_33:
     }
   }
 
-  return v4 != 0;
+  return cloudContainer != 0;
 }
 
-- (BOOL)setupCloudSchema:(BOOL)a3 error:(id *)a4
+- (BOOL)setupCloudSchema:(BOOL)schema error:(id *)error
 {
-  v5 = a3;
-  v7 = [(StaticKeyController *)self cloudContainer];
+  schemaCopy = schema;
+  cloudContainer = [(StaticKeyController *)self cloudContainer];
 
-  if (v7)
+  if (cloudContainer)
   {
-    if (v5)
+    if (schemaCopy)
     {
       v8 = 6;
     }
@@ -619,9 +619,9 @@ LABEL_33:
       v8 = 0;
     }
 
-    v9 = [(StaticKeyController *)self cloudContainer];
+    cloudContainer2 = [(StaticKeyController *)self cloudContainer];
     v15 = 0;
-    v10 = [v9 initializeCloudKitSchemaWithOptions:v8 error:&v15];
+    v10 = [cloudContainer2 initializeCloudKitSchemaWithOptions:v8 error:&v15];
     v11 = v15;
 
     if ((v10 & 1) == 0)
@@ -632,10 +632,10 @@ LABEL_33:
         sub_100249564();
       }
 
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v11;
+        *error = v11;
       }
     }
   }
@@ -654,13 +654,13 @@ LABEL_33:
   return v10;
 }
 
-- (BOOL)resetCloudZone:(id *)a3
+- (BOOL)resetCloudZone:(id *)zone
 {
-  v4 = [(StaticKeyController *)self cloudContainer];
+  cloudContainer = [(StaticKeyController *)self cloudContainer];
 
   v5 = [(StaticKeyController *)self log];
   v6 = v5;
-  if (v4)
+  if (cloudContainer)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -669,9 +669,9 @@ LABEL_33:
     }
 
     v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    v8 = [(StaticKeyController *)self cloudContainer];
-    v9 = [v8 persistentStoreCoordinator];
-    [v7 setPersistentStoreCoordinator:v9];
+    cloudContainer2 = [(StaticKeyController *)self cloudContainer];
+    persistentStoreCoordinator = [cloudContainer2 persistentStoreCoordinator];
+    [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -688,19 +688,19 @@ LABEL_33:
     sub_100249528();
   }
 
-  return v4 != 0;
+  return cloudContainer != 0;
 }
 
-- (id)fetchHandles:(id)a3 moc:(id)a4 error:(id *)a5
+- (id)fetchHandles:(id)handles moc:(id)moc error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  mocCopy = moc;
+  handlesCopy = handles;
   v10 = +[KTCoreDataSTHandle fetchRequest];
-  v11 = [NSPredicate predicateWithFormat:@"publicIdentity == %@", v9];
+  handlesCopy = [NSPredicate predicateWithFormat:@"publicIdentity == %@", handlesCopy];
 
-  [v10 setPredicate:v11];
+  [v10 setPredicate:handlesCopy];
   v19 = 0;
-  v12 = [v8 executeFetchRequest:v10 error:&v19];
+  v12 = [mocCopy executeFetchRequest:v10 error:&v19];
 
   v13 = v19;
   if (v12)
@@ -718,10 +718,10 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "fetchHandles failed with: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v14 = +[NSMutableSet set];
@@ -732,15 +732,15 @@ LABEL_33:
   return v17;
 }
 
-- (id)storeStaticKey:(id)a3 contactIdentifier:(id)a4 contactExternalIdentifier:(id)a5 mappings:(id)a6 error:(id *)a7
+- (id)storeStaticKey:(id)key contactIdentifier:(id)identifier contactExternalIdentifier:(id)externalIdentifier mappings:(id)mappings error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(StaticKeyController *)self fetchContactsSyncToken];
+  keyCopy = key;
+  identifierCopy = identifier;
+  externalIdentifierCopy = externalIdentifier;
+  mappingsCopy = mappings;
+  fetchContactsSyncToken = [(StaticKeyController *)self fetchContactsSyncToken];
 
-  if (!v16)
+  if (!fetchContactsSyncToken)
   {
     if (qword_10038BCF0 != -1)
     {
@@ -754,9 +754,9 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "storeStaticKey no previously existing sync token", buf, 2u);
     }
 
-    v18 = [(StaticKeyController *)self contactStore];
-    v19 = [(StaticKeyController *)self configurationStore];
-    [v18 fetchAndStoreContactsSyncTokenWithConfigStore:v19];
+    contactStore = [(StaticKeyController *)self contactStore];
+    configurationStore = [(StaticKeyController *)self configurationStore];
+    [contactStore fetchAndStoreContactsSyncTokenWithConfigStore:configurationStore];
   }
 
   *buf = 0;
@@ -765,11 +765,11 @@ LABEL_33:
   v59 = sub_100042D8C;
   v60 = sub_100042D9C;
   v61 = 0;
-  v20 = [(StaticKeyController *)self persistentContainer];
-  v21 = [v20 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v22 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v21 setMergePolicy:v22];
+  [newBackgroundContext setMergePolicy:v22];
 
   v50 = 0;
   v51 = &v50;
@@ -777,15 +777,15 @@ LABEL_33:
   v53 = sub_100042D8C;
   v54 = sub_100042D9C;
   v55 = 0;
-  v23 = [v12 ktStorageString];
+  ktStorageString = [keyCopy ktStorageString];
   v24 = [(StaticKeyController *)self log];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v15 componentsJoinedByString:{@", "}];
+    v25 = [mappingsCopy componentsJoinedByString:{@", "}];
     *v62 = 138412802;
-    v63 = v12;
+    v63 = keyCopy;
     v64 = 2112;
-    v65 = v23;
+    v65 = ktStorageString;
     v66 = 2112;
     v67 = v25;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "storeStaticKey identity: %@ %@ mappings: %@", v62, 0x20u);
@@ -795,45 +795,45 @@ LABEL_33:
   v41[1] = 3221225472;
   v41[2] = sub_100042DA4;
   v41[3] = &unk_10031A208;
-  v26 = v14;
+  v26 = externalIdentifierCopy;
   v42 = v26;
-  v27 = v13;
+  v27 = identifierCopy;
   v43 = v27;
-  v28 = v21;
+  v28 = newBackgroundContext;
   v44 = v28;
   v48 = &v50;
-  v29 = v23;
+  v29 = ktStorageString;
   v45 = v29;
-  v46 = self;
-  v30 = v15;
+  selfCopy = self;
+  v30 = mappingsCopy;
   v47 = v30;
   v49 = buf;
   [v28 performBlockAndWait:v41];
   v31 = *(v57 + 5);
-  if (!a7 || v31)
+  if (!error || v31)
   {
-    v32 = [v31 contactExternalURI];
-    v33 = [*(v57 + 5) publicKeyID];
-    v34 = [v33 publicAccountIdentity];
-    [(StaticKeyController *)self postChangeForEntry:v32 publicAccountIdentity:v34];
+    contactExternalURI = [v31 contactExternalURI];
+    publicKeyID = [*(v57 + 5) publicKeyID];
+    publicAccountIdentity = [publicKeyID publicAccountIdentity];
+    [(StaticKeyController *)self postChangeForEntry:contactExternalURI publicAccountIdentity:publicAccountIdentity];
 
-    v35 = [(StaticKeyController *)self idsDelegate];
-    v36 = [*(v57 + 5) mappings];
-    [v35 didUpdateStaticKeyStore:v36 application:kKTApplicationIdentifierIDS];
+    idsDelegate = [(StaticKeyController *)self idsDelegate];
+    mappings = [*(v57 + 5) mappings];
+    [idsDelegate didUpdateStaticKeyStore:mappings application:kKTApplicationIdentifierIDS];
   }
 
   else
   {
-    *a7 = v51[5];
+    *error = v51[5];
   }
 
-  v37 = [(StaticKeyController *)self queue];
+  queue = [(StaticKeyController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100043574;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v37, block);
+  dispatch_async(queue, block);
 
   v38 = *(v57 + 5);
   _Block_object_dispose(&v50, 8);
@@ -843,57 +843,57 @@ LABEL_33:
   return v38;
 }
 
-- (void)postChangeForEntry:(id)a3 publicAccountIdentity:(id)a4
+- (void)postChangeForEntry:(id)entry publicAccountIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  identityCopy = identity;
   v8 = [(StaticKeyController *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v14 = v6;
+    v14 = entryCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = identityCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "postChangeToEntry externalURI: %@ publicKey: %@", buf, 0x16u);
   }
 
-  if (v6 && v7)
+  if (entryCopy && identityCopy)
   {
     v11[0] = kTransparencyStaticKeyStoreContactIdentifier;
     v11[1] = kTransparencyStaticKeyStorePublicIdentifydentifier;
-    v12[0] = v6;
-    v12[1] = v7;
+    v12[0] = entryCopy;
+    v12[1] = identityCopy;
     v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-    v10 = [(StaticKeyController *)self notificationCenter];
-    [v10 postNotificationName:kTransparencyStaticKeyStoreNotification object:0 userInfo:v9 deliverImmediately:1];
+    notificationCenter = [(StaticKeyController *)self notificationCenter];
+    [notificationCenter postNotificationName:kTransparencyStaticKeyStoreNotification object:0 userInfo:v9 deliverImmediately:1];
   }
 }
 
-- (id)mapStaticKeyToStoreEntry:(id)a3 handles:(id)a4 moc:(id)a5 error:(id *)a6
+- (id)mapStaticKeyToStoreEntry:(id)entry handles:(id)handles moc:(id)moc error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 publicIdentity];
-  if (v11)
+  entryCopy = entry;
+  handlesCopy = handles;
+  publicIdentity = [entryCopy publicIdentity];
+  if (publicIdentity)
   {
     v44 = 0;
-    v12 = [KTAccountPublicID ktAccountPublicIDWithStorageString:v11 error:&v44];
+    v12 = [KTAccountPublicID ktAccountPublicIDWithStorageString:publicIdentity error:&v44];
     v13 = v44;
     v14 = v13;
     if (v12)
     {
       v37 = v13;
-      v38 = v11;
+      v38 = publicIdentity;
       v15 = objc_alloc_init(KTIDStaticKeyStoreEntry);
       v36 = v12;
       [v15 setPublicKeyID:v12];
-      v16 = [v9 contactIdentifier];
-      [v15 setContactIdentifier:v16];
+      contactIdentifier = [entryCopy contactIdentifier];
+      [v15 setContactIdentifier:contactIdentifier];
 
-      v39 = v9;
-      v17 = [v9 contactExternalIdentifier];
+      v39 = entryCopy;
+      contactExternalIdentifier = [entryCopy contactExternalIdentifier];
       v35 = v15;
-      [v15 setContactServerPath:v17];
+      [v15 setContactServerPath:contactExternalIdentifier];
 
       v18 = +[NSMutableArray array];
       v19 = +[NSMutableDictionary dictionary];
@@ -901,7 +901,7 @@ LABEL_33:
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v20 = v10;
+      v20 = handlesCopy;
       v21 = [v20 countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v21)
       {
@@ -917,22 +917,22 @@ LABEL_33:
             }
 
             v25 = *(*(&v40 + 1) + 8 * i);
-            v26 = [v25 idsID];
+            idsID = [v25 idsID];
 
-            if (v26)
+            if (idsID)
             {
               v27 = objc_alloc_init(KTIDStaticKeyStoreHandle);
               [v27 setValidationDate:0];
               [v27 setValid:0];
-              v28 = [v25 idsID];
-              [v27 setHandle:v28];
+              idsID2 = [v25 idsID];
+              [v27 setHandle:idsID2];
 
               [v27 setErrorCode:{objc_msgSend(v25, "error")}];
-              v29 = [v25 idsID];
-              [v19 setObject:v27 forKeyedSubscript:v29];
+              idsID3 = [v25 idsID];
+              [v19 setObject:v27 forKeyedSubscript:idsID3];
 
-              v30 = [v25 idsID];
-              [v18 addObject:v30];
+              idsID4 = [v25 idsID];
+              [v18 addObject:idsID4];
             }
           }
 
@@ -949,9 +949,9 @@ LABEL_33:
         [v35 setHandles:v19];
       }
 
-      v9 = v39;
+      entryCopy = v39;
       v14 = v37;
-      v11 = v38;
+      publicIdentity = v38;
       v12 = v36;
     }
 
@@ -965,11 +965,11 @@ LABEL_33:
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Failed to create KTAccountPublicID: %@", buf, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
         v33 = v14;
         v31 = 0;
-        *a6 = v14;
+        *error = v14;
       }
 
       else
@@ -994,9 +994,9 @@ LABEL_33:
   return v31;
 }
 
-- (id)findStaticKeyByKey:(id)a3 error:(id *)a4
+- (id)findStaticKeyByKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1009,35 +1009,35 @@ LABEL_33:
   v25 = sub_100042D8C;
   v26 = sub_100042D9C;
   v27 = 0;
-  v7 = [v6 ktStorageString];
-  if (v7)
+  ktStorageString = [keyCopy ktStorageString];
+  if (ktStorageString)
   {
-    v8 = [(StaticKeyController *)self persistentContainer];
-    v9 = [v8 newBackgroundContext];
+    persistentContainer = [(StaticKeyController *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v10 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-    [v9 setMergePolicy:v10];
+    [newBackgroundContext setMergePolicy:v10];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100043CC0;
     v16[3] = &unk_10031A230;
-    v17 = v7;
-    v11 = v9;
+    v17 = ktStorageString;
+    v11 = newBackgroundContext;
     v18 = v11;
-    v19 = self;
+    selfCopy = self;
     v20 = &v28;
     v21 = &v22;
     [v11 performBlockAndWait:v16];
     v12 = v23[5];
     if (!v12)
     {
-      if (a4)
+      if (error)
       {
         v13 = v29[5];
         if (v13)
         {
-          *a4 = v13;
+          *error = v13;
           v12 = v23[5];
         }
       }
@@ -1057,9 +1057,9 @@ LABEL_33:
   return v14;
 }
 
-- (id)findStaticKeyByHandle:(id)a3 error:(id *)a4
+- (id)findStaticKeyByHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
+  handleCopy = handle;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1072,30 +1072,30 @@ LABEL_33:
   v24 = sub_100042D8C;
   v25 = sub_100042D9C;
   v26 = 0;
-  v7 = [(StaticKeyController *)self persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v8 setMergePolicy:v9];
+  [newBackgroundContext setMergePolicy:v9];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100044020;
   v15[3] = &unk_10031A230;
-  v10 = v6;
+  v10 = handleCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = newBackgroundContext;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v19 = &v27;
   v20 = &v21;
   [v11 performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v28[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1107,17 +1107,17 @@ LABEL_33:
   return v13;
 }
 
-- (BOOL)shouldDoInitialCloudSyncing:(id)a3
+- (BOOL)shouldDoInitialCloudSyncing:(id)syncing
 {
-  v4 = a3;
-  v5 = [(StaticKeyController *)self configurationStore];
+  syncingCopy = syncing;
+  configurationStore = [(StaticKeyController *)self configurationStore];
 
-  if (v5)
+  if (configurationStore)
   {
-    v6 = [(StaticKeyController *)self configurationStore];
-    v7 = [v6 getSettingsDate:@"lastCKSyncData"];
+    configurationStore2 = [(StaticKeyController *)self configurationStore];
+    v7 = [configurationStore2 getSettingsDate:@"lastCKSyncData"];
 
-    if (v4 && v7)
+    if (syncingCopy && v7)
     {
       if (qword_10038BCF0 != -1)
       {
@@ -1132,8 +1132,8 @@ LABEL_33:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "cloud sync: last sync: %{public}@", &v17, 0xCu);
       }
 
-      v9 = [v4 dateByAddingTimeInterval:-604800.0];
-      v10 = [v7 compare:v9];
+      configurationStore4 = [syncingCopy dateByAddingTimeInterval:-604800.0];
+      v10 = [v7 compare:configurationStore4];
       v11 = v10 == -1;
       if (v10 != -1)
       {
@@ -1152,8 +1152,8 @@ LABEL_33:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "7d cloud sync setting", &v17, 2u);
       }
 
-      v13 = [(StaticKeyController *)self configurationStore];
-      [v13 setSettingsDate:@"lastCKSyncData" date:v4];
+      configurationStore3 = [(StaticKeyController *)self configurationStore];
+      [configurationStore3 setSettingsDate:@"lastCKSyncData" date:syncingCopy];
     }
 
     else
@@ -1170,8 +1170,8 @@ LABEL_33:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Initial cloud sync setting", &v17, 2u);
       }
 
-      v9 = [(StaticKeyController *)self configurationStore];
-      [v9 setSettingsDate:@"lastCKSyncData" date:v4];
+      configurationStore4 = [(StaticKeyController *)self configurationStore];
+      [configurationStore4 setSettingsDate:@"lastCKSyncData" date:syncingCopy];
     }
 
     v11 = 1;
@@ -1199,14 +1199,14 @@ LABEL_25:
   return v11;
 }
 
-- (void)launchCloudSyncing:(id)a3 initialDelay:(double)a4
+- (void)launchCloudSyncing:(id)syncing initialDelay:(double)delay
 {
-  v6 = a3;
-  if (a4 >= 0.0 && [(StaticKeyController *)self shouldDoInitialCloudSyncing:v6])
+  syncingCopy = syncing;
+  if (delay >= 0.0 && [(StaticKeyController *)self shouldDoInitialCloudSyncing:syncingCopy])
   {
     v7 = os_transaction_create();
-    v8 = dispatch_time(0, (a4 * 1000000000.0));
-    v9 = [(StaticKeyController *)self queue];
+    v8 = dispatch_time(0, (delay * 1000000000.0));
+    queue = [(StaticKeyController *)self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000447D0;
@@ -1214,7 +1214,7 @@ LABEL_25:
     v12[4] = self;
     v13 = v7;
     v10 = v7;
-    dispatch_after(v8, v9, v12);
+    dispatch_after(v8, queue, v12);
   }
 
   else
@@ -1233,9 +1233,9 @@ LABEL_25:
   }
 }
 
-- (id)findStaticKeyByContactIdentifier:(id)a3 error:(id *)a4
+- (id)findStaticKeyByContactIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1248,30 +1248,30 @@ LABEL_25:
   v24 = sub_100042D8C;
   v25 = sub_100042D9C;
   v26 = 0;
-  v7 = [(StaticKeyController *)self persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v8 setMergePolicy:v9];
+  [newBackgroundContext setMergePolicy:v9];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100044AA0;
   v15[3] = &unk_10031A230;
-  v10 = v6;
+  v10 = identifierCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = newBackgroundContext;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v19 = &v27;
   v20 = &v21;
   [v11 performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v28[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1283,10 +1283,10 @@ LABEL_25:
   return v13;
 }
 
-- (id)findStaticKeyByContactExternalURI:(id)a3 error:(id *)a4
+- (id)findStaticKeyByContactExternalURI:(id)i error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  iCopy = i;
+  if (iCopy)
   {
     v26 = 0;
     v27 = &v26;
@@ -1300,29 +1300,29 @@ LABEL_25:
     v23 = sub_100042D8C;
     v24 = sub_100042D9C;
     v25 = 0;
-    v7 = [(StaticKeyController *)self persistentContainer];
-    v8 = [v7 newBackgroundContext];
+    persistentContainer = [(StaticKeyController *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-    [v8 setMergePolicy:v9];
+    [newBackgroundContext setMergePolicy:v9];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100044E28;
     v14[3] = &unk_10031A230;
-    v15 = v6;
-    v10 = v8;
+    v15 = iCopy;
+    v10 = newBackgroundContext;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v18 = &v26;
     v19 = &v20;
     [v10 performBlockAndWait:v14];
-    if (a4)
+    if (error)
     {
       v11 = v27[5];
       if (v11)
       {
-        *a4 = v11;
+        *error = v11;
       }
     }
 
@@ -1340,12 +1340,12 @@ LABEL_25:
   return v12;
 }
 
-- (id)validateStaticKeyStoreMappingByKey:(id)a3 error:(id *)a4
+- (id)validateStaticKeyStoreMappingByKey:(id)key error:(id *)error
 {
-  v6 = [(StaticKeyController *)self findStaticKeyByKey:a3 error:?];
+  v6 = [(StaticKeyController *)self findStaticKeyByKey:key error:?];
   if (v6)
   {
-    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:a4];
+    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:error];
   }
 
   else
@@ -1356,12 +1356,12 @@ LABEL_25:
   return v7;
 }
 
-- (id)validateStaticKeyStoreMappingByContactIdentifer:(id)a3 error:(id *)a4
+- (id)validateStaticKeyStoreMappingByContactIdentifer:(id)identifer error:(id *)error
 {
-  v6 = [(StaticKeyController *)self findStaticKeyByContactIdentifier:a3 error:?];
+  v6 = [(StaticKeyController *)self findStaticKeyByContactIdentifier:identifer error:?];
   if (v6)
   {
-    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:a4];
+    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:error];
   }
 
   else
@@ -1372,12 +1372,12 @@ LABEL_25:
   return v7;
 }
 
-- (id)validateStaticKeyStoreMappingByContactExternalURI:(id)a3 error:(id *)a4
+- (id)validateStaticKeyStoreMappingByContactExternalURI:(id)i error:(id *)error
 {
-  v6 = [(StaticKeyController *)self findStaticKeyByContactExternalURI:a3 error:?];
+  v6 = [(StaticKeyController *)self findStaticKeyByContactExternalURI:i error:?];
   if (v6)
   {
-    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:a4];
+    v7 = [(StaticKeyController *)self validateStoreEntry:v6 error:error];
   }
 
   else
@@ -1388,18 +1388,18 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)deleteStaticKey:(id)a3 error:(id *)a4
+- (BOOL)deleteStaticKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v7 = [(StaticKeyController *)self persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v8 setMergePolicy:v9];
+  [newBackgroundContext setMergePolicy:v9];
 
   v25 = 0;
   v26 = &v25;
@@ -1408,35 +1408,35 @@ LABEL_25:
   v29 = sub_100042D9C;
   v30 = 0;
   v10 = +[NSMutableSet set];
-  v11 = [v6 ktStorageString];
-  v12 = v11;
-  if (v11)
+  ktStorageString = [keyCopy ktStorageString];
+  v12 = ktStorageString;
+  if (ktStorageString)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100045378;
     v19[3] = &unk_10031A230;
-    v20 = v11;
-    v21 = v8;
+    v20 = ktStorageString;
+    v21 = newBackgroundContext;
     v23 = &v25;
     v13 = v10;
     v22 = v13;
     v24 = &v31;
     [v21 performBlockAndWait:v19];
-    if (a4)
+    if (error)
     {
       v14 = v26[5];
       if (v14)
       {
-        *a4 = v14;
+        *error = v14;
       }
     }
 
     if ([v13 count])
     {
-      v15 = [(StaticKeyController *)self idsDelegate];
-      v16 = [v13 allObjects];
-      [v15 didUpdateStaticKeyStore:v16 application:kKTApplicationIdentifierIDS];
+      idsDelegate = [(StaticKeyController *)self idsDelegate];
+      allObjects = [v13 allObjects];
+      [idsDelegate didUpdateStaticKeyStore:allObjects application:kKTApplicationIdentifierIDS];
     }
 
     v17 = *(v32 + 24);
@@ -1453,18 +1453,18 @@ LABEL_25:
   return v17 & 1;
 }
 
-- (BOOL)deleteStaticKeyByContactIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteStaticKeyByContactIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v7 = [(StaticKeyController *)self persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v8 setMergePolicy:v9];
+  [newBackgroundContext setMergePolicy:v9];
 
   v25 = 0;
   v26 = &v25;
@@ -1477,29 +1477,29 @@ LABEL_25:
   v19[1] = 3221225472;
   v19[2] = sub_1000458C4;
   v19[3] = &unk_10031A230;
-  v11 = v6;
+  v11 = identifierCopy;
   v20 = v11;
-  v12 = v8;
+  v12 = newBackgroundContext;
   v21 = v12;
   v23 = &v25;
   v13 = v10;
   v22 = v13;
   v24 = &v31;
   [v12 performBlockAndWait:v19];
-  if (a4)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
     }
   }
 
   if ([v13 count])
   {
-    v15 = [(StaticKeyController *)self idsDelegate];
-    v16 = [v13 allObjects];
-    [v15 didUpdateStaticKeyStore:v16 application:kKTApplicationIdentifierIDS];
+    idsDelegate = [(StaticKeyController *)self idsDelegate];
+    allObjects = [v13 allObjects];
+    [idsDelegate didUpdateStaticKeyStore:allObjects application:kKTApplicationIdentifierIDS];
   }
 
   v17 = *(v32 + 24);
@@ -1510,20 +1510,20 @@ LABEL_25:
   return v17;
 }
 
-- (BOOL)deleteStaticKeyByContactExternalURI:(id)a3 error:(id *)a4
+- (BOOL)deleteStaticKeyByContactExternalURI:(id)i error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  iCopy = i;
+  if (iCopy)
   {
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    v7 = [(StaticKeyController *)self persistentContainer];
-    v8 = [v7 newBackgroundContext];
+    persistentContainer = [(StaticKeyController *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v9 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-    [v8 setMergePolicy:v9];
+    [newBackgroundContext setMergePolicy:v9];
 
     v24 = 0;
     v25 = &v24;
@@ -1536,28 +1536,28 @@ LABEL_25:
     v18[1] = 3221225472;
     v18[2] = sub_100045E64;
     v18[3] = &unk_10031A230;
-    v19 = v6;
-    v11 = v8;
+    v19 = iCopy;
+    v11 = newBackgroundContext;
     v20 = v11;
     v22 = &v24;
     v12 = v10;
     v21 = v12;
     v23 = &v30;
     [v11 performBlockAndWait:v18];
-    if (a4)
+    if (error)
     {
       v13 = v25[5];
       if (v13)
       {
-        *a4 = v13;
+        *error = v13;
       }
     }
 
     if ([v12 count])
     {
-      v14 = [(StaticKeyController *)self idsDelegate];
-      v15 = [v12 allObjects];
-      [v14 didUpdateStaticKeyStore:v15 application:kKTApplicationIdentifierIDS];
+      idsDelegate = [(StaticKeyController *)self idsDelegate];
+      allObjects = [v12 allObjects];
+      [idsDelegate didUpdateStaticKeyStore:allObjects application:kKTApplicationIdentifierIDS];
     }
 
     v16 = *(v31 + 24);
@@ -1574,14 +1574,14 @@ LABEL_25:
   return v16 & 1;
 }
 
-- (id)listStaticKey:(id *)a3
+- (id)listStaticKey:(id *)key
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(StaticKeyController *)self persistentContainer];
-  v7 = [v6 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v8 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v7 setMergePolicy:v8];
+  [newBackgroundContext setMergePolicy:v8];
 
   v19 = 0;
   v20 = &v19;
@@ -1593,18 +1593,18 @@ LABEL_25:
   v15[1] = 3221225472;
   v15[2] = sub_100046354;
   v15[3] = &unk_100317DE0;
-  v9 = v7;
+  v9 = newBackgroundContext;
   v16 = v9;
   v18 = &v19;
   v10 = v5;
   v17 = v10;
   [v9 performBlockAndWait:v15];
-  if (a3)
+  if (key)
   {
     v11 = v20[5];
     if (v11)
     {
-      *a3 = v11;
+      *key = v11;
     }
   }
 
@@ -1616,9 +1616,9 @@ LABEL_25:
   return v13;
 }
 
-- (BOOL)setErrorCode:(int)a3 forMapping:(id)a4 error:(id *)a5
+- (BOOL)setErrorCode:(int)code forMapping:(id)mapping error:(id *)error
 {
-  v8 = a4;
+  mappingCopy = mapping;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1629,30 +1629,30 @@ LABEL_25:
   v26 = sub_100042D8C;
   v27 = sub_100042D9C;
   v28 = 0;
-  v9 = [(StaticKeyController *)self persistentContainer];
-  v10 = [v9 newBackgroundContext];
+  persistentContainer = [(StaticKeyController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v11 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-  [v10 setMergePolicy:v11];
+  [newBackgroundContext setMergePolicy:v11];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000466D8;
   v17[3] = &unk_10031A338;
-  v12 = v8;
+  v12 = mappingCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = newBackgroundContext;
   v19 = v13;
   v20 = &v23;
-  v22 = a3;
+  codeCopy = code;
   v21 = &v29;
   [v13 performBlockAndWait:v17];
-  if (a5)
+  if (error)
   {
     v14 = v24[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -1664,55 +1664,55 @@ LABEL_25:
   return v15;
 }
 
-- (BOOL)haveContact:(id)a3 error:(id *)a4
+- (BOOL)haveContact:(id)contact error:(id *)error
 {
-  v6 = a3;
-  v7 = [(StaticKeyController *)self contactStore];
-  LOBYTE(a4) = [v7 haveContact:v6 error:a4];
+  contactCopy = contact;
+  contactStore = [(StaticKeyController *)self contactStore];
+  LOBYTE(error) = [contactStore haveContact:contactCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)lastContactSyncDate
 {
-  v2 = [(StaticKeyController *)self configurationStore];
-  v3 = [v2 getSettingsDate:@"lastContactSyncDate"];
+  configurationStore = [(StaticKeyController *)self configurationStore];
+  v3 = [configurationStore getSettingsDate:@"lastContactSyncDate"];
 
   return v3;
 }
 
 - (void)updateLastContactSyncDate
 {
-  v3 = [(StaticKeyController *)self configurationStore];
+  configurationStore = [(StaticKeyController *)self configurationStore];
   v2 = +[NSDate date];
-  [v3 setSettingsDate:@"lastContactSyncDate" date:v2];
+  [configurationStore setSettingsDate:@"lastContactSyncDate" date:v2];
 }
 
 - (id)fetchContactsSyncToken
 {
-  v2 = [(StaticKeyController *)self configurationStore];
-  v3 = [v2 getSettingsData:@"lastContactSyncData"];
+  configurationStore = [(StaticKeyController *)self configurationStore];
+  v3 = [configurationStore getSettingsData:@"lastContactSyncData"];
 
   return v3;
 }
 
-- (void)storeContactsSyncToken:(id)a3
+- (void)storeContactsSyncToken:(id)token
 {
-  v4 = a3;
-  v5 = [(StaticKeyController *)self configurationStore];
-  [v5 setSettingsData:@"lastContactSyncData" data:v4];
+  tokenCopy = token;
+  configurationStore = [(StaticKeyController *)self configurationStore];
+  [configurationStore setSettingsData:@"lastContactSyncData" data:tokenCopy];
 }
 
-- (void)fetchPeerHandles:(id)a3 application:(id)a4 complete:(id)a5
+- (void)fetchPeerHandles:(id)handles application:(id)application complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(StaticKeyController *)self idsDelegate];
-  v12 = v11;
-  if (v11)
+  handlesCopy = handles;
+  applicationCopy = application;
+  completeCopy = complete;
+  idsDelegate = [(StaticKeyController *)self idsDelegate];
+  v12 = idsDelegate;
+  if (idsDelegate)
   {
-    [v11 fetchPeerHandles:v8 application:v9 complete:v10];
+    [idsDelegate fetchPeerHandles:handlesCopy application:applicationCopy complete:completeCopy];
   }
 
   else
@@ -1723,27 +1723,27 @@ LABEL_25:
       sub_1002496E4();
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 0, 0);
   }
 }
 
-- (void)validatePeerResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5
+- (void)validatePeerResult:(id)result uuid:(id)uuid completionBlock:(id)block
 {
-  v5 = a5;
+  blockCopy = block;
   v6 = objc_alloc_init(KTVerifierResult);
   [v6 setSucceed:0];
-  v5[2](v5, v6, 0);
+  blockCopy[2](blockCopy, v6, 0);
 }
 
-- (id)validateStoreEntry:(id)a3 error:(id *)a4
+- (id)validateStoreEntry:(id)entry error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = sub_100042D8C;
   v25 = sub_100042D9C;
-  v5 = a3;
-  v26 = v5;
+  entryCopy = entry;
+  v26 = entryCopy;
   if (qword_10038BCF0 != -1)
   {
     sub_100249720();
@@ -1752,8 +1752,8 @@ LABEL_25:
   v6 = qword_10038BCF8;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 mappings];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    mappings = [entryCopy mappings];
+    v8 = [mappings componentsJoinedByString:{@", "}];
     *buf = 141558274;
     v28 = 1752392040;
     v29 = 2112;
@@ -1763,17 +1763,17 @@ LABEL_25:
 
   v9 = dispatch_semaphore_create(0);
   v10 = kKTApplicationIdentifierIDS;
-  v11 = [v5 mappings];
+  mappings2 = [entryCopy mappings];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100046E44;
   v17[3] = &unk_10031A3E0;
-  v12 = v5;
+  v12 = entryCopy;
   v18 = v12;
   v20 = &v21;
   v13 = v9;
   v19 = v13;
-  [(StaticKeyController *)self fetchPeerHandles:v11 application:v10 complete:v17];
+  [(StaticKeyController *)self fetchPeerHandles:mappings2 application:v10 complete:v17];
 
   v14 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v13, v14);
@@ -1784,7 +1784,7 @@ LABEL_25:
   return v15;
 }
 
-- (void)peerVerificationUpdated:(id)a3
+- (void)peerVerificationUpdated:(id)updated
 {
   v3 = [(StaticKeyController *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1794,12 +1794,12 @@ LABEL_25:
   }
 }
 
-- (id)findStaticKeyByContact:(id)a3 error:(id *)a4
+- (id)findStaticKeyByContact:(id)contact error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 externalURI];
+  contactCopy = contact;
+  externalURI = [contactCopy externalURI];
   v15 = 0;
-  v8 = [(StaticKeyController *)self findStaticKeyByContactExternalURI:v7 error:&v15];
+  v8 = [(StaticKeyController *)self findStaticKeyByContactExternalURI:externalURI error:&v15];
   v9 = v15;
 
   if (v8)
@@ -1809,26 +1809,26 @@ LABEL_25:
 
   else
   {
-    v11 = [v6 identifier];
+    identifier = [contactCopy identifier];
     v14 = v9;
-    v8 = [(StaticKeyController *)self findStaticKeyByContactIdentifier:v11 error:&v14];
+    v8 = [(StaticKeyController *)self findStaticKeyByContactIdentifier:identifier error:&v14];
     v10 = v14;
 
-    if (a4 && !v8 && v10)
+    if (error && !v8 && v10)
     {
       v12 = v10;
       v8 = 0;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   return v8;
 }
 
-- (void)updateContact:(id)a3
+- (void)updateContact:(id)contact
 {
-  v4 = a3;
-  v5 = [KeyTransparencyContactMapping mapContactsToIDS:v4];
+  contactCopy = contact;
+  v5 = [KeyTransparencyContactMapping mapContactsToIDS:contactCopy];
   v6 = [(StaticKeyController *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1838,13 +1838,13 @@ LABEL_25:
   }
 
   v27 = 0;
-  v7 = [(StaticKeyController *)self findStaticKeyByContact:v4 error:&v27];
+  v7 = [(StaticKeyController *)self findStaticKeyByContact:contactCopy error:&v27];
 
   v8 = v27;
   if (v7)
   {
-    v9 = [v7 mappings];
-    v10 = [NSSet setWithArray:v9];
+    mappings = [v7 mappings];
+    v10 = [NSSet setWithArray:mappings];
 
     if ([v10 isEqual:v5])
     {
@@ -1863,12 +1863,12 @@ LABEL_17:
 
     if ([v5 count])
     {
-      v23 = [v7 publicKeyID];
-      v13 = [v7 contactIdentifier];
-      v14 = [v7 contactExternalURI];
-      v15 = [v5 allObjects];
+      publicKeyID = [v7 publicKeyID];
+      contactIdentifier = [v7 contactIdentifier];
+      contactExternalURI = [v7 contactExternalURI];
+      allObjects = [v5 allObjects];
       v24 = v8;
-      v16 = [(StaticKeyController *)self storeStaticKey:v23 contactIdentifier:v13 contactExternalIdentifier:v14 mappings:v15 error:&v24];
+      v16 = [(StaticKeyController *)self storeStaticKey:publicKeyID contactIdentifier:contactIdentifier contactExternalIdentifier:contactExternalURI mappings:allObjects error:&v24];
       v17 = v24;
 
       if (!v16)
@@ -1898,9 +1898,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v18 = [v7 contactExternalURI];
+    contactExternalURI2 = [v7 contactExternalURI];
     v26 = v8;
-    v19 = [(StaticKeyController *)self deleteStaticKeyByContactExternalURI:v18 error:&v26];
+    v19 = [(StaticKeyController *)self deleteStaticKeyByContactExternalURI:contactExternalURI2 error:&v26];
     v17 = v26;
 
     if (v19)
@@ -1914,9 +1914,9 @@ LABEL_18:
       sub_10024981C();
     }
 
-    v21 = [v7 contactIdentifier];
+    contactIdentifier2 = [v7 contactIdentifier];
     v25 = v17;
-    v22 = [(StaticKeyController *)self deleteStaticKeyByContactIdentifier:v21 error:&v25];
+    v22 = [(StaticKeyController *)self deleteStaticKeyByContactIdentifier:contactIdentifier2 error:&v25];
     v8 = v25;
 
     if ((v22 & 1) == 0)
@@ -1943,14 +1943,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)deleteContact:(id)a3 contactExternalURI:(id)a4
+- (void)deleteContact:(id)contact contactExternalURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contactCopy = contact;
+  iCopy = i;
+  if (iCopy)
   {
     v15 = 0;
-    v8 = [(StaticKeyController *)self deleteStaticKeyByContactExternalURI:v7 error:&v15];
+    v8 = [(StaticKeyController *)self deleteStaticKeyByContactExternalURI:iCopy error:&v15];
     v9 = v15;
     v10 = v9;
     if (v8)
@@ -1971,7 +1971,7 @@ LABEL_19:
   }
 
   v14 = v9;
-  v12 = [(StaticKeyController *)self deleteStaticKeyByContactIdentifier:v6 error:&v14];
+  v12 = [(StaticKeyController *)self deleteStaticKeyByContactIdentifier:contactCopy error:&v14];
   v10 = v14;
 
   if ((v12 & 1) == 0)

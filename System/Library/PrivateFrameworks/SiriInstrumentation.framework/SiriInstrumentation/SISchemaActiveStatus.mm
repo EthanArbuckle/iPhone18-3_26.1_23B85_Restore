@@ -1,29 +1,29 @@
 @interface SISchemaActiveStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaActiveStatus)initWithDictionary:(id)a3;
-- (SISchemaActiveStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaActiveStatus)initWithDictionary:(id)dictionary;
+- (SISchemaActiveStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAudioDevicesActiveWithin24Hours:(id)a3;
-- (void)addCarBluetoothHeadUnitsActiveWithinLast24Hours:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioDevicesActiveWithin24Hours:(id)hours;
+- (void)addCarBluetoothHeadUnitsActiveWithinLast24Hours:(id)hours;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaActiveStatus
 
-- (SISchemaActiveStatus)initWithDictionary:(id)a3
+- (SISchemaActiveStatus)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = SISchemaActiveStatus;
   v5 = [(SISchemaActiveStatus *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioDevicesActiveWithin24Hours"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioDevicesActiveWithin24Hours"];
     objc_opt_class();
     v26 = v6;
     if (objc_opt_isKindOfClass())
@@ -69,18 +69,18 @@
       v6 = v26;
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"carPlayActiveWithin24Hours"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"carPlayActiveWithin24Hours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaActiveStatus setCarPlayActiveWithin24Hours:](v5, "setCarPlayActiveWithin24Hours:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"carBluetoothHeadUnitsActiveWithinLast24Hours"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"carBluetoothHeadUnitsActiveWithinLast24Hours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v4;
+      v25 = dictionaryCopy;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -119,7 +119,7 @@
         while (v18);
       }
 
-      v4 = v25;
+      dictionaryCopy = v25;
       v6 = v26;
     }
 
@@ -129,30 +129,30 @@
   return v5;
 }
 
-- (SISchemaActiveStatus)initWithJSON:(id)a3
+- (SISchemaActiveStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaActiveStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaActiveStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaActiveStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -166,10 +166,10 @@
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_audioDevicesActiveWithin24Hours count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -189,16 +189,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -208,12 +208,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"audioDevicesActiveWithin24Hours"];
+    [dictionary setObject:array forKeyedSubscript:@"audioDevicesActiveWithin24Hours"];
   }
 
   if ([(NSArray *)self->_carBluetoothHeadUnitsActiveWithinLast24Hours count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -233,16 +233,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -252,18 +252,18 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"carBluetoothHeadUnitsActiveWithinLast24Hours"];
+    [dictionary setObject:array2 forKeyedSubscript:@"carBluetoothHeadUnitsActiveWithinLast24Hours"];
   }
 
   if (*&self->_has)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaActiveStatus carPlayActiveWithin24Hours](self, "carPlayActiveWithin24Hours")}];
-    [v3 setObject:v20 forKeyedSubscript:@"carPlayActiveWithin24Hours"];
+    [dictionary setObject:v20 forKeyedSubscript:@"carPlayActiveWithin24Hours"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v22];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v22];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -282,28 +282,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_carBluetoothHeadUnitsActiveWithinLast24Hours hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
-  v6 = [v4 audioDevicesActiveWithin24Hours];
-  if ((v5 != 0) == (v6 == 0))
+  audioDevicesActiveWithin24Hours = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
+  audioDevicesActiveWithin24Hours2 = [equalCopy audioDevicesActiveWithin24Hours];
+  if ((audioDevicesActiveWithin24Hours != 0) == (audioDevicesActiveWithin24Hours2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
-  if (v7)
+  audioDevicesActiveWithin24Hours3 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
+  if (audioDevicesActiveWithin24Hours3)
   {
-    v8 = v7;
-    v9 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
-    v10 = [v4 audioDevicesActiveWithin24Hours];
-    v11 = [v9 isEqual:v10];
+    v8 = audioDevicesActiveWithin24Hours3;
+    audioDevicesActiveWithin24Hours4 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours];
+    audioDevicesActiveWithin24Hours5 = [equalCopy audioDevicesActiveWithin24Hours];
+    v11 = [audioDevicesActiveWithin24Hours4 isEqual:audioDevicesActiveWithin24Hours5];
 
     if (!v11)
     {
@@ -315,7 +315,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -323,18 +323,18 @@
   if (*&self->_has)
   {
     carPlayActiveWithin24Hours = self->_carPlayActiveWithin24Hours;
-    if (carPlayActiveWithin24Hours != [v4 carPlayActiveWithin24Hours])
+    if (carPlayActiveWithin24Hours != [equalCopy carPlayActiveWithin24Hours])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
-  v6 = [v4 carBluetoothHeadUnitsActiveWithinLast24Hours];
-  if ((v5 != 0) != (v6 == 0))
+  audioDevicesActiveWithin24Hours = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
+  audioDevicesActiveWithin24Hours2 = [equalCopy carBluetoothHeadUnitsActiveWithinLast24Hours];
+  if ((audioDevicesActiveWithin24Hours != 0) != (audioDevicesActiveWithin24Hours2 == 0))
   {
-    v13 = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
-    if (!v13)
+    carBluetoothHeadUnitsActiveWithinLast24Hours = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
+    if (!carBluetoothHeadUnitsActiveWithinLast24Hours)
     {
 
 LABEL_18:
@@ -342,10 +342,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
-    v16 = [v4 carBluetoothHeadUnitsActiveWithinLast24Hours];
-    v17 = [v15 isEqual:v16];
+    v14 = carBluetoothHeadUnitsActiveWithinLast24Hours;
+    carBluetoothHeadUnitsActiveWithinLast24Hours2 = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
+    carBluetoothHeadUnitsActiveWithinLast24Hours3 = [equalCopy carBluetoothHeadUnitsActiveWithinLast24Hours];
+    v17 = [carBluetoothHeadUnitsActiveWithinLast24Hours2 isEqual:carBluetoothHeadUnitsActiveWithinLast24Hours3];
 
     if (v17)
     {
@@ -365,10 +365,10 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -437,54 +437,54 @@ LABEL_16:
   }
 }
 
-- (void)addCarBluetoothHeadUnitsActiveWithinLast24Hours:(id)a3
+- (void)addCarBluetoothHeadUnitsActiveWithinLast24Hours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   carBluetoothHeadUnitsActiveWithinLast24Hours = self->_carBluetoothHeadUnitsActiveWithinLast24Hours;
-  v8 = v4;
+  v8 = hoursCopy;
   if (!carBluetoothHeadUnitsActiveWithinLast24Hours)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_carBluetoothHeadUnitsActiveWithinLast24Hours;
-    self->_carBluetoothHeadUnitsActiveWithinLast24Hours = v6;
+    self->_carBluetoothHeadUnitsActiveWithinLast24Hours = array;
 
-    v4 = v8;
+    hoursCopy = v8;
     carBluetoothHeadUnitsActiveWithinLast24Hours = self->_carBluetoothHeadUnitsActiveWithinLast24Hours;
   }
 
-  [(NSArray *)carBluetoothHeadUnitsActiveWithinLast24Hours addObject:v4];
+  [(NSArray *)carBluetoothHeadUnitsActiveWithinLast24Hours addObject:hoursCopy];
 }
 
-- (void)addAudioDevicesActiveWithin24Hours:(id)a3
+- (void)addAudioDevicesActiveWithin24Hours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   audioDevicesActiveWithin24Hours = self->_audioDevicesActiveWithin24Hours;
-  v8 = v4;
+  v8 = hoursCopy;
   if (!audioDevicesActiveWithin24Hours)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_audioDevicesActiveWithin24Hours;
-    self->_audioDevicesActiveWithin24Hours = v6;
+    self->_audioDevicesActiveWithin24Hours = array;
 
-    v4 = v8;
+    hoursCopy = v8;
     audioDevicesActiveWithin24Hours = self->_audioDevicesActiveWithin24Hours;
   }
 
-  [(NSArray *)audioDevicesActiveWithin24Hours addObject:v4];
+  [(NSArray *)audioDevicesActiveWithin24Hours addObject:hoursCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = SISchemaActiveStatus;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaActiveStatus *)self audioDevicesActiveWithin24Hours:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(SISchemaActiveStatus *)self setAudioDevicesActiveWithin24Hours:v7];
 
-  v8 = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  carBluetoothHeadUnitsActiveWithinLast24Hours = [(SISchemaActiveStatus *)self carBluetoothHeadUnitsActiveWithinLast24Hours];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:carBluetoothHeadUnitsActiveWithinLast24Hours underConditions:policyCopy];
 
   [(SISchemaActiveStatus *)self setCarBluetoothHeadUnitsActiveWithinLast24Hours:v9];
 

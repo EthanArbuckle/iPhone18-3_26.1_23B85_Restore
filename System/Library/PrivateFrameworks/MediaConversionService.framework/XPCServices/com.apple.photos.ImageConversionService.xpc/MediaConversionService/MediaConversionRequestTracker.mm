@@ -1,9 +1,9 @@
 @interface MediaConversionRequestTracker
-- (BOOL)_valueIsSimpleScalarType:(id)a3;
-- (BOOL)copyDuplicateRequestOutputFromOriginalRequestTracker:(id)a3 error:(id *)a4;
-- (BOOL)isDuplicateOfRequestWithRequestTracker:(id)a3 identicalDestinationURL:(BOOL *)a4;
+- (BOOL)_valueIsSimpleScalarType:(id)type;
+- (BOOL)copyDuplicateRequestOutputFromOriginalRequestTracker:(id)tracker error:(id *)error;
+- (BOOL)isDuplicateOfRequestWithRequestTracker:(id)tracker identicalDestinationURL:(BOOL *)l;
 - (BOOL)shouldDump;
-- (MediaConversionRequestTracker)initWithRequestOptions:(id)a3 requestNumber:(unint64_t)a4;
+- (MediaConversionRequestTracker)initWithRequestOptions:(id)options requestNumber:(unint64_t)number;
 - (NSDictionary)requestCompletionPerfCheckExtraInformation;
 - (NSString)requestIdentifier;
 - (NSString)requestOptionsSignatureString;
@@ -11,57 +11,57 @@
 - (id)graphDumpURLsForCurrentProcessIdentifier;
 - (id)requestCompletionPerfCheckExtraInformationLogString;
 - (id)sourceURLCollectionSignature;
-- (int64_t)compare:(id)a3;
-- (unint64_t)hashForObject:(id)a3;
-- (void)addCoreImageGraphDumpPath:(id)a3;
+- (int64_t)compare:(id)compare;
+- (unint64_t)hashForObject:(id)object;
+- (void)addCoreImageGraphDumpPath:(id)path;
 - (void)cacheDestinationBookmarkCollectionSignature;
 - (void)cacheSourceBookmarkCollectionSignatureAndFilename;
-- (void)copyCoreImageGraphDumpsToURL:(id)a3;
+- (void)copyCoreImageGraphDumpsToURL:(id)l;
 - (void)didCompleteRequest;
 - (void)didDequeueAndStartProcessingRequest;
-- (void)dumpResourceURLCollection:(id)a3 toParentDirectory:(id)a4 directoryName:(id)a5 updatingDebugInformation:(id)a6;
-- (void)markAsCompletedWithInitialRequestIdentifier:(id)a3;
+- (void)dumpResourceURLCollection:(id)collection toParentDirectory:(id)directory directoryName:(id)name updatingDebugInformation:(id)information;
+- (void)markAsCompletedWithInitialRequestIdentifier:(id)identifier;
 - (void)setupCoreImageGraphDumpCapture;
 - (void)setupPerfCheck;
 - (void)storeDebugDump;
-- (void)storeDebugDumpInputInformationToURL:(id)a3 updatingDebugInformation:(id)a4;
-- (void)storeDebugDumpOutputInformationToURL:(id)a3 updatingDebugInformation:(id)a4;
+- (void)storeDebugDumpInputInformationToURL:(id)l updatingDebugInformation:(id)information;
+- (void)storeDebugDumpOutputInformationToURL:(id)l updatingDebugInformation:(id)information;
 @end
 
 @implementation MediaConversionRequestTracker
 
-- (void)storeDebugDumpOutputInformationToURL:(id)a3 updatingDebugInformation:(id)a4
+- (void)storeDebugDumpOutputInformationToURL:(id)l updatingDebugInformation:(id)information
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  informationCopy = information;
   v9 = +[NSFileManager defaultManager];
-  v10 = [(MediaConversionRequestTracker *)self outputData];
+  outputData = [(MediaConversionRequestTracker *)self outputData];
 
-  if (v10)
+  if (outputData)
   {
-    v11 = [(MediaConversionRequestTracker *)self outputTypeIdentifier];
+    outputTypeIdentifier = [(MediaConversionRequestTracker *)self outputTypeIdentifier];
 
-    if (!v11)
+    if (!outputTypeIdentifier)
     {
       v35 = +[NSAssertionHandler currentHandler];
       [v35 handleFailureInMethod:a2 object:self file:@"MediaConversionDebugUtilities.m" lineNumber:548 description:@"Unexpected nil result data UTI"];
     }
 
-    v12 = [(MediaConversionRequestTracker *)self outputTypeIdentifier];
-    v13 = [UTType typeWithIdentifier:v12];
-    v14 = [v13 preferredFilenameExtension];
+    outputTypeIdentifier2 = [(MediaConversionRequestTracker *)self outputTypeIdentifier];
+    v13 = [UTType typeWithIdentifier:outputTypeIdentifier2];
+    preferredFilenameExtension = [v13 preferredFilenameExtension];
 
-    v15 = [@"outputData" stringByAppendingPathExtension:v14];
-    v16 = [v7 URLByAppendingPathComponent:v15];
-    v17 = [(MediaConversionRequestTracker *)self outputData];
+    lastPathComponent2 = [@"outputData" stringByAppendingPathExtension:preferredFilenameExtension];
+    v16 = [lCopy URLByAppendingPathComponent:lastPathComponent2];
+    outputData2 = [(MediaConversionRequestTracker *)self outputData];
     v37 = 0;
-    v18 = [v17 writeToURL:v16 options:1 error:&v37];
+    v18 = [outputData2 writeToURL:v16 options:1 error:&v37];
     v19 = v37;
 
     if (v18)
     {
-      v20 = [v16 lastPathComponent];
-      [v8 setObject:v20 forKeyedSubscript:@"outputFilename"];
+      lastPathComponent = [v16 lastPathComponent];
+      [informationCopy setObject:lastPathComponent forKeyedSubscript:@"outputFilename"];
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -74,21 +74,21 @@
 
   else
   {
-    v21 = [(MediaConversionRequestTracker *)self outputURL];
+    outputURL = [(MediaConversionRequestTracker *)self outputURL];
 
-    if (!v21)
+    if (!outputURL)
     {
       goto LABEL_14;
     }
 
-    v22 = [(MediaConversionRequestTracker *)self outputURL];
-    v23 = [v22 pathExtension];
-    v24 = [@"output" stringByAppendingPathExtension:v23];
-    v14 = [v7 URLByAppendingPathComponent:v24];
+    outputURL2 = [(MediaConversionRequestTracker *)self outputURL];
+    pathExtension = [outputURL2 pathExtension];
+    v24 = [@"output" stringByAppendingPathExtension:pathExtension];
+    preferredFilenameExtension = [lCopy URLByAppendingPathComponent:v24];
 
-    v25 = [(MediaConversionRequestTracker *)self outputURL];
+    outputURL3 = [(MediaConversionRequestTracker *)self outputURL];
     v36 = 0;
-    LODWORD(v24) = [v9 copyItemAtURL:v25 toURL:v14 error:&v36];
+    LODWORD(v24) = [v9 copyItemAtURL:outputURL3 toURL:preferredFilenameExtension error:&v36];
     v19 = v36;
 
     if (!v24)
@@ -103,18 +103,18 @@
       goto LABEL_13;
     }
 
-    v15 = [v14 lastPathComponent];
-    [v8 setObject:v15 forKeyedSubscript:@"outputFilename"];
+    lastPathComponent2 = [preferredFilenameExtension lastPathComponent];
+    [informationCopy setObject:lastPathComponent2 forKeyedSubscript:@"outputFilename"];
   }
 
 LABEL_13:
 LABEL_14:
-  v26 = [(MediaConversionRequestTracker *)self outputInformation];
+  outputInformation = [(MediaConversionRequestTracker *)self outputInformation];
 
-  if (v26)
+  if (outputInformation)
   {
-    v27 = [(MediaConversionRequestTracker *)self outputInformation];
-    v28 = [v27 mutableCopy];
+    outputInformation2 = [(MediaConversionRequestTracker *)self outputInformation];
+    v28 = [outputInformation2 mutableCopy];
 
     v29 = [v28 objectForKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
     v30 = v29;
@@ -124,64 +124,64 @@ LABEL_14:
       [v28 setObject:v31 forKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
     }
 
-    [v8 setObject:v28 forKeyedSubscript:@"outputInformation"];
+    [informationCopy setObject:v28 forKeyedSubscript:@"outputInformation"];
   }
 
-  v32 = [(MediaConversionRequestTracker *)self error];
+  error = [(MediaConversionRequestTracker *)self error];
 
-  if (v32)
+  if (error)
   {
-    v33 = [(MediaConversionRequestTracker *)self error];
-    v34 = [v33 description];
-    [v8 setObject:v34 forKeyedSubscript:@"error"];
+    error2 = [(MediaConversionRequestTracker *)self error];
+    v34 = [error2 description];
+    [informationCopy setObject:v34 forKeyedSubscript:@"error"];
   }
 }
 
-- (void)dumpResourceURLCollection:(id)a3 toParentDirectory:(id)a4 directoryName:(id)a5 updatingDebugInformation:(id)a6
+- (void)dumpResourceURLCollection:(id)collection toParentDirectory:(id)directory directoryName:(id)name updatingDebugInformation:(id)information
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  collectionCopy = collection;
+  nameCopy = name;
+  informationCopy = information;
   v18 = 0;
-  v12 = [v9 urlForDebugDumpWithDirectoryName:v10 inExistingParentDirectory:a4 error:&v18];
+  v12 = [collectionCopy urlForDebugDumpWithDirectoryName:nameCopy inExistingParentDirectory:directory error:&v18];
   v13 = v18;
   if (v12)
   {
-    v14 = [v12 path];
-    v15 = [@"resourceDumpPath-" stringByAppendingString:v10];
-    [v11 setObject:v14 forKeyedSubscript:v15];
+    path = [v12 path];
+    v15 = [@"resourceDumpPath-" stringByAppendingString:nameCopy];
+    [informationCopy setObject:path forKeyedSubscript:v15];
 
-    v16 = [v9 logMessageSummary];
-    v17 = [@"resourceURLCollectionSummary-" stringByAppendingString:v10];
-    [v11 setObject:v16 forKeyedSubscript:v17];
+    logMessageSummary = [collectionCopy logMessageSummary];
+    v17 = [@"resourceURLCollectionSummary-" stringByAppendingString:nameCopy];
+    [informationCopy setObject:logMessageSummary forKeyedSubscript:v17];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v20 = v10;
+    v20 = nameCopy;
     v21 = 2114;
     v22 = v13;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to dump resources %{public}@ to debug dump: %{public}@", buf, 0x16u);
   }
 }
 
-- (void)storeDebugDumpInputInformationToURL:(id)a3 updatingDebugInformation:(id)a4
+- (void)storeDebugDumpInputInformationToURL:(id)l updatingDebugInformation:(id)information
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MediaConversionRequestTracker *)self requestOptions];
-  v9 = [v8 description];
-  [v7 setObject:v9 forKeyedSubscript:@"requestOptionsDescription"];
+  lCopy = l;
+  informationCopy = information;
+  requestOptions = [(MediaConversionRequestTracker *)self requestOptions];
+  v9 = [requestOptions description];
+  [informationCopy setObject:v9 forKeyedSubscript:@"requestOptionsDescription"];
 
-  v10 = [(MediaConversionRequestTracker *)self requestOptions];
+  requestOptions2 = [(MediaConversionRequestTracker *)self requestOptions];
   v23 = 0;
-  v11 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:0 error:&v23];
+  v11 = [NSKeyedArchiver archivedDataWithRootObject:requestOptions2 requiringSecureCoding:0 error:&v23];
   v12 = v23;
 
   if (v11)
   {
-    v13 = [v6 URLByAppendingPathComponent:@"request-options.keyedarchive"];
+    v13 = [lCopy URLByAppendingPathComponent:@"request-options.keyedarchive"];
     v22 = v12;
     v14 = [v11 writeToURL:v13 options:1 error:&v22];
     v15 = v22;
@@ -206,41 +206,41 @@ LABEL_14:
     v15 = v12;
   }
 
-  v16 = [(MediaConversionRequestTracker *)self sourceURLCollection];
-  v17 = [v16 urlCount];
+  sourceURLCollection = [(MediaConversionRequestTracker *)self sourceURLCollection];
+  urlCount = [sourceURLCollection urlCount];
 
-  if (v17)
+  if (urlCount)
   {
-    v18 = [(MediaConversionRequestTracker *)self sourceURLCollection];
-    [(MediaConversionRequestTracker *)self dumpResourceURLCollection:v18 toParentDirectory:v6 directoryName:@"sourceResourceURLCollection" updatingDebugInformation:v7];
+    sourceURLCollection2 = [(MediaConversionRequestTracker *)self sourceURLCollection];
+    [(MediaConversionRequestTracker *)self dumpResourceURLCollection:sourceURLCollection2 toParentDirectory:lCopy directoryName:@"sourceResourceURLCollection" updatingDebugInformation:informationCopy];
   }
 
-  v19 = [(MediaConversionRequestTracker *)self destinationURLCollection];
-  v20 = [v19 urlCount];
+  destinationURLCollection = [(MediaConversionRequestTracker *)self destinationURLCollection];
+  urlCount2 = [destinationURLCollection urlCount];
 
-  if (v20)
+  if (urlCount2)
   {
-    v21 = [(MediaConversionRequestTracker *)self destinationURLCollection];
-    [(MediaConversionRequestTracker *)self dumpResourceURLCollection:v21 toParentDirectory:v6 directoryName:@"destinationResourceURLCollection" updatingDebugInformation:v7];
+    destinationURLCollection2 = [(MediaConversionRequestTracker *)self destinationURLCollection];
+    [(MediaConversionRequestTracker *)self dumpResourceURLCollection:destinationURLCollection2 toParentDirectory:lCopy directoryName:@"destinationResourceURLCollection" updatingDebugInformation:informationCopy];
   }
 }
 
-- (void)addCoreImageGraphDumpPath:(id)a3
+- (void)addCoreImageGraphDumpPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   coreImageGraphDumpPaths = self->_coreImageGraphDumpPaths;
-  v8 = v4;
+  v8 = pathCopy;
   if (!coreImageGraphDumpPaths)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_coreImageGraphDumpPaths;
     self->_coreImageGraphDumpPaths = v6;
 
-    v4 = v8;
+    pathCopy = v8;
     coreImageGraphDumpPaths = self->_coreImageGraphDumpPaths;
   }
 
-  [(NSMutableArray *)coreImageGraphDumpPaths addObject:v4];
+  [(NSMutableArray *)coreImageGraphDumpPaths addObject:pathCopy];
 }
 
 - (id)graphDumpURLsForCurrentProcessIdentifier
@@ -280,15 +280,15 @@ LABEL_14:
 
       v9 = *(*(&v44 + 1) + 8 * v8);
       v10 = [NSURL fileURLWithPath:v9];
-      v11 = [v10 URLByResolvingSymlinksInPath];
+      uRLByResolvingSymlinksInPath = [v10 URLByResolvingSymlinksInPath];
 
       v43 = 0;
-      v12 = [v36 contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:0 options:7 error:&v43];
+      v12 = [v36 contentsOfDirectoryAtURL:uRLByResolvingSymlinksInPath includingPropertiesForKeys:0 options:7 error:&v43];
       v13 = v43;
       v14 = v13;
       if (v12)
       {
-        v38 = v11;
+        v38 = uRLByResolvingSymlinksInPath;
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
@@ -313,8 +313,8 @@ LABEL_14:
               }
 
               v21 = *(*(&v39 + 1) + 8 * i);
-              v22 = [v21 lastPathComponent];
-              if ([v22 rangeOfString:v2 options:1024] != 0x7FFFFFFFFFFFFFFFLL)
+              lastPathComponent = [v21 lastPathComponent];
+              if ([lastPathComponent rangeOfString:v2 options:1024] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 if (!v7)
                 {
@@ -341,30 +341,30 @@ LABEL_14:
           v8 = v33;
           v14 = v34;
           v12 = v37;
-          v11 = v38;
+          uRLByResolvingSymlinksInPath = v38;
         }
 
         else
         {
 
-          v11 = v38;
+          uRLByResolvingSymlinksInPath = v38;
         }
       }
 
       else
       {
-        v23 = [v13 domain];
-        if ([v23 isEqualToString:NSCocoaErrorDomain])
+        domain = [v13 domain];
+        if ([domain isEqualToString:NSCocoaErrorDomain])
         {
-          v24 = [v14 code];
+          code = [v14 code];
           v25 = v14;
-          v26 = v11;
+          v26 = uRLByResolvingSymlinksInPath;
           v27 = v8;
-          v28 = v24;
+          v28 = code;
 
           v29 = v28 == 257;
           v8 = v27;
-          v11 = v26;
+          uRLByResolvingSymlinksInPath = v26;
           v14 = v25;
           v12 = 0;
           if (v29)
@@ -407,14 +407,14 @@ LABEL_33:
   return v7;
 }
 
-- (void)copyCoreImageGraphDumpsToURL:(id)a3
+- (void)copyCoreImageGraphDumpsToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSFileManager defaultManager];
-  v6 = [(MediaConversionRequestTracker *)self graphDumpURLsForCurrentProcessIdentifier];
-  v7 = [NSMutableSet setWithSet:v6];
+  graphDumpURLsForCurrentProcessIdentifier = [(MediaConversionRequestTracker *)self graphDumpURLsForCurrentProcessIdentifier];
+  v7 = [NSMutableSet setWithSet:graphDumpURLsForCurrentProcessIdentifier];
 
-  v20 = self;
+  selfCopy = self;
   [v7 minusSet:self->_coreImageGraphDumpURLsAtStart];
   v25 = 0u;
   v26 = 0u;
@@ -438,15 +438,15 @@ LABEL_33:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 lastPathComponent];
-        v15 = [v4 URLByAppendingPathComponent:v14];
+        lastPathComponent = [v13 lastPathComponent];
+        v15 = [lCopy URLByAppendingPathComponent:lastPathComponent];
         v22 = 0;
         v16 = [v5 copyItemAtURL:v13 toURL:v15 error:&v22];
         v17 = v22;
         if (v16)
         {
-          v18 = [v15 path];
-          [(MediaConversionRequestTracker *)v20 addCoreImageGraphDumpPath:v18];
+          path = [v15 path];
+          [(MediaConversionRequestTracker *)selfCopy addCoreImageGraphDumpPath:path];
         }
 
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -473,12 +473,12 @@ LABEL_33:
   if ([(MediaConversionRequestTracker *)self shouldDump])
   {
     unsetenv("CI_PRINT_TREE");
-    v3 = [(MediaConversionRequestTracker *)self requestIdentifier];
+    requestIdentifier = [(MediaConversionRequestTracker *)self requestIdentifier];
     v4 = NSTemporaryDirectory();
     v5 = [v4 stringByAppendingPathComponent:@"MediaConversionServiceDebugging"];
     v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
 
-    v7 = [v6 URLByAppendingPathComponent:v3];
+    v7 = [v6 URLByAppendingPathComponent:requestIdentifier];
     v8 = +[NSFileManager defaultManager];
     v28 = 0;
     v9 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v28];
@@ -490,15 +490,15 @@ LABEL_33:
       [(MediaConversionRequestTracker *)self storeDebugDumpInputInformationToURL:v7 updatingDebugInformation:v11];
       [(MediaConversionRequestTracker *)self storeDebugDumpOutputInformationToURL:v7 updatingDebugInformation:v11];
       [(MediaConversionRequestTracker *)self copyCoreImageGraphDumpsToURL:v7];
-      v12 = [(MediaConversionRequestTracker *)self endTime];
-      v13 = [(MediaConversionRequestTracker *)self enqueueTime];
-      [v12 timeIntervalSinceDate:v13];
+      endTime = [(MediaConversionRequestTracker *)self endTime];
+      enqueueTime = [(MediaConversionRequestTracker *)self enqueueTime];
+      [endTime timeIntervalSinceDate:enqueueTime];
       v14 = [NSNumber numberWithDouble:?];
       [v11 setObject:v14 forKeyedSubscript:@"requestDurationSeconds"];
 
-      v15 = [(MediaConversionRequestTracker *)self endTime];
-      v16 = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
-      [v15 timeIntervalSinceDate:v16];
+      endTime2 = [(MediaConversionRequestTracker *)self endTime];
+      dequeueAndStartProcessingTime = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
+      [endTime2 timeIntervalSinceDate:dequeueAndStartProcessingTime];
       v17 = [NSNumber numberWithDouble:?];
       [v11 setObject:v17 forKeyedSubscript:@"processingDurationSeconds"];
 
@@ -509,11 +509,11 @@ LABEL_33:
       v19 = [NSString stringWithUTF8String:getprogname()];
       [v11 setObject:v19 forKeyedSubscript:@"processName"];
 
-      v20 = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
-      [v11 setObject:v20 forKeyedSubscript:@"perfCheckInformation"];
+      requestCompletionPerfCheckExtraInformation = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
+      [v11 setObject:requestCompletionPerfCheckExtraInformation forKeyedSubscript:@"perfCheckInformation"];
 
-      v21 = [(MediaConversionRequestTracker *)self requestOptionsSignatureString];
-      [v11 setObject:v21 forKeyedSubscript:@"requestOptionsSignature"];
+      requestOptionsSignatureString = [(MediaConversionRequestTracker *)self requestOptionsSignatureString];
+      [v11 setObject:requestOptionsSignatureString forKeyedSubscript:@"requestOptionsSignature"];
 
       v22 = [v7 URLByAppendingPathComponent:@"debug-info.plist"];
       v27 = 0;
@@ -550,7 +550,7 @@ LABEL_33:
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v30 = v3;
+      v30 = requestIdentifier;
       v31 = 2112;
       v32 = v10;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create dump directory for media conversion request %@: %@", buf, 0x16u);
@@ -560,11 +560,11 @@ LABEL_33:
 
 - (id)requestCompletionPerfCheckExtraInformationLogString
 {
-  v2 = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
-  v3 = v2;
-  if (v2)
+  requestCompletionPerfCheckExtraInformation = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
+  v3 = requestCompletionPerfCheckExtraInformation;
+  if (requestCompletionPerfCheckExtraInformation)
   {
-    v4 = [v2 objectForKeyedSubscript:@"processMemoryPeakKiloBytesInitial"];
+    v4 = [requestCompletionPerfCheckExtraInformation objectForKeyedSubscript:@"processMemoryPeakKiloBytesInitial"];
     [v4 doubleValue];
     v6 = v5;
     v7 = [v3 objectForKeyedSubscript:@"processMemoryPeakKiloBytesAfterRequest"];
@@ -666,16 +666,16 @@ LABEL_33:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, &_os_log_default, OS_SIGNPOST_INTERVAL_END, signpostId, "com.apple.photos.mediaconversion.service.processing", "", buf, 2u);
   }
 
-  v6 = [(MediaConversionRequestTracker *)self requestIdentifier];
-  v7 = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformationLogString];
+  requestIdentifier = [(MediaConversionRequestTracker *)self requestIdentifier];
+  requestCompletionPerfCheckExtraInformationLogString = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformationLogString];
   [(MediaConversionRequestTracker *)self storeDebugDump];
-  v8 = [(MediaConversionRequestTracker *)self debugDumpDirectoryURL];
+  debugDumpDirectoryURL = [(MediaConversionRequestTracker *)self debugDumpDirectoryURL];
 
-  if (v8)
+  if (debugDumpDirectoryURL)
   {
-    v9 = [(MediaConversionRequestTracker *)self debugDumpDirectoryURL];
-    v10 = [v9 path];
-    v11 = [NSString stringWithFormat:@", debug dump saved to %@ because %@ user default is set", v10, @"MediaConversionServiceKeepTemporaryFiles"];
+    debugDumpDirectoryURL2 = [(MediaConversionRequestTracker *)self debugDumpDirectoryURL];
+    path = [debugDumpDirectoryURL2 path];
+    v11 = [NSString stringWithFormat:@", debug dump saved to %@ because %@ user default is set", path, @"MediaConversionServiceKeepTemporaryFiles"];
   }
 
   else
@@ -686,41 +686,41 @@ LABEL_33:
   if (self->_originalRequestIdentifier)
   {
     v12 = [NSString stringWithFormat:@" (duplicate of %@)", self->_originalRequestIdentifier];
-    v13 = @"(omitted)";
+    logMessageSummary = @"(omitted)";
   }
 
   else
   {
-    v14 = [(MediaConversionRequestTracker *)self sourceURLCollection];
-    v13 = [v14 logMessageSummary];
+    sourceURLCollection = [(MediaConversionRequestTracker *)self sourceURLCollection];
+    logMessageSummary = [sourceURLCollection logMessageSummary];
 
     v12 = &stru_10003F468;
   }
 
-  v15 = [(MediaConversionRequestTracker *)self endTime];
-  v16 = [(MediaConversionRequestTracker *)self enqueueTime];
-  [v15 timeIntervalSinceDate:v16];
+  endTime = [(MediaConversionRequestTracker *)self endTime];
+  enqueueTime = [(MediaConversionRequestTracker *)self enqueueTime];
+  [endTime timeIntervalSinceDate:enqueueTime];
   v18 = v17;
 
-  v19 = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
-  v20 = [(MediaConversionRequestTracker *)self enqueueTime];
-  [v19 timeIntervalSinceDate:v20];
+  dequeueAndStartProcessingTime = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
+  enqueueTime2 = [(MediaConversionRequestTracker *)self enqueueTime];
+  [dequeueAndStartProcessingTime timeIntervalSinceDate:enqueueTime2];
   v22 = v21;
 
-  v23 = [(MediaConversionRequestTracker *)self endTime];
-  v24 = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
-  [v23 timeIntervalSinceDate:v24];
+  endTime2 = [(MediaConversionRequestTracker *)self endTime];
+  dequeueAndStartProcessingTime2 = [(MediaConversionRequestTracker *)self dequeueAndStartProcessingTime];
+  [endTime2 timeIntervalSinceDate:dequeueAndStartProcessingTime2];
   v26 = v25;
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(MediaConversionRequestTracker *)self error];
+    error = [(MediaConversionRequestTracker *)self error];
     *buf = 138545411;
-    v29 = v6;
+    v29 = requestIdentifier;
     v30 = 2114;
     v31 = v12;
     v32 = 2113;
-    v33 = v13;
+    v33 = logMessageSummary;
     v34 = 2048;
     v35 = v18;
     v36 = 2048;
@@ -728,21 +728,21 @@ LABEL_33:
     v38 = 2048;
     v39 = v26;
     v40 = 2114;
-    v41 = v27;
+    v41 = error;
     v42 = 2114;
-    v43 = v7;
+    v43 = requestCompletionPerfCheckExtraInformationLogString;
     v44 = 2114;
     v45 = v11;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Completed media conversion for job %{public}@%{public}@, source URL Collection %{private}@, request duration %.3fs (%.3fs enqueued/waiting, %.3fs processing), error = %{public}@%{public}@%{public}@", buf, 0x5Cu);
   }
 }
 
-- (void)markAsCompletedWithInitialRequestIdentifier:(id)a3
+- (void)markAsCompletedWithInitialRequestIdentifier:(id)identifier
 {
-  v19 = a3;
+  identifierCopy = identifier;
   [(MediaConversionRequestTracker *)self didCompleteRequest];
-  v5 = [(MediaConversionRequestTracker *)self outputInformation];
-  v6 = [v5 mutableCopy];
+  outputInformation = [(MediaConversionRequestTracker *)self outputInformation];
+  v6 = [outputInformation mutableCopy];
 
   if (v6)
   {
@@ -771,17 +771,17 @@ LABEL_33:
     v7 = [NSNumber numberWithDouble:?];
     [v6 setObject:v7 forKeyedSubscript:@"PAMediaConversionServiceConversionTotalDurationTimeIntervalServiceSideKey"];
 
-    if (v19 && ([(MediaConversionRequestTracker *)self requestIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(NSMutableArray *)v19 isEqualToString:v8], v8, (v9 & 1) == 0))
+    if (identifierCopy && ([(MediaConversionRequestTracker *)self requestIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(NSMutableArray *)identifierCopy isEqualToString:v8], v8, (v9 & 1) == 0))
     {
       v12 = @"PAMediaConversionServiceDeduplicatedAgainstOriginalRequestIdentifierKey";
       v13 = v6;
-      coreImageGraphDumpPaths = v19;
+      coreImageGraphDumpPaths = identifierCopy;
     }
 
     else
     {
-      v10 = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
-      [v6 setObject:v10 forKeyedSubscript:@"PAMediaConversionServiceConversionPerfCheckDataKey"];
+      requestCompletionPerfCheckExtraInformation = [(MediaConversionRequestTracker *)self requestCompletionPerfCheckExtraInformation];
+      [v6 setObject:requestCompletionPerfCheckExtraInformation forKeyedSubscript:@"PAMediaConversionServiceConversionPerfCheckDataKey"];
 
       coreImageGraphDumpPaths = self->_coreImageGraphDumpPaths;
       v12 = @"PAMediaConversionServiceUnitTestSupportCoreImageGraphDumpPathsKey";
@@ -794,9 +794,9 @@ LABEL_33:
 
   else
   {
-    v14 = [(MediaConversionRequestTracker *)self error];
+    error = [(MediaConversionRequestTracker *)self error];
 
-    if (!v14)
+    if (!error)
     {
       v15 = +[NSAssertionHandler currentHandler];
       [v15 handleFailureInMethod:a2 object:self file:@"MediaConversionDebugUtilities.m" lineNumber:303 description:@"Unexpected nil result information and error"];
@@ -829,9 +829,9 @@ LABEL_33:
   }
 }
 
-- (BOOL)_valueIsSimpleScalarType:(id)a3
+- (BOOL)_valueIsSimpleScalarType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -847,19 +847,19 @@ LABEL_33:
   return isKindOfClass & 1;
 }
 
-- (unint64_t)hashForObject:(id)a3
+- (unint64_t)hashForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [v5 allKeys];
-    v7 = [v6 sortedArrayUsingComparator:&stru_10003DB68];
+    allKeys = [v5 allKeys];
+    v7 = [allKeys sortedArrayUsingComparator:&stru_10003DB68];
 
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v8)
@@ -897,13 +897,13 @@ LABEL_33:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (![(MediaConversionRequestTracker *)self _valueIsSimpleScalarType:v4])
+      if (![(MediaConversionRequestTracker *)self _valueIsSimpleScalarType:objectCopy])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v22 = 0;
-          v18 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v22];
+          v18 = [NSKeyedArchiver archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v22];
           v5 = v22;
           if (v18)
           {
@@ -935,11 +935,11 @@ LABEL_33:
         }
       }
 
-      v10 = [v4 hash];
+      v10 = [objectCopy hash];
       goto LABEL_26;
     }
 
-    v5 = v4;
+    v5 = objectCopy;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -980,14 +980,14 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)copyDuplicateRequestOutputFromOriginalRequestTracker:(id)a3 error:(id *)a4
+- (BOOL)copyDuplicateRequestOutputFromOriginalRequestTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 1;
-  v7 = [(MediaConversionRequestTracker *)self destinationURLCollection];
+  destinationURLCollection = [(MediaConversionRequestTracker *)self destinationURLCollection];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -995,26 +995,26 @@ LABEL_26:
   v26 = sub_1000207D8;
   v27 = 0;
   v8 = +[NSFileManager defaultManager];
-  v9 = [v6 destinationURLCollection];
+  destinationURLCollection2 = [trackerCopy destinationURLCollection];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000207E0;
   v15[3] = &unk_10003DB28;
-  v10 = v7;
+  v10 = destinationURLCollection;
   v16 = v10;
-  v11 = v6;
+  v11 = trackerCopy;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v20 = &v28;
   v21 = &v22;
   v12 = v8;
   v19 = v12;
-  [v9 enumerateResourceURLs:v15];
+  [destinationURLCollection2 enumerateResourceURLs:v15];
 
   v13 = *(v29 + 24);
-  if (a4 && (v29[3] & 1) == 0)
+  if (error && (v29[3] & 1) == 0)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v13 = *(v29 + 24);
   }
 
@@ -1024,12 +1024,12 @@ LABEL_26:
   return v13 & 1;
 }
 
-- (BOOL)isDuplicateOfRequestWithRequestTracker:(id)a3 identicalDestinationURL:(BOOL *)a4
+- (BOOL)isDuplicateOfRequestWithRequestTracker:(id)tracker identicalDestinationURL:(BOOL *)l
 {
-  v7 = a3;
-  if (v7)
+  trackerCopy = tracker;
+  if (trackerCopy)
   {
-    if (a4)
+    if (l)
     {
       goto LABEL_3;
     }
@@ -1040,7 +1040,7 @@ LABEL_26:
     v19 = +[NSAssertionHandler currentHandler];
     [v19 handleFailureInMethod:a2 object:self file:@"MediaConversionDebugUtilities.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"otherRequestTracker"}];
 
-    if (a4)
+    if (l)
     {
       goto LABEL_3;
     }
@@ -1050,8 +1050,8 @@ LABEL_26:
   [v20 handleFailureInMethod:a2 object:self file:@"MediaConversionDebugUtilities.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"identicalDestinationURL"}];
 
 LABEL_3:
-  v8 = [(MediaConversionRequestTracker *)self requestOptionsSignatureString];
-  v9 = [v8 componentsSeparatedByString:@"-"];
+  requestOptionsSignatureString = [(MediaConversionRequestTracker *)self requestOptionsSignatureString];
+  v9 = [requestOptionsSignatureString componentsSeparatedByString:@"-"];
 
   if ([v9 count] != 3)
   {
@@ -1059,8 +1059,8 @@ LABEL_3:
     [v21 handleFailureInMethod:a2 object:self file:@"MediaConversionDebugUtilities.m" lineNumber:200 description:{@"Unexpected self signature component count %lu", objc_msgSend(v9, "count")}];
   }
 
-  v10 = [v7 requestOptionsSignatureString];
-  v11 = [v10 componentsSeparatedByString:@"-"];
+  requestOptionsSignatureString2 = [trackerCopy requestOptionsSignatureString];
+  v11 = [requestOptionsSignatureString2 componentsSeparatedByString:@"-"];
 
   if ([v11 count] != 3)
   {
@@ -1085,7 +1085,7 @@ LABEL_3:
 
     v12 = [v9 objectAtIndexedSubscript:2];
     v13 = [v11 objectAtIndexedSubscript:2];
-    *a4 = [v12 isEqualToString:v13];
+    *l = [v12 isEqualToString:v13];
   }
 
 LABEL_12:
@@ -1105,10 +1105,10 @@ LABEL_12:
     v4 = [NSArray arrayWithObjects:v12 count:5];
     v5 = [(NSDictionary *)self->_requestOptions mutableCopy];
     [v5 removeObjectsForKeys:v4];
-    v6 = [(MediaConversionRequestTracker *)self sourceURLCollectionSignature];
+    sourceURLCollectionSignature = [(MediaConversionRequestTracker *)self sourceURLCollectionSignature];
     v7 = [(MediaConversionRequestTracker *)self hashForObject:v5];
-    v8 = [(MediaConversionRequestTracker *)self destinationURLsSignature];
-    v9 = [NSString stringWithFormat:@"%@-%lx-%@", v6, v7, v8];
+    destinationURLsSignature = [(MediaConversionRequestTracker *)self destinationURLsSignature];
+    v9 = [NSString stringWithFormat:@"%@-%lx-%@", sourceURLCollectionSignature, v7, destinationURLsSignature];
     v10 = self->_cachedRequestOptionsSignature;
     self->_cachedRequestOptionsSignature = v9;
 
@@ -1188,25 +1188,25 @@ LABEL_12:
   self->_cachedSourceURLFilenameOnlySummary = v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MediaConversionRequestTracker *)self effectivePriority];
-  v6 = [v4 effectivePriority];
-  if (v5 <= v6)
+  compareCopy = compare;
+  effectivePriority = [(MediaConversionRequestTracker *)self effectivePriority];
+  effectivePriority2 = [compareCopy effectivePriority];
+  if (effectivePriority <= effectivePriority2)
   {
-    if (v5 < v6)
+    if (effectivePriority < effectivePriority2)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(MediaConversionRequestTracker *)self enqueueTime];
-      v9 = [v4 enqueueTime];
-      v10 = [v8 compare:v9];
+      enqueueTime = [(MediaConversionRequestTracker *)self enqueueTime];
+      enqueueTime2 = [compareCopy enqueueTime];
+      v10 = [enqueueTime compare:enqueueTime2];
 
-      if (v5 <= 0)
+      if (effectivePriority <= 0)
       {
         v7 = v10;
       }
@@ -1236,8 +1236,8 @@ LABEL_12:
 
 - (NSString)requestIdentifier
 {
-  v2 = [(MediaConversionRequestTracker *)self requestOptions];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  requestOptions = [(MediaConversionRequestTracker *)self requestOptions];
+  v3 = [requestOptions objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
 
   return v3;
 }
@@ -1247,9 +1247,9 @@ LABEL_12:
   if ([(MediaConversionRequestTracker *)self shouldDump])
   {
     setenv("CI_PRINT_TREE", "4 pdf", 1);
-    v3 = [(MediaConversionRequestTracker *)self graphDumpURLsForCurrentProcessIdentifier];
+    graphDumpURLsForCurrentProcessIdentifier = [(MediaConversionRequestTracker *)self graphDumpURLsForCurrentProcessIdentifier];
     coreImageGraphDumpURLsAtStart = self->_coreImageGraphDumpURLsAtStart;
-    self->_coreImageGraphDumpURLsAtStart = v3;
+    self->_coreImageGraphDumpURLsAtStart = graphDumpURLsForCurrentProcessIdentifier;
 
     _objc_release_x1();
   }
@@ -1296,10 +1296,10 @@ LABEL_12:
   }
 }
 
-- (MediaConversionRequestTracker)initWithRequestOptions:(id)a3 requestNumber:(unint64_t)a4
+- (MediaConversionRequestTracker)initWithRequestOptions:(id)options requestNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  optionsCopy = options;
+  v9 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
 
   if (!v9)
   {
@@ -1313,8 +1313,8 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_requestOptions, a3);
-    v11->_requestNumber = a4;
+    objc_storeStrong(&v10->_requestOptions, options);
+    v11->_requestNumber = number;
     v12 = +[NSDate date];
     enqueueTime = v11->_enqueueTime;
     v11->_enqueueTime = v12;
@@ -1324,10 +1324,10 @@ LABEL_12:
     v11->_transaction = v14;
 
     v16 = +[NSXPCConnection currentConnection];
-    v17 = [v16 _xpcConnection];
-    v11->_clientProcessIdentifier = xpc_connection_get_pid(v17);
+    _xpcConnection = [v16 _xpcConnection];
+    v11->_clientProcessIdentifier = xpc_connection_get_pid(_xpcConnection);
 
-    v18 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
     v11->_effectivePriority = [v18 integerValue];
 
     v11->_signpostId = os_signpost_id_make_with_pointer(&_os_log_default, v11);
@@ -1335,8 +1335,8 @@ LABEL_12:
     signpostId = v11->_signpostId;
     if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(&_os_log_default))
     {
-      v21 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
-      v22 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
+      v21 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+      v22 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
       *buf = 138543618;
       v27 = v21;
       v28 = 2112;

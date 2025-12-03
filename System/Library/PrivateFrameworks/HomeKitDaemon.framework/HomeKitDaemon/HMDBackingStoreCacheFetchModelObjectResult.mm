@@ -1,14 +1,14 @@
 @interface HMDBackingStoreCacheFetchModelObjectResult
-- (HMDBackingStoreCacheFetchModelObjectResult)initWithRecord:(id)a3 data:(id)a4 encoding:(unint64_t)a5 error:(id *)a6;
+- (HMDBackingStoreCacheFetchModelObjectResult)initWithRecord:(id)record data:(id)data encoding:(unint64_t)encoding error:(id *)error;
 @end
 
 @implementation HMDBackingStoreCacheFetchModelObjectResult
 
-- (HMDBackingStoreCacheFetchModelObjectResult)initWithRecord:(id)a3 data:(id)a4 encoding:(unint64_t)a5 error:(id *)a6
+- (HMDBackingStoreCacheFetchModelObjectResult)initWithRecord:(id)record data:(id)data encoding:(unint64_t)encoding error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  recordCopy = record;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = HMDBackingStoreCacheFetchModelObjectResult;
   v12 = [(HMDBackingStoreCacheFetchModelObjectResult *)&v26 init];
@@ -17,21 +17,21 @@
     goto LABEL_13;
   }
 
-  if (v10 && v11)
+  if (recordCopy && dataCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v10 error:0];
+    v13 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:recordCopy error:0];
     v14 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithCoder:v13];
     record = v12->_record;
     v12->_record = v14;
 
-    if (a5)
+    if (encoding)
     {
-      v16 = [HMDBackingStoreModelObject objectFromData:v11 encoding:a5 error:a6];
+      v16 = [HMDBackingStoreModelObject objectFromData:dataCopy encoding:encoding error:error];
       object = v12->_object;
       v12->_object = v16;
     }
 
-    if (*a6)
+    if (*error)
     {
       v18 = objc_autoreleasePoolPush();
       v19 = v12;
@@ -39,7 +39,7 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = *a6;
+        v22 = *error;
         *buf = 138543618;
         v28 = v21;
         v29 = 2112;
@@ -62,10 +62,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a6)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-    *a6 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface VoiceOverKeyboardTimeoutController
-- (double)valueForSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
 - (id)actionDetailControllerDelegate;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 @end
 
 @implementation VoiceOverKeyboardTimeoutController
 
 - (id)actionDetailControllerDelegate
 {
-  v2 = [(VoiceOverKeyboardTimeoutController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"VoiceOverKeyboardTimeoutControllerDelegateKey"];
+  specifier = [(VoiceOverKeyboardTimeoutController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"VoiceOverKeyboardTimeoutControllerDelegateKey"];
 
   return v4;
 }
@@ -23,17 +23,17 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = settingsLocString(@"KEYBOARD_TIMING_TIMEOUT_FOOTER", @"VoiceOverSettings");
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
 
-    [v5 addObject:v6];
+    [array addObject:emptyGroupSpecifier];
     v8 = [MEMORY[0x277D3FAD8] ax_stepperSpecifierWithDelegate:self];
     [v8 setProperty:&unk_284E7E618 forKey:*MEMORY[0x277D401A8]];
-    [v5 addObject:v8];
+    [array addObject:v8];
     v9 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -41,26 +41,26 @@
   return v4;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [(VoiceOverKeyboardTimeoutController *)self actionDetailControllerDelegate];
-  v4 = [v3 keyboardTimeout];
-  [v4 doubleValue];
+  actionDetailControllerDelegate = [(VoiceOverKeyboardTimeoutController *)self actionDetailControllerDelegate];
+  keyboardTimeout = [actionDetailControllerDelegate keyboardTimeout];
+  [keyboardTimeout doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = [(VoiceOverKeyboardTimeoutController *)self actionDetailControllerDelegate];
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  [v6 setKeyboardTimeout:v5];
+  actionDetailControllerDelegate = [(VoiceOverKeyboardTimeoutController *)self actionDetailControllerDelegate];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:value];
+  [actionDetailControllerDelegate setKeyboardTimeout:v5];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(VoiceOverKeyboardTimeoutController *)self valueForSpecifier:a3];
+  [(VoiceOverKeyboardTimeoutController *)self valueForSpecifier:specifier];
   v3 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

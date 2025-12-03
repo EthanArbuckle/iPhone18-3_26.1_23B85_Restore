@@ -1,7 +1,7 @@
 @interface PKSelectionModificationKnob
 - (double)_knobTailWidth;
 - (double)_rectForKnob;
-- (double)distanceFromKnobCenterToPoint:(double)a3;
+- (double)distanceFromKnobCenterToPoint:(double)point;
 - (id)_updateKnobAppearance;
 - (id)accessibilityIdentifier;
 - (id)didBeginBrushSelection;
@@ -23,16 +23,16 @@
   v1 = result;
   if (*(result + 64) != 1)
   {
-    v32 = [(PKSelectionModificationKnob *)result _rectForKnob];
+    _rectForKnob = [(PKSelectionModificationKnob *)result _rectForKnob];
     v17 = v18;
     v13 = v19;
     v15 = v20;
-    v21 = [PKSelectionModificationKnob _knobTailWidth];
+    _knobTailWidth = [PKSelectionModificationKnob _knobTailWidth];
     [v1 bounds];
     v23 = v22 + -1.0;
-    v24 = v21 * 0.5;
+    v24 = _knobTailWidth * 0.5;
     v25 = v1[9];
-    v26 = v21 * 0.5;
+    v26 = _knobTailWidth * 0.5;
     if (*(v1 + 65) == 1)
     {
       if (v25 == 1)
@@ -50,7 +50,7 @@ LABEL_9:
       v34 = v28 * 0.5 - v24;
       v4 = v29 * 0.5 - v26;
       v10 = v24 + v23;
-      v2 = v21;
+      v2 = _knobTailWidth;
       v16 = v33;
       goto LABEL_10;
     }
@@ -95,16 +95,16 @@ LABEL_10:
 
 - (double)_rectForKnob
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 72);
-    if (*(a1 + 65) == 1)
+    v2 = *(self + 72);
+    if (*(self + 65) == 1)
     {
       if (v2 == 1)
       {
 LABEL_4:
-        [a1 bounds];
-        [a1 bounds];
+        [self bounds];
+        [self bounds];
         return 0.0;
       }
     }
@@ -114,9 +114,9 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    [a1 bounds];
-    [a1 bounds];
-    [a1 bounds];
+    [self bounds];
+    [self bounds];
+    [self bounds];
   }
 
   return 0.0;
@@ -124,11 +124,11 @@ LABEL_4:
 
 - (double)_knobTailWidth
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 3.5;
-  if (v1 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 4.0;
   }
@@ -165,14 +165,14 @@ LABEL_4:
   }
 }
 
-- (double)distanceFromKnobCenterToPoint:(double)a3
+- (double)distanceFromKnobCenterToPoint:(double)point
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v15.origin.x = [(PKSelectionModificationKnob *)a1 _rectForKnob];
+  v15.origin.x = [(PKSelectionModificationKnob *)self _rectForKnob];
   x = v15.origin.x;
   y = v15.origin.y;
   width = v15.size.width;
@@ -183,8 +183,8 @@ LABEL_4:
   v16.size.width = width;
   v16.size.height = height;
   MidY = CGRectGetMidY(v16);
-  [a1 frame];
-  return sqrt((a3 - (MidY + v13)) * (a3 - (MidY + v13)) + (a2 - (MidX + v12)) * (a2 - (MidX + v12)));
+  [self frame];
+  return sqrt((point - (MidY + v13)) * (point - (MidY + v13)) + (a2 - (MidX + v12)) * (a2 - (MidX + v12)));
 }
 
 - (id)setKnobColor:(id *)result

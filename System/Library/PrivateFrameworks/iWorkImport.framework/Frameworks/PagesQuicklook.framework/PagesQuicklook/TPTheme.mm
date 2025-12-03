@@ -1,34 +1,34 @@
 @interface TPTheme
-+ (TPTheme)themeWithContext:(id)a3 alternate:(unint64_t)a4 withStylesheet:(id)a5;
++ (TPTheme)themeWithContext:(id)context alternate:(unint64_t)alternate withStylesheet:(id)stylesheet;
 - (BOOL)isBasicTheme;
 - (BOOL)isBookPortraitTemplateTheme;
 - (NSDictionary)headerAndFooterStyles;
 - (TSWPParagraphStyle)bodyStyle;
 - (TSWPParagraphStyle)footnoteStyle;
 - (TSWPParagraphStyle)headerAndFooterStyle;
-- (id)_paragraphStylePresetWithName:(id)a3 orContentTag:(id)a4;
+- (id)_paragraphStylePresetWithName:(id)name orContentTag:(id)tag;
 - (id)localizedBodyStyleName;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TPTheme
 
-+ (TPTheme)themeWithContext:(id)a3 alternate:(unint64_t)a4 withStylesheet:(id)a5
++ (TPTheme)themeWithContext:(id)context alternate:(unint64_t)alternate withStylesheet:(id)stylesheet
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___TPTheme;
-  v5 = objc_msgSendSuper2(&v7, sel_themeWithContext_alternate_withStylesheet_, a3, a4, a5);
+  v5 = objc_msgSendSuper2(&v7, sel_themeWithContext_alternate_withStylesheet_, context, alternate, stylesheet);
 
   return v5;
 }
 
-- (id)_paragraphStylePresetWithName:(id)a3 orContentTag:(id)a4
+- (id)_paragraphStylePresetWithName:(id)name orContentTag:(id)tag
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  tagCopy = tag;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -49,7 +49,7 @@ LABEL_3:
 
       v26 = *(*(&v69 + 1) + 8 * v25);
       v27 = objc_msgSend_name(v26, v18, v20, v21, v22, v23);
-      isEqualToString = objc_msgSend_isEqualToString_(v27, v28, v29, v30, v31, v32, v6);
+      isEqualToString = objc_msgSend_isEqualToString_(v27, v28, v29, v30, v31, v32, nameCopy);
 
       if (isEqualToString)
       {
@@ -81,7 +81,7 @@ LABEL_3:
 LABEL_9:
   }
 
-  v39 = objc_msgSend_paragraphStyleWithContentTag_(self, v34, v35, v36, v37, v38, v7);
+  v39 = objc_msgSend_paragraphStyleWithContentTag_(self, v34, v35, v36, v37, v38, tagCopy);
   if (!v39)
   {
     v39 = objc_msgSend_defaultParagraphStyle(self, v40, v41, v42, v43, v44);
@@ -202,11 +202,11 @@ LABEL_14:
   return v24;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v10 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, v9, off_2812F85B8[2]);
+  v10 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, v9, off_2812F85B8[2]);
 
   if (*(v10 + 24))
   {
@@ -220,30 +220,30 @@ LABEL_14:
 
   v12.receiver = self;
   v12.super_class = TPTheme;
-  [(TSATheme *)&v12 loadFromArchive:v11 unarchiver:v4];
+  [(TSATheme *)&v12 loadFromArchive:v11 unarchiver:unarchiverCopy];
 }
 
-- (void)p_saveToArchive:(void *)a3 archiver:(id)a4
+- (void)p_saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276014698;
   v13[3] = &unk_27A6A84B8;
-  v15 = self;
-  v16 = a3;
-  v14 = v6;
-  v7 = v6;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, v9, v10, v11, v12, 1, a3, v13);
+  selfCopy = self;
+  archiveCopy = archive;
+  v14 = archiverCopy;
+  v7 = archiverCopy;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, v9, v10, v11, v12, 1, archive, v13);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v15 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v15, v4, v5, v6, v7, v8, sub_2760147DC, off_2812F85B8[2]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, v5, v6, v7, v8, sub_2760147DC, off_2812F85B8[2]);
 
-  objc_msgSend_p_saveToArchive_archiver_(self, v10, v11, v12, v13, v14, v9, v15);
+  objc_msgSend_p_saveToArchive_archiver_(self, v10, v11, v12, v13, v14, v9, archiverCopy);
 }
 
 @end

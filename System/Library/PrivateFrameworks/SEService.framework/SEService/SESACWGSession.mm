@@ -1,24 +1,24 @@
 @interface SESACWGSession
 - (SESACWGSessionDelegate)delegate;
-- (id)setActiveKey:(id)a3;
-- (id)setSecureElementToken:(id)a3;
-- (void)didEndUnexpectedly:(id)a3;
-- (void)didStartSession:(id)a3;
+- (id)setActiveKey:(id)key;
+- (id)setSecureElementToken:(id)token;
+- (void)didEndUnexpectedly:(id)unexpectedly;
+- (void)didStartSession:(id)session;
 - (void)endSession;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation SESACWGSession
 
-- (id)setActiveKey:(id)a3
+- (id)setActiveKey:(id)key
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = keyCopy;
     _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_INFO, "setActiveKey %@", &buf, 0xCu);
   }
 
@@ -46,7 +46,7 @@
     v24[3] = &unk_1E82D0DF0;
     v24[4] = &v26;
     v24[5] = &buf;
-    [v6 setActiveKey:v4 reply:v24];
+    [v6 setActiveKey:keyCopy reply:v24];
 
     v7 = *(&buf + 1);
     if ((v27[3] & 1) == 0 && !*(*(&buf + 1) + 40))
@@ -61,7 +61,7 @@
     }
 
     aid = self->_aid;
-    if (!v4 || *(v7 + 40))
+    if (!keyCopy || *(v7 + 40))
     {
       self->_aid = 0;
 
@@ -74,7 +74,7 @@
     {
       self->_aid = @"A000000909ACCE5501";
 
-      v13 = v4;
+      v13 = keyCopy;
       activeKeyIdentifier = self->_activeKeyIdentifier;
       self->_activeKeyIdentifier = v13;
       v15 = 1;
@@ -113,10 +113,10 @@
   return v18;
 }
 
-- (id)setSecureElementToken:(id)a3
+- (id)setSecureElementToken:(id)token
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -148,7 +148,7 @@
     v20[3] = &unk_1E82D0DF0;
     v20[4] = &v22;
     v20[5] = buf;
-    [v6 setSecureElementToken:v4 reply:v20];
+    [v6 setSecureElementToken:tokenCopy reply:v20];
 
     v7 = v27;
     if ((v23[3] & 1) == 0 && !*(v27 + 5))
@@ -194,18 +194,18 @@
   return v15;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = SESACWGSession;
-  [(SESSession *)&v3 didStartSession:a3];
+  [(SESSession *)&v3 didStartSession:session];
 }
 
-- (void)didEndUnexpectedly:(id)a3
+- (void)didEndUnexpectedly:(id)unexpectedly
 {
   v3.receiver = self;
   v3.super_class = SESACWGSession;
-  [(SESSession *)&v3 didEndUnexpectedly:a3];
+  [(SESSession *)&v3 didEndUnexpectedly:unexpectedly];
 }
 
 - (void)endSession
@@ -216,19 +216,19 @@
   [(SESACWGSession *)self sendEvent:&unk_1F4762E28];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SESSession *)self state]== 1)
   {
-    v5 = [(SESSession *)self queue];
+    queue = [(SESSession *)self queue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __28__SESACWGSession_sendEvent___block_invoke;
     v7[3] = &unk_1E82D11C0;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = eventCopy;
+    dispatch_async(queue, v7);
   }
 
   else

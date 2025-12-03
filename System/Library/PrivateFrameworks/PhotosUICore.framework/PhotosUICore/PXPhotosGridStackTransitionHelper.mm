@@ -1,19 +1,19 @@
 @interface PXPhotosGridStackTransitionHelper
-- (id)transitionViewForAsset:(id)a3;
-- (uint64_t)prepareForTransitionFromEndpoint:(void *)a3 toEndpoint:(void *)a4 withPrimaryAssetReference:(void *)a5 dataSource:;
-- (void)addTransitionAnimationsToAnimator:(void *)a3 inContainerView:;
-- (void)addTransitionCompletionsToAnimator:(uint64_t)a1;
-- (void)initWithStackItemsCount:(void *)a1;
-- (void)setInitialTransitionStateInContainerView:(void *)a3 aboveView:;
+- (id)transitionViewForAsset:(id)asset;
+- (uint64_t)prepareForTransitionFromEndpoint:(void *)endpoint toEndpoint:(void *)toEndpoint withPrimaryAssetReference:(void *)reference dataSource:;
+- (void)addTransitionAnimationsToAnimator:(void *)animator inContainerView:;
+- (void)addTransitionCompletionsToAnimator:(uint64_t)animator;
+- (void)initWithStackItemsCount:(void *)count;
+- (void)setInitialTransitionStateInContainerView:(void *)view aboveView:;
 @end
 
 @implementation PXPhotosGridStackTransitionHelper
 
-- (id)transitionViewForAsset:(id)a3
+- (id)transitionViewForAsset:(id)asset
 {
   assetMapping = self->_assetMapping;
-  v4 = a3;
-  v5 = v4;
+  assetCopy = asset;
+  v5 = assetCopy;
   if (assetMapping)
   {
     assetReferences = assetMapping->_assetReferences;
@@ -21,7 +21,7 @@
     v11[1] = 3221225472;
     v11[2] = __61__PXPhotosGridTransitionAssetMapping_transitionViewForAsset___block_invoke;
     v11[3] = &unk_1E774B6B0;
-    v12 = v4;
+    v12 = assetCopy;
     v7 = [(NSMutableArray *)assetReferences indexOfObjectPassingTest:v11];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -48,14 +48,14 @@
   return v9;
 }
 
-- (void)initWithStackItemsCount:(void *)a1
+- (void)initWithStackItemsCount:(void *)count
 {
-  if (!a1)
+  if (!count)
   {
     return 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = count;
   v18.super_class = PXPhotosGridStackTransitionHelper;
   v3 = objc_msgSendSuper2(&v18, sel_init);
   v4 = v3;
@@ -101,42 +101,42 @@
   return v4;
 }
 
-- (uint64_t)prepareForTransitionFromEndpoint:(void *)a3 toEndpoint:(void *)a4 withPrimaryAssetReference:(void *)a5 dataSource:
+- (uint64_t)prepareForTransitionFromEndpoint:(void *)endpoint toEndpoint:(void *)toEndpoint withPrimaryAssetReference:(void *)reference dataSource:
 {
   v57 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v43 = v12;
-  if (a1)
+  endpointCopy = endpoint;
+  toEndpointCopy = toEndpoint;
+  referenceCopy = reference;
+  v43 = referenceCopy;
+  if (self)
   {
-    v13 = [v12 assetReferenceForAssetReference:v11];
+    v13 = [referenceCopy assetReferenceForAssetReference:toEndpointCopy];
     v48 = 0u;
     v49 = 0u;
-    [v11 indexPath];
+    [toEndpointCopy indexPath];
     if (v13 && v48 != *off_1E7721F68)
     {
       v42 = v13;
-      v39 = v11;
-      v15 = *(a1 + 8);
+      v39 = toEndpointCopy;
+      v15 = *(self + 8);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __118__PXPhotosGridStackTransitionHelper_prepareForTransitionFromEndpoint_toEndpoint_withPrimaryAssetReference_dataSource___block_invoke;
       aBlock[3] = &unk_1E772FC78;
       v41 = v9;
       v45 = v9;
-      v40 = v10;
-      v46 = v10;
+      v40 = endpointCopy;
+      v46 = endpointCopy;
       v14 = v15;
       v47 = v14;
       v16 = _Block_copy(aBlock);
       v17 = [v43 numberOfItemsInSection:*(&v48 + 1)];
-      v18 = [v43 identifier];
-      v19 = *(a1 + 16);
+      identifier = [v43 identifier];
+      v19 = *(self + 16);
       if (v19 >= 1)
       {
-        v20 = v18;
+        v20 = identifier;
         v21 = -v19;
         do
         {
@@ -195,22 +195,22 @@
               }
 
               v33 = *(*(&v50 + 1) + 8 * i);
-              v34 = [v33 placeholderViewFactory];
+              placeholderViewFactory = [v33 placeholderViewFactory];
 
-              if (v34)
+              if (placeholderViewFactory)
               {
-                v35 = [v33 placeholderViewFactory];
-                v36 = (v35)[2](v35, v33);
+                placeholderViewFactory2 = [v33 placeholderViewFactory];
+                null = (placeholderViewFactory2)[2](placeholderViewFactory2, v33);
 
-                [(objc_class *)v14[4].isa addObject:v36];
+                [(objc_class *)v14[4].isa addObject:null];
                 v30 = (v30 + 1);
               }
 
               else
               {
                 isa = v14[4].isa;
-                v36 = [MEMORY[0x1E695DFB0] null];
-                [(objc_class *)isa addObject:v36];
+                null = [MEMORY[0x1E695DFB0] null];
+                [(objc_class *)isa addObject:null];
               }
             }
 
@@ -226,18 +226,18 @@
         }
 
         v14[5].isa = v30;
-        a1 = v30 != 0;
+        self = v30 != 0;
         v13 = v42;
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
 
-      v10 = v40;
+      endpointCopy = v40;
       v9 = v41;
-      v11 = v39;
+      toEndpointCopy = v39;
     }
 
     else
@@ -246,15 +246,15 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v11;
+        *(&buf + 4) = toEndpointCopy;
         _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "Transition: asset reference %@ cannot be found in the provided dataSource", &buf, 0xCu);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __118__PXPhotosGridStackTransitionHelper_prepareForTransitionFromEndpoint_toEndpoint_withPrimaryAssetReference_dataSource___block_invoke(uint64_t a1, void *a2)
@@ -289,17 +289,17 @@ void __118__PXPhotosGridStackTransitionHelper_prepareForTransitionFromEndpoint_t
   }
 }
 
-- (void)setInitialTransitionStateInContainerView:(void *)a3 aboveView:
+- (void)setInitialTransitionStateInContainerView:(void *)view aboveView:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  viewCopy = view;
+  v7 = viewCopy;
+  if (self)
   {
-    v8 = a1[1];
+    v8 = self[1];
     if (v8 && *(v8 + 40))
     {
-      if (v6)
+      if (viewCopy)
       {
         goto LABEL_5;
       }
@@ -307,8 +307,8 @@ void __118__PXPhotosGridStackTransitionHelper_prepareForTransitionFromEndpoint_t
 
     else
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel_setInitialTransitionStateInContainerView_aboveView_ object:a1 file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:87 description:@"Helper must be successfully prepared"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setInitialTransitionStateInContainerView_aboveView_ object:self file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:87 description:@"Helper must be successfully prepared"];
 
       if (v7)
       {
@@ -317,19 +317,19 @@ LABEL_5:
         v10 = v5;
         do
         {
-          v11 = [v9 superview];
+          superview = [v9 superview];
 
-          if (v11 == v10)
+          if (superview == v10)
           {
             break;
           }
 
-          v12 = [v9 superview];
+          superview2 = [v9 superview];
 
-          v9 = v12;
+          v9 = superview2;
         }
 
-        while (v12);
+        while (superview2);
 
         goto LABEL_11;
       }
@@ -338,7 +338,7 @@ LABEL_5:
     v9 = 0;
 LABEL_11:
     v14 = [MEMORY[0x1E695DFA8] set];
-    v15 = a1[1];
+    v15 = self[1];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __88__PXPhotosGridStackTransitionHelper_setInitialTransitionStateInContainerView_aboveView___block_invoke;
@@ -350,10 +350,10 @@ LABEL_11:
     v17 = v9;
     [(PXPhotosGridTransitionAssetMapping *)v15 enumerateTransitionAssetsUsingBlock:v20];
     v18 = v23;
-    a1 = v16;
+    self = v16;
   }
 
-  return a1;
+  return self;
 }
 
 void __88__PXPhotosGridStackTransitionHelper_setInitialTransitionStateInContainerView_aboveView___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -365,25 +365,25 @@ void __88__PXPhotosGridStackTransitionHelper_setInitialTransitionStateInContaine
   PXRectGetCenter();
 }
 
-- (void)addTransitionAnimationsToAnimator:(void *)a3 inContainerView:
+- (void)addTransitionAnimationsToAnimator:(void *)animator inContainerView:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  animatorCopy = animator;
+  if (self)
   {
-    v7 = *(a1 + 8);
+    v7 = *(self + 8);
     if (!v7 || !*(v7 + 40))
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_addTransitionAnimationsToAnimator_inContainerView_ object:a1 file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:112 description:@"Helper must be successfully prepared"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addTransitionAnimationsToAnimator_inContainerView_ object:self file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:112 description:@"Helper must be successfully prepared"];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __87__PXPhotosGridStackTransitionHelper_addTransitionAnimationsToAnimator_inContainerView___block_invoke;
     v9[3] = &unk_1E774C620;
-    v9[4] = a1;
-    v10 = v6;
+    v9[4] = self;
+    v10 = animatorCopy;
     [v5 addAnimations:v9];
   }
 }
@@ -426,23 +426,23 @@ void __87__PXPhotosGridStackTransitionHelper_addTransitionAnimationsToAnimator_i
   PXRectGetCenter();
 }
 
-- (void)addTransitionCompletionsToAnimator:(uint64_t)a1
+- (void)addTransitionCompletionsToAnimator:(uint64_t)animator
 {
   v3 = a2;
-  if (a1)
+  if (animator)
   {
-    v4 = *(a1 + 8);
+    v4 = *(animator + 8);
     if (!v4 || !*(v4 + 40))
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_addTransitionCompletionsToAnimator_ object:a1 file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:127 description:@"Helper must be successfully prepared"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addTransitionCompletionsToAnimator_ object:animator file:@"PXPhotosGridStackTransitionHelper.m" lineNumber:127 description:@"Helper must be successfully prepared"];
     }
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __72__PXPhotosGridStackTransitionHelper_addTransitionCompletionsToAnimator___block_invoke;
     v6[3] = &unk_1E7748D18;
-    v6[4] = a1;
+    v6[4] = animator;
     [v3 addCompletion:v6];
   }
 }

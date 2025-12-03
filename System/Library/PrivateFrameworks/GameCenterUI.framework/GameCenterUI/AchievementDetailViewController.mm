@@ -1,87 +1,87 @@
 @interface AchievementDetailViewController
-- (id)contentScrollViewForEdge:(unint64_t)a3;
-- (id)presentingViewControllerForLockupView:(id)a3;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
+- (id)presentingViewControllerForLockupView:(id)view;
 - (void)didTapDone;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupViewDidFinishRequest:(id)request;
 - (void)shareButtonPressed;
-- (void)showAppStoreProductPage:(id)a3;
+- (void)showAppStoreProductPage:(id)page;
 - (void)updateThePreferredSheetDetents;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AchievementDetailViewController
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = self;
-  v5 = sub_24E30452C(a3);
+  selfCopy = self;
+  v5 = sub_24E30452C(edge);
 
   return v5;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E3045C4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E305044(a3, &selRef_viewDidAppear_, sub_24E3063E4);
+  selfCopy = self;
+  sub_24E305044(appear, &selRef_viewDidAppear_, sub_24E3063E4);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E304F8C(a3);
+  selfCopy = self;
+  sub_24E304F8C(disappear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_24E305044(a3, &selRef_viewIsAppearing_, sub_24E30510C);
+  selfCopy = self;
+  sub_24E305044(appearing, &selRef_viewIsAppearing_, sub_24E30510C);
 }
 
 - (void)updateThePreferredSheetDetents
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E30510C();
 }
 
 - (void)shareButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E3054D0();
 }
 
 - (void)didTapDone
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E3058C8();
 }
 
-- (id)presentingViewControllerForLockupView:(id)a3
+- (id)presentingViewControllerForLockupView:(id)view
 {
   v3 = sub_24E306620();
 
   return v3;
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E306670(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_24E306670(requestCopy);
 }
 
-- (void)showAppStoreProductPage:(id)a3
+- (void)showAppStoreProductPage:(id)page
 {
-  v4 = a3;
-  v5 = self;
+  pageCopy = page;
+  selfCopy = self;
   sub_24E306920();
 }
 

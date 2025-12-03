@@ -1,10 +1,10 @@
 @interface CollectionOrderStorage
 - (CollectionOrderStorage)init;
-- (id)orderCollections:(id)a3;
+- (id)orderCollections:(id)collections;
 - (void)_loadOrder;
 - (void)_saveOrder;
-- (void)editCollection:(id)a3;
-- (void)removeCollections:(id)a3;
+- (void)editCollection:(id)collection;
+- (void)removeCollections:(id)collections;
 @end
 
 @implementation CollectionOrderStorage
@@ -42,13 +42,13 @@
   self->_orderedIdentifiers = v8;
 }
 
-- (id)orderCollections:(id)a3
+- (id)orderCollections:(id)collections
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  collectionsCopy = collections;
+  v5 = collectionsCopy;
+  if (collectionsCopy)
   {
-    v27 = [v4 mutableCopy];
+    v27 = [collectionsCopy mutableCopy];
     v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
     if ((_UISolariumEnabled() & 1) == 0)
     {
@@ -103,8 +103,8 @@
                 }
 
                 v18 = *(*(&v28 + 1) + 8 * j);
-                v19 = [v18 identifier];
-                v20 = [v19 isEqualToString:v12];
+                identifier = [v18 identifier];
+                v20 = [identifier isEqualToString:v12];
 
                 if (v20)
                 {
@@ -147,27 +147,27 @@ LABEL_20:
   return v21;
 }
 
-- (void)editCollection:(id)a3
+- (void)editCollection:(id)collection
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  v5 = [v4 UUIDString];
+  collectionCopy = collection;
+  identifier = [collectionCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
-    if (([v5 isEqualToString:@"__internal_CollectionSavedLinesIdentifier"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"__internal_CollectionSavedPlacesIdentifier") & 1) == 0)
+    if (([uUIDString isEqualToString:@"__internal_CollectionSavedLinesIdentifier"] & 1) == 0 && (objc_msgSend(uUIDString, "isEqualToString:", @"__internal_CollectionSavedPlacesIdentifier") & 1) == 0)
     {
-      v6 = [v8 isLegacyFavoritesCollection];
+      isLegacyFavoritesCollection = [collectionCopy isLegacyFavoritesCollection];
       orderedIdentifiers = self->_orderedIdentifiers;
-      if (v6)
+      if (isLegacyFavoritesCollection)
       {
-        [(NSMutableOrderedSet *)orderedIdentifiers addObject:v5];
+        [(NSMutableOrderedSet *)orderedIdentifiers addObject:uUIDString];
       }
 
       else
       {
-        [(NSMutableOrderedSet *)orderedIdentifiers removeObject:v5];
-        [(NSMutableOrderedSet *)self->_orderedIdentifiers insertObject:v5 atIndex:0];
+        [(NSMutableOrderedSet *)orderedIdentifiers removeObject:uUIDString];
+        [(NSMutableOrderedSet *)self->_orderedIdentifiers insertObject:uUIDString atIndex:0];
       }
     }
 
@@ -175,14 +175,14 @@ LABEL_20:
   }
 }
 
-- (void)removeCollections:(id)a3
+- (void)removeCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [collectionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -194,19 +194,19 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionsCopy);
         }
 
         orderedIdentifiers = self->_orderedIdentifiers;
-        v10 = [*(*(&v12 + 1) + 8 * v8) identifier];
-        v11 = [v10 UUIDString];
-        [(NSMutableOrderedSet *)orderedIdentifiers removeObject:v11];
+        identifier = [*(*(&v12 + 1) + 8 * v8) identifier];
+        uUIDString = [identifier UUIDString];
+        [(NSMutableOrderedSet *)orderedIdentifiers removeObject:uUIDString];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [collectionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -216,8 +216,8 @@ LABEL_20:
 - (void)_saveOrder
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  v3 = [(NSMutableOrderedSet *)self->_orderedIdentifiers array];
-  [v4 setObject:v3 forKey:@"__internal_CollectionOrderStorage"];
+  array = [(NSMutableOrderedSet *)self->_orderedIdentifiers array];
+  [v4 setObject:array forKey:@"__internal_CollectionOrderStorage"];
 }
 
 @end

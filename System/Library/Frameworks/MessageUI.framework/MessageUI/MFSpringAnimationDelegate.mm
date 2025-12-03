@@ -1,6 +1,6 @@
 @interface MFSpringAnimationDelegate
 - (MFSpringAnimationDelegate)init;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation MFSpringAnimationDelegate
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;

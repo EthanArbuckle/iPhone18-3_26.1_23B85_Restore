@@ -1,21 +1,21 @@
 @interface TSPDescriptionComponentReader
-- (TSPDescriptionComponentReader)initWithComponent:(id)a3 delegate:(id)a4 readChannel:(id)a5 descriptionGenerator:(id)a6;
-- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 ignoreMessageData:(BOOL)a5 hasAlternateMessages:(BOOL)a6;
+- (TSPDescriptionComponentReader)initWithComponent:(id)component delegate:(id)delegate readChannel:(id)channel descriptionGenerator:(id)generator;
+- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream ignoreMessageData:(BOOL)data hasAlternateMessages:(BOOL)messages;
 - (void)read;
 @end
 
 @implementation TSPDescriptionComponentReader
 
-- (TSPDescriptionComponentReader)initWithComponent:(id)a3 delegate:(id)a4 readChannel:(id)a5 descriptionGenerator:(id)a6
+- (TSPDescriptionComponentReader)initWithComponent:(id)component delegate:(id)delegate readChannel:(id)channel descriptionGenerator:(id)generator
 {
-  v11 = a6;
+  generatorCopy = generator;
   v15.receiver = self;
   v15.super_class = TSPDescriptionComponentReader;
-  v12 = [(TSPComponentReader *)&v15 initWithComponent:a3 finalizeHandlerQueue:0 delegate:a4 readChannel:a5];
+  v12 = [(TSPComponentReader *)&v15 initWithComponent:component finalizeHandlerQueue:0 delegate:delegate readChannel:channel];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_descriptionGenerator, a6);
+    objc_storeStrong(&v12->_descriptionGenerator, generator);
   }
 
   return v13;
@@ -35,12 +35,12 @@
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)a3 stream:(DispatchDataInputStream *)a4 ignoreMessageData:(BOOL)a5 hasAlternateMessages:(BOOL)a6
+- (id)unknownObjectUnarchiverWithArchiveInfo:(const void *)info stream:(DispatchDataInputStream *)stream ignoreMessageData:(BOOL)data hasAlternateMessages:(BOOL)messages
 {
-  if (a4)
+  if (stream)
   {
-    v7 = sub_276A764C4(a3);
-    (*(a4->var0 + 4))(a4, v7);
+    v7 = sub_276A764C4(info);
+    (*(stream->var0 + 4))(stream, v7);
   }
 
   return 0;

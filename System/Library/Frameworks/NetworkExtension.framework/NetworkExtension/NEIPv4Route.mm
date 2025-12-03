@@ -1,37 +1,37 @@
 @interface NEIPv4Route
 + (NEIPv4Route)defaultRoute;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)isDefaultRoute;
-- (NEIPv4Route)initWithCoder:(id)a3;
+- (NEIPv4Route)initWithCoder:(id)coder;
 - (NEIPv4Route)initWithDestinationAddress:(NSString *)address subnetMask:(NSString *)subnetMask;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEIPv4Route
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(NEIPv4Route *)self init];
   if (v5)
   {
-    if (v4)
+    if (dictionaryCopy)
     {
       v6 = CFDICTIONARY_TYPE;
-      if (CFGetTypeID(v4) == v6)
+      if (CFGetTypeID(dictionaryCopy) == v6)
       {
-        v7 = NEGetValueWithType(v4, *MEMORY[0x1E69824A0], CFSTRING_TYPE);
+        v7 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E69824A0], CFSTRING_TYPE);
         destinationAddress = v5->_destinationAddress;
         v5->_destinationAddress = v7;
 
-        v9 = NEGetValueWithType(v4, *MEMORY[0x1E69824B8], CFSTRING_TYPE);
+        v9 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E69824B8], CFSTRING_TYPE);
         destinationSubnetMask = v5->_destinationSubnetMask;
         v5->_destinationSubnetMask = v9;
 
-        v11 = NEGetValueWithType(v4, *MEMORY[0x1E69824A8], CFSTRING_TYPE);
+        v11 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E69824A8], CFSTRING_TYPE);
         gatewayAddress = v5->_gatewayAddress;
         v5->_gatewayAddress = v11;
       }
@@ -44,47 +44,47 @@
 - (id)copyLegacyDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NEIPv4Route *)self destinationAddress];
+  destinationAddress = [(NEIPv4Route *)self destinationAddress];
 
-  if (v4)
+  if (destinationAddress)
   {
-    v5 = [(NEIPv4Route *)self destinationAddress];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69824A0]];
+    destinationAddress2 = [(NEIPv4Route *)self destinationAddress];
+    [v3 setObject:destinationAddress2 forKeyedSubscript:*MEMORY[0x1E69824A0]];
   }
 
-  v6 = [(NEIPv4Route *)self destinationSubnetMask];
+  destinationSubnetMask = [(NEIPv4Route *)self destinationSubnetMask];
 
-  if (v6)
+  if (destinationSubnetMask)
   {
-    v7 = [(NEIPv4Route *)self destinationSubnetMask];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69824B8]];
+    destinationSubnetMask2 = [(NEIPv4Route *)self destinationSubnetMask];
+    [v3 setObject:destinationSubnetMask2 forKeyedSubscript:*MEMORY[0x1E69824B8]];
   }
 
-  v8 = [(NEIPv4Route *)self gatewayAddress];
+  gatewayAddress = [(NEIPv4Route *)self gatewayAddress];
 
-  if (v8)
+  if (gatewayAddress)
   {
-    v9 = [(NEIPv4Route *)self gatewayAddress];
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69824A8]];
+    gatewayAddress2 = [(NEIPv4Route *)self gatewayAddress];
+    [v3 setObject:gatewayAddress2 forKeyedSubscript:*MEMORY[0x1E69824A8]];
   }
 
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v14 = 0;
-  v5 = [(NEIPv4Route *)self destinationAddress];
+  destinationAddress = [(NEIPv4Route *)self destinationAddress];
 
-  if (!v5)
+  if (!destinationAddress)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     goto LABEL_9;
   }
 
-  v6 = [(NEIPv4Route *)self destinationAddress];
-  v7 = inet_pton(2, [v6 UTF8String], &v14);
+  destinationAddress2 = [(NEIPv4Route *)self destinationAddress];
+  v7 = inet_pton(2, [destinationAddress2 UTF8String], &v14);
 
   if (!v7)
   {
@@ -96,80 +96,80 @@
   {
     v8 = @"IPv4Route Destination address is loopback";
 LABEL_7:
-    [NEConfiguration addError:v8 toList:v4];
-    LOBYTE(v5) = 0;
+    [NEConfiguration addError:v8 toList:errorsCopy];
+    LOBYTE(destinationAddress) = 0;
     goto LABEL_9;
   }
 
-  LOBYTE(v5) = 1;
+  LOBYTE(destinationAddress) = 1;
 LABEL_9:
-  v9 = [(NEIPv4Route *)self destinationSubnetMask];
+  destinationSubnetMask = [(NEIPv4Route *)self destinationSubnetMask];
 
-  if (!v9)
+  if (!destinationSubnetMask)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v10 = [(NEIPv4Route *)self gatewayAddress];
+  gatewayAddress = [(NEIPv4Route *)self gatewayAddress];
 
-  if (v10)
+  if (gatewayAddress)
   {
-    v11 = [(NEIPv4Route *)self gatewayAddress];
-    v12 = inet_pton(2, [v11 UTF8String], &v14);
+    gatewayAddress2 = [(NEIPv4Route *)self gatewayAddress];
+    v12 = inet_pton(2, [gatewayAddress2 UTF8String], &v14);
 
     if (!v12)
     {
-      [NEConfiguration addError:v4 toList:?];
-      LOBYTE(v5) = 0;
+      [NEConfiguration addError:errorsCopy toList:?];
+      LOBYTE(destinationAddress) = 0;
     }
   }
 
-  return v5;
+  return destinationAddress;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIPv4Route allocWithZone:a3];
-  v5 = [(NEIPv4Route *)self destinationAddress];
-  v6 = [(NEIPv4Route *)self destinationSubnetMask];
-  v7 = [(NEIPv4Route *)v4 initWithDestinationAddress:v5 subnetMask:v6];
+  v4 = [NEIPv4Route allocWithZone:zone];
+  destinationAddress = [(NEIPv4Route *)self destinationAddress];
+  destinationSubnetMask = [(NEIPv4Route *)self destinationSubnetMask];
+  v7 = [(NEIPv4Route *)v4 initWithDestinationAddress:destinationAddress subnetMask:destinationSubnetMask];
 
-  v8 = [(NEIPv4Route *)self gatewayAddress];
-  [(NEIPv4Route *)v7 setGatewayAddress:v8];
+  gatewayAddress = [(NEIPv4Route *)self gatewayAddress];
+  [(NEIPv4Route *)v7 setGatewayAddress:gatewayAddress];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEIPv4Route *)self destinationAddress];
-  [v4 encodeObject:v5 forKey:@"DestinationAddress"];
+  coderCopy = coder;
+  destinationAddress = [(NEIPv4Route *)self destinationAddress];
+  [coderCopy encodeObject:destinationAddress forKey:@"DestinationAddress"];
 
-  v6 = [(NEIPv4Route *)self destinationSubnetMask];
-  [v4 encodeObject:v6 forKey:@"DestinationSubnetMask"];
+  destinationSubnetMask = [(NEIPv4Route *)self destinationSubnetMask];
+  [coderCopy encodeObject:destinationSubnetMask forKey:@"DestinationSubnetMask"];
 
-  v7 = [(NEIPv4Route *)self gatewayAddress];
-  [v4 encodeObject:v7 forKey:@"RouteGatewayAddress"];
+  gatewayAddress = [(NEIPv4Route *)self gatewayAddress];
+  [coderCopy encodeObject:gatewayAddress forKey:@"RouteGatewayAddress"];
 }
 
-- (NEIPv4Route)initWithCoder:(id)a3
+- (NEIPv4Route)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NEIPv4Route;
   v5 = [(NEIPv4Route *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationAddress"];
     destinationAddress = v5->_destinationAddress;
     v5->_destinationAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationSubnetMask"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationSubnetMask"];
     destinationSubnetMask = v5->_destinationSubnetMask;
     v5->_destinationSubnetMask = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RouteGatewayAddress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RouteGatewayAddress"];
     gatewayAddress = v5->_gatewayAddress;
     v5->_gatewayAddress = v10;
   }
@@ -180,13 +180,13 @@ LABEL_9:
 - (BOOL)isDefaultRoute
 {
   v3 = +[NEIPv4Route defaultRoute];
-  v4 = [(NEIPv4Route *)self destinationAddress];
-  v5 = [v3 destinationAddress];
-  if ([v4 isEqualToString:v5])
+  destinationAddress = [(NEIPv4Route *)self destinationAddress];
+  destinationAddress2 = [v3 destinationAddress];
+  if ([destinationAddress isEqualToString:destinationAddress2])
   {
-    v6 = [(NEIPv4Route *)self destinationSubnetMask];
-    v7 = [v3 destinationSubnetMask];
-    v8 = [v6 isEqualToString:v7];
+    destinationSubnetMask = [(NEIPv4Route *)self destinationSubnetMask];
+    destinationSubnetMask2 = [v3 destinationSubnetMask];
+    v8 = [destinationSubnetMask isEqualToString:destinationSubnetMask2];
   }
 
   else

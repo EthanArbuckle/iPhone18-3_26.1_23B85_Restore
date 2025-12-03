@@ -9,14 +9,14 @@
 - (NSString)userName;
 - (UIImage)loggedOutIcon;
 - (UserInformationManager)init;
-- (id)userIconAllowingFallback:(BOOL)a3;
-- (void)_handleProfilePictureStoreDidChangeNotification:(id)a3;
+- (id)userIconAllowingFallback:(BOOL)fallback;
+- (void)_handleProfilePictureStoreDidChangeNotification:(id)notification;
 - (void)_retrieveUserProfilePicture;
-- (void)_retrieveUserProfilePictureWithImageCreationCompletion:(id)a3;
-- (void)_throttledProfilePictureTimerUpdate:(id)a3;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
+- (void)_retrieveUserProfilePictureWithImageCreationCompletion:(id)completion;
+- (void)_throttledProfilePictureTimerUpdate:(id)update;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
 - (void)dealloc;
-- (void)retrieveAddressForLocationWithCompletion:(id)a3;
+- (void)retrieveAddressForLocationWithCompletion:(id)completion;
 @end
 
 @implementation UserInformationManager
@@ -71,8 +71,8 @@
 
 - (BOOL)loggedIn
 {
-  v2 = [(UserInformationManager *)self account];
-  v3 = v2 != 0;
+  account = [(UserInformationManager *)self account];
+  v3 = account != 0;
 
   return v3;
 }
@@ -112,7 +112,7 @@
   return loggedOutIcon;
 }
 
-- (void)_throttledProfilePictureTimerUpdate:(id)a3
+- (void)_throttledProfilePictureTimerUpdate:(id)update
 {
   self->_hasCalledReloadProfilePictureInLast10Seconds = 0;
   v3 = sub_100026868();
@@ -123,9 +123,9 @@
   }
 }
 
-- (void)_handleProfilePictureStoreDidChangeNotification:(id)a3
+- (void)_handleProfilePictureStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100026868();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -146,48 +146,48 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
-  if (a3)
+  if (observers)
   {
     [(GEOObserverHashTable *)self->_observers userDataDidUpdate];
   }
 }
 
-- (void)retrieveAddressForLocationWithCompletion:(id)a3
+- (void)retrieveAddressForLocationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MKLocationManager sharedLocationManager];
-  v5 = [v4 lastLocation];
+  lastLocation = [v4 lastLocation];
 
-  if (v5)
+  if (lastLocation)
   {
     v6 = +[MKMapService sharedService];
-    v7 = [v6 ticketForReverseGeocodeLocation:v5];
+    v7 = [v6 ticketForReverseGeocodeLocation:lastLocation];
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100AE7818;
     v8[3] = &unk_10165EB78;
-    v9 = v3;
+    v9 = completionCopy;
     [v7 submitWithHandler:v8 networkActivity:0];
   }
 }
 
-- (void)_retrieveUserProfilePictureWithImageCreationCompletion:(id)a3
+- (void)_retrieveUserProfilePictureWithImageCreationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(UserInformationManager *)self loggedIn])
   {
-    v5 = [(UserInformationManager *)self profilePictureStore];
+    profilePictureStore = [(UserInformationManager *)self profilePictureStore];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100AE79E0;
     v11[3] = &unk_101637920;
     v6 = &v12;
-    v12 = v4;
-    v7 = v4;
-    [v5 fetchProfilePictureForAccountOwner:v11];
+    v12 = completionCopy;
+    v7 = completionCopy;
+    [profilePictureStore fetchProfilePictureForAccountOwner:v11];
   }
 
   else
@@ -197,13 +197,13 @@
     v9[2] = sub_100AE7AB8;
     v9[3] = &unk_101661760;
     v6 = &v10;
-    v10 = v4;
-    v8 = v4;
+    v10 = completionCopy;
+    v8 = completionCopy;
     dispatch_async(&_dispatch_main_q, v9);
   }
 }
 
-- (id)userIconAllowingFallback:(BOOL)a3
+- (id)userIconAllowingFallback:(BOOL)fallback
 {
   userIcon = self->_userIcon;
   if (userIcon)
@@ -213,26 +213,26 @@
 
   else
   {
-    v4 = !a3;
+    v4 = !fallback;
   }
 
   if (v4)
   {
-    v5 = userIcon;
+    loggedOutIcon = userIcon;
   }
 
   else
   {
-    v5 = [(UserInformationManager *)self loggedOutIcon];
+    loggedOutIcon = [(UserInformationManager *)self loggedOutIcon];
   }
 
-  return v5;
+  return loggedOutIcon;
 }
 
 - (NSString)userEmail
 {
-  v3 = [(UserInformationManager *)self account];
-  v4 = v3;
+  account = [(UserInformationManager *)self account];
+  v4 = account;
   userEmail = self->_userEmail;
   if (userEmail)
   {
@@ -241,24 +241,24 @@
 
   else
   {
-    v6 = v3 == 0;
+    v6 = account == 0;
   }
 
   if (!v6)
   {
-    v7 = [v3 aa_primaryEmail];
-    if ([v7 length])
+    aa_primaryEmail = [account aa_primaryEmail];
+    if ([aa_primaryEmail length])
     {
-      v8 = [v4 aa_isPrimaryEmailVerified];
+      aa_isPrimaryEmailVerified = [v4 aa_isPrimaryEmailVerified];
 
-      if (!v8)
+      if (!aa_isPrimaryEmailVerified)
       {
         v9 = 0;
         goto LABEL_11;
       }
 
-      v7 = [v4 aa_primaryEmail];
-      v9 = [v7 copy];
+      aa_primaryEmail = [v4 aa_primaryEmail];
+      v9 = [aa_primaryEmail copy];
     }
 
     else
@@ -280,8 +280,8 @@ LABEL_11:
 
 - (NSString)userGivenName
 {
-  v3 = [(UserInformationManager *)self account];
-  v4 = v3;
+  account = [(UserInformationManager *)self account];
+  v4 = account;
   userGivenName = self->_userGivenName;
   if (userGivenName)
   {
@@ -290,20 +290,20 @@ LABEL_11:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = account == 0;
   }
 
   if (!v6)
   {
     v7 = objc_alloc_init(NSPersonNameComponents);
-    v8 = [v4 aa_firstName];
-    [v7 setGivenName:v8];
+    aa_firstName = [v4 aa_firstName];
+    [v7 setGivenName:aa_firstName];
 
-    v9 = [v4 aa_middleName];
-    [v7 setMiddleName:v9];
+    aa_middleName = [v4 aa_middleName];
+    [v7 setMiddleName:aa_middleName];
 
-    v10 = [v4 aa_lastName];
-    [v7 setFamilyName:v10];
+    aa_lastName = [v4 aa_lastName];
+    [v7 setFamilyName:aa_lastName];
 
     v11 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v7 style:1 options:0];
     v12 = self->_userGivenName;
@@ -319,8 +319,8 @@ LABEL_11:
 
 - (NSString)userName
 {
-  v3 = [(UserInformationManager *)self account];
-  v4 = v3;
+  account = [(UserInformationManager *)self account];
+  v4 = account;
   userName = self->_userName;
   if (userName)
   {
@@ -329,23 +329,23 @@ LABEL_11:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = account == 0;
   }
 
   if (!v6)
   {
     v7 = objc_alloc_init(NSPersonNameComponents);
-    v8 = [v4 aa_firstName];
-    [v7 setGivenName:v8];
+    aa_firstName = [v4 aa_firstName];
+    [v7 setGivenName:aa_firstName];
 
-    v9 = [v4 aa_middleName];
-    [v7 setMiddleName:v9];
+    aa_middleName = [v4 aa_middleName];
+    [v7 setMiddleName:aa_middleName];
 
-    v10 = [v4 aa_lastName];
-    [v7 setFamilyName:v10];
+    aa_lastName = [v4 aa_lastName];
+    [v7 setFamilyName:aa_lastName];
 
-    v11 = [(UserInformationManager *)self nameFormatter];
-    v12 = [v11 stringFromPersonNameComponents:v7];
+    nameFormatter = [(UserInformationManager *)self nameFormatter];
+    v12 = [nameFormatter stringFromPersonNameComponents:v7];
     v13 = self->_userName;
     self->_userName = v12;
 
@@ -375,8 +375,8 @@ LABEL_11:
 
 - (AAUIProfilePictureStore)profilePictureStore
 {
-  v3 = [(UserInformationManager *)self account];
-  v4 = v3;
+  account = [(UserInformationManager *)self account];
+  v4 = account;
   profilePictureStore = self->_profilePictureStore;
   if (profilePictureStore)
   {
@@ -385,7 +385,7 @@ LABEL_11:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = account == 0;
   }
 
   if (!v6)

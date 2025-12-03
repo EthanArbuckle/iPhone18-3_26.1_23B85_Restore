@@ -1,7 +1,7 @@
 @interface CMCoastedGravityEstimator
 - (CMCoastedGravityEstimator)init;
-- (CMGravity)feedAccelAtTimestamp:(double)a3 X:(float)a4 Y:(float)a5 Z:(float)a6;
-- (CMGravity)feedRotationRateAtTimestamp:(double)a3 X:(float)a4 Y:(float)a5 Z:(float)a6;
+- (CMGravity)feedAccelAtTimestamp:(double)timestamp X:(float)x Y:(float)y Z:(float)z;
+- (CMGravity)feedRotationRateAtTimestamp:(double)timestamp X:(float)x Y:(float)y Z:(float)z;
 @end
 
 @implementation CMCoastedGravityEstimator
@@ -20,18 +20,18 @@
   return v3;
 }
 
-- (CMGravity)feedAccelAtTimestamp:(double)a3 X:(float)a4 Y:(float)a5 Z:(float)a6
+- (CMGravity)feedAccelAtTimestamp:(double)timestamp X:(float)x Y:(float)y Z:(float)z
 {
-  v6 = sub_100046780(&self->_impl, a3, a4, a5, a6);
+  v6 = sub_100046780(&self->_impl, timestamp, x, y, z);
   result.var2 = v8;
   result.var1 = v7;
   result.var0 = v6;
   return result;
 }
 
-- (CMGravity)feedRotationRateAtTimestamp:(double)a3 X:(float)a4 Y:(float)a5 Z:(float)a6
+- (CMGravity)feedRotationRateAtTimestamp:(double)timestamp X:(float)x Y:(float)y Z:(float)z
 {
-  sub_1000468E4(&self->_impl, a3, a4, a5, a6);
+  sub_1000468E4(&self->_impl, timestamp, x, y, z);
   result.var2 = v8;
   result.var1 = v7;
   result.var0 = v6;

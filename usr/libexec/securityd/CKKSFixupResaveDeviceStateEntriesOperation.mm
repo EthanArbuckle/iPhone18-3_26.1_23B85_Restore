@@ -1,5 +1,5 @@
 @interface CKKSFixupResaveDeviceStateEntriesOperation
-- (CKKSFixupResaveDeviceStateEntriesOperation)initWithOperationDependencies:(id)a3;
+- (CKKSFixupResaveDeviceStateEntriesOperation)initWithOperationDependencies:(id)dependencies;
 - (id)description;
 - (void)groupStart;
 @end
@@ -8,17 +8,17 @@
 
 - (void)groupStart
 {
-  v3 = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
-  v4 = [v3 databaseProvider];
+  deps = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
+  databaseProvider = [deps databaseProvider];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
-  v6 = [v5 activeManagedViews];
+  deps2 = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
+  activeManagedViews = [deps2 activeManagedViews];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -30,7 +30,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeManagedViews);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -40,12 +40,12 @@
         v12[3] = &unk_100343B50;
         v12[4] = v11;
         v12[5] = self;
-        [v4 dispatchSyncWithSQLTransaction:v12];
+        [databaseProvider dispatchSyncWithSQLTransaction:v12];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -54,23 +54,23 @@
 
 - (id)description
 {
-  v2 = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
-  v3 = [v2 views];
-  v4 = [NSString stringWithFormat:@"<CKKSFixup:ResaveCDSE (%@)>", v3];
+  deps = [(CKKSFixupResaveDeviceStateEntriesOperation *)self deps];
+  views = [deps views];
+  v4 = [NSString stringWithFormat:@"<CKKSFixup:ResaveCDSE (%@)>", views];
 
   return v4;
 }
 
-- (CKKSFixupResaveDeviceStateEntriesOperation)initWithOperationDependencies:(id)a3
+- (CKKSFixupResaveDeviceStateEntriesOperation)initWithOperationDependencies:(id)dependencies
 {
-  v5 = a3;
+  dependenciesCopy = dependencies;
   v9.receiver = self;
   v9.super_class = CKKSFixupResaveDeviceStateEntriesOperation;
   v6 = [(CKKSGroupOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deps, a3);
+    objc_storeStrong(&v6->_deps, dependencies);
     objc_storeStrong(&v7->_intendedState, @"fixup_delete_tombstones");
     objc_storeStrong(&v7->_nextState, @"error");
   }

@@ -1,18 +1,18 @@
 @interface CADDiagnosticsDatabaseCollector
-- (void)collect:(id)a3;
-- (void)determineExpectedOutputFiles:(id)a3;
+- (void)collect:(id)collect;
+- (void)determineExpectedOutputFiles:(id)files;
 @end
 
 @implementation CADDiagnosticsDatabaseCollector
 
-- (void)determineExpectedOutputFiles:(id)a3
+- (void)determineExpectedOutputFiles:(id)files
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filesCopy = files;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = [CADDiagnosticsDatabaseCollectorDBInfo alloc];
   v7 = CalDatabaseCopyDirectoryPath();
-  v8 = [(CADDiagnosticsDatabaseCollectorDBInfo *)v6 initWithPossiblyUnmigratedDatabaseDirectory:v7 context:v4];
+  v8 = [(CADDiagnosticsDatabaseCollectorDBInfo *)v6 initWithPossiblyUnmigratedDatabaseDirectory:v7 context:filesCopy];
 
   if (v8)
   {
@@ -23,9 +23,9 @@
   if (v9)
   {
     v10 = v9;
-    v25 = self;
+    selfCopy = self;
     v26 = v8;
-    v24 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithMainDatabase:v9 context:v4];
+    v24 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithMainDatabase:v9 context:filesCopy];
     [v5 addObject:?];
     v32 = 0u;
     v33 = 0u;
@@ -47,10 +47,10 @@
             objc_enumerationMutation(obj);
           }
 
-          v15 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithMainDatabase:v10 auxDatabase:*(*(&v32 + 1) + 8 * v14) context:v4];
+          v15 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithMainDatabase:v10 auxDatabase:*(*(&v32 + 1) + 8 * v14) context:filesCopy];
           [v5 addObject:v15];
           v16 = CalAuxDatabaseCopyPath();
-          v17 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithPossiblyUnmigratedDatabaseDirectory:v16 context:v4];
+          v17 = [[CADDiagnosticsDatabaseCollectorDBInfo alloc] initWithPossiblyUnmigratedDatabaseDirectory:v16 context:filesCopy];
           if (v17)
           {
             [v5 addObject:v17];
@@ -67,13 +67,13 @@
     }
 
     CFRelease(v10);
-    self = v25;
+    self = selfCopy;
     v8 = v26;
   }
 
   else
   {
-    [v4 logError:@"Couldn't open main database; not going to be able to collect any databases."];
+    [filesCopy logError:@"Couldn't open main database; not going to be able to collect any databases."];
   }
 
   objc_storeStrong(&self->_dbInfos, v5);
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v18);
         }
 
-        [*(*(&v28 + 1) + 8 * v22++) determineExpectedOutputFiles:v4];
+        [*(*(&v28 + 1) + 8 * v22++) determineExpectedOutputFiles:filesCopy];
       }
 
       while (v20 != v22);
@@ -110,10 +110,10 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collect:(id)a3
+- (void)collect:(id)collect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectCopy = collect;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -134,7 +134,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) collect:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) collect:{collectCopy, v11}];
       }
 
       while (v7 != v9);

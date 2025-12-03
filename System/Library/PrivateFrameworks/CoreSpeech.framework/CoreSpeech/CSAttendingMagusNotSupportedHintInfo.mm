@@ -1,5 +1,5 @@
 @interface CSAttendingMagusNotSupportedHintInfo
-- (CSAttendingMagusNotSupportedHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4 rootRequestId:(id)a5;
+- (CSAttendingMagusNotSupportedHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason rootRequestId:(id)id;
 - (id)_reasonString;
 - (id)description;
 @end
@@ -13,8 +13,8 @@
   v7.super_class = CSAttendingMagusNotSupportedHintInfo;
   v4 = [(CSAttendingHintInfo *)&v7 description];
   [v3 appendFormat:@"%@", v4];
-  v5 = [(CSAttendingMagusNotSupportedHintInfo *)self _reasonString];
-  [v3 appendFormat:@"[reason: %@]", v5];
+  _reasonString = [(CSAttendingMagusNotSupportedHintInfo *)self _reasonString];
+  [v3 appendFormat:@"[reason: %@]", _reasonString];
 
   [v3 appendFormat:@"[rootRequestId: %@]", self->_rootRequestId];
 
@@ -34,17 +34,17 @@
   }
 }
 
-- (CSAttendingMagusNotSupportedHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4 rootRequestId:(id)a5
+- (CSAttendingMagusNotSupportedHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason rootRequestId:(id)id
 {
-  v9 = a5;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = CSAttendingMagusNotSupportedHintInfo;
-  v10 = [(CSAttendingHintInfo *)&v13 initWithOrigin:a3];
+  v10 = [(CSAttendingHintInfo *)&v13 initWithOrigin:origin];
   v11 = v10;
   if (v10)
   {
-    v10->_reason = a4;
-    objc_storeStrong(&v10->_rootRequestId, a5);
+    v10->_reason = reason;
+    objc_storeStrong(&v10->_rootRequestId, id);
   }
 
   return v11;

@@ -1,9 +1,9 @@
 @interface SFSSTTSEngine
 - (AudioStreamBasicDescription)asbd;
-- (AudioStreamBasicDescription)constructPcmAsbdWithSampleRate:(SEL)a3;
-- (SFSSTTSEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4;
-- (id)loadResourceAtPath:(id)a3 mimeType:(id)a4;
-- (id)synthesizeText:(id)a3 loggable:(BOOL)a4 synthesisBegin:(id)a5 synthesisChunk:(id)a6 synthesisEnd:(id)a7;
+- (AudioStreamBasicDescription)constructPcmAsbdWithSampleRate:(SEL)rate;
+- (SFSSTTSEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath;
+- (id)loadResourceAtPath:(id)path mimeType:(id)type;
+- (id)synthesizeText:(id)text loggable:(BOOL)loggable synthesisBegin:(id)begin synthesisChunk:(id)chunk synthesisEnd:(id)end;
 - (void)dealloc;
 - (void)preheat;
 - (void)stopSynthesis;
@@ -56,14 +56,14 @@
   }
 }
 
-- (id)synthesizeText:(id)a3 loggable:(BOOL)a4 synthesisBegin:(id)a5 synthesisChunk:(id)a6 synthesisEnd:(id)a7
+- (id)synthesizeText:(id)text loggable:(BOOL)loggable synthesisBegin:(id)begin synthesisChunk:(id)chunk synthesisEnd:(id)end
 {
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[SFSSTTSEngineCallbackResult alloc] initWithBeginCallback:v12 chunkCallback:v13 endCallback:v14];
+  textCopy = text;
+  beginCopy = begin;
+  chunkCopy = chunk;
+  endCopy = end;
+  v15 = [[SFSSTTSEngineCallbackResult alloc] initWithBeginCallback:beginCopy chunkCallback:chunkCopy endCallback:endCopy];
   callbackResult = self->_callbackResult;
   self->_callbackResult = v15;
 
@@ -83,8 +83,8 @@
   *(&v36 + 1) = MEMORY[0x26D631550](v28);
   *(&v37 + 1) = &v36;
   ptr = self->_synthesizer.__ptr_;
-  v19 = v11;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v11 UTF8String]);
+  v19 = textCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [textCopy UTF8String]);
   [(SFSSTTSEngineCallbackResult *)self->_callbackResult pcmDataBuffer];
   [(SFSSTTSEngineCallbackResult *)self->_callbackResult marker];
   v20 = *(&v37 + 1);
@@ -143,15 +143,15 @@ uint64_t __84__SFSSTTSEngine_synthesizeText_loggable_synthesisBegin_synthesisChu
   return v4;
 }
 
-- (id)loadResourceAtPath:(id)a3 mimeType:(id)a4
+- (id)loadResourceAtPath:(id)path mimeType:(id)type
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  typeCopy = type;
   ptr = self->_synthesizer.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(&v17, [v6 UTF8String]);
-  v9 = v7;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v7 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v17, [pathCopy UTF8String]);
+  v9 = typeCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [typeCopy UTF8String]);
   resource = TTSSynthesizer::load_resource();
   if (v16 < 0)
   {
@@ -175,8 +175,8 @@ LABEL_7:
     v11 = MEMORY[0x277CCA9B8];
     v19[0] = @"path";
     v19[1] = @"mimeType";
-    v20[0] = v6;
-    v20[1] = v7;
+    v20[0] = pathCopy;
+    v20[1] = typeCopy;
     v19[2] = *MEMORY[0x277CCA470];
     v20[2] = @"TTSSynthesizer::load_resource";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
@@ -197,7 +197,7 @@ LABEL_8:
   [(SFSSTTSEngine *)&v2 dealloc];
 }
 
-- (AudioStreamBasicDescription)constructPcmAsbdWithSampleRate:(SEL)a3
+- (AudioStreamBasicDescription)constructPcmAsbdWithSampleRate:(SEL)rate
 {
   retstr->mSampleRate = a4;
   *&retstr->mFormatID = xmmword_26914CD80;
@@ -205,18 +205,18 @@ LABEL_8:
   return self;
 }
 
-- (SFSSTTSEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4
+- (SFSSTTSEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v15.receiver = self;
   v15.super_class = SFSSTTSEngine;
   v9 = [(SFSSTTSEngine *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_voicePath, a3);
+    objc_storeStrong(&v9->_voicePath, path);
     if (v10->_voicePath)
     {
       operator new();
@@ -226,7 +226,7 @@ LABEL_8:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = pathCopy;
       _os_log_error_impl(&dword_269079000, v11, OS_LOG_TYPE_ERROR, "Voice asset path is invalid, path=%@", buf, 0xCu);
     }
 

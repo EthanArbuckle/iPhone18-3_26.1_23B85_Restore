@@ -1,41 +1,41 @@
 @interface _TUIVideoPlaybackChecks
-- (void)setAssetKeysLoaded:(BOOL)a3;
-- (void)setItemIsReadyToPlay:(BOOL)a3;
-- (void)setPlaybackLikelyToKeepUp:(BOOL)a3;
-- (void)setPlayerHasNoWaitingReason:(BOOL)a3;
+- (void)setAssetKeysLoaded:(BOOL)loaded;
+- (void)setItemIsReadyToPlay:(BOOL)play;
+- (void)setPlaybackLikelyToKeepUp:(BOOL)up;
+- (void)setPlayerHasNoWaitingReason:(BOOL)reason;
 @end
 
 @implementation _TUIVideoPlaybackChecks
 
-- (void)setAssetKeysLoaded:(BOOL)a3
+- (void)setAssetKeysLoaded:(BOOL)loaded
 {
-  if (self->_assetKeysLoaded != a3)
+  if (self->_assetKeysLoaded != loaded)
   {
-    self->_assetKeysLoaded = a3;
+    self->_assetKeysLoaded = loaded;
   }
 }
 
-- (void)setPlaybackLikelyToKeepUp:(BOOL)a3
+- (void)setPlaybackLikelyToKeepUp:(BOOL)up
 {
-  if (self->_playbackLikelyToKeepUp != a3)
+  if (self->_playbackLikelyToKeepUp != up)
   {
-    self->_playbackLikelyToKeepUp = a3;
+    self->_playbackLikelyToKeepUp = up;
   }
 }
 
-- (void)setItemIsReadyToPlay:(BOOL)a3
+- (void)setItemIsReadyToPlay:(BOOL)play
 {
-  if (self->_itemIsReadyToPlay != a3)
+  if (self->_itemIsReadyToPlay != play)
   {
-    self->_itemIsReadyToPlay = a3;
+    self->_itemIsReadyToPlay = play;
   }
 }
 
-- (void)setPlayerHasNoWaitingReason:(BOOL)a3
+- (void)setPlayerHasNoWaitingReason:(BOOL)reason
 {
-  if (self->_playerHasNoWaitingReason != a3)
+  if (self->_playerHasNoWaitingReason != reason)
   {
-    self->_playerHasNoWaitingReason = a3;
+    self->_playerHasNoWaitingReason = reason;
   }
 }
 

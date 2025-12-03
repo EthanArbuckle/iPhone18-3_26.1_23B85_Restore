@@ -18,8 +18,8 @@
   v22 = __Block_byref_object_copy__12821;
   v23 = __Block_byref_object_dispose__12822;
   v12 = [MUAppLockupImage alloc];
-  v13 = [a1 artworkURL];
-  v24 = [(MUAppLockupImage *)v12 initWithRemoteURL:v13 metrics:v11];
+  artworkURL = [self artworkURL];
+  v24 = [(MUAppLockupImage *)v12 initWithRemoteURL:artworkURL metrics:v11];
 
   v14 = v20[5];
   v16[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
 
 - (id)actionButtonText
 {
-  if ([a1 isInstalled])
+  if ([self isInstalled])
   {
     v1 = @"OPEN [Placecard]";
   }

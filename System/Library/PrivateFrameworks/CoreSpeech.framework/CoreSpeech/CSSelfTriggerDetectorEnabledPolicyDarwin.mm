@@ -10,13 +10,13 @@
 - (BOOL)_shouldEnableMyriadFriendlySelfTrigger
 {
   v2 = +[CSSelfTriggerEnabledMonitorAccessory sharedInstance];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (isEnabled)
     {
       v5 = @"YES";
     }
@@ -28,7 +28,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Device meets myriad-friendly selfTrigger condition : %{public}@", &v7, 0x16u);
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (void)_addSelfTriggerDetectorEnabledConditions

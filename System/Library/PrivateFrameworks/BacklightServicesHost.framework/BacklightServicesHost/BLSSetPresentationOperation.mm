@@ -1,20 +1,20 @@
 @interface BLSSetPresentationOperation
-- (BLSSetPresentationOperation)initWithBacklightState:(int64_t)a3 additions:(id)a4;
+- (BLSSetPresentationOperation)initWithBacklightState:(int64_t)state additions:(id)additions;
 - (id)description;
 @end
 
 @implementation BLSSetPresentationOperation
 
-- (BLSSetPresentationOperation)initWithBacklightState:(int64_t)a3 additions:(id)a4
+- (BLSSetPresentationOperation)initWithBacklightState:(int64_t)state additions:(id)additions
 {
-  v7 = a4;
+  additionsCopy = additions;
   v11.receiver = self;
   v11.super_class = BLSSetPresentationOperation;
-  v8 = [(BLSHEnvironmentOperation *)&v11 initWithBacklightState:a3];
+  v8 = [(BLSHEnvironmentOperation *)&v11 initWithBacklightState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_additions, a4);
+    objc_storeStrong(&v8->_additions, additions);
   }
 
   return v9;
@@ -28,9 +28,9 @@
   v5 = [v3 appendObject:v4 withName:@"backlightState"];
 
   v6 = [v3 appendObject:self->_additions withName:@"additions"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

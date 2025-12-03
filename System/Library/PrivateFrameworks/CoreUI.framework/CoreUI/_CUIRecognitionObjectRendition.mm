@@ -1,15 +1,15 @@
 @interface _CUIRecognitionObjectRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version;
 @end
 
 @implementation _CUIRecognitionObjectRendition
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v8.receiver = self;
   v8.super_class = _CUIRecognitionObjectRendition;
-  v4 = [(_CUIRawDataRendition *)&v8 _initWithCSIHeader:a3 version:*&a4];
+  v4 = [(_CUIRawDataRendition *)&v8 _initWithCSIHeader:header version:*&version];
   if (v4)
   {
     v5 = [[_CUISubrangeData alloc] initWithData:*(v4 + 27) range:0, 4];
@@ -22,16 +22,16 @@
   return v4;
 }
 
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version
 {
   v15.receiver = self;
   v15.super_class = _CUIRecognitionObjectRendition;
   [CUIThemeRendition _initalizeMetadataFromCSIData:sel__initalizeMetadataFromCSIData_version_ version:?];
-  var10 = a3->var10;
+  var10 = data->var10;
   if (var10)
   {
-    v8 = (&a3->var11.var1[a3->var11.var0 + 1] + var10);
-    v9 = &a3->var11.var1[a3->var11.var0 + 1];
+    v8 = (&data->var11.var1[data->var11.var0 + 1] + var10);
+    v9 = &data->var11.var1[data->var11.var0 + 1];
     do
     {
       v10 = v9[1];
@@ -75,7 +75,7 @@
         *&self[1].super.super._stackKey[10].identifier = v14;
       }
 
-      if (a4 <= 0x34E && *v9 == 1019)
+      if (version <= 0x34E && *v9 == 1019)
       {
         v10 = 12;
       }

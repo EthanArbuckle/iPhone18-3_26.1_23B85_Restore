@@ -1,66 +1,66 @@
 @interface MTL4ToolsCounterHeap
-- (MTL4ToolsCounterHeap)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsCounterHeap)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
-- (id)resolveCounterRange:(_NSRange)a3;
+- (id)resolveCounterRange:(_NSRange)range;
 - (int64_t)type;
 - (unint64_t)count;
-- (void)invalidateCounterRange:(_NSRange)a3;
-- (void)setLabel:(id)a3;
+- (void)invalidateCounterRange:(_NSRange)range;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTL4ToolsCounterHeap
 
-- (MTL4ToolsCounterHeap)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsCounterHeap)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsCounterHeap;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)count
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 count];
+  return [baseObject count];
 }
 
 - (int64_t)type
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 type];
+  return [baseObject type];
 }
 
-- (void)invalidateCounterRange:(_NSRange)a3
+- (void)invalidateCounterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 invalidateCounterRange:{location, length}];
+  [baseObject invalidateCounterRange:{location, length}];
 }
 
-- (id)resolveCounterRange:(_NSRange)a3
+- (id)resolveCounterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v5 resolveCounterRange:{location, length}];
+  return [baseObject resolveCounterRange:{location, length}];
 }
 
 @end

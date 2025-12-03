@@ -1,17 +1,17 @@
 @interface _UIOSystemBannerViewController
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSString)requesterIdentifier;
 - (UIEdgeInsets)bannerContentOutsets;
-- (_UIOSystemBannerViewController)initWithBannerRequest:(id)a3;
+- (_UIOSystemBannerViewController)initWithBannerRequest:(id)request;
 - (_UIOSystemBannerViewControllerDelegate)delegate;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
 @end
 
 @implementation _UIOSystemBannerViewController
 
-- (_UIOSystemBannerViewController)initWithBannerRequest:(id)a3
+- (_UIOSystemBannerViewController)initWithBannerRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v27.receiver = self;
   v27.super_class = _UIOSystemBannerViewController;
   v6 = [(_UIOSystemBannerViewController *)&v27 init];
@@ -37,45 +37,45 @@
     _Block_object_dispose(&v29, 8);
     v9 = objc_opt_new();
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [v5 primaryTitleText];
+    primaryTitleText = [requestCopy primaryTitleText];
 
-    if (v11)
+    if (primaryTitleText)
     {
       v12 = objc_alloc(sub_100002788());
-      v13 = [v5 primaryTitleText];
-      v14 = [v12 initWithText:v13 style:1];
+      primaryTitleText2 = [requestCopy primaryTitleText];
+      v14 = [v12 initWithText:primaryTitleText2 style:1];
       [v10 addObject:v14];
     }
 
-    v15 = [v5 secondaryTitleText];
+    secondaryTitleText = [requestCopy secondaryTitleText];
 
-    if (v15)
+    if (secondaryTitleText)
     {
       v16 = objc_alloc(sub_100002788());
-      v17 = [v5 secondaryTitleText];
-      v18 = [v16 initWithText:v17 style:2];
+      secondaryTitleText2 = [requestCopy secondaryTitleText];
+      v18 = [v16 initWithText:secondaryTitleText2 style:2];
       [v10 addObject:v18];
     }
 
     [v9 setCenterContentItems:v10];
     [v9 setAutoresizingMask:18];
-    v19 = [(_UIOSystemBannerViewController *)v6 view];
-    [v19 bounds];
+    view = [(_UIOSystemBannerViewController *)v6 view];
+    [view bounds];
     [v9 setFrame:?];
 
-    v20 = [(_UIOSystemBannerViewController *)v6 view];
-    [v20 addSubview:v9];
+    view2 = [(_UIOSystemBannerViewController *)v6 view];
+    [view2 addSubview:v9];
 
     pillView = v6->_pillView;
     v6->_pillView = v9;
     v22 = v9;
 
     v23 = +[NSUUID UUID];
-    v24 = [v23 UUIDString];
+    uUIDString = [v23 UUIDString];
     requestIdentifier = v6->_requestIdentifier;
-    v6->_requestIdentifier = v24;
+    v6->_requestIdentifier = uUIDString;
 
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v6;
@@ -84,9 +84,9 @@
 - (NSString)requesterIdentifier
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (UIEdgeInsets)bannerContentOutsets
@@ -99,9 +99,9 @@
   return result;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [(PLPillView *)self->_pillView systemLayoutSizeFittingSize:a3.width, a3.height, a4.width, a4.height];
+  [(PLPillView *)self->_pillView systemLayoutSizeFittingSize:size.width, size.height, containerSize.width, containerSize.height];
   v6 = v5;
   v8 = v7;
   [(_UISystemBannerRequest *)self->_request preferredMinimumBannerWidth];
@@ -126,11 +126,11 @@
   return result;
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v5 = a4;
-  v6 = [(_UIOSystemBannerViewController *)self delegate];
-  [v6 presentable:self willDisappearWithReason:v5];
+  reasonCopy = reason;
+  delegate = [(_UIOSystemBannerViewController *)self delegate];
+  [delegate presentable:self willDisappearWithReason:reasonCopy];
 }
 
 - (_UIOSystemBannerViewControllerDelegate)delegate

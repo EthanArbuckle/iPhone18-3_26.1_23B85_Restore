@@ -1,7 +1,7 @@
 @interface MapsSuggestionsMLSignalAlgorithm
 - (MapsSuggestionsMLSignalAlgorithm)init;
 - (NSString)uniqueName;
-- (char)transportModesForSignalPack:(id)a3 handler:(id)a4;
+- (char)transportModesForSignalPack:(id)pack handler:(id)handler;
 - (id).cxx_construct;
 @end
 
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (char)transportModesForSignalPack:(id)a3 handler:(id)a4
+- (char)transportModesForSignalPack:(id)pack handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  packCopy = pack;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -60,7 +60,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!packCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -83,9 +83,9 @@ LABEL_13:
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsMLSignalAlgorithm *)self uniqueName];
+    uniqueName = [(MapsSuggestionsMLSignalAlgorithm *)self uniqueName];
     *buf = 138412546;
-    v19 = v9;
+    v19 = uniqueName;
     v20 = 2080;
     *v21 = "transportModesForSignalPack_ML";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -102,8 +102,8 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_10001601C;
   v15[3] = &unk_100075660;
-  v16 = v6;
-  v17 = v7;
+  v16 = packCopy;
+  v17 = handlerCopy;
   sub_100015E74(&self->_queue, self, v15);
 
   v11 = 1;

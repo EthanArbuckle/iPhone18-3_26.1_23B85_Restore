@@ -1,30 +1,30 @@
 @interface PRMutableEditingLook
-- (PRMutableEditingLook)initWithIdentifier:(id)a3 displayName:(id)a4 initialTimeFontConfiguration:(id)a5 initialTitleColor:(id)a6;
+- (PRMutableEditingLook)initWithIdentifier:(id)identifier displayName:(id)name initialTimeFontConfiguration:(id)configuration initialTitleColor:(id)color;
 - (PRTimeFontConfiguration)initialTimeFontConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initialTitleColor;
-- (void)setInitialTimeFontConfiguration:(id)a3;
-- (void)setInitialTitleColor:(id)a3;
+- (void)setInitialTimeFontConfiguration:(id)configuration;
+- (void)setInitialTitleColor:(id)color;
 @end
 
 @implementation PRMutableEditingLook
 
-- (PRMutableEditingLook)initWithIdentifier:(id)a3 displayName:(id)a4 initialTimeFontConfiguration:(id)a5 initialTitleColor:(id)a6
+- (PRMutableEditingLook)initWithIdentifier:(id)identifier displayName:(id)name initialTimeFontConfiguration:(id)configuration initialTitleColor:(id)color
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  configurationCopy = configuration;
+  colorCopy = color;
   v28.receiver = self;
   v28.super_class = PRMutableEditingLook;
-  v15 = [(PREditingLook *)&v28 initWithIdentifier:v11 displayName:v12 initialTimeFontConfiguration:v13 initialTitleColor:v14];
+  v15 = [(PREditingLook *)&v28 initWithIdentifier:identifierCopy displayName:nameCopy initialTimeFontConfiguration:configurationCopy initialTitleColor:colorCopy];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [nameCopy copy];
     displayName = v15->_displayName;
     v15->_displayName = v16;
 
-    v18 = [v11 copy];
+    v18 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v18;
 
@@ -32,21 +32,21 @@
     isKindOfClass = objc_opt_isKindOfClass();
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
-    if ((isKindOfClass & 1) == 0 && v14 && (v21 & 1) == 0)
+    if ((isKindOfClass & 1) == 0 && colorCopy && (v21 & 1) == 0)
     {
       [PRMutableEditingLook initWithIdentifier:a2 displayName:? initialTimeFontConfiguration:? initialTitleColor:?];
     }
 
-    if (v14)
+    if (colorCopy)
     {
       if (v21)
       {
-        v22 = v14;
+        v22 = colorCopy;
       }
 
       else
       {
-        v22 = [[PRPosterColor alloc] initWithColor:v14 preferredStyle:2];
+        v22 = [[PRPosterColor alloc] initWithColor:colorCopy preferredStyle:2];
       }
 
       v23 = v22;
@@ -57,7 +57,7 @@
       v23 = 0;
     }
 
-    v24 = [[PREditingLookProperties alloc] initWithTimeFontConfiguration:v13 titlePosterColor:v23];
+    v24 = [[PREditingLookProperties alloc] initWithTimeFontConfiguration:configurationCopy titlePosterColor:v23];
     v25 = [(PREditingLookProperties *)v24 copy];
     initialProperties = v15->_initialProperties;
     v15->_initialProperties = v25;
@@ -68,53 +68,53 @@
 
 - (PRTimeFontConfiguration)initialTimeFontConfiguration
 {
-  v2 = [(PRMutableEditingLook *)self initialProperties];
-  v3 = [v2 timeFontConfiguration];
+  initialProperties = [(PRMutableEditingLook *)self initialProperties];
+  timeFontConfiguration = [initialProperties timeFontConfiguration];
 
-  return v3;
+  return timeFontConfiguration;
 }
 
 - (id)initialTitleColor
 {
-  v2 = [(PRMutableEditingLook *)self initialProperties];
-  v3 = [v2 titlePosterColor];
+  initialProperties = [(PRMutableEditingLook *)self initialProperties];
+  titlePosterColor = [initialProperties titlePosterColor];
 
-  return v3;
+  return titlePosterColor;
 }
 
-- (void)setInitialTimeFontConfiguration:(id)a3
+- (void)setInitialTimeFontConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [PREditingLookProperties alloc];
-  v6 = [(PRMutableEditingLook *)self initialProperties];
-  v7 = [v6 titlePosterColor];
-  v8 = [(PREditingLookProperties *)v5 initWithTimeFontConfiguration:v4 titlePosterColor:v7];
+  initialProperties = [(PRMutableEditingLook *)self initialProperties];
+  titlePosterColor = [initialProperties titlePosterColor];
+  v8 = [(PREditingLookProperties *)v5 initWithTimeFontConfiguration:configurationCopy titlePosterColor:titlePosterColor];
 
   [(PRMutableEditingLook *)self setInitialProperties:v8];
 }
 
-- (void)setInitialTitleColor:(id)a3
+- (void)setInitialTitleColor:(id)color
 {
-  v13 = a3;
+  colorCopy = color;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
-  if ((isKindOfClass & 1) == 0 && v13 && (v6 & 1) == 0)
+  if ((isKindOfClass & 1) == 0 && colorCopy && (v6 & 1) == 0)
   {
     [PRMutableEditingLook setInitialTitleColor:a2];
   }
 
-  if (v13)
+  if (colorCopy)
   {
     if (v6)
     {
-      v7 = v13;
+      v7 = colorCopy;
     }
 
     else
     {
-      v7 = [[PRPosterColor alloc] initWithColor:v13 preferredStyle:2];
+      v7 = [[PRPosterColor alloc] initWithColor:colorCopy preferredStyle:2];
     }
 
     v8 = v7;
@@ -126,14 +126,14 @@
   }
 
   v9 = [PREditingLookProperties alloc];
-  v10 = [(PRMutableEditingLook *)self initialProperties];
-  v11 = [v10 timeFontConfiguration];
-  v12 = [(PREditingLookProperties *)v9 initWithTimeFontConfiguration:v11 titlePosterColor:v8];
+  initialProperties = [(PRMutableEditingLook *)self initialProperties];
+  timeFontConfiguration = [initialProperties timeFontConfiguration];
+  v12 = [(PREditingLookProperties *)v9 initWithTimeFontConfiguration:timeFontConfiguration titlePosterColor:v8];
 
   [(PRMutableEditingLook *)self setInitialProperties:v12];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRImmutableEditingLook alloc];
 

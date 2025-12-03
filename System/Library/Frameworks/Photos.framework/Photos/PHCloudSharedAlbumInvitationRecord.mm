@@ -1,90 +1,90 @@
 @interface PHCloudSharedAlbumInvitationRecord
 + (id)entityKeyMap;
-+ (id)fetchInvitationRecordsForSharedAlbum:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
++ (id)fetchInvitationRecordsForSharedAlbum:(id)album;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
 - (NSArray)inviteeEmails;
 - (NSArray)inviteePhones;
 - (NSString)inviteeEmail;
 - (NSString)inviteePhone;
-- (PHCloudSharedAlbumInvitationRecord)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHCloudSharedAlbumInvitationRecord)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 @end
 
 @implementation PHCloudSharedAlbumInvitationRecord
 
 - (NSArray)inviteePhones
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 personInfoManager];
-  v6 = [(PHCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  v7 = [v5 phonesForInvitationRecordGUID:v6];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  personInfoManager = [v3PhotoLibrary personInfoManager];
+  cloudGUID = [(PHCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  v7 = [personInfoManager phonesForInvitationRecordGUID:cloudGUID];
 
   return v7;
 }
 
 - (NSArray)inviteeEmails
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 personInfoManager];
-  v6 = [(PHCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  v7 = [v5 emailsForInvitationRecordGUID:v6];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  personInfoManager = [v3PhotoLibrary personInfoManager];
+  cloudGUID = [(PHCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  v7 = [personInfoManager emailsForInvitationRecordGUID:cloudGUID];
 
   return v7;
 }
 
 - (NSString)inviteePhone
 {
-  v2 = [(PHCloudSharedAlbumInvitationRecord *)self inviteePhones];
-  v3 = [v2 firstObject];
+  inviteePhones = [(PHCloudSharedAlbumInvitationRecord *)self inviteePhones];
+  firstObject = [inviteePhones firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)inviteeEmail
 {
-  v2 = [(PHCloudSharedAlbumInvitationRecord *)self inviteeEmails];
-  v3 = [v2 firstObject];
+  inviteeEmails = [(PHCloudSharedAlbumInvitationRecord *)self inviteeEmails];
+  firstObject = [inviteeEmails firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (PHCloudSharedAlbumInvitationRecord)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCloudSharedAlbumInvitationRecord)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PHCloudSharedAlbumInvitationRecord;
-  v9 = [(PHObject *)&v26 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v26 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"albumGUID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"albumGUID"];
     albumGUID = v9->_albumGUID;
     v9->_albumGUID = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cloudGUID"];
     cloudGUID = v9->_cloudGUID;
     v9->_cloudGUID = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"inviteeFirstName"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"inviteeFirstName"];
     inviteeFirstName = v9->_inviteeFirstName;
     v9->_inviteeFirstName = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"inviteeLastName"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"inviteeLastName"];
     inviteeLastName = v9->_inviteeLastName;
     v9->_inviteeLastName = v16;
 
-    v18 = [v8 objectForKeyedSubscript:@"inviteeHashedPersonID"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"inviteeHashedPersonID"];
     inviteeHashedPersonID = v9->_inviteeHashedPersonID;
     v9->_inviteeHashedPersonID = v18;
 
-    v20 = [v8 objectForKeyedSubscript:@"isMine"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isMine"];
     v9->_isMine = [v20 BOOLValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"invitationState"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"invitationState"];
     invitationState = v9->_invitationState;
     v9->_invitationState = v21;
 
-    v23 = [v8 objectForKeyedSubscript:@"invitationStateLocal"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"invitationStateLocal"];
     invitationStateLocal = v9->_invitationStateLocal;
     v9->_invitationStateLocal = v23;
   }
@@ -92,18 +92,18 @@
   return v9;
 }
 
-+ (id)fetchInvitationRecordsForSharedAlbum:(id)a3
++ (id)fetchInvitationRecordsForSharedAlbum:(id)album
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  albumCopy = album;
+  photoLibrary = [albumCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__PHCloudSharedAlbumInvitationRecord_fetchInvitationRecordsForSharedAlbum___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v3;
-  v6 = v3;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:v9];
+  v10 = albumCopy;
+  v6 = albumCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:librarySpecificFetchOptions fetchBlock:v9];
 
   return v7;
 }
@@ -178,7 +178,7 @@ void __50__PHCloudSharedAlbumInvitationRecord_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken != -1)
   {

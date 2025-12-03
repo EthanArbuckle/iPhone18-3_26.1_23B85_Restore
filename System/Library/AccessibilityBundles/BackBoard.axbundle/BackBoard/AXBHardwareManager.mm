@@ -8,9 +8,9 @@
 - (void)_updateCameraButtonSensitivity;
 - (void)_updateEventTap;
 - (void)_updateIgnoreTrackpadSettings;
-- (void)_updateKeyboardService:(__IOHIDServiceClient *)a3;
-- (void)_updateStateForKeyboardEvent:(id)a3;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)_updateKeyboardService:(__IOHIDServiceClient *)service;
+- (void)_updateStateForKeyboardEvent:(id)event;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
 @end
 
@@ -128,9 +128,9 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC84F8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC84F0] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC84F8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC84F0] object:0];
   [(AXUIClient *)self->_stickyKeysClient setDelegate:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -143,8 +143,8 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
 - (void)_updateCameraButtonSensitivity
 {
   v15 = *MEMORY[0x29EDCA608];
-  v2 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  [v2 cameraButtonSensitivity];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  [mEMORY[0x29EDBDFA0] cameraButtonSensitivity];
   v4 = v3;
 
   v5 = [MEMORY[0x29EDBFBB8] build:&__block_literal_global_300];
@@ -201,15 +201,15 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
 
           v10 = *(*(&v20 + 1) + 8 * i);
           v11 = MEMORY[0x29EDBA070];
-          v12 = [MEMORY[0x29EDBDFA0] sharedInstance];
-          IOHIDServiceClientSetProperty(v10, @"TrackpadExternallyDisabled", [v11 numberWithBool:{objc_msgSend(v12, "ignoreTrackpad")}]);
+          mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+          IOHIDServiceClientSetProperty(v10, @"TrackpadExternallyDisabled", [v11 numberWithBool:{objc_msgSend(mEMORY[0x29EDBDFA0], "ignoreTrackpad")}]);
 
           v13 = AXLogCommon();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             v14 = MEMORY[0x29EDBA070];
-            v15 = [MEMORY[0x29EDBDFA0] sharedInstance];
-            v16 = [v14 numberWithBool:{objc_msgSend(v15, "ignoreTrackpad")}];
+            mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
+            v16 = [v14 numberWithBool:{objc_msgSend(mEMORY[0x29EDBDFA0]2, "ignoreTrackpad")}];
             *buf = 138412290;
             v25 = v16;
             _os_log_impl(&dword_29BBBD000, v13, OS_LOG_TYPE_DEFAULT, "Applying ignore trackpad from pref change %@", buf, 0xCu);
@@ -228,39 +228,39 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_updateStateForKeyboardEvent:(id)a3
+- (void)_updateStateForKeyboardEvent:(id)event
 {
-  v9 = a3;
-  v4 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v5 = [v9 flags];
-  if ((v5 & 0xE0000) != 0)
+  eventCopy = event;
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  flags = [eventCopy flags];
+  if ((flags & 0xE0000) != 0)
   {
-    v6 = [v9 keyInfo];
-    v7 = [v6 keyCode];
-    v8 = [v9 keyInfo];
-    -[AXBHardwareManager _notifyServerStickyKeyUpdatedForKeycode:usagePage:down:up:locked:](self, "_notifyServerStickyKeyUpdatedForKeycode:usagePage:down:up:locked:", v7, [v8 usagePage], (v5 >> 17) & 1, (v5 >> 19) & 1, (v5 >> 18) & 1);
+    keyInfo = [eventCopy keyInfo];
+    keyCode = [keyInfo keyCode];
+    keyInfo2 = [eventCopy keyInfo];
+    -[AXBHardwareManager _notifyServerStickyKeyUpdatedForKeycode:usagePage:down:up:locked:](self, "_notifyServerStickyKeyUpdatedForKeycode:usagePage:down:up:locked:", keyCode, [keyInfo2 usagePage], (flags >> 17) & 1, (flags >> 19) & 1, (flags >> 18) & 1);
   }
 
-  if ((v5 & 0x200000) != 0 && ([v4 stickyKeysEnabled] & 1) == 0)
+  if ((flags & 0x200000) != 0 && ([mEMORY[0x29EDBDFA0] stickyKeysEnabled] & 1) == 0)
   {
     [(AXBHardwareManager *)self setShouldNotUpdateHIDClientForNextStickyKeysEnabledChange:1];
-    [v4 setStickyKeysEnabled:1];
+    [mEMORY[0x29EDBDFA0] setStickyKeysEnabled:1];
     [(AXBHardwareManager *)self _notifyServerStickyKeysToggledViaShift];
   }
 
-  else if ((v5 & 0x400000) != 0 && [v4 stickyKeysEnabled])
+  else if ((flags & 0x400000) != 0 && [mEMORY[0x29EDBDFA0] stickyKeysEnabled])
   {
     [(AXBHardwareManager *)self setShouldNotUpdateHIDClientForNextStickyKeysEnabledChange:1];
-    [v4 setStickyKeysEnabled:0];
+    [mEMORY[0x29EDBDFA0] setStickyKeysEnabled:0];
     [(AXBHardwareManager *)self _notifyServerStickyKeysToggledViaShift];
     [(AXBHardwareManager *)self _notifyServerStickyKeysDisabled];
   }
 }
 
-- (void)_updateKeyboardService:(__IOHIDServiceClient *)a3
+- (void)_updateKeyboardService:(__IOHIDServiceClient *)service
 {
-  v17 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v4 = IOHIDServiceClientCopyProperty(a3, *MEMORY[0x29EDBDE60]);
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  v4 = IOHIDServiceClientCopyProperty(service, *MEMORY[0x29EDBDE60]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -272,7 +272,7 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v5 = 1;
   }
 
-  if (([v17 stickyKeysEnabled] & 1) != 0 || objc_msgSend(v17, "stickyKeysShiftToggleEnabled"))
+  if (([mEMORY[0x29EDBDFA0] stickyKeysEnabled] & 1) != 0 || objc_msgSend(mEMORY[0x29EDBDFA0], "stickyKeysShiftToggleEnabled"))
   {
     v6 = v5;
   }
@@ -282,8 +282,8 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [v17 stickyKeysEnabled];
-  v8 = [v17 stickyKeysShiftToggleEnabled];
+  stickyKeysEnabled = [mEMORY[0x29EDBDFA0] stickyKeysEnabled];
+  stickyKeysShiftToggleEnabled = [mEMORY[0x29EDBDFA0] stickyKeysShiftToggleEnabled];
   v9 = _AXSSlowKeysEnabled() == 0;
   v10 = *MEMORY[0x29EDB8EF8];
   v11 = *MEMORY[0x29EDB8F00];
@@ -297,8 +297,8 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v12 = *MEMORY[0x29EDB8F00];
   }
 
-  IOHIDServiceClientSetProperty(a3, @"HIDStickyKeysDisabled", v12);
-  if ((v5 & v7) != 0)
+  IOHIDServiceClientSetProperty(service, @"HIDStickyKeysDisabled", v12);
+  if ((v5 & stickyKeysEnabled) != 0)
   {
     v13 = v11;
   }
@@ -308,8 +308,8 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v13 = v10;
   }
 
-  IOHIDServiceClientSetProperty(a3, @"HIDStickyKeysOn", v13);
-  if ((v5 & v8) != 0)
+  IOHIDServiceClientSetProperty(service, @"HIDStickyKeysOn", v13);
+  if ((v5 & stickyKeysShiftToggleEnabled) != 0)
   {
     v14 = v11;
   }
@@ -319,7 +319,7 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v14 = v10;
   }
 
-  IOHIDServiceClientSetProperty(a3, @"HIDStickyKeysShiftToggles", v14);
+  IOHIDServiceClientSetProperty(service, @"HIDStickyKeysShiftToggles", v14);
   if (v9 || (v5 & 1) == 0)
   {
     v16 = 0;
@@ -331,22 +331,22 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
     v16 = (v15 * 1000.0);
   }
 
-  IOHIDServiceClientSetProperty(a3, @"HIDSlowKeysDelay", [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v16]);
+  IOHIDServiceClientSetProperty(service, @"HIDSlowKeysDelay", [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v16]);
 }
 
 - (void)_updateEventTap
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  if (_AXSSlowKeysEnabled() || ([v3 stickyKeysEnabled] & 1) != 0 || objc_msgSend(v3, "stickyKeysShiftToggleEnabled"))
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  if (_AXSSlowKeysEnabled() || ([mEMORY[0x29EDBDFA0] stickyKeysEnabled] & 1) != 0 || objc_msgSend(mEMORY[0x29EDBDFA0], "stickyKeysShiftToggleEnabled"))
   {
-    v4 = [(AXBHardwareManager *)self eventTapIdentifier];
+    eventTapIdentifier = [(AXBHardwareManager *)self eventTapIdentifier];
 
-    v5 = [MEMORY[0x29EDBDF60] sharedManager];
-    v6 = v5;
-    if (v4)
+    mEMORY[0x29EDBDF60] = [MEMORY[0x29EDBDF60] sharedManager];
+    mEMORY[0x29EDBDF60]2 = mEMORY[0x29EDBDF60];
+    if (eventTapIdentifier)
     {
-      v7 = [(AXBHardwareManager *)self eventTapIdentifier];
-      [v6 runMatchingServiceHandlerForEventTap:v7];
+      eventTapIdentifier2 = [(AXBHardwareManager *)self eventTapIdentifier];
+      [mEMORY[0x29EDBDF60]2 runMatchingServiceHandlerForEventTap:eventTapIdentifier2];
     }
 
     else
@@ -361,28 +361,28 @@ void __26__AXBHardwareManager_init__block_invoke_5(uint64_t a1)
       v14[2] = __37__AXBHardwareManager__updateEventTap__block_invoke_2;
       v14[3] = &unk_29F2A5070;
       v14[4] = self;
-      v8 = [v5 installKeyboardEventTap:v15 identifier:0 matchingServiceHandler:v14];
+      v8 = [mEMORY[0x29EDBDF60] installKeyboardEventTap:v15 identifier:0 matchingServiceHandler:v14];
       [(AXBHardwareManager *)self setEventTapIdentifier:v8];
 
-      v6 = [MEMORY[0x29EDBDF60] sharedManager];
-      v7 = [(AXBHardwareManager *)self eventTapIdentifier];
-      [v6 setEventTapPriority:v7 priority:22];
+      mEMORY[0x29EDBDF60]2 = [MEMORY[0x29EDBDF60] sharedManager];
+      eventTapIdentifier2 = [(AXBHardwareManager *)self eventTapIdentifier];
+      [mEMORY[0x29EDBDF60]2 setEventTapPriority:eventTapIdentifier2 priority:22];
     }
   }
 
   else
   {
-    v9 = [(AXBHardwareManager *)self eventTapIdentifier];
+    eventTapIdentifier3 = [(AXBHardwareManager *)self eventTapIdentifier];
 
-    if (v9)
+    if (eventTapIdentifier3)
     {
-      v10 = [MEMORY[0x29EDBDF60] sharedManager];
-      v11 = [(AXBHardwareManager *)self eventTapIdentifier];
-      [v10 runMatchingServiceHandlerForEventTap:v11];
+      mEMORY[0x29EDBDF60]3 = [MEMORY[0x29EDBDF60] sharedManager];
+      eventTapIdentifier4 = [(AXBHardwareManager *)self eventTapIdentifier];
+      [mEMORY[0x29EDBDF60]3 runMatchingServiceHandlerForEventTap:eventTapIdentifier4];
 
-      v12 = [MEMORY[0x29EDBDF60] sharedManager];
-      v13 = [(AXBHardwareManager *)self eventTapIdentifier];
-      [v12 removeEventTap:v13];
+      mEMORY[0x29EDBDF60]4 = [MEMORY[0x29EDBDF60] sharedManager];
+      eventTapIdentifier5 = [(AXBHardwareManager *)self eventTapIdentifier];
+      [mEMORY[0x29EDBDF60]4 removeEventTap:eventTapIdentifier5];
 
       [(AXBHardwareManager *)self setEventTapIdentifier:0];
     }
@@ -418,10 +418,10 @@ uint64_t __37__AXBHardwareManager__updateEventTap__block_invoke(uint64_t a1, voi
 
 - (void)_stickyKeysEnabledChanged
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v4 = [v3 stickyKeysEnabled];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  stickyKeysEnabled = [mEMORY[0x29EDBDFA0] stickyKeysEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((stickyKeysEnabled & 1) == 0)
   {
     [(AXBHardwareManager *)self _notifyServerStickyKeysDisabled];
   }
@@ -441,9 +441,9 @@ uint64_t __37__AXBHardwareManager__updateEventTap__block_invoke(uint64_t a1, voi
 
 - (void)_notifyServerStickyKeysToggledViaShift
 {
-  v3 = [(AXBHardwareManager *)self _stickyKeysClient];
-  v2 = [MEMORY[0x29EDBD688] mainAccessQueue];
-  [v3 sendAsynchronousMessage:0 withIdentifier:10000 targetAccessQueue:v2 completion:&__block_literal_global_343];
+  _stickyKeysClient = [(AXBHardwareManager *)self _stickyKeysClient];
+  mainAccessQueue = [MEMORY[0x29EDBD688] mainAccessQueue];
+  [_stickyKeysClient sendAsynchronousMessage:0 withIdentifier:10000 targetAccessQueue:mainAccessQueue completion:&__block_literal_global_343];
 }
 
 uint64_t __60__AXBHardwareManager__notifyServerStickyKeysToggledViaShift__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -458,9 +458,9 @@ uint64_t __60__AXBHardwareManager__notifyServerStickyKeysToggledViaShift__block_
 
 - (void)_notifyServerStickyKeysDisabled
 {
-  v3 = [(AXBHardwareManager *)self _stickyKeysClient];
-  v2 = [MEMORY[0x29EDBD688] mainAccessQueue];
-  [v3 sendAsynchronousMessage:0 withIdentifier:10001 targetAccessQueue:v2 completion:&__block_literal_global_348_0];
+  _stickyKeysClient = [(AXBHardwareManager *)self _stickyKeysClient];
+  mainAccessQueue = [MEMORY[0x29EDBD688] mainAccessQueue];
+  [_stickyKeysClient sendAsynchronousMessage:0 withIdentifier:10001 targetAccessQueue:mainAccessQueue completion:&__block_literal_global_348_0];
 }
 
 uint64_t __53__AXBHardwareManager__notifyServerStickyKeysDisabled__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -483,7 +483,7 @@ uint64_t __87__AXBHardwareManager__notifyServerStickyKeyUpdatedForKeycode_usageP
   return result;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;

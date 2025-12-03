@@ -1,7 +1,7 @@
 @interface THNoteCardBodyLayer
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)dealloc;
-- (void)setLayoutContext:(id)a3;
+- (void)setLayoutContext:(id)context;
 - (void)sizeToFit;
 @end
 
@@ -24,9 +24,9 @@
   [(THNoteCardBodyLayer *)self setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(THNoteCardBodyLayer *)self bounds:a3.width];
+  [(THNoteCardBodyLayer *)self bounds:fits.width];
   v4 = v3;
   v6 = v5;
   result.height = v6;
@@ -34,13 +34,13 @@
   return result;
 }
 
-- (void)setLayoutContext:(id)a3
+- (void)setLayoutContext:(id)context
 {
   layoutContext = self->_layoutContext;
-  if (layoutContext != a3)
+  if (layoutContext != context)
   {
 
-    self->_layoutContext = a3;
+    self->_layoutContext = context;
 
     [(THNoteCardBodyLayer *)self setNeedsLayout];
   }

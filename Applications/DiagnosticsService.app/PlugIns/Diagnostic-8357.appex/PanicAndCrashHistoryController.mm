@@ -1,11 +1,11 @@
 @interface PanicAndCrashHistoryController
-- (BOOL)passesFilter:(id)a3;
+- (BOOL)passesFilter:(id)filter;
 - (id)defaultLogLineLabelMap;
 - (id)gatherBiomeRecords;
-- (id)logLineLabelForIndex:(id)a3 andLogLineType:(id)a4;
-- (id)processLine:(id)a3;
-- (void)parseLogsWithCollector:(id)a3;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (id)logLineLabelForIndex:(id)index andLogLineType:(id)type;
+- (id)processLine:(id)line;
+- (void)parseLogsWithCollector:(id)collector;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
@@ -23,18 +23,18 @@
   return v3;
 }
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(PanicAndCrashHistoryController *)self setInputs:a3, a4];
+  [(PanicAndCrashHistoryController *)self setInputs:inputs, responder];
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PanicAndCrashHistoryController *)self inputs];
-  v7 = [v6 applicationFilters];
+  inputs = [(PanicAndCrashHistoryController *)self inputs];
+  applicationFilters = [inputs applicationFilters];
 
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [applicationFilters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -46,7 +46,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(applicationFilters);
         }
 
         v12 = [NSPredicate predicateWithFormat:@"self LIKE %@", *(*(&v14 + 1) + 8 * v11)];
@@ -56,7 +56,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [applicationFilters countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -70,10 +70,10 @@
 - (void)start
 {
   v3 = [DSGeneralLogCollector alloc];
-  v4 = [(PanicAndCrashHistoryController *)self inputs];
-  v5 = [v4 logIds];
-  v6 = [v5 allObjects];
-  v7 = [v3 initWithLogIDs:v6];
+  inputs = [(PanicAndCrashHistoryController *)self inputs];
+  logIds = [inputs logIds];
+  allObjects = [logIds allObjects];
+  v7 = [v3 initWithLogIDs:allObjects];
 
   if (([(PanicAndCrashHistoryController *)self isCancelled]& 1) == 0)
   {
@@ -83,12 +83,12 @@
   [(PanicAndCrashHistoryController *)self setFinished:1];
 }
 
-- (void)parseLogsWithCollector:(id)a3
+- (void)parseLogsWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = +[NSMutableArray array];
-  v6 = [(PanicAndCrashHistoryController *)self gatherBiomeRecords];
-  [v5 addObjectsFromArray:v6];
+  gatherBiomeRecords = [(PanicAndCrashHistoryController *)self gatherBiomeRecords];
+  [v5 addObjectsFromArray:gatherBiomeRecords];
 
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
@@ -99,38 +99,38 @@
   v11[4] = self;
   v7 = v5;
   v12 = v7;
-  [v4 enumerateLogLinesWithBlock:v11];
+  [collectorCopy enumerateLogLinesWithBlock:v11];
   if (([(PanicAndCrashHistoryController *)self isCancelled]& 1) == 0)
   {
-    v8 = [(PanicAndCrashHistoryController *)self result];
-    [v8 setStatusCode:&off_100008658];
+    result = [(PanicAndCrashHistoryController *)self result];
+    [result setStatusCode:&off_100008658];
 
     v15 = @"logLines";
     v16 = v7;
     v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v10 = [(PanicAndCrashHistoryController *)self result];
-    [v10 setData:v9];
+    result2 = [(PanicAndCrashHistoryController *)self result];
+    [result2 setData:v9];
   }
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (id)logLineLabelForIndex:(id)a3 andLogLineType:(id)a4
+- (id)logLineLabelForIndex:(id)index andLogLineType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PanicAndCrashHistoryController *)self inputs];
-  v9 = [v8 resultLabelFilters];
-  v10 = [v9 objectForKey:v7];
+  indexCopy = index;
+  typeCopy = type;
+  inputs = [(PanicAndCrashHistoryController *)self inputs];
+  resultLabelFilters = [inputs resultLabelFilters];
+  v10 = [resultLabelFilters objectForKey:typeCopy];
 
-  if (!v10 || ([v10 objectForKey:v6], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  if (!v10 || ([v10 objectForKey:indexCopy], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v12 = [v6 intValue];
-    v13 = [(PanicAndCrashHistoryController *)self defaultLogLineLabelMap];
-    v14 = v13;
-    v15 = v12 > 1 ? v7 : @"AnyLogLine";
-    v16 = [v13 objectForKey:v15];
+    intValue = [indexCopy intValue];
+    defaultLogLineLabelMap = [(PanicAndCrashHistoryController *)self defaultLogLineLabelMap];
+    v14 = defaultLogLineLabelMap;
+    v15 = intValue > 1 ? typeCopy : @"AnyLogLine";
+    v16 = [defaultLogLineLabelMap objectForKey:v15];
 
     v10 = v16;
     if (!v16)
@@ -139,22 +139,22 @@
     }
   }
 
-  v17 = [v10 objectForKey:v6];
-  if (!v17)
+  indexCopy = [v10 objectForKey:indexCopy];
+  if (!indexCopy)
   {
 LABEL_8:
-    v17 = [NSString stringWithFormat:@"untitledLabelAt-%@", v6];
+    indexCopy = [NSString stringWithFormat:@"untitledLabelAt-%@", indexCopy];
   }
 
-  return v17;
+  return indexCopy;
 }
 
-- (id)processLine:(id)a3
+- (id)processLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 fields];
-  v7 = [v6 count];
+  fields = [lineCopy fields];
+  v7 = [fields count];
 
   if (v7)
   {
@@ -162,17 +162,17 @@ LABEL_8:
     do
     {
       v9 = [NSNumber numberWithInt:v8];
-      v10 = [v4 type];
-      v11 = [(PanicAndCrashHistoryController *)self logLineLabelForIndex:v9 andLogLineType:v10];
+      type = [lineCopy type];
+      v11 = [(PanicAndCrashHistoryController *)self logLineLabelForIndex:v9 andLogLineType:type];
 
-      v12 = [v4 fields];
+      fields2 = [lineCopy fields];
       v13 = [NSNumber numberWithInt:v8];
-      v14 = [v12 objectAtIndex:{objc_msgSend(v13, "unsignedIntValue")}];
+      v14 = [fields2 objectAtIndex:{objc_msgSend(v13, "unsignedIntValue")}];
 
       [v5 setValue:v14 forKey:v11];
       ++v8;
-      v15 = [v4 fields];
-      v16 = [v15 count];
+      fields3 = [lineCopy fields];
+      v16 = [fields3 count];
     }
 
     while (v16 > v8);
@@ -181,15 +181,15 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)passesFilter:(id)a3
+- (BOOL)passesFilter:(id)filter
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:filter];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PanicAndCrashHistoryController *)self applicationPredicates];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  applicationPredicates = [(PanicAndCrashHistoryController *)self applicationPredicates];
+  v6 = [applicationPredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -199,7 +199,7 @@ LABEL_8:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applicationPredicates);
         }
 
         v9 = [v4 filteredArrayUsingPredicate:*(*(&v11 + 1) + 8 * i)];
@@ -211,7 +211,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [applicationPredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -231,17 +231,17 @@ LABEL_11:
   v3 = +[NSMutableArray array];
   objc_initWeak(&location, self);
   v4 = BiomeLibrary();
-  v5 = [v4 Diagnostics];
-  v6 = [v5 Panic];
+  diagnostics = [v4 Diagnostics];
+  panic = [diagnostics Panic];
 
-  v7 = [v6 publisherWithUseCase:@"DiagnosticsPanicEventCollection"];
+  v7 = [panic publisherWithUseCase:@"DiagnosticsPanicEventCollection"];
   v8 = [v7 filterWithIsIncluded:&stru_1000082E0];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000024B0;
   v16 = &unk_100008348;
   objc_copyWeak(&v19, &location);
-  v17 = self;
+  selfCopy = self;
   v9 = v3;
   v18 = v9;
   v10 = [v8 sinkWithCompletion:&stru_100008320 receiveInput:&v13];

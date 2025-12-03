@@ -1,13 +1,13 @@
 @interface WKWallpaperAdjustmentTraitOffset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)moreSpaceModeOffsetLandscape;
 - (CGPoint)moreSpaceModeOffsetPortrait;
-- (CGPoint)offsetForCurrentScreenScaleModeWithInterfaceOrientation:(int64_t)a3;
+- (CGPoint)offsetForCurrentScreenScaleModeWithInterfaceOrientation:(int64_t)orientation;
 - (CGPoint)zoomedModeOffsetLandscape;
 - (CGPoint)zoomedModeOffsetPortrait;
 - (NSString)description;
-- (WKWallpaperAdjustmentTraitOffset)initWithAttributeDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WKWallpaperAdjustmentTraitOffset)initWithAttributeDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (id)wk_descriptionBuilder;
@@ -16,9 +16,9 @@
 
 @implementation WKWallpaperAdjustmentTraitOffset
 
-- (WKWallpaperAdjustmentTraitOffset)initWithAttributeDictionary:(id)a3
+- (WKWallpaperAdjustmentTraitOffset)initWithAttributeDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v105.receiver = self;
   v105.super_class = WKWallpaperAdjustmentTraitOffset;
   v5 = [(WKWallpaperAdjustmentTraitOffset *)&v105 init];
@@ -27,7 +27,7 @@
     v6 = *MEMORY[0x1E695EFF8];
     v7 = *(MEMORY[0x1E695EFF8] + 8);
     objc_opt_class();
-    v8 = [v4 objectForKeyedSubscript:@"screenScaleModeZoomed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"screenScaleModeZoomed"];
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -221,7 +221,7 @@
     }
 
     v104 = v13;
-    v57 = [v4 objectForKeyedSubscript:@"screenScaleModeMoreSpace"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"screenScaleModeMoreSpace"];
     v58 = v14;
     if (v57)
     {
@@ -416,20 +416,20 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKWallpaperAdjustmentTraitOffset *)self propertyListRepresentation];
-  v6 = [v4 initWithAttributeDictionary:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  propertyListRepresentation = [(WKWallpaperAdjustmentTraitOffset *)self propertyListRepresentation];
+  v6 = [v4 initWithAttributeDictionary:propertyListRepresentation];
 
   return v6;
 }
 
-- (CGPoint)offsetForCurrentScreenScaleModeWithInterfaceOrientation:(int64_t)a3
+- (CGPoint)offsetForCurrentScreenScaleModeWithInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(WKWallpaperAdjustmentTraitOffset *)self overrideScreenScaleMode];
+  overrideScreenScaleMode = [(WKWallpaperAdjustmentTraitOffset *)self overrideScreenScaleMode];
 
-  if (v5)
+  if (overrideScreenScaleMode)
   {
     [(WKWallpaperAdjustmentTraitOffset *)self overrideScreenScaleMode];
   }
@@ -441,7 +441,7 @@
   v6 = ;
   if ([v6 isEqualToString:@"screenScaleModeZoomed"])
   {
-    if ((a3 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
       [(WKWallpaperAdjustmentTraitOffset *)self zoomedModeOffsetLandscape];
     }
@@ -459,7 +459,7 @@ LABEL_13:
 
   if ([v6 isEqualToString:@"screenScaleModeMoreSpace"])
   {
-    if ((a3 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
       [(WKWallpaperAdjustmentTraitOffset *)self moreSpaceModeOffsetLandscape];
     }
@@ -492,7 +492,7 @@ LABEL_14:
   v7 = *MEMORY[0x1E695EFF8] == v6 && v4 == v3;
   if (!v7 || (([(WKWallpaperAdjustmentTraitOffset *)self zoomedModeOffsetPortrait], v5 == v9) ? (v10 = v4 == v8) : (v10 = 0), !v10 || (([(WKWallpaperAdjustmentTraitOffset *)self moreSpaceModeOffsetLandscape], v5 == v12) ? (v13 = v4 == v11) : (v13 = 0), !v13 || (([(WKWallpaperAdjustmentTraitOffset *)self moreSpaceModeOffsetPortrait], v5 == v15) ? (v16 = v4 == v14) : (v16 = 0), !v16))))
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     [(WKWallpaperAdjustmentTraitOffset *)self zoomedModeOffsetLandscape];
     if (v5 == v19 && v4 == v18)
     {
@@ -529,12 +529,12 @@ LABEL_44:
           v96[1] = v70;
           v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:2];
           v98 = v71;
-          v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
+          dictionary2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
         }
 
         else
         {
-          v72 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           [(WKWallpaperAdjustmentTraitOffset *)self moreSpaceModeOffsetLandscape];
           if (v5 != v74 || v4 != v73)
           {
@@ -550,7 +550,7 @@ LABEL_44:
             v94[1] = v80;
             v81 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:2];
 
-            [v72 na_safeSetObject:v81 forKey:@"interfaceOrientationLandscape"];
+            [dictionary2 na_safeSetObject:v81 forKey:@"interfaceOrientationLandscape"];
           }
 
           [(WKWallpaperAdjustmentTraitOffset *)self moreSpaceModeOffsetPortrait];
@@ -570,11 +570,11 @@ LABEL_44:
           v92[1] = v88;
           v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
 
-          [v72 na_safeSetObject:v67 forKey:@"interfaceOrientationPortrait"];
+          [dictionary2 na_safeSetObject:v67 forKey:@"interfaceOrientationPortrait"];
         }
 
 LABEL_65:
-        [v17 na_safeSetObject:v72 forKey:@"screenScaleModeMoreSpace"];
+        [dictionary na_safeSetObject:dictionary2 forKey:@"screenScaleModeMoreSpace"];
 
         goto LABEL_66;
       }
@@ -599,12 +599,12 @@ LABEL_65:
       v104[1] = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:2];
       v106[0] = v35;
-      v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:&v105 count:1];
+      dictionary3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:&v105 count:1];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       [(WKWallpaperAdjustmentTraitOffset *)self zoomedModeOffsetLandscape];
       if (v5 != v38 || v4 != v37)
       {
@@ -620,7 +620,7 @@ LABEL_65:
         v102[1] = v44;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:2];
 
-        [v36 na_safeSetObject:v45 forKey:@"interfaceOrientationLandscape"];
+        [dictionary3 na_safeSetObject:v45 forKey:@"interfaceOrientationLandscape"];
       }
 
       [(WKWallpaperAdjustmentTraitOffset *)self zoomedModeOffsetPortrait];
@@ -641,20 +641,20 @@ LABEL_65:
       v100[1] = v53;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:2];
 
-      [v36 na_safeSetObject:v31 forKey:@"interfaceOrientationPortrait"];
+      [dictionary3 na_safeSetObject:v31 forKey:@"interfaceOrientationPortrait"];
     }
 
 LABEL_43:
-    [v17 na_safeSetObject:v36 forKey:@"screenScaleModeZoomed"];
+    [dictionary na_safeSetObject:dictionary3 forKey:@"screenScaleModeZoomed"];
 
     goto LABEL_44;
   }
 
-  v17 = 0;
+  dictionary = 0;
 LABEL_66:
   v89 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return dictionary;
 }
 
 id __47__WKWallpaperAdjustmentTraitOffset_na_identity__block_invoke()
@@ -720,19 +720,19 @@ uint64_t __47__WKWallpaperAdjustmentTraitOffset_na_identity__block_invoke_7(uint
   return [v2 valueWithCGPoint:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -741,7 +741,7 @@ uint64_t __47__WKWallpaperAdjustmentTraitOffset_na_identity__block_invoke_7(uint
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__WKWallpaperAdjustmentTraitOffset_wk_descriptionBuilder__block_invoke;
@@ -749,7 +749,7 @@ uint64_t __47__WKWallpaperAdjustmentTraitOffset_na_identity__block_invoke_7(uint
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -766,10 +766,10 @@ void __57__WKWallpaperAdjustmentTraitOffset_wk_descriptionBuilder__block_invoke(
 
 - (NSString)description
 {
-  v2 = [(WKWallpaperAdjustmentTraitOffset *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKWallpaperAdjustmentTraitOffset *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock

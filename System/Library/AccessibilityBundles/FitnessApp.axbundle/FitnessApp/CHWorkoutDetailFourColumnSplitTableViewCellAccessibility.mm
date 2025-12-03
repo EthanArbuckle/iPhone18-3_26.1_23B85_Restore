@@ -1,22 +1,22 @@
 @interface CHWorkoutDetailFourColumnSplitTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CHWorkoutDetailFourColumnSplitTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" hasInstanceMethod:@"configureWithWorkout:workoutActivity:unit:split:splitIndex:splitDistance:includeHeartRate:isLastCell:dataCalculator:formattingManager:" withFullSignature:{"v", "@", "@", "@", "@", "q", "d", "B", "B", "@", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" hasInstanceMethod:@"configureWithSwimmingSplit:splitIndex:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "B", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKWorkoutActivity" hasInstanceMethod:@"fiui_activityType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKWorkout" hasInstanceMethod:@"fiui_activityType" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" hasInstanceMethod:@"configureWithWorkout:workoutActivity:unit:split:splitIndex:splitDistance:includeHeartRate:isLastCell:dataCalculator:formattingManager:" withFullSignature:{"v", "@", "@", "@", "@", "q", "d", "B", "B", "@", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" hasInstanceMethod:@"configureWithSwimmingSplit:splitIndex:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "B", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSplitTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKWorkoutActivity" hasInstanceMethod:@"fiui_activityType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKWorkout" hasInstanceMethod:@"fiui_activityType" withFullSignature:{"@", 0}];
 }
 
 uint64_t __194__CHWorkoutDetailFourColumnSplitTableViewCellAccessibility_configureWithWorkout_workoutActivity_unit_split_splitIndex_splitDistance_includeHeartRate_isLastCell_dataCalculator_formattingManager___block_invoke(uint64_t a1)

@@ -18,11 +18,11 @@
 
 - (id)editorialArtworkCatalog
 {
-  v3 = [(MPModelTVShow *)self editorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  editorialArtworkCatalogBlock = [(MPModelTVShow *)self editorialArtworkCatalogBlock];
+  v4 = editorialArtworkCatalogBlock;
+  if (editorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(editorialArtworkCatalogBlock + 16))(editorialArtworkCatalogBlock, self);
   }
 
   else
@@ -35,11 +35,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelTVShow *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelTVShow *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -53,15 +53,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"TV show %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"TV show %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyTVShowTitle"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelTVShow *)self title];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    title = [(MPModelTVShow *)self title];
+    v9 = [v7 stringWithFormat:@"“%@” ", title];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -71,62 +71,62 @@
 
 + (void)__MPModelPropertyTVShowStoreCanonicalID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyTVShowStoreCanonicalID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyTVShowStoreCanonicalID"];
 }
 
 + (void)__MPModelPropertyTVShowTagline__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyTVShowTagline"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyTVShowTagline"];
 }
 
 + (void)__MPModelPropertyTVShowEpisodeCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyTVShowEpisodeCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyTVShowEpisodeCount"];
 }
 
 + (void)__MPModelPropertyTVShowEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyTVShowEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyTVShowEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyTVShowArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyTVShowArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyTVShowArtwork"];
 }
 
 + (void)__MPModelRelationshipTVShowCreator__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:96 description:@"Translator was missing mapping for MPModelRelationshipTVShowCreator"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:96 description:@"Translator was missing mapping for MPModelRelationshipTVShowCreator"];
 }
 
 + (void)__MPModelPropertyTVShowShortEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyTVShowShortEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyTVShowShortEditorNotes"];
 }
 
 + (void)__MPModelPropertyTVShowEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:94 description:@"Translator was missing mapping for MPModelPropertyTVShowEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:94 description:@"Translator was missing mapping for MPModelPropertyTVShowEditorNotes"];
 }
 
 + (void)__MPModelPropertyTVShowShortTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:93 description:@"Translator was missing mapping for MPModelPropertyTVShowShortTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:93 description:@"Translator was missing mapping for MPModelPropertyTVShowShortTitle"];
 }
 
 + (void)__MPModelPropertyTVShowTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVShow.m" lineNumber:92 description:@"Translator was missing mapping for MPModelPropertyTVShowTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVShow.m" lineNumber:92 description:@"Translator was missing mapping for MPModelPropertyTVShowTitle"];
 }
 
 @end

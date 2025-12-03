@@ -1,17 +1,17 @@
 @interface DDUser
-+ (id)userWithName:(id)a3 fullName:(id)a4 primaryGroup:(id)a5;
++ (id)userWithName:(id)name fullName:(id)fullName primaryGroup:(id)group;
 - (DDGroup)primaryGroup;
 - (DDUser)init;
-- (DDUser)userWithName:(id)a3 fullName:(id)a4 primaryGroup:(id)a5;
+- (DDUser)userWithName:(id)name fullName:(id)fullName primaryGroup:(id)group;
 - (NSSet)aliases;
 - (NSSet)memberships;
 - (NSString)homeDirectory;
 - (NSString)shell;
 - (int64_t)hash;
-- (void)setAliases:(id)a3;
-- (void)setHomeDirectory:(id)a3;
-- (void)setPrimaryGroup:(id)a3;
-- (void)setShell:(id)a3;
+- (void)setAliases:(id)aliases;
+- (void)setHomeDirectory:(id)directory;
+- (void)setPrimaryGroup:(id)group;
+- (void)setShell:(id)shell;
 @end
 
 @implementation DDUser
@@ -36,7 +36,7 @@
   return v11;
 }
 
-- (void)setHomeDirectory:(id)a3
+- (void)setHomeDirectory:(id)directory
 {
   v4 = type metadata accessor for User();
   v5 = *(*(v4 - 8) + 64);
@@ -47,7 +47,7 @@
   v11 = OBJC_IVAR___DDUser__user;
   swift_beginAccess();
   sub_2480D1F28(self + v11, &v17);
-  v12 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v13 = &v7[*(v4 + 36)];
   v14 = v13[1];
@@ -65,17 +65,17 @@
 
 - (DDGroup)primaryGroup
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2480D06AC();
 
   return v3;
 }
 
-- (void)setPrimaryGroup:(id)a3
+- (void)setPrimaryGroup:(id)group
 {
-  v4 = a3;
-  v5 = self;
-  sub_2480D0918(v4);
+  groupCopy = group;
+  selfCopy = self;
+  sub_2480D0918(groupCopy);
 }
 
 - (NSString)shell
@@ -98,7 +98,7 @@
   return v11;
 }
 
-- (void)setShell:(id)a3
+- (void)setShell:(id)shell
 {
   v4 = type metadata accessor for User();
   v5 = *(*(v4 - 8) + 64);
@@ -109,7 +109,7 @@
   v11 = OBJC_IVAR___DDUser__user;
   swift_beginAccess();
   sub_2480D1F28(self + v11, &v17);
-  v12 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v13 = &v7[*(v4 + 40)];
   v14 = v13[1];
@@ -143,7 +143,7 @@
   return v9;
 }
 
-- (void)setAliases:(id)a3
+- (void)setAliases:(id)aliases
 {
   v4 = type metadata accessor for User();
   v5 = *(*(v4 - 8) + 64);
@@ -153,7 +153,7 @@
   v9 = OBJC_IVAR___DDUser__user;
   swift_beginAccess();
   sub_2480D1F28(self + v9, &v15);
-  v10 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v11 = *(v4 + 48);
   v12 = *&v7[v11];
@@ -177,7 +177,7 @@
   v7 = OBJC_IVAR___DDUser__user;
   swift_beginAccess();
   sub_2480D1F28(self + v7, v17);
-  v8 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v9 = *&v6[*(v3 + 44)];
 
@@ -193,7 +193,7 @@
   return v14;
 }
 
-- (DDUser)userWithName:(id)a3 fullName:(id)a4 primaryGroup:(id)a5
+- (DDUser)userWithName:(id)name fullName:(id)fullName primaryGroup:(id)group
 {
   result = sub_2480DCC8C();
   __break(1u);
@@ -207,14 +207,14 @@
   return result;
 }
 
-+ (id)userWithName:(id)a3 fullName:(id)a4 primaryGroup:(id)a5
++ (id)userWithName:(id)name fullName:(id)fullName primaryGroup:(id)group
 {
   v6 = sub_2480DCA8C();
   v8 = v7;
   v9 = sub_2480DCA8C();
   v11 = v10;
-  v12 = a5;
-  v13 = sub_2480D8458(v6, v8, v9, v11, v12);
+  groupCopy = group;
+  v13 = sub_2480D8458(v6, v8, v9, v11, groupCopy);
 
   return v13;
 }
@@ -228,7 +228,7 @@
   v7 = OBJC_IVAR___DDUser__user;
   swift_beginAccess();
   sub_2480D1F28(self + v7, v11);
-  v8 = self;
+  selfCopy = self;
   swift_dynamicCast();
   sub_2480DCCCC();
   User.hash(into:)(v11);

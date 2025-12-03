@@ -1,9 +1,9 @@
 @interface _CDPPredictionResult
-- (_CDPPredictionResult)initWithMembers:(id)a3 andScores:(id)a4;
-- (id)initByMergingPredictionResults:(id)a3;
+- (_CDPPredictionResult)initWithMembers:(id)members andScores:(id)scores;
+- (id)initByMergingPredictionResults:(id)results;
 - (id)rankedMembers;
-- (id)rankedMembers:(id)a3;
-- (id)rankedMembersPassingThreshold:(double)a3;
+- (id)rankedMembers:(id)members;
+- (id)rankedMembersPassingThreshold:(double)threshold;
 - (void)commonInit;
 @end
 
@@ -17,10 +17,10 @@
   [(_CDPPredictionResult *)self setWeight:1.0];
 }
 
-- (_CDPPredictionResult)initWithMembers:(id)a3 andScores:(id)a4
+- (_CDPPredictionResult)initWithMembers:(id)members andScores:(id)scores
 {
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  scoresCopy = scores;
   v17.receiver = self;
   v17.super_class = _CDPPredictionResult;
   v8 = [(_CDPPredictionResult *)&v17 init];
@@ -28,15 +28,15 @@
   if (v8)
   {
     [(_CDPPredictionResult *)v8 commonInit];
-    v10 = [v6 count];
+    v10 = [membersCopy count];
     if (v10 >= 1)
     {
       v11 = v10;
       for (i = 0; i != v11; ++i)
       {
         scoresForMembers = v9->_scoresForMembers;
-        v14 = [v7 objectAtIndexedSubscript:i];
-        v15 = [v6 objectAtIndexedSubscript:i];
+        v14 = [scoresCopy objectAtIndexedSubscript:i];
+        v15 = [membersCopy objectAtIndexedSubscript:i];
         [(NSMutableDictionary *)scoresForMembers setObject:v14 forKey:v15];
       }
     }
@@ -45,10 +45,10 @@
   return v9;
 }
 
-- (id)initByMergingPredictionResults:(id)a3
+- (id)initByMergingPredictionResults:(id)results
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v68.receiver = self;
   v68.super_class = _CDPPredictionResult;
   v45 = [(_CDPPredictionResult *)&v68 init];
@@ -59,7 +59,7 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v5 = v4;
+    v5 = resultsCopy;
     v6 = [v5 countByEnumeratingWithState:&v64 objects:v73 count:16];
     if (!v6)
     {
@@ -91,7 +91,7 @@ LABEL_43:
 
     if (v9 > 0.0)
     {
-      v43 = v4;
+      v43 = resultsCopy;
       v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v60 = 0u;
       v61 = 0u;
@@ -117,10 +117,10 @@ LABEL_43:
             v57 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v18 = [v17 scoresForMembers];
-            v19 = [v18 allKeys];
+            scoresForMembers = [v17 scoresForMembers];
+            allKeys = [scoresForMembers allKeys];
 
-            v20 = [v19 countByEnumeratingWithState:&v56 objects:v71 count:16];
+            v20 = [allKeys countByEnumeratingWithState:&v56 objects:v71 count:16];
             if (v20)
             {
               v21 = v20;
@@ -131,7 +131,7 @@ LABEL_43:
                 {
                   if (*v57 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v24 = *(*(&v56 + 1) + 8 * k);
@@ -141,7 +141,7 @@ LABEL_43:
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v56 objects:v71 count:16];
+                v21 = [allKeys countByEnumeratingWithState:&v56 objects:v71 count:16];
               }
 
               while (v21);
@@ -194,8 +194,8 @@ LABEL_43:
                   }
 
                   v33 = *(*(&v48 + 1) + 8 * n);
-                  v34 = [v33 scoresForMembers];
-                  v35 = [v34 objectForKeyedSubscript:v26];
+                  scoresForMembers2 = [v33 scoresForMembers];
+                  v35 = [scoresForMembers2 objectForKeyedSubscript:v26];
                   [v35 doubleValue];
                   v37 = v36;
                   [v33 weight];
@@ -224,7 +224,7 @@ LABEL_43:
         while (v46);
       }
 
-      v4 = v43;
+      resultsCopy = v43;
       goto LABEL_43;
     }
   }
@@ -235,14 +235,14 @@ LABEL_44:
   return v45;
 }
 
-- (id)rankedMembers:(id)a3
+- (id)rankedMembers:(id)members
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38___CDPPredictionResult_rankedMembers___block_invoke;
   v5[3] = &unk_1E73682B0;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [members sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -252,8 +252,8 @@ LABEL_44:
   rankedMembers = self->_rankedMembers;
   if (!rankedMembers)
   {
-    v4 = [(NSMutableDictionary *)self->_scoresForMembers allKeys];
-    v5 = [(_CDPPredictionResult *)self rankedMembers:v4];
+    allKeys = [(NSMutableDictionary *)self->_scoresForMembers allKeys];
+    v5 = [(_CDPPredictionResult *)self rankedMembers:allKeys];
     v6 = self->_rankedMembers;
     self->_rankedMembers = v5;
 
@@ -263,17 +263,17 @@ LABEL_44:
   return rankedMembers;
 }
 
-- (id)rankedMembersPassingThreshold:(double)a3
+- (id)rankedMembersPassingThreshold:(double)threshold
 {
-  v5 = [(NSMutableDictionary *)self->_scoresForMembers allKeys];
+  allKeys = [(NSMutableDictionary *)self->_scoresForMembers allKeys];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54___CDPPredictionResult_rankedMembersPassingThreshold___block_invoke;
   v10[3] = &unk_1E73682D8;
   v10[4] = self;
-  *&v10[5] = a3;
-  v6 = [v5 indexesOfObjectsPassingTest:v10];
-  v7 = [v5 objectsAtIndexes:v6];
+  *&v10[5] = threshold;
+  v6 = [allKeys indexesOfObjectsPassingTest:v10];
+  v7 = [allKeys objectsAtIndexes:v6];
   v8 = [(_CDPPredictionResult *)self rankedMembers:v7];
 
   return v8;

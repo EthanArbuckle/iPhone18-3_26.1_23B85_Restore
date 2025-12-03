@@ -1,23 +1,23 @@
 @interface PLFetchingAlbumJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3;
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context;
 - (void)_fixHasLocationSmartAlbum;
-- (void)migrateMergedPayloadWithUpdatePayloads:(id)a3;
+- (void)migrateMergedPayloadWithUpdatePayloads:(id)payloads;
 @end
 
 @implementation PLFetchingAlbumJournalEntryPayload
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[PLFetchingAlbum validKindsForPersistence];
-  v6 = [v4 objectForKeyedSubscript:@"kind"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(dictionaryCopy) = [v5 containsObject:v6];
+  return dictionaryCopy;
 }
 
 + (id)persistedPropertyNamesForEntityNames
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __74__PLFetchingAlbumJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_53643 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_53643, block);
@@ -50,7 +50,7 @@ void __74__PLFetchingAlbumJournalEntryPayload_persistedPropertyNamesForEntityNam
   block[1] = 3221225472;
   block[2] = __53__PLFetchingAlbumJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_53645 != -1)
   {
     dispatch_once(&modelProperties_onceToken_53645, block);
@@ -77,7 +77,7 @@ uint64_t __53__PLFetchingAlbumJournalEntryPayload_modelProperties__block_invoke(
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___PLFetchingAlbumJournalEntryPayload;
   v4 = objc_msgSendSuper2(&v11, sel_nonPersistedModelPropertiesDescription);
   v5 = [v3 initWithDictionary:v4];
@@ -97,9 +97,9 @@ uint64_t __53__PLFetchingAlbumJournalEntryPayload_modelProperties__block_invoke(
   return v5;
 }
 
-- (void)migrateMergedPayloadWithUpdatePayloads:(id)a3
+- (void)migrateMergedPayloadWithUpdatePayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   if ([(PLManagedObjectJournalEntryPayload *)self payloadVersion]<= 1)
   {
     [(PLFetchingAlbumJournalEntryPayload *)self _fixHasLocationSmartAlbum];
@@ -107,20 +107,20 @@ uint64_t __53__PLFetchingAlbumJournalEntryPayload_modelProperties__block_invoke(
 
   v5.receiver = self;
   v5.super_class = PLFetchingAlbumJournalEntryPayload;
-  [(PLManagedObjectJournalEntryPayload *)&v5 migrateMergedPayloadWithUpdatePayloads:v4];
+  [(PLManagedObjectJournalEntryPayload *)&v5 migrateMergedPayloadWithUpdatePayloads:payloadsCopy];
 }
 
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context
 {
-  v3 = [a3 photoLibrary];
-  v4 = [PLGenericAlbum insertNewSmartAlbumIntoLibrary:v3];
+  photoLibrary = [context photoLibrary];
+  v4 = [PLGenericAlbum insertNewSmartAlbumIntoLibrary:photoLibrary];
 
   return v4;
 }
 
 - (void)_fixHasLocationSmartAlbum
 {
-  v5 = [(PLGenericAlbumJournalEntryPayload *)self userQueryData];
+  userQueryData = [(PLGenericAlbumJournalEntryPayload *)self userQueryData];
   v3 = [PLQueryHandler constructQueryFromData:?];
   if ([PLQueryHandler fixUserQueryDataInQuery:v3])
   {

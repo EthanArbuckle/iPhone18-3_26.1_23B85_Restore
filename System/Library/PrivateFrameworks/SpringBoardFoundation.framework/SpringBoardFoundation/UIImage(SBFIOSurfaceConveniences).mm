@@ -7,19 +7,19 @@
 - (id)sbf_CGImageBackedImageWithMaximumBitsPerComponent:()SBFIOSurfaceConveniences skipCIF10FitsInSRGBCheck:
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  if ([a1 CGImage])
+  if ([self CGImage])
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [a1 ioSurface];
-    v9 = v8;
-    if (v8)
+    ioSurface = [self ioSurface];
+    v9 = ioSurface;
+    if (ioSurface)
     {
-      v10 = [v8 pixelFormat];
-      if (a3 <= 8 && v10 == 1999843442)
+      pixelFormat = [ioSurface pixelFormat];
+      if (a3 <= 8 && pixelFormat == 1999843442)
       {
         v11 = *MEMORY[0x1E696D3B0];
         v18[0] = *MEMORY[0x1E696D2B8];
@@ -40,18 +40,18 @@
       }
 
       v15 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      [a1 scale];
-      v7 = [v15 initWithCGImage:v14 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v16}];
+      [self scale];
+      selfCopy = [v15 initWithCGImage:v14 scale:objc_msgSend(self orientation:{"imageOrientation"), v16}];
       CGImageRelease(v14);
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

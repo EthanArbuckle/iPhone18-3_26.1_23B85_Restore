@@ -7,11 +7,11 @@
 - (CGPoint)accessibilityActivationPoint
 {
   v3 = [(InteractionFactorsCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
-  v4 = [v3 firstObject];
-  v5 = v4;
-  if (v4)
+  firstObject = [v3 firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    [v4 accessibilityActivationPoint];
+    [firstObject accessibilityActivationPoint];
   }
 
   else

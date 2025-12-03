@@ -1,29 +1,29 @@
 @interface OADBulletFontSpecification
-- (BOOL)isEqual:(id)a3;
-- (OADBulletFontSpecification)initWithFont:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADBulletFontSpecification)initWithFont:(id)font;
 @end
 
 @implementation OADBulletFontSpecification
 
-- (OADBulletFontSpecification)initWithFont:(id)a3
+- (OADBulletFontSpecification)initWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  fontCopy = font;
+  v5 = [fontCopy copy];
   mFont = self->mFont;
   self->mFont = v5;
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mFont = self->mFont;
-    v6 = [v4 font];
-    v7 = [(NSString *)mFont isEqual:v6];
+    font = [equalCopy font];
+    v7 = [(NSString *)mFont isEqual:font];
   }
 
   else

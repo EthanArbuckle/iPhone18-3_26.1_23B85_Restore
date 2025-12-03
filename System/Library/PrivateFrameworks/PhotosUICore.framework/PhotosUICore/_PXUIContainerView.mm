@@ -9,9 +9,9 @@
   v5.receiver = self;
   v5.super_class = _PXUIContainerView;
   [(_PXUIContainerView *)&v5 didMoveToWindow];
-  v3 = [(_PXUIContainerView *)self deferredAppearingAnimation];
+  deferredAppearingAnimation = [(_PXUIContainerView *)self deferredAppearingAnimation];
 
-  if (v3)
+  if (deferredAppearingAnimation)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

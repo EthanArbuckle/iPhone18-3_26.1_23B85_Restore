@@ -1,41 +1,41 @@
 @interface IOGPUMetalRenderCommandEncoder
-- (IOGPUMetalRenderCommandEncoder)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6;
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (IOGPUMetalRenderCommandEncoder)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation IOGPUMetalRenderCommandEncoder
 
-- (IOGPUMetalRenderCommandEncoder)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (IOGPUMetalRenderCommandEncoder)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v5.receiver = self;
   v5.super_class = IOGPUMetalRenderCommandEncoder;
-  return [(IOGPUMetalCommandEncoder *)&v5 initWithCommandBuffer:a3, a4];
+  return [(IOGPUMetalCommandEncoder *)&v5 initWithCommandBuffer:buffer, descriptor];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
-  if (a4)
+  if (count)
   {
-    v9 = a4;
+    countCopy = count;
     v11 = 0;
     do
     {
-      v12 = *a3++;
+      v12 = *resources++;
       if (objc_opt_respondsToSelector())
       {
         v13 = 2;
@@ -47,10 +47,10 @@
       }
 
       v11 |= v13;
-      --v9;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
   else
@@ -58,16 +58,16 @@
     v11 = 0;
   }
 
-  [(IOGPUMetalRenderCommandEncoder *)self memoryBarrierWithScope:v11 afterStages:a5 beforeStages:a6];
+  [(IOGPUMetalRenderCommandEncoder *)self memoryBarrierWithScope:v11 afterStages:stages beforeStages:beforeStages];
 }
 
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setVertexVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setVertexVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -77,10 +77,10 @@
   }
 }
 
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -90,7 +90,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }
@@ -110,13 +110,13 @@
   }
 }
 
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setFragmentVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setFragmentVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -126,10 +126,10 @@
   }
 }
 
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -139,7 +139,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }
@@ -159,13 +159,13 @@
   }
 }
 
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setTileVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setTileVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -175,10 +175,10 @@
   }
 }
 
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -188,7 +188,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }
@@ -208,13 +208,13 @@
   }
 }
 
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(_MTLCommandEncoder *)self setObjectVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(_MTLCommandEncoder *)self setObjectVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -224,10 +224,10 @@
   }
 }
 
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -237,7 +237,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }
@@ -257,13 +257,13 @@
   }
 }
 
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(_MTLCommandEncoder *)self setMeshVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(_MTLCommandEncoder *)self setMeshVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -273,10 +273,10 @@
   }
 }
 
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -286,7 +286,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }
@@ -306,14 +306,14 @@
   }
 }
 
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setVertexBuffer:v8 offset:v9 atIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setVertexBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else
@@ -323,14 +323,14 @@
   }
 }
 
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setFragmentBuffer:v8 offset:v9 atIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setFragmentBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else
@@ -340,14 +340,14 @@
   }
 }
 
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(IOGPUMetalRenderCommandEncoder *)self setTileBuffer:v8 offset:v9 atIndex:a4];
+    [(IOGPUMetalRenderCommandEncoder *)self setTileBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else
@@ -357,14 +357,14 @@
   }
 }
 
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(_MTLCommandEncoder *)self setObjectBuffer:v8 offset:v9 atIndex:a4];
+    [(_MTLCommandEncoder *)self setObjectBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else
@@ -374,14 +374,14 @@
   }
 }
 
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(_MTLCommandEncoder *)self setMeshBuffer:v8 offset:v9 atIndex:a4];
+    [(_MTLCommandEncoder *)self setMeshBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else

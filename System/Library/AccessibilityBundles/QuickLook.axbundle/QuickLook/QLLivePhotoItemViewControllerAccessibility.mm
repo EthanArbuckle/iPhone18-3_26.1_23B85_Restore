@@ -1,21 +1,21 @@
 @interface QLLivePhotoItemViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axPhotoDescriptionFromContext:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axPhotoDescriptionFromContext:(id)context;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLLivePhotoItemViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLLivePhotoItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"QLLivePhotoItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"QLLivePhotoItemViewController" hasInstanceVariable:@"_livePhotoView" withType:"PHLivePhotoView"];
-  [v3 validateClass:@"QLLivePhotoItemViewController" isKindOfClass:@"QLItemViewController"];
-  [v3 validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLLivePhotoItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"QLLivePhotoItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"QLLivePhotoItemViewController" hasInstanceVariable:@"_livePhotoView" withType:"PHLivePhotoView"];
+  [validationsCopy validateClass:@"QLLivePhotoItemViewController" isKindOfClass:@"QLItemViewController"];
+  [validationsCopy validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,21 +30,21 @@
   [v5 setAccessibilityLabel:v4];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = QLLivePhotoItemViewControllerAccessibility;
-  [(QLLivePhotoItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:a3 context:a4 completionHandler:a5];
+  [(QLLivePhotoItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:contents context:context completionHandler:handler];
   [(QLLivePhotoItemViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)_axPhotoDescriptionFromContext:(id)a3
+- (id)_axPhotoDescriptionFromContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 accessibilityLabel];
-  if (!v4)
+  contextCopy = context;
+  accessibilityLabel = [contextCopy accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v4 = [v3 safeValueForKey:@"previewTitle"];
+    accessibilityLabel = [contextCopy safeValueForKey:@"previewTitle"];
   }
 
   v7 = accessibilityLocalizedString(@"ql.live.photo");

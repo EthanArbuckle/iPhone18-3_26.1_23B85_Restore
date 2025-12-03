@@ -1,6 +1,6 @@
 @interface SDAirDropService_objc
 - (SDAirDropService_objc)init;
-- (void)dumpDBWithUrl:(id)a3;
+- (void)dumpDBWithUrl:(id)url;
 - (void)start;
 @end
 
@@ -20,7 +20,7 @@
   sub_10047B4C4(v5);
 }
 
-- (void)dumpDBWithUrl:(id)a3
+- (void)dumpDBWithUrl:(id)url
 {
   v4 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v5 = *(*(v4 - 8) + 64);

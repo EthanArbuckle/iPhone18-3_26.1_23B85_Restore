@@ -1,21 +1,21 @@
 @interface JFXCompositionPlayableElementUpdateRequest
-- (JFXCompositionPlayableElementUpdateRequest)initWithBlock:(id)a3 withClip:(id)a4;
+- (JFXCompositionPlayableElementUpdateRequest)initWithBlock:(id)block withClip:(id)clip;
 - (id)description;
 @end
 
 @implementation JFXCompositionPlayableElementUpdateRequest
 
-- (JFXCompositionPlayableElementUpdateRequest)initWithBlock:(id)a3 withClip:(id)a4
+- (JFXCompositionPlayableElementUpdateRequest)initWithBlock:(id)block withClip:(id)clip
 {
-  v6 = a4;
+  clipCopy = clip;
   v11.receiver = self;
   v11.super_class = JFXCompositionPlayableElementUpdateRequest;
-  v7 = [(JFXCompositionPlayerRequest *)&v11 initWithBlock:a3 ofType:5];
+  v7 = [(JFXCompositionPlayerRequest *)&v11 initWithBlock:block ofType:5];
   if (v7)
   {
-    v8 = [v6 uuid];
+    uuid = [clipCopy uuid];
     clipUUID = v7->_clipUUID;
-    v7->_clipUUID = v8;
+    v7->_clipUUID = uuid;
   }
 
   return v7;
@@ -27,8 +27,8 @@
   v8.receiver = self;
   v8.super_class = JFXCompositionPlayableElementUpdateRequest;
   v4 = [(JFXCompositionPlayerRequest *)&v8 description];
-  v5 = [(JFXCompositionPlayableElementUpdateRequest *)self clipUUID];
-  v6 = [v3 stringWithFormat:@"<%@ clipID:%@>", v4, v5];
+  clipUUID = [(JFXCompositionPlayableElementUpdateRequest *)self clipUUID];
+  v6 = [v3 stringWithFormat:@"<%@ clipID:%@>", v4, clipUUID];
 
   return v6;
 }

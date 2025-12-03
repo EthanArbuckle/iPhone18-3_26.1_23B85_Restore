@@ -7,8 +7,8 @@
 
 - (BOOL)npkHasContent
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v4 = [v3 length] != 0;
 
   return v4;
@@ -16,13 +16,13 @@
 
 - (uint64_t)isAllCaps
 {
-  if ([a1 isEqualToString:&stru_286C934F8])
+  if ([self isEqualToString:&stru_286C934F8])
   {
     return 0;
   }
 
-  v3 = [a1 uppercaseString];
-  v4 = [v3 isEqualToString:a1];
+  uppercaseString = [self uppercaseString];
+  v4 = [uppercaseString isEqualToString:self];
 
   return v4;
 }

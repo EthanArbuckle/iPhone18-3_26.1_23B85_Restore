@@ -1,39 +1,39 @@
 @interface CAMTorchPatternController
-- (CAMTorchPatternController)initWithCaptureController:(id)a3;
-- (void)_applyTorchLevel:(float)a3;
+- (CAMTorchPatternController)initWithCaptureController:(id)controller;
+- (void)_applyTorchLevel:(float)level;
 - (void)_resetTorchLevel;
-- (void)_setPerforming:(BOOL)a3;
+- (void)_setPerforming:(BOOL)performing;
 - (void)blink;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 - (void)doubleBlink;
-- (void)startPerformingPattern:(id)a3;
+- (void)startPerformingPattern:(id)pattern;
 - (void)stopPerformingPattern;
 @end
 
 @implementation CAMTorchPatternController
 
-- (CAMTorchPatternController)initWithCaptureController:(id)a3
+- (CAMTorchPatternController)initWithCaptureController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CAMTorchPatternController;
   v6 = [(CAMTorchPatternController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__captureController, a3);
+    objc_storeStrong(&v6->__captureController, controller);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)startPerformingPattern:(id)a3
+- (void)startPerformingPattern:(id)pattern
 {
-  v5 = a3;
+  patternCopy = pattern;
   if (![(CAMTorchPatternController *)self _isPerforming])
   {
-    objc_storeStrong(&self->__currentPattern, a3);
+    objc_storeStrong(&self->__currentPattern, pattern);
     self->__startTime = CACurrentMediaTime();
     [(CAMTorchPattern *)self->__currentPattern setStartTime:?];
     [(CAMTorchPatternController *)self _setPerforming:1];
@@ -54,17 +54,17 @@
 
 - (void)_resetTorchLevel
 {
-  v2 = [(CAMTorchPatternController *)self _captureController];
-  [v2 changeToTorchMode:0];
+  _captureController = [(CAMTorchPatternController *)self _captureController];
+  [_captureController changeToTorchMode:0];
 }
 
-- (void)_applyTorchLevel:(float)a3
+- (void)_applyTorchLevel:(float)level
 {
-  if (a3 >= 0.01)
+  if (level >= 0.01)
   {
-    v5 = [(CAMTorchPatternController *)self _captureController];
-    *&v4 = a3;
-    [v5 changeToTorchLevel:v4];
+    _captureController = [(CAMTorchPatternController *)self _captureController];
+    *&v4 = level;
+    [_captureController changeToTorchLevel:v4];
   }
 
   else
@@ -100,20 +100,20 @@
   [(CAMTorchPattern *)v5 setStartTime:?];
 }
 
-- (void)_setPerforming:(BOOL)a3
+- (void)_setPerforming:(BOOL)performing
 {
-  if (self->__performing != a3)
+  if (self->__performing != performing)
   {
-    self->__performing = a3;
-    if (a3)
+    self->__performing = performing;
+    if (performing)
     {
       v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_displayLinkFired_];
       displayLink = self->__displayLink;
       self->__displayLink = v4;
 
       v6 = self->__displayLink;
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       v8 = self->__displayLink;
 
@@ -130,7 +130,7 @@
   }
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
   [(CAMTorchPattern *)self->__currentPattern updateAtTime:CACurrentMediaTime() - self->__startTime];
   [(CAMTorchPattern *)self->__currentPattern torchLevel];

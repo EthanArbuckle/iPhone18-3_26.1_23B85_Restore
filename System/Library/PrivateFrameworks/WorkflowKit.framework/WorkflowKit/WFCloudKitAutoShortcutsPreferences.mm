@@ -1,24 +1,24 @@
 @interface WFCloudKitAutoShortcutsPreferences
-+ (BOOL)isAutoShortcutsPreferencesRecordID:(id)a3;
++ (BOOL)isAutoShortcutsPreferencesRecordID:(id)d;
 + (NSDictionary)properties;
-+ (id)identifierForRecordID:(id)a3;
-+ (id)recordIDWithZoneID:(id)a3 identifier:(id)a4;
++ (id)identifierForRecordID:(id)d;
++ (id)recordIDWithZoneID:(id)d identifier:(id)identifier;
 - (INAppDescriptor)appDescriptor;
 - (NSSet)disabledAutoShortcuts;
-- (WFCloudKitAutoShortcutsPreferences)initWithAutoShortcutsPreferences:(id)a3 identifier:(id)a4;
-- (id)fileRepresentationFromObject:(id)a3;
+- (WFCloudKitAutoShortcutsPreferences)initWithAutoShortcutsPreferences:(id)preferences identifier:(id)identifier;
+- (id)fileRepresentationFromObject:(id)object;
 - (id)fileRepresentations;
 @end
 
 @implementation WFCloudKitAutoShortcutsPreferences
 
-+ (id)identifierForRecordID:(id)a3
++ (id)identifierForRecordID:(id)d
 {
-  v3 = [a3 recordName];
+  recordName = [d recordName];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-", @"AutoShortcutsPreferences"];
-  if ([v3 hasPrefix:v4])
+  if ([recordName hasPrefix:v4])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v5 = [recordName substringFromIndex:{objc_msgSend(v4, "length")}];
   }
 
   else
@@ -29,22 +29,22 @@
   return v5;
 }
 
-+ (BOOL)isAutoShortcutsPreferencesRecordID:(id)a3
++ (BOOL)isAutoShortcutsPreferencesRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 hasPrefix:@"AutoShortcutsPreferences"];
+  recordName = [d recordName];
+  v4 = [recordName hasPrefix:@"AutoShortcutsPreferences"];
 
   return v4;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 identifier:(id)a4
++ (id)recordIDWithZoneID:(id)d identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -52,8 +52,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitAutoShortcutsPreferences.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitAutoShortcutsPreferences.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
 
     if (v9)
     {
@@ -61,12 +61,12 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitAutoShortcutsPreferences.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCloudKitAutoShortcutsPreferences.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_3:
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AutoShortcutsPreferences", v9];
-  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v10 zoneID:v7];
+  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v10 zoneID:dCopy];
 
   return v11;
 }
@@ -102,20 +102,20 @@ LABEL_3:
 - (id)fileRepresentations
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
+  appDescriptorFileRepresentation = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
 
-  if (v4)
+  if (appDescriptorFileRepresentation)
   {
-    v5 = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
-    [v3 addObject:v5];
+    appDescriptorFileRepresentation2 = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
+    [v3 addObject:appDescriptorFileRepresentation2];
   }
 
-  v6 = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
+  disabledAutoShortcutsFileRepresentation = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
 
-  if (v6)
+  if (disabledAutoShortcutsFileRepresentation)
   {
-    v7 = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
-    [v3 addObject:v7];
+    disabledAutoShortcutsFileRepresentation2 = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
+    [v3 addObject:disabledAutoShortcutsFileRepresentation2];
   }
 
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v3];
@@ -128,10 +128,10 @@ LABEL_3:
   disabledAutoShortcuts = self->_disabledAutoShortcuts;
   if (!disabledAutoShortcuts)
   {
-    v4 = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
-    v5 = [v4 data];
+    disabledAutoShortcutsFileRepresentation = [(WFCloudKitAutoShortcutsPreferences *)self disabledAutoShortcutsFileRepresentation];
+    data = [disabledAutoShortcutsFileRepresentation data];
 
-    v6 = [WFDatabase disabledAutoShortcutsFromData:v5];
+    v6 = [WFDatabase disabledAutoShortcutsFromData:data];
     v7 = self->_disabledAutoShortcuts;
     self->_disabledAutoShortcuts = v6;
 
@@ -146,10 +146,10 @@ LABEL_3:
   appDescriptor = self->_appDescriptor;
   if (!appDescriptor)
   {
-    v4 = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
-    v5 = [v4 data];
+    appDescriptorFileRepresentation = [(WFCloudKitAutoShortcutsPreferences *)self appDescriptorFileRepresentation];
+    data = [appDescriptorFileRepresentation data];
 
-    v6 = [WFDatabase appDescriptorFromData:v5];
+    v6 = [WFDatabase appDescriptorFromData:data];
     v7 = self->_appDescriptor;
     self->_appDescriptor = v6;
 
@@ -159,11 +159,11 @@ LABEL_3:
   return appDescriptor;
 }
 
-- (id)fileRepresentationFromObject:(id)a3
+- (id)fileRepresentationFromObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v3 = [(WFCloudKitAutoShortcutsPreferences *)self dataFromObject:a3 error:&v11];
+  v3 = [(WFCloudKitAutoShortcutsPreferences *)self dataFromObject:object error:&v11];
   v4 = v11;
   if (v4)
   {
@@ -195,42 +195,42 @@ LABEL_3:
   return v8;
 }
 
-- (WFCloudKitAutoShortcutsPreferences)initWithAutoShortcutsPreferences:(id)a3 identifier:(id)a4
+- (WFCloudKitAutoShortcutsPreferences)initWithAutoShortcutsPreferences:(id)preferences identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  identifierCopy = identifier;
   v8 = [(WFCloudKitAutoShortcutsPreferences *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a4);
-    v10 = [v6 appDescriptor];
+    objc_storeStrong(&v8->_identifier, identifier);
+    appDescriptor = [preferencesCopy appDescriptor];
     appDescriptor = v9->_appDescriptor;
-    v9->_appDescriptor = v10;
+    v9->_appDescriptor = appDescriptor;
 
-    v12 = [v6 appDescriptor];
-    v13 = [(WFCloudKitAutoShortcutsPreferences *)v9 fileRepresentationFromObject:v12];
+    appDescriptor2 = [preferencesCopy appDescriptor];
+    v13 = [(WFCloudKitAutoShortcutsPreferences *)v9 fileRepresentationFromObject:appDescriptor2];
     appDescriptorFileRepresentation = v9->_appDescriptorFileRepresentation;
     v9->_appDescriptorFileRepresentation = v13;
 
-    v15 = [v6 appName];
+    appName = [preferencesCopy appName];
     appName = v9->_appName;
-    v9->_appName = v15;
+    v9->_appName = appName;
 
-    v9->_isSiriEnabled = [v6 isSiriEnabled];
-    v9->_isSpotlightEnabled = [v6 isSpotlightEnabled];
-    v17 = [v6 disabledAutoShortcuts];
+    v9->_isSiriEnabled = [preferencesCopy isSiriEnabled];
+    v9->_isSpotlightEnabled = [preferencesCopy isSpotlightEnabled];
+    disabledAutoShortcuts = [preferencesCopy disabledAutoShortcuts];
     disabledAutoShortcuts = v9->_disabledAutoShortcuts;
-    v9->_disabledAutoShortcuts = v17;
+    v9->_disabledAutoShortcuts = disabledAutoShortcuts;
 
-    v19 = [v6 disabledAutoShortcuts];
-    v20 = [(WFCloudKitAutoShortcutsPreferences *)v9 fileRepresentationFromObject:v19];
+    disabledAutoShortcuts2 = [preferencesCopy disabledAutoShortcuts];
+    v20 = [(WFCloudKitAutoShortcutsPreferences *)v9 fileRepresentationFromObject:disabledAutoShortcuts2];
     disabledAutoShortcutsFileRepresentation = v9->_disabledAutoShortcutsFileRepresentation;
     v9->_disabledAutoShortcutsFileRepresentation = v20;
 
-    v22 = [v6 cloudKitMetadata];
+    cloudKitMetadata = [preferencesCopy cloudKitMetadata];
     recordSystemFieldsData = v9->_recordSystemFieldsData;
-    v9->_recordSystemFieldsData = v22;
+    v9->_recordSystemFieldsData = cloudKitMetadata;
 
     v24 = v9;
   }

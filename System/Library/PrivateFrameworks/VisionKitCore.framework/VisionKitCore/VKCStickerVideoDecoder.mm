@@ -1,18 +1,18 @@
 @interface VKCStickerVideoDecoder
-- (CGImage)frameAtIndex:(int64_t)a3;
+- (CGImage)frameAtIndex:(int64_t)index;
 - (id)delegate;
 - (id)setDelegate:(id *)result;
-- (uint64_t)frameForTargetTimestamp:(void *)a1;
+- (uint64_t)frameForTargetTimestamp:(void *)timestamp;
 - (uint64_t)videoData;
 - (void)configureForVideoDataChange;
-- (void)setVideoData:(id *)a1;
+- (void)setVideoData:(id *)data;
 @end
 
 @implementation VKCStickerVideoDecoder
 
-- (CGImage)frameAtIndex:(int64_t)a3
+- (CGImage)frameAtIndex:(int64_t)index
 {
-  ImageAtIndex = CGImageSourceCreateImageAtIndex([(VKCStickerVideoDecoder *)self videoCGImageSource], a3, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex([(VKCStickerVideoDecoder *)self videoCGImageSource], index, 0);
   v4 = ImageAtIndex;
   if (ImageAtIndex)
   {
@@ -22,14 +22,14 @@
   return v4;
 }
 
-- (void)setVideoData:(id *)a1
+- (void)setVideoData:(id *)data
 {
   v4 = a2;
-  if (a1 && a1[2] != v4)
+  if (data && data[2] != v4)
   {
     v5 = v4;
-    objc_storeStrong(a1 + 2, a2);
-    [a1 configureForVideoDataChange];
+    objc_storeStrong(data + 2, a2);
+    [data configureForVideoDataChange];
     v4 = v5;
   }
 }
@@ -118,8 +118,8 @@
           v20 = 0;
         }
 
-        v21 = [(VKCStickerVideoDecoder *)self frameRanges];
-        [v21 addObject:v20];
+        frameRanges = [(VKCStickerVideoDecoder *)self frameRanges];
+        [frameRanges addObject:v20];
 
         v13 = v13 + v17;
         ++v12;
@@ -164,24 +164,24 @@
   return WeakRetained;
 }
 
-- (uint64_t)frameForTargetTimestamp:(void *)a1
+- (uint64_t)frameForTargetTimestamp:(void *)timestamp
 {
-  if (!a1 || ![a1 frameCount] || !objc_msgSend(a1, "videoCGImageSource"))
+  if (!timestamp || ![timestamp frameCount] || !objc_msgSend(timestamp, "videoCGImageSource"))
   {
     return 0;
   }
 
-  [a1 duration];
+  [timestamp duration];
   v5 = fmod(a2, v4);
-  if ([a1 frameCount] >= 1)
+  if ([timestamp frameCount] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [a1 previousFrameIndex] + v6;
-      v8 = v7 % [a1 frameCount];
-      v9 = [a1 frameRanges];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      v7 = [timestamp previousFrameIndex] + v6;
+      v8 = v7 % [timestamp frameCount];
+      frameRanges = [timestamp frameRanges];
+      v10 = [frameRanges objectAtIndexedSubscript:v8];
 
       if (v10 && (v11 = v10[1], v11 <= v5))
       {
@@ -200,10 +200,10 @@
       ++v6;
     }
 
-    while (v6 < [a1 frameCount]);
+    while (v6 < [timestamp frameCount]);
   }
 
-  [a1 frameCount];
+  [timestamp frameCount];
   [OUTLINED_FUNCTION_1_8() setPreviousFrameIndex:?];
   v14 = OUTLINED_FUNCTION_1_8();
 

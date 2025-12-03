@@ -1,17 +1,17 @@
 @interface TPSTargetingValidator
-+ (BOOL)validateConditions:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 error:(id *)a8;
-+ (void)_validateCondition:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 completionHandler:(id)a8;
-+ (void)validateConditions:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 completionHandler:(id)a8;
++ (BOOL)validateConditions:(id)conditions joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue error:(id *)error;
++ (void)_validateCondition:(id)condition joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue completionHandler:(id)handler;
++ (void)validateConditions:(id)conditions joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation TPSTargetingValidator
 
-+ (BOOL)validateConditions:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 error:(id *)a8
++ (BOOL)validateConditions:(id)conditions joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue error:(id *)error
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  conditionsCopy = conditions;
+  contextCopy = context;
+  cacheCopy = cache;
+  queueCopy = queue;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -32,12 +32,12 @@
   v26 = &v27;
   v19 = v17;
   v24 = v19;
-  [v18 validateConditions:v13 joinType:a4 context:v14 cache:v15 completionQueue:v16 completionHandler:v23];
+  [v18 validateConditions:conditionsCopy joinType:type context:contextCopy cache:cacheCopy completionQueue:queueCopy completionHandler:v23];
   v20 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v19, v20);
-  if (a8)
+  if (error)
   {
-    *a8 = v28[5];
+    *error = v28[5];
   }
 
   v21 = *(v34 + 24);
@@ -66,19 +66,19 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)validateConditions:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 completionHandler:(id)a8
++ (void)validateConditions:(id)conditions joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue completionHandler:(id)handler
 {
   v84 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  conditionsCopy = conditions;
+  contextCopy = context;
+  cacheCopy = cache;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17 = @"unspecified";
-  v50 = v13;
-  if (v13)
+  v50 = contextCopy;
+  if (contextCopy)
   {
-    v17 = v13;
+    v17 = contextCopy;
   }
 
   v49 = v17;
@@ -91,27 +91,27 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
   aBlock[2] = __101__TPSTargetingValidator_validateConditions_joinType_context_cache_completionQueue_completionHandler___block_invoke;
   aBlock[3] = &unk_2789AF960;
   v78 = &v79;
-  v42 = v15;
+  v42 = queueCopy;
   v76 = v42;
-  v41 = v16;
+  v41 = handlerCopy;
   v77 = v41;
   v51 = _Block_copy(aBlock);
-  if (([MEMORY[0x277D71740] ignoreTargetingValidator] & 1) != 0 || !objc_msgSend(v43, "count"))
+  if (([MEMORY[0x277D71740] ignoreTargetingValidator] & 1) != 0 || !objc_msgSend(conditionsCopy, "count"))
   {
     v51[2](v51, 1, 0);
   }
 
   else
   {
-    if ([v43 count] == 1)
+    if ([conditionsCopy count] == 1)
     {
-      v18 = [v43 firstObject];
-      [a1 _validateCondition:v18 joinType:a4 context:v13 cache:v14 completionQueue:v42 completionHandler:v51];
+      firstObject = [conditionsCopy firstObject];
+      [self _validateCondition:firstObject joinType:type context:contextCopy cache:cacheCopy completionQueue:v42 completionHandler:v51];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v43, "count")}];
+      v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(conditionsCopy, "count")}];
       v20 = objc_alloc_init(MEMORY[0x277CCABD8]);
       [v20 setMaxConcurrentOperationCount:-1];
       [v20 setSuspended:1];
@@ -123,14 +123,14 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
       v74[1] = 3221225472;
       v74[2] = __101__TPSTargetingValidator_validateConditions_joinType_context_cache_completionQueue_completionHandler___block_invoke_3;
       v74[3] = &__block_descriptor_40_e8_B16__0q8l;
-      v74[4] = a4;
+      v74[4] = type;
       v46 = _Block_copy(v74);
       v44 = objc_opt_new();
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      obj = v43;
+      obj = conditionsCopy;
       v23 = [obj countByEnumeratingWithState:&v70 objects:v83 count:16];
       if (v23)
       {
@@ -147,10 +147,10 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
             v26 = *(*(&v70 + 1) + 8 * i);
             v27 = [[TPSTargetingValidateOperation alloc] initWithTargetingCondition:v26];
             [(TPSTargetingValidateOperation *)v27 setContext:v50];
-            v28 = [v26 identifier];
-            if (v14)
+            identifier = [v26 identifier];
+            if (cacheCopy)
             {
-              v29 = [v14 cacheResultForIdentifier:v28];
+              v29 = [cacheCopy cacheResultForIdentifier:identifier];
               if (v29 != -1)
               {
                 [(TPSTargetingValidateOperation *)v27 setResult:v29];
@@ -165,14 +165,14 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
             v59[3] = &unk_2789AF9D0;
             objc_copyWeak(v68, &location);
             v60 = v22;
-            v61 = v14;
-            v30 = v28;
+            v61 = cacheCopy;
+            v30 = identifier;
             v62 = v30;
             v65 = v46;
             v67 = &v79;
             v63 = v49;
             v66 = v51;
-            v68[1] = a4;
+            v68[1] = type;
             v64 = v47;
             [(TPSTargetingValidateOperation *)v27 setCompletionBlock:v59];
             [v19 addObject:v27];
@@ -198,28 +198,28 @@ void __89__TPSTargetingValidator_validateConditions_joinType_context_cache_compl
       v33 = v49;
       v54 = v33;
       v57 = &v79;
-      v18 = v19;
-      v55 = v18;
-      v58 = a4;
+      firstObject = v19;
+      v55 = firstObject;
+      typeCopy = type;
       v34 = v51;
       v56 = v34;
       [v47 addBarrierBlock:v52];
       if ([v44 count])
       {
         v35 = MEMORY[0x277CCAC30];
-        v36 = [MEMORY[0x277CCABB0] numberWithInteger:a4 == 1];
+        v36 = [MEMORY[0x277CCABB0] numberWithInteger:type == 1];
         v37 = [v35 predicateWithFormat:@"(result == %@)", v36];
-        v38 = [v18 filteredArrayUsingPredicate:v37];
+        v38 = [firstObject filteredArrayUsingPredicate:v37];
 
         if ([v38 count])
         {
-          v39 = [MEMORY[0x277D71778] targeting];
-          if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
+          targeting = [MEMORY[0x277D71778] targeting];
+          if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
           {
-            [TPSTargetingValidator validateConditions:v33 joinType:a4 == 1 context:v39 cache:? completionQueue:? completionHandler:?];
+            [TPSTargetingValidator validateConditions:v33 joinType:type == 1 context:targeting cache:? completionQueue:? completionHandler:?];
           }
 
-          v34[2](v34, a4 == 1, 0);
+          v34[2](v34, type == 1, 0);
         }
 
         v31 = v47;
@@ -371,44 +371,44 @@ void __101__TPSTargetingValidator_validateConditions_joinType_context_cache_comp
   }
 }
 
-+ (void)_validateCondition:(id)a3 joinType:(int64_t)a4 context:(id)a5 cache:(id)a6 completionQueue:(id)a7 completionHandler:(id)a8
++ (void)_validateCondition:(id)condition joinType:(int64_t)type context:(id)context cache:(id)cache completionQueue:(id)queue completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a8;
-  v15 = [v11 identifier];
-  v16 = [v15 isEqualToString:@"unknown"];
-  if (!v13 || (v16 & 1) != 0 || (v17 = [v13 cacheResultForIdentifier:v15], v17 == -1))
+  conditionCopy = condition;
+  contextCopy = context;
+  cacheCopy = cache;
+  handlerCopy = handler;
+  identifier = [conditionCopy identifier];
+  v16 = [identifier isEqualToString:@"unknown"];
+  if (!cacheCopy || (v16 & 1) != 0 || (v17 = [cacheCopy cacheResultForIdentifier:identifier], v17 == -1))
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __101__TPSTargetingValidator__validateCondition_joinType_context_cache_completionQueue_completionHandler___block_invoke;
     v23[3] = &unk_2789AFA48;
-    v24 = v13;
-    v25 = v15;
-    v26 = v14;
-    [v11 validateWithCompletion:v23];
+    v24 = cacheCopy;
+    v25 = identifier;
+    v26 = handlerCopy;
+    [conditionCopy validateWithCompletion:v23];
   }
 
   else
   {
     v18 = v17;
-    v19 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
     {
       v21 = @"unspecified";
-      if (v12)
+      if (contextCopy)
       {
-        v21 = v12;
+        v21 = contextCopy;
       }
 
       v22 = @"NO";
       *buf = 138412802;
       v28 = v21;
       v29 = 2112;
-      v30 = v15;
+      v30 = identifier;
       if (v18 == 1)
       {
         v22 = @"YES";
@@ -416,10 +416,10 @@ void __101__TPSTargetingValidator_validateConditions_joinType_context_cache_comp
 
       v31 = 2112;
       v32 = v22;
-      _os_log_debug_impl(&dword_232D6F000, v19, OS_LOG_TYPE_DEBUG, "[%@] - Using cached result for precondition (%@) - Valid: %@", buf, 0x20u);
+      _os_log_debug_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_DEBUG, "[%@] - Using cached result for precondition (%@) - Valid: %@", buf, 0x20u);
     }
 
-    (*(v14 + 2))(v14, v18 == 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, v18 == 1, 0);
   }
 
   v20 = *MEMORY[0x277D85DE8];

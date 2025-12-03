@@ -1,6 +1,6 @@
 @interface SSSearchToolDonation
 - (SSSearchToolDonation)init;
-- (void)donateSpotlightRankingItemsWithQuery:(id)a3 data:(id)a4 timestamp:(id)a5 requestID:(id)a6;
+- (void)donateSpotlightRankingItemsWithQuery:(id)query data:(id)data timestamp:(id)timestamp requestID:(id)d;
 @end
 
 @implementation SSSearchToolDonation
@@ -35,23 +35,23 @@
     }
 
     v4 = v3();
-    v5 = [v4 SearchTool];
-    v6 = [v5 Transcript];
+    searchTool = [v4 SearchTool];
+    transcript = [searchTool Transcript];
 
-    v7 = [v6 source];
+    source = [transcript source];
     searchToolTranscriptSource = v2->searchToolTranscriptSource;
-    v2->searchToolTranscriptSource = v7;
+    v2->searchToolTranscriptSource = source;
   }
 
   return v2;
 }
 
-- (void)donateSpotlightRankingItemsWithQuery:(id)a3 data:(id)a4 timestamp:(id)a5 requestID:(id)a6
+- (void)donateSpotlightRankingItemsWithQuery:(id)query data:(id)data timestamp:(id)timestamp requestID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  dataCopy = data;
+  timestampCopy = timestamp;
+  dCopy = d;
   if (BiomeLibraryInternalLibraryCore() && self->searchToolTranscriptSource)
   {
     v18 = 0;
@@ -72,7 +72,7 @@
 
     v15 = v14;
     _Block_object_dispose(&v18, 8);
-    v16 = [[v14 alloc] initWithAbsoluteTimestamp:v12 requestId:v13 query:v10 eventType:@"spotlightRankingLogs" data:v11];
+    v16 = [[v14 alloc] initWithAbsoluteTimestamp:timestampCopy requestId:dCopy query:queryCopy eventType:@"spotlightRankingLogs" data:dataCopy];
     [(BMSource *)self->searchToolTranscriptSource sendEvent:v16];
   }
 }

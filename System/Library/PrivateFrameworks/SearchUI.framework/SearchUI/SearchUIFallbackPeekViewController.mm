@@ -1,41 +1,41 @@
 @interface SearchUIFallbackPeekViewController
-- (SearchUIFallbackPeekViewController)initWithDetailedRowModel:(id)a3;
+- (SearchUIFallbackPeekViewController)initWithDetailedRowModel:(id)model;
 @end
 
 @implementation SearchUIFallbackPeekViewController
 
-- (SearchUIFallbackPeekViewController)initWithDetailedRowModel:(id)a3
+- (SearchUIFallbackPeekViewController)initWithDetailedRowModel:(id)model
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v69.receiver = self;
   v69.super_class = SearchUIFallbackPeekViewController;
   v5 = [(SearchUIFallbackPeekViewController *)&v69 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v7 = [(SearchUIFallbackPeekViewController *)v5 view];
-    [v7 setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(SearchUIFallbackPeekViewController *)v5 view];
+    [view setBackgroundColor:systemBackgroundColor];
 
-    v8 = [(SearchUIFallbackPeekViewController *)v5 view];
-    v9 = [v8 tlks_screen];
-    [v9 _referenceBounds];
+    view2 = [(SearchUIFallbackPeekViewController *)v5 view];
+    tlks_screen = [view2 tlks_screen];
+    [tlks_screen _referenceBounds];
     Width = CGRectGetWidth(v73);
 
     v11 = Width / (Width + -32.0);
     v59 = objc_opt_new();
-    v12 = [v4 identifyingResult];
+    identifyingResult = [modelCopy identifyingResult];
     v57 = v5;
-    if (v12)
+    if (identifyingResult)
     {
-      v13 = [v4 identifyingResult];
-      [SearchUIAppIconImage appIconForResult:v13 variant:3];
+      identifyingResult2 = [modelCopy identifyingResult];
+      [SearchUIAppIconImage appIconForResult:identifyingResult2 variant:3];
     }
 
     else
     {
-      v13 = [v4 applicationBundleIdentifier];
-      [SearchUIAppIconImage appIconForBundleIdentifier:v13 variant:3];
+      identifyingResult2 = [modelCopy applicationBundleIdentifier];
+      [SearchUIAppIconImage appIconForBundleIdentifier:identifyingResult2 variant:3];
     }
     v14 = ;
 
@@ -54,8 +54,8 @@
     v19 = v18;
     v66 = v19;
     v68 = 0x4031000000000000;
-    v58 = v4;
-    v20 = v4;
+    v58 = modelCopy;
+    v20 = modelCopy;
     v67 = v20;
     [v19 performBatchUpdates:v65];
     [v59 addObject:v19];
@@ -80,9 +80,9 @@
 
           v25 = *(*(&v61 + 1) + 8 * i);
           v26 = objc_alloc(MEMORY[0x1E69D91A0]);
-          v27 = [v20 details];
-          v28 = [v27 firstObject];
-          v29 = [v26 initWithProminence:v25 != v28];
+          details = [v20 details];
+          firstObject = [details firstObject];
+          v29 = [v26 initWithProminence:v25 != firstObject];
 
           v30 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0];
           [v29 setFont:v30];
@@ -102,37 +102,37 @@
       while (v22);
     }
 
-    v32 = [v59 lastObject];
+    lastObject = [v59 lastObject];
     LODWORD(v33) = 1132068864;
-    [v32 setContentCompressionResistancePriority:1 forAxis:v33];
-    v34 = [v20 leadingImage];
+    [lastObject setContentCompressionResistancePriority:1 forAxis:v33];
+    leadingImage = [v20 leadingImage];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v35 = [v34 bundleIdentifier];
+      bundleIdentifier = [leadingImage bundleIdentifier];
     }
 
     else
     {
-      v35 = 0;
+      bundleIdentifier = 0;
     }
 
     v5 = v57;
-    if ([v34 isEqual:v56])
+    if ([leadingImage isEqual:v56])
     {
       goto LABEL_28;
     }
 
-    v36 = [v56 bundleIdentifier];
-    v37 = [v35 isEqual:v36];
+    bundleIdentifier2 = [v56 bundleIdentifier];
+    v37 = [bundleIdentifier isEqual:bundleIdentifier2];
 
-    if (!v34 || (v37 & 1) != 0)
+    if (!leadingImage || (v37 & 1) != 0)
     {
       goto LABEL_28;
     }
 
-    v38 = [v20 fallbackImage];
-    if (v34 != v38)
+    fallbackImage = [v20 fallbackImage];
+    if (leadingImage != fallbackImage)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -147,7 +147,7 @@ LABEL_28:
         v46 = v11 * 32.0;
         [v44 setCustomSpacing:v55 afterView:ceilf(v46)];
         v47 = v11 * 16.0;
-        [v44 setCustomSpacing:v32 afterView:ceilf(v47)];
+        [v44 setCustomSpacing:lastObject afterView:ceilf(v47)];
         [v44 setAxis:1];
         [v44 setAlignment:1];
         v48 = v11 * 23.0;
@@ -160,26 +160,26 @@ LABEL_28:
         [v52 setVerticalAlignment:1];
         [v52 setLayoutMarginsRelativeArrangement:1];
         [v52 setLayoutMargins:{v49, v49, v49, v49}];
-        v53 = [(SearchUIFallbackPeekViewController *)v57 view];
-        [v53 addSubview:v52];
+        view3 = [(SearchUIFallbackPeekViewController *)v57 view];
+        [view3 addSubview:v52];
 
         [SearchUIAutoLayout fillContainerWithView:v52];
-        v4 = v58;
+        modelCopy = v58;
         goto LABEL_29;
       }
 
-      v38 = [SearchUIImageView imageViewWithImage:v34];
-      [v34 size];
+      fallbackImage = [SearchUIImageView imageViewWithImage:leadingImage];
+      [leadingImage size];
       if (v41 == *MEMORY[0x1E695F060] && v40 == *(MEMORY[0x1E695F060] + 8))
       {
         [MEMORY[0x1E69D91A8] maxThumbnailSize];
         v43 = v11 * v42;
-        [v38 setMinimumLayoutSize:{v43, v43}];
-        [v38 setMaximumLayoutSize:{v43, v43}];
+        [fallbackImage setMinimumLayoutSize:{v43, v43}];
+        [fallbackImage setMaximumLayoutSize:{v43, v43}];
       }
 
-      [v38 setMaximumLayoutSize:{1.79769313e308, v11 * 120.0}];
-      [v59 addObject:v38];
+      [fallbackImage setMaximumLayoutSize:{1.79769313e308, v11 * 120.0}];
+      [v59 addObject:fallbackImage];
     }
 
     goto LABEL_28;

@@ -1,6 +1,6 @@
 @interface MessageCellWarningView
 - (MessageCellWarningView)init;
-- (void)setImage:(id)a3 warningString:(id)a4 emphasizedRangeValue:(id)a5;
+- (void)setImage:(id)image warningString:(id)string emphasizedRangeValue:(id)value;
 @end
 
 @implementation MessageCellWarningView
@@ -49,12 +49,12 @@
   return v2;
 }
 
-- (void)setImage:(id)a3 warningString:(id)a4 emphasizedRangeValue:(id)a5
+- (void)setImage:(id)image warningString:(id)string emphasizedRangeValue:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   imageView = self->_imageView;
-  v10 = a4;
-  [(UIImageView *)imageView setImage:a3];
+  stringCopy = string;
+  [(UIImageView *)imageView setImage:image];
   v11 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:0x8000 options:0];
   v27 = [UIFont fontWithDescriptor:v11 size:0.0];
   v30[0] = NSFontAttributeName;
@@ -64,9 +64,9 @@
   v31[1] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-  v14 = [[NSMutableAttributedString alloc] initWithString:v10 attributes:v13];
-  v15 = v8;
-  if (v8)
+  v14 = [[NSMutableAttributedString alloc] initWithString:stringCopy attributes:v13];
+  v15 = valueCopy;
+  if (valueCopy)
   {
     v16 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:32770 options:0];
 
@@ -78,8 +78,8 @@
     v29[1] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
 
-    v20 = [v15 rangeValue];
-    [v14 setAttributes:v19 range:{v20, v21}];
+    rangeValue = [v15 rangeValue];
+    [v14 setAttributes:v19 range:{rangeValue, v21}];
 
     v11 = v16;
   }

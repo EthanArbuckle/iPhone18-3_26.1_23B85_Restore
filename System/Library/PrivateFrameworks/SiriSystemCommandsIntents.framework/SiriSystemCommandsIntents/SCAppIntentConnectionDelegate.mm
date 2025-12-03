@@ -1,86 +1,86 @@
 @interface SCAppIntentConnectionDelegate
-- (BOOL)executor:(id)a3 shouldRunShowOutputAction:(id)a4;
-- (void)executor:(LNActionExecutor *)a3 environmentForViewSnippetWithCompletion:(id)a4;
-- (void)executor:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsContinueInAppWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
+- (BOOL)executor:(id)executor shouldRunShowOutputAction:(id)action;
+- (void)executor:(LNActionExecutor *)executor environmentForViewSnippetWithCompletion:(id)completion;
+- (void)executor:(id)executor didFinishWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsContinueInAppWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
 @end
 
 @implementation SCAppIntentConnectionDelegate
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2691DC2B0(v8, v7);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2691DC2B0(selfCopy, requestCopy);
 }
 
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2691DC334(v8, v7);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2691DC334(selfCopy, requestCopy);
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2691DC654(v8, v7);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2691DC654(selfCopy, requestCopy);
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2691DC6D8(v8, v7);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2691DC6D8(selfCopy, requestCopy);
 }
 
-- (void)executor:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didFinishWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_2691DC75C(v11, a4, a5);
+  executorCopy = executor;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2691DC75C(errorCopy, result, error);
 }
 
-- (void)executor:(LNActionExecutor *)a3 environmentForViewSnippetWithCompletion:(id)a4
+- (void)executor:(LNActionExecutor *)executor environmentForViewSnippetWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = executor;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  executorCopy = executor;
+  selfCopy = self;
 
   sub_2691DD1AC(&unk_2691E3F68, v7);
 }
 
-- (BOOL)executor:(id)a3 shouldRunShowOutputAction:(id)a4
+- (BOOL)executor:(id)executor shouldRunShowOutputAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  executorCopy = executor;
+  actionCopy = action;
+  selfCopy = self;
   sub_2691DD2BC();
 
   return 0;
 }
 
-- (void)executor:(id)a3 needsContinueInAppWithRequest:(id)a4
+- (void)executor:(id)executor needsContinueInAppWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2691DD464(v8, v7);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2691DD464(selfCopy, requestCopy);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface VCPRealTimeAnalysisClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-- (VCPRealTimeAnalysisClientHandler)initWithXPCConnection:(id)a3;
-- (void)requestAnalysis:(unint64_t)a3 ofIOSurface:(id)a4 withProperties:(id)a5 withReply:(id)a6;
++ (id)clientHandlerWithXPCConnection:(id)connection;
+- (VCPRealTimeAnalysisClientHandler)initWithXPCConnection:(id)connection;
+- (void)requestAnalysis:(unint64_t)analysis ofIOSurface:(id)surface withProperties:(id)properties withReply:(id)reply;
 @end
 
 @implementation VCPRealTimeAnalysisClientHandler
 
-- (VCPRealTimeAnalysisClientHandler)initWithXPCConnection:(id)a3
+- (VCPRealTimeAnalysisClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v25.receiver = self;
   v25.super_class = VCPRealTimeAnalysisClientHandler;
   v6 = [(VCPRealTimeAnalysisClientHandler *)&v25 init];
@@ -18,7 +18,7 @@
     transaction = v6->_transaction;
     v6->_transaction = v7;
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     [(NSXPCConnection *)v6->_connection setExportedObject:v6];
     connection = v6->_connection;
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VCPRealTimeAnalysisServerProtocol];
@@ -53,41 +53,41 @@
   return v6;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (void)requestAnalysis:(unint64_t)a3 ofIOSurface:(id)a4 withProperties:(id)a5 withReply:(id)a6
+- (void)requestAnalysis:(unint64_t)analysis ofIOSurface:(id)surface withProperties:(id)properties withReply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v13 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v13))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = analysis;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "Received frame analysis request (%x)", buf, 8u);
     }
   }
 
   *buf = 0;
   v14 = +[NSMutableDictionary dictionary];
-  if (!a3)
+  if (!analysis)
   {
     goto LABEL_39;
   }
 
-  v15 = CVPixelBufferCreateWithIOSurface(kCFAllocatorDefault, v10, 0, buf);
+  v15 = CVPixelBufferCreateWithIOSurface(kCFAllocatorDefault, surfaceCopy, 0, buf);
   if (!v15)
   {
-    if (a3)
+    if (analysis)
     {
       contentAnalysis = self->_contentAnalysis;
       if (!contentAnalysis)
@@ -140,7 +140,7 @@
       [v14 setObject:v22 forKeyedSubscript:VCPContentTypeKey];
     }
 
-    if ((a3 & 4) == 0)
+    if ((analysis & 4) == 0)
     {
       goto LABEL_39;
     }
@@ -148,14 +148,14 @@
     if (self->_priorityAnalysis || (+[VCPPriorityAnalysis priorityAnalysis], v23 = objc_claimAutoreleasedReturnValue(), priorityAnalysis = self->_priorityAnalysis, self->_priorityAnalysis = v23, priorityAnalysis, self->_priorityAnalysis))
     {
       *v32 = 0;
-      if (v11)
+      if (propertiesCopy)
       {
         totalFaceDetectedFrames = self->_totalFaceDetectedFrames;
         self->_totalFaceDetectedFrames = totalFaceDetectedFrames + 1;
         v26 = 0.0;
         if (totalFaceDetectedFrames >= 5)
         {
-          v15 = [(VCPPriorityAnalysis *)self->_priorityAnalysis calculatePriorityScore:v32 ofPixelBuffer:*buf withMetadata:v11, 0.0];
+          v15 = [(VCPPriorityAnalysis *)self->_priorityAnalysis calculatePriorityScore:v32 ofPixelBuffer:*buf withMetadata:propertiesCopy, 0.0];
           if (v15)
           {
             if (MediaAnalysisLogLevel() < 3)
@@ -230,12 +230,12 @@ LABEL_40:
   if (v15)
   {
     v30 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v15 userInfo:0];
-    v12[2](v12, 0, v30);
+    replyCopy[2](replyCopy, 0, v30);
   }
 
   else
   {
-    (v12)[2](v12, v14, 0);
+    (replyCopy)[2](replyCopy, v14, 0);
   }
 
   [(MADScopedWatchdog *)self->_scopedWatchdog pet];

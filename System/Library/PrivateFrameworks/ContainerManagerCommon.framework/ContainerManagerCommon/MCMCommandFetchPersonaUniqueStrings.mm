@@ -27,28 +27,28 @@
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
-  v5 = [(MCMCommand *)self context];
-  v6 = [v5 clientIdentity];
-  v7 = [v6 userIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  userIdentity = [clientIdentity userIdentity];
 
-  if ([v7 isNoSpecificPersona])
+  if ([userIdentity isNoSpecificPersona])
   {
-    v8 = [(MCMCommand *)self context];
-    v9 = [v8 userIdentityCache];
+    context2 = [(MCMCommand *)self context];
+    userIdentityCache = [context2 userIdentityCache];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46__MCMCommandFetchPersonaUniqueStrings_execute__block_invoke;
     v15[3] = &unk_1E86AF940;
     v16 = v4;
-    [v9 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v15];
+    [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v15];
   }
 
   else
   {
-    v10 = [v7 personaUniqueString];
-    if (v10)
+    personaUniqueString = [userIdentity personaUniqueString];
+    if (personaUniqueString)
     {
-      [v4 addObject:v10];
+      [v4 addObject:personaUniqueString];
     }
   }
 
@@ -63,8 +63,8 @@
   }
 
   v12 = [[MCMResultFetchPersonaUniqueStrings alloc] initWithPersonaUniqueStrings:v4];
-  v13 = [(MCMCommand *)self resultPromise];
-  [v13 completeWithResult:v12];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x1E69E9840];

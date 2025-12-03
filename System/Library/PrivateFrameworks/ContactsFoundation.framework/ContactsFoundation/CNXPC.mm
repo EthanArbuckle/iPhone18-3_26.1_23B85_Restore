@@ -1,19 +1,19 @@
 @interface CNXPC
-+ (id)listenerDelegateWithExportedObject:(id)a3 exportedInterfaceProtocol:(id)a4;
-+ (id)reasonConnectionWasInvalidated:(id)a3;
-+ (id)resumedConnectionForServiceName:(id)a3 remoteObjectInterfaceProtocol:(id)a4;
++ (id)listenerDelegateWithExportedObject:(id)object exportedInterfaceProtocol:(id)protocol;
++ (id)reasonConnectionWasInvalidated:(id)invalidated;
++ (id)resumedConnectionForServiceName:(id)name remoteObjectInterfaceProtocol:(id)protocol;
 @end
 
 @implementation CNXPC
 
-+ (id)resumedConnectionForServiceName:(id)a3 remoteObjectInterfaceProtocol:(id)a4
++ (id)resumedConnectionForServiceName:(id)name remoteObjectInterfaceProtocol:(id)protocol
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:v5];
+  nameCopy = name;
+  protocolCopy = protocol;
+  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:nameCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v6];
+    v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:protocolCopy];
     [v7 setRemoteObjectInterface:v8];
 
     [v7 resume];
@@ -22,32 +22,32 @@
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [CNXPC resumedConnectionForServiceName:v5 remoteObjectInterfaceProtocol:?];
+    [CNXPC resumedConnectionForServiceName:nameCopy remoteObjectInterfaceProtocol:?];
   }
 
   return v7;
 }
 
-+ (id)listenerDelegateWithExportedObject:(id)a3 exportedInterfaceProtocol:(id)a4
++ (id)listenerDelegateWithExportedObject:(id)object exportedInterfaceProtocol:(id)protocol
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNXPCListenerDelegate alloc] initWithWithExportedObject:v6 exportedInterfaceProtocol:v5];
+  protocolCopy = protocol;
+  objectCopy = object;
+  v7 = [[CNXPCListenerDelegate alloc] initWithWithExportedObject:objectCopy exportedInterfaceProtocol:protocolCopy];
 
   return v7;
 }
 
-+ (id)reasonConnectionWasInvalidated:(id)a3
++ (id)reasonConnectionWasInvalidated:(id)invalidated
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  invalidatedCopy = invalidated;
+  v4 = invalidatedCopy;
+  if (invalidatedCopy)
   {
-    v5 = [v3 _xpcConnection];
+    _xpcConnection = [invalidatedCopy _xpcConnection];
 
-    if (v5)
+    if (_xpcConnection)
     {
-      v6 = [v4 _xpcConnection];
+      _xpcConnection2 = [v4 _xpcConnection];
       v7 = xpc_connection_copy_invalidation_reason();
 
       if (v7)

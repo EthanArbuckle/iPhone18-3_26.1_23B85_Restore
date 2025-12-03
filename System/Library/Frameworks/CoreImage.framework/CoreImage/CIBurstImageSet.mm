@@ -1,13 +1,13 @@
 @interface CIBurstImageSet
 + (id)burstImageSet;
-+ (id)burstImageSetWithOptions:(id)a3;
++ (id)burstImageSetWithOptions:(id)options;
 - (BOOL)isPortrait;
-- (CIBurstImageSet)initWithOptions:(id)a3;
+- (CIBurstImageSet)initWithOptions:(id)options;
 - (id)bestImageIdentifiers;
 - (id)coverImageIdentifier;
-- (id)imageClusterForIdentifier:(id)a3;
-- (id)statsForImageWithIdentifier:(id)a3;
-- (void)addImageFromIOSurface:(__IOSurface *)a3 properties:(id)a4 identifier:(id)a5 completionBlock:(id)a6;
+- (id)imageClusterForIdentifier:(id)identifier;
+- (id)statsForImageWithIdentifier:(id)identifier;
+- (void)addImageFromIOSurface:(__IOSurface *)surface properties:(id)properties identifier:(id)identifier completionBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -20,9 +20,9 @@
   return v2;
 }
 
-+ (id)burstImageSetWithOptions:(id)a3
++ (id)burstImageSetWithOptions:(id)options
 {
-  v3 = [[CIBurstImageSet alloc] initWithOptions:a3];
+  v3 = [[CIBurstImageSet alloc] initWithOptions:options];
 
   return v3;
 }
@@ -39,7 +39,7 @@
   [(CIBurstImageSet *)&v4 dealloc];
 }
 
-- (CIBurstImageSet)initWithOptions:(id)a3
+- (CIBurstImageSet)initWithOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -61,21 +61,21 @@
   return v3;
 }
 
-- (void)addImageFromIOSurface:(__IOSurface *)a3 properties:(id)a4 identifier:(id)a5 completionBlock:(id)a6
+- (void)addImageFromIOSurface:(__IOSurface *)surface properties:(id)properties identifier:(id)identifier completionBlock:(id)block
 {
-  if (a3 && a5)
+  if (surface && identifier)
   {
-    [-[NSMutableDictionary objectForKeyedSubscript:](self->_priv objectForKeyedSubscript:{@"ids", "addObject:", a5}];
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    [v11 setObject:kCIBurstImageSet_VersionString_2 forKeyedSubscript:kCIBurstImageProperty_AlgorithmVersion];
-    [v11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetWidth(a3)), @"Image_Width"}];
-    [v11 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetWidth(a3)), @"Image_Height"}];
-    if ([a4 objectForKeyedSubscript:@"Orientation"])
+    [-[NSMutableDictionary objectForKeyedSubscript:](self->_priv objectForKeyedSubscript:{@"ids", "addObject:", identifier}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:kCIBurstImageSet_VersionString_2 forKeyedSubscript:kCIBurstImageProperty_AlgorithmVersion];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetWidth(surface)), @"Image_Width"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetWidth(surface)), @"Image_Height"}];
+    if ([properties objectForKeyedSubscript:@"Orientation"])
     {
-      [v11 setObject:objc_msgSend(a4 forKeyedSubscript:{"objectForKeyedSubscript:", @"Orientation", @"Image_Orientation"}];
+      [dictionary setObject:objc_msgSend(properties forKeyedSubscript:{"objectForKeyedSubscript:", @"Orientation", @"Image_Orientation"}];
     }
 
-    v12 = [a4 valueForKeyPath:@"{MakerApple}.3"];
+    v12 = [properties valueForKeyPath:@"{MakerApple}.3"];
     if (v12)
     {
       v13 = v12;
@@ -83,30 +83,30 @@
       v15 = v14;
       [objc_msgSend(v13 objectForKeyedSubscript:{@"value", "doubleValue"}];
       v17 = [MEMORY[0x1E696AD98] numberWithDouble:v16 / v15];
-      [v11 setObject:v17 forKeyedSubscript:kCIBurstImageProperty_ImageTimestamp];
+      [dictionary setObject:v17 forKeyedSubscript:kCIBurstImageProperty_ImageTimestamp];
     }
 
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:timeElapsedSinceInit()];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeReceived];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeQueued];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeConverted];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeStartedAnalysis];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeStartedFaceDetection];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceDetection];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceBlinkDetection];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceFocusScore];
-    [v11 setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneAnalysis];
-    [-[NSMutableDictionary objectForKeyedSubscript:](self->_priv objectForKeyedSubscript:{@"stats", "addObject:", v11}];
-    if ([objc_msgSend(a4 valueForKey:{@"AccumulatedFaceMetadata", "count"}])
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeReceived];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeQueued];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeConverted];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeStartedAnalysis];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeStartedFaceDetection];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceDetection];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceBlinkDetection];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneFaceFocusScore];
+    [dictionary setObject:v18 forKeyedSubscript:kCIBurstImageProperty_TimeDoneAnalysis];
+    [-[NSMutableDictionary objectForKeyedSubscript:](self->_priv objectForKeyedSubscript:{@"stats", "addObject:", dictionary}];
+    if ([objc_msgSend(properties valueForKey:{@"AccumulatedFaceMetadata", "count"}])
     {
       [(NSMutableDictionary *)self->_priv setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hasFace"];
     }
 
-    if (a6)
+    if (block)
     {
-      v19 = *(a6 + 2);
+      v19 = *(block + 2);
 
-      v19(a6, a5, 1);
+      v19(block, identifier, 1);
     }
   }
 }
@@ -128,16 +128,16 @@
   result = [-[CIBurstImageSet allImageIdentifiers](self "allImageIdentifiers")];
   if (result)
   {
-    v4 = [(CIBurstImageSet *)self allImageIdentifiers];
+    allImageIdentifiers = [(CIBurstImageSet *)self allImageIdentifiers];
     v5 = [-[CIBurstImageSet allImageIdentifiers](self "allImageIdentifiers")] >> 1;
 
-    return [v4 objectAtIndexedSubscript:v5];
+    return [allImageIdentifiers objectAtIndexedSubscript:v5];
   }
 
   return result;
 }
 
-- (id)imageClusterForIdentifier:(id)a3
+- (id)imageClusterForIdentifier:(id)identifier
 {
   if (![-[CIBurstImageSet allImageIdentifiers](self "allImageIdentifiers")])
   {
@@ -147,7 +147,7 @@
   return [(CIBurstImageSet *)self allImageIdentifiers];
 }
 
-- (id)statsForImageWithIdentifier:(id)a3
+- (id)statsForImageWithIdentifier:(id)identifier
 {
   v4 = [-[CIBurstImageSet allImageIdentifiers](self "allImageIdentifiers")];
   v5 = [(NSMutableDictionary *)self->_priv objectForKeyedSubscript:@"stats"];

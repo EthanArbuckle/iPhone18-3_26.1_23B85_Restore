@@ -28,10 +28,10 @@
   v6 = MEMORY[0x1E69DC668];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 sharedApplication];
-  v10 = [v9 preferredContentSizeCategory];
+  sharedApplication = [v6 sharedApplication];
+  preferredContentSizeCategory = [sharedApplication preferredContentSizeCategory];
 
-  v11 = [a1 fontForStyle:v8 currentSizeCategory:v10 maxSizeCategory:v7];
+  v11 = [self fontForStyle:v8 currentSizeCategory:preferredContentSizeCategory maxSizeCategory:v7];
 
   return v11;
 }

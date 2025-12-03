@@ -1,22 +1,22 @@
 @interface SBClippedZoomView
-- (SBClippedZoomView)initWithClippingFrame:(CGRect)a3 fullscreenZoomView:(id)a4;
+- (SBClippedZoomView)initWithClippingFrame:(CGRect)frame fullscreenZoomView:(id)view;
 @end
 
 @implementation SBClippedZoomView
 
-- (SBClippedZoomView)initWithClippingFrame:(CGRect)a3 fullscreenZoomView:(id)a4
+- (SBClippedZoomView)initWithClippingFrame:(CGRect)frame fullscreenZoomView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  if (!v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  if (!viewCopy)
   {
     [SBClippedZoomView initWithClippingFrame:a2 fullscreenZoomView:self];
   }
 
-  [v11 bounds];
+  [viewCopy bounds];
   v13 = v12;
   v15 = v14;
   v20.receiver = self;
@@ -30,7 +30,7 @@
 
     [(UIView *)v16->_clippingView setClipsToBounds:1];
     [(SBClippedZoomView *)v16 addSubview:v16->_clippingView];
-    objc_storeStrong(&v16->_fullscreenZoomViewToClip, a4);
+    objc_storeStrong(&v16->_fullscreenZoomViewToClip, view);
     [(SBFullscreenZoomView *)v16->_fullscreenZoomViewToClip setFrame:-x, -y, v13, v15];
     [(UIView *)v16->_clippingView addSubview:v16->_fullscreenZoomViewToClip];
   }

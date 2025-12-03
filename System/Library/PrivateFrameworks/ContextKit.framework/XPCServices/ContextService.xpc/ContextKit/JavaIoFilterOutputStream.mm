@@ -1,17 +1,17 @@
 @interface JavaIoFilterOutputStream
-- (JavaIoFilterOutputStream)initWithJavaIoOutputStream:(id)a3;
+- (JavaIoFilterOutputStream)initWithJavaIoOutputStream:(id)stream;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
-- (void)writeWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)writeWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation JavaIoFilterOutputStream
 
-- (JavaIoFilterOutputStream)initWithJavaIoOutputStream:(id)a3
+- (JavaIoFilterOutputStream)initWithJavaIoOutputStream:(id)stream
 {
   JavaIoOutputStream_init(self, a2);
-  JreStrongAssign(&self->out_, a3);
+  JreStrongAssign(&self->out_, stream);
   return self;
 }
 
@@ -38,31 +38,31 @@
   [(JavaIoOutputStream *)out flush];
 }
 
-- (void)writeWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)writeWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = a4;
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  if (a5 >= 1)
+  intCopy = int;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  if (withInt >= 1)
   {
-    v9 = a5;
+    withIntCopy = withInt;
     do
     {
-      v10 = *(a3 + 2);
-      if (v6 < 0 || v6 >= v10)
+      v10 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v10)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v10, v6);
+        IOSArray_throwOutOfBoundsWithMsg(v10, intCopy);
       }
 
-      [(JavaIoFilterOutputStream *)self writeWithInt:*(a3 + v6++ + 12)];
-      --v9;
+      [(JavaIoFilterOutputStream *)self writeWithInt:*(array + intCopy++ + 12)];
+      --withIntCopy;
     }
 
-    while (v9);
+    while (withIntCopy);
   }
 }
 

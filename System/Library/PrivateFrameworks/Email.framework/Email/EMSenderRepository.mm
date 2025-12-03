@@ -1,8 +1,8 @@
 @interface EMSenderRepository
 + (id)log;
-- (id)performQuery:(id)a3 withObserver:(id)a4;
-- (void)refreshQueryWithObserver:(id)a3;
-- (void)simpleAddressesForRelevantSendersWithCompletion:(id)a3;
+- (id)performQuery:(id)query withObserver:(id)observer;
+- (void)refreshQueryWithObserver:(id)observer;
+- (void)simpleAddressesForRelevantSendersWithCompletion:(id)completion;
 @end
 
 @implementation EMSenderRepository
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __25__EMSenderRepository_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_38 != -1)
   {
     dispatch_once(&log_onceToken_38, block);
@@ -32,33 +32,33 @@ void __25__EMSenderRepository_log__block_invoke(uint64_t a1)
   log_log_38 = v1;
 }
 
-- (id)performQuery:(id)a3 withObserver:(id)a4
+- (id)performQuery:(id)query withObserver:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  observerCopy = observer;
   [(EMSenderRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EMSenderRepository performQuery:withObserver:]", "EMSenderRepository.m", 26, "0");
 }
 
-- (void)refreshQueryWithObserver:(id)a3
+- (void)refreshQueryWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   [(EMSenderRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EMSenderRepository refreshQueryWithObserver:]", "EMSenderRepository.m", 30, "0");
 }
 
-- (void)simpleAddressesForRelevantSendersWithCompletion:(id)a3
+- (void)simpleAddressesForRelevantSendersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(EMRepository *)self connection];
+  completionCopy = completion;
+  connection = [(EMRepository *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__EMSenderRepository_simpleAddressesForRelevantSendersWithCompletion___block_invoke;
   v11[3] = &unk_1E826EAC0;
   v11[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__EMSenderRepository_simpleAddressesForRelevantSendersWithCompletion___block_invoke_3;

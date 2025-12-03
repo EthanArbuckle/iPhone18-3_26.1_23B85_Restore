@@ -10,20 +10,20 @@
 {
   v8 = a5;
   v9 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:0];
-  v10 = [v9 popoverPresentationController];
+  popoverPresentationController = [v9 popoverPresentationController];
 
-  if (v10)
+  if (popoverPresentationController)
   {
-    v11 = [a1 tableView];
-    v12 = [v11 cellForRowAtIndexPath:v8];
+    tableView = [self tableView];
+    tableView2 = [tableView cellForRowAtIndexPath:v8];
 
-    if (!v12)
+    if (!tableView2)
     {
-      v12 = [a1 tableView];
+      tableView2 = [self tableView];
     }
 
-    v13 = [v9 popoverPresentationController];
-    [v13 setSourceView:v12];
+    popoverPresentationController2 = [v9 popoverPresentationController];
+    [popoverPresentationController2 setSourceView:tableView2];
   }
 
   return v9;
@@ -31,13 +31,13 @@
 
 - (id)hu_getSelectedCell
 {
-  v2 = [a1 tableView];
-  v3 = [v2 indexPathForSelectedRow];
+  tableView = [self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v3)
+  if (indexPathForSelectedRow)
   {
-    v4 = [a1 tableView];
-    v5 = [v4 cellForRowAtIndexPath:v3];
+    tableView2 = [self tableView];
+    v5 = [tableView2 cellForRowAtIndexPath:indexPathForSelectedRow];
   }
 
   else
@@ -50,13 +50,13 @@
 
 - (uint64_t)hu_shouldScrollToTop
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return 1;
   }
 
-  v2 = [a1 tableView];
-  [v2 adjustedContentInset];
+  tableView = [self tableView];
+  [tableView adjustedContentInset];
   v4 = v3 <= 0.0;
 
   return v4;

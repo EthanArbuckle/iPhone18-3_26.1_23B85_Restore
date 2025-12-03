@@ -1,15 +1,15 @@
 @interface THMacTOCNode
-+ (id)nodeForPageIndex:(int64_t)a3 inNode:(id)a4 excludeHeadings:(BOOL)a5;
-+ (id)nodeTreeWithDocumentRoot:(id)a3 navigator:(id)a4 hasPaginatedData:(BOOL)a5;
-+ (id)pageNodeForPageIndex:(int64_t)a3 inNode:(id)a4;
++ (id)nodeForPageIndex:(int64_t)index inNode:(id)node excludeHeadings:(BOOL)headings;
++ (id)nodeTreeWithDocumentRoot:(id)root navigator:(id)navigator hasPaginatedData:(BOOL)data;
++ (id)pageNodeForPageIndex:(int64_t)index inNode:(id)node;
 - (CGImage)image;
 - (NSString)displayPageNumber;
 - (THMacTOCNode)init;
-- (id)rootNodeFilteringOutFirstLevelNodesOfType:(int)a3;
+- (id)rootNodeFilteringOutFirstLevelNodesOfType:(int)type;
 - (int64_t)absolutePageIndex;
 - (unint64_t)nodeLevel;
-- (void)addChild:(id)a3;
-- (void)addPage:(id)a3;
+- (void)addChild:(id)child;
+- (void)addPage:(id)page;
 - (void)dealloc;
 - (void)invalidatePaginationData;
 - (void)p_invaliatePaginationData;
@@ -17,12 +17,12 @@
 
 @implementation THMacTOCNode
 
-+ (id)nodeTreeWithDocumentRoot:(id)a3 navigator:(id)a4 hasPaginatedData:(BOOL)a5
++ (id)nodeTreeWithDocumentRoot:(id)root navigator:(id)navigator hasPaginatedData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v7 = objc_alloc_init(THMacTOCNode);
   [(THMacTOCNode *)v7 setNodeType:1];
-  if (v5)
+  if (dataCopy)
   {
     v8 = objc_alloc_init(THMacTOCNode);
     [(THMacTOCNode *)v8 setNodeType:8];
@@ -32,18 +32,18 @@
     [(THMacTOCNode *)v7 addChild:v8];
   }
 
-  v9 = [a3 properties];
-  if ([v9 introMediaUrl])
+  properties = [root properties];
+  if ([properties introMediaUrl])
   {
     v10 = objc_alloc_init(THMacTOCNode);
     [(THMacTOCNode *)v10 setNodeType:2];
     -[THMacTOCNode setTitle:](v10, "setTitle:", [THBundle() localizedStringForKey:@"Intro Image" value:&stru_471858 table:0]);
     [(THMacTOCNode *)v10 setAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
     [(THMacTOCNode *)v10 setDisplayPageNumber:&stru_471858];
-    if ([v9 introMediaIsVideo])
+    if ([properties introMediaIsVideo])
     {
       -[THMacTOCNode setTitle:](v10, "setTitle:", [THBundle() localizedStringForKey:@"Intro Movie" value:&stru_471858 table:0]);
-      v11 = +[AVAsset assetWithURL:](AVAsset, "assetWithURL:", [v9 introMediaUrl]);
+      v11 = +[AVAsset assetWithURL:](AVAsset, "assetWithURL:", [properties introMediaUrl]);
       if (v11)
       {
         [(AVAsset *)v11 duration];
@@ -70,27 +70,27 @@
     [(THMacTOCNode *)v7 addChild:v10];
   }
 
-  v19 = [a3 tocModel];
+  tocModel = [root tocModel];
   v20 = 0;
-  if ([objc_msgSend(v19 "tiles")])
+  if ([objc_msgSend(tocModel "tiles")])
   {
     v21 = 0;
     v54 = v7;
-    v49 = v5;
-    v52 = a4;
-    v48 = v19;
+    v49 = dataCopy;
+    navigatorCopy = navigator;
+    v48 = tocModel;
     do
     {
       v51 = v21;
-      v22 = [objc_msgSend(v19 "tiles")];
-      v23 = [v22 browserPageNode];
+      v22 = [objc_msgSend(tocModel "tiles")];
+      browserPageNode = [v22 browserPageNode];
       v24 = objc_alloc_init(THMacTOCNode);
       [(THMacTOCNode *)v24 setNodeType:16];
-      -[THMacTOCNode setChapterTOCPageInfo:](v24, "setChapterTOCPageInfo:", [v23 pageAtRelativeIndex:0 forPresentationType:{objc_msgSend(objc_msgSend(a3, "properties"), "chapterBrowserPagePresentationType")}]);
+      -[THMacTOCNode setChapterTOCPageInfo:](v24, "setChapterTOCPageInfo:", [browserPageNode pageAtRelativeIndex:0 forPresentationType:{objc_msgSend(objc_msgSend(root, "properties"), "chapterBrowserPagePresentationType")}]);
       -[THMacTOCNode setTitle:](v24, "setTitle:", [objc_msgSend(v22 "frontTitleText")]);
-      [(THMacTOCNode *)v24 setNavigator:a4];
+      [(THMacTOCNode *)v24 setNavigator:navigator];
       -[THMacTOCNode setLink:](v24, "setLink:", [v22 firstModelLink]);
-      if (v5)
+      if (dataCopy)
       {
         v25 = v20;
       }
@@ -101,7 +101,7 @@
       }
 
       [(THMacTOCNode *)v24 setAbsolutePageIndex:v25];
-      if (v5)
+      if (dataCopy)
       {
         -[THMacTOCNode setImageData:](v24, "setImageData:", [objc_msgSend(v22 "largerThumbs")]);
       }
@@ -115,7 +115,7 @@
           v28 = [objc_msgSend(v22 "portraitEntries")];
           if (![v28 indentLevel])
           {
-            if (v5)
+            if (dataCopy)
             {
               -[THMacTOCNode setNodeNumberString:](v24, "setNodeNumberString:", [v28 sectionIdentifier]);
               -[THMacTOCNode setDisplayPageNumber:](v24, "setDisplayPageNumber:", [v28 displayPageNumber]);
@@ -140,32 +140,32 @@
             }
 
             [(THMacTOCNode *)v27 setNodeType:v29];
-            [(THMacTOCNode *)v27 setNavigator:a4];
+            [(THMacTOCNode *)v27 setNavigator:navigator];
             -[THMacTOCNode setTitle:](v27, "setTitle:", [objc_msgSend(v28 "title")]);
-            if (v5)
+            if (dataCopy)
             {
               -[THMacTOCNode setNodeNumberString:](v27, "setNodeNumberString:", [v28 sectionIdentifier]);
               -[THMacTOCNode setDisplayPageNumber:](v27, "setDisplayPageNumber:", [v28 displayPageNumber]);
               -[THMacTOCNode setDisplayPageNumberValue:](v27, "setDisplayPageNumberValue:", [v28 displayPageNumberValue]);
               -[THMacTOCNode setDisplayPageNumberFormat:](v27, "setDisplayPageNumberFormat:", [v28 displayPageNumberFormat]);
-              v30 = [v28 pageIndex];
+              pageIndex = [v28 pageIndex];
             }
 
             else
             {
               -[THMacTOCNode setDisplayPageNumberFormat:](v27, "setDisplayPageNumberFormat:", [v28 displayPageNumberFormat]);
-              v30 = 0x7FFFFFFFFFFFFFFFLL;
+              pageIndex = 0x7FFFFFFFFFFFFFFFLL;
             }
 
-            [(THMacTOCNode *)v27 setAbsolutePageIndex:v30];
+            [(THMacTOCNode *)v27 setAbsolutePageIndex:pageIndex];
             -[THMacTOCNode setLink:](v27, "setLink:", [v28 modelLink]);
-            if ([v28 pageIndex] != 0x7FFFFFFFFFFFFFFFLL && v5)
+            if ([v28 pageIndex] != 0x7FFFFFFFFFFFFFFFLL && dataCopy)
             {
-              v31 = [v22 largerThumbs];
-              v32 = [v28 pageIndex];
-              v33 = v32 - [(THMacTOCNode *)v24 absolutePageIndex];
-              a4 = v52;
-              -[THMacTOCNode setImageData:](v27, "setImageData:", [v31 objectAtIndex:v33]);
+              largerThumbs = [v22 largerThumbs];
+              pageIndex2 = [v28 pageIndex];
+              v33 = pageIndex2 - [(THMacTOCNode *)v24 absolutePageIndex];
+              navigator = navigatorCopy;
+              -[THMacTOCNode setImageData:](v27, "setImageData:", [largerThumbs objectAtIndex:v33]);
             }
 
             [(THMacTOCNode *)v24 addChild:v27];
@@ -175,9 +175,9 @@
           {
             v34 = objc_alloc_init(THMacTOCNode);
             [(THMacTOCNode *)v34 setNodeType:128];
-            [(THMacTOCNode *)v34 setNavigator:a4];
+            [(THMacTOCNode *)v34 setNavigator:navigator];
             -[THMacTOCNode setTitle:](v34, "setTitle:", [objc_msgSend(v28 "title")]);
-            if (v5)
+            if (dataCopy)
             {
               -[THMacTOCNode setNodeNumberString:](v34, "setNodeNumberString:", [v28 sectionIdentifier]);
               -[THMacTOCNode setDisplayPageNumber:](v34, "setDisplayPageNumber:", [v28 displayPageNumber]);
@@ -197,15 +197,15 @@
       }
 
       [(THMacTOCNode *)v7 addChild:v24];
-      if (v5)
+      if (dataCopy)
       {
         ++v20;
         v57 = 0u;
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v35 = [v22 largerThumbs];
-        v36 = [v35 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        largerThumbs2 = [v22 largerThumbs];
+        v36 = [largerThumbs2 countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (v36)
         {
           v37 = v36;
@@ -217,13 +217,13 @@
             {
               if (*v56 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(largerThumbs2);
               }
 
               if ((v39 & 1) == 0)
               {
                 v41 = *(*(&v55 + 1) + 8 * i);
-                v42 = [a1 nodeForPageIndex:v20 inNode:v54 excludeHeadings:1];
+                v42 = [self nodeForPageIndex:v20 inNode:v54 excludeHeadings:1];
                 v43 = objc_alloc_init(THMacTOCNode);
                 [(THMacTOCNode *)v43 setNodeType:64];
                 -[THMacTOCNode setDisplayPageNumberValue:](v43, "setDisplayPageNumberValue:", [v42 displayPageNumberValue] + v20 - objc_msgSend(v42, "absolutePageIndex"));
@@ -239,7 +239,7 @@
               v39 = 0;
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v55 objects:v60 count:16];
+            v37 = [largerThumbs2 countByEnumeratingWithState:&v55 objects:v60 count:16];
             v39 = 0;
           }
 
@@ -248,16 +248,16 @@
       }
 
       v21 = v51 + 1;
-      v19 = v48;
+      tocModel = v48;
       v7 = v54;
-      v5 = v49;
-      a4 = v52;
+      dataCopy = v49;
+      navigator = navigatorCopy;
     }
 
     while (v51 + 1 < [objc_msgSend(v48 "tiles")]);
   }
 
-  if (v5)
+  if (dataCopy)
   {
     v44 = v20;
   }
@@ -268,7 +268,7 @@
   }
 
   [(THMacTOCNode *)v7 setAbsolutePageIndex:v44];
-  if ([objc_msgSend(a3 "glossary")])
+  if ([objc_msgSend(root "glossary")])
   {
     v45 = objc_alloc_init(THMacTOCNode);
     [(THMacTOCNode *)v45 setNodeType:4];
@@ -281,15 +281,15 @@
   return v7;
 }
 
-+ (id)nodeForPageIndex:(int64_t)a3 inNode:(id)a4 excludeHeadings:(BOOL)a5
++ (id)nodeForPageIndex:(int64_t)index inNode:(id)node excludeHeadings:(BOOL)headings
 {
-  v5 = a5;
+  headingsCopy = headings;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a4 children];
-  result = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  children = [node children];
+  result = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (result)
   {
     v10 = result;
@@ -303,18 +303,18 @@
         v14 = v11;
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v17 + 1) + 8 * v13);
-        if (v5 && [*(*(&v17 + 1) + 8 * v13) nodeType] == 128 || (v15 = objc_msgSend(v11, "absolutePageIndex"), v15 == 0x7FFFFFFFFFFFFFFFLL))
+        if (headingsCopy && [*(*(&v17 + 1) + 8 * v13) nodeType] == 128 || (v15 = objc_msgSend(v11, "absolutePageIndex"), v15 == 0x7FFFFFFFFFFFFFFFLL))
         {
           v11 = v14;
         }
 
-        else if (v15 >= a3)
+        else if (v15 >= index)
         {
-          if (v15 == a3)
+          if (v15 == index)
           {
             result = v11;
           }
@@ -331,7 +331,7 @@
       }
 
       while (v10 != v13);
-      result = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      result = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
       v10 = result;
       if (result)
       {
@@ -362,7 +362,7 @@ LABEL_17:
 
       else
       {
-        result = [a1 nodeForPageIndex:a3 inNode:v14 excludeHeadings:v5];
+        result = [self nodeForPageIndex:index inNode:v14 excludeHeadings:headingsCopy];
       }
 
       if (!result)
@@ -375,14 +375,14 @@ LABEL_17:
   return result;
 }
 
-+ (id)pageNodeForPageIndex:(int64_t)a3 inNode:(id)a4
++ (id)pageNodeForPageIndex:(int64_t)index inNode:(id)node
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a4 children];
-  result = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [node children];
+  result = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!result)
   {
     return result;
@@ -398,14 +398,14 @@ LABEL_3:
     v11 = v8;
     if (*v15 != v9)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(children);
     }
 
     v8 = *(*(&v14 + 1) + 8 * v10);
     if ([v8 nodeType] != 128 && objc_msgSend(v8, "nodeType") != 32)
     {
-      v12 = [v8 absolutePageIndex];
-      if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+      absolutePageIndex = [v8 absolutePageIndex];
+      if (absolutePageIndex != 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
@@ -415,7 +415,7 @@ LABEL_3:
 LABEL_10:
     if (v7 == ++v10)
     {
-      result = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      result = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
       v7 = result;
       if (result)
       {
@@ -427,12 +427,12 @@ LABEL_10:
     }
   }
 
-  if (v12 < a3)
+  if (absolutePageIndex < index)
   {
     goto LABEL_10;
   }
 
-  if (v12 == a3)
+  if (absolutePageIndex == index)
   {
     result = v8;
   }
@@ -447,7 +447,7 @@ LABEL_10:
 LABEL_20:
     if (v11)
     {
-      v13 = ~[v11 absolutePageIndex] + a3;
+      v13 = ~[v11 absolutePageIndex] + index;
       if (v13 >= [objc_msgSend(v11 "pages")])
       {
         return 0;
@@ -470,8 +470,8 @@ LABEL_20:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(THMacTOCNode *)self children];
-  v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  children = [(THMacTOCNode *)self children];
+  v4 = [(NSMutableArray *)children countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -483,7 +483,7 @@ LABEL_20:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v8 + 1) + 8 * v7) invalidatePaginationData];
@@ -491,7 +491,7 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSMutableArray *)children countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -530,7 +530,7 @@ LABEL_20:
   [(THMacTOCNode *)&v3 dealloc];
 }
 
-- (id)rootNodeFilteringOutFirstLevelNodesOfType:(int)a3
+- (id)rootNodeFilteringOutFirstLevelNodesOfType:(int)type
 {
   v5 = objc_alloc_init(THMacTOCNode);
   [(THMacTOCNode *)v5 setNodeType:[(THMacTOCNode *)self nodeType]];
@@ -538,20 +538,20 @@ LABEL_20:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(THMacTOCNode *)self children];
-  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [(THMacTOCNode *)self children];
+  v7 = [(NSMutableArray *)children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v15;
-    v10 = ~a3;
+    v10 = ~type;
     do
     {
       for (i = 0; i != v8; i = i + 1)
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -561,7 +561,7 @@ LABEL_20:
         }
       }
 
-      v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(NSMutableArray *)children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -570,28 +570,28 @@ LABEL_20:
   return v5;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
   if (![(THMacTOCNode *)self children])
   {
     [(THMacTOCNode *)self setChildren:+[NSMutableArray array]];
   }
 
-  v5 = [(THMacTOCNode *)self children];
+  children = [(THMacTOCNode *)self children];
 
-  [(NSMutableArray *)v5 addObject:a3];
+  [(NSMutableArray *)children addObject:child];
 }
 
-- (void)addPage:(id)a3
+- (void)addPage:(id)page
 {
   if (![(THMacTOCNode *)self pages])
   {
     [(THMacTOCNode *)self setPages:+[NSMutableArray array]];
   }
 
-  v5 = [(THMacTOCNode *)self pages];
+  pages = [(THMacTOCNode *)self pages];
 
-  [(NSMutableArray *)v5 addObject:a3];
+  [(NSMutableArray *)pages addObject:page];
 }
 
 - (CGImage)image
@@ -609,15 +609,15 @@ LABEL_20:
 
 - (unint64_t)nodeLevel
 {
-  v2 = [(THMacTOCNode *)self nodeType];
-  if (v2 == 32)
+  nodeType = [(THMacTOCNode *)self nodeType];
+  if (nodeType == 32)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 128);
+    return 2 * (nodeType == 128);
   }
 }
 

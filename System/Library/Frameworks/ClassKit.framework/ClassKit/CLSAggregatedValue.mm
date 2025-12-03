@@ -1,40 +1,40 @@
 @interface CLSAggregatedValue
-- (CLSAggregatedValue)initWithCoder:(id)a3;
+- (CLSAggregatedValue)initWithCoder:(id)coder;
 - (double)normalized;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)add:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)add:(id)add;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSAggregatedValue
 
-- (CLSAggregatedValue)initWithCoder:(id)a3
+- (CLSAggregatedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLSAggregatedValue;
   v6 = [(CLSAggregatedValue *)&v11 init];
   if (v6)
   {
-    objc_msgSend_decodeDoubleForKey_(v4, v5, @"value");
+    objc_msgSend_decodeDoubleForKey_(coderCopy, v5, @"value");
     v6->_value = v7;
-    v6->_totalSampleCount = objc_msgSend_decodeIntegerForKey_(v4, v8, @"totalSampleCount");
-    v6->_aggregateType = objc_msgSend_decodeIntForKey_(v4, v9, @"aggregateType");
+    v6->_totalSampleCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, @"totalSampleCount");
+    v6->_aggregateType = objc_msgSend_decodeIntForKey_(coderCopy, v9, @"aggregateType");
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v8 = a3;
-  objc_msgSend_encodeDouble_forKey_(v8, v5, @"value", value);
-  objc_msgSend_encodeInteger_forKey_(v8, v6, self->_totalSampleCount, @"totalSampleCount");
-  objc_msgSend_encodeInt_forKey_(v8, v7, self->_aggregateType, @"aggregateType");
+  coderCopy = coder;
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v5, @"value", value);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_totalSampleCount, @"totalSampleCount");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v7, self->_aggregateType, @"aggregateType");
 }
 
 - (double)normalized
@@ -48,11 +48,11 @@
   return self->_value / totalSampleCount;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = CLSAggregatedValue;
-  v4 = [(CLSReportItem *)&v18 copyWithZone:a3];
+  v4 = [(CLSReportItem *)&v18 copyWithZone:zone];
   objc_msgSend_value(self, v5, v6);
   objc_msgSend_setValue_(v4, v7, v8);
   v11 = objc_msgSend_totalSampleCount(self, v9, v10);
@@ -62,9 +62,9 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(a3, a2, self, 0);
+  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(compare, a2, self, 0);
   v7 = v4;
   if (self->_totalSampleCount || objc_msgSend_totalSampleCount(v4, v5, v6) && self->_totalSampleCount)
   {
@@ -98,12 +98,12 @@
   return v15;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
-  objc_msgSend_value(v4, v5, v6);
+  addCopy = add;
+  objc_msgSend_value(addCopy, v5, v6);
   self->_value = v7 + self->_value;
-  v10 = objc_msgSend_totalSampleCount(v4, v8, v9);
+  v10 = objc_msgSend_totalSampleCount(addCopy, v8, v9);
 
   self->_totalSampleCount += v10;
 }
@@ -126,18 +126,18 @@
 {
   v19.receiver = self;
   v19.super_class = CLSAggregatedValue;
-  v3 = [(CLSReportItem *)&v19 dictionaryRepresentation];
+  dictionaryRepresentation = [(CLSReportItem *)&v19 dictionaryRepresentation];
   v4 = MEMORY[0x277CCABB0];
   objc_msgSend_value(self, v5, v6);
   v9 = objc_msgSend_numberWithDouble_(v4, v7, v8);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v10, v9, @"value");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v10, v9, @"value");
 
   v11 = MEMORY[0x277CCABB0];
   v14 = objc_msgSend_totalSampleCount(self, v12, v13);
   v16 = objc_msgSend_numberWithInteger_(v11, v15, v14);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v17, v16, @"samples");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v17, v16, @"samples");
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

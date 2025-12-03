@@ -1,18 +1,18 @@
 @interface _UISearchPresentationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityPresentationControllerModalizes;
 @end
 
 @implementation _UISearchPresentationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIPresentationController";
   [location[0] validateClass:@"_UISearchPresentationController" isKindOfClass:?];
   [location[0] validateClass:@"UIPresentationController" hasInstanceMethod:@"_accessibilityPresentationControllerModalizes" withFullSignature:{"B", 0}];
@@ -21,7 +21,7 @@
 
 - (BOOL)_accessibilityPresentationControllerModalizes
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UISearchPresentationControllerAccessibility;

@@ -1,13 +1,13 @@
 @interface TSCH3DChartSilhouetteEdgeCollectProcessor
-- (TSCH3DChartSilhouetteEdgeCollectProcessor)initWithEdgeDetectionParameters:(const EdgeDetectionParameters *)a3;
+- (TSCH3DChartSilhouetteEdgeCollectProcessor)initWithEdgeDetectionParameters:(const EdgeDetectionParameters *)parameters;
 - (id).cxx_construct;
-- (int64_t)attribute:(id)a3 resource:(id)a4 specs:(const AttributeSpecs *)a5;
-- (void)submit:(id)a3;
+- (int64_t)attribute:(id)attribute resource:(id)resource specs:(const AttributeSpecs *)specs;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DChartSilhouetteEdgeCollectProcessor
 
-- (TSCH3DChartSilhouetteEdgeCollectProcessor)initWithEdgeDetectionParameters:(const EdgeDetectionParameters *)a3
+- (TSCH3DChartSilhouetteEdgeCollectProcessor)initWithEdgeDetectionParameters:(const EdgeDetectionParameters *)parameters
 {
   v8 = objc_msgSend_processor(TSCH3DMatrixRenderProcessor, a2, v3, v4, v5);
   v11.receiver = self;
@@ -16,30 +16,30 @@
 
   if (v9)
   {
-    v9->_edgeDetectionParameters = *a3;
+    v9->_edgeDetectionParameters = *parameters;
   }
 
   return v9;
 }
 
-- (int64_t)attribute:(id)a3 resource:(id)a4 specs:(const AttributeSpecs *)a5
+- (int64_t)attribute:(id)attribute resource:(id)resource specs:(const AttributeSpecs *)specs
 {
-  v8 = a3;
-  v10 = a4;
-  if (a5->var0)
+  attributeCopy = attribute;
+  resourceCopy = resource;
+  if (specs->var0)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "[TSCH3DChartSilhouetteEdgeCollectProcessor attribute:resource:specs:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartSelectedElementHighlightSceneObject.mm");
-    v24 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, *&a5->var0, v22, v23, @"stride %lu offset %lu components %lu", a5->var0, a5->var1, a5->var2);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v25, v26, v27, v28, v15, v20, 96, 0, "don't know how to deal with strided resource yet %@ specs %@", v10, v24);
+    v24 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, *&specs->var0, v22, v23, @"stride %lu offset %lu components %lu", specs->var0, specs->var1, specs->var2);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v25, v26, v27, v28, v15, v20, 96, 0, "don't know how to deal with strided resource yet %@ specs %@", resourceCopy, v24);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
   }
 
-  if (qword_280A46550 == v8)
+  if (qword_280A46550 == attributeCopy)
   {
-    objc_msgSend_setVertices_(self, v9, v11, v12, v13, v10);
+    objc_msgSend_setVertices_(self, v9, v11, v12, v13, resourceCopy);
     v33 = -1;
   }
 
@@ -47,27 +47,27 @@
   {
     v35.receiver = self;
     v35.super_class = TSCH3DChartSilhouetteEdgeCollectProcessor;
-    v33 = [(TSCH3DRetargetRenderProcessor *)&v35 attribute:v8 resource:v10 specs:a5];
+    v33 = [(TSCH3DRetargetRenderProcessor *)&v35 attribute:attributeCopy resource:resourceCopy specs:specs];
   }
 
   return v33;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
-  if (objc_msgSend_type(v4, v5, v6, v7, v8) != 1)
+  submitCopy = submit;
+  if (objc_msgSend_type(submitCopy, v5, v6, v7, v8) != 1)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "[TSCH3DChartSilhouetteEdgeCollectProcessor submit:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartSelectedElementHighlightSceneObject.mm");
-    v24 = objc_msgSend_type(v4, v20, v21, v22, v23);
+    v24 = objc_msgSend_type(submitCopy, v20, v21, v22, v23);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v25, v26, v27, v28, v14, v19, 109, 0, "invalid primitive type %ld only triangles are supported", v24);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
   }
 
-  if (!objc_msgSend_hasOffset(v4, v9, v10, v11, v12) || (objc_msgSend_hasCount(v4, v33, v34, v35, v36) & 1) == 0)
+  if (!objc_msgSend_hasOffset(submitCopy, v9, v10, v11, v12) || (objc_msgSend_hasCount(submitCopy, v33, v34, v35, v36) & 1) == 0)
   {
     v37 = MEMORY[0x277D81150];
     v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v34, v35, v36, "[TSCH3DChartSilhouetteEdgeCollectProcessor submit:]");
@@ -77,8 +77,8 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v48, v49, v50, v51);
   }
 
-  v52 = objc_msgSend_offset(v4, v33, v34, v35, v36);
-  v57 = objc_msgSend_count(v4, v53, v54, v55, v56);
+  v52 = objc_msgSend_offset(submitCopy, v33, v34, v35, v36);
+  v57 = objc_msgSend_count(submitCopy, v53, v54, v55, v56);
   v62 = objc_msgSend_buffer(self->_vertices, v58, v59, v60, v61);
   v63 = sub_27616536C(v62);
 

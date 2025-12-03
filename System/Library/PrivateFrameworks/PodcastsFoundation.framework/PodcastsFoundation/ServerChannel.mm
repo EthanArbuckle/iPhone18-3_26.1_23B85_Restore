@@ -88,8 +88,8 @@
 
 - (NSString)displayType
 {
-  v2 = self;
-  sub_1D902F434(v2, &v5);
+  selfCopy = self;
+  sub_1D902F434(selfCopy, &v5);
 
   v3 = _sSS18PodcastsFoundationE18userDefaultsObjectSo8NSStringCSgyF_0();
 
@@ -248,7 +248,7 @@
 
 - (NSString)fallbackSubscriptionName
 {
-  v2 = self;
+  selfCopy = self;
   ServerChannel.fallbackSubscriptionName.getter();
   v4 = v3;
 

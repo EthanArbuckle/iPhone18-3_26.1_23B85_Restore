@@ -2,7 +2,7 @@
 - (SBPercentPassthroughInteractiveTransition)init;
 - (void)cancelTransition;
 - (void)finishInteractiveTransition;
-- (void)updateTransition:(double)a3;
+- (void)updateTransition:(double)transition;
 @end
 
 @implementation SBPercentPassthroughInteractiveTransition
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)updateTransition:(double)a3
+- (void)updateTransition:(double)transition
 {
   WeakRetained = objc_loadWeakRetained(&self->_transitionContext);
-  [WeakRetained updateInteractiveTransition:a3];
+  [WeakRetained updateInteractiveTransition:transition];
 }
 
 - (void)finishInteractiveTransition

@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (CGSize)imageSize;
 - (CKMessagesComplicationImageProvider)init;
-- (id)_simpleTintableImageOverImage:(id)a3 withContext:(id)a4;
-- (id)imageForUnreadCount:(unint64_t)a3 family:(int64_t)a4 complicationTemplate:(id)a5 specs:(id)a6;
+- (id)_simpleTintableImageOverImage:(id)image withContext:(id)context;
+- (id)imageForUnreadCount:(unint64_t)count family:(int64_t)family complicationTemplate:(id)template specs:(id)specs;
 @end
 
 @implementation CKMessagesComplicationImageProvider
@@ -42,13 +42,13 @@
   return v2;
 }
 
-- (id)imageForUnreadCount:(unint64_t)a3 family:(int64_t)a4 complicationTemplate:(id)a5 specs:(id)a6
+- (id)imageForUnreadCount:(unint64_t)count family:(int64_t)family complicationTemplate:(id)template specs:(id)specs
 {
-  v10 = a5;
-  v11 = a6;
+  templateCopy = template;
+  specsCopy = specs;
   v12 = [CKMessagesComplicationDataContext alloc];
   objc_msgSend_imageSize(self, v13, v14, v15, v16, v17);
-  v23 = objc_msgSend_initWithUnreadCount_family_template_specs_imageSize_(v12, v18, v19, v20, v21, v22, a3, a4, v10, v11);
+  v23 = objc_msgSend_initWithUnreadCount_family_template_specs_imageSize_(v12, v18, v19, v20, v21, v22, count, family, templateCopy, specsCopy);
   os_unfair_lock_lock(&self->_lock);
   v29 = objc_msgSend_objectForKey_(self->_imageCache, v24, v25, v26, v27, v28, v23);
   v35 = v29;
@@ -71,19 +71,19 @@
   return v36;
 }
 
-- (id)_simpleTintableImageOverImage:(id)a3 withContext:(id)a4
+- (id)_simpleTintableImageOverImage:(id)image withContext:(id)context
 {
   v94 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_imageFrame(v7, v8, v9, v10, v11, v12);
+  imageCopy = image;
+  contextCopy = context;
+  objc_msgSend_imageFrame(contextCopy, v8, v9, v10, v11, v12);
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  if (objc_msgSend_unreadCount(v7, v21, v13, v15, v17, v19))
+  if (objc_msgSend_unreadCount(contextCopy, v21, v13, v15, v17, v19))
   {
-    v27 = objc_msgSend_textAttributes(v7, v22, v23, v24, v25, v26);
+    v27 = objc_msgSend_textAttributes(contextCopy, v22, v23, v24, v25, v26);
     v28 = v27 != 0;
   }
 
@@ -97,9 +97,9 @@
   v40 = objc_msgSend_log(self, v35, v36, v37, v38, v39);
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    objc_msgSend_backgroundFrame(v7, v41, v42, v43, v44, v45);
+    objc_msgSend_backgroundFrame(contextCopy, v41, v42, v43, v44, v45);
     v47 = v46;
-    objc_msgSend_backgroundFrame(v7, v48, v49, v50, v51, v46);
+    objc_msgSend_backgroundFrame(contextCopy, v48, v49, v50, v51, v46);
     *buf = 134219008;
     v85 = v47;
     v86 = 2048;
@@ -109,12 +109,12 @@
     v90 = 2048;
     v91 = v18;
     v92 = 2048;
-    v93 = objc_msgSend_unreadCount(v7, v52, v53, v54, v56, v55);
+    v93 = objc_msgSend_unreadCount(contextCopy, v52, v53, v54, v56, v55);
     _os_log_impl(&dword_23BD1C000, v40, OS_LOG_TYPE_DEFAULT, "generating image with background size: (%f, %f), imageSize: (%f, %f), unreadCount: %lu", buf, 0x34u);
   }
 
   v57 = objc_alloc(MEMORY[0x277D75560]);
-  objc_msgSend_backgroundFrame(v7, v58, v59, v60, v61, v62);
+  objc_msgSend_backgroundFrame(contextCopy, v58, v59, v60, v61, v62);
   v66 = objc_msgSend_initWithSize_format_(v57, v63, v64, v65, v64, v65, v29);
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
@@ -125,10 +125,10 @@
   v81 = v18;
   v82 = v20;
   v83 = v28;
-  v77 = v6;
-  v78 = v7;
-  v67 = v7;
-  v68 = v6;
+  v77 = imageCopy;
+  v78 = contextCopy;
+  v67 = contextCopy;
+  v68 = imageCopy;
   v74 = objc_msgSend_imageWithActions_(v66, v69, v70, v71, v72, v73, v76);
 
   return v74;

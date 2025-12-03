@@ -1,33 +1,33 @@
 @interface BDWorkoutPreviewMetadata
-+ (void)getPreviewMetadata:(id)a3 withCompletion:(id)a4;
-- (BDWorkoutPreviewMetadata)initWithActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 configurationType:(int64_t)a5 configurationName:(id)a6 goalTypeIdentifier:(unint64_t)a7;
++ (void)getPreviewMetadata:(id)metadata withCompletion:(id)completion;
+- (BDWorkoutPreviewMetadata)initWithActivityType:(unint64_t)type isIndoor:(BOOL)indoor configurationType:(int64_t)configurationType configurationName:(id)name goalTypeIdentifier:(unint64_t)identifier;
 @end
 
 @implementation BDWorkoutPreviewMetadata
 
-- (BDWorkoutPreviewMetadata)initWithActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 configurationType:(int64_t)a5 configurationName:(id)a6 goalTypeIdentifier:(unint64_t)a7
+- (BDWorkoutPreviewMetadata)initWithActivityType:(unint64_t)type isIndoor:(BOOL)indoor configurationType:(int64_t)configurationType configurationName:(id)name goalTypeIdentifier:(unint64_t)identifier
 {
-  v13 = a6;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = BDWorkoutPreviewMetadata;
   v14 = [(BDWorkoutPreviewMetadata *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_isIndoor = a4;
-    v14->_activityType = a3;
-    v14->_configurationType = a5;
-    objc_storeStrong(&v14->_configurationName, a6);
-    v15->_goalTypeIdentifier = a7;
+    v14->_isIndoor = indoor;
+    v14->_activityType = type;
+    v14->_configurationType = configurationType;
+    objc_storeStrong(&v14->_configurationName, name);
+    v15->_goalTypeIdentifier = identifier;
   }
 
   return v15;
 }
 
-+ (void)getPreviewMetadata:(id)a3 withCompletion:(id)a4
++ (void)getPreviewMetadata:(id)metadata withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -46,22 +46,22 @@
 
   v8 = v7;
   _Block_object_dispose(&v17, 8);
-  v9 = [v7 dataFromSourceFromData:v5];
+  v9 = [v7 dataFromSourceFromData:metadataCopy];
   if (v9)
   {
     v10 = [BDWorkoutPreviewMetadata alloc];
-    v11 = [v9 activityType];
-    v12 = [v9 isIndoor];
-    v13 = [v9 configurationType];
-    v14 = [v9 configurationName];
-    v15 = -[BDWorkoutPreviewMetadata initWithActivityType:isIndoor:configurationType:configurationName:goalTypeIdentifier:](v10, "initWithActivityType:isIndoor:configurationType:configurationName:goalTypeIdentifier:", v11, v12, v13, v14, [v9 goalTypeIdentifier]);
+    activityType = [v9 activityType];
+    isIndoor = [v9 isIndoor];
+    configurationType = [v9 configurationType];
+    configurationName = [v9 configurationName];
+    v15 = -[BDWorkoutPreviewMetadata initWithActivityType:isIndoor:configurationType:configurationName:goalTypeIdentifier:](v10, "initWithActivityType:isIndoor:configurationType:configurationName:goalTypeIdentifier:", activityType, isIndoor, configurationType, configurationName, [v9 goalTypeIdentifier]);
 
-    v6[2](v6, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

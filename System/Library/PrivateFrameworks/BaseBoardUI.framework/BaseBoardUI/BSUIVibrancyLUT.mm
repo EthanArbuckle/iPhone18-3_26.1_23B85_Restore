@@ -1,49 +1,49 @@
 @interface BSUIVibrancyLUT
 + (void)initialize;
-- (BOOL)canReuseInterpolatedLUTWithBlend:(double)a3 toIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldUseInterpolatedLUTForBlend:(double)a3 toIdentifier:(id)a4;
-- (BSUIVibrancyLUT)initWithIdentifier:(id)a3 bundleURL:(id)a4 blend:(double)a5 toIdentifier:(id)a6;
+- (BOOL)canReuseInterpolatedLUTWithBlend:(double)blend toIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldUseInterpolatedLUTForBlend:(double)blend toIdentifier:(id)identifier;
+- (BSUIVibrancyLUT)initWithIdentifier:(id)identifier bundleURL:(id)l blend:(double)blend toIdentifier:(id)toIdentifier;
 - (CAFilter)resolvedLUTFilter;
 - (NSString)groupName;
-- (id)copyWithBlend:(double)a3 toIdentifier:(id)a4;
-- (id)copyWithLuminanceReduced:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)interpolatedImageWithFirstImage:(id)a3 secondImage:(id)a4 blend:(double)a5;
+- (id)copyWithBlend:(double)blend toIdentifier:(id)identifier;
+- (id)copyWithLuminanceReduced:(BOOL)reduced;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)interpolatedImageWithFirstImage:(id)image secondImage:(id)secondImage blend:(double)blend;
 - (id)membersForCoder;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BSUIVibrancyLUT
 
-- (BSUIVibrancyLUT)initWithIdentifier:(id)a3 bundleURL:(id)a4 blend:(double)a5 toIdentifier:(id)a6
+- (BSUIVibrancyLUT)initWithIdentifier:(id)identifier bundleURL:(id)l blend:(double)blend toIdentifier:(id)toIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  lCopy = l;
+  toIdentifierCopy = toIdentifier;
   v19.receiver = self;
   v19.super_class = BSUIVibrancyLUT;
   v12 = [(BSUIVibrancyLUT *)&v19 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     lutIdentifier = v12->_lutIdentifier;
     v12->_lutIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [lCopy copy];
     bundleURL = v12->_bundleURL;
     v12->_bundleURL = v15;
 
     BSIntervalClip();
     v12->_blend = v17;
-    objc_storeStrong(&v12->_toIdentifier, a6);
+    objc_storeStrong(&v12->_toIdentifier, toIdentifier);
   }
 
   return v12;
 }
 
-- (BOOL)shouldUseInterpolatedLUTForBlend:(double)a3 toIdentifier:(id)a4
+- (BOOL)shouldUseInterpolatedLUTForBlend:(double)blend toIdentifier:(id)identifier
 {
   if (BSFloatIsZero())
   {
@@ -51,7 +51,7 @@
   }
 
   v6 = BSFloatIsOne() ^ 1;
-  if (a4)
+  if (identifier)
   {
     return v6;
   }
@@ -62,17 +62,17 @@
   }
 }
 
-- (BOOL)canReuseInterpolatedLUTWithBlend:(double)a3 toIdentifier:(id)a4
+- (BOOL)canReuseInterpolatedLUTWithBlend:(double)blend toIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   [(BSUIVibrancyLUT *)self blend];
   if (BSFloatEqualToFloat())
   {
-    v6 = [(BSUIVibrancyLUT *)self toIdentifier];
-    if ([v6 isEqualToString:v5])
+    toIdentifier = [(BSUIVibrancyLUT *)self toIdentifier];
+    if ([toIdentifier isEqualToString:identifierCopy])
     {
-      v7 = [(BSUIVibrancyLUT *)self interpolatedLutImage];
-      v8 = v7 != 0;
+      interpolatedLutImage = [(BSUIVibrancyLUT *)self interpolatedLutImage];
+      v8 = interpolatedLutImage != 0;
     }
 
     else
@@ -93,16 +93,16 @@
 {
   [(BSUIVibrancyLUT *)self blend];
   v4 = v3;
-  v5 = [(BSUIVibrancyLUT *)self toIdentifier];
-  v6 = [(BSUIVibrancyLUT *)self shouldUseInterpolatedLUTForBlend:v5 toIdentifier:v4];
+  toIdentifier = [(BSUIVibrancyLUT *)self toIdentifier];
+  v6 = [(BSUIVibrancyLUT *)self shouldUseInterpolatedLUTForBlend:toIdentifier toIdentifier:v4];
 
   if (v6)
   {
-    v7 = [(BSUIVibrancyLUT *)self lutIdentifier];
-    v8 = [(BSUIVibrancyLUT *)self toIdentifier];
+    lutIdentifier = [(BSUIVibrancyLUT *)self lutIdentifier];
+    toIdentifier2 = [(BSUIVibrancyLUT *)self toIdentifier];
     [(BSUIVibrancyLUT *)self blend];
-    [(BSUIVibrancyLUT *)self interpolatedImageWithFirstImage:v7 secondImage:v8 blend:?];
-    v10 = v9 = v7;
+    [(BSUIVibrancyLUT *)self interpolatedImageWithFirstImage:lutIdentifier secondImage:toIdentifier2 blend:?];
+    v10 = v9 = lutIdentifier;
   }
 
   else
@@ -111,26 +111,26 @@
     if (BSFloatIsOne() && ([(BSUIVibrancyLUT *)self toIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       v12 = MEMORY[0x1E69DCAB8];
-      v13 = [(BSUIVibrancyLUT *)self toIdentifier];
+      toIdentifier3 = [(BSUIVibrancyLUT *)self toIdentifier];
       v14 = MEMORY[0x1E696AAE8];
-      v8 = [(BSUIVibrancyLUT *)self bundleURL];
-      v15 = [v14 bundleWithURL:v8];
-      v16 = [v12 imageNamed:v13 inBundle:v15];
+      toIdentifier2 = [(BSUIVibrancyLUT *)self bundleURL];
+      v15 = [v14 bundleWithURL:toIdentifier2];
+      v16 = [v12 imageNamed:toIdentifier3 inBundle:v15];
     }
 
     else
     {
       v17 = MEMORY[0x1E69DCAB8];
-      v13 = [(BSUIVibrancyLUT *)self lutIdentifier];
+      toIdentifier3 = [(BSUIVibrancyLUT *)self lutIdentifier];
       v18 = MEMORY[0x1E696AAE8];
-      v8 = [(BSUIVibrancyLUT *)self bundleURL];
-      v15 = [v18 bundleWithURL:v8];
-      v16 = [v17 imageNamed:v13 inBundle:v15];
+      toIdentifier2 = [(BSUIVibrancyLUT *)self bundleURL];
+      v15 = [v18 bundleWithURL:toIdentifier2];
+      v16 = [v17 imageNamed:toIdentifier3 inBundle:v15];
     }
 
     v19 = v16;
 
-    v9 = v13;
+    v9 = toIdentifier3;
     v10 = v19;
   }
 
@@ -141,20 +141,20 @@
     IsOne = BSFloatIsOne();
     if (IsOne && ([(BSUIVibrancyLUT *)self toIdentifier], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v23 = [(BSUIVibrancyLUT *)self toIdentifier];
+      toIdentifier4 = [(BSUIVibrancyLUT *)self toIdentifier];
       v24 = 0;
       v25 = 1;
     }
 
     else
     {
-      v23 = [(BSUIVibrancyLUT *)self lutIdentifier];
+      toIdentifier4 = [(BSUIVibrancyLUT *)self lutIdentifier];
       v22 = 0;
       v25 = 0;
       v24 = 1;
     }
 
-    [v20 setName:v23];
+    [v20 setName:toIdentifier4];
     if (v24)
     {
 
@@ -170,8 +170,8 @@ LABEL_15:
       if (!IsOne)
       {
 LABEL_17:
-        v26 = [v10 CGImage];
-        [v20 setValue:v26 forKey:*MEMORY[0x1E6979AB8]];
+        cGImage = [v10 CGImage];
+        [v20 setValue:cGImage forKey:*MEMORY[0x1E6979AB8]];
         goto LABEL_22;
       }
 
@@ -194,30 +194,30 @@ LABEL_22:
   return v20;
 }
 
-- (id)interpolatedImageWithFirstImage:(id)a3 secondImage:(id)a4 blend:(double)a5
+- (id)interpolatedImageWithFirstImage:(id)image secondImage:(id)secondImage blend:(double)blend
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(BSUIVibrancyLUT *)self canReuseInterpolatedLUTWithBlend:v9 toIdentifier:a5])
+  imageCopy = image;
+  secondImageCopy = secondImage;
+  if ([(BSUIVibrancyLUT *)self canReuseInterpolatedLUTWithBlend:secondImageCopy toIdentifier:blend])
   {
-    v10 = [(BSUIVibrancyLUT *)self interpolatedLutImage];
+    interpolatedLutImage = [(BSUIVibrancyLUT *)self interpolatedLutImage];
   }
 
   else
   {
     v11 = MEMORY[0x1E69DCAB8];
     v12 = MEMORY[0x1E696AAE8];
-    v13 = [(BSUIVibrancyLUT *)self bundleURL];
-    v14 = [v12 bundleWithURL:v13];
-    v15 = [v11 imageNamed:v8 inBundle:v14];
+    bundleURL = [(BSUIVibrancyLUT *)self bundleURL];
+    v14 = [v12 bundleWithURL:bundleURL];
+    v15 = [v11 imageNamed:imageCopy inBundle:v14];
 
     v16 = MEMORY[0x1E69DCAB8];
     v17 = MEMORY[0x1E696AAE8];
-    v18 = [(BSUIVibrancyLUT *)self bundleURL];
-    v19 = [v17 bundleWithURL:v18];
-    v20 = [v16 imageNamed:v9 inBundle:v19];
+    bundleURL2 = [(BSUIVibrancyLUT *)self bundleURL];
+    v19 = [v17 bundleWithURL:bundleURL2];
+    v20 = [v16 imageNamed:secondImageCopy inBundle:v19];
 
-    v10 = 0;
+    interpolatedLutImage = 0;
     if (v15 && v20)
     {
       [v15 size];
@@ -227,39 +227,39 @@ LABEL_22:
       [v15 size];
       UIGraphicsBeginImageContext(v31);
       v25 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      *&v26 = a5;
+      *&v26 = blend;
       [v25 _solveForInput:v26];
       v28 = v27;
       [v15 drawInRect:0 blendMode:0.0 alpha:{0.0, v22, v24, 1.0}];
       [v20 drawInRect:0 blendMode:0.0 alpha:{0.0, v22, v24, v28}];
-      v10 = UIGraphicsGetImageFromCurrentImageContext();
+      interpolatedLutImage = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      [(BSUIVibrancyLUT *)self setInterpolatedLutImage:v10];
+      [(BSUIVibrancyLUT *)self setInterpolatedLutImage:interpolatedLutImage];
     }
   }
 
-  return v10;
+  return interpolatedLutImage;
 }
 
 - (NSString)groupName
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BSUIVibrancyLUT *)self lutIdentifier];
-  v5 = [(BSUIVibrancyLUT *)self bundleURL];
-  v6 = [v3 stringWithFormat:@"%@%@", v4, v5];
+  lutIdentifier = [(BSUIVibrancyLUT *)self lutIdentifier];
+  bundleURL = [(BSUIVibrancyLUT *)self bundleURL];
+  v6 = [v3 stringWithFormat:@"%@%@", lutIdentifier, bundleURL];
 
   return v6;
 }
 
-- (id)copyWithLuminanceReduced:(BOOL)a3
+- (id)copyWithLuminanceReduced:(BOOL)reduced
 {
-  v3 = a3;
+  reducedCopy = reduced;
   v5 = self->_lutIdentifier;
   lutIdentifier = self->_lutIdentifier;
   if (lutIdentifier)
   {
     v7 = [(NSString *)lutIdentifier hasPrefix:@"luminance_reduced_"];
-    if (v7 != v3)
+    if (v7 != reducedCopy)
     {
       v8 = self->_lutIdentifier;
       if (v7)
@@ -273,7 +273,7 @@ LABEL_22:
       }
 
       v10 = v9;
-      v11 = BSLutIdentifierForName(v9, v3);
+      v11 = BSLutIdentifierForName(v9, reducedCopy);
 
       v5 = v11;
     }
@@ -284,7 +284,7 @@ LABEL_22:
   if (toIdentifier)
   {
     v14 = [(NSString *)toIdentifier hasPrefix:@"luminance_reduced_"];
-    if (v14 != v3)
+    if (v14 != reducedCopy)
     {
       v15 = self->_toIdentifier;
       if (v14)
@@ -298,50 +298,50 @@ LABEL_22:
       }
 
       v17 = v16;
-      v18 = BSLutIdentifierForName(v16, v3);
+      v18 = BSLutIdentifierForName(v16, reducedCopy);
 
       v12 = v18;
     }
   }
 
   v19 = [BSUIVibrancyLUT alloc];
-  v20 = [(BSUIVibrancyLUT *)self bundleURL];
+  bundleURL = [(BSUIVibrancyLUT *)self bundleURL];
   [(BSUIVibrancyLUT *)self blend];
-  v21 = [(BSUIVibrancyLUT *)v19 initWithIdentifier:v5 bundleURL:v20 blend:v12 toIdentifier:?];
+  v21 = [(BSUIVibrancyLUT *)v19 initWithIdentifier:v5 bundleURL:bundleURL blend:v12 toIdentifier:?];
 
   return v21;
 }
 
-- (id)copyWithBlend:(double)a3 toIdentifier:(id)a4
+- (id)copyWithBlend:(double)blend toIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = [BSUIVibrancyLUT alloc];
-  v8 = [(BSUIVibrancyLUT *)self lutIdentifier];
-  v9 = [(BSUIVibrancyLUT *)self bundleURL];
-  v10 = [(BSUIVibrancyLUT *)v7 initWithIdentifier:v8 bundleURL:v9 blend:v6 toIdentifier:a3];
+  lutIdentifier = [(BSUIVibrancyLUT *)self lutIdentifier];
+  bundleURL = [(BSUIVibrancyLUT *)self bundleURL];
+  v10 = [(BSUIVibrancyLUT *)v7 initWithIdentifier:lutIdentifier bundleURL:bundleURL blend:identifierCopy toIdentifier:blend];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     v7 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) != 0 && ([(BSUIVibrancyLUT *)self lutIdentifier], v9 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyLUT *)v6 lutIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11) && ([(BSUIVibrancyLUT *)self bundleURL], v12 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyLUT *)v6 bundleURL], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && ([(BSUIVibrancyLUT *)self blend], [(BSUIVibrancyLUT *)v6 blend], BSFloatEqualToFloat()) && ([(BSUIVibrancyLUT *)self toIdentifier], v15 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyLUT *)v6 toIdentifier], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17))
     {
-      v18 = [(BSUIVibrancyLUT *)self interpolatedLutImage];
-      v19 = [(BSUIVibrancyLUT *)v6 interpolatedLutImage];
+      interpolatedLutImage = [(BSUIVibrancyLUT *)self interpolatedLutImage];
+      interpolatedLutImage2 = [(BSUIVibrancyLUT *)v6 interpolatedLutImage];
       v20 = BSEqualObjects();
     }
 
@@ -356,8 +356,8 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_lutIdentifier];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_lutIdentifier];
   v5 = [v4 appendObject:self->_bundleURL];
   blend = self->_blend;
   *&blend = blend;
@@ -368,7 +368,7 @@ LABEL_22:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BSUIVibrancyLUT alloc];
   lutIdentifier = self->_lutIdentifier;
@@ -381,10 +381,10 @@ LABEL_22:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    MEMORY[0x1EEDF0408](a1, 0);
+    MEMORY[0x1EEDF0408](self, 0);
   }
 }
 
@@ -480,19 +480,19 @@ LABEL_22:
   return v14;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v9 = a3;
-  v4 = [(BSUIVibrancyLUT *)self lutIdentifier];
-  [v9 appendString:v4 withName:@"lutIdentifier"];
+  formatterCopy = formatter;
+  lutIdentifier = [(BSUIVibrancyLUT *)self lutIdentifier];
+  [formatterCopy appendString:lutIdentifier withName:@"lutIdentifier"];
 
-  v5 = [(BSUIVibrancyLUT *)self bundleURL];
-  v6 = [v9 appendObject:v5 withName:@"bundleURL"];
+  bundleURL = [(BSUIVibrancyLUT *)self bundleURL];
+  v6 = [formatterCopy appendObject:bundleURL withName:@"bundleURL"];
 
   [(BSUIVibrancyLUT *)self blend];
-  v7 = [v9 appendFloat:@"blend" withName:?];
-  v8 = [(BSUIVibrancyLUT *)self toIdentifier];
-  [v9 appendString:v8 withName:@"toIdentifier"];
+  v7 = [formatterCopy appendFloat:@"blend" withName:?];
+  toIdentifier = [(BSUIVibrancyLUT *)self toIdentifier];
+  [formatterCopy appendString:toIdentifier withName:@"toIdentifier"];
 }
 
 @end

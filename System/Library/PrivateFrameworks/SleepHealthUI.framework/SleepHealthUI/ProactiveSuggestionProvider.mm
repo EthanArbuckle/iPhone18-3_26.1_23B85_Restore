@@ -1,13 +1,13 @@
 @interface ProactiveSuggestionProvider
 - (_TtC13SleepHealthUI27ProactiveSuggestionProvider)init;
-- (void)hksp_suggestedSleepScheduleWithCompletion:(id)a3;
+- (void)hksp_suggestedSleepScheduleWithCompletion:(id)completion;
 @end
 
 @implementation ProactiveSuggestionProvider
 
-- (void)hksp_suggestedSleepScheduleWithCompletion:(id)a3
+- (void)hksp_suggestedSleepScheduleWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = [objc_allocWithZone(MEMORY[0x277CEB830]) init];

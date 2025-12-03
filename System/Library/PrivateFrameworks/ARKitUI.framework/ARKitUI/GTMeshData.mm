@@ -1,19 +1,19 @@
 @interface GTMeshData
-- (BOOL)parseMaterialFile:(id)a3 error:(id *)a4;
-- (BOOL)parseOBJFileWith:(id *)a3;
-- (BOOL)readLine:(id)a3 error:(id *)a4;
-- (GTMeshData)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)parseMaterialFile:(id)file error:(id *)error;
+- (BOOL)parseOBJFileWith:(id *)with;
+- (BOOL)readLine:(id)line error:(id *)error;
+- (GTMeshData)initWithURL:(id)l error:(id *)error;
 - (id).cxx_construct;
-- (unsigned)findIndexOrPushVertex:(const GTVertexData *)a3;
+- (unsigned)findIndexOrPushVertex:(const GTVertexData *)vertex;
 @end
 
 @implementation GTMeshData
 
-- (BOOL)parseMaterialFile:(id)a3 error:(id *)a4
+- (BOOL)parseMaterialFile:(id)file error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfURL:v26 encoding:4 error:a4];
+  fileCopy = file;
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfURL:fileCopy encoding:4 error:error];
   v7 = v6;
   v25 = v6;
   if (v6)
@@ -72,11 +72,11 @@
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = *a4;
+        v21 = *error;
         *buf = 138543874;
         v34 = v20;
         v35 = 2048;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2112;
         v38 = v21;
         _os_log_impl(&dword_23D3AE000, obj, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to open .mtl file, error: %@.", buf, 0x20u);
@@ -87,11 +87,11 @@
     {
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      v24 = *a4;
+      v24 = *error;
       *buf = 138543874;
       v34 = v23;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
       v38 = v24;
       _os_log_impl(&dword_23D3AE000, obj, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to open .mtl file, error: %@.", buf, 0x20u);
@@ -102,10 +102,10 @@
   return v25 != 0;
 }
 
-- (unsigned)findIndexOrPushVertex:(const GTVertexData *)a3
+- (unsigned)findIndexOrPushVertex:(const GTVertexData *)vertex
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = std::__hash_table<std::__hash_value_type<GTVertexData,unsigned int>,std::__unordered_map_hasher<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::hash<GTVertexData>,std::equal_to<GTVertexData>,true>,std::__unordered_map_equal<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::equal_to<GTVertexData>,std::hash<GTVertexData>,true>,std::allocator<std::__hash_value_type<GTVertexData,unsigned int>>>::find<GTVertexData>(&self->_vertexMap.__table_.__bucket_list_.__ptr_, a3);
+  v5 = std::__hash_table<std::__hash_value_type<GTVertexData,unsigned int>,std::__unordered_map_hasher<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::hash<GTVertexData>,std::equal_to<GTVertexData>,true>,std::__unordered_map_equal<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::equal_to<GTVertexData>,std::hash<GTVertexData>,true>,std::allocator<std::__hash_value_type<GTVertexData,unsigned int>>>::find<GTVertexData>(&self->_vertexMap.__table_.__bucket_list_.__ptr_, vertex);
   if (v5)
   {
     result = v5[4].u32[0];
@@ -115,10 +115,10 @@
   {
     p_vertices = &self->_vertices;
     v8 = -1431655765 * ((self->_vertices.__end_ - self->_vertices.__begin_) >> 4);
-    v9 = *(a3 + 1);
-    v27[0] = *a3;
+    v9 = *(vertex + 1);
+    v27[0] = *vertex;
     v27[1] = v9;
-    v27[2] = *(a3 + 2);
+    v27[2] = *(vertex + 2);
     v28 = v8;
     std::__hash_table<std::__hash_value_type<GTVertexData,unsigned int>,std::__unordered_map_hasher<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::hash<GTVertexData>,std::equal_to<GTVertexData>,true>,std::__unordered_map_equal<GTVertexData,std::__hash_value_type<GTVertexData,unsigned int>,std::equal_to<GTVertexData>,std::hash<GTVertexData>,true>,std::allocator<std::__hash_value_type<GTVertexData,unsigned int>>>::__emplace_unique_key_args<GTVertexData,std::pair<GTVertexData,unsigned int>>(&self->_vertexMap.__table_.__bucket_list_.__ptr_, v27);
     end = self->_vertices.__end_;
@@ -154,9 +154,9 @@
       }
 
       v19 = 48 * v15;
-      v20 = *a3;
-      v21 = *(a3 + 2);
-      *(v19 + 16) = *(a3 + 1);
+      v20 = *vertex;
+      v21 = *(vertex + 2);
+      *(v19 + 16) = *(vertex + 1);
       *(v19 + 32) = v21;
       *v19 = v20;
       v14 = (48 * v15 + 48);
@@ -176,9 +176,9 @@
 
     else
     {
-      v12 = *a3;
-      v13 = *(a3 + 2);
-      *(end + 1) = *(a3 + 1);
+      v12 = *vertex;
+      v13 = *(vertex + 2);
+      *(end + 1) = *(vertex + 1);
       *(end + 2) = v13;
       *end = v12;
       v14 = (end + 48);
@@ -192,13 +192,13 @@
   return result;
 }
 
-- (BOOL)readLine:(id)a3 error:(id *)a4
+- (BOOL)readLine:(id)line error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lineCopy = line;
   v35 = 0;
   v34 = 0;
-  if (sscanf([v6 UTF8String], " v %f %f %f", &v35 + 4, &v35, &v34) == 3)
+  if (sscanf([lineCopy UTF8String], " v %f %f %f", &v35 + 4, &v35, &v34) == 3)
   {
     *&v7 = __PAIR64__(v35, HIDWORD(v35));
     DWORD2(v7) = v34;
@@ -209,8 +209,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = v6;
-  if (sscanf([v6 UTF8String], " vn %f %f %f", &v35 + 4, &v35, &v34) == 3)
+  v8 = lineCopy;
+  if (sscanf([lineCopy UTF8String], " vn %f %f %f", &v35 + 4, &v35, &v34) == 3)
   {
     *&v9 = __PAIR64__(v35, HIDWORD(v35));
     DWORD2(v9) = v34;
@@ -219,8 +219,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = v6;
-  if (sscanf([v6 UTF8String], " f %d//%d %d//%d %d//%d", v42, v41, &v42[4], &v41[4], &v42[8], &v41[8]) == 6)
+  v10 = lineCopy;
+  if (sscanf([lineCopy UTF8String], " f %d//%d %d//%d %d//%d", v42, v41, &v42[4], &v41[4], &v42[8], &v41[8]) == 6)
   {
     for (i = 0; i != 3; ++i)
     {
@@ -236,19 +236,19 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = v6;
-  if (sscanf([v6 UTF8String], " mtllib %256s", v40) == 1)
+  v13 = lineCopy;
+  if (sscanf([lineCopy UTF8String], " mtllib %256s", v40) == 1)
   {
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v40];
-    v15 = [(NSURL *)self->_objUrl URLByDeletingLastPathComponent];
-    v16 = [v15 URLByAppendingPathComponent:v14];
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_objUrl URLByDeletingLastPathComponent];
+    v16 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v14];
 
-    [(GTMeshData *)self parseMaterialFile:v16 error:a4];
+    [(GTMeshData *)self parseMaterialFile:v16 error:error];
     goto LABEL_14;
   }
 
-  v17 = v6;
-  if (sscanf([v6 UTF8String], " usemtl %256s", v40) != 1)
+  v17 = lineCopy;
+  if (sscanf([lineCopy UTF8String], " usemtl %256s", v40) != 1)
   {
     goto LABEL_14;
   }
@@ -301,7 +301,7 @@ LABEL_14:
     _os_log_impl(&dword_23D3AE000, v26, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Encountered usemtl '%{public}@' command before newmtl", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     v31 = objc_alloc(MEMORY[0x277CCA9B8]);
     v32 = *MEMORY[0x277CCA470];
@@ -310,7 +310,7 @@ LABEL_14:
     v37[0] = @"Loading a material file failed.";
     v37[1] = @"Encountered usemlt command in material file without newmtl.";
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-    *a4 = [v31 initWithDomain:*MEMORY[0x277CE5178] code:500 userInfo:v33];
+    *error = [v31 initWithDomain:*MEMORY[0x277CE5178] code:500 userInfo:v33];
   }
 
   v21 = 0;
@@ -320,10 +320,10 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)parseOBJFileWith:(id *)a3
+- (BOOL)parseOBJFileWith:(id *)with
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfURL:self->_objUrl encoding:4 error:a3];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfURL:self->_objUrl encoding:4 error:with];
   if (v5)
   {
     v6 = v5;
@@ -347,8 +347,8 @@ LABEL_15:
             objc_enumerationMutation(v8);
           }
 
-          [(GTMeshData *)self readLine:*(*(&v23 + 1) + 8 * i) error:a3, v23];
-          if (*a3)
+          [(GTMeshData *)self readLine:*(*(&v23 + 1) + 8 * i) error:with, v23];
+          if (*with)
           {
 
             goto LABEL_21;
@@ -387,11 +387,11 @@ LABEL_15:
       {
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        v18 = *a3;
+        v18 = *with;
         *buf = 138543874;
         v29 = v17;
         v30 = 2048;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2112;
         v33 = v18;
         _os_log_impl(&dword_23D3AE000, v15, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to open .obj file, error: %@.", buf, 0x20u);
@@ -402,11 +402,11 @@ LABEL_15:
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = *a3;
+      v21 = *with;
       *buf = 138543874;
       v29 = v20;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v21;
       _os_log_impl(&dword_23D3AE000, v15, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to open .obj file, error: %@.", buf, 0x20u);
@@ -420,21 +420,21 @@ LABEL_21:
   return result;
 }
 
-- (GTMeshData)initWithURL:(id)a3 error:(id *)a4
+- (GTMeshData)initWithURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = GTMeshData;
   v8 = [(GTMeshData *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_objUrl, a3);
+    objc_storeStrong(&v8->_objUrl, l);
     v10 = objc_opt_new();
     submeshes = v9->_submeshes;
     v9->_submeshes = v10;
 
-    [(GTMeshData *)v9 parseOBJFileWith:a4];
+    [(GTMeshData *)v9 parseOBJFileWith:error];
   }
 
   return v9;

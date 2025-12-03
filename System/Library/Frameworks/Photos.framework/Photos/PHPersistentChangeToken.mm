@@ -1,56 +1,56 @@
 @interface PHPersistentChangeToken
-+ (PHPersistentChangeToken)tokenWithPersistentHistoryToken:(id)a3;
-+ (id)currentTokenForContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersistentChangeToken:(id)a3;
-- (PHPersistentChangeToken)initWithCoder:(id)a3;
-- (PHPersistentChangeToken)initWithPersistentHistoryToken:(id)a3 version:(int)a4;
++ (PHPersistentChangeToken)tokenWithPersistentHistoryToken:(id)token;
++ (id)currentTokenForContext:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersistentChangeToken:(id)token;
+- (PHPersistentChangeToken)initWithCoder:(id)coder;
+- (PHPersistentChangeToken)initWithPersistentHistoryToken:(id)token version:(int)version;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHPersistentChangeToken
 
-- (PHPersistentChangeToken)initWithCoder:(id)a3
+- (PHPersistentChangeToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersistentHistoryToken"];
-  v6 = [v4 decodeIntForKey:@"Version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersistentHistoryToken"];
+  v6 = [coderCopy decodeIntForKey:@"Version"];
 
   v7 = [(PHPersistentChangeToken *)self initWithPersistentHistoryToken:v5 version:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   persistentHistoryToken = self->_persistentHistoryToken;
-  v5 = a3;
-  [v5 encodeObject:persistentHistoryToken forKey:@"PersistentHistoryToken"];
-  [v5 encodeInt:self->_version forKey:@"Version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:persistentHistoryToken forKey:@"PersistentHistoryToken"];
+  [coderCopy encodeInt:self->_version forKey:@"Version"];
 }
 
 - (unint64_t)hash
 {
-  v4 = [(PHPersistentChangeToken *)self persistentHistoryToken];
+  persistentHistoryToken = [(PHPersistentChangeToken *)self persistentHistoryToken];
 
-  if (!v4)
+  if (!persistentHistoryToken)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PHPersistentChangeToken.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"self.persistentHistoryToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPersistentChangeToken.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"self.persistentHistoryToken"}];
   }
 
-  v5 = [(PHPersistentChangeToken *)self persistentHistoryToken];
-  v6 = [v5 hash];
-  v7 = [(PHPersistentChangeToken *)self version];
+  persistentHistoryToken2 = [(PHPersistentChangeToken *)self persistentHistoryToken];
+  v6 = [persistentHistoryToken2 hash];
+  version = [(PHPersistentChangeToken *)self version];
 
-  return v6 ^ v7;
+  return v6 ^ version;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -58,21 +58,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHPersistentChangeToken *)self isEqualToPersistentChangeToken:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHPersistentChangeToken *)self isEqualToPersistentChangeToken:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPersistentChangeToken:(id)a3
+- (BOOL)isEqualToPersistentChangeToken:(id)token
 {
-  v4 = a3;
-  v5 = [v4 version];
-  if (v5 == [(PHPersistentChangeToken *)self version])
+  tokenCopy = token;
+  version = [tokenCopy version];
+  if (version == [(PHPersistentChangeToken *)self version])
   {
-    v6 = [v4 persistentHistoryToken];
-    v7 = [(PHPersistentChangeToken *)self persistentHistoryToken];
-    v8 = [v6 isEqual:v7];
+    persistentHistoryToken = [tokenCopy persistentHistoryToken];
+    persistentHistoryToken2 = [(PHPersistentChangeToken *)self persistentHistoryToken];
+    v8 = [persistentHistoryToken isEqual:persistentHistoryToken2];
   }
 
   else
@@ -88,36 +88,36 @@
   v3 = [MEMORY[0x1E69BE3C8] descriptionBuilderWithObject:self];
   [v3 appendName:@"persistentHistoryToken" typeCode:"@" value:&self->_persistentHistoryToken];
   [v3 appendName:@"version" typeCode:"i" value:&self->_version];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (PHPersistentChangeToken)initWithPersistentHistoryToken:(id)a3 version:(int)a4
+- (PHPersistentChangeToken)initWithPersistentHistoryToken:(id)token version:(int)version
 {
-  v6 = a3;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = PHPersistentChangeToken;
   v7 = [(PHPersistentChangeToken *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tokenCopy copy];
     persistentHistoryToken = v7->_persistentHistoryToken;
     v7->_persistentHistoryToken = v8;
 
-    v7->_version = a4;
+    v7->_version = version;
     v10 = v7;
   }
 
   return v7;
 }
 
-+ (PHPersistentChangeToken)tokenWithPersistentHistoryToken:(id)a3
++ (PHPersistentChangeToken)tokenWithPersistentHistoryToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = a3;
-    v4 = [[PHPersistentChangeToken alloc] initWithPersistentHistoryToken:v3];
+    tokenCopy = token;
+    v4 = [[PHPersistentChangeToken alloc] initWithPersistentHistoryToken:tokenCopy];
   }
 
   else
@@ -128,12 +128,12 @@
   return v4;
 }
 
-+ (id)currentTokenForContext:(id)a3
++ (id)currentTokenForContext:(id)context
 {
-  v4 = [a3 persistentStoreCoordinator];
-  v5 = [v4 currentPersistentHistoryTokenFromStores:0];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  v5 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:0];
 
-  v6 = [a1 tokenWithPersistentHistoryToken:v5];
+  v6 = [self tokenWithPersistentHistoryToken:v5];
 
   return v6;
 }

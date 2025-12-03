@@ -1,71 +1,71 @@
 @interface CRLCollaboratorCursorCoordinator
 - (_TtC8Freeform32CRLCollaboratorCursorCoordinator)init;
-- (id)collaboratorCursorSelectionPathForRenderer:(id)a3 collaboratorPresence:(id)a4;
+- (id)collaboratorCursorSelectionPathForRenderer:(id)renderer collaboratorPresence:(id)presence;
 - (void)dispatchSelectionPath:withFlags:;
-- (void)invalidateCursorWithCollaboratorPresence:(id)a3;
-- (void)registerCursorRenderer:(id)a3;
-- (void)setShouldShowCollaboratorCursors:(BOOL)a3;
-- (void)unregisterCursorRenderer:(id)a3;
-- (void)updateCollaboratorOwnershipWithPresenceUUID:(id)a3;
-- (void)updateCursorInformationWithSelectionPath:(id)a3 collaboratorPresence:(id)a4;
-- (void)validateSelectionStateUsing:(id)a3;
-- (void)willTeardownRenderer:(id)a3;
+- (void)invalidateCursorWithCollaboratorPresence:(id)presence;
+- (void)registerCursorRenderer:(id)renderer;
+- (void)setShouldShowCollaboratorCursors:(BOOL)cursors;
+- (void)unregisterCursorRenderer:(id)renderer;
+- (void)updateCollaboratorOwnershipWithPresenceUUID:(id)d;
+- (void)updateCursorInformationWithSelectionPath:(id)path collaboratorPresence:(id)presence;
+- (void)validateSelectionStateUsing:(id)using;
+- (void)willTeardownRenderer:(id)renderer;
 @end
 
 @implementation CRLCollaboratorCursorCoordinator
 
-- (void)setShouldShowCollaboratorCursors:(BOOL)a3
+- (void)setShouldShowCollaboratorCursors:(BOOL)cursors
 {
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator_shouldShowCollaboratorCursors) = a3;
-  v3 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator_shouldShowCollaboratorCursors) = cursors;
+  selfCopy = self;
   sub_100D56F68();
 }
 
-- (void)registerCursorRenderer:(id)a3
+- (void)registerCursorRenderer:(id)renderer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100D57260(a3);
+  selfCopy = self;
+  sub_100D57260(renderer);
   swift_unknownObjectRelease();
 }
 
-- (void)unregisterCursorRenderer:(id)a3
+- (void)unregisterCursorRenderer:(id)renderer
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  [a3 setCollaboratorCursorDelegate:0];
-  v5 = *(&v6->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator__collaboratorCursorRenderers);
-  [v5 removeObject:a3];
+  selfCopy = self;
+  [renderer setCollaboratorCursorDelegate:0];
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator__collaboratorCursorRenderers);
+  [v5 removeObject:renderer];
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateCursorInformationWithSelectionPath:(id)a3 collaboratorPresence:(id)a4
+- (void)updateCursorInformationWithSelectionPath:(id)path collaboratorPresence:(id)presence
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100D576AC(a3, v8);
+  pathCopy = path;
+  presenceCopy = presence;
+  selfCopy = self;
+  sub_100D576AC(path, presenceCopy);
 }
 
-- (void)updateCollaboratorOwnershipWithPresenceUUID:(id)a3
+- (void)updateCollaboratorOwnershipWithPresenceUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100D57988(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)invalidateCursorWithCollaboratorPresence:(id)a3
+- (void)invalidateCursorWithCollaboratorPresence:(id)presence
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D57E74(v4);
+  presenceCopy = presence;
+  selfCopy = self;
+  sub_100D57E74(presenceCopy);
 }
 
 - (_TtC8Freeform32CRLCollaboratorCursorCoordinator)init
@@ -75,40 +75,40 @@
   return result;
 }
 
-- (id)collaboratorCursorSelectionPathForRenderer:(id)a3 collaboratorPresence:(id)a4
+- (id)collaboratorCursorSelectionPathForRenderer:(id)renderer collaboratorPresence:(id)presence
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100D59A04(a3, v7);
+  presenceCopy = presence;
+  selfCopy = self;
+  v9 = sub_100D59A04(renderer, presenceCopy);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (void)willTeardownRenderer:(id)a3
+- (void)willTeardownRenderer:(id)renderer
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_10098EABC(&_mh_execute_header, "willTeardownRenderer(_:)", 24, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCollaboratorCursorCoordinator.swift", 102, 2, 195);
-  [a3 setCollaboratorCursorDelegate:0];
-  v5 = *(&v6->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator__collaboratorCursorRenderers);
-  [v5 removeObject:a3];
+  [renderer setCollaboratorCursorDelegate:0];
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform32CRLCollaboratorCursorCoordinator__collaboratorCursorRenderers);
+  [v5 removeObject:renderer];
 
   swift_unknownObjectRelease();
 }
 
-- (void)validateSelectionStateUsing:(id)a3
+- (void)validateSelectionStateUsing:(id)using
 {
-  v4 = a3;
-  v5 = self;
+  usingCopy = using;
+  selfCopy = self;
   sub_100D5A078();
 }
 
 - (void)dispatchSelectionPath:withFlags:
 {
   v0 = objc_opt_self();
-  v1 = [v0 _atomicIncrementAssertCount];
+  _atomicIncrementAssertCount = [v0 _atomicIncrementAssertCount];
   v25 = [objc_allocWithZone(NSString) init];
   sub_100604538(_swiftEmptyArrayStorage, &v25);
   StaticString.description.getter();
@@ -117,7 +117,7 @@
   StaticString.description.getter();
   v3 = String._bridgeToObjectiveC()();
 
-  v4 = [v3 lastPathComponent];
+  lastPathComponent = [v3 lastPathComponent];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -133,7 +133,7 @@
   *(inited + 16) = xmmword_10146CA70;
   *(inited + 56) = &type metadata for Int32;
   *(inited + 64) = &protocol witness table for Int32;
-  *(inited + 32) = v1;
+  *(inited + 32) = _atomicIncrementAssertCount;
   v10 = sub_100006370(0, &qword_1019F4D30);
   *(inited + 96) = v10;
   v11 = sub_1005CF04C();

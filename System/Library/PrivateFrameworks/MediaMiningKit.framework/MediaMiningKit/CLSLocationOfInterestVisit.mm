@@ -1,11 +1,11 @@
 @interface CLSLocationOfInterestVisit
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLSLocationOfInterest)locationOfInterest;
-- (CLSLocationOfInterestVisit)initWithCoder:(id)a3;
-- (CLSLocationOfInterestVisit)initWithIdentifier:(id)a3 visitInterval:(id)a4 confidence:(double)a5;
+- (CLSLocationOfInterestVisit)initWithCoder:(id)coder;
+- (CLSLocationOfInterestVisit)initWithIdentifier:(id)identifier visitInterval:(id)interval confidence:(double)confidence;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocationOfInterest:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocationOfInterest:(id)interest;
 @end
 
 @implementation CLSLocationOfInterestVisit
@@ -28,10 +28,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -42,8 +42,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(CLSLocationOfInterestVisit *)v4 identifier];
-      v7 = [(NSUUID *)identifier isEqual:v6];
+      identifier = [(CLSLocationOfInterestVisit *)equalCopy identifier];
+      v7 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -55,9 +55,9 @@
   return v7;
 }
 
-- (void)setLocationOfInterest:(id)a3
+- (void)setLocationOfInterest:(id)interest
 {
-  obj = a3;
+  obj = interest;
   WeakRetained = objc_loadWeakRetained(&self->_locationOfInterest);
   if (WeakRetained != obj || ([obj isEqual:WeakRetained] & 1) == 0)
   {
@@ -67,46 +67,46 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_visitInterval forKey:@"visitInterval"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_visitInterval forKey:@"visitInterval"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
   WeakRetained = objc_loadWeakRetained(&self->_locationOfInterest);
-  [v5 encodeObject:WeakRetained forKey:@"locationOfInterest"];
+  [coderCopy encodeObject:WeakRetained forKey:@"locationOfInterest"];
 }
 
-- (CLSLocationOfInterestVisit)initWithCoder:(id)a3
+- (CLSLocationOfInterestVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitInterval"];
-  [v4 decodeDoubleForKey:@"confidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitInterval"];
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v7 = [(CLSLocationOfInterestVisit *)self initWithIdentifier:v5 visitInterval:v6 confidence:?];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
     [v8 addVisit:v7];
   }
 
   return v7;
 }
 
-- (CLSLocationOfInterestVisit)initWithIdentifier:(id)a3 visitInterval:(id)a4 confidence:(double)a5
+- (CLSLocationOfInterestVisit)initWithIdentifier:(id)identifier visitInterval:(id)interval confidence:(double)confidence
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  intervalCopy = interval;
   v14.receiver = self;
   v14.super_class = CLSLocationOfInterestVisit;
   v11 = [(CLSLocationOfInterestVisit *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_visitInterval, a4);
-    v12->_confidence = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_visitInterval, interval);
+    v12->_confidence = confidence;
   }
 
   return v12;

@@ -1,22 +1,22 @@
 @interface AXInvertColors_Animoji
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Animoji
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PuppetCollectionViewCell"];
-  [v3 validateClass:@"PuppetCollectionViewCell" hasInstanceMethod:@"pickerView:viewForRow:forComponent:reusingView:" withFullSignature:{"@", "q", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PuppetCollectionViewCell"];
+  [validationsCopy validateClass:@"PuppetCollectionViewCell" hasInstanceMethod:@"pickerView:viewForRow:forComponent:reusingView:" withFullSignature:{"@", "q", "q", "@", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PuppetCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PuppetPickerViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PuppetCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PuppetPickerViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

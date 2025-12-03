@@ -1,9 +1,9 @@
 @interface _DPDediscoKeyConfigurationV2
-+ (id)decodeDAPEncodedConfig:(id)a3 withError:(id *)a4;
-+ (id)extractPublicKeyFromString:(id)a3;
-+ (id)keysFromConfiguration:(id)a3 dediscoServerNames:(id)a4 error:(id *)a5 overrideVerifyDate:(id)a6;
-+ (id)verifySignature:(id)a3 data:(id)a4 certificate:(id)a5 overrideVerifyDate:(id)a6 isAppleServer:(BOOL)a7;
-- (_DPDediscoKeyConfigurationV2)initWithDestinationKey:(id)a3 facilitatorPublicKey:(id)a4 keysMetadataArray:(id)a5;
++ (id)decodeDAPEncodedConfig:(id)config withError:(id *)error;
++ (id)extractPublicKeyFromString:(id)string;
++ (id)keysFromConfiguration:(id)configuration dediscoServerNames:(id)names error:(id *)error overrideVerifyDate:(id)date;
++ (id)verifySignature:(id)signature data:(id)data certificate:(id)certificate overrideVerifyDate:(id)date isAppleServer:(BOOL)server;
+- (_DPDediscoKeyConfigurationV2)initWithDestinationKey:(id)key facilitatorPublicKey:(id)publicKey keysMetadataArray:(id)array;
 - (id)helperURL;
 - (id)leaderURL;
 - (unsigned)helperHPKEConfigID;
@@ -12,13 +12,13 @@
 
 @implementation _DPDediscoKeyConfigurationV2
 
-+ (id)keysFromConfiguration:(id)a3 dediscoServerNames:(id)a4 error:(id *)a5 overrideVerifyDate:(id)a6
++ (id)keysFromConfiguration:(id)configuration dediscoServerNames:(id)names error:(id *)error overrideVerifyDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v62 = a6;
+  configurationCopy = configuration;
+  namesCopy = names;
+  dateCopy = date;
   v78 = 0;
-  v68 = [NSPropertyListSerialization propertyListWithData:v9 options:0 format:0 error:&v78];
+  v68 = [NSPropertyListSerialization propertyListWithData:configurationCopy options:0 format:0 error:&v78];
   v11 = v78;
   if (v11)
   {
@@ -29,10 +29,10 @@
       sub_10004E3FC();
     }
 
-    if (a5)
+    if (error)
     {
       [_DPDediscoError errorWithCode:300 underlyingError:v12 description:@"Failed to deserialize the configuration."];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -43,18 +43,18 @@
     goto LABEL_73;
   }
 
-  v57 = a1;
-  v58 = v9;
+  selfCopy = self;
+  v58 = configurationCopy;
   v60 = [&__NSArray0__struct mutableCopy];
   v15 = [&off_100075AD8 objectAtIndexedSubscript:0];
   v86[0] = v15;
-  v16 = [v10 objectForKeyedSubscript:kDPMetadataDediscoServerConfigurationLeader];
+  v16 = [namesCopy objectForKeyedSubscript:kDPMetadataDediscoServerConfigurationLeader];
   v85 = v16;
   v17 = [NSArray arrayWithObjects:&v85 count:1];
   v87[0] = v17;
   v18 = [&off_100075AD8 objectAtIndexedSubscript:1];
   v86[1] = v18;
-  v19 = [v10 objectForKeyedSubscript:kDPMetadataDediscoServerConfigurationHelpers];
+  v19 = [namesCopy objectForKeyedSubscript:kDPMetadataDediscoServerConfigurationHelpers];
   v87[1] = v19;
   v61 = [NSDictionary dictionaryWithObjects:v87 forKeys:v86 count:2];
 
@@ -62,7 +62,7 @@
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v59 = v10;
+  v59 = namesCopy;
   v55 = [&off_100075AD8 countByEnumeratingWithState:&v74 objects:v84 count:16];
   v12 = 0;
   if (!v55)
@@ -137,10 +137,10 @@
                 _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
               }
 
-              if (a5)
+              if (error)
               {
                 [_DPDediscoError errorWithCode:300 description:v37];
-                *a5 = v39 = 0;
+                *error = v39 = 0;
                 goto LABEL_39;
               }
 
@@ -149,15 +149,15 @@ LABEL_38:
               goto LABEL_39;
             }
 
-            v36 = [objc_opt_class() verifySignature:v30 data:v28 certificate:v29 overrideVerifyDate:v62 isAppleServer:{objc_msgSend(v25, "localizedCaseInsensitiveContainsString:", @"apple"}];
+            v36 = [objc_opt_class() verifySignature:v30 data:v28 certificate:v29 overrideVerifyDate:dateCopy isAppleServer:{objc_msgSend(v25, "localizedCaseInsensitiveContainsString:", @"apple"}];
             v37 = v36;
             if (v36)
             {
-              if (a5)
+              if (error)
               {
                 v38 = v36;
                 v39 = 0;
-                *a5 = v37;
+                *error = v37;
 LABEL_39:
                 v12 = v24;
                 goto LABEL_40;
@@ -167,7 +167,7 @@ LABEL_39:
             }
 
             v69 = v24;
-            v53 = [v57 decodeDAPEncodedConfig:v28 withError:&v69];
+            v53 = [selfCopy decodeDAPEncodedConfig:v28 withError:&v69];
             v12 = v69;
 
             if (!v53 || v12)
@@ -182,13 +182,13 @@ LABEL_39:
                 _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%@ error: %@", buf, 0x16u);
               }
 
-              if (!a5)
+              if (!error)
               {
                 goto LABEL_56;
               }
 
               [_DPDediscoError errorWithCode:300 underlyingError:v12 description:@"Failed to decode the DAP encoded configuration file"];
-              *a5 = v39 = 0;
+              *error = v39 = 0;
             }
 
             else
@@ -206,9 +206,9 @@ LABEL_39:
                   _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "error: %@", buf, 0xCu);
                 }
 
-                if (a5)
+                if (error)
                 {
-                  *a5 = [_DPDediscoError errorWithCode:300 underlyingError:0 description:v43];
+                  *error = [_DPDediscoError errorWithCode:300 underlyingError:0 description:v43];
                 }
 
 LABEL_56:
@@ -227,8 +227,8 @@ LABEL_40:
             if (!v39)
             {
               v14 = 0;
-              v9 = v58;
-              v10 = v59;
+              configurationCopy = v58;
+              namesCopy = v59;
               goto LABEL_72;
             }
 
@@ -245,7 +245,7 @@ LABEL_40:
       }
 
       v21 = v56 + 1;
-      v10 = v59;
+      namesCopy = v59;
       v46 = v60;
       v20 = v54;
     }
@@ -265,8 +265,8 @@ LABEL_65:
     v51 = [v50 objectForKeyedSubscript:@"publicKey"];
     v14 = [(_DPDediscoKeyConfigurationV2 *)v48 initWithDestinationKey:v49 facilitatorPublicKey:v51 keysMetadataArray:v46];
 
-    v10 = v59;
-    v9 = v58;
+    namesCopy = v59;
+    configurationCopy = v58;
   }
 
   else
@@ -278,11 +278,11 @@ LABEL_65:
       sub_10004F918(obj, v12, v47);
     }
 
-    v9 = v58;
-    if (a5)
+    configurationCopy = v58;
+    if (error)
     {
       [_DPDediscoError errorWithCode:300 underlyingError:v12 description:obj];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -298,33 +298,33 @@ LABEL_73:
   return v14;
 }
 
-- (_DPDediscoKeyConfigurationV2)initWithDestinationKey:(id)a3 facilitatorPublicKey:(id)a4 keysMetadataArray:(id)a5
+- (_DPDediscoKeyConfigurationV2)initWithDestinationKey:(id)key facilitatorPublicKey:(id)publicKey keysMetadataArray:(id)array
 {
   v6.receiver = self;
   v6.super_class = _DPDediscoKeyConfigurationV2;
-  return [(_DPDediscoKeyConfiguration *)&v6 initWithDestinationKey:a3 facilitatorPublicKey:a4 keysMetadataArray:a5];
+  return [(_DPDediscoKeyConfiguration *)&v6 initWithDestinationKey:key facilitatorPublicKey:publicKey keysMetadataArray:array];
 }
 
-+ (id)decodeDAPEncodedConfig:(id)a3 withError:(id *)a4
++ (id)decodeDAPEncodedConfig:(id)config withError:(id *)error
 {
-  v5 = a3;
-  if ([v5 length] > 8)
+  configCopy = config;
+  if ([configCopy length] > 8)
   {
     v8 = [&__NSDictionary0__struct mutableCopy];
-    v9 = [v5 bytes];
-    v10 = [NSNumber numberWithChar:*v9];
+    bytes = [configCopy bytes];
+    v10 = [NSNumber numberWithChar:*bytes];
     [v8 setObject:v10 forKeyedSubscript:@"id"];
 
-    v11 = [NSNumber numberWithUnsignedShort:bswap32(*(v9 + 1)) >> 16];
+    v11 = [NSNumber numberWithUnsignedShort:bswap32(*(bytes + 1)) >> 16];
     [v8 setObject:v11 forKeyedSubscript:@"kem_id"];
 
-    v12 = [NSNumber numberWithUnsignedShort:bswap32(*(v9 + 3)) >> 16];
+    v12 = [NSNumber numberWithUnsignedShort:bswap32(*(bytes + 3)) >> 16];
     [v8 setObject:v12 forKeyedSubscript:@"kdf_id"];
 
-    v13 = [NSNumber numberWithUnsignedShort:bswap32(*(v9 + 5)) >> 16];
+    v13 = [NSNumber numberWithUnsignedShort:bswap32(*(bytes + 5)) >> 16];
     [v8 setObject:v13 forKeyedSubscript:@"aead_id"];
 
-    v14 = *(v9 + 7);
+    v14 = *(bytes + 7);
     v15 = [v8 objectForKeyedSubscript:@"kem_id"];
     if ([v15 unsignedShortValue] == 16)
     {
@@ -332,16 +332,16 @@ LABEL_73:
       if ([v16 unsignedShortValue] == 1)
       {
         v17 = [v8 objectForKeyedSubscript:@"aead_id"];
-        v18 = [v17 unsignedShortValue];
+        unsignedShortValue = [v17 unsignedShortValue];
 
-        if (v18 == 1)
+        if (unsignedShortValue == 1)
         {
           if (v14)
           {
             v19 = __rev16(v14);
-            if ([v5 length] == (v19 + 9))
+            if ([configCopy length] == (v19 + 9))
             {
-              v20 = [NSData dataWithBytes:v9 + 9 length:v19];
+              v20 = [NSData dataWithBytes:bytes + 9 length:v19];
               [v8 setObject:v20 forKeyedSubscript:@"publicKey"];
               v7 = v8;
 
@@ -355,7 +355,7 @@ LABEL_29:
               sub_10004FA20();
             }
 
-            if (a4)
+            if (error)
             {
               v22 = @"Dedisco V2 config is malformed; buffer length does not match the expected value.";
               goto LABEL_19;
@@ -372,7 +372,7 @@ LABEL_28:
             sub_10004FAA0();
           }
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_28;
           }
@@ -380,7 +380,7 @@ LABEL_28:
           v22 = @"Dedisco V2 config is malformed; public key length is zero.";
 LABEL_19:
           [_DPDediscoError errorWithCode:300 description:v22];
-          *a4 = v7 = 0;
+          *error = v7 = 0;
           goto LABEL_29;
         }
 
@@ -391,7 +391,7 @@ LABEL_15:
           sub_10004F9A0();
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_28;
         }
@@ -410,10 +410,10 @@ LABEL_15:
     sub_10004FB20();
   }
 
-  if (a4)
+  if (error)
   {
     [_DPDediscoError errorWithCode:300 description:@"Malformed Dedisco V2 config, the buffer length is lower than the minimum length."];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -426,10 +426,10 @@ LABEL_30:
   return v7;
 }
 
-+ (id)extractPublicKeyFromString:(id)a3
++ (id)extractPublicKeyFromString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+  stringCopy = string;
+  v4 = [[NSData alloc] initWithBase64EncodedString:stringCopy options:0];
 
   if (v4)
   {
@@ -448,12 +448,12 @@ LABEL_30:
   return v4;
 }
 
-+ (id)verifySignature:(id)a3 data:(id)a4 certificate:(id)a5 overrideVerifyDate:(id)a6 isAppleServer:(BOOL)a7
++ (id)verifySignature:(id)signature data:(id)data certificate:(id)certificate overrideVerifyDate:(id)date isAppleServer:(BOOL)server
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [a1 extractCertificatesFromChain:a5];
+  signatureCopy = signature;
+  dataCopy = data;
+  dateCopy = date;
+  v14 = [self extractCertificatesFromChain:certificate];
   PPMAggregatorConfigSigning = SecPolicyCreatePPMAggregatorConfigSigning();
   if (!PPMAggregatorConfigSigning)
   {
@@ -462,7 +462,7 @@ LABEL_30:
   }
 
   v16 = PPMAggregatorConfigSigning;
-  v17 = [a1 constructTrust:v14 policy:PPMAggregatorConfigSigning overrideVerifyDate:v13];
+  v17 = [self constructTrust:v14 policy:PPMAggregatorConfigSigning overrideVerifyDate:dateCopy];
   CFRelease(v16);
   if (v17)
   {
@@ -483,7 +483,7 @@ LABEL_30:
 
     v18 = SecTrustCopyKey(v17);
     error = 0;
-    v19 = SecKeyVerifySignature(v18, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v12, v11, &error);
+    v19 = SecKeyVerifySignature(v18, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, signatureCopy, &error);
     CFRelease(v18);
     v20 = 0;
     if (!v19)
@@ -514,8 +514,8 @@ LABEL_15:
 
 - (id)leaderURL
 {
-  v2 = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  keysMetadataArray = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
+  v3 = [keysMetadataArray objectAtIndexedSubscript:0];
   v4 = [v3 objectForKeyedSubscript:@"url"];
 
   return v4;
@@ -523,8 +523,8 @@ LABEL_15:
 
 - (id)helperURL
 {
-  v2 = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  keysMetadataArray = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
+  v3 = [keysMetadataArray objectAtIndexedSubscript:1];
   v4 = [v3 objectForKeyedSubscript:@"url"];
 
   return v4;
@@ -532,22 +532,22 @@ LABEL_15:
 
 - (unsigned)leaderHPKEConfigID
 {
-  v2 = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  keysMetadataArray = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
+  v3 = [keysMetadataArray objectAtIndexedSubscript:0];
   v4 = [v3 objectForKeyedSubscript:@"id"];
-  v5 = [v4 unsignedCharValue];
+  unsignedCharValue = [v4 unsignedCharValue];
 
-  return v5;
+  return unsignedCharValue;
 }
 
 - (unsigned)helperHPKEConfigID
 {
-  v2 = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  keysMetadataArray = [(_DPDediscoKeyConfiguration *)self keysMetadataArray];
+  v3 = [keysMetadataArray objectAtIndexedSubscript:1];
   v4 = [v3 objectForKeyedSubscript:@"id"];
-  v5 = [v4 unsignedCharValue];
+  unsignedCharValue = [v4 unsignedCharValue];
 
-  return v5;
+  return unsignedCharValue;
 }
 
 @end

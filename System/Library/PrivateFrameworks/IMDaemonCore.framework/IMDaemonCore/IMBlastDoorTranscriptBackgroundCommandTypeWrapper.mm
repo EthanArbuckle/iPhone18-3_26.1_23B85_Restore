@@ -1,35 +1,35 @@
 @interface IMBlastDoorTranscriptBackgroundCommandTypeWrapper
-- (IMBlastDoorTranscriptBackgroundCommandTypeWrapper)initWith:(id)a3;
+- (IMBlastDoorTranscriptBackgroundCommandTypeWrapper)initWith:(id)with;
 @end
 
 @implementation IMBlastDoorTranscriptBackgroundCommandTypeWrapper
 
-- (IMBlastDoorTranscriptBackgroundCommandTypeWrapper)initWith:(id)a3
+- (IMBlastDoorTranscriptBackgroundCommandTypeWrapper)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v15.receiver = self;
   v15.super_class = IMBlastDoorTranscriptBackgroundCommandTypeWrapper;
   v5 = [(IMBlastDoorTranscriptBackgroundCommandTypeWrapper *)&v15 init];
   if (v5)
   {
-    -[IMBlastDoorTranscriptBackgroundCommandTypeWrapper setType:](v5, "setType:", [v4 type]);
-    v6 = [v4 type];
-    if (v6 > 1)
+    -[IMBlastDoorTranscriptBackgroundCommandTypeWrapper setType:](v5, "setType:", [withCopy type]);
+    type = [withCopy type];
+    if (type > 1)
     {
-      if (v6 == 2)
+      if (type == 2)
       {
         v12 = [IMBlastDoorBackgroundRequestInfo alloc];
-        v8 = [v4 request];
-        v9 = [(IMBlastDoorBackgroundRequestInfo *)v12 initWith:v8];
+        request = [withCopy request];
+        v9 = [(IMBlastDoorBackgroundRequestInfo *)v12 initWith:request];
         [(IMBlastDoorTranscriptBackgroundCommandTypeWrapper *)v5 setRequest:v9];
         goto LABEL_11;
       }
 
-      if (v6 == 3)
+      if (type == 3)
       {
         v10 = [IMBlastDoorBackgroundUpdateInfo alloc];
-        v8 = [v4 requestResponse];
-        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v10 initWith:v8];
+        request = [withCopy requestResponse];
+        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v10 initWith:request];
         [(IMBlastDoorTranscriptBackgroundCommandTypeWrapper *)v5 setRequestResponse:v9];
         goto LABEL_11;
       }
@@ -37,20 +37,20 @@
 
     else
     {
-      if (!v6)
+      if (!type)
       {
         v11 = [IMBlastDoorBackgroundUpdateInfo alloc];
-        v8 = [v4 update];
-        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v11 initWith:v8];
+        request = [withCopy update];
+        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v11 initWith:request];
         [(IMBlastDoorTranscriptBackgroundCommandTypeWrapper *)v5 setUpdate:v9];
         goto LABEL_11;
       }
 
-      if (v6 == 1)
+      if (type == 1)
       {
         v7 = [IMBlastDoorBackgroundUpdateInfo alloc];
-        v8 = [v4 refresh];
-        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v7 initWith:v8];
+        request = [withCopy refresh];
+        v9 = [(IMBlastDoorBackgroundUpdateInfo *)v7 initWith:request];
         [(IMBlastDoorTranscriptBackgroundCommandTypeWrapper *)v5 setRefresh:v9];
 LABEL_11:
       }

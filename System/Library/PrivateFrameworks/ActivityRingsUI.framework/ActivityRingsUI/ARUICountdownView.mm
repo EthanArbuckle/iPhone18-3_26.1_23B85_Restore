@@ -1,6 +1,6 @@
 @interface ARUICountdownView
 + (id)countdownViewConfiguredForCompanion;
-+ (id)countdownViewConfiguredForDisplayWithRingDiameter:(float)a3;
++ (id)countdownViewConfiguredForDisplayWithRingDiameter:(float)diameter;
 + (id)countdownViewConfiguredForWatch;
 - (id)backingTrackRingGroup;
 - (id)ringGroup;
@@ -10,29 +10,29 @@
 
 - (id)ringGroup
 {
-  v3 = [(ARUIRingsView *)self ringGroups];
-  v4 = [v3 count];
+  ringGroups = [(ARUIRingsView *)self ringGroups];
+  v4 = [ringGroups count];
 
   if (v4 < 2)
   {
     v8.receiver = self;
     v8.super_class = ARUICountdownView;
-    v6 = [(ARUIRingsView *)&v8 ringGroup];
+    ringGroup = [(ARUIRingsView *)&v8 ringGroup];
   }
 
   else
   {
-    v5 = [(ARUIRingsView *)self ringGroups];
-    v6 = [v5 lastObject];
+    ringGroups2 = [(ARUIRingsView *)self ringGroups];
+    ringGroup = [ringGroups2 lastObject];
   }
 
-  return v6;
+  return ringGroup;
 }
 
 - (id)backingTrackRingGroup
 {
-  v3 = [(ARUIRingsView *)self ringGroups];
-  v4 = [v3 count];
+  ringGroups = [(ARUIRingsView *)self ringGroups];
+  v4 = [ringGroups count];
 
   if (v4 < 2)
   {
@@ -41,8 +41,8 @@
 
   else
   {
-    v5 = [(ARUIRingsView *)self ringGroups];
-    v6 = [v5 objectAtIndex:0];
+    ringGroups2 = [(ARUIRingsView *)self ringGroups];
+    v6 = [ringGroups2 objectAtIndex:0];
   }
 
   return v6;
@@ -80,7 +80,7 @@
   return v9;
 }
 
-+ (id)countdownViewConfiguredForDisplayWithRingDiameter:(float)a3
++ (id)countdownViewConfiguredForDisplayWithRingDiameter:(float)diameter
 {
   v33[2] = *MEMORY[0x1E69E9840];
   v4 = +[ARUIRingGroup countdownRingGroup];
@@ -110,14 +110,14 @@
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        *&v10 = a3;
+        *&v10 = diameter;
         [v14 setGroupDiameter:v10];
         LODWORD(v15) = 7.0;
         [v14 setThickness:v15];
         [v14 setPercentage:0 ofRingAtIndex:0.0];
-        v16 = [v7 gradientLightColor];
-        v17 = [v7 gradientDarkColor];
-        [v14 setTopColor:v16 bottomColor:v17 ofRingAtIndex:0];
+        gradientLightColor = [v7 gradientLightColor];
+        gradientDarkColor = [v7 gradientDarkColor];
+        [v14 setTopColor:gradientLightColor bottomColor:gradientDarkColor ofRingAtIndex:0];
 
         LODWORD(v18) = ARUIRingPercentageValueNoRing;
         [v14 setPercentage:0 ofRingAtIndex:v18];

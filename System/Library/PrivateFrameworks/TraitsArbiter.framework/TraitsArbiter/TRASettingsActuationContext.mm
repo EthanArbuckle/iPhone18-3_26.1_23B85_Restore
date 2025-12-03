@@ -1,59 +1,59 @@
 @interface TRASettingsActuationContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSettingsActuationContext:(id)a3;
-- (TRASettingsActuationContext)initWithAnimationSettings:(id)a3 drawingFence:(id)a4 preventTouchCancellation:(BOOL)a5;
-- (TRASettingsActuationContext)initWithSettingsActuationContext:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSettingsActuationContext:(id)context;
+- (TRASettingsActuationContext)initWithAnimationSettings:(id)settings drawingFence:(id)fence preventTouchCancellation:(BOOL)cancellation;
+- (TRASettingsActuationContext)initWithSettingsActuationContext:(id)context;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setAnimationSettings:(id)a3;
+- (void)setAnimationSettings:(id)settings;
 @end
 
 @implementation TRASettingsActuationContext
 
-- (TRASettingsActuationContext)initWithAnimationSettings:(id)a3 drawingFence:(id)a4 preventTouchCancellation:(BOOL)a5
+- (TRASettingsActuationContext)initWithAnimationSettings:(id)settings drawingFence:(id)fence preventTouchCancellation:(BOOL)cancellation
 {
-  v8 = a3;
-  v9 = a4;
+  settingsCopy = settings;
+  fenceCopy = fence;
   v13.receiver = self;
   v13.super_class = TRASettingsActuationContext;
   v10 = [(TRASettingsActuationContext *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_preventTouchCancellation = a5;
-    [(TRASettingsActuationContext *)v10 setAnimationSettings:v8];
-    objc_storeStrong(&v11->_drawingFence, a4);
+    v10->_preventTouchCancellation = cancellation;
+    [(TRASettingsActuationContext *)v10 setAnimationSettings:settingsCopy];
+    objc_storeStrong(&v11->_drawingFence, fence);
   }
 
   return v11;
 }
 
-- (TRASettingsActuationContext)initWithSettingsActuationContext:(id)a3
+- (TRASettingsActuationContext)initWithSettingsActuationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 animationSettings];
-  v6 = v5;
-  if (!v5)
+  contextCopy = context;
+  animationSettings = [contextCopy animationSettings];
+  v6 = animationSettings;
+  if (!animationSettings)
   {
     v6 = [MEMORY[0x277CF0B70] settingsWithDuration:0.0];
   }
 
-  v7 = [v4 drawingFence];
-  v8 = [v4 preventTouchCancellation];
+  drawingFence = [contextCopy drawingFence];
+  preventTouchCancellation = [contextCopy preventTouchCancellation];
 
-  v9 = [(TRASettingsActuationContext *)self initWithAnimationSettings:v6 drawingFence:v7 preventTouchCancellation:v8];
-  if (!v5)
+  v9 = [(TRASettingsActuationContext *)self initWithAnimationSettings:v6 drawingFence:drawingFence preventTouchCancellation:preventTouchCancellation];
+  if (!animationSettings)
   {
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToSettingsActuationContext:(id)a3
+- (BOOL)isEqualToSettingsActuationContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     goto LABEL_8;
   }
@@ -64,15 +64,15 @@
     [TRASettingsActuationContext isEqualToSettingsActuationContext:];
   }
 
-  if (self == v4)
+  if (self == contextCopy)
   {
     v10 = 1;
     goto LABEL_10;
   }
 
   animationSettings = self->_animationSettings;
-  v6 = [(TRASettingsActuationContext *)v4 animationSettings];
-  LODWORD(animationSettings) = [(BSAnimationSettings *)animationSettings isEqual:v6];
+  animationSettings = [(TRASettingsActuationContext *)contextCopy animationSettings];
+  LODWORD(animationSettings) = [(BSAnimationSettings *)animationSettings isEqual:animationSettings];
 
   if (!animationSettings)
   {
@@ -80,13 +80,13 @@
   }
 
   drawingFence = self->_drawingFence;
-  v8 = [(TRASettingsActuationContext *)v4 drawingFence];
-  LODWORD(drawingFence) = [drawingFence isEqual:v8];
+  drawingFence = [(TRASettingsActuationContext *)contextCopy drawingFence];
+  LODWORD(drawingFence) = [drawingFence isEqual:drawingFence];
 
   if (drawingFence)
   {
     preventTouchCancellation = self->_preventTouchCancellation;
-    v10 = preventTouchCancellation == [(TRASettingsActuationContext *)v4 preventTouchCancellation];
+    v10 = preventTouchCancellation == [(TRASettingsActuationContext *)contextCopy preventTouchCancellation];
   }
 
   else
@@ -100,18 +100,18 @@ LABEL_10:
   return v10;
 }
 
-- (void)setAnimationSettings:(id)a3
+- (void)setAnimationSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
-    if (self->_animationSettings == v4)
+    if (self->_animationSettings == settingsCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = v4;
-    v5 = [(BSAnimationSettings *)v4 copy];
+    v7 = settingsCopy;
+    v5 = [(BSAnimationSettings *)settingsCopy copy];
   }
 
   else
@@ -123,14 +123,14 @@ LABEL_10:
   animationSettings = self->_animationSettings;
   self->_animationSettings = v5;
 
-  v4 = v7;
+  settingsCopy = v7;
 LABEL_6:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -138,7 +138,7 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsActuationContext *)self isEqualToSettingsActuationContext:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsActuationContext *)self isEqualToSettingsActuationContext:equalCopy];
   }
 
   return v5;
@@ -146,10 +146,10 @@ LABEL_6:
 
 - (id)succinctDescription
 {
-  v2 = [(TRASettingsActuationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRASettingsActuationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -162,12 +162,12 @@ LABEL_6:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRASettingsActuationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRASettingsActuationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToSettingsActuationContext:.cold.1()

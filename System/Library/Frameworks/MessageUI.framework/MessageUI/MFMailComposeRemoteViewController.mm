@@ -1,35 +1,35 @@
 @interface MFMailComposeRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (MFMailComposeRemoteViewControllerDelegate)delegate;
 - (void)bodyFinishedDrawing;
-- (void)serviceCompositionFinishedWithResult:(int64_t)a3 error:(id)a4;
-- (void)serviceCompositionRequestsSendWithBody:(id)a3 recipients:(id)a4 completion:(id)a5;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)serviceCompositionFinishedWithResult:(int64_t)result error:(id)error;
+- (void)serviceCompositionRequestsSendWithBody:(id)body recipients:(id)recipients completion:(id)completion;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation MFMailComposeRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"ComposeServiceRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.MailCompositionService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"ComposeServiceRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.MailCompositionService" connectionHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:*MEMORY[0x1E69DEAE8]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x1E69DEAE8]])
     {
-      v7 = [v5 code];
+      code = [v5 code];
 
-      if (v7 == 1)
+      if (code == 1)
       {
         goto LABEL_9;
       }
@@ -49,30 +49,30 @@
   }
 
 LABEL_9:
-  v9 = [(MFMailComposeRemoteViewController *)self delegate];
-  [v9 compositionViewServiceTerminatedWithError:v5];
+  delegate = [(MFMailComposeRemoteViewController *)self delegate];
+  [delegate compositionViewServiceTerminatedWithError:v5];
 }
 
-- (void)serviceCompositionFinishedWithResult:(int64_t)a3 error:(id)a4
+- (void)serviceCompositionFinishedWithResult:(int64_t)result error:(id)error
 {
-  v7 = a4;
-  v6 = [(MFMailComposeRemoteViewController *)self delegate];
-  [v6 compositionFinishedWithResult:a3 error:v7];
+  errorCopy = error;
+  delegate = [(MFMailComposeRemoteViewController *)self delegate];
+  [delegate compositionFinishedWithResult:result error:errorCopy];
 }
 
-- (void)serviceCompositionRequestsSendWithBody:(id)a3 recipients:(id)a4 completion:(id)a5
+- (void)serviceCompositionRequestsSendWithBody:(id)body recipients:(id)recipients completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MFMailComposeRemoteViewController *)self delegate];
-  [v10 compositionRequestsSendWithBody:v11 recipients:v8 completion:v9];
+  bodyCopy = body;
+  recipientsCopy = recipients;
+  completionCopy = completion;
+  delegate = [(MFMailComposeRemoteViewController *)self delegate];
+  [delegate compositionRequestsSendWithBody:bodyCopy recipients:recipientsCopy completion:completionCopy];
 }
 
 - (void)bodyFinishedDrawing
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_MFMailComposeViewControllerFirstDrawNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_MFMailComposeViewControllerFirstDrawNotification" object:self];
 }
 
 - (MFMailComposeRemoteViewControllerDelegate)delegate

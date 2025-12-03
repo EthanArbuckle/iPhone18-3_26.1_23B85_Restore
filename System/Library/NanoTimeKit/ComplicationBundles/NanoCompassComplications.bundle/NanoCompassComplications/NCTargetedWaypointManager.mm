@@ -3,7 +3,7 @@
 - (NCTargetedWaypointManager)init;
 - (id)fetchTargetedWaypointUUID;
 - (void)_loadTargetedWaypointUUID;
-- (void)setTargetedWaypointUUID:(id)a3;
+- (void)setTargetedWaypointUUID:(id)d;
 @end
 
 @implementation NCTargetedWaypointManager
@@ -34,17 +34,17 @@
   return v6;
 }
 
-- (void)setTargetedWaypointUUID:(id)a3
+- (void)setTargetedWaypointUUID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = v5;
+  dCopy = d;
+  v8 = dCopy;
   targetedWaypointUUID = self->_targetedWaypointUUID;
   p_targetedWaypointUUID = &self->_targetedWaypointUUID;
   v9 = targetedWaypointUUID;
-  if (targetedWaypointUUID != v5 && (objc_msgSend_isEqual_(v5, v6, v9, v7) & 1) == 0)
+  if (targetedWaypointUUID != dCopy && (objc_msgSend_isEqual_(dCopy, v6, v9, v7) & 1) == 0)
   {
-    objc_storeStrong(p_targetedWaypointUUID, a3);
+    objc_storeStrong(p_targetedWaypointUUID, d);
     v12 = objc_alloc(MEMORY[0x277CBEBD0]);
     v15 = objc_msgSend_initWithSuiteName_(v12, v13, @"com.apple.compass", v14);
     v16 = *p_targetedWaypointUUID;

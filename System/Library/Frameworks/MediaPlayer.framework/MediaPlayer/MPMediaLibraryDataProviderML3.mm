@@ -1,153 +1,153 @@
 @interface MPMediaLibraryDataProviderML3
 + (NSArray)onDiskProviders;
-+ (id)_unadjustedValueForItemDateWithDefaultValue:(id)a3;
-+ (id)_unadjustedValueForItemPropertyRatingWithDefaultValue:(id)a3;
-+ (id)_unadjustedValueForItemPropertyVolumeAdjustmentWithDefaultValue:(id)a3;
-+ (id)_unadjustedValueForItemPropertyVolumeNormalizationWithDefaultValue:(id)a3;
-+ (id)_unadjustedValueForItemTimeWithDefaultValue:(id)a3;
-+ (id)_unadjustedValueForMPProperty:(id)a3 withDefaultValue:(id)a4;
-+ (id)uniqueIdentifierForLibrary:(id)a3;
++ (id)_unadjustedValueForItemDateWithDefaultValue:(id)value;
++ (id)_unadjustedValueForItemPropertyRatingWithDefaultValue:(id)value;
++ (id)_unadjustedValueForItemPropertyVolumeAdjustmentWithDefaultValue:(id)value;
++ (id)_unadjustedValueForItemPropertyVolumeNormalizationWithDefaultValue:(id)value;
++ (id)_unadjustedValueForItemTimeWithDefaultValue:(id)value;
++ (id)_unadjustedValueForMPProperty:(id)property withDefaultValue:(id)value;
++ (id)uniqueIdentifierForLibrary:(id)library;
 - (BOOL)_dataProviderSupportsEntityChangeTracking;
-- (BOOL)_removeEntitiesWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4 entityClass:(Class)a5;
-- (BOOL)collectionExistsContainedWithinPersistentIDs:(const unint64_t *)a3 count:(unint64_t)a4 groupingType:(int64_t)a5 existentPID:(unint64_t *)a6;
-- (BOOL)collectionExistsContainedWithinSyncIDs:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionExistsWithCloudLibraryID:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionExistsWithCloudUniversalLibraryID:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionExistsWithName:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionExistsWithPersistentID:(unint64_t)a3 groupingType:(int64_t)a4;
-- (BOOL)collectionExistsWithSagaID:(int64_t)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionExistsWithStoreID:(int64_t)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5;
-- (BOOL)collectionInLibraryWithPersistentID:(unint64_t)a3 groupingType:(int64_t)a4;
-- (BOOL)deleteItemsWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4;
+- (BOOL)_removeEntitiesWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count entityClass:(Class)class;
+- (BOOL)collectionExistsContainedWithinPersistentIDs:(const unint64_t *)ds count:(unint64_t)count groupingType:(int64_t)type existentPID:(unint64_t *)d;
+- (BOOL)collectionExistsContainedWithinSyncIDs:(id)ds groupingType:(int64_t)type existentPID:(unint64_t *)d;
+- (BOOL)collectionExistsWithCloudLibraryID:(id)d groupingType:(int64_t)type existentPID:(unint64_t *)iD;
+- (BOOL)collectionExistsWithCloudUniversalLibraryID:(id)d groupingType:(int64_t)type existentPID:(unint64_t *)iD;
+- (BOOL)collectionExistsWithName:(id)name groupingType:(int64_t)type existentPID:(unint64_t *)d;
+- (BOOL)collectionExistsWithPersistentID:(unint64_t)d groupingType:(int64_t)type;
+- (BOOL)collectionExistsWithSagaID:(int64_t)d groupingType:(int64_t)type existentPID:(unint64_t *)iD;
+- (BOOL)collectionExistsWithStoreID:(int64_t)d groupingType:(int64_t)type existentPID:(unint64_t *)iD;
+- (BOOL)collectionInLibraryWithPersistentID:(unint64_t)d groupingType:(int64_t)type;
+- (BOOL)deleteItemsWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count;
 - (BOOL)hasGeniusMixes;
-- (BOOL)hasMediaOfType:(unint64_t)a3;
+- (BOOL)hasMediaOfType:(unint64_t)type;
 - (BOOL)hasUbiquitousBookmarkableItems;
-- (BOOL)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unint64_t)a7;
-- (BOOL)performTransactionWithBlock:(id)a3;
-- (BOOL)playlistExistsWithPersistentID:(unint64_t)a3;
-- (BOOL)removeItemsWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4;
-- (BOOL)removePlaylistWithIdentifier:(int64_t)a3;
-- (BOOL)removePlaylistWithIdentifier:(int64_t)a3 preserveUndeletableEntities:(BOOL)a4;
+- (BOOL)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unint64_t)mediaType;
+- (BOOL)performTransactionWithBlock:(id)block;
+- (BOOL)playlistExistsWithPersistentID:(unint64_t)d;
+- (BOOL)removeItemsWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count;
+- (BOOL)removePlaylistWithIdentifier:(int64_t)identifier;
+- (BOOL)removePlaylistWithIdentifier:(int64_t)identifier preserveUndeletableEntities:(BOOL)entities;
 - (ICUserIdentity)userIdentity;
 - (MPMediaLibrary)mediaLibrary;
-- (MPMediaLibraryDataProviderML3)initWithLibrary:(id)a3;
+- (MPMediaLibraryDataProviderML3)initWithLibrary:(id)library;
 - (NSString)accountDSID;
 - (NSString)description;
 - (NSString)name;
 - (NSString)uniqueIdentifier;
-- (id)ML3SystemFilterPredicatesWithGroupingType:(int64_t)a3 cloudTrackFilteringType:(int64_t)a4 subscriptionFilteringOptions:(int64_t)a5 additionalFilterPredicates:(id)a6;
-- (id)_adjustedItemDateOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemNonnullDateOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyAssetURLOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyBookletsOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyChapterArtworkTimesOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyChaptersOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyContentRatingOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyEQPresetOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyEpisodeNumberOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyFilePathOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyMovieInfoOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyRatingOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertySeasonNameOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertySeasonNumberOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyVolumeAdjustmentOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemPropertyVolumeNormalizationOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedItemTimeOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedPlaylistPropertySeedItemsOfEntity:(id)a3 withDefaultValue:(id)a4;
-- (id)_adjustedPropertyMediaTypeOfEntity:(id)a3 withDefaultValue:(id)a4;
+- (id)ML3SystemFilterPredicatesWithGroupingType:(int64_t)type cloudTrackFilteringType:(int64_t)filteringType subscriptionFilteringOptions:(int64_t)options additionalFilterPredicates:(id)predicates;
+- (id)_adjustedItemDateOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemNonnullDateOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyAssetURLOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyBookletsOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyChapterArtworkTimesOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyChaptersOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyContentRatingOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyEQPresetOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyEpisodeNumberOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyFilePathOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyMovieInfoOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyRatingOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertySeasonNameOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertySeasonNumberOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyVolumeAdjustmentOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemPropertyVolumeNormalizationOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedItemTimeOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedPlaylistPropertySeedItemsOfEntity:(id)entity withDefaultValue:(id)value;
+- (id)_adjustedPropertyMediaTypeOfEntity:(id)entity withDefaultValue:(id)value;
 - (id)_storePlatformRequestContext;
 - (id)_userSocialProfileID;
-- (id)adjustedValueForMPProperty:(id)a3 ofEntity:(id)a4 withDefaultValue:(id)a5;
-- (id)collectionResultSetForQueryCriteria:(id)a3;
-- (id)itemResultSetForQueryCriteria:(id)a3;
+- (id)adjustedValueForMPProperty:(id)property ofEntity:(id)entity withDefaultValue:(id)value;
+- (id)collectionResultSetForQueryCriteria:(id)criteria;
+- (id)itemResultSetForQueryCriteria:(id)criteria;
 - (id)lastModifiedDate;
-- (id)multiverseIdentifierForCollectionWithPersistentID:(int64_t)a3 groupingType:(int64_t)a4;
-- (id)multiverseIdentifierForTrackWithPersistentID:(int64_t)a3;
-- (id)systemFilterPredicatesWithGroupingType:(int64_t)a3 cloudTrackFilteringType:(int64_t)a4 subscriptionFilteringOptions:(int64_t)a5;
-- (int64_t)addPlaylistWithValuesForProperties:(id)a3 trackList:(id)a4 playlistEntryProperties:(id)a5;
-- (int64_t)containerPersistentIDForGlobalID:(id)a3;
+- (id)multiverseIdentifierForCollectionWithPersistentID:(int64_t)d groupingType:(int64_t)type;
+- (id)multiverseIdentifierForTrackWithPersistentID:(int64_t)d;
+- (id)systemFilterPredicatesWithGroupingType:(int64_t)type cloudTrackFilteringType:(int64_t)filteringType subscriptionFilteringOptions:(int64_t)options;
+- (int64_t)addPlaylistWithValuesForProperties:(id)properties trackList:(id)list playlistEntryProperties:(id)entryProperties;
+- (int64_t)containerPersistentIDForGlobalID:(id)d;
 - (int64_t)favoriteSongsPlaylistPersistentID;
-- (int64_t)itemPersistentIDForStoreID:(int64_t)a3;
+- (int64_t)itemPersistentIDForStoreID:(int64_t)d;
 - (int64_t)photosMemoriesPlaylistPersistentID;
 - (int64_t)playbackHistoryPlaylistPersistentID;
 - (int64_t)playlistGeneration;
-- (int64_t)sdk_addPlaylistWithValuesForProperties:(id)a3;
-- (void)_addGlobalPlaylistsToLibraryDatabase:(id)a3 asLibraryOwned:(BOOL)a4 completion:(id)a5;
+- (int64_t)sdk_addPlaylistWithValuesForProperties:(id)properties;
+- (void)_addGlobalPlaylistsToLibraryDatabase:(id)database asLibraryOwned:(BOOL)owned completion:(id)completion;
 - (void)_coalesceEvents;
-- (void)_dynamicPropertiesDidChange:(id)a3;
-- (void)_importStoreAlbumArtistElements:(id)a3 withReferralObject:(id)a4 withCompletion:(id)a5;
-- (void)_importStoreItemElements:(id)a3 withReferralObject:(id)a4 addTracksToDeviceLibraryOnly:(BOOL)a5 andAddTracksToCloudLibrary:(BOOL)a6 usingCloudAdamID:(int64_t)a7 withCompletion:(id)a8;
-- (void)_invalidatePersistentKeysForIdentifiers:(int64_t *)a3 count:(unint64_t)a4;
-- (void)_invisiblePropertiesDidChange:(id)a3;
-- (void)_libraryCloudLibraryAvailabilityDidChange:(id)a3;
-- (void)_libraryContentsDidChange:(id)a3;
-- (void)_libraryEntitiesAddedOrRemoved:(id)a3;
-- (void)_libraryPathDidChange:(id)a3;
-- (void)_loadProperties:(id)a3 ofEntityWithIdentifier:(int64_t)a4 ML3EntityClass:(Class)a5 completionBlock:(id)a6;
-- (void)_loadValueForAggregateFunction:(id)a3 entityClass:(Class)a4 property:(id)a5 query:(id)a6 completionBlock:(id)a7;
+- (void)_dynamicPropertiesDidChange:(id)change;
+- (void)_importStoreAlbumArtistElements:(id)elements withReferralObject:(id)object withCompletion:(id)completion;
+- (void)_importStoreItemElements:(id)elements withReferralObject:(id)object addTracksToDeviceLibraryOnly:(BOOL)only andAddTracksToCloudLibrary:(BOOL)library usingCloudAdamID:(int64_t)d withCompletion:(id)completion;
+- (void)_invalidatePersistentKeysForIdentifiers:(int64_t *)identifiers count:(unint64_t)count;
+- (void)_invisiblePropertiesDidChange:(id)change;
+- (void)_libraryCloudLibraryAvailabilityDidChange:(id)change;
+- (void)_libraryContentsDidChange:(id)change;
+- (void)_libraryEntitiesAddedOrRemoved:(id)removed;
+- (void)_libraryPathDidChange:(id)change;
+- (void)_loadProperties:(id)properties ofEntityWithIdentifier:(int64_t)identifier ML3EntityClass:(Class)class completionBlock:(id)block;
+- (void)_loadValueForAggregateFunction:(id)function entityClass:(Class)class property:(id)property query:(id)query completionBlock:(id)block;
 - (void)_postEvents;
 - (void)_updateArtworkDataSourceMediaLibraryUniqueIdentifier;
-- (void)addGlobalPlaylistWithID:(id)a3 andAddToCloudLibrary:(BOOL)a4 completion:(id)a5;
-- (void)addItemWithIdentifier:(int64_t)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)addItemsWithIdentifiers:(id)a3 andEntryProperties:(id)a4 toPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
-- (void)addItemsWithIdentifiers:(id)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)addPlaylistStoreItemsForLookupItems:(id)a3 withCompletion:(id)a4;
-- (void)addToLocalDeviceLibraryGlobalPlaylistWithID:(id)a3 completion:(id)a4;
-- (void)addTracksToMyLibrary:(id)a3;
-- (void)clearLocationPropertiesOfItemWithIdentifier:(int64_t)a3;
+- (void)addGlobalPlaylistWithID:(id)d andAddToCloudLibrary:(BOOL)library completion:(id)completion;
+- (void)addItemWithIdentifier:(int64_t)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block;
+- (void)addItemsWithIdentifiers:(id)identifiers andEntryProperties:(id)properties toPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)addItemsWithIdentifiers:(id)identifiers toPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)addPlaylistStoreItemsForLookupItems:(id)items withCompletion:(id)completion;
+- (void)addToLocalDeviceLibraryGlobalPlaylistWithID:(id)d completion:(id)completion;
+- (void)addTracksToMyLibrary:(id)library;
+- (void)clearLocationPropertiesOfItemWithIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)enumerateCollectionIdentifiersForQueryCriteria:(id)a3 ordered:(BOOL)a4 cancelBlock:(id)a5 usingBlock:(id)a6;
-- (void)enumerateEntityChangesAfterSyncAnchor:(id)a3 maximumRevisionType:(int64_t)a4 inUsersLibrary:(BOOL)a5 itemBlock:(id)a6 collectionBlock:(id)a7;
-- (void)enumerateItemIdentifiersForQueryCriteria:(id)a3 ordered:(BOOL)a4 cancelBlock:(id)a5 usingBlock:(id)a6;
-- (void)importArtworkTokenForEntityPersistentID:(unint64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7;
-- (void)loadProperties:(id)a3 ofCollectionWithIdentifier:(int64_t)a4 groupingType:(int64_t)a5 completionBlock:(id)a6;
-- (void)loadProperties:(id)a3 ofItemWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)loadQueryCriteria:(id)a3 countOfCollectionsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 countOfItemsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 hasCollectionsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 hasItemsWithCompletionBlock:(id)a4;
-- (void)loadValueForAggregateFunction:(id)a3 onCollectionsForProperty:(id)a4 queryCriteria:(id)a5 completionBlock:(id)a6;
-- (void)loadValueForAggregateFunction:(id)a3 onItemsForProperty:(id)a4 queryCriteria:(id)a5 completionBlock:(id)a6;
-- (void)moveItemFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 inPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
-- (void)performBackgroundTaskWithBlock:(id)a3;
-- (void)performReadTransactionWithBlock:(id)a3;
-- (void)performStoreAlbumArtistLibraryImport:(id)a3 withCompletion:(id)a4;
-- (void)performStoreItemLibraryImport:(id)a3 withCompletion:(id)a4;
-- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)a3 withPath:(id)a4 assetProtectionType:(int64_t)a5;
-- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)a3 withPath:(id)a4 assetProtectionType:(int64_t)a5 completionBlock:(id)a6;
-- (void)removeAllItemsInPlaylistWithIdentifier:(int64_t)a3;
-- (void)removeArtworkForEntityPersistentID:(unint64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6;
-- (void)removeFirstItemFromPlaylistWithIdentifier:(int64_t)a3;
-- (void)removeItemsAtIndexes:(id)a3 inPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)sdk_addItemWithOpaqueID:(id)a3 withCompletion:(id)a4;
-- (void)sdk_addItemWithOpaqueIdentifier:(id)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)sdk_addItemWithSagaIdentifier:(int64_t)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5;
-- (void)setItemsWithIdentifiers:(id)a3 andEntryProperties:(id)a4 forPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
-- (void)setLibrary:(id)a3;
-- (void)setLibraryContainerFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4;
-- (void)setLibraryEntityFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4;
-- (void)setLibraryPublicContainerFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4;
-- (void)setLibraryPublicEntityFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4;
-- (void)setReactionText:(id)a3 onEntryAtPosition:(unint64_t)a4 inPlaylistWithIdentifier:(int64_t)a5 completion:(id)a6;
-- (void)setUserIdentity:(id)a3;
-- (void)setValue:(id)a3 forProperty:(id)a4 ofCollectionWithIdentifier:(int64_t)a5 groupingType:(int64_t)a6 completionBlock:(id)a7;
-- (void)setValue:(id)a3 forProperty:(id)a4 ofItemWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
-- (void)setValue:(id)a3 forProperty:(id)a4 ofPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
-- (void)setValues:(id)a3 forProperties:(id)a4 forItemPersistentIDs:(id)a5;
-- (void)setValuesForProperties:(id)a3 trackList:(id)a4 andEntryProperties:(id)a5 ofPlaylistWithIdentifier:(int64_t)a6 completionBlock:(id)a7;
+- (void)enumerateCollectionIdentifiersForQueryCriteria:(id)criteria ordered:(BOOL)ordered cancelBlock:(id)block usingBlock:(id)usingBlock;
+- (void)enumerateEntityChangesAfterSyncAnchor:(id)anchor maximumRevisionType:(int64_t)type inUsersLibrary:(BOOL)library itemBlock:(id)block collectionBlock:(id)collectionBlock;
+- (void)enumerateItemIdentifiersForQueryCriteria:(id)criteria ordered:(BOOL)ordered cancelBlock:(id)block usingBlock:(id)usingBlock;
+- (void)importArtworkTokenForEntityPersistentID:(unint64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType;
+- (void)loadProperties:(id)properties ofCollectionWithIdentifier:(int64_t)identifier groupingType:(int64_t)type completionBlock:(id)block;
+- (void)loadProperties:(id)properties ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria countOfCollectionsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria countOfItemsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria hasCollectionsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria hasItemsWithCompletionBlock:(id)block;
+- (void)loadValueForAggregateFunction:(id)function onCollectionsForProperty:(id)property queryCriteria:(id)criteria completionBlock:(id)block;
+- (void)loadValueForAggregateFunction:(id)function onItemsForProperty:(id)property queryCriteria:(id)criteria completionBlock:(id)block;
+- (void)moveItemFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex inPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)performBackgroundTaskWithBlock:(id)block;
+- (void)performReadTransactionWithBlock:(id)block;
+- (void)performStoreAlbumArtistLibraryImport:(id)import withCompletion:(id)completion;
+- (void)performStoreItemLibraryImport:(id)import withCompletion:(id)completion;
+- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)identifier withPath:(id)path assetProtectionType:(int64_t)type;
+- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)identifier withPath:(id)path assetProtectionType:(int64_t)type completionBlock:(id)block;
+- (void)removeAllItemsInPlaylistWithIdentifier:(int64_t)identifier;
+- (void)removeArtworkForEntityPersistentID:(unint64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType;
+- (void)removeFirstItemFromPlaylistWithIdentifier:(int64_t)identifier;
+- (void)removeItemsAtIndexes:(id)indexes inPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)sdk_addItemWithOpaqueID:(id)d withCompletion:(id)completion;
+- (void)sdk_addItemWithOpaqueIdentifier:(id)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block;
+- (void)sdk_addItemWithSagaIdentifier:(int64_t)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block;
+- (void)setItemsWithIdentifiers:(id)identifiers andEntryProperties:(id)properties forPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)setLibrary:(id)library;
+- (void)setLibraryContainerFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates;
+- (void)setLibraryEntityFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates;
+- (void)setLibraryPublicContainerFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates;
+- (void)setLibraryPublicEntityFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates;
+- (void)setReactionText:(id)text onEntryAtPosition:(unint64_t)position inPlaylistWithIdentifier:(int64_t)identifier completion:(id)completion;
+- (void)setUserIdentity:(id)identity;
+- (void)setValue:(id)value forProperty:(id)property ofCollectionWithIdentifier:(int64_t)identifier groupingType:(int64_t)type completionBlock:(id)block;
+- (void)setValue:(id)value forProperty:(id)property ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)setValue:(id)value forProperty:(id)property ofPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)setValues:(id)values forProperties:(id)properties forItemPersistentIDs:(id)ds;
+- (void)setValuesForProperties:(id)properties trackList:(id)list andEntryProperties:(id)entryProperties ofPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block;
 @end
 
 @implementation MPMediaLibraryDataProviderML3
 
 - (void)_updateArtworkDataSourceMediaLibraryUniqueIdentifier
 {
-  v5 = [(MPMediaLibraryDataProviderML3 *)self artworkDataSource];
+  artworkDataSource = [(MPMediaLibraryDataProviderML3 *)self artworkDataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(MPMediaLibraryDataProviderML3 *)self artworkDataSource];
+    artworkDataSource2 = [(MPMediaLibraryDataProviderML3 *)self artworkDataSource];
     v4 = [objc_opt_class() uniqueIdentifierForLibrary:self->_library];
-    [v3 setMediaLibraryUniqueIdentifier:v4];
+    [artworkDataSource2 setMediaLibraryUniqueIdentifier:v4];
   }
 }
 
@@ -156,9 +156,9 @@
   uniqueIdentifier = self->_uniqueIdentifier;
   if (!uniqueIdentifier)
   {
-    v5 = [(ML3MusicLibrary *)self->_library libraryUID];
+    libraryUID = [(ML3MusicLibrary *)self->_library libraryUID];
     v6 = self->_uniqueIdentifier;
-    self->_uniqueIdentifier = v5;
+    self->_uniqueIdentifier = libraryUID;
 
     uniqueIdentifier = self->_uniqueIdentifier;
     v2 = vars8;
@@ -182,15 +182,15 @@
   userIdentity = self->_userIdentity;
   if (userIdentity)
   {
-    v3 = userIdentity;
+    activeAccount = userIdentity;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  return v3;
+  return activeAccount;
 }
 
 - (MPMediaLibrary)mediaLibrary
@@ -203,21 +203,21 @@
 - (id)_userSocialProfileID
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v4 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
   v25 = 0;
-  v5 = [v3 DSIDForUserIdentity:v4 outError:&v25];
+  v5 = [defaultIdentityStore DSIDForUserIdentity:userIdentity outError:&v25];
   v6 = v25;
 
   if (v5)
   {
-    v7 = [MEMORY[0x1E69E4460] shared];
+    mEMORY[0x1E69E4460] = [MEMORY[0x1E69E4460] shared];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v7 allUserStates];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    allUserStates = [mEMORY[0x1E69E4460] allUserStates];
+    v9 = [allUserStates countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v9)
     {
       v10 = v9;
@@ -228,24 +228,24 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allUserStates);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 dsid];
-          v15 = v14;
-          if (v5 == v14)
+          dsid = [v13 dsid];
+          v15 = dsid;
+          if (v5 == dsid)
           {
 
 LABEL_17:
-            v18 = [v13 music];
-            v19 = [v18 userProfile];
-            v17 = [v19 socialProfileID];
+            music = [v13 music];
+            userProfile = [music userProfile];
+            socialProfileID = [userProfile socialProfileID];
 
             goto LABEL_18;
           }
 
-          v16 = [v5 isEqual:v14];
+          v16 = [v5 isEqual:dsid];
 
           if (v16)
           {
@@ -253,8 +253,8 @@ LABEL_17:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
-        v17 = 0;
+        v10 = [allUserStates countByEnumeratingWithState:&v21 objects:v26 count:16];
+        socialProfileID = 0;
         if (v10)
         {
           continue;
@@ -266,7 +266,7 @@ LABEL_17:
 
     else
     {
-      v17 = 0;
+      socialProfileID = 0;
     }
 
 LABEL_18:
@@ -274,21 +274,21 @@ LABEL_18:
 
   else
   {
-    v7 = os_log_create("com.apple.amp.mediaplayer", "Default");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    mEMORY[0x1E69E4460] = os_log_create("com.apple.amp.mediaplayer", "Default");
+    if (os_log_type_enabled(mEMORY[0x1E69E4460], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v28 = v6;
-      _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "Can't get user social profile ID because DSID = nil. err = %{public}@", buf, 0xCu);
+      _os_log_impl(&dword_1A238D000, mEMORY[0x1E69E4460], OS_LOG_TYPE_ERROR, "Can't get user social profile ID because DSID = nil. err = %{public}@", buf, 0xCu);
     }
 
-    v17 = 0;
+    socialProfileID = 0;
   }
 
-  return v17;
+  return socialProfileID;
 }
 
-- (BOOL)_removeEntitiesWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4 entityClass:(Class)a5
+- (BOOL)_removeEntitiesWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count entityClass:(Class)class
 {
   v9 = 0;
   v10 = &v9;
@@ -298,9 +298,9 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_count_entityClass___block_invoke;
   v8[3] = &unk_1E7677758;
-  v8[6] = a5;
-  v8[7] = a4;
-  v8[8] = a3;
+  v8[6] = class;
+  v8[7] = count;
+  v8[8] = identifiers;
   v8[4] = self;
   v8[5] = &v9;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v8];
@@ -350,18 +350,18 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
   return *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)_loadValueForAggregateFunction:(id)a3 entityClass:(Class)a4 property:(id)a5 query:(id)a6 completionBlock:(id)a7
+- (void)_loadValueForAggregateFunction:(id)function entityClass:(Class)class property:(id)property query:(id)query completionBlock:(id)block
 {
-  v18 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [(objc_class *)a4 propertyForMPMediaEntityProperty:v18];
-  v16 = [v13 valueForAggregateFunction:v14 onEntitiesForProperty:v15];
+  propertyCopy = property;
+  blockCopy = block;
+  queryCopy = query;
+  functionCopy = function;
+  v15 = [(objc_class *)class propertyForMPMediaEntityProperty:propertyCopy];
+  v16 = [queryCopy valueForAggregateFunction:functionCopy onEntitiesForProperty:v15];
 
   if (v16)
   {
-    v17 = [(MPMediaLibraryDataProviderML3 *)self adjustedValueForMPProperty:v18 ofEntity:0 withDefaultValue:v16];
+    v17 = [(MPMediaLibraryDataProviderML3 *)self adjustedValueForMPProperty:propertyCopy ofEntity:0 withDefaultValue:v16];
   }
 
   else
@@ -369,21 +369,21 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
     v17 = 0;
   }
 
-  v12[2](v12, v17);
+  blockCopy[2](blockCopy, v17);
 }
 
-- (void)_loadProperties:(id)a3 ofEntityWithIdentifier:(int64_t)a4 ML3EntityClass:(Class)a5 completionBlock:(id)a6
+- (void)_loadProperties:(id)properties ofEntityWithIdentifier:(int64_t)identifier ML3EntityClass:(Class)class completionBlock:(id)block
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 count];
+  propertiesCopy = properties;
+  blockCopy = block;
+  v12 = [propertiesCopy count];
   if (v12)
   {
     v13 = v12;
-    v35 = a4;
-    v36 = self;
-    v40 = v11;
+    identifierCopy = identifier;
+    selfCopy = self;
+    v40 = blockCopy;
     v39 = objc_autoreleasePoolPush();
     v38 = &v34;
     v14 = &v34 - ((8 * v13 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -394,8 +394,8 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
     v45 = 0u;
     v43 = 0u;
     v42 = 0u;
-    v41 = v10;
-    v15 = v10;
+    v41 = propertiesCopy;
+    v15 = propertiesCopy;
     v16 = [v15 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v16)
     {
@@ -412,7 +412,7 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
           }
 
           v21 = *(*(&v42 + 1) + 8 * i);
-          v22 = [(objc_class *)a5 propertyForMPMediaEntityProperty:v21];
+          v22 = [(objc_class *)class propertyForMPMediaEntityProperty:v21];
           if (v22)
           {
             objc_storeStrong(&v14[8 * v18], v21);
@@ -437,8 +437,8 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
       v34 = &v34;
       v24 = (&v34 - ((8 * v18 + 15) & 0xFFFFFFFFFFFFFFF0));
       bzero(v24, 8 * v18);
-      v25 = v36;
-      v26 = [(objc_class *)a5 newWithPersistentID:v35 inLibrary:v36->_library];
+      v25 = selfCopy;
+      v26 = [(objc_class *)class newWithPersistentID:identifierCopy inLibrary:selfCopy->_library];
       [v26 getValues:v24 forProperties:v14 count:v18];
       v27 = v14;
       do
@@ -456,7 +456,7 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
       while (v18);
     }
 
-    v11 = v40;
+    blockCopy = v40;
     (v40)[2](v40, v23);
 
     v32 = v37;
@@ -468,7 +468,7 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
     }
 
     while (v33);
-    v10 = v41;
+    propertiesCopy = v41;
     do
     {
 
@@ -481,11 +481,11 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
 
   else
   {
-    v11[2](v11, MEMORY[0x1E695E0F8]);
+    blockCopy[2](blockCopy, MEMORY[0x1E695E0F8]);
   }
 }
 
-- (void)_libraryCloudLibraryAvailabilityDidChange:(id)a3
+- (void)_libraryCloudLibraryAvailabilityDidChange:(id)change
 {
   v3 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -494,11 +494,11 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "Received cloud library availability did change notification", v5, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPMediaLibraryCloudLibraryAvailabilityDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPMediaLibraryCloudLibraryAvailabilityDidChangeNotification" object:0];
 }
 
-- (void)_invisiblePropertiesDidChange:(id)a3
+- (void)_invisiblePropertiesDidChange:(id)change
 {
   refreshState = self->_refreshState;
   if (refreshState <= 1)
@@ -510,7 +510,7 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
   [(MPMediaLibraryDataProviderML3 *)self _coalesceEvents];
 }
 
-- (void)_dynamicPropertiesDidChange:(id)a3
+- (void)_dynamicPropertiesDidChange:(id)change
 {
   refreshState = self->_refreshState;
   if (refreshState <= 2)
@@ -522,7 +522,7 @@ uint64_t __82__MPMediaLibraryDataProviderML3__removeEntitiesWithIdentifiers_coun
   [(MPMediaLibraryDataProviderML3 *)self _coalesceEvents];
 }
 
-- (void)_libraryEntitiesAddedOrRemoved:(id)a3
+- (void)_libraryEntitiesAddedOrRemoved:(id)removed
 {
   entitiesAddedOrRemovedNotificationQueue = self->_entitiesAddedOrRemovedNotificationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -595,7 +595,7 @@ void __64__MPMediaLibraryDataProviderML3__libraryEntitiesAddedOrRemoved___block_
   *(v3 + 80) = 0;
 }
 
-- (void)_libraryPathDidChange:(id)a3
+- (void)_libraryPathDidChange:(id)change
 {
   uniqueIdentifier = self->_uniqueIdentifier;
   self->_uniqueIdentifier = 0;
@@ -605,11 +605,11 @@ void __64__MPMediaLibraryDataProviderML3__libraryEntitiesAddedOrRemoved___block_
   [(MPMediaLibraryDataProviderML3 *)self _updateArtworkDataSourceMediaLibraryUniqueIdentifier];
 }
 
-- (void)_libraryContentsDidChange:(id)a3
+- (void)_libraryContentsDidChange:(id)change
 {
   self->_refreshState = 3;
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69B2CF8]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69B2CF8]];
 
   if (v5 && ([v5 BOOLValue] & 1) == 0)
   {
@@ -689,17 +689,17 @@ void *__44__MPMediaLibraryDataProviderML3__postEvents__block_invoke(uint64_t a1)
   }
 }
 
-- (id)adjustedValueForMPProperty:(id)a3 ofEntity:(id)a4 withDefaultValue:(id)a5
+- (id)adjustedValueForMPProperty:(id)property ofEntity:(id)entity withDefaultValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  entityCopy = entity;
+  valueCopy = value;
   if (adjustedValueForMPProperty_ofEntity_withDefaultValue__onceToken != -1)
   {
     dispatch_once(&adjustedValueForMPProperty_ofEntity_withDefaultValue__onceToken, &__block_literal_global_270);
   }
 
-  v11 = NSMapGet(adjustedValueForMPProperty_ofEntity_withDefaultValue____adjustmentMap, v8);
+  v11 = NSMapGet(adjustedValueForMPProperty_ofEntity_withDefaultValue____adjustmentMap, propertyCopy);
   if (v11)
   {
     v12 = [self v11];
@@ -707,7 +707,7 @@ void *__44__MPMediaLibraryDataProviderML3__postEvents__block_invoke(uint64_t a1)
 
   else
   {
-    v12 = v10;
+    v12 = valueCopy;
   }
 
   v13 = v12;
@@ -763,38 +763,38 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   NSMapInsert(v2, @"albumArtistDateFavorited", sel__adjustedItemDateOfEntity_withDefaultValue_);
 }
 
-- (id)_adjustedItemPropertyAssetURLOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyAssetURLOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v5 = a3;
-  v6 = [a4 pathExtension];
-  v7 = [v5 valueForProperty:*MEMORY[0x1E69B3338]];
-  v8 = [v7 integerValue];
+  entityCopy = entity;
+  pathExtension = [value pathExtension];
+  v7 = [entityCopy valueForProperty:*MEMORY[0x1E69B3338]];
+  integerValue = [v7 integerValue];
 
-  if (v8 || ([v5 valueForProperty:*MEMORY[0x1E69B3120]], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, !v11))
+  if (integerValue || ([entityCopy valueForProperty:*MEMORY[0x1E69B3120]], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, !v11))
   {
     v9 = 0;
   }
 
   else
   {
-    v12 = [v5 persistentID];
-    v9 = [MEMORY[0x1E695DFF8] msv_urlForMediaAssetWithPersistentID:v12 pathExtension:v6];
+    persistentID = [entityCopy persistentID];
+    v9 = [MEMORY[0x1E695DFF8] msv_urlForMediaAssetWithPersistentID:persistentID pathExtension:pathExtension];
   }
 
   return v9;
 }
 
-- (id)_adjustedItemPropertyEQPresetOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyEQPresetOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = [a4 integerValue];
-  if (v4 <= 99)
+  integerValue = [value integerValue];
+  if (integerValue <= 99)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4 - 99;
+    v5 = integerValue - 99;
   }
 
   v6 = MEMORY[0x1E696AD98];
@@ -802,14 +802,14 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return [v6 numberWithInteger:v5];
 }
 
-- (id)_adjustedItemPropertyContentRatingOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyContentRatingOfEntity:(id)entity withDefaultValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 componentsSeparatedByString:@"|"];
+    v5 = [valueCopy componentsSeparatedByString:@"|"];
     v6 = [v5 count];
     if (v6)
     {
@@ -864,7 +864,7 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = valueCopy;
       _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_ERROR, "Unexpected content rating format: %@", buf, 0xCu);
     }
 
@@ -874,25 +874,25 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return v13;
 }
 
-- (id)_adjustedItemPropertyChaptersOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyChaptersOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v5 = a3;
-  v6 = self;
-  v7 = [v5 chapterTOC];
-  v8 = [v7 countOfChapters];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
+  entityCopy = entity;
+  selfCopy = self;
+  chapterTOC = [entityCopy chapterTOC];
+  countOfChapters = [chapterTOC countOfChapters];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:countOfChapters];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __MPMediaChaptersFromML3Entity_block_invoke;
   aBlock[3] = &unk_1E7677780;
-  v10 = v7;
+  v10 = chapterTOC;
   v29 = v10;
-  v30 = v6;
-  v31 = v5;
+  v30 = selfCopy;
+  v31 = entityCopy;
   v11 = v9;
   v32 = v11;
-  v12 = v5;
-  v13 = v6;
+  v12 = entityCopy;
+  v13 = selfCopy;
   v14 = _Block_copy(aBlock);
   (*(v14 + 2))(v14, 0, 5, 0);
   v26[0] = MEMORY[0x1E69E9820];
@@ -925,13 +925,13 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return v20;
 }
 
-- (id)_adjustedItemPropertySeasonNameOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertySeasonNameOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a4;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 integerValue] < 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy integerValue] < 1)
   {
-    v8 = &stru_1F149ECA8;
+    valueCopy = &stru_1F149ECA8;
   }
 
   else
@@ -939,41 +939,41 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
     v5 = MEMORY[0x1E696AEC0];
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v7 = [v6 localizedStringForKey:@"SEASON_DISPLAY_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v8 = [v5 localizedStringWithFormat:v7, v4];
+    valueCopy = [v5 localizedStringWithFormat:v7, valueCopy];
   }
 
-  return v8;
+  return valueCopy;
 }
 
-- (id)_adjustedItemPropertySeasonNumberOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertySeasonNumberOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a4;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 integerValue] < 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy integerValue] < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   return v5;
 }
 
-- (id)_adjustedItemPropertyChapterArtworkTimesOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyChapterArtworkTimesOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = [a3 chapterTOC];
-  v5 = [v4 countOfGroupsForProperty:4];
+  chapterTOC = [entity chapterTOC];
+  v5 = [chapterTOC countOfGroupsForProperty:4];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
   if (v5)
   {
     v7 = 0;
     do
     {
-      v8 = [v4 chapterIndexForGroupIndex:v7 groupingProperty:4];
-      v9 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v4, "timeLocationInMSOfChapterAtIndex:", v8) / 1000.0}];
+      v8 = [chapterTOC chapterIndexForGroupIndex:v7 groupingProperty:4];
+      v9 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(chapterTOC, "timeLocationInMSOfChapterAtIndex:", v8) / 1000.0}];
       [v6 addObject:v9];
 
       v7 = (v7 + 1);
@@ -987,14 +987,14 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return v6;
 }
 
-- (id)_adjustedItemPropertyEpisodeNumberOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyEpisodeNumberOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x1E69B33A8]];
+  entityCopy = entity;
+  v5 = [entityCopy valueForProperty:*MEMORY[0x1E69B33A8]];
   v6 = v5;
   if (!v5 || ![v5 integerValue])
   {
-    v7 = [v4 valueForProperty:*MEMORY[0x1E69B2EF8]];
+    v7 = [entityCopy valueForProperty:*MEMORY[0x1E69B2EF8]];
 
     v6 = v7;
   }
@@ -1002,14 +1002,14 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return v6;
 }
 
-- (id)_adjustedItemPropertyMovieInfoOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyMovieInfoOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a4;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length])
   {
     v5 = MEMORY[0x1E696AE40];
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [valueCopy dataUsingEncoding:4];
     v7 = [v5 propertyListWithData:v6 options:0 format:0 error:0];
   }
 
@@ -1021,10 +1021,10 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   return v7;
 }
 
-- (id)_adjustedItemPropertyFilePathOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyFilePathOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a4;
-  if ([v4 length] < 2)
+  valueCopy = value;
+  if ([valueCopy length] < 2)
   {
     v7 = 0;
   }
@@ -1032,35 +1032,35 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   else
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{CPSharedResourcesDirectory(), @"Media", v4, 0}];
+    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{CPSharedResourcesDirectory(), @"Media", valueCopy, 0}];
     v7 = [v5 pathWithComponents:v6];
   }
 
   return v7;
 }
 
-- (id)_adjustedItemNonnullDateOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemNonnullDateOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E695DF00];
-  [a4 doubleValue];
+  [value doubleValue];
 
   return [v4 dateWithTimeIntervalSinceReferenceDate:?];
 }
 
-- (id)_adjustedItemPropertyBookletsOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyBookletsOfEntity:(id)entity withDefaultValue:(id)value
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  valueCopy = value;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__9726;
   v25 = __Block_byref_object_dispose__9727;
-  v26 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = MEMORY[0x1E69B3488];
-  v9 = [v6 persistentID];
-  v10 = [v8 predicateWithProperty:*MEMORY[0x1E69B2A38] equalToInt64:v9];
+  persistentID = [entityCopy persistentID];
+  v10 = [v8 predicateWithProperty:*MEMORY[0x1E69B2A38] equalToInt64:persistentID];
   v11 = *MEMORY[0x1E69B2A40];
   v27[0] = *MEMORY[0x1E69B2A50];
   v27[1] = v11;
@@ -1073,7 +1073,7 @@ void __86__MPMediaLibraryDataProviderML3_adjustedValueForMPProperty_ofEntity_wit
   v18[1] = 3221225472;
   v18[2] = __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_withDefaultValue___block_invoke;
   v18[3] = &unk_1E7677730;
-  v15 = v6;
+  v15 = entityCopy;
   v19 = v15;
   v20 = &v21;
   [v14 enumeratePersistentIDsAndProperties:v13 usingBlock:v18];
@@ -1095,13 +1095,13 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   [*(*(*(a1 + 40) + 8) + 40) addObject:v5];
 }
 
-- (id)_adjustedItemDateOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemDateOfEntity:(id)entity withDefaultValue:(id)value
 {
-  v4 = a4;
-  if ([v4 longLongValue])
+  valueCopy = value;
+  if ([valueCopy longLongValue])
   {
     v5 = MEMORY[0x1E695DF00];
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -1113,19 +1113,19 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   return v6;
 }
 
-- (id)_adjustedItemPropertyRatingOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyRatingOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  [a4 floatValue];
+  [value floatValue];
   v6 = v5 / 20.0;
 
   return [v4 numberWithDouble:v6];
 }
 
-- (id)_adjustedItemPropertyVolumeAdjustmentOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyVolumeAdjustmentOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  *&v5 = ((([a4 integerValue] + 1000) / 2000.0) * 2.0) + 0.0;
+  *&v5 = ((([value integerValue] + 1000) / 2000.0) * 2.0) + 0.0;
   if (*&v5 < 0.0)
   {
     *&v5 = 0.0;
@@ -1139,14 +1139,14 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   return [v4 numberWithFloat:v5];
 }
 
-- (id)_adjustedItemPropertyVolumeNormalizationOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemPropertyVolumeNormalizationOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a4 integerValue];
+  integerValue = [value integerValue];
   v6 = 1.0;
-  if (v5 && v5 != 0xFFFF)
+  if (integerValue && integerValue != 0xFFFF)
   {
-    v7 = sqrt(1000.0 / v5);
+    v7 = sqrt(1000.0 / integerValue);
     v6 = v7;
   }
 
@@ -1166,43 +1166,43 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   return [v4 numberWithFloat:v8];
 }
 
-- (id)_adjustedItemTimeOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedItemTimeOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a4 unsignedIntValue] / 1000.0;
+  v5 = [value unsignedIntValue] / 1000.0;
 
   return [v4 numberWithDouble:v5];
 }
 
-- (id)_adjustedPropertyMediaTypeOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedPropertyMediaTypeOfEntity:(id)entity withDefaultValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a4 integerValue];
+  integerValue = [value integerValue];
   v6 = 255;
-  if (v5 != 0xFF)
+  if (integerValue != 0xFF)
   {
     v6 = 0;
   }
 
-  if ((~v5 & 0xFF00) == 0)
+  if ((~integerValue & 0xFF00) == 0)
   {
     v6 |= 0xFF00uLL;
   }
 
-  v7 = vandq_s8(vshlq_u32(vdupq_n_s32(v5), xmmword_1A273DD80), xmmword_1A273DD90);
+  v7 = vandq_s8(vshlq_u32(vdupq_n_s32(integerValue), xmmword_1A273DD80), xmmword_1A273DD90);
   v8 = vorr_s8(*v7.i8, *&vextq_s8(v7, v7, 8uLL));
 
-  return [v4 numberWithUnsignedInteger:v6 | v8.i32[0] | v5 & 0x3210 | v8.i32[1] | (4 * v5) & 0x400 | (4 * ((v5 >> 1) & 1)) | (2 * v5) & 0x800];
+  return [v4 numberWithUnsignedInteger:v6 | v8.i32[0] | integerValue & 0x3210 | v8.i32[1] | (4 * integerValue) & 0x400 | (4 * ((integerValue >> 1) & 1)) | (2 * integerValue) & 0x800];
 }
 
-- (id)_adjustedPlaylistPropertySeedItemsOfEntity:(id)a3 withDefaultValue:(id)a4
+- (id)_adjustedPlaylistPropertySeedItemsOfEntity:(id)entity withDefaultValue:(id)value
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (value)
   {
-    v8[0] = a4;
+    v8[0] = value;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a4;
+    valueCopy = value;
     v6 = [v4 arrayWithObjects:v8 count:1];
   }
 
@@ -1214,15 +1214,15 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   return v6;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   userIdentity = self->_userIdentity;
-  v10 = v4;
-  if (userIdentity != v4)
+  v10 = identityCopy;
+  if (userIdentity != identityCopy)
   {
-    v6 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-    v7 = [(ICUserIdentity *)userIdentity isEqualToIdentity:v10 inStore:v6];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    v7 = [(ICUserIdentity *)userIdentity isEqualToIdentity:v10 inStore:defaultIdentityStore];
 
     if ((v7 & 1) == 0)
     {
@@ -1233,9 +1233,9 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
   }
 }
 
-- (void)performBackgroundTaskWithBlock:(id)a3
+- (void)performBackgroundTaskWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (performBackgroundTaskWithBlock____once != -1)
   {
     dispatch_once(&performBackgroundTaskWithBlock____once, &__block_literal_global_222);
@@ -1243,7 +1243,7 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
 
   if (performBackgroundTaskWithBlock____appRunsContinously == 1)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   else
@@ -1255,7 +1255,7 @@ void __88__MPMediaLibraryDataProviderML3__adjustedItemPropertyBookletsOfEntity_w
     block[3] = &unk_1E7682518;
     block[4] = self;
     dispatch_sync(backgroundTaskQueue, block);
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     v6 = dispatch_time(0, 1000000000);
     v7 = self->_backgroundTaskQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -1389,21 +1389,21 @@ void __64__MPMediaLibraryDataProviderML3_performBackgroundTaskWithBlock___block_
   }
 }
 
-- (id)ML3SystemFilterPredicatesWithGroupingType:(int64_t)a3 cloudTrackFilteringType:(int64_t)a4 subscriptionFilteringOptions:(int64_t)a5 additionalFilterPredicates:(id)a6
+- (id)ML3SystemFilterPredicatesWithGroupingType:(int64_t)type cloudTrackFilteringType:(int64_t)filteringType subscriptionFilteringOptions:(int64_t)options additionalFilterPredicates:(id)predicates
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  predicatesCopy = predicates;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(MPMediaLibraryDataProviderML3 *)self systemFilterPredicatesWithGroupingType:a3 cloudTrackFilteringType:a4 subscriptionFilteringOptions:a5];
-    if (![v10 count])
+    v11 = [(MPMediaLibraryDataProviderML3 *)self systemFilterPredicatesWithGroupingType:type cloudTrackFilteringType:filteringType subscriptionFilteringOptions:options];
+    if (![predicatesCopy count])
     {
       goto LABEL_8;
     }
 
     if (v11)
     {
-      v12 = [v11 arrayByAddingObjectsFromArray:v10];
+      v12 = [v11 arrayByAddingObjectsFromArray:predicatesCopy];
 
       v11 = v12;
       goto LABEL_8;
@@ -1412,10 +1412,10 @@ void __64__MPMediaLibraryDataProviderML3_performBackgroundTaskWithBlock___block_
     goto LABEL_6;
   }
 
-  if ([v10 count])
+  if ([predicatesCopy count])
   {
 LABEL_6:
-    v11 = v10;
+    v11 = predicatesCopy;
     goto LABEL_8;
   }
 
@@ -1443,7 +1443,7 @@ LABEL_8:
         }
 
         v19 = *(*(&v24 + 1) + 8 * v18);
-        if (a3 == 6)
+        if (type == 6)
         {
           [v19 ML3PredicateForContainer];
         }
@@ -1483,46 +1483,46 @@ LABEL_8:
   return v21;
 }
 
-- (id)systemFilterPredicatesWithGroupingType:(int64_t)a3 cloudTrackFilteringType:(int64_t)a4 subscriptionFilteringOptions:(int64_t)a5
+- (id)systemFilterPredicatesWithGroupingType:(int64_t)type cloudTrackFilteringType:(int64_t)filteringType subscriptionFilteringOptions:(int64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v9 = objc_opt_new();
   v44 = [MPMediaPropertyPredicate predicateWithValue:MEMORY[0x1E695E118] forProperty:@"hasNonPurgeableAsset" comparisonType:109];
   v43 = [MPMediaPropertyPredicate predicateWithValue:MEMORY[0x1E695E118] forProperty:@"isPlayable" comparisonType:109];
-  if (a4 <= 2 && +[MPMediaQuery isFilteringDisabled])
+  if (filteringType <= 2 && +[MPMediaQuery isFilteringDisabled])
   {
     v10 = 0;
-    v11 = [(ML3MusicLibrary *)self->_library sagaOnDiskDatabaseRevision];
+    sagaOnDiskDatabaseRevision = [(ML3MusicLibrary *)self->_library sagaOnDiskDatabaseRevision];
   }
 
   else
   {
-    v12 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-    v13 = [MPCloudController controllerWithUserIdentity:v12];
+    userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+    v13 = [MPCloudController controllerWithUserIdentity:userIdentity];
     HIDWORD(v40) = [v13 canShowCloudMusic];
 
-    v14 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-    v15 = [MPCloudController controllerWithUserIdentity:v14];
+    userIdentity2 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+    v15 = [MPCloudController controllerWithUserIdentity:userIdentity2];
     LODWORD(v40) = [v15 canShowCloudVideo];
 
-    if (a4 < 6)
+    if (filteringType < 6)
     {
       v10 = 0;
     }
 
     else
     {
-      v16 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-      v17 = [MPCloudController controllerWithUserIdentity:v16];
-      v18 = [v17 hasProperNetworkConditionsToPlayMedia];
+      userIdentity3 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+      v17 = [MPCloudController controllerWithUserIdentity:userIdentity3];
+      hasProperNetworkConditionsToPlayMedia = [v17 hasProperNetworkConditionsToPlayMedia];
 
-      v10 = v18 ^ 1;
+      v10 = hasProperNetworkConditionsToPlayMedia ^ 1;
     }
 
-    v11 = [(ML3MusicLibrary *)self->_library sagaOnDiskDatabaseRevision];
+    sagaOnDiskDatabaseRevision = [(ML3MusicLibrary *)self->_library sagaOnDiskDatabaseRevision];
   }
 
-  if (v11 < 1)
+  if (sagaOnDiskDatabaseRevision < 1)
   {
     v21 = 0;
     v42 = 0;
@@ -1539,9 +1539,9 @@ LABEL_8:
   }
 
   v22 = +[MPMediaQuery isFilteringDisabled];
-  if (a3 == 6)
+  if (type == 6)
   {
-    if (((v5 | v22) & 1) == 0)
+    if (((optionsCopy | v22) & 1) == 0)
     {
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
@@ -1562,7 +1562,7 @@ LABEL_8:
     [v9 addObject:v25];
 
     v26 = v44;
-    if (((a4 != 2) & v41) != 0)
+    if (((filteringType != 2) & v41) != 0)
     {
       v26 = v43;
     }
@@ -1578,11 +1578,11 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  if (a4 > 4)
+  if (filteringType > 4)
   {
-    if (a4 > 6)
+    if (filteringType > 6)
     {
-      if (a4 == 7)
+      if (filteringType == 7)
       {
         if (!(v10 & 1 | ((v41 & 1) == 0)))
         {
@@ -1600,7 +1600,7 @@ LABEL_44:
 
       else
       {
-        if (a4 != 8)
+        if (filteringType != 8)
         {
           goto LABEL_26;
         }
@@ -1617,7 +1617,7 @@ LABEL_58:
       goto LABEL_26;
     }
 
-    if (a4 == 5)
+    if (filteringType == 5)
     {
       if (v39)
       {
@@ -1662,11 +1662,11 @@ LABEL_39:
     goto LABEL_25;
   }
 
-  if (a4 <= 2)
+  if (filteringType <= 2)
   {
-    if (a4)
+    if (filteringType)
     {
-      if (a4 != 2)
+      if (filteringType != 2)
       {
         goto LABEL_26;
       }
@@ -1684,7 +1684,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a4 != 3)
+  if (filteringType != 3)
   {
     if (v41)
     {
@@ -1745,83 +1745,83 @@ LABEL_26:
   return v28;
 }
 
-- (void)setLibraryPublicContainerFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4
+- (void)setLibraryPublicContainerFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates
 {
-  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:6 cloudTrackFilteringType:a3 subscriptionFilteringOptions:1 additionalFilterPredicates:a4];
+  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:6 cloudTrackFilteringType:type subscriptionFilteringOptions:1 additionalFilterPredicates:predicates];
   [(ML3MusicLibrary *)self->_library setLibraryPublicContainerFilterPredicates:v5];
 }
 
-- (void)setLibraryPublicEntityFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4
+- (void)setLibraryPublicEntityFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates
 {
-  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:0 cloudTrackFilteringType:a3 subscriptionFilteringOptions:1 additionalFilterPredicates:a4];
+  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:0 cloudTrackFilteringType:type subscriptionFilteringOptions:1 additionalFilterPredicates:predicates];
   [(ML3MusicLibrary *)self->_library setLibraryPublicEntityFilterPredicates:v5];
 }
 
-- (void)setLibraryContainerFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4
+- (void)setLibraryContainerFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates
 {
-  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:6 cloudTrackFilteringType:a3 subscriptionFilteringOptions:0 additionalFilterPredicates:a4];
+  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:6 cloudTrackFilteringType:type subscriptionFilteringOptions:0 additionalFilterPredicates:predicates];
   [(ML3MusicLibrary *)self->_library setLibraryContainerFilterPredicates:v5];
 }
 
-- (void)setLibraryEntityFilterPredicatesWithCloudFilteringType:(int64_t)a3 additionalFilterPredicates:(id)a4
+- (void)setLibraryEntityFilterPredicatesWithCloudFilteringType:(int64_t)type additionalFilterPredicates:(id)predicates
 {
-  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:0 cloudTrackFilteringType:a3 subscriptionFilteringOptions:0 additionalFilterPredicates:a4];
+  v5 = [(MPMediaLibraryDataProviderML3 *)self ML3SystemFilterPredicatesWithGroupingType:0 cloudTrackFilteringType:type subscriptionFilteringOptions:0 additionalFilterPredicates:predicates];
   [(ML3MusicLibrary *)self->_library setLibraryEntityFilterPredicates:v5];
 }
 
-- (void)clearLocationPropertiesOfItemWithIdentifier:(int64_t)a3
+- (void)clearLocationPropertiesOfItemWithIdentifier:(int64_t)identifier
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69B3538];
   library = self->_library;
-  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:identifier];
   v7[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 clearLocationFromLibrary:library persistentIDs:v6 disableKeepLocal:0];
 }
 
-- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)a3 withPath:(id)a4 assetProtectionType:(int64_t)a5 completionBlock:(id)a6
+- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)identifier withPath:(id)path assetProtectionType:(int64_t)type completionBlock:(id)block
 {
   v9 = MEMORY[0x1E69B3538];
   library = self->_library;
-  v11 = a6;
-  v12 = a4;
-  v13 = [v9 newWithPersistentID:a3 inLibrary:library];
-  [v13 populateLocationPropertiesWithPath:v12 protectionType:a5 completionBlock:v11];
+  blockCopy = block;
+  pathCopy = path;
+  v13 = [v9 newWithPersistentID:identifier inLibrary:library];
+  [v13 populateLocationPropertiesWithPath:pathCopy protectionType:type completionBlock:blockCopy];
 }
 
-- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)a3 withPath:(id)a4 assetProtectionType:(int64_t)a5
+- (void)populateLocationPropertiesOfItemWithIdentifier:(int64_t)identifier withPath:(id)path assetProtectionType:(int64_t)type
 {
   v7 = MEMORY[0x1E69B3538];
   library = self->_library;
-  v9 = a4;
-  v10 = [v7 newWithPersistentID:a3 inLibrary:library];
-  [v10 populateLocationPropertiesWithPath:v9 protectionType:a5];
+  pathCopy = path;
+  v10 = [v7 newWithPersistentID:identifier inLibrary:library];
+  [v10 populateLocationPropertiesWithPath:pathCopy protectionType:type];
 }
 
-- (id)itemResultSetForQueryCriteria:(id)a3
+- (id)itemResultSetForQueryCriteria:(id)criteria
 {
-  v3 = [a3 ML3ItemsQueryInLibrary:self->_library];
+  v3 = [criteria ML3ItemsQueryInLibrary:self->_library];
   v4 = [objc_alloc(MEMORY[0x1E69B3510]) initWithQuery:v3];
 
   return v4;
 }
 
-- (id)collectionResultSetForQueryCriteria:(id)a3
+- (id)collectionResultSetForQueryCriteria:(id)criteria
 {
-  v3 = [a3 ML3CollectionsQueryInLibrary:self->_library];
+  v3 = [criteria ML3CollectionsQueryInLibrary:self->_library];
   v4 = [objc_alloc(MEMORY[0x1E69B3510]) initWithQuery:v3];
 
   return v4;
 }
 
-- (void)enumerateEntityChangesAfterSyncAnchor:(id)a3 maximumRevisionType:(int64_t)a4 inUsersLibrary:(BOOL)a5 itemBlock:(id)a6 collectionBlock:(id)a7
+- (void)enumerateEntityChangesAfterSyncAnchor:(id)anchor maximumRevisionType:(int64_t)type inUsersLibrary:(BOOL)library itemBlock:(id)block collectionBlock:(id)collectionBlock
 {
-  v8 = a5;
+  libraryCopy = library;
   v23[12] = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  v14 = [a3 longLongValue];
+  blockCopy = block;
+  collectionBlockCopy = collectionBlock;
+  longLongValue = [anchor longLongValue];
   v23[0] = [MEMORY[0x1E69B34A0] revisionTrackingCode];
   v23[1] = 6;
   v23[2] = [MEMORY[0x1E69B3438] revisionTrackingCode];
@@ -1841,11 +1841,11 @@ LABEL_26:
   v18[3] = &unk_1E7677708;
   v21 = 6;
   v22 = v23;
-  v19 = v12;
-  v20 = v13;
-  v16 = v13;
-  v17 = v12;
-  [(ML3MusicLibrary *)library enumeratePersistentIDsAfterRevision:v14 revisionTrackingCode:0x7FFFFFFFFFFFFFFFLL maximumRevisionType:a4 forMediaTypes:0 inUsersLibrary:v8 usingBlock:v18];
+  v19 = blockCopy;
+  v20 = collectionBlockCopy;
+  v16 = collectionBlockCopy;
+  v17 = blockCopy;
+  [(ML3MusicLibrary *)library enumeratePersistentIDsAfterRevision:longLongValue revisionTrackingCode:0x7FFFFFFFFFFFFFFFLL maximumRevisionType:type forMediaTypes:0 inUsersLibrary:libraryCopy usingBlock:v18];
 }
 
 void __132__MPMediaLibraryDataProviderML3_enumerateEntityChangesAfterSyncAnchor_maximumRevisionType_inUsersLibrary_itemBlock_collectionBlock___block_invoke(void *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -1888,30 +1888,30 @@ LABEL_9:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)setReactionText:(id)a3 onEntryAtPosition:(unint64_t)a4 inPlaylistWithIdentifier:(int64_t)a5 completion:(id)a6
+- (void)setReactionText:(id)text onEntryAtPosition:(unint64_t)position inPlaylistWithIdentifier:(int64_t)identifier completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(MPMediaLibraryDataProviderML3 *)self _userSocialProfileID];
-  v13 = [objc_alloc(MEMORY[0x1E69B34A0]) initWithPersistentID:a5 inLibrary:self->_library];
+  completionCopy = completion;
+  textCopy = text;
+  _userSocialProfileID = [(MPMediaLibraryDataProviderML3 *)self _userSocialProfileID];
+  v13 = [objc_alloc(MEMORY[0x1E69B34A0]) initWithPersistentID:identifier inLibrary:self->_library];
   v16 = 0;
-  v14 = [v13 setItemReactionText:v11 onEntryAtPosition:a4 forUserIdentifier:v12 previousReactionText:&v16];
+  v14 = [v13 setItemReactionText:textCopy onEntryAtPosition:position forUserIdentifier:_userSocialProfileID previousReactionText:&v16];
 
   v15 = v16;
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v14, v15);
+    completionCopy[2](completionCopy, v14, v15);
   }
 }
 
-- (void)moveItemFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 inPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)moveItemFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex inPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v11 = [MEMORY[0x1E69B34A0] newWithPersistentID:a5 inLibrary:self->_library];
+  v11 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__MPMediaLibraryDataProviderML3_moveItemFromIndex_toIndex_inPlaylistWithIdentifier_completionBlock___block_invoke;
@@ -1919,12 +1919,12 @@ LABEL_9:
   v12 = v11;
   v14 = v12;
   v15 = &v18;
-  v16 = a3;
-  v17 = a4;
+  indexCopy = index;
+  toIndexCopy = toIndex;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v13];
-  if (v10)
+  if (blockCopy)
   {
-    v10[2](v10, *(v19 + 24));
+    blockCopy[2](blockCopy, *(v19 + 24));
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1979,9 +1979,9 @@ void __100__MPMediaLibraryDataProviderML3_moveItemFromIndex_toIndex_inPlaylistWi
   [v2 addObject:v3];
 }
 
-- (void)removeFirstItemFromPlaylistWithIdentifier:(int64_t)a3
+- (void)removeFirstItemFromPlaylistWithIdentifier:(int64_t)identifier
 {
-  v4 = [MEMORY[0x1E69B34A0] newWithPersistentID:a3 inLibrary:self->_library];
+  v4 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__MPMediaLibraryDataProviderML3_removeFirstItemFromPlaylistWithIdentifier___block_invoke;
@@ -1991,9 +1991,9 @@ void __100__MPMediaLibraryDataProviderML3_moveItemFromIndex_toIndex_inPlaylistWi
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v6];
 }
 
-- (void)removeAllItemsInPlaylistWithIdentifier:(int64_t)a3
+- (void)removeAllItemsInPlaylistWithIdentifier:(int64_t)identifier
 {
-  v4 = [MEMORY[0x1E69B34A0] newWithPersistentID:a3 inLibrary:self->_library];
+  v4 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__MPMediaLibraryDataProviderML3_removeAllItemsInPlaylistWithIdentifier___block_invoke;
@@ -2003,18 +2003,18 @@ void __100__MPMediaLibraryDataProviderML3_moveItemFromIndex_toIndex_inPlaylistWi
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v6];
 }
 
-- (void)sdk_addItemWithSagaIdentifier:(int64_t)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)sdk_addItemWithSagaIdentifier:(int64_t)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-  v10 = [MPCloudController controllerWithUserIdentity:v9];
+  blockCopy = block;
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  v10 = [MPCloudController controllerWithUserIdentity:userIdentity];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __104__MPMediaLibraryDataProviderML3_sdk_addItemWithSagaIdentifier_toPlaylistWithIdentifier_completionBlock___block_invoke;
   v12[3] = &unk_1E76816D0;
-  v13 = v8;
-  v11 = v8;
-  [v10 sdk_addItemWithSagaID:a3 toPlaylistWithPersistentID:a4 completionHandler:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [v10 sdk_addItemWithSagaID:identifier toPlaylistWithPersistentID:withIdentifier completionHandler:v12];
 }
 
 uint64_t __104__MPMediaLibraryDataProviderML3_sdk_addItemWithSagaIdentifier_toPlaylistWithIdentifier_completionBlock___block_invoke(uint64_t a1)
@@ -2028,11 +2028,11 @@ uint64_t __104__MPMediaLibraryDataProviderML3_sdk_addItemWithSagaIdentifier_toPl
   return result;
 }
 
-- (void)removeItemsAtIndexes:(id)a3 inPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)removeItemsAtIndexes:(id)indexes inPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69B34A0] newWithPersistentID:a4 inLibrary:self->_library];
+  indexesCopy = indexes;
+  blockCopy = block;
+  v10 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
   v11 = dispatch_get_global_queue(0, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -2040,10 +2040,10 @@ uint64_t __104__MPMediaLibraryDataProviderML3_sdk_addItemWithSagaIdentifier_toPl
   v15[3] = &unk_1E7681770;
   v15[4] = self;
   v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
+  v17 = indexesCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = indexesCopy;
   v14 = v10;
   dispatch_async(v11, v15);
 }
@@ -2072,21 +2072,21 @@ void __95__MPMediaLibraryDataProviderML3_removeItemsAtIndexes_inPlaylistWithIden
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)sdk_addItemWithOpaqueIdentifier:(id)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)sdk_addItemWithOpaqueIdentifier:(id)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-  v11 = [MPCloudController controllerWithUserIdentity:v10];
+  blockCopy = block;
+  identifierCopy = identifier;
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  v11 = [MPCloudController controllerWithUserIdentity:userIdentity];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueIdentifier_toPlaylistWithIdentifier_completionBlock___block_invoke;
   v13[3] = &unk_1E76776E0;
   v13[4] = self;
-  v14 = v8;
-  v15 = a4;
-  v12 = v8;
-  [v11 sdk_addStoreItemWithOpaqueID:v9 toPlaylistWithPersistentID:a4 completionHandler:v13];
+  v14 = blockCopy;
+  withIdentifierCopy = withIdentifier;
+  v12 = blockCopy;
+  [v11 sdk_addStoreItemWithOpaqueID:identifierCopy toPlaylistWithPersistentID:withIdentifier completionHandler:v13];
 }
 
 void __106__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueIdentifier_toPlaylistWithIdentifier_completionBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2145,42 +2145,42 @@ void __106__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueIdentifier_toPlay
   }
 }
 
-- (void)addItemsWithIdentifiers:(id)a3 andEntryProperties:(id)a4 toPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)addItemsWithIdentifiers:(id)identifiers andEntryProperties:(id)properties toPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69B34A0] newWithPersistentID:a5 inLibrary:self->_library];
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  blockCopy = block;
+  v13 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __117__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_andEntryProperties_toPlaylistWithIdentifier_completionBlock___block_invoke;
   v38[3] = &unk_1E7677618;
   v15 = v14;
   v39 = v15;
-  [v11 enumerateKeysAndObjectsUsingBlock:v38];
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v38];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
   v37 = 0;
   v16 = [v13 valueForProperty:*MEMORY[0x1E69B2BB0]];
-  LODWORD(a6) = [v16 BOOLValue];
+  LODWORD(block) = [v16 BOOLValue];
 
-  if (a6)
+  if (block)
   {
-    v28 = v10;
-    v17 = [MEMORY[0x1E69E4460] shared];
-    v18 = [v17 activeUserState];
-    v19 = [v18 music];
-    v20 = [v19 userProfile];
-    v21 = [v20 socialProfileID];
+    v28 = identifiersCopy;
+    mEMORY[0x1E69E4460] = [MEMORY[0x1E69E4460] shared];
+    activeUserState = [mEMORY[0x1E69E4460] activeUserState];
+    music = [activeUserState music];
+    userProfile = [music userProfile];
+    socialProfileID = [userProfile socialProfileID];
 
-    v10 = v28;
+    identifiersCopy = v28;
   }
 
   else
   {
-    v21 = 0;
+    socialProfileID = 0;
   }
 
   v22 = dispatch_get_global_queue(0, 0);
@@ -2188,17 +2188,17 @@ void __106__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueIdentifier_toPlay
   block[1] = 3221225472;
   block[2] = __117__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_andEntryProperties_toPlaylistWithIdentifier_completionBlock___block_invoke_3;
   block[3] = &unk_1E7677668;
-  v34 = v12;
+  v34 = blockCopy;
   v35 = v36;
   block[4] = self;
   v30 = v13;
-  v31 = v10;
+  v31 = identifiersCopy;
   v32 = v15;
-  v33 = v21;
-  v23 = v12;
-  v24 = v21;
+  v33 = socialProfileID;
+  v23 = blockCopy;
+  v24 = socialProfileID;
   v25 = v15;
-  v26 = v10;
+  v26 = identifiersCopy;
   v27 = v13;
   dispatch_async(v22, block);
 
@@ -2256,11 +2256,11 @@ void __117__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_andEntryProper
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (void)addItemsWithIdentifiers:(id)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)addItemsWithIdentifiers:(id)identifiers toPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69B34A0] newWithPersistentID:a4 inLibrary:self->_library];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  v10 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -2270,13 +2270,13 @@ void __117__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_andEntryProper
   block[1] = 3221225472;
   block[2] = __98__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_toPlaylistWithIdentifier_completionBlock___block_invoke;
   block[3] = &unk_1E76776B8;
-  v18 = v9;
+  v18 = blockCopy;
   v19 = v20;
   block[4] = self;
   v16 = v10;
-  v17 = v8;
-  v12 = v9;
-  v13 = v8;
+  v17 = identifiersCopy;
+  v12 = blockCopy;
+  v13 = identifiersCopy;
   v14 = v10;
   dispatch_async(v11, block);
 
@@ -2301,10 +2301,10 @@ void __98__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_toPlaylistWithI
   }
 }
 
-- (void)addItemWithIdentifier:(int64_t)a3 toPlaylistWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)addItemWithIdentifier:(int64_t)identifier toPlaylistWithIdentifier:(int64_t)withIdentifier completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E69B34A0] newWithPersistentID:a4 inLibrary:self->_library];
+  blockCopy = block;
+  v9 = [MEMORY[0x1E69B34A0] newWithPersistentID:withIdentifier inLibrary:self->_library];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -2317,9 +2317,9 @@ void __98__MPMediaLibraryDataProviderML3_addItemsWithIdentifiers_toPlaylistWithI
   block[4] = self;
   v14 = v9;
   v16 = v18;
-  v17 = a3;
-  v15 = v8;
-  v11 = v8;
+  identifierCopy = identifier;
+  v15 = blockCopy;
+  v11 = blockCopy;
   v12 = v9;
   dispatch_async(v10, block);
 
@@ -2358,42 +2358,42 @@ uint64_t __96__MPMediaLibraryDataProviderML3_addItemWithIdentifier_toPlaylistWit
   return *(*(a1[5] + 8) + 24);
 }
 
-- (void)setItemsWithIdentifiers:(id)a3 andEntryProperties:(id)a4 forPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)setItemsWithIdentifiers:(id)identifiers andEntryProperties:(id)properties forPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69B34A0] newWithPersistentID:a5 inLibrary:self->_library];
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  blockCopy = block;
+  v13 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProperties_forPlaylistWithIdentifier_completionBlock___block_invoke;
   v38[3] = &unk_1E7677618;
   v15 = v14;
   v39 = v15;
-  [v11 enumerateKeysAndObjectsUsingBlock:v38];
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v38];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
   v37 = 0;
   v16 = [v13 valueForProperty:*MEMORY[0x1E69B2BB0]];
-  LODWORD(a6) = [v16 BOOLValue];
+  LODWORD(block) = [v16 BOOLValue];
 
-  if (a6)
+  if (block)
   {
-    v28 = v10;
-    v17 = [MEMORY[0x1E69E4460] shared];
-    v18 = [v17 activeUserState];
-    v19 = [v18 music];
-    v20 = [v19 userProfile];
-    v21 = [v20 socialProfileID];
+    v28 = identifiersCopy;
+    mEMORY[0x1E69E4460] = [MEMORY[0x1E69E4460] shared];
+    activeUserState = [mEMORY[0x1E69E4460] activeUserState];
+    music = [activeUserState music];
+    userProfile = [music userProfile];
+    socialProfileID = [userProfile socialProfileID];
 
-    v10 = v28;
+    identifiersCopy = v28;
   }
 
   else
   {
-    v21 = 0;
+    socialProfileID = 0;
   }
 
   v22 = dispatch_get_global_queue(0, 0);
@@ -2401,17 +2401,17 @@ uint64_t __96__MPMediaLibraryDataProviderML3_addItemWithIdentifier_toPlaylistWit
   block[1] = 3221225472;
   block[2] = __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProperties_forPlaylistWithIdentifier_completionBlock___block_invoke_3;
   block[3] = &unk_1E7677668;
-  v34 = v12;
+  v34 = blockCopy;
   v35 = v36;
   block[4] = self;
   v30 = v13;
-  v31 = v10;
+  v31 = identifiersCopy;
   v32 = v15;
-  v33 = v21;
-  v23 = v12;
-  v24 = v21;
+  v33 = socialProfileID;
+  v23 = blockCopy;
+  v24 = socialProfileID;
   v25 = v15;
-  v26 = v10;
+  v26 = identifiersCopy;
   v27 = v13;
   dispatch_async(v22, block);
 
@@ -2469,16 +2469,16 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (void)_invalidatePersistentKeysForIdentifiers:(int64_t *)a3 count:(unint64_t)a4
+- (void)_invalidatePersistentKeysForIdentifiers:(int64_t *)identifiers count:(unint64_t)count
 {
   v53[3] = *MEMORY[0x1E69E9840];
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 0;
-  if (a4)
+  if (count)
   {
-    v5 = a4;
+    countCopy = count;
     v31 = *MEMORY[0x1E69B2F48];
     v33 = *MEMORY[0x1E69B3098];
     v34 = *MEMORY[0x1E69B3138];
@@ -2486,7 +2486,7 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
     v27 = v4;
     do
     {
-      v8 = *a3++;
+      v8 = *identifiers++;
       v7 = v8;
       v9 = [objc_alloc(MEMORY[0x1E69B3538]) initWithPersistentID:v8 inLibrary:self->_library];
       v53[0] = v34;
@@ -2495,14 +2495,14 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:3];
       v11 = [v9 getValuesForProperties:v10];
       v12 = [v11 objectForKeyedSubscript:v34];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
       v14 = [v11 objectForKeyedSubscript:v33];
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
 
-      if (v13 == 4)
+      if (integerValue == 4)
       {
-        v16 = v15;
+        v16 = bOOLValue;
       }
 
       else
@@ -2512,7 +2512,7 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
 
       if (v16 == 1)
       {
-        v17 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v18 = [v11 objectForKeyedSubscript:v31];
         if ([v18 length])
         {
@@ -2526,13 +2526,13 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
 
         v42 = 0;
         v30 = v19;
-        if ([v17 fileExistsAtPath:v27 isDirectory:?] && v42 == 1)
+        if ([defaultManager fileExistsAtPath:v27 isDirectory:?] && v42 == 1)
         {
           v20 = os_log_create("com.apple.amp.mediaplayer", "Library");
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
-            v48 = self;
+            selfCopy2 = self;
             v49 = 2048;
             v50 = v7;
             v51 = 2114;
@@ -2540,28 +2540,28 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
             _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking for offline keys for track with persistentID %lld, in path '%{public}@", buf, 0x20u);
           }
 
-          v29 = [MEMORY[0x1E69E43F8] pendingInvalidationKeyStorePath];
-          if (([v17 fileExistsAtPath:v29] & 1) == 0)
+          pendingInvalidationKeyStorePath = [MEMORY[0x1E69E43F8] pendingInvalidationKeyStorePath];
+          if (([defaultManager fileExistsAtPath:pendingInvalidationKeyStorePath] & 1) == 0)
           {
             v41 = 0;
-            [v17 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:&v41];
+            [defaultManager createDirectoryAtPath:pendingInvalidationKeyStorePath withIntermediateDirectories:1 attributes:0 error:&v41];
             v21 = v41;
             if (v21)
             {
               log = os_log_create("com.apple.amp.mediaplayer", "Library");
               if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
               {
-                v22 = [v21 msv_description];
+                msv_description = [v21 msv_description];
                 *buf = v27;
-                v48 = self;
+                selfCopy2 = self;
                 v49 = 2114;
-                v50 = v22;
+                v50 = msv_description;
                 _os_log_impl(&dword_1A238D000, log, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create key purgatory directory error=%{public}@", buf, 0x16u);
               }
             }
           }
 
-          v23 = [objc_alloc(MEMORY[0x1E69E4430]) initWithPath:v29];
+          v23 = [objc_alloc(MEMORY[0x1E69E4430]) initWithPath:pendingInvalidationKeyStorePath];
           v24 = [objc_alloc(MEMORY[0x1E69E4430]) initWithPath:v30];
           v36[0] = MEMORY[0x1E69E9820];
           v36[1] = 3221225472;
@@ -2569,17 +2569,17 @@ void __118__MPMediaLibraryDataProviderML3_setItemsWithIdentifiers_andEntryProper
           v36[3] = &unk_1E76775F0;
           v25 = v23;
           v37 = v25;
-          v38 = self;
+          selfCopy3 = self;
           v39 = &v43;
           v40 = v7;
           [v24 enumerateKeyEntriesUsingBlock:v36];
         }
       }
 
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
     if (v44[3])
     {
       v26 = dispatch_get_global_queue(0, 0);
@@ -2649,7 +2649,7 @@ void __79__MPMediaLibraryDataProviderML3__invalidatePersistentKeysForIdentifiers
   [v1 processPendingKeyInvalidations];
 }
 
-- (BOOL)removeItemsWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4
+- (BOOL)removeItemsWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count
 {
   v9 = 0;
   v10 = &v9;
@@ -2659,8 +2659,8 @@ void __79__MPMediaLibraryDataProviderML3__invalidatePersistentKeysForIdentifiers
   v7[1] = 3221225472;
   v7[2] = __66__MPMediaLibraryDataProviderML3_removeItemsWithIdentifiers_count___block_invoke;
   v7[3] = &unk_1E76775C8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = identifiers;
+  v7[7] = count;
   v8 = 1;
   v7[4] = self;
   v7[5] = &v9;
@@ -2711,7 +2711,7 @@ uint64_t __66__MPMediaLibraryDataProviderML3_removeItemsWithIdentifiers_count___
   return *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)deleteItemsWithIdentifiers:(int64_t *)a3 count:(unint64_t)a4
+- (BOOL)deleteItemsWithIdentifiers:(int64_t *)identifiers count:(unint64_t)count
 {
   v8 = 0;
   v9 = &v8;
@@ -2721,8 +2721,8 @@ uint64_t __66__MPMediaLibraryDataProviderML3_removeItemsWithIdentifiers_count___
   v7[1] = 3221225472;
   v7[2] = __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___block_invoke;
   v7[3] = &unk_1E76775A0;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = identifiers;
+  v7[7] = count;
   v7[4] = self;
   v7[5] = &v8;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v7];
@@ -2748,7 +2748,7 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   return *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)removePlaylistWithIdentifier:(int64_t)a3 preserveUndeletableEntities:(BOOL)a4
+- (BOOL)removePlaylistWithIdentifier:(int64_t)identifier preserveUndeletableEntities:(BOOL)entities
 {
   v9 = 0;
   v10 = &v9;
@@ -2760,8 +2760,8 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   v7[3] = &unk_1E7677578;
   v7[4] = self;
   v7[5] = &v9;
-  v7[6] = a3;
-  v8 = a4;
+  v7[6] = identifier;
+  entitiesCopy = entities;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v7];
   if (*(v10 + 24) == 1)
   {
@@ -2778,7 +2778,7 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   return v5 & 1;
 }
 
-- (BOOL)removePlaylistWithIdentifier:(int64_t)a3
+- (BOOL)removePlaylistWithIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -2790,7 +2790,7 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   v6[3] = &unk_1E7677550;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = identifier;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v6];
   if (*(v8 + 24) == 1)
   {
@@ -2807,9 +2807,9 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   return v4 & 1;
 }
 
-- (int64_t)sdk_addPlaylistWithValuesForProperties:(id)a3
+- (int64_t)sdk_addPlaylistWithValuesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -2820,24 +2820,24 @@ uint64_t __66__MPMediaLibraryDataProviderML3_deleteItemsWithIdentifiers_count___
   v9[1] = 3221225472;
   v9[2] = __72__MPMediaLibraryDataProviderML3_sdk_addPlaylistWithValuesForProperties___block_invoke;
   v9[3] = &unk_1E7677690;
-  v5 = v4;
-  v11 = self;
+  v5 = propertiesCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v5;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v9];
   v6 = v14[5];
   if (v6)
   {
-    v7 = [v6 persistentID];
+    persistentID = [v6 persistentID];
   }
 
   else
   {
-    v7 = 0;
+    persistentID = 0;
   }
 
   _Block_object_dispose(&v13, 8);
-  return v7;
+  return persistentID;
 }
 
 BOOL __72__MPMediaLibraryDataProviderML3_sdk_addPlaylistWithValuesForProperties___block_invoke(uint64_t a1)
@@ -2876,11 +2876,11 @@ BOOL __72__MPMediaLibraryDataProviderML3_sdk_addPlaylistWithValuesForProperties_
   return v10;
 }
 
-- (int64_t)addPlaylistWithValuesForProperties:(id)a3 trackList:(id)a4 playlistEntryProperties:(id)a5
+- (int64_t)addPlaylistWithValuesForProperties:(id)properties trackList:(id)list playlistEntryProperties:(id)entryProperties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  listCopy = list;
+  entryPropertiesCopy = entryProperties;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2891,27 +2891,27 @@ BOOL __72__MPMediaLibraryDataProviderML3_sdk_addPlaylistWithValuesForProperties_
   v17[1] = 3221225472;
   v17[2] = __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_trackList_playlistEntryProperties___block_invoke;
   v17[3] = &unk_1E7677640;
-  v11 = v8;
+  v11 = propertiesCopy;
   v22 = &v23;
   v18 = v11;
-  v19 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = listCopy;
   v20 = v12;
-  v13 = v10;
+  v13 = entryPropertiesCopy;
   v21 = v13;
   [(MPMediaLibraryDataProviderML3 *)self performTransactionWithBlock:v17];
   if (v24[5] && ([MPMediaLibrary reloadLibraryDataProvider:self], (v14 = v24[5]) != 0))
   {
-    v15 = [v14 persistentID];
+    persistentID = [v14 persistentID];
   }
 
   else
   {
-    v15 = 0;
+    persistentID = 0;
   }
 
   _Block_object_dispose(&v23, 8);
-  return v15;
+  return persistentID;
 }
 
 BOOL __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_trackList_playlistEntryProperties___block_invoke(uint64_t a1)
@@ -3029,70 +3029,70 @@ BOOL __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_tra
 
 - (int64_t)photosMemoriesPlaylistPersistentID
 {
-  v2 = [(ML3MusicLibrary *)self->_library currentDevicePhotosMemoriesPlaylist];
-  v3 = v2;
-  if (v2)
+  currentDevicePhotosMemoriesPlaylist = [(ML3MusicLibrary *)self->_library currentDevicePhotosMemoriesPlaylist];
+  v3 = currentDevicePhotosMemoriesPlaylist;
+  if (currentDevicePhotosMemoriesPlaylist)
   {
-    v4 = [v2 persistentID];
+    persistentID = [currentDevicePhotosMemoriesPlaylist persistentID];
   }
 
   else
   {
-    v4 = 0;
+    persistentID = 0;
   }
 
-  return v4;
+  return persistentID;
 }
 
 - (int64_t)favoriteSongsPlaylistPersistentID
 {
-  v2 = [(ML3MusicLibrary *)self->_library currentDeviceFavoriteSongsPlaylist];
-  v3 = v2;
-  if (v2)
+  currentDeviceFavoriteSongsPlaylist = [(ML3MusicLibrary *)self->_library currentDeviceFavoriteSongsPlaylist];
+  v3 = currentDeviceFavoriteSongsPlaylist;
+  if (currentDeviceFavoriteSongsPlaylist)
   {
-    v4 = [v2 persistentID];
+    persistentID = [currentDeviceFavoriteSongsPlaylist persistentID];
   }
 
   else
   {
-    v4 = 0;
+    persistentID = 0;
   }
 
-  return v4;
+  return persistentID;
 }
 
 - (int64_t)playbackHistoryPlaylistPersistentID
 {
-  v2 = [(ML3MusicLibrary *)self->_library currentDevicePlaybackHistoryPlaylist];
-  v3 = v2;
-  if (v2)
+  currentDevicePlaybackHistoryPlaylist = [(ML3MusicLibrary *)self->_library currentDevicePlaybackHistoryPlaylist];
+  v3 = currentDevicePlaybackHistoryPlaylist;
+  if (currentDevicePlaybackHistoryPlaylist)
   {
-    v4 = [v2 persistentID];
+    persistentID = [currentDevicePlaybackHistoryPlaylist persistentID];
   }
 
   else
   {
-    v4 = 0;
+    persistentID = 0;
   }
 
-  return v4;
+  return persistentID;
 }
 
-- (void)setValuesForProperties:(id)a3 trackList:(id)a4 andEntryProperties:(id)a5 ofPlaylistWithIdentifier:(int64_t)a6 completionBlock:(id)a7
+- (void)setValuesForProperties:(id)properties trackList:(id)list andEntryProperties:(id)entryProperties ofPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
   v68 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v31 = a4;
-  v33 = a5;
-  v32 = a7;
-  v39 = [MEMORY[0x1E695DF90] dictionary];
-  v44 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v43, "count")}];
-  v36 = [MEMORY[0x1E695DF00] date];
+  propertiesCopy = properties;
+  listCopy = list;
+  entryPropertiesCopy = entryProperties;
+  blockCopy = block;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v44 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
+  date = [MEMORY[0x1E695DF00] date];
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = [v43 allKeys];
+  obj = [propertiesCopy allKeys];
   v10 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (!v10)
   {
@@ -3121,7 +3121,7 @@ BOOL __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_tra
       v15 = [MEMORY[0x1E69B34A0] propertyForMPMediaEntityProperty:v14];
       if (v15)
       {
-        v16 = [v43 objectForKey:v14];
+        v16 = [propertiesCopy objectForKey:v14];
         if ([v15 isEqualToString:v12])
         {
           if ([v16 integerValue] == -1)
@@ -3142,7 +3142,7 @@ BOOL __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_tra
             {
               v17 = [MEMORY[0x1E69B3488] predicateWithProperty:v34 value:&unk_1F1509718 comparison:1];
 
-              [v39 setObject:&unk_1F1509748 forKey:v12];
+              [dictionary setObject:&unk_1F1509748 forKey:v12];
               goto LABEL_21;
             }
 
@@ -3156,7 +3156,7 @@ BOOL __102__MPMediaLibraryDataProviderML3_addPlaylistWithValuesForProperties_tra
               v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
               v17 = [v18 predicateMatchingPredicates:v21];
 
-              [v39 setObject:&unk_1F1509718 forKey:v12];
+              [dictionary setObject:&unk_1F1509718 forKey:v12];
 LABEL_21:
               v41 = v17;
             }
@@ -3164,13 +3164,13 @@ LABEL_21:
 
           else
           {
-            [v39 setObject:&unk_1F1509730 forKey:v12];
+            [dictionary setObject:&unk_1F1509730 forKey:v12];
           }
         }
 
         else if ([v15 isEqualToString:v40])
         {
-          [v44 setValue:v36 forKey:v35];
+          [v44 setValue:date forKey:v35];
         }
 
         [v44 setValue:v16 forKey:v15];
@@ -3185,12 +3185,12 @@ LABEL_27:
 
   if ([v44 count])
   {
-    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v33, "count")}];
+    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(entryPropertiesCopy, "count")}];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __126__MPMediaLibraryDataProviderML3_setValuesForProperties_trackList_andEntryProperties_ofPlaylistWithIdentifier_completionBlock___block_invoke;
     v56[3] = &unk_1E76774B0;
-    v57 = v33;
+    v57 = entryPropertiesCopy;
     v23 = v22;
     v58 = v23;
     [v57 enumerateKeysAndObjectsUsingBlock:v56];
@@ -3198,7 +3198,7 @@ LABEL_27:
     *(&buf + 1) = &buf;
     v64 = 0x2020000000;
     v65 = 1;
-    v24 = [MEMORY[0x1E69B34A0] newWithPersistentID:a6 inLibrary:self->_library];
+    v24 = [MEMORY[0x1E69B34A0] newWithPersistentID:identifier inLibrary:self->_library];
     setValuesWidthLimitedQueue = self->_setValuesWidthLimitedQueue;
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
@@ -3209,14 +3209,14 @@ LABEL_27:
     v26 = v24;
     v46 = v26;
     v47 = v44;
-    v48 = v31;
+    v48 = listCopy;
     v27 = v23;
     v49 = v27;
-    v50 = v39;
+    v50 = dictionary;
     v51 = v41;
-    v55 = a6;
-    v53 = v32;
-    v52 = v43;
+    identifierCopy = identifier;
+    v53 = blockCopy;
+    v52 = propertiesCopy;
     [(NSOperationQueue *)setValuesWidthLimitedQueue addOperationWithBlock:v45];
 
     _Block_object_dispose(&buf, 8);
@@ -3227,14 +3227,14 @@ LABEL_27:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v43;
+    *(&buf + 4) = propertiesCopy;
     _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "Failed to map any playlist properties from %{public}@", &buf, 0xCu);
   }
 
-  if (v32)
+  if (blockCopy)
   {
     v27 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:0 debugDescription:@"Failed to map provided properties in setValuesForProperties"];
-    (*(v32 + 2))(v32, 0, v27);
+    (*(blockCopy + 2))(blockCopy, 0, v27);
 LABEL_33:
   }
 }
@@ -3763,52 +3763,52 @@ void __126__MPMediaLibraryDataProviderML3_setValuesForProperties_trackList_andEn
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 ofPlaylistWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)setValue:(id)value forProperty:(id)property ofPlaylistWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
+  if (valueCopy)
   {
-    v13 = v10;
+    null = valueCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14 = v13;
-  v16 = v11;
-  v17[0] = v13;
+  v14 = null;
+  v16 = propertyCopy;
+  v17[0] = null;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [(MPMediaLibraryDataProviderML3 *)self setValuesForProperties:v15 trackList:0 andEntryProperties:0 ofPlaylistWithIdentifier:a5 completionBlock:v12];
+  [(MPMediaLibraryDataProviderML3 *)self setValuesForProperties:v15 trackList:0 andEntryProperties:0 ofPlaylistWithIdentifier:identifier completionBlock:blockCopy];
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 ofCollectionWithIdentifier:(int64_t)a5 groupingType:(int64_t)a6 completionBlock:(id)a7
+- (void)setValue:(id)value forProperty:(id)property ofCollectionWithIdentifier:(int64_t)identifier groupingType:(int64_t)type completionBlock:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
   v15 = ML3CollectionEntityClassForGroupingType();
-  v16 = [v15 propertyForMPMediaEntityProperty:v13];
-  if (v16 || v15 == objc_opt_class() && (v15 = ML3CollectionEntityClassForMPMediaItemCollectionProperty(v13), [v15 propertyForMPMediaEntityProperty:v13], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  v16 = [v15 propertyForMPMediaEntityProperty:propertyCopy];
+  if (v16 || v15 == objc_opt_class() && (v15 = ML3CollectionEntityClassForMPMediaItemCollectionProperty(propertyCopy), [v15 propertyForMPMediaEntityProperty:propertyCopy], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v25 = v12;
-    if (v12)
+    v25 = valueCopy;
+    if (valueCopy)
     {
-      v17 = v12;
+      null = valueCopy;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v19 = v17;
-    v20 = [v15 newWithPersistentID:a5 inLibrary:self->_library];
+    v19 = null;
+    v20 = [v15 newWithPersistentID:identifier inLibrary:self->_library];
     v40[0] = 0;
     v40[1] = v40;
     v40[2] = 0x2020000000;
@@ -3838,19 +3838,19 @@ void __126__MPMediaLibraryDataProviderML3_setValuesForProperties_trackList_andEn
     v27 = v22;
     v23 = v16;
     v35 = v15;
-    v36 = a5;
+    identifierCopy = identifier;
     v28 = v23;
     v32 = v38;
     v24 = v20;
     v29 = v24;
     v33 = v40;
     v34 = buf;
-    v31 = v14;
-    v30 = v13;
-    v37 = a6;
+    v31 = blockCopy;
+    v30 = propertyCopy;
+    typeCopy = type;
     [(NSOperationQueue *)setValuesWidthLimitedQueue addOperationWithBlock:v26];
 
-    v12 = v25;
+    valueCopy = v25;
     _Block_object_dispose(v38, 8);
     _Block_object_dispose(buf, 8);
 
@@ -3865,15 +3865,15 @@ void __126__MPMediaLibraryDataProviderML3_setValuesForProperties_trackList_andEn
       *buf = 138412802;
       *&buf[4] = v15;
       *&buf[12] = 2048;
-      *&buf[14] = a6;
+      *&buf[14] = type;
       *&buf[22] = 2112;
-      v42 = v13;
+      v42 = propertyCopy;
       _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_ERROR, "entityClass %@ (groupingType = %ld) has no ML3Property for MPProperty %@", buf, 0x20u);
     }
 
-    if (v14)
+    if (blockCopy)
     {
-      (*(v14 + 2))(v14, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
     }
   }
 }
@@ -4605,44 +4605,44 @@ void __110__MPMediaLibraryDataProviderML3_setValue_forProperty_ofCollectionWithI
   setValue_forProperty_ofCollectionWithIdentifier_groupingType_completionBlock____cloudPropertiesToUpload = v0;
 }
 
-- (void)setValues:(id)a3 forProperties:(id)a4 forItemPersistentIDs:(id)a5
+- (void)setValues:(id)values forProperties:(id)properties forItemPersistentIDs:(id)ds
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count] && objc_msgSend(v11, "count"))
+  valuesCopy = values;
+  propertiesCopy = properties;
+  dsCopy = ds;
+  if ([propertiesCopy count] && objc_msgSend(dsCopy, "count"))
   {
     v24 = a2;
-    v25 = v11;
-    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-    if ([v10 count])
+    v25 = dsCopy;
+    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
+    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
+    if ([propertiesCopy count])
     {
       v14 = 0;
       do
       {
-        v15 = [v10 objectAtIndexedSubscript:v14];
-        v16 = [v9 objectAtIndexedSubscript:v14];
+        v15 = [propertiesCopy objectAtIndexedSubscript:v14];
+        v16 = [valuesCopy objectAtIndexedSubscript:v14];
         v17 = [MEMORY[0x1E69B3538] propertyForMPMediaEntityProperty:v15];
         if (!v17)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:v24 object:self file:@"MPMediaLibraryDataProviderML3.m" lineNumber:1520 description:{@"No ML3Property for MPProperty: %@", v15}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:v24 object:self file:@"MPMediaLibraryDataProviderML3.m" lineNumber:1520 description:{@"No ML3Property for MPProperty: %@", v15}];
         }
 
         [v12 addObject:v17];
-        v18 = [objc_opt_class() _unadjustedValueForMPProperty:v15 withDefaultValue:v16];
-        if (!v18)
+        null = [objc_opt_class() _unadjustedValueForMPProperty:v15 withDefaultValue:v16];
+        if (!null)
         {
-          v18 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        [v13 addObject:v18];
+        [v13 addObject:null];
 
         ++v14;
       }
 
-      while (v14 < [v10 count]);
+      while (v14 < [propertiesCopy count]);
     }
 
     setValuesWidthLimitedQueue = self->_setValuesWidthLimitedQueue;
@@ -4653,7 +4653,7 @@ void __110__MPMediaLibraryDataProviderML3_setValue_forProperty_ofCollectionWithI
     v28[4] = self;
     v29 = v13;
     v30 = v12;
-    v11 = v25;
+    dsCopy = v25;
     v31 = v25;
     v21 = v12;
     v22 = v13;
@@ -4664,7 +4664,7 @@ void __110__MPMediaLibraryDataProviderML3_setValue_forProperty_ofCollectionWithI
     block[2] = __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersistentIDs___block_invoke_3;
     block[3] = &unk_1E76823C0;
     block[4] = self;
-    v27 = v10;
+    v27 = propertiesCopy;
     dispatch_async(cloudUpdateQueue, block);
   }
 }
@@ -4706,21 +4706,21 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
   }
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 ofItemWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)setValue:(id)value forProperty:(id)property ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
   v80 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v10 = a4;
-  v45 = a6;
-  v46 = v10;
-  v11 = [MEMORY[0x1E69B3538] propertyForMPMediaEntityProperty:v10];
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
+  v46 = propertyCopy;
+  v11 = [MEMORY[0x1E69B3538] propertyForMPMediaEntityProperty:propertyCopy];
   if (v11)
   {
-    v12 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-    v13 = [MPCloudController controllerWithUserIdentity:v12];
+    userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+    v13 = [MPCloudController controllerWithUserIdentity:userIdentity];
 
-    v43 = [MEMORY[0x1E69B3538] newWithPersistentID:a5 inLibrary:self->_library];
-    v42 = [v13 isCloudEnabled];
+    v43 = [MEMORY[0x1E69B3538] newWithPersistentID:identifier inLibrary:self->_library];
+    isCloudEnabled = [v13 isCloudEnabled];
     v65 = 0;
     v66 = &v65;
     v67 = 0x2020000000;
@@ -4735,15 +4735,15 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
     v62 = &v61;
     v63 = 0x2020000000;
     v64 = 0;
-    v14 = [objc_opt_class() _unadjustedValueForMPProperty:v46 withDefaultValue:v44];
+    v14 = [objc_opt_class() _unadjustedValueForMPProperty:v46 withDefaultValue:valueCopy];
     v15 = MEMORY[0x1E695DF70];
-    v16 = v14;
+    null = v14;
     if (!v14)
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v17 = [v15 arrayWithObject:v16];
+    v17 = [v15 arrayWithObject:null];
     if (!v14)
     {
     }
@@ -4751,25 +4751,25 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
     v18 = [MEMORY[0x1E695DF70] arrayWithObject:v11];
     if ([v11 isEqualToString:*MEMORY[0x1E69B3108]])
     {
-      v19 = [v14 integerValue];
-      v66[3] = v19;
+      integerValue = [v14 integerValue];
+      v66[3] = integerValue;
       [v17 addObject:MEMORY[0x1E695E118]];
       [v18 addObject:*MEMORY[0x1E69B3110]];
-      v20 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v21 = *(*(&v75 + 1) + 40);
-      *(*(&v75 + 1) + 40) = v20;
+      *(*(&v75 + 1) + 40) = date;
 
       [v17 addObject:*(*(&v75 + 1) + 40)];
       [v18 addObject:*MEMORY[0x1E69B3118]];
       *(v62 + 24) = 1;
-      if (v42)
+      if (isCloudEnabled)
       {
         if ([v46 isEqualToString:@"_itemLikedState"])
         {
           if (v66[3] == 2)
           {
             v22 = v18;
-            v23 = a5;
+            identifierCopy = identifier;
             v24 = v11;
             v25 = v13;
             v26 = v17;
@@ -4780,7 +4780,7 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
             v17 = v26;
             v13 = v25;
             v11 = v24;
-            a5 = v23;
+            identifier = identifierCopy;
             v18 = v22;
             if (v28 && [v13 favoriteSongAddToLibraryBehavior] != 2)
             {
@@ -4801,12 +4801,12 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
         v71 = 2114;
         v72 = v18;
         v73 = 2048;
-        v74 = a5;
+        identifierCopy2 = identifier;
         _os_log_impl(&dword_1A238D000, v29, OS_LOG_TYPE_DEFAULT, "Setting values=%{public}@ for properties=%{public}@, trackPid=%lld", buf, 0x20u);
       }
     }
 
-    [v43 setValues:v17 forProperties:v18 async:1 withCompletionBlock:v45];
+    [v43 setValues:v17 forProperties:v18 async:1 withCompletionBlock:blockCopy];
     v41 = v18;
     v30 = v17;
     if (MPTrackCloudPropertiesToUpload_onceToken != -1)
@@ -4821,11 +4821,11 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
     block[1] = 3221225472;
     block[2] = __91__MPMediaLibraryDataProviderML3_setValue_forProperty_ofItemWithIdentifier_completionBlock___block_invoke;
     block[3] = &unk_1E76773C0;
-    v60 = v42;
+    v60 = isCloudEnabled;
     v48 = v32;
     v49 = v46;
     v50 = v13;
-    v59 = a5;
+    identifierCopy3 = identifier;
     v51 = v31;
     v52 = v43;
     v56 = &v65;
@@ -4833,7 +4833,7 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
     v53 = v14;
     v58 = &v61;
     v54 = v11;
-    v55 = self;
+    selfCopy = self;
     v34 = v14;
     v35 = v43;
     v36 = v31;
@@ -4853,13 +4853,13 @@ void __78__MPMediaLibraryDataProviderML3_setValues_forProperties_forItemPersiste
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v75) = 138543362;
-      *(&v75 + 4) = v10;
+      *(&v75 + 4) = propertyCopy;
       _os_log_impl(&dword_1A238D000, v39, OS_LOG_TYPE_ERROR, "Could not find track property for property=%{public}@", &v75, 0xCu);
     }
 
-    if (v45)
+    if (blockCopy)
     {
-      (*(v45 + 2))(v45, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
     }
   }
 }
@@ -5152,16 +5152,16 @@ void __91__MPMediaLibraryDataProviderML3_setValue_forProperty_ofItemWithIdentifi
   }
 }
 
-- (void)performReadTransactionWithBlock:(id)a3
+- (void)performReadTransactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   library = self->_library;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MPMediaLibraryDataProviderML3_performReadTransactionWithBlock___block_invoke;
   v7[3] = &unk_1E7677370;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v7];
 }
 
@@ -5175,9 +5175,9 @@ void __65__MPMediaLibraryDataProviderML3_performReadTransactionWithBlock___block
   [a2 performTransactionWithBlock:v3];
 }
 
-- (BOOL)performTransactionWithBlock:(id)a3
+- (BOOL)performTransactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -5188,7 +5188,7 @@ void __65__MPMediaLibraryDataProviderML3_performReadTransactionWithBlock___block
   v8[2] = __61__MPMediaLibraryDataProviderML3_performTransactionWithBlock___block_invoke;
   v8[3] = &unk_1E7677348;
   v10 = &v11;
-  v6 = v4;
+  v6 = blockCopy;
   v9 = v6;
   [(ML3MusicLibrary *)library performDatabaseTransactionWithBlock:v8];
   LOBYTE(library) = *(v12 + 24);
@@ -5197,11 +5197,11 @@ void __65__MPMediaLibraryDataProviderML3_performReadTransactionWithBlock___block
   return library;
 }
 
-- (void)loadProperties:(id)a3 ofCollectionWithIdentifier:(int64_t)a4 groupingType:(int64_t)a5 completionBlock:(id)a6
+- (void)loadProperties:(id)properties ofCollectionWithIdentifier:(int64_t)identifier groupingType:(int64_t)type completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  propertiesCopy = properties;
+  blockCopy = block;
   v11 = ML3CollectionEntityClassForGroupingType();
   v12 = v11;
   if (v11 == objc_opt_class())
@@ -5210,7 +5210,7 @@ void __65__MPMediaLibraryDataProviderML3_performReadTransactionWithBlock___block
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = v9;
+    v13 = propertiesCopy;
     v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v14)
     {
@@ -5245,60 +5245,60 @@ LABEL_4:
     }
   }
 
-  [(MPMediaLibraryDataProviderML3 *)self _loadProperties:v9 ofEntityWithIdentifier:a4 ML3EntityClass:v12 completionBlock:v10, v18];
+  [(MPMediaLibraryDataProviderML3 *)self _loadProperties:propertiesCopy ofEntityWithIdentifier:identifier ML3EntityClass:v12 completionBlock:blockCopy, v18];
 }
 
-- (void)loadProperties:(id)a3 ofItemWithIdentifier:(int64_t)a4 completionBlock:(id)a5
+- (void)loadProperties:(id)properties ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  [(MPMediaLibraryDataProviderML3 *)self _loadProperties:v9 ofEntityWithIdentifier:a4 ML3EntityClass:objc_opt_class() completionBlock:v8];
+  blockCopy = block;
+  propertiesCopy = properties;
+  [(MPMediaLibraryDataProviderML3 *)self _loadProperties:propertiesCopy ofEntityWithIdentifier:identifier ML3EntityClass:objc_opt_class() completionBlock:blockCopy];
 }
 
-- (void)loadValueForAggregateFunction:(id)a3 onCollectionsForProperty:(id)a4 queryCriteria:(id)a5 completionBlock:(id)a6
+- (void)loadValueForAggregateFunction:(id)function onCollectionsForProperty:(id)property queryCriteria:(id)criteria completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = ML3CollectionEntityClassForMPMediaItemCollectionProperty(v12);
-  v15 = [v11 ML3CollectionsQueryInLibrary:self->_library];
+  blockCopy = block;
+  criteriaCopy = criteria;
+  propertyCopy = property;
+  functionCopy = function;
+  v14 = ML3CollectionEntityClassForMPMediaItemCollectionProperty(propertyCopy);
+  v15 = [criteriaCopy ML3CollectionsQueryInLibrary:self->_library];
 
-  [(MPMediaLibraryDataProviderML3 *)self _loadValueForAggregateFunction:v13 entityClass:v14 property:v12 query:v15 completionBlock:v10];
+  [(MPMediaLibraryDataProviderML3 *)self _loadValueForAggregateFunction:functionCopy entityClass:v14 property:propertyCopy query:v15 completionBlock:blockCopy];
 }
 
-- (void)loadValueForAggregateFunction:(id)a3 onItemsForProperty:(id)a4 queryCriteria:(id)a5 completionBlock:(id)a6
+- (void)loadValueForAggregateFunction:(id)function onItemsForProperty:(id)property queryCriteria:(id)criteria completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  criteriaCopy = criteria;
+  propertyCopy = property;
+  functionCopy = function;
   v14 = objc_opt_class();
-  v15 = [v11 ML3ItemsQueryInLibrary:self->_library];
+  v15 = [criteriaCopy ML3ItemsQueryInLibrary:self->_library];
 
-  [(MPMediaLibraryDataProviderML3 *)self _loadValueForAggregateFunction:v13 entityClass:v14 property:v12 query:v15 completionBlock:v10];
+  [(MPMediaLibraryDataProviderML3 *)self _loadValueForAggregateFunction:functionCopy entityClass:v14 property:propertyCopy query:v15 completionBlock:blockCopy];
 }
 
-- (void)enumerateCollectionIdentifiersForQueryCriteria:(id)a3 ordered:(BOOL)a4 cancelBlock:(id)a5 usingBlock:(id)a6
+- (void)enumerateCollectionIdentifiersForQueryCriteria:(id)criteria ordered:(BOOL)ordered cancelBlock:(id)block usingBlock:(id)usingBlock
 {
-  v28 = a4;
+  orderedCopy = ordered;
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v29 = a5;
-  v26 = a6;
-  v27 = self;
-  v10 = [v9 ML3CollectionsQueryInLibrary:self->_library];
-  v30 = v9;
-  v11 = [v9 collectionPropertiesToFetch];
-  v12 = [v11 count];
+  criteriaCopy = criteria;
+  blockCopy = block;
+  usingBlockCopy = usingBlock;
+  selfCopy = self;
+  v10 = [criteriaCopy ML3CollectionsQueryInLibrary:self->_library];
+  v30 = criteriaCopy;
+  collectionPropertiesToFetch = [criteriaCopy collectionPropertiesToFetch];
+  v12 = [collectionPropertiesToFetch count];
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:v12];
   v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v12];
-  v15 = [v10 entityClass];
+  entityClass = [v10 entityClass];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = v11;
+  v16 = collectionPropertiesToFetch;
   v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v17)
   {
@@ -5314,7 +5314,7 @@ LABEL_4:
         }
 
         v21 = *(*(&v35 + 1) + 8 * i);
-        v22 = [v15 propertyForMPMediaEntityProperty:v21];
+        v22 = [entityClass propertyForMPMediaEntityProperty:v21];
         if (v22)
         {
           [v13 addObject:v22];
@@ -5337,10 +5337,10 @@ LABEL_4:
   v31[3] = &unk_1E7677320;
   v33 = v23;
   v34 = v24;
-  v31[4] = v27;
-  v32 = v26;
-  v25 = v26;
-  [v10 enumeratePersistentIDsAndProperties:v13 ordered:v28 cancelBlock:v29 usingBlock:v31];
+  v31[4] = selfCopy;
+  v32 = usingBlockCopy;
+  v25 = usingBlockCopy;
+  [v10 enumeratePersistentIDsAndProperties:v13 ordered:orderedCopy cancelBlock:blockCopy usingBlock:v31];
   free(v24);
 }
 
@@ -5375,32 +5375,32 @@ void __111__MPMediaLibraryDataProviderML3_enumerateCollectionIdentifiersForQuery
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)enumerateItemIdentifiersForQueryCriteria:(id)a3 ordered:(BOOL)a4 cancelBlock:(id)a5 usingBlock:(id)a6
+- (void)enumerateItemIdentifiersForQueryCriteria:(id)criteria ordered:(BOOL)ordered cancelBlock:(id)block usingBlock:(id)usingBlock
 {
-  v7 = a4;
-  v10 = a6;
+  orderedCopy = ordered;
+  usingBlockCopy = usingBlock;
   library = self->_library;
-  v12 = a5;
-  v13 = [a3 ML3ItemsQueryInLibrary:library];
+  blockCopy = block;
+  v13 = [criteria ML3ItemsQueryInLibrary:library];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __105__MPMediaLibraryDataProviderML3_enumerateItemIdentifiersForQueryCriteria_ordered_cancelBlock_usingBlock___block_invoke;
   v15[3] = &unk_1E76772F8;
-  v16 = v10;
-  v14 = v10;
-  [v13 enumeratePersistentIDsAndProperties:0 ordered:v7 cancelBlock:v12 usingBlock:v15];
+  v16 = usingBlockCopy;
+  v14 = usingBlockCopy;
+  [v13 enumeratePersistentIDsAndProperties:0 ordered:orderedCopy cancelBlock:blockCopy usingBlock:v15];
 }
 
-- (void)_addGlobalPlaylistsToLibraryDatabase:(id)a3 asLibraryOwned:(BOOL)a4 completion:(id)a5
+- (void)_addGlobalPlaylistsToLibraryDatabase:(id)database asLibraryOwned:(BOOL)owned completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  databaseCopy = database;
+  completionCopy = completion;
   v10 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = databaseCopy;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "Fetching global playlists with IDs %{public}@...", &buf, 0xCu);
   }
 
@@ -5409,24 +5409,24 @@ void __111__MPMediaLibraryDataProviderML3_enumerateCollectionIdentifiersForQuery
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__9726;
   v25 = __Block_byref_object_dispose__9727;
-  v26 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = objc_alloc_init(MEMORY[0x1E69E4610]);
-  v12 = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
-  [v11 setRequestContext:v12];
+  _storePlatformRequestContext = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
+  [v11 setRequestContext:_storePlatformRequestContext];
 
   [v11 setPersonalizationStyle:0];
   [v11 setKeyProfile:*MEMORY[0x1E69E42A8]];
-  [v11 setItemIdentifiers:v8];
+  [v11 setItemIdentifiers:databaseCopy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__MPMediaLibraryDataProviderML3__addGlobalPlaylistsToLibraryDatabase_asLibraryOwned_completion___block_invoke;
   v16[3] = &unk_1E76772D0;
-  v13 = v8;
-  v21 = a4;
+  v13 = databaseCopy;
+  ownedCopy = owned;
   v17 = v13;
-  v18 = self;
+  selfCopy = self;
   p_buf = &buf;
-  v14 = v9;
+  v14 = completionCopy;
   v19 = v14;
   v15 = [v11 performWithResponseHandler:v16];
 
@@ -5702,27 +5702,27 @@ void __96__MPMediaLibraryDataProviderML3__addGlobalPlaylistsToLibraryDatabase_as
   }
 }
 
-- (void)addToLocalDeviceLibraryGlobalPlaylistWithID:(id)a3 completion:(id)a4
+- (void)addToLocalDeviceLibraryGlobalPlaylistWithID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "import global playlist with id %@ to local device library", buf, 0xCu);
   }
 
-  v13 = v6;
+  v13 = dCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__MPMediaLibraryDataProviderML3_addToLocalDeviceLibraryGlobalPlaylistWithID_completion___block_invoke;
   v11[3] = &unk_1E767C5D0;
-  v12 = v7;
-  v10 = v7;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MPMediaLibraryDataProviderML3 *)self _addGlobalPlaylistsToLibraryDatabase:v9 asLibraryOwned:1 completion:v11];
 }
 
@@ -5737,26 +5737,26 @@ uint64_t __88__MPMediaLibraryDataProviderML3_addToLocalDeviceLibraryGlobalPlayli
   return result;
 }
 
-- (void)addGlobalPlaylistWithID:(id)a3 andAddToCloudLibrary:(BOOL)a4 completion:(id)a5
+- (void)addGlobalPlaylistWithID:(id)d andAddToCloudLibrary:(BOOL)library completion:(id)completion
 {
-  v6 = a4;
+  libraryCopy = library;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__MPMediaLibraryDataProviderML3_addGlobalPlaylistWithID_andAddToCloudLibrary_completion___block_invoke;
   aBlock[3] = &unk_1E76816D0;
-  v27 = v9;
-  v10 = v9;
+  v27 = completionCopy;
+  v10 = completionCopy;
   v11 = _Block_copy(aBlock);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __89__MPMediaLibraryDataProviderML3_addGlobalPlaylistWithID_andAddToCloudLibrary_completion___block_invoke_2;
   v21 = &unk_1E7677280;
-  v25 = v6;
-  v22 = self;
-  v12 = v8;
+  v25 = libraryCopy;
+  selfCopy = self;
+  v12 = dCopy;
   v23 = v12;
   v24 = v11;
   v13 = v11;
@@ -5765,7 +5765,7 @@ uint64_t __88__MPMediaLibraryDataProviderML3_addToLocalDeviceLibraryGlobalPlayli
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = "no";
-    if (v6)
+    if (libraryCopy)
     {
       v16 = "yes";
     }
@@ -5778,7 +5778,7 @@ uint64_t __88__MPMediaLibraryDataProviderML3_addToLocalDeviceLibraryGlobalPlayli
   }
 
   v28 = v12;
-  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:{1, v18, v19, v20, v21, v22}];
+  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:{1, v18, v19, v20, v21, selfCopy}];
   [(MPMediaLibraryDataProviderML3 *)self _addGlobalPlaylistsToLibraryDatabase:v17 asLibraryOwned:1 completion:v14];
 }
 
@@ -5851,7 +5851,7 @@ LABEL_6:
   (*(*(a1 + 32) + 16))(*(a1 + 32), v4);
 }
 
-- (void)removeArtworkForEntityPersistentID:(unint64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6
+- (void)removeArtworkForEntityPersistentID:(unint64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType
 {
   library = self->_library;
   v7[0] = MEMORY[0x1E69E9820];
@@ -5859,10 +5859,10 @@ LABEL_6:
   v7[2] = __102__MPMediaLibraryDataProviderML3_removeArtworkForEntityPersistentID_entityType_artworkType_sourceType___block_invoke;
   v7[3] = &unk_1E7677258;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  v7[7] = a5;
-  v7[8] = a6;
+  v7[5] = d;
+  v7[6] = type;
+  v7[7] = artworkType;
+  v7[8] = sourceType;
   [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:1 withBlock:v7];
 }
 
@@ -5878,12 +5878,12 @@ void __102__MPMediaLibraryDataProviderML3_removeArtworkForEntityPersistentID_ent
   [*(a1[4] + 88) updateBestArtworkTokenForEntityPersistentID:a1[5] entityType:a1[6] artworkType:a1[7] retrievalTime:0 preserveExistingAvailableToken:v8 usingConnection:0.0];
 }
 
-- (BOOL)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unint64_t)a7
+- (BOOL)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unint64_t)mediaType
 {
-  v7 = a7;
-  v12 = ~a7;
-  v13 = a4;
-  v14 = a3;
+  mediaTypeCopy = mediaType;
+  v12 = ~mediaType;
+  tokenCopy = token;
+  dataCopy = data;
   if (v12)
   {
     v15 = 0;
@@ -5899,31 +5899,31 @@ void __102__MPMediaLibraryDataProviderML3_removeArtworkForEntityPersistentID_ent
     v15 |= 0xFF00u;
   }
 
-  v16 = vandq_s8(vshlq_u32(vdupq_n_s32(v7), xmmword_1A273DDC0), xmmword_1A273DDD0);
+  v16 = vandq_s8(vshlq_u32(vdupq_n_s32(mediaTypeCopy), xmmword_1A273DDC0), xmmword_1A273DDD0);
   *v16.i8 = vorr_s8(*v16.i8, *&vextq_s8(v16, v16, 8uLL));
-  v17 = [(ML3MusicLibrary *)self->_library importOriginalArtworkFromImageData:v14 withArtworkToken:v13 artworkType:a5 sourceType:a6 mediaType:v16.i32[0] | v7 & 0x3210 | v16.i32[1] | (v7 >> 1) & 2 | (v7 >> 2) & 0x100 | (v7 >> 1) & 0x400 | v15];
+  v17 = [(ML3MusicLibrary *)self->_library importOriginalArtworkFromImageData:dataCopy withArtworkToken:tokenCopy artworkType:type sourceType:sourceType mediaType:v16.i32[0] | mediaTypeCopy & 0x3210 | v16.i32[1] | (mediaTypeCopy >> 1) & 2 | (mediaTypeCopy >> 2) & 0x100 | (mediaTypeCopy >> 1) & 0x400 | v15];
 
   return v17;
 }
 
-- (void)importArtworkTokenForEntityPersistentID:(unint64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7
+- (void)importArtworkTokenForEntityPersistentID:(unint64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType
 {
-  v12 = a5;
-  [(ML3MusicLibrary *)self->_library importArtworkTokenForEntityPersistentID:a3 entityType:a4 artworkToken:v12 artworkType:a6 sourceType:a7];
+  tokenCopy = token;
+  [(ML3MusicLibrary *)self->_library importArtworkTokenForEntityPersistentID:d entityType:type artworkToken:tokenCopy artworkType:artworkType sourceType:sourceType];
 }
 
-- (void)_importStoreAlbumArtistElements:(id)a3 withReferralObject:(id)a4 withCompletion:(id)a5
+- (void)_importStoreAlbumArtistElements:(id)elements withReferralObject:(id)object withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  elementsCopy = elements;
+  completionCopy = completion;
   v9 = os_log_create("com.apple.amp.mediaplayer", "Library_Oversize");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v25 = [v7 count];
+    v25 = [elementsCopy count];
     v26 = 2114;
-    v27 = v7;
+    v27 = elementsCopy;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "Adding %llu store album artists to device only library %{public}@", buf, 0x16u);
   }
 
@@ -5934,32 +5934,32 @@ void __102__MPMediaLibraryDataProviderML3_removeArtworkForEntityPersistentID_ent
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "Parsing album artist data...", buf, 2u);
   }
 
-  v11 = [[MPStoreItemImportAlbumArtistData alloc] initWithAlbumArtistImportElements:v7];
+  v11 = [[MPStoreItemImportAlbumArtistData alloc] initWithAlbumArtistImportElements:elementsCopy];
   v12 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(ML3StoreItemAlbumArtistData *)v11 albumArtistCount];
+    albumArtistCount = [(ML3StoreItemAlbumArtistData *)v11 albumArtistCount];
     *buf = 134217984;
-    v25 = v13;
+    v25 = albumArtistCount;
     _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "Importing %lu album artists...", buf, 0xCu);
   }
 
-  v14 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v15 = [v14 databasePath];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  databasePath = [library databasePath];
 
   v16 = objc_alloc(MEMORY[0x1E69B34E8]);
-  v17 = [(ML3StoreItemAlbumArtistData *)v11 albumArtistData];
+  albumArtistData = [(ML3StoreItemAlbumArtistData *)v11 albumArtistData];
   v18 = MSVTCCIdentityForCurrentProcess();
-  v19 = [v16 initWithLibraryPath:v15 trackData:0 playlistData:0 albumArtistData:v17 albumData:0 clientIdentity:v18];
+  v19 = [v16 initWithLibraryPath:databasePath trackData:0 playlistData:0 albumArtistData:albumArtistData albumData:0 clientIdentity:v18];
 
-  v20 = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
+  mEMORY[0x1E69B3548] = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __99__MPMediaLibraryDataProviderML3__importStoreAlbumArtistElements_withReferralObject_withCompletion___block_invoke;
   v22[3] = &unk_1E7677208;
-  v23 = v8;
-  v21 = v8;
-  [v20 performImport:v19 fromSource:6 withProgressBlock:0 completionHandler:v22];
+  v23 = completionCopy;
+  v21 = completionCopy;
+  [mEMORY[0x1E69B3548] performImport:v19 fromSource:6 withProgressBlock:0 completionHandler:v22];
 }
 
 void __99__MPMediaLibraryDataProviderML3__importStoreAlbumArtistElements_withReferralObject_withCompletion___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -6003,25 +6003,25 @@ void __99__MPMediaLibraryDataProviderML3__importStoreAlbumArtistElements_withRef
   }
 }
 
-- (void)_importStoreItemElements:(id)a3 withReferralObject:(id)a4 addTracksToDeviceLibraryOnly:(BOOL)a5 andAddTracksToCloudLibrary:(BOOL)a6 usingCloudAdamID:(int64_t)a7 withCompletion:(id)a8
+- (void)_importStoreItemElements:(id)elements withReferralObject:(id)object addTracksToDeviceLibraryOnly:(BOOL)only andAddTracksToCloudLibrary:(BOOL)library usingCloudAdamID:(int64_t)d withCompletion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
+  libraryCopy = library;
+  onlyCopy = only;
   v43 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  elementsCopy = elements;
+  objectCopy = object;
+  completionCopy = completion;
   v16 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v36 = [v13 count];
+    v36 = [elementsCopy count];
     v37 = 1024;
-    v38 = v9;
+    v38 = libraryCopy;
     v39 = 1024;
-    v40 = v10;
+    v40 = onlyCopy;
     v41 = 2114;
-    v42 = v13;
+    v42 = elementsCopy;
     _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_DEFAULT, "Adding %llu store items to library (add to cloud library: %{BOOL}u, local library:%{BOOL}u): %{public}@", buf, 0x22u);
   }
 
@@ -6032,38 +6032,38 @@ void __99__MPMediaLibraryDataProviderML3__importStoreAlbumArtistElements_withRef
     _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEFAULT, "Parsing track data...", buf, 2u);
   }
 
-  v18 = [[MPStoreItemImportTrackData alloc] initWithImportElements:v13];
+  v18 = [[MPStoreItemImportTrackData alloc] initWithImportElements:elementsCopy];
   v19 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(ML3StoreItemTrackData *)v18 trackCount];
+    trackCount = [(ML3StoreItemTrackData *)v18 trackCount];
     *buf = 134217984;
-    v36 = v20;
+    v36 = trackCount;
     _os_log_impl(&dword_1A238D000, v19, OS_LOG_TYPE_DEFAULT, "Importing %lu tracks...", buf, 0xCu);
   }
 
-  v21 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v22 = [v21 databasePath];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  databasePath = [library databasePath];
 
   v23 = objc_alloc(MEMORY[0x1E69B34E8]);
-  v24 = [(ML3StoreItemTrackData *)v18 trackData];
-  v25 = [v23 initWithLibraryPath:v22 trackData:v24 playlistData:0];
+  trackData = [(ML3StoreItemTrackData *)v18 trackData];
+  v25 = [v23 initWithLibraryPath:databasePath trackData:trackData playlistData:0];
 
-  [v25 setTracksAreLibraryOwnedContent:v10 | v9];
-  [v25 setPendingMatch:v10 | v9];
-  v26 = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
+  [v25 setTracksAreLibraryOwnedContent:onlyCopy | libraryCopy];
+  [v25 setPendingMatch:onlyCopy | libraryCopy];
+  mEMORY[0x1E69B3548] = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __165__MPMediaLibraryDataProviderML3__importStoreItemElements_withReferralObject_addTracksToDeviceLibraryOnly_andAddTracksToCloudLibrary_usingCloudAdamID_withCompletion___block_invoke;
   v30[3] = &unk_1E7677230;
-  v34 = v9;
+  v34 = libraryCopy;
   v30[4] = self;
-  v31 = v14;
-  v32 = v15;
-  v33 = a7;
-  v27 = v15;
-  v28 = v14;
-  [v26 performImport:v25 fromSource:6 withProgressBlock:0 completionHandler:v30];
+  v31 = objectCopy;
+  v32 = completionCopy;
+  dCopy = d;
+  v27 = completionCopy;
+  v28 = objectCopy;
+  [mEMORY[0x1E69B3548] performImport:v25 fromSource:6 withProgressBlock:0 completionHandler:v30];
 }
 
 void __165__MPMediaLibraryDataProviderML3__importStoreItemElements_withReferralObject_addTracksToDeviceLibraryOnly_andAddTracksToCloudLibrary_usingCloudAdamID_withCompletion___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -6185,11 +6185,11 @@ LABEL_10:
   }
 }
 
-- (void)addPlaylistStoreItemsForLookupItems:(id)a3 withCompletion:(id)a4
+- (void)addPlaylistStoreItemsForLookupItems:(id)items withCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  itemsCopy = items;
   v8 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -6197,39 +6197,39 @@ LABEL_10:
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "Parsing track data...", buf, 2u);
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69B3530]) initWithLookupItems:v7];
-  v10 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-  v11 = [MPCloudController controllerWithUserIdentity:v10];
-  v12 = [v11 cloudAddToPlaylistBehavior];
+  v9 = [objc_alloc(MEMORY[0x1E69B3530]) initWithLookupItems:itemsCopy];
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  v11 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  cloudAddToPlaylistBehavior = [v11 cloudAddToPlaylistBehavior];
 
   v13 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 trackCount];
+    trackCount = [v9 trackCount];
     *buf = 134217984;
-    v26 = v14;
+    v26 = trackCount;
     _os_log_impl(&dword_1A238D000, v13, OS_LOG_TYPE_DEFAULT, "Importing %lu tracks...", buf, 0xCu);
   }
 
-  v15 = v12 != 2;
+  v15 = cloudAddToPlaylistBehavior != 2;
 
-  v16 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v17 = [v16 databasePath];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  databasePath = [library databasePath];
 
   v18 = objc_alloc(MEMORY[0x1E69B34E8]);
-  v19 = [v9 trackData];
-  v20 = [v18 initWithLibraryPath:v17 trackData:v19 playlistData:0];
+  trackData = [v9 trackData];
+  v20 = [v18 initWithLibraryPath:databasePath trackData:trackData playlistData:0];
 
   [v20 setTracksAreLibraryOwnedContent:v15];
   [v20 setPendingMatch:v15];
-  v21 = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
+  mEMORY[0x1E69B3548] = [MEMORY[0x1E69B3548] sharedMediaLibraryService];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_withCompletion___block_invoke;
   v23[3] = &unk_1E7677208;
-  v24 = v6;
-  v22 = v6;
-  [v21 performImport:v20 fromSource:6 withProgressBlock:0 completionHandler:v23];
+  v24 = completionCopy;
+  v22 = completionCopy;
+  [mEMORY[0x1E69B3548] performImport:v20 fromSource:6 withProgressBlock:0 completionHandler:v23];
 }
 
 void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_withCompletion___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -6274,21 +6274,21 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
   }
 }
 
-- (void)performStoreAlbumArtistLibraryImport:(id)a3 withCompletion:(id)a4
+- (void)performStoreAlbumArtistLibraryImport:(id)import withCompletion:(id)completion
 {
   v52[0] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v38 = a4;
+  importCopy = import;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v39 = v5;
-  v9 = [v5 importElements];
+  v39 = importCopy;
+  importElements = [importCopy importElements];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  v10 = [importElements countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v10)
   {
     v11 = v10;
@@ -6302,13 +6302,13 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
       {
         if (*v48 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(importElements);
         }
 
         v15 = *(*(&v47 + 1) + 8 * v14);
-        v16 = [v15 storeItem];
+        storeItem = [v15 storeItem];
 
-        if (v16)
+        if (storeItem)
         {
           [v6 addObject:v15];
         }
@@ -6323,7 +6323,7 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
             v20 = v8;
             v21 = v13;
             v22 = v6;
-            v23 = v9;
+            v23 = importElements;
             v24 = v7;
             v25 = v52 + 1;
             do
@@ -6354,7 +6354,7 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
 
             v29 = CFStringCreateWithBytes(0, v28, v52 - v28, 0x8000100u, 0);
             v7 = v24;
-            v9 = v23;
+            importElements = v23;
             v6 = v22;
             v13 = v21;
             v8 = v20;
@@ -6377,7 +6377,7 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
       }
 
       while (v14 != v11);
-      v11 = [v9 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      v11 = [importElements countByEnumeratingWithState:&v47 objects:v51 count:16];
     }
 
     while (v11);
@@ -6385,35 +6385,35 @@ void __84__MPMediaLibraryDataProviderML3_addPlaylistStoreItemsForLookupItems_wit
 
   if ([v7 count])
   {
-    v31 = objc_alloc_init(MEMORY[0x1E69E4610]);
-    v32 = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
-    [v31 setRequestContext:v32];
+    referralObject = objc_alloc_init(MEMORY[0x1E69E4610]);
+    _storePlatformRequestContext = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
+    [referralObject setRequestContext:_storePlatformRequestContext];
 
-    [v31 setItemIdentifiers:v7];
-    [v31 setPersonalizationStyle:0];
-    [v31 setKeyProfile:*MEMORY[0x1E69E42A8]];
+    [referralObject setItemIdentifiers:v7];
+    [referralObject setPersonalizationStyle:0];
+    [referralObject setKeyProfile:*MEMORY[0x1E69E42A8]];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_withCompletion___block_invoke;
     v41[3] = &unk_1E76771E0;
-    v33 = v38;
-    v46 = v38;
+    v33 = completionCopy;
+    v46 = completionCopy;
     v42 = v8;
     v43 = v6;
-    v44 = self;
+    selfCopy = self;
     v34 = v7;
     v35 = v39;
     v45 = v39;
-    v36 = [v31 performWithResponseHandler:v41];
+    v36 = [referralObject performWithResponseHandler:v41];
   }
 
   else
   {
     v34 = v7;
     v35 = v39;
-    v31 = [v39 referralObject];
-    v33 = v38;
-    [(MPMediaLibraryDataProviderML3 *)self _importStoreAlbumArtistElements:v6 withReferralObject:v31 withCompletion:v38];
+    referralObject = [v39 referralObject];
+    v33 = completionCopy;
+    [(MPMediaLibraryDataProviderML3 *)self _importStoreAlbumArtistElements:v6 withReferralObject:referralObject withCompletion:completionCopy];
   }
 }
 
@@ -6488,21 +6488,21 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
   }
 }
 
-- (void)performStoreItemLibraryImport:(id)a3 withCompletion:(id)a4
+- (void)performStoreItemLibraryImport:(id)import withCompletion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v38 = a4;
+  importCopy = import;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v39 = v5;
-  v9 = [v5 importElements];
+  v39 = importCopy;
+  importElements = [importCopy importElements];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  v10 = [importElements countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v10)
   {
     v11 = v10;
@@ -6513,13 +6513,13 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
       {
         if (*v52 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(importElements);
         }
 
         v14 = *(*(&v51 + 1) + 8 * i);
-        v15 = [v14 storeItem];
+        storeItem = [v14 storeItem];
 
-        if (v15)
+        if (storeItem)
         {
           [v6 addObject:v14];
         }
@@ -6534,7 +6534,7 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
         [v8 setObject:v14 forKey:v17];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v11 = [importElements countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v11);
@@ -6546,16 +6546,16 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
     v19 = v18;
     if (v18 == 1)
     {
-      v20 = [v7 firstObject];
-      v36 = [v20 longLongValue];
+      firstObject = [v7 firstObject];
+      longLongValue = [firstObject longLongValue];
     }
 
     else
     {
-      v36 = 0;
+      longLongValue = 0;
     }
 
-    v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v19];
+    referralObject = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v19];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -6575,8 +6575,8 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v47 + 1) + 8 * j) stringValue];
-          [v22 addObject:v32];
+          stringValue = [*(*(&v47 + 1) + 8 * j) stringValue];
+          [referralObject addObject:stringValue];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -6586,36 +6586,36 @@ void __85__MPMediaLibraryDataProviderML3_performStoreAlbumArtistLibraryImport_wi
     }
 
     v33 = objc_alloc_init(MEMORY[0x1E69E4610]);
-    v34 = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
-    [v33 setRequestContext:v34];
+    _storePlatformRequestContext = [(MPMediaLibraryDataProviderML3 *)self _storePlatformRequestContext];
+    [v33 setRequestContext:_storePlatformRequestContext];
 
-    [v33 setItemIdentifiers:v22];
+    [v33 setItemIdentifiers:referralObject];
     [v33 setPersonalizationStyle:0];
     [v33 setKeyProfile:*MEMORY[0x1E69E42A8]];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __78__MPMediaLibraryDataProviderML3_performStoreItemLibraryImport_withCompletion___block_invoke;
     v40[3] = &unk_1E76771B8;
-    v26 = v38;
-    v45 = v38;
+    v26 = completionCopy;
+    v45 = completionCopy;
     v41 = v8;
     v42 = v6;
-    v43 = self;
+    selfCopy = self;
     v21 = v39;
     v44 = v39;
-    v46 = v36;
+    v46 = longLongValue;
     v35 = [v33 performWithResponseHandler:v40];
   }
 
   else
   {
     v21 = v39;
-    v22 = [v39 referralObject];
-    v23 = [v39 addToDeviceLibraryOnly];
-    v24 = [v39 addToCloudLibrary];
-    v25 = v23;
-    v26 = v38;
-    [(MPMediaLibraryDataProviderML3 *)self _importStoreItemElements:v6 withReferralObject:v22 addTracksToDeviceLibraryOnly:v25 andAddTracksToCloudLibrary:v24 usingCloudAdamID:0 withCompletion:v38];
+    referralObject = [v39 referralObject];
+    addToDeviceLibraryOnly = [v39 addToDeviceLibraryOnly];
+    addToCloudLibrary = [v39 addToCloudLibrary];
+    v25 = addToDeviceLibraryOnly;
+    v26 = completionCopy;
+    [(MPMediaLibraryDataProviderML3 *)self _importStoreItemElements:v6 withReferralObject:referralObject addTracksToDeviceLibraryOnly:v25 andAddTracksToCloudLibrary:addToCloudLibrary usingCloudAdamID:0 withCompletion:completionCopy];
   }
 }
 
@@ -6739,20 +6739,20 @@ void __61__MPMediaLibraryDataProviderML3__storePlatformRequestContext__block_inv
   [v3 setClientInfo:v14];
 }
 
-- (void)sdk_addItemWithOpaqueID:(id)a3 withCompletion:(id)a4
+- (void)sdk_addItemWithOpaqueID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
-  v9 = [MPCloudController controllerWithUserIdentity:v8];
+  completionCopy = completion;
+  dCopy = d;
+  userIdentity = [(MPMediaLibraryDataProviderML3 *)self userIdentity];
+  v9 = [MPCloudController controllerWithUserIdentity:userIdentity];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueID_withCompletion___block_invoke;
   v11[3] = &unk_1E7677190;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 sdk_addStoreItemWithOpaqueID:v7 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 sdk_addStoreItemWithOpaqueID:dCopy completionHandler:v11];
 }
 
 void __72__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueID_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6859,16 +6859,16 @@ void __72__MPMediaLibraryDataProviderML3_sdk_addItemWithOpaqueID_withCompletion_
   }
 }
 
-- (void)addTracksToMyLibrary:(id)a3
+- (void)addTracksToMyLibrary:(id)library
 {
-  v4 = [a3 valueForKey:@"persistentID"];
+  v4 = [library valueForKey:@"persistentID"];
   library = self->_library;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__MPMediaLibraryDataProviderML3_addTracksToMyLibrary___block_invoke;
   v7[3] = &unk_1E7677168;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   [(ML3MusicLibrary *)library performDatabaseTransactionWithBlock:v7];
 }
@@ -6886,65 +6886,65 @@ uint64_t __54__MPMediaLibraryDataProviderML3_addTracksToMyLibrary___block_invoke
   return v7;
 }
 
-- (id)multiverseIdentifierForCollectionWithPersistentID:(int64_t)a3 groupingType:(int64_t)a4
+- (id)multiverseIdentifierForCollectionWithPersistentID:(int64_t)d groupingType:(int64_t)type
 {
-  if ((a4 - 1) > 5)
+  if ((type - 1) > 5)
   {
-    v5 = 0;
+    multiverseIdentifier = 0;
   }
 
   else
   {
-    v4 = [objc_alloc(**(&unk_1E76778D8 + a4 - 1)) initWithPersistentID:a3 inLibrary:self->_library];
-    v5 = [v4 multiverseIdentifier];
+    v4 = [objc_alloc(**(&unk_1E76778D8 + type - 1)) initWithPersistentID:d inLibrary:self->_library];
+    multiverseIdentifier = [v4 multiverseIdentifier];
   }
 
-  return v5;
+  return multiverseIdentifier;
 }
 
-- (id)multiverseIdentifierForTrackWithPersistentID:(int64_t)a3
+- (id)multiverseIdentifierForTrackWithPersistentID:(int64_t)d
 {
-  v3 = [objc_alloc(MEMORY[0x1E69B3538]) initWithPersistentID:a3 inLibrary:self->_library];
-  v4 = [v3 multiverseIdentifier];
+  v3 = [objc_alloc(MEMORY[0x1E69B3538]) initWithPersistentID:d inLibrary:self->_library];
+  multiverseIdentifier = [v3 multiverseIdentifier];
 
-  return v4;
+  return multiverseIdentifier;
 }
 
-- (void)loadQueryCriteria:(id)a3 countOfCollectionsWithCompletionBlock:(id)a4
-{
-  library = self->_library;
-  v7 = a4;
-  v8 = [a3 ML3CollectionsQueryInLibrary:library];
-  (*(a4 + 2))(v7, [v8 countOfEntities]);
-}
-
-- (void)loadQueryCriteria:(id)a3 countOfItemsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria countOfCollectionsWithCompletionBlock:(id)block
 {
   library = self->_library;
-  v7 = a4;
-  v8 = [a3 ML3ItemsQueryInLibrary:library];
-  (*(a4 + 2))(v7, [v8 countOfEntities]);
+  blockCopy = block;
+  v8 = [criteria ML3CollectionsQueryInLibrary:library];
+  (*(block + 2))(blockCopy, [v8 countOfEntities]);
 }
 
-- (void)loadQueryCriteria:(id)a3 hasCollectionsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria countOfItemsWithCompletionBlock:(id)block
 {
   library = self->_library;
-  v7 = a4;
-  v8 = [a3 ML3CollectionsQueryInLibrary:library];
-  (*(a4 + 2))(v7, [v8 hasEntities]);
+  blockCopy = block;
+  v8 = [criteria ML3ItemsQueryInLibrary:library];
+  (*(block + 2))(blockCopy, [v8 countOfEntities]);
 }
 
-- (void)loadQueryCriteria:(id)a3 hasItemsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria hasCollectionsWithCompletionBlock:(id)block
 {
   library = self->_library;
-  v7 = a4;
-  v8 = [a3 ML3ItemsQueryInLibrary:library];
-  (*(a4 + 2))(v7, [v8 hasEntities]);
+  blockCopy = block;
+  v8 = [criteria ML3CollectionsQueryInLibrary:library];
+  (*(block + 2))(blockCopy, [v8 hasEntities]);
 }
 
-- (BOOL)collectionExistsContainedWithinSyncIDs:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (void)loadQueryCriteria:(id)criteria hasItemsWithCompletionBlock:(id)block
 {
-  v8 = a3;
+  library = self->_library;
+  blockCopy = block;
+  v8 = [criteria ML3ItemsQueryInLibrary:library];
+  (*(block + 2))(blockCopy, [v8 hasEntities]);
+}
+
+- (BOOL)collectionExistsContainedWithinSyncIDs:(id)ds groupingType:(int64_t)type existentPID:(unint64_t *)d
+{
+  dsCopy = ds;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6953,24 +6953,24 @@ uint64_t __54__MPMediaLibraryDataProviderML3_addTracksToMyLibrary___block_invoke
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (a4 == 1)
+  if (type == 1)
   {
     v10 = MEMORY[0x1E69B2A08];
     goto LABEL_5;
   }
 
   v9 = 0;
-  if (a4 == 6)
+  if (type == 6)
   {
     v10 = MEMORY[0x1E69B2CB0];
 LABEL_5:
     v9 = *v10;
   }
 
-  if (v8 && [v8 count])
+  if (dsCopy && [dsCopy count])
   {
-    v11 = MPML3CollectionClassFromGroupingType(a4);
-    v12 = [MEMORY[0x1E69B34B8] predicateWithProperty:v9 values:v8];
+    v11 = MPML3CollectionClassFromGroupingType(type);
+    v12 = [MEMORY[0x1E69B34B8] predicateWithProperty:v9 values:dsCopy];
     v13 = [v11 queryWithLibrary:self->_library predicate:v12];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -6982,9 +6982,9 @@ LABEL_5:
   }
 
   v14 = *(v22 + 24);
-  if (a5 && *(v22 + 24))
+  if (d && *(v22 + 24))
   {
-    *a5 = v18[3];
+    *d = v18[3];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -7001,9 +7001,9 @@ uint64_t __97__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinSync
   return result;
 }
 
-- (BOOL)collectionExistsWithCloudUniversalLibraryID:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (BOOL)collectionExistsWithCloudUniversalLibraryID:(id)d groupingType:(int64_t)type existentPID:(unint64_t *)iD
 {
-  v8 = a3;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -7012,13 +7012,13 @@ uint64_t __97__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinSync
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a4 > 6 || ((0x4Bu >> a4) & 1) == 0)
+  if (type > 6 || ((0x4Bu >> type) & 1) == 0)
   {
     v9 = 0;
     goto LABEL_8;
   }
 
-  v9 = **(&unk_1E76778A0 + a4);
+  v9 = **(&unk_1E76778A0 + type);
   if (!v9)
   {
 LABEL_8:
@@ -7026,8 +7026,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = MPML3CollectionClassFromGroupingType(a4);
-  v11 = [MEMORY[0x1E69B3488] predicateWithProperty:v9 value:v8 comparison:1];
+  v10 = MPML3CollectionClassFromGroupingType(type);
+  v11 = [MEMORY[0x1E69B3488] predicateWithProperty:v9 value:dCopy comparison:1];
   v12 = [v10 queryWithLibrary:self->_library predicate:v11];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -7038,9 +7038,9 @@ LABEL_8:
   [v12 enumeratePersistentIDsUsingBlock:v15];
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) != 0)
+  if (iD && (v21[3] & 1) != 0)
   {
-    *a5 = v17[3];
+    *iD = v17[3];
   }
 
 LABEL_9:
@@ -7059,9 +7059,9 @@ uint64_t __102__MPMediaLibraryDataProviderML3_collectionExistsWithCloudUniversal
   return result;
 }
 
-- (BOOL)collectionExistsWithCloudLibraryID:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (BOOL)collectionExistsWithCloudLibraryID:(id)d groupingType:(int64_t)type existentPID:(unint64_t *)iD
 {
-  v8 = a3;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -7070,14 +7070,14 @@ uint64_t __102__MPMediaLibraryDataProviderML3_collectionExistsWithCloudUniversal
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (a4 == 1)
+  if (type == 1)
   {
     v9 = MEMORY[0x1E69B29C0];
   }
 
   else
   {
-    if (a4 != 3)
+    if (type != 3)
     {
       v10 = 0;
       goto LABEL_10;
@@ -7094,8 +7094,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = MPML3CollectionClassFromGroupingType(a4);
-  v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 value:v8 comparison:1];
+  v11 = MPML3CollectionClassFromGroupingType(type);
+  v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 value:dCopy comparison:1];
   v13 = [v11 queryWithLibrary:self->_library predicate:v12];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -7106,9 +7106,9 @@ LABEL_10:
   [v13 enumeratePersistentIDsUsingBlock:v16];
 
   v14 = *(v22 + 24);
-  if (a5 && (v22[3] & 1) != 0)
+  if (iD && (v22[3] & 1) != 0)
   {
-    *a5 = v18[3];
+    *iD = v18[3];
   }
 
 LABEL_11:
@@ -7127,7 +7127,7 @@ uint64_t __93__MPMediaLibraryDataProviderML3_collectionExistsWithCloudLibraryID_
   return result;
 }
 
-- (BOOL)collectionExistsWithSagaID:(int64_t)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (BOOL)collectionExistsWithSagaID:(int64_t)d groupingType:(int64_t)type existentPID:(unint64_t *)iD
 {
   v21 = 0;
   v22 = &v21;
@@ -7137,9 +7137,9 @@ uint64_t __93__MPMediaLibraryDataProviderML3_collectionExistsWithCloudLibraryID_
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (a4)
+  if (type)
   {
-    if (a4 != 6)
+    if (type != 6)
     {
       v10 = 0;
       goto LABEL_10;
@@ -7161,8 +7161,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = MPML3CollectionClassFromGroupingType(a4);
-  v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 equalToInt64:a3];
+  v11 = MPML3CollectionClassFromGroupingType(type);
+  v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 equalToInt64:d];
   v13 = [v11 queryWithLibrary:self->_library predicate:v12];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -7173,9 +7173,9 @@ LABEL_10:
   [v13 enumeratePersistentIDsUsingBlock:v16];
 
   v14 = *(v22 + 24);
-  if (a5 && (v22[3] & 1) != 0)
+  if (iD && (v22[3] & 1) != 0)
   {
-    *a5 = v18[3];
+    *iD = v18[3];
   }
 
 LABEL_11:
@@ -7193,7 +7193,7 @@ uint64_t __85__MPMediaLibraryDataProviderML3_collectionExistsWithSagaID_grouping
   return result;
 }
 
-- (BOOL)collectionExistsWithStoreID:(int64_t)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (BOOL)collectionExistsWithStoreID:(int64_t)d groupingType:(int64_t)type existentPID:(unint64_t *)iD
 {
   v20 = 0;
   v21 = &v20;
@@ -7203,13 +7203,13 @@ uint64_t __85__MPMediaLibraryDataProviderML3_collectionExistsWithSagaID_grouping
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a4 > 5)
+  if (type > 5)
   {
     v9 = 0;
     goto LABEL_7;
   }
 
-  v9 = **(&unk_1E7677870 + a4);
+  v9 = **(&unk_1E7677870 + type);
   if (!v9)
   {
 LABEL_7:
@@ -7217,8 +7217,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = MPML3CollectionClassFromGroupingType(a4);
-  v11 = [MEMORY[0x1E69B3488] predicateWithProperty:v9 equalToInt64:a3];
+  v10 = MPML3CollectionClassFromGroupingType(type);
+  v11 = [MEMORY[0x1E69B3488] predicateWithProperty:v9 equalToInt64:d];
   v12 = [v10 queryWithLibrary:self->_library predicate:v11];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -7229,9 +7229,9 @@ LABEL_7:
   [v12 enumeratePersistentIDsUsingBlock:v15];
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) != 0)
+  if (iD && (v21[3] & 1) != 0)
   {
-    *a5 = v17[3];
+    *iD = v17[3];
   }
 
 LABEL_8:
@@ -7249,9 +7249,9 @@ uint64_t __86__MPMediaLibraryDataProviderML3_collectionExistsWithStoreID_groupin
   return result;
 }
 
-- (BOOL)collectionExistsWithName:(id)a3 groupingType:(int64_t)a4 existentPID:(unint64_t *)a5
+- (BOOL)collectionExistsWithName:(id)name groupingType:(int64_t)type existentPID:(unint64_t *)d
 {
-  v8 = a3;
+  nameCopy = name;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -7260,20 +7260,20 @@ uint64_t __86__MPMediaLibraryDataProviderML3_collectionExistsWithStoreID_groupin
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (v8)
+  if (nameCopy)
   {
-    v9 = MPML3CollectionClassFromGroupingType(a4);
-    if (a4 > 7)
+    v9 = MPML3CollectionClassFromGroupingType(type);
+    if (type > 7)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = **(&unk_1E7677830 + a4);
+      v10 = **(&unk_1E7677830 + type);
     }
 
-    v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 value:v8 comparison:1];
+    v12 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 value:nameCopy comparison:1];
     v13 = [v9 queryWithLibrary:self->_library predicate:v12];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -7284,9 +7284,9 @@ uint64_t __86__MPMediaLibraryDataProviderML3_collectionExistsWithStoreID_groupin
     [v13 enumeratePersistentIDsUsingBlock:v15];
 
     v11 = *(v21 + 24);
-    if (a5 && (v21[3] & 1) != 0)
+    if (d && (v21[3] & 1) != 0)
     {
-      *a5 = v17[3];
+      *d = v17[3];
       v11 = 1;
     }
   }
@@ -7310,7 +7310,7 @@ uint64_t __83__MPMediaLibraryDataProviderML3_collectionExistsWithName_groupingTy
   return result;
 }
 
-- (BOOL)collectionExistsContainedWithinPersistentIDs:(const unint64_t *)a3 count:(unint64_t)a4 groupingType:(int64_t)a5 existentPID:(unint64_t *)a6
+- (BOOL)collectionExistsContainedWithinPersistentIDs:(const unint64_t *)ds count:(unint64_t)count groupingType:(int64_t)type existentPID:(unint64_t *)d
 {
   v20 = 0;
   v21 = &v20;
@@ -7320,10 +7320,10 @@ uint64_t __83__MPMediaLibraryDataProviderML3_collectionExistsWithName_groupingTy
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a3)
+  if (ds)
   {
-    v10 = MPML3CollectionClassFromGroupingType(a5);
-    v11 = [MEMORY[0x1E69B3500] predicateWithPersistentIDs:a3 count:a4 shouldContain:1];
+    v10 = MPML3CollectionClassFromGroupingType(type);
+    v11 = [MEMORY[0x1E69B3500] predicateWithPersistentIDs:ds count:count shouldContain:1];
     v12 = [v10 queryWithLibrary:self->_library predicate:v11];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -7334,9 +7334,9 @@ uint64_t __83__MPMediaLibraryDataProviderML3_collectionExistsWithName_groupingTy
     [v12 enumeratePersistentIDsUsingBlock:v15];
 
     v13 = *(v21 + 24);
-    if (a6 && (v21[3] & 1) != 0)
+    if (d && (v21[3] & 1) != 0)
     {
-      *a6 = v17[3];
+      *d = v17[3];
       v13 = 1;
     }
   }
@@ -7359,24 +7359,24 @@ uint64_t __109__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinPer
   return result;
 }
 
-- (BOOL)collectionInLibraryWithPersistentID:(unint64_t)a3 groupingType:(int64_t)a4
+- (BOOL)collectionInLibraryWithPersistentID:(unint64_t)d groupingType:(int64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     return 0;
   }
 
-  v6 = MPML3CollectionClassFromGroupingType(a4);
+  v6 = MPML3CollectionClassFromGroupingType(type);
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [v6 newWithPersistentID:a3 inLibrary:self->_library];
+  v8 = [v6 newWithPersistentID:d inLibrary:self->_library];
   if ([v8 existsInLibrary])
   {
-    v9 = [v7 collectionWithPersistentID:a3 addedToLibrary:self->_library];
+    v9 = [v7 collectionWithPersistentID:d addedToLibrary:self->_library];
   }
 
   else
@@ -7387,44 +7387,44 @@ uint64_t __109__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinPer
   return v9;
 }
 
-- (BOOL)collectionExistsWithPersistentID:(unint64_t)a3 groupingType:(int64_t)a4
+- (BOOL)collectionExistsWithPersistentID:(unint64_t)d groupingType:(int64_t)type
 {
-  v6 = MPML3CollectionClassFromGroupingType(a4);
+  v6 = MPML3CollectionClassFromGroupingType(type);
   if (v6)
   {
-    v7 = [v6 newWithPersistentID:a3 inLibrary:self->_library];
-    v8 = [v7 existsInLibrary];
+    v7 = [v6 newWithPersistentID:d inLibrary:self->_library];
+    existsInLibrary = [v7 existsInLibrary];
 
-    LOBYTE(v6) = v8;
+    LOBYTE(v6) = existsInLibrary;
   }
 
   return v6;
 }
 
-- (int64_t)containerPersistentIDForGlobalID:(id)a3
+- (int64_t)containerPersistentIDForGlobalID:(id)d
 {
-  v4 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2AD0] equalToValue:a3];
+  v4 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2AD0] equalToValue:d];
   v5 = [MEMORY[0x1E69B34A0] anyInLibrary:self->_library predicate:v4];
-  v6 = [v5 persistentID];
+  persistentID = [v5 persistentID];
 
-  return v6;
+  return persistentID;
 }
 
-- (BOOL)playlistExistsWithPersistentID:(unint64_t)a3
+- (BOOL)playlistExistsWithPersistentID:(unint64_t)d
 {
-  v3 = [MEMORY[0x1E69B34A0] newWithPersistentID:a3 inLibrary:self->_library];
-  v4 = [v3 existsInLibrary];
+  v3 = [MEMORY[0x1E69B34A0] newWithPersistentID:d inLibrary:self->_library];
+  existsInLibrary = [v3 existsInLibrary];
 
-  return v4;
+  return existsInLibrary;
 }
 
-- (int64_t)itemPersistentIDForStoreID:(int64_t)a3
+- (int64_t)itemPersistentIDForStoreID:(int64_t)d
 {
-  v4 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B3308] equalToInt64:a3];
+  v4 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B3308] equalToInt64:d];
   v5 = [MEMORY[0x1E69B3538] anyInLibrary:self->_library predicate:v4];
-  v6 = [v5 persistentID];
+  persistentID = [v5 persistentID];
 
-  return v6;
+  return persistentID;
 }
 
 - (BOOL)hasUbiquitousBookmarkableItems
@@ -7454,7 +7454,7 @@ uint64_t __109__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinPer
   return self;
 }
 
-- (BOOL)hasMediaOfType:(unint64_t)a3
+- (BOOL)hasMediaOfType:(unint64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -7465,7 +7465,7 @@ uint64_t __109__MPMediaLibraryDataProviderML3_collectionExistsContainedWithinPer
   v5[2] = __48__MPMediaLibraryDataProviderML3_hasMediaOfType___block_invoke;
   v5[3] = &unk_1E76814A0;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = type;
   v5[4] = self;
   [(MPMediaLibraryDataProviderML3 *)self performBackgroundTaskWithBlock:v5];
   v3 = *(v7 + 24);
@@ -7547,7 +7547,7 @@ void __51__MPMediaLibraryDataProviderML3_playlistGeneration__block_invoke(uint64
   v17[3] = &unk_1E767B1A0;
   v17[4] = &v18;
   [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v17];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -7567,12 +7567,12 @@ void __51__MPMediaLibraryDataProviderML3_playlistGeneration__block_invoke(uint64
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 attributesOfItemAtPath:*(*(&v13 + 1) + 8 * i) error:{0, v13}];
-        v10 = [v9 fileModificationDate];
+        v9 = [defaultManager attributesOfItemAtPath:*(*(&v13 + 1) + 8 * i) error:{0, v13}];
+        fileModificationDate = [v9 fileModificationDate];
 
-        if (!v5 || [v10 compare:v5] == 1)
+        if (!v5 || [fileModificationDate compare:v5] == 1)
         {
-          v11 = v10;
+          v11 = fileModificationDate;
 
           v5 = v11;
         }
@@ -7599,43 +7599,43 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
 
 - (NSString)accountDSID
 {
-  v3 = [(ML3MusicLibrary *)self->_library sagaAccountID];
-  if (!v3)
+  sagaAccountID = [(ML3MusicLibrary *)self->_library sagaAccountID];
+  if (!sagaAccountID)
   {
-    v3 = [(ML3MusicLibrary *)self->_library jaliscoAccountID];
+    sagaAccountID = [(ML3MusicLibrary *)self->_library jaliscoAccountID];
   }
 
-  v4 = [v3 stringValue];
+  stringValue = [sagaAccountID stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)name
 {
-  v2 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v3 = [v2 name];
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  name = [currentDeviceInfo name];
 
-  return v3;
+  return name;
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v6 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ML3MusicLibrary *)v5 debugDescription];
+    v7 = [(ML3MusicLibrary *)libraryCopy debugDescription];
     *buf = 134218498;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
-    v28 = v5;
+    v28 = libraryCopy;
     v29 = 2114;
     v30 = v7;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "DataProvider %p setting MusicLibrary to %p (description=%{public}@)", buf, 0x20u);
   }
 
-  if (!v5)
+  if (!libraryCopy)
   {
     v8 = dispatch_semaphore_create(0);
     v19 = MEMORY[0x1E69B13D8];
@@ -7685,20 +7685,20 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (self->_library != v5)
+  if (self->_library != libraryCopy)
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 removeObserver:self name:0 object:self->_library];
-    objc_storeStrong(&self->_library, a3);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:0 object:self->_library];
+    objc_storeStrong(&self->_library, library);
     uniqueIdentifier = self->_uniqueIdentifier;
     self->_uniqueIdentifier = 0;
 
     [(MPMediaLibraryDataProviderML3 *)self _updateArtworkDataSourceMediaLibraryUniqueIdentifier];
-    if (v5)
+    if (libraryCopy)
     {
-      [v16 addObserver:self selector:sel__libraryContentsDidChange_ name:*MEMORY[0x1E69B2D08] object:v5];
-      [v16 addObserver:self selector:sel__dynamicPropertiesDidChange_ name:*MEMORY[0x1E69B2D28] object:v5];
-      [v16 addObserver:self selector:sel__invisiblePropertiesDidChange_ name:*MEMORY[0x1E69B2D20] object:v5];
+      [defaultCenter addObserver:self selector:sel__libraryContentsDidChange_ name:*MEMORY[0x1E69B2D08] object:libraryCopy];
+      [defaultCenter addObserver:self selector:sel__dynamicPropertiesDidChange_ name:*MEMORY[0x1E69B2D28] object:libraryCopy];
+      [defaultCenter addObserver:self selector:sel__invisiblePropertiesDidChange_ name:*MEMORY[0x1E69B2D20] object:libraryCopy];
     }
   }
 }
@@ -7706,18 +7706,18 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v5 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v6 = [v5 debugDescription];
-  v7 = [v3 stringWithFormat:@"<DataProvider: %p> MusicLibrary=%p, description=%@", self, v4, v6];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  library2 = [(MPMediaLibraryDataProviderML3 *)self library];
+  v6 = [library2 debugDescription];
+  v7 = [v3 stringWithFormat:@"<DataProvider: %p> MusicLibrary=%p, description=%@", self, library, v6];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__postEvents object:0];
   v4.receiver = self;
@@ -7725,17 +7725,17 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
   [(MPMediaLibraryDataProviderML3 *)&v4 dealloc];
 }
 
-- (MPMediaLibraryDataProviderML3)initWithLibrary:(id)a3
+- (MPMediaLibraryDataProviderML3)initWithLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v24.receiver = self;
   v24.super_class = MPMediaLibraryDataProviderML3;
   v6 = [(MPMediaLibraryDataProviderML3 *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
     v8 = [[MPMediaEntityCache alloc] initWithMediaLibraryDataProvider:v7];
     entityCache = v7->_entityCache;
     v7->_entityCache = v8;
@@ -7761,16 +7761,16 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
     [(NSOperationQueue *)v7->_setValuesWidthLimitedQueue setMaxConcurrentOperationCount:5];
     if (v7->_library)
     {
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v19 addObserver:v7 selector:sel__libraryContentsDidChange_ name:*MEMORY[0x1E69B2D08] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__libraryEntitiesAddedOrRemoved_ name:*MEMORY[0x1E69B2D18] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__dynamicPropertiesDidChange_ name:*MEMORY[0x1E69B2D28] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__invisiblePropertiesDidChange_ name:*MEMORY[0x1E69B2D20] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__displayValuesDidChange_ name:*MEMORY[0x1E69B2D10] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__syncGenerationDidChange_ name:*MEMORY[0x1E69B2D38] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__libraryUIDDidChange_ name:*MEMORY[0x1E69B2D40] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__libraryCloudLibraryAvailabilityDidChange_ name:*MEMORY[0x1E69B2D00] object:v7->_library];
-      [v19 addObserver:v7 selector:sel__libraryPathDidChange_ name:*MEMORY[0x1E69B2D30] object:v7->_library];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel__libraryContentsDidChange_ name:*MEMORY[0x1E69B2D08] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__libraryEntitiesAddedOrRemoved_ name:*MEMORY[0x1E69B2D18] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__dynamicPropertiesDidChange_ name:*MEMORY[0x1E69B2D28] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__invisiblePropertiesDidChange_ name:*MEMORY[0x1E69B2D20] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__displayValuesDidChange_ name:*MEMORY[0x1E69B2D10] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__syncGenerationDidChange_ name:*MEMORY[0x1E69B2D38] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__libraryUIDDidChange_ name:*MEMORY[0x1E69B2D40] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__libraryCloudLibraryAvailabilityDidChange_ name:*MEMORY[0x1E69B2D00] object:v7->_library];
+      [defaultCenter addObserver:v7 selector:sel__libraryPathDidChange_ name:*MEMORY[0x1E69B2D30] object:v7->_library];
     }
 
     v20 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -7781,7 +7781,7 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
       *buf = 134218498;
       v26 = v7;
       v27 = 2048;
-      v28 = library;
+      libraryCopy2 = library;
       v29 = 2114;
       v30 = v22;
       _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_DEFAULT, "DataProvider %p init with MusicLibrary=%p (description=%{public}@)", buf, 0x20u);
@@ -7793,24 +7793,24 @@ void __49__MPMediaLibraryDataProviderML3_lastModifiedDate__block_invoke(uint64_t
   return v7;
 }
 
-+ (id)_unadjustedValueForMPProperty:(id)a3 withDefaultValue:(id)a4
++ (id)_unadjustedValueForMPProperty:(id)property withDefaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   if (_unadjustedValueForMPProperty_withDefaultValue__onceToken != -1)
   {
     dispatch_once(&_unadjustedValueForMPProperty_withDefaultValue__onceToken, &__block_literal_global_313);
   }
 
-  v8 = NSMapGet(_unadjustedValueForMPProperty_withDefaultValue____unadjustmentMap, v6);
+  v8 = NSMapGet(_unadjustedValueForMPProperty_withDefaultValue____unadjustmentMap, propertyCopy);
   if (v8)
   {
-    v9 = [a1 v8];
+    v9 = [self v8];
   }
 
   else
   {
-    v9 = v7;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -7850,36 +7850,36 @@ void __80__MPMediaLibraryDataProviderML3__unadjustedValueForMPProperty_withDefau
   NSMapInsert(v2, @"albumArtistDateFavorited", sel__unadjustedValueForItemDateWithDefaultValue_);
 }
 
-+ (id)_unadjustedValueForItemDateWithDefaultValue:(id)a3
++ (id)_unadjustedValueForItemDateWithDefaultValue:(id)value
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 timeIntervalSinceReferenceDate];
+  [value timeIntervalSinceReferenceDate];
 
   return [v3 numberWithDouble:?];
 }
 
-+ (id)_unadjustedValueForItemTimeWithDefaultValue:(id)a3
++ (id)_unadjustedValueForItemTimeWithDefaultValue:(id)value
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 doubleValue];
+  [value doubleValue];
   v5 = v4 * 1000.0;
 
   return [v3 numberWithDouble:v5];
 }
 
-+ (id)_unadjustedValueForItemPropertyRatingWithDefaultValue:(id)a3
++ (id)_unadjustedValueForItemPropertyRatingWithDefaultValue:(id)value
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 floatValue];
+  [value floatValue];
   v5 = v4 * 20.0;
 
   return [v3 numberWithDouble:v5];
 }
 
-+ (id)_unadjustedValueForItemPropertyVolumeAdjustmentWithDefaultValue:(id)a3
++ (id)_unadjustedValueForItemPropertyVolumeAdjustmentWithDefaultValue:(id)value
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 floatValue];
+  [value floatValue];
   if ((((v4 * 2000.0) * 0.5) + 1.8447e19) < 0xFFFFFFFFFFFFFC18)
   {
     v5 = -1000;
@@ -7893,24 +7893,24 @@ void __80__MPMediaLibraryDataProviderML3__unadjustedValueForMPProperty_withDefau
   return [v3 numberWithUnsignedInteger:v5];
 }
 
-+ (id)_unadjustedValueForItemPropertyVolumeNormalizationWithDefaultValue:(id)a3
++ (id)_unadjustedValueForItemPropertyVolumeNormalizationWithDefaultValue:(id)value
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 floatValue];
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [value floatValue];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger MPITScaledVolumeNormalization(float)"];
-  [v4 handleFailureInFunction:v5 file:@"MPMediaLibraryDataProviderML3.m" lineNumber:3515 description:@"MPITScaledVolumeNormalization is Unimplemented"];
+  [currentHandler handleFailureInFunction:v5 file:@"MPMediaLibraryDataProviderML3.m" lineNumber:3515 description:@"MPITScaledVolumeNormalization is Unimplemented"];
 
   return [v3 numberWithUnsignedInteger:0];
 }
 
-+ (id)uniqueIdentifierForLibrary:(id)a3
++ (id)uniqueIdentifierForLibrary:(id)library
 {
-  v3 = [a3 libraryUID];
-  v4 = v3;
-  if (v3)
+  libraryUID = [library libraryUID];
+  v4 = libraryUID;
+  if (libraryUID)
   {
-    v5 = v3;
+    v5 = libraryUID;
   }
 
   else
@@ -7931,8 +7931,8 @@ void __80__MPMediaLibraryDataProviderML3__unadjustedValueForMPProperty_withDefau
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [MEMORY[0x1E69B34E0] allLibraries];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allLibraries = [MEMORY[0x1E69B34E0] allLibraries];
+  v4 = [allLibraries countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7943,14 +7943,14 @@ void __80__MPMediaLibraryDataProviderML3__unadjustedValueForMPProperty_withDefau
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allLibraries);
         }
 
         v8 = [[MPMediaLibraryDataProviderML3 alloc] initWithLibrary:*(*(&v11 + 1) + 8 * i)];
         [v2 addObject:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allLibraries countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

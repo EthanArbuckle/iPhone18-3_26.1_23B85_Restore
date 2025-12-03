@@ -1,16 +1,16 @@
 @interface FIUIWorkoutSummaryColoredDetailTableViewCell
-+ (double)rowHeightWithNoDataString:(id)a3;
-- (FIUIWorkoutSummaryColoredDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_resizeFontsIfNeededToFitWidth:(double)a3;
++ (double)rowHeightWithNoDataString:(id)string;
+- (FIUIWorkoutSummaryColoredDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_resizeFontsIfNeededToFitWidth:(double)width;
 - (void)_setDefaultValueFontSizes;
 - (void)_setupUI;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCustomAccessoryButton:(id)a3;
-- (void)setDetailString:(id)a3 suffixString:(id)a4 textColor:(id)a5 shouldForceLTRForDetailString:(BOOL)a6;
-- (void)setNoDataString:(id)a3 textColor:(id)a4;
-- (void)setSecondMetricTitle:(id)a3 detailString:(id)a4 detailColor:(id)a5;
-- (void)setTitleString:(id)a3;
+- (void)setCustomAccessoryButton:(id)button;
+- (void)setDetailString:(id)string suffixString:(id)suffixString textColor:(id)color shouldForceLTRForDetailString:(BOOL)detailString;
+- (void)setNoDataString:(id)string textColor:(id)color;
+- (void)setSecondMetricTitle:(id)title detailString:(id)string detailColor:(id)color;
+- (void)setTitleString:(id)string;
 @end
 
 @implementation FIUIWorkoutSummaryColoredDetailTableViewCell
@@ -27,8 +27,8 @@
   titleLabel = self->_titleLabel;
   self->_titleLabel = v8;
 
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)self->_titleLabel setTextColor:v10];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)self->_titleLabel setTextColor:whiteColor];
 
   [(UILabel *)self->_titleLabel setAllowsDefaultTighteningForTruncation:1];
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
@@ -50,21 +50,21 @@
   v18 = [MEMORY[0x1E69DC888] colorWithWhite:0.15 alpha:1.0];
   [(UIView *)self->_optionalButtonView setBackgroundColor:v18];
 
-  v19 = [(UIView *)self->_optionalButtonView layer];
-  [v19 setCornerRadius:6.0];
+  layer = [(UIView *)self->_optionalButtonView layer];
+  [layer setCornerRadius:6.0];
 
   [(UIView *)self->_optionalButtonView setHidden:1];
-  v20 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [v20 addSubview:self->_optionalButtonView];
+  contentView = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [contentView addSubview:self->_optionalButtonView];
 
-  v21 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [v21 addSubview:self->_titleLabel];
+  contentView2 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_titleLabel];
 
-  v22 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [v22 addSubview:self->_detailLabel];
+  contentView3 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [contentView3 addSubview:self->_detailLabel];
 
-  v23 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [v23 addSubview:self->_dividerView];
+  contentView4 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [contentView4 addSubview:self->_dividerView];
 }
 
 - (void)_setDefaultValueFontSizes
@@ -80,8 +80,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -94,27 +94,27 @@
   v14 = 17.0 - v12;
   [(UILabel *)self->_titleLabel _baselineOffsetFromBottom];
   v16 = v14 + v15;
-  v17 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  contentView2 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
   v52 = v16;
   v53 = v13;
-  [(UILabel *)self->_titleLabel setFrame:FIUIRoundFrameToViewScale(v17)];
+  [(UILabel *)self->_titleLabel setFrame:FIUIRoundFrameToViewScale(contentView2)];
 
   customAccessoryButton = self->_customAccessoryButton;
   v51 = v11;
   if (customAccessoryButton)
   {
     [(UIButton *)customAccessoryButton sizeToFit];
-    v19 = [(UIButton *)self->_customAccessoryButton imageView];
-    [v19 frame];
+    imageView = [(UIButton *)self->_customAccessoryButton imageView];
+    [imageView frame];
     v50 = v20;
 
     [(UIButton *)self->_customAccessoryButton frame];
     v22 = v21;
-    v23 = [(UIButton *)self->_customAccessoryButton imageView];
-    [v23 frame];
+    imageView2 = [(UIButton *)self->_customAccessoryButton imageView];
+    [imageView2 frame];
     v25 = v24;
-    v26 = [(UIButton *)self->_customAccessoryButton imageView];
-    [v26 frame];
+    imageView3 = [(UIButton *)self->_customAccessoryButton imageView];
+    [imageView3 frame];
     v28 = v22 - (v25 + v27);
 
     [(UIButton *)self->_customAccessoryButton bounds];
@@ -153,8 +153,8 @@
   [(UILabel *)self->_detailLabel sizeThatFits:v9 + 5.5 * -2.0, 1.79769313e308];
   CGRectGetWidth(v59);
   [(UILabel *)self->_detailLabel _baselineOffsetFromBottom];
-  v35 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  v55 = FIUIRoundFrameToViewScale(v35);
+  contentView3 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  v55 = FIUIRoundFrameToViewScale(contentView3);
   v56 = v36;
   v57 = v37;
   v58 = v38;
@@ -174,13 +174,13 @@
     v54[2] = v41;
     v54[3] = v43;
     FIUIFlipFrameRightToLeftIfNeeded(v54, v34, v33, v9, v51);
-    v45 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [(UILabel *)self->_noDataLabel setFrame:FIUIRoundFrameToViewScale(v45)];
+    contentView4 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [(UILabel *)self->_noDataLabel setFrame:FIUIRoundFrameToViewScale(contentView4)];
   }
 
   [(UILabel *)self->_secondTitleLabel setFrame:5.5, v52 + 38.25, v9 + 5.5 * -2.0, v53];
-  v46 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-  [(UILabel *)self->_secondDetailLabel setFrame:FIUIRoundFrameToViewScale(v46)];
+  contentView5 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  [(UILabel *)self->_secondDetailLabel setFrame:FIUIRoundFrameToViewScale(contentView5)];
 
   [(UIView *)self->_dividerView sizeThatFits:v9 + 5.5 * -2.0, 1.79769313e308];
   v63.origin.x = v34;
@@ -206,8 +206,8 @@
       [FIUIWorkoutSummaryColoredDetailTableViewCell layoutSubviews];
     }
 
-    v49 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [(UIView *)self->_optionalButtonView setFrame:FIUIRoundFrameToViewScale(v49)];
+    contentView6 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [(UIView *)self->_optionalButtonView setFrame:FIUIRoundFrameToViewScale(contentView6)];
   }
 }
 
@@ -227,19 +227,19 @@
   self->_secondDetailLabel = 0;
 }
 
-+ (double)rowHeightWithNoDataString:(id)a3
++ (double)rowHeightWithNoDataString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 49.0;
   }
 
-  v3 = a3;
+  stringCopy = string;
   v4 = _NoDataLabel();
-  [v4 setText:v3];
+  [v4 setText:stringCopy];
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v7 = v6;
 
   [v4 sizeThatFits:{v7 + 5.5 * -2.0, 1.79769313e308}];
@@ -248,11 +248,11 @@
   return v9 + 17.0 + 9.0;
 }
 
-- (FIUIWorkoutSummaryColoredDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (FIUIWorkoutSummaryColoredDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = FIUIWorkoutSummaryColoredDetailTableViewCell;
-  v4 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -262,45 +262,45 @@
   return v5;
 }
 
-- (void)setCustomAccessoryButton:(id)a3
+- (void)setCustomAccessoryButton:(id)button
 {
-  v9 = a3;
-  v5 = [(UIButton *)self->_customAccessoryButton superview];
-  v6 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+  buttonCopy = button;
+  superview = [(UIButton *)self->_customAccessoryButton superview];
+  contentView = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
 
-  if (v5 == v6)
+  if (superview == contentView)
   {
     [(UIButton *)self->_customAccessoryButton removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_customAccessoryButton, a3);
-  if (v9)
+  objc_storeStrong(&self->_customAccessoryButton, button);
+  if (buttonCopy)
   {
-    v7 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [v7 addSubview:self->_customAccessoryButton];
+    contentView2 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_customAccessoryButton];
 
-    v8 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [v8 bringSubviewToFront:self->_customAccessoryButton];
+    contentView3 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [contentView3 bringSubviewToFront:self->_customAccessoryButton];
   }
 
   [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v4 = [a3 localizedUppercaseString];
-  [(UILabel *)self->_titleLabel setText:v4];
+  localizedUppercaseString = [string localizedUppercaseString];
+  [(UILabel *)self->_titleLabel setText:localizedUppercaseString];
 }
 
-- (void)_resizeFontsIfNeededToFitWidth:(double)a3
+- (void)_resizeFontsIfNeededToFitWidth:(double)width
 {
-  v21 = [(UIFont *)self->_detailFont fontDescriptor];
-  v5 = [(UIFont *)self->_suffixFont fontDescriptor];
-  if (a3 > 0.0)
+  fontDescriptor = [(UIFont *)self->_detailFont fontDescriptor];
+  fontDescriptor2 = [(UIFont *)self->_suffixFont fontDescriptor];
+  if (width > 0.0)
   {
-    v6 = [(UILabel *)self->_detailLabel attributedText];
-    [v6 size];
-    if (v7 <= a3)
+    attributedText = [(UILabel *)self->_detailLabel attributedText];
+    [attributedText size];
+    if (v7 <= width)
     {
 LABEL_5:
     }
@@ -319,13 +319,13 @@ LABEL_5:
 
         v10 = MEMORY[0x1E69DB878];
         [(UIFont *)self->_detailFont pointSize];
-        v12 = [v10 fontWithDescriptor:v21 size:v11 * 0.9];
+        v12 = [v10 fontWithDescriptor:fontDescriptor size:v11 * 0.9];
         detailFont = self->_detailFont;
         self->_detailFont = v12;
 
         v14 = MEMORY[0x1E69DB878];
         [(UIFont *)self->_suffixFont pointSize];
-        v16 = [v14 fontWithDescriptor:v5 size:v15 * 0.9];
+        v16 = [v14 fontWithDescriptor:fontDescriptor2 size:v15 * 0.9];
         suffixFont = self->_suffixFont;
         self->_suffixFont = v16;
 
@@ -333,9 +333,9 @@ LABEL_5:
         v19 = NLSessionFormatDetailLabel(self->_detailString, self->_suffixString, self->_detailFont, self->_suffixFont, self->_textColor, IsRightToLeft, self->_shouldForceLTRForDetailString);
         [(UILabel *)self->_detailLabel setAttributedText:v19];
 
-        v6 = [(UILabel *)self->_detailLabel attributedText];
-        [v6 size];
-        if (v20 <= a3)
+        attributedText = [(UILabel *)self->_detailLabel attributedText];
+        [attributedText size];
+        if (v20 <= width)
         {
           goto LABEL_5;
         }
@@ -344,26 +344,26 @@ LABEL_5:
   }
 }
 
-- (void)setDetailString:(id)a3 suffixString:(id)a4 textColor:(id)a5 shouldForceLTRForDetailString:(BOOL)a6
+- (void)setDetailString:(id)string suffixString:(id)suffixString textColor:(id)color shouldForceLTRForDetailString:(BOOL)detailString
 {
-  v10 = a5;
-  self->_shouldForceLTRForDetailString = a6;
-  if (a3)
+  colorCopy = color;
+  self->_shouldForceLTRForDetailString = detailString;
+  if (string)
   {
-    v11 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v11 = &stru_1F5F88F90;
+    stringCopy = &stru_1F5F88F90;
   }
 
-  v12 = v11;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  v12 = stringCopy;
+  suffixStringCopy = suffixString;
+  v14 = suffixStringCopy;
+  if (suffixStringCopy)
   {
-    v15 = v13;
+    v15 = suffixStringCopy;
   }
 
   else
@@ -373,32 +373,32 @@ LABEL_5:
 
   v16 = v15;
 
-  v17 = [(__CFString *)v12 localizedUppercaseString];
+  localizedUppercaseString = [(__CFString *)v12 localizedUppercaseString];
 
-  v18 = [(__CFString *)v16 localizedUppercaseString];
+  localizedUppercaseString2 = [(__CFString *)v16 localizedUppercaseString];
 
   detailString = self->_detailString;
-  self->_detailString = v17;
-  v20 = v17;
+  self->_detailString = localizedUppercaseString;
+  v20 = localizedUppercaseString;
 
   suffixString = self->_suffixString;
-  self->_suffixString = v18;
-  v22 = v18;
+  self->_suffixString = localizedUppercaseString2;
+  v22 = localizedUppercaseString2;
 
   textColor = self->_textColor;
-  self->_textColor = v10;
-  v24 = v10;
+  self->_textColor = colorCopy;
+  v24 = colorCopy;
 
   IsRightToLeft = FIUILocaleIsRightToLeft();
   v26 = NLSessionFormatDetailLabel(self->_detailString, self->_suffixString, self->_detailFont, self->_suffixFont, self->_textColor, IsRightToLeft, self->_shouldForceLTRForDetailString);
   [(UILabel *)self->_detailLabel setAttributedText:v26];
 }
 
-- (void)setSecondMetricTitle:(id)a3 detailString:(id)a4 detailColor:(id)a5
+- (void)setSecondMetricTitle:(id)title detailString:(id)string detailColor:(id)color
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  stringCopy = string;
+  colorCopy = color;
   v10 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
   secondTitleLabel = self->_secondTitleLabel;
   if (!secondTitleLabel)
@@ -411,17 +411,17 @@ LABEL_5:
     [(UILabel *)self->_secondTitleLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_secondTitleLabel setFont:v10];
     v14 = self->_secondTitleLabel;
-    v15 = [MEMORY[0x1E6989B18] systemGrayTextColor];
-    [(UILabel *)v14 setTextColor:v15];
+    systemGrayTextColor = [MEMORY[0x1E6989B18] systemGrayTextColor];
+    [(UILabel *)v14 setTextColor:systemGrayTextColor];
 
-    v16 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [v16 addSubview:self->_secondTitleLabel];
+    contentView = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [contentView addSubview:self->_secondTitleLabel];
 
     secondTitleLabel = self->_secondTitleLabel;
   }
 
-  v17 = [v23 localizedUppercaseString];
-  [(UILabel *)secondTitleLabel setText:v17];
+  localizedUppercaseString = [titleCopy localizedUppercaseString];
+  [(UILabel *)secondTitleLabel setText:localizedUppercaseString];
 
   secondDetailLabel = self->_secondDetailLabel;
   if (!secondDetailLabel)
@@ -431,22 +431,22 @@ LABEL_5:
     self->_secondDetailLabel = v19;
 
     [(UILabel *)self->_secondDetailLabel setFont:v10];
-    [(UILabel *)self->_secondDetailLabel setTextColor:v9];
-    v21 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-    [v21 addSubview:self->_secondDetailLabel];
+    [(UILabel *)self->_secondDetailLabel setTextColor:colorCopy];
+    contentView2 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_secondDetailLabel];
 
     secondDetailLabel = self->_secondDetailLabel;
   }
 
-  v22 = [v8 localizedUppercaseString];
-  [(UILabel *)secondDetailLabel setText:v22];
+  localizedUppercaseString2 = [stringCopy localizedUppercaseString];
+  [(UILabel *)secondDetailLabel setText:localizedUppercaseString2];
 }
 
-- (void)setNoDataString:(id)a3 textColor:(id)a4
+- (void)setNoDataString:(id)string textColor:(id)color
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14 && (v7 = [v14 length], v8 = v14, v7))
+  stringCopy = string;
+  colorCopy = color;
+  if (stringCopy && (v7 = [stringCopy length], v8 = stringCopy, v7))
   {
     noDataLabel = self->_noDataLabel;
     if (!noDataLabel)
@@ -455,15 +455,15 @@ LABEL_5:
       v11 = self->_noDataLabel;
       self->_noDataLabel = v10;
 
-      v12 = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
-      [v12 addSubview:self->_noDataLabel];
+      contentView = [(FIUIWorkoutSummaryColoredDetailTableViewCell *)self contentView];
+      [contentView addSubview:self->_noDataLabel];
 
-      v8 = v14;
+      v8 = stringCopy;
       noDataLabel = self->_noDataLabel;
     }
 
     [(UILabel *)noDataLabel setText:v8];
-    [(UILabel *)self->_noDataLabel setTextColor:v6];
+    [(UILabel *)self->_noDataLabel setTextColor:colorCopy];
   }
 
   else

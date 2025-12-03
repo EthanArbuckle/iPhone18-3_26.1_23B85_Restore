@@ -1,16 +1,16 @@
 @interface SRFirstRunOnboardingController
 + (void)initialize;
 - (void)addNextButton;
-- (void)cancelPrompt:(id)a3;
-- (void)completePrompt:(id)a3;
+- (void)cancelPrompt:(id)prompt;
+- (void)completePrompt:(id)prompt;
 - (void)dealloc;
-- (void)disableSensorKit:(id)a3;
-- (void)enableSensorKit:(id)a3;
+- (void)disableSensorKit:(id)kit;
+- (void)enableSensorKit:(id)kit;
 - (void)loadPrivacy;
 - (void)loadTurnOn;
 - (void)loadWelcome;
-- (void)presentNextStep:(id)a3;
-- (void)showSensorKitPrivacyPage:(id)a3;
+- (void)presentNextStep:(id)step;
+- (void)showSensorKitPrivacyPage:(id)page;
 - (void)viewDidLoad;
 @end
 
@@ -18,7 +18,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F48 = os_log_create("com.apple.SensorKit", "SRLogFirstRunOnboardingController");
   }
@@ -59,9 +59,9 @@
   v3 = +[OBBoldTrayButton boldButton];
   [v3 setTitle:+[NSString srui_localizedStringForCode:](NSString forState:{"srui_localizedStringForCode:", 58), 0}];
   [v3 addTarget:self action:"presentNextStep:" forControlEvents:64];
-  v4 = [(SRFirstRunOnboardingController *)self buttonTray];
+  buttonTray = [(SRFirstRunOnboardingController *)self buttonTray];
 
-  [v4 addButton:v3];
+  [buttonTray addButton:v3];
 }
 
 - (void)loadWelcome
@@ -79,8 +79,8 @@
   for (i = 60; i != 64; ++i)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [[SRBulletedListItem alloc] initWithTitle:+[NSString srui_localizedStringForCode:](NSString description:"srui_localizedStringForCode:" image:i) textStyle:0, +[UIImage imageNamed:inBundle:withConfiguration:](UIImage, "imageNamed:inBundle:withConfiguration:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"bullet_%ld", i - 59), +[NSBundle skui_bundle], 0), UIFontTextStyleHeadline];
-    [v2 addArrangedSubview:v5];
+    uIFontTextStyleHeadline = [[SRBulletedListItem alloc] initWithTitle:+[NSString srui_localizedStringForCode:](NSString description:"srui_localizedStringForCode:" image:i) textStyle:0, +[UIImage imageNamed:inBundle:withConfiguration:](UIImage, "imageNamed:inBundle:withConfiguration:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"bullet_%ld", i - 59), +[NSBundle skui_bundle], 0), UIFontTextStyleHeadline];
+    [v2 addArrangedSubview:uIFontTextStyleHeadline];
     [v2 setCustomSpacing:objc_msgSend(objc_msgSend(v2 afterView:{"arrangedSubviews"), "lastObject"), 26.0}];
 
     objc_autoreleasePoolPop(v4);
@@ -110,7 +110,7 @@
   [(SRFirstRunOnboardingController *)self addNextButton];
 }
 
-- (void)showSensorKitPrivacyPage:(id)a3
+- (void)showSensorKitPrivacyPage:(id)page
 {
   v4 = qword_100015F48;
   if (os_log_type_enabled(qword_100015F48, OS_LOG_TYPE_INFO))
@@ -139,28 +139,28 @@
   [objc_msgSend(v4 "layer")];
   [v4 setTitle:+[NSString srui_localizedStringForCode:](NSString forState:{"srui_localizedStringForCode:", 66), 0}];
   [v4 addTarget:self action:"disableSensorKit:" forControlEvents:64];
-  v5 = [(SRFirstRunOnboardingController *)self buttonTray];
+  buttonTray = [(SRFirstRunOnboardingController *)self buttonTray];
 
-  [v5 addButton:v4];
+  [buttonTray addButton:v4];
 }
 
-- (void)enableSensorKit:(id)a3
+- (void)enableSensorKit:(id)kit
 {
   [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient setFirstRunOnboardingCompleted:"setFirstRunOnboardingCompleted:", 1];
   [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient setDataCollectionEnabled:"setDataCollectionEnabled:", 1];
 
-  [(SRFirstRunOnboardingController *)self completePrompt:a3];
+  [(SRFirstRunOnboardingController *)self completePrompt:kit];
 }
 
-- (void)disableSensorKit:(id)a3
+- (void)disableSensorKit:(id)kit
 {
   [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient setFirstRunOnboardingCompleted:"setFirstRunOnboardingCompleted:", 0];
   [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient setDataCollectionEnabled:"setDataCollectionEnabled:", 0];
 
-  [(SRFirstRunOnboardingController *)self completePrompt:a3];
+  [(SRFirstRunOnboardingController *)self completePrompt:kit];
 }
 
-- (void)presentNextStep:(id)a3
+- (void)presentNextStep:(id)step
 {
   step = self->_step;
   if (step >= 2)
@@ -210,27 +210,27 @@ LABEL_14:
   v9 = [NSString srui_localizedStringForCode:v8];
 LABEL_16:
   v12 = [[SRFirstRunOnboardingController alloc] initWithTitle:v7 detailText:v9 icon:0 contentLayout:2];
-  v10 = [(SRFirstRunOnboardingController *)v12 headerView];
+  headerView = [(SRFirstRunOnboardingController *)v12 headerView];
   LODWORD(v11) = 1036831949;
-  [v10 setTitleHyphenationFactor:v11];
+  [headerView setTitleHyphenationFactor:v11];
   [(SRFirstRunOnboardingController *)v12 setStep:step + 1];
   [(SRFirstRunOnboardingController *)v12 setDelegate:[(SRFirstRunOnboardingController *)self delegate]];
   [-[SRFirstRunOnboardingController navigationController](self "navigationController")];
 }
 
-- (void)cancelPrompt:(id)a3
+- (void)cancelPrompt:(id)prompt
 {
-  v3 = [(SRFirstRunOnboardingController *)self delegate];
-  [(SRAuthorizationTableDelegate *)v3 authorizationTable:0 foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
+  delegate = [(SRFirstRunOnboardingController *)self delegate];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTable:0 foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
 
-  [(SRAuthorizationTableDelegate *)v3 authorizationTableCompletedPromptSuccessfully:0];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTableCompletedPromptSuccessfully:0];
 }
 
-- (void)completePrompt:(id)a3
+- (void)completePrompt:(id)prompt
 {
-  v3 = [(SRFirstRunOnboardingController *)self delegate];
+  delegate = [(SRFirstRunOnboardingController *)self delegate];
 
-  [(SRAuthorizationTableDelegate *)v3 authorizationTableCompletedPromptSuccessfully:0];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTableCompletedPromptSuccessfully:0];
 }
 
 @end

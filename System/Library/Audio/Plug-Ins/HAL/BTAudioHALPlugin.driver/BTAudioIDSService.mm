@@ -1,17 +1,17 @@
 @interface BTAudioIDSService
 - (BOOL)isConnected;
-- (BOOL)sendArbitrationMsg:(id)a3 forAddress:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)var0 :char_traits<char>;
+- (BOOL)sendArbitrationMsg:(id)msg forAddress:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)var0 :char_traits<char>;
 - (BTAudioIDSService)init;
 - (void)dealloc;
-- (void)handleDidTakeOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (void)handleDidTakeOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (void)handleReconcileOwnershipRemoteOwns:()basic_string<char;
 - (void)handleReconcileOwnershipRemoteReleased:()basic_string<char;
-- (void)handleRequestOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (void)handleRequestOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (void)handleTakeOwnershipFailed:()basic_string<char;
 - (void)handleUnsupportedArbitrationMsg:()basic_string<char;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 @end
 
 @implementation BTAudioIDSService
@@ -47,23 +47,23 @@
 
 - (BOOL)isConnected
 {
-  v3 = [(BTAudioIDSService *)self compatibleAndNearby];
-  if (v3)
+  compatibleAndNearby = [(BTAudioIDSService *)self compatibleAndNearby];
+  if (compatibleAndNearby)
   {
 
-    LOBYTE(v3) = [(BTAudioIDSService *)self compatibleAndConnected];
+    LOBYTE(compatibleAndNearby) = [(BTAudioIDSService *)self compatibleAndConnected];
   }
 
-  return v3;
+  return compatibleAndNearby;
 }
 
-- (BOOL)sendArbitrationMsg:(id)a3 forAddress:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)var0 :char_traits<char>
+- (BOOL)sendArbitrationMsg:(id)msg forAddress:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)var0 :char_traits<char>
 {
   v5 = v4;
   Current = CFAbsoluteTimeGetCurrent();
   memset(&v48, 0, sizeof(v48));
   sub_2088(&v48, "");
-  if (v5 && [a3 isEqualToString:@"RequestOwnership"])
+  if (v5 && [msg isEqualToString:@"RequestOwnership"])
   {
     std::string::assign(&v48, [v5 UTF8String]);
   }
@@ -71,8 +71,8 @@
   v10 = qword_C2330;
   if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [objc_msgSend(a3 "description")];
-    v12 = [(BTAudioIDSService *)self isConnected];
+    v11 = [objc_msgSend(msg "description")];
+    isConnected = [(BTAudioIDSService *)self isConnected];
     compatibleAndConnected = self->compatibleAndConnected;
     compatibleAndNearby = self->compatibleAndNearby;
     v15 = &v48;
@@ -84,7 +84,7 @@
     *buf = 136447234;
     v54 = v11;
     v55 = 1024;
-    *v56 = v12;
+    *v56 = isConnected;
     *&v56[4] = 1024;
     *&v56[6] = compatibleAndConnected;
     v57 = 1024;
@@ -94,9 +94,9 @@
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "sendArbitrationMsg arbitrationKey: %{public}s, isConnected: %d, connected: %d, nearby: %d, responseId: %s", buf, 0x28u);
   }
 
-  if (![a3 isEqualToString:@"RequestOwnership"] || -[BTAudioIDSService isConnected](self, "isConnected"))
+  if (![msg isEqualToString:@"RequestOwnership"] || -[BTAudioIDSService isConnected](self, "isConnected"))
   {
-    if ([a3 isEqualToString:@"RequestOwnership"] && -[BTAudioIDSService isConnected](self, "isConnected"))
+    if ([msg isEqualToString:@"RequestOwnership"] && -[BTAudioIDSService isConnected](self, "isConnected"))
     {
       v16 = qword_D8DF0;
       if (*(&var0->var0.var1 + 23) < 0)
@@ -156,10 +156,10 @@ LABEL_31:
         }
 
         v50 = [NSString stringWithUTF8String:var0];
-        v51 = a3;
+        msgCopy = msg;
         v49 = @"kOwnershipDeviceAddr";
         v52 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-        v23 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
+        v23 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&msgCopy count:1];
         v24 = [NSSet setWithObject:IDSDefaultPairedDevice];
         v41 = 0;
         v25 = +[NSMutableDictionary dictionary];
@@ -168,9 +168,9 @@ LABEL_31:
         [v25 setValue:v27 forKey:IDSSendMessageOptionTimeoutKey];
         [v25 setValue:&__kCFBooleanTrue forKey:IDSSendMessageOptionFireAndForgetKey];
         [v25 setValue:&__kCFBooleanTrue forKey:IDSSendMessageOptionEnforceRemoteTimeoutsKey];
-        v28 = [(BTAudioIDSService *)self lastUsedIdentifierKey];
-        [v25 setValue:v28 forKey:IDSSendMessageOptionQueueOneIdentifierKey];
-        if ([a3 isEqualToString:@"RequestOwnership"])
+        lastUsedIdentifierKey = [(BTAudioIDSService *)self lastUsedIdentifierKey];
+        [v25 setValue:lastUsedIdentifierKey forKey:IDSSendMessageOptionQueueOneIdentifierKey];
+        if ([msg isEqualToString:@"RequestOwnership"])
         {
           [v25 setValue:&__kCFBooleanTrue forKey:IDSSendMessageOptionExpectsPeerResponseKey];
         }
@@ -192,11 +192,11 @@ LABEL_31:
             goto LABEL_42;
           }
 
-          v31 = [(BTAudioIDSService *)self lastUsedIdentifierKey];
+          lastUsedIdentifierKey2 = [(BTAudioIDSService *)self lastUsedIdentifierKey];
           *buf = 138543618;
           v54 = v23;
           v55 = 2114;
-          *v56 = v31;
+          *v56 = lastUsedIdentifierKey2;
           v32 = "Successfully sent msg %{public}@ with identifier %{public}@";
           v33 = v29;
           v34 = 22;
@@ -219,22 +219,22 @@ LABEL_31:
 
         _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, v32, buf, v34);
 LABEL_42:
-        if ([a3 isEqualToString:@"RequestOwnership"])
+        if ([msg isEqualToString:@"RequestOwnership"])
         {
           v36 = 1;
         }
 
-        else if ([a3 isEqualToString:@"DidTakeOwnership"])
+        else if ([msg isEqualToString:@"DidTakeOwnership"])
         {
           v36 = 2;
         }
 
-        else if ([a3 isEqualToString:@"ReconcileOwnershipRemoteOwns"])
+        else if ([msg isEqualToString:@"ReconcileOwnershipRemoteOwns"])
         {
           v36 = 4;
         }
 
-        else if ([a3 isEqualToString:@"ReconcileOwnershipRemoteReleased"])
+        else if ([msg isEqualToString:@"ReconcileOwnershipRemoteReleased"])
         {
           v36 = 5;
         }
@@ -303,16 +303,16 @@ LABEL_56:
   return v18;
 }
 
-- (void)handleRequestOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)handleRequestOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
   v6 = qword_C2330;
   if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3;
-    if (*(&a3->var0.var1 + 23) < 0)
+    var0 = std;
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      var0 = a3->var0.var1.var0;
+      var0 = std->var0.var1.var0;
     }
 
     *buf = 136446210;
@@ -322,15 +322,15 @@ LABEL_56:
 
   sub_707D4(13);
   v8 = qword_D8DF0;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    sub_9780(__p, a3->var0.var1.var0, a3->var0.var1.var1);
+    sub_9780(__p, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    *__p = *a3->var0.var0.var0;
-    v10 = *(&a3->var0.var1 + 2);
+    *__p = *std->var0.var0.var0;
+    v10 = *(&std->var0.var1 + 2);
   }
 
   sub_4DA14(v8, __p, 0, 1, v4);
@@ -340,7 +340,7 @@ LABEL_56:
   }
 }
 
-- (void)handleDidTakeOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)handleDidTakeOwnership:()basic_string<char withResponseIdentifier:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
   v6 = qword_C2330;
@@ -352,15 +352,15 @@ LABEL_56:
 
   sub_707D4(14);
   v7 = qword_D8DF0;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    sub_9780(__p, a3->var0.var1.var0, a3->var0.var1.var1);
+    sub_9780(__p, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    *__p = *a3->var0.var0.var0;
-    v9 = *(&a3->var0.var1 + 2);
+    *__p = *std->var0.var0.var0;
+    v9 = *(&std->var0.var1 + 2);
   }
 
   sub_4DA14(v7, __p, 1, 0, v4);
@@ -484,29 +484,29 @@ LABEL_56:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v11 = qword_C2330;
   if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    *&buf[4] = [objc_msgSend(a5 "description")];
+    *&buf[4] = [objc_msgSend(message "description")];
     *&buf[12] = 2082;
-    *&buf[14] = [objc_msgSend(a6 "description")];
+    *&buf[14] = [objc_msgSend(d "description")];
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Received IDS message %{public}s from %{public}s", buf, 0x16u);
   }
 
-  v12 = [objc_msgSend(a5 "allKeys")];
+  v12 = [objc_msgSend(message "allKeys")];
   if (v12)
   {
-    v13 = [a5 valueForKey:v12];
+    v13 = [message valueForKey:v12];
     if (v13)
     {
       memset(buf, 0, sizeof(buf));
       sub_2088(buf, [objc_msgSend(v13 valueForKey:{@"kOwnershipDeviceAddr", "UTF8String"}]);
       if ([v12 isEqualToString:@"RequestOwnership"])
       {
-        v14 = [a7 outgoingResponseIdentifier];
+        outgoingResponseIdentifier = [context outgoingResponseIdentifier];
         if (buf[23] < 0)
         {
           sub_9780(&__dst, *buf, *&buf[8]);
@@ -518,7 +518,7 @@ LABEL_56:
           v31 = *&buf[16];
         }
 
-        [(BTAudioIDSService *)self handleRequestOwnership:&__dst withResponseIdentifier:v14];
+        [(BTAudioIDSService *)self handleRequestOwnership:&__dst withResponseIdentifier:outgoingResponseIdentifier];
         if ((SHIBYTE(v31) & 0x80000000) == 0)
         {
           goto LABEL_53;
@@ -529,7 +529,7 @@ LABEL_56:
 
       else if ([v12 isEqualToString:@"DidTakeOwnership"])
       {
-        v15 = [a7 incomingResponseIdentifier];
+        incomingResponseIdentifier = [context incomingResponseIdentifier];
         if (buf[23] < 0)
         {
           sub_9780(&v28, *buf, *&buf[8]);
@@ -541,7 +541,7 @@ LABEL_56:
           v29 = *&buf[16];
         }
 
-        [(BTAudioIDSService *)self handleDidTakeOwnership:&v28 withResponseIdentifier:v15];
+        [(BTAudioIDSService *)self handleDidTakeOwnership:&v28 withResponseIdentifier:incomingResponseIdentifier];
         if ((SHIBYTE(v29) & 0x80000000) == 0)
         {
           goto LABEL_53;
@@ -643,7 +643,7 @@ LABEL_56:
         v17 = qword_C2330;
         if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_ERROR))
         {
-          sub_79614([objc_msgSend(a5 "description")], v32, v17);
+          sub_79614([objc_msgSend(message "description")], v32, v17);
         }
 
         if (buf[23] < 0)
@@ -684,18 +684,18 @@ LABEL_53:
 
   else if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_ERROR))
   {
-    sub_796E0(a5);
+    sub_796E0(message);
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v4 = &byte_BA20A[32246];
   v5 = qword_C2330;
   if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v32 = [a4 count];
+    v32 = [changed count];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Nearby devices changed to %lu", buf, 0xCu);
   }
 
@@ -703,7 +703,7 @@ LABEL_53:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+  v6 = [changed countByEnumeratingWithState:&v27 objects:v45 count:16];
   if (v6)
   {
     v8 = v6;
@@ -717,7 +717,7 @@ LABEL_53:
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(changed);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -725,7 +725,7 @@ LABEL_53:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v25 = [objc_msgSend(v12 "productName")];
-          v24 = [v12 productBuildVersion];
+          productBuildVersion = [v12 productBuildVersion];
           v23 = [objc_msgSend(v12 "service")];
           v14 = "true";
           if ([v12 isNearby])
@@ -744,7 +744,7 @@ LABEL_53:
           }
 
           v16 = v4;
-          v17 = [v12 serviceMinCompatibilityVersion];
+          serviceMinCompatibilityVersion = [v12 serviceMinCompatibilityVersion];
           v18 = [(BTAudioIDSService *)self deviceIsCompatible:v12];
           *buf = v21;
           v19 = "will not";
@@ -755,7 +755,7 @@ LABEL_53:
 
           v32 = v25;
           v33 = 2112;
-          v34 = v24;
+          v34 = productBuildVersion;
           v35 = 2080;
           v36 = v23;
           v37 = 2080;
@@ -763,7 +763,7 @@ LABEL_53:
           v39 = 2080;
           v40 = v14;
           v41 = 2048;
-          v42 = v17;
+          v42 = serviceMinCompatibilityVersion;
           v4 = v16;
           v43 = 2080;
           v44 = v19;
@@ -776,7 +776,7 @@ LABEL_53:
         }
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+      v8 = [changed countByEnumeratingWithState:&v27 objects:v45 count:16];
     }
 
     while (v8);
@@ -791,14 +791,14 @@ LABEL_53:
   [(BTAudioIDSService *)self setCompatibleAndNearby:v20];
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   v4 = &byte_BA20A[32246];
   v5 = qword_C2330;
   if (os_log_type_enabled(qword_C2330, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v32 = [a4 count];
+    v32 = [changed count];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Connected devices changed to %lu", buf, 0xCu);
   }
 
@@ -806,7 +806,7 @@ LABEL_53:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+  v6 = [changed countByEnumeratingWithState:&v27 objects:v45 count:16];
   if (v6)
   {
     v8 = v6;
@@ -820,7 +820,7 @@ LABEL_53:
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(changed);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -828,7 +828,7 @@ LABEL_53:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v25 = [objc_msgSend(v12 "productName")];
-          v24 = [v12 productBuildVersion];
+          productBuildVersion = [v12 productBuildVersion];
           v23 = [objc_msgSend(v12 "service")];
           v14 = "true";
           if ([v12 isNearby])
@@ -847,7 +847,7 @@ LABEL_53:
           }
 
           v16 = v4;
-          v17 = [v12 serviceMinCompatibilityVersion];
+          serviceMinCompatibilityVersion = [v12 serviceMinCompatibilityVersion];
           v18 = [(BTAudioIDSService *)self deviceIsCompatible:v12];
           *buf = v21;
           v19 = "will not";
@@ -858,7 +858,7 @@ LABEL_53:
 
           v32 = v25;
           v33 = 2112;
-          v34 = v24;
+          v34 = productBuildVersion;
           v35 = 2080;
           v36 = v23;
           v37 = 2080;
@@ -866,7 +866,7 @@ LABEL_53:
           v39 = 2080;
           v40 = v14;
           v41 = 2048;
-          v42 = v17;
+          v42 = serviceMinCompatibilityVersion;
           v4 = v16;
           v43 = 2080;
           v44 = v19;
@@ -879,7 +879,7 @@ LABEL_53:
         }
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+      v8 = [changed countByEnumeratingWithState:&v27 objects:v45 count:16];
     }
 
     while (v8);

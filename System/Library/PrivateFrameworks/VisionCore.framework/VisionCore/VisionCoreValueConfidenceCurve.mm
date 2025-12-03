@@ -1,19 +1,19 @@
 @interface VisionCoreValueConfidenceCurve
-+ (VisionCoreValueConfidenceCurve)curveWithValues:(const float *)a3 confidences:(const float *)a4 count:(unint64_t)a5 error:(id *)a6;
-+ (VisionCoreValueConfidenceCurve)curveWithValuesArray:(id)a3 confidencesArray:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreValueConfidenceCurve)initWithCoder:(id)a3;
-- (float)confidenceForValue:(float)a3;
++ (VisionCoreValueConfidenceCurve)curveWithValues:(const float *)values confidences:(const float *)confidences count:(unint64_t)count error:(id *)error;
++ (VisionCoreValueConfidenceCurve)curveWithValuesArray:(id)array confidencesArray:(id)confidencesArray error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreValueConfidenceCurve)initWithCoder:(id)coder;
+- (float)confidenceForValue:(float)value;
 - (float)maximumConfidence;
 - (float)maximumValue;
 - (float)minimumConfidence;
-- (float)valueForConfidence:(float)a3;
+- (float)valueForConfidence:(float)confidence;
 - (id).cxx_construct;
 - (id)description;
-- (uint64_t)_addValue:(float)a3 confidence:atIndex:error:;
+- (uint64_t)_addValue:(float)value confidence:atIndex:error:;
 - (uint64_t)_finalizeInitialization;
-- (uint64_t)_prepareForCount:(void *)a3 error:;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)_prepareForCount:(void *)count error:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreValueConfidenceCurve
@@ -26,9 +26,9 @@
   return self;
 }
 
-- (VisionCoreValueConfidenceCurve)initWithCoder:(id)a3
+- (VisionCoreValueConfidenceCurve)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!self)
   {
     goto LABEL_47;
@@ -42,9 +42,9 @@
     goto LABEL_47;
   }
 
-  if ([v4 containsValueForKey:@"v.v"])
+  if ([coderCopy containsValueForKey:@"v.v"])
   {
-    v5 = v4;
+    v5 = coderCopy;
     v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"v.v"];
     v7 = v6;
     if (v6)
@@ -65,11 +65,11 @@ LABEL_30:
         goto LABEL_45;
       }
 
-      v27 = [v7 bytes];
+      bytes = [v7 bytes];
       v28 = adler32(0, 0, 0);
-      v29 = adler32(v28, v27, v9 - 4);
-      v30 = &v27[v18];
-      v31 = v27[v18];
+      v29 = adler32(v28, bytes, v9 - 4);
+      v30 = &bytes[v18];
+      v31 = bytes[v18];
       v32 = v18 >> 2;
       std::vector<VisionCoreValueConfidencePoint>::reserve(&self->_increasingValuePoints.__begin_, v18 >> 2);
       if (v18)
@@ -82,9 +82,9 @@ LABEL_30:
         do
         {
           *&v39.receiver = v31 / 10.0;
-          HIDWORD(v39.receiver) = bswap32(*v27);
+          HIDWORD(v39.receiver) = bswap32(*bytes);
           std::vector<VisionCoreValueConfidencePoint>::push_back[abi:ne200100](&self->_increasingValuePoints, &v39);
-          v27 += 4;
+          bytes += 4;
           ++v31;
           --v32;
         }
@@ -109,19 +109,19 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if (![v4 containsValueForKey:@"0.1"])
+  if (![coderCopy containsValueForKey:@"0.1"])
   {
-    if (![v4 containsValueForKey:@"pts"])
+    if (![coderCopy containsValueForKey:@"pts"])
     {
       v17 = [MEMORY[0x1E696ABC0] VisionCoreErrorForCorruptedResourceWithLocalizedDescription:@"missing curve data"];
-      [v4 failWithError:v17];
+      [coderCopy failWithError:v17];
 
 LABEL_47:
-      v37 = 0;
+      selfCopy = 0;
       goto LABEL_48;
     }
 
-    v5 = v4;
+    v5 = coderCopy;
     v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"pts"];
     v7 = v13;
     if (!v13)
@@ -138,9 +138,9 @@ LABEL_47:
         goto LABEL_30;
       }
 
-      v33 = [v7 bytes];
+      bytes2 = [v7 bytes];
       v34 = adler32(0, 0, 0);
-      v35 = adler32(v34, v33, v15);
+      v35 = adler32(v34, bytes2, v15);
       v36 = v15 >> 3;
       std::vector<VisionCoreValueConfidencePoint>::reserve(&self->_increasingValuePoints.__begin_, v36);
       if (v36 <= 1)
@@ -150,14 +150,14 @@ LABEL_47:
 
       do
       {
-        v39.receiver = vrev32_s8(*v33);
+        v39.receiver = vrev32_s8(*bytes2);
         std::vector<VisionCoreValueConfidencePoint>::push_back[abi:ne200100](&self->_increasingValuePoints, &v39);
-        ++v33;
+        ++bytes2;
         --v36;
       }
 
       while (v36);
-      if (bswap32(v33->i32[0]) == v35)
+      if (bswap32(bytes2->i32[0]) == v35)
       {
         v26 = 1;
         goto LABEL_43;
@@ -174,7 +174,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v5 = v4;
+  v5 = coderCopy;
   v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"0.1"];
   v7 = v10;
   if (!v10)
@@ -195,11 +195,11 @@ LABEL_45:
     goto LABEL_30;
   }
 
-  v20 = [v7 bytes];
+  bytes3 = [v7 bytes];
   v21 = adler32(0, 0, 0);
-  v22 = adler32(v21, v20, v12);
+  v22 = adler32(v21, bytes3, v12);
   std::vector<VisionCoreValueConfidencePoint>::reserve(&self->_increasingValuePoints.__begin_, v12 / 5);
-  v24 = &v20[4 * v19];
+  v24 = &bytes3[4 * v19];
   if (v12 >= 5)
   {
     if (v19 <= 1)
@@ -214,12 +214,12 @@ LABEL_45:
 
     do
     {
-      HIDWORD(v39.receiver) = bswap32(*v20);
+      HIDWORD(v39.receiver) = bswap32(*bytes3);
       LOBYTE(v23) = *v24;
       *&v39.receiver = v23 / 10.0;
       std::vector<VisionCoreValueConfidencePoint>::push_back[abi:ne200100](&self->_increasingValuePoints, &v39);
       v24 = (v24 + 1);
-      v20 += 4;
+      bytes3 += 4;
       --v25;
     }
 
@@ -237,15 +237,15 @@ LABEL_43:
 
   self->_confidencesAreIncreasing = *(self->_increasingValuePoints.__begin_ + 1) < *(self->_increasingValuePoints.__end_ - 1);
   self = self;
-  v37 = self;
+  selfCopy = self;
 LABEL_48:
 
-  return v37;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v39 = a3;
+  coderCopy = coder;
   if (self)
   {
     resolvedPointsDistribution_DO_NOT_DIRECTLY_ACCESS = self->_resolvedPointsDistribution_DO_NOT_DIRECTLY_ACCESS;
@@ -323,7 +323,7 @@ LABEL_22:
       self->_resolvedPointsDistribution_DO_NOT_DIRECTLY_ACCESS = resolvedPointsDistribution_DO_NOT_DIRECTLY_ACCESS;
     }
 
-    v11 = v39;
+    v11 = coderCopy;
     v13 = self->_increasingValuePoints.__begin_;
     v12 = self->_increasingValuePoints.__end_;
     v14 = v12 - v13;
@@ -331,14 +331,14 @@ LABEL_22:
     {
       v23 = (v14 >> 1) + (v14 >> 3);
       v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v23 + 4];
-      v24 = [v15 mutableBytes];
-      v25 = v24;
-      v26 = (v24 + (v14 >> 1));
+      mutableBytes = [v15 mutableBytes];
+      v25 = mutableBytes;
+      v26 = (mutableBytes + (v14 >> 1));
       v28 = self->_increasingValuePoints.__begin_;
       v27 = self->_increasingValuePoints.__end_;
       if (v28 != v27)
       {
-        v29 = v24;
+        v29 = mutableBytes;
         do
         {
           *v29++ = bswap32(*(v28 + 1));
@@ -358,14 +358,14 @@ LABEL_22:
     else if (resolvedPointsDistribution_DO_NOT_DIRECTLY_ACCESS == 3)
     {
       v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:(v14 >> 1) + 5];
-      v16 = [v15 mutableBytes];
-      v17 = v16;
+      mutableBytes2 = [v15 mutableBytes];
+      v17 = mutableBytes2;
       v18 = self->_increasingValuePoints.__begin_;
       v19 = self->_increasingValuePoints.__end_;
-      v20 = v16;
+      v20 = mutableBytes2;
       if (v18 != v19)
       {
-        v20 = v16;
+        v20 = mutableBytes2;
         do
         {
           *v20++ = bswap32(*(v18 + 1));
@@ -385,9 +385,9 @@ LABEL_22:
     else
     {
       v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v14 | 4];
-      v31 = [v15 mutableBytes];
-      v32 = v31;
-      v33 = v31;
+      mutableBytes3 = [v15 mutableBytes];
+      v32 = mutableBytes3;
+      v33 = mutableBytes3;
       if (v12 != v13)
       {
         v34 = v14 >> 3;
@@ -397,7 +397,7 @@ LABEL_22:
           v34 = 1;
         }
 
-        v33 = v31;
+        v33 = mutableBytes3;
         do
         {
           v36 = *v35;
@@ -417,14 +417,14 @@ LABEL_22:
 
   else
   {
-    v38 = v39;
+    v38 = coderCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -434,7 +434,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_confidencesAreIncreasing == v5->_confidencesAreIncreasing && (begin = self->_increasingValuePoints.__begin_, end = self->_increasingValuePoints.__end_, v8 = v5->_increasingValuePoints.__begin_, end - begin == v5->_increasingValuePoints.__end_ - v8))
       {
         if (begin == end)
@@ -501,10 +501,10 @@ LABEL_22:
   return v4;
 }
 
-- (float)confidenceForValue:(float)a3
+- (float)confidenceForValue:(float)value
 {
   begin = self->_increasingValuePoints.__begin_;
-  if (*begin >= a3)
+  if (*begin >= value)
   {
     return *(begin + 1);
   }
@@ -517,9 +517,9 @@ LABEL_22:
 
   v5 = (begin + 8);
   v6 = 1;
-  while (*v5 <= a3)
+  while (*v5 <= value)
   {
-    if (*v5 == a3)
+    if (*v5 == value)
     {
       return *(begin + 2 * v6 + 1);
     }
@@ -542,7 +542,7 @@ LABEL_22:
 
   else
   {
-    v11 = (a3 - v9) / v10;
+    v11 = (value - v9) / v10;
   }
 
   if (self->_confidencesAreIncreasing)
@@ -570,14 +570,14 @@ LABEL_22:
   return v13 + (v11 * (*(v14 + 1) - v13));
 }
 
-- (float)valueForConfidence:(float)a3
+- (float)valueForConfidence:(float)confidence
 {
   begin = self->_increasingValuePoints.__begin_;
   v4 = (self->_increasingValuePoints.__end_ - begin) >> 3;
   v5 = *(begin + 1);
   if (!self->_confidencesAreIncreasing)
   {
-    if (v5 > a3)
+    if (v5 > confidence)
     {
       if (v4 >= 2)
       {
@@ -586,12 +586,12 @@ LABEL_22:
         while (1)
         {
           v10 = v6[1];
-          if (v10 < a3)
+          if (v10 < confidence)
           {
             break;
           }
 
-          if (v10 == a3)
+          if (v10 == confidence)
           {
             return *v6;
           }
@@ -611,7 +611,7 @@ LABEL_22:
 
         else
         {
-          v16 = (a3 - v10) / v15;
+          v16 = (confidence - v10) / v15;
         }
 
         v14 = 1.0 - v16;
@@ -624,7 +624,7 @@ LABEL_22:
     return *begin;
   }
 
-  if (v5 >= a3)
+  if (v5 >= confidence)
   {
     return *begin;
   }
@@ -639,12 +639,12 @@ LABEL_22:
   while (1)
   {
     v8 = v6[1];
-    if (v8 > a3)
+    if (v8 > confidence)
     {
       break;
     }
 
-    if (v8 == a3)
+    if (v8 == confidence)
     {
       return *v6;
     }
@@ -665,7 +665,7 @@ LABEL_22:
 
   else
   {
-    v14 = (a3 - v12) / v13;
+    v14 = (confidence - v12) / v13;
   }
 
   return *(v6 - 2) + (v14 * (*v6 - *(v6 - 2)));
@@ -718,15 +718,15 @@ LABEL_22:
   return *(begin + 2 * v3);
 }
 
-+ (VisionCoreValueConfidenceCurve)curveWithValuesArray:(id)a3 confidencesArray:(id)a4 error:(id *)a5
++ (VisionCoreValueConfidenceCurve)curveWithValuesArray:(id)array confidencesArray:(id)confidencesArray error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 count];
-  v11 = [v9 count];
+  arrayCopy = array;
+  confidencesArrayCopy = confidencesArray;
+  v10 = [arrayCopy count];
+  v11 = [confidencesArrayCopy count];
   if (v10 == v11)
   {
-    v12 = [a1 alloc];
+    v12 = [self alloc];
     if (v12)
     {
       v23.receiver = v12;
@@ -739,13 +739,13 @@ LABEL_22:
       v13 = 0;
     }
 
-    if ([(VisionCoreValueConfidenceCurve *)v13 _prepareForCount:v10 error:a5])
+    if ([(VisionCoreValueConfidenceCurve *)v13 _prepareForCount:v10 error:error])
     {
       if (!v10)
       {
 LABEL_9:
         [(VisionCoreValueConfidenceCurve *)v13 _finalizeInitialization];
-        a5 = v13;
+        error = v13;
 LABEL_13:
 
         goto LABEL_14;
@@ -754,10 +754,10 @@ LABEL_13:
       v14 = 0;
       while (1)
       {
-        v15 = [v8 objectAtIndexedSubscript:v14];
+        v15 = [arrayCopy objectAtIndexedSubscript:v14];
         [v15 floatValue];
         v17 = v16;
-        v18 = [v9 objectAtIndexedSubscript:v14];
+        v18 = [confidencesArrayCopy objectAtIndexedSubscript:v14];
         [v18 floatValue];
         v20 = [VisionCoreValueConfidenceCurve _addValue:v13 confidence:v17 atIndex:v19 error:?];
 
@@ -773,24 +773,24 @@ LABEL_13:
       }
     }
 
-    a5 = 0;
+    error = 0;
     goto LABEL_13;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot create a curve from %lu values and %lu confidences", v10, v11];
-    *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v21];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v21];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_14:
 
-  return a5;
+  return error;
 }
 
-- (uint64_t)_prepareForCount:(void *)a3 error:
+- (uint64_t)_prepareForCount:(void *)count error:
 {
   if (result)
   {
@@ -800,12 +800,12 @@ LABEL_14:
       return 1;
     }
 
-    else if (a3)
+    else if (count)
     {
       v4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:@"value/confidence curve must have at least one data point"];
       v5 = v4;
       result = 0;
-      *a3 = v4;
+      *count = v4;
     }
 
     else
@@ -817,11 +817,11 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_addValue:(float)a3 confidence:atIndex:error:
+- (uint64_t)_addValue:(float)value confidence:atIndex:error:
 {
   if (result)
   {
-    v3 = __PAIR64__(LODWORD(a3), LODWORD(a2));
+    v3 = __PAIR64__(LODWORD(value), LODWORD(a2));
     std::vector<VisionCoreValueConfidencePoint>::push_back[abi:ne200100](result + 8, &v3);
     return 1;
   }
@@ -1592,9 +1592,9 @@ LABEL_81:
   return result;
 }
 
-+ (VisionCoreValueConfidenceCurve)curveWithValues:(const float *)a3 confidences:(const float *)a4 count:(unint64_t)a5 error:(id *)a6
++ (VisionCoreValueConfidenceCurve)curveWithValues:(const float *)values confidences:(const float *)confidences count:(unint64_t)count error:(id *)error
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   if (v10)
   {
     v15.receiver = v10;
@@ -1607,9 +1607,9 @@ LABEL_81:
     v11 = 0;
   }
 
-  if ([(VisionCoreValueConfidenceCurve *)v11 _prepareForCount:a5 error:a6])
+  if ([(VisionCoreValueConfidenceCurve *)v11 _prepareForCount:count error:error])
   {
-    if (!a5)
+    if (!count)
     {
 LABEL_8:
       [(VisionCoreValueConfidenceCurve *)v11 _finalizeInitialization];
@@ -1618,9 +1618,9 @@ LABEL_8:
     }
 
     v12 = 0;
-    while (([VisionCoreValueConfidenceCurve _addValue:v11 confidence:a3[v12] atIndex:a4[v12] error:?]& 1) != 0)
+    while (([VisionCoreValueConfidenceCurve _addValue:v11 confidence:values[v12] atIndex:confidences[v12] error:?]& 1) != 0)
     {
-      if (a5 == ++v12)
+      if (count == ++v12)
       {
         goto LABEL_8;
       }

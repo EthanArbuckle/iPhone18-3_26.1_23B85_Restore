@@ -1,30 +1,30 @@
 @interface PDURLSessionProxyCreateSession
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSURLSessionConfiguration)_actualConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_setActualConfiguration:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDelegateImplementsSessionAuthChallenge:(BOOL)a3;
-- (void)setHasDelegateImplementsTaskAuthChallenge:(BOOL)a3;
-- (void)setHasDelegateImplementsWillPerformRedirection:(BOOL)a3;
-- (void)setHasDelegateImplementsWillSendRequest:(BOOL)a3;
-- (void)setHasSupportsRedirects:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_setActualConfiguration:(id)configuration;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDelegateImplementsSessionAuthChallenge:(BOOL)challenge;
+- (void)setHasDelegateImplementsTaskAuthChallenge:(BOOL)challenge;
+- (void)setHasDelegateImplementsWillPerformRedirection:(BOOL)redirection;
+- (void)setHasDelegateImplementsWillSendRequest:(BOOL)request;
+- (void)setHasSupportsRedirects:(BOOL)redirects;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyCreateSession
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   session = self->_session;
-  v6 = *(v4 + 2);
-  v8 = v4;
+  v6 = *(fromCopy + 2);
+  v8 = fromCopy;
   if (session)
   {
     if (!v6)
@@ -45,20 +45,20 @@
     [(PDURLSessionProxyCreateSession *)self setSession:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDURLSessionProxyCreateSession *)self setConfiguration:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 0x20) != 0)
   {
-    self->_supportsRedirects = *(v4 + 29);
+    self->_supportsRedirects = *(fromCopy + 29);
     *&self->_has |= 0x20u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
     if ((v7 & 0x10) == 0)
     {
 LABEL_11:
@@ -71,14 +71,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) == 0)
+  else if ((*(fromCopy + 32) & 0x10) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_delegateImplementsWillSendRequest = *(v4 + 28);
+  self->_delegateImplementsWillSendRequest = *(fromCopy + 28);
   *&self->_has |= 0x10u;
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 2) == 0)
   {
 LABEL_12:
@@ -91,9 +91,9 @@ LABEL_12:
   }
 
 LABEL_21:
-  self->_delegateImplementsSessionAuthChallenge = *(v4 + 25);
+  self->_delegateImplementsSessionAuthChallenge = *(fromCopy + 25);
   *&self->_has |= 2u;
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 4) == 0)
   {
 LABEL_13:
@@ -106,9 +106,9 @@ LABEL_13:
   }
 
 LABEL_22:
-  self->_delegateImplementsTaskAuthChallenge = *(v4 + 26);
+  self->_delegateImplementsTaskAuthChallenge = *(fromCopy + 26);
   *&self->_has |= 4u;
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 8) == 0)
   {
 LABEL_14:
@@ -121,12 +121,12 @@ LABEL_14:
   }
 
 LABEL_23:
-  self->_delegateImplementsWillPerformRedirection = *(v4 + 27);
+  self->_delegateImplementsWillPerformRedirection = *(fromCopy + 27);
   *&self->_has |= 8u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_15:
-    self->_delegateImplementsDidReceiveResponse = *(v4 + 24);
+    self->_delegateImplementsDidReceiveResponse = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -217,16 +217,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   session = self->_session;
-  if (session | *(v4 + 2))
+  if (session | *(equalCopy + 2))
   {
     if (![(PDURLSessionProxySessionMessage *)session isEqual:?])
     {
@@ -235,7 +235,7 @@ LABEL_7:
   }
 
   configuration = self->_configuration;
-  if (configuration | *(v4 + 1))
+  if (configuration | *(equalCopy + 1))
   {
     if (![(NSData *)configuration isEqual:?])
     {
@@ -245,115 +245,115 @@ LABEL_7:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 32) & 0x20) == 0)
+    if ((*(equalCopy + 32) & 0x20) == 0)
     {
       goto LABEL_52;
     }
 
-    v8 = *(v4 + 29);
+    v8 = *(equalCopy + 29);
     if (self->_supportsRedirects)
     {
-      if ((*(v4 + 29) & 1) == 0)
+      if ((*(equalCopy + 29) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 29))
+    else if (*(equalCopy + 29))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 32) & 0x20) != 0)
+  else if ((*(equalCopy + 32) & 0x20) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0)
+    if ((*(equalCopy + 32) & 0x10) == 0)
     {
       goto LABEL_52;
     }
 
-    v9 = *(v4 + 28);
+    v9 = *(equalCopy + 28);
     if (self->_delegateImplementsWillSendRequest)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_52;
     }
 
-    v10 = *(v4 + 25);
+    v10 = *(equalCopy + 25);
     if (self->_delegateImplementsSessionAuthChallenge)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_52;
     }
 
-    v11 = *(v4 + 26);
+    v11 = *(equalCopy + 26);
     if (self->_delegateImplementsTaskAuthChallenge)
     {
-      if ((*(v4 + 26) & 1) == 0)
+      if ((*(equalCopy + 26) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 26))
+    else if (*(equalCopy + 26))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 32) & 8) == 0)
+    if ((*(equalCopy + 32) & 8) == 0)
     {
       goto LABEL_16;
     }
@@ -363,40 +363,40 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if ((*(v4 + 32) & 8) == 0)
+  if ((*(equalCopy + 32) & 8) == 0)
   {
     goto LABEL_52;
   }
 
-  v12 = *(v4 + 27);
+  v12 = *(equalCopy + 27);
   if (self->_delegateImplementsWillPerformRedirection)
   {
-    if ((*(v4 + 27) & 1) == 0)
+    if ((*(equalCopy + 27) & 1) == 0)
     {
       goto LABEL_52;
     }
   }
 
-  else if (*(v4 + 27))
+  else if (*(equalCopy + 27))
   {
     goto LABEL_52;
   }
 
 LABEL_16:
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 32))
+    if (*(equalCopy + 32))
     {
       if (self->_delegateImplementsDidReceiveResponse)
       {
-        if (*(v4 + 24))
+        if (*(equalCopy + 24))
         {
           goto LABEL_54;
         }
       }
 
-      else if (!*(v4 + 24))
+      else if (!*(equalCopy + 24))
       {
 LABEL_54:
         v7 = 1;
@@ -412,14 +412,14 @@ LABEL_53:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_configuration copyWithZone:a3];
+  v8 = [(NSData *)self->_configuration copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -503,27 +503,27 @@ LABEL_7:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_session)
   {
-    [v4 setSession:?];
-    v4 = v6;
+    [toCopy setSession:?];
+    toCopy = v6;
   }
 
   if (self->_configuration)
   {
     [v6 setConfiguration:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[29] = self->_supportsRedirects;
-    v4[32] |= 0x20u;
+    toCopy[29] = self->_supportsRedirects;
+    toCopy[32] |= 0x20u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -542,8 +542,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[28] = self->_delegateImplementsWillSendRequest;
-  v4[32] |= 0x10u;
+  toCopy[28] = self->_delegateImplementsWillSendRequest;
+  toCopy[32] |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -557,8 +557,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  v4[25] = self->_delegateImplementsSessionAuthChallenge;
-  v4[32] |= 2u;
+  toCopy[25] = self->_delegateImplementsSessionAuthChallenge;
+  toCopy[32] |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -572,8 +572,8 @@ LABEL_9:
   }
 
 LABEL_18:
-  v4[26] = self->_delegateImplementsTaskAuthChallenge;
-  v4[32] |= 4u;
+  toCopy[26] = self->_delegateImplementsTaskAuthChallenge;
+  toCopy[32] |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -587,32 +587,32 @@ LABEL_10:
   }
 
 LABEL_19:
-  v4[27] = self->_delegateImplementsWillPerformRedirection;
-  v4[32] |= 8u;
+  toCopy[27] = self->_delegateImplementsWillPerformRedirection;
+  toCopy[32] |= 8u;
   if (*&self->_has)
   {
 LABEL_11:
-    v4[24] = self->_delegateImplementsDidReceiveResponse;
-    v4[32] |= 1u;
+    toCopy[24] = self->_delegateImplementsDidReceiveResponse;
+    toCopy[32] |= 1u;
   }
 
 LABEL_12:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_session)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_configuration)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -620,7 +620,7 @@ LABEL_12:
   {
     supportsRedirects = self->_supportsRedirects;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -641,7 +641,7 @@ LABEL_7:
 
   delegateImplementsWillSendRequest = self->_delegateImplementsWillSendRequest;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -657,7 +657,7 @@ LABEL_8:
 LABEL_17:
   delegateImplementsSessionAuthChallenge = self->_delegateImplementsSessionAuthChallenge;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -673,7 +673,7 @@ LABEL_9:
 LABEL_18:
   delegateImplementsTaskAuthChallenge = self->_delegateImplementsTaskAuthChallenge;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -689,28 +689,28 @@ LABEL_10:
 LABEL_19:
   delegateImplementsWillPerformRedirection = self->_delegateImplementsWillPerformRedirection;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if (*&self->_has)
   {
 LABEL_11:
     delegateImplementsDidReceiveResponse = self->_delegateImplementsDidReceiveResponse;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_12:
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -719,18 +719,18 @@ LABEL_12:
       while (1)
       {
         LOBYTE(v58[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v58[0] & 0x7F) << v6;
@@ -748,11 +748,11 @@ LABEL_12:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -772,18 +772,18 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v58[0]) = 0;
-            v46 = [a3 position] + 1;
-            if (v46 >= [a3 position] && (v47 = objc_msgSend(a3, "position") + 1, v47 <= objc_msgSend(a3, "length")))
+            v46 = [from position] + 1;
+            if (v46 >= [from position] && (v47 = objc_msgSend(from, "position") + 1, v47 <= objc_msgSend(from, "length")))
             {
-              v48 = [a3 data];
-              [v48 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v45 |= (v58[0] & 0x7F) << v43;
@@ -801,7 +801,7 @@ LABEL_15:
             }
           }
 
-          v23 = (v45 != 0) & ~[a3 hasError];
+          v23 = (v45 != 0) & ~[from hasError];
 LABEL_91:
           v55 = 29;
           goto LABEL_100;
@@ -816,18 +816,18 @@ LABEL_91:
           while (1)
           {
             LOBYTE(v58[0]) = 0;
-            v27 = [a3 position] + 1;
-            if (v27 >= [a3 position] && (v28 = objc_msgSend(a3, "position") + 1, v28 <= objc_msgSend(a3, "length")))
+            v27 = [from position] + 1;
+            if (v27 >= [from position] && (v28 = objc_msgSend(from, "position") + 1, v28 <= objc_msgSend(from, "length")))
             {
-              v29 = [a3 data];
-              [v29 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v26 |= (v58[0] & 0x7F) << v24;
@@ -845,7 +845,7 @@ LABEL_91:
             }
           }
 
-          v23 = (v26 != 0) & ~[a3 hasError];
+          v23 = (v26 != 0) & ~[from hasError];
 LABEL_97:
           v55 = 28;
 LABEL_100:
@@ -874,7 +874,7 @@ LABEL_100:
       objc_storeStrong(&self->_session, v36);
       v58[0] = 0;
       v58[1] = 0;
-      if (!PBReaderPlaceMark() || !sub_100077B9C(v36, a3))
+      if (!PBReaderPlaceMark() || !sub_100077B9C(v36, from))
       {
 
         return 0;
@@ -883,10 +883,10 @@ LABEL_100:
       PBReaderRecallMark();
 
 LABEL_101:
-      v56 = [a3 position];
-      if (v56 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -901,18 +901,18 @@ LABEL_101:
         while (1)
         {
           LOBYTE(v58[0]) = 0;
-          v52 = [a3 position] + 1;
-          if (v52 >= [a3 position] && (v53 = objc_msgSend(a3, "position") + 1, v53 <= objc_msgSend(a3, "length")))
+          v52 = [from position] + 1;
+          if (v52 >= [from position] && (v53 = objc_msgSend(from, "position") + 1, v53 <= objc_msgSend(from, "length")))
           {
-            v54 = [a3 data];
-            [v54 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v51 |= (v58[0] & 0x7F) << v49;
@@ -930,7 +930,7 @@ LABEL_101:
           }
         }
 
-        v23 = (v51 != 0) & ~[a3 hasError];
+        v23 = (v51 != 0) & ~[from hasError];
 LABEL_93:
         v55 = 27;
         goto LABEL_100;
@@ -945,18 +945,18 @@ LABEL_93:
         while (1)
         {
           LOBYTE(v58[0]) = 0;
-          v33 = [a3 position] + 1;
-          if (v33 >= [a3 position] && (v34 = objc_msgSend(a3, "position") + 1, v34 <= objc_msgSend(a3, "length")))
+          v33 = [from position] + 1;
+          if (v33 >= [from position] && (v34 = objc_msgSend(from, "position") + 1, v34 <= objc_msgSend(from, "length")))
           {
-            v35 = [a3 data];
-            [v35 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+            data5 = [from data];
+            [data5 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v32 |= (v58[0] & 0x7F) << v30;
@@ -974,7 +974,7 @@ LABEL_93:
           }
         }
 
-        v23 = (v32 != 0) & ~[a3 hasError];
+        v23 = (v32 != 0) & ~[from hasError];
 LABEL_99:
         v55 = 24;
         goto LABEL_100;
@@ -992,18 +992,18 @@ LABEL_99:
         while (1)
         {
           LOBYTE(v58[0]) = 0;
-          v40 = [a3 position] + 1;
-          if (v40 >= [a3 position] && (v41 = objc_msgSend(a3, "position") + 1, v41 <= objc_msgSend(a3, "length")))
+          v40 = [from position] + 1;
+          if (v40 >= [from position] && (v41 = objc_msgSend(from, "position") + 1, v41 <= objc_msgSend(from, "length")))
           {
-            v42 = [a3 data];
-            [v42 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+            data6 = [from data];
+            [data6 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v39 |= (v58[0] & 0x7F) << v37;
@@ -1021,7 +1021,7 @@ LABEL_99:
           }
         }
 
-        v23 = (v39 != 0) & ~[a3 hasError];
+        v23 = (v39 != 0) & ~[from hasError];
 LABEL_89:
         v55 = 25;
         goto LABEL_100;
@@ -1036,18 +1036,18 @@ LABEL_89:
         while (1)
         {
           LOBYTE(v58[0]) = 0;
-          v20 = [a3 position] + 1;
-          if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+          v20 = [from position] + 1;
+          if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
           {
-            v22 = [a3 data];
-            [v22 getBytes:v58 range:{objc_msgSend(a3, "position"), 1}];
+            data7 = [from data];
+            [data7 getBytes:v58 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v19 |= (v58[0] & 0x7F) << v17;
@@ -1065,7 +1065,7 @@ LABEL_89:
           }
         }
 
-        v23 = (v19 != 0) & ~[a3 hasError];
+        v23 = (v19 != 0) & ~[from hasError];
 LABEL_95:
         v55 = 26;
         goto LABEL_100;
@@ -1081,7 +1081,7 @@ LABEL_86:
     goto LABEL_101;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -1090,8 +1090,8 @@ LABEL_86:
   session = self->_session;
   if (session)
   {
-    v5 = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"session"];
+    dictionaryRepresentation = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"session"];
   }
 
   configuration = self->_configuration;
@@ -1192,15 +1192,15 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyCreateSession;
   v3 = [(PDURLSessionProxyCreateSession *)&v7 description];
-  v4 = [(PDURLSessionProxyCreateSession *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyCreateSession *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasDelegateImplementsWillPerformRedirection:(BOOL)a3
+- (void)setHasDelegateImplementsWillPerformRedirection:(BOOL)redirection
 {
-  if (a3)
+  if (redirection)
   {
     v3 = 8;
   }
@@ -1213,9 +1213,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDelegateImplementsTaskAuthChallenge:(BOOL)a3
+- (void)setHasDelegateImplementsTaskAuthChallenge:(BOOL)challenge
 {
-  if (a3)
+  if (challenge)
   {
     v3 = 4;
   }
@@ -1228,9 +1228,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDelegateImplementsSessionAuthChallenge:(BOOL)a3
+- (void)setHasDelegateImplementsSessionAuthChallenge:(BOOL)challenge
 {
-  if (a3)
+  if (challenge)
   {
     v3 = 2;
   }
@@ -1243,9 +1243,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDelegateImplementsWillSendRequest:(BOOL)a3
+- (void)setHasDelegateImplementsWillSendRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 16;
   }
@@ -1258,9 +1258,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSupportsRedirects:(BOOL)a3
+- (void)setHasSupportsRedirects:(BOOL)redirects
 {
-  if (a3)
+  if (redirects)
   {
     v3 = 32;
   }
@@ -1273,17 +1273,17 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)_setActualConfiguration:(id)a3
+- (void)_setActualConfiguration:(id)configuration
 {
-  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:a3];
+  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:configuration];
   [(PDURLSessionProxyCreateSession *)self setConfiguration:?];
 }
 
 - (NSURLSessionConfiguration)_actualConfiguration
 {
   v3 = objc_opt_class();
-  v4 = [(PDURLSessionProxyCreateSession *)self configuration];
-  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:v4];
+  configuration = [(PDURLSessionProxyCreateSession *)self configuration];
+  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:configuration];
 
   return v5;
 }

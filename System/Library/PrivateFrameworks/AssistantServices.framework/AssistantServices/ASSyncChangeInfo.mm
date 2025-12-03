@@ -19,9 +19,9 @@
     v4 = @"NO";
   }
 
-  v5 = [(ASSyncChangeInfo *)self postAnchor];
-  v6 = [(ASSyncChangeInfo *)self object];
-  v7 = [v3 stringByAppendingFormat:@" isDelete: %@, postAnchor: %@, change: %@", v4, v5, objc_opt_class()];
+  postAnchor = [(ASSyncChangeInfo *)self postAnchor];
+  object = [(ASSyncChangeInfo *)self object];
+  v7 = [v3 stringByAppendingFormat:@" isDelete: %@, postAnchor: %@, change: %@", v4, postAnchor, objc_opt_class()];
 
   return v7;
 }

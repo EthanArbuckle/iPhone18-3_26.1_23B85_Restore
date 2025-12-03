@@ -1,10 +1,10 @@
 @interface DDDataDetectorInterceptReporter
 - (DDDataDetectorInterceptReporter)init;
 - (id)eventRepresentation;
-- (id)stringForOption:(int64_t)a3;
+- (id)stringForOption:(int64_t)option;
 - (void)log;
-- (void)logForAction:(id)a3;
-- (void)setShownOptions:(id)a3;
+- (void)logForAction:(id)action;
+- (void)setShownOptions:(id)options;
 @end
 
 @implementation DDDataDetectorInterceptReporter
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (void)logForAction:(id)a3
+- (void)logForAction:(id)action
 {
-  v10 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = self;
+    selfCopy4 = self;
     v5 = 1;
   }
 
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = self;
+      selfCopy4 = self;
       v5 = 4;
     }
 
@@ -49,7 +49,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = self;
+        selfCopy4 = self;
         v5 = 3;
       }
 
@@ -58,11 +58,11 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v10 url];
-          v7 = [v6 absoluteString];
-          v8 = [v7 lowercaseString];
+          v6 = [actionCopy url];
+          absoluteString = [v6 absoluteString];
+          lowercaseString = [absoluteString lowercaseString];
 
-          if ([v8 hasPrefix:@"http"])
+          if ([lowercaseString hasPrefix:@"http"])
           {
             v9 = 7;
           }
@@ -77,30 +77,30 @@
           goto LABEL_14;
         }
 
-        v4 = self;
+        selfCopy4 = self;
         v5 = 6;
       }
     }
   }
 
-  [(DDDataDetectorInterceptReporter *)v4 setSelectedOption:v5];
+  [(DDDataDetectorInterceptReporter *)selfCopy4 setSelectedOption:v5];
 LABEL_14:
   [(DDDataDetectorInterceptReporter *)self log];
 }
 
-- (void)setShownOptions:(id)a3
+- (void)setShownOptions:(id)options
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  optionsCopy = options;
+  if ([optionsCopy count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [optionsCopy objectAtIndexedSubscript:0];
     -[DDDataDetectorInterceptReporter setFirstShownOption:](self, "setFirstShownOption:", [v5 integerValue]);
   }
 
-  if ([v4 count] >= 2)
+  if ([optionsCopy count] >= 2)
   {
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v6 = [optionsCopy objectAtIndexedSubscript:1];
     -[DDDataDetectorInterceptReporter setSecondShownOption:](self, "setSecondShownOption:", [v6 integerValue]);
   }
 
@@ -109,7 +109,7 @@ LABEL_14:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v4;
+  v7 = optionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -150,9 +150,9 @@ LABEL_15:
 {
   if (qword_280B12228 != -1)
   {
-    v2 = self;
+    selfCopy = self;
     [DDDataDetectorInterceptReporter log];
-    self = v2;
+    self = selfCopy;
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -191,16 +191,16 @@ LABEL_15:
   return v9;
 }
 
-- (id)stringForOption:(int64_t)a3
+- (id)stringForOption:(int64_t)option
 {
-  if ((a3 - 1) > 6)
+  if ((option - 1) > 6)
   {
     return @"app";
   }
 
   else
   {
-    return off_278290D68[a3 - 1];
+    return off_278290D68[option - 1];
   }
 }
 

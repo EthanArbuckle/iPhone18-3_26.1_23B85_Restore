@@ -1,11 +1,11 @@
 @interface CATSerialOperationEnqueuer
-- (CATSerialOperationEnqueuer)initWithTargetOperationQueue:(id)a3;
-- (void)addOperation:(id)a3;
-- (void)checkIfOperationIsFinished:(id)a3;
+- (CATSerialOperationEnqueuer)initWithTargetOperationQueue:(id)queue;
+- (void)addOperation:(id)operation;
+- (void)checkIfOperationIsFinished:(id)finished;
 - (void)dealloc;
 - (void)enqueueNextOperation;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performThreadSafeBlock:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performThreadSafeBlock:(id)block;
 @end
 
 @implementation CATSerialOperationEnqueuer
@@ -22,16 +22,16 @@
   [(CATSerialOperationEnqueuer *)&v3 dealloc];
 }
 
-- (CATSerialOperationEnqueuer)initWithTargetOperationQueue:(id)a3
+- (CATSerialOperationEnqueuer)initWithTargetOperationQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CATSerialOperationEnqueuer;
   v6 = [(CATSerialOperationEnqueuer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mTargetQueue, a3);
+    objc_storeStrong(&v6->mTargetQueue, queue);
     v8 = objc_opt_new();
     mPendingOperations = v7->mPendingOperations;
     v7->mPendingOperations = v8;
@@ -42,16 +42,16 @@
   return v7;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__CATSerialOperationEnqueuer_addOperation___block_invoke;
   v6[3] = &unk_278DA7470;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = operationCopy;
+  v5 = operationCopy;
   [(CATSerialOperationEnqueuer *)self performThreadSafeBlock:v6];
 }
 
@@ -68,33 +68,33 @@ uint64_t __43__CATSerialOperationEnqueuer_addOperation___block_invoke(uint64_t a
   p_mCurrentlyExecutingOperation = &self->mCurrentlyExecutingOperation;
   if (!self->mCurrentlyExecutingOperation)
   {
-    v4 = [(NSMutableArray *)self->mPendingOperations cat_popFirstObject];
-    v5 = v4;
-    if (v4)
+    cat_popFirstObject = [(NSMutableArray *)self->mPendingOperations cat_popFirstObject];
+    v5 = cat_popFirstObject;
+    if (cat_popFirstObject)
     {
-      v6 = v4;
-      objc_storeStrong(p_mCurrentlyExecutingOperation, v4);
+      v6 = cat_popFirstObject;
+      objc_storeStrong(p_mCurrentlyExecutingOperation, cat_popFirstObject);
       objc_storeStrong(&self->mStrongSelf, self);
       [(NSOperationQueue *)self->mTargetQueue addOperation:v6];
       [(CATSerialOperationEnqueuer *)self startObservingOperation:v6];
-      v4 = [(CATSerialOperationEnqueuer *)self checkIfOperationIsFinished:v6];
+      cat_popFirstObject = [(CATSerialOperationEnqueuer *)self checkIfOperationIsFinished:v6];
       v5 = v6;
     }
 
-    MEMORY[0x2821F96F8](v4, v5);
+    MEMORY[0x2821F96F8](cat_popFirstObject, v5);
   }
 }
 
-- (void)checkIfOperationIsFinished:(id)a3
+- (void)checkIfOperationIsFinished:(id)finished
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->mCurrentlyExecutingOperation == v4)
+  finishedCopy = finished;
+  v5 = finishedCopy;
+  if (self->mCurrentlyExecutingOperation == finishedCopy)
   {
-    v8 = v4;
-    v4 = [(NSOperation *)v4 isFinished];
+    v8 = finishedCopy;
+    finishedCopy = [(NSOperation *)finishedCopy isFinished];
     v5 = v8;
-    if (v4)
+    if (finishedCopy)
     {
       [(CATSerialOperationEnqueuer *)self stopObservingOperation:v8];
       mCurrentlyExecutingOperation = self->mCurrentlyExecutingOperation;
@@ -103,30 +103,30 @@ uint64_t __43__CATSerialOperationEnqueuer_addOperation___block_invoke(uint64_t a
       mStrongSelf = self->mStrongSelf;
       self->mStrongSelf = 0;
 
-      v4 = [(CATSerialOperationEnqueuer *)self enqueueNextOperation];
+      finishedCopy = [(CATSerialOperationEnqueuer *)self enqueueNextOperation];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](finishedCopy, v5);
 }
 
-- (void)performThreadSafeBlock:(id)a3
+- (void)performThreadSafeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->mLock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->mLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (a6 == @"CATSerialOperationEnqueuerObservationContext")
+  objectCopy = object;
+  v11 = objectCopy;
+  if (context == @"CATSerialOperationEnqueuerObservationContext")
   {
-    v12 = v10;
+    v12 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -147,7 +147,7 @@ uint64_t __43__CATSerialOperationEnqueuer_addOperation___block_invoke(uint64_t a
   {
     v16.receiver = self;
     v16.super_class = CATSerialOperationEnqueuer;
-    [(CATSerialOperationEnqueuer *)&v16 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(CATSerialOperationEnqueuer *)&v16 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 

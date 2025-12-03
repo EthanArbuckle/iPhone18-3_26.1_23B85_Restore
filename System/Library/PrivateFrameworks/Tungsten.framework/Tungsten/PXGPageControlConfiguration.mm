@@ -1,6 +1,6 @@
 @interface PXGPageControlConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)target;
 @end
 
@@ -13,10 +13,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -26,7 +26,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v9 = v5->_numberOfPages == self->_numberOfPages && v5->_currentPage == self->_currentPage && (WeakRetained = objc_loadWeakRetained(&v5->_target), v8 = objc_loadWeakRetained(&self->_target), v8, WeakRetained, WeakRetained == v8) && v6[5] == self->_action;
     }
@@ -40,7 +40,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 2) = self->_numberOfPages;

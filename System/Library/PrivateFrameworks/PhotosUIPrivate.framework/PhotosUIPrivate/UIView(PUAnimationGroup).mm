@@ -12,14 +12,14 @@
 - (id)_pu_animationDictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v1 = [a1 layer];
-  v2 = [v1 animationKeys];
-  v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v2, "count")}];
+  layer = [self layer];
+  animationKeys = [layer animationKeys];
+  v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(animationKeys, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = animationKeys;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -35,7 +35,7 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v1 animationForKey:{v9, v12}];
+        v10 = [layer animationForKey:{v9, v12}];
         [v3 setObject:v10 forKeyedSubscript:v9];
       }
 
@@ -56,24 +56,24 @@
   v43 = a5;
   if (![v9 count])
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"[views count] > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"[views count] > 0"}];
   }
 
   v44 = v10;
   if (!v10)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"animationBlock != NULL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"animationBlock != NULL"}];
   }
 
-  v11 = [v9 firstObject];
-  v12 = [v11 layer];
+  firstObject = [v9 firstObject];
+  layer = [firstObject layer];
 
-  v42 = v12;
-  v41 = [[PULayerAnimationGroup alloc] initWithReferenceLayer:v12];
+  v42 = layer;
+  v41 = [[PULayerAnimationGroup alloc] initWithReferenceLayer:layer];
   [PUAnimationGroup pushAnimationGroup:?];
-  v51 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
@@ -93,17 +93,17 @@
         }
 
         v14 = *(*(&v70 + 1) + 8 * i);
-        v15 = [v14 layer];
-        v16 = [v15 animationKeys];
-        if ([v16 count])
+        layer2 = [v14 layer];
+        animationKeys = [layer2 animationKeys];
+        if ([animationKeys count])
         {
           v52 = v14;
-          v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v16, "count")}];
+          v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(animationKeys, "count")}];
           v66 = 0u;
           v67 = 0u;
           v68 = 0u;
           v69 = 0u;
-          v18 = v16;
+          v18 = animationKeys;
           v19 = [v18 countByEnumeratingWithState:&v66 objects:v76 count:16];
           if (v19)
           {
@@ -119,7 +119,7 @@
                 }
 
                 v23 = *(*(&v66 + 1) + 8 * j);
-                v24 = [v15 animationForKey:v23];
+                v24 = [layer2 animationForKey:v23];
                 if (v24)
                 {
                   [v17 setObject:v24 forKeyedSubscript:v23];
@@ -132,7 +132,7 @@
             while (v20);
           }
 
-          [v51 setObject:v17 forKey:v52];
+          [strongToStrongObjectsMapTable setObject:v17 forKey:v52];
         }
       }
 
@@ -180,14 +180,14 @@
 
         v53 = v26;
         v27 = *(*(&v58 + 1) + 8 * v26);
-        v28 = [v27 layer];
-        v29 = [v51 objectForKey:v27];
+        layer3 = [v27 layer];
+        v29 = [strongToStrongObjectsMapTable objectForKey:v27];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v30 = [v28 animationKeys];
-        v31 = [v30 countByEnumeratingWithState:&v54 objects:v74 count:16];
+        animationKeys2 = [layer3 animationKeys];
+        v31 = [animationKeys2 countByEnumeratingWithState:&v54 objects:v74 count:16];
         if (v31)
         {
           v32 = v31;
@@ -198,20 +198,20 @@
             {
               if (*v55 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(animationKeys2);
               }
 
               v35 = *(*(&v54 + 1) + 8 * k);
               v36 = [v29 objectForKeyedSubscript:v35];
-              v37 = [v28 animationForKey:v35];
+              v37 = [layer3 animationForKey:v35];
               if (v37 != v36)
               {
-                v38 = [[PULayerAnimation alloc] initWithLayer:v28 key:v35];
+                v38 = [[PULayerAnimation alloc] initWithLayer:layer3 key:v35];
                 [(PUAnimationGroup *)v25 addSubAnimationGroup:v38];
               }
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v54 objects:v74 count:16];
+            v32 = [animationKeys2 countByEnumeratingWithState:&v54 objects:v74 count:16];
           }
 
           while (v32);
@@ -246,7 +246,7 @@
   v32 = a7;
   v25 = v22;
   v23 = v22;
-  [a1 _pu_animateViews:a9 withAnimationBlock:v24 completionHandler:a12];
+  [self _pu_animateViews:a9 withAnimationBlock:v24 completionHandler:a12];
 }
 
 + (void)pu_animateViews:()PUAnimationGroup usingDefaultDampedSpringWithDelay:initialSpringVelocity:options:animations:completion:
@@ -261,7 +261,7 @@
   v20 = a6;
   v17 = v14;
   v15 = v14;
-  [a1 _pu_animateViews:a5 withAnimationBlock:v16 completionHandler:a8];
+  [self _pu_animateViews:a5 withAnimationBlock:v16 completionHandler:a8];
 }
 
 + (void)pu_animateViews:()PUAnimationGroup withDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:
@@ -278,7 +278,7 @@
   v26 = a8;
   v21 = v18;
   v19 = v18;
-  [a1 _pu_animateViews:a7 withAnimationBlock:v20 completionHandler:a10];
+  [self _pu_animateViews:a7 withAnimationBlock:v20 completionHandler:a10];
 }
 
 + (void)pu_animateViews:()PUAnimationGroup withDuration:delay:options:animations:completion:
@@ -293,7 +293,7 @@
   v20 = a6;
   v17 = v14;
   v15 = v14;
-  [a1 _pu_animateViews:a5 withAnimationBlock:v16 completionHandler:a8];
+  [self _pu_animateViews:a5 withAnimationBlock:v16 completionHandler:a8];
 }
 
 @end

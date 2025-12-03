@@ -1,22 +1,22 @@
 @interface SecCBORArray
 - (SecCBORArray)init;
-- (SecCBORArray)initWith:(id)a3;
-- (void)write:(id)a3;
+- (SecCBORArray)initWith:(id)with;
+- (void)write:(id)write;
 @end
 
 @implementation SecCBORArray
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v6 = a3;
-  [(SecCBORValue *)self encodeStartItems:[(NSMutableArray *)self->m_data count] output:v6];
+  writeCopy = write;
+  [(SecCBORValue *)self encodeStartItems:[(NSMutableArray *)self->m_data count] output:writeCopy];
   if ([(NSMutableArray *)self->m_data count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->m_data objectAtIndexedSubscript:v4];
-      [v5 write:v6];
+      [v5 write:writeCopy];
 
       ++v4;
     }
@@ -25,15 +25,15 @@
   }
 }
 
-- (SecCBORArray)initWith:(id)a3
+- (SecCBORArray)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v9.receiver = self;
   v9.super_class = SecCBORArray;
   v5 = [(SecCBORArray *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:withCopy];
     m_data = v5->m_data;
     v5->m_data = v6;
   }

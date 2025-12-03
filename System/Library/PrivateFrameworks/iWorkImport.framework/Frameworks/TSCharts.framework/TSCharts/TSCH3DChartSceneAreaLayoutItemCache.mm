@@ -1,50 +1,50 @@
 @interface TSCH3DChartSceneAreaLayoutItemCache
-+ (id)cacheWithCacheValues:(const void *)a3;
++ (id)cacheWithCacheValues:(const void *)values;
 - (CGSize)chartBodyLayoutSize;
 - (CGSize)layoutSize;
 - (CGSize)requestChartBodyLayoutSize;
 - (CGSize)requestLayoutSize;
-- (TSCH3DChartSceneAreaLayoutItemCache)initWithCacheValues:(const void *)a3;
+- (TSCH3DChartSceneAreaLayoutItemCache)initWithCacheValues:(const void *)values;
 - (id).cxx_construct;
 - (tvec4<float>)infoChartScale;
 @end
 
 @implementation TSCH3DChartSceneAreaLayoutItemCache
 
-+ (id)cacheWithCacheValues:(const void *)a3
++ (id)cacheWithCacheValues:(const void *)values
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithCacheValues_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithCacheValues_(v4, v5, v6, v7, v8, values);
 
   return v9;
 }
 
-- (TSCH3DChartSceneAreaLayoutItemCache)initWithCacheValues:(const void *)a3
+- (TSCH3DChartSceneAreaLayoutItemCache)initWithCacheValues:(const void *)values
 {
   v9.receiver = self;
   v9.super_class = TSCH3DChartSceneAreaLayoutItemCache;
   result = [(TSCH3DChartSceneAreaLayoutItemCache *)&v9 init];
   if (result)
   {
-    result->_values.infoChartScale.var0.var0 = *a3;
-    result->_values.infoChartScale.var1.var0 = *(a3 + 1);
-    result->_values.infoChartScale.var2.var0 = *(a3 + 2);
-    result->_values.infoChartScale.var3.var0 = *(a3 + 3);
-    result->_values.containingViewport.var0.var0 = *(a3 + 4);
-    result->_values.containingViewport.var1.var0 = *(a3 + 5);
-    result->_values.chartBodyLayoutOffsetInChartAreaLayoutSpace.var0.var0 = *(a3 + 6);
-    result->_values.chartBodyLayoutOffsetInChartAreaLayoutSpace.var1.var0 = *(a3 + 7);
-    v5 = *(a3 + 2);
-    v6 = *(a3 + 3);
-    v7 = *(a3 + 4);
-    result->_values.requestChartBodyLayoutSize = *(a3 + 5);
+    result->_values.infoChartScale.var0.var0 = *values;
+    result->_values.infoChartScale.var1.var0 = *(values + 1);
+    result->_values.infoChartScale.var2.var0 = *(values + 2);
+    result->_values.infoChartScale.var3.var0 = *(values + 3);
+    result->_values.containingViewport.var0.var0 = *(values + 4);
+    result->_values.containingViewport.var1.var0 = *(values + 5);
+    result->_values.chartBodyLayoutOffsetInChartAreaLayoutSpace.var0.var0 = *(values + 6);
+    result->_values.chartBodyLayoutOffsetInChartAreaLayoutSpace.var1.var0 = *(values + 7);
+    v5 = *(values + 2);
+    v6 = *(values + 3);
+    v7 = *(values + 4);
+    result->_values.requestChartBodyLayoutSize = *(values + 5);
     result->_values.chartBodyLayoutSize = v7;
     result->_values.requestLayoutSize = v6;
     result->_values.layoutSize = v5;
-    result->_values.modelSize.var0.var0 = *(a3 + 24);
-    result->_values.modelSize.var1.var0 = *(a3 + 25);
-    v8 = *(a3 + 104);
-    *(&result->_values.layoutSettings.maxDepthRatioType + 1) = *(a3 + 113);
+    result->_values.modelSize.var0.var0 = *(values + 24);
+    result->_values.modelSize.var1.var0 = *(values + 25);
+    v8 = *(values + 104);
+    *(&result->_values.layoutSettings.maxDepthRatioType + 1) = *(values + 113);
     *&result->_values.layoutSettings.forceOmitLegend = v8;
   }
 

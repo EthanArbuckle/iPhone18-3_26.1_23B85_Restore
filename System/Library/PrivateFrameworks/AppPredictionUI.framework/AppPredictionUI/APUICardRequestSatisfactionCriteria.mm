@@ -2,14 +2,14 @@
 + (id)compactSatisfactionCriteria;
 + (id)customIntentSatisfactionCriteria;
 + (id)generalSatisfactionCriteria;
-- (BOOL)canSatisfyCardRequest:(id)a3;
+- (BOOL)canSatisfyCardRequest:(id)request;
 @end
 
 @implementation APUICardRequestSatisfactionCriteria
 
 + (id)generalSatisfactionCriteria
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -28,20 +28,20 @@
   return v2;
 }
 
-- (BOOL)canSatisfyCardRequest:(id)a3
+- (BOOL)canSatisfyCardRequest:(id)request
 {
-  v3 = [a3 content];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  content = [request content];
+  if (content && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [objc_opt_class() apui_isSupportedForCardRequests];
+    apui_isSupportedForCardRequests = [objc_opt_class() apui_isSupportedForCardRequests];
   }
 
   else
   {
-    v4 = 0;
+    apui_isSupportedForCardRequests = 0;
   }
 
-  return v4;
+  return apui_isSupportedForCardRequests;
 }
 
 @end

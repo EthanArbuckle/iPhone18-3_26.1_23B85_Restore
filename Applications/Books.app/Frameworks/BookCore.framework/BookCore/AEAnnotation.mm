@@ -1,68 +1,68 @@
 @interface AEAnnotation
-+ (BOOL)isBKBookmarkCreatorIdentifier:(id)a3;
-+ (BOOL)isSelectedTextRepeatedInRepresentativeTextForAnnotation:(id)a3;
-+ (BOOL)isValidForDeserialization:(id)a3;
-+ (BOOL)mergeAnnotation:(id)a3 withServerAnnotation:(id)a4 moc:(id)a5;
-+ (BOOL)mergeServerAnnotations:(id)a3 forAssetID:(id)a4 intoMoc:(id)a5;
-+ (id)_dictionaryRepresentationForAnnotationsMatchingPredicate:(id)a3 map:(id)a4 inManagedObjectContext:(id)a5;
-+ (id)aeAnnotationDictionaryRepresentationsForAnnotations:(id)a3;
-+ (id)annotatedAttributedStringForAnnotation:(id)a3;
-+ (id)annotatedAttributedStringForAnnotation:(id)a3 withPossibleLength:(unint64_t)a4;
-+ (id)annotatedAttributedStringWithString:(id)a3 annotationStyle:(int)a4 range:(_NSRange)a5;
-+ (id)annotationAssetIDFromDictionaryRepresentation:(id)a3;
-+ (id)annotationCreatorIdentifierFromDictionaryRepresentation:(id)a3;
-+ (id)annotationIncludingDeletedWithUUID:(id)a3 assetID:(id)a4 inManagedObjectContext:(id)a5;
-+ (id)annotationUuidFromDictionaryRepresentation:(id)a3;
-+ (id)annotationsForAssetID:(id)a3 includingDeleted:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)annotationsIncludingDeletedWithUUIDInList:(id)a3 assetID:(id)a4 inManagedObjectContext:(id)a5;
-+ (id)annotationsWithAssetIDInList:(id)a3 includingDeleted:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)bookmarkColorFromAnnotationStyle:(int)a3;
-+ (id)bookmarkTypeFromAnnotationType:(int)a3;
-+ (id)clauseForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6;
-+ (id)compatibleDictionaryRepresentationForAnnotationsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)contextAwareSelectedTextFromAnnotation:(id)a3;
-+ (id)deletedFlagFromDictionaryRepresentation:(id)a3;
-+ (id)dictionaryRepresentationsForAnnotations:(id)a3;
-+ (id)dictionaryResultsForAnnotationsWithPredicate:(id)a3 properties:(id)a4 propertyNamesMap:(id)a5 inManagedObjectContext:(id)a6;
-+ (id)dictionaryResultsForAssetsWithPredicate:(id)a3 properties:(id)a4 inManagedObjectContext:(id)a5;
-+ (id)globalAnnotationForAssetID:(id)a3 inManagedObjectContext:(id)a4;
++ (BOOL)isBKBookmarkCreatorIdentifier:(id)identifier;
++ (BOOL)isSelectedTextRepeatedInRepresentativeTextForAnnotation:(id)annotation;
++ (BOOL)isValidForDeserialization:(id)deserialization;
++ (BOOL)mergeAnnotation:(id)annotation withServerAnnotation:(id)serverAnnotation moc:(id)moc;
++ (BOOL)mergeServerAnnotations:(id)annotations forAssetID:(id)d intoMoc:(id)moc;
++ (id)_dictionaryRepresentationForAnnotationsMatchingPredicate:(id)predicate map:(id)map inManagedObjectContext:(id)context;
++ (id)aeAnnotationDictionaryRepresentationsForAnnotations:(id)annotations;
++ (id)annotatedAttributedStringForAnnotation:(id)annotation;
++ (id)annotatedAttributedStringForAnnotation:(id)annotation withPossibleLength:(unint64_t)length;
++ (id)annotatedAttributedStringWithString:(id)string annotationStyle:(int)style range:(_NSRange)range;
++ (id)annotationAssetIDFromDictionaryRepresentation:(id)representation;
++ (id)annotationCreatorIdentifierFromDictionaryRepresentation:(id)representation;
++ (id)annotationIncludingDeletedWithUUID:(id)d assetID:(id)iD inManagedObjectContext:(id)context;
++ (id)annotationUuidFromDictionaryRepresentation:(id)representation;
++ (id)annotationsForAssetID:(id)d includingDeleted:(BOOL)deleted inManagedObjectContext:(id)context;
++ (id)annotationsIncludingDeletedWithUUIDInList:(id)list assetID:(id)d inManagedObjectContext:(id)context;
++ (id)annotationsWithAssetIDInList:(id)list includingDeleted:(BOOL)deleted inManagedObjectContext:(id)context;
++ (id)bookmarkColorFromAnnotationStyle:(int)style;
++ (id)bookmarkTypeFromAnnotationType:(int)type;
++ (id)clauseForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range;
++ (id)compatibleDictionaryRepresentationForAnnotationsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context;
++ (id)contextAwareSelectedTextFromAnnotation:(id)annotation;
++ (id)deletedFlagFromDictionaryRepresentation:(id)representation;
++ (id)dictionaryRepresentationsForAnnotations:(id)annotations;
++ (id)dictionaryResultsForAnnotationsWithPredicate:(id)predicate properties:(id)properties propertyNamesMap:(id)map inManagedObjectContext:(id)context;
++ (id)dictionaryResultsForAssetsWithPredicate:(id)predicate properties:(id)properties inManagedObjectContext:(id)context;
++ (id)globalAnnotationForAssetID:(id)d inManagedObjectContext:(id)context;
 + (id)globalAnnotationTypeValues;
-+ (id)insertAnnotationWithAssetID:(id)a3 creatorIdentifier:(id)a4 annotationUuid:(id)a5 intoManagedObjectContext:(id)a6;
-+ (id)lastModificationFromDictionaryRepresentation:(id)a3;
-+ (id)lettersForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6;
-+ (id)maxAnnotationVersionForAssetsWithPredicate:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)maxExpressionDescriptionForProperty:(id)a3 expressionName:(id)a4;
++ (id)insertAnnotationWithAssetID:(id)d creatorIdentifier:(id)identifier annotationUuid:(id)uuid intoManagedObjectContext:(id)context;
++ (id)lastModificationFromDictionaryRepresentation:(id)representation;
++ (id)lettersForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range;
++ (id)maxAnnotationVersionForAssetsWithPredicate:(id)predicate inManagedObjectContext:(id)context;
++ (id)maxExpressionDescriptionForProperty:(id)property expressionName:(id)name;
 + (id)maxModificationDateExpressionDescription;
-+ (id)maxModificationDateForAllAnnotationsInManagedObjectContext:(id)a3;
-+ (id)maxModificationDateForAssetsWithPredicate:(id)a3 inManagedObjectContext:(id)a4;
++ (id)maxModificationDateForAllAnnotationsInManagedObjectContext:(id)context;
++ (id)maxModificationDateForAssetsWithPredicate:(id)predicate inManagedObjectContext:(id)context;
 + (id)maxUserModificationDateExpressionDescription;
-+ (id)optimizedRepresentativeTextForSerialization:(id)a3 selectedText:(id)a4;
-+ (id)optimizedSelectedTextForSerialization:(id)a3;
-+ (id)predicateForAnnotationIncludingDeletedWithUUID:(id)a3 assetID:(id)a4;
-+ (id)predicateForAnnotationsIncludingDeletedWithUUIDInList:(id)a3 assetID:(id)a4;
-+ (id)predicateForUserAnnotationsWithAssetID:(id)a3 includingDeleted:(BOOL)a4;
-+ (id)predicateForUserAnnotationsWithAssetIDInList:(id)a3 includingDeleted:(BOOL)a4;
++ (id)optimizedRepresentativeTextForSerialization:(id)serialization selectedText:(id)text;
++ (id)optimizedSelectedTextForSerialization:(id)serialization;
++ (id)predicateForAnnotationIncludingDeletedWithUUID:(id)d assetID:(id)iD;
++ (id)predicateForAnnotationsIncludingDeletedWithUUIDInList:(id)list assetID:(id)d;
++ (id)predicateForUserAnnotationsWithAssetID:(id)d includingDeleted:(BOOL)deleted;
++ (id)predicateForUserAnnotationsWithAssetIDInList:(id)list includingDeleted:(BOOL)deleted;
 + (id)userAnnotationTypeValues;
-+ (id)wordsForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6;
-+ (int)annotationStyleFromBookmarkColor:(id)a3;
-+ (int)annotationTypeFromBookmarkType:(id)a3;
-+ (int)annotationTypeFromDictionaryRepresentation:(id)a3;
++ (id)wordsForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range;
++ (int)annotationStyleFromBookmarkColor:(id)color;
++ (int)annotationTypeFromBookmarkType:(id)type;
++ (int)annotationTypeFromDictionaryRepresentation:(id)representation;
 - (AEAnnotationManagedObjectContext)managedObjectContext;
 - (BOOL)annotationDeleted;
 - (BOOL)annotationHasNote;
 - (BOOL)annotationIsBookmark;
 - (BOOL)annotationIsUnderline;
 - (BOOL)avoidSync;
-- (BOOL)bumpAnnotationVersionToMinimumVersion:(id)a3;
+- (BOOL)bumpAnnotationVersionToMinimumVersion:(id)version;
 - (BOOL)hasReadingProgress;
 - (BOOL)hasReadingProgressHighWaterMark;
 - (BOOL)isValidForSerialization;
 - (BOOL)spineIndexUpdated;
-- (BOOL)updateReadingProgressAndBumpHighWaterMarkToProgress:(float)a3;
+- (BOOL)updateReadingProgressAndBumpHighWaterMarkToProgress:(float)progress;
 - (BOOL)usesLegacySerializationMethod;
-- (BOOL)validateConsistency:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)validateConsistency:(id *)consistency;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (NSDate)locationModificationDate;
 - (NSDate)userModificationDate;
 - (NSNumber)annotationStyleNumber;
@@ -73,55 +73,55 @@
 - (float)readingProgress;
 - (float)readingProgressHighWaterMark;
 - (id)aeAnnotationDictionaryRepresentation;
-- (id)bkBookmarkDeserializeLocationDataFromDictionary:(id)a3 trustedSource:(BOOL)a4;
+- (id)bkBookmarkDeserializeLocationDataFromDictionary:(id)dictionary trustedSource:(BOOL)source;
 - (id)doesSerializeAs_iBooks;
 - (id)iBooks_dictionaryRepresentation;
 - (id)validateAnnotationUuid;
 - (int)annotationStyle;
 - (int)annotationType;
-- (void)aeAnnotationDeserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4;
+- (void)aeAnnotationDeserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source;
 - (void)awakeFromInsert;
 - (void)clearAvoidSync;
-- (void)deserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4;
-- (void)iBooks_deserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4;
-- (void)setAnnotationCreationDate:(id)a3;
-- (void)setAnnotationDeleted:(BOOL)a3;
-- (void)setAnnotationIsUnderline:(BOOL)a3;
-- (void)setAnnotationLocation:(id)a3;
-- (void)setAnnotationNote:(id)a3;
-- (void)setAnnotationRepresentativeText:(id)a3;
-- (void)setAnnotationSelectedText:(id)a3;
-- (void)setAnnotationSelectedTextRange:(_NSRange)a3;
-- (void)setAnnotationStyle:(int)a3;
-- (void)setAnnotationType:(int)a3;
-- (void)setAnnotationVersion:(id)a3;
-- (void)setAssetVersion:(id)a3;
-- (void)setAttachments:(id)a3;
+- (void)deserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source;
+- (void)iBooks_deserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source;
+- (void)setAnnotationCreationDate:(id)date;
+- (void)setAnnotationDeleted:(BOOL)deleted;
+- (void)setAnnotationIsUnderline:(BOOL)underline;
+- (void)setAnnotationLocation:(id)location;
+- (void)setAnnotationNote:(id)note;
+- (void)setAnnotationRepresentativeText:(id)text;
+- (void)setAnnotationSelectedText:(id)text;
+- (void)setAnnotationSelectedTextRange:(_NSRange)range;
+- (void)setAnnotationStyle:(int)style;
+- (void)setAnnotationType:(int)type;
+- (void)setAnnotationVersion:(id)version;
+- (void)setAssetVersion:(id)version;
+- (void)setAttachments:(id)attachments;
 - (void)setAvoidSync;
-- (void)setChapterTitle:(id)a3;
-- (void)setFutureProofing10:(id)a3;
-- (void)setFutureProofing11:(id)a3;
-- (void)setFutureProofing12:(id)a3;
-- (void)setFutureProofing1:(id)a3;
-- (void)setFutureProofing2:(id)a3;
-- (void)setFutureProofing3:(id)a3;
-- (void)setFutureProofing4:(id)a3;
-- (void)setFutureProofing5:(id)a3;
-- (void)setFutureProofing6:(id)a3;
-- (void)setFutureProofing7:(id)a3;
-- (void)setFutureProofing8:(id)a3;
-- (void)setFutureProofing9:(id)a3;
-- (void)setLocationModificationDate:(id)a3;
-- (void)setPhysicalPageNumber:(id)a3;
-- (void)setPlAbsolutePhysicalLocation:(id)a3;
-- (void)setPlLocationRangeEnd:(id)a3;
-- (void)setPlLocationRangeStart:(id)a3;
-- (void)setPlStorageUUID:(id)a3;
-- (void)setPlUserData:(id)a3;
-- (void)setReadingProgress:(float)a3;
-- (void)setReadingProgressHighWaterMark:(float)a3;
-- (void)setSpineIndexUpdated:(BOOL)a3;
-- (void)setUserModificationDate:(id)a3;
+- (void)setChapterTitle:(id)title;
+- (void)setFutureProofing10:(id)proofing10;
+- (void)setFutureProofing11:(id)proofing11;
+- (void)setFutureProofing12:(id)proofing12;
+- (void)setFutureProofing1:(id)proofing1;
+- (void)setFutureProofing2:(id)proofing2;
+- (void)setFutureProofing3:(id)proofing3;
+- (void)setFutureProofing4:(id)proofing4;
+- (void)setFutureProofing5:(id)proofing5;
+- (void)setFutureProofing6:(id)proofing6;
+- (void)setFutureProofing7:(id)proofing7;
+- (void)setFutureProofing8:(id)proofing8;
+- (void)setFutureProofing9:(id)proofing9;
+- (void)setLocationModificationDate:(id)date;
+- (void)setPhysicalPageNumber:(id)number;
+- (void)setPlAbsolutePhysicalLocation:(id)location;
+- (void)setPlLocationRangeEnd:(id)end;
+- (void)setPlLocationRangeStart:(id)start;
+- (void)setPlStorageUUID:(id)d;
+- (void)setPlUserData:(id)data;
+- (void)setReadingProgress:(float)progress;
+- (void)setReadingProgressHighWaterMark:(float)mark;
+- (void)setSpineIndexUpdated:(BOOL)updated;
+- (void)setUserModificationDate:(id)date;
 - (void)updateSystemAndLocationModificationDates;
 - (void)updateSystemAndUserModificationDates;
 - (void)updateSystemModificationDate;
@@ -142,45 +142,45 @@
   [(AEAnnotation *)self setPrimitiveValue:v4 forKey:@"annotationModificationDate"];
 }
 
-+ (id)predicateForAnnotationIncludingDeletedWithUUID:(id)a3 assetID:(id)a4
++ (id)predicateForAnnotationIncludingDeletedWithUUID:(id)d assetID:(id)iD
 {
-  if (a4)
+  if (iD)
   {
-    [NSPredicate predicateWithFormat:@"annotationAssetID == %@ AND annotationUuid == %@", a4, a3];
+    [NSPredicate predicateWithFormat:@"annotationAssetID == %@ AND annotationUuid == %@", iD, d];
   }
 
   else
   {
-    [NSPredicate predicateWithFormat:@"annotationUuid == %@ AND annotationType != %d ", a3, 3];
+    [NSPredicate predicateWithFormat:@"annotationUuid == %@ AND annotationType != %d ", d, 3];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)predicateForAnnotationsIncludingDeletedWithUUIDInList:(id)a3 assetID:(id)a4
++ (id)predicateForAnnotationsIncludingDeletedWithUUIDInList:(id)list assetID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    [NSPredicate predicateWithFormat:@"annotationUuid IN %@ AND annotationAssetID == %@", a3, a4];
+    [NSPredicate predicateWithFormat:@"annotationUuid IN %@ AND annotationAssetID == %@", list, d];
   }
 
   else
   {
-    [NSPredicate predicateWithFormat:@"annotationUuid IN %@ AND annotationType != %d", a3, 3];
+    [NSPredicate predicateWithFormat:@"annotationUuid IN %@ AND annotationType != %d", list, 3];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)predicateForUserAnnotationsWithAssetID:(id)a3 includingDeleted:(BOOL)a4
++ (id)predicateForUserAnnotationsWithAssetID:(id)d includingDeleted:(BOOL)deleted
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 userAnnotationTypeValues];
-  v8 = v7;
-  if (v4)
+  deletedCopy = deleted;
+  dCopy = d;
+  userAnnotationTypeValues = [self userAnnotationTypeValues];
+  v8 = userAnnotationTypeValues;
+  if (deletedCopy)
   {
     v9 = @"annotationAssetID == %@ AND annotationType IN %@";
   }
@@ -190,38 +190,38 @@
     v9 = @"annotationAssetID == %@ AND annotationType IN %@ AND annotationDeleted == 0";
   }
 
-  v10 = [NSPredicate predicateWithFormat:v9, v6, v7];
+  v10 = [NSPredicate predicateWithFormat:v9, dCopy, userAnnotationTypeValues];
 
   return v10;
 }
 
-+ (id)predicateForUserAnnotationsWithAssetIDInList:(id)a3 includingDeleted:(BOOL)a4
++ (id)predicateForUserAnnotationsWithAssetIDInList:(id)list includingDeleted:(BOOL)deleted
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 userAnnotationTypeValues];
-  v8 = [NSPredicate predicateWithFormat:@"annotationAssetID IN (%@) AND annotationType IN (%@) and (1 == %d OR annotationDeleted == 0)", v6, v7, v4];
+  deletedCopy = deleted;
+  listCopy = list;
+  userAnnotationTypeValues = [self userAnnotationTypeValues];
+  deletedCopy = [NSPredicate predicateWithFormat:@"annotationAssetID IN (%@) AND annotationType IN (%@) and (1 == %d OR annotationDeleted == 0)", listCopy, userAnnotationTypeValues, deletedCopy];
 
-  return v8;
+  return deletedCopy;
 }
 
-+ (id)dictionaryResultsForAssetsWithPredicate:(id)a3 properties:(id)a4 inManagedObjectContext:(id)a5
++ (id)dictionaryResultsForAssetsWithPredicate:(id)predicate properties:(id)properties inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  contextCopy = context;
+  if (contextCopy)
   {
     v10 = objc_autoreleasePoolPush();
     v11 = objc_alloc_init(NSFetchRequest);
-    v12 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v9];
+    v12 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:contextCopy];
     [v11 setEntity:v12];
     [v11 setResultType:2];
-    [v11 setPropertiesToFetch:v8];
+    [v11 setPropertiesToFetch:propertiesCopy];
     [v11 setReturnsDistinctResults:1];
-    [v11 setPredicate:v7];
+    [v11 setPredicate:predicateCopy];
     v15 = 0;
-    v13 = [v9 executeFetchRequest:v11 error:&v15];
+    v13 = [contextCopy executeFetchRequest:v11 error:&v15];
 
     objc_autoreleasePoolPop(v10);
   }
@@ -234,66 +234,66 @@
   return v13;
 }
 
-+ (id)annotationIncludingDeletedWithUUID:(id)a3 assetID:(id)a4 inManagedObjectContext:(id)a5
++ (id)annotationIncludingDeletedWithUUID:(id)d assetID:(id)iD inManagedObjectContext:(id)context
 {
-  v8 = a5;
-  v9 = [a1 predicateForAnnotationIncludingDeletedWithUUID:a3 assetID:a4];
-  v10 = [a1 annotationsForPredicate:v9 inManagedObjectContext:v8];
+  contextCopy = context;
+  v9 = [self predicateForAnnotationIncludingDeletedWithUUID:d assetID:iD];
+  v10 = [self annotationsForPredicate:v9 inManagedObjectContext:contextCopy];
 
-  v11 = [v10 lastObject];
+  lastObject = [v10 lastObject];
 
-  return v11;
+  return lastObject;
 }
 
-+ (id)annotationsForAssetID:(id)a3 includingDeleted:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)annotationsForAssetID:(id)d includingDeleted:(BOOL)deleted inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a1 predicateForAnnotationsWithAssetID:a3 includingDeleted:v5];
-  v10 = [a1 annotationsForPredicate:v9 inManagedObjectContext:v8];
+  deletedCopy = deleted;
+  contextCopy = context;
+  v9 = [self predicateForAnnotationsWithAssetID:d includingDeleted:deletedCopy];
+  v10 = [self annotationsForPredicate:v9 inManagedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (id)annotationsWithAssetIDInList:(id)a3 includingDeleted:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)annotationsWithAssetIDInList:(id)list includingDeleted:(BOOL)deleted inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a1 predicateForAnnotationsWithAssetIDInList:a3 includingDeleted:v5];
-  v10 = [a1 annotationsForPredicate:v9 inManagedObjectContext:v8];
+  deletedCopy = deleted;
+  contextCopy = context;
+  v9 = [self predicateForAnnotationsWithAssetIDInList:list includingDeleted:deletedCopy];
+  v10 = [self annotationsForPredicate:v9 inManagedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (id)annotationsIncludingDeletedWithUUIDInList:(id)a3 assetID:(id)a4 inManagedObjectContext:(id)a5
++ (id)annotationsIncludingDeletedWithUUIDInList:(id)list assetID:(id)d inManagedObjectContext:(id)context
 {
-  v8 = a5;
-  v9 = [a1 predicateForAnnotationsIncludingDeletedWithUUIDInList:a3 assetID:a4];
-  v10 = [a1 annotationsForPredicate:v9 inManagedObjectContext:v8];
+  contextCopy = context;
+  v9 = [self predicateForAnnotationsIncludingDeletedWithUUIDInList:list assetID:d];
+  v10 = [self annotationsForPredicate:v9 inManagedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (id)globalAnnotationForAssetID:(id)a3 inManagedObjectContext:(id)a4
++ (id)globalAnnotationForAssetID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [a1 predicateForGlobalAnnotationWithAssetID:a3];
-  v8 = [a1 annotationsForPredicate:v7 inManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [self predicateForGlobalAnnotationWithAssetID:d];
+  v8 = [self annotationsForPredicate:v7 inManagedObjectContext:contextCopy];
 
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
 
-  return v9;
+  return lastObject;
 }
 
-+ (id)maxExpressionDescriptionForProperty:(id)a3 expressionName:(id)a4
++ (id)maxExpressionDescriptionForProperty:(id)property expressionName:(id)name
 {
-  v5 = a4;
-  v6 = [NSExpression expressionForKeyPath:a3];
+  nameCopy = name;
+  v6 = [NSExpression expressionForKeyPath:property];
   v7 = [NSArray arrayWithObject:v6];
   v8 = [NSExpression expressionForFunction:@"max:" arguments:v7];
 
   v9 = objc_alloc_init(NSExpressionDescription);
-  [v9 setName:v5];
+  [v9 setName:nameCopy];
 
   [v9 setExpression:v8];
 
@@ -302,8 +302,8 @@
 
 + (id)maxModificationDateExpressionDescription
 {
-  v3 = [a1 maxModificationDateColumnName];
-  v4 = [a1 maxExpressionDescriptionForProperty:@"annotationModificationDate" expressionName:v3];
+  maxModificationDateColumnName = [self maxModificationDateColumnName];
+  v4 = [self maxExpressionDescriptionForProperty:@"annotationModificationDate" expressionName:maxModificationDateColumnName];
 
   [v4 setExpressionResultType:900];
 
@@ -312,25 +312,25 @@
 
 + (id)maxUserModificationDateExpressionDescription
 {
-  v3 = [a1 maxModificationDateColumnName];
-  v4 = [a1 maxExpressionDescriptionForProperty:@"futureProofing6" expressionName:v3];
+  maxModificationDateColumnName = [self maxModificationDateColumnName];
+  v4 = [self maxExpressionDescriptionForProperty:@"futureProofing6" expressionName:maxModificationDateColumnName];
 
   [v4 setExpressionResultType:900];
 
   return v4;
 }
 
-+ (id)maxModificationDateForAssetsWithPredicate:(id)a3 inManagedObjectContext:(id)a4
++ (id)maxModificationDateForAssetsWithPredicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  contextCopy = context;
+  if (contextCopy)
   {
     context = objc_autoreleasePoolPush();
     v7 = +[AEAnnotation maxModificationDateColumnName];
     v8 = +[AEAnnotation maxModificationDateExpressionDescription];
     v9 = objc_alloc_init(NSFetchRequest);
-    v24 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v6];
+    v24 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:contextCopy];
     [v9 setEntity:?];
     [v9 setResultType:2];
     v10 = [NSArray arrayWithObjects:@"annotationAssetID", @"annotationModificationDate", 0];
@@ -341,11 +341,11 @@
     [v9 setPropertiesToFetch:v11];
 
     [v9 setReturnsDistinctResults:1];
-    v28 = v5;
-    [v9 setPredicate:v5];
+    v28 = predicateCopy;
+    [v9 setPredicate:predicateCopy];
     v33 = 0;
-    v27 = v6;
-    v12 = [v6 executeFetchRequest:v9 error:&v33];
+    v27 = contextCopy;
+    v12 = [contextCopy executeFetchRequest:v9 error:&v33];
     v23 = v33;
     v13 = objc_alloc_init(NSMutableDictionary);
     v29 = 0u;
@@ -380,8 +380,8 @@
     }
 
     objc_autoreleasePoolPop(context);
-    v6 = v27;
-    v5 = v28;
+    contextCopy = v27;
+    predicateCopy = v28;
   }
 
   else
@@ -392,22 +392,22 @@
   return v13;
 }
 
-+ (id)maxAnnotationVersionForAssetsWithPredicate:(id)a3 inManagedObjectContext:(id)a4
++ (id)maxAnnotationVersionForAssetsWithPredicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predicateCopy = predicate;
+  contextCopy = context;
+  if (contextCopy)
   {
     v8 = objc_autoreleasePoolPush();
     v9 = objc_alloc_init(NSMutableDictionary);
-    v32 = [a1 maxExpressionDescriptionForProperty:@"futureProofing2" expressionName:@"futureProofing2"];
+    v32 = [self maxExpressionDescriptionForProperty:@"futureProofing2" expressionName:@"futureProofing2"];
     [v32 setExpressionResultType:700];
     v10 = objc_alloc_init(NSFetchRequest);
-    v31 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v7];
+    v31 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:contextCopy];
     [v10 setEntity:?];
     [v10 setResultType:2];
     [v10 setReturnsDistinctResults:1];
-    [v10 setPredicate:v6];
+    [v10 setPredicate:predicateCopy];
     v11 = [NSArray arrayWithObjects:@"annotationAssetID", @"futureProofing2", 0];
     [v10 setPropertiesToGroupBy:v11];
 
@@ -415,7 +415,7 @@
     [v10 setPropertiesToFetch:v12];
 
     v37 = 0;
-    v13 = [v7 executeFetchRequest:v10 error:&v37];
+    v13 = [contextCopy executeFetchRequest:v10 error:&v37];
     v14 = v37;
     v15 = v14;
     if (v13)
@@ -432,7 +432,7 @@
         v18 = v17;
         v27 = v13;
         v28 = v8;
-        v29 = v6;
+        v29 = predicateCopy;
         v19 = *v34;
         do
         {
@@ -456,7 +456,7 @@
 
         while (v18);
         v8 = v28;
-        v6 = v29;
+        predicateCopy = v29;
         v24 = v31;
         v23 = v32;
         v13 = v27;
@@ -508,36 +508,36 @@
   return v9;
 }
 
-+ (id)maxModificationDateForAllAnnotationsInManagedObjectContext:(id)a3
++ (id)maxModificationDateForAllAnnotationsInManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[AEAnnotation maxModificationDateExpressionDescription];
   v5 = [NSPredicate predicateWithValue:1];
   v6 = [NSArray arrayWithObject:v4];
-  v7 = [AEAnnotation dictionaryResultsForAssetsWithPredicate:v5 properties:v6 inManagedObjectContext:v3];
+  v7 = [AEAnnotation dictionaryResultsForAssetsWithPredicate:v5 properties:v6 inManagedObjectContext:contextCopy];
 
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
   v9 = +[AEAnnotation maxModificationDateColumnName];
-  v10 = [v8 objectForKey:v9];
+  v10 = [lastObject objectForKey:v9];
 
   return v10;
 }
 
-+ (id)insertAnnotationWithAssetID:(id)a3 creatorIdentifier:(id)a4 annotationUuid:(id)a5 intoManagedObjectContext:(id)a6
++ (id)insertAnnotationWithAssetID:(id)d creatorIdentifier:(id)identifier annotationUuid:(id)uuid intoManagedObjectContext:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 newByClass:objc_opt_class()];
+  uuidCopy = uuid;
+  contextCopy = context;
+  identifierCopy = identifier;
+  dCopy = d;
+  v13 = [contextCopy newByClass:objc_opt_class()];
 
-  [v13 setAnnotationCreatorIdentifier:v11];
-  [v13 setAnnotationAssetID:v12];
+  [v13 setAnnotationCreatorIdentifier:identifierCopy];
+  [v13 setAnnotationAssetID:dCopy];
 
-  if (v9)
+  if (uuidCopy)
   {
-    [v13 setAnnotationUuid:v9];
+    [v13 setAnnotationUuid:uuidCopy];
   }
 
   else
@@ -553,35 +553,35 @@
 {
   v4.receiver = self;
   v4.super_class = AEAnnotation;
-  v2 = [(AEAnnotation *)&v4 managedObjectContext];
+  managedObjectContext = [(AEAnnotation *)&v4 managedObjectContext];
 
-  return v2;
+  return managedObjectContext;
 }
 
-+ (id)optimizedSelectedTextForSerialization:(id)a3
++ (id)optimizedSelectedTextForSerialization:(id)serialization
 {
-  v3 = a3;
-  if ([v3 length] >= 0x1389)
+  serializationCopy = serialization;
+  if ([serializationCopy length] >= 0x1389)
   {
-    v4 = [v3 substringWithRange:{0, 5000}];
+    v4 = [serializationCopy substringWithRange:{0, 5000}];
 
-    v3 = v4;
+    serializationCopy = v4;
   }
 
-  return v3;
+  return serializationCopy;
 }
 
-+ (id)optimizedRepresentativeTextForSerialization:(id)a3 selectedText:(id)a4
++ (id)optimizedRepresentativeTextForSerialization:(id)serialization selectedText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] > 0x1388 || objc_msgSend(v5, "isEqualToString:", v6))
+  serializationCopy = serialization;
+  textCopy = text;
+  if ([serializationCopy length] > 0x1388 || objc_msgSend(serializationCopy, "isEqualToString:", textCopy))
   {
 
-    v5 = 0;
+    serializationCopy = 0;
   }
 
-  return v5;
+  return serializationCopy;
 }
 
 - (void)updateSystemModificationDate
@@ -627,20 +627,20 @@
   return v4;
 }
 
-- (void)setAnnotationStyle:(int)a3
+- (void)setAnnotationStyle:(int)style
 {
-  if (a3 == 6)
+  if (style == 6)
   {
-    v4 = 0;
+    styleCopy = 0;
   }
 
   else
   {
-    v4 = a3;
+    styleCopy = style;
   }
 
-  v16 = [NSNumber numberWithBool:a3 == 6];
-  v5 = [NSNumber numberWithInt:v4];
+  v16 = [NSNumber numberWithBool:style == 6];
+  v5 = [NSNumber numberWithInt:styleCopy];
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"annotationIsUnderline"];
   v7 = [(AEAnnotation *)self primitiveValueForKey:@"annotationStyle"];
   v8 = v7;
@@ -685,7 +685,7 @@
     }
 
     v13 = @"annotationIsUnderline";
-    v14 = self;
+    selfCopy2 = self;
     v15 = v16;
     goto LABEL_16;
   }
@@ -695,10 +695,10 @@
 LABEL_11:
     v13 = @"annotationStyle";
     [(AEAnnotation *)self willChangeValueForKey:@"annotationStyle"];
-    v14 = self;
+    selfCopy2 = self;
     v15 = v5;
 LABEL_16:
-    [(AEAnnotation *)v14 setPrimitiveValue:v15 forKey:v13];
+    [(AEAnnotation *)selfCopy2 setPrimitiveValue:v15 forKey:v13];
 LABEL_17:
     [(AEAnnotation *)self didChangeValueForKey:v13];
     [(AEAnnotation *)self updateSystemAndUserModificationDates];
@@ -716,15 +716,15 @@ LABEL_18:
 
   [(AEAnnotation *)self willAccessValueForKey:@"annotationStyle"];
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"annotationStyle"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   [(AEAnnotation *)self didAccessValueForKey:@"annotationStyle"];
-  return v5;
+  return intValue;
 }
 
-- (void)setAnnotationType:(int)a3
+- (void)setAnnotationType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"annotationType"];
   v5 = [NSNumber numberWithInt:v3];
   if (v6 != v5 && ([v6 isEqual:v5] & 1) == 0)
@@ -740,17 +740,17 @@ LABEL_18:
 {
   [(AEAnnotation *)self willAccessValueForKey:@"annotationType"];
   v3 = [(AEAnnotation *)self primitiveValueForKey:@"annotationType"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   [(AEAnnotation *)self didAccessValueForKey:@"annotationType"];
-  return v4;
+  return intValue;
 }
 
-- (void)setAnnotationCreationDate:(id)a3
+- (void)setAnnotationCreationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(AEAnnotation *)self willChangeValueForKey:@"annotationCreationDate"];
-  [(AEAnnotation *)self setPrimitiveValue:v4 forKey:@"annotationCreationDate"];
+  [(AEAnnotation *)self setPrimitiveValue:dateCopy forKey:@"annotationCreationDate"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"annotationCreationDate"];
 }
@@ -759,17 +759,17 @@ LABEL_18:
 {
   [(AEAnnotation *)self willAccessValueForKey:@"annotationDeleted"];
   v3 = [(AEAnnotation *)self primitiveValueForKey:@"annotationDeleted"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(AEAnnotation *)self didAccessValueForKey:@"annotationDeleted"];
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAnnotationDeleted:(BOOL)a3
+- (void)setAnnotationDeleted:(BOOL)deleted
 {
-  v3 = a3;
+  deletedCopy = deleted;
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"annotationDeleted"];
-  v5 = [NSNumber numberWithBool:v3];
+  v5 = [NSNumber numberWithBool:deletedCopy];
   if (v6 != v5 && ([v6 isEqual:v5] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"annotationDeleted"];
@@ -783,17 +783,17 @@ LABEL_18:
 {
   [(AEAnnotation *)self willAccessValueForKey:@"annotationIsUnderline"];
   v3 = [(AEAnnotation *)self primitiveValueForKey:@"annotationIsUnderline"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(AEAnnotation *)self didAccessValueForKey:@"annotationIsUnderline"];
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAnnotationIsUnderline:(BOOL)a3
+- (void)setAnnotationIsUnderline:(BOOL)underline
 {
-  v3 = a3;
+  underlineCopy = underline;
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"annotationIsUnderline"];
-  v5 = [NSNumber numberWithBool:v3];
+  v5 = [NSNumber numberWithBool:underlineCopy];
   if (v6 != v5 && ([v6 isEqual:v5] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"annotationIsUnderline"];
@@ -803,17 +803,17 @@ LABEL_18:
   }
 }
 
-- (void)setAnnotationLocation:(id)a3
+- (void)setAnnotationLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"annotationLocation"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != locationCopy && ([v5 isEqualToString:locationCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"annotationLocation"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"annotationLocation"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:locationCopy forKey:@"annotationLocation"];
     [(AEAnnotation *)self didChangeValueForKey:@"annotationLocation"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
@@ -821,17 +821,17 @@ LABEL_18:
 
 - (NSString)redactedAnnotationLocation
 {
-  v2 = [(AEAnnotation *)self annotationLocation];
-  v3 = [v2 bc_redactedCFIString];
+  annotationLocation = [(AEAnnotation *)self annotationLocation];
+  bc_redactedCFIString = [annotationLocation bc_redactedCFIString];
 
-  return v3;
+  return bc_redactedCFIString;
 }
 
 - (BOOL)annotationHasNote
 {
-  v2 = [(AEAnnotation *)self annotationNote];
+  annotationNote = [(AEAnnotation *)self annotationNote];
   v3 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  v4 = [annotationNote stringByTrimmingCharactersInSet:v3];
   v5 = [v4 length] != 0;
 
   return v5;
@@ -850,204 +850,204 @@ LABEL_18:
   }
 }
 
-- (void)setAnnotationNote:(id)a3
+- (void)setAnnotationNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"annotationNote"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != noteCopy && ([v5 isEqualToString:noteCopy] & 1) == 0)
   {
     [(AEAnnotation *)self updateSystemAndUserModificationDates];
     [(AEAnnotation *)self willChangeValueForKey:@"annotationNote"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"annotationNote"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:noteCopy forKey:@"annotationNote"];
     [(AEAnnotation *)self didChangeValueForKey:@"annotationNote"];
   }
 }
 
-- (void)setAnnotationRepresentativeText:(id)a3
+- (void)setAnnotationRepresentativeText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"annotationRepresentativeText"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != textCopy && ([v5 isEqualToString:textCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"annotationRepresentativeText"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"annotationRepresentativeText"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:textCopy forKey:@"annotationRepresentativeText"];
     [(AEAnnotation *)self didChangeValueForKey:@"annotationRepresentativeText"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setAnnotationSelectedText:(id)a3
+- (void)setAnnotationSelectedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"annotationSelectedText"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != textCopy && ([v5 isEqualToString:textCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"annotationSelectedText"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"annotationSelectedText"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:textCopy forKey:@"annotationSelectedText"];
     [(AEAnnotation *)self didChangeValueForKey:@"annotationSelectedText"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setPlLocationRangeStart:(id)a3
+- (void)setPlLocationRangeStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"plLocationRangeStart"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  if (v5 != startCopy && ([v5 isEqual:startCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"plLocationRangeStart"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"plLocationRangeStart"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:startCopy forKey:@"plLocationRangeStart"];
     [(AEAnnotation *)self didChangeValueForKey:@"plLocationRangeStart"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setPlLocationRangeEnd:(id)a3
+- (void)setPlLocationRangeEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"plLocationRangeEnd"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  if (v5 != endCopy && ([v5 isEqual:endCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"plLocationRangeEnd"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"plLocationRangeEnd"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:endCopy forKey:@"plLocationRangeEnd"];
     [(AEAnnotation *)self didChangeValueForKey:@"plLocationRangeEnd"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setPlAbsolutePhysicalLocation:(id)a3
+- (void)setPlAbsolutePhysicalLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"plAbsolutePhysicalLocation"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  if (v5 != locationCopy && ([v5 isEqual:locationCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"plAbsolutePhysicalLocation"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"plAbsolutePhysicalLocation"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:locationCopy forKey:@"plAbsolutePhysicalLocation"];
     [(AEAnnotation *)self didChangeValueForKey:@"plAbsolutePhysicalLocation"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setPlStorageUUID:(id)a3
+- (void)setPlStorageUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"plStorageUUID"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != dCopy && ([v5 isEqualToString:dCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"plStorageUUID"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"plStorageUUID"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:dCopy forKey:@"plStorageUUID"];
     [(AEAnnotation *)self didChangeValueForKey:@"plStorageUUID"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setPlUserData:(id)a3
+- (void)setPlUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"plUserData"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+  if (v5 != dataCopy && ([v5 isEqual:dataCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"plUserData"];
     v7.receiver = self;
     v7.super_class = AEAnnotation;
-    [(AEAnnotation *)&v7 setPrimitiveValue:v4 forKey:@"plUserData"];
+    [(AEAnnotation *)&v7 setPrimitiveValue:dataCopy forKey:@"plUserData"];
     [(AEAnnotation *)self didChangeValueForKey:@"plUserData"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setPhysicalPageNumber:(id)a3
+- (void)setPhysicalPageNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing1"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != numberCopy && ([v4 isEqualToString:numberCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing1"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing1"];
+    [(AEAnnotation *)self setPrimitiveValue:numberCopy forKey:@"futureProofing1"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing1"];
     [(AEAnnotation *)self updateSystemAndLocationModificationDates];
   }
 }
 
-- (void)setAnnotationVersion:(id)a3
+- (void)setAnnotationVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing2"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != versionCopy && ([v4 isEqualToString:versionCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing2"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing2"];
+    [(AEAnnotation *)self setPrimitiveValue:versionCopy forKey:@"futureProofing2"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing2"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setAssetVersion:(id)a3
+- (void)setAssetVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing3"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != versionCopy && ([v4 isEqualToString:versionCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing3"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing3"];
+    [(AEAnnotation *)self setPrimitiveValue:versionCopy forKey:@"futureProofing3"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing3"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
-  v5 = a3;
+  attachmentsCopy = attachments;
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing4"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != attachmentsCopy && ([v4 isEqualToString:attachmentsCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing4"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing4"];
+    [(AEAnnotation *)self setPrimitiveValue:attachmentsCopy forKey:@"futureProofing4"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing4"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setChapterTitle:(id)a3
+- (void)setChapterTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing5"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != titleCopy && ([v4 isEqualToString:titleCopy] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing5"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing5"];
+    [(AEAnnotation *)self setPrimitiveValue:titleCopy forKey:@"futureProofing5"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing5"];
     [(AEAnnotation *)self updateSystemModificationDate];
   }
 }
 
-- (void)setUserModificationDate:(id)a3
+- (void)setUserModificationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = [NSString stringWithFormat:@"%f", v4];
   }
 
@@ -1102,9 +1102,9 @@ LABEL_18:
   return result;
 }
 
-- (void)setAnnotationSelectedTextRange:(_NSRange)a3
+- (void)setAnnotationSelectedTextRange:(_NSRange)range
 {
-  v5 = NSStringFromRange(a3);
+  v5 = NSStringFromRange(range);
   v4 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing7"];
   if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
   {
@@ -1124,18 +1124,18 @@ LABEL_18:
   return v4;
 }
 
-- (void)setReadingProgressHighWaterMark:(float)a3
+- (void)setReadingProgressHighWaterMark:(float)mark
 {
   v4 = [NSNumber numberWithFloat:?];
-  v8 = [v4 bc_clampedToUnitIntervalOrNegativeOne];
+  bc_clampedToUnitIntervalOrNegativeOne = [v4 bc_clampedToUnitIntervalOrNegativeOne];
 
-  v5 = [v8 stringValue];
+  stringValue = [bc_clampedToUnitIntervalOrNegativeOne stringValue];
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing8"];
   v7 = v6;
-  if (v6 != v5 && ([v6 isEqualToString:v5] & 1) == 0)
+  if (v6 != stringValue && ([v6 isEqualToString:stringValue] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing8"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing8"];
+    [(AEAnnotation *)self setPrimitiveValue:stringValue forKey:@"futureProofing8"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing8"];
   }
 }
@@ -1149,18 +1149,18 @@ LABEL_18:
   return v4;
 }
 
-- (void)setReadingProgress:(float)a3
+- (void)setReadingProgress:(float)progress
 {
   v4 = [NSNumber numberWithFloat:?];
-  v8 = [v4 bc_assertClampedToUnitInterval];
+  bc_assertClampedToUnitInterval = [v4 bc_assertClampedToUnitInterval];
 
-  v5 = [v8 stringValue];
+  stringValue = [bc_assertClampedToUnitInterval stringValue];
   v6 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing10"];
   v7 = v6;
-  if (v6 != v5 && ([v6 isEqualToString:v5] & 1) == 0)
+  if (v6 != stringValue && ([v6 isEqualToString:stringValue] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing10"];
-    [(AEAnnotation *)self setPrimitiveValue:v5 forKey:@"futureProofing10"];
+    [(AEAnnotation *)self setPrimitiveValue:stringValue forKey:@"futureProofing10"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing10"];
   }
 }
@@ -1168,32 +1168,32 @@ LABEL_18:
 - (BOOL)spineIndexUpdated
 {
   v2 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing9"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSpineIndexUpdated:(BOOL)a3
+- (void)setSpineIndexUpdated:(BOOL)updated
 {
-  v7 = [NSNumber numberWithBool:a3];
-  v4 = [v7 stringValue];
+  v7 = [NSNumber numberWithBool:updated];
+  stringValue = [v7 stringValue];
   v5 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing9"];
   v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != stringValue && ([v5 isEqualToString:stringValue] & 1) == 0)
   {
     [(AEAnnotation *)self willChangeValueForKey:@"futureProofing9"];
-    [(AEAnnotation *)self setPrimitiveValue:v4 forKey:@"futureProofing9"];
+    [(AEAnnotation *)self setPrimitiveValue:stringValue forKey:@"futureProofing9"];
     [(AEAnnotation *)self didChangeValueForKey:@"futureProofing9"];
   }
 }
 
-- (void)setLocationModificationDate:(id)a3
+- (void)setLocationModificationDate:(id)date
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  dateCopy = date;
+  v9 = dateCopy;
+  if (dateCopy)
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v6 = [NSString stringWithFormat:@"%f", v5];
   }
 
@@ -1255,172 +1255,172 @@ LABEL_18:
   return v3;
 }
 
-- (void)setFutureProofing1:(id)a3
+- (void)setFutureProofing1:(id)proofing1
 {
-  v4 = a3;
+  proofing1Copy = proofing1;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing1"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing1"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing1Copy forKey:@"futureProofing1"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing1"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing2:(id)a3
+- (void)setFutureProofing2:(id)proofing2
 {
-  v4 = a3;
+  proofing2Copy = proofing2;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing2"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing2"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing2Copy forKey:@"futureProofing2"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing2"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing3:(id)a3
+- (void)setFutureProofing3:(id)proofing3
 {
-  v4 = a3;
+  proofing3Copy = proofing3;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing3"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing3"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing3Copy forKey:@"futureProofing3"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing3"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing4:(id)a3
+- (void)setFutureProofing4:(id)proofing4
 {
-  v4 = a3;
+  proofing4Copy = proofing4;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing4"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing4"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing4Copy forKey:@"futureProofing4"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing4"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing5:(id)a3
+- (void)setFutureProofing5:(id)proofing5
 {
-  v4 = a3;
+  proofing5Copy = proofing5;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing5"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing5"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing5Copy forKey:@"futureProofing5"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing5"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing6:(id)a3
+- (void)setFutureProofing6:(id)proofing6
 {
-  v4 = a3;
+  proofing6Copy = proofing6;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing6"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing6"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing6Copy forKey:@"futureProofing6"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing6"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing7:(id)a3
+- (void)setFutureProofing7:(id)proofing7
 {
-  v4 = a3;
+  proofing7Copy = proofing7;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing7"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing7"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing7Copy forKey:@"futureProofing7"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing7"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing8:(id)a3
+- (void)setFutureProofing8:(id)proofing8
 {
-  v4 = a3;
+  proofing8Copy = proofing8;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing8"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing8"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing8Copy forKey:@"futureProofing8"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing8"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing9:(id)a3
+- (void)setFutureProofing9:(id)proofing9
 {
-  v4 = a3;
+  proofing9Copy = proofing9;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing9"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing9"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing9Copy forKey:@"futureProofing9"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing9"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing10:(id)a3
+- (void)setFutureProofing10:(id)proofing10
 {
-  v4 = a3;
+  proofing10Copy = proofing10;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing10"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing10"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing10Copy forKey:@"futureProofing10"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing10"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing11:(id)a3
+- (void)setFutureProofing11:(id)proofing11
 {
-  v4 = a3;
+  proofing11Copy = proofing11;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing11"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing11"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing11Copy forKey:@"futureProofing11"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing11"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (void)setFutureProofing12:(id)a3
+- (void)setFutureProofing12:(id)proofing12
 {
-  v4 = a3;
+  proofing12Copy = proofing12;
   [(AEAnnotation *)self willChangeValueForKey:@"futureProofing12"];
   v5.receiver = self;
   v5.super_class = AEAnnotation;
-  [(AEAnnotation *)&v5 setPrimitiveValue:v4 forKey:@"futureProofing12"];
+  [(AEAnnotation *)&v5 setPrimitiveValue:proofing12Copy forKey:@"futureProofing12"];
 
   [(AEAnnotation *)self didChangeValueForKey:@"futureProofing12"];
   [(AEAnnotation *)self updateSystemModificationDate];
 }
 
-- (BOOL)bumpAnnotationVersionToMinimumVersion:(id)a3
+- (BOOL)bumpAnnotationVersionToMinimumVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(AEAnnotation *)self annotationVersion];
-  v6 = v5;
-  if (v5 && (v5 == v4 || [v5 compare:v4 options:64] != -1))
+  versionCopy = version;
+  annotationVersion = [(AEAnnotation *)self annotationVersion];
+  v6 = annotationVersion;
+  if (annotationVersion && (annotationVersion == versionCopy || [annotationVersion compare:versionCopy options:64] != -1))
   {
     v7 = 0;
   }
 
   else
   {
-    [(AEAnnotation *)self setAnnotationVersion:v4];
+    [(AEAnnotation *)self setAnnotationVersion:versionCopy];
     v7 = 1;
   }
 
   return v7;
 }
 
-- (BOOL)updateReadingProgressAndBumpHighWaterMarkToProgress:(float)a3
+- (BOOL)updateReadingProgressAndBumpHighWaterMarkToProgress:(float)progress
 {
-  BCFloatAssertUnitIntervalClamp(a3);
+  BCFloatAssertUnitIntervalClamp(progress);
   v5 = v4;
   [(AEAnnotation *)self setReadingProgress:?];
   if ([(AEAnnotation *)self hasReadingProgressHighWaterMark])
@@ -1453,13 +1453,13 @@ LABEL_18:
   return v3;
 }
 
-+ (id)annotatedAttributedStringWithString:(id)a3 annotationStyle:(int)a4 range:(_NSRange)a5
++ (id)annotatedAttributedStringWithString:(id)string annotationStyle:(int)style range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = *&a4;
-  v8 = a3;
-  v9 = [[NSMutableAttributedString alloc] initWithString:v8];
+  length = range.length;
+  location = range.location;
+  v7 = *&style;
+  stringCopy = string;
+  v9 = [[NSMutableAttributedString alloc] initWithString:stringCopy];
 
   v10 = [[NSNumber alloc] initWithInt:v7];
   [v9 addAttribute:@"kAEAnnotationStyleAttributeName" value:v10 range:{location, length}];
@@ -1467,36 +1467,36 @@ LABEL_18:
   return v9;
 }
 
-+ (id)annotatedAttributedStringForAnnotation:(id)a3 withPossibleLength:(unint64_t)a4
++ (id)annotatedAttributedStringForAnnotation:(id)annotation withPossibleLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [v6 annotationRepresentativeText];
-  v8 = [v7 flattenedAnnotationString];
+  annotationCopy = annotation;
+  annotationRepresentativeText = [annotationCopy annotationRepresentativeText];
+  flattenedAnnotationString = [annotationRepresentativeText flattenedAnnotationString];
 
-  v9 = [v6 annotationSelectedText];
-  v10 = [v9 flattenedAnnotationString];
+  annotationSelectedText = [annotationCopy annotationSelectedText];
+  flattenedAnnotationString2 = [annotationSelectedText flattenedAnnotationString];
 
-  if ([v10 length] >= a4 || +[AEAnnotation isSelectedTextRepeatedInRepresentativeTextForAnnotation:](AEAnnotation, "isSelectedTextRepeatedInRepresentativeTextForAnnotation:", v6))
+  if ([flattenedAnnotationString2 length] >= length || +[AEAnnotation isSelectedTextRepeatedInRepresentativeTextForAnnotation:](AEAnnotation, "isSelectedTextRepeatedInRepresentativeTextForAnnotation:", annotationCopy))
   {
-    v11 = v10;
+    v11 = flattenedAnnotationString2;
     v30 = 0;
     v31 = [v11 length];
     goto LABEL_17;
   }
 
-  v12 = v8;
-  v13 = [v12 rangeOfString:v10];
+  v12 = flattenedAnnotationString;
+  v13 = [v12 rangeOfString:flattenedAnnotationString2];
   v30 = v13;
   v31 = v14;
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = v10;
+    v15 = flattenedAnnotationString2;
 LABEL_15:
     v11 = v15;
     goto LABEL_16;
   }
 
-  if (&v14[v13] <= a4)
+  if (&v14[v13] <= length)
   {
     v15 = v12;
     goto LABEL_15;
@@ -1506,7 +1506,7 @@ LABEL_15:
   {
     v17 = 0;
 LABEL_26:
-    v11 = v10;
+    v11 = flattenedAnnotationString2;
 
     v29 = [v11 length];
     v30 = 0;
@@ -1514,13 +1514,13 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  v16 = [AEAnnotation clauseForSelectedTextForAnnotation:v6 inSentence:v12 possibleLength:a4 highlightedRange:&v30];
+  v16 = [AEAnnotation clauseForSelectedTextForAnnotation:annotationCopy inSentence:v12 possibleLength:length highlightedRange:&v30];
   if (!v16)
   {
-    v16 = [a1 wordsForSelectedTextForAnnotation:v6 inSentence:v12 possibleLength:a4 highlightedRange:&v30];
+    v16 = [self wordsForSelectedTextForAnnotation:annotationCopy inSentence:v12 possibleLength:length highlightedRange:&v30];
     if (!v16)
     {
-      v16 = [a1 lettersForSelectedTextForAnnotation:v6 inSentence:v12 possibleLength:a4 highlightedRange:&v30];
+      v16 = [self lettersForSelectedTextForAnnotation:annotationCopy inSentence:v12 possibleLength:length highlightedRange:&v30];
     }
   }
 
@@ -1547,21 +1547,21 @@ LABEL_19:
       v21 = [v11 stringByReplacingOccurrencesOfString:@"\r" withString:{@"\n", v30}];
 
       v22 = objc_opt_class();
-      v23 = [v6 annotationStyle];
-      v24 = [v22 annotatedAttributedStringWithString:v21 annotationStyle:v23 range:{v30, v31}];
+      annotationStyle = [annotationCopy annotationStyle];
+      v24 = [v22 annotatedAttributedStringWithString:v21 annotationStyle:annotationStyle range:{v30, v31}];
       goto LABEL_22;
     }
   }
 
   else
   {
-    v25 = [v6 annotationRepresentativeText];
+    annotationRepresentativeText2 = [annotationCopy annotationRepresentativeText];
 
-    v26 = [v25 length];
+    v26 = [annotationRepresentativeText2 length];
     v30 = 0;
     v31 = v26;
-    v11 = v25;
-    if (v25)
+    v11 = annotationRepresentativeText2;
+    if (annotationRepresentativeText2)
     {
       goto LABEL_19;
     }
@@ -1575,32 +1575,32 @@ LABEL_22:
   return v27;
 }
 
-+ (id)annotatedAttributedStringForAnnotation:(id)a3
++ (id)annotatedAttributedStringForAnnotation:(id)annotation
 {
-  v3 = a3;
-  v4 = [v3 annotationSelectedText];
-  v5 = [v4 flattenedAnnotationString];
+  annotationCopy = annotation;
+  annotationSelectedText = [annotationCopy annotationSelectedText];
+  flattenedAnnotationString = [annotationSelectedText flattenedAnnotationString];
 
-  v6 = [v5 length];
-  if ([v5 length])
+  v6 = [flattenedAnnotationString length];
+  if ([flattenedAnnotationString length])
   {
-    if (v5)
+    if (flattenedAnnotationString)
     {
 LABEL_3:
-      v7 = [v5 stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+      v7 = [flattenedAnnotationString stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
 
-      v8 = [objc_opt_class() annotatedAttributedStringWithString:v7 annotationStyle:objc_msgSend(v3 range:{"annotationStyle"), 0, v6}];
+      v8 = [objc_opt_class() annotatedAttributedStringWithString:v7 annotationStyle:objc_msgSend(annotationCopy range:{"annotationStyle"), 0, v6}];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v9 = [v3 annotationRepresentativeText];
+    annotationRepresentativeText = [annotationCopy annotationRepresentativeText];
 
-    v6 = [v9 length];
-    v5 = v9;
-    if (v9)
+    v6 = [annotationRepresentativeText length];
+    flattenedAnnotationString = annotationRepresentativeText;
+    if (annotationRepresentativeText)
     {
       goto LABEL_3;
     }
@@ -1613,18 +1613,18 @@ LABEL_6:
   return v8;
 }
 
-+ (BOOL)isSelectedTextRepeatedInRepresentativeTextForAnnotation:(id)a3
++ (BOOL)isSelectedTextRepeatedInRepresentativeTextForAnnotation:(id)annotation
 {
-  v3 = a3;
-  v4 = [v3 annotationRepresentativeText];
-  if (v4 && (v5 = v4, [v3 annotationSelectedText], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  annotationCopy = annotation;
+  annotationRepresentativeText = [annotationCopy annotationRepresentativeText];
+  if (annotationRepresentativeText && (v5 = annotationRepresentativeText, [annotationCopy annotationSelectedText], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [v3 annotationRepresentativeText];
-    v8 = [v3 annotationSelectedText];
-    v9 = [v3 annotationRepresentativeText];
-    v13.length = [v9 length];
+    annotationRepresentativeText2 = [annotationCopy annotationRepresentativeText];
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    annotationRepresentativeText3 = [annotationCopy annotationRepresentativeText];
+    v13.length = [annotationRepresentativeText3 length];
     v13.location = 0;
-    Results = CFStringCreateArrayWithFindResults(0, v7, v8, v13, 0);
+    Results = CFStringCreateArrayWithFindResults(0, annotationRepresentativeText2, annotationSelectedText, v13, 0);
 
     v11 = [(__CFArray *)Results count]> 1;
   }
@@ -1637,24 +1637,24 @@ LABEL_6:
   return v11;
 }
 
-+ (id)clauseForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6
++ (id)clauseForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range
 {
-  v9 = a3;
-  v10 = a4;
-  location = a6->location;
-  length = a6->length;
+  annotationCopy = annotation;
+  sentenceCopy = sentence;
+  location = range->location;
+  length = range->length;
   v13 = +[NSCharacterSet punctuationCharacterSet];
   v14 = 0;
   v15 = length + location;
   v16 = v15;
   while (v14 < v15)
   {
-    v17 = [v10 rangeOfCharacterFromSet:v13 options:0 range:{v14, v16}];
+    v17 = [sentenceCopy rangeOfCharacterFromSet:v13 options:0 range:{v14, v16}];
     v14 = &v17[v18];
     v16 = v15 - &v17[v18];
-    if (v16 <= a5)
+    if (v16 <= length)
     {
-      v19 = [v10 substringWithRange:{v14, objc_msgSend(v10, "length") - v14}];
+      v19 = [sentenceCopy substringWithRange:{v14, objc_msgSend(sentenceCopy, "length") - v14}];
       goto LABEL_6;
     }
   }
@@ -1666,35 +1666,35 @@ LABEL_6:
 
   if (v21)
   {
-    v22 = [v9 annotationSelectedText];
-    a6->location = [v21 rangeOfString:v22];
-    a6->length = v23;
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    range->location = [v21 rangeOfString:annotationSelectedText];
+    range->length = v23;
   }
 
   return v21;
 }
 
-+ (id)wordsForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6
++ (id)wordsForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range
 {
-  v9 = a3;
-  v10 = a4;
+  annotationCopy = annotation;
+  sentenceCopy = sentence;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = sub_CD7AC;
   v30 = sub_CD7BC;
   v31 = 0;
-  location = a6->location;
-  length = a6->length;
+  location = range->location;
+  length = range->length;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_CD7C4;
   v20[3] = &unk_2CCB78;
-  v24 = length;
-  v25 = a5;
+  lengthCopy = length;
+  lengthCopy2 = length;
   v22 = &v26;
   v23 = location;
-  v13 = v10;
+  v13 = sentenceCopy;
   v21 = v13;
   [v13 enumerateSubstringsInRange:0 options:length + location usingBlock:{3, v20}];
   v14 = v27[5];
@@ -1703,9 +1703,9 @@ LABEL_6:
 
   if (v16)
   {
-    v17 = [v9 annotationSelectedText];
-    a6->location = [v16 rangeOfString:v17];
-    a6->length = v18;
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    range->location = [v16 rangeOfString:annotationSelectedText];
+    range->length = v18;
   }
 
   _Block_object_dispose(&v26, 8);
@@ -1713,18 +1713,18 @@ LABEL_6:
   return v16;
 }
 
-+ (id)lettersForSelectedTextForAnnotation:(id)a3 inSentence:(id)a4 possibleLength:(unint64_t)a5 highlightedRange:(_NSRange *)a6
++ (id)lettersForSelectedTextForAnnotation:(id)annotation inSentence:(id)sentence possibleLength:(unint64_t)length highlightedRange:(_NSRange *)range
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6->length + a6->location;
-  v12 = v11 - a5;
-  v13 = [v10 length];
-  v14 = v11 >= a5;
-  v15 = v11 - a5;
-  if (v15 != 0 && v14 && (v16 = v13, v13 <= [v10 length]))
+  annotationCopy = annotation;
+  sentenceCopy = sentence;
+  v11 = range->length + range->location;
+  v12 = v11 - length;
+  v13 = [sentenceCopy length];
+  v14 = v11 >= length;
+  v15 = v11 - length;
+  if (v15 != 0 && v14 && (v16 = v13, v13 <= [sentenceCopy length]))
   {
-    v17 = [v10 substringWithRange:{v15, &v16[-v12]}];
+    v17 = [sentenceCopy substringWithRange:{v15, &v16[-v12]}];
   }
 
   else
@@ -1737,43 +1737,43 @@ LABEL_6:
 
   if (v19)
   {
-    v20 = [v9 annotationSelectedText];
-    a6->location = [v19 rangeOfString:v20];
-    a6->length = v21;
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    range->location = [v19 rangeOfString:annotationSelectedText];
+    range->length = v21;
   }
 
   return v19;
 }
 
-+ (id)contextAwareSelectedTextFromAnnotation:(id)a3
++ (id)contextAwareSelectedTextFromAnnotation:(id)annotation
 {
-  v3 = a3;
-  v4 = [v3 annotationRepresentativeText];
+  annotationCopy = annotation;
+  annotationRepresentativeText = [annotationCopy annotationRepresentativeText];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 annotationSelectedTextRange];
+    annotationSelectedTextRange = [annotationCopy annotationSelectedTextRange];
     v7 = v6;
   }
 
   else
   {
     v7 = 0;
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    annotationSelectedTextRange = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || ![v4 length])
+  if (annotationSelectedTextRange == 0x7FFFFFFFFFFFFFFFLL || ![annotationRepresentativeText length])
   {
-    v9 = [v3 annotationSelectedText];
-    if ([v4 length] && (objc_msgSend(v9, "isEqualToString:", v4) & 1) == 0 && objc_msgSend(v4, "ae_occurrenceCountOfString:", v9) == &dword_0 + 1)
+    annotationSelectedText = [annotationCopy annotationSelectedText];
+    if ([annotationRepresentativeText length] && (objc_msgSend(annotationSelectedText, "isEqualToString:", annotationRepresentativeText) & 1) == 0 && objc_msgSend(annotationRepresentativeText, "ae_occurrenceCountOfString:", annotationSelectedText) == &dword_0 + 1)
     {
-      v5 = [v4 rangeOfString:v9];
+      annotationSelectedTextRange = [annotationRepresentativeText rangeOfString:annotationSelectedText];
       v7 = v10;
       v8 = 0;
     }
 
     else
     {
-      v8 = v9;
+      v8 = annotationSelectedText;
     }
   }
 
@@ -1782,12 +1782,12 @@ LABEL_6:
     v8 = 0;
   }
 
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL && !v8)
+  if (annotationSelectedTextRange != 0x7FFFFFFFFFFFFFFFLL && !v8)
   {
     v11 = IMCommonCoreBundle();
     v12 = [v11 localizedStringForKey:@"\\U2026" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-    [v4 substringWithRange:{v5, v7}];
+    [annotationRepresentativeText substringWithRange:{annotationSelectedTextRange, v7}];
     v23 = 0;
     v24 = &v23;
     v25 = 0x3032000000;
@@ -1799,9 +1799,9 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = sub_CDC10;
     v17[3] = &unk_2CCBC8;
-    v21 = v5;
+    v21 = annotationSelectedTextRange;
     v22 = v7;
-    v18 = v4;
+    v18 = annotationRepresentativeText;
     v15 = v12;
     v19 = v15;
     v20 = &v23;
@@ -1814,41 +1814,41 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v7.receiver = self;
   v7.super_class = AEAnnotation;
   v5 = [(AEAnnotation *)&v7 validateForInsert:?];
-  return v5 & [(AEAnnotation *)self validateConsistency:a3];
+  return v5 & [(AEAnnotation *)self validateConsistency:insert];
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v7.receiver = self;
   v7.super_class = AEAnnotation;
   v5 = [(AEAnnotation *)&v7 validateForUpdate:?];
-  return v5 & [(AEAnnotation *)self validateConsistency:a3];
+  return v5 & [(AEAnnotation *)self validateConsistency:update];
 }
 
-- (BOOL)validateConsistency:(id *)a3
+- (BOOL)validateConsistency:(id *)consistency
 {
-  v5 = [(AEAnnotation *)self annotationLocation];
-  if ([v5 length])
+  annotationLocation = [(AEAnnotation *)self annotationLocation];
+  if ([annotationLocation length])
   {
     goto LABEL_4;
   }
 
-  v6 = [(AEAnnotation *)self plUserData];
-  if ([v6 length])
+  plUserData = [(AEAnnotation *)self plUserData];
+  if ([plUserData length])
   {
 
 LABEL_4:
     return 1;
   }
 
-  v8 = [(AEAnnotation *)self isAnnotationDeleted];
+  isAnnotationDeleted = [(AEAnnotation *)self isAnnotationDeleted];
 
-  if (v8)
+  if (isAnnotationDeleted)
   {
     return 1;
   }
@@ -1859,7 +1859,7 @@ LABEL_4:
     sub_1E9688(self, v9);
   }
 
-  if (!a3)
+  if (!consistency)
   {
     return 0;
   }
@@ -1867,7 +1867,7 @@ LABEL_4:
   v10 = [NSError errorWithDomain:@"AEAnnotationErrorDomain" code:1000 userInfo:0];
   v11 = v10;
   result = 0;
-  *a3 = v10;
+  *consistency = v10;
   return result;
 }
 
@@ -1875,71 +1875,71 @@ LABEL_4:
 {
   v3 = objc_opt_class();
   v27 = NSStringFromClass(v3);
-  v36 = [(AEAnnotation *)self annotationAssetID];
-  v38 = [(AEAnnotation *)self annotationCreationDate];
-  v32 = [(AEAnnotation *)self annotationCreatorIdentifier];
-  v26 = [(AEAnnotation *)self isAnnotationDeleted];
-  v25 = [(AEAnnotation *)self annotationIsUnderline];
-  v37 = [(AEAnnotation *)self annotationLocation];
-  v35 = [(AEAnnotation *)self annotationModificationDate];
-  v24 = [(AEAnnotation *)self annotationNote];
-  v34 = [(AEAnnotation *)self annotationRepresentativeText];
-  v23 = [(AEAnnotation *)self annotationSelectedText];
-  v22 = [(AEAnnotation *)self annotationStyle];
-  v21 = [(AEAnnotation *)self annotationType];
-  v33 = [(AEAnnotation *)self annotationUuid];
-  v31 = [(AEAnnotation *)self physicalPageNumber];
-  v20 = [(AEAnnotation *)self annotationVersion];
-  v30 = [(AEAnnotation *)self assetVersion];
-  v29 = [(AEAnnotation *)self attachments];
-  v19 = [(AEAnnotation *)self chapterTitle];
-  v18 = [(AEAnnotation *)self userModificationDate];
-  v17 = [(AEAnnotation *)self annotationModificationDate];
+  annotationAssetID = [(AEAnnotation *)self annotationAssetID];
+  annotationCreationDate = [(AEAnnotation *)self annotationCreationDate];
+  annotationCreatorIdentifier = [(AEAnnotation *)self annotationCreatorIdentifier];
+  isAnnotationDeleted = [(AEAnnotation *)self isAnnotationDeleted];
+  annotationIsUnderline = [(AEAnnotation *)self annotationIsUnderline];
+  annotationLocation = [(AEAnnotation *)self annotationLocation];
+  annotationModificationDate = [(AEAnnotation *)self annotationModificationDate];
+  annotationNote = [(AEAnnotation *)self annotationNote];
+  annotationRepresentativeText = [(AEAnnotation *)self annotationRepresentativeText];
+  annotationSelectedText = [(AEAnnotation *)self annotationSelectedText];
+  annotationStyle = [(AEAnnotation *)self annotationStyle];
+  annotationType = [(AEAnnotation *)self annotationType];
+  annotationUuid = [(AEAnnotation *)self annotationUuid];
+  physicalPageNumber = [(AEAnnotation *)self physicalPageNumber];
+  annotationVersion = [(AEAnnotation *)self annotationVersion];
+  assetVersion = [(AEAnnotation *)self assetVersion];
+  attachments = [(AEAnnotation *)self attachments];
+  chapterTitle = [(AEAnnotation *)self chapterTitle];
+  userModificationDate = [(AEAnnotation *)self userModificationDate];
+  annotationModificationDate2 = [(AEAnnotation *)self annotationModificationDate];
   v16 = [(AEAnnotation *)self primitiveValueForKey:@"futureProofing7"];
   [(AEAnnotation *)self readingProgressHighWaterMark];
   v5 = v4;
-  v14 = [(AEAnnotation *)self spineIndexUpdated];
+  spineIndexUpdated = [(AEAnnotation *)self spineIndexUpdated];
   [(AEAnnotation *)self readingProgress];
   v7 = v6;
-  v8 = [(AEAnnotation *)self locationModificationDate];
-  v15 = [(AEAnnotation *)self plAbsolutePhysicalLocation];
-  v9 = [(AEAnnotation *)self plLocationRangeEnd];
-  v10 = [(AEAnnotation *)self plLocationRangeStart];
-  v11 = [(AEAnnotation *)self plStorageUUID];
-  v12 = [(AEAnnotation *)self plUserData];
-  v28 = [NSString stringWithFormat:@"<%@:%p\n    assetID = %@\n    creationDate = %@;\n    creatorIdentifier = %@;\n    deleted = %d;\n    isUnderline = %d;\n    cfiLocation = %@;\n    modificationDate = %@;\n    note = %@;\n    representativeText = %@;\n    selectedText = %@;\n    style = %d;\n    type = %d;\n    uuid = %@;\n    physicalPageNumber = %@;\n    annotationVersion = %@;\n    assetVersion = %@;\n    attachments = %@;\n    chapterTitle = %@;\n    userModificationDate = %@;\n    annotationModificationDate = %@;\n    selectedTextRange = %@;\n    readingProgressHighWaterMark = %f;\n    spineIndexUpdated = %d;\n    readingProgress = %f;\n    locationModificationDate = %@;\n    plAbsolutePhysicalLocation = %@;\n    plLocationRangeEnd = %@;\n    plLocationRangeStart = %@;\n    plStorageUUID = %@;\n    plUserData = %@;\n>", v27, self, v36, v38, v32, v26, v25, v37, v35, v24, v34, v23, v22, v21, v33, v31, v20, v30, v29, v19, v18, v17, v16, *&v5, v14, *&v7, v8, v15, v9, v10, v11, v12];;
+  locationModificationDate = [(AEAnnotation *)self locationModificationDate];
+  plAbsolutePhysicalLocation = [(AEAnnotation *)self plAbsolutePhysicalLocation];
+  plLocationRangeEnd = [(AEAnnotation *)self plLocationRangeEnd];
+  plLocationRangeStart = [(AEAnnotation *)self plLocationRangeStart];
+  plStorageUUID = [(AEAnnotation *)self plStorageUUID];
+  plUserData = [(AEAnnotation *)self plUserData];
+  v28 = [NSString stringWithFormat:@"<%@:%p\n    assetID = %@\n    creationDate = %@;\n    creatorIdentifier = %@;\n    deleted = %d;\n    isUnderline = %d;\n    cfiLocation = %@;\n    modificationDate = %@;\n    note = %@;\n    representativeText = %@;\n    selectedText = %@;\n    style = %d;\n    type = %d;\n    uuid = %@;\n    physicalPageNumber = %@;\n    annotationVersion = %@;\n    assetVersion = %@;\n    attachments = %@;\n    chapterTitle = %@;\n    userModificationDate = %@;\n    annotationModificationDate = %@;\n    selectedTextRange = %@;\n    readingProgressHighWaterMark = %f;\n    spineIndexUpdated = %d;\n    readingProgress = %f;\n    locationModificationDate = %@;\n    plAbsolutePhysicalLocation = %@;\n    plLocationRangeEnd = %@;\n    plLocationRangeStart = %@;\n    plStorageUUID = %@;\n    plUserData = %@;\n>", v27, self, annotationAssetID, annotationCreationDate, annotationCreatorIdentifier, isAnnotationDeleted, annotationIsUnderline, annotationLocation, annotationModificationDate, annotationNote, annotationRepresentativeText, annotationSelectedText, annotationStyle, annotationType, annotationUuid, physicalPageNumber, annotationVersion, assetVersion, attachments, chapterTitle, userModificationDate, annotationModificationDate2, v16, *&v5, spineIndexUpdated, *&v7, locationModificationDate, plAbsolutePhysicalLocation, plLocationRangeEnd, plLocationRangeStart, plStorageUUID, plUserData];;
 
   return v28;
 }
 
 - (NSNumber)annotationStyleNumber
 {
-  v2 = [(AEAnnotation *)self annotationStyle];
+  annotationStyle = [(AEAnnotation *)self annotationStyle];
 
-  return [NSNumber numberWithInt:v2];
+  return [NSNumber numberWithInt:annotationStyle];
 }
 
 - (NSNumber)annotationTypeNumber
 {
-  v2 = [(AEAnnotation *)self annotationType];
+  annotationType = [(AEAnnotation *)self annotationType];
 
-  return [NSNumber numberWithInt:v2];
+  return [NSNumber numberWithInt:annotationType];
 }
 
-+ (BOOL)mergeAnnotation:(id)a3 withServerAnnotation:(id)a4 moc:(id)a5
++ (BOOL)mergeAnnotation:(id)annotation withServerAnnotation:(id)serverAnnotation moc:(id)moc
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() lastModificationFromDictionaryRepresentation:v8];
-  v11 = [v10 unsignedLongLongValue];
+  annotationCopy = annotation;
+  serverAnnotationCopy = serverAnnotation;
+  mocCopy = moc;
+  v10 = [objc_opt_class() lastModificationFromDictionaryRepresentation:serverAnnotationCopy];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-  v12 = [v7 annotationModificationDate];
-  [v12 timeIntervalSince1970];
+  annotationModificationDate = [annotationCopy annotationModificationDate];
+  [annotationModificationDate timeIntervalSince1970];
   v14 = v13;
 
-  v15 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:v8];
-  if (v11 < v14)
+  v15 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:serverAnnotationCopy];
+  if (unsignedLongLongValue < v14)
   {
     v16 = BKMobileCloudSyncAnnotationsLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1949,9 +1949,9 @@ LABEL_4:
       v31 = 1024;
       *v32 = v14;
       *&v32[4] = 1024;
-      *&v32[6] = v11;
+      *&v32[6] = unsignedLongLongValue;
       LOWORD(v33) = 1024;
-      *(&v33 + 2) = v14 - v11;
+      *(&v33 + 2) = v14 - unsignedLongLongValue;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Client: %d; Server: %d; (%d) client > server, not merging", &v29, 0x1Eu);
     }
 
@@ -1960,16 +1960,16 @@ LABEL_4:
 
   v17 = BKMobileCloudSyncAnnotationsLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-  if (v11 == v14)
+  if (unsignedLongLongValue == v14)
   {
     if (v18)
     {
       v29 = 138413058;
       v30 = v15;
       v31 = 1024;
-      *v32 = v11;
+      *v32 = unsignedLongLongValue;
       *&v32[4] = 1024;
-      *&v32[6] = v11;
+      *&v32[6] = unsignedLongLongValue;
       LOWORD(v33) = 1024;
       *(&v33 + 2) = 0;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Client: %d; Server: %d; (%d) client == server, not merging", &v29, 0x1Eu);
@@ -1985,25 +1985,25 @@ LABEL_4:
     v31 = 1024;
     *v32 = v14;
     *&v32[4] = 1024;
-    *&v32[6] = v11;
+    *&v32[6] = unsignedLongLongValue;
     LOWORD(v33) = 1024;
-    *(&v33 + 2) = v14 - v11;
+    *(&v33 + 2) = v14 - unsignedLongLongValue;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Client: %d; Server: %d; (%d) ... MERGING ANNOTATION", &v29, 0x1Eu);
   }
 
-  if (!v7)
+  if (!annotationCopy)
   {
-    v19 = [objc_opt_class() annotationCreatorIdentifierFromDictionaryRepresentation:v8];
-    v20 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:v8];
-    v7 = [AEAnnotation insertAnnotationWithAssetID:v20 creatorIdentifier:v19 annotationUuid:0 intoManagedObjectContext:v9];
+    v19 = [objc_opt_class() annotationCreatorIdentifierFromDictionaryRepresentation:serverAnnotationCopy];
+    annotationUuid2 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:serverAnnotationCopy];
+    annotationCopy = [AEAnnotation insertAnnotationWithAssetID:annotationUuid2 creatorIdentifier:v19 annotationUuid:0 intoManagedObjectContext:mocCopy];
     v21 = BKMobileCloudSyncAnnotationsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v7 annotationUuid];
+      annotationUuid = [annotationCopy annotationUuid];
       v29 = 138412546;
-      v30 = v20;
+      v30 = annotationUuid2;
       v31 = 2112;
-      *v32 = v22;
+      *v32 = annotationUuid;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Creating new Annotation: %@", &v29, 0x16u);
     }
 
@@ -2013,11 +2013,11 @@ LABEL_4:
   v19 = BKMobileCloudSyncAnnotationsLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [v7 annotationUuid];
+    annotationUuid2 = [annotationCopy annotationUuid];
     v29 = 138412546;
     v30 = v15;
     v31 = 2112;
-    *v32 = v20;
+    *v32 = annotationUuid2;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Updating existing Annotation: %@", &v29, 0x16u);
 LABEL_17:
   }
@@ -2025,13 +2025,13 @@ LABEL_17:
   v23 = BKMobileCloudSyncAnnotationsLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [v7 redactedAnnotationLocation];
-    v25 = [v7 plUserData];
-    v26 = [v25 description];
+    redactedAnnotationLocation = [annotationCopy redactedAnnotationLocation];
+    plUserData = [annotationCopy plUserData];
+    v26 = [plUserData description];
     v29 = 138412802;
     v30 = v15;
     v31 = 2114;
-    *v32 = v24;
+    *v32 = redactedAnnotationLocation;
     *&v32[8] = 2114;
     v33 = v26;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ annotation.annotationLocation=%{public}@ annotation.plUserData=%{public}@", &v29, 0x20u);
@@ -2043,37 +2043,37 @@ LABEL_17:
     v29 = 138412546;
     v30 = v15;
     v31 = 2114;
-    *v32 = v8;
+    *v32 = serverAnnotationCopy;
     _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ dictionary=%{public}@", &v29, 0x16u);
   }
 
-  [v7 deserializeFromDictionary:v8 trustedSource:0];
+  [annotationCopy deserializeFromDictionary:serverAnnotationCopy trustedSource:0];
 LABEL_23:
 
-  return v11 < v14;
+  return unsignedLongLongValue < v14;
 }
 
-+ (BOOL)mergeServerAnnotations:(id)a3 forAssetID:(id)a4 intoMoc:(id)a5
++ (BOOL)mergeServerAnnotations:(id)annotations forAssetID:(id)d intoMoc:(id)moc
 {
-  v7 = a3;
-  v8 = a4;
-  v36 = a5;
+  annotationsCopy = annotations;
+  dCopy = d;
+  mocCopy = moc;
   v9 = BKMobileCloudSyncAnnotationsLog();
-  v33 = v8;
+  v33 = dCopy;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [annotationsCopy count]);
     *buf = 138412546;
     v46 = v33;
     v47 = 2112;
     v48 = v10;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Merging {%@} serverAnnotations", buf, 0x16u);
 
-    v8 = v33;
+    dCopy = v33;
   }
 
-  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-  [AEAnnotation annotationsForAssetID:v8 includingDeleted:1 inManagedObjectContext:v36];
+  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(annotationsCopy, "count")}];
+  [AEAnnotation annotationsForAssetID:dCopy includingDeleted:1 inManagedObjectContext:mocCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -2093,8 +2093,8 @@ LABEL_23:
         }
 
         v16 = *(*(&v41 + 1) + 8 * i);
-        v17 = [v16 annotationUuid];
-        [v11 setObject:v16 forKey:v17];
+        annotationUuid = [v16 annotationUuid];
+        [v11 setObject:v16 forKey:annotationUuid];
       }
 
       v13 = [obj countByEnumeratingWithState:&v41 objects:v52 count:16];
@@ -2107,7 +2107,7 @@ LABEL_23:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v34 = v7;
+  v34 = annotationsCopy;
   v18 = [v34 countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v18)
   {
@@ -2132,21 +2132,21 @@ LABEL_23:
           v26 = objc_opt_class();
           if (v25 == 3)
           {
-            v27 = [v26 globalAnnotationForAssetID:v8 inManagedObjectContext:v36];
+            v27 = [v26 globalAnnotationForAssetID:dCopy inManagedObjectContext:mocCopy];
             v28 = BKMobileCloudSyncAnnotationsLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
               v29 = [objc_opt_class() annotationUuidFromDictionaryRepresentation:v24];
-              v30 = [v27 annotationUuid];
+              annotationUuid2 = [v27 annotationUuid];
               *buf = v32;
               v46 = v33;
               v47 = 2112;
               v48 = v29;
               v49 = 2112;
-              v50 = v30;
+              v50 = annotationUuid2;
               _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Found Global Annotation -- Server: %@\nLocal: %@", buf, 0x20u);
 
-              v8 = v33;
+              dCopy = v33;
             }
           }
 
@@ -2156,7 +2156,7 @@ LABEL_23:
             v27 = [v11 objectForKey:v28];
           }
 
-          v21 |= [AEAnnotation mergeAnnotation:v27 withServerAnnotation:v24 moc:v36];
+          v21 |= [AEAnnotation mergeAnnotation:v27 withServerAnnotation:v24 moc:mocCopy];
         }
 
         else
@@ -2165,7 +2165,7 @@ LABEL_23:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v46 = v8;
+            v46 = dCopy;
             v47 = 2112;
             v48 = v24;
             _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ Annotation not valid for deserialization: %@", buf, 0x16u);
@@ -2195,9 +2195,9 @@ LABEL_23:
   }
 
   v3 = [(AEAnnotation *)self performSelector:"doesSerializeAs_iBooks"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)aeAnnotationDictionaryRepresentation
@@ -2325,17 +2325,17 @@ LABEL_23:
   return v3;
 }
 
-+ (id)dictionaryRepresentationsForAnnotations:(id)a3
++ (id)dictionaryRepresentationsForAnnotations:(id)annotations
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-  if ([v3 count])
+  annotationsCopy = annotations;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [annotationsCopy count]);
+  if ([annotationsCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = annotationsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -2353,8 +2353,8 @@ LABEL_23:
           v10 = *(*(&v13 + 1) + 8 * i);
           if ([v10 isValidForSerialization])
           {
-            v11 = [v10 dictionaryRepresentation];
-            [v4 addObject:v11];
+            dictionaryRepresentation = [v10 dictionaryRepresentation];
+            [v4 addObject:dictionaryRepresentation];
           }
         }
 
@@ -2368,36 +2368,36 @@ LABEL_23:
   return v4;
 }
 
-+ (id)_dictionaryRepresentationForAnnotationsMatchingPredicate:(id)a3 map:(id)a4 inManagedObjectContext:(id)a5
++ (id)_dictionaryRepresentationForAnnotationsMatchingPredicate:(id)predicate map:(id)map inManagedObjectContext:(id)context
 {
-  v28 = a5;
-  v8 = a4;
-  v26 = a3;
-  v9 = [a1 dateKeysForDictionaryRepresentation];
-  v10 = [a1 requiredKeysForDictionaryRepresentation];
-  v11 = [a1 optionalKeysForDictionaryRepresentation];
-  v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count") + objc_msgSend(v10, "count") + objc_msgSend(v11, "count")}];
-  [v12 addObjectsFromArray:v9];
-  [v12 addObjectsFromArray:v10];
-  v27 = v11;
-  [v12 addObjectsFromArray:v11];
+  contextCopy = context;
+  mapCopy = map;
+  predicateCopy = predicate;
+  dateKeysForDictionaryRepresentation = [self dateKeysForDictionaryRepresentation];
+  requiredKeysForDictionaryRepresentation = [self requiredKeysForDictionaryRepresentation];
+  optionalKeysForDictionaryRepresentation = [self optionalKeysForDictionaryRepresentation];
+  v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dateKeysForDictionaryRepresentation, "count") + objc_msgSend(requiredKeysForDictionaryRepresentation, "count") + objc_msgSend(optionalKeysForDictionaryRepresentation, "count")}];
+  [v12 addObjectsFromArray:dateKeysForDictionaryRepresentation];
+  [v12 addObjectsFromArray:requiredKeysForDictionaryRepresentation];
+  v27 = optionalKeysForDictionaryRepresentation;
+  [v12 addObjectsFromArray:optionalKeysForDictionaryRepresentation];
   v13 = [AEAnnotation predicateForAllAnnotationsIncludingDeleted:0];
-  v14 = [NSArray arrayWithObjects:v13, v26, 0];
+  v14 = [NSArray arrayWithObjects:v13, predicateCopy, 0];
   v15 = [NSCompoundPredicate andPredicateWithSubpredicates:v14];
 
-  v16 = [a1 dictionaryResultsForAnnotationsWithPredicate:v15 properties:v12 propertyNamesMap:v8 inManagedObjectContext:v28];
+  v16 = [self dictionaryResultsForAnnotationsWithPredicate:v15 properties:v12 propertyNamesMap:mapCopy inManagedObjectContext:contextCopy];
 
-  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count") + objc_msgSend(v10, "count")}];
-  [v17 addObjectsFromArray:v9];
-  [v17 addObjectsFromArray:v10];
+  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dateKeysForDictionaryRepresentation, "count") + objc_msgSend(requiredKeysForDictionaryRepresentation, "count")}];
+  [v17 addObjectsFromArray:dateKeysForDictionaryRepresentation];
+  [v17 addObjectsFromArray:requiredKeysForDictionaryRepresentation];
   v18 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", -+[IMUserDataCull maxDeletedAge]);
   v19 = [NSPredicate predicateWithFormat:@"%K == YES && %K > %@", @"annotationDeleted", @"annotationModificationDate", v18];
 
-  v20 = [NSArray arrayWithObjects:v19, v26, 0];
+  v20 = [NSArray arrayWithObjects:v19, predicateCopy, 0];
 
   v21 = [NSCompoundPredicate andPredicateWithSubpredicates:v20];
 
-  v22 = [a1 dictionaryResultsForAnnotationsWithPredicate:v21 properties:v17 propertyNamesMap:v8 inManagedObjectContext:v28];
+  v22 = [self dictionaryResultsForAnnotationsWithPredicate:v21 properties:v17 propertyNamesMap:mapCopy inManagedObjectContext:contextCopy];
 
   v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v16, "count") + objc_msgSend(v22, "count")}];
   v24 = v23;
@@ -2414,9 +2414,9 @@ LABEL_23:
   return v24;
 }
 
-+ (id)compatibleDictionaryRepresentationForAnnotationsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4
++ (id)compatibleDictionaryRepresentationForAnnotationsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v38 = a4;
+  contextCopy = context;
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:@"bookDatabaseKey" forKey:@"annotationAssetID"];
   [v4 setObject:@"date" forKey:@"annotationCreationDate"];
@@ -2497,8 +2497,8 @@ LABEL_23:
 
   v32 = [NSPredicate predicateWithFormat:@"(%K == nil || %K == %@ || %K == %@) && (%K <= %@ || %K == nil)", @"annotationCreatorIdentifier", @"annotationCreatorIdentifier", @"com~apple~iBooks", @"annotationCreatorIdentifier", @"com.apple.iBooks", @"futureProofing2", @"2", @"futureProofing2"];
   v33 = [NSPredicate predicateWithFormat:@"(%K != nil && %K != %@ && %K != %@) || %K > %@", @"annotationCreatorIdentifier", @"annotationCreatorIdentifier", @"com~apple~iBooks", @"annotationCreatorIdentifier", @"com.apple.iBook", @"futureProofing2", @"2"];
-  v34 = [a1 _dictionaryRepresentationForAnnotationsMatchingPredicate:v32 map:v4 inManagedObjectContext:v38];
-  v35 = [a1 _dictionaryRepresentationForAnnotationsMatchingPredicate:v33 map:0 inManagedObjectContext:v38];
+  v34 = [self _dictionaryRepresentationForAnnotationsMatchingPredicate:v32 map:v4 inManagedObjectContext:contextCopy];
+  v35 = [self _dictionaryRepresentationForAnnotationsMatchingPredicate:v33 map:0 inManagedObjectContext:contextCopy];
 
   v36 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v34 count] + objc_msgSend(v35, "count"));
   [v36 addObjectsFromArray:v34];
@@ -2507,17 +2507,17 @@ LABEL_23:
   return v36;
 }
 
-+ (id)aeAnnotationDictionaryRepresentationsForAnnotations:(id)a3
++ (id)aeAnnotationDictionaryRepresentationsForAnnotations:(id)annotations
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-  if ([v3 count])
+  annotationsCopy = annotations;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [annotationsCopy count]);
+  if ([annotationsCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = annotationsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -2535,8 +2535,8 @@ LABEL_23:
           v10 = *(*(&v13 + 1) + 8 * i);
           if ([v10 isValidForSerialization])
           {
-            v11 = [v10 aeAnnotationDictionaryRepresentation];
-            [v4 addObject:v11];
+            aeAnnotationDictionaryRepresentation = [v10 aeAnnotationDictionaryRepresentation];
+            [v4 addObject:aeAnnotationDictionaryRepresentation];
           }
         }
 
@@ -2550,24 +2550,24 @@ LABEL_23:
   return v4;
 }
 
-+ (id)dictionaryResultsForAnnotationsWithPredicate:(id)a3 properties:(id)a4 propertyNamesMap:(id)a5 inManagedObjectContext:(id)a6
++ (id)dictionaryResultsForAnnotationsWithPredicate:(id)predicate properties:(id)properties propertyNamesMap:(id)map inManagedObjectContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  mapCopy = map;
+  contextCopy = context;
+  v14 = contextCopy;
+  if (contextCopy)
   {
-    v58 = v13;
-    v59 = v10;
-    v57 = v11;
-    v15 = [v11 mutableCopy];
+    v58 = contextCopy;
+    v59 = predicateCopy;
+    v57 = propertiesCopy;
+    v15 = [propertiesCopy mutableCopy];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    obj = [a1 dateKeysForDictionaryRepresentation];
+    obj = [self dateKeysForDictionaryRepresentation];
     v16 = [obj countByEnumeratingWithState:&v71 objects:v76 count:16];
     v63 = v15;
     if (v16)
@@ -2598,9 +2598,9 @@ LABEL_23:
             v27 = [NSExpression expressionForFunction:@"add:to:" arguments:v26];
 
             v28 = v20;
-            v29 = [v12 objectForKey:v28];
+            v29 = [mapCopy objectForKey:v28];
             objc_opt_class();
-            v30 = v12;
+            v30 = mapCopy;
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
@@ -2610,7 +2610,7 @@ LABEL_23:
               v28 = v32;
             }
 
-            v12 = v30;
+            mapCopy = v30;
             v33 = objc_alloc_init(NSExpressionDescription);
             [v33 setName:v28];
             [v33 setExpression:v27];
@@ -2631,8 +2631,8 @@ LABEL_23:
       while (v17);
     }
 
-    v10 = v59;
-    if ([v12 count])
+    predicateCopy = v59;
+    if ([mapCopy count])
     {
       v56 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v58];
       [v56 propertiesByName];
@@ -2646,8 +2646,8 @@ LABEL_23:
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v61 = v12;
-      v35 = v12;
+      v61 = mapCopy;
+      v35 = mapCopy;
       v36 = [v35 countByEnumeratingWithState:&v65 objects:v75 count:16];
       if (v36)
       {
@@ -2720,8 +2720,8 @@ LABEL_23:
         while (v37);
       }
 
-      v10 = v59;
-      v12 = v61;
+      predicateCopy = v59;
+      mapCopy = v61;
     }
 
     v49 = objc_autoreleasePoolPush();
@@ -2732,12 +2732,12 @@ LABEL_23:
     [v50 setEntity:v52];
     [v50 setResultType:2];
     [v50 setPropertiesToFetch:v51];
-    [v50 setPredicate:v10];
+    [v50 setPredicate:predicateCopy];
     v64 = 0;
     v53 = [v58 executeFetchRequest:v50 error:&v64];
 
     objc_autoreleasePoolPop(v49);
-    v11 = v57;
+    propertiesCopy = v57;
   }
 
   else
@@ -2755,8 +2755,8 @@ LABEL_23:
     return 1;
   }
 
-  v3 = [(AEAnnotation *)self annotationModificationDate];
-  [v3 timeIntervalSince1970];
+  annotationModificationDate = [(AEAnnotation *)self annotationModificationDate];
+  [annotationModificationDate timeIntervalSince1970];
   v5 = v4;
 
   if ([IMUserDataCull isTimestampNewerThanMaxDeletedAge:v5])
@@ -2767,14 +2767,14 @@ LABEL_23:
   v7 = BCIMLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(AEAnnotation *)self annotationAssetID];
-    v9 = [(AEAnnotation *)self annotationUuid];
+    annotationAssetID = [(AEAnnotation *)self annotationAssetID];
+    annotationUuid = [(AEAnnotation *)self annotationUuid];
     v10 = +[NSDate date];
     [v10 timeIntervalSince1970];
     v12 = 138412802;
-    v13 = v8;
+    v13 = annotationAssetID;
     v14 = 2112;
-    v15 = v9;
+    v15 = annotationUuid;
     v16 = 2048;
     v17 = ((v11 - v5) / 86400.0);
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "MZBookKeeper isValidForSerialization assetID=%@ [%@] [Deleted %llu days ago]", &v12, 0x20u);
@@ -2783,12 +2783,12 @@ LABEL_23:
   return 0;
 }
 
-- (void)deserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4
+- (void)deserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source
 {
-  v17 = a3;
-  v16 = a4;
-  v7 = [objc_opt_class() annotationCreatorIdentifierFromDictionaryRepresentation:v17];
-  v8 = [v17 objectForKey:@"bookDatabaseKey"];
+  dictionaryCopy = dictionary;
+  sourceCopy = source;
+  v7 = [objc_opt_class() annotationCreatorIdentifierFromDictionaryRepresentation:dictionaryCopy];
+  v8 = [dictionaryCopy objectForKey:@"bookDatabaseKey"];
   if (![objc_opt_class() isBKBookmarkCreatorIdentifier:v7] || !objc_msgSend(v8, "length"))
   {
     v9 = v7;
@@ -2815,11 +2815,11 @@ LABEL_9:
   v12 = [(AEAnnotation *)self methodSignatureForSelector:v10];
   v13 = [NSInvocation invocationWithMethodSignature:v12];
   [v13 setSelector:v10];
-  [v13 setArgument:&v17 atIndex:2];
-  [v13 setArgument:&v16 atIndex:3];
+  [v13 setArgument:&dictionaryCopy atIndex:2];
+  [v13 setArgument:&sourceCopy atIndex:3];
   [v13 invokeWithTarget:self];
-  v14 = [(AEAnnotation *)self annotationCreatorIdentifier];
-  v15 = [v14 isEqualToString:v9];
+  annotationCreatorIdentifier = [(AEAnnotation *)self annotationCreatorIdentifier];
+  v15 = [annotationCreatorIdentifier isEqualToString:v9];
 
   if ((v15 & 1) == 0)
   {
@@ -2827,9 +2827,9 @@ LABEL_9:
   }
 }
 
-- (void)aeAnnotationDeserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4
+- (void)aeAnnotationDeserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v38 = [(AEAnnotation *)self valueForKey:?];
 
   +[AEAnnotation requiredKeysForDictionaryRepresentation];
@@ -2852,20 +2852,20 @@ LABEL_9:
         }
 
         v10 = *(*(&v48 + 1) + 8 * i);
-        v11 = [v5 valueForKey:v10];
+        v11 = [dictionaryCopy valueForKey:v10];
         if (!v11 || (+[NSNull null], v12 = objc_claimAutoreleasedReturnValue(), v12, v11 == v12))
         {
-          v13 = self;
+          selfCopy2 = self;
           v14 = 0;
         }
 
         else
         {
-          v13 = self;
+          selfCopy2 = self;
           v14 = v11;
         }
 
-        [(AEAnnotation *)v13 setValue:v14 forKey:v10];
+        [(AEAnnotation *)selfCopy2 setValue:v14 forKey:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -2896,7 +2896,7 @@ LABEL_9:
           }
 
           v20 = *(*(&v44 + 1) + 8 * j);
-          v21 = [v5 valueForKey:v20];
+          v21 = [dictionaryCopy valueForKey:v20];
           if (v21)
           {
             v22 = +[NSNull null];
@@ -2935,7 +2935,7 @@ LABEL_9:
         }
 
         v28 = *(*(&v40 + 1) + 8 * k);
-        v29 = [v5 valueForKey:v28];
+        v29 = [dictionaryCopy valueForKey:v28];
         if (v29)
         {
           v30 = +[NSNull null];
@@ -2956,19 +2956,19 @@ LABEL_9:
 
   if (!v38)
   {
-    v33 = [(AEAnnotation *)self annotationModificationDate];
-    [(AEAnnotation *)self setUserModificationDate:v33];
+    annotationModificationDate = [(AEAnnotation *)self annotationModificationDate];
+    [(AEAnnotation *)self setUserModificationDate:annotationModificationDate];
     goto LABEL_44;
   }
 
-  v32 = [v5 valueForKey:@"futureProofing6"];
+  v32 = [dictionaryCopy valueForKey:@"futureProofing6"];
 
   if (v32)
   {
-    v33 = [v5 valueForKey:@"futureProofing6"];
-    if ([v33 length])
+    annotationModificationDate = [dictionaryCopy valueForKey:@"futureProofing6"];
+    if ([annotationModificationDate length])
     {
-      [v33 doubleValue];
+      [annotationModificationDate doubleValue];
       v34 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 LABEL_41:
       v36 = v34;
@@ -2983,50 +2983,50 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v35 = [v5 valueForKey:@"annotationModificationDate"];
+  v35 = [dictionaryCopy valueForKey:@"annotationModificationDate"];
 
   if (v35)
   {
-    v33 = [v5 valueForKey:@"annotationModificationDate"];
-    v34 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v33 unsignedLongLongValue]);
+    annotationModificationDate = [dictionaryCopy valueForKey:@"annotationModificationDate"];
+    v34 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [annotationModificationDate unsignedLongLongValue]);
     goto LABEL_41;
   }
 
 LABEL_45:
-  v37 = [(AEAnnotation *)self annotationModificationDate];
-  [(AEAnnotation *)self setLocationModificationDate:v37];
+  annotationModificationDate2 = [(AEAnnotation *)self annotationModificationDate];
+  [(AEAnnotation *)self setLocationModificationDate:annotationModificationDate2];
 }
 
-+ (BOOL)isValidForDeserialization:(id)a3
++ (BOOL)isValidForDeserialization:(id)deserialization
 {
-  v4 = a3;
-  v5 = [a1 deletedFlagFromDictionaryRepresentation:v4];
+  deserializationCopy = deserialization;
+  v5 = [self deletedFlagFromDictionaryRepresentation:deserializationCopy];
   if (![v5 BOOLValue])
   {
     objc_opt_class();
-    v14 = [v4 objectForKeyedSubscript:@"locationBPlist"];
+    v14 = [deserializationCopy objectForKeyedSubscript:@"locationBPlist"];
     v15 = BUDynamicCast();
     if (![v15 length])
     {
       objc_opt_class();
-      v16 = [v4 objectForKeyedSubscript:@"plUserData"];
+      v16 = [deserializationCopy objectForKeyedSubscript:@"plUserData"];
       v17 = BUDynamicCast();
       if (![v17 length])
       {
         objc_opt_class();
-        v18 = [v4 objectForKeyedSubscript:@"annotationLocation"];
+        v18 = [deserializationCopy objectForKeyedSubscript:@"annotationLocation"];
         v19 = BUDynamicCast();
         if (![v19 length])
         {
-          v21 = [a1 deletedFlagFromDictionaryRepresentation:v4];
-          v22 = [v21 BOOLValue];
+          v21 = [self deletedFlagFromDictionaryRepresentation:deserializationCopy];
+          bOOLValue = [v21 BOOLValue];
 
-          if ((v22 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v8 = BCIMLog();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
             {
-              sub_1ED128(a1, v4, v8);
+              sub_1ED128(self, deserializationCopy, v8);
             }
 
             goto LABEL_5;
@@ -3042,10 +3042,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [a1 lastModificationFromDictionaryRepresentation:v4];
-  v7 = [v6 unsignedLongLongValue];
+  v6 = [self lastModificationFromDictionaryRepresentation:deserializationCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  if ([IMUserDataCull isTimestampNewerThanMaxDeletedAge:v7])
+  if ([IMUserDataCull isTimestampNewerThanMaxDeletedAge:unsignedLongLongValue])
   {
     goto LABEL_12;
   }
@@ -3053,8 +3053,8 @@ LABEL_12:
   v8 = BKMobileCloudSyncAnnotationsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:v4];
-    v10 = [objc_opt_class() annotationUuidFromDictionaryRepresentation:v4];
+    v9 = [objc_opt_class() annotationAssetIDFromDictionaryRepresentation:deserializationCopy];
+    v10 = [objc_opt_class() annotationUuidFromDictionaryRepresentation:deserializationCopy];
     v11 = +[NSDate date];
     [v11 timeIntervalSince1970];
     *buf = 138412802;
@@ -3062,7 +3062,7 @@ LABEL_12:
     v25 = 2112;
     v26 = v10;
     v27 = 2048;
-    v28 = ((v12 - v7) / 86400.0);
+    v28 = ((v12 - unsignedLongLongValue) / 86400.0);
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "MZBookKeeper annotation merge assetID=%@ [%@] [Deleted %llu days ago]", buf, 0x20u);
   }
 
@@ -3077,38 +3077,38 @@ LABEL_13:
 - (id)iBooks_dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(AEAnnotation *)self annotationAssetID];
+  annotationAssetID = [(AEAnnotation *)self annotationAssetID];
 
-  if (v4)
+  if (annotationAssetID)
   {
-    v5 = [(AEAnnotation *)self annotationAssetID];
-    [v3 setObject:v5 forKey:@"bookDatabaseKey"];
+    annotationAssetID2 = [(AEAnnotation *)self annotationAssetID];
+    [v3 setObject:annotationAssetID2 forKey:@"bookDatabaseKey"];
   }
 
-  v6 = [(AEAnnotation *)self annotationCreationDate];
+  annotationCreationDate = [(AEAnnotation *)self annotationCreationDate];
 
-  if (v6)
+  if (annotationCreationDate)
   {
-    v7 = [(AEAnnotation *)self annotationCreationDate];
-    [v7 timeIntervalSince1970];
+    annotationCreationDate2 = [(AEAnnotation *)self annotationCreationDate];
+    [annotationCreationDate2 timeIntervalSince1970];
     v9 = [NSNumber numberWithUnsignedLongLong:v8];
     [v3 setObject:v9 forKey:@"date"];
   }
 
-  v10 = [(AEAnnotation *)self plLocationRangeStart];
+  plLocationRangeStart = [(AEAnnotation *)self plLocationRangeStart];
 
-  if (!v10)
+  if (!plLocationRangeStart)
   {
     v11 = [NSNumber numberWithInt:0];
     [(AEAnnotation *)self setPlLocationRangeStart:v11];
   }
 
-  v12 = [(AEAnnotation *)self plLocationRangeStart];
+  plLocationRangeStart2 = [(AEAnnotation *)self plLocationRangeStart];
 
-  if (v12)
+  if (plLocationRangeStart2)
   {
-    v13 = [(AEAnnotation *)self plLocationRangeStart];
-    [v3 setObject:v13 forKey:@"ordinal"];
+    plLocationRangeStart3 = [(AEAnnotation *)self plLocationRangeStart];
+    [v3 setObject:plLocationRangeStart3 forKey:@"ordinal"];
   }
 
   v14 = [objc_opt_class() bookmarkTypeFromAnnotationType:{-[AEAnnotation annotationType](self, "annotationType")}];
@@ -3117,30 +3117,30 @@ LABEL_13:
     [v3 setObject:v14 forKey:@"type"];
   }
 
-  v15 = [(AEAnnotation *)self annotationModificationDate];
+  annotationModificationDate = [(AEAnnotation *)self annotationModificationDate];
 
-  if (!v15)
+  if (!annotationModificationDate)
   {
-    v16 = [(AEAnnotation *)self annotationCreationDate];
-    [(AEAnnotation *)self setAnnotationModificationDate:v16];
+    annotationCreationDate3 = [(AEAnnotation *)self annotationCreationDate];
+    [(AEAnnotation *)self setAnnotationModificationDate:annotationCreationDate3];
   }
 
-  v17 = [(AEAnnotation *)self annotationModificationDate];
+  annotationModificationDate2 = [(AEAnnotation *)self annotationModificationDate];
 
-  if (v17)
+  if (annotationModificationDate2)
   {
-    v18 = [(AEAnnotation *)self annotationModificationDate];
-    [v18 timeIntervalSince1970];
+    annotationModificationDate3 = [(AEAnnotation *)self annotationModificationDate];
+    [annotationModificationDate3 timeIntervalSince1970];
     v20 = [NSNumber numberWithUnsignedLongLong:v19];
     [v3 setObject:v20 forKey:@"lastModification"];
   }
 
-  v21 = [(AEAnnotation *)self userModificationDate];
+  userModificationDate = [(AEAnnotation *)self userModificationDate];
 
-  if (v21)
+  if (userModificationDate)
   {
-    v22 = [(AEAnnotation *)self userModificationDate];
-    [v22 timeIntervalSince1970];
+    userModificationDate2 = [(AEAnnotation *)self userModificationDate];
+    [userModificationDate2 timeIntervalSince1970];
     v24 = [NSNumber numberWithUnsignedLongLong:v23];
     [v3 setObject:v24 forKey:@"lastUserModification"];
   }
@@ -3156,19 +3156,19 @@ LABEL_13:
     v26 = [NSNumber numberWithBool:[(AEAnnotation *)self annotationIsUnderline]];
     [v3 setObject:v26 forKey:@"annotationIsUnderline"];
 
-    v27 = [(AEAnnotation *)self plUserData];
+    plUserData = [(AEAnnotation *)self plUserData];
 
-    if (v27)
+    if (plUserData)
     {
-      v28 = [(AEAnnotation *)self plUserData];
-      [v3 setObject:v28 forKey:@"locationBPlist"];
+      plUserData2 = [(AEAnnotation *)self plUserData];
+      [v3 setObject:plUserData2 forKey:@"locationBPlist"];
     }
 
-    v29 = [(AEAnnotation *)self annotationSelectedText];
-    v30 = [objc_opt_class() optimizedSelectedTextForSerialization:v29];
+    annotationSelectedText = [(AEAnnotation *)self annotationSelectedText];
+    v30 = [objc_opt_class() optimizedSelectedTextForSerialization:annotationSelectedText];
 
-    v31 = [(AEAnnotation *)self annotationRepresentativeText];
-    v32 = [objc_opt_class() optimizedRepresentativeTextForSerialization:v31 selectedText:v30];
+    annotationRepresentativeText = [(AEAnnotation *)self annotationRepresentativeText];
+    v32 = [objc_opt_class() optimizedRepresentativeTextForSerialization:annotationRepresentativeText selectedText:v30];
 
     if (!v32)
     {
@@ -3198,15 +3198,15 @@ LABEL_13:
   [v3 setObject:v33 forKey:@"deletedFlag"];
 
   [(AEAnnotation *)self validateAnnotationUuid];
-  v34 = [(AEAnnotation *)self annotationUuid];
-  [v3 setObject:v34 forKey:@"serverSyncUniqueId"];
+  annotationUuid = [(AEAnnotation *)self annotationUuid];
+  [v3 setObject:annotationUuid forKey:@"serverSyncUniqueId"];
 
-  v35 = [(AEAnnotation *)self annotationNote];
+  annotationNote = [(AEAnnotation *)self annotationNote];
 
-  if (v35)
+  if (annotationNote)
   {
-    v36 = [(AEAnnotation *)self annotationNote];
-    [v3 setObject:v36 forKey:@"annotation"];
+    annotationNote2 = [(AEAnnotation *)self annotationNote];
+    [v3 setObject:annotationNote2 forKey:@"annotation"];
   }
 
   return v3;
@@ -3214,15 +3214,15 @@ LABEL_13:
 
 - (id)doesSerializeAs_iBooks
 {
-  v3 = [(AEAnnotation *)self annotationCreatorIdentifier];
-  v4 = [objc_opt_class() isBKBookmarkCreatorIdentifier:v3];
-  v5 = [(AEAnnotation *)self annotationVersion];
+  annotationCreatorIdentifier = [(AEAnnotation *)self annotationCreatorIdentifier];
+  v4 = [objc_opt_class() isBKBookmarkCreatorIdentifier:annotationCreatorIdentifier];
+  annotationVersion = [(AEAnnotation *)self annotationVersion];
 
-  v6 = (v5 == 0) & v4;
-  if (v5 && (v4 & 1) != 0)
+  v6 = (annotationVersion == 0) & v4;
+  if (annotationVersion && (v4 & 1) != 0)
   {
-    v7 = [(AEAnnotation *)self annotationVersion];
-    v6 = [v7 compare:@"3" options:64] == -1;
+    annotationVersion2 = [(AEAnnotation *)self annotationVersion];
+    v6 = [annotationVersion2 compare:@"3" options:64] == -1;
   }
 
   v8 = [NSNumber numberWithBool:v6];
@@ -3230,36 +3230,36 @@ LABEL_13:
   return v8;
 }
 
-- (void)iBooks_deserializeFromDictionary:(id)a3 trustedSource:(BOOL)a4
+- (void)iBooks_deserializeFromDictionary:(id)dictionary trustedSource:(BOOL)source
 {
-  v4 = a4;
-  v34 = a3;
+  sourceCopy = source;
+  dictionaryCopy = dictionary;
   v6 = [(AEAnnotation *)self valueForKey:@"futureProofing6"];
 
-  v7 = [v34 objectForKey:@"bookDatabaseKey"];
+  v7 = [dictionaryCopy objectForKey:@"bookDatabaseKey"];
   [(AEAnnotation *)self setAnnotationAssetID:v7];
 
   v8 = objc_opt_class();
-  v9 = [v34 objectForKey:@"highlightColor"];
+  v9 = [dictionaryCopy objectForKey:@"highlightColor"];
   -[AEAnnotation setAnnotationStyle:](self, "setAnnotationStyle:", [v8 annotationStyleFromBookmarkColor:v9]);
 
-  v10 = [v34 valueForKey:@"annotationIsUnderline"];
+  v10 = [dictionaryCopy valueForKey:@"annotationIsUnderline"];
   -[AEAnnotation setAnnotationIsUnderline:](self, "setAnnotationIsUnderline:", [v10 BOOLValue]);
 
-  v11 = [v34 objectForKey:@"date"];
+  v11 = [dictionaryCopy objectForKey:@"date"];
   v12 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v11 unsignedLongLongValue]);
   [(AEAnnotation *)self setAnnotationCreationDate:v12];
 
-  v13 = [(AEAnnotation *)self bkBookmarkDeserializeLocationDataFromDictionary:v34 trustedSource:v4];
+  v13 = [(AEAnnotation *)self bkBookmarkDeserializeLocationDataFromDictionary:dictionaryCopy trustedSource:sourceCopy];
   [(AEAnnotation *)self setPlUserData:v13];
 
-  v14 = [v34 objectForKey:@"ordinal"];
+  v14 = [dictionaryCopy objectForKey:@"ordinal"];
   [(AEAnnotation *)self setPlLocationRangeStart:v14];
 
-  v15 = [v34 objectForKey:@"text"];
+  v15 = [dictionaryCopy objectForKey:@"text"];
   [(AEAnnotation *)self setAnnotationSelectedText:v15];
 
-  v16 = [v34 objectForKey:@"textualContext"];
+  v16 = [dictionaryCopy objectForKey:@"textualContext"];
   if ([v16 length])
   {
     v17 = v16;
@@ -3272,7 +3272,7 @@ LABEL_13:
 
   [(AEAnnotation *)self setAnnotationRepresentativeText:v17];
   v18 = objc_opt_class();
-  v19 = [v34 objectForKey:@"type"];
+  v19 = [dictionaryCopy objectForKey:@"type"];
   -[AEAnnotation setAnnotationType:](self, "setAnnotationType:", [v18 annotationTypeFromBookmarkType:v19]);
 
   if (![(AEAnnotation *)self annotationStyle]&& ![(AEAnnotation *)self annotationIsUnderline]&& [(AEAnnotation *)self annotationType]== 2)
@@ -3282,8 +3282,8 @@ LABEL_13:
 
   if (![(AEAnnotation *)self annotationType])
   {
-    v20 = [(AEAnnotation *)self annotationSelectedText];
-    if (v20)
+    annotationSelectedText = [(AEAnnotation *)self annotationSelectedText];
+    if (annotationSelectedText)
     {
 
       v21 = 2;
@@ -3291,9 +3291,9 @@ LABEL_13:
 
     else
     {
-      v22 = [(AEAnnotation *)self annotationRepresentativeText];
+      annotationRepresentativeText = [(AEAnnotation *)self annotationRepresentativeText];
 
-      if (v22)
+      if (annotationRepresentativeText)
       {
         v21 = 2;
       }
@@ -3307,34 +3307,34 @@ LABEL_13:
     [(AEAnnotation *)self setAnnotationType:v21];
   }
 
-  v23 = [v34 objectForKey:@"deletedFlag"];
-  v24 = [v23 BOOLValue];
+  v23 = [dictionaryCopy objectForKey:@"deletedFlag"];
+  bOOLValue = [v23 BOOLValue];
 
-  [(AEAnnotation *)self setAnnotationDeleted:v24];
-  v25 = [v34 objectForKey:@"annotation"];
+  [(AEAnnotation *)self setAnnotationDeleted:bOOLValue];
+  v25 = [dictionaryCopy objectForKey:@"annotation"];
   [(AEAnnotation *)self setAnnotationNote:v25];
 
-  v26 = [v34 objectForKey:@"serverSyncUniqueId"];
+  v26 = [dictionaryCopy objectForKey:@"serverSyncUniqueId"];
   [(AEAnnotation *)self setAnnotationUuid:v26];
 
   [(AEAnnotation *)self validateAnnotationUuid];
-  v27 = [v34 objectForKey:@"lastModification"];
+  v27 = [dictionaryCopy objectForKey:@"lastModification"];
   v28 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v27 unsignedLongLongValue]);
   [(AEAnnotation *)self setAnnotationModificationDate:v28];
 
   if (!v6)
   {
-    v30 = [(AEAnnotation *)self annotationModificationDate];
-    [(AEAnnotation *)self setUserModificationDate:v30];
+    annotationModificationDate = [(AEAnnotation *)self annotationModificationDate];
+    [(AEAnnotation *)self setUserModificationDate:annotationModificationDate];
     goto LABEL_21;
   }
 
-  v29 = [v34 valueForKey:@"lastUserModification"];
+  v29 = [dictionaryCopy valueForKey:@"lastUserModification"];
 
   if (v29)
   {
-    v30 = [v34 objectForKey:@"lastUserModification"];
-    v31 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v30 unsignedLongLongValue]);
+    annotationModificationDate = [dictionaryCopy objectForKey:@"lastUserModification"];
+    v31 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [annotationModificationDate unsignedLongLongValue]);
 LABEL_18:
     [(AEAnnotation *)self setUserModificationDate:v31];
 LABEL_19:
@@ -3343,12 +3343,12 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v33 = [v34 valueForKey:@"lastModification"];
+  v33 = [dictionaryCopy valueForKey:@"lastModification"];
 
   if (v33)
   {
-    v30 = [v34 valueForKey:@"lastModification"];
-    v31 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v30 unsignedLongLongValue]);
+    annotationModificationDate = [dictionaryCopy valueForKey:@"lastModification"];
+    v31 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [annotationModificationDate unsignedLongLongValue]);
     if (!v31)
     {
       goto LABEL_19;
@@ -3358,31 +3358,31 @@ LABEL_21:
   }
 
 LABEL_22:
-  v32 = [(AEAnnotation *)self annotationModificationDate];
-  [(AEAnnotation *)self setLocationModificationDate:v32];
+  annotationModificationDate2 = [(AEAnnotation *)self annotationModificationDate];
+  [(AEAnnotation *)self setLocationModificationDate:annotationModificationDate2];
 }
 
-- (id)bkBookmarkDeserializeLocationDataFromDictionary:(id)a3 trustedSource:(BOOL)a4
+- (id)bkBookmarkDeserializeLocationDataFromDictionary:(id)dictionary trustedSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  dictionaryCopy = dictionary;
   if (objc_opt_respondsToSelector())
   {
-    [(AEAnnotation *)self preferredDeserializedLocationDataFromDictionary:v6 trustedSource:v4];
+    [(AEAnnotation *)self preferredDeserializedLocationDataFromDictionary:dictionaryCopy trustedSource:sourceCopy];
   }
 
   else
   {
-    [v6 objectForKey:@"locationBPlist"];
+    [dictionaryCopy objectForKey:@"locationBPlist"];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (int)annotationStyleFromBookmarkColor:(id)a3
++ (int)annotationStyleFromBookmarkColor:(id)color
 {
-  result = [a3 intValue];
+  result = [color intValue];
   if ((result - 1) >= 5)
   {
     return 0;
@@ -3391,24 +3391,24 @@ LABEL_22:
   return result;
 }
 
-+ (id)bookmarkColorFromAnnotationStyle:(int)a3
++ (id)bookmarkColorFromAnnotationStyle:(int)style
 {
-  if ((a3 - 1) >= 5)
+  if ((style - 1) >= 5)
   {
-    *&a3 = 0;
+    *&style = 0;
   }
 
   else
   {
-    v3 = a3;
+    styleCopy = style;
   }
 
-  return [NSNumber numberWithInt:*&a3];
+  return [NSNumber numberWithInt:*&style];
 }
 
-+ (int)annotationTypeFromBookmarkType:(id)a3
++ (int)annotationTypeFromBookmarkType:(id)type
 {
-  v3 = [a3 intValue] - 1;
+  v3 = [type intValue] - 1;
   if (v3 > 2)
   {
     return 0;
@@ -3420,28 +3420,28 @@ LABEL_22:
   }
 }
 
-+ (id)bookmarkTypeFromAnnotationType:(int)a3
++ (id)bookmarkTypeFromAnnotationType:(int)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = dword_2A462C[a3 - 1];
+    v3 = dword_2A462C[type - 1];
   }
 
   return [NSNumber numberWithInt:v3];
 }
 
-+ (id)annotationUuidFromDictionaryRepresentation:(id)a3
++ (id)annotationUuidFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"serverSyncUniqueId"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"serverSyncUniqueId"];
   if (![v4 length])
   {
-    v5 = [v3 objectForKey:@"annotationUuid"];
+    v5 = [representationCopy objectForKey:@"annotationUuid"];
 
     v4 = v5;
   }
@@ -3449,13 +3449,13 @@ LABEL_22:
   return v4;
 }
 
-+ (id)annotationAssetIDFromDictionaryRepresentation:(id)a3
++ (id)annotationAssetIDFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"bookDatabaseKey"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"bookDatabaseKey"];
   if (![v4 length])
   {
-    v5 = [v3 objectForKey:@"annotationAssetID"];
+    v5 = [representationCopy objectForKey:@"annotationAssetID"];
 
     v4 = v5;
   }
@@ -3463,33 +3463,33 @@ LABEL_22:
   return v4;
 }
 
-+ (id)lastModificationFromDictionaryRepresentation:(id)a3
++ (id)lastModificationFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"lastModification"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"lastModification"];
   if (!v4)
   {
-    v4 = [v3 objectForKey:@"annotationModificationDate"];
+    v4 = [representationCopy objectForKey:@"annotationModificationDate"];
   }
 
   return v4;
 }
 
-+ (id)deletedFlagFromDictionaryRepresentation:(id)a3
++ (id)deletedFlagFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"deletedFlag"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"deletedFlag"];
   if (!v4)
   {
-    v4 = [v3 objectForKey:@"annotationDeleted"];
+    v4 = [representationCopy objectForKey:@"annotationDeleted"];
   }
 
   return v4;
 }
 
-+ (id)annotationCreatorIdentifierFromDictionaryRepresentation:(id)a3
++ (id)annotationCreatorIdentifierFromDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 objectForKey:@"annotationCreatorIdentifier"];
+  v3 = [representation objectForKey:@"annotationCreatorIdentifier"];
   if (![v3 length])
   {
     v4 = @"com~apple~iBooks";
@@ -3500,10 +3500,10 @@ LABEL_22:
   return v3;
 }
 
-+ (int)annotationTypeFromDictionaryRepresentation:(id)a3
++ (int)annotationTypeFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"type"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"type"];
   if (v5)
   {
     v6 = v5;
@@ -3513,16 +3513,16 @@ LABEL_22:
       goto LABEL_7;
     }
 
-    v7 = [a1 annotationTypeFromBookmarkType:v6];
+    intValue = [self annotationTypeFromBookmarkType:v6];
   }
 
   else
   {
-    v6 = [v4 objectForKey:@"annotationType"];
-    v7 = [v6 intValue];
+    v6 = [representationCopy objectForKey:@"annotationType"];
+    intValue = [v6 intValue];
   }
 
-  v8 = v7;
+  v8 = intValue;
 LABEL_7:
 
   return v8;
@@ -3530,8 +3530,8 @@ LABEL_7:
 
 - (id)validateAnnotationUuid
 {
-  v3 = [(AEAnnotation *)self annotationUuid];
-  if (![v3 length])
+  annotationUuid = [(AEAnnotation *)self annotationUuid];
+  if (![annotationUuid length])
   {
     if ([(AEAnnotation *)self annotationType]== 3)
     {
@@ -3540,30 +3540,30 @@ LABEL_7:
 
     else
     {
-      v5 = [(AEAnnotation *)self plUserData];
-      v6 = [v5 bytes];
-      v7 = [(AEAnnotation *)self plUserData];
-      v8 = crc32(0, v6, [v7 length]);
+      plUserData = [(AEAnnotation *)self plUserData];
+      bytes = [plUserData bytes];
+      plUserData2 = [(AEAnnotation *)self plUserData];
+      v8 = crc32(0, bytes, [plUserData2 length]);
 
-      v9 = [(AEAnnotation *)self annotationCreationDate];
-      [v9 timeIntervalSince1970];
+      annotationCreationDate = [(AEAnnotation *)self annotationCreationDate];
+      [annotationCreationDate timeIntervalSince1970];
       v4 = [NSString stringWithFormat:@"%d-crc32(%08x)", v10, v8];
 
-      v3 = v9;
+      annotationUuid = annotationCreationDate;
     }
 
     [(AEAnnotation *)self setAnnotationUuid:v4];
-    v3 = v4;
+    annotationUuid = v4;
   }
 
-  return v3;
+  return annotationUuid;
 }
 
-+ (BOOL)isBKBookmarkCreatorIdentifier:(id)a3
++ (BOOL)isBKBookmarkCreatorIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:@"com~apple~iBooks"] & 1) == 0)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy && ([identifierCopy isEqualToString:@"com~apple~iBooks"] & 1) == 0)
   {
     v5 = [v4 isEqualToString:@"com.apple.iBooks"];
   }

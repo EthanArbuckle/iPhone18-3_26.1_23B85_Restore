@@ -1,14 +1,14 @@
 @interface EDInteractionEventLogSaltProvider
 + (OS_os_log)log;
 + (id)saltProviderFromKeyChain;
-+ (id)saltProviderWithString:(id)a3;
++ (id)saltProviderWithString:(id)string;
 - (BOOL)migrateAccessClass;
 - (EDInteractionEventLogSaltProvider)init;
 - (NSData)salt;
 - (id)_createSalt;
-- (id)_findExistingSaltError:(id *)a3;
+- (id)_findExistingSaltError:(id *)error;
 - (id)_findOrCreateSalt;
-- (id)_queryKeychainError:(id *)a3;
+- (id)_queryKeychainError:(id *)error;
 - (void)_createSalt;
 - (void)_deleteSalt;
 - (void)salt;
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __40__EDInteractionEventLogSaltProvider_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_47 != -1)
   {
     dispatch_once(&log_onceToken_47, block);
@@ -41,11 +41,11 @@ void __40__EDInteractionEventLogSaltProvider_log__block_invoke(uint64_t a1)
   log_log_47 = v1;
 }
 
-+ (id)saltProviderWithString:(id)a3
++ (id)saltProviderWithString:(id)string
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 dataUsingEncoding:4];
+  stringCopy = string;
+  v5 = objc_alloc_init(self);
+  v6 = [stringCopy dataUsingEncoding:4];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -54,7 +54,7 @@ void __40__EDInteractionEventLogSaltProvider_log__block_invoke(uint64_t a1)
 
 + (id)saltProviderFromKeyChain
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -79,9 +79,9 @@ void __40__EDInteractionEventLogSaltProvider_log__block_invoke(uint64_t a1)
   salt = self->_salt;
   if (!salt)
   {
-    v4 = [(EDInteractionEventLogSaltProvider *)self _findOrCreateSalt];
+    _findOrCreateSalt = [(EDInteractionEventLogSaltProvider *)self _findOrCreateSalt];
     v5 = self->_salt;
-    self->_salt = v4;
+    self->_salt = _findOrCreateSalt;
 
     salt = self->_salt;
   }
@@ -111,12 +111,12 @@ void __40__EDInteractionEventLogSaltProvider_log__block_invoke(uint64_t a1)
   if (!v3)
   {
 LABEL_9:
-    v9 = [(EDInteractionEventLogSaltProvider *)self _createSalt];
+    _createSalt = [(EDInteractionEventLogSaltProvider *)self _createSalt];
     goto LABEL_10;
   }
 
-  v5 = [v3 second];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E697ABD8]];
+  second = [v3 second];
+  v6 = [second objectForKeyedSubscript:*MEMORY[0x1E697ABD8]];
   v7 = [v6 isEqual:*MEMORY[0x1E697ABE0]];
 
   if (!v7)
@@ -138,14 +138,14 @@ LABEL_9:
     _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Found existing salt", v13, 2u);
   }
 
-  v9 = [v3 first];
+  _createSalt = [v3 first];
 LABEL_10:
-  v11 = v9;
+  v11 = _createSalt;
 
   return v11;
 }
 
-- (id)_queryKeychainError:(id *)a3
+- (id)_queryKeychainError:(id *)error
 {
   v19[6] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E697B008];
@@ -188,10 +188,10 @@ LABEL_10:
         [EDInteractionEventLogSaltProvider _queryKeychainError:];
       }
 
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
-        *a3 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_13;
       }
     }
@@ -212,7 +212,7 @@ LABEL_13:
   return v12;
 }
 
-- (id)_findExistingSaltError:(id *)a3
+- (id)_findExistingSaltError:(id *)error
 {
   v4 = [(EDInteractionEventLogSaltProvider *)self _queryKeychainError:?];
   if (v4)
@@ -220,8 +220,8 @@ LABEL_13:
     v5 = v4;
     v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_35];
 
-    v7 = [v6 firstObject];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF88]);
     if (v8)
@@ -256,16 +256,16 @@ LABEL_13:
       }
 
       v14 = MEMORY[0x1E699B848];
-      v15 = [v6 firstObject];
-      v16 = [v14 pairWithFirst:v9 second:v15];
+      firstObject2 = [v6 firstObject];
+      v16 = [v14 pairWithFirst:v9 second:firstObject2];
     }
 
     else
     {
       v16 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = 0;
+        *error = 0;
       }
     }
   }
@@ -332,8 +332,8 @@ uint64_t __60__EDInteractionEventLogSaltProvider__findExistingSaltError___block_
   v27 = v3;
   arc4random_buf(buf, 0x20uLL);
   v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buf length:32];
-  v5 = [v4 ef_hexString];
-  v6 = [v5 dataUsingEncoding:4];
+  ef_hexString = [v4 ef_hexString];
+  v6 = [ef_hexString dataUsingEncoding:4];
 
   v7 = *MEMORY[0x1E697AFF8];
   v21[0] = *MEMORY[0x1E697B3C0];
@@ -346,8 +346,8 @@ uint64_t __60__EDInteractionEventLogSaltProvider__findExistingSaltError___block_
   v25[2] = @"com.apple.mail";
   v25[3] = @"com.apple.mail.interaction-log.salt";
   v10 = MEMORY[0x1E696AD98];
-  v11 = [MEMORY[0x1E699B7B0] currentDevice];
-  v12 = [v10 numberWithInt:{objc_msgSend(v11, "isInternal") ^ 1}];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  v12 = [v10 numberWithInt:{objc_msgSend(currentDevice, "isInternal") ^ 1}];
   v13 = *MEMORY[0x1E697ABD8];
   v14 = *MEMORY[0x1E697ABE0];
   v25[4] = v12;
@@ -403,8 +403,8 @@ uint64_t __60__EDInteractionEventLogSaltProvider__findExistingSaltError___block_
   if (v4)
   {
     [(EDInteractionEventLogSaltProvider *)self _deleteSalt];
-    v7 = [(EDInteractionEventLogSaltProvider *)self _createSalt];
-    v8 = v7 != 0;
+    _createSalt = [(EDInteractionEventLogSaltProvider *)self _createSalt];
+    v8 = _createSalt != 0;
   }
 
   else
@@ -415,8 +415,8 @@ uint64_t __60__EDInteractionEventLogSaltProvider__findExistingSaltError___block_
       goto LABEL_12;
     }
 
-    v7 = [objc_opt_class() log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    _createSalt = [objc_opt_class() log];
+    if (os_log_type_enabled(_createSalt, OS_LOG_TYPE_ERROR))
     {
       [EDInteractionEventLogSaltProvider migrateAccessClass];
     }
@@ -431,7 +431,7 @@ LABEL_12:
 - (void)salt
 {
   v3 = @"NO";
-  if (a1)
+  if (self)
   {
     v3 = @"YES";
   }

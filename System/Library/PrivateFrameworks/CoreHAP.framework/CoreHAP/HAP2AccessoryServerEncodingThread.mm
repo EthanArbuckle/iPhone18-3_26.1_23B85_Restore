@@ -1,36 +1,36 @@
 @interface HAP2AccessoryServerEncodingThread
-+ (id)_parseShortFormUUID:(id)a3 error:(id *)a4;
-- (HAP2AccessoryServerEncodingThread)initWithEncodingFeatures:(unint64_t)a3 accessoryDescription:(id)a4;
-- (HAP2EncodedAttributeDatabaseResponseThread)_attributeDatabaseResponseFromBTLEResponse:(void *)a3 error:;
-- (HAP2EncodedCharacteristicRequestThread)_pairingsRequestWithCharacteristic:(uint64_t)a3 bodyValue:(char)a4 threadRequestType:(uint64_t)a5 error:;
-- (HAP2EncodedCharacteristicResponse)_prepareWriteResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)a1 error:(void *)a2;
-- (HAP2EncodedCharacteristicResponse)_readResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)a1 error:(void *)a2;
-- (HAP2EncodedListPairingsResponseThread)_listPairingsResponseFromBTLEResponse:(HAP2EncodedListPairingsResponseThread *)a1 request:(void *)a2 error:(void *)a3;
++ (id)_parseShortFormUUID:(id)d error:(id *)error;
+- (HAP2AccessoryServerEncodingThread)initWithEncodingFeatures:(unint64_t)features accessoryDescription:(id)description;
+- (HAP2EncodedAttributeDatabaseResponseThread)_attributeDatabaseResponseFromBTLEResponse:(void *)response error:;
+- (HAP2EncodedCharacteristicRequestThread)_pairingsRequestWithCharacteristic:(uint64_t)characteristic bodyValue:(char)value threadRequestType:(uint64_t)type error:;
+- (HAP2EncodedCharacteristicResponse)_prepareWriteResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)responses error:(void *)error;
+- (HAP2EncodedCharacteristicResponse)_readResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)responses error:(void *)error;
+- (HAP2EncodedListPairingsResponseThread)_listPairingsResponseFromBTLEResponse:(HAP2EncodedListPairingsResponseThread *)response request:(void *)request error:(void *)error;
 - (NSString)description;
-- (id)_errorIfResponseInvalid:(void *)a1;
-- (id)_extractAndValidateControlFieldWithData:(int)a3 expectedType:;
-- (id)_extractResponseBodyFromBTLEResponse:(void *)a1 request:(void *)a2 error:(void *)a3;
-- (id)_parseCharacteristicMetadata:(id)a3 error:(id *)a4;
-- (id)_parseCharacteristicResponsesWithBodyData:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)_parseCharacteristics:(id)a3 error:(id *)a4;
-- (id)_parseServiceList:(id)a3 error:(id *)a4;
-- (id)_parseTopLevelAttributeDatabaseFromData:(id)a3 error:(id *)a4;
-- (id)_valueResponseFromBTLEResponse:(void *)a1;
-- (id)decodeBodyData:(id)a3 format:(unint64_t)a4 error:(id *)a5;
-- (id)encodeBodyValue:(id)a3 format:(unint64_t)a4 error:(id *)a5;
-- (id)eventsForData:(id)a3 error:(id *)a4;
-- (id)executeWriteRequestForCharacteristics:(id)a3 error:(id *)a4;
-- (id)groupingsForReadRequestsForCharacteristics:(id)a3;
-- (id)groupingsForWriteRequestsForCharacteristics:(id)a3;
-- (id)notificationRequestsForCharacteristics:(id)a3 type:(unint64_t)a4 error:(id *)a5;
-- (id)prepareWriteRequestForCharacteristics:(id)a3 ttl:(double)a4 error:(id *)a5;
-- (id)readRequestForCharacteristics:(id)a3 shouldEncrypt:(BOOL)a4 error:(id *)a5;
-- (id)requestToAddPairing:(id)a3 characteristic:(id)a4 error:(id *)a5;
-- (id)requestToListPairingsWithCharacteristic:(id)a3 error:(id *)a4;
-- (id)requestToRemovePairing:(id)a3 characteristic:(id)a4 error:(id *)a5;
-- (id)responseForRequest:(id)a3 bodyData:(id)a4 error:(id *)a5;
-- (id)unpairedIdentifyRequestWithError:(id *)a3;
-- (id)writeRequestForCharacteristics:(id)a3 shouldEncrypt:(BOOL)a4 error:(id *)a5;
+- (id)_errorIfResponseInvalid:(void *)invalid;
+- (id)_extractAndValidateControlFieldWithData:(int)data expectedType:;
+- (id)_extractResponseBodyFromBTLEResponse:(void *)response request:(void *)request error:(void *)error;
+- (id)_parseCharacteristicMetadata:(id)metadata error:(id *)error;
+- (id)_parseCharacteristicResponsesWithBodyData:(id)data request:(id)request error:(id *)error;
+- (id)_parseCharacteristics:(id)characteristics error:(id *)error;
+- (id)_parseServiceList:(id)list error:(id *)error;
+- (id)_parseTopLevelAttributeDatabaseFromData:(id)data error:(id *)error;
+- (id)_valueResponseFromBTLEResponse:(void *)response;
+- (id)decodeBodyData:(id)data format:(unint64_t)format error:(id *)error;
+- (id)encodeBodyValue:(id)value format:(unint64_t)format error:(id *)error;
+- (id)eventsForData:(id)data error:(id *)error;
+- (id)executeWriteRequestForCharacteristics:(id)characteristics error:(id *)error;
+- (id)groupingsForReadRequestsForCharacteristics:(id)characteristics;
+- (id)groupingsForWriteRequestsForCharacteristics:(id)characteristics;
+- (id)notificationRequestsForCharacteristics:(id)characteristics type:(unint64_t)type error:(id *)error;
+- (id)prepareWriteRequestForCharacteristics:(id)characteristics ttl:(double)ttl error:(id *)error;
+- (id)readRequestForCharacteristics:(id)characteristics shouldEncrypt:(BOOL)encrypt error:(id *)error;
+- (id)requestToAddPairing:(id)pairing characteristic:(id)characteristic error:(id *)error;
+- (id)requestToListPairingsWithCharacteristic:(id)characteristic error:(id *)error;
+- (id)requestToRemovePairing:(id)pairing characteristic:(id)characteristic error:(id *)error;
+- (id)responseForRequest:(id)request bodyData:(id)data error:(id *)error;
+- (id)unpairedIdentifyRequestWithError:(id *)error;
+- (id)writeRequestForCharacteristics:(id)characteristics shouldEncrypt:(BOOL)encrypt error:(id *)error;
 @end
 
 @implementation HAP2AccessoryServerEncodingThread
@@ -52,36 +52,36 @@
     accessoryDescription = 0;
   }
 
-  v7 = [v3 stringWithFormat:@"%@ [%@]", v4, accessoryDescription];
+  accessoryDescription = [v3 stringWithFormat:@"%@ [%@]", v4, accessoryDescription];
 
-  return v7;
+  return accessoryDescription;
 }
 
-- (id)_parseTopLevelAttributeDatabaseFromData:(id)a3 error:(id *)a4
+- (id)_parseTopLevelAttributeDatabaseFromData:(id)data error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   if (([(HAP2AccessoryServerEncodingThread *)self encodingFeatures]& 2) != 0)
   {
-    v18 = [HAP2TLVAccessorySignatureReadRequest parsedFromData:v6 error:a4];
+    v18 = [HAP2TLVAccessorySignatureReadRequest parsedFromData:dataCopy error:error];
 
     goto LABEL_16;
   }
 
-  v7 = [HAP2TLVOldServiceList parsedFromData:v6 error:a4];
+  v7 = [HAP2TLVOldServiceList parsedFromData:dataCopy error:error];
 
   if (v7)
   {
-    v8 = [v7 serviceList];
-    if (v8)
+    serviceList = [v7 serviceList];
+    if (serviceList)
     {
       v9 = [HAPTLVUnsignedNumberValue alloc];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
       v11 = [(HAPTLVNumberValueBase *)v9 initWithValue:v10];
 
       v12 = [HAP2TLVParamAccessorySignature alloc];
-      v13 = [v7 serviceList];
-      v14 = [(HAP2TLVParamAccessorySignature *)v12 initWithAccessoryID:v11 serviceList:v13];
+      serviceList2 = [v7 serviceList];
+      v14 = [(HAP2TLVParamAccessorySignature *)v12 initWithAccessoryID:v11 serviceList:serviceList2];
 
       v15 = [HAP2TLVParamAccessoryList alloc];
       v22 = v14;
@@ -103,21 +103,21 @@ LABEL_14:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = v7;
       _os_log_error_impl(&dword_22AADC000, v19, OS_LOG_TYPE_ERROR, "%@ Found no services: %@", buf, 0x16u);
-      if (a4)
+      if (error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_11:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_14;
     }
 
@@ -134,12 +134,12 @@ LABEL_16:
   return v18;
 }
 
-- (id)_parseServiceList:(id)a3 error:(id *)a4
+- (id)_parseServiceList:(id)list error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  listCopy = list;
+  v7 = listCopy;
+  if (!listCopy)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -152,17 +152,17 @@ LABEL_16:
       LODWORD(buf) = 138412290;
       *(&buf + 4) = self;
       _os_log_error_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%@ Service list contains no services", &buf, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_9:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_12;
     }
 
@@ -176,7 +176,7 @@ LABEL_9:
   v20 = __Block_byref_object_copy__2091;
   v21 = __Block_byref_object_dispose__2092;
   v22 = 0;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(listCopy, "count")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__HAP2AccessoryServerEncodingThread__parseServiceList_error___block_invoke;
@@ -190,9 +190,9 @@ LABEL_9:
   if (v10)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -372,12 +372,12 @@ LABEL_34:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseCharacteristics:(id)a3 error:(id *)a4
+- (id)_parseCharacteristics:(id)characteristics error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  characteristicsCopy = characteristics;
+  v7 = characteristicsCopy;
+  if (!characteristicsCopy)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -390,17 +390,17 @@ LABEL_34:
       LODWORD(buf) = 138412290;
       *(&buf + 4) = self;
       _os_log_error_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%@ Characteristic list contains no characteristics", &buf, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_9:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_12;
     }
 
@@ -414,7 +414,7 @@ LABEL_9:
   v20 = __Block_byref_object_copy__2091;
   v21 = __Block_byref_object_dispose__2092;
   v22 = 0;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HAP2AccessoryServerEncodingThread__parseCharacteristics_error___block_invoke;
@@ -428,9 +428,9 @@ LABEL_9:
   if (v10)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -648,14 +648,14 @@ LABEL_40:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseCharacteristicMetadata:(id)a3 error:(id *)a4
+- (id)_parseCharacteristicMetadata:(id)metadata error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 userDescription];
-  v8 = [v6 bluetoothFormat];
+  metadataCopy = metadata;
+  userDescription = [metadataCopy userDescription];
+  bluetoothFormat = [metadataCopy bluetoothFormat];
 
-  if (!v8)
+  if (!bluetoothFormat)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -666,21 +666,21 @@ LABEL_40:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v43 = self;
+      selfCopy5 = self;
       v44 = 2112;
-      v45 = v6;
+      v45 = metadataCopy;
       _os_log_error_impl(&dword_22AADC000, v32, OS_LOG_TYPE_ERROR, "%@ Characteristic contains no format: %@", buf, 0x16u);
-      if (a4)
+      if (error)
       {
         goto LABEL_22;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_22:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_46;
     }
 
@@ -690,15 +690,15 @@ LABEL_22:
 
   v40 = 0;
   v41 = 0;
-  v9 = [v6 bluetoothFormat];
-  v10 = _parseBTLEPresentationFormat(v9, &v40, a4);
+  bluetoothFormat2 = [metadataCopy bluetoothFormat];
+  v10 = _parseBTLEPresentationFormat(bluetoothFormat2, &v40, error);
 
   v11 = 0;
   if (v10)
   {
     v39 = 0;
     v11 = 0;
-    if (_parseHAPCharacteristicFormat(v40, &v39, a4))
+    if (_parseHAPCharacteristicFormat(v40, &v39, error))
     {
       v38 = 0;
       v12 = _parseHAPCharacteristicUnit(v40, &v41, &v38);
@@ -714,9 +714,9 @@ LABEL_22:
         if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v43 = self;
+          selfCopy5 = self;
           v44 = 2112;
-          v45 = v6;
+          v45 = metadataCopy;
           v46 = 2112;
           v47 = v13;
           _os_log_error_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%@ Characteristic %@ unit failed to parse with error: %@", buf, 0x20u);
@@ -726,8 +726,8 @@ LABEL_22:
       }
 
       v15 = objc_alloc_init(HAPMetadataConstraints);
-      v16 = [v6 validRange];
-      if (v16 && (v17 = v16, [v6 validRange], v18 = objc_claimAutoreleasedReturnValue(), v19 = _parseCharacteristicValidRange(v18, v39, v15, a4), v18, v17, !v19))
+      validRange = [metadataCopy validRange];
+      if (validRange && (v17 = validRange, [metadataCopy validRange], v18 = objc_claimAutoreleasedReturnValue(), v19 = _parseCharacteristicValidRange(v18, v39, v15, error), v18, v17, !v19))
       {
         if (hap2LogInitialize_onceToken != -1)
         {
@@ -743,16 +743,16 @@ LABEL_22:
 
       else
       {
-        v20 = [v6 stepValue];
-        if (!v20 || (v21 = v20, [v6 stepValue], v22 = objc_claimAutoreleasedReturnValue(), v23 = _parseCharacteristicStepValue(v22, v39, v15, a4), v22, v21, v23))
+        stepValue = [metadataCopy stepValue];
+        if (!stepValue || (v21 = stepValue, [metadataCopy stepValue], v22 = objc_claimAutoreleasedReturnValue(), v23 = _parseCharacteristicStepValue(v22, v39, v15, error), v22, v21, v23))
         {
-          v24 = [v6 validValuesRange];
-          if (!v24 || (v25 = v24, [v6 validValuesRange], v26 = objc_claimAutoreleasedReturnValue(), valid = _parseCharacteristicValidValues(v26, v39, v15, a4), v26, v25, valid))
+          validValuesRange = [metadataCopy validValuesRange];
+          if (!validValuesRange || (v25 = validValuesRange, [metadataCopy validValuesRange], v26 = objc_claimAutoreleasedReturnValue(), valid = _parseCharacteristicValidValues(v26, v39, v15, error), v26, v25, valid))
           {
             v28 = [HAPCharacteristicMetadata alloc];
             v29 = HAPCharacteristicFormatToString(v39);
             v30 = HAPCharacteristicUnitToString(v41);
-            v11 = [(HAPCharacteristicMetadata *)v28 initWithConstraints:v15 description:v7 format:v29 units:v30];
+            v11 = [(HAPCharacteristicMetadata *)v28 initWithConstraints:v15 description:userDescription format:v29 units:v30];
 
             if (v11)
             {
@@ -771,22 +771,22 @@ LABEL_44:
             if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v43 = self;
+              selfCopy5 = self;
               v44 = 2112;
-              v45 = v6;
+              v45 = metadataCopy;
               _os_log_error_impl(&dword_22AADC000, v35, OS_LOG_TYPE_ERROR, "%@ Characteristic %@ metadata failed to parse", buf, 0x16u);
-              if (!a4)
+              if (!error)
               {
                 goto LABEL_44;
               }
             }
 
-            else if (!a4)
+            else if (!error)
             {
               goto LABEL_44;
             }
 
-            *a4 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
+            *error = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
             goto LABEL_44;
           }
 
@@ -806,9 +806,9 @@ LABEL_45:
           }
 
           *buf = 138412546;
-          v43 = self;
+          selfCopy5 = self;
           v44 = 2112;
-          v45 = v6;
+          v45 = metadataCopy;
           v34 = "%@ Characteristic %@ valid values range failed to parse";
 LABEL_35:
           _os_log_error_impl(&dword_22AADC000, v33, OS_LOG_TYPE_ERROR, v34, buf, 0x16u);
@@ -828,9 +828,9 @@ LABEL_35:
       }
 
       *buf = 138412546;
-      v43 = self;
+      selfCopy5 = self;
       v44 = 2112;
-      v45 = v6;
+      v45 = metadataCopy;
       v34 = "%@ Characteristic %@ valid range failed to parse";
       goto LABEL_35;
     }
@@ -843,25 +843,25 @@ LABEL_46:
   return v11;
 }
 
-- (id)eventsForData:(id)a3 error:(id *)a4
+- (id)eventsForData:(id)data error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = 0;
   p_info = &OBJC_METACLASS___HAP2EncodedEnableNotificationResponse.info;
   *&v8 = 138412802;
   v38 = v8;
-  v42 = v4;
+  v42 = dataCopy;
   while (1)
   {
-    if ([v4 length] <= v6)
+    if ([dataCopy length] <= v6)
     {
       v26 = v5;
       goto LABEL_50;
     }
 
-    v9 = [v4 subdataWithRange:{v6, objc_msgSend(v4, "length") - v6}];
+    v9 = [dataCopy subdataWithRange:{v6, objc_msgSend(dataCopy, "length") - v6}];
     v10 = [(HAP2AccessoryServerEncodingThread *)self _extractAndValidateControlFieldWithData:v9 expectedType:2];
     if (!v10)
     {
@@ -880,14 +880,14 @@ LABEL_46:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v50 = self;
+        selfCopy3 = self;
         v51 = 2112;
         v52 = v11;
         _os_log_error_impl(&dword_22AADC000, v34, OS_LOG_TYPE_ERROR, "%@ Invalid event, not enough data for header: %@", buf, 0x16u);
       }
 
-      v32 = a4;
-      if (a4)
+      errorCopy2 = error;
+      if (error)
       {
         v33 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
         goto LABEL_47;
@@ -918,17 +918,17 @@ LABEL_46:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v50 = self;
+        selfCopy3 = self;
         v51 = 2112;
         v52 = v11;
         _os_log_error_impl(&dword_22AADC000, v25, OS_LOG_TYPE_ERROR, "%@ Invalid event, no data: %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
         v23 = 0;
-        *a4 = v26 = 0;
+        *error = v26 = 0;
       }
 
       else
@@ -949,11 +949,11 @@ LABEL_46:
     v44 = v16;
     if (!v16)
     {
-      if (a4)
+      if (error)
       {
         v27 = v17;
         v23 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -984,7 +984,7 @@ LABEL_46:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         *buf = v38;
-        v50 = self;
+        selfCopy3 = self;
         v51 = 2112;
         v52 = v15;
         v53 = 2112;
@@ -1009,9 +1009,9 @@ LABEL_33:
     {
       v9 = v39;
       v21 = v46;
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
+        *error = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
       }
 
       v24 = 0;
@@ -1036,20 +1036,20 @@ LABEL_35:
 LABEL_36:
 
     v5 = v26;
-    v4 = v42;
+    dataCopy = v42;
     if ((v23 & 1) == 0)
     {
       goto LABEL_50;
     }
   }
 
-  v32 = a4;
-  if (a4)
+  errorCopy2 = error;
+  if (error)
   {
     v33 = [MEMORY[0x277CCA9B8] hapErrorWithCode:3 marker:213];
     v11 = 0;
 LABEL_47:
-    *v32 = v33;
+    *errorCopy2 = v33;
     goto LABEL_49;
   }
 
@@ -1065,12 +1065,12 @@ LABEL_50:
   return v35;
 }
 
-- (id)_extractAndValidateControlFieldWithData:(int)a3 expectedType:
+- (id)_extractAndValidateControlFieldWithData:(int)data expectedType:
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v11 = 0;
     if (v5 && [v5 length])
@@ -1082,9 +1082,9 @@ LABEL_50:
         v7 = 255;
       }
 
-      if (v7 == a3)
+      if (v7 == data)
       {
-        a1 = [v6 subdataWithRange:{1, objc_msgSend(v6, "length") - 1}];
+        self = [v6 subdataWithRange:{1, objc_msgSend(v6, "length") - 1}];
         goto LABEL_13;
       }
 
@@ -1097,33 +1097,33 @@ LABEL_50:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v13 = a1;
+        selfCopy = self;
         v14 = 1024;
         v15 = v11;
         _os_log_error_impl(&dword_22AADC000, v8, OS_LOG_TYPE_ERROR, "%@ Invalid response, control field (%02x) is not a response", buf, 0x12u);
       }
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_13:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)requestToListPairingsWithCharacteristic:(id)a3 error:(id *)a4
+- (id)requestToListPairingsWithCharacteristic:(id)characteristic error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  characteristicCopy = characteristic;
   v14 = 0;
   v7 = [HAPPairingUtilities createListPairingsRequest:&v14];
   v8 = v14;
   if (v7)
   {
-    v9 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:v6 bodyValue:v7 threadRequestType:14 error:a4];
+    v9 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:characteristicCopy bodyValue:v7 threadRequestType:14 error:error];
     goto LABEL_10;
   }
 
@@ -1136,22 +1136,22 @@ LABEL_13:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     _os_log_error_impl(&dword_22AADC000, v10, OS_LOG_TYPE_ERROR, "%@ Couldn't serialize list pairing request: %@", buf, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_7:
     v11 = v8;
     v9 = 0;
-    *a4 = v8;
+    *error = v8;
     goto LABEL_10;
   }
 
@@ -1163,43 +1163,43 @@ LABEL_10:
   return v9;
 }
 
-- (HAP2EncodedCharacteristicRequestThread)_pairingsRequestWithCharacteristic:(uint64_t)a3 bodyValue:(char)a4 threadRequestType:(uint64_t)a5 error:
+- (HAP2EncodedCharacteristicRequestThread)_pairingsRequestWithCharacteristic:(uint64_t)characteristic bodyValue:(char)value threadRequestType:(uint64_t)type error:
 {
-  v5 = a1;
+  selfCopy = self;
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v6 = *&asc_22AC9DB68[8 * (a4 - 10)];
-    v7 = [HAP2AccessoryServerEncodingThreadBTLERequest writeRequestForCharacteristic:a2 value:a3 authorizationData:0 contextData:0 options:3 error:a5];
+    v6 = *&asc_22AC9DB68[8 * (value - 10)];
+    v7 = [HAP2AccessoryServerEncodingThreadBTLERequest writeRequestForCharacteristic:a2 value:characteristic authorizationData:0 contextData:0 options:3 error:type];
     if (v7)
     {
       v8 = [HAP2EncodedCharacteristicRequestThread alloc];
       v12[0] = v7;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-      v5 = [(HAP2EncodedCharacteristicRequestThread *)v8 initWithBTLERequests:v9 requestType:v6 enforcePDUBodyLength:([(HAP2EncodedCharacteristicRequestThread *)v5 encodingFeatures]>> 5) & 1];
+      selfCopy = [(HAP2EncodedCharacteristicRequestThread *)v8 initWithBTLERequests:v9 requestType:v6 enforcePDUBodyLength:([(HAP2EncodedCharacteristicRequestThread *)selfCopy encodingFeatures]>> 5) & 1];
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)requestToAddPairing:(id)a3 characteristic:(id)a4 error:(id *)a5
+- (id)requestToAddPairing:(id)pairing characteristic:(id)characteristic error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  characteristicCopy = characteristic;
   v16 = 0;
-  v9 = [HAP2EncodingUtils addPairingRequestWithIdentity:a3 error:&v16];
+  v9 = [HAP2EncodingUtils addPairingRequestWithIdentity:pairing error:&v16];
   v10 = v16;
   if (v9)
   {
-    v11 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:v8 bodyValue:v9 threadRequestType:13 error:a5];
+    v11 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:characteristicCopy bodyValue:v9 threadRequestType:13 error:error];
     goto LABEL_10;
   }
 
@@ -1212,22 +1212,22 @@ LABEL_10:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v10;
     _os_log_error_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%@ Couldn't serialize remove request TLVs: %@", buf, 0x16u);
-    if (a5)
+    if (error)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
 LABEL_7:
     v13 = v10;
     v11 = 0;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_10;
   }
 
@@ -1239,18 +1239,18 @@ LABEL_10:
   return v11;
 }
 
-- (id)requestToRemovePairing:(id)a3 characteristic:(id)a4 error:(id *)a5
+- (id)requestToRemovePairing:(id)pairing characteristic:(id)characteristic error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a3 identifier];
+  characteristicCopy = characteristic;
+  identifier = [pairing identifier];
   v17 = 0;
-  v10 = [HAP2EncodingUtils removePairingRequestWithIdentifier:v9 error:&v17];
+  v10 = [HAP2EncodingUtils removePairingRequestWithIdentifier:identifier error:&v17];
   v11 = v17;
 
   if (v10)
   {
-    v12 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:v8 bodyValue:v10 threadRequestType:10 error:a5];
+    v12 = [(HAP2AccessoryServerEncodingThread *)self _pairingsRequestWithCharacteristic:characteristicCopy bodyValue:v10 threadRequestType:10 error:error];
     goto LABEL_10;
   }
 
@@ -1263,22 +1263,22 @@ LABEL_10:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v11;
     _os_log_error_impl(&dword_22AADC000, v13, OS_LOG_TYPE_ERROR, "%@ Couldn't serialize remove request TLVs: %@", buf, 0x16u);
-    if (a5)
+    if (error)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
 LABEL_7:
     v14 = v11;
     v12 = 0;
-    *a5 = v11;
+    *error = v11;
     goto LABEL_10;
   }
 
@@ -1290,30 +1290,30 @@ LABEL_10:
   return v12;
 }
 
-- (id)unpairedIdentifyRequestWithError:(id *)a3
+- (id)unpairedIdentifyRequestWithError:(id *)error
 {
   v3 = [[HAP2EncodedEmptyRequestThread alloc] initWithRequestType:12];
 
   return v3;
 }
 
-- (id)responseForRequest:(id)a3 bodyData:(id)a4 error:(id *)a5
+- (id)responseForRequest:(id)request bodyData:(id)data error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 type] == 12)
+  requestCopy = request;
+  dataCopy = data;
+  if ([requestCopy type] == 12)
   {
     self = objc_alloc_init(HAP2EncodedEmptyResponseThread);
     goto LABEL_80;
   }
 
-  if (v9)
+  if (dataCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v8;
+      v10 = requestCopy;
     }
 
     else
@@ -1324,7 +1324,7 @@ LABEL_10:
     v11 = v10;
     if (v11)
     {
-      v12 = [(HAP2AccessoryServerEncodingThread *)self _parseCharacteristicResponsesWithBodyData:v9 request:v11 error:a5];
+      v12 = [(HAP2AccessoryServerEncodingThread *)self _parseCharacteristicResponsesWithBodyData:dataCopy request:v11 error:error];
       if (!v12)
       {
         goto LABEL_78;
@@ -1336,7 +1336,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v8;
+      v13 = requestCopy;
     }
 
     else
@@ -1344,13 +1344,13 @@ LABEL_10:
       v13 = 0;
     }
 
-    v14 = [v13 btleRequest];
-    v15 = [[HAPBTLEResponse alloc] initWithRequest:v14];
-    v74 = v8;
+    btleRequest = [v13 btleRequest];
+    v15 = [[HAPBTLEResponse alloc] initWithRequest:btleRequest];
+    v74 = requestCopy;
     if (self)
     {
-      v16 = v9;
-      v17 = [(HAP2AccessoryServerEncodingThread *)self _extractAndValidateControlFieldWithData:v9 expectedType:1];
+      v16 = dataCopy;
+      v17 = [(HAP2AccessoryServerEncodingThread *)self _extractAndValidateControlFieldWithData:dataCopy expectedType:1];
       if (v17)
       {
         *buf = 0;
@@ -1369,7 +1369,7 @@ LABEL_10:
 
     else
     {
-      v16 = v9;
+      v16 = dataCopy;
       v20 = 0;
       v19 = 0;
     }
@@ -1395,57 +1395,57 @@ LABEL_10:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         v28 = v24;
-        v29 = [(HAPBTLEResponse *)v15 bodyLength];
+        bodyLength = [(HAPBTLEResponse *)v15 bodyLength];
         v30 = [v16 length];
         *buf = 138413058;
         *&buf[4] = self;
         v83 = 2048;
-        v84 = v29;
+        v84 = bodyLength;
         v85 = 2048;
         v86 = v30 - 1;
         v87 = 2112;
         v88 = v23;
         _os_log_error_impl(&dword_22AADC000, v28, OS_LOG_TYPE_ERROR, "%@ Failed to parse response (read %lu bytes, expected %lu): %@", buf, 0x2Au);
 
-        if (a5)
+        if (error)
         {
           goto LABEL_27;
         }
       }
 
-      else if (a5)
+      else if (error)
       {
 LABEL_27:
         [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
         v25 = 0;
-        *a5 = v26 = 0;
+        *error = v26 = 0;
 LABEL_33:
 
         if (!v26)
         {
           self = 0;
           v11 = 0;
-          v8 = v74;
-          v9 = v16;
+          requestCopy = v74;
+          dataCopy = v16;
           v12 = v25;
           goto LABEL_79;
         }
 
         v11 = 0;
-        v8 = v74;
-        v9 = v16;
+        requestCopy = v74;
+        dataCopy = v16;
         v12 = v25;
 LABEL_35:
-        v31 = [v8 type];
-        if (v31 <= 8)
+        type = [requestCopy type];
+        if (type <= 8)
         {
-          if (v31 <= 2)
+          if (type <= 2)
           {
-            if (v31)
+            if (type)
             {
-              if (v31 != 1)
+              if (type != 1)
               {
-                if (v31 == 2)
+                if (type == 2)
                 {
                   v32 = [HAP2AccessoryServerEncodingThread _readResponseFromBTLEResponses:v12 error:?];
 LABEL_97:
@@ -1503,13 +1503,13 @@ LABEL_61:
             }
 
 LABEL_48:
-            if (a5)
+            if (error)
             {
               v34 = MEMORY[0x277CCA9B8];
               v35 = 9;
 LABEL_50:
               [v34 hapErrorWithCode:v35];
-              *a5 = self = 0;
+              *error = self = 0;
               goto LABEL_79;
             }
 
@@ -1518,24 +1518,24 @@ LABEL_78:
             goto LABEL_79;
           }
 
-          if ((v31 - 5) < 4)
+          if ((type - 5) < 4)
           {
             goto LABEL_48;
           }
 
-          if (v31 == 3)
+          if (type == 3)
           {
             v32 = [HAP2AccessoryServerEncodingThread _prepareWriteResponseFromBTLEResponses:v12 error:?];
             goto LABEL_97;
           }
 
-          if (v31 == 4)
+          if (type == 4)
           {
             goto LABEL_61;
           }
 
 LABEL_76:
-          if (a5)
+          if (error)
           {
             v34 = MEMORY[0x277CCA9B8];
             v35 = 1;
@@ -1545,14 +1545,14 @@ LABEL_76:
           goto LABEL_78;
         }
 
-        if (v31 <= 11)
+        if (type <= 11)
         {
-          if ((v31 - 10) < 2)
+          if ((type - 10) < 2)
           {
             v36 = v12;
             v73 = v11;
-            v75 = v8;
-            v70 = v9;
+            v75 = requestCopy;
+            v70 = dataCopy;
             v71 = v36;
             if (self)
             {
@@ -1588,10 +1588,10 @@ LABEL_76:
                     }
 
                     v60 = *(*(&v77 + 1) + 8 * j);
-                    v61 = [v60 request];
-                    v62 = [v61 type];
+                    request = [v60 request];
+                    type2 = [request type];
 
-                    if (v62 == 3)
+                    if (type2 == 3)
                     {
                       v63 = [(HAP2AccessoryServerEncodingThread *)self _valueResponseFromBTLEResponse:v60];
                       [v38 addObject:v63];
@@ -1600,9 +1600,9 @@ LABEL_76:
                     else
                     {
                       v63 = [(HAP2AccessoryServerEncodingThread *)self _errorIfResponseInvalid:v60];
-                      v64 = [v60 request];
-                      v65 = [v64 characteristic];
-                      v66 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v65 error:v63];
+                      request2 = [v60 request];
+                      characteristic = [request2 characteristic];
+                      v66 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v63];
 
                       [v76 addObject:v66];
                     }
@@ -1623,15 +1623,15 @@ LABEL_76:
             v12 = v71;
 
             v11 = v73;
-            v8 = v75;
-            v9 = v70;
+            requestCopy = v75;
+            dataCopy = v70;
             goto LABEL_79;
           }
 
-          if (v31 == 9)
+          if (type == 9)
           {
             v52 = [v12 objectAtIndexedSubscript:0];
-            self = [(HAP2AccessoryServerEncodingThread *)self _attributeDatabaseResponseFromBTLEResponse:v52 error:a5];
+            self = [(HAP2AccessoryServerEncodingThread *)self _attributeDatabaseResponseFromBTLEResponse:v52 error:error];
 
             goto LABEL_79;
           }
@@ -1639,13 +1639,13 @@ LABEL_76:
           goto LABEL_76;
         }
 
-        if ((v31 - 13) < 2)
+        if ((type - 13) < 2)
         {
           v39 = [v12 objectAtIndexedSubscript:0];
           if (self)
           {
-            v40 = [HAP2AccessoryServerEncodingThread _extractResponseBodyFromBTLEResponse:v39 request:a5 error:?];
-            if (v40 && [HAP2EncodingUtils parseAddOrRemovePairingRequestResponse:v40 error:a5])
+            v40 = [HAP2AccessoryServerEncodingThread _extractResponseBodyFromBTLEResponse:v39 request:error error:?];
+            if (v40 && [HAP2EncodingUtils parseAddOrRemovePairingRequestResponse:v40 error:error])
             {
               self = [[HAP2EncodedResponseThread alloc] initWithBTLEResponse:v39];
             }
@@ -1659,30 +1659,30 @@ LABEL_76:
           goto LABEL_79;
         }
 
-        if (v31 == 12)
+        if (type == 12)
         {
           goto LABEL_48;
         }
 
-        if (v31 != 15)
+        if (type != 15)
         {
           goto LABEL_76;
         }
 
         v33 = [v12 objectAtIndexedSubscript:0];
-        self = [HAP2AccessoryServerEncodingThread _listPairingsResponseFromBTLEResponse:v33 request:a5 error:?];
+        self = [HAP2AccessoryServerEncodingThread _listPairingsResponseFromBTLEResponse:v33 request:error error:?];
 
 LABEL_79:
         goto LABEL_80;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v27 = v22;
       v25 = 0;
       v26 = 0;
-      *a5 = v23;
+      *error = v23;
       goto LABEL_33;
     }
 
@@ -1691,10 +1691,10 @@ LABEL_79:
     goto LABEL_33;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
-    *a5 = self = 0;
+    *error = self = 0;
   }
 
   else
@@ -1709,14 +1709,14 @@ LABEL_80:
   return self;
 }
 
-- (HAP2EncodedCharacteristicResponse)_readResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)a1 error:(void *)a2
+- (HAP2EncodedCharacteristicResponse)_readResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)responses error:(void *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (responses)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(errorCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -1736,7 +1736,7 @@ LABEL_80:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [(HAP2AccessoryServerEncodingThread *)a1 _valueResponseFromBTLEResponse:?];
+          v11 = [(HAP2AccessoryServerEncodingThread *)responses _valueResponseFromBTLEResponse:?];
           [v5 addObject:{v11, v16}];
         }
 
@@ -1748,23 +1748,23 @@ LABEL_80:
 
     v12 = [HAP2EncodedCharacteristicResponse alloc];
     v13 = [v5 copy];
-    a1 = [(HAP2EncodedCharacteristicResponse *)v12 initWithCharacteristics:v13];
+    responses = [(HAP2EncodedCharacteristicResponse *)v12 initWithCharacteristics:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return responses;
 }
 
-- (HAP2EncodedCharacteristicResponse)_prepareWriteResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)a1 error:(void *)a2
+- (HAP2EncodedCharacteristicResponse)_prepareWriteResponseFromBTLEResponses:(HAP2EncodedCharacteristicResponse *)responses error:(void *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v23 = v3;
-  if (a1)
+  errorCopy = error;
+  v23 = errorCopy;
+  if (responses)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count", v3)}];
+    v4 = errorCopy;
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(errorCopy, "count", errorCopy)}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -1785,23 +1785,23 @@ LABEL_80:
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 request];
+          request = [v10 request];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v10 request];
+            request2 = [v10 request];
           }
 
           else
           {
-            v12 = 0;
+            request2 = 0;
           }
 
           v13 = v10;
-          v14 = [v13 request];
-          v15 = [v14 characteristic];
+          request3 = [v13 request];
+          characteristic = [request3 characteristic];
 
-          v16 = [(HAP2AccessoryServerEncodingThread *)a1 _errorIfResponseInvalid:v13];
+          v16 = [(HAP2AccessoryServerEncodingThread *)responses _errorIfResponseInvalid:v13];
 
           if (v16)
           {
@@ -1813,7 +1813,7 @@ LABEL_80:
             v17 = 0;
           }
 
-          v18 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v15 error:v17];
+          v18 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v17];
 
           [v5 addObject:v18];
         }
@@ -1826,20 +1826,20 @@ LABEL_80:
 
     v19 = [HAP2EncodedCharacteristicResponse alloc];
     v20 = [v5 copy];
-    a1 = [(HAP2EncodedCharacteristicResponse *)v19 initWithCharacteristics:v20];
+    responses = [(HAP2EncodedCharacteristicResponse *)v19 initWithCharacteristics:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return responses;
 }
 
-- (HAP2EncodedAttributeDatabaseResponseThread)_attributeDatabaseResponseFromBTLEResponse:(void *)a3 error:
+- (HAP2EncodedAttributeDatabaseResponseThread)_attributeDatabaseResponseFromBTLEResponse:(void *)response error:
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v29 = 0;
     v30 = &v29;
@@ -1847,16 +1847,16 @@ LABEL_80:
     v32 = __Block_byref_object_copy__2091;
     v33 = __Block_byref_object_dispose__2092;
     v34 = 0;
-    v7 = [v5 body];
+    body = [v5 body];
     v8 = (v30 + 5);
     obj = v30[5];
-    v9 = [(HAP2EncodedAttributeDatabaseResponseThread *)a1 _parseTopLevelAttributeDatabaseFromData:v7 error:&obj];
+    v9 = [(HAP2EncodedAttributeDatabaseResponseThread *)self _parseTopLevelAttributeDatabaseFromData:body error:&obj];
     objc_storeStrong(v8, obj);
 
     if (v9)
     {
-      v10 = [v9 accessoryList];
-      if (v10)
+      accessoryList = [v9 accessoryList];
+      if (accessoryList)
       {
         *buf = 0;
         *&buf[8] = buf;
@@ -1864,18 +1864,18 @@ LABEL_80:
         v40 = __Block_byref_object_copy__2091;
         v41 = __Block_byref_object_dispose__2092;
         v11 = objc_alloc(MEMORY[0x277CBEB38]);
-        v12 = [v10 accessorySignatureList];
-        v42 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+        accessorySignatureList = [accessoryList accessorySignatureList];
+        v42 = [v11 initWithCapacity:{objc_msgSend(accessorySignatureList, "count")}];
 
-        v13 = [v10 accessorySignatureList];
+        accessorySignatureList2 = [accessoryList accessorySignatureList];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __86__HAP2AccessoryServerEncodingThread__attributeDatabaseResponseFromBTLEResponse_error___block_invoke;
         v27[3] = &unk_2786D3438;
-        v27[4] = a1;
+        v27[4] = self;
         v27[5] = &v29;
         v27[6] = buf;
-        [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+        [accessorySignatureList2 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
         v14 = *(*&buf[8] + 40);
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
@@ -1893,9 +1893,9 @@ LABEL_80:
           if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
           {
             *v35 = 138412546;
-            v36 = a1;
+            selfCopy = self;
             v37 = 2112;
-            v38 = v10;
+            v38 = accessoryList;
             _os_log_error_impl(&dword_22AADC000, v17, OS_LOG_TYPE_ERROR, "%@ Attribute database response doesn't contain primary accessory: %@", v35, 0x16u);
           }
 
@@ -1907,17 +1907,17 @@ LABEL_80:
         v20 = v30[5];
         if (v20)
         {
-          a1 = 0;
-          if (a3)
+          self = 0;
+          if (response)
           {
-            *a3 = v20;
+            *response = v20;
           }
         }
 
         else
         {
           v23 = [HAP2EncodedAttributeDatabaseResponseThread alloc];
-          a1 = [(HAP2EncodedAttributeDatabaseResponseThread *)v23 initWithBTLEResponse:v6 attributeDatabase:*(*&buf[8] + 40)];
+          self = [(HAP2EncodedAttributeDatabaseResponseThread *)v23 initWithBTLEResponse:v6 attributeDatabase:*(*&buf[8] + 40)];
         }
 
         _Block_object_dispose(buf, 8);
@@ -1934,27 +1934,27 @@ LABEL_80:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2112;
         *&buf[14] = v9;
         _os_log_error_impl(&dword_22AADC000, v22, OS_LOG_TYPE_ERROR, "%@ Attribute database contains no accessory list: %@", buf, 0x16u);
-        if (a3)
+        if (response)
         {
           goto LABEL_22;
         }
       }
 
-      else if (a3)
+      else if (response)
       {
 LABEL_22:
         [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
-        *a3 = a1 = 0;
+        *response = self = 0;
 LABEL_25:
 
         goto LABEL_26;
       }
 
-      a1 = 0;
+      self = 0;
       goto LABEL_25;
     }
 
@@ -1968,28 +1968,28 @@ LABEL_25:
     {
       v26 = v30[5];
       *buf = 138412546;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2112;
       *&buf[14] = v26;
       _os_log_error_impl(&dword_22AADC000, v21, OS_LOG_TYPE_ERROR, "%@ Failed to parse attribute database: %@", buf, 0x16u);
-      if (a3)
+      if (response)
       {
         goto LABEL_17;
       }
     }
 
-    else if (a3)
+    else if (response)
     {
 LABEL_17:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7 description:@"Invalid Response." reason:@"Failed to parse attribute database." suggestion:0 underlyingError:v30[5]];
-      *a3 = a1 = 0;
+      *response = self = 0;
 LABEL_26:
 
       _Block_object_dispose(&v29, 8);
       goto LABEL_27;
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_26;
   }
 
@@ -1997,27 +1997,27 @@ LABEL_27:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (HAP2EncodedListPairingsResponseThread)_listPairingsResponseFromBTLEResponse:(HAP2EncodedListPairingsResponseThread *)a1 request:(void *)a2 error:(void *)a3
+- (HAP2EncodedListPairingsResponseThread)_listPairingsResponseFromBTLEResponse:(HAP2EncodedListPairingsResponseThread *)response request:(void *)request error:(void *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  if (a1)
+  requestCopy = request;
+  if (response)
   {
-    v6 = [HAP2AccessoryServerEncodingThread _extractResponseBodyFromBTLEResponse:a1 request:v5 error:a3];
+    v6 = [HAP2AccessoryServerEncodingThread _extractResponseBodyFromBTLEResponse:response request:requestCopy error:error];
     if (!v6)
     {
-      if (a3)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
-        *a3 = a1 = 0;
+        *error = response = 0;
       }
 
       else
       {
-        a1 = 0;
+        response = 0;
       }
 
       goto LABEL_16;
@@ -2028,7 +2028,7 @@ LABEL_27:
     v8 = v13;
     if (v7)
     {
-      a1 = [[HAP2EncodedListPairingsResponseThread alloc] initWithBTLEResponse:v5 pairings:v7];
+      response = [[HAP2EncodedListPairingsResponseThread alloc] initWithBTLEResponse:requestCopy pairings:v7];
 LABEL_15:
 
 LABEL_16:
@@ -2044,26 +2044,26 @@ LABEL_16:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = a1;
+      responseCopy = response;
       v16 = 2112;
       v17 = v8;
       _os_log_error_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "%@ Unable to parse list pairings response: %@", buf, 0x16u);
-      if (a3)
+      if (error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_11:
       v10 = v8;
-      a1 = 0;
-      *a3 = v8;
+      response = 0;
+      *error = v8;
       goto LABEL_15;
     }
 
-    a1 = 0;
+    response = 0;
     goto LABEL_15;
   }
 
@@ -2071,37 +2071,37 @@ LABEL_17:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return response;
 }
 
-- (id)_extractResponseBodyFromBTLEResponse:(void *)a1 request:(void *)a2 error:(void *)a3
+- (id)_extractResponseBodyFromBTLEResponse:(void *)response request:(void *)request error:(void *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  v6 = [(HAP2AccessoryServerEncodingThread *)a1 _valueResponseFromBTLEResponse:v5];
-  v7 = [v6 error];
+  requestCopy = request;
+  v6 = [(HAP2AccessoryServerEncodingThread *)response _valueResponseFromBTLEResponse:requestCopy];
+  error = [v6 error];
 
-  if (!v7)
+  if (!error)
   {
-    v10 = [v5 request];
-    v11 = [v10 characteristic];
+    request = [requestCopy request];
+    characteristic = [request characteristic];
 
-    v12 = [v11 value];
+    value = [characteristic value];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v11 value];
+      value2 = [characteristic value];
     }
 
     else
     {
-      v9 = 0;
+      value2 = 0;
     }
 
-    [v11 setValue:0];
-    if (v9)
+    [characteristic setValue:0];
+    if (value2)
     {
-      v13 = v9;
+      v13 = value2;
 LABEL_17:
 
       goto LABEL_20;
@@ -2116,20 +2116,20 @@ LABEL_17:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v19 = 138412290;
-      v20 = a1;
+      responseCopy2 = response;
       _os_log_error_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid type for HAP2 request", &v19, 0xCu);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_17;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
       goto LABEL_17;
     }
 
-    *a3 = [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
+    *error = [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
     goto LABEL_17;
   }
 
@@ -2142,69 +2142,69 @@ LABEL_17:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     v15 = v8;
-    v16 = [v6 error];
+    error2 = [v6 error];
     v19 = 138412546;
-    v20 = a1;
+    responseCopy2 = response;
     v21 = 2112;
-    v22 = v16;
+    v22 = error2;
     _os_log_error_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "%@ Unable to parse pairing response: %@", &v19, 0x16u);
 
-    if (a3)
+    if (error)
     {
       goto LABEL_6;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_6:
     [v6 error];
-    *a3 = v9 = 0;
+    *error = value2 = 0;
     goto LABEL_20;
   }
 
-  v9 = 0;
+  value2 = 0;
 LABEL_20:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return value2;
 }
 
-- (id)_valueResponseFromBTLEResponse:(void *)a1
+- (id)_valueResponseFromBTLEResponse:(void *)response
 {
   v60 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v4 = [v3 request];
+  request = [v3 request];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 request];
+    request2 = [v3 request];
   }
 
   else
   {
-    v5 = 0;
+    request2 = 0;
   }
 
-  v6 = [v3 request];
-  v7 = [v6 characteristic];
+  request3 = [v3 request];
+  characteristic = [request3 characteristic];
 
-  v8 = [(HAP2AccessoryServerEncodingThread *)a1 _errorIfResponseInvalid:v3];
+  v8 = [(HAP2AccessoryServerEncodingThread *)response _errorIfResponseInvalid:v3];
   if (v8)
   {
-    [v7 setValue:0];
-    [v7 setNotificationContext:0];
-    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:v8];
+    [characteristic setValue:0];
+    [characteristic setNotificationContext:0];
+    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v8];
     goto LABEL_35;
   }
 
-  v10 = [v3 body];
+  body = [v3 body];
 
-  v11 = [v5 type];
-  if (!v10)
+  type = [request2 type];
+  if (!body)
   {
-    if (v11 == 3)
+    if (type == 3)
     {
       if (hap2LogInitialize_onceToken != -1)
       {
@@ -2215,64 +2215,64 @@ LABEL_20:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         v34 = v23;
-        v35 = [v7 type];
-        v36 = [HAPCharacteristic hap2_shortTypeFromUUID:v35];
-        v37 = [v7 instanceID];
+        type2 = [characteristic type];
+        v36 = [HAPCharacteristic hap2_shortTypeFromUUID:type2];
+        instanceID = [characteristic instanceID];
         *buf = 138412802;
-        v53 = a1;
+        responseCopy4 = response;
         v54 = 2112;
         v55 = v36;
         v56 = 2112;
-        v57 = v37;
+        v57 = instanceID;
         _os_log_error_impl(&dword_22AADC000, v34, OS_LOG_TYPE_ERROR, "%@ Read response for %@ [%@] does not contain a value", buf, 0x20u);
       }
 
-      [v7 setValue:0];
-      [v7 setNotificationContext:0];
-      v13 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-      v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:v13];
+      [characteristic setValue:0];
+      [characteristic setNotificationContext:0];
+      requestedValue = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
+      v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:requestedValue];
       goto LABEL_34;
     }
 
     goto LABEL_23;
   }
 
-  if (v11 != 3 && ([v5 writeOptions] & 2) == 0)
+  if (type != 3 && ([request2 writeOptions] & 2) == 0)
   {
 LABEL_23:
-    v13 = [v5 requestedValue];
+    requestedValue = [request2 requestedValue];
 
-    if (v13)
+    if (requestedValue)
     {
-      v24 = [v5 requestedValue];
-      [v7 setValue:v24];
+      requestedValue2 = [request2 requestedValue];
+      [characteristic setValue:requestedValue2];
 
-      [v7 setNotificationContext:0];
-      v13 = 0;
+      [characteristic setNotificationContext:0];
+      requestedValue = 0;
     }
 
     v21 = 0;
     goto LABEL_26;
   }
 
-  v12 = [v3 body];
+  body2 = [v3 body];
   v51 = 0;
-  v13 = [_HAPAccessoryServerBTLE200 extractSerializedRequestValueFromBodyData:v12 error:&v51];
+  requestedValue = [_HAPAccessoryServerBTLE200 extractSerializedRequestValueFromBodyData:body2 error:&v51];
   v14 = v51;
 
-  if (!v13)
+  if (!requestedValue)
   {
-    [v7 setValue:0];
-    [v7 setNotificationContext:0];
-    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:v14];
-    v13 = v14;
+    [characteristic setValue:0];
+    [characteristic setNotificationContext:0];
+    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v14];
+    requestedValue = v14;
     goto LABEL_34;
   }
 
-  v15 = [v5 characteristic];
-  v16 = [v15 metadata];
-  v17 = [v16 format];
-  v18 = HAPCharacteristicFormatFromString(v17);
+  characteristic2 = [request2 characteristic];
+  metadata = [characteristic2 metadata];
+  format = [metadata format];
+  v18 = HAPCharacteristicFormatFromString(format);
 
   if (!v18)
   {
@@ -2285,28 +2285,28 @@ LABEL_23:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v40 = v25;
-      v41 = [v7 type];
-      v42 = [HAPCharacteristic hap2_shortTypeFromUUID:v41];
-      v43 = [v7 instanceID];
+      type3 = [characteristic type];
+      v42 = [HAPCharacteristic hap2_shortTypeFromUUID:type3];
+      instanceID2 = [characteristic instanceID];
       *buf = 138412802;
-      v53 = a1;
+      responseCopy4 = response;
       v54 = 2112;
       v55 = v42;
       v56 = 2112;
-      v57 = v43;
+      v57 = instanceID2;
       _os_log_error_impl(&dword_22AADC000, v40, OS_LOG_TYPE_ERROR, "%@ No format for characteristic %@ [%@]", buf, 0x20u);
     }
 
-    [v7 setValue:0];
-    [v7 setNotificationContext:0];
+    [characteristic setValue:0];
+    [characteristic setNotificationContext:0];
     v26 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:v26];
+    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v26];
 
     goto LABEL_34;
   }
 
   v50 = 0;
-  v19 = [a1 decodeBodyData:v13 format:v18 error:&v50];
+  v19 = [response decodeBodyData:requestedValue format:v18 error:&v50];
   v20 = v50;
   if (v20)
   {
@@ -2320,38 +2320,38 @@ LABEL_23:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v46 = v22;
-      v48 = [v7 type];
-      v38 = [HAPCharacteristic hap2_shortTypeFromUUID:v48];
-      v39 = [v7 instanceID];
+      type4 = [characteristic type];
+      v38 = [HAPCharacteristic hap2_shortTypeFromUUID:type4];
+      instanceID3 = [characteristic instanceID];
       *buf = 138413058;
-      v53 = a1;
+      responseCopy4 = response;
       v54 = 2112;
       v55 = v38;
       v56 = 2112;
-      v57 = v39;
+      v57 = instanceID3;
       v58 = 2112;
       v59 = v21;
       _os_log_error_impl(&dword_22AADC000, v46, OS_LOG_TYPE_ERROR, "%@ Decoding value for characteristic %@ [%@] failed with error: %@", buf, 0x2Au);
     }
 
-    [v7 setValue:0];
-    [v7 setNotificationContext:0];
-    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:v21];
+    [characteristic setValue:0];
+    [characteristic setNotificationContext:0];
+    v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:v21];
 
     goto LABEL_27;
   }
 
-  [v7 setValue:v19];
-  if ([v5 type] == 3 && (objc_msgSend(v7, "properties") & 0x100) != 0)
+  [characteristic setValue:v19];
+  if ([request2 type] == 3 && (objc_msgSend(characteristic, "properties") & 0x100) != 0)
   {
-    v29 = [v3 body];
+    body3 = [v3 body];
     v49 = 0;
-    v21 = [_HAPAccessoryServerBTLE200 extractNotificationContextFromBodyData:v29 error:&v49];
+    v21 = [_HAPAccessoryServerBTLE200 extractNotificationContextFromBodyData:body3 error:&v49];
     v30 = v49;
 
     if (v21)
     {
-      [v7 setNotificationContext:v21];
+      [characteristic setNotificationContext:v21];
       if (hap2LogInitialize_onceToken != -1)
       {
         dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -2362,15 +2362,15 @@ LABEL_23:
       {
         v47 = v30;
         log = v31;
-        v45 = [v7 type];
-        v32 = [HAPCharacteristic hap2_shortTypeFromUUID:v45];
-        v33 = [v7 instanceID];
+        type5 = [characteristic type];
+        v32 = [HAPCharacteristic hap2_shortTypeFromUUID:type5];
+        instanceID4 = [characteristic instanceID];
         *buf = 138413058;
-        v53 = a1;
+        responseCopy4 = response;
         v54 = 2112;
         v55 = v32;
         v56 = 2112;
-        v57 = v33;
+        v57 = instanceID4;
         v58 = 2112;
         v59 = v21;
         _os_log_impl(&dword_22AADC000, log, OS_LOG_TYPE_INFO, "%@ Response for characteristic %@ [%@] contains notification context %@", buf, 0x2Au);
@@ -2386,7 +2386,7 @@ LABEL_23:
   }
 
 LABEL_26:
-  v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:v7 error:0];
+  v9 = [HAPCharacteristicResponseTuple responseTupleForCharacteristic:characteristic error:0];
 LABEL_27:
 
 LABEL_34:
@@ -2397,12 +2397,12 @@ LABEL_35:
   return v9;
 }
 
-- (id)_errorIfResponseInvalid:(void *)a1
+- (id)_errorIfResponseInvalid:(void *)invalid
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v4 = [v3 request];
-  v5 = [v4 characteristic];
+  request = [v3 request];
+  characteristic = [request characteristic];
 
   if (([v3 isValid] & 1) == 0)
   {
@@ -2415,15 +2415,15 @@ LABEL_35:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v15 = v11;
-      v16 = [v5 type];
-      v17 = [HAPCharacteristic hap2_shortTypeFromUUID:v16];
-      v18 = [v5 instanceID];
+      type = [characteristic type];
+      v17 = [HAPCharacteristic hap2_shortTypeFromUUID:type];
+      instanceID = [characteristic instanceID];
       v27 = 138412802;
-      v28 = v17;
+      invalidCopy3 = v17;
       v29 = 2112;
-      v30 = v18;
+      v30 = instanceID;
       v31 = 2112;
-      v32 = a1;
+      invalidCopy = invalid;
       _os_log_error_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "%@ Response for %@ [%@] is invalid", &v27, 0x20u);
     }
 
@@ -2432,29 +2432,29 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  v6 = [v3 statusCode];
+  statusCode = [v3 statusCode];
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
   }
 
   v7 = hap2Log_accessory;
-  if (v6)
+  if (statusCode)
   {
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v19 = v7;
-      v20 = [v5 type];
-      v21 = [HAPCharacteristic hap2_shortTypeFromUUID:v20];
-      v22 = [v5 instanceID];
+      type2 = [characteristic type];
+      v21 = [HAPCharacteristic hap2_shortTypeFromUUID:type2];
+      instanceID2 = [characteristic instanceID];
       v27 = 138413058;
-      v28 = a1;
+      invalidCopy3 = invalid;
       v29 = 2112;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      invalidCopy = instanceID2;
       v33 = 1024;
-      v34 = [v3 statusCode];
+      statusCode2 = [v3 statusCode];
       _os_log_error_impl(&dword_22AADC000, v19, OS_LOG_TYPE_ERROR, "%@ Response for characteristic: %@ [%@] contains a HAP status failure code: 0x%02x", &v27, 0x26u);
     }
 
@@ -2469,15 +2469,15 @@ LABEL_13:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
   {
     v23 = v7;
-    v24 = [v5 type];
-    v25 = [HAPCharacteristic hap2_shortTypeFromUUID:v24];
-    v26 = [v5 instanceID];
+    type3 = [characteristic type];
+    v25 = [HAPCharacteristic hap2_shortTypeFromUUID:type3];
+    instanceID3 = [characteristic instanceID];
     v27 = 138412802;
-    v28 = a1;
+    invalidCopy3 = invalid;
     v29 = 2112;
     v30 = v25;
     v31 = 2112;
-    v32 = v26;
+    invalidCopy = instanceID3;
     _os_log_debug_impl(&dword_22AADC000, v23, OS_LOG_TYPE_DEBUG, "%@ Response for characteristic %@ [%@] contains a HAP status success code", &v27, 0x20u);
   }
 
@@ -2832,22 +2832,22 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)_parseCharacteristicResponsesWithBodyData:(id)a3 request:(id)a4 error:(id *)a5
+- (id)_parseCharacteristicResponsesWithBodyData:(id)data request:(id)request error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 btleRequests];
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  dataCopy = data;
+  btleRequests = [request btleRequests];
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(btleRequests, "count")}];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __93__HAP2AccessoryServerEncodingThread__parseCharacteristicResponsesWithBodyData_request_error___block_invoke;
   v45[3] = &unk_2786D34F0;
   v11 = v10;
   v46 = v11;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
-  v12 = v8;
-  v42 = v9;
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  [btleRequests hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
+  v12 = dataCopy;
+  v42 = btleRequests;
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(btleRequests, "count")}];
   v41 = v12;
   v14 = v12;
   while (1)
@@ -2881,7 +2881,7 @@ LABEL_7:
         v32 = v31;
         v33 = [v14 length];
         *buf = 138412546;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 1024;
         v50 = v33;
         _os_log_error_impl(&dword_22AADC000, v32, OS_LOG_TYPE_ERROR, "%@ Found %u extra bytes of incoming PDU data", buf, 0x12u);
@@ -2894,7 +2894,7 @@ LABEL_7:
 
     if (!v15)
     {
-      if (!a5)
+      if (!error)
       {
         v14 = 0;
         goto LABEL_37;
@@ -2904,7 +2904,7 @@ LABEL_7:
       v14 = 0;
 LABEL_26:
       v35 = 0;
-      *a5 = v34;
+      *error = v34;
       goto LABEL_38;
     }
 
@@ -2913,7 +2913,7 @@ LABEL_26:
     {
 
 LABEL_24:
-      if (!a5)
+      if (!error)
       {
         goto LABEL_37;
       }
@@ -2950,24 +2950,24 @@ LABEL_24:
     }
 
     v20 = [[HAPBTLEResponse alloc] initWithRequest:v18];
-    v21 = [(HAPBTLEResponse *)v20 appendData:v19 error:a5];
+    v21 = [(HAPBTLEResponse *)v20 appendData:v19 error:error];
     if (v21)
     {
       [v13 addObject:v20];
       v22 = [v14 subdataWithRange:{v21, objc_msgSend(v14, "length") - v21}];
       v23 = v14;
       v24 = v16;
-      v25 = self;
+      selfCopy2 = self;
       v26 = v11;
-      v27 = a5;
+      errorCopy = error;
       v28 = v13;
       v29 = v22;
 
       v30 = v29;
       v13 = v28;
-      a5 = v27;
+      error = errorCopy;
       v11 = v26;
-      self = v25;
+      self = selfCopy2;
       v16 = v24;
       v14 = v30;
     }
@@ -2987,21 +2987,21 @@ LABEL_24:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     v39 = v36;
-    v40 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
     *buf = 138412546;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 1024;
-    v50 = v40;
+    v50 = unsignedIntValue;
     _os_log_error_impl(&dword_22AADC000, v39, OS_LOG_TYPE_ERROR, "%@ Unable to match request to response (tid: %x)", buf, 0x12u);
 
-    if (a5)
+    if (error)
     {
 LABEL_31:
-      *a5 = [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
+      *error = [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     goto LABEL_31;
   }
@@ -3033,16 +3033,16 @@ void __93__HAP2AccessoryServerEncodingThread__parseCharacteristicResponsesWithBo
   [*(a1 + 32) addObject:v5];
 }
 
-- (id)notificationRequestsForCharacteristics:(id)a3 type:(unint64_t)a4 error:(id *)a5
+- (id)notificationRequestsForCharacteristics:(id)characteristics type:(unint64_t)type error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (type == 1)
   {
     v7 = 12;
     v8 = 11;
   }
 
-  else if (a4)
+  else if (type)
   {
     v8 = 0;
     v7 = 0;
@@ -3055,9 +3055,9 @@ void __93__HAP2AccessoryServerEncodingThread__parseCharacteristicResponsesWithBo
   }
 
   v9 = MEMORY[0x277CBEB58];
-  v10 = a3;
-  v11 = [v9 setWithCapacity:{2 * objc_msgSend(v10, "count")}];
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  characteristicsCopy = characteristics;
+  v11 = [v9 setWithCapacity:{2 * objc_msgSend(characteristicsCopy, "count")}];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __87__HAP2AccessoryServerEncodingThread_notificationRequestsForCharacteristics_type_error___block_invoke;
@@ -3066,10 +3066,10 @@ void __93__HAP2AccessoryServerEncodingThread__parseCharacteristicResponsesWithBo
   v22[4] = self;
   v23 = v11;
   v24 = v12;
-  v25 = a4;
+  typeCopy = type;
   v13 = v12;
   v14 = v11;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
 
   v15 = v13;
   if (self)
@@ -3091,7 +3091,7 @@ void __93__HAP2AccessoryServerEncodingThread__parseCharacteristicResponsesWithBo
       v27[1] = 3221225472;
       v27[2] = __77__HAP2AccessoryServerEncodingThread__hapRequestsForBTLERequests_requestType___block_invoke;
       v27[3] = &unk_2786D32D0;
-      v29 = self;
+      selfCopy = self;
       v30 = v8;
       v28 = v16;
       v17 = v16;
@@ -3194,10 +3194,10 @@ void __77__HAP2AccessoryServerEncodingThread__hapRequestsForBTLERequests_request
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)executeWriteRequestForCharacteristics:(id)a3 error:(id *)a4
+- (id)executeWriteRequestForCharacteristics:(id)characteristics error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  characteristicsCopy = characteristics;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3211,14 +3211,14 @@ void __77__HAP2AccessoryServerEncodingThread__hapRequestsForBTLERequests_request
   v20 = &v21;
   v8 = v7;
   v19 = v8;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:&v15];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v15];
   v9 = v22[5];
   if (v9)
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -3266,10 +3266,10 @@ void __81__HAP2AccessoryServerEncodingThread_executeWriteRequestForCharacteristi
   }
 }
 
-- (id)prepareWriteRequestForCharacteristics:(id)a3 ttl:(double)a4 error:(id *)a5
+- (id)prepareWriteRequestForCharacteristics:(id)characteristics ttl:(double)ttl error:(id *)error
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  characteristicsCopy = characteristics;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -3283,14 +3283,14 @@ void __81__HAP2AccessoryServerEncodingThread_executeWriteRequestForCharacteristi
   v21 = &v22;
   v9 = v8;
   v20 = v9;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
   v10 = v23[5];
   if (v10)
   {
     v11 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -3340,12 +3340,12 @@ void __85__HAP2AccessoryServerEncodingThread_prepareWriteRequestForCharacteristi
   }
 }
 
-- (id)writeRequestForCharacteristics:(id)a3 shouldEncrypt:(BOOL)a4 error:(id *)a5
+- (id)writeRequestForCharacteristics:(id)characteristics shouldEncrypt:(BOOL)encrypt error:(id *)error
 {
-  v8 = a3;
+  characteristicsCopy = characteristics;
   [(HAP2AccessoryServerEncodingThread *)self encodingFeatures];
-  v9 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v9 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -3356,20 +3356,20 @@ void __85__HAP2AccessoryServerEncodingThread_prepareWriteRequestForCharacteristi
   v20 = 3221225472;
   v21 = __88__HAP2AccessoryServerEncodingThread_writeRequestForCharacteristics_shouldEncrypt_error___block_invoke;
   v22 = &unk_2786D3320;
-  v26 = a4;
+  encryptCopy = encrypt;
   v25 = &v27;
   v11 = v9;
   v23 = v11;
   v12 = v10;
   v24 = v12;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:&v19];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v19];
   v13 = v28[5];
   if (v13)
   {
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -3448,20 +3448,20 @@ void __88__HAP2AccessoryServerEncodingThread_writeRequestForCharacteristics_shou
 LABEL_8:
 }
 
-- (id)groupingsForWriteRequestsForCharacteristics:(id)a3
+- (id)groupingsForWriteRequestsForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerEncodingThread *)self encodingFeatures];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  characteristicsCopy = characteristics;
+  encodingFeatures = [(HAP2AccessoryServerEncodingThread *)self encodingFeatures];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v7 = v6;
-  if ((v5 & 4) != 0)
+  if ((encodingFeatures & 4) != 0)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy__2091;
     v21 = __Block_byref_object_dispose__2092;
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __81__HAP2AccessoryServerEncodingThread_groupingsForWriteRequestsForCharacteristics___block_invoke_52;
@@ -3469,7 +3469,7 @@ LABEL_8:
     v16 = &v17;
     v11 = v7;
     v15 = v11;
-    [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+    [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
     if ([v18[5] count])
     {
       v12 = [v18[5] copy];
@@ -3479,7 +3479,7 @@ LABEL_8:
     v9 = [v11 copy];
 
     _Block_object_dispose(&v17, 8);
-    v10 = v22;
+    v10 = array;
   }
 
   else
@@ -3490,7 +3490,7 @@ LABEL_8:
     v23[3] = &unk_2786D5900;
     v24 = v6;
     v8 = v6;
-    [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
+    [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
     v9 = [v8 copy];
     v10 = v24;
   }
@@ -3545,12 +3545,12 @@ void __81__HAP2AccessoryServerEncodingThread_groupingsForWriteRequestsForCharact
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readRequestForCharacteristics:(id)a3 shouldEncrypt:(BOOL)a4 error:(id *)a5
+- (id)readRequestForCharacteristics:(id)characteristics shouldEncrypt:(BOOL)encrypt error:(id *)error
 {
-  v6 = a3;
+  characteristicsCopy = characteristics;
   [(HAP2AccessoryServerEncodingThread *)self encodingFeatures];
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __87__HAP2AccessoryServerEncodingThread_readRequestForCharacteristics_shouldEncrypt_error___block_invoke;
@@ -3559,7 +3559,7 @@ void __81__HAP2AccessoryServerEncodingThread_groupingsForWriteRequestsForCharact
   v20 = v9;
   v10 = v8;
   v21 = v10;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
 
   v11 = [HAP2EncodedCharacteristicRequestThread alloc];
   v12 = [v10 copy];
@@ -3605,26 +3605,26 @@ void __87__HAP2AccessoryServerEncodingThread_readRequestForCharacteristics_shoul
   [*(a1 + 40) addObject:v14];
 }
 
-- (id)groupingsForReadRequestsForCharacteristics:(id)a3
+- (id)groupingsForReadRequestsForCharacteristics:(id)characteristics
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  characteristicsCopy = characteristics;
   if (([(HAP2AccessoryServerEncodingThread *)self encodingFeatures]& 4) != 0)
   {
-    v12[0] = v4;
+    v12[0] = characteristicsCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __80__HAP2AccessoryServerEncodingThread_groupingsForReadRequestsForCharacteristics___block_invoke;
     v10[3] = &unk_2786D60B0;
     v11 = v5;
     v6 = v5;
-    [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+    [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
     v7 = [v6 copy];
   }
 
@@ -3646,19 +3646,19 @@ void __80__HAP2AccessoryServerEncodingThread_groupingsForReadRequestsForCharacte
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decodeBodyData:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)decodeBodyData:(id)data format:(unint64_t)format error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = +[HAPDataValueTransformer defaultDataValueTransformer];
-  v9 = [v8 reverseTransformedValue:v7 format:a4 error:a5];
+  v9 = [v8 reverseTransformedValue:dataCopy format:format error:error];
 
   if (v9 && ([v9 conformsToProtocol:&unk_283ECFA90] & 1) == 0)
   {
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-      *a5 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -3670,42 +3670,42 @@ void __80__HAP2AccessoryServerEncodingThread_groupingsForReadRequestsForCharacte
   return v9;
 }
 
-- (id)encodeBodyValue:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)encodeBodyValue:(id)value format:(unint64_t)format error:(id *)error
 {
-  v7 = a3;
+  valueCopy = value;
   v8 = +[HAPDataValueTransformer defaultDataValueTransformer];
-  v9 = [v8 transformedValue:v7 format:a4 error:a5];
+  v9 = [v8 transformedValue:valueCopy format:format error:error];
 
   return v9;
 }
 
-- (HAP2AccessoryServerEncodingThread)initWithEncodingFeatures:(unint64_t)a3 accessoryDescription:(id)a4
+- (HAP2AccessoryServerEncodingThread)initWithEncodingFeatures:(unint64_t)features accessoryDescription:(id)description
 {
-  v7 = a4;
+  descriptionCopy = description;
   v11.receiver = self;
   v11.super_class = HAP2AccessoryServerEncodingThread;
   v8 = [(HAP2AccessoryServerEncodingThread *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_encodingFeatures = a3;
-    objc_storeStrong(&v8->_accessoryDescription, a4);
+    v8->_encodingFeatures = features;
+    objc_storeStrong(&v8->_accessoryDescription, description);
   }
 
   return v9;
 }
 
-+ (id)_parseShortFormUUID:(id)a3 error:(id *)a4
++ (id)_parseShortFormUUID:(id)d error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  v6 = dCopy;
+  if (!dCopy)
   {
     goto LABEL_9;
   }
 
-  if ([v5 length] == 16)
+  if ([dCopy length] == 16)
   {
     memset(buf, 0, sizeof(buf));
     [v6 getBytes:buf length:16];
@@ -3715,18 +3715,18 @@ void __80__HAP2AccessoryServerEncodingThread_groupingsForReadRequestsForCharacte
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 UUIDString];
+      uUIDString = [v8 UUIDString];
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v10 = 0;
+      *error = uUIDString = 0;
     }
 
     else
     {
-      v10 = 0;
+      uUIDString = 0;
     }
 
     goto LABEL_24;
@@ -3745,22 +3745,22 @@ void __80__HAP2AccessoryServerEncodingThread_groupingsForReadRequestsForCharacte
       *buf = 138412290;
       *&buf[4] = v6;
       _os_log_error_impl(&dword_22AADC000, v11, OS_LOG_TYPE_ERROR, "Provided UUID has invalid length: %@", buf, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_10;
       }
 
 LABEL_23:
-      v10 = 0;
+      uUIDString = 0;
       goto LABEL_24;
     }
 
 LABEL_9:
-    if (a4)
+    if (error)
     {
 LABEL_10:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
-      *a4 = v10 = 0;
+      *error = uUIDString = 0;
       goto LABEL_24;
     }
 
@@ -3768,12 +3768,12 @@ LABEL_10:
   }
 
   v12 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v6, "length")}];
-  v13 = [v6 bytes];
+  bytes = [v6 bytes];
   v14 = [v6 length];
   if (v14)
   {
     v15 = v14;
-    v16 = v13 - 1;
+    v16 = bytes - 1;
     do
     {
       if (v15 == [v6 length])
@@ -3792,12 +3792,12 @@ LABEL_10:
     while (v15);
   }
 
-  v10 = [v12 copy];
+  uUIDString = [v12 copy];
 
 LABEL_24:
   v18 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return uUIDString;
 }
 
 @end

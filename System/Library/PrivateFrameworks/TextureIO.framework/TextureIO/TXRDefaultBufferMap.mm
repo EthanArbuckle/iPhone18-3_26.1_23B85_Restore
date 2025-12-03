@@ -1,20 +1,20 @@
 @interface TXRDefaultBufferMap
-- (id)initForBuffer:(id)a3 withBytes:(void *)a4;
+- (id)initForBuffer:(id)buffer withBytes:(void *)bytes;
 @end
 
 @implementation TXRDefaultBufferMap
 
-- (id)initForBuffer:(id)a3 withBytes:(void *)a4
+- (id)initForBuffer:(id)buffer withBytes:(void *)bytes
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v11.receiver = self;
   v11.super_class = TXRDefaultBufferMap;
   v8 = [(TXRDefaultBufferMap *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_buffer, a3);
-    v9->_bytes = a4;
+    objc_storeStrong(&v8->_buffer, buffer);
+    v9->_bytes = bytes;
   }
 
   return v9;

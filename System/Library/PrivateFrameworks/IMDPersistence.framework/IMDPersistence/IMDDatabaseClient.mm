@@ -1,58 +1,58 @@
 @interface IMDDatabaseClient
-- (id)chatRecordsFilteredByPredicate:(id)a3;
-- (id)chatRecordsWithHandles:(id)a3 serviceName:(id)a4 displayName:(id)a5 groupID:(id)a6 style:(unsigned __int8)a7 useOriginalGroupID:(BOOL)a8;
-- (id)chatRecordsWithIdentifier:(id)a3;
-- (id)copyDuplicateGroupChatRecordsWithLimit:(int64_t)a3;
-- (id)handleRecordsFilteredByPredicate:(id)a3;
+- (id)chatRecordsFilteredByPredicate:(id)predicate;
+- (id)chatRecordsWithHandles:(id)handles serviceName:(id)name displayName:(id)displayName groupID:(id)d style:(unsigned __int8)style useOriginalGroupID:(BOOL)iD;
+- (id)chatRecordsWithIdentifier:(id)identifier;
+- (id)copyDuplicateGroupChatRecordsWithLimit:(int64_t)limit;
+- (id)handleRecordsFilteredByPredicate:(id)predicate;
 - (id)loadRecoverableMessagesMetadataGroupedByChatGUID;
-- (id)recoverableMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)a3;
-- (id)recoverableMessagesMetadataPendingCloudKitSaveWithLimit:(int64_t)a3 filter:(unint64_t)a4;
-- (id)scheduledMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)a3;
-- (void)_sendAsyncXPCMessage:(id)a3 action:(int64_t)a4 responseHandler:(id)a5;
-- (void)_sendSyncXPCMessage:(id)a3 action:(int64_t)a4 responseHandler:(id)a5;
-- (void)addScheduledMessageGUIDandCKRecordToDeleteFromCloudKit:(id)a3 recordID:(id)a4;
+- (id)recoverableMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)limit;
+- (id)recoverableMessagesMetadataPendingCloudKitSaveWithLimit:(int64_t)limit filter:(unint64_t)filter;
+- (id)scheduledMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)limit;
+- (void)_sendAsyncXPCMessage:(id)message action:(int64_t)action responseHandler:(id)handler;
+- (void)_sendSyncXPCMessage:(id)message action:(int64_t)action responseHandler:(id)handler;
+- (void)addScheduledMessageGUIDandCKRecordToDeleteFromCloudKit:(id)kit recordID:(id)d;
 - (void)clearRecoverableMessageTombStones;
-- (void)deleteAttachmentsDirectWithPredicate:(id)a3;
+- (void)deleteAttachmentsDirectWithPredicate:(id)predicate;
 - (void)deleteDatabase;
-- (void)deleteJunkMessagesOlderThanDays:(int64_t)a3;
-- (void)deleteRecoverableMessagesOlderThanDays:(int64_t)a3;
-- (void)deleteTombstonedScheduledMessagesWithRecordIDs:(id)a3;
-- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5;
-- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchChatRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchChatRecordsFilteredUsingPredicate:(id)a3 sortedUsingLastMessageDateAscending:(BOOL)a4 olderThan:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7;
-- (void)fetchChatRecordsWithAtLeastHandles:(id)a3 serviceNames:(id)a4 style:(unsigned __int8)a5 completionHandler:(id)a6;
-- (void)fetchChatRecordsWithPinningIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchContactsForIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchCountOfRecordType:(unint64_t)a3 completionHandler:(id)a4;
-- (void)fetchDataForKey:(id)a3 completionHandler:(id)a4;
-- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchHandleRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchInteger64ForKey:(id)a3 completionHandler:(id)a4;
-- (void)fetchLastMessageRecordForChatRecordWithRowID:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchMessagesWithoutChatsCountWithCompletionHandler:(id)a3;
-- (void)fetchScheduledMessageRecordsForChatRecordWithGUID:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5;
-- (void)fetchTotalMessageCountWithCompletionHandler:(id)a3;
-- (void)fetchUnreadMessageRecordsForChatsFilteredUsingPredicate:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5;
-- (void)inspectStorageWithStorageInspector:(id)a3 completionHandler:(id)a4;
-- (void)markMessageRecordsAsReadWithGUIDs:(id)a3;
-- (void)moveMessageRecordsToRecoveryForChatRecordsWithGUIDs:(id)a3 deleteDate:(id)a4;
-- (void)moveMessageRecordsToRecoveryForMessageGUIDs:(id)a3 deleteDate:(id)a4;
+- (void)deleteJunkMessagesOlderThanDays:(int64_t)days;
+- (void)deleteRecoverableMessagesOlderThanDays:(int64_t)days;
+- (void)deleteTombstonedScheduledMessagesWithRecordIDs:(id)ds;
+- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)predicate limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchChatRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchChatRecordsFilteredUsingPredicate:(id)predicate sortedUsingLastMessageDateAscending:(BOOL)ascending olderThan:(id)than limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchChatRecordsWithAtLeastHandles:(id)handles serviceNames:(id)names style:(unsigned __int8)style completionHandler:(id)handler;
+- (void)fetchChatRecordsWithPinningIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchContactsForIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchCountOfRecordType:(unint64_t)type completionHandler:(id)handler;
+- (void)fetchDataForKey:(id)key completionHandler:(id)handler;
+- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchHandleRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchInteger64ForKey:(id)key completionHandler:(id)handler;
+- (void)fetchLastMessageRecordForChatRecordWithRowID:(int64_t)d completionHandler:(id)handler;
+- (void)fetchMessagesWithoutChatsCountWithCompletionHandler:(id)handler;
+- (void)fetchScheduledMessageRecordsForChatRecordWithGUID:(id)d limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchTotalMessageCountWithCompletionHandler:(id)handler;
+- (void)fetchUnreadMessageRecordsForChatsFilteredUsingPredicate:(id)predicate limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)inspectStorageWithStorageInspector:(id)inspector completionHandler:(id)handler;
+- (void)markMessageRecordsAsReadWithGUIDs:(id)ds;
+- (void)moveMessageRecordsToRecoveryForChatRecordsWithGUIDs:(id)ds deleteDate:(id)date;
+- (void)moveMessageRecordsToRecoveryForMessageGUIDs:(id)ds deleteDate:(id)date;
 - (void)notifyFirstUnlockComplete;
-- (void)permanentlyDeleteRecoverableMessagesInChatsWithGUIDs:(id)a3 completionHandler:(id)a4;
-- (void)postSharePlayNotificationForChatGUID:(id)a3 faceTimeConversationUUID:(id)a4 handleIdentifier:(id)a5 localizedApplicationName:(id)a6;
-- (void)recoverMessageRecordsForChatRecordsWithGUIDs:(id)a3;
-- (void)resolveInconsistentGUIDForChatRecordWithGUID:(id)a3 newGUID:(id)a4 completionHandler:(id)a5;
-- (void)sendLegacyXPCCommandWithObject:(id)a3 reply:(id)a4;
-- (void)storeRecoverableMessagePartWithBody:(id)a3 forMessageWithGUID:(id)a4 deleteDate:(id)a5;
-- (void)updateAttachmentSyndicationRanges:(id)a3 shouldHideFromSyndication:(BOOL)a4;
-- (void)updateAttachmentsSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4;
-- (void)updateChatsSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4;
-- (void)updateMessageSyndicationRanges:(id)a3 shouldHideFromSyndication:(BOOL)a4;
-- (void)updateMessagesSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4;
-- (void)updateMessagesSyncedSyndicationRangesForGUIDs:(id)a3 toStatus:(int64_t)a4;
-- (void)updateRecoverableMessageSyncState:(int64_t)a3 forMessageGUIDs:(id)a4;
-- (void)updateRecoverableMessageSyncState:(int64_t)a3 forMessageRowID:(int64_t)a4 onPartIndex:(int64_t)a5;
+- (void)permanentlyDeleteRecoverableMessagesInChatsWithGUIDs:(id)ds completionHandler:(id)handler;
+- (void)postSharePlayNotificationForChatGUID:(id)d faceTimeConversationUUID:(id)iD handleIdentifier:(id)identifier localizedApplicationName:(id)name;
+- (void)recoverMessageRecordsForChatRecordsWithGUIDs:(id)ds;
+- (void)resolveInconsistentGUIDForChatRecordWithGUID:(id)d newGUID:(id)iD completionHandler:(id)handler;
+- (void)sendLegacyXPCCommandWithObject:(id)object reply:(id)reply;
+- (void)storeRecoverableMessagePartWithBody:(id)body forMessageWithGUID:(id)d deleteDate:(id)date;
+- (void)updateAttachmentSyndicationRanges:(id)ranges shouldHideFromSyndication:(BOOL)syndication;
+- (void)updateAttachmentsSyncStatusTo:(int64_t)to forGUIDs:(id)ds;
+- (void)updateChatsSyncStatusTo:(int64_t)to forGUIDs:(id)ds;
+- (void)updateMessageSyndicationRanges:(id)ranges shouldHideFromSyndication:(BOOL)syndication;
+- (void)updateMessagesSyncStatusTo:(int64_t)to forGUIDs:(id)ds;
+- (void)updateMessagesSyncedSyndicationRangesForGUIDs:(id)ds toStatus:(int64_t)status;
+- (void)updateRecoverableMessageSyncState:(int64_t)state forMessageGUIDs:(id)ds;
+- (void)updateRecoverableMessageSyncState:(int64_t)state forMessageRowID:(int64_t)d onPartIndex:(int64_t)index;
 @end
 
 @implementation IMDDatabaseClient
@@ -87,25 +87,25 @@
   return v5;
 }
 
-- (void)_sendSyncXPCMessage:(id)a3 action:(int64_t)a4 responseHandler:(id)a5
+- (void)_sendSyncXPCMessage:(id)message action:(int64_t)action responseHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  xpc_dictionary_set_int64(v8, "__xpc__event_code__", a4);
-  __XPCIMDMessageStoreSendXPCMessage(v8, v7, 0);
+  handlerCopy = handler;
+  messageCopy = message;
+  xpc_dictionary_set_int64(messageCopy, "__xpc__event_code__", action);
+  __XPCIMDMessageStoreSendXPCMessage(messageCopy, handlerCopy, 0);
 }
 
-- (void)_sendAsyncXPCMessage:(id)a3 action:(int64_t)a4 responseHandler:(id)a5
+- (void)_sendAsyncXPCMessage:(id)message action:(int64_t)action responseHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  xpc_dictionary_set_int64(v8, "__xpc__event_code__", a4);
-  __XPCIMDMessageStoreSendXPCMessage(v8, v7, 1);
+  handlerCopy = handler;
+  messageCopy = message;
+  xpc_dictionary_set_int64(messageCopy, "__xpc__event_code__", action);
+  __XPCIMDMessageStoreSendXPCMessage(messageCopy, handlerCopy, 1);
 }
 
-- (id)chatRecordsFilteredByPredicate:(id)a3
+- (id)chatRecordsFilteredByPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -115,9 +115,9 @@
   v6 = xpc_dictionary_create(0, 0, 0);
   if (v6)
   {
-    if (v4)
+    if (predicateCopy)
     {
-      v10 = v4;
+      v10 = predicateCopy;
       v11 = 0;
       IMInsertCodableObjectsToXPCDictionary();
     }
@@ -144,69 +144,69 @@
   return v8;
 }
 
-- (void)fetchChatRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchChatRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v14 = xpc_dictionary_create(0, 0, 0);
   if (v14)
   {
-    if (v10)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    if (v11)
+    if (descriptorsCopy)
     {
-      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, v11);
+      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, descriptorsCopy);
       xpc_dictionary_set_value(v14, "sortDescriptors", v15);
     }
 
-    xpc_dictionary_set_int64(v14, "limit", a5);
+    xpc_dictionary_set_int64(v14, "limit", limit);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_1B7B48DF0;
     v17[3] = &unk_1E7CB70A8;
     v17[4] = self;
-    v18 = v12;
+    v18 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, v14, 129, v17);
   }
 }
 
-- (void)fetchChatRecordsFilteredUsingPredicate:(id)a3 sortedUsingLastMessageDateAscending:(BOOL)a4 olderThan:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7
+- (void)fetchChatRecordsFilteredUsingPredicate:(id)predicate sortedUsingLastMessageDateAscending:(BOOL)ascending olderThan:(id)than limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  predicateCopy = predicate;
+  thanCopy = than;
+  handlerCopy = handler;
   v15 = xpc_dictionary_create(0, 0, 0);
   if (v15)
   {
-    if (v12)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    xpc_dictionary_set_BOOL(v15, "ascending", a4);
-    if (v13)
+    xpc_dictionary_set_BOOL(v15, "ascending", ascending);
+    if (thanCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    xpc_dictionary_set_int64(v15, "limit", a6);
+    xpc_dictionary_set_int64(v15, "limit", limit);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_1B7B48FF8;
     v17[3] = &unk_1E7CB70A8;
     v17[4] = self;
-    v18 = v14;
+    v18 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, v15, 130, v17);
   }
 }
 
-- (id)chatRecordsWithIdentifier:(id)a3
+- (id)chatRecordsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -216,9 +216,9 @@
   v6 = xpc_dictionary_create(0, 0, 0);
   if (v6)
   {
-    if (v4)
+    if (identifierCopy)
     {
-      v10 = v4;
+      v10 = identifierCopy;
       v11 = 0;
       IMInsertNSStringsToXPCDictionary();
     }
@@ -245,14 +245,14 @@
   return v8;
 }
 
-- (void)fetchChatRecordsWithPinningIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchChatRecordsWithPinningIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = xpc_dictionary_create(0, 0, 0);
   if (v8)
   {
-    if (v6)
+    if (identifierCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
@@ -262,19 +262,19 @@
     v10[2] = sub_1B7B49378;
     v10[3] = &unk_1E7CB70A8;
     v10[4] = self;
-    v11 = v7;
+    v11 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, v8, 133, v10);
   }
 }
 
-- (id)chatRecordsWithHandles:(id)a3 serviceName:(id)a4 displayName:(id)a5 groupID:(id)a6 style:(unsigned __int8)a7 useOriginalGroupID:(BOOL)a8
+- (id)chatRecordsWithHandles:(id)handles serviceName:(id)name displayName:(id)displayName groupID:(id)d style:(unsigned __int8)style useOriginalGroupID:(BOOL)iD
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  iDCopy = iD;
+  styleCopy = style;
+  handlesCopy = handles;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -284,32 +284,32 @@
   v18 = xpc_dictionary_create(0, 0, 0);
   if (v18)
   {
-    if (v14)
+    if (handlesCopy)
     {
       IMInsertArraysToXPCDictionary();
     }
 
-    if (v15)
+    if (nameCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    if (v16)
+    if (displayNameCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    if (v17)
+    if (dCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    if (v8)
+    if (iDCopy)
     {
       IMInsertBoolsToXPCDictionary();
     }
 
-    xpc_dictionary_set_int64(v18, "style", v9);
+    xpc_dictionary_set_int64(v18, "style", styleCopy);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = sub_1B7B49650;
@@ -332,42 +332,42 @@
   return v21;
 }
 
-- (void)fetchChatRecordsWithAtLeastHandles:(id)a3 serviceNames:(id)a4 style:(unsigned __int8)a5 completionHandler:(id)a6
+- (void)fetchChatRecordsWithAtLeastHandles:(id)handles serviceNames:(id)names style:(unsigned __int8)style completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  styleCopy = style;
+  handlesCopy = handles;
+  namesCopy = names;
+  handlerCopy = handler;
   v15 = xpc_dictionary_create(0, 0, 0);
   if (v15)
   {
-    if (v10)
+    if (handlesCopy)
     {
-      v17 = v10;
+      v17 = handlesCopy;
       v18 = 0;
       IMInsertArraysToXPCDictionary();
     }
 
-    if (objc_msgSend_count(v11, v13, v14, v17, v18))
+    if (objc_msgSend_count(namesCopy, v13, v14, v17, v18))
     {
       IMInsertArraysToXPCDictionary();
     }
 
-    xpc_dictionary_set_int64(v15, "style", v7);
+    xpc_dictionary_set_int64(v15, "style", styleCopy);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1B7B49810;
     v19[3] = &unk_1E7CB70A8;
     v19[4] = self;
-    v20 = v12;
+    v20 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, v15, 127, v19);
   }
 }
 
-- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchGroupPhotoPathsForChatsWithGroupIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -377,7 +377,7 @@
   v8 = xpc_dictionary_create(0, 0, 0);
   if (v8)
   {
-    if (v6)
+    if (dsCopy)
     {
       IMInsertArraysToXPCDictionary();
     }
@@ -388,14 +388,14 @@
     v10[3] = &unk_1E7CB8D20;
     v12 = v13;
     v10[4] = self;
-    v11 = v7;
+    v11 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, v8, 137, v10);
   }
 
   _Block_object_dispose(v13, 8);
 }
 
-- (id)copyDuplicateGroupChatRecordsWithLimit:(int64_t)a3
+- (id)copyDuplicateGroupChatRecordsWithLimit:(int64_t)limit
 {
   v11 = 0;
   v12 = &v11;
@@ -407,7 +407,7 @@
   v6 = empty;
   if (empty)
   {
-    xpc_dictionary_set_int64(empty, "limit", a3);
+    xpc_dictionary_set_int64(empty, "limit", limit);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1B7B49BF8;
@@ -423,20 +423,20 @@
   return v8;
 }
 
-- (void)resolveInconsistentGUIDForChatRecordWithGUID:(id)a3 newGUID:(id)a4 completionHandler:(id)a5
+- (void)resolveInconsistentGUIDForChatRecordWithGUID:(id)d newGUID:(id)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (v8)
+    if (dCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    if (v9)
+    if (iDCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
@@ -445,37 +445,37 @@
     v13[1] = 3221225472;
     v13[2] = sub_1B7B49D88;
     v13[3] = &unk_1E7CB8D48;
-    v14 = v10;
+    v14 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v12, empty, 138, v13);
   }
 }
 
-- (void)fetchLastMessageRecordForChatRecordWithRowID:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchLastMessageRecordForChatRecordWithRowID:(int64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   v8 = empty;
   if (empty)
   {
-    xpc_dictionary_set_int64(empty, "chatRowID", a3);
+    xpc_dictionary_set_int64(empty, "chatRowID", d);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1B7B49EBC;
     v10[3] = &unk_1E7CB70A8;
     v10[4] = self;
-    v11 = v6;
+    v11 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, v8, 48, v10);
   }
 }
 
-- (void)fetchUnreadMessageRecordsForChatsFilteredUsingPredicate:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchUnreadMessageRecordsForChatsFilteredUsingPredicate:(id)predicate limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (v8)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
@@ -486,46 +486,46 @@
     v12[2] = sub_1B7B4A06C;
     v12[3] = &unk_1E7CB70A8;
     v12[4] = self;
-    v13 = v9;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, empty, 83, v12, a4, 0);
+    v13 = handlerCopy;
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, empty, 83, v12, limit, 0);
   }
 }
 
-- (void)updateAttachmentSyndicationRanges:(id)a3 shouldHideFromSyndication:(BOOL)a4
+- (void)updateAttachmentSyndicationRanges:(id)ranges shouldHideFromSyndication:(BOOL)syndication
 {
-  v8 = a3;
+  rangesCopy = ranges;
   v6 = xpc_dictionary_create(0, 0, 0);
   if (v6)
   {
-    if (v8)
+    if (rangesCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    xpc_dictionary_set_BOOL(v6, "shouldHideFromSyndication", a4);
+    xpc_dictionary_set_BOOL(v6, "shouldHideFromSyndication", syndication);
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v7, v6, 206, &unk_1F2FA0210);
   }
 }
 
-- (void)updateMessageSyndicationRanges:(id)a3 shouldHideFromSyndication:(BOOL)a4
+- (void)updateMessageSyndicationRanges:(id)ranges shouldHideFromSyndication:(BOOL)syndication
 {
-  v8 = a3;
+  rangesCopy = ranges;
   v6 = xpc_dictionary_create(0, 0, 0);
   if (v6)
   {
-    if (v8)
+    if (rangesCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    xpc_dictionary_set_BOOL(v6, "shouldHideFromSyndication", a4);
+    xpc_dictionary_set_BOOL(v6, "shouldHideFromSyndication", syndication);
     objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v7, v6, 216, &unk_1F2F9FB90);
   }
 }
 
-- (void)fetchTotalMessageCountWithCompletionHandler:(id)a3
+- (void)fetchTotalMessageCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
@@ -538,16 +538,16 @@
     v7[2] = sub_1B7B4A608;
     v7[3] = &unk_1E7CB8D70;
     v9 = v10;
-    v8 = v4;
+    v8 = handlerCopy;
     objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v5, 234, v7);
 
     _Block_object_dispose(v10, 8);
   }
 }
 
-- (void)fetchMessagesWithoutChatsCountWithCompletionHandler:(id)a3
+- (void)fetchMessagesWithoutChatsCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
@@ -560,31 +560,31 @@
     v7[2] = sub_1B7B4A770;
     v7[3] = &unk_1E7CB8D70;
     v9 = v10;
-    v8 = v4;
+    v8 = handlerCopy;
     objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v5, 235, v7);
 
     _Block_object_dispose(v10, 8);
   }
 }
 
-- (void)postSharePlayNotificationForChatGUID:(id)a3 faceTimeConversationUUID:(id)a4 handleIdentifier:(id)a5 localizedApplicationName:(id)a6
+- (void)postSharePlayNotificationForChatGUID:(id)d faceTimeConversationUUID:(id)iD handleIdentifier:(id)identifier localizedApplicationName:(id)name
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  nameCopy = name;
   empty = xpc_dictionary_create_empty();
   v15 = empty;
-  if (v12 && v11 && v10 && empty)
+  if (identifierCopy && iDCopy && dCopy && empty)
   {
     IMInsertNSStringsToXPCDictionary();
     IMInsertNSStringsToXPCDictionary();
-    v19 = v12;
+    v19 = identifierCopy;
     IMInsertNSStringsToXPCDictionary();
-    if (v13)
+    if (nameCopy)
     {
-      v19 = v13;
+      v19 = nameCopy;
       IMInsertNSStringsToXPCDictionary();
     }
 
@@ -599,11 +599,11 @@
       *buf = 138413058;
       v21 = v15;
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v11;
+      v25 = iDCopy;
       v26 = 2112;
-      v27 = v12;
+      v27 = identifierCopy;
       _os_log_impl(&dword_1B7AD5000, v17, OS_LOG_TYPE_INFO, "Not sending XPC message for SharePlay notification because message (%@), chatGUID (%@), faceTimeConversationUUID (%@), or handleIdentifier (%@) were nil", buf, 0x2Au);
     }
   }
@@ -623,9 +623,9 @@
   objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v3, v4, 232, &unk_1F2F9FB10);
 }
 
-- (id)handleRecordsFilteredByPredicate:(id)a3
+- (id)handleRecordsFilteredByPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -635,9 +635,9 @@
   v6 = xpc_dictionary_create(0, 0, 0);
   if (v6)
   {
-    if (v4)
+    if (predicateCopy)
     {
-      v10 = v4;
+      v10 = predicateCopy;
       v11 = 0;
       IMInsertCodableObjectsToXPCDictionary();
     }
@@ -664,45 +664,45 @@
   return v8;
 }
 
-- (void)fetchHandleRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchHandleRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v14 = xpc_dictionary_create(0, 0, 0);
   if (v14)
   {
-    if (v10)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    if (v11)
+    if (descriptorsCopy)
     {
-      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, v11);
+      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, descriptorsCopy);
       xpc_dictionary_set_value(v14, "sortDescriptors", v15);
     }
 
-    xpc_dictionary_set_int64(v14, "limit", a5);
+    xpc_dictionary_set_int64(v14, "limit", limit);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_1B7B4AEE4;
     v17[3] = &unk_1E7CB70A8;
     v17[4] = self;
-    v18 = v12;
+    v18 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, v14, 228, v17);
   }
 }
 
-- (void)deleteAttachmentsDirectWithPredicate:(id)a3
+- (void)deleteAttachmentsDirectWithPredicate:(id)predicate
 {
-  v8 = a3;
+  predicateCopy = predicate;
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
-    if (v8)
+    if (predicateCopy)
     {
-      v6 = v8;
+      v6 = predicateCopy;
       v7 = 0;
       IMInsertCodableObjectsToXPCDictionary();
     }
@@ -711,63 +711,63 @@
   }
 }
 
-- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)predicate limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v10 = xpc_dictionary_create(0, 0, 0);
   if (v10)
   {
-    if (v8)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    xpc_dictionary_set_int64(v10, "limit", a4);
+    xpc_dictionary_set_int64(v10, "limit", limit);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1B7B4B130;
     v12[3] = &unk_1E7CB70A8;
     v12[4] = self;
-    v13 = v9;
+    v13 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, v10, 33, v12);
   }
 }
 
-- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)a3 sortedUsingDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchAttachmentRecordsFilteredUsingPredicate:(id)predicate sortedUsingDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v14 = xpc_dictionary_create(0, 0, 0);
   if (v14)
   {
-    if (v10)
+    if (predicateCopy)
     {
       IMInsertCodableObjectsToXPCDictionary();
     }
 
-    if (v11)
+    if (descriptorsCopy)
     {
-      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, v11);
+      v15 = objc_msgSend__xpcArrayWithCodableObjects_(self, v13, descriptorsCopy);
       xpc_dictionary_set_value(v14, "sortDescriptors", v15);
     }
 
-    xpc_dictionary_set_int64(v14, "limit", a5);
+    xpc_dictionary_set_int64(v14, "limit", limit);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_1B7B4B328;
     v17[3] = &unk_1E7CB70A8;
     v17[4] = self;
-    v18 = v12;
+    v18 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, v14, 34, v17);
   }
 }
 
-- (void)fetchDataForKey:(id)a3 completionHandler:(id)a4
+- (void)fetchDataForKey:(id)key completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -779,21 +779,21 @@
   v8[2] = sub_1B7B4B4D8;
   v8[3] = &unk_1E7CB8D70;
   v10 = v11;
-  v7 = v6;
+  v7 = handlerCopy;
   v9 = v7;
-  __syncXPCIMDKVValueForKey_IPCAction(v8, v5);
+  __syncXPCIMDKVValueForKey_IPCAction(v8, keyCopy);
 
   _Block_object_dispose(v11, 8);
 }
 
-- (void)fetchInteger64ForKey:(id)a3 completionHandler:(id)a4
+- (void)fetchInteger64ForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (v6)
+    if (keyCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
@@ -802,126 +802,126 @@
     v10[1] = 3221225472;
     v10[2] = sub_1B7B4B638;
     v10[3] = &unk_1E7CB8D48;
-    v11 = v7;
+    v11 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 192, v10);
   }
 }
 
-- (void)moveMessageRecordsToRecoveryForMessageGUIDs:(id)a3 deleteDate:(id)a4
+- (void)moveMessageRecordsToRecoveryForMessageGUIDs:(id)ds deleteDate:(id)date
 {
-  v11 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  dateCopy = date;
   empty = xpc_dictionary_create_empty();
-  if (empty && objc_msgSend_count(v11, v7, v8))
+  if (empty && objc_msgSend_count(dsCopy, v7, v8))
   {
     IMInsertArraysToXPCDictionary();
     IMInsertCodableObjectsToXPCDictionary();
-    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v10, empty, 207, &unk_1F2FA0A90, v6, 0);
+    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v10, empty, 207, &unk_1F2FA0A90, dateCopy, 0);
   }
 }
 
-- (void)moveMessageRecordsToRecoveryForChatRecordsWithGUIDs:(id)a3 deleteDate:(id)a4
+- (void)moveMessageRecordsToRecoveryForChatRecordsWithGUIDs:(id)ds deleteDate:(id)date
 {
-  v11 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  dateCopy = date;
   empty = xpc_dictionary_create_empty();
-  if (empty && objc_msgSend_count(v11, v7, v8))
+  if (empty && objc_msgSend_count(dsCopy, v7, v8))
   {
     IMInsertArraysToXPCDictionary();
     IMInsertCodableObjectsToXPCDictionary();
-    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v10, empty, 141, &unk_1F2FA0AB0, v6, 0);
+    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v10, empty, 141, &unk_1F2FA0AB0, dateCopy, 0);
   }
 }
 
-- (void)recoverMessageRecordsForChatRecordsWithGUIDs:(id)a3
+- (void)recoverMessageRecordsForChatRecordsWithGUIDs:(id)ds
 {
-  v8 = a3;
+  dsCopy = ds;
   empty = xpc_dictionary_create_empty();
-  if (empty && objc_msgSend_count(v8, v4, v5))
+  if (empty && objc_msgSend_count(dsCopy, v4, v5))
   {
     IMInsertArraysToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v7, empty, 142, &unk_1F2F9FAB0, v8, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v7, empty, 142, &unk_1F2F9FAB0, dsCopy, 0);
   }
 }
 
-- (void)updateChatsSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4
+- (void)updateChatsSyncStatusTo:(int64_t)to forGUIDs:(id)ds
 {
-  v10 = a4;
-  if (objc_msgSend_count(v10, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v6, v7))
   {
     empty = xpc_dictionary_create_empty();
     IMInsertArraysToXPCDictionary();
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 150, &unk_1F2FA0AD0, a3, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 150, &unk_1F2FA0AD0, to, 0);
   }
 }
 
-- (void)updateMessagesSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4
+- (void)updateMessagesSyncStatusTo:(int64_t)to forGUIDs:(id)ds
 {
-  v10 = a4;
-  if (objc_msgSend_count(v10, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v6, v7))
   {
     empty = xpc_dictionary_create_empty();
     IMInsertArraysToXPCDictionary();
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 181, &unk_1F2FA0AF0, a3, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 181, &unk_1F2FA0AF0, to, 0);
   }
 }
 
-- (void)updateMessagesSyncedSyndicationRangesForGUIDs:(id)a3 toStatus:(int64_t)a4
+- (void)updateMessagesSyncedSyndicationRangesForGUIDs:(id)ds toStatus:(int64_t)status
 {
-  v10 = a3;
-  if (objc_msgSend_count(v10, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v6, v7))
   {
     empty = xpc_dictionary_create_empty();
     IMInsertArraysToXPCDictionary();
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 182, &unk_1F2FA0B10, a4, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 182, &unk_1F2FA0B10, status, 0);
   }
 }
 
-- (void)updateAttachmentsSyncStatusTo:(int64_t)a3 forGUIDs:(id)a4
+- (void)updateAttachmentsSyncStatusTo:(int64_t)to forGUIDs:(id)ds
 {
-  v10 = a4;
-  if (objc_msgSend_count(v10, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v6, v7))
   {
     empty = xpc_dictionary_create_empty();
     IMInsertArraysToXPCDictionary();
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 188, &unk_1F2FA0B30, a3, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 188, &unk_1F2FA0B30, to, 0);
   }
 }
 
-- (void)deleteRecoverableMessagesOlderThanDays:(int64_t)a3
+- (void)deleteRecoverableMessagesOlderThanDays:(int64_t)days
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
     v7 = empty;
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v7, 208, &unk_1F2F9FF50, a3, 0);
+    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v7, 208, &unk_1F2F9FF50, days, 0);
     empty = v7;
   }
 }
 
-- (void)deleteJunkMessagesOlderThanDays:(int64_t)a3
+- (void)deleteJunkMessagesOlderThanDays:(int64_t)days
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
     v7 = empty;
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v7, 219, &unk_1F2F9FF30, a3, 0);
+    objc_msgSend__sendAsyncXPCMessage_action_responseHandler_(self, v6, v7, 219, &unk_1F2F9FF30, days, 0);
     empty = v7;
   }
 }
 
-- (void)permanentlyDeleteRecoverableMessagesInChatsWithGUIDs:(id)a3 completionHandler:(id)a4
+- (void)permanentlyDeleteRecoverableMessagesInChatsWithGUIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
-  if (empty && objc_msgSend_count(v6, v8, v9))
+  if (empty && objc_msgSend_count(dsCopy, v8, v9))
   {
     IMInsertArraysToXPCDictionary();
     v12[0] = MEMORY[0x1E69E9820];
@@ -929,12 +929,12 @@
     v12[2] = sub_1B7B4BD44;
     v12[3] = &unk_1E7CB70A8;
     v12[4] = self;
-    v13 = v7;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, empty, 143, v12, v6, 0);
+    v13 = handlerCopy;
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, empty, 143, v12, dsCopy, 0);
   }
 }
 
-- (id)recoverableMessagesMetadataPendingCloudKitSaveWithLimit:(int64_t)a3 filter:(unint64_t)a4
+- (id)recoverableMessagesMetadataPendingCloudKitSaveWithLimit:(int64_t)limit filter:(unint64_t)filter
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
@@ -953,7 +953,7 @@
     v10[3] = &unk_1E7CB70D0;
     v10[4] = self;
     v10[5] = &v11;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v7, empty, 210, v10, a4, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v7, empty, 210, v10, filter, 0);
     v8 = v12[5];
     _Block_object_dispose(&v11, 8);
   }
@@ -966,7 +966,7 @@
   return v8;
 }
 
-- (id)recoverableMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)a3
+- (id)recoverableMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)limit
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
@@ -984,7 +984,7 @@
     v9[3] = &unk_1E7CB70D0;
     v9[4] = self;
     v9[5] = &v10;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 213, v9, a3, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 213, v9, limit, 0);
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }
@@ -1016,7 +1016,7 @@
   }
 }
 
-- (void)updateRecoverableMessageSyncState:(int64_t)a3 forMessageRowID:(int64_t)a4 onPartIndex:(int64_t)a5
+- (void)updateRecoverableMessageSyncState:(int64_t)state forMessageRowID:(int64_t)d onPartIndex:(int64_t)index
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
@@ -1025,14 +1025,14 @@
     IMInsertIntsToXPCDictionary();
     IMInsertIntsToXPCDictionary();
     IMInsertIntsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v8, v9, 211, &unk_1F2F9FE90, a5, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v8, v9, 211, &unk_1F2F9FE90, index, 0);
     empty = v9;
   }
 }
 
-- (void)updateRecoverableMessageSyncState:(int64_t)a3 forMessageGUIDs:(id)a4
+- (void)updateRecoverableMessageSyncState:(int64_t)state forMessageGUIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
@@ -1042,24 +1042,24 @@
     v9[1] = 3221225472;
     v9[2] = sub_1B7B4C404;
     v9[3] = &unk_1E7CB8D90;
-    v9[4] = a3;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v8, empty, 221, v9, v6, 0);
+    v9[4] = state;
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v8, empty, 221, v9, dsCopy, 0);
   }
 }
 
-- (void)storeRecoverableMessagePartWithBody:(id)a3 forMessageWithGUID:(id)a4 deleteDate:(id)a5
+- (void)storeRecoverableMessagePartWithBody:(id)body forMessageWithGUID:(id)d deleteDate:(id)date
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bodyCopy = body;
+  dCopy = d;
+  dateCopy = date;
   empty = xpc_dictionary_create_empty();
-  if (v9 && objc_msgSend_length(v9, v11, v12) && objc_msgSend_length(v8, v14, v15))
+  if (dCopy && objc_msgSend_length(dCopy, v11, v12) && objc_msgSend_length(bodyCopy, v14, v15))
   {
     IMInsertNSStringsToXPCDictionary();
     IMInsertCodableObjectsToXPCDictionary();
     IMInsertCodableObjectsToXPCDictionary();
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, empty, 212, &unk_1F2FA0B70, v8, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v16, empty, 212, &unk_1F2FA0B70, bodyCopy, 0);
   }
 
   else if (IMOSLoggingEnabled())
@@ -1068,9 +1068,9 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v20 = v9;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v8;
+      v22 = bodyCopy;
       _os_log_impl(&dword_1B7AD5000, v17, OS_LOG_TYPE_INFO, "IMDDatabaseClient | Early return: Recently Deleted:storeRecoverableMessagePartWithBody given messageGUID: %@ partBody: %@", buf, 0x16u);
     }
   }
@@ -1078,19 +1078,19 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCountOfRecordType:(unint64_t)a3 completionHandler:(id)a4
+- (void)fetchCountOfRecordType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   v8 = empty;
   if (empty)
   {
-    xpc_dictionary_set_uint64(empty, "recordType", a3);
+    xpc_dictionary_set_uint64(empty, "recordType", type);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1B7B4C794;
     v11[3] = &unk_1E7CB8D48;
-    v12 = v6;
+    v12 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, v8, 226, v11);
   }
 
@@ -1106,24 +1106,24 @@
       }
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)inspectStorageWithStorageInspector:(id)a3 completionHandler:(id)a4
+- (void)inspectStorageWithStorageInspector:(id)inspector completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  inspectorCopy = inspector;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
     v16 = 0;
-    v10 = objc_msgSend_encodeToData_(v6, v8, &v16);
+    v10 = objc_msgSend_encodeToData_(inspectorCopy, v8, &v16);
     v11 = v16;
     v12 = v11;
     if (!v10 || v11)
     {
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
     }
 
     else
@@ -1133,36 +1133,36 @@
       v14[1] = 3221225472;
       v14[2] = sub_1B7B4C918;
       v14[3] = &unk_1E7CB8D48;
-      v15 = v7;
+      v15 = handlerCopy;
       objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v13, empty, 233, v14, v10, 0);
     }
   }
 }
 
-- (void)fetchScheduledMessageRecordsForChatRecordWithGUID:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchScheduledMessageRecordsForChatRecordWithGUID:(id)d limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (v8)
+    if (dCopy)
     {
       IMInsertNSStringsToXPCDictionary();
     }
 
-    xpc_dictionary_set_int64(empty, "limit", a4);
+    xpc_dictionary_set_int64(empty, "limit", limit);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1B7B4CB08;
     v12[3] = &unk_1E7CB70A8;
     v12[4] = self;
-    v13 = v9;
+    v13 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v11, empty, 69, v12);
   }
 }
 
-- (id)scheduledMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)a3
+- (id)scheduledMessagesMetadataPendingCloudKitDeleteWithLimit:(int64_t)limit
 {
   empty = xpc_dictionary_create_empty();
   if (empty)
@@ -1180,7 +1180,7 @@
     v9[3] = &unk_1E7CB70D0;
     v9[4] = self;
     v9[5] = &v10;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 70, v9, a3, 0);
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 70, v9, limit, 0);
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }
@@ -1193,12 +1193,12 @@
   return v7;
 }
 
-- (void)addScheduledMessageGUIDandCKRecordToDeleteFromCloudKit:(id)a3 recordID:(id)a4
+- (void)addScheduledMessageGUIDandCKRecordToDeleteFromCloudKit:(id)kit recordID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  dCopy = d;
   empty = xpc_dictionary_create_empty();
-  if (empty && objc_msgSend_length(v6, v8, v9) && objc_msgSend_length(v7, v11, v12))
+  if (empty && objc_msgSend_length(kitCopy, v8, v9) && objc_msgSend_length(dCopy, v11, v12))
   {
     IMInsertNSStringsToXPCDictionary();
     IMInsertNSStringsToXPCDictionary();
@@ -1206,19 +1206,19 @@
     v14[1] = 3221225472;
     v14[2] = sub_1B7B4CE94;
     v14[3] = &unk_1E7CB8DB8;
-    v15 = v6;
-    v16 = v7;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v13, empty, 71, v14, v7, 0);
+    v15 = kitCopy;
+    v16 = dCopy;
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v13, empty, 71, v14, dCopy, 0);
   }
 }
 
-- (void)deleteTombstonedScheduledMessagesWithRecordIDs:(id)a3
+- (void)deleteTombstonedScheduledMessagesWithRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (objc_msgSend_count(v4, v5, v6))
+    if (objc_msgSend_count(dsCopy, v5, v6))
     {
       IMInsertArraysToXPCDictionary();
     }
@@ -1227,14 +1227,14 @@
     v9[1] = 3221225472;
     v9[2] = sub_1B7B4D01C;
     v9[3] = &unk_1E7CB8DE0;
-    v10 = v4;
+    v10 = dsCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v8, empty, 72, v9);
   }
 }
 
-- (void)markMessageRecordsAsReadWithGUIDs:(id)a3
+- (void)markMessageRecordsAsReadWithGUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
@@ -1243,27 +1243,27 @@
     v7[1] = 3221225472;
     v7[2] = sub_1B7B4D18C;
     v7[3] = &unk_1E7CB8DE0;
-    v8 = v4;
-    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 229, v7, v4, 0);
+    v8 = dsCopy;
+    objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v6, empty, 229, v7, dsCopy, 0);
   }
 }
 
-- (void)sendLegacyXPCCommandWithObject:(id)a3 reply:(id)a4
+- (void)sendLegacyXPCCommandWithObject:(id)object reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  replyCopy = reply;
   v8 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v7, *MEMORY[0x1E695D930], @"IMDDatabaseClient should not fulfill this method, should use proxy directly!", 0);
   objc_exception_throw(v8);
 }
 
-- (void)fetchContactsForIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchContactsForIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   empty = xpc_dictionary_create_empty();
   if (empty)
   {
-    if (v6)
+    if (identifiersCopy)
     {
       IMInsertArraysToXPCDictionary();
     }
@@ -1273,13 +1273,13 @@
     v10[2] = sub_1B7B4D37C;
     v10[3] = &unk_1E7CB70A8;
     v10[4] = self;
-    v11 = v7;
+    v11 = handlerCopy;
     objc_msgSend__sendSyncXPCMessage_action_responseHandler_(self, v9, empty, 231, v10);
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F8]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8]);
   }
 }
 

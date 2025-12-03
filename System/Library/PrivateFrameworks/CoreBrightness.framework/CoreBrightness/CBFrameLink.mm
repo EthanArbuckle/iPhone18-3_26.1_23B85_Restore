@@ -1,23 +1,23 @@
 @interface CBFrameLink
 - (CBFrameLink)init;
-- (CBFrameLink)initWithDisplay:(__Display *)a3 andQueue:(id)a4;
+- (CBFrameLink)initWithDisplay:(__Display *)display andQueue:(id)queue;
 - (void)dealloc;
-- (void)frameSync:(id)a3;
+- (void)frameSync:(id)sync;
 - (void)pause;
 - (void)resume;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)setFrameNotificationBlock:(id)a3;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)setFrameNotificationBlock:(id)block;
 @end
 
 @implementation CBFrameLink
 
 - (void)resume
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_logHandle)
   {
-    logHandle = v10->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -45,16 +45,16 @@
     _os_log_impl(&dword_1DE8E5000, log, type, "FrameLink resume", v6, 2u);
   }
 
-  [(CADisplayLink *)v10->_displayLink setPaused:0];
+  [(CADisplayLink *)selfCopy->_displayLink setPaused:0];
 }
 
 - (void)pause
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_logHandle)
   {
-    logHandle = v10->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -82,27 +82,27 @@
     _os_log_impl(&dword_1DE8E5000, log, type, "FrameLink pause", v6, 2u);
   }
 
-  [(CADisplayLink *)v10->_displayLink setPaused:1];
+  [(CADisplayLink *)selfCopy->_displayLink setPaused:1];
 }
 
 - (CBFrameLink)init
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20.receiver = self;
   v20.super_class = CBFrameLink;
-  v22 = [(CBFrameLink *)&v20 init];
-  if (v22)
+  selfCopy = [(CBFrameLink *)&v20 init];
+  if (selfCopy)
   {
     v2 = os_log_create("com.apple.CoreBrightness.FrameLink", "default");
-    v22->_logHandle = v2;
-    v3 = [MEMORY[0x1E6979330] displayLinkWithTarget:v22 selector:sel_frameSync_];
-    v22->_displayLink = v3;
-    if (!v22->_displayLink)
+    selfCopy->_logHandle = v2;
+    v3 = [MEMORY[0x1E6979330] displayLinkWithTarget:selfCopy selector:sel_frameSync_];
+    selfCopy->_displayLink = v3;
+    if (!selfCopy->_displayLink)
     {
-      if (v22->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v22->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -131,19 +131,19 @@
       }
 
 LABEL_23:
-      MEMORY[0x1E69E5920](v22);
-      v22 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
       return 0;
     }
 
-    [(CADisplayLink *)v22->_displayLink setPaused:1];
-    v4 = [CBSharedFrameLinkRunLoop addDisplayLinkToRunLoop:v22->_displayLink forMode:*MEMORY[0x1E695D918]];
-    v22->_runLoopRef = v4;
-    if (!v22->_runLoopRef)
+    [(CADisplayLink *)selfCopy->_displayLink setPaused:1];
+    v4 = [CBSharedFrameLinkRunLoop addDisplayLinkToRunLoop:selfCopy->_displayLink forMode:*MEMORY[0x1E695D918]];
+    selfCopy->_runLoopRef = v4;
+    if (!selfCopy->_runLoopRef)
     {
-      if (v22->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v9 = v22->_logHandle;
+        v9 = selfCopy->_logHandle;
       }
 
       else
@@ -175,27 +175,27 @@ LABEL_23:
     }
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (CBFrameLink)initWithDisplay:(__Display *)a3 andQueue:(id)a4
+- (CBFrameLink)initWithDisplay:(__Display *)display andQueue:(id)queue
 {
-  v54 = self;
+  selfCopy = self;
   v53 = a2;
-  v52 = a3;
-  v51 = a4;
+  displayCopy = display;
+  queueCopy = queue;
   v50.receiver = self;
   v50.super_class = CBFrameLink;
-  v54 = [(CBFrameLink *)&v50 init];
-  if (v54)
+  selfCopy = [(CBFrameLink *)&v50 init];
+  if (selfCopy)
   {
     v4 = os_log_create("com.apple.CoreBrightness.FrameLink", "default");
-    *(v54 + 1) = v4;
-    if (!v52)
+    *(selfCopy + 1) = v4;
+    if (!displayCopy)
     {
-      if (*(v54 + 1))
+      if (*(selfCopy + 1))
       {
-        v28 = *(v54 + 1);
+        v28 = *(selfCopy + 1);
       }
 
       else
@@ -224,17 +224,17 @@ LABEL_23:
       }
 
 LABEL_53:
-      MEMORY[0x1E69E5920](v54);
-      v54 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
       return 0;
     }
 
-    *(v54 + 2) = v52;
-    if (!v51)
+    *(selfCopy + 2) = displayCopy;
+    if (!queueCopy)
     {
-      if (*(v54 + 1))
+      if (*(selfCopy + 1))
       {
-        v24 = *(v54 + 1);
+        v24 = *(selfCopy + 1);
       }
 
       else
@@ -265,21 +265,21 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    *(v54 + 3) = v51;
-    dispatch_retain(*(v54 + 3));
+    *(selfCopy + 3) = queueCopy;
+    dispatch_retain(*(selfCopy + 3));
     block = MEMORY[0x1E69E9820];
     v39 = -1073741824;
     v40 = 0;
     v41 = __40__CBFrameLink_initWithDisplay_andQueue___block_invoke;
     v42 = &unk_1E867B480;
-    v43 = v54;
+    v43 = selfCopy;
     v5 = dispatch_block_create_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0, &block);
-    *(v54 + 4) = v5;
-    if (!*(v54 + 4))
+    *(selfCopy + 4) = v5;
+    if (!*(selfCopy + 4))
     {
-      if (*(v54 + 1))
+      if (*(selfCopy + 1))
       {
-        v20 = *(v54 + 1);
+        v20 = *(selfCopy + 1);
       }
 
       else
@@ -310,13 +310,13 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    v6 = [MEMORY[0x1E6979330] displayLinkWithTarget:v54 selector:sel_frameSync_];
-    *(v54 + 5) = v6;
-    if (!*(v54 + 5))
+    v6 = [MEMORY[0x1E6979330] displayLinkWithTarget:selfCopy selector:sel_frameSync_];
+    *(selfCopy + 5) = v6;
+    if (!*(selfCopy + 5))
     {
-      if (*(v54 + 1))
+      if (*(selfCopy + 1))
       {
-        v16 = *(v54 + 1);
+        v16 = *(selfCopy + 1);
       }
 
       else
@@ -347,14 +347,14 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    [*(v54 + 5) setPaused:1];
-    v7 = [CBSharedFrameLinkRunLoop addDisplayLinkToRunLoop:*(v54 + 5) forMode:*MEMORY[0x1E695D918]];
-    *(v54 + 7) = v7;
-    if (!*(v54 + 7))
+    [*(selfCopy + 5) setPaused:1];
+    v7 = [CBSharedFrameLinkRunLoop addDisplayLinkToRunLoop:*(selfCopy + 5) forMode:*MEMORY[0x1E695D918]];
+    *(selfCopy + 7) = v7;
+    if (!*(selfCopy + 7))
     {
-      if (*(v54 + 1))
+      if (*(selfCopy + 1))
       {
-        v12 = *(v54 + 1);
+        v12 = *(selfCopy + 1);
       }
 
       else
@@ -386,52 +386,52 @@ LABEL_53:
     }
   }
 
-  return v54;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_runLoopRef)
   {
-    MEMORY[0x1E69E5920](v4->_runLoopRef);
-    v4->_runLoopRef = 0;
+    MEMORY[0x1E69E5920](selfCopy->_runLoopRef);
+    selfCopy->_runLoopRef = 0;
   }
 
-  if (v4->_displayLink)
+  if (selfCopy->_displayLink)
   {
-    [(CADisplayLink *)v4->_displayLink invalidate];
-    v4->_displayLink = 0;
+    [(CADisplayLink *)selfCopy->_displayLink invalidate];
+    selfCopy->_displayLink = 0;
   }
 
-  if (v4->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
   }
 
-  if (v4->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v4->_queue);
+    dispatch_release(selfCopy->_queue);
   }
 
-  if (v4->_fadeCallbackBlock)
+  if (selfCopy->_fadeCallbackBlock)
   {
-    _Block_release(v4->_fadeCallbackBlock);
+    _Block_release(selfCopy->_fadeCallbackBlock);
   }
 
-  if (v4->_frameNotificationBlock)
+  if (selfCopy->_frameNotificationBlock)
   {
-    _Block_release(v4->_frameNotificationBlock);
-    v4->_frameNotificationBlock = 0;
+    _Block_release(selfCopy->_frameNotificationBlock);
+    selfCopy->_frameNotificationBlock = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBFrameLink;
   [(CBFrameLink *)&v2 dealloc];
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (self->_queue)
   {
@@ -439,21 +439,21 @@ LABEL_53:
     self->_queue = 0;
   }
 
-  if (a3)
+  if (queue)
   {
-    self->_queue = a3;
+    self->_queue = queue;
     dispatch_retain(self->_queue);
   }
 }
 
-- (void)frameSync:(id)a3
+- (void)frameSync:(id)sync
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  syncCopy = sync;
   if (self->_logHandle)
   {
-    logHandle = v28->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -483,27 +483,27 @@ LABEL_53:
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, log, type, spid, "FrameSync", &unk_1DEAD656F, v22, 2u);
   }
 
-  if (v28->_fadeCallbackBlock)
+  if (selfCopy->_fadeCallbackBlock)
   {
-    queue = v28->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v17 = -1073741824;
     v18 = 0;
     v19 = __25__CBFrameLink_frameSync___block_invoke;
     v20 = &unk_1E867B480;
-    v21 = v28;
+    v21 = selfCopy;
     dispatch_async(queue, &block);
   }
 
-  if (v28->_frameNotificationBlock)
+  if (selfCopy->_frameNotificationBlock)
   {
-    v4 = v28->_queue;
+    v4 = selfCopy->_queue;
     v10 = MEMORY[0x1E69E9820];
     v11 = -1073741824;
     v12 = 0;
     v13 = __25__CBFrameLink_frameSync___block_invoke_23;
     v14 = &unk_1E867B480;
-    v15 = v28;
+    v15 = selfCopy;
     dispatch_async(v4, &v10);
   }
 }
@@ -649,7 +649,7 @@ void __25__CBFrameLink_frameSync___block_invoke_23(uint64_t a1)
   }
 }
 
-- (void)setFrameNotificationBlock:(id)a3
+- (void)setFrameNotificationBlock:(id)block
 {
   if (self->_frameNotificationBlock)
   {
@@ -657,9 +657,9 @@ void __25__CBFrameLink_frameSync___block_invoke_23(uint64_t a1)
     self->_frameNotificationBlock = 0;
   }
 
-  if (a3)
+  if (block)
   {
-    self->_frameNotificationBlock = _Block_copy(a3);
+    self->_frameNotificationBlock = _Block_copy(block);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CNMeCardSharingNameFormatter
-+ (id)formattedNameFromComponents:(id)a3 forProvider:(id)a4 withFormat:(unint64_t)a5;
-+ (id)formattedNameFromProvider:(id)a3 withFormat:(unint64_t)a4;
-+ (id)nameComponentsFromProvider:(id)a3;
-- (CNMeCardSharingNameFormatter)initWithNameProvider:(id)a3;
-- (id)formattedNameWithFormat:(unint64_t)a3;
++ (id)formattedNameFromComponents:(id)components forProvider:(id)provider withFormat:(unint64_t)format;
++ (id)formattedNameFromProvider:(id)provider withFormat:(unint64_t)format;
++ (id)nameComponentsFromProvider:(id)provider;
+- (CNMeCardSharingNameFormatter)initWithNameProvider:(id)provider;
+- (id)formattedNameWithFormat:(unint64_t)format;
 @end
 
 @implementation CNMeCardSharingNameFormatter
 
-- (id)formattedNameWithFormat:(unint64_t)a3
+- (id)formattedNameWithFormat:(unint64_t)format
 {
   cachedFormattedNames = self->_cachedFormattedNames;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -16,26 +16,26 @@
 
   if (!v7)
   {
-    v7 = [objc_opt_class() formattedNameFromComponents:self->_nameComponents forProvider:self->_nameProvider withFormat:a3];
+    v7 = [objc_opt_class() formattedNameFromComponents:self->_nameComponents forProvider:self->_nameProvider withFormat:format];
     v8 = self->_cachedFormattedNames;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:format];
     [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
   }
 
   return v7;
 }
 
-- (CNMeCardSharingNameFormatter)initWithNameProvider:(id)a3
+- (CNMeCardSharingNameFormatter)initWithNameProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = CNMeCardSharingNameFormatter;
   v6 = [(CNMeCardSharingNameFormatter *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nameProvider, a3);
-    v8 = [objc_opt_class() nameComponentsFromProvider:v5];
+    objc_storeStrong(&v6->_nameProvider, provider);
+    v8 = [objc_opt_class() nameComponentsFromProvider:providerCopy];
     nameComponents = v7->_nameComponents;
     v7->_nameComponents = v8;
 
@@ -49,26 +49,26 @@
   return v7;
 }
 
-+ (id)formattedNameFromComponents:(id)a3 forProvider:(id)a4 withFormat:(unint64_t)a5
++ (id)formattedNameFromComponents:(id)components forProvider:(id)provider withFormat:(unint64_t)format
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5 == 1)
+  componentsCopy = components;
+  providerCopy = provider;
+  v9 = providerCopy;
+  if (format == 1)
   {
-    v10 = [MEMORY[0x1E696ADF8] _localizedShortNameForComponents:v7 withStyle:1 options:0];
+    v10 = [MEMORY[0x1E696ADF8] _localizedShortNameForComponents:componentsCopy withStyle:1 options:0];
   }
 
   else
   {
-    if (a5)
+    if (format)
     {
-      [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v7 style:0 options:0];
+      [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:componentsCopy style:0 options:0];
     }
 
     else
     {
-      [v8 givenName];
+      [providerCopy givenName];
     }
     v10 = ;
   }
@@ -78,29 +78,29 @@
   return v11;
 }
 
-+ (id)formattedNameFromProvider:(id)a3 withFormat:(unint64_t)a4
++ (id)formattedNameFromProvider:(id)provider withFormat:(unint64_t)format
 {
-  v6 = a3;
-  v7 = [a1 nameComponentsFromProvider:v6];
-  v8 = [a1 formattedNameFromComponents:v7 forProvider:v6 withFormat:a4];
+  providerCopy = provider;
+  v7 = [self nameComponentsFromProvider:providerCopy];
+  v8 = [self formattedNameFromComponents:v7 forProvider:providerCopy withFormat:format];
 
   return v8;
 }
 
-+ (id)nameComponentsFromProvider:(id)a3
++ (id)nameComponentsFromProvider:(id)provider
 {
   v3 = MEMORY[0x1E696ADF0];
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 givenName];
-  [v5 setGivenName:v6];
+  givenName = [providerCopy givenName];
+  [v5 setGivenName:givenName];
 
-  v7 = [v4 middleName];
-  [v5 setMiddleName:v7];
+  middleName = [providerCopy middleName];
+  [v5 setMiddleName:middleName];
 
-  v8 = [v4 familyName];
+  familyName = [providerCopy familyName];
 
-  [v5 setFamilyName:v8];
+  [v5 setFamilyName:familyName];
 
   return v5;
 }

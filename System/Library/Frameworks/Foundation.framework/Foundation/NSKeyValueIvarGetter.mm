@@ -1,13 +1,13 @@
 @interface NSKeyValueIvarGetter
-- (NSKeyValueIvarGetter)initWithContainerClassID:(id)a3 key:(id)a4 containerIsa:(Class)a5 ivar:(objc_ivar *)a6;
+- (NSKeyValueIvarGetter)initWithContainerClassID:(id)d key:(id)key containerIsa:(Class)isa ivar:(objc_ivar *)ivar;
 @end
 
 @implementation NSKeyValueIvarGetter
 
-- (NSKeyValueIvarGetter)initWithContainerClassID:(id)a3 key:(id)a4 containerIsa:(Class)a5 ivar:(objc_ivar *)a6
+- (NSKeyValueIvarGetter)initWithContainerClassID:(id)d key:(id)key containerIsa:(Class)isa ivar:(objc_ivar *)ivar
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  TypeEncoding = ivar_getTypeEncoding(a6);
+  TypeEncoding = ivar_getTypeEncoding(ivar);
   v11 = *TypeEncoding;
   v12 = _NSGetBoolValueInIvar;
   if (v11 > 0x62)
@@ -179,8 +179,8 @@ LABEL_48:
       v27[2] = 0;
       v26.receiver = self;
       v26.super_class = NSKeyValueIvarGetter;
-      v27[0] = a6;
-      return [(NSKeyValueAccessor *)&v26 initWithContainerClassID:a3 key:a4 implementation:v14 selector:0 extraArguments:v27 count:1];
+      v27[0] = ivar;
+      return [(NSKeyValueAccessor *)&v26 initWithContainerClassID:d key:key implementation:v14 selector:0 extraArguments:v27 count:1];
     }
 
 LABEL_47:

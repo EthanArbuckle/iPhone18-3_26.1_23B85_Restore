@@ -1,12 +1,12 @@
 @interface __RCInteractionsController
-+ (void)__invokeCustomTriggerWithNamed:(id)a3 onEntityNamed:(id)a4 inSceneNamed:(id)a5;
-+ (void)__registerCustomActionWithNamed:(id)a3 inSceneNamed:(id)a4 action:(id)a5;
++ (void)__invokeCustomTriggerWithNamed:(id)named onEntityNamed:(id)entityNamed inSceneNamed:(id)sceneNamed;
++ (void)__registerCustomActionWithNamed:(id)named inSceneNamed:(id)sceneNamed action:(id)action;
 - (_TtC17RealityFoundation26__RCInteractionsController)init;
 @end
 
 @implementation __RCInteractionsController
 
-+ (void)__invokeCustomTriggerWithNamed:(id)a3 onEntityNamed:(id)a4 inSceneNamed:(id)a5
++ (void)__invokeCustomTriggerWithNamed:(id)named onEntityNamed:(id)entityNamed inSceneNamed:(id)sceneNamed
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -14,9 +14,9 @@
   specialized static __RCInteractionsController.__invokeCustomTrigger(named:onEntityNamed:inSceneNamed:)(v5, v7, v8, v9);
 }
 
-+ (void)__registerCustomActionWithNamed:(id)a3 inSceneNamed:(id)a4 action:(id)a5
++ (void)__registerCustomActionWithNamed:(id)named inSceneNamed:(id)sceneNamed action:(id)action
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(action);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();

@@ -1,38 +1,38 @@
 @interface MFLibraryReconciler
-- (BOOL)_shouldUseContextBasedReconciliationWithMessageReconciliationQueries:(unint64_t)a3 unreconciledMessages:;
-- (BOOL)_shouldUseContextBasedReconciliationWithThreadReconciliationQueries:(unint64_t)a3 unreconciledMessages:;
-- (MFLibraryReconciler)initWithLibrary:(id)a3 queryProvider:(id)a4 accountsProvider:(id)a5;
+- (BOOL)_shouldUseContextBasedReconciliationWithMessageReconciliationQueries:(unint64_t)queries unreconciledMessages:;
+- (BOOL)_shouldUseContextBasedReconciliationWithThreadReconciliationQueries:(unint64_t)queries unreconciledMessages:;
+- (MFLibraryReconciler)initWithLibrary:(id)library queryProvider:(id)provider accountsProvider:(id)accountsProvider;
 - (void)_reconcileInboxThreadsAndMessages;
 - (void)_reconcileRemainingEntries;
-- (void)_reconcileUsingMessageReconciliationQueries:(uint64_t)a1;
-- (void)_reconcileUsingThreadReconciliationQueries:(uint64_t)a1;
+- (void)_reconcileUsingMessageReconciliationQueries:(uint64_t)queries;
+- (void)_reconcileUsingThreadReconciliationQueries:(uint64_t)queries;
 - (void)persistenceDidReconcileProtectedData;
 @end
 
 @implementation MFLibraryReconciler
 
-- (MFLibraryReconciler)initWithLibrary:(id)a3 queryProvider:(id)a4 accountsProvider:(id)a5
+- (MFLibraryReconciler)initWithLibrary:(id)library queryProvider:(id)provider accountsProvider:(id)accountsProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  providerCopy = provider;
+  accountsProviderCopy = accountsProvider;
   v22.receiver = self;
   v22.super_class = MFLibraryReconciler;
   v11 = [(MFLibraryReconciler *)&v22 init];
   if (v11)
   {
-    v12 = [v8 persistence];
-    objc_storeWeak(&v11->_queryProvider, v9);
-    v13 = [v12 hookRegistry];
+    persistence = [libraryCopy persistence];
+    objc_storeWeak(&v11->_queryProvider, providerCopy);
+    hookRegistry = [persistence hookRegistry];
     hookRegistry = v11->_hookRegistry;
-    v11->_hookRegistry = v13;
+    v11->_hookRegistry = hookRegistry;
 
-    objc_storeStrong(&v11->_accountsProvider, a5);
-    v15 = [[MFLibraryMessageReconciler alloc] initWithLibrary:v8 accountsProvider:v10];
+    objc_storeStrong(&v11->_accountsProvider, accountsProvider);
+    v15 = [[MFLibraryMessageReconciler alloc] initWithLibrary:libraryCopy accountsProvider:accountsProviderCopy];
     messageReconciler = v11->_messageReconciler;
     v11->_messageReconciler = v15;
 
-    v17 = [[MFLibraryThreadReconciler alloc] initWithHookRegistry:v11->_hookRegistry persistence:v12];
+    v17 = [[MFLibraryThreadReconciler alloc] initWithHookRegistry:v11->_hookRegistry persistence:persistence];
     threadReconciler = v11->_threadReconciler;
     v11->_threadReconciler = v17;
 
@@ -148,14 +148,14 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
   [*(a1 + 40) invalidate];
 }
 
-- (BOOL)_shouldUseContextBasedReconciliationWithMessageReconciliationQueries:(unint64_t)a3 unreconciledMessages:
+- (BOOL)_shouldUseContextBasedReconciliationWithMessageReconciliationQueries:(unint64_t)queries unreconciledMessages:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 count];
-    v9 = a3 > 9 && v7 != 0;
+    v9 = queries > 9 && v7 != 0;
   }
 
   else
@@ -166,11 +166,11 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
   return v9;
 }
 
-- (void)_reconcileUsingMessageReconciliationQueries:(uint64_t)a1
+- (void)_reconcileUsingMessageReconciliationQueries:(uint64_t)queries
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (queries)
   {
     v4 = MFReconciliationSignpostLog();
     spid = os_signpost_id_generate(v4);
@@ -194,12 +194,12 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
     v9 = 0;
     do
     {
-      v10 = *(a1 + 40);
+      v10 = *(queries + 40);
       v11 = [v10 reconcileWithMessageReconciliationQueries:v3 window:v8];
 
       if ([v11 count])
       {
-        v12 = *(a1 + 48);
+        v12 = *(queries + 48);
         [v12 reconcileWithThreadsWithConversationIDs:v11 window:v8];
       }
 
@@ -239,14 +239,14 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldUseContextBasedReconciliationWithThreadReconciliationQueries:(unint64_t)a3 unreconciledMessages:
+- (BOOL)_shouldUseContextBasedReconciliationWithThreadReconciliationQueries:(unint64_t)queries unreconciledMessages:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 count];
-    v9 = a3 > 9 && v7 != 0;
+    v9 = queries > 9 && v7 != 0;
   }
 
   else
@@ -257,11 +257,11 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
   return v9;
 }
 
-- (void)_reconcileUsingThreadReconciliationQueries:(uint64_t)a1
+- (void)_reconcileUsingThreadReconciliationQueries:(uint64_t)queries
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (queries)
   {
     v4 = MFReconciliationSignpostLog();
     spid = os_signpost_id_generate(v4);
@@ -285,12 +285,12 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
     v9 = 0;
     do
     {
-      v10 = *(a1 + 40);
+      v10 = *(queries + 40);
       v11 = [v10 reconcileWithThreadReconciliationQueries:v3 window:v8];
 
       if ([v11 count])
       {
-        v12 = *(a1 + 48);
+        v12 = *(queries + 48);
         [v12 reconcileWithThreadsWithConversationIDs:v11 window:v8];
       }
 
@@ -333,7 +333,7 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
 - (void)_reconcileInboxThreadsAndMessages
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = MFReconciliationSignpostLog();
     spid = os_signpost_id_generate(v2);
@@ -357,12 +357,12 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
     do
     {
       v7 = objc_alloc_init(MEMORY[0x1E699B608]);
-      v8 = *(a1 + 40);
+      v8 = *(self + 40);
       v9 = [v8 reconcileInboxMessagesWithWindow:v7];
 
       if ([v9 count])
       {
-        v10 = *(a1 + 48);
+        v10 = *(self + 48);
         [v10 reconcileWithThreadsWithConversationIDs:v9 window:v7];
       }
 
@@ -404,7 +404,7 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
 
 - (void)_reconcileRemainingEntries
 {
-  if (a1)
+  if (self)
   {
     v2 = MFReconciliationSignpostLog();
     v3 = os_signpost_id_generate(v2);
@@ -425,8 +425,8 @@ void __59__MFLibraryReconciler_persistenceDidReconcileProtectedData__block_invok
     }
 
     v7 = objc_alloc_init(MEMORY[0x1E699B608]);
-    [*(a1 + 48) reconcileAllObjectsWithWindow:v7];
-    [*(a1 + 40) reconcileAllObjectsWithWindow:v7];
+    [*(self + 48) reconcileAllObjectsWithWindow:v7];
+    [*(self + 40) reconcileAllObjectsWithWindow:v7];
     v8 = MFReconciliationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {

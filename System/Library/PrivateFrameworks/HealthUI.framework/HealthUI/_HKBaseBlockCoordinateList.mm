@@ -1,44 +1,44 @@
 @interface _HKBaseBlockCoordinateList
-- (_HKBaseBlockCoordinateList)initWithCoordinates:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4;
-- (id)_coordinatesInChartableRange:(id)a3;
-- (id)firstCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
-- (id)lastCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
-- (int64_t)_numCoordinatesInChartableRange:(id)a3;
-- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 chartableValueRange:(id)a4 roundToViewScale:(BOOL)a5 block:(id)a6;
+- (_HKBaseBlockCoordinateList)initWithCoordinates:(id)coordinates blockPath:(HKGraphSeriesDataBlockPath *)path;
+- (id)_coordinatesInChartableRange:(id)range;
+- (id)firstCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
+- (id)lastCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
+- (int64_t)_numCoordinatesInChartableRange:(id)range;
+- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)transform chartableValueRange:(id)range roundToViewScale:(BOOL)scale block:(id)block;
 @end
 
 @implementation _HKBaseBlockCoordinateList
 
-- (_HKBaseBlockCoordinateList)initWithCoordinates:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4
+- (_HKBaseBlockCoordinateList)initWithCoordinates:(id)coordinates blockPath:(HKGraphSeriesDataBlockPath *)path
 {
-  v7 = a3;
+  coordinatesCopy = coordinates;
   v12.receiver = self;
   v12.super_class = _HKBaseBlockCoordinateList;
   v8 = [(_HKBaseBlockCoordinateList *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    resolution = a4->resolution;
-    *&v8->_blockPath.index = *&a4->index;
+    resolution = path->resolution;
+    *&v8->_blockPath.index = *&path->index;
     v8->_blockPath.resolution = resolution;
-    objc_storeStrong(&v8->_coordinates, a3);
+    objc_storeStrong(&v8->_coordinates, coordinates);
   }
 
   return v9;
 }
 
-- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 chartableValueRange:(id)a4 roundToViewScale:(BOOL)a5 block:(id)a6
+- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)transform chartableValueRange:(id)range roundToViewScale:(BOOL)scale block:(id)block
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [v11 minValue];
-  v13 = [v11 maxValue];
+  blockCopy = block;
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  maxValue = [rangeCopy maxValue];
 
-  [v12 doubleValue];
+  [minValue doubleValue];
   v15 = v14;
-  [v13 doubleValue];
+  [maxValue doubleValue];
   v17 = v16;
-  if (!v10)
+  if (!blockCopy)
   {
     [_HKBaseBlockCoordinateList _enumerateCoordinatesWithTransform:chartableValueRange:roundToViewScale:block:];
   }
@@ -48,30 +48,30 @@
   v23[1] = 3221225472;
   v23[2] = __108___HKBaseBlockCoordinateList__enumerateCoordinatesWithTransform_chartableValueRange_roundToViewScale_block___block_invoke;
   v23[3] = &unk_1E81B9540;
-  v24 = v12;
-  v25 = v13;
+  v24 = minValue;
+  v25 = maxValue;
   v28 = v17;
   v29 = v15;
-  v19 = *&a3->c;
-  v30 = *&a3->a;
+  v19 = *&transform->c;
+  v30 = *&transform->a;
   v31 = v19;
-  v32 = *&a3->tx;
-  v33 = a5;
-  v26 = self;
-  v27 = v10;
-  v20 = v10;
-  v21 = v13;
-  v22 = v12;
+  v32 = *&transform->tx;
+  scaleCopy = scale;
+  selfCopy = self;
+  v27 = blockCopy;
+  v20 = blockCopy;
+  v21 = maxValue;
+  v22 = minValue;
   [(NSArray *)coordinates enumerateObjectsUsingBlock:v23];
 }
 
-- (id)_coordinatesInChartableRange:(id)a3
+- (id)_coordinatesInChartableRange:(id)range
 {
   v5 = self->_coordinates;
-  if (a3)
+  if (range)
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = a3;
+    rangeCopy = range;
     v8 = objc_alloc_init(v6);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -83,7 +83,7 @@
     v13[0] = *MEMORY[0x1E695EFD0];
     v13[1] = v10;
     v13[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [(_HKBaseBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v13 chartableValueRange:v7 roundToViewScale:0 block:v14];
+    [(_HKBaseBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v13 chartableValueRange:rangeCopy roundToViewScale:0 block:v14];
 
     v11 = v9;
     v5 = v11;
@@ -92,14 +92,14 @@
   return v5;
 }
 
-- (int64_t)_numCoordinatesInChartableRange:(id)a3
+- (int64_t)_numCoordinatesInChartableRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (v4)
+  if (rangeCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -110,7 +110,7 @@
     v8[0] = *MEMORY[0x1E695EFD0];
     v8[1] = v5;
     v8[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [(_HKBaseBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v8 chartableValueRange:v4 roundToViewScale:0 block:v9];
+    [(_HKBaseBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v8 chartableValueRange:rangeCopy roundToViewScale:0 block:v9];
     v6 = v11[3];
   }
 
@@ -125,28 +125,28 @@
   return v6;
 }
 
-- (id)firstCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)firstCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = a4;
-  v6 = [(NSArray *)self->_coordinates firstObject];
-  v7 = *&a3->c;
-  v10[0] = *&a3->a;
+  scaleCopy = scale;
+  firstObject = [(NSArray *)self->_coordinates firstObject];
+  v7 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v7;
-  v10[2] = *&a3->tx;
-  v8 = [v6 copyWithTransform:v10 roundToViewScale:v4];
+  v10[2] = *&transform->tx;
+  v8 = [firstObject copyWithTransform:v10 roundToViewScale:scaleCopy];
 
   return v8;
 }
 
-- (id)lastCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)lastCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = a4;
-  v6 = [(NSArray *)self->_coordinates lastObject];
-  v7 = *&a3->c;
-  v10[0] = *&a3->a;
+  scaleCopy = scale;
+  lastObject = [(NSArray *)self->_coordinates lastObject];
+  v7 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v7;
-  v10[2] = *&a3->tx;
-  v8 = [v6 copyWithTransform:v10 roundToViewScale:v4];
+  v10[2] = *&transform->tx;
+  v8 = [lastObject copyWithTransform:v10 roundToViewScale:scaleCopy];
 
   return v8;
 }

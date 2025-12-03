@@ -5,7 +5,7 @@
 - (void)dealloc;
 - (void)postLocalNotification;
 - (void)postLocalNotificationIfNeeded;
-- (void)setRebootstrapCounterSnapshot:(unint64_t)a3;
+- (void)setRebootstrapCounterSnapshot:(unint64_t)snapshot;
 @end
 
 @implementation ASCRebootstrapNotifier
@@ -55,11 +55,11 @@
       }
     }
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel_postLocalNotificationIfNeeded name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_postLocalNotificationIfNeeded name:*MEMORY[0x277D76648] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_postLocalNotificationIfNeeded name:*MEMORY[0x277CCA0C0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_postLocalNotificationIfNeeded name:*MEMORY[0x277CCA0C0] object:0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -106,11 +106,11 @@ void __40__ASCRebootstrapNotifier__initSingleton__block_invoke(uint64_t a1)
   [(ASCRebootstrapNotifier *)&v4 dealloc];
 }
 
-- (void)setRebootstrapCounterSnapshot:(unint64_t)a3
+- (void)setRebootstrapCounterSnapshot:(unint64_t)snapshot
 {
-  if (self->_rebootstrapCounterSnapshot != a3)
+  if (self->_rebootstrapCounterSnapshot != snapshot)
   {
-    self->_rebootstrapCounterSnapshot = a3;
+    self->_rebootstrapCounterSnapshot = snapshot;
     [(ASCRebootstrapNotifier *)self postLocalNotification];
   }
 }
@@ -118,7 +118,7 @@ void __40__ASCRebootstrapNotifier__initSingleton__block_invoke(uint64_t a1)
 - (void)postLocalNotificationIfNeeded
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = ASCStringFromNotifyStatus(a1);
+  v1 = ASCStringFromNotifyStatus(self);
   v2 = 136446466;
   v3 = "[ASCRebootstrapNotifier postLocalNotificationIfNeeded]";
   v4 = 2114;
@@ -135,14 +135,14 @@ void __40__ASCRebootstrapNotifier__initSingleton__block_invoke(uint64_t a1)
     _os_log_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Daemon re-bootstrap detected", v4, 2u);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"ASCRebootstrapDidStartNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ASCRebootstrapDidStartNotification" object:self];
 }
 
 - (void)_initSingleton
 {
   *a2 = 136446466;
-  OUTLINED_FUNCTION_0_6(a1, a2, "[ASCRebootstrapNotifier _initSingleton]");
+  OUTLINED_FUNCTION_0_6(self, a2, "[ASCRebootstrapNotifier _initSingleton]");
   _os_log_error_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s/notify_get_state failed: %{public}@", v3, 0x16u);
 }
 

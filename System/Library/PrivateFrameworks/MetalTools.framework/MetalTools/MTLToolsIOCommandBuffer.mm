@@ -1,33 +1,33 @@
 @interface MTLToolsIOCommandBuffer
 - (BOOL)isCommitted;
-- (MTLToolsIOCommandBuffer)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsIOCommandBuffer)initWithBaseObject:(id)object parent:(id)parent;
 - (NSError)error;
 - (NSString)label;
 - (id).cxx_construct;
 - (int64_t)status;
 - (unint64_t)globalTraceObjectID;
 - (void)addBarrier;
-- (void)addCompletedHandler:(id)a3;
+- (void)addCompletedHandler:(id)handler;
 - (void)barrier;
 - (void)commit;
-- (void)copyStatusToBuffer:(id)a3 offset:(unint64_t)a4;
+- (void)copyStatusToBuffer:(id)buffer offset:(unint64_t)offset;
 - (void)dealloc;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value;
 - (void)enqueue;
 - (void)invokeCompletedHandlers;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 handle:(id)a6 handleOffset:(unint64_t)a7;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7;
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size handle:(id)handle handleOffset:(unint64_t)handleOffset;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset;
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1;
 - (void)popDebugGroup;
 - (void)preCommit;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
+- (void)signalEvent:(id)event value:(unint64_t)value;
 - (void)tryCancel;
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForEvent:(id)event value:(unint64_t)value;
 - (void)waitUntilCompleted;
 @end
 
@@ -35,44 +35,44 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (NSError)error
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 error];
+  return [baseObject error];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 pushDebugGroup:a3];
+  [baseObject pushDebugGroup:group];
 }
 
 - (void)popDebugGroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 popDebugGroup];
+  [baseObject popDebugGroup];
 }
 
-- (MTLToolsIOCommandBuffer)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsIOCommandBuffer)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLToolsIOCommandBuffer;
-  result = [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  result = [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
   if (result)
   {
     *(result + 9) = 0;
@@ -95,15 +95,15 @@
 
 - (BOOL)isCommitted
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isCommitted];
+  return [baseObject isCommitted];
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
   [-[MTLToolsObject baseObject](self "baseObject")];
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   os_unfair_lock_lock(self + 9);
   v6 = (self + 40);
   v8 = *(self + 6);
@@ -165,144 +165,144 @@
   os_unfair_lock_unlock(self + 9);
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 encodeWaitForEvent:v7 value:a4];
+  [baseObject encodeWaitForEvent:baseObject2 value:value];
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 encodeSignalEvent:v7 value:a4];
+  [baseObject encodeSignalEvent:baseObject2 value:value];
 }
 
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForEvent:(id)event value:(unint64_t)value
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 encodeWaitForEvent:v7 value:a4];
+  [baseObject encodeWaitForEvent:baseObject2 value:value];
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 encodeSignalEvent:v7 value:a4];
+  [baseObject encodeSignalEvent:baseObject2 value:value];
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 handle:(id)a6 handleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size handle:(id)handle handleOffset:(unint64_t)handleOffset
 {
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
-  v14 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [handle baseObject];
 
-  [v12 loadBuffer:v13 offset:a4 size:a5 sourceHandle:v14 sourceHandleOffset:a7];
+  [baseObject loadBuffer:baseObject2 offset:offset size:size sourceHandle:baseObject3 sourceHandleOffset:handleOffset];
 }
 
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 loadBytes:a3 size:a4 sourceHandle:a5 sourceHandleOffset:a6];
+  [baseObject loadBytes:bytes size:size sourceHandle:handle sourceHandleOffset:offset];
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset
 {
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
-  v14 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [handle baseObject];
 
-  [v12 loadBuffer:v13 offset:a4 size:a5 sourceHandle:v14 sourceHandleOffset:a7];
+  [baseObject loadBuffer:baseObject2 offset:offset size:size sourceHandle:baseObject3 sourceHandleOffset:handleOffset];
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1
 {
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v20 = *a6;
-  v19 = *a9;
-  [v17 loadTexture:v18 slice:a4 level:a5 size:&v20 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v19 sourceHandle:objc_msgSend(a10 sourceHandleOffset:{"baseObject"), a11}];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v20 = *size;
+  v19 = *origin;
+  [baseObject loadTexture:baseObject2 slice:slice level:level size:&v20 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v19 sourceHandle:objc_msgSend(handle sourceHandleOffset:{"baseObject"), offset}];
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1
 {
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v20 = *a6;
-  v19 = *a9;
-  [v17 loadTexture:v18 slice:a4 level:a5 size:&v20 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v19 sourceHandle:objc_msgSend(a10 sourceHandleOffset:{"baseObject"), a11}];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v20 = *size;
+  v19 = *origin;
+  [baseObject loadTexture:baseObject2 slice:slice level:level size:&v20 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v19 sourceHandle:objc_msgSend(handle sourceHandleOffset:{"baseObject"), offset}];
 }
 
-- (void)copyStatusToBuffer:(id)a3 offset:(unint64_t)a4
+- (void)copyStatusToBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v6 copyStatusToBuffer:v7 offset:a4];
+  [baseObject copyStatusToBuffer:baseObject2 offset:offset];
 }
 
 - (void)commit
 {
   [(MTLToolsIOCommandBuffer *)self preCommit];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 commit];
+  [baseObject commit];
 }
 
 - (void)waitUntilCompleted
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 waitUntilCompleted];
+  [baseObject waitUntilCompleted];
 }
 
 - (void)tryCancel
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 tryCancel];
+  [baseObject tryCancel];
 }
 
 - (void)barrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 addBarrier];
+  [baseObject addBarrier];
 }
 
 - (void)addBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 addBarrier];
+  [baseObject addBarrier];
 }
 
 - (void)enqueue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 enqueue];
+  [baseObject enqueue];
 }
 
 - (int64_t)status
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 status];
+  return [baseObject status];
 }
 
 - (unint64_t)globalTraceObjectID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalTraceObjectID];
+  return [baseObject globalTraceObjectID];
 }
 
 - (void)invokeCompletedHandlers

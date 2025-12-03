@@ -1,34 +1,34 @@
 @interface NUCompoundTransform
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3;
-- (CGPoint)transformPoint:(CGPoint)a3;
-- (NUCompoundTransform)initWithSrcTransforms:(id)a3 dstTransforms:(id)a4;
-- (NUCompoundTransform)initWithTransforms:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time;
+- (CGPoint)transformPoint:(CGPoint)point;
+- (NUCompoundTransform)initWithSrcTransforms:(id)transforms dstTransforms:(id)dstTransforms;
+- (NUCompoundTransform)initWithTransforms:(id)transforms;
 - (id)inverseTransform;
-- (void)transformMatrix:(_OWORD *)a3@<X8>;
+- (void)transformMatrix:(_OWORD *)matrix@<X8>;
 @end
 
 @implementation NUCompoundTransform
 
-- (void)transformMatrix:(_OWORD *)a3@<X8>
+- (void)transformMatrix:(_OWORD *)matrix@<X8>
 {
   v36 = *MEMORY[0x1E69E9840];
   v4 = a2[5];
-  a3[4] = a2[4];
-  a3[5] = v4;
+  matrix[4] = a2[4];
+  matrix[5] = v4;
   v5 = a2[7];
-  a3[6] = a2[6];
-  a3[7] = v5;
+  matrix[6] = a2[6];
+  matrix[7] = v5;
   v6 = a2[1];
-  *a3 = *a2;
-  a3[1] = v6;
+  *matrix = *a2;
+  matrix[1] = v6;
   v7 = a2[3];
-  a3[2] = a2[2];
-  a3[3] = v7;
+  matrix[2] = a2[2];
+  matrix[3] = v7;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = *(a1 + 8);
+  v8 = *(self + 8);
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -47,17 +47,17 @@
         v13 = *(*(&v31 + 1) + 8 * v12);
         if (v13)
         {
-          v14 = a3[5];
-          v22[4] = a3[4];
+          v14 = matrix[5];
+          v22[4] = matrix[4];
           v22[5] = v14;
-          v15 = a3[7];
-          v22[6] = a3[6];
+          v15 = matrix[7];
+          v22[6] = matrix[6];
           v22[7] = v15;
-          v16 = a3[1];
-          v22[0] = *a3;
+          v16 = matrix[1];
+          v22[0] = *matrix;
           v22[1] = v16;
-          v17 = a3[3];
-          v22[2] = a3[2];
+          v17 = matrix[3];
+          v22[2] = matrix[2];
           v22[3] = v17;
           [v13 transformMatrix:v22];
         }
@@ -75,18 +75,18 @@
         }
 
         v18 = v28;
-        a3[4] = v27;
-        a3[5] = v18;
+        matrix[4] = v27;
+        matrix[5] = v18;
         v19 = v30;
-        a3[6] = v29;
-        a3[7] = v19;
+        matrix[6] = v29;
+        matrix[7] = v19;
         v20 = v24;
-        *a3 = v23;
-        a3[1] = v20;
+        *matrix = v23;
+        matrix[1] = v20;
         v21 = v26;
         ++v12;
-        a3[2] = v25;
-        a3[3] = v21;
+        matrix[2] = v25;
+        matrix[3] = v21;
       }
 
       while (v10 != v12);
@@ -97,7 +97,7 @@
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time
 {
   v21 = *MEMORY[0x1E69E9840];
   *retstr = *a4;
@@ -150,10 +150,10 @@
   return result;
 }
 
-- (CGPoint)transformPoint:(CGPoint)a3
+- (CGPoint)transformPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -203,8 +203,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSArray *)self->_transforms reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_transforms reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,14 +215,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) inverseTransform];
-        [v3 addObject:v9];
+        inverseTransform = [*(*(&v12 + 1) + 8 * i) inverseTransform];
+        [v3 addObject:inverseTransform];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -233,11 +233,11 @@
   return v10;
 }
 
-- (NUCompoundTransform)initWithTransforms:(id)a3
+- (NUCompoundTransform)initWithTransforms:(id)transforms
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  transformsCopy = transforms;
+  if (!transformsCopy)
   {
     v10 = NUAssertLogger_24020();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -258,8 +258,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -270,8 +270,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -280,7 +280,7 @@
     _NUAssertFailHandler("[NUCompoundTransform initWithTransforms:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUCompoundTransform.m", 36, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "transforms != nil");
   }
 
-  v5 = v4;
+  v5 = transformsCopy;
   v26.receiver = self;
   v26.super_class = NUCompoundTransform;
   v6 = [(NUCompoundTransform *)&v26 init];
@@ -291,18 +291,18 @@
   return v6;
 }
 
-- (NUCompoundTransform)initWithSrcTransforms:(id)a3 dstTransforms:(id)a4
+- (NUCompoundTransform)initWithSrcTransforms:(id)transforms dstTransforms:(id)dstTransforms
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v6];
+  transformsCopy = transforms;
+  dstTransformsCopy = dstTransforms;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:transformsCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v7 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [dstTransformsCopy reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -314,17 +314,17 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) inverseTransform];
-        [v8 addObject:v14];
+        inverseTransform = [*(*(&v17 + 1) + 8 * v13) inverseTransform];
+        [v8 addObject:inverseTransform];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);

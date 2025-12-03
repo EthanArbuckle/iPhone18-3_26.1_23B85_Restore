@@ -1,27 +1,27 @@
 @interface HUQuickControlRoundButton
-- (HUQuickControlRoundButton)initWithFrame:(CGRect)a3;
+- (HUQuickControlRoundButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HUQuickControlRoundButton
 
-- (HUQuickControlRoundButton)initWithFrame:(CGRect)a3
+- (HUQuickControlRoundButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = HUQuickControlRoundButton;
-  v3 = [(HUQuickControlRoundButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUQuickControlRoundButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUQuickControlRoundButton *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(HUQuickControlRoundButton *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(HUQuickControlRoundButton *)v4 setClipsToBounds:1];
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v6 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
       controlCenterMaterialView = v4->_controlCenterMaterialView;
-      v4->_controlCenterMaterialView = v6;
+      v4->_controlCenterMaterialView = controlCenterTertiaryMaterial;
 
       [(HUQuickControlRoundButton *)v4 addSubview:v4->_controlCenterMaterialView];
     }
@@ -37,8 +37,8 @@
   [(HUQuickControlRoundButton *)&v20 layoutSubviews];
   [(HUQuickControlRoundButton *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(HUQuickControlRoundButton *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(HUQuickControlRoundButton *)self layer];
+  [layer setCornerRadius:v4];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
@@ -47,15 +47,15 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(HUQuickControlRoundButton *)self controlCenterMaterialView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    controlCenterMaterialView = [(HUQuickControlRoundButton *)self controlCenterMaterialView];
+    [controlCenterMaterialView setFrame:{v7, v9, v11, v13}];
 
-    v15 = [(HUQuickControlRoundButton *)self layer];
-    [v15 cornerRadius];
+    layer2 = [(HUQuickControlRoundButton *)self layer];
+    [layer2 cornerRadius];
     v17 = v16;
-    v18 = [(HUQuickControlRoundButton *)self controlCenterMaterialView];
-    v19 = [v18 layer];
-    [v19 setCornerRadius:v17];
+    controlCenterMaterialView2 = [(HUQuickControlRoundButton *)self controlCenterMaterialView];
+    layer3 = [controlCenterMaterialView2 layer];
+    [layer3 setCornerRadius:v17];
   }
 }
 

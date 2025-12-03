@@ -1,45 +1,45 @@
 @interface CPAnalyticsLogEventMatcher
-- (CPAnalyticsLogEventMatcher)initWithConfig:(id)a3;
+- (CPAnalyticsLogEventMatcher)initWithConfig:(id)config;
 @end
 
 @implementation CPAnalyticsLogEventMatcher
 
-- (CPAnalyticsLogEventMatcher)initWithConfig:(id)a3
+- (CPAnalyticsLogEventMatcher)initWithConfig:(id)config
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"label"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"label"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 length])
   {
-    v6 = [v4 objectForKeyedSubscript:@"shouldLogEventName"];
+    v6 = [configCopy objectForKeyedSubscript:@"shouldLogEventName"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v7 = CPAnalyticsLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v48 = v4;
+        v48 = configCopy;
         _os_log_error_impl(&dword_24260A000, v7, OS_LOG_TYPE_ERROR, "Malformed shouldLogEventName in log event matcher configuration %@", buf, 0xCu);
       }
 
-      v20 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v7 = [v4 objectForKeyedSubscript:@"eventPropertiesToLog"];
+      v7 = [configCopy objectForKeyedSubscript:@"eventPropertiesToLog"];
       if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v14 = CPAnalyticsLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v48 = v4;
+          v48 = configCopy;
           _os_log_error_impl(&dword_24260A000, v14, OS_LOG_TYPE_ERROR, "Malformed eventPropertiesToLog in log event matcher configuration %@", buf, 0xCu);
         }
 
-        v20 = 0;
+        selfCopy = 0;
       }
 
       else
@@ -72,11 +72,11 @@
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
-                  v48 = v4;
+                  v48 = configCopy;
                   _os_log_error_impl(&dword_24260A000, v29, OS_LOG_TYPE_ERROR, "Malformed eventPropertiesToLog in log event matcher configuration %@", buf, 0xCu);
                 }
 
-                v20 = 0;
+                selfCopy = 0;
                 v14 = v8;
                 v7 = v34;
                 goto LABEL_49;
@@ -93,18 +93,18 @@
           }
         }
 
-        v14 = [v4 objectForKeyedSubscript:@"eventPublicPropertiesToLog"];
+        v14 = [configCopy objectForKeyedSubscript:@"eventPublicPropertiesToLog"];
         if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           obj = CPAnalyticsLog();
           if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v48 = v4;
+            v48 = configCopy;
             _os_log_error_impl(&dword_24260A000, obj, OS_LOG_TYPE_ERROR, "Malformed eventPublicPropertiesToLog in log event matcher configuration %@", buf, 0xCu);
           }
 
-          v20 = 0;
+          selfCopy = 0;
           v7 = v34;
         }
 
@@ -138,11 +138,11 @@
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412290;
-                    v48 = v4;
+                    v48 = configCopy;
                     _os_log_error_impl(&dword_24260A000, v30, OS_LOG_TYPE_ERROR, "Malformed eventPublicPropertyToLog in log event matcher configuration %@", buf, 0xCu);
                   }
 
-                  v20 = 0;
+                  selfCopy = 0;
                   goto LABEL_44;
                 }
               }
@@ -157,8 +157,8 @@
             }
           }
 
-          v20 = [CPAnalyticsEventMatcher eventMatcherWithConfiguration:v4];
-          if (v20)
+          selfCopy = [CPAnalyticsEventMatcher eventMatcherWithConfiguration:configCopy];
+          if (selfCopy)
           {
             v36.receiver = self;
             v36.super_class = CPAnalyticsLogEventMatcher;
@@ -166,7 +166,7 @@
             v22 = v21;
             if (v21)
             {
-              objc_storeStrong(&v21->_eventMatcher, v20);
+              objc_storeStrong(&v21->_eventMatcher, selfCopy);
               v23 = [v5 copy];
               eventTypeLabel = v22->_eventTypeLabel;
               v22->_eventTypeLabel = v23;
@@ -182,8 +182,8 @@
             }
 
             self = v22;
-            obj = &v20->super.super;
-            v20 = self;
+            obj = &selfCopy->super.super;
+            selfCopy = self;
           }
 
           else
@@ -207,15 +207,15 @@ LABEL_49:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v48 = v4;
+      v48 = configCopy;
       _os_log_error_impl(&dword_24260A000, v6, OS_LOG_TYPE_ERROR, "Malformed label in log event matcher configuration %@", buf, 0xCu);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
   v31 = *MEMORY[0x277D85DE8];
-  return v20;
+  return selfCopy;
 }
 
 @end

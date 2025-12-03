@@ -3,11 +3,11 @@
 - (BOOL)shouldResideInALowerSubview;
 - (BOOL)supportsMaterialBackground;
 - (CSProudLockComponent)init;
-- (void)_setUnsignedIntegerValue:(void *)a1;
-- (void)setOptOutOfAlphaFadesForPageScroll:(int64_t)a3;
-- (void)setPrefersInlineCoaching:(BOOL)a3;
-- (void)setShouldResideInALowerSubview:(BOOL)a3;
-- (void)setSupportsMaterialBackground:(BOOL)a3;
+- (void)_setUnsignedIntegerValue:(void *)value;
+- (void)setOptOutOfAlphaFadesForPageScroll:(int64_t)scroll;
+- (void)setPrefersInlineCoaching:(BOOL)coaching;
+- (void)setShouldResideInALowerSubview:(BOOL)subview;
+- (void)setSupportsMaterialBackground:(BOOL)background;
 @end
 
 @implementation CSProudLockComponent
@@ -29,63 +29,63 @@
 
 - (BOOL)supportsMaterialBackground
 {
-  v2 = [(CSComponent *)self value];
-  v3 = ([v2 unsignedIntegerValue] >> 2) & 1;
+  value = [(CSComponent *)self value];
+  v3 = ([value unsignedIntegerValue] >> 2) & 1;
 
   return v3;
 }
 
 - (BOOL)shouldResideInALowerSubview
 {
-  v2 = [(CSComponent *)self value];
-  v3 = [v2 unsignedIntegerValue];
+  value = [(CSComponent *)self value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
-  return v3 & 1;
+  return unsignedIntegerValue & 1;
 }
 
-- (void)setOptOutOfAlphaFadesForPageScroll:(int64_t)a3
+- (void)setOptOutOfAlphaFadesForPageScroll:(int64_t)scroll
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= scroll)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:scroll];
   }
 }
 
 - (BOOL)prefersInlineCoaching
 {
-  v2 = [(CSComponent *)self value];
-  v3 = ([v2 unsignedIntegerValue] >> 1) & 1;
+  value = [(CSComponent *)self value];
+  v3 = ([value unsignedIntegerValue] >> 1) & 1;
 
   return v3;
 }
 
-- (void)_setUnsignedIntegerValue:(void *)a1
+- (void)_setUnsignedIntegerValue:(void *)value
 {
-  if (a1)
+  if (value)
   {
     v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a2];
-    [a1 setValue:v3];
+    [value setValue:v3];
   }
 }
 
-- (void)setShouldResideInALowerSubview:(BOOL)a3
+- (void)setShouldResideInALowerSubview:(BOOL)subview
 {
-  v3 = a3;
-  v5 = [(CSComponent *)self value];
-  v6 = [v5 unsignedIntegerValue];
+  subviewCopy = subview;
+  value = [(CSComponent *)self value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
   [(CSProudLockComponent *)self _setUnsignedIntegerValue:?];
 }
 
-- (void)setPrefersInlineCoaching:(BOOL)a3
+- (void)setPrefersInlineCoaching:(BOOL)coaching
 {
-  v3 = a3;
-  v5 = [(CSComponent *)self value];
-  v6 = [v5 unsignedIntegerValue];
+  coachingCopy = coaching;
+  value = [(CSComponent *)self value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
   v7 = 2;
-  if (!v3)
+  if (!coachingCopy)
   {
     v7 = 0;
   }
@@ -93,14 +93,14 @@
   [(CSProudLockComponent *)self _setUnsignedIntegerValue:?];
 }
 
-- (void)setSupportsMaterialBackground:(BOOL)a3
+- (void)setSupportsMaterialBackground:(BOOL)background
 {
-  v3 = a3;
-  v5 = [(CSComponent *)self value];
-  v6 = [v5 unsignedIntegerValue];
+  backgroundCopy = background;
+  value = [(CSComponent *)self value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
   v7 = 4;
-  if (!v3)
+  if (!backgroundCopy)
   {
     v7 = 0;
   }

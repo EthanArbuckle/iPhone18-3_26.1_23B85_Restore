@@ -1,15 +1,15 @@
 @interface LWCRExecutor
 + (id)executor;
-- (BOOL)evaluateRequirements:(id)a3 withFacts:(id)a4;
+- (BOOL)evaluateRequirements:(id)requirements withFacts:(id)facts;
 @end
 
 @implementation LWCRExecutor
 
-- (BOOL)evaluateRequirements:(id)a3 withFacts:(id)a4
+- (BOOL)evaluateRequirements:(id)requirements withFacts:(id)facts
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global];
+  requirementsCopy = requirements;
+  factsCopy = facts;
+  [factsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global];
   v26 = 0;
   v27 = 0;
   v28 = 0;
@@ -17,7 +17,7 @@
   v23[1] = 3221225472;
   v23[2] = __47__LWCRExecutor_evaluateRequirements_withFacts___block_invoke_2;
   v23[3] = &unk_29EE8DB40;
-  v24 = v6;
+  v24 = factsCopy;
   v21[0] = MEMORY[0x29EDCA5F8];
   v21[1] = 3221225472;
   v21[2] = __47__LWCRExecutor_evaluateRequirements_withFacts___block_invoke_3;
@@ -43,14 +43,14 @@
   v18[1] = 0;
   v16 = 0u;
   v17 = 0u;
-  v12 = *(v5 + 72);
-  v29 = *(v5 + 56);
+  v12 = *(requirementsCopy + 72);
+  v29 = *(requirementsCopy + 56);
   v30 = v12;
-  v31 = *(v5 + 88);
-  v32 = *(v5 + 13);
+  v31 = *(requirementsCopy + 88);
+  v32 = *(requirementsCopy + 13);
   if (der_vm_context_is_valid())
   {
-    v13 = (v5 + 56);
+    v13 = (requirementsCopy + 56);
   }
 
   else

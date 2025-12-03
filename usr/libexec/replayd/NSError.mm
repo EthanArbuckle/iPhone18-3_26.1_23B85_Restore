@@ -1,17 +1,17 @@
 @interface NSError
-+ (id)_rpUserErrorForCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)_scUserErrorForCode:(int64_t)a3 userInfo:(id)a4;
++ (id)_rpUserErrorForCode:(int64_t)code userInfo:(id)info;
++ (id)_scUserErrorForCode:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation NSError
 
-+ (id)_rpUserErrorForCode:(int64_t)a3 userInfo:(id)a4
++ (id)_rpUserErrorForCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [infoCopy mutableCopy];
   }
 
   else
@@ -20,7 +20,7 @@
   }
 
   v8 = v7;
-  switch(a3)
+  switch(code)
   {
     case -5836:
       v9 = @"RECORDING_ERROR_CLIP_IN_PROGRESS";
@@ -131,7 +131,7 @@
       v9 = @"RECORDING_ERROR_USER_DECLINED";
       break;
     default:
-      if (a3)
+      if (code)
       {
         v9 = @"RECORDING_ERROR_UNKNOWN";
       }
@@ -150,18 +150,18 @@
     [v8 setValue:v10 forKey:NSLocalizedDescriptionKey];
   }
 
-  v11 = [NSError errorWithDomain:@"com.apple.ReplayKit.RPRecordingErrorDomain" code:a3 userInfo:v8];
+  v11 = [NSError errorWithDomain:@"com.apple.ReplayKit.RPRecordingErrorDomain" code:code userInfo:v8];
 
   return v11;
 }
 
-+ (id)_scUserErrorForCode:(int64_t)a3 userInfo:(id)a4
++ (id)_scUserErrorForCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [infoCopy mutableCopy];
   }
 
   else
@@ -170,14 +170,14 @@
   }
 
   v8 = v7;
-  if ((a3 + 3821) > 0x14)
+  if ((code + 3821) > 0x14)
   {
     v9 = @"SCSTREAM_ERROR_UNKNOWN";
   }
 
   else
   {
-    v9 = off_1000A1510[a3 + 3821];
+    v9 = off_1000A1510[code + 3821];
   }
 
   v10 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v9];
@@ -186,7 +186,7 @@
     [v8 setValue:v10 forKey:NSLocalizedDescriptionKey];
   }
 
-  v11 = [NSError errorWithDomain:@"com.apple.ScreenCaptureKit.SCStreamErrorDomain" code:a3 userInfo:v8];
+  v11 = [NSError errorWithDomain:@"com.apple.ScreenCaptureKit.SCStreamErrorDomain" code:code userInfo:v8];
 
   return v11;
 }

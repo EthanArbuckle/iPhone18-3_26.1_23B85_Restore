@@ -1,17 +1,17 @@
 @interface BMGenerativeExperiencesGuardrailResult
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMGenerativeExperiencesGuardrailResult)initWithIdentifier:(id)a3 markedUnsafe:(id)a4 useCaseIdentifier:(id)a5 instanceType:(int)a6 userRequestID:(id)a7;
-- (BMGenerativeExperiencesGuardrailResult)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMGenerativeExperiencesGuardrailResult)initWithIdentifier:(id)identifier markedUnsafe:(id)unsafe useCaseIdentifier:(id)caseIdentifier instanceType:(int)type userRequestID:(id)d;
+- (BMGenerativeExperiencesGuardrailResult)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)identifier;
 - (NSUUID)userRequestID;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMGenerativeExperiencesGuardrailResult
@@ -36,25 +36,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -74,25 +74,25 @@
         goto LABEL_19;
       }
 
-      v13 = [(BMGenerativeExperiencesGuardrailResult *)self markedUnsafe];
-      if (v13 != [v5 markedUnsafe])
+      markedUnsafe = [(BMGenerativeExperiencesGuardrailResult *)self markedUnsafe];
+      if (markedUnsafe != [v5 markedUnsafe])
       {
         goto LABEL_19;
       }
     }
 
-    v14 = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
-    v15 = [v5 useCaseIdentifier];
-    v16 = v15;
-    if (v14 == v15)
+    useCaseIdentifier = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
+    useCaseIdentifier2 = [v5 useCaseIdentifier];
+    v16 = useCaseIdentifier2;
+    if (useCaseIdentifier == useCaseIdentifier2)
     {
     }
 
     else
     {
-      v17 = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
-      v18 = [v5 useCaseIdentifier];
-      v19 = [v17 isEqual:v18];
+      useCaseIdentifier3 = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
+      useCaseIdentifier4 = [v5 useCaseIdentifier];
+      v19 = [useCaseIdentifier3 isEqual:useCaseIdentifier4];
 
       if (!v19)
       {
@@ -100,21 +100,21 @@
       }
     }
 
-    v20 = [(BMGenerativeExperiencesGuardrailResult *)self instanceType];
-    if (v20 == [v5 instanceType])
+    instanceType = [(BMGenerativeExperiencesGuardrailResult *)self instanceType];
+    if (instanceType == [v5 instanceType])
     {
-      v21 = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
-      v22 = [v5 userRequestID];
-      if (v21 == v22)
+      userRequestID = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
+      userRequestID2 = [v5 userRequestID];
+      if (userRequestID == userRequestID2)
       {
         v12 = 1;
       }
 
       else
       {
-        v23 = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
-        v24 = [v5 userRequestID];
-        v12 = [v23 isEqual:v24];
+        userRequestID3 = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
+        userRequestID4 = [v5 userRequestID];
+        v12 = [userRequestID3 isEqual:userRequestID4];
       }
 
       goto LABEL_20;
@@ -168,8 +168,8 @@ LABEL_21:
 - (id)jsonDictionary
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
-  v4 = [v3 UUIDString];
+  identifier = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
+  uUIDString = [identifier UUIDString];
 
   if ([(BMGenerativeExperiencesGuardrailResult *)self hasMarkedUnsafe])
   {
@@ -181,54 +181,54 @@ LABEL_21:
     v5 = 0;
   }
 
-  v6 = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
+  useCaseIdentifier = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGenerativeExperiencesGuardrailResult instanceType](self, "instanceType")}];
-  v8 = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
-  v9 = [v8 UUIDString];
+  userRequestID = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
+  uUIDString2 = [userRequestID UUIDString];
 
   v20 = @"identifier";
-  v10 = v4;
-  if (!v4)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v25[0] = v10;
+  v18 = null;
+  v25[0] = null;
   v21 = @"markedUnsafe";
-  v11 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[1] = v11;
+  v25[1] = null2;
   v22 = @"useCaseIdentifier";
-  v12 = v6;
-  if (!v6)
+  null3 = useCaseIdentifier;
+  if (!useCaseIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[2] = v12;
+  v25[2] = null3;
   v23 = @"instanceType";
-  v13 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v13;
+  v25[3] = null4;
   v24 = @"userRequestID";
-  v14 = v9;
-  if (!v9)
+  null5 = uUIDString2;
+  if (!uUIDString2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v14;
+  v25[4] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v20 count:{5, v18}];
-  if (v9)
+  if (uUIDString2)
   {
     if (v7)
     {
@@ -242,7 +242,7 @@ LABEL_21:
     if (v7)
     {
 LABEL_16:
-      if (v6)
+      if (useCaseIdentifier)
       {
         goto LABEL_17;
       }
@@ -251,7 +251,7 @@ LABEL_16:
     }
   }
 
-  if (v6)
+  if (useCaseIdentifier)
   {
 LABEL_17:
     if (v5)
@@ -261,7 +261,7 @@ LABEL_17:
 
 LABEL_25:
 
-    if (v4)
+    if (uUIDString)
     {
       goto LABEL_19;
     }
@@ -277,7 +277,7 @@ LABEL_24:
   }
 
 LABEL_18:
-  if (v4)
+  if (uUIDString)
   {
     goto LABEL_19;
   }
@@ -290,11 +290,11 @@ LABEL_19:
   return v15;
 }
 
-- (BMGenerativeExperiencesGuardrailResult)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMGenerativeExperiencesGuardrailResult)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -308,7 +308,7 @@ LABEL_19:
     v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
     if (!v13)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -316,7 +316,7 @@ LABEL_19:
         v50 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"identifier"];
         v64[0] = v50;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
-        *a4 = [v30 initWithDomain:v31 code:2 userInfo:v32];
+        *error = [v30 initWithDomain:v31 code:2 userInfo:v32];
 
         v18 = 0;
       }
@@ -333,13 +333,13 @@ LABEL_19:
 
     v8 = v14;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"markedUnsafe"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"markedUnsafe"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v48 = 0;
           v18 = 0;
@@ -352,31 +352,31 @@ LABEL_4:
         v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"markedUnsafe"];
         v60 = v46;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-        v10 = v21 = a4;
+        v10 = v21 = error;
         v48 = 0;
         v18 = 0;
         *v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
         goto LABEL_53;
       }
 
-      v44 = a4;
+      errorCopy2 = error;
       v48 = v9;
     }
 
     else
     {
-      v44 = a4;
+      errorCopy2 = error;
       v48 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"useCaseIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"useCaseIdentifier"];
     v45 = v8;
-    v47 = self;
+    selfCopy = self;
     if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v46 = 0;
 LABEL_10:
-      v11 = [v6 objectForKeyedSubscript:@"instanceType"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"instanceType"];
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -390,7 +390,7 @@ LABEL_10:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v44)
+            if (!errorCopy2)
             {
               v12 = 0;
               v18 = 0;
@@ -403,7 +403,7 @@ LABEL_10:
             v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"instanceType"];
             v56 = v24;
             v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-            *v44 = [v33 initWithDomain:v42 code:2 userInfo:v34];
+            *errorCopy2 = [v33 initWithDomain:v42 code:2 userInfo:v34];
 
             v12 = 0;
             goto LABEL_46;
@@ -420,14 +420,14 @@ LABEL_10:
         v12 = 0;
       }
 
-      v24 = [v6 objectForKeyedSubscript:@"userRequestID"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"userRequestID"];
       if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v25 = 0;
 LABEL_34:
-        v18 = -[BMGenerativeExperiencesGuardrailResult initWithIdentifier:markedUnsafe:useCaseIdentifier:instanceType:userRequestID:](v47, "initWithIdentifier:markedUnsafe:useCaseIdentifier:instanceType:userRequestID:", v45, v48, v46, [v12 intValue], v25);
+        v18 = -[BMGenerativeExperiencesGuardrailResult initWithIdentifier:markedUnsafe:useCaseIdentifier:instanceType:userRequestID:](selfCopy, "initWithIdentifier:markedUnsafe:useCaseIdentifier:instanceType:userRequestID:", v45, v48, v46, [v12 intValue], v25);
 
-        v47 = v18;
+        selfCopy = v18;
 LABEL_51:
 
         goto LABEL_52;
@@ -440,7 +440,7 @@ LABEL_51:
         v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v26];
         if (!v27)
         {
-          if (v44)
+          if (errorCopy2)
           {
             v43 = objc_alloc(MEMORY[0x1E696ABC0]);
             v40 = *MEMORY[0x1E698F240];
@@ -448,7 +448,7 @@ LABEL_51:
             v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"userRequestID"];
             v54 = v35;
             v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-            *v44 = [v43 initWithDomain:v40 code:2 userInfo:v36];
+            *errorCopy2 = [v43 initWithDomain:v40 code:2 userInfo:v36];
           }
 
           v18 = 0;
@@ -461,7 +461,7 @@ LABEL_51:
         goto LABEL_34;
       }
 
-      if (v44)
+      if (errorCopy2)
       {
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
         v39 = *MEMORY[0x1E698F240];
@@ -469,7 +469,7 @@ LABEL_51:
         v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"userRequestID"];
         v52 = v28;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-        *v44 = [v41 initWithDomain:v39 code:2 userInfo:v29];
+        *errorCopy2 = [v41 initWithDomain:v39 code:2 userInfo:v29];
       }
 
 LABEL_46:
@@ -484,7 +484,7 @@ LABEL_46:
       goto LABEL_10;
     }
 
-    if (v44)
+    if (errorCopy2)
     {
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
       v23 = *MEMORY[0x1E698F240];
@@ -494,10 +494,10 @@ LABEL_46:
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       v46 = 0;
       v18 = 0;
-      *v44 = [v22 initWithDomain:v23 code:2 userInfo:v11];
+      *errorCopy2 = [v22 initWithDomain:v23 code:2 userInfo:v11];
 LABEL_52:
 
-      self = v47;
+      self = selfCopy;
       v8 = v45;
       goto LABEL_53;
     }
@@ -510,7 +510,7 @@ LABEL_54:
     goto LABEL_56;
   }
 
-  if (a4)
+  if (error)
   {
     v16 = objc_alloc(MEMORY[0x1E696ABC0]);
     v17 = *MEMORY[0x1E698F240];
@@ -519,7 +519,7 @@ LABEL_54:
     v62 = v8;
     v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
     v18 = 0;
-    *a4 = [v16 initWithDomain:v17 code:2 userInfo:?];
+    *error = [v16 initWithDomain:v17 code:2 userInfo:?];
 
 LABEL_56:
     goto LABEL_57;
@@ -536,14 +536,14 @@ LABEL_57:
 {
   v3 = objc_opt_new();
   [(BMGenerativeExperiencesGuardrailResult *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_raw_identifier)
   {
     PBDataWriterWriteDataField();
@@ -568,9 +568,9 @@ LABEL_57:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMGenerativeExperiencesGuardrailResult;
   v5 = [(BMEventBase *)&v37 init];
@@ -579,12 +579,12 @@ LABEL_57:
     goto LABEL_60;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -595,18 +595,18 @@ LABEL_57:
       while (1)
       {
         v38 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v38 & 0x7F) << v7;
@@ -624,9 +624,9 @@ LABEL_57:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -671,18 +671,18 @@ LABEL_49:
         while (1)
         {
           v38 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (v38 & 0x7F) << v23;
@@ -700,7 +700,7 @@ LABEL_49:
           }
         }
 
-        v29 = (v25 != 0) & ~[v4 hasError];
+        v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_56:
         v5->_markedUnsafe = v29;
       }
@@ -738,18 +738,18 @@ LABEL_56:
         while (1)
         {
           v38 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v38 & 0x7F) << v16;
@@ -765,7 +765,7 @@ LABEL_56:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 2)
         {
 LABEL_53:
           LODWORD(v18) = 0;
@@ -775,13 +775,13 @@ LABEL_53:
       }
 
 LABEL_57:
-      v34 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v34 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_59:
     v35 = 0;
@@ -799,34 +799,34 @@ LABEL_60:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
+  identifier = [(BMGenerativeExperiencesGuardrailResult *)self identifier];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMGenerativeExperiencesGuardrailResult markedUnsafe](self, "markedUnsafe")}];
-  v6 = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
+  useCaseIdentifier = [(BMGenerativeExperiencesGuardrailResult *)self useCaseIdentifier];
   v7 = BMGenerativeExperiencesGuardrailResultInstanceTypeAsString([(BMGenerativeExperiencesGuardrailResult *)self instanceType]);
-  v8 = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
-  v9 = [v3 initWithFormat:@"BMGenerativeExperiencesGuardrailResult with identifier: %@, markedUnsafe: %@, useCaseIdentifier: %@, instanceType: %@, userRequestID: %@", v4, v5, v6, v7, v8];
+  userRequestID = [(BMGenerativeExperiencesGuardrailResult *)self userRequestID];
+  v9 = [v3 initWithFormat:@"BMGenerativeExperiencesGuardrailResult with identifier: %@, markedUnsafe: %@, useCaseIdentifier: %@, instanceType: %@, userRequestID: %@", identifier, v5, useCaseIdentifier, v7, userRequestID];
 
   return v9;
 }
 
-- (BMGenerativeExperiencesGuardrailResult)initWithIdentifier:(id)a3 markedUnsafe:(id)a4 useCaseIdentifier:(id)a5 instanceType:(int)a6 userRequestID:(id)a7
+- (BMGenerativeExperiencesGuardrailResult)initWithIdentifier:(id)identifier markedUnsafe:(id)unsafe useCaseIdentifier:(id)caseIdentifier instanceType:(int)type userRequestID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  unsafeCopy = unsafe;
+  caseIdentifierCopy = caseIdentifier;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = BMGenerativeExperiencesGuardrailResult;
   v16 = [(BMEventBase *)&v23 init];
   if (v16)
   {
     v16->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (identifierCopy)
     {
       v24 = 0;
       v25 = 0;
-      [v12 getUUIDBytes:&v24];
+      [identifierCopy getUUIDBytes:&v24];
       v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v24 length:16];
       raw_identifier = v16->_raw_identifier;
       v16->_raw_identifier = v17;
@@ -838,10 +838,10 @@ LABEL_60:
       v16->_raw_identifier = 0;
     }
 
-    if (v13)
+    if (unsafeCopy)
     {
       v16->_hasMarkedUnsafe = 1;
-      v16->_markedUnsafe = [v13 BOOLValue];
+      v16->_markedUnsafe = [unsafeCopy BOOLValue];
     }
 
     else
@@ -850,13 +850,13 @@ LABEL_60:
       v16->_markedUnsafe = 0;
     }
 
-    objc_storeStrong(&v16->_useCaseIdentifier, a5);
-    v16->_instanceType = a6;
-    if (v15)
+    objc_storeStrong(&v16->_useCaseIdentifier, caseIdentifier);
+    v16->_instanceType = type;
+    if (dCopy)
     {
       v24 = 0;
       v25 = 0;
-      [v15 getUUIDBytes:&v24];
+      [dCopy getUUIDBytes:&v24];
       v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v24 length:16];
       raw_userRequestID = v16->_raw_userRequestID;
       v16->_raw_userRequestID = v19;
@@ -892,9 +892,9 @@ LABEL_60:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -902,8 +902,8 @@ LABEL_60:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMGenerativeExperiencesGuardrailResult alloc] initByReadFrom:v7];
     v4 = v8;

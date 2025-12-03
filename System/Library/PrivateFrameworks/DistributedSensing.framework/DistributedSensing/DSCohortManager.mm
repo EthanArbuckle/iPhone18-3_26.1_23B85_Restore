@@ -1,38 +1,38 @@
 @interface DSCohortManager
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)deviceFound:(id)a3;
-- (void)deviceLost:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)deviceFound:(id)found;
+- (void)deviceLost:(id)lost;
 - (void)printConsensusData;
-- (void)printConsensusDataFromWindowStart:(double)a3 ToWindowEnd:(double)a4;
+- (void)printConsensusDataFromWindowStart:(double)start ToWindowEnd:(double)end;
 @end
 
 @implementation DSCohortManager
 
-- (void)deviceFound:(id)a3
+- (void)deviceFound:(id)found
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(dispatchQueue);
-  [(DSCohortManager *)self _deviceFound:v5];
+  [(DSCohortManager *)self _deviceFound:foundCopy];
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(dispatchQueue);
-  [(DSCohortManager *)self _deviceLost:v5];
+  [(DSCohortManager *)self _deviceLost:lostCopy];
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  foundCopy = found;
+  v5 = foundCopy;
+  if (foundCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [foundCopy identifier];
     devices = self->_devices;
     if (!devices)
     {
@@ -43,13 +43,13 @@
       devices = self->_devices;
     }
 
-    v10 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)devices objectForKeyedSubscript:identifier];
 
     p_inst_meths = &OBJC_PROTOCOL___DSListenerClientProtocol.inst_meths;
     v12 = &OBJC_PROTOCOL___DSListenerClientProtocol.inst_meths;
     if (v10)
     {
-      v13 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v6];
+      v13 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
       if (onceTokenDSCohortManager != -1)
       {
         [DSCohortManager _deviceFound:];
@@ -59,20 +59,20 @@
       if (os_log_type_enabled(logObjDSCohortManager, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v73 = v6;
+        *v73 = identifier;
         _os_log_impl(&dword_249027000, v14, OS_LOG_TYPE_DEFAULT, "Updating device with ID: %@", buf, 0xCu);
       }
 
       [(DSDeviceContext *)v13 updateWithCBDevice:v5];
-      v15 = [(DSDeviceContext *)v13 changedFlag];
-      v60 = v6;
+      changedFlag = [(DSDeviceContext *)v13 changedFlag];
+      v60 = identifier;
       if (onceTokenDSCohortManager != -1)
       {
         [DSCohortManager _deviceFound:];
       }
 
-      v16 = v15 & 2;
-      v17 = v15 & 4;
+      v16 = changedFlag & 2;
+      v17 = changedFlag & 4;
       v18 = logObjDSCohortManager;
       if (os_log_type_enabled(logObjDSCohortManager, OS_LOG_TYPE_DEFAULT))
       {
@@ -87,8 +87,8 @@
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v19 = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
-      v20 = [v19 countByEnumeratingWithState:&v66 objects:v71 count:16];
+      xpcConnections = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
+      v20 = [xpcConnections countByEnumeratingWithState:&v66 objects:v71 count:16];
       if (v20)
       {
         v21 = v20;
@@ -99,13 +99,13 @@
           {
             if (*v67 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(xpcConnections);
             }
 
             v24 = *(*(&v66 + 1) + 8 * i);
-            v25 = [v24 motionSession];
+            motionSession = [v24 motionSession];
 
-            if (v25)
+            if (motionSession)
             {
               v26 = v16 == 0;
             }
@@ -117,9 +117,9 @@
 
             if (v26)
             {
-              v27 = [v24 kappaSession];
+              kappaSession = [v24 kappaSession];
 
-              if (v27)
+              if (kappaSession)
               {
                 v28 = v17 == 0;
               }
@@ -134,24 +134,24 @@
                 continue;
               }
 
-              v29 = [v24 kappaSession];
+              kappaSession2 = [v24 kappaSession];
             }
 
             else
             {
-              v29 = [v24 motionSession];
+              kappaSession2 = [v24 motionSession];
             }
 
-            v30 = v29;
-            v31 = [v29 deviceChangedHandler];
+            v30 = kappaSession2;
+            deviceChangedHandler = [kappaSession2 deviceChangedHandler];
 
-            if (v31)
+            if (deviceChangedHandler)
             {
-              (v31)[2](v31, v13);
+              (deviceChangedHandler)[2](deviceChangedHandler, v13);
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v66 objects:v71 count:16];
+          v21 = [xpcConnections countByEnumeratingWithState:&v66 objects:v71 count:16];
         }
 
         while (v21);
@@ -173,7 +173,7 @@
       if (os_log_type_enabled(logObjDSCohortManager, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v73 = v6;
+        *v73 = identifier;
         _os_log_impl(&dword_249027000, v33, OS_LOG_TYPE_DEFAULT, "Adding device with ID: %@", buf, 0xCu);
       }
 
@@ -201,18 +201,18 @@ LABEL_69:
       }
 
       v59 = v5;
-      v60 = v6;
-      [(NSMutableDictionary *)self->_devices setObject:v13 forKeyedSubscript:v6];
+      v60 = identifier;
+      [(NSMutableDictionary *)self->_devices setObject:v13 forKeyedSubscript:identifier];
     }
 
-    v34 = [(DSDeviceContext *)v13 discoveryFlag];
-    v35 = v34 & 2;
+    discoveryFlag = [(DSDeviceContext *)v13 discoveryFlag];
+    v35 = discoveryFlag & 2;
     if (p_inst_meths[29] != -1)
     {
       [DSCohortManager _deviceFound:];
     }
 
-    v36 = v34 & 4;
+    v36 = discoveryFlag & 4;
     v37 = v12[28];
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
@@ -233,9 +233,9 @@ LABEL_69:
       }
 
       v40 = [DSConsensusDatum alloc];
-      v41 = [(DSDeviceContext *)v13 vehicleConfidence];
+      vehicleConfidence = [(DSDeviceContext *)v13 vehicleConfidence];
       v42 = [MEMORY[0x277CBEAA8] now];
-      v43 = [(DSConsensusDatum *)v40 initWithIdentifier:v60 andConfidence:v41 atTime:v42];
+      v43 = [(DSConsensusDatum *)v40 initWithIdentifier:v60 andConfidence:vehicleConfidence atTime:v42];
 
       if (v43)
       {
@@ -247,8 +247,8 @@ LABEL_69:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v44 = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
-    v45 = [v44 countByEnumeratingWithState:&v61 objects:v70 count:16];
+    xpcConnections2 = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
+    v45 = [xpcConnections2 countByEnumeratingWithState:&v61 objects:v70 count:16];
     if (v45)
     {
       v46 = v45;
@@ -259,13 +259,13 @@ LABEL_69:
         {
           if (*v62 != v47)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(xpcConnections2);
           }
 
           v49 = *(*(&v61 + 1) + 8 * j);
-          v50 = [v49 motionSession];
+          motionSession2 = [v49 motionSession];
 
-          if (v50)
+          if (motionSession2)
           {
             v51 = v35 == 0;
           }
@@ -277,13 +277,13 @@ LABEL_69:
 
           if (!v51)
           {
-            v54 = [v49 motionSession];
+            motionSession3 = [v49 motionSession];
             goto LABEL_64;
           }
 
-          v52 = [v49 kappaSession];
+          kappaSession3 = [v49 kappaSession];
 
-          if (v52)
+          if (kappaSession3)
           {
             v53 = v36 == 0;
           }
@@ -295,28 +295,28 @@ LABEL_69:
 
           if (!v53)
           {
-            v54 = [v49 kappaSession];
+            motionSession3 = [v49 kappaSession];
 LABEL_64:
-            v55 = v54;
-            v56 = [v54 deviceFoundHandler];
+            v55 = motionSession3;
+            deviceFoundHandler = [motionSession3 deviceFoundHandler];
 
-            if (v56)
+            if (deviceFoundHandler)
             {
-              (v56)[2](v56, v13);
+              (deviceFoundHandler)[2](deviceFoundHandler, v13);
             }
 
             continue;
           }
         }
 
-        v46 = [v44 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        v46 = [xpcConnections2 countByEnumeratingWithState:&v61 objects:v70 count:16];
       }
 
       while (v46);
     }
 
     v5 = v59;
-    v6 = v60;
+    identifier = v60;
     goto LABEL_69;
   }
 
@@ -325,11 +325,11 @@ LABEL_70:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+  identifier = [lost identifier];
+  v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
   if (v5)
   {
     if (onceTokenDSCohortManager != -1)
@@ -341,21 +341,21 @@ LABEL_70:
     if (os_log_type_enabled(logObjDSCohortManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = identifier;
       _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "Removing device with ID: %@", buf, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_devices removeObjectForKey:identifier];
   }
 
-  v7 = [v5 dsInfoIsAlreadyFound];
-  v8 = [v5 dsActionIsAlreadyFound];
+  dsInfoIsAlreadyFound = [v5 dsInfoIsAlreadyFound];
+  dsActionIsAlreadyFound = [v5 dsActionIsAlreadyFound];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  xpcConnections = [(DSXPCServer *)self->_xpcDaemonServer xpcConnections];
+  v10 = [xpcConnections countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -366,15 +366,15 @@ LABEL_70:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(xpcConnections);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 motionSession];
+        motionSession = [v14 motionSession];
 
-        if (v15)
+        if (motionSession)
         {
-          v16 = v7 == 0;
+          v16 = dsInfoIsAlreadyFound == 0;
         }
 
         else
@@ -384,15 +384,15 @@ LABEL_70:
 
         if (!v16)
         {
-          v19 = [v14 motionSession];
+          motionSession2 = [v14 motionSession];
           goto LABEL_22;
         }
 
-        v17 = [v14 kappaSession];
+        kappaSession = [v14 kappaSession];
 
-        if (v17)
+        if (kappaSession)
         {
-          v18 = v8 == 0;
+          v18 = dsActionIsAlreadyFound == 0;
         }
 
         else
@@ -402,21 +402,21 @@ LABEL_70:
 
         if (!v18)
         {
-          v19 = [v14 kappaSession];
+          motionSession2 = [v14 kappaSession];
 LABEL_22:
-          v20 = v19;
-          v21 = [v19 deviceLostHandler];
+          v20 = motionSession2;
+          deviceLostHandler = [motionSession2 deviceLostHandler];
 
-          if (v21)
+          if (deviceLostHandler)
           {
-            (v21)[2](v21, v5);
+            (deviceLostHandler)[2](deviceLostHandler, v5);
           }
 
           continue;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [xpcConnections countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -434,12 +434,12 @@ LABEL_22:
   }
 }
 
-- (void)printConsensusDataFromWindowStart:(double)a3 ToWindowEnd:(double)a4
+- (void)printConsensusDataFromWindowStart:(double)start ToWindowEnd:(double)end
 {
   dataManager = self->_dataManager;
   if (dataManager)
   {
-    [(DSConsensusDataManager *)dataManager printConsensusDataFromWindowStart:a3 ToWindowEnd:a4];
+    [(DSConsensusDataManager *)dataManager printConsensusDataFromWindowStart:start ToWindowEnd:end];
   }
 }
 

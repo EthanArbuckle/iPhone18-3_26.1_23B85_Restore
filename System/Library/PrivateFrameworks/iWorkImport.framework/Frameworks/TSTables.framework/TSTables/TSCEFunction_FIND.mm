@@ -1,19 +1,19 @@
 @interface TSCEFunction_FIND
-+ (id)evaluateFindWithOptions:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5 findOptions:(unint64_t)a6;
++ (id)evaluateFindWithOptions:(id)options functionSpec:(id)spec arguments:(const void *)arguments findOptions:(unint64_t)findOptions;
 @end
 
 @implementation TSCEFunction_FIND
 
-+ (id)evaluateFindWithOptions:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5 findOptions:(unint64_t)a6
++ (id)evaluateFindWithOptions:(id)options functionSpec:(id)spec arguments:(const void *)arguments findOptions:(unint64_t)findOptions
 {
   v121 = 0;
   v122 = 0;
   v123 = 0;
-  v10 = **a5;
+  v10 = **arguments;
   v14 = v10;
   if (v10)
   {
-    objc_msgSend_formatWithContext_(v10, v11, a3, v12, v13);
+    objc_msgSend_formatWithContext_(v10, v11, options, v12, v13);
   }
 
   else
@@ -23,21 +23,21 @@
 
   sub_22114F414(&v121, &v120);
   v119 = 0;
-  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v14, v15, a3, a4, 0, &v119);
+  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v14, v15, options, spec, 0, &v119);
   v17 = v119;
   if (v17)
   {
     v22 = v17;
-    v23 = objc_msgSend_raiseErrorOrConvert_(a3, v18, v17, v20, v21);
+    v23 = objc_msgSend_raiseErrorOrConvert_(options, v18, v17, v20, v21);
     goto LABEL_42;
   }
 
   isRegexString = objc_msgSend_isRegexString(v14, v18, v19, v20, v21);
-  v24 = *(*a5 + 8);
+  v24 = *(*arguments + 8);
   v28 = v24;
   if (v24)
   {
-    objc_msgSend_formatWithContext_(v24, v25, a3, v26, v27);
+    objc_msgSend_formatWithContext_(v24, v25, options, v26, v27);
   }
 
   else
@@ -47,17 +47,17 @@
 
   sub_22114F414(&v121, &v120);
   v118 = 0;
-  v30 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v28, v29, a3, a4, 1, &v118);
+  v30 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v28, v29, options, spec, 1, &v118);
   v31 = v118;
   if (!v31)
   {
-    if (*(a5 + 1) - *a5 < 0x11uLL)
+    if (*(arguments + 1) - *arguments < 0x11uLL)
     {
       v44 = 0;
       goto LABEL_16;
     }
 
-    v36 = *(*a5 + 16);
+    v36 = *(*arguments + 16);
     if (objc_msgSend_isTokenOrEmptyArg(v36, v37, v38, v39, v40))
     {
       v44 = 0;
@@ -66,9 +66,9 @@ LABEL_14:
 LABEL_16:
       if (v44 >= objc_msgSend_length(v30, v32, v33, v34, v35, v110) && (v44 || objc_msgSend_length(v30, v45, v46, v47, v48)))
       {
-        v67 = objc_msgSend_functionName(a4, v45, v46, v47, v48);
+        v67 = objc_msgSend_functionName(spec, v45, v46, v47, v48);
         v71 = objc_msgSend_startNumberExceedsStringLengthErrorForFunctionName_(TSCEError, v68, v67, v69, v70);
-        v75 = objc_msgSend_raiseErrorOrConvert_(a3, v72, v71, v73, v74);
+        v75 = objc_msgSend_raiseErrorOrConvert_(options, v72, v71, v73, v74);
 LABEL_37:
         v23 = v75;
 
@@ -89,24 +89,24 @@ LABEL_40:
           v22 = v115;
           if (v22)
           {
-            v23 = objc_msgSend_raiseErrorOrConvert_(a3, v64, v22, v65, v66);
+            v23 = objc_msgSend_raiseErrorOrConvert_(options, v64, v22, v65, v66);
 
             goto LABEL_41;
           }
 
-          MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(v112, v64, v30, a6, v44, v57);
+          MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(v112, v64, v30, findOptions, v44, v57);
         }
 
         else
         {
-          MatchInString_options_range = objc_msgSend_rangeOfString_options_range_(v30, v53, v16, a6, v44, v57);
+          MatchInString_options_range = objc_msgSend_rangeOfString_options_range_(v30, v53, v16, findOptions, v44, v57);
         }
 
         if (MatchInString_options_range == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v67 = objc_msgSend_functionName(a4, v79, v80, v81, v82);
+          v67 = objc_msgSend_functionName(spec, v79, v80, v81, v82);
           v71 = objc_msgSend_matchNotFoundErrorForValue_isRegex_functionName_(TSCEError, v102, v16, isRegexString, v67);
-          v75 = objc_msgSend_raiseErrorOrConvert_(a3, v103, v71, v104, v105);
+          v75 = objc_msgSend_raiseErrorOrConvert_(options, v103, v71, v104, v105);
           goto LABEL_37;
         }
 
@@ -134,7 +134,7 @@ LABEL_40:
 
     if (v36)
     {
-      objc_msgSend_formatWithContext_(v36, v41, a3, v42, v43);
+      objc_msgSend_formatWithContext_(v36, v41, options, v42, v43);
     }
 
     else
@@ -145,9 +145,9 @@ LABEL_40:
     sub_22114F414(&v121, &v120);
     if (objc_msgSend_isEmptyArg(v36, v84, v85, v86, v87))
     {
-      v92 = objc_msgSend_functionName(a4, v88, v89, v90, v91);
+      v92 = objc_msgSend_functionName(spec, v88, v89, v90, v91);
       v94 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v93, 3, v92, 1, 1.0);
-      v23 = objc_msgSend_raiseErrorOrConvert_(a3, v95, v94, v96, v97);
+      v23 = objc_msgSend_raiseErrorOrConvert_(options, v95, v94, v96, v97);
 
       v22 = 0;
     }
@@ -155,7 +155,7 @@ LABEL_40:
     else
     {
       v117 = 0;
-      v92 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v36, v88, a3, a4, 2, &v117);
+      v92 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v36, v88, options, spec, 2, &v117);
       v22 = v117;
       v113 = v92;
       if (!v22)
@@ -168,14 +168,14 @@ LABEL_40:
         goto LABEL_14;
       }
 
-      v23 = objc_msgSend_raiseErrorOrConvert_(a3, v98, v22, v100, v101);
+      v23 = objc_msgSend_raiseErrorOrConvert_(options, v98, v22, v100, v101);
     }
 
     goto LABEL_41;
   }
 
   v22 = v31;
-  v23 = objc_msgSend_raiseErrorOrConvert_(a3, v32, v31, v34, v35);
+  v23 = objc_msgSend_raiseErrorOrConvert_(options, v32, v31, v34, v35);
 LABEL_41:
 
 LABEL_42:

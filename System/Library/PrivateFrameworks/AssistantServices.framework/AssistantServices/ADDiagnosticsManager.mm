@@ -1,25 +1,25 @@
 @interface ADDiagnosticsManager
-- (ADDiagnosticsManager)initWithQueue:(id)a3;
-- (void)updateLatencyDiagnosticConfiguration:(id)a3 completion:(id)a4;
+- (ADDiagnosticsManager)initWithQueue:(id)queue;
+- (void)updateLatencyDiagnosticConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation ADDiagnosticsManager
 
-- (void)updateLatencyDiagnosticConfiguration:(id)a3 completion:(id)a4
+- (void)updateLatencyDiagnosticConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v25 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v8 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-  v24 = self;
+  selfCopy = self;
   v9 = [NSURLSession sessionWithConfiguration:v8 delegate:self delegateQueue:0];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v26 = v6;
-  obj = [v6 diagnosticActions];
+  v26 = configurationCopy;
+  obj = [configurationCopy diagnosticActions];
   v10 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v10)
   {
@@ -37,8 +37,8 @@
         v14 = *(*(&v34 + 1) + 8 * i);
         v15 = [v14 uri];
         v16 = [NSMutableURLRequest requestWithURL:v15];
-        v17 = [v14 verb];
-        [v16 setHTTPMethod:v17];
+        verb = [v14 verb];
+        [v16 setHTTPMethod:verb];
         v18 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
@@ -67,28 +67,28 @@
     while (v11);
   }
 
-  queue = v24->_queue;
+  queue = selfCopy->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001480D0;
   block[3] = &unk_10051E038;
   v29 = v9;
-  v30 = v25;
+  v30 = completionCopy;
   v22 = v9;
-  v23 = v25;
+  v23 = completionCopy;
   dispatch_group_notify(v7, queue, block);
 }
 
-- (ADDiagnosticsManager)initWithQueue:(id)a3
+- (ADDiagnosticsManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADDiagnosticsManager;
   v6 = [(ADDiagnosticsManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

@@ -1,13 +1,13 @@
 @interface HomeAttributeValue
-- (HomeAttributeValue)initWithCoder:(id)a3;
-- (HomeAttributeValue)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (HomeAttributeValue)initWithCoder:(id)coder;
+- (HomeAttributeValue)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation HomeAttributeValue
 
-- (HomeAttributeValue)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (HomeAttributeValue)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_252E36F34();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_252E36F34();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_252E36F34();
     v14 = v13;
@@ -36,12 +36,12 @@
   return HomeAttributeValue.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (HomeAttributeValue)initWithCoder:(id)a3
+- (HomeAttributeValue)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HomeAttributeValue();
-  v4 = a3;
-  v5 = [(HomeAttributeValue *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HomeAttributeValue *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

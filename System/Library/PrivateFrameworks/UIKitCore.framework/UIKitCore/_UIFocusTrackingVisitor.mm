@@ -1,34 +1,34 @@
 @interface _UIFocusTrackingVisitor
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6;
-- (BOOL)_visitView:(id)a3;
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview;
+- (BOOL)_visitView:(id)view;
 @end
 
 @implementation _UIFocusTrackingVisitor
 
-- (BOOL)_visitView:(id)a3
+- (BOOL)_visitView:(id)view
 {
   subviewAddedToHierarchy = self->_subviewAddedToHierarchy;
-  v6 = [a3 _countOfFocusedAncestorTrackingViewsInSubtree];
+  _countOfFocusedAncestorTrackingViewsInSubtree = [view _countOfFocusedAncestorTrackingViewsInSubtree];
   countOfFocusedAncestorTrackingViewsInSubtree = self->_countOfFocusedAncestorTrackingViewsInSubtree;
   if (!subviewAddedToHierarchy)
   {
     countOfFocusedAncestorTrackingViewsInSubtree = -countOfFocusedAncestorTrackingViewsInSubtree;
   }
 
-  [a3 _setCountOfFocusedAncestorTrackingViewsInSubtree:countOfFocusedAncestorTrackingViewsInSubtree + v6];
+  [view _setCountOfFocusedAncestorTrackingViewsInSubtree:countOfFocusedAncestorTrackingViewsInSubtree + _countOfFocusedAncestorTrackingViewsInSubtree];
   return 1;
 }
 
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview
 {
-  v9 = [a4 _countOfFocusedAncestorTrackingViewsInSubtree];
-  if (v9)
+  _countOfFocusedAncestorTrackingViewsInSubtree = [subview _countOfFocusedAncestorTrackingViewsInSubtree];
+  if (_countOfFocusedAncestorTrackingViewsInSubtree)
   {
-    self->_subviewAddedToHierarchy = [a4 superview] == a3;
-    self->_countOfFocusedAncestorTrackingViewsInSubtree = [a4 _countOfFocusedAncestorTrackingViewsInSubtree];
+    self->_subviewAddedToHierarchy = [subview superview] == view;
+    self->_countOfFocusedAncestorTrackingViewsInSubtree = [subview _countOfFocusedAncestorTrackingViewsInSubtree];
   }
 
-  return v9 != 0;
+  return _countOfFocusedAncestorTrackingViewsInSubtree != 0;
 }
 
 @end

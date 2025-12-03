@@ -1,49 +1,49 @@
 @interface FaceCoreDetector
-+ (CGPoint)_makeYFlippedPointFromCoord:(coord *)a3 image:(id)a4;
-+ (CGRect)_makeYFlippedRectFromRect:(CGRect)a3 image:(id)a4;
-+ (Face)_createFaceFromFCRFace:(SEL)a3 image:(id)a4;
-+ (float)_interpretAsFloat:(id)a3 withDefault:(float)a4;
-+ (id)_convertRectsToString:(id)a3;
-+ (id)_createFCRFaceFromFace:(void *)a3 image:(id)a4;
-+ (id)_parseNumericOrBoolValue:(id)a3;
-+ (id)_parseOption:(id)a3 value:(id)a4;
-+ (id)_parseRegionOfInterestParam:(id)a3;
-+ (id)_transformROIs:(id)a3 image:(id)a4 usingBlock:(id)a5;
++ (CGPoint)_makeYFlippedPointFromCoord:(coord *)coord image:(id)image;
++ (CGRect)_makeYFlippedRectFromRect:(CGRect)rect image:(id)image;
++ (Face)_createFaceFromFCRFace:(SEL)face image:(id)image;
++ (float)_interpretAsFloat:(id)float withDefault:(float)default;
++ (id)_convertRectsToString:(id)string;
++ (id)_createFCRFaceFromFace:(void *)face image:(id)image;
++ (id)_parseNumericOrBoolValue:(id)value;
++ (id)_parseOption:(id)option value:(id)value;
++ (id)_parseRegionOfInterestParam:(id)param;
++ (id)_transformROIs:(id)is image:(id)image usingBlock:(id)block;
 + (id)faceDetector;
-+ (id)faceDetectorWithOptions:(id)a3;
++ (id)faceDetectorWithOptions:(id)options;
 + (id)fastFaceDetector;
 + (id)keypointTrackingDetector;
 + (id)preciseFaceDetector;
 + (id)standardTrackingDetector;
-+ (image)_createImage:(id)a3;
-+ (int)findProfileInParameters:(id)a3;
-+ (void)_addLandmarkOfType:(id)a3 fromMesh:(void *)a4 indexes:(id)a5 to:(id)a6 image:(id)a7;
-+ (void)_updateFCRFace:(id)a3 fromFace:(void *)a4 image:(id)a5;
-- (FaceCoreDetector)initWithOptions:(id)a3;
-- (FaceCoreDetector)initWithProfile:(int)a3 parameters:(id)a4;
-- (id)detectFacesInImage:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)extractDetailsForFaces:(id)a3 inImage:(id)a4 options:(id)a5 error:(id *)a6;
++ (image)_createImage:(id)image;
++ (int)findProfileInParameters:(id)parameters;
++ (void)_addLandmarkOfType:(id)type fromMesh:(void *)mesh indexes:(id)indexes to:(id)to image:(id)image;
++ (void)_updateFCRFace:(id)face fromFace:(void *)fromFace image:(id)image;
+- (FaceCoreDetector)initWithOptions:(id)options;
+- (FaceCoreDetector)initWithProfile:(int)profile parameters:(id)parameters;
+- (id)detectFacesInImage:(id)image options:(id)options error:(id *)error;
+- (id)extractDetailsForFaces:(id)faces inImage:(id)image options:(id)options error:(id *)error;
 - (id)version;
-- (void)_createFaceCoreLightApiWithProfile:(int)a3 parameters:(id)a4;
-- (void)_setParam:(id)a3 toValue:(id)a4 withDefaultValue:(id)a5;
-- (void)_updateDetectionParamsValues:(id)a3;
-- (void)_updateExtractionParamsValues:(id)a3;
+- (void)_createFaceCoreLightApiWithProfile:(int)profile parameters:(id)parameters;
+- (void)_setParam:(id)param toValue:(id)value withDefaultValue:(id)defaultValue;
+- (void)_updateDetectionParamsValues:(id)values;
+- (void)_updateExtractionParamsValues:(id)values;
 @end
 
 @implementation FaceCoreDetector
 
-+ (id)faceDetectorWithOptions:(id)a3
++ (id)faceDetectorWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [[FaceCoreDetector alloc] initWithProfile:[FaceCoreDetector parameters:"findProfileInParameters:" findProfileInParameters:v3], v3];
+  optionsCopy = options;
+  optionsCopy = [[FaceCoreDetector alloc] initWithProfile:[FaceCoreDetector parameters:"findProfileInParameters:" findProfileInParameters:optionsCopy], optionsCopy];
 
-  return v4;
+  return optionsCopy;
 }
 
-+ (int)findProfileInParameters:(id)a3
++ (int)findProfileInParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"FCRTrackingType"];
+  parametersCopy = parameters;
+  v4 = [parametersCopy objectForKey:@"FCRTrackingType"];
   v5 = v4;
   if (!v4)
   {
@@ -59,7 +59,7 @@
     }
 
 LABEL_6:
-    v7 = [v3 objectForKey:@"FCRDetectorType"];
+    v7 = [parametersCopy objectForKey:@"FCRDetectorType"];
     v8 = v7;
     if (v7)
     {
@@ -137,25 +137,25 @@ LABEL_12:
   return v3;
 }
 
-- (FaceCoreDetector)initWithOptions:(id)a3
+- (FaceCoreDetector)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(FaceCoreDetector *)self initWithProfile:[FaceCoreDetector parameters:"findProfileInParameters:" findProfileInParameters:v4], v4];
+  optionsCopy = options;
+  optionsCopy = [(FaceCoreDetector *)self initWithProfile:[FaceCoreDetector parameters:"findProfileInParameters:" findProfileInParameters:optionsCopy], optionsCopy];
 
-  return v5;
+  return optionsCopy;
 }
 
-- (FaceCoreDetector)initWithProfile:(int)a3 parameters:(id)a4
+- (FaceCoreDetector)initWithProfile:(int)profile parameters:(id)parameters
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&profile;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = FaceCoreDetector;
   v7 = [(FaceCoreDetector *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(FaceCoreDetector *)v7 _createFaceCoreLightApiWithProfile:v4 parameters:v6];
+    [(FaceCoreDetector *)v7 _createFaceCoreLightApiWithProfile:v4 parameters:parametersCopy];
     v9 = v8;
   }
 
@@ -190,16 +190,16 @@ LABEL_12:
   return v4;
 }
 
-- (void)_updateDetectionParamsValues:(id)a3
+- (void)_updateDetectionParamsValues:(id)values
 {
-  v4 = a3;
-  if (!v4)
+  valuesCopy = values;
+  if (!valuesCopy)
   {
-    v4 = MEMORY[0x277CBEC10];
+    valuesCopy = MEMORY[0x277CBEC10];
   }
 
-  v12 = v4;
-  v5 = [v4 objectForKey:@"initial_angle"];
+  v12 = valuesCopy;
+  v5 = [valuesCopy objectForKey:@"initial_angle"];
   [(FaceCoreDetector *)self _setParam:@"initial_angle" toValue:v5 withDefaultValue:&unk_284DF5458];
 
   v6 = [v12 objectForKey:@"eye_and_mouth"];
@@ -226,18 +226,18 @@ LABEL_12:
   [(FaceCoreDetector *)self _setParam:@"kalman_filter" toValue:v11 withDefaultValue:&unk_284DF5A40];
 }
 
-+ (id)_transformROIs:(id)a3 image:(id)a4 usingBlock:(id)a5
++ (id)_transformROIs:(id)is image:(id)image usingBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  isCopy = is;
+  imageCopy = image;
+  blockCopy = block;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(isCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v7;
+  obj = isCopy;
   v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -259,7 +259,7 @@ LABEL_12:
         [v15 getValue:&v22];
         v20 = 0u;
         v21 = 0u;
-        v31.origin.x = v9[2](v9, v8, *&v22, *(&v22 + 1), *&v23, *(&v23 + 1));
+        v31.origin.x = blockCopy[2](blockCopy, imageCopy, *&v22, *(&v22 + 1), *&v23, *(&v23 + 1));
         *&v20 = v31.origin.x;
         *(&v20 + 1) = *&v31.origin.y;
         *&v21 = v31.size.width;
@@ -286,10 +286,10 @@ LABEL_12:
   return v10;
 }
 
-+ (id)_parseRegionOfInterestParam:(id)a3
++ (id)_parseRegionOfInterestParam:(id)param
 {
-  v3 = a3;
-  if (!v3)
+  paramCopy = param;
+  if (!paramCopy)
   {
     v5 = MEMORY[0x277CBEBF8];
     goto LABEL_9;
@@ -298,7 +298,7 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEA60] arrayWithObject:v3];
+    v4 = [MEMORY[0x277CBEA60] arrayWithObject:paramCopy];
 LABEL_7:
     v5 = v4;
     goto LABEL_9;
@@ -307,7 +307,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = paramCopy;
     goto LABEL_7;
   }
 
@@ -318,16 +318,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)_updateExtractionParamsValues:(id)a3
+- (void)_updateExtractionParamsValues:(id)values
 {
-  v4 = a3;
-  if (!v4)
+  valuesCopy = values;
+  if (!valuesCopy)
   {
-    v4 = MEMORY[0x277CBEC10];
+    valuesCopy = MEMORY[0x277CBEC10];
   }
 
-  v13 = v4;
-  v5 = [v4 objectForKey:@"initial_angle"];
+  v13 = valuesCopy;
+  v5 = [valuesCopy objectForKey:@"initial_angle"];
   [(FaceCoreDetector *)self _setParam:@"initial_angle" toValue:v5 withDefaultValue:&unk_284DF5458];
 
   v6 = [v13 objectForKey:@"FCRExtractFaceprint"];
@@ -352,13 +352,13 @@ LABEL_9:
   [(FaceCoreDetector *)self _setParam:@"kalman_filter" toValue:v12 withDefaultValue:&unk_284DF5A40];
 }
 
-- (id)detectFacesInImage:(id)a3 options:(id)a4 error:(id *)a5
+- (id)detectFacesInImage:(id)image options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v18.var0 = [FaceCoreDetector _createImage:v7];
+  imageCopy = image;
+  optionsCopy = options;
+  v18.var0 = [FaceCoreDetector _createImage:imageCopy];
   *&v18.var1 = v9;
-  [(FaceCoreDetector *)self _updateDetectionParamsValues:v8];
+  [(FaceCoreDetector *)self _updateDetectionParamsValues:optionsCopy];
   apple::vision::libraries::facecore::FaceCoreAPI::detectFaces(self->_api.__ptr_, &v18, &v16);
   v10 = objc_alloc(MEMORY[0x277CBEB18]);
   v11 = [v10 initWithCapacity:0x8E38E38E38E38E39 * ((v17 - v16) >> 4)];
@@ -366,7 +366,7 @@ LABEL_9:
   v13 = v17;
   while (v12 != v13)
   {
-    v14 = [FaceCoreDetector _createFCRFaceFromFace:v12 image:v7];
+    v14 = [FaceCoreDetector _createFCRFaceFromFace:v12 image:imageCopy];
     [v11 addObject:v14];
 
     v12 += 144;
@@ -378,20 +378,20 @@ LABEL_9:
   return v11;
 }
 
-- (id)extractDetailsForFaces:(id)a3 inImage:(id)a4 options:(id)a5 error:(id *)a6
+- (id)extractDetailsForFaces:(id)faces inImage:(id)image options:(id)options error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v24.var0 = [FaceCoreDetector _createImage:v10];
+  facesCopy = faces;
+  imageCopy = image;
+  optionsCopy = options;
+  v24.var0 = [FaceCoreDetector _createImage:imageCopy];
   *&v24.var1 = v12;
-  [(FaceCoreDetector *)self _updateExtractionParamsValues:v11];
+  [(FaceCoreDetector *)self _updateExtractionParamsValues:optionsCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = v9;
+  v13 = facesCopy;
   v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v14)
   {
@@ -406,9 +406,9 @@ LABEL_9:
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        [FaceCoreDetector _createFaceFromFCRFace:v17 image:v10];
+        [FaceCoreDetector _createFaceFromFCRFace:v17 image:imageCopy];
         apple::vision::libraries::facecore::FaceCoreAPI::extractFaceDetails(self->_api.__ptr_, &v24, v19);
-        [FaceCoreDetector _updateFCRFace:v17 fromFace:v19 image:v10];
+        [FaceCoreDetector _updateFCRFace:v17 fromFace:v19 image:imageCopy];
         apple::vision::libraries::facecore::Face::~Face(v19);
       }
 
@@ -421,24 +421,24 @@ LABEL_9:
   return v13;
 }
 
-+ (image)_createImage:(id)a3
++ (image)_createImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 width];
-  v5 = [v3 height];
-  v6 = [v3 alignedImageData];
+  imageCopy = image;
+  width = [imageCopy width];
+  height = [imageCopy height];
+  alignedImageData = [imageCopy alignedImageData];
 
-  v7 = v6;
-  v8 = v4 | (v5 << 32);
+  v7 = alignedImageData;
+  v8 = width | (height << 32);
   result.var1 = v8;
   result.var2 = HIDWORD(v8);
   result.var0 = v7;
   return result;
 }
 
-+ (Face)_createFaceFromFCRFace:(SEL)a3 image:(id)a4
++ (Face)_createFaceFromFCRFace:(SEL)face image:(id)image
 {
-  v7 = a4;
+  imageCopy = image;
   v8 = a5;
   *&retstr->var14 = 0;
   retstr->var17 = 0.0;
@@ -455,13 +455,13 @@ LABEL_9:
   retstr->var10.var0 = 0;
   *(&retstr->var10.var2 + 6) = 0;
   retstr->var16 = 0;
-  [v7 faceSize];
+  [imageCopy faceSize];
   retstr->var0 = v9;
-  [v7 faceAngle];
+  [imageCopy faceAngle];
   retstr->var11 = v10;
-  if (v7)
+  if (imageCopy)
   {
-    [v7 face];
+    [imageCopy face];
     v12 = *(&v47 + 1);
     v11 = *&v47;
   }
@@ -476,11 +476,11 @@ LABEL_9:
   }
 
   retstr->var4 = [FaceCoreDetector _makeYFlippedCoordFromPoint:v8 image:v11, v12, v47, v51, v55];
-  retstr->var7 = [v7 trackDuration];
-  retstr->var6 = [v7 trackID];
-  if (v7)
+  retstr->var7 = [imageCopy trackDuration];
+  retstr->var6 = [imageCopy trackID];
+  if (imageCopy)
   {
-    [v7 leftEye];
+    [imageCopy leftEye];
     v14 = *(&v48 + 1);
     v13 = *&v48;
   }
@@ -495,9 +495,9 @@ LABEL_9:
   }
 
   retstr->var1 = [FaceCoreDetector _makeYFlippedCoordFromPoint:v8 image:v13, v14, v48, v52, v56];
-  if (v7)
+  if (imageCopy)
   {
-    [v7 rightEye];
+    [imageCopy rightEye];
     v16 = *(&v49 + 1);
     v15 = *&v49;
   }
@@ -512,9 +512,9 @@ LABEL_9:
   }
 
   retstr->var2 = [FaceCoreDetector _makeYFlippedCoordFromPoint:v8 image:v15, v16, v49, v53, v57];
-  if (v7)
+  if (imageCopy)
   {
-    [v7 mouth];
+    [imageCopy mouth];
     v18 = *(&v50 + 1);
     v17 = *&v50;
   }
@@ -529,60 +529,60 @@ LABEL_9:
   }
 
   retstr->var3 = [FaceCoreDetector _makeYFlippedCoordFromPoint:v8 image:v17, v18, v50, v54, v58];
-  v19 = [v7 expressionFeatures];
-  v20 = [v19 valueForKey:@"FCRFaceExpressionLeftEyeClosed"];
+  expressionFeatures = [imageCopy expressionFeatures];
+  v20 = [expressionFeatures valueForKey:@"FCRFaceExpressionLeftEyeClosed"];
   retstr->var12 = v20 != 0;
 
-  v21 = [v7 expressionFeatures];
-  v22 = [v21 valueForKey:@"FCRFaceExpressionLeftEyeClosedScore"];
+  expressionFeatures2 = [imageCopy expressionFeatures];
+  v22 = [expressionFeatures2 valueForKey:@"FCRFaceExpressionLeftEyeClosedScore"];
   [FaceCoreDetector _interpretAsFloat:v22 withDefault:0.0];
   retstr->var14 = v23;
 
-  v24 = [v7 expressionFeatures];
-  v25 = [v24 valueForKey:@"FCRFaceExpressionRightEyeClosed"];
+  expressionFeatures3 = [imageCopy expressionFeatures];
+  v25 = [expressionFeatures3 valueForKey:@"FCRFaceExpressionRightEyeClosed"];
   retstr->var13 = v25 != 0;
 
-  v26 = [v7 expressionFeatures];
-  v27 = [v26 valueForKey:@"FCRFaceExpressionRightEyeClosedScore"];
+  expressionFeatures4 = [imageCopy expressionFeatures];
+  v27 = [expressionFeatures4 valueForKey:@"FCRFaceExpressionRightEyeClosedScore"];
   [FaceCoreDetector _interpretAsFloat:v27 withDefault:0.0];
   retstr->var15 = v28;
 
-  v29 = [v7 expressionFeatures];
-  v30 = [v29 valueForKey:@"FCRFaceExpressionSmile"];
+  expressionFeatures5 = [imageCopy expressionFeatures];
+  v30 = [expressionFeatures5 valueForKey:@"FCRFaceExpressionSmile"];
   retstr->var16 = v30 != 0;
 
-  v31 = [v7 expressionFeatures];
-  v32 = [v31 valueForKey:@"FCRFaceExpressionSmileScore"];
+  expressionFeatures6 = [imageCopy expressionFeatures];
+  v32 = [expressionFeatures6 valueForKey:@"FCRFaceExpressionSmileScore"];
   [FaceCoreDetector _interpretAsFloat:v32 withDefault:0.0];
   retstr->var17 = v33;
 
-  v34 = [v7 expressionFeatures];
-  v35 = [v34 valueForKey:@"FCRFaceBlurred"];
+  expressionFeatures7 = [imageCopy expressionFeatures];
+  v35 = [expressionFeatures7 valueForKey:@"FCRFaceBlurred"];
   retstr->var18 = v35 != 0;
 
-  v36 = [v7 expressionFeatures];
-  v37 = [v36 valueForKey:@"FCRFaceBlurScore"];
+  expressionFeatures8 = [imageCopy expressionFeatures];
+  v37 = [expressionFeatures8 valueForKey:@"FCRFaceBlurScore"];
   [FaceCoreDetector _interpretAsFloat:v37 withDefault:0.0];
   retstr->var19 = v38;
 
-  v39 = [v7 faceprint];
-  if (v39)
+  faceprint = [imageCopy faceprint];
+  if (faceprint)
   {
-    v40 = [v7 faceprint];
-    v41 = [v40 length];
+    faceprint2 = [imageCopy faceprint];
+    v41 = [faceprint2 length];
 
     if (v41)
     {
       std::vector<apple::vision::libraries::facecore::processing::tracking::keypointtracker::datastructures::KPoint>::resize(&retstr->var8.var0, 0x254uLL);
       var0 = retstr->var8.var0;
-      v43 = [v7 faceprint];
-      memcpy(var0, [v43 bytes], 0x12A0uLL);
+      faceprint3 = [imageCopy faceprint];
+      memcpy(var0, [faceprint3 bytes], 0x12A0uLL);
     }
   }
 
-  v44 = [v7 faceType];
-  v45 = v44 == 2;
-  if (v44 == 1)
+  faceType = [imageCopy faceType];
+  v45 = faceType == 2;
+  if (faceType == 1)
   {
     v45 = 2;
   }
@@ -592,37 +592,37 @@ LABEL_9:
   return result;
 }
 
-+ (id)_createFCRFaceFromFace:(void *)a3 image:(id)a4
++ (id)_createFCRFaceFromFace:(void *)face image:(id)image
 {
-  v6 = a4;
+  imageCopy = image;
   v7 = objc_alloc_init(FaceCoreFace);
-  [a1 _updateFCRFace:v7 fromFace:a3 image:v6];
+  [self _updateFCRFace:v7 fromFace:face image:imageCopy];
 
   return v7;
 }
 
-+ (void)_updateFCRFace:(id)a3 fromFace:(void *)a4 image:(id)a5
++ (void)_updateFCRFace:(id)face fromFace:(void *)fromFace image:(id)image
 {
   v56[11] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [v8 setFaceSize:*a4];
-  [v8 setFaceAngle:*(a4 + 26)];
-  [a1 _makeYFlippedPointFromCoord:a4 + 28 image:v9];
+  faceCopy = face;
+  imageCopy = image;
+  [faceCopy setFaceSize:*fromFace];
+  [faceCopy setFaceAngle:*(fromFace + 26)];
+  [self _makeYFlippedPointFromCoord:fromFace + 28 image:imageCopy];
   v11 = v10;
   v13 = v12;
-  [a1 _makeYFlippedRectFromRect:v9 image:{(*(a4 + 7) - *a4), (*(a4 + 8) + *a4), (2 * *a4), (2 * *a4)}];
+  [self _makeYFlippedRectFromRect:imageCopy image:{(*(fromFace + 7) - *fromFace), (*(fromFace + 8) + *fromFace), (2 * *fromFace), (2 * *fromFace)}];
   v51 = v11;
   v52 = v13;
   *&v53 = v14;
   *(&v53 + 1) = v15;
   *&v54 = v16;
   *(&v54 + 1) = v17;
-  [v8 setFace:&v51];
-  v18 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:*(a4 + 6) length:*(a4 + 7) - *(a4 + 6)];
-  [v8 setFaceprint:v18];
+  [faceCopy setFace:&v51];
+  v18 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:*(fromFace + 6) length:*(fromFace + 7) - *(fromFace + 6)];
+  [faceCopy setFaceprint:v18];
 
-  v19 = *(a4 + 18);
+  v19 = *(fromFace + 18);
   if (v19 == 2)
   {
     v20 = 1;
@@ -633,28 +633,28 @@ LABEL_9:
     v20 = 2 * (v19 == 1);
   }
 
-  [v8 setFaceType:v20];
-  [v8 setTrackID:*(a4 + 10)];
-  [v8 setTrackDuration:*(a4 + 11)];
-  [a1 _makeYFlippedPointFromCoord:a4 + 4 image:v9];
+  [faceCopy setFaceType:v20];
+  [faceCopy setTrackID:*(fromFace + 10)];
+  [faceCopy setTrackDuration:*(fromFace + 11)];
+  [self _makeYFlippedPointFromCoord:fromFace + 4 image:imageCopy];
   v54 = 0u;
   v53 = 0u;
   v51 = v21;
   v52 = v22;
-  [v8 setLeftEye:&v51];
-  [a1 _makeYFlippedPointFromCoord:a4 + 12 image:v9];
+  [faceCopy setLeftEye:&v51];
+  [self _makeYFlippedPointFromCoord:fromFace + 12 image:imageCopy];
   v54 = 0u;
   v53 = 0u;
   v51 = v23;
   v52 = v24;
-  [v8 setRightEye:&v51];
-  [a1 _makeYFlippedPointFromCoord:a4 + 20 image:v9];
+  [faceCopy setRightEye:&v51];
+  [self _makeYFlippedPointFromCoord:fromFace + 20 image:imageCopy];
   v54 = 0u;
   v53 = 0u;
   v51 = v25;
   v52 = v26;
-  [v8 setMouth:&v51];
-  if (*(a4 + 10) != *(a4 + 11))
+  [faceCopy setMouth:&v51];
+  if (*(fromFace + 10) != *(fromFace + 11))
   {
     v55[0] = @"FCRFaceLandmarkEyebrowLeft";
     v55[1] = @"FCRFaceLandmarkEyebrowRight";
@@ -689,94 +689,94 @@ LABEL_9:
     v46[1] = 3221225472;
     v46[2] = __50__FaceCoreDetector__updateFCRFace_fromFace_image___block_invoke;
     v46[3] = &unk_278B7A898;
-    v49 = a1;
-    v50 = a4;
+    selfCopy = self;
+    fromFaceCopy = fromFace;
     v48 = &v51;
-    v47 = v9;
+    v47 = imageCopy;
     [v27 enumerateKeysAndObjectsUsingBlock:v46];
-    [v8 setFaceLandmarkPoints:v52[5]];
+    [faceCopy setFaceLandmarkPoints:v52[5]];
 
     _Block_object_dispose(&v51, 8);
   }
 
-  v28 = [MEMORY[0x277CBEB38] dictionary];
-  v30 = v28;
-  if (*(a4 + 108) == 1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v30 = dictionary;
+  if (*(fromFace + 108) == 1)
   {
-    [v28 setValue:MEMORY[0x277CBEC38] forKey:@"FCRFaceExpressionLeftEyeClosed"];
+    [dictionary setValue:MEMORY[0x277CBEC38] forKey:@"FCRFaceExpressionLeftEyeClosed"];
   }
 
-  LODWORD(v29) = *(a4 + 28);
+  LODWORD(v29) = *(fromFace + 28);
   v31 = [MEMORY[0x277CCABB0] numberWithFloat:v29];
   [v30 setValue:v31 forKey:@"FCRFaceExpressionLeftEyeClosedScore"];
 
-  if (*(a4 + 109) == 1)
+  if (*(fromFace + 109) == 1)
   {
     [v30 setValue:MEMORY[0x277CBEC38] forKey:@"FCRFaceExpressionRightEyeClosed"];
   }
 
-  LODWORD(v32) = *(a4 + 29);
+  LODWORD(v32) = *(fromFace + 29);
   v33 = [MEMORY[0x277CCABB0] numberWithFloat:v32];
   [v30 setValue:v33 forKey:@"FCRFaceExpressionRightEyeClosedScore"];
 
-  if (*(a4 + 120) == 1)
+  if (*(fromFace + 120) == 1)
   {
     [v30 setValue:MEMORY[0x277CBEC38] forKey:@"FCRFaceExpressionSmile"];
   }
 
-  LODWORD(v34) = *(a4 + 31);
+  LODWORD(v34) = *(fromFace + 31);
   v35 = [MEMORY[0x277CCABB0] numberWithFloat:v34];
   [v30 setValue:v35 forKey:@"FCRFaceExpressionSmileScore"];
 
-  if (*(a4 + 128) == 1)
+  if (*(fromFace + 128) == 1)
   {
     [v30 setValue:MEMORY[0x277CBEC38] forKey:@"FCRFaceBlurred"];
   }
 
-  LODWORD(v36) = *(a4 + 33);
+  LODWORD(v36) = *(fromFace + 33);
   v37 = [MEMORY[0x277CCABB0] numberWithFloat:v36];
   [v30 setValue:v37 forKey:@"FCRFaceBlurScore"];
 
-  [v8 setExpressionFeatures:v30];
-  if (*(a4 + 17))
+  [faceCopy setExpressionFeatures:v30];
+  if (*(fromFace + 17))
   {
     v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v39 = [v8 additionalInfo];
-    if (v39)
+    additionalInfo = [faceCopy additionalInfo];
+    if (additionalInfo)
     {
-      [v38 setValuesForKeysWithDictionary:v39];
+      [v38 setValuesForKeysWithDictionary:additionalInfo];
     }
 
-    v40 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:**(a4 + 17) length:*(*(a4 + 17) + 8)];
+    v40 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:**(fromFace + 17) length:*(*(fromFace + 17) + 8)];
     [v38 setObject:v40 forKey:@"FCRSmileAndBlinkFeatures"];
-    v41 = [MEMORY[0x277CCABB0] numberWithInt:*(*(a4 + 17) + 16)];
+    v41 = [MEMORY[0x277CCABB0] numberWithInt:*(*(fromFace + 17) + 16)];
     [v38 setObject:v41 forKey:@"FCRLeftEyeFeaturesOffset"];
 
-    v42 = [MEMORY[0x277CCABB0] numberWithInt:*(*(a4 + 17) + 20)];
+    v42 = [MEMORY[0x277CCABB0] numberWithInt:*(*(fromFace + 17) + 20)];
     [v38 setObject:v42 forKey:@"FCRRightEyeFeaturesOffset"];
 
-    v43 = [MEMORY[0x277CCABB0] numberWithInt:*(*(a4 + 17) + 32)];
+    v43 = [MEMORY[0x277CCABB0] numberWithInt:*(*(fromFace + 17) + 32)];
     [v38 setObject:v43 forKey:@"FCRSmileFeaturesOffset"];
 
-    v44 = [MEMORY[0x277CCABB0] numberWithInt:*(*(a4 + 17) + 24)];
+    v44 = [MEMORY[0x277CCABB0] numberWithInt:*(*(fromFace + 17) + 24)];
     [v38 setObject:v44 forKey:@"FCRBlinkFeaturesSize"];
 
-    v45 = [MEMORY[0x277CCABB0] numberWithInt:*(*(a4 + 17) + 28)];
+    v45 = [MEMORY[0x277CCABB0] numberWithInt:*(*(fromFace + 17) + 28)];
     [v38 setObject:v45 forKey:@"FCRSmileFeaturesSize"];
 
-    [v8 setAdditionalInfo:v38];
+    [faceCopy setAdditionalInfo:v38];
   }
 }
 
-+ (void)_addLandmarkOfType:(id)a3 fromMesh:(void *)a4 indexes:(id)a5 to:(id)a6 image:(id)a7
++ (void)_addLandmarkOfType:(id)type fromMesh:(void *)mesh indexes:(id)indexes to:(id)to image:(id)image
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v26 = a6;
-  v14 = a7;
-  v25 = v13;
-  std::vector<CGPoint>::vector[abi:ne200100](__p, [v13 count]);
+  typeCopy = type;
+  indexesCopy = indexes;
+  toCopy = to;
+  imageCopy = image;
+  v25 = indexesCopy;
+  std::vector<CGPoint>::vector[abi:ne200100](__p, [indexesCopy count]);
   v15 = __p[0];
   v28 = 0u;
   v29 = 0u;
@@ -796,8 +796,8 @@ LABEL_9:
           objc_enumerationMutation(v16);
         }
 
-        v27 = *(*a4 + 8 * [*(*(&v28 + 1) + 8 * i) unsignedIntegerValue]);
-        [a1 _makeYFlippedPointFromCoord:&v27 image:v14];
+        v27 = *(*mesh + 8 * [*(*(&v28 + 1) + 8 * i) unsignedIntegerValue]);
+        [self _makeYFlippedPointFromCoord:&v27 image:imageCopy];
         v20 = v15 + 2;
         *v15 = v21;
         v15[1] = v22;
@@ -812,8 +812,8 @@ LABEL_9:
   }
 
   v23 = [v16 count];
-  v24 = [FaceCoreLandmark landmarkWithType:v12 pointCount:v23 points:__p[0]];
-  [v26 setObject:v24 forKey:v12];
+  v24 = [FaceCoreLandmark landmarkWithType:typeCopy pointCount:v23 points:__p[0]];
+  [toCopy setObject:v24 forKey:typeCopy];
 
   if (__p[0])
   {
@@ -822,10 +822,10 @@ LABEL_9:
   }
 }
 
-- (void)_createFaceCoreLightApiWithProfile:(int)a3 parameters:(id)a4
+- (void)_createFaceCoreLightApiWithProfile:(int)profile parameters:(id)parameters
 {
-  a4;
-  if (a3 >= 6)
+  parameters;
+  if (profile >= 6)
   {
     NSLog(&cfstr_ErrorLegacyfac_1.isa);
   }
@@ -833,28 +833,28 @@ LABEL_9:
   operator new();
 }
 
-+ (CGPoint)_makeYFlippedPointFromCoord:(coord *)a3 image:(id)a4
++ (CGPoint)_makeYFlippedPointFromCoord:(coord *)coord image:(id)image
 {
-  var0 = a3->var0;
-  v6 = [a4 height];
+  var0 = coord->var0;
+  height = [image height];
   v7 = var0;
-  v8 = (v6 + ~a3->var1);
+  v8 = (height + ~coord->var1);
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-+ (CGRect)_makeYFlippedRectFromRect:(CGRect)a3 image:(id)a4
++ (CGRect)_makeYFlippedRectFromRect:(CGRect)rect image:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  v9 = imageCopy;
+  if (imageCopy)
   {
-    y = ([v8 height] - 1) - y;
+    y = ([imageCopy height] - 1) - y;
   }
 
   v10 = x;
@@ -868,26 +868,26 @@ LABEL_9:
   return result;
 }
 
-- (void)_setParam:(id)a3 toValue:(id)a4 withDefaultValue:(id)a5
+- (void)_setParam:(id)param toValue:(id)value withDefaultValue:(id)defaultValue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  paramCopy = param;
+  valueCopy = value;
+  defaultValueCopy = defaultValue;
+  v11 = defaultValueCopy;
+  if (valueCopy)
   {
-    v12 = v9;
+    v12 = valueCopy;
   }
 
   else
   {
-    v12 = v10;
+    v12 = defaultValueCopy;
   }
 
   v13 = v12;
   ptr = self->_api.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(v18, [v8 UTF8String]);
-  v15 = [FaceCoreDetector _parseOption:v8 value:v13];
+  std::string::basic_string[abi:ne200100]<0>(v18, [paramCopy UTF8String]);
+  v15 = [FaceCoreDetector _parseOption:paramCopy value:v13];
   std::string::basic_string[abi:ne200100]<0>(__p, [v15 UTF8String]);
   (**ptr)(ptr, v18, __p);
   if (v17 < 0)
@@ -901,26 +901,26 @@ LABEL_9:
   }
 }
 
-+ (float)_interpretAsFloat:(id)a3 withDefault:(float)a4
++ (float)_interpretAsFloat:(id)float withDefault:(float)default
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  floatCopy = float;
+  v6 = floatCopy;
+  if (floatCopy)
   {
-    [v5 floatValue];
-    a4 = v7;
+    [floatCopy floatValue];
+    default = v7;
   }
 
-  return a4;
+  return default;
 }
 
-+ (id)_parseOption:(id)a3 value:(id)a4
++ (id)_parseOption:(id)option value:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 _parseNumericOrBoolValue:v5];
+    v6 = [self _parseNumericOrBoolValue:valueCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
@@ -929,7 +929,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = valueCopy;
     goto LABEL_5;
   }
 
@@ -939,47 +939,47 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_parseNumericOrBoolValue:(id)a3
++ (id)_parseNumericOrBoolValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 isEqualToString:@"__NSCFBoolean"];
 
   if (v6)
   {
-    v7 = [v3 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     v8 = @"false";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = @"true";
     }
 
-    v9 = v8;
+    stringValue = v8;
   }
 
   else
   {
-    v9 = [v3 stringValue];
+    stringValue = [valueCopy stringValue];
   }
 
-  v10 = v9;
+  v10 = stringValue;
 
   return v10;
 }
 
-+ (id)_convertRectsToString:(id)a3
++ (id)_convertRectsToString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  stringCopy = string;
+  if ([stringCopy count])
   {
     v4 = [MEMORY[0x277CCAB68] stringWithFormat:&stru_284DF4C60];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = stringCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {

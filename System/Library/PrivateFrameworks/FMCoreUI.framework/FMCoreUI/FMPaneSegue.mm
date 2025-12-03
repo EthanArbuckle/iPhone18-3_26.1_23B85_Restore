@@ -1,16 +1,16 @@
 @interface FMPaneSegue
-- (void)performFromEdge:(unint64_t)a3;
+- (void)performFromEdge:(unint64_t)edge;
 @end
 
 @implementation FMPaneSegue
 
-- (void)performFromEdge:(unint64_t)a3
+- (void)performFromEdge:(unint64_t)edge
 {
-  v5 = [(UIStoryboardSegue *)self sourceViewController];
-  v6 = [(UIStoryboardSegue *)self destinationViewController];
-  if (v5)
+  sourceViewController = [(UIStoryboardSegue *)self sourceViewController];
+  destinationViewController = [(UIStoryboardSegue *)self destinationViewController];
+  if (sourceViewController)
   {
-    v7 = v5;
+    v7 = sourceViewController;
     while (1)
     {
       objc_opt_class();
@@ -19,10 +19,10 @@
         break;
       }
 
-      v8 = [v7 parentViewController];
+      parentViewController = [v7 parentViewController];
 
-      v7 = v8;
-      if (!v8)
+      v7 = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_5;
       }
@@ -40,10 +40,10 @@ LABEL_5:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"No instance of FMSlidingPaneViewController in controller hierarchy of %@", v5}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"No instance of FMSlidingPaneViewController in controller hierarchy of %@", sourceViewController}];
   }
 
-  [v9 presentPaneViewController:v6 fromEdge:a3 animated:-[FMPaneSegue disableAnimation](self completion:{"disableAnimation") ^ 1, 0}];
+  [v9 presentPaneViewController:destinationViewController fromEdge:edge animated:-[FMPaneSegue disableAnimation](self completion:{"disableAnimation") ^ 1, 0}];
 }
 
 @end

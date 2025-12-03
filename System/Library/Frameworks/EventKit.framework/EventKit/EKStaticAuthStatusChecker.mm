@@ -1,18 +1,18 @@
 @interface EKStaticAuthStatusChecker
-- (EKStaticAuthStatusChecker)initWithEventAccessLevel:(int)a3 hasAccessToReminders:(BOOL)a4;
+- (EKStaticAuthStatusChecker)initWithEventAccessLevel:(int)level hasAccessToReminders:(BOOL)reminders;
 @end
 
 @implementation EKStaticAuthStatusChecker
 
-- (EKStaticAuthStatusChecker)initWithEventAccessLevel:(int)a3 hasAccessToReminders:(BOOL)a4
+- (EKStaticAuthStatusChecker)initWithEventAccessLevel:(int)level hasAccessToReminders:(BOOL)reminders
 {
   v7.receiver = self;
   v7.super_class = EKStaticAuthStatusChecker;
   result = [(EKStaticAuthStatusChecker *)&v7 init];
   if (result)
   {
-    result->_eventAccessLevel = a3;
-    result->_hasAccessToReminders = a4;
+    result->_eventAccessLevel = level;
+    result->_hasAccessToReminders = reminders;
   }
 
   return result;

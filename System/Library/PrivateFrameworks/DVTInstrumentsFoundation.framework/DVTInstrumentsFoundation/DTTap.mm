@@ -1,6 +1,6 @@
 @interface DTTap
 - (DTTap)init;
-- (DTTap)initWithConfig:(id)a3 memoHandler:(id)a4;
+- (DTTap)initWithConfig:(id)config memoHandler:(id)handler;
 - (id)fetchDataNow;
 - (id)pause;
 - (id)start;
@@ -19,17 +19,17 @@
   __assert_rtn("[DTTap init]", "DTTap.m", 26, "0");
 }
 
-- (DTTap)initWithConfig:(id)a3 memoHandler:(id)a4
+- (DTTap)initWithConfig:(id)config memoHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = DTTap;
   v9 = [(DTTap *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!configCopy)
     {
       sub_24802F6D4();
     }
@@ -40,8 +40,8 @@
     serialQueue = v10->_serialQueue;
     v10->_serialQueue = v12;
 
-    objc_storeStrong(&v10->_config, a3);
-    objc_storeStrong(&v10->_memoHandler, a4);
+    objc_storeStrong(&v10->_config, config);
+    objc_storeStrong(&v10->_memoHandler, handler);
   }
 
   return v10;

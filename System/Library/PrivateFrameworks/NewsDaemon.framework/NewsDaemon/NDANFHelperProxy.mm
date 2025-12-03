@@ -1,7 +1,7 @@
 @interface NDANFHelperProxy
 - (NDANFHelperProxy)init;
 - (id)_connectionToXPCService;
-- (id)manifestFromANFDocumentData:(id)a3 reachedService:(BOOL *)a4;
+- (id)manifestFromANFDocumentData:(id)data reachedService:(BOOL *)service;
 - (void)dealloc;
 - (void)popInterest;
 - (void)pushInterest;
@@ -26,17 +26,17 @@
 
 - (void)dealloc
 {
-  v3 = [(NDANFHelperProxy *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(NDANFHelperProxy *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = NDANFHelperProxy;
   [(NDANFHelperProxy *)&v4 dealloc];
 }
 
-- (id)manifestFromANFDocumentData:(id)a3 reachedService:(BOOL *)a4
+- (id)manifestFromANFDocumentData:(id)data reachedService:(BOOL *)service
 {
-  v6 = a3;
+  dataCopy = data;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -47,24 +47,24 @@
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(NDANFHelperProxy *)self pushInterest];
-  v8 = [(NDANFHelperProxy *)self _connectionToXPCService];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+  _connectionToXPCService = [(NDANFHelperProxy *)self _connectionToXPCService];
+  v9 = [_connectionToXPCService synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__NDANFHelperProxy_manifestFromANFDocumentData_reachedService___block_invoke_5;
   v17[3] = &unk_27997C020;
   v19 = &v21;
-  v10 = v7;
+  v10 = date;
   v18 = v10;
   v20 = &v25;
-  [v9 decodeANFDocumentData:v6 completion:v17];
+  [v9 decodeANFDocumentData:dataCopy completion:v17];
 
   [(NDANFHelperProxy *)self popInterest];
-  if (a4)
+  if (service)
   {
-    *a4 = *(v22 + 24);
+    *service = *(v22 + 24);
   }
 
   v11 = v26[5];
@@ -144,18 +144,18 @@ void __63__NDANFHelperProxy_manifestFromANFDocumentData_reachedService___block_i
 
 - (void)pushInterest
 {
-  v3 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v3 lock];
+  xpcConnectionLock = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock lock];
 
   [(NDANFHelperProxy *)self setXpcConnectionInterest:[(NDANFHelperProxy *)self xpcConnectionInterest]+ 1];
-  v4 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v4 unlock];
+  xpcConnectionLock2 = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock2 unlock];
 }
 
 - (void)popInterest
 {
-  v3 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v3 lock];
+  xpcConnectionLock = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock lock];
 
   [(NDANFHelperProxy *)self setXpcConnectionInterest:[(NDANFHelperProxy *)self xpcConnectionInterest]- 1];
   if (![(NDANFHelperProxy *)self xpcConnectionInterest])
@@ -167,43 +167,43 @@ void __63__NDANFHelperProxy_manifestFromANFDocumentData_reachedService___block_i
       _os_log_impl(&dword_25BE24000, v4, OS_LOG_TYPE_DEFAULT, "ANFDecoder will invalidate connection due to zero interest", v7, 2u);
     }
 
-    v5 = [(NDANFHelperProxy *)self xpcConnection];
-    [v5 invalidate];
+    xpcConnection = [(NDANFHelperProxy *)self xpcConnection];
+    [xpcConnection invalidate];
 
     [(NDANFHelperProxy *)self setXpcConnection:0];
   }
 
-  v6 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v6 unlock];
+  xpcConnectionLock2 = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock2 unlock];
 }
 
 - (id)_connectionToXPCService
 {
-  v3 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v3 lock];
+  xpcConnectionLock = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock lock];
 
-  v4 = [(NDANFHelperProxy *)self xpcConnection];
+  xpcConnection = [(NDANFHelperProxy *)self xpcConnection];
 
-  if (!v4)
+  if (!xpcConnection)
   {
     v5 = NDANFDecodingServiceXPCConnection();
     [(NDANFHelperProxy *)self setXpcConnection:v5];
 
-    v6 = [(NDANFHelperProxy *)self xpcConnection];
-    [v6 setInvalidationHandler:&__block_literal_global_10];
+    xpcConnection2 = [(NDANFHelperProxy *)self xpcConnection];
+    [xpcConnection2 setInvalidationHandler:&__block_literal_global_10];
 
-    v7 = [(NDANFHelperProxy *)self xpcConnection];
-    [v7 setInterruptionHandler:&__block_literal_global_13];
+    xpcConnection3 = [(NDANFHelperProxy *)self xpcConnection];
+    [xpcConnection3 setInterruptionHandler:&__block_literal_global_13];
 
-    v8 = [(NDANFHelperProxy *)self xpcConnection];
-    [v8 activate];
+    xpcConnection4 = [(NDANFHelperProxy *)self xpcConnection];
+    [xpcConnection4 activate];
   }
 
-  v9 = [(NDANFHelperProxy *)self xpcConnection];
-  v10 = [(NDANFHelperProxy *)self xpcConnectionLock];
-  [v10 unlock];
+  xpcConnection5 = [(NDANFHelperProxy *)self xpcConnection];
+  xpcConnectionLock2 = [(NDANFHelperProxy *)self xpcConnectionLock];
+  [xpcConnectionLock2 unlock];
 
-  return v9;
+  return xpcConnection5;
 }
 
 void __43__NDANFHelperProxy__connectionToXPCService__block_invoke()

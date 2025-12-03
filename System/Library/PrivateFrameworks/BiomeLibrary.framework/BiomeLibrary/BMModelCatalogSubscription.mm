@@ -1,40 +1,40 @@
 @interface BMModelCatalogSubscription
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMModelCatalogSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMModelCatalogSubscription)initWithUseCase:(id)a3 parameters:(id)a4 expirationDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMModelCatalogSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMModelCatalogSubscription)initWithUseCase:(id)case parameters:(id)parameters expirationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)expirationDate;
 - (NSString)description;
 - (id)_parametersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMModelCatalogSubscription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMModelCatalogSubscription *)self useCase];
-    v7 = [v5 useCase];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    useCase = [(BMModelCatalogSubscription *)self useCase];
+    useCase2 = [v5 useCase];
+    v8 = useCase2;
+    if (useCase == useCase2)
     {
     }
 
     else
     {
-      v9 = [(BMModelCatalogSubscription *)self useCase];
-      v10 = [v5 useCase];
-      v11 = [v9 isEqual:v10];
+      useCase3 = [(BMModelCatalogSubscription *)self useCase];
+      useCase4 = [v5 useCase];
+      v11 = [useCase3 isEqual:useCase4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMModelCatalogSubscription *)self parameters];
-    v14 = [v5 parameters];
-    v15 = v14;
-    if (v13 == v14)
+    parameters = [(BMModelCatalogSubscription *)self parameters];
+    parameters2 = [v5 parameters];
+    v15 = parameters2;
+    if (parameters == parameters2)
     {
     }
 
     else
     {
-      v16 = [(BMModelCatalogSubscription *)self parameters];
-      v17 = [v5 parameters];
-      v18 = [v16 isEqual:v17];
+      parameters3 = [(BMModelCatalogSubscription *)self parameters];
+      parameters4 = [v5 parameters];
+      v18 = [parameters3 isEqual:parameters4];
 
       if (!v18)
       {
@@ -65,18 +65,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMModelCatalogSubscription *)self expirationDate];
-    v20 = [v5 expirationDate];
-    if (v19 == v20)
+    expirationDate = [(BMModelCatalogSubscription *)self expirationDate];
+    expirationDate2 = [v5 expirationDate];
+    if (expirationDate == expirationDate2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMModelCatalogSubscription *)self expirationDate];
-      v22 = [v5 expirationDate];
-      v12 = [v21 isEqual:v22];
+      expirationDate3 = [(BMModelCatalogSubscription *)self expirationDate];
+      expirationDate4 = [v5 expirationDate];
+      v12 = [expirationDate3 isEqual:expirationDate4];
     }
 
     goto LABEL_15;
@@ -108,16 +108,16 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMModelCatalogSubscription *)self useCase];
-  v4 = [v3 jsonDictionary];
+  useCase = [(BMModelCatalogSubscription *)self useCase];
+  jsonDictionary = [useCase jsonDictionary];
 
-  v5 = [(BMModelCatalogSubscription *)self _parametersJSONArray];
-  v6 = [(BMModelCatalogSubscription *)self expirationDate];
-  if (v6)
+  _parametersJSONArray = [(BMModelCatalogSubscription *)self _parametersJSONArray];
+  expirationDate = [(BMModelCatalogSubscription *)self expirationDate];
+  if (expirationDate)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMModelCatalogSubscription *)self expirationDate];
-    [v8 timeIntervalSince1970];
+    expirationDate2 = [(BMModelCatalogSubscription *)self expirationDate];
+    [expirationDate2 timeIntervalSince1970];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -127,40 +127,40 @@ LABEL_16:
   }
 
   v16[0] = @"useCase";
-  v10 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v10;
+  v17[0] = null;
   v16[1] = @"parameters";
-  v11 = v5;
-  if (!v5)
+  null2 = _parametersJSONArray;
+  if (!_parametersJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v11;
+  v17[1] = null2;
   v16[2] = @"expirationDate";
-  v12 = v9;
+  null3 = v9;
   if (!v9)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v12;
+  v17[2] = null3;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   if (v9)
   {
-    if (v5)
+    if (_parametersJSONArray)
     {
       goto LABEL_12;
     }
 
 LABEL_17:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_13;
     }
@@ -168,13 +168,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!_parametersJSONArray)
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_13;
   }
@@ -195,8 +195,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMModelCatalogSubscription *)self parameters];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  parameters = [(BMModelCatalogSubscription *)self parameters];
+  v5 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -207,14 +207,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(parameters);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -225,34 +225,34 @@ LABEL_13:
   return v3;
 }
 
-- (BMModelCatalogSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMModelCatalogSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v76[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"useCase"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"useCase"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v24 = v6;
+        v24 = dictionaryCopy;
         v25 = *MEMORY[0x1E698F240];
         v75 = *MEMORY[0x1E696A578];
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"useCase"];
         v76[0] = v26;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v76 forKeys:&v75 count:1];
         v27 = v25;
-        v6 = v24;
+        dictionaryCopy = v24;
         v8 = v26;
-        v28 = 0;
-        *a4 = [v23 initWithDomain:v27 code:2 userInfo:v9];
+        selfCopy3 = 0;
+        *error = [v23 initWithDomain:v27 code:2 userInfo:v9];
         goto LABEL_53;
       }
 
-      v28 = 0;
+      selfCopy3 = 0;
       goto LABEL_54;
     }
 
@@ -262,10 +262,10 @@ LABEL_13:
     v22 = v65;
     if (v22)
     {
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
       goto LABEL_40;
@@ -277,22 +277,22 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"parameters"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   if (!v11)
   {
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v55 = a4;
+      errorCopy2 = error;
       v56 = v8;
       v57 = v7;
-      v58 = self;
+      selfCopy2 = self;
       goto LABEL_9;
     }
 
-    if (a4)
+    if (error)
     {
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v39 = *MEMORY[0x1E698F240];
@@ -300,21 +300,21 @@ LABEL_13:
       v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"parameters"];
       v74 = v59;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-      v21 = v40 = a4;
-      v28 = 0;
+      v21 = v40 = error;
+      selfCopy3 = 0;
       *v40 = [v38 initWithDomain:v39 code:2 userInfo:v21];
       goto LABEL_52;
     }
 
 LABEL_40:
-    v28 = 0;
+    selfCopy3 = 0;
     goto LABEL_53;
   }
 
-  v55 = a4;
+  errorCopy2 = error;
   v56 = v8;
   v57 = v7;
-  v58 = self;
+  selfCopy2 = self;
 
   v9 = 0;
 LABEL_9:
@@ -332,7 +332,7 @@ LABEL_9:
 
   v13 = v12;
   v14 = *v62;
-  v54 = v6;
+  v54 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v13; ++i)
@@ -346,8 +346,8 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = v55;
-        if (v55)
+        v29 = errorCopy2;
+        if (errorCopy2)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -362,20 +362,20 @@ LABEL_33:
           *v29 = [v30 initWithDomain:v31 code:2 userInfo:v35];
 
 LABEL_37:
-          v28 = 0;
+          selfCopy3 = 0;
           v21 = v9;
-          v6 = v54;
-          self = v58;
+          dictionaryCopy = v54;
+          self = selfCopy2;
           v8 = v56;
           goto LABEL_51;
         }
 
 LABEL_41:
-        v28 = 0;
+        selfCopy3 = 0;
         v21 = v9;
-        v6 = v54;
+        dictionaryCopy = v54;
         v7 = v57;
-        self = v58;
+        self = selfCopy2;
         v8 = v56;
         goto LABEL_52;
       }
@@ -383,8 +383,8 @@ LABEL_41:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v29 = v55;
-        if (v55)
+        v29 = errorCopy2;
+        if (errorCopy2)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -408,10 +408,10 @@ LABEL_41:
       if (v20)
       {
         v36 = v20;
-        if (v55)
+        if (errorCopy2)
         {
           v37 = v20;
-          *v55 = v36;
+          *errorCopy2 = v36;
         }
 
         goto LABEL_37;
@@ -421,7 +421,7 @@ LABEL_41:
     }
 
     v13 = [v9 countByEnumeratingWithState:&v61 objects:v72 count:16];
-    v6 = v54;
+    dictionaryCopy = v54;
     if (v13)
     {
       continue;
@@ -432,17 +432,17 @@ LABEL_41:
 
 LABEL_19:
 
-  v17 = [v6 objectForKeyedSubscript:@"expirationDate"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"expirationDate"];
   if (!v17)
   {
     v21 = 0;
-    self = v58;
+    self = selfCopy2;
     v8 = v56;
     goto LABEL_50;
   }
 
   objc_opt_class();
-  self = v58;
+  self = selfCopy2;
   v8 = v56;
   if (objc_opt_isKindOfClass())
   {
@@ -480,13 +480,13 @@ LABEL_45:
     v21 = v46;
 LABEL_50:
     self = [(BMModelCatalogSubscription *)self initWithUseCase:v8 parameters:v59 expirationDate:v21];
-    v28 = self;
+    selfCopy3 = self;
   }
 
   else
   {
-    v28 = v55;
-    if (v55)
+    selfCopy3 = errorCopy2;
+    if (errorCopy2)
     {
       v53 = objc_alloc(MEMORY[0x1E696ABC0]);
       v50 = *MEMORY[0x1E698F240];
@@ -494,10 +494,10 @@ LABEL_50:
       v51 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"expirationDate"];
       v67 = v51;
       v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-      *v55 = [v53 initWithDomain:v50 code:2 userInfo:v52];
+      *errorCopy2 = [v53 initWithDomain:v50 code:2 userInfo:v52];
 
       v21 = 0;
-      v28 = 0;
+      selfCopy3 = 0;
     }
 
     else
@@ -515,27 +515,27 @@ LABEL_53:
 LABEL_54:
 
   v48 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMModelCatalogSubscription *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_useCase)
   {
     v17 = 0;
     PBDataWriterPlaceMark();
-    [(BMModelCatalogSubscriptionUseCase *)self->_useCase writeTo:v4];
+    [(BMModelCatalogSubscriptionUseCase *)self->_useCase writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -562,7 +562,7 @@ LABEL_54:
         v10 = *(*(&v13 + 1) + 8 * v9);
         v17 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:{v4, v13}];
+        [v10 writeTo:{toCopy, v13}];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -583,9 +583,9 @@ LABEL_54:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v30.receiver = self;
   v30.super_class = BMModelCatalogSubscription;
   v5 = [(BMEventBase *)&v30 init];
@@ -595,12 +595,12 @@ LABEL_54:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -611,18 +611,18 @@ LABEL_54:
       while (1)
       {
         LOBYTE(v31) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v31 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v31) & 0x7F) << v8;
@@ -639,9 +639,9 @@ LABEL_54:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -651,18 +651,18 @@ LABEL_16:
       {
         v5->_hasRaw_expirationDate = 1;
         v31 = 0.0;
-        v21 = [v4 position] + 8;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 8, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 8;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 8, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v23 = [v4 data];
-          [v23 getBytes:&v31 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_expirationDate = v31;
@@ -672,7 +672,7 @@ LABEL_16:
       {
         v31 = 0.0;
         v32 = 0;
-        if (!PBReaderPlaceMark() || (v19 = [[BMModelCatalogSubscriptionParameter alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v19 = [[BMModelCatalogSubscriptionParameter alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_37:
 
@@ -693,7 +693,7 @@ LABEL_37:
           goto LABEL_37;
         }
 
-        v17 = [[BMModelCatalogSubscriptionUseCase alloc] initByReadFrom:v4];
+        v17 = [[BMModelCatalogSubscriptionUseCase alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_37;
@@ -710,18 +710,18 @@ LABEL_37:
         goto LABEL_37;
       }
 
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v25 = [v6 copy];
   parameters = v5->_parameters;
   v5->_parameters = v25;
 
-  v27 = [v4 hasError];
-  if (v27)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_38:
     v28 = 0;
@@ -739,31 +739,31 @@ LABEL_36:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMModelCatalogSubscription *)self useCase];
-  v5 = [(BMModelCatalogSubscription *)self parameters];
-  v6 = [(BMModelCatalogSubscription *)self expirationDate];
-  v7 = [v3 initWithFormat:@"BMModelCatalogSubscription with useCase: %@, parameters: %@, expirationDate: %@", v4, v5, v6];
+  useCase = [(BMModelCatalogSubscription *)self useCase];
+  parameters = [(BMModelCatalogSubscription *)self parameters];
+  expirationDate = [(BMModelCatalogSubscription *)self expirationDate];
+  v7 = [v3 initWithFormat:@"BMModelCatalogSubscription with useCase: %@, parameters: %@, expirationDate: %@", useCase, parameters, expirationDate];
 
   return v7;
 }
 
-- (BMModelCatalogSubscription)initWithUseCase:(id)a3 parameters:(id)a4 expirationDate:(id)a5
+- (BMModelCatalogSubscription)initWithUseCase:(id)case parameters:(id)parameters expirationDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  caseCopy = case;
+  parametersCopy = parameters;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = BMModelCatalogSubscription;
   v12 = [(BMEventBase *)&v15 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_useCase, a3);
-    objc_storeStrong(&v12->_parameters, a4);
-    if (v11)
+    objc_storeStrong(&v12->_useCase, case);
+    objc_storeStrong(&v12->_parameters, parameters);
+    if (dateCopy)
     {
       v12->_hasRaw_expirationDate = 1;
-      [v11 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -828,9 +828,9 @@ id __37__BMModelCatalogSubscription_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -838,8 +838,8 @@ id __37__BMModelCatalogSubscription_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMModelCatalogSubscription alloc] initByReadFrom:v7];
     v4 = v8;

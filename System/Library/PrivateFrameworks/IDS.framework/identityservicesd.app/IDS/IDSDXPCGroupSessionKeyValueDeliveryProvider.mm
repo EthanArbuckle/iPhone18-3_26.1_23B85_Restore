@@ -1,15 +1,15 @@
 @interface IDSDXPCGroupSessionKeyValueDeliveryProvider
-- (IDSDXPCGroupSessionKeyValueDeliveryProvider)initWithQueue:(id)a3 connection:(id)a4;
-- (void)keyValueDeliveryForSessionID:(id)a3 completionHandler:(id)a4;
+- (IDSDXPCGroupSessionKeyValueDeliveryProvider)initWithQueue:(id)queue connection:(id)connection;
+- (void)keyValueDeliveryForSessionID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation IDSDXPCGroupSessionKeyValueDeliveryProvider
 
-- (IDSDXPCGroupSessionKeyValueDeliveryProvider)initWithQueue:(id)a3 connection:(id)a4
+- (IDSDXPCGroupSessionKeyValueDeliveryProvider)initWithQueue:(id)queue connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasEntitlement:kIDSGroupSessionKeyValueDeliveryEntitlement])
+  queueCopy = queue;
+  connectionCopy = connection;
+  if ([connectionCopy hasEntitlement:kIDSGroupSessionKeyValueDeliveryEntitlement])
   {
     v14.receiver = self;
     v14.super_class = IDSDXPCGroupSessionKeyValueDeliveryProvider;
@@ -17,11 +17,11 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_queue, a3);
+      objc_storeStrong(&v9->_queue, queue);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -30,30 +30,30 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v8;
+      v16 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Missing IDS Group Session Key Value Delivery entitlement -- failing creation of IDSDXPCGroupSessionKeyValueDeliveryProvider collaborator {connection: %@}", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)keyValueDeliveryForSessionID:(id)a3 completionHandler:(id)a4
+- (void)keyValueDeliveryForSessionID:(id)d completionHandler:(id)handler
 {
-  v9 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v6 = +[IDSDSessionController sharedInstance];
-  v7 = [v6 sessionWithUniqueID:v5];
+  v7 = [v6 sessionWithUniqueID:dCopy];
 
   if (!v7)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
-  v8 = [v7 keyValueDelivery];
-  (*(v9 + 2))(v9, v8, 0);
+  keyValueDelivery = [v7 keyValueDelivery];
+  (*(handlerCopy + 2))(handlerCopy, keyValueDelivery, 0);
 }
 
 @end

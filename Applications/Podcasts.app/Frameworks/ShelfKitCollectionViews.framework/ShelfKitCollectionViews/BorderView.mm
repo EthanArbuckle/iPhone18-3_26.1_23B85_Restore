@@ -1,36 +1,36 @@
 @interface BorderView
 - (UIColor)backgroundColor;
-- (_TtC23ShelfKitCollectionViews10BorderView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews10BorderView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setClipsToBounds:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews10BorderView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews10BorderView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
+- (void)setClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation BorderView
 
-- (_TtC23ShelfKitCollectionViews10BorderView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews10BorderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews10BorderView_roundedCorners) = -1;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(BorderView *)&v11 initWithFrame:x, y, width, height];
-  [(BorderView *)v9 setUserInteractionEnabled:0];
-  return v9;
+  height = [(BorderView *)&v11 initWithFrame:x, y, width, height];
+  [(BorderView *)height setUserInteractionEnabled:0];
+  return height;
 }
 
-- (_TtC23ShelfKitCollectionViews10BorderView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews10BorderView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews10BorderView_roundedCorners) = -1;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(BorderView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(BorderView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {
@@ -41,21 +41,21 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [objc_opt_self() clearColor];
+  clearColor = [objc_opt_self() clearColor];
 
-  return v2;
+  return clearColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v4 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_21AD70();
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = self;
+  selfCopy = self;
   sub_21AE24();
 }
 

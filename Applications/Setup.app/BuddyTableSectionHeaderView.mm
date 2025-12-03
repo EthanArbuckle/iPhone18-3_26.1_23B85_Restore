@@ -1,17 +1,17 @@
 @interface BuddyTableSectionHeaderView
-- (BuddyTableSectionHeaderView)initWithPadding:(UIEdgeInsets)a3;
+- (BuddyTableSectionHeaderView)initWithPadding:(UIEdgeInsets)padding;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)padding;
 @end
 
 @implementation BuddyTableSectionHeaderView
 
-- (BuddyTableSectionHeaderView)initWithPadding:(UIEdgeInsets)a3
+- (BuddyTableSectionHeaderView)initWithPadding:(UIEdgeInsets)padding
 {
-  *(&v25 + 1) = *&a3.left;
-  *&v25 = a3.top;
-  *&v26 = a3.bottom;
-  *(&v26 + 1) = *&a3.right;
+  *(&v25 + 1) = *&padding.left;
+  *&v25 = padding.top;
+  *&v26 = padding.bottom;
+  *(&v26 + 1) = *&padding.right;
   v23 = a2;
   location = 0;
   v22.receiver = self;
@@ -31,21 +31,21 @@
     [*(location + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
     [*(location + 1) setNumberOfLines:0];
     [location addSubview:*(location + 1)];
-    v21 = [*(location + 1) leadingAnchor];
-    v20 = [location leadingAnchor];
-    v19 = [v21 constraintEqualToAnchor:*(&v25 + 1) constant:?];
+    leadingAnchor = [*(location + 1) leadingAnchor];
+    leadingAnchor2 = [location leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:*(&v25 + 1) constant:?];
     v27[0] = v19;
-    v7 = [*(location + 1) trailingAnchor];
-    v8 = [location trailingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:*(&v26 + 1)];
+    trailingAnchor = [*(location + 1) trailingAnchor];
+    trailingAnchor2 = [location trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:*(&v26 + 1)];
     v27[1] = v9;
-    v10 = [*(location + 1) topAnchor];
-    v11 = [location topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:*&v25];
+    topAnchor = [*(location + 1) topAnchor];
+    topAnchor2 = [location topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:*&v25];
     v27[2] = v12;
-    v13 = [*(location + 1) bottomAnchor];
-    v14 = [location bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:-*&v26];
+    bottomAnchor = [*(location + 1) bottomAnchor];
+    bottomAnchor2 = [location bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-*&v26];
     v27[3] = v15;
     v16 = [NSArray arrayWithObjects:v27 count:4];
     [NSLayoutConstraint activateConstraints:v16];
@@ -59,8 +59,8 @@
 - (CGSize)intrinsicContentSize
 {
   [(BuddyTableSectionHeaderView *)self bounds];
-  v2 = [(BuddyTableSectionHeaderView *)self sectionLabel];
-  [(UILabel *)v2 intrinsicContentSize];
+  sectionLabel = [(BuddyTableSectionHeaderView *)self sectionLabel];
+  [(UILabel *)sectionLabel intrinsicContentSize];
   [(BuddyTableSectionHeaderView *)self padding];
   [(BuddyTableSectionHeaderView *)self padding];
   sub_10018C244();

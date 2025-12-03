@@ -1,14 +1,14 @@
 @interface _DDWirelessSettingsController
-- (void)wirelessSettingsDidChange:(id)a3;
+- (void)wirelessSettingsDidChange:(id)change;
 @end
 
 @implementation _DDWirelessSettingsController
 
-- (void)wirelessSettingsDidChange:(id)a3
+- (void)wirelessSettingsDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_23810B730(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_23810B730(change);
 }
 
 @end

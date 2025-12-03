@@ -6,18 +6,18 @@
 
 - (uint64_t)_getExtendedDynamicRangeGainFilterIndex
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 layer];
-  v2 = [v1 filters];
+  layer = [self layer];
+  filters = [layer filters];
 
-  if (v2)
+  if (filters)
   {
-    v3 = [v1 filters];
-    v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_10115];
+    filters2 = [layer filters];
+    v4 = [filters2 indexOfObjectPassingTest:&__block_literal_global_10115];
   }
 
   else

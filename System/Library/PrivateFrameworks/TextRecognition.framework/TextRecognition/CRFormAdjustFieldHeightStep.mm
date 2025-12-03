@@ -1,6 +1,6 @@
 @interface CRFormAdjustFieldHeightStep
 - (_TtC15TextRecognition27CRFormAdjustFieldHeightStep)init;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormAdjustFieldHeightStep
@@ -22,17 +22,17 @@
   return [(CRFormAdjustFieldHeightStep *)&v8 init];
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884F70);
   v9 = sub_1B429FDF8();
-  if (a4)
+  if (fields)
   {
     sub_1B429FDF8();
   }
 
-  v10 = a5;
-  v11 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1B4100F14(v9);
 
   v12 = sub_1B429FDE8();

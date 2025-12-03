@@ -1,15 +1,15 @@
 @interface VKKeyboardCameraGuidanceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_reallyShowGuidance;
 @end
 
 @implementation VKKeyboardCameraGuidanceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VKKeyboardCameraGuidanceView" hasInstanceMethod:@"_reallyShowGuidance" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VKKeyboardCameraGuidanceView" hasInstanceVariable:@"_text" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VKKeyboardCameraGuidanceView" hasInstanceMethod:@"_reallyShowGuidance" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VKKeyboardCameraGuidanceView" hasInstanceVariable:@"_text" withType:"NSString"];
 }
 
 - (void)_reallyShowGuidance

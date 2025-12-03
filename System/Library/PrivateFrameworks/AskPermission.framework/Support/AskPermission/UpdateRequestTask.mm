@@ -1,25 +1,25 @@
 @interface UpdateRequestTask
-- (UpdateRequestTask)initWithRequestIdentifier:(id)a3 action:(int64_t)a4;
-- (id)_parseResult:(id)a3;
-- (id)_serverRequestWithUser:(id)a3 error:(id *)a4;
+- (UpdateRequestTask)initWithRequestIdentifier:(id)identifier action:(int64_t)action;
+- (id)_parseResult:(id)result;
+- (id)_serverRequestWithUser:(id)user error:(id *)error;
 - (id)perform;
-- (void)_enqueueMetricsWithKeychainError:(id)a3 usedBiometrics:(BOOL)a4 request:(id)a5 error:(id)a6;
-- (void)_storeBiometricsToken:(id)a3;
+- (void)_enqueueMetricsWithKeychainError:(id)error usedBiometrics:(BOOL)biometrics request:(id)request error:(id)a6;
+- (void)_storeBiometricsToken:(id)token;
 @end
 
 @implementation UpdateRequestTask
 
-- (UpdateRequestTask)initWithRequestIdentifier:(id)a3 action:(int64_t)a4
+- (UpdateRequestTask)initWithRequestIdentifier:(id)identifier action:(int64_t)action
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = UpdateRequestTask;
   v8 = [(UpdateRequestTask *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestIdentifier, a3);
-    v9->_action = a4;
+    objc_storeStrong(&v8->_requestIdentifier, identifier);
+    v9->_action = action;
   }
 
   return v9;
@@ -37,18 +37,18 @@
   return v2;
 }
 
-- (void)_enqueueMetricsWithKeychainError:(id)a3 usedBiometrics:(BOOL)a4 request:(id)a5 error:(id)a6
+- (void)_enqueueMetricsWithKeychainError:(id)error usedBiometrics:(BOOL)biometrics request:(id)request error:(id)a6
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
+  biometricsCopy = biometrics;
+  errorCopy = error;
+  requestCopy = request;
   v53 = a6;
   v11 = +[AMSBag sharedBag];
   v12 = [AMSMetrics internalInstanceUsingBag:v11];
 
-  v51 = v9;
+  v51 = errorCopy;
   v52 = v12;
-  if (!v8 && (!v9 || [v9 code] == 6))
+  if (!biometricsCopy && (!errorCopy || [errorCopy code] == 6))
   {
     v13 = 0;
 LABEL_17:
@@ -127,9 +127,9 @@ LABEL_17:
   }
 
   v16 = v14;
-  [v14 setProperty:v15 forBodyKey:{@"dialogId", v9}];
+  [v14 setProperty:v15 forBodyKey:{@"dialogId", errorCopy}];
   v17 = objc_alloc_init(NSMutableArray);
-  if (v9)
+  if (errorCopy)
   {
     v63[0] = @"result";
     v63[1] = @"actionType";
@@ -138,12 +138,12 @@ LABEL_17:
     v64[2] = @"Biometric";
     v63[2] = @"targetId";
     v63[3] = @"reason";
-    v18 = [v9 ams_message];
-    v19 = v18;
+    ams_message = [errorCopy ams_message];
+    v19 = ams_message;
     v20 = @"(null)";
-    if (v18)
+    if (ams_message)
     {
-      v20 = v18;
+      v20 = ams_message;
     }
 
     v64[3] = v20;
@@ -151,7 +151,7 @@ LABEL_17:
     [v17 addObject:v21];
   }
 
-  if (v8)
+  if (biometricsCopy)
   {
     [v17 addObject:&off_1000580C8];
   }
@@ -163,17 +163,17 @@ LABEL_17:
   }
 
   v13 = v16;
-  if (!v8)
+  if (!biometricsCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_28:
-  if (v10)
+  if (requestCopy)
   {
     v37 = +[ApproverStore sharedStore];
-    v38 = [v10 uniqueIdentifier];
-    v39 = [v37 approvalRequestWithRequestIdentifier:v38];
+    uniqueIdentifier = [requestCopy uniqueIdentifier];
+    v39 = [v37 approvalRequestWithRequestIdentifier:uniqueIdentifier];
 
     v40 = v51;
     if (v39)
@@ -202,8 +202,8 @@ LABEL_47:
         v47 = +[APLogConfig sharedConfig];
       }
 
-      v48 = [v47 OSLogObject];
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v47 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
 LABEL_46:
 
@@ -226,8 +226,8 @@ LABEL_46:
         v47 = +[APLogConfig sharedConfig];
       }
 
-      v48 = [v47 OSLogObject];
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v47 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_46;
       }
@@ -238,7 +238,7 @@ LABEL_46:
       v50 = "%{public}@: Error - Unable to load stored Request object. Enqueueing standard metrics.";
     }
 
-    _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, v50, buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, v50, buf, 0xCu);
 
     goto LABEL_46;
   }
@@ -250,13 +250,13 @@ LABEL_46:
     v44 = +[APLogConfig sharedConfig];
   }
 
-  v45 = [v44 OSLogObject];
-  if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v44 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
     v59 = objc_opt_class();
     v46 = v59;
-    _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "%{public}@: Error - No request object supplied. Enqueueing standard metrics.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Error - No request object supplied. Enqueueing standard metrics.", buf, 0xCu);
   }
 
   v43 = v52;
@@ -264,19 +264,19 @@ LABEL_46:
 LABEL_48:
 }
 
-- (id)_serverRequestWithUser:(id)a3 error:(id *)a4
+- (id)_serverRequestWithUser:(id)user error:(id *)error
 {
-  v6 = a3;
+  userCopy = user;
   v7 = +[AMSBag sharedBag];
-  v8 = [v7 updateRequestURL];
+  updateRequestURL = [v7 updateRequestURL];
 
   v38[0] = @"requestId";
-  v9 = [(UpdateRequestTask *)self requestIdentifier];
+  requestIdentifier = [(UpdateRequestTask *)self requestIdentifier];
   v38[1] = @"approvalStatus";
-  v39[0] = v9;
-  v10 = [(UpdateRequestTask *)self action];
+  v39[0] = requestIdentifier;
+  action = [(UpdateRequestTask *)self action];
   v11 = &off_100058058;
-  if (!v10)
+  if (!action)
   {
     v11 = &off_100058040;
   }
@@ -285,28 +285,28 @@ LABEL_48:
   v12 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
 
   v13 = objc_alloc_init(URLRequestEncoder);
-  v14 = [(URLRequestEncoder *)v13 requestWithMethod:4 bagURL:v8 parameters:v12];
+  v14 = [(URLRequestEncoder *)v13 requestWithMethod:4 bagURL:updateRequestURL parameters:v12];
   v35 = 0;
   v15 = [v14 resultWithTimeout:&v35 error:60.0];
   v16 = v35;
   if (v15)
   {
-    v33 = v8;
+    v33 = updateRequestURL;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v17 = v15;
-      v18 = [v6 biometricsToken];
-      [v17 ap_setNullableValue:v18 forHTTPHeaderField:@"X-IC-TouchToken"];
+      biometricsToken = [userCopy biometricsToken];
+      [v17 ap_setNullableValue:biometricsToken forHTTPHeaderField:@"X-IC-TouchToken"];
 
-      v19 = [v6 DSID];
-      [v17 ap_setNullableValue:v19 forHTTPHeaderField:@"X-IC-DSID"];
+      dSID = [userCopy DSID];
+      [v17 ap_setNullableValue:dSID forHTTPHeaderField:@"X-IC-DSID"];
 
-      v20 = [v6 password];
-      [v17 ap_setNullableValue:v20 forHTTPHeaderField:@"X-IC-Password"];
+      password = [userCopy password];
+      [v17 ap_setNullableValue:password forHTTPHeaderField:@"X-IC-Password"];
 
-      v21 = [v6 username];
-      [v17 ap_setNullableValue:v21 forHTTPHeaderField:@"X-IC-Username"];
+      username = [userCopy username];
+      [v17 ap_setNullableValue:username forHTTPHeaderField:@"X-IC-Username"];
 
       v22 = +[APLogConfig sharedDaemonConfig];
       if (!v22)
@@ -314,14 +314,14 @@ LABEL_48:
         v22 = +[APLogConfig sharedConfig];
       }
 
-      v23 = [v22 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v24 = objc_opt_class();
         *buf = 138543362;
         v37 = v24;
         v25 = v24;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
       }
 
       v26 = +[URLSession sharedSession];
@@ -331,7 +331,7 @@ LABEL_48:
       v28 = [v27 resultWithTimeout:&v34 error:60.0];
       v29 = v34;
 
-      a4 = v32;
+      error = v32;
     }
 
     else
@@ -342,8 +342,8 @@ LABEL_48:
     }
 
     v16 = v29;
-    v8 = v33;
-    if (a4)
+    updateRequestURL = v33;
+    if (error)
     {
       goto LABEL_14;
     }
@@ -352,24 +352,24 @@ LABEL_48:
   else
   {
     v28 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_14:
       v30 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   return v28;
 }
 
-- (id)_parseResult:(id)a3
+- (id)_parseResult:(id)result
 {
-  v4 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -386,23 +386,23 @@ LABEL_14:
   v6 = [v5 objectForKeyedSubscript:@"status"];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v8 = +[APLogConfig sharedDaemonConfig];
     v9 = v8;
-    if (!v7)
+    if (!integerValue)
     {
       if (!v8)
       {
         v9 = +[APLogConfig sharedConfig];
       }
 
-      v20 = [v9 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v29 = objc_opt_class();
         v21 = v29;
-        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Success status code", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Success status code", buf, 0xCu);
       }
 
       v22 = [v5 objectForKeyedSubscript:@"touchToken"];
@@ -427,15 +427,15 @@ LABEL_14:
       v9 = +[APLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v29 = objc_opt_class();
       v30 = 2050;
-      v31 = v7;
+      v31 = integerValue;
       v11 = v29;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@: Error status code. Status code: %{public}ld", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Error status code. Status code: %{public}ld", buf, 0x16u);
     }
 
     v12 = [v5 objectForKeyedSubscript:@"errorNumber"];
@@ -447,8 +447,8 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v13 = [v12 integerValue];
-    if (v13 == 3711)
+    integerValue2 = [v12 integerValue];
+    if (integerValue2 == 3711)
     {
       v14 = +[APLogConfig sharedDaemonConfig];
       if (!v14)
@@ -456,8 +456,8 @@ LABEL_41:
         v14 = +[APLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_39;
       }
@@ -469,7 +469,7 @@ LABEL_41:
       v18 = "%{public}@: Previously declined error code";
     }
 
-    else if (v13 == 3710)
+    else if (integerValue2 == 3710)
     {
       v14 = +[APLogConfig sharedDaemonConfig];
       if (!v14)
@@ -477,8 +477,8 @@ LABEL_41:
         v14 = +[APLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_39;
       }
@@ -492,9 +492,9 @@ LABEL_41:
 
     else
     {
-      if (v13 != 3709)
+      if (integerValue2 != 3709)
       {
-        v26 = [NSString stringWithFormat:@"Server response contains error. Error code: %ld", v13];
+        v26 = [NSString stringWithFormat:@"Server response contains error. Error code: %ld", integerValue2];
         v19 = APError();
 
         goto LABEL_41;
@@ -506,8 +506,8 @@ LABEL_41:
         v14 = +[APLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_39;
       }
@@ -519,7 +519,7 @@ LABEL_41:
       v18 = "%{public}@: Request expired error code";
     }
 
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
 
 LABEL_39:
     v19 = 0;
@@ -534,28 +534,28 @@ LABEL_43:
   return v19;
 }
 
-- (void)_storeBiometricsToken:(id)a3
+- (void)_storeBiometricsToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = +[APLogConfig sharedDaemonConfig];
   v5 = v4;
-  if (v3)
+  if (tokenCopy)
   {
     if (!v4)
     {
       v5 = +[APLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
       v11 = objc_opt_class();
       v7 = v11;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Biometrics token available", &v10, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Biometrics token available", &v10, 0xCu);
     }
 
-    [BiometricsHandler storeToken:v3];
+    [BiometricsHandler storeToken:tokenCopy];
   }
 
   else
@@ -565,13 +565,13 @@ LABEL_43:
       v5 = +[APLogConfig sharedConfig];
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
       v11 = objc_opt_class();
       v9 = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Biometrics token not available", &v10, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Biometrics token not available", &v10, 0xCu);
     }
   }
 }

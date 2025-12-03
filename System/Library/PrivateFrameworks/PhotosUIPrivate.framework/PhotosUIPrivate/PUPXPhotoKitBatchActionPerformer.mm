@@ -1,13 +1,13 @@
 @interface PUPXPhotoKitBatchActionPerformer
-+ (BOOL)canPerformBatchOnAsset:(id)a3;
-+ (id)newActivityProgressAlertForAction:(id)a3 assets:(id)a4;
-+ (id)newEditActionForPerformer:(id)a3 class:(Class)a4 assets:(id)a5 prepareAction:(id)a6;
-+ (id)newProgressToastForAction:(id)a3 assets:(id)a4;
++ (BOOL)canPerformBatchOnAsset:(id)asset;
++ (id)newActivityProgressAlertForAction:(id)action assets:(id)assets;
++ (id)newEditActionForPerformer:(id)performer class:(Class)class assets:(id)assets prepareAction:(id)action;
++ (id)newProgressToastForAction:(id)action assets:(id)assets;
 @end
 
 @implementation PUPXPhotoKitBatchActionPerformer
 
-+ (id)newActivityProgressAlertForAction:(id)a3 assets:(id)a4
++ (id)newActivityProgressAlertForAction:(id)action assets:(id)assets
 {
   v4 = objc_alloc_init(MEMORY[0x1E69C3308]);
   v5 = objc_alloc_init(MEMORY[0x1E696AE38]);
@@ -19,11 +19,11 @@
   return v4;
 }
 
-+ (id)newProgressToastForAction:(id)a3 assets:(id)a4
++ (id)newProgressToastForAction:(id)action assets:(id)assets
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 delegate];
+  actionCopy = action;
+  assetsCopy = assets;
+  delegate = [actionCopy delegate];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
@@ -34,8 +34,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v5 delegate];
-  v10 = [v9 actionPerformerHostViewControllerForPresentingToast:v5];
+  delegate2 = [actionCopy delegate];
+  v10 = [delegate2 actionPerformerHostViewControllerForPresentingToast:actionCopy];
 
   if (!v10)
   {
@@ -43,21 +43,21 @@ LABEL_8:
   }
 
   v11 = +[PUPhotoEditProtoSettings sharedInstance];
-  v12 = [v11 useEditToastProgress];
+  useEditToastProgress = [v11 useEditToastProgress];
 
-  if (!v12)
+  if (!useEditToastProgress)
   {
     goto LABEL_8;
   }
 
-  v13 = [v5 delegate];
+  delegate3 = [actionCopy delegate];
   v14 = objc_opt_respondsToSelector();
 
   v15 = 0.0;
   if (v14)
   {
-    v16 = [v5 delegate];
-    [v16 actionPerformerBottomPaddingForPresentingToast:v5];
+    delegate4 = [actionCopy delegate];
+    [delegate4 actionPerformerBottomPaddingForPresentingToast:actionCopy];
     v15 = v17;
   }
 
@@ -66,15 +66,15 @@ LABEL_8:
   [v18 setCompletedUnitCount:0];
   v19 = objc_alloc(MEMORY[0x1E69C32E8]);
   v20 = v10;
-  v21 = [v20 px_navigationDestination];
-  v22 = [v19 initWithTargetDestination:v21 progress:v18];
+  px_navigationDestination = [v20 px_navigationDestination];
+  v22 = [v19 initWithTargetDestination:px_navigationDestination progress:v18];
 
   [v22 setBottomSpacing:v15];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __69__PUPXPhotoKitBatchActionPerformer_newProgressToastForAction_assets___block_invoke;
   v24[3] = &unk_1E7B7A800;
-  v25 = v6;
+  v25 = assetsCopy;
   v10 = v20;
   v26 = v10;
   [v22 setErrorButtonAction:v24];
@@ -93,49 +93,49 @@ void __69__PUPXPhotoKitBatchActionPerformer_newProgressToastForAction_assets___b
   [v5 presentViewController:v4 animated:1 completion:0];
 }
 
-+ (id)newEditActionForPerformer:(id)a3 class:(Class)a4 assets:(id)a5 prepareAction:(id)a6
++ (id)newEditActionForPerformer:(id)performer class:(Class)class assets:(id)assets prepareAction:(id)action
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  performerCopy = performer;
+  assetsCopy = assets;
+  actionCopy = action;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    v12 = [PUPXPhotoKitBatchActionPerformer newProgressToastForAction:v9 assets:v10];
+    v12 = [PUPXPhotoKitBatchActionPerformer newProgressToastForAction:performerCopy assets:assetsCopy];
     if (v12)
     {
-      v13 = 0;
+      defaultManager = 0;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E69C4558] defaultManager];
+      defaultManager = [MEMORY[0x1E69C4558] defaultManager];
     }
 
-    v30 = v9;
-    v15 = [PUPXPhotoKitBatchActionPerformer newActivityProgressAlertForAction:v9 assets:v10];
-    v16 = [MEMORY[0x1E69C4220] sharedPresetManager];
+    v30 = performerCopy;
+    v15 = [PUPXPhotoKitBatchActionPerformer newActivityProgressAlertForAction:performerCopy assets:assetsCopy];
+    mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__PUPXPhotoKitBatchActionPerformer_newEditActionForPerformer_class_assets_prepareAction___block_invoke;
     aBlock[3] = &unk_1E7B80DD0;
-    v28 = v16;
+    v28 = mEMORY[0x1E69C4220];
     v36 = v28;
     v17 = _Block_copy(aBlock);
     [v12 setCloseButtonAction:v17];
     [v15 setCancellationHandler:v17];
-    v18 = [a4 alloc];
-    v19 = [MEMORY[0x1E69C4220] sharedPresetManager];
-    v20 = [v15 progress];
-    v21 = [v12 progress];
-    v14 = [v18 initWithPresetManager:v19 syncProgress:v20 asyncProgress:v21 asyncLoadingStatusManager:v13 forAssets:v10];
+    v18 = [class alloc];
+    mEMORY[0x1E69C4220]2 = [MEMORY[0x1E69C4220] sharedPresetManager];
+    progress = [v15 progress];
+    progress2 = [v12 progress];
+    v14 = [v18 initWithPresetManager:mEMORY[0x1E69C4220]2 syncProgress:progress asyncProgress:progress2 asyncLoadingStatusManager:defaultManager forAssets:assetsCopy];
 
-    if (v11)
+    if (actionCopy)
     {
-      v11[2](v11, v14);
+      actionCopy[2](actionCopy, v14);
     }
 
-    v22 = [v14 localizedProgressToastSuccessTitle];
+    localizedProgressToastSuccessTitle = [v14 localizedProgressToastSuccessTitle];
     v23 = +[PUPhotoEditProtoSettings sharedInstance];
     [v14 setAllowSynchronousRendering:{objc_msgSend(v23, "allowSynchronousBatchRendering")}];
 
@@ -145,23 +145,23 @@ void __69__PUPXPhotoKitBatchActionPerformer_newProgressToastForAction_assets___b
     v31[3] = &unk_1E7B7CC58;
     v32 = v15;
     v33 = v12;
-    v34 = v22;
-    v24 = v22;
+    v34 = localizedProgressToastSuccessTitle;
+    v24 = localizedProgressToastSuccessTitle;
     v25 = v12;
     v26 = v15;
     [v14 setCompletionHandler:v31];
 
-    v9 = v30;
+    performerCopy = v30;
   }
 
   else
   {
-    v13 = PLUIGetLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    defaultManager = PLUIGetLog();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v38 = a4;
-      _os_log_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_ERROR, "Invalid class parameter for [PUPXPhotoKitPasteAdjustmentsActionPerformer newEditActionForPerformer:class:assets:] :%@", buf, 0xCu);
+      classCopy = class;
+      _os_log_impl(&dword_1B36F3000, defaultManager, OS_LOG_TYPE_ERROR, "Invalid class parameter for [PUPXPhotoKitPasteAdjustmentsActionPerformer newEditActionForPerformer:class:assets:] :%@", buf, 0xCu);
     }
 
     v14 = 0;
@@ -183,18 +183,18 @@ uint64_t __89__PUPXPhotoKitBatchActionPerformer_newEditActionForPerformer_class_
   return [v5 finishProgressMarkingAsComplete:1 updatedLocalizedTitle:v6 updatedLocalizedDescription:0];
 }
 
-+ (BOOL)canPerformBatchOnAsset:(id)a3
++ (BOOL)canPerformBatchOnAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69C4220] sharedPresetManager];
-  if (([v4 isBusyWithBatchAction] & 1) != 0 || !objc_msgSend(v3, "canPerformEditOperation:", 2))
+  assetCopy = asset;
+  mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+  if (([mEMORY[0x1E69C4220] isBusyWithBatchAction] & 1) != 0 || !objc_msgSend(assetCopy, "canPerformEditOperation:", 2))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:v3];
+    v5 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:assetCopy];
   }
 
   return v5;

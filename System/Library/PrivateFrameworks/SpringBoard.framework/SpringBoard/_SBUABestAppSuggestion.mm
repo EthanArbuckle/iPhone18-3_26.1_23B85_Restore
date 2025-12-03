@@ -1,8 +1,8 @@
 @interface _SBUABestAppSuggestion
 - (BOOL)isCallContinuitySuggestion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNotificationSuggestion;
-- (id)initWithAppSuggestion:(id *)a1;
+- (id)initWithAppSuggestion:(id *)suggestion;
 - (uint64_t)appSuggestion;
 - (unint64_t)hash;
 @end
@@ -11,11 +11,11 @@
 
 - (BOOL)isNotificationSuggestion
 {
-  v2 = [(UABestAppSuggestion *)self->_appSuggestion options];
-  v3 = [v2 objectForKey:*MEMORY[0x277D77BB8]];
-  v4 = [v3 BOOLValue];
+  options = [(UABestAppSuggestion *)self->_appSuggestion options];
+  v3 = [options objectForKey:*MEMORY[0x277D77BB8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isCallContinuitySuggestion
@@ -25,16 +25,16 @@
     return 1;
   }
 
-  v4 = [(UABestAppSuggestion *)self->_appSuggestion activityType];
+  activityType = [(UABestAppSuggestion *)self->_appSuggestion activityType];
   v5 = TUIsCallHandoffActivityType();
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -44,9 +44,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_SBUABestAppSuggestion *)v4 uniqueIdentifier];
-      v6 = [(_SBUABestAppSuggestion *)self uniqueIdentifier];
-      v7 = [v5 isEqual:v6];
+      uniqueIdentifier = [(_SBUABestAppSuggestion *)equalCopy uniqueIdentifier];
+      uniqueIdentifier2 = [(_SBUABestAppSuggestion *)self uniqueIdentifier];
+      v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
     }
 
     else
@@ -60,8 +60,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_SBUABestAppSuggestion *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(_SBUABestAppSuggestion *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
@@ -76,22 +76,22 @@
   return result;
 }
 
-- (id)initWithAppSuggestion:(id *)a1
+- (id)initWithAppSuggestion:(id *)suggestion
 {
   v4 = a2;
-  if (a1)
+  if (suggestion)
   {
-    v7.receiver = a1;
+    v7.receiver = suggestion;
     v7.super_class = _SBUABestAppSuggestion;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    suggestion = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return suggestion;
 }
 
 @end

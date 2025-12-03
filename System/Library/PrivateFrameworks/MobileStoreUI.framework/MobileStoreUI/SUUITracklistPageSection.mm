@@ -1,44 +1,44 @@
 @interface SUUITracklistPageSection
-- (BOOL)requestLayoutWithReloadReason:(int64_t)a3;
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5;
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUITracklistPageSection)initWithPageComponent:(id)a3;
+- (BOOL)requestLayoutWithReloadReason:(int64_t)reason;
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUITracklistPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
-- (double)_widthForButtonElements:(id)a3;
+- (double)_widthForButtonElements:(id)elements;
 - (id)_columnData;
-- (id)_representativeStringForViewElement:(id)a3;
-- (id)_viewElementForIndex:(int64_t)a3;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
+- (id)_representativeStringForViewElement:(id)element;
+- (id)_viewElementForIndex:(int64_t)index;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
 - (id)firstAppearanceIndexPath;
 - (id)relevantEntityProviders;
-- (int64_t)applyUpdateType:(int64_t)a3;
+- (int64_t)applyUpdateType:(int64_t)type;
 - (int64_t)numberOfCells;
-- (void)_enumerateVisibleViewElementsUsingBlock:(id)a3;
+- (void)_enumerateVisibleViewElementsUsingBlock:(id)block;
 - (void)_reloadEntityProvider;
-- (void)_requestCellLayoutWithColumnData:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillScrollToOffset:(CGPoint)a3 visibleRange:(SUUIIndexPathRange *)a4;
+- (void)_requestCellLayoutWithColumnData:(id)data;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillScrollToOffset:(CGPoint)offset visibleRange:(SUUIIndexPathRange *)range;
 - (void)dealloc;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUITracklistPageSection
 
-- (SUUITracklistPageSection)initWithPageComponent:(id)a3
+- (SUUITracklistPageSection)initWithPageComponent:(id)component
 {
   v6.receiver = self;
   v6.super_class = SUUITracklistPageSection;
-  v3 = [(SUUIStorePageSection *)&v6 initWithPageComponent:a3];
+  v3 = [(SUUIStorePageSection *)&v6 initWithPageComponent:component];
   v4 = v3;
   if (v3)
   {
@@ -56,24 +56,24 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
-  [v6 addItemViewElement:v9];
+  sessionCopy = session;
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v10 = [v7 item];
-  v11 = [(SUUITracklistPageSection *)self _viewElementForIndex:v10];
-  [v6 addItemViewElement:v11];
+  item = [pathCopy item];
+  v11 = [(SUUITracklistPageSection *)self _viewElementForIndex:item];
+  [sessionCopy addItemViewElement:v11];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = SUUITracklistPageSection;
-  v4 = [(SUUIStorePageSection *)&v6 applyUpdateType:a3];
+  v4 = [(SUUIStorePageSection *)&v6 applyUpdateType:type];
   if (v4 != 2)
   {
     [(SUUITracklistPageSection *)self _reloadEntityProvider];
@@ -82,25 +82,25 @@
   return v4;
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v4 item]);
-  v6 = [v5 style];
+  pathCopy = path;
+  v5 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
+  style = [v5 style];
 
-  v7 = [v6 ikBackgroundColor];
-  v8 = [v7 color];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v8)
+  if (color)
   {
-    v9 = v8;
+    v9 = color;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SUUITracklistPageSection;
-    v9 = [(SUUIStorePageSection *)&v12 backgroundColorForIndexPath:v4];
+    v9 = [(SUUIStorePageSection *)&v12 backgroundColorForIndexPath:pathCopy];
   }
 
   v10 = v9;
@@ -108,49 +108,49 @@
   return v10;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v4 item]);
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  v6 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
   v7 = v6;
   if (v6)
   {
     if ([v6 elementType] == 146)
     {
-      v8 = [v5 collectionView];
+      collectionView = [context collectionView];
       v9 = &SUUITracklistLockupCollectionViewCellReuseIdentifier;
     }
 
     else
     {
-      v15 = [(SUUIStorePageSection *)self pageComponent];
-      v16 = [v15 viewElement];
-      v17 = [v16 header];
+      pageComponent = [(SUUIStorePageSection *)self pageComponent];
+      viewElement = [pageComponent viewElement];
+      header = [viewElement header];
 
-      v8 = [v5 collectionView];
+      collectionView = [context collectionView];
       v9 = &SUUITracklistSectionHeaderReuseIdentifier;
-      if (v7 == v17)
+      if (v7 == header)
       {
         v9 = &SUUITracklistHeaderReuseIdentifier;
       }
     }
 
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:*v9 forIndexPath:v4];
+    v11 = [collectionView dequeueReusableCellWithReuseIdentifier:*v9 forIndexPath:pathCopy];
 
-    [v5 activePageWidth];
+    [context activePageWidth];
     [v11 reloadWithViewElement:v7 width:self->_cellLayoutContext context:v18 + -30.0];
   }
 
   else
   {
-    v10 = [v5 collectionView];
-    v11 = [v10 dequeueReusableCellWithReuseIdentifier:0x286AF0BA0 forIndexPath:v4];
+    collectionView2 = [context collectionView];
+    v11 = [collectionView2 dequeueReusableCellWithReuseIdentifier:0x286AF0BA0 forIndexPath:pathCopy];
 
-    v12 = [(SUUIStorePageSection *)self pageComponent];
-    v13 = [v12 viewElement];
-    v14 = [v13 style];
-    [v11 setColoringWithStyle:v14];
+    pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+    viewElement2 = [pageComponent2 viewElement];
+    style = [viewElement2 style];
+    [v11 setColoringWithStyle:style];
 
     [v11 setLeftEdgeInset:0.0];
     [v11 setRightEdgeInset:0.0];
@@ -160,15 +160,15 @@
   return v11;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  [v5 activePageWidth];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v7 = v6;
 
-  v8 = [v4 item];
-  v9 = [(SUUITracklistPageSection *)self _viewElementForIndex:v8];
+  item = [pathCopy item];
+  v9 = [(SUUITracklistPageSection *)self _viewElementForIndex:item];
   v10 = v9;
   if (v9)
   {
@@ -180,12 +180,12 @@
 
     else
     {
-      v14 = [(SUUIStorePageSection *)self pageComponent];
-      v15 = [v14 viewElement];
-      v16 = [v15 header];
+      pageComponent = [(SUUIStorePageSection *)self pageComponent];
+      viewElement = [pageComponent viewElement];
+      header = [viewElement header];
 
       cellLayoutContext = self->_cellLayoutContext;
-      if (v10 == v16)
+      if (v10 == header)
       {
         v11 = SUUITracklistHeaderCollectionViewCell;
       }
@@ -212,23 +212,23 @@
   return result;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v4 item]);
+  pathCopy = path;
+  v5 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
   if ([v5 isEnabled])
   {
-    v6 = [(SUUIStorePageSection *)self context];
-    v7 = [v6 collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v4];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
+    v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __67__SUUITracklistPageSection_collectionViewDidSelectItemAtIndexPath___block_invoke;
     v15 = &unk_2798F8F78;
-    v16 = self;
+    selfCopy = self;
     v17 = v8;
-    v18 = v4;
+    v18 = pathCopy;
     v19 = v5;
     v9 = v8;
     [v19 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:&v12];
@@ -240,8 +240,8 @@
   }
 
   v10 = [(SUUIStorePageSection *)self context:v12];
-  v11 = [v10 collectionView];
-  [v11 deselectItemAtIndexPath:v4 animated:0];
+  collectionView2 = [v10 collectionView];
+  [collectionView2 deselectItemAtIndexPath:pathCopy animated:0];
 }
 
 void __67__SUUITracklistPageSection_collectionViewDidSelectItemAtIndexPath___block_invoke(uint64_t a1, char a2, char a3)
@@ -275,93 +275,93 @@ void __67__SUUITracklistPageSection_collectionViewDidSelectItemAtIndexPath___blo
   }
 }
 
-- (void)collectionViewWillScrollToOffset:(CGPoint)a3 visibleRange:(SUUIIndexPathRange *)a4
+- (void)collectionViewWillScrollToOffset:(CGPoint)offset visibleRange:(SUUIIndexPathRange *)range
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(SUUITracklistPageSection *)self numberOfCells];
-  if (self->_lastNeedsMoreCount < v8)
+  y = offset.y;
+  x = offset.x;
+  numberOfCells = [(SUUITracklistPageSection *)self numberOfCells];
+  if (self->_lastNeedsMoreCount < numberOfCells)
   {
-    v9 = v8;
-    v10 = *&a4->var2;
-    v17 = *&a4->var0;
+    v9 = numberOfCells;
+    v10 = *&range->var2;
+    v17 = *&range->var0;
     v18 = v10;
     v11 = [(SUUIStorePageSection *)self itemRangeForIndexPathRange:&v17];
     if (v12 + v11 + 30 >= v9)
     {
       self->_lastNeedsMoreCount = v9;
-      v13 = [(SUUIStorePageSection *)self pageComponent];
-      v14 = [v13 viewElement];
-      [v14 dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+      pageComponent = [(SUUIStorePageSection *)self pageComponent];
+      viewElement = [pageComponent viewElement];
+      [viewElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
     }
   }
 
   v16.receiver = self;
   v16.super_class = SUUITracklistPageSection;
-  v15 = *&a4->var2;
-  v17 = *&a4->var0;
+  v15 = *&range->var2;
+  v17 = *&range->var0;
   v18 = v15;
   [(SUUIStorePageSection *)&v16 collectionViewWillScrollToOffset:&v17 visibleRange:x, y];
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 beginActiveImpressionForViewElement:v8];
-  v9 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v4 item]);
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
+  v9 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
 
-  [v6 beginActiveImpressionForViewElement:v9];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:v9];
   v10.receiver = self;
   v10.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v10 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v10 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 endActiveImpressionForViewElement:v8];
-  v9 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v4 item]);
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
+  v9 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
 
-  [v6 endActiveImpressionForViewElement:v9];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:v9];
   v10.receiver = self;
   v10.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v10 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v10 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
   columnData = self->_columnData;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  providerCopy = provider;
   [(SUUITracklistPageSection *)self _requestCellLayoutWithColumnData:columnData];
   v9.receiver = self;
   v9.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v9 entityProvider:v8 didInvalidateWithContext:v7];
+  [(SUUIStorePageSection *)&v9 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
 - (id)firstAppearanceIndexPath
 {
-  v3 = [(SUUITracklistPageSection *)self numberOfCells];
-  if (v3 < 1)
+  numberOfCells = [(SUUITracklistPageSection *)self numberOfCells];
+  if (numberOfCells < 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = numberOfCells;
     v5 = 1;
     do
     {
@@ -388,12 +388,12 @@ void __67__SUUITracklistPageSection_collectionViewDidSelectItemAtIndexPath___blo
   return v7;
 }
 
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUUITracklistPageSection *)self numberOfCells];
-  if (v7 < 1)
+  elementCopy = element;
+  blockCopy = block;
+  numberOfCells = [(SUUITracklistPageSection *)self numberOfCells];
+  if (numberOfCells < 1)
   {
 LABEL_5:
     v12 = 0;
@@ -401,12 +401,12 @@ LABEL_5:
 
   else
   {
-    v8 = v7;
+    v8 = numberOfCells;
     v9 = 0;
     while (1)
     {
       v10 = [(SUUITracklistPageSection *)self _viewElementForIndex:v9];
-      v11 = [v20 isDescendentFromViewElement:v10];
+      v11 = [elementCopy isDescendentFromViewElement:v10];
 
       if (v11)
       {
@@ -423,13 +423,13 @@ LABEL_5:
     if (v12)
     {
       v13 = objc_alloc_init(SUUIModalSourceViewProvider);
-      [(SUUIModalSourceViewProvider *)v13 setUserInfo:v20];
-      v14 = [(SUUIStorePageSection *)self context];
-      v15 = [v14 collectionView];
-      v16 = [v15 cellForItemAtIndexPath:v12];
+      [(SUUIModalSourceViewProvider *)v13 setUserInfo:elementCopy];
+      context = [(SUUIStorePageSection *)self context];
+      collectionView = [context collectionView];
+      v16 = [collectionView cellForItemAtIndexPath:v12];
 
-      v17 = [v20 itmlID];
-      v18 = [v16 viewForElementIdentifier:v17];
+      itmlID = [elementCopy itmlID];
+      v18 = [v16 viewForElementIdentifier:itmlID];
 
       if (v18)
       {
@@ -449,33 +449,33 @@ LABEL_5:
 
   v13 = 0;
 LABEL_7:
-  v6[2](v6, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
 - (int64_t)numberOfCells
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(SUUIStorePageSection *)self pageComponent];
-  v3 = [v2 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v4 = [v3 header];
+  header = [viewElement header];
 
-  v5 = v4 != 0;
-  v6 = [v3 tracks];
-  v7 = v6;
-  if (v6)
+  v5 = header != 0;
+  tracks = [viewElement tracks];
+  v7 = tracks;
+  if (tracks)
   {
-    v5 += [v6 count];
+    v5 += [tracks count];
   }
 
   else
   {
-    v8 = [v3 sections];
+    sections = [viewElement sections];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -486,55 +486,55 @@ LABEL_7:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sections);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) flattenedChildren];
-          v5 += [v13 count];
+          flattenedChildren = [*(*(&v15 + 1) + 8 * i) flattenedChildren];
+          v5 += [flattenedChildren count];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
     }
 
-    if ([v8 count] >= 2)
+    if ([sections count] >= 2)
     {
-      v5 = v5 + [v8 count] - 1;
+      v5 = v5 + [sections count] - 1;
     }
   }
 
   return v5;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
-  v5 = [(SUUITracklistPageSection *)self numberOfCells];
-  if (v5 <= 29 && self->_lastNeedsMoreCount < v5)
+  numberOfCells = [(SUUITracklistPageSection *)self numberOfCells];
+  if (numberOfCells <= 29 && self->_lastNeedsMoreCount < numberOfCells)
   {
-    self->_lastNeedsMoreCount = v5;
-    v6 = [(SUUIStorePageSection *)self pageComponent];
-    v7 = [v6 viewElement];
-    [v7 dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+    self->_lastNeedsMoreCount = numberOfCells;
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    [viewElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
   v8.receiver = self;
   v8.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v8 prefetchResourcesWithReason:a3];
+  [(SUUIStorePageSection *)&v8 prefetchResourcesWithReason:reason];
 }
 
 - (id)relevantEntityProviders
 {
   v7.receiver = self;
   v7.super_class = SUUITracklistPageSection;
-  v3 = [(SUUIStorePageSection *)&v7 relevantEntityProviders];
-  v4 = v3;
+  relevantEntityProviders = [(SUUIStorePageSection *)&v7 relevantEntityProviders];
+  v4 = relevantEntityProviders;
   if (self->_entityProvider)
   {
-    if (v3)
+    if (relevantEntityProviders)
     {
-      v5 = [v3 setByAddingObject:?];
+      v5 = [relevantEntityProviders setByAddingObject:?];
 
       v4 = v5;
     }
@@ -548,42 +548,42 @@ LABEL_7:
   return v4;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v11 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v11];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v7)
   {
-    [v5 activePageWidth];
+    [context activePageWidth];
     v9 = v8;
-    v10 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [v11 item]);
+    v10 = -[SUUITracklistPageSection _viewElementForIndex:](self, "_viewElementForIndex:", [pathCopy item]);
     [v7 reloadWithViewElement:v10 width:self->_cellLayoutContext context:v9 + -30.0];
   }
 }
 
-- (BOOL)requestLayoutWithReloadReason:(int64_t)a3
+- (BOOL)requestLayoutWithReloadReason:(int64_t)reason
 {
-  if (a3 != 2)
+  if (reason != 2)
   {
     return 0;
   }
 
-  v4 = [(SUUIStorePageSection *)self pageComponent];
-  v5 = [v4 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __58__SUUITracklistPageSection_requestLayoutWithReloadReason___block_invoke;
   v19 = &unk_2798F8FC8;
-  v20 = self;
+  selfCopy = self;
   v7 = v6;
   v21 = v7;
-  [v5 enumerateTracksUsingBlock:&v16];
-  [(SUUITracklistPageSection *)self _widthForButtonElements:v7, v16, v17, v18, v19, v20];
+  [viewElement enumerateTracksUsingBlock:&v16];
+  [(SUUITracklistPageSection *)self _widthForButtonElements:v7, v16, v17, v18, v19, selfCopy];
   v9 = v8;
   v10 = [(SUUITracklistColumnData *)self->_columnData columnForIdentifier:1];
   [v10 preferredWidth];
@@ -592,8 +592,8 @@ LABEL_7:
   {
     [v10 setPreferredWidth:v9];
     columnData = self->_columnData;
-    v14 = [(SUUIStorePageSection *)self context];
-    [v14 activePageWidth];
+    context = [(SUUIStorePageSection *)self context];
+    [context activePageWidth];
     [(SUUITracklistColumnData *)columnData adjustColumnsToFitWidth:?];
 
     [(SUUITracklistPageSection *)self _requestCellLayoutWithColumnData:self->_columnData];
@@ -633,10 +633,10 @@ void __58__SUUITracklistPageSection_requestLayoutWithReloadReason___block_invoke
   v8 = v7;
   v10 = v9;
   v21 = 0;
-  v11 = [(SUUIStorePageSection *)self pageComponent];
-  v12 = [v11 viewElement];
-  v13 = [v12 style];
-  v14 = SUUIViewElementPaddingForStyle(v13, &v21);
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
+  v14 = SUUIViewElementPaddingForStyle(style, &v21);
   v16 = v15;
 
   if (v21)
@@ -668,54 +668,54 @@ void __58__SUUITracklistPageSection_requestLayoutWithReloadReason___block_invoke
   return result;
 }
 
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SUUIStorePageSection *)self context];
-  v11 = [v10 collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v9];
+  animatedCopy = animated;
+  stateCopy = state;
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  LOBYTE(v5) = [v12 updateWithItemState:v8 context:self->_cellLayoutContext animated:v5];
-  return v5;
+  LOBYTE(animatedCopy) = [v12 updateWithItemState:stateCopy context:self->_cellLayoutContext animated:animatedCopy];
+  return animatedCopy;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF0BA0];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF05E0];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUITracklistLockupCollectionViewCellReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286B002A0];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF0BA0];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF05E0];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUITracklistLockupCollectionViewCellReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286B002A0];
   columnData = self->_columnData;
   self->_columnData = 0;
 
   v7 = self->_cellLayoutContext;
-  v8 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v7];
+  v8 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v7];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v8;
 
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setArtworkRequestDelegate:self];
-  v10 = [(SUUITracklistPageSection *)self _columnData];
-  [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:v10 forKey:0x286AF1940];
-  [v4 activePageWidth];
-  [v10 adjustColumnsToFitWidth:?];
-  [(SUUITracklistPageSection *)self _requestCellLayoutWithColumnData:v10];
+  _columnData = [(SUUITracklistPageSection *)self _columnData];
+  [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:_columnData forKey:0x286AF1940];
+  [contextCopy activePageWidth];
+  [_columnData adjustColumnsToFitWidth:?];
+  [(SUUITracklistPageSection *)self _requestCellLayoutWithColumnData:_columnData];
   v11.receiver = self;
   v11.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v11 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v11 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   columnData = self->_columnData;
-  v8 = a4;
-  v9 = [(SUUIStorePageSection *)self context];
-  [v9 activePageWidth];
+  coordinatorCopy = coordinator;
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   [(SUUITracklistColumnData *)columnData adjustColumnsToFitWidth:?];
 
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setActivePageWidth:width];
@@ -723,27 +723,27 @@ void __58__SUUITracklistPageSection_requestLayoutWithReloadReason___block_invoke
   [(SUUITracklistPageSection *)self _requestCellLayoutWithColumnData:self->_columnData];
   v10.receiver = self;
   v10.super_class = SUUITracklistPageSection;
-  [(SUUIStorePageSection *)&v10 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v10 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
+  requestCopy = request;
+  imageCopy = image;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__SUUITracklistPageSection_artworkRequest_didLoadImage___block_invoke;
   v13[3] = &unk_2798F8FF0;
-  v14 = v9;
-  v15 = v7;
-  v16 = v6;
-  v17 = self;
-  v10 = v6;
-  v11 = v7;
-  v12 = v9;
+  v14 = collectionView;
+  v15 = imageCopy;
+  v16 = requestCopy;
+  selfCopy = self;
+  v10 = requestCopy;
+  v11 = imageCopy;
+  v12 = collectionView;
   [(SUUITracklistPageSection *)self _enumerateVisibleViewElementsUsingBlock:v13];
 }
 
@@ -758,8 +758,8 @@ void __56__SUUITracklistPageSection_artworkRequest_didLoadImage___block_invoke(u
   columnData = self->_columnData;
   if (!columnData)
   {
-    v4 = [(SUUIStorePageSection *)self pageComponent];
-    v5 = [v4 viewElement];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
     v33[0] = 0;
     v33[1] = v33;
@@ -777,10 +777,10 @@ void __56__SUUITracklistPageSection_artworkRequest_didLoadImage___block_invoke(u
     v30 = v8;
     v9 = v7;
     v31 = v9;
-    [v5 enumerateTracksUsingBlock:v29];
+    [viewElement enumerateTracksUsingBlock:v29];
     v10 = SUUIFontLimitedPreferredFontForTextStyle(20, 5);
     v11 = SUUIFontPreferredFontForTextStyle(5);
-    v12 = [(SUUITracklistColumnData *)self->_columnData columns];
+    columns = [(SUUITracklistColumnData *)self->_columnData columns];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __39__SUUITracklistPageSection__columnData__block_invoke_3;
@@ -788,19 +788,19 @@ void __56__SUUITracklistPageSection_artworkRequest_didLoadImage___block_invoke(u
     v13 = v9;
     v28 = v33;
     v23 = v13;
-    v24 = self;
+    selfCopy = self;
     v14 = v8;
     v25 = v14;
     v15 = v11;
     v26 = v15;
     v16 = v10;
     v27 = v16;
-    [v12 enumerateObjectsUsingBlock:&v19];
+    [columns enumerateObjectsUsingBlock:&v19];
 
-    v17 = [v5 header];
-    if (v17)
+    header = [viewElement header];
+    if (header)
     {
-      [(SUUITracklistColumnData *)self->_columnData enumerateColumnsForHeader:v17 usingBlock:&__block_literal_global_19];
+      [(SUUITracklistColumnData *)self->_columnData enumerateColumnsForHeader:header usingBlock:&__block_literal_global_19];
     }
 
     _Block_object_dispose(v33, 8);
@@ -1028,23 +1028,23 @@ void __39__SUUITracklistPageSection__columnData__block_invoke_4(uint64_t a1, voi
   }
 }
 
-- (void)_enumerateVisibleViewElementsUsingBlock:(id)a3
+- (void)_enumerateVisibleViewElementsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  blockCopy = block;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForVisibleItems];
-  v8 = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__SUUITracklistPageSection__enumerateVisibleViewElementsUsingBlock___block_invoke;
   v10[3] = &unk_2798F6730;
-  v11 = v4;
-  v12 = v8;
+  v11 = blockCopy;
+  v12 = sectionIndex;
   v10[4] = self;
-  v9 = v4;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v9 = blockCopy;
+  [indexPathsForVisibleItems enumerateObjectsUsingBlock:v10];
 }
 
 void __68__SUUITracklistPageSection__enumerateVisibleViewElementsUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -1062,94 +1062,94 @@ void __68__SUUITracklistPageSection__enumerateVisibleViewElementsUsingBlock___bl
 
 - (void)_reloadEntityProvider
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v3 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v4 = [v6 explicitEntityProvider];
+  explicitEntityProvider = [viewElement explicitEntityProvider];
   entityProvider = self->_entityProvider;
-  if (entityProvider != v4 && ([(SUUIEntityProviding *)entityProvider isEqual:v4]& 1) == 0)
+  if (entityProvider != explicitEntityProvider && ([(SUUIEntityProviding *)entityProvider isEqual:explicitEntityProvider]& 1) == 0)
   {
-    objc_storeStrong(&self->_entityProvider, v4);
+    objc_storeStrong(&self->_entityProvider, explicitEntityProvider);
   }
 }
 
-- (id)_representativeStringForViewElement:(id)a3
+- (id)_representativeStringForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
-  v6 = 0;
-  if (v5 > 89)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  string = 0;
+  if (elementType > 89)
   {
-    if (v5 == 90)
+    if (elementType == 90)
     {
-      v8 = [v4 flattenedChildren];
-      v10 = [v8 firstObject];
-      v6 = [(SUUITracklistPageSection *)self _representativeStringForViewElement:v10];
+      flattenedChildren = [elementCopy flattenedChildren];
+      firstObject = [flattenedChildren firstObject];
+      string = [(SUUITracklistPageSection *)self _representativeStringForViewElement:firstObject];
 
       goto LABEL_10;
     }
 
-    if (v5 == 138)
+    if (elementType == 138)
     {
-      v8 = v4;
-      v11 = [v8 labelViewStyle];
-      v6 = 0;
-      if (v11 <= 3 && v11 != 2)
+      flattenedChildren = elementCopy;
+      labelViewStyle = [flattenedChildren labelViewStyle];
+      string = 0;
+      if (labelViewStyle <= 3 && labelViewStyle != 2)
       {
-        v12 = [v8 text];
-        v6 = [v12 string];
+        text = [flattenedChildren text];
+        string = [text string];
       }
 
       goto LABEL_10;
     }
 
-    if (v5 != 141)
+    if (elementType != 141)
     {
       goto LABEL_11;
     }
   }
 
-  else if ((v5 - 12) >= 2)
+  else if ((elementType - 12) >= 2)
   {
-    if (v5 != 80)
+    if (elementType != 80)
     {
       goto LABEL_11;
     }
 
-    v7 = [v4 text];
+    text2 = [elementCopy text];
     goto LABEL_9;
   }
 
-  v7 = [v4 buttonText];
+  text2 = [elementCopy buttonText];
 LABEL_9:
-  v8 = v7;
-  v6 = [v7 string];
+  flattenedChildren = text2;
+  string = [text2 string];
 LABEL_10:
 
 LABEL_11:
 
-  return v6;
+  return string;
 }
 
-- (void)_requestCellLayoutWithColumnData:(id)a3
+- (void)_requestCellLayoutWithColumnData:(id)data
 {
-  v23 = a3;
-  v4 = [(SUUIStorePageSection *)self pageComponent];
-  v5 = [v4 viewElement];
+  dataCopy = data;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v6 = [v5 header];
-  v7 = [(SUUIStorePageSection *)self context];
-  [v7 activePageWidth];
+  header = [viewElement header];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v9 = v8;
-  [v23 leftEdgeInset];
+  [dataCopy leftEdgeInset];
   v11 = v10;
-  [v23 rightEdgeInset];
+  [dataCopy rightEdgeInset];
   v13 = v12;
 
-  v14 = [(SUUITracklistPageSection *)self numberOfCells];
-  if (v14 >= 1)
+  numberOfCells = [(SUUITracklistPageSection *)self numberOfCells];
+  if (numberOfCells >= 1)
   {
-    v15 = v14;
+    v15 = numberOfCells;
     v16 = 0;
     v17 = v9 - v11 - v13;
     v18 = vcvtps_s32_f32(v17);
@@ -1157,8 +1157,8 @@ LABEL_11:
     {
       v19 = objc_autoreleasePoolPush();
       v20 = [(SUUITracklistPageSection *)self _viewElementForIndex:v16];
-      v21 = [v20 elementType];
-      if (v21 == 146 || v21 == 48)
+      elementType = [v20 elementType];
+      if (elementType == 146 || elementType == 48)
       {
         v22 = objc_opt_class();
         if (v22)
@@ -1175,43 +1175,43 @@ LABEL_11:
   }
 }
 
-- (id)_viewElementForIndex:(int64_t)a3
+- (id)_viewElementForIndex:(int64_t)index
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIStorePageSection *)self pageComponent];
-  v5 = [v4 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v6 = [v5 header];
-  v7 = v6;
-  if (a3 >= 1 && v6)
+  header = [viewElement header];
+  v7 = header;
+  if (index >= 1 && header)
   {
 
-    --a3;
+    --index;
   }
 
-  else if (v6)
+  else if (header)
   {
     goto LABEL_24;
   }
 
-  v8 = [v5 tracks];
-  v9 = v8;
-  if (v8)
+  tracks = [viewElement tracks];
+  v9 = tracks;
+  if (tracks)
   {
-    if (a3 >= [v8 count])
+    if (index >= [tracks count])
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [v9 objectAtIndex:a3];
+      v7 = [v9 objectAtIndex:index];
     }
   }
 
   else
   {
-    [v5 sections];
+    [viewElement sections];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -1229,24 +1229,24 @@ LABEL_11:
             objc_enumerationMutation(v10);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) flattenedChildren];
-          v14 = [v13 count];
-          if (a3 <= v14)
+          flattenedChildren = [*(*(&v16 + 1) + 8 * i) flattenedChildren];
+          v14 = [flattenedChildren count];
+          if (index <= v14)
           {
-            if (a3 == v14)
+            if (index == v14)
             {
               v7 = 0;
             }
 
             else
             {
-              v7 = [v13 objectAtIndex:a3];
+              v7 = [flattenedChildren objectAtIndex:index];
             }
 
             goto LABEL_22;
           }
 
-          a3 += ~v14;
+          index += ~v14;
         }
 
         v7 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1267,14 +1267,14 @@ LABEL_24:
   return v7;
 }
 
-- (double)_widthForButtonElements:(id)a3
+- (double)_widthForButtonElements:(id)elements
 {
   v54 = *MEMORY[0x277D85DE8];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = a3;
+  obj = elements;
   v3 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (!v3)
   {
@@ -1302,21 +1302,21 @@ LABEL_24:
       }
 
       v8 = *(*(&v49 + 1) + 8 * i);
-      v9 = [v8 itemIdentifier];
-      if (v9)
+      itemIdentifier = [v8 itemIdentifier];
+      if (itemIdentifier)
       {
-        v10 = v9;
+        v10 = itemIdentifier;
         v11 = +[SUUIItemStateCenter defaultCenter];
         v12 = [v11 stateForItemWithIdentifier:v10];
 
-        v13 = [v8 buyButtonDescriptor];
-        LODWORD(v11) = [v13 canPersonalizeUsingItemState:v12];
+        buyButtonDescriptor = [v8 buyButtonDescriptor];
+        LODWORD(v11) = [buyButtonDescriptor canPersonalizeUsingItemState:v12];
 
         if (v11)
         {
-          v14 = [(SUUIStorePageSection *)self context];
-          v15 = [v14 clientContext];
-          v16 = [SUUIItemOfferButton localizedTitleForItemState:v12 clientContext:v15];
+          context = [(SUUIStorePageSection *)self context];
+          clientContext = [context clientContext];
+          v16 = [SUUIItemOfferButton localizedTitleForItemState:v12 clientContext:clientContext];
 
           goto LABEL_11;
         }
@@ -1329,33 +1329,33 @@ LABEL_24:
 
       v16 = 0;
 LABEL_11:
-      v17 = [v8 elementType];
-      switch(v17)
+      elementType = [v8 elementType];
+      switch(elementType)
       {
         case 141:
           if ([SUUIStyledButton usesItemOfferAppearanceForButtonType:1 itemState:v12])
           {
-            v18 = v16;
+            string2 = v16;
           }
 
           else
           {
-            v18 = 0;
+            string2 = 0;
           }
 
           if (!v45)
           {
-            v21 = [v8 buttonTitleStyle];
-            v22 = v21;
-            if (!v21)
+            buttonTitleStyle = [v8 buttonTitleStyle];
+            whiteColor = buttonTitleStyle;
+            if (!buttonTitleStyle)
             {
-              v21 = [v8 style];
-              v43 = v21;
+              buttonTitleStyle = [v8 style];
+              v43 = buttonTitleStyle;
             }
 
-            v45 = SUUIViewElementFontWithStyle(v21);
-            v23 = v43;
-            if (!v22)
+            v45 = SUUIViewElementFontWithStyle(buttonTitleStyle);
+            whiteColor2 = v43;
+            if (!whiteColor)
             {
 LABEL_28:
             }
@@ -1363,46 +1363,46 @@ LABEL_28:
 
           break;
         case 50:
-          v19 = [v8 buttonImage];
-          [v19 size];
+          buttonImage = [v8 buttonImage];
+          [buttonImage size];
           v6 = v20;
 
 LABEL_33:
-          v29 = [v8 buttonText];
-          v28 = [v29 string];
+          buttonText = [v8 buttonText];
+          string = [buttonText string];
 
-          v30 = [v28 length];
+          v30 = [string length];
           if (v30 <= [v5 length])
           {
-            v18 = 0;
+            string2 = 0;
           }
 
           else
           {
-            v28 = v28;
+            string = string;
 
-            v18 = 0;
-            v5 = v28;
+            string2 = 0;
+            v5 = string;
           }
 
           goto LABEL_36;
         case 13:
           if (v16)
           {
-            v18 = v16;
+            string2 = v16;
           }
 
           else
           {
-            v24 = [v8 buttonText];
-            v18 = [v24 string];
+            buttonText2 = [v8 buttonText];
+            string2 = [buttonText2 string];
           }
 
           if ([v8 buttonViewType] == 3)
           {
-            v22 = [MEMORY[0x277D75348] whiteColor];
-            v23 = [MEMORY[0x277D75348] whiteColor];
-            v25 = [SUUIItemOfferButton cloudImageWithTintColor:v22 arrowTintColor:v23];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
+            whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+            v25 = [SUUIItemOfferButton cloudImageWithTintColor:whiteColor arrowTintColor:whiteColor2];
             [v25 size];
             v6 = v26;
 
@@ -1414,20 +1414,20 @@ LABEL_33:
           goto LABEL_33;
       }
 
-      if (!v18)
+      if (!string2)
       {
         goto LABEL_33;
       }
 
-      v27 = [v18 length];
-      v28 = v46;
+      v27 = [string2 length];
+      string = v46;
       if (v27 <= [v46 length])
       {
         goto LABEL_37;
       }
 
-      v18 = v18;
-      v46 = v18;
+      string2 = string2;
+      v46 = string2;
 LABEL_36:
 
 LABEL_37:

@@ -1,29 +1,29 @@
 @interface DTGPUCounterProfile_GPURawCounters
-+ (id)_sourceNameFromProfile:(unint64_t)a3;
-+ (id)_supportedProfileNameFromEnum:(unint64_t)a3 vendor:(unsigned int)a4;
-+ (id)create:(id)a3 profile:(unint64_t)a4;
-+ (unsigned)vendorFromDevice:(id)a3;
++ (id)_sourceNameFromProfile:(unint64_t)profile;
++ (id)_supportedProfileNameFromEnum:(unint64_t)enum vendor:(unsigned int)vendor;
++ (id)create:(id)create profile:(unint64_t)profile;
++ (unsigned)vendorFromDevice:(id)device;
 - (BOOL)_validateAndConfigureRawCounters;
-- (BOOL)start:(unint64_t)a3 vendorFeatures:(id)a4;
-- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)a3 profile:(unint64_t)a4;
-- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)a3 sourceName:(id)a4 profile:(unint64_t)a5;
-- (DTGPUCounterProfile_GPURawCounters)initWithLimitersProfile:(id)a3;
+- (BOOL)start:(unint64_t)start vendorFeatures:(id)features;
+- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)device profile:(unint64_t)profile;
+- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)device sourceName:(id)name profile:(unint64_t)profile;
+- (DTGPUCounterProfile_GPURawCounters)initWithLimitersProfile:(id)profile;
 - (id)counterProfileForHost;
 - (id)ringBufferCounts;
 - (id)sampleSizes;
 - (void)_releaseCounterSource;
 - (void)_releaseDataSource;
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4;
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback;
 - (void)stop;
 @end
 
 @implementation DTGPUCounterProfile_GPURawCounters
 
-+ (id)_supportedProfileNameFromEnum:(unint64_t)a3 vendor:(unsigned int)a4
++ (id)_supportedProfileNameFromEnum:(unint64_t)enum vendor:(unsigned int)vendor
 {
-  if (a3 == 4)
+  if (enum == 4)
   {
-    if (a4 == 2)
+    if (vendor == 2)
     {
       return @"Set2";
     }
@@ -34,9 +34,9 @@
     }
   }
 
-  else if (a3 == 3 && a4 < 3)
+  else if (enum == 3 && vendor < 3)
   {
-    return off_278EF4258[a4];
+    return off_278EF4258[vendor];
   }
 
   else
@@ -45,74 +45,74 @@
   }
 }
 
-+ (id)_sourceNameFromProfile:(unint64_t)a3
++ (id)_sourceNameFromProfile:(unint64_t)profile
 {
-  if (a3 - 5 > 8)
+  if (profile - 5 > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_278EF4270[a3 - 5];
+    return off_278EF4270[profile - 5];
   }
 }
 
-+ (id)create:(id)a3 profile:(unint64_t)a4
++ (id)create:(id)create profile:(unint64_t)profile
 {
-  v5 = a3;
+  createCopy = create;
   v6 = 0;
-  if (a4 <= 4)
+  if (profile <= 4)
   {
-    if (a4 - 3 < 2 || a4 == 1)
+    if (profile - 3 < 2 || profile == 1)
     {
-      v8 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:v5 profile:a4];
+      v8 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:createCopy profile:profile];
     }
 
     else
     {
-      if (a4 != 2)
+      if (profile != 2)
       {
         goto LABEL_18;
       }
 
-      v8 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithLimitersProfile:v5];
+      v8 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithLimitersProfile:createCopy];
     }
 
     goto LABEL_14;
   }
 
-  if (a4 - 5 >= 6)
+  if (profile - 5 >= 6)
   {
-    if (a4 == 12)
+    if (profile == 12)
     {
       v7 = [DTGPUCounterProfile_GPURawCounters _sourceNameFromProfile:12];
-      if (!v7 || [DTGPUCounterProfile_GPURawCounters vendorFromDevice:v5]!= 1)
+      if (!v7 || [DTGPUCounterProfile_GPURawCounters vendorFromDevice:createCopy]!= 1)
       {
         goto LABEL_5;
       }
 
-      v9 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:v5 sourceName:v7 profile:12];
+      v9 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:createCopy sourceName:v7 profile:12];
 LABEL_16:
       v6 = v9;
       goto LABEL_17;
     }
 
-    if (a4 != 13)
+    if (profile != 13)
     {
       goto LABEL_18;
     }
 
-    v8 = [[DTGPUCounterProfile_GPURawCountersAPS alloc] initWithProfile:13 device:v5];
+    v8 = [[DTGPUCounterProfile_GPURawCountersAPS alloc] initWithProfile:13 device:createCopy];
 LABEL_14:
     v6 = v8;
     goto LABEL_18;
   }
 
-  v7 = [DTGPUCounterProfile_GPURawCounters _sourceNameFromProfile:a4];
-  if (v7 && ![DTGPUCounterProfile_GPURawCounters vendorFromDevice:v5])
+  v7 = [DTGPUCounterProfile_GPURawCounters _sourceNameFromProfile:profile];
+  if (v7 && ![DTGPUCounterProfile_GPURawCounters vendorFromDevice:createCopy])
   {
-    v9 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:v5 sourceName:v7 profile:a4];
+    v9 = [[DTGPUCounterProfile_GPURawCounters alloc] initWithDevice:createCopy sourceName:v7 profile:profile];
     goto LABEL_16;
   }
 
@@ -125,20 +125,20 @@ LABEL_18:
   return v6;
 }
 
-+ (unsigned)vendorFromDevice:(id)a3
++ (unsigned)vendorFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 vendorName];
-  v5 = [v4 lowercaseString];
+  deviceCopy = device;
+  vendorName = [deviceCopy vendorName];
+  lowercaseString = [vendorName lowercaseString];
 
-  if ([v3 supportsFamily:1001])
+  if ([deviceCopy supportsFamily:1001])
   {
     v6 = 2;
   }
 
-  else if ([v5 rangeOfString:@"intel"] == 0x7FFFFFFFFFFFFFFFLL)
+  else if ([lowercaseString rangeOfString:@"intel"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v5 rangeOfString:@"amd"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([lowercaseString rangeOfString:@"amd"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 3;
     }
@@ -157,13 +157,13 @@ LABEL_18:
   return v6;
 }
 
-- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)a3 profile:(unint64_t)a4
+- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)device profile:(unint64_t)profile
 {
   v158 = *MEMORY[0x277D85DE8];
   v148.receiver = self;
   v148.super_class = DTGPUCounterProfile_GPURawCounters;
-  v126 = a3;
-  v6 = [(DTGPUCounterProfile *)&v148 initWithProfile:a4 device:?];
+  deviceCopy = device;
+  v6 = [(DTGPUCounterProfile *)&v148 initWithProfile:profile device:?];
   p_isa = &v6->super.super.isa;
   v133 = v6;
   if (!v6)
@@ -171,19 +171,19 @@ LABEL_18:
     goto LABEL_74;
   }
 
-  objc_storeStrong(&v6->_device, a3);
+  objc_storeStrong(&v6->_device, device);
   p_isa = &v133->super.super.isa;
-  v8 = [DTGPUCounterProfile_GPURawCounters vendorFromDevice:v126];
+  v8 = [DTGPUCounterProfile_GPURawCounters vendorFromDevice:deviceCopy];
   v133->_vendor = v8;
-  if (a4 != 1)
+  if (profile != 1)
   {
-    v114 = [DTGPUCounterProfile_GPURawCounters _supportedProfileNameFromEnum:a4 vendor:v8];
+    v114 = [DTGPUCounterProfile_GPURawCounters _supportedProfileNameFromEnum:profile vendor:v8];
     if (!v114 && v133->_vendor == 2)
     {
       goto LABEL_76;
     }
 
-    v122 = v126;
+    v122 = deviceCopy;
     CFProperty = IORegistryEntryCreateCFProperty([v122 acceleratorPort], @"MetalPluginName", 0, 0);
     v121 = IORegistryEntryCreateCFProperty([v122 acceleratorPort], @"MetalStatisticsName", 0, 0);
     objc_opt_class();
@@ -214,10 +214,10 @@ LABEL_15:
         v116 = GRCCopyAllCounterSourceGroup();
         if ([v116 count])
         {
-          v10 = [v116 firstObject];
+          firstObject = [v116 firstObject];
           v11 = MEMORY[0x277CBEB38];
-          v12 = [v10 features];
-          v13 = [v12 objectForKeyedSubscript:@"ConstantAGX_CoreConfig"];
+          features = [firstObject features];
+          v13 = [features objectForKeyedSubscript:@"ConstantAGX_CoreConfig"];
           v14 = [v11 dictionaryWithDictionary:v13];
           v15 = p_isa[22];
           p_isa[22] = v14;
@@ -290,8 +290,8 @@ LABEL_15:
 
         if (!v133->_vendor)
         {
-          v34 = [(MTLDevice *)v133->_device name];
-          v35 = [v34 containsString:@"Iris"];
+          name = [(MTLDevice *)v133->_device name];
+          v35 = [name containsString:@"Iris"];
 
           if ([CFProperty rangeOfString:@"KBL"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(CFProperty, "rangeOfString:", @"SKL") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(CFProperty, "rangeOfString:", @"BDW") == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -348,13 +348,13 @@ LABEL_43:
 
         v42 = [(__CFString *)v117 stringByAppendingPathComponent:CFProperty];
         v156[0] = v42;
-        v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle", CFProperty];
-        v156[1] = v43;
-        v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle/Contents/Resources", CFProperty];
-        v156[2] = v44;
+        cFProperty = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle", CFProperty];
+        v156[1] = cFProperty;
+        cFProperty2 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle/Contents/Resources", CFProperty];
+        v156[2] = cFProperty2;
         v110 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:3];
 
-        v135 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v146 = 0u;
         v147 = 0u;
         v144 = 0u;
@@ -385,7 +385,7 @@ LABEL_43:
               v55 = [v52 stringByAppendingString:@"-derived.js"];
 
               v56 = v55;
-              if ([v135 fileExistsAtPath:v54] && (objc_msgSend(v135, "fileExistsAtPath:", v55) & 1) != 0)
+              if ([defaultManager fileExistsAtPath:v54] && (objc_msgSend(defaultManager, "fileExistsAtPath:", v55) & 1) != 0)
               {
                 v46 = v55;
                 v47 = v54;
@@ -398,7 +398,7 @@ LABEL_60:
 
               v46 = [v56 stringByReplacingOccurrencesOfString:@"AGXMetalStatistics" withString:@"AGXMetalStatisticsExternal"];
 
-              if ([v135 fileExistsAtPath:v47] && objc_msgSend(v135, "fileExistsAtPath:", v46))
+              if ([defaultManager fileExistsAtPath:v47] && objc_msgSend(defaultManager, "fileExistsAtPath:", v46))
               {
                 goto LABEL_60;
               }
@@ -434,7 +434,7 @@ LABEL_61:
             goto LABEL_73;
           }
 
-          if (![v135 fileExistsAtPath:v47] || !objc_msgSend(v135, "fileExistsAtPath:", v46))
+          if (![defaultManager fileExistsAtPath:v47] || !objc_msgSend(defaultManager, "fileExistsAtPath:", v46))
           {
             v113 = 0;
 LABEL_73:
@@ -454,12 +454,12 @@ LABEL_76:
           v59 = [v107 objectForKeyedSubscript:@"DerivedCounters"];
           v109 = [v107 objectForKeyedSubscript:@"Instruments"];
           v60 = [v109 objectForKeyedSubscript:@"DefaultSamplingInterval"];
-          v61 = [v60 unsignedIntegerValue];
+          unsignedIntegerValue = [v60 unsignedIntegerValue];
 
           v62 = 50;
-          if (v61 > 0x32)
+          if (unsignedIntegerValue > 0x32)
           {
-            v62 = v61;
+            v62 = unsignedIntegerValue;
           }
 
           [(DTGPUCounterProfile *)v133 setDefaultSampleInterval:1000 * v62];
@@ -469,8 +469,8 @@ LABEL_76:
           {
             if (!v114 || ([v63 objectForKeyedSubscript:v114], v64 = objc_claimAutoreleasedReturnValue(), v65 = v64 == 0, v64, v65))
             {
-              v70 = [v63 allKeys];
-              v71 = [v70 objectAtIndexedSubscript:0];
+              allKeys = [v63 allKeys];
+              v71 = [allKeys objectAtIndexedSubscript:0];
 
               v66 = v71;
               v63 = v108;
@@ -495,17 +495,17 @@ LABEL_76:
                 v75 = [v73 objectForKeyedSubscript:@"Name"];
                 [(DTGPUCounterProfile *)v133 setProfileName:v75];
 
-                v76 = [(DTGPUCounterProfile *)v133 profileName];
-                LODWORD(v75) = v76 == 0;
+                profileName = [(DTGPUCounterProfile *)v133 profileName];
+                LODWORD(v75) = profileName == 0;
 
                 if (v75)
                 {
                   [(DTGPUCounterProfile *)v133 setProfileName:v114];
                 }
 
-                v77 = [(DTGPUCounterProfile *)v133 profileName];
+                profileName2 = [(DTGPUCounterProfile *)v133 profileName];
                 sourceName = v133->_sourceName;
-                v133->_sourceName = v77;
+                v133->_sourceName = profileName2;
 
                 v79 = [v105 objectForKeyedSubscript:@"RawCounterWidth"];
                 v142 = 0u;
@@ -556,29 +556,29 @@ LABEL_76:
                         if (v124)
                         {
                           v86 = v131;
-                          v87 = [v124 unsignedIntValue];
+                          unsignedIntValue = [v124 unsignedIntValue];
                         }
 
                         else
                         {
-                          v87 = 0;
+                          unsignedIntValue = 0;
                           v86 = v131;
                         }
 
-                        [(DTGPUCounter *)v86 setGroupIndex:v87];
+                        [(DTGPUCounter *)v86 setGroupIndex:unsignedIntValue];
                         if (v125)
                         {
-                          v88 = [v125 unsignedIntValue];
+                          unsignedIntValue2 = [v125 unsignedIntValue];
                         }
 
                         else
                         {
-                          v88 = 1;
+                          unsignedIntValue2 = 1;
                         }
 
-                        [(DTGPUCounter *)v86 setMultiplier:v88];
-                        v89 = [(DTGPUCounter *)v86 type];
-                        v90 = [v89 isEqualToString:@"Percentage"];
+                        [(DTGPUCounter *)v86 setMultiplier:unsignedIntValue2];
+                        type = [(DTGPUCounter *)v86 type];
+                        v90 = [type isEqualToString:@"Percentage"];
 
                         if (v90)
                         {
@@ -623,16 +623,16 @@ LABEL_76:
 
                                 if (v101)
                                 {
-                                  v103 = 32;
+                                  unsignedIntValue3 = 32;
                                 }
 
                                 else
                                 {
                                   v102 = [v79 objectForKeyedSubscript:v97];
-                                  v103 = [v102 unsignedIntValue];
+                                  unsignedIntValue3 = [v102 unsignedIntValue];
                                 }
 
-                                v104 = [[DTGPURawCounter_GPURawCounter alloc] initWithName:v97 width:v103];
+                                v104 = [[DTGPURawCounter_GPURawCounter alloc] initWithName:v97 width:unsignedIntValue3];
                                 [v91 addObject:v104];
                               }
                             }
@@ -711,55 +711,55 @@ LABEL_75:
   return v67;
 }
 
-- (DTGPUCounterProfile_GPURawCounters)initWithLimitersProfile:(id)a3
+- (DTGPUCounterProfile_GPURawCounters)initWithLimitersProfile:(id)profile
 {
   v52 = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = DTGPUCounterProfile_GPURawCounters;
-  v41 = a3;
+  profileCopy = profile;
   v3 = [(DTGPUCounterProfile *)&v50 initWithProfile:2 device:?];
   v44 = v3;
   if (v3)
   {
-    v38 = v41;
+    v38 = profileCopy;
     v3->_vendor = [DTGPUCounterProfile_GPURawCounters vendorFromDevice:v38];
     CFProperty = IORegistryEntryCreateCFProperty([v38 acceleratorPort], @"MetalPluginName", 0, 0);
-    v40 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle", CFProperty];
-    v42 = [v40 enumeratorAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    cFProperty = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle", CFProperty];
+    v42 = [defaultManager enumeratorAtPath:cFProperty];
 
-    v5 = [v42 nextObject];
-    if (v5)
+    nextObject = [v42 nextObject];
+    if (nextObject)
     {
-      while ([v5 rangeOfString:@"MetalLimiters"] == 0x7FFFFFFFFFFFFFFFLL)
+      while ([nextObject rangeOfString:@"MetalLimiters"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v6 = [v42 nextObject];
+        nextObject2 = [v42 nextObject];
 
-        v5 = v6;
-        if (!v6)
+        nextObject = nextObject2;
+        if (!nextObject2)
         {
           goto LABEL_5;
         }
       }
 
       v7 = MEMORY[0x277CCACA8];
-      v8 = v5;
+      v8 = nextObject;
       v37 = [v7 stringWithFormat:@"/System/Library/Extensions/%@.bundle/%@", CFProperty, v8];
       v35 = v8;
 
-      v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle/AGXMetalPerfCounters.plist", CFProperty];
-      if ([v40 fileExistsAtPath:v37] && objc_msgSend(v40, "fileExistsAtPath:", v36))
+      cFProperty2 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/Extensions/%@.bundle/AGXMetalPerfCounters.plist", CFProperty];
+      if ([defaultManager fileExistsAtPath:v37] && objc_msgSend(defaultManager, "fileExistsAtPath:", cFProperty2))
       {
         v34 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v37];
-        v45 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v36];
+        v45 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:cFProperty2];
         v9 = [v34 objectForKeyedSubscript:@"Configuration"];
         v10 = [v9 objectForKeyedSubscript:@"Timer Interval (microseconds)"];
-        v11 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 
         v12 = 50;
-        if (v11 > 0x32)
+        if (unsignedIntegerValue > 0x32)
         {
-          v12 = v11;
+          v12 = unsignedIntegerValue;
         }
 
         [(DTGPUCounterProfile *)v44 setDefaultSampleInterval:1000 * v12];
@@ -797,15 +797,15 @@ LABEL_75:
                   v24 = [DTGPURawCounter_GPURawCounter alloc];
                   if (v21)
                   {
-                    v25 = [v21 unsignedIntValue];
+                    unsignedIntValue = [v21 unsignedIntValue];
                   }
 
                   else
                   {
-                    v25 = 32;
+                    unsignedIntValue = 32;
                   }
 
-                  v26 = [(DTGPURawCounter_GPURawCounter *)v24 initWithName:v20 width:v25];
+                  v26 = [(DTGPURawCounter_GPURawCounter *)v24 initWithName:v20 width:unsignedIntValue];
                   [v23 addObject:v26];
 
                   v27 = [[DTGPUCounter alloc] initWithName:v20 maxValue:0];
@@ -865,20 +865,20 @@ LABEL_30:
   return v31;
 }
 
-- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)a3 sourceName:(id)a4 profile:(unint64_t)a5
+- (DTGPUCounterProfile_GPURawCounters)initWithDevice:(id)device sourceName:(id)name profile:(unint64_t)profile
 {
-  v8 = a3;
-  v9 = a4;
+  deviceCopy = device;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = DTGPUCounterProfile_GPURawCounters;
-  v10 = [(DTGPUCounterProfile *)&v14 initWithProfile:a5 device:v8];
+  v10 = [(DTGPUCounterProfile *)&v14 initWithProfile:profile device:deviceCopy];
   if (v10)
   {
-    v11 = [v9 lowercaseString];
+    lowercaseString = [nameCopy lowercaseString];
     sourceName = v10->_sourceName;
-    v10->_sourceName = v11;
+    v10->_sourceName = lowercaseString;
 
-    v10->_vendor = [DTGPUCounterProfile_GPURawCounters vendorFromDevice:v8];
+    v10->_vendor = [DTGPUCounterProfile_GPURawCounters vendorFromDevice:deviceCopy];
     [(DTGPUCounterProfile *)v10 setDerivedCounterScriptPath:0];
     [(DTGPUCounterProfile *)v10 setDefaultSampleInterval:50000];
   }
@@ -895,7 +895,7 @@ LABEL_30:
     goto LABEL_58;
   }
 
-  v102 = self;
+  selfCopy = self;
   if (self->_vendor != 2)
   {
     v146 = 0uLL;
@@ -923,8 +923,8 @@ LABEL_30:
           v141 = 0u;
           v142 = 0u;
           v143 = 0u;
-          v22 = [v21 sourceList];
-          v23 = [v22 countByEnumeratingWithState:&v140 objects:v157 count:16];
+          sourceList = [v21 sourceList];
+          v23 = [sourceList countByEnumeratingWithState:&v140 objects:v157 count:16];
           v113 = v21;
           if (!v23)
           {
@@ -940,14 +940,14 @@ LABEL_30:
           {
             if (*v141 != v24)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(sourceList);
             }
 
             v26 = *(*(&v140 + 1) + 8 * v25);
-            v27 = [v26 name];
-            v28 = [v27 lowercaseString];
-            v29 = [(NSString *)v102->_sourceName lowercaseString];
-            v30 = [v28 isEqualToString:v29];
+            name = [v26 name];
+            lowercaseString = [name lowercaseString];
+            lowercaseString2 = [(NSString *)selfCopy->_sourceName lowercaseString];
+            v30 = [lowercaseString isEqualToString:lowercaseString2];
 
             if (v30)
             {
@@ -956,7 +956,7 @@ LABEL_30:
 
             if (v23 == ++v25)
             {
-              v23 = [v22 countByEnumeratingWithState:&v140 objects:v157 count:16];
+              v23 = [sourceList countByEnumeratingWithState:&v140 objects:v157 count:16];
               if (!v23)
               {
                 goto LABEL_36;
@@ -966,11 +966,11 @@ LABEL_30:
             }
           }
 
-          objc_storeStrong(&v102->_sourceGroup, v113);
-          objc_storeStrong(&v102->_source, v26);
+          objc_storeStrong(&selfCopy->_sourceGroup, v113);
+          objc_storeStrong(&selfCopy->_source, v26);
 
 LABEL_38:
-          if (v102->_sourceGroup)
+          if (selfCopy->_sourceGroup)
           {
             goto LABEL_41;
           }
@@ -1026,8 +1026,8 @@ LABEL_41:
       v133 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v103 = [v5 sourceList];
-      v6 = [v103 countByEnumeratingWithState:&v132 objects:v155 count:16];
+      sourceList2 = [v5 sourceList];
+      v6 = [sourceList2 countByEnumeratingWithState:&v132 objects:v155 count:16];
       v101 = v4;
       if (v6)
       {
@@ -1038,12 +1038,12 @@ LABEL_41:
           {
             if (*v133 != v7)
             {
-              objc_enumerationMutation(v103);
+              objc_enumerationMutation(sourceList2);
             }
 
             v9 = *(*(&v132 + 1) + 8 * i);
-            v10 = [v9 name];
-            v11 = [v10 rangeOfString:@"RDE"] == 0;
+            name2 = [v9 name];
+            v11 = [name2 rangeOfString:@"RDE"] == 0;
 
             if (v11)
             {
@@ -1062,8 +1062,8 @@ LABEL_17:
               continue;
             }
 
-            v12 = [v9 name];
-            v13 = [v12 isEqualToString:@"Firmware"];
+            name3 = [v9 name];
+            v13 = [name3 isEqualToString:@"Firmware"];
 
             v15 = v112;
             v14 = v115;
@@ -1075,7 +1075,7 @@ LABEL_17:
             }
           }
 
-          v6 = [v103 countByEnumeratingWithState:&v132 objects:v155 count:16];
+          v6 = [sourceList2 countByEnumeratingWithState:&v132 objects:v155 count:16];
         }
 
         while (v6);
@@ -1092,12 +1092,12 @@ LABEL_17:
 LABEL_44:
 
   v31 = v106 ? v106 : v112;
-  objc_storeStrong(&v102->_source, v31);
+  objc_storeStrong(&selfCopy->_source, v31);
   v32 = v106 ? v109 : v115;
-  objc_storeStrong(&v102->_sourceGroup, v32);
+  objc_storeStrong(&selfCopy->_sourceGroup, v32);
 
 LABEL_51:
-  if (!v102->_sourceGroup || (source = v102->_source) == 0)
+  if (!selfCopy->_sourceGroup || (source = selfCopy->_source) == 0)
   {
 LABEL_58:
     v43 = 0;
@@ -1109,32 +1109,32 @@ LABEL_58:
   v131 = 1065353216;
   while (1)
   {
-    v35 = [(GPURawCounterSource *)source availableCounters];
-    v36 = [v35 count] > v34;
+    availableCounters = [(GPURawCounterSource *)source availableCounters];
+    v36 = [availableCounters count] > v34;
 
     if (!v36)
     {
       break;
     }
 
-    v37 = [(GPURawCounterSource *)v102->_source availableCounters];
-    v38 = [v37 objectAtIndexedSubscript:v34];
+    availableCounters2 = [(GPURawCounterSource *)selfCopy->_source availableCounters];
+    v38 = [availableCounters2 objectAtIndexedSubscript:v34];
 
-    v39 = [v38 counterValueType];
-    v40 = [v38 name];
-    v41 = v40;
-    sub_247F85940(__p, [v40 UTF8String]);
+    counterValueType = [v38 counterValueType];
+    name4 = [v38 name];
+    v41 = name4;
+    sub_247F85940(__p, [name4 UTF8String]);
     v148 = __p;
     v42 = sub_247FF84D8(v130, __p);
     *(v42 + 10) = v34;
-    v42[6] = v39;
+    v42[6] = counterValueType;
     if (v154 < 0)
     {
       operator delete(*__p);
     }
 
     v34 = (v34 + 1);
-    source = v102->_source;
+    source = selfCopy->_source;
   }
 
   v46 = objc_opt_new();
@@ -1142,8 +1142,8 @@ LABEL_58:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v100 = [(DTGPUCounterProfile *)v102 counters];
-  v108 = [v100 countByEnumeratingWithState:&v126 objects:v152 count:16];
+  counters = [(DTGPUCounterProfile *)selfCopy counters];
+  v108 = [counters countByEnumeratingWithState:&v126 objects:v152 count:16];
   if (v108)
   {
     v105 = *v127;
@@ -1154,7 +1154,7 @@ LABEL_58:
       {
         if (*v127 != v105)
         {
-          objc_enumerationMutation(v100);
+          objc_enumerationMutation(counters);
         }
 
         v48 = *(*(&v126 + 1) + 8 * j);
@@ -1164,8 +1164,8 @@ LABEL_58:
         v122 = 0u;
         v123 = 0u;
         v111 = v48;
-        v49 = [v48 rawCounters];
-        v50 = [v49 countByEnumeratingWithState:&v122 objects:v151 count:16];
+        rawCounters = [v48 rawCounters];
+        v50 = [rawCounters countByEnumeratingWithState:&v122 objects:v151 count:16];
         if (v50)
         {
           v51 = *v123;
@@ -1175,13 +1175,13 @@ LABEL_58:
             {
               if (*v123 != v51)
               {
-                objc_enumerationMutation(v49);
+                objc_enumerationMutation(rawCounters);
               }
 
               v53 = *(*(&v122 + 1) + 8 * k);
-              v54 = [v53 name];
-              v55 = v54;
-              sub_247F85940(__p, [v54 UTF8String]);
+              name5 = [v53 name];
+              v55 = name5;
+              sub_247F85940(__p, [name5 UTF8String]);
               v56 = sub_247FF8CE4(v130, __p);
               if (v154 < 0)
               {
@@ -1198,16 +1198,16 @@ LABEL_58:
 
               else if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
-                v57 = [v53 name];
-                v58 = v57;
-                v59 = [v57 UTF8String];
+                name6 = [v53 name];
+                v58 = name6;
+                uTF8String = [name6 UTF8String];
                 *__p = 136315138;
-                *&__p[4] = v59;
+                *&__p[4] = uTF8String;
                 _os_log_impl(&dword_247F67000, v47, OS_LOG_TYPE_ERROR, "Failed to find counter: failed at %s", __p, 0xCu);
               }
             }
 
-            v50 = [v49 countByEnumeratingWithState:&v122 objects:v151 count:16];
+            v50 = [rawCounters countByEnumeratingWithState:&v122 objects:v151 count:16];
           }
 
           while (v50);
@@ -1216,43 +1216,43 @@ LABEL_58:
         [v111 setRawCounters:v34];
       }
 
-      v108 = [v100 countByEnumeratingWithState:&v126 objects:v152 count:16];
+      v108 = [counters countByEnumeratingWithState:&v126 objects:v152 count:16];
     }
 
     while (v108);
   }
 
-  if (v102->_vendor != 2)
+  if (selfCopy->_vendor != 2)
   {
-    v60 = [(DTGPUCounterProfile *)v102 counters];
-    v61 = [v60 count] == 0;
+    counters2 = [(DTGPUCounterProfile *)selfCopy counters];
+    v61 = [counters2 count] == 0;
 
     if (v61)
     {
       for (m = 0; ; m = v82 + 1)
       {
-        v81 = [(GPURawCounterSource *)v102->_source availableCounters];
+        availableCounters3 = [(GPURawCounterSource *)selfCopy->_source availableCounters];
         v82 = m;
-        v83 = [v81 count] > m;
+        v83 = [availableCounters3 count] > m;
 
         if (!v83)
         {
           break;
         }
 
-        v84 = [(GPURawCounterSource *)v102->_source availableCounters];
-        v85 = [v84 objectAtIndexedSubscript:v82];
+        availableCounters4 = [(GPURawCounterSource *)selfCopy->_source availableCounters];
+        v85 = [availableCounters4 objectAtIndexedSubscript:v82];
 
         v86 = [DTGPURawCounter_GPURawCounter alloc];
-        v87 = [v85 name];
-        v88 = [(DTGPURawCounter_GPURawCounter *)v86 initWithName:v87 width:64];
+        name7 = [v85 name];
+        v88 = [(DTGPURawCounter_GPURawCounter *)v86 initWithName:name7 width:64];
 
         [(DTGPURawCounter_GPURawCounter *)v88 setCounterIdx:v82];
         -[DTGPURawCounter_GPURawCounter setValueType:](v88, "setValueType:", [v85 counterValueType]);
         [v46 addObject:v88];
         v89 = [DTGPUCounter alloc];
-        v90 = [v85 name];
-        v91 = [(DTGPUCounter *)v89 initWithName:v90 maxValue:0x7FFFFFFFLL];
+        name8 = [v85 name];
+        v91 = [(DTGPUCounter *)v89 initWithName:name8 maxValue:0x7FFFFFFFLL];
 
         v150 = v88;
         v92 = [MEMORY[0x277CBEA60] arrayWithObjects:&v150 count:1];
@@ -1275,19 +1275,19 @@ LABEL_58:
         {
         }
 
-        v95 = [v85 name];
-        [(DTGPUCounter *)v91 setFunctionName:v95];
+        name9 = [v85 name];
+        [(DTGPUCounter *)v91 setFunctionName:name9];
 
         [(DTGPUCounter *)v91 setMaxValue:0x7FFFFFFFLL];
         [(DTGPUCounter *)v91 setMultiplier:1];
         [(DTGPUCounter *)v91 setGroupIndex:1];
-        [(DTGPUCounterProfile *)v102 addCounter:v91];
+        [(DTGPUCounterProfile *)selfCopy addCounter:v91];
       }
     }
   }
 
   v62 = objc_opt_new();
-  if (v102->_vendor == 2)
+  if (selfCopy->_vendor == 2)
   {
     v63 = [[DTGPURawCounter_GPURawCounter alloc] initWithName:@"GRC_TIMESTAMP"];
     [v62 addObject:v63];
@@ -1305,13 +1305,13 @@ LABEL_58:
     [v62 addObject:v67];
   }
 
-  v68 = [v46 allObjects];
-  [v62 addObjectsFromArray:v68];
+  allObjects = [v46 allObjects];
+  [v62 addObjectsFromArray:allObjects];
 
-  v102->_gpuTimeIndex = -1;
-  if (v102->_vendor)
+  selfCopy->_gpuTimeIndex = -1;
+  if (selfCopy->_vendor)
   {
-    v102->_gpuTimeIndex = 0;
+    selfCopy->_gpuTimeIndex = 0;
     goto LABEL_87;
   }
 
@@ -1320,9 +1320,9 @@ LABEL_58:
   v121[1] = 3221225472;
   v121[2] = sub_247FF68F4;
   v121[3] = &unk_278EF4210;
-  v121[4] = v102;
+  v121[4] = selfCopy;
   [v62 enumerateObjectsUsingBlock:v121];
-  if (v102->_gpuTimeIndex == -1)
+  if (selfCopy->_gpuTimeIndex == -1)
   {
     v43 = 0;
   }
@@ -1330,13 +1330,13 @@ LABEL_58:
   else
   {
 LABEL_87:
-    objc_storeStrong(&v102->_rawCounters, v62);
+    objc_storeStrong(&selfCopy->_rawCounters, v62);
     v69 = objc_opt_new();
     v119 = 0u;
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
-    v70 = v102->_rawCounters;
+    v70 = selfCopy->_rawCounters;
     v71 = [(NSArray *)v70 countByEnumeratingWithState:&v117 objects:v149 count:16];
     if (v71)
     {
@@ -1350,8 +1350,8 @@ LABEL_87:
             objc_enumerationMutation(v70);
           }
 
-          v74 = [*(*(&v117 + 1) + 8 * n) rawCounterSelect];
-          [v69 addObject:v74];
+          rawCounterSelect = [*(*(&v117 + 1) + 8 * n) rawCounterSelect];
+          [v69 addObject:rawCounterSelect];
         }
 
         v71 = [(NSArray *)v70 countByEnumeratingWithState:&v117 objects:v149 count:16];
@@ -1360,14 +1360,14 @@ LABEL_87:
       while (v71);
     }
 
-    if (v102->_vendor == 2)
+    if (selfCopy->_vendor == 2)
     {
       v75 = [DTGPUAGXCounterSourceGroup alloc];
-      sourceGroup = v102->_sourceGroup;
-      v77 = [(DTGPUCounterProfile *)v102 profile];
-      v78 = [(DTGPUAGXCounterSourceGroup *)v75 initWithSourceGroup:sourceGroup selects:v69 apsSelects:MEMORY[0x277CBEBF8] profile:v77];
-      agxSource = v102->_agxSource;
-      v102->_agxSource = v78;
+      sourceGroup = selfCopy->_sourceGroup;
+      profile = [(DTGPUCounterProfile *)selfCopy profile];
+      v78 = [(DTGPUAGXCounterSourceGroup *)v75 initWithSourceGroup:sourceGroup selects:v69 apsSelects:MEMORY[0x277CBEBF8] profile:profile];
+      agxSource = selfCopy->_agxSource;
+      selfCopy->_agxSource = v78;
     }
 
     v43 = 1;
@@ -1390,8 +1390,8 @@ LABEL_59:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(GPURawCounterSourceGroup *)sourceGroup sourceList];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    sourceList = [(GPURawCounterSourceGroup *)sourceGroup sourceList];
+    v5 = [sourceList countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -1402,14 +1402,14 @@ LABEL_59:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sourceList);
           }
 
           [*(*(&v11 + 1) + 8 * v7++) setEnabled:0];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [sourceList countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -1428,10 +1428,10 @@ LABEL_59:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)start:(unint64_t)a3 vendorFeatures:(id)a4
+- (BOOL)start:(unint64_t)start vendorFeatures:(id)features
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  featuresCopy = features;
   source = self->_source;
   if (!source || !self->_sourceGroup)
   {
@@ -1440,7 +1440,7 @@ LABEL_59:
 
   if (self->_vendor != 2)
   {
-    [(GPURawCounterSource *)source setOptions:v6];
+    [(GPURawCounterSource *)source setOptions:featuresCopy];
     v28 = 0;
     v9 = objc_opt_new();
     v26 = 0u;
@@ -1461,8 +1461,8 @@ LABEL_59:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v24 + 1) + 8 * i) rawCounterSelect];
-          [v9 addObject:v14];
+          rawCounterSelect = [*(*(&v24 + 1) + 8 * i) rawCounterSelect];
+          [v9 addObject:rawCounterSelect];
         }
 
         v11 = [(NSArray *)v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -1478,7 +1478,7 @@ LABEL_59:
         self->_startTime = mach_absolute_time();
         mach_timebase_info(&self->_timeBaseInfo);
         self->_firstGpuTime = 0;
-        v8 = [(GPURawCounterSourceGroup *)self->_sourceGroup startSampling];
+        startSampling = [(GPURawCounterSourceGroup *)self->_sourceGroup startSampling];
 LABEL_22:
 
         goto LABEL_23;
@@ -1493,39 +1493,39 @@ LABEL_22:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v16 = [v9 objectAtIndexedSubscript:v28];
-        v17 = [v16 name];
-        v18 = v17;
-        v19 = [v17 UTF8String];
+        name = [v16 name];
+        v18 = name;
+        uTF8String = [name UTF8String];
         v20 = v15;
-        v21 = [v15 UTF8String];
+        uTF8String2 = [v15 UTF8String];
         *buf = 136315394;
-        v30 = v19;
+        v30 = uTF8String;
         v31 = 2080;
-        v32 = v21;
+        v32 = uTF8String2;
         _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to request counters: failed at %s (%s)", buf, 0x16u);
       }
 
       [(DTGPUCounterProfile_GPURawCounters *)self _releaseDataSource];
     }
 
-    v8 = 0;
+    startSampling = 0;
     goto LABEL_22;
   }
 
-  if (![(DTGPUAGXCounterSourceGroup *)self->_agxSource request:a3 vendorFeatures:v6])
+  if (![(DTGPUAGXCounterSourceGroup *)self->_agxSource request:start vendorFeatures:featuresCopy])
   {
 LABEL_6:
-    v8 = 0;
+    startSampling = 0;
     goto LABEL_23;
   }
 
   [(GPURawCounterSourceGroup *)self->_sourceGroup startSampling];
   [(DTGPUAGXCounterSourceGroup *)self->_agxSource resume];
-  v8 = 1;
+  startSampling = 1;
 LABEL_23:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v8;
+  return startSampling;
 }
 
 - (void)_releaseDataSource
@@ -1538,8 +1538,8 @@ LABEL_23:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(GPURawCounterSourceGroup *)sourceGroup sourceList];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    sourceList = [(GPURawCounterSourceGroup *)sourceGroup sourceList];
+    v5 = [sourceList countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -1550,14 +1550,14 @@ LABEL_23:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sourceList);
           }
 
           [*(*(&v11 + 1) + 8 * v7++) setEnabled:0];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [sourceList countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -1583,12 +1583,12 @@ LABEL_23:
   [(DTGPUCounterProfile_GPURawCounters *)self _releaseDataSource];
 }
 
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   if (self->_vendor == 2)
   {
-    [(DTGPUAGXCounterSourceGroup *)self->_agxSource sampleCounters:a3 callback:v6];
+    [(DTGPUAGXCounterSourceGroup *)self->_agxSource sampleCounters:counters callback:callbackCopy];
   }
 
   else
@@ -1602,7 +1602,7 @@ LABEL_23:
       v9[2] = sub_247FF7118;
       v9[3] = &unk_278EF4238;
       v9[4] = self;
-      v10 = v6;
+      v10 = callbackCopy;
       [(GPURawCounterSource *)source pollCountersAtBufferIndex:i withBlock:v9];
     }
   }
@@ -1635,8 +1635,8 @@ LABEL_23:
           }
 
           v7 = *(*(&v106 + 1) + 8 * i);
-          v8 = [v7 name];
-          [v81 setObject:v7 forKeyedSubscript:v8];
+          name = [v7 name];
+          [v81 setObject:v7 forKeyedSubscript:name];
         }
 
         v4 = [(NSArray *)v3 countByEnumeratingWithState:&v106 objects:v123 count:16];
@@ -1672,8 +1672,8 @@ LABEL_23:
           v101 = 0u;
           v98 = 0u;
           v99 = 0u;
-          v12 = [v79 selects];
-          v13 = [v12 countByEnumeratingWithState:&v98 objects:v121 count:16];
+          selects = [v79 selects];
+          v13 = [selects countByEnumeratingWithState:&v98 objects:v121 count:16];
           if (v13)
           {
             v14 = *v99;
@@ -1683,24 +1683,24 @@ LABEL_23:
               {
                 if (*v99 != v14)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(selects);
                 }
 
-                v16 = [*(*(&v98 + 1) + 8 * k) name];
-                v17 = [v81 objectForKeyedSubscript:v16];
+                name2 = [*(*(&v98 + 1) + 8 * k) name];
+                v17 = [v81 objectForKeyedSubscript:name2];
 
-                v18 = [v17 name];
-                v120[0] = v18;
+                name3 = [v17 name];
+                v120[0] = name3;
                 v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v17, "valueType") == 1}];
                 v120[1] = v19;
                 v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v120 count:2];
                 [v80 addObject:v20];
 
-                v21 = [v17 name];
-                [v11 setObject:v17 forKeyedSubscript:v21];
+                name4 = [v17 name];
+                [v11 setObject:v17 forKeyedSubscript:name4];
               }
 
-              v13 = [v12 countByEnumeratingWithState:&v98 objects:v121 count:16];
+              v13 = [selects countByEnumeratingWithState:&v98 objects:v121 count:16];
             }
 
             while (v13);
@@ -1711,8 +1711,8 @@ LABEL_23:
           v97 = 0u;
           v94 = 0u;
           v95 = 0u;
-          v77 = [(DTGPUCounterProfile *)self counters];
-          v22 = [v77 countByEnumeratingWithState:&v94 objects:v119 count:16];
+          counters = [(DTGPUCounterProfile *)self counters];
+          v22 = [counters countByEnumeratingWithState:&v94 objects:v119 count:16];
           if (v22)
           {
             v78 = *v95;
@@ -1722,7 +1722,7 @@ LABEL_23:
               {
                 if (*v95 != v78)
                 {
-                  objc_enumerationMutation(v77);
+                  objc_enumerationMutation(counters);
                 }
 
                 v24 = *(*(&v94 + 1) + 8 * m);
@@ -1730,8 +1730,8 @@ LABEL_23:
                 v91 = 0u;
                 v92 = 0u;
                 v93 = 0u;
-                v25 = [v24 rawCounters];
-                v26 = [v25 countByEnumeratingWithState:&v90 objects:v118 count:16];
+                rawCounters = [v24 rawCounters];
+                v26 = [rawCounters countByEnumeratingWithState:&v90 objects:v118 count:16];
                 if (v26)
                 {
                   v27 = *v91;
@@ -1741,11 +1741,11 @@ LABEL_23:
                     {
                       if (*v91 != v27)
                       {
-                        objc_enumerationMutation(v25);
+                        objc_enumerationMutation(rawCounters);
                       }
 
-                      v29 = [*(*(&v90 + 1) + 8 * n) name];
-                      v30 = [v11 objectForKeyedSubscript:v29];
+                      name5 = [*(*(&v90 + 1) + 8 * n) name];
+                      v30 = [v11 objectForKeyedSubscript:name5];
                       v31 = v30 == 0;
 
                       if (v31)
@@ -1755,7 +1755,7 @@ LABEL_23:
                       }
                     }
 
-                    v26 = [v25 countByEnumeratingWithState:&v90 objects:v118 count:16];
+                    v26 = [rawCounters countByEnumeratingWithState:&v90 objects:v118 count:16];
                     if (v26)
                     {
                       continue;
@@ -1768,12 +1768,12 @@ LABEL_23:
                 v32 = 1;
 LABEL_36:
 
-                v33 = [v79 source];
-                v34 = [v33 name];
-                if ([v34 hasPrefix:@"BMPR"])
+                source = [v79 source];
+                name6 = [source name];
+                if ([name6 hasPrefix:@"BMPR"])
                 {
-                  v35 = [v24 name];
-                  v36 = [v35 containsString:@"Bandwidth"];
+                  name7 = [v24 name];
+                  v36 = [name7 containsString:@"Bandwidth"];
                 }
 
                 else
@@ -1783,27 +1783,27 @@ LABEL_36:
 
                 if ((v32 | v36))
                 {
-                  v37 = [v24 infoArray];
-                  [v76 addObject:v37];
+                  infoArray = [v24 infoArray];
+                  [v76 addObject:infoArray];
                 }
               }
 
-              v22 = [v77 countByEnumeratingWithState:&v94 objects:v119 count:16];
+              v22 = [counters countByEnumeratingWithState:&v94 objects:v119 count:16];
             }
 
             while (v22);
           }
 
-          v38 = [MEMORY[0x277CCAA00] defaultManager];
-          v39 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
-          v40 = [v38 fileExistsAtPath:v39];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          derivedCounterScriptPath = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
+          v40 = [defaultManager fileExistsAtPath:derivedCounterScriptPath];
 
           v41 = &stru_285A19CB8;
           if (v40)
           {
             v42 = MEMORY[0x277CCACA8];
-            v43 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
-            v41 = [v42 stringWithContentsOfFile:v43 encoding:4 error:0];
+            derivedCounterScriptPath2 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
+            v41 = [v42 stringWithContentsOfFile:derivedCounterScriptPath2 encoding:4 error:0];
           }
 
           v116[0] = &unk_285A36DB0;
@@ -1840,8 +1840,8 @@ LABEL_36:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v46 = [(DTGPUCounterProfile *)self counters];
-    v47 = [v46 countByEnumeratingWithState:&v86 objects:v115 count:16];
+    counters2 = [(DTGPUCounterProfile *)self counters];
+    v47 = [counters2 countByEnumeratingWithState:&v86 objects:v115 count:16];
     if (v47)
     {
       v48 = *v87;
@@ -1851,14 +1851,14 @@ LABEL_36:
         {
           if (*v87 != v48)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(counters2);
           }
 
-          v50 = [*(*(&v86 + 1) + 8 * ii) infoArray];
-          [v75 addObject:v50];
+          infoArray2 = [*(*(&v86 + 1) + 8 * ii) infoArray];
+          [v75 addObject:infoArray2];
         }
 
-        v47 = [v46 countByEnumeratingWithState:&v86 objects:v115 count:16];
+        v47 = [counters2 countByEnumeratingWithState:&v86 objects:v115 count:16];
       }
 
       while (v47);
@@ -1883,8 +1883,8 @@ LABEL_36:
           }
 
           v55 = *(*(&v82 + 1) + 8 * jj);
-          v56 = [v55 name];
-          v113[0] = v56;
+          name8 = [v55 name];
+          v113[0] = name8;
           v57 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v55, "valueType") == 1}];
           v113[1] = v57;
           v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:2];
@@ -1897,15 +1897,15 @@ LABEL_36:
       while (v52);
     }
 
-    v59 = [MEMORY[0x277CCAA00] defaultManager];
-    v60 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
-    v61 = [v59 fileExistsAtPath:v60];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    derivedCounterScriptPath3 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
+    v61 = [defaultManager2 fileExistsAtPath:derivedCounterScriptPath3];
 
     if (v61)
     {
       v62 = MEMORY[0x277CCACA8];
-      v63 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
-      v64 = [v62 stringWithContentsOfFile:v63 encoding:4 error:0];
+      derivedCounterScriptPath4 = [(DTGPUCounterProfile *)self derivedCounterScriptPath];
+      v64 = [v62 stringWithContentsOfFile:derivedCounterScriptPath4 encoding:4 error:0];
     }
 
     else
@@ -1950,8 +1950,8 @@ LABEL_36:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    sources = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
+    v5 = [sources countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = *v15;
@@ -1961,16 +1961,16 @@ LABEL_36:
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sources);
           }
 
           v8 = MEMORY[0x277CCABB0];
-          v9 = [*(*(&v14 + 1) + 8 * i) selects];
-          v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+          selects = [*(*(&v14 + 1) + 8 * i) selects];
+          v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(selects, "count")}];
           [v3 addObject:v10];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [sources countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v5);
@@ -1999,8 +1999,8 @@ LABEL_36:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    sources = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
+    v6 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = *v17;
@@ -2010,28 +2010,28 @@ LABEL_36:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sources);
           }
 
           v9 = MEMORY[0x277CCABB0];
-          v10 = [*(*(&v16 + 1) + 8 * i) source];
-          v11 = [v10 ringBufferNum];
+          source = [*(*(&v16 + 1) + 8 * i) source];
+          ringBufferNum = [source ringBufferNum];
 
-          if (v11 <= 1)
+          if (ringBufferNum <= 1)
           {
             v12 = 1;
           }
 
           else
           {
-            v12 = v11;
+            v12 = ringBufferNum;
           }
 
           v13 = [v9 numberWithUnsignedInt:v12];
           [v4 addObject:v13];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);

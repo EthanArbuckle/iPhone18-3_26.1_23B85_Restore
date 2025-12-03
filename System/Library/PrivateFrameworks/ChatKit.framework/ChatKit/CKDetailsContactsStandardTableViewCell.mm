@@ -1,11 +1,11 @@
 @interface CKDetailsContactsStandardTableViewCell
 + (double)preferredHeight;
-- (CKDetailsContactsStandardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsContactsStandardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_hideAllButtons;
 - (void)_updateVisibleButtons;
 - (void)layoutSubviews;
-- (void)setShowsLocation:(BOOL)a3;
-- (void)setShowsTUConversationStatus:(BOOL)a3;
+- (void)setShowsLocation:(BOOL)location;
+- (void)setShowsTUConversationStatus:(BOOL)status;
 @end
 
 @implementation CKDetailsContactsStandardTableViewCell
@@ -19,20 +19,20 @@
   return v4;
 }
 
-- (CKDetailsContactsStandardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsContactsStandardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = CKDetailsContactsStandardTableViewCell;
-  v4 = [(CKDetailsContactsTableViewCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsContactsTableViewCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKDetailsContactsTableViewCell *)v4 nameLabel];
-    [v6 setLineBreakMode:4];
+    nameLabel = [(CKDetailsContactsTableViewCell *)v4 nameLabel];
+    [nameLabel setLineBreakMode:4];
 
-    v7 = [(CKDetailsContactsStandardTableViewCell *)v5 contentView];
-    v8 = [(CKDetailsContactsTableViewCell *)v5 nameLabel];
-    [v7 addSubview:v8];
+    contentView = [(CKDetailsContactsStandardTableViewCell *)v5 contentView];
+    nameLabel2 = [(CKDetailsContactsTableViewCell *)v5 nameLabel];
+    [contentView addSubview:nameLabel2];
 
     v9 = +[CKUIBehavior sharedBehaviors];
     [v9 detailsViewContactImageDiameter];
@@ -40,12 +40,12 @@
     v12 = +[CKUIBehavior sharedBehaviors];
     [v12 detailsViewContactImageDiameter];
     v14 = v13;
-    v15 = [(CKDetailsContactsTableViewCell *)v5 contactAvatarView];
-    [v15 setFrame:{0.0, 0.0, v11, v14}];
+    contactAvatarView = [(CKDetailsContactsTableViewCell *)v5 contactAvatarView];
+    [contactAvatarView setFrame:{0.0, 0.0, v11, v14}];
 
-    v16 = [(CKDetailsContactsStandardTableViewCell *)v5 contentView];
-    v17 = [(CKDetailsContactsTableViewCell *)v5 contactAvatarView];
-    [v16 addSubview:v17];
+    contentView2 = [(CKDetailsContactsStandardTableViewCell *)v5 contentView];
+    contactAvatarView2 = [(CKDetailsContactsTableViewCell *)v5 contactAvatarView];
+    [contentView2 addSubview:contactAvatarView2];
   }
 
   return v5;
@@ -56,7 +56,7 @@
   v136.receiver = self;
   v136.super_class = CKDetailsContactsStandardTableViewCell;
   [(CKDetailsContactsTableViewCell *)&v136 layoutSubviews];
-  v3 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 detailsContactCellButtonWidth];
   v6 = v5;
@@ -67,7 +67,7 @@
   v10 = 3.0;
   if (CKIsRunningInMacCatalyst())
   {
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
 LABEL_3:
       v11 = ceil(v10);
@@ -77,8 +77,8 @@ LABEL_3:
 
   else
   {
-    v12 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    [v12 bounds];
+    contentView = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    [contentView bounds];
     if (CGRectGetWidth(v137) > 320.0)
     {
       v10 = 8.0;
@@ -89,14 +89,14 @@ LABEL_3:
       v10 = 6.0;
     }
 
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-  [v13 bounds];
+  contentView2 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+  [contentView2 bounds];
   v11 = ceil(v14 - v10);
 
 LABEL_9:
@@ -112,15 +112,15 @@ LABEL_9:
     v17 = 0.0;
   }
 
-  v18 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
-  v19 = [v18 count];
+  visibleButtons = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
+  v19 = [visibleButtons count];
 
   v135 = v10;
   if (v19)
   {
     v20 = 0;
     v21 = ceil(v6 + v10 * 2.0);
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
       v22 = v21;
     }
@@ -131,7 +131,7 @@ LABEL_9:
     }
 
     v23 = ceil(v6);
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
       v24 = v23;
     }
@@ -155,46 +155,46 @@ LABEL_9:
       }
 
       v11 = v11 + v26;
-      v27 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
-      v28 = [v27 objectAtIndex:v20];
+      visibleButtons2 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
+      v28 = [visibleButtons2 objectAtIndex:v20];
 
       [v28 setBounds:{0.0, 0.0, v6, v9}];
       [(CKDetailsContactsStandardTableViewCell *)self bounds];
       v30 = floor(v29 * 0.5);
       v31 = v25 + v11 - v17;
-      if (v3)
+      if (userInterfaceLayoutDirection)
       {
         v31 = v17 + v11 - v25;
       }
 
       [v28 setCenter:{v31, v30}];
-      v32 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
+      updatingParticipantSpinner = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
 
-      [v28 setHidden:v32 != 0];
+      [v28 setHidden:updatingParticipantSpinner != 0];
       ++v20;
-      v33 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
-      v34 = [v33 count];
+      visibleButtons3 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
+      v34 = [visibleButtons3 count];
     }
 
     while (v20 < v34);
   }
 
-  v35 = [(CKDetailsContactsTableViewCell *)self contactAvatarView];
-  [v35 frame];
+  contactAvatarView = [(CKDetailsContactsTableViewCell *)self contactAvatarView];
+  [contactAvatarView frame];
   v37 = v36;
   v39 = v38;
 
-  v40 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-  v41 = v40;
-  if (v3)
+  contentView3 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+  v41 = contentView3;
+  if (userInterfaceLayoutDirection)
   {
-    [v40 bounds];
+    [contentView3 bounds];
     v43 = v42;
-    v44 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    [v44 layoutMargins];
+    contentView4 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    [contentView4 layoutMargins];
     v46 = v43 - v45 - v37;
-    v47 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    [v47 bounds];
+    contentView5 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    [contentView5 bounds];
     v49 = (v48 - v39) * 0.5;
     if (CKMainScreenScale_once_95 != -1)
     {
@@ -213,10 +213,10 @@ LABEL_9:
 
   else
   {
-    [v40 layoutMargins];
+    [contentView3 layoutMargins];
     v54 = v53;
-    v44 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    [v44 bounds];
+    contentView4 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    [contentView4 bounds];
     v56 = (v55 - v39) * 0.5;
     if (CKMainScreenScale_once_95 != -1)
     {
@@ -233,26 +233,26 @@ LABEL_9:
     v52 = floor(v56 * v57) / v57;
   }
 
-  v58 = [(CKDetailsContactsTableViewCell *)self contactAvatarView];
-  [v58 setFrame:{v51, v52, v37, v39}];
+  contactAvatarView2 = [(CKDetailsContactsTableViewCell *)self contactAvatarView];
+  [contactAvatarView2 setFrame:{v51, v52, v37, v39}];
 
-  v59 = [(CKDetailsContactsTableViewCell *)self entityName];
-  v60 = [(CKDetailsContactsTableViewCell *)self nameLabel];
-  [v60 setText:v59];
+  entityName = [(CKDetailsContactsTableViewCell *)self entityName];
+  nameLabel = [(CKDetailsContactsTableViewCell *)self nameLabel];
+  [nameLabel setText:entityName];
 
-  v61 = [(CKDetailsContactsTableViewCell *)self nameLabel];
-  [v61 setNumberOfLines:1];
+  nameLabel2 = [(CKDetailsContactsTableViewCell *)self nameLabel];
+  [nameLabel2 setNumberOfLines:1];
 
-  if (v3)
+  if (userInterfaceLayoutDirection)
   {
     v62 = +[CKUIBehavior sharedBehaviors];
     [v62 detailsContactAvatarLabelSpacing];
     v64 = v51 - v63;
 
     v65 = ceil(v64 - (v17 + v11 + v135 * 2.0));
-    v66 = [(CKDetailsContactsTableViewCell *)self nameLabel];
+    nameLabel3 = [(CKDetailsContactsTableViewCell *)self nameLabel];
     [(CKDetailsContactsStandardTableViewCell *)self frame];
-    [v66 sizeThatFits:{v65, v67}];
+    [nameLabel3 sizeThatFits:{v65, v67}];
     v69 = v68;
     v71 = v70;
 
@@ -278,9 +278,9 @@ LABEL_9:
     v75 = ceil(v37 + v51 + v77);
 
     v65 = ceil(v11 - v75 + v135 * -2.0 - v17);
-    v78 = [(CKDetailsContactsTableViewCell *)self nameLabel];
+    nameLabel4 = [(CKDetailsContactsTableViewCell *)self nameLabel];
     [(CKDetailsContactsStandardTableViewCell *)self frame];
-    [v78 sizeThatFits:{v65, v79}];
+    [nameLabel4 sizeThatFits:{v65, v79}];
     v72 = v80;
     v71 = v81;
 
@@ -292,12 +292,12 @@ LABEL_9:
 
   if ([(CKDetailsContactsTableViewCell *)self showsTUConversationStatus])
   {
-    v82 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
-    [v82 setNumberOfLines:1];
+    expanseStatusLabel = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
+    [expanseStatusLabel setNumberOfLines:1];
 
-    v83 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
+    expanseStatusLabel2 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
     [(CKDetailsContactsStandardTableViewCell *)self frame];
-    [v83 sizeThatFits:{v65, v84}];
+    [expanseStatusLabel2 sizeThatFits:{v65, v84}];
     v86 = v85;
     v88 = v87;
 
@@ -325,7 +325,7 @@ LABEL_9:
     v138.size.width = v72;
     v138.size.height = v71;
     MaxY = CGRectGetMaxY(v138);
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
       v94 = v75 - (v65 - v72);
     }
@@ -335,26 +335,26 @@ LABEL_9:
       v94 = v75;
     }
 
-    v95 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
+    expanseStatusLabel3 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
 LABEL_66:
-    v107 = v95;
-    [v95 setFrame:{v94, MaxY, v65, v88}];
+    v107 = expanseStatusLabel3;
+    [expanseStatusLabel3 setFrame:{v94, MaxY, v65, v88}];
 
     goto LABEL_68;
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showsLocation])
   {
-    v96 = [(CKDetailsContactsTableViewCell *)self locationString];
-    v97 = [(CKDetailsContactsTableViewCell *)self locationLabel];
-    [v97 setText:v96];
+    locationString = [(CKDetailsContactsTableViewCell *)self locationString];
+    locationLabel = [(CKDetailsContactsTableViewCell *)self locationLabel];
+    [locationLabel setText:locationString];
 
-    v98 = [(CKDetailsContactsTableViewCell *)self locationLabel];
-    [v98 setNumberOfLines:1];
+    locationLabel2 = [(CKDetailsContactsTableViewCell *)self locationLabel];
+    [locationLabel2 setNumberOfLines:1];
 
-    v99 = [(CKDetailsContactsTableViewCell *)self locationLabel];
+    locationLabel3 = [(CKDetailsContactsTableViewCell *)self locationLabel];
     [(CKDetailsContactsStandardTableViewCell *)self frame];
-    [v99 sizeThatFits:{v65, v100}];
+    [locationLabel3 sizeThatFits:{v65, v100}];
     v102 = v101;
     v88 = v103;
 
@@ -382,7 +382,7 @@ LABEL_66:
     v139.size.width = v72;
     v139.size.height = v71;
     MaxY = CGRectGetMaxY(v139);
-    if (v3)
+    if (userInterfaceLayoutDirection)
     {
       v94 = v75 - (v65 - v72);
     }
@@ -392,7 +392,7 @@ LABEL_66:
       v94 = v75;
     }
 
-    v95 = [(CKDetailsContactsTableViewCell *)self locationLabel];
+    expanseStatusLabel3 = [(CKDetailsContactsTableViewCell *)self locationLabel];
     goto LABEL_66;
   }
 
@@ -400,32 +400,32 @@ LABEL_66:
   v71 = v108;
   v92 = 0.0;
 LABEL_68:
-  v109 = [(CKDetailsContactsTableViewCell *)self nameLabel];
-  [v109 setFrame:{v75, v92, v72, v71}];
+  nameLabel5 = [(CKDetailsContactsTableViewCell *)self nameLabel];
+  [nameLabel5 setFrame:{v75, v92, v72, v71}];
 
-  v110 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
+  updatingParticipantSpinner2 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
 
-  if (v110)
+  if (updatingParticipantSpinner2)
   {
-    v111 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
-    v112 = [v111 lastObject];
+    visibleButtons4 = [(CKDetailsContactsStandardTableViewCell *)self visibleButtons];
+    lastObject = [visibleButtons4 lastObject];
 
-    v113 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
-    [v112 center];
-    [v113 setCenter:?];
+    updatingParticipantSpinner3 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
+    [lastObject center];
+    [updatingParticipantSpinner3 setCenter:?];
 
-    v114 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
-    [v114 startAnimating];
+    updatingParticipantSpinner4 = [(CKDetailsContactsTableViewCell *)self updatingParticipantSpinner];
+    [updatingParticipantSpinner4 startAnimating];
   }
 
-  v115 = [(CKDetailsCell *)self topSeperator];
-  [v115 frame];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator frame];
   v117 = v116;
   v119 = v118;
   v121 = v120;
 
-  v122 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-  [v122 layoutMargins];
+  contentView6 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+  [contentView6 layoutMargins];
   v124 = v123;
   v125 = +[CKUIBehavior sharedBehaviors];
   [v125 detailsContactAvatarLabelSpacing];
@@ -435,51 +435,51 @@ LABEL_68:
   v130 = v127 + v129;
 
   v131 = v130;
-  if (v3)
+  if (userInterfaceLayoutDirection)
   {
-    v132 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    [v132 layoutMargins];
+    contentView7 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    [contentView7 layoutMargins];
     v131 = v133;
   }
 
-  v134 = [(CKDetailsCell *)self topSeperator];
-  [v134 setFrame:{v131, v117, v119 - v130, v121}];
+  topSeperator2 = [(CKDetailsCell *)self topSeperator];
+  [topSeperator2 setFrame:{v131, v117, v119 - v130, v121}];
 }
 
-- (void)setShowsLocation:(BOOL)a3
+- (void)setShowsLocation:(BOOL)location
 {
   v10.receiver = self;
   v10.super_class = CKDetailsContactsStandardTableViewCell;
-  [(CKDetailsContactsTableViewCell *)&v10 setShowsLocation:a3];
-  v4 = [(CKDetailsContactsTableViewCell *)self locationLabel];
-  if (v4)
+  [(CKDetailsContactsTableViewCell *)&v10 setShowsLocation:location];
+  locationLabel = [(CKDetailsContactsTableViewCell *)self locationLabel];
+  if (locationLabel)
   {
-    v5 = v4;
-    v6 = [(CKDetailsContactsTableViewCell *)self locationLabel];
-    v7 = [v6 superview];
+    v5 = locationLabel;
+    locationLabel2 = [(CKDetailsContactsTableViewCell *)self locationLabel];
+    superview = [locationLabel2 superview];
 
-    if (!v7)
+    if (!superview)
     {
-      v8 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-      v9 = [(CKDetailsContactsTableViewCell *)self locationLabel];
-      [v8 addSubview:v9];
+      contentView = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+      locationLabel3 = [(CKDetailsContactsTableViewCell *)self locationLabel];
+      [contentView addSubview:locationLabel3];
     }
   }
 }
 
-- (void)setShowsTUConversationStatus:(BOOL)a3
+- (void)setShowsTUConversationStatus:(BOOL)status
 {
   v8.receiver = self;
   v8.super_class = CKDetailsContactsStandardTableViewCell;
-  [(CKDetailsContactsTableViewCell *)&v8 setShowsTUConversationStatus:a3];
-  v4 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
-  v5 = [v4 superview];
+  [(CKDetailsContactsTableViewCell *)&v8 setShowsTUConversationStatus:status];
+  expanseStatusLabel = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
+  superview = [expanseStatusLabel superview];
 
-  if (!v5)
+  if (!superview)
   {
-    v6 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    v7 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
-    [v6 addSubview:v7];
+    contentView = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    expanseStatusLabel2 = [(CKDetailsContactsTableViewCell *)self expanseStatusLabel];
+    [contentView addSubview:expanseStatusLabel2];
   }
 }
 
@@ -499,69 +499,69 @@ LABEL_68:
   if ([(CKDetailsContactsTableViewCell *)self showPhoneButton])
   {
     v6 = self->_visibleButtons;
-    v7 = [(CKDetailsContactsTableViewCell *)self phoneButton];
-    [(NSMutableArray *)v6 addObject:v7];
+    phoneButton = [(CKDetailsContactsTableViewCell *)self phoneButton];
+    [(NSMutableArray *)v6 addObject:phoneButton];
 
-    v8 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    v9 = [(CKDetailsContactsTableViewCell *)self phoneButton];
-    [v8 addSubview:v9];
+    contentView = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    phoneButton2 = [(CKDetailsContactsTableViewCell *)self phoneButton];
+    [contentView addSubview:phoneButton2];
   }
 
   else
   {
-    v8 = [(CKDetailsContactsTableViewCell *)self phoneButton];
-    [v8 removeFromSuperview];
+    contentView = [(CKDetailsContactsTableViewCell *)self phoneButton];
+    [contentView removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showMessageButton])
   {
     v10 = self->_visibleButtons;
-    v11 = [(CKDetailsContactsTableViewCell *)self messageButton];
-    [(NSMutableArray *)v10 addObject:v11];
+    messageButton = [(CKDetailsContactsTableViewCell *)self messageButton];
+    [(NSMutableArray *)v10 addObject:messageButton];
 
-    v12 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    v13 = [(CKDetailsContactsTableViewCell *)self messageButton];
-    [v12 addSubview:v13];
+    contentView2 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    messageButton2 = [(CKDetailsContactsTableViewCell *)self messageButton];
+    [contentView2 addSubview:messageButton2];
   }
 
   else
   {
-    v12 = [(CKDetailsContactsTableViewCell *)self messageButton];
-    [v12 removeFromSuperview];
+    contentView2 = [(CKDetailsContactsTableViewCell *)self messageButton];
+    [contentView2 removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showFaceTimeVideoButton])
   {
     v14 = self->_visibleButtons;
-    v15 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
-    [(NSMutableArray *)v14 addObject:v15];
+    facetimeVideoButton = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
+    [(NSMutableArray *)v14 addObject:facetimeVideoButton];
 
-    v16 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    v17 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
-    [v16 addSubview:v17];
+    contentView3 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    facetimeVideoButton2 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
+    [contentView3 addSubview:facetimeVideoButton2];
   }
 
   else
   {
-    v16 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
-    [v16 removeFromSuperview];
+    contentView3 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
+    [contentView3 removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showScreenSharingButton])
   {
     v18 = self->_visibleButtons;
-    v19 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
-    [(NSMutableArray *)v18 addObject:v19];
+    screenSharingButton = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
+    [(NSMutableArray *)v18 addObject:screenSharingButton];
 
-    v20 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
-    v21 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
-    [v20 addSubview:v21];
+    contentView4 = [(CKDetailsContactsStandardTableViewCell *)self contentView];
+    screenSharingButton2 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
+    [contentView4 addSubview:screenSharingButton2];
   }
 
   else
   {
-    v20 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
-    [v20 removeFromSuperview];
+    contentView4 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
+    [contentView4 removeFromSuperview];
   }
 
   [(CKDetailsContactsStandardTableViewCell *)self layoutSubviews];
@@ -582,26 +582,26 @@ LABEL_68:
   [(NSMutableArray *)visibleButtons removeAllObjects];
   if ([(CKDetailsContactsTableViewCell *)self showPhoneButton])
   {
-    v6 = [(CKDetailsContactsTableViewCell *)self phoneButton];
-    [v6 removeFromSuperview];
+    phoneButton = [(CKDetailsContactsTableViewCell *)self phoneButton];
+    [phoneButton removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showMessageButton])
   {
-    v7 = [(CKDetailsContactsTableViewCell *)self messageButton];
-    [v7 removeFromSuperview];
+    messageButton = [(CKDetailsContactsTableViewCell *)self messageButton];
+    [messageButton removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showFaceTimeVideoButton])
   {
-    v8 = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
-    [v8 removeFromSuperview];
+    facetimeVideoButton = [(CKDetailsContactsTableViewCell *)self facetimeVideoButton];
+    [facetimeVideoButton removeFromSuperview];
   }
 
   if ([(CKDetailsContactsTableViewCell *)self showScreenSharingButton])
   {
-    v9 = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
-    [v9 removeFromSuperview];
+    screenSharingButton = [(CKDetailsContactsTableViewCell *)self screenSharingButton];
+    [screenSharingButton removeFromSuperview];
   }
 
   [(CKDetailsContactsStandardTableViewCell *)self layoutSubviews];

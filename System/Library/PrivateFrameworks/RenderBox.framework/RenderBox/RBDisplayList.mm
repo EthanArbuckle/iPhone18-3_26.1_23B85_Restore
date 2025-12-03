@@ -1,8 +1,8 @@
 @interface RBDisplayList
 - (BOOL)isEmpty;
 - (CGAffineTransform)CTM;
-- (CGContext)beginCGContextWithAlpha:(float)a3;
-- (CGContext)beginCGContextWithAlpha:(float)a3 flags:(unsigned int)a4;
+- (CGContext)beginCGContextWithAlpha:(float)alpha;
+- (CGContext)beginCGContextWithAlpha:(float)alpha flags:(unsigned int)flags;
 - (CGRect)boundingRect;
 - (CGRect)clipBoundingBox;
 - (CGRect)contentRect;
@@ -15,46 +15,46 @@
 - (id).cxx_construct;
 - (id)moveContents;
 - (uint64_t)moveContents;
-- (void)_drawInState:(_RBDrawingState *)a3 alpha:(float)a4;
-- (void)addAffineTransformStyle:(CGAffineTransform *)a3;
-- (void)addAlphaGradientFilterWithStopCount:(int64_t)a3 colors:(id *)a4 colorSpace:(int)a5 locations:(const double *)a6 flags:(unsigned int)a7;
-- (void)addAlphaMultiplyFilterWithColor:(id)a3;
-- (void)addAlphaMultiplyFilterWithColor:(id)a3 colorSpace:(int)a4 flags:(unsigned int)a5;
-- (void)addAlphaThresholdFilterWithAlpha:(float)a3 color:(id)a4 colorSpace:(int)a5;
-- (void)addAlphaThresholdFilterWithMinAlpha:(float)a3 maxAlpha:(float)a4 color:(id)a5 colorSpace:(int)a6;
-- (void)addColorMonochromeFilterWithAmount:(float)a3 color:(id)a4 bias:(float)a5;
-- (void)addColorMonochromeFilterWithAmount:(float)a3 color:(id)a4 colorSpace:(int)a5 bias:(float)a6 flags:(unsigned int)a7;
-- (void)addColorMultiplyFilterWithColor:(id)a3;
-- (void)addColorMultiplyFilterWithColor:(id)a3 colorSpace:(int)a4 flags:(unsigned int)a5;
-- (void)addFilterLayerWithShader:(id)a3 border:(CGSize)a4 layerBorder:(CGSize)a5 bounds:(const CGRect *)a6 flags:(unsigned int)a7;
-- (void)addGrayscaleFilterWithAmount:(float)a3;
-- (void)addGrayscaleFilterWithAmount:(float)a3 flags:(unsigned int)a4;
-- (void)addLuminanceCurveFilterWithCurve:(float)a3[4] color:(id)a4 colorSpace:(int)a5 flags:(unsigned int)a6;
-- (void)addPathProjectionStyleWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 path:(RBPath)a5 transform:(CGAffineTransform *)a6 flags:(unsigned int)a7;
-- (void)addShadowStyleWithRadius:(double)a3 midpoint:(float)a4 offset:(CGSize)a5 color:(id)a6 colorSpace:(int)a7 blendMode:(int)a8 flags:(unsigned int)a9;
-- (void)addShadowStyleWithRadius:(double)a3 offset:(CGSize)a4 color:(id)a5 colorSpace:(int)a6 blendMode:(int)a7 flags:(unsigned int)a8;
-- (void)addShadowStyleWithRadius:(double)a3 offset:(CGSize)a4 color:(id)a5 mode:(unsigned int)a6;
-- (void)addVariableBlurLayerWithAlpha:(float)a3 scale:(double)a4 radius:(double)a5 bounds:(CGRect)a6 flags:(unsigned int)a7;
-- (void)beginLayerWithFlags:(unsigned int)a3;
+- (void)_drawInState:(_RBDrawingState *)state alpha:(float)alpha;
+- (void)addAffineTransformStyle:(CGAffineTransform *)style;
+- (void)addAlphaGradientFilterWithStopCount:(int64_t)count colors:(id *)colors colorSpace:(int)space locations:(const double *)locations flags:(unsigned int)flags;
+- (void)addAlphaMultiplyFilterWithColor:(id)color;
+- (void)addAlphaMultiplyFilterWithColor:(id)color colorSpace:(int)space flags:(unsigned int)flags;
+- (void)addAlphaThresholdFilterWithAlpha:(float)alpha color:(id)color colorSpace:(int)space;
+- (void)addAlphaThresholdFilterWithMinAlpha:(float)alpha maxAlpha:(float)maxAlpha color:(id)color colorSpace:(int)space;
+- (void)addColorMonochromeFilterWithAmount:(float)amount color:(id)color bias:(float)bias;
+- (void)addColorMonochromeFilterWithAmount:(float)amount color:(id)color colorSpace:(int)space bias:(float)bias flags:(unsigned int)flags;
+- (void)addColorMultiplyFilterWithColor:(id)color;
+- (void)addColorMultiplyFilterWithColor:(id)color colorSpace:(int)space flags:(unsigned int)flags;
+- (void)addFilterLayerWithShader:(id)shader border:(CGSize)border layerBorder:(CGSize)layerBorder bounds:(const CGRect *)bounds flags:(unsigned int)flags;
+- (void)addGrayscaleFilterWithAmount:(float)amount;
+- (void)addGrayscaleFilterWithAmount:(float)amount flags:(unsigned int)flags;
+- (void)addLuminanceCurveFilterWithCurve:(float)curve[4] color:(id)color colorSpace:(int)space flags:(unsigned int)flags;
+- (void)addPathProjectionStyleWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint path:(RBPath)path transform:(CGAffineTransform *)transform flags:(unsigned int)flags;
+- (void)addShadowStyleWithRadius:(double)radius midpoint:(float)midpoint offset:(CGSize)offset color:(id)color colorSpace:(int)space blendMode:(int)mode flags:(unsigned int)flags;
+- (void)addShadowStyleWithRadius:(double)radius offset:(CGSize)offset color:(id)color colorSpace:(int)space blendMode:(int)mode flags:(unsigned int)flags;
+- (void)addShadowStyleWithRadius:(double)radius offset:(CGSize)offset color:(id)color mode:(unsigned int)mode;
+- (void)addVariableBlurLayerWithAlpha:(float)alpha scale:(double)scale radius:(double)radius bounds:(CGRect)bounds flags:(unsigned int)flags;
+- (void)beginLayerWithFlags:(unsigned int)flags;
 - (void)beginRecordingXML;
 - (void)clear;
 - (void)clearCaches;
-- (void)clipLayerWithAlpha:(float)a3 mode:(int)a4;
-- (void)concat:(CGAffineTransform *)a3;
+- (void)clipLayerWithAlpha:(float)alpha mode:(int)mode;
+- (void)concat:(CGAffineTransform *)concat;
 - (void)dealloc;
-- (void)drawDebugSeed:(void *)a1;
-- (void)drawLayerWithAlpha:(float)a3 blendMode:(int)a4;
-- (void)renderInContext:(CGContext *)a3 options:(id)a4;
+- (void)drawDebugSeed:(void *)seed;
+- (void)drawLayerWithAlpha:(float)alpha blendMode:(int)mode;
+- (void)renderInContext:(CGContext *)context options:(id)options;
 - (void)restore;
 - (void)save;
-- (void)setCGStyleHandler:(id)a3;
-- (void)setCTM:(CGAffineTransform *)a3;
-- (void)setContentRect:(CGRect)a3;
-- (void)setDefaultColorSpace:(int)a3;
-- (void)setDeviceScale:(double)a3;
-- (void)setLayerAnimationSequencer:(id)a3;
-- (void)setLinearColors:(BOOL)a3;
-- (void)setProfile:(unsigned int)a3;
+- (void)setCGStyleHandler:(id)handler;
+- (void)setCTM:(CGAffineTransform *)m;
+- (void)setContentRect:(CGRect)rect;
+- (void)setDefaultColorSpace:(int)space;
+- (void)setDeviceScale:(double)scale;
+- (void)setLayerAnimationSequencer:(id)sequencer;
+- (void)setLinearColors:(BOOL)colors;
+- (void)setProfile:(unsigned int)profile;
 @end
 
 @implementation RBDisplayList
@@ -216,11 +216,11 @@ LABEL_7:
   return result;
 }
 
-- (void)setContentRect:(CGRect)a3
+- (void)setContentRect:(CGRect)rect
 {
-  y = a3.origin.y;
-  height = a3.size.height;
-  RB::DisplayList::Builder::set_crop(self + 2, a2, vcvt_f32_f64(a3.origin), vcvt_f32_f64(a3.size));
+  y = rect.origin.y;
+  height = rect.size.height;
+  RB::DisplayList::Builder::set_crop(self + 2, a2, vcvt_f32_f64(rect.origin), vcvt_f32_f64(rect.size));
 }
 
 - (float)contentHeadroom
@@ -237,20 +237,20 @@ LABEL_7:
   return result;
 }
 
-- (void)setDeviceScale:(double)a3
+- (void)setDeviceScale:(double)scale
 {
-  if (*(self + 47) != a3)
+  if (*(self + 47) != scale)
   {
-    *(self + 47) = a3;
+    *(self + 47) = scale;
     v3 = *(self + 40);
     if (v3)
     {
-      RB::XML::DisplayList::device_scale(v3, a2, a3);
+      RB::XML::DisplayList::device_scale(v3, a2, scale);
     }
   }
 }
 
-- (void)setProfile:(unsigned int)a3
+- (void)setProfile:(unsigned int)profile
 {
   v4 = *(self + 3);
   if (v4 && (*(v4 + 336) || *(v4 + 352)))
@@ -258,12 +258,12 @@ LABEL_7:
     [(RBDisplayList *)self setProfile:a2];
   }
 
-  if (*(self + 93) != a3)
+  if (*(self + 93) != profile)
   {
-    *(self + 93) = a3;
+    *(self + 93) = profile;
     v5 = self + 16;
 
-    RB::DisplayList::Builder::set_optimized(v5, a3 != 0);
+    RB::DisplayList::Builder::set_optimized(v5, profile != 0);
   }
 }
 
@@ -283,24 +283,24 @@ LABEL_7:
   return *(v2 + 352) == 0;
 }
 
-- (void)setDefaultColorSpace:(int)a3
+- (void)setDefaultColorSpace:(int)space
 {
   v4 = *(self + 37);
   v5 = *(v4 + 8);
-  *(v4 + 156) = rb_color_space(a3);
+  *(v4 + 156) = rb_color_space(space);
   v6 = *(v5 + 320);
   if (v6)
   {
-    *(v6 + 112) = a3;
+    *(v6 + 112) = space;
   }
 }
 
-- (void)setLinearColors:(BOOL)a3
+- (void)setLinearColors:(BOOL)colors
 {
-  v3 = a3;
+  colorsCopy = colors;
   v5 = rb_color_space([(RBDisplayList *)self defaultColorSpace]);
   v6 = v5 & 0xF;
-  if (v3)
+  if (colorsCopy)
   {
     v7 = 0;
   }
@@ -343,10 +343,10 @@ LABEL_7:
   }
 }
 
-- (void)beginLayerWithFlags:(unsigned int)a3
+- (void)beginLayerWithFlags:(unsigned int)flags
 {
-  v3 = *&a3;
-  if ((a3 & 4) != 0)
+  v3 = *&flags;
+  if ((flags & 4) != 0)
   {
     v5 = 119;
   }
@@ -356,8 +356,8 @@ LABEL_7:
     v5 = 123;
   }
 
-  v6 = v5 & a3;
-  if ((a3 & 0xA0) != 0)
+  v6 = v5 & flags;
+  if ((flags & 0xA0) != 0)
   {
     v7 = v6 | 0x80;
   }
@@ -398,7 +398,7 @@ LABEL_7:
   return v4;
 }
 
-- (void)setLayerAnimationSequencer:(id)a3
+- (void)setLayerAnimationSequencer:(id)sequencer
 {
   v5 = RB::DisplayList::Builder::current_layer(self + 16, *(self + 37));
   if (!v5 || (v7 = v5, (*(v5 + 77) & 1) != 0))
@@ -408,10 +408,10 @@ LABEL_7:
 
   if ((*(self + 304) & 1) == 0)
   {
-    if (a3)
+    if (sequencer)
     {
       v8 = *(self + 3);
-      v9 = [(RBAnimation *)a3 rb_animation];
+      rb_animation = [(RBAnimation *)sequencer rb_animation];
       v10 = ((v8[4] + 7) & 0xFFFFFFFFFFFFFFF8);
       if ((v10 + 3) > v8[5])
       {
@@ -423,9 +423,9 @@ LABEL_7:
         v8[4] = (v10 + 3);
       }
 
-      v11 = *v9;
-      v12 = v9[2];
-      v10[1] = v9[1];
+      v11 = *rb_animation;
+      v12 = rb_animation[2];
+      v10[1] = rb_animation[1];
       v10[2] = v12;
       *v10 = v11;
     }
@@ -439,28 +439,28 @@ LABEL_7:
   }
 }
 
-- (void)drawLayerWithAlpha:(float)a3 blendMode:(int)a4
+- (void)drawLayerWithAlpha:(float)alpha blendMode:(int)mode
 {
   v7 = RB::DisplayList::Builder::end_layer((self + 16), *(self + 37));
   RB::DisplayList::Builder::restore((self + 16), 1);
   v8 = *(self + 37);
-  v9 = rb_blend_mode(a4);
-  RB::DisplayList::Builder::draw_layer(self + 16, v7, v8, v9, a3);
+  v9 = rb_blend_mode(mode);
+  RB::DisplayList::Builder::draw_layer(self + 16, v7, v8, v9, alpha);
   v10 = *(self + 40);
   if (v10)
   {
 
-    RB::XML::DisplayList::draw_layer(v10, a4, a3);
+    RB::XML::DisplayList::draw_layer(v10, mode, alpha);
   }
 }
 
-- (void)clipLayerWithAlpha:(float)a3 mode:(int)a4
+- (void)clipLayerWithAlpha:(float)alpha mode:(int)mode
 {
   v7 = RB::DisplayList::Builder::end_layer((self + 16), *(self + 37));
   RB::DisplayList::Builder::restore((self + 16), 1);
   v8 = *(self + 37);
-  v9 = rb_clip_mode(a4);
-  RB::DisplayList::Builder::clip_layer(self + 2, v7, v8, v9, a3);
+  v9 = rb_clip_mode(mode);
+  RB::DisplayList::Builder::clip_layer(self + 2, v7, v8, v9, alpha);
   if (*(self + 40))
   {
 
@@ -468,37 +468,37 @@ LABEL_7:
   }
 }
 
-- (CGContext)beginCGContextWithAlpha:(float)a3
+- (CGContext)beginCGContextWithAlpha:(float)alpha
 {
   v4 = *(self + 37);
   [(RBDisplayList *)self deviceScale];
 
-  return begin_cgcontext(v4, a3, v5, 0);
+  return begin_cgcontext(v4, alpha, v5, 0);
 }
 
-- (CGContext)beginCGContextWithAlpha:(float)a3 flags:(unsigned int)a4
+- (CGContext)beginCGContextWithAlpha:(float)alpha flags:(unsigned int)flags
 {
   v6 = *(self + 37);
   [(RBDisplayList *)self deviceScale];
 
-  return begin_cgcontext(v6, a3, v7, a4);
+  return begin_cgcontext(v6, alpha, v7, flags);
 }
 
-- (void)setCGStyleHandler:(id)a3
+- (void)setCGStyleHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
 
   *(self + 41) = v4;
 }
 
-- (void)renderInContext:(CGContext *)a3 options:(id)a4
+- (void)renderInContext:(CGContext *)context options:(id)options
 {
   v5 = *(self + 3);
   if (v5)
   {
-    render_contents(a3, a4, v5, *(self + 40));
+    render_contents(context, options, v5, *(self + 40));
 
-    RBXMLRecorderMarkCGFrame(self, a3);
+    RBXMLRecorderMarkCGFrame(self, context);
   }
 }
 
@@ -512,13 +512,13 @@ LABEL_7:
   return self;
 }
 
-- (void)setCTM:(CGAffineTransform *)a3
+- (void)setCTM:(CGAffineTransform *)m
 {
   v3 = *(self + 37);
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&m->c;
+  v5[0] = *&m->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&m->tx;
   RBDrawingStateSetCTM(v3, v5);
 }
 
@@ -532,12 +532,12 @@ LABEL_7:
   return result;
 }
 
-- (void)concat:(CGAffineTransform *)a3
+- (void)concat:(CGAffineTransform *)concat
 {
   v3 = *(self + 37);
-  v4 = *&a3->c;
-  v5 = *&a3->tx;
-  v6[0] = *&a3->a;
+  v4 = *&concat->c;
+  v5 = *&concat->tx;
+  v6[0] = *&concat->a;
   v6[1] = v4;
   v6[2] = v5;
   RBDrawingStateConcatCTM(v3, v6);
@@ -557,19 +557,19 @@ LABEL_7:
   return v2;
 }
 
-- (void)_drawInState:(_RBDrawingState *)a3 alpha:(float)a4
+- (void)_drawInState:(_RBDrawingState *)state alpha:(float)alpha
 {
   [(RBDisplayList *)self clearCaches];
-  v8 = *(a3 + 1);
+  v8 = *(state + 1);
   if (!*(v8 + 24))
   {
-    make_contents(*(a3 + 1));
+    make_contents(*(state + 1));
   }
 
   v9 = *(self + 3);
   if (v9)
   {
-    RB::DisplayList::Builder::draw(v8 + 16, v9, a3, a4, 0, 0);
+    RB::DisplayList::Builder::draw(v8 + 16, v9, state, alpha, 0, 0);
   }
 
   v10 = *(v8 + 320);
@@ -579,78 +579,78 @@ LABEL_7:
     if (v11)
     {
 
-      RB::XML::DisplayList::draw_list(v10, a3, v11, v7, a4);
+      RB::XML::DisplayList::draw_list(v10, state, v11, v7, alpha);
     }
   }
 }
 
-- (void)addShadowStyleWithRadius:(double)a3 midpoint:(float)a4 offset:(CGSize)a5 color:(id)a6 colorSpace:(int)a7 blendMode:(int)a8 flags:(unsigned int)a9
+- (void)addShadowStyleWithRadius:(double)radius midpoint:(float)midpoint offset:(CGSize)offset color:(id)color colorSpace:(int)space blendMode:(int)mode flags:(unsigned int)flags
 {
   v9 = *(self + 37);
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  radiusCopy = radius;
+  offsetCopy = offset;
+  colorCopy = color;
+  spaceCopy = space;
   v14 = 0;
-  v15 = a4;
-  v16 = a8;
-  v17 = a9;
-  add_style(v9, &v10);
+  midpointCopy = midpoint;
+  modeCopy = mode;
+  flagsCopy = flags;
+  add_style(v9, &radiusCopy);
 }
 
-- (void)addShadowStyleWithRadius:(double)a3 offset:(CGSize)a4 color:(id)a5 colorSpace:(int)a6 blendMode:(int)a7 flags:(unsigned int)a8
+- (void)addShadowStyleWithRadius:(double)radius offset:(CGSize)offset color:(id)color colorSpace:(int)space blendMode:(int)mode flags:(unsigned int)flags
 {
   v8 = *(self + 37);
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  radiusCopy = radius;
+  offsetCopy = offset;
+  colorCopy = color;
+  spaceCopy = space;
   v13 = 0x3F00000000000000;
-  v14 = a7;
-  v15 = a8;
-  add_style(v8, &v9);
+  modeCopy = mode;
+  flagsCopy = flags;
+  add_style(v8, &radiusCopy);
 }
 
-- (void)addShadowStyleWithRadius:(double)a3 offset:(CGSize)a4 color:(id)a5 mode:(unsigned int)a6
+- (void)addShadowStyleWithRadius:(double)radius offset:(CGSize)offset color:(id)color mode:(unsigned int)mode
 {
   v6 = *(self + 37);
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  radiusCopy = radius;
+  offsetCopy = offset;
+  colorCopy = color;
   v10 = 0;
   v11 = 0x3F00000000000000;
   v12 = 0;
-  v13 = a6;
-  add_style(v6, &v7);
+  modeCopy = mode;
+  add_style(v6, &radiusCopy);
 }
 
-- (void)addAffineTransformStyle:(CGAffineTransform *)a3
+- (void)addAffineTransformStyle:(CGAffineTransform *)style
 {
   v3 = *(self + 37);
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&style->c;
+  v5[0] = *&style->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&style->tx;
   RBDrawingStateAddAffineTransformStyle(v3, v5);
 }
 
-- (void)addPathProjectionStyleWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 path:(RBPath)a5 transform:(CGAffineTransform *)a6 flags:(unsigned int)a7
+- (void)addPathProjectionStyleWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint path:(RBPath)path transform:(CGAffineTransform *)transform flags:(unsigned int)flags
 {
   v7 = *(self + 37);
-  v8 = *&a6->c;
-  v9[0] = *&a6->a;
+  v8 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v8;
-  v9[2] = *&a6->tx;
-  RBDrawingStateAddPathProjectionStyle(v7, a5.var0, a5.var1, v9, *&a7, a3, a3.y, a4.x, a4.y);
+  v9[2] = *&transform->tx;
+  RBDrawingStateAddPathProjectionStyle(v7, path.var0, path.var1, v9, *&flags, point, point.y, endPoint.x, endPoint.y);
 }
 
-- (void)addVariableBlurLayerWithAlpha:(float)a3 scale:(double)a4 radius:(double)a5 bounds:(CGRect)a6 flags:(unsigned int)a7
+- (void)addVariableBlurLayerWithAlpha:(float)alpha scale:(double)scale radius:(double)radius bounds:(CGRect)bounds flags:(unsigned int)flags
 {
-  v7 = *&a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  v7 = *&flags;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v16 = RB::DisplayList::Builder::end_layer((self + 16), *(self + 37));
   RB::DisplayList::Builder::restore((self + 16), 1);
   v17 = *(self + 37);
@@ -659,150 +659,150 @@ LABEL_7:
   v20 = width;
   v21 = height;
 
-  add_variable_blur_layer(v17, v16, a4, a3, a5, *&v18, v7);
+  add_variable_blur_layer(v17, v16, scale, alpha, radius, *&v18, v7);
 }
 
-- (void)addAlphaThresholdFilterWithMinAlpha:(float)a3 maxAlpha:(float)a4 color:(id)a5 colorSpace:(int)a6
+- (void)addAlphaThresholdFilterWithMinAlpha:(float)alpha maxAlpha:(float)maxAlpha color:(id)color colorSpace:(int)space
 {
-  if (a4 >= 1.0)
+  if (maxAlpha >= 1.0)
   {
-    a4 = INFINITY;
+    maxAlpha = INFINITY;
   }
 
   v6 = *(self + 37);
   v7[0] = 3;
-  *&v7[1] = a3;
-  *&v7[2] = a4;
-  v8 = a5;
-  v9 = a6;
+  *&v7[1] = alpha;
+  *&v7[2] = maxAlpha;
+  colorCopy = color;
+  spaceCopy = space;
   v10 = 0;
   add_style(v6, v7);
 }
 
-- (void)addAlphaThresholdFilterWithAlpha:(float)a3 color:(id)a4 colorSpace:(int)a5
+- (void)addAlphaThresholdFilterWithAlpha:(float)alpha color:(id)color colorSpace:(int)space
 {
   v5 = *(self + 37);
   v6[0] = 3;
-  *&v6[1] = a3;
+  *&v6[1] = alpha;
   v6[2] = 2139095040;
-  v7 = a4;
-  v8 = a5;
+  colorCopy = color;
+  spaceCopy = space;
   v9 = 0;
   add_style(v5, v6);
 }
 
-- (void)addAlphaGradientFilterWithStopCount:(int64_t)a3 colors:(id *)a4 colorSpace:(int)a5 locations:(const double *)a6 flags:(unsigned int)a7
+- (void)addAlphaGradientFilterWithStopCount:(int64_t)count colors:(id *)colors colorSpace:(int)space locations:(const double *)locations flags:(unsigned int)flags
 {
   v7 = *(self + 37);
   v8 = 0u;
   LOBYTE(v8) = 3;
   DWORD2(v8) = 1065353216;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  countCopy = count;
+  colorsCopy = colors;
+  spaceCopy = space;
+  locationsCopy = locations;
+  flagsCopy = flags;
   add_style(v7, &v8);
 }
 
-- (void)addColorMultiplyFilterWithColor:(id)a3 colorSpace:(int)a4 flags:(unsigned int)a5
+- (void)addColorMultiplyFilterWithColor:(id)color colorSpace:(int)space flags:(unsigned int)flags
 {
   v5 = *(self + 37);
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  spaceCopy = space;
   v8 = 0;
-  v9 = a5;
-  add_color_multiply_style(v5, &v6);
+  flagsCopy = flags;
+  add_color_multiply_style(v5, &colorCopy);
 }
 
-- (void)addColorMultiplyFilterWithColor:(id)a3
+- (void)addColorMultiplyFilterWithColor:(id)color
 {
   v3 = *(self + 37);
-  v4 = a3;
+  colorCopy = color;
   v5 = 0;
   v6 = 0;
-  add_color_multiply_style(v3, &v4);
+  add_color_multiply_style(v3, &colorCopy);
 }
 
-- (void)addAlphaMultiplyFilterWithColor:(id)a3 colorSpace:(int)a4 flags:(unsigned int)a5
+- (void)addAlphaMultiplyFilterWithColor:(id)color colorSpace:(int)space flags:(unsigned int)flags
 {
   v5 = *(self + 37);
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  spaceCopy = space;
   v8 = 0;
-  v9 = a5;
-  add_alpha_multiply_style(v5, &v6);
+  flagsCopy = flags;
+  add_alpha_multiply_style(v5, &colorCopy);
 }
 
-- (void)addAlphaMultiplyFilterWithColor:(id)a3
+- (void)addAlphaMultiplyFilterWithColor:(id)color
 {
   v3 = *(self + 37);
-  v4 = a3;
+  colorCopy = color;
   v5 = 0;
   v6 = 0;
-  add_alpha_multiply_style(v3, &v4);
+  add_alpha_multiply_style(v3, &colorCopy);
 }
 
-- (void)addGrayscaleFilterWithAmount:(float)a3 flags:(unsigned int)a4
+- (void)addGrayscaleFilterWithAmount:(float)amount flags:(unsigned int)flags
 {
   v4 = *(self + 37);
-  v5 = LODWORD(a3);
+  v5 = LODWORD(amount);
   v6 = RBColorWhite;
   v7 = 0;
-  v8 = a4;
+  flagsCopy = flags;
   add_style(v4, &v5);
 }
 
-- (void)addGrayscaleFilterWithAmount:(float)a3
+- (void)addGrayscaleFilterWithAmount:(float)amount
 {
   v3 = *(self + 37);
-  v4 = LODWORD(a3);
+  v4 = LODWORD(amount);
   v5 = RBColorWhite;
   v6 = 0;
   v7 = 0;
   add_style(v3, &v4);
 }
 
-- (void)addColorMonochromeFilterWithAmount:(float)a3 color:(id)a4 colorSpace:(int)a5 bias:(float)a6 flags:(unsigned int)a7
+- (void)addColorMonochromeFilterWithAmount:(float)amount color:(id)color colorSpace:(int)space bias:(float)bias flags:(unsigned int)flags
 {
   v7 = *(self + 37);
-  *&v8 = a3;
-  *(&v8 + 1) = a6;
-  v9 = a4;
-  v10 = a5;
+  *&v8 = amount;
+  *(&v8 + 1) = bias;
+  colorCopy = color;
+  spaceCopy = space;
   v11 = 0;
   add_style(v7, &v8);
 }
 
-- (void)addColorMonochromeFilterWithAmount:(float)a3 color:(id)a4 bias:(float)a5
+- (void)addColorMonochromeFilterWithAmount:(float)amount color:(id)color bias:(float)bias
 {
   v5 = *(self + 37);
-  *&v6 = a3;
-  *(&v6 + 1) = a5;
-  v7 = a4;
+  *&v6 = amount;
+  *(&v6 + 1) = bias;
+  colorCopy = color;
   v8 = 0;
   v9 = 0;
   add_style(v5, &v6);
 }
 
-- (void)addLuminanceCurveFilterWithCurve:(float)a3[4] color:(id)a4 colorSpace:(int)a5 flags:(unsigned int)a6
+- (void)addLuminanceCurveFilterWithCurve:(float)curve[4] color:(id)color colorSpace:(int)space flags:(unsigned int)flags
 {
   v6 = *(self + 37);
-  v7[0] = *a3;
-  v7[1] = a4;
-  v8 = a5;
+  v7[0] = *curve;
+  v7[1] = color;
+  spaceCopy = space;
   v9 = 0;
-  v10 = a6;
+  flagsCopy = flags;
   add_style(v6, v7);
 }
 
-- (void)addFilterLayerWithShader:(id)a3 border:(CGSize)a4 layerBorder:(CGSize)a5 bounds:(const CGRect *)a6 flags:(unsigned int)a7
+- (void)addFilterLayerWithShader:(id)shader border:(CGSize)border layerBorder:(CGSize)layerBorder bounds:(const CGRect *)bounds flags:(unsigned int)flags
 {
-  v7 = *&a7;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.height;
-  v12 = a4.width;
+  v7 = *&flags;
+  height = layerBorder.height;
+  width = layerBorder.width;
+  v11 = border.height;
+  v12 = border.width;
   v15 = RB::DisplayList::Builder::end_layer((self + 16), *(self + 37));
   RB::DisplayList::Builder::restore((self + 16), 1);
   v16 = *(self + 37);
@@ -811,7 +811,7 @@ LABEL_7:
   v19 = width;
   v20 = height;
 
-  add_shader_filter_layer(v16, a3, v15, *&v17, *&v19, a6, v7);
+  add_shader_filter_layer(v16, shader, v15, *&v17, *&v19, bounds, v7);
 }
 
 - (void)beginRecordingXML
@@ -822,10 +822,10 @@ LABEL_7:
   }
 }
 
-- (void)drawDebugSeed:(void *)a1
+- (void)drawDebugSeed:(void *)seed
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (seed)
   {
     if ([RBDisplayList drawDebugSeed:]::once != -1)
     {
@@ -865,10 +865,10 @@ LABEL_7:
     LODWORD(v13) = 1065353216;
     [v5 setColor:{v10, v11, v12, v13}];
     LODWORD(v14) = 1.0;
-    [a1 drawShape:v4 fill:v5 alpha:0 blendMode:v14];
-    [a1 save];
-    [a1 translateByX:1.0 Y:17.0];
-    [a1 scaleByX:16.0 Y:-16.0];
+    [seed drawShape:v4 fill:v5 alpha:0 blendMode:v14];
+    [seed save];
+    [seed translateByX:1.0 Y:17.0];
+    [seed scaleByX:16.0 Y:-16.0];
     [v4 setGlyphs:v21 positions:v20 count:v6 font:-[RBDisplayList drawDebugSeed:]::font renderingStyle:13];
     LODWORD(v15) = 1065353216;
     LODWORD(v16) = 1065353216;
@@ -876,8 +876,8 @@ LABEL_7:
     LODWORD(v18) = 1065353216;
     [v5 setColor:{v15, v16, v17, v18}];
     LODWORD(v19) = 1.0;
-    [a1 drawShape:v4 fill:v5 alpha:0 blendMode:v19];
-    [a1 restore];
+    [seed drawShape:v4 fill:v5 alpha:0 blendMode:v19];
+    [seed restore];
   }
 }
 
@@ -895,7 +895,7 @@ CGFontRef __31__RBDisplayList_drawDebugSeed___block_invoke()
 
 - (uint64_t)moveContents
 {
-  result = OUTLINED_FUNCTION_0_2(a1);
+  result = OUTLINED_FUNCTION_0_2(self);
   if (v8)
   {
     OUTLINED_FUNCTION_0();

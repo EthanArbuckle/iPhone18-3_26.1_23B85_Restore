@@ -1,6 +1,6 @@
 @interface PCRuntimeParameters
 + (int64_t)contextPrefetchLimit;
-+ (void)rateLimitRequestsInFeed:(float)a3 inArticle:(float)a4 betweenArticle:(float)a5 videoInArticle:(float)a6 nativeInFeed:(float)a7 nativeInArticle:(float)a8;
++ (void)rateLimitRequestsInFeed:(float)feed inArticle:(float)article betweenArticle:(float)betweenArticle videoInArticle:(float)inArticle nativeInFeed:(float)inFeed nativeInArticle:(float)nativeInArticle;
 @end
 
 @implementation PCRuntimeParameters
@@ -18,26 +18,26 @@
   }
 }
 
-+ (void)rateLimitRequestsInFeed:(float)a3 inArticle:(float)a4 betweenArticle:(float)a5 videoInArticle:(float)a6 nativeInFeed:(float)a7 nativeInArticle:(float)a8
++ (void)rateLimitRequestsInFeed:(float)feed inArticle:(float)article betweenArticle:(float)betweenArticle videoInArticle:(float)inArticle nativeInFeed:(float)inFeed nativeInArticle:(float)nativeInArticle
 {
   v36 = *MEMORY[0x277D85DE8];
   v24 = *MEMORY[0x277CE4B00];
-  v13 = sub_260F1E864(a3);
+  v13 = sub_260F1E864(feed);
   v30 = v13;
   v25 = *MEMORY[0x277CE4AF8];
-  v14 = sub_260F1E864(a4);
+  v14 = sub_260F1E864(article);
   v31 = v14;
   v26 = *MEMORY[0x277CE4AF0];
-  v15 = sub_260F1E864(a5);
+  v15 = sub_260F1E864(betweenArticle);
   v32 = v15;
   v27 = *MEMORY[0x277CE4B18];
-  v16 = sub_260F1E864(a6);
+  v16 = sub_260F1E864(inArticle);
   v33 = v16;
   v28 = *MEMORY[0x277CE4B10];
-  v17 = sub_260F1E864(a7);
+  v17 = sub_260F1E864(inFeed);
   v34 = v17;
   v29 = *MEMORY[0x277CE4B08];
-  v18 = sub_260F1E864(a8);
+  v18 = sub_260F1E864(nativeInArticle);
   v35 = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v24 count:6];
 

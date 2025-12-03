@@ -1,23 +1,23 @@
 @interface IATextInputActionsSessionSelectionAction
-- (IATextInputActionsSessionSelectionAction)initWithCoder:(id)a3;
+- (IATextInputActionsSessionSelectionAction)initWithCoder:(id)coder;
 - (_NSRange)rangeAfter;
 - (id)description;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (id)toDictionary;
-- (int64_t)mergeActionIfPossible:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
 - (int64_t)textInputActionsType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IATextInputActionsSessionSelectionAction
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   v7 = objc_msgSend_source(self, v5, v6);
-  if (v7 == objc_msgSend_source(v4, v8, v9) && (v12 = objc_msgSend_flagOptions(self, v10, v11), v12 == objc_msgSend_flagOptions(v4, v13, v14)))
+  if (v7 == objc_msgSend_source(possibleCopy, v8, v9) && (v12 = objc_msgSend_flagOptions(self, v10, v11), v12 == objc_msgSend_flagOptions(possibleCopy, v13, v14)))
   {
-    v19 = objc_msgSend_asSelection(v4, v15, v16);
+    v19 = objc_msgSend_asSelection(possibleCopy, v15, v16);
     if (v19 && ((objc_msgSend_rangeAfter(self, v17, v18), !v20) && (objc_msgSend_relativeRangeBefore(self, 0, v21), !v20) && (objc_msgSend_rangeAfter(v19, 0, v21), !v20) || (objc_msgSend_rangeAfter(self, v20, v21), v22) && (objc_msgSend_relativeRangeBefore(self, v22, v23), v24) && (objc_msgSend_rangeAfter(v19, v24, v25), v20)))
     {
       v26 = objc_msgSend_rangeAfter(v19, v20, v21);
@@ -84,21 +84,21 @@
   return result;
 }
 
-- (IATextInputActionsSessionSelectionAction)initWithCoder:(id)a3
+- (IATextInputActionsSessionSelectionAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = IATextInputActionsSessionSelectionAction;
-  v5 = [(IATextInputActionsSessionAction *)&v21 initWithCoder:v4];
+  v5 = [(IATextInputActionsSessionAction *)&v21 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     p_rangeAfter = &v5->_rangeAfter;
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"rangeAfter_location");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"rangeAfter_location");
     v13 = objc_msgSend_unsignedLongValue(v10, v11, v12);
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"rangeAfter_length");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"rangeAfter_length");
     v19 = objc_msgSend_unsignedLongValue(v16, v17, v18);
     p_rangeAfter->location = v13;
     v6->_rangeAfter.length = v19;
@@ -107,29 +107,29 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = IATextInputActionsSessionSelectionAction;
-  v4 = a3;
-  [(IATextInputActionsSessionAction *)&v12 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IATextInputActionsSessionAction *)&v12 encodeWithCoder:coderCopy];
   p_rangeAfter = &self->_rangeAfter;
   v7 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v6, self->_rangeAfter.location, v12.receiver, v12.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v7, @"rangeAfter_location");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"rangeAfter_location");
 
   v10 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v9, p_rangeAfter->length);
-  objc_msgSend_encodeObject_forKey_(v4, v11, v10, @"rangeAfter_length");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"rangeAfter_length");
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v16.receiver = self;
   v16.super_class = IATextInputActionsSessionSelectionAction;
-  v3 = a3;
-  v4 = [(IATextInputActionsSessionAction *)&v16 initFromDictionary:v3];
-  v6 = objc_msgSend_objectForKeyedSubscript_(v3, v5, @"rangeAfter_location", v16.receiver, v16.super_class);
+  dictionaryCopy = dictionary;
+  v4 = [(IATextInputActionsSessionAction *)&v16 initFromDictionary:dictionaryCopy];
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"rangeAfter_location", v16.receiver, v16.super_class);
   v9 = objc_msgSend_unsignedLongValue(v6, v7, v8);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v3, v10, @"rangeAfter_length");
+  v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"rangeAfter_length");
 
   v14 = objc_msgSend_unsignedLongValue(v11, v12, v13);
   v4[23] = v9;
@@ -142,15 +142,15 @@
 {
   v12.receiver = self;
   v12.super_class = IATextInputActionsSessionSelectionAction;
-  v3 = [(IATextInputActionsSessionAction *)&v12 toDictionary];
+  toDictionary = [(IATextInputActionsSessionAction *)&v12 toDictionary];
   p_rangeAfter = &self->_rangeAfter;
   v6 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v5, self->_rangeAfter.location);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v7, v6, @"rangeAfter_location");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v7, v6, @"rangeAfter_location");
 
   v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v8, p_rangeAfter->length);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v10, v9, @"rangeAfter_length");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v10, v9, @"rangeAfter_length");
 
-  return v3;
+  return toDictionary;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface QLUTIManager
-+ (BOOL)contentType:(id)a3 conformsToContentTypeInArray:(id)a4;
-+ (BOOL)contentTypeIsIWorkType:(id)a3;
-+ (BOOL)contentTypeIsInternallyClaimed:(id)a3;
-+ (BOOL)externalGeneratorPreferredForType:(id)a3;
-+ (id)_preferredParentUTIof:(id)a3 fromParents:(id)a4;
-+ (id)_recursiveValueInDictionary:(id)a3 forType:(id)a4 alreadySeenUTIs:(id)a5 matchedValueToTypeBlock:(id)a6 validationBlock:(id)a7;
-+ (id)_searchParentTypesFor:(id)a3 fromDictionary:(id)a4 alreadySeenUTIs:(id)a5 matchedValueToTypeBlock:(id)a6 validationBlock:(id)a7;
-+ (id)_selectParentUTIForUTI:(id)a3 fromParentUTIs:(id)a4 dictionary:(id)a5 alreadySeenUTIs:(id)a6 matchedValueToTypeBlock:(id)a7 validationBlock:(id)a8;
++ (BOOL)contentType:(id)type conformsToContentTypeInArray:(id)array;
++ (BOOL)contentTypeIsIWorkType:(id)type;
++ (BOOL)contentTypeIsInternallyClaimed:(id)claimed;
++ (BOOL)externalGeneratorPreferredForType:(id)type;
++ (id)_preferredParentUTIof:(id)iof fromParents:(id)parents;
++ (id)_recursiveValueInDictionary:(id)dictionary forType:(id)type alreadySeenUTIs:(id)is matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock;
++ (id)_searchParentTypesFor:(id)for fromDictionary:(id)dictionary alreadySeenUTIs:(id)is matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock;
++ (id)_selectParentUTIForUTI:(id)i fromParentUTIs:(id)is dictionary:(id)dictionary alreadySeenUTIs:(id)tIs matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock;
 + (id)claimedAVTypes;
 + (id)claimedCSVTypes;
 + (id)claimedCalendarTypes;
@@ -18,10 +18,10 @@
 + (id)claimedTextTypes;
 + (id)claimedWebViewTypes;
 + (id)claimediWorkTypes;
-+ (id)findAndStoreValueInTypeKeyedDictionary:(id)a3 forType:(id)a4 withDescription:(id)a5 withQueue:(id)a6 validationBlock:(id)a7;
++ (id)findAndStoreValueInTypeKeyedDictionary:(id)dictionary forType:(id)type withDescription:(id)description withQueue:(id)queue validationBlock:(id)block;
 + (id)iWorkTypes;
 + (id)internallyClaimedTypes;
-+ (id)screentimeiWorkBundleForUTI:(id)a3;
++ (id)screentimeiWorkBundleForUTI:(id)i;
 + (id)textGeneratorSupportedTypes;
 + (id)typesForWhichExternalGeneratorsArePreferred;
 @end
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __38__QLUTIManager_internallyClaimedTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (internallyClaimedTypes_onceToken != -1)
   {
     dispatch_once(&internallyClaimedTypes_onceToken, block);
@@ -57,13 +57,13 @@
   return v2;
 }
 
-+ (id)findAndStoreValueInTypeKeyedDictionary:(id)a3 forType:(id)a4 withDescription:(id)a5 withQueue:(id)a6 validationBlock:(id)a7
++ (id)findAndStoreValueInTypeKeyedDictionary:(id)dictionary forType:(id)type withDescription:(id)description withQueue:(id)queue validationBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  descriptionCopy = description;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = 0;
   v29 = 0;
   v30 = &v29;
@@ -71,27 +71,27 @@
   v32 = __Block_byref_object_copy__1;
   v33 = __Block_byref_object_dispose__1;
   v34 = 0;
-  if (v11 && v12)
+  if (dictionaryCopy && typeCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __105__QLUTIManager_findAndStoreValueInTypeKeyedDictionary_forType_withDescription_withQueue_validationBlock___block_invoke;
     v23[3] = &unk_279ADB440;
     v28 = &v29;
-    v24 = v11;
-    v25 = v12;
-    v26 = v13;
-    v27 = v15;
+    v24 = dictionaryCopy;
+    v25 = typeCopy;
+    v26 = descriptionCopy;
+    v27 = blockCopy;
     v17 = MEMORY[0x2667062A0](v23);
     v18 = v17;
-    if (v14)
+    if (queueCopy)
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __105__QLUTIManager_findAndStoreValueInTypeKeyedDictionary_forType_withDescription_withQueue_validationBlock___block_invoke_3;
       v21[3] = &unk_279ADB468;
       v22 = v17;
-      dispatch_sync(v14, v21);
+      dispatch_sync(queueCopy, v21);
     }
 
     else
@@ -187,33 +187,33 @@ id __105__QLUTIManager_findAndStoreValueInTypeKeyedDictionary_forType_withDescri
   return v12;
 }
 
-+ (id)_searchParentTypesFor:(id)a3 fromDictionary:(id)a4 alreadySeenUTIs:(id)a5 matchedValueToTypeBlock:(id)a6 validationBlock:(id)a7
++ (id)_searchParentTypesFor:(id)for fromDictionary:(id)dictionary alreadySeenUTIs:(id)is matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 lowercaseString];
-  if ([v17 hasPrefix:@"dyn."])
+  forCopy = for;
+  dictionaryCopy = dictionary;
+  isCopy = is;
+  blockCopy = block;
+  validationBlockCopy = validationBlock;
+  lowercaseString = [forCopy lowercaseString];
+  if ([lowercaseString hasPrefix:@"dyn."])
   {
     v18 = _UTTypeCopyPedigreeSet();
     v19 = [v18 mutableCopy];
-    [v19 removeObject:v17];
-    v20 = [v19 allObjects];
+    [v19 removeObject:lowercaseString];
+    allObjects = [v19 allObjects];
 
-    if (v20)
+    if (allObjects)
     {
 LABEL_3:
-      v21 = [a1 _selectParentUTIForUTI:v12 fromParentUTIs:v20 dictionary:v13 alreadySeenUTIs:v14 matchedValueToTypeBlock:v15 validationBlock:v16];
+      v21 = [self _selectParentUTIForUTI:forCopy fromParentUTIs:allObjects dictionary:dictionaryCopy alreadySeenUTIs:isCopy matchedValueToTypeBlock:blockCopy validationBlock:validationBlockCopy];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v20 = UTTypeCopyParentIdentifiers();
-    if (v20)
+    allObjects = UTTypeCopyParentIdentifiers();
+    if (allObjects)
     {
       goto LABEL_3;
     }
@@ -225,30 +225,30 @@ LABEL_6:
   return v21;
 }
 
-+ (id)_recursiveValueInDictionary:(id)a3 forType:(id)a4 alreadySeenUTIs:(id)a5 matchedValueToTypeBlock:(id)a6 validationBlock:(id)a7
++ (id)_recursiveValueInDictionary:(id)dictionary forType:(id)type alreadySeenUTIs:(id)is matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 lowercaseString];
-  if (!v14)
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  isCopy = is;
+  blockCopy = block;
+  validationBlockCopy = validationBlock;
+  lowercaseString = [typeCopy lowercaseString];
+  if (!isCopy)
   {
-    v14 = objc_opt_new();
+    isCopy = objc_opt_new();
   }
 
-  if (![v14 containsObject:v17])
+  if (![isCopy containsObject:lowercaseString])
   {
-    [v14 addObject:v17];
-    v18 = [(__CFString *)v12 objectForKeyedSubscript:v17];
+    [isCopy addObject:lowercaseString];
+    v18 = [(__CFString *)dictionaryCopy objectForKeyedSubscript:lowercaseString];
     if (v18)
     {
       v19 = v18;
-      if (v16)
+      if (validationBlockCopy)
       {
-        if (v16[2](v16, v18, v17))
+        if (validationBlockCopy[2](validationBlockCopy, v18, lowercaseString))
         {
           v20 = v19;
         }
@@ -262,7 +262,7 @@ LABEL_6:
 
         v22 = 1;
         v19 = v21;
-        if (!v15)
+        if (!blockCopy)
         {
           goto LABEL_19;
         }
@@ -283,17 +283,17 @@ LABEL_6:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v43 = v12;
+        v43 = dictionaryCopy;
         v44 = 2112;
-        v45 = v17;
+        v45 = lowercaseString;
         _os_log_impl(&dword_2615AE000, v23, OS_LOG_TYPE_INFO, "No exact match found in type dictionary %p for '%@' #UTI", buf, 0x16u);
       }
 
-      v19 = [a1 _searchParentTypesFor:v13 fromDictionary:v12 alreadySeenUTIs:v14 matchedValueToTypeBlock:v15 validationBlock:v16];
+      v19 = [self _searchParentTypesFor:typeCopy fromDictionary:dictionaryCopy alreadySeenUTIs:isCopy matchedValueToTypeBlock:blockCopy validationBlock:validationBlockCopy];
     }
 
     v22 = 1;
-    if (!v15)
+    if (!blockCopy)
     {
       goto LABEL_19;
     }
@@ -330,17 +330,17 @@ LABEL_6:
             }
 
             v33 = *(*(&v38 + 1) + 8 * i);
-            if (UTTypeConformsTo(v33, v17))
+            if (UTTypeConformsTo(v33, lowercaseString))
             {
               v34 = QLSLogHandle();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412802;
-                v43 = v17;
+                v43 = lowercaseString;
                 v44 = 2112;
                 v45 = v33;
                 v46 = 2112;
-                v47 = v17;
+                v47 = lowercaseString;
                 _os_log_impl(&dword_2615AE000, v34, OS_LOG_TYPE_DEBUG, "Infinite UTI tree loop (%@ conforms to %@ which conforms to %@) #UTI", buf, 0x20u);
               }
 
@@ -368,12 +368,12 @@ LABEL_36:
 
   v19 = 0;
   v22 = v35 == 0;
-  if (v15)
+  if (blockCopy)
   {
 LABEL_17:
     if (v22)
     {
-      v24 = v15[2](v15, v19, v17);
+      v24 = blockCopy[2](blockCopy, v19, lowercaseString);
 
       v19 = v24;
     }
@@ -384,47 +384,47 @@ LABEL_19:
   return v19;
 }
 
-+ (id)_preferredParentUTIof:(id)a3 fromParents:(id)a4
++ (id)_preferredParentUTIof:(id)iof fromParents:(id)parents
 {
-  v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:{a3, a4}];
+  v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:{iof, parents}];
   v5 = *MEMORY[0x277CE1CD0];
   if ([v4 conformsToType:*MEMORY[0x277CE1CD0]])
   {
-    v6 = [v5 identifier];
+    identifier = [v5 identifier];
   }
 
   else
   {
-    v6 = 0;
+    identifier = 0;
   }
 
-  return v6;
+  return identifier;
 }
 
-+ (id)_selectParentUTIForUTI:(id)a3 fromParentUTIs:(id)a4 dictionary:(id)a5 alreadySeenUTIs:(id)a6 matchedValueToTypeBlock:(id)a7 validationBlock:(id)a8
++ (id)_selectParentUTIForUTI:(id)i fromParentUTIs:(id)is dictionary:(id)dictionary alreadySeenUTIs:(id)tIs matchedValueToTypeBlock:(id)block validationBlock:(id)validationBlock
 {
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v33 = v14;
-  v20 = [a1 _preferredParentUTIof:v14 fromParents:v15];
-  if (!v20 || ([a1 _recursiveValueInDictionary:v16 forType:v20 alreadySeenUTIs:v17 matchedValueToTypeBlock:v18 validationBlock:v19], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
+  iCopy = i;
+  isCopy = is;
+  dictionaryCopy = dictionary;
+  tIsCopy = tIs;
+  blockCopy = block;
+  validationBlockCopy = validationBlock;
+  v33 = iCopy;
+  v20 = [self _preferredParentUTIof:iCopy fromParents:isCopy];
+  if (!v20 || ([self _recursiveValueInDictionary:dictionaryCopy forType:v20 alreadySeenUTIs:tIsCopy matchedValueToTypeBlock:blockCopy validationBlock:validationBlockCopy], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v15;
+    obj = isCopy;
     v22 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v22)
     {
       v23 = v22;
       v24 = *v35;
-      v31 = v15;
+      v31 = isCopy;
       v30 = v20;
       while (2)
       {
@@ -436,23 +436,23 @@ LABEL_19:
           }
 
           v26 = *(*(&v34 + 1) + 8 * i);
-          v27 = [a1 _recursiveValueInDictionary:v16 forType:v26 alreadySeenUTIs:v17 matchedValueToTypeBlock:v18 validationBlock:v19];
+          v27 = [self _recursiveValueInDictionary:dictionaryCopy forType:v26 alreadySeenUTIs:tIsCopy matchedValueToTypeBlock:blockCopy validationBlock:validationBlockCopy];
           if (v27)
           {
             v21 = v27;
-            if (!v19 || (v19[2](v19, v27, v33) & 1) != 0)
+            if (!validationBlockCopy || (validationBlockCopy[2](validationBlockCopy, v27, v33) & 1) != 0)
             {
               goto LABEL_17;
             }
 
-            v28 = [a1 _searchParentTypesFor:v26 fromDictionary:v16 alreadySeenUTIs:v17 matchedValueToTypeBlock:v18 validationBlock:v19];
+            v28 = [self _searchParentTypesFor:v26 fromDictionary:dictionaryCopy alreadySeenUTIs:tIsCopy matchedValueToTypeBlock:blockCopy validationBlock:validationBlockCopy];
 
             if (v28)
             {
               v21 = v28;
 LABEL_17:
               v20 = v30;
-              v15 = v31;
+              isCopy = v31;
               goto LABEL_18;
             }
           }
@@ -461,7 +461,7 @@ LABEL_17:
         v23 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
         v21 = 0;
         v20 = v30;
-        v15 = v31;
+        isCopy = v31;
         if (v23)
         {
           continue;
@@ -485,8 +485,8 @@ LABEL_18:
 + (id)claimedLivePhotoTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [*MEMORY[0x277CE1DD0] identifier];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  identifier = [*MEMORY[0x277CE1DD0] identifier];
+  v4 = [v2 setWithObjects:{identifier, 0}];
 
   return v4;
 }
@@ -494,8 +494,8 @@ LABEL_18:
 + (id)claimedContactTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [*MEMORY[0x277CE1EB8] identifier];
-  v4 = [v2 setWithObject:v3];
+  identifier = [*MEMORY[0x277CE1EB8] identifier];
+  v4 = [v2 setWithObject:identifier];
 
   return v4;
 }
@@ -503,8 +503,8 @@ LABEL_18:
 + (id)claimedCalendarTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [*MEMORY[0x277CE1D20] identifier];
-  v4 = [v2 setWithObject:v3];
+  identifier = [*MEMORY[0x277CE1D20] identifier];
+  v4 = [v2 setWithObject:identifier];
 
   return v4;
 }
@@ -538,8 +538,8 @@ void __32__QLUTIManager_claimedTextTypes__block_invoke()
 + (id)claimedPDFTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [*MEMORY[0x277CE1E08] identifier];
-  v4 = [v2 setWithObjects:{v3, @"com.apple.localized-pdf-bundle", 0}];
+  identifier = [*MEMORY[0x277CE1E08] identifier];
+  v4 = [v2 setWithObjects:{identifier, @"com.apple.localized-pdf-bundle", 0}];
 
   return v4;
 }
@@ -797,24 +797,24 @@ void __59__QLUTIManager_typesForWhichExternalGeneratorsArePreferred__block_invok
   typesForWhichExternalGeneratorsArePreferred__externallyPreferredTypes = v3;
 }
 
-+ (BOOL)externalGeneratorPreferredForType:(id)a3
++ (BOOL)externalGeneratorPreferredForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 typesForWhichExternalGeneratorsArePreferred];
-  v6 = [v4 identifier];
+  typeCopy = type;
+  typesForWhichExternalGeneratorsArePreferred = [self typesForWhichExternalGeneratorsArePreferred];
+  identifier = [typeCopy identifier];
 
-  v7 = [v6 lowercaseString];
-  v8 = [v5 containsObject:v7];
+  lowercaseString = [identifier lowercaseString];
+  v8 = [typesForWhichExternalGeneratorsArePreferred containsObject:lowercaseString];
 
   return v8;
 }
 
-+ (id)screentimeiWorkBundleForUTI:(id)a3
++ (id)screentimeiWorkBundleForUTI:(id)i
 {
-  v3 = a3;
-  if (v3 && (+[QLUTIManager claimediWorkTypes](QLUTIManager, "claimediWorkTypes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 containsObject:v3], v4, v5))
+  iCopy = i;
+  if (iCopy && (+[QLUTIManager claimediWorkTypes](QLUTIManager, "claimediWorkTypes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 containsObject:iCopy], v4, v5))
   {
-    [v3 rangeOfString:@"pages" options:1];
+    [iCopy rangeOfString:@"pages" options:1];
     if (v6)
     {
       v7 = @"com.apple.Pages";
@@ -822,7 +822,7 @@ void __59__QLUTIManager_typesForWhichExternalGeneratorsArePreferred__block_invok
 
     else
     {
-      [v3 rangeOfString:@"numbers" options:1];
+      [iCopy rangeOfString:@"numbers" options:1];
       if (v9)
       {
         v7 = @"com.apple.Numbers";
@@ -830,7 +830,7 @@ void __59__QLUTIManager_typesForWhichExternalGeneratorsArePreferred__block_invok
 
       else
       {
-        [v3 rangeOfString:@"keynote" options:1];
+        [iCopy rangeOfString:@"keynote" options:1];
         if (v10)
         {
           v7 = @"com.apple.Keynote";
@@ -884,30 +884,30 @@ void __26__QLUTIManager_iWorkTypes__block_invoke()
   iWorkTypes_iWorkTypes = v10;
 }
 
-+ (BOOL)contentTypeIsIWorkType:(id)a3
++ (BOOL)contentTypeIsIWorkType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() iWorkTypes];
-  LOBYTE(v4) = [v4 contentType:v3 conformsToContentTypeInArray:v5];
+  iWorkTypes = [objc_opt_class() iWorkTypes];
+  LOBYTE(v4) = [v4 contentType:typeCopy conformsToContentTypeInArray:iWorkTypes];
 
   return v4;
 }
 
-+ (BOOL)contentTypeIsInternallyClaimed:(id)a3
++ (BOOL)contentTypeIsInternallyClaimed:(id)claimed
 {
-  v4 = a3;
-  v5 = [a1 internallyClaimedTypes];
-  v6 = [v4 identifier];
+  claimedCopy = claimed;
+  internallyClaimedTypes = [self internallyClaimedTypes];
+  identifier = [claimedCopy identifier];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(claimedCopy) = [internallyClaimedTypes containsObject:identifier];
+  return claimedCopy;
 }
 
-+ (BOOL)contentType:(id)a3 conformsToContentTypeInArray:(id)a4
++ (BOOL)contentType:(id)type conformsToContentTypeInArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  arrayCopy = array;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -916,10 +916,10 @@ void __26__QLUTIManager_iWorkTypes__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __57__QLUTIManager_contentType_conformsToContentTypeInArray___block_invoke;
   v10[3] = &unk_279ADB4D0;
-  v7 = v5;
+  v7 = typeCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [arrayCopy enumerateObjectsUsingBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);

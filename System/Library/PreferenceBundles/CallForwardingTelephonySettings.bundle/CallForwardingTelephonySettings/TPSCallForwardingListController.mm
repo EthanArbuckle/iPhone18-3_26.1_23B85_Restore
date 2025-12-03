@@ -2,23 +2,23 @@
 - (PSSpecifier)conditionalServiceSwitchSpecifier;
 - (PSSpecifier)mainSwitchSpecifier;
 - (TPSCallForwardingController)callForwardingController;
-- (id)conditionalServiceBusyPhoneNumber:(id)a3;
-- (id)conditionalServiceSwitchOn:(id)a3;
+- (id)conditionalServiceBusyPhoneNumber:(id)number;
+- (id)conditionalServiceSwitchOn:(id)on;
 - (id)conditionalServiceTypeSpecifiers;
-- (id)conditionalServiceUnansweredPhoneNumber:(id)a3;
-- (id)conditionalServiceUnreachablePhoneNumber:(id)a3;
+- (id)conditionalServiceUnansweredPhoneNumber:(id)number;
+- (id)conditionalServiceUnreachablePhoneNumber:(id)number;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)unconditionalServicePhoneNumber:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)unconditionalServicePhoneNumber:(id)number;
 - (id)unconditionalServiceTypeSpecifiers;
-- (void)configureCell:(id)a3;
-- (void)configureCell:(id)a3 forSpecifier:(id)a4;
-- (void)setConditionalServiceBusyPhoneNumber:(id)a3 specifier:(id)a4;
-- (void)setConditionalServiceSwitchOn:(id)a3 specifier:(id)a4;
-- (void)setConditionalServiceUnansweredPhoneNumber:(id)a3 specifier:(id)a4;
-- (void)setConditionalServiceUnreachablePhoneNumber:(id)a3 specifier:(id)a4;
-- (void)setMainSwitchOn:(id)a3;
-- (void)setUnconditionalServicePhoneNumber:(id)a3 specifier:(id)a4;
+- (void)configureCell:(id)cell;
+- (void)configureCell:(id)cell forSpecifier:(id)specifier;
+- (void)setConditionalServiceBusyPhoneNumber:(id)number specifier:(id)specifier;
+- (void)setConditionalServiceSwitchOn:(id)on specifier:(id)specifier;
+- (void)setConditionalServiceUnansweredPhoneNumber:(id)number specifier:(id)specifier;
+- (void)setConditionalServiceUnreachablePhoneNumber:(id)number specifier:(id)specifier;
+- (void)setMainSwitchOn:(id)on;
+- (void)setUnconditionalServicePhoneNumber:(id)number specifier:(id)specifier;
 @end
 
 @implementation TPSCallForwardingListController
@@ -29,8 +29,8 @@
   if (!callForwardingController)
   {
     v4 = [TPSCallForwardingController alloc];
-    v5 = [(TPSCallForwardingListController *)self subscriptionContext];
-    v6 = [(TPSCallForwardingController *)v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSCallForwardingListController *)self subscriptionContext];
+    v6 = [(TPSCallForwardingController *)v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_callForwardingController;
     self->_callForwardingController = v6;
 
@@ -47,9 +47,9 @@
   v4 = *&self->TPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TPSCallForwardingListController *)self subscriptionContext];
-    v6 = [(TPSCallForwardingListController *)self callForwardingController];
-    if (!v5)
+    subscriptionContext = [(TPSCallForwardingListController *)self subscriptionContext];
+    callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+    if (!subscriptionContext)
     {
 LABEL_14:
 
@@ -58,33 +58,33 @@ LABEL_14:
     }
 
     v7 = +[NSMutableArray array];
-    v8 = [(TPSCallForwardingListController *)self mainSwitchSpecifier];
-    [v7 addObject:v8];
+    mainSwitchSpecifier = [(TPSCallForwardingListController *)self mainSwitchSpecifier];
+    [v7 addObject:mainSwitchSpecifier];
 
-    v9 = [v6 serviceType];
-    if (v9 != &dword_0 + 1)
+    serviceType = [callForwardingController serviceType];
+    if (serviceType != &dword_0 + 1)
     {
-      v10 = v9;
-      if (([v6 isLoading] & 1) == 0 && (objc_msgSend(v6, "isUnloading") & 1) == 0)
+      v10 = serviceType;
+      if (([callForwardingController isLoading] & 1) == 0 && (objc_msgSend(callForwardingController, "isUnloading") & 1) == 0)
       {
-        if ([v6 isConditionalServiceAvailable])
+        if ([callForwardingController isConditionalServiceAvailable])
         {
-          v11 = [(TPSCallForwardingListController *)self conditionalServiceSwitchSpecifier];
-          [v7 addObject:v11];
+          conditionalServiceSwitchSpecifier = [(TPSCallForwardingListController *)self conditionalServiceSwitchSpecifier];
+          [v7 addObject:conditionalServiceSwitchSpecifier];
         }
 
         if (v10 == &dword_0 + 2)
         {
-          v12 = [(TPSCallForwardingListController *)self unconditionalServiceTypeSpecifiers];
+          unconditionalServiceTypeSpecifiers = [(TPSCallForwardingListController *)self unconditionalServiceTypeSpecifiers];
           goto LABEL_12;
         }
 
         if (v10 == &dword_0 + 3)
         {
-          v12 = [(TPSCallForwardingListController *)self conditionalServiceTypeSpecifiers];
+          unconditionalServiceTypeSpecifiers = [(TPSCallForwardingListController *)self conditionalServiceTypeSpecifiers];
 LABEL_12:
-          v13 = v12;
-          [v7 addObjectsFromArray:v12];
+          v13 = unconditionalServiceTypeSpecifiers;
+          [v7 addObjectsFromArray:unconditionalServiceTypeSpecifiers];
         }
       }
     }
@@ -101,11 +101,11 @@ LABEL_15:
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TPSCallForwardingListController;
-  v5 = [(TPSCallForwardingListController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(TPSCallForwardingListController *)&v7 tableView:view cellForRowAtIndexPath:path];
   [(TPSCallForwardingListController *)self configureCell:v5];
 
   return v5;
@@ -146,22 +146,22 @@ LABEL_15:
 - (id)conditionalServiceTypeSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(TPSCallForwardingListController *)self callForwardingController];
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
   v5 = +[PSSpecifier emptyGroupSpecifier];
   [v3 addObject:v5];
-  v6 = [v4 localizedConditionalBusyTitle];
+  localizedConditionalBusyTitle = [callForwardingController localizedConditionalBusyTitle];
   v7 = objc_opt_class();
-  v8 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"setConditionalServiceBusyPhoneNumber:specifier:" get:"conditionalServiceBusyPhoneNumber:" detail:v7 cell:2 edit:objc_opt_class()];
+  v8 = [PSSpecifier preferenceSpecifierNamed:localizedConditionalBusyTitle target:self set:"setConditionalServiceBusyPhoneNumber:specifier:" get:"conditionalServiceBusyPhoneNumber:" detail:v7 cell:2 edit:objc_opt_class()];
 
   [v3 addObject:v8];
-  v9 = [v4 localizedConditionalUnansweredTitle];
+  localizedConditionalUnansweredTitle = [callForwardingController localizedConditionalUnansweredTitle];
   v10 = objc_opt_class();
-  v11 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:"setConditionalServiceUnansweredPhoneNumber:specifier:" get:"conditionalServiceUnansweredPhoneNumber:" detail:v10 cell:2 edit:objc_opt_class()];
+  v11 = [PSSpecifier preferenceSpecifierNamed:localizedConditionalUnansweredTitle target:self set:"setConditionalServiceUnansweredPhoneNumber:specifier:" get:"conditionalServiceUnansweredPhoneNumber:" detail:v10 cell:2 edit:objc_opt_class()];
 
   [v3 addObject:v11];
-  v12 = [v4 localizedConditionalUnreachableTitle];
+  localizedConditionalUnreachableTitle = [callForwardingController localizedConditionalUnreachableTitle];
   v13 = objc_opt_class();
-  v14 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:"setConditionalServiceUnreachablePhoneNumber:specifier:" get:"conditionalServiceUnreachablePhoneNumber:" detail:v13 cell:2 edit:objc_opt_class()];
+  v14 = [PSSpecifier preferenceSpecifierNamed:localizedConditionalUnreachableTitle target:self set:"setConditionalServiceUnreachablePhoneNumber:specifier:" get:"conditionalServiceUnreachablePhoneNumber:" detail:v13 cell:2 edit:objc_opt_class()];
 
   [v3 addObject:v14];
   v15 = [v3 copy];
@@ -184,9 +184,9 @@ LABEL_15:
   return v8;
 }
 
-- (void)setMainSwitchOn:(id)a3
+- (void)setMainSwitchOn:(id)on
 {
-  if ([a3 isOn])
+  if ([on isOn])
   {
     v4 = 2;
   }
@@ -196,82 +196,82 @@ LABEL_15:
     v4 = 1;
   }
 
-  v5 = [(TPSCallForwardingListController *)self callForwardingController];
-  [v5 updateServiceType:v4];
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  [callForwardingController updateServiceType:v4];
 
   [(TPSCallForwardingListController *)self reloadSpecifiers];
 }
 
-- (id)conditionalServiceBusyPhoneNumber:(id)a3
+- (id)conditionalServiceBusyPhoneNumber:(id)number
 {
-  v3 = [(TPSCallForwardingListController *)self callForwardingController];
-  v4 = [v3 conditionalServiceBusyPhoneNumber];
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  conditionalServiceBusyPhoneNumber = [callForwardingController conditionalServiceBusyPhoneNumber];
+
+  return conditionalServiceBusyPhoneNumber;
+}
+
+- (void)setConditionalServiceBusyPhoneNumber:(id)number specifier:(id)specifier
+{
+  specifierCopy = specifier;
+  numberCopy = number;
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  [callForwardingController setConditionalServiceBusyPhoneNumber:numberCopy];
+
+  [(TPSCallForwardingListController *)self reloadSpecifier:specifierCopy];
+}
+
+- (id)conditionalServiceUnansweredPhoneNumber:(id)number
+{
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  conditionalServiceUnansweredPhoneNumber = [callForwardingController conditionalServiceUnansweredPhoneNumber];
+
+  return conditionalServiceUnansweredPhoneNumber;
+}
+
+- (void)setConditionalServiceUnansweredPhoneNumber:(id)number specifier:(id)specifier
+{
+  specifierCopy = specifier;
+  numberCopy = number;
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  [callForwardingController setConditionalServiceUnansweredPhoneNumber:numberCopy];
+
+  [(TPSCallForwardingListController *)self reloadSpecifier:specifierCopy];
+}
+
+- (id)conditionalServiceUnreachablePhoneNumber:(id)number
+{
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  conditionalServiceUnreachablePhoneNumber = [callForwardingController conditionalServiceUnreachablePhoneNumber];
+
+  return conditionalServiceUnreachablePhoneNumber;
+}
+
+- (void)setConditionalServiceUnreachablePhoneNumber:(id)number specifier:(id)specifier
+{
+  specifierCopy = specifier;
+  numberCopy = number;
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  [callForwardingController setConditionalServiceUnreachablePhoneNumber:numberCopy];
+
+  [(TPSCallForwardingListController *)self reloadSpecifier:specifierCopy];
+}
+
+- (id)conditionalServiceSwitchOn:(id)on
+{
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [callForwardingController serviceType] == &dword_0 + 3);
 
   return v4;
 }
 
-- (void)setConditionalServiceBusyPhoneNumber:(id)a3 specifier:(id)a4
+- (void)setConditionalServiceSwitchOn:(id)on specifier:(id)specifier
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(TPSCallForwardingListController *)self callForwardingController];
-  [v7 setConditionalServiceBusyPhoneNumber:v6];
-
-  [(TPSCallForwardingListController *)self reloadSpecifier:v8];
-}
-
-- (id)conditionalServiceUnansweredPhoneNumber:(id)a3
-{
-  v3 = [(TPSCallForwardingListController *)self callForwardingController];
-  v4 = [v3 conditionalServiceUnansweredPhoneNumber];
-
-  return v4;
-}
-
-- (void)setConditionalServiceUnansweredPhoneNumber:(id)a3 specifier:(id)a4
-{
-  v8 = a4;
-  v6 = a3;
-  v7 = [(TPSCallForwardingListController *)self callForwardingController];
-  [v7 setConditionalServiceUnansweredPhoneNumber:v6];
-
-  [(TPSCallForwardingListController *)self reloadSpecifier:v8];
-}
-
-- (id)conditionalServiceUnreachablePhoneNumber:(id)a3
-{
-  v3 = [(TPSCallForwardingListController *)self callForwardingController];
-  v4 = [v3 conditionalServiceUnreachablePhoneNumber];
-
-  return v4;
-}
-
-- (void)setConditionalServiceUnreachablePhoneNumber:(id)a3 specifier:(id)a4
-{
-  v8 = a4;
-  v6 = a3;
-  v7 = [(TPSCallForwardingListController *)self callForwardingController];
-  [v7 setConditionalServiceUnreachablePhoneNumber:v6];
-
-  [(TPSCallForwardingListController *)self reloadSpecifier:v8];
-}
-
-- (id)conditionalServiceSwitchOn:(id)a3
-{
-  v3 = [(TPSCallForwardingListController *)self callForwardingController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 serviceType] == &dword_0 + 3);
-
-  return v4;
-}
-
-- (void)setConditionalServiceSwitchOn:(id)a3 specifier:(id)a4
-{
-  v14 = a3;
+  onCopy = on;
   v6 = PSControlKey;
-  v7 = a4;
-  v8 = [v7 propertyForKey:v6];
-  [v8 setOn:objc_msgSend(v14 animated:{"BOOLValue"), 1}];
-  v9 = [(TPSCallForwardingListController *)self cachedCellForSpecifier:v7];
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:v6];
+  [v8 setOn:objc_msgSend(onCopy animated:{"BOOLValue"), 1}];
+  v9 = [(TPSCallForwardingListController *)self cachedCellForSpecifier:specifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -279,10 +279,10 @@ LABEL_15:
     [v9 setLoading:1];
   }
 
-  v10 = [v14 BOOLValue];
-  v11 = [(TPSCallForwardingListController *)self callForwardingController];
-  v12 = v11;
-  if (v10)
+  bOOLValue = [onCopy BOOLValue];
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  v12 = callForwardingController;
+  if (bOOLValue)
   {
     v13 = 3;
   }
@@ -292,49 +292,49 @@ LABEL_15:
     v13 = 2;
   }
 
-  [v11 updateServiceType:v13];
+  [callForwardingController updateServiceType:v13];
 }
 
-- (id)unconditionalServicePhoneNumber:(id)a3
+- (id)unconditionalServicePhoneNumber:(id)number
 {
-  v3 = [(TPSCallForwardingListController *)self callForwardingController];
-  v4 = [v3 unconditionalServicePhoneNumber];
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  unconditionalServicePhoneNumber = [callForwardingController unconditionalServicePhoneNumber];
 
-  return v4;
+  return unconditionalServicePhoneNumber;
 }
 
-- (void)setUnconditionalServicePhoneNumber:(id)a3 specifier:(id)a4
+- (void)setUnconditionalServicePhoneNumber:(id)number specifier:(id)specifier
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(TPSCallForwardingListController *)self callForwardingController];
-  [v7 setUnconditionalServicePhoneNumber:v6];
+  specifierCopy = specifier;
+  numberCopy = number;
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  [callForwardingController setUnconditionalServicePhoneNumber:numberCopy];
 
-  [(TPSCallForwardingListController *)self reloadSpecifier:v8];
+  [(TPSCallForwardingListController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
-    v5 = [v4 specifier];
-    [(TPSCallForwardingListController *)self configureCell:v4 forSpecifier:v5];
+    v4 = cellCopy;
+    specifier = [v4 specifier];
+    [(TPSCallForwardingListController *)self configureCell:v4 forSpecifier:specifier];
   }
 }
 
-- (void)configureCell:(id)a3 forSpecifier:(id)a4
+- (void)configureCell:(id)cell forSpecifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [(TPSCallForwardingListController *)self callForwardingController];
-  v6 = [v9 specifier];
-  v7 = [(TPSCallForwardingListController *)self mainSwitchSpecifier];
+  cellCopy = cell;
+  callForwardingController = [(TPSCallForwardingListController *)self callForwardingController];
+  specifier = [cellCopy specifier];
+  mainSwitchSpecifier = [(TPSCallForwardingListController *)self mainSwitchSpecifier];
 
-  if (v6 == v7)
+  if (specifier == mainSwitchSpecifier)
   {
-    if (([v5 isLoading] & 1) != 0 || objc_msgSend(v5, "isUnloading"))
+    if (([callForwardingController isLoading] & 1) != 0 || objc_msgSend(callForwardingController, "isUnloading"))
     {
       v8 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
       [v8 startAnimating];
@@ -344,10 +344,10 @@ LABEL_15:
     {
       v8 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [v8 addTarget:self action:"setMainSwitchOn:" forControlEvents:4096];
-      [v8 setOn:{objc_msgSend(v5, "serviceType") != &dword_0 + 1}];
+      [v8 setOn:{objc_msgSend(callForwardingController, "serviceType") != &dword_0 + 1}];
     }
 
-    [v9 setAccessoryView:v8];
+    [cellCopy setAccessoryView:v8];
   }
 }
 

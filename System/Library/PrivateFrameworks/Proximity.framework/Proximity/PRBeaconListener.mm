@@ -1,23 +1,23 @@
 @interface PRBeaconListener
-- (PRBeaconListener)initWithDelegate:(id)a3 queue:(id)a4;
+- (PRBeaconListener)initWithDelegate:(id)delegate queue:(id)queue;
 - (PRBeaconListenerDelegate)delegate;
-- (void)_updateState:(unint64_t)a3;
-- (void)clearBeaconAllowlistWithCompletionHandler:(id)a3;
+- (void)_updateState:(unint64_t)state;
+- (void)clearBeaconAllowlistWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)deamonConnectionInterrupted;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
-- (void)pushBeaconAllowlist:(id)a3 completionHandler:(id)a4;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
+- (void)pushBeaconAllowlist:(id)allowlist completionHandler:(id)handler;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
 @end
 
 @implementation PRBeaconListener
 
-- (PRBeaconListener)initWithDelegate:(id)a3 queue:(id)a4
+- (PRBeaconListener)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = PRBeaconListener;
   v8 = [(PRRangingDevice *)&v24 init];
@@ -25,8 +25,8 @@
   if (v8)
   {
     v8->_state = 0;
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_queue, queue);
     objc_initWeak(&location, v9);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -48,8 +48,8 @@
     v15 = [(NSXPCConnection *)v9->_service._connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
     v18.receiver = v9;
     v18.super_class = PRBeaconListener;
-    v16 = [(PRRangingDevice *)&v18 clientInfo];
-    [v15 connectWithClientInfo:v16];
+    clientInfo = [(PRRangingDevice *)&v18 clientInfo];
+    [v15 connectWithClientInfo:clientInfo];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
@@ -71,19 +71,19 @@ void __43__PRBeaconListener_initWithDelegate_queue___block_invoke_2(uint64_t a1)
   [WeakRetained deamonConnectionInterrupted];
 }
 
-- (void)pushBeaconAllowlist:(id)a3 completionHandler:(id)a4
+- (void)pushBeaconAllowlist:(id)allowlist completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  allowlistCopy = allowlist;
+  handlerCopy = handler;
   v7 = [(NSXPCConnection *)self->_service._connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-  [v7 pushBeaconAllowlist:v8 reply:v6];
+  [v7 pushBeaconAllowlist:allowlistCopy reply:handlerCopy];
 }
 
-- (void)clearBeaconAllowlistWithCompletionHandler:(id)a3
+- (void)clearBeaconAllowlistWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v4 = [(NSXPCConnection *)self->_service._connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-  [v4 clearBeaconAllowlist:v5];
+  [v4 clearBeaconAllowlist:handlerCopy];
 }
 
 - (void)dealloc
@@ -99,21 +99,21 @@ void __43__PRBeaconListener_initWithDelegate_queue___block_invoke_2(uint64_t a1)
   v3 = [(NSXPCConnection *)self->_service._connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
   v5.receiver = self;
   v5.super_class = PRBeaconListener;
-  v4 = [(PRRangingDevice *)&v5 clientInfo];
-  [v3 connectWithClientInfo:v4];
+  clientInfo = [(PRRangingDevice *)&v5 clientInfo];
+  [v3 connectWithClientInfo:clientInfo];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__PRBeaconListener_didFailWithError___block_invoke;
   v7[3] = &unk_2788F3CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatchAsyncOnQueue(queue, v7);
 }
 
@@ -123,39 +123,39 @@ void __37__PRBeaconListener_didFailWithError___block_invoke(uint64_t a1)
   [WeakRetained beaconListener:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
-  if (a3 <= 4)
+  if (state <= 4)
   {
-    [(PRBeaconListener *)self _updateState:qword_230EED738[a3], a4];
+    [(PRBeaconListener *)self _updateState:qword_230EED738[state], cause];
   }
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v5 = a3;
+  solutionsCopy = solutions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained beaconListener:self didOutputRangeResults:v5];
+    [WeakRetained beaconListener:self didOutputRangeResults:solutionsCopy];
   }
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
-  if (a3 <= 3)
+  if (status <= 3)
   {
-    [(PRBeaconListener *)self _updateState:qword_230EED760[a3]];
+    [(PRBeaconListener *)self _updateState:qword_230EED760[status]];
   }
 }
 
-- (void)_updateState:(unint64_t)a3
+- (void)_updateState:(unint64_t)state
 {
-  self->_state = a3;
+  self->_state = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained beaconListener:self didChangeState:a3];
+    [WeakRetained beaconListener:self didChangeState:state];
   }
 }
 

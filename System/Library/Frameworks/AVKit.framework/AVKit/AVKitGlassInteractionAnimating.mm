@@ -1,19 +1,19 @@
 @interface AVKitGlassInteractionAnimating
-- (AVKitGlassInteractionAnimating)initWithInteractionAnimation:(id)a3;
+- (AVKitGlassInteractionAnimating)initWithInteractionAnimation:(id)animation;
 @end
 
 @implementation AVKitGlassInteractionAnimating
 
-- (AVKitGlassInteractionAnimating)initWithInteractionAnimation:(id)a3
+- (AVKitGlassInteractionAnimating)initWithInteractionAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   v9.receiver = self;
   v9.super_class = AVKitGlassInteractionAnimating;
   v6 = [(AVKitGlassInteractionAnimating *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedAnimator, a3);
+    objc_storeStrong(&v6->_wrappedAnimator, animation);
   }
 
   return v7;

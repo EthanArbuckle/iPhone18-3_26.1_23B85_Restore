@@ -1,28 +1,28 @@
 @interface CLMInterfaceHelper
-+ (UIEdgeInsets)separatorInsetsWith:(UIEdgeInsets)a3 traitCollection:(id)a4;
-+ (id)makePlaylistRowCellContentForPlaylistEntry:(id)a3;
++ (UIEdgeInsets)separatorInsetsWith:(UIEdgeInsets)with traitCollection:(id)collection;
++ (id)makePlaylistRowCellContentForPlaylistEntry:(id)entry;
 - (_TtC22ClarityUIMusicSettings18CLMInterfaceHelper)init;
 - (uint64_t)openMusicApp;
-- (void)loadPlaylistsWithCompletionHandler:(id)a3;
-- (void)setPlaylists:(id)a3;
+- (void)loadPlaylistsWithCompletionHandler:(id)handler;
+- (void)setPlaylists:(id)playlists;
 @end
 
 @implementation CLMInterfaceHelper
 
-- (void)setPlaylists:(id)a3
+- (void)setPlaylists:(id)playlists
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC22ClarityUIMusicSettings18CLMInterfaceHelper_playlists);
-  *(&self->super.isa + OBJC_IVAR____TtC22ClarityUIMusicSettings18CLMInterfaceHelper_playlists) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC22ClarityUIMusicSettings18CLMInterfaceHelper_playlists) = playlists;
+  playlistsCopy = playlists;
 }
 
-- (void)loadPlaylistsWithCompletionHandler:(id)a3
+- (void)loadPlaylistsWithCompletionHandler:(id)handler
 {
   v5 = sub_5170(&qword_14D98, &qword_A900);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -38,14 +38,14 @@
   v13[3] = 0;
   v13[4] = &unk_A920;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_7D48(0, 0, v8, &unk_A930, v13);
 }
 
-+ (id)makePlaylistRowCellContentForPlaylistEntry:(id)a3
++ (id)makePlaylistRowCellContentForPlaylistEntry:(id)entry
 {
   v4 = objc_allocWithZone(UITableViewCell);
-  v5 = a3;
+  entryCopy = entry;
   v6 = [v4 init];
   v8[3] = sub_5170(&qword_14DA0, &qword_A950);
   v8[4] = sub_6044(&qword_14DA8, &qword_14DA0, &qword_A950);
@@ -58,11 +58,11 @@
   return v6;
 }
 
-+ (UIEdgeInsets)separatorInsetsWith:(UIEdgeInsets)a3 traitCollection:(id)a4
++ (UIEdgeInsets)separatorInsetsWith:(UIEdgeInsets)with traitCollection:(id)collection
 {
-  left = a3.left;
-  v5 = a4;
-  v6 = [v5 preferredContentSizeCategory];
+  left = with.left;
+  collectionCopy = collection;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
   v7 = sub_953C();
 
   if (v7)
@@ -113,14 +113,14 @@
 
   (*(v5 + 32))(v8, v3, v4);
   v10 = objc_opt_self();
-  v11 = [v10 sharedApplication];
+  sharedApplication = [v10 sharedApplication];
   sub_903C(v12);
   v14 = v13;
-  v15 = [v11 canOpenURL:v13];
+  v15 = [sharedApplication canOpenURL:v13];
 
   if (v15)
   {
-    v16 = [v10 sharedApplication];
+    sharedApplication2 = [v10 sharedApplication];
     sub_903C(v17);
     v19 = v18;
     sub_83CC(&_swiftEmptyArrayStorage);
@@ -128,7 +128,7 @@
     sub_8C80(&qword_14CF0, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_940C().super.isa;
 
-    [v16 openURL:v19 options:isa completionHandler:0];
+    [sharedApplication2 openURL:v19 options:isa completionHandler:0];
   }
 
   return (*(v5 + 8))(v8, v4);

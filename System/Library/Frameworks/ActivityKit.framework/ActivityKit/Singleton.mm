@@ -4,15 +4,15 @@
 + (_TtC11ActivityKitP33_53EEA475F928A92791709C064B1A8B959Singleton)shared;
 + (_TtC11ActivityKitP33_6DC02F3CDAFEFBE600E2E479E61466209Singleton)shared;
 - (_TtC11ActivityKitP33_1602B0B984EDF6E52CE840E80AB3FBCA9Singleton)init;
-- (id)listenForActivityPresentationWithActivityIdentifier:(id)a3 presenterBundleIdentifier:(id)a4 handler:(id)a5;
-- (id)listenForActivityProminenceWithActivityIdentifier:(id)a3 handler:(id)a4;
-- (id)listenForActivityQoSWithActivityIdentifier:(id)a3 handler:(id)a4;
-- (void)activitiesChanged:(id)a3 completion:(id)a4;
-- (void)activityDidExceedReducedPushBudgetForIdentifier:(id)a3;
-- (void)activityDidUnsubscribeForIdentifier:(id)a3;
-- (void)activityPresentationsDidChange:(id)a3 completion:(id)a4;
-- (void)activityProminenceDidChange:(id)a3 completion:(id)a4;
-- (void)activityQoSDidChange:(id)a3 completion:(id)a4;
+- (id)listenForActivityPresentationWithActivityIdentifier:(id)identifier presenterBundleIdentifier:(id)bundleIdentifier handler:(id)handler;
+- (id)listenForActivityProminenceWithActivityIdentifier:(id)identifier handler:(id)handler;
+- (id)listenForActivityQoSWithActivityIdentifier:(id)identifier handler:(id)handler;
+- (void)activitiesChanged:(id)changed completion:(id)completion;
+- (void)activityDidExceedReducedPushBudgetForIdentifier:(id)identifier;
+- (void)activityDidUnsubscribeForIdentifier:(id)identifier;
+- (void)activityPresentationsDidChange:(id)change completion:(id)completion;
+- (void)activityProminenceDidChange:(id)change completion:(id)completion;
+- (void)activityQoSDidChange:(id)change completion:(id)completion;
 @end
 
 @implementation Singleton
@@ -33,11 +33,11 @@
   return v9;
 }
 
-- (void)activitiesChanged:(id)a3 completion:(id)a4
+- (void)activitiesChanged:(id)changed completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
+  v6 = _Block_copy(completion);
+  changedCopy = changed;
+  selfCopy = self;
   v9 = sub_1A2D07F44();
   v11 = v10;
 
@@ -57,18 +57,18 @@
   sub_1A2C55840(v9, v11);
 }
 
-- (id)listenForActivityProminenceWithActivityIdentifier:(id)a3 handler:(id)a4
+- (id)listenForActivityProminenceWithActivityIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1A2D08444();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
   type metadata accessor for RetryingCancellable();
   v10 = swift_allocObject();
-  v11 = self;
+  selfCopy = self;
 
-  v12 = sub_1A2C88734(0, 1, v10, v11, v6, v8, sub_1A2C95754, v9);
+  v12 = sub_1A2C88734(0, 1, v10, selfCopy, v6, v8, sub_1A2C95754, v9);
   v13 = type metadata accessor for CancellableAssertion();
   v14 = objc_allocWithZone(v13);
   v21 = v12;
@@ -86,16 +86,16 @@
   return v18;
 }
 
-- (void)activityProminenceDidChange:(id)a3 completion:(id)a4
+- (void)activityProminenceDidChange:(id)change completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(completion);
+  changeCopy = change;
+  selfCopy = self;
   v8 = sub_1A2D07F44();
   v10 = v9;
 
   _Block_copy(v6);
-  sub_1A2C94F6C(v8, v10, v11, v6);
+  sub_1A2C94F6C(v8, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   sub_1A2C55840(v8, v10);
@@ -125,31 +125,31 @@
   return v3;
 }
 
-- (id)listenForActivityPresentationWithActivityIdentifier:(id)a3 presenterBundleIdentifier:(id)a4 handler:(id)a5
+- (id)listenForActivityPresentationWithActivityIdentifier:(id)identifier presenterBundleIdentifier:(id)bundleIdentifier handler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1A2D08444();
   v9 = v8;
   v10 = sub_1A2D08444();
   v12 = v11;
   v13 = swift_allocObject();
   *(v13 + 16) = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = sub_1A2CA4AB4(v7, v9, v10, v12, sub_1A2C83438, v13);
 
   return v15;
 }
 
-- (void)activityPresentationsDidChange:(id)a3 completion:(id)a4
+- (void)activityPresentationsDidChange:(id)change completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(completion);
+  changeCopy = change;
+  selfCopy = self;
   v8 = sub_1A2D07F44();
   v10 = v9;
 
   _Block_copy(v6);
-  sub_1A2CA57BC(v8, v10, v11, v6);
+  sub_1A2CA57BC(v8, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   sub_1A2C55840(v8, v10);
@@ -167,19 +167,19 @@
   return v3;
 }
 
-- (void)activityDidExceedReducedPushBudgetForIdentifier:(id)a3
+- (void)activityDidExceedReducedPushBudgetForIdentifier:(id)identifier
 {
   v4 = sub_1A2D08444();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1A2CBC1AC(v4, v6);
 }
 
-- (void)activityDidUnsubscribeForIdentifier:(id)a3
+- (void)activityDidUnsubscribeForIdentifier:(id)identifier
 {
   v4 = sub_1A2D08444();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A2CBC01C();
   if (*v9)
   {
@@ -201,29 +201,29 @@
   return v3;
 }
 
-- (id)listenForActivityQoSWithActivityIdentifier:(id)a3 handler:(id)a4
+- (id)listenForActivityQoSWithActivityIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1A2D08444();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = sub_1A2CF9000(v6, v8, sub_1A2C83438, v9);
 
   return v11;
 }
 
-- (void)activityQoSDidChange:(id)a3 completion:(id)a4
+- (void)activityQoSDidChange:(id)change completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(completion);
+  changeCopy = change;
+  selfCopy = self;
   v8 = sub_1A2D07F44();
   v10 = v9;
 
   _Block_copy(v6);
-  sub_1A2CFA304(v8, v10, v11, v6);
+  sub_1A2CFA304(v8, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   sub_1A2C55840(v8, v10);

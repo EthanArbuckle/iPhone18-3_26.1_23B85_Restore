@@ -1,26 +1,26 @@
 @interface BSUIDownloadProgress
-- (BSUIDownloadProgress)initWithKind:(id)a3 instance:(id)a4 parameters:(id)a5;
-- (void)registerProgressObserver:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)unregisterProgressObserver:(id)a3;
+- (BSUIDownloadProgress)initWithKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (void)registerProgressObserver:(id)observer;
+- (void)setProgress:(id)progress;
+- (void)unregisterProgressObserver:(id)observer;
 @end
 
 @implementation BSUIDownloadProgress
 
-- (BSUIDownloadProgress)initWithKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (BSUIDownloadProgress)initWithKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = BSUIDownloadProgress;
   v12 = [(BSUIDownloadProgress *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_kind, a3);
-    objc_storeStrong(&v13->_instance, a4);
-    objc_storeStrong(&v13->_parameters, a5);
+    objc_storeStrong(&v12->_kind, kind);
+    objc_storeStrong(&v13->_instance, instance);
+    objc_storeStrong(&v13->_parameters, parameters);
     v14 = +[NSHashTable weakObjectsHashTable];
     observers = v13->_observers;
     v13->_observers = v14;
@@ -33,9 +33,9 @@
   return v13;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -50,7 +50,7 @@
   block[4] = self;
   block[5] = &v16;
   dispatch_sync(access, block);
-  objc_storeStrong(&self->_progress, a3);
+  objc_storeStrong(&self->_progress, progress);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -84,31 +84,31 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)registerProgressObserver:(id)a3
+- (void)registerProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   access = self->_access;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2AA1C;
   v7[3] = &unk_386D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(access, v7);
 }
 
-- (void)unregisterProgressObserver:(id)a3
+- (void)unregisterProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   access = self->_access;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2AAC0;
   v7[3] = &unk_386D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(access, v7);
 }
 

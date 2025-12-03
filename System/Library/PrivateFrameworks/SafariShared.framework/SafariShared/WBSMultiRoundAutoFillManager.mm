@@ -1,30 +1,30 @@
 @interface WBSMultiRoundAutoFillManager
-- (BOOL)shouldAttemptFollowUpAutoFillInFormWithMetadata:(id)a3 requestType:(unint64_t)a4;
-- (WBSMultiRoundAutoFillManager)initWithDataType:(unint64_t)a3;
+- (BOOL)shouldAttemptFollowUpAutoFillInFormWithMetadata:(id)metadata requestType:(unint64_t)type;
+- (WBSMultiRoundAutoFillManager)initWithDataType:(unint64_t)type;
 - (void)dealloc;
-- (void)dispatchFollowUpAutoFillOfFormWithMetdata:(id)a3 autoFillBlock:(id)a4;
-- (void)setAddressBookPropertiesThatCanBeFilled:(id)a3;
+- (void)dispatchFollowUpAutoFillOfFormWithMetdata:(id)metdata autoFillBlock:(id)block;
+- (void)setAddressBookPropertiesThatCanBeFilled:(id)filled;
 @end
 
 @implementation WBSMultiRoundAutoFillManager
 
-- (void)dispatchFollowUpAutoFillOfFormWithMetdata:(id)a3 autoFillBlock:(id)a4
+- (void)dispatchFollowUpAutoFillOfFormWithMetdata:(id)metdata autoFillBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  metdataCopy = metdata;
+  blockCopy = block;
   ++self->_numberOfFollowUpAutoFillAttempts;
   formMetadataFromPreviousAutoFillAttempt = self->_formMetadataFromPreviousAutoFillAttempt;
   self->_autoFillAttemptTrigger = 1;
-  self->_formMetadataFromPreviousAutoFillAttempt = v6;
-  v9 = v6;
+  self->_formMetadataFromPreviousAutoFillAttempt = metdataCopy;
+  v9 = metdataCopy;
 
   v10 = MEMORY[0x1E695DFF0];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__WBSMultiRoundAutoFillManager_dispatchFollowUpAutoFillOfFormWithMetdata_autoFillBlock___block_invoke;
   v14[3] = &unk_1E7FC86C8;
-  v15 = v7;
-  v11 = v7;
+  v15 = blockCopy;
+  v11 = blockCopy;
   v12 = [v10 scheduledTimerWithTimeInterval:0 repeats:v14 block:0.25];
   timerForFollowUpAutoFill = self->_timerForFollowUpAutoFill;
   self->_timerForFollowUpAutoFill = v12;
@@ -38,7 +38,7 @@
   [(WBSMultiRoundAutoFillManager *)&v3 dealloc];
 }
 
-- (WBSMultiRoundAutoFillManager)initWithDataType:(unint64_t)a3
+- (WBSMultiRoundAutoFillManager)initWithDataType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = WBSMultiRoundAutoFillManager;
@@ -46,7 +46,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_dataType = a3;
+    v4->_dataType = type;
     v4->_autoFillAttemptTrigger = 0;
     v4->_userDidInteractWithForm = 0;
     timerForFollowUpAutoFill = v4->_timerForFollowUpAutoFill;
@@ -63,15 +63,15 @@
   return v5;
 }
 
-- (BOOL)shouldAttemptFollowUpAutoFillInFormWithMetadata:(id)a3 requestType:(unint64_t)a4
+- (BOOL)shouldAttemptFollowUpAutoFillInFormWithMetadata:(id)metadata requestType:(unint64_t)type
 {
-  v6 = a3;
+  metadataCopy = metadata;
   LOBYTE(v7) = 0;
-  if (!a4 && !self->_userDidInteractWithForm)
+  if (!type && !self->_userDidInteractWithForm)
   {
     if (self->_numberOfFollowUpAutoFillAttempts <= 4)
     {
-      v7 = ![(WBSFormMetadata *)self->_formMetadataFromPreviousAutoFillAttempt isEqual:v6];
+      v7 = ![(WBSFormMetadata *)self->_formMetadataFromPreviousAutoFillAttempt isEqual:metadataCopy];
     }
 
     else
@@ -83,9 +83,9 @@
   return v7;
 }
 
-- (void)setAddressBookPropertiesThatCanBeFilled:(id)a3
+- (void)setAddressBookPropertiesThatCanBeFilled:(id)filled
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithSet:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithSet:filled];
   addressBookPropertiesThatCanBeFilled = self->_addressBookPropertiesThatCanBeFilled;
   self->_addressBookPropertiesThatCanBeFilled = v4;
 }

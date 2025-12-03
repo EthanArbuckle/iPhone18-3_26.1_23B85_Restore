@@ -1,41 +1,41 @@
 @interface SCNSkinner
 + (SCNSkinner)skinnerWithBaseGeometry:(SCNGeometry *)baseGeometry bones:(NSArray *)bones boneInverseBindTransforms:(NSArray *)boneInverseBindTransforms boneWeights:(SCNGeometrySource *)boneWeights boneIndices:(SCNGeometrySource *)boneIndices;
-+ (SCNSkinner)skinnerWithSkinnerRef:(__C3DSkinner *)a3;
-+ (__C3DSkinner)_createSkinnerWithBones:(id)a3 boneWeights:(id)a4 boneIndices:(id)a5 baseGeometry:(id)a6;
-+ (__C3DSkinner)_createSkinnerWithCompressedData:(id)a3 bonesCount:(unint64_t)a4 vertexCount:(unint64_t)a5;
-+ (id)_skinnerWithBaseGeometry:(id)a3 skinnableGeometry:(id)a4 bones:(id)a5 boneInverseBindTransforms:(id)a6 bindMatrix:(SCNMatrix4 *)a7;
-- (BOOL)_setSkeleton:(id)a3;
++ (SCNSkinner)skinnerWithSkinnerRef:(__C3DSkinner *)ref;
++ (__C3DSkinner)_createSkinnerWithBones:(id)bones boneWeights:(id)weights boneIndices:(id)indices baseGeometry:(id)geometry;
++ (__C3DSkinner)_createSkinnerWithCompressedData:(id)data bonesCount:(unint64_t)count vertexCount:(unint64_t)vertexCount;
++ (id)_skinnerWithBaseGeometry:(id)geometry skinnableGeometry:(id)skinnableGeometry bones:(id)bones boneInverseBindTransforms:(id)transforms bindMatrix:(SCNMatrix4 *)matrix;
+- (BOOL)_setSkeleton:(id)skeleton;
 - (NSArray)boneInverseBindTransforms;
 - (NSArray)bones;
 - (SCNGeometrySource)boneIndices;
 - (SCNGeometrySource)boneWeights;
 - (SCNMatrix4)baseGeometryBindTransform;
-- (SCNSkinner)initWithCoder:(id)a3;
-- (SCNSkinner)initWithSkinnerRef:(__C3DSkinner *)a3;
+- (SCNSkinner)initWithCoder:(id)coder;
+- (SCNSkinner)initWithSkinnerRef:(__C3DSkinner *)ref;
 - (__C3DScene)sceneRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)scene;
-- (void)_setBaseGeometry:(id)a3;
+- (void)_setBaseGeometry:(id)geometry;
 - (void)_syncObjCModel;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBaseGeometry:(SCNGeometry *)baseGeometry;
 - (void)setBaseGeometryBindTransform:(SCNMatrix4 *)baseGeometryBindTransform;
-- (void)setBoneInverseBindTransforms:(id)a3;
-- (void)setBones:(id)a3;
+- (void)setBoneInverseBindTransforms:(id)transforms;
+- (void)setBones:(id)bones;
 - (void)setSkeleton:(SCNNode *)skeleton;
 @end
 
 @implementation SCNSkinner
 
-- (SCNSkinner)initWithSkinnerRef:(__C3DSkinner *)a3
+- (SCNSkinner)initWithSkinnerRef:(__C3DSkinner *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNSkinner;
   v4 = [(SCNSkinner *)&v7 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     v4->_skinner = v5;
     if (v5)
     {
@@ -48,12 +48,12 @@
   return v4;
 }
 
-+ (SCNSkinner)skinnerWithSkinnerRef:(__C3DSkinner *)a3
++ (SCNSkinner)skinnerWithSkinnerRef:(__C3DSkinner *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithSkinnerRef:a3];
+    v6 = [[self alloc] initWithSkinnerRef:ref];
 
     return v6;
   }
@@ -92,7 +92,7 @@ void __21__SCNSkinner_dealloc__block_invoke(uint64_t a1)
   CFRelease(v2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   Copy = C3DSkinnerCreateCopy(self->_skinner);
   v5 = [[SCNSkinner alloc] initWithSkinnerRef:Copy];
@@ -103,15 +103,15 @@ void __21__SCNSkinner_dealloc__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)_setSkeleton:(id)a3
+- (BOOL)_setSkeleton:(id)skeleton
 {
   Weak = objc_loadWeak(&self->_skeleton);
-  if (Weak != a3)
+  if (Weak != skeleton)
   {
-    objc_storeWeak(&self->_skeleton, a3);
+    objc_storeWeak(&self->_skeleton, skeleton);
   }
 
-  return Weak != a3;
+  return Weak != skeleton;
 }
 
 - (void)_syncObjCModel
@@ -136,20 +136,20 @@ void __21__SCNSkinner_dealloc__block_invoke(uint64_t a1)
 
 - (void)setSkeleton:(SCNNode *)skeleton
 {
-  v5 = [(SCNSkinner *)self skeleton];
+  skeleton = [(SCNSkinner *)self skeleton];
   if ([(SCNSkinner *)self _setSkeleton:skeleton])
   {
     if (self->_skinner)
     {
-      v6 = [(SCNSkinner *)self sceneRef];
+      sceneRef = [(SCNSkinner *)self sceneRef];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __26__SCNSkinner_setSkeleton___block_invoke;
       v7[3] = &unk_2782FC928;
       v7[4] = self;
       v7[5] = skeleton;
-      v7[6] = v5;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+      v7[6] = skeleton;
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
     }
   }
 }
@@ -212,39 +212,39 @@ LABEL_12:
   }
 }
 
-- (void)_setBaseGeometry:(id)a3
+- (void)_setBaseGeometry:(id)geometry
 {
-  if (a3)
+  if (geometry)
   {
     baseGeometry = self->_baseGeometry;
-    if (baseGeometry != a3)
+    if (baseGeometry != geometry)
     {
 
-      self->_baseGeometry = a3;
+      self->_baseGeometry = geometry;
     }
   }
 }
 
-+ (__C3DSkinner)_createSkinnerWithBones:(id)a3 boneWeights:(id)a4 boneIndices:(id)a5 baseGeometry:(id)a6
++ (__C3DSkinner)_createSkinnerWithBones:(id)bones boneWeights:(id)weights boneIndices:(id)indices baseGeometry:(id)geometry
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = [a3 count];
+  v9 = [bones count];
   v10 = v9;
   if (v9 < 2)
   {
-    v19 = C3DSkinCreateWith(0, v9, 0, [a6 __CFObject]);
+    v19 = C3DSkinCreateWith(0, v9, 0, [geometry __CFObject]);
     C3DSkinSetMaxInfluencesPerVertex(v19, 1);
   }
 
   else
   {
-    v11 = [objc_msgSend(objc_msgSend(a6 geometrySourcesForSemantic:{@"kGeometrySourceSemanticVertex", "firstObject"), "vectorCount"}];
-    v12 = [objc_msgSend(a4 "data")];
-    v13 = [a4 bytesPerComponent];
-    v14 = [objc_msgSend(a5 "data")];
-    v15 = [a5 bytesPerComponent];
-    v16 = [a5 vectorCount];
-    if (v16 != [a4 vectorCount] || (v17 = v12 / v11 / v13, v14 / v11 / v15 != v17))
+    v11 = [objc_msgSend(objc_msgSend(geometry geometrySourcesForSemantic:{@"kGeometrySourceSemanticVertex", "firstObject"), "vectorCount"}];
+    v12 = [objc_msgSend(weights "data")];
+    bytesPerComponent = [weights bytesPerComponent];
+    v14 = [objc_msgSend(indices "data")];
+    bytesPerComponent2 = [indices bytesPerComponent];
+    vectorCount = [indices vectorCount];
+    if (vectorCount != [weights vectorCount] || (v17 = v12 / v11 / bytesPerComponent, v14 / v11 / bytesPerComponent2 != v17))
     {
       v21 = scn_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ LABEL_12:
       return 0;
     }
 
-    if (![a4 floatComponents] || objc_msgSend(a4, "bytesPerComponent") != 4)
+    if (![weights floatComponents] || objc_msgSend(weights, "bytesPerComponent") != 4)
     {
       v23 = scn_default_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -266,7 +266,7 @@ LABEL_12:
       return 0;
     }
 
-    if ([a5 bytesPerComponent] >= 3)
+    if ([indices bytesPerComponent] >= 3)
     {
       v18 = scn_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -277,9 +277,9 @@ LABEL_12:
       return 0;
     }
 
-    v24 = [a5 dataStride];
-    v25 = [a5 componentsPerVector];
-    if (v24 != [a5 bytesPerComponent] * v25)
+    dataStride = [indices dataStride];
+    componentsPerVector = [indices componentsPerVector];
+    if (dataStride != [indices bytesPerComponent] * componentsPerVector)
     {
       v45 = scn_default_log();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -290,9 +290,9 @@ LABEL_12:
       return 0;
     }
 
-    v26 = [a4 dataStride];
-    v27 = [a4 componentsPerVector];
-    if (v26 != [a4 bytesPerComponent] * v27)
+    dataStride2 = [weights dataStride];
+    componentsPerVector2 = [weights componentsPerVector];
+    if (dataStride2 != [weights bytesPerComponent] * componentsPerVector2)
     {
       v46 = scn_default_log();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -304,7 +304,7 @@ LABEL_12:
     }
 
     v28 = v17 * v11;
-    v19 = C3DSkinCreateWith(v11, v10, v17 * v11, [a6 __CFObject]);
+    v19 = C3DSkinCreateWith(v11, v10, v17 * v11, [geometry __CFObject]);
     C3DSkinSetMaxInfluencesPerVertex(v19, v17);
     v48 = 0;
     v49 = 0;
@@ -340,13 +340,13 @@ LABEL_12:
       while (v31);
     }
 
-    v36 = [objc_msgSend(a5 "data")];
-    v37 = [objc_msgSend(a5 "data")];
-    v38 = [objc_msgSend(a4 "data")];
-    v39 = [a5 bytesPerComponent];
+    v36 = [objc_msgSend(indices "data")];
+    v37 = [objc_msgSend(indices "data")];
+    v38 = [objc_msgSend(weights "data")];
+    bytesPerComponent3 = [indices bytesPerComponent];
     if (v28 >= 1)
     {
-      v40 = v39;
+      v40 = bytesPerComponent3;
       for (i = 0; i < v28; ++i)
       {
         if (v40 == 1)
@@ -389,11 +389,11 @@ LABEL_12:
   return v20;
 }
 
-+ (__C3DSkinner)_createSkinnerWithCompressedData:(id)a3 bonesCount:(unint64_t)a4 vertexCount:(unint64_t)a5
++ (__C3DSkinner)_createSkinnerWithCompressedData:(id)data bonesCount:(unint64_t)count vertexCount:(unint64_t)vertexCount
 {
-  if ([a3 count] != 3)
+  if ([data count] != 3)
   {
-    if ([a3 count] != 1)
+    if ([data count] != 1)
     {
       v18 = scn_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -402,7 +402,7 @@ LABEL_12:
       }
     }
 
-    v11 = [a3 objectAtIndexedSubscript:0];
+    v11 = [data objectAtIndexedSubscript:0];
     v12 = [v11 length];
     v8 = 0;
     v10 = 0;
@@ -410,38 +410,38 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v8 = [a3 objectAtIndexedSubscript:0];
-  if ([v8 length] == a5)
+  v8 = [data objectAtIndexedSubscript:0];
+  if ([v8 length] == vertexCount)
   {
     v9 = 1;
-    v10 = [a3 objectAtIndexedSubscript:1];
-    v11 = [a3 objectAtIndexedSubscript:2];
+    v10 = [data objectAtIndexedSubscript:1];
+    v11 = [data objectAtIndexedSubscript:2];
     v12 = [v11 length];
     if (v8)
     {
-      v13 = [v8 bytes];
-      if (a5)
+      bytes = [v8 bytes];
+      if (vertexCount)
       {
         v14 = 1;
-        v15 = a5;
+        vertexCountCopy = vertexCount;
         do
         {
-          v17 = *v13++;
+          v17 = *bytes++;
           v16 = v17;
           if (v14 <= v17)
           {
             v14 = v16;
           }
 
-          --v15;
+          --vertexCountCopy;
         }
 
-        while (v15);
+        while (vertexCountCopy);
         v9 = 0;
 LABEL_15:
-        v26 = C3DSkinCreateWith(a5, a4, v12, 0);
+        v26 = C3DSkinCreateWith(vertexCount, count, v12, 0);
         C3DSkinSetMaxInfluencesPerVertex(v26, v14);
-        if (a4 < 2)
+        if (count < 2)
         {
 LABEL_55:
           v32 = C3DSkinnerCreateWithSkin(v26);
@@ -455,11 +455,11 @@ LABEL_55:
         C3DSkinGetVertexWeightsPointers(v26, &v59, &v58, &v57);
         if (v9)
         {
-          if (a5)
+          if (vertexCount)
           {
             v27 = 0;
             v28 = v59;
-            v29 = a5;
+            vertexCountCopy2 = vertexCount;
             do
             {
               if (v27 >= v12)
@@ -478,54 +478,54 @@ LABEL_55:
               }
 
               *v28++ = v30;
-              --v29;
+              --vertexCountCopy2;
             }
 
-            while (v29);
+            while (vertexCountCopy2);
             goto LABEL_34;
           }
         }
 
         else
         {
-          v33 = [v8 bytes];
-          if (a5)
+          bytes2 = [v8 bytes];
+          if (vertexCount)
           {
             v27 = 0;
             v34 = v59;
-            v35 = a5;
+            vertexCountCopy3 = vertexCount;
             do
             {
               *v34++ = v27;
-              v36 = *v33++;
+              v36 = *bytes2++;
               v27 += v36;
-              --v35;
+              --vertexCountCopy3;
             }
 
-            while (v35);
+            while (vertexCountCopy3);
             goto LABEL_34;
           }
         }
 
         v27 = 0;
 LABEL_34:
-        v59[a5] = v27;
-        v37 = [v11 bytes];
+        v59[vertexCount] = v27;
+        bytes3 = [v11 bytes];
         if (v10)
         {
           v38 = [v10 length] / v12;
           if (v38 == 2)
           {
-            v47 = [v10 bytes];
+            bytes4 = [v10 bytes];
             if (v12 >= 1)
             {
               v49 = v57;
               v48 = v58;
               do
               {
-                v50 = *v37++;
+                v50 = *bytes3++;
                 *v48++ = v50;
-                v51 = *v47++;
+                v51 = *bytes4++;
                 *v49++ = v51 / 65535.0;
                 --v12;
               }
@@ -536,16 +536,16 @@ LABEL_34:
 
           else if (v38 == 1)
           {
-            v39 = [v10 bytes];
+            bytes5 = [v10 bytes];
             if (v12 >= 1)
             {
               v41 = v57;
               v40 = v58;
               do
               {
-                v42 = *v37++;
+                v42 = *bytes3++;
                 *v40++ = v42;
-                v43 = *v39++;
+                v43 = *bytes5++;
                 *v41++ = v43 / 255.0;
                 --v12;
               }
@@ -568,7 +568,7 @@ LABEL_34:
               v53 = v58;
               do
               {
-                v55 = *v37++;
+                v55 = *bytes3++;
                 *v53++ = v55;
                 *v54++ = 1.0;
                 --v12;
@@ -585,7 +585,7 @@ LABEL_34:
           v44 = v58;
           do
           {
-            v46 = *v37++;
+            v46 = *bytes3++;
             *v44++ = v46;
             *v45++ = 1.0;
             --v12;
@@ -651,14 +651,14 @@ LABEL_14:
     return 0;
   }
 
-  v14 = [a1 _createSkinnerWithBones:bones boneWeights:boneWeights boneIndices:boneIndices baseGeometry:baseGeometry];
+  v14 = [self _createSkinnerWithBones:bones boneWeights:boneWeights boneIndices:boneIndices baseGeometry:baseGeometry];
   if (!v14)
   {
     return 0;
   }
 
   v15 = v14;
-  v16 = [[a1 alloc] initWithSkinnerRef:v14];
+  v16 = [[self alloc] initWithSkinnerRef:v14];
   CFRelease(v15);
   [v16 setBones:bones];
   [v16 setBoneInverseBindTransforms:boneInverseBindTransforms];
@@ -668,28 +668,28 @@ LABEL_14:
   return v16;
 }
 
-+ (id)_skinnerWithBaseGeometry:(id)a3 skinnableGeometry:(id)a4 bones:(id)a5 boneInverseBindTransforms:(id)a6 bindMatrix:(SCNMatrix4 *)a7
++ (id)_skinnerWithBaseGeometry:(id)geometry skinnableGeometry:(id)skinnableGeometry bones:(id)bones boneInverseBindTransforms:(id)transforms bindMatrix:(SCNMatrix4 *)matrix
 {
-  Mesh = C3DGeometryGetMesh([a4 geometryRef]);
-  result = C3DSkinCreateWithSkinnableMesh(Mesh, [a5 count]);
+  Mesh = C3DGeometryGetMesh([skinnableGeometry geometryRef]);
+  result = C3DSkinCreateWithSkinnableMesh(Mesh, [bones count]);
   if (result)
   {
     v14 = result;
     v15 = C3DSkinnerCreateWithSkin(result);
     CFRelease(v14);
-    v16 = [[a1 alloc] initWithSkinnerRef:v15];
+    v16 = [[self alloc] initWithSkinnerRef:v15];
     CFRelease(v15);
-    [v16 setBones:a5];
-    [v16 setBoneInverseBindTransforms:a6];
-    v17 = *&a7->m21;
-    v19[0] = *&a7->m11;
+    [v16 setBones:bones];
+    [v16 setBoneInverseBindTransforms:transforms];
+    v17 = *&matrix->m21;
+    v19[0] = *&matrix->m11;
     v19[1] = v17;
-    v18 = *&a7->m41;
-    v19[2] = *&a7->m31;
+    v18 = *&matrix->m41;
+    v19[2] = *&matrix->m31;
     v19[3] = v18;
     [v16 setBaseGeometryBindTransform:v19];
-    [v16 _setBaseGeometry:a3];
-    [v16 _setSkeleton:_commonAncessor_0(a5)];
+    [v16 _setBaseGeometry:geometry];
+    [v16 _setSkeleton:_commonAncessor_0(bones)];
     return v16;
   }
 
@@ -699,11 +699,11 @@ LABEL_14:
 - (SCNMatrix4)baseGeometryBindTransform
 {
   *retstr = SCNMatrix4Identity;
-  v5 = [(SCNSkinner *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
   result = C3DGeometryGetOverrideMaterial(self->_skinner);
@@ -724,11 +724,11 @@ LABEL_14:
 
 - (void)setBaseGeometryBindTransform:(SCNMatrix4 *)baseGeometryBindTransform
 {
-  v5 = [(SCNSkinner *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
   OverrideMaterial = C3DGeometryGetOverrideMaterial(self->_skinner);
@@ -755,11 +755,11 @@ LABEL_14:
 
 - (SCNGeometrySource)boneWeights
 {
-  v3 = [(SCNSkinner *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   if (C3DSkinnerHasOnlyOneJoint(self->_skinner))
@@ -877,11 +877,11 @@ LABEL_28:
 
 - (SCNGeometrySource)boneIndices
 {
-  v3 = [(SCNSkinner *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   if (C3DSkinnerHasOnlyOneJoint(self->_skinner))
@@ -1000,11 +1000,11 @@ LABEL_28:
 
 - (NSArray)boneInverseBindTransforms
 {
-  v3 = [(SCNSkinner *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   OverrideMaterial = C3DGeometryGetOverrideMaterial(self->_skinner);
@@ -1045,13 +1045,13 @@ LABEL_28:
   return v6;
 }
 
-- (void)setBoneInverseBindTransforms:(id)a3
+- (void)setBoneInverseBindTransforms:(id)transforms
 {
-  v5 = [(SCNSkinner *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
     OverrideMaterial = C3DGeometryGetOverrideMaterial(self->_skinner);
     if (!OverrideMaterial)
     {
@@ -1072,7 +1072,7 @@ LABEL_13:
 
   v8 = OverrideMaterial;
   JointsCount = C3DSkinGetJointsCount(OverrideMaterial);
-  if ([a3 count] == JointsCount)
+  if ([transforms count] == JointsCount)
   {
     InverseBindMatricesPtr = C3DSkinGetInverseBindMatricesPtr(v8);
     if (JointsCount)
@@ -1080,7 +1080,7 @@ LABEL_13:
       v11 = InverseBindMatricesPtr;
       for (i = 0; i != JointsCount; ++i)
       {
-        v13 = [a3 objectAtIndex:{i, 0, 0, 0, 0, 0, 0, 0, 0}];
+        v13 = [transforms objectAtIndex:{i, 0, 0, 0, 0, 0, 0, 0, 0}];
         if (v13)
         {
           [v13 SCNMatrix4Value];
@@ -1108,18 +1108,18 @@ LABEL_13:
     v14 = scn_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(SCNSkinner *)JointsCount setBoneInverseBindTransforms:a3, v14];
+      [(SCNSkinner *)JointsCount setBoneInverseBindTransforms:transforms, v14];
     }
   }
 }
 
 - (NSArray)bones
 {
-  v3 = [(SCNSkinner *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   v5 = [C3DSkinnerGetJoints(self->_skinner) copy];
@@ -1141,15 +1141,15 @@ LABEL_13:
   return v7;
 }
 
-- (void)setBones:(id)a3
+- (void)setBones:(id)bones
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(bones, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [bones countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1160,7 +1160,7 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(bones);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -1168,17 +1168,17 @@ LABEL_13:
         [v10 setIsJoint:1];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [bones countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(SCNSkinner *)self sceneRef];
-  if (v11)
+  sceneRef = [(SCNSkinner *)self sceneRef];
+  if (sceneRef)
   {
-    v12 = v11;
-    C3DSceneLock(v11);
+    v12 = sceneRef;
+    C3DSceneLock(sceneRef);
     C3DSkinnerSetJoints(self->_skinner, v5);
     C3DSceneUnlock(v12);
   }
@@ -1189,11 +1189,11 @@ LABEL_13:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v43 = *MEMORY[0x277D85DE8];
-  [a3 encodeObject:-[SCNSkinner skeleton](self forKey:{"skeleton"), @"skeleton"}];
-  [a3 encodeObject:-[SCNSkinner baseGeometry](self forKey:{"baseGeometry"), @"baseGeometry"}];
+  [coder encodeObject:-[SCNSkinner skeleton](self forKey:{"skeleton"), @"skeleton"}];
+  [coder encodeObject:-[SCNSkinner baseGeometry](self forKey:{"baseGeometry"), @"baseGeometry"}];
   if (self)
   {
     [(SCNSkinner *)self baseGeometryBindTransform];
@@ -1207,10 +1207,10 @@ LABEL_13:
     v38 = 0u;
   }
 
-  SCNEncodeSCNMatrix4(a3, @"baseGeometryBindTransform", &v37);
-  v5 = [(SCNSkinner *)self bones];
-  [a3 encodeObject:v5 forKey:@"bones"];
-  if ([(NSArray *)v5 count]>= 2)
+  SCNEncodeSCNMatrix4(coder, @"baseGeometryBindTransform", &v37);
+  bones = [(SCNSkinner *)self bones];
+  [coder encodeObject:bones forKey:@"bones"];
+  if ([(NSArray *)bones count]>= 2)
   {
     if (self->_bonesAndIndicesCompression)
     {
@@ -1223,10 +1223,10 @@ LABEL_13:
       v35 = 0;
       C3DSkinGetVertexWeightsPointers(OverrideMaterial, &v36, &v35, &v37);
       v10 = [MEMORY[0x277CBEB28] dataWithLength:WeightsCount];
-      v11 = [v10 bytes];
+      bytes = [v10 bytes];
       if (WeightsCount >= 1)
       {
-        v12 = v11;
+        v12 = bytes;
         for (i = 0; i != WeightsCount; ++i)
         {
           v14 = v35;
@@ -1257,17 +1257,17 @@ LABEL_13:
       else
       {
         v20 = [MEMORY[0x277CBEB28] dataWithLength:MTLVertexFormat];
-        v21 = [v20 bytes];
+        bytes2 = [v20 bytes];
         if (MTLVertexFormat >= 1)
         {
           for (j = 0; j != MTLVertexFormat; ++j)
           {
-            *(v21 + j) = *(v36 + 8 * j + 8) - *(v36 + 8 * j);
+            *(bytes2 + j) = *(v36 + 8 * j + 8) - *(v36 + 8 * j);
           }
         }
 
-        v23 = [MEMORY[0x277CBEB28] dataWithLength:2 * WeightsCount];
-        v24 = [v23 bytes];
+        weightsCount = [MEMORY[0x277CBEB28] dataWithLength:2 * WeightsCount];
+        bytes3 = [weightsCount bytes];
         if (WeightsCount >= 1)
         {
           v25 = v37;
@@ -1280,39 +1280,39 @@ LABEL_13:
               v27 = 0xFFFF;
             }
 
-            *v24++ = v27 & ~(v27 >> 31);
+            *bytes3++ = v27 & ~(v27 >> 31);
             --WeightsCount;
           }
 
           while (WeightsCount);
         }
 
-        v28 = [MEMORY[0x277CBEA60] arrayWithObjects:{v20, v23, v10, 0}];
+        v28 = [MEMORY[0x277CBEA60] arrayWithObjects:{v20, weightsCount, v10, 0}];
       }
 
-      v18 = v28;
+      boneIndices = v28;
       v19 = @"compressedSkinData";
     }
 
     else
     {
-      [a3 encodeObject:-[SCNSkinner boneWeights](self forKey:{"boneWeights"), @"boneWeights"}];
-      v18 = [(SCNSkinner *)self boneIndices];
+      [coder encodeObject:-[SCNSkinner boneWeights](self forKey:{"boneWeights"), @"boneWeights"}];
+      boneIndices = [(SCNSkinner *)self boneIndices];
       v19 = @"boneIndices";
     }
 
-    [a3 encodeObject:v18 forKey:v19];
+    [coder encodeObject:boneIndices forKey:v19];
   }
 
-  v29 = [(SCNSkinner *)self boneInverseBindTransforms];
-  v30 = [(NSArray *)v29 count];
+  boneInverseBindTransforms = [(SCNSkinner *)self boneInverseBindTransforms];
+  v30 = [(NSArray *)boneInverseBindTransforms count];
   if (v30)
   {
     v31 = v30;
     for (k = 0; k != v31; ++k)
     {
       v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"baseGeometryBindTransform-%d", k];
-      v34 = [(NSArray *)v29 objectAtIndex:k];
+      v34 = [(NSArray *)boneInverseBindTransforms objectAtIndex:k];
       if (v34)
       {
         [v34 SCNMatrix4Value];
@@ -1326,12 +1326,12 @@ LABEL_13:
         v38 = 0u;
       }
 
-      SCNEncodeSCNMatrix4(a3, v33, &v37);
+      SCNEncodeSCNMatrix4(coder, v33, &v37);
     }
   }
 }
 
-- (SCNSkinner)initWithCoder:(id)a3
+- (SCNSkinner)initWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = SCNSkinner;
@@ -1340,11 +1340,11 @@ LABEL_13:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"baseGeometry"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"baseGeometry"];
     v8 = [objc_msgSend(objc_msgSend(v7 geometrySourcesForSemantic:{@"kGeometrySourceSemanticVertex", "firstObject"), "vectorCount"}];
-    v9 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"bones"];
-    v10 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"compressedSkinData"];
+    v9 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"bones"];
+    v10 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"compressedSkinData"];
     if (v10)
     {
       v4->_bonesAndIndicesCompression = 1;
@@ -1353,15 +1353,15 @@ LABEL_13:
 
     else
     {
-      v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"boneWeights"];
-      v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"boneIndices"];
+      v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"boneWeights"];
+      v13 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"boneIndices"];
       v11 = [objc_opt_class() _createSkinnerWithBones:v9 boneWeights:v12 boneIndices:v13 baseGeometry:v7];
     }
 
     v4->_skinner = v11;
     if (v11)
     {
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v15 = [v9 count];
       if (v15)
       {
@@ -1372,24 +1372,24 @@ LABEL_13:
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          SCNDecodeSCNMatrix4(a3, [MEMORY[0x277CCACA8] stringWithFormat:@"baseGeometryBindTransform-%d", i], &v21);
+          SCNDecodeSCNMatrix4(coder, [MEMORY[0x277CCACA8] stringWithFormat:@"baseGeometryBindTransform-%d", i], &v21);
           v20[0] = v21;
           v20[1] = v22;
           v20[2] = v23;
           v20[3] = v24;
-          [v14 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithSCNMatrix4:", v20)}];
+          [array addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithSCNMatrix4:", v20)}];
         }
       }
 
       [(SCNSkinner *)v4 _setBaseGeometry:v7];
       [(SCNSkinner *)v4 setBones:v9];
-      SCNDecodeSCNMatrix4(a3, @"baseGeometryBindTransform", v19);
+      SCNDecodeSCNMatrix4(coder, @"baseGeometryBindTransform", v19);
       v21 = v19[0];
       v22 = v19[1];
       v23 = v19[2];
       v24 = v19[3];
       [(SCNSkinner *)v4 setBaseGeometryBindTransform:&v21];
-      [(SCNSkinner *)v4 setBoneInverseBindTransforms:v14];
+      [(SCNSkinner *)v4 setBoneInverseBindTransforms:array];
       [(SCNSkinner *)v4 setSkeleton:v6];
       [SCNTransaction setImmediateMode:v5];
     }
@@ -1405,9 +1405,9 @@ LABEL_13:
 
 - (__C3DScene)sceneRef
 {
-  v2 = [(SCNSkinner *)self __CFObject];
+  __CFObject = [(SCNSkinner *)self __CFObject];
 
-  return C3DGetScene(v2);
+  return C3DGetScene(__CFObject);
 }
 
 - (id)scene

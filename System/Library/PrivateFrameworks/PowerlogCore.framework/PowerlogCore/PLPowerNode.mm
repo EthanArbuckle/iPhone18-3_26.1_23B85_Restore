@@ -1,5 +1,5 @@
 @interface PLPowerNode
-- (PLPowerNode)initWithName:(id)a3 withFGEnergy:(double)a4 withBGEnergy:(double)a5 withFGTime:(double)a6 withBGTime:(double)a7 withBGAudioTime:(double)a8 withBGLocationTime:(double)a9 withRootNodeEnergyRows:(id)a10;
+- (PLPowerNode)initWithName:(id)name withFGEnergy:(double)energy withBGEnergy:(double)gEnergy withFGTime:(double)time withBGTime:(double)gTime withBGAudioTime:(double)audioTime withBGLocationTime:(double)locationTime withRootNodeEnergyRows:(id)self0;
 - (id)energy;
 - (id)serialize;
 - (id)time;
@@ -7,11 +7,11 @@
 
 @implementation PLPowerNode
 
-- (PLPowerNode)initWithName:(id)a3 withFGEnergy:(double)a4 withBGEnergy:(double)a5 withFGTime:(double)a6 withBGTime:(double)a7 withBGAudioTime:(double)a8 withBGLocationTime:(double)a9 withRootNodeEnergyRows:(id)a10
+- (PLPowerNode)initWithName:(id)name withFGEnergy:(double)energy withBGEnergy:(double)gEnergy withFGTime:(double)time withBGTime:(double)gTime withBGAudioTime:(double)audioTime withBGLocationTime:(double)locationTime withRootNodeEnergyRows:(id)self0
 {
-  v19 = a3;
-  v20 = a10;
-  if (v19)
+  nameCopy = name;
+  rowsCopy = rows;
+  if (nameCopy)
   {
     v23.receiver = self;
     v23.super_class = PLPowerNode;
@@ -19,14 +19,14 @@
     self = v21;
     if (v21)
     {
-      objc_storeStrong(&v21->_name, a3);
-      self->_fgEnergy = a4;
-      self->_bgEnergy = a5;
-      self->_fgTime = a6;
-      self->_bgTime = a7;
-      self->_bgAudioTime = a8;
-      self->_bgLocationTime = a9;
-      objc_storeStrong(&self->_rootNodeEnergyRows, a10);
+      objc_storeStrong(&v21->_name, name);
+      self->_fgEnergy = energy;
+      self->_bgEnergy = gEnergy;
+      self->_fgTime = time;
+      self->_bgTime = gTime;
+      self->_bgAudioTime = audioTime;
+      self->_bgLocationTime = locationTime;
+      objc_storeStrong(&self->_rootNodeEnergyRows, rows);
     }
   }
 
@@ -36,8 +36,8 @@
 - (id)energy
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -59,11 +59,11 @@
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:@"RootNodeID"];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
-        if (v11)
+        if (intValue)
         {
-          v12 = [&unk_1F540B7B8 objectAtIndexedSubscript:v11];
+          v12 = [&unk_1F540B7B8 objectAtIndexedSubscript:intValue];
           v13 = [v9 objectForKeyedSubscript:@"FGEnergy"];
           [v13 doubleValue];
           v15 = v14;
@@ -75,25 +75,25 @@
           [(PLPowerNode *)self fgTime];
           if (v19 <= 60.0 || (v19 = v15 / 1000.0, v15 / 1000.0 <= 0.0))
           {
-            [v3 setObject:&unk_1F5405CE8 forKeyedSubscript:{v12, v19}];
+            [dictionary setObject:&unk_1F5405CE8 forKeyedSubscript:{v12, v19}];
           }
 
           else
           {
             v20 = [MEMORY[0x1E696AD98] numberWithLong:llround(v19)];
-            [v3 setObject:v20 forKeyedSubscript:v12];
+            [dictionary setObject:v20 forKeyedSubscript:v12];
           }
 
           [(PLPowerNode *)self bgTime];
           if (v21 <= 60.0 || (v21 = v18 / 1000.0, v18 / 1000.0 <= 0.0))
           {
-            [v4 setObject:&unk_1F5405CE8 forKeyedSubscript:{v12, v21}];
+            [dictionary2 setObject:&unk_1F5405CE8 forKeyedSubscript:{v12, v21}];
           }
 
           else
           {
             v22 = [MEMORY[0x1E696AD98] numberWithLong:llround(v21)];
-            [v4 setObject:v22 forKeyedSubscript:v12];
+            [dictionary2 setObject:v22 forKeyedSubscript:v12];
           }
         }
       }
@@ -106,8 +106,8 @@
 
   v31[0] = @"fg";
   v31[1] = @"bg";
-  v32[0] = v3;
-  v32[1] = v4;
+  v32[0] = dictionary;
+  v32[1] = dictionary2;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
   v24 = *MEMORY[0x1E69E9840];
@@ -152,20 +152,20 @@
 {
   v50[1] = *MEMORY[0x1E69E9840];
   v3 = [PLValueComparison alloc];
-  v4 = [(PLPowerNode *)self name];
-  v5 = [(PLValueComparison *)v3 initWithKey:@"AppBundleId" withValue:v4 withComparisonOperation:0];
+  name = [(PLPowerNode *)self name];
+  v5 = [(PLValueComparison *)v3 initWithKey:@"AppBundleId" withValue:name withComparisonOperation:0];
 
   v6 = +[PowerlogCore sharedCore];
-  v7 = [v6 storage];
+  storage = [v6 storage];
   v50[0] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
-  v9 = [v7 lastEntryForKey:@"PLApplicationAgent_EventNone_AllApps" withComparisons:v8 isSingleton:1];
+  v9 = [storage lastEntryForKey:@"PLApplicationAgent_EventNone_AllApps" withComparisons:v8 isSingleton:1];
 
   if (v9 && ([v9 objectForKeyedSubscript:@"AppIs3rdParty"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, v11))
   {
     v48[0] = @"app_bundleid";
-    v47 = [(PLPowerNode *)self name];
-    v49[0] = v47;
+    name2 = [(PLPowerNode *)self name];
+    v49[0] = name2;
     v48[1] = @"app_build_version";
     v12 = [v9 objectForKeyedSubscript:@"AppBuildVersion"];
     if (v12)
@@ -252,9 +252,9 @@
     v49[6] = v23;
     v48[7] = @"app_is_beta";
     v41 = [v9 objectForKeyedSubscript:{@"AppIsBeta", v23}];
-    v24 = [v41 BOOLValue];
+    bOOLValue = [v41 BOOLValue];
     v25 = @"false";
-    if (v24)
+    if (bOOLValue)
     {
       v25 = @"true";
     }
@@ -291,11 +291,11 @@
 
     v49[9] = v30;
     v48[10] = @"app_energy";
-    v31 = [(PLPowerNode *)self energy];
-    v49[10] = v31;
+    energy = [(PLPowerNode *)self energy];
+    v49[10] = energy;
     v48[11] = @"app_time";
-    v32 = [(PLPowerNode *)self time];
-    v49[11] = v32;
+    time = [(PLPowerNode *)self time];
+    v49[11] = time;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:12];
 
     if (v28)

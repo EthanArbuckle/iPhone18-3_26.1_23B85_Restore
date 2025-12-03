@@ -1,29 +1,29 @@
 @interface ARDaemonServiceListener
-- (ARDaemonServiceListener)initWithDelegate:(id)a3 watchdogMonitor:(id)a4 isInProcess:(BOOL)a5 requiredServiceNames:(id)a6 ignoredServiceNames:(id)a7;
+- (ARDaemonServiceListener)initWithDelegate:(id)delegate watchdogMonitor:(id)monitor isInProcess:(BOOL)process requiredServiceNames:(id)names ignoredServiceNames:(id)serviceNames;
 - (ARDaemonServiceListenerDelegate)delegate;
-- (BOOL)addServiceByName:(id)a3 serviceClass:(Class)a4;
-- (BOOL)addServiceWithQueueByName:(id)a3 serviceClass:(Class)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)createService:(id)a3;
-- (id)listenerForServiceNamed:(id)a3;
+- (BOOL)addServiceByName:(id)name serviceClass:(Class)class;
+- (BOOL)addServiceWithQueueByName:(id)name serviceClass:(Class)class;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)createService:(id)service;
+- (id)listenerForServiceNamed:(id)named;
 @end
 
 @implementation ARDaemonServiceListener
 
-- (ARDaemonServiceListener)initWithDelegate:(id)a3 watchdogMonitor:(id)a4 isInProcess:(BOOL)a5 requiredServiceNames:(id)a6 ignoredServiceNames:(id)a7
+- (ARDaemonServiceListener)initWithDelegate:(id)delegate watchdogMonitor:(id)monitor isInProcess:(BOOL)process requiredServiceNames:(id)names ignoredServiceNames:(id)serviceNames
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  delegateCopy = delegate;
+  monitorCopy = monitor;
+  namesCopy = names;
+  serviceNamesCopy = serviceNames;
   v32.receiver = self;
   v32.super_class = ARDaemonServiceListener;
   v16 = [(ARDaemonServiceListener *)&v32 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_delegate, v12);
-    v17->_isInProcess = a5;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v17->_isInProcess = process;
     v18 = objc_opt_new();
     xpcListeners = v17->_xpcListeners;
     v17->_xpcListeners = v18;
@@ -36,17 +36,17 @@
     serviceQueue = v17->_serviceQueue;
     v17->_serviceQueue = v22;
 
-    [v13 addQueue:v17->_serviceQueue hangPolicy:0];
-    v24 = [v14 count] != 0;
+    [monitorCopy addQueue:v17->_serviceQueue hangPolicy:0];
+    v24 = [namesCopy count] != 0;
     v25 = v17->_serviceQueue;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __113__ARDaemonServiceListener_initWithDelegate_watchdogMonitor_isInProcess_requiredServiceNames_ignoredServiceNames___block_invoke;
     v27[3] = &unk_278BCBD30;
     v31 = v24;
-    v28 = v14;
+    v28 = namesCopy;
     v29 = v17;
-    v30 = v15;
+    v30 = serviceNamesCopy;
     dispatch_sync(v25, v27);
   }
 
@@ -120,9 +120,9 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)listenerForServiceNamed:(id)a3
+- (id)listenerForServiceNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v12 = 0;
   v13 = &v12;
@@ -135,10 +135,10 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __51__ARDaemonServiceListener_listenerForServiceNamed___block_invoke;
   block[3] = &unk_278BCBD58;
-  v10 = v4;
+  v10 = namedCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = namedCopy;
   dispatch_sync(serviceQueue, block);
   v7 = v13[5];
 
@@ -157,9 +157,9 @@ uint64_t __51__ARDaemonServiceListener_listenerForServiceNamed___block_invoke(vo
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)addServiceWithQueueByName:(id)a3 serviceClass:(Class)a4
+- (BOOL)addServiceWithQueueByName:(id)name serviceClass:(Class)class
 {
-  v6 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_serviceQueue);
   v14 = 0;
   v15 = &v14;
@@ -171,10 +171,10 @@ uint64_t __51__ARDaemonServiceListener_listenerForServiceNamed___block_invoke(vo
   v10[2] = __66__ARDaemonServiceListener_addServiceWithQueueByName_serviceClass___block_invoke;
   v10[3] = &unk_278BCBD80;
   v10[4] = self;
-  v11 = v6;
+  v11 = nameCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  classCopy = class;
+  v8 = nameCopy;
   dispatch_sync(serviceQueue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -189,10 +189,10 @@ uint64_t __66__ARDaemonServiceListener_addServiceWithQueueByName_serviceClass___
   return result;
 }
 
-- (BOOL)addServiceByName:(id)a3 serviceClass:(Class)a4
+- (BOOL)addServiceByName:(id)name serviceClass:(Class)class
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_serviceQueue);
   v7 = _ARLogDaemon_5();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -202,16 +202,16 @@ uint64_t __66__ARDaemonServiceListener_addServiceWithQueueByName_serviceClass___
     v24 = 138544130;
     v25 = v9;
     v26 = 2048;
-    v27 = self;
+    selfCopy3 = self;
     v28 = 2112;
-    v29 = a4;
+    classCopy3 = class;
     v30 = 2112;
-    v31 = v6;
+    v31 = nameCopy;
     _os_log_impl(&dword_23D391000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Adding listener for service: <%@:%@>", &v24, 0x2Au);
   }
 
-  v10 = [(NSMutableDictionary *)self->_serviceClasses allKeys];
-  v11 = [v10 containsObject:v6];
+  allKeys = [(NSMutableDictionary *)self->_serviceClasses allKeys];
+  v11 = [allKeys containsObject:nameCopy];
 
   if (v11)
   {
@@ -232,11 +232,11 @@ uint64_t __66__ARDaemonServiceListener_addServiceWithQueueByName_serviceClass___
         v24 = 138544130;
         v25 = v16;
         v26 = 2048;
-        v27 = self;
+        selfCopy3 = self;
         v28 = 2112;
-        v29 = a4;
+        classCopy3 = class;
         v30 = 2112;
-        v31 = v6;
+        v31 = nameCopy;
         v17 = "%{public}@ <%p>: Duplicate service names are not allowed: <%@:%@>";
         v18 = v14;
         v19 = OS_LOG_TYPE_ERROR;
@@ -252,11 +252,11 @@ LABEL_13:
       v24 = 138544130;
       v25 = v16;
       v26 = 2048;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2112;
-      v29 = a4;
+      classCopy3 = class;
       v30 = 2112;
-      v31 = v6;
+      v31 = nameCopy;
       v17 = "Error: %{public}@ <%p>: Duplicate service names are not allowed: <%@:%@>";
       v18 = v14;
       v19 = OS_LOG_TYPE_INFO;
@@ -266,21 +266,21 @@ LABEL_13:
 
   else
   {
-    [(NSMutableDictionary *)self->_serviceClasses setObject:a4 forKey:v6];
+    [(NSMutableDictionary *)self->_serviceClasses setObject:class forKey:nameCopy];
     if (self->_isInProcess)
     {
-      v20 = [MEMORY[0x277CCAE98] anonymousListener];
+      anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     }
 
     else
     {
-      v20 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v6];
+      anonymousListener = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:nameCopy];
     }
 
-    v14 = v20;
-    [v20 setDelegate:self];
+    v14 = anonymousListener;
+    [anonymousListener setDelegate:self];
     [v14 _setQueue:self->_serviceQueue];
-    [(NSMutableDictionary *)self->_xpcListeners setObject:v14 forKey:v6];
+    [(NSMutableDictionary *)self->_xpcListeners setObject:v14 forKey:nameCopy];
     [v14 resume];
   }
 
@@ -288,14 +288,14 @@ LABEL_13:
   return v11 ^ 1;
 }
 
-- (id)createService:(id)a3
+- (id)createService:(id)service
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_serviceQueue);
   serviceClasses = self->_serviceClasses;
-  v6 = [v4 serviceName];
-  v7 = [(NSMutableDictionary *)serviceClasses objectForKey:v6];
+  serviceName = [serviceCopy serviceName];
+  v7 = [(NSMutableDictionary *)serviceClasses objectForKey:serviceName];
 
   if (!v7)
   {
@@ -313,13 +313,13 @@ LABEL_13:
       {
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        v18 = [v4 serviceName];
+        serviceName2 = [serviceCopy serviceName];
         v35 = 138543874;
         v36 = v17;
         v37 = 2048;
-        v38 = self;
+        selfCopy5 = self;
         v39 = 2112;
-        v40 = v18;
+        v40 = serviceName2;
         v19 = "%{public}@ <%p>: Failed to find service class for service name: %@";
         v20 = v8;
         v21 = OS_LOG_TYPE_ERROR;
@@ -332,13 +332,13 @@ LABEL_18:
     {
       v31 = objc_opt_class();
       v17 = NSStringFromClass(v31);
-      v18 = [v4 serviceName];
+      serviceName2 = [serviceCopy serviceName];
       v35 = 138543874;
       v36 = v17;
       v37 = 2048;
-      v38 = self;
+      selfCopy5 = self;
       v39 = 2112;
-      v40 = v18;
+      v40 = serviceName2;
       v19 = "Error: %{public}@ <%p>: Failed to find service class for service name: %@";
       v20 = v8;
       v21 = OS_LOG_TYPE_INFO;
@@ -349,7 +349,7 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  v8 = [[v7 alloc] initWithConnection:v4];
+  v8 = [[v7 alloc] initWithConnection:serviceCopy];
   if (!v8)
   {
     if (ARShouldUseLogTypeError_onceToken_3 != -1)
@@ -366,13 +366,13 @@ LABEL_18:
       {
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        v27 = [v4 serviceName];
+        serviceName3 = [serviceCopy serviceName];
         v35 = 138543874;
         v36 = v26;
         v37 = 2048;
-        v38 = self;
+        selfCopy5 = self;
         v39 = 2112;
-        v40 = v27;
+        v40 = serviceName3;
         v28 = "%{public}@ <%p>: Failed to create service for service name: %@";
         v29 = v24;
         v30 = OS_LOG_TYPE_ERROR;
@@ -385,13 +385,13 @@ LABEL_22:
     {
       v32 = objc_opt_class();
       v26 = NSStringFromClass(v32);
-      v27 = [v4 serviceName];
+      serviceName3 = [serviceCopy serviceName];
       v35 = 138543874;
       v36 = v26;
       v37 = 2048;
-      v38 = self;
+      selfCopy5 = self;
       v39 = 2112;
-      v40 = v27;
+      v40 = serviceName3;
       v28 = "Error: %{public}@ <%p>: Failed to create service for service name: %@";
       v29 = v24;
       v30 = OS_LOG_TYPE_INFO;
@@ -407,15 +407,15 @@ LABEL_22:
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v4 serviceName];
+    serviceName4 = [serviceCopy serviceName];
     v35 = 138544130;
     v36 = v11;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v39 = 2112;
     v40 = v7;
     v41 = 2112;
-    v42 = v12;
+    v42 = serviceName4;
     _os_log_impl(&dword_23D391000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Created %@ for service name: %@", &v35, 0x2Au);
   }
 
@@ -428,24 +428,24 @@ LABEL_24:
   return v13;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_serviceQueue);
   if (self->_isInProcess)
   {
-    v8 = [v7 serviceName];
+    serviceName = [connectionCopy serviceName];
 
-    if (!v8)
+    if (!serviceName)
     {
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v9 = [(NSMutableDictionary *)self->_xpcListeners allKeys];
-      v10 = [v9 countByEnumeratingWithState:&v40 objects:v54 count:16];
+      allKeys = [(NSMutableDictionary *)self->_xpcListeners allKeys];
+      v10 = [allKeys countByEnumeratingWithState:&v40 objects:v54 count:16];
       if (v10)
       {
         v11 = v10;
@@ -456,20 +456,20 @@ LABEL_24:
           {
             if (*v41 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v40 + 1) + 8 * i);
             v15 = [(NSMutableDictionary *)self->_xpcListeners objectForKeyedSubscript:v14];
 
-            if (v15 == v6)
+            if (v15 == listenerCopy)
             {
-              [v7 setValue:v14 forKey:@"_serviceName"];
+              [connectionCopy setValue:v14 forKey:@"_serviceName"];
               goto LABEL_13;
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v40 objects:v54 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v40 objects:v54 count:16];
           if (v11)
           {
             continue;
@@ -488,23 +488,23 @@ LABEL_13:
   {
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v7 ar_processName];
-    v20 = [v7 ar_remoteProcessIdentifier];
-    v21 = [v7 serviceName];
+    ar_processName = [connectionCopy ar_processName];
+    ar_remoteProcessIdentifier = [connectionCopy ar_remoteProcessIdentifier];
+    serviceName2 = [connectionCopy serviceName];
     *buf = 138544386;
     v45 = v18;
     v46 = 2048;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2114;
-    v49 = v19;
+    v49 = ar_processName;
     v50 = 1024;
-    v51 = v20;
+    v51 = ar_remoteProcessIdentifier;
     v52 = 2114;
-    v53 = v21;
+    v53 = serviceName2;
     _os_log_impl(&dword_23D391000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Listener received request from process: %{public}@ (%d) to accept connection for service: %{public}@", buf, 0x30u);
   }
 
-  v22 = [(ARDaemonServiceListener *)self createService:v7];
+  v22 = [(ARDaemonServiceListener *)self createService:connectionCopy];
   if (!v22)
   {
     if (ARShouldUseLogTypeError_onceToken_3 != -1)
@@ -521,13 +521,13 @@ LABEL_13:
       {
         v31 = objc_opt_class();
         v32 = NSStringFromClass(v31);
-        v33 = [v7 serviceName];
+        serviceName3 = [connectionCopy serviceName];
         *buf = 138543874;
         v45 = v32;
         v46 = 2048;
-        v47 = self;
+        selfCopy4 = self;
         v48 = 2112;
-        v49 = v33;
+        v49 = serviceName3;
         v34 = "%{public}@ <%p>: Failed to accept connection for service: %@";
         v35 = v30;
         v36 = OS_LOG_TYPE_ERROR;
@@ -540,13 +540,13 @@ LABEL_27:
     {
       v37 = objc_opt_class();
       v32 = NSStringFromClass(v37);
-      v33 = [v7 serviceName];
+      serviceName3 = [connectionCopy serviceName];
       *buf = 138543874;
       v45 = v32;
       v46 = 2048;
-      v47 = self;
+      selfCopy4 = self;
       v48 = 2112;
-      v49 = v33;
+      v49 = serviceName3;
       v34 = "Error: %{public}@ <%p>: Failed to accept connection for service: %@";
       v35 = v30;
       v36 = OS_LOG_TYPE_INFO;
@@ -561,20 +561,20 @@ LABEL_27:
   {
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v26 = [v7 serviceName];
+    serviceName4 = [connectionCopy serviceName];
     *buf = 138543874;
     v45 = v25;
     v46 = 2048;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2112;
-    v49 = v26;
+    v49 = serviceName4;
     _os_log_impl(&dword_23D391000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Accepting connection for service: %@", buf, 0x20u);
   }
 
-  v27 = [(ARDaemonServiceListener *)self delegate];
-  [v27 didDiscoverService:v22];
+  delegate = [(ARDaemonServiceListener *)self delegate];
+  [delegate didDiscoverService:v22];
 
-  [v7 resume];
+  [connectionCopy resume];
 LABEL_29:
 
   v38 = *MEMORY[0x277D85DE8];

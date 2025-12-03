@@ -1,17 +1,17 @@
 @interface NCTextMenuInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (CGRect)_editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (CGRect)_editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (NCTextMenuInteraction)init;
 - (NCTextSupporting)view;
-- (id)_editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)_editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4;
-- (void)_editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4;
-- (void)_handleLongPress:(id)a3;
+- (id)_editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)_editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration;
+- (void)_editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration;
+- (void)_handleLongPress:(id)press;
 - (void)_prepareHaptic;
 - (void)_tearDownHaptic;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation NCTextMenuInteraction
@@ -54,13 +54,13 @@
   [(NCTextMenuInteraction *)&v3 dealloc];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = WeakRetained;
-  if (WeakRetained && WeakRetained != v4)
+  if (WeakRetained && WeakRetained != viewCopy)
   {
     [WeakRetained removeGestureRecognizer:self->_longPressGestureRecognizer];
     [WeakRetained removeInteraction:self->_editMenuInteraction];
@@ -68,31 +68,31 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_view, v4);
-  if (v4)
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  if (viewCopy)
   {
-    [v4 addGestureRecognizer:self->_longPressGestureRecognizer];
-    [v4 addInteraction:self->_editMenuInteraction];
+    [viewCopy addGestureRecognizer:self->_longPressGestureRecognizer];
+    [viewCopy addInteraction:self->_editMenuInteraction];
   }
 }
 
-- (id)_editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)_editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  actionsCopy = actions;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__6;
   v22[4] = __Block_byref_object_dispose__6;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v12 = [WeakRetained attributedText];
-  v23 = [v12 string];
+  attributedText = [WeakRetained attributedText];
+  string = [attributedText string];
 
   v13 = MEMORY[0x277D750C8];
   v14 = NCUserNotificationsUIKitFrameworkBundle();
@@ -121,19 +121,19 @@ void __84__NCTextMenuInteraction__editMenuInteraction_menuForConfiguration_sugge
   [v1 setString:v2];
 }
 
-- (CGRect)_editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)_editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained frame];
   v6 = v5;
   v8 = v7;
-  v9 = [WeakRetained _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [WeakRetained _shouldReverseLayoutDirection];
   [WeakRetained sizeThatFits:{v6, v8}];
   v11 = v10;
   v13 = v12;
   [WeakRetained bounds];
   v16 = v15;
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v17 = v6 - v11 + v14;
   }
@@ -154,28 +154,28 @@ void __84__NCTextMenuInteraction__editMenuInteraction_menuForConfiguration_sugge
   return result;
 }
 
-- (void)_editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4
+- (void)_editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v5 = [WeakRetained textColor];
+  textColor = [WeakRetained textColor];
   defaultTextColor = self->_defaultTextColor;
-  self->_defaultTextColor = v5;
+  self->_defaultTextColor = textColor;
 
-  v7 = [MEMORY[0x277D75348] tintColor];
-  [WeakRetained setTextColor:v7];
+  tintColor = [MEMORY[0x277D75348] tintColor];
+  [WeakRetained setTextColor:tintColor];
 }
 
-- (void)_editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4
+- (void)_editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained setTextColor:self->_defaultTextColor];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_longPressGestureRecognizer == a3)
+  if (self->_longPressGestureRecognizer == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -188,24 +188,24 @@ void __84__NCTextMenuInteraction__editMenuInteraction_menuForConfiguration_sugge
   return isKindOfClass & 1;
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if (WeakRetained)
   {
-    v4 = [WeakRetained attributedText];
-    if ([v4 length])
+    attributedText = [WeakRetained attributedText];
+    if ([attributedText length])
     {
-      v5 = [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer state];
+      state = [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer state];
 
-      if (v5 == 1)
+      if (state == 1)
       {
         if ([WeakRetained becomeFirstResponder])
         {
           [(NCTextMenuInteraction *)self _performHaptic];
-          v6 = [WeakRetained superview];
+          superview = [WeakRetained superview];
           [WeakRetained center];
-          [v6 convertPoint:WeakRetained toView:?];
+          [superview convertPoint:WeakRetained toView:?];
           v8 = v7;
           v10 = v9;
 

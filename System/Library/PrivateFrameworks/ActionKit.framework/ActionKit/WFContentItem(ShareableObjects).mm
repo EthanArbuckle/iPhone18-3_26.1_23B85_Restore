@@ -30,7 +30,7 @@
       v17[2] = __87__WFContentItem_ShareableObjects__getShareableObjectOfTypes_options_completionHandler___block_invoke;
       v17[3] = &unk_278C1A4B0;
       v18 = v8;
-      [a1 getObjectRepresentation:v17 forClass:objc_opt_class()];
+      [self getObjectRepresentation:v17 forClass:objc_opt_class()];
       v12 = v18;
 LABEL_16:
 
@@ -40,7 +40,7 @@ LABEL_16:
 
   if (a3 & 2) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v11 = [a1 URL];
+    v11 = [self URL];
     (*(v8 + 2))(v8, v11, 0);
   }
 
@@ -49,14 +49,14 @@ LABEL_16:
     if (a3 & 4) != 0 && (a4)
     {
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([a1 asset], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "mediaType"), v13, v14 == 1))
+      if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([self asset], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "mediaType"), v13, v14 == 1))
       {
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __87__WFContentItem_ShareableObjects__getShareableObjectOfTypes_options_completionHandler___block_invoke_2;
         v15[3] = &unk_278C21CA0;
         v16 = v8;
-        [a1 getObjectRepresentation:v15 forClass:objc_opt_class()];
+        [self getObjectRepresentation:v15 forClass:objc_opt_class()];
         v12 = v16;
         goto LABEL_16;
       }
@@ -64,7 +64,7 @@ LABEL_16:
 
     if ((a3 & 8) != 0)
     {
-      [a1 getFileRepresentation:v8 forType:0];
+      [self getFileRepresentation:v8 forType:0];
     }
 
     else

@@ -1,8 +1,8 @@
 @interface ACCAuthorizationManager
 + (id)sharedManager;
-+ (unint64_t)authorizationStatusForCertSerial:(id)a3;
-+ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)a3 providesPower:(BOOL)a4 certSerial:(id)a5;
-+ (void)requestAuthorizationForCertSerial:(id)a3 withName:(id)a4 providesPower:(BOOL)a5 completionHandler:(id)a6;
++ (unint64_t)authorizationStatusForCertSerial:(id)serial;
++ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)name providesPower:(BOOL)power certSerial:(id)serial;
++ (void)requestAuthorizationForCertSerial:(id)serial withName:(id)name providesPower:(BOOL)power completionHandler:(id)handler;
 - (ACCAuthorizationManager)init;
 - (BOOL)bypassAuthorization;
 @end
@@ -55,7 +55,7 @@
   block[1] = 3221225472;
   block[2] = __40__ACCAuthorizationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_8 != -1)
   {
     dispatch_once(&sharedManager_once_8, block);
@@ -73,13 +73,13 @@ uint64_t __40__ACCAuthorizationManager_sharedManager__block_invoke(uint64_t a1)
   return _objc_release_x1();
 }
 
-+ (unint64_t)authorizationStatusForCertSerial:(id)a3
++ (unint64_t)authorizationStatusForCertSerial:(id)serial
 {
-  v3 = a3;
+  serialCopy = serial;
   v4 = +[ACCAuthorizationManager sharedManager];
-  v5 = [v4 bypassAuthorization];
+  bypassAuthorization = [v4 bypassAuthorization];
 
-  if (v5)
+  if (bypassAuthorization)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -96,7 +96,7 @@ uint64_t __40__ACCAuthorizationManager_sharedManager__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:v3];
+    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:serialCopy];
     v8 = v7;
     if (v7)
     {
@@ -120,12 +120,12 @@ uint64_t __40__ACCAuthorizationManager_sharedManager__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (void)requestAuthorizationForCertSerial:(id)a3 withName:(id)a4 providesPower:(BOOL)a5 completionHandler:(id)a6
++ (void)requestAuthorizationForCertSerial:(id)serial withName:(id)name providesPower:(BOOL)power completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [ACCAuthorizationManager authorizationStatusForCertSerial:v9];
+  serialCopy = serial;
+  nameCopy = name;
+  handlerCopy = handler;
+  v12 = [ACCAuthorizationManager authorizationStatusForCertSerial:serialCopy];
   if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     if (v12)
@@ -139,10 +139,10 @@ LABEL_6:
     v14[1] = 3221225472;
     v14[2] = __102__ACCAuthorizationManager_requestAuthorizationForCertSerial_withName_providesPower_completionHandler___block_invoke;
     v14[3] = &unk_100229C40;
-    v15 = v9;
-    v16 = v10;
-    v18 = a5;
-    v17 = v11;
+    v15 = serialCopy;
+    v16 = nameCopy;
+    powerCopy = power;
+    v17 = handlerCopy;
     dispatch_async(v13, v14);
 
     goto LABEL_7;
@@ -155,31 +155,31 @@ LABEL_6:
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, v12 == 2);
+    (*(handlerCopy + 2))(handlerCopy, v12 == 2);
   }
 
 LABEL_7:
 }
 
-+ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)a3 providesPower:(BOOL)a4 certSerial:(id)a5
++ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)name providesPower:(BOOL)power certSerial:(id)serial
 {
-  v50 = a4;
-  v6 = a3;
-  v7 = a5;
+  powerCopy = power;
+  nameCopy = name;
+  serialCopy = serial;
   v8 = acc_strings_bundle();
   v9 = [v8 localizedStringForKey:@"“%@” Would Like to Communicate With Your %@" value:&stru_10022D360 table:0];
   v10 = MGCopyAnswer();
-  v11 = [NSString stringWithFormat:v9, v6, v10];
+  v11 = [NSString stringWithFormat:v9, nameCopy, v10];
 
   v12 = acc_strings_bundle();
   v13 = [v12 localizedStringForKey:@"This accessory may access information from your %@ when connected." value:&stru_10022D360 table:0];
   v14 = MGCopyAnswer();
   v15 = [NSString stringWithFormat:v13, v14];
 
-  v53 = v6;
-  if (!v6 || ![v6 length])
+  v53 = nameCopy;
+  if (!nameCopy || ![nameCopy length])
   {
     v16 = acc_strings_bundle();
     v17 = [v16 localizedStringForKey:@"An Accessory Would Like to Communicate With Your %@" value:&stru_10022D360 table:0];
@@ -209,7 +209,7 @@ LABEL_7:
   v56[3] = kCFUserNotificationAlternateButtonTitleKey;
   v27 = acc_strings_bundle();
   v28 = v27;
-  if (v50)
+  if (powerCopy)
   {
     v29 = @"Charge Only";
   }
@@ -236,8 +236,8 @@ LABEL_7:
   v35 = [NSDictionary dictionaryWithObjects:v57 forKeys:v56 count:8];
 
   v36 = +[ACCAuthorizationManager sharedManager];
-  v37 = [v36 notificationDictMutable];
-  v38 = [v37 objectForKey:v7];
+  notificationDictMutable = [v36 notificationDictMutable];
+  v38 = [notificationDictMutable objectForKey:serialCopy];
 
   if (v38)
   {
@@ -247,20 +247,20 @@ LABEL_7:
   error = -1431655766;
   v39 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 3uLL, &error, v35);
   v40 = +[ACCAuthorizationManager sharedManager];
-  v41 = [v40 notificationDictMutable];
-  [v41 setObject:v39 forKey:v7];
+  notificationDictMutable2 = [v40 notificationDictMutable];
+  [notificationDictMutable2 setObject:v39 forKey:serialCopy];
 
   responseFlags = 0xAAAAAAAAAAAAAAAALL;
   CFUserNotificationReceiveResponse(v39, 0.0, &responseFlags);
   v42 = +[ACCAuthorizationManager sharedManager];
-  v43 = [v42 notificationDictMutable];
-  v44 = CFEqual([v43 objectForKey:v7], v39);
+  notificationDictMutable3 = [v42 notificationDictMutable];
+  v44 = CFEqual([notificationDictMutable3 objectForKey:serialCopy], v39);
 
   if (v44)
   {
     v45 = +[ACCAuthorizationManager sharedManager];
-    v46 = [v45 notificationDictMutable];
-    [v46 removeObjectForKey:v7];
+    notificationDictMutable4 = [v45 notificationDictMutable];
+    [notificationDictMutable4 removeObjectForKey:serialCopy];
   }
 
   CFRelease(v39);

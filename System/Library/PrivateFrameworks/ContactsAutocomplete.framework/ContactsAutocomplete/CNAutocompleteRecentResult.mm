@@ -1,31 +1,31 @@
 @interface CNAutocompleteRecentResult
 + (id)comparators;
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 lastSendingAddress:(id)a5 date:(id)a6;
-+ (id)groupResultWithDisplayName:(id)a3 date:(id)a4;
++ (id)contactResultWithDisplayName:(id)name value:(id)value lastSendingAddress:(id)address date:(id)date;
++ (id)groupResultWithDisplayName:(id)name date:(id)date;
 @end
 
 @implementation CNAutocompleteRecentResult
 
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 lastSendingAddress:(id)a5 date:(id)a6
++ (id)contactResultWithDisplayName:(id)name value:(id)value lastSendingAddress:(id)address date:(id)date
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a1 contactResultWithDisplayName:a3 value:a4 nameComponents:0 identifier:0];
-  v13 = [v10 copy];
+  dateCopy = date;
+  addressCopy = address;
+  v12 = [self contactResultWithDisplayName:name value:value nameComponents:0 identifier:0];
+  v13 = [dateCopy copy];
 
   v14 = v12[17];
   v12[17] = v13;
 
-  [v12 setLastSendingAddress:v11];
+  [v12 setLastSendingAddress:addressCopy];
 
   return v12;
 }
 
-+ (id)groupResultWithDisplayName:(id)a3 date:(id)a4
++ (id)groupResultWithDisplayName:(id)name date:(id)date
 {
-  v6 = a4;
-  v7 = [a1 groupResultWithDisplayName:a3 identifier:0];
-  v8 = [v6 copy];
+  dateCopy = date;
+  v7 = [self groupResultWithDisplayName:name identifier:0];
+  v8 = [dateCopy copy];
 
   v9 = v7[17];
   v7[17] = v8;

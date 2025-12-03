@@ -1,27 +1,27 @@
 @interface CLPInstSchemaCLPNLv4TaskEvaluationEnded
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAccuracyOnAnyUserParse:(BOOL)a3;
-- (void)setHasEvaluationCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAccuracyOnAnyUserParse:(BOOL)parse;
+- (void)setHasEvaluationCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPNLv4TaskEvaluationEnded
 
-- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CLPInstSchemaCLPNLv4TaskEvaluationEnded;
   v5 = [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"accuracyOnTheFirstUserParseCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"accuracyOnTheFirstUserParseCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)v5 setAccuracyOnTheFirstUserParseCount:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"accuracyOnAnyUserParse"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accuracyOnAnyUserParse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)v5 setAccuracyOnAnyUserParse:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"evaluationCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"evaluationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithJSON:(id)a3
+- (CLPInstSchemaCLPNLv4TaskEvaluationEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,14 +86,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = MEMORY[0x1E696AD98];
     [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)self accuracyOnAnyUserParse];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKeyedSubscript:@"accuracyOnAnyUserParse"];
+    [dictionary setObject:v8 forKeyedSubscript:@"accuracyOnAnyUserParse"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -116,19 +116,19 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(CLPInstSchemaCLPNLv4TaskEvaluationEnded *)self accuracyOnTheFirstUserParseCount];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKeyedSubscript:@"accuracyOnTheFirstUserParseCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"accuracyOnTheFirstUserParseCount"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CLPInstSchemaCLPNLv4TaskEvaluationEnded evaluationCount](self, "evaluationCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"evaluationCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"evaluationCount"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,16 +213,16 @@ LABEL_5:
   return v8 ^ v4 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -231,14 +231,14 @@ LABEL_5:
   if (*&has)
   {
     accuracyOnTheFirstUserParseCount = self->_accuracyOnTheFirstUserParseCount;
-    [v4 accuracyOnTheFirstUserParseCount];
+    [equalCopy accuracyOnTheFirstUserParseCount];
     if (accuracyOnTheFirstUserParseCount != v8)
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -250,11 +250,11 @@ LABEL_5:
   if (v9)
   {
     accuracyOnAnyUserParse = self->_accuracyOnAnyUserParse;
-    [v4 accuracyOnAnyUserParse];
+    [equalCopy accuracyOnAnyUserParse];
     if (accuracyOnAnyUserParse == v11)
     {
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
       goto LABEL_10;
     }
 
@@ -273,7 +273,7 @@ LABEL_10:
   if (v12)
   {
     evaluationCount = self->_evaluationCount;
-    if (evaluationCount != [v4 evaluationCount])
+    if (evaluationCount != [equalCopy evaluationCount])
     {
       goto LABEL_14;
     }
@@ -285,15 +285,15 @@ LABEL_15:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -313,20 +313,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasEvaluationCount:(BOOL)a3
+- (void)setHasEvaluationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -339,9 +339,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAccuracyOnAnyUserParse:(BOOL)a3
+- (void)setHasAccuracyOnAnyUserParse:(BOOL)parse
 {
-  if (a3)
+  if (parse)
   {
     v3 = 2;
   }

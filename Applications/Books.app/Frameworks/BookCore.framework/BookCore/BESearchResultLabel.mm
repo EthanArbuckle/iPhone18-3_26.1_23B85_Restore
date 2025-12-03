@@ -4,11 +4,11 @@
 - (_NSRange)boldRange;
 - (double)_labelLineSpacing;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutLines;
 - (void)layoutSubviews;
-- (void)setBoldColor:(id)a3;
-- (void)setPreferredMaxLayoutWidth:(double)a3;
+- (void)setBoldColor:(id)color;
+- (void)setPreferredMaxLayoutWidth:(double)width;
 - (void)updateConstraints;
 @end
 
@@ -30,25 +30,25 @@
   [(BESearchResultLabel *)&v3 updateConstraints];
 }
 
-- (void)setBoldColor:(id)a3
+- (void)setBoldColor:(id)color
 {
-  objc_storeStrong(&self->_boldColor, a3);
+  objc_storeStrong(&self->_boldColor, color);
 
   [(BESearchResultLabel *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setPreferredMaxLayoutWidth:(double)a3
+- (void)setPreferredMaxLayoutWidth:(double)width
 {
   v4.receiver = self;
   v4.super_class = BESearchResultLabel;
-  [(BESearchResultLabel *)&v4 setPreferredMaxLayoutWidth:a3];
+  [(BESearchResultLabel *)&v4 setPreferredMaxLayoutWidth:width];
   [(BESearchResultLabel *)self layoutLines];
   [(BESearchResultLabel *)self invalidateIntrinsicContentSize];
 }
 
 - (void)layoutLines
 {
-  v2 = self;
+  selfCopy = self;
   replacement = [(BESearchResultLabel *)self text];
   v3 = [(__CFString *)replacement length];
   if (v3)
@@ -57,49 +57,49 @@
     v64.location = 0;
     v64.length = 0;
     CFAttributedStringReplaceString(Mutable, v64, replacement);
-    v5 = [(BESearchResultLabel *)v2 font];
+    font = [(BESearchResultLabel *)selfCopy font];
 
     v65.length = [(__CFString *)replacement length];
     v65.location = 0;
-    v59 = v5;
-    CFAttributedStringSetAttribute(Mutable, v65, kCTFontAttributeName, v5);
+    v59 = font;
+    CFAttributedStringSetAttribute(Mutable, v65, kCTFontAttributeName, font);
     v6 = [(__CFString *)replacement length];
-    v7 = [(BESearchResultLabel *)v2 textColor];
-    v8 = [v7 CGColor];
+    textColor = [(BESearchResultLabel *)selfCopy textColor];
+    cGColor = [textColor CGColor];
     v66.location = 0;
     v66.length = v6;
-    CFAttributedStringSetAttribute(Mutable, v66, kCTForegroundColorAttributeName, v8);
+    CFAttributedStringSetAttribute(Mutable, v66, kCTForegroundColorAttributeName, cGColor);
 
-    v9 = [(BESearchResultLabel *)v2 font];
-    v10 = [v9 fontDescriptor];
-    v11 = [v10 fontDescriptorWithSymbolicTraits:2];
+    font2 = [(BESearchResultLabel *)selfCopy font];
+    fontDescriptor = [font2 fontDescriptor];
+    v11 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
-    v12 = [(BESearchResultLabel *)v2 font];
-    [v12 pointSize];
+    font3 = [(BESearchResultLabel *)selfCopy font];
+    [font3 pointSize];
     v55 = v11;
     v13 = [UIFont fontWithDescriptor:v11 size:?];
 
-    v14 = [(BESearchResultLabel *)v2 boldRange];
-    [(BESearchResultLabel *)v2 boldRange];
+    boldRange = [(BESearchResultLabel *)selfCopy boldRange];
+    [(BESearchResultLabel *)selfCopy boldRange];
     v16 = v15;
-    v67.location = v14;
+    v67.location = boldRange;
     v67.length = v16;
     v54 = v13;
     CFAttributedStringSetAttribute(Mutable, v67, kCTFontAttributeName, v13);
-    v17 = [(BESearchResultLabel *)v2 boldColor];
+    boldColor = [(BESearchResultLabel *)selfCopy boldColor];
 
-    if (v17)
+    if (boldColor)
     {
-      v18 = [(BESearchResultLabel *)v2 boldColor];
-      v19 = [v18 CGColor];
-      v68.location = v14;
+      boldColor2 = [(BESearchResultLabel *)selfCopy boldColor];
+      cGColor2 = [boldColor2 CGColor];
+      v68.location = boldRange;
       v68.length = v16;
-      CFAttributedStringSetAttribute(Mutable, v68, kCTForegroundColorAttributeName, v19);
+      CFAttributedStringSetAttribute(Mutable, v68, kCTForegroundColorAttributeName, cGColor2);
     }
 
     cf = Mutable;
     v20 = CTTypesetterCreateWithAttributedString(Mutable);
-    [(BESearchResultLabel *)v2 preferredMaxLayoutWidth];
+    [(BESearchResultLabel *)selfCopy preferredMaxLayoutWidth];
     v22 = v21;
     v23 = CFArrayCreateMutable(0, 5, &kCFTypeArrayCallBacks);
     if ([(__CFString *)replacement length])
@@ -119,7 +119,7 @@
 
         v28 = Line;
         v29 = v26 + v24;
-        if (v24 <= [(BESearchResultLabel *)v2 boldRange]&& v29 >= [(BESearchResultLabel *)v2 boldRange])
+        if (v24 <= [(BESearchResultLabel *)selfCopy boldRange]&& v29 >= [(BESearchResultLabel *)selfCopy boldRange])
         {
           Count = CFArrayGetCount(v23);
         }
@@ -137,15 +137,15 @@
       Count = 0;
     }
 
-    v30 = [(BESearchResultLabel *)v2 numberOfLines];
-    if (v30 <= 1)
+    numberOfLines = [(BESearchResultLabel *)selfCopy numberOfLines];
+    if (numberOfLines <= 1)
     {
       v31 = 1;
     }
 
     else
     {
-      v31 = v30;
+      v31 = numberOfLines;
     }
 
     v32 = CFArrayCreateMutable(0, v31, &kCFTypeArrayCallBacks);
@@ -217,12 +217,12 @@
           v70.location = 0;
           CFAttributedStringSetAttribute(v46, v70, kCTFontAttributeName, v59);
           v47 = [v46 length];
-          v48 = v2;
-          v49 = [(BESearchResultLabel *)v2 textColor];
-          v50 = [v49 CGColor];
+          v48 = selfCopy;
+          textColor2 = [(BESearchResultLabel *)selfCopy textColor];
+          cGColor3 = [textColor2 CGColor];
           v71.location = 0;
           v71.length = v47;
-          CFAttributedStringSetAttribute(v46, v71, kCTForegroundColorAttributeName, v50);
+          CFAttributedStringSetAttribute(v46, v71, kCTForegroundColorAttributeName, cGColor3);
 
           v51 = CTLineCreateWithAttributedString(v46);
           TruncatedLine = CTLineCreateTruncatedLine(v45, v22, v40, v51);
@@ -236,7 +236,7 @@
           CFRelease(v45);
           CFRelease(v51);
 
-          v2 = v48;
+          selfCopy = v48;
           v34 = v57;
           v20 = v58;
           v32 = theArray;
@@ -254,7 +254,7 @@
       while (v37 < v36);
     }
 
-    [(BESearchResultLabel *)v2 setLines:v32];
+    [(BESearchResultLabel *)selfCopy setLines:v32];
     CFRelease(cf);
     CFRelease(v20);
     CFRelease(v23);
@@ -270,11 +270,11 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(BESearchResultLabel *)self lines];
-  v8 = v7;
-  if (v7)
+  lines = [(BESearchResultLabel *)self lines];
+  v8 = lines;
+  if (lines)
   {
-    v9 = [(__CFArray *)v7 count];
+    v9 = [(__CFArray *)lines count];
     if (v9)
     {
       v10 = v9;
@@ -363,9 +363,9 @@
   [(BESearchResultLabel *)&v2 layoutSubviews];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(BESearchResultLabel *)self lines:a3.origin.x];
+  v4 = [(BESearchResultLabel *)self lines:rect.origin.x];
   v5 = v4;
   if (v4)
   {
@@ -383,18 +383,18 @@
         [(BESearchResultLabel *)self _labelLineSpacing];
         v9 = v9 + v11;
         CGContextSetTextPosition(CurrentContext, 0.0, v9);
-        v12 = [(BESearchResultLabel *)self shadowColor];
+        shadowColor = [(BESearchResultLabel *)self shadowColor];
 
-        if (v12)
+        if (shadowColor)
         {
           [(BESearchResultLabel *)self shadowOffset];
           v14 = v13;
           v16 = v15;
-          v17 = [(BESearchResultLabel *)self shadowColor];
-          v18 = [v17 CGColor];
+          shadowColor2 = [(BESearchResultLabel *)self shadowColor];
+          cGColor = [shadowColor2 CGColor];
           v20.width = v14;
           v20.height = v16;
-          CGContextSetShadowWithColor(CurrentContext, v20, 0.0, v18);
+          CGContextSetShadowWithColor(CurrentContext, v20, 0.0, cGColor);
         }
 
         CTLineDraw(ValueAtIndex, CurrentContext);
@@ -413,8 +413,8 @@
   [(BESearchResultLabel *)&v13 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(BESearchResultLabel *)self text];
-  v8 = [v7 length];
+  text = [(BESearchResultLabel *)self text];
+  v8 = [text length];
 
   if (v8)
   {

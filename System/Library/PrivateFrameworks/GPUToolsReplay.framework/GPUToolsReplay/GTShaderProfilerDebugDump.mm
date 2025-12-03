@@ -1,47 +1,47 @@
 @interface GTShaderProfilerDebugDump
 + (id)debugDump;
-- (GTShaderProfilerDebugDump)initWithDirectory:(id)a3;
-- (id)filePathFromFileName:(id)a3;
-- (void)setDirectory:(id)a3;
+- (GTShaderProfilerDebugDump)initWithDirectory:(id)directory;
+- (id)filePathFromFileName:(id)name;
+- (void)setDirectory:(id)directory;
 @end
 
 @implementation GTShaderProfilerDebugDump
 
-- (id)filePathFromFileName:(id)a3
+- (id)filePathFromFileName:(id)name
 {
-  v3 = [(NSString *)self->_directory stringByAppendingPathComponent:a3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 stringByDeletingLastPathComponent];
-  v6 = [v4 fileExistsAtPath:v5];
+  v3 = [(NSString *)self->_directory stringByAppendingPathComponent:name];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [v3 stringByDeletingLastPathComponent];
+  v6 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v3 stringByDeletingLastPathComponent];
-    [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent2 = [v3 stringByDeletingLastPathComponent];
+    [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent2 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v3;
 }
 
-- (void)setDirectory:(id)a3
+- (void)setDirectory:(id)directory
 {
-  v6 = a3;
-  objc_storeStrong(&self->_directory, a3);
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  directoryCopy = directory;
+  objc_storeStrong(&self->_directory, directory);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:0];
 }
 
-- (GTShaderProfilerDebugDump)initWithDirectory:(id)a3
+- (GTShaderProfilerDebugDump)initWithDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v9.receiver = self;
   v9.super_class = GTShaderProfilerDebugDump;
   v6 = [(GTShaderProfilerDebugDump *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_directory, a3);
+    objc_storeStrong(&v6->_directory, directory);
   }
 
   return v7;

@@ -1,50 +1,50 @@
 @interface _INPBDistanceValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBDistanceValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDistanceValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsUnit:(id)a3;
+- (int)StringAsUnit:(id)unit;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setUnit:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setUnit:(int)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDistanceValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDistanceValue *)self hasMagnitude])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBDistanceValue *)self magnitude];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"magnitude"];
+    [dictionary setObject:v5 forKeyedSubscript:@"magnitude"];
   }
 
   if ([(_INPBDistanceValue *)self hasUnit])
   {
-    v6 = [(_INPBDistanceValue *)self unit];
-    if ((v6 - 1) >= 0x16)
+    unit = [(_INPBDistanceValue *)self unit];
+    if ((unit - 1) >= 0x16)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
     else
     {
-      v7 = off_1E72837A0[(v6 - 1)];
+      v7 = off_1E72837A0[(unit - 1)];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v7 forKeyedSubscript:@"unit"];
   }
 
-  v8 = [(_INPBDistanceValue *)self valueMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBDistanceValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,28 +95,28 @@
   return v9 ^ v8 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBDistanceValue *)self hasMagnitude];
-    if (v5 == [v4 hasMagnitude])
+    hasMagnitude = [(_INPBDistanceValue *)self hasMagnitude];
+    if (hasMagnitude == [equalCopy hasMagnitude])
     {
-      if (!-[_INPBDistanceValue hasMagnitude](self, "hasMagnitude") || ![v4 hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(v4, "magnitude"), magnitude == v7))
+      if (!-[_INPBDistanceValue hasMagnitude](self, "hasMagnitude") || ![equalCopy hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(equalCopy, "magnitude"), magnitude == v7))
       {
-        v8 = [(_INPBDistanceValue *)self hasUnit];
-        if (v8 == [v4 hasUnit])
+        hasUnit = [(_INPBDistanceValue *)self hasUnit];
+        if (hasUnit == [equalCopy hasUnit])
         {
-          if (!-[_INPBDistanceValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+          if (!-[_INPBDistanceValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
           {
-            v10 = [(_INPBDistanceValue *)self valueMetadata];
-            v11 = [v4 valueMetadata];
-            v12 = v11;
-            if ((v10 != 0) != (v11 == 0))
+            valueMetadata = [(_INPBDistanceValue *)self valueMetadata];
+            valueMetadata2 = [equalCopy valueMetadata];
+            v12 = valueMetadata2;
+            if ((valueMetadata != 0) != (valueMetadata2 == 0))
             {
-              v13 = [(_INPBDistanceValue *)self valueMetadata];
-              if (!v13)
+              valueMetadata3 = [(_INPBDistanceValue *)self valueMetadata];
+              if (!valueMetadata3)
               {
 
 LABEL_18:
@@ -124,10 +124,10 @@ LABEL_18:
                 goto LABEL_16;
               }
 
-              v14 = v13;
-              v15 = [(_INPBDistanceValue *)self valueMetadata];
-              v16 = [v4 valueMetadata];
-              v17 = [v15 isEqual:v16];
+              v14 = valueMetadata3;
+              valueMetadata4 = [(_INPBDistanceValue *)self valueMetadata];
+              valueMetadata5 = [equalCopy valueMetadata];
+              v17 = [valueMetadata4 isEqual:valueMetadata5];
 
               if (v17)
               {
@@ -150,7 +150,7 @@ LABEL_16:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDistanceValue allocWithZone:](_INPBDistanceValue init];
   if ([(_INPBDistanceValue *)self hasMagnitude])
@@ -164,39 +164,39 @@ LABEL_16:
     [(_INPBDistanceValue *)v5 setUnit:[(_INPBDistanceValue *)self unit]];
   }
 
-  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBDistanceValue *)v5 setValueMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDistanceValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBDistanceValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDistanceValue)initWithCoder:(id)a3
+- (_INPBDistanceValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDistanceValue *)self initWithData:v6];
+    self = [(_INPBDistanceValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBDistanceValue *)self hasMagnitude])
   {
     magnitude = self->_magnitude;
@@ -209,127 +209,127 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBDistanceValue *)self valueMetadata];
+  valueMetadata = [(_INPBDistanceValue *)self valueMetadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (valueMetadata)
   {
-    v8 = [(_INPBDistanceValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBDistanceValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (int)StringAsUnit:(id)a3
+- (int)StringAsUnit:(id)unit
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"METERS"])
+  unitCopy = unit;
+  if ([unitCopy isEqualToString:@"METERS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MILES"])
+  else if ([unitCopy isEqualToString:@"MILES"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CENTIMETER"])
+  else if ([unitCopy isEqualToString:@"CENTIMETER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FOOT"])
+  else if ([unitCopy isEqualToString:@"FOOT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INCH"])
+  else if ([unitCopy isEqualToString:@"INCH"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"YARD"])
+  else if ([unitCopy isEqualToString:@"YARD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KILOMETER"])
+  else if ([unitCopy isEqualToString:@"KILOMETER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MEGAMETER"])
+  else if ([unitCopy isEqualToString:@"MEGAMETER"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"HECTOMETER"])
+  else if ([unitCopy isEqualToString:@"HECTOMETER"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"DECAMETER"])
+  else if ([unitCopy isEqualToString:@"DECAMETER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"DECIMETER"])
+  else if ([unitCopy isEqualToString:@"DECIMETER"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"MILLIMETER"])
+  else if ([unitCopy isEqualToString:@"MILLIMETER"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MICROMETER"])
+  else if ([unitCopy isEqualToString:@"MICROMETER"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"NANOMETER"])
+  else if ([unitCopy isEqualToString:@"NANOMETER"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"PICOMETER"])
+  else if ([unitCopy isEqualToString:@"PICOMETER"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SCANDINAVIAN_MILE"])
+  else if ([unitCopy isEqualToString:@"SCANDINAVIAN_MILE"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LIGHTYEAR"])
+  else if ([unitCopy isEqualToString:@"LIGHTYEAR"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"NAUTICAL_MILE"])
+  else if ([unitCopy isEqualToString:@"NAUTICAL_MILE"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"FATHOM"])
+  else if ([unitCopy isEqualToString:@"FATHOM"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"FURLONG"])
+  else if ([unitCopy isEqualToString:@"FURLONG"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ASTRONOMICAL_UNIT"])
+  else if ([unitCopy isEqualToString:@"ASTRONOMICAL_UNIT"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"PARSEC"])
+  else if ([unitCopy isEqualToString:@"PARSEC"])
   {
     v4 = 22;
   }
@@ -342,9 +342,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 2;
   }
@@ -357,10 +357,10 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -368,7 +368,7 @@ LABEL_16:
   else
   {
     *&self->_has = has | 2;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 

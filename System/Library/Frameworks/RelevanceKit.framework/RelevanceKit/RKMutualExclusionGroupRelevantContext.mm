@@ -1,58 +1,58 @@
 @interface RKMutualExclusionGroupRelevantContext
-- (BOOL)isEqual:(id)a3;
-- (RKMutualExclusionGroupRelevantContext)initWithCoder:(id)a3;
-- (RKMutualExclusionGroupRelevantContext)initWithGroupIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RKMutualExclusionGroupRelevantContext)initWithCoder:(id)coder;
+- (RKMutualExclusionGroupRelevantContext)initWithGroupIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RKMutualExclusionGroupRelevantContext
 
-- (RKMutualExclusionGroupRelevantContext)initWithGroupIdentifier:(id)a3
+- (RKMutualExclusionGroupRelevantContext)initWithGroupIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = RKMutualExclusionGroupRelevantContext;
-  v5 = [(RKRelevantContext *)&v9 _init];
-  if (v5)
+  _init = [(RKRelevantContext *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    groupIdentifier = v5->_groupIdentifier;
-    v5->_groupIdentifier = v6;
+    v6 = [identifierCopy copy];
+    groupIdentifier = _init->_groupIdentifier;
+    _init->_groupIdentifier = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (RKMutualExclusionGroupRelevantContext)initWithCoder:(id)a3
+- (RKMutualExclusionGroupRelevantContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
 
   v6 = [(RKMutualExclusionGroupRelevantContext *)self initWithGroupIdentifier:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
-  [v4 encodeObject:v5 forKey:@"groupIdentifier"];
+  coderCopy = coder;
+  groupIdentifier = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
+  [coderCopy encodeObject:groupIdentifier forKey:@"groupIdentifier"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
-  v3 = [v2 hash];
+  groupIdentifier = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
+  v3 = [groupIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -62,9 +62,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RKMutualExclusionGroupRelevantContext *)v4 groupIdentifier];
-      v6 = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
-      v7 = [v5 isEqual:v6];
+      groupIdentifier = [(RKMutualExclusionGroupRelevantContext *)equalCopy groupIdentifier];
+      groupIdentifier2 = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
+      v7 = [groupIdentifier isEqual:groupIdentifier2];
     }
 
     else
@@ -79,8 +79,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
-  v4 = [v2 stringWithFormat:@"<mutual exclusion group: %@>", v3];
+  groupIdentifier = [(RKMutualExclusionGroupRelevantContext *)self groupIdentifier];
+  v4 = [v2 stringWithFormat:@"<mutual exclusion group: %@>", groupIdentifier];
 
   return v4;
 }

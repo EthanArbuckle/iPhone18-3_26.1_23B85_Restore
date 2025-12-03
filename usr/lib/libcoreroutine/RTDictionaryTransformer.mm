@@ -1,15 +1,15 @@
 @interface RTDictionaryTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTDictionaryTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_10;
   }
@@ -32,7 +32,7 @@
   if (objc_opt_isKindOfClass())
   {
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:0 error:&v10];
+    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:valueCopy options:0 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {
@@ -40,7 +40,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v12 = v3;
+        v12 = valueCopy;
         v13 = 2112;
         v14 = v6;
         _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "failed dictionary serialization, value, %@, error, %@", buf, 0x16u);
@@ -64,11 +64,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_10;
   }
@@ -91,7 +91,7 @@ LABEL_10:
   if (objc_opt_isKindOfClass())
   {
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:0 error:&v10];
+    v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:valueCopy options:0 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {
@@ -101,7 +101,7 @@ LABEL_10:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v12 = v3;
+          v12 = valueCopy;
           v13 = 2112;
           v14 = v6;
           _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "failed dictionary deserialization, value, %@, error, %@", buf, 0x16u);

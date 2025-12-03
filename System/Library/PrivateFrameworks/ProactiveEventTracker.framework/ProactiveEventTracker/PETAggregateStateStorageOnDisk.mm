@@ -1,11 +1,11 @@
 @interface PETAggregateStateStorageOnDisk
 - (BOOL)resetLocked;
-- (PETAggregateStateStorageOnDisk)initWithPath:(id)a3;
-- (unint64_t)_reserveCapacity:(unsigned int)a3;
+- (PETAggregateStateStorageOnDisk)initWithPath:(id)path;
+- (unint64_t)_reserveCapacity:(unsigned int)capacity;
 - (void)_die;
-- (void)_remapWithFlock:(BOOL)a3;
+- (void)_remapWithFlock:(BOOL)flock;
 - (void)dealloc;
-- (void)expand:(unint64_t)a3 andRunWithLock:(id)a4;
+- (void)expand:(unint64_t)expand andRunWithLock:(id)lock;
 - (void)reset;
 - (void)saveCorruptState;
 @end
@@ -18,8 +18,8 @@
   if (v3)
   {
     v5 = v3;
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    [v4 copyItemAtPath:self->_path toPath:v5 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager copyItemAtPath:self->_path toPath:v5 error:0];
 
     v3 = v5;
   }
@@ -81,13 +81,13 @@
   return 0;
 }
 
-- (unint64_t)_reserveCapacity:(unsigned int)a3
+- (unint64_t)_reserveCapacity:(unsigned int)capacity
 {
   v15 = *MEMORY[0x1E69E9840];
   bytes = self->_bytes;
   v4 = bytes[1];
-  v5 = v4 + a3;
-  if (v4 + a3 > bytes[2])
+  v5 = v4 + capacity;
+  if (v4 + capacity > bytes[2])
   {
     if (ftruncate(self->_fd, (v5 + 4095) & 0xFFFFF000))
     {
@@ -115,13 +115,13 @@
   return v4 - 12;
 }
 
-- (void)expand:(unint64_t)a3 andRunWithLock:(id)a4
+- (void)expand:(unint64_t)expand andRunWithLock:(id)lock
 {
-  v7 = a4;
-  if (!v7)
+  lockCopy = lock;
+  if (!lockCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:301 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:301 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v8 = atomic_load(&self->_dead);
@@ -130,9 +130,9 @@
     pthread_mutex_lock(&self->_localLock);
     if (!flock(self->_fd, 2))
     {
-      if (a3)
+      if (expand)
       {
-        v10 = [(PETAggregateStateStorageOnDisk *)self _reserveCapacity:a3];
+        v10 = [(PETAggregateStateStorageOnDisk *)self _reserveCapacity:expand];
         v11 = atomic_load(&self->_dead);
         if (v11)
         {
@@ -168,10 +168,10 @@
         {
 LABEL_15:
           v18 = 0;
-          v15 = v7[2](v7, (bytes + 3), bytes[1] - 12, v12, &v18);
-          if (a3 && (v15 & 1) == 0)
+          v15 = lockCopy[2](lockCopy, (bytes + 3), bytes[1] - 12, v12, &v18);
+          if (expand && (v15 & 1) == 0)
           {
-            *(self->_bytes + 1) -= a3;
+            *(self->_bytes + 1) -= expand;
           }
 
           if (v18 != 1 || [(PETAggregateStateStorageOnDisk *)self resetLocked])
@@ -208,7 +208,7 @@ LABEL_6:
   }
 }
 
-- (void)_remapWithFlock:(BOOL)a3
+- (void)_remapWithFlock:(BOOL)flock
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = atomic_load(&self->_dead);
@@ -217,8 +217,8 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v4 = a3;
-  if (a3 && flock(self->_fd, 2))
+  flockCopy = flock;
+  if (flock && flock(self->_fd, 2))
   {
     goto LABEL_7;
   }
@@ -333,7 +333,7 @@ LABEL_7:
 
   [(PETAggregateStateStorageOnDisk *)self _die];
 LABEL_10:
-  if (v4)
+  if (flockCopy)
   {
     fd = self->_fd;
     if ((fd & 0x80000000) == 0)
@@ -367,14 +367,14 @@ LABEL_13:
   [(PETAggregateStateStorageOnDisk *)&v5 dealloc];
 }
 
-- (PETAggregateStateStorageOnDisk)initWithPath:(id)a3
+- (PETAggregateStateStorageOnDisk)initWithPath:(id)path
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v23.receiver = self;
@@ -386,8 +386,8 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v7->_path, a3);
-  v9 = open([v6 fileSystemRepresentation], 514, 384);
+  objc_storeStrong(&v7->_path, path);
+  v9 = open([pathCopy fileSystemRepresentation], 514, 384);
   v8->_fd = v9;
   if (v9 < 0)
   {
@@ -402,7 +402,7 @@ LABEL_11:
     v12 = __error();
     v13 = strerror(*v12);
     *buf = 138412802;
-    v25 = v6;
+    v25 = pathCopy;
     v26 = 1024;
     v27 = v11;
     v28 = 2080;
@@ -426,7 +426,7 @@ LABEL_14:
     v19 = __error();
     v20 = strerror(*v19);
     *buf = 138412802;
-    v25 = v6;
+    v25 = pathCopy;
     v26 = 1024;
     v27 = v18;
     v28 = 2080;

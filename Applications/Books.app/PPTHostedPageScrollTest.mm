@@ -6,7 +6,7 @@
 
 - (void)startTest
 {
-  v2 = self;
+  selfCopy = self;
   sub_10025DCFC();
 }
 

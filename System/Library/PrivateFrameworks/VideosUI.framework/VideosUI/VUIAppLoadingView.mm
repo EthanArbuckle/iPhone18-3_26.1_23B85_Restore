@@ -1,10 +1,10 @@
 @interface VUIAppLoadingView
 + (id)loadingScreen;
-- (VUIAppLoadingView)initWithFrame:(CGRect)a3 templateImage:(id)a4;
-- (void)didRotate:(id)a3;
+- (VUIAppLoadingView)initWithFrame:(CGRect)frame templateImage:(id)image;
+- (void)didRotate:(id)rotate;
 - (void)hide;
 - (void)hideImmediately;
-- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)a3;
+- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)only;
 - (void)timeout;
 @end
 
@@ -54,9 +54,9 @@ void __34__VUIAppLoadingView_loadingScreen__block_invoke()
   *(v10 + 440) = 0;
 }
 
-- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)a3
+- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)only
 {
-  [(UIImageView *)self->_maskView setHidden:a3];
+  [(UIImageView *)self->_maskView setHidden:only];
   if (!self->_overlayWindow)
   {
     v4 = [_VUILoadingOverlayWindow alloc];
@@ -70,25 +70,25 @@ void __34__VUIAppLoadingView_loadingScreen__block_invoke()
     v8 = objc_alloc_init(MEMORY[0x1E69DD258]);
     [(UIWindow *)v7 setRootViewController:v8];
 
-    v9 = [(UIWindow *)self->_overlayWindow layer];
-    v10 = [v9 superlayer];
-    [v10 setAllowsGroupOpacity:0];
+    layer = [(UIWindow *)self->_overlayWindow layer];
+    superlayer = [layer superlayer];
+    [superlayer setAllowsGroupOpacity:0];
 
-    v11 = [(UIWindow *)self->_overlayWindow layer];
-    [v11 setAllowsGroupOpacity:0];
+    layer2 = [(UIWindow *)self->_overlayWindow layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     [(UIWindow *)self->_overlayWindow setBackgroundColor:0];
   }
 
-  v12 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  v13 = [(VUIAppLoadingView *)self superview];
-  v14 = [v13 isEqual:v12];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  superview = [(VUIAppLoadingView *)self superview];
+  v14 = [superview isEqual:vui_keyWindow];
 
   if ((v14 & 1) == 0)
   {
     [(UIWindow *)self->_overlayWindow setVuiHidden:0];
-    v15 = [(UIWindow *)self->_overlayWindow rootViewController];
-    [v15 setView:self];
+    rootViewController = [(UIWindow *)self->_overlayWindow rootViewController];
+    [rootViewController setView:self];
 
     [(UIView *)self->_wallpaperView setVuiAlpha:1.0];
     [(VUIAppLoadingView *)self setVuiAlpha:1.0];
@@ -220,28 +220,28 @@ uint64_t __25__VUIAppLoadingView_hide__block_invoke_2(uint64_t a1)
   return [v2 setHidden:1];
 }
 
-- (VUIAppLoadingView)initWithFrame:(CGRect)a3 templateImage:(id)a4
+- (VUIAppLoadingView)initWithFrame:(CGRect)frame templateImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(VUIAppLoadingView *)self initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
+  height = [(VUIAppLoadingView *)self initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(VUIAppLoadingView *)v10 bounds];
+    [(VUIAppLoadingView *)height bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v20 = v11;
-    v21 = [v20 layer];
-    [v21 setAllowsGroupOpacity:0];
-    [v21 setAllowsGroupBlending:0];
-    v22 = v20;
-    if (v9)
+    layer = [v20 layer];
+    [layer setAllowsGroupOpacity:0];
+    [layer setAllowsGroupBlending:0];
+    contentView2 = v20;
+    if (imageCopy)
     {
       v23 = MEMORY[0x1E69DD248];
       v24 = [MEMORY[0x1E69DC730] effectWithStyle:1000];
@@ -254,70 +254,70 @@ uint64_t __25__VUIAppLoadingView_hide__block_invoke_2(uint64_t a1)
       [v20[57] setAutoresizingMask:18];
       [v20[57] setFrame:{v13, v15, v17, v19}];
       v28 = MEMORY[0x1E69DCAE0];
-      v29 = [v9 vuiTemplateImage];
-      v30 = [v28 vui_imageViewWithImage:v29];
+      vuiTemplateImage = [imageCopy vuiTemplateImage];
+      v30 = [v28 vui_imageViewWithImage:vuiTemplateImage];
       v31 = v20[56];
       v20[56] = v30;
 
-      v32 = [v20[57] contentView];
-      [v32 addSubview:v20[56]];
+      contentView = [v20[57] contentView];
+      [contentView addSubview:v20[56]];
 
-      v33 = [v20[56] layer];
-      [v33 setAllowsGroupOpacity:0];
+      layer2 = [v20[56] layer];
+      [layer2 setAllowsGroupOpacity:0];
 
       v34 = v20[56];
       [v20[57] bounds];
       [v34 setFrame:?];
       [v20 addSubview:v20[57]];
-      v22 = [v20[57] contentView];
+      contentView2 = [v20[57] contentView];
     }
 
-    v35 = [MEMORY[0x1E69DC888] grayColor];
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v37 = *MEMORY[0x1E69DE820];
-    v38 = [*MEMORY[0x1E69DDA98] keyWindow];
-    [v36 addObserver:v20 selector:sel_didRotate_ name:v37 object:v38];
+    keyWindow = [*MEMORY[0x1E69DDA98] keyWindow];
+    [defaultCenter addObserver:v20 selector:sel_didRotate_ name:v37 object:keyWindow];
 
     v39 = [VUIActivityIndicatorView vui_activityIndicatorViewWithActivityIndicatorStyle:0];
     v40 = v20[58];
     v20[58] = v39;
 
-    if (v35)
+    if (grayColor)
     {
-      [v20[58] setColor:v35];
+      [v20[58] setColor:grayColor];
     }
 
     [v20[58] sizeToFit];
     [v20[58] bounds];
     v42 = round(v13 + (v17 - v41) * 0.5);
     v44 = round(v15 + (v19 - v43) * 0.5);
-    if (v9)
+    if (imageCopy)
     {
       v44 = v44 + 50.0;
     }
 
     [v20[58] setFrame:{v42, v44}];
-    [v22 addSubview:v20[58]];
+    [contentView2 addSubview:v20[58]];
     [v20[58] vui_startAnimating];
   }
 
   return v11;
 }
 
-- (void)didRotate:(id)a3
+- (void)didRotate:(id)rotate
 {
   [(VUIActivityIndicatorView *)self->_spinner frame];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  [v8 frame];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  [vui_keyWindow frame];
   v11 = round(v10 + (v9 - v5) * 0.5);
   v14 = round(v13 + (v12 - v7) * 0.5);
 
-  v15 = [(UIImageView *)self->_maskView image];
+  image = [(UIImageView *)self->_maskView image];
 
   spinner = self->_spinner;
-  if (v15)
+  if (image)
   {
     v17 = v14 + 50.0;
   }

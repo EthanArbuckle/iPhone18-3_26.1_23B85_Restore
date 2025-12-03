@@ -1,33 +1,33 @@
 @interface ACProtobufCredentialItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDirtyProperties:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDirtyProperties:(id)properties;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufCredentialItem
 
-- (void)addDirtyProperties:(id)a3
+- (void)addDirtyProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dirtyProperties = self->_dirtyProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dirtyProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableArray *)dirtyProperties addObject:v4];
+  [(NSMutableArray *)dirtyProperties addObject:propertiesCopy];
 }
 
 - (id)description
@@ -36,27 +36,27 @@
   v8.receiver = self;
   v8.super_class = ACProtobufCredentialItem;
   v4 = [(ACProtobufCredentialItem *)&v8 description];
-  v5 = [(ACProtobufCredentialItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufCredentialItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   accountIdentifier = self->_accountIdentifier;
   if (accountIdentifier)
   {
-    [v3 setObject:accountIdentifier forKey:@"accountIdentifier"];
+    [dictionary setObject:accountIdentifier forKey:@"accountIdentifier"];
   }
 
   expirationDate = self->_expirationDate;
   if (expirationDate)
   {
-    v7 = [(ACProtobufDate *)expirationDate dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"expirationDate"];
+    dictionaryRepresentation = [(ACProtobufDate *)expirationDate dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"expirationDate"];
   }
 
   serviceName = self->_serviceName;
@@ -74,8 +74,8 @@
   objectID = self->_objectID;
   if (objectID)
   {
-    v11 = [(ACProtobufURL *)objectID dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"objectID"];
+    dictionaryRepresentation2 = [(ACProtobufURL *)objectID dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"objectID"];
   }
 
   dirtyProperties = self->_dirtyProperties;
@@ -87,10 +87,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   accountIdentifier = self->_accountIdentifier;
   PBDataWriterWriteStringField();
   if (self->_expirationDate)
@@ -146,56 +146,56 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setAccountIdentifier:self->_accountIdentifier];
+  toCopy = to;
+  [toCopy setAccountIdentifier:self->_accountIdentifier];
   if (self->_expirationDate)
   {
-    [v8 setExpirationDate:?];
+    [toCopy setExpirationDate:?];
   }
 
-  [v8 setServiceName:self->_serviceName];
+  [toCopy setServiceName:self->_serviceName];
   if (*&self->_has)
   {
-    v8[48] = self->_isPersistent;
-    v8[52] |= 1u;
+    toCopy[48] = self->_isPersistent;
+    toCopy[52] |= 1u;
   }
 
   if (self->_objectID)
   {
-    [v8 setObjectID:?];
+    [toCopy setObjectID:?];
   }
 
   if ([(ACProtobufCredentialItem *)self dirtyPropertiesCount])
   {
-    [v8 clearDirtyProperties];
-    v4 = [(ACProtobufCredentialItem *)self dirtyPropertiesCount];
-    if (v4)
+    [toCopy clearDirtyProperties];
+    dirtyPropertiesCount = [(ACProtobufCredentialItem *)self dirtyPropertiesCount];
+    if (dirtyPropertiesCount)
     {
-      v5 = v4;
+      v5 = dirtyPropertiesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ACProtobufCredentialItem *)self dirtyPropertiesAtIndex:i];
-        [v8 addDirtyProperties:v7];
+        [toCopy addDirtyProperties:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(ACProtobufDate *)self->_expirationDate copyWithZone:a3];
+  v8 = [(ACProtobufDate *)self->_expirationDate copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v10 = [(NSString *)self->_serviceName copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -205,7 +205,7 @@
     *(v5 + 52) |= 1u;
   }
 
-  v12 = [(ACProtobufURL *)self->_objectID copyWithZone:a3];
+  v12 = [(ACProtobufURL *)self->_objectID copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -229,7 +229,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addDirtyProperties:v19];
 
         ++v18;
@@ -246,16 +246,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier | *(v4 + 1))
+  if (accountIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)accountIdentifier isEqual:?])
     {
@@ -264,7 +264,7 @@
   }
 
   expirationDate = self->_expirationDate;
-  if (expirationDate | *(v4 + 3))
+  if (expirationDate | *(equalCopy + 3))
   {
     if (![(ACProtobufDate *)expirationDate isEqual:?])
     {
@@ -273,7 +273,7 @@
   }
 
   serviceName = self->_serviceName;
-  if (serviceName | *(v4 + 5))
+  if (serviceName | *(equalCopy + 5))
   {
     if (![(NSString *)serviceName isEqual:?])
     {
@@ -281,18 +281,18 @@
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v8 = *(v4 + 48);
+    v8 = *(equalCopy + 48);
     if (self->_isPersistent)
     {
-      if (*(v4 + 48))
+      if (*(equalCopy + 48))
       {
         goto LABEL_10;
       }
@@ -310,13 +310,13 @@ LABEL_15:
 
 LABEL_10:
   objectID = self->_objectID;
-  if (objectID | *(v4 + 4) && ![(ACProtobufURL *)objectID isEqual:?])
+  if (objectID | *(equalCopy + 4) && ![(ACProtobufURL *)objectID isEqual:?])
   {
     goto LABEL_15;
   }
 
   dirtyProperties = self->_dirtyProperties;
-  if (dirtyProperties | *(v4 + 2))
+  if (dirtyProperties | *(equalCopy + 2))
   {
     v11 = [(NSMutableArray *)dirtyProperties isEqual:?];
   }
@@ -351,17 +351,17 @@ LABEL_16:
   return v7 ^ v8 ^ [(NSMutableArray *)self->_dirtyProperties hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(ACProtobufCredentialItem *)self setAccountIdentifier:?];
   }
 
   expirationDate = self->_expirationDate;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (expirationDate)
   {
     if (v6)
@@ -375,19 +375,19 @@ LABEL_16:
     [(ACProtobufCredentialItem *)self setExpirationDate:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ACProtobufCredentialItem *)self setServiceName:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_isPersistent = *(v4 + 48);
+    self->_isPersistent = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 
   objectID = self->_objectID;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (objectID)
   {
     if (v8)
@@ -405,7 +405,7 @@ LABEL_16:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

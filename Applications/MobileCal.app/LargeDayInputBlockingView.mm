@@ -1,5 +1,5 @@
 @interface LargeDayInputBlockingView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (id)description;
 @end
 
@@ -13,8 +13,8 @@
   v4 = [(LargeDayInputBlockingView *)&v17 description];
   [v3 appendFormat:@"%@", v4];
 
-  v5 = [(LargeDayInputBlockingView *)self passthroughViews];
-  v6 = [v5 count];
+  passthroughViews = [(LargeDayInputBlockingView *)self passthroughViews];
+  v6 = [passthroughViews count];
   [v3 appendFormat:@"\n\tPassthrough views:"];
   if (v6)
   {
@@ -22,7 +22,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v5;
+    v7 = passthroughViews;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
@@ -55,15 +55,15 @@
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(LargeDayInputBlockingView *)self passthroughViews:a4];
+  v7 = [(LargeDayInputBlockingView *)self passthroughViews:event];
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {

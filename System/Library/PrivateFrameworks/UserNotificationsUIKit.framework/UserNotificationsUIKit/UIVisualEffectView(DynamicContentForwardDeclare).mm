@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 _obtainDynamicContentAssertionForReason:v4];
+    v5 = [self _obtainDynamicContentAssertionForReason:v4];
   }
 
   else

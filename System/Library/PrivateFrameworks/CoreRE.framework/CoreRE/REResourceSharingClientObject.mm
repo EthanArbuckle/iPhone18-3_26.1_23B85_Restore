@@ -1,37 +1,37 @@
 @interface REResourceSharingClientObject
-- (REResourceSharingClientObject)initWithAssetService:(AssetService *)a3 resourceSharingManager:(void *)a4 peerID:(unint64_t)a5;
-- (void)fetchResourceAtAssetPath:(id)a3 withReply:(id)a4;
-- (void)reportLoadState:(unsigned __int8)a3 forAssetId:(unint64_t)a4 assetSize:(unint64_t)a5 errorCode:(unsigned __int16)a6;
-- (void)setSubscriptionOptions:(id)a3 forResourceAtAssetPath:(id)a4;
-- (void)unsubscribeFromResourceAtAssetPath:(id)a3;
+- (REResourceSharingClientObject)initWithAssetService:(AssetService *)service resourceSharingManager:(void *)manager peerID:(unint64_t)d;
+- (void)fetchResourceAtAssetPath:(id)path withReply:(id)reply;
+- (void)reportLoadState:(unsigned __int8)state forAssetId:(unint64_t)id assetSize:(unint64_t)size errorCode:(unsigned __int16)code;
+- (void)setSubscriptionOptions:(id)options forResourceAtAssetPath:(id)path;
+- (void)unsubscribeFromResourceAtAssetPath:(id)path;
 @end
 
 @implementation REResourceSharingClientObject
 
-- (REResourceSharingClientObject)initWithAssetService:(AssetService *)a3 resourceSharingManager:(void *)a4 peerID:(unint64_t)a5
+- (REResourceSharingClientObject)initWithAssetService:(AssetService *)service resourceSharingManager:(void *)manager peerID:(unint64_t)d
 {
   v9.receiver = self;
   v9.super_class = REResourceSharingClientObject;
   result = [(REResourceSharingClientObject *)&v9 init];
   if (result)
   {
-    result->_assetService = a3;
-    result->_resourceSharingManager = a4;
-    result->_peerID = a5;
+    result->_assetService = service;
+    result->_resourceSharingManager = manager;
+    result->_peerID = d;
   }
 
   return result;
 }
 
-- (void)fetchResourceAtAssetPath:(id)a3 withReply:(id)a4
+- (void)fetchResourceAtAssetPath:(id)path withReply:(id)reply
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  pathCopy = path;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (!pathCopy)
   {
-    v18 = *re::resourceSharingLogObjects(v7);
+    v18 = *re::resourceSharingLogObjects(replyCopy);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
@@ -46,13 +46,13 @@
   assetService = self->_assetService;
   if (!assetService || !self->_resourceSharingManager)
   {
-    v16 = *re::resourceSharingLogObjects(v7);
+    v16 = *re::resourceSharingLogObjects(replyCopy);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = pathCopy;
       _os_log_error_impl(&dword_1E1C61000, v16, OS_LOG_TYPE_ERROR, "Resource connection %@ ignored a fetch request for '%@': service was deinited", buf, 0x16u);
     }
 
@@ -65,7 +65,7 @@ LABEL_15:
   }
 
   v10 = v34;
-  v11 = (*(assetService->var0 + 22))(&v31, assetService, [v6 UTF8String], 0);
+  v11 = (*(assetService->var0 + 22))(&v31, assetService, [pathCopy UTF8String], 0);
   if (v31)
   {
     if (v32 == 4)
@@ -74,7 +74,7 @@ LABEL_15:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v6;
+        *&buf[4] = pathCopy;
         v13 = "Resource fetch request for peer asset path '%@' is not allowed";
         v14 = v21;
         v15 = 12;
@@ -90,14 +90,14 @@ LABEL_15:
         re::DynamicString::DynamicString(&v25, &v33);
         re::DynamicString::DynamicString(v27, v36);
         v28 = v36[4];
-        v29 = self;
+        selfCopy = self;
         aBlock = _Block_copy(v8);
         resourceSharingManager = self->_resourceSharingManager;
         v37 = v24;
         re::DynamicString::DynamicString(&v38, &v25);
         re::DynamicString::DynamicString(v40, v27);
         v41 = v28;
-        v42 = v29;
+        v42 = selfCopy;
         v43 = _Block_copy(aBlock);
         v23 = *(resourceSharingManager + 7);
         *buf = MEMORY[0x1E69E9820];
@@ -192,7 +192,7 @@ LABEL_23:
       }
 
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = pathCopy;
       *&buf[12] = 2080;
       *&buf[14] = v20;
       v13 = "Failed to handle resource fetch request for '%@': %s";
@@ -225,19 +225,19 @@ LABEL_25:
 LABEL_32:
 }
 
-- (void)setSubscriptionOptions:(id)a3 forResourceAtAssetPath:(id)a4
+- (void)setSubscriptionOptions:(id)options forResourceAtAssetPath:(id)path
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (pathCopy)
   {
     assetService = self->_assetService;
     if (assetService && self->_resourceSharingManager)
     {
       v10 = v27;
-      v11 = (*(assetService->var0 + 22))(&v24, assetService, [v7 UTF8String], 0);
+      v11 = (*(assetService->var0 + 22))(&v24, assetService, [pathCopy UTF8String], 0);
       if (v24)
       {
         v20 = 0;
@@ -246,11 +246,11 @@ LABEL_32:
         v19 = 0;
         re::DynamicString::setCapacity(&v18, 0);
         re::AssetPath::fullAssetPath(v25, &v18);
-        v22 = self;
-        v23 = v6;
+        selfCopy = self;
+        v23 = optionsCopy;
         resourceSharingManager = self->_resourceSharingManager;
         re::DynamicString::DynamicString(&v31, &v18);
-        v33 = v22;
+        v33 = selfCopy;
         v34 = v23;
         v13 = *(resourceSharingManager + 7);
         *buf = MEMORY[0x1E69E9820];
@@ -323,7 +323,7 @@ LABEL_32:
 
     else
     {
-      v14 = *re::resourceSharingLogObjects(v7);
+      v14 = *re::resourceSharingLogObjects(pathCopy);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
@@ -347,18 +347,18 @@ LABEL_32:
   }
 }
 
-- (void)unsubscribeFromResourceAtAssetPath:(id)a3
+- (void)unsubscribeFromResourceAtAssetPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
     assetService = self->_assetService;
     if (assetService && self->_resourceSharingManager)
     {
       v7 = v27;
-      v8 = (*(assetService->var0 + 22))(buf, assetService, [v4 UTF8String], 0);
+      v8 = (*(assetService->var0 + 22))(buf, assetService, [pathCopy UTF8String], 0);
       if (buf[0])
       {
         v17 = 0;
@@ -366,11 +366,11 @@ LABEL_32:
         v15 = *&v26[2];
         v16 = 0;
         re::DynamicString::setCapacity(&v15, 0);
-        re::AssetPath::fullAssetPath(&v24 + 4, &v15);
-        v19 = self;
+        re::AssetPath::fullAssetPath(&selfCopy3 + 4, &v15);
+        selfCopy = self;
         resourceSharingManager = self->_resourceSharingManager;
         re::DynamicString::DynamicString(&v20, &v15);
-        v22 = v19;
+        v22 = selfCopy;
         v10 = *(resourceSharingManager + 7);
         *v31 = MEMORY[0x1E69E9820];
         *&v31[8] = 3321888768;
@@ -441,11 +441,11 @@ LABEL_32:
 
     else
     {
-      v11 = *re::resourceSharingLogObjects(v4);
+      v11 = *re::resourceSharingLogObjects(pathCopy);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2112;
         *v26 = v5;
         _os_log_error_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_ERROR, "Resource connection %@ ignored an unsubscribe request for '%@': service was deinited", buf, 0x16u);
@@ -459,39 +459,39 @@ LABEL_32:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_fault_impl(&dword_1E1C61000, v12, OS_LOG_TYPE_FAULT, "Resource connection %@ received an invalid unsubscribe request for a nil asset path", buf, 0xCu);
     }
   }
 }
 
-- (void)reportLoadState:(unsigned __int8)a3 forAssetId:(unint64_t)a4 assetSize:(unint64_t)a5 errorCode:(unsigned __int16)a6
+- (void)reportLoadState:(unsigned __int8)state forAssetId:(unint64_t)id assetSize:(unint64_t)size errorCode:(unsigned __int16)code
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_assetService && self->_resourceSharingManager)
   {
-    v8 = a6;
-    v10 = a3;
+    codeCopy = code;
+    stateCopy = state;
     v11 = *re::resourceSharingLogObjects(self);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109888;
-      *&buf[4] = v10;
+      *&buf[4] = stateCopy;
       *&buf[8] = 2048;
-      *&buf[10] = a4;
+      *&buf[10] = id;
       *&buf[18] = 2048;
-      *&buf[20] = a5;
+      *&buf[20] = size;
       v20 = 1024;
-      v21 = v8;
+      v21 = codeCopy;
       _os_log_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_DEFAULT, "Received load state:%u for asset:%llu of size:%zu, error:%d", buf, 0x22u);
     }
 
     resourceSharingManager = self->_resourceSharingManager;
     peerID = self->_peerID;
-    v18 = a5;
-    *buf = a4;
+    sizeCopy = size;
+    *buf = id;
     dispatch_assert_queue_V2(resourceSharingManager[5]);
-    if ((v10 - 4) >= 0xFEu)
+    if ((stateCopy - 4) >= 0xFEu)
     {
       v14 = resourceSharingManager[10];
       if (v14)
@@ -503,7 +503,7 @@ LABEL_32:
           if ([*(v15 - 64) peerID] == peerID)
           {
             re::HashTable<unsigned long long,unsigned long,re::Hash<unsigned long long>,re::EqualTo<unsigned long long>,true,false>::remove(v15, buf);
-            re::HashTable<unsigned long long,unsigned long,re::Hash<unsigned long long>,re::EqualTo<unsigned long long>,true,false>::addOrReplace(v15 + 48, buf, &v18);
+            re::HashTable<unsigned long long,unsigned long,re::Hash<unsigned long long>,re::EqualTo<unsigned long long>,true,false>::addOrReplace(v15 + 48, buf, &sizeCopy);
           }
 
           v15 += 168;
@@ -514,7 +514,7 @@ LABEL_32:
       }
     }
 
-    (*(self->_assetService->var0 + 50))(self->_assetService, a4, self->_peerID, v10, a5, v8);
+    (*(self->_assetService->var0 + 50))(self->_assetService, id, self->_peerID, stateCopy, size, codeCopy);
   }
 
   else
@@ -525,7 +525,7 @@ LABEL_32:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = id;
       _os_log_error_impl(&dword_1E1C61000, v17, OS_LOG_TYPE_ERROR, "Resource connection %@ ignored an unsubscribe request for '%llu': service was deinited", buf, 0x16u);
     }
   }

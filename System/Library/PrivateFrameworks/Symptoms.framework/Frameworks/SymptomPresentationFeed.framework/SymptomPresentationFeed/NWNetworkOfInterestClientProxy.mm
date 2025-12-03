@@ -1,7 +1,7 @@
 @interface NWNetworkOfInterestClientProxy
-- (NWNetworkOfInterestClientProxy)initWithDelegate:(id)a3;
+- (NWNetworkOfInterestClientProxy)initWithDelegate:(id)delegate;
 - (SFClientInterfaceProxy)delegate;
-- (void)updateNOI:(id)a3 keyPath:(id)a4 change:(id)a5;
+- (void)updateNOI:(id)i keyPath:(id)path change:(id)change;
 @end
 
 @implementation NWNetworkOfInterestClientProxy
@@ -13,14 +13,14 @@
   return WeakRetained;
 }
 
-- (NWNetworkOfInterestClientProxy)initWithDelegate:(id)a3
+- (NWNetworkOfInterestClientProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(NWNetworkOfInterestClientProxy *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (delegateCopy && v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_proxyHaveNOIs = objc_opt_respondsToSelector() & 1;
     v6->_proxyUpdateNOI = objc_opt_respondsToSelector() & 1;
   }
@@ -28,15 +28,15 @@
   return v6;
 }
 
-- (void)updateNOI:(id)a3 keyPath:(id)a4 change:(id)a5
+- (void)updateNOI:(id)i keyPath:(id)path change:(id)change
 {
   if (self->_proxyUpdateNOI)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
-    v12 = [(NWNetworkOfInterestClientProxy *)self delegate];
-    [v12 proxyUpdateNOI:v11 keyPath:v10 change:v9];
+    changeCopy = change;
+    pathCopy = path;
+    iCopy = i;
+    delegate = [(NWNetworkOfInterestClientProxy *)self delegate];
+    [delegate proxyUpdateNOI:iCopy keyPath:pathCopy change:changeCopy];
   }
 }
 

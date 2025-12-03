@@ -1,15 +1,15 @@
 @interface NTKGalleonRasterizableProgressView
-- (NTKGalleonRasterizableProgressView)initWithProgressView:(id)a3;
-- (void)galleon_setProgress:(double)a3;
+- (NTKGalleonRasterizableProgressView)initWithProgressView:(id)view;
+- (void)galleon_setProgress:(double)progress;
 - (void)tintColorDidChange;
 @end
 
 @implementation NTKGalleonRasterizableProgressView
 
-- (NTKGalleonRasterizableProgressView)initWithProgressView:(id)a3
+- (NTKGalleonRasterizableProgressView)initWithProgressView:(id)view
 {
-  v5 = a3;
-  objc_msgSend_frame(v5, v6, v7, v8);
+  viewCopy = view;
+  objc_msgSend_frame(viewCopy, v6, v7, v8);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -19,13 +19,13 @@
   v20 = [(NTKGalleonRasterizableProgressView *)&v86 initWithFrame:?];
   if (v20)
   {
-    objc_msgSend_galleon_setProgress_(v5, v17, v18, v19, 1.0);
-    objc_msgSend_layoutIfNeeded(v5, v21, v22, v23);
+    objc_msgSend_galleon_setProgress_(viewCopy, v17, v18, v19, 1.0);
+    objc_msgSend_layoutIfNeeded(viewCopy, v21, v22, v23);
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
     v84[2] = sub_23BE94A4C;
     v84[3] = &unk_278B9EDE0;
-    v24 = v5;
+    v24 = viewCopy;
     v85 = v24;
     v25 = MEMORY[0x23EEC0850](v84);
     objc_msgSend_bounds(v24, v26, v27, v28);
@@ -56,7 +56,7 @@
     v72 = v65;
 
     objc_msgSend_addSubview_(v20, v73, *(v20 + 51), v74);
-    objc_storeStrong(v20 + 54, a3);
+    objc_storeStrong(v20 + 54, view);
     v87.origin.x = v30;
     v87.origin.y = v32;
     v87.size.width = v34;
@@ -82,7 +82,7 @@
   objc_msgSend_setTintColor_(self->_imageView, v7, v9, v8);
 }
 
-- (void)galleon_setProgress:(double)a3
+- (void)galleon_setProgress:(double)progress
 {
   v5 = self->_imageView;
   v6 = self->_progressView;
@@ -92,18 +92,18 @@
   v20[3] = &unk_278B9EE08;
   v7 = v5;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v8 = v6;
   v23 = v8;
   v9 = MEMORY[0x23EEC0850](v20);
   v13 = v9;
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(progress) >= 0.00000011920929)
   {
-    if (fabs(a3 + -1.0) >= 0.00000011920929)
+    if (fabs(progress + -1.0) >= 0.00000011920929)
     {
       objc_msgSend_removeFromSuperview(self->_imageView, v10, v11, v12);
       objc_msgSend_addSubview_(self, v15, self->_progressView, v16);
-      objc_msgSend_galleon_setProgress_(self->_progressView, v17, v18, v19, a3);
+      objc_msgSend_galleon_setProgress_(self->_progressView, v17, v18, v19, progress);
       goto LABEL_7;
     }
 

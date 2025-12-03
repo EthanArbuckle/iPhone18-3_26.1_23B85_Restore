@@ -1,9 +1,9 @@
 @interface HDSPProcessStateManager
-- (BOOL)isProcessSuspended:(int)a3;
+- (BOOL)isProcessSuspended:(int)suspended;
 - (HDSPProcessStateManager)init;
-- (HDSPProcessStateManager)initWithProcessStateProvider:(id)a3;
+- (HDSPProcessStateManager)initWithProcessStateProvider:(id)provider;
 - (HDSPProcessStateManagerDelegate)delegate;
-- (void)_process:(id)a3 didUpdateFromState:(id)a4 toState:(id)a5;
+- (void)_process:(id)_process didUpdateFromState:(id)state toState:(id)toState;
 - (void)_updateConfiguration;
 - (void)dealloc;
 @end
@@ -21,9 +21,9 @@
   v18 = 0;
   v3 = self->_processIdentifiers;
   objc_sync_enter(v3);
-  v4 = [(NSMutableSet *)self->_processIdentifiers allObjects];
+  allObjects = [(NSMutableSet *)self->_processIdentifiers allObjects];
   v5 = v14[5];
-  v14[5] = v4;
+  v14[5] = allObjects;
 
   objc_sync_exit(v3);
   v6 = HKSPLogForCategory();
@@ -126,9 +126,9 @@ id __31__HDSPProcessStateManager_init__block_invoke(uint64_t a1, uint64_t a2)
   return v8;
 }
 
-- (HDSPProcessStateManager)initWithProcessStateProvider:(id)a3
+- (HDSPProcessStateManager)initWithProcessStateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = HDSPProcessStateManager;
   v5 = [(HDSPProcessStateManager *)&v20 init];
@@ -142,7 +142,7 @@ id __31__HDSPProcessStateManager_init__block_invoke(uint64_t a1, uint64_t a2)
     processIdentifiers = v5->_processIdentifiers;
     v5->_processIdentifiers = v8;
 
-    v10 = [v4 copy];
+    v10 = [providerCopy copy];
     processStateProvider = v5->_processStateProvider;
     v5->_processStateProvider = v10;
 
@@ -171,7 +171,7 @@ void __56__HDSPProcessStateManager_initWithProcessStateProvider___block_invoke(u
   [WeakRetained _updateConfiguration];
 }
 
-- (BOOL)isProcessSuspended:(int)a3
+- (BOOL)isProcessSuspended:(int)suspended
 {
   v3 = (*(self->_processStateProvider + 2))();
   v4 = [v3 taskState] == 3;
@@ -179,49 +179,49 @@ void __56__HDSPProcessStateManager_initWithProcessStateProvider___block_invoke(u
   return v4;
 }
 
-- (void)_process:(id)a3 didUpdateFromState:(id)a4 toState:(id)a5
+- (void)_process:(id)_process didUpdateFromState:(id)state toState:(id)toState
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 taskState] == 3 && objc_msgSend(v10, "taskState") != 3)
+  _processCopy = _process;
+  stateCopy = state;
+  toStateCopy = toState;
+  if ([stateCopy taskState] == 3 && objc_msgSend(toStateCopy, "taskState") != 3)
   {
     v16 = HKSPLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [v8 name];
+      name = [_processCopy name];
       v21 = 138543618;
       v22 = v17;
       v23 = 2114;
-      v24 = v19;
+      v24 = name;
       _os_log_impl(&dword_269B11000, v16, OS_LOG_TYPE_INFO, "[%{public}@] process %{public}@ no longer suspended", &v21, 0x16u);
     }
 
-    v15 = [(HDSPProcessStateManager *)self delegate];
-    [v15 processNoLongerSuspended:{objc_msgSend(v8, "pid")}];
+    delegate = [(HDSPProcessStateManager *)self delegate];
+    [delegate processNoLongerSuspended:{objc_msgSend(_processCopy, "pid")}];
     goto LABEL_11;
   }
 
-  if ([v9 taskState] != 3 && objc_msgSend(v10, "taskState") == 3)
+  if ([stateCopy taskState] != 3 && objc_msgSend(toStateCopy, "taskState") == 3)
   {
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = objc_opt_class();
       v13 = v12;
-      v14 = [v8 name];
+      name2 = [_processCopy name];
       v21 = 138543618;
       v22 = v12;
       v23 = 2114;
-      v24 = v14;
+      v24 = name2;
       _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_INFO, "[%{public}@] process %{public}@ is suspended", &v21, 0x16u);
     }
 
-    v15 = [(HDSPProcessStateManager *)self delegate];
-    [v15 processDidBecomeSuspended:{objc_msgSend(v8, "pid")}];
+    delegate = [(HDSPProcessStateManager *)self delegate];
+    [delegate processDidBecomeSuspended:{objc_msgSend(_processCopy, "pid")}];
 LABEL_11:
   }
 

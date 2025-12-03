@@ -1,25 +1,25 @@
 @interface BMStoreValidator
-- (BMStoreValidator)initWithIdentifier:(id)a3 storeConfig:(id)a4;
-- (int)isChronologicallyValidFromBookmark:(id)a3 shouldContinue:(id)a4;
-- (int)isChronologicallyValidFromTimestamp:(double)a3;
-- (int)isChronologicallyValidFromTimestamp:(double)a3 shouldContinue:(id)a4;
-- (int)isChronologicallyValidWithPublisher:(id)a3 shouldContinue:(id)a4;
+- (BMStoreValidator)initWithIdentifier:(id)identifier storeConfig:(id)config;
+- (int)isChronologicallyValidFromBookmark:(id)bookmark shouldContinue:(id)continue;
+- (int)isChronologicallyValidFromTimestamp:(double)timestamp;
+- (int)isChronologicallyValidFromTimestamp:(double)timestamp shouldContinue:(id)continue;
+- (int)isChronologicallyValidWithPublisher:(id)publisher shouldContinue:(id)continue;
 @end
 
 @implementation BMStoreValidator
 
-- (BMStoreValidator)initWithIdentifier:(id)a3 storeConfig:(id)a4
+- (BMStoreValidator)initWithIdentifier:(id)identifier storeConfig:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = BMStoreValidator;
   v9 = [(BMStoreValidator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = [[BPSBiomeStorePublisher alloc] initWithStreamId:v7 storeConfig:v8];
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = [[BPSBiomeStorePublisher alloc] initWithStreamId:identifierCopy storeConfig:configCopy];
     publisher = v10->_publisher;
     v10->_publisher = v11;
   }
@@ -27,22 +27,22 @@
   return v10;
 }
 
-- (int)isChronologicallyValidFromTimestamp:(double)a3
+- (int)isChronologicallyValidFromTimestamp:(double)timestamp
 {
-  v3 = self;
-  v4 = [(BPSBiomeStorePublisher *)self->_publisher withStartTime:a3];
-  LODWORD(v3) = [(BMStoreValidator *)v3 isChronologicallyValidWithPublisher:v4 shouldContinue:&__block_literal_global_16];
+  selfCopy = self;
+  v4 = [(BPSBiomeStorePublisher *)self->_publisher withStartTime:timestamp];
+  LODWORD(selfCopy) = [(BMStoreValidator *)selfCopy isChronologicallyValidWithPublisher:v4 shouldContinue:&__block_literal_global_16];
 
-  return v3;
+  return selfCopy;
 }
 
-- (int)isChronologicallyValidFromBookmark:(id)a3 shouldContinue:(id)a4
+- (int)isChronologicallyValidFromBookmark:(id)bookmark shouldContinue:(id)continue
 {
-  v6 = a4;
-  if (a3)
+  continueCopy = continue;
+  if (bookmark)
   {
-    [(BPSBiomeStorePublisher *)self->_publisher applyBookmark:a3];
-    v7 = [(BMStoreValidator *)self isChronologicallyValidWithPublisher:self->_publisher shouldContinue:v6];
+    [(BPSBiomeStorePublisher *)self->_publisher applyBookmark:bookmark];
+    v7 = [(BMStoreValidator *)self isChronologicallyValidWithPublisher:self->_publisher shouldContinue:continueCopy];
   }
 
   else
@@ -59,23 +59,23 @@
   return v7;
 }
 
-- (int)isChronologicallyValidFromTimestamp:(double)a3 shouldContinue:(id)a4
+- (int)isChronologicallyValidFromTimestamp:(double)timestamp shouldContinue:(id)continue
 {
-  v5 = self;
+  selfCopy = self;
   publisher = self->_publisher;
-  v7 = a4;
-  v8 = [(BPSBiomeStorePublisher *)publisher withStartTime:a3];
-  LODWORD(v5) = [(BMStoreValidator *)v5 isChronologicallyValidWithPublisher:v8 shouldContinue:v7];
+  continueCopy = continue;
+  v8 = [(BPSBiomeStorePublisher *)publisher withStartTime:timestamp];
+  LODWORD(selfCopy) = [(BMStoreValidator *)selfCopy isChronologicallyValidWithPublisher:v8 shouldContinue:continueCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (int)isChronologicallyValidWithPublisher:(id)a3 shouldContinue:(id)a4
+- (int)isChronologicallyValidWithPublisher:(id)publisher shouldContinue:(id)continue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  publisherCopy = publisher;
+  continueCopy = continue;
+  v8 = continueCopy;
+  if (publisherCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -92,8 +92,8 @@
     v15 = v17;
     v16 = &v18;
     v13[4] = self;
-    v14 = v7;
-    v9 = [v6 sinkWithCompletion:&__block_literal_global_3 shouldContinue:v13];
+    v14 = continueCopy;
+    v9 = [publisherCopy sinkWithCompletion:&__block_literal_global_3 shouldContinue:v13];
     v10 = *(v19 + 6);
 
     _Block_object_dispose(v17, 8);

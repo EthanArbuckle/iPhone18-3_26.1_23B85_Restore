@@ -1,21 +1,21 @@
 @interface AVCDOSDataOutputStorage
-- (AVCDOSDataOutputStorage)initWithDataOutput:(id)a3;
-- (BOOL)hasAllExpectedSynchronizedDataForLeaderTimestamp:(id *)a3;
+- (AVCDOSDataOutputStorage)initWithDataOutput:(id)output;
+- (BOOL)hasAllExpectedSynchronizedDataForLeaderTimestamp:(id *)timestamp;
 - (BOOL)isLive;
 - (void)dealloc;
-- (void)updateDelegateOverrideCallbackQueueQOSClass:(unsigned int)a3;
+- (void)updateDelegateOverrideCallbackQueueQOSClass:(unsigned int)class;
 @end
 
 @implementation AVCDOSDataOutputStorage
 
-- (AVCDOSDataOutputStorage)initWithDataOutput:(id)a3
+- (AVCDOSDataOutputStorage)initWithDataOutput:(id)output
 {
   v6.receiver = self;
   v6.super_class = AVCDOSDataOutputStorage;
   v4 = [(AVCDOSDataOutputStorage *)&v6 init];
   if (v4)
   {
-    v4->_dataOutput = a3;
+    v4->_dataOutput = output;
     v4->_synchronizedDataQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ((AVCaptureIsRunningInMediaserverd() & 1) == 0)
     {
@@ -33,12 +33,12 @@
   [(AVCDOSDataOutputStorage *)&v3 dealloc];
 }
 
-- (void)updateDelegateOverrideCallbackQueueQOSClass:(unsigned int)a3
+- (void)updateDelegateOverrideCallbackQueueQOSClass:(unsigned int)class
 {
   dispatch_sync(self->_delegateOverrideCallbackQueue, &__block_literal_global_21);
   dispatch_release(self->_delegateOverrideCallbackQueue);
   v5 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.avfoundation.dataoutputsynchronizer.dataoutputqueue_%@_%@", self->_dataOutput, objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")), "UTF8String"];
-  v6 = dispatch_queue_attr_make_with_qos_class(0, a3, 0);
+  v6 = dispatch_queue_attr_make_with_qos_class(0, class, 0);
   self->_delegateOverrideCallbackQueue = dispatch_queue_create(v5, v6);
 }
 
@@ -49,7 +49,7 @@
   return [v2 isLive];
 }
 
-- (BOOL)hasAllExpectedSynchronizedDataForLeaderTimestamp:(id *)a3
+- (BOOL)hasAllExpectedSynchronizedDataForLeaderTimestamp:(id *)timestamp
 {
   if (![(NSMutableArray *)[(AVCDOSDataOutputStorage *)self synchronizedDataQueue] count])
   {
@@ -91,7 +91,7 @@ LABEL_9:
   [v6 adjustedTimestamp];
 LABEL_10:
   v26 = time1;
-  time1 = *a3;
+  time1 = *timestamp;
   time2 = v26;
   if (CMTimeCompare(&time1, &time2) > 0)
   {
@@ -102,14 +102,14 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(AVCDOSDataOutputStorage *)self dataOutput];
-    v9 = [MEMORY[0x1E695DFA8] setWithArray:{-[AVCaptureDataOutputDelegateOverride metadataObjectTypes](v8, "metadataObjectTypes")}];
+    dataOutput = [(AVCDOSDataOutputStorage *)self dataOutput];
+    v9 = [MEMORY[0x1E695DFA8] setWithArray:{-[AVCaptureDataOutputDelegateOverride metadataObjectTypes](dataOutput, "metadataObjectTypes")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [(AVCDOSDataOutputStorage *)self synchronizedDataQueue];
-    v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    synchronizedDataQueue = [(AVCDOSDataOutputStorage *)self synchronizedDataQueue];
+    v11 = [(NSMutableArray *)synchronizedDataQueue countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v11)
     {
       v12 = v11;
@@ -120,7 +120,7 @@ LABEL_10:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(synchronizedDataQueue);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
@@ -139,7 +139,7 @@ LABEL_10:
           }
         }
 
-        v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v12 = [(NSMutableArray *)synchronizedDataQueue countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v12);

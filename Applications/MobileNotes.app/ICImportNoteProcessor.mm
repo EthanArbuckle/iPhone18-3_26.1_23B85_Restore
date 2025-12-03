@@ -4,14 +4,14 @@
 - (ICNAEventReporter)eventReporter;
 - (NSArray)allowedContentTypes;
 - (NSArray)errorFileURLs;
-- (id)getTypeIdentifierForFileURL:(id)a3;
-- (id)newFolderWithTitle:(id)a3 parentFolder:(id)a4 forAccount:(id)a5;
-- (id)parserForFileURL:(id)a3;
-- (void)addURLs:(id)a3 toImportFolder:(id)a4 shouldPreserveFolders:(BOOL)a5;
+- (id)getTypeIdentifierForFileURL:(id)l;
+- (id)newFolderWithTitle:(id)title parentFolder:(id)folder forAccount:(id)account;
+- (id)parserForFileURL:(id)l;
+- (void)addURLs:(id)ls toImportFolder:(id)folder shouldPreserveFolders:(BOOL)folders;
 - (void)cancelProcess;
-- (void)processURLs:(id)a3 shouldPreserveFolders:(BOOL)a4 account:(id)a5;
+- (void)processURLs:(id)ls shouldPreserveFolders:(BOOL)folders account:(id)account;
 - (void)setupFileParsers;
-- (void)traverseImportFolder:(id)a3 forAccount:(id)a4 shouldImportNotes:(BOOL)a5 completionBlock:(id)a6;
+- (void)traverseImportFolder:(id)folder forAccount:(id)account shouldImportNotes:(BOOL)notes completionBlock:(id)block;
 - (void)updateImportProgress;
 @end
 
@@ -48,8 +48,8 @@
 
 - (NSArray)errorFileURLs
 {
-  v2 = [(ICImportNoteProcessor *)self currentErrorFileURLs];
-  v3 = [v2 copy];
+  currentErrorFileURLs = [(ICImportNoteProcessor *)self currentErrorFileURLs];
+  v3 = [currentErrorFileURLs copy];
 
   return v3;
 }
@@ -57,24 +57,24 @@
 - (NSArray)allowedContentTypes
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ICImportNoteProcessor *)self importNoteFileParsers];
+  importNoteFileParsers = [(ICImportNoteProcessor *)self importNoteFileParsers];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10007B258;
   v8[3] = &unk_100646F10;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [importNoteFileParsers enumerateObjectsUsingBlock:v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)processURLs:(id)a3 shouldPreserveFolders:(BOOL)a4 account:(id)a5
+- (void)processURLs:(id)ls shouldPreserveFolders:(BOOL)folders account:(id)account
 {
-  v8 = a3;
-  v9 = a5;
+  lsCopy = ls;
+  accountCopy = account;
   if ([(ICImportNoteProcessor *)self state])
   {
     v10 = os_log_create("com.apple.notes", "Import");
@@ -89,7 +89,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!accountCopy)
   {
     [ICAssert handleFailedAssertWithCondition:"inAccount" functionName:"[ICImportNoteProcessor processURLs:shouldPreserveFolders:account:]" simulateCrash:1 showAlert:0 format:@"Account must not be nil"];
     v10 = os_log_create("com.apple.notes", "Import");
@@ -109,11 +109,11 @@ LABEL_11:
   [(ICImportNoteProcessor *)self setCurrentErrorFileURLs:v11];
 
   v12 = +[ICNoteContext sharedContext];
-  v13 = [v12 workerManagedObjectContext];
-  [(ICImportNoteProcessor *)self setManagedObjectContext:v13];
+  workerManagedObjectContext = [v12 workerManagedObjectContext];
+  [(ICImportNoteProcessor *)self setManagedObjectContext:workerManagedObjectContext];
 
-  v14 = [(ICImportNoteProcessor *)self managedObjectContext];
-  [v14 setIc_debugName:@"importNoteProcessor"];
+  managedObjectContext = [(ICImportNoteProcessor *)self managedObjectContext];
+  [managedObjectContext setIc_debugName:@"importNoteProcessor"];
 
   *buf = 0;
   v34 = buf;
@@ -121,26 +121,26 @@ LABEL_11:
   v36 = sub_10007B698;
   v37 = sub_10007B6A8;
   v38 = 0;
-  v15 = [(ICImportNoteProcessor *)self managedObjectContext];
+  managedObjectContext2 = [(ICImportNoteProcessor *)self managedObjectContext];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10007B6B0;
   v29[3] = &unk_100645A40;
   v32 = buf;
-  v30 = v9;
-  v31 = self;
-  [v15 performBlockAndWait:v29];
+  v30 = accountCopy;
+  selfCopy = self;
+  [managedObjectContext2 performBlockAndWait:v29];
 
   if (*(v34 + 5))
   {
     [(ICImportNoteProcessor *)self setState:1];
-    v16 = [(ICImportNoteProcessor *)self delegate];
+    delegate = [(ICImportNoteProcessor *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(ICImportNoteProcessor *)self delegate];
-      [v18 importStartedForNoteProcessor:self];
+      delegate2 = [(ICImportNoteProcessor *)self delegate];
+      [delegate2 importStartedForNoteProcessor:self];
     }
 
     objc_initWeak(&location, self);
@@ -150,10 +150,10 @@ LABEL_11:
     block[2] = sub_10007B748;
     block[3] = &unk_100646F60;
     objc_copyWeak(&v26, &location);
-    v20 = v8;
-    v27 = a4;
+    v20 = lsCopy;
+    foldersCopy = folders;
     v23 = v20;
-    v24 = self;
+    selfCopy2 = self;
     v25 = buf;
     dispatch_async(v19, block);
 
@@ -183,8 +183,8 @@ LABEL_16:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(ICImportNoteProcessor *)self importNoteFileParsers];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    importNoteFileParsers = [(ICImportNoteProcessor *)self importNoteFileParsers];
+    v4 = [importNoteFileParsers countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -195,13 +195,13 @@ LABEL_16:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(importNoteFileParsers);
           }
 
           [*(*(&v8 + 1) + 8 * i) cancelParsing];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [importNoteFileParsers countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -210,10 +210,10 @@ LABEL_16:
 
   else
   {
-    v3 = os_log_create("com.apple.notes", "Import");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    importNoteFileParsers = os_log_create("com.apple.notes", "Import");
+    if (os_log_type_enabled(importNoteFileParsers, OS_LOG_TYPE_DEBUG))
     {
-      sub_1004D9BD8(v3);
+      sub_1004D9BD8(importNoteFileParsers);
     }
   }
 }
@@ -230,25 +230,25 @@ LABEL_16:
   [(ICImportNoteProcessor *)self setImportNoteFileParsers:v6, v7, v8];
 }
 
-- (id)parserForFileURL:(id)a3
+- (id)parserForFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_10007B698;
   v19 = sub_10007B6A8;
   v20 = 0;
-  [v4 startAccessingSecurityScopedResource];
-  v5 = [(ICImportNoteProcessor *)self importNoteFileParsers];
+  [lCopy startAccessingSecurityScopedResource];
+  importNoteFileParsers = [(ICImportNoteProcessor *)self importNoteFileParsers];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_10007BFB0;
   v12 = &unk_100646F88;
-  v6 = v4;
+  v6 = lCopy;
   v13 = v6;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:&v9];
+  [importNoteFileParsers enumerateObjectsUsingBlock:&v9];
 
   [v6 stopAccessingSecurityScopedResource];
   v7 = v16[5];
@@ -258,15 +258,15 @@ LABEL_16:
   return v7;
 }
 
-- (void)addURLs:(id)a3 toImportFolder:(id)a4 shouldPreserveFolders:(BOOL)a5
+- (void)addURLs:(id)ls toImportFolder:(id)folder shouldPreserveFolders:(BOOL)folders
 {
-  v38 = a5;
-  v7 = a3;
-  v8 = a4;
+  foldersCopy = folders;
+  lsCopy = ls;
+  folderCopy = folder;
   v9 = objc_alloc_init(NSMutableArray);
-  v37 = v7;
-  v10 = [[NSMutableArray alloc] initWithArray:v7];
-  v39 = v8;
+  v37 = lsCopy;
+  v10 = [[NSMutableArray alloc] initWithArray:lsCopy];
+  v39 = folderCopy;
   if (![(ICImportNoteProcessor *)self shouldCancelImportProcess])
   {
     v12 = NSURLIsDirectoryKey;
@@ -281,21 +281,21 @@ LABEL_16:
 
       if (![v10 count])
       {
-        v13 = [v9 firstObject];
+        firstObject = [v9 firstObject];
 
         [v9 removeObjectAtIndex:0];
-        v14 = [v13 url];
+        v14 = [firstObject url];
         [v14 startAccessingSecurityScopedResource];
 
         v15 = +[NSFileManager defaultManager];
-        v16 = [v13 url];
+        v16 = [firstObject url];
         v46[0] = NSURLNameKey;
         v46[1] = v12;
         v46[2] = NSURLTypeIdentifierKey;
         v17 = [NSArray arrayWithObjects:v46 count:3];
         v18 = [v15 contentsOfDirectoryAtURL:v16 includingPropertiesForKeys:v17 options:4 error:0];
 
-        v19 = [v13 url];
+        v19 = [firstObject url];
         [v19 stopAccessingSecurityScopedResource];
 
         if (v18)
@@ -303,7 +303,7 @@ LABEL_16:
           [v10 addObjectsFromArray:v18];
         }
 
-        v8 = v13;
+        folderCopy = firstObject;
       }
 
       if ([v10 count] && !-[ICImportNoteProcessor shouldCancelImportProcess](self, "shouldCancelImportProcess"))
@@ -318,34 +318,34 @@ LABEL_30:
       }
     }
 
-    v20 = [v10 firstObject];
-    [v20 startAccessingSecurityScopedResource];
+    firstObject2 = [v10 firstObject];
+    [firstObject2 startAccessingSecurityScopedResource];
     [v10 removeObjectAtIndex:0];
     v43 = 0;
-    [v20 getResourceValue:&v43 forKey:v12 error:0];
+    [firstObject2 getResourceValue:&v43 forKey:v12 error:0];
     v21 = v43;
-    v22 = [(ICImportNoteProcessor *)self getTypeIdentifierForFileURL:v20];
+    v22 = [(ICImportNoteProcessor *)self getTypeIdentifierForFileURL:firstObject2];
     v42 = 0;
-    [v20 getResourceValue:&v42 forKey:NSURLIsPackageKey error:0];
+    [firstObject2 getResourceValue:&v42 forKey:NSURLIsPackageKey error:0];
     v41 = v42;
-    [v20 stopAccessingSecurityScopedResource];
+    [firstObject2 stopAccessingSecurityScopedResource];
     if (v22)
     {
       v23 = [UTType typeWithIdentifier:v22];
       v40 = [v23 conformsToType:UTTypeRTFD];
 
       [UTType importedTypeWithIdentifier:v22];
-      v24 = self;
+      selfCopy = self;
       v25 = v21;
-      v26 = v8;
+      v26 = folderCopy;
       v28 = v27 = v9;
       v29 = [UTType importedTypeWithIdentifier:@"com.apple.stickies.appexport"];
       v30 = [v28 conformsToType:v29];
 
       v9 = v27;
-      v8 = v26;
+      folderCopy = v26;
       v21 = v25;
-      self = v24;
+      self = selfCopy;
       if (([v21 BOOLValue] & 1) == 0)
       {
         goto LABEL_23;
@@ -357,11 +357,11 @@ LABEL_19:
         if ((v40 & 1) == 0)
         {
           v31 = objc_alloc_init(ICImportFolder);
-          [(ICImportFolder *)v31 setUrl:v20];
-          if (v38)
+          [(ICImportFolder *)v31 setUrl:firstObject2];
+          if (foldersCopy)
           {
-            v32 = [v8 subFolders];
-            [v32 addObject:v31];
+            subFolders = [folderCopy subFolders];
+            [subFolders addObject:v31];
           }
 
           [v9 addObject:v31];
@@ -372,19 +372,19 @@ LABEL_29:
         }
 
 LABEL_23:
-        v33 = [(ICImportNoteProcessor *)self parserForFileURL:v20];
+        v33 = [(ICImportNoteProcessor *)self parserForFileURL:firstObject2];
 
         if (v33)
         {
           v34 = v39;
-          if (v38)
+          if (foldersCopy)
           {
-            v34 = v8;
+            v34 = folderCopy;
           }
 
           v31 = v34;
-          v35 = [(ICImportFolder *)v31 fileURLs];
-          [v35 addObject:v20];
+          fileURLs = [(ICImportFolder *)v31 fileURLs];
+          [fileURLs addObject:firstObject2];
         }
 
         else
@@ -393,7 +393,7 @@ LABEL_23:
           if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_DEBUG))
           {
             *buf = v36;
-            v45 = v20;
+            v45 = firstObject2;
             _os_log_debug_impl(&_mh_execute_header, &v31->super, OS_LOG_TYPE_DEBUG, "Cannot process file to import to notes: %@", buf, 0xCu);
           }
         }
@@ -423,13 +423,13 @@ LABEL_23:
 LABEL_2:
 }
 
-- (id)getTypeIdentifierForFileURL:(id)a3
+- (id)getTypeIdentifierForFileURL:(id)l
 {
-  v3 = a3;
-  [v3 startAccessingSecurityScopedResource];
+  lCopy = l;
+  [lCopy startAccessingSecurityScopedResource];
   v10 = 0;
   v9 = 0;
-  v4 = [v3 getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
+  v4 = [lCopy getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
   v5 = v10;
   v6 = v9;
   if ((v4 & 1) == 0)
@@ -441,41 +441,41 @@ LABEL_2:
     }
   }
 
-  [v3 stopAccessingSecurityScopedResource];
+  [lCopy stopAccessingSecurityScopedResource];
 
   return v5;
 }
 
-- (void)traverseImportFolder:(id)a3 forAccount:(id)a4 shouldImportNotes:(BOOL)a5 completionBlock:(id)a6
+- (void)traverseImportFolder:(id)folder forAccount:(id)account shouldImportNotes:(BOOL)notes completionBlock:(id)block
 {
-  v58 = a5;
-  v9 = a3;
-  v56 = a4;
-  v10 = a6;
-  v53 = v9;
+  notesCopy = notes;
+  folderCopy = folder;
+  accountCopy = account;
+  blockCopy = block;
+  v53 = folderCopy;
   if ([(ICImportNoteProcessor *)self shouldCancelImportProcess])
   {
-    if (v10)
+    if (blockCopy)
     {
-      v10[2](v10);
+      blockCopy[2](blockCopy);
     }
 
     goto LABEL_62;
   }
 
-  v52 = v10;
+  v52 = blockCopy;
   val = self;
   [(ICImportNoteProcessor *)self updateImportProgress];
-  v11 = [[NSMutableArray alloc] initWithObjects:{v9, 0}];
+  v11 = [[NSMutableArray alloc] initWithObjects:{folderCopy, 0}];
   v54 = v11;
 LABEL_5:
-  v55 = [v11 firstObject];
+  firstObject = [v11 firstObject];
   [v54 removeObjectAtIndex:0];
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = [v55 fileURLs];
+  obj = [firstObject fileURLs];
   v60 = [obj countByEnumeratingWithState:&v94 objects:v104 count:16];
   if (!v60)
   {
@@ -485,8 +485,8 @@ LABEL_36:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v38 = [v55 subFolders];
-    v39 = [v38 countByEnumeratingWithState:&v62 objects:v98 count:16];
+    subFolders = [firstObject subFolders];
+    v39 = [subFolders countByEnumeratingWithState:&v62 objects:v98 count:16];
     if (!v39)
     {
       goto LABEL_50;
@@ -499,7 +499,7 @@ LABEL_38:
     {
       if (*v63 != v40)
       {
-        objc_enumerationMutation(v38);
+        objc_enumerationMutation(subFolders);
       }
 
       v42 = *(*(&v62 + 1) + 8 * v41);
@@ -513,14 +513,14 @@ LABEL_38:
         goto LABEL_60;
       }
 
-      v43 = [v42 fileURLs];
-      if ([v43 count])
+      fileURLs = [v42 fileURLs];
+      if ([fileURLs count])
       {
         break;
       }
 
-      v44 = [v42 subFolders];
-      v45 = [v44 count] == 0;
+      subFolders2 = [v42 subFolders];
+      v45 = [subFolders2 count] == 0;
 
       if (!v45)
       {
@@ -530,7 +530,7 @@ LABEL_38:
 LABEL_48:
       if (v39 == ++v41)
       {
-        v39 = [v38 countByEnumeratingWithState:&v62 objects:v98 count:16];
+        v39 = [subFolders countByEnumeratingWithState:&v62 objects:v98 count:16];
         if (v39)
         {
           goto LABEL_38;
@@ -556,13 +556,13 @@ LABEL_50:
     }
 
 LABEL_45:
-    if (v58)
+    if (notesCopy)
     {
       v46 = [v42 url];
-      v47 = [v46 lastPathComponent];
+      lastPathComponent = [v46 lastPathComponent];
 
-      v48 = [v55 folder];
-      v49 = [(ICImportNoteProcessor *)val newFolderWithTitle:v47 parentFolder:v48 forAccount:v56];
+      folder = [firstObject folder];
+      v49 = [(ICImportNoteProcessor *)val newFolderWithTitle:lastPathComponent parentFolder:folder forAccount:accountCopy];
 
       [v42 setFolder:v49];
     }
@@ -612,8 +612,8 @@ LABEL_7:
         }
       }
 
-      v22 = [v13 lastPathComponent];
-      v23 = [v18 URLByAppendingPathComponent:v22 isDirectory:0];
+      lastPathComponent2 = [v13 lastPathComponent];
+      v23 = [v18 URLByAppendingPathComponent:lastPathComponent2 isDirectory:0];
 
       [v13 startAccessingSecurityScopedResource];
       v24 = +[NSFileManager defaultManager];
@@ -632,7 +632,7 @@ LABEL_7:
       }
 
       v27 = v23;
-      if (v58)
+      if (notesCopy)
       {
         objc_initWeak(&location, val);
         v28 = dispatch_semaphore_create(0);
@@ -653,8 +653,8 @@ LABEL_7:
         v76[1] = 3221225472;
         v76[2] = sub_10007D140;
         v76[3] = &unk_100647000;
-        v77 = v55;
-        v29 = v56;
+        v77 = firstObject;
+        v29 = accountCopy;
         v78 = v29;
         objc_copyWeak(&v79, &location);
         v74[0] = _NSConcreteStackBlock;
@@ -684,8 +684,8 @@ LABEL_7:
         dispatch_semaphore_wait(v31, 0xFFFFFFFFFFFFFFFFLL);
         if (*(*(&buf + 1) + 24) == 1)
         {
-          v32 = [(ICImportNoteProcessor *)val eventReporter];
-          [v32 submitEverNoteImportEventWithCount:v85[3] isSuccessful:*(v81 + 24) intoAccount:v29];
+          eventReporter = [(ICImportNoteProcessor *)val eventReporter];
+          [eventReporter submitEverNoteImportEventWithCount:v85[3] isSuccessful:*(v81 + 24) intoAccount:v29];
         }
 
         objc_destroyWeak(&v73);
@@ -771,34 +771,34 @@ LABEL_60:
   v11 = v54;
 LABEL_61:
 
-  v10 = v52;
+  blockCopy = v52;
 LABEL_62:
 }
 
-- (id)newFolderWithTitle:(id)a3 parentFolder:(id)a4 forAccount:(id)a5
+- (id)newFolderWithTitle:(id)title parentFolder:(id)folder forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  folderCopy = folder;
+  accountCopy = account;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_10007B698;
   v26 = sub_10007B6A8;
   v27 = 0;
-  v11 = [(ICImportNoteProcessor *)self managedObjectContext];
+  managedObjectContext = [(ICImportNoteProcessor *)self managedObjectContext];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10007D900;
   v17[3] = &unk_1006470A0;
-  v12 = v9;
+  v12 = folderCopy;
   v18 = v12;
   v21 = &v22;
-  v13 = v10;
+  v13 = accountCopy;
   v19 = v13;
-  v14 = v8;
+  v14 = titleCopy;
   v20 = v14;
-  [v11 performBlockAndWait:v17];
+  [managedObjectContext performBlockAndWait:v17];
 
   v15 = v23[5];
   _Block_object_dispose(&v22, 8);
@@ -808,13 +808,13 @@ LABEL_62:
 
 - (void)updateImportProgress
 {
-  v3 = [(ICImportNoteProcessor *)self delegate];
+  delegate = [(ICImportNoteProcessor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICImportNoteProcessor *)self delegate];
-    [v5 progressUpdatedForImportNoteProcessor:self];
+    delegate2 = [(ICImportNoteProcessor *)self delegate];
+    [delegate2 progressUpdatedForImportNoteProcessor:self];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface RCWaveformScrollView
-- (CGPoint)contentOffsetInPresentationLayer:(BOOL)a3;
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4 usingCurrentAnimatedPosition:(BOOL)a5;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (CGPoint)contentOffsetInPresentationLayer:(BOOL)layer;
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view usingCurrentAnimatedPosition:(BOOL)position;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
 @end
 
 @implementation RCWaveformScrollView
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   if (!self->_ignoreContentOffsetChangesCount)
   {
@@ -15,11 +15,11 @@
     v7 = v4;
     v5.receiver = self;
     v5.super_class = RCWaveformScrollView;
-    [(RCWaveformScrollView *)&v5 setContentOffset:a3.x, a3.y];
+    [(RCWaveformScrollView *)&v5 setContentOffset:offset.x, offset.y];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
   if (!self->_ignoreContentOffsetChangesCount)
   {
@@ -27,20 +27,20 @@
     v8 = v5;
     v6.receiver = self;
     v6.super_class = RCWaveformScrollView;
-    [(RCWaveformScrollView *)&v6 setContentOffset:a4 animated:a3.x, a3.y];
+    [(RCWaveformScrollView *)&v6 setContentOffset:animated animated:offset.x, offset.y];
   }
 }
 
-- (CGPoint)contentOffsetInPresentationLayer:(BOOL)a3
+- (CGPoint)contentOffsetInPresentationLayer:(BOOL)layer
 {
-  if (a3)
+  if (layer)
   {
-    v4 = [(RCWaveformScrollView *)self layer];
-    v5 = [v4 presentationLayer];
+    layer = [(RCWaveformScrollView *)self layer];
+    presentationLayer = [layer presentationLayer];
 
-    if (v5)
+    if (presentationLayer)
     {
-      [v5 bounds];
+      [presentationLayer bounds];
     }
 
     else
@@ -70,25 +70,25 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4 usingCurrentAnimatedPosition:(BOOL)a5
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view usingCurrentAnimatedPosition:(BOOL)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  if (a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  if (position)
   {
-    v12 = [(RCWaveformScrollView *)self layer];
-    v13 = [v12 presentationLayer];
+    layer = [(RCWaveformScrollView *)self layer];
+    presentationLayer = [layer presentationLayer];
 
-    v14 = [v13 animationKeys];
-    v15 = [v14 count];
+    animationKeys = [presentationLayer animationKeys];
+    v15 = [animationKeys count];
 
     if (v15)
     {
-      v16 = [v11 layer];
-      [v13 convertRect:v16 fromLayer:{x, y, width, height}];
+      layer2 = [viewCopy layer];
+      [presentationLayer convertRect:layer2 fromLayer:{x, y, width, height}];
       v18 = v17;
       v20 = v19;
       v22 = v21;
@@ -99,7 +99,7 @@
     {
       v37.receiver = self;
       v37.super_class = RCWaveformScrollView;
-      [(RCWaveformScrollView *)&v37 convertRect:v11 fromView:x, y, width, height];
+      [(RCWaveformScrollView *)&v37 convertRect:viewCopy fromView:x, y, width, height];
       v18 = v29;
       v20 = v30;
       v22 = v31;
@@ -111,7 +111,7 @@
   {
     v38.receiver = self;
     v38.super_class = RCWaveformScrollView;
-    [(RCWaveformScrollView *)&v38 convertRect:v11 fromView:x, y, width, height];
+    [(RCWaveformScrollView *)&v38 convertRect:viewCopy fromView:x, y, width, height];
     v18 = v25;
     v20 = v26;
     v22 = v27;

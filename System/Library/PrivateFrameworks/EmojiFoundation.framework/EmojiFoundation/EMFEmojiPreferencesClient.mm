@@ -1,16 +1,16 @@
 @interface EMFEmojiPreferencesClient
 + (id)serviceInterface;
-- (EMFEmojiPreferencesClient)initWithMachName:(id)a3;
+- (EMFEmojiPreferencesClient)initWithMachName:(id)name;
 - (id)_initWithoutConnection;
-- (id)copySortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5;
+- (id)copySortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier;
 - (void)_disconnect;
 - (void)createConnectionIfNecessary;
 - (void)dealloc;
 - (void)didDisplaySkinToneHelp;
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5 replacementContext:(id)a6;
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9;
-- (void)didUseEmojiInEmojiKeyboardPalette:(id)a3 wasFromRecentsSection:(BOOL)a4;
-- (void)didViewEmojiIndex:(int64_t)a3 forCategory:(id)a4;
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name replacementContext:(id)context;
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement;
+- (void)didUseEmojiInEmojiKeyboardPalette:(id)palette wasFromRecentsSection:(BOOL)section;
+- (void)didViewEmojiIndex:(int64_t)index forCategory:(id)category;
 @end
 
 @implementation EMFEmojiPreferencesClient
@@ -97,21 +97,21 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke_2
   [WeakRetained setIsValid:0];
 }
 
-- (EMFEmojiPreferencesClient)initWithMachName:(id)a3
+- (EMFEmojiPreferencesClient)initWithMachName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = EMFEmojiPreferencesClient;
   v5 = [(EMFEmojiPreferences *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!nameCopy)
     {
-      v4 = @"com.apple.TextInput.emoji";
+      nameCopy = @"com.apple.TextInput.emoji";
     }
 
-    objc_storeStrong(&v5->_machName, v4);
+    objc_storeStrong(&v5->_machName, nameCopy);
     v6->_isValid = 0;
     [(EMFEmojiPreferencesClient *)v6 createConnectionIfNecessary];
   }
@@ -154,51 +154,51 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke(u
   [WeakRetained setIsValid:0];
 }
 
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5 replacementContext:(id)a6
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name replacementContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = v14;
+  emojiCopy = emoji;
+  modeCopy = mode;
+  nameCopy = name;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v15 = selfCopy;
   [v15 createConnectionIfNecessary];
-  v16 = [v15[11] remoteObjectProxy];
-  [v16 didUseEmoji:v10 usageMode:v11 typingName:v12 replacementContext:v13];
+  remoteObjectProxy = [v15[11] remoteObjectProxy];
+  [remoteObjectProxy didUseEmoji:emojiCopy usageMode:modeCopy typingName:nameCopy replacementContext:contextCopy];
 
   v17.receiver = v15;
   v17.super_class = EMFEmojiPreferencesClient;
-  [(EMFEmojiPreferences *)&v17 didUseEmoji:v10 usageMode:v11 typingName:v12];
+  [(EMFEmojiPreferences *)&v17 didUseEmoji:emojiCopy usageMode:modeCopy typingName:nameCopy];
 
   objc_sync_exit(v15);
 }
 
-- (void)didViewEmojiIndex:(int64_t)a3 forCategory:(id)a4
+- (void)didViewEmojiIndex:(int64_t)index forCategory:(id)category
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v7;
+  categoryCopy = category;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = selfCopy;
   [v8 createConnectionIfNecessary];
-  v9 = [v8[11] remoteObjectProxy];
-  [v9 didViewEmojiIndex:a3 forCategory:v6];
+  remoteObjectProxy = [v8[11] remoteObjectProxy];
+  [remoteObjectProxy didViewEmojiIndex:index forCategory:categoryCopy];
 
   v10.receiver = v8;
   v10.super_class = EMFEmojiPreferencesClient;
-  [(EMFEmojiPreferences *)&v10 didViewEmojiIndex:a3 forCategory:v6];
+  [(EMFEmojiPreferences *)&v10 didViewEmojiIndex:index forCategory:categoryCopy];
 
   objc_sync_exit(v8);
 }
 
 - (void)didDisplaySkinToneHelp
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy;
   [v3 createConnectionIfNecessary];
-  v4 = [v3[11] remoteObjectProxy];
-  [v4 didDisplaySkinToneHelp];
+  remoteObjectProxy = [v3[11] remoteObjectProxy];
+  [remoteObjectProxy didDisplaySkinToneHelp];
 
   v5.receiver = v3;
   v5.super_class = EMFEmojiPreferencesClient;
@@ -207,30 +207,30 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke(u
   objc_sync_exit(v3);
 }
 
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = self;
-  objc_sync_enter(v20);
-  v21 = v20;
+  emojiCopy = emoji;
+  contextCopy = context;
+  queryCopy = query;
+  positionCopy = position;
+  runCopy = run;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v21 = selfCopy;
   [v21 createConnectionIfNecessary];
-  v22 = [v21[11] remoteObjectProxy];
-  LOBYTE(v23) = a9;
-  [v22 didUseEmoji:v15 usageSource:a4 replacementContext:v16 searchQuery:v17 resultPosition:v18 numberSearchQueriesRun:v19 wasPositiveEngagement:v23];
+  remoteObjectProxy = [v21[11] remoteObjectProxy];
+  LOBYTE(v23) = engagement;
+  [remoteObjectProxy didUseEmoji:emojiCopy usageSource:source replacementContext:contextCopy searchQuery:queryCopy resultPosition:positionCopy numberSearchQueriesRun:runCopy wasPositiveEngagement:v23];
 
   objc_sync_exit(v21);
   v24.receiver = v21;
   v24.super_class = EMFEmojiPreferencesClient;
-  [(EMFEmojiPreferences *)&v24 didUseEmoji:v15 usageMode:0];
+  [(EMFEmojiPreferences *)&v24 didUseEmoji:emojiCopy usageMode:0];
 }
 
-- (void)didUseEmojiInEmojiKeyboardPalette:(id)a3 wasFromRecentsSection:(BOOL)a4
+- (void)didUseEmojiInEmojiKeyboardPalette:(id)palette wasFromRecentsSection:(BOOL)section
 {
-  if (a4)
+  if (section)
   {
     v4 = 2;
   }
@@ -241,26 +241,26 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke(u
   }
 
   LOBYTE(v5) = 1;
-  [(EMFEmojiPreferencesClient *)self didUseEmoji:a3 usageSource:v4 replacementContext:0 searchQuery:0 resultPosition:0 numberSearchQueriesRun:0 wasPositiveEngagement:v5];
+  [(EMFEmojiPreferencesClient *)self didUseEmoji:palette usageSource:v4 replacementContext:0 searchQuery:0 resultPosition:0 numberSearchQueriesRun:0 wasPositiveEngagement:v5];
 }
 
-- (id)copySortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5
+- (id)copySortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emojisCopy = emojis;
+  keywordCopy = keyword;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__5;
   v27 = __Block_byref_object_dispose__5;
   v28 = 0;
-  v11 = self;
-  objc_sync_enter(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = dispatch_semaphore_create(0);
-  v13 = v11;
+  v13 = selfCopy;
   [v13 createConnectionIfNecessary];
-  v14 = [v13[11] remoteObjectProxy];
+  remoteObjectProxy = [v13[11] remoteObjectProxy];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __71__EMFEmojiPreferencesClient_copySortedEmojis_keyword_localeIdentifier___block_invoke;
@@ -268,7 +268,7 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke(u
   v22 = &v23;
   v15 = v12;
   v21 = v15;
-  [v14 sortedEmojis:v8 keyword:v9 localeIdentifier:v10 handler:v20];
+  [remoteObjectProxy sortedEmojis:emojisCopy keyword:keywordCopy localeIdentifier:identifierCopy handler:v20];
 
   v16 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v15, v16);
@@ -277,7 +277,7 @@ void __56__EMFEmojiPreferencesClient_createConnectionIfNecessary__block_invoke(u
   v17 = v24[5];
   if (!v17)
   {
-    v17 = v8;
+    v17 = emojisCopy;
   }
 
   v18 = v17;

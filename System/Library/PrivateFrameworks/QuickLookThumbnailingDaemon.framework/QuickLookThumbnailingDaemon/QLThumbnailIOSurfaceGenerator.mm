@@ -1,6 +1,6 @@
 @interface QLThumbnailIOSurfaceGenerator
 + (id)sharedInstance;
-- (void)ioSurfaceWithSize:(CGSize)a3 completionHandler:(id)a4;
+- (void)ioSurfaceWithSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation QLThumbnailIOSurfaceGenerator
@@ -24,12 +24,12 @@ uint64_t __47__QLThumbnailIOSurfaceGenerator_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)ioSurfaceWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)ioSurfaceWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v18[0] = *MEMORY[0x277CD2928];
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:width];
   v19[0] = v7;
@@ -63,7 +63,7 @@ uint64_t __47__QLThumbnailIOSurfaceGenerator_sharedInstance__block_invoke()
     }
   }
 
-  v6[2](v6, v12, 0);
+  handlerCopy[2](handlerCopy, v12, 0);
 
   v15 = *MEMORY[0x277D85DE8];
 }

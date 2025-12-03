@@ -1,7 +1,7 @@
 @interface BUAppGroup
 + (BOOL)isUnitTesting;
 + (BUAppGroup)books;
-- (BUAppGroup)initWithIdentifier:(id)a3;
+- (BUAppGroup)initWithIdentifier:(id)identifier;
 - (NSURL)containerURL;
 @end
 
@@ -82,18 +82,18 @@ LABEL_8:
   return byte_280BC5DC0;
 }
 
-- (BUAppGroup)initWithIdentifier:(id)a3
+- (BUAppGroup)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BUAppGroup;
   v6 = [(BUAppGroup *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_alloc(MEMORY[0x277CBEBD0]);
-    v10 = objc_msgSend_initWithSuiteName_(v8, v9, v5);
+    v10 = objc_msgSend_initWithSuiteName_(v8, v9, identifierCopy);
     userDefaults = v7->_userDefaults;
     v7->_userDefaults = v10;
   }

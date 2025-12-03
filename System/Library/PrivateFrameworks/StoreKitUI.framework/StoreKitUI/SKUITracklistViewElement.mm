@@ -2,16 +2,16 @@
 - (NSArray)sections;
 - (NSArray)tracks;
 - (SKUIHeaderViewElement)header;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)pageComponentType;
-- (void)enumerateTracksUsingBlock:(id)a3;
+- (void)enumerateTracksUsingBlock:(id)block;
 @end
 
 @implementation SKUITracklistViewElement
 
-- (void)enumerateTracksUsingBlock:(id)a3
+- (void)enumerateTracksUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,7 +32,7 @@
   v14[1] = 3221225472;
   v14[2] = __54__SKUITracklistViewElement_enumerateTracksUsingBlock___block_invoke;
   v14[3] = &unk_2781FC588;
-  v13 = v4;
+  v13 = blockCopy;
   v15 = v13;
   v16 = v17;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v14];
@@ -73,13 +73,13 @@ void __54__SKUITracklistViewElement_enumerateTracksUsingBlock___block_invoke(uin
   v18 = __Block_byref_object_copy__69;
   v19 = __Block_byref_object_dispose__69;
   v20 = 0;
-  v11 = [(SKUITracklistViewElement *)self children];
+  children = [(SKUITracklistViewElement *)self children];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __34__SKUITracklistViewElement_header__block_invoke;
   v14[3] = &unk_2781FEA48;
   v14[4] = &v15;
-  [v11 enumerateObjectsUsingBlock:v14];
+  [children enumerateObjectsUsingBlock:v14];
 
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -118,13 +118,13 @@ void __34__SKUITracklistViewElement_header__block_invoke(uint64_t a1, void *a2, 
     v13 = self->_sections;
     self->_sections = v12;
 
-    v14 = [(SKUITracklistViewElement *)self children];
+    children = [(SKUITracklistViewElement *)self children];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __36__SKUITracklistViewElement_sections__block_invoke;
     v17[3] = &unk_2781FEA70;
     v17[4] = self;
-    [v14 enumerateObjectsUsingBlock:v17];
+    [children enumerateObjectsUsingBlock:v17];
 
     sections = self->_sections;
   }
@@ -168,13 +168,13 @@ void __36__SKUITracklistViewElement_sections__block_invoke(uint64_t a1, void *a2
     v13 = self->_tracks;
     self->_tracks = v12;
 
-    v14 = [(SKUITracklistViewElement *)self children];
+    children = [(SKUITracklistViewElement *)self children];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __34__SKUITracklistViewElement_tracks__block_invoke;
     v17[3] = &unk_2781FEA70;
     v17[4] = self;
-    [v14 enumerateObjectsUsingBlock:v17];
+    [children enumerateObjectsUsingBlock:v17];
 
     tracks = self->_tracks;
   }
@@ -197,9 +197,9 @@ void __34__SKUITracklistViewElement_tracks__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -214,9 +214,9 @@ void __34__SKUITracklistViewElement_tracks__block_invoke(uint64_t a1, void *a2)
 
   v17.receiver = self;
   v17.super_class = SKUITracklistViewElement;
-  v13 = [(SKUIViewElement *)&v17 applyUpdatesWithElement:v4];
+  v13 = [(SKUIViewElement *)&v17 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v13 updateType])
+  if (elementCopy != self || [v13 updateType])
   {
     sections = self->_sections;
     self->_sections = 0;

@@ -5,13 +5,13 @@
 - (_PeerPaymentIdentityManagerDelegate)_delegate;
 - (_PeerPaymentIdentityManagerDelegate)delegate;
 - (void)commitUpdatesIfNeeded;
-- (void)setAppearanceData:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setProfilePictureData:(id)a3;
-- (void)setShareLastName:(BOOL)a3;
-- (void)setShareProfilePicture:(BOOL)a3;
-- (void)set_appearanceData:(id)a3;
-- (void)set_profilePictureData:(id)a3;
+- (void)setAppearanceData:(id)data;
+- (void)setDelegate:(id)delegate;
+- (void)setProfilePictureData:(id)data;
+- (void)setShareLastName:(BOOL)name;
+- (void)setShareProfilePicture:(BOOL)picture;
+- (void)set_appearanceData:(id)data;
+- (void)set_profilePictureData:(id)data;
 @end
 
 @implementation _PKPeerPaymentIdentityManager
@@ -37,47 +37,47 @@
   return v4;
 }
 
-- (void)set_profilePictureData:(id)a3
+- (void)set_profilePictureData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_1BE04AAC4();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_1BE04AAC4();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
   v10 = (self + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData);
   v11 = *(self + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData);
   v12 = *(self + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData + 8);
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_1BD030394(v11, v12);
-  sub_1BD030394(v3, v8);
+  sub_1BD030394(dataCopy, v8);
   sub_1BD030220(v11, v12);
   sub_1BD217824(v11, v12);
 
   sub_1BD030220(v11, v12);
 
-  sub_1BD030220(v3, v8);
+  sub_1BD030220(dataCopy, v8);
 }
 
 - (NSData)profilePictureData
 {
   swift_getKeyPath();
   sub_1BD21AB90(&qword_1EBD3F6F0, type metadata accessor for PeerPaymentIdentityManager);
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
-  v4 = *(v3 + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData);
-  v5 = *(v3 + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData + 8);
+  v4 = *(selfCopy + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData);
+  v5 = *(selfCopy + OBJC_IVAR____PKPeerPaymentIdentityManager__profilePictureData + 8);
   sub_1BD030394(v4, v5);
 
   if (v5 >> 60 == 15)
@@ -95,63 +95,63 @@
   return v6;
 }
 
-- (void)setProfilePictureData:(id)a3
+- (void)setProfilePictureData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1BE04AAC4();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1BE04AAC4();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1BD218070(v3, v7);
+  sub_1BD218070(dataCopy, v7);
 }
 
-- (void)set_appearanceData:(id)a3
+- (void)set_appearanceData:(id)data
 {
   v4 = *(self + OBJC_IVAR____PKPeerPaymentIdentityManager__appearanceData);
-  *(self + OBJC_IVAR____PKPeerPaymentIdentityManager__appearanceData) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____PKPeerPaymentIdentityManager__appearanceData) = data;
+  dataCopy = data;
 }
 
 - (PKPeerPaymentProfileAppearanceData)appearanceData
 {
   swift_getKeyPath();
   sub_1BD21AB90(&qword_1EBD3F6F0, type metadata accessor for PeerPaymentIdentityManager);
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
-  v4 = *(v3 + OBJC_IVAR____PKPeerPaymentIdentityManager__appearanceData);
+  v4 = *(selfCopy + OBJC_IVAR____PKPeerPaymentIdentityManager__appearanceData);
   v5 = v4;
 
   return v4;
 }
 
-- (void)setAppearanceData:(id)a3
+- (void)setAppearanceData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD2185B0(v4);
+  dataCopy = data;
+  selfCopy = self;
+  sub_1BD2185B0(dataCopy);
 }
 
-- (void)setShareLastName:(BOOL)a3
+- (void)setShareLastName:(BOOL)name
 {
-  v4 = self;
-  PeerPaymentIdentityManager.shareLastName.setter(a3);
+  selfCopy = self;
+  PeerPaymentIdentityManager.shareLastName.setter(name);
 }
 
-- (void)setShareProfilePicture:(BOOL)a3
+- (void)setShareProfilePicture:(BOOL)picture
 {
-  v4 = self;
-  PeerPaymentIdentityManager.shareProfilePicture.setter(a3);
+  selfCopy = self;
+  PeerPaymentIdentityManager.shareProfilePicture.setter(picture);
 }
 
 - (_PeerPaymentIdentityManagerDelegate)_delegate
@@ -166,7 +166,7 @@
 {
   swift_getKeyPath();
   sub_1BD21AB90(&qword_1EBD3F6F0, type metadata accessor for PeerPaymentIdentityManager);
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
   swift_beginAccess();
@@ -175,12 +175,12 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getKeyPath();
   sub_1BD21AB90(&qword_1EBD3F6F0, type metadata accessor for PeerPaymentIdentityManager);
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BE04B584();
 
   swift_unknownObjectRelease();
@@ -188,7 +188,7 @@
 
 - (void)commitUpdatesIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   PeerPaymentIdentityManager.commitUpdatesIfNeeded()();
 }
 

@@ -1,8 +1,8 @@
 @interface _ATXTimeHistogram
-- (_ATXTimeHistogram)initWithCoder:(id)a3;
+- (_ATXTimeHistogram)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation _ATXTimeHistogram
@@ -15,7 +15,7 @@
   [(_ATXTimeHistogram *)&v3 dealloc];
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   if (self->_count)
   {
@@ -23,7 +23,7 @@
     v6 = 0;
     do
     {
-      (*(a3 + 2))(a3, LOWORD(self->_entries[v5].var1), self->_entries[v5].var2, self->_entries[v5].var0);
+      (*(enumerate + 2))(enumerate, LOWORD(self->_entries[v5].var1), self->_entries[v5].var2, self->_entries[v5].var0);
       ++v6;
       ++v5;
     }
@@ -32,9 +32,9 @@
   }
 }
 
-- (_ATXTimeHistogram)initWithCoder:(id)a3
+- (_ATXTimeHistogram)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _ATXTimeHistogram;
   v5 = [(_ATXTimeHistogram *)&v16 init];
@@ -46,8 +46,8 @@ LABEL_15:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v5->_count = [v4 decodeInt32ForKey:@"count"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entries"];
+  v5->_count = [coderCopy decodeInt32ForKey:@"count"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entries"];
   v8 = [v7 length];
   count = v5->_count;
   if (v8 == 16 * count)
@@ -59,9 +59,9 @@ LABEL_15:
       memcpy(v10, [v7 bytes], objc_msgSend(v7, "length"));
     }
 
-    if ([v4 containsValueForKey:@"bucketCount"])
+    if ([coderCopy containsValueForKey:@"bucketCount"])
     {
-      v11 = [v4 decodeInt32ForKey:@"bucketCount"];
+      v11 = [coderCopy decodeInt32ForKey:@"bucketCount"];
     }
 
     else
@@ -70,9 +70,9 @@ LABEL_15:
     }
 
     v5->_bucketCount = v11;
-    if ([v4 containsValueForKey:@"applyFilter"])
+    if ([coderCopy containsValueForKey:@"applyFilter"])
     {
-      v14 = [v4 decodeBoolForKey:@"applyFilter"];
+      v14 = [coderCopy decodeBoolForKey:@"applyFilter"];
     }
 
     else
@@ -99,18 +99,18 @@ LABEL_16:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt32:self->_count forKey:@"count"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_count forKey:@"count"];
   if (self->_entries)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:self->_entries length:16 * self->_count];
-    [v5 encodeObject:v4 forKey:@"entries"];
+    [coderCopy encodeObject:v4 forKey:@"entries"];
   }
 
-  [v5 encodeInt32:self->_bucketCount forKey:@"bucketCount"];
-  [v5 encodeBool:self->_applyFilter forKey:@"applyFilter"];
+  [coderCopy encodeInt32:self->_bucketCount forKey:@"bucketCount"];
+  [coderCopy encodeBool:self->_applyFilter forKey:@"applyFilter"];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface VUISportsScoreboardViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showScoreboard;
-- (VUISportsScoreboardViewModel)initWithDictionary:(id)a3;
+- (VUISportsScoreboardViewModel)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 - (id)jsContextDictionary;
 - (void)removeUnicodeFromScoreValuesIfNeeded;
@@ -9,27 +9,27 @@
 
 @implementation VUISportsScoreboardViewModel
 
-- (VUISportsScoreboardViewModel)initWithDictionary:(id)a3
+- (VUISportsScoreboardViewModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = VUISportsScoreboardViewModel;
   v5 = [(VUISportsScoreboardViewModel *)&v37 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
 
-    v8 = [v4 vui_stringForKey:@"sportingEventId"];
+    v8 = [dictionaryCopy vui_stringForKey:@"sportingEventId"];
     canonicalId = v5->_canonicalId;
     v5->_canonicalId = v8;
 
-    v10 = [v4 vui_stringForKey:@"sportingEventState"];
+    v10 = [dictionaryCopy vui_stringForKey:@"sportingEventState"];
     state = v5->_state;
     v5->_state = v10;
 
-    v12 = [v4 vui_dictionaryForKey:@"leagueContext"];
+    v12 = [dictionaryCopy vui_dictionaryForKey:@"leagueContext"];
     leagueContext = v5->_leagueContext;
     v5->_leagueContext = v12;
 
@@ -37,18 +37,18 @@
     leagueId = v5->_leagueId;
     v5->_leagueId = v14;
 
-    v16 = [v4 vui_arrayForKey:@"scores"];
+    v16 = [dictionaryCopy vui_arrayForKey:@"scores"];
     scores = v5->_scores;
     v5->_scores = v16;
 
-    v5->_suppressed = [v4 vui_BOOLForKey:@"suppressScoreboard" defaultValue:0];
-    v5->_configureScoreUpdates = [v4 vui_BOOLForKey:@"configureScoreUpdates" defaultValue:0];
-    v5->_isVersus = [v4 vui_BOOLForKey:@"isVersus" defaultValue:0];
-    v18 = [v4 vui_dictionaryForKey:@"contentMetadata"];
+    v5->_suppressed = [dictionaryCopy vui_BOOLForKey:@"suppressScoreboard" defaultValue:0];
+    v5->_configureScoreUpdates = [dictionaryCopy vui_BOOLForKey:@"configureScoreUpdates" defaultValue:0];
+    v5->_isVersus = [dictionaryCopy vui_BOOLForKey:@"isVersus" defaultValue:0];
+    v18 = [dictionaryCopy vui_dictionaryForKey:@"contentMetadata"];
     contentMetadata = v5->_contentMetadata;
     v5->_contentMetadata = v18;
 
-    v20 = [v4 vui_dictionaryForKey:@"scoreInfoText"];
+    v20 = [dictionaryCopy vui_dictionaryForKey:@"scoreInfoText"];
     v21 = [v20 vui_stringForKey:@"rowText1"];
     scoreInfoText1 = v5->_scoreInfoText1;
     v5->_scoreInfoText1 = v21;
@@ -61,12 +61,12 @@
     scoreInfoText3 = v5->_scoreInfoText3;
     v5->_scoreInfoText3 = v25;
 
-    v27 = [v4 vui_numberForKey:@"lastUpdatedTime"];
+    v27 = [dictionaryCopy vui_numberForKey:@"lastUpdatedTime"];
     v28 = v27;
     if (v27)
     {
-      v29 = [v27 longLongValue];
-      v30 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v29 / 1000.0];
+      longLongValue = [v27 longLongValue];
+      v30 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:longLongValue / 1000.0];
     }
 
     else
@@ -78,27 +78,27 @@
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
     }
 
     else
     {
-      v33 = [v4 vui_BOOLForKey:@"hasEventEnded" defaultValue:0];
+      bOOLValue = [dictionaryCopy vui_BOOLForKey:@"hasEventEnded" defaultValue:0];
     }
 
-    v5->_hasEventEnded = v33;
+    v5->_hasEventEnded = bOOLValue;
     if (v30)
     {
-      v34 = v30;
+      distantPast = v30;
     }
 
     else
     {
-      v34 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
     }
 
     lastUpdatedTime = v5->_lastUpdatedTime;
-    v5->_lastUpdatedTime = v34;
+    v5->_lastUpdatedTime = distantPast;
 
     [(VUISportsScoreboardViewModel *)v5 removeUnicodeFromScoreValuesIfNeeded];
   }
@@ -108,8 +108,8 @@
 
 - (BOOL)showScoreboard
 {
-  v3 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  if ([v3 sportsScoreSpoilersAllowed])
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  if ([mEMORY[0x1E69E15F0] sportsScoreSpoilersAllowed])
   {
     v4 = !self->_suppressed;
   }
@@ -195,10 +195,10 @@
   self->_scores = v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -206,7 +206,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_dictionaryRepresentation isEqualToDictionary:v4->_dictionaryRepresentation];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_dictionaryRepresentation isEqualToDictionary:equalCopy->_dictionaryRepresentation];
   }
 
   return v5;

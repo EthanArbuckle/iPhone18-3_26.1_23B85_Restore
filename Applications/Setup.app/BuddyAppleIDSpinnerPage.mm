@@ -1,10 +1,10 @@
 @interface BuddyAppleIDSpinnerPage
 - (BuddyAppleIDSpinnerPage)init;
-- (BuddyAppleIDSpinnerPage)initWithAccountMode:(unint64_t)a3;
+- (BuddyAppleIDSpinnerPage)initWithAccountMode:(unint64_t)mode;
 - (BuddyAppleIDSpinnerPageDelegate)spinnerDelegate;
 - (id)initForSilentAuthentication;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAppleIDSpinnerPage
@@ -24,18 +24,18 @@
   return v5;
 }
 
-- (BuddyAppleIDSpinnerPage)initWithAccountMode:(unint64_t)a3
+- (BuddyAppleIDSpinnerPage)initWithAccountMode:(unint64_t)mode
 {
-  v17 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = mode;
   location[0] = 0;
-  if (!a3)
+  if (!mode)
   {
     goto LABEL_8;
   }
 
-  if (a3 - 1 < 2)
+  if (mode - 1 < 2)
   {
     v3 = +[NSBundle mainBundle];
     v4 = [(NSBundle *)v3 localizedStringForKey:@"SIGN_IN_APPLE_ID_WORDY" value:&stru_10032F900 table:@"Localizable"];
@@ -45,7 +45,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
 LABEL_8:
     v9 = +[NSBundle mainBundle];
@@ -56,7 +56,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3 == 4)
+  if (mode == 4)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [(NSBundle *)v6 localizedStringForKey:@"UPGRADING_APPLE_ID_WORDY" value:&stru_10032F900 table:@"Localizable"];
@@ -65,14 +65,14 @@ LABEL_8:
   }
 
 LABEL_9:
-  v12 = v17;
-  v17 = 0;
+  v12 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v12;
   v15.super_class = BuddyAppleIDSpinnerPage;
-  v17 = [(BuddyAppleIDSpinnerPage *)&v15 initWithSpinnerText:location[0]];
-  v13 = v17;
+  selfCopy = [(BuddyAppleIDSpinnerPage *)&v15 initWithSpinnerText:location[0]];
+  v13 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
@@ -94,33 +94,33 @@ LABEL_9:
 
 - (void)loadView
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = BuddyAppleIDSpinnerPage;
   [(BuddyAppleIDSpinnerPage *)&v4 loadView];
-  v2 = [(BuddyAppleIDSpinnerPage *)v6 navigationItem];
-  [v2 setTitle:&stru_10032F900];
+  navigationItem = [(BuddyAppleIDSpinnerPage *)selfCopy navigationItem];
+  [navigationItem setTitle:&stru_10032F900];
 
-  v3 = [(BuddyAppleIDSpinnerPage *)v6 navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem2 = [(BuddyAppleIDSpinnerPage *)selfCopy navigationItem];
+  [navigationItem2 setHidesBackButton:1 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BuddyAppleIDSpinnerPage;
-  [(BuddyAppleIDSpinnerPage *)&v6 viewDidAppear:a3];
-  WeakRetained = objc_loadWeakRetained(&v9->_spinnerDelegate);
+  [(BuddyAppleIDSpinnerPage *)&v6 viewDidAppear:appear];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_spinnerDelegate);
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = objc_loadWeakRetained(&v9->_spinnerDelegate);
-    [v5 buddyAppleIDSpinnerPageDidAppear:v9];
+    v5 = objc_loadWeakRetained(&selfCopy->_spinnerDelegate);
+    [v5 buddyAppleIDSpinnerPageDidAppear:selfCopy];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface PMSharingGroupsProviderMain.GroupUpdateHandler
 - (_TtCV17PasswordManagerUI27PMSharingGroupsProviderMain18GroupUpdateHandler)init;
-- (void)groupProviderReceivedUpdates:(id)a3;
+- (void)groupProviderReceivedUpdates:(id)updates;
 @end
 
 @implementation PMSharingGroupsProviderMain.GroupUpdateHandler
 
-- (void)groupProviderReceivedUpdates:(id)a3
+- (void)groupProviderReceivedUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = self;
-  sub_21C6F1834(v4);
+  updatesCopy = updates;
+  selfCopy = self;
+  sub_21C6F1834(updatesCopy);
 }
 
 - (_TtCV17PasswordManagerUI27PMSharingGroupsProviderMain18GroupUpdateHandler)init

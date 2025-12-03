@@ -1,41 +1,41 @@
 @interface UNSBadgeService
-- (BOOL)setBadgeValue:(id)a3 forBundleIdentifier:(id)a4;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
+- (BOOL)setBadgeValue:(id)value forBundleIdentifier:(id)identifier;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNSBadgeService
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D77740];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy];
 
   objc_opt_class();
-  v6 = [v5 badgeValue];
+  badgeValue = [v5 badgeValue];
   v7 = UNSafeCast();
 
   return v7;
 }
 
-- (BOOL)setBadgeValue:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)setBadgeValue:(id)value forBundleIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D77740];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithBundleIdentifier:v6];
+  identifierCopy = identifier;
+  valueCopy = value;
+  v8 = [[v5 alloc] initWithBundleIdentifier:identifierCopy];
 
-  v9 = [v8 badgeValue];
-  [v8 setBadgeValue:v7];
+  badgeValue = [v8 badgeValue];
+  [v8 setBadgeValue:valueCopy];
 
-  if (v7)
+  if (valueCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v9 == 0;
+    v10 = badgeValue == 0;
   }
 
   v11 = !v10;

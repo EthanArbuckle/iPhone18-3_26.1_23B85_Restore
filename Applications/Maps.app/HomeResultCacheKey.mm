@@ -1,8 +1,8 @@
 @interface HomeResultCacheKey
-+ (BOOL)_location:(id)a3 isEquivalentToLocation:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualivantToKey:(id)a3;
-- (HomeResultCacheKey)initWithCountryCode:(id)a3 location:(id)a4;
++ (BOOL)_location:(id)_location isEquivalentToLocation:(id)location;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualivantToKey:(id)key;
+- (HomeResultCacheKey)initWithCountryCode:(id)code location:(id)location;
 - (id)description;
 @end
 
@@ -28,19 +28,19 @@
   return v9;
 }
 
-- (BOOL)isEqualivantToKey:(id)a3
+- (BOOL)isEqualivantToKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
-    v6 = [v4 countryCode];
-    v7 = v6;
-    if (v6 == self->_countryCode || [(NSString *)v6 isEqual:?])
+    countryCode = [keyCopy countryCode];
+    v7 = countryCode;
+    if (countryCode == self->_countryCode || [(NSString *)countryCode isEqual:?])
     {
       v8 = objc_opt_class();
-      v9 = [v5 location];
-      v10 = [v8 _location:v9 isEquivalentToLocation:self->_location];
+      location = [v5 location];
+      v10 = [v8 _location:location isEquivalentToLocation:self->_location];
     }
 
     else
@@ -57,32 +57,32 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(HomeResultCacheKey *)v6 countryCode];
-    v8 = v7;
-    if (v7 == self->_countryCode || [(NSString *)v7 isEqual:?])
+    countryCode = [(HomeResultCacheKey *)v6 countryCode];
+    v8 = countryCode;
+    if (countryCode == self->_countryCode || [(NSString *)countryCode isEqual:?])
     {
-      v9 = [(HomeResultCacheKey *)v6 location];
-      v10 = v9;
-      if (v9 == self->_location)
+      location = [(HomeResultCacheKey *)v6 location];
+      v10 = location;
+      if (location == self->_location)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [(GEOLocation *)v9 isEqual:?];
+        v11 = [(GEOLocation *)location isEqual:?];
       }
     }
 
@@ -100,37 +100,37 @@
   return v11;
 }
 
-- (HomeResultCacheKey)initWithCountryCode:(id)a3 location:(id)a4
+- (HomeResultCacheKey)initWithCountryCode:(id)code location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  locationCopy = location;
   v12.receiver = self;
   v12.super_class = HomeResultCacheKey;
   v8 = [(HomeResultCacheKey *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [codeCopy copy];
     countryCode = v8->_countryCode;
     v8->_countryCode = v9;
 
-    objc_storeStrong(&v8->_location, a4);
+    objc_storeStrong(&v8->_location, location);
   }
 
   return v8;
 }
 
-+ (BOOL)_location:(id)a3 isEquivalentToLocation:(id)a4
++ (BOOL)_location:(id)_location isEquivalentToLocation:(id)location
 {
-  if ((a3 != 0) == (a4 == 0))
+  if ((_location != 0) == (location == 0))
   {
     return 0;
   }
 
-  v5 = a4;
-  [a3 coordinate];
+  locationCopy = location;
+  [_location coordinate];
   v7 = v6;
   v9 = v8;
-  [v5 coordinate];
+  [locationCopy coordinate];
   v11 = v10;
   v13 = v12;
 

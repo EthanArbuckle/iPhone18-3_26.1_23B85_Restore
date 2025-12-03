@@ -1,7 +1,7 @@
 @interface SFBrowserASCLockupViewGenerator
 + (SFBrowserASCLockupViewGenerator)sharedGenerator;
 + (id)lockupViewGroup;
-- (void)generateLockupViewsWithDelegate:(id)a3 completionHandler:(id)a4;
+- (void)generateLockupViewsWithDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation SFBrowserASCLockupViewGenerator
@@ -44,23 +44,23 @@ void __50__SFBrowserASCLockupViewGenerator_lockupViewGroup__block_invoke()
   lockupViewGroup_group = v0;
 }
 
-- (void)generateLockupViewsWithDelegate:(id)a3 completionHandler:(id)a4
+- (void)generateLockupViewsWithDelegate:(id)delegate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   if (AppStoreComponentsLibraryCore() && getASCLockupContextWebBrowserSymbolLoc())
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     [(NSTimer *)self->_requestTimeout invalidate];
     v9 = MEMORY[0x1E695DFF0];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __85__SFBrowserASCLockupViewGenerator_generateLockupViewsWithDelegate_completionHandler___block_invoke;
     v19[3] = &unk_1E8495FC8;
-    v10 = v8;
+    v10 = array;
     v20 = v10;
-    v11 = v7;
-    v21 = self;
+    v11 = handlerCopy;
+    selfCopy = self;
     v22 = v11;
     v12 = [v9 scheduledTimerWithTimeInterval:0 repeats:v19 block:15.0];
     requestTimeout = self->_requestTimeout;
@@ -71,7 +71,7 @@ void __50__SFBrowserASCLockupViewGenerator_lockupViewGroup__block_invoke()
     block[2] = __85__SFBrowserASCLockupViewGenerator_generateLockupViewsWithDelegate_completionHandler___block_invoke_2;
     block[3] = &unk_1E84939B8;
     block[4] = self;
-    v16 = v6;
+    v16 = delegateCopy;
     v17 = v10;
     v18 = v11;
     v14 = v10;
@@ -80,7 +80,7 @@ void __50__SFBrowserASCLockupViewGenerator_lockupViewGroup__block_invoke()
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

@@ -42,14 +42,14 @@
           if ([v12 isInstalled])
           {
             v13 = objc_alloc_init(SiriTTSService_TTSAXResource);
-            v14 = [v12 primaryLanguage];
-            [(SiriTTSService_TTSAXResource *)v13 setLanguage:v14];
+            primaryLanguage = [v12 primaryLanguage];
+            [(SiriTTSService_TTSAXResource *)v13 setLanguage:primaryLanguage];
 
-            v15 = [v12 name];
-            [(SiriTTSService_TTSAXResource *)v13 setName:v15];
+            name = [v12 name];
+            [(SiriTTSService_TTSAXResource *)v13 setName:name];
 
-            v16 = [v12 contentPath];
-            [(SiriTTSService_TTSAXResource *)v13 setPath:v16];
+            contentPath = [v12 contentPath];
+            [(SiriTTSService_TTSAXResource *)v13 setPath:contentPath];
 
             [(NSArray *)v6 addObject:v13];
           }

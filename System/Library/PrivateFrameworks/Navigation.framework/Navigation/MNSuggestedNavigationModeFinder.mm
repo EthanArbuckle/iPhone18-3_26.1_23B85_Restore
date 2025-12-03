@@ -1,19 +1,19 @@
 @interface MNSuggestedNavigationModeFinder
-- (MNSuggestedNavigationModeFinder)initWithRoute:(id)a3 context:(unint64_t)a4 ignoreDeviceNavigability:(BOOL)a5;
-- (unint64_t)suggestedNavigationModeForLocation:(id)a3;
+- (MNSuggestedNavigationModeFinder)initWithRoute:(id)route context:(unint64_t)context ignoreDeviceNavigability:(BOOL)navigability;
+- (unint64_t)suggestedNavigationModeForLocation:(id)location;
 @end
 
 @implementation MNSuggestedNavigationModeFinder
 
-- (unint64_t)suggestedNavigationModeForLocation:(id)a3
+- (unint64_t)suggestedNavigationModeForLocation:(id)location
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   route = self->_route;
   if (route)
   {
-    v6 = [(GEOComposedRoute *)route origin];
-    if (!v6)
+    origin = [(GEOComposedRoute *)route origin];
+    if (!origin)
     {
       v7 = MNGetMNSuggestedNavigationModeLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@ LABEL_71:
     {
       if (!context)
       {
-        if (([v6 isCurrentLocation] & 1) == 0)
+        if (([origin isCurrentLocation] & 1) == 0)
         {
           v7 = MNGetMNSuggestedNavigationModeLog();
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -82,8 +82,8 @@ LABEL_71:
           goto LABEL_72;
         }
 
-        v14 = [(GEOComposedRoute *)self->_route transportType];
-        if (v14 <= 3 && v14 != 1)
+        transportType = [(GEOComposedRoute *)self->_route transportType];
+        if (transportType <= 3 && transportType != 1)
         {
           if (([(GEOComposedRoute *)self->_route isNavigable]& 1) == 0)
           {
@@ -98,10 +98,10 @@ LABEL_71:
             goto LABEL_71;
           }
 
-          v15 = [(GEOCountryConfiguration *)self->_countryConfiguration currentCountrySupportsNavigation];
+          currentCountrySupportsNavigation = [(GEOCountryConfiguration *)self->_countryConfiguration currentCountrySupportsNavigation];
           v7 = MNGetMNSuggestedNavigationModeLog();
           v16 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-          if ((v15 & 1) == 0)
+          if ((currentCountrySupportsNavigation & 1) == 0)
           {
             if (v16)
             {
@@ -133,15 +133,15 @@ LABEL_59:
           goto LABEL_71;
         }
 
-        v35 = [(GEOComposedRoute *)self->_route transportType];
-        if (v35 >= 7)
+        transportType2 = [(GEOComposedRoute *)self->_route transportType];
+        if (transportType2 >= 7)
         {
-          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v35];
+          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType2];
         }
 
         else
         {
-          v36 = *(&off_1E8430C98 + v35);
+          v36 = *(&off_1E8430C98 + transportType2);
         }
 
         *buf = 138412290;
@@ -165,7 +165,7 @@ LABEL_59:
       goto LABEL_9;
     }
 
-    if (!v4)
+    if (!locationCopy)
     {
       v7 = MNGetMNSuggestedNavigationModeLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -178,10 +178,10 @@ LABEL_59:
       goto LABEL_71;
     }
 
-    [v4 coordinate];
+    [locationCopy coordinate];
     v21 = v20;
     v23 = v22;
-    [v6 coordinate];
+    [origin coordinate];
     GEOCalculateDistance();
     v25 = v24;
     GEOConfigGetDouble();
@@ -231,8 +231,8 @@ LABEL_29:
       }
     }
 
-    v39 = [(GEOComposedRoute *)self->_route transportType];
-    if (v39 <= 3 && v39 != 1)
+    transportType3 = [(GEOComposedRoute *)self->_route transportType];
+    if (transportType3 <= 3 && transportType3 != 1)
     {
       if (self->_ignoreDeviceNavigability)
       {
@@ -293,15 +293,15 @@ LABEL_60:
       goto LABEL_71;
     }
 
-    v40 = [(GEOComposedRoute *)self->_route transportType];
-    if (v40 >= 7)
+    transportType4 = [(GEOComposedRoute *)self->_route transportType];
+    if (transportType4 >= 7)
     {
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v40];
+      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType4];
     }
 
     else
     {
-      v36 = *(&off_1E8430C98 + v40);
+      v36 = *(&off_1E8430C98 + transportType4);
     }
 
     *buf = 138412290;
@@ -326,22 +326,22 @@ LABEL_73:
   return v12;
 }
 
-- (MNSuggestedNavigationModeFinder)initWithRoute:(id)a3 context:(unint64_t)a4 ignoreDeviceNavigability:(BOOL)a5
+- (MNSuggestedNavigationModeFinder)initWithRoute:(id)route context:(unint64_t)context ignoreDeviceNavigability:(BOOL)navigability
 {
-  v9 = a3;
+  routeCopy = route;
   v15.receiver = self;
   v15.super_class = MNSuggestedNavigationModeFinder;
   v10 = [(MNSuggestedNavigationModeFinder *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_route, a3);
-    v11->_context = a4;
-    v12 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+    objc_storeStrong(&v10->_route, route);
+    v11->_context = context;
+    mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
     countryConfiguration = v11->_countryConfiguration;
-    v11->_countryConfiguration = v12;
+    v11->_countryConfiguration = mEMORY[0x1E69A1CD8];
 
-    v11->_ignoreDeviceNavigability = a5;
+    v11->_ignoreDeviceNavigability = navigability;
   }
 
   return v11;

@@ -1,18 +1,18 @@
 @interface SRBarSlideNavigationTransitionController
 - (SiriUINavigationController)_navigationController;
-- (void)configureWithNavigationController:(id)a3;
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3;
+- (void)configureWithNavigationController:(id)controller;
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SRBarSlideNavigationTransitionController
 
-- (void)configureWithNavigationController:(id)a3
+- (void)configureWithNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SRBarSlideNavigationTransitionController *)self _setNavigationController:v4];
+    [(SRBarSlideNavigationTransitionController *)self _setNavigationController:controllerCopy];
   }
 
   else
@@ -24,13 +24,13 @@
     }
   }
 
-  v6 = [v4 navigationBar];
-  [v6 setAlpha:0.0];
+  navigationBar = [controllerCopy navigationBar];
+  [navigationBar setAlpha:0.0];
 }
 
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -43,7 +43,7 @@
   v5[2] = sub_10003065C;
   v5[3] = &unk_100167718;
   objc_copyWeak(&v6, &location);
-  [v4 animateAlongsideTransition:v7 completion:v5];
+  [coordinatorCopy animateAlongsideTransition:v7 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

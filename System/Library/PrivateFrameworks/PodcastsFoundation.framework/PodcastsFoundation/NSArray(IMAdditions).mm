@@ -8,7 +8,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 count];
+  v8 = [self count];
   v9 = v8;
   if (v8 < 1)
   {
@@ -22,7 +22,7 @@
     do
     {
       v12 = v10 + (v11 - v10) / 2;
-      v13 = [a1 objectAtIndex:v12];
+      v13 = [self objectAtIndex:v12];
       v14 = [v13 valueForKeyPath:v7];
 
       if ([v14 compare:v6] == -1)
@@ -42,7 +42,7 @@
   v15 = 0x7FFFFFFFFFFFFFFFLL;
   if (v10 < v9)
   {
-    v16 = [a1 objectAtIndex:v10];
+    v16 = [self objectAtIndex:v10];
     v17 = [v16 valueForKeyPath:v7];
     v18 = [v17 compare:v6];
 

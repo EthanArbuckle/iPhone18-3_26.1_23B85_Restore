@@ -1,8 +1,8 @@
 @interface AXSSDocumentTextRuleBullets
 - (AXSSDocumentTextRuleBullets)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index;
 @end
 
 @implementation AXSSDocumentTextRuleBullets
@@ -21,26 +21,26 @@
   return v3;
 }
 
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a4.length;
-  v12 = a4.location;
-  v13 = a7;
-  v14 = v13;
+  length = wordRange.length;
+  location = wordRange.location;
+  v11 = range.length;
+  v12 = range.location;
+  textCopy = text;
+  v14 = textCopy;
   v15 = 0;
-  if (a5 && location != 0x7FFFFFFFFFFFFFFFLL && length != 0x7FFFFFFFFFFFFFFFLL)
+  if (previousWord && location != 0x7FFFFFFFFFFFFFFFLL && length != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = v12 + v11 - location;
-    v17 = [v13 attributedSubstringFromRange:{location, v16}];
-    v18 = [v17 string];
+    v17 = [textCopy attributedSubstringFromRange:{location, v16}];
+    string = [v17 string];
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", @"[:AX_nl:]([:AX_ws:]*[:AX_bullet:][:AX_ws:]*[:AX_nl:])+"];
     v21 = [AXSSDocumentTextRule replaceCustomRegexNotation:v20];
 
     v22 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v21 options:0 error:0];
-    v23 = [v18 length];
+    v23 = [string length];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __112__AXSSDocumentTextRuleBullets_issuesForWord_atRange_previousWord_previousWordRange_inText_ignoreRuleUntilIndex___block_invoke;
@@ -48,10 +48,10 @@
     v32 = location;
     v33 = v16;
     v29 = v14;
-    v30 = v18;
+    v30 = string;
     v24 = v19;
     v31 = v24;
-    v25 = v18;
+    v25 = string;
     [v22 enumerateMatchesInString:v25 options:0 range:0 usingBlock:{v23, v28}];
     v26 = v31;
     v15 = v24;
@@ -93,17 +93,17 @@ void __112__AXSSDocumentTextRuleBullets_issuesForWord_atRange_previousWord_previ
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AXSSDocumentTextRuleBullets;
-  return [(AXSSDocumentTextRule *)&v4 copyWithZone:a3];
+  return [(AXSSDocumentTextRule *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -115,7 +115,7 @@ void __112__AXSSDocumentTextRuleBullets_issuesForWord_atRange_previousWord_previ
     {
       v7.receiver = self;
       v7.super_class = AXSSDocumentTextRuleBullets;
-      v5 = [(AXSSDocumentTextRule *)&v7 isEqual:v4];
+      v5 = [(AXSSDocumentTextRule *)&v7 isEqual:equalCopy];
     }
 
     else

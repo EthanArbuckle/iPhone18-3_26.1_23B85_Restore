@@ -1,9 +1,9 @@
 @interface WFRemoteFileStatusView
-- (WFRemoteFileStatusView)initWithFrame:(CGRect)a3;
+- (WFRemoteFileStatusView)initWithFrame:(CGRect)frame;
 - (WFRemoteFileStatusViewDelegate)delegate;
 - (void)recoveryButtonTapped;
-- (void)setEmptyWithLabel:(BOOL)a3;
-- (void)setError:(id)a3;
+- (void)setEmptyWithLabel:(BOOL)label;
+- (void)setError:(id)error;
 - (void)setLoading;
 @end
 
@@ -16,117 +16,117 @@
   return WeakRetained;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v15 = a3;
-  v4 = [v15 localizedFailureReason];
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  localizedDescription = localizedFailureReason;
+  if (!localizedFailureReason)
   {
-    v5 = [v15 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
   }
 
-  v6 = [(WFRemoteFileStatusView *)self statusLabel];
-  [v6 setText:v5];
+  statusLabel = [(WFRemoteFileStatusView *)self statusLabel];
+  [statusLabel setText:localizedDescription];
 
-  if (!v4)
+  if (!localizedFailureReason)
   {
   }
 
-  v7 = [(WFRemoteFileStatusView *)self recoveryButton];
-  [v7 setHidden:0];
+  recoveryButton = [(WFRemoteFileStatusView *)self recoveryButton];
+  [recoveryButton setHidden:0];
 
-  v8 = [(WFRemoteFileStatusView *)self indicatorView];
-  [v8 setHidden:1];
+  indicatorView = [(WFRemoteFileStatusView *)self indicatorView];
+  [indicatorView setHidden:1];
 
   v9 = MEMORY[0x277CCAAD0];
-  v10 = [(WFRemoteFileStatusView *)self emptyConstraints];
-  [v9 deactivateConstraints:v10];
+  emptyConstraints = [(WFRemoteFileStatusView *)self emptyConstraints];
+  [v9 deactivateConstraints:emptyConstraints];
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(WFRemoteFileStatusView *)self loadingContraints];
-  [v11 deactivateConstraints:v12];
+  loadingContraints = [(WFRemoteFileStatusView *)self loadingContraints];
+  [v11 deactivateConstraints:loadingContraints];
 
   v13 = MEMORY[0x277CCAAD0];
-  v14 = [(WFRemoteFileStatusView *)self errorConstraints];
-  [v13 activateConstraints:v14];
+  errorConstraints = [(WFRemoteFileStatusView *)self errorConstraints];
+  [v13 activateConstraints:errorConstraints];
 }
 
 - (void)setLoading
 {
   v3 = WFLocalizedString(@"Loading…");
-  v4 = [(WFRemoteFileStatusView *)self statusLabel];
-  [v4 setText:v3];
+  statusLabel = [(WFRemoteFileStatusView *)self statusLabel];
+  [statusLabel setText:v3];
 
-  v5 = [(WFRemoteFileStatusView *)self recoveryButton];
-  [v5 setHidden:1];
+  recoveryButton = [(WFRemoteFileStatusView *)self recoveryButton];
+  [recoveryButton setHidden:1];
 
-  v6 = [(WFRemoteFileStatusView *)self indicatorView];
-  [v6 setHidden:0];
+  indicatorView = [(WFRemoteFileStatusView *)self indicatorView];
+  [indicatorView setHidden:0];
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(WFRemoteFileStatusView *)self emptyConstraints];
-  [v7 deactivateConstraints:v8];
+  emptyConstraints = [(WFRemoteFileStatusView *)self emptyConstraints];
+  [v7 deactivateConstraints:emptyConstraints];
 
   v9 = MEMORY[0x277CCAAD0];
-  v10 = [(WFRemoteFileStatusView *)self errorConstraints];
-  [v9 deactivateConstraints:v10];
+  errorConstraints = [(WFRemoteFileStatusView *)self errorConstraints];
+  [v9 deactivateConstraints:errorConstraints];
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(WFRemoteFileStatusView *)self loadingContraints];
-  [v11 activateConstraints:v12];
+  loadingContraints = [(WFRemoteFileStatusView *)self loadingContraints];
+  [v11 activateConstraints:loadingContraints];
 }
 
-- (void)setEmptyWithLabel:(BOOL)a3
+- (void)setEmptyWithLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
-    v4 = WFLocalizedString(@"This folder is empty");
-    v5 = [(WFRemoteFileStatusView *)self statusLabel];
-    [v5 setText:v4];
+    statusLabel2 = WFLocalizedString(@"This folder is empty");
+    statusLabel = [(WFRemoteFileStatusView *)self statusLabel];
+    [statusLabel setText:statusLabel2];
   }
 
   else
   {
-    v4 = [(WFRemoteFileStatusView *)self statusLabel];
-    [v4 setText:0];
+    statusLabel2 = [(WFRemoteFileStatusView *)self statusLabel];
+    [statusLabel2 setText:0];
   }
 
-  v6 = [(WFRemoteFileStatusView *)self recoveryButton];
-  [v6 setHidden:1];
+  recoveryButton = [(WFRemoteFileStatusView *)self recoveryButton];
+  [recoveryButton setHidden:1];
 
-  v7 = [(WFRemoteFileStatusView *)self indicatorView];
-  [v7 setHidden:1];
+  indicatorView = [(WFRemoteFileStatusView *)self indicatorView];
+  [indicatorView setHidden:1];
 
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [(WFRemoteFileStatusView *)self errorConstraints];
-  [v8 deactivateConstraints:v9];
+  errorConstraints = [(WFRemoteFileStatusView *)self errorConstraints];
+  [v8 deactivateConstraints:errorConstraints];
 
   v10 = MEMORY[0x277CCAAD0];
-  v11 = [(WFRemoteFileStatusView *)self loadingContraints];
-  [v10 deactivateConstraints:v11];
+  loadingContraints = [(WFRemoteFileStatusView *)self loadingContraints];
+  [v10 deactivateConstraints:loadingContraints];
 
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(WFRemoteFileStatusView *)self emptyConstraints];
-  [v12 activateConstraints:v13];
+  emptyConstraints = [(WFRemoteFileStatusView *)self emptyConstraints];
+  [v12 activateConstraints:emptyConstraints];
 }
 
 - (void)recoveryButtonTapped
 {
-  v3 = [(WFRemoteFileStatusView *)self delegate];
-  [v3 statusViewDidPressRecoveryButton:self];
+  delegate = [(WFRemoteFileStatusView *)self delegate];
+  [delegate statusViewDidPressRecoveryButton:self];
 }
 
-- (WFRemoteFileStatusView)initWithFrame:(CGRect)a3
+- (WFRemoteFileStatusView)initWithFrame:(CGRect)frame
 {
   v43[3] = *MEMORY[0x277D85DE8];
   v42.receiver = self;
   v42.super_class = WFRemoteFileStatusView;
-  v3 = [(WFRemoteFileStatusView *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFRemoteFileStatusView *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WFRemoteFileStatusView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WFRemoteFileStatusView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -137,8 +137,8 @@
 
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(UILabel *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v8 setTextColor:v9];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v8 setTextColor:grayColor];
 
     [(UILabel *)v8 setNumberOfLines:0];
     [(UILabel *)v8 setTextAlignment:1];

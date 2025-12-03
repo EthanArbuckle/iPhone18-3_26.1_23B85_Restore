@@ -1,14 +1,14 @@
 @interface ASMigrationAvailableItem
-+ (id)migrationAvailableItemWithCodableContainer:(id)a3;
-+ (id)migrationAvailableItemWithCodableItem:(id)a3;
-+ (id)migrationAvailableItemWithRecord:(id)a3;
++ (id)migrationAvailableItemWithCodableContainer:(id)container;
++ (id)migrationAvailableItemWithCodableItem:(id)item;
++ (id)migrationAvailableItemWithRecord:(id)record;
 - (ASCodableCloudKitMigrationAvailableItem)codableMigrationAvailableItem;
 - (ASCodableMigrationAvailableItemContainer)codableMigrationAvailableItemContainer;
-- (ASMigrationAvailableItem)initWithIdentifier:(id)a3 relationshipIdentifier:(id)a4;
-- (ASMigrationAvailableItem)initWithRelationshipIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASMigrationAvailableItem)initWithIdentifier:(id)identifier relationshipIdentifier:(id)relationshipIdentifier;
+- (ASMigrationAvailableItem)initWithRelationshipIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4;
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -17,25 +17,25 @@
 - (ASCodableCloudKitMigrationAvailableItem)codableMigrationAvailableItem
 {
   v3 = objc_alloc_init(ASCodableCloudKitMigrationAvailableItem);
-  v4 = [(ASMigrationAvailableItem *)self identifier];
-  [(ASCodableCloudKitMigrationAvailableItem *)v3 setIdentifier:v4];
+  identifier = [(ASMigrationAvailableItem *)self identifier];
+  [(ASCodableCloudKitMigrationAvailableItem *)v3 setIdentifier:identifier];
 
-  v5 = [(ASMigrationAvailableItem *)self relationshipIdentifier];
-  [(ASCodableCloudKitMigrationAvailableItem *)v3 setRelationshipIdentifier:v5];
+  relationshipIdentifier = [(ASMigrationAvailableItem *)self relationshipIdentifier];
+  [(ASCodableCloudKitMigrationAvailableItem *)v3 setRelationshipIdentifier:relationshipIdentifier];
 
   return v3;
 }
 
-+ (id)migrationAvailableItemWithCodableItem:(id)a3
++ (id)migrationAvailableItemWithCodableItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if (v4)
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    v5 = [v3 relationshipIdentifier];
-    if (v5)
+    relationshipIdentifier = [itemCopy relationshipIdentifier];
+    if (relationshipIdentifier)
     {
-      v6 = [[ASMigrationAvailableItem alloc] initWithIdentifier:v4 relationshipIdentifier:v5];
+      v6 = [[ASMigrationAvailableItem alloc] initWithIdentifier:identifier relationshipIdentifier:relationshipIdentifier];
     }
 
     else
@@ -71,13 +71,13 @@ id __86__ASMigrationAvailableItem_CloudKitCodingSupport__migrationAvailableItems
   return v5;
 }
 
-+ (id)migrationAvailableItemWithRecord:(id)a3
++ (id)migrationAvailableItemWithRecord:(id)record
 {
-  v3 = a3;
-  if (_ASCloudKitSchemaVersionForRecord(v3) == 1)
+  recordCopy = record;
+  if (_ASCloudKitSchemaVersionForRecord(recordCopy) == 1)
   {
-    v4 = [v3 encryptedValues];
-    v5 = [v4 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [recordCopy encryptedValues];
+    v5 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,12 +94,12 @@ id __86__ASMigrationAvailableItem_CloudKitCodingSupport__migrationAvailableItems
       v8 = [[ASCodableCloudKitMigrationAvailableItem alloc] initWithData:v6];
       v9 = [ASMigrationAvailableItem migrationAvailableItemWithCodableItem:v8];
       v10 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-      [v3 encodeSystemFieldsWithCoder:v10];
+      [recordCopy encodeSystemFieldsWithCoder:v10];
       [v10 finishEncoding];
       v11 = objc_alloc(MEMORY[0x277CCAAC8]);
-      v12 = [v10 encodedData];
+      encodedData = [v10 encodedData];
       v17 = 0;
-      v13 = [v11 initForReadingFromData:v12 error:&v17];
+      v13 = [v11 initForReadingFromData:encodedData error:&v17];
       v14 = v17;
 
       if (v14)
@@ -143,55 +143,55 @@ id __86__ASMigrationAvailableItem_CloudKitCodingSupport__migrationAvailableItems
   return v7;
 }
 
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
-  v8 = v7;
-  if (!v7 || ([v7 recordID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "zoneID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v6), v10, v9, (v11 & 1) == 0))
+  dCopy = d;
+  systemFieldsOnlyRecord = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
+  v8 = systemFieldsOnlyRecord;
+  if (!systemFieldsOnlyRecord || ([systemFieldsOnlyRecord recordID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "zoneID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", dCopy), v10, v9, (v11 & 1) == 0))
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(ASMigrationAvailableItem *)self relationshipIdentifier];
-    v14 = [v12 stringWithFormat:@"%@-%@", @"ActivitySharingMigrationAvailableRecord", v13];
+    relationshipIdentifier = [(ASMigrationAvailableItem *)self relationshipIdentifier];
+    v14 = [v12 stringWithFormat:@"%@-%@", @"ActivitySharingMigrationAvailableRecord", relationshipIdentifier];
 
-    v15 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v14 zoneID:v6];
+    v15 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v14 zoneID:dCopy];
     v16 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingMigrationAvailableRecord" recordID:v15];
 
     v8 = v16;
   }
 
-  _ASUpdateSchemaVersionOnRecord(1, v8, a4);
-  v17 = [(ASMigrationAvailableItem *)self codableMigrationAvailableItem];
-  v18 = [v17 data];
-  v19 = [v8 encryptedValues];
-  [v19 setObject:v18 forKeyedSubscript:@"EncryptedData"];
+  _ASUpdateSchemaVersionOnRecord(1, v8, type);
+  codableMigrationAvailableItem = [(ASMigrationAvailableItem *)self codableMigrationAvailableItem];
+  data = [codableMigrationAvailableItem data];
+  encryptedValues = [v8 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   return v8;
 }
 
-- (ASMigrationAvailableItem)initWithRelationshipIdentifier:(id)a3
+- (ASMigrationAvailableItem)initWithRelationshipIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(ASMigrationAvailableItem *)self initWithIdentifier:v7 relationshipIdentifier:v5];
+  identifierCopy = identifier;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [(ASMigrationAvailableItem *)self initWithIdentifier:uUIDString relationshipIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (ASMigrationAvailableItem)initWithIdentifier:(id)a3 relationshipIdentifier:(id)a4
+- (ASMigrationAvailableItem)initWithIdentifier:(id)identifier relationshipIdentifier:(id)relationshipIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  relationshipIdentifierCopy = relationshipIdentifier;
   v12.receiver = self;
   v12.super_class = ASMigrationAvailableItem;
   v9 = [(ASMigrationAvailableItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_relationshipIdentifier, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_relationshipIdentifier, relationshipIdentifier);
   }
 
   return v10;
@@ -212,25 +212,25 @@ id __86__ASMigrationAvailableItem_CloudKitCodingSupport__migrationAvailableItems
   return [MEMORY[0x277CCACA8] stringWithFormat:@"ASMigrationAvailableItem (%@), systemFieldsOnlyRecord exists: %@", self->_relationshipIdentifier, v2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(ASMigrationAvailableItem *)self relationshipIdentifier];
-  v6 = [v4 relationshipIdentifier];
+  equalCopy = equal;
+  relationshipIdentifier = [(ASMigrationAvailableItem *)self relationshipIdentifier];
+  relationshipIdentifier2 = [equalCopy relationshipIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(equalCopy) = [relationshipIdentifier isEqualToString:relationshipIdentifier2];
+  return equalCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ASMigrationAvailableItem *)self relationshipIdentifier];
-  v3 = [v2 hash];
+  relationshipIdentifier = [(ASMigrationAvailableItem *)self relationshipIdentifier];
+  v3 = [relationshipIdentifier hash];
 
   return v3;
 }
@@ -238,32 +238,32 @@ id __86__ASMigrationAvailableItem_CloudKitCodingSupport__migrationAvailableItems
 - (ASCodableMigrationAvailableItemContainer)codableMigrationAvailableItemContainer
 {
   v3 = objc_alloc_init(ASCodableMigrationAvailableItemContainer);
-  v4 = [(ASMigrationAvailableItem *)self codableMigrationAvailableItem];
-  [(ASCodableMigrationAvailableItemContainer *)v3 setMigrationAvailableItem:v4];
+  codableMigrationAvailableItem = [(ASMigrationAvailableItem *)self codableMigrationAvailableItem];
+  [(ASCodableMigrationAvailableItemContainer *)v3 setMigrationAvailableItem:codableMigrationAvailableItem];
 
-  v5 = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
+  systemFieldsOnlyRecord = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
 
-  if (v5)
+  if (systemFieldsOnlyRecord)
   {
     v6 = MEMORY[0x277CCAAB0];
-    v7 = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
-    v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    systemFieldsOnlyRecord2 = [(ASMigrationAvailableItem *)self systemFieldsOnlyRecord];
+    v8 = [v6 archivedDataWithRootObject:systemFieldsOnlyRecord2 requiringSecureCoding:1 error:0];
     [(ASCodableMigrationAvailableItemContainer *)v3 setSystemFieldsOnlyRecord:v8];
   }
 
   return v3;
 }
 
-+ (id)migrationAvailableItemWithCodableContainer:(id)a3
++ (id)migrationAvailableItemWithCodableContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 migrationAvailableItem];
-  v5 = [ASMigrationAvailableItem migrationAvailableItemWithCodableItem:v4];
+  containerCopy = container;
+  migrationAvailableItem = [containerCopy migrationAvailableItem];
+  v5 = [ASMigrationAvailableItem migrationAvailableItemWithCodableItem:migrationAvailableItem];
 
   v6 = objc_opt_class();
-  v7 = [v3 systemFieldsOnlyRecord];
+  systemFieldsOnlyRecord = [containerCopy systemFieldsOnlyRecord];
 
-  v8 = ASSecureUnarchiveClassWithDataAndStrictness(v6, v7, 0);
+  v8 = ASSecureUnarchiveClassWithDataAndStrictness(v6, systemFieldsOnlyRecord, 0);
   [v5 setSystemFieldsOnlyRecord:v8];
 
   return v5;

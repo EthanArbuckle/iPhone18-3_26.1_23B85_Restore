@@ -1,31 +1,31 @@
 @interface BWRemoteQueueSinkNode
 + (void)initialize;
 - (BOOL)videoHDRImageStatisticsEnabled;
-- (BWRemoteQueueSinkNode)initWithMediaType:(unsigned int)a3 clientAuditToken:(id *)a4 sinkID:(id)a5 cameraInfoByPortType:(id)a6;
+- (BWRemoteQueueSinkNode)initWithMediaType:(unsigned int)type clientAuditToken:(id *)token sinkID:(id)d cameraInfoByPortType:(id)portType;
 - (NSArray)movieLevelMetadata;
 - (uint64_t)_finishRenderingSampleBufferUsingTheLocalQueue:(uint64_t)result;
-- (uint64_t)_finishRenderingSampleBufferUsingTheRemoteCaptureStack:(int)a3 isDroppedSample:;
+- (uint64_t)_finishRenderingSampleBufferUsingTheRemoteCaptureStack:(int)stack isDroppedSample:;
 - (uint64_t)_sendAndClearCoreAnalyticsData;
 - (void)_handlePeerTerminated;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)registerSurfacesFromSourcePool:(id)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setClientVideoRetainedBufferCount:(int)a3;
-- (void)setRequestedBufferAttachmentsTrie:(id)a3;
-- (void)setSceneStabilityMetadataEnabled:(BOOL)a3;
-- (void)setVideoHDRImageStatisticsEnabled:(BOOL)a3;
-- (void)updateClientAuditToken:(id *)a3;
+- (void)registerSurfacesFromSourcePool:(id)pool;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setClientVideoRetainedBufferCount:(int)count;
+- (void)setRequestedBufferAttachmentsTrie:(id)trie;
+- (void)setSceneStabilityMetadataEnabled:(BOOL)enabled;
+- (void)setVideoHDRImageStatisticsEnabled:(BOOL)enabled;
+- (void)updateClientAuditToken:(id *)token;
 @end
 
 @implementation BWRemoteQueueSinkNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -34,12 +34,12 @@
   }
 }
 
-- (BWRemoteQueueSinkNode)initWithMediaType:(unsigned int)a3 clientAuditToken:(id *)a4 sinkID:(id)a5 cameraInfoByPortType:(id)a6
+- (BWRemoteQueueSinkNode)initWithMediaType:(unsigned int)type clientAuditToken:(id *)token sinkID:(id)d cameraInfoByPortType:(id)portType
 {
-  v8 = *&a3;
+  v8 = *&type;
   v26.receiver = self;
   v26.super_class = BWRemoteQueueSinkNode;
-  v9 = [(BWSinkNode *)&v26 initWithSinkID:a5];
+  v9 = [(BWSinkNode *)&v26 initWithSinkID:d];
   if (!v9)
   {
     return v9;
@@ -89,28 +89,28 @@ LABEL_7:
   *(v9 + 20) = *v11;
   *(v9 + 42) = *(v11 + 2);
   v9[306] = 1;
-  v13 = *&a4->var0[4];
-  v24 = *a4->var0;
+  v13 = *&token->var0[4];
+  v24 = *token->var0;
   v25 = v13;
   v9[305] = FigCaptureClientIsContinuityCapture(&v24) != 0;
 LABEL_9:
   v9[408] = 0;
-  v15 = *&a4->var0[4];
-  v24 = *a4->var0;
+  v15 = *&token->var0[4];
+  v24 = *token->var0;
   v25 = v15;
   *(v9 + 86) = FigCaptureGetPIDFromAuditToken(&v24);
-  v16 = *&a4->var0[4];
-  *(v9 + 348) = *a4->var0;
+  v16 = *&token->var0[4];
+  *(v9 + 348) = *token->var0;
   *(v9 + 364) = v16;
-  v17 = *&a4->var0[4];
-  v24 = *a4->var0;
+  v17 = *&token->var0[4];
+  v24 = *token->var0;
   v25 = v17;
   IsRunningInMediaserverd = FigCaptureClientIsRunningInMediaserverd(&v24);
   v19 = 1;
   if (!IsRunningInMediaserverd)
   {
-    v20 = *&a4->var0[4];
-    v24 = *a4->var0;
+    v20 = *&token->var0[4];
+    v24 = *token->var0;
     v25 = v20;
     v19 = FigCaptureClientIsRunningInCameracaptured(&v24) != 0;
   }
@@ -133,7 +133,7 @@ LABEL_9:
   v9[488] = 0;
   v9[489] = 0;
   *(v9 + 62) = objc_alloc_init(BWMovieLevelMetadataForProResRaw);
-  *(v9 + 63) = [a6 copy];
+  *(v9 + 63) = [portType copy];
   *(v9 + 64) = FigSimpleMutexCreate();
   [v9 setSupportsLiveReconfiguration:1];
   [v9 setSupportsPrepareWhileRunning:1];
@@ -187,27 +187,27 @@ LABEL_9:
   [(BWSinkNode *)&v9 dealloc];
 }
 
-- (void)registerSurfacesFromSourcePool:(id)a3
+- (void)registerSurfacesFromSourcePool:(id)pool
 {
   if (!self->_clientIsCaptureServerDaemon)
   {
     v5[5] = v3;
     v5[6] = v4;
-    [(BWRemoteQueueSinkNode *)self registerSurfacesFromSourcePool:v5, a3];
+    [(BWRemoteQueueSinkNode *)self registerSurfacesFromSourcePool:v5, pool];
   }
 }
 
-- (void)updateClientAuditToken:(id *)a3
+- (void)updateClientAuditToken:(id *)token
 {
-  v5 = *&a3->var0[4];
-  v11 = *a3->var0;
+  v5 = *&token->var0[4];
+  v11 = *token->var0;
   v12 = v5;
   self->_receiverPID = FigCaptureGetPIDFromAuditToken(&v11);
-  v6 = *&a3->var0[4];
-  *self->_receiverAuditToken.val = *a3->var0;
+  v6 = *&token->var0[4];
+  *self->_receiverAuditToken.val = *token->var0;
   *&self->_receiverAuditToken.val[4] = v6;
-  v7 = *&a3->var0[4];
-  v11 = *a3->var0;
+  v7 = *&token->var0[4];
+  v11 = *token->var0;
   v12 = v7;
   if (FigCaptureClientIsRunningInMediaserverd(&v11))
   {
@@ -216,32 +216,32 @@ LABEL_9:
 
   else
   {
-    v9 = *&a3->var0[4];
-    v11 = *a3->var0;
+    v9 = *&token->var0[4];
+    v11 = *token->var0;
     v12 = v9;
     v8 = FigCaptureClientIsRunningInCameracaptured(&v11) != 0;
   }
 
   self->_clientIsCaptureServerDaemon = v8;
-  v10 = *&a3->var0[4];
-  v11 = *a3->var0;
+  v10 = *&token->var0[4];
+  v11 = *token->var0;
   v12 = v10;
   self->_attachDetectedObjectsInfo = FigCaptureClientIsContinuityCapture(&v11) != 0;
 }
 
-- (void)setClientVideoRetainedBufferCount:(int)a3
+- (void)setClientVideoRetainedBufferCount:(int)count
 {
-  if (self->_clientVideoRetainedBufferCount != a3)
+  if (self->_clientVideoRetainedBufferCount != count)
   {
-    self->_clientVideoRetainedBufferCount = a3;
+    self->_clientVideoRetainedBufferCount = count;
     [(BWNodeInput *)self->super.super._input setRetainedBufferCount:?];
   }
 }
 
-- (void)setSceneStabilityMetadataEnabled:(BOOL)a3
+- (void)setSceneStabilityMetadataEnabled:(BOOL)enabled
 {
   stabilityMonitor = self->_stabilityMonitor;
-  if (a3)
+  if (enabled)
   {
     if (stabilityMonitor)
     {
@@ -264,13 +264,13 @@ LABEL_9:
   self->_stabilityMonitor = v5;
 }
 
-- (void)setRequestedBufferAttachmentsTrie:(id)a3
+- (void)setRequestedBufferAttachmentsTrie:(id)trie
 {
   requestedBufferAttachmentsTrie = self->_requestedBufferAttachmentsTrie;
-  self->_requestedBufferAttachmentsTrie = a3;
-  if (a3)
+  self->_requestedBufferAttachmentsTrie = trie;
+  if (trie)
   {
-    CFRetain(a3);
+    CFRetain(trie);
   }
 
   if (requestedBufferAttachmentsTrie)
@@ -280,10 +280,10 @@ LABEL_9:
   }
 }
 
-- (void)setVideoHDRImageStatisticsEnabled:(BOOL)a3
+- (void)setVideoHDRImageStatisticsEnabled:(BOOL)enabled
 {
   FigSimpleMutexLock();
-  self->_videoHDRImageStatisticsEnabled = a3;
+  self->_videoHDRImageStatisticsEnabled = enabled;
 
   FigSimpleMutexUnlock();
 }
@@ -387,12 +387,12 @@ LABEL_9:
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_remoteQueueSender)
   {
     v9 = 1;
-    if (!a4)
+    if (!format)
     {
       goto LABEL_13;
     }
@@ -401,7 +401,7 @@ LABEL_9:
   else
   {
     v9 = self->_localQueue != 0;
-    if (!a4)
+    if (!format)
     {
       goto LABEL_13;
     }
@@ -419,11 +419,11 @@ LABEL_9:
         {
           v13 = 5;
           v15 = 0;
-          v14 = 0;
+          dCopy2 = 0;
           v16 = 0;
           v19 = 0;
-          v17 = a3;
-          v18 = [a4 formatDescription];
+          dCopy = d;
+          formatDescription = [format formatDescription];
           if (FigRemoteOperationSenderEnqueueOperation(self->_remoteQueueSender, &v13) == -16665)
           {
             [(BWRemoteQueueSinkNode *)self _handlePeerTerminated];
@@ -432,11 +432,11 @@ LABEL_9:
 
         else if (self->_localQueue)
         {
-          v10 = [a4 formatDescription];
+          formatDescription2 = [format formatDescription];
           localQueue = self->_localQueue;
           v13 = 5;
-          v14 = a3;
-          v15 = v10;
+          dCopy2 = d;
+          v15 = formatDescription2;
           FigLocalQueueEnqueue(localQueue, &v13, 0);
         }
       }
@@ -451,13 +451,13 @@ LABEL_13:
 
   v12.receiver = self;
   v12.super_class = BWRemoteQueueSinkNode;
-  [(BWSinkNode *)&v12 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWSinkNode *)&v12 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   mediaTypeIsAudio = self->_mediaTypeIsAudio;
-  if (a3)
+  if (d)
   {
     if ((mediaTypeIsAudio & 1) == 0)
     {
@@ -472,18 +472,18 @@ LABEL_13:
 
   v8.receiver = self;
   v8.super_class = BWRemoteQueueSinkNode;
-  [(BWSinkNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWSinkNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *MEMORY[0x1E6960498], 0);
+  v6 = CMGetAttachment(buffer, *MEMORY[0x1E6960498], 0);
   memset(&v81, 0, sizeof(v81));
-  CMSampleBufferGetPresentationTimeStamp(&v81, a3);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  CMSampleBufferGetPresentationTimeStamp(&v81, buffer);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
   key = *off_1E798A3C8;
-  v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v9 = v8;
   if (!self->_mediaTypeIsVideo || v6 != 0 || v8 == 0)
   {
@@ -523,7 +523,7 @@ LABEL_13:
         [(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload setDeviceMask:[(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload deviceMask]| BWActiveDeviceTypeFromPortType(v12)];
       }
 
-      v17 = CMGetAttachment(a3, key, 0);
+      v17 = CMGetAttachment(buffer, key, 0);
       if (v17)
       {
         time[0].value = 0;
@@ -531,7 +531,7 @@ LABEL_13:
         if (CFDictionaryGetValueIfPresent(v17, *off_1E798B538, time))
         {
           v19 = *off_1E798A318;
-          v20 = CMGetAttachment(a3, *off_1E798A318, 0);
+          v20 = CMGetAttachment(buffer, *off_1E798A318, 0);
           if (v20)
           {
             v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v20];
@@ -544,7 +544,7 @@ LABEL_13:
 
           v22 = v21;
           [v22 setObject:time[0].value forKeyedSubscript:v18];
-          CMSetAttachment(a3, v19, v22, 1u);
+          CMSetAttachment(buffer, v19, v22, 1u);
         }
       }
 
@@ -561,7 +561,7 @@ LABEL_13:
 
         self->_firstPTS = v81;
         [(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload setClientApplicationID:self->_clientApplicationID, *v68, v69];
-        FormatDescription = CMSampleBufferGetFormatDescription(a3);
+        FormatDescription = CMSampleBufferGetFormatDescription(buffer);
         Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
         MediaSubType = CMFormatDescriptionGetMediaSubType(FormatDescription);
         if (v12)
@@ -571,7 +571,7 @@ LABEL_13:
 
         [(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload setHeight:HIDWORD(Dimensions)];
         [(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload setWidth:Dimensions];
-        v27 = CMSampleBufferGetImageBuffer(a3);
+        v27 = CMSampleBufferGetImageBuffer(buffer);
         if (v27)
         {
           v28 = v27;
@@ -585,7 +585,7 @@ LABEL_13:
         }
 
         [(BWVideoDataOutputAnalyticsPayload *)self->_analyticsPayload setVideoMirrored:v30];
-        v31 = CMSampleBufferGetImageBuffer(a3);
+        v31 = CMSampleBufferGetImageBuffer(buffer);
         if (v31 && (v32 = CVBufferCopyAttachments(v31, kCVAttachmentMode_ShouldPropagate)) != 0)
         {
           v33 = v32;
@@ -613,7 +613,7 @@ LABEL_13:
         FigSimpleMutexLock();
         FigGetUpTimeNanoseconds();
         [(BWMovieLevelMetadataForProResRaw *)self->_movieLevelMetadataForProResRaw reset];
-        [(BWMovieLevelMetadataForProResRaw *)self->_movieLevelMetadataForProResRaw updateMetadataFromSampleBuffer:a3 withCameraInfo:[(NSDictionary *)self->_cameraInfoByPortType objectForKeyedSubscript:v12]];
+        [(BWMovieLevelMetadataForProResRaw *)self->_movieLevelMetadataForProResRaw updateMetadataFromSampleBuffer:buffer withCameraInfo:[(NSDictionary *)self->_cameraInfoByPortType objectForKeyedSubscript:v12]];
         FigGetUpTimeNanoseconds();
         if (ImageBuffer)
         {
@@ -622,8 +622,8 @@ LABEL_13:
           {
             if (IsPackedBayerRaw)
             {
-              v36 = CMGetAttachment(a3, *off_1E798D448, 0);
-              BWUpdateFrameLevelMetadataForProResRaw(a3, v9, [(NSDictionary *)self->_cameraInfoByPortType objectForKeyedSubscript:v12], v36);
+              v36 = CMGetAttachment(buffer, *off_1E798D448, 0);
+              BWUpdateFrameLevelMetadataForProResRaw(buffer, v9, [(NSDictionary *)self->_cameraInfoByPortType objectForKeyedSubscript:v12], v36);
             }
           }
         }
@@ -633,17 +633,17 @@ LABEL_13:
 
       if (self->_removeCameraIntrinsicMatrixAttachment)
       {
-        CMRemoveAttachment(a3, *MEMORY[0x1E6960470]);
+        CMRemoveAttachment(buffer, *MEMORY[0x1E6960470]);
       }
 
       if (self->_attachPanoramaMetadata)
       {
-        ClientSpecifiedMetadataForPanorama = FigCaptureMetadataUtilitiesCreateClientSpecifiedMetadataForPanorama(a3, self->_panoramaRequiresLTMLocking);
+        ClientSpecifiedMetadataForPanorama = FigCaptureMetadataUtilitiesCreateClientSpecifiedMetadataForPanorama(buffer, self->_panoramaRequiresLTMLocking);
         if (ClientSpecifiedMetadataForPanorama)
         {
           v38 = ClientSpecifiedMetadataForPanorama;
           v39 = *off_1E798A318;
-          v40 = CMGetAttachment(a3, *off_1E798A318, 0);
+          v40 = CMGetAttachment(buffer, *off_1E798A318, 0);
           if (v40)
           {
             v41 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v40];
@@ -656,7 +656,7 @@ LABEL_13:
 
           v42 = v41;
           [v42 addEntriesFromDictionary:v38];
-          CMSetAttachment(a3, v39, v42, 1u);
+          CMSetAttachment(buffer, v39, v42, 1u);
           CFRelease(v38);
         }
       }
@@ -665,41 +665,41 @@ LABEL_13:
       {
         if (self->_stabilityMonitor)
         {
-          v43 = CMGetAttachment(a3, key, 0);
+          v43 = CMGetAttachment(buffer, key, 0);
           [v43 objectForKeyedSubscript:*off_1E798B070];
           stabilityMonitor = self->_stabilityMonitor;
-          CMSampleBufferGetPresentationTimeStamp(time, a3);
+          CMSampleBufferGetPresentationTimeStamp(time, buffer);
           [(BWSceneStabilityMonitor *)stabilityMonitor calculateStabilityWithPixelBuffer:ImageBuffer pts:time metadataDictionary:v43 forceSceneMotion:0];
-          v45 = [MEMORY[0x1E695DF90] dictionary];
-          [v45 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[BWSceneStabilityMonitor isStable](self->_stabilityMonitor, "isStable")), *off_1E798A4A8}];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[BWSceneStabilityMonitor isStable](self->_stabilityMonitor, "isStable")), *off_1E798A4A8}];
           v46 = MEMORY[0x1E696AD98];
           [(BWSceneStabilityMonitor *)self->_stabilityMonitor stabilityMetric];
-          [v45 setObject:objc_msgSend(v46 forKeyedSubscript:{"numberWithFloat:"), *off_1E798A4A0}];
+          [dictionary setObject:objc_msgSend(v46 forKeyedSubscript:{"numberWithFloat:"), *off_1E798A4A0}];
         }
 
         else
         {
-          v45 = 0;
+          dictionary = 0;
         }
 
         if (self->_requestedBufferAttachmentsTrie)
         {
-          v47 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], a3, 1u);
+          v47 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], buffer, 1u);
           if (v47)
           {
             v48 = v47;
-            if (!v45)
+            if (!dictionary)
             {
-              v45 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
             }
 
-            [(FigCaptureTrie *)self->_requestedBufferAttachmentsTrie extractFrom:v48 writeInto:v45 assumeMutable:0 overwrite:0];
+            [(FigCaptureTrie *)self->_requestedBufferAttachmentsTrie extractFrom:v48 writeInto:dictionary assumeMutable:0 overwrite:0];
           }
         }
 
         if ([(BWRemoteQueueSinkNode *)self videoHDRImageStatisticsEnabled])
         {
-          v49 = BWGetHDRImageStatisticsDictFromSampleBuffer(a3);
+          v49 = BWGetHDRImageStatisticsDictFromSampleBuffer(buffer);
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
@@ -752,7 +752,7 @@ LABEL_13:
             self->_frameSender = frameSender;
           }
 
-          [(CMCaptureFrameSenderService *)frameSender sendFrame:a3];
+          [(CMCaptureFrameSenderService *)frameSender sendFrame:buffer];
         }
 
         memset(&v74, 0, sizeof(v74));
@@ -773,7 +773,7 @@ LABEL_13:
 
       else
       {
-        v45 = 0;
+        dictionary = 0;
       }
 
       sharedMemoryPoolCFAllocator = self->_sharedMemoryPoolCFAllocator;
@@ -781,9 +781,9 @@ LABEL_13:
       attachDetectedObjectsInfo = self->_attachDetectedObjectsInfo;
       disableFlatDictionaryVDOMetadata = self->_disableFlatDictionaryVDOMetadata;
       [(BWGraph *)[(BWNode *)self graph] clientExpectsCameraMountedInLandscapeOrientation];
-      if (CMGetAttachment(a3, key, 0))
+      if (CMGetAttachment(buffer, key, 0))
       {
-        MetadataAttachments = FigCaptureMetadataUtilitiesCreateMetadataAttachments(a3, 1785096550, 0, 0, cameraSupportsFlash, 0, 0, 0, 0, attachDetectedObjectsInfo, disableFlatDictionaryVDOMetadata, 0, 1u, 1, 1, v45, 0, 0, 0, 0, 0);
+        MetadataAttachments = FigCaptureMetadataUtilitiesCreateMetadataAttachments(buffer, 1785096550, 0, 0, cameraSupportsFlash, 0, 0, 0, 0, attachDetectedObjectsInfo, disableFlatDictionaryVDOMetadata, 0, 1u, 1, 1, dictionary, 0, 0, 0, 0, 0);
         if (disableFlatDictionaryVDOMetadata)
         {
           MakerNoteFlatDictionary = 0;
@@ -791,11 +791,11 @@ LABEL_13:
 
         else
         {
-          MakerNoteFlatDictionary = FigCaptureMetadataUtilitiesCreateMakerNoteFlatDictionary(a3, *MEMORY[0x1E695E480], sharedMemoryPoolCFAllocator, &self->_makerNoteKeySpec);
+          MakerNoteFlatDictionary = FigCaptureMetadataUtilitiesCreateMakerNoteFlatDictionary(buffer, *MEMORY[0x1E695E480], sharedMemoryPoolCFAllocator, &self->_makerNoteKeySpec);
         }
 
-        CMRemoveAllAttachments(a3);
-        CMSetAttachments(a3, MetadataAttachments, 1u);
+        CMRemoveAllAttachments(buffer);
+        CMSetAttachments(buffer, MetadataAttachments, 1u);
         if (MetadataAttachments)
         {
           CFRelease(MetadataAttachments);
@@ -806,7 +806,7 @@ LABEL_13:
           Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
           CFDictionaryAddValue(Mutable, *off_1E798D2F8, self->_makerNoteKeySpec);
           CFDictionaryAddValue(Mutable, *off_1E798D2F0, MakerNoteFlatDictionary);
-          CMSetAttachment(a3, *MEMORY[0x1E696DE30], Mutable, 1u);
+          CMSetAttachment(buffer, *MEMORY[0x1E696DE30], Mutable, 1u);
           if (Mutable)
           {
             CFRelease(Mutable);
@@ -827,7 +827,7 @@ LABEL_13:
 
       if (!self->_cachedFormatDescription)
       {
-        v67 = CMSampleBufferGetFormatDescription(a3);
+        v67 = CMSampleBufferGetFormatDescription(buffer);
         if (v67)
         {
           v67 = CFRetain(v67);
@@ -837,11 +837,11 @@ LABEL_13:
       }
     }
 
-    BWSampleBufferRemoveAllAttachedMedia(a3);
-    BWNodeSanitizeMetadataIfNecessary(a3);
+    BWSampleBufferRemoveAllAttachedMedia(buffer);
+    BWNodeSanitizeMetadataIfNecessary(buffer);
     if (self->_remoteQueueSender)
     {
-      if ([(BWRemoteQueueSinkNode *)self _finishRenderingSampleBufferUsingTheRemoteCaptureStack:a3 isDroppedSample:v6 != 0])
+      if ([(BWRemoteQueueSinkNode *)self _finishRenderingSampleBufferUsingTheRemoteCaptureStack:buffer isDroppedSample:v6 != 0])
       {
         return;
       }
@@ -849,7 +849,7 @@ LABEL_13:
       goto LABEL_109;
     }
 
-    if (!self->_localQueue || ![(BWRemoteQueueSinkNode *)self _finishRenderingSampleBufferUsingTheLocalQueue:a3])
+    if (!self->_localQueue || ![(BWRemoteQueueSinkNode *)self _finishRenderingSampleBufferUsingTheLocalQueue:buffer])
     {
 LABEL_109:
       self->_lastPTS = v81;
@@ -857,9 +857,9 @@ LABEL_109:
   }
 }
 
-- (uint64_t)_finishRenderingSampleBufferUsingTheRemoteCaptureStack:(int)a3 isDroppedSample:
+- (uint64_t)_finishRenderingSampleBufferUsingTheRemoteCaptureStack:(int)stack isDroppedSample:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -880,7 +880,7 @@ LABEL_109:
   }
 
   v25[0] = 6;
-  v25[1] = a3 ^ 1;
+  v25[1] = stack ^ 1;
   *&v27 = sbuf;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v9 addObject:*off_1E798A3C8];
@@ -900,25 +900,25 @@ LABEL_109:
   }
 
   v28 = v9;
-  v10 = FigRemoteOperationSenderEnqueueOperation(*(a1 + 216), v25);
+  v10 = FigRemoteOperationSenderEnqueueOperation(*(self + 216), v25);
   if (v10 != -16669)
   {
     v11 = v10;
     if (v10 == -16665)
     {
-      [(BWRemoteQueueSinkNode *)a1 _handlePeerTerminated];
+      [(BWRemoteQueueSinkNode *)self _handlePeerTerminated];
       return 4294950631;
     }
 
     return v11;
   }
 
-  if (a3)
+  if (stack)
   {
     return 4294950627;
   }
 
-  if (*(a1 + 284) != 1)
+  if (*(self + 284) != 1)
   {
     [BWRemoteQueueSinkNode _finishRenderingSampleBufferUsingTheRemoteCaptureStack:isDroppedSample:];
     return 4294950627;
@@ -928,7 +928,7 @@ LABEL_109:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v12 = *(a1 + 216);
+  v12 = *(self + 216);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __96__BWRemoteQueueSinkNode__finishRenderingSampleBufferUsingTheRemoteCaptureStack_isDroppedSample___block_invoke;
@@ -939,21 +939,21 @@ LABEL_109:
   {
     cf = 0;
     FormatDescription = CMSampleBufferGetFormatDescription(sbuf);
-    v15 = *(a1 + 320);
+    v15 = *(self + 320);
     BWSampleBufferCreateForDroppedFrame(&v15, FormatDescription, @"LateFrame", &cf);
     LODWORD(v15.value) = 3;
     memset(&v15.value + 4, 0, 20);
     v17 = 0;
     v18 = 0;
     v16 = cf;
-    FigRemoteOperationSenderEnqueueOperation(*(a1 + 216), &v15);
+    FigRemoteOperationSenderEnqueueOperation(*(self + 216), &v15);
     if (cf)
     {
       CFRelease(cf);
     }
   }
 
-  v11 = FigRemoteOperationSenderEnqueueOperation(*(a1 + 216), v25);
+  v11 = FigRemoteOperationSenderEnqueueOperation(*(self + 216), v25);
   if (v11)
   {
     FigDebugAssert3();
@@ -1021,7 +1021,7 @@ void __72__BWRemoteQueueSinkNode__finishRenderingSampleBufferUsingTheLocalQueue_
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   mediaTypeIsVideo = self->_mediaTypeIsVideo;
   if (!mediaTypeIsVideo && !self->_mediaTypeIsPointCloud)
@@ -1053,10 +1053,10 @@ LABEL_11:
     }
 
 LABEL_9:
-    v10 = [a4 liveFormat];
-    if (v10)
+    liveFormat = [input liveFormat];
+    if (liveFormat)
     {
-      CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], [v10 pixelFormat], objc_msgSend(v10, "width"), objc_msgSend(v10, "height"), 0, &formatDescriptionOut);
+      CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], [liveFormat pixelFormat], objc_msgSend(liveFormat, "width"), objc_msgSend(liveFormat, "height"), 0, &formatDescriptionOut);
     }
 
     goto LABEL_11;
@@ -1077,7 +1077,7 @@ LABEL_9:
 LABEL_13:
   if (v9)
   {
-    if ([a3 reason] == 0x1F219BEF0)
+    if ([sample reason] == 0x1F219BEF0)
     {
       v11 = &OBJC_IVAR___BWRemoteQueueSinkNode__totalNumberOfISPFramesDropped;
     }
@@ -1085,7 +1085,7 @@ LABEL_13:
     else
     {
       v11 = &OBJC_IVAR___BWRemoteQueueSinkNode__totalNumberOfISPFramesDropped;
-      if ([a3 reason] != @"VideoDeviceDiscontinuity" && objc_msgSend(a3, "reason") != @"HighFrameRateAutoFocusDiscontinuity")
+      if ([sample reason] != @"VideoDeviceDiscontinuity" && objc_msgSend(sample, "reason") != @"HighFrameRateAutoFocusDiscontinuity")
       {
         v11 = &OBJC_IVAR___BWRemoteQueueSinkNode__totalNumberOfFramesDropped;
       }
@@ -1094,9 +1094,9 @@ LABEL_13:
     ++*(&self->super.super.super.isa + *v11);
   }
 
-  if (a3)
+  if (sample)
   {
-    [a3 pts];
+    [sample pts];
   }
 
   else
@@ -1104,8 +1104,8 @@ LABEL_13:
     memset(&v12, 0, sizeof(v12));
   }
 
-  BWSampleBufferCreateForDroppedFrame(&v12, formatDescriptionOut, [a3 reason], &cf);
-  [(BWRemoteQueueSinkNode *)self renderSampleBuffer:cf forInput:a4];
+  BWSampleBufferCreateForDroppedFrame(&v12, formatDescriptionOut, [sample reason], &cf);
+  [(BWRemoteQueueSinkNode *)self renderSampleBuffer:cf forInput:input];
   if (cf)
   {
     CFRelease(cf);
@@ -1119,15 +1119,15 @@ LABEL_13:
 
 - (NSArray)movieLevelMetadata
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   if (self->_proresRawVideo)
   {
     FigSimpleMutexLock();
-    v3 = [(BWMovieLevelMetadataForProResRaw *)self->_movieLevelMetadataForProResRaw proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:v3];
+    array = [(BWMovieLevelMetadataForProResRaw *)self->_movieLevelMetadataForProResRaw proResRawAugmentedMovieLevelMetadataWithMovieLevelMetadata:array];
     FigSimpleMutexUnlock();
   }
 
-  return v3;
+  return array;
 }
 
 - (uint64_t)_sendAndClearCoreAnalyticsData
@@ -1172,23 +1172,23 @@ LABEL_13:
 
 - (void)_handlePeerTerminated
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 248) = 1;
+    *(self + 248) = 1;
     FigSimpleMutexLock();
-    v2 = *(a1 + 216);
+    v2 = *(self + 216);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 216) = 0;
+      *(self + 216) = 0;
     }
 
     FigSimpleMutexUnlock();
-    v3 = *(a1 + 232);
+    v3 = *(self + 232);
     if (v3)
     {
       CFRelease(v3);
-      *(a1 + 232) = 0;
+      *(self + 232) = 0;
     }
   }
 }

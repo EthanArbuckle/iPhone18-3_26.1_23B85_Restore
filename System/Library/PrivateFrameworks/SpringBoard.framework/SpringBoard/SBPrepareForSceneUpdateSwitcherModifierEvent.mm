@@ -1,19 +1,19 @@
 @interface SBPrepareForSceneUpdateSwitcherModifierEvent
-- (SBPrepareForSceneUpdateSwitcherModifierEvent)initWithLiveAppLayouts:(id)a3;
+- (SBPrepareForSceneUpdateSwitcherModifierEvent)initWithLiveAppLayouts:(id)layouts;
 @end
 
 @implementation SBPrepareForSceneUpdateSwitcherModifierEvent
 
-- (SBPrepareForSceneUpdateSwitcherModifierEvent)initWithLiveAppLayouts:(id)a3
+- (SBPrepareForSceneUpdateSwitcherModifierEvent)initWithLiveAppLayouts:(id)layouts
 {
-  v5 = a3;
+  layoutsCopy = layouts;
   v9.receiver = self;
   v9.super_class = SBPrepareForSceneUpdateSwitcherModifierEvent;
   v6 = [(SBWindowingModifierActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_liveAppLayouts, a3);
+    objc_storeStrong(&v6->_liveAppLayouts, layouts);
   }
 
   return v7;

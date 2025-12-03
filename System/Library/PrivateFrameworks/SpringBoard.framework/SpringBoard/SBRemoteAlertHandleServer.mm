@@ -1,32 +1,32 @@
 @interface SBRemoteAlertHandleServer
-- (BOOL)_shouldAllowAuditToken:(id)a3 forDefinition:(id)a4;
-- (SBRemoteAlertHandleServer)initWithSessionManager:(id)a3;
-- (id)createRemoteAlertHandleContextWithDefinition:(id)a3 configurationContext:(id)a4;
-- (id)remoteAlertHandleContextsForDefinition:(id)a3 allowsCreationValue:(id)a4 configurationContext:(id)a5;
-- (void)_addConnection:(id)a3 forSession:(id)a4;
-- (void)_handleDisconnectForServiceConnection:(id)a3;
-- (void)_removeConnection:(id)a3 forSession:(id)a4;
-- (void)activateRemoteAlertHandleWithID:(id)a3 activationContext:(id)a4;
+- (BOOL)_shouldAllowAuditToken:(id)token forDefinition:(id)definition;
+- (SBRemoteAlertHandleServer)initWithSessionManager:(id)manager;
+- (id)createRemoteAlertHandleContextWithDefinition:(id)definition configurationContext:(id)context;
+- (id)remoteAlertHandleContextsForDefinition:(id)definition allowsCreationValue:(id)value configurationContext:(id)context;
+- (void)_addConnection:(id)connection forSession:(id)session;
+- (void)_handleDisconnectForServiceConnection:(id)connection;
+- (void)_removeConnection:(id)connection forSession:(id)session;
+- (void)activateRemoteAlertHandleWithID:(id)d activationContext:(id)context;
 - (void)dealloc;
-- (void)invalidateRemoteAlertHandleWithID:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5;
-- (void)remoteTransientOverlaySessionDidActivate:(id)a3;
-- (void)remoteTransientOverlaySessionDidDeactivate:(id)a3;
+- (void)invalidateRemoteAlertHandleWithID:(id)d;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error;
+- (void)remoteTransientOverlaySessionDidActivate:(id)activate;
+- (void)remoteTransientOverlaySessionDidDeactivate:(id)deactivate;
 @end
 
 @implementation SBRemoteAlertHandleServer
 
-- (SBRemoteAlertHandleServer)initWithSessionManager:(id)a3
+- (SBRemoteAlertHandleServer)initWithSessionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = SBRemoteAlertHandleServer;
   v6 = [(SBRemoteAlertHandleServer *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionManager, a3);
+    objc_storeStrong(&v6->_sessionManager, manager);
     v8 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.remote-alert" additionalCredentials:1];
     clientAuthenticator = v7->_clientAuthenticator;
     v7->_clientAuthenticator = v8;
@@ -102,23 +102,23 @@ void __52__SBRemoteAlertHandleServer_initWithSessionManager___block_invoke(uint6
   [(SBRemoteAlertHandleServer *)&v8 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withContext___block_invoke;
   v16[3] = &unk_2783B2168;
-  v7 = v6;
+  v7 = connectionCopy;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   [v7 configureConnection:v16];
   queue = self->_queue;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withContext___block_invoke_15;
   v13 = &unk_2783A92D8;
-  v14 = self;
+  selfCopy2 = self;
   v15 = v7;
   v9 = v7;
   dispatch_barrier_async(queue, &v10);
@@ -211,30 +211,30 @@ uint64_t __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withConte
   return [v2 addObject:v6];
 }
 
-- (id)remoteAlertHandleContextsForDefinition:(id)a3 allowsCreationValue:(id)a4 configurationContext:(id)a5
+- (id)remoteAlertHandleContextsForDefinition:(id)definition allowsCreationValue:(id)value configurationContext:(id)context
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CF3280] currentContext];
-  v12 = [v11 remoteProcess];
-  v13 = [v12 auditToken];
+  definitionCopy = definition;
+  valueCopy = value;
+  contextCopy = context;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  if ([(SBRemoteAlertHandleServer *)self _shouldAllowAuditToken:v13 forDefinition:v8])
+  if ([(SBRemoteAlertHandleServer *)self _shouldAllowAuditToken:auditToken forDefinition:definitionCopy])
   {
-    v14 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionsWithDefinition:v8 options:0];
-    if (![v14 count] && objc_msgSend(v9, "BOOLValue"))
+    v14 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionsWithDefinition:definitionCopy options:0];
+    if (![v14 count] && objc_msgSend(valueCopy, "BOOLValue"))
     {
-      v15 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager createSessionWithDefinition:v8];
+      v15 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager createSessionWithDefinition:definitionCopy];
       v47[0] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
 
       v14 = v16;
     }
 
-    v34 = v13;
-    v35 = v9;
+    v34 = auditToken;
+    v35 = valueCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -279,9 +279,9 @@ uint64_t __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withConte
     }
 
     v26 = +[_SBRemoteAlertHandleServerTarget currentTarget];
-    v27 = [v26 connection];
+    connection = [v26 connection];
 
-    if (v27)
+    if (connection)
     {
       v39 = 0u;
       v40 = 0u;
@@ -302,7 +302,7 @@ uint64_t __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withConte
               objc_enumerationMutation(v28);
             }
 
-            [(SBRemoteAlertHandleServer *)self _addConnection:v27 forSession:*(*(&v37 + 1) + 8 * j), v34, v35];
+            [(SBRemoteAlertHandleServer *)self _addConnection:connection forSession:*(*(&v37 + 1) + 8 * j), v34, v35];
           }
 
           v30 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -312,19 +312,19 @@ uint64_t __71__SBRemoteAlertHandleServer_listener_didReceiveConnection_withConte
       }
     }
 
-    if (!v10)
+    if (!contextCopy)
     {
-      v10 = objc_alloc_init(MEMORY[0x277D66BD0]);
+      contextCopy = objc_alloc_init(MEMORY[0x277D66BD0]);
     }
 
     v36 = v17;
-    v10 = v10;
+    contextCopy = contextCopy;
     v24 = v17;
     BSDispatchMain();
     v25 = v20;
 
-    v13 = v34;
-    v9 = v35;
+    auditToken = v34;
+    valueCopy = v35;
   }
 
   else
@@ -377,40 +377,40 @@ void __109__SBRemoteAlertHandleServer_remoteAlertHandleContextsForDefinition_all
   }
 }
 
-- (id)createRemoteAlertHandleContextWithDefinition:(id)a3 configurationContext:(id)a4
+- (id)createRemoteAlertHandleContextWithDefinition:(id)definition configurationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [v8 remoteProcess];
-  v10 = [v9 auditToken];
+  definitionCopy = definition;
+  contextCopy = context;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  if ([(SBRemoteAlertHandleServer *)self _shouldAllowAuditToken:v10 forDefinition:v6])
+  if ([(SBRemoteAlertHandleServer *)self _shouldAllowAuditToken:auditToken forDefinition:definitionCopy])
   {
-    v11 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager createSessionWithDefinition:v6];
+    v11 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager createSessionWithDefinition:definitionCopy];
     v12 = _SBSRemoteAlertHandleContextFromRemoteTransientOverlaySession(v11);
     v13 = +[_SBRemoteAlertHandleServerTarget currentTarget];
-    v14 = [v13 connection];
+    connection = [v13 connection];
 
-    if (v14)
+    if (connection)
     {
-      [(SBRemoteAlertHandleServer *)self _addConnection:v14 forSession:v11];
+      [(SBRemoteAlertHandleServer *)self _addConnection:connection forSession:v11];
     }
 
-    if (!v7)
+    if (!contextCopy)
     {
-      v7 = objc_alloc_init(MEMORY[0x277D66BD0]);
+      contextCopy = objc_alloc_init(MEMORY[0x277D66BD0]);
     }
 
-    v7 = v7;
+    contextCopy = contextCopy;
     v15 = v11;
     BSDispatchMain();
   }
 
   else
   {
-    v14 = SBLogTransientOverlay();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    connection = SBLogTransientOverlay();
+    if (os_log_type_enabled(connection, OS_LOG_TYPE_ERROR))
     {
       [SBRemoteAlertHandleServer createRemoteAlertHandleContextWithDefinition:configurationContext:];
     }
@@ -421,19 +421,19 @@ void __109__SBRemoteAlertHandleServer_remoteAlertHandleContextsForDefinition_all
   return v12;
 }
 
-- (void)activateRemoteAlertHandleWithID:(id)a3 activationContext:(id)a4
+- (void)activateRemoteAlertHandleWithID:(id)d activationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (dCopy)
   {
-    if (!v7)
+    if (!contextCopy)
     {
       v8 = objc_alloc_init(MEMORY[0x277D66BC0]);
     }
 
-    v9 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:v6 options:0];
+    v9 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:dCopy options:0];
     v10 = v9;
     if (v9)
     {
@@ -449,18 +449,18 @@ void __109__SBRemoteAlertHandleServer_remoteAlertHandleContextsForDefinition_all
       v11 = SBLogTransientOverlay();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [SBRemoteAlertHandleServer activateRemoteAlertHandleWithID:v6 activationContext:v11];
+        [SBRemoteAlertHandleServer activateRemoteAlertHandleWithID:dCopy activationContext:v11];
       }
     }
   }
 }
 
-- (void)invalidateRemoteAlertHandleWithID:(id)a3
+- (void)invalidateRemoteAlertHandleWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:v4 options:0];
+    v5 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:dCopy options:0];
     v6 = v5;
     if (v5)
     {
@@ -474,35 +474,35 @@ void __109__SBRemoteAlertHandleServer_remoteAlertHandleContextsForDefinition_all
       v7 = SBLogTransientOverlay();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(SBRemoteAlertHandleServer *)v4 invalidateRemoteAlertHandleWithID:v7];
+        [(SBRemoteAlertHandleServer *)dCopy invalidateRemoteAlertHandleWithID:v7];
       }
     }
   }
 }
 
-- (void)remoteTransientOverlaySessionDidActivate:(id)a3
+- (void)remoteTransientOverlaySessionDidActivate:(id)activate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activateCopy = activate;
   v5 = SBLogTransientOverlay();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v4;
+    v14 = activateCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "remoteTransientOverlaySessionDidActivate: %{public}@", buf, 0xCu);
   }
 
-  v6 = [v4 sessionID];
+  sessionID = [activateCopy sessionID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SBRemoteAlertHandleServer_remoteTransientOverlaySessionDidActivate___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v11 = v4;
-  v12 = v6;
-  v8 = v6;
-  v9 = v4;
+  v11 = activateCopy;
+  v12 = sessionID;
+  v8 = sessionID;
+  v9 = activateCopy;
   dispatch_async(queue, block);
 }
 
@@ -546,29 +546,29 @@ void __70__SBRemoteAlertHandleServer_remoteTransientOverlaySessionDidActivate___
   }
 }
 
-- (void)remoteTransientOverlaySessionDidDeactivate:(id)a3
+- (void)remoteTransientOverlaySessionDidDeactivate:(id)deactivate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = SBLogTransientOverlay();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v4;
+    v14 = deactivateCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "remoteTransientOverlaySessionDidDeactivate: %{public}@", buf, 0xCu);
   }
 
-  v6 = [v4 sessionID];
+  sessionID = [deactivateCopy sessionID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SBRemoteAlertHandleServer_remoteTransientOverlaySessionDidDeactivate___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v11 = v4;
-  v12 = v6;
-  v8 = v6;
-  v9 = v4;
+  v11 = deactivateCopy;
+  v12 = sessionID;
+  v8 = sessionID;
+  v9 = deactivateCopy;
   dispatch_async(queue, block);
 }
 
@@ -612,14 +612,14 @@ void __72__SBRemoteAlertHandleServer_remoteTransientOverlaySessionDidDeactivate_
   }
 }
 
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  errorCopy = error;
   v10 = SBLogTransientOverlay();
   v11 = v10;
-  if (v9)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -630,24 +630,24 @@ void __72__SBRemoteAlertHandleServer_remoteTransientOverlaySessionDidDeactivate_
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v8;
+    v23 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "remoteTransientOverlaySession:didInvalidateWithReason:error: %{public}@", buf, 0xCu);
   }
 
-  v12 = [v8 sessionID];
+  sessionID = [sessionCopy sessionID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__SBRemoteAlertHandleServer_remoteTransientOverlaySession_didInvalidateWithReason_error___block_invoke;
   block[3] = &unk_2783A9288;
   block[4] = self;
-  v18 = v8;
-  v20 = v12;
-  v21 = a4;
-  v19 = v9;
-  v14 = v12;
-  v15 = v9;
-  v16 = v8;
+  v18 = sessionCopy;
+  v20 = sessionID;
+  reasonCopy = reason;
+  v19 = errorCopy;
+  v14 = sessionID;
+  v15 = errorCopy;
+  v16 = sessionCopy;
   dispatch_async(queue, block);
 }
 
@@ -708,40 +708,40 @@ void __89__SBRemoteAlertHandleServer_remoteTransientOverlaySession_didInvalidate
   }
 }
 
-- (void)_addConnection:(id)a3 forSession:(id)a4
+- (void)_addConnection:(id)connection forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMapTable *)self->_sessionToConnections objectForKey:v7];
+  v8 = [(NSMapTable *)self->_sessionToConnections objectForKey:sessionCopy];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     sessionToConnections = self->_sessionToConnections;
     if (!sessionToConnections)
     {
-      v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
       v11 = self->_sessionToConnections;
-      self->_sessionToConnections = v10;
+      self->_sessionToConnections = strongToStrongObjectsMapTable;
 
       sessionToConnections = self->_sessionToConnections;
     }
 
-    [(NSMapTable *)sessionToConnections setObject:v8 forKey:v7];
+    [(NSMapTable *)sessionToConnections setObject:v8 forKey:sessionCopy];
   }
 
-  [v8 addObject:v6];
+  [v8 addObject:connectionCopy];
   if ([v8 count] == 1)
   {
-    v12 = v7;
+    v12 = sessionCopy;
     BSDispatchMain();
   }
 }
 
-- (void)_handleDisconnectForServiceConnection:(id)a3
+- (void)_handleDisconnectForServiceConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(NSMapTable *)self->_sessionToConnections copy];
   v16 = 0u;
@@ -766,7 +766,7 @@ void __89__SBRemoteAlertHandleServer_remoteTransientOverlaySession_didInvalidate
 
         v12 = *(*(&v16 + 1) + 8 * i);
         v13 = [v6 objectForKey:v12];
-        if ([v13 containsObject:v4])
+        if ([v13 containsObject:connectionCopy])
         {
           if (!v9)
           {
@@ -791,7 +791,7 @@ void __89__SBRemoteAlertHandleServer_remoteTransientOverlaySession_didInvalidate
   if ([v9 count])
   {
     v14 = v9;
-    v15 = v4;
+    v15 = connectionCopy;
     BSDispatchMain();
   }
 }
@@ -885,19 +885,19 @@ void __67__SBRemoteAlertHandleServer__handleDisconnectForServiceConnection___blo
   }
 }
 
-- (void)_removeConnection:(id)a3 forSession:(id)a4
+- (void)_removeConnection:(id)connection forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMapTable *)self->_sessionToConnections objectForKey:v7];
-  if ([v8 containsObject:v6])
+  v8 = [(NSMapTable *)self->_sessionToConnections objectForKey:sessionCopy];
+  if ([v8 containsObject:connectionCopy])
   {
-    [v8 removeObject:v6];
+    [v8 removeObject:connectionCopy];
     if (![v8 count])
     {
       v10 = MEMORY[0x277D85DD0];
-      v11 = v7;
+      v11 = sessionCopy;
       BSDispatchMain();
       [(NSMapTable *)self->_sessionToConnections removeObjectForKey:v11, v10, 3221225472, __58__SBRemoteAlertHandleServer__removeConnection_forSession___block_invoke, &unk_2783A92D8];
       if (![(NSMapTable *)self->_sessionToConnections count])
@@ -909,22 +909,22 @@ void __67__SBRemoteAlertHandleServer__handleDisconnectForServiceConnection___blo
   }
 }
 
-- (BOOL)_shouldAllowAuditToken:(id)a3 forDefinition:(id)a4
+- (BOOL)_shouldAllowAuditToken:(id)token forDefinition:(id)definition
 {
-  v6 = a3;
-  if ([a4 isForCarPlay])
+  tokenCopy = token;
+  if ([definition isForCarPlay])
   {
     v7 = 0;
   }
 
-  else if (([(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateAuditToken:v6]& 1) != 0)
+  else if (([(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateAuditToken:tokenCopy]& 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [(FBServiceClientAuthenticator *)self->_legacyClientAuthenticator authenticateAuditToken:v6];
+    v7 = [(FBServiceClientAuthenticator *)self->_legacyClientAuthenticator authenticateAuditToken:tokenCopy];
   }
 
   return v7;

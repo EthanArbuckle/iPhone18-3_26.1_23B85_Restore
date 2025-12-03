@@ -1,33 +1,33 @@
 @interface BMPBEntityRelationshipEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(id)attributes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBEntityRelationshipEvent
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = BMPBEntityRelationshipEvent;
   v4 = [(BMPBEntityRelationshipEvent *)&v8 description];
-  v5 = [(BMPBEntityRelationshipEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBEntityRelationshipEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   relationship = self->_relationship;
@@ -68,15 +68,15 @@
   sourceEntity = self->_sourceEntity;
   if (sourceEntity)
   {
-    v9 = [(BMPBEntity *)sourceEntity dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"sourceEntity"];
+    dictionaryRepresentation = [(BMPBEntity *)sourceEntity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"sourceEntity"];
   }
 
   targetEntity = self->_targetEntity;
   if (targetEntity)
   {
-    v11 = [(BMPBEntity *)targetEntity dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"targetEntity"];
+    dictionaryRepresentation2 = [(BMPBEntity *)targetEntity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"targetEntity"];
   }
 
   if ([(NSMutableArray *)self->_attributes count])
@@ -101,8 +101,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation3 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation3];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -119,10 +119,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientId)
   {
     PBDataWriterWriteStringField();
@@ -183,71 +183,71 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_clientId)
   {
-    [v8 setClientId:?];
+    [toCopy setClientId:?];
   }
 
   if (self->_relationship)
   {
-    [v8 setRelationship:?];
+    [toCopy setRelationship:?];
   }
 
   if (self->_sourceId)
   {
-    [v8 setSourceId:?];
+    [toCopy setSourceId:?];
   }
 
   if (self->_sourceEntity)
   {
-    [v8 setSourceEntity:?];
+    [toCopy setSourceEntity:?];
   }
 
   if (self->_targetEntity)
   {
-    [v8 setTargetEntity:?];
+    [toCopy setTargetEntity:?];
   }
 
   if ([(BMPBEntityRelationshipEvent *)self attributesCount])
   {
-    [v8 clearAttributes];
-    v4 = [(BMPBEntityRelationshipEvent *)self attributesCount];
-    if (v4)
+    [toCopy clearAttributes];
+    attributesCount = [(BMPBEntityRelationshipEvent *)self attributesCount];
+    if (attributesCount)
     {
-      v5 = v4;
+      v5 = attributesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBEntityRelationshipEvent *)self attributesAtIndex:i];
-        [v8 addAttributes:v7];
+        [toCopy addAttributes:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_relationship copyWithZone:a3];
+  v8 = [(NSString *)self->_relationship copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_sourceId copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceId copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(BMPBEntity *)self->_sourceEntity copyWithZone:a3];
+  v12 = [(BMPBEntity *)self->_sourceEntity copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(BMPBEntity *)self->_targetEntity copyWithZone:a3];
+  v14 = [(BMPBEntity *)self->_targetEntity copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
@@ -271,7 +271,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addAttributes:v21];
 
         ++v20;
@@ -288,13 +288,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((clientId = self->_clientId, !(clientId | v4[2])) || -[NSString isEqual:](clientId, "isEqual:")) && ((relationship = self->_relationship, !(relationship | v4[3])) || -[NSString isEqual:](relationship, "isEqual:")) && ((sourceId = self->_sourceId, !(sourceId | v4[5])) || -[NSString isEqual:](sourceId, "isEqual:")) && ((sourceEntity = self->_sourceEntity, !(sourceEntity | v4[4])) || -[BMPBEntity isEqual:](sourceEntity, "isEqual:")) && ((targetEntity = self->_targetEntity, !(targetEntity | v4[6])) || -[BMPBEntity isEqual:](targetEntity, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((clientId = self->_clientId, !(clientId | equalCopy[2])) || -[NSString isEqual:](clientId, "isEqual:")) && ((relationship = self->_relationship, !(relationship | equalCopy[3])) || -[NSString isEqual:](relationship, "isEqual:")) && ((sourceId = self->_sourceId, !(sourceId | equalCopy[5])) || -[NSString isEqual:](sourceId, "isEqual:")) && ((sourceEntity = self->_sourceEntity, !(sourceEntity | equalCopy[4])) || -[BMPBEntity isEqual:](sourceEntity, "isEqual:")) && ((targetEntity = self->_targetEntity, !(targetEntity | equalCopy[6])) || -[BMPBEntity isEqual:](targetEntity, "isEqual:")))
   {
     attributes = self->_attributes;
-    if (attributes | v4[1])
+    if (attributes | equalCopy[1])
     {
       v11 = [(NSMutableArray *)attributes isEqual:?];
     }
@@ -323,27 +323,27 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_attributes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BMPBEntityRelationshipEvent *)self setClientId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBEntityRelationshipEvent *)self setRelationship:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBEntityRelationshipEvent *)self setSourceId:?];
   }
 
   sourceEntity = self->_sourceEntity;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (sourceEntity)
   {
     if (v6)
@@ -358,7 +358,7 @@
   }
 
   targetEntity = self->_targetEntity;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (targetEntity)
   {
     if (v8)
@@ -376,7 +376,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 1);
+  v9 = *(fromCopy + 1);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

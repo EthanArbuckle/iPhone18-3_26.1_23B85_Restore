@@ -1,12 +1,12 @@
 @interface CNContactMatchSummarizer
-+ (id)keyDescriptorForContactIdentifiers:(id)a3 matchInfos:(id)a4;
++ (id)keyDescriptorForContactIdentifiers:(id)identifiers matchInfos:(id)infos;
 + (id)log;
 + (id)summaryProperties;
-+ (id)summaryPropertyForMatchInfo:(id)a3;
++ (id)summaryPropertyForMatchInfo:(id)info;
 - (CNContactMatchSummarizer)init;
-- (id)attributedStringForPropertyValueString:(id)a3 queryTerms:(id)a4 outMatchCount:(unint64_t *)a5;
-- (id)summariesFutureForContactsIdentifiers:(id)a3 matchInfos:(id)a4 contactStore:(id)a5 scheduler:(id)a6;
-- (id)summaryForContact:(id)a3 matchInfo:(id)a4;
+- (id)attributedStringForPropertyValueString:(id)string queryTerms:(id)terms outMatchCount:(unint64_t *)count;
+- (id)summariesFutureForContactsIdentifiers:(id)identifiers matchInfos:(id)infos contactStore:(id)store scheduler:(id)scheduler;
+- (id)summaryForContact:(id)contact matchInfo:(id)info;
 - (void)dealloc;
 @end
 
@@ -66,16 +66,16 @@ void __45__CNContactMatchSummarizer_summaryProperties__block_invoke()
   summaryProperties_cn_once_object_1 = v1;
 }
 
-+ (id)summaryPropertyForMatchInfo:(id)a3
++ (id)summaryPropertyForMatchInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [a1 summaryProperties];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  summaryProperties = [self summaryProperties];
+  v6 = [summaryProperties countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -88,12 +88,12 @@ void __45__CNContactMatchSummarizer_summaryProperties__block_invoke()
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(summaryProperties);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v4 matchedProperties];
-        v14 = [v13 objectForKey:v12];
+        matchedProperties = [infoCopy matchedProperties];
+        v14 = [matchedProperties objectForKey:v12];
 
         v15 = [v14 count];
         if (v15 > v8)
@@ -106,7 +106,7 @@ void __45__CNContactMatchSummarizer_summaryProperties__block_invoke()
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [summaryProperties countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -120,29 +120,29 @@ void __45__CNContactMatchSummarizer_summaryProperties__block_invoke()
   return v9;
 }
 
-- (id)summariesFutureForContactsIdentifiers:(id)a3 matchInfos:(id)a4 contactStore:(id)a5 scheduler:(id)a6
+- (id)summariesFutureForContactsIdentifiers:(id)identifiers matchInfos:(id)infos contactStore:(id)store scheduler:(id)scheduler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifiersCopy = identifiers;
+  infosCopy = infos;
+  storeCopy = store;
   v13 = MEMORY[0x1E6996668];
-  v14 = a6;
+  schedulerCopy = scheduler;
   v15 = objc_alloc_init(v13);
   v16 = MEMORY[0x1E6996720];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __100__CNContactMatchSummarizer_summariesFutureForContactsIdentifiers_matchInfos_contactStore_scheduler___block_invoke;
   v26[3] = &unk_1E7414090;
-  v27 = v10;
-  v28 = v11;
-  v29 = self;
-  v30 = v12;
+  v27 = identifiersCopy;
+  v28 = infosCopy;
+  selfCopy = self;
+  v30 = storeCopy;
   v17 = v15;
   v31 = v17;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
-  v21 = [v16 futureWithBlock:v26 scheduler:v14];
+  v18 = storeCopy;
+  v19 = infosCopy;
+  v20 = identifiersCopy;
+  v21 = [v16 futureWithBlock:v26 scheduler:schedulerCopy];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -246,17 +246,17 @@ uint64_t __100__CNContactMatchSummarizer_summariesFutureForContactsIdentifiers_m
   return result;
 }
 
-+ (id)keyDescriptorForContactIdentifiers:(id)a3 matchInfos:(id)a4
++ (id)keyDescriptorForContactIdentifiers:(id)identifiers matchInfos:(id)infos
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  infosCopy = infos;
   v21 = objc_alloc_init(CNPerContactPropertyKeyDescriptor);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
@@ -272,15 +272,15 @@ uint64_t __100__CNContactMatchSummarizer_summariesFutureForContactsIdentifiers_m
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v7 objectForKey:v13];
+        v14 = [infosCopy objectForKey:v13];
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 matchedProperties];
+          matchedProperties = [v14 matchedProperties];
 
-          if (v16)
+          if (matchedProperties)
           {
-            v17 = [a1 summaryPropertyForMatchInfo:v15];
+            v17 = [self summaryPropertyForMatchInfo:v15];
             v18 = v17;
             if (v17)
             {
@@ -310,10 +310,10 @@ uint64_t __100__CNContactMatchSummarizer_summariesFutureForContactsIdentifiers_m
   {
     v2->_tokenList = ABTokenListCreate();
     v3 = *MEMORY[0x1E695E480];
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     v8.location = 0;
     v8.length = 0;
-    v2->_tokenizer = CFStringTokenizerCreate(v3, &stru_1F094DAB0, v8, 0x810000uLL, v4);
+    v2->_tokenizer = CFStringTokenizerCreate(v3, &stru_1F094DAB0, v8, 0x810000uLL, currentLocale);
     v5 = v2;
   }
 
@@ -334,21 +334,21 @@ uint64_t __100__CNContactMatchSummarizer_summariesFutureForContactsIdentifiers_m
   [(CNContactMatchSummarizer *)&v4 dealloc];
 }
 
-- (id)summaryForContact:(id)a3 matchInfo:(id)a4
+- (id)summaryForContact:(id)contact matchInfo:(id)info
 {
   v55 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v5 = a4;
+  contactCopy = contact;
+  infoCopy = info;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__16;
   v48 = __Block_byref_object_dispose__16;
   v49 = 0;
-  v31 = [CNContactMatchSummarizer summaryPropertyForMatchInfo:v5];
-  v28 = v5;
-  v6 = [v5 matchedProperties];
-  v33 = [v6 objectForKey:v31];
+  v31 = [CNContactMatchSummarizer summaryPropertyForMatchInfo:infoCopy];
+  v28 = infoCopy;
+  matchedProperties = [infoCopy matchedProperties];
+  v33 = [matchedProperties objectForKey:v31];
 
   if (!v31)
   {
@@ -357,9 +357,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([v29 isKeyAvailable:v31])
+  if ([contactCopy isKeyAvailable:v31])
   {
-    v27 = [v29 valueForKey:v31];
+    v27 = [contactCopy valueForKey:v31];
     if (v27)
     {
       v7 = +[CN contactPropertiesByKey];
@@ -391,9 +391,9 @@ LABEL_26:
               }
 
               v12 = *(*(&v40 + 1) + 8 * i);
-              v13 = [v8 plistTransform];
-              v14 = [v12 value];
-              v15 = (v13)[2](v13, v14);
+              plistTransform = [v8 plistTransform];
+              value = [v12 value];
+              v15 = (plistTransform)[2](plistTransform, value);
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -412,21 +412,21 @@ LABEL_26:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v18 = [v8 summarizationKeys];
+                summarizationKeys = [v8 summarizationKeys];
               }
 
               else
               {
-                v18 = 0;
+                summarizationKeys = 0;
               }
 
               v34[0] = MEMORY[0x1E69E9820];
               v34[1] = 3221225472;
               v34[2] = __56__CNContactMatchSummarizer_summaryForContact_matchInfo___block_invoke;
               v34[3] = &unk_1E74140B8;
-              v19 = v18;
+              v19 = summarizationKeys;
               v35 = v19;
-              v36 = self;
+              selfCopy = self;
               v37 = v33;
               v38 = buf;
               v39 = &v44;
@@ -460,14 +460,14 @@ LABEL_26:
   v20 = [objc_opt_class() log];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v29 identifier];
-    v26 = [v29 availableKeyDescriptor];
+    identifier = [contactCopy identifier];
+    availableKeyDescriptor = [contactCopy availableKeyDescriptor];
     *buf = 138543874;
-    *&buf[4] = v25;
+    *&buf[4] = identifier;
     *&buf[12] = 2114;
     *&buf[14] = v31;
     *&buf[22] = 2114;
-    v54 = v26;
+    v54 = availableKeyDescriptor;
     _os_log_error_impl(&dword_1954A0000, v20, OS_LOG_TYPE_ERROR, "contact %{public}@ does not have %{public}@ fetched, available keys %{public}@", buf, 0x20u);
   }
 
@@ -500,14 +500,14 @@ void __56__CNContactMatchSummarizer_summaryForContact_matchInfo___block_invoke(u
   }
 }
 
-- (id)attributedStringForPropertyValueString:(id)a3 queryTerms:(id)a4 outMatchCount:(unint64_t *)a5
+- (id)attributedStringForPropertyValueString:(id)string queryTerms:(id)terms outMatchCount:(unint64_t *)count
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  termsCopy = terms;
   v8 = MEMORY[0x1E696AB08];
-  v9 = a3;
-  v10 = [v8 newlineCharacterSet];
-  v11 = [v9 componentsSeparatedByCharactersInSet:v10];
+  stringCopy = string;
+  newlineCharacterSet = [v8 newlineCharacterSet];
+  v11 = [stringCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v12 = [v11 componentsJoinedByString:@" "];
 
@@ -517,7 +517,7 @@ void __56__CNContactMatchSummarizer_summaryForContact_matchInfo___block_invoke(u
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v7;
+  obj = termsCopy;
   v38 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   v13 = 0;
   v14 = 0;
@@ -564,9 +564,9 @@ void __56__CNContactMatchSummarizer_summaryForContact_matchInfo___block_invoke(u
               v24 = [MEMORY[0x1E696AD98] numberWithBool:1];
               [v14 addAttribute:@"contactExcerptEmphasized" value:v24 range:{TokenRangeAtIndex, v21}];
 
-              if (a5)
+              if (count)
               {
-                ++*a5;
+                ++*count;
               }
             }
           }

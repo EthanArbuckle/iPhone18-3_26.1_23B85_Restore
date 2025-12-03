@@ -1,70 +1,70 @@
 @interface CAMViewfinderTransitionController
 - (CAMViewfinderTransitionable)target;
-- (void)closeAndRotateWithDirection:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)closeWithBlur:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)closeAndRotateWithDirection:(unint64_t)direction withCompletionHandler:(id)handler;
+- (void)closeWithBlur:(BOOL)blur animated:(BOOL)animated withCompletionHandler:(id)handler;
 - (void)handleApplicationDidEnterBackground;
-- (void)openForReason:(int64_t)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)openForReason:(int64_t)reason animated:(BOOL)animated withCompletionHandler:(id)handler;
 @end
 
 @implementation CAMViewfinderTransitionController
 
-- (void)closeWithBlur:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)closeWithBlur:(BOOL)blur animated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = a5;
-  v8 = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
-  if (!v8)
+  animatedCopy = animated;
+  blurCopy = blur;
+  handlerCopy = handler;
+  _openAndCloseTransition = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
+  if (!_openAndCloseTransition)
   {
     v9 = [CAMViewfinderOpenAndCloseTransition alloc];
-    v10 = [(CAMViewfinderTransitionController *)self target];
-    v8 = [(CAMViewfinderOpenAndCloseTransition *)v9 initWithTransitionableViewfinder:v10];
+    target = [(CAMViewfinderTransitionController *)self target];
+    _openAndCloseTransition = [(CAMViewfinderOpenAndCloseTransition *)v9 initWithTransitionableViewfinder:target];
 
-    [(CAMViewfinderTransitionController *)self _setOpenAndCloseTransition:v8];
+    [(CAMViewfinderTransitionController *)self _setOpenAndCloseTransition:_openAndCloseTransition];
   }
 
-  if (v6)
+  if (blurCopy)
   {
-    [(CAMViewfinderOpenAndCloseTransition *)v8 closeAnimated:v5 withCompletionHandler:v11];
+    [(CAMViewfinderOpenAndCloseTransition *)_openAndCloseTransition closeAnimated:animatedCopy withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    [(CAMViewfinderOpenAndCloseTransition *)v8 closeWithoutBlurring];
-    if (v11)
+    [(CAMViewfinderOpenAndCloseTransition *)_openAndCloseTransition closeWithoutBlurring];
+    if (handlerCopy)
     {
-      v11[2]();
+      handlerCopy[2]();
     }
   }
 }
 
-- (void)closeAndRotateWithDirection:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)closeAndRotateWithDirection:(unint64_t)direction withCompletionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = [(CAMViewfinderTransitionController *)self _flipTransition];
-  if (!v6)
+  handlerCopy = handler;
+  _flipTransition = [(CAMViewfinderTransitionController *)self _flipTransition];
+  if (!_flipTransition)
   {
     v7 = [CAMViewfinderFlipTransition alloc];
-    v8 = [(CAMViewfinderTransitionController *)self target];
-    v6 = [(CAMViewfinderFlipTransition *)v7 initWithTransitionableViewfinder:v8];
+    target = [(CAMViewfinderTransitionController *)self target];
+    _flipTransition = [(CAMViewfinderFlipTransition *)v7 initWithTransitionableViewfinder:target];
 
-    [(CAMViewfinderTransitionController *)self _setFlipTransition:v6];
+    [(CAMViewfinderTransitionController *)self _setFlipTransition:_flipTransition];
   }
 
-  [(CAMViewfinderFlipTransition *)v6 performFlipTransitionWithDirection:a3 completionHandler:v9];
+  [(CAMViewfinderFlipTransition *)_flipTransition performFlipTransitionWithDirection:direction completionHandler:handlerCopy];
 }
 
-- (void)openForReason:(int64_t)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)openForReason:(int64_t)reason animated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
-  v9 = [(CAMViewfinderTransitionController *)self _flipTransition];
-  v10 = v9;
-  if (v8)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  _openAndCloseTransition = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
+  _flipTransition = [(CAMViewfinderTransitionController *)self _flipTransition];
+  v10 = _flipTransition;
+  if (_openAndCloseTransition)
   {
     [(CAMViewfinderTransitionController *)self _setOpenAndCloseTransition:0];
-    [v8 openAnimated:v5 withCompletionHandler:v7];
+    [_openAndCloseTransition openAnimated:animatedCopy withCompletionHandler:handlerCopy];
     if (!v10)
     {
       goto LABEL_9;
@@ -73,12 +73,12 @@
     goto LABEL_5;
   }
 
-  if (v9)
+  if (_flipTransition)
   {
 LABEL_5:
     [(CAMViewfinderTransitionController *)self _setFlipTransition:0];
-    [v10 completeTransitionToLivePreviewWithCompletionHandler:v7];
-    if (v8)
+    [v10 completeTransitionToLivePreviewWithCompletionHandler:handlerCopy];
+    if (_openAndCloseTransition)
     {
       v11 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -97,9 +97,9 @@ LABEL_5:
     [CAMViewfinderTransitionController openForReason:v12 animated:? withCompletionHandler:?];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_9:
@@ -107,8 +107,8 @@ LABEL_9:
 
 - (void)handleApplicationDidEnterBackground
 {
-  v2 = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
-  [v2 setDidEnterBackground:1];
+  _openAndCloseTransition = [(CAMViewfinderTransitionController *)self _openAndCloseTransition];
+  [_openAndCloseTransition setDidEnterBackground:1];
 }
 
 - (CAMViewfinderTransitionable)target

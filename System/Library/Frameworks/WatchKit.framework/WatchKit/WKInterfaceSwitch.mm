@@ -1,26 +1,26 @@
 @interface WKInterfaceSwitch
-- (void)setAttributedTitle:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAttributedTitle:(id)title;
+- (void)setColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WKInterfaceSwitch
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"title"];
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = _WKValidatedAttributedString(a3);
+  v4 = _WKValidatedAttributedString(title);
   [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"title"];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = [SPColorWrapper wrapperForColor:a3];
+  v4 = [SPColorWrapper wrapperForColor:color];
   [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"color"];
 }
 

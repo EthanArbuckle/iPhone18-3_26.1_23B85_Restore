@@ -3,33 +3,33 @@
 - (void)_layoutImageView;
 - (void)_layoutSBIconView;
 - (void)layoutSubviews;
-- (void)setAppBundleIdentifier:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setAppBundleIdentifier:(id)identifier;
+- (void)setImage:(id)image;
 @end
 
 @implementation APUISuggestionIconView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
+    v6 = imageCopy;
     [(APUISuggestionIconView *)self setAppBundleIdentifier:0];
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(APUISuggestionIconView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setAppBundleIdentifier:(id)a3
+- (void)setAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   appBundleIdentifier = self->_appBundleIdentifier;
-  if (appBundleIdentifier != v4)
+  if (appBundleIdentifier != identifierCopy)
   {
-    v8 = v4;
-    if (!v4 || ![(NSString *)appBundleIdentifier isEqualToString:v4])
+    v8 = identifierCopy;
+    if (!identifierCopy || ![(NSString *)appBundleIdentifier isEqualToString:identifierCopy])
     {
       [(APUISuggestionIconView *)self setImage:0];
       v6 = [(NSString *)v8 copy];
@@ -81,8 +81,8 @@ uint64_t __40__APUISuggestionIconView_layoutSubviews__block_invoke(uint64_t a1)
 
   [(APUISuggestionIconView *)self bounds];
   [(APUISingleIconLayoutProvider *)self->_layoutProvider setSize:v5, v6];
-  v7 = [(APUISuggestionIconView *)self _screen];
-  [v7 scale];
+  _screen = [(APUISuggestionIconView *)self _screen];
+  [_screen scale];
   [(APUISingleIconLayoutProvider *)self->_layoutProvider setScale:?];
 
   if (!self->_appIconView)
@@ -113,8 +113,8 @@ uint64_t __40__APUISuggestionIconView_layoutSubviews__block_invoke(uint64_t a1)
     [(APUISuggestionIconView *)self addSubview:self->_appIconView];
   }
 
-  v12 = [(APUISuggestionIconView *)self delegate];
-  v13 = [v12 iconForSuggestionIconView:self];
+  delegate = [(APUISuggestionIconView *)self delegate];
+  v13 = [delegate iconForSuggestionIconView:self];
 
   [(APUISuggestionIconView *)self bounds];
   [(SBIconView *)self->_appIconView setFrame:?];
@@ -139,8 +139,8 @@ uint64_t __40__APUISuggestionIconView_layoutSubviews__block_invoke(uint64_t a1)
 
     [(UIImageView *)self->_imageView setClipsToBounds:1];
     [(UIImageView *)self->_imageView setContentMode:1];
-    v6 = [(UIImageView *)self->_imageView layer];
-    [v6 setCornerRadius:5.0];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setCornerRadius:5.0];
 
     [(APUISuggestionIconView *)self addSubview:self->_imageView];
     imageView = self->_imageView;

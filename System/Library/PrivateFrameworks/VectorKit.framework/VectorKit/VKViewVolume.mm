@@ -1,16 +1,16 @@
 @interface VKViewVolume
-- (Matrix<double,)lerpPoint:(float *)a3;
-- (void)updateWithFrustum:(id *)a3 matrix:(const void *)a4;
+- (Matrix<double,)lerpPoint:(float *)point;
+- (void)updateWithFrustum:(id *)frustum matrix:(const void *)matrix;
 @end
 
 @implementation VKViewVolume
 
-- (Matrix<double,)lerpPoint:(float *)a3
+- (Matrix<double,)lerpPoint:(float *)point
 {
   v3 = 0;
-  v4 = a3[1];
-  v5 = *a3;
-  v6 = a3[2];
+  v4 = point[1];
+  v5 = *point;
+  v6 = point[2];
   v27 = self->_corners[0];
   do
   {
@@ -96,14 +96,14 @@
   return result;
 }
 
-- (void)updateWithFrustum:(id *)a3 matrix:(const void *)a4
+- (void)updateWithFrustum:(id *)frustum matrix:(const void *)matrix
 {
-  var4 = a3->var4;
-  v6 = a3->var5 + a3->var5;
+  var4 = frustum->var4;
+  v6 = frustum->var5 + frustum->var5;
   v7 = -1.0 - v6;
-  v8 = a3->var1 * 0.5;
-  v9 = a3->var2 * 0.5;
-  var3 = a3->var3;
+  v8 = frustum->var1 * 0.5;
+  v9 = frustum->var2 * 0.5;
+  var3 = frustum->var3;
   v11 = v8 * (-1.0 - v6);
   v12 = -v9;
   self->_corners[0]._e[0] = v11;
@@ -120,7 +120,7 @@
   self->_corners[3]._e[0] = v14;
   self->_corners[3]._e[1] = v9;
   self->_corners[3]._e[2] = -var3;
-  if (!a3->var0)
+  if (!frustum->var0)
   {
     v15 = var4 / var3 * v8;
     v12 = -(var4 / var3 * v9);
@@ -150,7 +150,7 @@
     v22 = *(v17 - 1);
     v23 = v19;
     v24 = 0x3FF0000000000000;
-    *(v17 - 2) = gm::operator*<double,4,4,1>(a4, &v22);
+    *(v17 - 2) = gm::operator*<double,4,4,1>(matrix, &v22);
     *(v17 - 1) = v20;
     *v17 = v21;
     v17 += 3;

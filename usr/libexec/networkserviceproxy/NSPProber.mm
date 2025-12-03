@@ -1,9 +1,9 @@
 @interface NSPProber
-- (NSPProber)initWithCoder:(id)a3;
+- (NSPProber)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPProber
@@ -30,76 +30,76 @@
   return v3;
 }
 
-- (NSPProber)initWithCoder:(id)a3
+- (NSPProber)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NSPProber;
   v5 = [(NSPProber *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proberName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proberName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_proxyProber = [v4 decodeBoolForKey:@"proberProxy"];
-    v5->_probeCount = [v4 decodeIntegerForKey:@"proberProbeCount"];
-    v5->_probeConnectionTimeout = [v4 decodeIntegerForKey:@"proberProbeConnectionTimeout"];
-    v5->_probingActive = [v4 decodeBoolForKey:@"proberProbeActiveCount"];
-    v5->_probeOnNetworkChange = [v4 decodeBoolForKey:@"proberProbeOnNetworkChange"];
-    v5->_linkQuality = [v4 decodeIntForKey:@"proberLinkQuality"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proberNextProbeDate"];
+    v5->_proxyProber = [coderCopy decodeBoolForKey:@"proberProxy"];
+    v5->_probeCount = [coderCopy decodeIntegerForKey:@"proberProbeCount"];
+    v5->_probeConnectionTimeout = [coderCopy decodeIntegerForKey:@"proberProbeConnectionTimeout"];
+    v5->_probingActive = [coderCopy decodeBoolForKey:@"proberProbeActiveCount"];
+    v5->_probeOnNetworkChange = [coderCopy decodeBoolForKey:@"proberProbeOnNetworkChange"];
+    v5->_linkQuality = [coderCopy decodeIntForKey:@"proberLinkQuality"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proberNextProbeDate"];
     nextProbeDate = v5->_nextProbeDate;
     v5->_nextProbeDate = v8;
 
-    v5->_probeSuccessCount = [v4 decodeIntegerForKey:@"proberProbeSuccessCount"];
-    v5->_probeFailedCount = [v4 decodeIntegerForKey:@"proberProbeFailedCount"];
-    v5->_probeRedirectedCount = [v4 decodeIntegerForKey:@"proberProbeRedirectedCount"];
-    v5->_probeServerErrorCount = [v4 decodeIntegerForKey:@"proberProbeServerErrorCount"];
+    v5->_probeSuccessCount = [coderCopy decodeIntegerForKey:@"proberProbeSuccessCount"];
+    v5->_probeFailedCount = [coderCopy decodeIntegerForKey:@"proberProbeFailedCount"];
+    v5->_probeRedirectedCount = [coderCopy decodeIntegerForKey:@"proberProbeRedirectedCount"];
+    v5->_probeServerErrorCount = [coderCopy decodeIntegerForKey:@"proberProbeServerErrorCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_name forKey:@"proberName"];
-    [v5 encodeBool:self->_proxyProber forKey:@"proberProxy"];
-    [v5 encodeInteger:self->_probeCount forKey:@"proberProbeCount"];
-    [v5 encodeInteger:self->_probeConnectionTimeout forKey:@"proberProbeConnectionTimeout"];
-    [v5 encodeBool:self->_probingActive forKey:@"proberProbeActiveCount"];
-    [v5 encodeBool:self->_probeOnNetworkChange forKey:@"proberProbeOnNetworkChange"];
-    [v5 encodeInt:self->_linkQuality forKey:@"proberLinkQuality"];
-    [v5 encodeObject:self->_nextProbeDate forKey:@"proberNextProbeDate"];
-    [v5 encodeInteger:self->_probeSuccessCount forKey:@"proberProbeSuccessCount"];
-    [v5 encodeInteger:self->_probeFailedCount forKey:@"proberProbeFailedCount"];
-    [v5 encodeInteger:self->_probeRedirectedCount forKey:@"proberProbeRedirectedCount"];
+    [coderCopy encodeObject:self->_name forKey:@"proberName"];
+    [coderCopy encodeBool:self->_proxyProber forKey:@"proberProxy"];
+    [coderCopy encodeInteger:self->_probeCount forKey:@"proberProbeCount"];
+    [coderCopy encodeInteger:self->_probeConnectionTimeout forKey:@"proberProbeConnectionTimeout"];
+    [coderCopy encodeBool:self->_probingActive forKey:@"proberProbeActiveCount"];
+    [coderCopy encodeBool:self->_probeOnNetworkChange forKey:@"proberProbeOnNetworkChange"];
+    [coderCopy encodeInt:self->_linkQuality forKey:@"proberLinkQuality"];
+    [coderCopy encodeObject:self->_nextProbeDate forKey:@"proberNextProbeDate"];
+    [coderCopy encodeInteger:self->_probeSuccessCount forKey:@"proberProbeSuccessCount"];
+    [coderCopy encodeInteger:self->_probeFailedCount forKey:@"proberProbeFailedCount"];
+    [coderCopy encodeInteger:self->_probeRedirectedCount forKey:@"proberProbeRedirectedCount"];
     probeServerErrorCount = self->_probeServerErrorCount;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"proberName"];
-    [v5 encodeBool:0 forKey:@"proberProxy"];
-    [v5 encodeInteger:0 forKey:@"proberProbeCount"];
-    [v5 encodeInteger:0 forKey:@"proberProbeConnectionTimeout"];
-    [v5 encodeBool:0 forKey:@"proberProbeActiveCount"];
-    [v5 encodeBool:0 forKey:@"proberProbeOnNetworkChange"];
-    [v5 encodeInt:0 forKey:@"proberLinkQuality"];
-    [v5 encodeObject:0 forKey:@"proberNextProbeDate"];
-    [v5 encodeInteger:0 forKey:@"proberProbeSuccessCount"];
-    [v5 encodeInteger:0 forKey:@"proberProbeFailedCount"];
-    [v5 encodeInteger:0 forKey:@"proberProbeRedirectedCount"];
+    [coderCopy encodeObject:0 forKey:@"proberName"];
+    [coderCopy encodeBool:0 forKey:@"proberProxy"];
+    [coderCopy encodeInteger:0 forKey:@"proberProbeCount"];
+    [coderCopy encodeInteger:0 forKey:@"proberProbeConnectionTimeout"];
+    [coderCopy encodeBool:0 forKey:@"proberProbeActiveCount"];
+    [coderCopy encodeBool:0 forKey:@"proberProbeOnNetworkChange"];
+    [coderCopy encodeInt:0 forKey:@"proberLinkQuality"];
+    [coderCopy encodeObject:0 forKey:@"proberNextProbeDate"];
+    [coderCopy encodeInteger:0 forKey:@"proberProbeSuccessCount"];
+    [coderCopy encodeInteger:0 forKey:@"proberProbeFailedCount"];
+    [coderCopy encodeInteger:0 forKey:@"proberProbeRedirectedCount"];
     probeServerErrorCount = 0;
   }
 
-  [v5 encodeInteger:probeServerErrorCount forKey:@"proberProbeServerErrorCount"];
+  [coderCopy encodeInteger:probeServerErrorCount forKey:@"proberProbeServerErrorCount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPProber allocWithZone:?]];
   v5 = v4;

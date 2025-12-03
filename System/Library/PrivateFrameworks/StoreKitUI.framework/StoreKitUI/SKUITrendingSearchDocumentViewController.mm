@@ -1,21 +1,21 @@
 @interface SKUITrendingSearchDocumentViewController
-- (SKUITrendingSearchDocumentViewController)initWithTemplateElement:(id)a3;
+- (SKUITrendingSearchDocumentViewController)initWithTemplateElement:(id)element;
 - (SKUITrendingSearchView)resultsView;
 - (UIEdgeInsets)_resultsViewContentInset;
 - (void)_reloadResultsView;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)resultsViewTapRecognized:(id)a3;
-- (void)searchResultButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)resultsViewTapRecognized:(id)recognized;
+- (void)searchResultButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SKUITrendingSearchDocumentViewController
 
-- (SKUITrendingSearchDocumentViewController)initWithTemplateElement:(id)a3
+- (SKUITrendingSearchDocumentViewController)initWithTemplateElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITrendingSearchDocumentViewController initWithTemplateElement:];
@@ -27,16 +27,16 @@
   v6 = v5;
   if (v5)
   {
-    [(SKUITrendingSearchDocumentViewController *)v5 setTemplate:v4];
+    [(SKUITrendingSearchDocumentViewController *)v5 setTemplate:elementCopy];
   }
 
   return v6;
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
-  [(SKUITrendingSearchDocumentViewController *)self setTemplate:v4];
+  templateElement = [update templateElement];
+  [(SKUITrendingSearchDocumentViewController *)self setTemplate:templateElement];
 
   [(SKUITrendingSearchDocumentViewController *)self _reloadResultsView];
 }
@@ -44,22 +44,22 @@
 - (void)loadView
 {
   [(SKUITrendingSearchDocumentViewController *)self _reloadResultsView];
-  v3 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
-  [(SKUITrendingSearchDocumentViewController *)self setView:v3];
+  resultsView = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  [(SKUITrendingSearchDocumentViewController *)self setView:resultsView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SKUITrendingSearchDocumentViewController;
-  [(SKUITrendingSearchDocumentViewController *)&v3 viewDidAppear:a3];
+  [(SKUITrendingSearchDocumentViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  resultsView = [(SKUITrendingSearchDocumentViewController *)self resultsView];
   [(SKUITrendingSearchDocumentViewController *)self _resultsViewContentInset];
-  [v3 setLayoutMargins:?];
+  [resultsView setLayoutMargins:?];
 
   v4.receiver = self;
   v4.super_class = SKUITrendingSearchDocumentViewController;
@@ -81,8 +81,8 @@
     self->_resultsView = v5;
 
     v7 = self->_resultsView;
-    v8 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(SKUITrendingSearchView *)v7 setBackgroundColor:v8];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(SKUITrendingSearchView *)v7 setBackgroundColor:_systemBackgroundColor];
 
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_resultsViewTapRecognized_];
     [(SKUITrendingSearchView *)self->_resultsView addGestureRecognizer:v9];
@@ -92,25 +92,25 @@
   return v3;
 }
 
-- (void)resultsViewTapRecognized:(id)a3
+- (void)resultsViewTapRecognized:(id)recognized
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
 }
 
-- (void)searchResultButtonTapped:(id)a3
+- (void)searchResultButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SKUITrendingSearchDocumentViewController *)self template];
-  v10 = [v5 buttons];
+  tappedCopy = tapped;
+  template = [(SKUITrendingSearchDocumentViewController *)self template];
+  buttons = [template buttons];
 
-  v6 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
-  v7 = [v6 trendingSearchViews];
-  v8 = [v7 indexOfObjectIdenticalTo:v4];
+  resultsView = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  trendingSearchViews = [resultsView trendingSearchViews];
+  v8 = [trendingSearchViews indexOfObjectIdenticalTo:tappedCopy];
 
-  if (v8 < [v10 count])
+  if (v8 < [buttons count])
   {
-    v9 = [v10 objectAtIndex:v8];
+    v9 = [buttons objectAtIndex:v8];
     [v9 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
@@ -118,23 +118,23 @@
 - (void)_reloadResultsView
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUITrendingSearchDocumentViewController *)self template];
-  v4 = [v3 titleLabel];
+  template = [(SKUITrendingSearchDocumentViewController *)self template];
+  titleLabel = [template titleLabel];
 
-  v18 = v4;
-  v5 = [MEMORY[0x277D756B8] SKUITrending_titleLabelWithElement:v4];
-  v6 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
-  [v6 setTrendingTitleView:v5];
+  v18 = titleLabel;
+  v5 = [MEMORY[0x277D756B8] SKUITrending_titleLabelWithElement:titleLabel];
+  resultsView = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  [resultsView setTrendingTitleView:v5];
 
-  v7 = [(SKUITrendingSearchDocumentViewController *)self template];
-  v8 = [v7 buttons];
+  template2 = [(SKUITrendingSearchDocumentViewController *)self template];
+  buttons = [template2 buttons];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = buttons;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -160,12 +160,12 @@
     while (v12);
   }
 
-  v16 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
-  [v16 setTrendingSearchViews:v9];
+  resultsView2 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  [resultsView2 setTrendingSearchViews:v9];
 
-  v17 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
+  resultsView3 = [(SKUITrendingSearchDocumentViewController *)self resultsView];
   [(SKUITrendingSearchDocumentViewController *)self _resultsViewContentInset];
-  [v17 setLayoutMargins:?];
+  [resultsView3 setLayoutMargins:?];
 }
 
 - (UIEdgeInsets)_resultsViewContentInset

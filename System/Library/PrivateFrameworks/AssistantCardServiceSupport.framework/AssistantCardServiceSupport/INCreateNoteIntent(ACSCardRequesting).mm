@@ -12,18 +12,18 @@
   v7 = a4;
   if (v7)
   {
-    v8 = [v6 content];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v8 underlyingInteraction], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    content = [v6 content];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([content underlyingInteraction], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v9;
-      v11 = [v9 intentHandlingStatus];
-      if (v11 <= 6)
+      intentHandlingStatus = [v9 intentHandlingStatus];
+      if (intentHandlingStatus <= 6)
       {
-        if (v11 == 4)
+        if (intentHandlingStatus == 4)
         {
           v18 = MEMORY[0x277CCA9B8];
           v19 = *MEMORY[0x277CF93E8];
-          v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", v8, *MEMORY[0x277CCA068]];
+          v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", content, *MEMORY[0x277CCA068]];
           v24 = v20;
           v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
           v22 = [v18 errorWithDomain:v19 code:400 userInfo:v21];
@@ -32,7 +32,7 @@
 
         else
         {
-          [a1 _buildCardFromRequest:v6 reply:v7];
+          [self _buildCardFromRequest:v6 reply:v7];
         }
       }
     }
@@ -42,7 +42,7 @@
       v12 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CF93E8];
       v25 = *MEMORY[0x277CCA068];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", v8];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", content];
       v26[0] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v16 = [v12 errorWithDomain:v13 code:400 userInfo:v15];
@@ -61,77 +61,77 @@
   v6 = a4;
   if (v6)
   {
-    v7 = [a3 content];
+    content = [a3 content];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 underlyingInteraction];
+      underlyingInteraction = [content underlyingInteraction];
     }
 
     else
     {
-      v8 = 0;
+      underlyingInteraction = 0;
     }
 
-    v46 = v8;
-    v9 = [v8 intentResponse];
-    v45 = [MEMORY[0x277D4C230] acs_uniquelyIdentifiedCard];
+    v46 = underlyingInteraction;
+    intentResponse = [underlyingInteraction intentResponse];
+    acs_uniquelyIdentifiedCard = [MEMORY[0x277D4C230] acs_uniquelyIdentifiedCard];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [v9 createdNote];
-    v12 = [v11 title];
-    v13 = [v12 spokenPhrase];
+    createdNote = [intentResponse createdNote];
+    title = [createdNote title];
+    spokenPhrase = [title spokenPhrase];
 
-    v43 = v13;
-    if (v13)
+    v43 = spokenPhrase;
+    if (spokenPhrase)
     {
-      v14 = v13;
+      spokenPhrase2 = spokenPhrase;
       v15 = [MEMORY[0x277CD3E50] parameterForClass:objc_opt_class() keyPath:@"createdNote.title"];
     }
 
     else
     {
-      v16 = [a1 title];
-      v14 = [v16 spokenPhrase];
+      title2 = [self title];
+      spokenPhrase2 = [title2 spokenPhrase];
 
       v15 = [MEMORY[0x277CD3E50] parameterForClass:objc_opt_class() keyPath:@"title"];
-      if (!v14)
+      if (!spokenPhrase2)
       {
         goto LABEL_11;
       }
     }
 
-    v17 = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
-    [v17 setTitle:v14];
-    [v17 setIsCentered:1];
-    [v17 setSeparatorStyle:5];
-    [v17 setTitleAlign:1];
-    [v17 setTitleWeight:&unk_285314308];
+    acs_uniquelyIdentifiedCardSection = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
+    [acs_uniquelyIdentifiedCardSection setTitle:spokenPhrase2];
+    [acs_uniquelyIdentifiedCardSection setIsCentered:1];
+    [acs_uniquelyIdentifiedCardSection setSeparatorStyle:5];
+    [acs_uniquelyIdentifiedCardSection setTitleAlign:1];
+    [acs_uniquelyIdentifiedCardSection setTitleWeight:&unk_285314308];
     if (v15)
     {
       v59[0] = v15;
       [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
       v19 = v18 = v15;
-      [v17 acs_setParameters:v19];
+      [acs_uniquelyIdentifiedCardSection acs_setParameters:v19];
 
       v15 = v18;
     }
 
-    [v10 addObject:v17];
+    [v10 addObject:acs_uniquelyIdentifiedCardSection];
 
 LABEL_11:
-    v20 = [MEMORY[0x277D4C4C0] acs_wildCardSection];
-    [v10 addObject:v20];
+    acs_wildCardSection = [MEMORY[0x277D4C4C0] acs_wildCardSection];
+    [v10 addObject:acs_wildCardSection];
 
-    v21 = [a1 content];
-    v44 = v11;
-    v48 = [v11 contents];
-    v47 = v7;
+    content2 = [self content];
+    v44 = createdNote;
+    contents = [createdNote contents];
+    v47 = content;
     v42 = v15;
-    if (v48 || !v21)
+    if (contents || !content2)
     {
-      v22 = v48;
+      v22 = contents;
       v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v23 = v28;
-      if (v48)
+      if (contents)
       {
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
@@ -139,18 +139,18 @@ LABEL_11:
         v53[3] = &unk_278CCFBD0;
         v23 = v28;
         v54 = v23;
-        v55 = v9;
+        v55 = intentResponse;
         [v22 enumerateObjectsUsingBlock:v53];
 
         goto LABEL_18;
       }
 
-      if (!v21)
+      if (!content2)
       {
 LABEL_30:
-        [v45 setCardSections:{v10, v40, v41}];
-        [v45 acs_setInteraction:v46];
-        v6[2](v6, v45, 0);
+        [acs_uniquelyIdentifiedCard setCardSections:{v10, v40, v41}];
+        [acs_uniquelyIdentifiedCard acs_setInteraction:v46];
+        v6[2](v6, acs_uniquelyIdentifiedCard, 0);
 
         goto LABEL_31;
       }
@@ -160,7 +160,7 @@ LABEL_30:
 
     else
     {
-      v58 = v21;
+      v58 = content2;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
       v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
@@ -169,7 +169,7 @@ LABEL_30:
     v25 = objc_opt_class();
     v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"content"];
     v27 = [v24 parameterForClass:v25 keyPath:v26];
-    [v23 setObject:v27 forKey:v21];
+    [v23 setObject:v27 forKey:content2];
 
     if (!v22)
     {
@@ -177,7 +177,7 @@ LABEL_30:
     }
 
 LABEL_18:
-    v40 = v21;
+    v40 = content2;
     v41 = v6;
     v51 = 0u;
     v52 = 0u;
@@ -199,19 +199,19 @@ LABEL_18:
           }
 
           v34 = *(*(&v49 + 1) + 8 * i);
-          v35 = [v34 acs_cardSection];
+          acs_cardSection = [v34 acs_cardSection];
           v36 = [v23 objectForKey:v34];
           v37 = v36;
           if (v36)
           {
             v56 = v36;
             v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-            [v35 acs_setParameters:v38];
+            [acs_cardSection acs_setParameters:v38];
           }
 
-          if (v35)
+          if (acs_cardSection)
           {
-            [v10 addObject:v35];
+            [v10 addObject:acs_cardSection];
           }
         }
 
@@ -221,7 +221,7 @@ LABEL_18:
       while (v31);
     }
 
-    v21 = v40;
+    content2 = v40;
     v6 = v41;
     goto LABEL_30;
   }

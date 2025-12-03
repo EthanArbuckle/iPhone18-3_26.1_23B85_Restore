@@ -1,28 +1,28 @@
 @interface NUMediaView
-+ (UIEdgeInsets)_proposedInsetsForInsets:(UIEdgeInsets)a3 contentSize:(CGSize)a4 inFrame:(CGRect)a5 centerContent:(BOOL)a6;
-+ (double)currentEDRHeadroomForScreen:(id)a3;
-+ (double)maximumEDRHeadroomForScreen:(id)a3;
-- (BOOL)hasOverlayWithIdentifier:(id)a3;
++ (UIEdgeInsets)_proposedInsetsForInsets:(UIEdgeInsets)insets contentSize:(CGSize)size inFrame:(CGRect)frame centerContent:(BOOL)content;
++ (double)currentEDRHeadroomForScreen:(id)screen;
++ (double)maximumEDRHeadroomForScreen:(id)screen;
+- (BOOL)hasOverlayWithIdentifier:(id)identifier;
 - (BOOL)isMuted;
 - (BOOL)loopsVideoPlayback;
-- (CGPoint)convertPoint:(CGPoint)a3 fromSpace:(id)a4 toView:(id)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4 toSpace:(id)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 toNormalizedYDownSourceSpaceFromView:(id)a4;
-- (CGPoint)convertPointFromImage:(CGPoint)a3;
-- (CGPoint)convertPointToImage:(CGPoint)a3;
-- (CGRect)convertNormalizedViewRect:(CGRect)a3 fromSpace:(id)a4;
-- (CGRect)convertRectFromImage:(CGRect)a3;
-- (CGRect)convertRectToImage:(CGRect)a3;
-- (CGRect)convertViewRect:(CGRect)a3 fromSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromSpace:(id)space toView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view toSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toNormalizedYDownSourceSpaceFromView:(id)view;
+- (CGPoint)convertPointFromImage:(CGPoint)image;
+- (CGPoint)convertPointToImage:(CGPoint)image;
+- (CGRect)convertNormalizedViewRect:(CGRect)rect fromSpace:(id)space;
+- (CGRect)convertRectFromImage:(CGRect)image;
+- (CGRect)convertRectToImage:(CGRect)image;
+- (CGRect)convertViewRect:(CGRect)rect fromSpace:(id)space;
 - (CGRect)cropRect;
 - (CGRect)imageFrame;
 - (CGSize)_imageSize;
 - (CGSize)_masterSizeWithoutGeometry;
-- (NUMediaView)initWithCoder:(id)a3;
-- (NUMediaView)initWithFrame:(CGRect)a3;
+- (NUMediaView)initWithCoder:(id)coder;
+- (NUMediaView)initWithFrame:(CGRect)frame;
 - (NUMediaViewDelegate)delegate;
-- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)a3 inFrame:(CGRect)a4;
-- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)a3 inFrame:(CGRect)a4 alwaysCenterContent:(BOOL)a5;
+- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)size inFrame:(CGRect)frame;
+- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)size inFrame:(CGRect)frame alwaysCenterContent:(BOOL)content;
 - (UIEdgeInsets)edgeInsets;
 - (id)_layerRecursiveDescription;
 - (id)_livePhotoView;
@@ -32,58 +32,58 @@
 - (void)_invalidateDisplayEDRHeadroomMonitor;
 - (void)_livephotoPlaybackDidEnd;
 - (void)_livephotoPlaybackWillBegin;
-- (void)_monitorDisplayEDRHeadroom:(id)a3;
-- (void)_rendererDidCreateAVPlayerController:(id)a3;
+- (void)_monitorDisplayEDRHeadroom:(id)headroom;
+- (void)_rendererDidCreateAVPlayerController:(id)controller;
 - (void)_rendererDidFinishPreparingVideo;
-- (void)_rendererDidFinishWithStatistics:(id)a3;
+- (void)_rendererDidFinishWithStatistics:(id)statistics;
 - (void)_rendererDidStartPreparingVideo;
 - (void)_rendererDidUpdateLivePhoto;
 - (void)_scheduleDisplayEDRHeadroomMonitor;
-- (void)_setLayerFilters:(id)a3;
-- (void)_setPipelineFilters:(id)a3 shouldUpdateContent:(BOOL)a4;
+- (void)_setLayerFilters:(id)filters;
+- (void)_setPipelineFilters:(id)filters shouldUpdateContent:(BOOL)content;
 - (void)_setupViews;
 - (void)_startVideoPlayback;
 - (void)_stopVideoPlayback;
-- (void)_transitionToInsets:(UIEdgeInsets)a3 duration:(double)a4 animationCurve:(int64_t)a5 updateRenderContent:(BOOL)a6;
+- (void)_transitionToInsets:(UIEdgeInsets)insets duration:(double)duration animationCurve:(int64_t)curve updateRenderContent:(BOOL)content;
 - (void)_updateContentInsets;
 - (void)_updateRenderContent;
 - (void)_updateScreenSpaceOverlay;
-- (void)_updateVideoPlayerAlpha:(BOOL)a3;
+- (void)_updateVideoPlayerAlpha:(BOOL)alpha;
 - (void)_updateVisibleImageOverlayView;
-- (void)addOverlay:(id)a3 withIdentifier:(id)a4 style:(int64_t)a5;
+- (void)addOverlay:(id)overlay withIdentifier:(id)identifier style:(int64_t)style;
 - (void)didMoveToWindow;
 - (void)geometryUpdated;
-- (void)installRenderingCompletionBlock:(id)a3;
+- (void)installRenderingCompletionBlock:(id)block;
 - (void)layoutSubviews;
-- (void)playerController:(id)a3 didUpdateElapsedTime:(double)a4 duration:(double)a5;
-- (void)playerControllerDidFinishPlaying:(id)a3 duration:(double)a4;
-- (void)playerControllerFailedToPlayToEnd:(id)a3 error:(id)a4;
-- (void)playerControllerIsReadyForPlayback:(id)a3;
-- (void)playerRateDidChange:(id)a3 rate:(float)a4;
-- (void)removeOverlayWithIdentifier:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setAlwaysBounceScrollView:(BOOL)a3;
-- (void)setAngle:(double)a3;
-- (void)setCenterContent:(BOOL)a3;
-- (void)setComposition:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setLoopsVideoPlayback:(BOOL)a3;
-- (void)setMaximumZoomScale:(double)a3;
-- (void)setMedia:(id)a3;
-- (void)setMedia:(id)a3 displayType:(int64_t)a4;
-- (void)setMinimumZoomScale:(double)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setVideoPlayerVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setZoomScale:(double)a3;
+- (void)playerController:(id)controller didUpdateElapsedTime:(double)time duration:(double)duration;
+- (void)playerControllerDidFinishPlaying:(id)playing duration:(double)duration;
+- (void)playerControllerFailedToPlayToEnd:(id)end error:(id)error;
+- (void)playerControllerIsReadyForPlayback:(id)playback;
+- (void)playerRateDidChange:(id)change rate:(float)rate;
+- (void)removeOverlayWithIdentifier:(id)identifier;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setAlwaysBounceScrollView:(BOOL)view;
+- (void)setAngle:(double)angle;
+- (void)setCenterContent:(BOOL)content;
+- (void)setComposition:(id)composition;
+- (void)setDelegate:(id)delegate;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setLoopsVideoPlayback:(BOOL)playback;
+- (void)setMaximumZoomScale:(double)scale;
+- (void)setMedia:(id)media;
+- (void)setMedia:(id)media displayType:(int64_t)type;
+- (void)setMinimumZoomScale:(double)scale;
+- (void)setMuted:(BOOL)muted;
+- (void)setVideoPlayerVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setZoomScale:(double)scale;
 - (void)setZoomScaleToFit;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation NUMediaView
@@ -130,14 +130,14 @@
   return WeakRetained;
 }
 
-- (void)playerControllerIsReadyForPlayback:(id)a3
+- (void)playerControllerIsReadyForPlayback:(id)playback
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playbackCopy = playback;
   if (self->_delegateFlags.hasIsReadyForVideoPlayback)
   {
-    v5 = [(NUMediaView *)self delegate];
-    [v5 mediaViewIsReadyForVideoPlayback:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewIsReadyForVideoPlayback:self];
   }
 
   if (*MEMORY[0x277D2D078] != -1)
@@ -149,20 +149,20 @@
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
   {
     v7 = 134217984;
-    v8 = v4;
+    v8 = playbackCopy;
     _os_log_debug_impl(&dword_25BD29000, v6, OS_LOG_TYPE_DEBUG, "<controller: %p> ", &v7, 0xCu);
   }
 }
 
-- (void)playerControllerFailedToPlayToEnd:(id)a3 error:(id)a4
+- (void)playerControllerFailedToPlayToEnd:(id)end error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endCopy = end;
+  errorCopy = error;
   if (self->_delegateFlags.hasFailedToPlayToEnd)
   {
-    v8 = [(NUMediaView *)self delegate];
-    [v8 mediaViewFailedToPlayToEnd:self error:v7];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewFailedToPlayToEnd:self error:errorCopy];
   }
 
   if (*MEMORY[0x277D2D078] != -1)
@@ -174,17 +174,17 @@
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
   {
     v10 = 134218242;
-    v11 = v6;
+    v11 = endCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = errorCopy;
     _os_log_debug_impl(&dword_25BD29000, v9, OS_LOG_TYPE_DEBUG, "<controller: %p> failed to play to end: %@", &v10, 0x16u);
   }
 }
 
-- (void)playerController:(id)a3 didUpdateElapsedTime:(double)a4 duration:(double)a5
+- (void)playerController:(id)controller didUpdateElapsedTime:(double)time duration:(double)duration
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  controllerCopy = controller;
   if (*MEMORY[0x277D2D078] != -1)
   {
     dispatch_once(MEMORY[0x277D2D078], &__block_literal_global_439);
@@ -194,23 +194,23 @@
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
   {
     v9 = 134218496;
-    v10 = v7;
+    v10 = controllerCopy;
     v11 = 2048;
-    v12 = a4;
+    timeCopy = time;
     v13 = 2048;
-    v14 = a5;
+    durationCopy = duration;
     _os_log_debug_impl(&dword_25BD29000, v8, OS_LOG_TYPE_DEBUG, "<controller: %p> %g %g", &v9, 0x20u);
   }
 }
 
-- (void)playerControllerDidFinishPlaying:(id)a3 duration:(double)a4
+- (void)playerControllerDidFinishPlaying:(id)playing duration:(double)duration
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  playingCopy = playing;
   if (self->_delegateFlags.hasDidPlayToEnd)
   {
-    v7 = [(NUMediaView *)self delegate];
-    [v7 mediaViewDidPlayToEnd:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidPlayToEnd:self];
   }
 
   if (*MEMORY[0x277D2D078] != -1)
@@ -222,33 +222,33 @@
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
   {
     v9 = 134218240;
-    v10 = v6;
+    v10 = playingCopy;
     v11 = 2048;
-    v12 = a4;
+    durationCopy = duration;
     _os_log_debug_impl(&dword_25BD29000, v8, OS_LOG_TYPE_DEBUG, "<controller: %p> %g", &v9, 0x16u);
   }
 }
 
-- (void)playerRateDidChange:(id)a3 rate:(float)a4
+- (void)playerRateDidChange:(id)change rate:(float)rate
 {
-  v6 = [(NUMediaView *)self delegate];
-  if (a4 <= 0.0)
+  delegate = [(NUMediaView *)self delegate];
+  if (rate <= 0.0)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 mediaViewDidEndPlayback:self];
+      [delegate mediaViewDidEndPlayback:self];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 mediaViewDidStartPlayback:self];
+    [delegate mediaViewDidStartPlayback:self];
   }
 }
 
-- (BOOL)hasOverlayWithIdentifier:(id)a3
+- (BOOL)hasOverlayWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_overlayViews objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_overlayViews objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -301,28 +301,28 @@
   }
 }
 
-- (void)removeOverlayWithIdentifier:(id)a3
+- (void)removeOverlayWithIdentifier:(id)identifier
 {
   overlayViews = self->_overlayViews;
-  v6 = a3;
-  v5 = [(NSMutableDictionary *)overlayViews objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)overlayViews objectForKeyedSubscript:identifierCopy];
   [v5 removeFromSuperview];
 
-  [(NSMutableDictionary *)self->_overlayViews setObject:0 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_overlayViews setObject:0 forKeyedSubscript:identifierCopy];
 }
 
-- (void)addOverlay:(id)a3 withIdentifier:(id)a4 style:(int64_t)a5
+- (void)addOverlay:(id)overlay withIdentifier:(id)identifier style:(int64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if (!a5)
+  identifierCopy = identifier;
+  overlayCopy = overlay;
+  [overlayCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  if (!style)
   {
     v10 = &OBJC_IVAR___NUMediaView__screenSpaceOverlayView;
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (style == 1)
   {
     v10 = &OBJC_IVAR___NUMediaView__visibleImageOverlayView;
 LABEL_5:
@@ -333,35 +333,35 @@ LABEL_5:
   v11 = 0;
 LABEL_7:
   v24 = v11;
-  [v11 addSubview:v9];
-  v12 = [v9 topAnchor];
-  v13 = [v24 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  [v11 addSubview:overlayCopy];
+  topAnchor = [overlayCopy topAnchor];
+  topAnchor2 = [v24 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v14 setActive:1];
 
-  v15 = [v9 leftAnchor];
-  v16 = [v24 leftAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  leftAnchor = [overlayCopy leftAnchor];
+  leftAnchor2 = [v24 leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v17 setActive:1];
 
-  v18 = [v9 bottomAnchor];
-  v19 = [v24 bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  bottomAnchor = [overlayCopy bottomAnchor];
+  bottomAnchor2 = [v24 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v20 setActive:1];
 
-  v21 = [v9 rightAnchor];
-  v22 = [v24 rightAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  rightAnchor = [overlayCopy rightAnchor];
+  rightAnchor2 = [v24 rightAnchor];
+  v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v23 setActive:1];
 
-  [(NSMutableDictionary *)self->_overlayViews setObject:v9 forKey:v8];
+  [(NSMutableDictionary *)self->_overlayViews setObject:overlayCopy forKey:identifierCopy];
 }
 
 - (void)_updateContentInsets
 {
   v36 = *MEMORY[0x277D85DE8];
   [(NUScrollView *)self->_scrollView frame];
-  v3 = [(NURenderView *)self->_renderView hasTransitionAnimation];
+  hasTransitionAnimation = [(NURenderView *)self->_renderView hasTransitionAnimation];
   [(NUScrollView *)self->_scrollView contentSize];
   [NUMediaView _edgeInsetsForContentSize:"_edgeInsetsForContentSize:inFrame:" inFrame:?];
   v5 = v4;
@@ -370,7 +370,7 @@ LABEL_7:
   v11 = v10;
   [(NUScrollView *)self->_scrollView contentInset];
   v18 = v15 == v7 && v12 == v5 && v14 == v11 && v13 == v9;
-  if (!v18 && self->_transitionCount == 0 && !v3)
+  if (!v18 && self->_transitionCount == 0 && !hasTransitionAnimation)
   {
     if (*MEMORY[0x277D2D078] != -1)
     {
@@ -411,8 +411,8 @@ LABEL_7:
 - (CGSize)_imageSize
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(NURenderView *)self->_renderView _containerLayer];
-  [v2 bounds];
+  _containerLayer = [(NURenderView *)self->_renderView _containerLayer];
+  [_containerLayer bounds];
   v4 = v3;
   v6 = v5;
 
@@ -440,11 +440,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_updateVideoPlayerAlpha:(BOOL)a3
+- (void)_updateVideoPlayerAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v5 = [(NUMediaView *)self isVideoPlayerVisible];
-  if ((v5 & [(NUAVPlayerView *)self->_playerView isReadyForDisplay]) != 0)
+  alphaCopy = alpha;
+  isVideoPlayerVisible = [(NUMediaView *)self isVideoPlayerVisible];
+  if ((isVideoPlayerVisible & [(NUAVPlayerView *)self->_playerView isReadyForDisplay]) != 0)
   {
     v6 = 1.0;
   }
@@ -457,7 +457,7 @@ LABEL_7:
   [(NUAVPlayerView *)self->_playerView alpha];
   if (v6 != v7)
   {
-    if (v3)
+    if (alphaCopy)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -481,10 +481,10 @@ LABEL_7:
   }
 }
 
-- (void)_rendererDidFinishWithStatistics:(id)a3
+- (void)_rendererDidFinishWithStatistics:(id)statistics
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statisticsCopy = statistics;
   [(NURenderView *)self->_renderView frame];
   v6 = v5;
   v8 = v7;
@@ -545,16 +545,16 @@ LABEL_7:
 
   [(NUScrollView *)self->_scrollView setContentSize:v6, v8];
   [(NUMediaView *)self _updateContentInsets];
-  v21 = [(NUMediaView *)self delegate];
-  v22 = v21;
+  delegate = [(NUMediaView *)self delegate];
+  v22 = delegate;
   if (self->_delegateFlags.hasDidFinishRenderingWithStatistics)
   {
-    [v21 mediaViewDidFinishRendering:self withStatistics:v4];
+    [delegate mediaViewDidFinishRendering:self withStatistics:statisticsCopy];
   }
 
   else if (self->_delegateFlags.hasDidFinishRendering)
   {
-    [v21 mediaViewDidFinishRendering:self];
+    [delegate mediaViewDidFinishRendering:self];
   }
 
   renderingCompletionBlock = self->_renderingCompletionBlock;
@@ -570,15 +570,15 @@ LABEL_7:
   [(NUMediaView *)self _updateVisibleImageOverlayView];
 }
 
-- (void)_rendererDidCreateAVPlayerController:(id)a3
+- (void)_rendererDidCreateAVPlayerController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
   playerView = self->_playerView;
-  if (v4)
+  if (controllerCopy)
   {
-    v7 = [v4 player];
-    [(NUAVPlayerView *)playerView setPlayer:v7];
+    player = [controllerCopy player];
+    [(NUAVPlayerView *)playerView setPlayer:player];
 
     [v5 setDelegate:self];
   }
@@ -605,15 +605,15 @@ LABEL_7:
   }
 }
 
-- (void)_transitionToInsets:(UIEdgeInsets)a3 duration:(double)a4 animationCurve:(int64_t)a5 updateRenderContent:(BOOL)a6
+- (void)_transitionToInsets:(UIEdgeInsets)insets duration:(double)duration animationCurve:(int64_t)curve updateRenderContent:(BOOL)content
 {
-  v6 = a6;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  contentCopy = content;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v86 = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (content)
   {
     [(NUMediaViewRenderer *)self->_renderer cancelPendingRenders];
   }
@@ -640,14 +640,14 @@ LABEL_7:
     LODWORD(v85.a) = 138413058;
     WORD2(v85.b) = 2048;
     *(&v85.a + 4) = v62;
-    if (v6)
+    if (contentCopy)
     {
       v63 = @"YES";
     }
 
-    *(&v85.b + 6) = a4;
+    *(&v85.b + 6) = duration;
     HIWORD(v85.c) = 1024;
-    LODWORD(v85.d) = a5;
+    LODWORD(v85.d) = curve;
     WORD2(v85.d) = 2112;
     *(&v85.d + 6) = v63;
     _os_log_debug_impl(&dword_25BD29000, v61, OS_LOG_TYPE_DEBUG, "[NUMediaView _transitionToInsets:duration:animationCurve:updateRenderContent:] - insets: %@, duration: %f, animationCurve: %d, updateRenderContent: %@", &v85, 0x26u);
@@ -655,7 +655,7 @@ LABEL_7:
 
   if ([(NUMediaViewRenderer *)self->_renderer isZoomedToFit])
   {
-    v80 = a4;
+    durationCopy = duration;
     [(NUMediaView *)self frame];
     v18 = v17;
     v76 = v19;
@@ -781,7 +781,7 @@ LABEL_7:
     }
 
     renderView = self->_renderView;
-    v60 = NUMediaTimingFunctionForUIAnimationCurve(a5);
+    v60 = NUMediaTimingFunctionForUIAnimationCurve(curve);
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = __79__NUMediaView__transitionToInsets_duration_animationCurve_updateRenderContent___block_invoke;
@@ -791,8 +791,8 @@ LABEL_7:
     *&v83[6] = v79;
     *&v83[7] = v81;
     *&v83[8] = v82;
-    v84 = v6;
-    [(NURenderView *)renderView transitionToSize:v60 offset:v83 duration:v46 animationCurve:v44 completion:v56, v57, v80];
+    v84 = contentCopy;
+    [(NURenderView *)renderView transitionToSize:v60 offset:v83 duration:v46 animationCurve:v44 completion:v56, v57, durationCopy];
 
     [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView setFrame:v52, v51, v46, v44];
     self->_scrollUpdatesSuppressed = 0;
@@ -806,7 +806,7 @@ LABEL_7:
     self->_edgeInsets.bottom = bottom;
     self->_edgeInsets.right = right;
     self->_scrollUpdatesSuppressed = 0;
-    if (v6)
+    if (contentCopy)
     {
       [(NUMediaView *)self _updateRenderContent];
     }
@@ -859,16 +859,16 @@ uint64_t __79__NUMediaView__transitionToInsets_duration_animationCurve_updateRen
 
     [(NUAVPlayerView *)self->_playerView setAlpha:0.0];
     [(NUAVPlayerView *)self->_playerView setDelegate:self];
-    v6 = [MEMORY[0x277D2CFB8] isViewDebugEnabled];
+    isViewDebugEnabled = [MEMORY[0x277D2CFB8] isViewDebugEnabled];
     playerView = self->_playerView;
-    if (v6)
+    if (isViewDebugEnabled)
     {
-      v7 = [(NUAVPlayerView *)playerView layer];
-      v8 = [MEMORY[0x277D75348] cyanColor];
-      [v7 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+      layer = [(NUAVPlayerView *)playerView layer];
+      cyanColor = [MEMORY[0x277D75348] cyanColor];
+      [layer setBorderColor:{objc_msgSend(cyanColor, "CGColor")}];
 
-      v9 = [(NUAVPlayerView *)self->_playerView layer];
-      [v9 setBorderWidth:8.0];
+      layer2 = [(NUAVPlayerView *)self->_playerView layer];
+      [layer2 setBorderWidth:8.0];
 
       playerView = self->_playerView;
     }
@@ -887,12 +887,12 @@ uint64_t __79__NUMediaView__transitionToInsets_duration_animationCurve_updateRen
 
     if ([MEMORY[0x277D2CFB8] isViewDebugEnabled])
     {
-      v5 = [(UIView *)self->_livePhotoView layer];
-      v6 = [MEMORY[0x277D75348] redColor];
-      [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+      layer = [(UIView *)self->_livePhotoView layer];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [layer setBorderColor:{objc_msgSend(redColor, "CGColor")}];
 
-      v7 = [(UIView *)self->_livePhotoView layer];
-      [v7 setBorderWidth:8.0];
+      layer2 = [(UIView *)self->_livePhotoView layer];
+      [layer2 setBorderWidth:8.0];
     }
   }
 
@@ -934,19 +934,19 @@ uint64_t __79__NUMediaView__transitionToInsets_duration_animationCurve_updateRen
   [(NUScrollView *)self->_scrollView setZoomScale:1.0];
   if ([MEMORY[0x277D2CFB8] isViewDebugEnabled])
   {
-    v10 = [(NUScrollView *)self->_scrollView layer];
-    [v10 setBorderWidth:4.0];
+    layer = [(NUScrollView *)self->_scrollView layer];
+    [layer setBorderWidth:4.0];
 
-    v11 = [(NUScrollView *)self->_scrollView layer];
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [v11 setBorderColor:{objc_msgSend(v12, "CGColor")}];
+    layer2 = [(NUScrollView *)self->_scrollView layer];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [layer2 setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    v13 = [(NUMediaView *)self layer];
-    [v13 setBorderWidth:1.0];
+    layer3 = [(NUMediaView *)self layer];
+    [layer3 setBorderWidth:1.0];
 
-    v14 = [(NUMediaView *)self layer];
-    v15 = [MEMORY[0x277D75348] greenColor];
-    [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+    layer4 = [(NUMediaView *)self layer];
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    [layer4 setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
   }
 
   [(NUMediaView *)self addSubview:self->_scrollView];
@@ -963,21 +963,21 @@ uint64_t __79__NUMediaView__transitionToInsets_duration_animationCurve_updateRen
 
   [(NUMediaView *)self addSubview:self->_screenSpaceOverlayView];
   [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView setUserInteractionEnabled:0];
-  v20 = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView topAnchor];
+  topAnchor = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView topAnchor];
   imageTopAnchor = self->_imageTopAnchor;
-  self->_imageTopAnchor = v20;
+  self->_imageTopAnchor = topAnchor;
 
-  v22 = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView bottomAnchor];
+  bottomAnchor = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView bottomAnchor];
   imageBottomAnchor = self->_imageBottomAnchor;
-  self->_imageBottomAnchor = v22;
+  self->_imageBottomAnchor = bottomAnchor;
 
-  v24 = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView leftAnchor];
+  leftAnchor = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView leftAnchor];
   imageLeftAnchor = self->_imageLeftAnchor;
-  self->_imageLeftAnchor = v24;
+  self->_imageLeftAnchor = leftAnchor;
 
-  v26 = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView rightAnchor];
+  rightAnchor = [(_NUMediaScreenSpaceOverlayView *)self->_screenSpaceOverlayView rightAnchor];
   imageRightAnchor = self->_imageRightAnchor;
-  self->_imageRightAnchor = v26;
+  self->_imageRightAnchor = rightAnchor;
 
   v28 = objc_opt_new();
   visibleImageOverlayView = self->_visibleImageOverlayView;
@@ -1005,12 +1005,12 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 {
   if (!self->_transitionCount)
   {
-    v3 = [(NUMediaView *)self media];
+    media = [(NUMediaView *)self media];
 
-    if (v3)
+    if (media)
     {
-      v4 = [(NUMediaView *)self window];
-      if (v4)
+      window = [(NUMediaView *)self window];
+      if (window)
       {
       }
 
@@ -1020,7 +1020,7 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
       }
 
       renderer = self->_renderer;
-      v9 = [(NUMediaView *)self media];
+      media2 = [(NUMediaView *)self media];
       [(NUMediaViewRenderer *)renderer updateMedia:?];
     }
 
@@ -1031,15 +1031,15 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
         return;
       }
 
-      v5 = [(NUMediaView *)self composition];
+      composition = [(NUMediaView *)self composition];
 
-      if (!v5)
+      if (!composition)
       {
         return;
       }
 
-      v6 = [(NUMediaView *)self window];
-      if (v6)
+      window2 = [(NUMediaView *)self window];
+      if (window2)
       {
       }
 
@@ -1049,23 +1049,23 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
       }
 
       v8 = self->_renderer;
-      v9 = [(NUMediaView *)self composition];
+      media2 = [(NUMediaView *)self composition];
       [(NUMediaViewRenderer *)v8 updateComposition:?];
     }
   }
 }
 
-- (void)setCenterContent:(BOOL)a3
+- (void)setCenterContent:(BOOL)content
 {
-  if (self->_centerContent != a3)
+  if (self->_centerContent != content)
   {
-    self->_centerContent = a3;
+    self->_centerContent = content;
   }
 }
 
-- (void)setAlwaysBounceScrollView:(BOOL)a3
+- (void)setAlwaysBounceScrollView:(BOOL)view
 {
-  self->_alwaysBounceScrollView = a3;
+  self->_alwaysBounceScrollView = view;
   [(NUScrollView *)self->_scrollView setAlwaysBounceVertical:?];
   scrollView = self->_scrollView;
   alwaysBounceScrollView = self->_alwaysBounceScrollView;
@@ -1073,7 +1073,7 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
   [(NUScrollView *)scrollView setAlwaysBounceHorizontal:alwaysBounceScrollView];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (![(NUMediaView *)self loopsVideoPlayback]&& ![(NUMediaView *)self isVideoPlayerVisible])
   {
@@ -1086,15 +1086,15 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 
   if (self->_delegateFlags.hasDidEndDecelerating)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidEndDecelerating:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidEndDecelerating:self];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  if (![(NUMediaView *)self loopsVideoPlayback]&& ![(NUMediaView *)self isVideoPlayerVisible]&& !v4)
+  decelerateCopy = decelerate;
+  if (![(NUMediaView *)self loopsVideoPlayback]&& ![(NUMediaView *)self isVideoPlayerVisible]&& !decelerateCopy)
   {
     [(NUMediaViewRenderer *)self->_renderer endPanning];
     if (!self->_scrollUpdatesSuppressed)
@@ -1105,12 +1105,12 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 
   if (self->_delegateFlags.hasDidEndDragging)
   {
-    v6 = [(NUMediaView *)self delegate];
-    [v6 mediaViewDidEndDragging:self willDecelerate:v4];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidEndDragging:self willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (![(NUMediaView *)self loopsVideoPlayback]&& ![(NUMediaView *)self isVideoPlayerVisible]&& !self->_scrollUpdatesSuppressed)
   {
@@ -1121,24 +1121,24 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
   [(NUMediaView *)self _updateVisibleImageOverlayView];
   if (self->_delegateFlags.hasDidScroll)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidScroll:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidScroll:self];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(NUMediaViewRenderer *)self->_renderer beginPanning];
   if (self->_delegateFlags.hasWillBeginDragging)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewWillBeginDragging:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewWillBeginDragging:self];
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  if (![(NUMediaView *)self loopsVideoPlayback:a3]&& ![(NUMediaView *)self isVideoPlayerVisible])
+  if (![(NUMediaView *)self loopsVideoPlayback:zooming]&& ![(NUMediaView *)self isVideoPlayerVisible])
   {
     [(NUMediaViewRenderer *)self->_renderer endZooming];
     if (!self->_scrollUpdatesSuppressed)
@@ -1149,53 +1149,53 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 
   if (self->_delegateFlags.hasDidEndZooming)
   {
-    v6 = [(NUMediaView *)self delegate];
-    [v6 mediaViewDidEndZooming:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidEndZooming:self];
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  if (![(NUMediaView *)self loopsVideoPlayback:a3]&& ![(NUMediaView *)self isVideoPlayerVisible])
+  if (![(NUMediaView *)self loopsVideoPlayback:zooming]&& ![(NUMediaView *)self isVideoPlayerVisible])
   {
     [(NUMediaViewRenderer *)self->_renderer beginZooming];
   }
 
   if (self->_delegateFlags.hasWillBeginZooming)
   {
-    v5 = [(NUMediaView *)self delegate];
-    [v5 mediaViewWillBeginZooming:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewWillBeginZooming:self];
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v5 = a3;
+  zoomCopy = zoom;
   [(NUMediaView *)self _updateContentInsets];
   [(NUMediaView *)self _updateScreenSpaceOverlay];
   [(NUMediaView *)self _updateVisibleImageOverlayView];
   if (self->_delegateFlags.hasDidZoom)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v5 zoomScale];
-    [v4 mediaView:self didZoom:?];
+    delegate = [(NUMediaView *)self delegate];
+    [zoomCopy zoomScale];
+    [delegate mediaView:self didZoom:?];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
   v16 = *MEMORY[0x277D85DE8];
   p_edgeInsets = &self->_edgeInsets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v4), vceqq_f64(*&self->_edgeInsets.bottom, v5)))) & 1) == 0 && !self->_transitionCount)
   {
-    v10 = *&a3.top;
-    left = a3.left;
-    bottom = a3.bottom;
-    right = a3.right;
+    v10 = *&insets.top;
+    left = insets.left;
+    bottom = insets.bottom;
+    right = insets.right;
     if (*MEMORY[0x277D2D078] != -1)
     {
       dispatch_once(MEMORY[0x277D2D078], &__block_literal_global_439);
@@ -1235,16 +1235,16 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
   }
 }
 
-- (CGRect)convertViewRect:(CGRect)a3 fromSpace:(id)a4
+- (CGRect)convertViewRect:(CGRect)rect fromSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v78 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = [(NUMediaView *)self _geometry];
-  if (v10)
+  spaceCopy = space;
+  _geometry = [(NUMediaView *)self _geometry];
+  if (_geometry)
   {
     v79.origin.x = x;
     v79.origin.y = y;
@@ -1287,14 +1287,14 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
     v86.size.height = height;
     v15 = CGRectGetMaxY(v86);
     v76 = 0;
-    v16 = [v10 transformWithSourceSpace:v9 destinationSpace:@"/Image" error:&v76];
+    v16 = [_geometry transformWithSourceSpace:spaceCopy destinationSpace:@"/Image" error:&v76];
     v17 = v76;
     if (!v16)
     {
       v60 = NUAssertLogger();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
-        v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", v9, @"/Image", v17];
+        v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", spaceCopy, @"/Image", v17];
         *buf = 138543362;
         *&buf[4] = v61;
         _os_log_error_impl(&dword_25BD29000, v60, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -1311,8 +1311,8 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
           v68 = dispatch_get_specific(*v62);
           v69 = MEMORY[0x277CCACC8];
           v70 = v68;
-          v71 = [v69 callStackSymbols];
-          v72 = [v71 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v69 callStackSymbols];
+          v72 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           *&buf[4] = v68;
           *&buf[12] = 2114;
@@ -1323,8 +1323,8 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 
       else if (v65)
       {
-        v66 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v67 = [v66 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v67 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v67;
         _os_log_error_impl(&dword_25BD29000, v64, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1445,11 +1445,11 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
 
     v40 = v30 - v38;
     v41 = v31 - v39;
-    v42 = [(NUMediaView *)self _geometry];
-    v43 = v42;
-    if (v42)
+    _geometry2 = [(NUMediaView *)self _geometry];
+    v43 = _geometry2;
+    if (_geometry2)
     {
-      [v42 extent];
+      [_geometry2 extent];
     }
 
     else
@@ -1505,12 +1505,12 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
   return result;
 }
 
-- (CGRect)convertNormalizedViewRect:(CGRect)a3 fromSpace:(id)a4
+- (CGRect)convertNormalizedViewRect:(CGRect)rect fromSpace:(id)space
 {
-  v5 = a4;
+  spaceCopy = space;
   [(NUMediaView *)self _masterSizeWithoutGeometry];
   NURectDenormalize();
-  [(NUMediaView *)self convertViewRect:v5 fromSpace:?];
+  [(NUMediaView *)self convertViewRect:spaceCopy fromSpace:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1527,16 +1527,16 @@ void __26__NUMediaView__setupViews__block_invoke(uint64_t a1, void *a2, void *a3
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromSpace:(id)a4 toView:(id)a5
+- (CGPoint)convertPoint:(CGPoint)point fromSpace:(id)space toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v71 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NUMediaView *)self _geometry];
-  v12 = v11;
-  if (!v11)
+  spaceCopy = space;
+  viewCopy = view;
+  _geometry = [(NUMediaView *)self _geometry];
+  v12 = _geometry;
+  if (!_geometry)
   {
     v21 = MEMORY[0x277D2D078];
     if (*MEMORY[0x277D2D078] != -1)
@@ -1582,8 +1582,8 @@ LABEL_15:
         v30 = MEMORY[0x277CCACC8];
         v31 = specific;
         v32 = v28;
-        v33 = [v30 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = specific;
         v69 = 2114;
@@ -1601,8 +1601,8 @@ LABEL_31:
     {
       v52 = MEMORY[0x277CCACC8];
       v53 = v42;
-      v54 = [v52 callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v52 callStackSymbols];
+      v55 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v55;
       _os_log_error_impl(&dword_25BD29000, v53, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1612,11 +1612,11 @@ LABEL_31:
   }
 
   v66 = 0;
-  v13 = [v11 transformWithSourceSpace:v9 destinationSpace:@"/Image" error:&v66];
+  v13 = [_geometry transformWithSourceSpace:spaceCopy destinationSpace:@"/Image" error:&v66];
   v14 = v66;
   if (!v13)
   {
-    if ([v9 isEqualToString:@"/masterSpace"])
+    if ([spaceCopy isEqualToString:@"/masterSpace"])
     {
       v65 = 0;
       v13 = [v12 transformWithSourceSpace:@"/Master/Source" destinationSpace:@"/Image" error:&v65];
@@ -1634,7 +1634,7 @@ LABEL_31:
       v17 = v14;
     }
 
-    if ([v9 isEqualToString:@"/masterSpace"])
+    if ([spaceCopy isEqualToString:@"/masterSpace"])
     {
       v64 = 0;
       v13 = [v12 transformWithSourceSpace:@"/ShowOriginalSource" destinationSpace:@"/Image" error:&v64];
@@ -1660,7 +1660,7 @@ LABEL_31:
     {
       v38 = MEMORY[0x277CCACA8];
       v39 = v37;
-      v40 = [v38 stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", v9, @"/Image", v17];
+      v40 = [v38 stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", spaceCopy, @"/Image", v17];
       *buf = 138543362;
       v68 = v40;
       _os_log_impl(&dword_25BD29000, v39, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -1692,8 +1692,8 @@ LABEL_34:
         v47 = MEMORY[0x277CCACC8];
         v63 = v46;
         v48 = v45;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v46;
         v69 = 2114;
@@ -1704,7 +1704,7 @@ LABEL_34:
 LABEL_40:
       v61 = @"/Image";
       v62 = v17;
-      v60 = v9;
+      v60 = spaceCopy;
       _NUAssertContinueHandler();
       goto LABEL_4;
     }
@@ -1714,8 +1714,8 @@ LABEL_40:
     {
       v56 = MEMORY[0x277CCACC8];
       v57 = v51;
-      v58 = [v56 callStackSymbols];
-      v59 = [v58 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v56 callStackSymbols];
+      v59 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v59;
       _os_log_error_impl(&dword_25BD29000, v57, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1733,7 +1733,7 @@ LABEL_3:
 LABEL_4:
   [(NUMediaView *)self _imageSize:v60];
   [(NUMediaView *)self convertPointFromImage:x, v18 - y];
-  [v10 convertPoint:self fromView:?];
+  [viewCopy convertPoint:self fromView:?];
   x = v19;
   y = v20;
 
@@ -1745,15 +1745,15 @@ LABEL_32:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4 toSpace:(id)a5
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view toSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v68 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NUMediaView *)self _geometry];
-  if (!v11)
+  viewCopy = view;
+  spaceCopy = space;
+  _geometry = [(NUMediaView *)self _geometry];
+  if (!_geometry)
   {
     v21 = MEMORY[0x277D2D078];
     if (*MEMORY[0x277D2D078] != -1)
@@ -1799,8 +1799,8 @@ LABEL_15:
         v30 = MEMORY[0x277CCACC8];
         v31 = specific;
         v32 = v28;
-        v33 = [v30 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = specific;
         v66 = 2114;
@@ -1818,8 +1818,8 @@ LABEL_31:
     {
       v53 = MEMORY[0x277CCACC8];
       v54 = v42;
-      v55 = [v53 callStackSymbols];
-      v56 = [v55 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v53 callStackSymbols];
+      v56 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v56;
       _os_log_error_impl(&dword_25BD29000, v54, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1828,21 +1828,21 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  [(NUMediaView *)self convertPoint:v9 fromView:x, y];
+  [(NUMediaView *)self convertPoint:viewCopy fromView:x, y];
   [(NUMediaView *)self convertPointToImage:?];
   x = v12;
   v14 = v13;
   [(NUMediaView *)self _imageSize];
   y = v15 - v14;
   v63 = 0;
-  v16 = [v11 transformWithSourceSpace:@"/Image" destinationSpace:v10 error:&v63];
+  v16 = [_geometry transformWithSourceSpace:@"/Image" destinationSpace:spaceCopy error:&v63];
   v17 = v63;
   if (!v16)
   {
-    if ([v10 isEqualToString:@"/masterSpace"])
+    if ([spaceCopy isEqualToString:@"/masterSpace"])
     {
       v62 = 0;
-      v16 = [v11 transformWithSourceSpace:@"/Image" destinationSpace:@"/Master/Source" error:&v62];
+      v16 = [_geometry transformWithSourceSpace:@"/Image" destinationSpace:@"/Master/Source" error:&v62];
       v20 = v62;
 
       if (v16)
@@ -1857,10 +1857,10 @@ LABEL_31:
       v20 = v17;
     }
 
-    if ([v10 isEqualToString:@"/masterSpace"])
+    if ([spaceCopy isEqualToString:@"/masterSpace"])
     {
       v61 = 0;
-      v16 = [v11 transformWithSourceSpace:@"/Image" destinationSpace:@"/ShowOriginalSource" error:&v61];
+      v16 = [_geometry transformWithSourceSpace:@"/Image" destinationSpace:@"/ShowOriginalSource" error:&v61];
       v17 = v61;
 
       if (v16)
@@ -1883,7 +1883,7 @@ LABEL_31:
     {
       v38 = MEMORY[0x277CCACA8];
       v39 = v37;
-      v40 = [v38 stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", @"/Image", v10, v20];
+      v40 = [v38 stringWithFormat:@"Cannot establish a mapping from space %@ to space %@: %@", @"/Image", spaceCopy, v20];
       *buf = 138543362;
       v65 = v40;
       _os_log_impl(&dword_25BD29000, v39, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -1915,8 +1915,8 @@ LABEL_34:
         v47 = MEMORY[0x277CCACC8];
         v48 = v46;
         v49 = v45;
-        v50 = [v47 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v51 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v46;
         v66 = 2114;
@@ -1934,8 +1934,8 @@ LABEL_40:
     {
       v57 = MEMORY[0x277CCACC8];
       v58 = v52;
-      v59 = [v57 callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v57 callStackSymbols];
+      v60 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v60;
       _os_log_error_impl(&dword_25BD29000, v58, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1960,9 +1960,9 @@ LABEL_32:
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v8 = a3;
+  windowCopy = window;
   displayEDRMonitorTimer = self->_displayEDRMonitorTimer;
   if (displayEDRMonitorTimer)
   {
@@ -1991,13 +1991,13 @@ LABEL_32:
   }
 }
 
-- (void)_monitorDisplayEDRHeadroom:(id)a3
+- (void)_monitorDisplayEDRHeadroom:(id)headroom
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(NUMediaView *)self window];
-  v5 = [v4 screen];
+  window = [(NUMediaView *)self window];
+  screen = [window screen];
 
-  [NUMediaView currentEDRHeadroomForScreen:v5];
+  [NUMediaView currentEDRHeadroomForScreen:screen];
   v7 = v6;
   [(NUMediaViewRenderer *)self->_renderer displayCurrentEDRHeadroom];
   v9 = v8;
@@ -2055,8 +2055,8 @@ LABEL_32:
     v8 = CAFrameRateRangeMake(1.0, 60.0, 10.0);
     [(CADisplayLink *)self->_displayEDRMonitorLink setPreferredFrameRateRange:*&v8.minimum, *&v8.maximum, *&v8.preferred];
     v5 = self->_displayEDRMonitorLink;
-    v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 }
 
@@ -2065,33 +2065,33 @@ LABEL_32:
   v14.receiver = self;
   v14.super_class = NUMediaView;
   [(NUMediaView *)&v14 didMoveToWindow];
-  v3 = [(NUMediaView *)self window];
+  window = [(NUMediaView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(NUMediaView *)self window];
-    v5 = [v4 screen];
+    window2 = [(NUMediaView *)self window];
+    screen = [window2 screen];
 
     renderer = self->_renderer;
-    [v5 scale];
+    [screen scale];
     [(NUMediaViewRenderer *)renderer setBackingScale:?];
-    v7 = [MEMORY[0x277D2CFF8] currentPlatform];
-    v8 = [v5 _displayID];
-    v9 = [v7 displayWithIdentifier:v8];
+    currentPlatform = [MEMORY[0x277D2CFF8] currentPlatform];
+    _displayID = [screen _displayID];
+    v9 = [currentPlatform displayWithIdentifier:_displayID];
 
     v10 = self->_renderer;
-    v11 = [v9 pixelFormat];
-    [(NUMediaViewRenderer *)v10 setPixelFormat:v11];
+    pixelFormat = [v9 pixelFormat];
+    [(NUMediaViewRenderer *)v10 setPixelFormat:pixelFormat];
 
     v12 = self->_renderer;
-    v13 = [v9 colorSpace];
-    [(NUMediaViewRenderer *)v12 setColorSpace:v13];
+    colorSpace = [v9 colorSpace];
+    [(NUMediaViewRenderer *)v12 setColorSpace:colorSpace];
 
     if ([(NUMediaView *)self isHDREnabled])
     {
-      [NUMediaView maximumEDRHeadroomForScreen:v5];
+      [NUMediaView maximumEDRHeadroomForScreen:screen];
       [(NUMediaViewRenderer *)self->_renderer setDisplayMaximumEDRHeadroom:?];
-      [NUMediaView currentEDRHeadroomForScreen:v5];
+      [NUMediaView currentEDRHeadroomForScreen:screen];
       [(NUMediaViewRenderer *)self->_renderer setDisplayCurrentEDRHeadroom:?];
       [(NUMediaView *)self _scheduleDisplayEDRHeadroomMonitor];
     }
@@ -2100,91 +2100,91 @@ LABEL_32:
   }
 }
 
-- (void)_setLayerFilters:(id)a3
+- (void)_setLayerFilters:(id)filters
 {
   renderView = self->_renderView;
-  v5 = a3;
-  v6 = [(NURenderView *)renderView _backfillLayer];
-  [v6 setFilters:v5];
+  filtersCopy = filters;
+  _backfillLayer = [(NURenderView *)renderView _backfillLayer];
+  [_backfillLayer setFilters:filtersCopy];
 
-  v7 = [(NURenderView *)self->_renderView _roiLayer];
-  [v7 setFilters:v5];
+  _roiLayer = [(NURenderView *)self->_renderView _roiLayer];
+  [_roiLayer setFilters:filtersCopy];
 }
 
 - (id)snapshotImage
 {
-  v2 = [(NURenderView *)self->_renderView _backfillLayer];
-  v3 = [v2 snapshotImage];
+  _backfillLayer = [(NURenderView *)self->_renderView _backfillLayer];
+  snapshotImage = [_backfillLayer snapshotImage];
 
-  return v3;
+  return snapshotImage;
 }
 
 - (id)_layerRecursiveDescription
 {
-  v2 = [(NUMediaView *)self layer];
-  v3 = [v2 nu_layerRecursiveDescription];
+  layer = [(NUMediaView *)self layer];
+  nu_layerRecursiveDescription = [layer nu_layerRecursiveDescription];
 
-  return v3;
+  return nu_layerRecursiveDescription;
 }
 
-- (void)setVideoPlayerVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVideoPlayerVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_videoPlayerVisible != a3)
+  if (self->_videoPlayerVisible != visible)
   {
-    self->_videoPlayerVisible = a3;
-    self->_lastVideoPlayerVisibilityChangeWasAnimated = a4;
-    [(NUMediaView *)self _updateVideoPlayerAlpha:a4];
+    self->_videoPlayerVisible = visible;
+    self->_lastVideoPlayerVisibilityChangeWasAnimated = animated;
+    [(NUMediaView *)self _updateVideoPlayerAlpha:animated];
   }
 }
 
 - (void)_stopVideoPlayback
 {
-  v2 = [(NUMediaView *)self player];
-  [v2 pause];
+  player = [(NUMediaView *)self player];
+  [player pause];
 }
 
 - (void)_startVideoPlayback
 {
-  v2 = [(NUMediaView *)self player];
-  [v2 play];
+  player = [(NUMediaView *)self player];
+  [player play];
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
-  v4 = [(NUMediaView *)self player];
-  [v4 setMuted:v3];
+  mutedCopy = muted;
+  player = [(NUMediaView *)self player];
+  [player setMuted:mutedCopy];
 }
 
 - (BOOL)isMuted
 {
-  v2 = [(NUMediaView *)self player];
-  v3 = [v2 isMuted];
+  player = [(NUMediaView *)self player];
+  isMuted = [player isMuted];
 
-  return v3;
+  return isMuted;
 }
 
 - (BOOL)loopsVideoPlayback
 {
-  v2 = [(NUMediaView *)self player];
-  v3 = [v2 playbackMode];
+  player = [(NUMediaView *)self player];
+  playbackMode = [player playbackMode];
 
-  return v3 == 1;
+  return playbackMode == 1;
 }
 
-- (void)setLoopsVideoPlayback:(BOOL)a3
+- (void)setLoopsVideoPlayback:(BOOL)playback
 {
-  v3 = a3;
-  v4 = [(NUMediaView *)self player];
-  [v4 setPlaybackMode:v3];
+  playbackCopy = playback;
+  player = [(NUMediaView *)self player];
+  [player setPlaybackMode:playbackCopy];
 }
 
 - (void)_livephotoPlaybackDidEnd
 {
   if (self->_delegateFlags.hasDidEndLivePhotoPlayback)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidEndLivePhotoPlayback:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidEndLivePhotoPlayback:self];
   }
 }
 
@@ -2192,8 +2192,8 @@ LABEL_32:
 {
   if (self->_delegateFlags.hasWillBeginLivePhotoPlayback)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewWillBeginLivePhotoPlayback:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewWillBeginLivePhotoPlayback:self];
   }
 }
 
@@ -2201,8 +2201,8 @@ LABEL_32:
 {
   if (self->_delegateFlags.hasDidFinishPreparingVideo)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidFinishPreparingVideo:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidFinishPreparingVideo:self];
   }
 }
 
@@ -2210,8 +2210,8 @@ LABEL_32:
 {
   if (self->_delegateFlags.hasDidStartPreparingVideo)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidStartPreparingVideo:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidStartPreparingVideo:self];
   }
 }
 
@@ -2219,23 +2219,23 @@ LABEL_32:
 {
   if (self->_delegateFlags.hasDidUpdateLivePhoto)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidUpdateLivePhoto:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidUpdateLivePhoto:self];
   }
 }
 
 - (id)_videoPlayerController
 {
-  v2 = [(NUMediaView *)self _renderer];
-  v3 = [v2 nuAVPlayerController];
+  _renderer = [(NUMediaView *)self _renderer];
+  nuAVPlayerController = [_renderer nuAVPlayerController];
 
-  return v3;
+  return nuAVPlayerController;
 }
 
-- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)a3 inFrame:(CGRect)a4 alwaysCenterContent:(BOOL)a5
+- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)size inFrame:(CGRect)frame alwaysCenterContent:(BOOL)content
 {
-  v5 = a5 || self->_centerContent;
-  [objc_opt_class() _proposedInsetsForInsets:v5 contentSize:self->_edgeInsets.top inFrame:self->_edgeInsets.left centerContent:{self->_edgeInsets.bottom, self->_edgeInsets.right, a3.width, a3.height, *&a4.origin.x, *&a4.origin.y, *&a4.size.width, *&a4.size.height}];
+  v5 = content || self->_centerContent;
+  [objc_opt_class() _proposedInsetsForInsets:v5 contentSize:self->_edgeInsets.top inFrame:self->_edgeInsets.left centerContent:{self->_edgeInsets.bottom, self->_edgeInsets.right, size.width, size.height, *&frame.origin.x, *&frame.origin.y, *&frame.size.width, *&frame.size.height}];
   result.right = v9;
   result.bottom = v8;
   result.left = v7;
@@ -2243,9 +2243,9 @@ LABEL_32:
   return result;
 }
 
-- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)a3 inFrame:(CGRect)a4
+- (UIEdgeInsets)_edgeInsetsForContentSize:(CGSize)size inFrame:(CGRect)frame
 {
-  [(NUMediaView *)self _edgeInsetsForContentSize:0 inFrame:a3.width alwaysCenterContent:a3.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(NUMediaView *)self _edgeInsetsForContentSize:0 inFrame:size.width alwaysCenterContent:size.height, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -2253,26 +2253,26 @@ LABEL_32:
   return result;
 }
 
-- (void)setMinimumZoomScale:(double)a3
+- (void)setMinimumZoomScale:(double)scale
 {
-  [(NUScrollView *)self->_scrollView setMinimumZoomScale:a3];
+  [(NUScrollView *)self->_scrollView setMinimumZoomScale:scale];
 
   [(NUMediaView *)self _updateRenderContent];
 }
 
-- (void)setMaximumZoomScale:(double)a3
+- (void)setMaximumZoomScale:(double)scale
 {
-  [(NUMediaViewRenderer *)self->_renderer setMaximumZoomScale:a3];
+  [(NUMediaViewRenderer *)self->_renderer setMaximumZoomScale:scale];
 
   [(NUMediaView *)self _updateRenderContent];
 }
 
 - (void)setZoomScaleToFit
 {
-  v3 = [(NUMediaView *)self _renderer];
-  v4 = [v3 isZoomedToFit];
+  _renderer = [(NUMediaView *)self _renderer];
+  isZoomedToFit = [_renderer isZoomedToFit];
 
-  if ((v4 & 1) == 0)
+  if ((isZoomedToFit & 1) == 0)
   {
     [(NUMediaView *)self minimumZoomScale];
 
@@ -2280,9 +2280,9 @@ LABEL_32:
   }
 }
 
-- (void)setZoomScale:(double)a3
+- (void)setZoomScale:(double)scale
 {
-  [(NUScrollView *)self->_scrollView setZoomScale:a3];
+  [(NUScrollView *)self->_scrollView setZoomScale:scale];
 
   [(NUMediaView *)self _updateRenderContent];
 }
@@ -2291,44 +2291,44 @@ LABEL_32:
 {
   if (self->_delegateFlags.hasDidUpdateGeometry)
   {
-    v4 = [(NUMediaView *)self delegate];
-    [v4 mediaViewDidUpdateGeometry:self];
+    delegate = [(NUMediaView *)self delegate];
+    [delegate mediaViewDidUpdateGeometry:self];
   }
 }
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
   memset(&v6, 0, sizeof(v6));
-  CATransform3DMakeRotation(&v6, a3, 0.0, 0.0, 1.0);
-  v4 = [(NURenderView *)self->_renderView _containerLayer];
+  CATransform3DMakeRotation(&v6, angle, 0.0, 0.0, 1.0);
+  _containerLayer = [(NURenderView *)self->_renderView _containerLayer];
   v5 = v6;
-  [v4 setTransform:&v5];
+  [_containerLayer setTransform:&v5];
 }
 
-- (void)installRenderingCompletionBlock:(id)a3
+- (void)installRenderingCompletionBlock:(id)block
 {
-  self->_renderingCompletionBlock = [a3 copy];
+  self->_renderingCompletionBlock = [block copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setPipelineFilters:(id)a3 shouldUpdateContent:(BOOL)a4
+- (void)_setPipelineFilters:(id)filters shouldUpdateContent:(BOOL)content
 {
-  v4 = a4;
-  [(NUMediaViewRenderer *)self->_renderer setPipelineFilters:a3];
-  if (v4)
+  contentCopy = content;
+  [(NUMediaViewRenderer *)self->_renderer setPipelineFilters:filters];
+  if (contentCopy)
   {
 
     [(NUMediaView *)self _updateRenderContent];
   }
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toNormalizedYDownSourceSpaceFromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toNormalizedYDownSourceSpaceFromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  viewCopy = view;
   [(NUMediaView *)self _masterSizeWithoutGeometry];
   if (v8 <= 0.0 || (v10 = v9, v9 <= 0.0))
   {
@@ -2376,8 +2376,8 @@ LABEL_11:
         v23 = MEMORY[0x277CCACC8];
         v24 = specific;
         v25 = v21;
-        v26 = [v23 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         v35 = 138543618;
         v36 = specific;
         v37 = 2114;
@@ -2395,8 +2395,8 @@ LABEL_17:
     {
       v31 = MEMORY[0x277CCACC8];
       v32 = v28;
-      v33 = [v31 callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v31 callStackSymbols];
+      v34 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v35 = 138543362;
       v36 = v34;
       _os_log_error_impl(&dword_25BD29000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v35, 0xCu);
@@ -2406,7 +2406,7 @@ LABEL_17:
   }
 
   v11 = v8;
-  [(NUMediaView *)self convertPoint:v7 fromView:@"/masterSpace" toSpace:x, y];
+  [(NUMediaView *)self convertPoint:viewCopy fromView:@"/masterSpace" toSpace:x, y];
   x = v12 / v11;
   y = 1.0 - v13 / v10;
 LABEL_18:
@@ -2418,9 +2418,9 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)convertRectFromImage:(CGRect)a3
+- (CGRect)convertRectFromImage:(CGRect)image
 {
-  [(NUMediaViewRenderer *)self->_renderer convertRect:self fromImageToView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NUMediaViewRenderer *)self->_renderer convertRect:self fromImageToView:image.origin.x, image.origin.y, image.size.width, image.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2428,9 +2428,9 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)convertRectToImage:(CGRect)a3
+- (CGRect)convertRectToImage:(CGRect)image
 {
-  [(NUMediaViewRenderer *)self->_renderer convertRect:self toImageFromView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NUMediaViewRenderer *)self->_renderer convertRect:self toImageFromView:image.origin.x, image.origin.y, image.size.width, image.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2438,17 +2438,17 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)convertPointFromImage:(CGPoint)a3
+- (CGPoint)convertPointFromImage:(CGPoint)image
 {
-  [(NUMediaViewRenderer *)self->_renderer convertPoint:self fromImageToView:a3.x, a3.y];
+  [(NUMediaViewRenderer *)self->_renderer convertPoint:self fromImageToView:image.x, image.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)convertPointToImage:(CGPoint)a3
+- (CGPoint)convertPointToImage:(CGPoint)image
 {
-  [(NUMediaViewRenderer *)self->_renderer convertPoint:self toImageFromView:a3.x, a3.y];
+  [(NUMediaViewRenderer *)self->_renderer convertPoint:self toImageFromView:image.x, image.y];
   result.y = v4;
   result.x = v3;
   return result;
@@ -2456,8 +2456,8 @@ LABEL_18:
 
 - (CGRect)imageFrame
 {
-  v3 = [(NUMediaView *)self _geometry];
-  [v3 size];
+  _geometry = [(NUMediaView *)self _geometry];
+  [_geometry size];
 
   renderer = self->_renderer;
   NUPixelSizeToCGRect();
@@ -2470,39 +2470,39 @@ LABEL_18:
   return result;
 }
 
-- (void)setMedia:(id)a3
+- (void)setMedia:(id)media
 {
-  objc_storeStrong(&self->_media, a3);
-  if (a3)
+  objc_storeStrong(&self->_media, media);
+  if (media)
   {
 
     [(NUMediaView *)self _updateRenderContent];
   }
 }
 
-- (void)setMedia:(id)a3 displayType:(int64_t)a4
+- (void)setMedia:(id)media displayType:(int64_t)type
 {
-  v8 = a3;
-  objc_storeStrong(&self->_media, a3);
-  v7 = v8;
-  if (v8)
+  mediaCopy = media;
+  objc_storeStrong(&self->_media, media);
+  v7 = mediaCopy;
+  if (mediaCopy)
   {
-    [(NUMediaViewRenderer *)self->_renderer updateMedia:v8 displayType:a4];
-    v7 = v8;
+    [(NUMediaViewRenderer *)self->_renderer updateMedia:mediaCopy displayType:type];
+    v7 = mediaCopy;
   }
 }
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
-  v7 = a3;
-  v4 = [v7 mediaType];
+  compositionCopy = composition;
+  mediaType = [compositionCopy mediaType];
   renderer = self->_renderer;
-  if (v4 == 2)
+  if (mediaType == 2)
   {
-    v6 = [(NUMediaViewRenderer *)renderer composition];
+    composition = [(NUMediaViewRenderer *)renderer composition];
 
-    [(NUMediaViewRenderer *)self->_renderer setComposition:v7];
-    if (v6)
+    [(NUMediaViewRenderer *)self->_renderer setComposition:compositionCopy];
+    if (composition)
     {
       [(PFCoalescer *)self->_renderCoalescer update];
       goto LABEL_6;
@@ -2511,16 +2511,16 @@ LABEL_18:
 
   else
   {
-    [(NUMediaViewRenderer *)renderer setComposition:v7];
+    [(NUMediaViewRenderer *)renderer setComposition:compositionCopy];
   }
 
   [(NUMediaView *)self _updateRenderContent];
 LABEL_6:
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2548,11 +2548,11 @@ LABEL_6:
   }
 }
 
-- (NUMediaView)initWithCoder:(id)a3
+- (NUMediaView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NUMediaView;
-  v3 = [(NUMediaView *)&v6 initWithCoder:a3];
+  v3 = [(NUMediaView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -2562,11 +2562,11 @@ LABEL_6:
   return v4;
 }
 
-- (NUMediaView)initWithFrame:(CGRect)a3
+- (NUMediaView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NUMediaView;
-  v3 = [(NUMediaView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUMediaView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -2576,14 +2576,14 @@ LABEL_6:
   return v4;
 }
 
-+ (UIEdgeInsets)_proposedInsetsForInsets:(UIEdgeInsets)a3 contentSize:(CGSize)a4 inFrame:(CGRect)a5 centerContent:(BOOL)a6
++ (UIEdgeInsets)_proposedInsetsForInsets:(UIEdgeInsets)insets contentSize:(CGSize)size inFrame:(CGRect)frame centerContent:(BOOL)content
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v47 = *MEMORY[0x277D85DE8];
-  if (CGRectIsEmpty(a5))
+  if (CGRectIsEmpty(frame))
   {
     top = *MEMORY[0x277D768C8];
     left = *(MEMORY[0x277D768C8] + 8);
@@ -2592,15 +2592,15 @@ LABEL_6:
     goto LABEL_28;
   }
 
-  if (a6)
+  if (content)
   {
     v36 = right;
-    MinX = CGRectGetMinX(a5);
-    v34 = MinX + (CGRectGetWidth(a5) - a4.width) * 0.5;
-    MinY = CGRectGetMinY(a5);
-    Height = CGRectGetHeight(a5);
+    MinX = CGRectGetMinX(frame);
+    v34 = MinX + (CGRectGetWidth(frame) - size.width) * 0.5;
+    MinY = CGRectGetMinY(frame);
+    Height = CGRectGetHeight(frame);
     v14 = fmax(v34, 0.0);
-    v15 = fmax(MinY + (Height - a4.height) * 0.5, 0.0);
+    v15 = fmax(MinY + (Height - size.height) * 0.5, 0.0);
     v16 = v15 + v15 - bottom;
     if (bottom > v15)
     {
@@ -2683,8 +2683,8 @@ LABEL_6:
     v49.bottom = bottom;
     v49.right = v20;
     v23 = NSStringFromUIEdgeInsets(v49);
-    v29 = NSStringFromCGSize(a4);
-    v30 = NSStringFromCGRect(a5);
+    v29 = NSStringFromCGSize(size);
+    v30 = NSStringFromCGRect(frame);
     bottom = v33;
     top = v35;
     v50.top = v35;
@@ -2740,9 +2740,9 @@ LABEL_28:
   return result;
 }
 
-+ (double)currentEDRHeadroomForScreen:(id)a3
++ (double)currentEDRHeadroomForScreen:(id)screen
 {
-  [a3 currentEDRHeadroom];
+  [screen currentEDRHeadroom];
   v4 = v3;
   [MEMORY[0x277D2CFB8] overrideDisplayHeadroom];
   if (v5 >= 1.0)
@@ -2762,9 +2762,9 @@ LABEL_28:
   }
 }
 
-+ (double)maximumEDRHeadroomForScreen:(id)a3
++ (double)maximumEDRHeadroomForScreen:(id)screen
 {
-  [a3 potentialEDRHeadroom];
+  [screen potentialEDRHeadroom];
   v4 = v3;
   [MEMORY[0x277D2CFB8] overrideDisplayHeadroom];
   if (v5 >= 1.0)

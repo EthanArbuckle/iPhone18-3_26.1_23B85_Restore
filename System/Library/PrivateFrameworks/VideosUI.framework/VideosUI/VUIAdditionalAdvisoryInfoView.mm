@@ -2,28 +2,28 @@
 - (BOOL)_isPortrait;
 - (CGSize)_dividerSize;
 - (CGSize)_logoSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_descriptionMargin;
 - (UIEdgeInsets)_dividerMargin;
 - (UIEdgeInsets)_logoMargin;
 - (UIEdgeInsets)_margin;
-- (VUIAdditionalAdvisoryInfoView)initWithAdvisoryInfoDictionary:(id)a3 reduceMotion:(BOOL)a4;
+- (VUIAdditionalAdvisoryInfoView)initWithAdvisoryInfoDictionary:(id)dictionary reduceMotion:(BOOL)motion;
 - (double)_descriptionViewYOffset;
 - (double)_descriptionWidth;
-- (void)_configureSubviewsWithDictionary:(id)a3;
-- (void)_hideWithAnimationWithPlatterView:(id)a3 hidePlatterView:(BOOL)a4 completion:(id)a5;
-- (void)_showAnimatedLogoAndTextWithCompletion:(id)a3 platterView:(id)a4 animateDivider:(BOOL)a5;
-- (void)hideAnimated:(BOOL)a3 platterView:(id)a4 hidePlatterView:(BOOL)a5 completion:(id)a6;
+- (void)_configureSubviewsWithDictionary:(id)dictionary;
+- (void)_hideWithAnimationWithPlatterView:(id)view hidePlatterView:(BOOL)platterView completion:(id)completion;
+- (void)_showAnimatedLogoAndTextWithCompletion:(id)completion platterView:(id)view animateDivider:(BOOL)divider;
+- (void)hideAnimated:(BOOL)animated platterView:(id)view hidePlatterView:(BOOL)platterView completion:(id)completion;
 - (void)layoutSubviews;
-- (void)showWithAnimatedLogoAndText:(BOOL)a3 animateDivider:(BOOL)a4 platterView:(id)a5 completion:(id)a6;
+- (void)showWithAnimatedLogoAndText:(BOOL)text animateDivider:(BOOL)divider platterView:(id)view completion:(id)completion;
 @end
 
 @implementation VUIAdditionalAdvisoryInfoView
 
-- (VUIAdditionalAdvisoryInfoView)initWithAdvisoryInfoDictionary:(id)a3 reduceMotion:(BOOL)a4
+- (VUIAdditionalAdvisoryInfoView)initWithAdvisoryInfoDictionary:(id)dictionary reduceMotion:(BOOL)motion
 {
-  v4 = a4;
-  v6 = a3;
+  motionCopy = motion;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = VUIAdditionalAdvisoryInfoView;
   v7 = [(VUIAdditionalAdvisoryInfoView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -37,9 +37,9 @@
     layout = v7->_layout;
     v7->_layout = v10;
 
-    [(VUIAdditionalAdvisoryInfoView *)v7 _configureSubviewsWithDictionary:v6];
+    [(VUIAdditionalAdvisoryInfoView *)v7 _configureSubviewsWithDictionary:dictionaryCopy];
     v12 = 100.0;
-    if (v4)
+    if (motionCopy)
     {
       v12 = 0.0;
     }
@@ -50,9 +50,9 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIAdditionalAdvisoryInfoView *)self _logoSize:a3.width];
+  [(VUIAdditionalAdvisoryInfoView *)self _logoSize:fits.width];
   v5 = v4;
   v7 = v6;
   [(VUIAdditionalAdvisoryInfoView *)self _logoMargin];
@@ -84,11 +84,11 @@
 
 - (double)_descriptionViewYOffset
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
-  v4 = [v3 layer];
-  v5 = [v4 presentationLayer];
+  descriptionView = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
+  layer = [descriptionView layer];
+  presentationLayer = [layer presentationLayer];
   v6 = 0.0;
-  if (!v5)
+  if (!presentationLayer)
   {
     [(VUIAdditionalAdvisoryInfoView *)self animationDistance];
     v6 = -v7;
@@ -102,7 +102,7 @@
   v67.receiver = self;
   v67.super_class = VUIAdditionalAdvisoryInfoView;
   [(VUIAdditionalAdvisoryInfoView *)&v67 layoutSubviews];
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self vuiIsRTL];
+  vuiIsRTL = [(VUIAdditionalAdvisoryInfoView *)self vuiIsRTL];
   [(VUIAdditionalAdvisoryInfoView *)self bounds];
   v62 = v4;
   v59 = v5;
@@ -128,7 +128,7 @@
   v56 = v7;
   v25 = v7 - v15 - v9;
   v26 = v62 + v13;
-  if (v3)
+  if (vuiIsRTL)
   {
     v27 = v25;
   }
@@ -142,10 +142,10 @@
   v28 = v11;
   VUIRoundValue();
   v30 = v29;
-  v31 = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
+  logoImageView = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
   v32 = v28;
   v33 = v26;
-  [v31 setFrame:{v63, v30, v9, v32}];
+  [logoImageView setFrame:{v63, v30, v9, v32}];
 
   v64 = v21;
   v34 = v26 + v9 + v15 + v21;
@@ -153,7 +153,7 @@
   v36 = v15;
   v37 = v17;
   v38 = v25 - (v35 - v17);
-  if (v3)
+  if (vuiIsRTL)
   {
     v39 = v38;
   }
@@ -167,8 +167,8 @@
 
   if (v40)
   {
-    v41 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-    [v41 frame];
+    dividerView = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+    [dividerView frame];
     v43 = v42;
 
     if (v43 > 0.0)
@@ -176,8 +176,8 @@
       v43 = v60;
     }
 
-    v44 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-    [v44 setFrame:{v39, v59 + v58, v37, v43}];
+    dividerView2 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+    [dividerView2 setFrame:{v39, v59 + v58, v37, v43}];
 
     v45 = v37;
     v46 = v60;
@@ -191,7 +191,7 @@
 
   [(VUIAdditionalAdvisoryInfoView *)self _descriptionViewYOffset];
   v48 = v47;
-  if (v3)
+  if (vuiIsRTL)
   {
     v49 = v66;
     v50 = v57 - v55 - v9 - v36 - v64 - v37 - v65 - v61 - v66;
@@ -204,21 +204,21 @@
   }
 
   [(VUILabel *)self->_descriptionView setFrame:v50, v48, v49, v46];
-  v51 = [(VUILabel *)self->_descriptionView layer];
-  v52 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  [v52 descriptionCornerRadius];
-  [v51 setCornerRadius:?];
+  layer = [(VUILabel *)self->_descriptionView layer];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  [layout descriptionCornerRadius];
+  [layer setCornerRadius:?];
 
-  v53 = [(VUILabel *)self->_descriptionView layer];
-  [v53 setCompositingFilter:*MEMORY[0x1E6979D98]];
+  layer2 = [(VUILabel *)self->_descriptionView layer];
+  [layer2 setCompositingFilter:*MEMORY[0x1E6979D98]];
 }
 
 - (BOOL)_isPortrait
 {
-  v2 = [(VUIAdditionalAdvisoryInfoView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(VUIAdditionalAdvisoryInfoView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v3 && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || (v4 = +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait")))
+  if (!userInterfaceIdiom && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || (v4 = +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait")))
   {
     LOBYTE(v4) = 1;
   }
@@ -228,17 +228,17 @@
 
 - (UIEdgeInsets)_margin
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v4 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitMargin];
+    [layout portraitMargin];
   }
 
   else
   {
-    [v4 margin];
+    [layout margin];
   }
 
   v10 = v6;
@@ -259,17 +259,17 @@
 
 - (CGSize)_logoSize
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v4 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoSize];
+    [layout portraitLogoSize];
   }
 
   else
   {
-    [v4 logoSize];
+    [layout logoSize];
   }
 
   v8 = v6;
@@ -286,17 +286,17 @@
 {
   [(VUIAdditionalAdvisoryInfoView *)self bounds];
   v4 = v3;
-  v5 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v6 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v7 = v6;
-  if (v5)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v7 = layout;
+  if (_isPortrait)
   {
-    [v6 portraitDividerSize];
+    [layout portraitDividerSize];
   }
 
   else
   {
-    [v6 dividerSize];
+    [layout dividerSize];
   }
 
   v9 = v8;
@@ -310,17 +310,17 @@
 
 - (UIEdgeInsets)_logoMargin
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v4 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoMargin];
+    [layout portraitLogoMargin];
   }
 
   else
   {
-    [v4 logoMargin];
+    [layout logoMargin];
   }
 
   v10 = v6;
@@ -341,17 +341,17 @@
 
 - (UIEdgeInsets)_descriptionMargin
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v4 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitDescriptionMargin];
+    [layout portraitDescriptionMargin];
   }
 
   else
   {
-    [v4 descriptionMargin];
+    [layout descriptionMargin];
   }
 
   v10 = v6;
@@ -372,8 +372,8 @@
 
 - (double)_descriptionWidth
 {
-  v2 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  [v2 descriptionWidth];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  [layout descriptionWidth];
   v4 = v3;
 
   return v4;
@@ -381,17 +381,17 @@
 
 - (UIEdgeInsets)_dividerMargin
 {
-  v3 = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
-  v4 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIAdditionalAdvisoryInfoView *)self _isPortrait];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitDividerMargin];
+    [layout portraitDividerMargin];
   }
 
   else
   {
-    [v4 dividerMargin];
+    [layout dividerMargin];
   }
 
   v10 = v6;
@@ -410,16 +410,16 @@
   return result;
 }
 
-- (void)_configureSubviewsWithDictionary:(id)a3
+- (void)_configureSubviewsWithDictionary:(id)dictionary
 {
-  v19 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v19 objectForKeyedSubscript:@"VUIAdditionalAdvisoryInfoViewImageKey"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdditionalAdvisoryInfoViewImageKey"];
   if (v5)
   {
     [v4 setImage:v5];
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [v4 setTintColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v4 setTintColor:whiteColor];
   }
 
   [v4 setAlpha:0.0];
@@ -428,93 +428,93 @@
   [(VUIAdditionalAdvisoryInfoView *)self _dividerSize];
   v8 = v7;
   v9 = objc_opt_new();
-  v10 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v11 = [v10 dividerColor];
-  [v9 setBackgroundColor:v11];
+  layout = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  dividerColor = [layout dividerColor];
+  [v9 setBackgroundColor:dividerColor];
 
   [v9 setFrame:{0.0, 0.0, v8, 0.0}];
   [(VUIAdditionalAdvisoryInfoView *)self addSubview:v9];
   [(VUIAdditionalAdvisoryInfoView *)self setDividerView:v9];
-  v12 = [v19 objectForKeyedSubscript:@"VUIIAdditionalAdvisoryInfoViewDescriptionKey"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"VUIIAdditionalAdvisoryInfoViewDescriptionKey"];
   v13 = [(VUIAdditionalAdvisoryInfoView *)self description];
-  v14 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  v15 = [v14 descriptionLayout];
-  v16 = [VUILabel labelWithString:v13 textLayout:v15 existingLabel:0];
+  layout2 = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  descriptionLayout = [layout2 descriptionLayout];
+  v16 = [VUILabel labelWithString:v13 textLayout:descriptionLayout existingLabel:0];
 
   [v16 setText:v12];
   [(VUIAdditionalAdvisoryInfoView *)self addSubview:v16];
   [(VUIAdditionalAdvisoryInfoView *)self setDescriptionView:v16];
-  v17 = [(VUILabel *)self->_descriptionView layer];
-  v18 = [(VUIAdditionalAdvisoryInfoView *)self layout];
-  [v18 descriptionCornerRadius];
-  [v17 setCornerRadius:?];
+  layer = [(VUILabel *)self->_descriptionView layer];
+  layout3 = [(VUIAdditionalAdvisoryInfoView *)self layout];
+  [layout3 descriptionCornerRadius];
+  [layer setCornerRadius:?];
 
   [(VUIAdditionalAdvisoryInfoView *)self layoutSubviews];
 }
 
-- (void)showWithAnimatedLogoAndText:(BOOL)a3 animateDivider:(BOOL)a4 platterView:(id)a5 completion:(id)a6
+- (void)showWithAnimatedLogoAndText:(BOOL)text animateDivider:(BOOL)divider platterView:(id)view completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v30 = a5;
-  v10 = a6;
-  if (v8)
+  dividerCopy = divider;
+  textCopy = text;
+  viewCopy = view;
+  completionCopy = completion;
+  if (textCopy)
   {
-    [(VUIAdditionalAdvisoryInfoView *)self _showAnimatedLogoAndTextWithCompletion:v10 platterView:v30 animateDivider:v7];
+    [(VUIAdditionalAdvisoryInfoView *)self _showAnimatedLogoAndTextWithCompletion:completionCopy platterView:viewCopy animateDivider:dividerCopy];
   }
 
   else
   {
-    v11 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+    dividerView = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
 
-    if (v11)
+    if (dividerView)
     {
-      v12 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-      [v12 frame];
+      dividerView2 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+      [dividerView2 frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
 
       [(VUIAdditionalAdvisoryInfoView *)self _dividerSize];
       v20 = v19;
-      v21 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-      [v21 setFrame:{v14, v16, v18, v20}];
+      dividerView3 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+      [dividerView3 setFrame:{v14, v16, v18, v20}];
     }
 
-    v22 = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
-    [v22 setAlpha:1.0];
+    logoImageView = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
+    [logoImageView setAlpha:1.0];
 
-    v23 = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
-    [v23 setAlpha:1.0];
+    descriptionView = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
+    [descriptionView setAlpha:1.0];
 
-    if (v30)
+    if (viewCopy)
     {
       [(VUIAdditionalAdvisoryInfoView *)self frame];
       v25 = v24 + -15.0;
-      [v30 frame];
+      [viewCopy frame];
       v27 = v26;
       [(VUIAdditionalAdvisoryInfoView *)self frame];
       v29 = v28 + 30.0;
-      [v30 frame];
-      [v30 setFrame:{v25, v27, v29}];
+      [viewCopy frame];
+      [viewCopy setFrame:{v25, v27, v29}];
     }
 
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_showAnimatedLogoAndTextWithCompletion:(id)a3 platterView:(id)a4 animateDivider:(BOOL)a5
+- (void)_showAnimatedLogoAndTextWithCompletion:(id)completion platterView:(id)view animateDivider:(BOOL)divider
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  dividerCopy = divider;
+  completionCopy = completion;
+  viewCopy = view;
   [MEMORY[0x1E6979518] begin];
   v10 = MEMORY[0x1E6979518];
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
   v89[2] = __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndTextWithCompletion_platterView_animateDivider___block_invoke;
   v89[3] = &unk_1E872D7E0;
-  v88 = v8;
+  v88 = completionCopy;
   v90 = v88;
   [v10 setCompletionBlock:v89];
   v11 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
@@ -524,12 +524,12 @@
   [v11 setInitialVelocity:0.0];
   [v11 settlingDuration];
   [v11 setDuration:?];
-  v12 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-  v13 = [v12 layer];
+  dividerView = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+  layer = [dividerView layer];
 
-  if (v5)
+  if (dividerCopy)
   {
-    [v13 bounds];
+    [layer bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -541,7 +541,7 @@
     v23 = [MEMORY[0x1E696B098] valueWithCGRect:{v15, v17, v19, v21}];
     [v11 setToValue:v23];
 
-    [v13 addAnimation:v11 forKey:@"bounds"];
+    [layer addAnimation:v11 forKey:@"bounds"];
   }
 
   else
@@ -553,12 +553,12 @@
     v21 = v27;
   }
 
-  v87 = v13;
-  [v13 setBounds:{v15, v17, v19, v21}];
-  if (v9)
+  v87 = layer;
+  [layer setBounds:{v15, v17, v19, v21}];
+  if (viewCopy)
   {
-    v28 = [v9 layer];
-    [v28 bounds];
+    layer2 = [viewCopy layer];
+    [layer2 bounds];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -573,8 +573,8 @@
       v40 = [MEMORY[0x1E696B098] valueWithCGRect:{v30, v32, v38, v36}];
       [v11 setToValue:v40];
 
-      [v28 addAnimation:v11 forKey:@"bounds"];
-      [v28 setBounds:{v30, v32, v38, v36}];
+      [layer2 addAnimation:v11 forKey:@"bounds"];
+      [layer2 setBounds:{v30, v32, v38, v36}];
     }
 
     else if (v34 < v38)
@@ -586,11 +586,11 @@
       [v41 setInitialVelocity:0.0];
       [v41 settlingDuration];
       [v41 setDuration:?];
-      [v28 position];
+      [layer2 position];
       v43 = v42;
       v45 = v44;
-      v46 = [(VUIAdditionalAdvisoryInfoView *)self layer];
-      [v46 position];
+      layer3 = [(VUIAdditionalAdvisoryInfoView *)self layer];
+      [layer3 position];
       v48 = v47;
 
       v49 = [MEMORY[0x1E696B098] valueWithCGPoint:{v43, v45}];
@@ -599,8 +599,8 @@
       v50 = [MEMORY[0x1E696B098] valueWithCGPoint:{v48, v45}];
       [v41 setToValue:v50];
 
-      [v28 addAnimation:v41 forKey:@"position"];
-      [v28 setPosition:{v48, v45}];
+      [layer2 addAnimation:v41 forKey:@"position"];
+      [layer2 setPosition:{v48, v45}];
       [(VUIAdditionalAdvisoryInfoView *)self bounds];
       v52 = v51 + 30.0;
       v53 = [MEMORY[0x1E696B098] valueWithCGRect:{v30, v32, v34, v36}];
@@ -609,8 +609,8 @@
       v54 = [MEMORY[0x1E696B098] valueWithCGRect:{v30, v32, v52, v36}];
       [v11 setToValue:v54];
 
-      [v28 addAnimation:v11 forKey:@"bounds"];
-      [v28 setBounds:{v30, v32, v52, v36}];
+      [layer2 addAnimation:v11 forKey:@"bounds"];
+      [layer2 setBounds:{v30, v32, v52, v36}];
     }
   }
 
@@ -620,7 +620,7 @@
   LODWORD(v58) = 1059816735;
   v85 = [v55 initWithControlPoints:v57 :0.0 :v58 :v56];
   [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-  v59 = v86 = v9;
+  v59 = v86 = viewCopy;
   [v59 setTimingFunction:v85];
   [v59 setBeginTime:CACurrentMediaTime() + 0.8];
   v60 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
@@ -634,12 +634,12 @@
   [v59 setRemovedOnCompletion:0];
   v63 = *MEMORY[0x1E69797E8];
   [v59 setFillMode:*MEMORY[0x1E69797E8]];
-  v64 = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
-  v84 = [v64 layer];
+  logoImageView = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
+  layer4 = [logoImageView layer];
 
-  [v84 addAnimation:v59 forKey:@"opacity"];
-  [v84 setOpacity:0.0];
-  v65 = [(VUILabel *)self->_descriptionView layer];
+  [layer4 addAnimation:v59 forKey:@"opacity"];
+  [layer4 setOpacity:0.0];
+  layer5 = [(VUILabel *)self->_descriptionView layer];
   v66 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position"];
   [v66 setMass:1.0];
   [v66 setStiffness:24.0];
@@ -647,7 +647,7 @@
   [v66 setInitialVelocity:0.0];
   [v66 settlingDuration];
   [v66 setDuration:?];
-  [v65 position];
+  [layer5 position];
   v68 = v67;
   v70 = v69;
   [(VUIAdditionalAdvisoryInfoView *)self animationDistance];
@@ -660,8 +660,8 @@
 
   [v66 setRemovedOnCompletion:0];
   [v66 setFillMode:v63];
-  [v65 addAnimation:v66 forKey:@"position"];
-  [v65 setPosition:{v68, v70}];
+  [layer5 addAnimation:v66 forKey:@"position"];
+  [layer5 setPosition:{v68, v70}];
   v75 = objc_alloc(MEMORY[0x1E69793D0]);
   LODWORD(v76) = 1.0;
   LODWORD(v77) = 1051260355;
@@ -678,10 +678,10 @@
 
   [v80 setRemovedOnCompletion:0];
   [v80 setFillMode:v63];
-  [v65 addAnimation:v80 forKey:@"opacity"];
+  [layer5 addAnimation:v80 forKey:@"opacity"];
   [v80 setBeginTime:CACurrentMediaTime() + 0.349999994];
   [v80 setDuration:3.0];
-  [v65 setOpacity:0.0];
+  [layer5 setOpacity:0.0];
   [MEMORY[0x1E6979518] commit];
 }
 
@@ -696,55 +696,55 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
   return result;
 }
 
-- (void)hideAnimated:(BOOL)a3 platterView:(id)a4 hidePlatterView:(BOOL)a5 completion:(id)a6
+- (void)hideAnimated:(BOOL)animated platterView:(id)view hidePlatterView:(BOOL)platterView completion:(id)completion
 {
-  v6 = a5;
-  v8 = a3;
-  v10 = a6;
-  v22 = v10;
-  if (v8)
+  platterViewCopy = platterView;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v22 = completionCopy;
+  if (animatedCopy)
   {
-    [(VUIAdditionalAdvisoryInfoView *)self _hideWithAnimationWithPlatterView:a4 hidePlatterView:v6 completion:v10];
+    [(VUIAdditionalAdvisoryInfoView *)self _hideWithAnimationWithPlatterView:view hidePlatterView:platterViewCopy completion:completionCopy];
   }
 
   else
   {
-    v11 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+    dividerView = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
 
-    if (v11)
+    if (dividerView)
     {
-      v12 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-      [v12 frame];
+      dividerView2 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+      [dividerView2 frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
 
-      v19 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-      [v19 setFrame:{v14, v16, v18, 0.0}];
+      dividerView3 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+      [dividerView3 setFrame:{v14, v16, v18, 0.0}];
     }
 
-    v20 = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
-    [v20 setAlpha:0.0];
+    logoImageView = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
+    [logoImageView setAlpha:0.0];
 
-    v21 = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
-    [v21 setAlpha:0.0];
+    descriptionView = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
+    [descriptionView setAlpha:0.0];
 
     v22[2]();
   }
 }
 
-- (void)_hideWithAnimationWithPlatterView:(id)a3 hidePlatterView:(BOOL)a4 completion:(id)a5
+- (void)_hideWithAnimationWithPlatterView:(id)view hidePlatterView:(BOOL)platterView completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  platterViewCopy = platterView;
+  viewCopy = view;
+  completionCopy = completion;
   [MEMORY[0x1E6979518] begin];
   v10 = MEMORY[0x1E6979518];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __104__VUIAdditionalAdvisoryInfoView_Animator___hideWithAnimationWithPlatterView_hidePlatterView_completion___block_invoke;
   v55[3] = &unk_1E872D7E0;
-  v54 = v9;
+  v54 = completionCopy;
   v56 = v54;
   [v10 setCompletionBlock:v55];
   v11 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -767,16 +767,16 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
   [v16 setRemovedOnCompletion:0];
   v20 = *MEMORY[0x1E69797E8];
   [v16 setFillMode:*MEMORY[0x1E69797E8]];
-  v21 = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
-  v22 = [v21 layer];
+  logoImageView = [(VUIAdditionalAdvisoryInfoView *)self logoImageView];
+  layer = [logoImageView layer];
 
-  [v22 addAnimation:v16 forKey:@"opacity"];
-  [v22 setOpacity:0.0];
-  if (v8 && v6)
+  [layer addAnimation:v16 forKey:@"opacity"];
+  [layer setOpacity:0.0];
+  if (viewCopy && platterViewCopy)
   {
-    v23 = [v8 layer];
-    [v23 addAnimation:v16 forKey:@"opacity"];
-    [v23 setOpacity:0.0];
+    layer2 = [viewCopy layer];
+    [layer2 addAnimation:v16 forKey:@"opacity"];
+    [layer2 setOpacity:0.0];
   }
 
   v24 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -785,7 +785,7 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
   LODWORD(v27) = 1059816735;
   v51 = [v24 initWithControlPoints:v26 :0.0 :v27 :v25];
   [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-  v28 = v52 = v8;
+  v28 = v52 = viewCopy;
   [v28 setTimingFunction:v51];
   LODWORD(v29) = 1.0;
   v30 = [MEMORY[0x1E696AD98] numberWithFloat:v29];
@@ -797,12 +797,12 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
   [v28 setDuration:0.810000002];
   [v28 setRemovedOnCompletion:0];
   [v28 setFillMode:v20];
-  v32 = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
-  v33 = [v32 layer];
+  descriptionView = [(VUIAdditionalAdvisoryInfoView *)self descriptionView];
+  layer3 = [descriptionView layer];
 
-  [v33 addAnimation:v28 forKey:@"opacity"];
+  [layer3 addAnimation:v28 forKey:@"opacity"];
   [v28 setBeginTime:CACurrentMediaTime() + 0.349999994];
-  [v33 setOpacity:0.0];
+  [layer3 setOpacity:0.0];
   v34 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
   [v34 setDuration:0.88];
   v35 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -810,10 +810,10 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
   LODWORD(v37) = 1051260355;
   v38 = [v35 initWithControlPoints:v37 :0.0 :v36 :0.0];
   [v34 setTimingFunction:v38];
-  v39 = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
-  v40 = [v39 layer];
+  dividerView = [(VUIAdditionalAdvisoryInfoView *)self dividerView];
+  layer4 = [dividerView layer];
 
-  [v40 bounds];
+  [layer4 bounds];
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -826,8 +826,8 @@ uint64_t __109__VUIAdditionalAdvisoryInfoView_Animator___showAnimatedLogoAndText
 
   [v34 setRemovedOnCompletion:0];
   [v34 setFillMode:v20];
-  [v40 addAnimation:v34 forKey:@"bounds"];
-  [v40 setBounds:{v42, v44, v46, v48}];
+  [layer4 addAnimation:v34 forKey:@"bounds"];
+  [layer4 setBounds:{v42, v44, v46, v48}];
   [MEMORY[0x1E6979518] commit];
 }
 

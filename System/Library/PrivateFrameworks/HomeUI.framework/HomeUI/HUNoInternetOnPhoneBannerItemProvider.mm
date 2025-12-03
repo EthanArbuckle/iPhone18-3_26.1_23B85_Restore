@@ -1,10 +1,10 @@
 @interface HUNoInternetOnPhoneBannerItemProvider
 - (HUNoInternetOnPhoneBannerItemProvider)init;
-- (HUNoInternetOnPhoneBannerItemProvider)initWithHome:(id)a3 delegate:(id)a4;
+- (HUNoInternetOnPhoneBannerItemProvider)initWithHome:(id)home delegate:(id)delegate;
 - (HUNoInternetOnPhoneBannerItemProviderDelegate)delegate;
 - (id)items;
 - (id)reloadItems;
-- (void)notifyChangeForNoInternetOnPhone:(BOOL)a3;
+- (void)notifyChangeForNoInternetOnPhone:(BOOL)phone;
 - (void)startNetworkDiagnosticsObservationOnPhone;
 - (void)stopNetworkDiagnosticsObservationOnPhone;
 @end
@@ -16,7 +16,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_20D567EC8();
   sub_20CECF940(0, &qword_28111FAB8);
   v7 = sub_20D568518();
@@ -27,7 +27,7 @@
   v9 = swift_allocObject();
   v9[2] = 0;
   v9[3] = 0;
-  v9[4] = v6;
+  v9[4] = selfCopy;
   sub_20CF18C60(0, 0, v5, &unk_20D5C8DF0, v9);
 }
 
@@ -36,8 +36,8 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v9 - v4;
-  v6 = self;
-  [(HUNoInternetOnPhoneBannerItemProvider *)v6 notifyChangeForNoInternetOnPhone:0];
+  selfCopy = self;
+  [(HUNoInternetOnPhoneBannerItemProvider *)selfCopy notifyChangeForNoInternetOnPhone:0];
   v7 = sub_20D567C58();
   (*(*(v7 - 8) + 56))(v5, 1, 1, v7);
   v8 = swift_allocObject();
@@ -48,30 +48,30 @@
 
 - (HUNoInternetOnPhoneBannerItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUNoInternetOnPhoneBannerItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUNoInternetOnPhoneBannerItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNoInternetOnPhoneBannerItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUNoInternetOnPhoneBannerItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUNoInternetOnPhoneBannerItemProvider)initWithHome:(id)a3 delegate:(id)a4
+- (HUNoInternetOnPhoneBannerItemProvider)initWithHome:(id)home delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HUNoInternetOnPhoneBannerItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_opt_new();
     [(HUNoInternetOnPhoneBannerItemProvider *)v10 setBannerItems:v11];
 
-    v12 = [MEMORY[0x277D14670] sharedInstance];
-    [v12 addObserver:v10];
+    mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+    [mEMORY[0x277D14670] addObserver:v10];
   }
 
   return v10;
@@ -81,39 +81,39 @@
 {
   if (!_os_feature_enabled_impl() || hasInternetOutageOnPhone != 1)
   {
-    v7 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-    [v7 removeAllObjects];
+    bannerItems = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+    [bannerItems removeAllObjects];
 
-    v6 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-    v5 = 0;
+    bannerItems2 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+    bannerItems4 = 0;
     goto LABEL_6;
   }
 
-  v3 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-  v4 = [v3 count];
+  bannerItems3 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+  v4 = [bannerItems3 count];
 
   if (v4)
   {
-    v5 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-    v6 = 0;
+    bannerItems4 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+    bannerItems2 = 0;
 LABEL_6:
-    v8 = 0;
+    bannerItems6 = 0;
     goto LABEL_7;
   }
 
   v12 = [HUNoInternetOnPhoneBannerItem alloc];
-  v13 = [(HUNoInternetOnPhoneBannerItemProvider *)self home];
-  v14 = [(HUNoInternetOnPhoneBannerItem *)v12 initWithHome:v13];
+  home = [(HUNoInternetOnPhoneBannerItemProvider *)self home];
+  v14 = [(HUNoInternetOnPhoneBannerItem *)v12 initWithHome:home];
 
-  v15 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-  [v15 addObject:v14];
+  bannerItems5 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+  [bannerItems5 addObject:v14];
 
-  v8 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+  bannerItems6 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
 
-  v5 = 0;
-  v6 = 0;
+  bannerItems4 = 0;
+  bannerItems2 = 0;
 LABEL_7:
-  v9 = [objc_alloc(MEMORY[0x277D14768]) initWithAddedItems:v8 removedItems:v6 existingItems:v5];
+  v9 = [objc_alloc(MEMORY[0x277D14768]) initWithAddedItems:bannerItems6 removedItems:bannerItems2 existingItems:bannerItems4];
   v10 = [MEMORY[0x277D2C900] futureWithResult:v9];
 
   return v10;
@@ -121,17 +121,17 @@ LABEL_7:
 
 - (id)items
 {
-  v2 = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
-  v3 = [v2 copy];
+  bannerItems = [(HUNoInternetOnPhoneBannerItemProvider *)self bannerItems];
+  v3 = [bannerItems copy];
 
   return v3;
 }
 
-- (void)notifyChangeForNoInternetOnPhone:(BOOL)a3
+- (void)notifyChangeForNoInternetOnPhone:(BOOL)phone
 {
-  hasInternetOutageOnPhone = a3;
-  v4 = [(HUNoInternetOnPhoneBannerItemProvider *)self delegate];
-  v5 = [v4 conformsToProtocol:&unk_282542B08];
+  hasInternetOutageOnPhone = phone;
+  delegate = [(HUNoInternetOnPhoneBannerItemProvider *)self delegate];
+  v5 = [delegate conformsToProtocol:&unk_282542B08];
 
   if (v5)
   {

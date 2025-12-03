@@ -1,41 +1,41 @@
 @interface IDSGroupSessionBroadcastParameter
-- (BOOL)isEqual:(id)a3;
-- (IDSGroupSessionBroadcastParameter)initWithCoder:(id)a3;
-- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)a3 salt:(id)a4 serviceName:(id)a5;
-- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)a3 serviceName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSGroupSessionBroadcastParameter)initWithCoder:(id)coder;
+- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)d salt:(id)salt serviceName:(id)name;
+- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)d serviceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_requestNWConnectionforIDSGroupSessionBroadcastParameter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_requestNWConnectionforIDSGroupSessionBroadcastParameter:(id)parameter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSGroupSessionBroadcastParameter
 
-- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)a3 serviceName:(id)a4
+- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)d serviceName:(id)name
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 data];
-  v10 = [(IDSGroupSessionBroadcastParameter *)self initWithGroupSessionID:v8 salt:v9 serviceName:v7];
+  nameCopy = name;
+  dCopy = d;
+  data = [v6 data];
+  v10 = [(IDSGroupSessionBroadcastParameter *)self initWithGroupSessionID:dCopy salt:data serviceName:nameCopy];
 
   return v10;
 }
 
-- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)a3 salt:(id)a4 serviceName:(id)a5
+- (IDSGroupSessionBroadcastParameter)initWithGroupSessionID:(id)d salt:(id)salt serviceName:(id)name
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  nameCopy = name;
   v33.receiver = self;
   v33.super_class = IDSGroupSessionBroadcastParameter;
   v10 = [(IDSGroupSessionBroadcastParameter *)&v33 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_groupSessionID, a3);
-    objc_storeStrong(&v11->_serviceName, a5);
-    v12 = [v9 dataUsingEncoding:4];
+    objc_storeStrong(&v10->_groupSessionID, d);
+    objc_storeStrong(&v11->_serviceName, name);
+    v12 = [nameCopy dataUsingEncoding:4];
     memset(md, 170, 20);
     CC_SHA1([v12 bytes], objc_msgSend(v12, "length"), md);
     v13 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
@@ -59,8 +59,8 @@
     [v22 setParticipantID:0];
     [v22 setSalt:v11->_salt];
     v23 = v11->_parameters;
-    v24 = [v22 stringRepresentation];
-    [v24 UTF8String];
+    stringRepresentation = [v22 stringRepresentation];
+    [stringRepresentation UTF8String];
     nw_parameters_set_account_id();
 
     MEMORY[0x19A8BBA70](v11->_parameters, v21);
@@ -82,12 +82,12 @@
   return v11;
 }
 
-- (void)_requestNWConnectionforIDSGroupSessionBroadcastParameter:(id)a3
+- (void)_requestNWConnectionforIDSGroupSessionBroadcastParameter:(id)parameter
 {
-  v10 = a3;
-  v4 = [(IDSGroupSessionBroadcastParameter *)self endpoint];
-  v5 = [(IDSGroupSessionBroadcastParameter *)self parameters];
-  v6 = nw_connection_create(v4, v5);
+  parameterCopy = parameter;
+  endpoint = [(IDSGroupSessionBroadcastParameter *)self endpoint];
+  parameters = [(IDSGroupSessionBroadcastParameter *)self parameters];
+  v6 = nw_connection_create(endpoint, parameters);
 
   if (v6)
   {
@@ -101,16 +101,16 @@
     v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v9];
   }
 
-  if (v10)
+  if (parameterCopy)
   {
-    v10[2](v10, v6, v7);
+    parameterCopy[2](parameterCopy, v6, v7);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -120,18 +120,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       groupSessionID = self->_groupSessionID;
-      v7 = [(IDSGroupSessionBroadcastParameter *)v5 groupSessionID];
-      if ([(NSString *)groupSessionID isEqual:v7])
+      groupSessionID = [(IDSGroupSessionBroadcastParameter *)v5 groupSessionID];
+      if ([(NSString *)groupSessionID isEqual:groupSessionID])
       {
         salt = self->_salt;
-        v9 = [(IDSGroupSessionBroadcastParameter *)v5 salt];
-        if ([(NSData *)salt isEqual:v9])
+        salt = [(IDSGroupSessionBroadcastParameter *)v5 salt];
+        if ([(NSData *)salt isEqual:salt])
         {
           serviceName = self->_serviceName;
-          v11 = [(IDSGroupSessionBroadcastParameter *)v5 serviceName];
-          v12 = [(NSString *)serviceName isEqual:v11];
+          serviceName = [(IDSGroupSessionBroadcastParameter *)v5 serviceName];
+          v12 = [(NSString *)serviceName isEqual:serviceName];
         }
 
         else
@@ -162,27 +162,27 @@
   return v4 ^ [(NSData *)self->_salt hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupSessionID = self->_groupSessionID;
-  v5 = a3;
-  [v5 encodeObject:groupSessionID forKey:@"groupSessionID"];
-  [v5 encodeObject:self->_salt forKey:@"salt"];
-  [v5 encodeObject:self->_serviceName forKey:@"serviceName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupSessionID forKey:@"groupSessionID"];
+  [coderCopy encodeObject:self->_salt forKey:@"salt"];
+  [coderCopy encodeObject:self->_serviceName forKey:@"serviceName"];
 }
 
-- (IDSGroupSessionBroadcastParameter)initWithCoder:(id)a3
+- (IDSGroupSessionBroadcastParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
 
   v8 = [(IDSGroupSessionBroadcastParameter *)self initWithGroupSessionID:v5 salt:v6 serviceName:v7];
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IDSGroupSessionBroadcastParameter alloc];
   groupSessionID = self->_groupSessionID;

@@ -1,43 +1,43 @@
 @interface HDCloudSyncObserverTaskServer
-+ (BOOL)validateClient:(id)a3 error:(id *)a4;
-- (HDCloudSyncObserverTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (BOOL)validateClient:(id)client error:(id *)error;
+- (HDCloudSyncObserverTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (NSString)description;
-- (id)_readRestoreCompletionDateWithError:(id)a1;
-- (id)remote_retrieveProgressForIdentifier:(id)a3 completion:(id)a4;
-- (id)remote_startSyncIfRestoreNotCompletedWithUUID:(id)a3 completion:(id)a4;
-- (uint64_t)_queue_verifyCloudSyncEnabledWithError:(dispatch_queue_t *)a1;
-- (uint64_t)_shouldNotifyObserverAboutRequest:(uint64_t)a1;
-- (void)_cloudKitIdentityUpdated:(id)a3;
-- (void)_queue_didFailToPopulateStatusWithError:(uint64_t)a1;
+- (id)_readRestoreCompletionDateWithError:(id)error;
+- (id)remote_retrieveProgressForIdentifier:(id)identifier completion:(id)completion;
+- (id)remote_startSyncIfRestoreNotCompletedWithUUID:(id)d completion:(id)completion;
+- (uint64_t)_queue_verifyCloudSyncEnabledWithError:(dispatch_queue_t *)error;
+- (uint64_t)_shouldNotifyObserverAboutRequest:(uint64_t)request;
+- (void)_cloudKitIdentityUpdated:(id)updated;
+- (void)_queue_didFailToPopulateStatusWithError:(uint64_t)error;
 - (void)_queue_didUpdateSyncStatus;
-- (void)_queue_didUpdateSyncStatusWithErrorRequiringUserAction:(uint64_t)a1;
-- (void)_queue_didUpdateSyncStatusWithSyncEnabled:(uint64_t)a1;
-- (void)_queue_instantiateCloudSyncObserverStatus:(uint64_t)a1;
+- (void)_queue_didUpdateSyncStatusWithErrorRequiringUserAction:(uint64_t)action;
+- (void)_queue_didUpdateSyncStatusWithSyncEnabled:(uint64_t)enabled;
+- (void)_queue_instantiateCloudSyncObserverStatus:(uint64_t)status;
 - (void)_queue_syncDidStart;
-- (void)_queue_updateSyncStatusWithBlock:(uint64_t)a1;
-- (void)cloudSyncCoordinator:(id)a3 syncRequestDidCompleteForRequest:(id)a4 success:(BOOL)a5 error:(id)a6;
-- (void)cloudSyncCoordinator:(id)a3 syncStartedForRequest:(id)a4 progress:(id)a5;
-- (void)cloudSyncManager:(id)a3 didUpdateDataUploadRequestStatus:(int64_t)a4 startDate:(id)a5 endDate:(id)a6;
-- (void)cloudSyncManager:(id)a3 didUpdateErrorRequiringUserAction:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateLastLitePushDate:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateLastPullDate:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateLastPulledUpdateDate:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateLastPushDate:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateRestoreCompletionDate:(id)a4;
-- (void)cloudSyncManager:(id)a3 didUpdateSyncEnabled:(BOOL)a4;
+- (void)_queue_updateSyncStatusWithBlock:(uint64_t)block;
+- (void)cloudSyncCoordinator:(id)coordinator syncRequestDidCompleteForRequest:(id)request success:(BOOL)success error:(id)error;
+- (void)cloudSyncCoordinator:(id)coordinator syncStartedForRequest:(id)request progress:(id)progress;
+- (void)cloudSyncManager:(id)manager didUpdateDataUploadRequestStatus:(int64_t)status startDate:(id)date endDate:(id)endDate;
+- (void)cloudSyncManager:(id)manager didUpdateErrorRequiringUserAction:(id)action;
+- (void)cloudSyncManager:(id)manager didUpdateLastLitePushDate:(id)date;
+- (void)cloudSyncManager:(id)manager didUpdateLastPullDate:(id)date;
+- (void)cloudSyncManager:(id)manager didUpdateLastPulledUpdateDate:(id)date;
+- (void)cloudSyncManager:(id)manager didUpdateLastPushDate:(id)date;
+- (void)cloudSyncManager:(id)manager didUpdateRestoreCompletionDate:(id)date;
+- (void)cloudSyncManager:(id)manager didUpdateSyncEnabled:(BOOL)enabled;
 - (void)connectionInvalidated;
-- (void)remote_startObservingSyncRequestsMatchingFilter:(unint64_t)a3;
-- (void)remote_startObservingSyncStatusWithCompletion:(id)a3;
+- (void)remote_startObservingSyncRequestsMatchingFilter:(unint64_t)filter;
+- (void)remote_startObservingSyncStatusWithCompletion:(id)completion;
 - (void)remote_stopObservingSyncRequests;
 @end
 
 @implementation HDCloudSyncObserverTaskServer
 
-- (HDCloudSyncObserverTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDCloudSyncObserverTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = HDCloudSyncObserverTaskServer;
-  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:a3 configuration:0 client:a5 delegate:a6];
+  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:d configuration:0 client:client delegate:delegate];
   if (v6)
   {
     v7 = HKCreateSerialDispatchQueue();
@@ -56,17 +56,17 @@
 
 - (void)connectionInvalidated
 {
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 cloudSyncCoordinator];
-  [v5 removeObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator removeObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277CBBF90] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBBF90] object:0];
 
-  v8 = [(HDStandardTaskServer *)self profile];
-  v7 = [v8 cloudSyncManager];
-  [v7 removeObserver:self];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile2 cloudSyncManager];
+  [cloudSyncManager removeObserver:self];
 }
 
 - (NSString)description
@@ -74,31 +74,31 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDStandardTaskServer *)self client];
-  v7 = [v6 profile];
-  v8 = [v7 profileIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p %@>", v5, self, v8];
+  client = [(HDStandardTaskServer *)self client];
+  profile = [client profile];
+  profileIdentifier = [profile profileIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p %@>", v5, self, profileIdentifier];
 
   return v9;
 }
 
-+ (BOOL)validateClient:(id)a3 error:(id *)a4
++ (BOOL)validateClient:(id)client error:(id *)error
 {
   v5 = *MEMORY[0x277CCC8B0];
-  v6 = a3;
-  LOBYTE(v5) = [v6 hasRequiredEntitlement:v5 error:a4];
-  LOBYTE(a4) = [v6 hasRequiredArrayEntitlement:*MEMORY[0x277CCC8C0] containing:*MEMORY[0x277CCBD30] error:a4];
+  clientCopy = client;
+  LOBYTE(v5) = [clientCopy hasRequiredEntitlement:v5 error:error];
+  LOBYTE(error) = [clientCopy hasRequiredArrayEntitlement:*MEMORY[0x277CCC8C0] containing:*MEMORY[0x277CCBD30] error:error];
 
-  return (v5 | a4) & 1;
+  return (v5 | error) & 1;
 }
 
-- (void)remote_startObservingSyncStatusWithCompletion:(id)a3
+- (void)remote_startObservingSyncStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 cloudSyncManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
 
-  if (v6)
+  if (cloudSyncManager)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -106,14 +106,14 @@
     block[2] = __79__HDCloudSyncObserverTaskServer_remote_startObservingSyncStatusWithCompletion___block_invoke;
     block[3] = &unk_278614160;
     block[4] = self;
-    v9 = v6;
-    v10 = v4;
+    v9 = cloudSyncManager;
+    v10 = completionCopy;
     dispatch_sync(queue, block);
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -173,70 +173,70 @@ void __79__HDCloudSyncObserverTaskServer_remote_startObservingSyncStatusWithComp
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_didFailToPopulateStatusWithError:(uint64_t)a1
+- (void)_queue_didFailToPopulateStatusWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    v3 = *(a1 + 40);
+    v3 = *(error + 40);
     v4 = a2;
     dispatch_assert_queue_V2(v3);
-    *(a1 + 64) = 1;
+    *(error + 64) = 1;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__HDCloudSyncObserverTaskServer__queue_didFailToPopulateStatusWithError___block_invoke;
     v6[3] = &unk_2786138D0;
-    v6[4] = a1;
-    v5 = [a1 remoteObjectProxyWithErrorHandler:v6];
+    v6[4] = error;
+    v5 = [error remoteObjectProxyWithErrorHandler:v6];
     [v5 clientRemote_didFailToPopulateStatusWithError:v4];
   }
 }
 
-- (void)_queue_instantiateCloudSyncObserverStatus:(uint64_t)a1
+- (void)_queue_instantiateCloudSyncObserverStatus:(uint64_t)status
 {
   v3 = a2;
-  if (a1)
+  if (status)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if (*(a1 + 48))
+    dispatch_assert_queue_V2(*(status + 40));
+    if (*(status + 48))
     {
       v3[2](v3, 1, 0);
     }
 
     else
     {
-      v4 = [a1 profile];
-      v5 = [v4 cloudSyncManager];
+      profile = [status profile];
+      cloudSyncManager = [profile cloudSyncManager];
 
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserverStatus___block_invoke;
       v7[3] = &unk_27861AA30;
-      v7[4] = a1;
-      v8 = v5;
+      v7[4] = status;
+      v8 = cloudSyncManager;
       v9 = v3;
-      v6 = v5;
+      v6 = cloudSyncManager;
       [v6 accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:v7];
     }
   }
 }
 
-- (id)remote_startSyncIfRestoreNotCompletedWithUUID:(id)a3 completion:(id)a4
+- (id)remote_startSyncIfRestoreNotCompletedWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:1];
   queue = self->_queue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWithUUID_completion___block_invoke;
   v16[3] = &unk_278617440;
-  v19 = v7;
+  v19 = completionCopy;
   v16[4] = self;
-  v17 = v6;
+  v17 = dCopy;
   v10 = v8;
   v18 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = dCopy;
+  v12 = completionCopy;
   dispatch_sync(queue, v16);
   v13 = v18;
   v14 = v10;
@@ -372,17 +372,17 @@ void __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWi
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_queue_verifyCloudSyncEnabledWithError:(dispatch_queue_t *)a1
+- (uint64_t)_queue_verifyCloudSyncEnabledWithError:(dispatch_queue_t *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(a1[5]);
-    v4 = [(dispatch_queue_t *)a1 profile];
-    v5 = [v4 daemon];
-    v6 = [v5 cloudSyncCoordinator];
+    dispatch_assert_queue_V2(error[5]);
+    profile = [(dispatch_queue_t *)error profile];
+    daemon = [profile daemon];
+    cloudSyncCoordinator = [daemon cloudSyncCoordinator];
     v14 = 0;
-    v7 = [v6 canPerformCloudSyncWithError:&v14];
+    v7 = [cloudSyncCoordinator canPerformCloudSyncWithError:&v14];
     v8 = v14;
 
     if ((v7 & 1) == 0)
@@ -392,7 +392,7 @@ void __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWi
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v16 = a1;
+        errorCopy = error;
         v17 = 2114;
         v18 = v8;
         _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: syncIfRestoreNotCompleted triggered, but Health cloud sync is not enabled: %{public}@", buf, 0x16u);
@@ -424,34 +424,34 @@ void __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWi
   return v7;
 }
 
-- (void)_queue_didUpdateSyncStatusWithSyncEnabled:(uint64_t)a1
+- (void)_queue_didUpdateSyncStatusWithSyncEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(enabled + 40));
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __75__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatusWithSyncEnabled___block_invoke;
     v4[3] = &unk_278618990;
-    v4[4] = a1;
+    v4[4] = enabled;
     v5 = a2;
-    [(HDCloudSyncObserverTaskServer *)a1 _queue_updateSyncStatusWithBlock:v4];
+    [(HDCloudSyncObserverTaskServer *)enabled _queue_updateSyncStatusWithBlock:v4];
   }
 }
 
-- (void)_queue_didUpdateSyncStatusWithErrorRequiringUserAction:(uint64_t)a1
+- (void)_queue_didUpdateSyncStatusWithErrorRequiringUserAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(action + 40));
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __88__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatusWithErrorRequiringUserAction___block_invoke;
     v4[3] = &unk_278613920;
-    v4[4] = a1;
+    v4[4] = action;
     v5 = v3;
-    [(HDCloudSyncObserverTaskServer *)a1 _queue_updateSyncStatusWithBlock:v4];
+    [(HDCloudSyncObserverTaskServer *)action _queue_updateSyncStatusWithBlock:v4];
   }
 }
 
@@ -465,18 +465,18 @@ void __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWi
 - (void)_queue_didUpdateSyncStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if (*(a1 + 64))
+    dispatch_assert_queue_V2(*(self + 40));
+    if (*(self + 64))
     {
       _HKInitializeLogging();
       v2 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
-        v3 = *(a1 + 48);
+        v3 = *(self + 48);
         *buf = 138543618;
-        v8 = a1;
+        selfCopy = self;
         v9 = 2114;
         v10 = v3;
         _os_log_impl(&dword_228986000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling cloudSync observer client didUpdateObserverWithSyncStatus: with status: %{public}@", buf, 0x16u);
@@ -486,9 +486,9 @@ void __90__HDCloudSyncObserverTaskServer_remote_startSyncIfRestoreNotCompletedWi
       v6[1] = 3221225472;
       v6[2] = __59__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatus__block_invoke;
       v6[3] = &unk_2786138D0;
-      v6[4] = a1;
-      v4 = [a1 remoteObjectProxyWithErrorHandler:v6];
-      [v4 clientRemote_didUpdateObserverWithSyncStatus:*(a1 + 48)];
+      v6[4] = self;
+      v4 = [self remoteObjectProxyWithErrorHandler:v6];
+      [v4 clientRemote_didUpdateObserverWithSyncStatus:*(self + 48)];
     }
   }
 
@@ -507,11 +507,11 @@ void __75__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatusWithSyncEnabl
   }
 }
 
-- (void)_queue_updateSyncStatusWithBlock:(uint64_t)a1
+- (void)_queue_updateSyncStatusWithBlock:(uint64_t)block
 {
   v3 = a2;
-  dispatch_assert_queue_V2(*(a1 + 40));
-  if (*(a1 + 48))
+  dispatch_assert_queue_V2(*(block + 40));
+  if (*(block + 48))
   {
     v3[2](v3);
   }
@@ -522,9 +522,9 @@ void __75__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatusWithSyncEnabl
     v4[1] = 3221225472;
     v4[2] = __66__HDCloudSyncObserverTaskServer__queue_updateSyncStatusWithBlock___block_invoke;
     v4[3] = &unk_2786173C8;
-    v4[4] = a1;
+    v4[4] = block;
     v5 = v3;
-    [(HDCloudSyncObserverTaskServer *)a1 _queue_instantiateCloudSyncObserverStatus:v4];
+    [(HDCloudSyncObserverTaskServer *)block _queue_instantiateCloudSyncObserverStatus:v4];
   }
 }
 
@@ -650,19 +650,19 @@ void __59__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatus__block_invok
 - (void)_queue_syncDidStart
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[5]);
+    dispatch_assert_queue_V2(self[5]);
     _HKInitializeLogging();
     v2 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v3 = MEMORY[0x277CBEAA8];
       v4 = v2;
-      v5 = [v3 date];
+      date = [v3 date];
       v6 = HKDiagnosticStringFromDate();
       *buf = 138543618;
-      v11 = a1;
+      selfCopy = self;
       v12 = 2114;
       v13 = v6;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling cloudSync observer client syncDidStart with date: (%{public}@", buf, 0x16u);
@@ -672,8 +672,8 @@ void __59__HDCloudSyncObserverTaskServer__queue_didUpdateSyncStatus__block_invok
     v9[1] = 3221225472;
     v9[2] = __52__HDCloudSyncObserverTaskServer__queue_syncDidStart__block_invoke;
     v9[3] = &unk_2786138D0;
-    v9[4] = a1;
-    v7 = [(dispatch_queue_t *)a1 remoteObjectProxyWithErrorHandler:v9];
+    v9[4] = self;
+    v7 = [(dispatch_queue_t *)self remoteObjectProxyWithErrorHandler:v9];
     [v7 clientRemote_syncDidStart];
   }
 
@@ -1216,16 +1216,16 @@ void __90__HDCloudSyncObserverTaskServer__queue_startSyncIfRestoreNotCompletedWi
   (*(v13 + 2))(v13, 0, 0);
 }
 
-- (id)_readRestoreCompletionDateWithError:(id)a1
+- (id)_readRestoreCompletionDateWithError:(id)error
 {
-  v2 = a1;
+  errorCopy = error;
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    v4 = [a1 profile];
-    v5 = [v4 cloudSyncManager];
+    profile = [error profile];
+    cloudSyncManager = [profile cloudSyncManager];
     v13 = 0;
-    v6 = [v5 restoreCompletionDateWithError:&v13];
+    v6 = [cloudSyncManager restoreCompletionDateWithError:&v13];
     v7 = v13;
 
     if (!v6 && v7)
@@ -1235,13 +1235,13 @@ void __90__HDCloudSyncObserverTaskServer__queue_startSyncIfRestoreNotCompletedWi
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = v2;
+        v15 = errorCopy;
         v16 = 2114;
         v17 = v7;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to read the cloud sync restore status: %{public}@.", buf, 0x16u);
       }
 
-      v2 = 0;
+      errorCopy = 0;
       goto LABEL_15;
     }
 
@@ -1258,13 +1258,13 @@ LABEL_11:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v15 = v2;
+            v15 = errorCopy;
             _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Restore complete status not set.", buf, 0xCu);
           }
         }
 
 LABEL_14:
-        v2 = v6;
+        errorCopy = v6;
 LABEL_15:
 
         goto LABEL_16;
@@ -1285,7 +1285,7 @@ LABEL_15:
 LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return errorCopy;
 }
 
 void __84__HDCloudSyncObserverTaskServer__queue_mergeCloudSyncJournalsWithTaskTree_progress___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1338,7 +1338,7 @@ void __63__HDCloudSyncObserverTaskServer__persistRestoreCompletionDate___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cloudKitIdentityUpdated:(id)a3
+- (void)_cloudKitIdentityUpdated:(id)updated
 {
   v11 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -1346,18 +1346,18 @@ void __63__HDCloudSyncObserverTaskServer__persistRestoreCompletionDate___block_i
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Received CKIdentityUpdateNotification", buf, 0xCu);
   }
 
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 cloudSyncManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HDCloudSyncObserverTaskServer__cloudKitIdentityUpdated___block_invoke;
   v8[3] = &unk_2786130B0;
   v8[4] = self;
-  [v6 accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:v8];
+  [cloudSyncManager accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -1681,19 +1681,19 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   return result;
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateSyncEnabled:(BOOL)a4
+- (void)cloudSyncManager:(id)manager didUpdateSyncEnabled:(BOOL)enabled
 {
   dispatch_assert_queue_V2(self->_queue);
 
-  [(HDCloudSyncObserverTaskServer *)self _queue_didUpdateSyncStatusWithSyncEnabled:a4];
+  [(HDCloudSyncObserverTaskServer *)self _queue_didUpdateSyncStatusWithSyncEnabled:enabled];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateLastPushDate:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateLastPushDate:(id)date
 {
   queue = self->_queue;
-  v6 = a4;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = dateCopy;
   dispatch_assert_queue_V2(self->_queue);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1705,12 +1705,12 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   [(HDCloudSyncObserverTaskServer *)self _queue_updateSyncStatusWithBlock:v9];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateLastLitePushDate:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateLastLitePushDate:(id)date
 {
   queue = self->_queue;
-  v6 = a4;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = dateCopy;
   dispatch_assert_queue_V2(self->_queue);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1722,12 +1722,12 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   [(HDCloudSyncObserverTaskServer *)self _queue_updateSyncStatusWithBlock:v9];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateLastPullDate:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateLastPullDate:(id)date
 {
   queue = self->_queue;
-  v6 = a4;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = dateCopy;
   dispatch_assert_queue_V2(self->_queue);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1739,12 +1739,12 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   [(HDCloudSyncObserverTaskServer *)self _queue_updateSyncStatusWithBlock:v9];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateLastPulledUpdateDate:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateLastPulledUpdateDate:(id)date
 {
   queue = self->_queue;
-  v6 = a4;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = dateCopy;
   dispatch_assert_queue_V2(self->_queue);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1756,20 +1756,20 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   [(HDCloudSyncObserverTaskServer *)self _queue_updateSyncStatusWithBlock:v9];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateErrorRequiringUserAction:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateErrorRequiringUserAction:(id)action
 {
   queue = self->_queue;
-  v6 = a4;
+  actionCopy = action;
   dispatch_assert_queue_V2(queue);
-  [(HDCloudSyncObserverTaskServer *)self _queue_didUpdateSyncStatusWithErrorRequiringUserAction:v6];
+  [(HDCloudSyncObserverTaskServer *)self _queue_didUpdateSyncStatusWithErrorRequiringUserAction:actionCopy];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateRestoreCompletionDate:(id)a4
+- (void)cloudSyncManager:(id)manager didUpdateRestoreCompletionDate:(id)date
 {
   queue = self->_queue;
-  v6 = a4;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = dateCopy;
   dispatch_assert_queue_V2(self->_queue);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1781,10 +1781,10 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
   [(HDCloudSyncObserverTaskServer *)self _queue_updateSyncStatusWithBlock:v9];
 }
 
-- (void)cloudSyncManager:(id)a3 didUpdateDataUploadRequestStatus:(int64_t)a4 startDate:(id)a5 endDate:(id)a6
+- (void)cloudSyncManager:(id)manager didUpdateDataUploadRequestStatus:(int64_t)status startDate:(id)date endDate:(id)endDate
 {
-  v22 = a5;
-  v9 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
   dispatch_assert_queue_V2(self->_queue);
   status = self->_status;
   if (!status)
@@ -1796,45 +1796,45 @@ uint64_t __75__HDCloudSyncObserverTaskServer__queue_instantiateCloudSyncObserver
     status = self->_status;
   }
 
-  v13 = [(HKCloudSyncObserverStatus *)status dataUploadRequestStatus];
-  v14 = v13 != a4;
-  if (v13 != a4)
+  dataUploadRequestStatus = [(HKCloudSyncObserverStatus *)status dataUploadRequestStatus];
+  v14 = dataUploadRequestStatus != status;
+  if (dataUploadRequestStatus != status)
   {
-    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestStatus:a4];
+    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestStatus:status];
   }
 
-  v15 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestStartDate];
-  if (v15 == v22)
+  dataUploadRequestStartDate = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestStartDate];
+  if (dataUploadRequestStartDate == dateCopy)
   {
 
     goto LABEL_12;
   }
 
-  if (!v22)
+  if (!dateCopy)
   {
 
     goto LABEL_11;
   }
 
-  v16 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestStartDate];
-  v17 = [v16 isEqual:v22];
+  dataUploadRequestStartDate2 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestStartDate];
+  v17 = [dataUploadRequestStartDate2 isEqual:dateCopy];
 
   if ((v17 & 1) == 0)
   {
 LABEL_11:
-    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestStartDate:v22];
+    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestStartDate:dateCopy];
     v14 = 1;
   }
 
 LABEL_12:
-  v18 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestCompletionDate];
-  v19 = v18;
-  if (v18 != v9)
+  dataUploadRequestCompletionDate = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestCompletionDate];
+  v19 = dataUploadRequestCompletionDate;
+  if (dataUploadRequestCompletionDate != endDateCopy)
   {
-    if (v9)
+    if (endDateCopy)
     {
-      v20 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestCompletionDate];
-      v21 = [v20 isEqual:v9];
+      dataUploadRequestCompletionDate2 = [(HKCloudSyncObserverStatus *)self->_status dataUploadRequestCompletionDate];
+      v21 = [dataUploadRequestCompletionDate2 isEqual:endDateCopy];
 
       if (v21)
       {
@@ -1853,7 +1853,7 @@ LABEL_21:
     {
     }
 
-    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestCompletionDate:v9];
+    [(HKCloudSyncObserverStatus *)self->_status setDataUploadRequestCompletionDate:endDateCopy];
     goto LABEL_21;
   }
 
@@ -1865,7 +1865,7 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)remote_startObservingSyncRequestsMatchingFilter:(unint64_t)a3
+- (void)remote_startObservingSyncRequestsMatchingFilter:(unint64_t)filter
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1873,7 +1873,7 @@ LABEL_22:
   v4[2] = __81__HDCloudSyncObserverTaskServer_remote_startObservingSyncRequestsMatchingFilter___block_invoke;
   v4[3] = &unk_2786138F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = filter;
   dispatch_sync(queue, v4);
 }
 
@@ -1923,10 +1923,10 @@ _BYTE *__65__HDCloudSyncObserverTaskServer_remote_stopObservingSyncRequests__blo
   return result;
 }
 
-- (id)remote_retrieveProgressForIdentifier:(id)a3 completion:(id)a4
+- (id)remote_retrieveProgressForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1939,11 +1939,11 @@ _BYTE *__65__HDCloudSyncObserverTaskServer_remote_stopObservingSyncRequests__blo
   v13[2] = __81__HDCloudSyncObserverTaskServer_remote_retrieveProgressForIdentifier_completion___block_invoke;
   v13[3] = &unk_2786194F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -1993,13 +1993,13 @@ void __81__HDCloudSyncObserverTaskServer_remote_retrieveProgressForIdentifier_co
   *(v10 + 40) = v8;
 }
 
-- (uint64_t)_shouldNotifyObserverAboutRequest:(uint64_t)a1
+- (uint64_t)_shouldNotifyObserverAboutRequest:(uint64_t)request
 {
   v3 = a2;
-  dispatch_assert_queue_V2(*(a1 + 40));
-  if (*(a1 + 80) == 1)
+  dispatch_assert_queue_V2(*(request + 40));
+  if (*(request + 80) == 1)
   {
-    v4 = [v3 matchesFilter:*(a1 + 72)];
+    v4 = [v3 matchesFilter:*(request + 72)];
   }
 
   else
@@ -2048,20 +2048,20 @@ void __77__HDCloudSyncObserverTaskServer__queue_syncRequestDidComplete_success_e
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudSyncCoordinator:(id)a3 syncStartedForRequest:(id)a4 progress:(id)a5
+- (void)cloudSyncCoordinator:(id)coordinator syncStartedForRequest:(id)request progress:(id)progress
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  progressCopy = progress;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__HDCloudSyncObserverTaskServer_cloudSyncCoordinator_syncStartedForRequest_progress___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  v14 = progressCopy;
+  v10 = progressCopy;
+  v11 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -2110,21 +2110,21 @@ void __85__HDCloudSyncObserverTaskServer_cloudSyncCoordinator_syncStartedForRequ
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudSyncCoordinator:(id)a3 syncRequestDidCompleteForRequest:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)cloudSyncCoordinator:(id)coordinator syncRequestDidCompleteForRequest:(id)request success:(BOOL)success error:(id)error
 {
-  v9 = a4;
-  v10 = a6;
+  requestCopy = request;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __101__HDCloudSyncObserverTaskServer_cloudSyncCoordinator_syncRequestDidCompleteForRequest_success_error___block_invoke;
   v14[3] = &unk_278617A98;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = requestCopy;
+  successCopy = success;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = requestCopy;
   dispatch_async(queue, v14);
 }
 

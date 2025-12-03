@@ -1,19 +1,19 @@
 @interface W5PeerSensingListener
-- (BOOL)handleClientRequest:(id)a3;
-- (BOOL)performSensing:(id)a3 error:(id *)a4;
-- (W5PeerSensingListener)initWithInterface:(id)a3;
+- (BOOL)handleClientRequest:(id)request;
+- (BOOL)performSensing:(id)sensing error:(id *)error;
+- (W5PeerSensingListener)initWithInterface:(id)interface;
 @end
 
 @implementation W5PeerSensingListener
 
-- (W5PeerSensingListener)initWithInterface:(id)a3
+- (W5PeerSensingListener)initWithInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v10.receiver = self;
   v10.super_class = W5PeerSensingListener;
   v6 = [(W5PeerSensingListener *)&v10 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_interface, a3), !v7->_interface))
+  if (!v6 || (objc_storeStrong(&v6->_interface, interface), !v7->_interface))
   {
 
     v8 = sub_100098A04();
@@ -34,35 +34,35 @@
   return v7;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(W5PeerSensingResponsePayload);
-  v6 = [v4 options];
+  options = [requestCopy options];
 
-  if (v6)
+  if (options)
   {
-    v7 = objc_alloc_init(CWFSensingParameters);
-    v8 = [v4 options];
-    v9 = [v8 objectForKeyedSubscript:@"numberOfReports"];
-    [v7 setNumberOfReports:{objc_msgSend(v9, "intValue")}];
+    handler2 = objc_alloc_init(CWFSensingParameters);
+    options2 = [requestCopy options];
+    v9 = [options2 objectForKeyedSubscript:@"numberOfReports"];
+    [handler2 setNumberOfReports:{objc_msgSend(v9, "intValue")}];
 
-    v10 = [v4 options];
-    v11 = [v10 objectForKeyedSubscript:@"placeLabels"];
-    [v7 setPlaceLabels:v11];
+    options3 = [requestCopy options];
+    v11 = [options3 objectForKeyedSubscript:@"placeLabels"];
+    [handler2 setPlaceLabels:v11];
 
-    v12 = [v4 options];
-    v13 = [v12 objectForKeyedSubscript:@"activityLabels"];
-    [v7 setActivityLabels:v13];
+    options4 = [requestCopy options];
+    v13 = [options4 objectForKeyedSubscript:@"activityLabels"];
+    [handler2 setActivityLabels:v13];
 
-    v14 = [v4 options];
-    v15 = [v14 objectForKeyedSubscript:@"submitMetric"];
-    [v7 setSubmitMetric:{objc_msgSend(v15, "intValue") != 0}];
+    options5 = [requestCopy options];
+    v15 = [options5 objectForKeyedSubscript:@"submitMetric"];
+    [handler2 setSubmitMetric:{objc_msgSend(v15, "intValue") != 0}];
 
     v16 = sub_100098A04();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      [v7 description];
+      [handler2 description];
       v24 = 136315906;
       v25 = "[W5PeerSensingListener handleClientRequest:]";
       v26 = 2080;
@@ -74,14 +74,14 @@
     }
 
     v23 = 0;
-    v17 = [(W5PeerSensingListener *)self performSensing:v7 error:&v23];
+    v17 = [(W5PeerSensingListener *)self performSensing:handler2 error:&v23];
     v18 = v23;
     [(W5PeerSensingResponsePayload *)v5 setResult:v17];
-    v19 = [v18 localizedDescription];
+    localizedDescription = [v18 localizedDescription];
 
-    [(W5PeerSensingResponsePayload *)v5 setErrorStr:v19];
-    v20 = [v4 handler];
-    (v20)[2](v20, v5, 0);
+    [(W5PeerSensingResponsePayload *)v5 setErrorStr:localizedDescription];
+    handler = [requestCopy handler];
+    (handler)[2](handler, v5, 0);
   }
 
   else
@@ -100,26 +100,26 @@
 
     [(W5PeerSensingResponsePayload *)v5 setResult:0];
     [(W5PeerSensingResponsePayload *)v5 setErrorStr:@"empty request dictionary"];
-    v7 = [v4 handler];
-    (*(v7 + 2))(v7, v5, 0);
+    handler2 = [requestCopy handler];
+    (*(handler2 + 2))(handler2, v5, 0);
   }
 
-  return v6 != 0;
+  return options != 0;
 }
 
-- (BOOL)performSensing:(id)a3 error:(id *)a4
+- (BOOL)performSensing:(id)sensing error:(id *)error
 {
-  v6 = a3;
+  sensingCopy = sensing;
   v7 = sub_100098A04();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(W5PeerSensingListener *)self interface];
-    v12 = [v8 networkName];
+    interface = [(W5PeerSensingListener *)self interface];
+    networkName = [interface networkName];
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [(W5PeerSensingListener *)self interface];
-  v10 = [v9 performSensingWithParameters:v6 error:a4];
+  interface2 = [(W5PeerSensingListener *)self interface];
+  v10 = [interface2 performSensingWithParameters:sensingCopy error:error];
 
   return v10 != 0;
 }

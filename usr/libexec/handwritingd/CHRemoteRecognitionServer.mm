@@ -1,28 +1,28 @@
 @interface CHRemoteRecognitionServer
-+ (BOOL)_hasEntitlement:(id)a3 connection:(id)a4;
-+ (id)_unableToProcessRequestErrorWithBundleIdentifier:(id)a3;
++ (BOOL)_hasEntitlement:(id)entitlement connection:(id)connection;
++ (id)_unableToProcessRequestErrorWithBundleIdentifier:(id)identifier;
 + (id)sharedRemoteRecognitionServer;
-- (BOOL)_shouldFulfillRemoteRequestForConnection:(id)a3 error:(id *)a4;
-- (BOOL)isBundleIdentifierWhiteListed:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_shouldFulfillRemoteRequestForConnection:(id)connection error:(id *)error;
+- (BOOL)isBundleIdentifierWhiteListed:(id)listed;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CHRemoteRecognitionServer)init;
-- (void)_synthesizeStyleInventoryIfNeededWithConnection:(id)a3;
+- (void)_synthesizeStyleInventoryIfNeededWithConnection:(id)connection;
 - (void)dealloc;
-- (void)handleAwaitInventoryIdleRequestWithReply:(id)a3;
-- (void)handleDocumentLayoutAnalysisRequest:(id)a3 withReply:(id)a4;
-- (void)handleInventoryContentCheckRequest:(id)a3 withReply:(id)a4;
-- (void)handleInventoryRequest:(id)a3 withReply:(id)a4;
-- (void)handleInventoryStatusRequestWithReply:(id)a3;
-- (void)handleLineWrappingRequest:(id)a3 withReply:(id)a4;
-- (void)handlePowerLoggingRequest:(id)a3;
-- (void)handleRecognitionRequest:(id)a3 withReply:(id)a4;
-- (void)handleRequest:(id)a3 withReply:(id)a4;
-- (void)handleSessionStateUpdate:(id)a3;
-- (void)handleSketchRecognitionRequest:(id)a3 withReply:(id)a4;
-- (void)handleSynthesisStringChunkingRequest:(id)a3 withReply:(id)a4;
+- (void)handleAwaitInventoryIdleRequestWithReply:(id)reply;
+- (void)handleDocumentLayoutAnalysisRequest:(id)request withReply:(id)reply;
+- (void)handleInventoryContentCheckRequest:(id)request withReply:(id)reply;
+- (void)handleInventoryRequest:(id)request withReply:(id)reply;
+- (void)handleInventoryStatusRequestWithReply:(id)reply;
+- (void)handleLineWrappingRequest:(id)request withReply:(id)reply;
+- (void)handlePowerLoggingRequest:(id)request;
+- (void)handleRecognitionRequest:(id)request withReply:(id)reply;
+- (void)handleRequest:(id)request withReply:(id)reply;
+- (void)handleSessionStateUpdate:(id)update;
+- (void)handleSketchRecognitionRequest:(id)request withReply:(id)reply;
+- (void)handleSynthesisStringChunkingRequest:(id)request withReply:(id)reply;
 - (void)optimizeResourceUsage;
 - (void)resumeConnectionIfIdle;
-- (void)transcriptionPathsForTokenizedTextResult:(id)a3 recognitionRequest:(id)a4 withReply:(id)a5;
+- (void)transcriptionPathsForTokenizedTextResult:(id)result recognitionRequest:(id)request withReply:(id)reply;
 @end
 
 @implementation CHRemoteRecognitionServer
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007104;
   block[3] = &unk_1000247B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10002AC80 == -1)
   {
     v2 = qword_10002AC78;
@@ -135,14 +135,14 @@
   [(CHRemoteRecognitionServer *)&v7 dealloc];
 }
 
-+ (BOOL)_hasEntitlement:(id)a3 connection:(id)a4
++ (BOOL)_hasEntitlement:(id)entitlement connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  entitlementCopy = entitlement;
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -155,7 +155,7 @@
   v16 = v8;
   if (v8)
   {
-    v10 = SecTaskCopyValueForEntitlement(v8, v5, 0);
+    v10 = SecTaskCopyValueForEntitlement(v8, entitlementCopy, 0);
     v11 = v10;
     *v15.val = v10;
     if (v10)
@@ -181,10 +181,10 @@
   return v13;
 }
 
-- (BOOL)isBundleIdentifierWhiteListed:(id)a3
+- (BOOL)isBundleIdentifierWhiteListed:(id)listed
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple.PaperKit.extension"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.PaperKit.MarkupPhotoEditingExtension") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.quicklook.extension.previewUI") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.quicklook.UIExtension") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.ScreenshotServicesService"))
+  listedCopy = listed;
+  if ([listedCopy hasPrefix:@"com.apple.PaperKit.extension"] & 1) != 0 || (objc_msgSend(listedCopy, "isEqualToString:", @"com.apple.PaperKit.MarkupPhotoEditingExtension") & 1) != 0 || (objc_msgSend(listedCopy, "isEqualToString:", @"com.apple.quicklook.extension.previewUI") & 1) != 0 || (objc_msgSend(listedCopy, "isEqualToString:", @"com.apple.quicklook.UIExtension") & 1) != 0 || (objc_msgSend(listedCopy, "isEqualToString:", @"com.apple.ScreenshotServicesService"))
   {
 
     return 1;
@@ -192,20 +192,20 @@
 
   else
   {
-    v5 = [v3 hasPrefix:@"com.apple.Compose"];
+    v5 = [listedCopy hasPrefix:@"com.apple.Compose"];
 
     return v5;
   }
 }
 
-- (BOOL)_shouldFulfillRemoteRequestForConnection:(id)a3 error:(id *)a4
+- (BOOL)_shouldFulfillRemoteRequestForConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  v7 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [v6 processIdentifier]);
+  connectionCopy = connection;
+  v7 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [connectionCopy processIdentifier]);
   v8 = [RBSProcessHandle handleForIdentifier:v7 error:0];
 
-  v9 = [v8 currentState];
-  v10 = sub_100006F4C(v6);
+  currentState = [v8 currentState];
+  v10 = sub_100006F4C(connectionCopy);
   if (qword_10002AD20 != -1)
   {
     dispatch_once(&qword_10002AD20, &stru_1000249F0);
@@ -219,10 +219,10 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_shouldFulfillRemoteRequestForConnection bundleIdentifier: %@", &v24, 0xCu);
   }
 
-  if ([v9 taskState] == 4 || objc_msgSend(v9, "taskState") == 2)
+  if ([currentState taskState] == 4 || objc_msgSend(currentState, "taskState") == 2)
   {
-    v12 = [v9 endowmentNamespaces];
-    v13 = [v12 containsObject:@"com.apple.frontboard.visibility"];
+    endowmentNamespaces = [currentState endowmentNamespaces];
+    v13 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     if (qword_10002AD20 == -1)
     {
@@ -274,7 +274,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = [objc_opt_class() _hasEntitlement:@"com.apple.handwritingd.allowBackgroundRecognition" connection:v6];
+  v16 = [objc_opt_class() _hasEntitlement:@"com.apple.handwritingd.allowBackgroundRecognition" connection:connectionCopy];
   if (qword_10002AD20 == -1)
   {
     v17 = qword_10002ACC8;
@@ -343,7 +343,7 @@ LABEL_26:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v23 = v19;
   }
@@ -355,8 +355,8 @@ LABEL_26:
 
   if ((v23 & 1) == 0)
   {
-    v19 = sub_100006F4C(v6);
-    *a4 = [objc_opt_class() _unableToProcessRequestErrorWithBundleIdentifier:v19];
+    v19 = sub_100006F4C(connectionCopy);
+    *error = [objc_opt_class() _unableToProcessRequestErrorWithBundleIdentifier:v19];
 
     LOBYTE(v19) = 0;
   }
@@ -366,20 +366,20 @@ LABEL_20:
   return v19;
 }
 
-- (void)_synthesizeStyleInventoryIfNeededWithConnection:(id)a3
+- (void)_synthesizeStyleInventoryIfNeededWithConnection:(id)connection
 {
-  v8 = a3;
+  connectionCopy = connection;
   v4 = [CHSynthesisRequestOptions synthesisOptionsWithSynthesizeCharacterInventoryBehavior:1];
   v5 = [[CHRemoteSynthesisRequest alloc] initWithString:&stru_100025778 drawing:0 options:v4 requestType:0];
   synthesisRequestHandler = self->_synthesisRequestHandler;
-  v7 = sub_100006F4C(v8);
+  v7 = sub_100006F4C(connectionCopy);
   [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleRequest:v5 withReply:&stru_100024A30 bundleIdentifier:v7];
 }
 
-- (void)handleDocumentLayoutAnalysisRequest:(id)a3 withReply:(id)a4
+- (void)handleDocumentLayoutAnalysisRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -432,19 +432,19 @@ LABEL_11:
   {
     documentLayoutAnalysisRequestHandler = self->_documentLayoutAnalysisRequestHandler;
     v14 = sub_100006F4C(v10);
-    [(CHRemoteDocumentLayoutAnalysisRequestHandler *)documentLayoutAnalysisRequestHandler handleRequest:v6 withReply:v7 bundleIdentifier:v14];
+    [(CHRemoteDocumentLayoutAnalysisRequestHandler *)documentLayoutAnalysisRequestHandler handleRequest:requestCopy withReply:replyCopy bundleIdentifier:v14];
   }
 
   else
   {
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)handleRecognitionRequest:(id)a3 withReply:(id)a4
+- (void)handleRecognitionRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -497,20 +497,20 @@ LABEL_11:
   {
     recognitionRequestHandler = self->_recognitionRequestHandler;
     v14 = sub_100006F4C(v10);
-    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler handleRequest:v6 withReply:v7 bundleIdentifier:v14];
+    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler handleRequest:requestCopy withReply:replyCopy bundleIdentifier:v14];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v12);
   }
 }
 
-- (void)transcriptionPathsForTokenizedTextResult:(id)a3 recognitionRequest:(id)a4 withReply:(id)a5
+- (void)transcriptionPathsForTokenizedTextResult:(id)result recognitionRequest:(id)request withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -563,19 +563,19 @@ LABEL_11:
   {
     recognitionRequestHandler = self->_recognitionRequestHandler;
     v17 = sub_100006F4C(v13);
-    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler transcriptionPathsForTokenizedTextResult:v8 recognitionRequest:v9 withReply:v10 bundleIdentifier:v17];
+    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler transcriptionPathsForTokenizedTextResult:resultCopy recognitionRequest:requestCopy withReply:replyCopy bundleIdentifier:v17];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v15);
   }
 }
 
-- (void)handleRequest:(id)a3 withReply:(id)a4
+- (void)handleRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -635,13 +635,13 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = requestCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Handling remote synthesis request: %@", buf, 0xCu);
     }
 
     synthesisRequestHandler = self->_synthesisRequestHandler;
     v15 = sub_100006F4C(v10);
-    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleRequest:v6 withReply:v7 bundleIdentifier:v15];
+    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleRequest:requestCopy withReply:replyCopy bundleIdentifier:v15];
   }
 
   else
@@ -659,14 +659,14 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Handling remote synthesis request was not fullfilled due to: %@", buf, 0xCu);
     }
 
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)handleInventoryRequest:(id)a3 withReply:(id)a4
+- (void)handleInventoryRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -735,7 +735,7 @@ LABEL_11:
     }
 
 LABEL_22:
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
     goto LABEL_23;
   }
 
@@ -754,21 +754,21 @@ LABEL_16:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = requestCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Handling remote inventory request: %@", buf, 0xCu);
   }
 
   synthesisRequestHandler = self->_synthesisRequestHandler;
   v17 = sub_100006F4C(v10);
-  [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryRequest:v6 withReply:v7 bundleIdentifier:v17];
+  [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryRequest:requestCopy withReply:replyCopy bundleIdentifier:v17];
 
   [(CHRemoteRecognitionServer *)self _synthesizeStyleInventoryIfNeededWithConnection:v10];
 LABEL_23:
 }
 
-- (void)handleInventoryStatusRequestWithReply:(id)a3
+- (void)handleInventoryStatusRequestWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -833,19 +833,19 @@ LABEL_11:
 
     synthesisRequestHandler = self->_synthesisRequestHandler;
     v12 = sub_100006F4C(v7);
-    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryStatusRequestWithReply:v4 bundleIdentifier:v12];
+    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryStatusRequestWithReply:replyCopy bundleIdentifier:v12];
   }
 
   else
   {
-    v4[2](v4, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
   }
 }
 
-- (void)handleInventoryContentCheckRequest:(id)a3 withReply:(id)a4
+- (void)handleInventoryContentCheckRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -910,18 +910,18 @@ LABEL_11:
 
     synthesisRequestHandler = self->_synthesisRequestHandler;
     v15 = sub_100006F4C(v10);
-    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryContainingSampleRequest:v6 withReply:v7 bundleIdentifier:v15];
+    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleInventoryContainingSampleRequest:requestCopy withReply:replyCopy bundleIdentifier:v15];
   }
 
   else
   {
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)handleAwaitInventoryIdleRequestWithReply:(id)a3
+- (void)handleAwaitInventoryIdleRequestWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -986,19 +986,19 @@ LABEL_11:
 
     synthesisRequestHandler = self->_synthesisRequestHandler;
     v12 = sub_100006F4C(v7);
-    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleAwaitInventoryIdleRequestWithReply:v4 bundleIdentifier:v12];
+    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleAwaitInventoryIdleRequestWithReply:replyCopy bundleIdentifier:v12];
   }
 
   else
   {
-    v4[2](v4, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
   }
 }
 
-- (void)handleSketchRecognitionRequest:(id)a3 withReply:(id)a4
+- (void)handleSketchRecognitionRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -1051,19 +1051,19 @@ LABEL_11:
   {
     recognitionRequestHandler = self->_recognitionRequestHandler;
     v14 = sub_100006F4C(v10);
-    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler handleSketchRequest:v6 withReply:v7 bundleIdentifier:v14];
+    [(CHRemoteRecognitionRequestHandler *)recognitionRequestHandler handleSketchRequest:requestCopy withReply:replyCopy bundleIdentifier:v14];
   }
 
   else
   {
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)handleLineWrappingRequest:(id)a3 withReply:(id)a4
+- (void)handleLineWrappingRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -1116,18 +1116,18 @@ LABEL_11:
   {
     lineWrappingHandler = self->_lineWrappingHandler;
     v14 = sub_100006F4C(v10);
-    [(CHRemoteLineWrappingRequestHandler *)lineWrappingHandler handleRequest:v6 withReply:v7 bundleIdentifier:v14];
+    [(CHRemoteLineWrappingRequestHandler *)lineWrappingHandler handleRequest:requestCopy withReply:replyCopy bundleIdentifier:v14];
   }
 
   else
   {
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)handleSessionStateUpdate:(id)a3
+- (void)handleSessionStateUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -1177,15 +1177,15 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_100009884;
   v9[3] = &unk_100024A78;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = updateCopy;
+  selfCopy = self;
+  v8 = updateCopy;
   dispatch_async(serverQueue, v9);
 }
 
-- (void)handlePowerLoggingRequest:(id)a3
+- (void)handlePowerLoggingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -1230,13 +1230,13 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(CHRemotePowerLoggingRequestHandler *)self->_powerLoggingRequestHandler handleRequest:v4];
+  [(CHRemotePowerLoggingRequestHandler *)self->_powerLoggingRequestHandler handleRequest:requestCopy];
 }
 
-- (void)handleSynthesisStringChunkingRequest:(id)a3 withReply:(id)a4
+- (void)handleSynthesisStringChunkingRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (!self->_isListening)
   {
     if (qword_10002AD20 != -1)
@@ -1289,12 +1289,12 @@ LABEL_11:
   {
     synthesisRequestHandler = self->_synthesisRequestHandler;
     v14 = sub_100006F4C(v10);
-    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleSynthesisStringChunkingRequest:v6 withReply:v7 bundleIdentifier:v14];
+    [(CHRemoteSynthesisRequestHandler *)synthesisRequestHandler handleSynthesisStringChunkingRequest:requestCopy withReply:replyCopy bundleIdentifier:v14];
   }
 
   else
   {
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
@@ -1319,25 +1319,25 @@ LABEL_11:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CHRemoteRequestProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-+ (id)_unableToProcessRequestErrorWithBundleIdentifier:(id)a3
++ (id)_unableToProcessRequestErrorWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [NSString stringWithFormat:@"Unable to fulfill request for %@. The application does not have permission to run remote recognition or synthesis at this time", v3];
+  identifierCopy = identifier;
+  identifierCopy = [NSString stringWithFormat:@"Unable to fulfill request for %@. The application does not have permission to run remote recognition or synthesis at this time", identifierCopy];
   v8[0] = NSLocalizedDescriptionKey;
   v8[1] = NSLocalizedFailureReasonErrorKey;
-  v9[0] = v4;
+  v9[0] = identifierCopy;
   v9[1] = @"Requests cannot be executed because this app may not have permission to run remote recognition or synthesis in the background, or at all.";
   v8[2] = NSLocalizedRecoverySuggestionErrorKey;
   v9[2] = @"Re-submit the request from a permitted client application in an acceptable state";

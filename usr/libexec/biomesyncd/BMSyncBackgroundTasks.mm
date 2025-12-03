@@ -1,22 +1,22 @@
 @interface BMSyncBackgroundTasks
-+ (BOOL)registerDeferredMergeBGTaskWithCore:(id)a3 queue:(id)a4;
++ (BOOL)registerDeferredMergeBGTaskWithCore:(id)core queue:(id)queue;
 + (void)submitBackgroundTaskForDeferredMerge;
 @end
 
 @implementation BMSyncBackgroundTasks
 
-+ (BOOL)registerDeferredMergeBGTaskWithCore:(id)a3 queue:(id)a4
++ (BOOL)registerDeferredMergeBGTaskWithCore:(id)core queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  coreCopy = core;
+  queueCopy = queue;
   v7 = +[BGSystemTaskScheduler sharedScheduler];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100021668;
   v12[3] = &unk_100079358;
-  v8 = v5;
+  v8 = coreCopy;
   v13 = v8;
-  v9 = [v7 registerForTaskWithIdentifier:@"com.apple.biomesyncd.deferredMerge" usingQueue:v6 launchHandler:v12];
+  v9 = [v7 registerForTaskWithIdentifier:@"com.apple.biomesyncd.deferredMerge" usingQueue:queueCopy launchHandler:v12];
 
   if ((v9 & 1) == 0)
   {

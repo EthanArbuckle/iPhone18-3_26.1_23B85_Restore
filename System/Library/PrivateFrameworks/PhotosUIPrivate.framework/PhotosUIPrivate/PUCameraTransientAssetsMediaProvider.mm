@@ -1,32 +1,32 @@
 @interface PUCameraTransientAssetsMediaProvider
-- (BOOL)_requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (PUCameraTransientAssetsMediaProvider)initWithTransientImageManager:(id)a3 supplementaryLivePhotoImageSource:(id)a4;
-- (id)_livePhotoRequestWithID:(int)a3;
-- (id)_playerItemForVideoURL:(id)a3;
-- (id)_videoCompositionForAVAsset:(id)a3 filterName:(id)a4;
-- (int)_requestLivePhotoForTransientAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)_handleDelegateImageRequestResultWithImage:(id)a3 info:(id)a4 requestID:(int)a5;
-- (void)_handleLivePhotoPairedVideoRequestResultURL:(id)a3 filterName:(id)a4 stillDisplayTime:(id *)a5 error:(id)a6 requestID:(int)a7;
-- (void)_removeLivePhotoRequestWithID:(int)a3;
-- (void)_requestAVAssetForVideoURL:(id)a3 resultHandler:(id)a4;
-- (void)_setLivePhotoRequest:(id)a3 forRequestID:(int)a4;
-- (void)_updateResultForLivePhotoRequestID:(int)a3;
+- (BOOL)_requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (PUCameraTransientAssetsMediaProvider)initWithTransientImageManager:(id)manager supplementaryLivePhotoImageSource:(id)source;
+- (id)_livePhotoRequestWithID:(int)d;
+- (id)_playerItemForVideoURL:(id)l;
+- (id)_videoCompositionForAVAsset:(id)asset filterName:(id)name;
+- (int)_requestLivePhotoForTransientAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)_handleDelegateImageRequestResultWithImage:(id)image info:(id)info requestID:(int)d;
+- (void)_handleLivePhotoPairedVideoRequestResultURL:(id)l filterName:(id)name stillDisplayTime:(id *)time error:(id)error requestID:(int)d;
+- (void)_removeLivePhotoRequestWithID:(int)d;
+- (void)_requestAVAssetForVideoURL:(id)l resultHandler:(id)handler;
+- (void)_setLivePhotoRequest:(id)request forRequestID:(int)d;
+- (void)_updateResultForLivePhotoRequestID:(int)d;
 @end
 
 @implementation PUCameraTransientAssetsMediaProvider
 
-- (id)_videoCompositionForAVAsset:(id)a3 filterName:(id)a4
+- (id)_videoCompositionForAVAsset:(id)asset filterName:(id)name
 {
-  v5 = a3;
-  if (a4)
+  assetCopy = asset;
+  if (name)
   {
-    v6 = [MEMORY[0x1E695F648] filterWithName:a4];
+    v6 = [MEMORY[0x1E695F648] filterWithName:name];
     v7 = v6;
     if (v6)
     {
@@ -36,7 +36,7 @@
       v11[2] = __79__PUCameraTransientAssetsMediaProvider__videoCompositionForAVAsset_filterName___block_invoke;
       v11[3] = &unk_1E7B76240;
       v12 = v6;
-      v9 = [v8 videoCompositionWithAsset:v5 applyingCIFiltersWithHandler:v11];
+      v9 = [v8 videoCompositionWithAsset:assetCopy applyingCIFiltersWithHandler:v11];
     }
 
     else
@@ -62,19 +62,19 @@ void __79__PUCameraTransientAssetsMediaProvider__videoCompositionForAVAsset_filt
   [v3 finishWithImage:v4 context:0];
 }
 
-- (id)_playerItemForVideoURL:(id)a3
+- (id)_playerItemForVideoURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__18015;
   v29 = __Block_byref_object_dispose__18016;
   v30 = 0;
-  v4 = [MEMORY[0x1E6987E28] assetWithURL:v3];
+  v4 = [MEMORY[0x1E6987E28] assetWithURL:lCopy];
   v5 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v4];
-  v6 = [v5 firstObject];
-  [v6 nominalFrameRate];
+  firstObject = [v5 firstObject];
+  [firstObject nominalFrameRate];
   [MEMORY[0x1E69C0910] defaultSlowMotionRateForNominalFrameRate:?];
   v8 = v7;
   if (v7 >= 1.0)
@@ -120,14 +120,14 @@ void __79__PUCameraTransientAssetsMediaProvider__videoCompositionForAVAsset_filt
   return v14;
 }
 
-- (void)_requestAVAssetForVideoURL:(id)a3 resultHandler:(id)a4
+- (void)_requestAVAssetForVideoURL:(id)l resultHandler:(id)handler
 {
   v5 = MEMORY[0x1E6987E28];
-  v6 = a4;
-  v7 = [v5 assetWithURL:a3];
+  handlerCopy = handler;
+  v7 = [v5 assetWithURL:l];
   v8 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v7];
-  v9 = [v8 firstObject];
-  [v9 nominalFrameRate];
+  firstObject = [v8 firstObject];
+  [firstObject nominalFrameRate];
   [MEMORY[0x1E69C0910] defaultSlowMotionRateForNominalFrameRate:?];
   v11 = v10;
   if (v10 >= 1.0)
@@ -158,19 +158,19 @@ void __79__PUCameraTransientAssetsMediaProvider__videoCompositionForAVAsset_filt
   }
 
   v14 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v7 videoAdjustments:v13];
-  [v14 requestAVAssetWithResultHandler:v6];
+  [v14 requestAVAssetWithResultHandler:handlerCopy];
 }
 
-- (void)_removeLivePhotoRequestWithID:(int)a3
+- (void)_removeLivePhotoRequestWithID:(int)d
 {
-  v5 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
+  _livePhotoRequestQueue = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PUCameraTransientAssetsMediaProvider__removeLivePhotoRequestWithID___block_invoke;
   v6[3] = &unk_1E7B761F0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  dCopy = d;
+  dispatch_async(_livePhotoRequestQueue, v6);
 }
 
 void __70__PUCameraTransientAssetsMediaProvider__removeLivePhotoRequestWithID___block_invoke(uint64_t a1)
@@ -180,19 +180,19 @@ void __70__PUCameraTransientAssetsMediaProvider__removeLivePhotoRequestWithID___
   [v3 removeObjectForKey:v2];
 }
 
-- (void)_setLivePhotoRequest:(id)a3 forRequestID:(int)a4
+- (void)_setLivePhotoRequest:(id)request forRequestID:(int)d
 {
-  v6 = a3;
-  v7 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
+  requestCopy = request;
+  _livePhotoRequestQueue = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__PUCameraTransientAssetsMediaProvider__setLivePhotoRequest_forRequestID___block_invoke;
   block[3] = &unk_1E7B761C8;
-  v11 = a4;
+  dCopy = d;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = requestCopy;
+  v8 = requestCopy;
+  dispatch_async(_livePhotoRequestQueue, block);
 }
 
 void __74__PUCameraTransientAssetsMediaProvider__setLivePhotoRequest_forRequestID___block_invoke(uint64_t a1)
@@ -203,7 +203,7 @@ void __74__PUCameraTransientAssetsMediaProvider__setLivePhotoRequest_forRequestI
   [v4 setObject:v2 forKeyedSubscript:v3];
 }
 
-- (id)_livePhotoRequestWithID:(int)a3
+- (id)_livePhotoRequestWithID:(int)d
 {
   v10 = 0;
   v11 = &v10;
@@ -211,15 +211,15 @@ void __74__PUCameraTransientAssetsMediaProvider__setLivePhotoRequest_forRequestI
   v13 = __Block_byref_object_copy__18015;
   v14 = __Block_byref_object_dispose__18016;
   v15 = 0;
-  v5 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
+  _livePhotoRequestQueue = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PUCameraTransientAssetsMediaProvider__livePhotoRequestWithID___block_invoke;
   block[3] = &unk_1E7B77160;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  dCopy = d;
+  dispatch_sync(_livePhotoRequestQueue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -237,37 +237,37 @@ void __64__PUCameraTransientAssetsMediaProvider__livePhotoRequestWithID___block_
   *(v4 + 40) = v3;
 }
 
-- (void)_updateResultForLivePhotoRequestID:(int)a3
+- (void)_updateResultForLivePhotoRequestID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v32[1] = *MEMORY[0x1E69E9840];
   v5 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestWithID:?];
-  v6 = [v5 resultHandler];
+  resultHandler = [v5 resultHandler];
   if ([v5 imageRequestFinished] && objc_msgSend(v5, "videoRequestFinished"))
   {
-    v7 = [v5 image];
-    if (v7)
+    image = [v5 image];
+    if (image)
     {
-      v8 = v7;
-      v9 = [v5 videoURL];
-      if (v9)
+      v8 = image;
+      videoURL = [v5 videoURL];
+      if (videoURL)
       {
-        v10 = v9;
-        v11 = [v5 stillDisplayTime];
+        v10 = videoURL;
+        stillDisplayTime = [v5 stillDisplayTime];
 
-        if (v11)
+        if (stillDisplayTime)
         {
-          v12 = [v5 asset];
-          v13 = [v5 image];
-          v26 = [v5 videoURL];
+          asset = [v5 asset];
+          image2 = [v5 image];
+          videoURL2 = [v5 videoURL];
           v14 = [MEMORY[0x1E6987E28] assetWithURL:?];
           v29 = 0uLL;
           v30 = 0;
-          v15 = [v5 stillDisplayTime];
-          v16 = v15;
-          if (v15)
+          stillDisplayTime2 = [v5 stillDisplayTime];
+          v16 = stillDisplayTime2;
+          if (stillDisplayTime2)
           {
-            [v15 CMTimeValue];
+            [stillDisplayTime2 CMTimeValue];
           }
 
           else
@@ -276,19 +276,19 @@ void __64__PUCameraTransientAssetsMediaProvider__livePhotoRequestWithID___block_
             v30 = 0;
           }
 
-          v25 = [v12 hasPhotoColorAdjustments];
-          v18 = [v5 filterName];
-          v19 = [(PUCameraTransientAssetsMediaProvider *)self _videoCompositionForAVAsset:v14 filterName:v18];
+          hasPhotoColorAdjustments = [asset hasPhotoColorAdjustments];
+          filterName = [v5 filterName];
+          v19 = [(PUCameraTransientAssetsMediaProvider *)self _videoCompositionForAVAsset:v14 filterName:filterName];
 
           v24 = objc_alloc(MEMORY[0x1E69788C8]);
-          v23 = [v13 CGImage];
-          v20 = [v13 imageOrientation];
-          v21 = [v12 uuid];
+          cGImage = [image2 CGImage];
+          imageOrientation = [image2 imageOrientation];
+          uuid = [asset uuid];
           v27 = v29;
           v28 = v30;
-          v22 = [v24 initWithImage:v23 uiOrientation:v20 videoAsset:v14 photoTime:&v27 assetUUID:v21 options:v25 videoComposition:v19];
+          v22 = [v24 initWithImage:cGImage uiOrientation:imageOrientation videoAsset:v14 photoTime:&v27 assetUUID:uuid options:hasPhotoColorAdjustments videoComposition:v19];
 
-          (v6)[2](v6, v22, 0);
+          (resultHandler)[2](resultHandler, v22, 0);
 LABEL_15:
 
           [(PUCameraTransientAssetsMediaProvider *)self _removeLivePhotoRequestWithID:v3];
@@ -301,39 +301,39 @@ LABEL_15:
       }
     }
 
-    v17 = [v5 error];
-    v13 = v17;
-    if (v17)
+    error = [v5 error];
+    image2 = error;
+    if (error)
     {
       v31 = *MEMORY[0x1E6978DF0];
-      v32[0] = v17;
-      v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
+      v32[0] = error;
+      asset = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     }
 
     else
     {
-      v12 = 0;
+      asset = 0;
     }
 
-    (v6)[2](v6, 0, v12);
+    (resultHandler)[2](resultHandler, 0, asset);
     goto LABEL_15;
   }
 
 LABEL_16:
 }
 
-- (void)_handleLivePhotoPairedVideoRequestResultURL:(id)a3 filterName:(id)a4 stillDisplayTime:(id *)a5 error:(id)a6 requestID:(int)a7
+- (void)_handleLivePhotoPairedVideoRequestResultURL:(id)l filterName:(id)name stillDisplayTime:(id *)time error:(id)error requestID:(int)d
 {
-  v7 = *&a7;
+  v7 = *&d;
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
+  lCopy = l;
+  errorCopy = error;
+  nameCopy = name;
   v15 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestWithID:v7];
   v16 = v15;
-  if (v12)
+  if (lCopy)
   {
-    [v15 setVideoURL:v12];
+    [v15 setVideoURL:lCopy];
   }
 
   else
@@ -342,15 +342,15 @@ LABEL_16:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v19) = 138412290;
-      *(&v19 + 4) = v13;
+      *(&v19 + 4) = errorCopy;
       _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_ERROR, "Failed to load video URL for iris placeholder asse. Error: %@", &v19, 0xCu);
     }
   }
 
-  if (a5->var2)
+  if (time->var2)
   {
-    v19 = *&a5->var0;
-    var3 = a5->var3;
+    v19 = *&time->var0;
+    var3 = time->var3;
     v18 = [MEMORY[0x1E696B098] valueWithCMTime:&v19];
     [v16 setStillDisplayTime:v18];
   }
@@ -361,28 +361,28 @@ LABEL_16:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v19) = 138412290;
-      *(&v19 + 4) = v13;
+      *(&v19 + 4) = errorCopy;
       _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_ERROR, "Failed to load still display time for iris placeholder asset. Error: %@", &v19, 0xCu);
     }
   }
 
-  [v16 setFilterName:v14];
-  [v16 setError:v13];
+  [v16 setFilterName:nameCopy];
+  [v16 setError:errorCopy];
   [v16 setVideoRequestFinished:1];
   [(PUCameraTransientAssetsMediaProvider *)self _updateResultForLivePhotoRequestID:v7];
 }
 
-- (void)_handleDelegateImageRequestResultWithImage:(id)a3 info:(id)a4 requestID:(int)a5
+- (void)_handleDelegateImageRequestResultWithImage:(id)image info:(id)info requestID:(int)d
 {
-  v5 = *&a5;
+  v5 = *&d;
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  imageCopy = image;
+  infoCopy = info;
   v10 = [(PUCameraTransientAssetsMediaProvider *)self _livePhotoRequestWithID:v5];
   v11 = v10;
-  if (v8)
+  if (imageCopy)
   {
-    [v10 setImage:v8];
+    [v10 setImage:imageCopy];
   }
 
   else
@@ -391,62 +391,62 @@ LABEL_16:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = infoCopy;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Failed to load image for iris placeholder asset: %@", &v14, 0xCu);
     }
   }
 
-  v13 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+  v13 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
   [v11 setError:v13];
 
   [v11 setImageRequestFinished:1];
   [(PUCameraTransientAssetsMediaProvider *)self _updateResultForLivePhotoRequestID:v5];
 }
 
-- (int)_requestLivePhotoForTransientAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)_requestLivePhotoForTransientAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a7;
-  if (v10)
+  assetCopy = asset;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
-    v12 = v9;
-    v13 = [v12 placeholderImage];
+    _nextRequestId = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
+    v12 = assetCopy;
+    placeholderImage = [v12 placeholderImage];
     v14 = objc_alloc(MEMORY[0x1E69788C8]);
-    v15 = [v13 CGImage];
-    v16 = [v13 imageOrientation];
-    v17 = [v12 uuid];
+    cGImage = [placeholderImage CGImage];
+    imageOrientation = [placeholderImage imageOrientation];
+    uuid = [v12 uuid];
     v29 = *MEMORY[0x1E6960C70];
     v30 = *(MEMORY[0x1E6960C70] + 16);
-    v18 = [v14 initWithImage:v15 uiOrientation:v16 videoAsset:0 photoTime:&v29 assetUUID:v17 options:0 videoComposition:0];
+    v18 = [v14 initWithImage:cGImage uiOrientation:imageOrientation videoAsset:0 photoTime:&v29 assetUUID:uuid options:0 videoComposition:0];
 
     v31 = *MEMORY[0x1E6978E50];
     v32[0] = MEMORY[0x1E695E118];
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v10[2](v10, v18, v19);
+    handlerCopy[2](handlerCopy, v18, v19);
 
-    v20 = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
-    v21 = [v12 uuid];
+    _transientImageManager = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
+    uuid2 = [v12 uuid];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __120__PUCameraTransientAssetsMediaProvider__requestLivePhotoForTransientAsset_targetSize_contentMode_options_resultHandler___block_invoke;
     v25[3] = &unk_1E7B761A0;
     v25[4] = self;
-    v26 = v13;
+    v26 = placeholderImage;
     v27 = v12;
-    v28 = v10;
+    v28 = handlerCopy;
     v22 = v12;
-    v23 = v13;
-    [v20 requestPairedVideoURLForUUID:v21 resultHandler:v25];
+    v23 = placeholderImage;
+    [_transientImageManager requestPairedVideoURLForUUID:uuid2 resultHandler:v25];
   }
 
   else
   {
-    v11 = 0;
+    _nextRequestId = 0;
   }
 
-  return v11;
+  return _nextRequestId;
 }
 
 void __120__PUCameraTransientAssetsMediaProvider__requestLivePhotoForTransientAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -513,20 +513,20 @@ void __120__PUCameraTransientAssetsMediaProvider__requestLivePhotoForTransientAs
   (*(*(a1 + 56) + 16))();
 }
 
-- (BOOL)_requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (BOOL)_requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v37 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v24 = a6;
-  v25 = a7;
-  v14 = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
-  v15 = [(PUCameraTransientAssetsMediaProvider *)self supplementaryLivePhotoImageSource];
-  v16 = [[PUCameraPlaceholderLivePhotoRequest alloc] initWithAsset:v13 resultHandler:v25];
-  [(PUCameraTransientAssetsMediaProvider *)self _setLivePhotoRequest:v16 forRequestID:v14];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  _nextRequestId = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
+  supplementaryLivePhotoImageSource = [(PUCameraTransientAssetsMediaProvider *)self supplementaryLivePhotoImageSource];
+  v16 = [[PUCameraPlaceholderLivePhotoRequest alloc] initWithAsset:assetCopy resultHandler:handlerCopy];
+  [(PUCameraTransientAssetsMediaProvider *)self _setLivePhotoRequest:v16 forRequestID:_nextRequestId];
   v17 = objc_alloc_init(MEMORY[0x1E6978868]);
-  [v17 setNetworkAccessAllowed:{objc_msgSend(v24, "isNetworkAccessAllowed")}];
+  [v17 setNetworkAccessAllowed:{objc_msgSend(optionsCopy, "isNetworkAccessAllowed")}];
   [v17 setDeliveryMode:1];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -534,19 +534,19 @@ void __120__PUCameraTransientAssetsMediaProvider__requestLivePhotoForTransientAs
   aBlock[2] = __150__PUCameraTransientAssetsMediaProvider__requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7B76150;
   objc_copyWeak(&v30, &location);
-  v31 = v14;
+  v31 = _nextRequestId;
   v18 = _Block_copy(aBlock);
-  if (v15 && ((v15)[2](v15, v13, a5, v17, v18, width, height) & 1) != 0)
+  if (supplementaryLivePhotoImageSource && ((supplementaryLivePhotoImageSource)[2](supplementaryLivePhotoImageSource, assetCopy, mode, v17, v18, width, height) & 1) != 0)
   {
-    v19 = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
-    v20 = [v13 uuid];
+    _transientImageManager = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
+    uuid = [assetCopy uuid];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __150__PUCameraTransientAssetsMediaProvider__requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset_targetSize_contentMode_options_resultHandler___block_invoke_206;
     v26[3] = &unk_1E7B76178;
     objc_copyWeak(&v27, &location);
-    v28 = v14;
-    [v19 requestPairedVideoURLForUUID:v20 resultHandler:v26];
+    v28 = _nextRequestId;
+    [_transientImageManager requestPairedVideoURLForUUID:uuid resultHandler:v26];
     objc_destroyWeak(&v27);
 
     v21 = 1;
@@ -558,14 +558,14 @@ void __120__PUCameraTransientAssetsMediaProvider__requestLivePhotoForTransientAs
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v34 = self;
+      selfCopy = self;
       v35 = 2112;
-      v36 = v13;
+      v36 = assetCopy;
       _os_log_impl(&dword_1B36F3000, v22, OS_LOG_TYPE_ERROR, "%@ cannot provide a live photo for iris placeholder asset %@ because its supplementary source cannot provide an image.", buf, 0x16u);
     }
 
     [(PUCameraPlaceholderLivePhotoRequest *)v16 setImageRequestFinished:1];
-    [(PUCameraTransientAssetsMediaProvider *)self _updateResultForLivePhotoRequestID:v14];
+    [(PUCameraTransientAssetsMediaProvider *)self _updateResultForLivePhotoRequestID:_nextRequestId];
     v21 = 0;
   }
 
@@ -628,40 +628,40 @@ void __150__PUCameraTransientAssetsMediaProvider__requestLivePhotoWithSupplement
   [WeakRetained _handleDelegateImageRequestResultWithImage:*(a1 + 32) info:*(a1 + 40) requestID:*(a1 + 56)];
 }
 
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([(PUCameraTransientAssetsMediaProvider *)self _requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:v13 targetSize:a5 contentMode:v14 options:v15 resultHandler:width, height]|| (objc_opt_respondsToSelector() & 1) == 0)
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUCameraTransientAssetsMediaProvider *)self _requestLivePhotoWithSupplementaryImageSourceIfPossibleWithAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:width, height]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v16 = 0;
+    height = 0;
   }
 
   else
   {
-    v16 = [(PUCameraTransientAssetsMediaProvider *)self _requestLivePhotoForTransientAsset:v13 targetSize:a5 contentMode:v14 options:v15 resultHandler:width, height];
+    height = [(PUCameraTransientAssetsMediaProvider *)self _requestLivePhotoForTransientAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:width, height];
   }
 
-  return v16;
+  return height;
 }
 
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 mediaType];
-  if ([v8 canPlayPhotoIris])
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
+  mediaType = [videoCopy mediaType];
+  if ([videoCopy canPlayPhotoIris])
   {
-    v12 = 1;
+    isPhotoIrisPlaceholder = 1;
   }
 
   else
   {
-    v12 = [v8 isPhotoIrisPlaceholder];
+    isPhotoIrisPlaceholder = [videoCopy isPhotoIrisPlaceholder];
   }
 
   v28 = 0;
@@ -676,36 +676,36 @@ void __150__PUCameraTransientAssetsMediaProvider__requestLivePhotoWithSupplement
   v25 = __Block_byref_object_copy__18015;
   v26 = __Block_byref_object_dispose__18016;
   v27 = 0;
-  if (v11 == 2)
+  if (mediaType == 2)
   {
-    v13 = v8;
-    v14 = [v13 persistenceURL];
+    _transientImageManager = videoCopy;
+    persistenceURL = [_transientImageManager persistenceURL];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __85__PUCameraTransientAssetsMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke;
     v21[3] = &unk_1E7B760D8;
     v21[4] = &v28;
     v21[5] = &v22;
-    [(PUCameraTransientAssetsMediaProvider *)self _requestAVAssetForVideoURL:v14 resultHandler:v21];
-    if (v10)
+    [(PUCameraTransientAssetsMediaProvider *)self _requestAVAssetForVideoURL:persistenceURL resultHandler:v21];
+    if (handlerCopy)
     {
-      v10[2](v10, v29[5], v23[5], 0);
+      handlerCopy[2](handlerCopy, v29[5], v23[5], 0);
     }
 
-    v15 = 0;
+    _nextRequestId = 0;
   }
 
   else
   {
-    if (!v12)
+    if (!isPhotoIrisPlaceholder)
     {
-      v15 = 0;
+      _nextRequestId = 0;
       goto LABEL_12;
     }
 
-    v13 = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
-    v14 = [v8 uuid];
-    v15 = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
+    _transientImageManager = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
+    persistenceURL = [videoCopy uuid];
+    _nextRequestId = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __85__PUCameraTransientAssetsMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke_2;
@@ -713,15 +713,15 @@ void __150__PUCameraTransientAssetsMediaProvider__requestLivePhotoWithSupplement
     v17[4] = self;
     v19 = &v28;
     v20 = &v22;
-    v18 = v10;
-    [v13 requestPairedVideoURLForUUID:v14 resultHandler:v17];
+    v18 = handlerCopy;
+    [_transientImageManager requestPairedVideoURLForUUID:persistenceURL resultHandler:v17];
   }
 
 LABEL_12:
   _Block_object_dispose(&v22, 8);
 
   _Block_object_dispose(&v28, 8);
-  return v15;
+  return _nextRequestId;
 }
 
 void __85__PUCameraTransientAssetsMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -816,19 +816,19 @@ void __85__PUCameraTransientAssetsMediaProvider_requestAVAssetForVideo_options_r
   *(v9 + 40) = v6;
 }
 
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 mediaType];
-  if (([v7 canPlayPhotoIris] & 1) == 0)
+  videoCopy = video;
+  handlerCopy = handler;
+  mediaType = [videoCopy mediaType];
+  if (([videoCopy canPlayPhotoIris] & 1) == 0)
   {
-    v10 = [v7 isPhotoIrisPlaceholder];
-    if (v9 != 2)
+    isPhotoIrisPlaceholder = [videoCopy isPhotoIrisPlaceholder];
+    if (mediaType != 2)
     {
-      if (!v10)
+      if (!isPhotoIrisPlaceholder)
       {
-        v13 = 0;
+        _nextRequestId = 0;
         goto LABEL_11;
       }
 
@@ -836,37 +836,37 @@ void __85__PUCameraTransientAssetsMediaProvider_requestAVAssetForVideo_options_r
     }
 
 LABEL_5:
-    v11 = [v7 persistenceURL];
-    v12 = [(PUCameraTransientAssetsMediaProvider *)self _playerItemForVideoURL:v11];
-    if (v8)
+    persistenceURL = [videoCopy persistenceURL];
+    _transientImageManager = [(PUCameraTransientAssetsMediaProvider *)self _playerItemForVideoURL:persistenceURL];
+    if (handlerCopy)
     {
-      v8[2](v8, v12, 0);
+      handlerCopy[2](handlerCopy, _transientImageManager, 0);
     }
 
-    v13 = 0;
+    _nextRequestId = 0;
     goto LABEL_10;
   }
 
-  if (v9 == 2)
+  if (mediaType == 2)
   {
     goto LABEL_5;
   }
 
 LABEL_9:
-  v12 = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
-  v14 = [v7 uuid];
-  v13 = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
+  _transientImageManager = [(PUCameraTransientAssetsMediaProvider *)self _transientImageManager];
+  uuid = [videoCopy uuid];
+  _nextRequestId = [(PUCameraTransientAssetsMediaProvider *)self _nextRequestId];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__PUCameraTransientAssetsMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke;
   v16[3] = &unk_1E7B7F898;
-  v17 = v8;
-  [v12 requestPairedVideoURLForUUID:v14 resultHandler:v16];
+  v17 = handlerCopy;
+  [_transientImageManager requestPairedVideoURLForUUID:uuid resultHandler:v16];
 
 LABEL_10:
 LABEL_11:
 
-  return v13;
+  return _nextRequestId;
 }
 
 void __88__PUCameraTransientAssetsMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -929,42 +929,42 @@ void __88__PUCameraTransientAssetsMediaProvider_requestPlayerItemForVideo_option
   }
 }
 
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0, 0, a4);
+    (*(handler + 2))(handler, 0, 0, options);
   }
 
   return 0;
 }
 
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0, 0, 0, 0);
+    (*(handler + 2))(handler, 0, 0, 0, 0);
   }
 
   return 0;
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  width = a4.width;
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   v14 = objc_opt_respondsToSelector();
-  if (v13 && (v14 & 1) != 0)
+  if (handlerCopy && (v14 & 1) != 0)
   {
-    v15 = v11;
-    v16 = [v15 placeholderImage];
-    if ([v15 mediaType] != 2 || (objc_msgSend(v16, "size"), width <= v17) || (v18 = objc_msgSend(v12, "deliveryMode"), videoFrameGeneratorQueue = self->_videoFrameGeneratorQueue, v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __106__PUCameraTransientAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke, v21[3] = &unk_1E7B80B48, v22 = v15, v23 = v13, dispatch_async(videoFrameGeneratorQueue, v21), v23, v22, v18 != 1))
+    v15 = assetCopy;
+    placeholderImage = [v15 placeholderImage];
+    if ([v15 mediaType] != 2 || (objc_msgSend(placeholderImage, "size"), width <= v17) || (v18 = objc_msgSend(optionsCopy, "deliveryMode"), videoFrameGeneratorQueue = self->_videoFrameGeneratorQueue, v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __106__PUCameraTransientAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke, v21[3] = &unk_1E7B80B48, v22 = v15, v23 = handlerCopy, dispatch_async(videoFrameGeneratorQueue, v21), v23, v22, v18 != 1))
     {
-      if (v16)
+      if (placeholderImage)
       {
-        v13[2](v13, v16, 0);
+        handlerCopy[2](handlerCopy, placeholderImage, 0);
       }
     }
   }
@@ -1016,16 +1016,16 @@ void __106__PUCameraTransientAssetsMediaProvider_requestImageForAsset_targetSize
   }
 }
 
-- (PUCameraTransientAssetsMediaProvider)initWithTransientImageManager:(id)a3 supplementaryLivePhotoImageSource:(id)a4
+- (PUCameraTransientAssetsMediaProvider)initWithTransientImageManager:(id)manager supplementaryLivePhotoImageSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = PUCameraTransientAssetsMediaProvider;
   v9 = [(PUCameraTransientAssetsMediaProvider *)&v20 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [sourceCopy copy];
     supplementaryLivePhotoImageSource = v9->_supplementaryLivePhotoImageSource;
     v9->_supplementaryLivePhotoImageSource = v10;
 
@@ -1041,7 +1041,7 @@ void __106__PUCameraTransientAssetsMediaProvider_requestImageForAsset_targetSize
     videoFrameGeneratorQueue = v9->_videoFrameGeneratorQueue;
     v9->_videoFrameGeneratorQueue = v16;
 
-    objc_storeStrong(&v9->__transientImageManager, a3);
+    objc_storeStrong(&v9->__transientImageManager, manager);
     atomic_store(0x186A0u, &v9->_latestRequestId);
     v18 = v9;
   }

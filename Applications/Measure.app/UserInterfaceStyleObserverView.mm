@@ -1,44 +1,44 @@
 @interface UserInterfaceStyleObserverView
-- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithCoder:(id)a3;
-- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithFrame:(CGRect)a3;
+- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithCoder:(id)coder;
+- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UserInterfaceStyleObserverView
 
-- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithFrame:(CGRect)a3
+- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v7 = [(UserInterfaceStyleObserverView *)&v9 initWithFrame:x, y, width, height];
-  [(UserInterfaceStyleObserverView *)v7 setAutoresizingMask:0];
-  [(UserInterfaceStyleObserverView *)v7 setUserInteractionEnabled:0];
+  height = [(UserInterfaceStyleObserverView *)&v9 initWithFrame:x, y, width, height];
+  [(UserInterfaceStyleObserverView *)height setAutoresizingMask:0];
+  [(UserInterfaceStyleObserverView *)height setUserInteractionEnabled:0];
 
-  return v7;
+  return height;
 }
 
-- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithCoder:(id)a3
+- (_TtC7MeasureP33_EDD96BC629EA7EBD01211224C3FF48E430UserInterfaceStyleObserverView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
-  sub_1001CC2AC([(UserInterfaceStyleObserverView *)v3 traitCollection]);
+  selfCopy = self;
+  sub_1001CC2AC([(UserInterfaceStyleObserverView *)selfCopy traitCollection]);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
-  sub_1001CC2AC([(UserInterfaceStyleObserverView *)v2 traitCollection]);
+  selfCopy = self;
+  sub_1001CC2AC([(UserInterfaceStyleObserverView *)selfCopy traitCollection]);
 }
 
 @end

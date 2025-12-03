@@ -1,29 +1,29 @@
 @interface WLTips
 + (BOOL)download;
 + (id)tips;
-- (WLTips)initWithTitle:(id)a3 desc:(id)a4 thumbnail:(id)a5 image:(id)a6 video:(id)a7;
+- (WLTips)initWithTitle:(id)title desc:(id)desc thumbnail:(id)thumbnail image:(id)image video:(id)video;
 @end
 
 @implementation WLTips
 
-- (WLTips)initWithTitle:(id)a3 desc:(id)a4 thumbnail:(id)a5 image:(id)a6 video:(id)a7
+- (WLTips)initWithTitle:(id)title desc:(id)desc thumbnail:(id)thumbnail image:(id)image video:(id)video
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  descCopy = desc;
+  thumbnailCopy = thumbnail;
+  imageCopy = image;
+  videoCopy = video;
   v20.receiver = self;
   v20.super_class = WLTips;
   v17 = [(WLTips *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(WLTips *)v17 setTitle:v12];
-    [(WLTips *)v18 setDesc:v13];
-    [(WLTips *)v18 setThumbnail:v14];
-    [(WLTips *)v18 setImage:v15];
-    [(WLTips *)v18 setVideo:v16];
+    [(WLTips *)v17 setTitle:titleCopy];
+    [(WLTips *)v18 setDesc:descCopy];
+    [(WLTips *)v18 setThumbnail:thumbnailCopy];
+    [(WLTips *)v18 setImage:imageCopy];
+    [(WLTips *)v18 setVideo:videoCopy];
   }
 
   return v18;
@@ -32,13 +32,13 @@
 + (id)tips
 {
   v67 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = +[WLDeviceCapability hasHomeButton];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = v5;
-  if (v3)
+  if (userInterfaceIdiom)
   {
     if (v4)
     {
@@ -134,13 +134,13 @@ LABEL_20:
         v61 = v12;
         v13 = *(*(&v62 + 1) + 8 * v12);
         v14 = MEMORY[0x277CCACA8];
-        v15 = [v13 uppercaseString];
-        v16 = [v14 stringWithFormat:@"TIPS_%@_TITLE", v15];
+        uppercaseString = [v13 uppercaseString];
+        v16 = [v14 stringWithFormat:@"TIPS_%@_TITLE", uppercaseString];
         v60 = WLLocalizedString();
 
         v17 = MEMORY[0x277CCACA8];
-        v18 = [v13 uppercaseString];
-        v19 = [v17 stringWithFormat:@"TIPS_%@_DESCRIPTION_%@", v18, v39];
+        uppercaseString2 = [v13 uppercaseString];
+        v19 = [v17 stringWithFormat:@"TIPS_%@_DESCRIPTION_%@", uppercaseString2, v39];
         v53 = WLLocalizedString();
 
         v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@~%@_T.png", v13, v38, @"L"];
@@ -227,12 +227,12 @@ LABEL_20:
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v9 = [v8 thumbnail];
-        v60[0] = v9;
-        v10 = [v8 image];
-        v60[1] = v10;
-        v11 = [v8 video];
-        v60[2] = v11;
+        thumbnail = [v8 thumbnail];
+        v60[0] = thumbnail;
+        image = [v8 image];
+        v60[1] = image;
+        video = [v8 video];
+        v60[2] = video;
         v12 = [*(v6 + 2656) arrayWithObjects:v60 count:3];
 
         v13 = [v12 countByEnumeratingWithState:&v50 objects:v61 count:16];
@@ -260,10 +260,10 @@ LABEL_20:
               v47 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v18 = [v17 light];
-              v58[0] = v18;
-              v19 = [v17 dark];
-              v58[1] = v19;
+              light = [v17 light];
+              v58[0] = light;
+              dark = [v17 dark];
+              v58[1] = dark;
               v20 = [*(v6 + 2656) arrayWithObjects:v58 count:2];
 
               v21 = [v20 countByEnumeratingWithState:&v46 objects:v59 count:16];
@@ -282,21 +282,21 @@ LABEL_20:
                     }
 
                     v25 = *(*(&v46 + 1) + 8 * i);
-                    v26 = [v25 name];
-                    v27 = [v25 remoteURL];
-                    v36 = [v25 localFile];
+                    name = [v25 name];
+                    remoteURL = [v25 remoteURL];
+                    localFile = [v25 localFile];
                     _WLLog();
 
-                    v28 = [v25 download];
-                    v29 = [v25 name];
-                    v30 = [v25 remoteURL];
-                    v35 = [v25 localFile];
-                    v37 = v28;
-                    v33 = v29;
-                    v34 = v30;
+                    download = [v25 download];
+                    name2 = [v25 name];
+                    remoteURL2 = [v25 remoteURL];
+                    localFile2 = [v25 localFile];
+                    v37 = download;
+                    v33 = name2;
+                    v34 = remoteURL2;
                     _WLLog();
 
-                    if ((v28 & 1) == 0)
+                    if ((download & 1) == 0)
                     {
 
                       v2 = v42;
@@ -304,7 +304,7 @@ LABEL_20:
                     }
                   }
 
-                  v22 = [v20 countByEnumeratingWithState:&v46 objects:v59 count:{16, v29, v30, v35, v28}];
+                  v22 = [v20 countByEnumeratingWithState:&v46 objects:v59 count:{16, name2, remoteURL2, localFile2, download}];
                   if (v22)
                   {
                     continue;

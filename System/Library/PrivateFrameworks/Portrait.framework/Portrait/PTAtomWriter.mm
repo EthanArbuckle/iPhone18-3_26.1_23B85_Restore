@@ -1,82 +1,82 @@
 @interface PTAtomWriter
-- (PTAtomWriter)initWithByteWriter:(id)a3;
-- (PTAtomWriter)initWithParent:(id)a3;
-- (id)_errorForSize:(unint64_t)a3;
-- (id)_errorForVersion:(unint64_t)a3;
+- (PTAtomWriter)initWithByteWriter:(id)writer;
+- (PTAtomWriter)initWithParent:(id)parent;
+- (id)_errorForSize:(unint64_t)size;
+- (id)_errorForVersion:(unint64_t)version;
 - (id)debugDescription;
-- (void)_appendBytes:(const void *)a3 size:(unint64_t)a4;
+- (void)_appendBytes:(const void *)bytes size:(unint64_t)size;
 - (void)_debugLogAtomWriterState;
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4;
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size;
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset;
 - (void)_setErrorForByteWriterIfNeeded;
-- (void)_writeBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
-- (void)appendBytes:(const void *)a3 size:(unint64_t)a4;
-- (void)appendVersion:(unint64_t)a3 flags:(unint64_t)a4;
-- (void)beginAtomOfType:(unsigned int)a3;
+- (void)_writeBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset;
+- (void)appendBytes:(const void *)bytes size:(unint64_t)size;
+- (void)appendVersion:(unint64_t)version flags:(unint64_t)flags;
+- (void)beginAtomOfType:(unsigned int)type;
 - (void)endAtom;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation PTAtomWriter
 
-- (PTAtomWriter)initWithByteWriter:(id)a3
+- (PTAtomWriter)initWithByteWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v9.receiver = self;
   v9.super_class = PTAtomWriter;
   v6 = [(PTAtomWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_byteWriter, a3);
+    objc_storeStrong(&v6->_byteWriter, writer);
   }
 
   return v7;
 }
 
-- (PTAtomWriter)initWithParent:(id)a3
+- (PTAtomWriter)initWithParent:(id)parent
 {
-  v5 = a3;
+  parentCopy = parent;
   v11.receiver = self;
   v11.super_class = PTAtomWriter;
   v6 = [(PTAtomWriter *)&v11 init];
   if (v6)
   {
-    v7 = [v5 byteWriter];
+    byteWriter = [parentCopy byteWriter];
     byteWriter = v6->_byteWriter;
-    v6->_byteWriter = v7;
+    v6->_byteWriter = byteWriter;
 
-    objc_storeStrong(&v6->_parentWriter, a3);
-    v9 = [v5 globalAtomOffset];
-    v6->_globalAtomOffset = [v5 atomSize] + v9;
+    objc_storeStrong(&v6->_parentWriter, parent);
+    globalAtomOffset = [parentCopy globalAtomOffset];
+    v6->_globalAtomOffset = [parentCopy atomSize] + globalAtomOffset;
   }
 
   return v6;
 }
 
-- (void)beginAtomOfType:(unsigned int)a3
+- (void)beginAtomOfType:(unsigned int)type
 {
   if (!self->_error)
   {
-    [(PTAtomWriter *)a3 beginAtomOfType:?];
+    [(PTAtomWriter *)type beginAtomOfType:?];
   }
 }
 
-- (void)appendVersion:(unint64_t)a3 flags:(unint64_t)a4
+- (void)appendVersion:(unint64_t)version flags:(unint64_t)flags
 {
   if (!self->_error && self->_didBeginAtom)
   {
     v7 = v4;
     v8 = v5;
-    [(PTAtomWriter *)a3 appendVersion:a4 flags:&v6];
+    [(PTAtomWriter *)version appendVersion:flags flags:&v6];
   }
 }
 
-- (void)appendBytes:(const void *)a3 size:(unint64_t)a4
+- (void)appendBytes:(const void *)bytes size:(unint64_t)size
 {
-  if (!self->_error && a4 && self->_didBeginAtom)
+  if (!self->_error && size && self->_didBeginAtom)
   {
-    [(PTAtomWriter *)self appendBytes:a3 size:a4];
+    [(PTAtomWriter *)self appendBytes:bytes size:size];
   }
 }
 
@@ -99,9 +99,9 @@
       {
         v10 = bswap32(atomSize);
         [(PTAtomWriter *)self _writeBytes:&v10 size:4 offset:self->_globalAtomOffset];
-        v7 = [(PTAtomWriter *)self error];
+        error = [(PTAtomWriter *)self error];
 
-        if (!v7)
+        if (!error)
         {
           parentWriter = self->_parentWriter;
           if (parentWriter)
@@ -125,14 +125,14 @@
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v6 = a3;
-  objc_storeStrong(&self->_error, a3);
+  errorCopy = error;
+  objc_storeStrong(&self->_error, error);
   parentWriter = self->_parentWriter;
   if (parentWriter)
   {
-    [(PTAtomWriter *)parentWriter setError:v6];
+    [(PTAtomWriter *)parentWriter setError:errorCopy];
   }
 }
 
@@ -152,59 +152,73 @@
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(PTAtomWriter *)self globalAtomOffset];
-  v9 = [(PTAtomWriter *)self atomSize];
-  v10 = [(PTAtomWriter *)self atomDataOffset];
-  v11 = [(PTAtomWriter *)self atomDataSize];
-  v12 = [(PTAtomWriter *)self error];
-  if (v12)
+  globalAtomOffset = [(PTAtomWriter *)self globalAtomOffset];
+  atomSize = [(PTAtomWriter *)self atomSize];
+  atomDataOffset = [(PTAtomWriter *)self atomDataOffset];
+  atomDataSize = [(PTAtomWriter *)self atomDataSize];
+  error = [(PTAtomWriter *)self error];
+  if (error)
   {
-    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, v8, v9, v10, v11, &stru_2837D16E8];
+    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, globalAtomOffset, atomSize, atomDataOffset, atomDataSize, &stru_2837D16E8];
   }
 
   else
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(PTAtomWriter *)self error];
-    v16 = [v14 stringWithFormat:@" (%@)", v15];
-    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, v8, v9, v10, v11, v16];
+    error2 = [(PTAtomWriter *)self error];
+    v16 = [v14 stringWithFormat:@" (%@)", error2];
+    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, globalAtomOffset, atomSize, atomDataOffset, atomDataSize, v16];
   }
 
   return v13;
 }
 
-- (void)_appendBytes:(const void *)a3 size:(unint64_t)a4
+- (void)_appendBytes:(const void *)bytes size:(unint64_t)size
 {
   [PTAtomWriter _debugLogBytes:"_debugLogBytes:size:" size:?];
   byteWriter = self->_byteWriter;
 
-  [(PTByteWriter *)byteWriter appendBytes:a3 size:a4];
+  [(PTByteWriter *)byteWriter appendBytes:bytes size:size];
 }
 
-- (void)_writeBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (void)_writeBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset
 {
   [PTAtomWriter _debugLogBytes:"_debugLogBytes:size:offset:" size:? offset:?];
   byteWriter = self->_byteWriter;
 
-  [(PTByteWriter *)byteWriter writeBytes:a3 size:a4 offset:a5];
+  [(PTByteWriter *)byteWriter writeBytes:bytes size:size offset:offset];
 }
 
 - (void)_setErrorForByteWriterIfNeeded
 {
-  v3 = [(PTByteWriter *)self->_byteWriter error];
+  error = [(PTByteWriter *)self->_byteWriter error];
 
-  if (v3)
+  if (error)
   {
-    v5 = [(PTByteWriter *)self->_byteWriter error];
-    v4 = [(PTAtomWriter *)self _errorForByteWriterError:v5];
+    error2 = [(PTByteWriter *)self->_byteWriter error];
+    v4 = [(PTAtomWriter *)self _errorForByteWriterError:error2];
     [(PTAtomWriter *)self setError:v4];
   }
 }
 
-- (id)_errorForVersion:(unint64_t)a3
+- (id)_errorForVersion:(unint64_t)version
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"version %lu is too big to fit", a3];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"version %lu is too big to fit", version];
+  v4 = MEMORY[0x277CCA9B8];
+  v5 = *MEMORY[0x277CCA590];
+  v9 = *MEMORY[0x277CCA450];
+  v10[0] = version;
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
+  v7 = [v4 errorWithDomain:v5 code:-12572 userInfo:v6];
+
+  return v7;
+}
+
+- (id)_errorForSize:(unint64_t)size
+{
+  v10[1] = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"data size %lu is too big to fit", size];
   v4 = MEMORY[0x277CCA9B8];
   v5 = *MEMORY[0x277CCA590];
   v9 = *MEMORY[0x277CCA450];
@@ -215,33 +229,19 @@
   return v7;
 }
 
-- (id)_errorForSize:(unint64_t)a3
-{
-  v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"data size %lu is too big to fit", a3];
-  v4 = MEMORY[0x277CCA9B8];
-  v5 = *MEMORY[0x277CCA590];
-  v9 = *MEMORY[0x277CCA450];
-  v10[0] = v3;
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [v4 errorWithDomain:v5 code:-12572 userInfo:v6];
-
-  return v7;
-}
-
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size
 {
   if (PTSerializationDebugIsEnabled())
   {
     v6 = _PTLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [PTAtomWriter _debugLogBytes:a3 size:a4];
+      [PTAtomWriter _debugLogBytes:bytes size:size];
     }
   }
 }
 
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset
 {
   v14 = *MEMORY[0x277D85DE8];
   if (PTSerializationDebugIsEnabled())
@@ -249,9 +249,9 @@
     v8 = _PTLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = NSStringFromBytes(a3, a4);
+      v9 = NSStringFromBytes(bytes, size);
       v10 = 134218242;
-      v11 = a5;
+      offsetCopy = offset;
       v12 = 2112;
       v13 = v9;
       _os_log_debug_impl(&dword_2243FB000, v8, OS_LOG_TYPE_DEBUG, "w[%zd]: %@", &v10, 0x16u);
@@ -261,7 +261,7 @@
 
 - (void)_debugLogAtomWriterState
 {
-  v1 = [a1 debugDescription];
+  v1 = [self debugDescription];
   OUTLINED_FUNCTION_0_6(&dword_2243FB000, v2, v3, "%@", v4, v5, v6, v7, 2u);
 }
 

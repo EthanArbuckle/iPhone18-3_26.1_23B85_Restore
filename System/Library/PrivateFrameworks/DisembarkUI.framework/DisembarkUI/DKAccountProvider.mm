@@ -1,58 +1,58 @@
 @interface DKAccountProvider
 - (AAUIRecoveryFactorController)recoveryFactorController;
-- (DKAccountProvider)initWithFindMyProvider:(id)a3 appleCareProvider:(id)a4;
+- (DKAccountProvider)initWithFindMyProvider:(id)provider appleCareProvider:(id)careProvider;
 - (UIViewController)presentingViewController;
-- (id)accountsForAccountManager:(id)a3;
-- (void)_addAccountDataForAccounts:(id)a3 toAccountsData:(id)a4 completion:(id)a5;
-- (void)_determineEligibilityWithCompletion:(id)a3;
-- (void)_fetchAccountDataForAccount:(id)a3 completion:(id)a4;
-- (void)_performLastDeviceCheckWithCompletion:(id)a3;
-- (void)_presentLastDeviceAlertWithCompletion:(id)a3;
-- (void)_presentLastDeviceAlertWithRecoveryFactors:(unint64_t)a3 withCompletion:(id)a4;
-- (void)_verifyAndRepairManateeWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)_walrusStatusWithCompletion:(id)a3;
-- (void)cacheLocalDevicePasscode:(id)a3 passcodeType:(int)a4;
-- (void)fetchAccounts:(id)a3;
-- (void)preparationRequiredForPrimaryAppleAccountWithCompletion:(id)a3;
-- (void)preparePrimaryAppleAccountForSignOutWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)primaryAppleAccountRequiresADPSpecificInternetWarning:(id)a3;
-- (void)recoveryFactorController:(id)a3 didFinishAddingRecoveryContactWithError:(id)a4;
-- (void)signOutFlowController:(id)a3 disableFindMyDeviceForAccount:(id)a4 completion:(id)a5;
-- (void)signOutFlowController:(id)a3 performWalrusValidationForAccount:(id)a4 completion:(id)a5;
-- (void)signOutFlowController:(id)a3 showAlertWithTitle:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)signOutFlowController:(id)a3 signOutAccount:(id)a4 completion:(id)a5;
-- (void)signOutPrimaryAppleAccountWithPresentingViewController:(id)a3 completion:(id)a4;
+- (id)accountsForAccountManager:(id)manager;
+- (void)_addAccountDataForAccounts:(id)accounts toAccountsData:(id)data completion:(id)completion;
+- (void)_determineEligibilityWithCompletion:(id)completion;
+- (void)_fetchAccountDataForAccount:(id)account completion:(id)completion;
+- (void)_performLastDeviceCheckWithCompletion:(id)completion;
+- (void)_presentLastDeviceAlertWithCompletion:(id)completion;
+- (void)_presentLastDeviceAlertWithRecoveryFactors:(unint64_t)factors withCompletion:(id)completion;
+- (void)_verifyAndRepairManateeWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)_walrusStatusWithCompletion:(id)completion;
+- (void)cacheLocalDevicePasscode:(id)passcode passcodeType:(int)type;
+- (void)fetchAccounts:(id)accounts;
+- (void)preparationRequiredForPrimaryAppleAccountWithCompletion:(id)completion;
+- (void)preparePrimaryAppleAccountForSignOutWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)primaryAppleAccountRequiresADPSpecificInternetWarning:(id)warning;
+- (void)recoveryFactorController:(id)controller didFinishAddingRecoveryContactWithError:(id)error;
+- (void)signOutFlowController:(id)controller disableFindMyDeviceForAccount:(id)account completion:(id)completion;
+- (void)signOutFlowController:(id)controller performWalrusValidationForAccount:(id)account completion:(id)completion;
+- (void)signOutFlowController:(id)controller showAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)signOutFlowController:(id)controller signOutAccount:(id)account completion:(id)completion;
+- (void)signOutPrimaryAppleAccountWithPresentingViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation DKAccountProvider
 
-- (DKAccountProvider)initWithFindMyProvider:(id)a3 appleCareProvider:(id)a4
+- (DKAccountProvider)initWithFindMyProvider:(id)provider appleCareProvider:(id)careProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  careProviderCopy = careProvider;
   v20.receiver = self;
   v20.super_class = DKAccountProvider;
   v8 = [(DKAccountProvider *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    [(DKAccountProvider *)v8 setFindMyProvider:v6];
-    [(DKAccountProvider *)v9 setAppleCareProvider:v7];
-    v10 = [MEMORY[0x277CB8F48] defaultStore];
-    [(DKAccountProvider *)v9 setAccountStore:v10];
+    [(DKAccountProvider *)v8 setFindMyProvider:providerCopy];
+    [(DKAccountProvider *)v9 setAppleCareProvider:careProviderCopy];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    [(DKAccountProvider *)v9 setAccountStore:defaultStore];
 
     v11 = objc_alloc(MEMORY[0x277CED1E8]);
-    v12 = [(DKAccountProvider *)v9 accountStore];
-    v13 = [v11 initWithAccountStore:v12];
+    accountStore = [(DKAccountProvider *)v9 accountStore];
+    v13 = [v11 initWithAccountStore:accountStore];
     [(DKAccountProvider *)v9 setServiceOwnersManager:v13];
 
     v14 = objc_alloc(MEMORY[0x277CED1D0]);
-    v15 = [(DKAccountProvider *)v9 accountStore];
-    v16 = [v14 initWithAccountStore:v15];
+    accountStore2 = [(DKAccountProvider *)v9 accountStore];
+    v16 = [v14 initWithAccountStore:accountStore2];
     [(DKAccountProvider *)v9 setAccountManager:v16];
 
-    v17 = [(DKAccountProvider *)v9 accountManager];
-    [v17 setDelegate:v9];
+    accountManager = [(DKAccountProvider *)v9 accountManager];
+    [accountManager setDelegate:v9];
 
     v18 = objc_alloc_init(MEMORY[0x277CFD568]);
     [(DKAccountProvider *)v9 setWalrusStateController:v18];
@@ -61,16 +61,16 @@
   return v9;
 }
 
-- (void)fetchAccounts:(id)a3
+- (void)fetchAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(DKAccountProvider *)self accountStore];
-  v7 = [v6 aa_primaryAppleAccount];
+  accountStore = [(DKAccountProvider *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  v8 = [(DKAccountProvider *)self accountStore];
-  v9 = [v8 aa_appleAccounts];
-  v10 = [v9 mutableCopy];
+  accountStore2 = [(DKAccountProvider *)self accountStore];
+  aa_appleAccounts = [accountStore2 aa_appleAccounts];
+  v10 = [aa_appleAccounts mutableCopy];
 
   if ([v10 count])
   {
@@ -78,7 +78,7 @@
     v13[1] = 3221225472;
     v13[2] = __35__DKAccountProvider_fetchAccounts___block_invoke;
     v13[3] = &unk_278F7D8A8;
-    v11 = v7;
+    v11 = aa_primaryAppleAccount;
     v14 = v11;
     v12 = [v10 indexOfObjectPassingTest:v13];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
@@ -88,7 +88,7 @@
     }
   }
 
-  [(DKAccountProvider *)self _addAccountDataForAccounts:v10 toAccountsData:v5 completion:v4];
+  [(DKAccountProvider *)self _addAccountDataForAccounts:v10 toAccountsData:v5 completion:accountsCopy];
 }
 
 uint64_t __35__DKAccountProvider_fetchAccounts___block_invoke(uint64_t a1, void *a2)
@@ -100,21 +100,21 @@ uint64_t __35__DKAccountProvider_fetchAccounts___block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (void)primaryAppleAccountRequiresADPSpecificInternetWarning:(id)a3
+- (void)primaryAppleAccountRequiresADPSpecificInternetWarning:(id)warning
 {
-  v4 = a3;
+  warningCopy = warning;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__DKAccountProvider_primaryAppleAccountRequiresADPSpecificInternetWarning___block_invoke;
   v6[3] = &unk_278F7D8D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = warningCopy;
+  v5 = warningCopy;
   [(DKAccountProvider *)self _walrusStatusWithCompletion:v6];
 }
 
-- (void)cacheLocalDevicePasscode:(id)a3 passcodeType:(int)a4
+- (void)cacheLocalDevicePasscode:(id)passcode passcodeType:(int)type
 {
-  if (a4 == -1)
+  if (type == -1)
   {
     v5 = 3;
   }
@@ -125,21 +125,21 @@ uint64_t __35__DKAccountProvider_fetchAccounts___block_invoke(uint64_t a1, void 
   }
 
   v6 = MEMORY[0x277CFD500];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithValidatedSecret:v7 secretType:v5];
+  passcodeCopy = passcode;
+  v8 = [[v6 alloc] initWithValidatedSecret:passcodeCopy secretType:v5];
 
   [(DKAccountProvider *)self setCachedLocalSecret:v8];
 }
 
-- (void)preparationRequiredForPrimaryAppleAccountWithCompletion:(id)a3
+- (void)preparationRequiredForPrimaryAppleAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__DKAccountProvider_preparationRequiredForPrimaryAppleAccountWithCompletion___block_invoke;
   v6[3] = &unk_278F7D8D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(DKAccountProvider *)self _walrusStatusWithCompletion:v6];
 }
 
@@ -166,19 +166,19 @@ void __77__DKAccountProvider_preparationRequiredForPrimaryAppleAccountWithComple
   }
 }
 
-- (void)preparePrimaryAppleAccountForSignOutWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)preparePrimaryAppleAccountForSignOutWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __97__DKAccountProvider_preparePrimaryAppleAccountForSignOutWithPresentingViewController_completion___block_invoke;
   v10[3] = &unk_278F7D948;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = controllerCopy;
   v11 = v9;
   [(DKAccountProvider *)self _walrusStatusWithCompletion:v10];
 
@@ -244,39 +244,39 @@ void __97__DKAccountProvider_preparePrimaryAppleAccountForSignOutWithPresentingV
   [a1[5] presentViewController:v10 animated:1 completion:{0, v11, v12, v13, v14}];
 }
 
-- (void)signOutPrimaryAppleAccountWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)signOutPrimaryAppleAccountWithPresentingViewController:(id)controller completion:(id)completion
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CED1D8];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v9 = objc_alloc_init(v6);
-  [v9 setViewController:v8];
+  [v9 setViewController:controllerCopy];
   v14 = *MEMORY[0x277CED1A0];
   v10 = v14;
   v15[0] = self;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   [v9 setSignOutContexts:v11];
 
-  [(DKAccountProvider *)self setPresentingViewController:v8];
-  v12 = [(DKAccountProvider *)self serviceOwnersManager];
-  [v12 signOutService:v10 withContext:v9 completion:v7];
+  [(DKAccountProvider *)self setPresentingViewController:controllerCopy];
+  serviceOwnersManager = [(DKAccountProvider *)self serviceOwnersManager];
+  [serviceOwnersManager signOutService:v10 withContext:v9 completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signOutFlowController:(id)a3 performWalrusValidationForAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller performWalrusValidationForAccount:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  accountCopy = account;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__DKAccountProvider_signOutFlowController_performWalrusValidationForAccount_completion___block_invoke;
   v12[3] = &unk_278F7D970;
   objc_copyWeak(&v14, &location);
-  v11 = v10;
+  v11 = completionCopy;
   v13 = v11;
   [(DKAccountProvider *)self _walrusStatusWithCompletion:v12];
 
@@ -301,37 +301,37 @@ void __88__DKAccountProvider_signOutFlowController_performWalrusValidationForAcc
   }
 }
 
-- (void)signOutFlowController:(id)a3 disableFindMyDeviceForAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller disableFindMyDeviceForAccount:(id)account completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(DKAccountProvider *)self findMyProvider];
-  v8 = [(DKAccountProvider *)self presentingViewController];
+  completionCopy = completion;
+  findMyProvider = [(DKAccountProvider *)self findMyProvider];
+  presentingViewController = [(DKAccountProvider *)self presentingViewController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__DKAccountProvider_signOutFlowController_disableFindMyDeviceForAccount_completion___block_invoke;
   v10[3] = &unk_278F7D998;
-  v11 = v6;
-  v9 = v6;
-  [v7 disableFindMyWithPresentingViewController:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [findMyProvider disableFindMyWithPresentingViewController:presentingViewController completion:v10];
 }
 
-- (void)signOutFlowController:(id)a3 signOutAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller signOutAccount:(id)account completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(DKAccountProvider *)self accountStore];
-  [v9 removeAccount:v8 withCompletionHandler:v7];
+  completionCopy = completion;
+  accountCopy = account;
+  accountStore = [(DKAccountProvider *)self accountStore];
+  [accountStore removeAccount:accountCopy withCompletionHandler:completionCopy];
 }
 
-- (void)signOutFlowController:(id)a3 showAlertWithTitle:(id)a4 message:(id)a5 completion:(id)a6
+- (void)signOutFlowController:(id)controller showAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(DKAccountProvider *)self presentingViewController];
-  if (v12)
+  titleCopy = title;
+  messageCopy = message;
+  completionCopy = completion;
+  presentingViewController = [(DKAccountProvider *)self presentingViewController];
+  if (presentingViewController)
   {
-    v13 = [MEMORY[0x277D75110] alertControllerWithTitle:v9 message:v10 preferredStyle:1];
+    v13 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v14 = MEMORY[0x277D750F8];
     v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
     v16 = [v15 localizedStringForKey:@"OK" value:&stru_285BC2A70 table:@"Localizable"];
@@ -339,25 +339,25 @@ void __88__DKAccountProvider_signOutFlowController_performWalrusValidationForAcc
     v18[1] = 3221225472;
     v18[2] = __81__DKAccountProvider_signOutFlowController_showAlertWithTitle_message_completion___block_invoke;
     v18[3] = &unk_278F7D9C0;
-    v19 = v11;
+    v19 = completionCopy;
     v17 = [v14 actionWithTitle:v16 style:0 handler:v18];
     [v13 addAction:v17];
 
-    [v12 presentViewController:v13 animated:1 completion:0];
+    [presentingViewController presentViewController:v13 animated:1 completion:0];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DKAccountProvider *)self serviceOwnersManager];
+  serviceOwnersManager = [(DKAccountProvider *)self serviceOwnersManager];
   v4 = *MEMORY[0x277CED1A0];
-  v5 = [v3 accountForService:*MEMORY[0x277CED1A0]];
+  v5 = [serviceOwnersManager accountForService:*MEMORY[0x277CED1A0]];
 
   if (v5)
   {
@@ -376,18 +376,18 @@ void __88__DKAccountProvider_signOutFlowController_performWalrusValidationForAcc
   return v6;
 }
 
-- (void)recoveryFactorController:(id)a3 didFinishAddingRecoveryContactWithError:(id)a4
+- (void)recoveryFactorController:(id)controller didFinishAddingRecoveryContactWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(DKAccountProvider *)self pendingWalrusValidationCompletion];
+  errorCopy = error;
+  pendingWalrusValidationCompletion = [(DKAccountProvider *)self pendingWalrusValidationCompletion];
 
-  if (v6)
+  if (pendingWalrusValidationCompletion)
   {
-    v7 = [(DKAccountProvider *)self pendingWalrusValidationCompletion];
-    v8 = v7;
-    if (v5)
+    pendingWalrusValidationCompletion2 = [(DKAccountProvider *)self pendingWalrusValidationCompletion];
+    v8 = pendingWalrusValidationCompletion2;
+    if (errorCopy)
     {
-      v9 = [MEMORY[0x277CCA9B8] aa_errorWithCode:0 underlyingError:v5];
+      v9 = [MEMORY[0x277CCA9B8] aa_errorWithCode:0 underlyingError:errorCopy];
       v8[2](v8, 0, v9);
     }
 
@@ -397,8 +397,8 @@ void __88__DKAccountProvider_signOutFlowController_performWalrusValidationForAcc
       v10[1] = 3221225472;
       v10[2] = __86__DKAccountProvider_recoveryFactorController_didFinishAddingRecoveryContactWithError___block_invoke;
       v10[3] = &unk_278F7D8D0;
-      v11 = v7;
-      v8 = v7;
+      v11 = pendingWalrusValidationCompletion2;
+      v8 = pendingWalrusValidationCompletion2;
       [(DKAccountProvider *)self _walrusStatusWithCompletion:v10];
     }
 
@@ -434,31 +434,31 @@ void __86__DKAccountProvider_recoveryFactorController_didFinishAddingRecoveryCon
   }
 }
 
-- (void)_addAccountDataForAccounts:(id)a3 toAccountsData:(id)a4 completion:(id)a5
+- (void)_addAccountDataForAccounts:(id)accounts toAccountsData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  accountsCopy = accounts;
+  dataCopy = data;
+  completionCopy = completion;
+  if ([accountsCopy count])
   {
-    v11 = [v8 firstObject];
-    v12 = [v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1}];
+    firstObject = [accountsCopy firstObject];
+    v12 = [accountsCopy subarrayWithRange:{1, objc_msgSend(accountsCopy, "count") - 1}];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__DKAccountProvider__addAccountDataForAccounts_toAccountsData_completion___block_invoke;
     v15[3] = &unk_278F7D9E8;
-    v16 = v9;
-    v17 = self;
+    v16 = dataCopy;
+    selfCopy = self;
     v18 = v12;
-    v19 = v10;
+    v19 = completionCopy;
     v13 = v12;
-    [(DKAccountProvider *)self _fetchAccountDataForAccount:v11 completion:v15];
+    [(DKAccountProvider *)self _fetchAccountDataForAccount:firstObject completion:v15];
   }
 
   else
   {
-    v14 = [v9 copy];
-    (*(v10 + 2))(v10, v14);
+    v14 = [dataCopy copy];
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
@@ -473,22 +473,22 @@ uint64_t __74__DKAccountProvider__addAccountDataForAccounts_toAccountsData_compl
   return [v3 _addAccountDataForAccounts:v5 toAccountsData:v4 completion:v6];
 }
 
-- (void)_fetchAccountDataForAccount:(id)a3 completion:(id)a4
+- (void)_fetchAccountDataForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x277CECA90]);
-  v9 = [(DKAccountProvider *)self accountStore];
-  v10 = [v8 initWithAppleAccount:v6 store:v9];
+  accountStore = [(DKAccountProvider *)self accountStore];
+  v10 = [v8 initWithAppleAccount:accountCopy store:accountStore];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__DKAccountProvider__fetchAccountDataForAccount_completion___block_invoke;
   v13[3] = &unk_278F7DA10;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = accountCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = accountCopy;
   [v10 fetchProfilePictureForAccountOwner:v13];
 }
 
@@ -511,18 +511,18 @@ void __60__DKAccountProvider__fetchAccountDataForAccount_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_verifyAndRepairManateeWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)_verifyAndRepairManateeWithPresentingViewController:(id)controller completion:(id)completion
 {
   v6 = MEMORY[0x277CECA18];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v11 = [v6 contextWithType:6];
   [v11 setForceInlinePresentation:1];
-  v9 = [(DKAccountProvider *)self cachedLocalSecret];
-  [v11 setCachedLocalSecret:v9];
+  cachedLocalSecret = [(DKAccountProvider *)self cachedLocalSecret];
+  [v11 setCachedLocalSecret:cachedLocalSecret];
 
-  v10 = [objc_alloc(MEMORY[0x277CECA70]) initWithFlowContext:v11 withPresentingViewController:v8];
-  [v10 verifyAndRepairManateeWithCompletion:v7];
+  v10 = [objc_alloc(MEMORY[0x277CECA70]) initWithFlowContext:v11 withPresentingViewController:controllerCopy];
+  [v10 verifyAndRepairManateeWithCompletion:completionCopy];
 }
 
 - (AAUIRecoveryFactorController)recoveryFactorController
@@ -530,24 +530,24 @@ void __60__DKAccountProvider__fetchAccountDataForAccount_completion___block_invo
   recoveryFactorController = self->_recoveryFactorController;
   if (!recoveryFactorController)
   {
-    v4 = [(DKAccountProvider *)self presentingViewController];
-    v5 = [v4 navigationController];
-    v6 = v5;
-    if (v5)
+    presentingViewController = [(DKAccountProvider *)self presentingViewController];
+    navigationController = [presentingViewController navigationController];
+    v6 = navigationController;
+    if (navigationController)
     {
-      v7 = v5;
+      presentingViewController2 = navigationController;
     }
 
     else
     {
-      v7 = [(DKAccountProvider *)self presentingViewController];
+      presentingViewController2 = [(DKAccountProvider *)self presentingViewController];
     }
 
-    v8 = v7;
+    v8 = presentingViewController2;
 
     v9 = objc_alloc(MEMORY[0x277CECAA8]);
-    v10 = [(DKAccountProvider *)self accountManager];
-    v11 = [v9 initWithAccountManager:v10 presentingViewController:v8];
+    accountManager = [(DKAccountProvider *)self accountManager];
+    v11 = [v9 initWithAccountManager:accountManager presentingViewController:v8];
     v12 = self->_recoveryFactorController;
     self->_recoveryFactorController = v11;
 
@@ -561,17 +561,17 @@ void __60__DKAccountProvider__fetchAccountDataForAccount_completion___block_invo
   return recoveryFactorController;
 }
 
-- (void)_walrusStatusWithCompletion:(id)a3
+- (void)_walrusStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DKAccountProvider *)self walrusStateController];
+  completionCopy = completion;
+  walrusStateController = [(DKAccountProvider *)self walrusStateController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__DKAccountProvider__walrusStatusWithCompletion___block_invoke;
   v7[3] = &unk_278F7D8D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 walrusStatusWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [walrusStateController walrusStatusWithCompletion:v7];
 }
 
 void __49__DKAccountProvider__walrusStatusWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -599,16 +599,16 @@ void __49__DKAccountProvider__walrusStatusWithCompletion___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_performLastDeviceCheckWithCompletion:(id)a3
+- (void)_performLastDeviceCheckWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__DKAccountProvider__performLastDeviceCheckWithCompletion___block_invoke;
   v6[3] = &unk_278F7DA38;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(DKAccountProvider *)self _determineEligibilityWithCompletion:v6];
 
@@ -632,20 +632,20 @@ void __59__DKAccountProvider__performLastDeviceCheckWithCompletion___block_invok
   }
 }
 
-- (void)_determineEligibilityWithCompletion:(id)a3
+- (void)_determineEligibilityWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CFD480] sharedInstance];
-  v5 = [v4 contextForPrimaryAccount];
+  completionCopy = completion;
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  contextForPrimaryAccount = [mEMORY[0x277CFD480] contextForPrimaryAccount];
 
   v6 = objc_alloc_init(MEMORY[0x277CFD548]);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__DKAccountProvider__determineEligibilityWithCompletion___block_invoke;
   v8[3] = &unk_278F7DA60;
-  v9 = v3;
-  v7 = v3;
-  [v6 fetchEscrowRecordDevicesWithContext:v5 usingCache:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v6 fetchEscrowRecordDevicesWithContext:contextForPrimaryAccount usingCache:0 completion:v8];
 }
 
 void __57__DKAccountProvider__determineEligibilityWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -688,19 +688,19 @@ void __57__DKAccountProvider__determineEligibilityWithCompletion___block_invoke(
   v10();
 }
 
-- (void)_presentLastDeviceAlertWithCompletion:(id)a3
+- (void)_presentLastDeviceAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(DKAccountProvider *)self recoveryFactorController];
+  recoveryFactorController = [(DKAccountProvider *)self recoveryFactorController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__DKAccountProvider__presentLastDeviceAlertWithCompletion___block_invoke;
   v7[3] = &unk_278F7D970;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 availableRecoveryFactorsWithCompletion:v7];
+  [recoveryFactorController availableRecoveryFactorsWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -729,19 +729,19 @@ void __59__DKAccountProvider__presentLastDeviceAlertWithCompletion___block_invok
   }
 }
 
-- (void)_presentLastDeviceAlertWithRecoveryFactors:(unint64_t)a3 withCompletion:(id)a4
+- (void)_presentLastDeviceAlertWithRecoveryFactors:(unint64_t)factors withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  factorsCopy = factors;
+  completionCopy = completion;
   v7 = _DKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [DKAccountProvider _presentLastDeviceAlertWithRecoveryFactors:v7 withCompletion:?];
   }
 
-  v35 = (v4 & 4) >> 2;
+  v35 = (factorsCopy & 4) >> 2;
   v8 = @"CONTACT";
-  if ((v4 & 4) != 0)
+  if ((factorsCopy & 4) != 0)
   {
     v8 = @"KEY";
   }
@@ -769,7 +769,7 @@ void __59__DKAccountProvider__presentLastDeviceAlertWithCompletion___block_invok
   v48[1] = 3221225472;
   v48[2] = __79__DKAccountProvider__presentLastDeviceAlertWithRecoveryFactors_withCompletion___block_invoke;
   v48[3] = &unk_278F7D9C0;
-  v18 = v6;
+  v18 = completionCopy;
   v49 = v18;
   v19 = [v15 actionWithTitle:v17 style:2 handler:v48];
   [v14 addAction:v19];
@@ -811,8 +811,8 @@ void __59__DKAccountProvider__presentLastDeviceAlertWithCompletion___block_invok
   v32 = [v28 actionWithTitle:v30 style:1 handler:v41];
   [v14 addAction:v32];
 
-  v33 = [(DKAccountProvider *)self presentingViewController];
-  [v33 presentViewController:v14 animated:1 completion:0];
+  presentingViewController = [(DKAccountProvider *)self presentingViewController];
+  [presentingViewController presentViewController:v14 animated:1 completion:0];
 }
 
 void __79__DKAccountProvider__presentLastDeviceAlertWithRecoveryFactors_withCompletion___block_invoke_2(uint64_t a1)

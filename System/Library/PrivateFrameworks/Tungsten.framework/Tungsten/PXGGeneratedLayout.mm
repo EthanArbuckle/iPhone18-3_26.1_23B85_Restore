@@ -1,50 +1,50 @@
 @interface PXGGeneratedLayout
 - ($B30C796585FC215A6CA6704F8BA3D5B6)edgeCornerRadius;
 - ($B30C796585FC215A6CA6704F8BA3D5B6)itemCornerRadius;
-- (CGSize)sizeForItem:(int64_t)a3;
+- (CGSize)sizeForItem:(int64_t)item;
 - (NSString)diagnosticDescription;
 - (PXGGeneratedLayout)init;
 - (PXLayoutGenerator)generator;
 - (UIEdgeInsets)padding;
-- (_NSRange)_adjustItemsToLoadForAnchors:(_NSRange)a3 loadRect:(CGRect)a4;
+- (_NSRange)_adjustItemsToLoadForAnchors:(_NSRange)anchors loadRect:(CGRect)rect;
 - (_NSRange)itemsToLoad;
-- (_NSRange)itemsToLoadInRect:(CGRect)a3;
+- (_NSRange)itemsToLoadInRect:(CGRect)rect;
 - (id)newGenerator;
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3;
+- (id)objectReferenceForSpriteIndex:(unsigned int)index;
 - (void)_invalidateGenerator;
 - (void)_invalidateSprites;
-- (void)_updateAccessoriesGeometryBufferForSpriteCount:(int64_t)a3;
+- (void)_updateAccessoriesGeometryBufferForSpriteCount:(int64_t)count;
 - (void)_updateContentSize;
 - (void)_updateGenerator;
 - (void)_updateGeometries;
-- (void)_updateItemsGeometryBufferForSpriteCount:(int64_t)a3;
+- (void)_updateItemsGeometryBufferForSpriteCount:(int64_t)count;
 - (void)_updateSprites;
 - (void)_updateSpritesPostUpdate;
 - (void)contentSizeDidChange;
 - (void)dealloc;
-- (void)didApplySpriteChangeDetails:(id)a3;
+- (void)didApplySpriteChangeDetails:(id)details;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)enumerateItemsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)getSpriteZPosition:(float *)a3 clippingRect:(CGRect *)a4 forSpriteKind:(int64_t)a5;
+- (void)enumerateItemsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)getSpriteZPosition:(float *)position clippingRect:(CGRect *)rect forSpriteKind:(int64_t)kind;
 - (void)loadedItemsDidChange;
 - (void)metricsDidChange;
 - (void)paddingDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAccessoryMediaKind:(unsigned __int8)a3;
-- (void)setAccessoryPresentationType:(unsigned __int8)a3;
-- (void)setDefaultSpriteTag:(int64_t)a3;
-- (void)setEdgeCornerRadius:(id)a3;
-- (void)setEnableEffects:(BOOL)a3;
-- (void)setInteritemSpacing:(double)a3;
-- (void)setItemCornerRadius:(id)a3;
-- (void)setKeyItemIndex:(int64_t)a3;
-- (void)setKeyItemSpriteTag:(int64_t)a3;
-- (void)setMediaKind:(unsigned __int8)a3;
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setPresentationType:(unsigned __int8)a3;
-- (void)setUseSaliency:(BOOL)a3;
+- (void)setAccessoryMediaKind:(unsigned __int8)kind;
+- (void)setAccessoryPresentationType:(unsigned __int8)type;
+- (void)setDefaultSpriteTag:(int64_t)tag;
+- (void)setEdgeCornerRadius:(id)radius;
+- (void)setEnableEffects:(BOOL)effects;
+- (void)setInteritemSpacing:(double)spacing;
+- (void)setItemCornerRadius:(id)radius;
+- (void)setKeyItemIndex:(int64_t)index;
+- (void)setKeyItemSpriteTag:(int64_t)tag;
+- (void)setMediaKind:(unsigned __int8)kind;
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setPresentationType:(unsigned __int8)type;
+- (void)setUseSaliency:(BOOL)saliency;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
 - (void)visibleRectDidChange;
@@ -84,64 +84,64 @@
 {
   v17.receiver = self;
   v17.super_class = PXGGeneratedLayout;
-  v3 = [(PXGLayout *)&v17 diagnosticDescription];
+  diagnosticDescription = [(PXGLayout *)&v17 diagnosticDescription];
   [(PXGLayout *)self referenceSize];
   v5 = v4;
   [(PXGLayout *)self referenceSize];
   v7 = v6;
   v8 = MEMORY[0x21CEE3180]([(PXGGeneratedLayout *)self padding]);
-  v9 = [(PXGItemsLayout *)self numberOfItems];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
   [(PXGGeneratedLayout *)self interitemSpacing];
   v11 = v10;
   [(PXGLayout *)self displayScale];
   v13 = v12;
-  v14 = [(PXLayoutGenerator *)self->_generator diagnosticDescription];
-  v15 = [v3 px_stringByAppendingDescriptionDetailsWithFormat:@" size: {%.3f, %.3f}; padding: %@; items: %li; interItemSpacing: %.3f; screenScale: %.3f; generator: %@", v5, v7, v8, v9, v11, v13, v14];;
+  diagnosticDescription2 = [(PXLayoutGenerator *)self->_generator diagnosticDescription];
+  v15 = [diagnosticDescription px_stringByAppendingDescriptionDetailsWithFormat:@" size: {%.3f, %.3f}; padding: %@; items: %li; interItemSpacing: %.3f; screenScale: %.3f; generator: %@", v5, v7, v8, numberOfItems, v11, v13, diagnosticDescription2];;
 
   return v15;
 }
 
-- (_NSRange)_adjustItemsToLoadForAnchors:(_NSRange)a3 loadRect:(CGRect)a4
+- (_NSRange)_adjustItemsToLoadForAnchors:(_NSRange)anchors loadRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  length = a3.length;
-  location = a3.location;
-  v10 = [(PXGItemsLayout *)self numberOfItems:a4.origin.x];
-  v11 = [(PXGItemsLayout *)self anchorItemForAnchoredContentEdges];
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL || (v11 = [(PXGItemsLayout *)self anchorItemIndexForRootAnchor], v11 != 0x7FFFFFFFFFFFFFFFLL))
+  height = rect.size.height;
+  width = rect.size.width;
+  length = anchors.length;
+  location = anchors.location;
+  v10 = [(PXGItemsLayout *)self numberOfItems:rect.origin.x];
+  anchorItemForAnchoredContentEdges = [(PXGItemsLayout *)self anchorItemForAnchoredContentEdges];
+  if (anchorItemForAnchoredContentEdges != 0x7FFFFFFFFFFFFFFFLL || (anchorItemForAnchoredContentEdges = [(PXGItemsLayout *)self anchorItemIndexForRootAnchor], anchorItemForAnchoredContentEdges != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v12 = v11;
-    if (v11 < 0 || v11 >= v10)
+    v12 = anchorItemForAnchoredContentEdges;
+    if (anchorItemForAnchoredContentEdges < 0 || anchorItemForAnchoredContentEdges >= v10)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:612 description:{@"Anchor item %ld must be < numberOfItems %ld", v12, v10}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:612 description:{@"Anchor item %ld must be < numberOfItems %ld", v12, v10}];
     }
 
     if (v12 < location || v12 - location >= length)
     {
-      v13 = [(PXGGeneratedLayout *)self reasonableItemCountForSize:width, height];
-      v14 = v13 / 2;
-      if (v13 / 2 <= 1)
+      height = [(PXGGeneratedLayout *)self reasonableItemCountForSize:width, height];
+      v14 = height / 2;
+      if (height / 2 <= 1)
       {
         v14 = 1;
       }
 
       v15 = v12 - v14;
-      if (v10 - (v15 & ~(v15 >> 63)) < v13)
+      if (v10 - (v15 & ~(v15 >> 63)) < height)
       {
-        v15 = v10 - v13;
+        v15 = v10 - height;
       }
 
       location = v15 & ~(v15 >> 63);
-      if (v13 >= (v10 - location))
+      if (height >= (v10 - location))
       {
         length = v10 - location;
       }
 
       else
       {
-        length = v13;
+        length = height;
       }
     }
   }
@@ -153,7 +153,7 @@
   return result;
 }
 
-- (_NSRange)itemsToLoadInRect:(CGRect)a3
+- (_NSRange)itemsToLoadInRect:(CGRect)rect
 {
   v14 = 0;
   v15 = &v14;
@@ -170,7 +170,7 @@
   v9[3] = &unk_2782A9918;
   v9[4] = &v14;
   v9[5] = &v10;
-  [(PXGGeneratedLayout *)self enumerateItemsInRect:v9 usingBlock:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXGGeneratedLayout *)self enumerateItemsInRect:v9 usingBlock:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = v15[3];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -277,13 +277,13 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
       v10 = v9;
       v12 = [(PXGGeneratedLayout *)self itemsToLoadInRect:?];
 
-      v13 = [(PXGGeneratedLayout *)self _adjustItemsToLoadForAnchors:v12 loadRect:v11, v4, v6, v8, v10];
+      itemsToLoad = [(PXGGeneratedLayout *)self _adjustItemsToLoadForAnchors:v12 loadRect:v11, v4, v6, v8, v10];
     }
 
     else
     {
       v14 = 0;
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      itemsToLoad = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
@@ -291,11 +291,11 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   {
     v15.receiver = self;
     v15.super_class = PXGGeneratedLayout;
-    v13 = [(PXGItemsLayout *)&v15 itemsToLoad];
+    itemsToLoad = [(PXGItemsLayout *)&v15 itemsToLoad];
   }
 
   result.length = v14;
-  result.location = v13;
+  result.location = itemsToLoad;
   return result;
 }
 
@@ -331,9 +331,9 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   [(PXGGeneratedLayout *)self _invalidateSprites];
 }
 
-- (CGSize)sizeForItem:(int64_t)a3
+- (CGSize)sizeForItem:(int64_t)item
 {
-  v4 = [(PXGGeneratedLayout *)self generator];
+  generator = [(PXGGeneratedLayout *)self generator];
   v18 = 0;
   v16 = 0u;
   v17 = 0u;
@@ -344,7 +344,7 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  [v4 getGeometries:&v9 inRange:a3 withKind:{1, 0}];
+  [generator getGeometries:&v9 inRange:item withKind:{1, 0}];
   v5 = *(&v10 + 1);
   v6 = *&v11;
 
@@ -358,27 +358,27 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
 - (void)_updateSprites
 {
   *&v93[4] = *MEMORY[0x277D85DE8];
-  v4 = [(PXGLayout *)self localNumberOfSprites];
-  if ([(PXGItemsLayout *)self numberOfItems]!= v4)
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
+  if ([(PXGItemsLayout *)self numberOfItems]!= localNumberOfSprites)
   {
     if (![(PXGItemsLayout *)self isLazy]|| (v5 = [(PXGLayout *)self localNumberOfSprites], [(PXGItemsLayout *)self loadedItems], v6 != v5))
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"self.localNumberOfSprites == self.numberOfItems || (self.isLazy && self.localNumberOfSprites == self.loadedItems.length)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"self.localNumberOfSprites == self.numberOfItems || (self.isLazy && self.localNumberOfSprites == self.loadedItems.length)"}];
     }
   }
 
   v8 = 1;
   self->_isUpdatingSprites = 1;
-  v9 = [(PXGItemsLayout *)self loadedItems];
+  loadedItems = [(PXGItemsLayout *)self loadedItems];
   v55 = v10;
-  v56 = v9;
-  v58 = [(PXGItemsLayout *)self numberOfItems];
-  v57 = [(PXGItemsLayout *)self numberOfAccessoryItems];
-  v11 = [(PXGItemsLayout *)self delegate];
+  v56 = loadedItems;
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  numberOfAccessoryItems = [(PXGItemsLayout *)self numberOfAccessoryItems];
+  delegate = [(PXGItemsLayout *)self delegate];
   if ([(PXGItemsLayout *)self delegateRespondsTo:1024])
   {
-    v12 = v11;
+    v12 = delegate;
   }
 
   else
@@ -389,7 +389,7 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v54 = v12;
   if ([(PXGItemsLayout *)self delegateRespondsTo:256])
   {
-    v13 = v11;
+    v13 = delegate;
   }
 
   else
@@ -398,7 +398,7 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   }
 
   v14 = v13;
-  v15 = [(PXGItemsLayout *)self insetDelegate];
+  insetDelegate = [(PXGItemsLayout *)self insetDelegate];
   v16 = 0;
   v17 = v92;
   v18 = v90;
@@ -453,12 +453,12 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v75[1] = 3221225472;
   v75[2] = __36__PXGGeneratedLayout__updateSprites__block_invoke;
   v75[3] = &unk_2782A9850;
-  v61 = v11;
+  v61 = delegate;
   v76 = v61;
-  v77 = self;
+  selfCopy = self;
   v33 = v14;
   v78 = v33;
-  v34 = v15;
+  v34 = insetDelegate;
   v79 = v34;
   v81 = v92;
   v82 = v90;
@@ -471,27 +471,27 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v80 = v35;
   p_rect = &rect;
   v36 = MEMORY[0x21CEE40A0](v75);
-  v37 = [(PXGGeneratedLayout *)self presentationType];
-  v38 = [(PXGGeneratedLayout *)self mediaKind];
-  v39 = [(PXGGeneratedLayout *)self keyItemIndex];
-  v40 = [(PXGLayout *)self localNumberOfSprites];
+  presentationType = [(PXGGeneratedLayout *)self presentationType];
+  mediaKind = [(PXGGeneratedLayout *)self mediaKind];
+  keyItemIndex = [(PXGGeneratedLayout *)self keyItemIndex];
+  localNumberOfSprites2 = [(PXGLayout *)self localNumberOfSprites];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __36__PXGGeneratedLayout__updateSprites__block_invoke_2;
   v67[3] = &unk_2782A98A0;
-  v41 = v40 << 32;
+  v41 = localNumberOfSprites2 << 32;
   v70 = v55;
-  v71 = v39;
+  v71 = keyItemIndex;
   v69 = v56;
   v67[4] = self;
   v42 = v36;
   v68 = v42;
-  v73 = v38;
-  v74 = v37;
-  v72 = v58;
+  v73 = mediaKind;
+  v74 = presentationType;
+  v72 = numberOfItems;
   [(PXGLayout *)self modifySpritesInRange:v41 state:v67];
   LOBYTE(v41) = [(PXGGeneratedLayout *)self accessoryPresentationType];
-  v43 = [(PXGGeneratedLayout *)self accessoryMediaKind];
+  accessoryMediaKind = [(PXGGeneratedLayout *)self accessoryMediaKind];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __36__PXGGeneratedLayout__updateSprites__block_invoke_4;
@@ -499,10 +499,10 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v63[4] = self;
   v44 = v42;
   v64 = v44;
-  v65 = v43;
+  v65 = accessoryMediaKind;
   v66 = v41;
-  [(PXGItemsLayout *)self modifyAccessoryItemSpritesInRange:v57 << 32 state:v63];
-  if (v58)
+  [(PXGItemsLayout *)self modifyAccessoryItemSpritesInRange:numberOfAccessoryItems << 32 state:v63];
+  if (numberOfItems)
   {
     PXRectWithCenterAndSize();
     v46 = v45;
@@ -519,7 +519,7 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
     v52 = *(MEMORY[0x277CBF398] + 24);
   }
 
-  v53 = [(PXGGeneratedLayout *)self headerLayoutGuide];
+  headerLayoutGuide = [(PXGGeneratedLayout *)self headerLayoutGuide];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __36__PXGGeneratedLayout__updateSprites__block_invoke_5;
@@ -529,7 +529,7 @@ uint64_t __40__PXGGeneratedLayout_itemsToLoadInRect___block_invoke(uint64_t resu
   v62[7] = v50;
   v62[8] = v52;
   v62[4] = self;
-  [v53 performChanges:v62];
+  [headerLayoutGuide performChanges:v62];
 
   if ([(PXGGeneratedLayout *)self enableEffects])
   {
@@ -807,9 +807,9 @@ LABEL_6:
 LABEL_5:
     if (self->_postUpdateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout _invalidateSprites]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGGeneratedLayout.m" lineNumber:359 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGGeneratedLayout.m" lineNumber:359 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -834,84 +834,84 @@ LABEL_7:
   [(PXGItemsLayout *)self invalidateStylableType:1];
 }
 
-- (void)_updateAccessoriesGeometryBufferForSpriteCount:(int64_t)a3
+- (void)_updateAccessoriesGeometryBufferForSpriteCount:(int64_t)count
 {
-  self->_generatorAccessoriesGeometryBufferCount = a3;
+  self->_generatorAccessoriesGeometryBufferCount = count;
   generatorAccessoriesGeometryBufferCapacity = self->_generatorAccessoriesGeometryBufferCapacity;
-  if (generatorAccessoriesGeometryBufferCapacity < a3)
+  if (generatorAccessoriesGeometryBufferCapacity < count)
   {
-    v6 = a3;
+    countCopy = count;
     if (generatorAccessoriesGeometryBufferCapacity)
     {
-      v6 = self->_generatorAccessoriesGeometryBufferCapacity;
+      countCopy = self->_generatorAccessoriesGeometryBufferCapacity;
       do
       {
-        v6 *= 2;
+        countCopy *= 2;
       }
 
-      while (v6 < a3);
+      while (countCopy < count);
     }
 
-    self->_generatorAccessoriesGeometryBufferCapacity = v6;
-    self->_generatorAccessoriesGeometryBuffer = malloc_type_realloc(self->_generatorAccessoriesGeometryBuffer, 152 * v6, 0x42760281uLL);
+    self->_generatorAccessoriesGeometryBufferCapacity = countCopy;
+    self->_generatorAccessoriesGeometryBuffer = malloc_type_realloc(self->_generatorAccessoriesGeometryBuffer, 152 * countCopy, 0x42760281uLL);
   }
 
-  if (a3)
+  if (count)
   {
-    v7 = [(PXGGeneratedLayout *)self generator];
-    [v7 getGeometries:self->_generatorAccessoriesGeometryBuffer inRange:0 withKind:{a3, 1000}];
+    generator = [(PXGGeneratedLayout *)self generator];
+    [generator getGeometries:self->_generatorAccessoriesGeometryBuffer inRange:0 withKind:{count, 1000}];
   }
 }
 
-- (void)_updateItemsGeometryBufferForSpriteCount:(int64_t)a3
+- (void)_updateItemsGeometryBufferForSpriteCount:(int64_t)count
 {
-  self->_generatorItemsGeometryBufferCount = a3;
+  self->_generatorItemsGeometryBufferCount = count;
   generatorItemsGeometryBufferCapacity = self->_generatorItemsGeometryBufferCapacity;
-  if (generatorItemsGeometryBufferCapacity < a3)
+  if (generatorItemsGeometryBufferCapacity < count)
   {
-    v6 = a3;
+    countCopy = count;
     if (generatorItemsGeometryBufferCapacity)
     {
-      v6 = self->_generatorItemsGeometryBufferCapacity;
+      countCopy = self->_generatorItemsGeometryBufferCapacity;
       do
       {
-        v6 *= 2;
+        countCopy *= 2;
       }
 
-      while (v6 < a3);
+      while (countCopy < count);
     }
 
-    self->_generatorItemsGeometryBufferCapacity = v6;
-    self->_generatorItemsGeometryBuffer = malloc_type_realloc(self->_generatorItemsGeometryBuffer, 152 * v6, 0x42760281uLL);
+    self->_generatorItemsGeometryBufferCapacity = countCopy;
+    self->_generatorItemsGeometryBuffer = malloc_type_realloc(self->_generatorItemsGeometryBuffer, 152 * countCopy, 0x42760281uLL);
   }
 
-  if (a3)
+  if (count)
   {
-    v7 = [(PXGGeneratedLayout *)self generator];
-    [v7 getGeometries:self->_generatorItemsGeometryBuffer inRange:0 withKind:{a3, 0}];
+    generator = [(PXGGeneratedLayout *)self generator];
+    [generator getGeometries:self->_generatorItemsGeometryBuffer inRange:0 withKind:{count, 0}];
   }
 }
 
 - (void)_updateContentSize
 {
-  v3 = [(PXGGeneratedLayout *)self generator];
-  [v3 size];
+  generator = [(PXGGeneratedLayout *)self generator];
+  [generator size];
   [(PXGLayout *)self setContentSize:?];
 }
 
 - (void)_updateGeometries
 {
   [(PXGGeneratedLayout *)self _updateItemsGeometryBufferForSpriteCount:[(PXGItemsLayout *)self numberOfItems]];
-  v3 = [(PXGItemsLayout *)self numberOfAccessoryItems];
+  numberOfAccessoryItems = [(PXGItemsLayout *)self numberOfAccessoryItems];
 
-  [(PXGGeneratedLayout *)self _updateAccessoriesGeometryBufferForSpriteCount:v3];
+  [(PXGGeneratedLayout *)self _updateAccessoriesGeometryBufferForSpriteCount:numberOfAccessoryItems];
 }
 
 - (void)_updateGenerator
 {
-  v3 = [(PXGGeneratedLayout *)self newGenerator];
+  newGenerator = [(PXGGeneratedLayout *)self newGenerator];
   generator = self->_generator;
-  self->_generator = v3;
+  self->_generator = newGenerator;
 }
 
 - (void)_invalidateGenerator
@@ -930,9 +930,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_generatorUpdateFlags.updated & 7) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout _invalidateGenerator]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGGeneratedLayout.m" lineNumber:310 description:{@"invalidating %lu after it already has been updated", 7}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGGeneratedLayout.m" lineNumber:310 description:{@"invalidating %lu after it already has been updated", 7}];
 
       abort();
     }
@@ -964,25 +964,25 @@ LABEL_7:
   [(PXGItemsLayout *)&v7 didUpdate];
   if (self->_generatorUpdateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGGeneratedLayout.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGGeneratedLayout.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXGGeneratedLayout.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXGGeneratedLayout.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
 - (void)update
 {
-  v3 = [(PXGLayout *)self rootLayout];
-  v4 = [v3 activeAnchor];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  activeAnchor = [rootLayout activeAnchor];
 
-  if (v4)
+  if (activeAnchor)
   {
     [(PXGItemsLayout *)self invalidateLoadedItems];
   }
@@ -994,9 +994,9 @@ LABEL_7:
   {
     if (self->_generatorUpdateFlags.isPerformingUpdate)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXGGeneratedLayout.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v16 file:@"PXGGeneratedLayout.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_generatorUpdateFlags->needsUpdate;
     }
@@ -1009,14 +1009,14 @@ LABEL_7:
       [(PXGGeneratedLayout *)self _updateGenerator];
     }
 
-    v7 = [(PXGGeneratedLayout *)self generator];
-    v8 = [v7 geometryKinds];
-    v9 = [v8 containsIndex:1000];
+    generator = [(PXGGeneratedLayout *)self generator];
+    geometryKinds = [generator geometryKinds];
+    v9 = [geometryKinds containsIndex:1000];
 
     if (v9)
     {
-      v10 = [(PXGGeneratedLayout *)self generator];
-      -[PXGItemsLayout setNumberOfAccessoryItems:](self, "setNumberOfAccessoryItems:", [v10 numberOfGeometriesWithKind:1000]);
+      generator2 = [(PXGGeneratedLayout *)self generator];
+      -[PXGItemsLayout setNumberOfAccessoryItems:](self, "setNumberOfAccessoryItems:", [generator2 numberOfGeometriesWithKind:1000]);
     }
 
     else
@@ -1026,9 +1026,9 @@ LABEL_7:
 
     if (!self->_generatorUpdateFlags.isPerformingUpdate)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXGGeneratedLayout.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"_generatorUpdateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v18 file:@"PXGGeneratedLayout.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"_generatorUpdateFlags.isPerformingUpdate"}];
     }
 
     v11 = p_generatorUpdateFlags->needsUpdate;
@@ -1041,9 +1041,9 @@ LABEL_7:
 
     if (!self->_generatorUpdateFlags.isPerformingUpdate)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXGGeneratedLayout.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"_generatorUpdateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v20 file:@"PXGGeneratedLayout.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"_generatorUpdateFlags.isPerformingUpdate"}];
     }
 
     v12 = p_generatorUpdateFlags->needsUpdate;
@@ -1058,9 +1058,9 @@ LABEL_7:
     self->_generatorUpdateFlags.isPerformingUpdate = 0;
     if (v12)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v21 handleFailureInFunction:v22 file:@"PXGGeneratedLayout.m" lineNumber:288 description:{@"still needing to update %lu after update pass", p_generatorUpdateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v22 file:@"PXGGeneratedLayout.m" lineNumber:288 description:{@"still needing to update %lu after update pass", p_generatorUpdateFlags->needsUpdate}];
     }
   }
 
@@ -1074,9 +1074,9 @@ LABEL_7:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v23 handleFailureInFunction:v24 file:@"PXGGeneratedLayout.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v24 file:@"PXGGeneratedLayout.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v14 = p_postUpdateFlags->needsUpdate;
     }
@@ -1093,9 +1093,9 @@ LABEL_7:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v14)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout update]"];
-      [v25 handleFailureInFunction:v26 file:@"PXGGeneratedLayout.m" lineNumber:300 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v26 file:@"PXGGeneratedLayout.m" lineNumber:300 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
@@ -1108,17 +1108,17 @@ LABEL_7:
   self->_generatorUpdateFlags.willPerformUpdate = 1;
   if (self->_generatorUpdateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGGeneratedLayout.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGGeneratedLayout.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"!_generatorUpdateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGGeneratedLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXGGeneratedLayout.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXGGeneratedLayout.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -1127,9 +1127,9 @@ LABEL_7:
   generator = self->_generator;
   if (!generator)
   {
-    v4 = [(PXGGeneratedLayout *)self newGenerator];
+    newGenerator = [(PXGGeneratedLayout *)self newGenerator];
     v5 = self->_generator;
-    self->_generator = v4;
+    self->_generator = newGenerator;
 
     generator = self->_generator;
   }
@@ -1137,7 +1137,7 @@ LABEL_7:
   return generator;
 }
 
-- (void)setItemCornerRadius:(id)a3
+- (void)setItemCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -1147,11 +1147,11 @@ LABEL_7:
     self->_itemCornerRadius.var0.var0.topRight = v4;
     self->_itemCornerRadius.var0.var0.bottomLeft = v5;
     self->_itemCornerRadius.var0.var0.bottomRight = v6;
-    [(PXGGeneratedLayout *)self _invalidateSprites:*&a3.var0.var0.var0];
+    [(PXGGeneratedLayout *)self _invalidateSprites:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setEdgeCornerRadius:(id)a3
+- (void)setEdgeCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -1161,47 +1161,47 @@ LABEL_7:
     self->_edgeCornerRadius.var0.var0.topRight = v4;
     self->_edgeCornerRadius.var0.var0.bottomLeft = v5;
     self->_edgeCornerRadius.var0.var0.bottomRight = v6;
-    [(PXGGeneratedLayout *)self _invalidateSprites:*&a3.var0.var0.var0];
+    [(PXGGeneratedLayout *)self _invalidateSprites:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setEnableEffects:(BOOL)a3
+- (void)setEnableEffects:(BOOL)effects
 {
-  if (self->_enableEffects != a3)
+  if (self->_enableEffects != effects)
   {
-    self->_enableEffects = a3;
+    self->_enableEffects = effects;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setUseSaliency:(BOOL)a3
+- (void)setUseSaliency:(BOOL)saliency
 {
-  if (self->_useSaliency != a3)
+  if (self->_useSaliency != saliency)
   {
-    self->_useSaliency = a3;
+    self->_useSaliency = saliency;
     [(PXGGeneratedLayout *)self _invalidateGenerator];
 
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setInteritemSpacing:(double)a3
+- (void)setInteritemSpacing:(double)spacing
 {
-  if (self->_interitemSpacing != a3)
+  if (self->_interitemSpacing != spacing)
   {
-    self->_interitemSpacing = a3;
+    self->_interitemSpacing = spacing;
     [(PXGGeneratedLayout *)self _invalidateGenerator];
 
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsApproximatelyEqualToEdgeInsets() & 1) == 0)
   {
@@ -1214,90 +1214,90 @@ LABEL_7:
   }
 }
 
-- (void)setKeyItemSpriteTag:(int64_t)a3
+- (void)setKeyItemSpriteTag:(int64_t)tag
 {
-  if (self->_keyItemSpriteTag != a3)
+  if (self->_keyItemSpriteTag != tag)
   {
-    self->_keyItemSpriteTag = a3;
+    self->_keyItemSpriteTag = tag;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setDefaultSpriteTag:(int64_t)a3
+- (void)setDefaultSpriteTag:(int64_t)tag
 {
-  if (self->_defaultSpriteTag != a3)
+  if (self->_defaultSpriteTag != tag)
   {
-    self->_defaultSpriteTag = a3;
+    self->_defaultSpriteTag = tag;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setAccessoryMediaKind:(unsigned __int8)a3
+- (void)setAccessoryMediaKind:(unsigned __int8)kind
 {
-  if (self->_accessoryMediaKind != a3)
+  if (self->_accessoryMediaKind != kind)
   {
-    self->_accessoryMediaKind = a3;
+    self->_accessoryMediaKind = kind;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setAccessoryPresentationType:(unsigned __int8)a3
+- (void)setAccessoryPresentationType:(unsigned __int8)type
 {
-  if (self->_accessoryPresentationType != a3)
+  if (self->_accessoryPresentationType != type)
   {
-    self->_accessoryPresentationType = a3;
+    self->_accessoryPresentationType = type;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setMediaKind:(unsigned __int8)a3
+- (void)setMediaKind:(unsigned __int8)kind
 {
-  if (self->_mediaKind != a3)
+  if (self->_mediaKind != kind)
   {
-    self->_mediaKind = a3;
+    self->_mediaKind = kind;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setPresentationType:(unsigned __int8)a3
+- (void)setPresentationType:(unsigned __int8)type
 {
-  if (self->_presentationType != a3)
+  if (self->_presentationType != type)
   {
-    self->_presentationType = a3;
+    self->_presentationType = type;
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setKeyItemIndex:(int64_t)a3
+- (void)setKeyItemIndex:(int64_t)index
 {
-  if (self->_keyItemIndex != a3)
+  if (self->_keyItemIndex != index)
   {
-    self->_keyItemIndex = a3;
+    self->_keyItemIndex = index;
     [(PXGGeneratedLayout *)self _invalidateGenerator];
 
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)didApplySpriteChangeDetails:(id)a3
+- (void)didApplySpriteChangeDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v5.receiver = self;
   v5.super_class = PXGGeneratedLayout;
-  [(PXGLayout *)&v5 didApplySpriteChangeDetails:v4];
-  if (!self->_isUpdatingSprites && !-[PXGLayout isUpdatingSpriteStyling](self, "isUpdatingSpriteStyling") && (!v4 || [v4 hasAnyChanges]))
+  [(PXGLayout *)&v5 didApplySpriteChangeDetails:detailsCopy];
+  if (!self->_isUpdatingSprites && !-[PXGLayout isUpdatingSpriteStyling](self, "isUpdatingSpriteStyling") && (!detailsCopy || [detailsCopy hasAnyChanges]))
   {
     [(PXGGeneratedLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler
 {
-  v8 = a4;
+  detailsCopy = details;
   v9.receiver = self;
   v9.super_class = PXGGeneratedLayout;
-  [(PXGItemsLayout *)&v9 setNumberOfItems:a3 withChangeDetails:v8 changeMediaVersionHandler:a5];
-  if (!v8 || [v8 hasAnyChanges])
+  [(PXGItemsLayout *)&v9 setNumberOfItems:items withChangeDetails:detailsCopy changeMediaVersionHandler:handler];
+  if (!detailsCopy || [detailsCopy hasAnyChanges])
   {
     [(PXGGeneratedLayout *)self _invalidateGenerator];
   }
@@ -1339,22 +1339,22 @@ LABEL_7:
   [(PXGItemsLayout *)self invalidateLoadedItems];
 }
 
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3
+- (id)objectReferenceForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXGItemsLayout *)self delegate];
-  v6 = [v5 generatedLayout:self objectReferenceAtIndex:v3];
+  v3 = *&index;
+  delegate = [(PXGItemsLayout *)self delegate];
+  v6 = [delegate generatedLayout:self objectReferenceAtIndex:v3];
 
   return v6;
 }
 
-- (void)enumerateItemsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateItemsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v20 = 0;
   generatorItemsGeometryBufferCount = self->_generatorItemsGeometryBufferCount;
   if (generatorItemsGeometryBufferCount >= 1)
@@ -1376,7 +1376,7 @@ LABEL_7:
       v22.size.height = v19;
       if (CGRectIntersectsRect(v21, v22))
       {
-        v9[2](v9, i, &v20, v13, v15, v17, v19);
+        blockCopy[2](blockCopy, i, &v20, v13, v15, v17, v19);
         if (v20)
         {
           break;
@@ -1386,20 +1386,20 @@ LABEL_7:
   }
 }
 
-- (void)getSpriteZPosition:(float *)a3 clippingRect:(CGRect *)a4 forSpriteKind:(int64_t)a5
+- (void)getSpriteZPosition:(float *)position clippingRect:(CGRect *)rect forSpriteKind:(int64_t)kind
 {
-  *a3 = 0.0;
+  *position = 0.0;
   v5 = *(MEMORY[0x277CBF398] + 16);
-  a4->origin = *MEMORY[0x277CBF398];
-  a4->size = v5;
+  rect->origin = *MEMORY[0x277CBF398];
+  rect->size = v5;
 }
 
 - (id)newGenerator
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:67 description:{@"Method %s is a responsibility of subclass %@", "-[PXGGeneratedLayout newGenerator]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGGeneratedLayout.m" lineNumber:67 description:{@"Method %s is a responsibility of subclass %@", "-[PXGGeneratedLayout newGenerator]", v6}];
 
   abort();
 }

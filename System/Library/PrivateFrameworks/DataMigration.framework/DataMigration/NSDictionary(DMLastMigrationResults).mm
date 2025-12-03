@@ -10,11 +10,11 @@
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 dmlmr_buildVersionKey];
-  v13[0] = v7;
+  dmlmr_buildVersionKey = [self dmlmr_buildVersionKey];
+  v13[0] = dmlmr_buildVersionKey;
   v14[0] = v6;
-  v8 = [a1 dmlmr_successKey];
-  v13[1] = v8;
+  dmlmr_successKey = [self dmlmr_successKey];
+  v13[1] = dmlmr_successKey;
   v9 = [MEMORY[0x277CCABB0] numberWithBool:a3];
   v14[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -26,8 +26,8 @@
 
 - (id)dmlmr_success
 {
-  v2 = [MEMORY[0x277CBEAC0] dmlmr_successKey];
-  v3 = [a1 objectForKeyedSubscript:v2];
+  dmlmr_successKey = [MEMORY[0x277CBEAC0] dmlmr_successKey];
+  v3 = [self objectForKeyedSubscript:dmlmr_successKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -41,8 +41,8 @@
 
 - (id)dmlmr_buildVersion
 {
-  v2 = [MEMORY[0x277CBEAC0] dmlmr_buildVersionKey];
-  v3 = [a1 objectForKeyedSubscript:v2];
+  dmlmr_buildVersionKey = [MEMORY[0x277CBEAC0] dmlmr_buildVersionKey];
+  v3 = [self objectForKeyedSubscript:dmlmr_buildVersionKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)

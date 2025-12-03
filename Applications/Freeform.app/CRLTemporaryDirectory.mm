@@ -1,10 +1,10 @@
 @interface CRLTemporaryDirectory
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
 - (CRLTemporaryDirectory)init;
-- (CRLTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
+- (CRLTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
 - (NSString)path;
 - (NSURL)URL;
-- (id)initForWritingToURL:(id)a3 error:(id *)a4;
+- (id)initForWritingToURL:(id)l error:(id *)error;
 - (void)dealloc;
 - (void)removeDirectory;
 @end
@@ -61,15 +61,15 @@
   objc_exception_throw(v10);
 }
 
-- (CRLTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (CRLTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
   v13.receiver = self;
   v13.super_class = CRLTemporaryDirectory;
   v10 = [(CRLTemporaryDirectory *)&v13 init];
   v11 = v10;
-  if (v10 && ![(CRLTemporaryDirectory *)v10 _createDirectoryWithSignature:v8 subdirectory:v9 error:a5])
+  if (v10 && ![(CRLTemporaryDirectory *)v10 _createDirectoryWithSignature:signatureCopy subdirectory:subdirectoryCopy error:error])
   {
 
     v11 = 0;
@@ -78,20 +78,20 @@
   return v11;
 }
 
-- (id)initForWritingToURL:(id)a3 error:(id *)a4
+- (id)initForWritingToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = CRLTemporaryDirectory;
   v7 = [(CRLTemporaryDirectory *)&v13 init];
   if (v7)
   {
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:1 error:a4];
+    v9 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
 
-    v10 = [v9 path];
+    path = [v9 path];
     path = v7->_path;
-    v7->_path = v10;
+    v7->_path = path;
 
     if (!v9)
     {
@@ -154,8 +154,8 @@
 
 - (NSURL)URL
 {
-  v2 = [(CRLTemporaryDirectory *)self path];
-  v3 = [NSURL fileURLWithPath:v2 isDirectory:1];
+  path = [(CRLTemporaryDirectory *)self path];
+  v3 = [NSURL fileURLWithPath:path isDirectory:1];
 
   return v3;
 }
@@ -177,9 +177,9 @@
 
     else
     {
-      v10 = [v6 crl_isNoSuchFileError];
+      crl_isNoSuchFileError = [v6 crl_isNoSuchFileError];
 
-      if ((v10 & 1) == 0)
+      if ((crl_isNoSuchFileError & 1) == 0)
       {
         if (qword_101AD5A08 != -1)
         {
@@ -228,13 +228,13 @@
   }
 }
 
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
+  if (signatureCopy)
   {
-    v10 = v8;
+    v10 = signatureCopy;
   }
 
   else
@@ -267,9 +267,9 @@
   }
   v14 = ;
   v15 = v14;
-  if (v9)
+  if (subdirectoryCopy)
   {
-    v16 = [v14 stringByAppendingPathComponent:v9];
+    v16 = [v14 stringByAppendingPathComponent:subdirectoryCopy];
 
     v15 = v16;
   }
@@ -281,18 +281,18 @@
   v20 = v24;
 
   objc_storeStrong(&self->_path, v17);
-  if (a5 && (v19 & 1) == 0)
+  if (error && (v19 & 1) == 0)
   {
     if (v20)
     {
       v21 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
     {
       v22 = [NSError crl_fileWriteUnknownErrorWithUserInfo:0];
-      *a5 = v22;
+      *error = v22;
     }
   }
 

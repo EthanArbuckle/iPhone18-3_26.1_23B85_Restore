@@ -1,14 +1,14 @@
 @interface EAGLSharegroup
 - (void)dealloc;
-- (void)loadGLIPlugin:(__GLDPixelFormatRec *)a3 sharedWithCompute:(BOOL)a4;
+- (void)loadGLIPlugin:(__GLDPixelFormatRec *)plugin sharedWithCompute:(BOOL)compute;
 @end
 
 @implementation EAGLSharegroup
 
-- (void)loadGLIPlugin:(__GLDPixelFormatRec *)a3 sharedWithCompute:(BOOL)a4
+- (void)loadGLIPlugin:(__GLDPixelFormatRec *)plugin sharedWithCompute:(BOOL)compute
 {
-  *(self->_private + 2) = a3;
-  var1 = a3->var1;
+  *(self->_private + 2) = plugin;
+  var1 = plugin->var1;
   *(self->_private + 3) = gfxCreateSharedState();
   if (*(self->_private + 3))
   {

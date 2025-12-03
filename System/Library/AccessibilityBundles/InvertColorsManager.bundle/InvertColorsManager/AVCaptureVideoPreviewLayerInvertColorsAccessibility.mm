@@ -16,7 +16,7 @@
     v5 = v3;
     while (1)
     {
-      v6 = [v5 delegate];
+      delegate = [v5 delegate];
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
@@ -24,17 +24,17 @@
         break;
       }
 
-      v8 = [v5 superlayer];
+      superlayer = [v5 superlayer];
 
-      v5 = v8;
-      if (!v8)
+      v5 = superlayer;
+      if (!superlayer)
       {
         goto LABEL_7;
       }
     }
 
-    v9 = [v5 delegate];
-    [v9 setAccessibilityIgnoresInvertColors:1];
+    delegate2 = [v5 delegate];
+    [delegate2 setAccessibilityIgnoresInvertColors:1];
   }
 
 LABEL_7:

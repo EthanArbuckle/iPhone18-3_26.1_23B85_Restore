@@ -1,6 +1,6 @@
 @interface NHOLogging
 - (NHOLogging)init;
-- (id)logForCategory:(unint64_t)a3;
+- (id)logForCategory:(unint64_t)category;
 @end
 
 @implementation NHOLogging
@@ -42,12 +42,12 @@
   return v3;
 }
 
-- (id)logForCategory:(unint64_t)a3
+- (id)logForCategory:(unint64_t)category
 {
-  if (a3 < 9)
+  if (category < 9)
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
     v3 = [(NSMutableDictionary *)self->_logs objectForKeyedSubscript:v7];
     if (!v3)
     {

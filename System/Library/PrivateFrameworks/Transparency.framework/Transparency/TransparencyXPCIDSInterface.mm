@@ -14,8 +14,8 @@
   v4 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v4 forSelector:sel_setupKTSession_complete_ argumentIndex:0 ofReply:1];
 
-  v5 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v5 forSelector:sel_setupKTSession_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses forSelector:sel_setupKTSession_complete_ argumentIndex:1 ofReply:1];
 
   v6 = MEMORY[0x1E695DFD8];
   v16[0] = objc_opt_class();

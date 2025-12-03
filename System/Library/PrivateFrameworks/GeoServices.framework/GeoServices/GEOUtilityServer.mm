@@ -1,36 +1,36 @@
 @interface GEOUtilityServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (BOOL)handleIncomingPairedDeviceMessage:(id)a3 completionHandler:(id)a4;
-- (GEOUtilityServer)initWithDaemon:(id)a3;
-- (void)_checkinWithPairedDevice:(id)a3;
-- (void)checkinWithPairedDeviceMessage:(id)a3 completionHandler:(id)a4;
-- (void)checkinWithPairedDeviceWithRequest:(id)a3;
-- (void)currentServicesStateWithMessage:(id)a3;
-- (void)getCurrentPairedDeviceClientInfo:(id)a3;
-- (void)getGeoServicesCacheDirectoryWithMessage:(id)a3;
-- (void)getHomeDirectoryWithMessage:(id)a3;
-- (void)getMapsDefaultNavigationStateWithRequest:(id)a3;
-- (void)heartbeatWithMessage:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (BOOL)handleIncomingPairedDeviceMessage:(id)message completionHandler:(id)handler;
+- (GEOUtilityServer)initWithDaemon:(id)daemon;
+- (void)_checkinWithPairedDevice:(id)device;
+- (void)checkinWithPairedDeviceMessage:(id)message completionHandler:(id)handler;
+- (void)checkinWithPairedDeviceWithRequest:(id)request;
+- (void)currentServicesStateWithMessage:(id)message;
+- (void)getCurrentPairedDeviceClientInfo:(id)info;
+- (void)getGeoServicesCacheDirectoryWithMessage:(id)message;
+- (void)getHomeDirectoryWithMessage:(id)message;
+- (void)getMapsDefaultNavigationStateWithRequest:(id)request;
+- (void)heartbeatWithMessage:(id)message;
 @end
 
 @implementation GEOUtilityServer
 
-- (BOOL)handleIncomingPairedDeviceMessage:(id)a3 completionHandler:(id)a4
+- (BOOL)handleIncomingPairedDeviceMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  messageCopy = message;
+  handlerCopy = handler;
+  if ([messageCopy type] == 1)
   {
-    v8 = [v6 checkin];
-    v9 = v8 != 0;
-    if (v8)
+    checkin = [messageCopy checkin];
+    v9 = checkin != 0;
+    if (checkin)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1000149DC;
       v11[3] = &unk_100081CB0;
-      v12 = v7;
-      [(GEOUtilityServer *)self checkinWithPairedDeviceMessage:v8 completionHandler:v11];
+      v12 = handlerCopy;
+      [(GEOUtilityServer *)self checkinWithPairedDeviceMessage:checkin completionHandler:v11];
     }
   }
 
@@ -42,12 +42,12 @@
   return v9;
 }
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 > 2325)
   {
@@ -55,22 +55,22 @@
     {
       case 2326:
         v20 = objc_opt_class();
-        v21 = sub_100001388(@"utility", v10, v11, v20, v12);
+        v21 = sub_100001388(@"utility", messageCopy, objectCopy, v20, peerCopy);
         v16 = v21;
         if (v21)
         {
-          [v21 setSignpostId:a6];
+          [v21 setSignpostId:id];
           [(GEOUtilityServer *)self checkinWithPairedDeviceWithRequest:v16];
           goto LABEL_21;
         }
 
         goto LABEL_25;
       case 2856:
-        v23 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v23 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v23;
         if (v23)
         {
-          [v23 setSignpostId:a6];
+          [v23 setSignpostId:id];
           [(GEOUtilityServer *)self getGeoServicesCacheDirectoryWithMessage:v16];
           goto LABEL_21;
         }
@@ -78,11 +78,11 @@
         goto LABEL_25;
       case 2983:
         v17 = objc_opt_class();
-        v18 = sub_100001388(@"utility", v10, v11, v17, v12);
+        v18 = sub_100001388(@"utility", messageCopy, objectCopy, v17, peerCopy);
         v16 = v18;
         if (v18)
         {
-          [v18 setSignpostId:a6];
+          [v18 setSignpostId:id];
           [(GEOUtilityServer *)self getMapsDefaultNavigationStateWithRequest:v16];
           goto LABEL_21;
         }
@@ -98,39 +98,39 @@ LABEL_25:
     switch(v13)
     {
       case 944:
-        v19 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v19 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v19;
         if (v19)
         {
-          [v19 setSignpostId:a6];
+          [v19 setSignpostId:id];
           [(GEOUtilityServer *)self heartbeatWithMessage:v16];
           goto LABEL_21;
         }
 
         goto LABEL_25;
       case 1662:
-        v22 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v22 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v22;
         if (v22)
         {
-          [v22 setSignpostId:a6];
+          [v22 setSignpostId:id];
           [(GEOUtilityServer *)self getHomeDirectoryWithMessage:v16];
           goto LABEL_21;
         }
 
         goto LABEL_25;
       case 2120:
-        if (!sub_100001B78(v12, v11, @"utility", v10, &off_100088F28, 0))
+        if (!sub_100001B78(peerCopy, objectCopy, @"utility", messageCopy, &off_100088F28, 0))
         {
           v14 = 1;
           break;
         }
 
-        v15 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v15 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v15;
         if (v15)
         {
-          [v15 setSignpostId:a6];
+          [v15 setSignpostId:id];
           [(GEOUtilityServer *)self currentServicesStateWithMessage:v16];
 LABEL_21:
           v14 = 1;
@@ -146,10 +146,10 @@ LABEL_22:
   return v14;
 }
 
-- (void)getMapsDefaultNavigationStateWithRequest:(id)a3
+- (void)getMapsDefaultNavigationStateWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [[GEOUtilityDefaultNavigationStateReply alloc] initWithRequest:v3];
+  requestCopy = request;
+  v4 = [[GEOUtilityDefaultNavigationStateReply alloc] initWithRequest:requestCopy];
 
   if (!sub_10003CDE0())
   {
@@ -204,13 +204,13 @@ LABEL_10:
 
   v8 = v7;
   _Block_object_dispose(&v22, 8);
-  v9 = [v8 defaultWorkspace];
+  defaultWorkspace = [v8 defaultWorkspace];
   v16 = 0;
-  v10 = [v9 defaultApplicationForCategory:5 error:&v16];
+  v10 = [defaultWorkspace defaultApplicationForCategory:5 error:&v16];
   v11 = v16;
 
-  v12 = [v10 bundleIdentifier];
-  v13 = [v12 isEqualToString:MapsAppBundleId];
+  bundleIdentifier = [v10 bundleIdentifier];
+  v13 = [bundleIdentifier isEqualToString:MapsAppBundleId];
 
 LABEL_11:
   [v4 setError:v11];
@@ -218,27 +218,27 @@ LABEL_11:
   [v4 send];
 }
 
-- (void)checkinWithPairedDeviceMessage:(id)a3 completionHandler:(id)a4
+- (void)checkinWithPairedDeviceMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(geo_object_isolater *)self->_safePairedDeviceClientInfo setValue:v7];
+  handlerCopy = handler;
+  clientInfo = [message clientInfo];
+  [(geo_object_isolater *)self->_safePairedDeviceClientInfo setValue:clientInfo];
 
   v10 = objc_alloc_init(GEOPairedDeviceCheckinReply);
-  v8 = [(GEOUtilityServer *)self daemon];
-  v9 = sub_10001A314(v8);
+  daemon = [(GEOUtilityServer *)self daemon];
+  v9 = sub_10001A314(daemon);
   [v10 setClientInfo:v9];
 
-  v6[2](v6, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
 }
 
-- (void)checkinWithPairedDeviceWithRequest:(id)a3
+- (void)checkinWithPairedDeviceWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[GEOUtilityCheckinWithPairedDeviceReply alloc] initWithRequest:v4];
-  v6 = [v4 forced];
+  requestCopy = request;
+  v5 = [[GEOUtilityCheckinWithPairedDeviceReply alloc] initWithRequest:requestCopy];
+  forced = [requestCopy forced];
 
-  if ((v6 & 1) != 0 || ([(geo_object_isolater *)self->_safePairedDeviceClientInfo value], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((forced & 1) != 0 || ([(geo_object_isolater *)self->_safePairedDeviceClientInfo value], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -256,12 +256,12 @@ LABEL_11:
   }
 }
 
-- (void)_checkinWithPairedDevice:(id)a3
+- (void)_checkinWithPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(GEOPairedDeviceCheckinRequest);
-  v6 = [(GEOUtilityServer *)self daemon];
-  v7 = sub_10001A314(v6);
+  daemon = [(GEOUtilityServer *)self daemon];
+  v7 = sub_10001A314(daemon);
   [v5 setClientInfo:v7];
 
   v8 = +[GEOPairedDeviceConnection sharedInstance];
@@ -270,78 +270,78 @@ LABEL_11:
   v10[2] = sub_1000475A8;
   v10[3] = &unk_1000835C0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = deviceCopy;
+  v9 = deviceCopy;
   [v8 sendCheckin:v5 withReply:v10];
 }
 
-- (void)getCurrentPairedDeviceClientInfo:(id)a3
+- (void)getCurrentPairedDeviceClientInfo:(id)info
 {
   safePairedDeviceClientInfo = self->_safePairedDeviceClientInfo;
-  v5 = a3;
-  v6 = [(geo_object_isolater *)safePairedDeviceClientInfo value];
-  v7 = v6;
-  if (v6)
+  infoCopy = info;
+  value = [(geo_object_isolater *)safePairedDeviceClientInfo value];
+  v7 = value;
+  if (value)
   {
-    v5[2](v5, v6, 0);
+    infoCopy[2](infoCopy, value, 0);
   }
 
   else
   {
-    [(GEOUtilityServer *)self _checkinWithPairedDevice:v5];
+    [(GEOUtilityServer *)self _checkinWithPairedDevice:infoCopy];
   }
 }
 
-- (void)currentServicesStateWithMessage:(id)a3
+- (void)currentServicesStateWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(GEOServicesState);
   [v4 setBogusFieldForTestingPurposes:@"Valid looking state field"];
   v7 = @"state";
-  v5 = [v4 data];
-  v8 = v5;
+  data = [v4 data];
+  v8 = data;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
-  [v3 sendReply:v6];
+  [messageCopy sendReply:v6];
 }
 
-- (void)getGeoServicesCacheDirectoryWithMessage:(id)a3
+- (void)getGeoServicesCacheDirectoryWithMessage:(id)message
 {
   v6 = @"path";
-  v3 = a3;
+  messageCopy = message;
   v4 = +[GEOFilePaths _internal_geoServicesCacheDirectoryPath];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
-  [v3 sendReply:v5];
+  [messageCopy sendReply:v5];
 }
 
-- (void)getHomeDirectoryWithMessage:(id)a3
+- (void)getHomeDirectoryWithMessage:(id)message
 {
   v6 = @"path";
-  v3 = a3;
+  messageCopy = message;
   v4 = +[GEOFilePaths _internal_homeDirectory];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
-  [v3 sendReply:v5];
+  [messageCopy sendReply:v5];
 }
 
-- (void)heartbeatWithMessage:(id)a3
+- (void)heartbeatWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v6 = +[NSNotificationCenter defaultCenter];
   v4 = GEOPeerHeartbeatNotification;
-  v5 = [v3 peer];
+  peer = [messageCopy peer];
 
-  [v6 postNotificationName:v4 object:v5];
+  [v6 postNotificationName:v4 object:peer];
 }
 
-- (GEOUtilityServer)initWithDaemon:(id)a3
+- (GEOUtilityServer)initWithDaemon:(id)daemon
 {
   v8.receiver = self;
   v8.super_class = GEOUtilityServer;
-  v3 = [(GEOUtilityServer *)&v8 initWithDaemon:a3];
+  v3 = [(GEOUtilityServer *)&v8 initWithDaemon:daemon];
   if (v3)
   {
     v4 = geo_object_isolater_create();

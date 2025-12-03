@@ -1,21 +1,21 @@
 @interface SiriTTSOspreyChannel
-- (SiriTTSOspreyChannel)initWithURL:(id)a3 configuration:(id)a4;
-- (void)streamTTS:(id)a3 beginHandler:(id)a4 chunkHandler:(id)a5 completion:(id)a6;
+- (SiriTTSOspreyChannel)initWithURL:(id)l configuration:(id)configuration;
+- (void)streamTTS:(id)s beginHandler:(id)handler chunkHandler:(id)chunkHandler completion:(id)completion;
 @end
 
 @implementation SiriTTSOspreyChannel
 
-- (void)streamTTS:(id)a3 beginHandler:(id)a4 chunkHandler:(id)a5 completion:(id)a6
+- (void)streamTTS:(id)s beginHandler:(id)handler chunkHandler:(id)chunkHandler completion:(id)completion
 {
   v58 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v26 = a4;
-  v27 = a5;
-  aBlock = a6;
-  v10 = [v9 underlyingRequest];
+  sCopy = s;
+  handlerCopy = handler;
+  chunkHandlerCopy = chunkHandler;
+  aBlock = completion;
+  underlyingRequest = [sCopy underlyingRequest];
   v11 = objc_alloc_init(OPTTSMutableTextToSpeechRouterStreamingStreamingRequest);
   [(OPTTSMutableTextToSpeechRouterStreamingStreamingRequest *)v11 setContent_type:1];
-  [(OPTTSMutableTextToSpeechRouterStreamingStreamingRequest *)v11 setContentAsOPTTSStartTextToSpeechStreamingRequest:v10];
+  [(OPTTSMutableTextToSpeechRouterStreamingStreamingRequest *)v11 setContentAsOPTTSStartTextToSpeechStreamingRequest:underlyingRequest];
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x4810000000;
@@ -32,44 +32,44 @@
   v12 = TTSGetServiceLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 speech_id];
-    v14 = [v10 session_id];
-    v15 = [v10 stream_id];
-    v16 = [v10 meta_info];
-    v17 = [v16 app_id];
-    v18 = [v9 requestCreatedTime];
+    speech_id = [underlyingRequest speech_id];
+    session_id = [underlyingRequest session_id];
+    stream_id = [underlyingRequest stream_id];
+    meta_info = [underlyingRequest meta_info];
+    app_id = [meta_info app_id];
+    requestCreatedTime = [sCopy requestCreatedTime];
     *buf = 138413314;
-    v49 = v13;
+    v49 = speech_id;
     v50 = 2112;
-    v51 = v14;
+    v51 = session_id;
     v52 = 2112;
-    v53 = v15;
+    v53 = stream_id;
     v54 = 2112;
-    v55 = v17;
+    v55 = app_id;
     v56 = 2048;
-    v57 = v18;
+    v57 = requestCreatedTime;
     _os_log_impl(&dword_1B1A8A000, v12, OS_LOG_TYPE_DEFAULT, "Sent Osprey streaming request with speech_id '%@', session_id '%@', stream_id '%@', app_id '%@', request_id '%llu'", buf, 0x34u);
   }
 
   grpcChannel = self->_grpcChannel;
-  v20 = [(OPTTSTextToSpeechRouterStreamingStreamingRequest *)v11 flatbuffData];
+  flatbuffData = [(OPTTSTextToSpeechRouterStreamingStreamingRequest *)v11 flatbuffData];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __71__SiriTTSOspreyChannel_streamTTS_beginHandler_chunkHandler_completion___block_invoke;
   v40[3] = &unk_1E7AF38F0;
-  v41 = v10;
+  v41 = underlyingRequest;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __71__SiriTTSOspreyChannel_streamTTS_beginHandler_chunkHandler_completion___block_invoke_2;
   v33[3] = &unk_1E7AF3918;
   v21 = v41;
   v34 = v21;
-  v35 = v9;
+  v35 = sCopy;
   v38 = v42;
   v39 = v44;
-  v22 = v26;
+  v22 = handlerCopy;
   v36 = v22;
-  v23 = v27;
+  v23 = chunkHandlerCopy;
   v37 = v23;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -78,7 +78,7 @@
   v24 = v35;
   v31 = v24;
   v32 = v42;
-  [(OspreyChannel *)grpcChannel serverStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouterStreaming" requestData:v20 requestBuilder:v40 streamingResponseHandler:v33 completion:v30];
+  [(OspreyChannel *)grpcChannel serverStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouterStreaming" requestData:flatbuffData requestBuilder:v40 streamingResponseHandler:v33 completion:v30];
 
   _Block_object_dispose(v42, 8);
   _Block_object_dispose(v44, 8);
@@ -423,16 +423,16 @@ void __71__SiriTTSOspreyChannel_streamTTS_beginHandler_chunkHandler_completion__
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (SiriTTSOspreyChannel)initWithURL:(id)a3 configuration:(id)a4
+- (SiriTTSOspreyChannel)initWithURL:(id)l configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SiriTTSOspreyChannel;
   v8 = [(SiriTTSOspreyChannel *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69B7D80]) initWithURL:v6 configuration:v7];
+    v9 = [objc_alloc(MEMORY[0x1E69B7D80]) initWithURL:lCopy configuration:configurationCopy];
     grpcChannel = v8->_grpcChannel;
     v8->_grpcChannel = v9;
 

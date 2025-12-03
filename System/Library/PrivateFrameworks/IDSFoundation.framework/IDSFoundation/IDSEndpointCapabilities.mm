@@ -1,12 +1,12 @@
 @interface IDSEndpointCapabilities
 + (id)allowedCapabilities;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEndpointCapabilites:(id)a3;
-- (IDSEndpointCapabilities)initWithCapabilitiesMap:(id)a3;
-- (IDSEndpointCapabilities)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEndpointCapabilites:(id)capabilites;
+- (IDSEndpointCapabilities)initWithCapabilitiesMap:(id)map;
+- (IDSEndpointCapabilities)initWithCoder:(id)coder;
 - (id)debugDescription;
-- (int64_t)valueForCapability:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)valueForCapability:(id)capability;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSEndpointCapabilities
@@ -136,10 +136,10 @@
   return v2;
 }
 
-- (IDSEndpointCapabilities)initWithCapabilitiesMap:(id)a3
+- (IDSEndpointCapabilities)initWithCapabilitiesMap:(id)map
 {
   v137 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mapCopy = map;
   v135.receiver = self;
   v135.super_class = IDSEndpointCapabilities;
   v5 = [(IDSEndpointCapabilities *)&v135 init];
@@ -150,8 +150,8 @@
     v134 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v128 = v4;
-    v6 = v4;
+    v128 = mapCopy;
+    v6 = mapCopy;
     v130 = [v6 countByEnumeratingWithState:&v131 objects:v136 count:16];
     if (v130)
     {
@@ -875,7 +875,7 @@
       while (v130);
     }
 
-    v4 = v128;
+    mapCopy = v128;
   }
 
   v126 = v5;
@@ -883,16 +883,16 @@
   return v126;
 }
 
-- (int64_t)valueForCapability:(id)a3
+- (int64_t)valueForCapability:(id)capability
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  capabilityCopy = capability;
+  v5 = capabilityCopy;
+  if (!capabilityCopy)
   {
     goto LABEL_237;
   }
 
-  if (([v4 isEqualToString:@"supports-key-sharing"] & 1) == 0)
+  if (([capabilityCopy isEqualToString:@"supports-key-sharing"] & 1) == 0)
   {
     if ([v5 isEqualToString:@"supports-harmony"])
     {
@@ -1728,143 +1728,143 @@ LABEL_238:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IDSEndpointCapabilities *)self isEqualToEndpointCapabilites:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IDSEndpointCapabilities *)self isEqualToEndpointCapabilites:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToEndpointCapabilites:(id)a3
+- (BOOL)isEqualToEndpointCapabilites:(id)capabilites
 {
-  v4 = a3;
-  v5 = self == v4
-    || self->_supportsKeySharing == v4->_supportsKeySharing
-    && self->_supportsHarmony == v4->_supportsHarmony
-    && self->_supportsFMDV2 == v4->_supportsFMDV2
-    && self->_supportsFMFenceV1 == v4->_supportsFMFenceV1
-    && self->_supportsLocationSharing == v4->_supportsLocationSharing
-    && self->_supportsScreenTimeV2 == v4->_supportsScreenTimeV2
-    && self->_supportsIncomingFindMyV1 == v4->_supportsIncomingFindMyV1
-    && self->_supportsSecureLocationsV1 == v4->_supportsSecureLocationsV1
-    && self->_supportsActivitySharing == v4->_supportsActivitySharing
-    && self->_supportsManateeForAppleCash == v4->_supportsManateeForAppleCash
-    && self->_supportsRegionForAppleCash == v4->_supportsRegionForAppleCash
-    && self->_supportsHomeKitResident == v4->_supportsHomeKitResident
-    && self->_supportsMapsRoutingPathLeg == v4->_supportsMapsRoutingPathLeg
-    && self->_supportsMapsWGS84ElevationModel == v4->_supportsMapsWGS84ElevationModel
-    && self->_supportsBeaconSharingV2 == v4->_supportsBeaconSharingV2
-    && self->_supportsBeneficiaryInvites == v4->_supportsBeneficiaryInvites
-    && self->_supportsScreenTimeErrors == v4->_supportsScreenTimeErrors
-    && self->_supportsMapsWaypointRouteSharing == v4->_supportsMapsWaypointRouteSharing
-    && self->_supportsMapsProtocolV5 == v4->_supportsMapsProtocolV5
-    && self->_supportsCrossPlatformSharing == v4->_supportsCrossPlatformSharing
-    && self->_supportsZelkova == v4->_supportsZelkova
-    && self->_supportsPeopleRangingV1 == v4->_supportsPeopleRangingV1
-    && self->_supportsBeaconSharingV3 == v4->_supportsBeaconSharingV3
-    && self->_supportsGFTRelay == v4->_supportsGFTRelay
-    && self->_supportsManateeActivitySharing == v4->_supportsManateeActivitySharing
-    && self->_supportsRestrictedGuest == v4->_supportsRestrictedGuest
-    && self->_supportsAdaptiveTemperatureAutomations == v4->_supportsAdaptiveTemperatureAutomations
-    && self->_supportsRemoteATVSignIn == v4->_supportsRemoteATVSignIn
-    && self->_supportsUserDrivenCallActivation == v4->_supportsUserDrivenCallActivation
-    && self->_supportsLegacyContactInvitesV1 == v4->_supportsLegacyContactInvitesV1
-    && self->_supportsLegacyContactInvitesV2 == v4->_supportsLegacyContactInvitesV2
-    && self->_supportsLegacyContactInvitesV3 == v4->_supportsLegacyContactInvitesV3
-    && self->_ecVersion == v4->_ecVersion
-    && self->_isC2KEquipment == v4->_isC2KEquipment
-    && self->_showPeerErrors == v4->_showPeerErrors
-    && self->_nicknamesVersion == v4->_nicknamesVersion
-    && self->_optionallyReceiveTypingIndicator == v4->_optionallyReceiveTypingIndicator
-    && self->_supportsInlineAttachments == v4->_supportsInlineAttachments
-    && self->_supportsKeepReceipts == v4->_supportsKeepReceipts
-    && self->_supportsStickersV1 == v4->_supportsStickersV1
-    && self->_supportsChatAppsV1 == v4->_supportsChatAppsV1
-    && self->_supportsBubbleEditingV1 == v4->_supportsBubbleEditingV1
-    && self->_supportsAcknowledgementsV1 == v4->_supportsAcknowledgementsV1
-    && self->_supportsFullScreenMomentsV1 == v4->_supportsFullScreenMomentsV1
-    && self->_supportsFullScreenMomentsV2 == v4->_supportsFullScreenMomentsV2
-    && self->_supportsFullScreenMomentsV3 == v4->_supportsFullScreenMomentsV3
-    && self->_supportsInvisibleInkV1 == v4->_supportsInvisibleInkV1
-    && self->_supportsImpactEffectsV1 == v4->_supportsImpactEffectsV1
-    && self->_supportsUpdateAttachmentsV1 == v4->_supportsUpdateAttachmentsV1
-    && self->_supportsAutoloopVideoV1 == v4->_supportsAutoloopVideoV1
-    && self->_supportsMediaV2 == v4->_supportsMediaV2
-    && self->_supportsPhotosExtensionV1 == v4->_supportsPhotosExtensionV1
-    && self->_supportsPhotosExtensionV2 == v4->_supportsPhotosExtensionV2
-    && self->_supportsAudioMessagingV2 == v4->_supportsAudioMessagingV2
-    && self->_supportsAnimojiV2 == v4->_supportsAnimojiV2
-    && self->_supportsCertifiedDeliveryV1 == v4->_supportsCertifiedDeliveryV1
-    && self->_supportsOriginalTimestampOrderingV1 == v4->_supportsOriginalTimestampOrderingV1
-    && self->_supportsProtobufPayloadDataV2 == v4->_supportsProtobufPayloadDataV2
-    && self->_supportsHEIFEncoding == v4->_supportsHEIFEncoding
-    && self->_supportsHDRVideo == v4->_supportsHDRVideo
-    && self->_prefersSDRVideo == v4->_prefersSDRVideo
-    && self->_supportsQTAAudio == v4->_supportsQTAAudio
-    && self->_supportsSyndicationActionsV1 == v4->_supportsSyndicationActionsV1
-    && self->_supportsUWB == v4->_supportsUWB
-    && self->_supportsDeliveredQuietlyAndNotifyRecipient == v4->_supportsDeliveredQuietlyAndNotifyRecipient
-    && self->_supportsRetractAndEditMessages == v4->_supportsRetractAndEditMessages
-    && self->_supportsPeopleRequestMessages == v4->_supportsPeopleRequestMessages
-    && self->_supportsFamilyInviteMessageBubble == v4->_supportsFamilyInviteMessageBubble
-    && self->_supportsPeopleRequestMessagesV2 == v4->_supportsPeopleRequestMessagesV2
-    && self->_supportsAskTo == v4->_supportsAskTo
-    && self->_supportsAskToV2 == v4->_supportsAskToV2
-    && self->_supportsAskToResponseUI == v4->_supportsAskToResponseUI
-    && self->_supportsEmojiStickers == v4->_supportsEmojiStickers
-    && self->_supportsStickerEditing == v4->_supportsStickerEditing
-    && self->_supportsTranscriptBackgrounds == v4->_supportsTranscriptBackgrounds
-    && self->_supportsPolls == v4->_supportsPolls
-    && self->_supportsLQMHQ == v4->_supportsLQMHQ
-    && self->_supportsGroupTypingIndicators == v4->_supportsGroupTypingIndicators
-    && self->_supportsAutomaticTranslation == v4->_supportsAutomaticTranslation
-    && self->_supportsHybridGroupsV1 == v4->_supportsHybridGroupsV1
-    && self->_supportsFindMyPluginMessages == v4->_supportsFindMyPluginMessages
-    && self->_supportsSOSAlerting == v4->_supportsSOSAlerting
-    && self->_supportsPeopleRequestMessagesV3 == v4->_supportsPeopleRequestMessagesV3
-    && self->_supportsRecurringPaymentBubbles == v4->_supportsRecurringPaymentBubbles
-    && self->_supportsGroupAppleCash == v4->_supportsGroupAppleCash
-    && self->_supportsGroupPhotoRefreshVersion == v4->_supportsGroupPhotoRefreshVersion
-    && self->_supportsEmojiTapbacks == v4->_supportsEmojiTapbacks
-    && self->_supportsSendLaterMessages == v4->_supportsSendLaterMessages
-    && self->_supportsEmojiImages == v4->_supportsEmojiImages
-    && self->_supportsStickMojiBacks == v4->_supportsStickMojiBacks
-    && self->_supportsHighQualityPhotoFileSizes == v4->_supportsHighQualityPhotoFileSizes
-    && self->_supportsStewie == v4->_supportsStewie
-    && self->_senderKeyMessageVersion == v4->_senderKeyMessageVersion
-    && self->_supportsSenderKey == v4->_supportsSenderKey
-    && self->_supportsURIlessMembershipUpdates == v4->_supportsURIlessMembershipUpdates
-    && self->_supportsSenderKeySelfCheck == v4->_supportsSenderKeySelfCheck
-    && self->_supportsRecoveryContactUpsell == v4->_supportsRecoveryContactUpsell
-    && self->_supportsRBMChatBot == v4->_supportsRBMChatBot
-    && self->_supportsQueueOneReadReceipts == v4->_supportsQueueOneReadReceipts
-    && self->_supportsQueueOneReadReceiptsV2 == v4->_supportsQueueOneReadReceiptsV2
-    && self->_supportsIntroductions == v4->_supportsIntroductions
-    && self->_supportConditionalCKVEnforcement == v4->_supportConditionalCKVEnforcement
-    && self->_supportsModernGFT == v4->_supportsModernGFT
-    && self->_supportsCo == v4->_supportsCo
-    && self->_isGreenTea == v4->_isGreenTea
-    && self->_supportsGondola == v4->_supportsGondola
-    && self->_doesNotSupportGFTCalls == v4->_doesNotSupportGFTCalls
-    && self->_isWebClient == v4->_isWebClient
-    && self->_supportsAVLess == v4->_supportsAVLess
-    && self->_supportsSelfOneToOneInvites == v4->_supportsSelfOneToOneInvites
-    && self->_supportsHighResVideoMessaging == v4->_supportsHighResVideoMessaging
-    && self->_supportsLiveTranslation == v4->_supportsLiveTranslation
-    && self->_supportsNearbyFaceTime == v4->_supportsNearbyFaceTime
-    && self->_supportsSSRC == v4->_supportsSSRC
-    && self->_supportsCalls25 == v4->_supportsCalls25
-    && self->_supportsFriendingViaPush == v4->_supportsFriendingViaPush
-    && self->_supportsMessageTransportV2 == v4->_supportsMessageTransportV2;
+  capabilitesCopy = capabilites;
+  v5 = self == capabilitesCopy
+    || self->_supportsKeySharing == capabilitesCopy->_supportsKeySharing
+    && self->_supportsHarmony == capabilitesCopy->_supportsHarmony
+    && self->_supportsFMDV2 == capabilitesCopy->_supportsFMDV2
+    && self->_supportsFMFenceV1 == capabilitesCopy->_supportsFMFenceV1
+    && self->_supportsLocationSharing == capabilitesCopy->_supportsLocationSharing
+    && self->_supportsScreenTimeV2 == capabilitesCopy->_supportsScreenTimeV2
+    && self->_supportsIncomingFindMyV1 == capabilitesCopy->_supportsIncomingFindMyV1
+    && self->_supportsSecureLocationsV1 == capabilitesCopy->_supportsSecureLocationsV1
+    && self->_supportsActivitySharing == capabilitesCopy->_supportsActivitySharing
+    && self->_supportsManateeForAppleCash == capabilitesCopy->_supportsManateeForAppleCash
+    && self->_supportsRegionForAppleCash == capabilitesCopy->_supportsRegionForAppleCash
+    && self->_supportsHomeKitResident == capabilitesCopy->_supportsHomeKitResident
+    && self->_supportsMapsRoutingPathLeg == capabilitesCopy->_supportsMapsRoutingPathLeg
+    && self->_supportsMapsWGS84ElevationModel == capabilitesCopy->_supportsMapsWGS84ElevationModel
+    && self->_supportsBeaconSharingV2 == capabilitesCopy->_supportsBeaconSharingV2
+    && self->_supportsBeneficiaryInvites == capabilitesCopy->_supportsBeneficiaryInvites
+    && self->_supportsScreenTimeErrors == capabilitesCopy->_supportsScreenTimeErrors
+    && self->_supportsMapsWaypointRouteSharing == capabilitesCopy->_supportsMapsWaypointRouteSharing
+    && self->_supportsMapsProtocolV5 == capabilitesCopy->_supportsMapsProtocolV5
+    && self->_supportsCrossPlatformSharing == capabilitesCopy->_supportsCrossPlatformSharing
+    && self->_supportsZelkova == capabilitesCopy->_supportsZelkova
+    && self->_supportsPeopleRangingV1 == capabilitesCopy->_supportsPeopleRangingV1
+    && self->_supportsBeaconSharingV3 == capabilitesCopy->_supportsBeaconSharingV3
+    && self->_supportsGFTRelay == capabilitesCopy->_supportsGFTRelay
+    && self->_supportsManateeActivitySharing == capabilitesCopy->_supportsManateeActivitySharing
+    && self->_supportsRestrictedGuest == capabilitesCopy->_supportsRestrictedGuest
+    && self->_supportsAdaptiveTemperatureAutomations == capabilitesCopy->_supportsAdaptiveTemperatureAutomations
+    && self->_supportsRemoteATVSignIn == capabilitesCopy->_supportsRemoteATVSignIn
+    && self->_supportsUserDrivenCallActivation == capabilitesCopy->_supportsUserDrivenCallActivation
+    && self->_supportsLegacyContactInvitesV1 == capabilitesCopy->_supportsLegacyContactInvitesV1
+    && self->_supportsLegacyContactInvitesV2 == capabilitesCopy->_supportsLegacyContactInvitesV2
+    && self->_supportsLegacyContactInvitesV3 == capabilitesCopy->_supportsLegacyContactInvitesV3
+    && self->_ecVersion == capabilitesCopy->_ecVersion
+    && self->_isC2KEquipment == capabilitesCopy->_isC2KEquipment
+    && self->_showPeerErrors == capabilitesCopy->_showPeerErrors
+    && self->_nicknamesVersion == capabilitesCopy->_nicknamesVersion
+    && self->_optionallyReceiveTypingIndicator == capabilitesCopy->_optionallyReceiveTypingIndicator
+    && self->_supportsInlineAttachments == capabilitesCopy->_supportsInlineAttachments
+    && self->_supportsKeepReceipts == capabilitesCopy->_supportsKeepReceipts
+    && self->_supportsStickersV1 == capabilitesCopy->_supportsStickersV1
+    && self->_supportsChatAppsV1 == capabilitesCopy->_supportsChatAppsV1
+    && self->_supportsBubbleEditingV1 == capabilitesCopy->_supportsBubbleEditingV1
+    && self->_supportsAcknowledgementsV1 == capabilitesCopy->_supportsAcknowledgementsV1
+    && self->_supportsFullScreenMomentsV1 == capabilitesCopy->_supportsFullScreenMomentsV1
+    && self->_supportsFullScreenMomentsV2 == capabilitesCopy->_supportsFullScreenMomentsV2
+    && self->_supportsFullScreenMomentsV3 == capabilitesCopy->_supportsFullScreenMomentsV3
+    && self->_supportsInvisibleInkV1 == capabilitesCopy->_supportsInvisibleInkV1
+    && self->_supportsImpactEffectsV1 == capabilitesCopy->_supportsImpactEffectsV1
+    && self->_supportsUpdateAttachmentsV1 == capabilitesCopy->_supportsUpdateAttachmentsV1
+    && self->_supportsAutoloopVideoV1 == capabilitesCopy->_supportsAutoloopVideoV1
+    && self->_supportsMediaV2 == capabilitesCopy->_supportsMediaV2
+    && self->_supportsPhotosExtensionV1 == capabilitesCopy->_supportsPhotosExtensionV1
+    && self->_supportsPhotosExtensionV2 == capabilitesCopy->_supportsPhotosExtensionV2
+    && self->_supportsAudioMessagingV2 == capabilitesCopy->_supportsAudioMessagingV2
+    && self->_supportsAnimojiV2 == capabilitesCopy->_supportsAnimojiV2
+    && self->_supportsCertifiedDeliveryV1 == capabilitesCopy->_supportsCertifiedDeliveryV1
+    && self->_supportsOriginalTimestampOrderingV1 == capabilitesCopy->_supportsOriginalTimestampOrderingV1
+    && self->_supportsProtobufPayloadDataV2 == capabilitesCopy->_supportsProtobufPayloadDataV2
+    && self->_supportsHEIFEncoding == capabilitesCopy->_supportsHEIFEncoding
+    && self->_supportsHDRVideo == capabilitesCopy->_supportsHDRVideo
+    && self->_prefersSDRVideo == capabilitesCopy->_prefersSDRVideo
+    && self->_supportsQTAAudio == capabilitesCopy->_supportsQTAAudio
+    && self->_supportsSyndicationActionsV1 == capabilitesCopy->_supportsSyndicationActionsV1
+    && self->_supportsUWB == capabilitesCopy->_supportsUWB
+    && self->_supportsDeliveredQuietlyAndNotifyRecipient == capabilitesCopy->_supportsDeliveredQuietlyAndNotifyRecipient
+    && self->_supportsRetractAndEditMessages == capabilitesCopy->_supportsRetractAndEditMessages
+    && self->_supportsPeopleRequestMessages == capabilitesCopy->_supportsPeopleRequestMessages
+    && self->_supportsFamilyInviteMessageBubble == capabilitesCopy->_supportsFamilyInviteMessageBubble
+    && self->_supportsPeopleRequestMessagesV2 == capabilitesCopy->_supportsPeopleRequestMessagesV2
+    && self->_supportsAskTo == capabilitesCopy->_supportsAskTo
+    && self->_supportsAskToV2 == capabilitesCopy->_supportsAskToV2
+    && self->_supportsAskToResponseUI == capabilitesCopy->_supportsAskToResponseUI
+    && self->_supportsEmojiStickers == capabilitesCopy->_supportsEmojiStickers
+    && self->_supportsStickerEditing == capabilitesCopy->_supportsStickerEditing
+    && self->_supportsTranscriptBackgrounds == capabilitesCopy->_supportsTranscriptBackgrounds
+    && self->_supportsPolls == capabilitesCopy->_supportsPolls
+    && self->_supportsLQMHQ == capabilitesCopy->_supportsLQMHQ
+    && self->_supportsGroupTypingIndicators == capabilitesCopy->_supportsGroupTypingIndicators
+    && self->_supportsAutomaticTranslation == capabilitesCopy->_supportsAutomaticTranslation
+    && self->_supportsHybridGroupsV1 == capabilitesCopy->_supportsHybridGroupsV1
+    && self->_supportsFindMyPluginMessages == capabilitesCopy->_supportsFindMyPluginMessages
+    && self->_supportsSOSAlerting == capabilitesCopy->_supportsSOSAlerting
+    && self->_supportsPeopleRequestMessagesV3 == capabilitesCopy->_supportsPeopleRequestMessagesV3
+    && self->_supportsRecurringPaymentBubbles == capabilitesCopy->_supportsRecurringPaymentBubbles
+    && self->_supportsGroupAppleCash == capabilitesCopy->_supportsGroupAppleCash
+    && self->_supportsGroupPhotoRefreshVersion == capabilitesCopy->_supportsGroupPhotoRefreshVersion
+    && self->_supportsEmojiTapbacks == capabilitesCopy->_supportsEmojiTapbacks
+    && self->_supportsSendLaterMessages == capabilitesCopy->_supportsSendLaterMessages
+    && self->_supportsEmojiImages == capabilitesCopy->_supportsEmojiImages
+    && self->_supportsStickMojiBacks == capabilitesCopy->_supportsStickMojiBacks
+    && self->_supportsHighQualityPhotoFileSizes == capabilitesCopy->_supportsHighQualityPhotoFileSizes
+    && self->_supportsStewie == capabilitesCopy->_supportsStewie
+    && self->_senderKeyMessageVersion == capabilitesCopy->_senderKeyMessageVersion
+    && self->_supportsSenderKey == capabilitesCopy->_supportsSenderKey
+    && self->_supportsURIlessMembershipUpdates == capabilitesCopy->_supportsURIlessMembershipUpdates
+    && self->_supportsSenderKeySelfCheck == capabilitesCopy->_supportsSenderKeySelfCheck
+    && self->_supportsRecoveryContactUpsell == capabilitesCopy->_supportsRecoveryContactUpsell
+    && self->_supportsRBMChatBot == capabilitesCopy->_supportsRBMChatBot
+    && self->_supportsQueueOneReadReceipts == capabilitesCopy->_supportsQueueOneReadReceipts
+    && self->_supportsQueueOneReadReceiptsV2 == capabilitesCopy->_supportsQueueOneReadReceiptsV2
+    && self->_supportsIntroductions == capabilitesCopy->_supportsIntroductions
+    && self->_supportConditionalCKVEnforcement == capabilitesCopy->_supportConditionalCKVEnforcement
+    && self->_supportsModernGFT == capabilitesCopy->_supportsModernGFT
+    && self->_supportsCo == capabilitesCopy->_supportsCo
+    && self->_isGreenTea == capabilitesCopy->_isGreenTea
+    && self->_supportsGondola == capabilitesCopy->_supportsGondola
+    && self->_doesNotSupportGFTCalls == capabilitesCopy->_doesNotSupportGFTCalls
+    && self->_isWebClient == capabilitesCopy->_isWebClient
+    && self->_supportsAVLess == capabilitesCopy->_supportsAVLess
+    && self->_supportsSelfOneToOneInvites == capabilitesCopy->_supportsSelfOneToOneInvites
+    && self->_supportsHighResVideoMessaging == capabilitesCopy->_supportsHighResVideoMessaging
+    && self->_supportsLiveTranslation == capabilitesCopy->_supportsLiveTranslation
+    && self->_supportsNearbyFaceTime == capabilitesCopy->_supportsNearbyFaceTime
+    && self->_supportsSSRC == capabilitesCopy->_supportsSSRC
+    && self->_supportsCalls25 == capabilitesCopy->_supportsCalls25
+    && self->_supportsFriendingViaPush == capabilitesCopy->_supportsFriendingViaPush
+    && self->_supportsMessageTransportV2 == capabilitesCopy->_supportsMessageTransportV2;
 
   return v5;
 }
 
-- (IDSEndpointCapabilities)initWithCoder:(id)a3
+- (IDSEndpointCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCapabilitiesMapKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCapabilitiesMapKey"];
   if (v5)
   {
     v6 = [(IDSEndpointCapabilities *)self initWithCapabilitiesMap:v5];
@@ -1875,123 +1875,123 @@ LABEL_238:
     v6 = [(IDSEndpointCapabilities *)self initWithCapabilitiesMap:MEMORY[0x1E695E0F8]];
     if (v6)
     {
-      v6->_supportsKeySharing = [v4 decodeIntForKey:@"_supportsKeySharing"];
-      v6->_supportsHarmony = [v4 decodeIntForKey:@"_supportsHarmony"];
-      v6->_supportsFMDV2 = [v4 decodeIntForKey:@"_supportsFMDV2"];
-      v6->_supportsFMFenceV1 = [v4 decodeIntForKey:@"_supportsFMFenceV1"];
-      v6->_supportsLocationSharing = [v4 decodeIntForKey:@"_supportsLocationSharing"];
-      v6->_supportsScreenTimeV2 = [v4 decodeIntForKey:@"_supportsScreenTimeV2"];
-      v6->_supportsIncomingFindMyV1 = [v4 decodeIntForKey:@"_supportsIncomingFindMyV1"];
-      v6->_supportsSecureLocationsV1 = [v4 decodeIntForKey:@"_supportsSecureLocationsV1"];
-      v6->_supportsActivitySharing = [v4 decodeIntForKey:@"_supportsActivitySharing"];
-      v6->_supportsManateeForAppleCash = [v4 decodeIntForKey:@"_supportsManateeForAppleCash"];
-      v6->_supportsRegionForAppleCash = [v4 decodeIntForKey:@"_supportsRegionForAppleCash"];
-      v6->_supportsHomeKitResident = [v4 decodeIntForKey:@"_supportsHomeKitResident"];
-      v6->_supportsMapsRoutingPathLeg = [v4 decodeIntForKey:@"_supportsMapsRoutingPathLeg"];
-      v6->_supportsMapsWGS84ElevationModel = [v4 decodeIntForKey:@"_supportsMapsWGS84ElevationModel"];
-      v6->_supportsBeaconSharingV2 = [v4 decodeIntForKey:@"_supportsBeaconSharingV2"];
-      v6->_supportsBeneficiaryInvites = [v4 decodeIntForKey:@"_supportsBeneficiaryInvites"];
-      v6->_supportsScreenTimeErrors = [v4 decodeIntForKey:@"_supportsScreenTimeErrors"];
-      v6->_supportsMapsWaypointRouteSharing = [v4 decodeIntForKey:@"_supportsMapsWaypointRouteSharing"];
-      v6->_supportsMapsProtocolV5 = [v4 decodeIntForKey:@"_supportsMapsProtocolV5"];
-      v6->_supportsCrossPlatformSharing = [v4 decodeIntForKey:@"_supportsCrossPlatformSharing"];
-      v6->_supportsZelkova = [v4 decodeIntForKey:@"_supportsZelkova"];
-      v6->_supportsPeopleRangingV1 = [v4 decodeIntForKey:@"_supportsPeopleRangingV1"];
-      v6->_supportsBeaconSharingV3 = [v4 decodeIntForKey:@"_supportsBeaconSharingV3"];
-      v6->_supportsGFTRelay = [v4 decodeIntForKey:@"_supportsGFTRelay"];
-      v6->_supportsManateeActivitySharing = [v4 decodeIntForKey:@"_supportsManateeActivitySharing"];
-      v6->_supportsRestrictedGuest = [v4 decodeIntForKey:@"_supportsRestrictedGuest"];
-      v6->_supportsAdaptiveTemperatureAutomations = [v4 decodeIntForKey:@"_supportsAdaptiveTemperatureAutomations"];
-      v6->_supportsRemoteATVSignIn = [v4 decodeIntForKey:@"_supportsRemoteATVSignIn"];
-      v6->_supportsUserDrivenCallActivation = [v4 decodeIntForKey:@"_supportsUserDrivenCallActivation"];
-      v6->_supportsLegacyContactInvitesV1 = [v4 decodeIntForKey:@"_supportsLegacyContactInvitesV1"];
-      v6->_supportsLegacyContactInvitesV2 = [v4 decodeIntForKey:@"_supportsLegacyContactInvitesV2"];
-      v6->_supportsLegacyContactInvitesV3 = [v4 decodeIntForKey:@"_supportsLegacyContactInvitesV3"];
-      v6->_ecVersion = [v4 decodeIntForKey:@"_ecVersion"];
-      v6->_isC2KEquipment = [v4 decodeIntForKey:@"_isC2KEquipment"];
-      v6->_showPeerErrors = [v4 decodeIntForKey:@"_showPeerErrors"];
-      v6->_nicknamesVersion = [v4 decodeIntForKey:@"_nicknamesVersion"];
-      v6->_optionallyReceiveTypingIndicator = [v4 decodeIntForKey:@"_optionallyReceiveTypingIndicator"];
-      v6->_supportsInlineAttachments = [v4 decodeIntForKey:@"_supportsInlineAttachments"];
-      v6->_supportsKeepReceipts = [v4 decodeIntForKey:@"_supportsKeepReceipts"];
-      v6->_supportsStickersV1 = [v4 decodeIntForKey:@"_supportsStickersV1"];
-      v6->_supportsChatAppsV1 = [v4 decodeIntForKey:@"_supportsChatAppsV1"];
-      v6->_supportsBubbleEditingV1 = [v4 decodeIntForKey:@"_supportsBubbleEditingV1"];
-      v6->_supportsAcknowledgementsV1 = [v4 decodeIntForKey:@"_supportsAcknowledgementsV1"];
-      v6->_supportsFullScreenMomentsV1 = [v4 decodeIntForKey:@"_supportsFullScreenMomentsV1"];
-      v6->_supportsFullScreenMomentsV2 = [v4 decodeIntForKey:@"_supportsFullScreenMomentsV2"];
-      v6->_supportsFullScreenMomentsV3 = [v4 decodeIntForKey:@"_supportsFullScreenMomentsV3"];
-      v6->_supportsInvisibleInkV1 = [v4 decodeIntForKey:@"_supportsInvisibleInkV1"];
-      v6->_supportsImpactEffectsV1 = [v4 decodeIntForKey:@"_supportsImpactEffectsV1"];
-      v6->_supportsUpdateAttachmentsV1 = [v4 decodeIntForKey:@"_supportsUpdateAttachmentsV1"];
-      v6->_supportsAutoloopVideoV1 = [v4 decodeIntForKey:@"_supportsAutoloopVideoV1"];
-      v6->_supportsMediaV2 = [v4 decodeIntForKey:@"_supportsMediaV2"];
-      v6->_supportsPhotosExtensionV1 = [v4 decodeIntForKey:@"_supportsPhotosExtensionV1"];
-      v6->_supportsPhotosExtensionV2 = [v4 decodeIntForKey:@"_supportsPhotosExtensionV2"];
-      v6->_supportsAudioMessagingV2 = [v4 decodeIntForKey:@"_supportsAudioMessagingV2"];
-      v6->_supportsAnimojiV2 = [v4 decodeIntForKey:@"_supportsAnimojiV2"];
-      v6->_supportsCertifiedDeliveryV1 = [v4 decodeIntForKey:@"_supportsCertifiedDeliveryV1"];
-      v6->_supportsOriginalTimestampOrderingV1 = [v4 decodeIntForKey:@"_supportsOriginalTimestampOrderingV1"];
-      v6->_supportsProtobufPayloadDataV2 = [v4 decodeIntForKey:@"_supportsProtobufPayloadDataV2"];
-      v6->_supportsHEIFEncoding = [v4 decodeIntForKey:@"_supportsHEIFEncoding"];
-      v6->_supportsHDRVideo = [v4 decodeIntForKey:@"_supportsHDRVideo"];
-      v6->_prefersSDRVideo = [v4 decodeIntForKey:@"_prefersSDRVideo"];
-      v6->_supportsQTAAudio = [v4 decodeIntForKey:@"_supportsQTAAudio"];
-      v6->_supportsSyndicationActionsV1 = [v4 decodeIntForKey:@"_supportsSyndicationActionsV1"];
-      v6->_supportsUWB = [v4 decodeIntForKey:@"_supportsUWB"];
-      v6->_supportsDeliveredQuietlyAndNotifyRecipient = [v4 decodeIntForKey:@"_supportsDeliveredQuietlyAndNotifyRecipient"];
-      v6->_supportsRetractAndEditMessages = [v4 decodeIntForKey:@"_supportsRetractAndEditMessages"];
-      v6->_supportsPeopleRequestMessages = [v4 decodeIntForKey:@"_supportsPeopleRequestMessages"];
-      v6->_supportsFamilyInviteMessageBubble = [v4 decodeIntForKey:@"_supportsFamilyInviteMessageBubble"];
-      v6->_supportsPeopleRequestMessagesV2 = [v4 decodeIntForKey:@"_supportsPeopleRequestMessagesV2"];
-      v6->_supportsAskTo = [v4 decodeIntForKey:@"_supportsAskTo"];
-      v6->_supportsAskToV2 = [v4 decodeIntForKey:@"_supportsAskToV2"];
-      v6->_supportsAskToResponseUI = [v4 decodeIntForKey:@"_supportsAskToResponseUI"];
-      v6->_supportsEmojiStickers = [v4 decodeIntForKey:@"_supportsEmojiStickers"];
-      v6->_supportsStickerEditing = [v4 decodeIntForKey:@"_supportsStickerEditing"];
-      v6->_supportsTranscriptBackgrounds = [v4 decodeIntForKey:@"_supportsTranscriptBackgrounds"];
-      v6->_supportsPolls = [v4 decodeIntForKey:@"_supportsPolls"];
-      v6->_supportsLQMHQ = [v4 decodeIntForKey:@"_supportsLQMHQ"];
-      v6->_supportsGroupTypingIndicators = [v4 decodeIntForKey:@"_supportsGroupTypingIndicators"];
-      v6->_supportsAutomaticTranslation = [v4 decodeIntForKey:@"_supportsAutomaticTranslation"];
-      v6->_supportsHybridGroupsV1 = [v4 decodeIntForKey:@"_supportsHybridGroupsV1"];
-      v6->_supportsFindMyPluginMessages = [v4 decodeIntForKey:@"_supportsFindMyPluginMessages"];
-      v6->_supportsSOSAlerting = [v4 decodeIntForKey:@"_supportsSOSAlerting"];
-      v6->_supportsPeopleRequestMessagesV3 = [v4 decodeIntForKey:@"_supportsPeopleRequestMessagesV3"];
-      v6->_supportsRecurringPaymentBubbles = [v4 decodeIntForKey:@"_supportsRecurringPaymentBubbles"];
-      v6->_supportsGroupAppleCash = [v4 decodeIntForKey:@"_supportsGroupAppleCash"];
-      v6->_supportsGroupPhotoRefreshVersion = [v4 decodeIntForKey:@"_supportsGroupPhotoRefreshVersion"];
-      v6->_supportsEmojiTapbacks = [v4 decodeIntForKey:@"_supportsEmojiTapbacks"];
-      v6->_supportsSendLaterMessages = [v4 decodeIntForKey:@"_supportsSendLaterMessages"];
-      v6->_supportsEmojiImages = [v4 decodeIntForKey:@"_supportsEmojiImages"];
-      v6->_supportsStickMojiBacks = [v4 decodeIntForKey:@"_supportsStickMojiBacks"];
-      v6->_supportsHighQualityPhotoFileSizes = [v4 decodeIntForKey:@"_supportsHighQualityPhotoFileSizes"];
-      v6->_supportsStewie = [v4 decodeIntForKey:@"_supportsStewie"];
-      v6->_senderKeyMessageVersion = [v4 decodeIntForKey:@"_senderKeyMessageVersion"];
-      v6->_supportsSenderKey = [v4 decodeIntForKey:@"_supportsSenderKey"];
-      v6->_supportsURIlessMembershipUpdates = [v4 decodeIntForKey:@"_supportsURIlessMembershipUpdates"];
-      v6->_supportsSenderKeySelfCheck = [v4 decodeIntForKey:@"_supportsSenderKeySelfCheck"];
-      v6->_supportsRecoveryContactUpsell = [v4 decodeIntForKey:@"_supportsRecoveryContactUpsell"];
-      v6->_supportsRBMChatBot = [v4 decodeIntForKey:@"_supportsRBMChatBot"];
-      v6->_supportsQueueOneReadReceipts = [v4 decodeIntForKey:@"_supportsQueueOneReadReceipts"];
-      v6->_supportsQueueOneReadReceiptsV2 = [v4 decodeIntForKey:@"_supportsQueueOneReadReceiptsV2"];
-      v6->_supportsIntroductions = [v4 decodeIntForKey:@"_supportsIntroductions"];
-      v6->_supportConditionalCKVEnforcement = [v4 decodeIntForKey:@"_supportConditionalCKVEnforcement"];
-      v6->_supportsModernGFT = [v4 decodeIntForKey:@"_supportsModernGFT"];
-      v6->_supportsCo = [v4 decodeIntForKey:@"_supportsCo"];
-      v6->_isGreenTea = [v4 decodeIntForKey:@"_isGreenTea"];
-      v6->_supportsGondola = [v4 decodeIntForKey:@"_supportsGondola"];
-      v6->_doesNotSupportGFTCalls = [v4 decodeIntForKey:@"_doesNotSupportGFTCalls"];
-      v6->_isWebClient = [v4 decodeIntForKey:@"_isWebClient"];
-      v6->_supportsAVLess = [v4 decodeIntForKey:@"_supportsAVLess"];
-      v6->_supportsSelfOneToOneInvites = [v4 decodeIntForKey:@"_supportsSelfOneToOneInvites"];
-      v6->_supportsHighResVideoMessaging = [v4 decodeIntForKey:@"_supportsHighResVideoMessaging"];
-      v6->_supportsLiveTranslation = [v4 decodeIntForKey:@"_supportsLiveTranslation"];
-      v6->_supportsNearbyFaceTime = [v4 decodeIntForKey:@"_supportsNearbyFaceTime"];
-      v6->_supportsSSRC = [v4 decodeIntForKey:@"_supportsSSRC"];
-      v6->_supportsCalls25 = [v4 decodeIntForKey:@"_supportsCalls25"];
-      v6->_supportsFriendingViaPush = [v4 decodeIntForKey:@"_supportsFriendingViaPush"];
-      v6->_supportsMessageTransportV2 = [v4 decodeIntForKey:@"_supportsMessageTransportV2"];
+      v6->_supportsKeySharing = [coderCopy decodeIntForKey:@"_supportsKeySharing"];
+      v6->_supportsHarmony = [coderCopy decodeIntForKey:@"_supportsHarmony"];
+      v6->_supportsFMDV2 = [coderCopy decodeIntForKey:@"_supportsFMDV2"];
+      v6->_supportsFMFenceV1 = [coderCopy decodeIntForKey:@"_supportsFMFenceV1"];
+      v6->_supportsLocationSharing = [coderCopy decodeIntForKey:@"_supportsLocationSharing"];
+      v6->_supportsScreenTimeV2 = [coderCopy decodeIntForKey:@"_supportsScreenTimeV2"];
+      v6->_supportsIncomingFindMyV1 = [coderCopy decodeIntForKey:@"_supportsIncomingFindMyV1"];
+      v6->_supportsSecureLocationsV1 = [coderCopy decodeIntForKey:@"_supportsSecureLocationsV1"];
+      v6->_supportsActivitySharing = [coderCopy decodeIntForKey:@"_supportsActivitySharing"];
+      v6->_supportsManateeForAppleCash = [coderCopy decodeIntForKey:@"_supportsManateeForAppleCash"];
+      v6->_supportsRegionForAppleCash = [coderCopy decodeIntForKey:@"_supportsRegionForAppleCash"];
+      v6->_supportsHomeKitResident = [coderCopy decodeIntForKey:@"_supportsHomeKitResident"];
+      v6->_supportsMapsRoutingPathLeg = [coderCopy decodeIntForKey:@"_supportsMapsRoutingPathLeg"];
+      v6->_supportsMapsWGS84ElevationModel = [coderCopy decodeIntForKey:@"_supportsMapsWGS84ElevationModel"];
+      v6->_supportsBeaconSharingV2 = [coderCopy decodeIntForKey:@"_supportsBeaconSharingV2"];
+      v6->_supportsBeneficiaryInvites = [coderCopy decodeIntForKey:@"_supportsBeneficiaryInvites"];
+      v6->_supportsScreenTimeErrors = [coderCopy decodeIntForKey:@"_supportsScreenTimeErrors"];
+      v6->_supportsMapsWaypointRouteSharing = [coderCopy decodeIntForKey:@"_supportsMapsWaypointRouteSharing"];
+      v6->_supportsMapsProtocolV5 = [coderCopy decodeIntForKey:@"_supportsMapsProtocolV5"];
+      v6->_supportsCrossPlatformSharing = [coderCopy decodeIntForKey:@"_supportsCrossPlatformSharing"];
+      v6->_supportsZelkova = [coderCopy decodeIntForKey:@"_supportsZelkova"];
+      v6->_supportsPeopleRangingV1 = [coderCopy decodeIntForKey:@"_supportsPeopleRangingV1"];
+      v6->_supportsBeaconSharingV3 = [coderCopy decodeIntForKey:@"_supportsBeaconSharingV3"];
+      v6->_supportsGFTRelay = [coderCopy decodeIntForKey:@"_supportsGFTRelay"];
+      v6->_supportsManateeActivitySharing = [coderCopy decodeIntForKey:@"_supportsManateeActivitySharing"];
+      v6->_supportsRestrictedGuest = [coderCopy decodeIntForKey:@"_supportsRestrictedGuest"];
+      v6->_supportsAdaptiveTemperatureAutomations = [coderCopy decodeIntForKey:@"_supportsAdaptiveTemperatureAutomations"];
+      v6->_supportsRemoteATVSignIn = [coderCopy decodeIntForKey:@"_supportsRemoteATVSignIn"];
+      v6->_supportsUserDrivenCallActivation = [coderCopy decodeIntForKey:@"_supportsUserDrivenCallActivation"];
+      v6->_supportsLegacyContactInvitesV1 = [coderCopy decodeIntForKey:@"_supportsLegacyContactInvitesV1"];
+      v6->_supportsLegacyContactInvitesV2 = [coderCopy decodeIntForKey:@"_supportsLegacyContactInvitesV2"];
+      v6->_supportsLegacyContactInvitesV3 = [coderCopy decodeIntForKey:@"_supportsLegacyContactInvitesV3"];
+      v6->_ecVersion = [coderCopy decodeIntForKey:@"_ecVersion"];
+      v6->_isC2KEquipment = [coderCopy decodeIntForKey:@"_isC2KEquipment"];
+      v6->_showPeerErrors = [coderCopy decodeIntForKey:@"_showPeerErrors"];
+      v6->_nicknamesVersion = [coderCopy decodeIntForKey:@"_nicknamesVersion"];
+      v6->_optionallyReceiveTypingIndicator = [coderCopy decodeIntForKey:@"_optionallyReceiveTypingIndicator"];
+      v6->_supportsInlineAttachments = [coderCopy decodeIntForKey:@"_supportsInlineAttachments"];
+      v6->_supportsKeepReceipts = [coderCopy decodeIntForKey:@"_supportsKeepReceipts"];
+      v6->_supportsStickersV1 = [coderCopy decodeIntForKey:@"_supportsStickersV1"];
+      v6->_supportsChatAppsV1 = [coderCopy decodeIntForKey:@"_supportsChatAppsV1"];
+      v6->_supportsBubbleEditingV1 = [coderCopy decodeIntForKey:@"_supportsBubbleEditingV1"];
+      v6->_supportsAcknowledgementsV1 = [coderCopy decodeIntForKey:@"_supportsAcknowledgementsV1"];
+      v6->_supportsFullScreenMomentsV1 = [coderCopy decodeIntForKey:@"_supportsFullScreenMomentsV1"];
+      v6->_supportsFullScreenMomentsV2 = [coderCopy decodeIntForKey:@"_supportsFullScreenMomentsV2"];
+      v6->_supportsFullScreenMomentsV3 = [coderCopy decodeIntForKey:@"_supportsFullScreenMomentsV3"];
+      v6->_supportsInvisibleInkV1 = [coderCopy decodeIntForKey:@"_supportsInvisibleInkV1"];
+      v6->_supportsImpactEffectsV1 = [coderCopy decodeIntForKey:@"_supportsImpactEffectsV1"];
+      v6->_supportsUpdateAttachmentsV1 = [coderCopy decodeIntForKey:@"_supportsUpdateAttachmentsV1"];
+      v6->_supportsAutoloopVideoV1 = [coderCopy decodeIntForKey:@"_supportsAutoloopVideoV1"];
+      v6->_supportsMediaV2 = [coderCopy decodeIntForKey:@"_supportsMediaV2"];
+      v6->_supportsPhotosExtensionV1 = [coderCopy decodeIntForKey:@"_supportsPhotosExtensionV1"];
+      v6->_supportsPhotosExtensionV2 = [coderCopy decodeIntForKey:@"_supportsPhotosExtensionV2"];
+      v6->_supportsAudioMessagingV2 = [coderCopy decodeIntForKey:@"_supportsAudioMessagingV2"];
+      v6->_supportsAnimojiV2 = [coderCopy decodeIntForKey:@"_supportsAnimojiV2"];
+      v6->_supportsCertifiedDeliveryV1 = [coderCopy decodeIntForKey:@"_supportsCertifiedDeliveryV1"];
+      v6->_supportsOriginalTimestampOrderingV1 = [coderCopy decodeIntForKey:@"_supportsOriginalTimestampOrderingV1"];
+      v6->_supportsProtobufPayloadDataV2 = [coderCopy decodeIntForKey:@"_supportsProtobufPayloadDataV2"];
+      v6->_supportsHEIFEncoding = [coderCopy decodeIntForKey:@"_supportsHEIFEncoding"];
+      v6->_supportsHDRVideo = [coderCopy decodeIntForKey:@"_supportsHDRVideo"];
+      v6->_prefersSDRVideo = [coderCopy decodeIntForKey:@"_prefersSDRVideo"];
+      v6->_supportsQTAAudio = [coderCopy decodeIntForKey:@"_supportsQTAAudio"];
+      v6->_supportsSyndicationActionsV1 = [coderCopy decodeIntForKey:@"_supportsSyndicationActionsV1"];
+      v6->_supportsUWB = [coderCopy decodeIntForKey:@"_supportsUWB"];
+      v6->_supportsDeliveredQuietlyAndNotifyRecipient = [coderCopy decodeIntForKey:@"_supportsDeliveredQuietlyAndNotifyRecipient"];
+      v6->_supportsRetractAndEditMessages = [coderCopy decodeIntForKey:@"_supportsRetractAndEditMessages"];
+      v6->_supportsPeopleRequestMessages = [coderCopy decodeIntForKey:@"_supportsPeopleRequestMessages"];
+      v6->_supportsFamilyInviteMessageBubble = [coderCopy decodeIntForKey:@"_supportsFamilyInviteMessageBubble"];
+      v6->_supportsPeopleRequestMessagesV2 = [coderCopy decodeIntForKey:@"_supportsPeopleRequestMessagesV2"];
+      v6->_supportsAskTo = [coderCopy decodeIntForKey:@"_supportsAskTo"];
+      v6->_supportsAskToV2 = [coderCopy decodeIntForKey:@"_supportsAskToV2"];
+      v6->_supportsAskToResponseUI = [coderCopy decodeIntForKey:@"_supportsAskToResponseUI"];
+      v6->_supportsEmojiStickers = [coderCopy decodeIntForKey:@"_supportsEmojiStickers"];
+      v6->_supportsStickerEditing = [coderCopy decodeIntForKey:@"_supportsStickerEditing"];
+      v6->_supportsTranscriptBackgrounds = [coderCopy decodeIntForKey:@"_supportsTranscriptBackgrounds"];
+      v6->_supportsPolls = [coderCopy decodeIntForKey:@"_supportsPolls"];
+      v6->_supportsLQMHQ = [coderCopy decodeIntForKey:@"_supportsLQMHQ"];
+      v6->_supportsGroupTypingIndicators = [coderCopy decodeIntForKey:@"_supportsGroupTypingIndicators"];
+      v6->_supportsAutomaticTranslation = [coderCopy decodeIntForKey:@"_supportsAutomaticTranslation"];
+      v6->_supportsHybridGroupsV1 = [coderCopy decodeIntForKey:@"_supportsHybridGroupsV1"];
+      v6->_supportsFindMyPluginMessages = [coderCopy decodeIntForKey:@"_supportsFindMyPluginMessages"];
+      v6->_supportsSOSAlerting = [coderCopy decodeIntForKey:@"_supportsSOSAlerting"];
+      v6->_supportsPeopleRequestMessagesV3 = [coderCopy decodeIntForKey:@"_supportsPeopleRequestMessagesV3"];
+      v6->_supportsRecurringPaymentBubbles = [coderCopy decodeIntForKey:@"_supportsRecurringPaymentBubbles"];
+      v6->_supportsGroupAppleCash = [coderCopy decodeIntForKey:@"_supportsGroupAppleCash"];
+      v6->_supportsGroupPhotoRefreshVersion = [coderCopy decodeIntForKey:@"_supportsGroupPhotoRefreshVersion"];
+      v6->_supportsEmojiTapbacks = [coderCopy decodeIntForKey:@"_supportsEmojiTapbacks"];
+      v6->_supportsSendLaterMessages = [coderCopy decodeIntForKey:@"_supportsSendLaterMessages"];
+      v6->_supportsEmojiImages = [coderCopy decodeIntForKey:@"_supportsEmojiImages"];
+      v6->_supportsStickMojiBacks = [coderCopy decodeIntForKey:@"_supportsStickMojiBacks"];
+      v6->_supportsHighQualityPhotoFileSizes = [coderCopy decodeIntForKey:@"_supportsHighQualityPhotoFileSizes"];
+      v6->_supportsStewie = [coderCopy decodeIntForKey:@"_supportsStewie"];
+      v6->_senderKeyMessageVersion = [coderCopy decodeIntForKey:@"_senderKeyMessageVersion"];
+      v6->_supportsSenderKey = [coderCopy decodeIntForKey:@"_supportsSenderKey"];
+      v6->_supportsURIlessMembershipUpdates = [coderCopy decodeIntForKey:@"_supportsURIlessMembershipUpdates"];
+      v6->_supportsSenderKeySelfCheck = [coderCopy decodeIntForKey:@"_supportsSenderKeySelfCheck"];
+      v6->_supportsRecoveryContactUpsell = [coderCopy decodeIntForKey:@"_supportsRecoveryContactUpsell"];
+      v6->_supportsRBMChatBot = [coderCopy decodeIntForKey:@"_supportsRBMChatBot"];
+      v6->_supportsQueueOneReadReceipts = [coderCopy decodeIntForKey:@"_supportsQueueOneReadReceipts"];
+      v6->_supportsQueueOneReadReceiptsV2 = [coderCopy decodeIntForKey:@"_supportsQueueOneReadReceiptsV2"];
+      v6->_supportsIntroductions = [coderCopy decodeIntForKey:@"_supportsIntroductions"];
+      v6->_supportConditionalCKVEnforcement = [coderCopy decodeIntForKey:@"_supportConditionalCKVEnforcement"];
+      v6->_supportsModernGFT = [coderCopy decodeIntForKey:@"_supportsModernGFT"];
+      v6->_supportsCo = [coderCopy decodeIntForKey:@"_supportsCo"];
+      v6->_isGreenTea = [coderCopy decodeIntForKey:@"_isGreenTea"];
+      v6->_supportsGondola = [coderCopy decodeIntForKey:@"_supportsGondola"];
+      v6->_doesNotSupportGFTCalls = [coderCopy decodeIntForKey:@"_doesNotSupportGFTCalls"];
+      v6->_isWebClient = [coderCopy decodeIntForKey:@"_isWebClient"];
+      v6->_supportsAVLess = [coderCopy decodeIntForKey:@"_supportsAVLess"];
+      v6->_supportsSelfOneToOneInvites = [coderCopy decodeIntForKey:@"_supportsSelfOneToOneInvites"];
+      v6->_supportsHighResVideoMessaging = [coderCopy decodeIntForKey:@"_supportsHighResVideoMessaging"];
+      v6->_supportsLiveTranslation = [coderCopy decodeIntForKey:@"_supportsLiveTranslation"];
+      v6->_supportsNearbyFaceTime = [coderCopy decodeIntForKey:@"_supportsNearbyFaceTime"];
+      v6->_supportsSSRC = [coderCopy decodeIntForKey:@"_supportsSSRC"];
+      v6->_supportsCalls25 = [coderCopy decodeIntForKey:@"_supportsCalls25"];
+      v6->_supportsFriendingViaPush = [coderCopy decodeIntForKey:@"_supportsFriendingViaPush"];
+      v6->_supportsMessageTransportV2 = [coderCopy decodeIntForKey:@"_supportsMessageTransportV2"];
     }
   }
 
@@ -2000,127 +2000,127 @@ LABEL_238:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportsKeySharing = self->_supportsKeySharing;
-  v5 = a3;
-  [v5 encodeInt:supportsKeySharing forKey:@"_supportsKeySharing"];
-  [v5 encodeInt:self->_supportsHarmony forKey:@"_supportsHarmony"];
-  [v5 encodeInt:self->_supportsFMDV2 forKey:@"_supportsFMDV2"];
-  [v5 encodeInt:self->_supportsFMFenceV1 forKey:@"_supportsFMFenceV1"];
-  [v5 encodeInt:self->_supportsLocationSharing forKey:@"_supportsLocationSharing"];
-  [v5 encodeInt:self->_supportsScreenTimeV2 forKey:@"_supportsScreenTimeV2"];
-  [v5 encodeInt:self->_supportsIncomingFindMyV1 forKey:@"_supportsIncomingFindMyV1"];
-  [v5 encodeInt:self->_supportsSecureLocationsV1 forKey:@"_supportsSecureLocationsV1"];
-  [v5 encodeInt:self->_supportsActivitySharing forKey:@"_supportsActivitySharing"];
-  [v5 encodeInt:self->_supportsManateeForAppleCash forKey:@"_supportsManateeForAppleCash"];
-  [v5 encodeInt:self->_supportsRegionForAppleCash forKey:@"_supportsRegionForAppleCash"];
-  [v5 encodeInt:self->_supportsHomeKitResident forKey:@"_supportsHomeKitResident"];
-  [v5 encodeInt:self->_supportsMapsRoutingPathLeg forKey:@"_supportsMapsRoutingPathLeg"];
-  [v5 encodeInt:self->_supportsMapsWGS84ElevationModel forKey:@"_supportsMapsWGS84ElevationModel"];
-  [v5 encodeInt:self->_supportsBeaconSharingV2 forKey:@"_supportsBeaconSharingV2"];
-  [v5 encodeInt:self->_supportsBeneficiaryInvites forKey:@"_supportsBeneficiaryInvites"];
-  [v5 encodeInt:self->_supportsScreenTimeErrors forKey:@"_supportsScreenTimeErrors"];
-  [v5 encodeInt:self->_supportsMapsWaypointRouteSharing forKey:@"_supportsMapsWaypointRouteSharing"];
-  [v5 encodeInt:self->_supportsMapsProtocolV5 forKey:@"_supportsMapsProtocolV5"];
-  [v5 encodeInt:self->_supportsCrossPlatformSharing forKey:@"_supportsCrossPlatformSharing"];
-  [v5 encodeInt:self->_supportsZelkova forKey:@"_supportsZelkova"];
-  [v5 encodeInt:self->_supportsPeopleRangingV1 forKey:@"_supportsPeopleRangingV1"];
-  [v5 encodeInt:self->_supportsBeaconSharingV3 forKey:@"_supportsBeaconSharingV3"];
-  [v5 encodeInt:self->_supportsGFTRelay forKey:@"_supportsGFTRelay"];
-  [v5 encodeInt:self->_supportsManateeActivitySharing forKey:@"_supportsManateeActivitySharing"];
-  [v5 encodeInt:self->_supportsRestrictedGuest forKey:@"_supportsRestrictedGuest"];
-  [v5 encodeInt:self->_supportsAdaptiveTemperatureAutomations forKey:@"_supportsAdaptiveTemperatureAutomations"];
-  [v5 encodeInt:self->_supportsRemoteATVSignIn forKey:@"_supportsRemoteATVSignIn"];
-  [v5 encodeInt:self->_supportsUserDrivenCallActivation forKey:@"_supportsUserDrivenCallActivation"];
-  [v5 encodeInt:self->_supportsLegacyContactInvitesV1 forKey:@"_supportsLegacyContactInvitesV1"];
-  [v5 encodeInt:self->_supportsLegacyContactInvitesV2 forKey:@"_supportsLegacyContactInvitesV2"];
-  [v5 encodeInt:self->_supportsLegacyContactInvitesV3 forKey:@"_supportsLegacyContactInvitesV3"];
-  [v5 encodeInt:self->_ecVersion forKey:@"_ecVersion"];
-  [v5 encodeInt:self->_isC2KEquipment forKey:@"_isC2KEquipment"];
-  [v5 encodeInt:self->_showPeerErrors forKey:@"_showPeerErrors"];
-  [v5 encodeInt:self->_nicknamesVersion forKey:@"_nicknamesVersion"];
-  [v5 encodeInt:self->_optionallyReceiveTypingIndicator forKey:@"_optionallyReceiveTypingIndicator"];
-  [v5 encodeInt:self->_supportsInlineAttachments forKey:@"_supportsInlineAttachments"];
-  [v5 encodeInt:self->_supportsKeepReceipts forKey:@"_supportsKeepReceipts"];
-  [v5 encodeInt:self->_supportsStickersV1 forKey:@"_supportsStickersV1"];
-  [v5 encodeInt:self->_supportsChatAppsV1 forKey:@"_supportsChatAppsV1"];
-  [v5 encodeInt:self->_supportsBubbleEditingV1 forKey:@"_supportsBubbleEditingV1"];
-  [v5 encodeInt:self->_supportsAcknowledgementsV1 forKey:@"_supportsAcknowledgementsV1"];
-  [v5 encodeInt:self->_supportsFullScreenMomentsV1 forKey:@"_supportsFullScreenMomentsV1"];
-  [v5 encodeInt:self->_supportsFullScreenMomentsV2 forKey:@"_supportsFullScreenMomentsV2"];
-  [v5 encodeInt:self->_supportsFullScreenMomentsV3 forKey:@"_supportsFullScreenMomentsV3"];
-  [v5 encodeInt:self->_supportsInvisibleInkV1 forKey:@"_supportsInvisibleInkV1"];
-  [v5 encodeInt:self->_supportsImpactEffectsV1 forKey:@"_supportsImpactEffectsV1"];
-  [v5 encodeInt:self->_supportsUpdateAttachmentsV1 forKey:@"_supportsUpdateAttachmentsV1"];
-  [v5 encodeInt:self->_supportsAutoloopVideoV1 forKey:@"_supportsAutoloopVideoV1"];
-  [v5 encodeInt:self->_supportsMediaV2 forKey:@"_supportsMediaV2"];
-  [v5 encodeInt:self->_supportsPhotosExtensionV1 forKey:@"_supportsPhotosExtensionV1"];
-  [v5 encodeInt:self->_supportsPhotosExtensionV2 forKey:@"_supportsPhotosExtensionV2"];
-  [v5 encodeInt:self->_supportsAudioMessagingV2 forKey:@"_supportsAudioMessagingV2"];
-  [v5 encodeInt:self->_supportsAnimojiV2 forKey:@"_supportsAnimojiV2"];
-  [v5 encodeInt:self->_supportsCertifiedDeliveryV1 forKey:@"_supportsCertifiedDeliveryV1"];
-  [v5 encodeInt:self->_supportsOriginalTimestampOrderingV1 forKey:@"_supportsOriginalTimestampOrderingV1"];
-  [v5 encodeInt:self->_supportsProtobufPayloadDataV2 forKey:@"_supportsProtobufPayloadDataV2"];
-  [v5 encodeInt:self->_supportsHEIFEncoding forKey:@"_supportsHEIFEncoding"];
-  [v5 encodeInt:self->_supportsHDRVideo forKey:@"_supportsHDRVideo"];
-  [v5 encodeInt:self->_prefersSDRVideo forKey:@"_prefersSDRVideo"];
-  [v5 encodeInt:self->_supportsQTAAudio forKey:@"_supportsQTAAudio"];
-  [v5 encodeInt:self->_supportsSyndicationActionsV1 forKey:@"_supportsSyndicationActionsV1"];
-  [v5 encodeInt:self->_supportsUWB forKey:@"_supportsUWB"];
-  [v5 encodeInt:self->_supportsDeliveredQuietlyAndNotifyRecipient forKey:@"_supportsDeliveredQuietlyAndNotifyRecipient"];
-  [v5 encodeInt:self->_supportsRetractAndEditMessages forKey:@"_supportsRetractAndEditMessages"];
-  [v5 encodeInt:self->_supportsPeopleRequestMessages forKey:@"_supportsPeopleRequestMessages"];
-  [v5 encodeInt:self->_supportsFamilyInviteMessageBubble forKey:@"_supportsFamilyInviteMessageBubble"];
-  [v5 encodeInt:self->_supportsPeopleRequestMessagesV2 forKey:@"_supportsPeopleRequestMessagesV2"];
-  [v5 encodeInt:self->_supportsAskTo forKey:@"_supportsAskTo"];
-  [v5 encodeInt:self->_supportsAskToV2 forKey:@"_supportsAskToV2"];
-  [v5 encodeInt:self->_supportsAskToResponseUI forKey:@"_supportsAskToResponseUI"];
-  [v5 encodeInt:self->_supportsEmojiStickers forKey:@"_supportsEmojiStickers"];
-  [v5 encodeInt:self->_supportsStickerEditing forKey:@"_supportsStickerEditing"];
-  [v5 encodeInt:self->_supportsTranscriptBackgrounds forKey:@"_supportsTranscriptBackgrounds"];
-  [v5 encodeInt:self->_supportsPolls forKey:@"_supportsPolls"];
-  [v5 encodeInt:self->_supportsLQMHQ forKey:@"_supportsLQMHQ"];
-  [v5 encodeInt:self->_supportsGroupTypingIndicators forKey:@"_supportsGroupTypingIndicators"];
-  [v5 encodeInt:self->_supportsAutomaticTranslation forKey:@"_supportsAutomaticTranslation"];
-  [v5 encodeInt:self->_supportsHybridGroupsV1 forKey:@"_supportsHybridGroupsV1"];
-  [v5 encodeInt:self->_supportsFindMyPluginMessages forKey:@"_supportsFindMyPluginMessages"];
-  [v5 encodeInt:self->_supportsSOSAlerting forKey:@"_supportsSOSAlerting"];
-  [v5 encodeInt:self->_supportsPeopleRequestMessagesV3 forKey:@"_supportsPeopleRequestMessagesV3"];
-  [v5 encodeInt:self->_supportsRecurringPaymentBubbles forKey:@"_supportsRecurringPaymentBubbles"];
-  [v5 encodeInt:self->_supportsGroupAppleCash forKey:@"_supportsGroupAppleCash"];
-  [v5 encodeInt:self->_supportsGroupPhotoRefreshVersion forKey:@"_supportsGroupPhotoRefreshVersion"];
-  [v5 encodeInt:self->_supportsEmojiTapbacks forKey:@"_supportsEmojiTapbacks"];
-  [v5 encodeInt:self->_supportsSendLaterMessages forKey:@"_supportsSendLaterMessages"];
-  [v5 encodeInt:self->_supportsEmojiImages forKey:@"_supportsEmojiImages"];
-  [v5 encodeInt:self->_supportsStickMojiBacks forKey:@"_supportsStickMojiBacks"];
-  [v5 encodeInt:self->_supportsHighQualityPhotoFileSizes forKey:@"_supportsHighQualityPhotoFileSizes"];
-  [v5 encodeInt:self->_supportsStewie forKey:@"_supportsStewie"];
-  [v5 encodeInt:self->_senderKeyMessageVersion forKey:@"_senderKeyMessageVersion"];
-  [v5 encodeInt:self->_supportsSenderKey forKey:@"_supportsSenderKey"];
-  [v5 encodeInt:self->_supportsURIlessMembershipUpdates forKey:@"_supportsURIlessMembershipUpdates"];
-  [v5 encodeInt:self->_supportsSenderKeySelfCheck forKey:@"_supportsSenderKeySelfCheck"];
-  [v5 encodeInt:self->_supportsRecoveryContactUpsell forKey:@"_supportsRecoveryContactUpsell"];
-  [v5 encodeInt:self->_supportsRBMChatBot forKey:@"_supportsRBMChatBot"];
-  [v5 encodeInt:self->_supportsQueueOneReadReceipts forKey:@"_supportsQueueOneReadReceipts"];
-  [v5 encodeInt:self->_supportsQueueOneReadReceiptsV2 forKey:@"_supportsQueueOneReadReceiptsV2"];
-  [v5 encodeInt:self->_supportsIntroductions forKey:@"_supportsIntroductions"];
-  [v5 encodeInt:self->_supportConditionalCKVEnforcement forKey:@"_supportConditionalCKVEnforcement"];
-  [v5 encodeInt:self->_supportsModernGFT forKey:@"_supportsModernGFT"];
-  [v5 encodeInt:self->_supportsCo forKey:@"_supportsCo"];
-  [v5 encodeInt:self->_isGreenTea forKey:@"_isGreenTea"];
-  [v5 encodeInt:self->_supportsGondola forKey:@"_supportsGondola"];
-  [v5 encodeInt:self->_doesNotSupportGFTCalls forKey:@"_doesNotSupportGFTCalls"];
-  [v5 encodeInt:self->_isWebClient forKey:@"_isWebClient"];
-  [v5 encodeInt:self->_supportsAVLess forKey:@"_supportsAVLess"];
-  [v5 encodeInt:self->_supportsSelfOneToOneInvites forKey:@"_supportsSelfOneToOneInvites"];
-  [v5 encodeInt:self->_supportsHighResVideoMessaging forKey:@"_supportsHighResVideoMessaging"];
-  [v5 encodeInt:self->_supportsLiveTranslation forKey:@"_supportsLiveTranslation"];
-  [v5 encodeInt:self->_supportsNearbyFaceTime forKey:@"_supportsNearbyFaceTime"];
-  [v5 encodeInt:self->_supportsSSRC forKey:@"_supportsSSRC"];
-  [v5 encodeInt:self->_supportsCalls25 forKey:@"_supportsCalls25"];
-  [v5 encodeInt:self->_supportsFriendingViaPush forKey:@"_supportsFriendingViaPush"];
-  [v5 encodeInt:self->_supportsMessageTransportV2 forKey:@"_supportsMessageTransportV2"];
+  coderCopy = coder;
+  [coderCopy encodeInt:supportsKeySharing forKey:@"_supportsKeySharing"];
+  [coderCopy encodeInt:self->_supportsHarmony forKey:@"_supportsHarmony"];
+  [coderCopy encodeInt:self->_supportsFMDV2 forKey:@"_supportsFMDV2"];
+  [coderCopy encodeInt:self->_supportsFMFenceV1 forKey:@"_supportsFMFenceV1"];
+  [coderCopy encodeInt:self->_supportsLocationSharing forKey:@"_supportsLocationSharing"];
+  [coderCopy encodeInt:self->_supportsScreenTimeV2 forKey:@"_supportsScreenTimeV2"];
+  [coderCopy encodeInt:self->_supportsIncomingFindMyV1 forKey:@"_supportsIncomingFindMyV1"];
+  [coderCopy encodeInt:self->_supportsSecureLocationsV1 forKey:@"_supportsSecureLocationsV1"];
+  [coderCopy encodeInt:self->_supportsActivitySharing forKey:@"_supportsActivitySharing"];
+  [coderCopy encodeInt:self->_supportsManateeForAppleCash forKey:@"_supportsManateeForAppleCash"];
+  [coderCopy encodeInt:self->_supportsRegionForAppleCash forKey:@"_supportsRegionForAppleCash"];
+  [coderCopy encodeInt:self->_supportsHomeKitResident forKey:@"_supportsHomeKitResident"];
+  [coderCopy encodeInt:self->_supportsMapsRoutingPathLeg forKey:@"_supportsMapsRoutingPathLeg"];
+  [coderCopy encodeInt:self->_supportsMapsWGS84ElevationModel forKey:@"_supportsMapsWGS84ElevationModel"];
+  [coderCopy encodeInt:self->_supportsBeaconSharingV2 forKey:@"_supportsBeaconSharingV2"];
+  [coderCopy encodeInt:self->_supportsBeneficiaryInvites forKey:@"_supportsBeneficiaryInvites"];
+  [coderCopy encodeInt:self->_supportsScreenTimeErrors forKey:@"_supportsScreenTimeErrors"];
+  [coderCopy encodeInt:self->_supportsMapsWaypointRouteSharing forKey:@"_supportsMapsWaypointRouteSharing"];
+  [coderCopy encodeInt:self->_supportsMapsProtocolV5 forKey:@"_supportsMapsProtocolV5"];
+  [coderCopy encodeInt:self->_supportsCrossPlatformSharing forKey:@"_supportsCrossPlatformSharing"];
+  [coderCopy encodeInt:self->_supportsZelkova forKey:@"_supportsZelkova"];
+  [coderCopy encodeInt:self->_supportsPeopleRangingV1 forKey:@"_supportsPeopleRangingV1"];
+  [coderCopy encodeInt:self->_supportsBeaconSharingV3 forKey:@"_supportsBeaconSharingV3"];
+  [coderCopy encodeInt:self->_supportsGFTRelay forKey:@"_supportsGFTRelay"];
+  [coderCopy encodeInt:self->_supportsManateeActivitySharing forKey:@"_supportsManateeActivitySharing"];
+  [coderCopy encodeInt:self->_supportsRestrictedGuest forKey:@"_supportsRestrictedGuest"];
+  [coderCopy encodeInt:self->_supportsAdaptiveTemperatureAutomations forKey:@"_supportsAdaptiveTemperatureAutomations"];
+  [coderCopy encodeInt:self->_supportsRemoteATVSignIn forKey:@"_supportsRemoteATVSignIn"];
+  [coderCopy encodeInt:self->_supportsUserDrivenCallActivation forKey:@"_supportsUserDrivenCallActivation"];
+  [coderCopy encodeInt:self->_supportsLegacyContactInvitesV1 forKey:@"_supportsLegacyContactInvitesV1"];
+  [coderCopy encodeInt:self->_supportsLegacyContactInvitesV2 forKey:@"_supportsLegacyContactInvitesV2"];
+  [coderCopy encodeInt:self->_supportsLegacyContactInvitesV3 forKey:@"_supportsLegacyContactInvitesV3"];
+  [coderCopy encodeInt:self->_ecVersion forKey:@"_ecVersion"];
+  [coderCopy encodeInt:self->_isC2KEquipment forKey:@"_isC2KEquipment"];
+  [coderCopy encodeInt:self->_showPeerErrors forKey:@"_showPeerErrors"];
+  [coderCopy encodeInt:self->_nicknamesVersion forKey:@"_nicknamesVersion"];
+  [coderCopy encodeInt:self->_optionallyReceiveTypingIndicator forKey:@"_optionallyReceiveTypingIndicator"];
+  [coderCopy encodeInt:self->_supportsInlineAttachments forKey:@"_supportsInlineAttachments"];
+  [coderCopy encodeInt:self->_supportsKeepReceipts forKey:@"_supportsKeepReceipts"];
+  [coderCopy encodeInt:self->_supportsStickersV1 forKey:@"_supportsStickersV1"];
+  [coderCopy encodeInt:self->_supportsChatAppsV1 forKey:@"_supportsChatAppsV1"];
+  [coderCopy encodeInt:self->_supportsBubbleEditingV1 forKey:@"_supportsBubbleEditingV1"];
+  [coderCopy encodeInt:self->_supportsAcknowledgementsV1 forKey:@"_supportsAcknowledgementsV1"];
+  [coderCopy encodeInt:self->_supportsFullScreenMomentsV1 forKey:@"_supportsFullScreenMomentsV1"];
+  [coderCopy encodeInt:self->_supportsFullScreenMomentsV2 forKey:@"_supportsFullScreenMomentsV2"];
+  [coderCopy encodeInt:self->_supportsFullScreenMomentsV3 forKey:@"_supportsFullScreenMomentsV3"];
+  [coderCopy encodeInt:self->_supportsInvisibleInkV1 forKey:@"_supportsInvisibleInkV1"];
+  [coderCopy encodeInt:self->_supportsImpactEffectsV1 forKey:@"_supportsImpactEffectsV1"];
+  [coderCopy encodeInt:self->_supportsUpdateAttachmentsV1 forKey:@"_supportsUpdateAttachmentsV1"];
+  [coderCopy encodeInt:self->_supportsAutoloopVideoV1 forKey:@"_supportsAutoloopVideoV1"];
+  [coderCopy encodeInt:self->_supportsMediaV2 forKey:@"_supportsMediaV2"];
+  [coderCopy encodeInt:self->_supportsPhotosExtensionV1 forKey:@"_supportsPhotosExtensionV1"];
+  [coderCopy encodeInt:self->_supportsPhotosExtensionV2 forKey:@"_supportsPhotosExtensionV2"];
+  [coderCopy encodeInt:self->_supportsAudioMessagingV2 forKey:@"_supportsAudioMessagingV2"];
+  [coderCopy encodeInt:self->_supportsAnimojiV2 forKey:@"_supportsAnimojiV2"];
+  [coderCopy encodeInt:self->_supportsCertifiedDeliveryV1 forKey:@"_supportsCertifiedDeliveryV1"];
+  [coderCopy encodeInt:self->_supportsOriginalTimestampOrderingV1 forKey:@"_supportsOriginalTimestampOrderingV1"];
+  [coderCopy encodeInt:self->_supportsProtobufPayloadDataV2 forKey:@"_supportsProtobufPayloadDataV2"];
+  [coderCopy encodeInt:self->_supportsHEIFEncoding forKey:@"_supportsHEIFEncoding"];
+  [coderCopy encodeInt:self->_supportsHDRVideo forKey:@"_supportsHDRVideo"];
+  [coderCopy encodeInt:self->_prefersSDRVideo forKey:@"_prefersSDRVideo"];
+  [coderCopy encodeInt:self->_supportsQTAAudio forKey:@"_supportsQTAAudio"];
+  [coderCopy encodeInt:self->_supportsSyndicationActionsV1 forKey:@"_supportsSyndicationActionsV1"];
+  [coderCopy encodeInt:self->_supportsUWB forKey:@"_supportsUWB"];
+  [coderCopy encodeInt:self->_supportsDeliveredQuietlyAndNotifyRecipient forKey:@"_supportsDeliveredQuietlyAndNotifyRecipient"];
+  [coderCopy encodeInt:self->_supportsRetractAndEditMessages forKey:@"_supportsRetractAndEditMessages"];
+  [coderCopy encodeInt:self->_supportsPeopleRequestMessages forKey:@"_supportsPeopleRequestMessages"];
+  [coderCopy encodeInt:self->_supportsFamilyInviteMessageBubble forKey:@"_supportsFamilyInviteMessageBubble"];
+  [coderCopy encodeInt:self->_supportsPeopleRequestMessagesV2 forKey:@"_supportsPeopleRequestMessagesV2"];
+  [coderCopy encodeInt:self->_supportsAskTo forKey:@"_supportsAskTo"];
+  [coderCopy encodeInt:self->_supportsAskToV2 forKey:@"_supportsAskToV2"];
+  [coderCopy encodeInt:self->_supportsAskToResponseUI forKey:@"_supportsAskToResponseUI"];
+  [coderCopy encodeInt:self->_supportsEmojiStickers forKey:@"_supportsEmojiStickers"];
+  [coderCopy encodeInt:self->_supportsStickerEditing forKey:@"_supportsStickerEditing"];
+  [coderCopy encodeInt:self->_supportsTranscriptBackgrounds forKey:@"_supportsTranscriptBackgrounds"];
+  [coderCopy encodeInt:self->_supportsPolls forKey:@"_supportsPolls"];
+  [coderCopy encodeInt:self->_supportsLQMHQ forKey:@"_supportsLQMHQ"];
+  [coderCopy encodeInt:self->_supportsGroupTypingIndicators forKey:@"_supportsGroupTypingIndicators"];
+  [coderCopy encodeInt:self->_supportsAutomaticTranslation forKey:@"_supportsAutomaticTranslation"];
+  [coderCopy encodeInt:self->_supportsHybridGroupsV1 forKey:@"_supportsHybridGroupsV1"];
+  [coderCopy encodeInt:self->_supportsFindMyPluginMessages forKey:@"_supportsFindMyPluginMessages"];
+  [coderCopy encodeInt:self->_supportsSOSAlerting forKey:@"_supportsSOSAlerting"];
+  [coderCopy encodeInt:self->_supportsPeopleRequestMessagesV3 forKey:@"_supportsPeopleRequestMessagesV3"];
+  [coderCopy encodeInt:self->_supportsRecurringPaymentBubbles forKey:@"_supportsRecurringPaymentBubbles"];
+  [coderCopy encodeInt:self->_supportsGroupAppleCash forKey:@"_supportsGroupAppleCash"];
+  [coderCopy encodeInt:self->_supportsGroupPhotoRefreshVersion forKey:@"_supportsGroupPhotoRefreshVersion"];
+  [coderCopy encodeInt:self->_supportsEmojiTapbacks forKey:@"_supportsEmojiTapbacks"];
+  [coderCopy encodeInt:self->_supportsSendLaterMessages forKey:@"_supportsSendLaterMessages"];
+  [coderCopy encodeInt:self->_supportsEmojiImages forKey:@"_supportsEmojiImages"];
+  [coderCopy encodeInt:self->_supportsStickMojiBacks forKey:@"_supportsStickMojiBacks"];
+  [coderCopy encodeInt:self->_supportsHighQualityPhotoFileSizes forKey:@"_supportsHighQualityPhotoFileSizes"];
+  [coderCopy encodeInt:self->_supportsStewie forKey:@"_supportsStewie"];
+  [coderCopy encodeInt:self->_senderKeyMessageVersion forKey:@"_senderKeyMessageVersion"];
+  [coderCopy encodeInt:self->_supportsSenderKey forKey:@"_supportsSenderKey"];
+  [coderCopy encodeInt:self->_supportsURIlessMembershipUpdates forKey:@"_supportsURIlessMembershipUpdates"];
+  [coderCopy encodeInt:self->_supportsSenderKeySelfCheck forKey:@"_supportsSenderKeySelfCheck"];
+  [coderCopy encodeInt:self->_supportsRecoveryContactUpsell forKey:@"_supportsRecoveryContactUpsell"];
+  [coderCopy encodeInt:self->_supportsRBMChatBot forKey:@"_supportsRBMChatBot"];
+  [coderCopy encodeInt:self->_supportsQueueOneReadReceipts forKey:@"_supportsQueueOneReadReceipts"];
+  [coderCopy encodeInt:self->_supportsQueueOneReadReceiptsV2 forKey:@"_supportsQueueOneReadReceiptsV2"];
+  [coderCopy encodeInt:self->_supportsIntroductions forKey:@"_supportsIntroductions"];
+  [coderCopy encodeInt:self->_supportConditionalCKVEnforcement forKey:@"_supportConditionalCKVEnforcement"];
+  [coderCopy encodeInt:self->_supportsModernGFT forKey:@"_supportsModernGFT"];
+  [coderCopy encodeInt:self->_supportsCo forKey:@"_supportsCo"];
+  [coderCopy encodeInt:self->_isGreenTea forKey:@"_isGreenTea"];
+  [coderCopy encodeInt:self->_supportsGondola forKey:@"_supportsGondola"];
+  [coderCopy encodeInt:self->_doesNotSupportGFTCalls forKey:@"_doesNotSupportGFTCalls"];
+  [coderCopy encodeInt:self->_isWebClient forKey:@"_isWebClient"];
+  [coderCopy encodeInt:self->_supportsAVLess forKey:@"_supportsAVLess"];
+  [coderCopy encodeInt:self->_supportsSelfOneToOneInvites forKey:@"_supportsSelfOneToOneInvites"];
+  [coderCopy encodeInt:self->_supportsHighResVideoMessaging forKey:@"_supportsHighResVideoMessaging"];
+  [coderCopy encodeInt:self->_supportsLiveTranslation forKey:@"_supportsLiveTranslation"];
+  [coderCopy encodeInt:self->_supportsNearbyFaceTime forKey:@"_supportsNearbyFaceTime"];
+  [coderCopy encodeInt:self->_supportsSSRC forKey:@"_supportsSSRC"];
+  [coderCopy encodeInt:self->_supportsCalls25 forKey:@"_supportsCalls25"];
+  [coderCopy encodeInt:self->_supportsFriendingViaPush forKey:@"_supportsFriendingViaPush"];
+  [coderCopy encodeInt:self->_supportsMessageTransportV2 forKey:@"_supportsMessageTransportV2"];
 }
 
 @end

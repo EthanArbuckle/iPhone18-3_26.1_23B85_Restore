@@ -1,12 +1,12 @@
 @interface MobileCalDAVDirectorySearch
-+ (id)_convertRecordTypesToSearchTypes:(id)a3;
++ (id)_convertRecordTypesToSearchTypes:(id)types;
 - (BOOL)setNewStyleSearchTypeFromRecordTypes;
-- (MobileCalDAVDirectorySearch)initWithTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6 account:(id)a7;
+- (MobileCalDAVDirectorySearch)initWithTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer account:(id)account;
 - (id)_filterTermsForOldStyleSearch;
-- (id)_parseResponse:(id)a3;
+- (id)_parseResponse:(id)response;
 - (id)description;
-- (void)_finishWithError:(id)a3;
-- (void)_handleResponseForTask:(id)a3;
+- (void)_finishWithError:(id)error;
+- (void)_handleResponseForTask:(id)task;
 - (void)_performNewStyleSearch;
 - (void)_performOldStyleSearch;
 - (void)_reallyPerformSearch;
@@ -17,23 +17,23 @@
 
 @implementation MobileCalDAVDirectorySearch
 
-- (MobileCalDAVDirectorySearch)initWithTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6 account:(id)a7
+- (MobileCalDAVDirectorySearch)initWithTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer account:(id)account
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  termsCopy = terms;
+  typesCopy = types;
+  consumerCopy = consumer;
+  accountCopy = account;
   v24.receiver = self;
   v24.super_class = MobileCalDAVDirectorySearch;
   v17 = [(MobileCalDAVDirectorySearch *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_terms, a3);
-    objc_storeStrong(&v18->_recordTypes, a4);
-    v18->_resultLimit = a5;
-    objc_storeWeak(&v18->_consumer, v15);
-    objc_storeStrong(&v18->_account, a7);
+    objc_storeStrong(&v17->_terms, terms);
+    objc_storeStrong(&v18->_recordTypes, types);
+    v18->_resultLimit = limit;
+    objc_storeWeak(&v18->_consumer, consumerCopy);
+    objc_storeStrong(&v18->_account, account);
     v19 = +[NSString da_newGUID];
     searchID = v18->_searchID;
     v18->_searchID = v19;
@@ -92,10 +92,10 @@
 
 - (void)_reallyPerformSearch
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-  v4 = [v3 mainPrincipal];
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-  if ([v4 supportsCalendarUserSearch] && -[MobileCalDAVDirectorySearch setNewStyleSearchTypeFromRecordTypes](self, "setNewStyleSearchTypeFromRecordTypes"))
+  if ([mainPrincipal supportsCalendarUserSearch] && -[MobileCalDAVDirectorySearch setNewStyleSearchTypeFromRecordTypes](self, "setNewStyleSearchTypeFromRecordTypes"))
   {
     [(MobileCalDAVDirectorySearch *)self _performNewStyleSearch];
   }
@@ -240,8 +240,8 @@ LABEL_23:
   [(NSSet *)terms enumerateObjectsUsingBlock:v10];
   if ([v5 count] == &dword_0 + 1)
   {
-    v6 = [v5 anyObject];
-    if ([v6 length] <= 2)
+    anyObject = [v5 anyObject];
+    if ([anyObject length] <= 2)
     {
       v7 = DALoggingwithCategory();
       v8 = _CPLog_to_os_log_type[7];
@@ -250,7 +250,7 @@ LABEL_23:
         *buf = 134218242;
         v13 = 3;
         v14 = 2112;
-        v15 = v6;
+        v15 = anyObject;
         _os_log_impl(&dword_0, v7, v8, "Removing remaining calendar directory search term because it is less than [%lu] characters in length: [%@]", buf, 0x16u);
       }
 
@@ -263,21 +263,21 @@ LABEL_23:
 
 - (void)_performOldStyleSearch
 {
-  v3 = [(MobileCalDAVDirectorySearch *)self _filterTermsForOldStyleSearch];
-  if ([v3 count])
+  _filterTermsForOldStyleSearch = [(MobileCalDAVDirectorySearch *)self _filterTermsForOldStyleSearch];
+  if ([_filterTermsForOldStyleSearch count])
   {
-    v4 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-    v5 = [v4 mainPrincipal];
+    mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+    mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-    v6 = [v5 account];
-    v7 = [v6 collectionSetURL];
+    account = [mainPrincipal account];
+    collectionSetURL = [account collectionSetURL];
 
     v8 = [objc_opt_class() _convertRecordTypesToSearchTypes:self->_recordTypes];
-    v9 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-    v10 = [v9 searchPropertySet];
+    mobileCalDAVAccount2 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+    searchPropertySet = [mobileCalDAVAccount2 searchPropertySet];
 
-    v11 = [[CalDAVPrincipalPropertySearchTask alloc] initWithSearchStrings:self->_terms searchTypes:v8 serverSupportSet:v10 atURL:v7];
-    [v11 setAccountInfoProvider:v5];
+    v11 = [[CalDAVPrincipalPropertySearchTask alloc] initWithSearchStrings:self->_terms searchTypes:v8 serverSupportSet:searchPropertySet atURL:collectionSetURL];
+    [v11 setAccountInfoProvider:mainPrincipal];
     objc_initWeak(&location, v11);
     objc_initWeak(&from, self);
     v16 = _NSConcreteStackBlock;
@@ -313,21 +313,21 @@ LABEL_23:
       _os_log_impl(&dword_0, v14, v15, "After filtering calendar directory search terms, none are left.  Will not proceed with search.", buf, 2u);
     }
 
-    v5 = [NSError errorWithDomain:DAErrorDomain code:86 userInfo:0];
-    [(MobileCalDAVDirectorySearch *)self _finishWithError:v5];
+    mainPrincipal = [NSError errorWithDomain:DAErrorDomain code:86 userInfo:0];
+    [(MobileCalDAVDirectorySearch *)self _finishWithError:mainPrincipal];
   }
 }
 
-+ (id)_convertRecordTypesToSearchTypes:(id)a3
++ (id)_convertRecordTypesToSearchTypes:(id)types
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_A470;
   v8[3] = &unk_28928;
-  v9 = a3;
+  typesCopy = types;
   v3 = objc_alloc_init(NSMutableSet);
   v10 = v3;
-  v4 = v9;
+  v4 = typesCopy;
   v5 = objc_retainBlock(v8);
   (v5[2])(v5, DADCalendarDirectorySearchRecordType_Users, @"INDIVIDUAL");
   (v5[2])(v5, DADCalendarDirectorySearchRecordType_Locations, @"ROOM");
@@ -342,14 +342,14 @@ LABEL_23:
 {
   if (([CalDAVCalendarUserSearchTask tokensAreLegal:self->_terms]& 1) != 0)
   {
-    v3 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-    v4 = [v3 mainPrincipal];
+    mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+    mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-    v5 = [v4 account];
-    v6 = [v5 collectionSetURL];
+    account = [mainPrincipal account];
+    collectionSetURL = [account collectionSetURL];
 
-    v7 = [[CalDAVCalendarUserSearchTask alloc] initWithSearchStrings:self->_terms atURL:v6];
-    [v7 setAccountInfoProvider:v4];
+    v7 = [[CalDAVCalendarUserSearchTask alloc] initWithSearchStrings:self->_terms atURL:collectionSetURL];
+    [v7 setAccountInfoProvider:mainPrincipal];
     [v7 setSearchType:self->_searchType];
     [v7 setResultLimit:self->_resultLimit];
     objc_initWeak(&location, v7);
@@ -387,30 +387,30 @@ LABEL_23:
       _os_log_impl(&dword_0, v10, v11, "Calendar directory search terms are not legal.  Will not proceed with search.", buf, 2u);
     }
 
-    v4 = [NSError errorWithDomain:DAErrorDomain code:86 userInfo:0];
-    [(MobileCalDAVDirectorySearch *)self _finishWithError:v4];
+    mainPrincipal = [NSError errorWithDomain:DAErrorDomain code:86 userInfo:0];
+    [(MobileCalDAVDirectorySearch *)self _finishWithError:mainPrincipal];
   }
 }
 
-- (void)_handleResponseForTask:(id)a3
+- (void)_handleResponseForTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 error];
+  taskCopy = task;
+  error = [taskCopy error];
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v6, v7))
   {
     v12 = 138412546;
-    v13 = v4;
+    v13 = taskCopy;
     v14 = 2112;
-    v15 = v5;
+    v15 = error;
     _os_log_impl(&dword_0, v6, v7, "Calendar search task complete: [%@].  Error: [%@]", &v12, 0x16u);
   }
 
-  if (!v5)
+  if (!error)
   {
-    v8 = [v4 multiStatus];
-    v9 = [(MobileCalDAVDirectorySearch *)self _parseResponse:v8];
+    multiStatus = [taskCopy multiStatus];
+    v9 = [(MobileCalDAVDirectorySearch *)self _parseResponse:multiStatus];
     v10 = v9;
     if (v9 && [v9 count])
     {
@@ -419,17 +419,17 @@ LABEL_23:
     }
   }
 
-  [(MobileCalDAVDirectorySearch *)self _finishWithError:v5];
+  [(MobileCalDAVDirectorySearch *)self _finishWithError:error];
 }
 
-- (id)_parseResponse:(id)a3
+- (id)_parseResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [v4 responses];
+  responses = [responseCopy responses];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -444,7 +444,7 @@ LABEL_23:
   v19 = v12;
   v13 = v8;
   v20 = v13;
-  [v9 enumerateObjectsUsingBlock:v16];
+  [responses enumerateObjectsUsingBlock:v16];
   v14 = objc_alloc_init(NSMutableDictionary);
   if ([v10 count])
   {
@@ -469,9 +469,9 @@ LABEL_23:
   return v14;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!self->_finished)
   {
     v5 = DALoggingwithCategory();
@@ -479,15 +479,15 @@ LABEL_23:
     if (os_log_type_enabled(v5, v6))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_impl(&dword_0, v5, v6, "[%@] finished with error %@", &v8, 0x16u);
     }
 
     self->_finished = 1;
     WeakRetained = objc_loadWeakRetained(&self->_consumer);
-    [WeakRetained calendarDirectorySearchFinishedWithError:v4 exceededResultLimit:self->_exceededResultLimit];
+    [WeakRetained calendarDirectorySearchFinishedWithError:errorCopy exceededResultLimit:self->_exceededResultLimit];
 
     [(MobileCalDAVDADaemonAccount *)self->_account calendarDirectorySearchIsGoingAway:self];
   }

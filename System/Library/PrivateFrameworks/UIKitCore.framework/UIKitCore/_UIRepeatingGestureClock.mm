@@ -1,8 +1,8 @@
 @interface _UIRepeatingGestureClock
 - (_UIRepeatingGestureClockDelegate)delegate;
 - (void)_cancelTimer;
-- (void)_createTick:(id)a3;
-- (void)_performTick:(id)a3;
+- (void)_createTick:(id)tick;
+- (void)_performTick:(id)tick;
 - (void)_scheduleTimer;
 - (void)dealloc;
 @end
@@ -46,7 +46,7 @@
   [(_UIRepeatingGestureClock *)self performSelector:sel__createTick_ withObject:0 afterDelay:v5 inModes:v4];
 }
 
-- (void)_createTick:(id)a3
+- (void)_createTick:(id)tick
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = *MEMORY[0x1E695DA28];
@@ -54,15 +54,15 @@
   [(_UIRepeatingGestureClock *)self performSelector:sel__performTick_ withObject:0 afterDelay:v4 inModes:0.0];
 }
 
-- (void)_performTick:(id)a3
+- (void)_performTick:(id)tick
 {
   if (self->_timerOn)
   {
-    v5 = [(_UIRepeatingGestureClock *)self delegate];
-    v6 = v5;
-    if (v5)
+    delegate = [(_UIRepeatingGestureClock *)self delegate];
+    v6 = delegate;
+    if (delegate)
     {
-      [v5 repeatingGestureClockDidTick:self];
+      [delegate repeatingGestureClockDidTick:self];
       [(_UIRepeatingGestureClock *)self _scheduleTimer];
     }
 

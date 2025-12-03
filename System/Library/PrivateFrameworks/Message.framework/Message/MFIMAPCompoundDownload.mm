@@ -5,10 +5,10 @@
 - (unint64_t)bytesFetched;
 - (unint64_t)expectedLength;
 - (unint64_t)lengthOfDataBeforeLineConversion;
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4;
-- (void)addSubdownload:(id)a3;
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache;
+- (void)addSubdownload:(id)subdownload;
 - (void)processResults;
-- (void)removeSubdownload:(id)a3;
+- (void)removeSubdownload:(id)subdownload;
 @end
 
 @implementation MFIMAPCompoundDownload
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (void)addSubdownload:(id)a3
+- (void)addSubdownload:(id)subdownload
 {
-  v4 = a3;
-  v8 = v4;
+  subdownloadCopy = subdownload;
+  v8 = subdownloadCopy;
   [(MFIMAPCompoundDownload *)self mf_lock];
   subdownloads = self->_subdownloads;
   if (subdownloads)
   {
-    if ([(NSMutableArray *)subdownloads indexOfObjectIdenticalTo:v4]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)subdownloads indexOfObjectIdenticalTo:subdownloadCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->_subdownloads addObject:v4];
+      [(NSMutableArray *)self->_subdownloads addObject:subdownloadCopy];
     }
   }
 
@@ -55,20 +55,20 @@
   [(MFIMAPCompoundDownload *)self mf_unlock];
 }
 
-- (void)removeSubdownload:(id)a3
+- (void)removeSubdownload:(id)subdownload
 {
-  v4 = a3;
+  subdownloadCopy = subdownload;
   [(MFIMAPCompoundDownload *)self mf_lock];
-  [(NSMutableArray *)self->_subdownloads removeObjectIdenticalTo:v4];
+  [(NSMutableArray *)self->_subdownloads removeObjectIdenticalTo:subdownloadCopy];
   [(MFIMAPCompoundDownload *)self mf_unlock];
 }
 
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (self->_subdownloads && ([v6 isFull] & 1) == 0)
+  pipelineCopy = pipeline;
+  cacheCopy = cache;
+  if (self->_subdownloads && ([pipelineCopy isFull] & 1) == 0)
   {
     [(MFIMAPCompoundDownload *)self mf_lock];
     v16 = 0u;
@@ -92,10 +92,10 @@ LABEL_5:
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (([v12 isComplete] & 1) == 0)
         {
-          [v12 addCommandsToPipeline:v6 withCache:v7];
+          [v12 addCommandsToPipeline:pipelineCopy withCache:cacheCopy];
         }
 
-        if ([v6 isFull])
+        if ([pipelineCopy isFull])
         {
           break;
         }
@@ -226,14 +226,14 @@ LABEL_4:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) expectedLength];
+        expectedLength = [*(*(&v12 + 1) + 8 * v7) expectedLength];
         v9 = 0xFFFFFFFFLL;
-        if (v8 == 0xFFFFFFFFLL)
+        if (expectedLength == 0xFFFFFFFFLL)
         {
           break;
         }
 
-        v5 += v8;
+        v5 += expectedLength;
         if (v4 == ++v7)
         {
           v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];

@@ -1,5 +1,5 @@
 @interface MCMXPCMessageWithOwnersAndGroupsBase
-- (MCMXPCMessageWithOwnersAndGroupsBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageWithOwnersAndGroupsBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (NSSet)groupIdentifiers;
 - (NSSet)ownerIdentifiers;
 - (unint64_t)containerClass;
@@ -31,13 +31,13 @@
   return result;
 }
 
-- (MCMXPCMessageWithOwnersAndGroupsBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageWithOwnersAndGroupsBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v35.receiver = self;
   v35.super_class = MCMXPCMessageWithOwnersAndGroupsBase;
-  v9 = [(MCMXPCMessageBase *)&v35 initWithXPCObject:v8 context:a4 error:a5];
+  v9 = [(MCMXPCMessageBase *)&v35 initWithXPCObject:objectCopy context:context error:error];
   v10 = v9;
   if (v9)
   {
@@ -49,7 +49,7 @@
     groupIdentifiers = v10->_groupIdentifiers;
     v10->_groupIdentifiers = 0;
 
-    uint64 = xpc_dictionary_get_uint64(v8, "ContainerClass");
+    uint64 = xpc_dictionary_get_uint64(objectCopy, "ContainerClass");
     v10->_containerClass = uint64;
     if (uint64 - 1 >= 0xE)
     {
@@ -62,7 +62,7 @@ LABEL_29:
     }
 
     v10->_containerClass = container_class_normalized();
-    v14 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:v8 key:"OwnerIdentifiersArray" error:&v34];
+    v14 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:objectCopy key:"OwnerIdentifiersArray" error:&v34];
     if (v14)
     {
       objc_opt_class();
@@ -130,7 +130,7 @@ LABEL_28:
       }
     }
 
-    v23 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:v8 key:"GroupIdentifiers" error:&v34];
+    v23 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:objectCopy key:"GroupIdentifiers" error:&v34];
     if (!v23)
     {
       goto LABEL_39;
@@ -195,9 +195,9 @@ LABEL_33:
       }
 
 LABEL_30:
-      if (a5)
+      if (error)
       {
-        *a5 = v24;
+        *error = v24;
       }
 
       v10 = 0;

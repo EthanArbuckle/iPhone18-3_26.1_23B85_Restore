@@ -1,11 +1,11 @@
 @interface CRMLModel
 - (CRMLModel)init;
-- (CRMLModel)initWithURL:(id)a3 restrictToCPU:(BOOL)a4 error:(id *)a5;
+- (CRMLModel)initWithURL:(id)l restrictToCPU:(BOOL)u error:(id *)error;
 - (NSString)modelName;
-- (id)decodeActivations:(void *)a3;
-- (id)decodeActivations:(void *)a3 blank:(unsigned __int16)a4 ctcAllowGarbage:(BOOL)a5 numResultNeeded:(int64_t)a6;
-- (id)initRestrictingToCPU:(BOOL)a3;
-- (id)predict:(id)a3 error:(id *)a4;
+- (id)decodeActivations:(void *)activations;
+- (id)decodeActivations:(void *)activations blank:(unsigned __int16)blank ctcAllowGarbage:(BOOL)garbage numResultNeeded:(int64_t)needed;
+- (id)initRestrictingToCPU:(BOOL)u;
+- (id)predict:(id)predict error:(id *)error;
 - (vector<std::vector<std::vector<float>>,)activationsFromImage:(CRMLModel *)self;
 @end
 
@@ -14,8 +14,8 @@
 - (CRMLModel)init
 {
   v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreRecognition"];
-  v4 = [(CRMLModel *)self modelName];
-  v5 = [v3 pathForResource:v4 ofType:@"bundle"];
+  modelName = [(CRMLModel *)self modelName];
+  v5 = [v3 pathForResource:modelName ofType:@"bundle"];
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
   v7 = [(CRMLModel *)self initWithURL:v6 error:0];
@@ -23,84 +23,84 @@
   return v7;
 }
 
-- (id)initRestrictingToCPU:(BOOL)a3
+- (id)initRestrictingToCPU:(BOOL)u
 {
-  v3 = a3;
+  uCopy = u;
   v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreRecognition"];
-  v6 = [(CRMLModel *)self modelName];
-  v7 = [v5 pathForResource:v6 ofType:@"bundle"];
+  modelName = [(CRMLModel *)self modelName];
+  v7 = [v5 pathForResource:modelName ofType:@"bundle"];
 
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
-  v9 = [(CRMLModel *)self initWithURL:v8 restrictToCPU:v3 error:0];
+  v9 = [(CRMLModel *)self initWithURL:v8 restrictToCPU:uCopy error:0];
 
   return v9;
 }
 
-- (CRMLModel)initWithURL:(id)a3 restrictToCPU:(BOOL)a4 error:(id *)a5
+- (CRMLModel)initWithURL:(id)l restrictToCPU:(BOOL)u error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  uCopy = u;
+  lCopy = l;
   v31.receiver = self;
   v31.super_class = CRMLModel;
   v9 = [(CRMLModel *)&v31 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBFF38] defaultConfiguration];
+    defaultConfiguration = [MEMORY[0x277CBFF38] defaultConfiguration];
     if ((deviceHasAppleNeuralEngine() & 1) == 0)
     {
-      [v10 setAllowBackgroundGPUCompute:1];
+      [defaultConfiguration setAllowBackgroundGPUCompute:1];
     }
 
-    if (v6)
+    if (uCopy)
     {
-      [v10 setComputeUnits:0];
+      [defaultConfiguration setComputeUnits:0];
     }
 
-    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v8 configuration:v10 error:a5];
+    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:lCopy configuration:defaultConfiguration error:error];
     model = v9->model;
     v9->model = v11;
 
-    if (a5 && *a5 || (v13 = v9->model) == 0)
+    if (error && *error || (v13 = v9->model) == 0)
     {
 
       v29 = 0;
       goto LABEL_16;
     }
 
-    v14 = [(MLModel *)v13 modelDescription];
-    v15 = [v14 inputDescriptionsByName];
-    v16 = [v15 objectForKeyedSubscript:@"data"];
-    v17 = [v16 multiArrayConstraint];
-    v18 = [v17 shape];
-    [(CRMLModel *)v9 setModelShape:v18];
+    modelDescription = [(MLModel *)v13 modelDescription];
+    inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+    v16 = [inputDescriptionsByName objectForKeyedSubscript:@"data"];
+    multiArrayConstraint = [v16 multiArrayConstraint];
+    shape = [multiArrayConstraint shape];
+    [(CRMLModel *)v9 setModelShape:shape];
 
-    v19 = [(CRMLModel *)v9 modelShape];
-    v20 = [v19 objectAtIndexedSubscript:1];
+    modelShape = [(CRMLModel *)v9 modelShape];
+    v20 = [modelShape objectAtIndexedSubscript:1];
     v9->_modelHeight = [v20 intValue];
 
-    v21 = [(CRMLModel *)v9 modelShape];
-    v22 = [v21 objectAtIndexedSubscript:2];
+    modelShape2 = [(CRMLModel *)v9 modelShape];
+    v22 = [modelShape2 objectAtIndexedSubscript:2];
     v9->_modelWidth = [v22 intValue];
 
     [(CRMLModel *)v9 setGpuBatchSize:256];
-    v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v24 = [v23 objectForKey:@"com.apple.CoreRecognition.gpu_batch_size"];
-    v25 = [v24 integerValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v24 = [standardUserDefaults objectForKey:@"com.apple.CoreRecognition.gpu_batch_size"];
+    integerValue = [v24 integerValue];
 
-    if (v25 >= 1)
+    if (integerValue >= 1)
     {
-      [(CRMLModel *)v9 setGpuBatchSize:v25];
+      [(CRMLModel *)v9 setGpuBatchSize:integerValue];
       NSLog(&cfstr_UsingCustomGpu.isa, [(CRMLModel *)v9 gpuBatchSize]);
     }
 
     [(CRMLModel *)v9 setCpuBatchSize:512];
-    v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v27 = [v26 objectForKey:@"com.apple.CoreRecognition.cpu_batch_size"];
-    v28 = [v27 integerValue];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v27 = [standardUserDefaults2 objectForKey:@"com.apple.CoreRecognition.cpu_batch_size"];
+    integerValue2 = [v27 integerValue];
 
-    if (v28 >= 1)
+    if (integerValue2 >= 1)
     {
-      [(CRMLModel *)v9 setCpuBatchSize:v28];
+      [(CRMLModel *)v9 setCpuBatchSize:integerValue2];
       NSLog(&cfstr_UsingCustomCpu.isa, [(CRMLModel *)v9 cpuBatchSize]);
     }
   }
@@ -118,33 +118,33 @@ LABEL_16:
   return &stru_2859636D0;
 }
 
-- (id)predict:(id)a3 error:(id *)a4
+- (id)predict:(id)predict error:(id *)error
 {
-  v6 = a3;
+  predictCopy = predict;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v7 setObject:v6 forKeyedSubscript:@"data"];
-  v8 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v7 error:a4];
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(MLModel *)v9->model predictionFromFeatures:v8 error:a4];
-  objc_sync_exit(v9);
+  [v7 setObject:predictCopy forKeyedSubscript:@"data"];
+  v8 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v7 error:error];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [(MLModel *)selfCopy->model predictionFromFeatures:v8 error:error];
+  objc_sync_exit(selfCopy);
 
   v11 = [v10 featureValueForName:@"softmax_output"];
-  v12 = [v11 multiArrayValue];
+  multiArrayValue = [v11 multiArrayValue];
 
-  return v12;
+  return multiArrayValue;
 }
 
-- (id)decodeActivations:(void *)a3
+- (id)decodeActivations:(void *)activations
 {
-  NSLog(&cfstr_Decodeactivati.isa, a2, a3);
+  NSLog(&cfstr_Decodeactivati.isa, a2, activations);
   [(CRMLModel *)self doesNotRecognizeSelector:a2];
   return 0;
 }
 
-- (id)decodeActivations:(void *)a3 blank:(unsigned __int16)a4 ctcAllowGarbage:(BOOL)a5 numResultNeeded:(int64_t)a6
+- (id)decodeActivations:(void *)activations blank:(unsigned __int16)blank ctcAllowGarbage:(BOOL)garbage numResultNeeded:(int64_t)needed
 {
-  NSLog(&cfstr_Decodeactivati.isa, a2, a3, a4, a5, a6);
+  NSLog(&cfstr_Decodeactivati.isa, a2, activations, blank, garbage, needed);
   [(CRMLModel *)self doesNotRecognizeSelector:a2];
   return 0;
 }
@@ -170,17 +170,17 @@ LABEL_16:
       v7 = 1;
     }
 
-    v9 = [(CRMLModel *)self gpuBatchSize];
+    gpuBatchSize = [(CRMLModel *)self gpuBatchSize];
     std::vector<std::vector<float>>::resize(retstr->var0, v7);
-    v64 = vcvtps_s32_f32(v7 / v9);
+    v64 = vcvtps_s32_f32(v7 / gpuBatchSize);
     if (v64 >= 1)
     {
       v65 = v7;
       v71 = 0;
-      v72 = v9;
+      v72 = gpuBatchSize;
       v10 = 0;
       v68 = 0;
-      v63 = 2 * v9;
+      v63 = 2 * gpuBatchSize;
       v76 = retstr;
       do
       {
@@ -199,15 +199,15 @@ LABEL_16:
         v81[0] = &unk_285976950;
         v66 = [MEMORY[0x277CCABB0] numberWithInteger:v72];
         v81[1] = v66;
-        v13 = [(CRMLModel *)self modelShape];
-        v73 = [v13 objectAtIndexedSubscript:0];
+        modelShape = [(CRMLModel *)self modelShape];
+        v73 = [modelShape objectAtIndexedSubscript:0];
         v81[2] = v73;
-        v67 = [(CRMLModel *)self modelShape];
-        v14 = [v67 objectAtIndexedSubscript:1];
+        modelShape2 = [(CRMLModel *)self modelShape];
+        v14 = [modelShape2 objectAtIndexedSubscript:1];
         v81[3] = v14;
-        v15 = [(CRMLModel *)self modelShape];
+        modelShape3 = [(CRMLModel *)self modelShape];
         v77 = v11;
-        v16 = [v15 objectAtIndexedSubscript:2];
+        v16 = [modelShape3 objectAtIndexedSubscript:2];
         v81[4] = v16;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:5];
         v75 = [v12 initWithShape:v17 dataType:65600 error:0];
@@ -220,7 +220,7 @@ LABEL_16:
         }
 
         v18 = v75;
-        v19 = [v75 dataPointer];
+        dataPointer = [v75 dataPointer];
         if (v77 >= 1)
         {
           v20 = 0;
@@ -239,7 +239,7 @@ LABEL_16:
               {
                 if (modelWidth >= 1)
                 {
-                  v28 = (v19 + 8 * v21);
+                  v28 = (dataPointer + 8 * v21);
                   v21 += modelWidth;
                   v29 = v27;
                   v30 = modelWidth;
@@ -276,22 +276,22 @@ LABEL_16:
           NSLog(&stru_285965BF0.isa, v74);
         }
 
-        v33 = [v32 shape];
-        v34 = [v33 objectAtIndexedSubscript:0];
+        shape = [v32 shape];
+        v34 = [shape objectAtIndexedSubscript:0];
         v35 = [v34 integerValue] < v77;
 
         if (v35)
         {
-          v36 = [v32 shape];
-          v37 = [v36 objectAtIndexedSubscript:0];
+          shape2 = [v32 shape];
+          v37 = [shape2 objectAtIndexedSubscript:0];
           NSLog(&cfstr_Corerecognitio_0.isa, v32, v37, v72);
         }
 
-        v38 = [v32 shape];
-        v39 = [v32 shape];
-        v40 = [v38 objectAtIndexedSubscript:{objc_msgSend(v39, "count") - 1}];
-        v41 = [v40 integerValue];
-        v42 = v41 == [(CRMLModel *)self classCount];
+        shape3 = [v32 shape];
+        shape4 = [v32 shape];
+        v40 = [shape3 objectAtIndexedSubscript:{objc_msgSend(shape4, "count") - 1}];
+        integerValue = [v40 integerValue];
+        v42 = integerValue == [(CRMLModel *)self classCount];
 
         if (!v42)
         {
@@ -309,9 +309,9 @@ LABEL_16:
             {
               v46 = *retstr->var0;
               v47 = v32;
-              v48 = [v32 dataPointer];
+              dataPointer2 = [v32 dataPointer];
               v49 = (v46 + 24 * v70 * v72 + 24 * v44);
-              v50 = *(v48 + 8 * (i + v44 * [(CRMLModel *)self classCount]));
+              v50 = *(dataPointer2 + 8 * (i + v44 * [(CRMLModel *)self classCount]));
               v52 = v49[1];
               v51 = v49[2];
               if (v52 >= v51)

@@ -1,8 +1,8 @@
 @interface NTKCFaceDetailPigmentColorSliderCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailPigmentColorSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCFaceDetailPigmentColorSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NTKCFaceDetailPigmentColorSliderCellDelegate)delegate;
-- (void)colorSlider:(id)a3 valueChanged:(double)a4 phase:(int64_t)a5;
+- (void)colorSlider:(id)slider valueChanged:(double)changed phase:(int64_t)phase;
 - (void)layoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCFaceDetailPigmentColorSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCFaceDetailPigmentColorSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = NTKCFaceDetailPigmentColorSliderCell;
-  v4 = [(NTKCFaceDetailRowActionCell *)&v11 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(NTKCFaceDetailRowActionCell *)&v11 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,8 +30,8 @@
     v5->_slider = v7;
 
     [(NTKColorSlider *)v5->_slider setDelegate:v5];
-    v9 = [(NTKCFaceDetailPigmentColorSliderCell *)v5 contentView];
-    [v9 addSubview:v5->_slider];
+    contentView = [(NTKCFaceDetailPigmentColorSliderCell *)v5 contentView];
+    [contentView addSubview:v5->_slider];
   }
 
   return v5;
@@ -57,10 +57,10 @@
   [(NTKColorSlider *)self->_slider setFrame:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
 }
 
-- (void)colorSlider:(id)a3 valueChanged:(double)a4 phase:(int64_t)a5
+- (void)colorSlider:(id)slider valueChanged:(double)changed phase:(int64_t)phase
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pigmentColorSliderCell:self colorFractionChanged:a5 != 2 transiently:a5 == 3 canceled:a4];
+  [WeakRetained pigmentColorSliderCell:self colorFractionChanged:phase != 2 transiently:phase == 3 canceled:changed];
 }
 
 - (NTKCFaceDetailPigmentColorSliderCellDelegate)delegate

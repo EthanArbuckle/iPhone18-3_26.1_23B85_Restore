@@ -1,8 +1,8 @@
 @interface APSPayloadMessageStatsCounts
 - (APSPayloadMessageStatsCounts)init;
-- (void)_appendPrettyStatusToStatusPrinter:(id)a3 time:(double)a4 type:(id)a5 direction:(id)a6;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3 total:(BOOL)a4 direction:(id)a5;
-- (void)countTopic:(id)a3 now:(double)a4;
+- (void)_appendPrettyStatusToStatusPrinter:(id)printer time:(double)time type:(id)type direction:(id)direction;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer total:(BOOL)total direction:(id)direction;
+- (void)countTopic:(id)topic now:(double)now;
 - (void)prepareForDarkWake;
 - (void)prepareForFullWake;
 @end
@@ -28,32 +28,32 @@
   return v2;
 }
 
-- (void)countTopic:(id)a3 now:(double)a4
+- (void)countTopic:(id)topic now:(double)now
 {
   total = self->_total;
-  v7 = a3;
-  [(APSPayloadMessageStatsCount *)total countTopic:v7 now:a4];
-  [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState countTopic:v7 now:a4];
+  topicCopy = topic;
+  [(APSPayloadMessageStatsCount *)total countTopic:topicCopy now:now];
+  [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState countTopic:topicCopy now:now];
 }
 
-- (void)_appendPrettyStatusToStatusPrinter:(id)a3 time:(double)a4 type:(id)a5 direction:(id)a6
+- (void)_appendPrettyStatusToStatusPrinter:(id)printer time:(double)time type:(id)type direction:(id)direction
 {
-  if (a4 != 0.0)
+  if (time != 0.0)
   {
-    v10 = a3;
-    v11 = [NSString stringWithFormat:@"last %@ wake %@ push", a5, a6];
-    [v10 appendDescription:v11 timeIntervalValue:a4];
+    printerCopy = printer;
+    direction = [NSString stringWithFormat:@"last %@ wake %@ push", type, direction];
+    [printerCopy appendDescription:direction timeIntervalValue:time];
   }
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3 total:(BOOL)a4 direction:(id)a5
+- (void)appendPrettyStatusToStatusPrinter:(id)printer total:(BOOL)total direction:(id)direction
 {
-  v6 = a4;
-  v23 = a3;
-  v8 = a5;
+  totalCopy = total;
+  printerCopy = printer;
+  directionCopy = direction;
   if ([(APSPayloadMessageStatsCount *)self->_total count])
   {
-    if (v6)
+    if (totalCopy)
     {
       v9 = @"total %@ push notifications";
     }
@@ -63,20 +63,20 @@
       v9 = @"%@ push notifications";
     }
 
-    v10 = [NSString stringWithFormat:v9, v8];
-    [v23 appendDescription:v10 unsignedIntegerValue:{-[APSPayloadMessageStatsCount count](self->_total, "count")}];
-    v11 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState fullWake];
-    v12 = [v11 count];
+    directionCopy = [NSString stringWithFormat:v9, directionCopy];
+    [printerCopy appendDescription:directionCopy unsignedIntegerValue:{-[APSPayloadMessageStatsCount count](self->_total, "count")}];
+    fullWake = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState fullWake];
+    v12 = [fullWake count];
 
-    v13 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState darkWake];
-    v14 = [v13 count];
+    darkWake = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState darkWake];
+    v14 = [darkWake count];
 
-    v15 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState unknown];
-    v16 = [v15 count];
+    unknown = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState unknown];
+    v16 = [unknown count];
 
-    [v23 pushIndent];
-    [v23 appendDescription:@"previous hour" unsignedIntegerValue:{-[APSPayloadMessageStatsCount sumOfBucketType:](self->_total, "sumOfBucketType:", 0)}];
-    [v23 appendDescription:@"previous day" unsignedIntegerValue:{-[APSPayloadMessageStatsCount sumOfBucketType:](self->_total, "sumOfBucketType:", 1)}];
+    [printerCopy pushIndent];
+    [printerCopy appendDescription:@"previous hour" unsignedIntegerValue:{-[APSPayloadMessageStatsCount sumOfBucketType:](self->_total, "sumOfBucketType:", 0)}];
+    [printerCopy appendDescription:@"previous day" unsignedIntegerValue:{-[APSPayloadMessageStatsCount sumOfBucketType:](self->_total, "sumOfBucketType:", 1)}];
     if (v14 | v16)
     {
       if (v16)
@@ -91,55 +91,55 @@
         v18 = @"full/dark";
       }
 
-      [v23 appendDescription:v18 stringValue:v17];
+      [printerCopy appendDescription:v18 stringValue:v17];
 
-      v20 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState fullWake];
-      [v20 lastMessageTime];
-      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:v23 time:@"full" type:v8 direction:?];
+      fullWake2 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState fullWake];
+      [fullWake2 lastMessageTime];
+      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:printerCopy time:@"full" type:directionCopy direction:?];
 
-      v21 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState darkWake];
-      [v21 lastMessageTime];
-      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:v23 time:@"dark" type:v8 direction:?];
+      darkWake2 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState darkWake];
+      [darkWake2 lastMessageTime];
+      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:printerCopy time:@"dark" type:directionCopy direction:?];
 
-      v22 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState unknown];
-      [v22 lastMessageTime];
-      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:v23 time:@"unknown" type:v8 direction:?];
+      unknown2 = [(APSPayloadMessageStatsCountsByWakeState *)self->_byWakeState unknown];
+      [unknown2 lastMessageTime];
+      [(APSPayloadMessageStatsCounts *)self _appendPrettyStatusToStatusPrinter:printerCopy time:@"unknown" type:directionCopy direction:?];
     }
 
     else
     {
-      if (v6)
+      if (totalCopy)
       {
-        [NSString stringWithFormat:@"last %@ push notification", v8];
+        [NSString stringWithFormat:@"last %@ push notification", directionCopy];
       }
 
       else
       {
-        [NSString stringWithFormat:@"last %@ push", v8];
+        [NSString stringWithFormat:@"last %@ push", directionCopy];
       }
       v19 = ;
 
       [(APSPayloadMessageStatsCount *)self->_total lastMessageTime];
-      [v23 appendDescription:v19 timeIntervalValue:?];
-      v10 = v19;
+      [printerCopy appendDescription:v19 timeIntervalValue:?];
+      directionCopy = v19;
     }
 
-    [v23 popIndent];
+    [printerCopy popIndent];
   }
 }
 
 - (void)prepareForDarkWake
 {
   byWakeState = self->_byWakeState;
-  v3 = [(APSPayloadMessageStatsCountsByWakeState *)byWakeState darkWake];
-  [(APSPayloadMessageStatsCountsByWakeState *)byWakeState moveUnknownToDestination:v3];
+  darkWake = [(APSPayloadMessageStatsCountsByWakeState *)byWakeState darkWake];
+  [(APSPayloadMessageStatsCountsByWakeState *)byWakeState moveUnknownToDestination:darkWake];
 }
 
 - (void)prepareForFullWake
 {
   byWakeState = self->_byWakeState;
-  v3 = [(APSPayloadMessageStatsCountsByWakeState *)byWakeState fullWake];
-  [(APSPayloadMessageStatsCountsByWakeState *)byWakeState moveUnknownToDestination:v3];
+  fullWake = [(APSPayloadMessageStatsCountsByWakeState *)byWakeState fullWake];
+  [(APSPayloadMessageStatsCountsByWakeState *)byWakeState moveUnknownToDestination:fullWake];
 }
 
 @end

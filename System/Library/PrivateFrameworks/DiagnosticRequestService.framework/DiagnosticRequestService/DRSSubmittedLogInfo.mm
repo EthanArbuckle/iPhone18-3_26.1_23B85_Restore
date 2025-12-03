@@ -1,67 +1,67 @@
 @interface DRSSubmittedLogInfo
-+ (id)submittedLogInfosFromPaths:(id)a3 sandboxExtensions:(id)a4 transferOwnerships:(id)a5 successOut:(BOOL *)a6;
-- (DRSSubmittedLogInfo)initWithPath:(const char *)a3 sandboxExtension:(const char *)a4 transferOwnership:(BOOL)a5;
++ (id)submittedLogInfosFromPaths:(id)paths sandboxExtensions:(id)extensions transferOwnerships:(id)ownerships successOut:(BOOL *)out;
+- (DRSSubmittedLogInfo)initWithPath:(const char *)path sandboxExtension:(const char *)extension transferOwnership:(BOOL)ownership;
 - (id)debugDescription;
 @end
 
 @implementation DRSSubmittedLogInfo
 
-- (DRSSubmittedLogInfo)initWithPath:(const char *)a3 sandboxExtension:(const char *)a4 transferOwnership:(BOOL)a5
+- (DRSSubmittedLogInfo)initWithPath:(const char *)path sandboxExtension:(const char *)extension transferOwnership:(BOOL)ownership
 {
-  v5 = 0;
-  if (a3 && a4)
+  selfCopy = 0;
+  if (path && extension)
   {
     v15.receiver = self;
     v15.super_class = DRSSubmittedLogInfo;
     v9 = [(DRSSubmittedLogInfo *)&v15 init];
     if (v9)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+      v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:path];
       path = v9->_path;
       v9->_path = v10;
 
-      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
+      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:extension];
       sandboxExtension = v9->_sandboxExtension;
       v9->_sandboxExtension = v12;
 
-      v9->_transferOwnership = a5;
+      v9->_transferOwnership = ownership;
     }
 
     self = v9;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DRSSubmittedLogInfo *)self path];
-  v5 = [(DRSSubmittedLogInfo *)self sandboxExtension];
-  v6 = [(DRSSubmittedLogInfo *)self transferOwnership];
+  path = [(DRSSubmittedLogInfo *)self path];
+  sandboxExtension = [(DRSSubmittedLogInfo *)self sandboxExtension];
+  transferOwnership = [(DRSSubmittedLogInfo *)self transferOwnership];
   v7 = @"Copy";
-  if (v6)
+  if (transferOwnership)
   {
     v7 = @"Transfer";
   }
 
-  v8 = [v3 stringWithFormat:@"%@ %@ %@", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@", path, sandboxExtension, v7];
 
   return v8;
 }
 
-+ (id)submittedLogInfosFromPaths:(id)a3 sandboxExtensions:(id)a4 transferOwnerships:(id)a5 successOut:(BOOL *)a6
++ (id)submittedLogInfosFromPaths:(id)paths sandboxExtensions:(id)extensions transferOwnerships:(id)ownerships successOut:(BOOL *)out
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  *a6 = 1;
-  if (!v9 || !v10 || !v11)
+  pathsCopy = paths;
+  extensionsCopy = extensions;
+  ownershipsCopy = ownerships;
+  v12 = ownershipsCopy;
+  *out = 1;
+  if (!pathsCopy || !extensionsCopy || !ownershipsCopy)
   {
-    if (!v9 && !v10 && !v11)
+    if (!pathsCopy && !extensionsCopy && !ownershipsCopy)
     {
       v18 = 0;
       goto LABEL_31;
@@ -74,7 +74,7 @@
     }
 
     v19 = @"Available";
-    if (v9)
+    if (pathsCopy)
     {
       v20 = @"Available";
     }
@@ -84,7 +84,7 @@
       v20 = @"Missing";
     }
 
-    if (v10)
+    if (extensionsCopy)
     {
       v21 = @"Available";
     }
@@ -115,7 +115,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v13 = MEMORY[0x23838A140](v9);
+  v13 = MEMORY[0x23838A140](pathsCopy);
   v14 = MEMORY[0x277D86440];
   if (v13 != MEMORY[0x277D86440])
   {
@@ -134,7 +134,7 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  if (MEMORY[0x23838A140](v10) != v14)
+  if (MEMORY[0x23838A140](extensionsCopy) != v14)
   {
     v15 = DPLogHandle_RequestError();
     if (os_signpost_enabled(v15))
@@ -148,7 +148,7 @@ LABEL_28:
 LABEL_30:
 
     v18 = 0;
-    *a6 = 0;
+    *out = 0;
     goto LABEL_31;
   }
 
@@ -166,8 +166,8 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  count = xpc_array_get_count(v9);
-  v27 = xpc_array_get_count(v10);
+  count = xpc_array_get_count(pathsCopy);
+  v27 = xpc_array_get_count(extensionsCopy);
   v28 = xpc_array_get_count(v12);
   v29 = v28;
   if (count != v27 || count != v28)
@@ -189,15 +189,15 @@ LABEL_30:
     goto LABEL_21;
   }
 
-  v30 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (count)
   {
     v31 = 0;
     while (1)
     {
       v32 = [DRSSubmittedLogInfo alloc];
-      string = xpc_array_get_string(v9, v31);
-      v34 = xpc_array_get_string(v10, v31);
+      string = xpc_array_get_string(pathsCopy, v31);
+      v34 = xpc_array_get_string(extensionsCopy, v31);
       v35 = [(DRSSubmittedLogInfo *)v32 initWithPath:string sandboxExtension:v34 transferOwnership:xpc_array_get_BOOL(v12, v31)];
       if (!v35)
       {
@@ -205,7 +205,7 @@ LABEL_30:
       }
 
       v36 = v35;
-      [v30 addObject:v35];
+      [array addObject:v35];
 
       if (count == ++v31)
       {
@@ -224,15 +224,15 @@ LABEL_30:
   }
 
 LABEL_40:
-  if (![v30 count])
+  if (![array count])
   {
 LABEL_47:
     v18 = 0;
-    *a6 = 0;
+    *out = 0;
     goto LABEL_48;
   }
 
-  v18 = v30;
+  v18 = array;
 LABEL_48:
 
 LABEL_31:

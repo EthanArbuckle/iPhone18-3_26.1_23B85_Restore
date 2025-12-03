@@ -10,26 +10,26 @@
 
 - (id)_musicKit_self_insertItemsCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DD840])
+  if ([self conformsToProtocol:&unk_1F50DD840])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_insertItemsCommand_insertAfterPlayingItemCommandRequestWithPlaybackIntent:()MusicKit_SoftLinking_MPCPlayerInsertItemsCommand
 {
   v4 = a3;
-  v5 = [a1 _musicKit_self_insertItemsCommand];
-  v6 = [v4 _underlyingPlaybackIntent];
+  _musicKit_self_insertItemsCommand = [self _musicKit_self_insertItemsCommand];
+  _underlyingPlaybackIntent = [v4 _underlyingPlaybackIntent];
 
-  v7 = [v5 insertAfterPlayingItemWithPlaybackIntent:v6];
+  v7 = [_musicKit_self_insertItemsCommand insertAfterPlayingItemWithPlaybackIntent:_underlyingPlaybackIntent];
 
   return v7;
 }
@@ -37,10 +37,10 @@
 - (id)musicKit_insertItemsCommand_insertAtEndOfTracklistCommandRequestWithPlaybackIntent:()MusicKit_SoftLinking_MPCPlayerInsertItemsCommand
 {
   v4 = a3;
-  v5 = [a1 _musicKit_self_insertItemsCommand];
-  v6 = [v4 _underlyingPlaybackIntent];
+  _musicKit_self_insertItemsCommand = [self _musicKit_self_insertItemsCommand];
+  _underlyingPlaybackIntent = [v4 _underlyingPlaybackIntent];
 
-  v7 = [v5 insertAtEndOfTracklistWithPlaybackIntent:v6];
+  v7 = [_musicKit_self_insertItemsCommand insertAtEndOfTracklistWithPlaybackIntent:_underlyingPlaybackIntent];
 
   return v7;
 }
@@ -48,20 +48,20 @@
 - (id)musicKit_insertItemsCommand_insertAtEndOfUpNextCommandRequestWithPlaybackIntent:()MusicKit_SoftLinking_MPCPlayerInsertItemsCommand
 {
   v4 = a3;
-  v5 = [a1 _musicKit_self_insertItemsCommand];
-  v6 = [v4 _underlyingPlaybackIntent];
+  _musicKit_self_insertItemsCommand = [self _musicKit_self_insertItemsCommand];
+  _underlyingPlaybackIntent = [v4 _underlyingPlaybackIntent];
 
-  v7 = [v5 insertAtEndOfUpNextWithPlaybackIntent:v6];
+  v7 = [_musicKit_self_insertItemsCommand insertAtEndOfUpNextWithPlaybackIntent:_underlyingPlaybackIntent];
 
   return v7;
 }
 
 - (id)musicKit_insertItemCommand_insertAfterLastSection
 {
-  v1 = [a1 _musicKit_self_insertItemsCommand];
-  v2 = [v1 insertAfterLastSection];
+  _musicKit_self_insertItemsCommand = [self _musicKit_self_insertItemsCommand];
+  insertAfterLastSection = [_musicKit_self_insertItemsCommand insertAfterLastSection];
 
-  return v2;
+  return insertAfterLastSection;
 }
 
 @end

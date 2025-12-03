@@ -1,16 +1,16 @@
 @interface TSWPArchivedHyperlinkSelection
 - (NSString)description;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSWPArchivedHyperlinkSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v16 = a3;
-  if (v16)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -27,21 +27,21 @@
   }
 
   objc_msgSend_willModify(self, v4, v5);
-  objc_msgSend_setHyperlinkSelection_(self, v15, v16);
+  objc_msgSend_setHyperlinkSelection_(self, v15, selectionCopy);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   v4 = objc_alloc_init(TSWPHyperlinkSelection);
   hyperlinkSelection = self->_hyperlinkSelection;
   self->_hyperlinkSelection = v4;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithNewFunction_descriptor_(v4, v3, sub_276F374D0, off_2812DC408[174]);
+  objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, sub_276F374D0, off_2812DC408[174]);
 }
 
 - (NSString)description

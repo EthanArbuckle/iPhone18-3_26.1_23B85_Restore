@@ -7,7 +7,7 @@
 + (id)hu_homeControlServiceXPCInterface
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 interfaceWithProtocol:&unk_2825BD6C0];
+  v1 = [self interfaceWithProtocol:&unk_2825BD6C0];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();

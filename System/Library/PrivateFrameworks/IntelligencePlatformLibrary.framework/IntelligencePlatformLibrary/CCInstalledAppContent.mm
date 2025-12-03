@@ -1,8 +1,8 @@
 @interface CCInstalledAppContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCInstalledAppContent)initWithBundleIdentifier:(id)a3 bundleName:(id)a4 displayAppName:(id)a5 spokenName:(id)a6 alternativeAppNames:(id)a7 carPlayAlternativeDisplayName:(id)a8 spotlightName:(id)a9 providerName:(id)a10 error:(id *)a11;
-- (CCInstalledAppContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCInstalledAppContent)initWithBundleIdentifier:(id)identifier bundleName:(id)name displayAppName:(id)appName spokenName:(id)spokenName alternativeAppNames:(id)names carPlayAlternativeDisplayName:(id)displayName spotlightName:(id)spotlightName providerName:(id)self0 error:(id *)self1;
+- (CCInstalledAppContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)alternativeAppNames;
 - (NSString)bundleIdentifier;
 - (NSString)bundleName;
@@ -12,30 +12,30 @@
 - (NSString)spokenName;
 - (NSString)spotlightName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCInstalledAppContent
 
-- (CCInstalledAppContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCInstalledAppContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"bundleName"];
-    v11 = [v6 objectForKeyedSubscript:@"displayAppName"];
-    [v6 objectForKeyedSubscript:@"spokenName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"bundleName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"displayAppName"];
+    [dictionaryCopy objectForKeyedSubscript:@"spokenName"];
     v12 = v19 = v8;
-    v13 = [v6 objectForKeyedSubscript:@"alternativeAppNames"];
-    v14 = [v6 objectForKeyedSubscript:@"carPlayAlternativeDisplayName"];
-    [v6 objectForKeyedSubscript:@"spotlightName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"alternativeAppNames"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"carPlayAlternativeDisplayName"];
+    [dictionaryCopy objectForKeyedSubscript:@"spotlightName"];
     v15 = v20 = self;
-    v16 = [v6 objectForKeyedSubscript:@"providerName"];
-    v17 = [[CCInstalledAppContent alloc] initWithBundleIdentifier:v9 bundleName:v10 displayAppName:v11 spokenName:v12 alternativeAppNames:v13 carPlayAlternativeDisplayName:v14 spotlightName:v15 providerName:v16 error:a4];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"providerName"];
+    v17 = [[CCInstalledAppContent alloc] initWithBundleIdentifier:v9 bundleName:v10 displayAppName:v11 spokenName:v12 alternativeAppNames:v13 carPlayAlternativeDisplayName:v14 spotlightName:v15 providerName:v16 error:error];
 
     self = v20;
     v8 = v19;
@@ -55,50 +55,50 @@
   v3 = objc_opt_new();
   if (self->_bundleIdentifier)
   {
-    v4 = [(CCInstalledAppContent *)self bundleIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(CCInstalledAppContent *)self bundleIdentifier];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_bundleName)
   {
-    v5 = [(CCInstalledAppContent *)self bundleName];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleName"];
+    bundleName = [(CCInstalledAppContent *)self bundleName];
+    [v3 setObject:bundleName forKeyedSubscript:@"bundleName"];
   }
 
   if (self->_displayAppName)
   {
-    v6 = [(CCInstalledAppContent *)self displayAppName];
-    [v3 setObject:v6 forKeyedSubscript:@"displayAppName"];
+    displayAppName = [(CCInstalledAppContent *)self displayAppName];
+    [v3 setObject:displayAppName forKeyedSubscript:@"displayAppName"];
   }
 
   if (self->_spokenName)
   {
-    v7 = [(CCInstalledAppContent *)self spokenName];
-    [v3 setObject:v7 forKeyedSubscript:@"spokenName"];
+    spokenName = [(CCInstalledAppContent *)self spokenName];
+    [v3 setObject:spokenName forKeyedSubscript:@"spokenName"];
   }
 
   if (self->_alternativeAppNames)
   {
-    v8 = [(CCInstalledAppContent *)self alternativeAppNames];
-    [v3 setObject:v8 forKeyedSubscript:@"alternativeAppNames"];
+    alternativeAppNames = [(CCInstalledAppContent *)self alternativeAppNames];
+    [v3 setObject:alternativeAppNames forKeyedSubscript:@"alternativeAppNames"];
   }
 
   if (self->_carPlayAlternativeDisplayName)
   {
-    v9 = [(CCInstalledAppContent *)self carPlayAlternativeDisplayName];
-    [v3 setObject:v9 forKeyedSubscript:@"carPlayAlternativeDisplayName"];
+    carPlayAlternativeDisplayName = [(CCInstalledAppContent *)self carPlayAlternativeDisplayName];
+    [v3 setObject:carPlayAlternativeDisplayName forKeyedSubscript:@"carPlayAlternativeDisplayName"];
   }
 
   if (self->_spotlightName)
   {
-    v10 = [(CCInstalledAppContent *)self spotlightName];
-    [v3 setObject:v10 forKeyedSubscript:@"spotlightName"];
+    spotlightName = [(CCInstalledAppContent *)self spotlightName];
+    [v3 setObject:spotlightName forKeyedSubscript:@"spotlightName"];
   }
 
   if (self->_providerName)
   {
-    v11 = [(CCInstalledAppContent *)self providerName];
-    [v3 setObject:v11 forKeyedSubscript:@"providerName"];
+    providerName = [(CCInstalledAppContent *)self providerName];
+    [v3 setObject:providerName forKeyedSubscript:@"providerName"];
   }
 
   v12 = [v3 copy];
@@ -106,58 +106,58 @@
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v14 = a3;
+  blockCopy = block;
   if (self->_bundleIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36437 stringValue:self->_bundleIdentifier];
-    v14[2](v14, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_bundleName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36438 stringValue:self->_bundleName];
-    v14[2](v14, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_displayAppName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36439 stringValue:self->_displayAppName];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_spokenName)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36440 stringValue:self->_spokenName];
-    v14[2](v14, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_alternativeAppNames)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36441 repeatedStringValue:self->_alternativeAppNames];
-    v14[2](v14, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_carPlayAlternativeDisplayName)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36442 stringValue:self->_carPlayAlternativeDisplayName];
-    v14[2](v14, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_spotlightName)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36443 stringValue:self->_spotlightName];
-    v14[2](v14, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
-  v12 = v14;
+  v12 = blockCopy;
   if (self->_providerName)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:36444 stringValue:self->_providerName];
-    v14[2](v14, v13);
+    blockCopy[2](blockCopy, v13);
 
-    v12 = v14;
+    v12 = blockCopy;
   }
 }
 
@@ -217,10 +217,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v39 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v39];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -426,13 +426,13 @@ LABEL_53:
   {
     CCSetError();
     v30 = 0;
-    v31 = v39;
+    v31 = dataCopy;
   }
 
   else
   {
     v32 = MEMORY[0x1E6993AA8];
-    v31 = v39;
+    v31 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v33 = objc_opt_class();
@@ -453,20 +453,20 @@ LABEL_53:
   return v30;
 }
 
-- (CCInstalledAppContent)initWithBundleIdentifier:(id)a3 bundleName:(id)a4 displayAppName:(id)a5 spokenName:(id)a6 alternativeAppNames:(id)a7 carPlayAlternativeDisplayName:(id)a8 spotlightName:(id)a9 providerName:(id)a10 error:(id *)a11
+- (CCInstalledAppContent)initWithBundleIdentifier:(id)identifier bundleName:(id)name displayAppName:(id)appName spokenName:(id)spokenName alternativeAppNames:(id)names carPlayAlternativeDisplayName:(id)displayName spotlightName:(id)spotlightName providerName:(id)self0 error:(id *)self1
 {
   v68 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v57 = a8;
-  v21 = a9;
-  v56 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  appNameCopy = appName;
+  spokenNameCopy = spokenName;
+  namesCopy = names;
+  displayNameCopy = displayName;
+  spotlightNameCopy = spotlightName;
+  providerNameCopy = providerName;
   v22 = objc_opt_new();
-  v54 = v16;
-  if (v16)
+  v54 = identifierCopy;
+  if (identifierCopy)
   {
     objc_opt_class();
     v66 = 0;
@@ -474,10 +474,10 @@ LABEL_53:
     v24 = 0;
     if (!IsInstanceOfExpectedClass)
     {
-      v28 = v17;
-      v29 = v18;
-      v30 = v19;
-      v31 = v20;
+      v28 = nameCopy;
+      v29 = appNameCopy;
+      v30 = spokenNameCopy;
+      v31 = namesCopy;
       goto LABEL_15;
     }
 
@@ -489,8 +489,8 @@ LABEL_53:
     v24 = 0;
   }
 
-  v53 = v21;
-  if (v17)
+  v53 = spotlightNameCopy;
+  if (nameCopy)
   {
     objc_opt_class();
     v65 = v24;
@@ -500,35 +500,35 @@ LABEL_53:
     if (!v25)
     {
 LABEL_12:
-      v28 = v17;
-      v29 = v18;
-      v30 = v19;
-      v31 = v20;
+      v28 = nameCopy;
+      v29 = appNameCopy;
+      v30 = spokenNameCopy;
+      v31 = namesCopy;
 LABEL_13:
       CCSetError();
       v32 = 0;
       v24 = v26;
 LABEL_37:
-      v33 = self;
-      v34 = v57;
+      selfCopy5 = self;
+      v34 = displayNameCopy;
 LABEL_38:
-      v21 = v53;
+      spotlightNameCopy = v53;
       goto LABEL_39;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v18)
+    if (!appNameCopy)
     {
 LABEL_8:
       v24 = v26;
-      if (v19)
+      if (spokenNameCopy)
       {
         goto LABEL_9;
       }
 
 LABEL_20:
       v26 = v24;
-      if (!v20)
+      if (!namesCopy)
       {
         goto LABEL_11;
       }
@@ -540,7 +540,7 @@ LABEL_20:
   else
   {
     v26 = v24;
-    if (!v18)
+    if (!appNameCopy)
     {
       goto LABEL_8;
     }
@@ -557,7 +557,7 @@ LABEL_20:
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v19)
+  if (!spokenNameCopy)
   {
     goto LABEL_20;
   }
@@ -574,7 +574,7 @@ LABEL_9:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v20)
+  if (namesCopy)
   {
 LABEL_21:
     objc_opt_class();
@@ -588,8 +588,8 @@ LABEL_21:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v52 = v20;
-      v37 = v20;
+      v52 = namesCopy;
+      v37 = namesCopy;
       v38 = [v37 countByEnumeratingWithState:&v58 objects:v67 count:16];
       if (v38)
       {
@@ -614,15 +614,15 @@ LABEL_21:
         while (v39);
       }
 
-      v20 = v52;
+      namesCopy = v52;
       goto LABEL_30;
     }
 
 LABEL_36:
-    v28 = v17;
-    v29 = v18;
-    v30 = v19;
-    v31 = v20;
+    v28 = nameCopy;
+    v29 = appNameCopy;
+    v30 = spokenNameCopy;
+    v31 = namesCopy;
     CCSetError();
     v32 = 0;
     goto LABEL_37;
@@ -631,41 +631,41 @@ LABEL_36:
 LABEL_11:
   v24 = v26;
 LABEL_30:
-  if (v57)
+  if (displayNameCopy)
   {
-    v28 = v17;
-    v29 = v18;
-    v30 = v19;
+    v28 = nameCopy;
+    v29 = appNameCopy;
+    v30 = spokenNameCopy;
     objc_opt_class();
     v43 = CCValidateIsInstanceOfExpectedClass();
-    v34 = v57;
+    v34 = displayNameCopy;
     v44 = v24;
 
     if (!v43)
     {
-      v31 = v20;
+      v31 = namesCopy;
       CCSetError();
       v32 = 0;
       v24 = v44;
-      v33 = self;
+      selfCopy5 = self;
       goto LABEL_38;
     }
 
     v24 = v44;
     CCPBDataWriterWriteStringField();
-    v19 = v30;
-    v18 = v29;
-    v17 = v28;
+    spokenNameCopy = v30;
+    appNameCopy = v29;
+    nameCopy = v28;
   }
 
-  v21 = v53;
+  spotlightNameCopy = v53;
   if (!v53)
   {
-    v31 = v20;
+    v31 = namesCopy;
     goto LABEL_42;
   }
 
-  v31 = v20;
+  v31 = namesCopy;
   objc_opt_class();
   v45 = v24;
   v46 = CCValidateIsInstanceOfExpectedClass();
@@ -675,64 +675,64 @@ LABEL_30:
   {
     CCPBDataWriterWriteStringField();
 LABEL_42:
-    v49 = self;
-    v28 = v17;
-    if (!v56)
+    selfCopy4 = self;
+    v28 = nameCopy;
+    if (!providerNameCopy)
     {
-      v29 = v18;
-      v30 = v19;
+      v29 = appNameCopy;
+      v30 = spokenNameCopy;
       goto LABEL_47;
     }
 
-    v29 = v18;
+    v29 = appNameCopy;
     objc_opt_class();
     v50 = CCValidateIsInstanceOfExpectedClass();
     v26 = v24;
 
     if (v50)
     {
-      v30 = v19;
+      v30 = spokenNameCopy;
       CCPBDataWriterWriteStringField();
       v24 = v26;
-      v49 = self;
-      v21 = v53;
+      selfCopy4 = self;
+      spotlightNameCopy = v53;
 LABEL_47:
-      v51 = [v22 immutableData];
-      v33 = [(CCItemMessage *)v49 initWithData:v51 error:a11];
+      immutableData = [v22 immutableData];
+      selfCopy5 = [(CCItemMessage *)selfCopy4 initWithData:immutableData error:error];
 
-      v32 = v33;
+      v32 = selfCopy5;
       goto LABEL_16;
     }
 
-    v30 = v19;
+    v30 = spokenNameCopy;
     goto LABEL_13;
   }
 
-  v28 = v17;
-  v29 = v18;
-  v30 = v19;
+  v28 = nameCopy;
+  v29 = appNameCopy;
+  v30 = spokenNameCopy;
 LABEL_15:
   CCSetError();
   v32 = 0;
-  v33 = self;
+  selfCopy5 = self;
 LABEL_16:
-  v34 = v57;
+  v34 = displayNameCopy;
 LABEL_39:
 
   v47 = *MEMORY[0x1E69E9840];
   return v32;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 29102) > 0xAu)
+  if ((identifier + 29102) > 0xAu)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E7690 + (a3 + 29102));
+    return *(&off_1E73E7690 + (identifier + 29102));
   }
 }
 

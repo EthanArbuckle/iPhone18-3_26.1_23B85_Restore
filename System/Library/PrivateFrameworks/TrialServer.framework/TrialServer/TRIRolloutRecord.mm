@@ -1,48 +1,48 @@
 @interface TRIRolloutRecord
-+ (id)recordWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10 artifact:(id)a11;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecord:(id)a3;
-- (TRIRolloutRecord)initWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10 artifact:(id)a11;
-- (id)copyWithReplacementActiveFactorPackSetId:(id)a3;
-- (id)copyWithReplacementActiveTargetingRuleIndex:(id)a3;
-- (id)copyWithReplacementArtifact:(id)a3;
-- (id)copyWithReplacementDeployment:(id)a3;
-- (id)copyWithReplacementNamespaces:(id)a3;
-- (id)copyWithReplacementRampId:(id)a3;
-- (id)copyWithReplacementTargetedFactorPackSetId:(id)a3;
-- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)a3;
++ (id)recordWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0 artifact:(id)self1;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecord:(id)record;
+- (TRIRolloutRecord)initWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0 artifact:(id)self1;
+- (id)copyWithReplacementActiveFactorPackSetId:(id)id;
+- (id)copyWithReplacementActiveTargetingRuleIndex:(id)index;
+- (id)copyWithReplacementArtifact:(id)artifact;
+- (id)copyWithReplacementDeployment:(id)deployment;
+- (id)copyWithReplacementNamespaces:(id)namespaces;
+- (id)copyWithReplacementRampId:(id)id;
+- (id)copyWithReplacementTargetedFactorPackSetId:(id)id;
+- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)index;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIRolloutRecord
 
-- (TRIRolloutRecord)initWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10 artifact:(id)a11
+- (TRIRolloutRecord)initWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0 artifact:(id)self1
 {
-  v16 = a3;
-  v30 = a4;
-  v17 = a4;
-  v31 = a5;
-  v18 = a5;
-  v32 = a6;
-  v19 = a6;
-  v20 = a7;
-  v35 = a8;
-  v21 = a10;
-  v22 = a11;
-  v36 = v22;
-  if (!v16)
+  deploymentCopy = deployment;
+  idCopy = id;
+  idCopy2 = id;
+  setIdCopy = setId;
+  setIdCopy2 = setId;
+  indexCopy = index;
+  indexCopy2 = index;
+  packSetIdCopy = packSetId;
+  ruleIndexCopy = ruleIndex;
+  namespacesCopy = namespaces;
+  artifactCopy = artifact;
+  v36 = artifactCopy;
+  if (!deploymentCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1925 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1925 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
 
-    v22 = v36;
+    artifactCopy = v36;
   }
 
-  v33 = v21;
-  if (v21)
+  v33 = namespacesCopy;
+  if (namespacesCopy)
   {
-    if (v22)
+    if (artifactCopy)
     {
       goto LABEL_5;
     }
@@ -50,8 +50,8 @@
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1926 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1926 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
 
     if (v36)
     {
@@ -59,8 +59,8 @@
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1927 description:{@"Invalid parameter not satisfying: %@", @"artifact != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1927 description:{@"Invalid parameter not satisfying: %@", @"artifact != nil"}];
 
 LABEL_5:
   v38.receiver = self;
@@ -69,111 +69,111 @@ LABEL_5:
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_deployment, a3);
-    objc_storeStrong(&v24->_rampId, v30);
-    objc_storeStrong(&v24->_activeFactorPackSetId, v31);
-    objc_storeStrong(&v24->_activeTargetingRuleIndex, v32);
-    objc_storeStrong(&v24->_targetedFactorPackSetId, a7);
-    objc_storeStrong(&v24->_targetedTargetingRuleIndex, a8);
-    v24->_status = a9;
-    objc_storeStrong(&v24->_namespaces, a10);
-    objc_storeStrong(&v24->_artifact, a11);
+    objc_storeStrong(&v23->_deployment, deployment);
+    objc_storeStrong(&v24->_rampId, idCopy);
+    objc_storeStrong(&v24->_activeFactorPackSetId, setIdCopy);
+    objc_storeStrong(&v24->_activeTargetingRuleIndex, indexCopy);
+    objc_storeStrong(&v24->_targetedFactorPackSetId, packSetId);
+    objc_storeStrong(&v24->_targetedTargetingRuleIndex, ruleIndex);
+    v24->_status = status;
+    objc_storeStrong(&v24->_namespaces, namespaces);
+    objc_storeStrong(&v24->_artifact, artifact);
   }
 
   return v24;
 }
 
-+ (id)recordWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10 artifact:(id)a11
++ (id)recordWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0 artifact:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [[a1 alloc] initWithDeployment:v25 rampId:v24 activeFactorPackSetId:v23 activeTargetingRuleIndex:v22 targetedFactorPackSetId:v21 targetedTargetingRuleIndex:v20 status:a9 namespaces:v19 artifact:v18];
+  artifactCopy = artifact;
+  namespacesCopy = namespaces;
+  ruleIndexCopy = ruleIndex;
+  packSetIdCopy = packSetId;
+  indexCopy = index;
+  setIdCopy = setId;
+  idCopy = id;
+  deploymentCopy = deployment;
+  v26 = [[self alloc] initWithDeployment:deploymentCopy rampId:idCopy activeFactorPackSetId:setIdCopy activeTargetingRuleIndex:indexCopy targetedFactorPackSetId:packSetIdCopy targetedTargetingRuleIndex:ruleIndexCopy status:status namespaces:namespacesCopy artifact:artifactCopy];
 
   return v26;
 }
 
-- (id)copyWithReplacementDeployment:(id)a3
+- (id)copyWithReplacementDeployment:(id)deployment
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:v4 rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  deploymentCopy = deployment;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:deploymentCopy rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementRampId:(id)a3
+- (id)copyWithReplacementRampId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:v4 activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:idCopy activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementActiveFactorPackSetId:(id)a3
+- (id)copyWithReplacementActiveFactorPackSetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:v4 activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:idCopy activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementActiveTargetingRuleIndex:(id)a3
+- (id)copyWithReplacementActiveTargetingRuleIndex:(id)index
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:v4 targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  indexCopy = index;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:indexCopy targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementTargetedFactorPackSetId:(id)a3
+- (id)copyWithReplacementTargetedFactorPackSetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:v4 targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:idCopy targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)a3
+- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)index
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:v4 status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
+  indexCopy = index;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:indexCopy status:self->_status namespaces:self->_namespaces artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementNamespaces:(id)a3
+- (id)copyWithReplacementNamespaces:(id)namespaces
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:v4 artifact:self->_artifact];
+  namespacesCopy = namespaces;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:namespacesCopy artifact:self->_artifact];
 
   return v5;
 }
 
-- (id)copyWithReplacementArtifact:(id)a3
+- (id)copyWithReplacementArtifact:(id)artifact
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:v4];
+  artifactCopy = artifact;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces artifact:artifactCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRecord:(id)a3
+- (BOOL)isEqualToRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_27;
   }
 
   v6 = self->_deployment == 0;
-  v7 = [v4 deployment];
-  v8 = v7 != 0;
+  deployment = [recordCopy deployment];
+  v8 = deployment != 0;
 
   if (v6 == v8)
   {
@@ -183,8 +183,8 @@ LABEL_5:
   deployment = self->_deployment;
   if (deployment)
   {
-    v10 = [v5 deployment];
-    v11 = [(TRIRolloutDeployment *)deployment isEqual:v10];
+    deployment2 = [v5 deployment];
+    v11 = [(TRIRolloutDeployment *)deployment isEqual:deployment2];
 
     if (!v11)
     {
@@ -193,8 +193,8 @@ LABEL_5:
   }
 
   v12 = self->_rampId == 0;
-  v13 = [v5 rampId];
-  v14 = v13 != 0;
+  rampId = [v5 rampId];
+  v14 = rampId != 0;
 
   if (v12 == v14)
   {
@@ -204,8 +204,8 @@ LABEL_5:
   rampId = self->_rampId;
   if (rampId)
   {
-    v16 = [v5 rampId];
-    v17 = [(TRIRampId *)rampId isEqual:v16];
+    rampId2 = [v5 rampId];
+    v17 = [(TRIRampId *)rampId isEqual:rampId2];
 
     if (!v17)
     {
@@ -214,8 +214,8 @@ LABEL_5:
   }
 
   v18 = self->_activeFactorPackSetId == 0;
-  v19 = [v5 activeFactorPackSetId];
-  v20 = v19 != 0;
+  activeFactorPackSetId = [v5 activeFactorPackSetId];
+  v20 = activeFactorPackSetId != 0;
 
   if (v18 == v20)
   {
@@ -225,8 +225,8 @@ LABEL_5:
   activeFactorPackSetId = self->_activeFactorPackSetId;
   if (activeFactorPackSetId)
   {
-    v22 = [v5 activeFactorPackSetId];
-    v23 = [(TRIFactorPackSetId *)activeFactorPackSetId isEqual:v22];
+    activeFactorPackSetId2 = [v5 activeFactorPackSetId];
+    v23 = [(TRIFactorPackSetId *)activeFactorPackSetId isEqual:activeFactorPackSetId2];
 
     if (!v23)
     {
@@ -235,8 +235,8 @@ LABEL_5:
   }
 
   v24 = self->_activeTargetingRuleIndex == 0;
-  v25 = [v5 activeTargetingRuleIndex];
-  v26 = v25 != 0;
+  activeTargetingRuleIndex = [v5 activeTargetingRuleIndex];
+  v26 = activeTargetingRuleIndex != 0;
 
   if (v24 == v26)
   {
@@ -246,8 +246,8 @@ LABEL_5:
   activeTargetingRuleIndex = self->_activeTargetingRuleIndex;
   if (activeTargetingRuleIndex)
   {
-    v28 = [v5 activeTargetingRuleIndex];
-    v29 = [(NSNumber *)activeTargetingRuleIndex isEqual:v28];
+    activeTargetingRuleIndex2 = [v5 activeTargetingRuleIndex];
+    v29 = [(NSNumber *)activeTargetingRuleIndex isEqual:activeTargetingRuleIndex2];
 
     if (!v29)
     {
@@ -256,8 +256,8 @@ LABEL_5:
   }
 
   v30 = self->_targetedFactorPackSetId == 0;
-  v31 = [v5 targetedFactorPackSetId];
-  v32 = v31 != 0;
+  targetedFactorPackSetId = [v5 targetedFactorPackSetId];
+  v32 = targetedFactorPackSetId != 0;
 
   if (v30 == v32)
   {
@@ -267,8 +267,8 @@ LABEL_5:
   targetedFactorPackSetId = self->_targetedFactorPackSetId;
   if (targetedFactorPackSetId)
   {
-    v34 = [v5 targetedFactorPackSetId];
-    v35 = [(TRIFactorPackSetId *)targetedFactorPackSetId isEqual:v34];
+    targetedFactorPackSetId2 = [v5 targetedFactorPackSetId];
+    v35 = [(TRIFactorPackSetId *)targetedFactorPackSetId isEqual:targetedFactorPackSetId2];
 
     if (!v35)
     {
@@ -277,8 +277,8 @@ LABEL_5:
   }
 
   v36 = self->_targetedTargetingRuleIndex == 0;
-  v37 = [v5 targetedTargetingRuleIndex];
-  v38 = v37 != 0;
+  targetedTargetingRuleIndex = [v5 targetedTargetingRuleIndex];
+  v38 = targetedTargetingRuleIndex != 0;
 
   if (v36 == v38)
   {
@@ -288,8 +288,8 @@ LABEL_5:
   targetedTargetingRuleIndex = self->_targetedTargetingRuleIndex;
   if (targetedTargetingRuleIndex)
   {
-    v40 = [v5 targetedTargetingRuleIndex];
-    v41 = [(NSNumber *)targetedTargetingRuleIndex isEqual:v40];
+    targetedTargetingRuleIndex2 = [v5 targetedTargetingRuleIndex];
+    v41 = [(NSNumber *)targetedTargetingRuleIndex isEqual:targetedTargetingRuleIndex2];
 
     if (!v41)
     {
@@ -304,8 +304,8 @@ LABEL_5:
   }
 
   v43 = self->_namespaces == 0;
-  v44 = [v5 namespaces];
-  v45 = v44 != 0;
+  namespaces = [v5 namespaces];
+  v45 = namespaces != 0;
 
   if (v43 == v45)
   {
@@ -315,8 +315,8 @@ LABEL_5:
   namespaces = self->_namespaces;
   if (namespaces)
   {
-    v47 = [v5 namespaces];
-    v48 = [(NSArray *)namespaces isEqual:v47];
+    namespaces2 = [v5 namespaces];
+    v48 = [(NSArray *)namespaces isEqual:namespaces2];
 
     if (!v48)
     {
@@ -325,8 +325,8 @@ LABEL_5:
   }
 
   v49 = self->_artifact == 0;
-  v50 = [v5 artifact];
-  v51 = v50 != 0;
+  artifact = [v5 artifact];
+  v51 = artifact != 0;
 
   if (v49 == v51)
   {
@@ -339,8 +339,8 @@ LABEL_27:
     artifact = self->_artifact;
     if (artifact)
     {
-      v53 = [v5 artifact];
-      v54 = [(TRIClientRolloutArtifact *)artifact isEqual:v53];
+      artifact2 = [v5 artifact];
+      v54 = [(TRIClientRolloutArtifact *)artifact isEqual:artifact2];
     }
 
     else
@@ -352,18 +352,18 @@ LABEL_27:
   return v54 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutRecord *)self isEqualToRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutRecord *)self isEqualToRecord:v5];
   }
 
   return v6;

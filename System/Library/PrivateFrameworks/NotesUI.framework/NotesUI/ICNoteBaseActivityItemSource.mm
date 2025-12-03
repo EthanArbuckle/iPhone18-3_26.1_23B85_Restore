@@ -1,26 +1,26 @@
 @interface ICNoteBaseActivityItemSource
-- (ICNoteBaseActivityItemSource)initWithTitle:(id)a3;
+- (ICNoteBaseActivityItemSource)initWithTitle:(id)title;
 @end
 
 @implementation ICNoteBaseActivityItemSource
 
-- (ICNoteBaseActivityItemSource)initWithTitle:(id)a3
+- (ICNoteBaseActivityItemSource)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v8.receiver = self;
   v8.super_class = ICNoteBaseActivityItemSource;
   v5 = [(ICNoteBaseActivityItemSource *)&v8 init];
   if (v5)
   {
-    if ([v4 length])
+    if ([titleCopy length])
     {
-      [(ICNoteBaseActivityItemSource *)v5 setTitle:v4];
+      [(ICNoteBaseActivityItemSource *)v5 setTitle:titleCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69B77F0] defaultTitleForEmptyNote];
-      [(ICNoteBaseActivityItemSource *)v5 setTitle:v6];
+      defaultTitleForEmptyNote = [MEMORY[0x1E69B77F0] defaultTitleForEmptyNote];
+      [(ICNoteBaseActivityItemSource *)v5 setTitle:defaultTitleForEmptyNote];
     }
   }
 

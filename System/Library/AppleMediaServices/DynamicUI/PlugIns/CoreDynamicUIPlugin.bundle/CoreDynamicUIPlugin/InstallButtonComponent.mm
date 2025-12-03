@@ -1,20 +1,20 @@
 @interface InstallButtonComponent
 - (BOOL)isHighlighted;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)accessibilityLabel;
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4;
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
 - (void)prepareForReuse;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation InstallButtonComponent
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_44F34();
   v4 = v3;
 
@@ -31,46 +31,46 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_8F5F4();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_18714();
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4503C();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_450C8(a3);
+  selfCopy = self;
+  sub_450C8(highlighted);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_45128();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_451C4();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   sub_452FC();
   v7 = v6;
   v9 = v8;
@@ -82,19 +82,19 @@
   return result;
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  changeCopy = change;
+  selfCopy = self;
   sub_46758();
 }
 
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_46DCC();
 
   swift_unknownObjectRelease();

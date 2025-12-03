@@ -5,12 +5,12 @@
 - (BOOL)isFileWithFinderInfoAliasBit;
 - (BOOL)isFinderAlias;
 - (BRCGenerationID)generationID;
-- (BRCImportObject)initWithURL:(id)a3 existingItem:(id)a4 quarantineInfo:(id)a5 error:(id *)a6;
-- (BRCImportObject)initWithURL:(id)a3 logicalName:(id)a4 quarantineInfo:(id)a5 parentItem:(id)a6 error:(id *)a7;
-- (BRCImportObject)initWithURL:(id)a3 packageRoot:(id)a4 error:(id *)a5;
-- (id)initAsNewDirectoryWithLogicalName:(id)a3 parentItem:(id)a4;
-- (id)initAsSymlinkWithTarget:(id)a3 parentItem:(id)a4 logicalName:(id)a5 error:(id *)a6;
-- (void)_resolveParentBasedPropertiesWithParent:(id)a3 logicalName:(id)a4;
+- (BRCImportObject)initWithURL:(id)l existingItem:(id)item quarantineInfo:(id)info error:(id *)error;
+- (BRCImportObject)initWithURL:(id)l logicalName:(id)name quarantineInfo:(id)info parentItem:(id)item error:(id *)error;
+- (BRCImportObject)initWithURL:(id)l packageRoot:(id)root error:(id *)error;
+- (id)initAsNewDirectoryWithLogicalName:(id)name parentItem:(id)item;
+- (id)initAsSymlinkWithTarget:(id)target parentItem:(id)item logicalName:(id)name error:(id *)error;
+- (void)_resolveParentBasedPropertiesWithParent:(id)parent logicalName:(id)name;
 @end
 
 @implementation BRCImportObject
@@ -39,16 +39,16 @@
 
 - (BOOL)isFault
 {
-  v3 = [(BRCImportObject *)self isDocument];
-  if (v3)
+  isDocument = [(BRCImportObject *)self isDocument];
+  if (isDocument)
   {
-    v4 = [(BRCImportObject *)self logicalName];
-    v5 = [v4 br_isSideFaultName];
+    logicalName = [(BRCImportObject *)self logicalName];
+    br_isSideFaultName = [logicalName br_isSideFaultName];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isDocument) = br_isSideFaultName;
   }
 
-  return v3;
+  return isDocument;
 }
 
 - (BRCGenerationID)generationID
@@ -68,43 +68,43 @@
 
 - (BOOL)isFileWithFinderInfoAliasBit
 {
-  v3 = [(BRCImportObject *)self isFile];
-  if (v3)
+  isFile = [(BRCImportObject *)self isFile];
+  if (isFile)
   {
     return (*(self + 161) >> 5) & 1;
   }
 
-  return v3;
+  return isFile;
 }
 
 - (BOOL)isFinderAlias
 {
-  v3 = [(BRCImportObject *)self isFileWithFinderInfoAliasBit];
-  if (v3)
+  isFileWithFinderInfoAliasBit = [(BRCImportObject *)self isFileWithFinderInfoAliasBit];
+  if (isFileWithFinderInfoAliasBit)
   {
-    LOBYTE(v3) = (*(self + 161) & 0x40) == 0;
+    LOBYTE(isFileWithFinderInfoAliasBit) = (*(self + 161) & 0x40) == 0;
   }
 
-  return v3;
+  return isFileWithFinderInfoAliasBit;
 }
 
 - (BOOL)isBRAlias
 {
-  v3 = [(BRCImportObject *)self isFileWithFinderInfoAliasBit];
-  if (v3)
+  isFileWithFinderInfoAliasBit = [(BRCImportObject *)self isFileWithFinderInfoAliasBit];
+  if (isFileWithFinderInfoAliasBit)
   {
     return (*(self + 161) >> 6) & 1;
   }
 
-  return v3;
+  return isFileWithFinderInfoAliasBit;
 }
 
-- (id)initAsSymlinkWithTarget:(id)a3 parentItem:(id)a4 logicalName:(id)a5 error:(id *)a6
+- (id)initAsSymlinkWithTarget:(id)target parentItem:(id)item logicalName:(id)name error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  targetCopy = target;
+  itemCopy = item;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = BRCImportObject;
   v14 = [(BRCImportObject *)&v24 init];
@@ -114,13 +114,13 @@
     goto LABEL_4;
   }
 
-  if (v11)
+  if (targetCopy)
   {
-    [(BRCImportObject *)v14 _resolveParentBasedPropertiesWithParent:v12 logicalName:v13];
+    [(BRCImportObject *)v14 _resolveParentBasedPropertiesWithParent:itemCopy logicalName:nameCopy];
     v15->_mode = -24128;
     v15->_birthtime.tv_sec = time(0);
     v15->_mtime = v15->_birthtime;
-    objc_storeStrong(&v15->_symlinkContent, a3);
+    objc_storeStrong(&v15->_symlinkContent, target);
 LABEL_4:
     v16 = v15;
     goto LABEL_11;
@@ -137,7 +137,7 @@ LABEL_4:
       *buf = 136315906;
       v26 = "[BRCImportObject initAsSymlinkWithTarget:parentItem:logicalName:error:]";
       v27 = 2080;
-      if (!a6)
+      if (!error)
       {
         v23 = "(ignored by caller)";
       }
@@ -151,10 +151,10 @@ LABEL_4:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   v16 = 0;
@@ -164,11 +164,11 @@ LABEL_11:
   return v16;
 }
 
-- (BRCImportObject)initWithURL:(id)a3 existingItem:(id)a4 quarantineInfo:(id)a5 error:(id *)a6
+- (BRCImportObject)initWithURL:(id)l existingItem:(id)item quarantineInfo:(id)info error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  itemCopy = item;
   v39.receiver = self;
   v39.super_class = BRCImportObject;
   v12 = [(BRCImportObject *)&v39 init];
@@ -179,26 +179,26 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v13 = [v10 fileSystemRepresentation];
-  objc_storeStrong(&v12->_fileURL, a3);
-  if (v11)
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  objc_storeStrong(&v12->_fileURL, l);
+  if (itemCopy)
   {
-    v14 = [v11 st];
-    v15 = [v14 logicalName];
+    v14 = [itemCopy st];
+    logicalName = [v14 logicalName];
     p_logicalName = &v12->_logicalName;
     logicalName = v12->_logicalName;
-    v12->_logicalName = v15;
+    v12->_logicalName = logicalName;
   }
 
   else
   {
-    v18 = [v10 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     p_logicalName = &v12->_logicalName;
     v14 = v12->_logicalName;
-    v12->_logicalName = v18;
+    v12->_logicalName = lastPathComponent;
   }
 
-  v19 = open(v13, 2129924);
+  v19 = open(fileSystemRepresentation, 2129924);
   if ((v19 & 0x80000000) != 0)
   {
     v21 = *__error();
@@ -222,9 +222,9 @@ LABEL_14:
       v28 = brc_default_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(NSURL *)v12->_fileURL path];
+        path = [(NSURL *)v12->_fileURL path];
         *buf = 138412546;
-        v41 = v29;
+        v41 = path;
         v42 = 2112;
         v43 = v27;
         _os_log_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEFAULT, "[WARNING] fileURL is excluded at %@%@", buf, 0x16u);
@@ -233,26 +233,26 @@ LABEL_14:
       *(v12 + 161) |= 1u;
     }
 
-    if ([v11 isDocument] && -[BRCImportObject isUnixDir](v12, "isUnixDir"))
+    if ([itemCopy isDocument] && -[BRCImportObject isUnixDir](v12, "isUnixDir"))
     {
       *(v12 + 161) |= 4u;
     }
 
-    v30 = [v11 session];
+    session = [itemCopy session];
     session = v12->_session;
-    v12->_session = v30;
+    v12->_session = session;
 
-    v32 = [v11 itemParentGlobalID];
+    itemParentGlobalID = [itemCopy itemParentGlobalID];
     parentItemGlobalID = v12->_parentItemGlobalID;
-    v12->_parentItemGlobalID = v32;
+    v12->_parentItemGlobalID = itemParentGlobalID;
 
-    v34 = [v11 appLibrary];
+    appLibrary = [itemCopy appLibrary];
     appLibrary = v12->_appLibrary;
-    v12->_appLibrary = v34;
+    v12->_appLibrary = appLibrary;
 
-    v12->_itemScope = [v11 itemScope];
-    v12->_sharingOptions = [v11 sharingOptions];
-    v12->_isUserVisible = [v11 isUserVisible];
+    v12->_itemScope = [itemCopy itemScope];
+    v12->_sharingOptions = [itemCopy sharingOptions];
+    v12->_isUserVisible = [itemCopy isUserVisible];
     goto LABEL_22;
   }
 
@@ -268,7 +268,7 @@ LABEL_7:
       *buf = 136315906;
       v41 = "[BRCImportObject initWithURL:existingItem:quarantineInfo:error:]";
       v42 = 2080;
-      if (!a6)
+      if (!error)
       {
         v38 = "(ignored by caller)";
       }
@@ -282,10 +282,10 @@ LABEL_7:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v25 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
   v26 = 0;
@@ -295,35 +295,35 @@ LABEL_23:
   return v26;
 }
 
-- (void)_resolveParentBasedPropertiesWithParent:(id)a3 logicalName:(id)a4
+- (void)_resolveParentBasedPropertiesWithParent:(id)parent logicalName:(id)name
 {
-  v33 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_logicalName, a4);
-  v8 = [v33 session];
+  parentCopy = parent;
+  nameCopy = name;
+  objc_storeStrong(&self->_logicalName, name);
+  session = [parentCopy session];
   session = self->_session;
-  self->_session = v8;
+  self->_session = session;
 
-  v10 = [v33 itemGlobalID];
+  itemGlobalID = [parentCopy itemGlobalID];
   parentItemGlobalID = self->_parentItemGlobalID;
-  self->_parentItemGlobalID = v10;
+  self->_parentItemGlobalID = itemGlobalID;
 
-  v12 = [v33 appLibrary];
+  appLibrary = [parentCopy appLibrary];
   appLibrary = self->_appLibrary;
-  self->_appLibrary = v12;
+  self->_appLibrary = appLibrary;
 
-  v14 = [(BRCAppLibrary *)self->_appLibrary includesDataScope];
-  if ([v33 isZoneRoot])
+  includesDataScope = [(BRCAppLibrary *)self->_appLibrary includesDataScope];
+  if ([parentCopy isZoneRoot])
   {
-    if (v14)
+    if (includesDataScope)
     {
-      v15 = [v7 isEqualToString:*MEMORY[0x277CFAD50]] == 0;
+      v15 = [nameCopy isEqualToString:*MEMORY[0x277CFAD50]] == 0;
       v16 = 1;
     }
 
     else
     {
-      v15 = [v7 isEqualToString:*MEMORY[0x277CFADB8]] == 0;
+      v15 = [nameCopy isEqualToString:*MEMORY[0x277CFADB8]] == 0;
       v16 = 2;
     }
 
@@ -335,10 +335,10 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v17 = [v33 itemID];
-  if ([v17 isDocumentsFolder])
+  itemID = [parentCopy itemID];
+  if ([itemID isDocumentsFolder])
   {
-    v18 = [v7 isEqualToString:*MEMORY[0x277CFADB8]];
+    v18 = [nameCopy isEqualToString:*MEMORY[0x277CFADB8]];
 
     if (v18)
     {
@@ -353,46 +353,46 @@ LABEL_10:
   {
   }
 
-  self->_itemScope = [v33 itemScope];
+  self->_itemScope = [parentCopy itemScope];
 LABEL_13:
-  if ([v7 isEqualToString:*MEMORY[0x277CFAD90]])
+  if ([nameCopy isEqualToString:*MEMORY[0x277CFAD90]])
   {
-    v19 = [v33 fileObjectID];
-    if ([v19 isAppLibraryRoot] && (objc_msgSend(v19, "isCloudDocsRoot") & 1) == 0)
+    fileObjectID = [parentCopy fileObjectID];
+    if ([fileObjectID isAppLibraryRoot] && (objc_msgSend(fileObjectID, "isCloudDocsRoot") & 1) == 0)
     {
-      v20 = [v33 appLibrary];
+      appLibrary2 = [parentCopy appLibrary];
       v21 = self->_appLibrary;
-      self->_appLibrary = v20;
-      v22 = v20;
+      self->_appLibrary = appLibrary2;
+      v22 = appLibrary2;
 
       *(self + 162) |= 2u;
-      v23 = [(BRCAppLibrary *)v22 rootItemGlobalID];
+      rootItemGlobalID = [(BRCAppLibrary *)v22 rootItemGlobalID];
       v24 = self->_parentItemGlobalID;
-      self->_parentItemGlobalID = v23;
+      self->_parentItemGlobalID = rootItemGlobalID;
     }
   }
 
-  self->_sharingOptions = [v33 sharingOptions] & 0x78;
-  v25 = [v33 isUserVisible];
-  v26 = [v33 itemID];
-  v27 = [v26 isNonDesktopRoot];
-  v28 = [v33 itemScope];
-  v29 = [v33 isZoneRoot];
-  if (v29)
+  self->_sharingOptions = [parentCopy sharingOptions] & 0x78;
+  isUserVisible = [parentCopy isUserVisible];
+  itemID2 = [parentCopy itemID];
+  isNonDesktopRoot = [itemID2 isNonDesktopRoot];
+  itemScope = [parentCopy itemScope];
+  isZoneRoot = [parentCopy isZoneRoot];
+  if (isZoneRoot)
   {
-    v30 = 0;
+    logicalName = 0;
   }
 
   else
   {
-    v4 = [v33 st];
-    v30 = [v4 logicalName];
+    v4 = [parentCopy st];
+    logicalName = [v4 logicalName];
   }
 
-  v31 = [v33 appLibrary];
-  self->_isUserVisible = [BRCLocalItem computeUserVisibleStatusOfLiveItemWithParentVisible:v25 parentIsNonDesktopRoot:v27 parentScope:v28 itemFilename:v32 parentFilename:v30 appLibrary:v31];
+  appLibrary3 = [parentCopy appLibrary];
+  self->_isUserVisible = [BRCLocalItem computeUserVisibleStatusOfLiveItemWithParentVisible:isUserVisible parentIsNonDesktopRoot:isNonDesktopRoot parentScope:itemScope itemFilename:v32 parentFilename:logicalName appLibrary:appLibrary3];
 
-  if ((v29 & 1) == 0)
+  if ((isZoneRoot & 1) == 0)
   {
   }
 
@@ -402,17 +402,17 @@ LABEL_13:
   }
 }
 
-- (id)initAsNewDirectoryWithLogicalName:(id)a3 parentItem:(id)a4
+- (id)initAsNewDirectoryWithLogicalName:(id)name parentItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = BRCImportObject;
   v8 = [(BRCImportObject *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(BRCImportObject *)v8 _resolveParentBasedPropertiesWithParent:v7 logicalName:v6];
+    [(BRCImportObject *)v8 _resolveParentBasedPropertiesWithParent:itemCopy logicalName:nameCopy];
     v9->_mode = 16832;
     v9->_birthtime.tv_sec = time(0);
     v9->_mtime = v9->_birthtime;
@@ -421,13 +421,13 @@ LABEL_13:
   return v9;
 }
 
-- (BRCImportObject)initWithURL:(id)a3 logicalName:(id)a4 quarantineInfo:(id)a5 parentItem:(id)a6 error:(id *)a7
+- (BRCImportObject)initWithURL:(id)l logicalName:(id)name quarantineInfo:(id)info parentItem:(id)item error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  lCopy = l;
+  nameCopy = name;
+  infoCopy = info;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = BRCImportObject;
   v17 = [(BRCImportObject *)&v36 init];
@@ -438,11 +438,11 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v18 = [v13 fileSystemRepresentation];
-  objc_storeStrong(&v17->_fileURL, a3);
-  objc_storeStrong(&v17->_logicalName, a4);
-  objc_storeStrong(&v17->_quarantineInfo, a5);
-  v24 = BRCOpenAt(0xFFFFFFFFLL, v18, 32772, v19, v20, v21, v22, v23, v36.receiver);
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  objc_storeStrong(&v17->_fileURL, l);
+  objc_storeStrong(&v17->_logicalName, name);
+  objc_storeStrong(&v17->_quarantineInfo, info);
+  v24 = BRCOpenAt(0xFFFFFFFFLL, fileSystemRepresentation, 32772, v19, v20, v21, v22, v23, v36.receiver);
   if ((v24 & 0x80000000) != 0)
   {
     v26 = *__error();
@@ -471,7 +471,7 @@ LABEL_11:
     }
 
     *(v17 + 161) = *(v17 + 161) & 0xFB | v32;
-    [(BRCImportObject *)v17 _resolveParentBasedPropertiesWithParent:v16 logicalName:v14];
+    [(BRCImportObject *)v17 _resolveParentBasedPropertiesWithParent:itemCopy logicalName:nameCopy];
     goto LABEL_15;
   }
 
@@ -487,7 +487,7 @@ LABEL_4:
       *buf = 136315906;
       v38 = "[BRCImportObject initWithURL:logicalName:quarantineInfo:parentItem:error:]";
       v39 = 2080;
-      if (!a7)
+      if (!error)
       {
         v35 = "(ignored by caller)";
       }
@@ -501,10 +501,10 @@ LABEL_4:
     }
   }
 
-  if (a7)
+  if (error)
   {
     v30 = v27;
-    *a7 = v27;
+    *error = v27;
   }
 
   v31 = 0;
@@ -514,11 +514,11 @@ LABEL_16:
   return v31;
 }
 
-- (BRCImportObject)initWithURL:(id)a3 packageRoot:(id)a4 error:(id *)a5
+- (BRCImportObject)initWithURL:(id)l packageRoot:(id)root error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  rootCopy = root;
   v35.receiver = self;
   v35.super_class = BRCImportObject;
   v11 = [(BRCImportObject *)&v35 init];
@@ -527,18 +527,18 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v12 = [v10 session];
+  session = [rootCopy session];
   session = v11->_session;
-  v11->_session = v12;
+  v11->_session = session;
 
-  v14 = [v10 appLibrary];
+  appLibrary = [rootCopy appLibrary];
   appLibrary = v11->_appLibrary;
-  v11->_appLibrary = v14;
+  v11->_appLibrary = appLibrary;
 
-  objc_storeStrong(&v11->_fileURL, a3);
-  v16 = [(NSURL *)v11->_fileURL lastPathComponent];
+  objc_storeStrong(&v11->_fileURL, l);
+  lastPathComponent = [(NSURL *)v11->_fileURL lastPathComponent];
   logicalName = v11->_logicalName;
-  v11->_logicalName = v16;
+  v11->_logicalName = lastPathComponent;
 
   *(v11 + 161) |= 2u;
   if ([(NSString *)v11->_logicalName br_isExcludedWithMaximumDepth:1])
@@ -547,9 +547,9 @@ LABEL_16:
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(NSURL *)v11->_fileURL path];
+      path = [(NSURL *)v11->_fileURL path];
       *buf = 138412546;
-      v37 = v20;
+      v37 = path;
       v38 = 2112;
       *v39 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] Package item is excluded at %@%@", buf, 0x16u);
@@ -578,9 +578,9 @@ LABEL_16:
   v26 = brc_default_log();
   if (os_log_type_enabled(v26, 0x90u))
   {
-    v34 = [(NSURL *)v11->_fileURL path];
+    path2 = [(NSURL *)v11->_fileURL path];
     *buf = 138412802;
-    v37 = v34;
+    v37 = path2;
     v38 = 1024;
     *v39 = v24;
     *&v39[4] = 2112;
@@ -603,7 +603,7 @@ LABEL_12:
         *buf = 136315906;
         v37 = "[BRCImportObject(BRCPackageAdditions) initWithURL:packageRoot:error:]";
         v38 = 2080;
-        if (!a5)
+        if (!error)
         {
           v33 = "(ignored by caller)";
         }
@@ -617,10 +617,10 @@ LABEL_12:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v30 = v27;
-      *a5 = v27;
+      *error = v27;
     }
 
     v11 = 0;

@@ -1,36 +1,36 @@
 @interface ASCDigitalIdentityCredential
-- (ASCDigitalIdentityCredential)initWithCoder:(id)a3;
-- (ASCDigitalIdentityCredential)initWithCommandResponseData:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCDigitalIdentityCredential)initWithCoder:(id)coder;
+- (ASCDigitalIdentityCredential)initWithCommandResponseData:(id)data;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASCDigitalIdentityCredential
 
-- (ASCDigitalIdentityCredential)initWithCommandResponseData:(id)a3
+- (ASCDigitalIdentityCredential)initWithCommandResponseData:(id)data
 {
-  v4 = a3;
-  if (v4 && (v9.receiver = self, v9.super_class = ASCDigitalIdentityCredential, (self = [(ASCDigitalIdentityCredential *)&v9 init]) != 0))
+  dataCopy = data;
+  if (dataCopy && (v9.receiver = self, v9.super_class = ASCDigitalIdentityCredential, (self = [(ASCDigitalIdentityCredential *)&v9 init]) != 0))
   {
-    v5 = [v4 copy];
+    v5 = [dataCopy copy];
     commandResponseData = self->_commandResponseData;
     self->_commandResponseData = v5;
 
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -41,8 +41,8 @@
     if (objc_opt_isKindOfClass())
     {
       commandResponseData = self->_commandResponseData;
-      v6 = [(ASCDigitalIdentityCredential *)v4 commandResponseData];
-      v7 = [(NSData *)commandResponseData isEqual:v6];
+      commandResponseData = [(ASCDigitalIdentityCredential *)equalCopy commandResponseData];
+      v7 = [(NSData *)commandResponseData isEqual:commandResponseData];
     }
 
     else
@@ -54,10 +54,10 @@
   return v7;
 }
 
-- (ASCDigitalIdentityCredential)initWithCoder:(id)a3
+- (ASCDigitalIdentityCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"commandResponseData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"commandResponseData"];
 
   v6 = [(ASCDigitalIdentityCredential *)self initWithCommandResponseData:v5];
   return v6;

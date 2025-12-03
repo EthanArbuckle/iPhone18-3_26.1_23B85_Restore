@@ -1,47 +1,47 @@
 @interface _UITabBarControllerSidebarAnimator
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 - (void)runAnimations;
 - (void)runCompletions;
 @end
 
 @implementation _UITabBarControllerSidebarAnimator
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   animationBlocks = self->_animationBlocks;
-  aBlock = v4;
+  aBlock = animationsCopy;
   if (!animationBlocks)
   {
     v6 = objc_opt_new();
     v7 = self->_animationBlocks;
     self->_animationBlocks = v6;
 
-    v4 = aBlock;
+    animationsCopy = aBlock;
     animationBlocks = self->_animationBlocks;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(animationsCopy);
   [(NSMutableArray *)animationBlocks addObject:v8];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completionBlocks = self->_completionBlocks;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completionBlocks)
   {
     v6 = objc_opt_new();
     v7 = self->_completionBlocks;
     self->_completionBlocks = v6;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completionBlocks = self->_completionBlocks;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completionBlocks addObject:v8];
 }
 

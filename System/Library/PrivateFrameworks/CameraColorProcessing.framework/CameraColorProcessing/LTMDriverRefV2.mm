@@ -1,6 +1,6 @@
 @interface LTMDriverRefV2
 - (LTMDriverRefV2)init;
-- (int)computeLtmComputeInput:(const sCLRProcHITHStat_SOFTISP *)a3 withMetadata:(const sRefDriverInputs_SOFTISP *)a4 to:(sLtmComputeInput_SOFTISP *)a5 computeInputMetadata:(sLtmComputeMeta_SOFTISP *)a6;
+- (int)computeLtmComputeInput:(const sCLRProcHITHStat_SOFTISP *)input withMetadata:(const sRefDriverInputs_SOFTISP *)metadata to:(sLtmComputeInput_SOFTISP *)to computeInputMetadata:(sLtmComputeMeta_SOFTISP *)inputMetadata;
 - (void)dealloc;
 @end
 
@@ -42,12 +42,12 @@
   [(LTMDriverRefV2 *)&v4 dealloc];
 }
 
-- (int)computeLtmComputeInput:(const sCLRProcHITHStat_SOFTISP *)a3 withMetadata:(const sRefDriverInputs_SOFTISP *)a4 to:(sLtmComputeInput_SOFTISP *)a5 computeInputMetadata:(sLtmComputeMeta_SOFTISP *)a6
+- (int)computeLtmComputeInput:(const sCLRProcHITHStat_SOFTISP *)input withMetadata:(const sRefDriverInputs_SOFTISP *)metadata to:(sLtmComputeInput_SOFTISP *)to computeInputMetadata:(sLtmComputeMeta_SOFTISP *)inputMetadata
 {
   ltmDriver = self->_ltmDriver;
   if (ltmDriver)
   {
-    (*(ltmDriver->var0 + 1))(ltmDriver, a2, a3, a4, a5, a6);
+    (*(ltmDriver->var0 + 1))(ltmDriver, a2, input, metadata, to, inputMetadata);
     self->_ltmDriver = 0;
   }
 

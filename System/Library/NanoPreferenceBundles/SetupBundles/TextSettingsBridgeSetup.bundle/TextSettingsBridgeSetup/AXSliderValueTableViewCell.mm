@@ -1,5 +1,5 @@
 @interface AXSliderValueTableViewCell
-- (AXSliderValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXSliderValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (AXSliderValueTableViewCellDelegate)delegate;
 - (UIImage)maximumValueImage;
 - (UIImage)minimumValueImage;
@@ -7,23 +7,23 @@
 - (double)minimumValue;
 - (double)value;
 - (unint64_t)segmentCount;
-- (void)_sliderChanged:(id)a3;
+- (void)_sliderChanged:(id)changed;
 - (void)didMoveToSuperview;
-- (void)setMaximumValue:(double)a3;
-- (void)setMaximumValueImage:(id)a3;
-- (void)setMinimumValue:(double)a3;
-- (void)setMinimumValueImage:(id)a3;
-- (void)setSegmentCount:(unint64_t)a3;
-- (void)setValue:(double)a3;
+- (void)setMaximumValue:(double)value;
+- (void)setMaximumValueImage:(id)image;
+- (void)setMinimumValue:(double)value;
+- (void)setMinimumValueImage:(id)image;
+- (void)setSegmentCount:(unint64_t)count;
+- (void)setValue:(double)value;
 @end
 
 @implementation AXSliderValueTableViewCell
 
-- (AXSliderValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXSliderValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = AXSliderValueTableViewCell;
-  v4 = [(AXSliderValueTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXSliderValueTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,31 +31,31 @@
     v6 = objc_alloc_init(PSSegmentableSlider);
     [(AXSliderValueTableViewCell *)v5 setSlider:v6];
 
-    v7 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v7 setMinimumValue:0.0];
+    slider = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider setMinimumValue:0.0];
 
-    v8 = [(AXSliderValueTableViewCell *)v5 slider];
+    slider2 = [(AXSliderValueTableViewCell *)v5 slider];
     LODWORD(v9) = 1.0;
-    [v8 setMaximumValue:v9];
+    [slider2 setMaximumValue:v9];
 
-    v10 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v10 setSegmented:1];
+    slider3 = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider3 setSegmented:1];
 
-    v11 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v11 setSnapsToSegment:1];
+    slider4 = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider4 setSnapsToSegment:1];
 
-    v12 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v12 setContinuous:1];
+    slider5 = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider5 setContinuous:1];
 
-    v13 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    slider6 = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v14 addTarget:v5 action:"_sliderChanged:" forControlEvents:4096];
+    slider7 = [(AXSliderValueTableViewCell *)v5 slider];
+    [slider7 addTarget:v5 action:"_sliderChanged:" forControlEvents:4096];
 
-    v15 = [(AXSliderValueTableViewCell *)v5 contentView];
-    v16 = [(AXSliderValueTableViewCell *)v5 slider];
-    [v15 addSubview:v16];
+    contentView = [(AXSliderValueTableViewCell *)v5 contentView];
+    slider8 = [(AXSliderValueTableViewCell *)v5 slider];
+    [contentView addSubview:slider8];
   }
 
   return v5;
@@ -66,33 +66,33 @@
   v28.receiver = self;
   v28.super_class = AXSliderValueTableViewCell;
   [(AXSliderValueTableViewCell *)&v28 didMoveToSuperview];
-  v27 = [(AXSliderValueTableViewCell *)self slider];
-  v25 = [v27 leadingAnchor];
-  v26 = [(AXSliderValueTableViewCell *)self contentView];
-  v24 = [v26 readableContentGuide];
-  v23 = [v24 leadingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  leadingAnchor = [slider leadingAnchor];
+  contentView = [(AXSliderValueTableViewCell *)self contentView];
+  readableContentGuide = [contentView readableContentGuide];
+  leadingAnchor2 = [readableContentGuide leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v22;
-  v21 = [(AXSliderValueTableViewCell *)self slider];
-  v19 = [v21 topAnchor];
-  v20 = [(AXSliderValueTableViewCell *)self contentView];
-  v18 = [v20 readableContentGuide];
-  v17 = [v18 topAnchor];
-  v16 = [v19 constraintEqualToAnchor:v17];
+  slider2 = [(AXSliderValueTableViewCell *)self slider];
+  topAnchor = [slider2 topAnchor];
+  contentView2 = [(AXSliderValueTableViewCell *)self contentView];
+  readableContentGuide2 = [contentView2 readableContentGuide];
+  topAnchor2 = [readableContentGuide2 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[1] = v16;
-  v15 = [(AXSliderValueTableViewCell *)self slider];
-  v13 = [v15 bottomAnchor];
-  v14 = [(AXSliderValueTableViewCell *)self contentView];
-  v3 = [v14 readableContentGuide];
-  v4 = [v3 bottomAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4];
+  slider3 = [(AXSliderValueTableViewCell *)self slider];
+  bottomAnchor = [slider3 bottomAnchor];
+  contentView3 = [(AXSliderValueTableViewCell *)self contentView];
+  readableContentGuide3 = [contentView3 readableContentGuide];
+  bottomAnchor2 = [readableContentGuide3 bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[2] = v5;
-  v6 = [(AXSliderValueTableViewCell *)self slider];
-  v7 = [v6 trailingAnchor];
-  v8 = [(AXSliderValueTableViewCell *)self contentView];
-  v9 = [v8 readableContentGuide];
-  v10 = [v9 trailingAnchor];
-  v11 = [v7 constraintEqualToAnchor:v10];
+  slider4 = [(AXSliderValueTableViewCell *)self slider];
+  trailingAnchor = [slider4 trailingAnchor];
+  contentView4 = [(AXSliderValueTableViewCell *)self contentView];
+  readableContentGuide4 = [contentView4 readableContentGuide];
+  trailingAnchor2 = [readableContentGuide4 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[3] = v11;
   v12 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -100,108 +100,108 @@
 
 - (double)minimumValue
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  [v2 minimumValue];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider minimumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMinimumValue:(double)a3
+- (void)setMinimumValue:(double)value
 {
-  v3 = a3;
-  v5 = [(AXSliderValueTableViewCell *)self slider];
-  *&v4 = v3;
-  [v5 setMinimumValue:v4];
+  valueCopy = value;
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  *&v4 = valueCopy;
+  [slider setMinimumValue:v4];
 }
 
 - (double)maximumValue
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  [v2 maximumValue];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider maximumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaximumValue:(double)a3
+- (void)setMaximumValue:(double)value
 {
-  v3 = a3;
-  v5 = [(AXSliderValueTableViewCell *)self slider];
-  *&v4 = v3;
-  [v5 setMaximumValue:v4];
+  valueCopy = value;
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  *&v4 = valueCopy;
+  [slider setMaximumValue:v4];
 }
 
 - (double)value
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  [v2 value];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider value];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  v3 = a3;
-  v5 = [(AXSliderValueTableViewCell *)self slider];
-  *&v4 = v3;
-  [v5 setValue:v4];
+  valueCopy = value;
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  *&v4 = valueCopy;
+  [slider setValue:v4];
 }
 
-- (void)_sliderChanged:(id)a3
+- (void)_sliderChanged:(id)changed
 {
-  v4 = [(AXSliderValueTableViewCell *)self slider];
-  [v4 value];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider value];
   [(AXSliderValueTableViewCell *)self setValue:v5];
 
-  v6 = [(AXSliderValueTableViewCell *)self delegate];
+  delegate = [(AXSliderValueTableViewCell *)self delegate];
   [(AXSliderValueTableViewCell *)self value];
-  [v6 sliderValueTableViewCell:self didChangeValue:?];
+  [delegate sliderValueTableViewCell:self didChangeValue:?];
 }
 
 - (UIImage)minimumValueImage
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  v3 = [v2 minimumValueImage];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  minimumValueImage = [slider minimumValueImage];
 
-  return v3;
+  return minimumValueImage;
 }
 
-- (void)setMinimumValueImage:(id)a3
+- (void)setMinimumValueImage:(id)image
 {
-  v4 = a3;
-  v5 = [(AXSliderValueTableViewCell *)self slider];
-  [v5 setMinimumValueImage:v4];
+  imageCopy = image;
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider setMinimumValueImage:imageCopy];
 }
 
 - (UIImage)maximumValueImage
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  v3 = [v2 maximumValueImage];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  maximumValueImage = [slider maximumValueImage];
 
-  return v3;
+  return maximumValueImage;
 }
 
-- (void)setMaximumValueImage:(id)a3
+- (void)setMaximumValueImage:(id)image
 {
-  v4 = a3;
-  v5 = [(AXSliderValueTableViewCell *)self slider];
-  [v5 setMaximumValueImage:v4];
+  imageCopy = image;
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider setMaximumValueImage:imageCopy];
 }
 
 - (unint64_t)segmentCount
 {
-  v2 = [(AXSliderValueTableViewCell *)self slider];
-  v3 = [v2 segmentCount];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  segmentCount = [slider segmentCount];
 
-  return v3;
+  return segmentCount;
 }
 
-- (void)setSegmentCount:(unint64_t)a3
+- (void)setSegmentCount:(unint64_t)count
 {
-  v4 = [(AXSliderValueTableViewCell *)self slider];
-  [v4 setSegmentCount:a3];
+  slider = [(AXSliderValueTableViewCell *)self slider];
+  [slider setSegmentCount:count];
 }
 
 - (AXSliderValueTableViewCellDelegate)delegate

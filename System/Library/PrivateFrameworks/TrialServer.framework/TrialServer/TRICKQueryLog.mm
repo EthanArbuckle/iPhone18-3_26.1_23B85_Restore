@@ -1,22 +1,22 @@
 @interface TRICKQueryLog
-- (TRICKQueryLog)initWithPaths:(id)a3;
-- (void)_logQueryWithRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 guardedData:(id)a6;
-- (void)_openFileIfNeededWithGuardedData:(id)a3;
-- (void)logQueryWithRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5;
+- (TRICKQueryLog)initWithPaths:(id)paths;
+- (void)_logQueryWithRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors guardedData:(id)data;
+- (void)_openFileIfNeededWithGuardedData:(id)data;
+- (void)logQueryWithRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors;
 @end
 
 @implementation TRICKQueryLog
 
-- (TRICKQueryLog)initWithPaths:(id)a3
+- (TRICKQueryLog)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v15.receiver = self;
   v15.super_class = TRICKQueryLog;
   v6 = [(TRICKQueryLog *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paths, a3);
+    objc_storeStrong(&v6->_paths, paths);
     v8 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"com.apple.triald.ck-query-log" qosClass:17];
     queue = v7->_queue;
     v7->_queue = v8;
@@ -31,23 +31,23 @@
   return v7;
 }
 
-- (void)logQueryWithRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (void)logQueryWithRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___block_invoke;
   v15[3] = &unk_279DDF578;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = typeCopy;
+  v17 = predicateCopy;
+  v18 = descriptorsCopy;
+  v12 = descriptorsCopy;
+  v13 = predicateCopy;
+  v14 = typeCopy;
   dispatch_async(queue, v15);
 }
 
@@ -95,20 +95,20 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
   [v6 runWithLockAcquired:v12];
 }
 
-- (void)_logQueryWithRecordType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 guardedData:(id)a6
+- (void)_logQueryWithRecordType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors guardedData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  dataCopy = data;
   v14 = objc_autoreleasePoolPush();
-  [(TRICKQueryLog *)self _openFileIfNeededWithGuardedData:v13];
-  if ((v13[1] & 1) == 0 && v13[3])
+  [(TRICKQueryLog *)self _openFileIfNeededWithGuardedData:dataCopy];
+  if ((dataCopy[1] & 1) == 0 && dataCopy[3])
   {
-    if (v12)
+    if (descriptorsCopy)
     {
-      v15 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_0];
+      v15 = [descriptorsCopy _pas_mappedArrayWithTransform:&__block_literal_global_0];
       v16 = [v15 componentsJoinedByString:{@", "}];
     }
 
@@ -118,26 +118,26 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
     }
 
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
-    v18 = [v11 triLogDesc];
-    v19 = [v17 initWithFormat:@"recordType:%@ | predicate:%@ | sortDescriptors:[%@]", v10, v18, v16];
+    triLogDesc = [predicateCopy triLogDesc];
+    v19 = [v17 initWithFormat:@"recordType:%@ | predicate:%@ | sortDescriptors:[%@]", typeCopy, triLogDesc, v16];
 
     v20 = [v19 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_287FA0430];
 
-    if (([v13[2] containsObject:v20] & 1) == 0)
+    if (([dataCopy[2] containsObject:v20] & 1) == 0)
     {
-      [v13[2] addObject:v20];
+      [dataCopy[2] addObject:v20];
       v21 = [v20 stringByAppendingString:@"\n"];
 
       v22 = [v21 dataUsingEncoding:4];
       if (v22)
       {
-        v23 = v13[3];
+        v23 = dataCopy[3];
         v28 = 0;
         v24 = [v23 writeData:v22 error:&v28];
         v25 = v28;
         if (v24)
         {
-          [v13[3] synchronizeAndReturnError:0];
+          [dataCopy[3] synchronizeAndReturnError:0];
         }
 
         else
@@ -161,22 +161,22 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_openFileIfNeededWithGuardedData:(id)a3
+- (void)_openFileIfNeededWithGuardedData:(id)data
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  if ((*(v4 + 8) & 1) == 0 && !*(v4 + 3))
+  if ((*(dataCopy + 8) & 1) == 0 && !*(dataCopy + 3))
   {
-    v6 = [(TRIPaths *)self->_paths logDir];
-    v7 = [v6 stringByAppendingPathComponent:@"CKQueryLogs"];
+    logDir = [(TRIPaths *)self->_paths logDir];
+    v7 = [logDir stringByAppendingPathComponent:@"CKQueryLogs"];
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
 
     v9 = objc_opt_new();
-    v10 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v9 setTimeZone:v10];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v9 setTimeZone:localTimeZone];
 
     [v9 setFormatOptions:19];
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -209,16 +209,16 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
         _os_log_error_impl(&dword_26F567000, v25, OS_LOG_TYPE_ERROR, "Failed to open CKQueryLog: %s (%d)", buf, 0x12u);
       }
 
-      *(v4 + 8) = 1;
+      *(dataCopy + 8) = 1;
     }
 
     else
     {
       v18 = [objc_alloc(MEMORY[0x277CCA9F8]) initWithFileDescriptor:v17 closeOnDealloc:1];
-      v19 = *(v4 + 3);
-      *(v4 + 3) = v18;
+      v19 = *(dataCopy + 3);
+      *(dataCopy + 3) = v18;
 
-      v20 = *(v4 + 3);
+      v20 = *(dataCopy + 3);
       v51 = 0;
       v21 = [v20 readDataUpToLength:0x20000 error:&v51];
       v46 = v51;
@@ -232,8 +232,8 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
             v44 = v14;
             v45 = v7;
             v29 = objc_opt_new();
-            v30 = *(v4 + 2);
-            *(v4 + 2) = v29;
+            v30 = *(dataCopy + 2);
+            *(dataCopy + 2) = v29;
 
             v43 = v28;
             v31 = [v28 componentsSeparatedByString:@"\n"];
@@ -258,7 +258,7 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
                   v36 = *(*(&v47 + 1) + 8 * i);
                   if ([v36 length])
                   {
-                    [*(v4 + 2) addObject:v36];
+                    [*(dataCopy + 2) addObject:v36];
                   }
                 }
 
@@ -284,10 +284,10 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
               _os_log_error_impl(&dword_26F567000, v37, OS_LOG_TYPE_ERROR, "CKQueryLog is not UTF-8.", buf, 2u);
             }
 
-            v38 = *(v4 + 3);
-            *(v4 + 3) = 0;
+            v38 = *(dataCopy + 3);
+            *(dataCopy + 3) = 0;
 
-            *(v4 + 8) = 1;
+            *(dataCopy + 8) = 1;
           }
         }
 
@@ -300,10 +300,10 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
             _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "CKQueryLog is full.", buf, 2u);
           }
 
-          v23 = *(v4 + 3);
-          *(v4 + 3) = 0;
+          v23 = *(dataCopy + 3);
+          *(dataCopy + 3) = 0;
 
-          *(v4 + 8) = 1;
+          *(dataCopy + 8) = 1;
           v24 = v46;
         }
       }
@@ -319,10 +319,10 @@ void __66__TRICKQueryLog_logQueryWithRecordType_predicate_sortDescriptors___bloc
           _os_log_error_impl(&dword_26F567000, v26, OS_LOG_TYPE_ERROR, "Failed to load CKQueryLog: %{public}@", buf, 0xCu);
         }
 
-        v27 = *(v4 + 3);
-        *(v4 + 3) = 0;
+        v27 = *(dataCopy + 3);
+        *(dataCopy + 3) = 0;
 
-        *(v4 + 8) = 1;
+        *(dataCopy + 8) = 1;
       }
     }
   }

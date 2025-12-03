@@ -2,16 +2,16 @@
 + (id)serviceViewControllerInterface;
 - (_UIDocumentPickerRemoteViewControllerContaining)publicController;
 - (void)_didSelectPicker;
-- (void)_didSelectURLBookmark:(id)a3;
-- (void)_didSelectURLWrapper:(id)a3;
+- (void)_didSelectURLBookmark:(id)bookmark;
+- (void)_didSelectURLWrapper:(id)wrapper;
 - (void)_dismissViewController;
-- (void)_dismissWithOption:(id)a3;
-- (void)_stitchFileCreationAtURL:(id)a3;
-- (void)_tintColorDidChangeToColor:(id)a3;
+- (void)_dismissWithOption:(id)option;
+- (void)_stitchFileCreationAtURL:(id)l;
+- (void)_tintColorDidChangeToColor:(id)color;
 - (void)invalidate;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)viewDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _UIDocumentPickerRemoteViewController
@@ -29,8 +29,8 @@
 
 - (void)invalidate
 {
-  v3 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v3 _documentPickerDidDismiss];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _documentPickerDidDismiss];
 
   [(_UIDocumentPickerRemoteViewController *)self setPublicController:0];
 }
@@ -41,28 +41,28 @@
   v5.super_class = _UIDocumentPickerRemoteViewController;
   [(UIViewController *)&v5 viewDidLoad];
   v3 = objc_alloc_init(_UIDocumentPickerRemoteViewControllerTintColorView);
-  v4 = [(UIViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(UIViewController *)self view];
+  [view addSubview:v3];
 }
 
-- (void)_didSelectURLWrapper:(id)a3
+- (void)_didSelectURLWrapper:(id)wrapper
 {
-  v4 = a3;
-  v6 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  v5 = [v4 url];
+  wrapperCopy = wrapper;
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  v5 = [wrapperCopy url];
 
-  [v6 _didSelectURL:v5];
+  [publicController _didSelectURL:v5];
 }
 
-- (void)_didSelectURLBookmark:(id)a3
+- (void)_didSelectURLBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __63___UIDocumentPickerRemoteViewController__didSelectURLBookmark___block_invoke;
   v13 = &unk_1E7105650;
-  v14 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = bookmarkCopy;
   v15 = v5;
   v6 = &v10;
   v17 = 0;
@@ -89,9 +89,9 @@
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _FPDocumentURLFromBookmarkableString(CFStringRef, void (^__strong)(CFURLRef, CFErrorRef))"}];
-    [v8 handleFailureInFunction:v9 file:@"_UIDocumentPickerRemoteViewController.m" lineNumber:32 description:{@"%s", dlerror(), v10, v11, v12, v13, v14}];
+    [currentHandler handleFailureInFunction:v9 file:@"_UIDocumentPickerRemoteViewController.m" lineNumber:32 description:{@"%s", dlerror(), v10, v11, v12, v13, selfCopy}];
 
     __break(1u);
   }
@@ -99,64 +99,64 @@
 
 - (void)_dismissViewController
 {
-  v2 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v2 _dismissViewController];
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _dismissViewController];
 }
 
 - (void)_didSelectPicker
 {
-  v2 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v2 _didSelectPicker];
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _didSelectPicker];
 }
 
-- (void)_dismissWithOption:(id)a3
+- (void)_dismissWithOption:(id)option
 {
-  v4 = a3;
-  v5 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v5 _dismissWithOption:v4];
+  optionCopy = option;
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _dismissWithOption:optionCopy];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentPickerRemoteViewController;
-  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:a3];
-  v4 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v4 _dismissViewController];
+  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:error];
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _dismissViewController];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  v7 = [v6 modalPresentationStyle];
+  height = size.height;
+  width = size.width;
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  modalPresentationStyle = [publicController modalPresentationStyle];
 
-  if (v7 != 7)
+  if (modalPresentationStyle != 7)
   {
     width = 0.0;
   }
 
-  v8 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v8 setPreferredContentSize:{width, height}];
+  publicController2 = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController2 setPreferredContentSize:{width, height}];
 
   v9.receiver = self;
   v9.super_class = _UIDocumentPickerRemoteViewController;
   [(UIViewController *)&v9 setPreferredContentSize:width, height];
 }
 
-- (void)_stitchFileCreationAtURL:(id)a3
+- (void)_stitchFileCreationAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v5 _stitchFileCreationAtURL:v4];
+  lCopy = l;
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _stitchFileCreationAtURL:lCopy];
 }
 
-- (void)_tintColorDidChangeToColor:(id)a3
+- (void)_tintColorDidChangeToColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 _setTintColor:v4];
+  colorCopy = color;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _setTintColor:colorCopy];
 }
 
 - (_UIDocumentPickerRemoteViewControllerContaining)publicController

@@ -1,7 +1,7 @@
 @interface UITabBar
-+ (Class)_visualProviderClassForTabBar:(id)a3;
-+ (id)_visualProviderForTabBar:(id)a3;
-+ (void)_initializeForIdiom:(int64_t)a3;
++ (Class)_visualProviderClassForTabBar:(id)bar;
++ (id)_visualProviderForTabBar:(id)bar;
++ (void)_initializeForIdiom:(int64_t)idiom;
 - (BOOL)_isEligibleForFocusInteraction;
 - (BOOL)_isEligibleForFocusOcclusion;
 - (BOOL)_isMinimized;
@@ -12,35 +12,35 @@
 - (BOOL)canBecomeFocused;
 - (BOOL)endCustomizingAnimated:(BOOL)animated;
 - (BOOL)isTranslucent;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CGRect)_frameForHostedAccessoryView;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)_backdropViewLayerGroupName;
 - (NSString)description;
-- (UITabBar)initWithCoder:(id)a3;
-- (UITabBar)initWithFrame:(CGRect)a3;
+- (UITabBar)initWithCoder:(id)coder;
+- (UITabBar)initWithFrame:(CGRect)frame;
 - (UITabBarAppearance)standardAppearance;
 - (UITabBarItem)selectedItem;
 - (UIView)_externalViewForSafeAreaInsets;
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6;
-- (double)_frameForHostedElement:(uint64_t)a3 options:;
-- (double)_scaleFactorForItems:(id)a3 spacing:(double)a4 dimension:(double)a5 maxWidth:(double)a6;
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide;
+- (double)_frameForHostedElement:(uint64_t)element options:;
+- (double)_scaleFactorForItems:(id)items spacing:(double)spacing dimension:(double)dimension maxWidth:(double)width;
 - (double)_shadowAlpha;
-- (double)_totalDimensionForItems:(id)a3 spacing:(double)a4 dimension:(double)a5 scaleFactor:(double)a6;
+- (double)_totalDimensionForItems:(id)items spacing:(double)spacing dimension:(double)dimension scaleFactor:(double)factor;
 - (id)_defaultUnselectedTintColorForDefaultTV;
 - (id)_effectiveUnselectedLabelTintColor;
-- (id)_effectiveUnselectedTabTintColorConsideringView:(id)a3;
+- (id)_effectiveUnselectedTabTintColorConsideringView:(id)view;
 - (id)_effectiveUnselectedTintColor;
 - (id)_glassGroupContainer;
 - (id)_hostedElementsLayoutHandler;
 - (id)_normalInheritedTintColor;
-- (id)_resolvedPresentationSourceItemForItem:(id *)a1;
+- (id)_resolvedPresentationSourceItemForItem:(id *)item;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
-- (id)_viewsForMorphingToTarget:(id *)a1;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
+- (id)_viewsForMorphingToTarget:(id *)target;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)preferredFocusEnvironments;
 - (int64_t)_effectiveBarOrientation;
 - (int64_t)_expectedInterfaceOrientation;
@@ -58,83 +58,83 @@
 - (uint64_t)_updateMorphTargetBlock;
 - (unint64_t)_edgesPropagatingSafeAreaInsetsToSubviews;
 - (void)_accessibilityButtonShapesParametersDidChange;
-- (void)_adjustButtonSelection:(id)a3;
-- (void)_buttonDown:(id)a3;
-- (void)_buttonDownDelayed:(id)a3;
-- (void)_buttonUp:(id)a3;
-- (void)_configureTabBarReplacingItem:(id)a3 withNewItem:(id)a4 swapping:(BOOL)a5;
-- (void)_customizeWithAvailableItems:(id)a3;
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_didSelectButtonForItem:(id)a3;
-- (void)_dismissCustomizeSheet:(BOOL)a3;
+- (void)_adjustButtonSelection:(id)selection;
+- (void)_buttonDown:(id)down;
+- (void)_buttonDownDelayed:(id)delayed;
+- (void)_buttonUp:(id)up;
+- (void)_configureTabBarReplacingItem:(id)item withNewItem:(id)newItem swapping:(BOOL)swapping;
+- (void)_customizeWithAvailableItems:(id)items;
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_didSelectButtonForItem:(id)item;
+- (void)_dismissCustomizeSheet:(BOOL)sheet;
 - (void)_doCommonTabBarInit;
 - (void)_doCommonTabBarPreInit;
 - (void)_handleCurrentMorphTargetChange;
 - (void)_installDefaultAppearance;
 - (void)_makeCurrentButtonFirstResponder;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_sendAction:(id)a3 withEvent:(id)a4;
-- (void)_setBackdropViewLayerGroupName:(id)a3;
-- (void)_setBackgroundNeedsUpdate:(BOOL)a3;
-- (void)_setBarMetrics:(int64_t)a3;
-- (void)_setBarOrientation:(int64_t)a3;
-- (void)_setDisableBlurTinting:(BOOL)a3;
-- (void)_setDisplayStyle:(int64_t)a3;
-- (void)_setFocusedItemHightlightShouldBeVisible:(BOOL)a3;
-- (void)_setGlassGroupContainer:(uint64_t)a1;
-- (void)_setHiddenAwaitingFocus:(BOOL)a3;
-- (void)_setHidesShadow:(BOOL)a3;
-- (void)_setImageStyle:(int64_t)a3;
-- (void)_setLabelFont:(id)a3;
-- (void)_setLabelShadowColor:(id)a3;
-- (void)_setLabelShadowOffset:(CGSize)a3;
-- (void)_setLabelTextColor:(id)a3 selectedTextColor:(id)a4;
-- (void)_setMinimized:(BOOL)a3;
-- (void)_setMinimizedStateDidChangeHandler:(id)a3;
-- (void)_setPendingFocusAction:(BOOL)a3;
-- (void)_setScrollsItems:(BOOL)a3;
-- (void)_setShadowAlpha:(double)a3;
-- (void)_setShowsHighlightedState:(BOOL)a3;
-- (void)_setSpringLoaded:(BOOL)a3 force:(BOOL)a4;
-- (void)_setSuspendBackgroundUpdates:(BOOL)a3;
-- (void)_setTabBarSizing:(int64_t)a3;
-- (void)_setUpdateMorphTargetBlock:(void *)a1;
-- (void)_setVibrantLabels:(BOOL)a3;
-- (void)_updateTabBarItemView:(id)a3;
-- (void)addConstraint:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_sendAction:(id)action withEvent:(id)event;
+- (void)_setBackdropViewLayerGroupName:(id)name;
+- (void)_setBackgroundNeedsUpdate:(BOOL)update;
+- (void)_setBarMetrics:(int64_t)metrics;
+- (void)_setBarOrientation:(int64_t)orientation;
+- (void)_setDisableBlurTinting:(BOOL)tinting;
+- (void)_setDisplayStyle:(int64_t)style;
+- (void)_setFocusedItemHightlightShouldBeVisible:(BOOL)visible;
+- (void)_setGlassGroupContainer:(uint64_t)container;
+- (void)_setHiddenAwaitingFocus:(BOOL)focus;
+- (void)_setHidesShadow:(BOOL)shadow;
+- (void)_setImageStyle:(int64_t)style;
+- (void)_setLabelFont:(id)font;
+- (void)_setLabelShadowColor:(id)color;
+- (void)_setLabelShadowOffset:(CGSize)offset;
+- (void)_setLabelTextColor:(id)color selectedTextColor:(id)textColor;
+- (void)_setMinimized:(BOOL)minimized;
+- (void)_setMinimizedStateDidChangeHandler:(id)handler;
+- (void)_setPendingFocusAction:(BOOL)action;
+- (void)_setScrollsItems:(BOOL)items;
+- (void)_setShadowAlpha:(double)alpha;
+- (void)_setShowsHighlightedState:(BOOL)state;
+- (void)_setSpringLoaded:(BOOL)loaded force:(BOOL)force;
+- (void)_setSuspendBackgroundUpdates:(BOOL)updates;
+- (void)_setTabBarSizing:(int64_t)sizing;
+- (void)_setUpdateMorphTargetBlock:(void *)block;
+- (void)_setVibrantLabels:(BOOL)labels;
+- (void)_updateTabBarItemView:(id)view;
+- (void)addConstraint:(id)constraint;
 - (void)beginCustomizingItems:(NSArray *)items;
 - (void)dealloc;
-- (void)dismissCustomizeSheet:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)dismissCustomizeSheet:(BOOL)sheet;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)removeConstraint:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setBackgroundEffects:(id)a3;
+- (void)removeConstraint:(id)constraint;
+- (void)setAlpha:(double)alpha;
+- (void)setBackgroundEffects:(id)effects;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 - (void)setBarStyle:(UIBarStyle)barStyle;
 - (void)setBarTintColor:(UIColor *)barTintColor;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setDelegate:(id)delegate;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 - (void)setItems:(NSArray *)items animated:(BOOL)animated;
-- (void)setLocked:(BOOL)a3;
+- (void)setLocked:(BOOL)locked;
 - (void)setScrollEdgeAppearance:(UITabBarAppearance *)scrollEdgeAppearance;
 - (void)setSelectedItem:(UITabBarItem *)selectedItem;
 - (void)setSelectionIndicatorImage:(UIImage *)selectionIndicatorImage;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setShadowImage:(UIImage *)shadowImage;
 - (void)setStandardAppearance:(UITabBarAppearance *)standardAppearance;
 - (void)setTintColor:(UIColor *)tintColor;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 - (void)setTranslucent:(BOOL)translucent;
 - (void)setUnselectedItemTintColor:(UIColor *)unselectedItemTintColor;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateProperties;
 @end
 
@@ -146,8 +146,8 @@
   self->_displayStyle = 0;
   if (v3)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 BOOLForKey:@"UseTabBarLegacyTVStyle"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults BOOLForKey:@"UseTabBarLegacyTVStyle"];
 
     if (v5)
     {
@@ -210,17 +210,17 @@ LABEL_7:
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v5 = [(UIView *)self _screen];
-    v6 = [v5 _userInterfaceIdiom];
+    _screen = [(UIView *)self _screen];
+    _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-    if (v6 == 1)
+    if (_userInterfaceIdiom == 1)
     {
       self->_barMetrics = 2;
     }
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__accessibilityButtonShapesEnabledDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accessibilityButtonShapesEnabledDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   [(UIView *)self _setSafeAreaCornerAdaptation:3];
   [(_UITabBarVisualProvider *)self->_visualProvider prepare];
@@ -257,11 +257,11 @@ LABEL_7:
 
   else
   {
-    v5 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
-    v6 = v5;
-    if (v5)
+    backgroundImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
+    v6 = backgroundImage;
+    if (backgroundImage)
     {
-      [v5 _isInvisibleAndGetIsTranslucent:&v8];
+      [backgroundImage _isInvisibleAndGetIsTranslucent:&v8];
     }
 
     return v8;
@@ -276,13 +276,13 @@ LABEL_7:
     standardAppearance = self->_standardAppearance;
     self->_standardAppearance = v3;
 
-    v5 = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
+    appearanceObserver = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
     v6 = self->_standardAppearance;
     if (v6)
     {
-      v7 = v5;
-      objc_storeWeak(&v6->super._changeObserver, v5);
-      v5 = v7;
+      v7 = appearanceObserver;
+      objc_storeWeak(&v6->super._changeObserver, appearanceObserver);
+      appearanceObserver = v7;
     }
   }
 }
@@ -313,19 +313,19 @@ LABEL_7:
 
 - (UIView)_externalViewForSafeAreaInsets
 {
-  v3 = [(UITabBar *)self _expectedSuperviewFollowingAnimation];
-  v4 = v3;
-  if (v3)
+  _expectedSuperviewFollowingAnimation = [(UITabBar *)self _expectedSuperviewFollowingAnimation];
+  v4 = _expectedSuperviewFollowingAnimation;
+  if (_expectedSuperviewFollowingAnimation)
   {
-    v5 = v3;
+    superview = _expectedSuperviewFollowingAnimation;
   }
 
   else
   {
-    v5 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
   }
 
-  v6 = v5;
+  v6 = superview;
 
   return v6;
 }
@@ -368,28 +368,28 @@ LABEL_7:
 
 - (id)_normalInheritedTintColor
 {
-  v3 = [(_UITabBarVisualProvider *)self->_visualProvider defaultTintColor];
-  if ([(UIView *)self _definesTintColor]|| !v3)
+  defaultTintColor = [(_UITabBarVisualProvider *)self->_visualProvider defaultTintColor];
+  if ([(UIView *)self _definesTintColor]|| !defaultTintColor)
   {
     v7.receiver = self;
     v7.super_class = UITabBar;
-    v4 = [(UIView *)&v7 _normalInheritedTintColor];
+    _normalInheritedTintColor = [(UIView *)&v7 _normalInheritedTintColor];
   }
 
   else
   {
-    v4 = v3;
+    _normalInheritedTintColor = defaultTintColor;
   }
 
-  v5 = v4;
+  v5 = _normalInheritedTintColor;
 
   return v5;
 }
 
 - (id)_effectiveUnselectedLabelTintColor
 {
-  v2 = [(UITabBar *)self unselectedItemTintColor];
-  if (!v2)
+  unselectedItemTintColor = [(UITabBar *)self unselectedItemTintColor];
+  if (!unselectedItemTintColor)
   {
     if (_UISolariumEnabled())
     {
@@ -402,38 +402,38 @@ LABEL_7:
       {
         +[UIColor secondaryLabelColor];
       }
-      v2 = ;
+      unselectedItemTintColor = ;
     }
 
     else
     {
-      v2 = [UIColor colorWithWhite:0.57254902 alpha:1.0];
+      unselectedItemTintColor = [UIColor colorWithWhite:0.57254902 alpha:1.0];
     }
   }
 
-  return v2;
+  return unselectedItemTintColor;
 }
 
 - (id)_effectiveUnselectedTintColor
 {
-  v2 = [(UITabBar *)self unselectedItemTintColor];
-  if (!v2)
+  unselectedItemTintColor = [(UITabBar *)self unselectedItemTintColor];
+  if (!unselectedItemTintColor)
   {
-    v2 = [UIColor colorWithWhite:0.57254902 alpha:0.85];
+    unselectedItemTintColor = [UIColor colorWithWhite:0.57254902 alpha:0.85];
   }
 
-  return v2;
+  return unselectedItemTintColor;
 }
 
 - (id)_hostedElementsLayoutHandler
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[59] hostedElementsLayoutHandler];
+    self = [self[59] hostedElementsLayoutHandler];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)_isPhotosApp
@@ -464,8 +464,8 @@ void __24__UITabBar__isPhotosApp__block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2796 description:@"This can only be called by an approved app."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2796 description:@"This can only be called by an approved app."];
 
     if (self)
     {
@@ -478,8 +478,8 @@ void __24__UITabBar__isPhotosApp__block_invoke()
 
 - (int64_t)_expectedInterfaceOrientation
 {
-  v3 = [(UIView *)self window];
-  if (!v3)
+  window = [(UIView *)self window];
+  if (!window)
   {
     if ((*(&self->_tabBarFlags + 2) & 2) != 0)
     {
@@ -501,15 +501,15 @@ void __24__UITabBar__isPhotosApp__block_invoke()
     goto LABEL_10;
   }
 
-  v4 = v3;
+  v4 = window;
 LABEL_3:
-  v5 = [v4 _windowInterfaceOrientation];
-  if (!v5)
+  _windowInterfaceOrientation = [v4 _windowInterfaceOrientation];
+  if (!_windowInterfaceOrientation)
   {
-    v5 = [UIApp _sceneInterfaceOrientationFromWindow:v4];
+    _windowInterfaceOrientation = [UIApp _sceneInterfaceOrientationFromWindow:v4];
   }
 
-  v6 = v5;
+  v6 = _windowInterfaceOrientation;
 LABEL_10:
 
   return v6;
@@ -542,17 +542,17 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(UITabBar *)self barTintColor];
-  v4 = [(UITabBar *)self unselectedItemTintColor];
-  if (v3 && ([v3 alphaComponent], v5 != 0.0) || v4 && (objc_msgSend(v4, "alphaComponent"), v6 != 0.0))
+  barTintColor = [(UITabBar *)self barTintColor];
+  unselectedItemTintColor = [(UITabBar *)self unselectedItemTintColor];
+  if (barTintColor && ([barTintColor alphaComponent], v5 != 0.0) || unselectedItemTintColor && (objc_msgSend(unselectedItemTintColor, "alphaComponent"), v6 != 0.0))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom] != 3;
+    traitCollection = [(UIView *)self traitCollection];
+    v8 = [traitCollection userInterfaceIdiom] != 3;
   }
 
   return v8;
@@ -561,8 +561,8 @@ LABEL_10:
 - (void)dealloc
 {
   [(_UITabBarVisualProvider *)self->_visualProvider teardown];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UITabBar;
@@ -589,10 +589,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)_setLabelFont:(id)a3
+- (void)_setLabelFont:(id)font
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fontCopy = font;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
@@ -603,9 +603,9 @@ LABEL_10:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  v8 = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
+  tabItemAppearanceStorage = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
   v9 = *off_1E70EC918;
-  [v8 setTextAttribute:v4 forKey:*off_1E70EC918 state:0];
+  [tabItemAppearanceStorage setTextAttribute:fontCopy forKey:*off_1E70EC918 state:0];
 
   v17 = 0u;
   v18 = 0u;
@@ -627,7 +627,7 @@ LABEL_10:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) _setTitleTextAttributeValue:v4 forAttributeKey:v9 state:{0, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) _setTitleTextAttributeValue:fontCopy forAttributeKey:v9 state:{0, v15}];
       }
 
       while (v12 != v14);
@@ -638,11 +638,11 @@ LABEL_10:
   }
 }
 
-- (void)_setLabelTextColor:(id)a3 selectedTextColor:(id)a4
+- (void)_setLabelTextColor:(id)color selectedTextColor:(id)textColor
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  textColorCopy = textColor;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
@@ -653,10 +653,10 @@ LABEL_10:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  v11 = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
+  tabItemAppearanceStorage = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
   v12 = *off_1E70EC920;
-  [v11 setTextAttribute:v6 forKey:*off_1E70EC920 state:0];
-  [v11 setTextAttribute:v7 forKey:v12 state:4];
+  [tabItemAppearanceStorage setTextAttribute:colorCopy forKey:*off_1E70EC920 state:0];
+  [tabItemAppearanceStorage setTextAttribute:textColorCopy forKey:v12 state:4];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -677,8 +677,8 @@ LABEL_10:
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        [v18 _setTitleTextAttributeValue:v6 forAttributeKey:v12 state:{0, v19}];
-        [v18 _setTitleTextAttributeValue:v7 forAttributeKey:v12 state:4];
+        [v18 _setTitleTextAttributeValue:colorCopy forAttributeKey:v12 state:{0, v19}];
+        [v18 _setTitleTextAttributeValue:textColorCopy forAttributeKey:v12 state:4];
       }
 
       v15 = [(NSArray *)v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -688,10 +688,10 @@ LABEL_10:
   }
 }
 
-- (void)_setLabelShadowColor:(id)a3
+- (void)_setLabelShadowColor:(id)color
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
@@ -702,18 +702,18 @@ LABEL_10:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  v8 = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
+  tabItemAppearanceStorage = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
   v9 = *off_1E70EC9B0;
-  v10 = [v8 textAttributeForKey:*off_1E70EC9B0 state:0];
+  v10 = [tabItemAppearanceStorage textAttributeForKey:*off_1E70EC9B0 state:0];
 
   if (!v10)
   {
     v10 = objc_alloc_init(off_1E70ECB90);
   }
 
-  [v10 setShadowColor:v4];
-  v11 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage tabItemAppearanceStorage];
-  [v11 setTextAttribute:v10 forKey:v9 state:0];
+  [v10 setShadowColor:colorCopy];
+  tabItemAppearanceStorage2 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage tabItemAppearanceStorage];
+  [tabItemAppearanceStorage2 setTextAttribute:v10 forKey:v9 state:0];
 
   v19 = 0u;
   v20 = 0u;
@@ -746,10 +746,10 @@ LABEL_10:
   }
 }
 
-- (void)_setLabelShadowOffset:(CGSize)a3
+- (void)_setLabelShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   v23 = *MEMORY[0x1E69E9840];
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
@@ -761,9 +761,9 @@ LABEL_10:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  v9 = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
+  tabItemAppearanceStorage = [(_UITabBarAppearanceStorage *)appearanceStorage tabItemAppearanceStorage];
   v10 = *off_1E70EC9B0;
-  v11 = [v9 textAttributeForKey:*off_1E70EC9B0 state:0];
+  v11 = [tabItemAppearanceStorage textAttributeForKey:*off_1E70EC9B0 state:0];
 
   if (!v11)
   {
@@ -771,8 +771,8 @@ LABEL_10:
   }
 
   [v11 setShadowOffset:{width, height}];
-  v12 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage tabItemAppearanceStorage];
-  [v12 setTextAttribute:v11 forKey:v10 state:0];
+  tabItemAppearanceStorage2 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage tabItemAppearanceStorage];
+  [tabItemAppearanceStorage2 setTextAttribute:v11 forKey:v10 state:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -805,11 +805,11 @@ LABEL_10:
   }
 }
 
-- (void)_setVibrantLabels:(BOOL)a3
+- (void)_setVibrantLabels:(BOOL)labels
 {
-  if (((((*&self->_tabBarFlags & 0x2000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_tabBarFlags & 0x2000) == 0) ^ labels) & 1) == 0)
   {
-    if (a3)
+    if (labels)
     {
       v3 = 0x2000;
     }
@@ -823,11 +823,11 @@ LABEL_10:
   }
 }
 
-- (void)_setDisableBlurTinting:(BOOL)a3
+- (void)_setDisableBlurTinting:(BOOL)tinting
 {
-  if (((((*&self->_tabBarFlags & 0x4000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_tabBarFlags & 0x4000) == 0) ^ tinting) & 1) == 0)
   {
-    if (a3)
+    if (tinting)
     {
       v3 = 0x4000;
     }
@@ -842,31 +842,31 @@ LABEL_10:
   }
 }
 
-- (void)_setHidesShadow:(BOOL)a3
+- (void)_setHidesShadow:(BOOL)shadow
 {
-  self->_hidesShadow = a3;
-  v4 = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
-  [v4 setHidden:self->_hidesShadow];
+  self->_hidesShadow = shadow;
+  _shim_shadowView = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
+  [_shim_shadowView setHidden:self->_hidesShadow];
 }
 
 - (double)_shadowAlpha
 {
-  v2 = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
-  [v2 alpha];
+  _shim_shadowView = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
+  [_shim_shadowView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setShadowAlpha:(double)a3
+- (void)_setShadowAlpha:(double)alpha
 {
-  v4 = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
-  [v4 setAlpha:a3];
+  _shim_shadowView = [(_UITabBarVisualProvider *)self->_visualProvider _shim_shadowView];
+  [_shim_shadowView setAlpha:alpha];
 }
 
-- (void)_setSuspendBackgroundUpdates:(BOOL)a3
+- (void)_setSuspendBackgroundUpdates:(BOOL)updates
 {
-  if (a3)
+  if (updates)
   {
     v3 = 0x40000;
   }
@@ -877,18 +877,18 @@ LABEL_10:
   }
 
   self->_tabBarFlags = (*&self->_tabBarFlags & 0xFFFBFFFF | v3);
-  if (!a3)
+  if (!updates)
   {
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setBackgroundNeedsUpdate:(BOOL)a3
+- (void)_setBackgroundNeedsUpdate:(BOOL)update
 {
   tabBarFlags = self->_tabBarFlags;
   if ((*&tabBarFlags & 0x40000) == 0)
   {
-    if (a3)
+    if (update)
     {
       v4 = 1024;
     }
@@ -899,7 +899,7 @@ LABEL_10:
     }
 
     self->_tabBarFlags = (*&tabBarFlags & 0xFFFBFBFF | v4);
-    if (a3)
+    if (update)
     {
       [(UIView *)self setNeedsLayout];
     }
@@ -942,26 +942,26 @@ LABEL_10:
   }
 }
 
-- (void)_setTabBarSizing:(int64_t)a3
+- (void)_setTabBarSizing:(int64_t)sizing
 {
-  v5 = [(UIView *)self _screen];
-  v6 = [v5 _userInterfaceIdiom];
+  _screen = [(UIView *)self _screen];
+  _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-  self->_tabBarSizing = a3;
+  self->_tabBarSizing = sizing;
   barMetrics = self->_barMetrics;
-  if (a3 == 2)
+  if (sizing == 2)
   {
     v8 = 2;
   }
 
-  else if ((v6 - 2) > 6)
+  else if ((_userInterfaceIdiom - 2) > 6)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_18A678940[v6 - 2];
+    v8 = qword_18A678940[_userInterfaceIdiom - 2];
   }
 
   self->_barMetrics = v8;
@@ -975,49 +975,49 @@ LABEL_10:
   }
 }
 
-- (id)_effectiveUnselectedTabTintColorConsideringView:(id)a3
+- (id)_effectiveUnselectedTabTintColorConsideringView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
-  if (!v5)
+  viewCopy = view;
+  unselectedImageTintColor = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
+  if (!unselectedImageTintColor)
   {
-    v5 = [UITabBar _unselectedTabTintColorForView:v4];
+    unselectedImageTintColor = [UITabBar _unselectedTabTintColorForView:viewCopy];
   }
 
-  return v5;
+  return unselectedImageTintColor;
 }
 
 - (NSString)_backdropViewLayerGroupName
 {
-  v2 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   v3 = objc_opt_self();
-  v4 = [v2 objectForTrait:v3];
+  v4 = [traitCollection objectForTrait:v3];
 
   return v4;
 }
 
-- (void)_setBackdropViewLayerGroupName:(id)a3
+- (void)_setBackdropViewLayerGroupName:(id)name
 {
-  v7 = a3;
-  v4 = [(UIView *)self traitOverrides];
+  nameCopy = name;
+  traitOverrides = [(UIView *)self traitOverrides];
   v5 = objc_opt_self();
-  if (v7)
+  if (nameCopy)
   {
-    [v4 setObject:v7 forTrait:v5];
+    [traitOverrides setObject:nameCopy forTrait:v5];
   }
 
   else
   {
-    v6 = [v4 containsTrait:v5];
+    v6 = [traitOverrides containsTrait:v5];
 
     if (!v6)
     {
       goto LABEL_6;
     }
 
-    v4 = [(UIView *)self traitOverrides];
+    traitOverrides = [(UIView *)self traitOverrides];
     v5 = objc_opt_self();
-    [v4 removeTrait:v5];
+    [traitOverrides removeTrait:v5];
   }
 
 LABEL_6:
@@ -1056,12 +1056,12 @@ LABEL_6:
   }
 }
 
-+ (void)_initializeForIdiom:(int64_t)a3
++ (void)_initializeForIdiom:(int64_t)idiom
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 2 || a3 == 8)
+  if (idiom == 2 || idiom == 8)
   {
-    if (objc_opt_class() != a1)
+    if (objc_opt_class() != self)
     {
       return;
     }
@@ -1076,7 +1076,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (a3 == 3 && objc_opt_class() == a1)
+  if (idiom == 3 && objc_opt_class() == self)
   {
     v40[0] = _UIAppearanceContainerForUserInterfaceIdiom();
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
@@ -1150,14 +1150,14 @@ LABEL_10:
   }
 }
 
-+ (Class)_visualProviderClassForTabBar:(id)a3
++ (Class)_visualProviderClassForTabBar:(id)bar
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [bar traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if (_UISolariumEnabled())
   {
-    v5 = [_UITabBarVisualProviderFactory visualProviderClassForIdiom:v4];
+    v5 = [_UITabBarVisualProviderFactory visualProviderClassForIdiom:userInterfaceIdiom];
   }
 
   else
@@ -1168,36 +1168,36 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_visualProviderForTabBar:(id)a3
++ (id)_visualProviderForTabBar:(id)bar
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_msgSend(a1 _visualProviderClassForTabBar:{v4)), "initWithTabBar:", v4}];
+  barCopy = bar;
+  v5 = [objc_alloc(objc_msgSend(self _visualProviderClassForTabBar:{barCopy)), "initWithTabBar:", barCopy}];
 
   return v5;
 }
 
-- (UITabBar)initWithCoder:(id)a3
+- (UITabBar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UITabBar;
-  v5 = [(UIView *)&v25 initWithCoder:v4];
+  v5 = [(UIView *)&v25 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(UITabBar *)v5 _doCommonTabBarPreInit];
-    v7 = [v4 decodeObjectForKey:@"UIDelegate"];
+    v7 = [coderCopy decodeObjectForKey:@"UIDelegate"];
     objc_storeWeak(&v6->_delegate, v7);
 
-    v8 = [(UITabBar *)v6 isLocked];
+    isLocked = [(UITabBar *)v6 isLocked];
     [(UITabBar *)v6 setLocked:0];
     [(UIView *)v6 setClipsToBounds:0];
-    v9 = [v4 decodeObjectForKey:@"UISelectionIndicatorImage"];
+    v9 = [coderCopy decodeObjectForKey:@"UISelectionIndicatorImage"];
     [(UITabBar *)v6 setSelectionIndicatorImage:v9];
 
-    if ([v4 containsValueForKey:@"UISpringLoaded"])
+    if ([coderCopy containsValueForKey:@"UISpringLoaded"])
     {
-      if ([v4 decodeBoolForKey:@"UISpringLoaded"])
+      if ([coderCopy decodeBoolForKey:@"UISpringLoaded"])
       {
         v10 = 0x10000;
       }
@@ -1210,10 +1210,10 @@ LABEL_10:
       v6->_tabBarFlags = (*&v6->_tabBarFlags & 0xFFFEFFFF | v10);
     }
 
-    v11 = [v4 decodeObjectForKey:@"UIItems"];
+    v11 = [coderCopy decodeObjectForKey:@"UIItems"];
     if (v11)
     {
-      if (v8)
+      if (isLocked)
       {
         objc_storeStrong(&v6->_items, v11);
       }
@@ -1224,25 +1224,25 @@ LABEL_10:
       }
     }
 
-    v12 = [v4 decodeObjectForKey:@"UISelectedItem"];
+    v12 = [coderCopy decodeObjectForKey:@"UISelectedItem"];
     [(UITabBar *)v6 setSelectedItem:v12];
-    [(UITabBar *)v6 setLocked:v8];
-    v13 = [v4 decodeObjectForKey:@"UIBarTintColor"];
+    [(UITabBar *)v6 setLocked:isLocked];
+    v13 = [coderCopy decodeObjectForKey:@"UIBarTintColor"];
     [(UITabBar *)v6 setBarTintColor:v13];
 
-    v14 = [v4 decodeObjectForKey:@"UIBarUnselectedImageTintColor"];
+    v14 = [coderCopy decodeObjectForKey:@"UIBarUnselectedImageTintColor"];
     [(UITabBar *)v6 setUnselectedItemTintColor:v14];
 
-    v15 = [v4 decodeObjectForKey:@"UISelectedImageTintColor"];
+    v15 = [coderCopy decodeObjectForKey:@"UISelectedImageTintColor"];
     if (v15)
     {
       [(UITabBar *)v6 setSelectedImageTintColor:v15];
     }
 
-    v16 = [v4 decodeObjectForKey:@"UIShadowImage"];
+    v16 = [coderCopy decodeObjectForKey:@"UIShadowImage"];
     [(UITabBar *)v6 setShadowImage:v16];
 
-    v17 = [v4 decodeObjectForKey:@"UIBackgroundImage"];
+    v17 = [coderCopy decodeObjectForKey:@"UIBackgroundImage"];
     if (v17)
     {
       [(UITabBar *)v6 setBackgroundImage:v17];
@@ -1253,39 +1253,39 @@ LABEL_10:
       [(UITabBar *)v6 _setBackgroundNeedsUpdate:1];
     }
 
-    v18 = [v4 decodeObjectForKey:@"UITabBarStandardAppearance"];
+    v18 = [coderCopy decodeObjectForKey:@"UITabBarStandardAppearance"];
     standardAppearance = v6->_standardAppearance;
     v6->_standardAppearance = v18;
 
-    v20 = [v4 decodeObjectForKey:@"UITabBarScrollEdgeAppearance"];
+    v20 = [coderCopy decodeObjectForKey:@"UITabBarScrollEdgeAppearance"];
     scrollEdgeAppearance = v6->_scrollEdgeAppearance;
     v6->_scrollEdgeAppearance = v20;
 
-    if ([v4 containsValueForKey:@"UITabBarItemPositioning"])
+    if ([coderCopy containsValueForKey:@"UITabBarItemPositioning"])
     {
-      v6->_itemPositioning = [v4 decodeIntegerForKey:@"UITabBarItemPositioning"];
+      v6->_itemPositioning = [coderCopy decodeIntegerForKey:@"UITabBarItemPositioning"];
     }
 
-    if ([v4 containsValueForKey:@"UITabBarItemWidth"])
+    if ([coderCopy containsValueForKey:@"UITabBarItemWidth"])
     {
-      [v4 decodeDoubleForKey:@"UITabBarItemWidth"];
+      [coderCopy decodeDoubleForKey:@"UITabBarItemWidth"];
       v6->_itemDimension = v22;
     }
 
-    if ([v4 containsValueForKey:@"UITabBarItemSpacing"])
+    if ([coderCopy containsValueForKey:@"UITabBarItemSpacing"])
     {
-      [v4 decodeDoubleForKey:@"UITabBarItemSpacing"];
+      [coderCopy decodeDoubleForKey:@"UITabBarItemSpacing"];
       v6->_itemSpacing = v23;
     }
 
-    if ([v4 containsValueForKey:@"UIBarTranslucence"])
+    if ([coderCopy containsValueForKey:@"UIBarTranslucence"])
     {
-      v6->_tabBarFlags = (*&v6->_tabBarFlags & 0xFFFFFC7F | (([v4 decodeIntegerForKey:@"UIBarTranslucence"] & 7) << 7));
+      v6->_tabBarFlags = (*&v6->_tabBarFlags & 0xFFFFFC7F | (([coderCopy decodeIntegerForKey:@"UIBarTranslucence"] & 7) << 7));
     }
 
-    if ([v4 containsValueForKey:@"UIBarStyle"])
+    if ([coderCopy containsValueForKey:@"UIBarStyle"])
     {
-      v6->_tabBarFlags = (*&v6->_tabBarFlags & 0xFFFFFF8F | (16 * ([v4 decodeIntegerForKey:@"UIBarStyle"] & 7)));
+      v6->_tabBarFlags = (*&v6->_tabBarFlags & 0xFFFFFF8F | (16 * ([coderCopy decodeIntegerForKey:@"UIBarStyle"] & 7)));
     }
   }
 
@@ -1294,11 +1294,11 @@ LABEL_10:
   return v6;
 }
 
-- (UITabBar)initWithFrame:(CGRect)a3
+- (UITabBar)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UITabBar;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UITabBar *)v3 _doCommonTabBarPreInit];
   [(UITabBar *)v3 _setBackgroundNeedsUpdate:1];
   [(UITabBar *)v3 _doCommonTabBarInit];
@@ -1312,31 +1312,31 @@ LABEL_10:
   return [v2 shouldDecodeSubviews];
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v5.receiver = self;
   v5.super_class = UITabBar;
-  v4 = a3;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
-  [(_UITabBarVisualProvider *)self->_visualProvider updateArchivedSubviews:v4, v5.receiver, v5.super_class];
+  subviewsCopy = subviews;
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
+  [(_UITabBarVisualProvider *)self->_visualProvider updateArchivedSubviews:subviewsCopy, v5.receiver, v5.super_class];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = UITabBar;
-  [(UIView *)&v24 encodeWithCoder:v4];
+  [(UIView *)&v24 encodeWithCoder:coderCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    [v4 encodeConditionalObject:WeakRetained forKey:@"UIDelegate"];
+    [coderCopy encodeConditionalObject:WeakRetained forKey:@"UIDelegate"];
   }
 
   items = self->_items;
   if (items)
   {
-    [v4 encodeObject:items forKey:@"UIItems"];
+    [coderCopy encodeObject:items forKey:@"UIItems"];
   }
 
   v7 = objc_loadWeakRetained(&self->_selectedItem);
@@ -1344,87 +1344,87 @@ LABEL_10:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_selectedItem);
-    [v4 encodeObject:v8 forKey:@"UISelectedItem"];
+    [coderCopy encodeObject:v8 forKey:@"UISelectedItem"];
   }
 
-  v9 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage barTintColor];
+  barTintColor = [(_UITabBarAppearanceStorage *)self->_appearanceStorage barTintColor];
 
-  if (v9)
+  if (barTintColor)
   {
-    v10 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage barTintColor];
-    [v4 encodeObject:v10 forKey:@"UIBarTintColor"];
+    barTintColor2 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage barTintColor];
+    [coderCopy encodeObject:barTintColor2 forKey:@"UIBarTintColor"];
   }
 
-  v11 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
+  unselectedImageTintColor = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
 
-  if (v11)
+  if (unselectedImageTintColor)
   {
-    v12 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
-    [v4 encodeObject:v12 forKey:@"UIBarUnselectedImageTintColor"];
+    unselectedImageTintColor2 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage unselectedImageTintColor];
+    [coderCopy encodeObject:unselectedImageTintColor2 forKey:@"UIBarUnselectedImageTintColor"];
   }
 
-  v13 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectedImageTintColor];
+  selectedImageTintColor = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectedImageTintColor];
 
-  if (v13)
+  if (selectedImageTintColor)
   {
-    v14 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectedImageTintColor];
-    [v4 encodeObject:v14 forKey:@"UISelectedImageTintColor"];
+    selectedImageTintColor2 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectedImageTintColor];
+    [coderCopy encodeObject:selectedImageTintColor2 forKey:@"UISelectedImageTintColor"];
   }
 
-  v15 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectionIndicatorImage];
-  if (v15)
+  selectionIndicatorImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage selectionIndicatorImage];
+  if (selectionIndicatorImage)
   {
-    [v4 encodeObject:v15 forKey:@"UISelectionIndicatorImage"];
+    [coderCopy encodeObject:selectionIndicatorImage forKey:@"UISelectionIndicatorImage"];
   }
 
-  v16 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage shadowImage];
+  shadowImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage shadowImage];
 
-  if (v16)
+  if (shadowImage)
   {
-    [v4 encodeObject:v16 forKey:@"UIShadowImage"];
+    [coderCopy encodeObject:shadowImage forKey:@"UIShadowImage"];
   }
 
-  v17 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
+  backgroundImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
 
-  if (v17)
+  if (backgroundImage)
   {
-    [v4 encodeObject:v17 forKey:@"UIBackgroundImage"];
+    [coderCopy encodeObject:backgroundImage forKey:@"UIBackgroundImage"];
   }
 
   itemPositioning = self->_itemPositioning;
   if (itemPositioning)
   {
-    [v4 encodeInteger:itemPositioning forKey:@"UITabBarItemPositioning"];
+    [coderCopy encodeInteger:itemPositioning forKey:@"UITabBarItemPositioning"];
   }
 
   if (self->_itemDimension > 0.0)
   {
-    [v4 encodeDouble:@"UITabBarItemWidth" forKey:?];
+    [coderCopy encodeDouble:@"UITabBarItemWidth" forKey:?];
   }
 
   if (self->_itemSpacing > 0.0)
   {
-    [v4 encodeDouble:@"UITabBarItemSpacing" forKey:?];
+    [coderCopy encodeDouble:@"UITabBarItemSpacing" forKey:?];
   }
 
   tabBarFlags = self->_tabBarFlags;
   v20 = (tabBarFlags >> 7) & 7;
   if (v20)
   {
-    [v4 encodeInteger:v20 forKey:@"UIBarTranslucence"];
+    [coderCopy encodeInteger:v20 forKey:@"UIBarTranslucence"];
     LODWORD(tabBarFlags) = self->_tabBarFlags;
   }
 
   v21 = (tabBarFlags >> 4) & 7;
   if (v21)
   {
-    [v4 encodeInteger:v21 forKey:@"UIBarStyle"];
+    [coderCopy encodeInteger:v21 forKey:@"UIBarStyle"];
     LODWORD(tabBarFlags) = self->_tabBarFlags;
   }
 
   if ((tabBarFlags & 0x10000) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UISpringLoaded"];
+    [coderCopy encodeBool:1 forKey:@"UISpringLoaded"];
   }
 
   if ([(_UITabBarVisualProvider *)self->_visualProvider useModernAppearance])
@@ -1432,20 +1432,20 @@ LABEL_10:
     standardAppearance = self->_standardAppearance;
     if (standardAppearance)
     {
-      [v4 encodeObject:standardAppearance forKey:@"UITabBarStandardAppearance"];
+      [coderCopy encodeObject:standardAppearance forKey:@"UITabBarStandardAppearance"];
     }
 
     scrollEdgeAppearance = self->_scrollEdgeAppearance;
     if (scrollEdgeAppearance)
     {
-      [v4 encodeObject:scrollEdgeAppearance forKey:@"UITabBarScrollEdgeAppearance"];
+      [coderCopy encodeObject:scrollEdgeAppearance forKey:@"UITabBarScrollEdgeAppearance"];
     }
   }
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 8;
   }
@@ -1465,8 +1465,8 @@ LABEL_10:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UITabBar *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  items = [(UITabBar *)self items];
+  v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1477,19 +1477,19 @@ LABEL_10:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
-        v7 = [(UITabBarItem *)*(*(&v8 + 1) + 8 * i) _tabBarButton];
-        if ([v7 _isSelected])
+        _tabBarButton = [(UITabBarItem *)*(*(&v8 + 1) + 8 * i) _tabBarButton];
+        if ([_tabBarButton _isSelected])
         {
-          [v7 _showSelectedIndicator:1 changeSelection:0];
+          [_tabBarButton _showSelectedIndicator:1 changeSelection:0];
 
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -1543,10 +1543,10 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_didSelectButtonForItem:(id)a3
+- (void)_didSelectButtonForItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1567,7 +1567,7 @@ LABEL_10:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v10 == v4)
+        if (v10 == itemCopy)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1578,7 +1578,7 @@ LABEL_10:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [WeakRetained _tabBarDidChangeSelectionToItem:v4];
+            [WeakRetained _tabBarDidChangeSelectionToItem:itemCopy];
           }
 
           else
@@ -1603,11 +1603,11 @@ LABEL_10:
 LABEL_17:
 }
 
-- (void)_sendAction:(id)a3 withEvent:(id)a4
+- (void)_sendAction:(id)action withEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  eventCopy = event;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1628,9 +1628,9 @@ LABEL_17:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [(UITabBarItem *)v13 _tabBarButton];
+        _tabBarButton = [(UITabBarItem *)v13 _tabBarButton];
 
-        if (v14 == v6)
+        if (_tabBarButton == actionCopy)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1641,9 +1641,9 @@ LABEL_17:
           if ([v13 action])
           {
             v16 = UIApp;
-            v17 = [v13 action];
-            v18 = [v13 target];
-            [v16 sendAction:v17 toTarget:v18 fromSender:v13 forEvent:v7];
+            action = [v13 action];
+            target = [v13 target];
+            [v16 sendAction:action toTarget:target fromSender:v13 forEvent:eventCopy];
           }
 
           goto LABEL_16;
@@ -1675,15 +1675,15 @@ LABEL_16:
 
   else if (self->_items != v6)
   {
-    v7 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage _tabItemAppearanceStorage];
-    v8 = v7;
-    if (v7)
+    _tabItemAppearanceStorage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage _tabItemAppearanceStorage];
+    v8 = _tabItemAppearanceStorage;
+    if (_tabItemAppearanceStorage)
     {
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __30__UITabBar_setItems_animated___block_invoke;
       v43[3] = &unk_1E70F8CE8;
-      v44 = v7;
+      v44 = _tabItemAppearanceStorage;
       [(NSArray *)v6 enumerateObjectsUsingBlock:v43];
     }
 
@@ -1728,10 +1728,10 @@ LABEL_16:
           }
 
           v17 = *(*(&v39 + 1) + 8 * i);
-          v18 = [(UIView *)self traitCollection];
-          v19 = [v18 userInterfaceIdiom];
+          traitCollection = [(UIView *)self traitCollection];
+          userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-          if (v19 == 6 && v17)
+          if (userInterfaceIdiom == 6 && v17)
           {
             objc_storeWeak(v17 + 35, self);
           }
@@ -1775,10 +1775,10 @@ LABEL_22:
           }
 
           v25 = *(*(&v35 + 1) + 8 * j);
-          v26 = [(UIView *)self traitCollection];
-          v27 = [v26 userInterfaceIdiom];
+          traitCollection2 = [(UIView *)self traitCollection];
+          userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-          if (v27 == 6 && v25)
+          if (userInterfaceIdiom2 == 6 && v25)
           {
             objc_storeWeak((v25 + 280), 0);
           }
@@ -1808,9 +1808,9 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   [v4 setTitleTextAttributes:v6 forState:4];
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   if ([(UITabBar *)self isLocked])
   {
     v5 = MEMORY[0x1E695DF30];
@@ -1823,13 +1823,13 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   {
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIView *)&v7 setTranslatesAutoresizingMaskIntoConstraints:v3];
+    [(UIView *)&v7 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
   }
 }
 
-- (void)addConstraint:(id)a3
+- (void)addConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   if ([(UITabBar *)self isLocked])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot modify constraints for UITabBar managed by a controller"];
@@ -1839,13 +1839,13 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   {
     v5.receiver = self;
     v5.super_class = UITabBar;
-    [(UIView *)&v5 addConstraint:v4];
+    [(UIView *)&v5 addConstraint:constraintCopy];
   }
 }
 
-- (void)removeConstraint:(id)a3
+- (void)removeConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   if ([(UITabBar *)self isLocked])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot modify constraints for UITabBar managed by a controller"];
@@ -1855,43 +1855,43 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   {
     v5.receiver = self;
     v5.super_class = UITabBar;
-    [(UIView *)&v5 removeConstraint:v4];
+    [(UIView *)&v5 removeConstraint:constraintCopy];
   }
 }
 
-- (void)_setBarOrientation:(int64_t)a3
+- (void)_setBarOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[UITabBar _setBarOrientation:]"];
-    [v5 handleFailureInFunction:v6 file:@"UITabBar.m" lineNumber:1675 description:{@"Invalid parameter not satisfying: %@", @"UIDeviceOrientationIsValidInterfaceOrientation(orientation)"}];
+    [currentHandler handleFailureInFunction:v6 file:@"UITabBar.m" lineNumber:1675 description:{@"Invalid parameter not satisfying: %@", @"UIDeviceOrientationIsValidInterfaceOrientation(orientation)"}];
   }
 
-  v7 = [(UITabBar *)self _effectiveBarOrientation];
-  self->_barOrientation = a3;
-  if (v7 != [(UITabBar *)self _effectiveBarOrientation])
+  _effectiveBarOrientation = [(UITabBar *)self _effectiveBarOrientation];
+  self->_barOrientation = orientation;
+  if (_effectiveBarOrientation != [(UITabBar *)self _effectiveBarOrientation])
   {
 
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  [(_UITabBarVisualProvider *)self->_visualProvider intrinsicContentSizeGivenSize:a3.width, a3.height];
+  [(_UITabBarVisualProvider *)self->_visualProvider intrinsicContentSizeGivenSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UITabBar *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(UITabBar *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIView *)self superview];
-  if (v8)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     [(UIView *)self superview];
   }
@@ -1905,8 +1905,8 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   v11 = v10;
   v13 = v12;
 
-  v14 = [(UITabBar *)self _effectiveBarOrientation];
-  if ((v14 - 1) >= 2)
+  _effectiveBarOrientation = [(UITabBar *)self _effectiveBarOrientation];
+  if ((_effectiveBarOrientation - 1) >= 2)
   {
     v15 = v7;
   }
@@ -1916,7 +1916,7 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
     v15 = v13;
   }
 
-  if ((v14 - 1) >= 2)
+  if ((_effectiveBarOrientation - 1) >= 2)
   {
     v16 = v11;
   }
@@ -1939,32 +1939,32 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   [(_UITabBarVisualProvider *)self->_visualProvider updateProperties];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = UITabBar;
-  v4 = a3;
-  [(UIView *)&v5 traitCollectionDidChange:v4];
-  [(_UITabBarVisualProvider *)self->_visualProvider traitCollectionDidChange:v4, v5.receiver, v5.super_class];
+  changeCopy = change;
+  [(UIView *)&v5 traitCollectionDidChange:changeCopy];
+  [(_UITabBarVisualProvider *)self->_visualProvider traitCollectionDidChange:changeCopy, v5.receiver, v5.super_class];
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
   v8.receiver = self;
   v8.super_class = UITabBar;
-  v4 = a3;
-  v5 = [(UIView *)&v8 _traitCollectionForChildEnvironment:v4];
-  v6 = [(_UITabBarVisualProvider *)self->_visualProvider traitCollectionForChild:v4 baseTraitCollection:v5, v8.receiver, v8.super_class];
+  environmentCopy = environment;
+  v5 = [(UIView *)&v8 _traitCollectionForChildEnvironment:environmentCopy];
+  v6 = [(_UITabBarVisualProvider *)self->_visualProvider traitCollectionForChild:environmentCopy baseTraitCollection:v5, v8.receiver, v8.super_class];
 
   return v6;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = UITabBar;
   [(UIView *)&v5 setSemanticContentAttribute:?];
-  [(_UITabBarVisualProvider *)self->_visualProvider setSemanticContentAttribute:a3];
+  [(_UITabBarVisualProvider *)self->_visualProvider setSemanticContentAttribute:attribute];
 }
 
 - (void)beginCustomizingItems:(NSArray *)items
@@ -1985,8 +1985,8 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v7 = [(UITabBar *)self items];
-      [WeakRetained tabBar:self willBeginCustomizingItems:v7];
+      items = [(UITabBar *)self items];
+      [WeakRetained tabBar:self willBeginCustomizingItems:items];
     }
 
     [(_UITabBarVisualProvider *)self->_visualProvider willBeginCustomizingItems];
@@ -2011,11 +2011,11 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy
 {
   v19.receiver = self;
   v19.super_class = UITabBar;
-  [(UIView *)&v19 _didChangeFromIdiom:a3 onScreen:a4 traverseHierarchy:a5];
+  [(UIView *)&v19 _didChangeFromIdiom:idiom onScreen:screen traverseHierarchy:hierarchy];
   if (dyld_program_sdk_at_least())
   {
     [(UIView *)self frame];
@@ -2027,14 +2027,14 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
     if (v15 != v14)
     {
       [(UITabBar *)self setFrame:v8, v10, v12, v15];
-      v16 = [(UIView *)self superview];
-      [v16 setNeedsLayout];
+      superview = [(UIView *)self superview];
+      [superview setNeedsLayout];
     }
 
-    v17 = [(UIView *)self _screen];
-    v18 = [v17 _userInterfaceIdiom];
+    _screen = [(UIView *)self _screen];
+    _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-    if (v18 != a3 && (a3 == 3 || v18 == 3))
+    if (_userInterfaceIdiom != idiom && (idiom == 3 || _userInterfaceIdiom == 3))
     {
       [(UITabBar *)self _accessibilityButtonShapesParametersDidChange];
     }
@@ -2043,23 +2043,23 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
 
 - (void)_makeCurrentButtonFirstResponder
 {
-  v3 = [(UITabBar *)self selectedItem];
-  v2 = [(UITabBarItem *)v3 _tabBarButton];
-  [v2 becomeFirstResponder];
+  selectedItem = [(UITabBar *)self selectedItem];
+  _tabBarButton = [(UITabBarItem *)selectedItem _tabBarButton];
+  [_tabBarButton becomeFirstResponder];
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(_UITabBarVisualProvider *)self->_visualProvider preferredFocusEnvironments];
-  if (!v3)
+  preferredFocusEnvironments = [(_UITabBarVisualProvider *)self->_visualProvider preferredFocusEnvironments];
+  if (!preferredFocusEnvironments)
   {
-    v4 = [(UITabBar *)self preferredFocusedView];
-    v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v4, 0}];
+    preferredFocusedView = [(UITabBar *)self preferredFocusedView];
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:{preferredFocusedView, 0}];
   }
 
-  if (v3)
+  if (preferredFocusEnvironments)
   {
-    v5 = v3;
+    v5 = preferredFocusEnvironments;
   }
 
   else
@@ -2072,11 +2072,11 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)_setSpringLoaded:(BOOL)a3 force:(BOOL)a4
+- (void)_setSpringLoaded:(BOOL)loaded force:(BOOL)force
 {
-  v4 = a3;
+  loadedCopy = loaded;
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 || a4)
+  if (loaded || force)
   {
     v14 = 0u;
     v15 = 0u;
@@ -2097,7 +2097,7 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v12 + 1) + 8 * i) setSpringLoaded:{v4, v12}];
+          [*(*(&v12 + 1) + 8 * i) setSpringLoaded:{loadedCopy, v12}];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -2107,7 +2107,7 @@ void __30__UITabBar_setItems_animated___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  if (v4)
+  if (loadedCopy)
   {
     v11 = 0x10000;
   }
@@ -2148,11 +2148,11 @@ LABEL_8:
     self->_standardAppearance = v9;
 
     [(UITabBar *)self _installDefaultAppearance];
-    v11 = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
+    appearanceObserver = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
     v12 = self->_standardAppearance;
     if (v12)
     {
-      objc_storeWeak(&v12->super._changeObserver, v11);
+      objc_storeWeak(&v12->super._changeObserver, appearanceObserver);
     }
 
     [(_UITabBarVisualProvider *)self->_visualProvider backgroundTransitionProgress];
@@ -2161,10 +2161,10 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v14 = [(UIBarAppearance *)self->_standardAppearance _backgroundData];
-    v15 = [(UIBarAppearance *)v5 _backgroundData];
-    v16 = v14;
-    v17 = v15;
+    _backgroundData = [(UIBarAppearance *)self->_standardAppearance _backgroundData];
+    _backgroundData2 = [(UIBarAppearance *)v5 _backgroundData];
+    v16 = _backgroundData;
+    v17 = _backgroundData2;
     v18 = v17;
     if (v16 == v17)
     {
@@ -2233,11 +2233,11 @@ LABEL_8:
     self->_scrollEdgeAppearance = v9;
 
     [(UITabBar *)self _installDefaultAppearance];
-    v11 = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
+    appearanceObserver = [(_UITabBarVisualProvider *)self->_visualProvider appearanceObserver];
     v12 = self->_scrollEdgeAppearance;
     if (v12)
     {
-      objc_storeWeak(&v12->super._changeObserver, v11);
+      objc_storeWeak(&v12->super._changeObserver, appearanceObserver);
     }
 
     [(_UITabBarVisualProvider *)self->_visualProvider backgroundTransitionProgress];
@@ -2246,10 +2246,10 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v14 = [(UIBarAppearance *)self->_scrollEdgeAppearance _backgroundData];
-    v15 = [(UIBarAppearance *)v5 _backgroundData];
-    v16 = v14;
-    v17 = v15;
+    _backgroundData = [(UIBarAppearance *)self->_scrollEdgeAppearance _backgroundData];
+    _backgroundData2 = [(UIBarAppearance *)v5 _backgroundData];
+    v16 = _backgroundData;
+    v17 = _backgroundData2;
     v18 = v17;
     if (v16 == v17)
     {
@@ -2290,15 +2290,15 @@ LABEL_22:
   [(UITabBar *)self _useModernAppearance];
 }
 
-- (void)setBackgroundEffects:(id)a3
+- (void)setBackgroundEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   backgroundEffects = self->_backgroundEffects;
-  if (backgroundEffects != v4)
+  if (backgroundEffects != effectsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)backgroundEffects isEqualToArray:v4];
-    v4 = v9;
+    v9 = effectsCopy;
+    v6 = [(NSArray *)backgroundEffects isEqualToArray:effectsCopy];
+    effectsCopy = v9;
     if (!v6)
     {
       v7 = [(NSArray *)v9 copy];
@@ -2306,7 +2306,7 @@ LABEL_22:
       self->_backgroundEffects = v7;
 
       [(UITabBar *)self _setBackgroundNeedsUpdate:1];
-      v4 = v9;
+      effectsCopy = v9;
     }
   }
 }
@@ -2347,10 +2347,10 @@ LABEL_22:
   }
 
   v13 = v4;
-  v11 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
+  backgroundImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage backgroundImage];
 
   v4 = v13;
-  if (v13 != v11)
+  if (v13 != backgroundImage)
   {
     [(_UITabBarAppearanceStorage *)self->_appearanceStorage setBackgroundImage:v13];
     [(UITabBar *)self _setBackgroundNeedsUpdate:1];
@@ -2360,15 +2360,15 @@ LABEL_22:
 LABEL_11:
 }
 
-- (void)_setDisplayStyle:(int64_t)a3
+- (void)_setDisplayStyle:(int64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
     [(_UITabBarVisualProvider *)self->_visualProvider teardown];
     visualProvider = self->_visualProvider;
     self->_visualProvider = 0;
 
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     v6 = [UITabBar _visualProviderForTabBar:self];
     v7 = self->_visualProvider;
     self->_visualProvider = v6;
@@ -2415,10 +2415,10 @@ LABEL_11:
   }
 
   v13 = v4;
-  v11 = [(_UITabBarAppearanceStorage *)self->_appearanceStorage shadowImage];
+  shadowImage = [(_UITabBarAppearanceStorage *)self->_appearanceStorage shadowImage];
 
   v4 = v13;
-  if (v13 != v11)
+  if (v13 != shadowImage)
   {
     [(_UITabBarAppearanceStorage *)self->_appearanceStorage setShadowImage:v13];
     [(UITabBar *)self _setBackgroundNeedsUpdate:1];
@@ -2450,17 +2450,17 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v8 = [(_UITabBarAppearanceStorage *)appearanceStorage selectionIndicatorImage];
+  selectionIndicatorImage = [(_UITabBarAppearanceStorage *)appearanceStorage selectionIndicatorImage];
 
-  if (v8 != v4)
+  if (selectionIndicatorImage != v4)
   {
     [(_UITabBarAppearanceStorage *)self->_appearanceStorage setSelectionIndicatorImage:v4];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(UIView *)self subviews];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subviews = [(UIView *)self subviews];
+    v10 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2472,7 +2472,7 @@ LABEL_11:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -2485,7 +2485,7 @@ LABEL_11:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -2524,10 +2524,10 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v8 = [(_UITabBarAppearanceStorage *)appearanceStorage barTintColor];
+  barTintColor = [(_UITabBarAppearanceStorage *)appearanceStorage barTintColor];
 
   v4 = v9;
-  if (v8 != v9)
+  if (barTintColor != v9)
   {
     [(_UITabBarAppearanceStorage *)self->_appearanceStorage setBarTintColor:v9];
     [(UITabBar *)self _effectiveBarTintColorDidChange];
@@ -2575,10 +2575,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [(_UITabBarAppearanceStorage *)appearanceStorage unselectedImageTintColor];
+  unselectedImageTintColor = [(_UITabBarAppearanceStorage *)appearanceStorage unselectedImageTintColor];
 
   v4 = v9;
-  if (v8 != v9)
+  if (unselectedImageTintColor != v9)
   {
     [(_UITabBarAppearanceStorage *)self->_appearanceStorage setUnselectedImageTintColor:v9];
     [(_UITabBarVisualProvider *)self->_visualProvider updateUnselectedItemTintColor];
@@ -2588,11 +2588,11 @@ LABEL_7:
 LABEL_7:
 }
 
-- (void)_setBarMetrics:(int64_t)a3
+- (void)_setBarMetrics:(int64_t)metrics
 {
-  if (self->_barMetrics != a3)
+  if (self->_barMetrics != metrics)
   {
-    self->_barMetrics = a3;
+    self->_barMetrics = metrics;
     [(UIView *)self invalidateIntrinsicContentSize];
     [(UIView *)self setNeedsLayout];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2603,20 +2603,20 @@ LABEL_7:
   }
 }
 
-- (void)_setImageStyle:(int64_t)a3
+- (void)_setImageStyle:(int64_t)style
 {
-  if (self->_imageStyle != a3)
+  if (self->_imageStyle != style)
   {
-    self->_imageStyle = a3;
+    self->_imageStyle = style;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setShowsHighlightedState:(BOOL)a3
+- (void)_setShowsHighlightedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v15 = *MEMORY[0x1E69E9840];
-  self->_showsHighlightedState = a3;
+  self->_showsHighlightedState = state;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -2637,8 +2637,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [(UITabBarItem *)*(*(&v10 + 1) + 8 * v8) _tabBarButton];
-        [v9 _setShowsHighlightedState:{v3, v10}];
+        _tabBarButton = [(UITabBarItem *)*(*(&v10 + 1) + 8 * v8) _tabBarButton];
+        [_tabBarButton _setShowsHighlightedState:{stateCopy, v10}];
 
         ++v8;
       }
@@ -2651,33 +2651,33 @@ LABEL_7:
   }
 }
 
-- (void)_setScrollsItems:(BOOL)a3
+- (void)_setScrollsItems:(BOOL)items
 {
-  if (self->_scrollsItems != a3)
+  if (self->_scrollsItems != items)
   {
-    self->_scrollsItems = a3;
+    self->_scrollsItems = items;
     [(UIView *)self setNeedsLayout];
   }
 }
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x20) != 0)
+  if ((focusGroupContainmentBehavior & 0x20) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UITabBar;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
 - (BOOL)_isEligibleForFocusInteraction
@@ -2696,10 +2696,10 @@ LABEL_7:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 tabBarCanBecomeFocused];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  tabBarCanBecomeFocused = [_focusBehavior tabBarCanBecomeFocused];
 
-  if (v4)
+  if (tabBarCanBecomeFocused)
   {
     return ![(UIView *)self _isFocusedOrAncestorOfFocusedView];
   }
@@ -2710,14 +2710,14 @@ LABEL_7:
   }
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  if ([(_UITabBarVisualProvider *)self->_visualProvider shouldUpdateFocusInContext:v4])
+  contextCopy = context;
+  if ([(_UITabBarVisualProvider *)self->_visualProvider shouldUpdateFocusInContext:contextCopy])
   {
     v7.receiver = self;
     v7.super_class = UITabBar;
-    v5 = [(UIView *)&v7 shouldUpdateFocusInContext:v4];
+    v5 = [(UIView *)&v7 shouldUpdateFocusInContext:contextCopy];
   }
 
   else
@@ -2728,9 +2728,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)_setHiddenAwaitingFocus:(BOOL)a3
+- (void)_setHiddenAwaitingFocus:(BOOL)focus
 {
-  if (a3)
+  if (focus)
   {
     v3 = 2048;
   }
@@ -2743,14 +2743,14 @@ LABEL_7:
   self->_tabBarFlags = (*&self->_tabBarFlags & 0xFFFFF7FF | v3);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(UIView *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(UIView *)self isHidden];
   v10.receiver = self;
   v10.super_class = UITabBar;
-  [(UIView *)&v10 setHidden:v3];
-  if (v5 != v3)
+  [(UIView *)&v10 setHidden:hiddenCopy];
+  if (isHidden != hiddenCopy)
   {
     if ([(UITabBar *)self isLocked])
     {
@@ -2770,14 +2770,14 @@ LABEL_7:
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(UIView *)self alpha];
   v6 = v5;
   v10.receiver = self;
   v10.super_class = UITabBar;
-  [(UIView *)&v10 setAlpha:a3];
-  if (![(UIView *)self isHidden]&& (a3 == 0.0 && v6 != 0.0 || a3 != 0.0 && v6 == 0.0))
+  [(UIView *)&v10 setAlpha:alpha];
+  if (![(UIView *)self isHidden]&& (alpha == 0.0 && v6 != 0.0 || alpha != 0.0 && v6 == 0.0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_opt_respondsToSelector();
@@ -2790,11 +2790,11 @@ LABEL_7:
   }
 }
 
-- (void)_setFocusedItemHightlightShouldBeVisible:(BOOL)a3
+- (void)_setFocusedItemHightlightShouldBeVisible:(BOOL)visible
 {
-  if (((((*&self->_tabBarFlags & 0x1000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_tabBarFlags & 0x1000) == 0) ^ visible) & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v3 = 4096;
     }
@@ -2809,9 +2809,9 @@ LABEL_7:
   }
 }
 
-- (void)_setPendingFocusAction:(BOOL)a3
+- (void)_setPendingFocusAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 0x8000;
   }
@@ -2826,43 +2826,43 @@ LABEL_7:
 
 - (int64_t)_focusedIndex
 {
-  v3 = [(UITabBar *)self items];
-  v4 = [(UITabBar *)self _focusedTabBarItem];
-  v5 = [v3 indexOfObject:v4];
+  items = [(UITabBar *)self items];
+  _focusedTabBarItem = [(UITabBar *)self _focusedTabBarItem];
+  v5 = [items indexOfObject:_focusedTabBarItem];
 
   return v5;
 }
 
-- (void)dismissCustomizeSheet:(BOOL)a3
+- (void)dismissCustomizeSheet:(BOOL)sheet
 {
   if (self->_customizeView)
   {
-    [(UITabBar *)self _dismissCustomizeSheet:a3];
+    [(UITabBar *)self _dismissCustomizeSheet:sheet];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   if (self->_customizeView)
   {
-    if ([(UIView *)self pointInside:a4 withEvent:a3.x, a3.y])
+    if ([(UIView *)self pointInside:event withEvent:test.x, test.y])
     {
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
 
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UITabBar;
-    v6 = [(UIView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+    v6 = [(UIView *)&v8 hitTest:event withEvent:test.x, test.y];
     if (v6 == self && [(_UITabBarVisualProvider *)self->_visualProvider shouldPassthroughTouches])
     {
 
@@ -2873,13 +2873,13 @@ LABEL_7:
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if (self->_customizeView)
   {
     customizeView = self->_customizeView;
 
-    [(UITabBarCustomizeView *)customizeView tabBarTouchesBegan:a3 withEvent:a4];
+    [(UITabBarCustomizeView *)customizeView tabBarTouchesBegan:began withEvent:event];
   }
 
   else
@@ -2888,17 +2888,17 @@ LABEL_7:
     v9 = v5;
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIResponder *)&v7 touchesBegan:a3 withEvent:a4];
+    [(UIResponder *)&v7 touchesBegan:began withEvent:event];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (self->_customizeView)
   {
     customizeView = self->_customizeView;
 
-    [(UITabBarCustomizeView *)customizeView tabBarTouchesMoved:a3 withEvent:a4];
+    [(UITabBarCustomizeView *)customizeView tabBarTouchesMoved:moved withEvent:event];
   }
 
   else
@@ -2907,17 +2907,17 @@ LABEL_7:
     v9 = v5;
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIResponder *)&v7 touchesMoved:a3 withEvent:a4];
+    [(UIResponder *)&v7 touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self->_customizeView)
   {
     customizeView = self->_customizeView;
 
-    [(UITabBarCustomizeView *)customizeView tabBarTouchesEnded:a3 withEvent:a4];
+    [(UITabBarCustomizeView *)customizeView tabBarTouchesEnded:ended withEvent:event];
   }
 
   else
@@ -2926,17 +2926,17 @@ LABEL_7:
     v9 = v5;
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIResponder *)&v7 touchesEnded:a3 withEvent:a4];
+    [(UIResponder *)&v7 touchesEnded:ended withEvent:event];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self->_customizeView)
   {
     customizeView = self->_customizeView;
 
-    [(UITabBarCustomizeView *)customizeView tabBarTouchesCancelled:a3 withEvent:a4];
+    [(UITabBarCustomizeView *)customizeView tabBarTouchesCancelled:cancelled withEvent:event];
   }
 
   else
@@ -2945,16 +2945,16 @@ LABEL_7:
     v9 = v5;
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIResponder *)&v7 touchesCancelled:a3 withEvent:a4];
+    [(UIResponder *)&v7 touchesCancelled:cancelled withEvent:event];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -2972,12 +2972,12 @@ LABEL_7:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -2991,60 +2991,60 @@ LABEL_7:
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a4;
+  toWindowCopy = toWindow;
   v11.receiver = self;
   v11.super_class = UITabBar;
-  [(UIView *)&v11 _didMoveFromWindow:a3 toWindow:v6];
-  if (v6 && ![(UIView *)self _canDrawContent])
+  [(UIView *)&v11 _didMoveFromWindow:window toWindow:toWindowCopy];
+  if (toWindowCopy && ![(UIView *)self _canDrawContent])
   {
-    v7 = [v6 screen];
-    [v7 scale];
+    screen = [toWindowCopy screen];
+    [screen scale];
     v9 = v8;
-    v10 = [(UIView *)self layer];
-    [v10 setRasterizationScale:v9];
+    layer = [(UIView *)self layer];
+    [layer setRasterizationScale:v9];
   }
 }
 
-- (void)_buttonDown:(id)a3
+- (void)_buttonDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   *&self->_tabBarFlags &= ~4u;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    [(UITabBar *)self performSelector:sel__buttonDownDelayed_ withObject:v4 afterDelay:0.2];
+    [(UITabBar *)self performSelector:sel__buttonDownDelayed_ withObject:downCopy afterDelay:0.2];
   }
 }
 
-- (void)_buttonDownDelayed:(id)a3
+- (void)_buttonDownDelayed:(id)delayed
 {
   *&self->_tabBarFlags |= 4u;
-  v4 = a3;
-  [(UITabBar *)self _adjustButtonSelection:v4];
-  [v4 sendActionsForControlEvents:0x40000000];
+  delayedCopy = delayed;
+  [(UITabBar *)self _adjustButtonSelection:delayedCopy];
+  [delayedCopy sendActionsForControlEvents:0x40000000];
 }
 
-- (void)_buttonUp:(id)a3
+- (void)_buttonUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__buttonDownDelayed_ object:?];
   if ((*&self->_tabBarFlags & 4) == 0)
   {
-    [(UITabBar *)self _adjustButtonSelection:v4];
-    [v4 sendActionsForControlEvents:0x40000000];
+    [(UITabBar *)self _adjustButtonSelection:upCopy];
+    [upCopy sendActionsForControlEvents:0x40000000];
   }
 
-  if ([v4 isFirstResponder])
+  if ([upCopy isFirstResponder])
   {
-    [v4 resignFirstResponder];
+    [upCopy resignFirstResponder];
   }
 }
 
-- (void)_adjustButtonSelection:(id)a3
+- (void)_adjustButtonSelection:(id)selection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  selectionCopy = selection;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -3065,21 +3065,21 @@ LABEL_7:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(UITabBarItem *)v10 _tabBarButton];
+        _tabBarButton = [(UITabBarItem *)v10 _tabBarButton];
 
-        if (v11 == v4)
+        if (_tabBarButton == selectionCopy)
         {
-          v12 = [(UITabBar *)self isLocked];
+          isLocked = [(UITabBar *)self isLocked];
           [(UITabBar *)self setLocked:0];
           tabBarFlags = self->_tabBarFlags;
-          if (v12)
+          if (isLocked)
           {
             self->_tabBarFlags = (*&tabBarFlags | 0x40000);
           }
 
           [(UITabBar *)self setSelectedItem:v10];
           self->_tabBarFlags = (*&self->_tabBarFlags & 0xFFFBFFFF | (((*&tabBarFlags >> 18) & 1) << 18));
-          [(UITabBar *)self setLocked:v12];
+          [(UITabBar *)self setLocked:isLocked];
           goto LABEL_13;
         }
       }
@@ -3097,9 +3097,9 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)_dismissCustomizeSheet:(BOOL)a3
+- (void)_dismissCustomizeSheet:(BOOL)sheet
 {
-  v3 = a3;
+  sheetCopy = sheet;
   customizationItems = self->_customizationItems;
   if (customizationItems)
   {
@@ -3112,7 +3112,7 @@ LABEL_13:
   aBlock[3] = &unk_1E70F5AC0;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  if (v3)
+  if (sheetCopy)
   {
     [(UIView *)self->_customizeView frame];
     v8 = v7;
@@ -3135,12 +3135,12 @@ LABEL_13:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v16 = [(UITabBar *)self items];
-    [WeakRetained tabBar:self willEndCustomizingItems:v16 changed:(*&self->_tabBarFlags >> 1) & 1];
+    items = [(UITabBar *)self items];
+    [WeakRetained tabBar:self willEndCustomizingItems:items changed:(*&self->_tabBarFlags >> 1) & 1];
   }
 
   [(_UITabBarVisualProvider *)self->_visualProvider didEndCustomizingItems];
-  if (!v3)
+  if (!sheetCopy)
   {
     v6[2](v6, 1);
   }
@@ -3171,55 +3171,55 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
   return [v2 tintTabBarItemsForEdit:0];
 }
 
-- (void)_customizeWithAvailableItems:(id)a3
+- (void)_customizeWithAvailableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if (!self->_customizeView)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained tabBar:self willDisplayItemsForCustomization:v4];
+      [WeakRetained tabBar:self willDisplayItemsForCustomization:itemsCopy];
     }
 
     v6 = objc_loadWeakRetained(&self->__glassGroupContainer);
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      selfCopy = v6;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    v9 = v8;
+    v9 = selfCopy;
 
-    v10 = [(UIView *)v9 superview];
-    [v10 bounds];
+    superview = [(UIView *)v9 superview];
+    [superview bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(UIView *)self window];
-    v20 = [v19 windowScene];
-    v21 = [v20 _interfaceOrientation];
+    window = [(UIView *)self window];
+    windowScene = [window windowScene];
+    _interfaceOrientation = [windowScene _interfaceOrientation];
 
-    v22 = [(UIView *)self window];
-    v23 = __UIStatusBarManagerForWindow(v22);
-    v24 = [v23 isStatusBarHidden];
+    window2 = [(UIView *)self window];
+    v23 = __UIStatusBarManagerForWindow(window2);
+    isStatusBarHidden = [v23 isStatusBarHidden];
 
-    v25 = [(UIView *)self _screen];
-    v26 = v25;
-    if (v24)
+    _screen = [(UIView *)self _screen];
+    v26 = _screen;
+    if (isStatusBarHidden)
     {
-      [v25 bounds];
+      [_screen bounds];
     }
 
     else
     {
-      [v25 _applicationFrameForInterfaceOrientation:v21];
+      [_screen _applicationFrameForInterfaceOrientation:_interfaceOrientation];
     }
 
     v29 = v27;
@@ -3227,7 +3227,7 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if ((v21 - 3) >= 2)
+    if ((_interfaceOrientation - 3) >= 2)
     {
       v32 = v29;
     }
@@ -3237,7 +3237,7 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
       v32 = v30;
     }
 
-    if ((v21 - 3) >= 2)
+    if ((_interfaceOrientation - 3) >= 2)
     {
       v33 = v30;
     }
@@ -3265,19 +3265,19 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
     self->_customizeView = v37;
 
     v53 = v9;
-    [v10 _addSubview:self->_customizeView positioned:-3 relativeTo:v9];
+    [superview _addSubview:self->_customizeView positioned:-3 relativeTo:v9];
     v39 = self->_customizeView;
     v40 = +[UIColor systemBackgroundColor];
     [(UIView *)v39 setBackgroundColor:v40];
 
     [(UIView *)self->_customizeView setSemanticContentAttribute:v36];
     v41 = [UINavigationBar alloc];
-    v42 = [(UIView *)self window];
-    v43 = __UIStatusBarManagerForWindow(v42);
+    window3 = [(UIView *)self window];
+    v43 = __UIStatusBarManagerForWindow(window3);
     [v43 statusBarHeight];
     v45 = v44;
 
-    [UINavigationBar defaultSizeForOrientation:v21];
+    [UINavigationBar defaultSizeForOrientation:_interfaceOrientation];
     v47 = [(UINavigationBar *)v41 initWithFrame:0.0, v45, v16, v46];
     [(UIView *)v47 setAutoresizingMask:2];
     [(UINavigationBar *)v47 _setBarPosition:3];
@@ -3296,10 +3296,10 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
       [WeakRetained tabBar:self willShowCustomizationSheet:self->_customizeView withNavigationBar:v47];
     }
 
-    [(UITabBarCustomizeView *)self->_customizeView setTabBar:self currentItems:self->_items availableItems:v4];
+    [(UITabBarCustomizeView *)self->_customizeView setTabBar:self currentItems:self->_items availableItems:itemsCopy];
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained tabBar:self didDisplayItemsForCustomization:v4];
+      [WeakRetained tabBar:self didDisplayItemsForCustomization:itemsCopy];
     }
 
     v57[0] = MEMORY[0x1E69E9820];
@@ -3316,7 +3316,7 @@ uint64_t __35__UITabBar__dismissCustomizeSheet___block_invoke_2(uint64_t a1)
     v54[2] = __41__UITabBar__customizeWithAvailableItems___block_invoke_2;
     v54[3] = &unk_1E70F3C60;
     v55 = WeakRetained;
-    v56 = self;
+    selfCopy2 = self;
     v52 = WeakRetained;
     [UIView animateWithDuration:v57 animations:v54 completion:0.33];
     *&self->_tabBarFlags &= ~2u;
@@ -3342,10 +3342,10 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_configureTabBarReplacingItem:(id)a3 withNewItem:(id)a4 swapping:(BOOL)a5
+- (void)_configureTabBarReplacingItem:(id)item withNewItem:(id)newItem swapping:(BOOL)swapping
 {
-  v5 = a5;
-  v7 = [(_UITabBarVisualProvider *)self->_visualProvider exchangeItem:a3 withItem:a4];
+  swappingCopy = swapping;
+  v7 = [(_UITabBarVisualProvider *)self->_visualProvider exchangeItem:item withItem:newItem];
   items = self->_items;
   self->_items = v7;
 
@@ -3356,7 +3356,7 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   aBlock[4] = self;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v5)
+  if (swappingCopy)
   {
     [UIView animateWithDuration:v9 animations:0.2];
   }
@@ -3369,10 +3369,10 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   *&self->_tabBarFlags |= 2u;
 }
 
-- (double)_scaleFactorForItems:(id)a3 spacing:(double)a4 dimension:(double)a5 maxWidth:(double)a6
+- (double)_scaleFactorForItems:(id)items spacing:(double)spacing dimension:(double)dimension maxWidth:(double)width
 {
-  [(UITabBar *)self _totalDimensionForItems:a3 spacing:a4 dimension:a5 scaleFactor:1.0];
-  v8 = v7 <= a6;
+  [(UITabBar *)self _totalDimensionForItems:items spacing:spacing dimension:dimension scaleFactor:1.0];
+  v8 = v7 <= width;
   result = 0.9;
   if (v8)
   {
@@ -3382,15 +3382,15 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (double)_totalDimensionForItems:(id)a3 spacing:(double)a4 dimension:(double)a5 scaleFactor:(double)a6
+- (double)_totalDimensionForItems:(id)items spacing:(double)spacing dimension:(double)dimension scaleFactor:(double)factor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  itemsCopy = items;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v10 = [itemsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3402,26 +3402,26 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [(UITabBarItem *)v15 _tabBarButton];
-        v17 = [(UITabBarItem *)v15 _tabBarButton];
-        [v17 frame];
-        [v16 sizeThatFits:{v18, v19}];
+        _tabBarButton = [(UITabBarItem *)v15 _tabBarButton];
+        _tabBarButton2 = [(UITabBarItem *)v15 _tabBarButton];
+        [_tabBarButton2 frame];
+        [_tabBarButton sizeThatFits:{v18, v19}];
         v21 = v20;
 
-        v22 = v21 * a6;
-        if (v21 * a6 <= 0.0)
+        dimensionCopy = v21 * factor;
+        if (v21 * factor <= 0.0)
         {
-          v22 = a5;
+          dimensionCopy = dimension;
         }
 
-        v13 = v13 + v22 + a4;
+        v13 = v13 + dimensionCopy + spacing;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [itemsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
@@ -3435,12 +3435,12 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   return v13;
 }
 
-- (void)_updateTabBarItemView:(id)a3
+- (void)_updateTabBarItemView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(NSArray *)self->_items containsObject:?])
   {
-    [(_UITabBarVisualProvider *)self->_visualProvider _shim_updateTabBarItemView:v4];
+    [(_UITabBarVisualProvider *)self->_visualProvider _shim_updateTabBarItemView:viewCopy];
   }
 }
 
@@ -3450,11 +3450,11 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   {
     v2 = result;
     v3 = a2;
-    v4 = [v2 isLocked];
+    isLocked = [v2 isLocked];
     [v2 setLocked:0];
     v3[2](v3);
 
-    return [v2 setLocked:v4];
+    return [v2 setLocked:isLocked];
   }
 
   return result;
@@ -3490,26 +3490,26 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (double)_frameForHostedElement:(uint64_t)a3 options:
+- (double)_frameForHostedElement:(uint64_t)element options:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [*(a1 + 472) frameForHostedElement:a2 options:a3];
+  [*(self + 472) frameForHostedElement:a2 options:element];
   return result;
 }
 
-- (id)_viewsForMorphingToTarget:(id *)a1
+- (id)_viewsForMorphingToTarget:(id *)target
 {
-  if (a1)
+  if (target)
   {
-    a1 = [a1[59] viewsForMorphingToTarget:a2];
+    target = [target[59] viewsForMorphingToTarget:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return target;
 }
 
 - (uint64_t)_currentMorphTarget
@@ -3555,69 +3555,69 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_setGlassGroupContainer:(uint64_t)a1
+- (void)_setGlassGroupContainer:(uint64_t)container
 {
   obj = a2;
-  if (a1)
+  if (container)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 600));
+    WeakRetained = objc_loadWeakRetained((container + 600));
     if (WeakRetained != obj)
     {
-      objc_storeWeak((a1 + 600), obj);
-      [*(a1 + 472) glassGroupContainerDidChange:WeakRetained];
+      objc_storeWeak((container + 600), obj);
+      [*(container + 472) glassGroupContainerDidChange:WeakRetained];
     }
   }
 }
 
-- (id)_resolvedPresentationSourceItemForItem:(id *)a1
+- (id)_resolvedPresentationSourceItemForItem:(id *)item
 {
-  if (a1)
+  if (item)
   {
-    a1 = [a1[59] resolvedPresentationSourceItemForItem:a2];
+    item = [item[59] resolvedPresentationSourceItemForItem:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return item;
 }
 
-- (void)_setMinimized:(BOOL)a3
+- (void)_setMinimized:(BOOL)minimized
 {
-  v3 = a3;
+  minimizedCopy = minimized;
   if (![(UITabBar *)self _isPhotosApp])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2808 description:@"This can only be called by an approved app."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2808 description:@"This can only be called by an approved app."];
   }
 
-  if ([(UITabBar *)self _isMinimized]!= v3)
+  if ([(UITabBar *)self _isMinimized]!= minimizedCopy)
   {
     visualProvider = self->_visualProvider;
 
-    [(_UITabBarVisualProvider *)visualProvider setMinimized:v3];
+    [(_UITabBarVisualProvider *)visualProvider setMinimized:minimizedCopy];
   }
 }
 
 - (void)_handleCurrentMorphTargetChange
 {
-  v3 = [(UITabBar *)self _minimizedStateDidChangeHandler];
-  if (v3)
+  _minimizedStateDidChangeHandler = [(UITabBar *)self _minimizedStateDidChangeHandler];
+  if (_minimizedStateDidChangeHandler)
   {
-    v4 = v3;
+    v4 = _minimizedStateDidChangeHandler;
     v4[2](v4, [(UITabBar *)self _isMinimized]);
-    v3 = v4;
+    _minimizedStateDidChangeHandler = v4;
   }
 }
 
-- (void)_setMinimizedStateDidChangeHandler:(id)a3
+- (void)_setMinimizedStateDidChangeHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   if (![(UITabBar *)self _isPhotosApp])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2827 description:@"This can only be called by an approved app."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2827 description:@"This can only be called by an approved app."];
   }
 
-  v5 = [v8 copy];
+  v5 = [handlerCopy copy];
   minimizedStateDidChangeHandler = self->_minimizedStateDidChangeHandler;
   self->_minimizedStateDidChangeHandler = v5;
 }
@@ -3626,8 +3626,8 @@ void __41__UITabBar__customizeWithAvailableItems___block_invoke_2(uint64_t a1)
 {
   if (![(UITabBar *)self _isPhotosApp])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2833 description:@"This can only be called by an approved app."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBar.m" lineNumber:2833 description:@"This can only be called by an approved app."];
 
     if (self)
     {
@@ -3667,22 +3667,22 @@ LABEL_6:
   return result;
 }
 
-- (void)_setUpdateMorphTargetBlock:(void *)a1
+- (void)_setUpdateMorphTargetBlock:(void *)block
 {
-  if (a1)
+  if (block)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 592);
+    objc_setProperty_nonatomic_copy(block, newValue, newValue, 592);
   }
 }
 
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide
 {
   result = 0.0;
-  if (a6)
+  if (guide)
   {
     v7.receiver = self;
     v7.super_class = UITabBar;
-    [(UIView *)&v7 _autolayoutSpacingAtEdge:*&a3 forAttribute:a4 inContainer:a5 isGuide:1, 0.0];
+    [(UIView *)&v7 _autolayoutSpacingAtEdge:*&edge forAttribute:attribute inContainer:container isGuide:1, 0.0];
   }
 
   return result;

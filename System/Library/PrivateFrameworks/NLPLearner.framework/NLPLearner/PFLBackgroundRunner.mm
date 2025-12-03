@@ -1,6 +1,6 @@
 @interface PFLBackgroundRunner
 + (void)initialize;
-- (BOOL)prepareForActivity:(id)a3;
+- (BOOL)prepareForActivity:(id)activity;
 - (PFLBackgroundRunner)init;
 - (unsigned)start;
 - (void)cleanup;
@@ -34,21 +34,21 @@ uint64_t __33__PFLBackgroundRunner_initialize__block_invoke()
 
 - (void)cleanup
 {
-  v3 = [(PFLBackgroundRunner *)self assertion];
+  assertion = [(PFLBackgroundRunner *)self assertion];
 
-  if (v3)
+  if (assertion)
   {
-    v4 = [(PFLBackgroundRunner *)self assertion];
-    [v4 invalidate];
+    assertion2 = [(PFLBackgroundRunner *)self assertion];
+    [assertion2 invalidate];
   }
 }
 
-- (BOOL)prepareForActivity:(id)a3
+- (BOOL)prepareForActivity:(id)activity
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"QuickTypePFLBackgroundTask"];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"QuickTypePFLBackgroundTask"];
 
   if ([v6 length])
   {
@@ -57,9 +57,9 @@ uint64_t __33__PFLBackgroundRunner_initialize__block_invoke()
     v8 = v21;
     [(PFLBackgroundRunner *)self setTask:v7];
 
-    v9 = [(PFLBackgroundRunner *)self task];
+    task = [(PFLBackgroundRunner *)self task];
 
-    if (v9)
+    if (task)
     {
       v10 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.NLPLearner" name:@"AccessGPU"];
       v11 = objc_alloc(MEMORY[0x277D46DB8]);
@@ -125,8 +125,8 @@ uint64_t __33__PFLBackgroundRunner_initialize__block_invoke()
 - (unsigned)start
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(PFLBackgroundRunner *)self task];
-  v4 = [v3 url];
+  task = [(PFLBackgroundRunner *)self task];
+  v4 = [task url];
 
   v5 = sLog_6;
   if (os_log_type_enabled(sLog_6, OS_LOG_TYPE_DEFAULT))
@@ -158,7 +158,7 @@ uint64_t __33__PFLBackgroundRunner_initialize__block_invoke()
     v24 = 1;
     v9 = dispatch_group_create();
     dispatch_group_enter(v9);
-    v10 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __28__PFLBackgroundRunner_start__block_invoke;
@@ -167,7 +167,7 @@ uint64_t __33__PFLBackgroundRunner_initialize__block_invoke()
     v11 = v9;
     v18 = v11;
     v19 = v6;
-    [v19 downloadAttachmentsWithConfiguration:v10 completion:v17];
+    [v19 downloadAttachmentsWithConfiguration:defaultSessionConfiguration completion:v17];
 
     dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
     [(PFLBackgroundRunner *)self cleanup];

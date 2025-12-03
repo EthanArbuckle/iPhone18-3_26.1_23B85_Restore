@@ -1,33 +1,33 @@
 @interface _TVListView
-- (CGSize)tv_sizeThatFits:(CGSize)a3 withContentInset:(UIEdgeInsets)a4;
-- (void)setConfigureForStackTemplate:(BOOL)a3;
+- (CGSize)tv_sizeThatFits:(CGSize)fits withContentInset:(UIEdgeInsets)inset;
+- (void)setConfigureForStackTemplate:(BOOL)template;
 @end
 
 @implementation _TVListView
 
-- (CGSize)tv_sizeThatFits:(CGSize)a3 withContentInset:(UIEdgeInsets)a4
+- (CGSize)tv_sizeThatFits:(CGSize)fits withContentInset:(UIEdgeInsets)inset
 {
-  bottom = a4.bottom;
-  top = a4.top;
-  width = a3.width;
-  v8 = [(_TVListView *)self delegate:a3.width];
-  v9 = [(_TVListView *)self collectionViewLayout];
+  bottom = inset.bottom;
+  top = inset.top;
+  width = fits.width;
+  v8 = [(_TVListView *)self delegate:fits.width];
+  collectionViewLayout = [(_TVListView *)self collectionViewLayout];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v9 = 0;
+    collectionViewLayout = 0;
   }
 
   v10 = top + bottom;
-  [v9 itemSize];
+  [collectionViewLayout itemSize];
   v39 = v11;
-  [v9 sectionInset];
+  [collectionViewLayout sectionInset];
   v42 = v12;
   v14 = v13;
-  [v9 headerReferenceSize];
+  [collectionViewLayout headerReferenceSize];
   v16 = v15;
-  [v9 minimumLineSpacing];
+  [collectionViewLayout minimumLineSpacing];
   v18 = v17;
   v41 = objc_opt_respondsToSelector();
   v40 = objc_opt_respondsToSelector();
@@ -42,7 +42,7 @@
       v23 = v14;
       if (v40)
       {
-        [v8 collectionView:self layout:v9 insetForSectionAtIndex:v21];
+        [v8 collectionView:self layout:collectionViewLayout insetForSectionAtIndex:v21];
         v22 = v24;
         v23 = v25;
       }
@@ -50,14 +50,14 @@
       v26 = v16;
       if (v19)
       {
-        [v8 collectionView:self layout:v9 referenceSizeForHeaderInSection:v21];
+        [v8 collectionView:self layout:collectionViewLayout referenceSizeForHeaderInSection:v21];
         v26 = v27;
       }
 
       v28 = v18;
       if (v20)
       {
-        [v8 collectionView:self layout:v9 minimumLineSpacingForSectionAtIndex:v21];
+        [v8 collectionView:self layout:collectionViewLayout minimumLineSpacingForSectionAtIndex:v21];
         v28 = v29;
       }
 
@@ -78,7 +78,7 @@
           do
           {
             v34 = [MEMORY[0x277CCAA70] indexPathForItem:v33 inSection:v21];
-            [v8 collectionView:self layout:v9 sizeForItemAtIndexPath:v34];
+            [v8 collectionView:self layout:collectionViewLayout sizeForItemAtIndexPath:v34];
             v10 = v10 + v35;
 
             ++v33;
@@ -106,12 +106,12 @@
   return result;
 }
 
-- (void)setConfigureForStackTemplate:(BOOL)a3
+- (void)setConfigureForStackTemplate:(BOOL)template
 {
-  if (self->_configureForStackTemplate != a3)
+  if (self->_configureForStackTemplate != template)
   {
-    self->_configureForStackTemplate = a3;
-    [(_TVCollectionView *)self setScrollEnabled:!a3];
+    self->_configureForStackTemplate = template;
+    [(_TVCollectionView *)self setScrollEnabled:!template];
     configureForStackTemplate = self->_configureForStackTemplate;
 
     [(_TVListView *)self _setShouldDeriveVisibleBoundsFromContainingScrollView:configureForStackTemplate];

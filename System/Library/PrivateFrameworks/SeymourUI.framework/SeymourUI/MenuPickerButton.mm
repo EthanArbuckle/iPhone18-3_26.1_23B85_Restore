@@ -1,11 +1,11 @@
 @interface MenuPickerButton
-- (_TtC9SeymourUI16MenuPickerButton)initWithCoder:(id)a3;
+- (_TtC9SeymourUI16MenuPickerButton)initWithCoder:(id)coder;
 - (void)updateConfiguration;
 @end
 
 @implementation MenuPickerButton
 
-- (_TtC9SeymourUI16MenuPickerButton)initWithCoder:(id)a3
+- (_TtC9SeymourUI16MenuPickerButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI16MenuPickerButton_textForegroundColor) = 0;
   v3 = self + OBJC_IVAR____TtC9SeymourUI16MenuPickerButton_textFontDescriptor;
@@ -20,7 +20,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B81F018();
 }
 

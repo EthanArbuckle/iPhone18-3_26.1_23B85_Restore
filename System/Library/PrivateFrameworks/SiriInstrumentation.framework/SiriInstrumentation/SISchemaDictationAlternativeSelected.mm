@@ -1,49 +1,49 @@
 @interface SISchemaDictationAlternativeSelected
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaDictationAlternativeSelected)initWithDictionary:(id)a3;
-- (SISchemaDictationAlternativeSelected)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaDictationAlternativeSelected)initWithDictionary:(id)dictionary;
+- (SISchemaDictationAlternativeSelected)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAlternativeListPosition:(BOOL)a3;
-- (void)setHasCountOfAlternativesAvailable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAlternativeListPosition:(BOOL)position;
+- (void)setHasCountOfAlternativesAvailable:(BOOL)available;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaDictationAlternativeSelected
 
-- (SISchemaDictationAlternativeSelected)initWithDictionary:(id)a3
+- (SISchemaDictationAlternativeSelected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaDictationAlternativeSelected;
   v5 = [(SISchemaDictationAlternativeSelected *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"countOfWordsReplaced"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"countOfWordsReplaced"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDictationAlternativeSelected setCountOfWordsReplaced:](v5, "setCountOfWordsReplaced:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"countOfAlternativesAvailable"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"countOfAlternativesAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDictationAlternativeSelected setCountOfAlternativesAvailable:](v5, "setCountOfAlternativesAvailable:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"alternativeListPosition"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"alternativeListPosition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDictationAlternativeSelected setAlternativeListPosition:](v5, "setAlternativeListPosition:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"alternativesLocale"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"alternativesLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaDictationAlternativeSelected)initWithJSON:(id)a3
+- (SISchemaDictationAlternativeSelected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaDictationAlternativeSelected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaDictationAlternativeSelected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaDictationAlternativeSelected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,26 +93,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaDictationAlternativeSelected alternativeListPosition](self, "alternativeListPosition")}];
-    [v3 setObject:v4 forKeyedSubscript:@"alternativeListPosition"];
+    [dictionary setObject:v4 forKeyedSubscript:@"alternativeListPosition"];
   }
 
   if (self->_alternativesLocale)
   {
-    v5 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    alternativesLocale = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+    dictionaryRepresentation = [alternativesLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"alternativesLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alternativesLocale"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"alternativesLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"alternativesLocale"];
     }
   }
 
@@ -120,7 +120,7 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaDictationAlternativeSelected countOfAlternativesAvailable](self, "countOfAlternativesAvailable")}];
-    [v3 setObject:v9 forKeyedSubscript:@"countOfAlternativesAvailable"];
+    [dictionary setObject:v9 forKeyedSubscript:@"countOfAlternativesAvailable"];
 
     has = self->_has;
   }
@@ -128,12 +128,12 @@
   if (has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaDictationAlternativeSelected countOfWordsReplaced](self, "countOfWordsReplaced")}];
-    [v3 setObject:v10 forKeyedSubscript:@"countOfWordsReplaced"];
+    [dictionary setObject:v10 forKeyedSubscript:@"countOfWordsReplaced"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,16 +176,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(SISchemaLocaleIdentifier *)self->_alternativesLocale hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -194,13 +194,13 @@ LABEL_4:
   if (*&has)
   {
     countOfWordsReplaced = self->_countOfWordsReplaced;
-    if (countOfWordsReplaced != [v4 countOfWordsReplaced])
+    if (countOfWordsReplaced != [equalCopy countOfWordsReplaced])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -209,27 +209,27 @@ LABEL_4:
     if (v8)
     {
       countOfAlternativesAvailable = self->_countOfAlternativesAvailable;
-      if (countOfAlternativesAvailable != [v4 countOfAlternativesAvailable])
+      if (countOfAlternativesAvailable != [equalCopy countOfAlternativesAvailable])
       {
         goto LABEL_18;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (alternativeListPosition = self->_alternativeListPosition, alternativeListPosition == [v4 alternativeListPosition]))
+      if (!v10 || (alternativeListPosition = self->_alternativeListPosition, alternativeListPosition == [equalCopy alternativeListPosition]))
       {
-        v12 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
-        v13 = [v4 alternativesLocale];
-        v14 = v13;
-        if ((v12 != 0) != (v13 == 0))
+        alternativesLocale = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+        alternativesLocale2 = [equalCopy alternativesLocale];
+        v14 = alternativesLocale2;
+        if ((alternativesLocale != 0) != (alternativesLocale2 == 0))
         {
-          v15 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
-          if (!v15)
+          alternativesLocale3 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+          if (!alternativesLocale3)
           {
 
 LABEL_21:
@@ -237,10 +237,10 @@ LABEL_21:
             goto LABEL_19;
           }
 
-          v16 = v15;
-          v17 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
-          v18 = [v4 alternativesLocale];
-          v19 = [v17 isEqual:v18];
+          v16 = alternativesLocale3;
+          alternativesLocale4 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+          alternativesLocale5 = [equalCopy alternativesLocale];
+          v19 = [alternativesLocale4 isEqual:alternativesLocale5];
 
           if (v19)
           {
@@ -262,9 +262,9 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -295,21 +295,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+  alternativesLocale = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (alternativesLocale)
   {
-    v7 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
+    alternativesLocale2 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasAlternativeListPosition:(BOOL)a3
+- (void)setHasAlternativeListPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 4;
   }
@@ -322,9 +322,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCountOfAlternativesAvailable:(BOOL)a3
+- (void)setHasCountOfAlternativesAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 2;
   }
@@ -337,17 +337,17 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaDictationAlternativeSelected;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaDictationAlternativeSelected *)self alternativesLocale:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaDictationAlternativeSelected *)self deleteAlternativesLocale];
   }

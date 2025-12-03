@@ -1,16 +1,16 @@
 @interface AWDIDSRegistrationPhoneNumberValidationFinished
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfSMSSent:(BOOL)a3;
-- (void)setHasRegistrationError:(BOOL)a3;
-- (void)setHasValidationDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfSMSSent:(BOOL)sent;
+- (void)setHasRegistrationError:(BOOL)error;
+- (void)setHasValidationDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSRegistrationPhoneNumberValidationFinished
@@ -23,9 +23,9 @@
   [(AWDIDSRegistrationPhoneNumberValidationFinished *)&v3 dealloc];
 }
 
-- (void)setHasRegistrationError:(BOOL)a3
+- (void)setHasRegistrationError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasValidationDuration:(BOOL)a3
+- (void)setHasValidationDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumberOfSMSSent:(BOOL)a3
+- (void)setHasNumberOfSMSSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 2;
   }
@@ -77,16 +77,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -98,16 +98,16 @@
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validationDuration), @"validationDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validationDuration), @"validationDuration"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -118,13 +118,13 @@ LABEL_7:
   if ((has & 2) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfSMSSent), @"numberOfSMSSent"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfSMSSent), @"numberOfSMSSent"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -176,24 +176,24 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 36) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 7) = self->_registrationError;
-    *(a3 + 36) |= 4u;
+    *(to + 7) = self->_registrationError;
+    *(to + 36) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -212,21 +212,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 8) = self->_validationDuration;
-  *(a3 + 36) |= 8u;
+  *(to + 8) = self->_validationDuration;
+  *(to + 36) |= 8u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_8:
-  *(a3 + 6) = self->_numberOfSMSSent;
-  *(a3 + 36) |= 2u;
+  *(to + 6) = self->_numberOfSMSSent;
+  *(to + 36) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -234,7 +234,7 @@ LABEL_8:
     *(v5 + 36) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -273,22 +273,22 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if (has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -296,7 +296,7 @@ LABEL_24:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 2))
+    if (guid | *(equal + 2))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -309,34 +309,34 @@ LABEL_24:
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_registrationError != *(a3 + 7))
+      if ((*(equal + 36) & 4) == 0 || self->_registrationError != *(equal + 7))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_24;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0 || self->_validationDuration != *(a3 + 8))
+      if ((*(equal + 36) & 8) == 0 || self->_validationDuration != *(equal + 8))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_24;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_numberOfSMSSent != *(a3 + 6))
+      if ((*(equal + 36) & 2) == 0 || self->_numberOfSMSSent != *(equal + 6))
       {
         goto LABEL_24;
       }
@@ -399,25 +399,25 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDIDSRegistrationPhoneNumberValidationFinished *)self setGuid:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 4) != 0)
   {
-    self->_registrationError = *(a3 + 7);
+    self->_registrationError = *(from + 7);
     *&self->_has |= 4u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
     if ((v5 & 8) == 0)
     {
 LABEL_7:
@@ -430,20 +430,20 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 36) & 8) == 0)
+  else if ((*(from + 36) & 8) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_validationDuration = *(a3 + 8);
+  self->_validationDuration = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 36) & 2) == 0)
+  if ((*(from + 36) & 2) == 0)
   {
     return;
   }
 
 LABEL_8:
-  self->_numberOfSMSSent = *(a3 + 6);
+  self->_numberOfSMSSent = *(from + 6);
   *&self->_has |= 2u;
 }
 

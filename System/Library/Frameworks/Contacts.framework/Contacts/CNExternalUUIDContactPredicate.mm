@@ -1,23 +1,23 @@
 @interface CNExternalUUIDContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNExternalUUIDContactPredicate)initWithCoder:(id)a3;
-- (CNExternalUUIDContactPredicate)initWithExternalUUIDs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNExternalUUIDContactPredicate)initWithCoder:(id)coder;
+- (CNExternalUUIDContactPredicate)initWithExternalUUIDs:(id)ds;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNExternalUUIDContactPredicate
 
-- (CNExternalUUIDContactPredicate)initWithExternalUUIDs:(id)a3
+- (CNExternalUUIDContactPredicate)initWithExternalUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v10.receiver = self;
   v10.super_class = CNExternalUUIDContactPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     externalUUIDs = v5->_externalUUIDs;
     v5->_externalUUIDs = v6;
 
@@ -31,33 +31,33 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingExternalUUIDs:]"];
-  v5 = [(CNExternalUUIDContactPredicate *)self externalUUIDs];
-  v6 = [v3 appendName:@"externalUUIDs" object:v5];
+  externalUUIDs = [(CNExternalUUIDContactPredicate *)self externalUUIDs];
+  v6 = [v3 appendName:@"externalUUIDs" object:externalUUIDs];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42__CNExternalUUIDContactPredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
-  v16 = v4;
-  v17 = self;
+  v16 = equalCopy;
+  selfCopy = self;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __42__CNExternalUUIDContactPredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy2 = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy2}];
 
   return self;
 }
@@ -126,18 +126,18 @@ uint64_t __38__CNExternalUUIDContactPredicate_hash__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CNExternalUUIDContactPredicate)initWithCoder:(id)a3
+- (CNExternalUUIDContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNExternalUUIDContactPredicate;
-  v5 = [(CNPredicate *)&v14 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_externalUUIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_externalUUIDs"];
     v10 = [v9 copy];
     externalUUIDs = v5->_externalUUIDs;
     v5->_externalUUIDs = v10;
@@ -148,13 +148,13 @@ uint64_t __38__CNExternalUUIDContactPredicate_hash__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNExternalUUIDContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_externalUUIDs forKey:{@"_externalUUIDs", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_externalUUIDs forKey:{@"_externalUUIDs", v5.receiver, v5.super_class}];
 }
 
 @end

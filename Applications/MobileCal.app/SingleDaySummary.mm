@@ -1,14 +1,14 @@
 @interface SingleDaySummary
-- (CGRect)frameForEventID:(id)a3;
+- (CGRect)frameForEventID:(id)d;
 - (CompactMonthWeekViewDelegate)weekDelegate;
 - (SingleDaySummary)init;
 - (double)_actualEventsWidth;
 - (double)_totalEventsWidth;
-- (id)dataForEventID:(id)a3;
-- (unint64_t)backGroundCornerMaskforEventID:(id)a3;
+- (id)dataForEventID:(id)d;
+- (unint64_t)backGroundCornerMaskforEventID:(id)d;
 - (void)_processEventData;
-- (void)drawRect:(CGRect)a3;
-- (void)setData:(id)a3 date:(id)a4 calendar:(id)a5 delegate:(id)a6;
+- (void)drawRect:(CGRect)rect;
+- (void)setData:(id)data date:(id)date calendar:(id)calendar delegate:(id)delegate;
 @end
 
 @implementation SingleDaySummary
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)setData:(id)a3 date:(id)a4 calendar:(id)a5 delegate:(id)a6
+- (void)setData:(id)data date:(id)date calendar:(id)calendar delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(SingleDaySummary *)self setInputEventData:a3];
-  [(SingleDaySummary *)self setCalendar:v11];
-  v13 = [v11 startOfDayForDate:v12];
+  delegateCopy = delegate;
+  calendarCopy = calendar;
+  dateCopy = date;
+  [(SingleDaySummary *)self setInputEventData:data];
+  [(SingleDaySummary *)self setCalendar:calendarCopy];
+  v13 = [calendarCopy startOfDayForDate:dateCopy];
 
   [(SingleDaySummary *)self setDate:v13];
-  [(SingleDaySummary *)self setWeekDelegate:v10];
+  [(SingleDaySummary *)self setWeekDelegate:delegateCopy];
 
   [(SingleDaySummary *)self _processEventData];
 
@@ -48,8 +48,8 @@
 {
   v3 = [CalPreferences alloc];
   v34 = [v3 initWithDomain:kPreferenceDomain];
-  v4 = [(SingleDaySummary *)self inputEventData];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  inputEventData = [(SingleDaySummary *)self inputEventData];
+  v5 = [NSMutableArray arrayWithArray:inputEventData];
 
   v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
   v37 = 0u;
@@ -75,23 +75,23 @@
       }
 
       v11 = *(*(&v37 + 1) + 8 * i);
-      v12 = [(SingleDaySummary *)self date];
-      v13 = [(SingleDaySummary *)self calendar];
-      v14 = [v13 timeZone];
-      v15 = [EKCalendarDate calendarDateWithDate:v12 timeZone:v14];
+      date = [(SingleDaySummary *)self date];
+      calendar = [(SingleDaySummary *)self calendar];
+      timeZone = [calendar timeZone];
+      v15 = [EKCalendarDate calendarDateWithDate:date timeZone:timeZone];
 
-      v16 = [v15 calendarDateForDay];
-      v17 = [v16 date];
-      [v17 timeIntervalSinceReferenceDate];
+      calendarDateForDay = [v15 calendarDateForDay];
+      date2 = [calendarDateForDay date];
+      [date2 timeIntervalSinceReferenceDate];
       v19 = v18;
 
-      v20 = [v15 calendarDateForEndOfDay];
-      v21 = [v20 date];
-      [v21 timeIntervalSinceReferenceDate];
+      calendarDateForEndOfDay = [v15 calendarDateForEndOfDay];
+      date3 = [calendarDateForEndOfDay date];
+      [date3 timeIntervalSinceReferenceDate];
       v23 = v22;
 
-      v24 = [v11 startDate];
-      [v24 timeIntervalSinceReferenceDate];
+      startDate = [v11 startDate];
+      [startDate timeIntervalSinceReferenceDate];
       if (v25 > v23)
       {
 
@@ -100,8 +100,8 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v26 = [v11 endDate];
-      [v26 timeIntervalSinceReferenceDate];
+      endDate = [v11 endDate];
+      [endDate timeIntervalSinceReferenceDate];
       v28 = v27;
 
       if (v28 < v19)
@@ -155,15 +155,15 @@ LABEL_13:
   [(SingleDaySummary *)self setProcessedEventData:v31];
 }
 
-- (id)dataForEventID:(id)a3
+- (id)dataForEventID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SingleDaySummary *)self processedEventData];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  processedEventData = [(SingleDaySummary *)self processedEventData];
+  v6 = [processedEventData countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -173,12 +173,12 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(processedEventData);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 eventIdentifier];
-        v11 = [v4 isEqualToString:v10];
+        eventIdentifier = [v9 eventIdentifier];
+        v11 = [dCopy isEqualToString:eventIdentifier];
 
         if (v11)
         {
@@ -187,7 +187,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [processedEventData countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -202,22 +202,22 @@ LABEL_11:
   return v6;
 }
 
-- (CGRect)frameForEventID:(id)a3
+- (CGRect)frameForEventID:(id)d
 {
-  v4 = a3;
-  v5 = [(SingleDaySummary *)self processedEventData];
-  v6 = [v5 count];
+  dCopy = d;
+  processedEventData = [(SingleDaySummary *)self processedEventData];
+  v6 = [processedEventData count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [(SingleDaySummary *)self processedEventData];
-      v9 = [v8 objectAtIndex:v7];
+      processedEventData2 = [(SingleDaySummary *)self processedEventData];
+      v9 = [processedEventData2 objectAtIndex:v7];
 
-      v10 = [v9 eventIdentifier];
-      v11 = [v10 isEqualToString:v4];
+      eventIdentifier = [v9 eventIdentifier];
+      v11 = [eventIdentifier isEqualToString:dCopy];
 
       if (v11)
       {
@@ -225,8 +225,8 @@ LABEL_11:
       }
 
       ++v7;
-      v12 = [(SingleDaySummary *)self processedEventData];
-      v13 = [v12 count];
+      processedEventData3 = [(SingleDaySummary *)self processedEventData];
+      v13 = [processedEventData3 count];
     }
 
     while (v7 < v13);
@@ -261,22 +261,22 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)backGroundCornerMaskforEventID:(id)a3
+- (unint64_t)backGroundCornerMaskforEventID:(id)d
 {
-  v4 = a3;
-  v5 = [(SingleDaySummary *)self processedEventData];
-  v6 = [v5 count];
+  dCopy = d;
+  processedEventData = [(SingleDaySummary *)self processedEventData];
+  v6 = [processedEventData count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(SingleDaySummary *)self processedEventData];
-      v9 = [v8 objectAtIndex:v7];
+      processedEventData2 = [(SingleDaySummary *)self processedEventData];
+      v9 = [processedEventData2 objectAtIndex:v7];
 
-      v10 = [v9 eventIdentifier];
-      v11 = [v10 isEqualToString:v4];
+      eventIdentifier = [v9 eventIdentifier];
+      v11 = [eventIdentifier isEqualToString:dCopy];
 
       if (v11)
       {
@@ -284,8 +284,8 @@ LABEL_11:
       }
 
       ++v7;
-      v12 = [(SingleDaySummary *)self processedEventData];
-      v13 = [v12 count];
+      processedEventData3 = [(SingleDaySummary *)self processedEventData];
+      v13 = [processedEventData3 count];
 
       if (v7 >= v13)
       {
@@ -303,8 +303,8 @@ LABEL_11:
       v15 = 5;
     }
 
-    v16 = [(SingleDaySummary *)self processedEventData];
-    v17 = [v16 count] - 1;
+    processedEventData4 = [(SingleDaySummary *)self processedEventData];
+    v17 = [processedEventData4 count] - 1;
 
     if (v17 == v7)
     {
@@ -343,8 +343,8 @@ LABEL_5:
     }
   }
 
-  v9 = [(SingleDaySummary *)self weekDelegate];
-  [v9 monthWeekScale];
+  weekDelegate = [(SingleDaySummary *)self weekDelegate];
+  [weekDelegate monthWeekScale];
   v11 = v10;
 
   if (v11 <= 1.0)
@@ -358,8 +358,8 @@ LABEL_5:
 
 - (double)_actualEventsWidth
 {
-  v3 = [(SingleDaySummary *)self processedEventData];
-  v4 = [v3 count];
+  processedEventData = [(SingleDaySummary *)self processedEventData];
+  v4 = [processedEventData count];
   [(SingleDaySummary *)self _totalEventsWidth];
   [(SingleDaySummary *)self totalEventUnits];
   CalFloorToScreenScale();
@@ -368,9 +368,9 @@ LABEL_5:
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(SingleDaySummary *)self backgroundColor:a3.origin.x];
+  v4 = [(SingleDaySummary *)self backgroundColor:rect.origin.x];
   [v4 setFill];
 
   [(SingleDaySummary *)self bounds];
@@ -384,8 +384,8 @@ LABEL_5:
     [(SingleDaySummary *)self frame];
     if (v8 >= 0.1)
     {
-      v9 = [(SingleDaySummary *)self processedEventData];
-      if ([v9 count])
+      processedEventData = [(SingleDaySummary *)self processedEventData];
+      if ([processedEventData count])
       {
         [(SingleDaySummary *)self totalEventUnits];
         v11 = v10;
@@ -406,26 +406,26 @@ LABEL_5:
         [(SingleDaySummary *)self _totalEventsWidth];
         CalCeilToScreenScale();
         v19 = v18;
-        v9 = [UIBezierPath bezierPathWithRoundedRect:v15 cornerRadius:0.0, v13, v17, v17 * 0.5];
-        [v9 addClip];
-        v20 = [(SingleDaySummary *)self processedEventData];
-        v21 = [v20 count];
+        processedEventData = [UIBezierPath bezierPathWithRoundedRect:v15 cornerRadius:0.0, v13, v17, v17 * 0.5];
+        [processedEventData addClip];
+        processedEventData2 = [(SingleDaySummary *)self processedEventData];
+        v21 = [processedEventData2 count];
 
         if (v21)
         {
           v22 = 0;
           do
           {
-            v23 = [(SingleDaySummary *)self processedEventData];
-            v24 = [v23 objectAtIndex:v22];
+            processedEventData3 = [(SingleDaySummary *)self processedEventData];
+            v24 = [processedEventData3 objectAtIndex:v22];
 
             if (([v24 animating] & 1) == 0)
             {
               v25 = 0.0;
               if (v6)
               {
-                v26 = [(SingleDaySummary *)self processedEventData];
-                v27 = [v26 count] - 1;
+                processedEventData4 = [(SingleDaySummary *)self processedEventData];
+                v27 = [processedEventData4 count] - 1;
 
                 if (v22 < v27)
                 {
@@ -434,9 +434,9 @@ LABEL_5:
                 }
               }
 
-              v29 = [v24 color];
-              v30 = [(SingleDaySummary *)self traitCollection];
-              [v30 userInterfaceStyle];
+              color = [v24 color];
+              traitCollection = [(SingleDaySummary *)self traitCollection];
+              [traitCollection userInterfaceStyle];
               v31 = CUIKSummaryColorForColor();
 
               [v31 setFill];
@@ -450,8 +450,8 @@ LABEL_5:
             v15 = v19 + v15;
 
             ++v22;
-            v32 = [(SingleDaySummary *)self processedEventData];
-            v33 = [v32 count];
+            processedEventData5 = [(SingleDaySummary *)self processedEventData];
+            v33 = [processedEventData5 count];
           }
 
           while (v22 < v33);

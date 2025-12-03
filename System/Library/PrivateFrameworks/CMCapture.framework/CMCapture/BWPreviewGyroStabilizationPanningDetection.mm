@@ -1,6 +1,6 @@
 @interface BWPreviewGyroStabilizationPanningDetection
-- (BOOL)detectPanningUsingTranslation:(float *)a3 maxAvgTranslationOut:;
-- (BWPreviewGyroStabilizationPanningDetection)initWithPanningThreshold:(float)a3;
+- (BOOL)detectPanningUsingTranslation:(float *)translation maxAvgTranslationOut:;
+- (BWPreviewGyroStabilizationPanningDetection)initWithPanningThreshold:(float)threshold;
 - (float)_computePanningStatistics;
 - (void)_updateWithTranslation:(BWPreviewGyroStabilizationPanningDetection *)self;
 @end
@@ -76,7 +76,7 @@
   return result;
 }
 
-- (BWPreviewGyroStabilizationPanningDetection)initWithPanningThreshold:(float)a3
+- (BWPreviewGyroStabilizationPanningDetection)initWithPanningThreshold:(float)threshold
 {
   v7.receiver = self;
   v7.super_class = BWPreviewGyroStabilizationPanningDetection;
@@ -85,19 +85,19 @@
   if (v4)
   {
     [(BWPreviewGyroStabilizationPanningDetection *)v4 reset];
-    v5->_panningSpeedThreshold = a3;
+    v5->_panningSpeedThreshold = threshold;
   }
 
   return v5;
 }
 
-- (BOOL)detectPanningUsingTranslation:(float *)a3 maxAvgTranslationOut:
+- (BOOL)detectPanningUsingTranslation:(float *)translation maxAvgTranslationOut:
 {
   [(BWPreviewGyroStabilizationPanningDetection *)self _updateWithTranslation:?];
   [(BWPreviewGyroStabilizationPanningDetection *)self _computePanningStatistics];
-  if (a3)
+  if (translation)
   {
-    *a3 = v5;
+    *translation = v5;
   }
 
   return self->_isPanning;

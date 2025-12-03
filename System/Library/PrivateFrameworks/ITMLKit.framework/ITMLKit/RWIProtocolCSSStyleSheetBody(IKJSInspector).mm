@@ -31,8 +31,8 @@
     }
 
     v15 = MEMORY[0x277D7B6F8];
-    v16 = [v9 styleSheetId];
-    v17 = [v15 safe_initWithStyleSheetId:v16 rules:v10];
+    styleSheetId = [v9 styleSheetId];
+    v17 = [v15 safe_initWithStyleSheetId:styleSheetId rules:v10];
 
     [v17 setText:v8];
     [v17 ik_setTextNewLineIndexSet:v11];
@@ -50,12 +50,12 @@
 - (void)ik_setRuleList:()IKJSInspector
 {
   value = a3;
-  v4 = [a1 ik_ruleList];
+  ik_ruleList = [self ik_ruleList];
 
   v5 = value;
-  if (v4 != value)
+  if (ik_ruleList != value)
   {
-    objc_setAssociatedObject(a1, sel_ik_ruleList, value, 1);
+    objc_setAssociatedObject(self, sel_ik_ruleList, value, 1);
     v5 = value;
   }
 }
@@ -63,12 +63,12 @@
 - (void)ik_setTextNewLineIndexSet:()IKJSInspector
 {
   value = a3;
-  v4 = [a1 ik_textNewLineIndexSet];
+  ik_textNewLineIndexSet = [self ik_textNewLineIndexSet];
 
   v5 = value;
-  if (v4 != value)
+  if (ik_textNewLineIndexSet != value)
   {
-    objc_setAssociatedObject(a1, sel_ik_textNewLineIndexSet, value, 1);
+    objc_setAssociatedObject(self, sel_ik_textNewLineIndexSet, value, 1);
     v5 = value;
   }
 }

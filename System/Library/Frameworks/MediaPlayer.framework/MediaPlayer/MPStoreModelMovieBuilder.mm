@@ -1,6 +1,6 @@
 @interface MPStoreModelMovieBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelMovieBuilder
@@ -44,17 +44,17 @@
   return v9;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedMovieProperties & 1) == 0)
   {
-    v54 = v9;
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyMovieTitle"])
+    v54 = objectCopy;
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyMovieTitle"])
     {
       v13 = 2;
     }
@@ -65,7 +65,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFFD | v13);
-    if ([v12 containsObject:@"MPModelPropertyMovieDescriptionText"])
+    if ([properties containsObject:@"MPModelPropertyMovieDescriptionText"])
     {
       v14 = 4;
     }
@@ -76,7 +76,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFFB | v14);
-    if ([v12 containsObject:@"MPModelPropertyMovieDuration"])
+    if ([properties containsObject:@"MPModelPropertyMovieDuration"])
     {
       v15 = 8;
     }
@@ -87,7 +87,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFF7 | v15);
-    if ([v12 containsObject:@"MPModelPropertyMovieReleaseDate"])
+    if ([properties containsObject:@"MPModelPropertyMovieReleaseDate"])
     {
       v16 = 16;
     }
@@ -98,7 +98,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFEF | v16);
-    if ([v12 containsObject:@"MPModelPropertyMovieExplicitRating"])
+    if ([properties containsObject:@"MPModelPropertyMovieExplicitRating"])
     {
       v17 = 32;
     }
@@ -109,7 +109,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFDF | v17);
-    if ([v12 containsObject:@"MPModelPropertyMovieTagline"])
+    if ([properties containsObject:@"MPModelPropertyMovieTagline"])
     {
       v18 = 64;
     }
@@ -120,7 +120,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFFBF | v18);
-    if ([v12 containsObject:@"MPModelPropertyMovieArtwork"])
+    if ([properties containsObject:@"MPModelPropertyMovieArtwork"])
     {
       v19 = 128;
     }
@@ -131,7 +131,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFF7F | v19);
-    if ([v12 containsObject:@"MPModelPropertyMovieEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyMovieEditorialArtwork"])
     {
       v20 = 256;
     }
@@ -142,7 +142,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFEFF | v20);
-    if ([v12 containsObject:@"MPModelPropertyMovieLibraryAdded"])
+    if ([properties containsObject:@"MPModelPropertyMovieLibraryAdded"])
     {
       v21 = 0x8000;
     }
@@ -153,7 +153,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFF7FFF | v21);
-    if ([v12 containsObject:@"MPModelPropertyMovieKeepLocalEnableState"])
+    if ([properties containsObject:@"MPModelPropertyMovieKeepLocalEnableState"])
     {
       v22 = 512;
     }
@@ -164,7 +164,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFDFF | v22);
-    if ([v12 containsObject:@"MPModelPropertyMovieKeepLocalManagedStatus"])
+    if ([properties containsObject:@"MPModelPropertyMovieKeepLocalManagedStatus"])
     {
       v23 = 1024;
     }
@@ -175,7 +175,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFFBFF | v23);
-    if ([v12 containsObject:@"MPModelPropertyMovieKeepLocalManagedStatusReason"])
+    if ([properties containsObject:@"MPModelPropertyMovieKeepLocalManagedStatusReason"])
     {
       v24 = 2048;
     }
@@ -186,7 +186,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFF7FF | v24);
-    if ([v12 containsObject:@"MPModelPropertyMovieKeepLocalConstraints"])
+    if ([properties containsObject:@"MPModelPropertyMovieKeepLocalConstraints"])
     {
       v25 = 4096;
     }
@@ -197,7 +197,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFEFFF | v25);
-    if ([v12 containsObject:@"MPModelPropertyMovieLibraryAddEligible"])
+    if ([properties containsObject:@"MPModelPropertyMovieLibraryAddEligible"])
     {
       v26 = 0x10000;
     }
@@ -208,7 +208,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFEFFFF | v26);
-    if ([v12 containsObject:@"MPModelPropertyMovieHasCloudSyncSource"])
+    if ([properties containsObject:@"MPModelPropertyMovieHasCloudSyncSource"])
     {
       v27 = 0x2000;
     }
@@ -219,7 +219,7 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFFDFFF | v27);
-    if ([v12 containsObject:@"MPModelPropertyMovieStoreCanonicalID"])
+    if ([properties containsObject:@"MPModelPropertyMovieStoreCanonicalID"])
     {
       v28 = 0x20000;
     }
@@ -230,18 +230,18 @@
     }
 
     self->_requestedMovieProperties = (*&self->_requestedMovieProperties & 0xFFFDFFFF | v28);
-    v29 = [v11 relationships];
-    v30 = [v29 objectForKey:@"MPModelRelationshipMovieStoreAsset"];
+    relationships = [requestedPropertySet relationships];
+    v30 = [relationships objectForKey:@"MPModelRelationshipMovieStoreAsset"];
     storeAssetProperties = self->_storeAssetProperties;
     self->_storeAssetProperties = v30;
 
-    v32 = [v29 objectForKey:@"MPModelRelationshipMovieLocalFileAsset"];
+    v32 = [relationships objectForKey:@"MPModelRelationshipMovieLocalFileAsset"];
     if (v32)
     {
       *&self->_requestedMovieProperties |= 0x4000u;
     }
 
-    v33 = [v29 objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
+    v33 = [relationships objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
     if (v33)
     {
       v34 = [(MPStoreModelObjectBuilder *)[MPStoreModelPlaybackPositionBuilder alloc] initWithRequestedPropertySet:v33];
@@ -249,7 +249,7 @@
       self->_playbackPositionBuilder = v34;
     }
 
-    v36 = [v29 objectForKey:@"MPModelRelationshipMovieClips"];
+    v36 = [relationships objectForKey:@"MPModelRelationshipMovieClips"];
     if (v36)
     {
       v37 = [(MPStoreModelObjectBuilder *)[MPStoreModelMovieMediaClipBuilder alloc] initWithRequestedPropertySet:v36];
@@ -259,16 +259,16 @@
 
     *&self->_requestedMovieProperties |= 1u;
 
-    v9 = v54;
+    objectCopy = v54;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__MPStoreModelMovieBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v39 = v8;
+  v39 = metadataCopy;
   v60 = v39;
-  v40 = v10;
+  v40 = identityCopy;
   v61 = v40;
   v41 = _Block_copy(aBlock);
   v55[0] = MEMORY[0x1E69E9820];
@@ -278,15 +278,15 @@
   v55[4] = self;
   v42 = v39;
   v56 = v42;
-  v43 = v9;
+  v43 = objectCopy;
   v57 = v43;
   v44 = v40;
   v58 = v44;
   v45 = _Block_copy(v55);
   if (v43)
   {
-    v46 = [v43 identifiers];
-    v47 = [v46 copyWithSource:@"StorePlatform" block:v41];
+    identifiers = [v43 identifiers];
+    v47 = [identifiers copyWithSource:@"StorePlatform" block:v41];
     v48 = [v43 copyWithIdentifiers:v47 block:v45];
   }
 
@@ -294,8 +294,8 @@
   {
     v49 = [MPModelMovie alloc];
     v50 = [MPIdentifierSet alloc];
-    v46 = +[MPModelMovieKind identityKind];
-    v47 = [(MPIdentifierSet *)v50 initWithSource:@"StorePlatform" modelKind:v46 block:v41];
+    identifiers = +[MPModelMovieKind identityKind];
+    v47 = [(MPIdentifierSet *)v50 initWithSource:@"StorePlatform" modelKind:identifiers block:v41];
     v48 = [(MPModelObject *)v49 initWithIdentifiers:v47 block:v45];
   }
 

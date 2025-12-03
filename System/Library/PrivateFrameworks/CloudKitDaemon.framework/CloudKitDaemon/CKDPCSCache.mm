@@ -2,49 +2,49 @@
 - (BOOL)beginContentAccess;
 - (BOOL)hasStatusToReport;
 - (BOOL)isContentDiscarded;
-- (CKDPCSCache)initWithDeviceContext:(id)a3 containerID:(id)a4 accountOverrideInfo:(id)a5 accountID:(id)a6 encryptionServiceName:(id)a7;
+- (CKDPCSCache)initWithDeviceContext:(id)context containerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name;
 - (id)CKStatusReportArray;
-- (id)_lockedGetOutstandingFetchForOperation:(id)a3 options:(unint64_t)a4 itemIDString:(id)a5;
+- (id)_lockedGetOutstandingFetchForOperation:(id)operation options:(unint64_t)options itemIDString:(id)string;
 - (void)_discardSQLCache;
-- (void)_lockedAddOutstandingFetch:(id)a3 forItemIDString:(id)a4 databaseScope:(int64_t)a5;
-- (void)_lockedCreatePCSCacheFetchOfItem:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 fetchCreator:(id)a6 withCompletionHandler:(id)a7;
-- (void)_lockedFetchPCSForItem:(id)a3 memoryCache:(id)a4 forOperation:(id)a5 options:(unint64_t)a6 fetchCreator:(id)a7 withCompletionHandler:(id)a8;
-- (void)_lockedGetSQLCacheWithCompletionHandler:(id)a3;
-- (void)_lockedHandleMemoryFetchOfItem:(id)a3 pcsData:(id)a4 forOperation:(id)a5 options:(unint64_t)a6 fetchCreator:(id)a7 withCompletionHandler:(id)a8;
-- (void)_lockedInvalidateAllOutstandingPCSFetchesForItemIDString:(id)a3 databaseScope:(int64_t)a4;
-- (void)_lockedRemoveOutstandingFetch:(id)a3 forItemIDString:(id)a4 databaseScope:(int64_t)a5;
-- (void)_setPCSData:(id)a3 forFetchedRecordID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)_setPCSData:(id)a3 forFetchedShareID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)_setPCSData:(id)a3 forFetchedZoneID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)_updateMemoryCacheWithPCSData:(id)a3 forItemWithID:(id)a4 inMemoryCache:(id)a5 databaseScope:(int64_t)a6 withCompletionHandler:(id)a7;
-- (void)clearInvalidatedPCSSQLCacheEntriesWithSkipZonePCS:(BOOL)a3 completionHandler:(id)a4;
+- (void)_lockedAddOutstandingFetch:(id)fetch forItemIDString:(id)string databaseScope:(int64_t)scope;
+- (void)_lockedCreatePCSCacheFetchOfItem:(id)item forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler;
+- (void)_lockedFetchPCSForItem:(id)item memoryCache:(id)cache forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler;
+- (void)_lockedGetSQLCacheWithCompletionHandler:(id)handler;
+- (void)_lockedHandleMemoryFetchOfItem:(id)item pcsData:(id)data forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler;
+- (void)_lockedInvalidateAllOutstandingPCSFetchesForItemIDString:(id)string databaseScope:(int64_t)scope;
+- (void)_lockedRemoveOutstandingFetch:(id)fetch forItemIDString:(id)string databaseScope:(int64_t)scope;
+- (void)_setPCSData:(id)data forFetchedRecordID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)_setPCSData:(id)data forFetchedShareID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)_setPCSData:(id)data forFetchedZoneID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)_updateMemoryCacheWithPCSData:(id)data forItemWithID:(id)d inMemoryCache:(id)cache databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)clearInvalidatedPCSSQLCacheEntriesWithSkipZonePCS:(BOOL)s completionHandler:(id)handler;
 - (void)clearPCSCaches;
 - (void)clearPCSMemoryCaches;
 - (void)dealloc;
 - (void)discardContentIfPossible;
 - (void)endContentAccess;
-- (void)fetchPCSForRecordWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)fetchPCSForShareWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)fetchPCSForZoneWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)getSQLCache:(id)a3;
-- (void)removePCSDataForItemsInShareWithID:(id)a3;
-- (void)removePCSDataForItemsInZoneWithID:(id)a3;
+- (void)fetchPCSForRecordWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler;
+- (void)fetchPCSForShareWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler;
+- (void)fetchPCSForZoneWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler;
+- (void)getSQLCache:(id)cache;
+- (void)removePCSDataForItemsInShareWithID:(id)d;
+- (void)removePCSDataForItemsInZoneWithID:(id)d;
 - (void)runMemoryCacheEviction;
-- (void)updateMemoryCacheWithRecordPCSData:(id)a3 forRecordWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)updateMemoryCacheWithSharePCSData:(id)a3 forShareWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)updateMemoryCacheWithZonePCSData:(id)a3 forZoneWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6;
+- (void)updateMemoryCacheWithRecordPCSData:(id)data forRecordWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)updateMemoryCacheWithSharePCSData:(id)data forShareWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)updateMemoryCacheWithZonePCSData:(id)data forZoneWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
 @end
 
 @implementation CKDPCSCache
 
 - (BOOL)beginContentAccess
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_accessCount(v2, v3, v4);
-  objc_msgSend_setAccessCount_(v2, v6, v5 + 1);
-  v2->_contentDiscarded = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_accessCount(selfCopy, v3, v4);
+  objc_msgSend_setAccessCount_(selfCopy, v6, v5 + 1);
+  selfCopy->_contentDiscarded = 0;
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
@@ -107,26 +107,26 @@
   objc_msgSend_clearCache(v16, v17, v18);
 }
 
-- (CKDPCSCache)initWithDeviceContext:(id)a3 containerID:(id)a4 accountOverrideInfo:(id)a5 accountID:(id)a6 encryptionServiceName:(id)a7
+- (CKDPCSCache)initWithDeviceContext:(id)context containerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v56 = a7;
+  contextCopy = context;
+  dCopy = d;
+  infoCopy = info;
+  iDCopy = iD;
+  nameCopy = name;
   v57.receiver = self;
   v57.super_class = CKDPCSCache;
   v17 = [(CKDPCSCache *)&v57 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deviceContext, a3);
-    objc_storeStrong(&v18->_containerID, a4);
-    objc_storeStrong(&v18->_accountOverrideInfo, a5);
-    objc_storeStrong(&v18->_accountID, a6);
-    objc_storeStrong(&v18->_encryptionServiceName, a7);
+    objc_storeStrong(&v17->_deviceContext, context);
+    objc_storeStrong(&v18->_containerID, d);
+    objc_storeStrong(&v18->_accountOverrideInfo, info);
+    objc_storeStrong(&v18->_accountID, iD);
+    objc_storeStrong(&v18->_encryptionServiceName, name);
     v19 = MEMORY[0x277CCACA8];
-    v22 = objc_msgSend_containerIdentifier(v14, v20, v21);
+    v22 = objc_msgSend_containerIdentifier(dCopy, v20, v21);
     v24 = objc_msgSend_stringWithFormat_(v19, v23, @"%@.%@", @"com.apple.CloudKit.PCSCache.fetchQueue", v22);
     v25 = v24;
     v28 = objc_msgSend_UTF8String(v25, v26, v27);
@@ -137,7 +137,7 @@
 
     dispatch_queue_set_specific(v18->_fetchQueue, "com.apple.CloudKit.PCSCache.fetchQueue", 1, 0);
     v32 = MEMORY[0x277CCACA8];
-    v35 = objc_msgSend_containerIdentifier(v14, v33, v34);
+    v35 = objc_msgSend_containerIdentifier(dCopy, v33, v34);
     v37 = objc_msgSend_stringWithFormat_(v32, v36, @"%@.%@", @"com.apple.CloudKit.PCSCache.callbackQueue", v35);
     v38 = v37;
     v41 = objc_msgSend_UTF8String(v38, v39, v40);
@@ -180,7 +180,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "PCS cache deallocating: %p", buf, 0xCu);
   }
 
@@ -199,14 +199,14 @@
   objc_msgSend_runCacheEviction(shareMemoryCache, v6, v7);
 }
 
-- (void)_lockedGetSQLCacheWithCompletionHandler:(id)a3
+- (void)_lockedGetSQLCacheWithCompletionHandler:(id)handler
 {
-  v28 = a3;
+  handlerCopy = handler;
   v6 = objc_msgSend_fetchQueue(self, v4, v5);
   dispatch_assert_queue_V2(v6);
 
-  v7 = v28;
-  if (v28)
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     sqlCache = self->_sqlCache;
     if (!sqlCache)
@@ -221,18 +221,18 @@
       v27 = self->_sqlCache;
       self->_sqlCache = v26;
 
-      v7 = v28;
+      v7 = handlerCopy;
       sqlCache = self->_sqlCache;
     }
 
-    (v7)[2](v28, sqlCache, 0);
-    v7 = v28;
+    (v7)[2](handlerCopy, sqlCache, 0);
+    v7 = handlerCopy;
   }
 }
 
-- (void)getSQLCache:(id)a3
+- (void)getSQLCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   if (dispatch_get_specific("com.apple.CloudKit.PCSCache.fetchQueue"))
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -240,7 +240,7 @@
     v9[2] = sub_2252743A0;
     v9[3] = &unk_27854B6A0;
     v9[4] = self;
-    v10 = v4;
+    v10 = cacheCopy;
     objc_msgSend__lockedGetSQLCacheWithCompletionHandler_(self, v5, v9);
   }
 
@@ -253,7 +253,7 @@
     block[2] = sub_2252741F8;
     block[3] = &unk_278547220;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
+    v12 = cacheCopy;
     dispatch_async(v8, block);
 
     objc_destroyWeak(&v13);
@@ -261,49 +261,49 @@
   }
 }
 
-- (void)_lockedHandleMemoryFetchOfItem:(id)a3 pcsData:(id)a4 forOperation:(id)a5 options:(unint64_t)a6 fetchCreator:(id)a7 withCompletionHandler:(id)a8
+- (void)_lockedHandleMemoryFetchOfItem:(id)item pcsData:(id)data forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  itemCopy = item;
+  dataCopy = data;
+  operationCopy = operation;
+  creatorCopy = creator;
+  handlerCopy = handler;
   v21 = objc_msgSend_fetchQueue(self, v19, v20);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2252745FC;
   block[3] = &unk_27854B6C8;
-  v33 = v17;
-  v34 = a6;
-  v28 = v15;
-  v29 = v14;
-  v30 = self;
-  v31 = v16;
-  v32 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v18;
-  v25 = v14;
-  v26 = v15;
+  v33 = creatorCopy;
+  optionsCopy = options;
+  v28 = dataCopy;
+  v29 = itemCopy;
+  selfCopy = self;
+  v31 = operationCopy;
+  v32 = handlerCopy;
+  v22 = creatorCopy;
+  v23 = operationCopy;
+  v24 = handlerCopy;
+  v25 = itemCopy;
+  v26 = dataCopy;
   dispatch_async(v21, block);
 }
 
-- (void)_lockedRemoveOutstandingFetch:(id)a3 forItemIDString:(id)a4 databaseScope:(int64_t)a5
+- (void)_lockedRemoveOutstandingFetch:(id)fetch forItemIDString:(id)string databaseScope:(int64_t)scope
 {
-  v26 = a3;
-  v8 = a4;
+  fetchCopy = fetch;
+  stringCopy = string;
   v11 = objc_msgSend_fetchQueue(self, v9, v10);
   dispatch_assert_queue_V2(v11);
 
-  if (v26)
+  if (fetchCopy)
   {
-    v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"%lu-%@", a5, v8);
+    v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"%lu-%@", scope, stringCopy);
     v16 = objc_msgSend_outstandingFetches(self, v14, v15);
     v18 = objc_msgSend_objectForKeyedSubscript_(v16, v17, v13);
 
     if (v18)
     {
-      objc_msgSend_removeObject_(v18, v19, v26);
+      objc_msgSend_removeObject_(v18, v19, fetchCopy);
       if (!objc_msgSend_count(v18, v20, v21))
       {
         v24 = objc_msgSend_outstandingFetches(self, v22, v23);
@@ -313,19 +313,19 @@
   }
 }
 
-- (id)_lockedGetOutstandingFetchForOperation:(id)a3 options:(unint64_t)a4 itemIDString:(id)a5
+- (id)_lockedGetOutstandingFetchForOperation:(id)operation options:(unint64_t)options itemIDString:(id)string
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  operationCopy = operation;
+  stringCopy = string;
   v12 = objc_msgSend_fetchQueue(self, v10, v11);
   dispatch_assert_queue_V2(v12);
 
-  if (v9)
+  if (stringCopy)
   {
     v15 = objc_msgSend_outstandingFetches(self, v13, v14);
-    v18 = objc_msgSend_databaseScope(v8, v16, v17);
-    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v19, @"%lu-%@", v18, v9);
+    v18 = objc_msgSend_databaseScope(operationCopy, v16, v17);
+    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v19, @"%lu-%@", v18, stringCopy);
     v22 = objc_msgSend_objectForKeyedSubscript_(v15, v21, v20);
 
     v36 = 0u;
@@ -348,7 +348,7 @@
           }
 
           v30 = *(*(&v34 + 1) + 8 * i);
-          if (objc_msgSend_canBeUsedForOperation_withOptions_(v30, v26, v8, a4))
+          if (objc_msgSend_canBeUsedForOperation_withOptions_(v30, v26, operationCopy, options))
           {
             v31 = v30;
             goto LABEL_12;
@@ -379,14 +379,14 @@ LABEL_12:
   return v31;
 }
 
-- (void)_lockedAddOutstandingFetch:(id)a3 forItemIDString:(id)a4 databaseScope:(int64_t)a5
+- (void)_lockedAddOutstandingFetch:(id)fetch forItemIDString:(id)string databaseScope:(int64_t)scope
 {
-  v24 = a3;
-  v8 = a4;
+  fetchCopy = fetch;
+  stringCopy = string;
   v11 = objc_msgSend_fetchQueue(self, v9, v10);
   dispatch_assert_queue_V2(v11);
 
-  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"%lu-%@", a5, v8);
+  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"%lu-%@", scope, stringCopy);
 
   v16 = objc_msgSend_outstandingFetches(self, v14, v15);
   v18 = objc_msgSend_objectForKeyedSubscript_(v16, v17, v13);
@@ -398,17 +398,17 @@ LABEL_12:
     objc_msgSend_setObject_forKeyedSubscript_(v22, v23, v18, v13);
   }
 
-  objc_msgSend_addObject_(v18, v19, v24);
+  objc_msgSend_addObject_(v18, v19, fetchCopy);
 }
 
-- (void)_lockedInvalidateAllOutstandingPCSFetchesForItemIDString:(id)a3 databaseScope:(int64_t)a4
+- (void)_lockedInvalidateAllOutstandingPCSFetchesForItemIDString:(id)string databaseScope:(int64_t)scope
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_fetchQueue(self, v7, v8);
   dispatch_assert_queue_V2(v9);
 
-  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%lu-%@", a4, v6);
+  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%lu-%@", scope, stringCopy);
   v14 = objc_msgSend_outstandingFetches(self, v12, v13);
   v16 = objc_msgSend_objectForKeyedSubscript_(v14, v15, v11);
 
@@ -445,21 +445,21 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lockedCreatePCSCacheFetchOfItem:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 fetchCreator:(id)a6 withCompletionHandler:(id)a7
+- (void)_lockedCreatePCSCacheFetchOfItem:(id)item forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler
 {
   v94 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v75 = a7;
-  v17 = objc_msgSend_databaseScope(v13, v15, v16);
+  itemCopy = item;
+  operationCopy = operation;
+  creatorCopy = creator;
+  handlerCopy = handler;
+  v17 = objc_msgSend_databaseScope(operationCopy, v15, v16);
   v84 = 0;
   v85 = &v84;
   v86 = 0x3032000000;
   v87 = sub_225074110;
   v88 = sub_225073614;
-  v89 = objc_msgSend__lockedGetOutstandingFetchForOperation_options_itemIDString_(self, v18, v13, a5, v12);
-  v23 = objc_msgSend_parentOperation(v13, v19, v20);
+  v89 = objc_msgSend__lockedGetOutstandingFetchForOperation_options_itemIDString_(self, v18, operationCopy, options, itemCopy);
+  v23 = objc_msgSend_parentOperation(operationCopy, v19, v20);
   if (v23)
   {
     v24 = objc_msgSend_operationID(v85[5], v21, v22);
@@ -473,7 +473,7 @@ LABEL_12:
   }
 
   v30 = objc_msgSend_operationID(v85[5], v21, v22);
-  v33 = objc_msgSend_operationID(v13, v31, v32);
+  v33 = objc_msgSend_operationID(operationCopy, v31, v32);
   v35 = objc_msgSend_isEqualToString_(v30, v34, v33);
 
   v38 = v85[5];
@@ -489,7 +489,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v91 = v12;
+      v91 = itemCopy;
       _os_log_debug_impl(&dword_22506F000, v54, OS_LOG_TYPE_DEBUG, "Creating a new fetch operation for %{public}@", buf, 0xCu);
     }
 
@@ -499,10 +499,10 @@ LABEL_13:
     v76[3] = &unk_27854B740;
     v79 = &v84;
     v76[4] = self;
-    v77 = v12;
+    v77 = itemCopy;
     v80 = v17;
-    v78 = v75;
-    v14[2](v14, v76);
+    v78 = handlerCopy;
+    creatorCopy[2](creatorCopy, v76);
 
     goto LABEL_18;
   }
@@ -511,7 +511,7 @@ LABEL_13:
   v46 = objc_msgSend_container(v43, v44, v45);
   v49 = objc_msgSend_fetchAggregator(v46, v47, v48);
 
-  if (objc_msgSend_fetchRequestForExistingOperation_isDependentOnOperation_(v49, v50, v43, v13))
+  if (objc_msgSend_fetchRequestForExistingOperation_isDependentOnOperation_(v49, v50, v43, operationCopy))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -522,7 +522,7 @@ LABEL_13:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
     {
       v65 = objc_msgSend_operationID(v85[5], v52, v53);
-      v68 = objc_msgSend_operationID(v13, v66, v67);
+      v68 = objc_msgSend_operationID(operationCopy, v66, v67);
       *buf = 138543618;
       v91 = v65;
       v92 = 2114;
@@ -544,7 +544,7 @@ LABEL_13:
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
   {
     v70 = objc_msgSend_operationID(v85[5], v57, v58);
-    v73 = objc_msgSend_operationID(v13, v71, v72);
+    v73 = objc_msgSend_operationID(operationCopy, v71, v72);
     *buf = 138543618;
     v91 = v70;
     v92 = 2114;
@@ -558,7 +558,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_225275710;
   block[3] = &unk_27854B6F0;
-  v82 = v75;
+  v82 = handlerCopy;
   v83 = &v84;
   dispatch_group_notify(v61, v64, block);
 
@@ -568,131 +568,131 @@ LABEL_18:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lockedFetchPCSForItem:(id)a3 memoryCache:(id)a4 forOperation:(id)a5 options:(unint64_t)a6 fetchCreator:(id)a7 withCompletionHandler:(id)a8
+- (void)_lockedFetchPCSForItem:(id)item memoryCache:(id)cache forOperation:(id)operation options:(unint64_t)options fetchCreator:(id)creator withCompletionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  itemCopy = item;
+  cacheCopy = cache;
+  operationCopy = operation;
+  creatorCopy = creator;
+  handlerCopy = handler;
   v21 = objc_msgSend_fetchQueue(self, v19, v20);
   dispatch_assert_queue_V2(v21);
 
-  v24 = objc_msgSend_databaseScope(v16, v22, v23);
+  v24 = objc_msgSend_databaseScope(operationCopy, v22, v23);
   objc_initWeak(&location, self);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = sub_225275E48;
   v30[3] = &unk_27854B768;
   objc_copyWeak(v35, &location);
-  v25 = v14;
+  v25 = itemCopy;
   v31 = v25;
-  v26 = v16;
+  v26 = operationCopy;
   v32 = v26;
-  v35[1] = a6;
-  v27 = v17;
+  v35[1] = options;
+  v27 = creatorCopy;
   v33 = v27;
-  v28 = v18;
+  v28 = handlerCopy;
   v34 = v28;
-  objc_msgSend_getPCSDataFromCacheForID_databaseScope_withCompletionHandler_(v15, v29, v25, v24, v30);
+  objc_msgSend_getPCSDataFromCacheForID_databaseScope_withCompletionHandler_(cacheCopy, v29, v25, v24, v30);
 
   objc_destroyWeak(v35);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchPCSForRecordWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)fetchPCSForRecordWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 329, @"Invalid record ID: %@", v11);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 329, @"Invalid record ID: %@", dCopy);
   }
 
-  v16 = a5 | 0x800;
+  v16 = options | 0x800;
   v17 = objc_msgSend_fetchQueue(self, v14, v15);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_225276024;
   block[3] = &unk_27854B7B8;
-  v24 = v11;
-  v25 = v12;
-  v27 = v13;
+  v24 = dCopy;
+  v25 = operationCopy;
+  v27 = handlerCopy;
   v28 = v16;
-  v26 = self;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v19 = operationCopy;
+  v20 = dCopy;
   dispatch_async(v17, block);
 }
 
-- (void)fetchPCSForZoneWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)fetchPCSForZoneWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 351, @"Invalid zone ID: %@", v11);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 351, @"Invalid zone ID: %@", dCopy);
   }
 
-  v16 = a5 | 0x400;
+  v16 = options | 0x400;
   v17 = objc_msgSend_fetchQueue(self, v14, v15);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_225276450;
   block[3] = &unk_27854B7B8;
-  v24 = v11;
-  v25 = v12;
-  v27 = v13;
+  v24 = dCopy;
+  v25 = operationCopy;
+  v27 = handlerCopy;
   v28 = v16;
-  v26 = self;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v19 = operationCopy;
+  v20 = dCopy;
   dispatch_async(v17, block);
 }
 
-- (void)fetchPCSForShareWithID:(id)a3 forOperation:(id)a4 options:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)fetchPCSForShareWithID:(id)d forOperation:(id)operation options:(unint64_t)options withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 375, @"Invalid share ID: %@", v11);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDPCSCache.m", 375, @"Invalid share ID: %@", dCopy);
   }
 
-  v16 = a5 | 0x1000;
+  v16 = options | 0x1000;
   v17 = objc_msgSend_fetchQueue(self, v14, v15);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22527687C;
   block[3] = &unk_27854B7B8;
-  v24 = v11;
-  v25 = v12;
-  v27 = v13;
+  v24 = dCopy;
+  v25 = operationCopy;
+  v27 = handlerCopy;
   v28 = v16;
-  v26 = self;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v19 = operationCopy;
+  v20 = dCopy;
   dispatch_async(v17, block);
 }
 
-- (void)_setPCSData:(id)a3 forFetchedRecordID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)_setPCSData:(id)data forFetchedRecordID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v15 = a6;
-  if (v11)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -709,23 +709,23 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_225276CC4;
   block[3] = &unk_27854B7B8;
-  v25 = v12;
-  v26 = v11;
-  v28 = v15;
-  v29 = a5;
-  v27 = self;
-  v17 = v15;
-  v18 = v11;
-  v19 = v12;
+  v25 = dCopy;
+  v26 = dataCopy;
+  v28 = handlerCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v18 = dataCopy;
+  v19 = dCopy;
   dispatch_async(v16, block);
 }
 
-- (void)_setPCSData:(id)a3 forFetchedZoneID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)_setPCSData:(id)data forFetchedZoneID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v15 = a6;
-  if (v11)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -742,23 +742,23 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_22527733C;
   block[3] = &unk_27854B7B8;
-  v25 = v12;
-  v26 = v11;
-  v28 = v15;
-  v29 = a5;
-  v27 = self;
-  v17 = v15;
-  v18 = v11;
-  v19 = v12;
+  v25 = dCopy;
+  v26 = dataCopy;
+  v28 = handlerCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v18 = dataCopy;
+  v19 = dCopy;
   dispatch_async(v16, block);
 }
 
-- (void)_setPCSData:(id)a3 forFetchedShareID:(id)a4 withScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)_setPCSData:(id)data forFetchedShareID:(id)d withScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v15 = a6;
-  if (v11)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -775,32 +775,32 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_2252779E4;
   block[3] = &unk_27854B7B8;
-  v25 = v12;
-  v26 = v11;
-  v28 = v15;
-  v29 = a5;
-  v27 = self;
-  v17 = v15;
-  v18 = v11;
-  v19 = v12;
+  v25 = dCopy;
+  v26 = dataCopy;
+  v28 = handlerCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v18 = dataCopy;
+  v19 = dCopy;
   dispatch_async(v16, block);
 }
 
-- (void)_updateMemoryCacheWithPCSData:(id)a3 forItemWithID:(id)a4 inMemoryCache:(id)a5 databaseScope:(int64_t)a6 withCompletionHandler:(id)a7
+- (void)_updateMemoryCacheWithPCSData:(id)data forItemWithID:(id)d inMemoryCache:(id)cache databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
-  v17 = objc_msgSend_sqliteRepresentation(a4, v14, v15);
-  objc_msgSend_setPCSData_forItemID_databaseScope_withCompletionHandler_(v12, v16, v13, v17, a6, v11);
+  handlerCopy = handler;
+  cacheCopy = cache;
+  dataCopy = data;
+  v17 = objc_msgSend_sqliteRepresentation(d, v14, v15);
+  objc_msgSend_setPCSData_forItemID_databaseScope_withCompletionHandler_(cacheCopy, v16, dataCopy, v17, scope, handlerCopy);
 }
 
-- (void)updateMemoryCacheWithZonePCSData:(id)a3 forZoneWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)updateMemoryCacheWithZonePCSData:(id)data forZoneWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v21 = a3;
-  v11 = a4;
-  v14 = a6;
-  if (v21)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -813,15 +813,15 @@ LABEL_18:
   }
 
   v15 = objc_msgSend_zoneMemoryCache(self, v12, v13);
-  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, v21, v11, v15, a5, v14);
+  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, dataCopy, dCopy, v15, scope, handlerCopy);
 }
 
-- (void)updateMemoryCacheWithRecordPCSData:(id)a3 forRecordWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)updateMemoryCacheWithRecordPCSData:(id)data forRecordWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v21 = a3;
-  v11 = a4;
-  v14 = a6;
-  if (v21)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -834,15 +834,15 @@ LABEL_18:
   }
 
   v15 = objc_msgSend_recordMemoryCache(self, v12, v13);
-  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, v21, v11, v15, a5, v14);
+  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, dataCopy, dCopy, v15, scope, handlerCopy);
 }
 
-- (void)updateMemoryCacheWithSharePCSData:(id)a3 forShareWithID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)updateMemoryCacheWithSharePCSData:(id)data forShareWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v21 = a3;
-  v11 = a4;
-  v14 = a6;
-  if (v21)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -855,34 +855,34 @@ LABEL_18:
   }
 
   v15 = objc_msgSend_shareMemoryCache(self, v12, v13);
-  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, v21, v11, v15, a5, v14);
+  objc_msgSend__updateMemoryCacheWithPCSData_forItemWithID_inMemoryCache_databaseScope_withCompletionHandler_(self, v16, dataCopy, dCopy, v15, scope, handlerCopy);
 }
 
-- (void)removePCSDataForItemsInZoneWithID:(id)a3
+- (void)removePCSDataForItemsInZoneWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_fetchQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22527840C;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)removePCSDataForItemsInShareWithID:(id)a3
+- (void)removePCSDataForItemsInShareWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_fetchQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22527860C;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(v7, v9);
 }
 
@@ -944,10 +944,10 @@ LABEL_18:
 
 - (BOOL)isContentDiscarded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  contentDiscarded = v2->_contentDiscarded;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  contentDiscarded = selfCopy->_contentDiscarded;
+  objc_sync_exit(selfCopy);
 
   return contentDiscarded;
 }
@@ -963,11 +963,11 @@ LABEL_18:
   dispatch_async(v4, block);
 }
 
-- (void)clearInvalidatedPCSSQLCacheEntriesWithSkipZonePCS:(BOOL)a3 completionHandler:(id)a4
+- (void)clearInvalidatedPCSSQLCacheEntriesWithSkipZonePCS:(BOOL)s completionHandler:(id)handler
 {
-  v4 = a3;
+  sCopy = s;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -977,7 +977,7 @@ LABEL_18:
   if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_DEBUG))
   {
     v11 = @"NO";
-    if (v4)
+    if (sCopy)
     {
       v11 = @"YES";
     }
@@ -991,9 +991,9 @@ LABEL_18:
   v12[1] = 3221225472;
   v12[2] = sub_2252790B4;
   v12[3] = &unk_27854B858;
-  v14 = v4;
-  v13 = v6;
-  v8 = v6;
+  v14 = sCopy;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   objc_msgSend_getSQLCache_(self, v9, v12);
 
   v10 = *MEMORY[0x277D85DE8];

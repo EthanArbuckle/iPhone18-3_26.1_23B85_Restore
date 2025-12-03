@@ -1,8 +1,8 @@
 @interface FAFamilyMemberPhotoRequest
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 accountStore:(id)a4;
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 ephemeralAuthResults:(id)a4;
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 ephemeralAuthSigner:(id)a4;
-- (FAFamilyMemberPhotoRequest)initWithMemberDSID:(id)a3 accountStore:(id)a4;
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d accountStore:(id)store;
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d ephemeralAuthResults:(id)results;
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d ephemeralAuthSigner:(id)signer;
+- (FAFamilyMemberPhotoRequest)initWithMemberDSID:(id)d accountStore:(id)store;
 - (id)fa_photoRequestBaseURLString;
 - (id)urlRequest;
 - (id)urlString;
@@ -10,63 +10,63 @@
 
 @implementation FAFamilyMemberPhotoRequest
 
-- (FAFamilyMemberPhotoRequest)initWithMemberDSID:(id)a3 accountStore:(id)a4
+- (FAFamilyMemberPhotoRequest)initWithMemberDSID:(id)d accountStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 aa_primaryAppleAccount];
+  dCopy = d;
+  storeCopy = store;
+  aa_primaryAppleAccount = [storeCopy aa_primaryAppleAccount];
   v11.receiver = self;
   v11.super_class = FAFamilyMemberPhotoRequest;
-  v9 = [(AAFamilyRequest *)&v11 initWithAppleAccount:v8 grandSlamAccount:0 accountStore:v7];
+  v9 = [(AAFamilyRequest *)&v11 initWithAppleAccount:aa_primaryAppleAccount grandSlamAccount:0 accountStore:storeCopy];
 
   if (v9)
   {
-    [(FAFamilyMemberPhotoRequest *)v9 setFamilyMemberDSID:v6];
+    [(FAFamilyMemberPhotoRequest *)v9 setFamilyMemberDSID:dCopy];
   }
 
   return v9;
 }
 
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 accountStore:(id)a4
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d accountStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 aa_primaryAppleAccount];
+  dCopy = d;
+  storeCopy = store;
+  aa_primaryAppleAccount = [storeCopy aa_primaryAppleAccount];
   v11.receiver = self;
   v11.super_class = FAFamilyMemberPhotoRequest;
-  v9 = [(AAFamilyRequest *)&v11 initWithAppleAccount:v8 grandSlamAccount:0 accountStore:v7];
+  v9 = [(AAFamilyRequest *)&v11 initWithAppleAccount:aa_primaryAppleAccount grandSlamAccount:0 accountStore:storeCopy];
 
   if (v9)
   {
-    [(FAFamilyMemberPhotoRequest *)v9 setFamilyMemberAltDSID:v6];
+    [(FAFamilyMemberPhotoRequest *)v9 setFamilyMemberAltDSID:dCopy];
   }
 
   return v9;
 }
 
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 ephemeralAuthResults:(id)a4
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d ephemeralAuthResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FARequestEphemeralSigner alloc] initWithEphemeralAuthResults:v6];
+  resultsCopy = results;
+  dCopy = d;
+  v8 = [[FARequestEphemeralSigner alloc] initWithEphemeralAuthResults:resultsCopy];
 
-  v9 = [(FAFamilyMemberPhotoRequest *)self initWithMemberAltDSID:v7 ephemeralAuthSigner:v8];
+  v9 = [(FAFamilyMemberPhotoRequest *)self initWithMemberAltDSID:dCopy ephemeralAuthSigner:v8];
   return v9;
 }
 
-- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)a3 ephemeralAuthSigner:(id)a4
+- (FAFamilyMemberPhotoRequest)initWithMemberAltDSID:(id)d ephemeralAuthSigner:(id)signer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 account];
+  dCopy = d;
+  signerCopy = signer;
+  account = [signerCopy account];
   v12.receiver = self;
   v12.super_class = FAFamilyMemberPhotoRequest;
-  v10 = [(AAFamilyRequest *)&v12 initWithAppleAccount:v9 grandSlamAccount:0 accountStore:0];
+  v10 = [(AAFamilyRequest *)&v12 initWithAppleAccount:account grandSlamAccount:0 accountStore:0];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_ephemeralAuthSigner, a4);
-    objc_storeStrong(&v10->_familyMemberAltDSID, a3);
+    objc_storeStrong(&v10->_ephemeralAuthSigner, signer);
+    objc_storeStrong(&v10->_familyMemberAltDSID, d);
   }
 
   return v10;
@@ -74,19 +74,19 @@
 
 - (id)fa_photoRequestBaseURLString
 {
-  v2 = [MEMORY[0x1E698B9C0] urlConfiguration];
-  v3 = [v2 getFamilyMemberPhotoURL];
+  urlConfiguration = [MEMORY[0x1E698B9C0] urlConfiguration];
+  getFamilyMemberPhotoURL = [urlConfiguration getFamilyMemberPhotoURL];
 
-  return v3;
+  return getFamilyMemberPhotoURL;
 }
 
 - (id)urlString
 {
-  v3 = [(FAFamilyMemberPhotoRequest *)self fa_photoRequestBaseURLString];
+  fa_photoRequestBaseURLString = [(FAFamilyMemberPhotoRequest *)self fa_photoRequestBaseURLString];
   familyMemberDSID = self->_familyMemberDSID;
   if (familyMemberDSID)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?memberId=%@", v3, familyMemberDSID];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?memberId=%@", fa_photoRequestBaseURLString, familyMemberDSID];
     v6 = LABEL_5:;
     goto LABEL_6;
   }
@@ -94,7 +94,7 @@
   familyMemberAltDSID = self->_familyMemberAltDSID;
   if (familyMemberAltDSID)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?memberAltDSID=%@", v3, familyMemberAltDSID];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?memberAltDSID=%@", fa_photoRequestBaseURLString, familyMemberAltDSID];
     goto LABEL_5;
   }
 
@@ -114,8 +114,8 @@ LABEL_6:
 {
   v11.receiver = self;
   v11.super_class = FAFamilyMemberPhotoRequest;
-  v3 = [(AAFamilyRequest *)&v11 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAFamilyRequest *)&v11 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"GET"];
   [v4 fam_addiTunesHeadersWithAccount:self->_iTunesAccount];
@@ -125,16 +125,16 @@ LABEL_6:
     [v4 setValue:serverCacheTag forHTTPHeaderField:@"ETag"];
   }
 
-  v6 = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
+  ephemeralAuthSigner = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
 
-  if (v6)
+  if (ephemeralAuthSigner)
   {
-    v7 = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
-    [v7 signURLRequest:v4];
+    ephemeralAuthSigner2 = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
+    [ephemeralAuthSigner2 signURLRequest:v4];
 
-    v8 = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
-    v9 = [v8 account];
-    [v4 aa_addBasicAuthorizationHeaderWithAccount:v9 preferUsingPassword:1];
+    ephemeralAuthSigner3 = [(FAFamilyMemberPhotoRequest *)self ephemeralAuthSigner];
+    account = [ephemeralAuthSigner3 account];
+    [v4 aa_addBasicAuthorizationHeaderWithAccount:account preferUsingPassword:1];
   }
 
   return v4;

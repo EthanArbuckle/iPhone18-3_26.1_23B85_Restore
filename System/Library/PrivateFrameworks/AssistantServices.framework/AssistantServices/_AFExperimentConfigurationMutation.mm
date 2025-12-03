@@ -1,5 +1,5 @@
 @interface _AFExperimentConfigurationMutation
-- (_AFExperimentConfigurationMutation)initWithBase:(id)a3;
+- (_AFExperimentConfigurationMutation)initWithBase:(id)base;
 - (id)getControlGroup;
 - (id)getExperimentGroups;
 - (id)getIdentifier;
@@ -14,75 +14,75 @@
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_salt;
+    salt = self->_salt;
   }
 
   else
   {
-    v2 = [(AFExperimentConfiguration *)self->_base salt];
+    salt = [(AFExperimentConfiguration *)self->_base salt];
   }
 
-  return v2;
+  return salt;
 }
 
 - (id)getExperimentGroups
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_experimentGroups;
+    experimentGroups = self->_experimentGroups;
   }
 
   else
   {
-    v2 = [(AFExperimentConfiguration *)self->_base experimentGroups];
+    experimentGroups = [(AFExperimentConfiguration *)self->_base experimentGroups];
   }
 
-  return v2;
+  return experimentGroups;
 }
 
 - (id)getControlGroup
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_controlGroup;
+    controlGroup = self->_controlGroup;
   }
 
   else
   {
-    v2 = [(AFExperimentConfiguration *)self->_base controlGroup];
+    controlGroup = [(AFExperimentConfiguration *)self->_base controlGroup];
   }
 
-  return v2;
+  return controlGroup;
 }
 
 - (id)getVersion
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_version;
+    version = self->_version;
   }
 
   else
   {
-    v2 = [(AFExperimentConfiguration *)self->_base version];
+    version = [(AFExperimentConfiguration *)self->_base version];
   }
 
-  return v2;
+  return version;
 }
 
 - (id)getIdentifier
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_identifier;
+    identifier = self->_identifier;
   }
 
   else
   {
-    v2 = [(AFExperimentConfiguration *)self->_base identifier];
+    identifier = [(AFExperimentConfiguration *)self->_base identifier];
   }
 
-  return v2;
+  return identifier;
 }
 
 - (int64_t)getType
@@ -98,16 +98,16 @@
   }
 }
 
-- (_AFExperimentConfigurationMutation)initWithBase:(id)a3
+- (_AFExperimentConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFExperimentConfigurationMutation;
   v6 = [(_AFExperimentConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

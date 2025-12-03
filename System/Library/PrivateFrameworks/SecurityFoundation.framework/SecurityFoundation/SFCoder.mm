@@ -1,21 +1,21 @@
 @interface SFCoder
-- (SFCoder)initWithOptions:(id)a3;
+- (SFCoder)initWithOptions:(id)options;
 - (SFCodingOptions)options;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation SFCoder
 
-- (SFCoder)initWithOptions:(id)a3
+- (SFCoder)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = SFCoder;
   v6 = [(SFCoder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_coderInternal + 1, a3);
+    objc_storeStrong(v6->_coderInternal + 1, options);
   }
 
   return v7;
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   coderInternal = self->_coderInternal;
   v6 = coderInternal[1];
   coderInternal[1] = v4;

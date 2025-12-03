@@ -1,45 +1,45 @@
 @interface HDDiagnosticOperation
-+ (id)operationWithAttachmentDirectoryURL:(id)a3;
-- (BOOL)_copyDatabase:(sqlite3 *)a3 toDatabase:(sqlite3 *)a4;
-- (BOOL)copyDatabaseFromURL:(id)a3 toURL:(id)a4;
-- (HDDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3;
++ (id)operationWithAttachmentDirectoryURL:(id)l;
+- (BOOL)_copyDatabase:(sqlite3 *)database toDatabase:(sqlite3 *)toDatabase;
+- (BOOL)copyDatabaseFromURL:(id)l toURL:(id)rL;
+- (HDDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l;
 - (HDDiagnosticOperationDelegate)delegate;
 - (NSArray)attachments;
 - (NSString)reportFilename;
-- (id)_fileAttributesAtURL:(id)a3;
+- (id)_fileAttributesAtURL:(id)l;
 - (id)_headerString;
-- (id)fileCreationDateForURL:(id)a3;
-- (id)fileModificationDateForURL:(id)a3;
-- (id)openReadOnlyDatabaseAtURL:(id)a3;
-- (id)prettyPrintFileSize:(int64_t)a3;
-- (int64_t)_reportCountOfObjectsForEntityClass:(Class)a3 database:(id)a4;
-- (int64_t)_reportCountOfObjectsInTable:(id)a3 database:(id)a4;
-- (int64_t)fileSizeForURL:(id)a3;
-- (unint64_t)getFileStatisticsForDirectoryWithURL:(id)a3 earliestModificationDate:(double *)a4 totalFileSize:(int64_t *)a5 maxFileSize:(int64_t *)a6;
-- (void)_appendString:(id)a3 newLine:(BOOL)a4;
-- (void)_queue_submitAttachment:(id)a3;
-- (void)appendFormat:(id)a3;
-- (void)log:(id)a3;
+- (id)fileCreationDateForURL:(id)l;
+- (id)fileModificationDateForURL:(id)l;
+- (id)openReadOnlyDatabaseAtURL:(id)l;
+- (id)prettyPrintFileSize:(int64_t)size;
+- (int64_t)_reportCountOfObjectsForEntityClass:(Class)class database:(id)database;
+- (int64_t)_reportCountOfObjectsInTable:(id)table database:(id)database;
+- (int64_t)fileSizeForURL:(id)l;
+- (unint64_t)getFileStatisticsForDirectoryWithURL:(id)l earliestModificationDate:(double *)date totalFileSize:(int64_t *)size maxFileSize:(int64_t *)fileSize;
+- (void)_appendString:(id)string newLine:(BOOL)line;
+- (void)_queue_submitAttachment:(id)attachment;
+- (void)appendFormat:(id)format;
+- (void)log:(id)log;
 - (void)main;
-- (void)reportCountsForDatabase:(id)a3 entityClasses:(id)a4;
-- (void)reportIntegrityForDatabase:(id)a3;
-- (void)reportStatsForDatabaseAtURL:(id)a3;
-- (void)submitAttachment:(id)a3;
-- (void)submitAttachments:(id)a3;
-- (void)verifyPermissionsForFileAtURL:(id)a3;
+- (void)reportCountsForDatabase:(id)database entityClasses:(id)classes;
+- (void)reportIntegrityForDatabase:(id)database;
+- (void)reportStatsForDatabaseAtURL:(id)l;
+- (void)submitAttachment:(id)attachment;
+- (void)submitAttachments:(id)attachments;
+- (void)verifyPermissionsForFileAtURL:(id)l;
 @end
 
 @implementation HDDiagnosticOperation
 
-- (HDDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3
+- (HDDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = HDDiagnosticOperation;
   v5 = [(HDDiagnosticOperation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     attachmentDirectoryURL = v5->_attachmentDirectoryURL;
     v5->_attachmentDirectoryURL = v6;
 
@@ -51,10 +51,10 @@
   return v5;
 }
 
-+ (id)operationWithAttachmentDirectoryURL:(id)a3
++ (id)operationWithAttachmentDirectoryURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttachmentDirectoryURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithAttachmentDirectoryURL:lCopy];
 
   return v5;
 }
@@ -150,27 +150,27 @@ void __29__HDDiagnosticOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(HDDiagnosticOperation *)self _appendString:v6 newLine:1];
 }
 
-- (void)_appendString:(id)a3 newLine:(BOOL)a4
+- (void)_appendString:(id)string newLine:(BOOL)line
 {
-  v6 = a3;
+  stringCopy = string;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HDDiagnosticOperation__appendString_newLine___block_invoke;
   block[3] = &unk_2796C1060;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = stringCopy;
+  lineCopy = line;
+  v8 = stringCopy;
   dispatch_async(queue, block);
 }
 
@@ -205,46 +205,46 @@ uint64_t __47__HDDiagnosticOperation__appendString_newLine___block_invoke(uint64
 
 - (id)_headerString
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(HDDiagnosticOperation *)self stringFromDate:v5];
-  v7 = [v3 currentDeviceClass];
-  v8 = [v3 currentInternalDeviceModel];
-  v9 = [v3 currentDeviceDisplayName];
-  v10 = [v3 currentDeviceName];
-  v11 = [v3 currentOSName];
-  v12 = [v3 currentOSBuild];
-  v13 = [v4 stringWithFormat:@"Date:    %@\nDevice:  %@ %@\nName:    %@ (%@)\nBuild:   %@ %@\n\n\n", v6, v7, v8, v9, v10, v11, v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [(HDDiagnosticOperation *)self stringFromDate:date];
+  currentDeviceClass = [mEMORY[0x277CCDD30] currentDeviceClass];
+  currentInternalDeviceModel = [mEMORY[0x277CCDD30] currentInternalDeviceModel];
+  currentDeviceDisplayName = [mEMORY[0x277CCDD30] currentDeviceDisplayName];
+  currentDeviceName = [mEMORY[0x277CCDD30] currentDeviceName];
+  currentOSName = [mEMORY[0x277CCDD30] currentOSName];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
+  v13 = [v4 stringWithFormat:@"Date:    %@\nDevice:  %@ %@\nName:    %@ (%@)\nBuild:   %@ %@\n\n\n", v6, currentDeviceClass, currentInternalDeviceModel, currentDeviceDisplayName, currentDeviceName, currentOSName, currentOSBuild];
 
   return v13;
 }
 
-- (void)submitAttachment:(id)a3
+- (void)submitAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HDDiagnosticOperation_submitAttachment___block_invoke;
   v7[3] = &unk_2796C1088;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attachmentCopy;
+  v6 = attachmentCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)submitAttachments:(id)a3
+- (void)submitAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HDDiagnosticOperation_submitAttachments___block_invoke;
   v7[3] = &unk_2796C1088;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = attachmentsCopy;
+  selfCopy = self;
+  v6 = attachmentsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -284,49 +284,49 @@ void __43__HDDiagnosticOperation_submitAttachments___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_submitAttachment:(id)a3
+- (void)_queue_submitAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   attachments = self->_attachments;
-  v8 = v4;
+  v8 = attachmentCopy;
   if (!attachments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_attachments;
     self->_attachments = v6;
 
-    v4 = v8;
+    attachmentCopy = v8;
     attachments = self->_attachments;
   }
 
-  [(NSMutableArray *)attachments addObject:v4];
+  [(NSMutableArray *)attachments addObject:attachmentCopy];
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v8];
+  logCopy = log;
+  v6 = [[v4 alloc] initWithFormat:logCopy arguments:&v8];
 
-  v7 = [(HDDiagnosticOperation *)self delegate];
-  [v7 diagnosticOperation:self logMessage:v6];
+  delegate = [(HDDiagnosticOperation *)self delegate];
+  [delegate diagnosticOperation:self logMessage:v6];
 }
 
-- (BOOL)copyDatabaseFromURL:(id)a3 toURL:(id)a4
+- (BOOL)copyDatabaseFromURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   ppDb = 0;
-  v8 = sqlite3_open_v2([v6 fileSystemRepresentation], &ppDb, 1, 0);
+  v8 = sqlite3_open_v2([lCopy fileSystemRepresentation], &ppDb, 1, 0);
   if (v8)
   {
-    [(HDDiagnosticOperation *)self log:@"Could not open original database at '%@'. %s (%d)\n", v6, sqlite3_errmsg(ppDb), v8];
+    [(HDDiagnosticOperation *)self log:@"Could not open original database at '%@'. %s (%d)\n", lCopy, sqlite3_errmsg(ppDb), v8];
   }
 
   else
   {
     v13 = 0;
-    v9 = sqlite3_open_v2([v7 fileSystemRepresentation], &v13, 6, 0);
+    v9 = sqlite3_open_v2([rLCopy fileSystemRepresentation], &v13, 6, 0);
     if (!v9)
     {
       v11 = [(HDDiagnosticOperation *)self _copyDatabase:ppDb toDatabase:v13];
@@ -337,7 +337,7 @@ void __43__HDDiagnosticOperation_submitAttachments___block_invoke(uint64_t a1)
 
     v10 = v9;
     sqlite3_close(ppDb);
-    [(HDDiagnosticOperation *)self log:@"Could not open destination database at '%@'. %s (%d)\n", v7, sqlite3_errmsg(ppDb), v10];
+    [(HDDiagnosticOperation *)self log:@"Could not open destination database at '%@'. %s (%d)\n", rLCopy, sqlite3_errmsg(ppDb), v10];
   }
 
   v11 = 0;
@@ -346,17 +346,17 @@ LABEL_6:
   return v11;
 }
 
-- (id)openReadOnlyDatabaseAtURL:(id)a3
+- (id)openReadOnlyDatabaseAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:v4];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:lCopy];
   v11 = 0;
   v6 = [v5 openForReadingWithError:&v11];
   v7 = v11;
   v8 = v7;
   if (v6)
   {
-    [(HDDiagnosticOperation *)self log:@"Failed to open database at '%@': %@", v4, v7];
+    [(HDDiagnosticOperation *)self log:@"Failed to open database at '%@': %@", lCopy, v7];
     [v5 close];
     v9 = 0;
   }
@@ -369,10 +369,10 @@ LABEL_6:
   return v9;
 }
 
-- (int64_t)fileSizeForURL:(id)a3
+- (int64_t)fileSizeForURL:(id)l
 {
   memset(&v4, 0, sizeof(v4));
-  if (stat([a3 fileSystemRepresentation], &v4))
+  if (stat([l fileSystemRepresentation], &v4))
   {
     return -1;
   }
@@ -383,84 +383,84 @@ LABEL_6:
   }
 }
 
-- (id)fileCreationDateForURL:(id)a3
+- (id)fileCreationDateForURL:(id)l
 {
-  v3 = [(HDDiagnosticOperation *)self _fileAttributesAtURL:a3];
+  v3 = [(HDDiagnosticOperation *)self _fileAttributesAtURL:l];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA108]];
 
   return v4;
 }
 
-- (id)fileModificationDateForURL:(id)a3
+- (id)fileModificationDateForURL:(id)l
 {
-  v3 = [(HDDiagnosticOperation *)self _fileAttributesAtURL:a3];
+  v3 = [(HDDiagnosticOperation *)self _fileAttributesAtURL:l];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA150]];
 
   return v4;
 }
 
-- (id)_fileAttributesAtURL:(id)a3
+- (id)_fileAttributesAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v4 path];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
   v11 = 0;
-  v7 = [v5 attributesOfItemAtPath:v6 error:&v11];
+  v7 = [defaultManager attributesOfItemAtPath:path error:&v11];
   v8 = v11;
 
   if (!v7)
   {
-    v9 = [v4 path];
-    [(HDDiagnosticOperation *)self log:@"Failed to get file attributes at path %@: %@", v9, v8];
+    path2 = [lCopy path];
+    [(HDDiagnosticOperation *)self log:@"Failed to get file attributes at path %@: %@", path2, v8];
   }
 
   return v7;
 }
 
-- (id)prettyPrintFileSize:(int64_t)a3
+- (id)prettyPrintFileSize:(int64_t)size
 {
-  if (a3 > 1023)
+  if (size > 1023)
   {
-    if (a3 >> 20)
+    if (size >> 20)
     {
-      v3 = a3;
-      if (a3 >> 30)
+      sizeCopy = size;
+      if (size >> 30)
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfG (%lld bytes)", v3 * 9.31322575e-10, a3];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfG (%lld bytes)", sizeCopy * 9.31322575e-10, size];
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfM (%lld bytes)", v3 * 0.000000953674316, a3];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfM (%lld bytes)", sizeCopy * 0.000000953674316, size];
       }
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfK (%lld bytes)", vcvtd_n_f64_u64(a3, 0xAuLL), a3];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%0.3lfK (%lld bytes)", vcvtd_n_f64_u64(size, 0xAuLL), size];
     }
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%lld bytes", a3, v6];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%lld bytes", size, v6];
   }
   v4 = ;
 
   return v4;
 }
 
-- (unint64_t)getFileStatisticsForDirectoryWithURL:(id)a3 earliestModificationDate:(double *)a4 totalFileSize:(int64_t *)a5 maxFileSize:(int64_t *)a6
+- (unint64_t)getFileStatisticsForDirectoryWithURL:(id)l earliestModificationDate:(double *)date totalFileSize:(int64_t *)size maxFileSize:(int64_t *)fileSize
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  lCopy = l;
   v42 = 0;
-  v11 = [MEMORY[0x277D10710] journalChaptersForURL:v10 error:&v42];
+  v11 = [MEMORY[0x277D10710] journalChaptersForURL:lCopy error:&v42];
   v12 = v42;
   if (!v11)
   {
-    v29 = [v10 path];
-    [(HDDiagnosticOperation *)self log:@"Failed to retrieve contents of %@ directory: %@", v29, v12];
+    path = [lCopy path];
+    [(HDDiagnosticOperation *)self log:@"Failed to retrieve contents of %@ directory: %@", path, v12];
 LABEL_18:
 
     v30 = 0;
@@ -469,17 +469,17 @@ LABEL_18:
 
   if (![v11 count])
   {
-    v29 = [v10 path];
-    [(HDDiagnosticOperation *)self log:@"No files in %@", v29, v33];
+    path = [lCopy path];
+    [(HDDiagnosticOperation *)self log:@"No files in %@", path, v33];
     goto LABEL_18;
   }
 
-  v34 = a5;
-  v35 = a6;
-  v36 = a4;
+  sizeCopy = size;
+  fileSizeCopy = fileSize;
+  dateCopy = date;
   v37 = v12;
-  v13 = [MEMORY[0x277CBEAA8] distantPast];
-  [v13 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v15 = v14;
 
   v40 = 0u;
@@ -538,20 +538,20 @@ LABEL_18:
     v22 = 1.79769313e308;
   }
 
-  if (v34)
+  if (sizeCopy)
   {
-    *v34 = v19;
+    *sizeCopy = v19;
   }
 
   v12 = v37;
-  if (v35)
+  if (fileSizeCopy)
   {
-    *v35 = v20;
+    *fileSizeCopy = v20;
   }
 
-  if (v36)
+  if (dateCopy)
   {
-    *v36 = v22;
+    *dateCopy = v22;
   }
 
   v30 = [v16 count];
@@ -561,17 +561,17 @@ LABEL_27:
   return v30;
 }
 
-- (void)reportStatsForDatabaseAtURL:(id)a3
+- (void)reportStatsForDatabaseAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [lCopy path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (v7)
   {
-    v8 = [v4 path];
-    [(HDDiagnosticOperation *)self appendFormat:@"SQLite database %@:", v8];
+    path2 = [lCopy path];
+    [(HDDiagnosticOperation *)self appendFormat:@"SQLite database %@:", path2];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -579,18 +579,18 @@ LABEL_27:
     v14[3] = &unk_2796C10B0;
     v14[4] = self;
     v9 = MEMORY[0x25307B760](v14);
-    (v9)[2](v9, v4);
-    v10 = [v4 pathExtension];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", v10];
-    v12 = [v4 URLByDeletingPathExtension];
-    v13 = [v12 URLByAppendingPathExtension:v11];
+    (v9)[2](v9, lCopy);
+    pathExtension = [lCopy pathExtension];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", pathExtension];
+    uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+    v13 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v11];
 
     (v9)[2](v9, v13);
   }
 
   else
   {
-    [(HDDiagnosticOperation *)self log:@"No file present at %@.", v4];
+    [(HDDiagnosticOperation *)self log:@"No file present at %@.", lCopy];
   }
 }
 
@@ -628,16 +628,16 @@ void __53__HDDiagnosticOperation_reportStatsForDatabaseAtURL___block_invoke(uint
   }
 }
 
-- (void)verifyPermissionsForFileAtURL:(id)a3
+- (void)verifyPermissionsForFileAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   memset(&v12, 0, sizeof(v12));
-  if (stat([v4 fileSystemRepresentation], &v12))
+  if (stat([lCopy fileSystemRepresentation], &v12))
   {
-    v5 = [v4 path];
+    path = [lCopy path];
     v6 = __error();
     v7 = strerror(*v6);
-    [(HDDiagnosticOperation *)self log:@"Failed to stat '%@' when verifying permissions: %s", v5, v7, *&v12.st_dev, v12.st_ino];
+    [(HDDiagnosticOperation *)self log:@"Failed to stat '%@' when verifying permissions: %s", path, v7, *&v12.st_dev, v12.st_ino];
 LABEL_9:
 
     goto LABEL_10;
@@ -646,35 +646,35 @@ LABEL_9:
   if (v12.st_uid != 501)
   {
     pw_name = getpwuid(v12.st_uid)->pw_name;
-    v9 = [v4 path];
-    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Unexpected owner (%s) of file at %@", pw_name, v9, *&v12.st_dev, v12.st_ino];
+    path2 = [lCopy path];
+    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Unexpected owner (%s) of file at %@", pw_name, path2, *&v12.st_dev, v12.st_ino];
   }
 
   st_mode = v12.st_mode;
   if ((v12.st_mode & 0x100) == 0)
   {
-    v11 = [v4 path];
-    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Owner lacks read permission for file at %@", v11];
+    path3 = [lCopy path];
+    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Owner lacks read permission for file at %@", path3];
 
     st_mode = v12.st_mode;
   }
 
   if ((st_mode & 0x80) == 0)
   {
-    v5 = [v4 path];
-    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Owner lacks write permission for file at %@", v5];
+    path = [lCopy path];
+    [(HDDiagnosticOperation *)self appendFormat:@"ERROR: Owner lacks write permission for file at %@", path];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)reportIntegrityForDatabase:(id)a3
+- (void)reportIntegrityForDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [v4 fileURL];
-  v6 = [v5 path];
-  [(HDDiagnosticOperation *)self log:@"Checking integrity for %@...", v6];
+  databaseCopy = database;
+  fileURL = [databaseCopy fileURL];
+  path = [fileURL path];
+  [(HDDiagnosticOperation *)self log:@"Checking integrity for %@...", path];
 
   v16 = 0;
   v15[0] = MEMORY[0x277D85DD0];
@@ -682,18 +682,18 @@ LABEL_10:
   v15[2] = __52__HDDiagnosticOperation_reportIntegrityForDatabase___block_invoke;
   v15[3] = &unk_2796C0D00;
   v15[4] = self;
-  LOBYTE(v6) = [v4 executeSQL:@"PRAGMA INTEGRITY_CHECK" error:&v16 bindingHandler:0 enumerationHandler:v15];
+  LOBYTE(path) = [databaseCopy executeSQL:@"PRAGMA INTEGRITY_CHECK" error:&v16 bindingHandler:0 enumerationHandler:v15];
   v7 = v16;
-  if ((v6 & 1) == 0)
+  if ((path & 1) == 0)
   {
-    v8 = [v4 fileURL];
-    v9 = [v8 path];
-    [(HDDiagnosticOperation *)self log:@"\tERROR: Failed to perform integrity check on %@: %@", v9, v7];
+    fileURL2 = [databaseCopy fileURL];
+    path2 = [fileURL2 path];
+    [(HDDiagnosticOperation *)self log:@"\tERROR: Failed to perform integrity check on %@: %@", path2, v7];
   }
 
-  v10 = [v4 fileURL];
-  v11 = [v10 path];
-  [(HDDiagnosticOperation *)self log:@"Checking foreign keys for %@...", v11];
+  fileURL3 = [databaseCopy fileURL];
+  path3 = [fileURL3 path];
+  [(HDDiagnosticOperation *)self log:@"Checking foreign keys for %@...", path3];
 
   v13[4] = self;
   v14 = v7;
@@ -701,10 +701,10 @@ LABEL_10:
   v13[1] = 3221225472;
   v13[2] = __52__HDDiagnosticOperation_reportIntegrityForDatabase___block_invoke_2;
   v13[3] = &unk_2796C0D00;
-  LOBYTE(v11) = [v4 executeSQL:@"PRAGMA FOREIGN_KEY_CHECK" error:&v14 bindingHandler:0 enumerationHandler:v13];
+  LOBYTE(path3) = [databaseCopy executeSQL:@"PRAGMA FOREIGN_KEY_CHECK" error:&v14 bindingHandler:0 enumerationHandler:v13];
   v12 = v14;
 
-  if ((v11 & 1) == 0)
+  if ((path3 & 1) == 0)
   {
     [(HDDiagnosticOperation *)self log:@"\tERROR: Failed to perform foreign key check: %@", v12];
   }
@@ -735,16 +735,16 @@ uint64_t __52__HDDiagnosticOperation_reportIntegrityForDatabase___block_invoke_2
   return 1;
 }
 
-- (void)reportCountsForDatabase:(id)a3 entityClasses:(id)a4
+- (void)reportCountsForDatabase:(id)database entityClasses:(id)classes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  classesCopy = classes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [classesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -756,14 +756,14 @@ uint64_t __52__HDDiagnosticOperation_reportIntegrityForDatabase___block_invoke_2
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(classesCopy);
         }
 
-        [(HDDiagnosticOperation *)self _reportCountOfObjectsForEntityClass:*(*(&v13 + 1) + 8 * v11++) database:v6];
+        [(HDDiagnosticOperation *)self _reportCountOfObjectsForEntityClass:*(*(&v13 + 1) + 8 * v11++) database:databaseCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [classesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -772,58 +772,58 @@ uint64_t __52__HDDiagnosticOperation_reportIntegrityForDatabase___block_invoke_2
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_copyDatabase:(sqlite3 *)a3 toDatabase:(sqlite3 *)a4
+- (BOOL)_copyDatabase:(sqlite3 *)database toDatabase:(sqlite3 *)toDatabase
 {
-  v6 = sqlite3_file_control(a4, 0, 102, a3);
+  v6 = sqlite3_file_control(toDatabase, 0, 102, database);
   if (v6)
   {
-    [(HDDiagnosticOperation *)self log:@"Could not perform database copy: %s (%d)", sqlite3_errmsg(a4), v6];
+    [(HDDiagnosticOperation *)self log:@"Could not perform database copy: %s (%d)", sqlite3_errmsg(toDatabase), v6];
     return 0;
   }
 
-  v7 = sqlite3_exec(a4, "PRAGMA wal_checkpoint(RESTART);", 0, 0, 0);
+  v7 = sqlite3_exec(toDatabase, "PRAGMA wal_checkpoint(RESTART);", 0, 0, 0);
   if (v7)
   {
-    [(HDDiagnosticOperation *)self log:@"Could not checkpoint copied SQLite file: %s (%d)", sqlite3_errmsg(a4), v7];
+    [(HDDiagnosticOperation *)self log:@"Could not checkpoint copied SQLite file: %s (%d)", sqlite3_errmsg(toDatabase), v7];
     return 0;
   }
 
   return 1;
 }
 
-- (int64_t)_reportCountOfObjectsForEntityClass:(Class)a3 database:(id)a4
+- (int64_t)_reportCountOfObjectsForEntityClass:(Class)class database:(id)database
 {
-  v6 = a4;
-  v7 = [(objc_class *)a3 databaseTable];
-  v8 = [(HDDiagnosticOperation *)self _reportCountOfObjectsInTable:v7 database:v6];
+  databaseCopy = database;
+  databaseTable = [(objc_class *)class databaseTable];
+  v8 = [(HDDiagnosticOperation *)self _reportCountOfObjectsInTable:databaseTable database:databaseCopy];
 
   return v8;
 }
 
-- (int64_t)_reportCountOfObjectsInTable:(id)a3 database:(id)a4
+- (int64_t)_reportCountOfObjectsInTable:(id)table database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  databaseCopy = database;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(*) FROM %@", v6];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(*) FROM %@", tableCopy];
   v20 = &v22;
   v21 = 0;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __63__HDDiagnosticOperation__reportCountOfObjectsInTable_database___block_invoke;
   v17 = &unk_2796C0FC0;
-  v18 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = tableCopy;
   v19 = v9;
-  v10 = [v7 executeSQL:v8 error:&v21 bindingHandler:0 enumerationHandler:&v14];
+  v10 = [databaseCopy executeSQL:tableCopy error:&v21 bindingHandler:0 enumerationHandler:&v14];
   v11 = v21;
 
   if ((v10 & 1) == 0)
   {
-    [(HDDiagnosticOperation *)self log:@"Failed to count rows in table '%@': %@", v9, v11, v14, v15, v16, v17, v18];
+    [(HDDiagnosticOperation *)self log:@"Failed to count rows in table '%@': %@", v9, v11, v14, v15, v16, v17, selfCopy];
   }
 
   v12 = v23[3];

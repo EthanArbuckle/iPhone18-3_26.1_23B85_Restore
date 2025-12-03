@@ -1,18 +1,18 @@
 @interface CLKDateTextProvider
 + (CLKDateTextProvider)textProviderWithDate:(NSDate *)date units:(NSCalendarUnit)calendarUnits timeZone:(NSTimeZone *)timeZone;
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKDateTextProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKDateTextProvider)initWithCoder:(id)coder;
 - (CLKDateTextProvider)initWithDate:(NSDate *)date units:(NSCalendarUnit)calendarUnits timeZone:(NSTimeZone *)timeZone;
 - (id)JSONObjectRepresentation;
 - (id)_completeDateTemplateSeries;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_partialDateTemplateSeriesForUnits:(unint64_t)a3;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_partialDateTemplateSeriesForUnits:(unint64_t)units;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKDateTextProvider
@@ -23,11 +23,11 @@
   v9 = timeZone;
   v13.receiver = self;
   v13.super_class = CLKDateTextProvider;
-  v10 = [(CLKTextProvider *)&v13 initPrivate];
-  v11 = v10;
-  if (v10)
+  initPrivate = [(CLKTextProvider *)&v13 initPrivate];
+  v11 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKDateTextProvider *)v10 setDate:v8];
+    [(CLKDateTextProvider *)initPrivate setDate:v8];
     [(CLKDateTextProvider *)v11 setCalendarUnits:calendarUnits];
     [(CLKDateTextProvider *)v11 setTimeZone:v9];
     [(CLKDateTextProvider *)v11 setFormattingContext:2];
@@ -40,14 +40,14 @@
 {
   v8 = timeZone;
   v9 = date;
-  v10 = [[a1 alloc] initWithDate:v9 units:calendarUnits timeZone:v8];
+  v10 = [[self alloc] initWithDate:v9 units:calendarUnits timeZone:v8];
 
   return v10;
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
-  v6 = a4;
+  styleCopy = style;
   if (!self->_date)
   {
     goto LABEL_14;
@@ -78,21 +78,21 @@
   templateSeries = self->_templateSeries;
   if (!templateSeries)
   {
-    v11 = [(CLKDateTextProvider *)self _completeDateTemplateSeries];
+    _completeDateTemplateSeries = [(CLKDateTextProvider *)self _completeDateTemplateSeries];
     v12 = self->_templateSeries;
-    self->_templateSeries = v11;
+    self->_templateSeries = _completeDateTemplateSeries;
 
     templateSeries = self->_templateSeries;
   }
 
-  if ([(NSArray *)templateSeries count]<= a3)
+  if ([(NSArray *)templateSeries count]<= index)
   {
 LABEL_14:
     v14 = 0;
     goto LABEL_38;
   }
 
-  v13 = [(NSArray *)self->_templateSeries objectAtIndex:a3];
+  v13 = [(NSArray *)self->_templateSeries objectAtIndex:index];
   if (![v13 isEqualToString:@"d"])
   {
     if (!_isWeekdayDayTemplate(v13))
@@ -100,11 +100,11 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    v15 = [MEMORY[0x277CBEAF8] currentLocale];
-    v16 = [v15 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v16 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
-    LODWORD(v15) = [v16 isEqualToString:@"en"];
-    if (!v15)
+    LODWORD(currentLocale) = [v16 isEqualToString:@"en"];
+    if (!currentLocale)
     {
       goto LABEL_18;
     }
@@ -143,10 +143,10 @@ LABEL_19:
       {
         if (!_removePunctationIfNecessaryFromTextForTemplate_punctuationExceptDash)
         {
-          v23 = [MEMORY[0x277CCAB50] punctuationCharacterSet];
-          [v23 removeCharactersInString:@"-"];
+          punctuationCharacterSet = [MEMORY[0x277CCAB50] punctuationCharacterSet];
+          [punctuationCharacterSet removeCharactersInString:@"-"];
           v24 = _removePunctationIfNecessaryFromTextForTemplate_punctuationExceptDash;
-          _removePunctationIfNecessaryFromTextForTemplate_punctuationExceptDash = v23;
+          _removePunctationIfNecessaryFromTextForTemplate_punctuationExceptDash = punctuationCharacterSet;
         }
 
         v25 = [v22 componentsSeparatedByCharactersInSet:?];
@@ -157,30 +157,30 @@ LABEL_19:
     v21 = 0;
   }
 
-  if (([v6 uppercase] & 1) != 0 || self->_uppercase)
+  if (([styleCopy uppercase] & 1) != 0 || self->_uppercase)
   {
-    v26 = [MEMORY[0x277CBEAF8] currentLocale];
-    v27 = [v17 uppercaseStringWithLocale:v26];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v27 = [v17 uppercaseStringWithLocale:currentLocale2];
 
     v17 = v27;
   }
 
   v28 = objc_opt_new();
-  v29 = [v6 font];
+  font = [styleCopy font];
   v30 = *MEMORY[0x277D740A8];
-  [v28 setObject:v29 forKeyedSubscript:*MEMORY[0x277D740A8]];
+  [v28 setObject:font forKeyedSubscript:*MEMORY[0x277D740A8]];
 
-  v31 = [v6 otherAttributes];
-  [v28 addEntriesFromDictionary:v31];
+  otherAttributes = [styleCopy otherAttributes];
+  [v28 addEntriesFromDictionary:otherAttributes];
 
-  if ([v6 shouldEmbedTintColors])
+  if ([styleCopy shouldEmbedTintColors])
   {
-    v32 = [(CLKTextProvider *)self tintColor];
+    tintColor = [(CLKTextProvider *)self tintColor];
 
-    if (v32)
+    if (tintColor)
     {
-      v33 = [(CLKTextProvider *)self tintColor];
-      [v28 setObject:v33 forKeyedSubscript:*MEMORY[0x277D740C0]];
+      tintColor2 = [(CLKTextProvider *)self tintColor];
+      [v28 setObject:tintColor2 forKeyedSubscript:*MEMORY[0x277D740C0]];
     }
   }
 
@@ -194,8 +194,8 @@ LABEL_19:
 
     v37 = [(NSDateFormatter *)self->_dateFormatter _attributedStringWithFieldsFromDate:self->_date];
     v38 = objc_alloc(MEMORY[0x277CCAB48]);
-    v39 = [v37 string];
-    v40 = [v38 initWithString:v39];
+    string = [v37 string];
+    v40 = [v38 initWithString:string];
 
     v41 = [v37 length];
     v47[0] = MEMORY[0x277D85DD0];
@@ -241,12 +241,12 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
 {
   v6.receiver = self;
   v6.super_class = CLKDateTextProvider;
-  v3 = [(CLKTextProvider *)&v6 _validate];
-  if (v3)
+  _validate = [(CLKTextProvider *)&v6 _validate];
+  if (_validate)
   {
     if (self->_date)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_validate) = 1;
     }
 
     else
@@ -257,11 +257,11 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
         [(CLKTimeTextProvider *)self _validate];
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(_validate) = 0;
     }
   }
 
-  return v3;
+  return _validate;
 }
 
 - (id)description
@@ -273,11 +273,11 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKDateTextProvider;
-  v4 = [(CLKTextProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -295,12 +295,12 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKDateTextProvider;
-  v5 = [(CLKTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_date, v4[19]) && CLKEqualObjects(self->_timeZone, v4[21]) && self->_calendarUnits == v4[20] && self->_shortUnits == *(v4 + 145) && self->_allowsNarrowUnits == *(v4 + 146) && self->_narrowStandaloneWeekdayDay == *(v4 + 147) && CLKEqualObjects(self->_alternateCalendarLocaleID, v4[22]) && self->_formattingContext == v4[23];
+  v5 = [(CLKTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_date, equalCopy[19]) && CLKEqualObjects(self->_timeZone, equalCopy[21]) && self->_calendarUnits == equalCopy[20] && self->_shortUnits == *(equalCopy + 145) && self->_allowsNarrowUnits == *(equalCopy + 146) && self->_narrowStandaloneWeekdayDay == *(equalCopy + 147) && CLKEqualObjects(self->_alternateCalendarLocaleID, equalCopy[22]) && self->_formattingContext == equalCopy[23];
 
   return v5;
 }
@@ -315,69 +315,69 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
   return v5 + [(NSString *)self->_alternateCalendarLocaleID hash]+ (self->_formattingContext << 17) + (self->_narrowStandaloneWeekdayDay << 18);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKDateTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_date forKey:{@"_date", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_calendarUnits forKey:@"_calendarUnits"];
-  [v4 encodeObject:self->_timeZone forKey:@"_timeZone"];
-  [v4 encodeBool:self->_shortUnits forKey:@"_shortUnits"];
-  [v4 encodeBool:self->_allowsNarrowUnits forKey:@"_allowsNarrowUnits"];
-  [v4 encodeBool:self->_narrowStandaloneWeekdayDay forKey:@"_narrowStandaloneWeekdayDay"];
-  [v4 encodeObject:self->_alternateCalendarLocaleID forKey:@"_alternateCalendarLocaleID"];
-  [v4 encodeInteger:self->_formattingContext forKey:@"_formattingContext"];
-  [v4 encodeInteger:self->_formattingContext forKey:@"_formattingContext"];
-  [v4 encodeBool:self->_uppercase forKey:@"_uppercase"];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_date forKey:{@"_date", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_calendarUnits forKey:@"_calendarUnits"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"_timeZone"];
+  [coderCopy encodeBool:self->_shortUnits forKey:@"_shortUnits"];
+  [coderCopy encodeBool:self->_allowsNarrowUnits forKey:@"_allowsNarrowUnits"];
+  [coderCopy encodeBool:self->_narrowStandaloneWeekdayDay forKey:@"_narrowStandaloneWeekdayDay"];
+  [coderCopy encodeObject:self->_alternateCalendarLocaleID forKey:@"_alternateCalendarLocaleID"];
+  [coderCopy encodeInteger:self->_formattingContext forKey:@"_formattingContext"];
+  [coderCopy encodeInteger:self->_formattingContext forKey:@"_formattingContext"];
+  [coderCopy encodeBool:self->_uppercase forKey:@"_uppercase"];
 }
 
-- (CLKDateTextProvider)initWithCoder:(id)a3
+- (CLKDateTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CLKDateTextProvider;
-  v5 = [(CLKTextProvider *)&v13 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
 
-    v5->_calendarUnits = [v4 decodeIntegerForKey:@"_calendarUnits"];
-    v5->_shortUnits = [v4 decodeBoolForKey:@"_shortUnits"];
-    v5->_allowsNarrowUnits = [v4 decodeBoolForKey:@"_allowsNarrowUnits"];
-    v5->_narrowStandaloneWeekdayDay = [v4 decodeBoolForKey:@"_narrowStandaloneWeekdayDay"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alternateCalendarLocaleID"];
+    v5->_calendarUnits = [coderCopy decodeIntegerForKey:@"_calendarUnits"];
+    v5->_shortUnits = [coderCopy decodeBoolForKey:@"_shortUnits"];
+    v5->_allowsNarrowUnits = [coderCopy decodeBoolForKey:@"_allowsNarrowUnits"];
+    v5->_narrowStandaloneWeekdayDay = [coderCopy decodeBoolForKey:@"_narrowStandaloneWeekdayDay"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alternateCalendarLocaleID"];
     alternateCalendarLocaleID = v5->_alternateCalendarLocaleID;
     v5->_alternateCalendarLocaleID = v10;
 
-    v5->_formattingContext = [v4 decodeIntegerForKey:@"_formattingContext"];
-    v5->_uppercase = [v4 decodeBoolForKey:@"_uppercase"];
+    v5->_formattingContext = [coderCopy decodeIntegerForKey:@"_formattingContext"];
+    v5->_uppercase = [coderCopy decodeBoolForKey:@"_uppercase"];
   }
 
   return v5;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = CLKDateTextProvider;
-  v5 = [(CLKTextProvider *)&v15 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTextProvider *)&v15 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"date"];
+    v6 = [representationCopy objectForKeyedSubscript:@"date"];
     v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v6];
     v8 = v5[19];
     v5[19] = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"calendarUnits"];
+    v9 = [representationCopy objectForKeyedSubscript:@"calendarUnits"];
     if (v9)
     {
       objc_opt_class();
@@ -387,7 +387,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"timeZone"];
+    v10 = [representationCopy objectForKeyedSubscript:@"timeZone"];
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithJSONObjectRepresentation:v10];
@@ -395,7 +395,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
       v5[21] = v11;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"_uppercase"];
+    v13 = [representationCopy objectForKeyedSubscript:@"_uppercase"];
     if (v13)
     {
       objc_opt_class();
@@ -415,26 +415,26 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
 {
   v9.receiver = self;
   v9.super_class = CLKDateTextProvider;
-  v3 = [(CLKTextProvider *)&v9 JSONObjectRepresentation];
-  v4 = [(NSDate *)self->_date JSONObjectRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"date"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v9 JSONObjectRepresentation];
+  jSONObjectRepresentation2 = [(NSDate *)self->_date JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation2 forKeyedSubscript:@"date"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_calendarUnits];
-  [v3 setObject:v5 forKeyedSubscript:@"calendarUnits"];
+  [jSONObjectRepresentation setObject:v5 forKeyedSubscript:@"calendarUnits"];
 
-  v6 = [(NSTimeZone *)self->_timeZone JSONObjectRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"timeZone"];
+  jSONObjectRepresentation3 = [(NSTimeZone *)self->_timeZone JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation3 forKeyedSubscript:@"timeZone"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_uppercase];
-  [v3 setObject:v7 forKeyedSubscript:@"_uppercase"];
+  [jSONObjectRepresentation setObject:v7 forKeyedSubscript:@"_uppercase"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (id)_completeDateTemplateSeries
 {
   calendarUnits = self->_calendarUnits;
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ((calendarUnits & 0x21C) != 0)
   {
     v5 = calendarUnits & 0x21C;
@@ -448,7 +448,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
   do
   {
     v6 = [(CLKDateTextProvider *)self _partialDateTemplateSeriesForUnits:v5];
-    [v4 addObjectsFromArray:v6];
+    [array addObjectsFromArray:v6];
 
     v7 = v5 & 0xFFFFFFFFFFFFFDE3;
     if ((v5 & 0x10) == 0)
@@ -479,15 +479,15 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
 
   while (v5);
 
-  return v4;
+  return array;
 }
 
-- (id)_partialDateTemplateSeriesForUnits:(unint64_t)a3
+- (id)_partialDateTemplateSeriesForUnits:(unint64_t)units
 {
   v28[3] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v6 = v5;
-  if (a3 == 528)
+  if (units == 528)
   {
     if (self->_narrowStandaloneWeekdayDay)
     {
@@ -508,7 +508,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
     goto LABEL_41;
   }
 
-  if ((~a3 & 0x208) == 0)
+  if ((~units & 0x208) == 0)
   {
     if (!self->_shortUnits)
     {
@@ -531,7 +531,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
     goto LABEL_25;
   }
 
-  if ((a3 & 8) != 0)
+  if ((units & 8) != 0)
   {
     if (!self->_shortUnits)
     {
@@ -548,7 +548,7 @@ uint64_t __64__CLKDateTextProvider__sessionAttributedTextForIndex_withStyle___bl
 
   else
   {
-    if ((a3 & 0x200) == 0)
+    if ((units & 0x200) == 0)
     {
       v10 = &stru_284A20458;
 LABEL_24:
@@ -570,10 +570,10 @@ LABEL_24:
   }
 
 LABEL_25:
-  if ((a3 & 0x10) == 0)
+  if ((units & 0x10) == 0)
   {
     v11 = &stru_284A20458;
-    if ((a3 & 4) == 0)
+    if ((units & 4) == 0)
     {
       goto LABEL_33;
     }
@@ -596,13 +596,13 @@ LABEL_29:
   }
 
   v11 = [&stru_284A20458 stringByAppendingString:@"d"];
-  if ((a3 & 4) != 0)
+  if ((units & 4) != 0)
   {
     goto LABEL_29;
   }
 
 LABEL_33:
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -623,7 +623,7 @@ LABEL_33:
         }
 
         v20 = [*(*(&v22 + 1) + 8 * i) stringByAppendingString:{v11, v22}];
-        [v14 addObject:v20];
+        [array addObject:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -632,7 +632,7 @@ LABEL_33:
     while (v17);
   }
 
-  v6 = v14;
+  v6 = array;
 LABEL_41:
 
   return v6;

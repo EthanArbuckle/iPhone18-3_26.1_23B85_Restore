@@ -1,17 +1,17 @@
 @interface FitnessDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation FitnessDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Fitness"];
   v5 = [v4 URLByAppendingPathComponent:@"Blackbeard/Actions" isDirectory:1];
 
-  v6 = [v5 path];
-  v7 = [DEAttachmentItem attachmentWithPath:v6];
+  path = [v5 path];
+  v7 = [DEAttachmentItem attachmentWithPath:path];
 
   [v7 setDisplayName:@"Blackbeard Journals"];
   [v7 setShouldCompress:&__kCFBooleanTrue];

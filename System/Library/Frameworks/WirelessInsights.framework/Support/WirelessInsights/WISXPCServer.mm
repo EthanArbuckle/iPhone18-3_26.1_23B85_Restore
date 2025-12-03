@@ -1,6 +1,6 @@
 @interface WISXPCServer
 + (WISXPCServer)shared;
-- (BOOL)startAndReturnError:(id *)a3;
+- (BOOL)startAndReturnError:(id *)error;
 - (WISXPCServer)init;
 @end
 
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
   v4 = sub_100164A3C(&qword_1002D7180, &qword_10024ABF0);
   v5 = *(*(v4 - 8) + 64);
@@ -44,7 +44,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_10016930C(0, 0, v7, &unk_10024A180, v9);
 
   return 1;

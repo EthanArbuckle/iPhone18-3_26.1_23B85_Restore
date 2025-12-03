@@ -1,12 +1,12 @@
 @interface InterestSyncProcessor
 + (BOOL)canSyncInterests;
 - (BOOL)hasLocalChanges;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
-- (id)versionForGetTransaction:(id)a3 key:(id)a4;
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
+- (id)versionForGetTransaction:(id)transaction key:(id)key;
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version;
 @end
 
 @implementation InterestSyncProcessor
@@ -24,12 +24,12 @@
   return v4 & 1;
 }
 
-- (id)versionForGetTransaction:(id)a3 key:(id)a4
+- (id)versionForGetTransaction:(id)transaction key:(id)key
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  transactionCopy = transaction;
+  selfCopy = self;
   sub_100213A18(v6, v8);
   v12 = v11;
 
@@ -46,13 +46,13 @@
   return v13;
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100213F38(v8, v10, a5);
+  transactionCopy = transaction;
+  selfCopy = self;
+  v13 = sub_100213F38(v8, v10, version);
   v15 = v14;
 
   if (v15 >> 60 == 15)
@@ -70,17 +70,17 @@
   return v16;
 }
 
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = _Block_copy(a7);
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  if (a4)
+  v11 = _Block_copy(block);
+  transactionCopy = transaction;
+  keyCopy = key;
+  versionCopy = version;
+  selfCopy = self;
+  if (data)
   {
-    v16 = a4;
-    a4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v18 = v17;
   }
 
@@ -92,7 +92,7 @@
   v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
-  if (a6)
+  if (version)
   {
     v22 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v24 = v23;
@@ -120,23 +120,23 @@ LABEL_6:
   v26 = 0;
   v25 = 0;
 LABEL_9:
-  sub_1002152E4(a4, v18, v19, v21, v22, v24, v26, v25);
+  sub_1002152E4(data, v18, v19, v21, v22, v24, v26, v25);
   sub_1000112B4(v26);
 
-  sub_1001F6D60(a4, v18);
+  sub_1001F6D60(data, v18);
 }
 
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = _Block_copy(a7);
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  if (a4)
+  v11 = _Block_copy(block);
+  transactionCopy = transaction;
+  keyCopy = key;
+  versionCopy = version;
+  selfCopy = self;
+  if (data)
   {
-    v16 = a4;
-    a4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v18 = v17;
   }
 
@@ -148,7 +148,7 @@ LABEL_9:
   v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
-  if (a6)
+  if (version)
   {
     v22 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v24 = v23;
@@ -179,20 +179,20 @@ LABEL_9:
   sub_1002154C8(v19, v21, v22, v24, v26, v25);
   sub_1000112B4(v26);
 
-  sub_1001F6D60(a4, v18);
+  sub_1001F6D60(data, v18);
 }
 
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = _Block_copy(a7);
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  if (a4)
+  v11 = _Block_copy(block);
+  transactionCopy = transaction;
+  keyCopy = key;
+  versionCopy = version;
+  selfCopy = self;
+  if (data)
   {
-    v16 = a4;
-    a4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v18 = v17;
   }
 
@@ -204,7 +204,7 @@ LABEL_9:
   v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
-  if (a6)
+  if (version)
   {
     v22 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v24 = v23;
@@ -232,15 +232,15 @@ LABEL_6:
   v26 = 0;
   v25 = 0;
 LABEL_9:
-  sub_1002156A8(a4, v18, v19, v21, v22, v24, v26, v25);
+  sub_1002156A8(data, v18, v19, v21, v22, v24, v26, v25);
   sub_1000112B4(v26);
 
-  sub_1001F6D60(a4, v18);
+  sub_1001F6D60(data, v18);
 }
 
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version
 {
-  if (a4)
+  if (version)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -258,7 +258,7 @@ LABEL_9:
   v10 = *(v8 + 4);
   sub_100010C38(v8, v9);
   v11 = *(v10 + 96);
-  v12 = self;
+  selfCopy = self;
   v11(v5, v7, v9, v10);
   swift_endAccess();
 }

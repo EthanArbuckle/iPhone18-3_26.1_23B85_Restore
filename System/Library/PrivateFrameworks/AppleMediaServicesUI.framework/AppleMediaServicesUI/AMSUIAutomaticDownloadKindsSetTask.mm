@@ -1,28 +1,28 @@
 @interface AMSUIAutomaticDownloadKindsSetTask
-- (AMSUIAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5 viewController:(id)a6;
+- (AMSUIAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag viewController:(id)controller;
 - (id)perform;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIAutomaticDownloadKindsSetTask
 
-- (AMSUIAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5 viewController:(id)a6
+- (AMSUIAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag viewController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kindsCopy = kinds;
+  accountCopy = account;
+  bagCopy = bag;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = AMSUIAutomaticDownloadKindsSetTask;
   v14 = [(AMSTask *)&v18 init];
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x1E698C7D0]) initWithEnabledMediaKinds:v10 account:v11 bag:v12 presentationDelegate:v14];
+    v15 = [objc_alloc(MEMORY[0x1E698C7D0]) initWithEnabledMediaKinds:kindsCopy account:accountCopy bag:bagCopy presentationDelegate:v14];
     task = v14->_task;
     v14->_task = v15;
 
-    objc_storeStrong(&v14->_viewController, a6);
+    objc_storeStrong(&v14->_viewController, controller);
   }
 
   return v14;
@@ -30,46 +30,46 @@
 
 - (id)perform
 {
-  v2 = [(AMSUIAutomaticDownloadKindsSetTask *)self task];
-  v3 = [v2 perform];
+  task = [(AMSUIAutomaticDownloadKindsSetTask *)self task];
+  perform = [task perform];
 
-  return v3;
+  return perform;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [AMSUIAuthenticateTask alloc];
-  v9 = [(AMSUIAutomaticDownloadKindsSetTask *)self viewController];
-  v10 = [(AMSUIAuthenticateTask *)v8 initWithRequest:v7 presentingViewController:v9];
+  viewController = [(AMSUIAutomaticDownloadKindsSetTask *)self viewController];
+  v10 = [(AMSUIAuthenticateTask *)v8 initWithRequest:requestCopy presentingViewController:viewController];
 
-  v11 = [(AMSAuthenticateTask *)v10 performAuthentication];
+  performAuthentication = [(AMSAuthenticateTask *)v10 performAuthentication];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__AMSUIAutomaticDownloadKindsSetTask_handleAuthenticateRequest_completion___block_invoke;
   v13[3] = &unk_1E7F24370;
-  v14 = v6;
-  v12 = v6;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [performAuthentication addFinishBlock:v13];
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [AMSUIAlertDialogTask alloc];
-  v9 = [(AMSUIAutomaticDownloadKindsSetTask *)self viewController];
-  v10 = [(AMSUIAlertDialogTask *)v8 initWithRequest:v7 presentingViewController:v9];
+  viewController = [(AMSUIAutomaticDownloadKindsSetTask *)self viewController];
+  v10 = [(AMSUIAlertDialogTask *)v8 initWithRequest:requestCopy presentingViewController:viewController];
 
-  v11 = [(AMSUIAlertDialogTask *)v10 present];
+  present = [(AMSUIAlertDialogTask *)v10 present];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__AMSUIAutomaticDownloadKindsSetTask_handleDialogRequest_completion___block_invoke;
   v13[3] = &unk_1E7F24398;
-  v14 = v6;
-  v12 = v6;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface TSCHChartAxisLayoutUtilities
-+ (int64_t)snappedLabelAngleInDegrees:(float)a3 prefersVerticalAngles:(BOOL)a4;
++ (int64_t)snappedLabelAngleInDegrees:(float)degrees prefersVerticalAngles:(BOOL)angles;
 @end
 
 @implementation TSCHChartAxisLayoutUtilities
 
-+ (int64_t)snappedLabelAngleInDegrees:(float)a3 prefersVerticalAngles:(BOOL)a4
++ (int64_t)snappedLabelAngleInDegrees:(float)degrees prefersVerticalAngles:(BOOL)angles
 {
-  v5 = a4;
+  anglesCopy = angles;
   LODWORD(v4) = 1135869952;
-  v6 = sub_27628C1E0(a1, a2, *&a3, 0.0, v4);
+  v6 = sub_27628C1E0(self, a2, *&degrees, 0.0, v4);
   v7 = 70.0;
-  if (v5)
+  if (anglesCopy)
   {
     v7 = 20.0;
   }

@@ -22,19 +22,19 @@
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "_srSetupTempDirectory", buf, 2u);
   }
 
-  v2 = [a1 _srTempPath];
-  v3 = [a1 fileExistsAtPath:v2 isDirectory:0];
+  _srTempPath = [self _srTempPath];
+  v3 = [self fileExistsAtPath:_srTempPath isDirectory:0];
 
   if (v3)
   {
-    [a1 _srDeleteAllAndSystemTempFiles];
+    [self _srDeleteAllAndSystemTempFiles];
   }
 
   else
   {
-    v4 = [a1 _srTempPath];
+    _srTempPath2 = [self _srTempPath];
     v6 = 0;
-    [a1 createDirectoryAtPath:v4 withIntermediateDirectories:0 attributes:0 error:&v6];
+    [self createDirectoryAtPath:_srTempPath2 withIntermediateDirectories:0 attributes:0 error:&v6];
     v5 = v6;
 
     if (v5)
@@ -50,10 +50,10 @@
 
 - (id)dateSuffix
 {
-  v0 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v1 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v1 setDateFormat:@"MM-dd-yyyy HH:mm:ss"];
-  v2 = [v1 stringFromDate:v0];
+  v2 = [v1 stringFromDate:date];
   v3 = [v2 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
   return v3;
@@ -62,27 +62,27 @@
 - (id)outputPath:()RPExtensions bundleID:
 {
   v6 = a4;
-  v7 = [a1 dateSuffix];
+  dateSuffix = [self dateSuffix];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 _srTempPath];
-  v11 = v10;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _srTempPath = [defaultManager _srTempPath];
+  v11 = _srTempPath;
   switch(a3)
   {
     case 1:
-      [v8 stringWithFormat:@"%@/ClipRecording_%@.mp4", v10, v7];
+      [v8 stringWithFormat:@"%@/ClipRecording_%@.mp4", _srTempPath, dateSuffix];
       goto LABEL_7;
     case 3:
-      [v8 stringWithFormat:@"%@/LocalCapture_%@.mp4", v10, v7];
+      [v8 stringWithFormat:@"%@/LocalCapture_%@.mp4", _srTempPath, dateSuffix];
       goto LABEL_7;
     case 2:
-      [v8 stringWithFormat:@"%@/ScreenRecording_%@.mp4", v10, v7];
+      [v8 stringWithFormat:@"%@/ScreenRecording_%@.mp4", _srTempPath, dateSuffix];
       v12 = LABEL_7:;
       goto LABEL_9;
   }
 
   v13 = [MEMORY[0x277CCA8D8] _rpLocalizedAppNameFromBundleID:v6];
-  v12 = [v8 stringWithFormat:@"%@/%@_%@.mp4", v11, v13, v7];
+  v12 = [v8 stringWithFormat:@"%@/%@_%@.mp4", v11, v13, dateSuffix];
 
 LABEL_9:
 
@@ -94,23 +94,23 @@ LABEL_9:
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCAA00];
   v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 _srTempPath];
+  defaultManager = [v4 defaultManager];
+  _srTempPath = [defaultManager _srTempPath];
   v8 = [MEMORY[0x277CCA8D8] _rpLocalizedAppNameFromBundleID:v5];
 
-  v9 = [v3 stringWithFormat:@"%@/%@_trimmed.mp4", v7, v8];
+  v9 = [v3 stringWithFormat:@"%@/%@_trimmed.mp4", _srTempPath, v8];
 
   return v9;
 }
 
 - (uint64_t)_srSizeOfTempDir:()RPExtensions
 {
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [a1 _srTempPath];
-  v7 = [v5 attributesOfItemAtPath:v6 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _srTempPath = [self _srTempPath];
+  v7 = [defaultManager attributesOfItemAtPath:_srTempPath error:a3];
 
-  v8 = [v7 fileSize];
-  return v8;
+  fileSize = [v7 fileSize];
+  return fileSize;
 }
 
 - (uint64_t)_srDeleteFilesOlderThanTimeToLiveInSeconds:()RPExtensions deleteSystemFiles:
@@ -123,10 +123,10 @@ LABEL_9:
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "_srDeleteFilesOlderThanTimeToLiveInSeconds: %i", buf, 8u);
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [a1 _srTempPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _srTempPath = [self _srTempPath];
   v41 = 0;
-  v9 = [v7 contentsOfDirectoryAtPath:v8 error:&v41];
+  v9 = [defaultManager contentsOfDirectoryAtPath:_srTempPath error:&v41];
   v10 = v41;
 
   __92__NSFileManager_RPExtensions___srDeleteFilesOlderThanTimeToLiveInSeconds_deleteSystemFiles___block_invoke(v11, v10);
@@ -154,20 +154,20 @@ LABEL_9:
         if ((a4 & 1) != 0 || ([*(*(&v37 + 1) + 8 * i) containsString:@"ScreenRecording_"] & 1) == 0)
         {
           v17 = MEMORY[0x277CCACA8];
-          v18 = [a1 _srTempPath];
-          v19 = [v17 stringWithFormat:@"%@/%@", v18, v16];
+          _srTempPath2 = [self _srTempPath];
+          v19 = [v17 stringWithFormat:@"%@/%@", _srTempPath2, v16];
 
           v36 = v10;
-          v20 = [a1 attributesOfItemAtPath:v19 error:&v36];
+          v20 = [self attributesOfItemAtPath:v19 error:&v36];
           v21 = v36;
 
           __92__NSFileManager_RPExtensions___srDeleteFilesOlderThanTimeToLiveInSeconds_deleteSystemFiles___block_invoke(v22, v21);
-          v23 = [MEMORY[0x277CBEAA8] date];
-          v24 = [v20 fileModificationDate];
-          [v23 timeIntervalSinceDate:v24];
+          date = [MEMORY[0x277CBEAA8] date];
+          fileModificationDate = [v20 fileModificationDate];
+          [date timeIntervalSinceDate:fileModificationDate];
           v26 = v25;
 
-          v27 = [v20 fileSize];
+          fileSize = [v20 fileSize];
           if (a2 == 0.0 || v26 > a2)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -177,7 +177,7 @@ LABEL_9:
             }
 
             v35 = v21;
-            [a1 removeItemAtPath:v19 error:&v35];
+            [self removeItemAtPath:v19 error:&v35];
             v28 = v35;
 
             __92__NSFileManager_RPExtensions___srDeleteFilesOlderThanTimeToLiveInSeconds_deleteSystemFiles___block_invoke(v29, v28);
@@ -188,7 +188,7 @@ LABEL_9:
 
             else
             {
-              v30 = v27;
+              v30 = fileSize;
             }
 
             v34 += v30;
@@ -224,7 +224,7 @@ LABEL_9:
   block[2] = __56__NSFileManager_RPExtensions___srRemoveFile_completion___block_invoke;
   block[3] = &unk_278B61E60;
   v12 = v6;
-  v13 = a1;
+  selfCopy = self;
   v14 = v7;
   v9 = v7;
   v10 = v6;
@@ -241,7 +241,7 @@ LABEL_9:
   v15[1] = 3221225472;
   v15[2] = __67__NSFileManager_RPExtensions___srMoveFileFromURL_toURL_completion___block_invoke;
   v15[3] = &unk_278B62058;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v9;
   v17 = v8;
   v18 = v10;
@@ -259,7 +259,7 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = __56__NSFileManager_RPExtensions___srDeleteFilesWithPrefix___block_invoke;
   v7[3] = &unk_278B61C60;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = v4;
   v6 = v4;
   dispatch_async(v5, v7);
@@ -269,10 +269,10 @@ LABEL_9:
 {
   v3 = MEMORY[0x277CCAA00];
   v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  defaultManager = [v3 defaultManager];
+  path = [v4 path];
 
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
+  v7 = [defaultManager attributesOfItemAtPath:path error:0];
 
   v8 = [v7 objectForKey:*MEMORY[0x277CCA108]];
 
@@ -281,14 +281,14 @@ LABEL_9:
 
 - (uint64_t)_srDeviceFreeDiskSpace
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 _srTempPath];
-  v4 = [v2 attributesOfFileSystemForPath:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _srTempPath = [self _srTempPath];
+  v4 = [defaultManager attributesOfFileSystemForPath:_srTempPath error:0];
 
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA1D0]];
-  v6 = [v5 unsignedLongValue];
+  unsignedLongValue = [v5 unsignedLongValue];
 
-  return v6;
+  return unsignedLongValue;
 }
 
 @end

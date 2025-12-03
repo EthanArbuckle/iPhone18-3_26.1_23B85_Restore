@@ -1,12 +1,12 @@
 @interface CUIKCalendarInfo
 - (BOOL)isPublished;
-- (CUIKCalendarInfo)initWithCalendar:(id)a3;
+- (CUIKCalendarInfo)initWithCalendar:(id)calendar;
 - (CUIKGroupInfo)group;
 - (id)description;
 - (id)stringForSharedCalendar;
 - (void)_updateCustomGroupType;
-- (void)addCalendar:(id)a3;
-- (void)setCalendar:(id)a3;
+- (void)addCalendar:(id)calendar;
+- (void)setCalendar:(id)calendar;
 @end
 
 @implementation CUIKCalendarInfo
@@ -15,11 +15,11 @@
 {
   if (([(EKCalendar *)self->_calendar isSubscribedHolidayCalendar]& 1) == 0)
   {
-    v3 = [(EKCalendar *)self->_calendar source];
-    if ([v3 sourceType] != 5)
+    source = [(EKCalendar *)self->_calendar source];
+    if ([source sourceType] != 5)
     {
-      v5 = [(EKCalendar *)self->_calendar source];
-      v4 = [v5 sourceType] == 6;
+      source2 = [(EKCalendar *)self->_calendar source];
+      v4 = [source2 sourceType] == 6;
 
       goto LABEL_6;
     }
@@ -30,16 +30,16 @@ LABEL_6:
   self->_customGroupType = v4;
 }
 
-- (CUIKCalendarInfo)initWithCalendar:(id)a3
+- (CUIKCalendarInfo)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v11.receiver = self;
   v11.super_class = CUIKCalendarInfo;
   v6 = [(CUIKCalendarInfo *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
     v8 = CUIKDisplayedTitleForCalendar(v7->_calendar);
     title = v7->_title;
     v7->_title = v8;
@@ -51,39 +51,39 @@ LABEL_6:
   return v7;
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   p_calendar = &self->_calendar;
-  if (self->_calendar != v5)
+  if (self->_calendar != calendarCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_calendar, a3);
+    v7 = calendarCopy;
+    objc_storeStrong(p_calendar, calendar);
     p_calendar = [(CUIKCalendarInfo *)self _updateCustomGroupType];
-    v5 = v7;
+    calendarCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_calendar, v5);
+  MEMORY[0x1EEE66BB8](p_calendar, calendarCopy);
 }
 
-- (void)addCalendar:(id)a3
+- (void)addCalendar:(id)calendar
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectID];
-  v7 = [v6 databaseID];
-  v8 = [(EKCalendar *)self->_calendar objectID];
-  v9 = [v8 databaseID];
+  calendarCopy = calendar;
+  objectID = [calendarCopy objectID];
+  databaseID = [objectID databaseID];
+  objectID2 = [(EKCalendar *)self->_calendar objectID];
+  databaseID2 = [objectID2 databaseID];
 
-  if (v7 >= v9)
+  if (databaseID >= databaseID2)
   {
-    v10 = v5;
+    v10 = calendarCopy;
   }
 
   else
   {
     v10 = self->_calendar;
-    objc_storeStrong(&self->_calendar, a3);
+    objc_storeStrong(&self->_calendar, calendar);
   }
 
   otherCalendars = self->_otherCalendars;
@@ -104,8 +104,8 @@ LABEL_6:
 
 - (BOOL)isPublished
 {
-  v2 = [(EKCalendar *)self->_calendar publishURL];
-  v3 = v2 != 0;
+  publishURL = [(EKCalendar *)self->_calendar publishURL];
+  v3 = publishURL != 0;
 
   return v3;
 }
@@ -133,12 +133,12 @@ LABEL_6:
 
 - (id)stringForSharedCalendar
 {
-  v3 = [(EKCalendar *)self->_calendar sharees];
-  v4 = [v3 allObjects];
+  sharees = [(EKCalendar *)self->_calendar sharees];
+  allObjects = [sharees allObjects];
 
-  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [v4 count] == 1 && (-[EKCalendar isPublished](self->_calendar, "isPublished") & 1) == 0)
+  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [allObjects count] == 1 && (-[EKCalendar isPublished](self->_calendar, "isPublished") & 1) == 0)
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [allObjects objectAtIndex:0];
     v6 = [CUIKAttendeeUtils displayStringForIdentity:v5 useAddressAsFallback:1 contactIdentifier:0];
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
@@ -147,9 +147,9 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [v4 count] >= 2 && (-[EKCalendar isPublished](self->_calendar, "isPublished") & 1) == 0)
+  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [allObjects count] >= 2 && (-[EKCalendar isPublished](self->_calendar, "isPublished") & 1) == 0)
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [allObjects objectAtIndex:0];
     v6 = [CUIKAttendeeUtils displayStringForIdentity:v5 useAddressAsFallback:1 contactIdentifier:0];
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
@@ -158,9 +158,9 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [v4 count] && -[EKCalendar isPublished](self->_calendar, "isPublished"))
+  if (-[EKCalendar sharingStatus](self->_calendar, "sharingStatus") == 1 && [allObjects count] && -[EKCalendar isPublished](self->_calendar, "isPublished"))
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [allObjects objectAtIndex:0];
     v6 = [CUIKAttendeeUtils displayStringForIdentity:v5 useAddressAsFallback:1 contactIdentifier:0];
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
@@ -190,8 +190,8 @@ LABEL_19:
     v13 = MEMORY[0x1E696AEC0];
     v5 = CUIKBundle();
     v14 = [v5 localizedStringForKey:@"Shared by %@" value:&stru_1F4AA8958 table:0];
-    v15 = [(EKCalendar *)self->_calendar sharedOwnerName];
-    v11 = [v13 localizedStringWithFormat:v14, v15];
+    sharedOwnerName = [(EKCalendar *)self->_calendar sharedOwnerName];
+    v11 = [v13 localizedStringWithFormat:v14, sharedOwnerName];
   }
 
 LABEL_20:

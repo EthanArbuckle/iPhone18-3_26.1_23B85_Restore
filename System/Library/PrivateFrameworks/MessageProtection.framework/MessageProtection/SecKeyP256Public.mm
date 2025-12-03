@@ -1,7 +1,7 @@
 @interface SecKeyP256Public
-- (BOOL)verifySignature:(id)a3 data:(id)a4;
-- (SecKeyP256Public)initWithData:(id)a3 error:(id *)a4;
-- (SecKeyP256Public)initWithSecKeyRef:(__SecKey *)a3;
+- (BOOL)verifySignature:(id)signature data:(id)data;
+- (SecKeyP256Public)initWithData:(id)data error:(id *)error;
+- (SecKeyP256Public)initWithSecKeyRef:(__SecKey *)ref;
 - (id)dataRepresentation;
 - (void)dataRepresentation;
 - (void)dealloc;
@@ -22,7 +22,7 @@
   [(SecKeyP256Public *)&v4 dealloc];
 }
 
-- (SecKeyP256Public)initWithSecKeyRef:(__SecKey *)a3
+- (SecKeyP256Public)initWithSecKeyRef:(__SecKey *)ref
 {
   v7.receiver = self;
   v7.super_class = SecKeyP256Public;
@@ -33,14 +33,14 @@
     goto LABEL_4;
   }
 
-  if (a3)
+  if (ref)
   {
-    v4->_publicKeyRef = a3;
+    v4->_publicKeyRef = ref;
 LABEL_4:
-    a3 = v4;
+    ref = v4;
   }
 
-  return a3;
+  return ref;
 }
 
 - (id)dataRepresentation
@@ -111,22 +111,22 @@ LABEL_4:
   return v3;
 }
 
-- (SecKeyP256Public)initWithData:(id)a3 error:(id *)a4
+- (SecKeyP256Public)initWithData:(id)data error:(id *)error
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = MEMORY[0x2318925A0]();
   v8 = (24 * *v7 + 31) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20](v7);
   v10 = (&v25[-1] - v9);
-  [v6 length];
-  [v6 bytes];
+  [dataCopy length];
+  [dataCopy bytes];
   if (ccec_compact_import_pub())
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v6 description];
+    v12 = [dataCopy description];
     v13 = [v11 stringWithFormat:@"Incorrect data for public key: %@", v12];
-    MPLogAndAssignError(7, a4, v13);
+    MPLogAndAssignError(7, error, v13);
   }
 
   else
@@ -155,43 +155,43 @@ LABEL_4:
     if (v19)
     {
       v20->_publicKeyRef = v19;
-      a4 = v20;
+      error = v20;
       goto LABEL_6;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
 
-    *a4 = error;
+    *error = error;
     v23 = MessageProtectionLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [(SecKeyP256Public *)a4 initWithData:v6 error:v23];
+      [(SecKeyP256Public *)error initWithData:dataCopy error:v23];
     }
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_6:
 
   v21 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)verifySignature:(id)a3 data:(id)a4
+- (BOOL)verifySignature:(id)signature data:(id)data
 {
   error = 0;
   v6 = MEMORY[0x277CBEB28];
-  v7 = a4;
-  v8 = a3;
+  dataCopy = data;
+  signatureCopy = signature;
   v9 = [v6 dataWithLength:32];
-  v10 = [v7 bytes];
-  v11 = [v7 length];
+  bytes = [dataCopy bytes];
+  v11 = [dataCopy length];
 
-  CC_SHA256(v10, v11, [v9 bytes]);
-  v12 = [(SecKeyP256Public *)self publicKeyRef];
-  v13 = SecKeyVerifySignature(v12, *MEMORY[0x277CDC318], v9, v8, &error);
+  CC_SHA256(bytes, v11, [v9 bytes]);
+  publicKeyRef = [(SecKeyP256Public *)self publicKeyRef];
+  v13 = SecKeyVerifySignature(publicKeyRef, *MEMORY[0x277CDC318], v9, signatureCopy, &error);
 
   if (error)
   {
@@ -217,10 +217,10 @@ LABEL_6:
 - (void)dataRepresentation
 {
   v11 = *MEMORY[0x277D85DE8];
-  v8 = *a1;
-  if (*a1)
+  v8 = *self;
+  if (*self)
   {
-    v9 = CFCopyDescription(*a1);
+    v9 = CFCopyDescription(*self);
   }
 
   else

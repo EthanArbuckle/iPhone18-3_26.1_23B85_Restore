@@ -1,21 +1,21 @@
 @interface PKPaymentRewardsRedemptionUnit
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentRewardsRedemptionUnit)initWithCoder:(id)a3;
-- (PKPaymentRewardsRedemptionUnit)initWithDictionary:(id)a3;
-- (PKPaymentRewardsRedemptionUnit)initWithType:(unint64_t)a3 monetaryValue:(id)a4 value:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentRewardsRedemptionUnit)initWithCoder:(id)coder;
+- (PKPaymentRewardsRedemptionUnit)initWithDictionary:(id)dictionary;
+- (PKPaymentRewardsRedemptionUnit)initWithType:(unint64_t)type monetaryValue:(id)value value:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentRewardsRedemptionUnit
 
-- (PKPaymentRewardsRedemptionUnit)initWithType:(unint64_t)a3 monetaryValue:(id)a4 value:(id)a5
+- (PKPaymentRewardsRedemptionUnit)initWithType:(unint64_t)type monetaryValue:(id)value value:(id)a5
 {
-  v8 = a4;
+  valueCopy = value;
   v9 = a5;
   v17.receiver = self;
   v17.super_class = PKPaymentRewardsRedemptionUnit;
@@ -23,12 +23,12 @@
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
+    v10->_type = type;
     v12 = [v9 copy];
     value = v11->_value;
     v11->_value = v12;
 
-    v14 = [v8 copy];
+    v14 = [valueCopy copy];
     monetaryValue = v11->_monetaryValue;
     v11->_monetaryValue = v14;
   }
@@ -36,13 +36,13 @@
   return v11;
 }
 
-- (PKPaymentRewardsRedemptionUnit)initWithDictionary:(id)a3
+- (PKPaymentRewardsRedemptionUnit)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKPaymentRewardsRedemptionUnit;
   v5 = [(PKPaymentRewardsRedemptionUnit *)&v13 init];
-  if (!v5 || ([v4 PKDecimalNumberFromStringForKey:@"value"], v6 = objc_claimAutoreleasedReturnValue(), value = v5->_value, v5->_value = v6, value, objc_msgSend(v4, "PKStringForKey:", @"type"), v8 = objc_claimAutoreleasedReturnValue(), v5->_type = PKPaymentRewardsBalanceTypeFromString(v8), v8, objc_msgSend(v4, "PKCurrencyAmountForKey:", @"monetaryValue"), v9 = objc_claimAutoreleasedReturnValue(), monetaryValue = v5->_monetaryValue, v5->_monetaryValue = v9, monetaryValue, v5->_monetaryValue) && v5->_type)
+  if (!v5 || ([dictionaryCopy PKDecimalNumberFromStringForKey:@"value"], v6 = objc_claimAutoreleasedReturnValue(), value = v5->_value, v5->_value = v6, value, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"type"), v8 = objc_claimAutoreleasedReturnValue(), v5->_type = PKPaymentRewardsBalanceTypeFromString(v8), v8, objc_msgSend(dictionaryCopy, "PKCurrencyAmountForKey:", @"monetaryValue"), v9 = objc_claimAutoreleasedReturnValue(), monetaryValue = v5->_monetaryValue, v5->_monetaryValue = v9, monetaryValue, v5->_monetaryValue) && v5->_type)
   {
     v11 = v5;
   }
@@ -61,29 +61,29 @@
   v4 = PKPaymentRewardsBalanceTypeToString(self->_type);
   [v3 setObject:v4 forKeyedSubscript:@"type"];
 
-  v5 = [(NSDecimalNumber *)self->_value stringValue];
-  [v3 setObject:v5 forKeyedSubscript:@"value"];
+  stringValue = [(NSDecimalNumber *)self->_value stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"value"];
 
-  v6 = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"monetaryValue"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"monetaryValue"];
 
   v7 = [v3 copy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -201,20 +201,20 @@ LABEL_18:
   return v8;
 }
 
-- (PKPaymentRewardsRedemptionUnit)initWithCoder:(id)a3
+- (PKPaymentRewardsRedemptionUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentRewardsRedemptionUnit;
   v5 = [(PKPaymentRewardsRedemptionUnit *)&v11 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
     monetaryValue = v5->_monetaryValue;
     v5->_monetaryValue = v8;
   }
@@ -222,24 +222,24 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_value forKey:@"value"];
-  [v5 encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
+  [coderCopy encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_type;
-  v6 = [(NSDecimalNumber *)self->_value copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_value copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 

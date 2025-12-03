@@ -1,44 +1,44 @@
 @interface RequestStoreItem
-- (RequestStoreItem)initWithDictionary:(id)a3;
-- (RequestStoreItem)initWithItemIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 ageRating:(id)a6 ageRatingValue:(id)a7 approverDSID:(id)a8 requesterDSID:(id)a9 createdDate:(id)a10 modifiedDate:(id)a11 isException:(BOOL)a12 itemBundleID:(id)a13 itemDesc:(id)a14 itemTitle:(id)a15 localizedPrice:(id)a16 previewURL:(id)a17 productType:(id)a18 productTypeName:(id)a19 productURL:(id)a20 offerName:(id)a21 requestString:(id)a22 requestSummary:(id)a23 priceSummary:(id)a24 status:(int64_t)a25 suppressClientResume:(BOOL)a26 starRating:(id)a27 thumbnailURLString:(id)a28;
-- (RequestStoreItem)initWithRequest:(id)a3;
+- (RequestStoreItem)initWithDictionary:(id)dictionary;
+- (RequestStoreItem)initWithItemIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier ageRating:(id)rating ageRatingValue:(id)value approverDSID:(id)d requesterDSID:(id)iD createdDate:(id)self0 modifiedDate:(id)self1 isException:(BOOL)self2 itemBundleID:(id)self3 itemDesc:(id)self4 itemTitle:(id)self5 localizedPrice:(id)self6 previewURL:(id)self7 productType:(id)self8 productTypeName:(id)self9 productURL:(id)rL offerName:(id)offerName requestString:(id)string requestSummary:(id)summary priceSummary:(id)priceSummary status:(int64_t)status suppressClientResume:(BOOL)resume starRating:(id)starRating thumbnailURLString:(id)lString;
+- (RequestStoreItem)initWithRequest:(id)request;
 - (id)compile;
 - (id)description;
-- (void)overlayItem:(id)a3;
+- (void)overlayItem:(id)item;
 @end
 
 @implementation RequestStoreItem
 
-- (RequestStoreItem)initWithItemIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 ageRating:(id)a6 ageRatingValue:(id)a7 approverDSID:(id)a8 requesterDSID:(id)a9 createdDate:(id)a10 modifiedDate:(id)a11 isException:(BOOL)a12 itemBundleID:(id)a13 itemDesc:(id)a14 itemTitle:(id)a15 localizedPrice:(id)a16 previewURL:(id)a17 productType:(id)a18 productTypeName:(id)a19 productURL:(id)a20 offerName:(id)a21 requestString:(id)a22 requestSummary:(id)a23 priceSummary:(id)a24 status:(int64_t)a25 suppressClientResume:(BOOL)a26 starRating:(id)a27 thumbnailURLString:(id)a28
+- (RequestStoreItem)initWithItemIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier ageRating:(id)rating ageRatingValue:(id)value approverDSID:(id)d requesterDSID:(id)iD createdDate:(id)self0 modifiedDate:(id)self1 isException:(BOOL)self2 itemBundleID:(id)self3 itemDesc:(id)self4 itemTitle:(id)self5 localizedPrice:(id)self6 previewURL:(id)self7 productType:(id)self8 productTypeName:(id)self9 productURL:(id)rL offerName:(id)offerName requestString:(id)string requestSummary:(id)summary priceSummary:(id)priceSummary status:(int64_t)status suppressClientResume:(BOOL)resume starRating:(id)starRating thumbnailURLString:(id)lString
 {
-  v64 = a3;
-  v50 = a4;
-  v62 = a4;
-  v49 = a5;
-  v60 = a5;
-  obj = a6;
-  v58 = a6;
-  v46 = a7;
-  v56 = a7;
-  v47 = a8;
-  v33 = a8;
-  v34 = a9;
-  v65 = a10;
-  v63 = a11;
-  v61 = a13;
-  v59 = a14;
-  v57 = a15;
-  v55 = a16;
-  v35 = a17;
-  v36 = a18;
-  v54 = a19;
-  v37 = a20;
-  v38 = a21;
-  v39 = a22;
-  v40 = a23;
-  v41 = a24;
-  v53 = a27;
-  v52 = a28;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  requestIdentifierCopy2 = requestIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  uniqueIdentifierCopy2 = uniqueIdentifier;
+  obj = rating;
+  ratingCopy = rating;
+  valueCopy = value;
+  valueCopy2 = value;
+  dCopy = d;
+  dCopy2 = d;
+  iDCopy = iD;
+  dateCopy = date;
+  modifiedDateCopy = modifiedDate;
+  bundleIDCopy = bundleID;
+  descCopy = desc;
+  titleCopy = title;
+  priceCopy = price;
+  lCopy = l;
+  typeCopy = type;
+  nameCopy = name;
+  rLCopy = rL;
+  offerNameCopy = offerName;
+  stringCopy = string;
+  summaryCopy = summary;
+  priceSummaryCopy = priceSummary;
+  starRatingCopy = starRating;
+  lStringCopy = lString;
   v66.receiver = self;
   v66.super_class = RequestStoreItem;
   v42 = [(RequestStoreItem *)&v66 init];
@@ -46,147 +46,147 @@
   if (v42)
   {
     objc_storeStrong(&v42->_ageRating, obj);
-    objc_storeStrong(&v43->_ageRatingValue, v46);
-    objc_storeStrong(&v43->_approverDSID, v47);
-    objc_storeStrong(&v43->_createdDate, a10);
-    v43->_isException = a12;
-    objc_storeStrong(&v43->_itemBundleID, a13);
-    objc_storeStrong(&v43->_itemDescription, a14);
-    objc_storeStrong(&v43->_itemIdentifier, a3);
-    objc_storeStrong(&v43->_itemTitle, a15);
-    objc_storeStrong(&v43->_localizedPrice, a16);
-    objc_storeStrong(&v43->_modifiedDate, a11);
-    objc_storeStrong(&v43->_offerName, a21);
-    objc_storeStrong(&v43->_previewURL, a17);
-    objc_storeStrong(&v43->_priceSummary, a24);
-    objc_storeStrong(&v43->_productType, a18);
-    objc_storeStrong(&v43->_productTypeName, a19);
-    objc_storeStrong(&v43->_productURL, a20);
-    objc_storeStrong(&v43->_requestIdentifier, v50);
-    objc_storeStrong(&v43->_requestString, a22);
-    objc_storeStrong(&v43->_requestSummary, a23);
-    objc_storeStrong(&v43->_requesterDSID, a9);
-    objc_storeStrong(&v43->_starRating, a27);
-    v43->_status = a25;
-    v43->_suppressClientResume = a26;
-    objc_storeStrong(&v43->_thumbnailURLString, a28);
-    objc_storeStrong(&v43->_uniqueIdentifier, v49);
+    objc_storeStrong(&v43->_ageRatingValue, valueCopy);
+    objc_storeStrong(&v43->_approverDSID, dCopy);
+    objc_storeStrong(&v43->_createdDate, date);
+    v43->_isException = exception;
+    objc_storeStrong(&v43->_itemBundleID, bundleID);
+    objc_storeStrong(&v43->_itemDescription, desc);
+    objc_storeStrong(&v43->_itemIdentifier, identifier);
+    objc_storeStrong(&v43->_itemTitle, title);
+    objc_storeStrong(&v43->_localizedPrice, price);
+    objc_storeStrong(&v43->_modifiedDate, modifiedDate);
+    objc_storeStrong(&v43->_offerName, offerName);
+    objc_storeStrong(&v43->_previewURL, l);
+    objc_storeStrong(&v43->_priceSummary, priceSummary);
+    objc_storeStrong(&v43->_productType, type);
+    objc_storeStrong(&v43->_productTypeName, name);
+    objc_storeStrong(&v43->_productURL, rL);
+    objc_storeStrong(&v43->_requestIdentifier, requestIdentifierCopy);
+    objc_storeStrong(&v43->_requestString, string);
+    objc_storeStrong(&v43->_requestSummary, summary);
+    objc_storeStrong(&v43->_requesterDSID, iD);
+    objc_storeStrong(&v43->_starRating, starRating);
+    v43->_status = status;
+    v43->_suppressClientResume = resume;
+    objc_storeStrong(&v43->_thumbnailURLString, lString);
+    objc_storeStrong(&v43->_uniqueIdentifier, uniqueIdentifierCopy);
   }
 
   return v43;
 }
 
-- (RequestStoreItem)initWithRequest:(id)a3
+- (RequestStoreItem)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v53.receiver = self;
   v53.super_class = RequestStoreItem;
   v5 = [(RequestStoreItem *)&v53 init];
   if (v5)
   {
-    v6 = [v4 ageRating];
+    ageRating = [requestCopy ageRating];
     ageRating = v5->_ageRating;
-    v5->_ageRating = v6;
+    v5->_ageRating = ageRating;
 
-    v8 = [v4 ageRatingValue];
+    ageRatingValue = [requestCopy ageRatingValue];
     ageRatingValue = v5->_ageRatingValue;
-    v5->_ageRatingValue = v8;
+    v5->_ageRatingValue = ageRatingValue;
 
-    v10 = [v4 approverDSID];
+    approverDSID = [requestCopy approverDSID];
     approverDSID = v5->_approverDSID;
-    v5->_approverDSID = v10;
+    v5->_approverDSID = approverDSID;
 
-    v12 = [v4 createdDate];
+    createdDate = [requestCopy createdDate];
     createdDate = v5->_createdDate;
-    v5->_createdDate = v12;
+    v5->_createdDate = createdDate;
 
-    v5->_isException = [v4 isException];
-    v14 = [v4 itemBundleID];
+    v5->_isException = [requestCopy isException];
+    itemBundleID = [requestCopy itemBundleID];
     itemBundleID = v5->_itemBundleID;
-    v5->_itemBundleID = v14;
+    v5->_itemBundleID = itemBundleID;
 
-    v16 = [v4 itemDescription];
+    itemDescription = [requestCopy itemDescription];
     itemDescription = v5->_itemDescription;
-    v5->_itemDescription = v16;
+    v5->_itemDescription = itemDescription;
 
-    v18 = [v4 itemIdentifier];
+    itemIdentifier = [requestCopy itemIdentifier];
     itemIdentifier = v5->_itemIdentifier;
-    v5->_itemIdentifier = v18;
+    v5->_itemIdentifier = itemIdentifier;
 
-    v20 = [v4 itemTitle];
+    itemTitle = [requestCopy itemTitle];
     itemTitle = v5->_itemTitle;
-    v5->_itemTitle = v20;
+    v5->_itemTitle = itemTitle;
 
-    v22 = [v4 localizedPrice];
+    localizedPrice = [requestCopy localizedPrice];
     localizedPrice = v5->_localizedPrice;
-    v5->_localizedPrice = v22;
+    v5->_localizedPrice = localizedPrice;
 
-    v24 = [v4 modifiedDate];
+    modifiedDate = [requestCopy modifiedDate];
     modifiedDate = v5->_modifiedDate;
-    v5->_modifiedDate = v24;
+    v5->_modifiedDate = modifiedDate;
 
-    v26 = [v4 offerName];
+    offerName = [requestCopy offerName];
     offerName = v5->_offerName;
-    v5->_offerName = v26;
+    v5->_offerName = offerName;
 
-    v28 = [v4 previewURL];
+    previewURL = [requestCopy previewURL];
     previewURL = v5->_previewURL;
-    v5->_previewURL = v28;
+    v5->_previewURL = previewURL;
 
-    v30 = [v4 priceSummary];
+    priceSummary = [requestCopy priceSummary];
     priceSummary = v5->_priceSummary;
-    v5->_priceSummary = v30;
+    v5->_priceSummary = priceSummary;
 
-    v32 = [v4 productType];
+    productType = [requestCopy productType];
     productType = v5->_productType;
-    v5->_productType = v32;
+    v5->_productType = productType;
 
-    v34 = [v4 productTypeName];
+    productTypeName = [requestCopy productTypeName];
     productTypeName = v5->_productTypeName;
-    v5->_productTypeName = v34;
+    v5->_productTypeName = productTypeName;
 
-    v36 = [v4 productURL];
+    productURL = [requestCopy productURL];
     productURL = v5->_productURL;
-    v5->_productURL = v36;
+    v5->_productURL = productURL;
 
-    v38 = [v4 requestIdentifier];
+    requestIdentifier = [requestCopy requestIdentifier];
     requestIdentifier = v5->_requestIdentifier;
-    v5->_requestIdentifier = v38;
+    v5->_requestIdentifier = requestIdentifier;
 
-    v40 = [v4 requestString];
+    requestString = [requestCopy requestString];
     requestString = v5->_requestString;
-    v5->_requestString = v40;
+    v5->_requestString = requestString;
 
-    v42 = [v4 requestSummary];
+    requestSummary = [requestCopy requestSummary];
     requestSummary = v5->_requestSummary;
-    v5->_requestSummary = v42;
+    v5->_requestSummary = requestSummary;
 
-    v44 = [v4 requesterDSID];
+    requesterDSID = [requestCopy requesterDSID];
     requesterDSID = v5->_requesterDSID;
-    v5->_requesterDSID = v44;
+    v5->_requesterDSID = requesterDSID;
 
-    v46 = [v4 starRating];
+    starRating = [requestCopy starRating];
     starRating = v5->_starRating;
-    v5->_starRating = v46;
+    v5->_starRating = starRating;
 
-    v5->_status = [v4 status];
-    v5->_suppressClientResume = [v4 suppressClientResume];
-    v48 = [v4 thumbnailURLString];
+    v5->_status = [requestCopy status];
+    v5->_suppressClientResume = [requestCopy suppressClientResume];
+    thumbnailURLString = [requestCopy thumbnailURLString];
     thumbnailURLString = v5->_thumbnailURLString;
-    v5->_thumbnailURLString = v48;
+    v5->_thumbnailURLString = thumbnailURLString;
 
-    v50 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [requestCopy uniqueIdentifier];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v50;
+    v5->_uniqueIdentifier = uniqueIdentifier;
   }
 
   return v5;
 }
 
-- (RequestStoreItem)initWithDictionary:(id)a3
+- (RequestStoreItem)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"ageRating"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"ageRating"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -198,7 +198,7 @@
     v80 = 0;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"ageRatingValue"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"ageRatingValue"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -210,7 +210,7 @@
     v6 = 0;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"approverDSID"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"approverDSID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -222,7 +222,7 @@
     v8 = 0;
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"requesterDSID"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"requesterDSID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -234,7 +234,7 @@
     v10 = 0;
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"isException"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"isException"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -246,7 +246,7 @@
     v83 = 0;
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"itemDescription"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"itemDescription"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -258,7 +258,7 @@
     v77 = 0;
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"itemTitle"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"itemTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -272,7 +272,7 @@
 
   v85 = v10;
 
-  v14 = [v3 objectForKeyedSubscript:@"localizedPrice"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"localizedPrice"];
   objc_opt_class();
   v82 = v8;
   if (objc_opt_isKindOfClass())
@@ -285,7 +285,7 @@
     v90 = 0;
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"previewURL"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"previewURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -305,7 +305,7 @@ LABEL_29:
   v81 = 0;
 LABEL_31:
 
-  v17 = [v3 objectForKeyedSubscript:@"productType"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -317,7 +317,7 @@ LABEL_31:
     v91 = 0;
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"productTypeName"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"productTypeName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -329,7 +329,7 @@ LABEL_31:
     v19 = 0;
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"productURL"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"productURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -349,7 +349,7 @@ LABEL_41:
   v79 = 0;
 LABEL_43:
 
-  v22 = [v3 objectForKeyedSubscript:@"starRating"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"starRating"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -361,7 +361,7 @@ LABEL_43:
     v78 = 0;
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"thumbnailURLString"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"thumbnailURLString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -373,7 +373,7 @@ LABEL_43:
     v24 = 0;
   }
 
-  v25 = [v3 objectForKeyedSubscript:@"itemBundleID"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"itemBundleID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -385,7 +385,7 @@ LABEL_43:
     v76 = 0;
   }
 
-  v26 = [v3 objectForKeyedSubscript:@"itemIdentifier"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -397,7 +397,7 @@ LABEL_43:
     v88 = 0;
   }
 
-  v27 = [v3 objectForKeyedSubscript:@"requestIdentifier"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"requestIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -409,7 +409,7 @@ LABEL_43:
     v87 = 0;
   }
 
-  v28 = [v3 objectForKeyedSubscript:@"uniqueIdentifier"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"uniqueIdentifier"];
   objc_opt_class();
   v86 = v6;
   if (objc_opt_isKindOfClass())
@@ -422,7 +422,7 @@ LABEL_43:
     v73 = 0;
   }
 
-  v29 = [v3 objectForKeyedSubscript:@"createdTimeInterval"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"createdTimeInterval"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -443,7 +443,7 @@ LABEL_65:
   v31 = 0;
 LABEL_67:
 
-  v32 = [v3 objectForKeyedSubscript:@"modifiedTimeInterval"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"modifiedTimeInterval"];
   objc_opt_class();
   v75 = v19;
   if (objc_opt_isKindOfClass())
@@ -465,7 +465,7 @@ LABEL_71:
   v34 = 0;
 LABEL_73:
 
-  v35 = [v3 objectForKeyedSubscript:@"offerName"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"offerName"];
   objc_opt_class();
   v74 = v24;
   if (objc_opt_isKindOfClass())
@@ -478,7 +478,7 @@ LABEL_73:
     v36 = 0;
   }
 
-  v37 = [v3 objectForKeyedSubscript:@"requestString"];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"requestString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -490,7 +490,7 @@ LABEL_73:
     v38 = 0;
   }
 
-  v39 = [v3 objectForKeyedSubscript:@"requestSummary"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"requestSummary"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -502,7 +502,7 @@ LABEL_73:
     v40 = 0;
   }
 
-  v41 = [v3 objectForKeyedSubscript:@"priceSummary"];
+  v41 = [dictionaryCopy objectForKeyedSubscript:@"priceSummary"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -516,7 +516,7 @@ LABEL_73:
 
   v69 = v42;
 
-  v43 = [v3 objectForKeyedSubscript:@"status"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   v70 = v38;
   if (objc_opt_isKindOfClass())
@@ -529,7 +529,7 @@ LABEL_73:
     v44 = 0;
   }
 
-  v45 = [v3 objectForKeyedSubscript:@"suppressClientResume"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"suppressClientResume"];
   objc_opt_class();
   v71 = v36;
   if (objc_opt_isKindOfClass())
@@ -547,7 +547,7 @@ LABEL_73:
 
   v49 = 0;
   v50 = v88;
-  v72 = v3;
+  v72 = dictionaryCopy;
   v66 = v31;
   if (!v88)
   {
@@ -576,17 +576,17 @@ LABEL_96:
   }
 
   v52 = v31;
-  v67 = [v83 BOOLValue];
-  v53 = [v44 integerValue];
+  bOOLValue = [v83 BOOLValue];
+  integerValue = [v44 integerValue];
   LOBYTE(v65) = [v46 BOOLValue];
   v54 = v69;
-  v64 = v53;
+  v64 = integerValue;
   v63 = v47;
   v55 = v46;
   v56 = v47;
   v57 = v70;
   v58 = v71;
-  LOBYTE(v62) = v67;
+  LOBYTE(v62) = bOOLValue;
   v61 = v52;
   v50 = v88;
   v51 = v87;
@@ -602,326 +602,326 @@ LABEL_98:
 - (id)compile
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RequestStoreItem *)self ageRating];
-  [v3 ap_setNullableObject:v4 forKey:@"ageRating"];
+  ageRating = [(RequestStoreItem *)self ageRating];
+  [v3 ap_setNullableObject:ageRating forKey:@"ageRating"];
 
-  v5 = [(RequestStoreItem *)self ageRatingValue];
-  [v3 ap_setNullableObject:v5 forKey:@"ageRatingValue"];
+  ageRatingValue = [(RequestStoreItem *)self ageRatingValue];
+  [v3 ap_setNullableObject:ageRatingValue forKey:@"ageRatingValue"];
 
-  v6 = [(RequestStoreItem *)self approverDSID];
-  [v3 ap_setNullableObject:v6 forKey:@"approverDSID"];
+  approverDSID = [(RequestStoreItem *)self approverDSID];
+  [v3 ap_setNullableObject:approverDSID forKey:@"approverDSID"];
 
-  v7 = [(RequestStoreItem *)self requesterDSID];
-  [v3 ap_setNullableObject:v7 forKey:@"requesterDSID"];
+  requesterDSID = [(RequestStoreItem *)self requesterDSID];
+  [v3 ap_setNullableObject:requesterDSID forKey:@"requesterDSID"];
 
   v8 = [NSNumber numberWithBool:[(RequestStoreItem *)self isException]];
   [v3 ap_setNullableObject:v8 forKey:@"isException"];
 
-  v9 = [(RequestStoreItem *)self itemBundleID];
-  [v3 ap_setNullableObject:v9 forKey:@"itemBundleID"];
+  itemBundleID = [(RequestStoreItem *)self itemBundleID];
+  [v3 ap_setNullableObject:itemBundleID forKey:@"itemBundleID"];
 
-  v10 = [(RequestStoreItem *)self itemDescription];
-  [v3 ap_setNullableObject:v10 forKey:@"itemDescription"];
+  itemDescription = [(RequestStoreItem *)self itemDescription];
+  [v3 ap_setNullableObject:itemDescription forKey:@"itemDescription"];
 
-  v11 = [(RequestStoreItem *)self itemTitle];
-  [v3 ap_setNullableObject:v11 forKey:@"itemTitle"];
+  itemTitle = [(RequestStoreItem *)self itemTitle];
+  [v3 ap_setNullableObject:itemTitle forKey:@"itemTitle"];
 
-  v12 = [(RequestStoreItem *)self localizedPrice];
-  [v3 ap_setNullableObject:v12 forKey:@"localizedPrice"];
+  localizedPrice = [(RequestStoreItem *)self localizedPrice];
+  [v3 ap_setNullableObject:localizedPrice forKey:@"localizedPrice"];
 
-  v13 = [(RequestStoreItem *)self previewURL];
-  v14 = [v13 absoluteString];
-  [v3 ap_setNullableObject:v14 forKey:@"previewURL"];
+  previewURL = [(RequestStoreItem *)self previewURL];
+  absoluteString = [previewURL absoluteString];
+  [v3 ap_setNullableObject:absoluteString forKey:@"previewURL"];
 
-  v15 = [(RequestStoreItem *)self productType];
-  [v3 ap_setNullableObject:v15 forKey:@"productType"];
+  productType = [(RequestStoreItem *)self productType];
+  [v3 ap_setNullableObject:productType forKey:@"productType"];
 
-  v16 = [(RequestStoreItem *)self productTypeName];
-  [v3 ap_setNullableObject:v16 forKey:@"productTypeName"];
+  productTypeName = [(RequestStoreItem *)self productTypeName];
+  [v3 ap_setNullableObject:productTypeName forKey:@"productTypeName"];
 
-  v17 = [(RequestStoreItem *)self productURL];
-  v18 = [v17 absoluteString];
-  [v3 ap_setNullableObject:v18 forKey:@"productURL"];
+  productURL = [(RequestStoreItem *)self productURL];
+  absoluteString2 = [productURL absoluteString];
+  [v3 ap_setNullableObject:absoluteString2 forKey:@"productURL"];
 
-  v19 = [(RequestStoreItem *)self starRating];
-  [v3 ap_setNullableObject:v19 forKey:@"starRating"];
+  starRating = [(RequestStoreItem *)self starRating];
+  [v3 ap_setNullableObject:starRating forKey:@"starRating"];
 
-  v20 = [(RequestStoreItem *)self thumbnailURLString];
-  [v3 ap_setNullableObject:v20 forKey:@"thumbnailURLString"];
+  thumbnailURLString = [(RequestStoreItem *)self thumbnailURLString];
+  [v3 ap_setNullableObject:thumbnailURLString forKey:@"thumbnailURLString"];
 
-  v21 = [(RequestStoreItem *)self itemIdentifier];
-  [v3 ap_setNullableObject:v21 forKey:@"itemIdentifier"];
+  itemIdentifier = [(RequestStoreItem *)self itemIdentifier];
+  [v3 ap_setNullableObject:itemIdentifier forKey:@"itemIdentifier"];
 
-  v22 = [(RequestStoreItem *)self localizations];
-  v23 = [v22 compile];
-  [v3 ap_setNullableObject:v23 forKey:@"localizations"];
+  localizations = [(RequestStoreItem *)self localizations];
+  compile = [localizations compile];
+  [v3 ap_setNullableObject:compile forKey:@"localizations"];
 
-  v24 = [(RequestStoreItem *)self offerName];
-  [v3 ap_setNullableObject:v24 forKey:@"offerName"];
+  offerName = [(RequestStoreItem *)self offerName];
+  [v3 ap_setNullableObject:offerName forKey:@"offerName"];
 
-  v25 = [(RequestStoreItem *)self requestIdentifier];
-  [v3 ap_setNullableObject:v25 forKey:@"requestIdentifier"];
+  requestIdentifier = [(RequestStoreItem *)self requestIdentifier];
+  [v3 ap_setNullableObject:requestIdentifier forKey:@"requestIdentifier"];
 
   v26 = [NSNumber numberWithInteger:[(RequestStoreItem *)self status]];
   [v3 ap_setNullableObject:v26 forKey:@"status"];
 
-  v27 = [(RequestStoreItem *)self uniqueIdentifier];
-  [v3 ap_setNullableObject:v27 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(RequestStoreItem *)self uniqueIdentifier];
+  [v3 ap_setNullableObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v28 = [(RequestStoreItem *)self createdDate];
-  [v28 timeIntervalSinceReferenceDate];
+  createdDate = [(RequestStoreItem *)self createdDate];
+  [createdDate timeIntervalSinceReferenceDate];
   v29 = [NSNumber numberWithDouble:?];
   [v3 ap_setNullableObject:v29 forKey:@"createdTimeInterval"];
 
-  v30 = [(RequestStoreItem *)self modifiedDate];
-  [v30 timeIntervalSinceReferenceDate];
+  modifiedDate = [(RequestStoreItem *)self modifiedDate];
+  [modifiedDate timeIntervalSinceReferenceDate];
   v31 = [NSNumber numberWithDouble:?];
   [v3 ap_setNullableObject:v31 forKey:@"modifiedTimeInterval"];
 
   v32 = [NSNumber numberWithBool:[(RequestStoreItem *)self suppressClientResume]];
   [v3 ap_setNullableObject:v32 forKey:@"suppressClientResume"];
 
-  v33 = [(RequestStoreItem *)self requestString];
-  [v3 ap_setNullableObject:v33 forKey:@"requestString"];
+  requestString = [(RequestStoreItem *)self requestString];
+  [v3 ap_setNullableObject:requestString forKey:@"requestString"];
 
-  v34 = [(RequestStoreItem *)self requestSummary];
-  [v3 ap_setNullableObject:v34 forKey:@"requestSummary"];
+  requestSummary = [(RequestStoreItem *)self requestSummary];
+  [v3 ap_setNullableObject:requestSummary forKey:@"requestSummary"];
 
-  v35 = [(RequestStoreItem *)self priceSummary];
-  [v3 ap_setNullableObject:v35 forKey:@"priceSummary"];
+  priceSummary = [(RequestStoreItem *)self priceSummary];
+  [v3 ap_setNullableObject:priceSummary forKey:@"priceSummary"];
 
   return v3;
 }
 
-- (void)overlayItem:(id)a3
+- (void)overlayItem:(id)item
 {
-  v40 = a3;
+  itemCopy = item;
   if (![(RequestStoreItem *)self isException])
   {
-    -[RequestStoreItem setIsException:](self, "setIsException:", [v40 isException]);
+    -[RequestStoreItem setIsException:](self, "setIsException:", [itemCopy isException]);
   }
 
-  v4 = [(RequestStoreItem *)self ageRating];
-  if (v4)
+  ageRating = [(RequestStoreItem *)self ageRating];
+  if (ageRating)
   {
-    [(RequestStoreItem *)self setAgeRating:v4];
-  }
-
-  else
-  {
-    v5 = [v40 ageRating];
-    [(RequestStoreItem *)self setAgeRating:v5];
-  }
-
-  v6 = [(RequestStoreItem *)self ageRatingValue];
-  if (v6)
-  {
-    [(RequestStoreItem *)self setAgeRatingValue:v6];
+    [(RequestStoreItem *)self setAgeRating:ageRating];
   }
 
   else
   {
-    v7 = [v40 ageRatingValue];
-    [(RequestStoreItem *)self setAgeRatingValue:v7];
+    ageRating2 = [itemCopy ageRating];
+    [(RequestStoreItem *)self setAgeRating:ageRating2];
   }
 
-  v8 = [(RequestStoreItem *)self approverDSID];
-  if (v8)
+  ageRatingValue = [(RequestStoreItem *)self ageRatingValue];
+  if (ageRatingValue)
   {
-    [(RequestStoreItem *)self setApproverDSID:v8];
-  }
-
-  else
-  {
-    v9 = [v40 approverDSID];
-    [(RequestStoreItem *)self setApproverDSID:v9];
-  }
-
-  v10 = [(RequestStoreItem *)self createdDate];
-  if (v10)
-  {
-    [(RequestStoreItem *)self setCreatedDate:v10];
+    [(RequestStoreItem *)self setAgeRatingValue:ageRatingValue];
   }
 
   else
   {
-    v11 = [v40 createdDate];
-    [(RequestStoreItem *)self setCreatedDate:v11];
+    ageRatingValue2 = [itemCopy ageRatingValue];
+    [(RequestStoreItem *)self setAgeRatingValue:ageRatingValue2];
   }
 
-  v12 = [(RequestStoreItem *)self itemBundleID];
-  if (v12)
+  approverDSID = [(RequestStoreItem *)self approverDSID];
+  if (approverDSID)
   {
-    [(RequestStoreItem *)self setItemBundleID:v12];
-  }
-
-  else
-  {
-    v13 = [v40 itemBundleID];
-    [(RequestStoreItem *)self setItemBundleID:v13];
-  }
-
-  v14 = [(RequestStoreItem *)self itemDescription];
-  if (v14)
-  {
-    [(RequestStoreItem *)self setItemDescription:v14];
+    [(RequestStoreItem *)self setApproverDSID:approverDSID];
   }
 
   else
   {
-    v15 = [v40 itemDescription];
-    [(RequestStoreItem *)self setItemDescription:v15];
+    approverDSID2 = [itemCopy approverDSID];
+    [(RequestStoreItem *)self setApproverDSID:approverDSID2];
   }
 
-  v16 = [(RequestStoreItem *)self itemIdentifier];
-  if (v16)
+  createdDate = [(RequestStoreItem *)self createdDate];
+  if (createdDate)
   {
-    [(RequestStoreItem *)self setItemIdentifier:v16];
-  }
-
-  else
-  {
-    v17 = [v40 itemIdentifier];
-    [(RequestStoreItem *)self setItemIdentifier:v17];
-  }
-
-  v18 = [(RequestStoreItem *)self itemTitle];
-  if (v18)
-  {
-    [(RequestStoreItem *)self setItemTitle:v18];
+    [(RequestStoreItem *)self setCreatedDate:createdDate];
   }
 
   else
   {
-    v19 = [v40 itemTitle];
-    [(RequestStoreItem *)self setItemTitle:v19];
+    createdDate2 = [itemCopy createdDate];
+    [(RequestStoreItem *)self setCreatedDate:createdDate2];
   }
 
-  v20 = [(RequestStoreItem *)self localizedPrice];
-  if (v20)
+  itemBundleID = [(RequestStoreItem *)self itemBundleID];
+  if (itemBundleID)
   {
-    [(RequestStoreItem *)self setLocalizedPrice:v20];
-  }
-
-  else
-  {
-    v21 = [v40 localizedPrice];
-    [(RequestStoreItem *)self setLocalizedPrice:v21];
-  }
-
-  v22 = [(RequestStoreItem *)self modifiedDate];
-  if (v22)
-  {
-    [(RequestStoreItem *)self setModifiedDate:v22];
+    [(RequestStoreItem *)self setItemBundleID:itemBundleID];
   }
 
   else
   {
-    v23 = [v40 modifiedDate];
-    [(RequestStoreItem *)self setModifiedDate:v23];
+    itemBundleID2 = [itemCopy itemBundleID];
+    [(RequestStoreItem *)self setItemBundleID:itemBundleID2];
   }
 
-  v24 = [(RequestStoreItem *)self offerName];
-  if (v24)
+  itemDescription = [(RequestStoreItem *)self itemDescription];
+  if (itemDescription)
   {
-    [(RequestStoreItem *)self setOfferName:v24];
-  }
-
-  else
-  {
-    v25 = [v40 offerName];
-    [(RequestStoreItem *)self setOfferName:v25];
-  }
-
-  v26 = [(RequestStoreItem *)self priceSummary];
-  if (v26)
-  {
-    [(RequestStoreItem *)self setPriceSummary:v26];
+    [(RequestStoreItem *)self setItemDescription:itemDescription];
   }
 
   else
   {
-    v27 = [v40 priceSummary];
-    [(RequestStoreItem *)self setPriceSummary:v27];
+    itemDescription2 = [itemCopy itemDescription];
+    [(RequestStoreItem *)self setItemDescription:itemDescription2];
   }
 
-  v28 = [(RequestStoreItem *)self requestIdentifier];
-  if (v28)
+  itemIdentifier = [(RequestStoreItem *)self itemIdentifier];
+  if (itemIdentifier)
   {
-    [(RequestStoreItem *)self setRequestIdentifier:v28];
-  }
-
-  else
-  {
-    v29 = [v40 requestIdentifier];
-    [(RequestStoreItem *)self setRequestIdentifier:v29];
-  }
-
-  v30 = [(RequestStoreItem *)self requestString];
-  if (v30)
-  {
-    [(RequestStoreItem *)self setRequestString:v30];
+    [(RequestStoreItem *)self setItemIdentifier:itemIdentifier];
   }
 
   else
   {
-    v31 = [v40 requestString];
-    [(RequestStoreItem *)self setRequestString:v31];
+    itemIdentifier2 = [itemCopy itemIdentifier];
+    [(RequestStoreItem *)self setItemIdentifier:itemIdentifier2];
   }
 
-  v32 = [(RequestStoreItem *)self requestSummary];
-  if (v32)
+  itemTitle = [(RequestStoreItem *)self itemTitle];
+  if (itemTitle)
   {
-    [(RequestStoreItem *)self setRequestSummary:v32];
-  }
-
-  else
-  {
-    v33 = [v40 requestSummary];
-    [(RequestStoreItem *)self setRequestSummary:v33];
-  }
-
-  v34 = [(RequestStoreItem *)self requesterDSID];
-  if (v34)
-  {
-    [(RequestStoreItem *)self setRequesterDSID:v34];
+    [(RequestStoreItem *)self setItemTitle:itemTitle];
   }
 
   else
   {
-    v35 = [v40 requesterDSID];
-    [(RequestStoreItem *)self setRequesterDSID:v35];
+    itemTitle2 = [itemCopy itemTitle];
+    [(RequestStoreItem *)self setItemTitle:itemTitle2];
   }
 
-  v36 = [(RequestStoreItem *)self starRating];
-  if (v36)
+  localizedPrice = [(RequestStoreItem *)self localizedPrice];
+  if (localizedPrice)
   {
-    [(RequestStoreItem *)self setStarRating:v36];
-  }
-
-  else
-  {
-    v37 = [v40 starRating];
-    [(RequestStoreItem *)self setStarRating:v37];
-  }
-
-  v38 = [(RequestStoreItem *)self thumbnailURLString];
-  if (v38)
-  {
-    [(RequestStoreItem *)self setThumbnailURLString:v38];
+    [(RequestStoreItem *)self setLocalizedPrice:localizedPrice];
   }
 
   else
   {
-    v39 = [v40 thumbnailURLString];
-    [(RequestStoreItem *)self setThumbnailURLString:v39];
+    localizedPrice2 = [itemCopy localizedPrice];
+    [(RequestStoreItem *)self setLocalizedPrice:localizedPrice2];
+  }
+
+  modifiedDate = [(RequestStoreItem *)self modifiedDate];
+  if (modifiedDate)
+  {
+    [(RequestStoreItem *)self setModifiedDate:modifiedDate];
+  }
+
+  else
+  {
+    modifiedDate2 = [itemCopy modifiedDate];
+    [(RequestStoreItem *)self setModifiedDate:modifiedDate2];
+  }
+
+  offerName = [(RequestStoreItem *)self offerName];
+  if (offerName)
+  {
+    [(RequestStoreItem *)self setOfferName:offerName];
+  }
+
+  else
+  {
+    offerName2 = [itemCopy offerName];
+    [(RequestStoreItem *)self setOfferName:offerName2];
+  }
+
+  priceSummary = [(RequestStoreItem *)self priceSummary];
+  if (priceSummary)
+  {
+    [(RequestStoreItem *)self setPriceSummary:priceSummary];
+  }
+
+  else
+  {
+    priceSummary2 = [itemCopy priceSummary];
+    [(RequestStoreItem *)self setPriceSummary:priceSummary2];
+  }
+
+  requestIdentifier = [(RequestStoreItem *)self requestIdentifier];
+  if (requestIdentifier)
+  {
+    [(RequestStoreItem *)self setRequestIdentifier:requestIdentifier];
+  }
+
+  else
+  {
+    requestIdentifier2 = [itemCopy requestIdentifier];
+    [(RequestStoreItem *)self setRequestIdentifier:requestIdentifier2];
+  }
+
+  requestString = [(RequestStoreItem *)self requestString];
+  if (requestString)
+  {
+    [(RequestStoreItem *)self setRequestString:requestString];
+  }
+
+  else
+  {
+    requestString2 = [itemCopy requestString];
+    [(RequestStoreItem *)self setRequestString:requestString2];
+  }
+
+  requestSummary = [(RequestStoreItem *)self requestSummary];
+  if (requestSummary)
+  {
+    [(RequestStoreItem *)self setRequestSummary:requestSummary];
+  }
+
+  else
+  {
+    requestSummary2 = [itemCopy requestSummary];
+    [(RequestStoreItem *)self setRequestSummary:requestSummary2];
+  }
+
+  requesterDSID = [(RequestStoreItem *)self requesterDSID];
+  if (requesterDSID)
+  {
+    [(RequestStoreItem *)self setRequesterDSID:requesterDSID];
+  }
+
+  else
+  {
+    requesterDSID2 = [itemCopy requesterDSID];
+    [(RequestStoreItem *)self setRequesterDSID:requesterDSID2];
+  }
+
+  starRating = [(RequestStoreItem *)self starRating];
+  if (starRating)
+  {
+    [(RequestStoreItem *)self setStarRating:starRating];
+  }
+
+  else
+  {
+    starRating2 = [itemCopy starRating];
+    [(RequestStoreItem *)self setStarRating:starRating2];
+  }
+
+  thumbnailURLString = [(RequestStoreItem *)self thumbnailURLString];
+  if (thumbnailURLString)
+  {
+    [(RequestStoreItem *)self setThumbnailURLString:thumbnailURLString];
+  }
+
+  else
+  {
+    thumbnailURLString2 = [itemCopy thumbnailURLString];
+    [(RequestStoreItem *)self setThumbnailURLString:thumbnailURLString2];
   }
 }
 
 - (id)description
 {
-  v3 = [(RequestStoreItem *)self compile];
-  v4 = [(RequestStoreItem *)self ap_generateDescriptionWithSubObjects:v3];
+  compile = [(RequestStoreItem *)self compile];
+  v4 = [(RequestStoreItem *)self ap_generateDescriptionWithSubObjects:compile];
 
   return v4;
 }

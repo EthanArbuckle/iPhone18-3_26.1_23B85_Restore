@@ -1,20 +1,20 @@
 @interface HDClinicalIngestionFileImportOperation
-- (HDClinicalIngestionFileImportOperation)initWithFileHandle:(id)a3;
+- (HDClinicalIngestionFileImportOperation)initWithFileHandle:(id)handle;
 - (void)main;
 @end
 
 @implementation HDClinicalIngestionFileImportOperation
 
-- (HDClinicalIngestionFileImportOperation)initWithFileHandle:(id)a3
+- (HDClinicalIngestionFileImportOperation)initWithFileHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = HDClinicalIngestionFileImportOperation;
   v5 = [(HDClinicalIngestionFileImportOperation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HDClinicalIngestionFileImportOperation *)v5 setFileHandle:v4];
+    [(HDClinicalIngestionFileImportOperation *)v5 setFileHandle:handleCopy];
   }
 
   return v6;
@@ -22,7 +22,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   fileHandle = self->_fileHandle;
   _HKInitializeLogging();
   v4 = HKLogHealthRecords;
@@ -31,17 +31,17 @@
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(HDClinicalIngestionFileImportOperation *)v2 debugDescription];
+      v6 = [(HDClinicalIngestionFileImportOperation *)selfCopy debugDescription];
       *buf = 138543362;
       v68 = v6;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ file import beginning", buf, 0xCu);
     }
 
-    v7 = [(NSFileHandle *)v2->_fileHandle readDataToEndOfFile];
-    if (v7)
+    readDataToEndOfFile = [(NSFileHandle *)selfCopy->_fileHandle readDataToEndOfFile];
+    if (readDataToEndOfFile)
     {
       v64 = 0;
-      v8 = [NSJSONSerialization hk_JSONObjectFromFHIRData:v7 options:0 error:&v64];
+      v8 = [NSJSONSerialization hk_JSONObjectFromFHIRData:readDataToEndOfFile options:0 error:&v64];
       v9 = v64;
     }
 
@@ -82,8 +82,8 @@
       else
       {
         v48 = v11;
-        v49 = v7;
-        v51 = v2;
+        v49 = readDataToEndOfFile;
+        v51 = selfCopy;
         v15 = [v10 objectForKey:@"resources"];
         objc_opt_class();
         v47 = v15;
@@ -195,9 +195,9 @@
 
         v14 = 0;
         v8 = v46;
-        v2 = v51;
+        selfCopy = v51;
         v11 = v48;
-        v7 = v49;
+        readDataToEndOfFile = v49;
       }
 
       _HKInitializeLogging();
@@ -205,7 +205,7 @@
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v40 = v39;
-        v41 = [(HDClinicalIngestionFileImportOperation *)v2 debugDescription];
+        v41 = [(HDClinicalIngestionFileImportOperation *)selfCopy debugDescription];
         v42 = [v12 count];
         *buf = 138543618;
         v68 = v41;
@@ -237,24 +237,24 @@
         v43 = 0;
       }
 
-      [(HDClinicalIngestionFileImportOperation *)v2 setDocumentData:v43];
-      v45 = [(HDClinicalIngestionFileImportOperation *)v2 documentData];
+      [(HDClinicalIngestionFileImportOperation *)selfCopy setDocumentData:v43];
+      documentData = [(HDClinicalIngestionFileImportOperation *)selfCopy documentData];
 
-      if (!v45)
+      if (!documentData)
       {
-        [(HDClinicalIngestionFileImportOperation *)v2 setOperationError:v11];
+        [(HDClinicalIngestionFileImportOperation *)selfCopy setOperationError:v11];
       }
     }
 
     else
     {
-      [(HDClinicalIngestionFileImportOperation *)v2 setOperationError:v11];
+      [(HDClinicalIngestionFileImportOperation *)selfCopy setOperationError:v11];
     }
   }
 
   else if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_A5FA8(v4, v2);
+    sub_A5FA8(v4, selfCopy);
   }
 }
 

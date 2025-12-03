@@ -2,16 +2,16 @@
 + (id)supportedSettings;
 - (double)_fullDuration;
 - (double)remainingPlayDuration;
-- (float)_croppedFractionforRectAspectRatio:(float)a3 photoAspectRatio:(float)a4;
-- (void)_applyGeometryForStart:(BOOL)a3;
+- (float)_croppedFractionforRectAspectRatio:(float)ratio photoAspectRatio:(float)aspectRatio;
+- (void)_applyGeometryForStart:(BOOL)start;
 - (void)_setupAnimation;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)applySettings;
 - (void)dealloc;
 - (void)pauseAnimation;
-- (void)prepareContentEffectWithView:(id)a3;
+- (void)prepareContentEffectWithView:(id)view;
 - (void)resumeAnimation;
-- (void)setDefaultDuration:(double)a3;
+- (void)setDefaultDuration:(double)duration;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -167,16 +167,16 @@
       v27 = [(NSDictionary *)self->super._settings objectForKey:@"seed"];
       if (v27)
       {
-        v28 = [v27 integerValue];
+        integerValue = [v27 integerValue];
       }
 
       else
       {
         v29 = arc4random();
-        v28 = arc4random() | (v29 << 32);
+        integerValue = arc4random() | (v29 << 32);
       }
 
-      [(OKPanGenerator *)self->_panGenerator setRandomizer:v28];
+      [(OKPanGenerator *)self->_panGenerator setRandomizer:integerValue];
     }
   }
 
@@ -290,7 +290,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
 + (id)supportedSettings
 {
   v33[13] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKWidgetContentKenburnsEffect;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v32[0] = @"beginTime";
@@ -374,7 +374,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   return v2;
 }
 
-- (void)prepareContentEffectWithView:(id)a3
+- (void)prepareContentEffectWithView:(id)view
 {
   [(OKWidgetContentEffect *)self setAnimatedView:?];
   [(OKWidgetContentKenburnsEffect *)self applySettings];
@@ -382,10 +382,10 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   self->_animationIsUnderway = 0;
   self->_animationResumeTime = 0.0;
   self->_animationProgressAtStateChange = 0.0;
-  v5 = [a3 layer];
+  layer = [view layer];
   uuid = self->super._uuid;
 
-  [v5 removeAnimationForKey:uuid];
+  [layer removeAnimationForKey:uuid];
 }
 
 - (void)startAnimation
@@ -402,10 +402,10 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   v21.receiver = self;
   v21.super_class = OKWidgetContentKenburnsEffect;
   [(OKWidgetContentEffect *)&v21 pauseAnimation];
-  v3 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+  layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
   if (self->_animationIsUnderway)
   {
-    v4 = v3;
+    v4 = layer;
     [(CAAnimation *)[(OKWidgetContentEffect *)self animation] duration];
     v6 = v5;
     [v4 convertTime:0 fromLayer:CACurrentMediaTime()];
@@ -419,10 +419,10 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
 
     self->_animationProgressAtStateChange = v10;
     self->_animationResumeTime = 0.0;
-    v11 = [v4 presentationLayer];
-    if (v11)
+    presentationLayer = [v4 presentationLayer];
+    if (presentationLayer)
     {
-      [v11 transform];
+      [presentationLayer transform];
     }
 
     else
@@ -458,7 +458,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   [(OKWidgetContentEffect *)&v43 resumeAnimation];
   if (([objc_msgSend(-[OFUIView layer](-[OKWidgetContentEffect animatedView](self "animatedView")] & 1) == 0)
   {
-    v3 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+    layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
     if (self->_animationIsUnderway)
     {
       [(OKWidgetContentKenburnsEffect *)self remainingPlayDuration];
@@ -466,9 +466,9 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
       if (self->_translationXAnimation)
       {
         v6 = MEMORY[0x277CCABB0];
-        if (v3)
+        if (layer)
         {
-          [v3 transform];
+          [layer transform];
           v7 = *&v41;
         }
 
@@ -492,9 +492,9 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
       if (self->_translationYAnimation)
       {
         v8 = MEMORY[0x277CCABB0];
-        if (v3)
+        if (layer)
         {
-          [v3 transform];
+          [layer transform];
           v9 = *(&v33 + 1);
         }
 
@@ -518,9 +518,9 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
       if (self->_scaleAnimation)
       {
         v10 = MEMORY[0x277CCABB0];
-        if (v3)
+        if (layer)
         {
-          [v3 transform];
+          [layer transform];
           v11 = *&v19;
         }
 
@@ -562,12 +562,12 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
     v15 = *(MEMORY[0x277CD9DE8] + 48);
     v18[2] = *(MEMORY[0x277CD9DE8] + 32);
     v18[3] = v15;
-    [v3 setTransform:v18];
-    v16 = [(OKWidgetContentEffect *)self animation];
-    if (v16)
+    [layer setTransform:v18];
+    animation = [(OKWidgetContentEffect *)self animation];
+    if (animation)
     {
-      [v3 addAnimation:v16 forKey:self->super._uuid];
-      [v3 convertTime:0 fromLayer:CACurrentMediaTime()];
+      [layer addAnimation:animation forKey:self->super._uuid];
+      [layer convertTime:0 fromLayer:CACurrentMediaTime()];
       self->_animationResumeTime = v17;
       self->_animationIsUnderway = 1;
     }
@@ -617,20 +617,20 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   [v7 addObject:self->_translationYAnimation];
   if ([v7 count])
   {
-    v6 = [MEMORY[0x277CD9E00] animation];
-    [v6 setAnimations:v7];
-    [v6 setDuration:v4 + self->_beginTime];
-    [v6 setRemovedOnCompletion:0];
-    [v6 setFillMode:v5];
-    [v6 setDelegate:self];
-    [(OKWidgetContentEffect *)self setAnimation:v6];
+    animation = [MEMORY[0x277CD9E00] animation];
+    [animation setAnimations:v7];
+    [animation setDuration:v4 + self->_beginTime];
+    [animation setRemovedOnCompletion:0];
+    [animation setFillMode:v5];
+    [animation setDelegate:self];
+    [(OKWidgetContentEffect *)self setAnimation:animation];
   }
 }
 
-- (void)_applyGeometryForStart:(BOOL)a3
+- (void)_applyGeometryForStart:(BOOL)start
 {
   v4 = &OBJC_IVAR___OKWidgetContentKenburnsEffect__toScale;
-  if (a3)
+  if (start)
   {
     v4 = &OBJC_IVAR___OKWidgetContentKenburnsEffect__fromScale;
     v5 = &OBJC_IVAR___OKWidgetContentKenburnsEffect__fromX;
@@ -641,7 +641,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
     v5 = &OBJC_IVAR___OKWidgetContentKenburnsEffect__toX;
   }
 
-  if (a3)
+  if (start)
   {
     v6 = &OBJC_IVAR___OKWidgetContentKenburnsEffect__fromY;
   }
@@ -661,7 +661,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   v11 = *&v10.m43;
   v7 = *(&self->super.super.isa + *v5);
   v8 = *(&self->super.super.isa + *v6);
-  v9 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+  layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
   *&v10.m21 = v14;
   *&v10.m23 = v15;
   *&v10.m31 = v16;
@@ -671,25 +671,25 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   v10.m41 = v7;
   v10.m42 = v8;
   *&v10.m43 = v11;
-  [v9 setTransform:&v10];
+  [layer setTransform:&v10];
 }
 
-- (float)_croppedFractionforRectAspectRatio:(float)a3 photoAspectRatio:(float)a4
+- (float)_croppedFractionforRectAspectRatio:(float)ratio photoAspectRatio:(float)aspectRatio
 {
-  if (a4 >= a3)
+  if (aspectRatio >= ratio)
   {
-    return (a4 - a3) / a4;
+    return (aspectRatio - ratio) / aspectRatio;
   }
 
   else
   {
-    return (1.0 / a4 - 1.0 / a3) / (1.0 / a4);
+    return (1.0 / aspectRatio - 1.0 / ratio) / (1.0 / aspectRatio);
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     self->_animationProgressAtStateChange = 1.0;
     [(OKWidgetContentKenburnsEffect *)self _applyGeometryForStart:0];
@@ -699,14 +699,14 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
 
   else if ([(OKWidgetContentEffect *)self loop])
   {
-    v5 = [(OKWidgetContentEffect *)self animation];
-    if (v5)
+    animation = [(OKWidgetContentEffect *)self animation];
+    if (animation)
     {
-      v6 = v5;
-      v7 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+      v6 = animation;
+      layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
       uuid = self->super._uuid;
 
-      [v7 addAnimation:v6 forKey:uuid];
+      [layer addAnimation:v6 forKey:uuid];
     }
   }
 }
@@ -719,10 +719,10 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
   self->_animationIsUnderway = 0;
 }
 
-- (void)setDefaultDuration:(double)a3
+- (void)setDefaultDuration:(double)duration
 {
   [(OKWidgetContentEffect *)self defaultDuration];
-  if (v5 != a3)
+  if (v5 != duration)
   {
     if (self->_animationIsUnderway)
     {
@@ -731,7 +731,7 @@ double __46__OKWidgetContentKenburnsEffect_applySettings__block_invoke(uint64_t 
 
     v6.receiver = self;
     v6.super_class = OKWidgetContentKenburnsEffect;
-    [(OKWidgetContentEffect *)&v6 setDefaultDuration:a3];
+    [(OKWidgetContentEffect *)&v6 setDefaultDuration:duration];
     if (self->_animationIsUnderway)
     {
       [(OKWidgetContentKenburnsEffect *)self resumeAnimation];

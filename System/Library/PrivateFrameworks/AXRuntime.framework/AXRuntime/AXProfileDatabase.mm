@@ -67,19 +67,19 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
         }
 
         v4 = *(*(&v22 + 1) + 8 * i);
-        v5 = [v4 appName];
-        v6 = [v4 attribute];
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v6];
+        appName = [v4 appName];
+        attribute = [v4 attribute];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", attribute];
         v21 = [v4 pid];
         [v4 uid];
         v9 = v8;
         v10 = [v4 uid];
-        v11 = [v4 type];
-        v12 = [v4 attribute];
-        v13 = [v4 valueSize];
-        v14 = [v4 valueHash];
+        type = [v4 type];
+        attribute2 = [v4 attribute];
+        valueSize = [v4 valueSize];
+        valueHash = [v4 valueHash];
         [v4 duration];
-        [v19 appendFormat:@"%@, %@, %d, %llu.%llu, %lu, %ld, %lu, %lu, %f\n", v5, v7, v21, v9, v10, v11, v12, v13, v14, v15];
+        [v19 appendFormat:@"%@, %@, %d, %llu.%llu, %lu, %ld, %lu, %lu, %f\n", appName, v7, v21, v9, v10, type, attribute2, valueSize, valueHash, v15];
       }
 
       v20 = [(NSMutableArray *)obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -155,8 +155,8 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v19 = [v18 reverseObjectEnumerator];
-  v20 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+  reverseObjectEnumerator = [v18 reverseObjectEnumerator];
+  v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v20)
   {
     v21 = v20;
@@ -167,7 +167,7 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
       {
         if (*v43 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v24 = *(*(&v42 + 1) + 8 * j);
@@ -175,7 +175,7 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
         [v37 appendFormat:@"%@ = %@\n", v24, v25];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v42 objects:v51 count:16];
     }
 
     while (v21);
@@ -186,8 +186,8 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v26 = [v36 reverseObjectEnumerator];
-  v27 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  reverseObjectEnumerator2 = [v36 reverseObjectEnumerator];
+  v27 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v27)
   {
     v28 = v27;
@@ -198,7 +198,7 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
       {
         if (*v39 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(reverseObjectEnumerator2);
         }
 
         v31 = *(*(&v38 + 1) + 8 * k);
@@ -206,7 +206,7 @@ uint64_t __35__AXProfileDatabase_sharedDatabase__block_invoke()
         [v37 appendFormat:@"%@ = %@\n", v31, v32];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v28 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v28);

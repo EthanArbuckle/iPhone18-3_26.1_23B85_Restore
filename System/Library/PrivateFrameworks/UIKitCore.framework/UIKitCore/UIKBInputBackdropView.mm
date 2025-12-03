@@ -1,46 +1,46 @@
 @interface UIKBInputBackdropView
-- (CGSize)sizeForVisualState:(int64_t)a3;
-- (UIKBInputBackdropView)initWithFrame:(CGRect)a3;
-- (double)preferredCornerRadiusForState:(int64_t)a3;
-- (void)_beginSplitTransitionIfNeeded:(double)a3 gapWidth:(double)a4;
-- (void)_endSplitTransitionIfNeeded:(BOOL)a3;
-- (void)_prepareWithLeftOffset:(double)a3 gapWidth:(double)a4;
-- (void)_setRenderConfig:(id)a3;
-- (void)_updateForEmptyBackdrop:(BOOL)a3;
-- (void)_updateForLeftOffset:(double)a3 rightOffset:(double)a4;
-- (void)animatingTransitionFromState:(int64_t)a3 toState:(int64_t)a4 animationType:(int64_t)a5 totalDuration:(double)a6;
+- (CGSize)sizeForVisualState:(int64_t)state;
+- (UIKBInputBackdropView)initWithFrame:(CGRect)frame;
+- (double)preferredCornerRadiusForState:(int64_t)state;
+- (void)_beginSplitTransitionIfNeeded:(double)needed gapWidth:(double)width;
+- (void)_endSplitTransitionIfNeeded:(BOOL)needed;
+- (void)_prepareWithLeftOffset:(double)offset gapWidth:(double)width;
+- (void)_setRenderConfig:(id)config;
+- (void)_updateForEmptyBackdrop:(BOOL)backdrop;
+- (void)_updateForLeftOffset:(double)offset rightOffset:(double)rightOffset;
+- (void)animatingTransitionFromState:(int64_t)state toState:(int64_t)toState animationType:(int64_t)type totalDuration:(double)duration;
 - (void)createSplitBackdropIfNeeded;
 - (void)dealloc;
-- (void)finishedTransitionToState:(int64_t)a3 animationType:(int64_t)a4 interactiveTransition:(BOOL)a5;
-- (void)layoutInputBackdropToFullWithRect:(CGRect)a3;
-- (void)layoutInputBackdropToSplitWithHeight:(double)a3 innerCorners:(unint64_t)a4;
-- (void)layoutInputBackdropToSplitWithLeftViewRect:(CGRect)a3 andRightViewRect:(CGRect)a4 innerCorners:(unint64_t)a5;
-- (void)maskCornersIfNeededForStyle:(int64_t)a3;
-- (void)setGestureProgressForSplit:(double)a3;
-- (void)setIsAssistantBackground:(BOOL)a3;
-- (void)setProgress:(double)a3 withFrame:(CGRect)a4 innerCorners:(unint64_t)a5;
-- (void)transitionToStyle:(int64_t)a3;
-- (void)transitionToStyle:(int64_t)a3 isSplit:(BOOL)a4;
-- (void)transitioningToState:(int64_t)a3 animationType:(int64_t)a4 completionPercentage:(double)a5;
-- (void)updateCornersWithRadius:(double)a3 forVisualState:(int64_t)a4;
-- (void)updateCornersWithRadius:(double)a3 usingCornerRadii:(BOOL)a4;
+- (void)finishedTransitionToState:(int64_t)state animationType:(int64_t)type interactiveTransition:(BOOL)transition;
+- (void)layoutInputBackdropToFullWithRect:(CGRect)rect;
+- (void)layoutInputBackdropToSplitWithHeight:(double)height innerCorners:(unint64_t)corners;
+- (void)layoutInputBackdropToSplitWithLeftViewRect:(CGRect)rect andRightViewRect:(CGRect)viewRect innerCorners:(unint64_t)corners;
+- (void)maskCornersIfNeededForStyle:(int64_t)style;
+- (void)setGestureProgressForSplit:(double)split;
+- (void)setIsAssistantBackground:(BOOL)background;
+- (void)setProgress:(double)progress withFrame:(CGRect)frame innerCorners:(unint64_t)corners;
+- (void)transitionToStyle:(int64_t)style;
+- (void)transitionToStyle:(int64_t)style isSplit:(BOOL)split;
+- (void)transitioningToState:(int64_t)state animationType:(int64_t)type completionPercentage:(double)percentage;
+- (void)updateCornersWithRadius:(double)radius forVisualState:(int64_t)state;
+- (void)updateCornersWithRadius:(double)radius usingCornerRadii:(BOOL)radii;
 @end
 
 @implementation UIKBInputBackdropView
 
-- (UIKBInputBackdropView)initWithFrame:(CGRect)a3
+- (UIKBInputBackdropView)initWithFrame:(CGRect)frame
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = UIKBInputBackdropView;
-  v3 = [(UIView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v22.receiver = v3;
     v22.super_class = UIKBInputBackdropView;
-    v5 = [(UIView *)&v22 _inheritedRenderConfig];
-    v4->_style = [v5 backdropStyle];
+    _inheritedRenderConfig = [(UIView *)&v22 _inheritedRenderConfig];
+    v4->_style = [_inheritedRenderConfig backdropStyle];
 
     v6 = [UIKBBackdropView alloc];
     [(UIView *)v4 bounds];
@@ -120,58 +120,58 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setIsAssistantBackground:(BOOL)a3
+- (void)setIsAssistantBackground:(BOOL)background
 {
-  v3 = a3;
-  self->_isAssistantBackground = a3;
-  v4 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  [v4 setIsAssistantBackground:v3];
+  backgroundCopy = background;
+  self->_isAssistantBackground = background;
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  [inputBackdropFullView setIsAssistantBackground:backgroundCopy];
 }
 
-- (void)_updateForEmptyBackdrop:(BOOL)a3
+- (void)_updateForEmptyBackdrop:(BOOL)backdrop
 {
-  if (a3)
+  if (backdrop)
   {
     self->_style = 3903;
-    v4 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v4 transitionToStyle:self->_style];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView transitionToStyle:self->_style];
 
-    v5 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    inputBackdropFullView2 = [(UIKBInputBackdropView *)self inputBackdropFullView];
     v6 = MEMORY[0x1E695E0F0];
-    [v5 setBackgroundEffects:MEMORY[0x1E695E0F0]];
+    [inputBackdropFullView2 setBackgroundEffects:MEMORY[0x1E695E0F0]];
 
-    v7 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v7 setContentEffects:v6];
+    inputBackdropFullView3 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView3 setContentEffects:v6];
 
-    v10 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v10 setBackgroundColor:0];
+    inputBackdropFullView4 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView4 setBackgroundColor:0];
   }
 
   else
   {
-    v10 = +[UIColor systemBackgroundColor];
-    v8 = [v10 colorWithAlphaComponent:0.1];
-    v9 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v9 setBackgroundColor:v8];
+    inputBackdropFullView4 = +[UIColor systemBackgroundColor];
+    v8 = [inputBackdropFullView4 colorWithAlphaComponent:0.1];
+    inputBackdropFullView5 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView5 setBackgroundColor:v8];
   }
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v11 = a3;
-  if ([v11 animatedBackground] && !-[UIKBInputBackdropView supportsLightEffects](self, "supportsLightEffects") || objc_msgSend(v11, "emptyBackground"))
+  configCopy = config;
+  if ([configCopy animatedBackground] && !-[UIKBInputBackdropView supportsLightEffects](self, "supportsLightEffects") || objc_msgSend(configCopy, "emptyBackground"))
   {
     [(UIKBInputBackdropView *)self _updateForEmptyBackdrop:1];
   }
 
   else
   {
-    v4 = [v11 backdropStyle];
-    if (v4 == 3908)
+    backdropStyle = [configCopy backdropStyle];
+    if (backdropStyle == 3908)
     {
       v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v6 = [v5 preferencesActions];
-      if ([v6 colorAdaptiveKeyboardBackdropEnabled] && !_AXSEnhanceBackgroundContrastEnabled())
+      preferencesActions = [v5 preferencesActions];
+      if ([preferencesActions colorAdaptiveKeyboardBackdropEnabled] && !_AXSEnhanceBackgroundContrastEnabled())
       {
         v10 = _AXDarkenSystemColors();
 
@@ -190,31 +190,31 @@
 
     else
     {
-      v7 = v4;
-      v8 = [(UIKBInputBackdropView *)self backdropStyle];
-      if (v7 != 3904 && v8 != v7)
+      v7 = backdropStyle;
+      backdropStyle2 = [(UIKBInputBackdropView *)self backdropStyle];
+      if (v7 != 3904 && backdropStyle2 != v7)
       {
         [(UIKBInputBackdropView *)self _updateForEmptyBackdrop:0];
       }
     }
 
-    self->_style = [v11 backdropStyle];
-    v9 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v9 _setRenderConfig:v11];
+    self->_style = [configCopy backdropStyle];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView _setRenderConfig:configCopy];
   }
 }
 
-- (void)transitionToStyle:(int64_t)a3
+- (void)transitionToStyle:(int64_t)style
 {
-  self->_style = a3;
-  v4 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  [v4 transitionToStyle:self->_style];
+  self->_style = style;
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  [inputBackdropFullView transitionToStyle:self->_style];
 }
 
-- (void)transitionToStyle:(int64_t)a3 isSplit:(BOOL)a4
+- (void)transitionToStyle:(int64_t)style isSplit:(BOOL)split
 {
-  v4 = a4;
-  if (a3 == 3904)
+  splitCopy = split;
+  if (style == 3904)
   {
     if ([(UIKBInputBackdropView *)self supportsLightEffects])
     {
@@ -224,18 +224,18 @@
     goto LABEL_5;
   }
 
-  if (a3 == 3903)
+  if (style == 3903)
   {
 LABEL_5:
     [(UIKBInputBackdropView *)self _updateForEmptyBackdrop:1];
 LABEL_6:
-    if (a3 == 3904 && v4)
+    if (style == 3904 && splitCopy)
     {
-      v7 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-      [v7 transitionToStyle:3904];
+      inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+      [inputBackdropLeftView transitionToStyle:3904];
 
-      v8 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-      [v8 transitionToStyle:3904];
+      inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+      [inputBackdropRightView transitionToStyle:3904];
 LABEL_14:
 
       goto LABEL_15;
@@ -244,290 +244,290 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (self->_style != a3)
+  if (self->_style != style)
   {
     [(UIKBInputBackdropView *)self _updateForEmptyBackdrop:0];
   }
 
-  if (a3 == 3908 && v4)
+  if (style == 3908 && splitCopy)
   {
-    v9 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    [v9 transitionToStyle:3908 isSplit:1];
+    inputBackdropLeftView2 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    [inputBackdropLeftView2 transitionToStyle:3908 isSplit:1];
 
-    v8 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    [v8 transitionToStyle:3908 isSplit:1];
+    inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    [inputBackdropRightView transitionToStyle:3908 isSplit:1];
     goto LABEL_14;
   }
 
 LABEL_15:
-  self->_style = a3;
+  self->_style = style;
   [(UIKBInputBackdropView *)self maskCornersIfNeededForStyle:[(UIKBInputBackdropView *)self backdropStyle]];
   style = self->_style;
-  v13 = [(UIView *)self _inheritedRenderConfig];
-  v11 = _UIKBEffectsForStyle(style, v13);
-  v12 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  [v12 setBackgroundEffects:v11];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  v11 = _UIKBEffectsForStyle(style, _inheritedRenderConfig);
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  [inputBackdropFullView setBackgroundEffects:v11];
 }
 
-- (void)maskCornersIfNeededForStyle:(int64_t)a3
+- (void)maskCornersIfNeededForStyle:(int64_t)style
 {
-  if (a3 == 3908)
+  if (style == 3908)
   {
     [(UIKBInputBackdropView *)self preferredCornerRadiusForState:[(UIKBInputBackdropView *)self keyboardVisualState]];
     v6 = v5;
     v7 = ![(UIKBInputBackdropView *)self isAssistantBackground]&& [(UIKBInputBackdropView *)self keyboardVisualState]!= 3 && ([(UIKBInputBackdropView *)self keyboardVisualState]|| !+[UIKeyboardImpl isFloating]);
-    v8 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v8 _updateCornerRadiiIfNecessaryWithTopRadius:v7 useDeviceCorners:v6];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView _updateCornerRadiiIfNecessaryWithTopRadius:v7 useDeviceCorners:v6];
   }
 }
 
 - (void)createSplitBackdropIfNeeded
 {
   v59[5] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  v4 = [v3 superview];
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  superview = [inputBackdropFullView superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v5 removeFromSuperview];
+    inputBackdropFullView2 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView2 removeFromSuperview];
   }
 
-  v6 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  [inputBackdropLeftView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+  [inputBackdropRightView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   captureView = self->_captureView;
-  v9 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  v10 = [v9 superview];
+  inputBackdropLeftView2 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  superview2 = [inputBackdropLeftView2 superview];
 
-  if (!v10)
+  if (!superview2)
   {
-    v11 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    [(UIView *)self insertSubview:v11 atIndex:captureView != 0];
+    inputBackdropLeftView3 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    [(UIView *)self insertSubview:inputBackdropLeftView3 atIndex:captureView != 0];
   }
 
-  v12 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-  v13 = [v12 superview];
+  inputBackdropRightView2 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+  superview3 = [inputBackdropRightView2 superview];
 
-  if (!v13)
+  if (!superview3)
   {
-    v14 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    [(UIView *)self insertSubview:v14 atIndex:captureView != 0];
+    inputBackdropRightView3 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    [(UIView *)self insertSubview:inputBackdropRightView3 atIndex:captureView != 0];
   }
 
   [(UIKBInputBackdropView *)self transitionToStyle:self->_style isSplit:1];
-  v15 = [(UIKBInputBackdropView *)self splitConstraints];
+  splitConstraints = [(UIKBInputBackdropView *)self splitConstraints];
 
-  if (!v15)
+  if (!splitConstraints)
   {
-    v58 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v57 = [v58 leftAnchor];
-    v56 = [(UIView *)self leftAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    inputBackdropLeftView4 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    leftAnchor = [inputBackdropLeftView4 leftAnchor];
+    leftAnchor2 = [(UIView *)self leftAnchor];
+    v55 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v59[0] = v55;
-    v53 = [(UIView *)self rightAnchor];
-    v54 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v52 = [v54 rightAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    rightAnchor = [(UIView *)self rightAnchor];
+    inputBackdropRightView4 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    rightAnchor2 = [inputBackdropRightView4 rightAnchor];
+    v51 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v59[1] = v51;
-    v50 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v49 = [v50 topAnchor];
-    v48 = [(UIView *)self topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    inputBackdropLeftView5 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    topAnchor = [inputBackdropLeftView5 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[2] = v47;
-    v46 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v45 = [v46 topAnchor];
-    v16 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v17 = [v16 topAnchor];
-    v18 = [v45 constraintEqualToAnchor:v17];
+    inputBackdropRightView5 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    topAnchor3 = [inputBackdropRightView5 topAnchor];
+    inputBackdropLeftView6 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    topAnchor4 = [inputBackdropLeftView6 topAnchor];
+    v18 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v59[3] = v18;
-    v19 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v20 = [v19 bottomAnchor];
-    v21 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    inputBackdropRightView6 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    bottomAnchor = [inputBackdropRightView6 bottomAnchor];
+    inputBackdropLeftView7 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    bottomAnchor2 = [inputBackdropLeftView7 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[4] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:5];
     [(UIKBInputBackdropView *)self setSplitConstraints:v24];
   }
 
-  v25 = [(UIKBInputBackdropView *)self splitConstraints];
-  v26 = [v25 firstObject];
-  v27 = [v26 isActive];
+  splitConstraints2 = [(UIKBInputBackdropView *)self splitConstraints];
+  firstObject = [splitConstraints2 firstObject];
+  isActive = [firstObject isActive];
 
-  if ((v27 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v28 = MEMORY[0x1E69977A0];
-    v29 = [(UIKBInputBackdropView *)self splitConstraints];
-    [v28 activateConstraints:v29];
+    splitConstraints3 = [(UIKBInputBackdropView *)self splitConstraints];
+    [v28 activateConstraints:splitConstraints3];
   }
 
-  v30 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+  leftWidthConstraint = [(UIKBInputBackdropView *)self leftWidthConstraint];
 
-  if (!v30)
+  if (!leftWidthConstraint)
   {
-    v31 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v32 = [v31 widthAnchor];
+    inputBackdropLeftView8 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    widthAnchor = [inputBackdropLeftView8 widthAnchor];
     [(UIView *)self bounds];
-    v34 = [v32 constraintEqualToConstant:v33 * 0.6];
+    v34 = [widthAnchor constraintEqualToConstant:v33 * 0.6];
     [(UIKBInputBackdropView *)self setLeftWidthConstraint:v34];
   }
 
-  v35 = [(UIKBInputBackdropView *)self rightWidthConstraint];
+  rightWidthConstraint = [(UIKBInputBackdropView *)self rightWidthConstraint];
 
-  if (!v35)
+  if (!rightWidthConstraint)
   {
-    v36 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v37 = [v36 widthAnchor];
+    inputBackdropRightView7 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    widthAnchor2 = [inputBackdropRightView7 widthAnchor];
     [(UIView *)self bounds];
-    v39 = [v37 constraintEqualToConstant:v38 * 0.6];
+    v39 = [widthAnchor2 constraintEqualToConstant:v38 * 0.6];
     [(UIKBInputBackdropView *)self setRightWidthConstraint:v39];
   }
 
-  v40 = [(UIKBInputBackdropView *)self heightConstraint];
+  heightConstraint = [(UIKBInputBackdropView *)self heightConstraint];
 
-  if (!v40)
+  if (!heightConstraint)
   {
-    v41 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-    v42 = [v41 heightAnchor];
-    v43 = [v42 constraintEqualToConstant:self->_tallHeight];
+    inputBackdropLeftView9 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+    heightAnchor = [inputBackdropLeftView9 heightAnchor];
+    v43 = [heightAnchor constraintEqualToConstant:self->_tallHeight];
     [(UIKBInputBackdropView *)self setHeightConstraint:v43];
 
-    v44 = [(UIKBInputBackdropView *)self heightConstraint];
-    [v44 setActive:1];
+    heightConstraint2 = [(UIKBInputBackdropView *)self heightConstraint];
+    [heightConstraint2 setActive:1];
   }
 }
 
-- (void)layoutInputBackdropToSplitWithLeftViewRect:(CGRect)a3 andRightViewRect:(CGRect)a4 innerCorners:(unint64_t)a5
+- (void)layoutInputBackdropToSplitWithLeftViewRect:(CGRect)rect andRightViewRect:(CGRect)viewRect innerCorners:(unint64_t)corners
 {
-  width = a4.size.width;
-  height = a3.size.height;
-  v8 = a3.size.width;
-  [(UIKBInputBackdropView *)self createSplitBackdropIfNeeded:a3.origin.x];
-  v10 = [(UIKBInputBackdropView *)self heightConstraint];
-  [v10 setConstant:height];
+  width = viewRect.size.width;
+  height = rect.size.height;
+  v8 = rect.size.width;
+  [(UIKBInputBackdropView *)self createSplitBackdropIfNeeded:rect.origin.x];
+  heightConstraint = [(UIKBInputBackdropView *)self heightConstraint];
+  [heightConstraint setConstant:height];
 
   [(UIKBInputBackdropView *)self _updateForLeftOffset:v8 rightOffset:width];
-  v11 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-  v12 = [v11 isActive];
+  leftWidthConstraint = [(UIKBInputBackdropView *)self leftWidthConstraint];
+  isActive = [leftWidthConstraint isActive];
 
-  if ((v12 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v13 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-    [v13 setActive:1];
+    leftWidthConstraint2 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+    [leftWidthConstraint2 setActive:1];
   }
 
-  v14 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-  [v14 setConstant:v8];
+  leftWidthConstraint3 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+  [leftWidthConstraint3 setConstant:v8];
 
-  v15 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-  v16 = [v15 isActive];
+  rightWidthConstraint = [(UIKBInputBackdropView *)self rightWidthConstraint];
+  isActive2 = [rightWidthConstraint isActive];
 
-  if ((v16 & 1) == 0)
+  if ((isActive2 & 1) == 0)
   {
-    v17 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-    [v17 setActive:1];
+    rightWidthConstraint2 = [(UIKBInputBackdropView *)self rightWidthConstraint];
+    [rightWidthConstraint2 setActive:1];
   }
 
-  v18 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-  [v18 setConstant:width];
+  rightWidthConstraint3 = [(UIKBInputBackdropView *)self rightWidthConstraint];
+  [rightWidthConstraint3 setConstant:width];
 
-  self->_innerCorners = a5;
-  v19 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  [v19 updateCorners:a5 & 0xA];
+  self->_innerCorners = corners;
+  inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  [inputBackdropLeftView updateCorners:corners & 0xA];
 
-  v20 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-  [v20 updateCorners:a5 & 5];
+  inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+  [inputBackdropRightView updateCorners:corners & 5];
 }
 
-- (void)layoutInputBackdropToSplitWithHeight:(double)a3 innerCorners:(unint64_t)a4
+- (void)layoutInputBackdropToSplitWithHeight:(double)height innerCorners:(unint64_t)corners
 {
   [(UIKBInputBackdropView *)self createSplitBackdropIfNeeded];
-  v7 = [(UIKBInputBackdropView *)self heightConstraint];
-  [v7 setConstant:a3];
+  heightConstraint = [(UIKBInputBackdropView *)self heightConstraint];
+  [heightConstraint setConstant:height];
 
-  self->_innerCorners = a4;
-  v8 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  [v8 updateCorners:a4 & 0xA];
+  self->_innerCorners = corners;
+  inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  [inputBackdropLeftView updateCorners:corners & 0xA];
 
-  v9 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-  [v9 updateCorners:a4 & 5];
+  inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+  [inputBackdropRightView updateCorners:corners & 5];
 }
 
-- (void)layoutInputBackdropToFullWithRect:(CGRect)a3
+- (void)layoutInputBackdropToFullWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v50[4] = *MEMORY[0x1E69E9840];
-  v8 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  v9 = [v8 superview];
-  if (v9)
+  inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  superview = [inputBackdropLeftView superview];
+  if (superview)
   {
   }
 
   else
   {
-    v10 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v11 = [v10 superview];
+    inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    superview2 = [inputBackdropRightView superview];
 
-    if (!v11)
+    if (!superview2)
     {
       goto LABEL_5;
     }
   }
 
-  v12 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-  [v12 removeFromSuperview];
+  inputBackdropLeftView2 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+  [inputBackdropLeftView2 removeFromSuperview];
 
-  v13 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-  [v13 removeFromSuperview];
+  inputBackdropRightView2 = [(UIKBInputBackdropView *)self inputBackdropRightView];
+  [inputBackdropRightView2 removeFromSuperview];
 
 LABEL_5:
-  v14 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  [(UIView *)self insertSubview:v14 atIndex:self->_captureView != 0];
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  [(UIView *)self insertSubview:inputBackdropFullView atIndex:self->_captureView != 0];
 
-  v15 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+  fullWidthConstraints = [(UIKBInputBackdropView *)self fullWidthConstraints];
 
-  if (!v15)
+  if (!fullWidthConstraints)
   {
-    v49 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    v48 = [v49 leftAnchor];
-    v47 = [(UIView *)self leftAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:0.0];
+    inputBackdropFullView2 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    leftAnchor = [inputBackdropFullView2 leftAnchor];
+    leftAnchor2 = [(UIView *)self leftAnchor];
+    v46 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
     v50[0] = v46;
-    v45 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    v44 = [v45 topAnchor];
-    v43 = [(UIView *)self topAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:0.0];
+    inputBackdropFullView3 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    topAnchor = [inputBackdropFullView3 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v50[1] = v42;
-    v16 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    v17 = [v16 widthAnchor];
-    v18 = [(UIView *)self widthAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:0.0];
+    inputBackdropFullView4 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    widthAnchor = [inputBackdropFullView4 widthAnchor];
+    widthAnchor2 = [(UIView *)self widthAnchor];
+    v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:0.0];
     v50[2] = v19;
-    v20 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    v21 = [v20 heightAnchor];
-    v22 = [(UIView *)self heightAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+    inputBackdropFullView5 = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    heightAnchor = [inputBackdropFullView5 heightAnchor];
+    heightAnchor2 = [(UIView *)self heightAnchor];
+    v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:0.0];
     v50[3] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
     [(UIKBInputBackdropView *)self setFullWidthConstraints:v24];
   }
 
-  v25 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-  v26 = [v25 firstObject];
-  v27 = [v26 isActive];
+  fullWidthConstraints2 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+  firstObject = [fullWidthConstraints2 firstObject];
+  isActive = [firstObject isActive];
 
-  if ((v27 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v28 = MEMORY[0x1E69977A0];
-    v29 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-    [v28 activateConstraints:v29];
+    fullWidthConstraints3 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+    [v28 activateConstraints:fullWidthConstraints3];
   }
 
   [(UIView *)self bounds];
@@ -541,68 +541,68 @@ LABEL_5:
     v31 = width - v30;
     [(UIView *)self bounds];
     v33 = height - v32;
-    v34 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-    v35 = [v34 objectAtIndex:0];
+    fullWidthConstraints4 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+    v35 = [fullWidthConstraints4 objectAtIndex:0];
     [v35 setConstant:x];
 
-    v36 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-    v37 = [v36 objectAtIndex:1];
+    fullWidthConstraints5 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+    v37 = [fullWidthConstraints5 objectAtIndex:1];
     [v37 setConstant:y];
 
-    v38 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-    v39 = [v38 objectAtIndex:2];
+    fullWidthConstraints6 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+    v39 = [fullWidthConstraints6 objectAtIndex:2];
     [v39 setConstant:{fmax(v31, 0.0)}];
 
-    v40 = [(UIKBInputBackdropView *)self fullWidthConstraints];
-    v41 = [v40 objectAtIndex:3];
+    fullWidthConstraints7 = [(UIKBInputBackdropView *)self fullWidthConstraints];
+    v41 = [fullWidthConstraints7 objectAtIndex:3];
     [v41 setConstant:{fmax(v33, 0.0)}];
 
     [(UIView *)self layoutIfNeeded];
   }
 }
 
-- (void)updateCornersWithRadius:(double)a3 usingCornerRadii:(BOOL)a4
+- (void)updateCornersWithRadius:(double)radius usingCornerRadii:(BOOL)radii
 {
-  v4 = a4;
-  v6 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-  v7 = v6;
-  if (v4)
+  radiiCopy = radii;
+  inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+  v7 = inputBackdropFullView;
+  if (radiiCopy)
   {
-    [v6 _updateCornerRadiiIfNecessaryWithTopRadius:0 useDeviceCorners:a3];
+    [inputBackdropFullView _updateCornerRadiiIfNecessaryWithTopRadius:0 useDeviceCorners:radius];
   }
 
   else
   {
-    [v6 _setCornerRadius:1 continuous:15 maskedCorners:a3];
+    [inputBackdropFullView _setCornerRadius:1 continuous:15 maskedCorners:radius];
   }
 }
 
-- (void)updateCornersWithRadius:(double)a3 forVisualState:(int64_t)a4
+- (void)updateCornersWithRadius:(double)radius forVisualState:(int64_t)state
 {
   if ([(UIKBInputBackdropView *)self backdropStyle]== 3908)
   {
-    v7 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v7 _updateCornerRadiiIfNecessaryWithTopRadius:a4 != 3 useDeviceCorners:a3];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView _updateCornerRadiiIfNecessaryWithTopRadius:state != 3 useDeviceCorners:radius];
   }
 
   else
   {
-    v7 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v7 _setCornerRadius:1 continuous:15 maskedCorners:a3];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView _setCornerRadius:1 continuous:15 maskedCorners:radius];
   }
 }
 
-- (void)setProgress:(double)a3 withFrame:(CGRect)a4 innerCorners:(unint64_t)a5
+- (void)setProgress:(double)progress withFrame:(CGRect)frame innerCorners:(unint64_t)corners
 {
-  if (a3 >= 0.0)
+  if (progress >= 0.0)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    if (!CGRectIsEmpty(a4))
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    if (!CGRectIsEmpty(frame))
     {
-      if (a3 == 0.0 && (v12 = &OBJC_IVAR___UIKBInputBackdropView__savedStartRect, p_hasStartRect = &self->_hasStartRect, !self->_hasStartRect) || a3 == 1.0 && (v12 = &OBJC_IVAR___UIKBInputBackdropView__savedEndRect, p_hasStartRect = &self->_hasEndRect, !self->_hasEndRect))
+      if (progress == 0.0 && (v12 = &OBJC_IVAR___UIKBInputBackdropView__savedStartRect, p_hasStartRect = &self->_hasStartRect, !self->_hasStartRect) || progress == 1.0 && (v12 = &OBJC_IVAR___UIKBInputBackdropView__savedEndRect, p_hasStartRect = &self->_hasEndRect, !self->_hasEndRect))
       {
         *p_hasStartRect = 1;
         v14 = (self + *v12);
@@ -628,7 +628,7 @@ LABEL_5:
       }
 
       self->_heightDiff = v16 - *p_height;
-      if (a3 == 0.0)
+      if (progress == 0.0)
       {
         if (!self->_isTransitioning)
         {
@@ -641,78 +641,78 @@ LABEL_5:
 
       else
       {
-        [(UIKBInputBackdropView *)self _prepareWithLeftOffset:round(self->_transitionLeftOffset + (1.0 - a3) * (ceil(width * 0.5) - self->_transitionLeftOffset)) gapWidth:round(self->_transitionGap * a3)];
-        [(UIKBInputBackdropView *)self layoutInputBackdropToSplitWithHeight:a5 innerCorners:height];
+        [(UIKBInputBackdropView *)self _prepareWithLeftOffset:round(self->_transitionLeftOffset + (1.0 - progress) * (ceil(width * 0.5) - self->_transitionLeftOffset)) gapWidth:round(self->_transitionGap * progress)];
+        [(UIKBInputBackdropView *)self layoutInputBackdropToSplitWithHeight:corners innerCorners:height];
 
-        [(UIKBInputBackdropView *)self setGestureProgressForSplit:a3];
+        [(UIKBInputBackdropView *)self setGestureProgressForSplit:progress];
       }
     }
   }
 }
 
-- (void)_prepareWithLeftOffset:(double)a3 gapWidth:(double)a4
+- (void)_prepareWithLeftOffset:(double)offset gapWidth:(double)width
 {
-  self->_transitionGap = a4;
+  self->_transitionGap = width;
   [(UIView *)self bounds];
-  [(UIKBInputBackdropView *)self _updateForLeftOffset:a3 rightOffset:v7 - (a3 + a4)];
+  [(UIKBInputBackdropView *)self _updateForLeftOffset:offset rightOffset:v7 - (offset + width)];
 
   [(UIKBInputBackdropView *)self createSplitBackdropIfNeeded];
 }
 
-- (void)_updateForLeftOffset:(double)a3 rightOffset:(double)a4
+- (void)_updateForLeftOffset:(double)offset rightOffset:(double)rightOffset
 {
-  self->_transitionLeftOffset = a3;
-  self->_transitionRightOffset = a4;
+  self->_transitionLeftOffset = offset;
+  self->_transitionRightOffset = rightOffset;
   [(UIView *)self bounds];
   v7 = (v6 + self->_transitionLeftOffset - self->_transitionRightOffset) * 0.5;
-  self->_leftWidthDiff = v7 - a3;
+  self->_leftWidthDiff = v7 - offset;
   [(UIView *)self bounds];
   self->_rightWidthDiff = v8 - v7 - (self->_transitionLeftOffset - self->_transitionRightOffset) - self->_transitionRightOffset;
 }
 
-- (void)setGestureProgressForSplit:(double)a3
+- (void)setGestureProgressForSplit:(double)split
 {
-  if (a3 > 0.0)
+  if (split > 0.0)
   {
-    v5 = [(UIKBInputBackdropView *)self inputBackdropRightView];
-    v6 = [v5 superview];
-    if (v6)
+    inputBackdropRightView = [(UIKBInputBackdropView *)self inputBackdropRightView];
+    superview = [inputBackdropRightView superview];
+    if (superview)
     {
-      v7 = v6;
-      v8 = [(UIKBInputBackdropView *)self inputBackdropLeftView];
-      v9 = [v8 superview];
+      v7 = superview;
+      inputBackdropLeftView = [(UIKBInputBackdropView *)self inputBackdropLeftView];
+      superview2 = [inputBackdropLeftView superview];
 
-      if (v9)
+      if (superview2)
       {
 LABEL_10:
-        v14 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-        v15 = [v14 isActive];
+        leftWidthConstraint = [(UIKBInputBackdropView *)self leftWidthConstraint];
+        isActive = [leftWidthConstraint isActive];
 
-        if ((v15 & 1) == 0)
+        if ((isActive & 1) == 0)
         {
-          v16 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-          [v16 setActive:1];
+          leftWidthConstraint2 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+          [leftWidthConstraint2 setActive:1];
         }
 
-        v17 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-        v18 = [v17 isActive];
+        rightWidthConstraint = [(UIKBInputBackdropView *)self rightWidthConstraint];
+        isActive2 = [rightWidthConstraint isActive];
 
-        if ((v18 & 1) == 0)
+        if ((isActive2 & 1) == 0)
         {
-          v19 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-          [v19 setActive:1];
+          rightWidthConstraint2 = [(UIKBInputBackdropView *)self rightWidthConstraint];
+          [rightWidthConstraint2 setActive:1];
         }
 
-        v20 = self->_tallHeight - self->_heightDiff * a3;
-        v21 = [(UIKBInputBackdropView *)self heightConstraint];
-        [v21 setConstant:v20];
+        v20 = self->_tallHeight - self->_heightDiff * split;
+        heightConstraint = [(UIKBInputBackdropView *)self heightConstraint];
+        [heightConstraint setConstant:v20];
 
         if (self->_transitionGap <= 0.0)
         {
           [(UIView *)self bounds];
           v27 = v26 * 0.6;
-          v28 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-          [v28 setConstant:v27];
+          leftWidthConstraint3 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+          [leftWidthConstraint3 setConstant:v27];
 
           [(UIView *)self bounds];
           v25 = v29 * 0.6;
@@ -720,9 +720,9 @@ LABEL_10:
 
         else
         {
-          if (a3 >= 0.055)
+          if (split >= 0.055)
           {
-            v22 = 1.0 - (a3 * 1.05820106 + -1.05820106 + 1.0);
+            v22 = 1.0 - (split * 1.05820106 + -1.05820106 + 1.0);
           }
 
           else
@@ -731,14 +731,14 @@ LABEL_10:
           }
 
           v23 = self->_transitionLeftOffset + round(v22 * self->_leftWidthDiff);
-          v24 = [(UIKBInputBackdropView *)self leftWidthConstraint];
-          [v24 setConstant:v23];
+          leftWidthConstraint4 = [(UIKBInputBackdropView *)self leftWidthConstraint];
+          [leftWidthConstraint4 setConstant:v23];
 
           v25 = self->_transitionRightOffset + round(v22 * self->_rightWidthDiff);
         }
 
-        v30 = [(UIKBInputBackdropView *)self rightWidthConstraint];
-        [v30 setConstant:v25];
+        rightWidthConstraint3 = [(UIKBInputBackdropView *)self rightWidthConstraint];
+        [rightWidthConstraint3 setConstant:v25];
 
         return;
       }
@@ -760,25 +760,25 @@ LABEL_10:
   [(UIKBInputBackdropView *)self layoutInputBackdropToFullWithRect:x, y, width, height];
 }
 
-- (void)_beginSplitTransitionIfNeeded:(double)a3 gapWidth:(double)a4
+- (void)_beginSplitTransitionIfNeeded:(double)needed gapWidth:(double)width
 {
   if (!self->_isTransitioning)
   {
-    [(UIKBInputBackdropView *)self _prepareWithLeftOffset:a3 gapWidth:a4];
+    [(UIKBInputBackdropView *)self _prepareWithLeftOffset:needed gapWidth:width];
     self->_isTransitioning = 1;
     self->_hasStartRect = 0;
     self->_hasEndRect = 0;
   }
 }
 
-- (void)_endSplitTransitionIfNeeded:(BOOL)a3
+- (void)_endSplitTransitionIfNeeded:(BOOL)needed
 {
   if (self->_isTransitioning)
   {
     v16 = v7;
     v17 = v3;
     self->_isTransitioning = 0;
-    if (a3)
+    if (needed)
     {
       [(UIKBInputBackdropView *)self setGestureProgressForSplit:1.0];
       if (self->_hasEndRect)
@@ -822,20 +822,20 @@ LABEL_10:
   }
 }
 
-- (double)preferredCornerRadiusForState:(int64_t)a3
+- (double)preferredCornerRadiusForState:(int64_t)state
 {
-  v5 = [(UIKBInputBackdropView *)self isAssistantBackground];
+  isAssistantBackground = [(UIKBInputBackdropView *)self isAssistantBackground];
   result = 22.0;
-  if (!v5)
+  if (!isAssistantBackground)
   {
     result = 27.0;
-    if (a3 == 3)
+    if (state == 3)
     {
       v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v8 = [v7 preferencesActions];
-      v9 = [(UIView *)self traitCollection];
-      [v9 displayScale];
-      [v8 rivenSizeFactor:42.0 / v10];
+      preferencesActions = [v7 preferencesActions];
+      traitCollection = [(UIView *)self traitCollection];
+      [traitCollection displayScale];
+      [preferencesActions rivenSizeFactor:42.0 / v10];
       v12 = round(v11);
 
       return v12;
@@ -845,7 +845,7 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)sizeForVisualState:(int64_t)a3
+- (CGSize)sizeForVisualState:(int64_t)state
 {
   v3 = -1.0;
   v4 = -1.0;
@@ -854,42 +854,42 @@ LABEL_10:
   return result;
 }
 
-- (void)animatingTransitionFromState:(int64_t)a3 toState:(int64_t)a4 animationType:(int64_t)a5 totalDuration:(double)a6
+- (void)animatingTransitionFromState:(int64_t)state toState:(int64_t)toState animationType:(int64_t)type totalDuration:(double)duration
 {
-  [(UIKBInputBackdropView *)self preferredCornerRadiusForState:a4, a6];
+  [(UIKBInputBackdropView *)self preferredCornerRadiusForState:toState, duration];
   v9 = v8;
-  if ((a4 - 3) > 1)
+  if ((toState - 3) > 1)
   {
-    v10 = [(UIKBInputBackdropView *)self inputBackdropFullView];
-    [v10 _updateCornerRadiiIfNecessaryWithTopRadius:1 useDeviceCorners:v9];
+    inputBackdropFullView = [(UIKBInputBackdropView *)self inputBackdropFullView];
+    [inputBackdropFullView _updateCornerRadiiIfNecessaryWithTopRadius:1 useDeviceCorners:v9];
   }
 
   else
   {
 
-    [(UIKBInputBackdropView *)self updateCornersWithRadius:a4 forVisualState:?];
+    [(UIKBInputBackdropView *)self updateCornersWithRadius:toState forVisualState:?];
   }
 }
 
-- (void)transitioningToState:(int64_t)a3 animationType:(int64_t)a4 completionPercentage:(double)a5
+- (void)transitioningToState:(int64_t)state animationType:(int64_t)type completionPercentage:(double)percentage
 {
-  [(UIKBInputBackdropView *)self preferredCornerRadiusForState:2, a4];
+  [(UIKBInputBackdropView *)self preferredCornerRadiusForState:2, type];
   v9 = v8;
-  if (a3 == 3 || [(UIKBInputBackdropView *)self keyboardVisualState]== 3)
+  if (state == 3 || [(UIKBInputBackdropView *)self keyboardVisualState]== 3)
   {
     [(UIKBInputBackdropView *)self preferredCornerRadiusForState:3];
-    v11 = v10 + (v9 - v10) * a5;
+    v11 = v10 + (v9 - v10) * percentage;
 
     [(UIKBInputBackdropView *)self updateCornersWithRadius:3 forVisualState:v11];
   }
 }
 
-- (void)finishedTransitionToState:(int64_t)a3 animationType:(int64_t)a4 interactiveTransition:(BOOL)a5
+- (void)finishedTransitionToState:(int64_t)state animationType:(int64_t)type interactiveTransition:(BOOL)transition
 {
-  [(UIKBInputBackdropView *)self setKeyboardVisualState:a3, a4, a5];
-  v6 = [(UIKBInputBackdropView *)self backdropStyle];
+  [(UIKBInputBackdropView *)self setKeyboardVisualState:state, type, transition];
+  backdropStyle = [(UIKBInputBackdropView *)self backdropStyle];
 
-  [(UIKBInputBackdropView *)self maskCornersIfNeededForStyle:v6];
+  [(UIKBInputBackdropView *)self maskCornersIfNeededForStyle:backdropStyle];
 }
 
 @end

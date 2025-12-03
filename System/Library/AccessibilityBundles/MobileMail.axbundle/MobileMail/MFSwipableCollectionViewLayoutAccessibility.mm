@@ -1,22 +1,22 @@
 @interface MFSwipableCollectionViewLayoutAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
 @end
 
 @implementation MFSwipableCollectionViewLayoutAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFSwipableCollectionViewLayout" isKindOfClass:@"UICollectionViewLayout"];
-  [v3 validateClass:@"UICollectionViewLayout" hasInstanceMethod:@"initialLayoutAttributesForAppearingItemAtIndexPath:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFSwipableCollectionViewLayout" isKindOfClass:@"UICollectionViewLayout"];
+  [validationsCopy validateClass:@"UICollectionViewLayout" hasInstanceMethod:@"initialLayoutAttributesForAppearingItemAtIndexPath:" withFullSignature:{"@", 0}];
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = MFSwipableCollectionViewLayoutAccessibility;
-  v3 = [(MFSwipableCollectionViewLayoutAccessibility *)&v5 initialLayoutAttributesForAppearingItemAtIndexPath:a3];
+  v3 = [(MFSwipableCollectionViewLayoutAccessibility *)&v5 initialLayoutAttributesForAppearingItemAtIndexPath:path];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [v3 setAlpha:1.0];

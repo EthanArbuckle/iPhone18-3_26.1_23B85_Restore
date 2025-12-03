@@ -1,38 +1,38 @@
 @interface AppleAccountMonitor
-- (void)accountCredentialChanged:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)accountCredentialChanged:(id)changed;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 @end
 
 @implementation AppleAccountMonitor
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
-  v5 = self;
-  sub_100106298(v4, &unk_1001FDD50, sub_100106A54, &unk_1001FDD68);
+  addedCopy = added;
+  selfCopy = self;
+  sub_100106298(addedCopy, &unk_1001FDD50, sub_100106A54, &unk_1001FDD68);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = self;
-  sub_100106298(v4, &unk_1001FDD00, sub_100106BC4, &unk_1001FDD18);
+  removedCopy = removed;
+  selfCopy = self;
+  sub_100106298(removedCopy, &unk_1001FDD00, sub_100106BC4, &unk_1001FDD18);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
-  v5 = self;
-  sub_100106298(v4, &unk_1001FDCB0, sub_100106BC4, &unk_1001FDCC8);
+  modifiedCopy = modified;
+  selfCopy = self;
+  sub_100106298(modifiedCopy, &unk_1001FDCB0, sub_100106BC4, &unk_1001FDCC8);
 }
 
-- (void)accountCredentialChanged:(id)a3
+- (void)accountCredentialChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_100106298(v4, &unk_1001FDB98, sub_100106BC4, &unk_1001FDBB0);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_100106298(changedCopy, &unk_1001FDB98, sub_100106BC4, &unk_1001FDBB0);
 }
 
 @end

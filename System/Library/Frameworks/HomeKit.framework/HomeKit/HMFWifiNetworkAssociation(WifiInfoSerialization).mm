@@ -7,24 +7,24 @@
 - (HMAccessoryInfoProtoWifiNetworkInfoEvent)protoPayload
 {
   v2 = objc_alloc_init(HMAccessoryInfoProtoWifiNetworkInfoEvent);
-  v3 = [a1 MACAddress];
-  v4 = [v3 formattedString];
-  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setMacAddress:v4];
+  mACAddress = [self MACAddress];
+  formattedString = [mACAddress formattedString];
+  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setMacAddress:formattedString];
 
-  v5 = [a1 SSID];
-  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkSSID:v5];
+  sSID = [self SSID];
+  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkSSID:sSID];
 
-  -[HMAccessoryInfoProtoWifiNetworkInfoEvent setRequiresPassword:](v2, "setRequiresPassword:", [a1 requiresPassword]);
-  v6 = [a1 gatewayIPAddress];
-  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkGatewayIPAddress:v6];
+  -[HMAccessoryInfoProtoWifiNetworkInfoEvent setRequiresPassword:](v2, "setRequiresPassword:", [self requiresPassword]);
+  gatewayIPAddress = [self gatewayIPAddress];
+  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkGatewayIPAddress:gatewayIPAddress];
 
-  v7 = [a1 BSSID];
-  v8 = [v7 formattedString];
-  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkBSSID:v8];
+  bSSID = [self BSSID];
+  formattedString2 = [bSSID formattedString];
+  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkBSSID:formattedString2];
 
-  v9 = [a1 gatewayMACAddress];
-  v10 = [v9 formattedString];
-  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkGatewayMacAddress:v10];
+  gatewayMACAddress = [self gatewayMACAddress];
+  formattedString3 = [gatewayMACAddress formattedString];
+  [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)v2 setNetworkGatewayMacAddress:formattedString3];
 
   return v2;
 }

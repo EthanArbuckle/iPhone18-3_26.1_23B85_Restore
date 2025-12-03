@@ -5,7 +5,7 @@
 - (id)_placeholderBackgroundView;
 - (id)copyArchivableContext;
 - (id)copyDefaultScriptProperties;
-- (id)copyObjectForScriptFromPoolWithClass:(Class)a3;
+- (id)copyObjectForScriptFromPoolWithClass:(Class)class;
 - (id)copyScriptProperties;
 - (id)displayedURL;
 - (id)navigationItemForScriptInterface;
@@ -14,46 +14,46 @@
 - (id)storePageProtocol;
 - (void)_addPlaceholderBackgroundView;
 - (void)_applySavedScrollOffsetIfPossible;
-- (void)_applyScriptProperties:(id)a3;
-- (void)_finishLoadWithResult:(BOOL)a3 error:(id)a4;
-- (void)_getURLRequestForOperation:(id)a3 block:(id)a4;
-- (void)_loadURLRequest:(id)a3;
-- (void)_loadWithURLOperation:(id)a3 completionBlock:(id)a4;
-- (void)_prepareToLoadURL:(id)a3;
-- (void)_reloadBackgroundViewPropertiesWithScriptProperties:(id)a3;
+- (void)_applyScriptProperties:(id)properties;
+- (void)_finishLoadWithResult:(BOOL)result error:(id)error;
+- (void)_getURLRequestForOperation:(id)operation block:(id)block;
+- (void)_loadURLRequest:(id)request;
+- (void)_loadWithURLOperation:(id)operation completionBlock:(id)block;
+- (void)_prepareToLoadURL:(id)l;
+- (void)_reloadBackgroundViewPropertiesWithScriptProperties:(id)properties;
 - (void)_reloadObjectPool;
 - (void)_reloadPlaceholderBackgroundView;
 - (void)_reloadUI;
 - (void)_removePlaceholderBackgroundView;
-- (void)_sendOrientationWillChangeToInterfaceOrientation:(int64_t)a3;
-- (void)_setExistingNavigationItem:(id)a3;
-- (void)_setPerformanceMetrics:(id)a3;
+- (void)_sendOrientationWillChangeToInterfaceOrientation:(int64_t)orientation;
+- (void)_setExistingNavigationItem:(id)item;
+- (void)_setPerformanceMetrics:(id)metrics;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)dealloc;
 - (void)invalidate;
-- (void)keyboardDidHideWithInfo:(id)a3;
-- (void)keyboardWillShowWithInfo:(id)a3;
+- (void)keyboardDidHideWithInfo:(id)info;
+- (void)keyboardWillShowWithInfo:(id)info;
 - (void)loadView;
 - (void)parentViewControllerHierarchyDidChange;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setScriptProperties:(id)a3;
-- (void)setStorePageProtocol:(id)a3;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
+- (void)setAuthenticationContext:(id)context;
+- (void)setScriptProperties:(id)properties;
+- (void)setStorePageProtocol:(id)protocol;
 - (void)storePageCleanupBeforeTearDown;
 - (void)storePageProtocolDidChange;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)webViewManager:(id)a3 didFailLoadWithError:(id)a4;
-- (void)webViewManager:(id)a3 didReceivePrimaryResponse:(id)a4;
-- (void)webViewManager:(id)a3 didRejectInvalidRequest:(id)a4;
-- (void)webViewManager:(id)a3 webDocumentViewDidSetFrame:(CGRect)a4;
-- (void)webViewManager:(id)a3 willInjectScriptInterface:(id)a4;
-- (void)webViewManagerDidFinishLoad:(id)a3;
-- (void)webViewManagerDidStartLoad:(id)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)webViewManager:(id)manager didFailLoadWithError:(id)error;
+- (void)webViewManager:(id)manager didReceivePrimaryResponse:(id)response;
+- (void)webViewManager:(id)manager didRejectInvalidRequest:(id)request;
+- (void)webViewManager:(id)manager webDocumentViewDidSetFrame:(CGRect)frame;
+- (void)webViewManager:(id)manager willInjectScriptInterface:(id)interface;
+- (void)webViewManagerDidFinishLoad:(id)load;
+- (void)webViewManagerDidStartLoad:(id)load;
 @end
 
 @implementation SUWebViewController
@@ -80,16 +80,16 @@
   return result;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   authenticationContext = self->_authenticationContext;
-  if (authenticationContext != a3)
+  if (authenticationContext != context)
   {
 
-    self->_authenticationContext = [a3 mutableCopy];
-    v6 = [(SUWebViewController *)self style];
+    self->_authenticationContext = [context mutableCopy];
+    style = [(SUWebViewController *)self style];
     authenticationContext = self->_authenticationContext;
-    if (v6 == 1)
+    if (style == 1)
     {
       [(SSMutableAuthenticationContext *)self->_authenticationContext setShouldFollowAccountButtons:1];
       authenticationContext = self->_authenticationContext;
@@ -110,23 +110,23 @@
     goto LABEL_15;
   }
 
-  v3 = self->_authenticationContext;
-  if (!v3)
+  defaultStore = self->_authenticationContext;
+  if (!defaultStore)
   {
     account = self->_account;
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -148,8 +148,8 @@
         }
       }
 
-      v3 = [objc_alloc(MEMORY[0x1E69D4888]) initWithBackingAccount:self->_account];
-      if (!v3)
+      defaultStore = [objc_alloc(MEMORY[0x1E69D4888]) initWithBackingAccount:self->_account];
+      if (!defaultStore)
       {
         goto LABEL_14;
       }
@@ -174,22 +174,22 @@
         }
       }
 
-      v3 = [objc_msgSend(MEMORY[0x1E69D4890] defaultStore];
-      self->_account = [(SSMutableAuthenticationContext *)v3 backingAccount];
-      if (!v3)
+      defaultStore = [objc_msgSend(MEMORY[0x1E69D4890] defaultStore];
+      self->_account = [(SSMutableAuthenticationContext *)defaultStore backingAccount];
+      if (!defaultStore)
       {
         goto LABEL_14;
       }
     }
 
-    v3 = [objc_alloc(MEMORY[0x1E69D4898]) initWithAccount:v3];
+    defaultStore = [objc_alloc(MEMORY[0x1E69D4898]) initWithAccount:defaultStore];
   }
 
 LABEL_14:
   v10 = [[SUWebViewManager alloc] initWithClientInterface:[(SUViewController *)self clientInterface]];
   self->_webViewManager = v10;
   [(SUWebViewManager *)v10 setAccount:self->_account];
-  [(SUWebViewManager *)self->_webViewManager setAuthenticationContext:v3];
+  [(SUWebViewManager *)self->_webViewManager setAuthenticationContext:defaultStore];
   [(SUWebViewManager *)self->_webViewManager setDelegate:self];
   [(SUWebViewManager *)self->_webViewManager setInitialRequestPerformance:self->_performanceMetrics];
   [(SUWebViewManager *)self->_webViewManager setShouldSignRequests:self->_shouldSignRequests];
@@ -200,12 +200,12 @@ LABEL_15:
   result = self->_webView;
   if (!result)
   {
-    v12 = [(SUWebViewController *)self copyScriptProperties];
+    copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
     v13 = [[SUWebView alloc] initWithFrame:0.0, 0.0, 0.0, 1.0];
     self->_webView = v13;
     [(SUWebViewManager *)self->_webViewManager connectToWebView:v13];
     -[SUWebView setBackgroundColor:](self->_webView, "setBackgroundColor:", [MEMORY[0x1E69DC888] systemBackgroundColor]);
-    [(SUWebViewController *)self _applyScriptProperties:v12];
+    [(SUWebViewController *)self _applyScriptProperties:copyScriptProperties];
 
     return self->_webView;
   }
@@ -235,18 +235,18 @@ LABEL_15:
 {
   v8.receiver = self;
   v8.super_class = SUWebViewController;
-  v3 = [(SUViewController *)&v8 copyArchivableContext];
+  copyArchivableContext = [(SUViewController *)&v8 copyArchivableContext];
   if (![(SUViewController *)self shouldExcludeFromNavigationHistory])
   {
-    v4 = [(SUWebView *)self->_webView scrollView];
-    if (v4)
+    scrollView = [(SUWebView *)self->_webView scrollView];
+    if (scrollView)
     {
       v5 = MEMORY[0x1E696B098];
-      [v4 contentOffset];
+      [scrollView contentOffset];
       v6 = [v5 valueWithCGPoint:?];
 LABEL_6:
-      [v3 setValue:v6 forMetadataKey:@"offset"];
-      return v3;
+      [copyArchivableContext setValue:v6 forMetadataKey:@"offset"];
+      return copyArchivableContext;
     }
 
     if ([(SUViewController *)self _restoredContext])
@@ -256,21 +256,21 @@ LABEL_6:
     }
   }
 
-  return v3;
+  return copyArchivableContext;
 }
 
 - (id)copyDefaultScriptProperties
 {
   v8.receiver = self;
   v8.super_class = SUWebViewController;
-  v2 = [(SUViewController *)&v8 copyDefaultScriptProperties];
-  [v2 setDoubleTapEnabled:0];
-  [v2 setFlashesScrollIndicators:1];
-  [v2 setInputViewObeysDOMFocus:0];
-  [v2 setScrollingDisabled:0];
-  [v2 setShouldShowFormAccessory:1];
-  v3 = [MEMORY[0x1E69E47F8] sharedCache];
-  v4 = [objc_msgSend(v3 URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)), "valueForKey:", @"p2-client-options"}];
+  copyDefaultScriptProperties = [(SUViewController *)&v8 copyDefaultScriptProperties];
+  [copyDefaultScriptProperties setDoubleTapEnabled:0];
+  [copyDefaultScriptProperties setFlashesScrollIndicators:1];
+  [copyDefaultScriptProperties setInputViewObeysDOMFocus:0];
+  [copyDefaultScriptProperties setScrollingDisabled:0];
+  [copyDefaultScriptProperties setShouldShowFormAccessory:1];
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
+  v4 = [objc_msgSend(mEMORY[0x1E69E47F8] URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)), "valueForKey:", @"p2-client-options"}];
   objc_opt_class();
   v5 = 0;
   if (objc_opt_isKindOfClass())
@@ -280,46 +280,46 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  [v2 setShouldLoadProgressively:v6];
-  return v2;
+  [copyDefaultScriptProperties setShouldLoadProgressively:bOOLValue];
+  return copyDefaultScriptProperties;
 }
 
 - (id)copyScriptProperties
 {
   v8.receiver = self;
   v8.super_class = SUWebViewController;
-  v3 = [(SUViewController *)&v8 copyScriptProperties];
+  copyScriptProperties = [(SUViewController *)&v8 copyScriptProperties];
   webView = self->_webView;
   if (webView)
   {
-    [v3 setBackgroundColor:{-[SUWebView backgroundColor](webView, "backgroundColor")}];
-    [v3 setAlwaysDispatchesScrollEvents:{-[SUWebView _alwaysDispatchesScrollEvents](self->_webView, "_alwaysDispatchesScrollEvents")}];
-    v5 = [(SUWebView *)self->_webView _browserView];
-    [v3 setDoubleTapEnabled:{objc_msgSend(v5, "isDoubleTapEnabled")}];
-    [v3 setInputViewObeysDOMFocus:{objc_msgSend(v5, "inputViewObeysDOMFocus")}];
-    [v3 setScrollingDisabled:{-[SUWebView isScrollingEnabled](self->_webView, "isScrollingEnabled") ^ 1}];
-    [v3 setShouldShowFormAccessory:{objc_msgSend(v5, "isAccessoryEnabled")}];
-    v6 = [(SUWebView *)self->_webView scrollView];
-    [v3 setScrollContentInsets:SUUIScrollViewGetDefaultContentInset(v6)];
-    [v3 setShowsBackgroundShadow:{objc_msgSend(v6, "_showsBackgroundShadow")}];
-    [v3 setShowsHorizontalScrollIndicator:{objc_msgSend(v6, "showsHorizontalScrollIndicator")}];
-    [v3 setShowsVerticalScrollIndicator:{objc_msgSend(v6, "showsVerticalScrollIndicator")}];
+    [copyScriptProperties setBackgroundColor:{-[SUWebView backgroundColor](webView, "backgroundColor")}];
+    [copyScriptProperties setAlwaysDispatchesScrollEvents:{-[SUWebView _alwaysDispatchesScrollEvents](self->_webView, "_alwaysDispatchesScrollEvents")}];
+    _browserView = [(SUWebView *)self->_webView _browserView];
+    [copyScriptProperties setDoubleTapEnabled:{objc_msgSend(_browserView, "isDoubleTapEnabled")}];
+    [copyScriptProperties setInputViewObeysDOMFocus:{objc_msgSend(_browserView, "inputViewObeysDOMFocus")}];
+    [copyScriptProperties setScrollingDisabled:{-[SUWebView isScrollingEnabled](self->_webView, "isScrollingEnabled") ^ 1}];
+    [copyScriptProperties setShouldShowFormAccessory:{objc_msgSend(_browserView, "isAccessoryEnabled")}];
+    scrollView = [(SUWebView *)self->_webView scrollView];
+    [copyScriptProperties setScrollContentInsets:SUUIScrollViewGetDefaultContentInset(scrollView)];
+    [copyScriptProperties setShowsBackgroundShadow:{objc_msgSend(scrollView, "_showsBackgroundShadow")}];
+    [copyScriptProperties setShowsHorizontalScrollIndicator:{objc_msgSend(scrollView, "showsHorizontalScrollIndicator")}];
+    [copyScriptProperties setShowsVerticalScrollIndicator:{objc_msgSend(scrollView, "showsVerticalScrollIndicator")}];
   }
 
-  return v3;
+  return copyScriptProperties;
 }
 
-- (id)copyObjectForScriptFromPoolWithClass:(Class)a3
+- (id)copyObjectForScriptFromPoolWithClass:(Class)class
 {
-  v4 = [(SUObjectPool *)self->_objectPool copyPoppedObjectForClass:a3];
+  v4 = [(SUObjectPool *)self->_objectPool copyPoppedObjectForClass:class];
   if (-[SUWebView isLoading](self->_webView, "isLoading") && [v4 conformsToProtocol:&unk_1F423BE40])
   {
     [v4 setDeferringInterfaceUpdates:1];
@@ -348,10 +348,10 @@ LABEL_6:
 
 - (CGRect)documentBounds
 {
-  v2 = [(SUWebView *)self->_webView _browserView];
-  if (v2)
+  _browserView = [(SUWebView *)self->_webView _browserView];
+  if (_browserView)
   {
-    [v2 documentBounds];
+    [_browserView documentBounds];
   }
 
   else
@@ -381,20 +381,20 @@ LABEL_6:
   [(SUViewController *)&v3 invalidate];
 }
 
-- (void)keyboardDidHideWithInfo:(id)a3
+- (void)keyboardDidHideWithInfo:(id)info
 {
   [(SUWebView *)self->_webView _updateScrollerViewForInputView:?];
   v5.receiver = self;
   v5.super_class = SUWebViewController;
-  [(UIViewController *)&v5 keyboardDidHideWithInfo:a3];
+  [(UIViewController *)&v5 keyboardDidHideWithInfo:info];
 }
 
-- (void)keyboardWillShowWithInfo:(id)a3
+- (void)keyboardWillShowWithInfo:(id)info
 {
   [(SUWebView *)self->_webView _updateScrollerViewForInputView:?];
   v5.receiver = self;
   v5.super_class = SUWebViewController;
-  [(UIViewController *)&v5 keyboardWillShowWithInfo:a3];
+  [(UIViewController *)&v5 keyboardWillShowWithInfo:info];
 }
 
 - (void)loadView
@@ -433,10 +433,10 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v4 = [(SUDelayedNavigationItem *)delayedNavigationItem wrappedNavigationItem];
-  v5 = [(SUViewController *)self navigationItem];
+  wrappedNavigationItem = [(SUDelayedNavigationItem *)delayedNavigationItem wrappedNavigationItem];
+  navigationItem = [(SUViewController *)self navigationItem];
   result = self->_delayedNavigationItem;
-  if (v4 != v5)
+  if (wrappedNavigationItem != navigationItem)
   {
 
     self->_delayedNavigationItem = 0;
@@ -468,9 +468,9 @@ LABEL_4:
   [(UIViewController *)&v3 parentViewControllerHierarchyDidChange];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   for (i = -[SUWebViewController parentViewController](self, "parentViewController"); i; i = [i parentViewController])
   {
     objc_opt_class();
@@ -482,40 +482,40 @@ LABEL_4:
 
   if ([i bridgedNavigation])
   {
-    v10 = [i parentViewController];
+    parentViewController = [i parentViewController];
 
-    [v10 presentViewController:a3 animated:v6 completion:0];
+    [parentViewController presentViewController:controller animated:animatedCopy completion:0];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SUWebViewController;
-    [(SUWebViewController *)&v11 presentViewController:a3 animated:v6 completion:a5];
+    [(SUWebViewController *)&v11 presentViewController:controller animated:animatedCopy completion:completion];
   }
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
   v33 = *MEMORY[0x1E69E9840];
-  [(SUWebViewController *)self _prepareToLoadURL:a4];
-  v7 = [(SUWebViewController *)self webView];
+  [(SUWebViewController *)self _prepareToLoadURL:l];
+  webView = [(SUWebViewController *)self webView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MEMORY[0x1E69D4938] sharedConfig];
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -535,7 +535,7 @@ LABEL_4:
       }
     }
 
-    [(SUWebView *)v7 loadData:a3 MIMEType:@"text/html" textEncodingName:CFStringConvertEncodingToIANACharSetName(0x8000100u) baseURL:a4];
+    [(SUWebView *)webView loadData:page MIMEType:@"text/html" textEncodingName:CFStringConvertEncodingToIANACharSetName(0x8000100u) baseURL:l];
   }
 
   else
@@ -543,19 +543,19 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [MEMORY[0x1E69D4938] sharedConfig];
-      v14 = [v13 shouldLog];
-      if ([v13 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog2 | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v15 &= 2u;
       }
@@ -577,26 +577,26 @@ LABEL_4:
         }
       }
 
-      [(SUWebView *)v7 loadHTMLString:a3 baseURL:a4, v29];
+      [(SUWebView *)webView loadHTMLString:page baseURL:l, v29];
     }
 
     else
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v20 = [MEMORY[0x1E69D4938] sharedConfig];
-      v21 = [v20 shouldLog];
-      if ([v20 shouldLogToDisk])
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+      if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog3 | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog3;
       }
 
-      if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v22 &= 2u;
       }
@@ -620,7 +620,7 @@ LABEL_4:
           }
         }
 
-        [(SUWebView *)v7 loadArchive:a3, v29];
+        [(SUWebView *)webView loadArchive:page, v29];
       }
 
       else
@@ -649,29 +649,29 @@ LABEL_4:
   }
 }
 
-- (void)_setExistingNavigationItem:(id)a3
+- (void)_setExistingNavigationItem:(id)item
 {
   [(SUDelayedNavigationItem *)self->_delayedNavigationItem setWrappedNavigationItem:?];
   v5.receiver = self;
   v5.super_class = SUWebViewController;
-  [(SUViewController *)&v5 _setExistingNavigationItem:a3];
+  [(SUViewController *)&v5 _setExistingNavigationItem:item];
 }
 
-- (void)setScriptProperties:(id)a3
+- (void)setScriptProperties:(id)properties
 {
   v5.receiver = self;
   v5.super_class = SUWebViewController;
   [(SUViewController *)&v5 setScriptProperties:?];
-  [(SUWebViewController *)self _applyScriptProperties:a3];
+  [(SUWebViewController *)self _applyScriptProperties:properties];
 }
 
-- (void)setStorePageProtocol:(id)a3
+- (void)setStorePageProtocol:(id)protocol
 {
   storePageProtocol = self->_storePageProtocol;
-  if (storePageProtocol != a3)
+  if (storePageProtocol != protocol)
   {
 
-    self->_storePageProtocol = a3;
+    self->_storePageProtocol = protocol;
 
     [(SUWebViewController *)self storePageProtocolDidChange];
   }
@@ -712,40 +712,40 @@ LABEL_4:
   [(SUViewController *)&v3 storePageProtocolDidChange];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_hasEverAppeared)
   {
     [(SUWebViewManager *)self->_webViewManager dispatchEvent:0 forName:@"didreappear"];
   }
 
   self->_hasEverAppeared = 1;
-  v5 = [(SUWebViewController *)self copyScriptProperties];
-  [(SUWebViewController *)self _applyScriptProperties:v5];
-  if ((-[SUWebView isLoading](self->_webView, "isLoading") & 1) == 0 && -[SUWebView request](self->_webView, "request") && [v5 flashesScrollIndicators])
+  copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
+  [(SUWebViewController *)self _applyScriptProperties:copyScriptProperties];
+  if ((-[SUWebView isLoading](self->_webView, "isLoading") & 1) == 0 && -[SUWebView request](self->_webView, "request") && [copyScriptProperties flashesScrollIndicators])
   {
     [-[SUWebView _scrollView](self->_webView "_scrollView")];
   }
 
   v6.receiver = self;
   v6.super_class = SUWebViewController;
-  [(SUViewController *)&v6 viewDidAppear:v3];
+  [(SUViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUWebViewManager *)self->_webViewManager dispatchEvent:0 forName:@"diddisappear"];
   [-[SUWebView _scrollView](self->_webView "_scrollView")];
   v5.receiver = self;
   v5.super_class = SUWebViewController;
-  [(SUViewController *)&v5 viewDidDisappear:v3];
+  [(SUViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_hasEverAppeared)
   {
     v5 = [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
@@ -763,17 +763,17 @@ LABEL_4:
 
   v6.receiver = self;
   v6.super_class = SUWebViewController;
-  [(SUViewController *)&v6 viewWillAppear:v3];
+  [(SUViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUWebViewManager *)self->_webViewManager dispatchEvent:0 forName:@"willdisappear"];
   self->_lastKnownOrientation = [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   v5.receiver = self;
   v5.super_class = SUWebViewController;
-  [(SUViewController *)&v5 viewWillDisappear:v3];
+  [(SUViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (id)newRotationController
@@ -783,17 +783,17 @@ LABEL_4:
   return [(SURotationController *)v3 initWithViewController:self];
 }
 
-- (void)webViewManager:(id)a3 didFailLoadWithError:(id)a4
+- (void)webViewManager:(id)manager didFailLoadWithError:(id)error
 {
-  if ([a4 code] != -999)
+  if ([error code] != -999)
   {
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 
-    [(SUWebViewController *)self _finishLoadWithResult:0 error:a4];
+    [(SUWebViewController *)self _finishLoadWithResult:0 error:error];
   }
 }
 
-- (void)webViewManager:(id)a3 didReceivePrimaryResponse:(id)a4
+- (void)webViewManager:(id)manager didReceivePrimaryResponse:(id)response
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!self->_mescalSession)
@@ -801,7 +801,7 @@ LABEL_4:
     goto LABEL_20;
   }
 
-  [a4 allHeaderFields];
+  [response allHeaderFields];
   v6 = ISDictionaryValueForCaseInsensitiveString();
   if (![v6 length])
   {
@@ -811,22 +811,22 @@ LABEL_4:
   v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v6 options:0];
   v26 = 0;
   v8 = [(SUMescalSession *)self->_mescalSession verifyPrimeSignature:v7 error:&v26];
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
   if (v8)
   {
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v13 = v11;
     }
@@ -839,7 +839,7 @@ LABEL_4:
     if (v13)
     {
       v14 = objc_opt_class();
-      v15 = [a4 URL];
+      v15 = [response URL];
       v27 = 138412546;
       v28 = v14;
       v29 = 2112;
@@ -852,7 +852,7 @@ LABEL_4:
 
   else
   {
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v11;
     }
@@ -885,7 +885,7 @@ LABEL_17:
   }
 
 LABEL_20:
-  v21 = [a4 URL];
+  v21 = [response URL];
   displayedURL = self->_displayedURL;
   if (displayedURL != v21)
   {
@@ -895,7 +895,7 @@ LABEL_20:
   }
 }
 
-- (void)webViewManager:(id)a3 didRejectInvalidRequest:(id)a4
+- (void)webViewManager:(id)manager didRejectInvalidRequest:(id)request
 {
   if (self->_loadBlock)
   {
@@ -905,24 +905,24 @@ LABEL_20:
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURLRequest:a4];
+    v5 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURLRequest:request];
     [(UIViewController *)self reloadWithURLRequestProperties:?];
   }
 }
 
-- (void)webViewManager:(id)a3 willInjectScriptInterface:(id)a4
+- (void)webViewManager:(id)manager willInjectScriptInterface:(id)interface
 {
-  v5 = [-[SUWebViewController parentViewController](self parentViewController];
+  parentViewController = [-[SUWebViewController parentViewController](self parentViewController];
 
-  [a4 setScriptWindowContext:v5];
+  [interface setScriptWindowContext:parentViewController];
 }
 
-- (void)webViewManagerDidFinishLoad:(id)a3
+- (void)webViewManagerDidFinishLoad:(id)load
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = [(SUWebView *)self->_webView _browserView];
+  _browserView = [(SUWebView *)self->_webView _browserView];
   WebThreadLock();
-  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(v4 "webView")];
+  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(_browserView "webView")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 statusCode] - 400) <= 0x257)
   {
@@ -931,12 +931,12 @@ LABEL_20:
 
   [(SUDelayedNavigationItem *)self->_delayedNavigationItem commitDelayedChanges];
   [(SUDelayedNavigationItem *)self->_delayedNavigationItem setShouldDelayChanges:0];
-  v6 = [(SUObjectPool *)self->_objectPool vendedObjects];
+  vendedObjects = [(SUObjectPool *)self->_objectPool vendedObjects];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  v7 = [(NSArray *)vendedObjects countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -947,7 +947,7 @@ LABEL_20:
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(vendedObjects);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
@@ -957,7 +957,7 @@ LABEL_20:
         }
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v29 objects:v41 count:16];
+      v8 = [(NSArray *)vendedObjects countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
     while (v8);
@@ -966,11 +966,11 @@ LABEL_20:
   self->_objectPool = 0;
   [(SUWebViewController *)self _reloadUI];
   [(SUWebViewController *)self _removePlaceholderBackgroundView];
-  v12 = self;
+  selfCopy = self;
   [(SUWebViewController *)self setViewIsReady:1];
   [(SUWebViewController *)self _applySavedScrollOffsetIfPossible];
-  v13 = [(SUWebViewController *)self copyScriptProperties];
-  if ([v13 flashesScrollIndicators])
+  copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
+  if ([copyScriptProperties flashesScrollIndicators])
   {
     [-[SUWebView _scrollView](self->_webView "_scrollView")];
   }
@@ -980,8 +980,8 @@ LABEL_20:
   {
     if (v28)
     {
-      v14 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v14 setStatusBarStyle:v28];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] setStatusBarStyle:v28];
     }
 
     else
@@ -994,19 +994,19 @@ LABEL_20:
   {
     Current = CFAbsoluteTimeGetCurrent();
     [(ISURLRequestPerformance *)self->_performanceMetrics setRenderFinishTime:?];
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v17 = [v16 shouldLog];
-    if ([v16 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -1043,26 +1043,26 @@ LABEL_20:
   [(SUWebViewController *)self _finishLoadWithResult:1 error:0];
 }
 
-- (void)webViewManagerDidStartLoad:(id)a3
+- (void)webViewManagerDidStartLoad:(id)load
 {
   v21 = *MEMORY[0x1E69E9840];
   [(SUDelayedNavigationItem *)self->_delayedNavigationItem setShouldDelayChanges:1];
   if (self->_performanceMetrics)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -1096,38 +1096,38 @@ LABEL_20:
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-- (void)webViewManager:(id)a3 webDocumentViewDidSetFrame:(CGRect)a4
+- (void)webViewManager:(id)manager webDocumentViewDidSetFrame:(CGRect)frame
 {
-  [(SUWebViewController *)self _applySavedScrollOffsetIfPossible:a3];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [(SUWebViewController *)self _applySavedScrollOffsetIfPossible:manager];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v5 postNotificationName:@"SUViewControllerDocumentBoundsDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"SUViewControllerDocumentBoundsDidChangeNotification" object:self];
 }
 
-- (void)_loadWithURLOperation:(id)a3 completionBlock:(id)a4
+- (void)_loadWithURLOperation:(id)operation completionBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
   loadBlock = self->_loadBlock;
-  if (loadBlock != a4)
+  if (loadBlock != block)
   {
 
-    self->_loadBlock = [a4 copy];
+    self->_loadBlock = [block copy];
   }
 
   v8 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -1155,7 +1155,7 @@ LABEL_20:
   v17[3] = &unk_1E8164C40;
   v17[4] = self;
   v17[5] = v8;
-  [(SUWebViewController *)self _getURLRequestForOperation:a3 block:v17, v15];
+  [(SUWebViewController *)self _getURLRequestForOperation:operation block:v17, v15];
 }
 
 uint64_t __61__SUWebViewController__loadWithURLOperation_completionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -1200,25 +1200,25 @@ uint64_t __61__SUWebViewController__loadWithURLOperation_completionBlock___block
   return [objc_msgSend(*(a1 + 40) object];
 }
 
-- (void)_setPerformanceMetrics:(id)a3
+- (void)_setPerformanceMetrics:(id)metrics
 {
   performanceMetrics = self->_performanceMetrics;
-  if (performanceMetrics != a3)
+  if (performanceMetrics != metrics)
   {
 
-    self->_performanceMetrics = a3;
+    self->_performanceMetrics = metrics;
     webViewManager = self->_webViewManager;
 
-    [(SUWebViewManager *)webViewManager setInitialRequestPerformance:a3];
+    [(SUWebViewManager *)webViewManager setInitialRequestPerformance:metrics];
   }
 }
 
 - (void)_addPlaceholderBackgroundView
 {
-  v3 = [[(SUWebViewController *)self webView] _browserView];
-  [v3 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
-  [v3 setOpaque:0];
-  [v3 setNeedsDisplay];
+  _browserView = [[(SUWebViewController *)self webView] _browserView];
+  [_browserView setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
+  [_browserView setOpaque:0];
+  [_browserView setNeedsDisplay];
   if (![(SUWebViewController *)self _placeholderBackgroundView])
   {
 
@@ -1257,11 +1257,11 @@ uint64_t __61__SUWebViewController__loadWithURLOperation_completionBlock___block
 LABEL_6:
   if (v9 != v3 || v8 != v4)
   {
-    v12 = [(SUWebView *)self->_webView scrollView];
-    if (v12)
+    scrollView = [(SUWebView *)self->_webView scrollView];
+    if (scrollView)
     {
-      v13 = v12;
-      [v12 contentOffset];
+      v13 = scrollView;
+      [scrollView contentOffset];
       if (v14 < 0.00000011920929)
       {
         [v13 contentSize];
@@ -1281,84 +1281,84 @@ LABEL_6:
   }
 }
 
-- (void)_applyScriptProperties:(id)a3
+- (void)_applyScriptProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
     webView = self->_webView;
     if (webView)
     {
-      v6 = [(SUWebView *)webView _scrollView];
-      [v6 setShowsHorizontalScrollIndicator:{objc_msgSend(a3, "showsHorizontalScrollIndicator")}];
-      [v6 setShowsVerticalScrollIndicator:{objc_msgSend(a3, "showsVerticalScrollIndicator")}];
-      [a3 scrollContentInsets];
+      _scrollView = [(SUWebView *)webView _scrollView];
+      [_scrollView setShowsHorizontalScrollIndicator:{objc_msgSend(properties, "showsHorizontalScrollIndicator")}];
+      [_scrollView setShowsVerticalScrollIndicator:{objc_msgSend(properties, "showsVerticalScrollIndicator")}];
+      [properties scrollContentInsets];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
       if (_UIApplicationUsesLegacyUI())
       {
-        SUUIScrollViewSetDefaultContentInset(v6, v8, v10, v12, v14);
+        SUUIScrollViewSetDefaultContentInset(_scrollView, v8, v10, v12, v14);
       }
 
-      -[SUWebView _setAlwaysDispatchesScrollEvents:](self->_webView, "_setAlwaysDispatchesScrollEvents:", [a3 alwaysDispatchesScrollEvents]);
-      v15 = [a3 showsBackgroundShadow];
-      v16 = [a3 topExtensionColor];
-      if (v16)
+      -[SUWebView _setAlwaysDispatchesScrollEvents:](self->_webView, "_setAlwaysDispatchesScrollEvents:", [properties alwaysDispatchesScrollEvents]);
+      showsBackgroundShadow = [properties showsBackgroundShadow];
+      topExtensionColor = [properties topExtensionColor];
+      if (topExtensionColor)
       {
-        v17 = v16;
-        if (!SUGradientColorIsPatternColor(v16, 0))
+        v17 = topExtensionColor;
+        if (!SUGradientColorIsPatternColor(topExtensionColor, 0))
         {
-          [v6 setTopExtensionViewColor:0];
-          [(SUWebView *)self->_webView setShowsTopBackgroundShadow:v15];
+          [_scrollView setTopExtensionViewColor:0];
+          [(SUWebView *)self->_webView setShowsTopBackgroundShadow:showsBackgroundShadow];
           [(SUWebView *)self->_webView setTopBackgroundColor:v17];
-          v15 = 0;
+          showsBackgroundShadow = 0;
           goto LABEL_11;
         }
 
-        v18 = v6;
+        v18 = _scrollView;
         v19 = v17;
       }
 
       else
       {
-        v18 = v6;
+        v18 = _scrollView;
         v19 = 0;
       }
 
       [v18 setTopExtensionViewColor:v19];
       [(SUWebView *)self->_webView setTopBackgroundColor:0];
 LABEL_11:
-      [v6 _setShowsBackgroundShadow:v15];
-      v20 = [(SUWebView *)self->_webView _browserView];
-      [v20 setAccessoryEnabled:{objc_msgSend(a3, "shouldShowFormAccessory")}];
-      [v20 setDoubleTapEnabled:{objc_msgSend(a3, "isDoubleTapEnabled")}];
-      [v20 setInputViewObeysDOMFocus:{objc_msgSend(a3, "inputViewObeysDOMFocus")}];
-      -[SUWebView setScrollingEnabled:](self->_webView, "setScrollingEnabled:", [a3 isScrollingDisabled] ^ 1);
+      [_scrollView _setShowsBackgroundShadow:showsBackgroundShadow];
+      _browserView = [(SUWebView *)self->_webView _browserView];
+      [_browserView setAccessoryEnabled:{objc_msgSend(properties, "shouldShowFormAccessory")}];
+      [_browserView setDoubleTapEnabled:{objc_msgSend(properties, "isDoubleTapEnabled")}];
+      [_browserView setInputViewObeysDOMFocus:{objc_msgSend(properties, "inputViewObeysDOMFocus")}];
+      -[SUWebView setScrollingEnabled:](self->_webView, "setScrollingEnabled:", [properties isScrollingDisabled] ^ 1);
     }
   }
 
-  [(SUWebViewController *)self _reloadBackgroundViewPropertiesWithScriptProperties:a3];
+  [(SUWebViewController *)self _reloadBackgroundViewPropertiesWithScriptProperties:properties];
 }
 
-- (void)_finishLoadWithResult:(BOOL)a3 error:(id)a4
+- (void)_finishLoadWithResult:(BOOL)result error:(id)error
 {
   loadBlock = self->_loadBlock;
   if (loadBlock)
   {
-    v6 = a3;
+    resultCopy = result;
     v9 = loadBlock;
-    v8 = self;
+    selfCopy = self;
 
     self->_loadBlock = 0;
-    v9[2](v9, v6, a4);
+    v9[2](v9, resultCopy, error);
   }
 }
 
-- (void)_getURLRequestForOperation:(id)a3 block:(id)a4
+- (void)_getURLRequestForOperation:(id)operation block:(id)block
 {
-  v7 = [a3 requestProperties];
-  v8 = [MEMORY[0x1E69D49F8] contextWithBagType:{objc_msgSend(v7, "URLBagType")}];
+  requestProperties = [operation requestProperties];
+  v8 = [MEMORY[0x1E69D49F8] contextWithBagType:{objc_msgSend(requestProperties, "URLBagType")}];
   v9 = [objc_alloc(MEMORY[0x1E69E4770]) initWithBagContext:v8];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1366,10 +1366,10 @@ LABEL_11:
   v10[3] = &unk_1E8164C90;
   v10[4] = v9;
   v10[5] = self;
-  v10[6] = v7;
-  v10[7] = a3;
+  v10[6] = requestProperties;
+  v10[7] = operation;
   v10[8] = v8;
-  v10[9] = a4;
+  v10[9] = block;
   [v9 setCompletionBlock:v10];
   [(SUViewController *)self enqueueOperation:v9 cancelOnDealloc:0];
 }
@@ -1671,24 +1671,24 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
   v2 = *(a1 + 32);
 }
 
-- (void)_loadURLRequest:(id)a3
+- (void)_loadURLRequest:(id)request
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (request)
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -1700,7 +1700,7 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
       v16 = 2048;
       Current = CFAbsoluteTimeGetCurrent();
       v18 = 2112;
-      v19 = [a3 URL];
+      v19 = [request URL];
       LODWORD(v13) = 32;
       v12 = &v14;
       v8 = _os_log_send_and_compose_impl();
@@ -1714,8 +1714,8 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
       }
     }
 
-    -[SUWebViewController _prepareToLoadURL:](self, "_prepareToLoadURL:", [a3 URL]);
-    [[(SUWebViewController *)self webView] loadRequest:a3];
+    -[SUWebViewController _prepareToLoadURL:](self, "_prepareToLoadURL:", [request URL]);
+    [[(SUWebViewController *)self webView] loadRequest:request];
   }
 
   else
@@ -1728,26 +1728,26 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
 
 - (id)_placeholderBackgroundView
 {
-  v2 = [(SUWebView *)self->_webView _scrollView];
+  _scrollView = [(SUWebView *)self->_webView _scrollView];
 
-  return [v2 viewWithTag:1886151271];
+  return [_scrollView viewWithTag:1886151271];
 }
 
-- (void)_prepareToLoadURL:(id)a3
+- (void)_prepareToLoadURL:(id)l
 {
-  v5 = [(SUWebViewController *)self webView];
-  [-[SUWebView _browserView](v5 "_browserView")];
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
+  webView = [(SUWebViewController *)self webView];
+  [-[SUWebView _browserView](webView "_browserView")];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   [-[SUWebViewController view](self "view")];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(SUWebViewController *)self copyScriptProperties];
-  if (![v15 shouldLoadProgressively] || objc_msgSend(v6, "launchedToTest") && (objc_msgSend(v6, "shouldRecordExtendedLaunchTime") & 1) != 0)
+  copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
+  if (![copyScriptProperties shouldLoadProgressively] || objc_msgSend(mEMORY[0x1E69DC668], "launchedToTest") && (objc_msgSend(mEMORY[0x1E69DC668], "shouldRecordExtendedLaunchTime") & 1) != 0)
   {
     [(SUWebViewController *)self _removePlaceholderBackgroundView];
-    [(SUWebView *)v5 removeFromSuperview];
+    [(SUWebView *)webView removeFromSuperview];
     v16 = 0;
     v17 = 0;
     v14 = 1.0;
@@ -1761,28 +1761,28 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
     v16 = 18;
   }
 
-  [(SUWebView *)v5 setAutoresizingMask:v16];
+  [(SUWebView *)webView setAutoresizingMask:v16];
   [(SUWebViewController *)self setViewIsReady:v17];
-  [(SUWebView *)v5 setFrame:v8, v10, v12, v14];
+  [(SUWebView *)webView setFrame:v8, v10, v12, v14];
 
-  self->_url = a3;
+  self->_url = l;
   self->_displayedURL = self->_url;
 
   [(SUWebViewController *)self _reloadObjectPool];
 }
 
-- (void)_reloadBackgroundViewPropertiesWithScriptProperties:(id)a3
+- (void)_reloadBackgroundViewPropertiesWithScriptProperties:(id)properties
 {
   if ([(SUWebViewController *)self isViewLoaded])
   {
-    v5 = [a3 usesBlurredBackground] ? objc_msgSend(MEMORY[0x1E69DC888], "clearColor") : objc_msgSend(a3, "backgroundColor");
+    v5 = [properties usesBlurredBackground] ? objc_msgSend(MEMORY[0x1E69DC888], "clearColor") : objc_msgSend(properties, "backgroundColor");
     v6 = v5;
     if (v5)
     {
-      v7 = [(SUWebViewController *)self view];
-      [v7 setBackgroundColor:v6];
+      view = [(SUWebViewController *)self view];
+      [view setBackgroundColor:v6];
       [v6 alphaComponent];
-      [v7 setOpaque:v8 == 1.0];
+      [view setOpaque:v8 == 1.0];
       [(SUWebView *)self->_webView setBackgroundColor:v6];
       webView = self->_webView;
       [v6 alphaComponent];
@@ -1818,52 +1818,52 @@ void __56__SUWebViewController__getURLRequestForOperation_block___block_invoke_1
   v7 = [-[SUViewController viewControllerFactory](self "viewControllerFactory")];
   [v7 setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
   [(SUWebViewController *)self addChildViewController:v7];
-  v3 = [(SUWebViewController *)self copyScriptProperties];
-  if ([v3 placeholderBackgroundGradient])
+  copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
+  if ([copyScriptProperties placeholderBackgroundGradient])
   {
-    v4 = [v3 placeholderBackgroundGradient];
+    placeholderBackgroundGradient = [copyScriptProperties placeholderBackgroundGradient];
   }
 
   else
   {
-    v4 = [-[UIViewController section](self "section")];
-    if (!v4)
+    placeholderBackgroundGradient = [-[UIViewController section](self "section")];
+    if (!placeholderBackgroundGradient)
     {
       goto LABEL_5;
     }
   }
 
-  [v7 setBackgroundGradient:v4];
+  [v7 setBackgroundGradient:placeholderBackgroundGradient];
 LABEL_5:
-  [v7 setScriptProperties:v3];
+  [v7 setScriptProperties:copyScriptProperties];
 
-  v5 = [[(SUWebViewController *)self webView] _scrollView];
-  v6 = [v7 view];
+  _scrollView = [[(SUWebViewController *)self webView] _scrollView];
+  view = [v7 view];
   [v7 setView:0];
-  [v5 bounds];
-  [v6 setFrame:?];
-  [v6 setTag:1886151271];
-  [v5 insertSubview:v6 atIndex:0];
+  [_scrollView bounds];
+  [view setFrame:?];
+  [view setTag:1886151271];
+  [_scrollView insertSubview:view atIndex:0];
 
   [(SUWebViewController *)self removeChildViewController:v7];
 }
 
 - (void)_reloadUI
 {
-  v3 = [(SUWebViewController *)self view];
-  v4 = [(SUWebViewController *)self webView];
-  [(SUWebView *)v4 setAutoresizingMask:18];
-  [v3 bounds];
-  [(SUWebView *)v4 setFrame:?];
-  [v3 addSubview:v4];
-  v5 = [(SUWebView *)v4 title];
-  if ([(NSString *)v5 length])
+  view = [(SUWebViewController *)self view];
+  webView = [(SUWebViewController *)self webView];
+  [(SUWebView *)webView setAutoresizingMask:18];
+  [view bounds];
+  [(SUWebView *)webView setFrame:?];
+  [view addSubview:webView];
+  title = [(SUWebView *)webView title];
+  if ([(NSString *)title length])
   {
-    [(SUViewController *)self setTitle:v5 changeTabBarItem:0];
+    [(SUViewController *)self setTitle:title changeTabBarItem:0];
   }
 
-  v6 = [(SUWebViewController *)self copyScriptProperties];
-  [(SUWebViewController *)self _applyScriptProperties:v6];
+  copyScriptProperties = [(SUWebViewController *)self copyScriptProperties];
+  [(SUWebViewController *)self _applyScriptProperties:copyScriptProperties];
 }
 
 - (void)_removePlaceholderBackgroundView
@@ -1872,36 +1872,36 @@ LABEL_5:
   if (v3)
   {
     v4 = v3;
-    v5 = [(SUWebView *)self->_webView _browserView];
-    [v5 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "systemBackgroundColor")}];
-    [v5 setOpaque:{-[SUWebView isOpaque](self->_webView, "isOpaque")}];
-    [v5 setNeedsDisplay];
+    _browserView = [(SUWebView *)self->_webView _browserView];
+    [_browserView setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "systemBackgroundColor")}];
+    [_browserView setOpaque:{-[SUWebView isOpaque](self->_webView, "isOpaque")}];
+    [_browserView setNeedsDisplay];
 
     [v4 removeFromSuperview];
   }
 }
 
-- (void)_sendOrientationWillChangeToInterfaceOrientation:(int64_t)a3
+- (void)_sendOrientationWillChangeToInterfaceOrientation:(int64_t)orientation
 {
   v4 = 90;
   v5 = -90;
   v6 = 180;
-  if (a3 != 2)
+  if (orientation != 2)
   {
     v6 = 0;
   }
 
-  if (a3 != 4)
+  if (orientation != 4)
   {
     v5 = v6;
   }
 
-  if (a3 != 3)
+  if (orientation != 3)
   {
     v4 = v5;
   }
 
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v7 = 0;
   }

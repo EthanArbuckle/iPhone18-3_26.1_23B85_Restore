@@ -1,123 +1,123 @@
 @interface PVEffect
-+ (BOOL)effectIDIsNone:(id)a3;
-+ (BOOL)effectIDIsRegistered:(id)a3;
-+ (BOOL)isAllCapsFromAttributes:(id)a3;
-+ (BOOL)isVideoForEffectID:(id)a3;
-+ (Class)classForEffectID:(id)a3;
-+ (double)baselineOffsetFromAttributedString:(id)a3;
-+ (double)textHeightFromAttributedString:(id)a3 defaultAttributes:(id)a4 scale:(double)a5;
-+ (double)xOffsetForTextTrackingFromAttributedString:(id)a3;
++ (BOOL)effectIDIsNone:(id)none;
++ (BOOL)effectIDIsRegistered:(id)registered;
++ (BOOL)isAllCapsFromAttributes:(id)attributes;
++ (BOOL)isVideoForEffectID:(id)d;
++ (Class)classForEffectID:(id)d;
++ (double)baselineOffsetFromAttributedString:(id)string;
++ (double)textHeightFromAttributedString:(id)string defaultAttributes:(id)attributes scale:(double)scale;
++ (double)xOffsetForTextTrackingFromAttributedString:(id)string;
 + (id)_effectRegistry;
 + (id)_effectRegistryForLookup;
 + (id)_registeredEffectClasses;
-+ (id)_registryEntryForEffectID:(id)a3;
++ (id)_registryEntryForEffectID:(id)d;
 + (id)allRegisteredEffectIDs;
-+ (id)attributeForName:(id)a3 fromAttributedString:(id)a4 defaultAttributes:(id)a5;
-+ (id)categoryForEffectID:(id)a3;
++ (id)attributeForName:(id)name fromAttributedString:(id)string defaultAttributes:(id)attributes;
++ (id)categoryForEffectID:(id)d;
 + (id)defaultVideoTransitionEffectID;
-+ (id)descriptionForEffectID:(id)a3;
-+ (id)displayNameForEffectID:(id)a3;
-+ (id)displayNameForEffectType:(id)a3;
-+ (id)effectTypeForEffectID:(id)a3;
-+ (id)firstRegisteredEffectIDContainingSubstring:(id)a3;
-+ (id)newEffectWithData:(id)a3;
-+ (id)newEffectWithID:(id)a3;
-+ (id)newEffectWithURL:(id)a3;
-+ (id)propertiesForEffect:(id)a3;
-+ (id)registeredEffectIDsForClass:(Class)a3;
-+ (id)registeredEffectIDsForEffectType:(id)a3;
-+ (id)registeredEffectIDsForEffectTypes:(id)a3;
-+ (id)shadowFromAttributedString:(id)a3 defaultAttributes:(id)a4;
-+ (id)themeForEffectID:(id)a3;
++ (id)descriptionForEffectID:(id)d;
++ (id)displayNameForEffectID:(id)d;
++ (id)displayNameForEffectType:(id)type;
++ (id)effectTypeForEffectID:(id)d;
++ (id)firstRegisteredEffectIDContainingSubstring:(id)substring;
++ (id)newEffectWithData:(id)data;
++ (id)newEffectWithID:(id)d;
++ (id)newEffectWithURL:(id)l;
++ (id)propertiesForEffect:(id)effect;
++ (id)registeredEffectIDsForClass:(Class)class;
++ (id)registeredEffectIDsForEffectType:(id)type;
++ (id)registeredEffectIDsForEffectTypes:(id)types;
++ (id)shadowFromAttributedString:(id)string defaultAttributes:(id)attributes;
++ (id)themeForEffectID:(id)d;
 + (id)userVisibleEffectIDs;
-+ (int64_t)verticalAlignmentFromAttributedString:(id)a3 defaultAttributes:(id)a4;
-+ (void)_registerEffectsInBundle:(id)a3 atPath:(id)a4;
++ (int64_t)verticalAlignmentFromAttributedString:(id)string defaultAttributes:(id)attributes;
++ (void)_registerEffectsInBundle:(id)bundle atPath:(id)path;
 + (void)clearPreviewStats;
-+ (void)deferEffectRegistrationForClass:(Class)a3;
++ (void)deferEffectRegistrationForClass:(Class)class;
 + (void)ensureEffectsRegistered;
-+ (void)initEffectRegistryWithHostDelegate:(id)a3;
-+ (void)modifyAttributedStringByAdjustingFont:(id)a3 toFitSize:(CGSize)a4;
-+ (void)modifyAttributedStringByAdjustingFontSize:(id)a3 scale:(double)a4;
-+ (void)modifyAttributedStringByAdjustingForNegativeLineSpacing:(id)a3 scale:(double)a4;
-+ (void)modifyAttributedStringByAdjustingKerning:(id)a3 attributes:(id)a4 range:(_NSRange)a5 scale:(double)a6;
-+ (void)modifyAttributedStringByAdjustingOutline:(id)a3 attributes:(id)a4 range:(_NSRange)a5 scale:(double)a6;
-+ (void)modifyAttributedStringByAdjustingShadow:(id)a3 effectTransform:(id)a4;
-+ (void)modifyAttributedStringByAdjustingShadow:(id)a3 scale:(double)a4 rotation:(double)a5;
-+ (void)modifyAttributedStringByApplyingSubstituteFont:(id)a3 attributes:(id)a4 range:(_NSRange)a5;
-+ (void)registerEffectClass:(Class)a3 forEffectID:(id)a4 withProperties:(id)a5;
-+ (void)willTerminate:(id)a3;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3;
++ (void)initEffectRegistryWithHostDelegate:(id)delegate;
++ (void)modifyAttributedStringByAdjustingFont:(id)font toFitSize:(CGSize)size;
++ (void)modifyAttributedStringByAdjustingFontSize:(id)size scale:(double)scale;
++ (void)modifyAttributedStringByAdjustingForNegativeLineSpacing:(id)spacing scale:(double)scale;
++ (void)modifyAttributedStringByAdjustingKerning:(id)kerning attributes:(id)attributes range:(_NSRange)range scale:(double)scale;
++ (void)modifyAttributedStringByAdjustingOutline:(id)outline attributes:(id)attributes range:(_NSRange)range scale:(double)scale;
++ (void)modifyAttributedStringByAdjustingShadow:(id)shadow effectTransform:(id)transform;
++ (void)modifyAttributedStringByAdjustingShadow:(id)shadow scale:(double)scale rotation:(double)rotation;
++ (void)modifyAttributedStringByApplyingSubstituteFont:(id)font attributes:(id)attributes range:(_NSRange)range;
++ (void)registerEffectClass:(Class)class forEffectID:(id)d withProperties:(id)properties;
++ (void)willTerminate:(id)terminate;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range;
 - ($948BFCBB2DDE7F94AFEDE1DD48437795)effectRange;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)applyTimedPropertiesForTime:(id *)a3;
-- (BOOL)bounds:(CGRect *)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)applyTimedPropertiesForTime:(id *)time;
+- (BOOL)bounds:(CGRect *)bounds atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
 - (BOOL)isHidden;
 - (BOOL)isVisible;
 - (BOOL)loadEffect;
-- (CGPoint)convertPointToView:(id *)a3 atTime:(BOOL)a4 forcePosterFrame:(BOOL)a5 includeTransformAnimation:(BOOL)a6 includePlayableAspectScale:(CGSize)a7 viewSize:(int)a8 viewOrigin:;
-- (CGPoint)pointForKey:(id)a3 defaultValue:(CGPoint)a4;
+- (CGPoint)convertPointToView:(id *)view atTime:(BOOL)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(CGSize)scale viewSize:(int)size viewOrigin:;
+- (CGPoint)pointForKey:(id)key defaultValue:(CGPoint)value;
 - (CGRect)outputROI;
-- (CGRect)playableRectInView:(CGSize)a3;
-- (CGRect)playableRectInView_NoLock:(CGSize)a3 properties:(id)a4;
-- (CGRect)rectForKey:(id)a3 defaultValue:(CGRect)a4;
+- (CGRect)playableRectInView:(CGSize)view;
+- (CGRect)playableRectInView_NoLock:(CGSize)lock properties:(id)properties;
+- (CGRect)rectForKey:(id)key defaultValue:(CGRect)value;
 - (CGSize)outputSize;
-- (CGSize)sizeForKey:(id)a3 defaultValue:(CGSize)a4;
+- (CGSize)sizeForKey:(id)key defaultValue:(CGSize)value;
 - (NSDictionary)inspectableProperties;
-- (PVEffect)initWithCoder:(id)a3;
-- (PVEffect)initWithContentID:(id)a3 andDictionary:(id)a4;
-- (PVEffect)initWithEffectID:(id)a3;
+- (PVEffect)initWithCoder:(id)coder;
+- (PVEffect)initWithContentID:(id)d andDictionary:(id)dictionary;
+- (PVEffect)initWithEffectID:(id)d;
 - (__n128)getScale;
-- (__n128)matrixFloat4x4ForKey:(void *)a1;
-- (double)convertPointFromView:(uint64_t)a1@<X8> atTime:viewSize:viewOrigin:;
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4;
+- (__n128)matrixFloat4x4ForKey:(void *)key;
+- (double)convertPointFromView:(uint64_t)view@<X8> atTime:viewSize:viewOrigin:;
+- (double)doubleForKey:(id)key defaultValue:(double)value;
 - (double)outputAspectRatio;
 - (double)playableAspectRatio;
-- (double)playableAspectRatio_NoLock:(id)a3;
-- (double)playableScaleInView:(CGSize)a3;
-- (double)playableScaleInView_NoLock:(CGSize)a3 properties:(id)a4;
+- (double)playableAspectRatio_NoLock:(id)lock;
+- (double)playableScaleInView:(CGSize)view;
+- (double)playableScaleInView_NoLock:(CGSize)lock properties:(id)properties;
 - (float)proxyRenderScale;
-- (id)attributedStringForKey:(id)a3 defaultValue:(id)a4;
+- (id)attributedStringForKey:(id)key defaultValue:(id)value;
 - (id)contentBundle;
-- (id)contentPropertyForKey:(id)a3;
+- (id)contentPropertyForKey:(id)key;
 - (id)contentRegistryProperties;
-- (id)contentRegistryPropertyForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)contentRegistryPropertyForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDisplayName;
 - (id)description;
 - (id)descriptionOfInspectableProperties;
 - (id)effectDescription;
-- (id)inspectablePropertyForKey:(id)a3;
-- (id)stringForKey:(id)a3 defaultValue:(id)a4;
-- (id)userContextForTimedPropertiesDelegate:(id)a3;
+- (id)inspectablePropertyForKey:(id)key;
+- (id)stringForKey:(id)key defaultValue:(id)value;
+- (id)userContextForTimedPropertiesDelegate:(id)delegate;
 - (int)playableAspectRatioPreservationMode;
-- (int)playableAspectRatioPreservationMode_NoLock:(id)a3;
+- (int)playableAspectRatioPreservationMode_NoLock:(id)lock;
 - (void)_configureComponents;
-- (void)_copyWithZone:(_NSZone *)a3 into:(id)a4;
-- (void)_decodeFromCoder:(id)a3 into:(id)a4;
-- (void)_postInit:(id)a3;
-- (void)addEntriesToInspectableProperties:(id)a3;
+- (void)_copyWithZone:(_NSZone *)zone into:(id)into;
+- (void)_decodeFromCoder:(id)coder into:(id)into;
+- (void)_postInit:(id)init;
+- (void)addEntriesToInspectableProperties:(id)properties;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadEffectOnQueue:(id)a3 completion:(id)a4;
-- (void)loadResourcesOnQueue:(id)a3 completion:(id)a4;
-- (void)matrixDouble4x4ForKey:(void *)a1@<X0>;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadEffectOnQueue:(id)queue completion:(id)completion;
+- (void)loadResourcesOnQueue:(id)queue completion:(id)completion;
+- (void)matrixDouble4x4ForKey:(void *)key@<X0>;
 - (void)releaseEffect;
-- (void)runWithInspectableProperties:(id)a3;
-- (void)runWithInspectableProperties_NoLock:(id)a3;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setEffectRange:(id *)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setInspectableProperties:(id)a3;
-- (void)setInspectableProperty:(id)a3 forKey:(id)a4;
-- (void)setMatrixDouble4x4:(__int128 *)a3 forKey:(void *)a4;
-- (void)setMatrixFloat4x4:(double)a3 forKey:(double)a4;
-- (void)setPlayableAspectRatio:(double)a3;
-- (void)setPlayableAspectRatioPreservationMode:(int)a3;
-- (void)setPoint:(CGPoint)a3 forKey:(id)a4;
-- (void)setRect:(CGRect)a3 forKey:(id)a4;
-- (void)setSize:(CGSize)a3 forKey:(id)a4;
+- (void)runWithInspectableProperties:(id)properties;
+- (void)runWithInspectableProperties_NoLock:(id)lock;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setEffectRange:(id *)range;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInspectableProperties:(id)properties;
+- (void)setInspectableProperty:(id)property forKey:(id)key;
+- (void)setMatrixDouble4x4:(__int128 *)double4x4 forKey:(void *)key;
+- (void)setMatrixFloat4x4:(double)float4x4 forKey:(double)key;
+- (void)setPlayableAspectRatio:(double)ratio;
+- (void)setPlayableAspectRatioPreservationMode:(int)mode;
+- (void)setPoint:(CGPoint)point forKey:(id)key;
+- (void)setRect:(CGRect)rect forKey:(id)key;
+- (void)setSize:(CGSize)size forKey:(id)key;
 @end
 
 @implementation PVEffect
@@ -147,9 +147,9 @@ void __52__PVEffect_PlayableAspectRatio__playableAspectRatio__block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (void)setPlayableAspectRatio:(double)a3
+- (void)setPlayableAspectRatio:(double)ratio
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:ratio];
   [PVEffect setInspectableProperty:"setInspectableProperty:forKey:" forKey:?];
 }
 
@@ -177,13 +177,13 @@ void __68__PVEffect_PlayableAspectRatio__playableAspectRatioPreservationMode__bl
   *(*(*(a1 + 40) + 8) + 24) = [*(a1 + 32) playableAspectRatioPreservationMode_NoLock:?];
 }
 
-- (void)setPlayableAspectRatioPreservationMode:(int)a3
+- (void)setPlayableAspectRatioPreservationMode:(int)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&mode];
   [PVEffect setInspectableProperty:"setInspectableProperty:forKey:" forKey:?];
 }
 
-- (CGRect)playableRectInView:(CGSize)a3
+- (CGRect)playableRectInView:(CGSize)view
 {
   v13 = 0;
   v14 = &v13;
@@ -197,7 +197,7 @@ void __68__PVEffect_PlayableAspectRatio__playableAspectRatioPreservationMode__bl
   v11[3] = &unk_279AA4DB0;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
+  viewCopy = view;
   [(PVEffect *)self runWithInspectableProperties:v11];
   v3 = v14[6];
   v4 = v14[7];
@@ -226,7 +226,7 @@ void __52__PVEffect_PlayableAspectRatio__playableRectInView___block_invoke(uint6
   v3[9] = v7;
 }
 
-- (double)playableScaleInView:(CGSize)a3
+- (double)playableScaleInView:(CGSize)view
 {
   v7 = 0;
   v8 = &v7;
@@ -238,7 +238,7 @@ void __52__PVEffect_PlayableAspectRatio__playableRectInView___block_invoke(uint6
   v5[3] = &unk_279AA4DB0;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  viewCopy = view;
   [(PVEffect *)self runWithInspectableProperties:v5];
   v3 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -252,11 +252,11 @@ void __53__PVEffect_PlayableAspectRatio__playableScaleInView___block_invoke(uint
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (double)playableAspectRatio_NoLock:(id)a3
+- (double)playableAspectRatio_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
-  v5 = [v4 objectForKeyedSubscript:@"kPVPlayableAspectRatioKey"];
+  v5 = [lockCopy objectForKeyedSubscript:@"kPVPlayableAspectRatioKey"];
   v6 = v5;
   if (v5)
   {
@@ -273,36 +273,36 @@ void __53__PVEffect_PlayableAspectRatio__playableScaleInView___block_invoke(uint
   return v8;
 }
 
-- (int)playableAspectRatioPreservationMode_NoLock:(id)a3
+- (int)playableAspectRatioPreservationMode_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
-  v5 = [v4 objectForKeyedSubscript:@"kPVPlayableAspectRatioPreservationModeKey"];
+  v5 = [lockCopy objectForKeyedSubscript:@"kPVPlayableAspectRatioPreservationModeKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v7 = [objc_opt_class() defaultPlayableAspectRatioPreservationMode];
+    intValue = [objc_opt_class() defaultPlayableAspectRatioPreservationMode];
   }
 
-  v8 = v7;
+  v8 = intValue;
 
   return v8;
 }
 
-- (CGRect)playableRectInView_NoLock:(CGSize)a3 properties:(id)a4
+- (CGRect)playableRectInView_NoLock:(CGSize)lock properties:(id)properties
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = lock.height;
+  width = lock.width;
+  propertiesCopy = properties;
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
-  [(PVEffect *)self playableAspectRatio_NoLock:v7];
+  [(PVEffect *)self playableAspectRatio_NoLock:propertiesCopy];
   v9 = v8;
-  v10 = [(PVEffect *)self playableAspectRatioPreservationMode_NoLock:v7];
+  v10 = [(PVEffect *)self playableAspectRatioPreservationMode_NoLock:propertiesCopy];
   v11 = 1.0;
   if (v10 > 2)
   {
@@ -384,15 +384,15 @@ LABEL_19:
   return result;
 }
 
-- (double)playableScaleInView_NoLock:(CGSize)a3 properties:(id)a4
+- (double)playableScaleInView_NoLock:(CGSize)lock properties:(id)properties
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = lock.height;
+  width = lock.width;
+  propertiesCopy = properties;
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
-  [(PVEffect *)self playableAspectRatio_NoLock:v7];
+  [(PVEffect *)self playableAspectRatio_NoLock:propertiesCopy];
   v9 = v8;
-  v10 = [(PVEffect *)self playableAspectRatioPreservationMode_NoLock:v7];
+  v10 = [(PVEffect *)self playableAspectRatioPreservationMode_NoLock:propertiesCopy];
   v11 = 1.0;
   if (!v10)
   {
@@ -472,7 +472,7 @@ LABEL_15:
   return v14;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range
 {
   v4 = MEMORY[0x277CC08C8];
   v5 = *(MEMORY[0x277CC08C8] + 16);
@@ -482,7 +482,7 @@ LABEL_15:
   return self;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range
 {
   v4 = MEMORY[0x277CC08C8];
   v5 = *(MEMORY[0x277CC08C8] + 16);
@@ -492,7 +492,7 @@ LABEL_15:
   return self;
 }
 
-- (CGPoint)convertPointToView:(id *)a3 atTime:(BOOL)a4 forcePosterFrame:(BOOL)a5 includeTransformAnimation:(BOOL)a6 includePlayableAspectScale:(CGSize)a7 viewSize:(int)a8 viewOrigin:
+- (CGPoint)convertPointToView:(id *)view atTime:(BOOL)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(CGSize)scale viewSize:(int)size viewOrigin:
 {
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
@@ -501,12 +501,12 @@ LABEL_15:
   return result;
 }
 
-- (double)convertPointFromView:(uint64_t)a1@<X8> atTime:viewSize:viewOrigin:
+- (double)convertPointFromView:(uint64_t)view@<X8> atTime:viewSize:viewOrigin:
 {
-  *a1 = 0;
-  *(a1 + 8) = 0;
+  *view = 0;
+  *(view + 8) = 0;
   result = 0.0;
-  *(a1 + 16) = 0u;
+  *(view + 16) = 0u;
   return result;
 }
 
@@ -514,66 +514,66 @@ LABEL_15:
 {
   __asm { FMOV            V0.2D, #1.0 }
 
-  *a1 = result;
-  a1[1] = result;
+  *self = result;
+  self[1] = result;
   return result;
 }
 
-- (BOOL)bounds:(CGRect *)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7
+- (BOOL)bounds:(CGRect *)bounds atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
-  if (a3)
+  if (bounds)
   {
     v7 = *(MEMORY[0x277CBF3A0] + 16);
-    a3->origin = *MEMORY[0x277CBF3A0];
-    a3->size = v7;
+    bounds->origin = *MEMORY[0x277CBF3A0];
+    bounds->size = v7;
   }
 
-  return a3 != 0;
+  return bounds != 0;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(PVEffect *)self inspectablePropertyForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVEffect *)self inspectablePropertyForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(PVEffect *)self setInspectableProperty:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:boolCopy];
+  [(PVEffect *)self setInspectableProperty:v8 forKey:keyCopy];
 }
 
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4
+- (double)doubleForKey:(id)key defaultValue:(double)value
 {
-  v5 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  v5 = [(PVEffect *)self inspectablePropertyForKey:key];
   v6 = v5;
   if (v5)
   {
     [v5 doubleValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(PVEffect *)self setInspectableProperty:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(PVEffect *)self setInspectableProperty:v8 forKey:keyCopy];
 }
 
-- (CGPoint)pointForKey:(id)a3 defaultValue:(CGPoint)a4
+- (CGPoint)pointForKey:(id)key defaultValue:(CGPoint)value
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  y = value.y;
+  x = value.x;
+  v6 = [(PVEffect *)self inspectablePropertyForKey:key];
   v7 = v6;
   if (v6)
   {
@@ -589,21 +589,21 @@ LABEL_15:
   return result;
 }
 
-- (void)setPoint:(CGPoint)a3 forKey:(id)a4
+- (void)setPoint:(CGPoint)point forKey:(id)key
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = MEMORY[0x277CCAE60];
-  v8 = a4;
+  keyCopy = key;
   v9 = [v7 valueWithCGPoint:{x, y}];
-  [(PVEffect *)self setInspectableProperty:v9 forKey:v8];
+  [(PVEffect *)self setInspectableProperty:v9 forKey:keyCopy];
 }
 
-- (CGSize)sizeForKey:(id)a3 defaultValue:(CGSize)a4
+- (CGSize)sizeForKey:(id)key defaultValue:(CGSize)value
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  height = value.height;
+  width = value.width;
+  v6 = [(PVEffect *)self inspectablePropertyForKey:key];
   v7 = v6;
   if (v6)
   {
@@ -619,23 +619,23 @@ LABEL_15:
   return result;
 }
 
-- (void)setSize:(CGSize)a3 forKey:(id)a4
+- (void)setSize:(CGSize)size forKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x277CCAE60];
-  v8 = a4;
+  keyCopy = key;
   v9 = [v7 valueWithCGSize:{width, height}];
-  [(PVEffect *)self setInspectableProperty:v9 forKey:v8];
+  [(PVEffect *)self setInspectableProperty:v9 forKey:keyCopy];
 }
 
-- (CGRect)rectForKey:(id)a3 defaultValue:(CGRect)a4
+- (CGRect)rectForKey:(id)key defaultValue:(CGRect)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  height = value.size.height;
+  width = value.size.width;
+  y = value.origin.y;
+  x = value.origin.x;
+  v8 = [(PVEffect *)self inspectablePropertyForKey:key];
   v9 = v8;
   if (v8)
   {
@@ -657,21 +657,21 @@ LABEL_15:
   return result;
 }
 
-- (void)setRect:(CGRect)a3 forKey:(id)a4
+- (void)setRect:(CGRect)rect forKey:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = MEMORY[0x277CCAE60];
-  v10 = a4;
+  keyCopy = key;
   v11 = [v9 valueWithCGRect:{x, y, width, height}];
-  [(PVEffect *)self setInspectableProperty:v11 forKey:v10];
+  [(PVEffect *)self setInspectableProperty:v11 forKey:keyCopy];
 }
 
-- (void)matrixDouble4x4ForKey:(void *)a1@<X0>
+- (void)matrixDouble4x4ForKey:(void *)key@<X0>
 {
-  v3 = [a1 transformObjectForKey:?];
+  v3 = [key transformObjectForKey:?];
   if (v3)
   {
     v9 = v3;
@@ -697,28 +697,28 @@ LABEL_15:
   }
 }
 
-- (void)setMatrixDouble4x4:(__int128 *)a3 forKey:(void *)a4
+- (void)setMatrixDouble4x4:(__int128 *)double4x4 forKey:(void *)key
 {
-  v5 = a3[5];
-  v15 = a3[4];
+  v5 = double4x4[5];
+  v15 = double4x4[4];
   v16 = v5;
-  v6 = a3[7];
-  v17 = a3[6];
+  v6 = double4x4[7];
+  v17 = double4x4[6];
   v18 = v6;
-  v7 = a3[1];
-  v11 = *a3;
+  v7 = double4x4[1];
+  v11 = *double4x4;
   v12 = v7;
-  v8 = a3[3];
-  v13 = a3[2];
+  v8 = double4x4[3];
+  v13 = double4x4[2];
   v14 = v8;
-  v9 = a4;
+  keyCopy = key;
   v10 = [PVMatrix44Double matrixWithSIMDDouble4x4:&v11];
-  [a1 setInspectableProperty:v10 forKey:{v9, v11, v12, v13, v14, v15, v16, v17, v18}];
+  [self setInspectableProperty:v10 forKey:{keyCopy, v11, v12, v13, v14, v15, v16, v17, v18}];
 }
 
-- (__n128)matrixFloat4x4ForKey:(void *)a1
+- (__n128)matrixFloat4x4ForKey:(void *)key
 {
-  v1 = [a1 transformObjectForKey:?];
+  v1 = [key transformObjectForKey:?];
   v2 = v1;
   if (v1)
   {
@@ -734,11 +734,11 @@ LABEL_15:
   return v5;
 }
 
-- (void)setMatrixFloat4x4:(double)a3 forKey:(double)a4
+- (void)setMatrixFloat4x4:(double)float4x4 forKey:(double)key
 {
   v8 = a7;
-  v13 = [PVMatrix44Double matrixWithSIMDFloat4x4:a2, a3, a4, a5];
-  [a1 setInspectableProperty:v13 forKey:v8];
+  v13 = [PVMatrix44Double matrixWithSIMDFloat4x4:a2, float4x4, key, a5];
+  [self setInspectableProperty:v13 forKey:v8];
 }
 
 - (double)outputAspectRatio
@@ -750,10 +750,10 @@ LABEL_15:
   return result;
 }
 
-- (id)stringForKey:(id)a3 defaultValue:(id)a4
+- (id)stringForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  valueCopy = value;
+  v7 = [(PVEffect *)self inspectablePropertyForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -762,7 +762,7 @@ LABEL_15:
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -770,10 +770,10 @@ LABEL_15:
   return v10;
 }
 
-- (id)attributedStringForKey:(id)a3 defaultValue:(id)a4
+- (id)attributedStringForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PVEffect *)self inspectablePropertyForKey:a3];
+  valueCopy = value;
+  v7 = [(PVEffect *)self inspectablePropertyForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -782,7 +782,7 @@ LABEL_15:
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -790,18 +790,18 @@ LABEL_15:
   return v10;
 }
 
-- (PVEffect)initWithEffectID:(id)a3
+- (PVEffect)initWithEffectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = PVEffect;
   v6 = [(PVEffect *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_effectID, a3);
-    v8 = [(PVEffect *)v7 effectID];
-    v9 = [PVEffect propertiesForEffect:v8];
+    objc_storeStrong(&v6->_effectID, d);
+    effectID = [(PVEffect *)v7 effectID];
+    v9 = [PVEffect propertiesForEffect:effectID];
     contentProperties = v7->_contentProperties;
     v7->_contentProperties = v9;
 
@@ -838,22 +838,22 @@ LABEL_15:
   return 0;
 }
 
-- (PVEffect)initWithContentID:(id)a3 andDictionary:(id)a4
+- (PVEffect)initWithContentID:(id)d andDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PVEffect;
   v9 = [(PVEffect *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_effectID, a3);
-    v11 = [v8 valueForKey:@"contentProperties"];
+    objc_storeStrong(&v9->_effectID, d);
+    v11 = [dictionaryCopy valueForKey:@"contentProperties"];
     contentProperties = v10->_contentProperties;
     v10->_contentProperties = v11;
 
-    v13 = [v8 valueForKey:@"contentType"];
+    v13 = [dictionaryCopy valueForKey:@"contentType"];
     effectType = v10->_effectType;
     v10->_effectType = v13;
 
@@ -917,9 +917,9 @@ LABEL_15:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PVEffect *)self displayName];
-  v7 = [(PVEffect *)self effectID];
-  v8 = [v3 stringWithFormat:@"%@ %@ %@", v5, v6, v7];
+  displayName = [(PVEffect *)self displayName];
+  effectID = [(PVEffect *)self effectID];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@", v5, displayName, effectID];
 
   return v8;
 }
@@ -954,7 +954,7 @@ LABEL_15:
     atomic_fetch_add(loadCount, 1u);
   }
 
-  v4 = [(PVEffect *)self loadResources];
+  loadResources = [(PVEffect *)self loadResources];
   v5 = self->_loadCount;
   if (v5)
   {
@@ -967,25 +967,25 @@ LABEL_15:
       v9[2] = __22__PVEffect_loadEffect__block_invoke;
       v9[3] = &unk_279AA5CB8;
       v9[4] = self;
-      v10 = v4;
+      v10 = loadResources;
       [(NSMutableArray *)components enumerateObjectsUsingBlock:v9];
     }
   }
 
-  return v4;
+  return loadResources;
 }
 
-- (void)loadEffectOnQueue:(id)a3 completion:(id)a4
+- (void)loadEffectOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __41__PVEffect_loadEffectOnQueue_completion___block_invoke;
   v8[3] = &unk_279AA5CE0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  dispatch_async(a3, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __41__PVEffect_loadEffectOnQueue_completion___block_invoke(uint64_t a1)
@@ -996,17 +996,17 @@ uint64_t __41__PVEffect_loadEffectOnQueue_completion___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)loadResourcesOnQueue:(id)a3 completion:(id)a4
+- (void)loadResourcesOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __44__PVEffect_loadResourcesOnQueue_completion___block_invoke;
   v8[3] = &unk_279AA5CE0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  dispatch_async(a3, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t a1)
@@ -1037,30 +1037,30 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   }
 }
 
-- (id)inspectablePropertyForKey:(id)a3
+- (id)inspectablePropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSLock *)self->_inspectablePropertiesLock lock];
-  v5 = [(NSMutableDictionary *)self->_inspectableProperties objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_inspectableProperties objectForKeyedSubscript:keyCopy];
   [(NSLock *)self->_inspectablePropertiesLock unlock];
 
   return v5;
 }
 
-- (void)setInspectableProperty:(id)a3 forKey:(id)a4
+- (void)setInspectableProperty:(id)property forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   [(NSLock *)self->_inspectablePropertiesLock lock];
   inspectableProperties = self->_inspectableProperties;
-  if (v8)
+  if (propertyCopy)
   {
-    [(NSMutableDictionary *)inspectableProperties setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)inspectableProperties setObject:propertyCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)inspectableProperties removeObjectForKey:v6];
+    [(NSMutableDictionary *)inspectableProperties removeObjectForKey:keyCopy];
   }
 
   [(NSLock *)self->_inspectablePropertiesLock unlock];
@@ -1075,19 +1075,19 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setInspectableProperties:(id)a3
+- (void)setInspectableProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   [(NSLock *)self->_inspectablePropertiesLock lock];
-  [(NSMutableDictionary *)self->_inspectableProperties setDictionary:v4];
+  [(NSMutableDictionary *)self->_inspectableProperties setDictionary:propertiesCopy];
   [(NSLock *)self->_inspectablePropertiesLock unlock];
 }
 
-- (void)addEntriesToInspectableProperties:(id)a3
+- (void)addEntriesToInspectableProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   [(NSLock *)self->_inspectablePropertiesLock lock];
-  [(NSMutableDictionary *)self->_inspectableProperties addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)self->_inspectableProperties addEntriesFromDictionary:propertiesCopy];
   [(NSLock *)self->_inspectablePropertiesLock unlock];
 }
 
@@ -1104,20 +1104,20 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
 {
   v11[1] = *MEMORY[0x277D85DE8];
   {
-    v8 = self;
-    self = v8;
+    selfCopy = self;
+    self = selfCopy;
     if (v9)
     {
       v10 = @"197A9506-9198-4FBD-A7BF-955118A07AE2";
       v11[0] = &unk_28732D6E8;
       [PVEffect proxyRenderScale]::sEffectProxyResMap = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      self = v8;
+      self = selfCopy;
     }
   }
 
   v2 = [PVEffect proxyRenderScale]::sEffectProxyResMap;
-  v3 = [(PVEffect *)self effectID];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  effectID = [(PVEffect *)self effectID];
+  v4 = [v2 objectForKeyedSubscript:effectID];
 
   if (v4)
   {
@@ -1133,18 +1133,18 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:hidden];
   [PVEffect setInspectableProperty:"setInspectableProperty:forKey:" forKey:?];
 }
 
 - (BOOL)isHidden
 {
   v2 = [(PVEffect *)self inspectablePropertyForKey:@"kPVHiddenKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isVisible
@@ -1161,28 +1161,28 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
 - (id)contentRegistryProperties
 {
   v3 = +[PVContentRegistry sharedInstance];
-  v4 = [(PVEffect *)self effectID];
-  v5 = [v3 contentPropertiesForID:v4];
+  effectID = [(PVEffect *)self effectID];
+  v5 = [v3 contentPropertiesForID:effectID];
 
   return v5;
 }
 
-- (id)contentRegistryPropertyForKey:(id)a3
+- (id)contentRegistryPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PVEffect *)self contentRegistryProperties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  contentRegistryProperties = [(PVEffect *)self contentRegistryProperties];
+  v6 = [contentRegistryProperties objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)contentPropertyForKey:(id)a3
+- (id)contentPropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   contentProperties = self->_contentProperties;
   if (contentProperties)
   {
-    v6 = [(NSDictionary *)contentProperties valueForKey:v4];
+    v6 = [(NSDictionary *)contentProperties valueForKey:keyCopy];
   }
 
   else
@@ -1209,56 +1209,56 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)_postInit:(id)a3
+- (void)_postInit:(id)init
 {
-  v6 = a3;
-  v4 = [v6 objectForKey:@"effectType"];
+  initCopy = init;
+  v4 = [initCopy objectForKey:@"effectType"];
   if (v4)
   {
     objc_storeStrong(&self->_effectType, v4);
   }
 
-  v5 = [v6 objectForKey:@"displayName"];
+  v5 = [initCopy objectForKey:@"displayName"];
   if (v5)
   {
     objc_storeStrong(&self->_displayName, v5);
   }
 }
 
-- (void)_copyWithZone:(_NSZone *)a3 into:(id)a4
+- (void)_copyWithZone:(_NSZone *)zone into:(id)into
 {
-  v5 = a4;
-  [v5 setValue:self->_effectType forKey:@"effectType"];
-  [v5 setValue:self->_displayName forKey:@"displayName"];
+  intoCopy = into;
+  [intoCopy setValue:self->_effectType forKey:@"effectType"];
+  [intoCopy setValue:self->_displayName forKey:@"displayName"];
 }
 
-- (void)_decodeFromCoder:(id)a3 into:(id)a4
+- (void)_decodeFromCoder:(id)coder into:(id)into
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 decodeObjectOfClass:objc_opt_class() forKey:@"effectType"];
+  coderCopy = coder;
+  intoCopy = into;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectType"];
   if (v6)
   {
-    [v5 setValue:v6 forKey:@"effectType"];
+    [intoCopy setValue:v6 forKey:@"effectType"];
   }
 
-  v7 = [v8 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
   if (v7)
   {
-    [v5 setValue:v7 forKey:@"displayName"];
+    [intoCopy setValue:v7 forKey:@"displayName"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [(PVEffect *)self _copyWithZone:a3 into:v5];
+  [(PVEffect *)self _copyWithZone:zone into:v5];
   v6 = +[PVContentRegistry sharedInstance];
-  v7 = [(PVEffect *)self effectID];
-  v8 = [v6 createContentInstance:v7];
+  effectID = [(PVEffect *)self effectID];
+  v8 = [v6 createContentInstance:effectID];
 
-  v9 = [(PVEffect *)self inspectableProperties];
-  [v8 setInspectableProperties:v9];
+  inspectableProperties = [(PVEffect *)self inspectableProperties];
+  [v8 setInspectableProperties:inspectableProperties];
 
   v10 = *&self->_effectRange.start.epoch;
   v12[0] = *&self->_effectRange.start.value;
@@ -1271,31 +1271,31 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   return v8;
 }
 
-- (PVEffect)initWithCoder:(id)a3
+- (PVEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectID"];
   v6 = +[PVContentRegistry sharedInstance];
   v7 = [v6 createContentInstance:v5];
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(PVEffect *)v7 _decodeFromCoder:v4 into:v8];
+    [(PVEffect *)v7 _decodeFromCoder:coderCopy into:v8];
     [(PVEffect *)v7 _postInit:v8];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(PVEffect *)self effectID];
-  [v5 encodeObject:v4 forKey:@"effectID"];
+  coderCopy = coder;
+  effectID = [(PVEffect *)self effectID];
+  [coderCopy encodeObject:effectID forKey:@"effectID"];
 
-  [v5 encodeObject:self->_effectType forKey:@"effectType"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_effectType forKey:@"effectType"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
 }
 
 - (id)effectDescription
@@ -1306,14 +1306,14 @@ uint64_t __44__PVEffect_loadResourcesOnQueue_completion___block_invoke(uint64_t 
   *&range.start.epoch = v3;
   *&range.duration.timescale = *&self->_effectRange.duration.timescale;
   v4 = CMTimeRangeCopyAsDictionary(&range, 0);
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [(NSLock *)self->_inspectablePropertiesLock lock];
   inspectableProperties = self->_inspectableProperties;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = *"";
   v12[2] = __29__PVEffect_effectDescription__block_invoke;
   v12[3] = &unk_279AA5D38;
-  v7 = v5;
+  v7 = dictionary;
   v13 = v7;
   [(NSMutableDictionary *)inspectableProperties enumerateKeysAndObjectsUsingBlock:v12];
   [(NSLock *)self->_inspectablePropertiesLock unlock];
@@ -1355,8 +1355,8 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PVEffect *)self effectDescription];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  effectDescription = [(PVEffect *)self effectDescription];
+  v4 = [v2 stringWithFormat:@"%@", effectDescription];
 
   return v4;
 }
@@ -1370,78 +1370,78 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   return self;
 }
 
-- (void)setEffectRange:(id *)a3
+- (void)setEffectRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_effectRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_effectRange.start.epoch = *&range->var0.var3;
   *&self->_effectRange.duration.timescale = v4;
   *&self->_effectRange.start.value = v3;
 }
 
-- (BOOL)applyTimedPropertiesForTime:(id *)a3
+- (BOOL)applyTimedPropertiesForTime:(id *)time
 {
   timedPropertiesComponent = self->_timedPropertiesComponent;
-  v5 = *a3;
+  v5 = *time;
   return [(PVEffectTimedPropertiesComponent *)timedPropertiesComponent applyTimedPropertiesForTime:&v5];
 }
 
-- (id)userContextForTimedPropertiesDelegate:(id)a3
+- (id)userContextForTimedPropertiesDelegate:(id)delegate
 {
-  v3 = [(PVEffectTimedPropertiesComponent *)self->_timedPropertiesComponent userContextForTimedPropertiesDelegate:a3];
+  v3 = [(PVEffectTimedPropertiesComponent *)self->_timedPropertiesComponent userContextForTimedPropertiesDelegate:delegate];
 
   return v3;
 }
 
-- (void)runWithInspectableProperties:(id)a3
+- (void)runWithInspectableProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   [(NSLock *)self->_inspectablePropertiesLock lock];
-  v4[2](v4, self->_inspectableProperties);
+  propertiesCopy[2](propertiesCopy, self->_inspectableProperties);
   [(NSLock *)self->_inspectablePropertiesLock unlock];
 }
 
-- (void)runWithInspectableProperties_NoLock:(id)a3
+- (void)runWithInspectableProperties_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
-  v4[2](v4, self->_inspectableProperties);
+  lockCopy[2](lockCopy, self->_inspectableProperties);
 }
 
-+ (id)attributeForName:(id)a3 fromAttributedString:(id)a4 defaultAttributes:(id)a5
++ (id)attributeForName:(id)name fromAttributedString:(id)string defaultAttributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  nameCopy = name;
+  stringCopy = string;
+  attributesCopy = attributes;
+  if ([stringCopy length])
   {
-    [v8 attribute:v7 atIndex:0 effectiveRange:0];
+    [stringCopy attribute:nameCopy atIndex:0 effectiveRange:0];
   }
 
   else
   {
-    [v9 objectForKeyedSubscript:v7];
+    [attributesCopy objectForKeyedSubscript:nameCopy];
   }
   v10 = ;
 
   return v10;
 }
 
-+ (int64_t)verticalAlignmentFromAttributedString:(id)a3 defaultAttributes:(id)a4
++ (int64_t)verticalAlignmentFromAttributedString:(id)string defaultAttributes:(id)attributes
 {
-  v4 = [a1 attributeForName:@"TXTextVerticalAlignment" fromAttributedString:a3 defaultAttributes:a4];
+  v4 = [self attributeForName:@"TXTextVerticalAlignment" fromAttributedString:string defaultAttributes:attributes];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (v6 >= 3)
+    integerValue = [v4 integerValue];
+    if (integerValue >= 3)
     {
       v7 = -1;
     }
 
     else
     {
-      v7 = v6;
+      v7 = integerValue;
     }
   }
 
@@ -1453,28 +1453,28 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   return v7;
 }
 
-+ (double)textHeightFromAttributedString:(id)a3 defaultAttributes:(id)a4 scale:(double)a5
++ (double)textHeightFromAttributedString:(id)string defaultAttributes:(id)attributes scale:(double)scale
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] && (objc_msgSend(v7, "attribute:atIndex:effectiveRange:", @"TXTextHeight", 0, 0), v9 = objc_claimAutoreleasedReturnValue(), (v10 = v9) != 0))
+  stringCopy = string;
+  attributesCopy = attributes;
+  if ([stringCopy length] && (objc_msgSend(stringCopy, "attribute:atIndex:effectiveRange:", @"TXTextHeight", 0, 0), v9 = objc_claimAutoreleasedReturnValue(), (v10 = v9) != 0))
   {
     [v9 doubleValue];
     v12 = v11;
-    v13 = [v7 attribute:@"TXTextDynamicLineSpacing" atIndex:0 effectiveRange:0];
+    v13 = [stringCopy attribute:@"TXTextDynamicLineSpacing" atIndex:0 effectiveRange:0];
     [v13 doubleValue];
-    v15 = v12 * a5 + v14 * a5;
+    v15 = v12 * scale + v14 * scale;
   }
 
   else
   {
     v16 = *MEMORY[0x277D740A8];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+    v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740A8]];
     if (!v10)
     {
-      if ([v7 length])
+      if ([stringCopy length])
       {
-        v10 = [v7 attribute:v16 atIndex:0 effectiveRange:0];
+        v10 = [stringCopy attribute:v16 atIndex:0 effectiveRange:0];
       }
 
       else
@@ -1494,19 +1494,19 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   return v15;
 }
 
-+ (id)shadowFromAttributedString:(id)a3 defaultAttributes:(id)a4
++ (id)shadowFromAttributedString:(id)string defaultAttributes:(id)attributes
 {
-  v4 = [a1 attributeForName:*MEMORY[0x277D74138] fromAttributedString:a3 defaultAttributes:a4];
+  v4 = [self attributeForName:*MEMORY[0x277D74138] fromAttributedString:string defaultAttributes:attributes];
 
   return v4;
 }
 
-+ (double)xOffsetForTextTrackingFromAttributedString:(id)a3
++ (double)xOffsetForTextTrackingFromAttributedString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 attribute:@"TXTrackingValue" atIndex:0 effectiveRange:0];
+    v4 = [stringCopy attribute:@"TXTrackingValue" atIndex:0 effectiveRange:0];
     [v4 doubleValue];
     v6 = v5;
 
@@ -1521,20 +1521,20 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   return v7;
 }
 
-+ (BOOL)isAllCapsFromAttributes:(id)a3
++ (BOOL)isAllCapsFromAttributes:(id)attributes
 {
-  v3 = [a3 objectForKeyedSubscript:@"MotionTextStyleAllCapsAttributeName"];
+  v3 = [attributes objectForKeyedSubscript:@"MotionTextStyleAllCapsAttributeName"];
   v4 = [v3 integerValue] > 0;
 
   return v4;
 }
 
-+ (double)baselineOffsetFromAttributedString:(id)a3
++ (double)baselineOffsetFromAttributedString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 attribute:*MEMORY[0x277D74078] atIndex:0 effectiveRange:0];
+    v4 = [stringCopy attribute:*MEMORY[0x277D74078] atIndex:0 effectiveRange:0];
     [v4 doubleValue];
     v6 = -v5;
   }
@@ -1547,22 +1547,22 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   return v6;
 }
 
-+ (void)modifyAttributedStringByAdjustingFontSize:(id)a3 scale:(double)a4
++ (void)modifyAttributedStringByAdjustingFontSize:(id)size scale:(double)scale
 {
-  v11 = a3;
-  if ([v11 length])
+  sizeCopy = size;
+  if ([sizeCopy length])
   {
     v5 = *MEMORY[0x277D740A8];
-    v6 = [v11 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+    v6 = [sizeCopy attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
     v7 = v6;
     if (v6)
     {
       [v6 pointSize];
-      v9 = [v7 fontWithSize:fabs(a4) * v8];
+      v9 = [v7 fontWithSize:fabs(scale) * v8];
 
-      v10 = [v11 length];
-      [v11 removeAttribute:v5 range:{0, v10}];
-      [v11 addAttribute:v5 value:v9 range:{0, v10}];
+      v10 = [sizeCopy length];
+      [sizeCopy removeAttribute:v5 range:{0, v10}];
+      [sizeCopy addAttribute:v5 value:v9 range:{0, v10}];
     }
 
     else
@@ -1572,18 +1572,18 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingShadow:(id)a3 effectTransform:(id)a4
++ (void)modifyAttributedStringByAdjustingShadow:(id)shadow effectTransform:(id)transform
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  shadowCopy = shadow;
+  transformCopy = transform;
+  if ([shadowCopy length])
   {
-    v8 = [v6 string];
-    v9 = [v8 isEqualToString:@" "];
+    string = [shadowCopy string];
+    v9 = [string isEqualToString:@" "];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v6 attribute:*MEMORY[0x277D74138] atIndex:0 effectiveRange:0];
+      v10 = [shadowCopy attribute:*MEMORY[0x277D74138] atIndex:0 effectiveRange:0];
       if (v10)
       {
         v23 = xmmword_260342820;
@@ -1593,9 +1593,9 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
         memset(v20, 0, sizeof(v20));
         v21 = xmmword_260342800;
         v22 = qword_260342810;
-        if (v7)
+        if (transformCopy)
         {
-          [v7 SIMDDouble4x4];
+          [transformCopy SIMDDouble4x4];
         }
 
         else
@@ -1616,24 +1616,24 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
         v11[0] = v21;
         v11[1] = v22;
         pv_simd_quaternion_get_euler_angles(v11, 4, &v12);
-        [a1 modifyAttributedStringByAdjustingShadow:v6 scale:*&v23 rotation:*&v13 + 3.14159265];
+        [self modifyAttributedStringByAdjustingShadow:shadowCopy scale:*&v23 rotation:*&v13 + 3.14159265];
       }
     }
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingShadow:(id)a3 scale:(double)a4 rotation:(double)a5
++ (void)modifyAttributedStringByAdjustingShadow:(id)shadow scale:(double)scale rotation:(double)rotation
 {
-  v7 = a3;
-  if ([v7 length])
+  shadowCopy = shadow;
+  if ([shadowCopy length])
   {
-    v8 = [v7 string];
-    v9 = [v8 isEqualToString:@" "];
+    string = [shadowCopy string];
+    v9 = [string isEqualToString:@" "];
 
     if ((v9 & 1) == 0)
     {
       v10 = *MEMORY[0x277D74138];
-      v11 = [v7 attribute:*MEMORY[0x277D74138] atIndex:0 effectiveRange:0];
+      v11 = [shadowCopy attribute:*MEMORY[0x277D74138] atIndex:0 effectiveRange:0];
       v12 = v11;
       if (v11)
       {
@@ -1641,8 +1641,8 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
         v37 = 0.0;
         v34 = 0.0;
         v35 = 0.0;
-        v13 = [v11 shadowColor];
-        [v13 getRed:&v37 green:&v36 blue:&v35 alpha:&v34];
+        shadowColor = [v11 shadowColor];
+        [shadowColor getRed:&v37 green:&v36 blue:&v35 alpha:&v34];
         v34 = v34 * v34;
         v14 = [MEMORY[0x277D75348] colorWithRed:v37 green:v36 blue:v35 alpha:?];
         [v12 setShadowColor:v14];
@@ -1650,18 +1650,18 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
         [v12 shadowBlurRadius];
         [v12 setShadowBlurRadius:v15 * 0.5];
         [v12 shadowBlurRadius];
-        v31 = fabs(a4);
+        v31 = fabs(scale);
         [v12 setShadowBlurRadius:v31 * v16];
         [v12 shadowOffset];
         v29 = v18;
         v30 = v17;
-        v19 = [v7 attribute:@"TXTextDropShadowIsFixedSource" atIndex:0 effectiveRange:0];
-        v20 = [v19 BOOLValue];
+        v19 = [shadowCopy attribute:@"TXTextDropShadowIsFixedSource" atIndex:0 effectiveRange:0];
+        bOOLValue = [v19 BOOLValue];
         v21.f64[0] = v30;
         v21.f64[1] = v29;
         v32 = vmulq_n_f64(v21, v31);
 
-        if (v20)
+        if (bOOLValue)
         {
           if (v32.f64[0] == 0.0)
           {
@@ -1707,7 +1707,7 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
           }
 
           v33 = v23;
-          v27 = __sincos_stret(v22 - a5);
+          v27 = __sincos_stret(v22 - rotation);
           v26.f64[0] = v27.__cosval;
           v26.f64[1] = v27.__sinval;
           v24 = vmulq_n_f64(v26, v33);
@@ -1720,98 +1720,98 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
         }
 
         [v12 setShadowOffset:*&v24];
-        v28 = [v7 length];
-        [v7 removeAttribute:v10 range:{0, v28}];
-        [v7 addAttribute:v10 value:v12 range:{0, v28}];
+        v28 = [shadowCopy length];
+        [shadowCopy removeAttribute:v10 range:{0, v28}];
+        [shadowCopy addAttribute:v10 value:v12 range:{0, v28}];
       }
     }
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingOutline:(id)a3 attributes:(id)a4 range:(_NSRange)a5 scale:(double)a6
++ (void)modifyAttributedStringByAdjustingOutline:(id)outline attributes:(id)attributes range:(_NSRange)range scale:(double)scale
 {
-  length = a5.length;
-  location = a5.location;
-  v19 = a3;
-  v10 = a4;
-  if ([v19 length])
+  length = range.length;
+  location = range.location;
+  outlineCopy = outline;
+  attributesCopy = attributes;
+  if ([outlineCopy length])
   {
     v11 = *MEMORY[0x277D74160];
-    v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277D74160]];
+    v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D74160]];
     if (v12)
     {
-      v13 = [v10 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+      v13 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740A8]];
       [v13 pointSize];
       v15 = v14;
       if (v14 == 0.0)
       {
-        [v19 removeAttribute:v11 range:{location, length}];
+        [outlineCopy removeAttribute:v11 range:{location, length}];
       }
 
       else
       {
         v16 = MEMORY[0x277CCABB0];
         [v12 doubleValue];
-        v18 = [v16 numberWithDouble:fabs(a6) * (100.0 / v15 * v17)];
-        [v19 removeAttribute:v11 range:{location, length}];
-        [v19 addAttribute:v11 value:v18 range:{location, length}];
+        v18 = [v16 numberWithDouble:fabs(scale) * (100.0 / v15 * v17)];
+        [outlineCopy removeAttribute:v11 range:{location, length}];
+        [outlineCopy addAttribute:v11 value:v18 range:{location, length}];
       }
     }
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingKerning:(id)a3 attributes:(id)a4 range:(_NSRange)a5 scale:(double)a6
++ (void)modifyAttributedStringByAdjustingKerning:(id)kerning attributes:(id)attributes range:(_NSRange)range scale:(double)scale
 {
-  length = a5.length;
-  location = a5.location;
-  v17 = a3;
-  v10 = a4;
-  if ([v17 length])
+  length = range.length;
+  location = range.location;
+  kerningCopy = kerning;
+  attributesCopy = attributes;
+  if ([kerningCopy length])
   {
     v11 = *MEMORY[0x277D740D0];
-    v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277D740D0]];
+    v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740D0]];
     v13 = v12;
     if (v12)
     {
       v14 = MEMORY[0x277CCABB0];
       [v12 doubleValue];
-      v16 = [v14 numberWithDouble:fabs(a6) * v15];
-      [v17 removeAttribute:v11 range:{location, length}];
-      [v17 addAttribute:v11 value:v16 range:{location, length}];
+      v16 = [v14 numberWithDouble:fabs(scale) * v15];
+      [kerningCopy removeAttribute:v11 range:{location, length}];
+      [kerningCopy addAttribute:v11 value:v16 range:{location, length}];
     }
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingForNegativeLineSpacing:(id)a3 scale:(double)a4
++ (void)modifyAttributedStringByAdjustingForNegativeLineSpacing:(id)spacing scale:(double)scale
 {
-  v35 = a3;
-  if ([v35 length])
+  spacingCopy = spacing;
+  if ([spacingCopy length])
   {
     v5 = *MEMORY[0x277D74118];
-    v6 = [v35 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0];
+    v6 = [spacingCopy attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0];
     v7 = v6;
     if (v6)
     {
       [v6 lineSpacing];
       if (v8 != 0.0)
       {
-        v9 = [v35 length];
+        v9 = [spacingCopy length];
         v10 = [v7 mutableCopy];
         [v7 lineSpacing];
-        v11 = fabs(a4);
+        v11 = fabs(scale);
         [v10 setLineSpacing:v11 * v12];
-        [v35 removeAttribute:v5 range:{0, v9}];
-        [v35 addAttribute:v5 value:v10 range:{0, v9}];
+        [spacingCopy removeAttribute:v5 range:{0, v9}];
+        [spacingCopy addAttribute:v5 value:v10 range:{0, v9}];
         [v7 lineSpacing];
         if (v13 <= 0.0)
         {
-          v14 = [v35 string];
-          v15 = [MEMORY[0x277CCA900] newlineCharacterSet];
-          v16 = [v14 componentsSeparatedByCharactersInSet:v15];
+          string = [spacingCopy string];
+          newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+          v16 = [string componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
           if ([v16 count])
           {
-            v34 = [v35 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+            v34 = [spacingCopy attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
             [v34 ascender];
             v18 = v17;
             [v34 descender];
@@ -1845,7 +1845,7 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
                   v33 = [v30 length] + 1;
                 }
 
-                [v35 addAttribute:v5 value:v31 range:{v27, v33}];
+                [spacingCopy addAttribute:v5 value:v31 range:{v27, v33}];
                 v27 += v33;
 
                 ++v29;
@@ -1861,15 +1861,15 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-+ (void)modifyAttributedStringByAdjustingFont:(id)a3 toFitSize:(CGSize)a4
++ (void)modifyAttributedStringByAdjustingFont:(id)font toFitSize:(CGSize)size
 {
-  width = a4.width;
-  v5 = a3;
-  if ([v5 length])
+  width = size.width;
+  fontCopy = font;
+  if ([fontCopy length])
   {
     v6 = *MEMORY[0x277D740A8];
-    v22 = [v5 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
-    v7 = [v5 length];
+    v22 = [fontCopy attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+    v7 = [fontCopy length];
     [v22 pointSize];
     v9 = v8;
     v10 = 0;
@@ -1884,7 +1884,7 @@ void __29__PVEffect_effectDescription__block_invoke(uint64_t a1, void *a2, void 
       v23[2] = __75__PVEffect_TextUtilities__modifyAttributedStringByAdjustingFont_toFitSize___block_invoke;
       v23[3] = &unk_279AA64E0;
       v25 = v9;
-      v15 = v5;
+      v15 = fontCopy;
       v24 = v15;
       [v15 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v23}];
       [v15 size];
@@ -1969,27 +1969,27 @@ void __75__PVEffect_TextUtilities__modifyAttributedStringByAdjustingFont_toFitSi
   }
 }
 
-+ (void)modifyAttributedStringByApplyingSubstituteFont:(id)a3 attributes:(id)a4 range:(_NSRange)a5
++ (void)modifyAttributedStringByApplyingSubstituteFont:(id)font attributes:(id)attributes range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v13 = a3;
-  v8 = a4;
-  if ([v13 length])
+  length = range.length;
+  location = range.location;
+  fontCopy = font;
+  attributesCopy = attributes;
+  if ([fontCopy length])
   {
     v9 = *MEMORY[0x277D740A8];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+    v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740A8]];
     if (v10)
     {
-      v11 = [v8 objectForKeyedSubscript:@"TXSubstituteFont"];
+      v11 = [attributesCopy objectForKeyedSubscript:@"TXSubstituteFont"];
       if (v11)
       {
         [v10 pointSize];
         v12 = [v11 fontWithSize:?];
         if (v12)
         {
-          [v13 removeAttribute:v9 range:{location, length}];
-          [v13 addAttribute:v9 value:v12 range:{location, length}];
+          [fontCopy removeAttribute:v9 range:{location, length}];
+          [fontCopy addAttribute:v9 value:v12 range:{location, length}];
         }
       }
     }
@@ -2051,21 +2051,21 @@ void __75__PVEffect_TextUtilities__modifyAttributedStringByAdjustingFont_toFitSi
 
 + (id)_effectRegistryForLookup
 {
-  [a1 ensureEffectsRegistered];
+  [self ensureEffectsRegistered];
 
-  return [a1 _effectRegistry];
+  return [self _effectRegistry];
 }
 
-+ (void)deferEffectRegistrationForClass:(Class)a3
++ (void)deferEffectRegistrationForClass:(Class)class
 {
-  v6 = a3;
+  classCopy = class;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   if (gCalledDeferredRegistrations)
   {
     objc_sync_exit(v4);
 
-    [(objc_class *)a3 runDeferredRegistration];
+    [(objc_class *)class runDeferredRegistration];
   }
 
   else
@@ -2084,44 +2084,44 @@ void __75__PVEffect_TextUtilities__modifyAttributedStringByAdjustingFont_toFitSi
       gDeferredRegistrationClients = v5;
     }
 
-    std::vector<objc_class * {__strong}>::push_back[abi:ne200100](v5, &v6);
+    std::vector<objc_class * {__strong}>::push_back[abi:ne200100](v5, &classCopy);
     objc_sync_exit(v4);
   }
 }
 
-+ (void)registerEffectClass:(Class)a3 forEffectID:(id)a4 withProperties:(id)a5
++ (void)registerEffectClass:(Class)class forEffectID:(id)d withProperties:(id)properties
 {
-  v16 = a4;
-  v8 = a5;
-  if (a3 && v16)
+  dCopy = d;
+  propertiesCopy = properties;
+  if (class && dCopy)
   {
-    v9 = [a1 _effectRegistry];
-    v10 = [v9 objectForKey:v16];
+    _effectRegistry = [self _effectRegistry];
+    v10 = [_effectRegistry objectForKey:dCopy];
 
     if (v10)
     {
-      v11 = [v9 objectForKey:v16];
+      v11 = [_effectRegistry objectForKey:dCopy];
       ClassName = object_getClassName([v11 effectClass]);
-      v13 = object_getClassName(a3);
-      NSLog(&cfstr_PveffectWarnin_0.isa, v16, ClassName, v13);
+      v13 = object_getClassName(class);
+      NSLog(&cfstr_PveffectWarnin_0.isa, dCopy, ClassName, v13);
     }
 
-    v14 = [[PVEffectRegistryEntry alloc] initWithClass:a3 andProperties:v8];
-    [v9 setObject:v14 forKey:v16];
+    v14 = [[PVEffectRegistryEntry alloc] initWithClass:class andProperties:propertiesCopy];
+    [_effectRegistry setObject:v14 forKey:dCopy];
   }
 
   else
   {
-    v15 = object_getClassName(a3);
-    NSLog(&cfstr_PveffectWarnin.isa, v16, v15);
+    v15 = object_getClassName(class);
+    NSLog(&cfstr_PveffectWarnin.isa, dCopy, v15);
   }
 }
 
-+ (id)newEffectWithID:(id)a3
++ (id)newEffectWithID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _effectRegistryForLookup];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  _effectRegistryForLookup = [self _effectRegistryForLookup];
+  v6 = [_effectRegistryForLookup objectForKey:dCopy];
 
   if (v6)
   {
@@ -2137,38 +2137,38 @@ void __75__PVEffect_TextUtilities__modifyAttributedStringByAdjustingFont_toFitSi
   return v7;
 }
 
-+ (id)newEffectWithURL:(id)a3
++ (id)newEffectWithURL:(id)l
 {
-  v3 = [PVMotionEffect newEffectWithURL:a3];
+  v3 = [PVMotionEffect newEffectWithURL:l];
   [v3 _postInit:0];
   return v3;
 }
 
-+ (id)newEffectWithData:(id)a3
++ (id)newEffectWithData:(id)data
 {
-  v3 = [PVMotionEffect newEffectWithData:a3];
+  v3 = [PVMotionEffect newEffectWithData:data];
   [v3 _postInit:0];
   return v3;
 }
 
-+ (BOOL)effectIDIsRegistered:(id)a3
++ (BOOL)effectIDIsRegistered:(id)registered
 {
-  v4 = a3;
-  v5 = [a1 _effectRegistryForLookup];
-  v6 = [v5 objectForKey:v4];
+  registeredCopy = registered;
+  _effectRegistryForLookup = [self _effectRegistryForLookup];
+  v6 = [_effectRegistryForLookup objectForKey:registeredCopy];
 
   return v6 != 0;
 }
 
-+ (BOOL)effectIDIsNone:(id)a3
++ (BOOL)effectIDIsNone:(id)none
 {
-  v3 = a3;
+  noneCopy = none;
   if (+[PVEffect(PVEffectRegistry) effectIDIsNone:]::onceToken != -1)
   {
     +[PVEffect(PVEffectRegistry) effectIDIsNone:];
   }
 
-  v4 = [+[PVEffect(PVEffectRegistry) effectIDIsNone:]::noneEffectIDs containsObject:v3];
+  v4 = [+[PVEffect(PVEffectRegistry) effectIDIsNone:]::noneEffectIDs containsObject:noneCopy];
 
   return v4;
 }
@@ -2180,40 +2180,40 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
   +[PVEffect(PVEffectRegistry) effectIDIsNone:]::noneEffectIDs = v0;
 }
 
-+ (id)_registryEntryForEffectID:(id)a3
++ (id)_registryEntryForEffectID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _effectRegistryForLookup];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  _effectRegistryForLookup = [self _effectRegistryForLookup];
+  v6 = [_effectRegistryForLookup objectForKey:dCopy];
 
   if (!v6)
   {
-    NSLog(&cfstr_PveffectWarnin_1.isa, v4);
+    NSLog(&cfstr_PveffectWarnin_1.isa, dCopy);
   }
 
   return v6;
 }
 
-+ (id)propertiesForEffect:(id)a3
++ (id)propertiesForEffect:(id)effect
 {
-  v3 = [a1 _registryEntryForEffectID:a3];
-  v4 = [v3 effectProperties];
+  v3 = [self _registryEntryForEffectID:effect];
+  effectProperties = [v3 effectProperties];
 
-  return v4;
+  return effectProperties;
 }
 
 + (id)allRegisteredEffectIDs
 {
-  v2 = [a1 _effectRegistryForLookup];
-  v3 = [v2 allKeys];
+  _effectRegistryForLookup = [self _effectRegistryForLookup];
+  allKeys = [_effectRegistryForLookup allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 + (id)userVisibleEffectIDs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -2235,14 +2235,14 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
         v5 = *(*(&v14 + 1) + 8 * i);
         v6 = [PVEffect propertiesForEffect:v5];
         v7 = [v6 objectForKey:@"FFEffectProperty_HiddenInUI"];
-        v8 = [v7 BOOLValue];
+        bOOLValue = [v7 BOOLValue];
 
         v9 = [v6 objectForKey:@"FFEffectProperty_AvailableInSimpleMode"];
-        v10 = [v9 BOOLValue];
+        bOOLValue2 = [v9 BOOLValue];
 
-        if (!(v8 & 1 | ((v10 & 1) == 0)))
+        if (!(bOOLValue & 1 | ((bOOLValue2 & 1) == 0)))
         {
-          [v12 addObject:v5];
+          [array addObject:v5];
         }
       }
 
@@ -2252,28 +2252,28 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
     while (v2);
   }
 
-  return v12;
+  return array;
 }
 
-+ (id)effectTypeForEffectID:(id)a3
++ (id)effectTypeForEffectID:(id)d
 {
-  v3 = [a1 propertiesForEffect:a3];
+  v3 = [self propertiesForEffect:d];
   v4 = [v3 objectForKey:@"FFEffectProperty_EffectType"];
 
   return v4;
 }
 
-+ (id)registeredEffectIDsForEffectType:(id)a3
++ (id)registeredEffectIDsForEffectType:(id)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a1 allRegisteredEffectIDs];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allRegisteredEffectIDs = [self allRegisteredEffectIDs];
+  v7 = [allRegisteredEffectIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -2283,12 +2283,12 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allRegisteredEffectIDs);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [a1 effectTypeForEffectID:v10];
-        v12 = [v11 isEqualToString:v4];
+        v11 = [self effectTypeForEffectID:v10];
+        v12 = [v11 isEqualToString:typeCopy];
 
         if (v12)
         {
@@ -2296,7 +2296,7 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allRegisteredEffectIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -2305,16 +2305,16 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
   return v5;
 }
 
-+ (id)registeredEffectIDsForEffectTypes:(id)a3
++ (id)registeredEffectIDsForEffectTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -2328,7 +2328,7 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        v10 = [a1 registeredEffectIDsForEffectType:{*(*(&v12 + 1) + 8 * i), v12}];
+        v10 = [self registeredEffectIDsForEffectType:{*(*(&v12 + 1) + 8 * i), v12}];
         [v5 addObjectsFromArray:v10];
       }
 
@@ -2341,10 +2341,10 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
   return v5;
 }
 
-+ (id)firstRegisteredEffectIDContainingSubstring:(id)a3
++ (id)firstRegisteredEffectIDContainingSubstring:(id)substring
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  substringCopy = substring;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -2364,7 +2364,7 @@ void __45__PVEffect_PVEffectRegistry__effectIDIsNone___block_invoke()
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 rangeOfString:v3] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([v8 rangeOfString:substringCopy] != 0x7FFFFFFFFFFFFFFFLL)
         {
           v5 = v8;
           goto LABEL_11;
@@ -2386,15 +2386,15 @@ LABEL_11:
   return v5;
 }
 
-+ (Class)classForEffectID:(id)a3
++ (Class)classForEffectID:(id)d
 {
-  v3 = [a1 _registryEntryForEffectID:a3];
-  v4 = [v3 effectClass];
+  v3 = [self _registryEntryForEffectID:d];
+  effectClass = [v3 effectClass];
 
-  return v4;
+  return effectClass;
 }
 
-+ (id)registeredEffectIDsForClass:(Class)a3
++ (id)registeredEffectIDsForClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2402,8 +2402,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a1 allRegisteredEffectIDs];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allRegisteredEffectIDs = [self allRegisteredEffectIDs];
+  v7 = [allRegisteredEffectIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -2413,17 +2413,17 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allRegisteredEffectIDs);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([a1 classForEffectID:v10] == a3)
+        if ([self classForEffectID:v10] == class)
         {
           [v5 addObject:v10];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allRegisteredEffectIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2432,50 +2432,50 @@ LABEL_11:
   return v5;
 }
 
-+ (id)displayNameForEffectType:(id)a3
++ (id)displayNameForEffectType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"effect.video.filter"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"effect.video.filter"])
   {
     v4 = @"Effects";
   }
 
-  else if ([v3 isEqualToString:@"effect.video.generator"])
+  else if ([typeCopy isEqualToString:@"effect.video.generator"])
   {
     v4 = @"Generators";
   }
 
-  else if ([v3 isEqualToString:@"effect.video.transition"])
+  else if ([typeCopy isEqualToString:@"effect.video.transition"])
   {
     v4 = @"Transitions";
   }
 
-  else if ([v3 isEqualToString:@"effect.video.compositor"])
+  else if ([typeCopy isEqualToString:@"effect.video.compositor"])
   {
     v4 = @"Composite Operations";
   }
 
-  else if ([v3 isEqualToString:@"effect.video.multiplexor"])
+  else if ([typeCopy isEqualToString:@"effect.video.multiplexor"])
   {
     v4 = @"Multiplexor Operations";
   }
 
-  else if ([v3 isEqualToString:@"effect.video.title"])
+  else if ([typeCopy isEqualToString:@"effect.video.title"])
   {
     v4 = @"Titles";
   }
 
-  else if ([v3 isEqualToString:@"effect.audio.effect"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect.audio.generator") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect.audio.transition"))
+  else if ([typeCopy isEqualToString:@"effect.audio.effect"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"effect.audio.generator") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"effect.audio.transition"))
   {
     v4 = @"Audio Effects";
   }
 
-  else if ([v3 isEqualToString:@"effect.audio.offline-effect"])
+  else if ([typeCopy isEqualToString:@"effect.audio.offline-effect"])
   {
     v4 = @"Audio Offline Effect";
   }
 
-  else if ([v3 isEqualToString:@"effect.audio.music-instrument"])
+  else if ([typeCopy isEqualToString:@"effect.audio.music-instrument"])
   {
     v4 = @"Audio Instrument";
   }
@@ -2488,41 +2488,41 @@ LABEL_11:
   return v4;
 }
 
-+ (id)displayNameForEffectID:(id)a3
++ (id)displayNameForEffectID:(id)d
 {
-  v3 = [a1 propertiesForEffect:a3];
+  v3 = [self propertiesForEffect:d];
   v4 = [v3 objectForKey:@"FFEffectProperty_DisplayName"];
 
   return v4;
 }
 
-+ (id)categoryForEffectID:(id)a3
++ (id)categoryForEffectID:(id)d
 {
-  v3 = [a1 propertiesForEffect:a3];
+  v3 = [self propertiesForEffect:d];
   v4 = [v3 objectForKey:@"FFEffectProperty_Category"];
 
   return v4;
 }
 
-+ (id)themeForEffectID:(id)a3
++ (id)themeForEffectID:(id)d
 {
-  v3 = [a1 propertiesForEffect:a3];
+  v3 = [self propertiesForEffect:d];
   v4 = [v3 objectForKey:@"kFFEffectProperty_Theme"];
 
   return v4;
 }
 
-+ (id)descriptionForEffectID:(id)a3
++ (id)descriptionForEffectID:(id)d
 {
-  v3 = [a1 propertiesForEffect:a3];
+  v3 = [self propertiesForEffect:d];
   v4 = [v3 objectForKey:@"FFEffectProperty_Description"];
 
   return v4;
 }
 
-+ (BOOL)isVideoForEffectID:(id)a3
++ (BOOL)isVideoForEffectID:(id)d
 {
-  v3 = [PVEffect effectTypeForEffectID:a3];
+  v3 = [PVEffect effectTypeForEffectID:d];
   if ([v3 isEqualToString:@"effect.video.filter"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect.video.generator") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect.video.transition") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect.video.title"))
   {
     v4 = 1;
@@ -2538,13 +2538,13 @@ LABEL_11:
 
 + (id)defaultVideoTransitionEffectID
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"FFDefaultVideoTransition"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"FFDefaultVideoTransition"];
 
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 setObject:@"FxPlug:4731E73A-8DAC-4113-9A30-AE85B1761265" forKey:@"FFDefaultVideoTransition"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 setObject:@"FxPlug:4731E73A-8DAC-4113-9A30-AE85B1761265" forKey:@"FFDefaultVideoTransition"];
 
     v3 = @"FxPlug:4731E73A-8DAC-4113-9A30-AE85B1761265";
   }
@@ -2567,36 +2567,36 @@ LABEL_11:
   return v2;
 }
 
-+ (void)_registerEffectsInBundle:(id)a3 atPath:(id)a4
++ (void)_registerEffectsInBundle:(id)bundle atPath:(id)path
 {
-  v9 = a3;
-  v5 = [v9 principalClass];
-  if ([v5 isSubclassOfClass:objc_opt_class()])
+  bundleCopy = bundle;
+  principalClass = [bundleCopy principalClass];
+  if ([principalClass isSubclassOfClass:objc_opt_class()])
   {
-    v6 = [a1 _registeredEffectClasses];
-    v7 = [v6 containsObject:v5];
+    _registeredEffectClasses = [self _registeredEffectClasses];
+    v7 = [_registeredEffectClasses containsObject:principalClass];
 
     if ((v7 & 1) == 0)
     {
-      [v5 registerEffects];
-      v8 = [a1 _registeredEffectClasses];
-      [v8 addObject:v5];
+      [principalClass registerEffects];
+      _registeredEffectClasses2 = [self _registeredEffectClasses];
+      [_registeredEffectClasses2 addObject:principalClass];
     }
   }
 }
 
-+ (void)initEffectRegistryWithHostDelegate:(id)a3
++ (void)initEffectRegistryWithHostDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = *"";
     v7[2] = __69__PVEffect_RuntimeBundleLoading__initEffectRegistryWithHostDelegate___block_invoke;
     v7[3] = &unk_279AA4DD8;
-    v8 = v4;
+    v8 = delegateCopy;
     v6 = MEMORY[0x2666EAFC0](v7);
     v6[2]();
   }
@@ -2615,11 +2615,11 @@ void __69__PVEffect_RuntimeBundleLoading__initEffectRegistryWithHostDelegate___b
   [v2 addObserver:v3 selector:sel_willTerminate_ name:*MEMORY[0x277D76770] object:0];
 }
 
-+ (void)willTerminate:(id)a3
++ (void)willTerminate:(id)terminate
 {
   v4 = objc_opt_self();
 
-  if (v4 == a1)
+  if (v4 == self)
   {
     +[PVEffect handleApplicationWillTerminate];
 
@@ -2629,7 +2629,7 @@ void __69__PVEffect_RuntimeBundleLoading__initEffectRegistryWithHostDelegate___b
 
 + (void)clearPreviewStats
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[PVMotionEffect clearPreviewStats];

@@ -2,7 +2,7 @@
 - (SBHomeScreenConfigurationServer)init;
 - (id)configurationSessionConnection;
 - (id)delegate;
-- (id)makeErrorWithCode:(void *)a1;
+- (id)makeErrorWithCode:(void *)code;
 - (id)setConfigurationSessionConnection:(id *)result;
 - (id)setDelegate:(id *)result;
 - (uint64_t)activate;
@@ -10,11 +10,11 @@
 - (uint64_t)connections;
 - (uint64_t)listener;
 - (uint64_t)queue;
-- (void)applyConfiguration:(id)a3 completion:(id)a4;
-- (void)beginConfigurationSessionWithCompletion:(id)a3;
-- (void)endConfigurationSessionWithCompletion:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeConnection:(uint64_t)a1;
+- (void)applyConfiguration:(id)configuration completion:(id)completion;
+- (void)beginConfigurationSessionWithCompletion:(id)completion;
+- (void)endConfigurationSessionWithCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeConnection:(uint64_t)connection;
 @end
 
 @implementation SBHomeScreenConfigurationServer
@@ -97,13 +97,13 @@ void __39__SBHomeScreenConfigurationServer_init__block_invoke(uint64_t a1, void 
   [v6 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 remoteProcess];
-  v12 = [v11 auditToken];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
   if (self)
   {
@@ -120,7 +120,7 @@ void __39__SBHomeScreenConfigurationServer_init__block_invoke(uint64_t a1, void 
   }
 
   v15 = authenticator;
-  v16 = [(FBServiceClientAuthenticator *)v15 authenticateAuditToken:v12];
+  v16 = [(FBServiceClientAuthenticator *)v15 authenticateAuditToken:auditToken];
 
   if (v16)
   {
@@ -128,9 +128,9 @@ void __39__SBHomeScreenConfigurationServer_init__block_invoke(uint64_t a1, void 
     block[1] = 3221225472;
     block[2] = __77__SBHomeScreenConfigurationServer_listener_didReceiveConnection_withContext___block_invoke;
     block[3] = &unk_2783A9A90;
-    v17 = v9;
+    v17 = connectionCopy;
     v20 = v17;
-    v21 = self;
+    selfCopy = self;
     objc_copyWeak(&v23, &location);
     v22 = v13;
     dispatch_sync(v22, block);
@@ -144,10 +144,10 @@ void __39__SBHomeScreenConfigurationServer_init__block_invoke(uint64_t a1, void 
     v18 = SBLogHomeScreenConfiguration();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [SBHomeScreenConfigurationServer listener:v9 didReceiveConnection:v18 withContext:?];
+      [SBHomeScreenConfigurationServer listener:connectionCopy didReceiveConnection:v18 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);
@@ -215,9 +215,9 @@ void __77__SBHomeScreenConfigurationServer_listener_didReceiveConnection_withCon
   [(SBHomeScreenConfigurationServer *)WeakRetained removeConnection:?];
 }
 
-- (void)beginConfigurationSessionWithCompletion:(id)a3
+- (void)beginConfigurationSessionWithCompletion:(id)completion
 {
-  v11 = a3;
+  completionCopy = completion;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -232,45 +232,45 @@ void __77__SBHomeScreenConfigurationServer_listener_didReceiveConnection_withCon
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x277CF3280] currentContext];
-  v7 = v6;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v7 = currentContext;
   if (!WeakRetained)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_12:
-    v10 = [(SBHomeScreenConfigurationServer *)v8 makeErrorWithCode:v9];
-    v11[2](v11, v10);
+    v10 = [(SBHomeScreenConfigurationServer *)selfCopy2 makeErrorWithCode:v9];
+    completionCopy[2](completionCopy, v10);
 
     goto LABEL_13;
   }
 
-  if (v6 == v5)
+  if (currentContext == v5)
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_13;
   }
 
   if (v5)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 2;
     goto LABEL_12;
   }
 
   if (self)
   {
-    objc_storeWeak(&self->_configurationSessionConnection, v6);
+    objc_storeWeak(&self->_configurationSessionConnection, currentContext);
   }
 
-  [WeakRetained configurationServerDidBeginConfigurationSession:self completion:v11];
+  [WeakRetained configurationServerDidBeginConfigurationSession:self completion:completionCopy];
 LABEL_13:
 }
 
-- (void)applyConfiguration:(id)a3 completion:(id)a4
+- (void)applyConfiguration:(id)configuration completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -285,13 +285,13 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CF3280] currentContext];
-  v10 = v9;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v10 = currentContext;
   if (WeakRetained)
   {
-    if (v8 && v8 == v9)
+    if (v8 && v8 == currentContext)
     {
-      [WeakRetained configurationServer:self didReceiveConfiguration:v11 completion:v6];
+      [WeakRetained configurationServer:self didReceiveConfiguration:configurationCopy completion:completionCopy];
     }
 
     else
@@ -306,9 +306,9 @@ LABEL_13:
   }
 }
 
-- (void)endConfigurationSessionWithCompletion:(id)a3
+- (void)endConfigurationSessionWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -323,20 +323,20 @@ LABEL_13:
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x277CF3280] currentContext];
-  v7 = v6;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v7 = currentContext;
   if (WeakRetained)
   {
     if (v5)
     {
-      if (v5 == v6)
+      if (v5 == currentContext)
       {
         if (self)
         {
           objc_storeWeak(&self->_configurationSessionConnection, 0);
         }
 
-        [WeakRetained configurationServerDidEndConfigurationSession:self completion:v8];
+        [WeakRetained configurationServerDidEndConfigurationSession:self completion:completionCopy];
       }
 
       else
@@ -347,7 +347,7 @@ LABEL_13:
 
     else
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -377,21 +377,21 @@ LABEL_13:
   return result;
 }
 
-- (void)removeConnection:(uint64_t)a1
+- (void)removeConnection:(uint64_t)connection
 {
   v3 = a2;
-  if (a1)
+  if (connection)
   {
     v6 = v3;
-    dispatch_assert_queue_V2(*(a1 + 32));
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    dispatch_assert_queue_V2(*(connection + 32));
+    WeakRetained = objc_loadWeakRetained((connection + 48));
 
-    [*(a1 + 40) removeObject:v6];
+    [*(connection + 40) removeObject:v6];
     v3 = v6;
     if (WeakRetained == v6)
     {
-      v5 = objc_loadWeakRetained((a1 + 8));
-      [v5 configurationServerDidEndConfigurationSession:a1 completion:&__block_literal_global_9];
+      v5 = objc_loadWeakRetained((connection + 8));
+      [v5 configurationServerDidEndConfigurationSession:connection completion:&__block_literal_global_9];
 
       v3 = v6;
     }
@@ -420,15 +420,15 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (id)makeErrorWithCode:(void *)a1
+- (id)makeErrorWithCode:(void *)code
 {
-  if (a1)
+  if (code)
   {
-    a1 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FD8] code:a2 userInfo:0];
+    code = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FD8] code:a2 userInfo:0];
     v2 = vars8;
   }
 
-  return a1;
+  return code;
 }
 
 - (id)setConfigurationSessionConnection:(id *)result

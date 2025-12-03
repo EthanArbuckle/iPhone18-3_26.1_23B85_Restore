@@ -1,47 +1,47 @@
 @interface CRKASMCredentialStore
 - (CRKASMCredentialManifest)certificateManifest;
 - (CRKASMCredentialManifest)identityManifest;
-- (CRKASMCredentialStore)initWithKeychain:(id)a3 accessGroup:(id)a4 certificateManifestStorageKey:(id)a5 identityManifestStorageKey:(id)a6;
+- (CRKASMCredentialStore)initWithKeychain:(id)keychain accessGroup:(id)group certificateManifestStorageKey:(id)key identityManifestStorageKey:(id)storageKey;
 - (NSDictionary)debugInfo;
-- (id)addCertificate:(id)a3 entry:(id)a4;
-- (id)addCertificate:(id)a3 forUserIdentifier:(id)a4;
-- (id)addCertificates:(id)a3 forUserIdentifier:(id)a4;
-- (id)addEntriesByCertificate:(id)a3;
-- (id)addIdentity:(id)a3 entry:(id)a4;
-- (id)addIdentity:(id)a3 forUserIdentifier:(id)a4;
-- (id)certificateWithPersistentID:(id)a3;
-- (id)identityWithPersistentID:(id)a3;
-- (id)makeCertificateWithCommonNamePrefix:(id)a3 userIdentifier:(id)a4;
-- (id)makeEntryWithCertificate:(id)a3 userIdentifier:(id)a4;
-- (id)makeIdentityWithCommonNamePrefix:(id)a3 userIdentifier:(id)a4;
+- (id)addCertificate:(id)certificate entry:(id)entry;
+- (id)addCertificate:(id)certificate forUserIdentifier:(id)identifier;
+- (id)addCertificates:(id)certificates forUserIdentifier:(id)identifier;
+- (id)addEntriesByCertificate:(id)certificate;
+- (id)addIdentity:(id)identity entry:(id)entry;
+- (id)addIdentity:(id)identity forUserIdentifier:(id)identifier;
+- (id)certificateWithPersistentID:(id)d;
+- (id)identityWithPersistentID:(id)d;
+- (id)makeCertificateWithCommonNamePrefix:(id)prefix userIdentifier:(id)identifier;
+- (id)makeEntryWithCertificate:(id)certificate userIdentifier:(id)identifier;
+- (id)makeIdentityWithCommonNamePrefix:(id)prefix userIdentifier:(id)identifier;
 - (void)clearCertificates;
 - (void)clearIdentities;
-- (void)forgetCertificatesWithPersistentIDs:(id)a3;
-- (void)forgetIdentitiesWithPersistentIDs:(id)a3;
-- (void)removeCertificatesWithPersistentIDs:(id)a3;
-- (void)removeIdentitiesWithPersistentIDs:(id)a3;
+- (void)forgetCertificatesWithPersistentIDs:(id)ds;
+- (void)forgetIdentitiesWithPersistentIDs:(id)ds;
+- (void)removeCertificatesWithPersistentIDs:(id)ds;
+- (void)removeIdentitiesWithPersistentIDs:(id)ds;
 @end
 
 @implementation CRKASMCredentialStore
 
-- (CRKASMCredentialStore)initWithKeychain:(id)a3 accessGroup:(id)a4 certificateManifestStorageKey:(id)a5 identityManifestStorageKey:(id)a6
+- (CRKASMCredentialStore)initWithKeychain:(id)keychain accessGroup:(id)group certificateManifestStorageKey:(id)key identityManifestStorageKey:(id)storageKey
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  keychainCopy = keychain;
+  groupCopy = group;
+  keyCopy = key;
+  storageKeyCopy = storageKey;
   v22.receiver = self;
   v22.super_class = CRKASMCredentialStore;
   v15 = [(CRKASMCredentialStore *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_keychain, a3);
-    v17 = [CRKAnnotatedCredentialStore certificateStoreWithKeychain:v11 accessGroup:v12 manifestStorageKey:v13];
+    objc_storeStrong(&v15->_keychain, keychain);
+    v17 = [CRKAnnotatedCredentialStore certificateStoreWithKeychain:keychainCopy accessGroup:groupCopy manifestStorageKey:keyCopy];
     certificateAnnotatedStore = v16->_certificateAnnotatedStore;
     v16->_certificateAnnotatedStore = v17;
 
-    v19 = [CRKAnnotatedCredentialStore identityStoreWithKeychain:v11 accessGroup:v12 manifestStorageKey:v14];
+    v19 = [CRKAnnotatedCredentialStore identityStoreWithKeychain:keychainCopy accessGroup:groupCopy manifestStorageKey:storageKeyCopy];
     identityAnnotatedStore = v16->_identityAnnotatedStore;
     v16->_identityAnnotatedStore = v19;
   }
@@ -53,13 +53,13 @@
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"Certificates";
-  v3 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  v4 = [v3 debugInfo];
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  debugInfo = [certificateAnnotatedStore debugInfo];
   v9[1] = @"Identities";
-  v10[0] = v4;
-  v5 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
-  v6 = [v5 debugInfo];
-  v10[1] = v6;
+  v10[0] = debugInfo;
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  debugInfo2 = [identityAnnotatedStore debugInfo];
+  v10[1] = debugInfo2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   return v7;
@@ -68,59 +68,59 @@
 - (CRKASMCredentialManifest)certificateManifest
 {
   v3 = [CRKASMCredentialManifest alloc];
-  v4 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  v5 = [v4 manifest];
-  v6 = [(CRKASMCredentialManifest *)v3 initWithAnnotatedManifest:v5];
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  manifest = [certificateAnnotatedStore manifest];
+  v6 = [(CRKASMCredentialManifest *)v3 initWithAnnotatedManifest:manifest];
 
   return v6;
 }
 
-- (id)certificateWithPersistentID:(id)a3
+- (id)certificateWithPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  v6 = [v5 credentialWithPersistentID:v4];
+  dCopy = d;
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  v6 = [certificateAnnotatedStore credentialWithPersistentID:dCopy];
 
   return v6;
 }
 
-- (void)removeCertificatesWithPersistentIDs:(id)a3
+- (void)removeCertificatesWithPersistentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  [v5 removeCredentialsWithPersistentIDs:v4];
+  dsCopy = ds;
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  [certificateAnnotatedStore removeCredentialsWithPersistentIDs:dsCopy];
 }
 
-- (void)forgetCertificatesWithPersistentIDs:(id)a3
+- (void)forgetCertificatesWithPersistentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  [v5 forgetCredentialsWithPersistentIDs:v4];
+  dsCopy = ds;
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  [certificateAnnotatedStore forgetCredentialsWithPersistentIDs:dsCopy];
 }
 
-- (id)makeCertificateWithCommonNamePrefix:(id)a3 userIdentifier:(id)a4
+- (id)makeCertificateWithCommonNamePrefix:(id)prefix userIdentifier:(id)identifier
 {
-  v4 = [(CRKASMCredentialStore *)self makeIdentityWithCommonNamePrefix:a3 userIdentifier:a4];
-  v5 = [v4 certificate];
+  v4 = [(CRKASMCredentialStore *)self makeIdentityWithCommonNamePrefix:prefix userIdentifier:identifier];
+  certificate = [v4 certificate];
 
-  return v5;
+  return certificate;
 }
 
 - (void)clearCertificates
 {
-  v4 = [(CRKASMCredentialStore *)self certificateManifest];
-  v3 = [v4 persistentIDs];
-  [(CRKASMCredentialStore *)self removeCertificatesWithPersistentIDs:v3];
+  certificateManifest = [(CRKASMCredentialStore *)self certificateManifest];
+  persistentIDs = [certificateManifest persistentIDs];
+  [(CRKASMCredentialStore *)self removeCertificatesWithPersistentIDs:persistentIDs];
 }
 
-- (id)addCertificate:(id)a3 forUserIdentifier:(id)a4
+- (id)addCertificate:(id)certificate forUserIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  certificateCopy = certificate;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (certificateCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -137,29 +137,29 @@
 
   [CRKASMCredentialStore addCertificate:forUserIdentifier:];
 LABEL_3:
-  v9 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  v9 = [MEMORY[0x277CBEB98] setWithObject:certificateCopy];
   v10 = [(CRKASMCredentialStore *)self addCertificates:v9 forUserIdentifier:v8];
-  v11 = [v10 objectForKey:v6];
+  v11 = [v10 objectForKey:certificateCopy];
 
   return v11;
 }
 
-- (id)addCertificates:(id)a3 forUserIdentifier:(id)a4
+- (id)addCertificates:(id)certificates forUserIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  certificatesCopy = certificates;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [CRKASMCredentialStore addCertificates:forUserIdentifier:];
   }
 
-  v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = certificatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -175,10 +175,10 @@ LABEL_3:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [(CRKASMCredentialStore *)self makeEntryWithCertificate:v14 userIdentifier:v7, v18];
+        v15 = [(CRKASMCredentialStore *)self makeEntryWithCertificate:v14 userIdentifier:identifierCopy, v18];
         if (v15)
         {
-          [v8 setObject:v15 forKey:v14];
+          [strongToStrongObjectsMapTable setObject:v15 forKey:v14];
         }
       }
 
@@ -188,19 +188,19 @@ LABEL_3:
     while (v11);
   }
 
-  v16 = [(CRKASMCredentialStore *)self addEntriesByCertificate:v8];
+  v16 = [(CRKASMCredentialStore *)self addEntriesByCertificate:strongToStrongObjectsMapTable];
 
   return v16;
 }
 
-- (id)addCertificate:(id)a3 entry:(id)a4
+- (id)addCertificate:(id)certificate entry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  certificateCopy = certificate;
+  entryCopy = entry;
+  v8 = entryCopy;
+  if (certificateCopy)
   {
-    if (v7)
+    if (entryCopy)
     {
       goto LABEL_3;
     }
@@ -217,25 +217,25 @@ LABEL_3:
 
   [CRKASMCredentialStore addCertificate:entry:];
 LABEL_3:
-  v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [v9 setObject:v8 forKey:v6];
-  v10 = [(CRKASMCredentialStore *)self addEntriesByCertificate:v9];
-  v11 = [v10 objectForKey:v6];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [strongToStrongObjectsMapTable setObject:v8 forKey:certificateCopy];
+  v10 = [(CRKASMCredentialStore *)self addEntriesByCertificate:strongToStrongObjectsMapTable];
+  v11 = [v10 objectForKey:certificateCopy];
 
   return v11;
 }
 
-- (id)addEntriesByCertificate:(id)a3
+- (id)addEntriesByCertificate:(id)certificate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  certificateCopy = certificate;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v3 keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  keyEnumerator = [certificateCopy keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -246,39 +246,39 @@ LABEL_3:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [certificateCopy objectForKey:v10];
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 dictionaryValue];
-          v14 = [[CRKAnnotatedCredential alloc] initWithCredential:v10 annotation:v13];
+          dictionaryValue = [v11 dictionaryValue];
+          v14 = [[CRKAnnotatedCredential alloc] initWithCredential:v10 annotation:dictionaryValue];
           [v4 addObject:v14];
         }
 
         else
         {
-          v13 = _CRKLogASM_6();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          dictionaryValue = _CRKLogASM_6();
+          if (os_log_type_enabled(dictionaryValue, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v24 = v10;
-            _os_log_error_impl(&dword_243550000, v13, OS_LOG_TYPE_ERROR, "No entry found for certificate %@", buf, 0xCu);
+            _os_log_error_impl(&dword_243550000, dictionaryValue, OS_LOG_TYPE_ERROR, "No entry found for certificate %@", buf, 0xCu);
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  v15 = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
-  v16 = [v15 addCredentials:v4];
+  certificateAnnotatedStore = [(CRKASMCredentialStore *)self certificateAnnotatedStore];
+  v16 = [certificateAnnotatedStore addCredentials:v4];
 
   return v16;
 }
@@ -286,67 +286,67 @@ LABEL_3:
 - (CRKASMCredentialManifest)identityManifest
 {
   v3 = [CRKASMCredentialManifest alloc];
-  v4 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
-  v5 = [v4 manifest];
-  v6 = [(CRKASMCredentialManifest *)v3 initWithAnnotatedManifest:v5];
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  manifest = [identityAnnotatedStore manifest];
+  v6 = [(CRKASMCredentialManifest *)v3 initWithAnnotatedManifest:manifest];
 
   return v6;
 }
 
-- (id)identityWithPersistentID:(id)a3
+- (id)identityWithPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
-  v6 = [v5 credentialWithPersistentID:v4];
+  dCopy = d;
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  v6 = [identityAnnotatedStore credentialWithPersistentID:dCopy];
 
   return v6;
 }
 
-- (void)removeIdentitiesWithPersistentIDs:(id)a3
+- (void)removeIdentitiesWithPersistentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
-  [v5 removeCredentialsWithPersistentIDs:v4];
+  dsCopy = ds;
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  [identityAnnotatedStore removeCredentialsWithPersistentIDs:dsCopy];
 }
 
-- (void)forgetIdentitiesWithPersistentIDs:(id)a3
+- (void)forgetIdentitiesWithPersistentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
-  [v5 forgetCredentialsWithPersistentIDs:v4];
+  dsCopy = ds;
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  [identityAnnotatedStore forgetCredentialsWithPersistentIDs:dsCopy];
 }
 
-- (id)makeIdentityWithCommonNamePrefix:(id)a3 userIdentifier:(id)a4
+- (id)makeIdentityWithCommonNamePrefix:(id)prefix userIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CRKASMCertificateCommonName alloc] initWithPrefix:v7 userIdentifier:v6];
+  identifierCopy = identifier;
+  prefixCopy = prefix;
+  v8 = [[CRKASMCertificateCommonName alloc] initWithPrefix:prefixCopy userIdentifier:identifierCopy];
 
   v9 = [CRKIdentityConfiguration alloc];
-  v10 = [(CRKASMCertificateCommonName *)v8 stringValue];
-  v11 = [(CRKIdentityConfiguration *)v9 initWithCommonName:v10];
+  stringValue = [(CRKASMCertificateCommonName *)v8 stringValue];
+  v11 = [(CRKIdentityConfiguration *)v9 initWithCommonName:stringValue];
 
-  v12 = [(CRKASMCredentialStore *)self keychain];
-  v13 = [v12 makeIdentityWithConfiguration:v11];
+  keychain = [(CRKASMCredentialStore *)self keychain];
+  v13 = [keychain makeIdentityWithConfiguration:v11];
 
   return v13;
 }
 
 - (void)clearIdentities
 {
-  v4 = [(CRKASMCredentialStore *)self identityManifest];
-  v3 = [v4 persistentIDs];
-  [(CRKASMCredentialStore *)self removeIdentitiesWithPersistentIDs:v3];
+  identityManifest = [(CRKASMCredentialStore *)self identityManifest];
+  persistentIDs = [identityManifest persistentIDs];
+  [(CRKASMCredentialStore *)self removeIdentitiesWithPersistentIDs:persistentIDs];
 }
 
-- (id)addIdentity:(id)a3 forUserIdentifier:(id)a4
+- (id)addIdentity:(id)identity forUserIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identityCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -363,12 +363,12 @@ LABEL_3:
 
   [CRKASMCredentialStore addIdentity:forUserIdentifier:];
 LABEL_3:
-  v9 = [v6 certificate];
-  v10 = [(CRKASMCredentialStore *)self makeEntryWithCertificate:v9 userIdentifier:v8];
+  certificate = [identityCopy certificate];
+  v10 = [(CRKASMCredentialStore *)self makeEntryWithCertificate:certificate userIdentifier:v8];
 
   if (v10)
   {
-    v11 = [(CRKASMCredentialStore *)self addIdentity:v6 entry:v10];
+    v11 = [(CRKASMCredentialStore *)self addIdentity:identityCopy entry:v10];
   }
 
   else
@@ -379,14 +379,14 @@ LABEL_3:
   return v11;
 }
 
-- (id)addIdentity:(id)a3 entry:(id)a4
+- (id)addIdentity:(id)identity entry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identityCopy = identity;
+  entryCopy = entry;
+  v8 = entryCopy;
+  if (identityCopy)
   {
-    if (v7)
+    if (entryCopy)
     {
       goto LABEL_3;
     }
@@ -403,24 +403,24 @@ LABEL_3:
 
   [CRKASMCredentialStore addIdentity:entry:];
 LABEL_3:
-  v9 = [v8 dictionaryValue];
-  v10 = [[CRKAnnotatedCredential alloc] initWithCredential:v6 annotation:v9];
-  v11 = [(CRKASMCredentialStore *)self identityAnnotatedStore];
+  dictionaryValue = [v8 dictionaryValue];
+  v10 = [[CRKAnnotatedCredential alloc] initWithCredential:identityCopy annotation:dictionaryValue];
+  identityAnnotatedStore = [(CRKASMCredentialStore *)self identityAnnotatedStore];
   v12 = [MEMORY[0x277CBEB98] setWithObject:v10];
-  v13 = [v11 addCredentials:v12];
-  v14 = [v13 objectForKey:v6];
+  v13 = [identityAnnotatedStore addCredentials:v12];
+  v14 = [v13 objectForKey:identityCopy];
 
   return v14;
 }
 
-- (id)makeEntryWithCertificate:(id)a3 userIdentifier:(id)a4
+- (id)makeEntryWithCertificate:(id)certificate userIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  certificateCopy = certificate;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v7 = _CRKLogASM_6();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    validityDateInterval = _CRKLogASM_6();
+    if (os_log_type_enabled(validityDateInterval, OS_LOG_TYPE_ERROR))
     {
       [CRKASMCredentialStore makeEntryWithCertificate:userIdentifier:];
     }
@@ -428,10 +428,10 @@ LABEL_3:
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!certificateCopy)
   {
-    v7 = _CRKLogASM_6();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    validityDateInterval = _CRKLogASM_6();
+    if (os_log_type_enabled(validityDateInterval, OS_LOG_TYPE_ERROR))
     {
       [CRKASMCredentialStore makeEntryWithCertificate:userIdentifier:];
     }
@@ -441,11 +441,11 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v7 = [v5 validityDateInterval];
-  if (v7)
+  validityDateInterval = [certificateCopy validityDateInterval];
+  if (validityDateInterval)
   {
-    v8 = [v5 fingerprint];
-    if (!v8)
+    fingerprint = [certificateCopy fingerprint];
+    if (!fingerprint)
     {
       v9 = _CRKLogASM_6();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -454,13 +454,13 @@ LABEL_13:
       }
     }
 
-    v10 = [[CRKASMCredentialManifestEntry alloc] initWithUserIdentifier:v6 validityInterval:v7 fingerprint:v8];
+    v10 = [[CRKASMCredentialManifestEntry alloc] initWithUserIdentifier:identifierCopy validityInterval:validityDateInterval fingerprint:fingerprint];
   }
 
   else
   {
-    v8 = _CRKLogASM_6();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    fingerprint = _CRKLogASM_6();
+    if (os_log_type_enabled(fingerprint, OS_LOG_TYPE_ERROR))
     {
       [CRKASMCredentialStore makeEntryWithCertificate:userIdentifier:];
     }

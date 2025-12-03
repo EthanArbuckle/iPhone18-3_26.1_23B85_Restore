@@ -6,11 +6,11 @@
 
 - (double)edgeInsets
 {
-  [a1 topInset];
+  [self topInset];
   v3 = v2;
-  [a1 leftInset];
-  [a1 bottomInset];
-  [a1 rightInset];
+  [self leftInset];
+  [self bottomInset];
+  [self rightInset];
   return v3;
 }
 

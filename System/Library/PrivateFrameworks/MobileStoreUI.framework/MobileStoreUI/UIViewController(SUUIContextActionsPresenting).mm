@@ -9,7 +9,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [[SUUIContextActionsPresentationRegistration alloc] initWithViewController:a1 handler:v6];
+  v8 = [[SUUIContextActionsPresentationRegistration alloc] initWithViewController:self handler:v6];
 
   v9 = [objc_alloc(MEMORY[0x277D758D0]) initWithView:v7];
   [v9 setDelegate:v8];
@@ -26,15 +26,15 @@
 - (void)unregisterForPreviewing:()SUUIContextActionsPresenting
 {
   v3 = a3;
-  v6 = [v3 longPressGestureRecognizer];
-  if (v6)
+  longPressGestureRecognizer = [v3 longPressGestureRecognizer];
+  if (longPressGestureRecognizer)
   {
-    v4 = [v6 view];
-    [v4 removeGestureRecognizer:v6];
+    view = [longPressGestureRecognizer view];
+    [view removeGestureRecognizer:longPressGestureRecognizer];
   }
 
-  v5 = [v3 previewInteraction];
-  [v5 cancelInteraction];
+  previewInteraction = [v3 previewInteraction];
+  [previewInteraction cancelInteraction];
 
   [v3 setPreviewInteraction:0];
 }

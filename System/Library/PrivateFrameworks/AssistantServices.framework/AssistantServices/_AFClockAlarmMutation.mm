@@ -2,7 +2,7 @@
 - (BOOL)getIsEnabled;
 - (BOOL)getIsFiring;
 - (BOOL)getIsSnoozed;
-- (_AFClockAlarmMutation)initWithBase:(id)a3;
+- (_AFClockAlarmMutation)initWithBase:(id)base;
 - (id)getAlarmID;
 - (id)getAlarmURL;
 - (id)getDismissedDate;
@@ -21,30 +21,30 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_alarmID;
+    alarmID = self->_alarmID;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base alarmID];
+    alarmID = [(AFClockAlarm *)self->_base alarmID];
   }
 
-  return v2;
+  return alarmID;
 }
 
 - (id)getAlarmURL
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_alarmURL;
+    alarmURL = self->_alarmURL;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base alarmURL];
+    alarmURL = [(AFClockAlarm *)self->_base alarmURL];
   }
 
-  return v2;
+  return alarmURL;
 }
 
 - (BOOL)getIsFiring
@@ -64,15 +64,15 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_title;
+    title = self->_title;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base title];
+    title = [(AFClockAlarm *)self->_base title];
   }
 
-  return v2;
+  return title;
 }
 
 - (unint64_t)getHour
@@ -157,57 +157,57 @@
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_firedDate;
+    firedDate = self->_firedDate;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base firedDate];
+    firedDate = [(AFClockAlarm *)self->_base firedDate];
   }
 
-  return v2;
+  return firedDate;
 }
 
 - (id)getDismissedDate
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_dismissedDate;
+    dismissedDate = self->_dismissedDate;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base dismissedDate];
+    dismissedDate = [(AFClockAlarm *)self->_base dismissedDate];
   }
 
-  return v2;
+  return dismissedDate;
 }
 
 - (id)getLastModifiedDate
 {
   if ((*&self->_mutationFlags & 0x2000) != 0)
   {
-    v2 = self->_lastModifiedDate;
+    lastModifiedDate = self->_lastModifiedDate;
   }
 
   else
   {
-    v2 = [(AFClockAlarm *)self->_base lastModifiedDate];
+    lastModifiedDate = [(AFClockAlarm *)self->_base lastModifiedDate];
   }
 
-  return v2;
+  return lastModifiedDate;
 }
 
-- (_AFClockAlarmMutation)initWithBase:(id)a3
+- (_AFClockAlarmMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClockAlarmMutation;
   v6 = [(_AFClockAlarmMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

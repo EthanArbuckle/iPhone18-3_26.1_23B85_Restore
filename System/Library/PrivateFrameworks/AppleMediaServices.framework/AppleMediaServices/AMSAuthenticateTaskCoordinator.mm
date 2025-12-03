@@ -1,16 +1,16 @@
 @interface AMSAuthenticateTaskCoordinator
 + (id)internalQueue;
 + (id)promiseStore;
-- (id)_authenticateTaskForItem:(id)a3;
-- (id)_authenticateTaskForItem:(id)a3 authenticationResults:(id)a4;
-- (id)_enqueueItem:(id)a3 handleAuthenticationWithBlock:(id)a4;
-- (id)_handleAuthenticateRequestWithItem:(id)a3 authenticationResults:(id)a4;
-- (id)_promiseStorePairForRequest:(id)a3;
-- (id)_promiseWithResultsForRequest:(id)a3;
-- (id)enqueueAuthenticationRequest:(id)a3 handleAuthenticationWithBlock:(id)a4;
-- (id)handleRequest:(id)a3;
-- (void)_addToStoreRequest:(id)a3 promise:(id)a4;
-- (void)_removeFromPromiseStore:(id)a3;
+- (id)_authenticateTaskForItem:(id)item;
+- (id)_authenticateTaskForItem:(id)item authenticationResults:(id)results;
+- (id)_enqueueItem:(id)item handleAuthenticationWithBlock:(id)block;
+- (id)_handleAuthenticateRequestWithItem:(id)item authenticationResults:(id)results;
+- (id)_promiseStorePairForRequest:(id)request;
+- (id)_promiseWithResultsForRequest:(id)request;
+- (id)enqueueAuthenticationRequest:(id)request handleAuthenticationWithBlock:(id)block;
+- (id)handleRequest:(id)request;
+- (void)_addToStoreRequest:(id)request promise:(id)promise;
+- (void)_removeFromPromiseStore:(id)store;
 @end
 
 @implementation AMSAuthenticateTaskCoordinator
@@ -54,13 +54,13 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
   qword_1ED6E2778 = v0;
 }
 
-- (id)handleRequest:(id)a3
+- (id)handleRequest:(id)request
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"AMSAuthenticateTaskCoordinatorItemKeyRequest";
-  v10[0] = a3;
+  v10[0] = request;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  requestCopy = request;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = [(AMSAuthenticateTaskCoordinator *)self handleRequestDictionary:v6];
@@ -68,15 +68,15 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
   return v7;
 }
 
-- (id)enqueueAuthenticationRequest:(id)a3 handleAuthenticationWithBlock:(id)a4
+- (id)enqueueAuthenticationRequest:(id)request handleAuthenticationWithBlock:(id)block
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (requestCopy)
   {
-    if (!v8)
+    if (!blockCopy)
     {
       v10 = +[AMSLogConfig sharedAccountsConfig];
       if (!v10)
@@ -84,8 +84,8 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v12 = AMSLogKey();
         v13 = MEMORY[0x1E696AEC0];
@@ -104,7 +104,7 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
         v16 = ;
         *buf = 138543362;
         v42 = v16;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Missing authentication handler block. Authentication will be processed by AMSAuthenticateTaskCoordinator.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ Missing authentication handler block. Authentication will be processed by AMSAuthenticateTaskCoordinator.", buf, 0xCu);
         if (v12)
         {
 
@@ -115,7 +115,7 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
 
     v32 = objc_alloc_init(AMSMutablePromise);
     v39 = @"AMSAuthenticateTaskCoordinatorItemKeyRequest";
-    v40 = v7;
+    v40 = requestCopy;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v34 = [(AMSAuthenticateTaskCoordinator *)self _enqueueItem:v33 handleAuthenticationWithBlock:v9];
     v37[0] = MEMORY[0x1E69E9820];
@@ -131,16 +131,16 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
   {
     v17 = +[AMSUnitTests isRunningUnitTests];
     v18 = +[AMSLogConfig sharedAccountsConfig];
-    v19 = v18;
+    defaultCenter = v18;
     if (v17)
     {
       if (!v18)
       {
-        v19 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v21 = AMSLogKey();
         v22 = MEMORY[0x1E696AEC0];
@@ -156,31 +156,31 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
         {
           [v22 stringWithFormat:@"%@: ", v23];
         }
-        v25 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v42 = v25;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@ The provided AMSAuthenticateRequest is nil. Unable to continue.", buf, 0xCu);
+        v42 = selfCopy;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@ The provided AMSAuthenticateRequest is nil. Unable to continue.", buf, 0xCu);
         if (v21)
         {
 
-          v25 = self;
+          selfCopy = self;
         }
       }
 
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
-      v26 = +[AMSLogConfig sharedAccountsConfig];
-      [v19 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v26 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject3 = +[AMSLogConfig sharedAccountsConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject3 userInfo:0];
     }
 
     else
     {
       if (!v18)
       {
-        v19 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v19 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+      oSLogObject3 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_FAULT))
       {
         v27 = AMSLogKey();
         v28 = MEMORY[0x1E696AEC0];
@@ -196,14 +196,14 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
         {
           [v28 stringWithFormat:@"%@: ", v29];
         }
-        v31 = ;
+        selfCopy2 = ;
         *buf = 138543362;
-        v42 = v31;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_FAULT, "%{public}@ The provided AMSAuthenticateRequest is nil. Unable to continue.", buf, 0xCu);
+        v42 = selfCopy2;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_FAULT, "%{public}@ The provided AMSAuthenticateRequest is nil. Unable to continue.", buf, 0xCu);
         if (v27)
         {
 
-          v31 = self;
+          selfCopy2 = self;
         }
       }
     }
@@ -215,39 +215,39 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
   return v35;
 }
 
-- (id)_authenticateTaskForItem:(id)a3 authenticationResults:(id)a4
+- (id)_authenticateTaskForItem:(id)item authenticationResults:(id)results
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
-  v7 = [v6 options];
-  v8 = [[AMSAuthenticateTask alloc] initWithAuthenticationResults:v5 options:v7];
+  resultsCopy = results;
+  v6 = [item objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
+  options = [v6 options];
+  v8 = [[AMSAuthenticateTask alloc] initWithAuthenticationResults:resultsCopy options:options];
 
   return v8;
 }
 
-- (id)_authenticateTaskForItem:(id)a3
+- (id)_authenticateTaskForItem:(id)item
 {
-  v3 = [a3 objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
+  v3 = [item objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
   v4 = [[AMSAuthenticateTask alloc] initWithRequest:v3];
 
   return v4;
 }
 
-- (id)_enqueueItem:(id)a3 handleAuthenticationWithBlock:(id)a4
+- (id)_enqueueItem:(id)item handleAuthenticationWithBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  blockCopy = block;
   v9 = +[AMSLogConfig sharedAccountsConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
-    v36 = v8;
+    v36 = blockCopy;
     v11 = AMSLogKey();
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
@@ -265,14 +265,14 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
     v15 = ;
     v16 = +[AMSAuthenticateTaskCoordinator promiseStore];
     v17 = [v16 count];
-    v18 = AMSHashIfNeeded(v7);
+    v18 = AMSHashIfNeeded(itemCopy);
     *buf = 138543874;
     v43 = v15;
     v44 = 2048;
     v45 = v17;
     v46 = 2114;
     v47 = v18;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ Primary Request count in store: %lu. Adding Authenticate Request to coordinator: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@ Primary Request count in store: %lu. Adding Authenticate Request to coordinator: %{public}@", buf, 0x20u);
 
     if (v11)
     {
@@ -280,10 +280,10 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
       v15 = v4;
     }
 
-    v8 = v36;
+    blockCopy = v36;
   }
 
-  v19 = [v7 objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
+  v19 = [itemCopy objectForKeyedSubscript:@"AMSAuthenticateTaskCoordinatorItemKeyRequest"];
   if (v19)
   {
     v20 = objc_alloc_init(AMSMutablePromise);
@@ -294,10 +294,10 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
     block[3] = &unk_1E73B3E58;
     block[4] = self;
     v38 = v19;
-    v41 = v8;
+    v41 = blockCopy;
     v22 = v20;
     v39 = v22;
-    v40 = v7;
+    v40 = itemCopy;
     dispatch_async(v21, block);
 
     v23 = v40;
@@ -315,10 +315,10 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v26 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v28 = v8;
+      v28 = blockCopy;
       v29 = AMSLogKey();
       v30 = MEMORY[0x1E696AEC0];
       v31 = objc_opt_class();
@@ -333,20 +333,20 @@ void __47__AMSAuthenticateTaskCoordinator_internalQueue__block_invoke()
       {
         [v30 stringWithFormat:@"%@: ", v31];
       }
-      v33 = ;
+      selfCopy = ;
       v34 = AMSLogableError(v24);
       *buf = 138543618;
-      v43 = v33;
+      v43 = selfCopy;
       v44 = 2114;
       v45 = v34;
-      _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@ Error processing authenticate request: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@ Error processing authenticate request: %{public}@", buf, 0x16u);
       if (v29)
       {
 
-        v33 = self;
+        selfCopy = self;
       }
 
-      v8 = v28;
+      blockCopy = v28;
     }
 
     v25 = [AMSPromise promiseWithError:v24];
@@ -768,36 +768,36 @@ void __77__AMSAuthenticateTaskCoordinator__enqueueItem_handleAuthenticationWithB
   }
 }
 
-- (id)_handleAuthenticateRequestWithItem:(id)a3 authenticationResults:(id)a4
+- (id)_handleAuthenticateRequestWithItem:(id)item authenticationResults:(id)results
 {
-  if (a4)
+  if (results)
   {
-    [(AMSAuthenticateTaskCoordinator *)self _authenticateTaskForItem:a3 authenticationResults:?];
+    [(AMSAuthenticateTaskCoordinator *)self _authenticateTaskForItem:item authenticationResults:?];
   }
 
   else
   {
-    [(AMSAuthenticateTaskCoordinator *)self _authenticateTaskForItem:a3];
+    [(AMSAuthenticateTaskCoordinator *)self _authenticateTaskForItem:item];
   }
   v4 = ;
-  v5 = [v4 performAuthentication];
+  performAuthentication = [v4 performAuthentication];
 
-  return v5;
+  return performAuthentication;
 }
 
-- (void)_addToStoreRequest:(id)a3 promise:(id)a4
+- (void)_addToStoreRequest:(id)request promise:(id)promise
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  promiseCopy = promise;
+  requestCopy = request;
   v8 = +[AMSLogConfig sharedAccountsConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v10 = AMSLogKey();
     v11 = MEMORY[0x1E696AEC0];
@@ -813,33 +813,33 @@ void __77__AMSAuthenticateTaskCoordinator__enqueueItem_handleAuthenticationWithB
     {
       [v11 stringWithFormat:@"%@: ", v12];
     }
-    v14 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v18 = v14;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ Adding Request to store", buf, 0xCu);
+    v18 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@ Adding Request to store", buf, 0xCu);
     if (v10)
     {
 
-      v14 = self;
+      selfCopy = self;
     }
   }
 
   v15 = +[AMSAuthenticateTaskCoordinator promiseStore];
-  v16 = [[AMSPair alloc] initWithFirst:v7 second:v6];
+  v16 = [[AMSPair alloc] initWithFirst:requestCopy second:promiseCopy];
 
   [v15 addObject:v16];
 }
 
-- (id)_promiseStorePairForRequest:(id)a3
+- (id)_promiseStorePairForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[AMSAuthenticateTaskCoordinator promiseStore];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__AMSAuthenticateTaskCoordinator__promiseStorePairForRequest___block_invoke;
   v8[3] = &unk_1E73B3E80;
-  v9 = v3;
-  v5 = v3;
+  v9 = requestCopy;
+  v5 = requestCopy;
   v6 = [v4 ams_firstObjectPassingTest:v8];
 
   return v6;
@@ -868,26 +868,26 @@ uint64_t __62__AMSAuthenticateTaskCoordinator__promiseStorePairForRequest___bloc
   return v6;
 }
 
-- (id)_promiseWithResultsForRequest:(id)a3
+- (id)_promiseWithResultsForRequest:(id)request
 {
-  v3 = [(AMSAuthenticateTaskCoordinator *)self _promiseStorePairForRequest:a3];
-  v4 = [v3 second];
+  v3 = [(AMSAuthenticateTaskCoordinator *)self _promiseStorePairForRequest:request];
+  second = [v3 second];
 
-  return v4;
+  return second;
 }
 
-- (void)_removeFromPromiseStore:(id)a3
+- (void)_removeFromPromiseStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  storeCopy = store;
+  if (storeCopy)
   {
     v5 = +[AMSAuthenticateTaskCoordinator promiseStore];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__AMSAuthenticateTaskCoordinator__removeFromPromiseStore___block_invoke;
     v15[3] = &unk_1E73B3E80;
-    v16 = v4;
+    v16 = storeCopy;
     v6 = [v5 ams_firstObjectPassingTest:v15];
 
     v7 = +[AMSLogConfig sharedAccountsConfig];
@@ -896,8 +896,8 @@ uint64_t __62__AMSAuthenticateTaskCoordinator__promiseStorePairForRequest___bloc
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = AMSLogKey();
       v10 = MEMORY[0x1E696AEC0];
@@ -913,16 +913,16 @@ uint64_t __62__AMSAuthenticateTaskCoordinator__promiseStorePairForRequest___bloc
       {
         [v10 stringWithFormat:@"%@: ", v11];
       }
-      v13 = ;
+      selfCopy = ;
       *buf = 138543618;
-      v18 = v13;
+      v18 = selfCopy;
       v19 = 2114;
       v20 = v6;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ Removing request from store. pair = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@ Removing request from store. pair = %{public}@", buf, 0x16u);
       if (v9)
       {
 
-        v13 = self;
+        selfCopy = self;
       }
     }
 

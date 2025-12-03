@@ -1,53 +1,53 @@
 @interface BKJaliscoAsset
-+ (id)newAssetFromServerItem:(id)a3 dataSourceIdentifier:(id)a4;
-+ (id)newAssetWithStoreID:(id)a3 dataSourceIdentifier:(id)a4;
++ (id)newAssetFromServerItem:(id)item dataSourceIdentifier:(id)identifier;
++ (id)newAssetWithStoreID:(id)d dataSourceIdentifier:(id)identifier;
 @end
 
 @implementation BKJaliscoAsset
 
-+ (id)newAssetFromServerItem:(id)a3 dataSourceIdentifier:(id)a4
++ (id)newAssetFromServerItem:(id)item dataSourceIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(BKJaliscoAsset);
-  v8 = [v5 isAudiobook];
-  v9 = [v8 BOOLValue];
+  isAudiobook = [itemCopy isAudiobook];
+  bOOLValue = [isAudiobook BOOLValue];
 
   [(BKJaliscoAsset *)v7 setAccountID:0];
-  v10 = [v5 storeID];
-  [(BKJaliscoAsset *)v7 setAssetID:v10];
+  storeID = [itemCopy storeID];
+  [(BKJaliscoAsset *)v7 setAssetID:storeID];
 
-  v11 = [v5 storeID];
-  [(BKJaliscoAsset *)v7 setStoreID:v11];
+  storeID2 = [itemCopy storeID];
+  [(BKJaliscoAsset *)v7 setStoreID:storeID2];
 
-  v12 = [v5 artist];
-  [(BKJaliscoAsset *)v7 setAuthor:v12];
+  artist = [itemCopy artist];
+  [(BKJaliscoAsset *)v7 setAuthor:artist];
 
-  v13 = [v5 title];
-  [(BKJaliscoAsset *)v7 setTitle:v13];
+  title = [itemCopy title];
+  [(BKJaliscoAsset *)v7 setTitle:title];
 
-  v14 = [v5 sortedTitle];
-  [(BKJaliscoAsset *)v7 setSortTitle:v14];
+  sortedTitle = [itemCopy sortedTitle];
+  [(BKJaliscoAsset *)v7 setSortTitle:sortedTitle];
 
-  v15 = [v5 sortedAuthor];
-  [(BKJaliscoAsset *)v7 setSortAuthor:v15];
+  sortedAuthor = [itemCopy sortedAuthor];
+  [(BKJaliscoAsset *)v7 setSortAuthor:sortedAuthor];
 
-  v16 = [v5 storeID];
-  v17 = [NSString stringWithFormat:@"%@://book/%@", @"ibooks-purchases", v16];
+  storeID3 = [itemCopy storeID];
+  v17 = [NSString stringWithFormat:@"%@://book/%@", @"ibooks-purchases", storeID3];
   v18 = [NSURL URLWithString:v17];
   [(BKJaliscoAsset *)v7 setUrl:v18];
 
-  v19 = [v5 genre];
-  [(BKJaliscoAsset *)v7 setGenre:v19];
+  genre = [itemCopy genre];
+  [(BKJaliscoAsset *)v7 setGenre:genre];
 
-  [(BKJaliscoAsset *)v7 setDataSourceIdentifier:v6];
+  [(BKJaliscoAsset *)v7 setDataSourceIdentifier:identifierCopy];
   [(BKJaliscoAsset *)v7 setSample:0];
   [(BKJaliscoAsset *)v7 setProof:0];
   [(BKJaliscoAsset *)v7 setCompressed:0];
   [(BKJaliscoAsset *)v7 setLocked:0];
   [(BKJaliscoAsset *)v7 setGeneration:0x7FFFFFFFFFFFFFFFLL];
   [(BKJaliscoAsset *)v7 setFileSize:0];
-  if (v9)
+  if (bOOLValue)
   {
     v20 = 6;
   }
@@ -59,18 +59,18 @@
 
   [(BKJaliscoAsset *)v7 setContentType:v20];
   [(BKJaliscoAsset *)v7 setState:3];
-  v21 = [v5 isExplicit];
-  [(BKJaliscoAsset *)v7 setIsExplicit:v21];
+  isExplicit = [itemCopy isExplicit];
+  [(BKJaliscoAsset *)v7 setIsExplicit:isExplicit];
 
-  v22 = [v5 purchasedAt];
-  [(BKJaliscoAsset *)v7 setDataSourceInsertionDate:v22];
+  purchasedAt = [itemCopy purchasedAt];
+  [(BKJaliscoAsset *)v7 setDataSourceInsertionDate:purchasedAt];
 
   [(BKJaliscoAsset *)v7 setReleaseDate:0];
-  v23 = [v5 purchasedAt];
-  [(BKJaliscoAsset *)v7 setPurchaseDate:v23];
+  purchasedAt2 = [itemCopy purchasedAt];
+  [(BKJaliscoAsset *)v7 setPurchaseDate:purchasedAt2];
 
-  v24 = [v5 expectedDate];
-  [(BKJaliscoAsset *)v7 setExpectedDate:v24];
+  expectedDate = [itemCopy expectedDate];
+  [(BKJaliscoAsset *)v7 setExpectedDate:expectedDate];
 
   [(BKJaliscoAsset *)v7 setShouldDisableOptimizeSpeed:0];
   [(BKJaliscoAsset *)v7 setShouldDisableTouchEmulation:0];
@@ -85,11 +85,11 @@
   [(BKJaliscoAsset *)v7 setGrouping:0];
   [(BKJaliscoAsset *)v7 setComputedRating:0];
   [(BKJaliscoAsset *)v7 setMetadataMigrationVersion:0];
-  if (v9)
+  if (bOOLValue)
   {
     objc_opt_class();
-    v25 = [v5 additionalAudiobookInfo];
-    v26 = [v25 objectForKeyedSubscript:@"daap.songtime"];
+    additionalAudiobookInfo = [itemCopy additionalAudiobookInfo];
+    v26 = [additionalAudiobookInfo objectForKeyedSubscript:@"daap.songtime"];
     v27 = BUDynamicCast();
 
     if (!v27)
@@ -109,21 +109,21 @@
   return v7;
 }
 
-+ (id)newAssetWithStoreID:(id)a3 dataSourceIdentifier:(id)a4
++ (id)newAssetWithStoreID:(id)d dataSourceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v7 = objc_alloc_init(BKJaliscoAsset);
   [(BKJaliscoAsset *)v7 setAccountID:0];
-  [(BKJaliscoAsset *)v7 setAssetID:v6];
-  [(BKJaliscoAsset *)v7 setStoreID:v6];
+  [(BKJaliscoAsset *)v7 setAssetID:dCopy];
+  [(BKJaliscoAsset *)v7 setStoreID:dCopy];
 
   [(BKJaliscoAsset *)v7 setAuthor:0];
   [(BKJaliscoAsset *)v7 setTitle:0];
   [(BKJaliscoAsset *)v7 setSortTitle:0];
   [(BKJaliscoAsset *)v7 setUrl:0];
   [(BKJaliscoAsset *)v7 setGenre:0];
-  [(BKJaliscoAsset *)v7 setDataSourceIdentifier:v5];
+  [(BKJaliscoAsset *)v7 setDataSourceIdentifier:identifierCopy];
 
   [(BKJaliscoAsset *)v7 setSample:0];
   [(BKJaliscoAsset *)v7 setProof:0];

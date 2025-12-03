@@ -1,14 +1,14 @@
 @interface LNStaticDeferredLocalizedString
-+ (id)prelocalizeUsingLocaleIdentifier:(id)a3 block:(id)a4;
-- (BOOL)hasEqualLocalizedString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LNStaticDeferredLocalizedString)initWithCoder:(id)a3;
-- (LNStaticDeferredLocalizedString)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 bundleURL:(id)a6;
-- (LNStaticDeferredLocalizedString)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 bundleURL:(id)a6 alternatives:(id)a7;
-- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)a3;
-- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)a3 alternatives:(id)a4;
-- (LNStaticDeferredLocalizedString)localizedStringWithPluralizationNumber:(id)a3 forLocaleIdentifier:(id)a4;
-- (LNStaticDeferredLocalizedString)localizedStringWithReplacements:(id)a3 forLocaleIdentifier:(id)a4;
++ (id)prelocalizeUsingLocaleIdentifier:(id)identifier block:(id)block;
+- (BOOL)hasEqualLocalizedString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (LNStaticDeferredLocalizedString)initWithCoder:(id)coder;
+- (LNStaticDeferredLocalizedString)initWithKey:(id)key defaultValue:(id)value table:(id)table bundleURL:(id)l;
+- (LNStaticDeferredLocalizedString)initWithKey:(id)key defaultValue:(id)value table:(id)table bundleURL:(id)l alternatives:(id)alternatives;
+- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)resource;
+- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)resource alternatives:(id)alternatives;
+- (LNStaticDeferredLocalizedString)localizedStringWithPluralizationNumber:(id)number forLocaleIdentifier:(id)identifier;
+- (LNStaticDeferredLocalizedString)localizedStringWithReplacements:(id)replacements forLocaleIdentifier:(id)identifier;
 - (NSString)defaultValue;
 - (NSString)description;
 - (NSString)key;
@@ -17,14 +17,14 @@
 - (_NSLocalizedStringResource)localizedStringResource;
 - (id)_dictionaryRepresenation;
 - (id)_init;
-- (id)localizedStringForLocaleIdentifier:(id)a3;
-- (id)localizedStringForLocaleIdentifier:(id)a3 bundleURL:(id)a4;
-- (id)localizedStringForLocaleIdentifier:(id)a3 kind:(id)a4;
+- (id)localizedStringForLocaleIdentifier:(id)identifier;
+- (id)localizedStringForLocaleIdentifier:(id)identifier bundleURL:(id)l;
+- (id)localizedStringForLocaleIdentifier:(id)identifier kind:(id)kind;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation LNStaticDeferredLocalizedString
@@ -59,16 +59,16 @@
     goto LABEL_7;
   }
 
-  v5 = [(LNStaticDeferredLocalizedString *)self bundleURL];
-  if (v5)
+  bundleURL = [(LNStaticDeferredLocalizedString *)self bundleURL];
+  if (bundleURL)
   {
 LABEL_6:
     v9 = objc_alloc(MEMORY[0x1E696B100]);
     v10 = [(LNStaticDeferredLocalizedString *)self key];
-    v11 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-    v12 = [(LNStaticDeferredLocalizedString *)self table];
-    v13 = [MEMORY[0x1E695DF58] currentLocale];
-    v14 = [v9 initWithKey:v10 defaultValue:v11 table:v12 locale:v13 bundleURL:v5];
+    defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+    table = [(LNStaticDeferredLocalizedString *)self table];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v14 = [v9 initWithKey:v10 defaultValue:defaultValue table:table locale:currentLocale bundleURL:bundleURL];
     v15 = self->_localizedStringResource;
     self->_localizedStringResource = v14;
 
@@ -78,19 +78,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-  v7 = [v6 URL];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  v7 = [bundleRecordForCurrentProcess URL];
   if (v7)
   {
-    v5 = v7;
+    bundleURL = v7;
 
     goto LABEL_6;
   }
 
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v8 bundleURL];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleURL = [mainBundle bundleURL];
 
-  if (v5)
+  if (bundleURL)
   {
     goto LABEL_6;
   }
@@ -139,8 +139,8 @@ LABEL_8:
   {
     v6 = [(_NSLocalizedStringResource *)self->_localizedStringResource key];
     v7 = [v6 hash];
-    v8 = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
-    v2 = [v8 hash] ^ v7;
+    table = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
+    v2 = [table hash] ^ v7;
   }
 
   v4[2](v4);
@@ -149,10 +149,10 @@ LABEL_8:
   {
     v9 = [(LNStaticDeferredLocalizedString *)self key];
     v10 = [v9 hash];
-    v11 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-    v12 = [v11 hash] ^ v10;
-    v13 = [(LNStaticDeferredLocalizedString *)self table];
-    v2 = v12 ^ [v13 hash];
+    defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+    v12 = [defaultValue hash] ^ v10;
+    table2 = [(LNStaticDeferredLocalizedString *)self table];
+    v2 = v12 ^ [table2 hash];
   }
 
   return v2;
@@ -170,15 +170,15 @@ LABEL_8:
   bundleURL = self->_bundleURL;
   if (bundleURL)
   {
-    v5 = bundleURL;
+    bundleURL = bundleURL;
   }
 
   else
   {
-    v5 = [(_NSLocalizedStringResource *)self->_localizedStringResource bundleURL];
+    bundleURL = [(_NSLocalizedStringResource *)self->_localizedStringResource bundleURL];
   }
 
-  v6 = v5;
+  v6 = bundleURL;
   v3[2](v3);
 
   return v6;
@@ -193,9 +193,9 @@ LABEL_8:
   v8[3] = &unk_1E72B1260;
   v8[4] = self;
   v3 = MEMORY[0x193AD9570](v8);
-  v4 = [(_NSLocalizedStringResource *)self->_localizedStringResource defaultValue];
-  defaultValue = v4;
-  if (!v4)
+  defaultValue = [(_NSLocalizedStringResource *)self->_localizedStringResource defaultValue];
+  defaultValue = defaultValue;
+  if (!defaultValue)
   {
     defaultValue = self->_defaultValue;
   }
@@ -216,9 +216,9 @@ LABEL_8:
   v8[3] = &unk_1E72B1260;
   v8[4] = self;
   v3 = MEMORY[0x193AD9570](v8);
-  v4 = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
-  table = v4;
-  if (!v4)
+  table = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
+  table = table;
+  if (!table)
   {
     table = self->_table;
   }
@@ -232,7 +232,7 @@ LABEL_8:
 
 - (id)_dictionaryRepresenation
 {
-  v2 = self;
+  selfCopy = self;
   LNStaticDeferredLocalizedString._dictionaryRepresentation()();
 
   v3 = sub_18F093A3C();
@@ -240,9 +240,9 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)hasEqualLocalizedString:(id)a3
+- (BOOL)hasEqualLocalizedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_localizedStringResourceLock);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -254,7 +254,7 @@ LABEL_8:
   if (localizedStringResource)
   {
     v7 = [(_NSLocalizedStringResource *)localizedStringResource key];
-    v8 = [v4 key];
+    v8 = [stringCopy key];
     v9 = v7;
     v10 = v8;
     v11 = v10;
@@ -283,10 +283,10 @@ LABEL_23:
       }
     }
 
-    v16 = [(_NSLocalizedStringResource *)self->_localizedStringResource defaultValue];
-    v17 = [v4 defaultValue];
-    v14 = v16;
-    v18 = v17;
+    defaultValue = [(_NSLocalizedStringResource *)self->_localizedStringResource defaultValue];
+    defaultValue2 = [stringCopy defaultValue];
+    v14 = defaultValue;
+    v18 = defaultValue2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -313,10 +313,10 @@ LABEL_22:
       }
     }
 
-    v21 = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
-    v22 = [v4 table];
-    v20 = v21;
-    v23 = v22;
+    table = [(_NSLocalizedStringResource *)self->_localizedStringResource table];
+    table2 = [stringCopy table];
+    v20 = table;
+    v23 = table2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -342,10 +342,10 @@ LABEL_24:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_localizedStringResourceLock);
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -356,26 +356,26 @@ LABEL_24:
   localizedStringResource = self->_localizedStringResource;
   if (localizedStringResource)
   {
-    [v4 encodeObject:localizedStringResource forKey:@"localizedStringResource"];
+    [coderCopy encodeObject:localizedStringResource forKey:@"localizedStringResource"];
   }
 
   v5[2](v5);
 
   v7 = [(LNStaticDeferredLocalizedString *)self key];
-  [v4 encodeObject:v7 forKey:@"key"];
+  [coderCopy encodeObject:v7 forKey:@"key"];
 
-  v8 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-  [v4 encodeObject:v8 forKey:@"defaultValue"];
+  defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+  [coderCopy encodeObject:defaultValue forKey:@"defaultValue"];
 
-  v9 = [(LNStaticDeferredLocalizedString *)self bundleURL];
-  [v4 encodeObject:v9 forKey:@"bundleURL"];
+  bundleURL = [(LNStaticDeferredLocalizedString *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 
-  v10 = [(LNStaticDeferredLocalizedString *)self table];
-  [v4 encodeObject:v10 forKey:@"table"];
+  table = [(LNStaticDeferredLocalizedString *)self table];
+  [coderCopy encodeObject:table forKey:@"table"];
 
-  v11 = [MEMORY[0x1E696AF00] currentThread];
-  v12 = [v11 threadDictionary];
-  v13 = [v12 objectForKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v13 = [threadDictionary objectForKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
 
   if (v13)
   {
@@ -437,7 +437,7 @@ LABEL_22:
               v35 = v13;
               v36[0] = v14;
               v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-              [v4 encodeObject:v32 forKey:@"prelocalizedStrings"];
+              [coderCopy encodeObject:v32 forKey:@"prelocalizedStrings"];
 
               goto LABEL_23;
             }
@@ -471,10 +471,10 @@ LABEL_23:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (LNStaticDeferredLocalizedString)initWithCoder:(id)a3
+- (LNStaticDeferredLocalizedString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedStringResource"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedStringResource"];
   if (v5)
   {
     v6 = v5;
@@ -483,53 +483,53 @@ LABEL_23:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"prelocalizedStrings"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"prelocalizedStrings"];
     prelocalizedStrings = self->_prelocalizedStrings;
     self->_prelocalizedStrings = v11;
   }
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     if (!v6)
     {
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"table"];
-    prelocalizedStrings = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"table"];
+    prelocalizedStrings = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
     self = [(LNStaticDeferredLocalizedString *)self initWithKey:v6 defaultValue:prelocalizedStrings table:v10 bundleURL:v13];
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"prelocalizedStrings"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"prelocalizedStrings"];
     v19 = self->_prelocalizedStrings;
     self->_prelocalizedStrings = v18;
   }
 
-  v20 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = [(LNStaticDeferredLocalizedString *)self key];
-  [v7 getCharacters:a3 range:{location, length}];
+  [v7 getCharacters:characters range:{location, length}];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v4 = [(LNStaticDeferredLocalizedString *)self key];
-  LOWORD(a3) = [v4 characterAtIndex:a3];
+  LOWORD(index) = [v4 characterAtIndex:index];
 
-  return a3;
+  return index;
 }
 
 - (unint64_t)length
@@ -566,25 +566,25 @@ LABEL_6:
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = [(LNStaticDeferredLocalizedString *)self key];
-    v13 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-    v14 = [(LNStaticDeferredLocalizedString *)self table];
-    v15 = [(LNStaticDeferredLocalizedString *)self bundleURL];
-    v2 = [v9 stringWithFormat:@"<%@: %p, key: %@, defaultValue: %@, table: %@, bundleURL: %@>", v11, self, v12, v13, v14, v15];
+    defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+    table = [(LNStaticDeferredLocalizedString *)self table];
+    bundleURL = [(LNStaticDeferredLocalizedString *)self bundleURL];
+    v2 = [v9 stringWithFormat:@"<%@: %p, key: %@, defaultValue: %@, table: %@, bundleURL: %@>", v11, self, v12, defaultValue, table, bundleURL];
   }
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -633,10 +633,10 @@ LABEL_29:
       }
     }
 
-    v17 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-    v18 = [(LNStaticDeferredLocalizedString *)v6 defaultValue];
-    v15 = v17;
-    v19 = v18;
+    defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+    defaultValue2 = [(LNStaticDeferredLocalizedString *)v6 defaultValue];
+    v15 = defaultValue;
+    v19 = defaultValue2;
     v14 = v19;
     if (v15 == v19)
     {
@@ -663,10 +663,10 @@ LABEL_28:
       }
     }
 
-    v22 = [(LNStaticDeferredLocalizedString *)self table];
-    v23 = [(LNStaticDeferredLocalizedString *)v6 table];
-    v21 = v22;
-    v24 = v23;
+    table = [(LNStaticDeferredLocalizedString *)self table];
+    table2 = [(LNStaticDeferredLocalizedString *)v6 table];
+    v21 = table;
+    v24 = table2;
     v20 = v24;
     if (v21 == v24)
     {
@@ -694,55 +694,55 @@ LABEL_30:
   return v8;
 }
 
-- (LNStaticDeferredLocalizedString)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 bundleURL:(id)a6
+- (LNStaticDeferredLocalizedString)initWithKey:(id)key defaultValue:(id)value table:(id)table bundleURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
+  lCopy = l;
+  if (!keyCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v15 = [(LNStaticDeferredLocalizedString *)self _init];
-  if (v15)
+  _init = [(LNStaticDeferredLocalizedString *)self _init];
+  if (_init)
   {
-    v16 = [v11 copy];
-    key = v15->_key;
-    v15->_key = v16;
+    v16 = [keyCopy copy];
+    key = _init->_key;
+    _init->_key = v16;
 
-    v18 = [v12 copy];
-    defaultValue = v15->_defaultValue;
-    v15->_defaultValue = v18;
+    v18 = [valueCopy copy];
+    defaultValue = _init->_defaultValue;
+    _init->_defaultValue = v18;
 
-    v20 = [v13 copy];
-    table = v15->_table;
-    v15->_table = v20;
+    v20 = [tableCopy copy];
+    table = _init->_table;
+    _init->_table = v20;
 
-    v22 = [v14 copy];
-    bundleURL = v15->_bundleURL;
-    v15->_bundleURL = v22;
+    v22 = [lCopy copy];
+    bundleURL = _init->_bundleURL;
+    _init->_bundleURL = v22;
 
-    v24 = v15;
+    v24 = _init;
   }
 
-  return v15;
+  return _init;
 }
 
-- (LNStaticDeferredLocalizedString)localizedStringWithReplacements:(id)a3 forLocaleIdentifier:(id)a4
+- (LNStaticDeferredLocalizedString)localizedStringWithReplacements:(id)replacements forLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
+  replacementsCopy = replacements;
+  identifierCopy = identifier;
+  localizedStringResource = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
 
   v9 = [(LNStaticDeferredLocalizedString *)self key];
-  if (v8)
+  if (localizedStringResource)
   {
-    v10 = [(LNStaticDeferredLocalizedString *)self table];
-    v11 = [(LNStaticDeferredLocalizedString *)self bundleURL];
-    v12 = [v9 localizedStringWithReplacements:v6 table:v10 bundleURL:v11 localeIdentifier:v7];
+    table = [(LNStaticDeferredLocalizedString *)self table];
+    bundleURL = [(LNStaticDeferredLocalizedString *)self bundleURL];
+    v12 = [v9 localizedStringWithReplacements:replacementsCopy table:table bundleURL:bundleURL localeIdentifier:identifierCopy];
 
     v9 = v12;
   }
@@ -750,13 +750,13 @@ LABEL_30:
   return v9;
 }
 
-- (LNStaticDeferredLocalizedString)localizedStringWithPluralizationNumber:(id)a3 forLocaleIdentifier:(id)a4
+- (LNStaticDeferredLocalizedString)localizedStringWithPluralizationNumber:(id)number forLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  numberCopy = number;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v7];
+    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
   }
 
   else
@@ -764,52 +764,52 @@ LABEL_30:
     [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
   v8 = ;
-  v9 = [v8 localeIdentifier];
-  if (!v9)
+  localeIdentifier = [v8 localeIdentifier];
+  if (!localeIdentifier)
   {
     goto LABEL_9;
   }
 
-  v10 = v9;
-  v11 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
-  v12 = [v8 localeIdentifier];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v10 = localeIdentifier;
+  prelocalizedStrings = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
+  localeIdentifier2 = [v8 localeIdentifier];
+  v13 = [prelocalizedStrings objectForKeyedSubscript:localeIdentifier2];
 
   if (!v13)
   {
 LABEL_9:
-    v22 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
+    localizedStringResource = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
 
-    if (!v22)
+    if (!localizedStringResource)
     {
       v24 = [(LNStaticDeferredLocalizedString *)self key];
       goto LABEL_17;
     }
 
-    v23 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
-    v19 = [v23 copy];
+    localizedStringResource2 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
+    v19 = [localizedStringResource2 copy];
 
     [v19 setLocale:v8];
-    v20 = objc_alloc_init(MEMORY[0x1E696B108]);
-    [v20 setPluralizationNumber:v6];
-    v21 = [v19 localizeWithOptions:v20];
+    prelocalizedStrings3 = objc_alloc_init(MEMORY[0x1E696B108]);
+    [prelocalizedStrings3 setPluralizationNumber:numberCopy];
+    v21 = [v19 localizeWithOptions:prelocalizedStrings3];
     goto LABEL_11;
   }
 
-  v14 = [v6 integerValue];
-  v15 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
-  v16 = [v8 localeIdentifier];
-  v17 = [v15 objectForKeyedSubscript:v16];
+  integerValue = [numberCopy integerValue];
+  prelocalizedStrings2 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
+  localeIdentifier3 = [v8 localeIdentifier];
+  v17 = [prelocalizedStrings2 objectForKeyedSubscript:localeIdentifier3];
   v18 = v17;
-  if (v14 < 2)
+  if (integerValue < 2)
   {
-    v19 = [v17 objectForKeyedSubscript:v6];
+    v19 = [v17 objectForKeyedSubscript:numberCopy];
 
     if (!v19)
     {
-      v20 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
-      v26 = [v8 localeIdentifier];
-      v27 = [v20 objectForKeyedSubscript:v26];
+      prelocalizedStrings3 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
+      localeIdentifier4 = [v8 localeIdentifier];
+      v27 = [prelocalizedStrings3 objectForKeyedSubscript:localeIdentifier4];
       v24 = [v27 objectForKeyedSubscript:&unk_1F02FEFE8];
 
       goto LABEL_12;
@@ -827,8 +827,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v20 = [v8 localeIdentifier];
-  v21 = [(LNStaticDeferredLocalizedString *)self localizedStringWithPluralizationNumber:&unk_1F02FF018 forLocaleIdentifier:v20];
+  prelocalizedStrings3 = [v8 localeIdentifier];
+  v21 = [(LNStaticDeferredLocalizedString *)self localizedStringWithPluralizationNumber:&unk_1F02FF018 forLocaleIdentifier:prelocalizedStrings3];
 LABEL_11:
   v24 = v21;
 LABEL_12:
@@ -839,21 +839,21 @@ LABEL_17:
   return v24;
 }
 
-- (id)localizedStringForLocaleIdentifier:(id)a3 bundleURL:(id)a4
+- (id)localizedStringForLocaleIdentifier:(id)identifier bundleURL:(id)l
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E696B100];
-  v8 = a4;
+  lCopy = l;
   v9 = [v7 alloc];
   v10 = [(LNStaticDeferredLocalizedString *)self key];
-  v11 = [(LNStaticDeferredLocalizedString *)self defaultValue];
-  v12 = [(LNStaticDeferredLocalizedString *)self table];
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v9 initWithKey:v10 defaultValue:v11 table:v12 locale:v13 bundleURL:v8];
+  defaultValue = [(LNStaticDeferredLocalizedString *)self defaultValue];
+  table = [(LNStaticDeferredLocalizedString *)self table];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v14 = [v9 initWithKey:v10 defaultValue:defaultValue table:table locale:currentLocale bundleURL:lCopy];
 
-  if (v6)
+  if (identifierCopy)
   {
-    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v6];
+    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
   }
 
   else
@@ -863,29 +863,29 @@ LABEL_17:
   v15 = ;
   [v14 setLocale:v15];
 
-  v16 = [v14 localize];
+  localize = [v14 localize];
 
-  return v16;
+  return localize;
 }
 
-- (id)localizedStringForLocaleIdentifier:(id)a3 kind:(id)a4
+- (id)localizedStringForLocaleIdentifier:(id)identifier kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(LNStaticDeferredLocalizedString *)self isMemberOfClass:objc_opt_class()]|| ([(LNStaticDeferredLocalizedString *)self localizedStringForLocaleIdentifier:v6 kind:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  identifierCopy = identifier;
+  kindCopy = kind;
+  if (![(LNStaticDeferredLocalizedString *)self isMemberOfClass:objc_opt_class()]|| ([(LNStaticDeferredLocalizedString *)self localizedStringForLocaleIdentifier:identifierCopy kind:kindCopy], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [(LNStaticDeferredLocalizedString *)self localizedStringForLocaleIdentifier:v6];
+    v8 = [(LNStaticDeferredLocalizedString *)self localizedStringForLocaleIdentifier:identifierCopy];
   }
 
   return v8;
 }
 
-- (id)localizedStringForLocaleIdentifier:(id)a3
+- (id)localizedStringForLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
+    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
   }
 
   else
@@ -893,147 +893,147 @@ LABEL_17:
     [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
   v5 = ;
-  v6 = [v5 localeIdentifier];
-  if (v6)
+  localeIdentifier = [v5 localeIdentifier];
+  if (localeIdentifier)
   {
-    v7 = v6;
-    v8 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
-    v9 = [v5 localeIdentifier];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v7 = localeIdentifier;
+    prelocalizedStrings = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
+    localeIdentifier2 = [v5 localeIdentifier];
+    v10 = [prelocalizedStrings objectForKeyedSubscript:localeIdentifier2];
 
     if (v10)
     {
-      v11 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
-      v12 = [v5 localeIdentifier];
-      v13 = [v11 objectForKeyedSubscript:v12];
-      v14 = [v13 objectForKeyedSubscript:&unk_1F02FEFE8];
+      prelocalizedStrings2 = [(LNStaticDeferredLocalizedString *)self prelocalizedStrings];
+      localeIdentifier3 = [v5 localeIdentifier];
+      v13 = [prelocalizedStrings2 objectForKeyedSubscript:localeIdentifier3];
+      localize = [v13 objectForKeyedSubscript:&unk_1F02FEFE8];
 
 LABEL_9:
       goto LABEL_11;
     }
   }
 
-  v15 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
+  localizedStringResource = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
 
-  if (v15)
+  if (localizedStringResource)
   {
-    v16 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
-    v11 = [v16 copy];
+    localizedStringResource2 = [(LNStaticDeferredLocalizedString *)self localizedStringResource];
+    prelocalizedStrings2 = [localizedStringResource2 copy];
 
-    [v11 setLocale:v5];
-    v14 = [v11 localize];
+    [prelocalizedStrings2 setLocale:v5];
+    localize = [prelocalizedStrings2 localize];
     goto LABEL_9;
   }
 
-  v14 = [(LNStaticDeferredLocalizedString *)self key];
+  localize = [(LNStaticDeferredLocalizedString *)self key];
 LABEL_11:
 
-  return v14;
+  return localize;
 }
 
-- (LNStaticDeferredLocalizedString)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 bundleURL:(id)a6 alternatives:(id)a7
+- (LNStaticDeferredLocalizedString)initWithKey:(id)key defaultValue:(id)value table:(id)table bundleURL:(id)l alternatives:(id)alternatives
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
+  lCopy = l;
+  alternativesCopy = alternatives;
   v17 = [(LNStaticDeferredLocalizedString *)self isMemberOfClass:objc_opt_class()];
-  if (v16 && v17 && [v16 count])
+  if (alternativesCopy && v17 && [alternativesCopy count])
   {
-    v18 = [[LNStaticDeferredLocalizedStringWithAlternatives alloc] initWithKey:v12 defaultValue:v13 table:v14 bundleURL:v15 alternatives:v16];
+    v18 = [[LNStaticDeferredLocalizedStringWithAlternatives alloc] initWithKey:keyCopy defaultValue:valueCopy table:tableCopy bundleURL:lCopy alternatives:alternativesCopy];
   }
 
   else
   {
-    v18 = [(LNStaticDeferredLocalizedString *)self initWithKey:v12 defaultValue:v13 table:v14 bundleURL:v15];
+    v18 = [(LNStaticDeferredLocalizedString *)self initWithKey:keyCopy defaultValue:valueCopy table:tableCopy bundleURL:lCopy];
   }
 
   return &v18->super;
 }
 
-- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)a3 alternatives:(id)a4
+- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)resource alternatives:(id)alternatives
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  alternativesCopy = alternatives;
   v9 = [(LNStaticDeferredLocalizedString *)self isMemberOfClass:objc_opt_class()];
-  if (v8 && v9 && [v8 count])
+  if (alternativesCopy && v9 && [alternativesCopy count])
   {
-    v10 = [[LNStaticDeferredLocalizedStringWithAlternatives alloc] initWithLocalizedStringResource:v7 alternatives:v8];
+    _init = [[LNStaticDeferredLocalizedStringWithAlternatives alloc] initWithLocalizedStringResource:resourceCopy alternatives:alternativesCopy];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!resourceCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"localizedStringResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"localizedStringResource"}];
   }
 
-  v10 = [(LNStaticDeferredLocalizedString *)self _init];
-  if (v10)
+  _init = [(LNStaticDeferredLocalizedString *)self _init];
+  if (_init)
   {
-    v11 = v7;
-    self = v10->super._localizedStringResource;
-    v10->super._localizedStringResource = v11;
+    v11 = resourceCopy;
+    self = _init->super._localizedStringResource;
+    _init->super._localizedStringResource = v11;
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return &v10->super;
+  return &_init->super;
 }
 
-- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)a3
+- (LNStaticDeferredLocalizedString)initWithLocalizedStringResource:(id)resource
 {
-  v6 = a3;
-  if (!v6)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"localizedStringResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"localizedStringResource"}];
   }
 
-  v7 = [(LNStaticDeferredLocalizedString *)self _init];
-  v8 = v7;
-  if (v7)
+  _init = [(LNStaticDeferredLocalizedString *)self _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 7, a3);
+    objc_storeStrong(_init + 7, resource);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (id)prelocalizeUsingLocaleIdentifier:(id)a3 block:(id)a4
++ (id)prelocalizeUsingLocaleIdentifier:(id)identifier block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"LNStaticDeferredLocalizedString.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNStaticDeferredLocalizedString.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  v9 = v7;
-  if (!v7)
+  localeIdentifier = identifierCopy;
+  if (!identifierCopy)
   {
-    a1 = [MEMORY[0x1E695DF58] currentLocale];
-    v9 = [a1 localeIdentifier];
+    self = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [self localeIdentifier];
   }
 
-  v10 = [MEMORY[0x1E696AF00] currentThread];
-  v11 = [v10 threadDictionary];
-  [v11 setObject:v9 forKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:localeIdentifier forKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
 
-  if (!v7)
+  if (!identifierCopy)
   {
   }
 
-  v12 = v8[2](v8);
-  v13 = [MEMORY[0x1E696AF00] currentThread];
-  v14 = [v13 threadDictionary];
-  [v14 setObject:0 forKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
+  v12 = blockCopy[2](blockCopy);
+  currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:0 forKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
 
   return v12;
 }

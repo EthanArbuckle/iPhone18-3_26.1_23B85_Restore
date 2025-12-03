@@ -10,7 +10,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC7Network12__NWPathFlow_keyStorage);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     MEMORY[0x1865DF520](v4, -1, -1);

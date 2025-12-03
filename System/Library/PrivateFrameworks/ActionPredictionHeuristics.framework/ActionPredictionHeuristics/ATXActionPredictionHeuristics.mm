@@ -1,18 +1,18 @@
 @interface ATXActionPredictionHeuristics
-+ (id)actionsWithLocationManager:(id)a3;
-+ (id)addCacheExpirerNotification:(id)a3;
++ (id)actionsWithLocationManager:(id)manager;
++ (id)addCacheExpirerNotification:(id)notification;
 + (id)nextCacheExpirationDate;
 @end
 
 @implementation ATXActionPredictionHeuristics
 
-+ (id)actionsWithLocationManager:(id)a3
++ (id)actionsWithLocationManager:(id)manager
 {
   v95 = *MEMORY[0x277D85DE8];
-  v50 = a3;
+  managerCopy = manager;
   context = objc_autoreleasePoolPush();
-  v57 = [MEMORY[0x277CE8A40] sharedInstance];
-  v51 = [v57 heuristicsCached];
+  mEMORY[0x277CE8A40] = [MEMORY[0x277CE8A40] sharedInstance];
+  heuristicsCached = [mEMORY[0x277CE8A40] heuristicsCached];
   v79 = 0;
   v80 = &v79;
   v81 = 0x3032000000;
@@ -30,18 +30,18 @@
 
   [v4 setRemoteObjectInterface:v5];
   [v4 resume];
-  v10 = [objc_alloc(MEMORY[0x277CE89F0]) initWithLocationManager:v50];
+  v10 = [objc_alloc(MEMORY[0x277CE89F0]) initWithLocationManager:managerCopy];
   v11 = [objc_alloc(MEMORY[0x277CE89E8]) initWithDevice:v10];
   v12 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_37];
   v13 = ATXHeuristicsBundlePath();
   v14 = [v10 now];
-  v15 = [v11 listenerEndpoint];
+  listenerEndpoint = [v11 listenerEndpoint];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __60__ATXActionPredictionHeuristics_actionsWithLocationManager___block_invoke_38;
   v78[3] = &unk_278C3BD90;
   v78[4] = &v79;
-  [v12 actionsAndExpirersForHeuristicsExcept:v51 bundlePath:v13 now:v14 dataSourcesEndpoint:v15 reply:v78];
+  [v12 actionsAndExpirersForHeuristicsExcept:heuristicsCached bundlePath:v13 now:v14 dataSourcesEndpoint:listenerEndpoint reply:v78];
 
   [v4 invalidate];
   objc_autoreleasePoolPop(v3);
@@ -50,9 +50,9 @@
     v16 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v80[5] allKeys];
+      allKeys = [v80[5] allKeys];
       *buf = 138412290;
-      v94 = v17;
+      v94 = allKeys;
       _os_log_impl(&dword_23E3DF000, v16, OS_LOG_TYPE_DEFAULT, "Received results from HeuristicInterpreter: %@", buf, 0xCu);
     }
 
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v94 = v51;
+      v94 = heuristicsCached;
       _os_log_impl(&dword_23E3DF000, v18, OS_LOG_TYPE_DEFAULT, "Using cached results: %@", buf, 0xCu);
     }
 
@@ -86,13 +86,13 @@
 
           v21 = *(*(&v74 + 1) + 8 * i);
           v58 = [v80[5] objectForKeyedSubscript:v21];
-          v22 = [v58 actionMakers];
-          v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v22, "count")}];
+          actionMakers = [v58 actionMakers];
+          v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(actionMakers, "count")}];
           v87 = 0u;
           v88 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v24 = v22;
+          v24 = actionMakers;
           v25 = [v24 countByEnumeratingWithState:&v85 objects:buf count:16];
           if (v25)
           {
@@ -106,10 +106,10 @@
                   objc_enumerationMutation(v24);
                 }
 
-                v28 = [*(*(&v85 + 1) + 8 * j) action];
-                if (v28)
+                action = [*(*(&v85 + 1) + 8 * j) action];
+                if (action)
                 {
-                  [v23 addObject:v28];
+                  [v23 addObject:action];
                 }
               }
 
@@ -119,8 +119,8 @@
             while (v25);
           }
 
-          v29 = [v58 expirers];
-          [v57 setObject:v23 expirers:v29 forKey:v21];
+          expirers = [v58 expirers];
+          [mEMORY[0x277CE8A40] setObject:v23 expirers:expirers forKey:v21];
 
           v72 = 0u;
           v73 = 0u;
@@ -141,8 +141,8 @@
                 }
 
                 v34 = *(*(&v70 + 1) + 8 * k);
-                v35 = [v34 criteria];
-                v36 = [v35 isRelevant:v20];
+                criteria = [v34 criteria];
+                v36 = [criteria isRelevant:v20];
 
                 if (v36)
                 {
@@ -178,7 +178,7 @@
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v54 = v51;
+    v54 = heuristicsCached;
     v59 = [v54 countByEnumeratingWithState:&v66 objects:v90 count:16];
     if (v59)
     {
@@ -192,7 +192,7 @@
             objc_enumerationMutation(v54);
           }
 
-          v38 = [v57 objectForKey:*(*(&v66 + 1) + 8 * m) found:0];
+          v38 = [mEMORY[0x277CE8A40] objectForKey:*(*(&v66 + 1) + 8 * m) found:0];
           v64 = 0u;
           v65 = 0u;
           v62 = 0u;
@@ -212,8 +212,8 @@
                 }
 
                 v43 = *(*(&v62 + 1) + 8 * n);
-                v44 = [v43 criteria];
-                v45 = [v44 isRelevant:v20];
+                criteria2 = [v43 criteria];
+                v45 = [criteria2 isRelevant:v20];
 
                 if (v45)
                 {
@@ -309,23 +309,23 @@ uint64_t __60__ATXActionPredictionHeuristics_actionsWithLocationManager___block_
   return v7;
 }
 
-+ (id)addCacheExpirerNotification:(id)a3
++ (id)addCacheExpirerNotification:(id)notification
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  v6 = [MEMORY[0x277CE8A40] sharedInstance];
-  v7 = [v5 addObserverForName:@"com.apple.duetexpertd.heuristic.cache-expired" object:v6 queue:0 usingBlock:v4];
+  notificationCopy = notification;
+  defaultCenter = [v3 defaultCenter];
+  mEMORY[0x277CE8A40] = [MEMORY[0x277CE8A40] sharedInstance];
+  v7 = [defaultCenter addObserverForName:@"com.apple.duetexpertd.heuristic.cache-expired" object:mEMORY[0x277CE8A40] queue:0 usingBlock:notificationCopy];
 
   return v7;
 }
 
 + (id)nextCacheExpirationDate
 {
-  v2 = [MEMORY[0x277CE8A40] sharedInstance];
-  v3 = [v2 firstExpirationDate];
+  mEMORY[0x277CE8A40] = [MEMORY[0x277CE8A40] sharedInstance];
+  firstExpirationDate = [mEMORY[0x277CE8A40] firstExpirationDate];
 
-  return v3;
+  return firstExpirationDate;
 }
 
 @end

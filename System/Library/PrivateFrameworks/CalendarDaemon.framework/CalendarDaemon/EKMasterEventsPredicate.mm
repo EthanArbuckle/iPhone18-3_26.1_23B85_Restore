@@ -1,15 +1,15 @@
 @interface EKMasterEventsPredicate
-+ (id)predicateWithCalendarIDs:(id)a3;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
++ (id)predicateWithCalendarIDs:(id)ds;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)predicateFormat;
 @end
 
 @implementation EKMasterEventsPredicate
 
-+ (id)predicateWithCalendarIDs:(id)a3
++ (id)predicateWithCalendarIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCalendars:v4];
+  dsCopy = ds;
+  v5 = [[self alloc] initWithCalendars:dsCopy];
 
   return v5;
 }
@@ -21,7 +21,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
   v5 = [(EKPredicate *)self calendarRowIDsForDatabaseID:AuxilliaryDatabaseID];

@@ -1,24 +1,24 @@
 @interface SSSScreenshotModificationInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)annotations;
 - (SSSCropInfo)cropInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForScreenshotWithEnvironmentDescription:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)initForScreenshotWithEnvironmentDescription:(id)description;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSSScreenshotModificationInfo
 
-- (id)initForScreenshotWithEnvironmentDescription:(id)a3
+- (id)initForScreenshotWithEnvironmentDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v17.receiver = self;
   v17.super_class = SSSScreenshotModificationInfo;
   v5 = [(SSSScreenshotModificationInfo *)&v17 init];
   environmentDescription = v5->_environmentDescription;
-  v5->_environmentDescription = v4;
-  v7 = v4;
+  v5->_environmentDescription = descriptionCopy;
+  v7 = descriptionCopy;
 
   [(SSEnvironmentDescription *)v7 imagePointSize];
   sub_10005385C(v16, v8, v9);
@@ -50,34 +50,34 @@
 
 - (NSArray)annotations
 {
-  v2 = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
-  v3 = [_SSSScreenshotAnnotationController annotationsFromAnnotationData:v2];
+  annotationNSDatas = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
+  v3 = [_SSSScreenshotAnnotationController annotationsFromAnnotationData:annotationNSDatas];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[12] == self->_paperKitChangeCounter && [v5[1] isEqual:self->_environmentDescription] && (objc_msgSend(v6, "cropInfo"), -[SSSScreenshotModificationInfo cropInfo](self, "cropInfo"), sub_10005387C(v20, &v19)) && (objc_msgSend(v6, "annotationNSDatas"), v7 = objc_claimAutoreleasedReturnValue(), -[SSSScreenshotModificationInfo annotationNSDatas](self, "annotationNSDatas"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9) && (objc_msgSend(v6, "vellumOpacity"), v11 = v10, -[SSSScreenshotModificationInfo vellumOpacity](self, "vellumOpacity"), v11 == v12))
     {
-      v13 = [v6 imageDescription];
-      v14 = [(SSSScreenshotModificationInfo *)self imageDescription];
-      if (v13 == v14)
+      imageDescription = [v6 imageDescription];
+      imageDescription2 = [(SSSScreenshotModificationInfo *)self imageDescription];
+      if (imageDescription == imageDescription2)
       {
         v17 = 1;
       }
 
       else
       {
-        v15 = [v6 imageDescription];
-        v16 = [(SSSScreenshotModificationInfo *)self imageDescription];
-        v17 = [v15 isEqualToString:v16];
+        imageDescription3 = [v6 imageDescription];
+        imageDescription4 = [(SSSScreenshotModificationInfo *)self imageDescription];
+        v17 = [imageDescription3 isEqualToString:imageDescription4];
       }
     }
 
@@ -95,7 +95,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 1, self->_environmentDescription);
@@ -105,20 +105,20 @@
   *(v4 + 1) = v18;
   *(v4 + 2) = v6;
   *(v4 + 3) = v5;
-  v7 = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
-  v8 = [v7 copy];
+  annotationNSDatas = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
+  v8 = [annotationNSDatas copy];
   v9 = v4[8];
   v4[8] = v8;
 
   [(SSSScreenshotModificationInfo *)self vellumOpacity];
   v4[9] = v10;
-  v11 = [(SSSScreenshotModificationInfo *)self originalAnnotations];
-  v12 = [v11 copy];
+  originalAnnotations = [(SSSScreenshotModificationInfo *)self originalAnnotations];
+  v12 = [originalAnnotations copy];
   v13 = v4[10];
   v4[10] = v12;
 
-  v14 = [(SSSScreenshotModificationInfo *)self imageDescription];
-  v15 = [v14 copy];
+  imageDescription = [(SSSScreenshotModificationInfo *)self imageDescription];
+  v15 = [imageDescription copy];
   v16 = v4[11];
   v4[11] = v15;
 
@@ -126,22 +126,22 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(SSSScreenshotModificationInfo *)[SSSScreenshotMutableModificationInfo alloc] initForScreenshotWithEnvironmentDescription:self->_environmentDescription];
   [(SSSScreenshotModificationInfo *)self cropInfo];
   [v4 setCropInfo:&v11];
-  v5 = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
-  [v4 setAnnotationNSDatas:v5];
+  annotationNSDatas = [(SSSScreenshotModificationInfo *)self annotationNSDatas];
+  [v4 setAnnotationNSDatas:annotationNSDatas];
 
   [(SSSScreenshotModificationInfo *)self vellumOpacity];
   [v4 setVellumOpacity:?];
-  v6 = [(SSSScreenshotModificationInfo *)self originalAnnotations];
-  v7 = [v6 mutableCopy];
+  originalAnnotations = [(SSSScreenshotModificationInfo *)self originalAnnotations];
+  v7 = [originalAnnotations mutableCopy];
   [v4 setOriginalAnnotations:v7];
 
-  v8 = [(SSSScreenshotModificationInfo *)self imageDescription];
-  v9 = [v8 copy];
+  imageDescription = [(SSSScreenshotModificationInfo *)self imageDescription];
+  v9 = [imageDescription copy];
   [v4 setImageDescription:v9];
 
   [v4 setPaperKitChangeCounter:{-[SSSScreenshotModificationInfo paperKitChangeCounter](self, "paperKitChangeCounter")}];

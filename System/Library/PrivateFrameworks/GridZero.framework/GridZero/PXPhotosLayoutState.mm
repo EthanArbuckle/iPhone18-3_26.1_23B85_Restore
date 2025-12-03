@@ -1,23 +1,23 @@
 @interface PXPhotosLayoutState
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXPhotosLayoutState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXPhotosLayoutState);
-  v5 = [(PXPhotosLayoutState *)self lens];
-  [(PXPhotosLayoutState *)v4 setLens:v5];
+  lens = [(PXPhotosLayoutState *)self lens];
+  [(PXPhotosLayoutState *)v4 setLens:lens];
 
-  v6 = [(PXPhotosLayoutState *)self bodyProvider];
-  [(PXPhotosLayoutState *)v4 setBodyProvider:v6];
+  bodyProvider = [(PXPhotosLayoutState *)self bodyProvider];
+  [(PXPhotosLayoutState *)v4 setBodyProvider:bodyProvider];
 
-  v7 = [(PXPhotosLayoutState *)self headerProvider];
-  [(PXPhotosLayoutState *)v4 setHeaderProvider:v7];
+  headerProvider = [(PXPhotosLayoutState *)self headerProvider];
+  [(PXPhotosLayoutState *)v4 setHeaderProvider:headerProvider];
 
-  v8 = [(PXPhotosLayoutState *)self anchorAssetReference];
-  [(PXPhotosLayoutState *)v4 setAnchorAssetReference:v8];
+  anchorAssetReference = [(PXPhotosLayoutState *)self anchorAssetReference];
+  [(PXPhotosLayoutState *)v4 setAnchorAssetReference:anchorAssetReference];
 
   return v4;
 }

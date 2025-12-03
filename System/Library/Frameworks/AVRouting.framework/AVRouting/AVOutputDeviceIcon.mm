@@ -1,5 +1,5 @@
 @interface AVOutputDeviceIcon
-- (AVOutputDeviceIcon)initWithDict:(id)a3;
+- (AVOutputDeviceIcon)initWithDict:(id)dict;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(AVOutputDeviceIcon *)&v3 dealloc];
 }
 
-- (AVOutputDeviceIcon)initWithDict:(id)a3
+- (AVOutputDeviceIcon)initWithDict:(id)dict
 {
   v17.receiver = self;
   v17.super_class = AVOutputDeviceIcon;
   v4 = [(AVOutputDeviceIcon *)&v17 init];
   if (v4)
   {
-    v5 = [a3 valueForKey:@"widthPixels"];
+    v5 = [dict valueForKey:@"widthPixels"];
     objc_opt_class();
     v6 = 0.0;
     v7 = 0.0;
@@ -29,7 +29,7 @@
       v7 = v8;
     }
 
-    v9 = [a3 valueForKey:@"heightPixels"];
+    v9 = [dict valueForKey:@"heightPixels"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
     }
 
     v4->_pixelSize = [MEMORY[0x1E696B098] valueWithSize:{v7, v6}];
-    v11 = [a3 valueForKey:@"imageData"];
+    v11 = [dict valueForKey:@"imageData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,19 +51,19 @@
     }
 
     v4->_imageData = v12;
-    v13 = [a3 valueForKey:@"prerendered"];
+    v13 = [dict valueForKey:@"prerendered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
     }
 
     else
     {
-      v14 = 1;
+      bOOLValue = 1;
     }
 
-    v4->_prerendered = v14;
+    v4->_prerendered = bOOLValue;
     v15 = v4;
   }
 

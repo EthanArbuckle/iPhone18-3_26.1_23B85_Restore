@@ -6,8 +6,8 @@
 
 - (id)ontologyDatabase
 {
-  v1 = [a1 protectedResources];
-  v2 = [v1 objectForKeyedSubscript:@"OntologyDatabase"];
+  protectedResources = [self protectedResources];
+  v2 = [protectedResources objectForKeyedSubscript:@"OntologyDatabase"];
 
   return v2;
 }

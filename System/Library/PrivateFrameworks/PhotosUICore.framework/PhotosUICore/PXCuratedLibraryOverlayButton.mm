@@ -1,33 +1,33 @@
 @interface PXCuratedLibraryOverlayButton
-+ (CGSize)_sizeOfTitle:(id)a3 withFont:(id)a4;
-+ (CGSize)sizeWithConfiguration:(id)a3;
++ (CGSize)_sizeOfTitle:(id)title withFont:(id)font;
++ (CGSize)sizeWithConfiguration:(id)configuration;
 + (NSCache)buttonSizeCache;
 + (NSCache)titleSizeCache;
 + (UIFont)defaultTitleFont;
-+ (id)iconImageSymbolConfigurationFromConfiguration:(id)a3;
-+ (void)_getSize:(CGSize *)a3 titleFrame:(CGRect *)a4 captionFrame:(CGRect *)a5 iconFrame:(CGRect *)a6 forConfiguration:(id)a7 title:(id)a8;
++ (id)iconImageSymbolConfigurationFromConfiguration:(id)configuration;
++ (void)_getSize:(CGSize *)size titleFrame:(CGRect *)frame captionFrame:(CGRect *)captionFrame iconFrame:(CGRect *)iconFrame forConfiguration:(id)configuration title:(id)title;
 - (CGRect)clippingRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (PXCuratedLibraryOverlayButton)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_accessibilitySettingsChanged:(id)a3;
-- (void)_performAction:(id)a3;
-- (void)_performMenuAction:(id)a3;
+- (PXCuratedLibraryOverlayButton)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_accessibilitySettingsChanged:(id)changed;
+- (void)_performAction:(id)action;
+- (void)_performMenuAction:(id)action;
 - (void)_platformSpecificViewSetup;
 - (void)_setupViews;
 - (void)_updateBackgroundView;
-- (void)_updateButtonSystemWithConfiguration:(id)a3;
-- (void)_updateButtonWithConfiguration:(id)a3;
+- (void)_updateButtonSystemWithConfiguration:(id)configuration;
+- (void)_updateButtonWithConfiguration:(id)configuration;
 - (void)_updateEffectView;
 - (void)_updateEffectViewBackgroundStyle;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setUserData:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXCuratedLibraryOverlayButton
@@ -49,24 +49,24 @@
 {
   if ([objc_opt_class() usesButtonSystem])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1639 description:@"Shouldn't be called if button system is used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1639 description:@"Shouldn't be called if button system is used."];
   }
 
   [(PXCuratedLibraryOverlayButton *)self effectView];
   if (objc_claimAutoreleasedReturnValue())
   {
-    v4 = [(PXCuratedLibraryOverlayButton *)self userData];
+    userData = [(PXCuratedLibraryOverlayButton *)self userData];
     [(PXCuratedLibraryOverlayButton *)self _updateEffectViewBackgroundStyle];
-    v5 = v4;
+    v5 = userData;
     [v5 segment];
-    v6 = [v5 spec];
-    [v6 buttonHeight];
+    spec = [v5 spec];
+    [spec buttonHeight];
 
     [v5 style];
-    v7 = [v5 spec];
+    spec2 = [v5 spec];
 
-    [v7 layoutDirection];
+    [spec2 layoutDirection];
     PXFloatApproximatelyEqualToFloat();
   }
 }
@@ -75,33 +75,33 @@
 {
   if ([objc_opt_class() usesButtonSystem])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1564 description:@"Shouldn't be called if button system is used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1564 description:@"Shouldn't be called if button system is used."];
   }
 
-  v4 = [(PXCuratedLibraryOverlayButton *)self effectView];
-  if (v4)
+  effectView = [(PXCuratedLibraryOverlayButton *)self effectView];
+  if (effectView)
   {
-    v19 = v4;
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    v6 = [(PXCuratedLibraryOverlayButton *)self userData];
-    v7 = [v6 style];
+    v19 = effectView;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    userData = [(PXCuratedLibraryOverlayButton *)self userData];
+    style = [userData style];
 
     v8 = 1;
-    if (v7 <= 8)
+    if (style <= 8)
     {
-      if (v7 <= 5)
+      if (style <= 5)
       {
-        if (v7)
+        if (style)
         {
-          if (v7 != 1)
+          if (style != 1)
           {
             v9 = 0;
             v10 = 0;
-            if ((v7 - 2) < 4)
+            if ((style - 2) < 4)
             {
-              v18 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v18 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1618 description:@"Code which should be unreachable has been reached"];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1618 description:@"Code which should be unreachable has been reached"];
 
               abort();
             }
@@ -115,12 +115,12 @@
         goto LABEL_19;
       }
 
-      if (v7 == 6)
+      if (style == 6)
       {
         goto LABEL_19;
       }
 
-      if (v7 == 7)
+      if (style == 7)
       {
 LABEL_18:
         v9 = @"UIBlurEffectStyleSystemUltraThinMaterialDark";
@@ -135,9 +135,9 @@ LABEL_18:
 
     else
     {
-      if (v7 <= 11)
+      if (style <= 11)
       {
-        if (v7 != 10)
+        if (style != 10)
         {
           goto LABEL_18;
         }
@@ -148,30 +148,30 @@ LABEL_19:
         goto LABEL_24;
       }
 
-      switch(v7)
+      switch(style)
       {
         case 12:
-          v13 = [MEMORY[0x1E69DC888] systemBlueColor];
+          systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
 
           v10 = 6;
-          v5 = v13;
+          clearColor = systemBlueColor;
           v9 = @"UIBlurEffectStyleSystemUltraThinMaterial";
           break;
         case 13:
-          v14 = [MEMORY[0x1E69DC888] systemBlueColor];
+          systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
 
           v10 = 7;
-          v5 = v14;
+          clearColor = systemBlueColor2;
           v9 = @"UIBlurEffectStyleSystemThinMaterial";
           break;
         case 14:
-          v11 = [(PXCuratedLibraryOverlayButton *)self userData];
-          v12 = [v11 backgroundColor];
+          userData2 = [(PXCuratedLibraryOverlayButton *)self userData];
+          backgroundColor = [userData2 backgroundColor];
 
           v9 = 0;
           v8 = 0;
           v10 = 0;
-          v5 = v12;
+          clearColor = backgroundColor;
           break;
         default:
           v9 = 0;
@@ -181,8 +181,8 @@ LABEL_19:
     }
 
 LABEL_24:
-    v15 = [(PXCuratedLibraryOverlayButton *)self contentView];
-    [v15 setBackgroundColor:v5];
+    contentView = [(PXCuratedLibraryOverlayButton *)self contentView];
+    [contentView setBackgroundColor:clearColor];
 
     if (v8)
     {
@@ -198,7 +198,7 @@ LABEL_24:
       [v19 setEffect:0];
     }
 
-    v4 = v19;
+    effectView = v19;
   }
 }
 
@@ -213,28 +213,28 @@ LABEL_24:
 {
   if ([objc_opt_class() usesButtonSystem])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1529 description:@"Shouldn't be called if button system is used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1529 description:@"Shouldn't be called if button system is used."];
   }
 
-  v4 = [(PXCuratedLibraryOverlayButton *)self userData];
-  v5 = [v4 style];
+  userData = [(PXCuratedLibraryOverlayButton *)self userData];
+  style = [userData style];
 
-  if (v5 >= 0xF)
+  if (style >= 0xF)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL _PXNeedsEffectViewForStyle(PXCuratedLibraryOverlayButtonStyle)"];
-    [v15 handleFailureInFunction:v16 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
+    [currentHandler2 handleFailureInFunction:v16 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v6 = 0x7FC3u >> v5;
-  v7 = [(PXCuratedLibraryOverlayButton *)self effectView];
+  v6 = 0x7FC3u >> style;
+  effectView = [(PXCuratedLibraryOverlayButton *)self effectView];
 
-  if ((v6 & 1) == 0 || v7)
+  if ((v6 & 1) == 0 || effectView)
   {
-    if ((v6 & 1) != 0 || !v7)
+    if ((v6 & 1) != 0 || !effectView)
     {
       return;
     }
@@ -246,8 +246,8 @@ LABEL_24:
     [v17 setAutoresizingMask:18];
     [(PXCuratedLibraryOverlayButton *)self setContentView:v17];
     [(PXCuratedLibraryOverlayButton *)self addSubview:v17];
-    v13 = [(PXCuratedLibraryOverlayButton *)self effectView];
-    [v13 removeFromSuperview];
+    effectView2 = [(PXCuratedLibraryOverlayButton *)self effectView];
+    [effectView2 removeFromSuperview];
 
     [(PXCuratedLibraryOverlayButton *)self setEffectView:0];
   }
@@ -260,35 +260,35 @@ LABEL_24:
     [v17 setUserInteractionEnabled:0];
     [v17 setAutoresizingMask:18];
     [(PXCuratedLibraryOverlayButton *)self setEffectView:v17];
-    v9 = [(PXCuratedLibraryOverlayButton *)self contentView];
-    v10 = [v17 contentView];
-    [(PXCuratedLibraryOverlayButton *)self setContentView:v10];
+    contentView = [(PXCuratedLibraryOverlayButton *)self contentView];
+    contentView2 = [v17 contentView];
+    [(PXCuratedLibraryOverlayButton *)self setContentView:contentView2];
 
-    v11 = [(PXCuratedLibraryOverlayButton *)self effectView];
-    [(PXCuratedLibraryOverlayButton *)self addSubview:v11];
+    effectView3 = [(PXCuratedLibraryOverlayButton *)self effectView];
+    [(PXCuratedLibraryOverlayButton *)self addSubview:effectView3];
 
-    [v9 removeFromSuperview];
+    [contentView removeFromSuperview];
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(PXCuratedLibraryOverlayButton *)self userData:a3];
-  v6 = [v5 segment];
-  v7 = [v5 spec];
-  [v7 buttonHeight];
+  v5 = [(PXCuratedLibraryOverlayButton *)self userData:interaction];
+  segment = [v5 segment];
+  spec = [v5 spec];
+  [spec buttonHeight];
   v9 = v8 * 0.5;
 
-  v10 = [v5 style];
+  style = [v5 style];
   v11 = 0.0;
   v12 = 4.0;
   v13 = 5.0;
-  if (((1 << v10) & 0xC0) == 0)
+  if (((1 << style) & 0xC0) == 0)
   {
     v13 = 0.0;
   }
 
-  if (((1 << v10) & 0x1C00) != 0)
+  if (((1 << style) & 0x1C00) != 0)
   {
     v13 = 0.0;
   }
@@ -298,13 +298,13 @@ LABEL_24:
     v12 = v9;
   }
 
-  if (((1 << v10) & 0x3C) != 0)
+  if (((1 << style) & 0x3C) != 0)
   {
     v13 = 0.0;
     v12 = 0.0;
   }
 
-  if (v10 > 0xC)
+  if (style > 0xC)
   {
     v12 = v9;
   }
@@ -314,7 +314,7 @@ LABEL_24:
     v11 = v13;
   }
 
-  if (v6 == 2)
+  if (segment == 2)
   {
     v14 = v11;
   }
@@ -324,7 +324,7 @@ LABEL_24:
     v14 = v12;
   }
 
-  if (v6 == 1)
+  if (segment == 1)
   {
     v15 = v11;
   }
@@ -334,10 +334,10 @@ LABEL_24:
     v15 = v12;
   }
 
-  v16 = [v5 spec];
-  v17 = [v16 layoutDirection];
+  spec2 = [v5 spec];
+  layoutDirection = [spec2 layoutDirection];
 
-  if (v17 == 2)
+  if (layoutDirection == 2)
   {
     v18 = v15;
   }
@@ -347,7 +347,7 @@ LABEL_24:
     v18 = v14;
   }
 
-  if (v17 == 2)
+  if (layoutDirection == 2)
   {
     v19 = v14;
   }
@@ -370,13 +370,13 @@ LABEL_24:
   return v28;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = [(PXCuratedLibraryOverlayButton *)self userData:a3];
-  v7 = [v6 spec];
-  v8 = [v7 isFloating];
+  v6 = [(PXCuratedLibraryOverlayButton *)self userData:interaction];
+  spec = [v6 spec];
+  isFloating = [spec isFloating];
 
-  if ((v8 & 1) != 0 || [v6 forcePointerInteractionEnabled])
+  if ((isFloating & 1) != 0 || [v6 forcePointerInteractionEnabled])
   {
     v9 = MEMORY[0x1E69DCDC0];
     [(PXCuratedLibraryOverlayButton *)self bounds];
@@ -391,75 +391,75 @@ LABEL_24:
   return v10;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v11.receiver = self;
   v11.super_class = PXCuratedLibraryOverlayButton;
-  [(PXCuratedLibraryOverlayButton *)&v11 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
-  v6 = [(PXCuratedLibraryOverlayButton *)self userData];
-  v7 = [v6 willDismissMenuActionHandler];
+  [(PXCuratedLibraryOverlayButton *)&v11 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
+  userData = [(PXCuratedLibraryOverlayButton *)self userData];
+  willDismissMenuActionHandler = [userData willDismissMenuActionHandler];
 
-  if (v7)
+  if (willDismissMenuActionHandler)
   {
-    v8 = [(PXCuratedLibraryOverlayButton *)self userData];
-    v9 = [v8 willDismissMenuActionHandler];
-    v9[2]();
+    userData2 = [(PXCuratedLibraryOverlayButton *)self userData];
+    willDismissMenuActionHandler2 = [userData2 willDismissMenuActionHandler];
+    willDismissMenuActionHandler2[2]();
   }
 
-  v10 = [(PXCuratedLibraryOverlayButton *)self menu];
-  [v10 didClose];
+  menu = [(PXCuratedLibraryOverlayButton *)self menu];
+  [menu didClose];
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v11.receiver = self;
   v11.super_class = PXCuratedLibraryOverlayButton;
-  [(PXCuratedLibraryOverlayButton *)&v11 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
-  v6 = [(PXCuratedLibraryOverlayButton *)self userData];
-  v7 = [v6 willDisplayMenuActionHandler];
+  [(PXCuratedLibraryOverlayButton *)&v11 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
+  userData = [(PXCuratedLibraryOverlayButton *)self userData];
+  willDisplayMenuActionHandler = [userData willDisplayMenuActionHandler];
 
-  if (v7)
+  if (willDisplayMenuActionHandler)
   {
-    v8 = [(PXCuratedLibraryOverlayButton *)self userData];
-    v9 = [v8 willDisplayMenuActionHandler];
-    v9[2]();
+    userData2 = [(PXCuratedLibraryOverlayButton *)self userData];
+    willDisplayMenuActionHandler2 = [userData2 willDisplayMenuActionHandler];
+    willDisplayMenuActionHandler2[2]();
   }
 
-  v10 = [(PXCuratedLibraryOverlayButton *)self menu];
-  [v10 willOpen];
+  menu = [(PXCuratedLibraryOverlayButton *)self menu];
+  [menu willOpen];
 }
 
-- (void)_accessibilitySettingsChanged:(id)a3
+- (void)_accessibilitySettingsChanged:(id)changed
 {
-  v3 = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
-  [v3 _setWantsUnderlineForAccessibilityButtonShapesEnabled:UIAccessibilityButtonShapesEnabled()];
+  customTitleLabel = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
+  [customTitleLabel _setWantsUnderlineForAccessibilityButtonShapesEnabled:UIAccessibilityButtonShapesEnabled()];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   if ([objc_opt_class() usesButtonSystem])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1446 description:@"Shouldn't be called if button system is used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1446 description:@"Shouldn't be called if button system is used."];
   }
 
   contentView = self->_contentView;
-  if (contentView != v6)
+  if (contentView != viewCopy)
   {
     v8 = contentView;
-    objc_storeStrong(&self->_contentView, a3);
-    if (v6 && v8)
+    objc_storeStrong(&self->_contentView, view);
+    if (viewCopy && v8)
     {
       [(UIView *)v8 frame];
-      [(UIView *)v6 setFrame:?];
+      [(UIView *)viewCopy setFrame:?];
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(UIView *)v8 subviews];
-      v10 = [v9 copy];
+      subviews = [(UIView *)v8 subviews];
+      v10 = [subviews copy];
 
       v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v11)
@@ -476,7 +476,7 @@ LABEL_24:
               objc_enumerationMutation(v10);
             }
 
-            [(UIView *)v6 addSubview:*(*(&v16 + 1) + 8 * v14++)];
+            [(UIView *)viewCopy addSubview:*(*(&v16 + 1) + 8 * v14++)];
           }
 
           while (v12 != v14);
@@ -486,99 +486,99 @@ LABEL_24:
         while (v12);
       }
 
-      [(PXCuratedLibraryOverlayButton *)self insertSubview:v6 aboveSubview:v8];
+      [(PXCuratedLibraryOverlayButton *)self insertSubview:viewCopy aboveSubview:v8];
     }
   }
 }
 
-- (void)_performMenuAction:(id)a3
+- (void)_performMenuAction:(id)action
 {
-  v10 = a3;
-  v5 = [(PXCuratedLibraryOverlayButton *)self userData];
-  v6 = [v5 actionPerformer];
-  v7 = [v5 menuActionHandler];
-  v8 = v7;
-  if (v6 && v7)
+  actionCopy = action;
+  userData = [(PXCuratedLibraryOverlayButton *)self userData];
+  actionPerformer = [userData actionPerformer];
+  menuActionHandler = [userData menuActionHandler];
+  v8 = menuActionHandler;
+  if (actionPerformer && menuActionHandler)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1435 description:{@"Invalid parameter not satisfying: %@", @"PX_NAND(actionPerformer, actionHandler)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1435 description:{@"Invalid parameter not satisfying: %@", @"PX_NAND(actionPerformer, actionHandler)"}];
   }
 
-  [v6 setSender:v10];
-  [v6 performActionWithCompletionHandler:0];
+  [actionPerformer setSender:actionCopy];
+  [actionPerformer performActionWithCompletionHandler:0];
   if (v8)
   {
     v8[2](v8);
   }
 }
 
-- (void)_performAction:(id)a3
+- (void)_performAction:(id)action
 {
-  v10 = a3;
-  v5 = [(PXCuratedLibraryOverlayButton *)self userData];
-  v6 = [v5 actionPerformer];
-  v7 = [v5 actionHandler];
-  v8 = v7;
-  if (v6 && v7)
+  actionCopy = action;
+  userData = [(PXCuratedLibraryOverlayButton *)self userData];
+  actionPerformer = [userData actionPerformer];
+  actionHandler = [userData actionHandler];
+  v8 = actionHandler;
+  if (actionPerformer && actionHandler)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1420 description:{@"Invalid parameter not satisfying: %@", @"PX_NAND(actionPerformer, actionHandler)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1420 description:{@"Invalid parameter not satisfying: %@", @"PX_NAND(actionPerformer, actionHandler)"}];
   }
 
-  [v6 setSender:v10];
-  [v6 performActionWithCompletionHandler:0];
+  [actionPerformer setSender:actionCopy];
+  [actionPerformer performActionWithCompletionHandler:0];
   if (v8)
   {
     v8[2](v8);
   }
 }
 
-- (void)_updateButtonWithConfiguration:(id)a3
+- (void)_updateButtonWithConfiguration:(id)configuration
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   if ([objc_opt_class() usesButtonSystem])
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1351 description:@"Shouldn't be called if button system is used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1351 description:@"Shouldn't be called if button system is used."];
   }
 
   [(PXCuratedLibraryOverlayButton *)self _updateBackgroundView];
   [(PXCuratedLibraryOverlayButton *)self _updateEffectView];
-  v6 = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
-  v7 = [v5 tintedIconImage];
-  [v6 setImage:v7];
+  customIconImageView = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
+  tintedIconImage = [configurationCopy tintedIconImage];
+  [customIconImageView setImage:tintedIconImage];
 
-  v8 = [v5 highlightedIconImage];
-  [v6 setHighlightedImage:v8];
+  highlightedIconImage = [configurationCopy highlightedIconImage];
+  [customIconImageView setHighlightedImage:highlightedIconImage];
 
-  v9 = [v5 tintColor];
-  [v6 setTintColor:v9];
+  tintColor = [configurationCopy tintColor];
+  [customIconImageView setTintColor:tintColor];
 
-  v10 = [(PXCuratedLibraryOverlayButton *)self pointerInteraction];
-  [v10 invalidate];
+  pointerInteraction = [(PXCuratedLibraryOverlayButton *)self pointerInteraction];
+  [pointerInteraction invalidate];
 
-  v11 = v5;
+  v11 = configurationCopy;
   if (_PXIconImageSymbolConfiguration_onceToken != -1)
   {
     dispatch_once(&_PXIconImageSymbolConfiguration_onceToken, &__block_literal_global_863_140948);
   }
 
-  v12 = [MEMORY[0x1E69DC668] sharedApplication];
-  v13 = [v12 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v15 = [v11 systemImageName];
+  systemImageName = [v11 systemImageName];
   v16 = [off_1E7721928 alloc];
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "style")}];
   v18 = v17;
-  if (v15)
+  if (systemImageName)
   {
     v44 = v17;
-    v19 = [MEMORY[0x1E69DC668] sharedApplication];
-    v20 = [v19 preferredContentSizeCategory];
-    v45 = v20;
-    v46 = v15;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v45 = preferredContentSizeCategory2;
+    v46 = systemImageName;
     v21 = MEMORY[0x1E695DEC8];
     v22 = 3;
   }
@@ -586,9 +586,9 @@ LABEL_24:
   else
   {
     v44 = v17;
-    v19 = [MEMORY[0x1E69DC668] sharedApplication];
-    v20 = [v19 preferredContentSizeCategory];
-    v45 = v20;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v45 = preferredContentSizeCategory2;
     v21 = MEMORY[0x1E695DEC8];
     v22 = 2;
   }
@@ -601,15 +601,15 @@ LABEL_24:
   {
 LABEL_33:
 
-    [v6 setPreferredSymbolConfiguration:v25];
+    [customIconImageView setPreferredSymbolConfiguration:v25];
     [v11 hitTestOutsets];
     sub_1A524D1F4();
   }
 
-  v26 = [v11 style];
-  if (v26 <= 0xE)
+  style = [v11 style];
+  if (style <= 0xE)
   {
-    if (((1 << v26) & 0x6FC0) != 0)
+    if (((1 << style) & 0x6FC0) != 0)
     {
 LABEL_11:
       v27 = MEMORY[0x1E69DDC50];
@@ -619,18 +619,18 @@ LABEL_11:
       }
 
       v28 = *v27;
-      v29 = [v11 spec];
-      v30 = [v29 options];
+      spec = [v11 spec];
+      options = [spec options];
 
       v31 = MEMORY[0x1E69DDCF8];
-      if ((v30 & 4) == 0)
+      if ((options & 4) == 0)
       {
         v31 = MEMORY[0x1E69DDD78];
       }
 
       v32 = *v31;
       v33 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:v32 maxContentSizeCategory:v28 withSymbolicTraits:32770];
-      if ((v30 & 4) != 0 || ([v15 isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"person.2.fill"))
+      if ((options & 4) != 0 || ([systemImageName isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(systemImageName, "isEqualToString:", @"person.2.fill"))
       {
         v34 = 1;
       }
@@ -647,7 +647,7 @@ LABEL_11:
       goto LABEL_31;
     }
 
-    if (((1 << v26) & 0x30) != 0)
+    if (((1 << style) & 0x30) != 0)
     {
       v28 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] maxContentSizeCategory:*MEMORY[0x1E69DDC58] withSymbolicTraits:4096];
       v36 = MEMORY[0x1E69DCAD8];
@@ -659,7 +659,7 @@ LABEL_26:
       goto LABEL_30;
     }
 
-    if (v26 == 12)
+    if (style == 12)
     {
       v39 = MEMORY[0x1E69DDC50];
       if (!IsAccessibilityCategory)
@@ -674,12 +674,12 @@ LABEL_26:
     }
   }
 
-  if (v26 < 2)
+  if (style < 2)
   {
     goto LABEL_11;
   }
 
-  if (v26 - 2 > 1)
+  if (style - 2 > 1)
   {
     v25 = 0;
     goto LABEL_32;
@@ -699,46 +699,46 @@ LABEL_32:
   goto LABEL_33;
 }
 
-- (void)_updateButtonSystemWithConfiguration:(id)a3
+- (void)_updateButtonSystemWithConfiguration:(id)configuration
 {
   v89 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   if (([objc_opt_class() usesButtonSystem] & 1) == 0)
   {
-    v80 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v80 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1203 description:@"Shouldn't be called if button system is not used."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryOverlayButton.m" lineNumber:1203 description:@"Shouldn't be called if button system is not used."];
   }
 
-  v6 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  if (v5)
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  if (configurationCopy)
   {
-    v7 = v5;
-    v8 = [v7 segment];
-    v9 = [v7 spec];
-    [v9 buttonHeight];
+    v7 = configurationCopy;
+    segment = [v7 segment];
+    spec = [v7 spec];
+    [spec buttonHeight];
     v11 = v10 * 0.5;
 
-    v12 = [v7 style];
+    style = [v7 style];
     v13 = 0.0;
-    if (v12 <= 0xC)
+    if (style <= 0xC)
     {
-      if (((1 << v12) & 0x3C) != 0)
+      if (((1 << style) & 0x3C) != 0)
       {
         v11 = 0.0;
       }
 
-      else if (((1 << v12) & 0x1C00) != 0)
+      else if (((1 << style) & 0x1C00) != 0)
       {
         v11 = 4.0;
       }
 
-      else if (((1 << v12) & 0xC0) != 0)
+      else if (((1 << style) & 0xC0) != 0)
       {
         v13 = 5.0;
       }
     }
 
-    if (v8 == 2)
+    if (segment == 2)
     {
       v14 = v13;
     }
@@ -748,15 +748,15 @@ LABEL_32:
       v14 = v11;
     }
 
-    if (v8 == 1)
+    if (segment == 1)
     {
       v11 = v13;
     }
 
-    v15 = [v7 spec];
+    spec2 = [v7 spec];
 
-    v16 = [v15 layoutDirection];
-    if (v16 == 2)
+    layoutDirection = [spec2 layoutDirection];
+    if (layoutDirection == 2)
     {
       v17 = v11;
     }
@@ -766,7 +766,7 @@ LABEL_32:
       v17 = v14;
     }
 
-    if (v16 == 2)
+    if (layoutDirection == 2)
     {
       v18 = v14;
     }
@@ -786,42 +786,42 @@ LABEL_32:
       v19 = v18;
     }
 
-    [v6 setCornerStyle:4];
+    [plainButtonConfiguration setCornerStyle:4];
     if (v19 == 0.0)
     {
-      [v6 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
+      [plainButtonConfiguration setContentInsets:{0.0, 0.0, 0.0, 0.0}];
     }
   }
 
-  v20 = [v5 iconImageWithoutConfiguration];
+  iconImageWithoutConfiguration = [configurationCopy iconImageWithoutConfiguration];
 
-  if (v20)
+  if (iconImageWithoutConfiguration)
   {
-    v21 = [v5 iconImageWithoutConfiguration];
-    [v6 setImage:v21];
+    iconImageWithoutConfiguration2 = [configurationCopy iconImageWithoutConfiguration];
+    [plainButtonConfiguration setImage:iconImageWithoutConfiguration2];
   }
 
-  v22 = v5;
+  v22 = configurationCopy;
   if (_PXIconImageSymbolConfiguration_onceToken != -1)
   {
     dispatch_once(&_PXIconImageSymbolConfiguration_onceToken, &__block_literal_global_863_140948);
   }
 
-  v23 = [MEMORY[0x1E69DC668] sharedApplication];
-  v24 = [v23 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v24);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v25 = [v22 systemImageName];
+  systemImageName = [v22 systemImageName];
   v26 = [off_1E7721928 alloc];
   v27 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v22, "style")}];
   v28 = v27;
-  if (v25)
+  if (systemImageName)
   {
     v86 = v27;
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 preferredContentSizeCategory];
-    v87 = v30;
-    v88 = v25;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v87 = preferredContentSizeCategory2;
+    v88 = systemImageName;
     v31 = MEMORY[0x1E695DEC8];
     v32 = 3;
   }
@@ -829,9 +829,9 @@ LABEL_32:
   else
   {
     v86 = v27;
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 preferredContentSizeCategory];
-    v87 = v30;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v87 = preferredContentSizeCategory2;
     v31 = MEMORY[0x1E695DEC8];
     v32 = 2;
   }
@@ -846,44 +846,44 @@ LABEL_32:
   {
 LABEL_59:
 
-    [v6 setPreferredSymbolConfigurationForImage:v36];
-    v55 = [v22 title];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v36];
+    title = [v22 title];
 
-    if (v55)
+    if (title)
     {
-      v56 = [v22 title];
-      [v6 setTitle:v56];
+      title2 = [v22 title];
+      [plainButtonConfiguration setTitle:title2];
 
       v84[0] = MEMORY[0x1E69E9820];
       v84[1] = 3221225472;
       v84[2] = __70__PXCuratedLibraryOverlayButton__updateButtonSystemWithConfiguration___block_invoke;
       v84[3] = &unk_1E7741BF8;
       v85 = v22;
-      [v6 setTitleTextAttributesTransformer:v84];
+      [plainButtonConfiguration setTitleTextAttributesTransformer:v84];
     }
 
-    v57 = [v22 caption];
+    caption = [v22 caption];
 
-    if (v57)
+    if (caption)
     {
-      v58 = [v22 caption];
-      [v6 setSubtitle:v58];
+      caption2 = [v22 caption];
+      [plainButtonConfiguration setSubtitle:caption2];
 
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
       v82[2] = __70__PXCuratedLibraryOverlayButton__updateButtonSystemWithConfiguration___block_invoke_2;
       v82[3] = &unk_1E7741BF8;
       v83 = v22;
-      [v6 setSubtitleTextAttributesTransformer:v82];
+      [plainButtonConfiguration setSubtitleTextAttributesTransformer:v82];
     }
 
-    v59 = [v22 style];
+    style2 = [v22 style];
     v60 = 0;
-    if (v59 > 8)
+    if (style2 > 8)
     {
-      if (v59 <= 11)
+      if (style2 <= 11)
       {
-        if (v59 != 10)
+        if (style2 != 10)
         {
           goto LABEL_77;
         }
@@ -891,71 +891,71 @@ LABEL_59:
         goto LABEL_78;
       }
 
-      if (v59 == 12)
+      if (style2 == 12)
       {
         v61 = [MEMORY[0x1E69DC730] effectWithStyle:6];
-        v62 = [MEMORY[0x1E69DC888] systemBlueColor];
+        systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
         goto LABEL_82;
       }
 
-      if (v59 != 13)
+      if (style2 != 13)
       {
-        v62 = 0;
+        systemBlueColor = 0;
         v61 = 0;
-        if (v59 == 14)
+        if (style2 == 14)
         {
-          v62 = [v22 backgroundColor];
+          systemBlueColor = [v22 backgroundColor];
           v60 = 0;
           v61 = 0;
         }
 
 LABEL_83:
-        [v6 setTitleLineBreakMode:2];
-        [v6 setSubtitleLineBreakMode:2];
+        [plainButtonConfiguration setTitleLineBreakMode:2];
+        [plainButtonConfiguration setSubtitleLineBreakMode:2];
         if (v61)
         {
-          v63 = [(PXCuratedLibraryOverlayButton *)self effectView];
+          effectView = [(PXCuratedLibraryOverlayButton *)self effectView];
 
-          if (v63)
+          if (effectView)
           {
-            v64 = [(PXCuratedLibraryOverlayButton *)self effectView];
-            [v64 setEffect:v61];
+            effectView2 = [(PXCuratedLibraryOverlayButton *)self effectView];
+            [effectView2 setEffect:v61];
           }
 
           else
           {
-            v64 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v61];
-            [(PXCuratedLibraryOverlayButton *)self setEffectView:v64];
+            effectView2 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v61];
+            [(PXCuratedLibraryOverlayButton *)self setEffectView:effectView2];
           }
 
-          v65 = [(PXCuratedLibraryOverlayButton *)self effectView];
-          v66 = [v65 contentView];
-          [v66 setBackgroundColor:v62];
+          effectView3 = [(PXCuratedLibraryOverlayButton *)self effectView];
+          contentView = [effectView3 contentView];
+          [contentView setBackgroundColor:systemBlueColor];
 
-          [v65 _setGroupName:v60];
-          v67 = [MEMORY[0x1E69DC888] clearColor];
-          v68 = [v6 background];
-          [v68 setBackgroundColor:v67];
+          [effectView3 _setGroupName:v60];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          background = [plainButtonConfiguration background];
+          [background setBackgroundColor:clearColor];
 
-          v69 = [v6 background];
-          [v69 setCustomView:v65];
+          background2 = [plainButtonConfiguration background];
+          [background2 setCustomView:effectView3];
         }
 
         else
         {
-          if (!v62)
+          if (!systemBlueColor)
           {
             goto LABEL_91;
           }
 
-          v65 = [v6 background];
-          [v65 setBackgroundColor:v62];
+          effectView3 = [plainButtonConfiguration background];
+          [effectView3 setBackgroundColor:systemBlueColor];
         }
 
 LABEL_91:
-        v70 = [*(v37 + 1640) sharedApplication];
-        v71 = [v70 preferredContentSizeCategory];
-        v72 = UIContentSizeCategoryIsAccessibilityCategory(v71);
+        sharedApplication = [*(v37 + 1640) sharedApplication];
+        preferredContentSizeCategory3 = [sharedApplication preferredContentSizeCategory];
+        v72 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
         if (v72)
         {
@@ -963,51 +963,51 @@ LABEL_91:
           v73 = objc_alloc_init(MEMORY[0x1E69DCC18]);
           [(PXCuratedLibraryOverlayButton *)self addInteraction:v73];
 
-          v74 = [v22 accessibilityTitle];
-          if (v74)
+          accessibilityTitle = [v22 accessibilityTitle];
+          if (accessibilityTitle)
           {
-            [(PXCuratedLibraryOverlayButton *)self setLargeContentTitle:v74];
+            [(PXCuratedLibraryOverlayButton *)self setLargeContentTitle:accessibilityTitle];
           }
 
           else
           {
-            v75 = [v22 title];
-            [(PXCuratedLibraryOverlayButton *)self setLargeContentTitle:v75];
+            title3 = [v22 title];
+            [(PXCuratedLibraryOverlayButton *)self setLargeContentTitle:title3];
           }
 
-          v76 = [v22 largeContentViewerImage];
-          [(PXCuratedLibraryOverlayButton *)self setLargeContentImage:v76];
+          largeContentViewerImage = [v22 largeContentViewerImage];
+          [(PXCuratedLibraryOverlayButton *)self setLargeContentImage:largeContentViewerImage];
 
           [(PXCuratedLibraryOverlayButton *)self setScalesLargeContentImage:1];
         }
 
-        v77 = [v22 accessibilityTitle];
-        [(PXCuratedLibraryOverlayButton *)self setAccessibilityLabel:v77];
+        accessibilityTitle2 = [v22 accessibilityTitle];
+        [(PXCuratedLibraryOverlayButton *)self setAccessibilityLabel:accessibilityTitle2];
 
-        v78 = [v22 contentColor];
-        [(PXCuratedLibraryOverlayButton *)self setTintColor:v78];
+        contentColor = [v22 contentColor];
+        [(PXCuratedLibraryOverlayButton *)self setTintColor:contentColor];
 
-        v79 = [v22 accessibilityTitle];
-        [(PXCuratedLibraryOverlayButton *)self setAccessibilityLabel:v79];
+        accessibilityTitle3 = [v22 accessibilityTitle];
+        [(PXCuratedLibraryOverlayButton *)self setAccessibilityLabel:accessibilityTitle3];
 
         [v22 hitTestOutsets];
         sub_1A524D1F4();
       }
 
       v61 = [MEMORY[0x1E69DC730] effectWithStyle:7];
-      v62 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
 LABEL_80:
       v60 = @"UIBlurEffectStyleSystemThinMaterial";
       goto LABEL_83;
     }
 
-    if (v59 <= 5)
+    if (style2 <= 5)
     {
-      if (v59)
+      if (style2)
       {
-        v62 = 0;
+        systemBlueColor = 0;
         v61 = 0;
-        if (v59 != 1)
+        if (style2 != 1)
         {
           goto LABEL_83;
         }
@@ -1016,34 +1016,34 @@ LABEL_80:
       }
     }
 
-    else if (v59 != 6)
+    else if (style2 != 6)
     {
-      if (v59 == 7)
+      if (style2 == 7)
       {
 LABEL_77:
         v61 = [MEMORY[0x1E69DC730] effectWithStyle:16];
-        v62 = 0;
+        systemBlueColor = 0;
         v60 = @"UIBlurEffectStyleSystemUltraThinMaterialDark";
         goto LABEL_83;
       }
 
       v61 = [MEMORY[0x1E69DC730] effectWithStyle:7];
-      v62 = 0;
+      systemBlueColor = 0;
       goto LABEL_80;
     }
 
 LABEL_78:
     v61 = [MEMORY[0x1E69DC730] effectWithStyle:6];
-    v62 = 0;
+    systemBlueColor = 0;
 LABEL_82:
     v60 = @"UIBlurEffectStyleSystemUltraThinMaterial";
     goto LABEL_83;
   }
 
-  v38 = [v22 style];
-  if (v38 <= 0xE)
+  style3 = [v22 style];
+  if (style3 <= 0xE)
   {
-    if (((1 << v38) & 0x6FC0) != 0)
+    if (((1 << style3) & 0x6FC0) != 0)
     {
 LABEL_37:
       v39 = MEMORY[0x1E69DDC50];
@@ -1053,18 +1053,18 @@ LABEL_37:
       }
 
       v40 = *v39;
-      v41 = [v22 spec];
-      v42 = [v41 options];
+      spec3 = [v22 spec];
+      options = [spec3 options];
 
       v43 = MEMORY[0x1E69DDCF8];
-      if ((v42 & 4) == 0)
+      if ((options & 4) == 0)
       {
         v43 = MEMORY[0x1E69DDD78];
       }
 
       v44 = *v43;
       v45 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:v44 maxContentSizeCategory:v40 withSymbolicTraits:32770];
-      if ((v42 & 4) != 0 || ([v25 isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"person.2.fill"))
+      if ((options & 4) != 0 || ([systemImageName isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(systemImageName, "isEqualToString:", @"person.2.fill"))
       {
         v46 = 1;
       }
@@ -1083,7 +1083,7 @@ LABEL_37:
       goto LABEL_57;
     }
 
-    if (((1 << v38) & 0x30) != 0)
+    if (((1 << style3) & 0x30) != 0)
     {
       v40 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] maxContentSizeCategory:*MEMORY[0x1E69DDC58] withSymbolicTraits:4096];
       v48 = MEMORY[0x1E69DCAD8];
@@ -1095,7 +1095,7 @@ LABEL_52:
       goto LABEL_56;
     }
 
-    if (v38 == 12)
+    if (style3 == 12)
     {
       v51 = MEMORY[0x1E69DDC50];
       if (!IsAccessibilityCategory)
@@ -1110,12 +1110,12 @@ LABEL_52:
     }
   }
 
-  if (v38 < 2)
+  if (style3 < 2)
   {
     goto LABEL_37;
   }
 
-  if (v38 - 2 > 1)
+  if (style3 - 2 > 1)
   {
     v36 = 0;
     goto LABEL_58;
@@ -1313,8 +1313,8 @@ LABEL_19:
 {
   if (([objc_opt_class() usesButtonSystem] & 1) == 0)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXCuratedLibraryOverlayButton *)self setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXCuratedLibraryOverlayButton *)self setBackgroundColor:clearColor];
 
     [(PXCuratedLibraryOverlayButton *)self _updateBackgroundView];
     [(PXCuratedLibraryOverlayButton *)self bounds];
@@ -1328,8 +1328,8 @@ LABEL_19:
     self->_customIconImageView = v12;
     v14 = v12;
 
-    v15 = [(PXCuratedLibraryOverlayButton *)self contentView];
-    [v15 addSubview:v14];
+    contentView = [(PXCuratedLibraryOverlayButton *)self contentView];
+    [contentView addSubview:v14];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1350,8 +1350,8 @@ LABEL_19:
     self->_customCaptionLabel = v19;
   }
 
-  v21 = [(PXCuratedLibraryOverlayButton *)self layer];
-  [v21 setAllowsGroupOpacity:0];
+  layer = [(PXCuratedLibraryOverlayButton *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(PXCuratedLibraryOverlayButton *)self _platformSpecificViewSetup];
 }
@@ -1368,29 +1368,29 @@ id __44__PXCuratedLibraryOverlayButton__setupViews__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if ([objc_opt_class() usesButtonSystem])
   {
     v9.receiver = self;
     v9.super_class = PXCuratedLibraryOverlayButton;
-    [(PXCuratedLibraryOverlayButton *)&v9 setHighlighted:v3];
+    [(PXCuratedLibraryOverlayButton *)&v9 setHighlighted:highlightedCopy];
   }
 
-  else if ([(PXCuratedLibraryOverlayButton *)self isHighlighted]!= v3)
+  else if ([(PXCuratedLibraryOverlayButton *)self isHighlighted]!= highlightedCopy)
   {
     v8.receiver = self;
     v8.super_class = PXCuratedLibraryOverlayButton;
-    [(PXCuratedLibraryOverlayButton *)&v8 setHighlighted:v3];
-    v5 = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
-    [v5 setHighlighted:v3];
+    [(PXCuratedLibraryOverlayButton *)&v8 setHighlighted:highlightedCopy];
+    customIconImageView = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
+    [customIconImageView setHighlighted:highlightedCopy];
 
-    v6 = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
-    [v6 setHighlighted:v3];
+    customTitleLabel = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
+    [customTitleLabel setHighlighted:highlightedCopy];
 
-    v7 = [(PXCuratedLibraryOverlayButton *)self customCaptionLabel];
-    [v7 setHighlighted:v3];
+    customCaptionLabel = [(PXCuratedLibraryOverlayButton *)self customCaptionLabel];
+    [customCaptionLabel setHighlighted:highlightedCopy];
   }
 }
 
@@ -1405,7 +1405,7 @@ id __44__PXCuratedLibraryOverlayButton__setupViews__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(PXCuratedLibraryOverlayButton *)self userData];
+    userData = [(PXCuratedLibraryOverlayButton *)self userData];
     v50 = 0uLL;
     v48 = 0u;
     v49 = 0u;
@@ -1414,15 +1414,15 @@ id __44__PXCuratedLibraryOverlayButton__setupViews__block_invoke(uint64_t a1)
     v46 = 0u;
     v44 = 0u;
     v4 = objc_opt_class();
-    v5 = [v3 title];
-    [v4 _getSize:&v50 titleFrame:&v48 captionFrame:&v46 iconFrame:&v44 forConfiguration:v3 title:v5];
+    title = [userData title];
+    [v4 _getSize:&v50 titleFrame:&v48 captionFrame:&v46 iconFrame:&v44 forConfiguration:userData title:title];
 
     [(PXCuratedLibraryOverlayButton *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(PXCuratedLibraryOverlayButton *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(PXCuratedLibraryOverlayButton *)self effectiveUserInterfaceLayoutDirection];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke;
@@ -1432,31 +1432,31 @@ id __44__PXCuratedLibraryOverlayButton__setupViews__block_invoke(uint64_t a1)
     *&aBlock[6] = v11;
     *&aBlock[7] = v13;
     v42 = v50;
-    v43 = v14 == 1;
+    v43 = effectiveUserInterfaceLayoutDirection == 1;
     v15 = _Block_copy(aBlock);
-    v16 = [(PXCuratedLibraryOverlayButton *)self contentView];
-    [v16 setFrame:{v7, v9, v11, v13}];
+    contentView = [(PXCuratedLibraryOverlayButton *)self contentView];
+    [contentView setFrame:{v7, v9, v11, v13}];
 
     v17 = v15[2](v15, *&v48, *(&v48 + 1), *&v49, *(&v49 + 1));
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    customTitleLabel = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
+    [customTitleLabel setFrame:{v17, v19, v21, v23}];
 
     v25 = v15[2](v15, *&v46, *(&v46 + 1), *&v47, *(&v47 + 1));
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(PXCuratedLibraryOverlayButton *)self customCaptionLabel];
-    [v32 setFrame:{v25, v27, v29, v31}];
+    customCaptionLabel = [(PXCuratedLibraryOverlayButton *)self customCaptionLabel];
+    [customCaptionLabel setFrame:{v25, v27, v29, v31}];
 
     v33 = v15[2](v15, *&v44, *(&v44 + 1), *&v45, *(&v45 + 1));
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    v40 = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
-    [v40 setFrame:{v33, v35, v37, v39}];
+    customIconImageView = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
+    [customIconImageView setFrame:{v33, v35, v37, v39}];
   }
 }
 
@@ -1472,32 +1472,32 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   v5 = self->_userData;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == dataCopy)
   {
   }
 
   else
   {
-    v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 isEqual:v8];
+    v7 = [(PXCuratedLibraryOverlayButtonConfiguration *)v5 isEqual:dataCopy];
 
     if (!v7)
     {
-      objc_storeStrong(&self->_userData, a3);
+      objc_storeStrong(&self->_userData, data);
       if ([objc_opt_class() usesButtonSystem])
       {
-        [(PXCuratedLibraryOverlayButton *)self _updateButtonSystemWithConfiguration:v8];
+        [(PXCuratedLibraryOverlayButton *)self _updateButtonSystemWithConfiguration:dataCopy];
       }
 
       else
       {
-        if (v8)
+        if (dataCopy)
         {
-          [(PXCuratedLibraryOverlayButton *)self _updateButtonWithConfiguration:v8];
+          [(PXCuratedLibraryOverlayButton *)self _updateButtonWithConfiguration:dataCopy];
         }
 
         [(PXCuratedLibraryOverlayButton *)self setNeedsLayout];
@@ -1521,20 +1521,20 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
     v11.receiver = self;
     v11.super_class = PXCuratedLibraryOverlayButton;
     v5 = [(PXCuratedLibraryOverlayButton *)&v11 description];
-    v6 = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
-    v7 = [v6 image];
-    v8 = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
-    v9 = [v8 text];
-    v3 = [v4 stringWithFormat:@"<%@ icon:%@ title:%@>", v5, v7, v9];
+    customIconImageView = [(PXCuratedLibraryOverlayButton *)self customIconImageView];
+    image = [customIconImageView image];
+    customTitleLabel = [(PXCuratedLibraryOverlayButton *)self customTitleLabel];
+    text = [customTitleLabel text];
+    v3 = [v4 stringWithFormat:@"<%@ icon:%@ title:%@>", v5, image, text];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(PXCuratedLibraryOverlayButton *)self isSizeCalculationButton])
   {
     v14.receiver = self;
@@ -1545,8 +1545,8 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
   else
   {
     v8 = objc_opt_class();
-    v9 = [(PXCuratedLibraryOverlayButton *)self userData];
-    [v8 sizeWithConfiguration:v9];
+    userData = [(PXCuratedLibraryOverlayButton *)self userData];
+    [v8 sizeWithConfiguration:userData];
     v11 = v10;
     v13 = v12;
 
@@ -1559,19 +1559,19 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
   return result;
 }
 
-- (PXCuratedLibraryOverlayButton)initWithFrame:(CGRect)a3
+- (PXCuratedLibraryOverlayButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXCuratedLibraryOverlayButton;
-  v3 = [(PXCuratedLibraryOverlayButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCuratedLibraryOverlayButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXCuratedLibraryOverlayButton *)v3 _setupViews];
     [(PXCuratedLibraryOverlayButton *)v4 addTarget:v4 action:sel__performAction_ forControlEvents:64];
     [(PXCuratedLibraryOverlayButton *)v4 addTarget:v4 action:sel__performMenuAction_ forControlEvents:0x4000];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__accessibilitySettingsChanged_ name:*MEMORY[0x1E69DD8A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__accessibilitySettingsChanged_ name:*MEMORY[0x1E69DD8A8] object:0];
   }
 
   return v4;
@@ -1586,9 +1586,9 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
   }
 
   v2 = [off_1E7721928 alloc];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  v18[1] = v4;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v18[1] = preferredContentSizeCategory;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:0];
   v18[2] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
@@ -1597,9 +1597,9 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
   v8 = [_PXFontForComponent_fontCache objectForKey:v7];
   if (!v8)
   {
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
     v12 = MEMORY[0x1E69DDC50];
     if (!IsAccessibilityCategory)
@@ -1633,9 +1633,9 @@ uint64_t __47__PXCuratedLibraryOverlayButton_layoutSubviews__block_invoke(uint64
     }
 
 LABEL_16:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"UIFont *_PXFontForComponent(__strong _PXOverlayButtonComponent, PXCuratedLibraryOverlayButtonStyle)"}];
-    [v16 handleFailureInFunction:v17 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:176 description:@"Unexpected _PXOverlayButtonComponent passed to PXFontForComponent!"];
+    [currentHandler handleFailureInFunction:v17 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:176 description:@"Unexpected _PXOverlayButtonComponent passed to PXFontForComponent!"];
 
     abort();
   }
@@ -1645,31 +1645,31 @@ LABEL_12:
   return v8;
 }
 
-+ (void)_getSize:(CGSize *)a3 titleFrame:(CGRect *)a4 captionFrame:(CGRect *)a5 iconFrame:(CGRect *)a6 forConfiguration:(id)a7 title:(id)a8
++ (void)_getSize:(CGSize *)size titleFrame:(CGRect *)frame captionFrame:(CGRect *)captionFrame iconFrame:(CGRect *)iconFrame forConfiguration:(id)configuration title:(id)title
 {
   v170 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a8;
-  if (v12)
+  configurationCopy = configuration;
+  titleCopy = title;
+  if (configurationCopy)
   {
-    v14 = [v12 style];
-    if (v14 > 0xE)
+    style = [configurationCopy style];
+    if (style > 0xE)
     {
-      v138 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v139 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL _PXNeedsEffectViewForStyle(PXCuratedLibraryOverlayButtonStyle)"];
-      [v138 handleFailureInFunction:v139 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v139 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v15 = v14;
-    v156 = v13;
-    v145 = a6;
-    if (((1 << v14) & 0x7FC3) != 0)
+    v15 = style;
+    v156 = titleCopy;
+    iconFrameCopy = iconFrame;
+    if (((1 << style) & 0x7FC3) != 0)
     {
       v17 = *MEMORY[0x1E695F060];
       v16 = *(MEMORY[0x1E695F060] + 8);
-      v18 = [v13 length];
+      v18 = [titleCopy length];
       v19 = 12.0;
       v157 = v17;
       if (!v18)
@@ -1691,22 +1691,22 @@ LABEL_12:
       v157 = *MEMORY[0x1E695F060];
     }
 
-    v24 = v12;
-    v25 = [v24 segment];
-    v26 = [v24 spec];
-    [v26 buttonHeight];
+    v24 = configurationCopy;
+    segment = [v24 segment];
+    spec = [v24 spec];
+    [spec buttonHeight];
     v28 = v27 * 0.5;
 
-    v29 = [v24 style];
+    style2 = [v24 style];
     v30 = 0.0;
     v31 = 4.0;
     v32 = 5.0;
-    if (((1 << v29) & 0xC0) == 0)
+    if (((1 << style2) & 0xC0) == 0)
     {
       v32 = 0.0;
     }
 
-    if (((1 << v29) & 0x1C00) != 0)
+    if (((1 << style2) & 0x1C00) != 0)
     {
       v32 = 0.0;
     }
@@ -1716,13 +1716,13 @@ LABEL_12:
       v31 = v28;
     }
 
-    if (((1 << v29) & 0x3C) != 0)
+    if (((1 << style2) & 0x3C) != 0)
     {
       v32 = 0.0;
       v31 = 0.0;
     }
 
-    if (v29 > 0xC)
+    if (style2 > 0xC)
     {
       v31 = v28;
     }
@@ -1732,7 +1732,7 @@ LABEL_12:
       v30 = v32;
     }
 
-    if (v25 == 2)
+    if (segment == 2)
     {
       v33 = v30;
     }
@@ -1742,7 +1742,7 @@ LABEL_12:
       v33 = v31;
     }
 
-    if (v25 == 1)
+    if (segment == 1)
     {
       v34 = v30;
     }
@@ -1752,10 +1752,10 @@ LABEL_12:
       v34 = v31;
     }
 
-    v35 = [v24 spec];
+    spec2 = [v24 spec];
 
-    v36 = [v35 layoutDirection];
-    if (v36 == 2)
+    layoutDirection = [spec2 layoutDirection];
+    if (layoutDirection == 2)
     {
       v37 = v34;
     }
@@ -1766,7 +1766,7 @@ LABEL_12:
     }
 
     v143 = v37;
-    if (v36 == 2)
+    if (layoutDirection == 2)
     {
       v38 = v33;
     }
@@ -1777,8 +1777,8 @@ LABEL_12:
     }
 
     v141 = v38;
-    v39 = [v24 spec];
-    [v39 buttonHeight];
+    spec3 = [v24 spec];
+    [spec3 buttonHeight];
     v41 = v40;
 
     v42 = v16;
@@ -1786,17 +1786,17 @@ LABEL_12:
     if (!v156)
     {
 LABEL_58:
-      v58 = [v24 caption];
+      caption = [v24 caption];
       v59 = v16;
       v60 = v157;
-      if (!v58)
+      if (!caption)
       {
 LABEL_78:
-        v78 = [v24 iconImage];
-        v79 = v78;
-        if (v78)
+        iconImage = [v24 iconImage];
+        v79 = iconImage;
+        if (iconImage)
         {
-          [v78 size];
+          [iconImage size];
           v157 = v80;
           v16 = v81;
         }
@@ -1816,9 +1816,9 @@ LABEL_78:
         v86 = v85;
         v88 = v87;
         v90 = v89;
-        v91 = [v24 buttonType];
+        buttonType = [v24 buttonType];
         v92 = v82 - (v84 + v88);
-        if (v91 == 4)
+        if (buttonType == 4)
         {
           v92 = 6.0;
         }
@@ -1891,7 +1891,7 @@ LABEL_78:
         if (v150)
         {
           v106(v104, v101);
-          p_x = &v145->origin.x;
+          p_x = &iconFrameCopy->origin.x;
           v108 = v103[2](v103, v60, v59);
           v142 = v110;
           v144 = v109;
@@ -1924,7 +1924,7 @@ LABEL_78:
         else
         {
           v106(v104, v101);
-          p_x = &v145->origin.x;
+          p_x = &iconFrameCopy->origin.x;
           v105[2](v105, v86);
           v158 = v103[2](v103, v157, v16);
           v151 = v124;
@@ -1961,20 +1961,20 @@ LABEL_78:
           v140[1] = v82 + v153 * 2.0;
         }
 
-        if (a4)
+        if (frame)
         {
-          a4->origin.x = v118;
-          a4->origin.y = v117;
-          a4->size.width = v115;
-          a4->size.height = v155;
+          frame->origin.x = v118;
+          frame->origin.y = v117;
+          frame->size.width = v115;
+          frame->size.height = v155;
         }
 
-        if (a5)
+        if (captionFrame)
         {
-          a5->origin.x = v149;
-          a5->origin.y = v147;
-          a5->size.width = v144;
-          a5->size.height = v142;
+          captionFrame->origin.x = v149;
+          captionFrame->origin.y = v147;
+          captionFrame->size.width = v144;
+          captionFrame->size.height = v142;
         }
 
         if (p_x)
@@ -1986,7 +1986,7 @@ LABEL_78:
         }
 
         _Block_object_dispose(&v162, 8);
-        v13 = v156;
+        titleCopy = v156;
         goto LABEL_121;
       }
 
@@ -1999,9 +1999,9 @@ LABEL_78:
       v62 = v15 - 2 < 4;
       v63 = [off_1E7721928 alloc];
       v162 = @"_PXOverlayButtonComponentCaption";
-      v64 = [MEMORY[0x1E69DC668] sharedApplication];
-      v65 = [v64 preferredContentSizeCategory];
-      v163 = v65;
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+      v163 = preferredContentSizeCategory;
       v66 = [MEMORY[0x1E696AD98] numberWithInteger:v62];
       v164 = v66;
       v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v162 count:3];
@@ -2012,7 +2012,7 @@ LABEL_78:
       {
 LABEL_77:
 
-        [a1 _sizeOfTitle:v58 withFont:v69];
+        [self _sizeOfTitle:caption withFont:v69];
         v60 = v76;
         v59 = v77;
 
@@ -2030,9 +2030,9 @@ LABEL_77:
         goto LABEL_75;
       }
 
-      v70 = [MEMORY[0x1E69DC668] sharedApplication];
-      v71 = [v70 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v71);
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
       v73 = MEMORY[0x1E69DDC50];
       if (!IsAccessibilityCategory)
@@ -2068,9 +2068,9 @@ LABEL_75:
       }
 
 LABEL_122:
-      v136 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v137 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"UIFont *_PXFontForComponent(__strong _PXOverlayButtonComponent, PXCuratedLibraryOverlayButtonStyle)"}];
-      [v136 handleFailureInFunction:v137 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:176 description:@"Unexpected _PXOverlayButtonComponent passed to PXFontForComponent!"];
+      [currentHandler2 handleFailureInFunction:v137 file:@"PXCuratedLibraryOverlayButton.m" lineNumber:176 description:@"Unexpected _PXOverlayButtonComponent passed to PXFontForComponent!"];
 
       abort();
     }
@@ -2082,9 +2082,9 @@ LABEL_122:
 
     v43 = [off_1E7721928 alloc];
     v162 = @"_PXOverlayButtonComponentTitle";
-    v44 = [MEMORY[0x1E69DC668] sharedApplication];
-    v45 = [v44 preferredContentSizeCategory];
-    v163 = v45;
+    mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory3 = [mEMORY[0x1E69DC668]3 preferredContentSizeCategory];
+    v163 = preferredContentSizeCategory3;
     v46 = [MEMORY[0x1E696AD98] numberWithInteger:v15 - 2 < 4];
     v164 = v46;
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v162 count:3];
@@ -2095,7 +2095,7 @@ LABEL_122:
     {
 LABEL_57:
 
-      [a1 _sizeOfTitle:v156 withFont:v49];
+      [self _sizeOfTitle:v156 withFont:v49];
       v154 = v56;
       v42 = v57;
 
@@ -2113,9 +2113,9 @@ LABEL_57:
       goto LABEL_55;
     }
 
-    v50 = [MEMORY[0x1E69DC668] sharedApplication];
-    v51 = [v50 preferredContentSizeCategory];
-    v52 = UIContentSizeCategoryIsAccessibilityCategory(v51);
+    mEMORY[0x1E69DC668]4 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory4 = [mEMORY[0x1E69DC668]4 preferredContentSizeCategory];
+    v52 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory4);
 
     v53 = MEMORY[0x1E69DDC50];
     if (!v52)
@@ -2153,31 +2153,31 @@ LABEL_55:
     goto LABEL_57;
   }
 
-  if (a3)
+  if (size)
   {
-    *a3 = *MEMORY[0x1E695F060];
+    *size = *MEMORY[0x1E695F060];
   }
 
   v20 = MEMORY[0x1E695F058];
-  if (a4)
+  if (frame)
   {
     v21 = *(MEMORY[0x1E695F058] + 16);
-    a4->origin = *MEMORY[0x1E695F058];
-    a4->size = v21;
+    frame->origin = *MEMORY[0x1E695F058];
+    frame->size = v21;
   }
 
-  if (a5)
+  if (captionFrame)
   {
     v22 = *(v20 + 16);
-    a5->origin = *v20;
-    a5->size = v22;
+    captionFrame->origin = *v20;
+    captionFrame->size = v22;
   }
 
-  if (a6)
+  if (iconFrame)
   {
     v23 = *(v20 + 16);
-    a6->origin = *v20;
-    a6->size = v23;
+    iconFrame->origin = *v20;
+    iconFrame->size = v23;
   }
 
 LABEL_121:
@@ -2195,38 +2195,38 @@ double __99__PXCuratedLibraryOverlayButton__getSize_titleFrame_captionFrame_icon
   return MinX;
 }
 
-+ (id)iconImageSymbolConfigurationFromConfiguration:(id)a3
++ (id)iconImageSymbolConfigurationFromConfiguration:(id)configuration
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  configurationCopy = configuration;
   if (_PXIconImageSymbolConfiguration_onceToken != -1)
   {
     dispatch_once(&_PXIconImageSymbolConfiguration_onceToken, &__block_literal_global_863_140948);
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v7 = [v3 systemImageName];
+  systemImageName = [configurationCopy systemImageName];
   v8 = [off_1E7721928 alloc];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "style")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(configurationCopy, "style")}];
   v10 = v9;
-  if (v7)
+  if (systemImageName)
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 preferredContentSizeCategory];
-    v37 = v12;
-    v38 = v7;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v37 = preferredContentSizeCategory2;
+    v38 = systemImageName;
     v13 = MEMORY[0x1E695DEC8];
     v14 = 3;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 preferredContentSizeCategory];
-    v37 = v12;
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x1E69DC668]2 preferredContentSizeCategory];
+    v37 = preferredContentSizeCategory2;
     v13 = MEMORY[0x1E695DEC8];
     v14 = 2;
   }
@@ -2237,10 +2237,10 @@ double __99__PXCuratedLibraryOverlayButton__getSize_titleFrame_captionFrame_icon
   v17 = [_PXIconImageSymbolConfiguration_configsCache objectForKey:v16];
   if (!v17)
   {
-    v18 = [v3 style];
-    if (v18 <= 0xE)
+    style = [configurationCopy style];
+    if (style <= 0xE)
     {
-      if (((1 << v18) & 0x6FC0) != 0)
+      if (((1 << style) & 0x6FC0) != 0)
       {
 LABEL_9:
         v19 = MEMORY[0x1E69DDC50];
@@ -2250,18 +2250,18 @@ LABEL_9:
         }
 
         v20 = *v19;
-        v21 = [v3 spec];
-        v22 = [v21 options];
+        spec = [configurationCopy spec];
+        options = [spec options];
 
         v23 = MEMORY[0x1E69DDCF8];
-        if ((v22 & 4) == 0)
+        if ((options & 4) == 0)
         {
           v23 = MEMORY[0x1E69DDD78];
         }
 
         v24 = *v23;
         v25 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:v24 maxContentSizeCategory:v20 withSymbolicTraits:32770];
-        if ((v22 & 4) != 0 || ([v7 isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"person.2.fill"))
+        if ((options & 4) != 0 || ([systemImageName isEqualToString:@"person.fill"] & 1) != 0 || objc_msgSend(systemImageName, "isEqualToString:", @"person.2.fill"))
         {
           v26 = 1;
         }
@@ -2278,7 +2278,7 @@ LABEL_9:
         goto LABEL_29;
       }
 
-      if (((1 << v18) & 0x30) != 0)
+      if (((1 << style) & 0x30) != 0)
       {
         v20 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] maxContentSizeCategory:*MEMORY[0x1E69DDC58] withSymbolicTraits:4096];
         v28 = MEMORY[0x1E69DCAD8];
@@ -2290,7 +2290,7 @@ LABEL_24:
         goto LABEL_28;
       }
 
-      if (v18 == 12)
+      if (style == 12)
       {
         v31 = MEMORY[0x1E69DDC50];
         if (!IsAccessibilityCategory)
@@ -2305,12 +2305,12 @@ LABEL_24:
       }
     }
 
-    if (v18 < 2)
+    if (style < 2)
     {
       goto LABEL_9;
     }
 
-    if (v18 - 2 > 1)
+    if (style - 2 > 1)
     {
       v17 = 0;
       goto LABEL_30;
@@ -2332,25 +2332,25 @@ LABEL_30:
   return v17;
 }
 
-+ (CGSize)sizeWithConfiguration:(id)a3
++ (CGSize)sizeWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v35 = 0.0;
   v36 = 0.0;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
-  v6 = [a1 buttonSizeCache];
-  v7 = [v6 objectForKey:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(configurationCopy, "hash")}];
+  buttonSizeCache = [self buttonSizeCache];
+  v7 = [buttonSizeCache objectForKey:v5];
   if (!v7)
   {
-    v11 = [v4 spec];
-    v12 = [v11 extendedTraitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    spec = [configurationCopy spec];
+    extendedTraitCollection = [spec extendedTraitCollection];
+    userInterfaceIdiom = [extendedTraitCollection userInterfaceIdiom];
 
-    if (v13 == 5 && [objc_opt_class() usesButtonSystem])
+    if (userInterfaceIdiom == 5 && [objc_opt_class() usesButtonSystem])
     {
       v14 = objc_alloc_init(PXCuratedLibraryOverlayButton);
       [(PXCuratedLibraryOverlayButton *)v14 setIsSizeCalculationButton:1];
-      [(PXCuratedLibraryOverlayButton *)v14 setUserData:v4];
+      [(PXCuratedLibraryOverlayButton *)v14 setUserData:configurationCopy];
       [(PXCuratedLibraryOverlayButton *)v14 sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
       v16 = v15;
       v18 = v17;
@@ -2359,13 +2359,13 @@ LABEL_30:
 
 LABEL_17:
       v8 = [MEMORY[0x1E696B098] valueWithCGSize:{v16, v18, *&v35}];
-      [v6 setObject:v8 forKey:v5];
+      [buttonSizeCache setObject:v8 forKey:v5];
 
       goto LABEL_18;
     }
 
-    v19 = [v4 possibleTitles];
-    v20 = [v19 mutableCopy];
+    possibleTitles = [configurationCopy possibleTitles];
+    v20 = [possibleTitles mutableCopy];
     v21 = v20;
     if (v20)
     {
@@ -2379,38 +2379,38 @@ LABEL_17:
 
     v23 = v22;
 
-    v24 = [v4 title];
+    title = [configurationCopy title];
 
-    if (v24)
+    if (title)
     {
-      v25 = [v4 title];
-      [v23 addObject:v25];
+      title2 = [configurationCopy title];
+      [v23 addObject:title2];
     }
 
-    v26 = [v23 allObjects];
-    v27 = [v26 sortedArrayUsingComparator:&__block_literal_global_637_141154];
-    v28 = [v27 firstObject];
+    allObjects = [v23 allObjects];
+    v27 = [allObjects sortedArrayUsingComparator:&__block_literal_global_637_141154];
+    firstObject = [v27 firstObject];
 
-    [a1 _getSize:&v35 titleFrame:0 captionFrame:0 iconFrame:0 forConfiguration:v4 title:v28];
+    [self _getSize:&v35 titleFrame:0 captionFrame:0 iconFrame:0 forConfiguration:configurationCopy title:firstObject];
     if ([objc_opt_class() usesButtonSystem])
     {
-      v29 = [v4 title];
-      if (v29)
+      title3 = [configurationCopy title];
+      if (title3)
       {
 
 LABEL_15:
         v31 = objc_alloc_init(PXCuratedLibraryOverlayButton);
         [(PXCuratedLibraryOverlayButton *)v31 setIsSizeCalculationButton:1];
-        [(PXCuratedLibraryOverlayButton *)v31 setUserData:v4];
+        [(PXCuratedLibraryOverlayButton *)v31 setUserData:configurationCopy];
         [(PXCuratedLibraryOverlayButton *)v31 sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
         v35 = v32;
 
         goto LABEL_16;
       }
 
-      v30 = [v4 caption];
+      caption = [configurationCopy caption];
 
-      if (v30)
+      if (caption)
       {
         goto LABEL_15;
       }
@@ -2455,19 +2455,19 @@ uint64_t __55__PXCuratedLibraryOverlayButton_sizeWithConfiguration___block_invok
   }
 }
 
-+ (CGSize)_sizeOfTitle:(id)a3 withFont:(id)a4
++ (CGSize)_sizeOfTitle:(id)title withFont:(id)font
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 titleSizeCache];
+  titleCopy = title;
+  fontCopy = font;
+  titleSizeCache = [self titleSizeCache];
   v9 = [off_1E7721928 alloc];
-  v25[0] = v6;
-  v25[1] = v7;
+  v25[0] = titleCopy;
+  v25[1] = fontCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   v11 = [v9 initWithObjects:v10];
 
-  v12 = [v8 objectForKey:v11];
+  v12 = [titleSizeCache objectForKey:v11];
   if (v12)
   {
     v13 = v12;
@@ -2479,14 +2479,14 @@ uint64_t __55__PXCuratedLibraryOverlayButton_sizeWithConfiguration___block_invok
   else
   {
     v23 = *MEMORY[0x1E69DB648];
-    v24 = v7;
+    v24 = fontCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [v6 sizeWithAttributes:v18];
+    [titleCopy sizeWithAttributes:v18];
     v15 = v19;
     v17 = v20;
 
     v13 = [MEMORY[0x1E696B098] valueWithCGSize:{v15, v17}];
-    [v8 setObject:v13 forKey:v11];
+    [titleSizeCache setObject:v13 forKey:v11];
   }
 
   v21 = v15;

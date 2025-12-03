@@ -2,7 +2,7 @@
 - (BOOL)canAddEditingItem;
 - (BOOL)shouldKeepNoiseValue;
 - (BOOL)shouldShowLanguageLabel;
-- (id)newEditingItemWithValue:(id)a3;
+- (id)newEditingItemWithValue:(id)value;
 - (void)saveChanges;
 @end
 
@@ -12,15 +12,15 @@
 {
   v9.receiver = self;
   v9.super_class = CNCardPropertyAddressingGrammarGroup;
-  v3 = [(CNCardPropertyGroup *)&v9 canAddEditingItem];
-  if (v3)
+  canAddEditingItem = [(CNCardPropertyGroup *)&v9 canAddEditingItem];
+  if (canAddEditingItem)
   {
-    v4 = [(CNCardGroup *)self contact];
-    v5 = [v4 contactType];
+    contact = [(CNCardGroup *)self contact];
+    contactType = [contact contactType];
 
-    if (v5 == 1)
+    if (contactType == 1)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(canAddEditingItem) = 0;
     }
 
     else
@@ -43,11 +43,11 @@
 
       v7 = v6;
       _Block_object_dispose(&v11, 8);
-      LOBYTE(v3) = [v6 canDisplayPronounPicker];
+      LOBYTE(canAddEditingItem) = [v6 canDisplayPronounPicker];
     }
   }
 
-  return v3;
+  return canAddEditingItem;
 }
 
 - (BOOL)shouldKeepNoiseValue
@@ -57,9 +57,9 @@
     return 0;
   }
 
-  v3 = [(CNCardGroup *)self contact];
-  v4 = [v3 addressingGrammars];
-  v5 = [v4 count];
+  contact = [(CNCardGroup *)self contact];
+  addressingGrammars = [contact addressingGrammars];
+  v5 = [addressingGrammars count];
 
   if (v5 != 1)
   {
@@ -67,13 +67,13 @@
   }
 
   objc_opt_class();
-  v6 = [(CNCardGroup *)self contact];
-  v7 = [v6 addressingGrammars];
-  v8 = [v7 firstObject];
-  v9 = [v8 value];
+  contact2 = [(CNCardGroup *)self contact];
+  addressingGrammars2 = [contact2 addressingGrammars];
+  firstObject = [addressingGrammars2 firstObject];
+  value = [firstObject value];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = value;
   }
 
   else
@@ -83,18 +83,18 @@
 
   v11 = v10;
 
-  v12 = [v11 isUnspecified];
-  return v12;
+  isUnspecified = [v11 isUnspecified];
+  return isUnspecified;
 }
 
 - (void)saveChanges
 {
   v29 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v3 = [(CNCardGroup *)self contact];
+  contact = [(CNCardGroup *)self contact];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contact;
   }
 
   else
@@ -107,15 +107,15 @@
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF70]);
-    v7 = [(CNCardPropertyGroup *)self editingItems];
-    v23 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+    editingItems = [(CNCardPropertyGroup *)self editingItems];
+    v23 = [v6 initWithCapacity:{objc_msgSend(editingItems, "count")}];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [(CNCardPropertyGroup *)self editingItems];
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    editingItems2 = [(CNCardPropertyGroup *)self editingItems];
+    v9 = [editingItems2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
@@ -127,7 +127,7 @@
         {
           if (*v25 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(editingItems2);
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
@@ -145,24 +145,24 @@
 
           v17 = v16;
 
-          v18 = [v17 labeledValue];
-          v19 = [v18 value];
+          labeledValue = [v17 labeledValue];
+          value = [labeledValue value];
 
-          if (((*(v12 + 16))(v12, v19) & 1) == 0)
+          if (((*(v12 + 16))(v12, value) & 1) == 0)
           {
-            v20 = [v17 labeledValue];
-            [v23 _cn_addNonNilObject:v20];
+            labeledValue2 = [v17 labeledValue];
+            [v23 _cn_addNonNilObject:labeledValue2];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v10 = [editingItems2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v10);
     }
 
-    v21 = [v5 addressingGrammars];
-    v22 = [v21 isEqualToArray:v23];
+    addressingGrammars = [v5 addressingGrammars];
+    v22 = [addressingGrammars isEqualToArray:v23];
 
     if ((v22 & 1) == 0 && ![(CNCardPropertyAddressingGrammarGroup *)self shouldKeepNoiseValue])
     {
@@ -173,21 +173,21 @@
 
 - (BOOL)shouldShowLanguageLabel
 {
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v4 = [v3 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  v5 = [v4 componentsSeparatedByString:@"-"];
-  v6 = [v5 firstObject];
-  v7 = [(CNCardPropertyGroup *)self editingItems];
+  v5 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v5 firstObject];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__CNCardPropertyAddressingGrammarGroup_shouldShowLanguageLabel__block_invoke;
   v12[3] = &unk_1E74E6260;
-  v13 = v6;
-  v14 = v4;
-  v8 = v4;
-  v9 = v6;
-  v10 = [v7 _cn_any:v12];
+  v13 = firstObject2;
+  v14 = firstObject;
+  v8 = firstObject;
+  v9 = firstObject2;
+  v10 = [editingItems _cn_any:v12];
 
   return v10;
 }
@@ -247,11 +247,11 @@ uint64_t __63__CNCardPropertyAddressingGrammarGroup_shouldShowLanguageLabel__blo
   return v11;
 }
 
-- (id)newEditingItemWithValue:(id)a3
+- (id)newEditingItemWithValue:(id)value
 {
-  v4 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:a3];
-  v5 = [(CNCardGroup *)self contact];
-  v6 = [CNPropertyGroupAddressingGrammarItem propertyGroupItemWithLabeledValue:v4 group:self contact:v5];
+  v4 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:value];
+  contact = [(CNCardGroup *)self contact];
+  v6 = [CNPropertyGroupAddressingGrammarItem propertyGroupItemWithLabeledValue:v4 group:self contact:contact];
 
   [v6 setWasAdded:1];
   return v6;

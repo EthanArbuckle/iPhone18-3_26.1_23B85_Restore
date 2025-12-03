@@ -1,16 +1,16 @@
 @interface BMIntelligenceFlowTranscriptDatastreamEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithAbsoluteTimestamp:(id)a3 monotonicTimestamp:(id)a4 identifiers:(id)a5 eventId:(id)a6 eventType:(id)a7 data:(id)a8;
-- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithAbsoluteTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp identifiers:(id)identifiers eventId:(id)id eventType:(id)type data:(id)data;
+- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligenceFlowTranscriptDatastreamEvent
@@ -19,9 +19,9 @@
 {
   v3 = objc_opt_new();
   [(BMIntelligenceFlowTranscriptDatastreamEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
 + (id)columns
@@ -66,25 +66,25 @@ id __54__BMIntelligenceFlowTranscriptDatastreamEvent_columns__block_invoke(uint6
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -92,18 +92,18 @@ id __54__BMIntelligenceFlowTranscriptDatastreamEvent_columns__block_invoke(uint6
       }
     }
 
-    v13 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
-    v14 = [v5 monotonicTimestamp];
-    v15 = v14;
-    if (v13 == v14)
+    monotonicTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
+    monotonicTimestamp2 = [v5 monotonicTimestamp];
+    v15 = monotonicTimestamp2;
+    if (monotonicTimestamp == monotonicTimestamp2)
     {
     }
 
     else
     {
-      v16 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
-      v17 = [v5 monotonicTimestamp];
-      v18 = [v16 isEqual:v17];
+      monotonicTimestamp3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
+      monotonicTimestamp4 = [v5 monotonicTimestamp];
+      v18 = [monotonicTimestamp3 isEqual:monotonicTimestamp4];
 
       if (!v18)
       {
@@ -111,18 +111,18 @@ id __54__BMIntelligenceFlowTranscriptDatastreamEvent_columns__block_invoke(uint6
       }
     }
 
-    v19 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
-    v20 = [v5 identifiers];
-    v21 = v20;
-    if (v19 == v20)
+    identifiers = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
+    identifiers2 = [v5 identifiers];
+    v21 = identifiers2;
+    if (identifiers == identifiers2)
     {
     }
 
     else
     {
-      v22 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
-      v23 = [v5 identifiers];
-      v24 = [v22 isEqual:v23];
+      identifiers3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
+      identifiers4 = [v5 identifiers];
+      v24 = [identifiers3 isEqual:identifiers4];
 
       if (!v24)
       {
@@ -130,18 +130,18 @@ id __54__BMIntelligenceFlowTranscriptDatastreamEvent_columns__block_invoke(uint6
       }
     }
 
-    v25 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
-    v26 = [v5 eventId];
-    v27 = v26;
-    if (v25 == v26)
+    eventId = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
+    eventId2 = [v5 eventId];
+    v27 = eventId2;
+    if (eventId == eventId2)
     {
     }
 
     else
     {
-      v28 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
-      v29 = [v5 eventId];
-      v30 = [v28 isEqual:v29];
+      eventId3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
+      eventId4 = [v5 eventId];
+      v30 = [eventId3 isEqual:eventId4];
 
       if (!v30)
       {
@@ -149,18 +149,18 @@ id __54__BMIntelligenceFlowTranscriptDatastreamEvent_columns__block_invoke(uint6
       }
     }
 
-    v31 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
-    v32 = [v5 eventType];
-    v33 = v32;
-    if (v31 == v32)
+    eventType = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
+    eventType2 = [v5 eventType];
+    v33 = eventType2;
+    if (eventType == eventType2)
     {
     }
 
     else
     {
-      v34 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
-      v35 = [v5 eventType];
-      v36 = [v34 isEqual:v35];
+      eventType3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
+      eventType4 = [v5 eventType];
+      v36 = [eventType3 isEqual:eventType4];
 
       if (!v36)
       {
@@ -172,18 +172,18 @@ LABEL_22:
       }
     }
 
-    v38 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
-    v39 = [v5 data];
-    if (v38 == v39)
+    data = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
+    data2 = [v5 data];
+    if (data == data2)
     {
       v12 = 1;
     }
 
     else
     {
-      v40 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
-      v41 = [v5 data];
-      v12 = [v40 isEqual:v41];
+      data3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
+      data4 = [v5 data];
+      v12 = [data3 isEqual:data4];
     }
 
     goto LABEL_22;
@@ -215,12 +215,12 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v29[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -229,72 +229,72 @@ LABEL_23:
     v6 = 0;
   }
 
-  v7 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
-  v8 = [v7 jsonDictionary];
+  monotonicTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
+  jsonDictionary = [monotonicTimestamp jsonDictionary];
 
-  v9 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
-  v10 = [v9 jsonDictionary];
+  identifiers = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
+  jsonDictionary2 = [identifiers jsonDictionary];
 
-  v11 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
-  v12 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
-  v13 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
-  v14 = [v13 base64EncodedStringWithOptions:0];
+  eventId = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
+  eventType = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
+  data = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
+  v14 = [data base64EncodedStringWithOptions:0];
 
   v28[0] = @"absoluteTimestamp";
-  v15 = v6;
+  null = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v15;
+  v26 = null;
   v27 = v6;
-  v29[0] = v15;
+  v29[0] = null;
   v28[1] = @"monotonicTimestamp";
-  v16 = v8;
-  if (!v8)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v16;
-  v29[1] = v16;
+  v24 = null2;
+  v29[1] = null2;
   v28[2] = @"identifiers";
-  v17 = v10;
-  if (!v10)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[2] = v17;
+  v29[2] = null3;
   v28[3] = @"eventId";
-  v18 = v11;
-  if (!v11)
+  null4 = eventId;
+  if (!eventId)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v18;
+  v29[3] = null4;
   v28[4] = @"eventType";
-  v19 = v12;
-  if (!v12)
+  null5 = eventType;
+  if (!eventType)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v19;
+  v29[4] = null5;
   v28[5] = @"data";
-  v20 = v14;
+  null6 = v14;
   if (!v14)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v20;
+  v29[5] = null6;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:{6, v24}];
   if (v14)
   {
-    if (v12)
+    if (eventType)
     {
       goto LABEL_18;
     }
@@ -303,10 +303,10 @@ LABEL_23:
   else
   {
 
-    if (v12)
+    if (eventType)
     {
 LABEL_18:
-      if (v11)
+      if (eventId)
       {
         goto LABEL_19;
       }
@@ -315,17 +315,17 @@ LABEL_18:
     }
   }
 
-  if (v11)
+  if (eventId)
   {
 LABEL_19:
-    if (v10)
+    if (jsonDictionary2)
     {
       goto LABEL_20;
     }
 
 LABEL_29:
 
-    if (v8)
+    if (jsonDictionary)
     {
       goto LABEL_21;
     }
@@ -335,13 +335,13 @@ LABEL_29:
 
 LABEL_28:
 
-  if (!v10)
+  if (!jsonDictionary2)
   {
     goto LABEL_29;
   }
 
 LABEL_20:
-  if (v8)
+  if (jsonDictionary)
   {
     goto LABEL_21;
   }
@@ -358,11 +358,11 @@ LABEL_21:
   return v21;
 }
 
-- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -391,7 +391,7 @@ LABEL_21:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           goto LABEL_33;
@@ -405,9 +405,9 @@ LABEL_21:
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
         v48 = [v46 initWithDomain:v47 code:2 userInfo:?];
         v8 = 0;
-        v49 = a4;
-        a4 = 0;
-        *v49 = v48;
+        errorCopy = error;
+        error = 0;
+        *errorCopy = v48;
         goto LABEL_31;
       }
 
@@ -423,13 +423,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v16 = [v6 objectForKeyedSubscript:@"monotonicTimestamp"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"monotonicTimestamp"];
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_32;
       }
@@ -437,7 +437,7 @@ LABEL_9:
       v66 = objc_alloc(MEMORY[0x1E696ABC0]);
       v29 = *MEMORY[0x1E698F240];
       v81 = *MEMORY[0x1E696A578];
-      v30 = a4;
+      errorCopy2 = error;
       v31 = v8;
       v32 = objc_alloc(MEMORY[0x1E696AEC0]);
       v52 = objc_opt_class();
@@ -446,9 +446,9 @@ LABEL_9:
       v68 = [v33 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v52, @"monotonicTimestamp"];
       v82 = v68;
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-      *v30 = [v66 initWithDomain:v29 code:2 userInfo:v34];
+      *errorCopy2 = [v66 initWithDomain:v29 code:2 userInfo:v34];
 
-      a4 = 0;
+      error = 0;
       goto LABEL_30;
     }
 
@@ -458,13 +458,13 @@ LABEL_9:
     v27 = v70;
     if (v27)
     {
-      if (a4)
+      if (error)
       {
         v27 = v27;
-        *a4 = v27;
+        *error = v27;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_31;
     }
   }
@@ -474,11 +474,11 @@ LABEL_9:
     v68 = 0;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"identifiers"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"identifiers"];
   if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v64 = 0;
-    v65 = self;
+    errorCopy5 = self;
     goto LABEL_15;
   }
 
@@ -491,27 +491,27 @@ LABEL_9:
     v28 = v69;
     if (v28)
     {
-      if (a4)
+      if (error)
       {
         v28 = v28;
-        *a4 = v28;
+        *error = v28;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_28;
     }
 
-    v65 = self;
+    errorCopy5 = self;
 
 LABEL_15:
-    v18 = [v6 objectForKeyedSubscript:@"eventId"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"eventId"];
     v63 = v8;
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v23 = 0;
           goto LABEL_27;
@@ -525,16 +525,16 @@ LABEL_15:
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
         v41 = [v39 initWithDomain:v40 code:2 userInfo:v19];
         v61 = 0;
-        v42 = a4;
-        a4 = 0;
-        *v42 = v41;
+        errorCopy3 = error;
+        error = 0;
+        *errorCopy3 = v41;
 LABEL_26:
 
         v23 = v61;
         v8 = v63;
 LABEL_27:
 
-        self = v65;
+        self = errorCopy5;
         goto LABEL_28;
       }
 
@@ -546,20 +546,20 @@ LABEL_27:
       v61 = 0;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"eventType"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v20 = 0;
           goto LABEL_26;
         }
 
         v55 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v58 = a4;
+        errorCopy4 = error;
         v43 = *MEMORY[0x1E698F240];
         v75 = *MEMORY[0x1E696A578];
         v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"eventType"];
@@ -567,8 +567,8 @@ LABEL_27:
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
         v44 = [v55 initWithDomain:v43 code:2 userInfo:v21];
         v20 = 0;
-        a4 = 0;
-        *v58 = v44;
+        error = 0;
+        *errorCopy4 = v44;
         goto LABEL_25;
       }
 
@@ -580,13 +580,13 @@ LABEL_27:
       v20 = 0;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"data"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"data"];
     if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v22 = 0;
 LABEL_24:
-      a4 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)v65 initWithAbsoluteTimestamp:v63 monotonicTimestamp:v68 identifiers:v64 eventId:v61 eventType:v20 data:v22];
-      v65 = a4;
+      error = [(BMIntelligenceFlowTranscriptDatastreamEvent *)errorCopy5 initWithAbsoluteTimestamp:v63 monotonicTimestamp:v68 identifiers:v64 eventId:v61 eventType:v20 data:v22];
+      errorCopy5 = error;
 LABEL_25:
 
       goto LABEL_26;
@@ -608,7 +608,7 @@ LABEL_25:
         goto LABEL_24;
       }
 
-      if (a4)
+      if (error)
       {
         v59 = objc_alloc(MEMORY[0x1E696ABC0]);
         v56 = *MEMORY[0x1E698F240];
@@ -616,16 +616,16 @@ LABEL_25:
         v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected format for value of field '%@', expected base64 encoding", @"data"];
         v74 = v54;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-        *a4 = [v59 initWithDomain:v56 code:2 userInfo:v45];
+        *error = [v59 initWithDomain:v56 code:2 userInfo:v45];
 
 LABEL_72:
         v22 = 0;
-        a4 = 0;
+        error = 0;
         goto LABEL_25;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v60 = objc_alloc(MEMORY[0x1E696ABC0]);
       v57 = *MEMORY[0x1E698F240];
@@ -633,7 +633,7 @@ LABEL_72:
       v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type (%@) for value of field '%@', expected NSData or base64 encoded NSString", objc_opt_class(), @"data"];
       v72 = v54;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-      v51 = v50 = a4;
+      v51 = v50 = error;
       *v50 = [v60 initWithDomain:v57 code:2 userInfo:v51];
 
       goto LABEL_72;
@@ -643,13 +643,13 @@ LABEL_72:
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!error)
   {
-    a4 = 0;
+    error = 0;
     goto LABEL_29;
   }
 
-  v35 = a4;
+  errorCopy6 = error;
   v67 = objc_alloc(MEMORY[0x1E696ABC0]);
   v62 = *MEMORY[0x1E698F240];
   v79 = *MEMORY[0x1E696A578];
@@ -661,8 +661,8 @@ LABEL_72:
   v64 = [v38 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v53, @"identifiers"];
   v80 = v64;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-  a4 = 0;
-  *v35 = [v67 initWithDomain:v62 code:2 userInfo:v23];
+  error = 0;
+  *errorCopy6 = [v67 initWithDomain:v62 code:2 userInfo:v23];
 LABEL_28:
 
 LABEL_29:
@@ -675,12 +675,12 @@ LABEL_32:
 
 LABEL_33:
   v25 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -690,14 +690,14 @@ LABEL_33:
   if (self->_monotonicTimestamp)
   {
     PBDataWriterPlaceMark();
-    [(BMMonotonicTimestamp *)self->_monotonicTimestamp writeTo:v4];
+    [(BMMonotonicTimestamp *)self->_monotonicTimestamp writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_identifiers)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceFlowIdentifiers *)self->_identifiers writeTo:v4];
+    [(BMIntelligenceFlowIdentifiers *)self->_identifiers writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -717,9 +717,9 @@ LABEL_33:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMIntelligenceFlowTranscriptDatastreamEvent;
   v5 = [(BMEventBase *)&v28 init];
@@ -728,12 +728,12 @@ LABEL_33:
     goto LABEL_46;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -744,18 +744,18 @@ LABEL_33:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v29) & 0x7F) << v7;
@@ -772,9 +772,9 @@ LABEL_33:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -814,18 +814,18 @@ LABEL_33:
       {
         v5->_hasRaw_absoluteTimestamp = 1;
         v29 = 0.0;
-        v20 = [v4 position] + 8;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 8;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v29 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_absoluteTimestamp = v29;
@@ -842,7 +842,7 @@ LABEL_33:
             goto LABEL_45;
           }
 
-          v16 = [[BMMonotonicTimestamp alloc] initByReadFrom:v4];
+          v16 = [[BMMonotonicTimestamp alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_45;
@@ -865,7 +865,7 @@ LABEL_33:
             goto LABEL_45;
           }
 
-          v16 = [[BMIntelligenceFlowIdentifiers alloc] initByReadFrom:v4];
+          v16 = [[BMIntelligenceFlowIdentifiers alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_45;
@@ -881,13 +881,13 @@ LABEL_33:
       }
 
 LABEL_43:
-      v25 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v25 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_45:
     v26 = 0;
@@ -905,35 +905,35 @@ LABEL_46:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
-  v5 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
-  v6 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
-  v7 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
-  v8 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
-  v9 = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
-  v10 = [v3 initWithFormat:@"BMIntelligenceFlowTranscriptDatastreamEvent with absoluteTimestamp: %@, monotonicTimestamp: %@, identifiers: %@, eventId: %@, eventType: %@, data: %@", v4, v5, v6, v7, v8, v9];
+  absoluteTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self absoluteTimestamp];
+  monotonicTimestamp = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self monotonicTimestamp];
+  identifiers = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self identifiers];
+  eventId = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventId];
+  eventType = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self eventType];
+  data = [(BMIntelligenceFlowTranscriptDatastreamEvent *)self data];
+  v10 = [v3 initWithFormat:@"BMIntelligenceFlowTranscriptDatastreamEvent with absoluteTimestamp: %@, monotonicTimestamp: %@, identifiers: %@, eventId: %@, eventType: %@, data: %@", absoluteTimestamp, monotonicTimestamp, identifiers, eventId, eventType, data];
 
   return v10;
 }
 
-- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithAbsoluteTimestamp:(id)a3 monotonicTimestamp:(id)a4 identifiers:(id)a5 eventId:(id)a6 eventType:(id)a7 data:(id)a8
+- (BMIntelligenceFlowTranscriptDatastreamEvent)initWithAbsoluteTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp identifiers:(id)identifiers eventId:(id)id eventType:(id)type data:(id)data
 {
-  v14 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  timestampCopy = timestamp;
+  monotonicTimestampCopy = monotonicTimestamp;
+  identifiersCopy = identifiers;
+  idCopy = id;
+  typeCopy = type;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = BMIntelligenceFlowTranscriptDatastreamEvent;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (timestampCopy)
     {
       v18->_hasRaw_absoluteTimestamp = 1;
-      [v14 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -943,11 +943,11 @@ LABEL_46:
     }
 
     v18->_raw_absoluteTimestamp = v19;
-    objc_storeStrong(&v18->_monotonicTimestamp, a4);
-    objc_storeStrong(&v18->_identifiers, a5);
-    objc_storeStrong(&v18->_eventId, a6);
-    objc_storeStrong(&v18->_eventType, a7);
-    objc_storeStrong(&v18->_data, a8);
+    objc_storeStrong(&v18->_monotonicTimestamp, monotonicTimestamp);
+    objc_storeStrong(&v18->_identifiers, identifiers);
+    objc_storeStrong(&v18->_eventId, id);
+    objc_storeStrong(&v18->_eventType, type);
+    objc_storeStrong(&v18->_data, data);
   }
 
   return v18;
@@ -975,9 +975,9 @@ LABEL_46:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -985,8 +985,8 @@ LABEL_46:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligenceFlowTranscriptDatastreamEvent alloc] initByReadFrom:v7];
     v4 = v8;

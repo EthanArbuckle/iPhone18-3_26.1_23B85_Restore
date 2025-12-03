@@ -1,11 +1,11 @@
 @interface PSCStrideConfig
 - (PSCStrideConfig)init;
-- (PSCStrideConfig)initWithGraphName:(id)a3 sessionName:(id)a4 stride:(id)a5;
+- (PSCStrideConfig)initWithGraphName:(id)name sessionName:(id)sessionName stride:(id)stride;
 @end
 
 @implementation PSCStrideConfig
 
-- (PSCStrideConfig)initWithGraphName:(id)a3 sessionName:(id)a4 stride:(id)a5
+- (PSCStrideConfig)initWithGraphName:(id)name sessionName:(id)sessionName stride:(id)stride
 {
   v7 = sub_25EB6E268();
   v9 = v8;
@@ -16,10 +16,10 @@
   v12 = (self + OBJC_IVAR___PSCStrideConfig_sessionName);
   *v12 = v10;
   v12[1] = v13;
-  *(self + OBJC_IVAR___PSCStrideConfig_stride) = a5;
+  *(self + OBJC_IVAR___PSCStrideConfig_stride) = stride;
   v16.receiver = self;
   v16.super_class = PSCStrideConfig;
-  v14 = a5;
+  strideCopy = stride;
   return [(PSCStrideConfig *)&v16 init];
 }
 

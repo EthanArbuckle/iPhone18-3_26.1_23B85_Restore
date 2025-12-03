@@ -1,5 +1,5 @@
 @interface _LiveSpeechTextView
-- (_TtC19LiveSpeechUIService19_LiveSpeechTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC19LiveSpeechUIService19_LiveSpeechTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_320DC();
 }
 
-- (_TtC19LiveSpeechUIService19_LiveSpeechTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC19LiveSpeechUIService19_LiveSpeechTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

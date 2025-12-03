@@ -1,29 +1,29 @@
 @interface AWDWiFiDPSPerACTxCompletionSnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDropped:(BOOL)a3;
-- (void)setHasExpired:(BOOL)a3;
-- (void)setHasFirmwareFreePacket:(BOOL)a3;
-- (void)setHasForceLifetimeExp:(BOOL)a3;
-- (void)setHasMaxRetries:(BOOL)a3;
-- (void)setHasNoAck:(BOOL)a3;
-- (void)setHasNoBuf:(BOOL)a3;
-- (void)setHasNoResources:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasTxFailure:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDropped:(BOOL)dropped;
+- (void)setHasExpired:(BOOL)expired;
+- (void)setHasFirmwareFreePacket:(BOOL)packet;
+- (void)setHasForceLifetimeExp:(BOOL)exp;
+- (void)setHasMaxRetries:(BOOL)retries;
+- (void)setHasNoAck:(BOOL)ack;
+- (void)setHasNoBuf:(BOOL)buf;
+- (void)setHasNoResources:(BOOL)resources;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasTxFailure:(BOOL)failure;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiDPSPerACTxCompletionSnapshot
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 512;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDropped:(BOOL)a3
+- (void)setHasDropped:(BOOL)dropped
 {
-  if (a3)
+  if (dropped)
   {
     v3 = 2;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNoBuf:(BOOL)a3
+- (void)setHasNoBuf:(BOOL)buf
 {
-  if (a3)
+  if (buf)
   {
     v3 = 128;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNoResources:(BOOL)a3
+- (void)setHasNoResources:(BOOL)resources
 {
-  if (a3)
+  if (resources)
   {
     v3 = 256;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNoAck:(BOOL)a3
+- (void)setHasNoAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 64;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasExpired:(BOOL)a3
+- (void)setHasExpired:(BOOL)expired
 {
-  if (a3)
+  if (expired)
   {
     v3 = 4;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTxFailure:(BOOL)a3
+- (void)setHasTxFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 1024;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasFirmwareFreePacket:(BOOL)a3
+- (void)setHasFirmwareFreePacket:(BOOL)packet
 {
-  if (a3)
+  if (packet)
   {
     v3 = 8;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasMaxRetries:(BOOL)a3
+- (void)setHasMaxRetries:(BOOL)retries
 {
-  if (a3)
+  if (retries)
   {
     v3 = 32;
   }
@@ -156,9 +156,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasForceLifetimeExp:(BOOL)a3
+- (void)setHasForceLifetimeExp:(BOOL)exp
 {
-  if (a3)
+  if (exp)
   {
     v3 = 16;
   }
@@ -180,11 +180,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -203,7 +203,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dropped), @"dropped"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dropped), @"dropped"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -217,7 +217,7 @@ LABEL_4:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noBuf), @"noBuf"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noBuf), @"noBuf"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -231,7 +231,7 @@ LABEL_5:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noResources), @"noResources"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noResources), @"noResources"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -245,7 +245,7 @@ LABEL_6:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noAck), @"noAck"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noAck), @"noAck"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -259,7 +259,7 @@ LABEL_7:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_chipModeError), @"chipModeError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_chipModeError), @"chipModeError"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -273,7 +273,7 @@ LABEL_8:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expired), @"expired"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expired), @"expired"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -287,7 +287,7 @@ LABEL_9:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txFailure), @"txFailure"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txFailure), @"txFailure"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -298,17 +298,17 @@ LABEL_10:
     }
 
 LABEL_23:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRetries), @"maxRetries"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRetries), @"maxRetries"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_12;
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_firmwareFreePacket), @"firmwareFreePacket"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_firmwareFreePacket), @"firmwareFreePacket"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -319,13 +319,13 @@ LABEL_11:
   if ((has & 0x10) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_forceLifetimeExp), @"forceLifetimeExp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_forceLifetimeExp), @"forceLifetimeExp"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x200) != 0)
@@ -483,13 +483,13 @@ LABEL_23:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(a3 + 11) = self->_success;
-    *(a3 + 26) |= 0x200u;
+    *(to + 11) = self->_success;
+    *(to + 26) |= 0x200u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -508,8 +508,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_dropped;
-  *(a3 + 26) |= 2u;
+  *(to + 3) = self->_dropped;
+  *(to + 26) |= 2u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_noBuf;
-  *(a3 + 26) |= 0x80u;
+  *(to + 9) = self->_noBuf;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(a3 + 10) = self->_noResources;
-  *(a3 + 26) |= 0x100u;
+  *(to + 10) = self->_noResources;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(a3 + 8) = self->_noAck;
-  *(a3 + 26) |= 0x40u;
+  *(to + 8) = self->_noAck;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -568,8 +568,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(a3 + 2) = self->_chipModeError;
-  *(a3 + 26) |= 1u;
+  *(to + 2) = self->_chipModeError;
+  *(to + 26) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -583,8 +583,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(a3 + 4) = self->_expired;
-  *(a3 + 26) |= 4u;
+  *(to + 4) = self->_expired;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  *(a3 + 12) = self->_txFailure;
-  *(a3 + 26) |= 0x400u;
+  *(to + 12) = self->_txFailure;
+  *(to + 26) |= 0x400u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_10:
   }
 
 LABEL_21:
-  *(a3 + 5) = self->_firmwareFreePacket;
-  *(a3 + 26) |= 8u;
+  *(to + 5) = self->_firmwareFreePacket;
+  *(to + 26) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -625,23 +625,23 @@ LABEL_11:
     }
 
 LABEL_23:
-    *(a3 + 6) = self->_forceLifetimeExp;
-    *(a3 + 26) |= 0x10u;
+    *(to + 6) = self->_forceLifetimeExp;
+    *(to + 26) |= 0x10u;
     return;
   }
 
 LABEL_22:
-  *(a3 + 7) = self->_maxRetries;
-  *(a3 + 26) |= 0x20u;
+  *(to + 7) = self->_maxRetries;
+  *(to + 26) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_23;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -798,22 +798,22 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 26);
+    v7 = *(equal + 26);
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 26) & 0x200) == 0 || self->_success != *(a3 + 11))
+      if ((*(equal + 26) & 0x200) == 0 || self->_success != *(equal + 11))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 26) & 0x200) != 0)
+    else if ((*(equal + 26) & 0x200) != 0)
     {
 LABEL_56:
       LOBYTE(v5) = 0;
@@ -822,7 +822,7 @@ LABEL_56:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_dropped != *(a3 + 3))
+      if ((v7 & 2) == 0 || self->_dropped != *(equal + 3))
       {
         goto LABEL_56;
       }
@@ -835,7 +835,7 @@ LABEL_56:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_noBuf != *(a3 + 9))
+      if ((v7 & 0x80) == 0 || self->_noBuf != *(equal + 9))
       {
         goto LABEL_56;
       }
@@ -848,20 +848,20 @@ LABEL_56:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 26) & 0x100) == 0 || self->_noResources != *(a3 + 10))
+      if ((*(equal + 26) & 0x100) == 0 || self->_noResources != *(equal + 10))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 26) & 0x100) != 0)
+    else if ((*(equal + 26) & 0x100) != 0)
     {
       goto LABEL_56;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_noAck != *(a3 + 8))
+      if ((v7 & 0x40) == 0 || self->_noAck != *(equal + 8))
       {
         goto LABEL_56;
       }
@@ -874,7 +874,7 @@ LABEL_56:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_chipModeError != *(a3 + 2))
+      if ((v7 & 1) == 0 || self->_chipModeError != *(equal + 2))
       {
         goto LABEL_56;
       }
@@ -887,7 +887,7 @@ LABEL_56:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_expired != *(a3 + 4))
+      if ((v7 & 4) == 0 || self->_expired != *(equal + 4))
       {
         goto LABEL_56;
       }
@@ -900,20 +900,20 @@ LABEL_56:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 26) & 0x400) == 0 || self->_txFailure != *(a3 + 12))
+      if ((*(equal + 26) & 0x400) == 0 || self->_txFailure != *(equal + 12))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 26) & 0x400) != 0)
+    else if ((*(equal + 26) & 0x400) != 0)
     {
       goto LABEL_56;
     }
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_firmwareFreePacket != *(a3 + 5))
+      if ((v7 & 8) == 0 || self->_firmwareFreePacket != *(equal + 5))
       {
         goto LABEL_56;
       }
@@ -926,7 +926,7 @@ LABEL_56:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_maxRetries != *(a3 + 7))
+      if ((v7 & 0x20) == 0 || self->_maxRetries != *(equal + 7))
       {
         goto LABEL_56;
       }
@@ -940,7 +940,7 @@ LABEL_56:
     LOBYTE(v5) = (v7 & 0x10) == 0;
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_forceLifetimeExp != *(a3 + 6))
+      if ((v7 & 0x10) == 0 || self->_forceLifetimeExp != *(equal + 6))
       {
         goto LABEL_56;
       }
@@ -1105,14 +1105,14 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x200) != 0)
   {
-    self->_success = *(a3 + 11);
+    self->_success = *(from + 11);
     *&self->_has |= 0x200u;
-    v3 = *(a3 + 26);
+    v3 = *(from + 26);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -1130,9 +1130,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_dropped = *(a3 + 3);
+  self->_dropped = *(from + 3);
   *&self->_has |= 2u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x80) == 0)
   {
 LABEL_4:
@@ -1145,9 +1145,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_noBuf = *(a3 + 9);
+  self->_noBuf = *(from + 9);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x100) == 0)
   {
 LABEL_5:
@@ -1160,9 +1160,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_noResources = *(a3 + 10);
+  self->_noResources = *(from + 10);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x40) == 0)
   {
 LABEL_6:
@@ -1175,9 +1175,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_noAck = *(a3 + 8);
+  self->_noAck = *(from + 8);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 1) == 0)
   {
 LABEL_7:
@@ -1190,9 +1190,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_chipModeError = *(a3 + 2);
+  self->_chipModeError = *(from + 2);
   *&self->_has |= 1u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 4) == 0)
   {
 LABEL_8:
@@ -1205,9 +1205,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_expired = *(a3 + 4);
+  self->_expired = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x400) == 0)
   {
 LABEL_9:
@@ -1220,9 +1220,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_txFailure = *(a3 + 12);
+  self->_txFailure = *(from + 12);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 8) == 0)
   {
 LABEL_10:
@@ -1235,9 +1235,9 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_firmwareFreePacket = *(a3 + 5);
+  self->_firmwareFreePacket = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x20) == 0)
   {
 LABEL_11:
@@ -1247,15 +1247,15 @@ LABEL_11:
     }
 
 LABEL_23:
-    self->_forceLifetimeExp = *(a3 + 6);
+    self->_forceLifetimeExp = *(from + 6);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_22:
-  self->_maxRetries = *(a3 + 7);
+  self->_maxRetries = *(from + 7);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 26) & 0x10) != 0)
+  if ((*(from + 26) & 0x10) != 0)
   {
     goto LABEL_23;
   }

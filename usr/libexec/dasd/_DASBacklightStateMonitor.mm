@@ -1,7 +1,7 @@
 @interface _DASBacklightStateMonitor
 + (_DASBacklightStateMonitor)sharedInstance;
 - (_DASBacklightStateMonitor)init;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)registerForBacklightUpdates;
 @end
 
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_100101B40;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B8C8 != -1)
   {
     dispatch_once(&qword_10020B8C8, block);
@@ -62,11 +62,11 @@
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  if (self->_currentState != a4)
+  if (self->_currentState != state)
   {
-    self->_currentState = a4;
+    self->_currentState = state;
     v6 = [_DASDaemonLogger logForCategory:@"BacklightStateMonitor"];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {

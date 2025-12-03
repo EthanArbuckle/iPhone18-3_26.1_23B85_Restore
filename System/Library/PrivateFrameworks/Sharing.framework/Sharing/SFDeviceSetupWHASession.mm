@@ -1,5 +1,5 @@
 @interface SFDeviceSetupWHASession
-- (BOOL)_verifyiCloudMatch:(unint64_t)a3 error:(id *)a4;
+- (BOOL)_verifyiCloudMatch:(unint64_t)match error:(id *)error;
 - (SFDeviceSetupWHASession)init;
 - (int)_runCDPSetup;
 - (int)_runFinish;
@@ -12,16 +12,16 @@
 - (int)_runTRSessionStart;
 - (int)_runTRSetupConfiguration;
 - (void)_cleanup;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_run;
 - (void)_runInfoExchangeRequest;
-- (void)_runInfoExchangeResponse:(id)a3 error:(id)a4;
+- (void)_runInfoExchangeResponse:(id)response error:(id)error;
 - (void)activate;
 - (void)dealloc;
-- (void)homeKitSelectHome:(id)a3;
-- (void)homeKitSelectRoom:(id)a3;
+- (void)homeKitSelectHome:(id)home;
+- (void)homeKitSelectRoom:(id)room;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
 @end
 
 @implementation SFDeviceSetupWHASession
@@ -200,52 +200,52 @@ uint64_t __37__SFDeviceSetupWHASession_invalidate__block_invoke(uint64_t a1)
   return [v2 _cleanup];
 }
 
-- (void)homeKitSelectHome:(id)a3
+- (void)homeKitSelectHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SFDeviceSetupWHASession_homeKitSelectHome___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = homeCopy;
+  v6 = homeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)homeKitSelectRoom:(id)a3
+- (void)homeKitSelectRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SFDeviceSetupWHASession_homeKitSelectRoom___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = roomCopy;
+  v6 = roomCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SFDeviceSetupWHASession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_SFDeviceSetupWHASession <= 30 && (gLogCategory_SFDeviceSetupWHASession != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupWHASession _reportError:];
@@ -255,8 +255,8 @@ uint64_t __37__SFDeviceSetupWHASession_invalidate__block_invoke(uint64_t a1)
   if (progressHandler)
   {
     v17 = @"eo";
-    v8 = v6;
-    if (!v6)
+    v8 = errorCopy;
+    if (!errorCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = *MEMORY[0x1E696A768];
@@ -278,7 +278,7 @@ uint64_t __37__SFDeviceSetupWHASession_invalidate__block_invoke(uint64_t a1)
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     progressHandler[2](progressHandler, 30, v13);
 
-    if (!v6)
+    if (!errorCopy)
     {
     }
   }
@@ -654,13 +654,13 @@ void __40__SFDeviceSetupWHASession__runPairSetup__block_invoke(uint64_t a1, void
   [(SFSession *)sfSession sendRequestID:@"_info" options:0 request:v3 responseHandler:v5];
 }
 
-- (void)_runInfoExchangeResponse:(id)a3 error:(id)a4
+- (void)_runInfoExchangeResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
   v12 = 0;
-  if (v6 && !v7)
+  if (responseCopy && !errorCopy)
   {
     if (gLogCategory_SFDeviceSetupWHASession <= 30 && (gLogCategory_SFDeviceSetupWHASession != -1 || _LogCategory_Initialize()))
     {
@@ -688,13 +688,13 @@ LABEL_12:
   }
 
   self->_infoExchangeState = 3;
-  if (!v7)
+  if (!errorCopy)
   {
     v10 = NSErrorWithOSStatusF();
     goto LABEL_12;
   }
 
-  [(SFDeviceSetupWHASession *)self _reportError:v7];
+  [(SFDeviceSetupWHASession *)self _reportError:errorCopy];
 LABEL_14:
 }
 
@@ -715,9 +715,9 @@ LABEL_14:
     }
 
     self->_trSessionState = 1;
-    v4 = [(SFSession *)self->_sfSession trSession];
+    trSession = [(SFSession *)self->_sfSession trSession];
     trSession = self->_trSession;
-    self->_trSession = v4;
+    self->_trSession = trSession;
 
     if (self->_trSession)
     {
@@ -1316,20 +1316,20 @@ LABEL_20:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_verifyiCloudMatch:(unint64_t)a3 error:(id *)a4
+- (BOOL)_verifyiCloudMatch:(unint64_t)match error:(id *)error
 {
   v7 = SFMyAltDSID();
-  v8 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
 
-  if (v8)
+  if (uTF8String)
   {
     v9 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"AltDSID" keyLength:16];
     v10 = v9;
     if (v9)
     {
       [v9 bytes];
-      strlen(v8);
-      if (SipHash() == a3)
+      strlen(uTF8String);
+      if (SipHash() == match)
       {
         v11 = 0;
         v12 = 0;
@@ -1347,10 +1347,10 @@ LABEL_20:
   }
 
   v11 = v12 != 0;
-  if (a4 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a4 = v12;
+    *error = v12;
     v11 = 1;
   }
 
@@ -1364,26 +1364,26 @@ LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFDeviceSetupWHASession *)self _runSFSessionStart];
-    if (v3 == 4 || v3 == 2)
+    _runSFSessionStart = [(SFDeviceSetupWHASession *)self _runSFSessionStart];
+    if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
     {
-      v5 = [(SFDeviceSetupWHASession *)self _runPairVerify];
-      if (v5 == 4 || v5 == 2)
+      _runPairVerify = [(SFDeviceSetupWHASession *)self _runPairVerify];
+      if (_runPairVerify == 4 || _runPairVerify == 2)
       {
         if (self->_sessionSecured || ((v7 = [(SFDeviceSetupWHASession *)self _runPairSetup], v7 != 4) ? (v8 = v7 == 2) : (v8 = 1), v8))
         {
-          v9 = [(SFDeviceSetupWHASession *)self _runInfoExchange];
-          if (v9 == 4 || v9 == 2)
+          _runInfoExchange = [(SFDeviceSetupWHASession *)self _runInfoExchange];
+          if (_runInfoExchange == 4 || _runInfoExchange == 2)
           {
-            v11 = [(SFDeviceSetupWHASession *)self _runTRSessionStart];
-            if (v11 == 4 || v11 == 2)
+            _runTRSessionStart = [(SFDeviceSetupWHASession *)self _runTRSessionStart];
+            if (_runTRSessionStart == 4 || _runTRSessionStart == 2)
             {
               if (!self->_trSetupConfigurationEnabled || ((v13 = [(SFDeviceSetupWHASession *)self _runTRSetupConfiguration], v13 != 4) ? (v14 = v13 == 2) : (v14 = 1), v14))
               {
                 if (!self->_trAuthenticationEnabled || ((v15 = [(SFDeviceSetupWHASession *)self _runTRAuthentication], v15 != 4) ? (v16 = v15 == 2) : (v16 = 1), v16))
                 {
-                  v17 = [(SFDeviceSetupWHASession *)self _runHomeKitSetup];
-                  if (v17 == 4 || v17 == 2)
+                  _runHomeKitSetup = [(SFDeviceSetupWHASession *)self _runHomeKitSetup];
+                  if (_runHomeKitSetup == 4 || _runHomeKitSetup == 2)
                   {
                     if (!self->_cdpEnabled || (self->_peerProblemsFlags & 0x20000) == 0 || ((v19 = [(SFDeviceSetupWHASession *)self _runCDPSetup], v19 != 4) ? (v20 = v19 == 2) : (v20 = 1), v20))
                     {

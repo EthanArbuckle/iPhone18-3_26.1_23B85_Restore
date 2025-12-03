@@ -2,7 +2,7 @@
 - (BOOL)isControllerKeyAvailable;
 - (BOOL)isKeychainSyncEnabled;
 - (BOOL)supportsKeyTransferServer;
-- (HMDCloudManagerDataSource)initWithHomeManager:(id)a3;
+- (HMDCloudManagerDataSource)initWithHomeManager:(id)manager;
 - (HMDHomeManager)homeManager;
 - (id)keyTransferAgent;
 @end
@@ -18,47 +18,47 @@
 
 - (id)keyTransferAgent
 {
-  v2 = [(HMDCloudManagerDataSource *)self homeManager];
-  v3 = [v2 keyTransferAgent];
+  homeManager = [(HMDCloudManagerDataSource *)self homeManager];
+  keyTransferAgent = [homeManager keyTransferAgent];
 
-  return v3;
+  return keyTransferAgent;
 }
 
 - (BOOL)supportsKeyTransferServer
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 supportsKeyTransferServer];
+  supportsKeyTransferServer = [v2 supportsKeyTransferServer];
 
-  return v3;
+  return supportsKeyTransferServer;
 }
 
 - (BOOL)isKeychainSyncEnabled
 {
   v2 = +[HMDAppleAccountSettings sharedSettings];
-  v3 = [v2 isKeychainSyncEnabled];
+  isKeychainSyncEnabled = [v2 isKeychainSyncEnabled];
 
-  return v3;
+  return isKeychainSyncEnabled;
 }
 
 - (BOOL)isControllerKeyAvailable
 {
-  v2 = [MEMORY[0x277CFEC78] systemStore];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v5 = 0;
-  v3 = [v2 getControllerPublicKey:&v5 secretKey:0 username:0 allowCreation:0 error:0];
+  v3 = [systemStore getControllerPublicKey:&v5 secretKey:0 username:0 allowCreation:0 error:0];
 
   return v3;
 }
 
-- (HMDCloudManagerDataSource)initWithHomeManager:(id)a3
+- (HMDCloudManagerDataSource)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = HMDCloudManagerDataSource;
   v5 = [(HMDCloudManagerDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_homeManager, v4);
+    objc_storeWeak(&v5->_homeManager, managerCopy);
   }
 
   return v6;

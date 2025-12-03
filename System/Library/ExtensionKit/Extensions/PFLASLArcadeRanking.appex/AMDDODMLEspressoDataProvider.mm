@@ -1,40 +1,40 @@
 @interface AMDDODMLEspressoDataProvider
-- (AMDDODMLEspressoDataProvider)initWithInputs:(int64_t)a3 featureSizeMap:(id)a4 inputDictionary:(id)a5;
-- (id)bindDataToInputsDirectly:(id)a3 batchSize:(int64_t)a4 error:(id *)a5 errorDomain:(id)a6;
+- (AMDDODMLEspressoDataProvider)initWithInputs:(int64_t)inputs featureSizeMap:(id)map inputDictionary:(id)dictionary;
+- (id)bindDataToInputsDirectly:(id)directly batchSize:(int64_t)size error:(id *)error errorDomain:(id)domain;
 @end
 
 @implementation AMDDODMLEspressoDataProvider
 
-- (AMDDODMLEspressoDataProvider)initWithInputs:(int64_t)a3 featureSizeMap:(id)a4 inputDictionary:(id)a5
+- (AMDDODMLEspressoDataProvider)initWithInputs:(int64_t)inputs featureSizeMap:(id)map inputDictionary:(id)dictionary
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  inputsCopy = inputs;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, map);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v12->_length = v10;
-  objc_storeStrong(&v12->_inputDictionary, v8);
-  objc_storeStrong(&v12->_featureSizeMap, location);
-  v12->_currentIndex = 0;
-  v7 = v12;
+  objc_storeStrong(&v8, dictionary);
+  selfCopy->_length = inputsCopy;
+  objc_storeStrong(&selfCopy->_inputDictionary, v8);
+  objc_storeStrong(&selfCopy->_featureSizeMap, location);
+  selfCopy->_currentIndex = 0;
+  v7 = selfCopy;
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)bindDataToInputsDirectly:(id)a3 batchSize:(int64_t)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)bindDataToInputsDirectly:(id)directly batchSize:(int64_t)size error:(id *)error errorDomain:(id)domain
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v47 = a4;
-  v46 = a5;
+  objc_storeStrong(location, directly);
+  sizeCopy = size;
+  errorCopy = error;
   v45 = 0;
-  objc_storeStrong(&v45, a6);
+  objc_storeStrong(&v45, domain);
   memset(__b, 0, sizeof(__b));
   v31 = location[0];
   v32 = [v31 countByEnumeratingWithState:__b objects:v55 count:16];
@@ -54,32 +54,32 @@
       v44 = *(__b[1] + 8 * v26);
       v22 = [location[0] objectForKeyedSubscript:v44];
       v6 = v22;
-      v23 = [v22 mutableBytes];
+      mutableBytes = [v22 mutableBytes];
 
-      v42 = v23;
-      v41 = [(NSDictionary *)v49->_inputDictionary objectForKey:v44];
+      v42 = mutableBytes;
+      v41 = [(NSDictionary *)selfCopy->_inputDictionary objectForKey:v44];
       if (v41)
       {
-        v39 = [(NSDictionary *)v49->_featureSizeMap objectForKey:v44];
+        v39 = [(NSDictionary *)selfCopy->_featureSizeMap objectForKey:v44];
         if (v39)
         {
-          v11 = [v39 longValue];
-          if (v42[2] * v42[3] * v42[4] * v42[5] == v11 * v47)
+          longValue = [v39 longValue];
+          if (v42[2] * v42[3] * v42[4] * v42[5] == longValue * sizeCopy)
           {
             v38 = *v42;
             v37 = [v41 length] / 4;
-            for (i = 0; i < v47; ++i)
+            for (i = 0; i < sizeCopy; ++i)
             {
-              v35 = [v39 longValue];
-              for (j = 0; j < v35; ++j)
+              longValue2 = [v39 longValue];
+              for (j = 0; j < longValue2; ++j)
               {
-                v33 = v49->_currentIndex * v35 + i * v35 + j;
+                v33 = selfCopy->_currentIndex * longValue2 + i * longValue2 + j;
                 if (v33 >= v37)
                 {
                   v14 = [NSError alloc];
                   v18 = [v14 initWithDomain:v45 code:91 userInfo:0];
                   v15 = v18;
-                  *v46 = v18;
+                  *errorCopy = v18;
                   v50 = 0;
                   v40 = 1;
                   goto LABEL_20;
@@ -89,7 +89,7 @@
                 v51 = 4;
                 v53 = 4 * v33;
                 v54 = 4;
-                [v41 getBytes:v38 + 4 * (i * v35 + j) range:{4 * v33, 4}];
+                [v41 getBytes:v38 + 4 * (i * longValue2 + j) range:{4 * v33, 4}];
               }
             }
 
@@ -101,7 +101,7 @@
             v12 = [NSError alloc];
             v19 = [v12 initWithDomain:v45 code:82 userInfo:0];
             v13 = v19;
-            *v46 = v19;
+            *errorCopy = v19;
             v50 = 0;
             v40 = 1;
           }
@@ -112,7 +112,7 @@
           v9 = [NSError alloc];
           v20 = [v9 initWithDomain:v45 code:80 userInfo:0];
           v10 = v20;
-          *v46 = v20;
+          *errorCopy = v20;
           v50 = 0;
           v40 = 1;
         }
@@ -126,7 +126,7 @@ LABEL_20:
         v7 = [NSError alloc];
         v21 = [v7 initWithDomain:v45 code:81 userInfo:0];
         v8 = v21;
-        *v46 = v21;
+        *errorCopy = v21;
         v50 = 0;
         v40 = 1;
       }
@@ -158,10 +158,10 @@ LABEL_24:
 
   if (!v40)
   {
-    v49->_currentIndex += v47;
-    if ((v49->_currentIndex + v47) > v49->_length)
+    selfCopy->_currentIndex += sizeCopy;
+    if ((selfCopy->_currentIndex + sizeCopy) > selfCopy->_length)
     {
-      v49->_currentIndex = 0;
+      selfCopy->_currentIndex = 0;
     }
 
     v50 = [NSNumber numberWithLong:1];

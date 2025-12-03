@@ -1,59 +1,59 @@
 @interface EQKitVBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitVBox
 
-- (EQKitVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4
+- (EQKitVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index
 {
   v6.receiver = self;
   v6.super_class = EQKitVBox;
-  result = [(EQKitCompoundBox *)&v6 initWithChildBoxes:a3];
+  result = [(EQKitCompoundBox *)&v6 initWithChildBoxes:boxes];
   if (result)
   {
-    result->mPivotIndex = a4;
+    result->mPivotIndex = index;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_childBoxes(self, v9, v10, v11);
   v17 = objc_msgSend_pivotIndex(self, v13, v14, v15);
 
   return objc_msgSend_initWithChildBoxes_pivotIndex_(v8, v16, v12, v17);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        v12 = objc_msgSend_pivotIndex(v3, v9, v10, v11);
-        if (v12 == objc_msgSend_pivotIndex(a3, v13, v14, v15))
+        v12 = objc_msgSend_pivotIndex(selfCopy, v9, v10, v11);
+        if (v12 == objc_msgSend_pivotIndex(equal, v13, v14, v15))
         {
-          v19 = objc_msgSend_childBoxes(v3, v16, v17, v18);
-          self = objc_msgSend_childBoxes(a3, v20, v21, v22);
+          v19 = objc_msgSend_childBoxes(selfCopy, v16, v17, v18);
+          self = objc_msgSend_childBoxes(equal, v20, v21, v22);
           if (v19 == self)
           {
             LOBYTE(self) = 1;
@@ -61,12 +61,12 @@
 
           else
           {
-            v25 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v19 && v25)
+            if (v19 && selfCopy2)
             {
 
-              LOBYTE(self) = objc_msgSend_isEqual_(v19, v23, v25, v24);
+              LOBYTE(self) = objc_msgSend_isEqual_(v19, v23, selfCopy2, v24);
             }
           }
         }
@@ -89,15 +89,15 @@
   return [(EQKitCompoundBox *)&v3 hash];
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v41 = *MEMORY[0x277D85DE8];
   v39.receiver = self;
   v39.super_class = EQKitVBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  if (a3)
+  if (context)
   {
     objc_msgSend_height(self, v8, v9, v10);
     v12 = v11;
@@ -124,7 +124,7 @@
           v26 = *(*(&v35 + 1) + 8 * i);
           objc_msgSend_layoutHeight(v26, v19, v20, v21);
           v28 = v23 + v27;
-          objc_msgSend_renderIntoContext_offset_(v26, v29, a3, v30, x, v28);
+          objc_msgSend_renderIntoContext_offset_(v26, v29, context, v30, x, v28);
           objc_msgSend_layoutDepth(v26, v31, v32, v33);
           v23 = v28 + v34;
         }
@@ -137,13 +137,13 @@
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v40 = *MEMORY[0x277D85DE8];
-  objc_msgSend_height(self, a2, a3, v4);
-  if ((*(a3 + 6) | 2) == 2 && (v13 = v12, v37 = 0u, v38 = 0u, v35 = 0u, v36 = 0u, v14 = objc_msgSend_childBoxes(self, v9, v10, v11, 0), (v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v35, v39, 16)) != 0))
+  objc_msgSend_height(self, a2, spec, v4);
+  if ((*(spec + 6) | 2) == 2 && (v13 = v12, v37 = 0u, v38 = 0u, v35 = 0u, v36 = 0u, v14 = objc_msgSend_childBoxes(self, v9, v10, v11, 0), (v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v35, v39, 16)) != 0))
   {
     v20 = v16;
     v21 = 0;
@@ -161,7 +161,7 @@
         v25 = *(*(&v35 + 1) + 8 * i);
         objc_msgSend_layoutHeight(v25, v17, v18, v19);
         v27 = v22 + v26;
-        v21 |= objc_msgSend_appendOpticalAlignToSpec_offset_(v25, v28, a3, v29, x, v27);
+        v21 |= objc_msgSend_appendOpticalAlignToSpec_offset_(v25, v28, spec, v29, x, v27);
         objc_msgSend_layoutDepth(v25, v30, v31, v32);
         v22 = v27 + v33;
       }
@@ -180,10 +180,10 @@
   return v21 & 1;
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a4 == self)
+  if (descendant == self)
   {
 LABEL_12:
     LOBYTE(v14) = 1;
@@ -191,7 +191,7 @@ LABEL_12:
 
   else
   {
-    objc_msgSend_height(self, a2, a3, a4);
+    objc_msgSend_height(self, a2, transform, descendant);
     v8 = v7;
     v35 = 0u;
     v36 = 0u;
@@ -216,17 +216,17 @@ LABEL_12:
           v22 = *(*(&v35 + 1) + 8 * i);
           objc_msgSend_layoutHeight(v22, v15, v16, v17);
           v24 = v19 + v23;
-          if (objc_msgSend_p_getTransform_fromDescendant_(v22, v25, a3, a4))
+          if (objc_msgSend_p_getTransform_fromDescendant_(v22, v25, transform, descendant))
           {
-            v30 = *&a3->c;
-            *&v33.a = *&a3->a;
+            v30 = *&transform->c;
+            *&v33.a = *&transform->a;
             *&v33.c = v30;
-            *&v33.tx = *&a3->tx;
+            *&v33.tx = *&transform->tx;
             CGAffineTransformTranslate(&v34, &v33, 0.0, v24);
             v31 = *&v34.c;
-            *&a3->a = *&v34.a;
-            *&a3->c = v31;
-            *&a3->tx = *&v34.tx;
+            *&transform->a = *&v34.a;
+            *&transform->c = v31;
+            *&transform->tx = *&v34.tx;
             goto LABEL_12;
           }
 
@@ -264,26 +264,26 @@ LABEL_12:
   return objc_msgSend_stringWithFormat_(v3, v28, @"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu", v29, v4, self, v9, v14, v19, v23, v27);
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
-  if (a3 || a4 || a5)
+  if (height || depth || width)
   {
-    if (a3)
+    if (height)
     {
-      *a3 = 0.0;
+      *height = 0.0;
     }
 
-    if (a4)
+    if (depth)
     {
-      *a4 = 0.0;
+      *depth = 0.0;
     }
 
-    if (a5)
+    if (width)
     {
-      *a5 = 0.0;
+      *width = 0.0;
     }
 
-    v9 = objc_msgSend_childBoxes(self, a2, a3, a4);
+    v9 = objc_msgSend_childBoxes(self, a2, height, depth);
     v13 = objc_msgSend_count(v9, v10, v11, v12);
     if (v13)
     {
@@ -303,7 +303,7 @@ LABEL_12:
         {
           if (i <= v22)
           {
-            if (a3)
+            if (height)
             {
               if (v22)
               {
@@ -315,10 +315,10 @@ LABEL_12:
                 objc_msgSend_height(v24, v18, v25, v20);
               }
 
-              *a3 = v29 + *a3;
+              *height = v29 + *height;
             }
 
-            if (!a4)
+            if (!depth)
             {
               goto LABEL_31;
             }
@@ -334,30 +334,30 @@ LABEL_12:
             }
 
 LABEL_29:
-            v28 = a4;
+            heightCopy = depth;
 LABEL_30:
-            *v28 = v27 + *v28;
+            *heightCopy = v27 + *heightCopy;
             goto LABEL_31;
           }
 
-          if (a4)
+          if (depth)
           {
             objc_msgSend_layoutVSize(v24, v18, v25, v20);
             goto LABEL_29;
           }
         }
 
-        else if (a3)
+        else if (height)
         {
           objc_msgSend_layoutVSize(v24, v18, v25, v20);
-          v28 = a3;
+          heightCopy = height;
           goto LABEL_30;
         }
 
 LABEL_31:
-        if (a5)
+        if (width)
         {
-          v30 = *a5;
+          v30 = *width;
           objc_msgSend_width(v26, v18, v25, v20);
           if (v30 <= v32)
           {
@@ -366,10 +366,10 @@ LABEL_31:
 
           else
           {
-            v33 = *a5;
+            v33 = *width;
           }
 
-          *a5 = v33;
+          *width = v33;
         }
       }
     }

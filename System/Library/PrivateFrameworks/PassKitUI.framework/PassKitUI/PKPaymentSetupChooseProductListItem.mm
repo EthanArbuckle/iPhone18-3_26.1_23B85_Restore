@@ -1,24 +1,24 @@
 @interface PKPaymentSetupChooseProductListItem
-- (PKPaymentSetupChooseProductListItem)initWithIdentifier:(id)a3 type:(unint64_t)a4 title:(id)a5 subtitle:(id)a6;
+- (PKPaymentSetupChooseProductListItem)initWithIdentifier:(id)identifier type:(unint64_t)type title:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation PKPaymentSetupChooseProductListItem
 
-- (PKPaymentSetupChooseProductListItem)initWithIdentifier:(id)a3 type:(unint64_t)a4 title:(id)a5 subtitle:(id)a6
+- (PKPaymentSetupChooseProductListItem)initWithIdentifier:(id)identifier type:(unint64_t)type title:(id)title subtitle:(id)subtitle
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v17.receiver = self;
   v17.super_class = PKPaymentSetupChooseProductListItem;
   v14 = [(PKPaymentSetupChooseProductListItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v15->_type = a4;
-    objc_storeStrong(&v15->_title, a5);
-    objc_storeStrong(&v15->_subtitle, a6);
+    objc_storeStrong(&v14->_identifier, identifier);
+    v15->_type = type;
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v15->_subtitle, subtitle);
     v15->_loadingIndicatorVisible = 0;
   }
 

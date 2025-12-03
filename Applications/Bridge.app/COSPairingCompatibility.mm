@@ -1,29 +1,29 @@
 @interface COSPairingCompatibility
-- (BOOL)_checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:(unint64_t)a3 watchChipID:(id)a4;
-- (BOOL)_isVersion:(unint64_t)a3 withinStart:(id)a4 andEnd:(id)a5 isWatch:(BOOL)a6;
-- (BOOL)_productTypeIsTinkerEnabled:(id)a3;
-- (BOOL)_productTypeIsYorktownEnabled:(id)a3;
+- (BOOL)_checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:(unint64_t)version watchChipID:(id)d;
+- (BOOL)_isVersion:(unint64_t)version withinStart:(id)start andEnd:(id)end isWatch:(BOOL)watch;
+- (BOOL)_productTypeIsTinkerEnabled:(id)enabled;
+- (BOOL)_productTypeIsYorktownEnabled:(id)enabled;
 - (id)_findZeroDayPlist;
-- (void)_setCompatiblityCriteriaWithProductType:(id)a3 systemVersion:(unint64_t)a4 watchPairingVersion:(int64_t)a5 watchChipIDNumber:(id)a6 shouldForceSoftwareUpdateCheck:(BOOL)a7 zeroDayCriteria:(id)a8;
-- (void)_setUpdateStateForPairingCode:(unint64_t)a3 watchChipID:(id)a4 watchRequestsFailSafe:(BOOL)a5 isWatchAhead:(BOOL)a6;
-- (void)_setYorktownCompatibilityFlagsFromForProductType:(id)a3 watchPairingVersion:(int64_t)a4 yorktownPairing:(BOOL)a5;
-- (void)_setupZeroDayForcedUpdateForProductType:(id)a3 systemVersion:(unint64_t)a4 zeroDayCriteria:(id)a5;
+- (void)_setCompatiblityCriteriaWithProductType:(id)type systemVersion:(unint64_t)version watchPairingVersion:(int64_t)pairingVersion watchChipIDNumber:(id)number shouldForceSoftwareUpdateCheck:(BOOL)check zeroDayCriteria:(id)criteria;
+- (void)_setUpdateStateForPairingCode:(unint64_t)code watchChipID:(id)d watchRequestsFailSafe:(BOOL)safe isWatchAhead:(BOOL)ahead;
+- (void)_setYorktownCompatibilityFlagsFromForProductType:(id)type watchPairingVersion:(int64_t)version yorktownPairing:(BOOL)pairing;
+- (void)_setupZeroDayForcedUpdateForProductType:(id)type systemVersion:(unint64_t)version zeroDayCriteria:(id)criteria;
 - (void)reset;
-- (void)setCompatiblityCriteriaWithDevice:(id)a3;
-- (void)setCompatiblityCriteriaWithDevice:(id)a3 zeroDayCriteria:(id)a4;
-- (void)setCompatiblityCriteriaWithMetadata:(id)a3 scannedPairingVersion:(unint64_t)a4;
-- (void)setCompatiblityCriteriaWithMetadata:(id)a3 scannedPairingVersion:(unint64_t)a4 zeroDayCriteria:(id)a5;
+- (void)setCompatiblityCriteriaWithDevice:(id)device;
+- (void)setCompatiblityCriteriaWithDevice:(id)device zeroDayCriteria:(id)criteria;
+- (void)setCompatiblityCriteriaWithMetadata:(id)metadata scannedPairingVersion:(unint64_t)version;
+- (void)setCompatiblityCriteriaWithMetadata:(id)metadata scannedPairingVersion:(unint64_t)version zeroDayCriteria:(id)criteria;
 @end
 
 @implementation COSPairingCompatibility
 
-- (void)setCompatiblityCriteriaWithDevice:(id)a3
+- (void)setCompatiblityCriteriaWithDevice:(id)device
 {
-  v6 = a3;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v4 = [(COSPairingCompatibility *)self _findZeroDayPlist];
-    v5 = [NSArray arrayWithContentsOfFile:v4];
+    _findZeroDayPlist = [(COSPairingCompatibility *)self _findZeroDayPlist];
+    v5 = [NSArray arrayWithContentsOfFile:_findZeroDayPlist];
   }
 
   else
@@ -31,33 +31,33 @@
     v5 = 0;
   }
 
-  [(COSPairingCompatibility *)self setCompatiblityCriteriaWithDevice:v6 zeroDayCriteria:v5];
+  [(COSPairingCompatibility *)self setCompatiblityCriteriaWithDevice:deviceCopy zeroDayCriteria:v5];
 }
 
-- (void)setCompatiblityCriteriaWithDevice:(id)a3 zeroDayCriteria:(id)a4
+- (void)setCompatiblityCriteriaWithDevice:(id)device zeroDayCriteria:(id)criteria
 {
   v6 = NRDevicePropertyProductType;
-  v7 = a4;
-  v8 = a3;
-  v15 = [v8 valueForProperty:v6];
-  v9 = [v8 valueForProperty:NRDevicePropertySystemVersion];
-  v10 = [v8 valueForProperty:NRDevicePropertyMaxPairingCompatibilityVersion];
-  v11 = [v10 integerValue];
-  v12 = [v8 valueForProperty:NRDevicePropertyChipID];
+  criteriaCopy = criteria;
+  deviceCopy = device;
+  v15 = [deviceCopy valueForProperty:v6];
+  v9 = [deviceCopy valueForProperty:NRDevicePropertySystemVersion];
+  v10 = [deviceCopy valueForProperty:NRDevicePropertyMaxPairingCompatibilityVersion];
+  integerValue = [v10 integerValue];
+  v12 = [deviceCopy valueForProperty:NRDevicePropertyChipID];
 
-  v13 = [UIApp setupController];
-  v14 = [v13 shouldForceSoftwareUpdateCheck];
+  setupController = [UIApp setupController];
+  shouldForceSoftwareUpdateCheck = [setupController shouldForceSoftwareUpdateCheck];
 
-  [(COSPairingCompatibility *)self _setCompatiblityCriteriaWithProductType:v15 systemVersion:NRWatchOSVersion() watchPairingVersion:v11 watchChipIDNumber:v12 shouldForceSoftwareUpdateCheck:v14 zeroDayCriteria:v7];
+  [(COSPairingCompatibility *)self _setCompatiblityCriteriaWithProductType:v15 systemVersion:NRWatchOSVersion() watchPairingVersion:integerValue watchChipIDNumber:v12 shouldForceSoftwareUpdateCheck:shouldForceSoftwareUpdateCheck zeroDayCriteria:criteriaCopy];
 }
 
-- (void)setCompatiblityCriteriaWithMetadata:(id)a3 scannedPairingVersion:(unint64_t)a4
+- (void)setCompatiblityCriteriaWithMetadata:(id)metadata scannedPairingVersion:(unint64_t)version
 {
-  v8 = a3;
+  metadataCopy = metadata;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(COSPairingCompatibility *)self _findZeroDayPlist];
-    v7 = [NSArray arrayWithContentsOfFile:v6];
+    _findZeroDayPlist = [(COSPairingCompatibility *)self _findZeroDayPlist];
+    v7 = [NSArray arrayWithContentsOfFile:_findZeroDayPlist];
   }
 
   else
@@ -65,20 +65,20 @@
     v7 = 0;
   }
 
-  [(COSPairingCompatibility *)self setCompatiblityCriteriaWithMetadata:v8 scannedPairingVersion:a4 zeroDayCriteria:v7];
+  [(COSPairingCompatibility *)self setCompatiblityCriteriaWithMetadata:metadataCopy scannedPairingVersion:version zeroDayCriteria:v7];
 }
 
-- (void)setCompatiblityCriteriaWithMetadata:(id)a3 scannedPairingVersion:(unint64_t)a4 zeroDayCriteria:(id)a5
+- (void)setCompatiblityCriteriaWithMetadata:(id)metadata scannedPairingVersion:(unint64_t)version zeroDayCriteria:(id)criteria
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = [v13 productType];
-  v10 = [v13 encodedSystemVersion];
-  v11 = v13;
-  if (v13)
+  metadataCopy = metadata;
+  criteriaCopy = criteria;
+  productType = [metadataCopy productType];
+  encodedSystemVersion = [metadataCopy encodedSystemVersion];
+  v11 = metadataCopy;
+  if (metadataCopy)
   {
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 chipID]);
-    v11 = v13;
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy chipID]);
+    v11 = metadataCopy;
   }
 
   else
@@ -86,36 +86,36 @@
     v12 = 0;
   }
 
-  -[COSPairingCompatibility _setCompatiblityCriteriaWithProductType:systemVersion:watchPairingVersion:watchChipIDNumber:shouldForceSoftwareUpdateCheck:zeroDayCriteria:](self, "_setCompatiblityCriteriaWithProductType:systemVersion:watchPairingVersion:watchChipIDNumber:shouldForceSoftwareUpdateCheck:zeroDayCriteria:", v9, v10, a4, v12, [v11 postFailsafeObliteration], v8);
+  -[COSPairingCompatibility _setCompatiblityCriteriaWithProductType:systemVersion:watchPairingVersion:watchChipIDNumber:shouldForceSoftwareUpdateCheck:zeroDayCriteria:](self, "_setCompatiblityCriteriaWithProductType:systemVersion:watchPairingVersion:watchChipIDNumber:shouldForceSoftwareUpdateCheck:zeroDayCriteria:", productType, encodedSystemVersion, version, v12, [v11 postFailsafeObliteration], criteriaCopy);
 }
 
-- (void)_setCompatiblityCriteriaWithProductType:(id)a3 systemVersion:(unint64_t)a4 watchPairingVersion:(int64_t)a5 watchChipIDNumber:(id)a6 shouldForceSoftwareUpdateCheck:(BOOL)a7 zeroDayCriteria:(id)a8
+- (void)_setCompatiblityCriteriaWithProductType:(id)type systemVersion:(unint64_t)version watchPairingVersion:(int64_t)pairingVersion watchChipIDNumber:(id)number shouldForceSoftwareUpdateCheck:(BOOL)check zeroDayCriteria:(id)criteria
 {
-  v42 = a7;
-  v12 = a3;
-  v13 = a6;
-  v14 = a8;
+  checkCopy = check;
+  typeCopy = type;
+  numberCopy = number;
+  criteriaCopy = criteria;
   v43 = +[UIApplication sharedApplication];
-  v15 = [UIApp bridgeController];
-  v16 = [v15 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   v17 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v18 = [v17 maxPairingCompatibilityVersion];
+  maxPairingCompatibilityVersion = [v17 maxPairingCompatibilityVersion];
 
   v19 = _BPSIsPairingCompatible();
-  v20 = (v18 < a5) & ~v19;
-  [(COSPairingCompatibility *)self _setShouldBlockTinkerForProductType:v12 tinkerPairing:v16];
-  v21 = [UIApp setupController];
-  v22 = [v21 offerYorktownForCurrentPairing];
+  v20 = (maxPairingCompatibilityVersion < pairingVersion) & ~v19;
+  [(COSPairingCompatibility *)self _setShouldBlockTinkerForProductType:typeCopy tinkerPairing:isTinkerPairing];
+  setupController = [UIApp setupController];
+  offerYorktownForCurrentPairing = [setupController offerYorktownForCurrentPairing];
 
-  [(COSPairingCompatibility *)self _setYorktownCompatibilityFlagsFromForProductType:v12 watchPairingVersion:a5 yorktownPairing:v22];
+  [(COSPairingCompatibility *)self _setYorktownCompatibilityFlagsFromForProductType:typeCopy watchPairingVersion:pairingVersion yorktownPairing:offerYorktownForCurrentPairing];
   v23 = _os_feature_enabled_impl();
-  if (v14 && v23)
+  if (criteriaCopy && v23)
   {
-    [(COSPairingCompatibility *)self _setupZeroDayForcedUpdateForProductType:v12 systemVersion:a4 zeroDayCriteria:v14];
+    [(COSPairingCompatibility *)self _setupZeroDayForcedUpdateForProductType:typeCopy systemVersion:version zeroDayCriteria:criteriaCopy];
   }
 
-  [(COSPairingCompatibility *)self _setUpdateStateForPairingCode:a5 watchChipID:v13 watchRequestsFailSafe:v42 isWatchAhead:v20];
+  [(COSPairingCompatibility *)self _setUpdateStateForPairingCode:pairingVersion watchChipID:numberCopy watchRequestsFailSafe:checkCopy isWatchAhead:v20];
   self->_pairingShouldContinue = (self->_runUpdateInSetup | v19) & 1;
   v24 = _os_feature_enabled_impl();
   v25 = pbb_setupflow_log();
@@ -138,7 +138,7 @@
     v46 = 1024;
     v47 = updateInRevLockFlow;
     v48 = 1024;
-    v49 = v42;
+    v49 = checkCopy;
     v50 = 1024;
     v51 = blockTinkerPairing;
     v52 = 1024;
@@ -173,7 +173,7 @@
     v46 = 1024;
     v47 = v36;
     v48 = 1024;
-    v49 = v42;
+    v49 = checkCopy;
     v50 = 1024;
     v51 = v37;
     v52 = 1024;
@@ -202,43 +202,43 @@ LABEL_10:
 {
   *&self->_blockTinkerPairing = 0;
   [UIApp setIsUpdatingGizmoInSetupFlow:0];
-  v2 = [UIApp bridgeController];
-  [v2 setShouldSuppressTransportReachabilityTimeout:0];
+  bridgeController = [UIApp bridgeController];
+  [bridgeController setShouldSuppressTransportReachabilityTimeout:0];
 }
 
-- (void)_setYorktownCompatibilityFlagsFromForProductType:(id)a3 watchPairingVersion:(int64_t)a4 yorktownPairing:(BOOL)a5
+- (void)_setYorktownCompatibilityFlagsFromForProductType:(id)type watchPairingVersion:(int64_t)version yorktownPairing:(BOOL)pairing
 {
-  self->_blockYorktownPairing = a5 & ~[(COSPairingCompatibility *)self _productTypeIsYorktownEnabled:a3];
-  v8 = a4 < 21 && a5;
+  self->_blockYorktownPairing = pairing & ~[(COSPairingCompatibility *)self _productTypeIsYorktownEnabled:type];
+  v8 = version < 21 && pairing;
   self->_yorktownForceSU = v8;
 }
 
-- (void)_setUpdateStateForPairingCode:(unint64_t)a3 watchChipID:(id)a4 watchRequestsFailSafe:(BOOL)a5 isWatchAhead:(BOOL)a6
+- (void)_setUpdateStateForPairingCode:(unint64_t)code watchChipID:(id)d watchRequestsFailSafe:(BOOL)safe isWatchAhead:(BOOL)ahead
 {
-  v7 = a5;
-  updateInRevLockFlow = [(COSPairingCompatibility *)self _checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:a3 watchChipID:a4];
+  safeCopy = safe;
+  updateInRevLockFlow = [(COSPairingCompatibility *)self _checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:code watchChipID:d];
   self->_updateInRevLockFlow = updateInRevLockFlow;
-  if (v7 && (updateInRevLockFlow & 1) == 0 && !a6)
+  if (safeCopy && (updateInRevLockFlow & 1) == 0 && !ahead)
   {
-    v10 = [UIApp bridgeController];
-    [v10 setShouldSuppressTransportReachabilityTimeout:1];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController setShouldSuppressTransportReachabilityTimeout:1];
 
     self->_failSafeUpdateRequested = 1;
     updateInRevLockFlow = self->_updateInRevLockFlow;
   }
 
-  v11 = ((updateInRevLockFlow & 1) != 0 || v7 || self->_requiresZeroDayUpdate || !self->_blockYorktownPairing && self->_yorktownForceSU) && !a6;
+  v11 = ((updateInRevLockFlow & 1) != 0 || safeCopy || self->_requiresZeroDayUpdate || !self->_blockYorktownPairing && self->_yorktownForceSU) && !ahead;
   self->_runUpdateInSetup = v11;
 }
 
-- (void)_setupZeroDayForcedUpdateForProductType:(id)a3 systemVersion:(unint64_t)a4 zeroDayCriteria:(id)a5
+- (void)_setupZeroDayForcedUpdateForProductType:(id)type systemVersion:(unint64_t)version zeroDayCriteria:(id)criteria
 {
-  v31 = a3;
+  typeCopy = type;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = a5;
+  obj = criteria;
   v33 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v33)
   {
@@ -272,7 +272,7 @@ LABEL_10:
         v35 = v9;
         if (v9)
         {
-          v17 = [(COSPairingCompatibility *)self _isVersion:a4 withinStart:v9 andEnd:v11 isWatch:1];
+          v17 = [(COSPairingCompatibility *)self _isVersion:version withinStart:v9 andEnd:v11 isWatch:1];
         }
 
         v20 = sub_10002EF1C();
@@ -283,7 +283,7 @@ LABEL_10:
 
         if ([v16 count])
         {
-          v19 = [v16 containsObject:v31];
+          v19 = [v16 containsObject:typeCopy];
         }
 
         if ((v19 & v17 & v18) == 1)
@@ -302,8 +302,8 @@ LABEL_10:
           zeroDayUpdateLearnMoreLink = self->_zeroDayUpdateLearnMoreLink;
           self->_zeroDayUpdateLearnMoreLink = v23;
 
-          v25 = [(NSURL *)self->_zeroDayUpdateLearnMoreLink scheme];
-          if (!v25 || (v26 = v25, [(NSURL *)self->_zeroDayUpdateLearnMoreLink host], v27 = objc_claimAutoreleasedReturnValue(), v27, v26, !v27))
+          scheme = [(NSURL *)self->_zeroDayUpdateLearnMoreLink scheme];
+          if (!scheme || (v26 = scheme, [(NSURL *)self->_zeroDayUpdateLearnMoreLink host], v27 = objc_claimAutoreleasedReturnValue(), v27, v26, !v27))
           {
             v28 = self->_zeroDayUpdateLearnMoreLink;
             self->_zeroDayUpdateLearnMoreLink = 0;
@@ -326,12 +326,12 @@ LABEL_10:
 LABEL_22:
 }
 
-- (BOOL)_isVersion:(unint64_t)a3 withinStart:(id)a4 andEnd:(id)a5 isWatch:(BOOL)a6
+- (BOOL)_isVersion:(unint64_t)version withinStart:(id)start andEnd:(id)end isWatch:(BOOL)watch
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if (v6)
+  watchCopy = watch;
+  startCopy = start;
+  endCopy = end;
+  if (watchCopy)
   {
     v11 = NRWatchOSVersion();
   }
@@ -342,14 +342,14 @@ LABEL_22:
   }
 
   v12 = v11;
-  if ((!v10 || [v10 isEqualToString:&stru_10026E598]) && v12 == a3)
+  if ((!endCopy || [endCopy isEqualToString:&stru_10026E598]) && v12 == version)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v6)
+    if (watchCopy)
     {
       v14 = NRWatchOSVersion();
       v15 = NRWatchOSVersion();
@@ -361,7 +361,7 @@ LABEL_22:
       v15 = NRRawVersionFromString();
     }
 
-    v13 = v14 <= a3 && v15 >= a3;
+    v13 = v14 <= version && v15 >= version;
   }
 
   return v13;
@@ -370,8 +370,8 @@ LABEL_22:
 - (id)_findZeroDayPlist
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v14[0] = v3;
+  firstObject = [v2 firstObject];
+  v14[0] = firstObject;
   v14[1] = PBAssetsCacheDirName;
   v14[2] = PBAZeroDayUpdateAssetName;
   v4 = [NSArray arrayWithObjects:v14 count:3];
@@ -409,9 +409,9 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)_productTypeIsTinkerEnabled:(id)a3
+- (BOOL)_productTypeIsTinkerEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"AllowUnsupportedTinkerHW-YourMileageMayVary"];
 
@@ -421,8 +421,8 @@ LABEL_22:
   }
 
   v6 = qword_1002BD668;
-  v7 = [v3 lowercaseString];
-  v8 = [v6 containsObject:v7];
+  lowercaseString = [enabledCopy lowercaseString];
+  v8 = [v6 containsObject:lowercaseString];
 
   v9 = pbb_setupflow_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -431,7 +431,7 @@ LABEL_22:
     v12 = 136315650;
     v13 = "[COSPairingCompatibility _productTypeIsTinkerEnabled:]";
     v14 = 2112;
-    v15 = v3;
+    v15 = enabledCopy;
     if (v8)
     {
       v10 = @"Yes";
@@ -445,23 +445,23 @@ LABEL_22:
   return (v5 | v8) & 1;
 }
 
-- (BOOL)_productTypeIsYorktownEnabled:(id)a3
+- (BOOL)_productTypeIsYorktownEnabled:(id)enabled
 {
   v3 = qword_1002BD680;
-  v4 = a3;
+  enabledCopy = enabled;
   if (v3 != -1)
   {
     sub_10018AC20();
   }
 
   v5 = qword_1002BD678;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [enabledCopy lowercaseString];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:lowercaseString];
   return v7 ^ 1;
 }
 
-- (BOOL)_checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:(unint64_t)a3 watchChipID:(id)a4
+- (BOOL)_checkIfShouldUpdateInRevLockFlowForWatchPairingVersion:(unint64_t)version watchChipID:(id)d
 {
   if (_BPSIsPairingCompatible())
   {
@@ -469,9 +469,9 @@ LABEL_22:
   }
 
   v6 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v7 = [v6 maxPairingCompatibilityVersion];
+  maxPairingCompatibilityVersion = [v6 maxPairingCompatibilityVersion];
 
-  return v7 > a3;
+  return maxPairingCompatibilityVersion > version;
 }
 
 @end

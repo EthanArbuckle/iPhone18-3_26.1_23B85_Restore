@@ -1,25 +1,25 @@
 @interface PGLocationRepresentativeAssetQuestionFactory
-- (id)_addQuestionsForAssetUUIDs:(id)a3 photoLibrary:(id)a4;
-- (id)_fetchAssetsWithLibrary:(id)a3 internalPredicate:(id)a4;
-- (id)_selectAssetsFromAssets:(id)a3 limit:(unint64_t)a4;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)_addQuestionsForAssetUUIDs:(id)ds photoLibrary:(id)library;
+- (id)_fetchAssetsWithLibrary:(id)library internalPredicate:(id)predicate;
+- (id)_selectAssetsFromAssets:(id)assets limit:(unint64_t)limit;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGLocationRepresentativeAssetQuestionFactory
 
-- (id)_addQuestionsForAssetUUIDs:(id)a3 photoLibrary:(id)a4
+- (id)_addQuestionsForAssetUUIDs:(id)ds photoLibrary:(id)library
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
-  v7 = [v24 librarySpecificFetchOptions];
+  dsCopy = ds;
+  libraryCopy = library;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v27[0] = *MEMORY[0x277CD9AF8];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-  [v7 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  v25 = v6;
-  v23 = v7;
-  v9 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v6 options:v7];
+  v25 = dsCopy;
+  v23 = librarySpecificFetchOptions;
+  v9 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:dsCopy options:librarySpecificFetchOptions];
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v11 = [v9 count];
   if (v11)
@@ -30,14 +30,14 @@
       v14 = objc_autoreleasePoolPush();
       v15 = [v9 objectAtIndex:i];
       v26 = 0;
-      v16 = [v15 photosOneUpProperties];
-      v17 = [v16 localizedGeoDescriptionIsHome:&v26];
+      photosOneUpProperties = [v15 photosOneUpProperties];
+      v17 = [photosOneUpProperties localizedGeoDescriptionIsHome:&v26];
 
       if (v17)
       {
         v18 = [PGLocationRepresentativeAssetQuestion alloc];
-        v19 = [v15 uuid];
-        v20 = [(PGLocationRepresentativeAssetQuestion *)v18 initWithAssetUUID:v19 locationName:v17];
+        uuid = [v15 uuid];
+        v20 = [(PGLocationRepresentativeAssetQuestion *)v18 initWithAssetUUID:uuid locationName:v17];
 
         if ([(PGSurveyQuestionFactory *)self shouldAddQuestion:v20 toAlreadyGeneratedQuestions:v10])
         {
@@ -54,52 +54,52 @@
   return v10;
 }
 
-- (id)_selectAssetsFromAssets:(id)a3 limit:(unint64_t)a4
+- (id)_selectAssetsFromAssets:(id)assets limit:(unint64_t)limit
 {
-  v5 = a3;
+  assetsCopy = assets;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if ([v6 count] < a4)
+  if ([v6 count] < limit)
   {
     v29 = 0;
     v8 = 0;
-    v31 = (a4 + 1) >> 1;
+    v31 = (limit + 1) >> 1;
     v32 = 0;
     v9 = *MEMORY[0x277D3C8A8];
     v30 = v7;
     do
     {
-      if (v8 >= [v5 count])
+      if (v8 >= [assetsCopy count])
       {
         break;
       }
 
-      v10 = [v5 objectAtIndexedSubscript:v8];
-      v11 = [v10 location];
-      [v11 coordinate];
+      v10 = [assetsCopy objectAtIndexedSubscript:v8];
+      location = [v10 location];
+      [location coordinate];
       v13 = v12;
       v15 = v14;
 
       v16 = [MEMORY[0x277CD97E8] poiGeoHashWithGeoHashSize:v9 latitude:v13 longitude:v15];
       if (([v7 containsObject:v16] & 1) == 0)
       {
-        v17 = a4;
+        limitCopy = limit;
         v18 = v9;
-        v19 = [v10 iconicScoreProperties];
-        [v19 iconicScore];
+        iconicScoreProperties = [v10 iconicScoreProperties];
+        [iconicScoreProperties iconicScore];
         v21 = v20;
 
-        v22 = [v10 curationModel];
-        v23 = [v22 iconicScoreModel];
-        [v23 minimumMeaningfulIconicScore];
+        curationModel = [v10 curationModel];
+        iconicScoreModel = [curationModel iconicScoreModel];
+        [iconicScoreModel minimumMeaningfulIconicScore];
         v25 = v24;
 
         if (v21 < v25 || v32 >= v31)
         {
           if (v21 < v25 && v29 < v31)
           {
-            v27 = [v10 localIdentifier];
-            [v6 addObject:v27];
+            localIdentifier = [v10 localIdentifier];
+            [v6 addObject:localIdentifier];
 
             ++v29;
           }
@@ -107,62 +107,62 @@
 
         else
         {
-          v26 = [v10 localIdentifier];
-          [v6 addObject:v26];
+          localIdentifier2 = [v10 localIdentifier];
+          [v6 addObject:localIdentifier2];
 
           ++v32;
         }
 
         v9 = v18;
-        a4 = v17;
+        limit = limitCopy;
         v7 = v30;
       }
 
       ++v8;
     }
 
-    while ([v6 count] < a4);
+    while ([v6 count] < limit);
   }
 
   return v6;
 }
 
-- (id)_fetchAssetsWithLibrary:(id)a3 internalPredicate:(id)a4
+- (id)_fetchAssetsWithLibrary:(id)library internalPredicate:(id)predicate
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 librarySpecificFetchOptions];
-  v8 = [MEMORY[0x277D3C7D8] requiredFetchPropertySets];
-  [v7 setFetchPropertySets:v8];
+  predicateCopy = predicate;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  requiredFetchPropertySets = [MEMORY[0x277D3C7D8] requiredFetchPropertySets];
+  [librarySpecificFetchOptions setFetchPropertySets:requiredFetchPropertySets];
 
-  [v7 setFetchLimit:1000];
+  [librarySpecificFetchOptions setFetchLimit:1000];
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v21[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  [v7 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
-  v11 = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
-  v12 = [v11 allKeys];
+  existingQuestionsByEntityIdentifier = [(PGSurveyQuestionFactory *)self existingQuestionsByEntityIdentifier];
+  allKeys = [existingQuestionsByEntityIdentifier allKeys];
 
   v13 = MEMORY[0x277CCA920];
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (uuid IN %@)", v12];
+  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (uuid IN %@)", allKeys];
   v20[0] = v14;
-  v20[1] = v6;
+  v20[1] = predicateCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v16 = [v13 andPredicateWithSubpredicates:v15];
-  [v7 setInternalPredicate:v16];
+  [librarySpecificFetchOptions setInternalPredicate:v16];
 
-  v17 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v7];
+  v17 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   if (v6)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -177,7 +177,7 @@
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_23:
-          v20 = MEMORY[0x277CBEBF8];
+          allObjects2 = MEMORY[0x277CBEBF8];
           goto LABEL_34;
         }
 
@@ -194,7 +194,7 @@ LABEL_22:
       v8 = v9;
     }
 
-    if (!a3)
+    if (!limit)
     {
       if (CFAbsoluteTimeGetCurrent() - v8 < 0.01)
       {
@@ -220,29 +220,29 @@ LABEL_22:
   else
   {
     v8 = 0.0;
-    if (!a3)
+    if (!limit)
     {
       goto LABEL_23;
     }
   }
 
-  v11 = [(PGSurveyQuestionFactory *)self workingContext];
-  v12 = [v11 photoLibrary];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
 
-  v13 = [MEMORY[0x277D3ACD0] predicateForAssetWithLocation];
-  v14 = [(PGLocationRepresentativeAssetQuestionFactory *)self _fetchAssetsWithLibrary:v12 internalPredicate:v13];
-  v15 = [v14 fetchedObjects];
+  predicateForAssetWithLocation = [MEMORY[0x277D3ACD0] predicateForAssetWithLocation];
+  v14 = [(PGLocationRepresentativeAssetQuestionFactory *)self _fetchAssetsWithLibrary:photoLibrary internalPredicate:predicateForAssetWithLocation];
+  fetchedObjects = [v14 fetchedObjects];
 
-  v16 = [(PGSurveyQuestionFactory *)self curationSession];
+  curationSession = [(PGSurveyQuestionFactory *)self curationSession];
 
-  if (!v16)
+  if (!curationSession)
   {
     v17 = objc_alloc_init(MEMORY[0x277D3C7A0]);
     [(PGSurveyQuestionFactory *)self setCurationSession:v17];
   }
 
-  v18 = [(PGSurveyQuestionFactory *)self curationSession];
-  [v18 prepareAssets:v15];
+  curationSession2 = [(PGSurveyQuestionFactory *)self curationSession];
+  [curationSession2 prepareAssets:fetchedObjects];
 
   if (!v6)
   {
@@ -261,9 +261,9 @@ LABEL_22:
   {
     v8 = v19;
 LABEL_25:
-    v21 = [(PGLocationRepresentativeAssetQuestionFactory *)self _selectAssetsFromAssets:v15 limit:a3];
-    v22 = [v21 allObjects];
-    v23 = [(PGLocationRepresentativeAssetQuestionFactory *)self _addQuestionsForAssetUUIDs:v22 photoLibrary:v12];
+    v21 = [(PGLocationRepresentativeAssetQuestionFactory *)self _selectAssetsFromAssets:fetchedObjects limit:limit];
+    allObjects = [v21 allObjects];
+    v23 = [(PGLocationRepresentativeAssetQuestionFactory *)self _addQuestionsForAssetUUIDs:allObjects photoLibrary:photoLibrary];
 
     if (v6 && CFAbsoluteTimeGetCurrent() - v8 >= 0.01 && (v26 = 0, v6[2](v6, &v26, 1.0), v26))
     {
@@ -276,12 +276,12 @@ LABEL_25:
         _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      v20 = MEMORY[0x277CBEBF8];
+      allObjects2 = MEMORY[0x277CBEBF8];
     }
 
     else
     {
-      v20 = [v23 allObjects];
+      allObjects2 = [v23 allObjects];
     }
 
     goto LABEL_33;
@@ -296,13 +296,13 @@ LABEL_25:
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  v20 = MEMORY[0x277CBEBF8];
+  allObjects2 = MEMORY[0x277CBEBF8];
 LABEL_33:
 
 LABEL_34:
   v24 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return allObjects2;
 }
 
 @end

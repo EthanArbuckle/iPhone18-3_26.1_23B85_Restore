@@ -1,29 +1,29 @@
 @interface WFIconGradientBackground
-- (BOOL)isEqual:(id)a3;
-- (WFIconGradientBackground)initWithCoder:(id)a3;
-- (WFIconGradientBackground)initWithGradient:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFIconGradientBackground)initWithCoder:(id)coder;
+- (WFIconGradientBackground)initWithGradient:(id)gradient;
 @end
 
 @implementation WFIconGradientBackground
 
-- (WFIconGradientBackground)initWithCoder:(id)a3
+- (WFIconGradientBackground)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
 
   v6 = [(WFIconGradientBackground *)self initWithGradient:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFIconGradientBackground *)self gradient];
-    v6 = [v4 gradient];
-    v7 = v5;
-    v8 = v6;
+    gradient = [(WFIconGradientBackground *)self gradient];
+    gradient2 = [equalCopy gradient];
+    v7 = gradient;
+    v8 = gradient2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -48,22 +48,22 @@
   return v10;
 }
 
-- (WFIconGradientBackground)initWithGradient:(id)a3
+- (WFIconGradientBackground)initWithGradient:(id)gradient
 {
-  v6 = a3;
-  if (!v6)
+  gradientCopy = gradient;
+  if (!gradientCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFIconBackground.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"gradient"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFIconBackground.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"gradient"}];
   }
 
   v12.receiver = self;
   v12.super_class = WFIconGradientBackground;
-  v7 = [(WFIconBackground *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(WFIconBackground *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(_init + 1, gradient);
     v9 = v8;
   }
 

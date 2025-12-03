@@ -1,9 +1,9 @@
 @interface SBDashBoardIdleTimerController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (NSString)coverSheetIdentifier;
-- (SBDashBoardIdleTimerController)initWithCoverSheetViewController:(id)a3;
+- (SBDashBoardIdleTimerController)initWithCoverSheetViewController:(id)controller;
 - (SBIdleTimerCoordinating)idleTimerCoordinator;
-- (id)dashBoardIdleTimerProvider:(id)a3 didProposeBehavior:(id)a4 reason:(id)a5;
+- (id)dashBoardIdleTimerProvider:(id)provider didProposeBehavior:(id)behavior reason:(id)reason;
 - (void)dealloc;
 - (void)resetIdleTimerIfTopMost;
 @end
@@ -20,16 +20,16 @@
 - (void)resetIdleTimerIfTopMost
 {
   v3 = +[SBWorkspace mainWorkspace];
-  v4 = [v3 transientOverlayPresentationManager];
-  v5 = [v4 hasActivePresentation];
+  transientOverlayPresentationManager = [v3 transientOverlayPresentationManager];
+  hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-  if (v5)
+  if (hasActivePresentation)
   {
-    v6 = [MEMORY[0x277D02C20] rootSettings];
-    v7 = [v6 idleTimerSettings];
-    v8 = [v7 increaseNotificationScrollLogging];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    idleTimerSettings = [rootSettings idleTimerSettings];
+    increaseNotificationScrollLogging = [idleTimerSettings increaseNotificationScrollLogging];
 
-    if (v8)
+    if (increaseNotificationScrollLogging)
     {
       v9 = SBLogIdleTimer();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -48,16 +48,16 @@
   }
 }
 
-- (SBDashBoardIdleTimerController)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardIdleTimerController)initWithCoverSheetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBDashBoardIdleTimerController;
   v6 = [(SBDashBoardIdleTimerController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetViewController, a3);
+    objc_storeStrong(&v6->_coverSheetViewController, controller);
     v8 = [[SBDashBoardIdleTimerProvider alloc] initWithDelegate:v7];
     dashBoardIdleTimerProvider = v7->_dashBoardIdleTimerProvider;
     v7->_dashBoardIdleTimerProvider = v8;
@@ -83,19 +83,19 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = 0;
-  if (v5 <= 23)
+  eventCopy = event;
+  type = [eventCopy type];
+  isConsumable = 0;
+  if (type <= 23)
   {
-    switch(v5)
+    switch(type)
     {
       case 2:
         dashBoardIdleTimerProvider = self->_dashBoardIdleTimerProvider;
-        v12 = [(CSCoverSheetViewController *)self->_coverSheetViewController activeBehavior];
-        [(SBDashBoardIdleTimerProvider *)dashBoardIdleTimerProvider updateIdleTimerWithIdleDimProvider:v12 reason:@"BehaviorChanged"];
+        activeBehavior = [(CSCoverSheetViewController *)self->_coverSheetViewController activeBehavior];
+        [(SBDashBoardIdleTimerProvider *)dashBoardIdleTimerProvider updateIdleTimerWithIdleDimProvider:activeBehavior reason:@"BehaviorChanged"];
 
         goto LABEL_18;
       case 7:
@@ -108,18 +108,18 @@
 LABEL_14:
         [(SBDashBoardIdleTimerProvider *)v7 removeDisabledIdleTimerAssertionReason:v8];
 LABEL_18:
-        v6 = [v4 isConsumable];
+        isConsumable = [eventCopy isConsumable];
         break;
     }
   }
 
   else
   {
-    if (v5 <= 37)
+    if (type <= 37)
     {
-      if (v5 != 24)
+      if (type != 24)
       {
-        if (v5 != 25)
+        if (type != 25)
         {
           goto LABEL_19;
         }
@@ -130,7 +130,7 @@ LABEL_18:
       goto LABEL_13;
     }
 
-    if (v5 == 38)
+    if (type == 38)
     {
 LABEL_13:
       v7 = self->_dashBoardIdleTimerProvider;
@@ -138,7 +138,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v5 == 39)
+    if (type == 39)
     {
 LABEL_12:
       v9 = self->_dashBoardIdleTimerProvider;
@@ -151,18 +151,18 @@ LABEL_17:
 
 LABEL_19:
 
-  return v6;
+  return isConsumable;
 }
 
-- (id)dashBoardIdleTimerProvider:(id)a3 didProposeBehavior:(id)a4 reason:(id)a5
+- (id)dashBoardIdleTimerProvider:(id)provider didProposeBehavior:(id)behavior reason:(id)reason
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SBDashBoardIdleTimerController *)self idleTimerCoordinator];
-  v10 = v9;
-  if (v9)
+  behaviorCopy = behavior;
+  reasonCopy = reason;
+  idleTimerCoordinator = [(SBDashBoardIdleTimerController *)self idleTimerCoordinator];
+  v10 = idleTimerCoordinator;
+  if (idleTimerCoordinator)
   {
-    v11 = [v9 idleTimerProvider:self didProposeBehavior:v7 forReason:v8];
+    v11 = [idleTimerCoordinator idleTimerProvider:self didProposeBehavior:behaviorCopy forReason:reasonCopy];
   }
 
   else

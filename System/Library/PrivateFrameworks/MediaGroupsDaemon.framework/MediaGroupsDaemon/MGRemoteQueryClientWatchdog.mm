@@ -1,42 +1,42 @@
 @interface MGRemoteQueryClientWatchdog
-+ (id)watchdogForTarget:(id)a3 dispatchQueue:(id)a4 delegate:(id)a5 usingSession:(id)a6;
++ (id)watchdogForTarget:(id)target dispatchQueue:(id)queue delegate:(id)delegate usingSession:(id)session;
 - (MGRemoteQueryClient)ping;
 - (MGRemoteQueryClientWatchdogDelegate)delegate;
 - (NSString)description;
-- (id)_initWithTarget:(id)a3 dispatchQueue:(id)a4 delegate:(id)a5 usingSession:(id)a6;
+- (id)_initWithTarget:(id)target dispatchQueue:(id)queue delegate:(id)delegate usingSession:(id)session;
 - (id)pingClient;
-- (void)_pingFinished:(BOOL)a3;
+- (void)_pingFinished:(BOOL)finished;
 - (void)_pingStart;
 - (void)_timerCancel;
 - (void)_timerFired;
 - (void)_timerInit;
 - (void)_timerReschedule;
-- (void)_withPingLock:(id)a3;
-- (void)clientInvalidated:(id)a3 withError:(id)a4;
+- (void)_withPingLock:(id)lock;
+- (void)clientInvalidated:(id)invalidated withError:(id)error;
 - (void)dealloc;
 - (void)reset;
-- (void)setPing:(id)a3;
+- (void)setPing:(id)ping;
 @end
 
 @implementation MGRemoteQueryClientWatchdog
 
-+ (id)watchdogForTarget:(id)a3 dispatchQueue:(id)a4 delegate:(id)a5 usingSession:(id)a6
++ (id)watchdogForTarget:(id)target dispatchQueue:(id)queue delegate:(id)delegate usingSession:(id)session
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithTarget:v13 dispatchQueue:v12 delegate:v11 usingSession:v10];
+  sessionCopy = session;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  targetCopy = target;
+  v14 = [[self alloc] _initWithTarget:targetCopy dispatchQueue:queueCopy delegate:delegateCopy usingSession:sessionCopy];
 
   return v14;
 }
 
-- (id)_initWithTarget:(id)a3 dispatchQueue:(id)a4 delegate:(id)a5 usingSession:(id)a6
+- (id)_initWithTarget:(id)target dispatchQueue:(id)queue delegate:(id)delegate usingSession:(id)session
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  targetCopy = target;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  sessionCopy = session;
   v21.receiver = self;
   v21.super_class = MGRemoteQueryClientWatchdog;
   v15 = [(MGRemoteQueryClientWatchdog *)&v21 init];
@@ -44,17 +44,17 @@
   if (v15)
   {
     v15->_pingLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_target, a3);
-    objc_storeStrong(p_isa + 3, a4);
-    objc_storeWeak(p_isa + 5, v13);
-    objc_storeStrong(p_isa + 6, a6);
-    v17 = [p_isa dispatchQueue];
+    objc_storeStrong(&v15->_target, target);
+    objc_storeStrong(p_isa + 3, queue);
+    objc_storeWeak(p_isa + 5, delegateCopy);
+    objc_storeStrong(p_isa + 6, session);
+    dispatchQueue = [p_isa dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__MGRemoteQueryClientWatchdog__initWithTarget_dispatchQueue_delegate_usingSession___block_invoke;
     block[3] = &unk_27989ED90;
     v20 = p_isa;
-    dispatch_async(v17, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return p_isa;
@@ -73,23 +73,23 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryClientWatchdog *)self target];
-  v7 = [(MGRemoteQueryClientWatchdog *)self timer];
-  v8 = [(MGRemoteQueryClientWatchdog *)self pingClient];
-  v9 = [v3 stringWithFormat:@"<%@: %p, _target = %@, _timer = %p, _ping = %@>", v5, self, v6, v7, v8];
+  target = [(MGRemoteQueryClientWatchdog *)self target];
+  timer = [(MGRemoteQueryClientWatchdog *)self timer];
+  pingClient = [(MGRemoteQueryClientWatchdog *)self pingClient];
+  v9 = [v3 stringWithFormat:@"<%@: %p, _target = %@, _timer = %p, _ping = %@>", v5, self, target, timer, pingClient];
 
   return v9;
 }
 
 - (void)reset
 {
-  v3 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__MGRemoteQueryClientWatchdog_reset__block_invoke;
   block[3] = &unk_27989ED90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (id)pingClient
@@ -125,11 +125,11 @@ uint64_t __41__MGRemoteQueryClientWatchdog_pingClient__block_invoke(uint64_t a1)
 
 - (void)_timerInit
 {
-  v3 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+  dispatchQueue2 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, dispatchQueue2);
 
   objc_storeStrong(&self->_timer, v5);
   objc_initWeak(&location, self);
@@ -158,8 +158,8 @@ void __41__MGRemoteQueryClientWatchdog__timerInit__block_invoke(uint64_t a1)
 
 - (void)_timerReschedule
 {
-  v3 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   source = [(MGRemoteQueryClientWatchdog *)self timer];
   v4 = dispatch_walltime(0, 900000000000);
@@ -168,29 +168,29 @@ void __41__MGRemoteQueryClientWatchdog__timerInit__block_invoke(uint64_t a1)
 
 - (void)_timerCancel
 {
-  v2 = [(MGRemoteQueryClientWatchdog *)self timer];
-  if (v2)
+  timer = [(MGRemoteQueryClientWatchdog *)self timer];
+  if (timer)
   {
-    v3 = v2;
-    dispatch_source_cancel(v2);
-    v2 = v3;
+    v3 = timer;
+    dispatch_source_cancel(timer);
+    timer = v3;
   }
 }
 
 - (void)_timerFired
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = MGLogForCategory(6);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MGRemoteQueryClientWatchdog *)self target];
+    target = [(MGRemoteQueryClientWatchdog *)self target];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = target;
     _os_log_impl(&dword_25863A000, v4, OS_LOG_TYPE_DEFAULT, "%p watchdog fired, pinging target %@", &v7, 0x16u);
   }
 
@@ -200,8 +200,8 @@ void __41__MGRemoteQueryClientWatchdog__timerInit__block_invoke(uint64_t a1)
 
 - (void)_pingStart
 {
-  v3 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -256,12 +256,12 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pingFinished:(BOOL)a3
+- (void)_pingFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -271,12 +271,12 @@ LABEL_7:
   [(MGRemoteQueryClientWatchdog *)self _withPingLock:v12];
   v6 = MGLogForCategory(6);
   v7 = v6;
-  if (v3)
+  if (finishedCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_25863A000, v7, OS_LOG_TYPE_DEBUG, "%p watchdog ping successful", buf, 0xCu);
     }
 
@@ -287,49 +287,49 @@ LABEL_7:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(MGRemoteQueryClientWatchdog *)self target];
+      target = [(MGRemoteQueryClientWatchdog *)self target];
       *buf = 134218242;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v11;
+      v16 = target;
       _os_log_error_impl(&dword_25863A000, v7, OS_LOG_TYPE_ERROR, "%p watchdog ping failed for %@", buf, 0x16u);
     }
 
-    v8 = [(MGRemoteQueryClientWatchdog *)self delegate];
-    v9 = v8;
-    if (v8)
+    delegate = [(MGRemoteQueryClientWatchdog *)self delegate];
+    v9 = delegate;
+    if (delegate)
     {
-      [v8 watchdogFired:self];
+      [delegate watchdogFired:self];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withPingLock:(id)a3
+- (void)_withPingLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_pingLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_pingLock);
 }
 
-- (void)clientInvalidated:(id)a3 withError:(id)a4
+- (void)clientInvalidated:(id)invalidated withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
+  invalidatedCopy = invalidated;
+  errorCopy = error;
+  dispatchQueue = [(MGRemoteQueryClientWatchdog *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__MGRemoteQueryClientWatchdog_clientInvalidated_withError___block_invoke;
   block[3] = &unk_27989F010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = invalidatedCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = invalidatedCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __59__MGRemoteQueryClientWatchdog_clientInvalidated_withError___block_invoke(uint64_t a1)
@@ -390,15 +390,15 @@ void __59__MGRemoteQueryClientWatchdog_clientInvalidated_withError___block_invok
   return ping;
 }
 
-- (void)setPing:(id)a3
+- (void)setPing:(id)ping
 {
-  v7 = a3;
+  pingCopy = ping;
   os_unfair_lock_assert_owner(&self->_pingLock);
   ping = self->_ping;
   p_ping = &self->_ping;
-  if (ping != v7 && ([(MGRemoteQueryClient *)v7 isEqual:?]& 1) == 0)
+  if (ping != pingCopy && ([(MGRemoteQueryClient *)pingCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(p_ping, a3);
+    objc_storeStrong(p_ping, ping);
   }
 
   MEMORY[0x2821F96F8]();

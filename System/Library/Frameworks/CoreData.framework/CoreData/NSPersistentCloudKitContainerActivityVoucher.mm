@@ -1,20 +1,20 @@
 @interface NSPersistentCloudKitContainerActivityVoucher
-+ (id)describeConfiguration:(id)a3;
-+ (id)describeConfigurationWithoutPointer:(id)a3;
-+ (id)stringForQoS:(int64_t)a3;
-+ (id)stringForQoSClass:(unsigned int)a3;
-+ (unsigned)qosClassForQualityOfService:(int64_t)a3;
-- (NSPersistentCloudKitContainerActivityVoucher)initWithCoder:(id)a3;
-- (NSPersistentCloudKitContainerActivityVoucher)initWithLabel:(id)a3 forEventsOfType:(int64_t)a4 withConfiguration:(id)a5 affectingObjectsMatching:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeConfiguration:(id)configuration;
++ (id)describeConfigurationWithoutPointer:(id)pointer;
++ (id)stringForQoS:(int64_t)s;
++ (id)stringForQoSClass:(unsigned int)class;
++ (unsigned)qosClassForQualityOfService:(int64_t)service;
+- (NSPersistentCloudKitContainerActivityVoucher)initWithCoder:(id)coder;
+- (NSPersistentCloudKitContainerActivityVoucher)initWithLabel:(id)label forEventsOfType:(int64_t)type withConfiguration:(id)configuration affectingObjectsMatching:(id)matching;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPersistentCloudKitContainerActivityVoucher
 
-- (NSPersistentCloudKitContainerActivityVoucher)initWithLabel:(id)a3 forEventsOfType:(int64_t)a4 withConfiguration:(id)a5 affectingObjectsMatching:(id)a6
+- (NSPersistentCloudKitContainerActivityVoucher)initWithLabel:(id)label forEventsOfType:(int64_t)type withConfiguration:(id)configuration affectingObjectsMatching:(id)matching
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v41.receiver = self;
@@ -22,11 +22,11 @@
   v10 = [(NSPersistentCloudKitContainerActivityVoucher *)&v41 init];
   if (v10)
   {
-    if (a4)
+    if (type)
     {
-      if (a5)
+      if (configuration)
       {
-        if ([a5 isLongLived])
+        if ([configuration isLongLived])
         {
           v22 = MEMORY[0x1E695DF30];
           v23 = *MEMORY[0x1E695D940];
@@ -36,7 +36,7 @@
           v27 = objc_opt_class();
           v28 = [v24 stringWithFormat:@"%@ does not allow clients to specify if operations are longlived or not. Clients should leave longLived unmodified and allow %@ to choose to mark operations long lived or not.", v26, NSStringFromClass(v27)];
           v42 = @"offendingConfiguration";
-          v43[0] = a5;
+          v43[0] = configuration;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
           v30 = v22;
           v31 = v23;
@@ -44,16 +44,16 @@
           goto LABEL_15;
         }
 
-        if ([a5 allowsCellularAccess])
+        if ([configuration allowsCellularAccess])
         {
-          if ([a5 allowsExpensiveNetworkAccess])
+          if ([configuration allowsExpensiveNetworkAccess])
           {
-            v10->_eventType = a4;
+            v10->_eventType = type;
             v10->_bundleIdentifier = [objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
             v10->_processName = [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
-            v10->_label = [a3 copy];
-            v10->_fetchRequest = [a6 copy];
-            v10->_operationConfiguration = [a5 copy];
+            v10->_label = [label copy];
+            v10->_fetchRequest = [matching copy];
+            v10->_operationConfiguration = [configuration copy];
             goto LABEL_8;
           }
 
@@ -120,7 +120,7 @@ LABEL_8:
   [(NSPersistentCloudKitContainerActivityVoucher *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPersistentCloudKitContainerActivityVoucher alloc] initWithLabel:self->_label forEventsOfType:self->_eventType withConfiguration:self->_operationConfiguration affectingObjectsMatching:self->_fetchRequest];
 
@@ -139,38 +139,38 @@ LABEL_8:
   return v6;
 }
 
-- (NSPersistentCloudKitContainerActivityVoucher)initWithCoder:(id)a3
+- (NSPersistentCloudKitContainerActivityVoucher)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NSPersistentCloudKitContainerActivityVoucher;
   v4 = [(NSPersistentCloudKitContainerActivityVoucher *)&v6 init];
   if (v4)
   {
-    v4->_label = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
-    v4->_bundleIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-    v4->_eventType = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"eventTypeNum", "unsignedIntegerValue"}];
-    v4->_fetchRequest = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fetchRequest"];
+    v4->_label = [coder decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v4->_bundleIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v4->_eventType = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"eventTypeNum", "unsignedIntegerValue"}];
+    v4->_fetchRequest = [coder decodeObjectOfClass:objc_opt_class() forKey:@"fetchRequest"];
     getCloudKitCKOperationConfigurationClass[0]();
-    v4->_operationConfiguration = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"operationConfiguration"];
+    v4->_operationConfiguration = [coder decodeObjectOfClass:objc_opt_class() forKey:@"operationConfiguration"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", self->_eventType), @"eventTypeNum"}];
-  [a3 encodeObject:self->_label forKey:@"label"];
-  [a3 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [a3 encodeObject:self->_fetchRequest forKey:@"fetchRequest"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", self->_eventType), @"eventTypeNum"}];
+  [coder encodeObject:self->_label forKey:@"label"];
+  [coder encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coder encodeObject:self->_fetchRequest forKey:@"fetchRequest"];
   operationConfiguration = self->_operationConfiguration;
 
-  [a3 encodeObject:operationConfiguration forKey:@"operationConfiguration"];
+  [coder encodeObject:operationConfiguration forKey:@"operationConfiguration"];
 }
 
-+ (id)describeConfiguration:(id)a3
++ (id)describeConfiguration:(id)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
     return @"nil";
   }
@@ -178,8 +178,8 @@ LABEL_8:
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = +[NSPersistentCloudKitContainerActivityVoucher stringForQoS:](NSPersistentCloudKitContainerActivityVoucher, "stringForQoS:", [a3 qualityOfService]);
-  if ([a3 allowsCellularAccess])
+  v7 = +[NSPersistentCloudKitContainerActivityVoucher stringForQoS:](NSPersistentCloudKitContainerActivityVoucher, "stringForQoS:", [configuration qualityOfService]);
+  if ([configuration allowsCellularAccess])
   {
     v8 = @"wifi+celluar";
   }
@@ -189,23 +189,23 @@ LABEL_8:
     v8 = @"wifi-only";
   }
 
-  v9 = [a3 isLongLived];
-  [a3 timeoutIntervalForRequest];
+  isLongLived = [configuration isLongLived];
+  [configuration timeoutIntervalForRequest];
   v11 = v10;
-  [a3 timeoutIntervalForResource];
-  return [v4 stringWithFormat:@"<%@:%p %@:%@:%d:%f:%f>", v6, a3, v7, v8, v9, v11, v12];
+  [configuration timeoutIntervalForResource];
+  return [v4 stringWithFormat:@"<%@:%p %@:%@:%d:%f:%f>", v6, configuration, v7, v8, isLongLived, v11, v12];
 }
 
-+ (id)describeConfigurationWithoutPointer:(id)a3
++ (id)describeConfigurationWithoutPointer:(id)pointer
 {
-  if (!a3)
+  if (!pointer)
   {
     return @"nil";
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = +[NSPersistentCloudKitContainerActivityVoucher stringForQoS:](NSPersistentCloudKitContainerActivityVoucher, "stringForQoS:", [a3 qualityOfService]);
-  if ([a3 allowsCellularAccess])
+  v5 = +[NSPersistentCloudKitContainerActivityVoucher stringForQoS:](NSPersistentCloudKitContainerActivityVoucher, "stringForQoS:", [pointer qualityOfService]);
+  if ([pointer allowsCellularAccess])
   {
     v6 = @"wifi+celluar";
   }
@@ -215,18 +215,18 @@ LABEL_8:
     v6 = @"wifi-only";
   }
 
-  v7 = [a3 isLongLived];
-  [a3 timeoutIntervalForRequest];
+  isLongLived = [pointer isLongLived];
+  [pointer timeoutIntervalForRequest];
   v9 = v8;
-  [a3 timeoutIntervalForResource];
-  return [v4 stringWithFormat:@"%@:%@:%d:%f:%f", v5, v6, v7, v9, v10];
+  [pointer timeoutIntervalForResource];
+  return [v4 stringWithFormat:@"%@:%@:%d:%f:%f", v5, v6, isLongLived, v9, v10];
 }
 
-+ (id)stringForQoS:(int64_t)a3
++ (id)stringForQoS:(int64_t)s
 {
-  if (a3 > 16)
+  if (s > 16)
   {
-    switch(a3)
+    switch(s)
     {
       case 17:
         return @"Utility";
@@ -239,7 +239,7 @@ LABEL_8:
 
   else
   {
-    switch(a3)
+    switch(s)
     {
       case -1:
         return @"Default";
@@ -269,12 +269,12 @@ LABEL_8:
   return @"unknown";
 }
 
-+ (id)stringForQoSClass:(unsigned int)a3
++ (id)stringForQoSClass:(unsigned int)class
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 <= 16)
+  if (class <= 16)
   {
-    switch(a3)
+    switch(class)
     {
       case 0u:
         result = @"QOS_CLASS_UNSPECIFIED";
@@ -288,15 +288,15 @@ LABEL_8:
     }
   }
 
-  else if (a3 > 24)
+  else if (class > 24)
   {
-    if (a3 == 33)
+    if (class == 33)
     {
       result = @"QOS_CLASS_USER_INTERACTIVE";
       goto LABEL_22;
     }
 
-    if (a3 == 25)
+    if (class == 25)
     {
       result = @"QOS_CLASS_USER_INITIATED";
       goto LABEL_22;
@@ -305,13 +305,13 @@ LABEL_8:
 
   else
   {
-    if (a3 == 17)
+    if (class == 17)
     {
       result = @"QOS_CLASS_UTILITY";
       goto LABEL_22;
     }
 
-    if (a3 == 21)
+    if (class == 21)
     {
       result = @"QOS_CLASS_DEFAULT";
       goto LABEL_22;
@@ -322,7 +322,7 @@ LABEL_8:
   if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
   {
     v8 = 67109120;
-    v9 = a3;
+    classCopy2 = class;
     _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: What qos class is this? %u\n", &v8, 8u);
   }
 
@@ -330,7 +330,7 @@ LABEL_8:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
     v8 = 67109120;
-    v9 = a3;
+    classCopy2 = class;
     _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: What qos class is this? %u", &v8, 8u);
   }
 
@@ -340,12 +340,12 @@ LABEL_22:
   return result;
 }
 
-+ (unsigned)qosClassForQualityOfService:(int64_t)a3
++ (unsigned)qosClassForQualityOfService:(int64_t)service
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 > 16)
+  if (service > 16)
   {
-    switch(a3)
+    switch(service)
     {
       case 17:
         result = 17;
@@ -361,27 +361,27 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  if (a3 == -1)
+  if (service == -1)
   {
 LABEL_15:
     result = 21;
     goto LABEL_18;
   }
 
-  if (a3 == 5)
+  if (service == 5)
   {
     result = 5;
     goto LABEL_18;
   }
 
-  if (a3 != 9)
+  if (service != 9)
   {
 LABEL_11:
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      serviceCopy2 = service;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown quality of service: %ld\n", &v8, 0xCu);
     }
 
@@ -389,7 +389,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      serviceCopy2 = service;
       _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: Unknown quality of service: %ld", &v8, 0xCu);
     }
 

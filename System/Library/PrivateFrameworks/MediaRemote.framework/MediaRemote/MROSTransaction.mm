@@ -1,24 +1,24 @@
 @interface MROSTransaction
-- (MROSTransaction)initWithName:(id)a3;
+- (MROSTransaction)initWithName:(id)name;
 - (void)invalidateTransaction;
 @end
 
 @implementation MROSTransaction
 
-- (MROSTransaction)initWithName:(id)a3
+- (MROSTransaction)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = MROSTransaction;
   v6 = [(MROSTransaction *)&v10 init];
   if (v6)
   {
-    [v5 UTF8String];
+    [nameCopy UTF8String];
     v7 = os_transaction_create();
     containedTransaction = v6->_containedTransaction;
     v6->_containedTransaction = v7;
 
-    objc_storeStrong(&v6->_transactionName, a3);
+    objc_storeStrong(&v6->_transactionName, name);
   }
 
   return v6;
@@ -31,7 +31,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[OS_Transaction] invalidating: %{public}@", &v8, 0xCu);
   }
 

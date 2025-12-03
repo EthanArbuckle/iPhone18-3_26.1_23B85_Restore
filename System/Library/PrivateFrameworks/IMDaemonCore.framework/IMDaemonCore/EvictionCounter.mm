@@ -1,18 +1,18 @@
 @interface EvictionCounter
 - (_TtC12IMDaemonCoreP33_BB25839AF7989309BBD0C1A20CE96CCC15EvictionCounter)init;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation EvictionCounter
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_22B7DC118();
   swift_unknownObjectRelease();
   sub_22B4CFB78(v9);
-  v6 = *(&v5->super.isa + OBJC_IVAR____TtC12IMDaemonCoreP33_BB25839AF7989309BBD0C1A20CE96CCC15EvictionCounter_evictionCount);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC12IMDaemonCoreP33_BB25839AF7989309BBD0C1A20CE96CCC15EvictionCounter_evictionCount);
   v7 = __OFADD__(v6, 1);
   v8 = (v6 + 1);
   if (v7)
@@ -22,7 +22,7 @@
 
   else
   {
-    *(&v5->super.isa + OBJC_IVAR____TtC12IMDaemonCoreP33_BB25839AF7989309BBD0C1A20CE96CCC15EvictionCounter_evictionCount) = v8;
+    *(&selfCopy->super.isa + OBJC_IVAR____TtC12IMDaemonCoreP33_BB25839AF7989309BBD0C1A20CE96CCC15EvictionCounter_evictionCount) = v8;
   }
 }
 

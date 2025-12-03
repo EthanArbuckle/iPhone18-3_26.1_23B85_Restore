@@ -1,98 +1,98 @@
 @interface MANode
-- (BOOL)conformsToNodeSchema:(id)a3;
-- (BOOL)hasEdge:(id)a3 isIn:(BOOL *)a4;
-- (BOOL)hasEqualPropertiesToNode:(id)a3;
+- (BOOL)conformsToNodeSchema:(id)schema;
+- (BOOL)hasEdge:(id)edge isIn:(BOOL *)in;
+- (BOOL)hasEqualPropertiesToNode:(id)node;
 - (BOOL)hasProperties;
-- (BOOL)hasProperties:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNode:(id)a3;
-- (BOOL)isSameNodeAsNode:(id)a3;
+- (BOOL)hasProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNode:(id)node;
+- (BOOL)isSameNodeAsNode:(id)node;
 - (BOOL)isUnique;
-- (BOOL)matchesNode:(id)a3 includingProperties:(BOOL)a4;
+- (BOOL)matchesNode:(id)node includingProperties:(BOOL)properties;
 - (MANode)init;
-- (MANode)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5;
-- (MANode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 weight:(float)a5 properties:(id)a6;
+- (MANode)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties;
+- (MANode)initWithLabel:(id)label domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties;
 - (NSDictionary)properties;
 - (NSSet)labels;
 - (NSString)description;
-- (id)anyEdgeOfType:(unint64_t)a3 withNode:(id)a4;
-- (id)changingPropertiesWithProperties:(id)a3;
-- (id)edgesOfType:(unint64_t)a3 withNode:(id)a4;
+- (id)anyEdgeOfType:(unint64_t)type withNode:(id)node;
+- (id)changingPropertiesWithProperties:(id)properties;
+- (id)edgesOfType:(unint64_t)type withNode:(id)node;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3 kindOfClass:(Class)a4;
+- (id)propertyForKey:(id)key;
+- (id)propertyForKey:(id)key kindOfClass:(Class)class;
 - (id)propertyKeys;
 - (id)shortDescription;
-- (id)visualStringWithName:(id)a3 andPropertyKeys:(id)a4;
+- (id)visualStringWithName:(id)name andPropertyKeys:(id)keys;
 - (unint64_t)edgesCount;
 - (unint64_t)hash;
 - (unint64_t)inEdgesCount;
 - (unint64_t)outEdgesCount;
 - (unint64_t)propertiesCount;
-- (void)enumerateEdgesInDomains:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesOfType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesUsingBlock:(id)a3;
-- (void)enumerateEdgesWithDomains:(id)a3 usingBlock:(id)a4;
-- (void)enumerateInEdgesUsingBlock:(id)a3;
-- (void)enumerateNeighborEdgesAndNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNeighborEdgesAndNodesThroughInEdgesUsingBlock:(id)a3;
-- (void)enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:(id)a3;
-- (void)enumerateNeighborEdgesAndNodesUsingBlock:(id)a3;
-- (void)enumerateNeighborNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNeighborNodesThroughInEdgesUsingBlock:(id)a3;
-- (void)enumerateNeighborNodesThroughOutEdgesUsingBlock:(id)a3;
-- (void)enumerateNeighborNodesUsingBlock:(id)a3;
-- (void)enumerateOutEdgesUsingBlock:(id)a3;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
-- (void)enumerateSiblingNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4;
-- (void)setGraphReference:(id)a3;
+- (void)enumerateEdgesInDomains:(id)domains usingBlock:(id)block;
+- (void)enumerateEdgesOfType:(unint64_t)type usingBlock:(id)block;
+- (void)enumerateEdgesUsingBlock:(id)block;
+- (void)enumerateEdgesWithDomains:(id)domains usingBlock:(id)block;
+- (void)enumerateInEdgesUsingBlock:(id)block;
+- (void)enumerateNeighborEdgesAndNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block;
+- (void)enumerateNeighborEdgesAndNodesThroughInEdgesUsingBlock:(id)block;
+- (void)enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:(id)block;
+- (void)enumerateNeighborEdgesAndNodesUsingBlock:(id)block;
+- (void)enumerateNeighborNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block;
+- (void)enumerateNeighborNodesThroughInEdgesUsingBlock:(id)block;
+- (void)enumerateNeighborNodesThroughOutEdgesUsingBlock:(id)block;
+- (void)enumerateNeighborNodesUsingBlock:(id)block;
+- (void)enumerateOutEdgesUsingBlock:(id)block;
+- (void)enumeratePropertiesUsingBlock:(id)block;
+- (void)enumerateSiblingNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block;
+- (void)setGraphReference:(id)reference;
 @end
 
 @implementation MANode
 
-- (id)visualStringWithName:(id)a3 andPropertyKeys:(id)a4
+- (id)visualStringWithName:(id)name andPropertyKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  keysCopy = keys;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CCAB68] string];
-  objc_msgSend(v9, "appendString:", @"(");
-  if (v6)
+  string = [MEMORY[0x277CCAB68] string];
+  objc_msgSend(string, "appendString:", @"(");
+  if (nameCopy)
   {
-    [v9 appendString:v6];
+    [string appendString:nameCopy];
   }
 
-  v10 = [(MANode *)self label];
+  label = [(MANode *)self label];
 
-  if (v10)
+  if (label)
   {
-    v11 = [(MANode *)self label];
-    [v9 appendFormat:@":%@", v11];
+    label2 = [(MANode *)self label];
+    [string appendFormat:@":%@", label2];
   }
 
   else
   {
-    [v9 appendFormat:@":"];
+    [string appendFormat:@":"];
   }
 
   if ([(MANode *)self domain]&& [(MANode *)self domain]!= 1)
   {
-    [v9 appendFormat:@":%lu", -[MANode domain](self, "domain")];
+    [string appendFormat:@":%lu", -[MANode domain](self, "domain")];
   }
 
-  v12 = [(MANode *)self propertyDictionary];
-  v13 = PropertiesVisualStringForKeys(v7, v12);
+  propertyDictionary = [(MANode *)self propertyDictionary];
+  v13 = PropertiesVisualStringForKeys(keysCopy, propertyDictionary);
 
   if ([v13 length] >= 3)
   {
-    [v9 appendFormat:@" %@", v13];
+    [string appendFormat:@" %@", v13];
   }
 
-  [v9 appendString:@""]);
+  [string appendString:@""]);
 
   objc_autoreleasePoolPop(v8);
 
-  return v9;
+  return string;
 }
 
 void __71__MANode_enumerateSiblingNodesThroughEdgesWithLabel_domain_usingBlock___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -129,19 +129,19 @@ void __71__MANode_enumerateSiblingNodesThroughEdgesWithLabel_domain_usingBlock__
   }
 }
 
-- (void)enumerateSiblingNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4
+- (void)enumerateSiblingNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__MANode_enumerateSiblingNodesThroughEdgesWithDomains_usingBlock___block_invoke;
   v10[3] = &unk_2797FECC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = domainsCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = domainsCopy;
   [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithDomains:v9 usingBlock:v10];
 }
 
@@ -178,17 +178,17 @@ void __66__MANode_enumerateSiblingNodesThroughEdgesWithDomains_usingBlock___bloc
   }
 }
 
-- (void)enumerateNeighborEdgesAndNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4
+- (void)enumerateNeighborEdgesAndNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__MANode_enumerateNeighborEdgesAndNodesThroughEdgesWithDomains_usingBlock___block_invoke;
   v8[3] = &unk_2797FEBF8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(MANode *)self enumerateEdgesInDomains:a3 usingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(MANode *)self enumerateEdgesInDomains:domains usingBlock:v8];
 }
 
 void __75__MANode_enumerateNeighborEdgesAndNodesThroughEdgesWithDomains_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -199,17 +199,17 @@ void __75__MANode_enumerateNeighborEdgesAndNodesThroughEdgesWithDomains_usingBlo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateNeighborNodesThroughEdgesWithDomains:(id)a3 usingBlock:(id)a4
+- (void)enumerateNeighborNodesThroughEdgesWithDomains:(id)domains usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__MANode_enumerateNeighborNodesThroughEdgesWithDomains_usingBlock___block_invoke;
   v8[3] = &unk_2797FEBF8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(MANode *)self enumerateEdgesInDomains:a3 usingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(MANode *)self enumerateEdgesInDomains:domains usingBlock:v8];
 }
 
 void __67__MANode_enumerateNeighborNodesThroughEdgesWithDomains_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -218,34 +218,34 @@ void __67__MANode_enumerateNeighborNodesThroughEdgesWithDomains_usingBlock___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)hasEdge:(id)a3 isIn:(BOOL *)a4
+- (BOOL)hasEdge:(id)edge isIn:(BOOL *)in
 {
-  v6 = a3;
+  edgeCopy = edge;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v7 = [v6 sourceNode];
-  v8 = [v6 targetNode];
+  sourceNode = [edgeCopy sourceNode];
+  targetNode = [edgeCopy targetNode];
   v9 = [MAEdgeFilter alloc];
-  v10 = [v6 label];
-  v11 = -[MAElementFilter initWithLabel:domain:](v9, "initWithLabel:domain:", v10, [v6 domain]);
+  label = [edgeCopy label];
+  v11 = -[MAElementFilter initWithLabel:domain:](v9, "initWithLabel:domain:", label, [edgeCopy domain]);
 
-  v12 = [v6 propertyDictionary];
+  propertyDictionary = [edgeCopy propertyDictionary];
   implementation = self->_implementation;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __23__MANode_hasEdge_isIn___block_invoke;
   v18[3] = &unk_2797FEC20;
-  v14 = v7;
+  v14 = sourceNode;
   v19 = v14;
-  v15 = v8;
+  v15 = targetNode;
   v20 = v15;
-  v16 = v12;
+  v16 = propertyDictionary;
   v23 = &v25;
-  v24 = a4;
+  inCopy = in;
   v21 = v16;
-  v22 = self;
+  selfCopy = self;
   [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:3 matchingFilter:v11 usingBlock:v18];
   LOBYTE(self) = *(v26 + 24);
 
@@ -287,49 +287,49 @@ void __23__MANode_hasEdge_isIn___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
 LABEL_9:
 }
 
-- (void)enumerateNeighborNodesThroughInEdgesUsingBlock:(id)a3
+- (void)enumerateNeighborNodesThroughInEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesThroughEdgesOfType:1 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesThroughEdgesOfType:1 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateNeighborEdgesAndNodesThroughInEdgesUsingBlock:(id)a3
+- (void)enumerateNeighborEdgesAndNodesThroughInEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesThroughEdgesOfType:1 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesThroughEdgesOfType:1 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateNeighborNodesThroughOutEdgesUsingBlock:(id)a3
+- (void)enumerateNeighborNodesThroughOutEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesThroughEdgesOfType:2 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesThroughEdgesOfType:2 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:(id)a3
+- (void)enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesThroughEdgesOfType:2 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesThroughEdgesOfType:2 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesInDomains:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesInDomains:(id)domains usingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = domainsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -360,8 +360,8 @@ LABEL_9:
   v17[2] = __45__MANode_enumerateEdgesInDomains_usingBlock___block_invoke;
   v17[3] = &unk_2797FEBF8;
   v18 = v8;
-  v19 = v7;
-  v14 = v7;
+  v19 = blockCopy;
+  v14 = blockCopy;
   v15 = v8;
   [(MANode *)self enumerateEdgesOfType:3 withLabel:0 domain:0 usingBlock:v17];
 
@@ -377,33 +377,33 @@ void __45__MANode_enumerateEdgesInDomains_usingBlock___block_invoke(uint64_t a1,
   }
 }
 
-- (void)enumerateNeighborNodesUsingBlock:(id)a3
+- (void)enumerateNeighborNodesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MANodeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesMatchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborNodesMatchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateNeighborEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateNeighborEdgesAndNodesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MANodeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesMatchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateNeighborEdgesAndNodesMatchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesWithDomains:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesWithDomains:(id)domains usingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = domainsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -434,8 +434,8 @@ void __45__MANode_enumerateEdgesInDomains_usingBlock___block_invoke(uint64_t a1,
   v17[2] = __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke;
   v17[3] = &unk_2797FEBF8;
   v18 = v8;
-  v19 = v7;
-  v14 = v7;
+  v19 = blockCopy;
+  v14 = blockCopy;
   v15 = v8;
   [(MANode *)self enumerateEdgesOfType:3 withLabel:0 domain:0 usingBlock:v17];
 
@@ -451,41 +451,41 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
   }
 }
 
-- (void)enumerateOutEdgesUsingBlock:(id)a3
+- (void)enumerateOutEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:2 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:2 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateInEdgesUsingBlock:(id)a3
+- (void)enumerateInEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:1 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:1 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateEdgesOfType:(unint64_t)type usingBlock:(id)block
 {
   implementation = self->_implementation;
-  v6 = a4;
+  blockCopy = block;
   v7 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:a3 matchingFilter:v7 usingBlock:v6];
+  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:type matchingFilter:v7 usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesUsingBlock:(id)a3
+- (void)enumerateEdgesUsingBlock:(id)block
 {
   implementation = self->_implementation;
-  v4 = a3;
+  blockCopy = block;
   v5 = +[(MAElementFilter *)MAEdgeFilter];
-  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:3 matchingFilter:v5 usingBlock:v4];
+  [(MANodeImplementationProtocol *)implementation enumerateEdgesOfType:3 matchingFilter:v5 usingBlock:blockCopy];
 }
 
-- (id)anyEdgeOfType:(unint64_t)a3 withNode:(id)a4
+- (id)anyEdgeOfType:(unint64_t)type withNode:(id)node
 {
-  v6 = a4;
+  nodeCopy = node;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -497,17 +497,17 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
   v9[2] = __33__MANode_anyEdgeOfType_withNode___block_invoke;
   v9[3] = &unk_2797FFB10;
   v9[4] = &v10;
-  [(MANode *)self enumerateEdgesOfType:a3 withNode:v6 usingBlock:v9];
+  [(MANode *)self enumerateEdgesOfType:type withNode:nodeCopy usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
   return v7;
 }
 
-- (id)edgesOfType:(unint64_t)a3 withNode:(id)a4
+- (id)edgesOfType:(unint64_t)type withNode:(id)node
 {
   v6 = MEMORY[0x277CBEB58];
-  v7 = a4;
+  nodeCopy = node;
   v8 = objc_alloc_init(v6);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -515,7 +515,7 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
   v11[3] = &unk_2797FFB60;
   v9 = v8;
   v12 = v9;
-  [(MANode *)self enumerateEdgesOfType:a3 withNode:v7 usingBlock:v11];
+  [(MANode *)self enumerateEdgesOfType:type withNode:nodeCopy usingBlock:v11];
 
   return v9;
 }
@@ -549,13 +549,13 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
 
 - (BOOL)isUnique
 {
-  v3 = [(MAGraphReference *)self->_graphReference concreteGraph];
-  if (v3)
+  concreteGraph = [(MAGraphReference *)self->_graphReference concreteGraph];
+  if (concreteGraph)
   {
-    v4 = [(MANode *)self label];
-    v5 = [(MANode *)self domain];
-    v6 = [(MANode *)self propertyDictionary];
-    v7 = [v3 nodesForLabel:v4 domain:v5 properties:v6];
+    label = [(MANode *)self label];
+    domain = [(MANode *)self domain];
+    propertyDictionary = [(MANode *)self propertyDictionary];
+    v7 = [concreteGraph nodesForLabel:label domain:domain properties:propertyDictionary];
     v8 = [v7 count] == 1;
   }
 
@@ -567,11 +567,11 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
   return v8;
 }
 
-- (id)changingPropertiesWithProperties:(id)a3
+- (id)changingPropertiesWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MANode *)self properties];
-  v6 = [v5 isEqual:v4];
+  propertiesCopy = properties;
+  properties = [(MANode *)self properties];
+  v6 = [properties isEqual:propertiesCopy];
   v7 = MEMORY[0x277CBEC10];
   if ((v6 & 1) == 0)
   {
@@ -585,9 +585,9 @@ void __47__MANode_enumerateEdgesWithDomains_usingBlock___block_invoke(uint64_t a
     v10[1] = 3221225472;
     v10[2] = __43__MANode_changingPropertiesWithProperties___block_invoke;
     v10[3] = &unk_2797FEBD0;
-    v11 = v5;
+    v11 = properties;
     v12 = &v13;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [propertiesCopy enumerateKeysAndObjectsUsingBlock:v10];
     v8 = v14[5];
     if (!v8)
     {
@@ -649,16 +649,16 @@ void __43__MANode_changingPropertiesWithProperties___block_invoke(uint64_t a1, v
   objc_exception_throw(v2);
 }
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MANode *)self propertyDictionary];
-  [v5 enumerateKeysAndObjectsUsingBlock:v4];
+  blockCopy = block;
+  propertyDictionary = [(MANode *)self propertyDictionary];
+  [propertyDictionary enumerateKeysAndObjectsUsingBlock:blockCopy];
 }
 
-- (id)propertyForKey:(id)a3 kindOfClass:(Class)a4
+- (id)propertyForKey:(id)key kindOfClass:(Class)class
 {
-  v4 = [(MANode *)self propertyForKey:a3];
+  v4 = [(MANode *)self propertyForKey:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -672,16 +672,16 @@ void __43__MANode_changingPropertiesWithProperties___block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MANode *)v5 propertyDictionary];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  propertyDictionary = [(MANode *)selfCopy propertyDictionary];
+  v7 = propertyDictionary;
+  if (propertyDictionary)
   {
-    v8 = [v6 objectForKeyedSubscript:v4];
+    v8 = [propertyDictionary objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -689,16 +689,16 @@ void __43__MANode_changingPropertiesWithProperties___block_invoke(uint64_t a1, v
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 count];
     if (v6 <= [(MANode *)self propertiesCount])
@@ -743,26 +743,26 @@ void __24__MANode_hasProperties___block_invoke(uint64_t a1, uint64_t a2, void *a
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)matchesNode:(id)a3 includingProperties:(BOOL)a4
+- (BOOL)matchesNode:(id)node includingProperties:(BOOL)properties
 {
-  v7 = a3;
-  v8 = [v7 label];
-  v9 = [v7 domain];
-  v10 = [v8 isEqualToString:@"*"];
+  nodeCopy = node;
+  label = [nodeCopy label];
+  domain = [nodeCopy domain];
+  v10 = [label isEqualToString:@"*"];
   if ((v10 & 1) == 0)
   {
-    v4 = [(MANode *)self label];
-    if (![v4 isEqualToString:v8])
+    label2 = [(MANode *)self label];
+    if (![label2 isEqualToString:label])
     {
       v11 = 0;
       goto LABEL_14;
     }
   }
 
-  if (v9)
+  if (domain)
   {
-    v11 = [(MANode *)self domain]== v9;
-    if (!v11 || !a4)
+    v11 = [(MANode *)self domain]== domain;
+    if (!v11 || !properties)
     {
 LABEL_10:
       if (v10)
@@ -774,13 +774,13 @@ LABEL_10:
     }
 
 LABEL_9:
-    v12 = [v7 propertyDictionary];
-    v11 = [(MANode *)self hasProperties:v12];
+    propertyDictionary = [nodeCopy propertyDictionary];
+    v11 = [(MANode *)self hasProperties:propertyDictionary];
 
     goto LABEL_10;
   }
 
-  if (a4)
+  if (properties)
   {
     goto LABEL_9;
   }
@@ -796,27 +796,27 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (!nodeCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (nodeCopy == self)
   {
     v10 = 1;
     goto LABEL_12;
   }
 
-  v6 = [(MANode *)self domain];
-  if (v6 == [(MANode *)v5 domain]&& ([(MANode *)self weight], v8 = v7, [(MANode *)v5 weight], v8 == v9))
+  domain = [(MANode *)self domain];
+  if (domain == [(MANode *)v5 domain]&& ([(MANode *)self weight], v8 = v7, [(MANode *)v5 weight], v8 == v9))
   {
-    v11 = [(MANode *)self label];
-    v12 = [(MANode *)v5 label];
-    v10 = (v11 == v12 || [v11 isEqualToString:v12]) && -[MANode hasEqualPropertiesToNode:](self, "hasEqualPropertiesToNode:", v5);
+    label = [(MANode *)self label];
+    label2 = [(MANode *)v5 label];
+    v10 = (label == label2 || [label isEqualToString:label2]) && -[MANode hasEqualPropertiesToNode:](self, "hasEqualPropertiesToNode:", v5);
   }
 
   else
@@ -830,23 +830,23 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)isSameNodeAsNode:(id)a3
+- (BOOL)isSameNodeAsNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(MANode *)v4 graphReference];
-    v7 = [(MANode *)self graphReference];
-    if (v6 == v7)
+    graphReference = [(MANode *)nodeCopy graphReference];
+    graphReference2 = [(MANode *)self graphReference];
+    if (graphReference == graphReference2)
     {
-      v9 = [(MANode *)v5 identifier];
-      v8 = v9 == [(MANode *)self identifier];
+      identifier = [(MANode *)v5 identifier];
+      v8 = identifier == [(MANode *)self identifier];
     }
 
     else
@@ -858,14 +858,14 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)hasEqualPropertiesToNode:(id)a3
+- (BOOL)hasEqualPropertiesToNode:(id)node
 {
-  v4 = a3;
-  v5 = [(MANode *)self propertyDictionary];
-  v6 = [v4 propertyDictionary];
+  nodeCopy = node;
+  propertyDictionary = [(MANode *)self propertyDictionary];
+  propertyDictionary2 = [nodeCopy propertyDictionary];
 
-  LOBYTE(v4) = [v5 isEqualToDictionary:v6];
-  return v4;
+  LOBYTE(nodeCopy) = [propertyDictionary isEqualToDictionary:propertyDictionary2];
+  return nodeCopy;
 }
 
 - (unint64_t)hash
@@ -877,10 +877,10 @@ LABEL_12:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_13;
@@ -889,7 +889,7 @@ LABEL_12:
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     identifier = self->_identifier;
     if (identifier == 0x7FFFFFFFFFFFFFFFLL && v7->_identifier == 0x7FFFFFFFFFFFFFFFLL)
@@ -899,10 +899,10 @@ LABEL_12:
 
     if (self->_graphReference != v7->_graphReference)
     {
-      v10 = [(MANode *)self graph];
-      v11 = [(MANode *)v8 graph];
+      graph = [(MANode *)self graph];
+      graph2 = [(MANode *)v8 graph];
 
-      if (v10 != v11)
+      if (graph != graph2)
       {
 LABEL_9:
         v6 = [(MANode *)self isEqualToNode:v8];
@@ -926,40 +926,40 @@ LABEL_13:
 
 - (NSDictionary)properties
 {
-  v3 = [(MANode *)self propertyDictionary];
+  propertyDictionary = [(MANode *)self propertyDictionary];
   [(MANode *)self weight];
-  v5 = [(MAKGWeightConversion *)v4 kgPropertiesForMAProperties:v3 weight:?];
+  v5 = [(MAKGWeightConversion *)v4 kgPropertiesForMAProperties:propertyDictionary weight:?];
 
   return v5;
 }
 
 - (NSSet)labels
 {
-  v3 = [(MANode *)self graphReference];
-  v4 = [v3 concreteGraph];
-  v5 = [(MANode *)self label];
-  v6 = [v4 labelsForLabel:v5 domain:{-[MANode domain](self, "domain")}];
+  graphReference = [(MANode *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  label = [(MANode *)self label];
+  v6 = [concreteGraph labelsForLabel:label domain:{-[MANode domain](self, "domain")}];
 
   return v6;
 }
 
-- (MANode)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5
+- (MANode)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties
 {
   v17 = 1;
   v16 = 0;
-  v8 = a5;
-  MALabelAndDomainFromKGLabels(a4, &v16, &v17);
+  propertiesCopy = properties;
+  MALabelAndDomainFromKGLabels(labels, &v16, &v17);
   v9 = v16;
   v15 = 0;
   v14 = 0;
-  [MAKGWeightConversion maPropertiesAndWeightForKGProperties:v8 maProperties:&v14 maWeight:&v15];
+  [MAKGWeightConversion maPropertiesAndWeightForKGProperties:propertiesCopy maProperties:&v14 maWeight:&v15];
 
   LODWORD(v10) = v15;
   v11 = [(MANode *)self initWithLabel:v9 domain:v17 weight:v14 properties:v10];
   v12 = v11;
   if (v11)
   {
-    [(MANode *)v11 setIdentifier:a3];
+    [(MANode *)v11 setIdentifier:identifier];
   }
 
   return v12;
@@ -974,8 +974,8 @@ LABEL_13:
   identifier = self->_identifier;
   [(MANode *)self weight];
   v7 = v6;
-  v8 = [(MANode *)self label];
-  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, v8];
+  label = [(MANode *)self label];
+  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, label];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ edgesCount:[%ld] inEdgesCount:[%ld] outEdgesCount:[%ld]", v9, -[MANode edgesCount](self, "edgesCount"), -[MANode inEdgesCount](self, "inEdgesCount"), -[MANode outEdgesCount](self, "outEdgesCount")];
 
@@ -985,33 +985,33 @@ LABEL_13:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MANode *)self shortDescription];
-  v5 = [(MANode *)self visualString];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [(MANode *)self shortDescription];
+  visualString = [(MANode *)self visualString];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, visualString];
 
   return v6;
 }
 
-- (void)setGraphReference:(id)a3
+- (void)setGraphReference:(id)reference
 {
-  v5 = a3;
-  if (self->_graphReference != v5)
+  referenceCopy = reference;
+  if (self->_graphReference != referenceCopy)
   {
-    v9 = v5;
-    v6 = [(MAGraphReference *)v5 concreteGraph];
-    v7 = [objc_alloc(objc_msgSend(v6 "nodeClass"))];
+    v9 = referenceCopy;
+    concreteGraph = [(MAGraphReference *)referenceCopy concreteGraph];
+    v7 = [objc_alloc(objc_msgSend(concreteGraph "nodeClass"))];
     implementation = self->_implementation;
     self->_implementation = v7;
 
-    objc_storeStrong(&self->_graphReference, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_graphReference, reference);
+    referenceCopy = v9;
   }
 }
 
-- (MANode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 weight:(float)a5 properties:(id)a6
+- (MANode)initWithLabel:(id)label domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties
 {
-  v9 = a3;
-  v10 = a6;
+  labelCopy = label;
+  propertiesCopy = properties;
   v11 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v11);
 }
@@ -1023,9 +1023,9 @@ LABEL_13:
   return [(MANode *)&v3 init];
 }
 
-- (BOOL)conformsToNodeSchema:(id)a3
+- (BOOL)conformsToNodeSchema:(id)schema
 {
-  v4 = a3;
+  schemaCopy = schema;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1034,7 +1034,7 @@ LABEL_13:
   v7[1] = 3221225472;
   v7[2] = __39__MANode_Schema__conformsToNodeSchema___block_invoke;
   v7[3] = &unk_2797FF270;
-  v5 = v4;
+  v5 = schemaCopy;
   v8 = v5;
   v9 = &v10;
   [(MANode *)self enumerateEdgesUsingBlock:v7];

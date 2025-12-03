@@ -1,13 +1,13 @@
 @interface _UIFocusSceneHostAssertionObserver
 - (BOOL)isActive;
-- (_UIFocusSceneHostAssertionObserver)initWithScene:(id)a3;
+- (_UIFocusSceneHostAssertionObserver)initWithScene:(id)scene;
 @end
 
 @implementation _UIFocusSceneHostAssertionObserver
 
-- (_UIFocusSceneHostAssertionObserver)initWithScene:(id)a3
+- (_UIFocusSceneHostAssertionObserver)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = _UIFocusSceneHostAssertionObserver;
   v5 = [(_UIFocusStateObserver *)&v11 init];
@@ -19,7 +19,7 @@
     v8[2] = __52___UIFocusSceneHostAssertionObserver_initWithScene___block_invoke;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = v4;
+    v10 = sceneCopy;
     [(_UIFocusStateObserver *)v9 performUpdatesAndNotifyObservers:v8];
   }
 
@@ -29,9 +29,9 @@
 - (BOOL)isActive
 {
   WeakRetained = objc_loadWeakRetained(&self->_focusSystemManager);
-  v3 = [WeakRetained isHostAssertingActiveFocusSystem];
+  isHostAssertingActiveFocusSystem = [WeakRetained isHostAssertingActiveFocusSystem];
 
-  return v3;
+  return isHostAssertingActiveFocusSystem;
 }
 
 @end

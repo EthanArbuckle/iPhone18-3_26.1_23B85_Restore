@@ -2,23 +2,23 @@
 - (DBSDisplayZoomTableViewCellDelegate)delegate;
 - (id)_optionViewsByDensity;
 - (void)_configureForLegacy;
-- (void)_configureForThreeDisplayOptionsWithLeadingView:(id)a3 middleView:(id)a4 trailingView:(id)a5;
-- (void)_configureForTwoDisplayOptionsWithLeadingView:(id)a3 trailingView:(id)a4;
+- (void)_configureForThreeDisplayOptionsWithLeadingView:(id)view middleView:(id)middleView trailingView:(id)trailingView;
+- (void)_configureForTwoDisplayOptionsWithLeadingView:(id)view trailingView:(id)trailingView;
 - (void)configureView;
 - (void)startAnimation;
 - (void)stopAnimation;
-- (void)updateSelectedViewWithOption:(unint64_t)a3;
-- (void)userDidTapOnDisplayZoomOptionView:(id)a3;
+- (void)updateSelectedViewWithOption:(unint64_t)option;
+- (void)userDidTapOnDisplayZoomOptionView:(id)view;
 @end
 
 @implementation DBSDisplayZoomTableViewCell
 
 - (void)configureView
 {
-  v3 = [(DBSDisplayZoomTableViewCell *)self delegate];
-  v39 = [v3 supportedDisplayZoomOptions];
+  delegate = [(DBSDisplayZoomTableViewCell *)self delegate];
+  supportedDisplayZoomOptions = [delegate supportedDisplayZoomOptions];
 
-  v4 = [v39 containsObject:&unk_28349F448];
+  v4 = [supportedDisplayZoomOptions containsObject:&unk_28349F448];
   v5 = MEMORY[0x277CBF3A0];
   if (v4)
   {
@@ -26,87 +26,87 @@
     standardOptionView = self->_standardOptionView;
     self->_standardOptionView = v6;
 
-    v8 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    standardOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+    [standardOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-    [v9 setDelegate:self];
+    standardOptionView2 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+    [standardOptionView2 setDelegate:self];
 
     v10 = DBSStringForDisplayZoomOption(0);
-    v11 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-    [v11 setAccessibilityIdentifier:v10];
+    standardOptionView3 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+    [standardOptionView3 setAccessibilityIdentifier:v10];
   }
 
-  if ([v39 containsObject:&unk_28349F460])
+  if ([supportedDisplayZoomOptions containsObject:&unk_28349F460])
   {
     v12 = [[DBSDisplayZoomOptionView alloc] initWithFrame:1 displayZoomOption:*v5, v5[1], v5[2], v5[3]];
     zoomedOptionView = self->_zoomedOptionView;
     self->_zoomedOptionView = v12;
 
-    v14 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    zoomedOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+    [zoomedOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-    [v15 setDelegate:self];
+    zoomedOptionView2 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+    [zoomedOptionView2 setDelegate:self];
 
     v16 = DBSStringForDisplayZoomOption(1);
-    v17 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-    [v17 setAccessibilityIdentifier:v16];
+    zoomedOptionView3 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+    [zoomedOptionView3 setAccessibilityIdentifier:v16];
   }
 
-  if ([v39 containsObject:&unk_28349F478])
+  if ([supportedDisplayZoomOptions containsObject:&unk_28349F478])
   {
     v18 = [[DBSDisplayZoomOptionView alloc] initWithFrame:2 displayZoomOption:*v5, v5[1], v5[2], v5[3]];
     denseOptionView = self->_denseOptionView;
     self->_denseOptionView = v18;
 
-    v20 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    denseOptionView = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+    [denseOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-    [v21 setDelegate:self];
+    denseOptionView2 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+    [denseOptionView2 setDelegate:self];
 
     v22 = DBSStringForDisplayZoomOption(2);
-    v23 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-    [v23 setAccessibilityIdentifier:v22];
+    denseOptionView3 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+    [denseOptionView3 setAccessibilityIdentifier:v22];
   }
 
-  if ([v39 containsObject:&unk_28349F490])
+  if ([supportedDisplayZoomOptions containsObject:&unk_28349F490])
   {
     v24 = [[DBSDisplayZoomOptionView alloc] initWithFrame:3 displayZoomOption:*v5, v5[1], v5[2], v5[3]];
     denserOptionView = self->_denserOptionView;
     self->_denserOptionView = v24;
 
-    v26 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    denserOptionView = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+    [denserOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-    [v27 setDelegate:self];
+    denserOptionView2 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+    [denserOptionView2 setDelegate:self];
 
     v28 = DBSStringForDisplayZoomOption(3);
-    v29 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-    [v29 setAccessibilityIdentifier:v28];
+    denserOptionView3 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+    [denserOptionView3 setAccessibilityIdentifier:v28];
   }
 
   if (DBSReverseZoomEnabled())
   {
-    v30 = [(DBSDisplayZoomTableViewCell *)self _optionViewsByDensity];
-    if ([v30 count] >= 4)
+    _optionViewsByDensity = [(DBSDisplayZoomTableViewCell *)self _optionViewsByDensity];
+    if ([_optionViewsByDensity count] >= 4)
     {
-      v31 = [v30 subarrayWithRange:{objc_msgSend(v30, "count") - 3, 3}];
+      v31 = [_optionViewsByDensity subarrayWithRange:{objc_msgSend(_optionViewsByDensity, "count") - 3, 3}];
 
-      v30 = v31;
+      _optionViewsByDensity = v31;
     }
 
-    v32 = [v30 objectAtIndexedSubscript:0];
-    v33 = [v30 objectAtIndexedSubscript:1];
+    v32 = [_optionViewsByDensity objectAtIndexedSubscript:0];
+    v33 = [_optionViewsByDensity objectAtIndexedSubscript:1];
     v34 = 0;
-    if ([v30 count] >= 3)
+    if ([_optionViewsByDensity count] >= 3)
     {
-      v34 = [v30 objectAtIndexedSubscript:2];
+      v34 = [_optionViewsByDensity objectAtIndexedSubscript:2];
     }
 
-    if ([v39 count] == 2)
+    if ([supportedDisplayZoomOptions count] == 2)
     {
       [(DBSDisplayZoomTableViewCell *)self _configureForTwoDisplayOptionsWithLeadingView:v32 trailingView:v33];
     }
@@ -122,447 +122,447 @@
     [(DBSDisplayZoomTableViewCell *)self _configureForLegacy];
   }
 
-  v35 = [(DBSDisplayZoomTableViewCell *)self delegate];
+  delegate2 = [(DBSDisplayZoomTableViewCell *)self delegate];
   v36 = objc_opt_respondsToSelector();
 
   if (v36)
   {
-    v37 = [(DBSDisplayZoomTableViewCell *)self delegate];
-    v38 = [v37 displayZoomTableViewCellCurrentlySelectedDisplayZoomOption:self];
+    delegate3 = [(DBSDisplayZoomTableViewCell *)self delegate];
+    v38 = [delegate3 displayZoomTableViewCellCurrentlySelectedDisplayZoomOption:self];
 
     [(DBSDisplayZoomTableViewCell *)self updateSelectedViewWithOption:v38];
   }
 }
 
-- (void)_configureForTwoDisplayOptionsWithLeadingView:(id)a3 trailingView:(id)a4
+- (void)_configureForTwoDisplayOptionsWithLeadingView:(id)view trailingView:(id)trailingView
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v8 addSubview:v7];
+  trailingViewCopy = trailingView;
+  viewCopy = view;
+  contentView = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView addSubview:viewCopy];
 
-  v9 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v9 addSubview:v6];
+  contentView2 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView2 addSubview:trailingViewCopy];
 
   v61 = objc_alloc_init(MEMORY[0x277D756D0]);
   v10 = objc_alloc_init(MEMORY[0x277D756D0]);
   v11 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v12 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v12 addLayoutGuide:v61];
+  contentView3 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView3 addLayoutGuide:v61];
 
-  v13 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v13 addLayoutGuide:v10];
+  contentView4 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView4 addLayoutGuide:v10];
 
-  v14 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v14 addLayoutGuide:v11];
+  contentView5 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView5 addLayoutGuide:v11];
 
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [v6 topAnchor];
-  v17 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v18 = [v17 topAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:18.0];
-  [v15 addObject:v19];
+  array = [MEMORY[0x277CBEB18] array];
+  topAnchor = [trailingViewCopy topAnchor];
+  contentView6 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
+  [array addObject:v19];
 
-  v20 = [v7 topAnchor];
-  v21 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:18.0];
-  [v15 addObject:v23];
+  topAnchor3 = [viewCopy topAnchor];
+  contentView7 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:18.0];
+  [array addObject:v23];
 
-  v24 = [v6 bottomAnchor];
-  v25 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-18.0];
-  [v15 addObject:v27];
+  bottomAnchor = [trailingViewCopy bottomAnchor];
+  contentView8 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView8 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-18.0];
+  [array addObject:v27];
 
-  v28 = [v7 bottomAnchor];
-  v29 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:-18.0];
-  [v15 addObject:v31];
+  bottomAnchor3 = [viewCopy bottomAnchor];
+  contentView9 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView9 bottomAnchor];
+  v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-18.0];
+  [array addObject:v31];
 
-  v32 = [v61 leadingAnchor];
-  v33 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v34 = [v33 leadingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
-  [v15 addObject:v35];
+  leadingAnchor = [v61 leadingAnchor];
+  contentView10 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView10 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v35];
 
-  v36 = [v61 trailingAnchor];
-  v37 = [v7 leadingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
-  [v15 addObject:v38];
+  trailingAnchor = [v61 trailingAnchor];
+  leadingAnchor3 = [viewCopy leadingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
+  [array addObject:v38];
 
-  v39 = [v7 trailingAnchor];
-  v40 = [v10 leadingAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
-  [v15 addObject:v41];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  leadingAnchor4 = [v10 leadingAnchor];
+  v41 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v41];
 
-  v42 = [v10 trailingAnchor];
-  v43 = [v6 leadingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
-  [v15 addObject:v44];
+  trailingAnchor3 = [v10 trailingAnchor];
+  leadingAnchor5 = [trailingViewCopy leadingAnchor];
+  v44 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
+  [array addObject:v44];
 
-  v45 = [v6 trailingAnchor];
-  v46 = [v11 leadingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
-  [v15 addObject:v47];
+  trailingAnchor4 = [trailingViewCopy trailingAnchor];
+  leadingAnchor6 = [v11 leadingAnchor];
+  v47 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v47];
 
-  v48 = [v11 trailingAnchor];
-  v49 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v50 = [v49 trailingAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50];
-  [v15 addObject:v51];
+  trailingAnchor5 = [v11 trailingAnchor];
+  contentView11 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  trailingAnchor6 = [contentView11 trailingAnchor];
+  v51 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+  [array addObject:v51];
 
-  v52 = [v7 widthAnchor];
+  widthAnchor = [viewCopy widthAnchor];
 
-  v53 = [v6 widthAnchor];
+  widthAnchor2 = [trailingViewCopy widthAnchor];
 
-  v54 = [v52 constraintEqualToAnchor:v53];
-  [v15 addObject:v54];
+  v54 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [array addObject:v54];
 
-  v55 = [v61 widthAnchor];
-  v56 = [v10 widthAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 multiplier:1.0];
-  [v15 addObject:v57];
+  widthAnchor3 = [v61 widthAnchor];
+  widthAnchor4 = [v10 widthAnchor];
+  v57 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
+  [array addObject:v57];
 
-  v58 = [v10 widthAnchor];
-  v59 = [v11 widthAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59 multiplier:1.0];
-  [v15 addObject:v60];
+  widthAnchor5 = [v10 widthAnchor];
+  widthAnchor6 = [v11 widthAnchor];
+  v60 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0];
+  [array addObject:v60];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v15];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
-- (void)_configureForThreeDisplayOptionsWithLeadingView:(id)a3 middleView:(id)a4 trailingView:(id)a5
+- (void)_configureForThreeDisplayOptionsWithLeadingView:(id)view middleView:(id)middleView trailingView:(id)trailingView
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v11 addSubview:v10];
+  trailingViewCopy = trailingView;
+  middleViewCopy = middleView;
+  viewCopy = view;
+  contentView = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView addSubview:viewCopy];
 
-  v12 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v12 addSubview:v9];
+  contentView2 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView2 addSubview:middleViewCopy];
 
-  v13 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v13 addSubview:v8];
+  contentView3 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView3 addSubview:trailingViewCopy];
 
   v87 = objc_alloc_init(MEMORY[0x277D756D0]);
   v85 = objc_alloc_init(MEMORY[0x277D756D0]);
   v14 = objc_alloc_init(MEMORY[0x277D756D0]);
   v86 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v15 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v15 addLayoutGuide:v87];
+  contentView4 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView4 addLayoutGuide:v87];
 
-  v16 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v16 addLayoutGuide:v85];
+  contentView5 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView5 addLayoutGuide:v85];
 
-  v17 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v17 addLayoutGuide:v14];
+  contentView6 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView6 addLayoutGuide:v14];
 
-  v18 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v18 addLayoutGuide:v86];
+  contentView7 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView7 addLayoutGuide:v86];
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [v8 topAnchor];
-  v21 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:18.0];
-  [v19 addObject:v23];
+  array = [MEMORY[0x277CBEB18] array];
+  topAnchor = [trailingViewCopy topAnchor];
+  contentView8 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor2 = [contentView8 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
+  [array addObject:v23];
 
-  v24 = [v10 topAnchor];
-  v25 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:18.0];
-  [v19 addObject:v27];
+  topAnchor3 = [viewCopy topAnchor];
+  contentView9 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor4 = [contentView9 topAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:18.0];
+  [array addObject:v27];
 
-  v28 = [v9 topAnchor];
-  v29 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v30 = [v29 topAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:18.0];
-  [v19 addObject:v31];
+  topAnchor5 = [middleViewCopy topAnchor];
+  contentView10 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor6 = [contentView10 topAnchor];
+  v31 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:18.0];
+  [array addObject:v31];
 
-  v32 = [v8 bottomAnchor];
-  v33 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:-18.0];
-  [v19 addObject:v35];
+  bottomAnchor = [trailingViewCopy bottomAnchor];
+  contentView11 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView11 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-18.0];
+  [array addObject:v35];
 
-  v36 = [v10 bottomAnchor];
-  v37 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38 constant:-18.0];
-  [v19 addObject:v39];
+  bottomAnchor3 = [viewCopy bottomAnchor];
+  contentView12 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView12 bottomAnchor];
+  v39 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-18.0];
+  [array addObject:v39];
 
-  v40 = [v9 bottomAnchor];
-  v41 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:-18.0];
-  [v19 addObject:v43];
+  bottomAnchor5 = [middleViewCopy bottomAnchor];
+  contentView13 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor6 = [contentView13 bottomAnchor];
+  v43 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-18.0];
+  [array addObject:v43];
 
-  v44 = [v87 leadingAnchor];
-  v45 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v46 = [v45 leadingAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
-  [v19 addObject:v47];
+  leadingAnchor = [v87 leadingAnchor];
+  contentView14 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView14 leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v47];
 
-  v48 = [v87 trailingAnchor];
-  v49 = [v10 leadingAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
-  [v19 addObject:v50];
+  trailingAnchor = [v87 trailingAnchor];
+  leadingAnchor3 = [viewCopy leadingAnchor];
+  v50 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
+  [array addObject:v50];
 
-  v51 = [v10 trailingAnchor];
-  v52 = [v85 leadingAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
-  [v19 addObject:v53];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  leadingAnchor4 = [v85 leadingAnchor];
+  v53 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v53];
 
-  v54 = [v85 trailingAnchor];
-  v55 = [v9 leadingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
-  [v19 addObject:v56];
+  trailingAnchor3 = [v85 trailingAnchor];
+  leadingAnchor5 = [middleViewCopy leadingAnchor];
+  v56 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
+  [array addObject:v56];
 
-  v57 = [v9 trailingAnchor];
-  v58 = [v14 leadingAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
-  [v19 addObject:v59];
+  trailingAnchor4 = [middleViewCopy trailingAnchor];
+  leadingAnchor6 = [v14 leadingAnchor];
+  v59 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v59];
 
-  v60 = [v14 trailingAnchor];
-  v61 = [v8 leadingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
-  [v19 addObject:v62];
+  trailingAnchor5 = [v14 trailingAnchor];
+  leadingAnchor7 = [trailingViewCopy leadingAnchor];
+  v62 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor7];
+  [array addObject:v62];
 
-  v63 = [v8 trailingAnchor];
-  v64 = [v86 leadingAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
-  [v19 addObject:v65];
+  trailingAnchor6 = [trailingViewCopy trailingAnchor];
+  leadingAnchor8 = [v86 leadingAnchor];
+  v65 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor8];
+  [array addObject:v65];
 
-  v66 = [v86 trailingAnchor];
-  v67 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v68 = [v67 trailingAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68];
-  [v19 addObject:v69];
+  trailingAnchor7 = [v86 trailingAnchor];
+  contentView15 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  trailingAnchor8 = [contentView15 trailingAnchor];
+  v69 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
+  [array addObject:v69];
 
-  v70 = [v10 widthAnchor];
+  widthAnchor = [viewCopy widthAnchor];
 
-  v71 = [v9 widthAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71];
-  [v19 addObject:v72];
+  widthAnchor2 = [middleViewCopy widthAnchor];
+  v72 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [array addObject:v72];
 
-  v73 = [v9 widthAnchor];
+  widthAnchor3 = [middleViewCopy widthAnchor];
 
-  v74 = [v8 widthAnchor];
+  widthAnchor4 = [trailingViewCopy widthAnchor];
 
-  v75 = [v73 constraintEqualToAnchor:v74];
-  [v19 addObject:v75];
+  v75 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
+  [array addObject:v75];
 
-  v76 = [v87 widthAnchor];
-  v77 = [v85 widthAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77 multiplier:1.0];
-  [v19 addObject:v78];
+  widthAnchor5 = [v87 widthAnchor];
+  widthAnchor6 = [v85 widthAnchor];
+  v78 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0];
+  [array addObject:v78];
 
-  v79 = [v85 widthAnchor];
-  v80 = [v14 widthAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80 multiplier:1.0];
-  [v19 addObject:v81];
+  widthAnchor7 = [v85 widthAnchor];
+  widthAnchor8 = [v14 widthAnchor];
+  v81 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:1.0];
+  [array addObject:v81];
 
-  v82 = [v14 widthAnchor];
-  v83 = [v86 widthAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83 multiplier:1.0];
-  [v19 addObject:v84];
+  widthAnchor9 = [v14 widthAnchor];
+  widthAnchor10 = [v86 widthAnchor];
+  v84 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10 multiplier:1.0];
+  [array addObject:v84];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v19];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (void)_configureForLegacy
 {
-  v3 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v4 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  [v3 addSubview:v4];
+  contentView = [(DBSDisplayZoomTableViewCell *)self contentView];
+  zoomedOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  [contentView addSubview:zoomedOptionView];
 
-  v5 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v6 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  [v5 addSubview:v6];
+  contentView2 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  standardOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  [contentView2 addSubview:standardOptionView];
 
   v68 = objc_alloc_init(MEMORY[0x277D756D0]);
   v7 = objc_alloc_init(MEMORY[0x277D756D0]);
   v8 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v9 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v9 addLayoutGuide:v68];
+  contentView3 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView3 addLayoutGuide:v68];
 
-  v10 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v10 addLayoutGuide:v7];
+  contentView4 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView4 addLayoutGuide:v7];
 
-  v11 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  [v11 addLayoutGuide:v8];
+  contentView5 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  [contentView5 addLayoutGuide:v8];
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  v14 = [v13 topAnchor];
-  v15 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:56.0];
-  [v12 addObject:v17];
+  array = [MEMORY[0x277CBEB18] array];
+  standardOptionView2 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  topAnchor = [standardOptionView2 topAnchor];
+  contentView6 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:56.0];
+  [array addObject:v17];
 
-  v18 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  v19 = [v18 topAnchor];
-  v20 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:56.0];
-  [v12 addObject:v22];
+  zoomedOptionView2 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  topAnchor3 = [zoomedOptionView2 topAnchor];
+  contentView7 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:56.0];
+  [array addObject:v22];
 
-  v23 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  v24 = [v23 bottomAnchor];
-  v25 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-56.0];
-  [v12 addObject:v27];
+  standardOptionView3 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  bottomAnchor = [standardOptionView3 bottomAnchor];
+  contentView8 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView8 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-56.0];
+  [array addObject:v27];
 
-  v28 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:-56.0];
-  [v12 addObject:v32];
+  zoomedOptionView3 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  bottomAnchor3 = [zoomedOptionView3 bottomAnchor];
+  contentView9 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView9 bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-56.0];
+  [array addObject:v32];
 
-  v33 = [v68 leadingAnchor];
-  v34 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v35 = [v34 leadingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
-  [v12 addObject:v36];
+  leadingAnchor = [v68 leadingAnchor];
+  contentView10 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView10 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v36];
 
-  v37 = [v68 trailingAnchor];
-  v38 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
-  [v12 addObject:v40];
+  trailingAnchor = [v68 trailingAnchor];
+  zoomedOptionView4 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  leadingAnchor3 = [zoomedOptionView4 leadingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
+  [array addObject:v40];
 
-  v41 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  v42 = [v41 trailingAnchor];
-  v43 = [v7 leadingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
-  [v12 addObject:v44];
+  zoomedOptionView5 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  trailingAnchor2 = [zoomedOptionView5 trailingAnchor];
+  leadingAnchor4 = [v7 leadingAnchor];
+  v44 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v44];
 
-  v45 = [v7 trailingAnchor];
-  v46 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  v47 = [v46 leadingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
-  [v12 addObject:v48];
+  trailingAnchor3 = [v7 trailingAnchor];
+  standardOptionView4 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  leadingAnchor5 = [standardOptionView4 leadingAnchor];
+  v48 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
+  [array addObject:v48];
 
-  v49 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  v50 = [v49 trailingAnchor];
-  v51 = [v8 leadingAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
-  [v12 addObject:v52];
+  standardOptionView5 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  trailingAnchor4 = [standardOptionView5 trailingAnchor];
+  leadingAnchor6 = [v8 leadingAnchor];
+  v52 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v52];
 
-  v53 = [v8 trailingAnchor];
-  v54 = [(DBSDisplayZoomTableViewCell *)self contentView];
-  v55 = [v54 trailingAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
-  [v12 addObject:v56];
+  trailingAnchor5 = [v8 trailingAnchor];
+  contentView11 = [(DBSDisplayZoomTableViewCell *)self contentView];
+  trailingAnchor6 = [contentView11 trailingAnchor];
+  v56 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+  [array addObject:v56];
 
-  v57 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  v58 = [v57 widthAnchor];
-  v59 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  v60 = [v59 widthAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
-  [v12 addObject:v61];
+  zoomedOptionView6 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  widthAnchor = [zoomedOptionView6 widthAnchor];
+  standardOptionView6 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  widthAnchor2 = [standardOptionView6 widthAnchor];
+  v61 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [array addObject:v61];
 
-  v62 = [v68 widthAnchor];
-  v63 = [v7 widthAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63 multiplier:1.0];
-  [v12 addObject:v64];
+  widthAnchor3 = [v68 widthAnchor];
+  widthAnchor4 = [v7 widthAnchor];
+  v64 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
+  [array addObject:v64];
 
-  v65 = [v7 widthAnchor];
-  v66 = [v8 widthAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66 multiplier:1.0];
-  [v12 addObject:v67];
+  widthAnchor5 = [v7 widthAnchor];
+  widthAnchor6 = [v8 widthAnchor];
+  v67 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0];
+  [array addObject:v67];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v12];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (id)_optionViewsByDensity
 {
   v3 = objc_opt_new();
-  v4 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  zoomedOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
 
-  if (v4)
+  if (zoomedOptionView)
   {
-    v5 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-    [v3 addObject:v5];
+    zoomedOptionView2 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+    [v3 addObject:zoomedOptionView2];
   }
 
-  v6 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  standardOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
 
-  if (v6)
+  if (standardOptionView)
   {
-    v7 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-    [v3 addObject:v7];
+    standardOptionView2 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+    [v3 addObject:standardOptionView2];
   }
 
-  v8 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+  denseOptionView = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
 
-  if (v8)
+  if (denseOptionView)
   {
-    v9 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-    [v3 addObject:v9];
+    denseOptionView2 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+    [v3 addObject:denseOptionView2];
   }
 
-  v10 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+  denserOptionView = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
 
-  if (v10)
+  if (denserOptionView)
   {
-    v11 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-    [v3 addObject:v11];
+    denserOptionView2 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+    [v3 addObject:denserOptionView2];
   }
 
   return v3;
 }
 
-- (void)updateSelectedViewWithOption:(unint64_t)a3
+- (void)updateSelectedViewWithOption:(unint64_t)option
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(DBSDisplayZoomTableViewCell *)self _optionViewsByDensity];
+  _optionViewsByDensity = [(DBSDisplayZoomTableViewCell *)self _optionViewsByDensity];
   v6 = 0;
-  if (a3 > 1)
+  if (option > 1)
   {
-    if (a3 == 2)
+    if (option == 2)
     {
-      v7 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+      denseOptionView = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
     }
 
     else
     {
-      if (a3 != 3)
+      if (option != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+      denseOptionView = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
     }
   }
 
-  else if (a3)
+  else if (option)
   {
-    if (a3 != 1)
+    if (option != 1)
     {
       goto LABEL_11;
     }
 
-    v7 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+    denseOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
   }
 
   else
   {
-    v7 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+    denseOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
   }
 
-  v6 = v7;
+  v6 = denseOptionView;
 LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v5;
+  v8 = _optionViewsByDensity;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -592,46 +592,46 @@ LABEL_11:
 
 - (void)startAnimation
 {
-  v3 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  [v3 startAnimation];
+  standardOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  [standardOptionView startAnimation];
 
-  v4 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  [v4 startAnimation];
+  zoomedOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  [zoomedOptionView startAnimation];
 
-  v5 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-  [v5 startAnimation];
+  denseOptionView = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+  [denseOptionView startAnimation];
 
-  v6 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-  [v6 startAnimation];
+  denserOptionView = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+  [denserOptionView startAnimation];
 }
 
 - (void)stopAnimation
 {
-  v3 = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
-  [v3 stopAnimation];
+  standardOptionView = [(DBSDisplayZoomTableViewCell *)self standardOptionView];
+  [standardOptionView stopAnimation];
 
-  v4 = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
-  [v4 stopAnimation];
+  zoomedOptionView = [(DBSDisplayZoomTableViewCell *)self zoomedOptionView];
+  [zoomedOptionView stopAnimation];
 
-  v5 = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
-  [v5 stopAnimation];
+  denseOptionView = [(DBSDisplayZoomTableViewCell *)self denseOptionView];
+  [denseOptionView stopAnimation];
 
-  v6 = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
-  [v6 stopAnimation];
+  denserOptionView = [(DBSDisplayZoomTableViewCell *)self denserOptionView];
+  [denserOptionView stopAnimation];
 }
 
-- (void)userDidTapOnDisplayZoomOptionView:(id)a3
+- (void)userDidTapOnDisplayZoomOptionView:(id)view
 {
-  v7 = a3;
-  v4 = [(DBSDisplayZoomTableViewCell *)self delegate];
+  viewCopy = view;
+  delegate = [(DBSDisplayZoomTableViewCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DBSDisplayZoomTableViewCell *)self delegate];
-    [v6 displayZoomTableViewCell:self userDidTapOnDisplayZoomOption:{objc_msgSend(v7, "displayZoomOption")}];
+    delegate2 = [(DBSDisplayZoomTableViewCell *)self delegate];
+    [delegate2 displayZoomTableViewCell:self userDidTapOnDisplayZoomOption:{objc_msgSend(viewCopy, "displayZoomOption")}];
 
-    -[DBSDisplayZoomTableViewCell updateSelectedViewWithOption:](self, "updateSelectedViewWithOption:", [v7 displayZoomOption]);
+    -[DBSDisplayZoomTableViewCell updateSelectedViewWithOption:](self, "updateSelectedViewWithOption:", [viewCopy displayZoomOption]);
   }
 }
 

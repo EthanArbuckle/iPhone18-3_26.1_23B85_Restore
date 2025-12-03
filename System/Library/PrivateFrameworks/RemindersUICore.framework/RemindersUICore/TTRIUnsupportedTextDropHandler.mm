@@ -1,6 +1,6 @@
 @interface TTRIUnsupportedTextDropHandler
 - (_TtC15RemindersUICore30TTRIUnsupportedTextDropHandler)init;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
 @end
 
 @implementation TTRIUnsupportedTextDropHandler
@@ -12,11 +12,11 @@
   return [(TTRIUnsupportedTextDropHandler *)&v3 init];
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v4 = [objc_allocWithZone(MEMORY[0x277D75BA8]) initWithDropOperation_];
+  initWithDropOperation_ = [objc_allocWithZone(MEMORY[0x277D75BA8]) initWithDropOperation_];
 
-  return v4;
+  return initWithDropOperation_;
 }
 
 @end

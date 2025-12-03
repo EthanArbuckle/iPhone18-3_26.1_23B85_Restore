@@ -1,37 +1,37 @@
 @interface INFVariantsDescriptor
 + (id)variant;
-+ (id)variantWithVariants:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)variantWithVariants:(unint64_t)variants;
+- (BOOL)isEqual:(id)equal;
 - (INFVariantsDescriptor)init;
-- (INFVariantsDescriptor)initWithVariants:(unint64_t)a3;
+- (INFVariantsDescriptor)initWithVariants:(unint64_t)variants;
 - (NSString)dictionaryKey;
-- (id)append:(id)a3 toString:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)append:(id)append toString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)variantByRemovingOneAttribute;
 @end
 
 @implementation INFVariantsDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     gender = self->_gender;
-    if (gender != [(INFVariantsDescriptor *)v4 gender])
+    if (gender != [(INFVariantsDescriptor *)equalCopy gender])
     {
       v8 = 0;
       goto LABEL_9;
     }
 
     plurality = self->_plurality;
-    v7 = plurality == [(INFVariantsDescriptor *)v4 plurality];
+    v7 = plurality == [(INFVariantsDescriptor *)equalCopy plurality];
   }
 
   else
   {
-    v7 = self == v4;
+    v7 = self == equalCopy;
   }
 
   v8 = v7;
@@ -56,9 +56,9 @@ LABEL_9:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (self)
   {
@@ -69,19 +69,19 @@ LABEL_9:
   return v5;
 }
 
-- (INFVariantsDescriptor)initWithVariants:(unint64_t)a3
+- (INFVariantsDescriptor)initWithVariants:(unint64_t)variants
 {
-  v3 = a3;
+  variantsCopy = variants;
   result = [(INFVariantsDescriptor *)self init];
   if (result)
   {
-    if (v3)
+    if (variantsCopy)
     {
       result->_plurality = 1;
-      if ((v3 & 2) == 0)
+      if ((variantsCopy & 2) == 0)
       {
 LABEL_4:
-        if ((v3 & 4) == 0)
+        if ((variantsCopy & 4) == 0)
         {
           goto LABEL_5;
         }
@@ -90,16 +90,16 @@ LABEL_4:
       }
     }
 
-    else if ((v3 & 2) == 0)
+    else if ((variantsCopy & 2) == 0)
     {
       goto LABEL_4;
     }
 
     result->_plurality = 2;
-    if ((v3 & 4) == 0)
+    if ((variantsCopy & 4) == 0)
     {
 LABEL_5:
-      if ((v3 & 8) == 0)
+      if ((variantsCopy & 8) == 0)
       {
         return result;
       }
@@ -109,7 +109,7 @@ LABEL_5:
 
 LABEL_10:
     result->_gender = 2;
-    if ((v3 & 8) == 0)
+    if ((variantsCopy & 8) == 0)
     {
       return result;
     }
@@ -135,21 +135,21 @@ LABEL_6:
   return result;
 }
 
-- (id)append:(id)a3 toString:(id)a4
+- (id)append:(id)append toString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  appendCopy = append;
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", v6, v5];
+    appendCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", stringCopy, appendCopy];
   }
 
   else
   {
-    v7 = v5;
+    appendCopy = appendCopy;
   }
 
-  v8 = v7;
+  v8 = appendCopy;
 
   return v8;
 }
@@ -221,14 +221,14 @@ LABEL_6:
 
 + (id)variant
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)variantWithVariants:(unint64_t)a3
++ (id)variantWithVariants:(unint64_t)variants
 {
-  v3 = [[a1 alloc] initWithVariants:a3];
+  v3 = [[self alloc] initWithVariants:variants];
 
   return v3;
 }

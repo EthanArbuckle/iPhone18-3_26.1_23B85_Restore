@@ -1,6 +1,6 @@
 @interface UIWebRotatingAlertController
 - (BOOL)presentSheet;
-- (UIWebRotatingAlertController)initWithUIWebDocumentView:(id)a3;
+- (UIWebRotatingAlertController)initWithUIWebDocumentView:(id)view;
 - (void)_disableWebView;
 - (void)_enableWebView;
 - (void)dealloc;
@@ -9,16 +9,16 @@
 
 @implementation UIWebRotatingAlertController
 
-- (UIWebRotatingAlertController)initWithUIWebDocumentView:(id)a3
+- (UIWebRotatingAlertController)initWithUIWebDocumentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UIWebRotatingAlertController;
   v6 = [(_UIRotatingAlertController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webBrowserView, a3);
+    objc_storeStrong(&v6->_webBrowserView, view);
   }
 
   return v7;
@@ -27,26 +27,26 @@
 - (void)_disableWebView
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_webBrowserView webView];
-  v4 = [v3 mainFrame];
-  [v4 setTimeoutsPaused:1];
+  webView = [(UIWebDocumentView *)self->_webBrowserView webView];
+  mainFrame = [webView mainFrame];
+  [mainFrame setTimeoutsPaused:1];
 
-  v5 = [(UIWebDocumentView *)self->_webBrowserView webView];
-  self->_wasDeferringCallbacks = [v5 defersCallbacks];
+  webView2 = [(UIWebDocumentView *)self->_webBrowserView webView];
+  self->_wasDeferringCallbacks = [webView2 defersCallbacks];
 
-  v6 = [(UIWebDocumentView *)self->_webBrowserView webView];
-  [v6 setDefersCallbacks:1];
+  webView3 = [(UIWebDocumentView *)self->_webBrowserView webView];
+  [webView3 setDefersCallbacks:1];
 }
 
 - (void)_enableWebView
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_webBrowserView webView];
-  v4 = [v3 mainFrame];
-  [v4 setTimeoutsPaused:0];
+  webView = [(UIWebDocumentView *)self->_webBrowserView webView];
+  mainFrame = [webView mainFrame];
+  [mainFrame setTimeoutsPaused:0];
 
-  v5 = [(UIWebDocumentView *)self->_webBrowserView webView];
-  [v5 setDefersCallbacks:self->_wasDeferringCallbacks];
+  webView2 = [(UIWebDocumentView *)self->_webBrowserView webView];
+  [webView2 setDefersCallbacks:self->_wasDeferringCallbacks];
 }
 
 - (void)dealloc

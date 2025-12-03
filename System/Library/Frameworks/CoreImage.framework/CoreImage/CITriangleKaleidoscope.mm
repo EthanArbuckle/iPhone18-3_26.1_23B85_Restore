@@ -103,8 +103,8 @@
   v29 = [CIVector vectorWithX:v50 Y:v49];
   v30 = [CIVector vectorWithX:v25 Y:v27 Z:v26 W:v28];
   v31 = [CIVector vectorWithX:v20 Y:v23 Z:v21 W:*&v10];
-  v32 = [(CITriangleKaleidoscope *)self _geomKernel];
-  v33 = [(CITriangleKaleidoscope *)self _colorKernel];
+  _geomKernel = [(CITriangleKaleidoscope *)self _geomKernel];
+  _colorKernel = [(CITriangleKaleidoscope *)self _colorKernel];
   v34 = *MEMORY[0x1E695F040];
   v35 = *(MEMORY[0x1E695F040] + 8);
   v36 = *(MEMORY[0x1E695F040] + 16);
@@ -120,7 +120,7 @@
   v60[0] = v29;
   v60[1] = v30;
   v60[2] = v31;
-  v39 = [v32 applyWithExtent:v56 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v60, 3), v34, v35, v36, v37}];
+  v39 = [_geomKernel applyWithExtent:v56 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v60, 3), v34, v35, v36, v37}];
   [v39 extent];
   v41 = v40;
   v43 = v42;
@@ -131,7 +131,7 @@
   v59[2] = v30;
   LODWORD(v40) = v55;
   v59[3] = [MEMORY[0x1E696AD98] numberWithFloat:v40];
-  return [v33 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v59, 4), v41, v43, v45, v47}];
+  return [_colorKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v59, 4), v41, v43, v45, v47}];
 }
 
 double __37__CITriangleKaleidoscope_outputImage__block_invoke(float32x2_t *a1, CGFloat a2, CGFloat a3, CGFloat a4, CGFloat a5)

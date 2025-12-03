@@ -1,16 +1,16 @@
 @interface CNiOSABLinkedContactsPredicate
-- (CNiOSABLinkedContactsPredicate)initWithCoder:(id)a3;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (void)encodeWithCoder:(id)a3;
+- (CNiOSABLinkedContactsPredicate)initWithCoder:(id)coder;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABLinkedContactsPredicate
 
-- (CNiOSABLinkedContactsPredicate)initWithCoder:(id)a3
+- (CNiOSABLinkedContactsPredicate)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CNiOSABLinkedContactsPredicate;
-  v3 = [(CNLinkedContactsPredicate *)&v7 initWithCoder:a3];
+  v3 = [(CNLinkedContactsPredicate *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -20,25 +20,25 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CNiOSABLinkedContactsPredicate;
-  [(CNLinkedContactsPredicate *)&v3 encodeWithCoder:a3];
+  [(CNLinkedContactsPredicate *)&v3 encodeWithCoder:coder];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = [(CNLinkedContactsPredicate *)self contact];
-  v9 = v8;
-  if (v8)
+  contact = [(CNLinkedContactsPredicate *)self contact];
+  v9 = contact;
+  if (contact)
   {
-    v10 = [v8 isUnified];
-    v11 = [v9 identifier];
-    if (v10)
+    isUnified = [contact isUnified];
+    identifier = [v9 identifier];
+    if (isUnified)
     {
-      v12 = v11;
+      v12 = identifier;
     }
 
     else
@@ -46,24 +46,24 @@
       v12 = 0;
     }
 
-    if (v10)
+    if (isUnified)
     {
-      v13 = 0;
+      contactIdentifier = 0;
     }
 
     else
     {
-      v13 = v11;
+      contactIdentifier = identifier;
     }
   }
 
   else
   {
-    v13 = [(CNLinkedContactsPredicate *)self contactIdentifier];
+    contactIdentifier = [(CNLinkedContactsPredicate *)self contactIdentifier];
     v12 = 0;
   }
 
-  if (v13 | v12)
+  if (contactIdentifier | v12)
   {
     if (v12)
     {

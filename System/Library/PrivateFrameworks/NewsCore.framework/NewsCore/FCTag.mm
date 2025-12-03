@@ -1,10 +1,10 @@
 @interface FCTag
-- (BOOL)_isValidScheme:(_BOOL8)a1;
+- (BOOL)_isValidScheme:(_BOOL8)scheme;
 - (BOOL)isAuthenticationSetup;
 - (BOOL)isBlockedExplicitContent;
 - (BOOL)isDark;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTag:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTag:(id)tag;
 - (BOOL)isNoLongerAvailable;
 - (BOOL)isPurchaseSetup;
 - (BOOL)isSubscribable;
@@ -40,10 +40,10 @@
 - (FCSectionProviding)asSection;
 - (FCSportsEventProviding)asSportsEvent;
 - (FCSportsProviding)asSports;
-- (FCTag)initWithData:(id)a3 context:(id)a4;
-- (FCTag)initWithTagMetadata:(id)a3 assetManager:(id)a4 isSports:(BOOL)a5;
-- (FCTag)initWithTagRecord:(id)a3 assetManager:(id)a4 interestToken:(id)a5 specialTagFeedType:(unint64_t)a6;
-- (FCTag)initWithTagType:(unint64_t)a3 identifier:(id)a4 name:(id)a5;
+- (FCTag)initWithData:(id)data context:(id)context;
+- (FCTag)initWithTagMetadata:(id)metadata assetManager:(id)manager isSports:(BOOL)sports;
+- (FCTag)initWithTagRecord:(id)record assetManager:(id)manager interestToken:(id)token specialTagFeedType:(unint64_t)type;
+- (FCTag)initWithTagType:(unint64_t)type identifier:(id)identifier name:(id)name;
 - (FCTagBanner)bannerImageForMask;
 - (FCTagBanner)bannerImageForThemeBackground;
 - (FCTagBanner)bannerImageForWhiteBackground;
@@ -63,22 +63,22 @@
 - (NSString)highlightsArticleListID;
 - (NSString)personalizedPaywallName;
 - (NSString)stocksFeedConfigJSON;
-- (id)_FCColorFromHexTriplet:(void *)a1;
-- (id)_feedConfigurationForSection:(id *)a1;
+- (id)_FCColorFromHexTriplet:(void *)triplet;
+- (id)_feedConfigurationForSection:(id *)section;
 - (id)authorizationURL;
-- (id)freeFeedIDForBin:(int64_t)a3;
-- (id)freeFeedIDForSection:(id)a3 bin:(int64_t)a4;
-- (id)initChannelForTestingWithIdentifier:(id)a3 name:(id)a4 defaultSection:(id)a5 publisherAuthorizationURL:(id)a6 publisherVerificationURL:(id)a7;
-- (id)initChannelForTestingWithIdentifier:(id)a3 name:(id)a4 publisherPaidBundlePurchaseIDs:(id)a5;
-- (id)initChannelFromNotificationWithIdentifier:(id)a3 name:(id)a4 nameImageAssetHandle:(id)a5 nameImageMaskAssetHandle:(id)a6;
-- (id)initForTestingWithTagType:(unint64_t)a3 identifier:(id)a4 name:(id)a5 umcCanonicalID:(id)a6;
+- (id)freeFeedIDForBin:(int64_t)bin;
+- (id)freeFeedIDForSection:(id)section bin:(int64_t)bin;
+- (id)initChannelForTestingWithIdentifier:(id)identifier name:(id)name defaultSection:(id)section publisherAuthorizationURL:(id)l publisherVerificationURL:(id)rL;
+- (id)initChannelForTestingWithIdentifier:(id)identifier name:(id)name publisherPaidBundlePurchaseIDs:(id)ds;
+- (id)initChannelFromNotificationWithIdentifier:(id)identifier name:(id)name nameImageAssetHandle:(id)handle nameImageMaskAssetHandle:(id)assetHandle;
+- (id)initForTestingWithTagType:(unint64_t)type identifier:(id)identifier name:(id)name umcCanonicalID:(id)d;
 - (id)mainCompactDisplayName;
-- (id)paidFeedIDForBin:(int64_t)a3;
-- (id)paidFeedIDForSection:(id)a3 bin:(int64_t)a4;
+- (id)paidFeedIDForBin:(int64_t)bin;
+- (id)paidFeedIDForSection:(id)section bin:(int64_t)bin;
 - (id)prefetchPurchaseOffer;
-- (id)purchaseOfferableConfigurationsFromProtobufList:(void *)a1;
-- (id)setTitleDisplayPrefixOverride:(id)a3;
-- (id)setTitleDisplaySuffixOverride:(id)a3;
+- (id)purchaseOfferableConfigurationsFromProtobufList:(void *)list;
+- (id)setTitleDisplayPrefixOverride:(id)override;
+- (id)setTitleDisplaySuffixOverride:(id)override;
 - (int64_t)feedType;
 - (unint64_t)channelType;
 - (unint64_t)hash;
@@ -89,27 +89,27 @@
 
 - (NSData)sportsRecommendationMappingsJSON
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 sportsRecommendationMappingsJson];
-  v4 = [v3 fc_gzipInflate];
+  tagRecord = [(FCTag *)self tagRecord];
+  sportsRecommendationMappingsJson = [tagRecord sportsRecommendationMappingsJson];
+  fc_gzipInflate = [sportsRecommendationMappingsJson fc_gzipInflate];
 
-  return v4;
+  return fc_gzipInflate;
 }
 
 - (BOOL)isPurchaseSetup
 {
-  v2 = [(FCTag *)self publisherPaidOfferableConfigurations];
-  v3 = [v2 count] != 0;
+  publisherPaidOfferableConfigurations = [(FCTag *)self publisherPaidOfferableConfigurations];
+  v3 = [publisherPaidOfferableConfigurations count] != 0;
 
   return v3;
 }
 
-- (FCTag)initWithTagType:(unint64_t)a3 identifier:(id)a4 name:(id)a5
+- (FCTag)initWithTagType:(unint64_t)type identifier:(id)identifier name:(id)name
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier != 0"];
     *buf = 136315906;
@@ -128,14 +128,14 @@
   v10 = [(FCTag *)&v18 init];
   if (v10)
   {
-    if ([v8 length])
+    if ([identifierCopy length])
     {
-      v10->_tagType = a3;
-      v11 = [v8 copy];
+      v10->_tagType = type;
+      v11 = [identifierCopy copy];
       identifier = v10->_identifier;
       v10->_identifier = v11;
 
-      v13 = [v9 copy];
+      v13 = [nameCopy copy];
       name = v10->_name;
       v10->_name = v13;
     }
@@ -151,94 +151,94 @@
   return v10;
 }
 
-- (FCTag)initWithTagMetadata:(id)a3 assetManager:(id)a4 isSports:(BOOL)a5
+- (FCTag)initWithTagMetadata:(id)metadata assetManager:(id)manager isSports:(BOOL)sports
 {
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  managerCopy = manager;
   v78.receiver = self;
   v78.super_class = FCTag;
   v10 = [(FCTag *)&v78 init];
   if (v10)
   {
-    v11 = [v8 name];
+    name = [metadataCopy name];
     name = v10->_name;
-    v10->_name = v11;
+    v10->_name = name;
 
-    v13 = [v8 identifier];
+    identifier = [metadataCopy identifier];
     identifier = v10->_identifier;
-    v10->_identifier = v13;
+    v10->_identifier = identifier;
 
-    v10->_tagType = [v8 tagType];
-    v10->_isSports = a5;
-    v15 = [v8 sportsPrimaryName];
+    v10->_tagType = [metadataCopy tagType];
+    v10->_isSports = sports;
+    sportsPrimaryName = [metadataCopy sportsPrimaryName];
     sportsPrimaryName = v10->_sportsPrimaryName;
-    v10->_sportsPrimaryName = v15;
+    v10->_sportsPrimaryName = sportsPrimaryName;
 
-    v17 = [v8 sportsSecondaryName];
+    sportsSecondaryName = [metadataCopy sportsSecondaryName];
     sportsSecondaryName = v10->_sportsSecondaryName;
-    v10->_sportsSecondaryName = v17;
+    v10->_sportsSecondaryName = sportsSecondaryName;
 
-    v19 = [v8 sportsSecondaryShortName];
+    sportsSecondaryShortName = [metadataCopy sportsSecondaryShortName];
     sportsSecondaryShortName = v10->_sportsSecondaryShortName;
-    v10->_sportsSecondaryShortName = v19;
+    v10->_sportsSecondaryShortName = sportsSecondaryShortName;
 
-    v21 = [v8 sportsFullName];
+    sportsFullName = [metadataCopy sportsFullName];
     sportsFullName = v10->_sportsFullName;
-    v10->_sportsFullName = v21;
+    v10->_sportsFullName = sportsFullName;
 
-    v10->_sportsLeagueType = [v8 sportsLeagueType];
-    v23 = [v8 sportsPrimaryColor];
-    v24 = [FCColor nullableColorWithHexString:v23];
+    v10->_sportsLeagueType = [metadataCopy sportsLeagueType];
+    sportsPrimaryColor = [metadataCopy sportsPrimaryColor];
+    v24 = [FCColor nullableColorWithHexString:sportsPrimaryColor];
     sportsPrimaryColor = v10->_sportsPrimaryColor;
     v10->_sportsPrimaryColor = v24;
 
-    v26 = [v8 isAthlete];
+    isAthlete = [metadataCopy isAthlete];
     v27 = 4;
-    if (!v26)
+    if (!isAthlete)
     {
       v27 = 0;
     }
 
     v10->_sportsType = v27;
-    v10->_isLocal = [v8 isLocalNews];
-    v28 = [v8 groupTitleColor];
+    v10->_isLocal = [metadataCopy isLocalNews];
+    groupTitleColor = [metadataCopy groupTitleColor];
     groupTitleColorHexString = v10->_groupTitleColorHexString;
-    v10->_groupTitleColorHexString = v28;
+    v10->_groupTitleColorHexString = groupTitleColor;
 
-    v10->_isPublic = [v8 isPublic];
-    v30 = [v8 nameImageMetadata];
-    v31 = v30;
-    if (v30)
+    v10->_isPublic = [metadataCopy isPublic];
+    nameImageMetadata = [metadataCopy nameImageMetadata];
+    v31 = nameImageMetadata;
+    if (nameImageMetadata)
     {
-      v32 = [v30 dataUsingEncoding:4];
+      v32 = [nameImageMetadata dataUsingEncoding:4];
       v33 = v32;
       if (v32)
       {
-        v34 = [v32 bytes];
-        LOWORD(v35) = *v34;
+        bytes = [v32 bytes];
+        LOWORD(v35) = *bytes;
         v36 = v35;
-        LOWORD(v37) = v34[1];
+        LOWORD(v37) = bytes[1];
         v38 = v37;
         v10->_nameImageSize.width = v36;
         v10->_nameImageSize.height = v38;
-        LOWORD(v36) = v34[2];
+        LOWORD(v36) = bytes[2];
         v39 = *&v36;
-        LOWORD(v38) = v34[5];
+        LOWORD(v38) = bytes[5];
         v40 = *&v38;
-        LOWORD(v41) = v34[4];
+        LOWORD(v41) = bytes[4];
         v42 = v41;
-        LOWORD(v43) = v34[3];
+        LOWORD(v43) = bytes[3];
         v44 = v43;
         v10->_nameImageInsets.top = v39;
         v10->_nameImageInsets.left = v40;
         v10->_nameImageInsets.bottom = v42;
         v10->_nameImageInsets.right = v44;
-        LOWORD(v39) = v34[6];
-        LOWORD(v40) = v34[7];
-        LOWORD(v42) = v34[8];
-        LOWORD(v44) = v34[11];
-        LOWORD(v45) = v34[10];
-        LOWORD(v46) = v34[9];
+        LOWORD(v39) = bytes[6];
+        LOWORD(v40) = bytes[7];
+        LOWORD(v42) = bytes[8];
+        LOWORD(v44) = bytes[11];
+        LOWORD(v45) = bytes[10];
+        LOWORD(v46) = bytes[9];
         v10->_nameImageForDarkBackgroundSize.width = *&v39;
         v10->_nameImageForDarkBackgroundSize.height = *&v40;
         v47 = *&v42;
@@ -249,16 +249,16 @@
         v10->_nameImageForDarkBackgroundInsets.left = v48;
         v10->_nameImageForDarkBackgroundInsets.bottom = v45;
         v10->_nameImageForDarkBackgroundInsets.right = v46;
-        LOWORD(v47) = v34[12];
+        LOWORD(v47) = bytes[12];
         v51 = *&v47;
-        LOWORD(v48) = v34[13];
+        LOWORD(v48) = bytes[13];
         v52 = *&v48;
         v10->_nameImageMaskSize.width = v51;
         v10->_nameImageMaskSize.height = v52;
-        LOWORD(v51) = v34[14];
-        LOWORD(v52) = v34[17];
-        LOWORD(v49) = v34[16];
-        LOWORD(v50) = v34[15];
+        LOWORD(v51) = bytes[14];
+        LOWORD(v52) = bytes[17];
+        LOWORD(v49) = bytes[16];
+        LOWORD(v50) = bytes[15];
         v10->_nameImageMaskInsets.top = *&v51;
         v10->_nameImageMaskInsets.left = *&v52;
         v10->_nameImageMaskInsets.bottom = v49;
@@ -266,10 +266,10 @@
       }
     }
 
-    v53 = [v8 nameImage];
-    if (v53)
+    nameImage = [metadataCopy nameImage];
+    if (nameImage)
     {
-      v54 = [v9 assetHandleForCKAssetURLString:v53 lifetimeHint:0];
+      v54 = [managerCopy assetHandleForCKAssetURLString:nameImage lifetimeHint:0];
       nameImageAssetHandle = v10->_nameImageAssetHandle;
       v10->_nameImageAssetHandle = v54;
 
@@ -278,26 +278,26 @@
       v10->_bannerImageForWhiteBackground = v56;
     }
 
-    v58 = [v8 coverImage];
-    if (v58)
+    coverImage = [metadataCopy coverImage];
+    if (coverImage)
     {
-      v59 = [v9 assetHandleForCKAssetURLString:v58 lifetimeHint:0];
+      v59 = [managerCopy assetHandleForCKAssetURLString:coverImage lifetimeHint:0];
       coverImageAssetHandle = v10->_coverImageAssetHandle;
       v10->_coverImageAssetHandle = v59;
     }
 
-    v61 = [v8 feedNavImage];
-    if (v61)
+    feedNavImage = [metadataCopy feedNavImage];
+    if (feedNavImage)
     {
-      v62 = [v9 assetHandleForCKAssetURLString:v61 lifetimeHint:0];
+      v62 = [managerCopy assetHandleForCKAssetURLString:feedNavImage lifetimeHint:0];
       feedNavImageAssetHandle = v10->_feedNavImageAssetHandle;
       v10->_feedNavImageAssetHandle = v62;
     }
 
-    v64 = [v8 nameImageForDarkBackground];
-    if (v64)
+    nameImageForDarkBackground = [metadataCopy nameImageForDarkBackground];
+    if (nameImageForDarkBackground)
     {
-      v65 = [v9 assetHandleForCKAssetURLString:v64 lifetimeHint:0];
+      v65 = [managerCopy assetHandleForCKAssetURLString:nameImageForDarkBackground lifetimeHint:0];
       nameImageForDarkBackgroundAssetHandle = v10->_nameImageForDarkBackgroundAssetHandle;
       v10->_nameImageForDarkBackgroundAssetHandle = v65;
 
@@ -306,10 +306,10 @@
       v10->_bannerImageForThemeBackground = v67;
     }
 
-    v69 = [v8 nameImageMask];
-    if (v69)
+    nameImageMask = [metadataCopy nameImageMask];
+    if (nameImageMask)
     {
-      v70 = [v9 assetHandleForCKAssetURLString:v69 lifetimeHint:0];
+      v70 = [managerCopy assetHandleForCKAssetURLString:nameImageMask lifetimeHint:0];
       nameImageMaskAssetHandle = v10->_nameImageMaskAssetHandle;
       v10->_nameImageMaskAssetHandle = v70;
 
@@ -318,10 +318,10 @@
       v10->_bannerImageForMask = v72;
     }
 
-    v74 = [v8 sportsLogoImageCompact];
-    if (v74)
+    sportsLogoImageCompact = [metadataCopy sportsLogoImageCompact];
+    if (sportsLogoImageCompact)
     {
-      v75 = [v9 assetHandleForCKAssetURLString:v74 lifetimeHint:0];
+      v75 = [managerCopy assetHandleForCKAssetURLString:sportsLogoImageCompact lifetimeHint:0];
       sportsLogoImageCompactAssetHandle = v10->_sportsLogoImageCompactAssetHandle;
       v10->_sportsLogoImageCompactAssetHandle = v75;
     }
@@ -330,29 +330,29 @@
   return v10;
 }
 
-- (FCTag)initWithData:(id)a3 context:(id)a4
+- (FCTag)initWithData:(id)data context:(id)context
 {
   v6 = MEMORY[0x1E69B7000];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithData:v8];
+  contextCopy = context;
+  dataCopy = data;
+  v9 = [[v6 alloc] initWithData:dataCopy];
 
   v10 = [FCTag alloc];
-  v11 = [v7 assetManager];
+  assetManager = [contextCopy assetManager];
 
-  v12 = [(FCTag *)v10 initWithTagRecord:v9 assetManager:v11 interestToken:0 specialTagFeedType:0];
+  v12 = [(FCTag *)v10 initWithTagRecord:v9 assetManager:assetManager interestToken:0 specialTagFeedType:0];
   return v12;
 }
 
-- (FCTag)initWithTagRecord:(id)a3 assetManager:(id)a4 interestToken:(id)a5 specialTagFeedType:(unint64_t)a6
+- (FCTag)initWithTagRecord:(id)record assetManager:(id)manager interestToken:(id)token specialTagFeedType:(unint64_t)type
 {
   v433 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v420 = a4;
-  v11 = a4;
-  v424 = a5;
-  v12 = [v10 name];
-  v13 = [v10 type] - 1;
+  recordCopy = record;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  tokenCopy = token;
+  name = [recordCopy name];
+  v13 = [recordCopy type] - 1;
   if (v13 < 5)
   {
     v14 = v13 + 1;
@@ -363,186 +363,186 @@
     v14 = 0;
   }
 
-  v15 = [v10 base];
-  v16 = [v15 identifier];
-  v423 = v12;
-  v17 = [(FCTag *)self initWithTagType:v14 identifier:v16 name:v12];
+  base = [recordCopy base];
+  identifier = [base identifier];
+  v423 = name;
+  v17 = [(FCTag *)self initWithTagType:v14 identifier:identifier name:name];
 
   if (!v17)
   {
     goto LABEL_85;
   }
 
-  v414 = a5;
+  tokenCopy2 = token;
   context = objc_autoreleasePoolPush();
-  if (([v10 propertyFlags] & 4) != 0)
+  if (([recordCopy propertyFlags] & 4) != 0)
   {
     v17->_userFacingTagTypeOverride = 1;
   }
 
-  v18 = [v10 nameCompact];
+  nameCompact = [recordCopy nameCompact];
   nameCompact = v17->_nameCompact;
-  v17->_nameCompact = v18;
+  v17->_nameCompact = nameCompact;
 
-  v20 = [v10 feedConfiguration];
+  feedConfiguration = [recordCopy feedConfiguration];
   feedConfiguration = v17->_feedConfiguration;
-  v17->_feedConfiguration = v20;
+  v17->_feedConfiguration = feedConfiguration;
 
-  v415 = [v10 purchaseOfferableConfigurations];
-  v22 = [FCTag purchaseOfferableConfigurationsFromProtobufList:v415];
+  purchaseOfferableConfigurations = [recordCopy purchaseOfferableConfigurations];
+  v22 = [FCTag purchaseOfferableConfigurationsFromProtobufList:purchaseOfferableConfigurations];
   publisherPaidOfferableConfigurations = v17->_publisherPaidOfferableConfigurations;
   v17->_publisherPaidOfferableConfigurations = v22;
 
   v24 = MEMORY[0x1E695DF00];
-  v25 = [v10 base];
-  v26 = [v25 fetchDate];
-  v27 = [v24 dateWithPBDate:v26];
+  base2 = [recordCopy base];
+  fetchDate = [base2 fetchDate];
+  v27 = [v24 dateWithPBDate:fetchDate];
   fetchDate = v17->_fetchDate;
   v17->_fetchDate = v27;
 
-  v29 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   loadDate = v17->_loadDate;
-  v17->_loadDate = v29;
+  v17->_loadDate = date;
 
   v31 = MEMORY[0x1E695DF00];
-  v32 = [v10 base];
-  v33 = [v32 modificationDate];
-  v34 = [v31 dateWithPBDate:v33];
+  base3 = [recordCopy base];
+  modificationDate = [base3 modificationDate];
+  v34 = [v31 dateWithPBDate:modificationDate];
   lastModifiedDate = v17->_lastModifiedDate;
   v17->_lastModifiedDate = v34;
 
-  v36 = [v10 base];
-  v37 = [v36 changeTag];
+  base4 = [recordCopy base];
+  changeTag = [base4 changeTag];
   versionKey = v17->_versionKey;
-  v17->_versionKey = v37;
+  v17->_versionKey = changeTag;
 
-  v17->_isDeprecated = [v10 isDeprecated];
-  v39 = [v10 replacementID];
+  v17->_isDeprecated = [recordCopy isDeprecated];
+  replacementID = [recordCopy replacementID];
   replacementID = v17->_replacementID;
-  v17->_replacementID = v39;
+  v17->_replacementID = replacementID;
 
-  v41 = [v10 highlightsArticleListID];
+  highlightsArticleListID = [recordCopy highlightsArticleListID];
   highlightsArticleListID = v17->_highlightsArticleListID;
-  v17->_highlightsArticleListID = v41;
+  v17->_highlightsArticleListID = highlightsArticleListID;
 
-  v17->_isExplicitContent = [v10 isExplicitContent];
-  v43 = [v10 primaryAudience];
+  v17->_isExplicitContent = [recordCopy isExplicitContent];
+  primaryAudience = [recordCopy primaryAudience];
   primaryAudience = v17->_primaryAudience;
-  v17->_primaryAudience = v43;
+  v17->_primaryAudience = primaryAudience;
 
-  v45 = [v10 iAdCategories];
+  iAdCategories = [recordCopy iAdCategories];
   iAdCategories = v17->_iAdCategories;
-  v17->_iAdCategories = v45;
+  v17->_iAdCategories = iAdCategories;
 
-  v47 = [v10 iAdKeywords];
+  iAdKeywords = [recordCopy iAdKeywords];
   iAdKeywords = v17->_iAdKeywords;
-  v17->_iAdKeywords = v47;
+  v17->_iAdKeywords = iAdKeywords;
 
-  v49 = [v10 language];
+  language = [recordCopy language];
   language = v17->_language;
-  v17->_language = v49;
+  v17->_language = language;
 
-  v51 = [v10 magazineGenre];
+  magazineGenre = [recordCopy magazineGenre];
   magazineGenre = v17->_magazineGenre;
-  v17->_magazineGenre = v51;
+  v17->_magazineGenre = magazineGenre;
 
-  v53 = [v10 superfeedConfigResourceID];
+  superfeedConfigResourceID = [recordCopy superfeedConfigResourceID];
   superfeedConfigResourceID = v17->_superfeedConfigResourceID;
-  v17->_superfeedConfigResourceID = v53;
+  v17->_superfeedConfigResourceID = superfeedConfigResourceID;
 
-  [v10 subscriptionRate];
+  [recordCopy subscriptionRate];
   v17->_subscriptionRate = v55;
-  v56 = [v10 adTargetingKeywords];
+  adTargetingKeywords = [recordCopy adTargetingKeywords];
   adTargetingKeywords = v17->_adTargetingKeywords;
-  v17->_adTargetingKeywords = v56;
+  v17->_adTargetingKeywords = adTargetingKeywords;
 
-  v58 = [v10 blockedStorefrontIDs];
+  blockedStorefrontIDs = [recordCopy blockedStorefrontIDs];
   blockedStorefrontIDs = v17->_blockedStorefrontIDs;
-  v17->_blockedStorefrontIDs = v58;
+  v17->_blockedStorefrontIDs = blockedStorefrontIDs;
 
-  v60 = [v10 allowedStorefrontIDs];
+  allowedStorefrontIDs = [recordCopy allowedStorefrontIDs];
   allowedStorefrontIDs = v17->_allowedStorefrontIDs;
-  v17->_allowedStorefrontIDs = v60;
+  v17->_allowedStorefrontIDs = allowedStorefrontIDs;
 
-  v17->_score = [v10 score];
-  v17->_contentProvider = [v10 contentProvider];
-  v17->_isPublic = [v10 isPublic];
-  v17->_minimumNewsVersion = [v10 minimumNewsVersion];
-  v17->_isNotificationEnabled = [v10 isNotificationEnabled];
-  v62 = [v10 subtitle];
+  v17->_score = [recordCopy score];
+  v17->_contentProvider = [recordCopy contentProvider];
+  v17->_isPublic = [recordCopy isPublic];
+  v17->_minimumNewsVersion = [recordCopy minimumNewsVersion];
+  v17->_isNotificationEnabled = [recordCopy isNotificationEnabled];
+  subtitle = [recordCopy subtitle];
   subtitle = v17->_subtitle;
-  v17->_subtitle = v62;
+  v17->_subtitle = subtitle;
 
-  v64 = [v10 latestIssueIDs];
+  latestIssueIDs = [recordCopy latestIssueIDs];
   currentIssueIDs = v17->_currentIssueIDs;
-  v17->_currentIssueIDs = v64;
+  v17->_currentIssueIDs = latestIssueIDs;
 
-  v66 = [v10 recentIssueIDs];
+  recentIssueIDs = [recordCopy recentIssueIDs];
   recentIssueIDs = v17->_recentIssueIDs;
-  v17->_recentIssueIDs = v66;
+  v17->_recentIssueIDs = recentIssueIDs;
 
-  v68 = [v10 archiveIssueListID];
+  archiveIssueListID = [recordCopy archiveIssueListID];
   backIssuesListID = v17->_backIssuesListID;
-  v17->_backIssuesListID = v68;
+  v17->_backIssuesListID = archiveIssueListID;
 
-  [v10 nameImageScaleFactor];
+  [recordCopy nameImageScaleFactor];
   v17->_bannerImageScale = v70;
-  v17->_bannerImageBaselineOffsetPercentage = [v10 nameImageBaselineShift];
-  v71 = [v10 generateLogoImageAssetHandleWithAssetManager:v11];
+  v17->_bannerImageBaselineOffsetPercentage = [recordCopy nameImageBaselineShift];
+  v71 = [recordCopy generateLogoImageAssetHandleWithAssetManager:managerCopy2];
   logoImageAssetHandle = v17->_logoImageAssetHandle;
   v17->_logoImageAssetHandle = v71;
 
-  v73 = [v10 generateNameImageAssetHandleWithAssetManager:v11];
+  v73 = [recordCopy generateNameImageAssetHandleWithAssetManager:managerCopy2];
   nameImageAssetHandle = v17->_nameImageAssetHandle;
   v17->_nameImageAssetHandle = v73;
 
-  v75 = [v10 generateNameImageCompactAssetHandleWithAssetManager:v11];
+  v75 = [recordCopy generateNameImageCompactAssetHandleWithAssetManager:managerCopy2];
   nameImageCompactAssetHandle = v17->_nameImageCompactAssetHandle;
   v17->_nameImageCompactAssetHandle = v75;
 
-  v77 = [v10 generateNameImageForDarkBackgroundAssetHandleWithAssetManager:v11];
+  v77 = [recordCopy generateNameImageForDarkBackgroundAssetHandleWithAssetManager:managerCopy2];
   nameImageForDarkBackgroundAssetHandle = v17->_nameImageForDarkBackgroundAssetHandle;
   v17->_nameImageForDarkBackgroundAssetHandle = v77;
 
-  v79 = [v10 nameImageMaskURL];
-  v80 = [v10 generateNameImageMaskAssetHandleForURL:v79 withAssetManager:v11];
+  nameImageMaskURL = [recordCopy nameImageMaskURL];
+  v80 = [recordCopy generateNameImageMaskAssetHandleForURL:nameImageMaskURL withAssetManager:managerCopy2];
   nameImageMaskAssetHandle = v17->_nameImageMaskAssetHandle;
   v17->_nameImageMaskAssetHandle = v80;
 
-  v82 = [v10 generateCoverImageAssetHandleWithAssetManager:v11];
+  v82 = [recordCopy generateCoverImageAssetHandleWithAssetManager:managerCopy2];
   coverImageAssetHandle = v17->_coverImageAssetHandle;
   v17->_coverImageAssetHandle = v82;
 
-  v84 = [v10 generateFeedNavImageAssetHandleWithAssetManager:v11];
+  v84 = [recordCopy generateFeedNavImageAssetHandleWithAssetManager:managerCopy2];
   feedNavImageAssetHandle = v17->_feedNavImageAssetHandle;
   v17->_feedNavImageAssetHandle = v84;
 
-  v86 = [v10 generateFeedNavImageHQAssetHandleWithAssetManager:v11];
+  v86 = [recordCopy generateFeedNavImageHQAssetHandleWithAssetManager:managerCopy2];
   feedNavImageHQAssetHandle = v17->_feedNavImageHQAssetHandle;
   v17->_feedNavImageHQAssetHandle = v86;
 
-  v88 = [v10 parentID];
+  parentID = [recordCopy parentID];
   parentID = v17->_parentID;
-  v17->_parentID = v88;
+  v17->_parentID = parentID;
 
-  v90 = [v10 channelSectionIDs];
+  channelSectionIDs = [recordCopy channelSectionIDs];
   sectionIDs = v17->_sectionIDs;
-  v17->_sectionIDs = v90;
+  v17->_sectionIDs = channelSectionIDs;
 
-  v92 = [v10 channelDefaultSectionID];
+  channelDefaultSectionID = [recordCopy channelDefaultSectionID];
   defaultSectionID = v17->_defaultSectionID;
-  v17->_defaultSectionID = v92;
+  v17->_defaultSectionID = channelDefaultSectionID;
 
-  v94 = [v10 channelSectionFeedConfigurations];
+  channelSectionFeedConfigurations = [recordCopy channelSectionFeedConfigurations];
   sectionFeedConfigurations = v17->_sectionFeedConfigurations;
-  v17->_sectionFeedConfigurations = v94;
+  v17->_sectionFeedConfigurations = channelSectionFeedConfigurations;
 
-  v96 = [v10 supergroupConfigJson];
+  supergroupConfigJson = [recordCopy supergroupConfigJson];
   supergroupConfigJson = v17->_supergroupConfigJson;
-  v17->_supergroupConfigJson = v96;
+  v17->_supergroupConfigJson = supergroupConfigJson;
 
   v98 = [(NSString *)v17->_supergroupConfigJson dataUsingEncoding:4];
-  v417 = v11;
+  v417 = managerCopy2;
   if (v98)
   {
     v99 = objc_opt_class();
@@ -557,7 +557,7 @@
       v104 = [v102 objectForKeyedSubscript:@"contextualNames"];
       v105 = FCCheckedDynamicCast(v103, v104);
 
-      v11 = v417;
+      managerCopy2 = v417;
       v106 = [v105 fc_arrayByTransformingWithBlock:&__block_literal_global_507_0];
     }
 
@@ -575,19 +575,19 @@
   contextualNames = v17->_contextualNames;
   v17->_contextualNames = v106;
 
-  v108 = [v10 supergroupKnobsJson];
+  supergroupKnobsJson = [recordCopy supergroupKnobsJson];
   supergroupKnobsJson = v17->_supergroupKnobsJson;
-  v17->_supergroupKnobsJson = v108;
+  v17->_supergroupKnobsJson = supergroupKnobsJson;
 
   v110 = [FCSectionSupergroupKnobs alloc];
-  v111 = [v10 supergroupKnobsJson];
-  v112 = [(FCSectionSupergroupKnobs *)v110 initWithJSONString:v111];
+  supergroupKnobsJson2 = [recordCopy supergroupKnobsJson];
+  v112 = [(FCSectionSupergroupKnobs *)v110 initWithJSONString:supergroupKnobsJson2];
   supergroupKnobs = v17->_supergroupKnobs;
   v17->_supergroupKnobs = v112;
 
-  v17->_hideAccessoryText = [v10 hideAccessoryText];
-  v114 = [v10 templateJson];
-  v115 = [v114 dataUsingEncoding:4];
+  v17->_hideAccessoryText = [recordCopy hideAccessoryText];
+  templateJson = [recordCopy templateJson];
+  v115 = [templateJson dataUsingEncoding:4];
 
   v422 = v115;
   if (v115)
@@ -597,9 +597,9 @@
     v117 = v426;
     if (v116)
     {
-      if (v11)
+      if (managerCopy2)
       {
-        v118 = v11[15];
+        v118 = managerCopy2[15];
       }
 
       else
@@ -616,9 +616,9 @@
       {
         v123 = v122;
         v409 = v120;
-        v124 = [@"2" integerValue];
+        integerValue = [@"2" integerValue];
         v125 = v123;
-        if (v124 == 2)
+        if (integerValue == 2)
         {
           v411 = v121;
           v408 = v121;
@@ -722,15 +722,15 @@
           darkStyleAdBackgroundColorHexString = v17->_darkStyleAdBackgroundColorHexString;
           v17->_darkStyleAdBackgroundColorHexString = v162;
 
-          v164 = [v125 objectForKeyedSubscript:@"adBackgroundGradient"];
-          v403 = v164;
-          if (v164)
+          v407 = [v125 objectForKeyedSubscript:@"adBackgroundGradient"];
+          v403 = v407;
+          if (v407)
           {
-            v164 = [FCColorGradient colorGradientWithConfigDict:v164, v164, v404, v405, v406, v407];
+            v407 = [FCColorGradient colorGradientWithConfigDict:v407, v407, v404, v405, v406, v407];
           }
 
           adBackgroundGradient = v17->_adBackgroundGradient;
-          v17->_adBackgroundGradient = v164;
+          v17->_adBackgroundGradient = v407;
 
           v166 = [v125 objectForKeyedSubscript:@"darkStyleAdBackgroundGradient"];
           v167 = v166;
@@ -783,7 +783,7 @@
           lazyContentColorMap = v17->_lazyContentColorMap;
           v17->_lazyContentColorMap = v204;
 
-          v11 = v417;
+          managerCopy2 = v417;
           v121 = v411;
         }
 
@@ -824,7 +824,7 @@
 
         v185 = v17->_headlineBylineTextInfo;
         v17->_headlineBylineTextInfo = v184;
-        v11 = v417;
+        managerCopy2 = v417;
 
         v121 = v412;
         v116 = v410;
@@ -851,12 +851,12 @@
   [(FCHeadlineTemplate *)v206 setBackgroundColor:v207];
 
   objc_storeStrong(&v17->_defaultHeadlineTemplate, v206);
-  v208 = [v10 nameImageMetadata];
+  nameImageMetadata = [recordCopy nameImageMetadata];
 
-  if (v208)
+  if (nameImageMetadata)
   {
-    v209 = [v10 nameImageMetadata];
-    v210 = [v209 length];
+    nameImageMetadata2 = [recordCopy nameImageMetadata];
+    v210 = [nameImageMetadata2 length];
 
     if (v210 <= 0x23 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -872,38 +872,38 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v211 = [v10 nameImageMetadata];
-    v212 = [v211 length];
+    nameImageMetadata3 = [recordCopy nameImageMetadata];
+    v212 = [nameImageMetadata3 length];
 
     if (v212 >= 0x24)
     {
-      v213 = [v10 nameImageMetadata];
-      v214 = [v213 bytes];
+      nameImageMetadata4 = [recordCopy nameImageMetadata];
+      bytes = [nameImageMetadata4 bytes];
 
-      LOWORD(v215) = *v214;
+      LOWORD(v215) = *bytes;
       v216 = v215;
-      LOWORD(v217) = v214[1];
+      LOWORD(v217) = bytes[1];
       v218 = v217;
       v17->_nameImageSize.width = v216;
       v17->_nameImageSize.height = v218;
-      LOWORD(v216) = v214[2];
+      LOWORD(v216) = bytes[2];
       v219 = *&v216;
-      LOWORD(v218) = v214[5];
+      LOWORD(v218) = bytes[5];
       v220 = *&v218;
-      LOWORD(v221) = v214[4];
+      LOWORD(v221) = bytes[4];
       v222 = v221;
-      LOWORD(v223) = v214[3];
+      LOWORD(v223) = bytes[3];
       v224 = v223;
       v17->_nameImageInsets.top = v219;
       v17->_nameImageInsets.left = v220;
       v17->_nameImageInsets.bottom = v222;
       v17->_nameImageInsets.right = v224;
-      LOWORD(v219) = v214[6];
-      LOWORD(v220) = v214[7];
-      LOWORD(v222) = v214[8];
-      LOWORD(v224) = v214[11];
-      LOWORD(v225) = v214[10];
-      LOWORD(v226) = v214[9];
+      LOWORD(v219) = bytes[6];
+      LOWORD(v220) = bytes[7];
+      LOWORD(v222) = bytes[8];
+      LOWORD(v224) = bytes[11];
+      LOWORD(v225) = bytes[10];
+      LOWORD(v226) = bytes[9];
       v17->_nameImageForDarkBackgroundSize.width = *&v219;
       v17->_nameImageForDarkBackgroundSize.height = *&v220;
       v227 = *&v222;
@@ -914,16 +914,16 @@
       v17->_nameImageForDarkBackgroundInsets.left = v228;
       v17->_nameImageForDarkBackgroundInsets.bottom = v225;
       v17->_nameImageForDarkBackgroundInsets.right = v226;
-      LOWORD(v227) = v214[12];
+      LOWORD(v227) = bytes[12];
       v231 = *&v227;
-      LOWORD(v228) = v214[13];
+      LOWORD(v228) = bytes[13];
       v232 = *&v228;
       v17->_nameImageMaskSize.width = v231;
       v17->_nameImageMaskSize.height = v232;
-      LOWORD(v231) = v214[14];
-      LOWORD(v232) = v214[17];
-      LOWORD(v229) = v214[16];
-      LOWORD(v230) = v214[15];
+      LOWORD(v231) = bytes[14];
+      LOWORD(v232) = bytes[17];
+      LOWORD(v229) = bytes[16];
+      LOWORD(v230) = bytes[15];
       v17->_nameImageMaskInsets.top = *&v231;
       v17->_nameImageMaskInsets.left = *&v232;
       v17->_nameImageMaskInsets.bottom = v229;
@@ -931,38 +931,38 @@
     }
   }
 
-  v233 = [v10 publisherPaidAuthorizationURL];
+  publisherPaidAuthorizationURL = [recordCopy publisherPaidAuthorizationURL];
   publisherPaidAuthorizationURL = v17->_publisherPaidAuthorizationURL;
-  v17->_publisherPaidAuthorizationURL = v233;
+  v17->_publisherPaidAuthorizationURL = publisherPaidAuthorizationURL;
 
-  v235 = [v10 publisherPaidVerificationURL];
+  publisherPaidVerificationURL = [recordCopy publisherPaidVerificationURL];
   publisherPaidVerificationURL = v17->_publisherPaidVerificationURL;
-  v17->_publisherPaidVerificationURL = v235;
+  v17->_publisherPaidVerificationURL = publisherPaidVerificationURL;
 
-  v237 = [v10 publisherPaidWebaccessURL];
+  publisherPaidWebaccessURL = [recordCopy publisherPaidWebaccessURL];
   publisherPaidWebAccessURL = v17->_publisherPaidWebAccessURL;
-  v17->_publisherPaidWebAccessURL = v237;
+  v17->_publisherPaidWebAccessURL = publisherPaidWebaccessURL;
 
-  v239 = [v10 publisherPaidFeldsparablePurchaseIDs];
+  publisherPaidFeldsparablePurchaseIDs = [recordCopy publisherPaidFeldsparablePurchaseIDs];
   publisherPaidFeldsparablePurchaseIDs = v17->_publisherPaidFeldsparablePurchaseIDs;
-  v17->_publisherPaidFeldsparablePurchaseIDs = v239;
+  v17->_publisherPaidFeldsparablePurchaseIDs = publisherPaidFeldsparablePurchaseIDs;
 
-  v241 = [v10 publisherPaidBundlePurchaseIDs];
+  publisherPaidBundlePurchaseIDs = [recordCopy publisherPaidBundlePurchaseIDs];
   publisherPaidBundlePurchaseIDs = v17->_publisherPaidBundlePurchaseIDs;
-  v17->_publisherPaidBundlePurchaseIDs = v241;
+  v17->_publisherPaidBundlePurchaseIDs = publisherPaidBundlePurchaseIDs;
 
-  v243 = [v10 purchaseOfferableConfigurations];
-  v244 = [FCTag purchaseOfferableConfigurationsFromProtobufList:v243];
+  purchaseOfferableConfigurations2 = [recordCopy purchaseOfferableConfigurations];
+  v244 = [FCTag purchaseOfferableConfigurationsFromProtobufList:purchaseOfferableConfigurations2];
   v245 = v17->_publisherPaidOfferableConfigurations;
   v17->_publisherPaidOfferableConfigurations = v244;
 
-  v17->_publisherPaidLeakyPaywallOptOut = [v10 publisherPaidLeakyPaywallOptOut];
-  v17->_publisherPaidWebAccessOptIn = [v10 publisherPaidWebOptIn];
-  v246 = [v10 publisherPaidDescriptionStrings];
+  v17->_publisherPaidLeakyPaywallOptOut = [recordCopy publisherPaidLeakyPaywallOptOut];
+  v17->_publisherPaidWebAccessOptIn = [recordCopy publisherPaidWebOptIn];
+  publisherPaidDescriptionStrings = [recordCopy publisherPaidDescriptionStrings];
   publisherPaidDescriptionStrings = v17->_publisherPaidDescriptionStrings;
-  v17->_publisherPaidDescriptionStrings = v246;
+  v17->_publisherPaidDescriptionStrings = publisherPaidDescriptionStrings;
 
-  v248 = [v10 groupingAvailability] - 1;
+  v248 = [recordCopy groupingAvailability] - 1;
   if (v248 < 3)
   {
     v249 = v248 + 1;
@@ -974,70 +974,70 @@
   }
 
   v17->_groupingEligibility = v249;
-  v17->_isHidden = [v10 isHidden];
-  v250 = [v10 nameImageMaskWidgetLQURL];
-  v251 = [v10 generateNameImageMaskAssetHandleForURL:v250 withAssetManager:v11];
+  v17->_isHidden = [recordCopy isHidden];
+  nameImageMaskWidgetLQURL = [recordCopy nameImageMaskWidgetLQURL];
+  v251 = [recordCopy generateNameImageMaskAssetHandleForURL:nameImageMaskWidgetLQURL withAssetManager:managerCopy2];
   nameImageMaskWidgetLQAssetHandle = v17->_nameImageMaskWidgetLQAssetHandle;
   v17->_nameImageMaskWidgetLQAssetHandle = v251;
 
-  v253 = [v10 nameImageMaskWidgetHQURL];
-  v254 = [v10 generateNameImageMaskAssetHandleForURL:v253 withAssetManager:v11];
+  nameImageMaskWidgetHQURL = [recordCopy nameImageMaskWidgetHQURL];
+  v254 = [recordCopy generateNameImageMaskAssetHandleForURL:nameImageMaskWidgetHQURL withAssetManager:managerCopy2];
   nameImageMaskWidgetHQAssetHandle = v17->_nameImageMaskWidgetHQAssetHandle;
   v17->_nameImageMaskWidgetHQAssetHandle = v254;
 
-  v256 = [v10 nameImageLargeURL];
-  v257 = [v10 generateNameImageLargeAssetHandleForURLString:v256 withAssetManager:v11];
+  nameImageLargeURL = [recordCopy nameImageLargeURL];
+  v257 = [recordCopy generateNameImageLargeAssetHandleForURLString:nameImageLargeURL withAssetManager:managerCopy2];
   nameImageLargeAssetHandle = v17->_nameImageLargeAssetHandle;
   v17->_nameImageLargeAssetHandle = v257;
 
-  v259 = [v10 nameImageLargeMaskURL];
-  v260 = [v10 generateNameImageLargeMaskAssetHandleForURLString:v259 withAssetManager:v11];
+  nameImageLargeMaskURL = [recordCopy nameImageLargeMaskURL];
+  v260 = [recordCopy generateNameImageLargeMaskAssetHandleForURLString:nameImageLargeMaskURL withAssetManager:managerCopy2];
   nameImageLargeMaskAssetHandle = v17->_nameImageLargeMaskAssetHandle;
   v17->_nameImageLargeMaskAssetHandle = v260;
 
-  v262 = [v10 navigationChromeBackgroundImageURL];
-  v263 = [v10 generateNavigationChromeBackgroundImageAssetHandleForURLString:v262 withAssetManager:v11];
+  navigationChromeBackgroundImageURL = [recordCopy navigationChromeBackgroundImageURL];
+  v263 = [recordCopy generateNavigationChromeBackgroundImageAssetHandleForURLString:navigationChromeBackgroundImageURL withAssetManager:managerCopy2];
   navigationChromeBackgroundImage = v17->_navigationChromeBackgroundImage;
   v17->_navigationChromeBackgroundImage = v263;
 
-  v265 = [v10 darkStyleNavigationChromeBackgroundImageURL];
-  v266 = [v10 generateNavigationChromeBackgroundImageAssetHandleForURLString:v265 withAssetManager:v11];
+  darkStyleNavigationChromeBackgroundImageURL = [recordCopy darkStyleNavigationChromeBackgroundImageURL];
+  v266 = [recordCopy generateNavigationChromeBackgroundImageAssetHandleForURLString:darkStyleNavigationChromeBackgroundImageURL withAssetManager:managerCopy2];
   darkStyleNavigationChromeBackgroundImage = v17->_darkStyleNavigationChromeBackgroundImage;
   v17->_darkStyleNavigationChromeBackgroundImage = v266;
 
-  v268 = [v10 navigationChromeBackgroundImageCompactURL];
-  v269 = [v10 generateNavigationChromeBackgroundImageCompactAssetHandleForURLString:v268 withAssetManager:v11];
+  navigationChromeBackgroundImageCompactURL = [recordCopy navigationChromeBackgroundImageCompactURL];
+  v269 = [recordCopy generateNavigationChromeBackgroundImageCompactAssetHandleForURLString:navigationChromeBackgroundImageCompactURL withAssetManager:managerCopy2];
   navigationChromeBackgroundImageCompact = v17->_navigationChromeBackgroundImageCompact;
   v17->_navigationChromeBackgroundImageCompact = v269;
 
-  v271 = [v10 darkStyleNavigationChromeBackgroundImageCompactURL];
-  v272 = [v10 generateNavigationChromeBackgroundImageCompactAssetHandleForURLString:v271 withAssetManager:v11];
+  darkStyleNavigationChromeBackgroundImageCompactURL = [recordCopy darkStyleNavigationChromeBackgroundImageCompactURL];
+  v272 = [recordCopy generateNavigationChromeBackgroundImageCompactAssetHandleForURLString:darkStyleNavigationChromeBackgroundImageCompactURL withAssetManager:managerCopy2];
   darkStyleNavigationChromeBackgroundImageCompact = v17->_darkStyleNavigationChromeBackgroundImageCompact;
   v17->_darkStyleNavigationChromeBackgroundImageCompact = v272;
 
-  v274 = [v10 navigationChromeBackgroundImageLargeURL];
-  v275 = [v10 generateNavigationChromeBackgroundImageLargeAssetHandleForURLString:v274 withAssetManager:v11];
+  navigationChromeBackgroundImageLargeURL = [recordCopy navigationChromeBackgroundImageLargeURL];
+  v275 = [recordCopy generateNavigationChromeBackgroundImageLargeAssetHandleForURLString:navigationChromeBackgroundImageLargeURL withAssetManager:managerCopy2];
   navigationChromeBackgroundImageLarge = v17->_navigationChromeBackgroundImageLarge;
   v17->_navigationChromeBackgroundImageLarge = v275;
 
-  v277 = [v10 darkStyleNavigationChromeBackgroundImageLargeURL];
-  v278 = [v10 generateNavigationChromeBackgroundImageLargeAssetHandleForURLString:v277 withAssetManager:v11];
+  darkStyleNavigationChromeBackgroundImageLargeURL = [recordCopy darkStyleNavigationChromeBackgroundImageLargeURL];
+  v278 = [recordCopy generateNavigationChromeBackgroundImageLargeAssetHandleForURLString:darkStyleNavigationChromeBackgroundImageLargeURL withAssetManager:managerCopy2];
   darkStyleNavigationChromeBackgroundImageLarge = v17->_darkStyleNavigationChromeBackgroundImageLarge;
   v17->_darkStyleNavigationChromeBackgroundImageLarge = v278;
 
-  v280 = [v10 nameImageCompactURL];
+  nameImageCompactURL = [recordCopy nameImageCompactURL];
 
-  if (v280)
+  if (nameImageCompactURL)
   {
-    v281 = [v10 nameImageCompactURL];
-    v282 = [v10 generateNameImageMaskAssetHandleForURL:v281 withAssetManager:v11];
+    nameImageCompactURL2 = [recordCopy nameImageCompactURL];
+    v282 = [recordCopy generateNameImageMaskAssetHandleForURL:nameImageCompactURL2 withAssetManager:managerCopy2];
     v283 = v17->_nameImageCompactAssetHandle;
     v17->_nameImageCompactAssetHandle = v282;
   }
 
-  objc_storeStrong(&v17->_tagRecord, a3);
-  objc_storeStrong(&v17->_assetManager, v420);
-  objc_storeStrong(&v17->_tagInterestToken, v414);
+  objc_storeStrong(&v17->_tagRecord, record);
+  objc_storeStrong(&v17->_assetManager, managerCopy);
+  objc_storeStrong(&v17->_tagInterestToken, tokenCopy2);
   v284 = [[FCTagBanner alloc] initWithAssetHandle:v17->_nameImageAssetHandle size:v17->_nameImageSize.width insets:v17->_nameImageSize.height, v17->_nameImageInsets.top, v17->_nameImageInsets.left, v17->_nameImageInsets.bottom, v17->_nameImageInsets.right];
   bannerImageForWhiteBackground = v17->_bannerImageForWhiteBackground;
   v17->_bannerImageForWhiteBackground = v284;
@@ -1055,137 +1055,137 @@
   compactBannerImage = v17->_compactBannerImage;
   v17->_compactBannerImage = v291;
 
-  v17->_isRealTimeTrackingEnabled = [v10 behaviorFlags] & 1;
-  v17->_isArticleReadCountReportingEnabled = ([v10 behaviorFlags] & 8) != 0;
-  v17->_isAutoDarkModeEnabled = ([v10 behaviorFlags] & 0x10) == 0;
-  v17->_disableFollow = ([v10 behaviorFlags] & 2) != 0;
-  v17->_disableBlock = ([v10 behaviorFlags] & 4) != 0;
-  v17->_useCompactNameForPersonalizedPaywall = ([v10 behaviorFlags] & 0x20) != 0;
-  v17->_sponsoredFeedEligible = ([v10 behaviorFlags] & 0x40) != 0;
-  v17->_allowsRecipes = ([v10 behaviorFlags] & 0x80) != 0;
-  v17->_isInternal = [v10 propertyFlags] & 1;
-  v17->_isSandbox = ([v10 propertyFlags] & 2) != 0;
-  v17->_isLocal = ([v10 propertyFlags] & 4) != 0;
-  v17->_isSensitiveTopic = ([v10 propertyFlags] & 8) != 0;
-  v17->_isNewspaper = ([v10 propertyFlags] & 0x10) != 0;
-  v17->_isMagazine = ([v10 propertyFlags] & 0x20) != 0;
-  v17->_isSports = ([v10 propertyFlags] & 0x40) != 0;
-  v17->_isMySports = ([v10 propertyFlags] & 0x80) != 0;
-  v17->_isPuzzleHub = ([v10 propertyFlags] >> 8) & 1;
-  v17->_isFoodTopic = ([v10 propertyFlags] & 0x200) != 0;
-  v17->_isFoodSection = ([v10 propertyFlags] & 0x400) != 0;
-  v17->_hasEvergreenArticleList = [v10 propertyFlagsLocalized] & 1;
-  v17->_hasRecipeList = ([v10 propertyFlagsLocalized] & 2) != 0;
-  v293 = [(FCTag *)v17 identifier];
-  v17->_isPuzzleType = [FCPuzzleType isPuzzleTypeIdentifier:v293];
+  v17->_isRealTimeTrackingEnabled = [recordCopy behaviorFlags] & 1;
+  v17->_isArticleReadCountReportingEnabled = ([recordCopy behaviorFlags] & 8) != 0;
+  v17->_isAutoDarkModeEnabled = ([recordCopy behaviorFlags] & 0x10) == 0;
+  v17->_disableFollow = ([recordCopy behaviorFlags] & 2) != 0;
+  v17->_disableBlock = ([recordCopy behaviorFlags] & 4) != 0;
+  v17->_useCompactNameForPersonalizedPaywall = ([recordCopy behaviorFlags] & 0x20) != 0;
+  v17->_sponsoredFeedEligible = ([recordCopy behaviorFlags] & 0x40) != 0;
+  v17->_allowsRecipes = ([recordCopy behaviorFlags] & 0x80) != 0;
+  v17->_isInternal = [recordCopy propertyFlags] & 1;
+  v17->_isSandbox = ([recordCopy propertyFlags] & 2) != 0;
+  v17->_isLocal = ([recordCopy propertyFlags] & 4) != 0;
+  v17->_isSensitiveTopic = ([recordCopy propertyFlags] & 8) != 0;
+  v17->_isNewspaper = ([recordCopy propertyFlags] & 0x10) != 0;
+  v17->_isMagazine = ([recordCopy propertyFlags] & 0x20) != 0;
+  v17->_isSports = ([recordCopy propertyFlags] & 0x40) != 0;
+  v17->_isMySports = ([recordCopy propertyFlags] & 0x80) != 0;
+  v17->_isPuzzleHub = ([recordCopy propertyFlags] >> 8) & 1;
+  v17->_isFoodTopic = ([recordCopy propertyFlags] & 0x200) != 0;
+  v17->_isFoodSection = ([recordCopy propertyFlags] & 0x400) != 0;
+  v17->_hasEvergreenArticleList = [recordCopy propertyFlagsLocalized] & 1;
+  v17->_hasRecipeList = ([recordCopy propertyFlagsLocalized] & 2) != 0;
+  identifier2 = [(FCTag *)v17 identifier];
+  v17->_isPuzzleType = [FCPuzzleType isPuzzleTypeIdentifier:identifier2];
 
-  v17->_specialTagFeedType = a6;
-  v17->_isFoodHub = a6 == 1;
-  v17->_isRecipeCatalog = a6 == 2;
+  v17->_specialTagFeedType = type;
+  v17->_isFoodHub = type == 1;
+  v17->_isRecipeCatalog = type == 2;
   v294 = v17->_isFoodTopic || v17->_allowsRecipes;
   v17->_hasRecipes = v294 & 1;
-  v17->_isSportsRecommendable = [v10 isSportsRecommendable];
-  v295 = [v10 generateSportsLogoImageAssetHandleWithAssetManager:v11];
+  v17->_isSportsRecommendable = [recordCopy isSportsRecommendable];
+  v295 = [recordCopy generateSportsLogoImageAssetHandleWithAssetManager:managerCopy2];
   sportsLogoImageAssetHandle = v17->_sportsLogoImageAssetHandle;
   v17->_sportsLogoImageAssetHandle = v295;
 
-  v297 = [v10 generateSportsLogoImageCompactAssetHandleWithAssetManager:v11];
+  v297 = [recordCopy generateSportsLogoImageCompactAssetHandleWithAssetManager:managerCopy2];
   sportsLogoImageCompactAssetHandle = v17->_sportsLogoImageCompactAssetHandle;
   v17->_sportsLogoImageCompactAssetHandle = v297;
 
-  v299 = [v10 generateSportsLogoImageLargeAssetHandleWithAssetManager:v11];
+  v299 = [recordCopy generateSportsLogoImageLargeAssetHandleWithAssetManager:managerCopy2];
   sportsLogoImageLargeAssetHandle = v17->_sportsLogoImageLargeAssetHandle;
   v17->_sportsLogoImageLargeAssetHandle = v299;
 
-  v301 = [v10 generateSportsLogoAltImageAssetHandleWithAssetManager:v11];
+  v301 = [recordCopy generateSportsLogoAltImageAssetHandleWithAssetManager:managerCopy2];
   sportsLogoAltImageAssetHandle = v17->_sportsLogoAltImageAssetHandle;
   v17->_sportsLogoAltImageAssetHandle = v301;
 
-  v303 = [v10 generateSportsLogoAltImageCompactAssetHandleWithAssetManager:v11];
+  v303 = [recordCopy generateSportsLogoAltImageCompactAssetHandleWithAssetManager:managerCopy2];
   sportsLogoAltImageCompactAssetHandle = v17->_sportsLogoAltImageCompactAssetHandle;
   v17->_sportsLogoAltImageCompactAssetHandle = v303;
 
-  v305 = [v10 generateSportsLogoAltImageLargeAssetHandleWithAssetManager:v11];
+  v305 = [recordCopy generateSportsLogoAltImageLargeAssetHandleWithAssetManager:managerCopy2];
   sportsLogoAltImageLargeAssetHandle = v17->_sportsLogoAltImageLargeAssetHandle;
   v17->_sportsLogoAltImageLargeAssetHandle = v305;
 
-  v307 = [v10 sportsData];
-  v308 = [v307 length];
+  sportsData = [recordCopy sportsData];
+  v308 = [sportsData length];
 
   if (v308)
   {
-    v309 = [v10 sportsData];
+    sportsData2 = [recordCopy sportsData];
     sportsData = v17->_sportsData;
-    v17->_sportsData = v309;
+    v17->_sportsData = sportsData2;
 
     v311 = MEMORY[0x1E695DF20];
-    v312 = [v10 sportsData];
-    v313 = [v311 fc_dictionaryFromJSON:v312];
+    sportsData3 = [recordCopy sportsData];
+    v313 = [v311 fc_dictionaryFromJSON:sportsData3];
 
     v314 = v313;
     v315 = [[FCSportsData alloc] initWithDictionary:v314];
 
-    v316 = [(FCSportsData *)v315 UMCCanonicalID];
+    uMCCanonicalID = [(FCSportsData *)v315 UMCCanonicalID];
     UMCCanonicalID = v17->_UMCCanonicalID;
-    v17->_UMCCanonicalID = v316;
+    v17->_UMCCanonicalID = uMCCanonicalID;
 
-    v318 = [(FCSportsData *)v315 sportsPrimaryName];
+    sportsPrimaryName = [(FCSportsData *)v315 sportsPrimaryName];
     sportsPrimaryName = v17->_sportsPrimaryName;
-    v17->_sportsPrimaryName = v318;
+    v17->_sportsPrimaryName = sportsPrimaryName;
 
-    v320 = [(FCSportsData *)v315 sportsNameAbbreviation];
+    sportsNameAbbreviation = [(FCSportsData *)v315 sportsNameAbbreviation];
     sportsNameAbbreviation = v17->_sportsNameAbbreviation;
-    v17->_sportsNameAbbreviation = v320;
+    v17->_sportsNameAbbreviation = sportsNameAbbreviation;
 
-    v322 = [(FCSportsData *)v315 sportsSecondaryName];
+    sportsSecondaryName = [(FCSportsData *)v315 sportsSecondaryName];
     sportsSecondaryName = v17->_sportsSecondaryName;
-    v17->_sportsSecondaryName = v322;
+    v17->_sportsSecondaryName = sportsSecondaryName;
 
-    v324 = [(FCSportsData *)v315 sportsSecondaryShortName];
+    sportsSecondaryShortName = [(FCSportsData *)v315 sportsSecondaryShortName];
     sportsSecondaryShortName = v17->_sportsSecondaryShortName;
-    v17->_sportsSecondaryShortName = v324;
+    v17->_sportsSecondaryShortName = sportsSecondaryShortName;
 
-    v326 = [(FCSportsData *)v315 sportsFullName];
+    sportsFullName = [(FCSportsData *)v315 sportsFullName];
     sportsFullName = v17->_sportsFullName;
-    v17->_sportsFullName = v326;
+    v17->_sportsFullName = sportsFullName;
 
-    v328 = [(FCSportsData *)v315 topLevelSportTagIdentifier];
+    topLevelSportTagIdentifier = [(FCSportsData *)v315 topLevelSportTagIdentifier];
     topLevelSportTagIdentifier = v17->_topLevelSportTagIdentifier;
-    v17->_topLevelSportTagIdentifier = v328;
+    v17->_topLevelSportTagIdentifier = topLevelSportTagIdentifier;
 
-    v330 = [(FCSportsData *)v315 topLevelGroupsTagIdentifiers];
+    topLevelGroupsTagIdentifiers = [(FCSportsData *)v315 topLevelGroupsTagIdentifiers];
     topLevelGroupsTagIdentifiers = v17->_topLevelGroupsTagIdentifiers;
-    v17->_topLevelGroupsTagIdentifiers = v330;
+    v17->_topLevelGroupsTagIdentifiers = topLevelGroupsTagIdentifiers;
 
-    v332 = [(FCSportsData *)v315 sportsNickname];
+    sportsNickname = [(FCSportsData *)v315 sportsNickname];
     sportsNickname = v17->_sportsNickname;
-    v17->_sportsNickname = v332;
+    v17->_sportsNickname = sportsNickname;
 
-    v334 = [(FCSportsData *)v315 sportsLocation];
+    sportsLocation = [(FCSportsData *)v315 sportsLocation];
     sportsLocation = v17->_sportsLocation;
-    v17->_sportsLocation = v334;
+    v17->_sportsLocation = sportsLocation;
 
     v17->_hideLocationInMasthead = [(FCSportsData *)v315 hideLocationInMasthead];
     v17->_sportsType = [(FCSportsData *)v315 sportsType];
-    v336 = [(FCSportsData *)v315 sportsTypeDisplayName];
+    sportsTypeDisplayName = [(FCSportsData *)v315 sportsTypeDisplayName];
     sportsTypeDisplayName = v17->_sportsTypeDisplayName;
-    v17->_sportsTypeDisplayName = v336;
+    v17->_sportsTypeDisplayName = sportsTypeDisplayName;
 
-    v338 = [(FCSportsData *)v315 sportsTypePluralizedDisplayName];
+    sportsTypePluralizedDisplayName = [(FCSportsData *)v315 sportsTypePluralizedDisplayName];
     sportsTypePluralizedDisplayName = v17->_sportsTypePluralizedDisplayName;
-    v17->_sportsTypePluralizedDisplayName = v338;
+    v17->_sportsTypePluralizedDisplayName = sportsTypePluralizedDisplayName;
 
     v17->_sportsLeagueType = [(FCSportsData *)v315 sportsLeagueType];
   }
 
-  v340 = [v10 sportsTheme];
-  v341 = [v340 length];
+  sportsTheme = [recordCopy sportsTheme];
+  v341 = [sportsTheme length];
 
   if (v341)
   {
     v342 = MEMORY[0x1E695DF20];
-    v343 = [v10 sportsTheme];
-    v344 = [v342 fc_dictionaryFromJSON:v343];
+    sportsTheme2 = [recordCopy sportsTheme];
+    v344 = [v342 fc_dictionaryFromJSON:sportsTheme2];
 
     v345 = v344;
     v346 = [v345 objectForKeyedSubscript:@"primaryColor"];
@@ -1212,22 +1212,22 @@
     v17->_sportsLogoMastheadVisibility = FCMastheadLogoVisibilityFromString(v357);
   }
 
-  v358 = [v10 publisherSpecifiedArticleIDs];
+  publisherSpecifiedArticleIDs = [recordCopy publisherSpecifiedArticleIDs];
   publisherSpecifiedArticleIDs = v17->_publisherSpecifiedArticleIDs;
-  v17->_publisherSpecifiedArticleIDs = v358;
+  v17->_publisherSpecifiedArticleIDs = publisherSpecifiedArticleIDs;
 
   v360 = MEMORY[0x1E695DF00];
-  v361 = [v10 publisherSpecifiedArticleIDsModifiedDate];
-  v362 = [v360 dateWithPBDate:v361];
+  publisherSpecifiedArticleIDsModifiedDate = [recordCopy publisherSpecifiedArticleIDsModifiedDate];
+  v362 = [v360 dateWithPBDate:publisherSpecifiedArticleIDsModifiedDate];
   publisherSpecifiedArticleIDsModifiedDate = v17->_publisherSpecifiedArticleIDsModifiedDate;
   v17->_publisherSpecifiedArticleIDsModifiedDate = v362;
 
-  if ([v10 hasPublisherSpecifiedArticlesJson])
+  if ([recordCopy hasPublisherSpecifiedArticlesJson])
   {
     v364 = MEMORY[0x1E695DF20];
-    v421 = v10;
-    v365 = [v10 publisherSpecifiedArticlesJson];
-    v366 = [v364 fc_dictionaryFromJSON:v365];
+    v421 = recordCopy;
+    publisherSpecifiedArticlesJson = [recordCopy publisherSpecifiedArticlesJson];
+    v366 = [v364 fc_dictionaryFromJSON:publisherSpecifiedArticlesJson];
 
     obja = v366;
     v367 = [v366 objectForKeyedSubscript:@"articles"];
@@ -1252,13 +1252,13 @@
           }
 
           v374 = [[FCPublisherSpecifiedArticle alloc] initWithDictionary:*(*(&v427 + 1) + 8 * i)];
-          v375 = [(FCPublisherSpecifiedArticle *)v374 articleID];
-          v376 = [v375 length];
+          articleID = [(FCPublisherSpecifiedArticle *)v374 articleID];
+          v376 = [articleID length];
 
           if (v376)
           {
-            v377 = [(FCPublisherSpecifiedArticle *)v374 articleID];
-            [v368 setObject:v374 forKeyedSubscript:v377];
+            articleID2 = [(FCPublisherSpecifiedArticle *)v374 articleID];
+            [v368 setObject:v374 forKeyedSubscript:articleID2];
           }
         }
 
@@ -1280,24 +1280,24 @@
 
     objc_storeStrong(&v17->_publisherSpecifiedArticles, v378);
 
-    v10 = v421;
-    v11 = v417;
+    recordCopy = v421;
+    managerCopy2 = v417;
   }
 
-  v379 = [v10 paidBundlePaywallConfigurationJson];
-  v380 = [v379 length];
+  paidBundlePaywallConfigurationJson = [recordCopy paidBundlePaywallConfigurationJson];
+  v380 = [paidBundlePaywallConfigurationJson length];
 
   if (v380)
   {
     v381 = MEMORY[0x1E695DF20];
-    v382 = [v10 paidBundlePaywallConfigurationJson];
-    v383 = [v381 fc_dictionaryFromJSON:v382];
+    paidBundlePaywallConfigurationJson2 = [recordCopy paidBundlePaywallConfigurationJson];
+    v383 = [v381 fc_dictionaryFromJSON:paidBundlePaywallConfigurationJson2];
 
     paidBundlePaywallConfiguration = [v383 allKeys];
     if ([paidBundlePaywallConfiguration count])
     {
-      v385 = [v383 allKeys];
-      v386 = [v385 containsObject:@"subscriptionButton"];
+      allKeys = [v383 allKeys];
+      v386 = [allKeys containsObject:@"subscriptionButton"];
 
       if (!v386)
       {
@@ -1315,16 +1315,16 @@ LABEL_75:
   }
 
 LABEL_76:
-  v388 = [(FCTag *)v17 sportsRecommendationMappingsJSON];
-  v389 = [v388 length];
+  sportsRecommendationMappingsJSON = [(FCTag *)v17 sportsRecommendationMappingsJSON];
+  v389 = [sportsRecommendationMappingsJSON length];
 
   if (v389)
   {
-    v390 = [(FCTag *)v17 sportsRecommendationMappingsJSON];
-    if (v390)
+    sportsRecommendationMappingsJSON2 = [(FCTag *)v17 sportsRecommendationMappingsJSON];
+    if (sportsRecommendationMappingsJSON2)
     {
       v425 = 0;
-      v391 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v390 options:0 error:&v425];
+      v391 = [MEMORY[0x1E696ACB0] JSONObjectWithData:sportsRecommendationMappingsJSON2 options:0 error:&v425];
       v392 = v425;
       if (v392)
       {
@@ -1354,7 +1354,7 @@ LABEL_76:
   v399 = v17->_nameCompact;
   v17->_nameCompact = v398;
 
-  v17->_foodGroupingAvailability = [v10 foodGroupingAvailability];
+  v17->_foodGroupingAvailability = [recordCopy foodGroupingAvailability];
   objc_autoreleasePoolPop(context);
 LABEL_85:
 
@@ -1362,16 +1362,16 @@ LABEL_85:
   return v17;
 }
 
-- (id)purchaseOfferableConfigurationsFromProtobufList:(void *)a1
+- (id)purchaseOfferableConfigurationsFromProtobufList:(void *)list
 {
   v20 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  v2 = [MEMORY[0x1E695DF70] array];
+  listCopy = list;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v1;
+  obj = listCopy;
   v3 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
@@ -1388,10 +1388,10 @@ LABEL_85:
 
         v7 = *(*(&v15 + 1) + 8 * i);
         v8 = [FCPurchaseOfferableConfiguration alloc];
-        v9 = [v7 purchaseId];
-        v10 = -[FCPurchaseOfferableConfiguration initWithPurchaseID:allowsPublisherPhoneApp:allowsPublisherPadApp:allowsPublisherWebsite:preferredOffer:](v8, "initWithPurchaseID:allowsPublisherPhoneApp:allowsPublisherPadApp:allowsPublisherWebsite:preferredOffer:", v9, [v7 allowsPublisherPhoneApp], objc_msgSend(v7, "allowsPublisherPadApp"), objc_msgSend(v7, "allowsPublisherWebSite"), objc_msgSend(v7, "preferredOffer"));
+        purchaseId = [v7 purchaseId];
+        v10 = -[FCPurchaseOfferableConfiguration initWithPurchaseID:allowsPublisherPhoneApp:allowsPublisherPadApp:allowsPublisherWebsite:preferredOffer:](v8, "initWithPurchaseID:allowsPublisherPhoneApp:allowsPublisherPadApp:allowsPublisherWebsite:preferredOffer:", purchaseId, [v7 allowsPublisherPhoneApp], objc_msgSend(v7, "allowsPublisherPadApp"), objc_msgSend(v7, "allowsPublisherWebSite"), objc_msgSend(v7, "preferredOffer"));
 
-        [v2 addObject:v10];
+        [array addObject:v10];
       }
 
       v4 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1400,7 +1400,7 @@ LABEL_85:
     while (v4);
   }
 
-  v11 = [v2 copy];
+  v11 = [array copy];
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
@@ -1423,32 +1423,32 @@ LABEL_85:
 
 - (NSArray)loadableFonts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FCTag *)self headlineTitleTextInfo];
-  v5 = [v4 font];
+  array = [MEMORY[0x1E695DF70] array];
+  headlineTitleTextInfo = [(FCTag *)self headlineTitleTextInfo];
+  font = [headlineTitleTextInfo font];
 
-  if (v5)
+  if (font)
   {
-    [v3 addObject:v5];
+    [array addObject:font];
   }
 
-  v6 = [(FCTag *)self headlineExcerptTextInfo];
-  v7 = [v6 font];
+  headlineExcerptTextInfo = [(FCTag *)self headlineExcerptTextInfo];
+  font2 = [headlineExcerptTextInfo font];
 
-  if (v7)
+  if (font2)
   {
-    [v3 addObject:v7];
+    [array addObject:font2];
   }
 
-  v8 = [(FCTag *)self headlineBylineTextInfo];
-  v9 = [v8 font];
+  headlineBylineTextInfo = [(FCTag *)self headlineBylineTextInfo];
+  font3 = [headlineBylineTextInfo font];
 
-  if (v9)
+  if (font3)
   {
-    [v3 addObject:v9];
+    [array addObject:font3];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)isBlockedExplicitContent
@@ -1461,8 +1461,8 @@ LABEL_85:
 
   else
   {
-    v5 = [(FCTag *)self primaryAudience];
-    v4 = [v5 isEqualToString:@"MATURE"];
+    primaryAudience = [(FCTag *)self primaryAudience];
+    v4 = [primaryAudience isEqualToString:@"MATURE"];
   }
 
   return v4;
@@ -1471,34 +1471,34 @@ LABEL_85:
 - (NSString)description
 {
   v3 = [FCDescription descriptionWithObject:self];
-  v4 = [(FCTag *)self name];
-  [v3 addField:@"name" value:v4];
+  name = [(FCTag *)self name];
+  [v3 addField:@"name" value:name];
 
-  v5 = [(FCTag *)self identifier];
-  [v3 addField:@"ID" value:v5];
+  identifier = [(FCTag *)self identifier];
+  [v3 addField:@"ID" value:identifier];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 - (NSData)data
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 data];
+  tagRecord = [(FCTag *)self tagRecord];
+  data = [tagRecord data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)groupName
 {
   v3 = objc_opt_new();
-  v4 = [(FCTag *)self titleDisplayPrefix];
+  titleDisplayPrefix = [(FCTag *)self titleDisplayPrefix];
 
-  if (v4)
+  if (titleDisplayPrefix)
   {
-    v5 = [(FCTag *)self titleDisplayPrefix];
-    [v3 appendString:v5];
+    titleDisplayPrefix2 = [(FCTag *)self titleDisplayPrefix];
+    [v3 appendString:titleDisplayPrefix2];
   }
 
   if (self->_name)
@@ -1506,12 +1506,12 @@ LABEL_85:
     [v3 appendString:?];
   }
 
-  v6 = [(FCTag *)self titleDisplaySuffix];
+  titleDisplaySuffix = [(FCTag *)self titleDisplaySuffix];
 
-  if (v6)
+  if (titleDisplaySuffix)
   {
-    v7 = [(FCTag *)self titleDisplaySuffix];
-    [v3 appendString:v7];
+    titleDisplaySuffix2 = [(FCTag *)self titleDisplaySuffix];
+    [v3 appendString:titleDisplaySuffix2];
   }
 
   v8 = [v3 copy];
@@ -1521,9 +1521,9 @@ LABEL_85:
 
 - (NSString)displayName
 {
-  v3 = [(FCTag *)self asSports];
-  v4 = v3;
-  if (v3 && (v5 = [v3 sportsType], v5 <= 0xB))
+  asSports = [(FCTag *)self asSports];
+  v4 = asSports;
+  if (asSports && (v5 = [asSports sportsType], v5 <= 0xB))
   {
     if (((1 << v5) & 0xFDB) != 0)
     {
@@ -1538,87 +1538,87 @@ LABEL_85:
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      name = v6;
     }
 
     else
     {
-      v8 = [(FCTag *)self name];
+      name = [(FCTag *)self name];
     }
 
-    v9 = v8;
+    name2 = name;
   }
 
   else
   {
-    v9 = [(FCTag *)self name];
+    name2 = [(FCTag *)self name];
   }
 
-  return v9;
+  return name2;
 }
 
 - (NSString)compactDisplayName
 {
-  v3 = [(FCTag *)self asSports];
-  v4 = v3;
-  if (v3 && ([v3 sportsSecondaryShortName], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  asSports = [(FCTag *)self asSports];
+  v4 = asSports;
+  if (asSports && ([asSports sportsSecondaryShortName], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     v7 = FCBundle();
     v8 = [v7 localizedStringForKey:@"%@ (%@)" value:&stru_1F2DC7DC0 table:0];
-    v9 = [(FCTag *)self mainCompactDisplayName];
-    v10 = [v4 sportsSecondaryShortName];
-    v11 = [v6 initWithFormat:v8, v9, v10];
+    mainCompactDisplayName = [(FCTag *)self mainCompactDisplayName];
+    sportsSecondaryShortName = [v4 sportsSecondaryShortName];
+    mainCompactDisplayName2 = [v6 initWithFormat:v8, mainCompactDisplayName, sportsSecondaryShortName];
   }
 
   else
   {
-    v11 = [(FCTag *)self mainCompactDisplayName];
+    mainCompactDisplayName2 = [(FCTag *)self mainCompactDisplayName];
   }
 
-  return v11;
+  return mainCompactDisplayName2;
 }
 
 - (id)mainCompactDisplayName
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 nameCompact];
-    if (v2 && (v3 = v2, [v1 nameCompact], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", &stru_1F2DC7DC0), v4, v3, (v5 & 1) == 0))
+    nameCompact = [self nameCompact];
+    if (nameCompact && (v3 = nameCompact, [selfCopy nameCompact], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", &stru_1F2DC7DC0), v4, v3, (v5 & 1) == 0))
     {
-      v1 = [v1 nameCompact];
+      selfCopy = [selfCopy nameCompact];
     }
 
     else
     {
-      v6 = [v1 asSports];
-      v7 = v6;
-      if (v6)
+      asSports = [selfCopy asSports];
+      v7 = asSports;
+      if (asSports)
       {
-        v8 = [v6 sportsPrimaryName];
-        v9 = v8;
-        if (v8)
+        sportsPrimaryName = [asSports sportsPrimaryName];
+        v9 = sportsPrimaryName;
+        if (sportsPrimaryName)
         {
-          v10 = v8;
+          displayName = sportsPrimaryName;
         }
 
         else
         {
-          v10 = [v1 displayName];
+          displayName = [selfCopy displayName];
         }
 
-        v1 = v10;
+        selfCopy = displayName;
       }
 
       else
       {
-        v1 = [v1 displayName];
+        selfCopy = [selfCopy displayName];
       }
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 id __60__FCTag__inflateFromVersionlessJSONDictionary_URLGenerator___block_invoke(void *a1, void *a2, void *a3)
@@ -1736,15 +1736,15 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   return v22;
 }
 
-- (id)initForTestingWithTagType:(unint64_t)a3 identifier:(id)a4 name:(id)a5 umcCanonicalID:(id)a6
+- (id)initForTestingWithTagType:(unint64_t)type identifier:(id)identifier name:(id)name umcCanonicalID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
   if (self)
   {
-    if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier != 0"];
       *v22 = 136315906;
@@ -1763,18 +1763,18 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
     self = objc_msgSendSuper2(v22, sel_init);
     if (self)
     {
-      if ([v10 length])
+      if ([identifierCopy length])
       {
-        self->_tagType = a3;
-        v13 = [v10 copy];
+        self->_tagType = type;
+        v13 = [identifierCopy copy];
         identifier = self->_identifier;
         self->_identifier = v13;
 
-        v15 = [v11 copy];
+        v15 = [nameCopy copy];
         name = self->_name;
         self->_name = v15;
 
-        v17 = [v12 copy];
+        v17 = [dCopy copy];
         UMCCanonicalID = self->_UMCCanonicalID;
         self->_UMCCanonicalID = v17;
 
@@ -1793,15 +1793,15 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   return self;
 }
 
-- (id)initChannelForTestingWithIdentifier:(id)a3 name:(id)a4 defaultSection:(id)a5 publisherAuthorizationURL:(id)a6 publisherVerificationURL:(id)a7
+- (id)initChannelForTestingWithIdentifier:(id)identifier name:(id)name defaultSection:(id)section publisherAuthorizationURL:(id)l publisherVerificationURL:(id)rL
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (![v12 length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  nameCopy = name;
+  sectionCopy = section;
+  lCopy = l;
+  rLCopy = rL;
+  if (![identifierCopy length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier.length != 0"];
     *buf = 136315906;
@@ -1820,26 +1820,26 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   v17 = [(FCTag *)&v31 init];
   if (v17)
   {
-    if ([v12 length])
+    if ([identifierCopy length])
     {
       v17->_tagType = 2;
-      v18 = [v12 copy];
+      v18 = [identifierCopy copy];
       identifier = v17->_identifier;
       v17->_identifier = v18;
 
-      v20 = [v13 copy];
+      v20 = [nameCopy copy];
       name = v17->_name;
       v17->_name = v20;
 
-      v22 = [v14 copy];
+      v22 = [sectionCopy copy];
       defaultSectionID = v17->_defaultSectionID;
       v17->_defaultSectionID = v22;
 
-      v24 = [v15 copy];
+      v24 = [lCopy copy];
       publisherPaidAuthorizationURL = v17->_publisherPaidAuthorizationURL;
       v17->_publisherPaidAuthorizationURL = v24;
 
-      v26 = [v16 copy];
+      v26 = [rLCopy copy];
       publisherPaidVerificationURL = v17->_publisherPaidVerificationURL;
       v17->_publisherPaidVerificationURL = v26;
     }
@@ -1855,13 +1855,13 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   return v17;
 }
 
-- (id)initChannelForTestingWithIdentifier:(id)a3 name:(id)a4 publisherPaidBundlePurchaseIDs:(id)a5
+- (id)initChannelForTestingWithIdentifier:(id)identifier name:(id)name publisherPaidBundlePurchaseIDs:(id)ds
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  nameCopy = name;
+  dsCopy = ds;
+  if (![identifierCopy length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier.length != 0"];
     *buf = 136315906;
@@ -1880,18 +1880,18 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   v11 = [(FCTag *)&v21 init];
   if (v11)
   {
-    if ([v8 length])
+    if ([identifierCopy length])
     {
       v11->_tagType = 2;
-      v12 = [v8 copy];
+      v12 = [identifierCopy copy];
       identifier = v11->_identifier;
       v11->_identifier = v12;
 
-      v14 = [v9 copy];
+      v14 = [nameCopy copy];
       name = v11->_name;
       v11->_name = v14;
 
-      v16 = [v10 copy];
+      v16 = [dsCopy copy];
       publisherPaidBundlePurchaseIDs = v11->_publisherPaidBundlePurchaseIDs;
       v11->_publisherPaidBundlePurchaseIDs = v16;
     }
@@ -1907,14 +1907,14 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   return v11;
 }
 
-- (id)initChannelFromNotificationWithIdentifier:(id)a3 name:(id)a4 nameImageAssetHandle:(id)a5 nameImageMaskAssetHandle:(id)a6
+- (id)initChannelFromNotificationWithIdentifier:(id)identifier name:(id)name nameImageAssetHandle:(id)handle nameImageMaskAssetHandle:(id)assetHandle
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v10 length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  nameCopy = name;
+  handleCopy = handle;
+  assetHandleCopy = assetHandle;
+  if (![identifierCopy length] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier.length != 0"];
     *buf = 136315906;
@@ -1933,26 +1933,26 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   v14 = [(FCTag *)&v29 init];
   if (v14)
   {
-    if ([v10 length])
+    if ([identifierCopy length])
     {
       v14->_tagType = 2;
-      v15 = [v10 copy];
+      v15 = [identifierCopy copy];
       identifier = v14->_identifier;
       v14->_identifier = v15;
 
-      v17 = [v11 copy];
+      v17 = [nameCopy copy];
       name = v14->_name;
       v14->_name = v17;
 
-      objc_storeStrong(&v14->_nameImageAssetHandle, a5);
+      objc_storeStrong(&v14->_nameImageAssetHandle, handle);
       v19 = [FCTagBanner alloc];
       v20 = *MEMORY[0x1E695F060];
       v21 = *(MEMORY[0x1E695F060] + 8);
-      v22 = [(FCTagBanner *)v19 initWithAssetHandle:v12 size:*MEMORY[0x1E695F060] insets:v21, 0.0, 0.0, 0.0, 0.0];
+      v22 = [(FCTagBanner *)v19 initWithAssetHandle:handleCopy size:*MEMORY[0x1E695F060] insets:v21, 0.0, 0.0, 0.0, 0.0];
       bannerImageForWhiteBackground = v14->_bannerImageForWhiteBackground;
       v14->_bannerImageForWhiteBackground = v22;
 
-      v24 = [[FCTagBanner alloc] initWithAssetHandle:v13 size:v20 insets:v21, 0.0, 0.0, 0.0, 0.0];
+      v24 = [[FCTagBanner alloc] initWithAssetHandle:assetHandleCopy size:v20 insets:v21, 0.0, 0.0, 0.0, 0.0];
       bannerImageForMask = v14->_bannerImageForMask;
       v14->_bannerImageForMask = v24;
     }
@@ -1968,15 +1968,15 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1994,9 +1994,9 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
 
   if (v6)
   {
-    v7 = [(FCTag *)self identifier];
-    v8 = [v6 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier = [(FCTag *)self identifier];
+    identifier2 = [v6 identifier];
+    v9 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -2009,113 +2009,113 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
 
 - (unint64_t)hash
 {
-  v2 = [(FCTag *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(FCTag *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (FCContentArchive)contentArchive
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [FCContentArchive archiveWithRecord:v2];
+  tagRecord = [(FCTag *)self tagRecord];
+  v3 = [FCContentArchive archiveWithRecord:tagRecord];
 
   return v3;
 }
 
 - (FCContentManifest)contentManifest
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 base];
-  v4 = [v3 contentManifest];
+  tagRecord = [(FCTag *)self tagRecord];
+  base = [tagRecord base];
+  contentManifest = [base contentManifest];
 
-  return v4;
+  return contentManifest;
 }
 
 - (FCChannelProviding)asChannel
 {
   if ([(FCTag *)self tagType]== 2)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (FCSectionProviding)asSection
 {
-  v2 = self;
-  if ([(FCTag *)self tagType]!= 3 && [(FCTag *)v2 tagType]!= 5 && [(FCTag *)v2 tagType]!= 4)
+  selfCopy = self;
+  if ([(FCTag *)self tagType]!= 3 && [(FCTag *)selfCopy tagType]!= 5 && [(FCTag *)selfCopy tagType]!= 4)
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (FCTopicProviding)asTopic
 {
   if ([(FCTag *)self tagType]== 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (FCSportsProviding)asSports
 {
   if ([(FCTag *)self isSports])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (FCSportsEventProviding)asSportsEvent
 {
   if ([(FCTag *)self isSportsEvent])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (FCPuzzleTypeProviding)asPuzzleType
 {
   if ([(FCTag *)self isPuzzleType])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isSubscribable
@@ -2129,8 +2129,8 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
 
     if ([(FCTag *)self tagType]== 2)
     {
-      v4 = [(FCTag *)self defaultSectionID];
-      v3 = v4 != 0;
+      defaultSectionID = [(FCTag *)self defaultSectionID];
+      v3 = defaultSectionID != 0;
 
       return v3;
     }
@@ -2143,49 +2143,49 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
 {
   if ([(FCTag *)self useCompactNameForPersonalizedPaywall])
   {
-    v3 = [(FCTag *)self nameCompact];
-    v4 = v3;
-    if (v3)
+    nameCompact = [(FCTag *)self nameCompact];
+    v4 = nameCompact;
+    if (nameCompact)
     {
-      v5 = v3;
+      name = nameCompact;
     }
 
     else
     {
-      v5 = [(FCTag *)self name];
+      name = [(FCTag *)self name];
     }
 
-    v6 = v5;
+    name2 = name;
   }
 
   else
   {
-    v6 = [(FCTag *)self name];
+    name2 = [(FCTag *)self name];
   }
 
-  return v6;
+  return name2;
 }
 
-- (BOOL)isEqualToTag:(id)a3
+- (BOOL)isEqualToTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = objc_opt_class();
-  v6 = FCCheckedDynamicCast(v5, v4);
+  v6 = FCCheckedDynamicCast(v5, tagCopy);
 
-  v7 = [(FCTag *)self versionKey];
-  v8 = [v6 versionKey];
-  v9 = [v7 isEqualToString:v8];
+  versionKey = [(FCTag *)self versionKey];
+  versionKey2 = [v6 versionKey];
+  v9 = [versionKey isEqualToString:versionKey2];
 
   return v9;
 }
 
-- (id)freeFeedIDForBin:(int64_t)a3
+- (id)freeFeedIDForBin:(int64_t)bin
 {
-  v5 = [(FCTag *)self pptFeedIDOverride];
+  pptFeedIDOverride = [(FCTag *)self pptFeedIDOverride];
 
-  if (v5)
+  if (pptFeedIDOverride)
   {
-    v6 = [(FCTag *)self pptFeedIDOverride];
+    pptFeedIDOverride2 = [(FCTag *)self pptFeedIDOverride];
   }
 
   else
@@ -2200,31 +2200,31 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
       feedConfiguration = 0;
     }
 
-    v8 = [(NTPBFeedConfiguration *)feedConfiguration feedIDForBin:a3 paid:0];
+    v8 = [(NTPBFeedConfiguration *)feedConfiguration feedIDForBin:bin paid:0];
     v9 = v8;
     if (v8)
     {
-      v10 = v8;
+      identifier = v8;
     }
 
     else
     {
-      v10 = [(FCTag *)self identifier];
+      identifier = [(FCTag *)self identifier];
     }
 
-    v6 = v10;
+    pptFeedIDOverride2 = identifier;
   }
 
-  return v6;
+  return pptFeedIDOverride2;
 }
 
-- (id)paidFeedIDForBin:(int64_t)a3
+- (id)paidFeedIDForBin:(int64_t)bin
 {
-  v5 = [(FCTag *)self pptFeedIDOverride];
+  pptFeedIDOverride = [(FCTag *)self pptFeedIDOverride];
 
-  if (v5)
+  if (pptFeedIDOverride)
   {
-    v6 = [(FCTag *)self pptFeedIDOverride];
+    pptFeedIDOverride2 = [(FCTag *)self pptFeedIDOverride];
   }
 
   else
@@ -2239,7 +2239,7 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
       feedConfiguration = 0;
     }
 
-    v8 = [(NTPBFeedConfiguration *)feedConfiguration feedIDForBin:a3 paid:1];
+    v8 = [(NTPBFeedConfiguration *)feedConfiguration feedIDForBin:bin paid:1];
     v9 = v8;
     if (v8)
     {
@@ -2248,19 +2248,19 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
 
     else
     {
-      v10 = [(FCTag *)self freeFeedIDForBin:a3];
+      v10 = [(FCTag *)self freeFeedIDForBin:bin];
     }
 
-    v6 = v10;
+    pptFeedIDOverride2 = v10;
   }
 
-  return v6;
+  return pptFeedIDOverride2;
 }
 
-- (id)_feedConfigurationForSection:(id *)a1
+- (id)_feedConfigurationForSection:(id *)section
 {
   v3 = a2;
-  if (a1)
+  if (section)
   {
     v14 = 0;
     v15 = &v14;
@@ -2268,29 +2268,29 @@ FCContentColorMap *__61__FCTag__inflateFromJSONDictionary_withVersion_URLGenerat
     v17 = __Block_byref_object_copy__49;
     v18 = __Block_byref_object_dispose__49;
     v19 = 0;
-    v4 = [a1 sectionIDs];
-    v5 = [v4 count];
-    v6 = a1[135];
+    sectionIDs = [section sectionIDs];
+    v5 = [sectionIDs count];
+    v6 = section[135];
     v7 = [v6 count];
 
     if (v5 == v7)
     {
-      v8 = [a1 sectionIDs];
-      v9 = a1[135];
+      sectionIDs2 = [section sectionIDs];
+      v9 = section[135];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __38__FCTag__feedConfigurationForSection___block_invoke;
       v11[3] = &unk_1E7C41F80;
       v12 = v3;
       v13 = &v14;
-      [v8 fc_enumerateSideBySideWithArray:v9 reverse:0 block:v11];
+      [sectionIDs2 fc_enumerateSideBySideWithArray:v9 reverse:0 block:v11];
     }
 
-    a1 = v15[5];
+    section = v15[5];
     _Block_object_dispose(&v14, 8);
   }
 
-  return a1;
+  return section;
 }
 
 void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -2303,11 +2303,11 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)setTitleDisplayPrefixOverride:(id)a3
+- (id)setTitleDisplayPrefixOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v5 = [FCTag alloc];
-  v6 = [(FCTag *)self tagRecord];
+  tagRecord = [(FCTag *)self tagRecord];
   if (self)
   {
     v7 = self->_assetManager;
@@ -2322,18 +2322,18 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
     specialTagFeedType = 0;
   }
 
-  v10 = [(FCTag *)v5 initWithTagRecord:v6 assetManager:v7 interestToken:v8 specialTagFeedType:specialTagFeedType];
+  v10 = [(FCTag *)v5 initWithTagRecord:tagRecord assetManager:v7 interestToken:v8 specialTagFeedType:specialTagFeedType];
 
-  [(FCTag *)v10 setTitleDisplayPrefix:v4];
+  [(FCTag *)v10 setTitleDisplayPrefix:overrideCopy];
 
   return v10;
 }
 
-- (id)setTitleDisplaySuffixOverride:(id)a3
+- (id)setTitleDisplaySuffixOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v5 = [FCTag alloc];
-  v6 = [(FCTag *)self tagRecord];
+  tagRecord = [(FCTag *)self tagRecord];
   if (self)
   {
     v7 = self->_assetManager;
@@ -2348,27 +2348,27 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
     specialTagFeedType = 0;
   }
 
-  v10 = [(FCTag *)v5 initWithTagRecord:v6 assetManager:v7 interestToken:v8 specialTagFeedType:specialTagFeedType];
+  v10 = [(FCTag *)v5 initWithTagRecord:tagRecord assetManager:v7 interestToken:v8 specialTagFeedType:specialTagFeedType];
 
-  [(FCTag *)v10 setTitleDisplaySuffix:v4];
+  [(FCTag *)v10 setTitleDisplaySuffix:overrideCopy];
 
   return v10;
 }
 
-- (id)freeFeedIDForSection:(id)a3 bin:(int64_t)a4
+- (id)freeFeedIDForSection:(id)section bin:(int64_t)bin
 {
-  v6 = a3;
-  v7 = [(FCTag *)&self->super.isa _feedConfigurationForSection:v6];
-  v8 = [v7 feedIDForBin:a4 paid:0];
+  sectionCopy = section;
+  v7 = [(FCTag *)&self->super.isa _feedConfigurationForSection:sectionCopy];
+  v8 = [v7 feedIDForBin:bin paid:0];
 
   if (!v8)
   {
-    v9 = [(FCTag *)self defaultSectionID];
-    v10 = [v6 isEqualToString:v9];
+    defaultSectionID = [(FCTag *)self defaultSectionID];
+    v10 = [sectionCopy isEqualToString:defaultSectionID];
 
     if (v10)
     {
-      v8 = [(FCTag *)self freeFeedIDForBin:a4];
+      v8 = [(FCTag *)self freeFeedIDForBin:bin];
     }
 
     else
@@ -2384,7 +2384,7 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
 
   else
   {
-    v11 = v6;
+    v11 = sectionCopy;
   }
 
   v12 = v11;
@@ -2392,20 +2392,20 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
   return v11;
 }
 
-- (id)paidFeedIDForSection:(id)a3 bin:(int64_t)a4
+- (id)paidFeedIDForSection:(id)section bin:(int64_t)bin
 {
-  v6 = a3;
-  v7 = [(FCTag *)&self->super.isa _feedConfigurationForSection:v6];
-  v8 = [v7 feedIDForBin:a4 paid:1];
+  sectionCopy = section;
+  v7 = [(FCTag *)&self->super.isa _feedConfigurationForSection:sectionCopy];
+  v8 = [v7 feedIDForBin:bin paid:1];
 
   if (!v8)
   {
-    v9 = [(FCTag *)self defaultSectionID];
-    v10 = [v6 isEqualToString:v9];
+    defaultSectionID = [(FCTag *)self defaultSectionID];
+    v10 = [sectionCopy isEqualToString:defaultSectionID];
 
-    if (!v10 || ([(FCTag *)self paidFeedIDForBin:a4], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v10 || ([(FCTag *)self paidFeedIDForBin:bin], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v11 = [(FCTag *)self freeFeedIDForSection:v6 bin:a4];
+      v11 = [(FCTag *)self freeFeedIDForSection:sectionCopy bin:bin];
     }
 
     v8 = v11;
@@ -2421,35 +2421,35 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
     return 0;
   }
 
-  v3 = [(FCTag *)self replacementID];
-  v4 = [v3 length] == 0;
+  replacementID = [(FCTag *)self replacementID];
+  v4 = [replacementID length] == 0;
 
   return v4;
 }
 
 - (BOOL)isAuthenticationSetup
 {
-  v3 = [(FCTag *)self publisherPaidAuthorizationURL];
-  v4 = [v3 fc_stringByTrimmingWhiteSpace];
+  publisherPaidAuthorizationURL = [(FCTag *)self publisherPaidAuthorizationURL];
+  fc_stringByTrimmingWhiteSpace = [publisherPaidAuthorizationURL fc_stringByTrimmingWhiteSpace];
 
-  v5 = [(FCTag *)self publisherPaidVerificationURL];
-  v6 = [v5 fc_stringByTrimmingWhiteSpace];
+  publisherPaidVerificationURL = [(FCTag *)self publisherPaidVerificationURL];
+  fc_stringByTrimmingWhiteSpace2 = [publisherPaidVerificationURL fc_stringByTrimmingWhiteSpace];
 
-  if ([v4 length] && objc_msgSend(v6, "length"))
+  if ([fc_stringByTrimmingWhiteSpace length] && objc_msgSend(fc_stringByTrimmingWhiteSpace2, "length"))
   {
     v7 = objc_alloc(MEMORY[0x1E696AF20]);
-    v8 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    v8 = [MEMORY[0x1E695DFF8] URLWithString:fc_stringByTrimmingWhiteSpace];
     v9 = [v7 initWithURL:v8 resolvingAgainstBaseURL:1];
 
     v10 = objc_alloc(MEMORY[0x1E696AF20]);
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:fc_stringByTrimmingWhiteSpace2];
     v12 = [v10 initWithURL:v11 resolvingAgainstBaseURL:1];
 
-    v13 = [v9 scheme];
-    if ([(FCTag *)self _isValidScheme:v13])
+    scheme = [v9 scheme];
+    if ([(FCTag *)self _isValidScheme:scheme])
     {
-      v14 = [v12 scheme];
-      v15 = [(FCTag *)self _isValidScheme:v14];
+      scheme2 = [v12 scheme];
+      v15 = [(FCTag *)self _isValidScheme:scheme2];
     }
 
     else
@@ -2466,66 +2466,66 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
   return v15;
 }
 
-- (BOOL)_isValidScheme:(_BOOL8)a1
+- (BOOL)_isValidScheme:(_BOOL8)scheme
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (scheme)
   {
     v5 = [v3 length];
-    a1 = v5 == [@"https" length] && objc_msgSend(v4, "rangeOfString:options:", @"https", 1) != 0x7FFFFFFFFFFFFFFFLL;
+    scheme = v5 == [@"https" length] && objc_msgSend(v4, "rangeOfString:options:", @"https", 1) != 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return a1;
+  return scheme;
 }
 
 - (id)authorizationURL
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.stocks"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.stocks"];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(FCTag *)self identifier];
-  v8 = v7;
+  identifier = [(FCTag *)self identifier];
+  v8 = identifier;
   v9 = @"applenews://authentication_callback";
   if (v5)
   {
     v9 = @"stocks://authentication_callback";
   }
 
-  v10 = [v6 stringWithFormat:@"%@/%@", v9, v7];
+  v10 = [v6 stringWithFormat:@"%@/%@", v9, identifier];
 
-  v11 = [(FCTag *)self publisherPaidAuthorizationURL];
-  v12 = [v11 fc_stringByTrimmingWhiteSpace];
+  publisherPaidAuthorizationURL = [(FCTag *)self publisherPaidAuthorizationURL];
+  fc_stringByTrimmingWhiteSpace = [publisherPaidAuthorizationURL fc_stringByTrimmingWhiteSpace];
 
-  if ([v12 length])
+  if ([fc_stringByTrimmingWhiteSpace length])
   {
     v13 = objc_alloc(MEMORY[0x1E696AF20]);
-    v14 = [MEMORY[0x1E695DFF8] URLWithString:v12];
+    v14 = [MEMORY[0x1E695DFF8] URLWithString:fc_stringByTrimmingWhiteSpace];
     v15 = [v13 initWithURL:v14 resolvingAgainstBaseURL:1];
 
-    v16 = [v15 scheme];
-    v17 = [(FCTag *)self _isValidScheme:v16];
+    scheme = [v15 scheme];
+    v17 = [(FCTag *)self _isValidScheme:scheme];
 
     if (v17)
     {
-      v18 = [MEMORY[0x1E695DF58] currentLocale];
-      v19 = [v18 objectForKey:*MEMORY[0x1E695D9B0]];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v19 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
-      v20 = [MEMORY[0x1E695DF58] currentLocale];
-      v21 = [v20 objectForKey:*MEMORY[0x1E695D978]];
+      currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+      v21 = [currentLocale2 objectForKey:*MEMORY[0x1E695D978]];
 
-      v22 = [v12 rangeOfString:@"redirect_uri"];
+      v22 = [fc_stringByTrimmingWhiteSpace rangeOfString:@"redirect_uri"];
       v23 = MEMORY[0x1E695DFF8];
       if (v22 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?%@=%@&%@=%@&%@=%@", v12, @"redirect_uri", v10, @"country", v21, @"language", v19];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?%@=%@&%@=%@&%@=%@", fc_stringByTrimmingWhiteSpace, @"redirect_uri", v10, @"country", v21, @"language", v19];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@&%@=%@&%@=%@", v12, v10, @"country", v21, @"language", v19, v27];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@&%@=%@&%@=%@", fc_stringByTrimmingWhiteSpace, v10, @"country", v21, @"language", v19, v27];
       }
       v25 = ;
       v24 = [v23 URLWithString:v25];
@@ -2549,10 +2549,10 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
 {
   if ([(FCTag *)self isPurchaseSetup])
   {
-    v3 = [(FCTag *)self publisherPaidOfferableConfigurations];
-    if ([v3 count] == 1)
+    publisherPaidOfferableConfigurations = [(FCTag *)self publisherPaidOfferableConfigurations];
+    if ([publisherPaidOfferableConfigurations count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [publisherPaidOfferableConfigurations firstObject];
     }
 
     else
@@ -2563,14 +2563,14 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
       v11 = __Block_byref_object_copy__49;
       v12 = __Block_byref_object_dispose__49;
       v13 = 0;
-      v5 = [(FCTag *)self publisherPaidOfferableConfigurations];
+      publisherPaidOfferableConfigurations2 = [(FCTag *)self publisherPaidOfferableConfigurations];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __30__FCTag_prefetchPurchaseOffer__block_invoke;
       v7[3] = &unk_1E7C41FA8;
       v7[4] = &v8;
-      [v5 enumerateObjectsUsingBlock:v7];
-      v4 = v9[5];
+      [publisherPaidOfferableConfigurations2 enumerateObjectsUsingBlock:v7];
+      firstObject = v9[5];
 
       _Block_object_dispose(&v8, 8);
     }
@@ -2578,10 +2578,10 @@ void __38__FCTag__feedConfigurationForSection___block_invoke(uint64_t a1, void *
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 void __30__FCTag_prefetchPurchaseOffer__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -2597,20 +2597,20 @@ void __30__FCTag_prefetchPurchaseOffer__block_invoke(uint64_t a1, void *a2, uint
 - (NSString)articleRecirculationConfigJSON
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(FCTag *)self tagRecord];
-  v5 = [v4 articleRecirculationConfiguration];
-  v6 = [v5 fc_gzipInflate];
-  v7 = [v3 initWithData:v6 encoding:4];
+  tagRecord = [(FCTag *)self tagRecord];
+  articleRecirculationConfiguration = [tagRecord articleRecirculationConfiguration];
+  fc_gzipInflate = [articleRecirculationConfiguration fc_gzipInflate];
+  v7 = [v3 initWithData:fc_gzipInflate encoding:4];
 
   return v7;
 }
 
 - (NSString)highlightsArticleListID
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 highlightsArticleListID];
+  tagRecord = [(FCTag *)self tagRecord];
+  highlightsArticleListID = [tagRecord highlightsArticleListID];
 
-  return v3;
+  return highlightsArticleListID;
 }
 
 FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_invoke_3(uint64_t a1, void *a2)
@@ -2630,17 +2630,17 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
 - (NSString)stocksFeedConfigJSON
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 stocksFeedConfigurationJson];
+  tagRecord = [(FCTag *)self tagRecord];
+  stocksFeedConfigurationJson = [tagRecord stocksFeedConfigurationJson];
 
-  return v3;
+  return stocksFeedConfigurationJson;
 }
 
 - (int64_t)feedType
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(FCTag *)self tagType];
-  if (v2 >= 6)
+  tagType = [(FCTag *)self tagType];
+  if (tagType >= 6)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2661,7 +2661,7 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
   else
   {
-    result = qword_1B681A950[v2];
+    result = qword_1B681A950[tagType];
   }
 
   v4 = *MEMORY[0x1E69E9840];
@@ -2670,59 +2670,59 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
 - (FCTagBanner)bannerImageForMask
 {
-  v3 = [(FCTag *)self nameImageMaskAssetHandle];
+  nameImageMaskAssetHandle = [(FCTag *)self nameImageMaskAssetHandle];
 
-  if (v3)
+  if (nameImageMaskAssetHandle)
   {
-    v4 = self->_bannerImageForMask;
+    bannerImageForThemeBackground = self->_bannerImageForMask;
   }
 
   else
   {
-    v5 = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
+    nameImageForDarkBackgroundAssetHandle = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
 
-    if (v5)
+    if (nameImageForDarkBackgroundAssetHandle)
     {
-      v4 = [(FCTag *)self bannerImageForThemeBackground];
+      bannerImageForThemeBackground = [(FCTag *)self bannerImageForThemeBackground];
     }
 
     else
     {
-      v6 = [(FCTag *)self nameImageAssetHandle];
+      nameImageAssetHandle = [(FCTag *)self nameImageAssetHandle];
 
-      if (v6)
+      if (nameImageAssetHandle)
       {
-        v4 = [(FCTag *)self bannerImageForWhiteBackground];
+        bannerImageForThemeBackground = [(FCTag *)self bannerImageForWhiteBackground];
       }
 
       else
       {
-        v7 = [(FCTag *)self nameImageCompactAssetHandle];
+        nameImageCompactAssetHandle = [(FCTag *)self nameImageCompactAssetHandle];
 
-        if (v7)
+        if (nameImageCompactAssetHandle)
         {
-          v4 = [(FCTag *)self compactBannerImage];
+          bannerImageForThemeBackground = [(FCTag *)self compactBannerImage];
         }
 
         else
         {
-          v4 = 0;
+          bannerImageForThemeBackground = 0;
         }
       }
     }
   }
 
-  return v4;
+  return bannerImageForThemeBackground;
 }
 
 - (BOOL)isWhite
 {
-  v3 = [(FCTag *)self backgroundColor];
-  if (v3)
+  backgroundColor = [(FCTag *)self backgroundColor];
+  if (backgroundColor)
   {
-    v4 = [(FCTag *)self backgroundColor];
+    backgroundColor2 = [(FCTag *)self backgroundColor];
     v5 = +[FCColor whiteColor];
-    v6 = [v4 isSimilarToColor:v5 withinPercentage:0.12];
+    v6 = [backgroundColor2 isSimilarToColor:v5 withinPercentage:0.12];
   }
 
   else
@@ -2735,18 +2735,18 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
 - (BOOL)isDark
 {
-  v3 = [(FCTag *)self backgroundColor];
-  [v3 red];
+  backgroundColor = [(FCTag *)self backgroundColor];
+  [backgroundColor red];
   v5 = v4;
-  v6 = [(FCTag *)self backgroundColor];
-  [v6 green];
+  backgroundColor2 = [(FCTag *)self backgroundColor];
+  [backgroundColor2 green];
   v8 = v7 * 0.7152 + v5 * 0.2126;
-  v9 = [(FCTag *)self backgroundColor];
-  [v9 blue];
+  backgroundColor3 = [(FCTag *)self backgroundColor];
+  [backgroundColor3 blue];
   v11 = v8 + v10 * 0.0722;
 
-  v12 = [(FCTag *)self backgroundColor];
-  v14 = v11 < 0.7 || v12 == 0;
+  backgroundColor4 = [(FCTag *)self backgroundColor];
+  v14 = v11 < 0.7 || backgroundColor4 == 0;
 
   return v14;
 }
@@ -2769,143 +2769,143 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
 - (FCTagBanner)bannerImageForWhiteBackground
 {
-  v3 = [(FCTag *)self nameImageAssetHandle];
+  nameImageAssetHandle = [(FCTag *)self nameImageAssetHandle];
 
-  if (v3)
+  if (nameImageAssetHandle)
   {
-    v4 = self->_bannerImageForWhiteBackground;
+    bannerImageForThemeBackground = self->_bannerImageForWhiteBackground;
   }
 
   else
   {
-    v5 = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
+    nameImageForDarkBackgroundAssetHandle = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
 
-    if (v5)
+    if (nameImageForDarkBackgroundAssetHandle)
     {
-      v4 = [(FCTag *)self bannerImageForThemeBackground];
+      bannerImageForThemeBackground = [(FCTag *)self bannerImageForThemeBackground];
     }
 
     else
     {
-      v6 = [(FCTag *)self nameImageMaskAssetHandle];
+      nameImageMaskAssetHandle = [(FCTag *)self nameImageMaskAssetHandle];
 
-      if (v6)
+      if (nameImageMaskAssetHandle)
       {
-        v4 = [(FCTag *)self bannerImageForMask];
+        bannerImageForThemeBackground = [(FCTag *)self bannerImageForMask];
       }
 
       else
       {
-        v7 = [(FCTag *)self nameImageCompactAssetHandle];
+        nameImageCompactAssetHandle = [(FCTag *)self nameImageCompactAssetHandle];
 
-        if (v7)
+        if (nameImageCompactAssetHandle)
         {
-          v4 = [(FCTag *)self compactBannerImage];
+          bannerImageForThemeBackground = [(FCTag *)self compactBannerImage];
         }
 
         else
         {
-          v4 = 0;
+          bannerImageForThemeBackground = 0;
         }
       }
     }
   }
 
-  return v4;
+  return bannerImageForThemeBackground;
 }
 
 - (FCTagBanner)bannerImageForThemeBackground
 {
-  v3 = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
+  nameImageForDarkBackgroundAssetHandle = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
 
-  if (v3)
+  if (nameImageForDarkBackgroundAssetHandle)
   {
-    v4 = self->_bannerImageForThemeBackground;
+    bannerImageForWhiteBackground = self->_bannerImageForThemeBackground;
   }
 
   else
   {
-    v5 = [(FCTag *)self nameImageAssetHandle];
+    nameImageAssetHandle = [(FCTag *)self nameImageAssetHandle];
 
-    if (v5)
+    if (nameImageAssetHandle)
     {
-      v4 = [(FCTag *)self bannerImageForWhiteBackground];
+      bannerImageForWhiteBackground = [(FCTag *)self bannerImageForWhiteBackground];
     }
 
     else
     {
-      v6 = [(FCTag *)self nameImageMaskAssetHandle];
+      nameImageMaskAssetHandle = [(FCTag *)self nameImageMaskAssetHandle];
 
-      if (v6)
+      if (nameImageMaskAssetHandle)
       {
-        v4 = [(FCTag *)self bannerImageForMask];
+        bannerImageForWhiteBackground = [(FCTag *)self bannerImageForMask];
       }
 
       else
       {
-        v7 = [(FCTag *)self nameImageCompactAssetHandle];
+        nameImageCompactAssetHandle = [(FCTag *)self nameImageCompactAssetHandle];
 
-        if (v7)
+        if (nameImageCompactAssetHandle)
         {
-          v4 = [(FCTag *)self compactBannerImage];
+          bannerImageForWhiteBackground = [(FCTag *)self compactBannerImage];
         }
 
         else
         {
-          v4 = 0;
+          bannerImageForWhiteBackground = 0;
         }
       }
     }
   }
 
-  return v4;
+  return bannerImageForWhiteBackground;
 }
 
 - (FCTagBanner)compactBannerImage
 {
-  v3 = [(FCTag *)self nameImageCompactAssetHandle];
+  nameImageCompactAssetHandle = [(FCTag *)self nameImageCompactAssetHandle];
 
-  if (v3)
+  if (nameImageCompactAssetHandle)
   {
-    v4 = self->_compactBannerImage;
+    bannerImageForMask = self->_compactBannerImage;
   }
 
   else
   {
-    v5 = [(FCTag *)self nameImageMaskAssetHandle];
+    nameImageMaskAssetHandle = [(FCTag *)self nameImageMaskAssetHandle];
 
-    if (v5)
+    if (nameImageMaskAssetHandle)
     {
-      v4 = [(FCTag *)self bannerImageForMask];
+      bannerImageForMask = [(FCTag *)self bannerImageForMask];
     }
 
     else
     {
-      v6 = [(FCTag *)self nameImageAssetHandle];
+      nameImageAssetHandle = [(FCTag *)self nameImageAssetHandle];
 
-      if (v6)
+      if (nameImageAssetHandle)
       {
-        v4 = [(FCTag *)self bannerImageForWhiteBackground];
+        bannerImageForMask = [(FCTag *)self bannerImageForWhiteBackground];
       }
 
       else
       {
-        v7 = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
+        nameImageForDarkBackgroundAssetHandle = [(FCTag *)self nameImageForDarkBackgroundAssetHandle];
 
-        if (v7)
+        if (nameImageForDarkBackgroundAssetHandle)
         {
-          v4 = [(FCTag *)self bannerImageForThemeBackground];
+          bannerImageForMask = [(FCTag *)self bannerImageForThemeBackground];
         }
 
         else
         {
-          v4 = 0;
+          bannerImageForMask = 0;
         }
       }
     }
   }
 
-  return v4;
+  return bannerImageForMask;
 }
 
 - (FCColor)backgroundColor
@@ -3027,24 +3027,24 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
   return [(FCTag *)self _FCColorFromHexTriplet:?];
 }
 
-- (id)_FCColorFromHexTriplet:(void *)a1
+- (id)_FCColorFromHexTriplet:(void *)triplet
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (triplet)
   {
     if ([v3 length])
     {
-      a1 = [FCColor nullableColorWithHexString:v4];
+      triplet = [FCColor nullableColorWithHexString:v4];
     }
 
     else
     {
-      a1 = 0;
+      triplet = 0;
     }
   }
 
-  return a1;
+  return triplet;
 }
 
 - (FCColor)darkStyleNavigationChromeBackgroundColor
@@ -3202,25 +3202,25 @@ FCSelectorValue *__50__FCTag__contextualNamesFromSupergroupConfigJson___block_in
 
   else if ([(FCTag *)self tagType]== 2)
   {
-    v6 = [(FCTag *)self theme];
-    v7 = [v6 backgroundColor];
+    theme = [(FCTag *)self theme];
+    backgroundColor = [theme backgroundColor];
 
-    v8 = [(FCTag *)self theme];
-    v9 = [v8 foregroundColor];
+    theme2 = [(FCTag *)self theme];
+    foregroundColor = [theme2 foregroundColor];
 
-    if (v7)
+    if (backgroundColor)
     {
       v10 = +[FCColor whiteColor];
-      v11 = [v7 isSimilarToColor:v10 withinPercentage:0.2];
+      v11 = [backgroundColor isSimilarToColor:v10 withinPercentage:0.2];
 
-      v12 = v7;
+      v12 = backgroundColor;
       if (!v11)
       {
         goto LABEL_12;
       }
     }
 
-    if (v9 && (+[FCColor whiteColor](FCColor, "whiteColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v9 isSimilarToColor:v13 withinPercentage:0.2], v13, v12 = v9, (v14 & 1) == 0))
+    if (foregroundColor && (+[FCColor whiteColor](FCColor, "whiteColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [foregroundColor isSimilarToColor:v13 withinPercentage:0.2], v13, v12 = foregroundColor, (v14 & 1) == 0))
     {
 LABEL_12:
       v5 = v12;
@@ -3260,25 +3260,25 @@ LABEL_12:
 
   else if ([(FCTag *)self tagType]== 2)
   {
-    v6 = [(FCTag *)self theme];
-    v7 = [v6 darkStyleBackgroundColor];
+    theme = [(FCTag *)self theme];
+    darkStyleBackgroundColor = [theme darkStyleBackgroundColor];
 
-    v8 = [(FCTag *)self theme];
-    v9 = [v8 darkStyleForegroundColor];
+    theme2 = [(FCTag *)self theme];
+    darkStyleForegroundColor = [theme2 darkStyleForegroundColor];
 
-    if (v7)
+    if (darkStyleBackgroundColor)
     {
       v10 = +[FCColor blackColor];
-      v11 = [v7 isSimilarToColor:v10 withinPercentage:0.2];
+      v11 = [darkStyleBackgroundColor isSimilarToColor:v10 withinPercentage:0.2];
 
-      v12 = v7;
+      v12 = darkStyleBackgroundColor;
       if (!v11)
       {
         goto LABEL_12;
       }
     }
 
-    if (v9 && (+[FCColor blackColor](FCColor, "blackColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v9 isSimilarToColor:v13 withinPercentage:0.2], v13, v12 = v9, (v14 & 1) == 0))
+    if (darkStyleForegroundColor && (+[FCColor blackColor](FCColor, "blackColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [darkStyleForegroundColor isSimilarToColor:v13 withinPercentage:0.2], v13, v12 = darkStyleForegroundColor, (v14 & 1) == 0))
     {
 LABEL_12:
       v5 = v12;
@@ -3310,17 +3310,17 @@ LABEL_12:
 
 - (NSData)backingTagRecordData
 {
-  v2 = [(FCTag *)self tagRecord];
-  v3 = [v2 data];
+  tagRecord = [(FCTag *)self tagRecord];
+  data = [tagRecord data];
 
-  return v3;
+  return data;
 }
 
 - (BOOL)isWhitelisted
 {
-  v3 = [(FCTag *)self iAdCategories];
-  v4 = [(FCTag *)self identifier];
-  v5 = [v3 containsObject:v4];
+  iAdCategories = [(FCTag *)self iAdCategories];
+  identifier = [(FCTag *)self identifier];
+  v5 = [iAdCategories containsObject:identifier];
 
   return v5;
 }
@@ -3337,10 +3337,10 @@ LABEL_12:
     return 2;
   }
 
-  v4 = [(FCTag *)self currentIssueIDs];
-  v5 = [v4 count];
-  v6 = [(FCTag *)self recentIssueIDs];
-  v7 = [v6 count];
+  currentIssueIDs = [(FCTag *)self currentIssueIDs];
+  v5 = [currentIssueIDs count];
+  recentIssueIDs = [(FCTag *)self recentIssueIDs];
+  v7 = [recentIssueIDs count];
 
   if (v5 + v7)
   {
@@ -3368,33 +3368,33 @@ LABEL_12:
 - (NSArray)sportsParentTagIdentifiers
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCTag *)self topLevelGroupsTagIdentifiers];
+  topLevelGroupsTagIdentifiers = [(FCTag *)self topLevelGroupsTagIdentifiers];
 
-  if (v3)
+  if (topLevelGroupsTagIdentifiers)
   {
-    v4 = [(FCTag *)self topLevelGroupsTagIdentifiers];
+    topLevelGroupsTagIdentifiers2 = [(FCTag *)self topLevelGroupsTagIdentifiers];
   }
 
   else
   {
-    v5 = [(FCTag *)self topLevelSportTagIdentifier];
+    topLevelSportTagIdentifier = [(FCTag *)self topLevelSportTagIdentifier];
 
-    if (v5)
+    if (topLevelSportTagIdentifier)
     {
-      v6 = [(FCTag *)self topLevelSportTagIdentifier];
-      v9[0] = v6;
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+      topLevelSportTagIdentifier2 = [(FCTag *)self topLevelSportTagIdentifier];
+      v9[0] = topLevelSportTagIdentifier2;
+      topLevelGroupsTagIdentifiers2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     }
 
     else
     {
-      v4 = MEMORY[0x1E695E0F0];
+      topLevelGroupsTagIdentifiers2 = MEMORY[0x1E695E0F0];
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return topLevelGroupsTagIdentifiers2;
 }
 
 - (CGSize)nameImageSize

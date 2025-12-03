@@ -1,13 +1,13 @@
 @interface LPEventTimeline
-+ (id)eventWithType:(int64_t)a3 subtitle:(id)a4;
++ (id)eventWithType:(int64_t)type subtitle:(id)subtitle;
 @end
 
 @implementation LPEventTimeline
 
-+ (id)eventWithType:(int64_t)a3 subtitle:(id)a4
++ (id)eventWithType:(int64_t)type subtitle:(id)subtitle
 {
-  v5 = a4;
-  v6 = [[LPEvent alloc] initWithType:a3 subtitle:v5];
+  subtitleCopy = subtitle;
+  v6 = [[LPEvent alloc] initWithType:type subtitle:subtitleCopy];
 
   return v6;
 }

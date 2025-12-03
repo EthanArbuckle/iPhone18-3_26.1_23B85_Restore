@@ -1,22 +1,22 @@
 @interface SDAutoUnlockWiFiAWDLInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDiscoveryMetric:(BOOL)a3;
-- (void)setHasMasterChannel:(BOOL)a3;
-- (void)setHasPreferredChannel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDiscoveryMetric:(BOOL)metric;
+- (void)setHasMasterChannel:(BOOL)channel;
+- (void)setHasPreferredChannel:(BOOL)channel;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockWiFiAWDLInfo
 
-- (void)setHasDiscoveryMetric:(BOOL)a3
+- (void)setHasDiscoveryMetric:(BOOL)metric
 {
-  if (a3)
+  if (metric)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMasterChannel:(BOOL)a3
+- (void)setHasMasterChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPreferredChannel:(BOOL)a3
+- (void)setHasPreferredChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockWiFiAWDLInfo;
   v3 = [(SDAutoUnlockWiFiAWDLInfo *)&v7 description];
-  v4 = [(SDAutoUnlockWiFiAWDLInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockWiFiAWDLInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -140,14 +140,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_macAddress)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -155,7 +155,7 @@ LABEL_8:
   {
     discoveryMetric = self->_discoveryMetric;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -176,7 +176,7 @@ LABEL_5:
 
   masterChannel = self->_masterChannel;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -192,38 +192,38 @@ LABEL_6:
 LABEL_15:
   preferredChannel = self->_preferredChannel;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_7:
     channelFlags = self->_channelFlags;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_extraInfoData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_macAddress)
   {
-    [v4 setMacAddress:?];
-    v4 = v6;
+    [toCopy setMacAddress:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = self->_discoveryMetric;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 3) = self->_discoveryMetric;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -242,8 +242,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 8) = self->_masterChannel;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 8) = self->_masterChannel;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -257,27 +257,27 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 9) = self->_preferredChannel;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 9) = self->_preferredChannel;
+  *(toCopy + 40) |= 8u;
   if (*&self->_has)
   {
 LABEL_7:
-    *(v4 + 2) = self->_channelFlags;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = self->_channelFlags;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_8:
   if (self->_extraInfoData)
   {
     [v6 setExtraInfoData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_macAddress copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_macAddress copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -329,23 +329,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSData *)self->_extraInfoData copyWithZone:a3];
+  v9 = [(NSData *)self->_extraInfoData copyWithZone:zone];
   v10 = v5[2];
   v5[2] = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   macAddress = self->_macAddress;
-  if (macAddress | *(v4 + 3))
+  if (macAddress | *(equalCopy + 3))
   {
     if (![(NSData *)macAddress isEqual:?])
     {
@@ -353,16 +353,16 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_discoveryMetric != *(v4 + 3))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_discoveryMetric != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_26:
     v8 = 0;
@@ -371,45 +371,45 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_masterChannel != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_masterChannel != *(equalCopy + 8))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_preferredChannel != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_preferredChannel != *(equalCopy + 9))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_channelFlags != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_channelFlags != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_26;
   }
 
   extraInfoData = self->_extraInfoData;
-  if (extraInfoData | *(v4 + 2))
+  if (extraInfoData | *(equalCopy + 2))
   {
     v8 = [(NSData *)extraInfoData isEqual:?];
   }
@@ -479,22 +479,22 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSData *)self->_extraInfoData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SDAutoUnlockWiFiAWDLInfo *)self setMacAddress:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_discoveryMetric = v4[3];
+    self->_discoveryMetric = fromCopy[3];
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -507,14 +507,14 @@ LABEL_5:
     }
   }
 
-  else if ((v4[10] & 4) == 0)
+  else if ((fromCopy[10] & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_masterChannel = v4[8];
+  self->_masterChannel = fromCopy[8];
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -527,20 +527,20 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_preferredChannel = v4[9];
+  self->_preferredChannel = fromCopy[9];
   *&self->_has |= 8u;
-  if (v4[10])
+  if (fromCopy[10])
   {
 LABEL_7:
-    self->_channelFlags = v4[2];
+    self->_channelFlags = fromCopy[2];
     *&self->_has |= 1u;
   }
 
 LABEL_8:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAutoUnlockWiFiAWDLInfo *)self setExtraInfoData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

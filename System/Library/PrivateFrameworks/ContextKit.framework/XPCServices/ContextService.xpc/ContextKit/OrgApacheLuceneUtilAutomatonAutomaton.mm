@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneUtilAutomatonAutomaton
-- (BOOL)transitionSortedWithOrgApacheLuceneUtilAutomatonTransition:(id)a3;
+- (BOOL)transitionSortedWithOrgApacheLuceneUtilAutomatonTransition:(id)transition;
 - (id)getSortedTransitions;
 - (id)getStartPoints;
 - (id)toDot;
 - (int)createState;
-- (int)getNumTransitionsWithInt:(int)a3;
-- (int)initTransitionWithInt:(int)a3 withOrgApacheLuceneUtilAutomatonTransition:(id)a4;
-- (int)stepWithInt:(int)a3 withInt:(int)a4;
+- (int)getNumTransitionsWithInt:(int)int;
+- (int)initTransitionWithInt:(int)int withOrgApacheLuceneUtilAutomatonTransition:(id)transition;
+- (int)stepWithInt:(int)int withInt:(int)withInt;
 - (int64_t)ramBytesUsed;
 - (uint64_t)finishCurrentState;
 - (unsigned)growStates;
 - (unsigned)growTransitions;
-- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3;
+- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton;
 - (void)dealloc;
 - (void)finishState;
-- (void)getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:(id)a3;
-- (void)getTransitionWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilAutomatonTransition:(id)a5;
+- (void)getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:(id)transition;
+- (void)getTransitionWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilAutomatonTransition:(id)transition;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonAutomaton
@@ -44,8 +44,8 @@
 
 - (unsigned)growStates
 {
-  v9 = (a1 + 24);
-  result = *(a1 + 24);
+  v9 = (self + 24);
+  result = *(self + 24);
   if (!result)
   {
     JreThrowNullPointerException();
@@ -64,13 +64,13 @@
 
 - (id)getSortedTransitions
 {
-  v3 = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
+  getNumStates = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
   v4 = OrgApacheLuceneUtilAutomatonTransition_class_();
-  v5 = [IOSObjectArray arrayWithLength:v3 type:IOSClass_arrayType(v4, 1u)];
-  if (v3 >= 1)
+  v5 = [IOSObjectArray arrayWithLength:getNumStates type:IOSClass_arrayType(v4, 1u)];
+  if (getNumStates >= 1)
   {
     v6 = 0;
-    v7 = v3;
+    v7 = getNumStates;
     do
     {
       v8 = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumTransitionsWithInt:v6];
@@ -113,8 +113,8 @@
 
 - (unsigned)growTransitions
 {
-  v9 = (a1 + 40);
-  result = *(a1 + 40);
+  v9 = (self + 40);
+  result = *(self + 40);
   if (!result)
   {
     JreThrowNullPointerException();
@@ -133,13 +133,13 @@
 
 - (uint64_t)finishCurrentState
 {
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (!v1)
   {
     goto LABEL_81;
   }
 
-  v3 = 2 * *(a1 + 16);
+  v3 = 2 * *(self + 16);
   v4 = v3 | 1;
   v5 = *(v1 + 8);
   if (v3 < 0 || v4 >= v5)
@@ -154,7 +154,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v5, v3);
   }
 
-  v8 = *(a1 + 56);
+  v8 = *(self + 56);
   if (!v8)
   {
     goto LABEL_81;
@@ -181,7 +181,7 @@
   v17 = v9;
   do
   {
-    v18 = *(a1 + 40);
+    v18 = *(self + 40);
     if (!v18)
     {
       goto LABEL_81;
@@ -193,7 +193,7 @@
       IOSArray_throwOutOfBoundsWithMsg(v19, v14);
     }
 
-    v20 = *(a1 + 40);
+    v20 = *(self + 40);
     v21 = *(v18 + 12 + 4 * v14);
     v22 = v14 + 1;
     if (v14 + 1 < 0 || v22 >= v19)
@@ -214,7 +214,7 @@
     {
       if (v16 != -1)
       {
-        v37 = *(a1 + 40);
+        v37 = *(self + 40);
         v38 = *(v37 + 8);
         v39 = 3 * v11 + v17;
         if (v39 < 0 || v39 >= v38)
@@ -223,7 +223,7 @@
         }
 
         *(v37 + 12 + 4 * v39) = v16;
-        v40 = *(a1 + 40);
+        v40 = *(self + 40);
         v41 = *(v40 + 8);
         v42 = v39 + 1;
         if (v39 + 1 < 0 || v42 >= v41)
@@ -232,7 +232,7 @@
         }
 
         *(v40 + 12 + 4 * v42) = v12;
-        v43 = *(a1 + 40);
+        v43 = *(self + 40);
         v44 = *(v43 + 8);
         v45 = v39 + 2;
         v46 = v39 + 2;
@@ -253,7 +253,7 @@
     {
       if (v16 != -1)
       {
-        v27 = *(a1 + 40);
+        v27 = *(self + 40);
         v28 = *(v27 + 8);
         v29 = 3 * v11 + v17;
         if (v29 < 0 || v29 >= v28)
@@ -262,7 +262,7 @@
         }
 
         *(v27 + 12 + 4 * v29) = v16;
-        v30 = *(a1 + 40);
+        v30 = *(self + 40);
         v31 = *(v30 + 8);
         v32 = v29 + 1;
         if (v29 + 1 < 0 || v32 >= v31)
@@ -271,7 +271,7 @@
         }
 
         *(v30 + 12 + 4 * v32) = v12;
-        v33 = *(a1 + 40);
+        v33 = *(self + 40);
         v34 = *(v33 + 8);
         v35 = v29 + 2;
         v36 = v29 + 2;
@@ -307,7 +307,7 @@ LABEL_38:
     goto LABEL_60;
   }
 
-  v47 = *(a1 + 40);
+  v47 = *(self + 40);
   if (!v47)
   {
     goto LABEL_81;
@@ -322,7 +322,7 @@ LABEL_38:
   }
 
   *(v47 + 12 + 4 * v49) = v16;
-  v51 = *(a1 + 40);
+  v51 = *(self + 40);
   v52 = *(v51 + 8);
   v53 = v49 + 1;
   if (v50 + 1 < 0 || v53 >= v52)
@@ -331,7 +331,7 @@ LABEL_38:
   }
 
   *(v51 + 12 + 4 * v53) = v12;
-  v54 = *(a1 + 40);
+  v54 = *(self + 40);
   v55 = *(v54 + 8);
   v57 = v50 + 2;
   v56 = v50 + 2 < 0;
@@ -347,9 +347,9 @@ LABEL_38:
 LABEL_60:
   LODWORD(v7) = v75;
 LABEL_61:
-  v59 = *(a1 + 16);
-  *(a1 + 12) += -3 * (v7 - v11);
-  v60 = *(a1 + 24);
+  v59 = *(self + 16);
+  *(self + 12) += -3 * (v7 - v11);
+  v60 = *(self + 24);
   v61 = (2 * v59) | 1;
   v62 = *(v60 + 8);
   if (2 * v59 < 0 || v61 >= v62)
@@ -358,7 +358,7 @@ LABEL_61:
   }
 
   *(v60 + 12 + 4 * v61) = v11;
-  v63 = *(a1 + 64);
+  v63 = *(self + 64);
   if (!v63)
   {
     goto LABEL_81;
@@ -366,12 +366,12 @@ LABEL_61:
 
   v64 = v11;
   result = [v63 sortWithInt:v10 withInt:(v11 + v10)];
-  if (*(a1 + 48) != 1 || v64 < 2)
+  if (*(self + 48) != 1 || v64 < 2)
   {
     return result;
   }
 
-  v66 = *(a1 + 40);
+  v66 = *(self + 40);
   if (!v66)
   {
 LABEL_81:
@@ -390,7 +390,7 @@ LABEL_81:
   v71 = v64 - 1;
   while (1)
   {
-    v72 = *(a1 + 40);
+    v72 = *(self + 40);
     result = *(v72 + 8);
     v73 = v70 - 1;
     if (v70 - 1 < 0 || v73 >= result)
@@ -403,7 +403,7 @@ LABEL_81:
       break;
     }
 
-    v74 = *(a1 + 40);
+    v74 = *(self + 40);
     result = *(v74 + 8);
     if ((v70 & 0x80000000) != 0 || v70 >= result)
     {
@@ -418,23 +418,23 @@ LABEL_81:
     }
   }
 
-  *(a1 + 48) = 0;
+  *(self + 48) = 0;
   return result;
 }
 
-- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3
+- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton
 {
-  v5 = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
-  if (!a3)
+  getNumStates = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
+  if (!automaton)
   {
     goto LABEL_31;
   }
 
-  v12 = v5;
-  v13 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(self->states_, *(a3 + 2) + self->nextState_, v6, v7, v8, v9, v10, v11);
+  v12 = getNumStates;
+  v13 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(self->states_, *(automaton + 2) + self->nextState_, v6, v7, v8, v9, v10, v11);
   JreStrongAssign(&self->states_, v13);
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 3), 0, self->states_, self->nextState_, *(a3 + 2));
-  v14 = *(a3 + 2);
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(automaton + 3), 0, self->states_, self->nextState_, *(automaton + 2));
+  v14 = *(automaton + 2);
   if (v14 >= 1)
   {
     v15 = 0;
@@ -467,7 +467,7 @@ LABEL_81:
       }
 
       v15 += 2;
-      v14 = *(a3 + 2);
+      v14 = *(automaton + 2);
       if (v15 >= v14)
       {
         goto LABEL_15;
@@ -480,12 +480,12 @@ LABEL_31:
 
 LABEL_15:
   self->nextState_ += v14;
-  v22 = [a3 getNumStates];
-  v23 = [a3 getAcceptStates];
-  if (v22 >= 1)
+  getNumStates2 = [automaton getNumStates];
+  getAcceptStates = [automaton getAcceptStates];
+  if (getNumStates2 >= 1)
   {
-    v30 = v23;
-    if (!v23)
+    v30 = getAcceptStates;
+    if (!getAcceptStates)
     {
       goto LABEL_31;
     }
@@ -504,14 +504,14 @@ LABEL_15:
       v24 = v32 + 1;
     }
 
-    while (v24 < v22);
+    while (v24 < getNumStates2);
   }
 
   p_transitions = &self->transitions_;
-  v34 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(self->transitions_, *(a3 + 3) + self->nextTransition_, v24, v25, v26, v27, v28, v29);
+  v34 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(self->transitions_, *(automaton + 3) + self->nextTransition_, v24, v25, v26, v27, v28, v29);
   JreStrongAssign(&self->transitions_, v34);
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 5), 0, self->transitions_, self->nextTransition_, *(a3 + 3));
-  v35 = *(a3 + 3);
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(automaton + 5), 0, self->transitions_, self->nextTransition_, *(automaton + 3));
+  v35 = *(automaton + 3);
   if (v35 >= 1)
   {
     for (i = 0; i < v35; i += 3)
@@ -530,12 +530,12 @@ LABEL_15:
       }
 
       *(&v37->super.size_ + v39 + 1) += v12;
-      v35 = *(a3 + 3);
+      v35 = *(automaton + 3);
     }
   }
 
   self->nextTransition_ += v35;
-  if (!*(a3 + 48))
+  if (!*(automaton + 48))
   {
     self->deterministic_ = 0;
   }
@@ -550,7 +550,7 @@ LABEL_15:
   }
 }
 
-- (int)getNumTransitionsWithInt:(int)a3
+- (int)getNumTransitionsWithInt:(int)int
 {
   states = self->states_;
   if (!states)
@@ -558,11 +558,11 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v4 = (2 * a3) | 1;
+  v4 = (2 * int) | 1;
   size = states->super.size_;
-  if (2 * a3 < 0 || v4 >= size)
+  if (2 * int < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (2 * a3) | 1);
+    IOSArray_throwOutOfBoundsWithMsg(size, (2 * int) | 1);
   }
 
   if (*(&states->super.size_ + v4 + 1) == -1)
@@ -576,26 +576,26 @@ LABEL_15:
   }
 }
 
-- (int)initTransitionWithInt:(int)a3 withOrgApacheLuceneUtilAutomatonTransition:(id)a4
+- (int)initTransitionWithInt:(int)int withOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
-  if (!a4 || (*(a4 + 2) = a3, (states = self->states_) == 0))
+  if (!transition || (*(transition + 2) = int, (states = self->states_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  v6 = 2 * a3;
+  v6 = 2 * int;
   size = states->super.size_;
-  if (2 * a3 < 0 || v6 >= size)
+  if (2 * int < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (2 * a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (2 * int));
   }
 
-  *(a4 + 6) = *(&states->super.size_ + v6 + 1);
+  *(transition + 6) = *(&states->super.size_ + v6 + 1);
 
   return [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumTransitionsWithInt:?];
 }
 
-- (void)getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:(id)a3
+- (void)getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
   transitions = self->transitions_;
   if (!transitions)
@@ -603,40 +603,40 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 6);
-  *(a3 + 6) = v5 + 1;
+  v5 = *(transition + 6);
+  *(transition + 6) = v5 + 1;
   size = transitions->super.size_;
   if (v5 < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
   }
 
-  *(a3 + 3) = *(&transitions->super.size_ + v5 + 1);
+  *(transition + 3) = *(&transitions->super.size_ + v5 + 1);
   v7 = self->transitions_;
-  v8 = *(a3 + 6);
-  *(a3 + 6) = v8 + 1;
+  v8 = *(transition + 6);
+  *(transition + 6) = v8 + 1;
   v9 = v7->super.size_;
   if (v8 < 0 || v8 >= v9)
   {
     IOSArray_throwOutOfBoundsWithMsg(v9, v8);
   }
 
-  *(a3 + 4) = *(&v7->super.size_ + v8 + 1);
+  *(transition + 4) = *(&v7->super.size_ + v8 + 1);
   v10 = self->transitions_;
-  v11 = *(a3 + 6);
-  *(a3 + 6) = v11 + 1;
+  v11 = *(transition + 6);
+  *(transition + 6) = v11 + 1;
   v12 = v10->super.size_;
   if (v11 < 0 || v11 >= v12)
   {
     IOSArray_throwOutOfBoundsWithMsg(v12, v11);
   }
 
-  *(a3 + 5) = *(&v10->super.size_ + v11 + 1);
+  *(transition + 5) = *(&v10->super.size_ + v11 + 1);
 }
 
-- (BOOL)transitionSortedWithOrgApacheLuceneUtilAutomatonTransition:(id)a3
+- (BOOL)transitionSortedWithOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
-  if (!a3)
+  if (!transition)
   {
     goto LABEL_20;
   }
@@ -647,8 +647,8 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v5 = *(a3 + 6);
-  v6 = 2 * *(a3 + 2);
+  v5 = *(transition + 6);
+  v6 = 2 * *(transition + 2);
   size = states->super.size_;
   if (v6 < 0 || v6 >= size)
   {
@@ -670,7 +670,7 @@ LABEL_20:
   v9 = transitions->super.size_;
   if ((v5 & 0x80000000) != 0 || v5 >= v9)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v9, *(a3 + 6));
+    IOSArray_throwOutOfBoundsWithMsg(v9, *(transition + 6));
   }
 
   v10 = self->transitions_;
@@ -689,7 +689,7 @@ LABEL_20:
     IOSArray_throwOutOfBoundsWithMsg(v9, v14);
   }
 
-  v16 = *(a3 + 4);
+  v16 = *(transition + 4);
   if (v13 > v16)
   {
     return 1;
@@ -701,16 +701,16 @@ LABEL_20:
   }
 
   v18 = *(&v10->super.size_ + v15 + 1);
-  v19 = *(a3 + 5);
+  v19 = *(transition + 5);
   if (v18 > v19)
   {
     return 1;
   }
 
-  return v18 >= v19 && v11 > *(a3 + 3);
+  return v18 >= v19 && v11 > *(transition + 3);
 }
 
-- (void)getTransitionWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilAutomatonTransition:(id)a5
+- (void)getTransitionWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
   states = self->states_;
   if (!states)
@@ -718,20 +718,20 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  v7 = 2 * a3;
+  v7 = 2 * int;
   size = states->super.size_;
-  if (2 * a3 < 0 || v7 >= size)
+  if (2 * int < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
   }
 
-  if (!a5 || (v9 = *(&states->super.size_ + v7 + 1), *(a5 + 2) = a3, (transitions = self->transitions_) == 0))
+  if (!transition || (v9 = *(&states->super.size_ + v7 + 1), *(transition + 2) = int, (transitions = self->transitions_) == 0))
   {
 LABEL_14:
     JreThrowNullPointerException();
   }
 
-  v11 = (v9 + 3 * a4);
+  v11 = (v9 + 3 * withInt);
   v12 = (v11 + 1);
   v13 = transitions->super.size_;
   if ((v11 & 0x80000000) != 0 || v11 >= v13)
@@ -739,7 +739,7 @@ LABEL_14:
     IOSArray_throwOutOfBoundsWithMsg(v13, v11);
   }
 
-  *(a5 + 3) = *(&transitions->super.size_ + v11 + 1);
+  *(transition + 3) = *(&transitions->super.size_ + v11 + 1);
   v14 = self->transitions_;
   v15 = (v11 + 2);
   v16 = v14->super.size_;
@@ -748,7 +748,7 @@ LABEL_14:
     IOSArray_throwOutOfBoundsWithMsg(v16, v12);
   }
 
-  *(a5 + 4) = *(&v14->super.size_ + v12 + 1);
+  *(transition + 4) = *(&v14->super.size_ + v12 + 1);
   v17 = self->transitions_;
   v18 = v17->super.size_;
   if ((v15 & 0x80000000) != 0 || v15 >= v18)
@@ -756,7 +756,7 @@ LABEL_14:
     IOSArray_throwOutOfBoundsWithMsg(v18, v15);
   }
 
-  *(a5 + 5) = *(&v17->super.size_ + v15 + 1);
+  *(transition + 5) = *(&v17->super.size_ + v15 + 1);
 }
 
 - (id)toDot
@@ -764,15 +764,15 @@ LABEL_14:
   v3 = new_JavaLangStringBuilder_init();
   [(JavaLangStringBuilder *)v3 appendWithNSString:@"digraph Automaton {\n"];
   [(JavaLangStringBuilder *)v3 appendWithNSString:@"  rankdir = LR\n"];
-  v18 = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
-  if (v18 >= 1)
+  getNumStates = [(OrgApacheLuceneUtilAutomatonAutomaton *)self getNumStates];
+  if (getNumStates >= 1)
   {
     [(JavaLangStringBuilder *)v3 appendWithNSString:@"  initial [shape=plaintext, label=0]\n"];
     [(JavaLangStringBuilder *)v3 appendWithNSString:@"  initial -> 0\n"];
   }
 
   v4 = new_OrgApacheLuceneUtilAutomatonTransition_init();
-  if (v18 >= 1)
+  if (getNumStates >= 1)
   {
     v5 = v4;
     v6 = 0;
@@ -816,7 +816,7 @@ LABEL_14:
       v6 = (v6 + 1);
     }
 
-    while (v6 != v18);
+    while (v6 != getNumStates);
   }
 
   [(JavaLangStringBuilder *)v3 appendWithChar:125];
@@ -919,14 +919,14 @@ LABEL_37:
           goto LABEL_37;
         }
 
-        v23 = [v22 intValue];
+        intValue = [v22 intValue];
         v24 = v16->super.size_;
         if ((v19 & 0x80000000) != 0 || v19 >= v24)
         {
           IOSArray_throwOutOfBoundsWithMsg(v24, v19);
         }
 
-        *(&v16->super.size_ + v19 + 1) = v23;
+        *(&v16->super.size_ + v19 + 1) = intValue;
         ++v21;
         v19 = (v19 + 1);
       }
@@ -943,7 +943,7 @@ LABEL_37:
   return v16;
 }
 
-- (int)stepWithInt:(int)a3 withInt:(int)a4
+- (int)stepWithInt:(int)int withInt:(int)withInt
 {
   states = self->states_;
   if (!states)
@@ -952,10 +952,10 @@ LABEL_23:
     JreThrowNullPointerException();
   }
 
-  v6 = 2 * a3;
-  v7 = 2 * a3;
+  v6 = 2 * int;
+  v7 = 2 * int;
   size = states->super.size_;
-  if (2 * a3 < 0 || v6 >= size)
+  if (2 * int < 0 || v6 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v6);
   }
@@ -998,7 +998,7 @@ LABEL_23:
     }
 
     v10 = (v10 + 3);
-    if (v17 <= a4 && *(&self->transitions_->super.size_ + v18 + 1) >= a4)
+    if (v17 <= withInt && *(&self->transitions_->super.size_ + v18 + 1) >= withInt)
     {
       return v15;
     }

@@ -1,49 +1,49 @@
 @interface HKSingleAudiogramChartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axCollectSeriesDataForGraphView:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axCollectSeriesDataForGraphView:(id)view;
 - (id)_axHearingSensitivityFormatter;
-- (id)_axSelectedXCoordinateForGraphView:(id)a3;
+- (id)_axSelectedXCoordinateForGraphView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetupGraphViewDescription;
 - (void)_axUpdateAXElementsForGraphView;
 - (void)_axUpdateSelectionAXElementsForGraphView;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphViewDidEndSelection:(id)a3;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphViewDidEndSelection:(id)selection;
 @end
 
 @implementation HKSingleAudiogramChartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"graphView:didUpdateSelectedPoint:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"graphViewDidEndSelection:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"_formattedFrequencyStringForFrequency:" withFullSignature:{"@", "d", 0}];
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"scalarGraphViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"annotationViewDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAudiogramAnnotationViewDataSource" hasSwiftFieldOfAnyClass:@"hearingSensitivityFormatter"];
-  [v3 validateClass:@"HKInteractiveChartHearingSensitivityFormatter" isKindOfClass:@"HKInteractiveChartDataFormatter"];
-  [v3 validateClass:@"HKInteractiveChartDataFormatter" hasInstanceMethod:@"formattedSelectedRangeLabelDataWithChartData:context:" withFullSignature:{"@", "@", "q", 0}];
-  [v3 validateClass:@"HKInteractiveChartDataFormatter" hasInstanceMethod:@"valueStringFromNumber:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"HKScalarGraphViewController" isKindOfClass:@"HKGraphViewController"];
-  [v3 validateClass:@"HKGraphViewController" hasInstanceMethod:@"graphView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKGraphView" hasInstanceMethod:@"allSeries" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKGraphView" hasInstanceMethod:@"overlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKGraphView" hasInstanceMethod:@"enumerateVisibleCoordinatesForSeries:block:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"HKGraphView" hasInstanceVariable:@"_seriesGroupRows" withType:"NSMutableArray"];
-  [v3 validateClass:@"HKGraphSeries" hasInstanceMethod:@"visibleValueRange" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKValueRange" hasInstanceMethod:@"minValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKValueRange" hasInstanceMethod:@"maxValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKLineSeriesBlockCoordinate" hasInstanceMethod:@"userInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKLineSeriesBlockCoordinate" hasInstanceMethod:@"coordinate" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"frequencyHertz" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"sensitivityDBHL" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"isLeftEar" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HKSelectedRangeData" hasInstanceMethod:@"titleOverride" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKSelectedRangeData" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKGraphViewSeriesGroup" hasInstanceMethod:@"selectionContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKGraphViewSelectionContext" hasInstanceMethod:@"selectedRangeBoundariesXValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"graphView:didUpdateSelectedPoint:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"graphViewDidEndSelection:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"_formattedFrequencyStringForFrequency:" withFullSignature:{"@", "d", 0}];
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"scalarGraphViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKSingleAudiogramChartViewController" hasInstanceMethod:@"annotationViewDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAudiogramAnnotationViewDataSource" hasSwiftFieldOfAnyClass:@"hearingSensitivityFormatter"];
+  [validationsCopy validateClass:@"HKInteractiveChartHearingSensitivityFormatter" isKindOfClass:@"HKInteractiveChartDataFormatter"];
+  [validationsCopy validateClass:@"HKInteractiveChartDataFormatter" hasInstanceMethod:@"formattedSelectedRangeLabelDataWithChartData:context:" withFullSignature:{"@", "@", "q", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartDataFormatter" hasInstanceMethod:@"valueStringFromNumber:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"HKScalarGraphViewController" isKindOfClass:@"HKGraphViewController"];
+  [validationsCopy validateClass:@"HKGraphViewController" hasInstanceMethod:@"graphView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKGraphView" hasInstanceMethod:@"allSeries" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKGraphView" hasInstanceMethod:@"overlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKGraphView" hasInstanceMethod:@"enumerateVisibleCoordinatesForSeries:block:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"HKGraphView" hasInstanceVariable:@"_seriesGroupRows" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"HKGraphSeries" hasInstanceMethod:@"visibleValueRange" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKValueRange" hasInstanceMethod:@"minValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKValueRange" hasInstanceMethod:@"maxValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKLineSeriesBlockCoordinate" hasInstanceMethod:@"userInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKLineSeriesBlockCoordinate" hasInstanceMethod:@"coordinate" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"frequencyHertz" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"sensitivityDBHL" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HKAudiogramChartData" hasInstanceMethod:@"isLeftEar" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HKSelectedRangeData" hasInstanceMethod:@"titleOverride" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKSelectedRangeData" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKGraphViewSeriesGroup" hasInstanceMethod:@"selectionContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKGraphViewSelectionContext" hasInstanceMethod:@"selectedRangeBoundariesXValue" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -55,19 +55,19 @@
   [(HKSingleAudiogramChartViewControllerAccessibility *)self _axUpdateAXElementsForGraphView];
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
   v5.receiver = self;
   v5.super_class = HKSingleAudiogramChartViewControllerAccessibility;
-  [(HKSingleAudiogramChartViewControllerAccessibility *)&v5 graphView:a3 didUpdateSelectedPoint:a4];
+  [(HKSingleAudiogramChartViewControllerAccessibility *)&v5 graphView:view didUpdateSelectedPoint:point];
   [(HKSingleAudiogramChartViewControllerAccessibility *)self _axUpdateSelectionAXElementsForGraphView];
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
   v4.receiver = self;
   v4.super_class = HKSingleAudiogramChartViewControllerAccessibility;
-  [(HKSingleAudiogramChartViewControllerAccessibility *)&v4 graphViewDidEndSelection:a3];
+  [(HKSingleAudiogramChartViewControllerAccessibility *)&v4 graphViewDidEndSelection:selection];
   [(HKSingleAudiogramChartViewControllerAccessibility *)self _axUpdateSelectionAXElementsForGraphView];
 }
 
@@ -87,21 +87,21 @@
     v20 = 0;
     objc_opt_class();
     v7 = __UIAccessibilityCastAsClass();
-    v8 = [v7 navigationController];
-    v9 = [v8 navigationBar];
-    v10 = [v9 topItem];
-    v11 = [v10 title];
-    [v4 _accessibilitySetRetainedValue:v11 forKey:@"kAXGraphViewDisplayName"];
+    navigationController = [v7 navigationController];
+    navigationBar = [navigationController navigationBar];
+    topItem = [navigationBar topItem];
+    title = [topItem title];
+    [v4 _accessibilitySetRetainedValue:title forKey:@"kAXGraphViewDisplayName"];
 
-    v12 = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axHearingSensitivityFormatter];
+    _axHearingSensitivityFormatter = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axHearingSensitivityFormatter];
     v17[0] = MEMORY[0x29EDCA5F8];
     v17[1] = 3221225472;
     v17[2] = __81__HKSingleAudiogramChartViewControllerAccessibility__axSetupGraphViewDescription__block_invoke;
     v17[3] = &unk_29F2C43B8;
-    v18 = v12;
+    v18 = _axHearingSensitivityFormatter;
     v19 = v6;
     v13 = v6;
-    v14 = v12;
+    v14 = _axHearingSensitivityFormatter;
     v15 = MEMORY[0x29C2D9420](v17);
     v16 = MEMORY[0x29C2D9420]();
     [v4 _accessibilitySetRetainedValue:v16 forKey:@"kAXGraphViewYValueDescriptorBlock"];
@@ -147,7 +147,7 @@ void __81__HKSingleAudiogramChartViewControllerAccessibility__axSetupGraphViewDe
 
   if (v65)
   {
-    v59 = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axHearingSensitivityFormatter];
+    _axHearingSensitivityFormatter = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axHearingSensitivityFormatter];
     v3 = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axCollectSeriesDataForGraphView:v65];
     v62 = [(HKSingleAudiogramChartViewControllerAccessibility *)self _axSelectedXCoordinateForGraphView:v65];
     [v62 floatValue];
@@ -221,7 +221,7 @@ void __81__HKSingleAudiogramChartViewControllerAccessibility__axSetupGraphViewDe
                 v90 = __84__HKSingleAudiogramChartViewControllerAccessibility__axUpdateAXElementsForGraphView__block_invoke;
                 v91 = &unk_29F2C4390;
                 v93 = &v99;
-                v92 = self;
+                selfCopy = self;
                 v94 = v20;
                 AXPerformSafeBlock();
                 v24 = objc_alloc(MEMORY[0x29EDB8060]);
@@ -260,7 +260,7 @@ void __81__HKSingleAudiogramChartViewControllerAccessibility__axSetupGraphViewDe
           v77 = __84__HKSingleAudiogramChartViewControllerAccessibility__axUpdateAXElementsForGraphView__block_invoke_2;
           v78 = &unk_29F2C43E0;
           v81 = &v82;
-          v79 = v59;
+          v79 = _axHearingSensitivityFormatter;
           v67 = v11;
           v80 = v67;
           AXPerformSafeBlock();
@@ -290,8 +290,8 @@ void __81__HKSingleAudiogramChartViewControllerAccessibility__axSetupGraphViewDe
                 v36 = [v34 safeValueForKey:@"attributedString"];
                 v37 = __UIAccessibilityCastAsClass();
 
-                v38 = [v37 string];
-                [v29 axSafelyAddObject:v38];
+                string = [v37 string];
+                [v29 axSafelyAddObject:string];
               }
 
               v31 = [v30 countByEnumeratingWithState:&v71 objects:v110 count:16];
@@ -372,13 +372,13 @@ void __84__HKSingleAudiogramChartViewControllerAccessibility__axUpdateAXElements
   *(v4 + 40) = v3;
 }
 
-- (id)_axCollectSeriesDataForGraphView:(id)a3
+- (id)_axCollectSeriesDataForGraphView:(id)view
 {
   v32 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  viewCopy = view;
   v30 = 0;
   objc_opt_class();
-  v4 = [v3 safeValueForKey:@"allSeries"];
+  v4 = [viewCopy safeValueForKey:@"allSeries"];
   v5 = __UIAccessibilityCastAsClass();
 
   v23 = objc_opt_new();
@@ -428,7 +428,7 @@ LABEL_15:
           abort();
         }
 
-        v24 = v3;
+        v24 = viewCopy;
         v25 = v23;
         AXPerformSafeBlock();
 
@@ -450,10 +450,10 @@ LABEL_15:
     v9 = 0;
   }
 
-  [v3 _accessibilitySetRetainedValue:v9 forKey:@"kAXGraphViewYAxisMin"];
-  [v3 _accessibilitySetRetainedValue:v8 forKey:@"kAXGraphViewYAxisMax"];
-  v16 = [v23 allKeys];
-  v17 = [v16 sortedArrayUsingComparator:&__block_literal_global_0];
+  [viewCopy _accessibilitySetRetainedValue:v9 forKey:@"kAXGraphViewYAxisMin"];
+  [viewCopy _accessibilitySetRetainedValue:v8 forKey:@"kAXGraphViewYAxisMax"];
+  allKeys = [v23 allKeys];
+  v17 = [allKeys sortedArrayUsingComparator:&__block_literal_global_0];
 
   v18 = [v23 objectsForKeys:v17 notFoundMarker:MEMORY[0x29EDB8E90]];
 
@@ -520,8 +520,8 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [v4 accessibilityElements];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    accessibilityElements = [v4 accessibilityElements];
+    v10 = [accessibilityElements countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v10)
     {
       v11 = v10;
@@ -536,7 +536,7 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(accessibilityElements);
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
@@ -550,7 +550,7 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v11 = [accessibilityElements countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v11);
@@ -563,8 +563,8 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = [v4 accessibilityElements];
-    v23 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    accessibilityElements = [v4 accessibilityElements];
+    v23 = [accessibilityElements countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v23)
     {
       v24 = v23;
@@ -575,13 +575,13 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
         {
           if (*v33 != v25)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(accessibilityElements);
           }
 
           [*(*(&v32 + 1) + 8 * j) setAccessibilityTraits:0];
         }
 
-        v24 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v24 = [accessibilityElements countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v24);
@@ -599,16 +599,16 @@ void __86__HKSingleAudiogramChartViewControllerAccessibility__axCollectSeriesDat
   return v3;
 }
 
-- (id)_axSelectedXCoordinateForGraphView:(id)a3
+- (id)_axSelectedXCoordinateForGraphView:(id)view
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  viewCopy = view;
   v26 = 0;
   objc_opt_class();
-  v4 = [v3 safeValueForKey:@"_seriesGroupRows"];
+  v4 = [viewCopy safeValueForKey:@"_seriesGroupRows"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v20 = v3;
+  v20 = viewCopy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;

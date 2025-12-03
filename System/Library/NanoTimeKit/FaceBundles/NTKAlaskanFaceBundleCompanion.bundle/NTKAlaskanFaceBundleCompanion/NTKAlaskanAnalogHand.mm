@@ -1,27 +1,27 @@
 @interface NTKAlaskanAnalogHand
-- (NTKAlaskanAnalogHand)initWithFrame:(CGRect)a3 defaultTipLayer:(BOOL)a4 defaultTailLayer:(BOOL)a5;
+- (NTKAlaskanAnalogHand)initWithFrame:(CGRect)frame defaultTipLayer:(BOOL)layer defaultTailLayer:(BOOL)tailLayer;
 - (void)layoutSubviews;
-- (void)setTailLayer:(id)a3;
-- (void)setTipLayer:(id)a3;
+- (void)setTailLayer:(id)layer;
+- (void)setTipLayer:(id)layer;
 @end
 
 @implementation NTKAlaskanAnalogHand
 
-- (NTKAlaskanAnalogHand)initWithFrame:(CGRect)a3 defaultTipLayer:(BOOL)a4 defaultTailLayer:(BOOL)a5
+- (NTKAlaskanAnalogHand)initWithFrame:(CGRect)frame defaultTipLayer:(BOOL)layer defaultTailLayer:(BOOL)tailLayer
 {
-  v5 = a5;
-  v6 = a4;
+  tailLayerCopy = tailLayer;
+  layerCopy = layer;
   v24.receiver = self;
   v24.super_class = NTKAlaskanAnalogHand;
-  v7 = [(NTKAlaskanAnalogHand *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(NTKAlaskanAnalogHand *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v8 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v9 = [v8 device];
+    device = [v8 device];
 
-    v11 = sub_17380(v10, v9);
+    v11 = sub_17380(v10, device);
     v13 = v12;
-    if (v6)
+    if (layerCopy)
     {
       v14 = v11;
       v15 = objc_alloc_init(CALayer);
@@ -35,11 +35,11 @@
       v17 = +[UIColor whiteColor];
       -[CALayer setBackgroundColor:](v7->_tipLayer, "setBackgroundColor:", [v17 CGColor]);
 
-      v18 = [(NTKAlaskanAnalogHand *)v7 layer];
-      [v18 addSublayer:v7->_tipLayer];
+      layer = [(NTKAlaskanAnalogHand *)v7 layer];
+      [layer addSublayer:v7->_tipLayer];
     }
 
-    if (v5)
+    if (tailLayerCopy)
     {
       v19 = objc_alloc_init(CALayer);
       tailLayer = v7->_tailLayer;
@@ -52,24 +52,24 @@
       v21 = +[UIColor whiteColor];
       -[CALayer setBackgroundColor:](v7->_tailLayer, "setBackgroundColor:", [v21 CGColor]);
 
-      v22 = [(NTKAlaskanAnalogHand *)v7 layer];
-      [v22 addSublayer:v7->_tailLayer];
+      layer2 = [(NTKAlaskanAnalogHand *)v7 layer];
+      [layer2 addSublayer:v7->_tailLayer];
     }
   }
 
   return v7;
 }
 
-- (void)setTipLayer:(id)a3
+- (void)setTipLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   tipLayer = self->_tipLayer;
-  if (tipLayer != v5)
+  if (tipLayer != layerCopy)
   {
     [(CALayer *)tipLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_tipLayer, a3);
-    v7 = [(NTKAlaskanAnalogHand *)self layer];
-    [v7 addSublayer:self->_tipLayer];
+    objc_storeStrong(&self->_tipLayer, layer);
+    layer = [(NTKAlaskanAnalogHand *)self layer];
+    [layer addSublayer:self->_tipLayer];
 
     tipLayer = [(NTKAlaskanAnalogHand *)self setNeedsLayout];
   }
@@ -77,16 +77,16 @@
   _objc_release_x1(tipLayer);
 }
 
-- (void)setTailLayer:(id)a3
+- (void)setTailLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   tailLayer = self->_tailLayer;
-  if (tailLayer != v5)
+  if (tailLayer != layerCopy)
   {
     [(CALayer *)tailLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_tailLayer, a3);
-    v7 = [(NTKAlaskanAnalogHand *)self layer];
-    [v7 addSublayer:self->_tailLayer];
+    objc_storeStrong(&self->_tailLayer, layer);
+    layer = [(NTKAlaskanAnalogHand *)self layer];
+    [layer addSublayer:self->_tailLayer];
 
     tailLayer = [(NTKAlaskanAnalogHand *)self setNeedsLayout];
   }
@@ -100,7 +100,7 @@
   v21.super_class = NTKAlaskanAnalogHand;
   [(NTKAlaskanAnalogHand *)&v21 layoutSubviews];
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   [(CALayer *)self->_tipLayer frame];
   v6 = v5;

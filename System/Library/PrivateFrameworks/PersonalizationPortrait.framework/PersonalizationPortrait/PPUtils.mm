@@ -1,19 +1,19 @@
 @interface PPUtils
-+ (BOOL)localizedTimeStructForDate:(id)a3 tm:(tm *)a4;
-+ (BOOL)localizedTimeStructForSecondsFrom1970:(double)a3 tm:(tm *)a4;
-+ (double)jaroSimilarityForString:(id)a3 other:(id)a4;
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4;
-+ (id)coordinatesToGeoHashWithLength:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5;
++ (BOOL)localizedTimeStructForDate:(id)date tm:(tm *)tm;
++ (BOOL)localizedTimeStructForSecondsFrom1970:(double)from1970 tm:(tm *)tm;
++ (double)jaroSimilarityForString:(id)string other:(id)other;
++ (id)Sha256ForData:(id)data withSalt:(id)salt;
++ (id)coordinatesToGeoHashWithLength:(unint64_t)length latitude:(double)latitude longitude:(double)longitude;
 + (id)currentLocaleLanguageCode;
-+ (id)formatStringArray:(id)a3 truncatingAtLength:(unint64_t)a4;
-+ (id)hexOfBytes:(const void *)a3 size:(unint64_t)a4;
++ (id)formatStringArray:(id)array truncatingAtLength:(unint64_t)length;
++ (id)hexOfBytes:(const void *)bytes size:(unint64_t)size;
 + (id)hexUUID;
 + (id)osBuild;
 + (id)preferredLanguages;
-+ (id)reduceSpotlightDomainIdentifiers:(id)a3;
-+ (id)sqliteGlobEscape:(id)a3;
-+ (int64_t)compareDouble:(double)a3 withDouble:(double)a4;
-+ (void)enumerateChunksOfSize:(unint64_t)a3 fromArray:(id)a4 usingBlock:(id)a5;
++ (id)reduceSpotlightDomainIdentifiers:(id)identifiers;
++ (id)sqliteGlobEscape:(id)escape;
++ (int64_t)compareDouble:(double)double withDouble:(double)withDouble;
++ (void)enumerateChunksOfSize:(unint64_t)size fromArray:(id)array usingBlock:(id)block;
 @end
 
 @implementation PPUtils
@@ -43,15 +43,15 @@ void __29__PPUtils_preferredLanguages__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (BOOL)localizedTimeStructForSecondsFrom1970:(double)a3 tm:(tm *)a4
++ (BOOL)localizedTimeStructForSecondsFrom1970:(double)from1970 tm:(tm *)tm
 {
   v5 = 0;
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 >= -2147483650.0 && a3 <= 2147483650.0)
+  if (from1970 >= -2147483650.0 && from1970 <= 2147483650.0)
   {
-    v14 = a3;
+    from1970Copy = from1970;
     *__error() = 0;
-    v7 = localtime_r(&v14, a4);
+    v7 = localtime_r(&from1970Copy, tm);
     v5 = v7 != 0;
     if (!v7)
     {
@@ -62,7 +62,7 @@ void __29__PPUtils_preferredLanguages__block_invoke()
         v12 = strerror(*v11);
         v13 = *__error();
         *buf = 134218498;
-        v16 = a3;
+        from1970Copy2 = from1970;
         v17 = 2080;
         v18 = v12;
         v19 = 1024;
@@ -76,27 +76,27 @@ void __29__PPUtils_preferredLanguages__block_invoke()
   return v5;
 }
 
-+ (BOOL)localizedTimeStructForDate:(id)a3 tm:(tm *)a4
++ (BOOL)localizedTimeStructForDate:(id)date tm:(tm *)tm
 {
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
 
-  return [PPUtils localizedTimeStructForSecondsFrom1970:a4 tm:?];
+  return [PPUtils localizedTimeStructForSecondsFrom1970:tm tm:?];
 }
 
-+ (id)sqliteGlobEscape:(id)a3
++ (id)sqliteGlobEscape:(id)escape
 {
-  v5 = a3;
-  if (!v5)
+  escapeCopy = escape;
+  if (!escapeCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"PPUtils.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"unescaped"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPUtils.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"unescaped"}];
 
     v6 = objc_autoreleasePoolPush();
     goto LABEL_39;
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = v5;
+  v7 = escapeCopy;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -125,12 +125,12 @@ void __29__PPUtils_preferredLanguages__block_invoke()
   {
 
 LABEL_39:
-    v12 = v5;
+    v12 = escapeCopy;
     goto LABEL_40;
   }
 
   v36 = v6;
-  v37 = v5;
+  v37 = escapeCopy;
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -226,7 +226,7 @@ LABEL_23:
   while (Length != v14);
 
   v6 = v36;
-  v5 = v37;
+  escapeCopy = v37;
   if (!v12)
   {
     goto LABEL_39;
@@ -247,15 +247,15 @@ LABEL_40:
   return v12;
 }
 
-+ (double)jaroSimilarityForString:(id)a3 other:(id)a4
++ (double)jaroSimilarityForString:(id)string other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  otherCopy = other;
   v7 = 1.0;
-  if (([v5 isEqualToString:v6] & 1) == 0)
+  if (([stringCopy isEqualToString:otherCopy] & 1) == 0)
   {
-    [v5 length];
-    [v6 length];
+    [stringCopy length];
+    [otherCopy length];
     v8 = objc_opt_new();
     v29 = 0;
     v30 = &v29;
@@ -396,23 +396,23 @@ LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)reduceSpotlightDomainIdentifiers:(id)a3
++ (id)reduceSpotlightDomainIdentifiers:(id)identifiers
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PPUtils.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPUtils.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifiers"}];
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [objc_alloc(MEMORY[0x1E69C5D18]) initWithDomainsFromArray:v5];
-  v8 = [v7 allDomains];
+  v7 = [objc_alloc(MEMORY[0x1E69C5D18]) initWithDomainsFromArray:identifiersCopy];
+  allDomains = [v7 allDomains];
   v9 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"self" ascending:1];
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v8 sortedArrayUsingDescriptors:v10];
+  v11 = [allDomains sortedArrayUsingDescriptors:v10];
 
   objc_autoreleasePoolPop(v6);
   v12 = *MEMORY[0x1E69E9840];
@@ -423,26 +423,26 @@ LABEL_17:
 + (id)currentLocaleLanguageCode
 {
   v2 = MEMORY[0x1E695DF58];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [v2 componentsFromLocaleIdentifier:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [v2 componentsFromLocaleIdentifier:localeIdentifier];
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695D9B0]];
 
   return v6;
 }
 
-+ (id)coordinatesToGeoHashWithLength:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5
++ (id)coordinatesToGeoHashWithLength:(unint64_t)length latitude:(double)latitude longitude:(double)longitude
 {
-  v7 = a3;
+  lengthCopy = length;
   v26[2] = *MEMORY[0x1E69E9840];
-  if (a3 >= 0xD)
+  if (length >= 0xD)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PPUtils.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"hashLength <= GEOHASH_MAX_LENGTH"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPUtils.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"hashLength <= GEOHASH_MAX_LENGTH"}];
   }
 
   v8 = 0;
-  v9 = 1 << (5 * v7 - 1);
+  v9 = 1 << (5 * lengthCopy - 1);
   v10 = -180.0;
   v11 = 180.0;
   v12 = 90.0;
@@ -450,7 +450,7 @@ LABEL_17:
   do
   {
     v14 = v10 + (v11 - v10) * 0.5;
-    if (v14 <= a5)
+    if (v14 <= longitude)
     {
       v15 = v9;
     }
@@ -466,7 +466,7 @@ LABEL_17:
       break;
     }
 
-    if (v14 <= a5)
+    if (v14 <= longitude)
     {
       v10 = v10 + (v11 - v10) * 0.5;
     }
@@ -477,7 +477,7 @@ LABEL_17:
     }
 
     v16 = v9 >> 1;
-    if (v13 + (v12 - v13) * 0.5 <= a4)
+    if (v13 + (v12 - v13) * 0.5 <= latitude)
     {
       v13 = v13 + (v12 - v13) * 0.5;
     }
@@ -495,18 +495,18 @@ LABEL_17:
 
   while (v17);
   memset(v26, 0, 13);
-  if (v7)
+  if (lengthCopy)
   {
-    v18 = 5 * v7 - 5;
+    v18 = 5 * lengthCopy - 5;
     v19 = v26;
     do
     {
       *v19++ = geoHashBase32Map[(v8 >> v18) & 0x1F];
       v18 -= 5;
-      --v7;
+      --lengthCopy;
     }
 
-    while (v7);
+    while (lengthCopy);
   }
 
   v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v26 encoding:4];
@@ -515,20 +515,20 @@ LABEL_17:
   return v20;
 }
 
-+ (id)formatStringArray:(id)a3 truncatingAtLength:(unint64_t)a4
++ (id)formatStringArray:(id)array truncatingAtLength:(unint64_t)length
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_autoreleasePoolPush();
-  if ([v5 count] > a4)
+  if ([arrayCopy count] > length)
   {
-    v7 = [v5 subarrayWithRange:{0, a4}];
+    v7 = [arrayCopy subarrayWithRange:{0, length}];
     v8 = [v7 arrayByAddingObject:@"..."];
 
-    v5 = v8;
+    arrayCopy = v8;
   }
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [v5 _pas_componentsJoinedByString:{@", "}];
+  v10 = [arrayCopy _pas_componentsJoinedByString:{@", "}];
   v11 = [v9 initWithFormat:@"[ %@ ]", v10];
 
   objc_autoreleasePoolPop(v6);
@@ -536,9 +536,9 @@ LABEL_17:
   return v11;
 }
 
-+ (int64_t)compareDouble:(double)a3 withDouble:(double)a4
++ (int64_t)compareDouble:(double)double withDouble:(double)withDouble
 {
-  if (a3 >= a4)
+  if (double >= withDouble)
   {
     v4 = 0;
   }
@@ -548,7 +548,7 @@ LABEL_17:
     v4 = -1;
   }
 
-  if (a3 > a4)
+  if (double > withDouble)
   {
     return 1;
   }
@@ -573,31 +573,31 @@ LABEL_17:
   return v3;
 }
 
-+ (id)hexOfBytes:(const void *)a3 size:(unint64_t)a4
++ (id)hexOfBytes:(const void *)bytes size:(unint64_t)size
 {
-  v4 = a4;
-  v6 = 2 * a4;
-  v7 = malloc_type_malloc(2 * a4, 0x74DED8F2uLL);
+  sizeCopy = size;
+  v6 = 2 * size;
+  v7 = malloc_type_malloc(2 * size, 0x74DED8F2uLL);
   if (!v7)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:@"malloc failed" userInfo:0];
     objc_exception_throw(v12);
   }
 
-  if (v4)
+  if (sizeCopy)
   {
     v8 = v7 + 1;
     do
     {
-      *(v8 - 1) = charOfNibble[*a3 >> 4];
-      v9 = *a3;
-      a3 = a3 + 1;
+      *(v8 - 1) = charOfNibble[*bytes >> 4];
+      v9 = *bytes;
+      bytes = bytes + 1;
       *v8 = charOfNibble[v9 & 0xF];
       v8 += 2;
-      --v4;
+      --sizeCopy;
     }
 
-    while (v4);
+    while (sizeCopy);
   }
 
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:v7 length:v6 encoding:4 freeWhenDone:1];
@@ -605,21 +605,21 @@ LABEL_17:
   return v10;
 }
 
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4
++ (id)Sha256ForData:(id)data withSalt:(id)salt
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  saltCopy = salt;
   memset(&v13, 0, sizeof(v13));
-  v6 = a3;
+  dataCopy = data;
   CC_SHA256_Init(&v13);
-  v7 = v6;
-  v8 = [v7 bytes];
-  v9 = [v6 length];
+  v7 = dataCopy;
+  bytes = [v7 bytes];
+  v9 = [dataCopy length];
 
-  CC_SHA256_Update(&v13, v8, v9);
-  if (v5)
+  CC_SHA256_Update(&v13, bytes, v9);
+  if (saltCopy)
   {
-    CC_SHA256_Update(&v13, [v5 bytes], objc_msgSend(v5, "length"));
+    CC_SHA256_Update(&v13, [saltCopy bytes], objc_msgSend(saltCopy, "length"));
   }
 
   *md = 0u;
@@ -664,22 +664,22 @@ void __18__PPUtils_osBuild__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (void)enumerateChunksOfSize:(unint64_t)a3 fromArray:(id)a4 usingBlock:(id)a5
++ (void)enumerateChunksOfSize:(unint64_t)size fromArray:(id)array usingBlock:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  if (!a3)
+  arrayCopy = array;
+  blockCopy = block;
+  if (!size)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PPUtils.m" lineNumber:27 description:@"Chunk size must be nonzero"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPUtils.m" lineNumber:27 description:@"Chunk size must be nonzero"];
   }
 
-  if ([v9 count])
+  if ([arrayCopy count])
   {
-    if ([v9 count] <= a3)
+    if ([arrayCopy count] <= size)
     {
       v19 = 0;
-      v10[2](v10, v9, &v19);
+      blockCopy[2](blockCopy, arrayCopy, &v19);
     }
 
     else
@@ -687,17 +687,17 @@ void __18__PPUtils_osBuild__block_invoke()
       v11 = 0;
       do
       {
-        if (v11 >= [v9 count])
+        if (v11 >= [arrayCopy count])
         {
           break;
         }
 
         v12 = objc_autoreleasePoolPush();
         v18 = 0;
-        v13 = [v9 count];
-        v14 = v13 - v11 >= a3 ? a3 : v13 - v11;
-        v15 = [v9 subarrayWithRange:{v11, v14}];
-        v10[2](v10, v15, &v18);
+        v13 = [arrayCopy count];
+        v14 = v13 - v11 >= size ? size : v13 - v11;
+        v15 = [arrayCopy subarrayWithRange:{v11, v14}];
+        blockCopy[2](blockCopy, v15, &v18);
 
         v11 += v14;
         v16 = v18;

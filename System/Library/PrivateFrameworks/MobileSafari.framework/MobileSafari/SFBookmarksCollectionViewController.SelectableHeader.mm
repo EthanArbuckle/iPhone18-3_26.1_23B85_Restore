@@ -1,13 +1,13 @@
 @interface SFBookmarksCollectionViewController.SelectableHeader
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader)initWithCoder:(id)a3;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader)initWithCoder:(id)coder;
 - (unint64_t)accessibilityTraits;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)handleTap;
 @end
 
 @implementation SFBookmarksCollectionViewController.SelectableHeader
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader)initWithCoder:(id)a3
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader_isEditing) = 0;
   v3 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController16SelectableHeader_tapHandler);
@@ -26,18 +26,18 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BAA92E4();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_18BC1F738();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1F718();
-  v8 = self;
+  selfCopy = self;
   sub_18BAA93A4(v7);
 
   (*(v5 + 8))(v7, v4);

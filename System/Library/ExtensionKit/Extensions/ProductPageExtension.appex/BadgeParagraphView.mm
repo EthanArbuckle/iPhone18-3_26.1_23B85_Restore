@@ -1,29 +1,29 @@
 @interface BadgeParagraphView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension18BadgeParagraphView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension18BadgeParagraphView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)preferredContentSizeCategoryDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BadgeParagraphView
 
-- (_TtC20ProductPageExtension18BadgeParagraphView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension18BadgeParagraphView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension18BadgeParagraphView_paragraphLabel);
-  v6 = self;
+  selfCopy = self;
   [v5 sizeThatFits:{width, height}];
   v8 = v7;
-  v9 = [(BadgeParagraphView *)v6 traitCollection];
+  traitCollection = [(BadgeParagraphView *)selfCopy traitCollection];
   v10 = sub_1000182D0(v8, width);
   v12 = v11;
 
@@ -36,20 +36,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017A04();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100017CBC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100017CBC(change);
 }
 
 - (void)preferredContentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017E0C();
 }
 

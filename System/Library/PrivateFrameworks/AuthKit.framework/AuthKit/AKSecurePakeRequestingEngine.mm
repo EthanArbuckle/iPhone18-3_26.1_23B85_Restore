@@ -1,60 +1,60 @@
 @interface AKSecurePakeRequestingEngine
-- (AKSecurePakeRequestingEngine)initWithContext:(id)a3 enterCodeBlock:(id)a4;
-- (id)_newProverWithEntropy:(id)a3 error:(id *)a4;
-- (void)_onqueue_processMessage1:(id)a3 completionHandler:(id)a4;
-- (void)_onqueue_processMessage1:(id)a3 withProver:(id)a4 completionHandler:(id)a5;
-- (void)_onqueue_processMessage3:(id)a3 completionHandler:(id)a4;
-- (void)_onqueue_processMessage3:(id)a3 withProver:(id)a4 completionHandler:(id)a5;
-- (void)_onqueue_processMessage:(id)a3 completionHandler:(id)a4;
-- (void)_onqueue_proverWithCompletionHandler:(id)a3;
-- (void)processMessage:(id)a3 completionHandler:(id)a4;
+- (AKSecurePakeRequestingEngine)initWithContext:(id)context enterCodeBlock:(id)block;
+- (id)_newProverWithEntropy:(id)entropy error:(id *)error;
+- (void)_onqueue_processMessage1:(id)message1 completionHandler:(id)handler;
+- (void)_onqueue_processMessage1:(id)message1 withProver:(id)prover completionHandler:(id)handler;
+- (void)_onqueue_processMessage3:(id)message3 completionHandler:(id)handler;
+- (void)_onqueue_processMessage3:(id)message3 withProver:(id)prover completionHandler:(id)handler;
+- (void)_onqueue_processMessage:(id)message completionHandler:(id)handler;
+- (void)_onqueue_proverWithCompletionHandler:(id)handler;
+- (void)processMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation AKSecurePakeRequestingEngine
 
-- (AKSecurePakeRequestingEngine)initWithContext:(id)a3 enterCodeBlock:(id)a4
+- (AKSecurePakeRequestingEngine)initWithContext:(id)context enterCodeBlock:(id)block
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, block);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = AKSecurePakeRequestingEngine;
-  v13 = [(AKSecurePakeEngineBase *)&v10 initWithContext:location[0]];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKSecurePakeEngineBase *)&v10 initWithContext:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = objc_retainBlock(v11);
-    enterCodeBlock = v13->_enterCodeBlock;
-    v13->_enterCodeBlock = v5;
+    enterCodeBlock = selfCopy->_enterCodeBlock;
+    selfCopy->_enterCodeBlock = v5;
     _objc_release(enterCodeBlock);
   }
 
-  v8 = _objc_retain(v13);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)_onqueue_proverWithCompletionHandler:(id)a3
+- (void)_onqueue_proverWithCompletionHandler:(id)handler
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(AKSecurePakeEngineBase *)v22 queue];
-  dispatch_assert_queue_V2(v9);
-  _objc_release(v9);
-  if (v22->_prover)
+  objc_storeStrong(location, handler);
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  if (selfCopy->_prover)
   {
     if (location[0])
     {
-      (*(location[0] + 2))(location[0], v22->_prover, 0);
+      (*(location[0] + 2))(location[0], selfCopy->_prover, 0);
     }
 
     v20 = 1;
@@ -62,15 +62,15 @@
 
   else
   {
-    v8 = [(AKSecurePakeEngineBase *)v22 context];
-    v19[0] = [(AKSecurePakeContext *)v8 sessionEntropy];
+    context = [(AKSecurePakeEngineBase *)selfCopy context];
+    v19[0] = [(AKSecurePakeContext *)context sessionEntropy];
     v19[1] = v3;
-    _objc_release(v8);
+    _objc_release(context);
     if (v19[0])
     {
-      objc_initWeak(&from, v22);
-      enterCodeBlock = v22->_enterCodeBlock;
-      v4 = [(AKSecurePakeEngineBase *)v22 context];
+      objc_initWeak(&from, selfCopy);
+      enterCodeBlock = selfCopy->_enterCodeBlock;
+      context2 = [(AKSecurePakeEngineBase *)selfCopy context];
       v10 = _NSConcreteStackBlock;
       v11 = -1040187392;
       v12 = 0;
@@ -79,8 +79,8 @@
       objc_copyWeak(&v16, &from);
       sub_100069A2C(v17, v19);
       v15 = _objc_retain(location[0]);
-      enterCodeBlock[2](enterCodeBlock, v4, &v10);
-      _objc_release(v4);
+      enterCodeBlock[2](enterCodeBlock, context2, &v10);
+      _objc_release(context2);
       objc_storeStrong(&v15, 0);
       sub_100069A94(v17);
       objc_destroyWeak(&v16);
@@ -107,15 +107,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_newProverWithEntropy:(id)a3 error:(id *)a4
+- (id)_newProverWithEntropy:(id)entropy error:(id *)error
 {
-  v15 = a3;
-  v14 = self;
+  entropyCopy = entropy;
+  selfCopy = self;
   v13 = a2;
-  v12 = a4;
+  errorCopy = error;
   location = 0;
   obj = 0;
-  v7 = [[SPAKE2WebProver alloc] initWithSalt:a3.var0 code:a3.var1 error:&obj];
+  v7 = [[SPAKE2WebProver alloc] initWithSalt:entropy.var0 code:entropy.var1 error:&obj];
   objc_storeStrong(&location, obj);
   v10 = v7;
   if (v7)
@@ -133,11 +133,11 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v12)
+    if (errorCopy)
     {
       v6 = location;
       v4 = location;
-      *v12 = v6;
+      *errorCopy = v6;
     }
 
     v16 = 0;
@@ -145,18 +145,18 @@
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&location, 0);
-  sub_100069A94(&v15.var0);
+  sub_100069A94(&entropyCopy.var0);
   return v16;
 }
 
-- (void)processMessage:(id)a3 completionHandler:(id)a4
+- (void)processMessage:(id)message completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, handler);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -166,13 +166,13 @@
   }
 
   objc_storeStrong(&v15, 0);
-  queue = [(AKSecurePakeEngineBase *)v18 queue];
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10006E718;
   v10 = &unk_100320558;
-  v11 = _objc_retain(v18);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(location[0]);
   v13 = _objc_retain(v16);
   dispatch_async(queue, &v6);
@@ -184,14 +184,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_processMessage:(id)a3 completionHandler:(id)a4
+- (void)_onqueue_processMessage:(id)message completionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, handler);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -201,18 +201,18 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v6 = [(AKSecurePakeEngineBase *)v14 queue];
-  dispatch_assert_queue_V2(v6);
-  _objc_release(v6);
-  v7 = [location[0] messageStep];
-  if (v7 == 1)
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  messageStep = [location[0] messageStep];
+  if (messageStep == 1)
   {
-    [(AKSecurePakeRequestingEngine *)v14 _onqueue_processMessage1:location[0] completionHandler:v12];
+    [(AKSecurePakeRequestingEngine *)selfCopy _onqueue_processMessage1:location[0] completionHandler:v12];
   }
 
-  else if (v7 == 3)
+  else if (messageStep == 3)
   {
-    [(AKSecurePakeRequestingEngine *)v14 _onqueue_processMessage3:location[0] completionHandler:v12];
+    [(AKSecurePakeRequestingEngine *)selfCopy _onqueue_processMessage3:location[0] completionHandler:v12];
   }
 
   else
@@ -238,14 +238,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_processMessage1:(id)a3 completionHandler:(id)a4
+- (void)_onqueue_processMessage1:(id)message1 completionHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message1);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, handler);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -255,11 +255,11 @@
   }
 
   objc_storeStrong(&v17, 0);
-  v5 = [(AKSecurePakeEngineBase *)v20 queue];
-  dispatch_assert_queue_V2(v5);
-  _objc_release(v5);
-  objc_initWeak(&from, v20);
-  v4 = v20;
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  objc_initWeak(&from, selfCopy);
+  v4 = selfCopy;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -277,16 +277,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_processMessage1:(id)a3 withProver:(id)a4 completionHandler:(id)a5
+- (void)_onqueue_processMessage1:(id)message1 withProver:(id)prover completionHandler:(id)handler
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message1);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, prover);
   v44 = 0;
-  objc_storeStrong(&v44, a5);
+  objc_storeStrong(&v44, handler);
   v43 = _AKLogSystem();
   v42 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -296,22 +296,22 @@
   }
 
   objc_storeStrong(&v43, 0);
-  v23 = [(AKSecurePakeEngineBase *)v47 queue];
-  dispatch_assert_queue_V2(v23);
-  _objc_release(v23);
-  v41 = [location[0] pakeData];
-  if (v41)
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  pakeData = [location[0] pakeData];
+  if (pakeData)
   {
     v37 = 0;
-    prover = v47->_prover;
+    prover = selfCopy->_prover;
     v35 = 0;
-    v20 = [(SPAKE2WebProver *)prover processMsg1:v41 error:&v35];
+    v20 = [(SPAKE2WebProver *)prover processMsg1:pakeData error:&v35];
     objc_storeStrong(&v37, v35);
     v36 = v20;
     if (v20)
     {
       v32 = 0;
-      v6 = v47->_prover;
+      v6 = selfCopy->_prover;
       v30 = 0;
       v17 = [(SPAKE2WebProver *)v6 getMsg1WithError:&v30];
       objc_storeStrong(&v32, v30);
@@ -319,20 +319,20 @@
       if (v17)
       {
         v8 = [AKSecurePakeMessage alloc];
-        v14 = [location[0] sessionID];
-        v13 = [location[0] altDSID];
+        sessionID = [location[0] sessionID];
+        altDSID = [location[0] altDSID];
         v7 = v31;
-        v12 = [location[0] serverData];
-        v11 = [location[0] transactionID];
-        v10 = [(AKSecurePakeEngineBase *)v47 context];
-        v9 = [(AKSecurePakeContext *)v10 devicePushToken];
-        v27 = [(AKSecurePakeMessage *)v8 initWithSessionID:v14 altDSID:v13 messageStep:1 pakeData:v7 clientData:0 serverData:v12 clientError:0 transactionID:v11 devicePushToken:v9 encryptedCode:0 pushMessage:0];
-        _objc_release(v9);
-        _objc_release(v10);
-        _objc_release(v11);
-        _objc_release(v12);
-        _objc_release(v13);
-        _objc_release(v14);
+        serverData = [location[0] serverData];
+        transactionID = [location[0] transactionID];
+        context = [(AKSecurePakeEngineBase *)selfCopy context];
+        devicePushToken = [(AKSecurePakeContext *)context devicePushToken];
+        v27 = [(AKSecurePakeMessage *)v8 initWithSessionID:sessionID altDSID:altDSID messageStep:1 pakeData:v7 clientData:0 serverData:serverData clientError:0 transactionID:transactionID devicePushToken:devicePushToken encryptedCode:0 pushMessage:0];
+        _objc_release(devicePushToken);
+        _objc_release(context);
+        _objc_release(transactionID);
+        _objc_release(serverData);
+        _objc_release(altDSID);
+        _objc_release(sessionID);
         v26 = _AKLogSystem();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
@@ -382,7 +382,7 @@
       v33 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        sub_10001B098(v50, v41, v37);
+        sub_10001B098(v50, pakeData, v37);
         _os_log_error_impl(&_mh_execute_header, v34, v33, "Failed to process msg1 (%@) with error: %@", v50, 0x16u);
       }
 
@@ -423,20 +423,20 @@
     v38 = 1;
   }
 
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&pakeData, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_processMessage3:(id)a3 completionHandler:(id)a4
+- (void)_onqueue_processMessage3:(id)message3 completionHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message3);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, handler);
   v8 = _AKLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -445,12 +445,12 @@
   }
 
   objc_storeStrong(&v8, 0);
-  v6 = [(AKSecurePakeEngineBase *)v11 queue];
-  dispatch_assert_queue_V2(v6);
-  _objc_release(v6);
-  if (v11->_prover)
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  if (selfCopy->_prover)
   {
-    [(AKSecurePakeRequestingEngine *)v11 _onqueue_processMessage3:location[0] withProver:v11->_prover completionHandler:v9];
+    [(AKSecurePakeRequestingEngine *)selfCopy _onqueue_processMessage3:location[0] withProver:selfCopy->_prover completionHandler:v9];
   }
 
   else if (v9)
@@ -465,16 +465,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_processMessage3:(id)a3 withProver:(id)a4 completionHandler:(id)a5
+- (void)_onqueue_processMessage3:(id)message3 withProver:(id)prover completionHandler:(id)handler
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message3);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, prover);
   v52 = 0;
-  objc_storeStrong(&v52, a5);
+  objc_storeStrong(&v52, handler);
   v51 = _AKLogSystem();
   v50 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -484,23 +484,23 @@
   }
 
   objc_storeStrong(&v51, 0);
-  v25 = [(AKSecurePakeEngineBase *)v55 queue];
-  dispatch_assert_queue_V2(v25);
-  _objc_release(v25);
-  v49 = [location[0] pakeData];
-  v48 = [location[0] encryptedCode];
-  if (v49 && v48)
+  queue = [(AKSecurePakeEngineBase *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  _objc_release(queue);
+  pakeData = [location[0] pakeData];
+  encryptedCode = [location[0] encryptedCode];
+  if (pakeData && encryptedCode)
   {
     v44 = 0;
-    prover = v55->_prover;
+    prover = selfCopy->_prover;
     v42 = 0;
-    v22 = [(SPAKE2WebProver *)prover processMsg2:v49 error:&v42];
+    v22 = [(SPAKE2WebProver *)prover processMsg2:pakeData error:&v42];
     objc_storeStrong(&v44, v42);
     v43 = v22;
     if (v22)
     {
       v39 = 0;
-      v6 = v55->_prover;
+      v6 = selfCopy->_prover;
       v37 = 0;
       v19 = [(SPAKE2WebProver *)v6 getMsg2WithError:&v37];
       objc_storeStrong(&v39, v37);
@@ -508,30 +508,30 @@
       if (v19)
       {
         v34 = 0;
-        v7 = v55->_prover;
+        v7 = selfCopy->_prover;
         v32 = 0;
-        v16 = [(SPAKE2WebProver *)v7 decryptMessageInBinary:v48 error:&v32];
+        v16 = [(SPAKE2WebProver *)v7 decryptMessageInBinary:encryptedCode error:&v32];
         objc_storeStrong(&v34, v32);
         v33 = v16;
-        v31 = [(AKSecurePakeEngineBase *)v55 controller];
-        if (([(SPAKE2WebProver *)v55->_prover isVerified]& 1) != 0)
+        controller = [(AKSecurePakeEngineBase *)selfCopy controller];
+        if (([(SPAKE2WebProver *)selfCopy->_prover isVerified]& 1) != 0)
         {
           v8 = [AKSymmetricKey alloc];
-          v9 = [(SPAKE2WebProver *)v55->_prover getKey];
+          getKey = [(SPAKE2WebProver *)selfCopy->_prover getKey];
           v30 = [v8 initFromSymmetricKey:?];
-          _objc_release(v9);
-          [v31 securePakeEngine:v55 didDeriveKey:v30];
+          _objc_release(getKey);
+          [controller securePakeEngine:selfCopy didDeriveKey:v30];
           v11 = [AKSecurePakeMessage alloc];
-          v15 = [location[0] sessionID];
-          v14 = [location[0] altDSID];
+          sessionID = [location[0] sessionID];
+          altDSID = [location[0] altDSID];
           v10 = v38;
-          v13 = [location[0] serverData];
-          v12 = [location[0] transactionID];
-          v29 = [(AKSecurePakeMessage *)v11 initWithSessionID:v15 altDSID:v14 messageStep:4 pakeData:v10 clientData:0 serverData:v13 clientError:0 transactionID:v12 devicePushToken:0 encryptedCode:0 pushMessage:0];
-          _objc_release(v12);
-          _objc_release(v13);
-          _objc_release(v14);
-          _objc_release(v15);
+          serverData = [location[0] serverData];
+          transactionID = [location[0] transactionID];
+          v29 = [(AKSecurePakeMessage *)v11 initWithSessionID:sessionID altDSID:altDSID messageStep:4 pakeData:v10 clientData:0 serverData:serverData clientError:0 transactionID:transactionID devicePushToken:0 encryptedCode:0 pushMessage:0];
+          _objc_release(transactionID);
+          _objc_release(serverData);
+          _objc_release(altDSID);
+          _objc_release(sessionID);
           if (v52)
           {
             (*(v52 + 2))(v52, v29, 0);
@@ -544,7 +544,7 @@
         else
         {
           v28 = [NSError ak_errorWithCode:-7126];
-          [v31 securePakeEngine:v55 didFailToDeriveKeyWithError:v28];
+          [controller securePakeEngine:selfCopy didFailToDeriveKeyWithError:v28];
           if (v52)
           {
             (*(v52 + 2))(v52, 0, v28);
@@ -553,7 +553,7 @@
           objc_storeStrong(&v28, 0);
         }
 
-        objc_storeStrong(&v31, 0);
+        objc_storeStrong(&controller, 0);
         objc_storeStrong(&v33, 0);
         objc_storeStrong(&v34, 0);
         v45 = 0;
@@ -591,7 +591,7 @@
       v40 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
-        sub_10001B098(v57, v49, v44);
+        sub_10001B098(v57, pakeData, v44);
         _os_log_error_impl(&_mh_execute_header, v41, v40, "Failed to process msg2 (%@) with error: %@", v57, 0x16u);
       }
 
@@ -632,8 +632,8 @@
     v45 = 1;
   }
 
-  objc_storeStrong(&v48, 0);
-  objc_storeStrong(&v49, 0);
+  objc_storeStrong(&encryptedCode, 0);
+  objc_storeStrong(&pakeData, 0);
   objc_storeStrong(&v52, 0);
   objc_storeStrong(&v53, 0);
   objc_storeStrong(location, 0);

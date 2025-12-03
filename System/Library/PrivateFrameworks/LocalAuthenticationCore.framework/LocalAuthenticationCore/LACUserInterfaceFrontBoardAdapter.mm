@@ -1,28 +1,28 @@
 @interface LACUserInterfaceFrontBoardAdapter
-+ (id)applicationPayloadURLForBundleID:(id)a3 rootControllerName:(id)a4 parameters:(id)a5;
++ (id)applicationPayloadURLForBundleID:(id)d rootControllerName:(id)name parameters:(id)parameters;
 @end
 
 @implementation LACUserInterfaceFrontBoardAdapter
 
-+ (id)applicationPayloadURLForBundleID:(id)a3 rootControllerName:(id)a4 parameters:(id)a5
++ (id)applicationPayloadURLForBundleID:(id)d rootControllerName:(id)name parameters:(id)parameters
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  nameCopy = name;
+  parametersCopy = parameters;
   v10 = objc_opt_new();
-  [v10 setScheme:v7];
-  [v10 setHost:v8];
-  if ([v9 count])
+  [v10 setScheme:dCopy];
+  [v10 setHost:nameCopy];
+  if ([parametersCopy count])
   {
-    v28 = v7;
+    v28 = dCopy;
     v11 = objc_opt_new();
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v9;
-    v12 = v9;
+    v27 = parametersCopy;
+    v12 = parametersCopy;
     v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v13)
     {
@@ -52,8 +52,8 @@
     }
 
     [v10 setQueryItems:v11];
-    v7 = v28;
-    v9 = v27;
+    dCopy = v28;
+    parametersCopy = v27;
   }
 
   v21 = [v10 URL];

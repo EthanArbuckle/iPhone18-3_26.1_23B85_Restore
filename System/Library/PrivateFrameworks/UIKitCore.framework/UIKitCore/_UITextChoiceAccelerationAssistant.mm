@@ -1,145 +1,145 @@
 @interface _UITextChoiceAccelerationAssistant
 - (BOOL)autocorrectInlinePromptIsVisible;
-- (BOOL)canHandleDictationChoiceForPromptIndex:(int64_t)a3;
+- (BOOL)canHandleDictationChoiceForPromptIndex:(int64_t)index;
 - (BOOL)dismissIfPresented;
-- (BOOL)positionIsAtDocumentStart:(id)a3;
-- (BOOL)presentTextChoicePromptForText:(id)a3 delay:(double)a4 autocorrectionRects:(id)a5;
+- (BOOL)positionIsAtDocumentStart:(id)start;
+- (BOOL)presentTextChoicePromptForText:(id)text delay:(double)delay autocorrectionRects:(id)rects;
 - (BOOL)promptIsVisible;
-- (BOOL)showAutocorrectReplacementChoicesIfNeeded:(id)a3 forRange:(id)a4;
-- (BOOL)showChoicesForAutocorrectionCandidate:(id)a3 range:(id)a4 delay:(double)a5;
-- (BOOL)showChoicesForCandidates:(id)a3;
-- (BOOL)showChoicesForTextInRange:(id)a3;
-- (BOOL)showChoicesForTextInRange:(id)a3 withReplacements:(id)a4 delay:(double)a5;
-- (BOOL)showDictationChoicesForTextInRange:(id)a3;
-- (BOOL)showPromptForReplacementCandidate:(id)a3 originalCandidate:(id)a4 delay:(double)a5;
+- (BOOL)showAutocorrectReplacementChoicesIfNeeded:(id)needed forRange:(id)range;
+- (BOOL)showChoicesForAutocorrectionCandidate:(id)candidate range:(id)range delay:(double)delay;
+- (BOOL)showChoicesForCandidates:(id)candidates;
+- (BOOL)showChoicesForTextInRange:(id)range;
+- (BOOL)showChoicesForTextInRange:(id)range withReplacements:(id)replacements delay:(double)delay;
+- (BOOL)showDictationChoicesForTextInRange:(id)range;
+- (BOOL)showPromptForReplacementCandidate:(id)candidate originalCandidate:(id)originalCandidate delay:(double)delay;
 - (BOOL)showingPrompt;
 - (BOOL)showingPromptsIncludingDictationChoices;
-- (BOOL)textChoiceInteraction:(id)a3 shouldRespondToTapAtPoint:(CGPoint)a4;
-- (CGRect)convertedSelectionRect:(id)a3;
+- (BOOL)textChoiceInteraction:(id)interaction shouldRespondToTapAtPoint:(CGPoint)point;
+- (CGRect)convertedSelectionRect:(id)rect;
 - (UITextInput)textInputResponder;
 - (UITextInteractionAssistant)interactionAssistant;
 - (_UIAssertion)grabberSuppressionAssertion;
-- (_UITextChoiceAccelerationAssistant)initWithInteractionAssistant:(id)a3;
-- (_UITextChoiceAccelerationAssistant)initWithTextInputResponder:(id)a3;
+- (_UITextChoiceAccelerationAssistant)initWithInteractionAssistant:(id)assistant;
+- (_UITextChoiceAccelerationAssistant)initWithTextInputResponder:(id)responder;
 - (_UITextChoiceAccelerationBubble)prompt;
 - (_UITextChoicesAssistantDelegate)delegate;
 - (id)_document;
 - (id)_existingUnderlineView;
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4;
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position;
 - (id)_underlineView;
 - (id)activeSelectedRange;
-- (id)alternateCorrectionsForList:(id)a3;
-- (id)anchorRangeForText:(id)a3;
-- (id)autocorrectionForList:(id)a3;
-- (id)candidateForFinalString:(id)a3;
-- (id)createPromptWithCompletionHandler:(id)a3;
+- (id)alternateCorrectionsForList:(id)list;
+- (id)anchorRangeForText:(id)text;
+- (id)autocorrectionForList:(id)list;
+- (id)candidateForFinalString:(id)string;
+- (id)createPromptWithCompletionHandler:(id)handler;
 - (id)currentKeyboardSceneDelegate;
 - (id)defaultUnderlineColor;
-- (id)keyFromRange:(id)a3;
-- (id)listForFinalString:(id)a3;
-- (id)nearestDictationPromptForPoint:(CGPoint)a3 withEvent:(id)a4;
+- (id)keyFromRange:(id)range;
+- (id)listForFinalString:(id)string;
+- (id)nearestDictationPromptForPoint:(CGPoint)point withEvent:(id)event;
 - (id)parentViewForPrompt;
-- (id)rangeForTextChoicesAtPosition:(id)a3;
-- (id)rangeOfAutocorrectionForString:(id)a3 atPosition:(id)a4 inDocument:(id)a5;
-- (id)selectionRectsForRange:(id)a3;
+- (id)rangeForTextChoicesAtPosition:(id)position;
+- (id)rangeOfAutocorrectionForString:(id)string atPosition:(id)position inDocument:(id)document;
+- (id)selectionRectsForRange:(id)range;
 - (id)selectionViewManager;
 - (id)textHighlightColor;
 - (id)textInputView;
-- (id)underlineRectForTextSelectionRect:(id)a3 forCandidate:(id)a4;
-- (id)underlineRectFromDocumentRect:(CGRect)a3;
-- (id)underlineRectsForCandidate:(id)a3 range:(id)a4;
-- (id)underlineRectsForCandidate:(id)a3 selectionRects:(id)a4;
-- (id)underlineRectsForInput:(id)a3;
-- (id)updateUnderlineRects:(id)a3 forRange:(id)a4;
+- (id)underlineRectForTextSelectionRect:(id)rect forCandidate:(id)candidate;
+- (id)underlineRectFromDocumentRect:(CGRect)rect;
+- (id)underlineRectsForCandidate:(id)candidate range:(id)range;
+- (id)underlineRectsForCandidate:(id)candidate selectionRects:(id)rects;
+- (id)underlineRectsForInput:(id)input;
+- (id)updateUnderlineRects:(id)rects forRange:(id)range;
 - (unint64_t)numberOfDisambiguationOptions;
 - (void)_addUnderlineView;
-- (void)_removeUnderlinesRelativeToPosition:(id)a3 compare:(int64_t)a4;
+- (void)_removeUnderlinesRelativeToPosition:(id)position compare:(int64_t)compare;
 - (void)activateUnderlineViewIfNeeded;
-- (void)addList:(id)a3 forCandidate:(id)a4;
-- (void)addUnderlineForCandidate:(id)a3 range:(id)a4;
-- (void)addUnderlinesForCandidate:(id)a3 range:(id)a4;
-- (void)adjustRangesAfterPosition:(id)a3 byOffset:(int64_t)a4;
+- (void)addList:(id)list forCandidate:(id)candidate;
+- (void)addUnderlineForCandidate:(id)candidate range:(id)range;
+- (void)addUnderlinesForCandidate:(id)candidate range:(id)range;
+- (void)adjustRangesAfterPosition:(id)position byOffset:(int64_t)offset;
 - (void)cancelPendingDictationPromptDisplay;
 - (void)cancelPromptDisplay;
 - (void)clearSecureCandidateHashes;
-- (void)clearUnderlineForPosition:(id)a3;
-- (void)clearUnderlinesIfNeededBeforePosition:(id)a3;
-- (void)clearUnderlinesInRange:(id)a3 animated:(BOOL)a4;
+- (void)clearUnderlineForPosition:(id)position;
+- (void)clearUnderlinesIfNeededBeforePosition:(id)position;
+- (void)clearUnderlinesInRange:(id)range animated:(BOOL)animated;
 - (void)dealloc;
-- (void)decorateTextInRanges:(id)a3 replacementTexts:(id)a4 allowAutomaticReplacement:(BOOL)a5 autoHide:(BOOL)a6 voiceCommandTrackingUUID:(id)a7 withCompletionHandler:(id)a8;
-- (void)decorateTextInRects:(id)a3 targetTextArray:(id)a4 replacementTexts:(id)a5 deltaRanges:(id)a6 originalSelectedRange:(_NSRange)a7 allowAutomaticReplacement:(BOOL)a8 autoHide:(BOOL)a9 voiceCommandUUID:(id)a10 withCompletionHandler:(id)a11;
+- (void)decorateTextInRanges:(id)ranges replacementTexts:(id)texts allowAutomaticReplacement:(BOOL)replacement autoHide:(BOOL)hide voiceCommandTrackingUUID:(id)d withCompletionHandler:(id)handler;
+- (void)decorateTextInRects:(id)rects targetTextArray:(id)array replacementTexts:(id)texts deltaRanges:(id)ranges originalSelectedRange:(_NSRange)range allowAutomaticReplacement:(BOOL)replacement autoHide:(BOOL)hide voiceCommandUUID:(id)self0 withCompletionHandler:(id)self1;
 - (void)didRecognizeDismissal;
 - (void)dismissWithoutSelection;
-- (void)fullAutocorrectionForWord:(id)a3 atPosition:(id)a4 completionHandler:(id)a5;
+- (void)fullAutocorrectionForWord:(id)word atPosition:(id)position completionHandler:(id)handler;
 - (void)informAnalyticsOfCompletedCandidateReplacement;
 - (void)informAnalyticsOfUpcomingCandidateReplacement;
-- (void)presentIfNeededForRange:(id)a3;
+- (void)presentIfNeededForRange:(id)range;
 - (void)refreshExistingUnderlines;
 - (void)releaseSelectionGrabberAssertion;
 - (void)removeActivePromptAndUnderline;
-- (void)removeAllUnderlinesAnimated:(BOOL)a3;
+- (void)removeAllUnderlinesAnimated:(BOOL)animated;
 - (void)removePassthroughContainer;
-- (void)removeUnderlinesAfterPosition:(id)a3;
-- (void)removeUnderlinesBeforePosition:(id)a3;
-- (void)removeWordForRange:(id)a3 animated:(BOOL)a4;
-- (void)resetDictationChoicesAnimated:(BOOL)a3;
+- (void)removeUnderlinesAfterPosition:(id)position;
+- (void)removeUnderlinesBeforePosition:(id)position;
+- (void)removeWordForRange:(id)range animated:(BOOL)animated;
+- (void)resetDictationChoicesAnimated:(BOOL)animated;
 - (void)resetDictationUnderlines;
-- (void)restoreInsertionPointPositionWithDocument:(id)a3 originalPositionRange:(_NSRange)a4 targetRange:(_NSRange)a5 payloadRange:(_NSRange)a6 contextBefore:(BOOL)a7;
+- (void)restoreInsertionPointPositionWithDocument:(id)document originalPositionRange:(_NSRange)range targetRange:(_NSRange)targetRange payloadRange:(_NSRange)payloadRange contextBefore:(BOOL)before;
 - (void)selectionDidChange;
 - (void)setNeedsUnderlineUpdate;
 - (void)setupPassthroughContainer;
-- (void)shouldShowPromptForWebKitText:(id)a3 atPosition:(id)a4 completionHandler:(id)a5;
-- (void)textChoiceInteraction:(id)a3 receivedTapAtLocation:(CGPoint)a4;
+- (void)shouldShowPromptForWebKitText:(id)text atPosition:(id)position completionHandler:(id)handler;
+- (void)textChoiceInteraction:(id)interaction receivedTapAtLocation:(CGPoint)location;
 - (void)textDidEndScrolling;
 - (void)textWillBeginScrolling;
-- (void)trackUnderlineForWebKitCandidate:(id)a3;
-- (void)underlineTextInRange:(id)a3 revertText:(id)a4 textChoices:(id)a5 isActiveEditingSession:(BOOL)a6;
-- (void)updateActivePromptForCandidate:(id)a3 displayRects:(id)a4 highlightOnly:(BOOL)a5;
-- (void)updateDictationChoicesFromPromptIndex:(int64_t)a3 completionHandler:(id)a4;
-- (void)updateDocumentFromPrompt:(id)a3 completionHandler:(id)a4;
-- (void)updatePrompt:(id)a3 forReplacementCandidate:(id)a4;
-- (void)updatePromptLocation:(id)a3;
-- (void)updateReplacements:(id)a3 forCandidate:(id)a4;
-- (void)updateReplacementsForSavedCandidate:(id)a3;
+- (void)trackUnderlineForWebKitCandidate:(id)candidate;
+- (void)underlineTextInRange:(id)range revertText:(id)text textChoices:(id)choices isActiveEditingSession:(BOOL)session;
+- (void)updateActivePromptForCandidate:(id)candidate displayRects:(id)rects highlightOnly:(BOOL)only;
+- (void)updateDictationChoicesFromPromptIndex:(int64_t)index completionHandler:(id)handler;
+- (void)updateDocumentFromPrompt:(id)prompt completionHandler:(id)handler;
+- (void)updatePrompt:(id)prompt forReplacementCandidate:(id)candidate;
+- (void)updatePromptLocation:(id)location;
+- (void)updateReplacements:(id)replacements forCandidate:(id)candidate;
+- (void)updateReplacementsForSavedCandidate:(id)candidate;
 - (void)updateSelectionHighlights;
 - (void)updateUnderlineGeometryIfNeeded;
-- (void)updateUnderlinesForAddedRange:(id)a3;
-- (void)updateUnderlinesIfNeededAfterPosition:(id)a3;
+- (void)updateUnderlinesForAddedRange:(id)range;
+- (void)updateUnderlinesIfNeededAfterPosition:(id)position;
 @end
 
 @implementation _UITextChoiceAccelerationAssistant
 
 - (id)parentViewForPrompt
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self currentKeyboardSceneDelegate];
-  v4 = [v3 containerWindow];
-  v5 = v4;
-  if (v4)
+  currentKeyboardSceneDelegate = [(_UITextChoiceAccelerationAssistant *)self currentKeyboardSceneDelegate];
+  containerWindow = [currentKeyboardSceneDelegate containerWindow];
+  v5 = containerWindow;
+  if (containerWindow)
   {
-    v6 = v4;
+    inputOverlayContainer = containerWindow;
   }
 
   else
   {
-    v7 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v6 = [v7 inputOverlayContainer];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputOverlayContainer = [delegate inputOverlayContainer];
   }
 
-  return v6;
+  return inputOverlayContainer;
 }
 
 - (id)currentKeyboardSceneDelegate
 {
-  v2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v3 = [v2 inputOverlayContainer];
-  v4 = [v3 keyboardSceneDelegate];
+  delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  inputOverlayContainer = [delegate inputOverlayContainer];
+  keyboardSceneDelegate = [inputOverlayContainer keyboardSceneDelegate];
 
-  if (!v4)
+  if (!keyboardSceneDelegate)
   {
-    v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    keyboardSceneDelegate = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   }
 
-  return v4;
+  return keyboardSceneDelegate;
 }
 
 - (_UITextChoicesAssistantDelegate)delegate
@@ -186,72 +186,72 @@
 
   [(_UITextChoiceAccelerationAssistant *)self cancelPromptDisplay];
   [(_UITextChoiceAccelerationAssistant *)self releaseSelectionGrabberAssertion];
-  v3 = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
-  v4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v5 = v4;
-  if (v3)
+  promptIsVisible = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  v5 = prompt;
+  if (promptIsVisible)
   {
-    [v4 removeAnimated:1];
+    [prompt removeAnimated:1];
 
     if (![(_UITextChoiceAccelerationAssistant *)self usingCustomInteraction])
     {
       goto LABEL_11;
     }
 
-    v6 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (!v6)
+    if (!textInputResponder)
     {
       goto LABEL_11;
     }
 
-    v7 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-    v5 = [v7 end];
+    activeSelectedRange = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+    v5 = [activeSelectedRange end];
 
     if (v5)
     {
-      v8 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-      if (v8)
+      if (textInputResponder2)
       {
-        v9 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-        v10 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-        v11 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-        v12 = [v11 textRangeFromPosition:v5 toPosition:v5];
-        [v9 updateTextChoicePromptSelection:v10 toRange:v12];
+        delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+        textInputResponder3 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+        textInputResponder4 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+        v12 = [textInputResponder4 textRangeFromPosition:v5 toPosition:v5];
+        [delegate updateTextChoicePromptSelection:textInputResponder3 toRange:v12];
       }
     }
   }
 
   else
   {
-    [v4 reset];
+    [prompt reset];
   }
 
 LABEL_11:
   if (!+[UIKeyboard usesInputSystemUI])
   {
-    return v3;
+    return promptIsVisible;
   }
 
   if ([(_UITextChoiceAccelerationAssistant *)self showingPrompt])
   {
-    v13 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    [v13 dismissTextChoicePrompt];
+    delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    [delegate2 dismissTextChoicePrompt];
 
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(promptIsVisible) = 1;
+    return promptIsVisible;
   }
 
 LABEL_2:
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(promptIsVisible) = 0;
+  return promptIsVisible;
 }
 
 - (void)cancelPromptDisplay
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self promptDisplayTimer];
-  [v3 invalidate];
+  promptDisplayTimer = [(_UITextChoiceAccelerationAssistant *)self promptDisplayTimer];
+  [promptDisplayTimer invalidate];
 
   [(_UITextChoiceAccelerationAssistant *)self setPromptDisplayTimer:0];
 
@@ -260,12 +260,12 @@ LABEL_2:
 
 - (void)removePassthroughContainer
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
+  passthroughContainer = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
 
-  if (v3)
+  if (passthroughContainer)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
-    [v4 removeFromSuperview];
+    passthroughContainer2 = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
+    [passthroughContainer2 removeFromSuperview];
 
     [(_UITextChoiceAccelerationAssistant *)self setPassthroughContainer:0];
   }
@@ -284,12 +284,12 @@ LABEL_2:
 
 - (BOOL)promptIsVisible
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v4 = [v3 superview];
-  if (v4)
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  superview = [prompt superview];
+  if (superview)
   {
-    v5 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    [v5 alpha];
+    prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    [prompt2 alpha];
     v7 = v6 > 0.0;
   }
 
@@ -305,14 +305,14 @@ LABEL_2:
 {
   if ([(_UITextChoiceAccelerationAssistant *)self usingCustomInteraction])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-    if (v3)
+    activeSelectedRange = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+    if (activeSelectedRange)
     {
-      v5 = v3;
-      v4 = [v3 end];
+      v5 = activeSelectedRange;
+      v4 = [activeSelectedRange end];
       [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesIfNeededAfterPosition:v4];
 
-      v3 = v5;
+      activeSelectedRange = v5;
     }
   }
 }
@@ -331,49 +331,49 @@ LABEL_2:
 {
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v4 = [v3 _existingUnderlineView];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    _existingUnderlineView = [selectionViewManager _existingUnderlineView];
   }
 
   else
   {
-    v4 = self->_selectionHighlightView;
+    _existingUnderlineView = self->_selectionHighlightView;
   }
 
-  return v4;
+  return _existingUnderlineView;
 }
 
 - (id)selectionViewManager
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+  interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
 
-  if (v3)
+  if (interactionAssistant)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-    v5 = [v4 _selectionViewManager];
+    interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    _selectionViewManager = [interactionAssistant2 _selectionViewManager];
   }
 
   else
   {
-    v7 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (v7)
+    if (textInputResponder)
     {
-      v8 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-      v5 = [v8 _selectionDisplayInteraction];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      _selectionViewManager = [textInputResponder2 _selectionDisplayInteraction];
 
-      if (!v5)
+      if (!_selectionViewManager)
       {
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v9 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-        v10 = [v9 textInputView];
-        v11 = [v10 interactions];
+        textInputResponder3 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+        textInputView = [textInputResponder3 textInputView];
+        interactions = [textInputView interactions];
 
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [interactions countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           v13 = *v19;
@@ -383,7 +383,7 @@ LABEL_2:
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(interactions);
               }
 
               v15 = *(*(&v18 + 1) + 8 * i);
@@ -405,7 +405,7 @@ LABEL_2:
               }
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+            v12 = [interactions countByEnumeratingWithState:&v18 objects:v22 count:16];
             if (v12)
             {
               continue;
@@ -428,17 +428,17 @@ LABEL_22:
           v17 = v12;
         }
 
-        v5 = v17;
+        _selectionViewManager = v17;
       }
     }
 
     else
     {
-      v5 = 0;
+      _selectionViewManager = 0;
     }
   }
 
-  return v5;
+  return _selectionViewManager;
 }
 
 - (UITextInteractionAssistant)interactionAssistant
@@ -454,17 +454,17 @@ LABEL_22:
   if (self->_needsUpdate)
   {
     v49 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v3 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v4 = [v3 isEditing];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    isEditing = [_document isEditing];
 
-    if ((v4 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       [(_UITextChoiceAccelerationAssistant *)self removeAllUnderlinesAnimated:0];
       [(_UITextChoiceAccelerationAssistant *)self dismissIfPresented];
     }
 
-    v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    v6 = [v5 copy];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    v6 = [underlinedRanges copy];
 
     if (![v6 count])
     {
@@ -477,7 +477,7 @@ LABEL_22:
     v54 = 0u;
     v7 = v6;
     v8 = [v7 countByEnumeratingWithState:&v53 objects:v57 count:16];
-    v9 = v7;
+    _underlineView = v7;
     if (v8)
     {
       v10 = v8;
@@ -499,43 +499,43 @@ LABEL_22:
           v14 = *(*(&v53 + 1) + 8 * v13);
           if (([v14 isEmpty] & 1) == 0)
           {
-            v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-            v16 = [v15 textInRange:v14];
+            _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+            v16 = [_document2 textInRange:v14];
 
             v17 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v14];
-            v18 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-            v19 = [v18 objectForKey:v17];
+            underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+            v19 = [underlinedWordData objectForKey:v17];
 
             if (v19)
             {
-              v20 = [v19 documentTextToReplace];
-              v21 = [v20 isEqualToString:v16];
+              documentTextToReplace = [v19 documentTextToReplace];
+              v21 = [documentTextToReplace isEqualToString:v16];
 
               if (v21)
               {
                 if ((v11 & 1) == 0)
                 {
                   v22 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:v14];
-                  v23 = [v22 firstObject];
-                  [v23 rect];
+                  firstObject = [v22 firstObject];
+                  [firstObject rect];
                   v25 = v24;
                   v27 = v26;
 
-                  v28 = [v19 underlines];
-                  v29 = [v28 firstObject];
-                  [v29 rect];
+                  underlines = [v19 underlines];
+                  firstObject2 = [underlines firstObject];
+                  [firstObject2 rect];
                   v31 = v30;
                   v33 = v32;
 
                   if (v25 == v31 && v27 == v33)
                   {
-                    v35 = [v22 lastObject];
-                    [v35 rect];
+                    lastObject = [v22 lastObject];
+                    [lastObject rect];
                     v37 = v36;
                     v39 = v38;
-                    v40 = [v19 underlines];
-                    v41 = [v40 lastObject];
-                    [v41 rect];
+                    underlines2 = [v19 underlines];
+                    lastObject2 = [underlines2 lastObject];
+                    [lastObject2 rect];
                     v43 = v42;
                     v45 = v44;
 
@@ -543,7 +543,7 @@ LABEL_22:
                     if (v37 == v43 && v39 == v45)
                     {
 
-                      v9 = v50;
+                      _underlineView = v50;
                       goto LABEL_31;
                     }
                   }
@@ -553,13 +553,13 @@ LABEL_22:
                   }
                 }
 
-                v46 = [v19 underlines];
-                v47 = [(_UITextChoiceAccelerationAssistant *)self updateUnderlineRects:v46 forRange:v14];
+                underlines3 = [v19 underlines];
+                v47 = [(_UITextChoiceAccelerationAssistant *)self updateUnderlineRects:underlines3 forRange:v14];
                 [v19 setUnderlines:v47];
 
                 v7 = v50;
-                v48 = [v19 underlines];
-                [v49 addObjectsFromArray:v48];
+                underlines4 = [v19 underlines];
+                [v49 addObjectsFromArray:underlines4];
 
                 v11 = 1;
               }
@@ -590,8 +590,8 @@ LABEL_22:
 
       if (v11)
       {
-        v9 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-        [v9 setUnderlineRects:v49];
+        _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+        [_underlineView setUnderlineRects:v49];
         goto LABEL_31;
       }
     }
@@ -609,65 +609,65 @@ LABEL_31:
 {
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v4 = [v3 textInput];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    textInput = [selectionViewManager textInput];
   }
 
   else
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-    v5 = [v3 activeSelectionController];
-    v6 = [v5 selection];
-    v4 = [v6 document];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    activeSelectionController = [selectionViewManager activeSelectionController];
+    selection = [activeSelectionController selection];
+    textInput = [selection document];
   }
 
-  return v4;
+  return textInput;
 }
 
-- (_UITextChoiceAccelerationAssistant)initWithInteractionAssistant:(id)a3
+- (_UITextChoiceAccelerationAssistant)initWithInteractionAssistant:(id)assistant
 {
-  v4 = a3;
+  assistantCopy = assistant;
   v17.receiver = self;
   v17.super_class = _UITextChoiceAccelerationAssistant;
   v5 = [(_UITextChoiceAccelerationAssistant *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactionAssistant, v4);
-    v7 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v5->_interactionAssistant, assistantCopy);
+    array = [MEMORY[0x1E695DF70] array];
     underlinedRanges = v6->_underlinedRanges;
-    v6->_underlinedRanges = v7;
+    v6->_underlinedRanges = array;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     savedLists = v6->_savedLists;
-    v6->_savedLists = v9;
+    v6->_savedLists = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     underlinedWordData = v6->_underlinedWordData;
-    v6->_underlinedWordData = v11;
+    v6->_underlinedWordData = dictionary2;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     underlinedWordDataForDictation = v6->_underlinedWordDataForDictation;
-    v6->_underlinedWordDataForDictation = v13;
+    v6->_underlinedWordDataForDictation = dictionary3;
 
     v6->_usingCustomInteraction = 0;
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v6 selector:sel_displayDidChange_ name:@"UITextSelectionWillScroll" object:0];
-    [v15 addObserver:v6 selector:sel_displayDidChange_ name:@"UITextSelectionWillZoom" object:0];
-    [v15 addObserver:v6 selector:sel_updatePromptLocation_ name:@"UIWindowSceneDidEndLiveResizeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_displayDidChange_ name:@"UITextSelectionWillScroll" object:0];
+    [defaultCenter addObserver:v6 selector:sel_displayDidChange_ name:@"UITextSelectionWillZoom" object:0];
+    [defaultCenter addObserver:v6 selector:sel_updatePromptLocation_ name:@"UIWindowSceneDidEndLiveResizeNotification" object:0];
   }
 
   return v6;
 }
 
-- (_UITextChoiceAccelerationAssistant)initWithTextInputResponder:(id)a3
+- (_UITextChoiceAccelerationAssistant)initWithTextInputResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v5 = [(_UITextChoiceAccelerationAssistant *)self initWithInteractionAssistant:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_textInputResponder, v4);
+    objc_storeWeak(&v5->_textInputResponder, responderCopy);
     v6->_usingCustomInteraction = 1;
     v7 = [[_UITextChoiceInteraction alloc] initWithDelegate:v6];
     textChoiceInteraction = v6->_textChoiceInteraction;
@@ -692,17 +692,17 @@ LABEL_31:
   [(_UITextChoiceAccelerationAssistant *)&v5 dealloc];
 }
 
-- (BOOL)textChoiceInteraction:(id)a3 shouldRespondToTapAtPoint:(CGPoint)a4
+- (BOOL)textChoiceInteraction:(id)interaction shouldRespondToTapAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (![(_UITextChoiceAccelerationAssistant *)self usingCustomInteraction]|| [(_UITextChoiceAccelerationAssistant *)self showingPrompt])
   {
     return 0;
   }
 
-  v8 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-  v9 = [v8 closestPositionToPoint:{x, y}];
+  textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  v9 = [textInputResponder closestPositionToPoint:{x, y}];
 
   v7 = 0;
   if (v9)
@@ -718,28 +718,28 @@ LABEL_31:
   return v7;
 }
 
-- (void)textChoiceInteraction:(id)a3 receivedTapAtLocation:(CGPoint)a4
+- (void)textChoiceInteraction:(id)interaction receivedTapAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   if (![(_UITextChoiceAccelerationAssistant *)self showingPrompt])
   {
-    v14 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v18 = [v14 closestPositionToPoint:{x, y}];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    v18 = [textInputResponder closestPositionToPoint:{x, y}];
 
     if (v18)
     {
       v15 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:v18];
       if (v15)
       {
-        v10 = v15;
+        delegate = v15;
         if ([(_UITextChoiceAccelerationAssistant *)self showDictationChoicesForTextInRange:v15])
         {
           goto LABEL_8;
         }
 
-        v16 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-        v17 = [(_UITextChoiceAccelerationAssistant *)self showAutocorrectReplacementChoicesIfNeeded:v16 forRange:v10];
+        textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+        v17 = [(_UITextChoiceAccelerationAssistant *)self showAutocorrectReplacementChoicesIfNeeded:textInputResponder2 forRange:delegate];
 
         if (v17)
         {
@@ -753,8 +753,8 @@ LABEL_31:
   }
 
   [(_UITextChoiceAccelerationAssistant *)self dismissIfPresented];
-  v7 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-  v18 = [v7 closestPositionToPoint:{x, y}];
+  textInputResponder3 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  v18 = [textInputResponder3 closestPositionToPoint:{x, y}];
 
   v8 = v18;
   if (!v18)
@@ -762,15 +762,15 @@ LABEL_31:
     goto LABEL_12;
   }
 
-  v9 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  textInputResponder4 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-  if (v9)
+  if (textInputResponder4)
   {
-    v10 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v11 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v12 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v13 = [v12 textRangeFromPosition:v18 toPosition:v18];
-    [v10 updateTextChoicePromptSelection:v11 toRange:v13];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    textInputResponder5 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder6 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    v13 = [textInputResponder6 textRangeFromPosition:v18 toPosition:v18];
+    [delegate updateTextChoicePromptSelection:textInputResponder5 toRange:v13];
 
 LABEL_8:
   }
@@ -780,9 +780,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)createPromptWithCompletionHandler:(id)a3
+- (id)createPromptWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [_UITextChoiceAccelerationBubble alloc];
   v6 = [(_UITextChoiceAccelerationBubble *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   objc_initWeak(&location, self);
@@ -793,7 +793,7 @@ LABEL_12:
   objc_copyWeak(&v18, &location);
   v7 = v6;
   v16 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v17 = v8;
   v9 = [UIAction actionWithHandler:&v12];
   [(UIControl *)v7 addAction:v9 forControlEvents:64, v12, v13, v14, v15];
@@ -807,85 +807,85 @@ LABEL_12:
 
 - (void)_addUnderlineView
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
+  selectionHighlightView = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
 
-  if (!v3)
+  if (!selectionHighlightView)
   {
     v4 = [_UITextUnderlineView alloc];
     v5 = [(_UITextUnderlineView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(_UITextChoiceAccelerationAssistant *)self setSelectionHighlightView:v5];
   }
 
-  v6 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-  v8 = [v6 _hostViewBelowText];
+  selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+  _hostViewBelowText = [selectionViewManager _hostViewBelowText];
 
-  v7 = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
-  [v8 addSubview:v7];
+  selectionHighlightView2 = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
+  [_hostViewBelowText addSubview:selectionHighlightView2];
 }
 
 - (id)_underlineView
 {
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v4 = [v3 _underlineView];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    _underlineView = [selectionViewManager _underlineView];
   }
 
   else
   {
-    v4 = self->_selectionHighlightView;
+    _underlineView = self->_selectionHighlightView;
   }
 
-  return v4;
+  return _underlineView;
 }
 
 - (id)textInputView
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+  interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
 
-  if (v3)
+  if (interactionAssistant)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-    v5 = [v4 view];
-    v6 = [v5 textInputView];
+    interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    view = [interactionAssistant2 view];
+    textInputView = [view textInputView];
   }
 
   else
   {
-    v6 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputView = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (!v6)
+    if (!textInputView)
     {
       goto LABEL_6;
     }
 
-    v4 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v6 = [v4 textInputView];
+    interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputView = [interactionAssistant2 textInputView];
   }
 
 LABEL_6:
 
-  return v6;
+  return textInputView;
 }
 
 - (void)activateUnderlineViewIfNeeded
 {
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
 
-    if (!v3)
+    if (!selectionViewManager)
     {
-      v5 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-      [v5 activate];
+      interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+      [interactionAssistant activate];
     }
   }
 
   else
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
+    selectionHighlightView = [(_UITextChoiceAccelerationAssistant *)self selectionHighlightView];
 
-    if (!v4)
+    if (!selectionHighlightView)
     {
 
       [(_UITextChoiceAccelerationAssistant *)self _addUnderlineView];
@@ -899,8 +899,8 @@ LABEL_6:
   if (!+[UIKeyboard isKeyboardProcess])
   {
     v65 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v3 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    v4 = [v3 copy];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    v4 = [underlinedRanges copy];
 
     v76 = 0u;
     v77 = 0u;
@@ -928,12 +928,12 @@ LABEL_6:
         }
 
         v9 = *(*(&v74 + 1) + 8 * v8);
-        v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v11 = [v10 textInRange:v9];
+        _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v11 = [_document textInRange:v9];
 
         v12 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v9];
-        v13 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-        v14 = [v13 objectForKey:v12];
+        underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+        v14 = [underlinedWordData objectForKey:v12];
 
         if (!v14)
         {
@@ -941,51 +941,51 @@ LABEL_6:
           goto LABEL_44;
         }
 
-        v15 = [v14 documentTextToReplace];
-        v16 = [v15 isEqualToString:v11];
+        documentTextToReplace = [v14 documentTextToReplace];
+        v16 = [documentTextToReplace isEqualToString:v11];
 
         if (v16)
         {
-          v17 = [v14 underlines];
-          v18 = [(_UITextChoiceAccelerationAssistant *)self updateUnderlineRects:v17 forRange:v9];
+          underlines = [v14 underlines];
+          v18 = [(_UITextChoiceAccelerationAssistant *)self updateUnderlineRects:underlines forRange:v9];
           [v14 setUnderlines:v18];
 
-          v19 = [v14 underlines];
-          [v65 addObjectsFromArray:v19];
+          underlines2 = [v14 underlines];
+          [v65 addObjectsFromArray:underlines2];
 
           goto LABEL_44;
         }
 
-        v20 = [v9 start];
-        v21 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v22 = [v21 endOfDocument];
+        start = [v9 start];
+        _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        endOfDocument = [_document2 endOfDocument];
 
-        v67 = v22;
-        if (v22)
+        v67 = endOfDocument;
+        if (endOfDocument)
         {
-          if (!v20 || (-[_UITextChoiceAccelerationAssistant _document](self, "_document"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 comparePosition:v22 toPosition:v20], v23, v24 == -1))
+          if (!start || (-[_UITextChoiceAccelerationAssistant _document](self, "_document"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 comparePosition:endOfDocument toPosition:start], v23, v24 == -1))
           {
-            v25 = v22;
+            v25 = endOfDocument;
 
-            v20 = v25;
+            start = v25;
           }
         }
 
-        v26 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v27 = [v26 tokenizer];
-        v28 = [v27 rangeEnclosingPosition:v20 withGranularity:1 inDirection:1];
+        _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer = [_document3 tokenizer];
+        v28 = [tokenizer rangeEnclosingPosition:start withGranularity:1 inDirection:1];
 
-        v68 = v20;
+        v68 = start;
         v69 = v12;
         if (v28 && ([v28 isEmpty] & 1) == 0)
         {
-          v39 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v29 = [v39 textInRange:v28];
+          _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v29 = [_document4 textInRange:v28];
 
-          v40 = [v14 documentTextToReplace];
-          LOBYTE(v39) = [v40 isEqualToString:v29];
+          documentTextToReplace2 = [v14 documentTextToReplace];
+          LOBYTE(_document4) = [documentTextToReplace2 isEqualToString:v29];
 
-          if (v39)
+          if (_document4)
           {
             goto LABEL_30;
           }
@@ -996,41 +996,41 @@ LABEL_6:
           v29 = v11;
         }
 
-        v30 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v31 = [v30 tokenizer];
-        v32 = [v31 rangeEnclosingPosition:v20 withGranularity:1 inDirection:0];
+        _document5 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer2 = [_document5 tokenizer];
+        v32 = [tokenizer2 rangeEnclosingPosition:start withGranularity:1 inDirection:0];
 
         if (v32 && ([v32 isEmpty] & 1) == 0)
         {
-          v41 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v33 = [v41 textInRange:v32];
+          _document6 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v33 = [_document6 textInRange:v32];
 
-          v42 = [v14 documentTextToReplace];
-          LOBYTE(v41) = [v42 isEqualToString:v33];
+          documentTextToReplace3 = [v14 documentTextToReplace];
+          LOBYTE(_document6) = [documentTextToReplace3 isEqualToString:v33];
 
-          if (v41)
+          if (_document6)
           {
             v29 = v33;
             v28 = v32;
 LABEL_30:
-            v45 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-            v46 = [v45 indexOfObject:v9];
+            underlinedRanges2 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+            v46 = [underlinedRanges2 indexOfObject:v9];
 
-            v47 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-            v48 = v47;
+            underlinedRanges3 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+            v48 = underlinedRanges3;
             v62 = v29;
             if (v46 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v47 addObject:v28];
+              [underlinedRanges3 addObject:v28];
             }
 
             else
             {
-              [v47 replaceObjectAtIndex:v46 withObject:v28];
+              [underlinedRanges3 replaceObjectAtIndex:v46 withObject:v28];
             }
 
             v49 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:v28];
-            v50 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
@@ -1053,7 +1053,7 @@ LABEL_30:
                   v56 = [(_UITextChoiceAccelerationAssistant *)self underlineRectForTextSelectionRect:*(*(&v70 + 1) + 8 * i) forCandidate:0, v62];
                   if (v56)
                   {
-                    [v50 addObject:v56];
+                    [array addObject:v56];
                   }
                 }
 
@@ -1063,15 +1063,15 @@ LABEL_30:
               while (v53);
             }
 
-            [v14 setUnderlines:v50];
-            [v65 addObjectsFromArray:v50];
+            [v14 setUnderlines:array];
+            [v65 addObjectsFromArray:array];
             v57 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v28];
-            v58 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+            underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
             v12 = v69;
-            [v58 removeObjectForKey:v69];
+            [underlinedWordData2 removeObjectForKey:v69];
 
-            v59 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-            [v59 setObject:v14 forKey:v57];
+            underlinedWordData3 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+            [underlinedWordData3 setObject:v14 forKey:v57];
 
             v7 = v63;
             v6 = v64;
@@ -1085,24 +1085,24 @@ LABEL_30:
           v33 = v29;
         }
 
-        v34 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v35 = [v34 tokenizer];
-        v36 = [v35 positionFromPosition:v20 toBoundary:1 inDirection:0];
+        _document7 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer3 = [_document7 tokenizer];
+        v36 = [tokenizer3 positionFromPosition:start toBoundary:1 inDirection:0];
 
-        v37 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v38 = [v37 tokenizer];
-        v28 = [v38 rangeEnclosingPosition:v36 withGranularity:1 inDirection:0];
+        _document8 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer4 = [_document8 tokenizer];
+        v28 = [tokenizer4 rangeEnclosingPosition:v36 withGranularity:1 inDirection:0];
 
         if (v28 && ![v28 isEmpty])
         {
-          v43 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v29 = [v43 textInRange:v28];
+          _document9 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v29 = [_document9 textInRange:v28];
 
-          v44 = [v14 documentTextToReplace];
-          LODWORD(v43) = [v44 isEqualToString:v29];
+          documentTextToReplace4 = [v14 documentTextToReplace];
+          LODWORD(_document9) = [documentTextToReplace4 isEqualToString:v29];
 
           v12 = v69;
-          if (v43)
+          if (_document9)
           {
             goto LABEL_30;
           }
@@ -1136,8 +1136,8 @@ LABEL_44:
       {
 LABEL_48:
 
-        v61 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-        [v61 setUnderlineRects:v65];
+        _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+        [_underlineView setUnderlineRects:v65];
 
         return;
       }
@@ -1145,28 +1145,28 @@ LABEL_48:
   }
 }
 
-- (void)updateUnderlinesForAddedRange:(id)a3
+- (void)updateUnderlinesForAddedRange:(id)range
 {
-  v20 = a3;
+  rangeCopy = range;
   [(_UITextChoiceAccelerationAssistant *)self activateUnderlineViewIfNeeded];
-  v4 = v20;
-  if (v20)
+  v4 = rangeCopy;
+  if (rangeCopy)
   {
-    v5 = [v20 start];
-    v6 = [(_UITextChoiceAccelerationAssistant *)self positionIsAtDocumentStart:v5];
+    start = [rangeCopy start];
+    v6 = [(_UITextChoiceAccelerationAssistant *)self positionIsAtDocumentStart:start];
 
     if (!v6)
     {
-      v7 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v8 = [v7 tokenizer];
-      v9 = [v20 start];
-      v10 = [v8 positionFromPosition:v9 toBoundary:2 inDirection:1];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      tokenizer = [_document tokenizer];
+      start2 = [rangeCopy start];
+      v10 = [tokenizer positionFromPosition:start2 toBoundary:2 inDirection:1];
 
       if (v10)
       {
-        v11 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v12 = [v20 start];
-        v13 = [v11 comparePosition:v12 toPosition:v10];
+        _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        start3 = [rangeCopy start];
+        v13 = [_document2 comparePosition:start3 toPosition:v10];
 
         if (v13)
         {
@@ -1175,29 +1175,29 @@ LABEL_48:
       }
     }
 
-    v14 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
+    lastAddedPosition = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
 
-    if (v14)
+    if (lastAddedPosition)
     {
-      v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v16 = [v20 end];
-      v17 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
-      v18 = [v15 comparePosition:v16 toPosition:v17];
+      _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v16 = [rangeCopy end];
+      lastAddedPosition2 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
+      v18 = [_document3 comparePosition:v16 toPosition:lastAddedPosition2];
 
-      v19 = [v20 end];
+      v19 = [rangeCopy end];
       if (v18 != 1)
       {
         [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesIfNeededAfterPosition:v19];
 LABEL_12:
 
-        v4 = v20;
+        v4 = rangeCopy;
         goto LABEL_13;
       }
     }
 
     else
     {
-      v19 = [v20 end];
+      v19 = [rangeCopy end];
     }
 
     [(_UITextChoiceAccelerationAssistant *)self setLastAddedPosition:v19];
@@ -1207,103 +1207,103 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)addUnderlinesForCandidate:(id)a3 range:(id)a4
+- (void)addUnderlinesForCandidate:(id)candidate range:(id)range
 {
-  v17 = a3;
-  v6 = a4;
-  [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesForAddedRange:v6];
-  v7 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:v17 range:v6];
+  candidateCopy = candidate;
+  rangeCopy = range;
+  [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesForAddedRange:rangeCopy];
+  v7 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:candidateCopy range:rangeCopy];
   if (!+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess") && [v7 count])
   {
-    v8 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (v8)
+    if (textInputResponder)
     {
-      v9 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-      v10 = [v9 textInputView];
-      v11 = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
-      [v10 addInteraction:v11];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      textInputView = [textInputResponder2 textInputView];
+      textChoiceInteraction = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
+      [textInputView addInteraction:textChoiceInteraction];
     }
 
-    v12 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-    [v12 addUnderlines:v7 animated:0];
+    _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+    [_underlineView addUnderlines:v7 animated:0];
 
-    v13 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    [v13 addObject:v6];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    [underlinedRanges addObject:rangeCopy];
 
-    v14 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:v17 range:v6];
+    v14 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:candidateCopy range:rangeCopy];
     [v14 setUnderlines:v7];
     [v14 setUnderlineStyle:1];
-    v15 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v16 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v6];
-    [v15 setObject:v14 forKey:v16];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    v16 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+    [underlinedWordData setObject:v14 forKey:v16];
   }
 }
 
-- (void)addUnderlineForCandidate:(id)a3 range:(id)a4
+- (void)addUnderlineForCandidate:(id)candidate range:(id)range
 {
-  v18 = a3;
-  v6 = a4;
+  candidateCopy = candidate;
+  rangeCopy = range;
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v7 = [v18 candidate];
-    v8 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:v7];
+    candidate = [candidateCopy candidate];
+    v8 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:candidate];
 
-    v9 = [v18 candidate];
-    v10 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForInput:v9];
+    candidate2 = [candidateCopy candidate];
+    v10 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForInput:candidate2];
 
-    v11 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    [v11 addObject:v8];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    [underlinedRanges addObject:v8];
 
-    v12 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:v18 range:v8];
+    v12 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:candidateCopy range:v8];
     [v12 setUnderlines:v10];
     [v12 setUnderlineStyle:0];
-    v13 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
     v14 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v8];
-    [v13 setObject:v12 forKey:v14];
+    [underlinedWordData setObject:v12 forKey:v14];
   }
 
-  if (v6)
+  if (rangeCopy)
   {
-    if (([v6 isEmpty] & 1) == 0)
+    if (([rangeCopy isEmpty] & 1) == 0)
     {
-      v15 = [v6 start];
-      if (v15)
+      start = [rangeCopy start];
+      if (start)
       {
-        v16 = v15;
-        v17 = [v6 end];
+        v16 = start;
+        v17 = [rangeCopy end];
 
         if (v17)
         {
-          [(_UITextChoiceAccelerationAssistant *)self addUnderlinesForCandidate:v18 range:v6];
+          [(_UITextChoiceAccelerationAssistant *)self addUnderlinesForCandidate:candidateCopy range:rangeCopy];
         }
       }
     }
   }
 }
 
-- (void)underlineTextInRange:(id)a3 revertText:(id)a4 textChoices:(id)a5 isActiveEditingSession:(BOOL)a6
+- (void)underlineTextInRange:(id)range revertText:(id)text textChoices:(id)choices isActiveEditingSession:(BOOL)session
 {
-  v6 = a6;
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
-  [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesForAddedRange:v29];
-  v12 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:0 range:v29];
+  sessionCopy = session;
+  rangeCopy = range;
+  textCopy = text;
+  choicesCopy = choices;
+  [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesForAddedRange:rangeCopy];
+  v12 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:0 range:rangeCopy];
   v13 = +[UIKeyboard isKeyboardProcess];
-  if (v29 && !v13)
+  if (rangeCopy && !v13)
   {
-    v14 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    [v14 addObject:v29];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    [underlinedRanges addObject:rangeCopy];
 
-    v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v16 = [v15 textInRange:v29];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v16 = [_document textInRange:rangeCopy];
 
     if (v16 && [v16 length])
     {
-      v17 = [_UIReplacementCandidate candidateForDocumentText:v16 revertText:v10 textChoices:0 range:v29 underlineStyle:1 promptStyle:1 promptButton:2];
-      [v17 setRevertText:v10];
-      [v17 setTextChoices:v11];
+      v17 = [_UIReplacementCandidate candidateForDocumentText:v16 revertText:textCopy textChoices:0 range:rangeCopy underlineStyle:1 promptStyle:1 promptButton:2];
+      [v17 setRevertText:textCopy];
+      [v17 setTextChoices:choicesCopy];
       v18 = [v12 count];
       v19 = v18 != 0;
       if (v18)
@@ -1312,15 +1312,15 @@ LABEL_13:
       }
 
       [v17 setUnderlineStyle:1];
-      v20 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-      v21 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v29];
-      [v20 setObject:v17 forKey:v21];
+      underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+      v21 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+      [underlinedWordData setObject:v17 forKey:v21];
 
-      if (v6)
+      if (sessionCopy)
       {
-        v22 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-        v23 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v29];
-        [v22 setObject:v17 forKey:v23];
+        underlinedWordDataForDictation = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+        v23 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+        [underlinedWordDataForDictation setObject:v17 forKey:v23];
       }
     }
 
@@ -1329,17 +1329,17 @@ LABEL_13:
       v19 = 0;
     }
 
-    v24 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-    [v24 addUnderlines:v12 animated:0];
+    _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+    [_underlineView addUnderlines:v12 animated:0];
 
-    v25 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (v25)
+    if (textInputResponder)
     {
-      v26 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-      v27 = [v26 textInputView];
-      v28 = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
-      [v27 addInteraction:v28];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      textInputView = [textInputResponder2 textInputView];
+      textChoiceInteraction = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
+      [textInputView addInteraction:textChoiceInteraction];
     }
 
     if (v19)
@@ -1349,26 +1349,26 @@ LABEL_13:
   }
 }
 
-- (id)underlineRectsForCandidate:(id)a3 range:(id)a4
+- (id)underlineRectsForCandidate:(id)candidate range:(id)range
 {
-  v6 = a3;
-  v7 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:a4];
-  v8 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:v6 selectionRects:v7];
+  candidateCopy = candidate;
+  v7 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:range];
+  v8 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForCandidate:candidateCopy selectionRects:v7];
 
   return v8;
 }
 
-- (id)underlineRectsForCandidate:(id)a3 selectionRects:(id)a4
+- (id)underlineRectsForCandidate:(id)candidate selectionRects:(id)rects
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  candidateCopy = candidate;
+  rectsCopy = rects;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = rectsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1383,7 +1383,7 @@ LABEL_13:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(_UITextChoiceAccelerationAssistant *)self underlineRectForTextSelectionRect:*(*(&v16 + 1) + 8 * i) forCandidate:v6, v16];
+        v14 = [(_UITextChoiceAccelerationAssistant *)self underlineRectForTextSelectionRect:*(*(&v16 + 1) + 8 * i) forCandidate:candidateCopy, v16];
         if (v14)
         {
           [v8 addObject:v14];
@@ -1399,19 +1399,19 @@ LABEL_13:
   return v8;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   if ([(_UITextChoiceAccelerationAssistant *)self usingCustomInteraction]&& ([(_UITextChoiceAccelerationAssistant *)self textInputResponder], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v7 = [v6 selectionRectsForRange:v4];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    v7 = [textInputResponder selectionRectsForRange:rangeCopy];
   }
 
   else
   {
-    v6 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v7 = [v6 _underlineRectsByDocumentLineForSelectionRange:v4];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v7 = [textInputResponder _underlineRectsByDocumentLineForSelectionRange:rangeCopy];
   }
 
   v8 = v7;
@@ -1419,17 +1419,17 @@ LABEL_13:
   return v8;
 }
 
-- (id)updateUnderlineRects:(id)a3 forRange:(id)a4
+- (id)updateUnderlineRects:(id)rects forRange:(id)range
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:v7];
+  rectsCopy = rects;
+  rangeCopy = range;
+  v8 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:rangeCopy];
   if (+[UIKeyboard isKeyboardProcess])
   {
     v9 = +[UIKeyboard currentDocumentState];
-    v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v11 = [v7 _asNSRangeRelativeToDocument:v10];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v11 = [rangeCopy _asNSRangeRelativeToDocument:_document];
     v13 = v12;
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1439,9 +1439,9 @@ LABEL_13:
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v23 = [v22 inputOverlayContainer];
-      v24 = [_UIMutableTextSelectionRect selectionRectWithRect:v23 fromView:v15, v17, v19, v21];
+      delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputOverlayContainer = [delegate inputOverlayContainer];
+      v24 = [_UIMutableTextSelectionRect selectionRectWithRect:inputOverlayContainer fromView:v15, v17, v19, v21];
 
       v33[0] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
@@ -1458,7 +1458,7 @@ LABEL_13:
     {
       v28 = [v8 objectAtIndex:v27];
       v29 = [(_UITextChoiceAccelerationAssistant *)self underlineRectForTextSelectionRect:v28 forCandidate:0];
-      if (v27 < [v6 count])
+      if (v27 < [rectsCopy count])
       {
         if (v29)
         {
@@ -1479,10 +1479,10 @@ LABEL_12:
       }
     }
 
-    v30 = [v6 objectAtIndex:v27];
+    v30 = [rectsCopy objectAtIndex:v27];
     [v29 setUnderlineType:{objc_msgSend(v30, "underlineType")}];
-    v31 = [v30 underlineColor];
-    [v29 setUnderlineColor:v31];
+    underlineColor = [v30 underlineColor];
+    [v29 setUnderlineColor:underlineColor];
 
 LABEL_11:
     [v26 addObject:v29];
@@ -1494,11 +1494,11 @@ LABEL_13:
   return v26;
 }
 
-- (id)keyFromRange:(id)a3
+- (id)keyFromRange:(id)range
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self _document];
-  v6 = [v4 _asNSRangeRelativeToDocument:v5];
+  rangeCopy = range;
+  _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+  v6 = [rangeCopy _asNSRangeRelativeToDocument:_document];
   v8 = v7;
 
   v9 = MEMORY[0x1E696AEC0];
@@ -1510,12 +1510,12 @@ LABEL_13:
   return v11;
 }
 
-- (void)_removeUnderlinesRelativeToPosition:(id)a3 compare:(int64_t)a4
+- (void)_removeUnderlinesRelativeToPosition:(id)position compare:(int64_t)compare
 {
   v30 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v6 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  v7 = [v6 copy];
+  positionCopy = position;
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  v7 = [underlinedRanges copy];
 
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
@@ -1538,27 +1538,27 @@ LABEL_13:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 start];
-        if (a4 == -1)
+        start = [v12 start];
+        if (compare == -1)
         {
           v14 = [v12 end];
 
-          v13 = v14;
+          start = v14;
         }
 
-        v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v16 = [v15 comparePosition:v13 toPosition:v24];
+        _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v16 = [_document comparePosition:start toPosition:positionCopy];
 
-        if (v16 == a4)
+        if (v16 == compare)
         {
-          v17 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+          underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
           v18 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v12];
-          v19 = [v17 objectForKey:v18];
+          v19 = [underlinedWordData objectForKey:v18];
 
           if (v19)
           {
-            v20 = [v19 underlines];
-            [v22 addObjectsFromArray:v20];
+            underlines = [v19 underlines];
+            [v22 addObjectsFromArray:underlines];
           }
 
           [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v12];
@@ -1571,64 +1571,64 @@ LABEL_13:
     while (v9);
   }
 
-  v21 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-  [v21 removeUnderlines:v22 animated:1];
+  _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+  [_underlineView removeUnderlines:v22 animated:1];
 }
 
-- (void)removeUnderlinesBeforePosition:(id)a3
+- (void)removeUnderlinesBeforePosition:(id)position
 {
-  v7 = a3;
-  v4 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  v5 = [v4 count];
+  positionCopy = position;
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  v5 = [underlinedRanges count];
 
-  v6 = v7;
-  if (v7 && v5)
+  v6 = positionCopy;
+  if (positionCopy && v5)
   {
-    [(_UITextChoiceAccelerationAssistant *)self _removeUnderlinesRelativeToPosition:v7 compare:-1];
-    v6 = v7;
+    [(_UITextChoiceAccelerationAssistant *)self _removeUnderlinesRelativeToPosition:positionCopy compare:-1];
+    v6 = positionCopy;
   }
 }
 
-- (void)removeUnderlinesAfterPosition:(id)a3
+- (void)removeUnderlinesAfterPosition:(id)position
 {
-  if (a3)
+  if (position)
   {
-    [(_UITextChoiceAccelerationAssistant *)self _removeUnderlinesRelativeToPosition:a3 compare:1];
+    [(_UITextChoiceAccelerationAssistant *)self _removeUnderlinesRelativeToPosition:position compare:1];
   }
 }
 
-- (void)clearUnderlinesIfNeededBeforePosition:(id)a3
+- (void)clearUnderlinesIfNeededBeforePosition:(id)position
 {
-  v21 = a3;
-  v4 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  v5 = [v4 count];
+  positionCopy = position;
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  v5 = [underlinedRanges count];
 
-  v6 = v21;
-  if (v21 && v5)
+  v6 = positionCopy;
+  if (positionCopy && v5)
   {
-    if ([(_UITextChoiceAccelerationAssistant *)self positionIsAtDocumentStart:v21])
+    if ([(_UITextChoiceAccelerationAssistant *)self positionIsAtDocumentStart:positionCopy])
     {
       [(_UITextChoiceAccelerationAssistant *)self removeAllUnderlinesAnimated:0];
       [(_UITextChoiceAccelerationAssistant *)self dismissIfPresented];
 LABEL_15:
-      v6 = v21;
+      v6 = positionCopy;
       goto LABEL_16;
     }
 
-    v7 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v8 = [v7 tokenizer];
-    v9 = [v8 positionFromPosition:v21 toBoundary:1 inDirection:1];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    tokenizer = [_document tokenizer];
+    v9 = [tokenizer positionFromPosition:positionCopy toBoundary:1 inDirection:1];
 
     if (v9)
     {
-      v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v11 = [v10 textRangeFromPosition:v9 toPosition:v21];
+      _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v11 = [_document2 textRangeFromPosition:v9 toPosition:positionCopy];
 
       if (v11 && (-[_UITextChoiceAccelerationAssistant _document](self, "_document"), v12 = objc_claimAutoreleasedReturnValue(), [v12 textInRange:v11], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @" "), v13, v12, (v14 & 1) != 0))
       {
-        v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v16 = [v15 tokenizer];
-        v17 = [v16 positionFromPosition:v9 toBoundary:1 inDirection:1];
+        _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer2 = [_document3 tokenizer];
+        v17 = [tokenizer2 positionFromPosition:v9 toBoundary:1 inDirection:1];
 
         v9 = v17;
         if (!v17)
@@ -1641,9 +1641,9 @@ LABEL_15:
       {
       }
 
-      v18 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v19 = [v18 tokenizer];
-      v20 = [v19 positionFromPosition:v9 toBoundary:1 inDirection:1];
+      _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      tokenizer3 = [_document4 tokenizer];
+      v20 = [tokenizer3 positionFromPosition:v9 toBoundary:1 inDirection:1];
 
       if (v20)
       {
@@ -1654,40 +1654,40 @@ LABEL_15:
     }
 
 LABEL_14:
-    [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesIfNeededAfterPosition:v21];
+    [(_UITextChoiceAccelerationAssistant *)self updateUnderlinesIfNeededAfterPosition:positionCopy];
     goto LABEL_15;
   }
 
 LABEL_16:
 }
 
-- (void)updateUnderlinesIfNeededAfterPosition:(id)a3
+- (void)updateUnderlinesIfNeededAfterPosition:(id)position
 {
-  v14 = a3;
-  v4 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
+  positionCopy = position;
+  lastAddedPosition = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
 
-  if (v4)
+  if (lastAddedPosition)
   {
-    v5 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v6 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
-    v7 = [v5 comparePosition:v14 toPosition:v6];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    lastAddedPosition2 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
+    v7 = [_document comparePosition:positionCopy toPosition:lastAddedPosition2];
 
     if (v7 == -1)
     {
-      v8 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v9 = [v8 tokenizer];
-      v10 = [v9 positionFromPosition:v14 toBoundary:2 inDirection:0];
+      _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      tokenizer = [_document2 tokenizer];
+      v10 = [tokenizer positionFromPosition:positionCopy toBoundary:2 inDirection:0];
 
       if (v10)
       {
-        v11 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v12 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
-        v13 = [v11 offsetFromPosition:v10 toPosition:v12];
+        _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        lastAddedPosition3 = [(_UITextChoiceAccelerationAssistant *)self lastAddedPosition];
+        v13 = [_document3 offsetFromPosition:v10 toPosition:lastAddedPosition3];
 
         if (v13 >= 2)
         {
           [(_UITextChoiceAccelerationAssistant *)self removeAllUnderlinesAnimated:1];
-          [(_UITextChoiceAccelerationAssistant *)self setLastAddedPosition:v14];
+          [(_UITextChoiceAccelerationAssistant *)self setLastAddedPosition:positionCopy];
         }
       }
 
@@ -1696,32 +1696,32 @@ LABEL_16:
   }
 }
 
-- (void)clearUnderlineForPosition:(id)a3
+- (void)clearUnderlineForPosition:(id)position
 {
-  v4 = a3;
-  if (v4)
+  positionCopy = position;
+  if (positionCopy)
   {
-    v14 = v4;
-    v5 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v6 = [v5 tokenizer];
-    v7 = [v6 rangeEnclosingPosition:v14 withGranularity:1 inDirection:1];
+    v14 = positionCopy;
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    tokenizer = [_document tokenizer];
+    v7 = [tokenizer rangeEnclosingPosition:v14 withGranularity:1 inDirection:1];
 
     if (+[UIKeyboard usesInputSystemUI]&& !v7)
     {
-      v8 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v9 = [v8 tokenizer];
-      v7 = [v9 positionFromPosition:v14 toBoundary:1 inDirection:1];
+      _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      tokenizer2 = [_document2 tokenizer];
+      v7 = [tokenizer2 positionFromPosition:v14 toBoundary:1 inDirection:1];
 
       if (v7)
       {
-        v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v11 = [v10 tokenizer];
-        v12 = [v11 positionFromPosition:v7 toBoundary:1 inDirection:1];
+        _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        tokenizer3 = [_document3 tokenizer];
+        v12 = [tokenizer3 positionFromPosition:v7 toBoundary:1 inDirection:1];
 
         if (v12)
         {
-          v13 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v7 = [v13 textRangeFromPosition:v12 toPosition:v14];
+          _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v7 = [_document4 textRangeFromPosition:v12 toPosition:v14];
 
           goto LABEL_7;
         }
@@ -1731,7 +1731,7 @@ LABEL_16:
 
 LABEL_10:
 
-      v4 = v14;
+      positionCopy = v14;
       goto LABEL_11;
     }
 
@@ -1747,15 +1747,15 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)clearUnderlinesInRange:(id)a3 animated:(BOOL)a4
+- (void)clearUnderlinesInRange:(id)range animated:(BOOL)animated
 {
-  v33 = a4;
+  animatedCopy = animated;
   v47 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  if (v34)
+  rangeCopy = range;
+  if (rangeCopy)
   {
-    v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    v6 = [v5 copy];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    v6 = [underlinedRanges copy];
 
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v36 = 0u;
@@ -1783,18 +1783,18 @@ LABEL_11:
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        v13 = [v12 start];
-        if (!v13 || (v14 = v13, [v12 end], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
+        start = [v12 start];
+        if (!start || (v14 = start, [v12 end], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
         {
           v26 = _UIKeyboardLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v12 start];
+            start2 = [v12 start];
             v29 = [v12 end];
             *buf = v31;
             v41 = v12;
             v42 = 2112;
-            v43 = v28;
+            v43 = start2;
             v44 = 2112;
             v45 = v29;
             _os_log_error_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "Error: Underlined range %@: %@ -> %@", buf, 0x20u);
@@ -1803,29 +1803,29 @@ LABEL_11:
           goto LABEL_16;
         }
 
-        v16 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v17 = [v34 start];
+        _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+        start3 = [rangeCopy start];
         v18 = [v12 end];
-        v19 = [v16 comparePosition:v17 toPosition:v18];
+        v19 = [_document comparePosition:start3 toPosition:v18];
 
-        v20 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v21 = [v34 end];
-        v22 = [v12 start];
-        v23 = [v20 comparePosition:v21 toPosition:v22];
+        _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v21 = [rangeCopy end];
+        start4 = [v12 start];
+        v23 = [_document2 comparePosition:v21 toPosition:start4];
 
         if (v19 != 1 && v23 != -1)
         {
-          v24 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+          underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
           v25 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v12];
-          v26 = [v24 objectForKey:v25];
+          v26 = [underlinedWordData objectForKey:v25];
 
           if (v26)
           {
-            v27 = [v26 underlines];
-            [v32 addObjectsFromArray:v27];
+            underlines = [v26 underlines];
+            [v32 addObjectsFromArray:underlines];
           }
 
-          [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v12 animated:v33];
+          [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v12 animated:animatedCopy];
 LABEL_16:
 
           continue;
@@ -1837,8 +1837,8 @@ LABEL_16:
       {
 LABEL_19:
 
-        v30 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-        [v30 removeUnderlines:v32 animated:v33];
+        _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+        [_underlineView removeUnderlines:v32 animated:animatedCopy];
 
         break;
       }
@@ -1846,19 +1846,19 @@ LABEL_19:
   }
 }
 
-- (void)adjustRangesAfterPosition:(id)a3 byOffset:(int64_t)a4
+- (void)adjustRangesAfterPosition:(id)position byOffset:(int64_t)offset
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 || !a4)
+  positionCopy = position;
+  if (!positionCopy || !offset)
   {
     [(_UITextChoiceAccelerationAssistant *)self setNeedsUnderlineUpdate];
     goto LABEL_21;
   }
 
-  v38 = a4;
-  v7 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  v8 = [v7 copy];
+  offsetCopy = offset;
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  v8 = [underlinedRanges copy];
 
   v43 = 0u;
   v44 = 0u;
@@ -1874,7 +1874,7 @@ LABEL_19:
   v10 = v9;
   v11 = *v42;
   v36 = *v42;
-  v37 = v6;
+  v37 = positionCopy;
   do
   {
     v12 = 0;
@@ -1887,47 +1887,47 @@ LABEL_19:
       }
 
       v13 = *(*(&v41 + 1) + 8 * v12);
-      v14 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v15 = [v13 start];
-      v16 = [v14 comparePosition:v15 toPosition:v6];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      start = [v13 start];
+      v16 = [_document comparePosition:start toPosition:positionCopy];
 
       if (v16 != -1)
       {
         v17 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v13];
-        v18 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-        v19 = [v18 objectForKey:v17];
+        underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+        v19 = [underlinedWordData objectForKey:v17];
 
         if (v19)
         {
-          v20 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v21 = [v13 start];
-          v22 = [v20 positionFromPosition:v21 offset:v38];
+          _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          start2 = [v13 start];
+          underlinedRanges5 = [_document2 positionFromPosition:start2 offset:offsetCopy];
 
-          v23 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
           v24 = [v13 end];
-          v25 = [v23 positionFromPosition:v24 offset:v38];
+          v25 = [_document3 positionFromPosition:v24 offset:offsetCopy];
 
-          v26 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v27 = [v26 textRangeFromPosition:v22 toPosition:v25];
+          _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v27 = [_document4 textRangeFromPosition:underlinedRanges5 toPosition:v25];
 
-          v28 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-          [v28 removeObjectForKey:v17];
+          underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+          [underlinedWordData2 removeObjectForKey:v17];
 
-          v29 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+          underlinedWordData3 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
           v30 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v27];
-          [v29 setObject:v19 forKey:v30];
+          [underlinedWordData3 setObject:v19 forKey:v30];
 
-          v31 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-          v32 = [v31 indexOfObject:v13];
+          underlinedRanges2 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+          v32 = [underlinedRanges2 indexOfObject:v13];
 
           if (v32 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v33 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-            [v33 replaceObjectAtIndex:v32 withObject:v27];
+            underlinedRanges3 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+            [underlinedRanges3 replaceObjectAtIndex:v32 withObject:v27];
           }
 
           v11 = v36;
-          v6 = v37;
+          positionCopy = v37;
 LABEL_15:
 
           v10 = v40;
@@ -1935,13 +1935,13 @@ LABEL_15:
 
         else
         {
-          v34 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-          v35 = [v34 indexOfObject:v13];
+          underlinedRanges4 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+          v35 = [underlinedRanges4 indexOfObject:v13];
 
           if (v35 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v22 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-            [v22 removeObjectAtIndex:v35];
+            underlinedRanges5 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+            [underlinedRanges5 removeObjectAtIndex:v35];
             goto LABEL_15;
           }
         }
@@ -1961,34 +1961,34 @@ LABEL_19:
 LABEL_21:
 }
 
-- (BOOL)positionIsAtDocumentStart:(id)a3
+- (BOOL)positionIsAtDocumentStart:(id)start
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self _document];
-  v6 = [v5 beginningOfDocument];
+  startCopy = start;
+  _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+  beginningOfDocument = [_document beginningOfDocument];
 
   v7 = 0;
-  if (v4 && v6)
+  if (startCopy && beginningOfDocument)
   {
-    v8 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v7 = [v8 comparePosition:v4 toPosition:v6] == 0;
+    _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v7 = [_document2 comparePosition:startCopy toPosition:beginningOfDocument] == 0;
   }
 
   return v7;
 }
 
-- (id)underlineRectForTextSelectionRect:(id)a3 forCandidate:(id)a4
+- (id)underlineRectForTextSelectionRect:(id)rect forCandidate:(id)candidate
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 rect];
-  if (v8 == 0.0 || ([(_UITextChoiceAccelerationAssistant *)self convertedSelectionRect:v6], x = v27.origin.x, y = v27.origin.y, width = v27.size.width, height = v27.size.height, CGRectEqualToRect(v27, *MEMORY[0x1E695F050])))
+  rectCopy = rect;
+  candidateCopy = candidate;
+  [rectCopy rect];
+  if (v8 == 0.0 || ([(_UITextChoiceAccelerationAssistant *)self convertedSelectionRect:rectCopy], x = v27.origin.x, y = v27.origin.y, width = v27.size.width, height = v27.size.height, CGRectEqualToRect(v27, *MEMORY[0x1E695F050])))
   {
     v13 = 0;
     goto LABEL_4;
   }
 
-  [v6 baselineOffset];
+  [rectCopy baselineOffset];
   if (v15 == 0.0)
   {
     v16 = height * 0.75;
@@ -1999,9 +1999,9 @@ LABEL_21:
     v16 = v15;
   }
 
-  if (v6)
+  if (rectCopy)
   {
-    [v6 transform];
+    [rectCopy transform];
   }
 
   else
@@ -2012,30 +2012,30 @@ LABEL_21:
   }
 
   v13 = [_UITextUnderlineRect underlineRectWithRect:&v23 offset:x transform:y, width, height, v16];
-  v17 = [(_UITextChoiceAccelerationAssistant *)self defaultUnderlineColor];
-  if (v7)
+  defaultUnderlineColor = [(_UITextChoiceAccelerationAssistant *)self defaultUnderlineColor];
+  if (candidateCopy)
   {
     if (TIGetShowCandidateConfidenceValue_onceToken != -1)
     {
       dispatch_once(&TIGetShowCandidateConfidenceValue_onceToken, &__block_literal_global_1032);
     }
 
-    v18 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-    v19 = [v18 valueForPreferenceKey:@"ShowCandidateConfidence"];
+    mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+    v19 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"ShowCandidateConfidence"];
 
-    LODWORD(v18) = [v19 BOOLValue];
-    if (v18)
+    LODWORD(mEMORY[0x1E69D9680]) = [v19 BOOLValue];
+    if (mEMORY[0x1E69D9680])
     {
-      v20 = [v7 confidence];
-      if (v20 > 1)
+      confidence = [candidateCopy confidence];
+      if (confidence > 1)
       {
-        if (v20 == 3)
+        if (confidence == 3)
         {
           v21 = +[UIColor systemGrayColor];
           goto LABEL_26;
         }
 
-        if (v20 == 2)
+        if (confidence == 2)
         {
           v21 = +[UIColor systemRedColor];
           goto LABEL_26;
@@ -2044,46 +2044,46 @@ LABEL_21:
 
       else
       {
-        if (!v20)
+        if (!confidence)
         {
           v21 = +[UIColor systemGreenColor];
           goto LABEL_26;
         }
 
-        if (v20 == 1)
+        if (confidence == 1)
         {
           v21 = +[UIColor systemYellowColor];
 LABEL_26:
           v22 = v21;
 
-          v17 = v22;
+          defaultUnderlineColor = v22;
         }
       }
     }
   }
 
-  [v13 setUnderlineColor:{v17, v23, v24, v25}];
+  [v13 setUnderlineColor:{defaultUnderlineColor, v23, v24, v25}];
 
 LABEL_4:
 
   return v13;
 }
 
-- (CGRect)convertedSelectionRect:(id)a3
+- (CGRect)convertedSelectionRect:(id)rect
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-  if (v5 || ([(_UITextChoiceAccelerationAssistant *)self activateUnderlineViewIfNeeded], [(_UITextChoiceAccelerationAssistant *)self _underlineView], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  rectCopy = rect;
+  _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+  if (_underlineView || ([(_UITextChoiceAccelerationAssistant *)self activateUnderlineViewIfNeeded], [(_UITextChoiceAccelerationAssistant *)self _underlineView], (_underlineView = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
-    [v4 rect];
+    v6 = _underlineView;
+    [rectCopy rect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v16 = [v15 textInputView];
-    [v6 convertRect:v16 fromView:{v8, v10, v12, v14}];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    textInputView = [_document textInputView];
+    [v6 convertRect:textInputView fromView:{v8, v10, v12, v14}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -2112,34 +2112,34 @@ LABEL_4:
 - (id)defaultUnderlineColor
 {
   v3 = +[UIKeyboard currentDocumentState];
-  v4 = [v3 autocorrectTextBackgroundColor];
+  autocorrectTextBackgroundColor = [v3 autocorrectTextBackgroundColor];
 
-  if (v4)
+  if (autocorrectTextBackgroundColor)
   {
-    v5 = [v3 insertionPointColor];
-    v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v5 cgColor]);
+    insertionPointColor = [v3 insertionPointColor];
+    v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [insertionPointColor cgColor]);
 
     goto LABEL_9;
   }
 
-  v7 = [(_UITextChoiceAccelerationAssistant *)self _document];
+  _document = [(_UITextChoiceAccelerationAssistant *)self _document];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v10 = [v9 insertionPointColor];
+    _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+    insertionPointColor2 = [_document2 insertionPointColor];
     goto LABEL_7;
   }
 
-  v11 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-  if (v11)
+  if (textInputResponder)
   {
-    v9 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
-    v10 = [v9 tintColor];
+    _document2 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
+    insertionPointColor2 = [_document2 tintColor];
 LABEL_7:
-    v6 = v10;
+    v6 = insertionPointColor2;
 
     if (v6)
     {
@@ -2187,8 +2187,8 @@ LABEL_9:
 
   if (WeakRetained)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-    obj = [v4 obtainSelectionGrabberSuppressionAssertion];
+    interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    obj = [interactionAssistant obtainSelectionGrabberSuppressionAssertion];
 
     v5 = objc_loadWeakRetained(&self->_interactionAssistant);
     [v5 setGrabberSuppressionAssertion:obj];
@@ -2208,9 +2208,9 @@ LABEL_9:
     }
 
     obj = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v8 = [obj _obtainGrabberSuppressionAssertion];
+    _obtainGrabberSuppressionAssertion = [obj _obtainGrabberSuppressionAssertion];
     textChoiceInteractionGrabberSuppressionAssertion = self->_textChoiceInteractionGrabberSuppressionAssertion;
-    self->_textChoiceInteractionGrabberSuppressionAssertion = v8;
+    self->_textChoiceInteractionGrabberSuppressionAssertion = _obtainGrabberSuppressionAssertion;
 
     [obj setNeedsSelectionUpdate];
     [(_UITextChoiceAccelerationAssistant *)self setNeedsUnderlineUpdate];
@@ -2220,40 +2220,40 @@ LABEL_9:
 - (id)textHighlightColor
 {
   v3 = +[UIKeyboard currentDocumentState];
-  v4 = [v3 autocorrectTextBackgroundColor];
+  autocorrectTextBackgroundColor = [v3 autocorrectTextBackgroundColor];
 
-  if (v4)
+  if (autocorrectTextBackgroundColor)
   {
-    v5 = [v3 autocorrectTextBackgroundColor];
-    v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v5 cgColor]);
+    autocorrectTextBackgroundColor2 = [v3 autocorrectTextBackgroundColor];
+    selectionHighlightColor = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [autocorrectTextBackgroundColor2 cgColor]);
 LABEL_5:
-    v9 = v6;
+    v9 = selectionHighlightColor;
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [(_UITextChoiceAccelerationAssistant *)self _document];
+  _document = [(_UITextChoiceAccelerationAssistant *)self _document];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v5 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v6 = [v5 selectionHighlightColor];
+    autocorrectTextBackgroundColor2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+    selectionHighlightColor = [autocorrectTextBackgroundColor2 selectionHighlightColor];
     goto LABEL_5;
   }
 
-  v11 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-  if (v11)
+  if (textInputResponder)
   {
-    v12 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
-    v13 = [v12 traitCollection];
-    v14 = dbl_18A679CF0[[v13 userInterfaceStyle] == 2];
+    textInputView = [(_UITextChoiceAccelerationAssistant *)self textInputView];
+    traitCollection = [textInputView traitCollection];
+    v14 = dbl_18A679CF0[[traitCollection userInterfaceStyle] == 2];
 
-    v5 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
-    v15 = [v5 tintColor];
-    v9 = [v15 colorWithAlphaComponent:v14];
+    autocorrectTextBackgroundColor2 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
+    tintColor = [autocorrectTextBackgroundColor2 tintColor];
+    v9 = [tintColor colorWithAlphaComponent:v14];
 
     goto LABEL_6;
   }
@@ -2264,14 +2264,14 @@ LABEL_7:
   return v9;
 }
 
-- (id)nearestDictationPromptForPoint:(CGPoint)a3 withEvent:(id)a4
+- (id)nearestDictationPromptForPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  v9 = [v8 count];
+  eventCopy = event;
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  v9 = [dictationVoiceEditingPrompts count];
   if (v9)
   {
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:v9];
@@ -2279,7 +2279,7 @@ LABEL_7:
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v11 = v8;
+    v11 = dictationVoiceEditingPrompts;
     v12 = [v11 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v12)
     {
@@ -2296,7 +2296,7 @@ LABEL_7:
 
           v16 = *(*(&v46 + 1) + 8 * i);
           [v16 convertPoint:0 fromView:{x, y}];
-          if ([v16 pointInside:v7 withEvent:?])
+          if ([v16 pointInside:eventCopy withEvent:?])
           {
             [v10 addObject:v16];
           }
@@ -2313,7 +2313,7 @@ LABEL_7:
     {
       if (v17 == 1)
       {
-        v18 = [v10 firstObject];
+        firstObject = [v10 firstObject];
       }
 
       else
@@ -2327,7 +2327,7 @@ LABEL_7:
         if (v20)
         {
           v21 = v20;
-          v18 = 0;
+          firstObject = 0;
           v22 = *v43;
           v23 = 1.79769313e308;
           do
@@ -2340,8 +2340,8 @@ LABEL_7:
               }
 
               v25 = *(*(&v42 + 1) + 8 * j);
-              v26 = [v25 backgroundView];
-              [v26 frame];
+              backgroundView = [v25 backgroundView];
+              [backgroundView frame];
               v28 = v27;
               v30 = v29;
               v32 = v31;
@@ -2363,7 +2363,7 @@ LABEL_7:
                 v39 = v38;
                 v40 = v25;
 
-                v18 = v40;
+                firstObject = v40;
                 v23 = v39;
               }
             }
@@ -2376,35 +2376,35 @@ LABEL_7:
 
         else
         {
-          v18 = 0;
+          firstObject = 0;
         }
       }
     }
 
     else
     {
-      v18 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
 - (BOOL)autocorrectInlinePromptIsVisible
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self showingAutocorrectInlinePrompt];
-  if (v3)
+  showingAutocorrectInlinePrompt = [(_UITextChoiceAccelerationAssistant *)self showingAutocorrectInlinePrompt];
+  if (showingAutocorrectInlinePrompt)
   {
 
-    LOBYTE(v3) = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
+    LOBYTE(showingAutocorrectInlinePrompt) = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
   }
 
-  return v3;
+  return showingAutocorrectInlinePrompt;
 }
 
 - (BOOL)showingPrompt
@@ -2427,43 +2427,43 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  v3 = [v4 count] != 0;
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  v3 = [dictationVoiceEditingPrompts count] != 0;
 
   return v3;
 }
 
-- (void)updateActivePromptForCandidate:(id)a3 displayRects:(id)a4 highlightOnly:(BOOL)a5
+- (void)updateActivePromptForCandidate:(id)candidate displayRects:(id)rects highlightOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_UITextChoiceAccelerationAssistant *)self parentViewForPrompt];
-  if (!v10)
+  candidateCopy = candidate;
+  rectsCopy = rects;
+  parentViewForPrompt = [(_UITextChoiceAccelerationAssistant *)self parentViewForPrompt];
+  if (!parentViewForPrompt)
   {
 LABEL_11:
     [(_UITextChoiceAccelerationAssistant *)self setKeepPromptActive:0];
     goto LABEL_16;
   }
 
-  v11 = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
-  v12 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v13 = [v12 superview];
-  v14 = v13 == v10;
+  keepPromptActive = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  superview = [prompt superview];
+  v14 = superview == parentViewForPrompt;
 
-  v15 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v16 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v10 _convertVisualAltitude:v16 toView:0.0];
-  [v15 _setVisualAltitude:?];
+  prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  prompt3 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [parentViewForPrompt _convertVisualAltitude:prompt3 toView:0.0];
+  [prompt2 _setVisualAltitude:?];
 
-  if (![v9 count])
+  if (![rectsCopy count])
   {
-    v24 = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
-    if (!v9 && !v8 && v24)
+    keepPromptActive2 = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
+    if (!rectsCopy && !candidateCopy && keepPromptActive2)
     {
-      v25 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      [v25 hideForNow];
+      prompt4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      [prompt4 hideForNow];
 
       [(_UITextChoiceAccelerationAssistant *)self removePassthroughContainer];
     }
@@ -2471,48 +2471,48 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v17 = v14 && v11;
+  v17 = v14 && keepPromptActive;
   [(_UITextChoiceAccelerationAssistant *)self setKeepPromptActive:1];
-  v18 = [v9 firstObject];
-  if (v5)
+  firstObject = [rectsCopy firstObject];
+  if (onlyCopy)
   {
     if (!v17)
     {
-      v19 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      [v19 showChoices:0];
+      prompt5 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      [prompt5 showChoices:0];
     }
 
-    v20 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    v21 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v22 = [v21 inputOverlayContainer];
-    v23 = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
-    [v20 updateTextBoxHighlightForRect:v18 inTextView:v22 parentView:v10 highlightColor:v23];
+    prompt6 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputOverlayContainer = [delegate inputOverlayContainer];
+    textHighlightColor = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
+    [prompt6 updateTextBoxHighlightForRect:firstObject inTextView:inputOverlayContainer parentView:parentViewForPrompt highlightColor:textHighlightColor];
   }
 
   else
   {
     if (!v17)
     {
-      v26 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      [v26 updateButtonForType:1];
+      prompt7 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      [prompt7 updateButtonForType:1];
 
-      v27 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      v33[0] = v8;
+      prompt8 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      v33[0] = candidateCopy;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
       v29 = _candidatesChoicesFromTextChoices(v28, 0);
-      v30 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v31 = [v30 inputOverlayContainer];
-      [v27 updateWithChoices:v29 fromParentView:v10 referenceTextView:v31 presentedFromRect:v18 textHighlightColor:0];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputOverlayContainer2 = [delegate2 inputOverlayContainer];
+      [prompt8 updateWithChoices:v29 fromParentView:parentViewForPrompt referenceTextView:inputOverlayContainer2 presentedFromRect:firstObject textHighlightColor:0];
 
-      v32 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      [v32 updateButtonName:@"xmark" placement:1 originalText:v8];
+      prompt9 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      [prompt9 updateButtonName:@"xmark" placement:1 originalText:candidateCopy];
     }
 
-    v20 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    v21 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v22 = [v21 inputOverlayContainer];
-    v23 = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
-    [v20 updateForSingleWord:v8 textAnchorRect:v18 inTextView:v22 parentView:v10 highlightColor:v23];
+    prompt6 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputOverlayContainer = [delegate inputOverlayContainer];
+    textHighlightColor = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
+    [prompt6 updateForSingleWord:candidateCopy textAnchorRect:firstObject inTextView:inputOverlayContainer parentView:parentViewForPrompt highlightColor:textHighlightColor];
   }
 
   [(_UITextChoiceAccelerationAssistant *)self setupPassthroughContainer];
@@ -2521,22 +2521,22 @@ LABEL_16:
 
 - (void)setupPassthroughContainer
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
+  passthroughContainer = [(_UITextChoiceAccelerationAssistant *)self passthroughContainer];
 
-  if (!v3)
+  if (!passthroughContainer)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
-    v5 = [v4 _window];
-    v6 = [v5 windowScene];
-    v9 = [v6 keyWindow];
+    textInputView = [(_UITextChoiceAccelerationAssistant *)self textInputView];
+    _window = [textInputView _window];
+    windowScene = [_window windowScene];
+    keyWindow = [windowScene keyWindow];
 
-    if (v9)
+    if (keyWindow)
     {
       v7 = [_UITextChoiceAccelerationPassthroughView alloc];
-      [v9 bounds];
+      [keyWindow bounds];
       v8 = [(_UITextChoiceAccelerationPassthroughView *)v7 initWithFrame:self delegate:?];
       [(UIView *)v8 setAutoresizingMask:18];
-      [v9 addSubview:v8];
+      [keyWindow addSubview:v8];
       [(_UITextChoiceAccelerationAssistant *)self setPassthroughContainer:v8];
     }
   }
@@ -2546,8 +2546,8 @@ LABEL_16:
 {
   if ([(_UITextChoiceAccelerationAssistant *)self keepPromptActive])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    [v3 acceptAutocorrectionWithCompletionHandler:0];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    [delegate acceptAutocorrectionWithCompletionHandler:0];
   }
 
   else
@@ -2557,12 +2557,12 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    v3 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-    if (v3)
+    delegate = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+    if (delegate)
     {
-      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v3 animated:0];
-      v4 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-      [v4 selectionChanged];
+      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:delegate animated:0];
+      interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+      [interactionAssistant selectionChanged];
     }
   }
 
@@ -2571,35 +2571,35 @@ LABEL_7:
   [(_UITextChoiceAccelerationAssistant *)self resetDictationChoicesAnimated:0];
 }
 
-- (BOOL)showPromptForReplacementCandidate:(id)a3 originalCandidate:(id)a4 delay:(double)a5
+- (BOOL)showPromptForReplacementCandidate:(id)candidate originalCandidate:(id)originalCandidate delay:(double)delay
 {
-  v8 = a3;
-  v9 = a4;
+  candidateCopy = candidate;
+  originalCandidateCopy = originalCandidate;
   [(_UITextChoiceAccelerationAssistant *)self updateSelectionHighlights];
   [(_UITextChoiceAccelerationAssistant *)self setKeepPromptActive:0];
-  v10 = [(_UITextChoiceAccelerationAssistant *)self parentViewForPrompt];
-  if (!v10)
+  parentViewForPrompt = [(_UITextChoiceAccelerationAssistant *)self parentViewForPrompt];
+  if (!parentViewForPrompt)
   {
     v30 = 0;
     goto LABEL_38;
   }
 
-  v11 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v12 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v10 _convertVisualAltitude:v12 toView:0.0];
-  [v11 _setVisualAltitude:?];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [parentViewForPrompt _convertVisualAltitude:prompt2 toView:0.0];
+  [prompt _setVisualAltitude:?];
 
-  v13 = [v8 rangeInDocument];
-  v14 = [v8 underlines];
+  rangeInDocument = [candidateCopy rangeInDocument];
+  underlines = [candidateCopy underlines];
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v15 = [v8 documentTextToReplace];
-    v16 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForInput:v15];
+    documentTextToReplace = [candidateCopy documentTextToReplace];
+    v16 = [(_UITextChoiceAccelerationAssistant *)self underlineRectsForInput:documentTextToReplace];
 
     if (![v16 count])
     {
-      v17 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v18 = [v17 textInRange:v13];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v18 = [_document textInRange:rangeInDocument];
 
       if (v18 && [v18 length])
       {
@@ -2609,107 +2609,107 @@ LABEL_7:
       }
     }
 
-    v14 = v16;
+    underlines = v16;
   }
 
-  if (!v14 || ![v14 count])
+  if (!underlines || ![underlines count])
   {
-    v20 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
 
-    if (v20)
+    if (interactionAssistant)
     {
-      v21 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-      v22 = [v21 activeSelectionController];
-      v23 = [v22 selection];
-      v24 = [v23 underlineRectsForRange:v13];
+      interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+      activeSelectionController = [interactionAssistant2 activeSelectionController];
+      selection = [activeSelectionController selection];
+      v24 = [selection underlineRectsForRange:rangeInDocument];
 
-      v14 = v24;
+      underlines = v24;
     }
   }
 
   if ([(_UITextChoiceAccelerationAssistant *)self usingCustomInteraction])
   {
-    v25 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-    if (v25)
+    if (textInputResponder)
     {
-      v26 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-      v27 = [v26 selectionRectsForRange:v13];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      v27 = [textInputResponder2 selectionRectsForRange:rangeInDocument];
 
-      v14 = v27;
+      underlines = v27;
     }
   }
 
-  if (!v14 || ![v14 count])
+  if (!underlines || ![underlines count])
   {
-    v28 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v29 = [v28 asyncInputDelegate];
-    if (v29)
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    asyncInputDelegate = [delegate asyncInputDelegate];
+    if (asyncInputDelegate)
     {
     }
 
     else
     {
-      v31 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v32 = [v31 webInputDelegate];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      webInputDelegate = [delegate2 webInputDelegate];
 
-      if (!v32)
+      if (!webInputDelegate)
       {
-        v35 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-        v36 = [v35 asyncWebKitInteractionDelegate];
-        v38 = [v36 webSelectionRects];
+        delegate3 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+        asyncWebKitInteractionDelegate = [delegate3 asyncWebKitInteractionDelegate];
+        webSelectionRects = [asyncWebKitInteractionDelegate webSelectionRects];
         goto LABEL_25;
       }
     }
 
-    v33 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v34 = [v33 inputDelegateManager];
-    v35 = [v34 selectedTextRange];
+    delegate4 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputDelegateManager = [delegate4 inputDelegateManager];
+    delegate3 = [inputDelegateManager selectedTextRange];
 
-    if (!v35)
+    if (!delegate3)
     {
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    v36 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v37 = [v36 inputDelegateManager];
-    v38 = [v37 selectionRectsForRange:v35];
+    asyncWebKitInteractionDelegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputDelegateManager2 = [asyncWebKitInteractionDelegate inputDelegateManager];
+    webSelectionRects = [inputDelegateManager2 selectionRectsForRange:delegate3];
 
-    v14 = v37;
+    underlines = inputDelegateManager2;
 LABEL_25:
 
-    v14 = v38;
+    underlines = webSelectionRects;
     goto LABEL_26;
   }
 
 LABEL_27:
-  if ([v14 count] && (objc_msgSend(v14, "firstObject"), (v39 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([underlines count] && (objc_msgSend(underlines, "firstObject"), (v39 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v40 = v39;
     v47 = MEMORY[0x1E69E9820];
     v48 = 3221225472;
     v49 = __96___UITextChoiceAccelerationAssistant_showPromptForReplacementCandidate_originalCandidate_delay___block_invoke;
     v50 = &unk_1E7109380;
-    v51 = v8;
-    v52 = v9;
-    v53 = self;
-    v41 = v13;
+    v51 = candidateCopy;
+    v52 = originalCandidateCopy;
+    selfCopy = self;
+    v41 = rangeInDocument;
     v54 = v41;
-    v55 = v10;
+    v55 = parentViewForPrompt;
     v42 = v40;
     v56 = v42;
     v43 = _Block_copy(&v47);
     [(_UITextChoiceAccelerationAssistant *)self cancelPromptDisplay:v47];
-    if (a5 <= 0.0)
+    if (delay <= 0.0)
     {
       v43[2](v43, 0);
     }
 
     else
     {
-      v44 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v43 block:a5];
+      v44 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v43 block:delay];
       [(_UITextChoiceAccelerationAssistant *)self setPromptDisplayTimer:v44];
     }
 
@@ -2718,9 +2718,9 @@ LABEL_27:
       [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v41];
     }
 
-    v45 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+    _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
     v30 = 1;
-    [v45 removeUnderlines:v14 animated:1];
+    [_underlineView removeUnderlines:underlines animated:1];
   }
 
   else
@@ -2732,29 +2732,29 @@ LABEL_38:
   return v30;
 }
 
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  textCopy = text;
+  positionCopy = position;
+  if (positionCopy)
   {
-    if ([v6 length])
+    if ([textCopy length])
     {
-      v8 = [v6 length];
-      v9 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v10 = [v9 positionFromPosition:v7 offset:-v8];
+      v8 = [textCopy length];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      _document4 = [_document positionFromPosition:positionCopy offset:-v8];
 
-      if (v10)
+      if (_document4)
       {
-        v11 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v12 = [v11 textRangeFromPosition:v10 toPosition:v7];
+        _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v12 = [_document2 textRangeFromPosition:_document4 toPosition:positionCopy];
 
         if (v12)
         {
-          v13 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v14 = [v13 textInRange:v12];
+          _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          v14 = [_document3 textInRange:v12];
 
-          if ([v14 isEqualToString:v6])
+          if ([v14 isEqualToString:textCopy])
           {
             v15 = v12;
           }
@@ -2779,8 +2779,8 @@ LABEL_38:
 
     else
     {
-      v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v15 = [v10 textRangeFromPosition:v7 toPosition:v7];
+      _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v15 = [_document4 textRangeFromPosition:positionCopy toPosition:positionCopy];
     }
   }
 
@@ -2792,21 +2792,21 @@ LABEL_38:
   return v15;
 }
 
-- (BOOL)showChoicesForAutocorrectionCandidate:(id)a3 range:(id)a4 delay:(double)a5
+- (BOOL)showChoicesForAutocorrectionCandidate:(id)candidate range:(id)range delay:(double)delay
 {
   v95 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  candidateCopy = candidate;
+  rangeCopy = range;
   p_candidate = &self->_candidate;
-  if (self->_candidate == v9)
+  if (self->_candidate == candidateCopy)
   {
-    v13 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    v14 = [v13 candidate];
-    if (v14 == v9)
+    prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    candidate = [prompt candidate];
+    if (candidate == candidateCopy)
     {
-      v15 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      v16 = [v15 superview];
-      v12 = v16 == 0;
+      prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      superview = [prompt2 superview];
+      v12 = superview == 0;
     }
 
     else
@@ -2820,9 +2820,9 @@ LABEL_38:
     v12 = 1;
   }
 
-  v17 = [(TIKeyboardCandidate *)v9 candidate];
+  candidate2 = [(TIKeyboardCandidate *)candidateCopy candidate];
 
-  if (!v17 || !v12)
+  if (!candidate2 || !v12)
   {
     [(_UITextChoiceAccelerationAssistant *)self dismissWithoutSelection];
 LABEL_27:
@@ -2830,53 +2830,53 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v10 isEmpty])
+  if ([rangeCopy isEmpty])
   {
-    v18 = [v10 start];
-    v19 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:v18];
+    start = [rangeCopy start];
+    v19 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:start];
 
     if (v19 && ([v19 isEmpty] & 1) == 0)
     {
-      v23 = v10;
-      v10 = v19;
+      v23 = rangeCopy;
+      rangeCopy = v19;
 LABEL_24:
 
       goto LABEL_25;
     }
 
-    v20 = v9;
-    v21 = [(TIKeyboardCandidate *)v9 candidate];
-    v22 = [v10 start];
-    v23 = [(_UITextChoiceAccelerationAssistant *)self _rangeOfText:v21 endingAtPosition:v22];
+    v20 = candidateCopy;
+    candidate3 = [(TIKeyboardCandidate *)candidateCopy candidate];
+    start2 = [rangeCopy start];
+    v23 = [(_UITextChoiceAccelerationAssistant *)self _rangeOfText:candidate3 endingAtPosition:start2];
 
     if (v23)
     {
       v24 = v23;
 
-      v10 = v24;
+      rangeCopy = v24;
     }
 
-    else if (!v10)
+    else if (!rangeCopy)
     {
-      v9 = v20;
+      candidateCopy = v20;
       goto LABEL_20;
     }
 
-    v9 = v20;
-    if (![v10 isEmpty])
+    candidateCopy = v20;
+    if (![rangeCopy isEmpty])
     {
       goto LABEL_24;
     }
 
 LABEL_20:
-    v25 = v10;
-    v26 = v9;
-    v86 = self;
-    v27 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v28 = [v27 tokenizer];
+    v25 = rangeCopy;
+    v26 = candidateCopy;
+    selfCopy = self;
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    tokenizer = [_document tokenizer];
     v29 = v25;
-    v30 = [v25 start];
-    v31 = [v28 rangeEnclosingPosition:v30 withGranularity:1 inDirection:1];
+    start3 = [v25 start];
+    v31 = [tokenizer rangeEnclosingPosition:start3 withGranularity:1 inDirection:1];
 
     if (v31 && ([v31 isEmpty] & 1) == 0)
     {
@@ -2885,36 +2885,36 @@ LABEL_20:
       v29 = v32;
     }
 
-    v9 = v26;
+    candidateCopy = v26;
 
-    v10 = v29;
-    self = v86;
+    rangeCopy = v29;
+    self = selfCopy;
     goto LABEL_24;
   }
 
 LABEL_25:
-  if (!v10 || ([v10 isEmpty] & 1) != 0)
+  if (!rangeCopy || ([rangeCopy isEmpty] & 1) != 0)
   {
     goto LABEL_27;
   }
 
-  objc_storeStrong(p_candidate, a3);
+  objc_storeStrong(p_candidate, candidate);
   if (+[UIKeyboard usesInputSystemUI])
   {
     [(_UITextChoiceAccelerationAssistant *)self updateSelectionHighlights];
-    v35 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    [v35 presentTextChoicePromptForRange:v10];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    [delegate presentTextChoicePromptForRange:rangeCopy];
 
-    v36 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v37 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v10];
-    v38 = [v36 objectForKey:v37];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    v37 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+    v38 = [underlinedWordData objectForKey:v37];
 
     if (v38)
     {
-      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v10];
-      v39 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-      v40 = [v38 underlines];
-      [v39 removeUnderlines:v40 animated:1];
+      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:rangeCopy];
+      _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+      underlines = [v38 underlines];
+      [_underlineView removeUnderlines:underlines animated:1];
     }
 
     [(_UITextChoiceAccelerationAssistant *)self cancelPromptDisplay];
@@ -2923,37 +2923,37 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v41 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v41 setCandidate:v9];
+  prompt3 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [prompt3 setCandidate:candidateCopy];
 
-  v42 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v43 = [v42 keyboardState];
-  v44 = [v43 secureCandidateRenderTraits];
-  [v44 singleCellHeight];
+  delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  keyboardState = [delegate2 keyboardState];
+  secureCandidateRenderTraits = [keyboardState secureCandidateRenderTraits];
+  [secureCandidateRenderTraits singleCellHeight];
   v46 = v45;
-  v47 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v47 setSecureCandidateHeight:v46];
+  prompt4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [prompt4 setSecureCandidateHeight:v46];
 
-  v48 = [MEMORY[0x1E695DF70] array];
-  v49 = [(TIKeyboardCandidate *)v9 candidate];
-  v50 = [(_UITextChoiceAccelerationAssistant *)self listForFinalString:v49];
+  array = [MEMORY[0x1E695DF70] array];
+  candidate4 = [(TIKeyboardCandidate *)candidateCopy candidate];
+  v50 = [(_UITextChoiceAccelerationAssistant *)self listForFinalString:candidate4];
 
   v51 = [(_UITextChoiceAccelerationAssistant *)self alternateCorrectionsForList:v50];
-  v52 = [(TIKeyboardCandidate *)v9 input];
-  v53 = [v52 length];
+  input = [(TIKeyboardCandidate *)candidateCopy input];
+  v53 = [input length];
 
   if (v53)
   {
-    v54 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v55 = [v54 textInRange:v10];
+    _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v55 = [_document2 textInRange:rangeCopy];
 
-    v56 = [(TIKeyboardCandidate *)v9 input];
-    v57 = [v56 isEqualToString:v55];
+    input2 = [(TIKeyboardCandidate *)candidateCopy input];
+    v57 = [input2 isEqualToString:v55];
 
     if (v57)
     {
-      v58 = [(TIKeyboardCandidate *)v9 candidate];
-      v59 = [v58 isEqualToString:v55];
+      candidate5 = [(TIKeyboardCandidate *)candidateCopy candidate];
+      v59 = [candidate5 isEqualToString:v55];
 
       if (v59)
       {
@@ -2963,16 +2963,16 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v61 = [(TIKeyboardCandidate *)v9 candidate];
+      candidate6 = [(TIKeyboardCandidate *)candidateCopy candidate];
     }
 
     else
     {
-      v61 = [(TIKeyboardCandidate *)v9 input];
+      candidate6 = [(TIKeyboardCandidate *)candidateCopy input];
     }
 
-    v62 = v61;
-    [v48 addObject:v61];
+    v62 = candidate6;
+    [array addObject:candidate6];
 
     v60 = 1;
     goto LABEL_41;
@@ -2984,9 +2984,9 @@ LABEL_42:
   if ([v51 count])
   {
     v82 = v50;
-    v83 = v10;
-    v87 = self;
-    v84 = v9;
+    v83 = rangeCopy;
+    selfCopy2 = self;
+    v84 = candidateCopy;
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
@@ -3010,16 +3010,16 @@ LABEL_42:
           v69 = *(*(&v89 + 1) + 8 * i);
           if ([v69 isAlternativeInput])
           {
-            v70 = [v69 candidate];
-            v93 = v70;
+            candidate7 = [v69 candidate];
+            v93 = candidate7;
             LOBYTE(v60) = 1;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
 
             v66 = v71;
           }
 
-          v72 = [v69 candidate];
-          [v48 addObject:v72];
+          candidate8 = [v69 candidate];
+          [array addObject:candidate8];
         }
 
         v65 = [v63 countByEnumeratingWithState:&v89 objects:v94 count:16];
@@ -3033,10 +3033,10 @@ LABEL_42:
       v66 = 0;
     }
 
-    v60 = v60 & ([v48 count] < 2);
-    v10 = v83;
-    v9 = v84;
-    self = v87;
+    v60 = v60 & ([array count] < 2);
+    rangeCopy = v83;
+    candidateCopy = v84;
+    self = selfCopy2;
     v50 = v82;
   }
 
@@ -3045,25 +3045,25 @@ LABEL_42:
     v66 = 0;
   }
 
-  v73 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v74 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v10];
-  v75 = [v73 objectForKey:v74];
+  underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v74 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+  v75 = [underlinedWordData2 objectForKey:v74];
 
   if (!v75)
   {
-    v76 = [(TIKeyboardCandidate *)v9 candidate];
-    [(TIKeyboardCandidate *)v9 input];
+    candidate9 = [(TIKeyboardCandidate *)candidateCopy candidate];
+    [(TIKeyboardCandidate *)candidateCopy input];
     v88 = v60;
     v77 = v50;
-    v79 = v78 = v9;
-    v75 = [_UIReplacementCandidate candidateForDocumentText:v76 revertText:v79 textChoices:0 range:v10 underlineStyle:1 promptStyle:0 promptButton:2];
+    v79 = v78 = candidateCopy;
+    v75 = [_UIReplacementCandidate candidateForDocumentText:candidate9 revertText:v79 textChoices:0 range:rangeCopy underlineStyle:1 promptStyle:0 promptButton:2];
 
-    v9 = v78;
+    candidateCopy = v78;
     v50 = v77;
     v60 = v88;
   }
 
-  if ([v48 count])
+  if ([array count])
   {
     v80 = 1;
   }
@@ -3085,32 +3085,32 @@ LABEL_42:
   }
 
   [v75 setPreferredPromptButton:v81];
-  if (v75 && [v48 count])
+  if (v75 && [array count])
   {
-    [v75 setTextChoices:v48];
+    [v75 setTextChoices:array];
   }
 
   [v75 setAlternativeRevertTexts:v66];
   [v75 setIsAutofillDoubleLineUI:0];
-  v33 = [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v75 delay:a5];
+  v33 = [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v75 delay:delay];
 
 LABEL_28:
   return v33;
 }
 
-- (BOOL)showChoicesForCandidates:(id)a3
+- (BOOL)showChoicesForCandidates:(id)candidates
 {
   v112 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  IsSmartReply = _candidateSourceIsSmartReply(v4);
-  v90 = v4;
+  candidatesCopy = candidates;
+  firstObject = [candidatesCopy firstObject];
+  IsSmartReply = _candidateSourceIsSmartReply(firstObject);
+  v90 = firstObject;
   if (IsSmartReply)
   {
     goto LABEL_2;
   }
 
-  if ([v4 slotID])
+  if ([firstObject slotID])
   {
     v6 = 0;
     v92 = 1;
@@ -3128,17 +3128,17 @@ LABEL_2:
     }
 
     v92 = 0;
-    v6 = [v4 customInfoType] != 32;
+    v6 = [firstObject customInfoType] != 32;
   }
 
 LABEL_7:
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v91 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
+  v91 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v8 = v3;
+  v8 = candidatesCopy;
   v9 = [v8 countByEnumeratingWithState:&v101 objects:v111 count:16];
   if (v9)
   {
@@ -3172,10 +3172,10 @@ LABEL_7:
         [v91 addObject:v14];
         v15 = v7;
         v16 = MEMORY[0x1E696AD98];
-        v17 = [v14 secureCandidateHash];
+        secureCandidateHash = [v14 secureCandidateHash];
         v18 = v16;
         v7 = v15;
-        v19 = [v18 numberWithUnsignedInteger:v17];
+        v19 = [v18 numberWithUnsignedInteger:secureCandidateHash];
         [v15 addObject:v19];
       }
 
@@ -3186,7 +3186,7 @@ LABEL_7:
     while (v10);
   }
 
-  if (![v91 count] || (v20 = self, -[NSArray isEqualToArray:](self->_secureCandidateHashes, "isEqualToArray:", v7)))
+  if (![v91 count] || (selfCopy = self, -[NSArray isEqualToArray:](self->_secureCandidateHashes, "isEqualToArray:", v7)))
   {
     v21 = 0;
     goto LABEL_62;
@@ -3194,12 +3194,12 @@ LABEL_7:
 
   v86 = v7;
   objc_storeStrong(&self->_secureCandidateHashes, v7);
-  v22 = [v8 firstObject];
-  v23 = [v22 input];
-  v24 = v23;
-  if (v23)
+  firstObject2 = [v8 firstObject];
+  input = [firstObject2 input];
+  v24 = input;
+  if (input)
   {
-    v25 = v23;
+    v25 = input;
   }
 
   else
@@ -3209,15 +3209,15 @@ LABEL_7:
 
   v26 = v25;
 
-  v27 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-  v28 = [v27 activeSelection];
-  v29 = [v28 selectedRange];
+  interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+  activeSelection = [interactionAssistant activeSelection];
+  selectedRange = [activeSelection selectedRange];
 
-  v85 = v29;
-  v30 = +[_UIReplacementCandidate candidateForDocumentText:revertText:candidateChoices:range:underlineStyle:promptStyle:promptButton:](_UIReplacementCandidate, "candidateForDocumentText:revertText:candidateChoices:range:underlineStyle:promptStyle:promptButton:", v26, &stru_1EFB14550, v91, v29, 0, 2, [v91 count] < 2);
-  v31 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-  v32 = [v31 activeSelection];
-  [v32 caretRect];
+  v85 = selectedRange;
+  v30 = +[_UIReplacementCandidate candidateForDocumentText:revertText:candidateChoices:range:underlineStyle:promptStyle:promptButton:](_UIReplacementCandidate, "candidateForDocumentText:revertText:candidateChoices:range:underlineStyle:promptStyle:promptButton:", v26, &stru_1EFB14550, v91, selectedRange, 0, 2, [v91 count] < 2);
+  interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+  activeSelection2 = [interactionAssistant2 activeSelection];
+  [activeSelection2 caretRect];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -3233,25 +3233,25 @@ LABEL_7:
   [v30 setUnderlines:v43];
 
   [v30 setIsAutofillDoubleLineUI:0];
-  v44 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
   v87 = v30;
-  [v44 setReplacement:v30];
+  [prompt setReplacement:v30];
 
-  v45 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v46 = [v45 keyboardState];
-  v47 = [v46 secureCandidateRenderTraits];
-  [v47 singleCellHeight];
+  delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  keyboardState = [delegate keyboardState];
+  secureCandidateRenderTraits = [keyboardState secureCandidateRenderTraits];
+  [secureCandidateRenderTraits singleCellHeight];
   v49 = v48;
-  v50 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v50 setSecureCandidateHeight:v49];
+  prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [prompt2 setSecureCandidateHeight:v49];
 
-  v51 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v52 = [v51 keyboardState];
-  v53 = [v52 secureCandidateRenderTraits];
+  delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  keyboardState2 = [delegate2 keyboardState];
+  secureCandidateRenderTraits2 = [keyboardState2 secureCandidateRenderTraits];
 
   if (v6)
   {
-    v83 = v53;
+    v83 = secureCandidateRenderTraits2;
     v84 = v26;
     v99 = 0u;
     v100 = 0u;
@@ -3272,9 +3272,9 @@ LABEL_7:
             objc_enumerationMutation(v54);
           }
 
-          v59 = [*(*(&v97 + 1) + 8 * j) textSuggestion];
-          v60 = [v59 headerText];
-          v61 = [v60 length];
+          textSuggestion = [*(*(&v97 + 1) + 8 * j) textSuggestion];
+          headerText = [textSuggestion headerText];
+          v61 = [headerText length];
 
           if (v61)
           {
@@ -3297,17 +3297,17 @@ LABEL_7:
 
   else
   {
-    v62 = v53;
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ![v53 isInlinePromptUI])
+    v62 = secureCandidateRenderTraits2;
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ![secureCandidateRenderTraits2 isInlinePromptUI])
     {
       goto LABEL_55;
     }
 
-    v83 = v53;
+    v83 = secureCandidateRenderTraits2;
     v84 = v26;
-    v63 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    [v63 secureCandidateHeight];
-    [v63 setSecureCandidateHeight:v64 * 0.5];
+    prompt3 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    [prompt3 secureCandidateHeight];
+    [prompt3 setSecureCandidateHeight:v64 * 0.5];
 
     v95 = 0u;
     v96 = 0u;
@@ -3350,9 +3350,9 @@ LABEL_7:
             v8 = v75;
             if (v77)
             {
-              v81 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-              [v81 secureCandidateHeight];
-              [v81 setSecureCandidateHeight:v82 + v82];
+              prompt4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+              [prompt4 secureCandidateHeight];
+              [prompt4 setSecureCandidateHeight:v82 + v82];
 
               [v87 setIsAutofillDoubleLineUI:1];
               goto LABEL_54;
@@ -3377,7 +3377,7 @@ LABEL_7:
 
 LABEL_54:
 
-  v20 = self;
+  selfCopy = self;
   v62 = v83;
   v26 = v84;
 LABEL_55:
@@ -3400,53 +3400,53 @@ LABEL_55:
     _os_log_impl(&dword_188A29000, v78, OS_LOG_TYPE_DEFAULT, "Text choice assistant is showing prompt for %@ candidates", buf, 0xCu);
   }
 
-  v21 = [(_UITextChoiceAccelerationAssistant *)v20 showPromptForReplacementCandidate:v87];
+  v21 = [(_UITextChoiceAccelerationAssistant *)selfCopy showPromptForReplacementCandidate:v87];
   v7 = v86;
 LABEL_62:
 
   return v21;
 }
 
-- (void)updatePromptLocation:(id)a3
+- (void)updatePromptLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v4 object];
+  locationCopy = location;
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  window = [prompt window];
+  windowScene = [window windowScene];
+  object = [locationCopy object];
 
-  if (v7 == v8)
+  if (windowScene == object)
   {
-    v10 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    v9 = [v10 replacement];
-    [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v9];
+    prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    replacement = [prompt2 replacement];
+    [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:replacement];
   }
 }
 
-- (BOOL)showChoicesForTextInRange:(id)a3
+- (BOOL)showChoicesForTextInRange:(id)range
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v6 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v4];
+  rangeCopy = range;
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v6 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [underlinedWordData objectForKey:v6];
 
   if (v7)
   {
     [v7 setIsAutofillDoubleLineUI:0];
-    v8 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    [v8 setCandidate:0];
+    prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    [prompt setCandidate:0];
 
-    v9 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    [v9 setReplacement:v7];
+    prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    [prompt2 setReplacement:v7];
 
-    v10 = [v7 textChoices];
+    textChoices = [v7 textChoices];
 
-    if (!v10)
+    if (!textChoices)
     {
-      v11 = [v7 revertText];
-      v15[0] = v11;
+      revertText = [v7 revertText];
+      v15[0] = revertText;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       [v7 setTextChoices:v12];
     }
@@ -3462,13 +3462,13 @@ LABEL_62:
   return v13;
 }
 
-- (BOOL)showDictationChoicesForTextInRange:(id)a3
+- (BOOL)showDictationChoicesForTextInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-  v6 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v4];
+  rangeCopy = range;
+  underlinedWordDataForDictation = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+  v6 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [underlinedWordDataForDictation objectForKey:v6];
 
   if (v7)
   {
@@ -3484,56 +3484,56 @@ LABEL_62:
   return v8;
 }
 
-- (BOOL)showChoicesForTextInRange:(id)a3 withReplacements:(id)a4 delay:(double)a5
+- (BOOL)showChoicesForTextInRange:(id)range withReplacements:(id)replacements delay:(double)delay
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 firstObject];
-  v11 = v10;
-  if (v10)
+  rangeCopy = range;
+  replacementsCopy = replacements;
+  firstObject = [replacementsCopy firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
-    v12 = [v10 originalText];
-    v13 = [v11 replacementText];
-    v14 = [_UIReplacementCandidate candidateForDocumentText:v12 revertText:v13 textChoices:0 range:v8 underlineStyle:0 promptStyle:1 promptButton:2];
+    originalText = [firstObject originalText];
+    replacementText = [v11 replacementText];
+    v14 = [_UIReplacementCandidate candidateForDocumentText:originalText revertText:replacementText textChoices:0 range:rangeCopy underlineStyle:0 promptStyle:1 promptButton:2];
 
-    if ([v9 count] >= 2)
+    if ([replacementsCopy count] >= 2)
     {
-      v15 = [MEMORY[0x1E695DF70] array];
-      v16 = [v11 replacementText];
+      array = [MEMORY[0x1E695DF70] array];
+      replacementText2 = [v11 replacementText];
 
-      if (v16)
+      if (replacementText2)
       {
-        v17 = [v11 replacementText];
-        [v15 addObject:v17];
+        replacementText3 = [v11 replacementText];
+        [array addObject:replacementText3];
       }
 
-      if ([v9 count] >= 2)
+      if ([replacementsCopy count] >= 2)
       {
         v18 = 1;
         do
         {
-          v19 = [v9 objectAtIndex:v18];
-          v20 = [v19 replacementText];
+          v19 = [replacementsCopy objectAtIndex:v18];
+          replacementText4 = [v19 replacementText];
 
-          if (v20)
+          if (replacementText4)
           {
-            v21 = [v19 replacementText];
-            [v15 addObject:v21];
+            replacementText5 = [v19 replacementText];
+            [array addObject:replacementText5];
           }
 
           ++v18;
         }
 
-        while (v18 < [v9 count]);
+        while (v18 < [replacementsCopy count]);
       }
 
-      [v14 setTextChoices:v15];
+      [v14 setTextChoices:array];
       [v14 setPreferredPromptButton:0];
       [v14 setPreferredPromptStyle:2];
     }
 
     [v14 setIsAutofillDoubleLineUI:0];
-    v22 = [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v14 delay:a5];
+    v22 = [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v14 delay:delay];
   }
 
   else
@@ -3544,10 +3544,10 @@ LABEL_62:
   return v22;
 }
 
-- (BOOL)showAutocorrectReplacementChoicesIfNeeded:(id)a3 forRange:(id)a4
+- (BOOL)showAutocorrectReplacementChoicesIfNeeded:(id)needed forRange:(id)range
 {
-  v6 = a4;
-  v7 = [UITextReplacementGeneratorForCorrections generatorForTextInput:a3 range:v6 options:32];
+  rangeCopy = range;
+  v7 = [UITextReplacementGeneratorForCorrections generatorForTextInput:needed range:rangeCopy options:32];
   v8 = v7;
   if (!v7)
   {
@@ -3559,11 +3559,11 @@ LABEL_62:
     [v8 forceAutocorrectionGuesses];
   }
 
-  v9 = [v8 autocorrectionRecord];
-  if (v9 && (v10 = v9, v11 = [v8 forceAutocorrectionGuesses], v10, v11))
+  autocorrectionRecord = [v8 autocorrectionRecord];
+  if (autocorrectionRecord && (v10 = autocorrectionRecord, v11 = [v8 forceAutocorrectionGuesses], v10, v11))
   {
-    v12 = [v8 autocorrectionRecord];
-    v13 = [(_UITextChoiceAccelerationAssistant *)self showChoicesForAutocorrectionCandidate:v12 range:v6 delay:0.2];
+    autocorrectionRecord2 = [v8 autocorrectionRecord];
+    v13 = [(_UITextChoiceAccelerationAssistant *)self showChoicesForAutocorrectionCandidate:autocorrectionRecord2 range:rangeCopy delay:0.2];
   }
 
   else
@@ -3577,8 +3577,8 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v12 = [v8 replacements];
-    v13 = [(_UITextChoiceAccelerationAssistant *)self showChoicesForTextInRange:v6 withReplacements:v12 delay:0.2];
+    autocorrectionRecord2 = [v8 replacements];
+    v13 = [(_UITextChoiceAccelerationAssistant *)self showChoicesForTextInRange:rangeCopy withReplacements:autocorrectionRecord2 delay:0.2];
   }
 
   v14 = v13;
@@ -3594,31 +3594,31 @@ LABEL_13:
   return v15;
 }
 
-- (void)updatePrompt:(id)a3 forReplacementCandidate:(id)a4
+- (void)updatePrompt:(id)prompt forReplacementCandidate:(id)candidate
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  promptCopy = prompt;
+  candidateCopy = candidate;
+  v6 = candidateCopy;
+  if (!candidateCopy)
   {
     v8 = @"arrow.uturn.backward";
     v9 = 1;
     goto LABEL_19;
   }
 
-  v7 = [v5 preferredPromptButton];
+  preferredPromptButton = [candidateCopy preferredPromptButton];
   v8 = @"arrow.uturn.backward";
   v9 = 1;
-  if (v7 <= 2)
+  if (preferredPromptButton <= 2)
   {
-    if (!v7)
+    if (!preferredPromptButton)
     {
       v9 = 0;
       v8 = &stru_1EFB14550;
       goto LABEL_18;
     }
 
-    if (v7 != 1)
+    if (preferredPromptButton != 1)
     {
       goto LABEL_18;
     }
@@ -3626,18 +3626,18 @@ LABEL_13:
 
   else
   {
-    if (v7 != 3)
+    if (preferredPromptButton != 3)
     {
-      if (v7 == 4)
+      if (preferredPromptButton == 4)
       {
         v9 = 2;
       }
 
-      else if (v7 == 5)
+      else if (preferredPromptButton == 5)
       {
-        if ([v11 labelNumber])
+        if ([promptCopy labelNumber])
         {
-          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu.circle.fill", objc_msgSend(v11, "labelNumber")];
+          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu.circle.fill", objc_msgSend(promptCopy, "labelNumber")];
         }
 
         else
@@ -3651,30 +3651,30 @@ LABEL_13:
       goto LABEL_18;
     }
 
-    v7 = 2;
+    preferredPromptButton = 2;
   }
 
   v8 = @"xmark";
-  v9 = v7;
+  v9 = preferredPromptButton;
 LABEL_18:
-  [v11 updateButtonForType:{objc_msgSend(v6, "preferredPromptButton")}];
+  [promptCopy updateButtonForType:{objc_msgSend(v6, "preferredPromptButton")}];
 LABEL_19:
-  v10 = [v6 revertText];
-  [v11 updateButtonName:v8 placement:v9 originalText:v10];
+  revertText = [v6 revertText];
+  [promptCopy updateButtonName:v8 placement:v9 originalText:revertText];
 }
 
-- (id)rangeForTextChoicesAtPosition:(id)a3
+- (id)rangeForTextChoicesAtPosition:(id)position
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  positionCopy = position;
+  if (positionCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    v6 = [v5 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    v6 = [underlinedRanges countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v6)
     {
       v8 = v6;
@@ -3687,22 +3687,22 @@ LABEL_19:
         {
           if (*v28 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(underlinedRanges);
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v11 start];
-          if (v12 && (v13 = v12, [v11 end], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+          start = [v11 start];
+          if (start && (v13 = start, [v11 end], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
           {
-            v15 = [(_UITextChoiceAccelerationAssistant *)self _document];
-            v16 = [v11 start];
-            v17 = [v15 comparePosition:v4 toPosition:v16];
+            _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+            start2 = [v11 start];
+            v17 = [_document comparePosition:positionCopy toPosition:start2];
 
             if (v17 != -1)
             {
-              v18 = [(_UITextChoiceAccelerationAssistant *)self _document];
+              _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
               v19 = [v11 end];
-              v20 = [v18 comparePosition:v4 toPosition:v19];
+              v20 = [_document2 comparePosition:positionCopy toPosition:v19];
 
               if (v20 != 1)
               {
@@ -3717,12 +3717,12 @@ LABEL_19:
             v21 = _UIKeyboardLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v22 = [v11 start];
+              start3 = [v11 start];
               v23 = [v11 end];
               *buf = v26;
               v32 = v11;
               v33 = 2112;
-              v34 = v22;
+              v34 = start3;
               v35 = 2112;
               v36 = v23;
               _os_log_error_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "Error: Underlined range %@: %@ -> %@", buf, 0x20u);
@@ -3730,7 +3730,7 @@ LABEL_19:
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v27 objects:v37 count:16];
+        v8 = [underlinedRanges countByEnumeratingWithState:&v27 objects:v37 count:16];
       }
 
       while (v8);
@@ -3750,26 +3750,26 @@ LABEL_19:
 
 - (unint64_t)numberOfDisambiguationOptions
 {
-  v2 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  v3 = [v2 count];
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  v3 = [dictationVoiceEditingPrompts count];
 
   return v3;
 }
 
-- (BOOL)canHandleDictationChoiceForPromptIndex:(int64_t)a3
+- (BOOL)canHandleDictationChoiceForPromptIndex:(int64_t)index
 {
-  v5 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  if ([v5 count])
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  if ([dictationVoiceEditingPrompts count])
   {
-    if (a3 == -1)
+    if (index == -1)
     {
       v7 = 1;
     }
 
     else
     {
-      v6 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-      v7 = [v6 count] > (a3 - 1);
+      dictationVoiceEditingPrompts2 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+      v7 = [dictationVoiceEditingPrompts2 count] > (index - 1);
     }
   }
 
@@ -3781,19 +3781,19 @@ LABEL_19:
   return v7;
 }
 
-- (void)updateDictationChoicesFromPromptIndex:(int64_t)a3 completionHandler:(id)a4
+- (void)updateDictationChoicesFromPromptIndex:(int64_t)index completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 == -1)
+  handlerCopy = handler;
+  if (index == -1)
   {
-    v11 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-    v12 = [v11 lastObject];
+    dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+    lastObject = [dictationVoiceEditingPrompts lastObject];
   }
 
   else
   {
-    v7 = a3 < 1;
-    v8 = a3 - 1;
+    v7 = index < 1;
+    v8 = index - 1;
     if (v7 || (-[_UITextChoiceAccelerationAssistant dictationVoiceEditingPrompts](self, "dictationVoiceEditingPrompts"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8 >= v10))
     {
       v13 = _UIKeyboardLog();
@@ -3806,32 +3806,32 @@ LABEL_19:
       goto LABEL_10;
     }
 
-    v11 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-    v12 = [v11 objectAtIndex:v8];
+    dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+    lastObject = [dictationVoiceEditingPrompts objectAtIndex:v8];
   }
 
-  v13 = v12;
+  v13 = lastObject;
 
   if (v13)
   {
-    [(_UITextChoiceAccelerationAssistant *)self updateDocumentFromPrompt:v13 completionHandler:v6];
+    [(_UITextChoiceAccelerationAssistant *)self updateDocumentFromPrompt:v13 completionHandler:handlerCopy];
 LABEL_10:
   }
 }
 
-- (void)updateDocumentFromPrompt:(id)a3 completionHandler:(id)a4
+- (void)updateDocumentFromPrompt:(id)prompt completionHandler:(id)handler
 {
   v148[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  promptCopy = prompt;
+  handlerCopy = handler;
   [(_UITextChoiceAccelerationAssistant *)self cancelPromptDisplay];
-  v8 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  [v8 handleTextChoiceBubbleTapped];
+  delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  [delegate handleTextChoiceBubbleTapped];
 
-  v9 = [v6 selectedCandidateChoice];
-  if (![v9 slotID])
+  selectedCandidateChoice = [promptCopy selectedCandidateChoice];
+  if (![selectedCandidateChoice slotID])
   {
-    v10 = [v6 selectedCandidateChoice];
+    selectedCandidateChoice2 = [promptCopy selectedCandidateChoice];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3840,8 +3840,8 @@ LABEL_10:
       goto LABEL_4;
     }
 
-    v16 = [v6 selectedCandidateChoice];
-    if (_candidateSourceIsSmartReply(v16))
+    selectedCandidateChoice3 = [promptCopy selectedCandidateChoice];
+    if (_candidateSourceIsSmartReply(selectedCandidateChoice3))
     {
       v17 = _UIKeyboardSmartReplyLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -3850,32 +3850,32 @@ LABEL_10:
         _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEFAULT, "Text choice assistant is accepting smart reply candidate", buf, 2u);
       }
 
-      v18 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      [v18 acceptPredictiveInput:v16];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      [delegate2 acceptPredictiveInput:selectedCandidateChoice3];
 LABEL_54:
 
       goto LABEL_5;
     }
 
-    v18 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-    if (([v18 isEmpty] & 1) == 0)
+    delegate2 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+    if (([delegate2 isEmpty] & 1) == 0)
     {
-      v19 = v18;
-      if (v18)
+      v19 = delegate2;
+      if (delegate2)
       {
 LABEL_21:
-        v26 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v27 = [v26 textInRange:v19];
+        _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v27 = [_document textInRange:v19];
 
-        if ([v6 shouldRejectCandidate])
+        if ([promptCopy shouldRejectCandidate])
         {
-          v28 = [v6 selectedChoice];
-          if ([v28 isEqualToString:@"autocorrection.cancel"])
+          selectedChoice = [promptCopy selectedChoice];
+          if ([selectedChoice isEqualToString:@"autocorrection.cancel"])
           {
 
 LABEL_25:
-            v29 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-            [v29 fadeAutocorrectPrompt];
+            delegate3 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+            [delegate3 fadeAutocorrectPrompt];
 
             +[UIKBAnalyticsDispatcher didRevisionBubbleTap];
 LABEL_51:
@@ -3883,19 +3883,19 @@ LABEL_51:
             if (!+[UIKeyboard isKeyboardProcess])
             {
               v109 = [v27 length];
-              v110 = [v6 selectedChoice];
-              v111 = v109 - [v110 length];
+              selectedChoice2 = [promptCopy selectedChoice];
+              v111 = v109 - [selectedChoice2 length];
 
-              v112 = [v19 start];
-              [(_UITextChoiceAccelerationAssistant *)self adjustRangesAfterPosition:v112 byOffset:v111];
+              start = [v19 start];
+              [(_UITextChoiceAccelerationAssistant *)self adjustRangesAfterPosition:start byOffset:v111];
             }
 
             goto LABEL_54;
           }
 
-          v30 = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
+          keepPromptActive = [(_UITextChoiceAccelerationAssistant *)self keepPromptActive];
 
-          if (v30)
+          if (keepPromptActive)
           {
             goto LABEL_25;
           }
@@ -3907,75 +3907,75 @@ LABEL_51:
         }
 
         v144 = v27;
-        if ([v6 promptStyle] != 3)
+        if ([promptCopy promptStyle] != 3)
         {
-          v50 = [v6 candidate];
-          v51 = [v50 candidate];
+          candidate = [promptCopy candidate];
+          v50Candidate = [candidate candidate];
 
-          v142 = v51;
-          if ([v51 length])
+          v142 = v50Candidate;
+          if ([v50Candidate length])
           {
-            v52 = [v18 end];
-            v53 = [(_UITextChoiceAccelerationAssistant *)self _rangeOfText:v51 endingAtPosition:v52];
+            v52 = [delegate2 end];
+            v53 = [(_UITextChoiceAccelerationAssistant *)self _rangeOfText:v50Candidate endingAtPosition:v52];
 
             if (v53 && ([v53 isEmpty] & 1) == 0)
             {
               v54 = v53;
 
-              v55 = v51;
+              v55 = v50Candidate;
               v144 = v55;
               v19 = v54;
             }
           }
 
-          v56 = [v6 selectedChoice];
-          v57 = [v6 selectedChoice];
-          v58 = [UITextReplacement replacementWithRange:v19 original:v144 replacement:v56 menuTitle:v57];
+          selectedChoice3 = [promptCopy selectedChoice];
+          selectedChoice4 = [promptCopy selectedChoice];
+          v58 = [UITextReplacement replacementWithRange:v19 original:v144 replacement:selectedChoice3 menuTitle:selectedChoice4];
 
           [(_UITextChoiceAccelerationAssistant *)self informAnalyticsOfUpcomingCandidateReplacement];
-          v59 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-          [v59 replaceText:v58];
+          delegate4 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+          [delegate4 replaceText:v58];
 
-          if ([v6 shouldRejectCandidate])
+          if ([promptCopy shouldRejectCandidate])
           {
-            v60 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-            v61 = [v6 candidate];
-            [v60 rejectAutocorrection:v61];
+            delegate5 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+            candidate2 = [promptCopy candidate];
+            [delegate5 rejectAutocorrection:candidate2];
           }
 
           [(_UITextChoiceAccelerationAssistant *)self informAnalyticsOfCompletedCandidateReplacement];
           v62 = +[UIDictationController activeInstance];
-          v63 = [v6 replacement];
-          v64 = [v63 voiceCommandTrackingUUID];
-          [v62 markDictationUndoEventWithVoiceCommandUUID:v64 viaTapOnRevertBubble:1];
+          replacement = [promptCopy replacement];
+          voiceCommandTrackingUUID = [replacement voiceCommandTrackingUUID];
+          [v62 markDictationUndoEventWithVoiceCommandUUID:voiceCommandTrackingUUID viaTapOnRevertBubble:1];
 
           goto LABEL_41;
         }
 
-        v31 = [v6 replacement];
-        v32 = [v31 rangeInDocument];
+        replacement2 = [promptCopy replacement];
+        rangeInDocument = [replacement2 rangeInDocument];
 
-        if (!v32)
+        if (!rangeInDocument)
         {
           v143 = +[UIDictationController activeInstance];
-          v65 = [v6 deltaRange];
+          deltaRange = [promptCopy deltaRange];
           v128 = v66;
-          v130 = v65;
-          v138 = [v6 replacement];
-          v140 = [v138 documentTextToReplace];
-          v136 = [v6 replacement];
-          v134 = [v136 textChoices];
-          v122 = [v134 objectAtIndexedSubscript:0];
-          v67 = [v6 originalSelectedRange];
+          v130 = deltaRange;
+          replacement3 = [promptCopy replacement];
+          documentTextToReplace = [replacement3 documentTextToReplace];
+          replacement4 = [promptCopy replacement];
+          textChoices = [replacement4 textChoices];
+          v122 = [textChoices objectAtIndexedSubscript:0];
+          originalSelectedRange = [promptCopy originalSelectedRange];
           v118 = v68;
-          v120 = v67;
-          v124 = [v6 replacement];
-          v114 = [v124 voiceCommandDisambiguationSelectedIndex];
-          v116 = [v6 replacement];
-          v69 = [v116 voiceCommandDisambiguationTargetCount];
-          v70 = [v6 replacement];
-          v71 = [v70 voiceCommandTrackingUUID];
-          [v143 performTextReplacementForWebKitWithDeltaRange:v130 targetText:v128 replacementText:v140 originalSelectedRange:v122 voiceCommandDisambiguationSelectedIndex:v120 voiceCommandDisambiguationTargetCount:v118 voiceCommandUUID:v114 completionHandler:{v69, v71, v7}];
+          v120 = originalSelectedRange;
+          replacement5 = [promptCopy replacement];
+          voiceCommandDisambiguationSelectedIndex = [replacement5 voiceCommandDisambiguationSelectedIndex];
+          replacement6 = [promptCopy replacement];
+          voiceCommandDisambiguationTargetCount = [replacement6 voiceCommandDisambiguationTargetCount];
+          replacement7 = [promptCopy replacement];
+          voiceCommandTrackingUUID2 = [replacement7 voiceCommandTrackingUUID];
+          [v143 performTextReplacementForWebKitWithDeltaRange:v130 targetText:v128 replacementText:documentTextToReplace originalSelectedRange:v122 voiceCommandDisambiguationSelectedIndex:v120 voiceCommandDisambiguationTargetCount:v118 voiceCommandUUID:voiceCommandDisambiguationSelectedIndex completionHandler:{voiceCommandDisambiguationTargetCount, voiceCommandTrackingUUID2, handlerCopy}];
 
           [(_UITextChoiceAccelerationAssistant *)self resetDictationChoicesAnimated:0];
 LABEL_41:
@@ -3983,83 +3983,83 @@ LABEL_41:
           goto LABEL_51;
         }
 
-        v33 = [v6 replacement];
-        v34 = [v33 textChoices];
-        v35 = [v34 objectAtIndexedSubscript:0];
+        replacement8 = [promptCopy replacement];
+        textChoices2 = [replacement8 textChoices];
+        v35 = [textChoices2 objectAtIndexedSubscript:0];
         v129 = [v35 isEqualToString:0x1EFB75A70];
 
-        v36 = [v6 replacement];
-        v37 = [v36 textChoices];
-        v38 = [v37 objectAtIndexedSubscript:0];
-        LODWORD(v34) = [v38 isEqualToString:0x1EFB75A90];
+        replacement9 = [promptCopy replacement];
+        textChoices3 = [replacement9 textChoices];
+        v38 = [textChoices3 objectAtIndexedSubscript:0];
+        LODWORD(textChoices2) = [v38 isEqualToString:0x1EFB75A90];
 
-        v39 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-        v40 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v141 = v39;
-        v135 = [v40 _nsrangeForTextRange:v39];
+        activeSelectedRange = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+        _document2 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v141 = activeSelectedRange;
+        v135 = [_document2 _nsrangeForTextRange:activeSelectedRange];
         v137 = v41;
 
-        v42 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v43 = [v6 replacement];
-        v44 = [v43 rangeInDocument];
-        v133 = [v42 _nsrangeForTextRange:v44];
+        _document3 = [(_UITextChoiceAccelerationAssistant *)self _document];
+        replacement10 = [promptCopy replacement];
+        rangeInDocument2 = [replacement10 rangeInDocument];
+        v133 = [_document3 _nsrangeForTextRange:rangeInDocument2];
         v127 = v45;
 
-        v46 = [v6 replacement];
-        v139 = [v46 voiceCommandDisambiguationSelectedIndex];
+        replacement11 = [promptCopy replacement];
+        voiceCommandDisambiguationSelectedIndex2 = [replacement11 voiceCommandDisambiguationSelectedIndex];
 
-        if (v34)
+        if (textChoices2)
         {
-          v47 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v48 = [v6 replacement];
-          v49 = [v48 rangeInDocument];
-          [v47 setSelectedTextRange:v49];
+          _document4 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          replacement12 = [promptCopy replacement];
+          rangeInDocument3 = [replacement12 rangeInDocument];
+          [_document4 setSelectedTextRange:rangeInDocument3];
         }
 
         else
         {
           if (!v129)
           {
-            v84 = [v6 replacement];
-            v85 = [v84 textChoices];
-            v132 = [v85 objectAtIndexedSubscript:0];
+            replacement13 = [promptCopy replacement];
+            textChoices4 = [replacement13 textChoices];
+            v132 = [textChoices4 objectAtIndexedSubscript:0];
 
-            v125 = [v6 replacement];
-            v86 = [v125 rangeInDocument];
-            v87 = [v6 replacement];
-            v88 = [v87 documentTextToReplace];
-            v89 = [UITextReplacement replacementWithRange:v86 original:v88 replacement:v132 menuTitle:v132 isDictationCommandReplacement:1];
+            replacement14 = [promptCopy replacement];
+            rangeInDocument4 = [replacement14 rangeInDocument];
+            replacement15 = [promptCopy replacement];
+            documentTextToReplace2 = [replacement15 documentTextToReplace];
+            v89 = [UITextReplacement replacementWithRange:rangeInDocument4 original:documentTextToReplace2 replacement:v132 menuTitle:v132 isDictationCommandReplacement:1];
 
-            v90 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+            delegate6 = [(_UITextChoiceAccelerationAssistant *)self delegate];
             v119 = v89;
-            [v90 replaceText:v89];
+            [delegate6 replaceText:v89];
 
-            v91 = [v6 replacement];
-            v92 = [v91 revertText];
+            replacement16 = [promptCopy replacement];
+            revertText = [replacement16 revertText];
 
-            v93 = [v6 replacement];
-            v94 = [v93 textChoices];
-            v123 = [v94 firstObject];
+            replacement17 = [promptCopy replacement];
+            textChoices5 = [replacement17 textChoices];
+            firstObject = [textChoices5 firstObject];
 
             v95 = [v132 length];
-            v121 = v92;
-            v96 = v95 - [v92 length];
-            v97 = [v6 replacement];
-            v98 = [v97 rangeInDocument];
+            v121 = revertText;
+            v96 = v95 - [revertText length];
+            replacement18 = [promptCopy replacement];
+            rangeInDocument5 = [replacement18 rangeInDocument];
 
-            v99 = [(_UITextChoiceAccelerationAssistant *)self _document];
-            v100 = [v98 end];
-            v126 = [v99 positionFromPosition:v100 offset:v96];
+            _document5 = [(_UITextChoiceAccelerationAssistant *)self _document];
+            v100 = [rangeInDocument5 end];
+            v126 = [_document5 positionFromPosition:v100 offset:v96];
 
-            v101 = [(_UITextChoiceAccelerationAssistant *)self _document];
-            v117 = v98;
-            v102 = [v98 start];
-            v103 = [v101 textRangeFromPosition:v102 toPosition:v126];
+            _document6 = [(_UITextChoiceAccelerationAssistant *)self _document];
+            v117 = rangeInDocument5;
+            start2 = [rangeInDocument5 start];
+            v103 = [_document6 textRangeFromPosition:start2 toPosition:v126];
 
             if (v103)
             {
-              v104 = [v6 replacement];
-              v115 = [v104 voiceCommandTrackingUUID];
+              replacement19 = [promptCopy replacement];
+              voiceCommandTrackingUUID3 = [replacement19 voiceCommandTrackingUUID];
 
               [(_UITextChoiceAccelerationAssistant *)self resetDictationChoicesAnimated:0];
               v148[0] = v121;
@@ -4068,58 +4068,58 @@ LABEL_41:
 
               v147 = v103;
               v106 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v147 count:1];
-              v146 = v123;
+              v146 = firstObject;
               v107 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v146 count:1];
-              [(_UITextChoiceAccelerationAssistant *)self decorateTextInRanges:v106 replacementTexts:v107 allowAutomaticReplacement:0 autoHide:1 voiceCommandTrackingUUID:v115 withCompletionHandler:v7];
+              [(_UITextChoiceAccelerationAssistant *)self decorateTextInRanges:v106 replacementTexts:v107 allowAutomaticReplacement:0 autoHide:1 voiceCommandTrackingUUID:voiceCommandTrackingUUID3 withCompletionHandler:handlerCopy];
             }
 
-            v108 = [(_UITextChoiceAccelerationAssistant *)self _document];
+            _document7 = [(_UITextChoiceAccelerationAssistant *)self _document];
             LOBYTE(v113) = v135 > v133;
-            -[_UITextChoiceAccelerationAssistant restoreInsertionPointPositionWithDocument:originalPositionRange:targetRange:payloadRange:contextBefore:](self, "restoreInsertionPointPositionWithDocument:originalPositionRange:targetRange:payloadRange:contextBefore:", v108, v135, v137, v133, v127, 0, [v132 length], v113);
+            -[_UITextChoiceAccelerationAssistant restoreInsertionPointPositionWithDocument:originalPositionRange:targetRange:payloadRange:contextBefore:](self, "restoreInsertionPointPositionWithDocument:originalPositionRange:targetRange:payloadRange:contextBefore:", _document7, v135, v137, v133, v127, 0, [v132 length], v113);
 
             goto LABEL_48;
           }
 
-          v72 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v73 = [v6 replacement];
-          v74 = [v73 rangeInDocument];
-          [v72 setSelectedTextRange:v74];
+          _document8 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          replacement20 = [promptCopy replacement];
+          rangeInDocument6 = [replacement20 rangeInDocument];
+          [_document8 setSelectedTextRange:rangeInDocument6];
 
-          v75 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v76 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-          v131 = [v75 _nsrangeForTextRange:v76];
+          _document9 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          activeSelectedRange2 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+          v131 = [_document9 _nsrangeForTextRange:activeSelectedRange2];
           v78 = v77;
 
-          v79 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-          [v79 deleteBackward];
+          delegate7 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+          [delegate7 deleteBackward];
 
-          v80 = [(_UITextChoiceAccelerationAssistant *)self _document];
-          v81 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-          v82 = [v80 _nsrangeForTextRange:v81];
+          _document10 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          activeSelectedRange3 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+          v82 = [_document10 _nsrangeForTextRange:activeSelectedRange3];
 
-          v83 = [(_UITextChoiceAccelerationAssistant *)self _document];
+          _document11 = [(_UITextChoiceAccelerationAssistant *)self _document];
           LOBYTE(v113) = v135 > v133;
-          [(_UITextChoiceAccelerationAssistant *)self restoreInsertionPointPositionWithDocument:v83 originalPositionRange:v135 targetRange:v137 payloadRange:0 contextBefore:v131 + v78 - v82, 0, 0, v113];
+          [(_UITextChoiceAccelerationAssistant *)self restoreInsertionPointPositionWithDocument:_document11 originalPositionRange:v135 targetRange:v137 payloadRange:0 contextBefore:v131 + v78 - v82, 0, 0, v113];
         }
 
         [(_UITextChoiceAccelerationAssistant *)self resetDictationChoicesAnimated:0];
 LABEL_48:
         v27 = v144;
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7, v139);
+          handlerCopy[2](handlerCopy, voiceCommandDisambiguationSelectedIndex2);
         }
 
         goto LABEL_51;
       }
     }
 
-    v20 = [v18 start];
-    v21 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:v20];
+    start3 = [delegate2 start];
+    v21 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:start3];
 
     if (!v21)
     {
-      v22 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      _document12 = [(_UITextChoiceAccelerationAssistant *)self _document];
       v23 = objc_opt_respondsToSelector();
 
       if ((v23 & 1) == 0)
@@ -4128,9 +4128,9 @@ LABEL_48:
         goto LABEL_19;
       }
 
-      v24 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v25 = [v18 end];
-      v21 = [v24 _rangeOfEnclosingWord:v25];
+      _document13 = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v25 = [delegate2 end];
+      v21 = [_document13 _rangeOfEnclosingWord:v25];
 
       if (!v21)
       {
@@ -4149,18 +4149,18 @@ LABEL_20:
     }
 
 LABEL_19:
-    v19 = v18;
+    v19 = delegate2;
     goto LABEL_20;
   }
 
 LABEL_4:
-  v12 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v13 = [v6 authenticationMessage];
-  [v12 _attemptAuthenticationWithMessage:v13];
+  delegate8 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  authenticationMessage = [promptCopy authenticationMessage];
+  [delegate8 _attemptAuthenticationWithMessage:authenticationMessage];
 
-  v14 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v15 = [v6 selectedCandidateChoice];
-  [v14 acceptPredictiveInput:v15];
+  delegate9 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  selectedCandidateChoice4 = [promptCopy selectedCandidateChoice];
+  [delegate9 acceptPredictiveInput:selectedCandidateChoice4];
 
 LABEL_5:
 }
@@ -4171,18 +4171,18 @@ LABEL_5:
   v3 = +[UIKBAnalyticsDispatcher sharedInstance];
   [v3 setNextCandidateReplacementSource:8];
 
-  v4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  v5 = [v4 buttonType];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  buttonType = [prompt buttonType];
 
-  v6 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v9 = v6;
+  delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  v9 = delegate;
   v7 = @"revisionBubble";
-  if (v5 == 1)
+  if (buttonType == 1)
   {
     v7 = @"reversionBubble";
   }
 
-  if (v5)
+  if (buttonType)
   {
     v8 = v7;
   }
@@ -4192,7 +4192,7 @@ LABEL_5:
     v8 = @"autocorrectionBubble";
   }
 
-  [v6 acceptingCandidateWithTrigger:v8];
+  [delegate acceptingCandidateWithTrigger:v8];
 }
 
 - (void)informAnalyticsOfCompletedCandidateReplacement
@@ -4203,128 +4203,128 @@ LABEL_5:
 
 - (id)activeSelectedRange
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+  interactionAssistant = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
 
-  if (v3)
+  if (interactionAssistant)
   {
-    v4 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-    v5 = [v4 activeSelection];
-    v6 = v5;
-    if (v5)
+    interactionAssistant2 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+    activeSelection = [interactionAssistant2 activeSelection];
+    v6 = activeSelection;
+    if (activeSelection)
     {
-      v7 = v5;
+      selection = activeSelection;
     }
 
     else
     {
-      v9 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
-      v10 = [v9 activeSelectionController];
-      v7 = [v10 selection];
+      interactionAssistant3 = [(_UITextChoiceAccelerationAssistant *)self interactionAssistant];
+      activeSelectionController = [interactionAssistant3 activeSelectionController];
+      selection = [activeSelectionController selection];
     }
 
-    v8 = [v7 selectedRange];
+    selectedRange = [selection selectedRange];
   }
 
   else
   {
-    v7 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v8 = [v7 selectedTextRange];
+    selection = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    selectedRange = [selection selectedTextRange];
   }
 
-  v11 = v8;
+  v11 = selectedRange;
 
   return v11;
 }
 
-- (void)removeWordForRange:(id)a3 animated:(BOOL)a4
+- (void)removeWordForRange:(id)range animated:(BOOL)animated
 {
-  v4 = a4;
-  v27 = a3;
+  animatedCopy = animated;
+  rangeCopy = range;
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v6 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v7 = [v6 textInRange:v27];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v7 = [_document textInRange:rangeCopy];
 
     v8 = [(_UITextChoiceAccelerationAssistant *)self candidateForFinalString:v7];
     if (v8)
     {
-      v9 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-      [v9 removeObjectForKey:v7];
+      savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+      [savedLists removeObjectForKey:v7];
     }
   }
 
-  v10 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  [v10 removeObject:v27];
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  [underlinedRanges removeObject:rangeCopy];
 
-  v11 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v27];
-  v12 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v13 = [v12 objectForKey:v11];
+  v11 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:rangeCopy];
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v13 = [underlinedWordData objectForKey:v11];
 
   if (v13)
   {
-    v14 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    [v14 removeObjectForKey:v11];
+    underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    [underlinedWordData2 removeObjectForKey:v11];
 
-    v15 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-    [v15 removeObjectForKey:v11];
+    underlinedWordDataForDictation = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+    [underlinedWordDataForDictation removeObjectForKey:v11];
 
-    v16 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-    v17 = [v13 documentTextToReplace];
-    [v16 removeObjectForKey:v17];
+    savedLists2 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+    documentTextToReplace = [v13 documentTextToReplace];
+    [savedLists2 removeObjectForKey:documentTextToReplace];
 
     if (!+[UIKeyboard isKeyboardProcess])
     {
-      v18 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-      v19 = [v13 underlines];
-      [v18 removeUnderlines:v19 animated:v4];
+      _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+      underlines = [v13 underlines];
+      [_underlineView removeUnderlines:underlines animated:animatedCopy];
 
       [(_UITextChoiceAccelerationAssistant *)self setNeedsUnderlineUpdate];
     }
   }
 
-  v20 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-  if (v20)
+  textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  if (textInputResponder)
   {
-    v21 = v20;
-    v22 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-    v23 = [v22 count];
+    v21 = textInputResponder;
+    underlinedRanges2 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+    v23 = [underlinedRanges2 count];
 
     if (!v23)
     {
-      v24 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-      v25 = [v24 textInputView];
-      v26 = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
-      [v25 removeInteraction:v26];
+      textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+      textInputView = [textInputResponder2 textInputView];
+      textChoiceInteraction = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
+      [textInputView removeInteraction:textChoiceInteraction];
     }
   }
 }
 
-- (void)removeAllUnderlinesAnimated:(BOOL)a3
+- (void)removeAllUnderlinesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self _existingUnderlineView];
-  [v5 clearAllUnderlinesAnimated:v3];
+  animatedCopy = animated;
+  _existingUnderlineView = [(_UITextChoiceAccelerationAssistant *)self _existingUnderlineView];
+  [_existingUnderlineView clearAllUnderlinesAnimated:animatedCopy];
 
-  v6 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-  [v6 removeAllObjects];
+  underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+  [underlinedRanges removeAllObjects];
 
-  v7 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  [v7 removeAllObjects];
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  [underlinedWordData removeAllObjects];
 
-  v8 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-  [v8 removeAllObjects];
+  underlinedWordDataForDictation = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+  [underlinedWordDataForDictation removeAllObjects];
 
-  v9 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-  [v9 removeAllObjects];
+  savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+  [savedLists removeAllObjects];
 
-  v10 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+  textInputResponder = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
 
-  if (v10)
+  if (textInputResponder)
   {
-    v13 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
-    v11 = [v13 textInputView];
-    v12 = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
-    [v11 removeInteraction:v12];
+    textInputResponder2 = [(_UITextChoiceAccelerationAssistant *)self textInputResponder];
+    textInputView = [textInputResponder2 textInputView];
+    textChoiceInteraction = [(_UITextChoiceAccelerationAssistant *)self textChoiceInteraction];
+    [textInputView removeInteraction:textChoiceInteraction];
   }
 }
 
@@ -4334,159 +4334,159 @@ LABEL_5:
   [(_UITextChoiceAccelerationAssistant *)self setKeepPromptActive:0];
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    [v3 dismissTextChoicePrompt];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    [delegate dismissTextChoicePrompt];
   }
 
-  v4 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-  [v4 removeAnimated:1];
+  prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+  [prompt removeAnimated:1];
 }
 
 - (void)removeActivePromptAndUnderline
 {
   [(_UITextChoiceAccelerationAssistant *)self cancelPromptDisplay];
-  v3 = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
-  v15 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-  if ([v15 isEmpty])
+  promptIsVisible = [(_UITextChoiceAccelerationAssistant *)self promptIsVisible];
+  activeSelectedRange = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+  if ([activeSelectedRange isEmpty])
   {
-    v4 = [v15 start];
-    v5 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:v4];
+    start = [activeSelectedRange start];
+    v5 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:start];
 
     if (v5 && ([v5 isEmpty] & 1) == 0)
     {
       v6 = v5;
 
-      v15 = v6;
+      activeSelectedRange = v6;
     }
   }
 
-  if (([v15 isEmpty] & 1) == 0)
+  if (([activeSelectedRange isEmpty] & 1) == 0)
   {
-    v7 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v8 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:v15];
-    v9 = [v7 objectForKey:v8];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    v8 = [(_UITextChoiceAccelerationAssistant *)self keyFromRange:activeSelectedRange];
+    v9 = [underlinedWordData objectForKey:v8];
 
     if (v9)
     {
-      v10 = [v9 underlines];
-      v11 = [v10 count];
+      underlines = [v9 underlines];
+      v11 = [underlines count];
 
       if (v11)
       {
-        v12 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-        v13 = [v9 underlines];
-        [v12 removeUnderlines:v13 animated:1];
+        _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+        underlines2 = [v9 underlines];
+        [_underlineView removeUnderlines:underlines2 animated:1];
       }
 
-      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:v15];
+      [(_UITextChoiceAccelerationAssistant *)self removeWordForRange:activeSelectedRange];
     }
   }
 
-  if (v3)
+  if (promptIsVisible)
   {
-    v14 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    [v14 removeAnimated:1];
+    prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    [prompt removeAnimated:1];
   }
 }
 
-- (void)addList:(id)a3 forCandidate:(id)a4
+- (void)addList:(id)list forCandidate:(id)candidate
 {
-  if (a3 && a4)
+  if (list && candidate)
   {
-    v6 = a3;
-    v8 = [a4 candidate];
-    v7 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-    [v7 setObject:v6 forKey:v8];
+    listCopy = list;
+    candidate = [candidate candidate];
+    savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+    [savedLists setObject:listCopy forKey:candidate];
   }
 }
 
-- (id)listForFinalString:(id)a3
+- (id)listForFinalString:(id)string
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-  v6 = [v5 objectForKey:v4];
+  stringCopy = string;
+  savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+  v6 = [savedLists objectForKey:stringCopy];
 
   return v6;
 }
 
-- (id)candidateForFinalString:(id)a3
+- (id)candidateForFinalString:(id)string
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-  v6 = [v5 objectForKey:v4];
+  stringCopy = string;
+  savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+  v6 = [savedLists objectForKey:stringCopy];
 
   v7 = [(_UITextChoiceAccelerationAssistant *)self autocorrectionForList:v6];
 
   return v7;
 }
 
-- (id)alternateCorrectionsForList:(id)a3
+- (id)alternateCorrectionsForList:(id)list
 {
-  v3 = [a3 corrections];
-  v4 = [v3 alternateCorrections];
+  corrections = [list corrections];
+  alternateCorrections = [corrections alternateCorrections];
 
-  return v4;
+  return alternateCorrections;
 }
 
-- (id)autocorrectionForList:(id)a3
+- (id)autocorrectionForList:(id)list
 {
-  v3 = [a3 corrections];
-  v4 = [v3 autocorrection];
+  corrections = [list corrections];
+  autocorrection = [corrections autocorrection];
 
-  return v4;
+  return autocorrection;
 }
 
-- (void)shouldShowPromptForWebKitText:(id)a3 atPosition:(id)a4 completionHandler:(id)a5
+- (void)shouldShowPromptForWebKitText:(id)text atPosition:(id)position completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v12 = [v11 objectForKey:v8];
+  textCopy = text;
+  positionCopy = position;
+  handlerCopy = handler;
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v12 = [underlinedWordData objectForKey:textCopy];
 
   if (v12)
   {
-    v10[2](v10, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
-    v13 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v14 = [v13 inputDelegateManager];
-    v15 = [v14 asyncCapableInputDelegate];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputDelegateManager = [delegate inputDelegateManager];
+    asyncCapableInputDelegate = [inputDelegateManager asyncCapableInputDelegate];
 
-    if (v15)
+    if (asyncCapableInputDelegate)
     {
       v16 = objc_opt_new();
       [v16 setSurroundingGranularity:0];
       [v16 setFlags:197];
-      v17 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v18 = [v17 inputDelegateManager];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputDelegateManager2 = [delegate2 inputDelegateManager];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __97___UITextChoiceAccelerationAssistant_shouldShowPromptForWebKitText_atPosition_completionHandler___block_invoke;
       v19[3] = &unk_1E71093A8;
       v19[4] = self;
-      v20 = v8;
-      v21 = v9;
-      v22 = v10;
-      [v18 requestDocumentContext:v16 completionHandler:v19];
+      v20 = textCopy;
+      v21 = positionCopy;
+      v22 = handlerCopy;
+      [inputDelegateManager2 requestDocumentContext:v16 completionHandler:v19];
     }
 
     else
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (void)fullAutocorrectionForWord:(id)a3 atPosition:(id)a4 completionHandler:(id)a5
+- (void)fullAutocorrectionForWord:(id)word atPosition:(id)position completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v12 = [v11 objectForKey:v8];
+  wordCopy = word;
+  positionCopy = position;
+  handlerCopy = handler;
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v12 = [underlinedWordData objectForKey:wordCopy];
 
   if (!v12)
   {
@@ -4495,30 +4495,30 @@ LABEL_5:
     aBlock[2] = __93___UITextChoiceAccelerationAssistant_fullAutocorrectionForWord_atPosition_completionHandler___block_invoke;
     aBlock[3] = &unk_1E71093A8;
     aBlock[4] = self;
-    v26 = v8;
-    v27 = v9;
-    v13 = v10;
+    v26 = wordCopy;
+    v27 = positionCopy;
+    v13 = handlerCopy;
     v28 = v13;
     v24 = _Block_copy(aBlock);
     v14 = objc_opt_new();
     [v14 setSurroundingGranularity:0];
     [v14 setFlags:197];
-    v15 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v16 = [v15 inputDelegateManager];
-    v17 = [v16 asyncCapableInputDelegate];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputDelegateManager = [delegate inputDelegateManager];
+    asyncCapableInputDelegate = [inputDelegateManager asyncCapableInputDelegate];
 
-    if (v17)
+    if (asyncCapableInputDelegate)
     {
-      v18 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v19 = [v18 inputDelegateManager];
-      v20 = [v19 asyncCapableInputDelegate];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputDelegateManager2 = [delegate2 inputDelegateManager];
+      asyncCapableInputDelegate2 = [inputDelegateManager2 asyncCapableInputDelegate];
 
-      v21 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v22 = [v21 inputDelegateManager];
+      delegate3 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputDelegateManager3 = [delegate3 inputDelegateManager];
       v23 = v24;
-      [v22 requestDocumentContext:v14 completionHandler:v24];
+      [inputDelegateManager3 requestDocumentContext:v14 completionHandler:v24];
 
-      if (v20)
+      if (asyncCapableInputDelegate2)
       {
 LABEL_8:
 
@@ -4533,35 +4533,35 @@ LABEL_8:
     }
 
     (*(v13 + 2))(v13, 0);
-    v20 = 0;
+    asyncCapableInputDelegate2 = 0;
     goto LABEL_8;
   }
 
-  (*(v10 + 2))(v10, v8);
+  (*(handlerCopy + 2))(handlerCopy, wordCopy);
 LABEL_9:
 }
 
-- (id)rangeOfAutocorrectionForString:(id)a3 atPosition:(id)a4 inDocument:(id)a5
+- (id)rangeOfAutocorrectionForString:(id)string atPosition:(id)position inDocument:(id)document
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 autocorrectedRanges];
-  if (v9)
+  positionCopy = position;
+  documentCopy = document;
+  autocorrectedRanges = [documentCopy autocorrectedRanges];
+  if (autocorrectedRanges)
   {
-    v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    [v10 caretRectForPosition:v7];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    [_document caretRectForPosition:positionCopy];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [v8 rangeContainedWithinRect:{v12, v14, v16, v18}];
+    v19 = [documentCopy rangeContainedWithinRect:{v12, v14, v16, v18}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = v9;
+    v20 = autocorrectedRanges;
     v21 = [v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v21)
     {
@@ -4576,10 +4576,10 @@ LABEL_9:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v30 + 1) + 8 * i) rangeValue];
-          if (v19 >= v25 && v19 - v25 < v26)
+          rangeValue = [*(*(&v30 + 1) + 8 * i) rangeValue];
+          if (v19 >= rangeValue && v19 - rangeValue < v26)
           {
-            v28 = [MEMORY[0x1E696B098] valueWithRange:{v25, v26}];
+            v28 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v26}];
             goto LABEL_15;
           }
         }
@@ -4602,40 +4602,40 @@ LABEL_15:
   return v28;
 }
 
-- (void)trackUnderlineForWebKitCandidate:(id)a3
+- (void)trackUnderlineForWebKitCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 candidate];
+  candidateCopy = candidate;
+  candidate = [candidateCopy candidate];
 
-  if (v5)
+  if (candidate)
   {
-    v6 = [v4 candidate];
-    v7 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:v6];
+    candidate2 = [candidateCopy candidate];
+    v7 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:candidate2];
 
     if (v7)
     {
       if (([v7 isEmpty] & 1) == 0)
       {
-        v8 = [v7 start];
-        if (v8)
+        start = [v7 start];
+        if (start)
         {
-          v9 = v8;
+          v9 = start;
           v10 = [v7 end];
 
           if (v10)
           {
-            v11 = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
-            [v11 addObject:v7];
+            underlinedRanges = [(_UITextChoiceAccelerationAssistant *)self underlinedRanges];
+            [underlinedRanges addObject:v7];
           }
         }
       }
     }
 
-    v12 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:v4 range:v7];
+    v12 = [_UIReplacementCandidate candidateForAutocorrectionCandidate:candidateCopy range:v7];
     [v12 setUnderlineStyle:0];
-    v13 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v14 = [v4 candidate];
-    [v13 setObject:v12 forKey:v14];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    candidate3 = [candidateCopy candidate];
+    [underlinedWordData setObject:v12 forKey:candidate3];
   }
 
   else
@@ -4649,35 +4649,35 @@ LABEL_15:
   }
 }
 
-- (BOOL)presentTextChoicePromptForText:(id)a3 delay:(double)a4 autocorrectionRects:(id)a5
+- (BOOL)presentTextChoicePromptForText:(id)text delay:(double)delay autocorrectionRects:(id)rects
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-  v11 = [v10 objectForKey:v9];
+  rectsCopy = rects;
+  textCopy = text;
+  underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+  v11 = [underlinedWordData objectForKey:textCopy];
 
   if (v11 && (+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess") || ![v11 underlineStyle]))
   {
-    v12 = [(_UITextChoiceAccelerationAssistant *)self savedLists];
-    v13 = [v11 documentTextToReplace];
-    v14 = [v12 objectForKey:v13];
+    savedLists = [(_UITextChoiceAccelerationAssistant *)self savedLists];
+    documentTextToReplace = [v11 documentTextToReplace];
+    v14 = [savedLists objectForKey:documentTextToReplace];
 
     if (v14)
     {
-      v15 = [v14 corrections];
-      v16 = [v15 autocorrection];
+      corrections = [v14 corrections];
+      autocorrection = [corrections autocorrection];
     }
 
     else
     {
-      v16 = 0;
+      autocorrection = 0;
     }
 
-    if ([v8 count])
+    if ([rectsCopy count])
     {
-      v17 = [v8 firstObject];
-      [v17 CGRectValue];
+      firstObject = [rectsCopy firstObject];
+      [firstObject CGRectValue];
       v24 = *(MEMORY[0x1E695EFD0] + 16);
       v26 = *MEMORY[0x1E695EFD0];
       v25 = v26;
@@ -4686,8 +4686,8 @@ LABEL_15:
       v23 = v28;
       v18 = [_UITextUnderlineRect underlineRectWithRect:"underlineRectWithRect:offset:transform:" offset:&v26 transform:?];
 
-      v19 = [v8 lastObject];
-      [v19 CGRectValue];
+      lastObject = [rectsCopy lastObject];
+      [lastObject CGRectValue];
       v26 = v25;
       v27 = v24;
       v28 = v23;
@@ -4700,27 +4700,27 @@ LABEL_15:
     }
 
     [v11 setIsAutofillDoubleLineUI:0];
-    [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v11 originalCandidate:v16 delay:a4];
+    [(_UITextChoiceAccelerationAssistant *)self showPromptForReplacementCandidate:v11 originalCandidate:autocorrection delay:delay];
   }
 
   return v11 != 0;
 }
 
-- (void)updateReplacements:(id)a3 forCandidate:(id)a4
+- (void)updateReplacements:(id)replacements forCandidate:(id)candidate
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [v23 firstObject];
-  if (v7)
+  replacementsCopy = replacements;
+  candidateCopy = candidate;
+  firstObject = [replacementsCopy firstObject];
+  if (firstObject)
   {
-    v8 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v9 = [v8 objectForKey:v6];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    v9 = [underlinedWordData objectForKey:candidateCopy];
 
-    v10 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:v6];
+    v10 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:candidateCopy];
     if (!v9)
     {
-      v11 = [v23 count];
-      v12 = [v7 replacementText];
+      v11 = [replacementsCopy count];
+      replacementText = [firstObject replacementText];
       if (v11 <= 1)
       {
         v13 = 1;
@@ -4731,40 +4731,40 @@ LABEL_15:
         v13 = 2;
       }
 
-      v9 = [_UIReplacementCandidate candidateForDocumentText:v6 revertText:v12 textChoices:0 range:v10 underlineStyle:0 promptStyle:v13 promptButton:2 * (v11 < 2)];
+      v9 = [_UIReplacementCandidate candidateForDocumentText:candidateCopy revertText:replacementText textChoices:0 range:v10 underlineStyle:0 promptStyle:v13 promptButton:2 * (v11 < 2)];
     }
 
-    if ([v23 count])
+    if ([replacementsCopy count])
     {
-      v14 = [MEMORY[0x1E695DF70] array];
-      if ([v23 count])
+      array = [MEMORY[0x1E695DF70] array];
+      if ([replacementsCopy count])
       {
         v15 = 0;
         do
         {
-          v16 = [v23 objectAtIndex:v15];
-          v17 = [v16 replacementText];
+          v16 = [replacementsCopy objectAtIndex:v15];
+          replacementText2 = [v16 replacementText];
 
-          if (v17)
+          if (replacementText2)
           {
-            v18 = [v16 replacementText];
-            [v14 addObject:v18];
+            replacementText3 = [v16 replacementText];
+            [array addObject:replacementText3];
           }
 
           ++v15;
         }
 
-        while (v15 < [v23 count]);
+        while (v15 < [replacementsCopy count]);
       }
 
-      if ([v14 count])
+      if ([array count])
       {
-        [v9 setTextChoices:v14];
+        [v9 setTextChoices:array];
       }
     }
 
-    v19 = [v9 textChoices];
-    v20 = [v19 count];
+    textChoices = [v9 textChoices];
+    v20 = [textChoices count];
 
     if (v20 <= 1)
     {
@@ -4778,47 +4778,47 @@ LABEL_15:
 
     [v9 setPreferredPromptStyle:v21];
     [v9 setPreferredPromptButton:2 * (v20 < 2)];
-    v22 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    [v22 setObject:v9 forKey:v6];
+    underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    [underlinedWordData2 setObject:v9 forKey:candidateCopy];
   }
 }
 
-- (void)updateReplacementsForSavedCandidate:(id)a3
+- (void)updateReplacementsForSavedCandidate:(id)candidate
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(_UITextChoiceAccelerationAssistant *)self listForFinalString:v4];
+  candidateCopy = candidate;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(_UITextChoiceAccelerationAssistant *)self listForFinalString:candidateCopy];
   v7 = [(_UITextChoiceAccelerationAssistant *)self alternateCorrectionsForList:v6];
   v8 = [(_UITextChoiceAccelerationAssistant *)self autocorrectionForList:v6];
-  v9 = [v8 input];
-  v10 = [v9 length];
+  input = [v8 input];
+  v10 = [input length];
 
   if (v10)
   {
-    v11 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-    v12 = [v11 inputDelegateManager];
-    v13 = [v12 asyncCapableInputDelegate];
+    delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+    inputDelegateManager = [delegate inputDelegateManager];
+    asyncCapableInputDelegate = [inputDelegateManager asyncCapableInputDelegate];
 
-    if (v13)
+    if (asyncCapableInputDelegate)
     {
-      v14 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-      v15 = [v14 inputDelegateManager];
-      v16 = [v15 selectedText];
+      delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+      inputDelegateManager2 = [delegate2 inputDelegateManager];
+      selectedText = [inputDelegateManager2 selectedText];
     }
 
     else
     {
-      v16 = 0;
+      selectedText = 0;
     }
 
-    v17 = [v8 input];
-    v18 = [v17 isEqualToString:v16];
+    input2 = [v8 input];
+    v18 = [input2 isEqualToString:selectedText];
 
     if (v18)
     {
-      v19 = [v8 candidate];
-      v20 = [v19 isEqualToString:v16];
+      candidate = [v8 candidate];
+      v20 = [candidate isEqualToString:selectedText];
 
       if (v20)
       {
@@ -4827,16 +4827,16 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v21 = [v8 candidate];
+      candidate2 = [v8 candidate];
     }
 
     else
     {
-      v21 = [v8 input];
+      candidate2 = [v8 input];
     }
 
-    v22 = v21;
-    [v5 addObject:v21];
+    v22 = candidate2;
+    [array addObject:candidate2];
 
     goto LABEL_10;
   }
@@ -4845,7 +4845,7 @@ LABEL_11:
   if ([v7 count])
   {
     v44 = v8;
-    v23 = v4;
+    v23 = candidateCopy;
     v24 = v6;
     v48 = 0u;
     v49 = 0u;
@@ -4867,8 +4867,8 @@ LABEL_11:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v46 + 1) + 8 * i) candidate];
-          [v5 addObject:v31];
+          candidate3 = [*(*(&v46 + 1) + 8 * i) candidate];
+          [array addObject:candidate3];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -4879,20 +4879,20 @@ LABEL_11:
 
     v7 = v25;
     v6 = v24;
-    v4 = v23;
+    candidateCopy = v23;
     v8 = v44;
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v32 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    v33 = [v32 objectForKey:v4];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    v33 = [underlinedWordData objectForKey:candidateCopy];
 
     if (!v33)
     {
-      v34 = [v5 count];
-      v35 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:v4];
-      [v5 firstObject];
+      v34 = [array count];
+      v35 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:candidateCopy];
+      [array firstObject];
       v45 = v6;
       v37 = v36 = v7;
       if (v34 <= 1)
@@ -4905,17 +4905,17 @@ LABEL_11:
         v38 = 2;
       }
 
-      v33 = [_UIReplacementCandidate candidateForDocumentText:v4 revertText:v37 textChoices:0 range:v35 underlineStyle:0 promptStyle:v38 promptButton:2 * (v34 < 2)];
+      v33 = [_UIReplacementCandidate candidateForDocumentText:candidateCopy revertText:v37 textChoices:0 range:v35 underlineStyle:0 promptStyle:v38 promptButton:2 * (v34 < 2)];
 
       v7 = v36;
       v6 = v45;
     }
 
-    v39 = [v5 copy];
+    v39 = [array copy];
     [v33 setTextChoices:v39];
 
-    v40 = [v33 textChoices];
-    v41 = [v40 count];
+    textChoices = [v33 textChoices];
+    v41 = [textChoices count];
 
     if (v41 <= 1)
     {
@@ -4929,44 +4929,44 @@ LABEL_11:
 
     [v33 setPreferredPromptStyle:v42];
     [v33 setPreferredPromptButton:2 * (v41 < 2)];
-    v43 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    [v43 setObject:v33 forKey:v4];
+    underlinedWordData2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    [underlinedWordData2 setObject:v33 forKey:candidateCopy];
   }
 }
 
-- (void)restoreInsertionPointPositionWithDocument:(id)a3 originalPositionRange:(_NSRange)a4 targetRange:(_NSRange)a5 payloadRange:(_NSRange)a6 contextBefore:(BOOL)a7
+- (void)restoreInsertionPointPositionWithDocument:(id)document originalPositionRange:(_NSRange)range targetRange:(_NSRange)targetRange payloadRange:(_NSRange)payloadRange contextBefore:(BOOL)before
 {
-  length = a5.length;
-  v8 = a4.length;
-  location = a4.location;
-  v12 = a3;
-  v15 = v12;
-  if (a7)
+  length = targetRange.length;
+  v8 = range.length;
+  location = range.location;
+  documentCopy = document;
+  v15 = documentCopy;
+  if (before)
   {
-    location += a6.length - length;
+    location += payloadRange.length - length;
     if (location == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4505 description:{@"restoreInsertionPointPositionWithDocument to an invalid range (%lu)", 0x7FFFFFFFFFFFFFFFLL}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4505 description:{@"restoreInsertionPointPositionWithDocument to an invalid range (%lu)", 0x7FFFFFFFFFFFFFFFLL}];
 
-      v12 = v15;
+      documentCopy = v15;
     }
   }
 
-  v13 = [v12 _textRangeFromNSRange:{location, v8}];
+  v13 = [documentCopy _textRangeFromNSRange:{location, v8}];
   [v15 setSelectedTextRange:v13];
 }
 
-- (void)resetDictationChoicesAnimated:(BOOL)a3
+- (void)resetDictationChoicesAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  v6 = [dictationVoiceEditingPrompts countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4978,35 +4978,35 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dictationVoiceEditingPrompts);
         }
 
-        [*(*(&v15 + 1) + 8 * v9++) removeAnimated:v3 withDuration:1.0];
+        [*(*(&v15 + 1) + 8 * v9++) removeAnimated:animatedCopy withDuration:1.0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [dictationVoiceEditingPrompts countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  v11 = [v10 count];
+  dictationVoiceEditingPrompts2 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  v11 = [dictationVoiceEditingPrompts2 count];
 
   if (v11)
   {
     [(_UITextChoiceAccelerationAssistant *)self releaseSelectionGrabberAssertion];
-    v12 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-    [v12 removeAllObjects];
+    dictationVoiceEditingPrompts3 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+    [dictationVoiceEditingPrompts3 removeAllObjects];
   }
 
-  v13 = [(_UITextChoiceAccelerationAssistant *)self dictationDisambiguationUIAssertion];
+  dictationDisambiguationUIAssertion = [(_UITextChoiceAccelerationAssistant *)self dictationDisambiguationUIAssertion];
 
-  if (v13)
+  if (dictationDisambiguationUIAssertion)
   {
-    v14 = [(_UITextChoiceAccelerationAssistant *)self dictationDisambiguationUIAssertion];
-    [v14 _invalidate];
+    dictationDisambiguationUIAssertion2 = [(_UITextChoiceAccelerationAssistant *)self dictationDisambiguationUIAssertion];
+    [dictationDisambiguationUIAssertion2 _invalidate];
 
     [(_UITextChoiceAccelerationAssistant *)self setDictationDisambiguationUIAssertion:0];
   }
@@ -5015,8 +5015,8 @@ LABEL_11:
 - (void)resetDictationUnderlines
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-  v4 = [v3 count];
+  underlinedWordDataForDictation = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+  v4 = [underlinedWordDataForDictation count];
 
   if (v4)
   {
@@ -5024,10 +5024,10 @@ LABEL_11:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-    v6 = [v5 allValues];
+    underlinedWordDataForDictation2 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+    allValues = [underlinedWordDataForDictation2 allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -5039,32 +5039,32 @@ LABEL_11:
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v18 + 1) + 8 * v10);
-          v12 = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
-          v13 = [v11 underlines];
-          [v12 removeUnderlines:v13 animated:1];
+          _underlineView = [(_UITextChoiceAccelerationAssistant *)self _underlineView];
+          underlines = [v11 underlines];
+          [_underlineView removeUnderlines:underlines animated:1];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
 
-    v14 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-    v15 = [v14 allKeys];
+    underlinedWordDataForDictation3 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+    allKeys = [underlinedWordDataForDictation3 allKeys];
 
-    v16 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
-    [v16 removeObjectsForKeys:v15];
+    underlinedWordData = [(_UITextChoiceAccelerationAssistant *)self underlinedWordData];
+    [underlinedWordData removeObjectsForKeys:allKeys];
 
-    v17 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
-    [v17 removeAllObjects];
+    underlinedWordDataForDictation4 = [(_UITextChoiceAccelerationAssistant *)self underlinedWordDataForDictation];
+    [underlinedWordDataForDictation4 removeAllObjects];
 
     if (!+[UIKeyboard isKeyboardProcess])
     {
@@ -5075,75 +5075,75 @@ LABEL_11:
 
 - (void)cancelPendingDictationPromptDisplay
 {
-  v3 = [(_UITextChoiceAccelerationAssistant *)self dictationUnderlineDisplayTimer];
-  [v3 invalidate];
+  dictationUnderlineDisplayTimer = [(_UITextChoiceAccelerationAssistant *)self dictationUnderlineDisplayTimer];
+  [dictationUnderlineDisplayTimer invalidate];
 
   [(_UITextChoiceAccelerationAssistant *)self setDictationUnderlineDisplayTimer:0];
-  v4 = [(_UITextChoiceAccelerationAssistant *)self dictationPromptAutoUpdateTimer];
-  [v4 invalidate];
+  dictationPromptAutoUpdateTimer = [(_UITextChoiceAccelerationAssistant *)self dictationPromptAutoUpdateTimer];
+  [dictationPromptAutoUpdateTimer invalidate];
 
   [(_UITextChoiceAccelerationAssistant *)self setDictationPromptAutoUpdateTimer:0];
 }
 
-- (void)decorateTextInRanges:(id)a3 replacementTexts:(id)a4 allowAutomaticReplacement:(BOOL)a5 autoHide:(BOOL)a6 voiceCommandTrackingUUID:(id)a7 withCompletionHandler:(id)a8
+- (void)decorateTextInRanges:(id)ranges replacementTexts:(id)texts allowAutomaticReplacement:(BOOL)replacement autoHide:(BOOL)hide voiceCommandTrackingUUID:(id)d withCompletionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
+  hideCopy = hide;
+  replacementCopy = replacement;
   v67[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v61 = a8;
+  rangesCopy = ranges;
+  textsCopy = texts;
+  handlerCopy = handler;
   if (+[UIKeyboard isKeyboardProcess])
   {
     goto LABEL_37;
   }
 
-  v16 = [v14 count];
-  if (v16 != [v15 count])
+  v16 = [rangesCopy count];
+  if (v16 != [textsCopy count])
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4567 description:@"ranges and replacementTexts must have the same amount of items"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4567 description:@"ranges and replacementTexts must have the same amount of items"];
   }
 
-  v17 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
 
-  if (!v17)
+  if (!dictationVoiceEditingPrompts)
   {
     v18 = objc_opt_new();
     [(_UITextChoiceAccelerationAssistant *)self setDictationVoiceEditingPrompts:v18];
   }
 
   [(_UITextChoiceAccelerationAssistant *)self updateSelectionHighlights];
-  v19 = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
-  v54 = v9;
+  textHighlightColor = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
+  v54 = hideCopy;
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v20 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v21 = [v20 _cursorTintColor];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    _cursorTintColor = [selectionViewManager _cursorTintColor];
 
-    v19 = v21;
+    textHighlightColor = _cursorTintColor;
   }
 
-  v59 = [v14 count];
-  v22 = v59 == 1 && v10;
+  v59 = [rangesCopy count];
+  v22 = v59 == 1 && replacementCopy;
   v53 = v22;
-  if ([v14 count])
+  if ([rangesCopy count])
   {
     v23 = 0;
     v62 = 1;
-    v57 = v15;
-    v58 = v14;
-    v55 = self;
-    v56 = v19;
+    v57 = textsCopy;
+    v58 = rangesCopy;
+    selfCopy = self;
+    v56 = textHighlightColor;
     do
     {
-      v24 = [v14 objectAtIndexedSubscript:v23];
-      v25 = [v15 objectAtIndexedSubscript:v23];
+      v24 = [rangesCopy objectAtIndexedSubscript:v23];
+      v25 = [textsCopy objectAtIndexedSubscript:v23];
       v26 = [(_UITextChoiceAccelerationAssistant *)self selectionRectsForRange:v24];
       if (v24)
       {
-        v27 = [(_UITextChoiceAccelerationAssistant *)self _document];
-        v28 = [v27 textInRange:v24];
+        _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+        v28 = [_document textInRange:v24];
 
         if (v28 && [v28 length])
         {
@@ -5152,23 +5152,23 @@ LABEL_11:
           v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:1];
           [MEMORY[0x1E696AD98] numberWithInt:v23];
           v31 = v30 = self;
-          v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v14, "count")}];
+          v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(rangesCopy, "count")}];
           v33 = [_UIReplacementCandidate candidateForDocumentText:v28 revertText:v28 textChoices:v29 range:v24 underlineStyle:0 promptStyle:3 promptButton:5 voiceCommandDisambiguationSelectedIndex:v31 voiceCommandDisambiguationTargetCount:v32];
 
-          v34 = [(_UITextChoiceAccelerationAssistant *)v30 createPromptWithCompletionHandler:v61];
+          v34 = [(_UITextChoiceAccelerationAssistant *)v30 createPromptWithCompletionHandler:handlerCopy];
           [v34 setPromptStyle:3];
           [v34 setDictationPromptDelegate:v30];
-          v35 = [(_UITextChoiceAccelerationAssistant *)v30 dictationVoiceEditingPrompts];
-          [v35 addObject:v34];
+          dictationVoiceEditingPrompts2 = [(_UITextChoiceAccelerationAssistant *)v30 dictationVoiceEditingPrompts];
+          [dictationVoiceEditingPrompts2 addObject:v34];
 
-          v36 = [(_UITextChoiceAccelerationAssistant *)v30 parentViewForPrompt];
-          [v36 _convertVisualAltitude:v34 toView:0.0];
+          parentViewForPrompt = [(_UITextChoiceAccelerationAssistant *)v30 parentViewForPrompt];
+          [parentViewForPrompt _convertVisualAltitude:v34 toView:0.0];
           [v34 _setVisualAltitude:?];
           v37 = v30;
-          v19 = v56;
-          v38 = [(_UITextChoiceAccelerationAssistant *)v37 textInputView];
-          v39 = [v26 firstObject];
-          [v34 updateWithChoices:0 fromParentView:v36 referenceTextView:v38 presentedFromRect:v39 textHighlightColor:v56];
+          textHighlightColor = v56;
+          textInputView = [(_UITextChoiceAccelerationAssistant *)v37 textInputView];
+          firstObject = [v26 firstObject];
+          [v34 updateWithChoices:0 fromParentView:parentViewForPrompt referenceTextView:textInputView presentedFromRect:firstObject textHighlightColor:v56];
 
           [v34 updateButtonForType:5];
           [v34 setReplacement:v33];
@@ -5177,12 +5177,12 @@ LABEL_11:
             [v34 setLabelNumber:v62];
           }
 
-          self = v55;
-          [(_UITextChoiceAccelerationAssistant *)v55 updatePrompt:v34 forReplacementCandidate:v33];
+          self = selfCopy;
+          [(_UITextChoiceAccelerationAssistant *)selfCopy updatePrompt:v34 forReplacementCandidate:v33];
           ++v62;
 
-          v15 = v57;
-          v14 = v58;
+          textsCopy = v57;
+          rangesCopy = v58;
           v25 = v60;
         }
       }
@@ -5190,13 +5190,13 @@ LABEL_11:
       ++v23;
     }
 
-    while (v23 < [v14 count]);
+    while (v23 < [rangesCopy count]);
   }
 
-  v40 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
-  if ([v40 count] <= 1)
+  dictationVoiceEditingPrompts3 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  if ([dictationVoiceEditingPrompts3 count] <= 1)
   {
-    v46 = self;
+    selfCopy2 = self;
     v44 = v53;
     v43 = v54;
     goto LABEL_25;
@@ -5209,23 +5209,23 @@ LABEL_11:
   v43 = v54;
   if (!v42)
   {
-    v40 = +[UIDictationController activeInstance];
-    v45 = [v40 _obtainDisambiguationUIAssertion];
-    v46 = v41;
-    [(_UITextChoiceAccelerationAssistant *)v41 setDictationDisambiguationUIAssertion:v45];
+    dictationVoiceEditingPrompts3 = +[UIDictationController activeInstance];
+    _obtainDisambiguationUIAssertion = [dictationVoiceEditingPrompts3 _obtainDisambiguationUIAssertion];
+    selfCopy2 = v41;
+    [(_UITextChoiceAccelerationAssistant *)v41 setDictationDisambiguationUIAssertion:_obtainDisambiguationUIAssertion];
 
 LABEL_25:
-    v41 = v46;
+    v41 = selfCopy2;
   }
 
   [(_UITextChoiceAccelerationAssistant *)v41 setupPassthroughContainer];
   if (v44)
   {
     [(_UITextChoiceAccelerationAssistant *)v41 cancelPendingDictationPromptDisplay];
-    v47 = [(_UITextChoiceAccelerationAssistant *)v41 dictationVoiceEditingPrompts];
-    v48 = [v47 firstObject];
+    dictationVoiceEditingPrompts4 = [(_UITextChoiceAccelerationAssistant *)v41 dictationVoiceEditingPrompts];
+    firstObject2 = [dictationVoiceEditingPrompts4 firstObject];
 
-    if (v48)
+    if (firstObject2)
     {
       v49 = MEMORY[0x1E695DFF0];
       v64[0] = MEMORY[0x1E69E9820];
@@ -5233,15 +5233,15 @@ LABEL_25:
       v64[2] = __158___UITextChoiceAccelerationAssistant_decorateTextInRanges_replacementTexts_allowAutomaticReplacement_autoHide_voiceCommandTrackingUUID_withCompletionHandler___block_invoke;
       v64[3] = &unk_1E71093D0;
       v64[4] = v41;
-      v65 = v48;
-      v66 = v61;
+      v65 = firstObject2;
+      v66 = handlerCopy;
       v50 = [v49 scheduledTimerWithTimeInterval:0 repeats:v64 block:0.2];
       [(_UITextChoiceAccelerationAssistant *)v41 setDictationPromptAutoUpdateTimer:v50];
     }
 
-    else if (v61)
+    else if (handlerCopy)
     {
-      (*(v61 + 2))(v61, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -5256,125 +5256,125 @@ LABEL_25:
     [(_UITextChoiceAccelerationAssistant *)v41 setDictationUnderlineDisplayTimer:v51];
   }
 
-  else if (v61)
+  else if (handlerCopy)
   {
-    (*(v61 + 2))(v61, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_37:
 }
 
-- (void)decorateTextInRects:(id)a3 targetTextArray:(id)a4 replacementTexts:(id)a5 deltaRanges:(id)a6 originalSelectedRange:(_NSRange)a7 allowAutomaticReplacement:(BOOL)a8 autoHide:(BOOL)a9 voiceCommandUUID:(id)a10 withCompletionHandler:(id)a11
+- (void)decorateTextInRects:(id)rects targetTextArray:(id)array replacementTexts:(id)texts deltaRanges:(id)ranges originalSelectedRange:(_NSRange)range allowAutomaticReplacement:(BOOL)replacement autoHide:(BOOL)hide voiceCommandUUID:(id)self0 withCompletionHandler:(id)self1
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v80 = a6;
-  v78 = a10;
-  v79 = a11;
+  rectsCopy = rects;
+  arrayCopy = array;
+  textsCopy = texts;
+  rangesCopy = ranges;
+  dCopy = d;
+  handlerCopy = handler;
   if (+[UIKeyboard isKeyboardProcess])
   {
     goto LABEL_42;
   }
 
-  v19 = [v16 count];
-  if (v19 != [v18 count])
+  v19 = [rectsCopy count];
+  if (v19 != [textsCopy count])
   {
-    v67 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v67 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4658 description:@"rects and replacementTexts must have the same amount of items"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4658 description:@"rects and replacementTexts must have the same amount of items"];
   }
 
-  v20 = [v16 count];
-  if (v20 != [v17 count])
+  v20 = [rectsCopy count];
+  if (v20 != [arrayCopy count])
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4659 description:@"rects and targetTextArray must have the same amount of items"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4659 description:@"rects and targetTextArray must have the same amount of items"];
   }
 
-  if (v80)
+  if (rangesCopy)
   {
-    v21 = [v16 count];
-    if (v21 != [v80 count])
+    v21 = [rectsCopy count];
+    if (v21 != [rangesCopy count])
     {
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v70 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4660 description:@"deltaRanges must be nil or rects and deltaRanges must have the same amount of items"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4660 description:@"deltaRanges must be nil or rects and deltaRanges must have the same amount of items"];
     }
   }
 
-  v22 = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
+  dictationVoiceEditingPrompts = [(_UITextChoiceAccelerationAssistant *)self dictationVoiceEditingPrompts];
 
-  if (!v22)
+  if (!dictationVoiceEditingPrompts)
   {
     v23 = objc_opt_new();
     [(_UITextChoiceAccelerationAssistant *)self setDictationVoiceEditingPrompts:v23];
   }
 
   [(_UITextChoiceAccelerationAssistant *)self updateSelectionHighlights];
-  v24 = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
+  textHighlightColor = [(_UITextChoiceAccelerationAssistant *)self textHighlightColor];
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
   {
-    v25 = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
-    v26 = [v25 _cursorTintColor];
+    selectionViewManager = [(_UITextChoiceAccelerationAssistant *)self selectionViewManager];
+    _cursorTintColor = [selectionViewManager _cursorTintColor];
 
-    v24 = v26;
+    textHighlightColor = _cursorTintColor;
   }
 
-  v77 = v24;
-  v27 = [v16 count];
-  v28 = v27 == 1 && a8;
+  v77 = textHighlightColor;
+  v27 = [rectsCopy count];
+  v28 = v27 == 1 && replacement;
   v71 = v28;
-  if (v27 != [v17 count])
+  if (v27 != [arrayCopy count])
   {
-    v69 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v69 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4675 description:@"rects must match targets"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UITextChoiceAccelerationAssistant.m" lineNumber:4675 description:@"rects must match targets"];
   }
 
-  v82 = self;
+  selfCopy = self;
   if (v27)
   {
     v29 = v27;
     v30 = 0;
-    v74 = v17;
-    v75 = v16;
+    v74 = arrayCopy;
+    v75 = rectsCopy;
     v72 = v27;
-    v73 = v18;
+    v73 = textsCopy;
     do
     {
-      v31 = [v16 objectAtIndexedSubscript:v30];
-      v32 = [v17 objectAtIndexedSubscript:v30];
+      v31 = [rectsCopy objectAtIndexedSubscript:v30];
+      v32 = [arrayCopy objectAtIndexedSubscript:v30];
       v33 = v32;
       if (v32 && [v32 length])
       {
-        v34 = [v18 objectAtIndexedSubscript:v30];
+        v34 = [textsCopy objectAtIndexedSubscript:v30];
         v88[0] = v34;
         v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:1];
         v36 = [MEMORY[0x1E696AD98] numberWithInt:v30];
         v37 = [MEMORY[0x1E696AD98] numberWithInt:v29];
         v81 = [_UIReplacementCandidate candidateForDocumentText:v33 revertText:v33 textChoices:v35 range:0 underlineStyle:0 promptStyle:0 promptButton:5 voiceCommandDisambiguationSelectedIndex:v36 voiceCommandDisambiguationTargetCount:v37];
 
-        [v81 setVoiceCommandTrackingUUID:v78];
-        v38 = [(_UITextChoiceAccelerationAssistant *)v82 createPromptWithCompletionHandler:v79];
-        [v38 setDictationPromptDelegate:v82];
+        [v81 setVoiceCommandTrackingUUID:dCopy];
+        v38 = [(_UITextChoiceAccelerationAssistant *)selfCopy createPromptWithCompletionHandler:handlerCopy];
+        [v38 setDictationPromptDelegate:selfCopy];
         [v38 setPromptStyle:3];
-        v39 = [(_UITextChoiceAccelerationAssistant *)v82 dictationVoiceEditingPrompts];
-        [v39 addObject:v38];
+        dictationVoiceEditingPrompts2 = [(_UITextChoiceAccelerationAssistant *)selfCopy dictationVoiceEditingPrompts];
+        [dictationVoiceEditingPrompts2 addObject:v38];
 
-        v40 = [(_UITextChoiceAccelerationAssistant *)v82 parentViewForPrompt];
-        [v40 _convertVisualAltitude:v38 toView:0.0];
+        parentViewForPrompt = [(_UITextChoiceAccelerationAssistant *)selfCopy parentViewForPrompt];
+        [parentViewForPrompt _convertVisualAltitude:v38 toView:0.0];
         [v38 _setVisualAltitude:?];
         [v31 CGRectValue];
         v42 = v41;
         v44 = v43;
         v46 = v45;
         v48 = v47;
-        v49 = [(_UITextChoiceAccelerationAssistant *)v82 delegate];
-        v50 = [v49 inputOverlayContainer];
-        v51 = [_UIMutableTextSelectionRect selectionRectWithRect:v50 fromView:v42, v44, v46, v48];
+        delegate = [(_UITextChoiceAccelerationAssistant *)selfCopy delegate];
+        inputOverlayContainer = [delegate inputOverlayContainer];
+        v51 = [_UIMutableTextSelectionRect selectionRectWithRect:inputOverlayContainer fromView:v42, v44, v46, v48];
 
         v29 = v72;
-        v52 = [(_UITextChoiceAccelerationAssistant *)v82 textInputView];
-        [v38 updateWithChoices:0 fromParentView:v40 referenceTextView:v52 presentedFromRect:v51 textHighlightColor:v77];
+        textInputView = [(_UITextChoiceAccelerationAssistant *)selfCopy textInputView];
+        [v38 updateWithChoices:0 fromParentView:parentViewForPrompt referenceTextView:textInputView presentedFromRect:v51 textHighlightColor:v77];
 
         [v38 updateButtonForType:5];
         [v38 setReplacement:v81];
@@ -5383,19 +5383,19 @@ LABEL_37:
           [v38 setLabelNumber:v30 + 1];
         }
 
-        if (v80)
+        if (rangesCopy)
         {
-          v53 = [v80 objectAtIndex:v30];
-          v54 = [v53 rangeValue];
-          [v38 setDeltaRange:{v54, v55}];
+          v53 = [rangesCopy objectAtIndex:v30];
+          rangeValue = [v53 rangeValue];
+          [v38 setDeltaRange:{rangeValue, v55}];
         }
 
-        [v38 setOriginalSelectedRange:{a7.location, a7.length}];
-        [(_UITextChoiceAccelerationAssistant *)v82 updatePrompt:v38 forReplacementCandidate:v81];
+        [v38 setOriginalSelectedRange:{range.location, range.length}];
+        [(_UITextChoiceAccelerationAssistant *)selfCopy updatePrompt:v38 forReplacementCandidate:v81];
 
-        v17 = v74;
-        v16 = v75;
-        v18 = v73;
+        arrayCopy = v74;
+        rectsCopy = v75;
+        textsCopy = v73;
       }
 
       ++v30;
@@ -5404,87 +5404,87 @@ LABEL_37:
     while (v29 != v30);
   }
 
-  v56 = [(_UITextChoiceAccelerationAssistant *)v82 dictationVoiceEditingPrompts];
-  if ([v56 count] <= 1)
+  dictationVoiceEditingPrompts3 = [(_UITextChoiceAccelerationAssistant *)selfCopy dictationVoiceEditingPrompts];
+  if ([dictationVoiceEditingPrompts3 count] <= 1)
   {
     v58 = v77;
     v59 = v71;
     goto LABEL_32;
   }
 
-  v57 = [(_UITextChoiceAccelerationAssistant *)v82 dictationDisambiguationUIAssertion];
+  dictationDisambiguationUIAssertion = [(_UITextChoiceAccelerationAssistant *)selfCopy dictationDisambiguationUIAssertion];
 
   v58 = v77;
   v59 = v71;
-  if (!v57)
+  if (!dictationDisambiguationUIAssertion)
   {
-    v56 = +[UIDictationController activeInstance];
-    v60 = [v56 _obtainDisambiguationUIAssertion];
-    [(_UITextChoiceAccelerationAssistant *)v82 setDictationDisambiguationUIAssertion:v60];
+    dictationVoiceEditingPrompts3 = +[UIDictationController activeInstance];
+    _obtainDisambiguationUIAssertion = [dictationVoiceEditingPrompts3 _obtainDisambiguationUIAssertion];
+    [(_UITextChoiceAccelerationAssistant *)selfCopy setDictationDisambiguationUIAssertion:_obtainDisambiguationUIAssertion];
 
 LABEL_32:
   }
 
-  [(_UITextChoiceAccelerationAssistant *)v82 setupPassthroughContainer];
+  [(_UITextChoiceAccelerationAssistant *)selfCopy setupPassthroughContainer];
   if (v59)
   {
-    [(_UITextChoiceAccelerationAssistant *)v82 cancelPendingDictationPromptDisplay];
-    v61 = [(_UITextChoiceAccelerationAssistant *)v82 dictationVoiceEditingPrompts];
-    v62 = [v61 firstObject];
+    [(_UITextChoiceAccelerationAssistant *)selfCopy cancelPendingDictationPromptDisplay];
+    dictationVoiceEditingPrompts4 = [(_UITextChoiceAccelerationAssistant *)selfCopy dictationVoiceEditingPrompts];
+    firstObject = [dictationVoiceEditingPrompts4 firstObject];
 
-    if (v62)
+    if (firstObject)
     {
       v63 = MEMORY[0x1E695DFF0];
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
       v85[2] = __199___UITextChoiceAccelerationAssistant_decorateTextInRects_targetTextArray_replacementTexts_deltaRanges_originalSelectedRange_allowAutomaticReplacement_autoHide_voiceCommandUUID_withCompletionHandler___block_invoke;
       v85[3] = &unk_1E71093D0;
-      v85[4] = v82;
-      v86 = v62;
-      v87 = v79;
+      v85[4] = selfCopy;
+      v86 = firstObject;
+      v87 = handlerCopy;
       v64 = [v63 scheduledTimerWithTimeInterval:0 repeats:v85 block:0.2];
-      [(_UITextChoiceAccelerationAssistant *)v82 setDictationPromptAutoUpdateTimer:v64];
+      [(_UITextChoiceAccelerationAssistant *)selfCopy setDictationPromptAutoUpdateTimer:v64];
     }
   }
 
-  else if (a9)
+  else if (hide)
   {
     v65 = MEMORY[0x1E695DFF0];
     v83[0] = MEMORY[0x1E69E9820];
     v83[1] = 3221225472;
     v83[2] = __199___UITextChoiceAccelerationAssistant_decorateTextInRects_targetTextArray_replacementTexts_deltaRanges_originalSelectedRange_allowAutomaticReplacement_autoHide_voiceCommandUUID_withCompletionHandler___block_invoke_2;
     v83[3] = &unk_1E71093F8;
-    v83[4] = v82;
-    v84 = v79;
+    v83[4] = selfCopy;
+    v84 = handlerCopy;
     v66 = [v65 scheduledTimerWithTimeInterval:0 repeats:v83 block:0.2];
-    [(_UITextChoiceAccelerationAssistant *)v82 setDictationUnderlineDisplayTimer:v66];
+    [(_UITextChoiceAccelerationAssistant *)selfCopy setDictationUnderlineDisplayTimer:v66];
   }
 
-  else if (v79)
+  else if (handlerCopy)
   {
-    (*(v79 + 2))(v79, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_42:
 }
 
-- (void)presentIfNeededForRange:(id)a3
+- (void)presentIfNeededForRange:(id)range
 {
-  v14 = a3;
-  if ([v14 isEmpty])
+  rangeCopy = range;
+  if ([rangeCopy isEmpty])
   {
-    v4 = [v14 start];
-    v5 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:v4];
+    start = [rangeCopy start];
+    v5 = [(_UITextChoiceAccelerationAssistant *)self rangeForTextChoicesAtPosition:start];
 
-    if (v5 || (-[_UITextChoiceAccelerationAssistant _document](self, "_document"), v6 = objc_claimAutoreleasedReturnValue(), [v14 end], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "_rangeOfEnclosingWord:", v7), v5 = objc_claimAutoreleasedReturnValue(), v7, v6, v5))
+    if (v5 || (-[_UITextChoiceAccelerationAssistant _document](self, "_document"), v6 = objc_claimAutoreleasedReturnValue(), [rangeCopy end], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "_rangeOfEnclosingWord:", v7), v5 = objc_claimAutoreleasedReturnValue(), v7, v6, v5))
     {
       v8 = v5;
 
       v9 = v8;
 LABEL_6:
       v15 = v9;
-      v10 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v11 = [v10 textInRange:v15];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v11 = [_document textInRange:v15];
 
       v12 = [(_UITextChoiceAccelerationAssistant *)self candidateForFinalString:v11];
       if (v12)
@@ -5502,8 +5502,8 @@ LABEL_6:
     }
   }
 
-  v9 = v14;
-  if (v14)
+  v9 = rangeCopy;
+  if (rangeCopy)
   {
     goto LABEL_6;
   }
@@ -5513,41 +5513,41 @@ LABEL_6:
 LABEL_11:
 }
 
-- (id)anchorRangeForText:(id)a3
+- (id)anchorRangeForText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
-  if (v5)
+  textCopy = text;
+  activeSelectedRange = [(_UITextChoiceAccelerationAssistant *)self activeSelectedRange];
+  if (activeSelectedRange)
   {
-    v6 = [(_UITextChoiceAccelerationAssistant *)self _document];
-    v7 = [v5 end];
-    v8 = [v6 _rangeOfText:v4 endingAtPosition:v7];
+    _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+    v7 = [activeSelectedRange end];
+    v8 = [_document _rangeOfText:textCopy endingAtPosition:v7];
 
     if (v8)
     {
       v9 = v8;
 
-      v5 = v9;
+      activeSelectedRange = v9;
     }
   }
 
-  return v5;
+  return activeSelectedRange;
 }
 
-- (id)underlineRectsForInput:(id)a3
+- (id)underlineRectsForInput:(id)input
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  inputCopy = input;
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [(_UITextChoiceAccelerationAssistant *)self anchorRangeForText:inputCopy];
     v7 = v6;
     if (v6 && ([v6 isEmpty] & 1) == 0)
     {
       v8 = +[UIKeyboard currentDocumentState];
-      v9 = [(_UITextChoiceAccelerationAssistant *)self _document];
-      v10 = [v7 _asNSRangeRelativeToDocument:v9];
+      _document = [(_UITextChoiceAccelerationAssistant *)self _document];
+      v10 = [v7 _asNSRangeRelativeToDocument:_document];
       v12 = v11;
 
       v21 = v12;
@@ -5575,7 +5575,7 @@ LABEL_11:
             v18 = [(_UITextChoiceAccelerationAssistant *)self underlineRectFromDocumentRect:?];
             if (v18)
             {
-              [v5 addObject:v18];
+              [array addObject:v18];
             }
           }
 
@@ -5585,13 +5585,13 @@ LABEL_11:
         while (v15);
       }
 
-      if (![v5 count])
+      if (![array count])
       {
         [v8 firstRectForCharacterRange:{v22, v21}];
         v19 = [(_UITextChoiceAccelerationAssistant *)self underlineRectFromDocumentRect:?];
         if (v19)
         {
-          [v5 addObject:v19];
+          [array addObject:v19];
         }
       }
     }
@@ -5599,30 +5599,30 @@ LABEL_11:
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)underlineRectFromDocumentRect:(CGRect)a3
+- (id)underlineRectFromDocumentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITextChoiceAccelerationAssistant *)self textInputView];
-  v9 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v10 = [v9 inputOverlayContainer];
-  [v8 convertRect:v10 toCoordinateSpace:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textInputView = [(_UITextChoiceAccelerationAssistant *)self textInputView];
+  delegate = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  inputOverlayContainer = [delegate inputOverlayContainer];
+  [textInputView convertRect:inputOverlayContainer toCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(_UITextChoiceAccelerationAssistant *)self delegate];
-  v20 = [v19 inputOverlayContainer];
-  v21 = [_UIMutableTextSelectionRect selectionRectWithRect:v20 fromView:v12, v14, v16, v18];
+  delegate2 = [(_UITextChoiceAccelerationAssistant *)self delegate];
+  inputOverlayContainer2 = [delegate2 inputOverlayContainer];
+  v21 = [_UIMutableTextSelectionRect selectionRectWithRect:inputOverlayContainer2 fromView:v12, v14, v16, v18];
 
   v22 = [(_UITextChoiceAccelerationAssistant *)self underlineRectForTextSelectionRect:v21 forCandidate:0];
 
@@ -5633,9 +5633,9 @@ LABEL_11:
 {
   if ([(_UITextChoiceAccelerationAssistant *)self promptIsVisible])
   {
-    v3 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-    v4 = [v3 replacement];
-    IsSmartReply = _replacementSourceIsSmartReply(v4);
+    prompt = [(_UITextChoiceAccelerationAssistant *)self prompt];
+    replacement = [prompt replacement];
+    IsSmartReply = _replacementSourceIsSmartReply(replacement);
 
     if (IsSmartReply)
     {
@@ -5646,10 +5646,10 @@ LABEL_11:
         _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "Text choice assistant is stashing smart replies as scrolling begins", v10, 2u);
       }
 
-      v7 = [(_UITextChoiceAccelerationAssistant *)self prompt];
-      v8 = [v7 replacement];
+      prompt2 = [(_UITextChoiceAccelerationAssistant *)self prompt];
+      replacement2 = [prompt2 replacement];
       stashedReplacement = self->_stashedReplacement;
-      self->_stashedReplacement = v8;
+      self->_stashedReplacement = replacement2;
 
       [(_UITextChoiceAccelerationAssistant *)self clearSecureCandidateHashes];
     }
@@ -5671,8 +5671,8 @@ LABEL_11:
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "Text choice assistant is restoring stashed smart replies as scrolling ends", v7, 2u);
     }
 
-    v6 = [(_UIReplacementCandidate *)v3 candidateChoices];
-    [(_UITextChoiceAccelerationAssistant *)self showChoicesForCandidates:v6];
+    candidateChoices = [(_UIReplacementCandidate *)v3 candidateChoices];
+    [(_UITextChoiceAccelerationAssistant *)self showChoicesForCandidates:candidateChoices];
   }
 }
 

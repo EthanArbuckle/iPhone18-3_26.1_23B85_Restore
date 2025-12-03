@@ -1,12 +1,12 @@
 @interface INFERENCESchemaINFERENCEClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (INFERENCESchemaINFERENCEABModelEvaluated)abModelEvaluated;
 - (INFERENCESchemaINFERENCEABModelResultTriggered)abModelResultTriggered;
 - (INFERENCESchemaINFERENCEAsrEuclidEmbedding)asrEuclidEmbedding;
 - (INFERENCESchemaINFERENCECRRTrainingSampleCollected)crrTrainingSampleCollected;
-- (INFERENCESchemaINFERENCEClientEvent)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEClientEvent)initWithJSON:(id)a3;
+- (INFERENCESchemaINFERENCEClientEvent)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEClientEvent)initWithJSON:(id)n;
 - (INFERENCESchemaINFERENCECommsAppSelectionGroundTruthGenerated)commsAppSelectionGroundTruthGenerated;
 - (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)contactCandidatesInfoGenerated;
 - (INFERENCESchemaINFERENCEMusicAppSelectionGroundTruthGenerated)musicAppSelectionGroundTruthGenerated;
@@ -22,7 +22,7 @@
 - (INFERENCESchemaINFERENCEWorkoutsAppSelectionGroundTruthGenerated)workoutsAppSelectionGroundTruthGenerated;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -47,37 +47,37 @@
 - (void)deleteVideoPlayOnThirdPartyAppGroundTruthGenerated;
 - (void)deleteVideoSmartAppSelectionDisambiguation;
 - (void)deleteWorkoutsAppSelectionGroundTruthGenerated;
-- (void)setAbModelEvaluated:(id)a3;
-- (void)setAbModelResultTriggered:(id)a3;
-- (void)setAsrEuclidEmbedding:(id)a3;
-- (void)setCommsAppSelectionGroundTruthGenerated:(id)a3;
-- (void)setContactCandidatesInfoGenerated:(id)a3;
-- (void)setCrrTrainingSampleCollected:(id)a3;
-- (void)setMusicAppSelectionGroundTruthGenerated:(id)a3;
-- (void)setNotebookAppSelectionGroundTruthGenerated:(id)a3;
-- (void)setPervasiveEntityResolutionGroundTruthGenerated:(id)a3;
-- (void)setResolutionQueryInfoGenerated:(id)a3;
-- (void)setResolutionRequestContext:(id)a3;
-- (void)setSeasExecutionPathReported:(id)a3;
-- (void)setSimpleTaskInfoGenerated:(id)a3;
-- (void)setUserPromptSelectedInfoGenerated:(id)a3;
-- (void)setVideoPlayOnThirdPartyAppGroundTruthGenerated:(id)a3;
-- (void)setVideoSmartAppSelectionDisambiguation:(id)a3;
-- (void)setWorkoutsAppSelectionGroundTruthGenerated:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAbModelEvaluated:(id)evaluated;
+- (void)setAbModelResultTriggered:(id)triggered;
+- (void)setAsrEuclidEmbedding:(id)embedding;
+- (void)setCommsAppSelectionGroundTruthGenerated:(id)generated;
+- (void)setContactCandidatesInfoGenerated:(id)generated;
+- (void)setCrrTrainingSampleCollected:(id)collected;
+- (void)setMusicAppSelectionGroundTruthGenerated:(id)generated;
+- (void)setNotebookAppSelectionGroundTruthGenerated:(id)generated;
+- (void)setPervasiveEntityResolutionGroundTruthGenerated:(id)generated;
+- (void)setResolutionQueryInfoGenerated:(id)generated;
+- (void)setResolutionRequestContext:(id)context;
+- (void)setSeasExecutionPathReported:(id)reported;
+- (void)setSimpleTaskInfoGenerated:(id)generated;
+- (void)setUserPromptSelectedInfoGenerated:(id)generated;
+- (void)setVideoPlayOnThirdPartyAppGroundTruthGenerated:(id)generated;
+- (void)setVideoSmartAppSelectionDisambiguation:(id)disambiguation;
+- (void)setWorkoutsAppSelectionGroundTruthGenerated:(id)generated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEClientEvent
 
-- (INFERENCESchemaINFERENCEClientEvent)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = INFERENCESchemaINFERENCEClientEvent;
   v5 = [(INFERENCESchemaINFERENCEClientEvent *)&v55 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setMusicAppSelectionGroundTruthGenerated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setVideoPlayOnThirdPartyAppGroundTruthGenerated:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setVideoSmartAppSelectionDisambiguation:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"resolutionRequestContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"resolutionRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setResolutionRequestContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"simpleTaskInfoGenerated"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"simpleTaskInfoGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,7 +125,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setSimpleTaskInfoGenerated:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"resolutionQueryInfoGenerated"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"resolutionQueryInfoGenerated"];
     objc_opt_class();
     v54 = v18;
     if (objc_opt_isKindOfClass())
@@ -134,7 +134,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setResolutionQueryInfoGenerated:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"userPromptSelectedInfoGenerated"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"userPromptSelectedInfoGenerated"];
     objc_opt_class();
     v53 = v20;
     if (objc_opt_isKindOfClass())
@@ -143,7 +143,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setUserPromptSelectedInfoGenerated:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"contactCandidatesInfoGenerated"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"contactCandidatesInfoGenerated"];
     objc_opt_class();
     v52 = v22;
     if (objc_opt_isKindOfClass())
@@ -152,7 +152,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setContactCandidatesInfoGenerated:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"crrTrainingSampleCollected"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"crrTrainingSampleCollected"];
     objc_opt_class();
     v51 = v24;
     if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@
     }
 
     v49 = v8;
-    v26 = [v4 objectForKeyedSubscript:@"abModelEvaluated"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"abModelEvaluated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,7 +172,7 @@
 
     v44 = v26;
     v48 = v10;
-    v28 = [v4 objectForKeyedSubscript:@"abModelResultTriggered"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"abModelResultTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,7 +181,7 @@
     }
 
     v47 = v12;
-    v30 = [v4 objectForKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,7 +190,7 @@
     }
 
     v46 = v14;
-    v32 = [v4 objectForKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -199,7 +199,7 @@
     }
 
     v45 = v16;
-    v34 = [v4 objectForKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -208,7 +208,7 @@
     }
 
     v50 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,7 +216,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setPervasiveEntityResolutionGroundTruthGenerated:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"seasExecutionPathReported"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"seasExecutionPathReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -224,7 +224,7 @@
       [(INFERENCESchemaINFERENCEClientEvent *)v5 setSeasExecutionPathReported:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"asrEuclidEmbedding"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"asrEuclidEmbedding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -238,30 +238,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEClientEvent)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -274,298 +274,298 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_abModelEvaluated)
   {
-    v4 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    abModelEvaluated = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+    dictionaryRepresentation = [abModelEvaluated dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"abModelEvaluated"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"abModelEvaluated"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"abModelEvaluated"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"abModelEvaluated"];
     }
   }
 
   if (self->_abModelResultTriggered)
   {
-    v7 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    abModelResultTriggered = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+    dictionaryRepresentation2 = [abModelResultTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"abModelResultTriggered"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"abModelResultTriggered"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"abModelResultTriggered"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"abModelResultTriggered"];
     }
   }
 
   if (self->_asrEuclidEmbedding)
   {
-    v10 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    asrEuclidEmbedding = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+    dictionaryRepresentation3 = [asrEuclidEmbedding dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"asrEuclidEmbedding"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"asrEuclidEmbedding"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"asrEuclidEmbedding"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"asrEuclidEmbedding"];
     }
   }
 
   if (self->_commsAppSelectionGroundTruthGenerated)
   {
-    v13 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    commsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+    dictionaryRepresentation4 = [commsAppSelectionGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"commsAppSelectionGroundTruthGenerated"];
     }
   }
 
   if (self->_contactCandidatesInfoGenerated)
   {
-    v16 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    contactCandidatesInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+    dictionaryRepresentation5 = [contactCandidatesInfoGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"contactCandidatesInfoGenerated"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"contactCandidatesInfoGenerated"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"contactCandidatesInfoGenerated"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"contactCandidatesInfoGenerated"];
     }
   }
 
   if (self->_crrTrainingSampleCollected)
   {
-    v19 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    crrTrainingSampleCollected = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+    dictionaryRepresentation6 = [crrTrainingSampleCollected dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"crrTrainingSampleCollected"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"crrTrainingSampleCollected"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"crrTrainingSampleCollected"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"crrTrainingSampleCollected"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v22 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+    dictionaryRepresentation7 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"eventMetadata"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_musicAppSelectionGroundTruthGenerated)
   {
-    v25 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    musicAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+    dictionaryRepresentation8 = [musicAppSelectionGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"musicAppSelectionGroundTruthGenerated"];
     }
   }
 
   if (self->_notebookAppSelectionGroundTruthGenerated)
   {
-    v28 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    notebookAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+    dictionaryRepresentation9 = [notebookAppSelectionGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"notebookAppSelectionGroundTruthGenerated"];
     }
   }
 
   if (self->_pervasiveEntityResolutionGroundTruthGenerated)
   {
-    v31 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    pervasiveEntityResolutionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+    dictionaryRepresentation10 = [pervasiveEntityResolutionGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"pervasiveEntityResolutionGroundTruthGenerated"];
     }
   }
 
   if (self->_resolutionQueryInfoGenerated)
   {
-    v34 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    resolutionQueryInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+    dictionaryRepresentation11 = [resolutionQueryInfoGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"resolutionQueryInfoGenerated"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"resolutionQueryInfoGenerated"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"resolutionQueryInfoGenerated"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"resolutionQueryInfoGenerated"];
     }
   }
 
   if (self->_resolutionRequestContext)
   {
-    v37 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    resolutionRequestContext = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+    dictionaryRepresentation12 = [resolutionRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"resolutionRequestContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"resolutionRequestContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"resolutionRequestContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"resolutionRequestContext"];
     }
   }
 
   if (self->_seasExecutionPathReported)
   {
-    v40 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    seasExecutionPathReported = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+    dictionaryRepresentation13 = [seasExecutionPathReported dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"seasExecutionPathReported"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"seasExecutionPathReported"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"seasExecutionPathReported"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"seasExecutionPathReported"];
     }
   }
 
   if (self->_simpleTaskInfoGenerated)
   {
-    v43 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    simpleTaskInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+    dictionaryRepresentation14 = [simpleTaskInfoGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"simpleTaskInfoGenerated"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"simpleTaskInfoGenerated"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"simpleTaskInfoGenerated"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"simpleTaskInfoGenerated"];
     }
   }
 
   if (self->_userPromptSelectedInfoGenerated)
   {
-    v46 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    userPromptSelectedInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+    dictionaryRepresentation15 = [userPromptSelectedInfoGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"userPromptSelectedInfoGenerated"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"userPromptSelectedInfoGenerated"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"userPromptSelectedInfoGenerated"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"userPromptSelectedInfoGenerated"];
     }
   }
 
   if (self->_videoPlayOnThirdPartyAppGroundTruthGenerated)
   {
-    v49 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    videoPlayOnThirdPartyAppGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+    dictionaryRepresentation16 = [videoPlayOnThirdPartyAppGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"videoPlayOnThirdPartyAppGroundTruthGenerated"];
     }
   }
 
   if (self->_videoSmartAppSelectionDisambiguation)
   {
-    v52 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    videoSmartAppSelectionDisambiguation = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+    dictionaryRepresentation17 = [videoSmartAppSelectionDisambiguation dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"videoSmartAppSelectionDisambiguation"];
     }
   }
 
   if (self->_workoutsAppSelectionGroundTruthGenerated)
   {
-    v55 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    workoutsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+    dictionaryRepresentation18 = [workoutsAppSelectionGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"workoutsAppSelectionGroundTruthGenerated"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -590,34 +590,34 @@
   return v18 ^ v19 ^ [(INFERENCESchemaINFERENCEAsrEuclidEmbedding *)self->_asrEuclidEmbedding hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_93;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_93;
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v8 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -629,20 +629,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
-  v7 = [v4 musicAppSelectionGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+  eventMetadata2 = [equalCopy musicAppSelectionGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v13 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
-  if (v13)
+  musicAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+  if (musicAppSelectionGroundTruthGenerated)
   {
-    v14 = v13;
-    v15 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
-    v16 = [v4 musicAppSelectionGroundTruthGenerated];
-    v17 = [v15 isEqual:v16];
+    v14 = musicAppSelectionGroundTruthGenerated;
+    musicAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+    musicAppSelectionGroundTruthGenerated3 = [equalCopy musicAppSelectionGroundTruthGenerated];
+    v17 = [musicAppSelectionGroundTruthGenerated2 isEqual:musicAppSelectionGroundTruthGenerated3];
 
     if (!v17)
     {
@@ -654,20 +654,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
-  v7 = [v4 videoPlayOnThirdPartyAppGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+  eventMetadata2 = [equalCopy videoPlayOnThirdPartyAppGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v18 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
-  if (v18)
+  videoPlayOnThirdPartyAppGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+  if (videoPlayOnThirdPartyAppGroundTruthGenerated)
   {
-    v19 = v18;
-    v20 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
-    v21 = [v4 videoPlayOnThirdPartyAppGroundTruthGenerated];
-    v22 = [v20 isEqual:v21];
+    v19 = videoPlayOnThirdPartyAppGroundTruthGenerated;
+    videoPlayOnThirdPartyAppGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+    videoPlayOnThirdPartyAppGroundTruthGenerated3 = [equalCopy videoPlayOnThirdPartyAppGroundTruthGenerated];
+    v22 = [videoPlayOnThirdPartyAppGroundTruthGenerated2 isEqual:videoPlayOnThirdPartyAppGroundTruthGenerated3];
 
     if (!v22)
     {
@@ -679,20 +679,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
-  v7 = [v4 videoSmartAppSelectionDisambiguation];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+  eventMetadata2 = [equalCopy videoSmartAppSelectionDisambiguation];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v23 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
-  if (v23)
+  videoSmartAppSelectionDisambiguation = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+  if (videoSmartAppSelectionDisambiguation)
   {
-    v24 = v23;
-    v25 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
-    v26 = [v4 videoSmartAppSelectionDisambiguation];
-    v27 = [v25 isEqual:v26];
+    v24 = videoSmartAppSelectionDisambiguation;
+    videoSmartAppSelectionDisambiguation2 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+    videoSmartAppSelectionDisambiguation3 = [equalCopy videoSmartAppSelectionDisambiguation];
+    v27 = [videoSmartAppSelectionDisambiguation2 isEqual:videoSmartAppSelectionDisambiguation3];
 
     if (!v27)
     {
@@ -704,20 +704,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
-  v7 = [v4 resolutionRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+  eventMetadata2 = [equalCopy resolutionRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v28 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
-  if (v28)
+  resolutionRequestContext = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+  if (resolutionRequestContext)
   {
-    v29 = v28;
-    v30 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
-    v31 = [v4 resolutionRequestContext];
-    v32 = [v30 isEqual:v31];
+    v29 = resolutionRequestContext;
+    resolutionRequestContext2 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+    resolutionRequestContext3 = [equalCopy resolutionRequestContext];
+    v32 = [resolutionRequestContext2 isEqual:resolutionRequestContext3];
 
     if (!v32)
     {
@@ -729,20 +729,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
-  v7 = [v4 simpleTaskInfoGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+  eventMetadata2 = [equalCopy simpleTaskInfoGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v33 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
-  if (v33)
+  simpleTaskInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+  if (simpleTaskInfoGenerated)
   {
-    v34 = v33;
-    v35 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
-    v36 = [v4 simpleTaskInfoGenerated];
-    v37 = [v35 isEqual:v36];
+    v34 = simpleTaskInfoGenerated;
+    simpleTaskInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+    simpleTaskInfoGenerated3 = [equalCopy simpleTaskInfoGenerated];
+    v37 = [simpleTaskInfoGenerated2 isEqual:simpleTaskInfoGenerated3];
 
     if (!v37)
     {
@@ -754,20 +754,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
-  v7 = [v4 resolutionQueryInfoGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+  eventMetadata2 = [equalCopy resolutionQueryInfoGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v38 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
-  if (v38)
+  resolutionQueryInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+  if (resolutionQueryInfoGenerated)
   {
-    v39 = v38;
-    v40 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
-    v41 = [v4 resolutionQueryInfoGenerated];
-    v42 = [v40 isEqual:v41];
+    v39 = resolutionQueryInfoGenerated;
+    resolutionQueryInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+    resolutionQueryInfoGenerated3 = [equalCopy resolutionQueryInfoGenerated];
+    v42 = [resolutionQueryInfoGenerated2 isEqual:resolutionQueryInfoGenerated3];
 
     if (!v42)
     {
@@ -779,20 +779,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
-  v7 = [v4 userPromptSelectedInfoGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+  eventMetadata2 = [equalCopy userPromptSelectedInfoGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v43 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
-  if (v43)
+  userPromptSelectedInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+  if (userPromptSelectedInfoGenerated)
   {
-    v44 = v43;
-    v45 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
-    v46 = [v4 userPromptSelectedInfoGenerated];
-    v47 = [v45 isEqual:v46];
+    v44 = userPromptSelectedInfoGenerated;
+    userPromptSelectedInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+    userPromptSelectedInfoGenerated3 = [equalCopy userPromptSelectedInfoGenerated];
+    v47 = [userPromptSelectedInfoGenerated2 isEqual:userPromptSelectedInfoGenerated3];
 
     if (!v47)
     {
@@ -804,20 +804,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
-  v7 = [v4 contactCandidatesInfoGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+  eventMetadata2 = [equalCopy contactCandidatesInfoGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v48 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
-  if (v48)
+  contactCandidatesInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+  if (contactCandidatesInfoGenerated)
   {
-    v49 = v48;
-    v50 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
-    v51 = [v4 contactCandidatesInfoGenerated];
-    v52 = [v50 isEqual:v51];
+    v49 = contactCandidatesInfoGenerated;
+    contactCandidatesInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+    contactCandidatesInfoGenerated3 = [equalCopy contactCandidatesInfoGenerated];
+    v52 = [contactCandidatesInfoGenerated2 isEqual:contactCandidatesInfoGenerated3];
 
     if (!v52)
     {
@@ -829,20 +829,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
-  v7 = [v4 crrTrainingSampleCollected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+  eventMetadata2 = [equalCopy crrTrainingSampleCollected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v53 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
-  if (v53)
+  crrTrainingSampleCollected = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+  if (crrTrainingSampleCollected)
   {
-    v54 = v53;
-    v55 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
-    v56 = [v4 crrTrainingSampleCollected];
-    v57 = [v55 isEqual:v56];
+    v54 = crrTrainingSampleCollected;
+    crrTrainingSampleCollected2 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+    crrTrainingSampleCollected3 = [equalCopy crrTrainingSampleCollected];
+    v57 = [crrTrainingSampleCollected2 isEqual:crrTrainingSampleCollected3];
 
     if (!v57)
     {
@@ -854,20 +854,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
-  v7 = [v4 abModelEvaluated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+  eventMetadata2 = [equalCopy abModelEvaluated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v58 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
-  if (v58)
+  abModelEvaluated = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+  if (abModelEvaluated)
   {
-    v59 = v58;
-    v60 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
-    v61 = [v4 abModelEvaluated];
-    v62 = [v60 isEqual:v61];
+    v59 = abModelEvaluated;
+    abModelEvaluated2 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+    abModelEvaluated3 = [equalCopy abModelEvaluated];
+    v62 = [abModelEvaluated2 isEqual:abModelEvaluated3];
 
     if (!v62)
     {
@@ -879,20 +879,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
-  v7 = [v4 abModelResultTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+  eventMetadata2 = [equalCopy abModelResultTriggered];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v63 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
-  if (v63)
+  abModelResultTriggered = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+  if (abModelResultTriggered)
   {
-    v64 = v63;
-    v65 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
-    v66 = [v4 abModelResultTriggered];
-    v67 = [v65 isEqual:v66];
+    v64 = abModelResultTriggered;
+    abModelResultTriggered2 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+    abModelResultTriggered3 = [equalCopy abModelResultTriggered];
+    v67 = [abModelResultTriggered2 isEqual:abModelResultTriggered3];
 
     if (!v67)
     {
@@ -904,20 +904,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
-  v7 = [v4 workoutsAppSelectionGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+  eventMetadata2 = [equalCopy workoutsAppSelectionGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v68 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
-  if (v68)
+  workoutsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+  if (workoutsAppSelectionGroundTruthGenerated)
   {
-    v69 = v68;
-    v70 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
-    v71 = [v4 workoutsAppSelectionGroundTruthGenerated];
-    v72 = [v70 isEqual:v71];
+    v69 = workoutsAppSelectionGroundTruthGenerated;
+    workoutsAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+    workoutsAppSelectionGroundTruthGenerated3 = [equalCopy workoutsAppSelectionGroundTruthGenerated];
+    v72 = [workoutsAppSelectionGroundTruthGenerated2 isEqual:workoutsAppSelectionGroundTruthGenerated3];
 
     if (!v72)
     {
@@ -929,20 +929,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
-  v7 = [v4 notebookAppSelectionGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+  eventMetadata2 = [equalCopy notebookAppSelectionGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v73 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
-  if (v73)
+  notebookAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+  if (notebookAppSelectionGroundTruthGenerated)
   {
-    v74 = v73;
-    v75 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
-    v76 = [v4 notebookAppSelectionGroundTruthGenerated];
-    v77 = [v75 isEqual:v76];
+    v74 = notebookAppSelectionGroundTruthGenerated;
+    notebookAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+    notebookAppSelectionGroundTruthGenerated3 = [equalCopy notebookAppSelectionGroundTruthGenerated];
+    v77 = [notebookAppSelectionGroundTruthGenerated2 isEqual:notebookAppSelectionGroundTruthGenerated3];
 
     if (!v77)
     {
@@ -954,20 +954,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
-  v7 = [v4 commsAppSelectionGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+  eventMetadata2 = [equalCopy commsAppSelectionGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v78 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
-  if (v78)
+  commsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+  if (commsAppSelectionGroundTruthGenerated)
   {
-    v79 = v78;
-    v80 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
-    v81 = [v4 commsAppSelectionGroundTruthGenerated];
-    v82 = [v80 isEqual:v81];
+    v79 = commsAppSelectionGroundTruthGenerated;
+    commsAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+    commsAppSelectionGroundTruthGenerated3 = [equalCopy commsAppSelectionGroundTruthGenerated];
+    v82 = [commsAppSelectionGroundTruthGenerated2 isEqual:commsAppSelectionGroundTruthGenerated3];
 
     if (!v82)
     {
@@ -979,20 +979,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
-  v7 = [v4 pervasiveEntityResolutionGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+  eventMetadata2 = [equalCopy pervasiveEntityResolutionGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v83 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
-  if (v83)
+  pervasiveEntityResolutionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+  if (pervasiveEntityResolutionGroundTruthGenerated)
   {
-    v84 = v83;
-    v85 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
-    v86 = [v4 pervasiveEntityResolutionGroundTruthGenerated];
-    v87 = [v85 isEqual:v86];
+    v84 = pervasiveEntityResolutionGroundTruthGenerated;
+    pervasiveEntityResolutionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+    pervasiveEntityResolutionGroundTruthGenerated3 = [equalCopy pervasiveEntityResolutionGroundTruthGenerated];
+    v87 = [pervasiveEntityResolutionGroundTruthGenerated2 isEqual:pervasiveEntityResolutionGroundTruthGenerated3];
 
     if (!v87)
     {
@@ -1004,20 +1004,20 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
-  v7 = [v4 seasExecutionPathReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+  eventMetadata2 = [equalCopy seasExecutionPathReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_92;
   }
 
-  v88 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
-  if (v88)
+  seasExecutionPathReported = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+  if (seasExecutionPathReported)
   {
-    v89 = v88;
-    v90 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
-    v91 = [v4 seasExecutionPathReported];
-    v92 = [v90 isEqual:v91];
+    v89 = seasExecutionPathReported;
+    seasExecutionPathReported2 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+    seasExecutionPathReported3 = [equalCopy seasExecutionPathReported];
+    v92 = [seasExecutionPathReported2 isEqual:seasExecutionPathReported3];
 
     if (!v92)
     {
@@ -1029,12 +1029,12 @@
   {
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
-  v7 = [v4 asrEuclidEmbedding];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+  eventMetadata2 = [equalCopy asrEuclidEmbedding];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v93 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
-    if (!v93)
+    asrEuclidEmbedding = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+    if (!asrEuclidEmbedding)
     {
 
 LABEL_96:
@@ -1042,10 +1042,10 @@ LABEL_96:
       goto LABEL_94;
     }
 
-    v94 = v93;
-    v95 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
-    v96 = [v4 asrEuclidEmbedding];
-    v97 = [v95 isEqual:v96];
+    v94 = asrEuclidEmbedding;
+    asrEuclidEmbedding2 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+    asrEuclidEmbedding3 = [equalCopy asrEuclidEmbedding];
+    v97 = [asrEuclidEmbedding2 isEqual:asrEuclidEmbedding3];
 
     if (v97)
     {
@@ -1065,154 +1065,154 @@ LABEL_94:
   return v98;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v41 = a3;
-  v4 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+    eventMetadata2 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+  musicAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
 
-  if (v6)
+  if (musicAppSelectionGroundTruthGenerated)
   {
-    v7 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+    musicAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+  videoPlayOnThirdPartyAppGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
 
-  if (v8)
+  if (videoPlayOnThirdPartyAppGroundTruthGenerated)
   {
-    v9 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+    videoPlayOnThirdPartyAppGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+  videoSmartAppSelectionDisambiguation = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
 
-  if (v10)
+  if (videoSmartAppSelectionDisambiguation)
   {
-    v11 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+    videoSmartAppSelectionDisambiguation2 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+  resolutionRequestContext = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
 
-  if (v12)
+  if (resolutionRequestContext)
   {
-    v13 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+    resolutionRequestContext2 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+  simpleTaskInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
 
-  if (v14)
+  if (simpleTaskInfoGenerated)
   {
-    v15 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+    simpleTaskInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+  resolutionQueryInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
 
-  if (v16)
+  if (resolutionQueryInfoGenerated)
   {
-    v17 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+    resolutionQueryInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+  userPromptSelectedInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
 
-  if (v18)
+  if (userPromptSelectedInfoGenerated)
   {
-    v19 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+    userPromptSelectedInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+  contactCandidatesInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
 
-  if (v20)
+  if (contactCandidatesInfoGenerated)
   {
-    v21 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+    contactCandidatesInfoGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+  crrTrainingSampleCollected = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
 
-  if (v22)
+  if (crrTrainingSampleCollected)
   {
-    v23 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+    crrTrainingSampleCollected2 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+  abModelEvaluated = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
 
-  if (v24)
+  if (abModelEvaluated)
   {
-    v25 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+    abModelEvaluated2 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+  abModelResultTriggered = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
 
-  if (v26)
+  if (abModelResultTriggered)
   {
-    v27 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+    abModelResultTriggered2 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+  workoutsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
 
-  if (v28)
+  if (workoutsAppSelectionGroundTruthGenerated)
   {
-    v29 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+    workoutsAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+  notebookAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
 
-  if (v30)
+  if (notebookAppSelectionGroundTruthGenerated)
   {
-    v31 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+    notebookAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+  commsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
 
-  if (v32)
+  if (commsAppSelectionGroundTruthGenerated)
   {
-    v33 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+    commsAppSelectionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+  pervasiveEntityResolutionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
 
-  if (v34)
+  if (pervasiveEntityResolutionGroundTruthGenerated)
   {
-    v35 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+    pervasiveEntityResolutionGroundTruthGenerated2 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+  seasExecutionPathReported = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
 
-  if (v36)
+  if (seasExecutionPathReported)
   {
-    v37 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+    seasExecutionPathReported2 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+  asrEuclidEmbedding = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
 
-  v39 = v41;
-  if (v38)
+  v39 = toCopy;
+  if (asrEuclidEmbedding)
   {
-    v40 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+    asrEuclidEmbedding2 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
     PBDataWriterWriteSubmessage();
 
-    v39 = v41;
+    v39 = toCopy;
   }
 }
 
@@ -1241,9 +1241,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setAsrEuclidEmbedding:(id)a3
+- (void)setAsrEuclidEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1293,14 +1293,14 @@ LABEL_94:
   self->_seasExecutionPathReported = 0;
 
   v21 = 117;
-  if (!v4)
+  if (!embeddingCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   asrEuclidEmbedding = self->_asrEuclidEmbedding;
-  self->_asrEuclidEmbedding = v4;
+  self->_asrEuclidEmbedding = embeddingCopy;
 }
 
 - (void)deleteSeasExecutionPathReported
@@ -1328,9 +1328,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setSeasExecutionPathReported:(id)a3
+- (void)setSeasExecutionPathReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1380,14 +1380,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 116;
-  if (!v4)
+  if (!reportedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   seasExecutionPathReported = self->_seasExecutionPathReported;
-  self->_seasExecutionPathReported = v4;
+  self->_seasExecutionPathReported = reportedCopy;
 }
 
 - (void)deletePervasiveEntityResolutionGroundTruthGenerated
@@ -1415,9 +1415,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setPervasiveEntityResolutionGroundTruthGenerated:(id)a3
+- (void)setPervasiveEntityResolutionGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1467,14 +1467,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 115;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   pervasiveEntityResolutionGroundTruthGenerated = self->_pervasiveEntityResolutionGroundTruthGenerated;
-  self->_pervasiveEntityResolutionGroundTruthGenerated = v4;
+  self->_pervasiveEntityResolutionGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteCommsAppSelectionGroundTruthGenerated
@@ -1502,9 +1502,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setCommsAppSelectionGroundTruthGenerated:(id)a3
+- (void)setCommsAppSelectionGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1554,14 +1554,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 114;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   commsAppSelectionGroundTruthGenerated = self->_commsAppSelectionGroundTruthGenerated;
-  self->_commsAppSelectionGroundTruthGenerated = v4;
+  self->_commsAppSelectionGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteNotebookAppSelectionGroundTruthGenerated
@@ -1589,9 +1589,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setNotebookAppSelectionGroundTruthGenerated:(id)a3
+- (void)setNotebookAppSelectionGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1641,14 +1641,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 113;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   notebookAppSelectionGroundTruthGenerated = self->_notebookAppSelectionGroundTruthGenerated;
-  self->_notebookAppSelectionGroundTruthGenerated = v4;
+  self->_notebookAppSelectionGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteWorkoutsAppSelectionGroundTruthGenerated
@@ -1676,9 +1676,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setWorkoutsAppSelectionGroundTruthGenerated:(id)a3
+- (void)setWorkoutsAppSelectionGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1728,14 +1728,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 112;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   workoutsAppSelectionGroundTruthGenerated = self->_workoutsAppSelectionGroundTruthGenerated;
-  self->_workoutsAppSelectionGroundTruthGenerated = v4;
+  self->_workoutsAppSelectionGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteAbModelResultTriggered
@@ -1763,9 +1763,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setAbModelResultTriggered:(id)a3
+- (void)setAbModelResultTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1815,14 +1815,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 111;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   abModelResultTriggered = self->_abModelResultTriggered;
-  self->_abModelResultTriggered = v4;
+  self->_abModelResultTriggered = triggeredCopy;
 }
 
 - (void)deleteAbModelEvaluated
@@ -1850,9 +1850,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setAbModelEvaluated:(id)a3
+- (void)setAbModelEvaluated:(id)evaluated
 {
-  v4 = a3;
+  evaluatedCopy = evaluated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1902,14 +1902,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 110;
-  if (!v4)
+  if (!evaluatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   abModelEvaluated = self->_abModelEvaluated;
-  self->_abModelEvaluated = v4;
+  self->_abModelEvaluated = evaluatedCopy;
 }
 
 - (void)deleteCrrTrainingSampleCollected
@@ -1937,9 +1937,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setCrrTrainingSampleCollected:(id)a3
+- (void)setCrrTrainingSampleCollected:(id)collected
 {
-  v4 = a3;
+  collectedCopy = collected;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -1989,14 +1989,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 109;
-  if (!v4)
+  if (!collectedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   crrTrainingSampleCollected = self->_crrTrainingSampleCollected;
-  self->_crrTrainingSampleCollected = v4;
+  self->_crrTrainingSampleCollected = collectedCopy;
 }
 
 - (void)deleteContactCandidatesInfoGenerated
@@ -2024,9 +2024,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setContactCandidatesInfoGenerated:(id)a3
+- (void)setContactCandidatesInfoGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2076,14 +2076,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 108;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   contactCandidatesInfoGenerated = self->_contactCandidatesInfoGenerated;
-  self->_contactCandidatesInfoGenerated = v4;
+  self->_contactCandidatesInfoGenerated = generatedCopy;
 }
 
 - (void)deleteUserPromptSelectedInfoGenerated
@@ -2111,9 +2111,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setUserPromptSelectedInfoGenerated:(id)a3
+- (void)setUserPromptSelectedInfoGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2163,14 +2163,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 107;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   userPromptSelectedInfoGenerated = self->_userPromptSelectedInfoGenerated;
-  self->_userPromptSelectedInfoGenerated = v4;
+  self->_userPromptSelectedInfoGenerated = generatedCopy;
 }
 
 - (void)deleteResolutionQueryInfoGenerated
@@ -2198,9 +2198,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setResolutionQueryInfoGenerated:(id)a3
+- (void)setResolutionQueryInfoGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2250,14 +2250,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 106;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   resolutionQueryInfoGenerated = self->_resolutionQueryInfoGenerated;
-  self->_resolutionQueryInfoGenerated = v4;
+  self->_resolutionQueryInfoGenerated = generatedCopy;
 }
 
 - (void)deleteSimpleTaskInfoGenerated
@@ -2285,9 +2285,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setSimpleTaskInfoGenerated:(id)a3
+- (void)setSimpleTaskInfoGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2337,14 +2337,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 105;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   simpleTaskInfoGenerated = self->_simpleTaskInfoGenerated;
-  self->_simpleTaskInfoGenerated = v4;
+  self->_simpleTaskInfoGenerated = generatedCopy;
 }
 
 - (void)deleteResolutionRequestContext
@@ -2372,9 +2372,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setResolutionRequestContext:(id)a3
+- (void)setResolutionRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2424,14 +2424,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   resolutionRequestContext = self->_resolutionRequestContext;
-  self->_resolutionRequestContext = v4;
+  self->_resolutionRequestContext = contextCopy;
 }
 
 - (void)deleteVideoSmartAppSelectionDisambiguation
@@ -2459,9 +2459,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setVideoSmartAppSelectionDisambiguation:(id)a3
+- (void)setVideoSmartAppSelectionDisambiguation:(id)disambiguation
 {
-  v4 = a3;
+  disambiguationCopy = disambiguation;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2511,14 +2511,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 103;
-  if (!v4)
+  if (!disambiguationCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   videoSmartAppSelectionDisambiguation = self->_videoSmartAppSelectionDisambiguation;
-  self->_videoSmartAppSelectionDisambiguation = v4;
+  self->_videoSmartAppSelectionDisambiguation = disambiguationCopy;
 }
 
 - (void)deleteVideoPlayOnThirdPartyAppGroundTruthGenerated
@@ -2546,9 +2546,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setVideoPlayOnThirdPartyAppGroundTruthGenerated:(id)a3
+- (void)setVideoPlayOnThirdPartyAppGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
   self->_musicAppSelectionGroundTruthGenerated = 0;
 
@@ -2598,14 +2598,14 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 102;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   videoPlayOnThirdPartyAppGroundTruthGenerated = self->_videoPlayOnThirdPartyAppGroundTruthGenerated;
-  self->_videoPlayOnThirdPartyAppGroundTruthGenerated = v4;
+  self->_videoPlayOnThirdPartyAppGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteMusicAppSelectionGroundTruthGenerated
@@ -2633,9 +2633,9 @@ LABEL_94:
   return v3;
 }
 
-- (void)setMusicAppSelectionGroundTruthGenerated:(id)a3
+- (void)setMusicAppSelectionGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   videoPlayOnThirdPartyAppGroundTruthGenerated = self->_videoPlayOnThirdPartyAppGroundTruthGenerated;
   self->_videoPlayOnThirdPartyAppGroundTruthGenerated = 0;
 
@@ -2685,194 +2685,194 @@ LABEL_94:
   self->_asrEuclidEmbedding = 0;
 
   v21 = 101;
-  if (!v4)
+  if (!generatedCopy)
   {
     v21 = 0;
   }
 
   self->_whichEvent_Type = v21;
   musicAppSelectionGroundTruthGenerated = self->_musicAppSelectionGroundTruthGenerated;
-  self->_musicAppSelectionGroundTruthGenerated = v4;
+  self->_musicAppSelectionGroundTruthGenerated = generatedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x10)
+  whichEvent_Type = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x10)
   {
     return @"com.apple.aiml.siri.inference.INFERENCEClientEvent";
   }
 
   else
   {
-    return off_1E78D87E0[v2 - 101];
+    return off_1E78D87E0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v61.receiver = self;
   v61.super_class = INFERENCESchemaINFERENCEClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  musicAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self musicAppSelectionGroundTruthGenerated];
+  v10 = [musicAppSelectionGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteMusicAppSelectionGroundTruthGenerated];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  videoPlayOnThirdPartyAppGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self videoPlayOnThirdPartyAppGroundTruthGenerated];
+  v13 = [videoPlayOnThirdPartyAppGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteVideoPlayOnThirdPartyAppGroundTruthGenerated];
   }
 
-  v15 = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  videoSmartAppSelectionDisambiguation = [(INFERENCESchemaINFERENCEClientEvent *)self videoSmartAppSelectionDisambiguation];
+  v16 = [videoSmartAppSelectionDisambiguation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteVideoSmartAppSelectionDisambiguation];
   }
 
-  v18 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  resolutionRequestContext = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionRequestContext];
+  v19 = [resolutionRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteResolutionRequestContext];
   }
 
-  v21 = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  simpleTaskInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self simpleTaskInfoGenerated];
+  v22 = [simpleTaskInfoGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteSimpleTaskInfoGenerated];
   }
 
-  v24 = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  resolutionQueryInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self resolutionQueryInfoGenerated];
+  v25 = [resolutionQueryInfoGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteResolutionQueryInfoGenerated];
   }
 
-  v27 = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  userPromptSelectedInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self userPromptSelectedInfoGenerated];
+  v28 = [userPromptSelectedInfoGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteUserPromptSelectedInfoGenerated];
   }
 
-  v30 = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  contactCandidatesInfoGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self contactCandidatesInfoGenerated];
+  v31 = [contactCandidatesInfoGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteContactCandidatesInfoGenerated];
   }
 
-  v33 = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  crrTrainingSampleCollected = [(INFERENCESchemaINFERENCEClientEvent *)self crrTrainingSampleCollected];
+  v34 = [crrTrainingSampleCollected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteCrrTrainingSampleCollected];
   }
 
-  v36 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  abModelEvaluated = [(INFERENCESchemaINFERENCEClientEvent *)self abModelEvaluated];
+  v37 = [abModelEvaluated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteAbModelEvaluated];
   }
 
-  v39 = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  abModelResultTriggered = [(INFERENCESchemaINFERENCEClientEvent *)self abModelResultTriggered];
+  v40 = [abModelResultTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteAbModelResultTriggered];
   }
 
-  v42 = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  workoutsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self workoutsAppSelectionGroundTruthGenerated];
+  v43 = [workoutsAppSelectionGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteWorkoutsAppSelectionGroundTruthGenerated];
   }
 
-  v45 = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  notebookAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self notebookAppSelectionGroundTruthGenerated];
+  v46 = [notebookAppSelectionGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteNotebookAppSelectionGroundTruthGenerated];
   }
 
-  v48 = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  commsAppSelectionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self commsAppSelectionGroundTruthGenerated];
+  v49 = [commsAppSelectionGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteCommsAppSelectionGroundTruthGenerated];
   }
 
-  v51 = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  pervasiveEntityResolutionGroundTruthGenerated = [(INFERENCESchemaINFERENCEClientEvent *)self pervasiveEntityResolutionGroundTruthGenerated];
+  v52 = [pervasiveEntityResolutionGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deletePervasiveEntityResolutionGroundTruthGenerated];
   }
 
-  v54 = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  seasExecutionPathReported = [(INFERENCESchemaINFERENCEClientEvent *)self seasExecutionPathReported];
+  v55 = [seasExecutionPathReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteSeasExecutionPathReported];
   }
 
-  v57 = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  asrEuclidEmbedding = [(INFERENCESchemaINFERENCEClientEvent *)self asrEuclidEmbedding];
+  v58 = [asrEuclidEmbedding applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(INFERENCESchemaINFERENCEClientEvent *)self deleteAsrEuclidEmbedding];
   }
@@ -2890,112 +2890,112 @@ LABEL_94:
 
 - (int)componentName
 {
-  v2 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-  v3 = [v2 inferenceId];
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  inferenceId = [eventMetadata inferenceId];
 
-  if (v3)
+  if (inferenceId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [inferenceId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [inferenceId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 27;
+        LODWORD(value) = 27;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
-  v3 = [v2 inferenceId];
+  eventMetadata = [(INFERENCESchemaINFERENCEClientEvent *)self eventMetadata];
+  inferenceId = [eventMetadata inferenceId];
 
-  if (!v3)
+  if (!inferenceId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [inferenceId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [inferenceId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = inferenceId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x10)
+  whichEvent_Type = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x10)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9C08[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9C08[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x10)
+  if (tag - 101 > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9C90[a3 - 101];
+    return off_1E78E9C90[tag - 101];
   }
 }
 
 - (int)clockIsolationLevel
 {
-  v2 = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0xE)
+  whichEvent_Type = [(INFERENCESchemaINFERENCEClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xE)
   {
     return 1;
   }
 
   else
   {
-    return dword_1AA738C28[v2 - 101];
+    return dword_1AA738C28[whichEvent_Type - 101];
   }
 }
 

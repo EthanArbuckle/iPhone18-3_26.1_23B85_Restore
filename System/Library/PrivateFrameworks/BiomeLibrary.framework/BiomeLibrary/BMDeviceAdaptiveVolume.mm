@@ -1,19 +1,19 @@
 @interface BMDeviceAdaptiveVolume
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceAdaptiveVolume)initWithControllerVersion:(id)a3 refMicdBA:(id)a4 refMicdBC:(id)a5 drumdBA:(id)a6 drumdBK:(id)a7 drumdBAPredicted:(id)a8 downlinkdBA:(id)a9 currentVolumePrct:(id)a10 lastUserVolChangeType:(id)a11 headphoneMode:(id)a12 streamType:(id)a13 windSpeechAggressorFlag:(id)a14 volumeChangeFlag:(id)a15 speechPresenceProbability:(id)a16 personalizationParamSnr:(id)a17 personalizationParamMistakes:(id)a18 lastEMediadBA:(id)a19 lastVolMediaPrct:(id)a20 lastETelephonydBA:(id)a21 lastVolTelephonyPrct:(id)a22 lastESiridBA:(id)a23 lastVolSiriPrct:(id)a24 smoothEae:(id)a25 desiredDeltaE:(id)a26 predVolMediaPrct:(id)a27 predVolTelephonyPrct:(id)a28 predVolSiriPrct:(id)a29 onStartPredictionFlag:(id)a30 guardrailsAvoidFlag:(id)a31 minMaxCutFlag:(id)a32 manualVolumeChangeFlag:(id)a33 bigWindowSize:(id)a34 smallWindowSize:(id)a35 activeAppName:(id)a36 activeAirpodsSerialNumber:(id)a37;
-- (BMDeviceAdaptiveVolume)initWithControllerVersion:(void *)a3 refMicdBA:(void *)a4 refMicdBC:(void *)a5 drumdBA:(void *)a6 drumdBK:(void *)a7 drumdBAPredicted:(void *)a8 downlinkdBA:(id)a9 currentVolumePrct:(id)a10 lastUserVolChangeType:(id)a11 headphoneMode:(id)a12 streamType:(id)a13 windSpeechAggressorFlag:(id)a14 volumeChangeFlag:(id)a15 speechPresenceProbability:(id)a16 personalizationParamSnr:(id)a17 personalizationParamMistakes:(id)a18 lastEMediadBA:(id)a19 lastVolMediaPrct:(id)a20 lastETelephonydBA:(id)a21 lastVolTelephonyPrct:(id)a22 lastESiridBA:(id)a23 lastVolSiriPrct:(id)a24 smoothEae:(id)a25 desiredDeltaE:(id)a26 predVolMediaPrct:(id)a27 predVolTelephonyPrct:(id)a28 predVolSiriPrct:(id)a29 onStartPredictionFlag:(id)a30 guardrailsAvoidFlag:(id)a31 minMaxCutFlag:(id)a32 manualVolumeChangeFlag:(id)a33 bigWindowSize:(id)a34 smallWindowSize:(id)a35 activeAppName:(id)a36 activeAirpodsSerialNumber:(id)a37 anchorVol:(id)a38 anchorEnv:(id)a39 personalizationCoeff:(id)a40 unsignedPredVolMediaPrct:(id)a41 unsignedPredVolTelephonyPrct:(id)a42 unsignedPredVolSiriPrct:(id)a43 singleBudFlag:(id)a44 cdEngagementFlag:(id)a45 activeStreamFlag:(id)a46 pvFeatureEnableFlag:(id)a47 envSpectralData32B:(id)a48 windStrength:(id)a49 windProb:(id)a50 mediaType:(id)a51 sourceActivity:(id)a52 budActivity:(id)a53 location:(id)a54 locationType:(id)a55 focusMode:(id)a56 streamingAppBundleId:(id)a57 noiseType4B:(id)a58 instdBA:(id)a59 instdBC:(id)a60 nonCAListeningMode:(id)a61 fit:(id)a62 fixedAutoAncGain:(id)a63 adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:;
-- (BMDeviceAdaptiveVolume)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceAdaptiveVolume)initWithControllerVersion:(id)version refMicdBA:(id)a refMicdBC:(id)c drumdBA:(id)bA drumdBK:(id)k drumdBAPredicted:(id)predicted downlinkdBA:(id)downlinkdBA currentVolumePrct:(id)self0 lastUserVolChangeType:(id)self1 headphoneMode:(id)self2 streamType:(id)self3 windSpeechAggressorFlag:(id)self4 volumeChangeFlag:(id)self5 speechPresenceProbability:(id)self6 personalizationParamSnr:(id)self7 personalizationParamMistakes:(id)self8 lastEMediadBA:(id)self9 lastVolMediaPrct:(id)mediaPrct lastETelephonydBA:(id)telephonydBA lastVolTelephonyPrct:(id)telephonyPrct lastESiridBA:(id)siridBA lastVolSiriPrct:(id)siriPrct smoothEae:(id)eae desiredDeltaE:(id)e predVolMediaPrct:(id)volMediaPrct predVolTelephonyPrct:(id)volTelephonyPrct predVolSiriPrct:(id)volSiriPrct onStartPredictionFlag:(id)version0 guardrailsAvoidFlag:(id)version1 minMaxCutFlag:(id)version2 manualVolumeChangeFlag:(id)version3 bigWindowSize:(id)version4 smallWindowSize:(id)version5 activeAppName:(id)version6 activeAirpodsSerialNumber:(id)version7;
+- (BMDeviceAdaptiveVolume)initWithControllerVersion:(void *)version refMicdBA:(void *)a refMicdBC:(void *)c drumdBA:(void *)bA drumdBK:(void *)k drumdBAPredicted:(void *)predicted downlinkdBA:(id)downlinkdBA currentVolumePrct:(id)self0 lastUserVolChangeType:(id)self1 headphoneMode:(id)self2 streamType:(id)self3 windSpeechAggressorFlag:(id)self4 volumeChangeFlag:(id)self5 speechPresenceProbability:(id)self6 personalizationParamSnr:(id)self7 personalizationParamMistakes:(id)self8 lastEMediadBA:(id)self9 lastVolMediaPrct:(id)mediaPrct lastETelephonydBA:(id)telephonydBA lastVolTelephonyPrct:(id)telephonyPrct lastESiridBA:(id)siridBA lastVolSiriPrct:(id)siriPrct smoothEae:(id)eae desiredDeltaE:(id)e predVolMediaPrct:(id)volMediaPrct predVolTelephonyPrct:(id)volTelephonyPrct predVolSiriPrct:(id)volSiriPrct onStartPredictionFlag:(id)version0 guardrailsAvoidFlag:(id)version1 minMaxCutFlag:(id)version2 manualVolumeChangeFlag:(id)version3 bigWindowSize:(id)version4 smallWindowSize:(id)version5 activeAppName:(id)version6 activeAirpodsSerialNumber:(id)version7 anchorVol:(id)version8 anchorEnv:(id)version9 personalizationCoeff:(id)a0 unsignedPredVolMediaPrct:(id)a1 unsignedPredVolTelephonyPrct:(id)a2 unsignedPredVolSiriPrct:(id)a3 singleBudFlag:(id)a4 cdEngagementFlag:(id)c activeStreamFlag:(id)bA pvFeatureEnableFlag:(id)k envSpectralData32B:(id)predicted windStrength:(id)downlinkdBA windProb:(id)c0 mediaType:(id)c1 sourceActivity:(id)c2 budActivity:(id)c3 location:(id)c4 locationType:(id)c5 focusMode:(id)c6 streamingAppBundleId:(id)c7 noiseType4B:(id)c8 instdBA:(id)c9 instdBC:(id)bA0 nonCAListeningMode:(id)bA1 fit:(id)bA2 fixedAutoAncGain:(id)bA3 adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:;
+- (BMDeviceAdaptiveVolume)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_envSpectralData32BJSONArray;
 - (id)_noiseType4BJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (uint64_t)initWithControllerVersion:(void *)a1 refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:;
-- (void)writeTo:(id)a3;
+- (uint64_t)initWithControllerVersion:(void *)version refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceAdaptiveVolume
@@ -172,13 +172,13 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMDeviceAdaptiveVolume hasControllerVersion](self, "hasControllerVersion") || [v5 hasControllerVersion])
     {
       if (![(BMDeviceAdaptiveVolume *)self hasControllerVersion])
@@ -191,8 +191,8 @@
         goto LABEL_339;
       }
 
-      v6 = [(BMDeviceAdaptiveVolume *)self controllerVersion];
-      if (v6 != [v5 controllerVersion])
+      controllerVersion = [(BMDeviceAdaptiveVolume *)self controllerVersion];
+      if (controllerVersion != [v5 controllerVersion])
       {
         goto LABEL_339;
       }
@@ -210,8 +210,8 @@
         goto LABEL_339;
       }
 
-      v7 = [(BMDeviceAdaptiveVolume *)self refMicdBA];
-      if (v7 != [v5 refMicdBA])
+      refMicdBA = [(BMDeviceAdaptiveVolume *)self refMicdBA];
+      if (refMicdBA != [v5 refMicdBA])
       {
         goto LABEL_339;
       }
@@ -229,8 +229,8 @@
         goto LABEL_339;
       }
 
-      v8 = [(BMDeviceAdaptiveVolume *)self refMicdBC];
-      if (v8 != [v5 refMicdBC])
+      refMicdBC = [(BMDeviceAdaptiveVolume *)self refMicdBC];
+      if (refMicdBC != [v5 refMicdBC])
       {
         goto LABEL_339;
       }
@@ -248,8 +248,8 @@
         goto LABEL_339;
       }
 
-      v9 = [(BMDeviceAdaptiveVolume *)self drumdBA];
-      if (v9 != [v5 drumdBA])
+      drumdBA = [(BMDeviceAdaptiveVolume *)self drumdBA];
+      if (drumdBA != [v5 drumdBA])
       {
         goto LABEL_339;
       }
@@ -267,8 +267,8 @@
         goto LABEL_339;
       }
 
-      v10 = [(BMDeviceAdaptiveVolume *)self drumdBK];
-      if (v10 != [v5 drumdBK])
+      drumdBK = [(BMDeviceAdaptiveVolume *)self drumdBK];
+      if (drumdBK != [v5 drumdBK])
       {
         goto LABEL_339;
       }
@@ -286,8 +286,8 @@
         goto LABEL_339;
       }
 
-      v11 = [(BMDeviceAdaptiveVolume *)self drumdBAPredicted];
-      if (v11 != [v5 drumdBAPredicted])
+      drumdBAPredicted = [(BMDeviceAdaptiveVolume *)self drumdBAPredicted];
+      if (drumdBAPredicted != [v5 drumdBAPredicted])
       {
         goto LABEL_339;
       }
@@ -305,8 +305,8 @@
         goto LABEL_339;
       }
 
-      v12 = [(BMDeviceAdaptiveVolume *)self downlinkdBA];
-      if (v12 != [v5 downlinkdBA])
+      downlinkdBA = [(BMDeviceAdaptiveVolume *)self downlinkdBA];
+      if (downlinkdBA != [v5 downlinkdBA])
       {
         goto LABEL_339;
       }
@@ -324,8 +324,8 @@
         goto LABEL_339;
       }
 
-      v13 = [(BMDeviceAdaptiveVolume *)self currentVolumePrct];
-      if (v13 != [v5 currentVolumePrct])
+      currentVolumePrct = [(BMDeviceAdaptiveVolume *)self currentVolumePrct];
+      if (currentVolumePrct != [v5 currentVolumePrct])
       {
         goto LABEL_339;
       }
@@ -343,8 +343,8 @@
         goto LABEL_339;
       }
 
-      v14 = [(BMDeviceAdaptiveVolume *)self lastUserVolChangeType];
-      if (v14 != [v5 lastUserVolChangeType])
+      lastUserVolChangeType = [(BMDeviceAdaptiveVolume *)self lastUserVolChangeType];
+      if (lastUserVolChangeType != [v5 lastUserVolChangeType])
       {
         goto LABEL_339;
       }
@@ -362,8 +362,8 @@
         goto LABEL_339;
       }
 
-      v15 = [(BMDeviceAdaptiveVolume *)self headphoneMode];
-      if (v15 != [v5 headphoneMode])
+      headphoneMode = [(BMDeviceAdaptiveVolume *)self headphoneMode];
+      if (headphoneMode != [v5 headphoneMode])
       {
         goto LABEL_339;
       }
@@ -381,8 +381,8 @@
         goto LABEL_339;
       }
 
-      v16 = [(BMDeviceAdaptiveVolume *)self streamType];
-      if (v16 != [v5 streamType])
+      streamType = [(BMDeviceAdaptiveVolume *)self streamType];
+      if (streamType != [v5 streamType])
       {
         goto LABEL_339;
       }
@@ -400,8 +400,8 @@
         goto LABEL_339;
       }
 
-      v17 = [(BMDeviceAdaptiveVolume *)self windSpeechAggressorFlag];
-      if (v17 != [v5 windSpeechAggressorFlag])
+      windSpeechAggressorFlag = [(BMDeviceAdaptiveVolume *)self windSpeechAggressorFlag];
+      if (windSpeechAggressorFlag != [v5 windSpeechAggressorFlag])
       {
         goto LABEL_339;
       }
@@ -419,8 +419,8 @@
         goto LABEL_339;
       }
 
-      v18 = [(BMDeviceAdaptiveVolume *)self volumeChangeFlag];
-      if (v18 != [v5 volumeChangeFlag])
+      volumeChangeFlag = [(BMDeviceAdaptiveVolume *)self volumeChangeFlag];
+      if (volumeChangeFlag != [v5 volumeChangeFlag])
       {
         goto LABEL_339;
       }
@@ -438,8 +438,8 @@
         goto LABEL_339;
       }
 
-      v19 = [(BMDeviceAdaptiveVolume *)self speechPresenceProbability];
-      if (v19 != [v5 speechPresenceProbability])
+      speechPresenceProbability = [(BMDeviceAdaptiveVolume *)self speechPresenceProbability];
+      if (speechPresenceProbability != [v5 speechPresenceProbability])
       {
         goto LABEL_339;
       }
@@ -457,8 +457,8 @@
         goto LABEL_339;
       }
 
-      v20 = [(BMDeviceAdaptiveVolume *)self personalizationParamSnr];
-      if (v20 != [v5 personalizationParamSnr])
+      personalizationParamSnr = [(BMDeviceAdaptiveVolume *)self personalizationParamSnr];
+      if (personalizationParamSnr != [v5 personalizationParamSnr])
       {
         goto LABEL_339;
       }
@@ -476,8 +476,8 @@
         goto LABEL_339;
       }
 
-      v21 = [(BMDeviceAdaptiveVolume *)self personalizationParamMistakes];
-      if (v21 != [v5 personalizationParamMistakes])
+      personalizationParamMistakes = [(BMDeviceAdaptiveVolume *)self personalizationParamMistakes];
+      if (personalizationParamMistakes != [v5 personalizationParamMistakes])
       {
         goto LABEL_339;
       }
@@ -495,8 +495,8 @@
         goto LABEL_339;
       }
 
-      v22 = [(BMDeviceAdaptiveVolume *)self lastEMediadBA];
-      if (v22 != [v5 lastEMediadBA])
+      lastEMediadBA = [(BMDeviceAdaptiveVolume *)self lastEMediadBA];
+      if (lastEMediadBA != [v5 lastEMediadBA])
       {
         goto LABEL_339;
       }
@@ -514,8 +514,8 @@
         goto LABEL_339;
       }
 
-      v23 = [(BMDeviceAdaptiveVolume *)self lastVolMediaPrct];
-      if (v23 != [v5 lastVolMediaPrct])
+      lastVolMediaPrct = [(BMDeviceAdaptiveVolume *)self lastVolMediaPrct];
+      if (lastVolMediaPrct != [v5 lastVolMediaPrct])
       {
         goto LABEL_339;
       }
@@ -533,8 +533,8 @@
         goto LABEL_339;
       }
 
-      v24 = [(BMDeviceAdaptiveVolume *)self lastETelephonydBA];
-      if (v24 != [v5 lastETelephonydBA])
+      lastETelephonydBA = [(BMDeviceAdaptiveVolume *)self lastETelephonydBA];
+      if (lastETelephonydBA != [v5 lastETelephonydBA])
       {
         goto LABEL_339;
       }
@@ -552,8 +552,8 @@
         goto LABEL_339;
       }
 
-      v25 = [(BMDeviceAdaptiveVolume *)self lastVolTelephonyPrct];
-      if (v25 != [v5 lastVolTelephonyPrct])
+      lastVolTelephonyPrct = [(BMDeviceAdaptiveVolume *)self lastVolTelephonyPrct];
+      if (lastVolTelephonyPrct != [v5 lastVolTelephonyPrct])
       {
         goto LABEL_339;
       }
@@ -571,8 +571,8 @@
         goto LABEL_339;
       }
 
-      v26 = [(BMDeviceAdaptiveVolume *)self lastESiridBA];
-      if (v26 != [v5 lastESiridBA])
+      lastESiridBA = [(BMDeviceAdaptiveVolume *)self lastESiridBA];
+      if (lastESiridBA != [v5 lastESiridBA])
       {
         goto LABEL_339;
       }
@@ -590,8 +590,8 @@
         goto LABEL_339;
       }
 
-      v27 = [(BMDeviceAdaptiveVolume *)self lastVolSiriPrct];
-      if (v27 != [v5 lastVolSiriPrct])
+      lastVolSiriPrct = [(BMDeviceAdaptiveVolume *)self lastVolSiriPrct];
+      if (lastVolSiriPrct != [v5 lastVolSiriPrct])
       {
         goto LABEL_339;
       }
@@ -609,8 +609,8 @@
         goto LABEL_339;
       }
 
-      v28 = [(BMDeviceAdaptiveVolume *)self smoothEae];
-      if (v28 != [v5 smoothEae])
+      smoothEae = [(BMDeviceAdaptiveVolume *)self smoothEae];
+      if (smoothEae != [v5 smoothEae])
       {
         goto LABEL_339;
       }
@@ -628,8 +628,8 @@
         goto LABEL_339;
       }
 
-      v29 = [(BMDeviceAdaptiveVolume *)self desiredDeltaE];
-      if (v29 != [v5 desiredDeltaE])
+      desiredDeltaE = [(BMDeviceAdaptiveVolume *)self desiredDeltaE];
+      if (desiredDeltaE != [v5 desiredDeltaE])
       {
         goto LABEL_339;
       }
@@ -647,8 +647,8 @@
         goto LABEL_339;
       }
 
-      v30 = [(BMDeviceAdaptiveVolume *)self predVolMediaPrct];
-      if (v30 != [v5 predVolMediaPrct])
+      predVolMediaPrct = [(BMDeviceAdaptiveVolume *)self predVolMediaPrct];
+      if (predVolMediaPrct != [v5 predVolMediaPrct])
       {
         goto LABEL_339;
       }
@@ -666,8 +666,8 @@
         goto LABEL_339;
       }
 
-      v31 = [(BMDeviceAdaptiveVolume *)self predVolTelephonyPrct];
-      if (v31 != [v5 predVolTelephonyPrct])
+      predVolTelephonyPrct = [(BMDeviceAdaptiveVolume *)self predVolTelephonyPrct];
+      if (predVolTelephonyPrct != [v5 predVolTelephonyPrct])
       {
         goto LABEL_339;
       }
@@ -685,8 +685,8 @@
         goto LABEL_339;
       }
 
-      v32 = [(BMDeviceAdaptiveVolume *)self predVolSiriPrct];
-      if (v32 != [v5 predVolSiriPrct])
+      predVolSiriPrct = [(BMDeviceAdaptiveVolume *)self predVolSiriPrct];
+      if (predVolSiriPrct != [v5 predVolSiriPrct])
       {
         goto LABEL_339;
       }
@@ -704,8 +704,8 @@
         goto LABEL_339;
       }
 
-      v33 = [(BMDeviceAdaptiveVolume *)self onStartPredictionFlag];
-      if (v33 != [v5 onStartPredictionFlag])
+      onStartPredictionFlag = [(BMDeviceAdaptiveVolume *)self onStartPredictionFlag];
+      if (onStartPredictionFlag != [v5 onStartPredictionFlag])
       {
         goto LABEL_339;
       }
@@ -723,8 +723,8 @@
         goto LABEL_339;
       }
 
-      v34 = [(BMDeviceAdaptiveVolume *)self guardrailsAvoidFlag];
-      if (v34 != [v5 guardrailsAvoidFlag])
+      guardrailsAvoidFlag = [(BMDeviceAdaptiveVolume *)self guardrailsAvoidFlag];
+      if (guardrailsAvoidFlag != [v5 guardrailsAvoidFlag])
       {
         goto LABEL_339;
       }
@@ -742,8 +742,8 @@
         goto LABEL_339;
       }
 
-      v35 = [(BMDeviceAdaptiveVolume *)self minMaxCutFlag];
-      if (v35 != [v5 minMaxCutFlag])
+      minMaxCutFlag = [(BMDeviceAdaptiveVolume *)self minMaxCutFlag];
+      if (minMaxCutFlag != [v5 minMaxCutFlag])
       {
         goto LABEL_339;
       }
@@ -761,8 +761,8 @@
         goto LABEL_339;
       }
 
-      v36 = [(BMDeviceAdaptiveVolume *)self manualVolumeChangeFlag];
-      if (v36 != [v5 manualVolumeChangeFlag])
+      manualVolumeChangeFlag = [(BMDeviceAdaptiveVolume *)self manualVolumeChangeFlag];
+      if (manualVolumeChangeFlag != [v5 manualVolumeChangeFlag])
       {
         goto LABEL_339;
       }
@@ -780,8 +780,8 @@
         goto LABEL_339;
       }
 
-      v37 = [(BMDeviceAdaptiveVolume *)self bigWindowSize];
-      if (v37 != [v5 bigWindowSize])
+      bigWindowSize = [(BMDeviceAdaptiveVolume *)self bigWindowSize];
+      if (bigWindowSize != [v5 bigWindowSize])
       {
         goto LABEL_339;
       }
@@ -799,25 +799,25 @@
         goto LABEL_339;
       }
 
-      v38 = [(BMDeviceAdaptiveVolume *)self smallWindowSize];
-      if (v38 != [v5 smallWindowSize])
+      smallWindowSize = [(BMDeviceAdaptiveVolume *)self smallWindowSize];
+      if (smallWindowSize != [v5 smallWindowSize])
       {
         goto LABEL_339;
       }
     }
 
-    v39 = [(BMDeviceAdaptiveVolume *)self activeAppName];
-    v40 = [v5 activeAppName];
-    v41 = v40;
-    if (v39 == v40)
+    activeAppName = [(BMDeviceAdaptiveVolume *)self activeAppName];
+    activeAppName2 = [v5 activeAppName];
+    v41 = activeAppName2;
+    if (activeAppName == activeAppName2)
     {
     }
 
     else
     {
-      v42 = [(BMDeviceAdaptiveVolume *)self activeAppName];
-      v43 = [v5 activeAppName];
-      v44 = [v42 isEqual:v43];
+      activeAppName3 = [(BMDeviceAdaptiveVolume *)self activeAppName];
+      activeAppName4 = [v5 activeAppName];
+      v44 = [activeAppName3 isEqual:activeAppName4];
 
       if (!v44)
       {
@@ -825,18 +825,18 @@
       }
     }
 
-    v46 = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
-    v47 = [v5 activeAirpodsSerialNumber];
-    v48 = v47;
-    if (v46 == v47)
+    activeAirpodsSerialNumber = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
+    activeAirpodsSerialNumber2 = [v5 activeAirpodsSerialNumber];
+    v48 = activeAirpodsSerialNumber2;
+    if (activeAirpodsSerialNumber == activeAirpodsSerialNumber2)
     {
     }
 
     else
     {
-      v49 = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
-      v50 = [v5 activeAirpodsSerialNumber];
-      v51 = [v49 isEqual:v50];
+      activeAirpodsSerialNumber3 = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
+      activeAirpodsSerialNumber4 = [v5 activeAirpodsSerialNumber];
+      v51 = [activeAirpodsSerialNumber3 isEqual:activeAirpodsSerialNumber4];
 
       if (!v51)
       {
@@ -856,8 +856,8 @@
         goto LABEL_339;
       }
 
-      v52 = [(BMDeviceAdaptiveVolume *)self anchorVol];
-      if (v52 != [v5 anchorVol])
+      anchorVol = [(BMDeviceAdaptiveVolume *)self anchorVol];
+      if (anchorVol != [v5 anchorVol])
       {
         goto LABEL_339;
       }
@@ -875,8 +875,8 @@
         goto LABEL_339;
       }
 
-      v53 = [(BMDeviceAdaptiveVolume *)self anchorEnv];
-      if (v53 != [v5 anchorEnv])
+      anchorEnv = [(BMDeviceAdaptiveVolume *)self anchorEnv];
+      if (anchorEnv != [v5 anchorEnv])
       {
         goto LABEL_339;
       }
@@ -894,8 +894,8 @@
         goto LABEL_339;
       }
 
-      v54 = [(BMDeviceAdaptiveVolume *)self personalizationCoeff];
-      if (v54 != [v5 personalizationCoeff])
+      personalizationCoeff = [(BMDeviceAdaptiveVolume *)self personalizationCoeff];
+      if (personalizationCoeff != [v5 personalizationCoeff])
       {
         goto LABEL_339;
       }
@@ -913,8 +913,8 @@
         goto LABEL_339;
       }
 
-      v55 = [(BMDeviceAdaptiveVolume *)self unsignedPredVolMediaPrct];
-      if (v55 != [v5 unsignedPredVolMediaPrct])
+      unsignedPredVolMediaPrct = [(BMDeviceAdaptiveVolume *)self unsignedPredVolMediaPrct];
+      if (unsignedPredVolMediaPrct != [v5 unsignedPredVolMediaPrct])
       {
         goto LABEL_339;
       }
@@ -932,8 +932,8 @@
         goto LABEL_339;
       }
 
-      v56 = [(BMDeviceAdaptiveVolume *)self unsignedPredVolTelephonyPrct];
-      if (v56 != [v5 unsignedPredVolTelephonyPrct])
+      unsignedPredVolTelephonyPrct = [(BMDeviceAdaptiveVolume *)self unsignedPredVolTelephonyPrct];
+      if (unsignedPredVolTelephonyPrct != [v5 unsignedPredVolTelephonyPrct])
       {
         goto LABEL_339;
       }
@@ -951,8 +951,8 @@
         goto LABEL_339;
       }
 
-      v57 = [(BMDeviceAdaptiveVolume *)self unsignedPredVolSiriPrct];
-      if (v57 != [v5 unsignedPredVolSiriPrct])
+      unsignedPredVolSiriPrct = [(BMDeviceAdaptiveVolume *)self unsignedPredVolSiriPrct];
+      if (unsignedPredVolSiriPrct != [v5 unsignedPredVolSiriPrct])
       {
         goto LABEL_339;
       }
@@ -970,8 +970,8 @@
         goto LABEL_339;
       }
 
-      v58 = [(BMDeviceAdaptiveVolume *)self singleBudFlag];
-      if (v58 != [v5 singleBudFlag])
+      singleBudFlag = [(BMDeviceAdaptiveVolume *)self singleBudFlag];
+      if (singleBudFlag != [v5 singleBudFlag])
       {
         goto LABEL_339;
       }
@@ -989,8 +989,8 @@
         goto LABEL_339;
       }
 
-      v59 = [(BMDeviceAdaptiveVolume *)self cdEngagementFlag];
-      if (v59 != [v5 cdEngagementFlag])
+      cdEngagementFlag = [(BMDeviceAdaptiveVolume *)self cdEngagementFlag];
+      if (cdEngagementFlag != [v5 cdEngagementFlag])
       {
         goto LABEL_339;
       }
@@ -1008,8 +1008,8 @@
         goto LABEL_339;
       }
 
-      v60 = [(BMDeviceAdaptiveVolume *)self activeStreamFlag];
-      if (v60 != [v5 activeStreamFlag])
+      activeStreamFlag = [(BMDeviceAdaptiveVolume *)self activeStreamFlag];
+      if (activeStreamFlag != [v5 activeStreamFlag])
       {
         goto LABEL_339;
       }
@@ -1027,25 +1027,25 @@
         goto LABEL_339;
       }
 
-      v61 = [(BMDeviceAdaptiveVolume *)self pvFeatureEnableFlag];
-      if (v61 != [v5 pvFeatureEnableFlag])
+      pvFeatureEnableFlag = [(BMDeviceAdaptiveVolume *)self pvFeatureEnableFlag];
+      if (pvFeatureEnableFlag != [v5 pvFeatureEnableFlag])
       {
         goto LABEL_339;
       }
     }
 
-    v62 = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
-    v63 = [v5 envSpectralData32B];
-    v64 = v63;
-    if (v62 == v63)
+    envSpectralData32B = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
+    envSpectralData32B2 = [v5 envSpectralData32B];
+    v64 = envSpectralData32B2;
+    if (envSpectralData32B == envSpectralData32B2)
     {
     }
 
     else
     {
-      v65 = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
-      v66 = [v5 envSpectralData32B];
-      v67 = [v65 isEqual:v66];
+      envSpectralData32B3 = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
+      envSpectralData32B4 = [v5 envSpectralData32B];
+      v67 = [envSpectralData32B3 isEqual:envSpectralData32B4];
 
       if (!v67)
       {
@@ -1065,8 +1065,8 @@
         goto LABEL_339;
       }
 
-      v68 = [(BMDeviceAdaptiveVolume *)self windStrength];
-      if (v68 != [v5 windStrength])
+      windStrength = [(BMDeviceAdaptiveVolume *)self windStrength];
+      if (windStrength != [v5 windStrength])
       {
         goto LABEL_339;
       }
@@ -1084,8 +1084,8 @@
         goto LABEL_339;
       }
 
-      v69 = [(BMDeviceAdaptiveVolume *)self windProb];
-      if (v69 != [v5 windProb])
+      windProb = [(BMDeviceAdaptiveVolume *)self windProb];
+      if (windProb != [v5 windProb])
       {
         goto LABEL_339;
       }
@@ -1103,8 +1103,8 @@
         goto LABEL_339;
       }
 
-      v70 = [(BMDeviceAdaptiveVolume *)self mediaType];
-      if (v70 != [v5 mediaType])
+      mediaType = [(BMDeviceAdaptiveVolume *)self mediaType];
+      if (mediaType != [v5 mediaType])
       {
         goto LABEL_339;
       }
@@ -1122,8 +1122,8 @@
         goto LABEL_339;
       }
 
-      v71 = [(BMDeviceAdaptiveVolume *)self sourceActivity];
-      if (v71 != [v5 sourceActivity])
+      sourceActivity = [(BMDeviceAdaptiveVolume *)self sourceActivity];
+      if (sourceActivity != [v5 sourceActivity])
       {
         goto LABEL_339;
       }
@@ -1141,8 +1141,8 @@
         goto LABEL_339;
       }
 
-      v72 = [(BMDeviceAdaptiveVolume *)self budActivity];
-      if (v72 != [v5 budActivity])
+      budActivity = [(BMDeviceAdaptiveVolume *)self budActivity];
+      if (budActivity != [v5 budActivity])
       {
         goto LABEL_339;
       }
@@ -1160,8 +1160,8 @@
         goto LABEL_339;
       }
 
-      v73 = [(BMDeviceAdaptiveVolume *)self location];
-      if (v73 != [v5 location])
+      location = [(BMDeviceAdaptiveVolume *)self location];
+      if (location != [v5 location])
       {
         goto LABEL_339;
       }
@@ -1179,8 +1179,8 @@
         goto LABEL_339;
       }
 
-      v74 = [(BMDeviceAdaptiveVolume *)self locationType];
-      if (v74 != [v5 locationType])
+      locationType = [(BMDeviceAdaptiveVolume *)self locationType];
+      if (locationType != [v5 locationType])
       {
         goto LABEL_339;
       }
@@ -1198,8 +1198,8 @@
         goto LABEL_339;
       }
 
-      v75 = [(BMDeviceAdaptiveVolume *)self focusMode];
-      if (v75 != [v5 focusMode])
+      focusMode = [(BMDeviceAdaptiveVolume *)self focusMode];
+      if (focusMode != [v5 focusMode])
       {
         goto LABEL_339;
       }
@@ -1217,25 +1217,25 @@
         goto LABEL_339;
       }
 
-      v76 = [(BMDeviceAdaptiveVolume *)self streamingAppBundleId];
-      if (v76 != [v5 streamingAppBundleId])
+      streamingAppBundleId = [(BMDeviceAdaptiveVolume *)self streamingAppBundleId];
+      if (streamingAppBundleId != [v5 streamingAppBundleId])
       {
         goto LABEL_339;
       }
     }
 
-    v77 = [(BMDeviceAdaptiveVolume *)self noiseType4B];
-    v78 = [v5 noiseType4B];
-    v79 = v78;
-    if (v77 == v78)
+    noiseType4B = [(BMDeviceAdaptiveVolume *)self noiseType4B];
+    noiseType4B2 = [v5 noiseType4B];
+    v79 = noiseType4B2;
+    if (noiseType4B == noiseType4B2)
     {
     }
 
     else
     {
-      v80 = [(BMDeviceAdaptiveVolume *)self noiseType4B];
-      v81 = [v5 noiseType4B];
-      v82 = [v80 isEqual:v81];
+      noiseType4B3 = [(BMDeviceAdaptiveVolume *)self noiseType4B];
+      noiseType4B4 = [v5 noiseType4B];
+      v82 = [noiseType4B3 isEqual:noiseType4B4];
 
       if (!v82)
       {
@@ -1273,8 +1273,8 @@
 
                           if (-[BMDeviceAdaptiveVolume hasRoutedDRCGain](self, "hasRoutedDRCGain") && [v5 hasRoutedDRCGain])
                           {
-                            v94 = [(BMDeviceAdaptiveVolume *)self routedDRCGain];
-                            v45 = v94 == [v5 routedDRCGain];
+                            routedDRCGain = [(BMDeviceAdaptiveVolume *)self routedDRCGain];
+                            v45 = routedDRCGain == [v5 routedDRCGain];
 LABEL_340:
 
                             goto LABEL_341;
@@ -1635,8 +1635,8 @@ LABEL_341:
     v188 = 0;
   }
 
-  v187 = [(BMDeviceAdaptiveVolume *)self activeAppName];
-  v186 = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
+  activeAppName = [(BMDeviceAdaptiveVolume *)self activeAppName];
+  activeAirpodsSerialNumber = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
   if ([(BMDeviceAdaptiveVolume *)self hasAnchorVol])
   {
     v185 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume anchorVol](self, "anchorVol")}];
@@ -1737,7 +1737,7 @@ LABEL_341:
     v176 = 0;
   }
 
-  v156 = [(BMDeviceAdaptiveVolume *)self _envSpectralData32BJSONArray];
+  _envSpectralData32BJSONArray = [(BMDeviceAdaptiveVolume *)self _envSpectralData32BJSONArray];
   if ([(BMDeviceAdaptiveVolume *)self hasWindStrength])
   {
     v155 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume windStrength](self, "windStrength")}];
@@ -1828,7 +1828,7 @@ LABEL_341:
     v169 = 0;
   }
 
-  v168 = [(BMDeviceAdaptiveVolume *)self _noiseType4BJSONArray];
+  _noiseType4BJSONArray = [(BMDeviceAdaptiveVolume *)self _noiseType4BJSONArray];
   if ([(BMDeviceAdaptiveVolume *)self hasInstdBA])
   {
     v167 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume instdBA](self, "instdBA")}];
@@ -1950,653 +1950,653 @@ LABEL_341:
   }
 
   v215[0] = @"controllerVersion";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v147 = v11;
-  v242[0] = v11;
+  v147 = null;
+  v242[0] = null;
   v215[1] = @"refMicdBA";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v146 = v12;
-  v242[1] = v12;
+  v146 = null2;
+  v242[1] = null2;
   v215[2] = @"refMicdBC";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v145 = v13;
-  v242[2] = v13;
+  v145 = null3;
+  v242[2] = null3;
   v215[3] = @"drumdBA";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v144 = v14;
-  v242[3] = v14;
+  v144 = null4;
+  v242[3] = null4;
   v215[4] = @"drumdBK";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143 = v15;
-  v242[4] = v15;
+  v143 = null5;
+  v242[4] = null5;
   v215[5] = @"drumdBAPredicted";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v142 = v16;
-  v242[5] = v16;
+  v142 = null6;
+  v242[5] = null6;
   v215[6] = @"downlinkdBA";
-  v17 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v141 = v17;
-  v242[6] = v17;
+  v141 = null7;
+  v242[6] = null7;
   v215[7] = @"currentVolumePrct";
-  v18 = v213;
+  null8 = v213;
   if (!v213)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v140 = v18;
-  v242[7] = v18;
+  v140 = null8;
+  v242[7] = null8;
   v215[8] = @"lastUserVolChangeType";
-  v19 = v212;
+  null9 = v212;
   if (!v212)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v139 = v19;
-  v242[8] = v19;
+  v139 = null9;
+  v242[8] = null9;
   v215[9] = @"headphoneMode";
-  v20 = v211;
+  null10 = v211;
   if (!v211)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v138 = v20;
-  v242[9] = v20;
+  v138 = null10;
+  v242[9] = null10;
   v215[10] = @"streamType";
-  v21 = v210;
+  null11 = v210;
   if (!v210)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v137 = v21;
-  v242[10] = v21;
+  v137 = null11;
+  v242[10] = null11;
   v215[11] = @"windSpeechAggressorFlag";
-  v22 = v209;
+  null12 = v209;
   if (!v209)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v136 = v22;
-  v242[11] = v22;
+  v136 = null12;
+  v242[11] = null12;
   v215[12] = @"volumeChangeFlag";
-  v23 = v208;
+  null13 = v208;
   if (!v208)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v135 = v23;
-  v242[12] = v23;
+  v135 = null13;
+  v242[12] = null13;
   v215[13] = @"speechPresenceProbability";
-  v24 = v207;
+  null14 = v207;
   if (!v207)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v134 = v24;
-  v242[13] = v24;
+  v134 = null14;
+  v242[13] = null14;
   v215[14] = @"personalizationParamSnr";
-  v25 = v206;
+  null15 = v206;
   if (!v206)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v133 = v25;
-  v242[14] = v25;
+  v133 = null15;
+  v242[14] = null15;
   v215[15] = @"personalizationParamMistakes";
-  v26 = v205;
+  null16 = v205;
   if (!v205)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v132 = v26;
-  v242[15] = v26;
+  v132 = null16;
+  v242[15] = null16;
   v215[16] = @"lastEMediadBA";
-  v27 = v204;
+  null17 = v204;
   if (!v204)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v131 = v27;
-  v242[16] = v27;
+  v131 = null17;
+  v242[16] = null17;
   v215[17] = @"lastVolMediaPrct";
-  v28 = v203;
+  null18 = v203;
   if (!v203)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v130 = v28;
-  v242[17] = v28;
+  v130 = null18;
+  v242[17] = null18;
   v215[18] = @"lastETelephonydBA";
-  v29 = v202;
+  null19 = v202;
   if (!v202)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v129 = v29;
-  v242[18] = v29;
+  v129 = null19;
+  v242[18] = null19;
   v215[19] = @"lastVolTelephonyPrct";
-  v30 = v201;
+  null20 = v201;
   if (!v201)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v128 = v30;
-  v242[19] = v30;
+  v128 = null20;
+  v242[19] = null20;
   v215[20] = @"lastESiridBA";
-  v31 = v200;
+  null21 = v200;
   if (!v200)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v127 = v31;
-  v242[20] = v31;
+  v127 = null21;
+  v242[20] = null21;
   v215[21] = @"lastVolSiriPrct";
-  v32 = v199;
+  null22 = v199;
   if (!v199)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v126 = v32;
-  v242[21] = v32;
+  v126 = null22;
+  v242[21] = null22;
   v215[22] = @"smoothEae";
-  v33 = v198;
+  null23 = v198;
   if (!v198)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v125 = v33;
-  v242[22] = v33;
+  v125 = null23;
+  v242[22] = null23;
   v215[23] = @"desiredDeltaE";
-  v34 = v197;
+  null24 = v197;
   if (!v197)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v124 = v34;
-  v242[23] = v34;
+  v124 = null24;
+  v242[23] = null24;
   v215[24] = @"predVolMediaPrct";
-  v35 = v196;
+  null25 = v196;
   if (!v196)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v123 = v35;
-  v242[24] = v35;
+  v123 = null25;
+  v242[24] = null25;
   v215[25] = @"predVolTelephonyPrct";
-  v36 = v195;
+  null26 = v195;
   if (!v195)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v122 = v36;
-  v242[25] = v36;
+  v122 = null26;
+  v242[25] = null26;
   v215[26] = @"predVolSiriPrct";
-  v37 = v194;
+  null27 = v194;
   if (!v194)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v121 = v37;
-  v242[26] = v37;
+  v121 = null27;
+  v242[26] = null27;
   v215[27] = @"onStartPredictionFlag";
-  v38 = v193;
+  null28 = v193;
   if (!v193)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v120 = v38;
-  v242[27] = v38;
+  v120 = null28;
+  v242[27] = null28;
   v215[28] = @"guardrailsAvoidFlag";
-  v39 = v192;
+  null29 = v192;
   if (!v192)
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v119 = v39;
-  v242[28] = v39;
+  v119 = null29;
+  v242[28] = null29;
   v215[29] = @"minMaxCutFlag";
-  v40 = v191;
+  null30 = v191;
   if (!v191)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v118 = v40;
-  v242[29] = v40;
+  v118 = null30;
+  v242[29] = null30;
   v215[30] = @"manualVolumeChangeFlag";
-  v41 = v190;
+  null31 = v190;
   if (!v190)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v117 = v41;
-  v242[30] = v41;
+  v117 = null31;
+  v242[30] = null31;
   v215[31] = @"bigWindowSize";
-  v42 = v189;
+  null32 = v189;
   if (!v189)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v116 = v42;
-  v242[31] = v42;
+  v116 = null32;
+  v242[31] = null32;
   v215[32] = @"smallWindowSize";
-  v43 = v188;
+  null33 = v188;
   if (!v188)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v115 = v43;
-  v242[32] = v43;
+  v115 = null33;
+  v242[32] = null33;
   v215[33] = @"activeAppName";
-  v44 = v187;
-  if (!v187)
+  null34 = activeAppName;
+  if (!activeAppName)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v114 = v44;
-  v242[33] = v44;
+  v114 = null34;
+  v242[33] = null34;
   v215[34] = @"activeAirpodsSerialNumber";
-  v45 = v186;
-  if (!v186)
+  null35 = activeAirpodsSerialNumber;
+  if (!activeAirpodsSerialNumber)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v113 = v45;
-  v242[34] = v45;
+  v113 = null35;
+  v242[34] = null35;
   v215[35] = @"anchorVol";
-  v46 = v185;
+  null36 = v185;
   if (!v185)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v112 = v46;
-  v242[35] = v46;
+  v112 = null36;
+  v242[35] = null36;
   v215[36] = @"anchorEnv";
-  v47 = v184;
+  null37 = v184;
   if (!v184)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v111 = v47;
-  v242[36] = v47;
+  v111 = null37;
+  v242[36] = null37;
   v215[37] = @"personalizationCoeff";
-  v48 = v183;
+  null38 = v183;
   if (!v183)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v110 = v48;
-  v242[37] = v48;
+  v110 = null38;
+  v242[37] = null38;
   v215[38] = @"unsignedPredVolMediaPrct";
-  v49 = v182;
+  null39 = v182;
   if (!v182)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v109 = v49;
-  v242[38] = v49;
+  v109 = null39;
+  v242[38] = null39;
   v215[39] = @"unsignedPredVolTelephonyPrct";
-  v50 = v181;
+  null40 = v181;
   if (!v181)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v108 = v50;
-  v242[39] = v50;
+  v108 = null40;
+  v242[39] = null40;
   v215[40] = @"unsignedPredVolSiriPrct";
-  v51 = v180;
+  null41 = v180;
   if (!v180)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v107 = v51;
-  v242[40] = v51;
+  v107 = null41;
+  v242[40] = null41;
   v215[41] = @"singleBudFlag";
-  v52 = v179;
+  null42 = v179;
   if (!v179)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v106 = v52;
-  v242[41] = v52;
+  v106 = null42;
+  v242[41] = null42;
   v215[42] = @"cdEngagementFlag";
-  v53 = v178;
+  null43 = v178;
   if (!v178)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105 = v53;
-  v242[42] = v53;
+  v105 = null43;
+  v242[42] = null43;
   v215[43] = @"activeStreamFlag";
-  v54 = v177;
+  null44 = v177;
   if (!v177)
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v104 = v54;
+  v104 = null44;
   v153 = v10;
-  v242[43] = v54;
+  v242[43] = null44;
   v215[44] = @"pvFeatureEnableFlag";
-  v55 = v176;
+  null45 = v176;
   if (!v176)
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
+    null45 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v103 = v55;
-  v242[44] = v55;
+  v103 = null45;
+  v242[44] = null45;
   v215[45] = @"envSpectralData32B";
-  if (v156)
+  if (_envSpectralData32BJSONArray)
   {
-    v243 = v156;
+    v243 = _envSpectralData32BJSONArray;
     v216 = @"envSpectralData_32B";
-    v56 = v156;
+    null47 = _envSpectralData32BJSONArray;
   }
 
   else
   {
-    v87 = [MEMORY[0x1E695DFB0] null];
-    v243 = v87;
+    null46 = [MEMORY[0x1E695DFB0] null];
+    v243 = null46;
     v216 = @"envSpectralData_32B";
-    v56 = [MEMORY[0x1E695DFB0] null];
+    null47 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v102 = v56;
-  v244 = v56;
+  v102 = null47;
+  v244 = null47;
   v217 = @"windStrength";
   if (v155)
   {
     v245 = v155;
     v218 = @"wind_strength";
-    v57 = v155;
+    null49 = v155;
   }
 
   else
   {
-    v86 = [MEMORY[0x1E695DFB0] null];
-    v245 = v86;
+    null48 = [MEMORY[0x1E695DFB0] null];
+    v245 = null48;
     v218 = @"wind_strength";
-    v57 = [MEMORY[0x1E695DFB0] null];
+    null49 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v101 = v57;
-  v246 = v57;
+  v101 = null49;
+  v246 = null49;
   v219 = @"windProb";
   if (v154)
   {
     v247 = v154;
     v220 = @"wind_prob";
-    v58 = v154;
+    null51 = v154;
   }
 
   else
   {
-    v85 = [MEMORY[0x1E695DFB0] null];
-    v247 = v85;
+    null50 = [MEMORY[0x1E695DFB0] null];
+    v247 = null50;
     v220 = @"wind_prob";
-    v58 = [MEMORY[0x1E695DFB0] null];
+    null51 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100 = v58;
-  v248 = v58;
+  v100 = null51;
+  v248 = null51;
   v221 = @"mediaType";
-  v59 = v175;
+  null52 = v175;
   if (!v175)
   {
-    v59 = [MEMORY[0x1E695DFB0] null];
+    null52 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v249 = v59;
+  v249 = null52;
   v222 = @"sourceActivity";
-  v60 = v174;
+  null53 = v174;
   if (!v174)
   {
-    v60 = [MEMORY[0x1E695DFB0] null];
+    null53 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v250 = v60;
+  v250 = null53;
   v223 = @"budActivity";
-  v61 = v173;
+  null54 = v173;
   if (!v173)
   {
-    v61 = [MEMORY[0x1E695DFB0] null];
+    null54 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v251 = v61;
+  v251 = null54;
   v224 = @"location";
-  v62 = v172;
+  null55 = v172;
   if (!v172)
   {
-    v62 = [MEMORY[0x1E695DFB0] null];
+    null55 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96 = v62;
-  v252 = v62;
+  v96 = null55;
+  v252 = null55;
   v225 = @"locationType";
-  v63 = v171;
+  null56 = v171;
   if (!v171)
   {
-    v63 = [MEMORY[0x1E695DFB0] null];
+    null56 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v95 = v63;
-  v253 = v63;
+  v95 = null56;
+  v253 = null56;
   v226 = @"focusMode";
-  v64 = v170;
+  null57 = v170;
   if (!v170)
   {
-    v64 = [MEMORY[0x1E695DFB0] null];
+    null57 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94 = v64;
-  v99 = v59;
-  v254 = v64;
+  v94 = null57;
+  v99 = null52;
+  v254 = null57;
   v227 = @"streamingAppBundleId";
-  v65 = v169;
+  null58 = v169;
   if (!v169)
   {
-    v65 = [MEMORY[0x1E695DFB0] null];
+    null58 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v93 = v65;
-  v255 = v65;
+  v93 = null58;
+  v255 = null58;
   v228 = @"noiseType4B";
-  v97 = v61;
-  if (v168)
+  v97 = null54;
+  if (_noiseType4BJSONArray)
   {
-    v256 = v168;
+    v256 = _noiseType4BJSONArray;
     v229 = @"noiseType_4B";
-    v66 = v168;
+    null60 = _noiseType4BJSONArray;
   }
 
   else
   {
-    v84 = [MEMORY[0x1E695DFB0] null];
-    v256 = v84;
+    null59 = [MEMORY[0x1E695DFB0] null];
+    v256 = null59;
     v229 = @"noiseType_4B";
-    v66 = [MEMORY[0x1E695DFB0] null];
+    null60 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v92 = v66;
-  v257 = v66;
+  v92 = null60;
+  v257 = null60;
   v230 = @"instdBA";
-  v67 = v167;
+  null61 = v167;
   if (!v167)
   {
-    v67 = [MEMORY[0x1E695DFB0] null];
+    null61 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v258 = v67;
+  v258 = null61;
   v231 = @"instdBC";
-  v68 = v166;
+  null62 = v166;
   if (!v166)
   {
-    v68 = [MEMORY[0x1E695DFB0] null];
+    null62 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v259 = v68;
+  v259 = null62;
   v232 = @"nonCAListeningMode";
-  v69 = v165;
+  null63 = v165;
   if (!v165)
   {
-    v69 = [MEMORY[0x1E695DFB0] null];
+    null63 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v214 = v69;
-  v260 = v69;
+  v214 = null63;
+  v260 = null63;
   v233 = @"fit";
-  v70 = v164;
+  null64 = v164;
   if (!v164)
   {
-    v70 = [MEMORY[0x1E695DFB0] null];
+    null64 = [MEMORY[0x1E695DFB0] null];
   }
 
   v149 = v9;
-  v90 = v70;
-  v261 = v70;
+  v90 = null64;
+  v261 = null64;
   v234 = @"fixedAutoAncGain";
-  v71 = v163;
+  null65 = v163;
   if (!v163)
   {
-    v71 = [MEMORY[0x1E695DFB0] null];
+    null65 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v98 = v60;
-  v89 = v71;
-  v262 = v71;
+  v98 = null53;
+  v89 = null65;
+  v262 = null65;
   v235 = @"adjustedAutoAncGain";
-  v72 = v162;
+  null66 = v162;
   if (!v162)
   {
-    v72 = [MEMORY[0x1E695DFB0] null];
+    null66 = [MEMORY[0x1E695DFB0] null];
   }
 
   v151 = v7;
   v152 = v6;
-  v88 = v72;
-  v263 = v72;
+  v88 = null66;
+  v263 = null66;
   v236 = @"timestamp";
-  v73 = v161;
+  null67 = v161;
   if (!v161)
   {
-    v73 = [MEMORY[0x1E695DFB0] null];
+    null67 = [MEMORY[0x1E695DFB0] null];
   }
 
   v150 = v4;
-  v264 = v73;
+  v264 = null67;
   v237 = @"DRCenablementBit";
-  v74 = v160;
+  null68 = v160;
   if (!v160)
   {
-    v74 = [MEMORY[0x1E695DFB0] null];
+    null68 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91 = v67;
+  v91 = null61;
   v75 = v8;
-  v265 = v74;
+  v265 = null68;
   v238 = @"DRCwindFlag";
-  v76 = v159;
+  null69 = v159;
   if (!v159)
   {
-    v76 = [MEMORY[0x1E695DFB0] null];
+    null69 = [MEMORY[0x1E695DFB0] null];
   }
 
   v77 = v3;
-  v266 = v76;
+  v266 = null69;
   v239 = @"DRCappSelfVoiceFlag";
-  v78 = v158;
+  null70 = v158;
   if (!v158)
   {
-    v78 = [MEMORY[0x1E695DFB0] null];
+    null70 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v267 = v78;
+  v267 = null70;
   v240 = @"drumDRC";
-  v79 = v157;
+  null71 = v157;
   if (!v157)
   {
-    v79 = [MEMORY[0x1E695DFB0] null];
+    null71 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v268 = v79;
+  v268 = null71;
   v241 = @"routedDRCGain";
-  v80 = v153;
+  null72 = v153;
   if (!v153)
   {
-    v80 = [MEMORY[0x1E695DFB0] null];
+    null72 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v269 = v80;
+  v269 = null72;
   v148 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v242 forKeys:v215 count:72];
   if (!v153)
   {
@@ -2663,7 +2663,7 @@ LABEL_341:
   {
   }
 
-  if (!v168)
+  if (!_noiseType4BJSONArray)
   {
   }
 
@@ -2712,7 +2712,7 @@ LABEL_373:
 
 LABEL_462:
 
-      if (v156)
+      if (_envSpectralData32BJSONArray)
       {
         goto LABEL_375;
       }
@@ -2727,7 +2727,7 @@ LABEL_462:
   }
 
 LABEL_374:
-  if (v156)
+  if (_envSpectralData32BJSONArray)
   {
     goto LABEL_375;
   }
@@ -2775,11 +2775,11 @@ LABEL_375:
   {
   }
 
-  if (!v186)
+  if (!activeAirpodsSerialNumber)
   {
   }
 
-  if (!v187)
+  if (!activeAppName)
   {
   }
 
@@ -2992,8 +2992,8 @@ LABEL_457:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMDeviceAdaptiveVolume *)self noiseType4B];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  noiseType4B = [(BMDeviceAdaptiveVolume *)self noiseType4B];
+  v5 = [noiseType4B countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3004,13 +3004,13 @@ LABEL_457:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(noiseType4B);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [noiseType4B countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3029,8 +3029,8 @@ LABEL_457:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  envSpectralData32B = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
+  v5 = [envSpectralData32B countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3041,13 +3041,13 @@ LABEL_457:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(envSpectralData32B);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [envSpectralData32B countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3058,11 +3058,11 @@ LABEL_457:
   return v3;
 }
 
-- (BMDeviceAdaptiveVolume)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceAdaptiveVolume)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v791[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"controllerVersion"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"controllerVersion"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -3074,7 +3074,7 @@ LABEL_457:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"refMicdBA"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"refMicdBA"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -3086,13 +3086,13 @@ LABEL_4:
     {
       v10 = v9;
 LABEL_7:
-      v637 = [v6 objectForKeyedSubscript:@"refMicdBC"];
+      v637 = [dictionaryCopy objectForKeyedSubscript:@"refMicdBC"];
       v633 = v8;
       if (!v637 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v11 = v10;
-        v12 = self;
-        v13 = a4;
+        selfCopy2 = self;
+        errorCopy2 = error;
         v636 = 0;
         goto LABEL_10;
       }
@@ -3101,11 +3101,11 @@ LABEL_7:
       if (objc_opt_isKindOfClass())
       {
         v11 = v10;
-        v12 = self;
-        v13 = a4;
+        selfCopy2 = self;
+        errorCopy2 = error;
         v636 = v637;
 LABEL_10:
-        v14 = [v6 objectForKeyedSubscript:@"drumdBA"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"drumdBA"];
         if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v629 = v14;
@@ -3119,7 +3119,7 @@ LABEL_10:
           v629 = v14;
           v630 = v14;
 LABEL_13:
-          v15 = [v6 objectForKeyedSubscript:@"drumdBK"];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"drumdBK"];
           v634 = v15;
           if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -3132,7 +3132,7 @@ LABEL_13:
           {
             v631 = v16;
 LABEL_16:
-            v17 = [v6 objectForKeyedSubscript:@"drumdBAPredicted"];
+            v17 = [dictionaryCopy objectForKeyedSubscript:@"drumdBAPredicted"];
             v628 = v17;
             if (!v17 || (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -3145,7 +3145,7 @@ LABEL_16:
             {
               v626 = v18;
 LABEL_19:
-              v19 = [v6 objectForKeyedSubscript:@"downlinkdBA"];
+              v19 = [dictionaryCopy objectForKeyedSubscript:@"downlinkdBA"];
               v625 = v19;
               if (!v19 || (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -3158,7 +3158,7 @@ LABEL_19:
               {
                 v623 = v20;
 LABEL_22:
-                v21 = [v6 objectForKeyedSubscript:@"currentVolumePrct"];
+                v21 = [dictionaryCopy objectForKeyedSubscript:@"currentVolumePrct"];
                 v611 = v21;
                 if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -3171,7 +3171,7 @@ LABEL_22:
                 {
                   v609 = v22;
 LABEL_25:
-                  v23 = [v6 objectForKeyedSubscript:@"lastUserVolChangeType"];
+                  v23 = [dictionaryCopy objectForKeyedSubscript:@"lastUserVolChangeType"];
                   v608 = v23;
                   if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
@@ -3184,7 +3184,7 @@ LABEL_25:
                   {
                     v606 = v24;
 LABEL_28:
-                    v25 = [v6 objectForKeyedSubscript:@"headphoneMode"];
+                    v25 = [dictionaryCopy objectForKeyedSubscript:@"headphoneMode"];
                     v605 = v25;
                     if (!v25 || (v26 = v25, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
@@ -3197,7 +3197,7 @@ LABEL_28:
                     {
                       v603 = v26;
 LABEL_31:
-                      v27 = [v6 objectForKeyedSubscript:@"streamType"];
+                      v27 = [dictionaryCopy objectForKeyedSubscript:@"streamType"];
                       v602 = v27;
                       if (!v27 || (v28 = v27, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
@@ -3210,7 +3210,7 @@ LABEL_31:
                       {
                         v600 = v28;
 LABEL_34:
-                        v29 = [v6 objectForKeyedSubscript:@"windSpeechAggressorFlag"];
+                        v29 = [dictionaryCopy objectForKeyedSubscript:@"windSpeechAggressorFlag"];
                         v587 = v29;
                         if (!v29 || (v30 = v29, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
@@ -3223,7 +3223,7 @@ LABEL_34:
                         {
                           v586 = v30;
 LABEL_37:
-                          v31 = [v6 objectForKeyedSubscript:@"volumeChangeFlag"];
+                          v31 = [dictionaryCopy objectForKeyedSubscript:@"volumeChangeFlag"];
                           v585 = v31;
                           if (!v31 || (v32 = v31, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
@@ -3236,7 +3236,7 @@ LABEL_37:
                           {
                             v584 = v32;
 LABEL_40:
-                            v33 = [v6 objectForKeyedSubscript:@"speechPresenceProbability"];
+                            v33 = [dictionaryCopy objectForKeyedSubscript:@"speechPresenceProbability"];
                             v583 = v33;
                             if (!v33 || (v34 = v33, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -3249,7 +3249,7 @@ LABEL_40:
                             {
                               v582 = v34;
 LABEL_43:
-                              v35 = [v6 objectForKeyedSubscript:@"personalizationParamSnr"];
+                              v35 = [dictionaryCopy objectForKeyedSubscript:@"personalizationParamSnr"];
                               v581 = v35;
                               if (!v35 || (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                               {
@@ -3262,7 +3262,7 @@ LABEL_43:
                               {
                                 v580 = v36;
 LABEL_46:
-                                v37 = [v6 objectForKeyedSubscript:@"personalizationParamMistakes"];
+                                v37 = [dictionaryCopy objectForKeyedSubscript:@"personalizationParamMistakes"];
                                 v579 = v37;
                                 if (!v37 || (v38 = v37, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
@@ -3275,25 +3275,25 @@ LABEL_46:
                                 {
                                   v578 = v38;
 LABEL_49:
-                                  v39 = [v6 objectForKeyedSubscript:@"lastEMediadBA"];
+                                  v39 = [dictionaryCopy objectForKeyedSubscript:@"lastEMediadBA"];
                                   v577 = v39;
                                   if (!v39 || (v40 = v39, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
                                     v573 = 0;
 LABEL_52:
-                                    v41 = [v6 objectForKeyedSubscript:@"lastVolMediaPrct"];
-                                    v612 = v13;
+                                    v41 = [dictionaryCopy objectForKeyedSubscript:@"lastVolMediaPrct"];
+                                    v612 = errorCopy2;
                                     v574 = v41;
                                     if (!v41)
                                     {
                                       v575 = 0;
-                                      self = v12;
+                                      self = selfCopy2;
                                       goto LABEL_119;
                                     }
 
                                     v42 = v41;
                                     objc_opt_class();
-                                    self = v12;
+                                    self = selfCopy2;
                                     if (objc_opt_isKindOfClass())
                                     {
                                       v575 = 0;
@@ -3309,7 +3309,7 @@ LABEL_119:
                                       v575 = v42;
 LABEL_120:
                                       v62 = v630;
-                                      v125 = [v6 objectForKeyedSubscript:@"lastETelephonydBA"];
+                                      v125 = [dictionaryCopy objectForKeyedSubscript:@"lastETelephonydBA"];
                                       v572 = v125;
                                       if (!v125 || (v126 = v125, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -3322,12 +3322,12 @@ LABEL_120:
                                       {
                                         v570 = v126;
 LABEL_123:
-                                        v127 = [v6 objectForKeyedSubscript:@"lastVolTelephonyPrct"];
+                                        v127 = [dictionaryCopy objectForKeyedSubscript:@"lastVolTelephonyPrct"];
                                         v569 = v127;
                                         if (!v127 || (v128 = v127, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                         {
                                           v129 = v10;
-                                          v130 = self;
+                                          selfCopy4 = self;
                                           v567 = 0;
                                           goto LABEL_126;
                                         }
@@ -3336,10 +3336,10 @@ LABEL_123:
                                         if (objc_opt_isKindOfClass())
                                         {
                                           v129 = v10;
-                                          v130 = self;
+                                          selfCopy4 = self;
                                           v567 = v128;
 LABEL_126:
-                                          v131 = [v6 objectForKeyedSubscript:@"lastESiridBA"];
+                                          v131 = [dictionaryCopy objectForKeyedSubscript:@"lastESiridBA"];
                                           v566 = v131;
                                           if (!v131 || (v132 = v131, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -3352,7 +3352,7 @@ LABEL_126:
                                           {
                                             v564 = v132;
 LABEL_129:
-                                            v133 = [v6 objectForKeyedSubscript:@"lastVolSiriPrct"];
+                                            v133 = [dictionaryCopy objectForKeyedSubscript:@"lastVolSiriPrct"];
                                             v563 = v133;
                                             if (!v133 || (v134 = v133, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -3365,7 +3365,7 @@ LABEL_129:
                                             {
                                               v561 = v134;
 LABEL_132:
-                                              v135 = [v6 objectForKeyedSubscript:@"smoothEae"];
+                                              v135 = [dictionaryCopy objectForKeyedSubscript:@"smoothEae"];
                                               v560 = v135;
                                               if (!v135 || (v136 = v135, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
@@ -3378,7 +3378,7 @@ LABEL_132:
                                               {
                                                 v558 = v136;
 LABEL_135:
-                                                v137 = [v6 objectForKeyedSubscript:@"desiredDeltaE"];
+                                                v137 = [dictionaryCopy objectForKeyedSubscript:@"desiredDeltaE"];
                                                 v557 = v137;
                                                 if (!v137 || (v138 = v137, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                 {
@@ -3391,7 +3391,7 @@ LABEL_135:
                                                 {
                                                   v555 = v138;
 LABEL_138:
-                                                  v139 = [v6 objectForKeyedSubscript:@"predVolMediaPrct"];
+                                                  v139 = [dictionaryCopy objectForKeyedSubscript:@"predVolMediaPrct"];
                                                   v554 = v139;
                                                   if (!v139 || (v140 = v139, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                   {
@@ -3404,7 +3404,7 @@ LABEL_138:
                                                   {
                                                     v552 = v140;
 LABEL_141:
-                                                    v141 = [v6 objectForKeyedSubscript:@"predVolTelephonyPrct"];
+                                                    v141 = [dictionaryCopy objectForKeyedSubscript:@"predVolTelephonyPrct"];
                                                     v551 = v141;
                                                     if (!v141 || (v142 = v141, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                     {
@@ -3417,7 +3417,7 @@ LABEL_141:
                                                     {
                                                       v548 = v142;
 LABEL_144:
-                                                      v143 = [v6 objectForKeyedSubscript:@"predVolSiriPrct"];
+                                                      v143 = [dictionaryCopy objectForKeyedSubscript:@"predVolSiriPrct"];
                                                       v540 = v129;
                                                       v547 = v143;
                                                       if (!v143 || (v144 = v143, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -3431,7 +3431,7 @@ LABEL_144:
                                                       {
                                                         v545 = v144;
 LABEL_147:
-                                                        v145 = [v6 objectForKeyedSubscript:@"onStartPredictionFlag"];
+                                                        v145 = [dictionaryCopy objectForKeyedSubscript:@"onStartPredictionFlag"];
                                                         v544 = v145;
                                                         if (!v145 || (v146 = v145, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                         {
@@ -3444,7 +3444,7 @@ LABEL_147:
                                                         {
                                                           v542 = v146;
 LABEL_150:
-                                                          v147 = [v6 objectForKeyedSubscript:@"guardrailsAvoidFlag"];
+                                                          v147 = [dictionaryCopy objectForKeyedSubscript:@"guardrailsAvoidFlag"];
                                                           v539 = v147;
                                                           if (!v147 || (v148 = v147, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                           {
@@ -3457,7 +3457,7 @@ LABEL_150:
                                                           {
                                                             v538 = v148;
 LABEL_153:
-                                                            v149 = [v6 objectForKeyedSubscript:@"minMaxCutFlag"];
+                                                            v149 = [dictionaryCopy objectForKeyedSubscript:@"minMaxCutFlag"];
                                                             v536 = v149;
                                                             if (!v149 || (v150 = v149, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                             {
@@ -3470,7 +3470,7 @@ LABEL_153:
                                                             {
                                                               v537 = v150;
 LABEL_156:
-                                                              v151 = [v6 objectForKeyedSubscript:@"manualVolumeChangeFlag"];
+                                                              v151 = [dictionaryCopy objectForKeyedSubscript:@"manualVolumeChangeFlag"];
                                                               v534 = v151;
                                                               if (!v151 || (v152 = v151, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                               {
@@ -3483,7 +3483,7 @@ LABEL_156:
                                                               {
                                                                 v535 = v152;
 LABEL_159:
-                                                                v153 = [v6 objectForKeyedSubscript:@"bigWindowSize"];
+                                                                v153 = [dictionaryCopy objectForKeyedSubscript:@"bigWindowSize"];
                                                                 v533 = v153;
                                                                 if (!v153 || (v154 = v153, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                 {
@@ -3496,8 +3496,8 @@ LABEL_159:
                                                                 {
                                                                   v532 = v154;
 LABEL_162:
-                                                                  v155 = [v6 objectForKeyedSubscript:@"smallWindowSize"];
-                                                                  self = v130;
+                                                                  v155 = [dictionaryCopy objectForKeyedSubscript:@"smallWindowSize"];
+                                                                  self = selfCopy4;
                                                                   v527 = v155;
                                                                   if (!v155 || (v156 = v155, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                   {
@@ -3510,13 +3510,13 @@ LABEL_162:
                                                                   {
                                                                     v526 = v156;
 LABEL_165:
-                                                                    v157 = [v6 objectForKeyedSubscript:@"activeAppName"];
+                                                                    v157 = [dictionaryCopy objectForKeyedSubscript:@"activeAppName"];
                                                                     v525 = v157;
                                                                     if (!v157 || (v158 = v157, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                     {
                                                                       v524 = 0;
 LABEL_168:
-                                                                      v159 = [v6 objectForKeyedSubscript:@"activeAirpodsSerialNumber"];
+                                                                      v159 = [dictionaryCopy objectForKeyedSubscript:@"activeAirpodsSerialNumber"];
                                                                       v522 = v159;
                                                                       if (v159 && (v160 = v159, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                       {
@@ -3566,13 +3566,13 @@ LABEL_563:
                                                                       }
 
                                                                       v62 = v630;
-                                                                      v161 = [v6 objectForKeyedSubscript:@"anchorVol"];
+                                                                      v161 = [dictionaryCopy objectForKeyedSubscript:@"anchorVol"];
                                                                       v520 = v161;
                                                                       if (!v161 || (v162 = v161, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                       {
                                                                         v521 = 0;
 LABEL_174:
-                                                                        v163 = [v6 objectForKeyedSubscript:@"anchorEnv"];
+                                                                        v163 = [dictionaryCopy objectForKeyedSubscript:@"anchorEnv"];
                                                                         v515 = v163;
                                                                         if (v163 && (v164 = v163, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                         {
@@ -3591,12 +3591,12 @@ LABEL_174:
                                                                             v298 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                             v299 = *MEMORY[0x1E698F240];
                                                                             v718 = *MEMORY[0x1E696A578];
-                                                                            v594 = v6;
+                                                                            v594 = dictionaryCopy;
                                                                             v300 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                             v454 = objc_opt_class();
                                                                             v301 = v300;
                                                                             v10 = v540;
-                                                                            v6 = v594;
+                                                                            dictionaryCopy = v594;
                                                                             v512 = [v301 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v454, @"anchorEnv"];
                                                                             v719 = v512;
                                                                             v165 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v719 forKeys:&v718 count:1];
@@ -3616,13 +3616,13 @@ LABEL_174:
                                                                           v519 = 0;
                                                                         }
 
-                                                                        v165 = [v6 objectForKeyedSubscript:@"personalizationCoeff"];
+                                                                        v165 = [dictionaryCopy objectForKeyedSubscript:@"personalizationCoeff"];
                                                                         if (!v165 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                         {
                                                                           v509 = v165;
                                                                           v512 = 0;
 LABEL_180:
-                                                                          v166 = [v6 objectForKeyedSubscript:@"unsignedPredVolMediaPrct"];
+                                                                          v166 = [dictionaryCopy objectForKeyedSubscript:@"unsignedPredVolMediaPrct"];
                                                                           v511 = v166;
                                                                           if (v166 && (v167 = v166, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
@@ -3634,13 +3634,13 @@ LABEL_180:
                                                                                 v309 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                 v310 = *MEMORY[0x1E698F240];
                                                                                 v714 = *MEMORY[0x1E696A578];
-                                                                                v596 = v6;
+                                                                                v596 = dictionaryCopy;
                                                                                 v311 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                                 v456 = objc_opt_class();
                                                                                 v312 = v311;
                                                                                 v165 = v509;
                                                                                 v10 = v540;
-                                                                                v6 = v596;
+                                                                                dictionaryCopy = v596;
                                                                                 v507 = [v312 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v456, @"unsignedPredVolMediaPrct"];
                                                                                 v715 = v507;
                                                                                 v313 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v715 forKeys:&v714 count:1];
@@ -3671,7 +3671,7 @@ LABEL_180:
                                                                             v510 = 0;
                                                                           }
 
-                                                                          v168 = [v6 objectForKeyedSubscript:@"unsignedPredVolTelephonyPrct"];
+                                                                          v168 = [dictionaryCopy objectForKeyedSubscript:@"unsignedPredVolTelephonyPrct"];
                                                                           v508 = v168;
                                                                           if (v168 && (v169 = v168, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
@@ -3683,13 +3683,13 @@ LABEL_180:
                                                                                 v328 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                 v329 = *MEMORY[0x1E698F240];
                                                                                 v712 = *MEMORY[0x1E696A578];
-                                                                                v597 = v6;
+                                                                                v597 = dictionaryCopy;
                                                                                 v330 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                                 v457 = objc_opt_class();
                                                                                 v331 = v330;
                                                                                 v165 = v509;
                                                                                 v10 = v540;
-                                                                                v6 = v597;
+                                                                                dictionaryCopy = v597;
                                                                                 v505 = [v331 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v457, @"unsignedPredVolTelephonyPrct"];
                                                                                 v713 = v505;
                                                                                 v332 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v713 forKeys:&v712 count:1];
@@ -3720,7 +3720,7 @@ LABEL_180:
                                                                             v507 = 0;
                                                                           }
 
-                                                                          v170 = [v6 objectForKeyedSubscript:@"unsignedPredVolSiriPrct"];
+                                                                          v170 = [dictionaryCopy objectForKeyedSubscript:@"unsignedPredVolSiriPrct"];
                                                                           v506 = v170;
                                                                           if (v170 && (v171 = v170, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
@@ -3732,13 +3732,13 @@ LABEL_180:
                                                                                 v334 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                 v335 = *MEMORY[0x1E698F240];
                                                                                 v710 = *MEMORY[0x1E696A578];
-                                                                                v598 = v6;
+                                                                                v598 = dictionaryCopy;
                                                                                 v336 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                                 v458 = objc_opt_class();
                                                                                 v337 = v336;
                                                                                 v165 = v509;
                                                                                 v10 = v540;
-                                                                                v6 = v598;
+                                                                                dictionaryCopy = v598;
                                                                                 v503 = [v337 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v458, @"unsignedPredVolSiriPrct"];
                                                                                 v711 = v503;
                                                                                 v338 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v711 forKeys:&v710 count:1];
@@ -3769,7 +3769,7 @@ LABEL_180:
                                                                             v505 = 0;
                                                                           }
 
-                                                                          v172 = [v6 objectForKeyedSubscript:@"singleBudFlag"];
+                                                                          v172 = [dictionaryCopy objectForKeyedSubscript:@"singleBudFlag"];
                                                                           v504 = v172;
                                                                           if (v172 && (v173 = v172, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
@@ -3778,7 +3778,7 @@ LABEL_180:
                                                                             {
                                                                               v340 = v10;
                                                                               v341 = v8;
-                                                                              v342 = self;
+                                                                              selfCopy8 = self;
                                                                               if (!v612)
                                                                               {
                                                                                 v503 = 0;
@@ -3811,13 +3811,13 @@ LABEL_180:
                                                                             v503 = 0;
                                                                           }
 
-                                                                          v174 = [v6 objectForKeyedSubscript:@"cdEngagementFlag"];
+                                                                          v174 = [dictionaryCopy objectForKeyedSubscript:@"cdEngagementFlag"];
                                                                           v502 = v174;
                                                                           if (!v174 || (v175 = v174, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                           {
                                                                             v501 = 0;
 LABEL_195:
-                                                                            v176 = [v6 objectForKeyedSubscript:@"activeStreamFlag"];
+                                                                            v176 = [dictionaryCopy objectForKeyedSubscript:@"activeStreamFlag"];
                                                                             v500 = v176;
                                                                             if (!v176)
                                                                             {
@@ -3836,7 +3836,7 @@ LABEL_195:
                                                                             {
                                                                               v176 = v176;
 LABEL_338:
-                                                                              v315 = [v6 objectForKeyedSubscript:@"pvFeatureEnableFlag"];
+                                                                              v315 = [dictionaryCopy objectForKeyedSubscript:@"pvFeatureEnableFlag"];
                                                                               v499 = v315;
                                                                               if (!v315 || (v316 = v315, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                               {
@@ -3849,9 +3849,9 @@ LABEL_338:
                                                                               {
                                                                                 v498 = v316;
 LABEL_341:
-                                                                                v317 = [v6 objectForKeyedSubscript:@"envSpectralData32B"];
-                                                                                v318 = [MEMORY[0x1E695DFB0] null];
-                                                                                v319 = [v317 isEqual:v318];
+                                                                                v317 = [dictionaryCopy objectForKeyedSubscript:@"envSpectralData32B"];
+                                                                                null = [MEMORY[0x1E695DFB0] null];
+                                                                                v319 = [v317 isEqual:null];
 
                                                                                 v496 = v176;
                                                                                 if (v319)
@@ -3894,7 +3894,7 @@ LABEL_341:
                                                                                   }
                                                                                 }
 
-                                                                                v528 = self;
+                                                                                selfCopy6 = self;
                                                                                 v516 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v317, "count")}];
                                                                                 v642 = 0u;
                                                                                 v643 = 0u;
@@ -3936,7 +3936,7 @@ LABEL_373:
                                                                                           v47 = 0;
                                                                                           v612->super.super.isa = [v347 initWithDomain:v348 code:2 userInfo:?];
                                                                                           v495 = v320;
-                                                                                          self = v528;
+                                                                                          self = selfCopy6;
                                                                                           v8 = v633;
                                                                                           v65 = v629;
                                                                                           v199 = v573;
@@ -3946,7 +3946,7 @@ LABEL_373:
 LABEL_378:
                                                                                         v47 = 0;
                                                                                         v353 = v320;
-                                                                                        self = v528;
+                                                                                        self = selfCopy6;
                                                                                         v8 = v633;
                                                                                         v10 = v540;
                                                                                         v65 = v629;
@@ -3984,7 +3984,7 @@ LABEL_378:
                                                                                   while (v322);
                                                                                 }
 
-                                                                                v326 = [v6 objectForKeyedSubscript:@"windStrength"];
+                                                                                v326 = [dictionaryCopy objectForKeyedSubscript:@"windStrength"];
                                                                                 v550 = v7;
                                                                                 v541 = v9;
                                                                                 if (v326)
@@ -3994,7 +3994,7 @@ LABEL_378:
 
                                                                                 else
                                                                                 {
-                                                                                  v327 = [v6 objectForKeyedSubscript:@"wind_strength"];
+                                                                                  v327 = [dictionaryCopy objectForKeyedSubscript:@"wind_strength"];
 
                                                                                   if (!v327)
                                                                                   {
@@ -4026,7 +4026,7 @@ LABEL_378:
 
                                                                                     v495 = 0;
                                                                                     v47 = 0;
-                                                                                    self = v528;
+                                                                                    self = selfCopy6;
                                                                                     v8 = v633;
                                                                                     v10 = v540;
                                                                                     v65 = v629;
@@ -4038,8 +4038,8 @@ LABEL_378:
                                                                                   v514 = v327;
                                                                                   v495 = v514;
 LABEL_402:
-                                                                                  v363 = [v6 objectForKeyedSubscript:@"windProb"];
-                                                                                  v599 = v6;
+                                                                                  v363 = [dictionaryCopy objectForKeyedSubscript:@"windProb"];
+                                                                                  v599 = dictionaryCopy;
                                                                                   if (v363)
                                                                                   {
                                                                                     v362 = v363;
@@ -4047,7 +4047,7 @@ LABEL_402:
 
                                                                                   else
                                                                                   {
-                                                                                    v362 = [v6 objectForKeyedSubscript:@"wind_prob"];
+                                                                                    v362 = [dictionaryCopy objectForKeyedSubscript:@"wind_prob"];
 
                                                                                     if (!v362)
                                                                                     {
@@ -4088,7 +4088,7 @@ LABEL_402:
 LABEL_406:
                                                                                   v494 = 0;
 LABEL_409:
-                                                                                  v364 = [v6 objectForKeyedSubscript:@"mediaType"];
+                                                                                  v364 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
                                                                                   if (v364 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                                   {
                                                                                     objc_opt_class();
@@ -4320,9 +4320,9 @@ LABEL_409:
                                                                                   }
 
                                                                                   v365 = [v599 objectForKeyedSubscript:@"noiseType4B"];
-                                                                                  v366 = [MEMORY[0x1E695DFB0] null];
+                                                                                  null2 = [MEMORY[0x1E695DFB0] null];
                                                                                   v367 = v365;
-                                                                                  LODWORD(v365) = [v365 isEqual:v366];
+                                                                                  LODWORD(v365) = [v365 isEqual:null2];
 
                                                                                   if (v365)
                                                                                   {
@@ -4781,8 +4781,8 @@ LABEL_490:
                                                                                                             {
                                                                                                               v382 = v381;
 LABEL_493:
-                                                                                                              v47 = [BMDeviceAdaptiveVolume initWithControllerVersion:v528 refMicdBA:"initWithControllerVersion:refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData32B:windStrength:windProb:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:" refMicdBC:v633 drumdBA:v540 drumdBK:v636 drumdBAPredicted:v630 downlinkdBA:v631 currentVolumePrct:v626 lastUserVolChangeType:v623 headphoneMode:v609 streamType:v606 windSpeechAggressorFlag:v603 volumeChangeFlag:v600 speechPresenceProbability:v586 personalizationParamSnr:v584 personalizationParamMistakes:v582 lastEMediadBA:v580 lastVolMediaPrct:v578 lastETelephonydBA:v573 lastVolTelephonyPrct:v575 lastESiridBA:v570 lastVolSiriPrct:v567 smoothEae:v564 desiredDeltaE:v561 predVolMediaPrct:v558 predVolTelephonyPrct:v555 predVolSiriPrct:v552 onStartPredictionFlag:v548 guardrailsAvoidFlag:v545 minMaxCutFlag:v542 manualVolumeChangeFlag:v538 bigWindowSize:v537 smallWindowSize:v535 activeAppName:v532 activeAirpodsSerialNumber:v526 anchorVol:v524 anchorEnv:v523 personalizationCoeff:v521 unsignedPredVolMediaPrct:v519 unsignedPredVolTelephonyPrct:v512 unsignedPredVolSiriPrct:v510 singleBudFlag:v507 cdEngagementFlag:v505 activeStreamFlag:v503 pvFeatureEnableFlag:v501 envSpectralData32B:v496 windStrength:v498 windProb:v516 mediaType:v495 sourceActivity:v494 budActivity:v488 location:v487 locationType:v485 focusMode:v483 streamingAppBundleId:v481 noiseType4B:v480 instdBA:v479 instdBC:v373 nonCAListeningMode:v493 fit:v477 fixedAutoAncGain:v472 adjustedAutoAncGain:v471 timestamp:v469 DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:? drumDRC:? routedDRCGain:?];
-                                                                                                              v528 = v47;
+                                                                                                              v47 = [BMDeviceAdaptiveVolume initWithControllerVersion:selfCopy6 refMicdBA:"initWithControllerVersion:refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData32B:windStrength:windProb:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:" refMicdBC:v633 drumdBA:v540 drumdBK:v636 drumdBAPredicted:v630 downlinkdBA:v631 currentVolumePrct:v626 lastUserVolChangeType:v623 headphoneMode:v609 streamType:v606 windSpeechAggressorFlag:v603 volumeChangeFlag:v600 speechPresenceProbability:v586 personalizationParamSnr:v584 personalizationParamMistakes:v582 lastEMediadBA:v580 lastVolMediaPrct:v578 lastETelephonydBA:v573 lastVolTelephonyPrct:v575 lastESiridBA:v570 lastVolSiriPrct:v567 smoothEae:v564 desiredDeltaE:v561 predVolMediaPrct:v558 predVolTelephonyPrct:v555 predVolSiriPrct:v552 onStartPredictionFlag:v548 guardrailsAvoidFlag:v545 minMaxCutFlag:v542 manualVolumeChangeFlag:v538 bigWindowSize:v537 smallWindowSize:v535 activeAppName:v532 activeAirpodsSerialNumber:v526 anchorVol:v524 anchorEnv:v523 personalizationCoeff:v521 unsignedPredVolMediaPrct:v519 unsignedPredVolTelephonyPrct:v512 unsignedPredVolSiriPrct:v510 singleBudFlag:v507 cdEngagementFlag:v505 activeStreamFlag:v503 pvFeatureEnableFlag:v501 envSpectralData32B:v496 windStrength:v498 windProb:v516 mediaType:v495 sourceActivity:v494 budActivity:v488 location:v487 locationType:v485 focusMode:v483 streamingAppBundleId:v481 noiseType4B:v480 instdBA:v479 instdBC:v373 nonCAListeningMode:v493 fit:v477 fixedAutoAncGain:v472 adjustedAutoAncGain:v471 timestamp:v469 DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:? drumDRC:? routedDRCGain:?];
+                                                                                                              selfCopy6 = v47;
                                                                                                             }
 
                                                                                                             else
@@ -4856,10 +4856,10 @@ LABEL_544:
 LABEL_545:
                                                                                       v9 = v541;
                                                                                       v7 = v550;
-                                                                                      v6 = v599;
+                                                                                      dictionaryCopy = v599;
 LABEL_546:
 
-                                                                                      self = v528;
+                                                                                      self = selfCopy6;
                                                                                       v8 = v633;
                                                                                       v65 = v629;
                                                                                       v199 = v573;
@@ -4953,7 +4953,7 @@ LABEL_398:
 
                                                                             v340 = v10;
                                                                             v341 = v8;
-                                                                            v342 = self;
+                                                                            selfCopy8 = self;
                                                                             if (v612)
                                                                             {
                                                                               v351 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -4974,7 +4974,7 @@ LABEL_398:
                                                                             v176 = 0;
                                                                             v47 = 0;
 LABEL_394:
-                                                                            self = v342;
+                                                                            self = selfCopy8;
                                                                             v8 = v341;
                                                                             v10 = v340;
                                                                             v65 = v629;
@@ -4991,7 +4991,7 @@ LABEL_394:
 
                                                                           v340 = v10;
                                                                           v341 = v8;
-                                                                          v342 = self;
+                                                                          selfCopy8 = self;
                                                                           if (v612)
                                                                           {
                                                                             v530 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -5009,7 +5009,7 @@ LABEL_394:
                                                                           v501 = 0;
                                                                           v47 = 0;
 LABEL_392:
-                                                                          self = v342;
+                                                                          self = selfCopy8;
                                                                           v8 = v341;
                                                                           v10 = v340;
                                                                           v65 = v629;
@@ -5030,12 +5030,12 @@ LABEL_392:
                                                                           v303 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                           v304 = *MEMORY[0x1E698F240];
                                                                           v716 = *MEMORY[0x1E696A578];
-                                                                          v595 = v6;
+                                                                          v595 = dictionaryCopy;
                                                                           v305 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                           v455 = objc_opt_class();
                                                                           v306 = v305;
                                                                           v10 = v540;
-                                                                          v6 = v595;
+                                                                          dictionaryCopy = v595;
                                                                           v510 = [v306 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v455, @"personalizationCoeff"];
                                                                           v717 = v510;
                                                                           v307 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v717 forKeys:&v716 count:1];
@@ -5071,12 +5071,12 @@ LABEL_375:
                                                                         v292 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                         v293 = *MEMORY[0x1E698F240];
                                                                         v720 = *MEMORY[0x1E696A578];
-                                                                        v593 = v6;
+                                                                        v593 = dictionaryCopy;
                                                                         v294 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                         v453 = objc_opt_class();
                                                                         v295 = v294;
                                                                         v10 = v540;
-                                                                        v6 = v593;
+                                                                        dictionaryCopy = v593;
                                                                         v519 = [v295 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v453, @"anchorVol"];
                                                                         v721 = v519;
                                                                         v296 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v721 forKeys:&v720 count:1];
@@ -5144,12 +5144,12 @@ LABEL_566:
                                                                     v278 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                     v279 = *MEMORY[0x1E698F240];
                                                                     v726 = *MEMORY[0x1E696A578];
-                                                                    v592 = v6;
+                                                                    v592 = dictionaryCopy;
                                                                     v280 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                     v452 = objc_opt_class();
                                                                     v281 = v280;
                                                                     v10 = v129;
-                                                                    v6 = v592;
+                                                                    dictionaryCopy = v592;
                                                                     v62 = v630;
                                                                     v524 = [v281 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v452, @"smallWindowSize"];
                                                                     v727 = v524;
@@ -5179,13 +5179,13 @@ LABEL_567:
                                                                   v272 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                   v273 = *MEMORY[0x1E698F240];
                                                                   v728 = *MEMORY[0x1E696A578];
-                                                                  v591 = v6;
+                                                                  v591 = dictionaryCopy;
                                                                   v274 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                   v451 = objc_opt_class();
                                                                   v275 = v274;
-                                                                  self = v130;
+                                                                  self = selfCopy4;
                                                                   v10 = v129;
-                                                                  v6 = v591;
+                                                                  dictionaryCopy = v591;
                                                                   v62 = v630;
                                                                   v526 = [v275 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v451, @"bigWindowSize"];
                                                                   v729 = v526;
@@ -5205,7 +5205,7 @@ LABEL_567:
                                                                 v47 = 0;
                                                                 v65 = v629;
                                                                 v199 = v573;
-                                                                self = v130;
+                                                                self = selfCopy4;
                                                                 v10 = v129;
                                                                 v62 = v630;
 LABEL_568:
@@ -5218,13 +5218,13 @@ LABEL_568:
                                                                 v266 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                 v267 = *MEMORY[0x1E698F240];
                                                                 v730 = *MEMORY[0x1E696A578];
-                                                                v590 = v6;
+                                                                v590 = dictionaryCopy;
                                                                 v268 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                 v450 = objc_opt_class();
                                                                 v269 = v268;
-                                                                self = v130;
+                                                                self = selfCopy4;
                                                                 v10 = v129;
-                                                                v6 = v590;
+                                                                dictionaryCopy = v590;
                                                                 v62 = v630;
                                                                 v532 = [v269 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v450, @"manualVolumeChangeFlag"];
                                                                 v731 = v532;
@@ -5244,7 +5244,7 @@ LABEL_568:
                                                               v47 = 0;
                                                               v65 = v629;
                                                               v199 = v573;
-                                                              self = v130;
+                                                              self = selfCopy4;
                                                               v10 = v129;
                                                               v62 = v630;
 LABEL_569:
@@ -5257,13 +5257,13 @@ LABEL_569:
                                                               v260 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                               v261 = *MEMORY[0x1E698F240];
                                                               v732 = *MEMORY[0x1E696A578];
-                                                              v589 = v6;
+                                                              v589 = dictionaryCopy;
                                                               v262 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                               v449 = objc_opt_class();
                                                               v263 = v262;
-                                                              self = v130;
+                                                              self = selfCopy4;
                                                               v10 = v129;
-                                                              v6 = v589;
+                                                              dictionaryCopy = v589;
                                                               v62 = v630;
                                                               v535 = [v263 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v449, @"minMaxCutFlag"];
                                                               v733 = v535;
@@ -5283,7 +5283,7 @@ LABEL_569:
                                                             v47 = 0;
                                                             v65 = v629;
                                                             v199 = v573;
-                                                            self = v130;
+                                                            self = selfCopy4;
                                                             v10 = v129;
                                                             v62 = v630;
 LABEL_570:
@@ -5296,13 +5296,13 @@ LABEL_570:
                                                             v254 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                             v255 = *MEMORY[0x1E698F240];
                                                             v734 = *MEMORY[0x1E696A578];
-                                                            v588 = v6;
+                                                            v588 = dictionaryCopy;
                                                             v256 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                             v448 = objc_opt_class();
                                                             v257 = v256;
-                                                            self = v130;
+                                                            self = selfCopy4;
                                                             v10 = v129;
-                                                            v6 = v588;
+                                                            dictionaryCopy = v588;
                                                             v62 = v630;
                                                             v537 = [v257 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v448, @"guardrailsAvoidFlag"];
                                                             v735 = v537;
@@ -5322,7 +5322,7 @@ LABEL_570:
                                                           v47 = 0;
                                                           v65 = v629;
                                                           v199 = v573;
-                                                          self = v130;
+                                                          self = selfCopy4;
                                                           v10 = v129;
                                                           v62 = v630;
 LABEL_571:
@@ -5335,7 +5335,7 @@ LABEL_571:
                                                           v250 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                           v543 = *MEMORY[0x1E698F240];
                                                           v736 = *MEMORY[0x1E696A578];
-                                                          self = v130;
+                                                          self = selfCopy4;
                                                           v10 = v129;
                                                           v62 = v630;
                                                           v538 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"onStartPredictionFlag"];
@@ -5357,7 +5357,7 @@ LABEL_571:
                                                         v47 = 0;
                                                         v65 = v629;
                                                         v199 = v573;
-                                                        self = v130;
+                                                        self = selfCopy4;
                                                         v10 = v129;
                                                         v62 = v630;
 LABEL_572:
@@ -5370,7 +5370,7 @@ LABEL_572:
                                                         v246 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                         v546 = *MEMORY[0x1E698F240];
                                                         v738 = *MEMORY[0x1E696A578];
-                                                        self = v130;
+                                                        self = selfCopy4;
                                                         v10 = v129;
                                                         v62 = v630;
                                                         v542 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"predVolSiriPrct"];
@@ -5392,7 +5392,7 @@ LABEL_572:
                                                       v47 = 0;
                                                       v65 = v629;
                                                       v199 = v573;
-                                                      self = v130;
+                                                      self = selfCopy4;
                                                       v10 = v129;
                                                       v62 = v630;
 LABEL_573:
@@ -5405,7 +5405,7 @@ LABEL_573:
                                                       v242 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                       v549 = *MEMORY[0x1E698F240];
                                                       v740 = *MEMORY[0x1E696A578];
-                                                      self = v130;
+                                                      self = selfCopy4;
                                                       v10 = v129;
                                                       v62 = v630;
                                                       v545 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"predVolTelephonyPrct"];
@@ -5427,7 +5427,7 @@ LABEL_573:
                                                     v47 = 0;
                                                     v65 = v629;
                                                     v199 = v573;
-                                                    self = v130;
+                                                    self = selfCopy4;
                                                     v10 = v129;
                                                     v62 = v630;
 LABEL_574:
@@ -5440,7 +5440,7 @@ LABEL_574:
                                                     v238 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v553 = *MEMORY[0x1E698F240];
                                                     v742 = *MEMORY[0x1E696A578];
-                                                    self = v130;
+                                                    self = selfCopy4;
                                                     v10 = v129;
                                                     v62 = v630;
                                                     v548 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"predVolMediaPrct"];
@@ -5462,7 +5462,7 @@ LABEL_574:
                                                   v47 = 0;
                                                   v65 = v629;
                                                   v199 = v573;
-                                                  self = v130;
+                                                  self = selfCopy4;
                                                   v10 = v129;
                                                   v62 = v630;
 LABEL_575:
@@ -5475,7 +5475,7 @@ LABEL_575:
                                                   v234 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                   v556 = *MEMORY[0x1E698F240];
                                                   v744 = *MEMORY[0x1E696A578];
-                                                  self = v130;
+                                                  self = selfCopy4;
                                                   v10 = v129;
                                                   v62 = v630;
                                                   v552 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"desiredDeltaE"];
@@ -5497,7 +5497,7 @@ LABEL_575:
                                                 v47 = 0;
                                                 v65 = v629;
                                                 v199 = v573;
-                                                self = v130;
+                                                self = selfCopy4;
                                                 v10 = v129;
                                                 v62 = v630;
 LABEL_576:
@@ -5510,7 +5510,7 @@ LABEL_576:
                                                 v230 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v559 = *MEMORY[0x1E698F240];
                                                 v746 = *MEMORY[0x1E696A578];
-                                                self = v130;
+                                                self = selfCopy4;
                                                 v10 = v129;
                                                 v62 = v630;
                                                 v555 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"smoothEae"];
@@ -5532,7 +5532,7 @@ LABEL_576:
                                               v47 = 0;
                                               v65 = v629;
                                               v199 = v573;
-                                              self = v130;
+                                              self = selfCopy4;
                                               v10 = v129;
                                               v62 = v630;
 LABEL_577:
@@ -5545,7 +5545,7 @@ LABEL_577:
                                               v226 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v562 = *MEMORY[0x1E698F240];
                                               v748 = *MEMORY[0x1E696A578];
-                                              self = v130;
+                                              self = selfCopy4;
                                               v10 = v129;
                                               v62 = v630;
                                               v558 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"lastVolSiriPrct"];
@@ -5567,7 +5567,7 @@ LABEL_577:
                                             v47 = 0;
                                             v65 = v629;
                                             v199 = v573;
-                                            self = v130;
+                                            self = selfCopy4;
                                             v10 = v129;
                                             v62 = v630;
 LABEL_578:
@@ -5580,7 +5580,7 @@ LABEL_578:
                                             v222 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v565 = *MEMORY[0x1E698F240];
                                             v750 = *MEMORY[0x1E696A578];
-                                            self = v130;
+                                            self = selfCopy4;
                                             v10 = v129;
                                             v62 = v630;
                                             v561 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"lastESiridBA"];
@@ -5602,7 +5602,7 @@ LABEL_578:
                                           v47 = 0;
                                           v65 = v629;
                                           v199 = v573;
-                                          self = v130;
+                                          self = selfCopy4;
                                           v10 = v129;
                                           v62 = v630;
 LABEL_579:
@@ -5704,16 +5704,16 @@ LABEL_582:
                                     goto LABEL_52;
                                   }
 
-                                  if (v13)
+                                  if (errorCopy2)
                                   {
                                     v202 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v203 = *MEMORY[0x1E698F240];
                                     v758 = *MEMORY[0x1E696A578];
-                                    v204 = v13;
+                                    v204 = errorCopy2;
                                     v205 = objc_alloc(MEMORY[0x1E696AEC0]);
                                     v447 = objc_opt_class();
                                     v206 = v205;
-                                    self = v12;
+                                    self = selfCopy2;
                                     v10 = v11;
                                     v62 = v630;
                                     v575 = [v206 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v447, @"lastEMediadBA"];
@@ -5733,25 +5733,25 @@ LABEL_582:
                                   v199 = 0;
                                   v47 = 0;
                                   v65 = v629;
-                                  self = v12;
+                                  self = selfCopy2;
                                   v10 = v11;
                                   v62 = v630;
 LABEL_583:
 
-                                  a4 = v636;
+                                  error = v636;
                                   goto LABEL_584;
                                 }
 
-                                if (v13)
+                                if (errorCopy2)
                                 {
                                   v195 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v196 = *MEMORY[0x1E698F240];
                                   v760 = *MEMORY[0x1E696A578];
-                                  v622 = v13;
+                                  v622 = errorCopy2;
                                   v197 = objc_alloc(MEMORY[0x1E696AEC0]);
                                   v446 = objc_opt_class();
                                   v198 = v197;
-                                  self = v12;
+                                  self = selfCopy2;
                                   v10 = v11;
                                   v62 = v630;
                                   v199 = [v198 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v446, @"personalizationParamMistakes"];
@@ -5770,28 +5770,28 @@ LABEL_583:
                                 v578 = 0;
                                 v47 = 0;
                                 v65 = v629;
-                                self = v12;
+                                self = selfCopy2;
                                 v10 = v11;
-                                a4 = v636;
+                                error = v636;
                                 v62 = v630;
 LABEL_584:
 
                                 goto LABEL_585;
                               }
 
-                              if (v13)
+                              if (errorCopy2)
                               {
                                 v189 = objc_alloc(MEMORY[0x1E696ABC0]);
                                 v190 = *MEMORY[0x1E698F240];
                                 v762 = *MEMORY[0x1E696A578];
-                                v621 = v13;
+                                v621 = errorCopy2;
                                 v191 = objc_alloc(MEMORY[0x1E696AEC0]);
                                 v445 = objc_opt_class();
                                 v192 = v191;
-                                self = v12;
+                                self = selfCopy2;
                                 v10 = v11;
                                 v62 = v630;
-                                a4 = v636;
+                                error = v636;
                                 v578 = [v192 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v445, @"personalizationParamSnr"];
                                 v763 = v578;
                                 v193 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v763 forKeys:&v762 count:1];
@@ -5808,28 +5808,28 @@ LABEL_584:
                               v580 = 0;
                               v47 = 0;
                               v65 = v629;
-                              self = v12;
+                              self = selfCopy2;
                               v10 = v11;
-                              a4 = v636;
+                              error = v636;
                               v62 = v630;
 LABEL_585:
 
                               goto LABEL_586;
                             }
 
-                            if (v13)
+                            if (errorCopy2)
                             {
                               v183 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v184 = *MEMORY[0x1E698F240];
                               v764 = *MEMORY[0x1E696A578];
-                              v620 = v13;
+                              v620 = errorCopy2;
                               v185 = objc_alloc(MEMORY[0x1E696AEC0]);
                               v444 = objc_opt_class();
                               v186 = v185;
-                              self = v12;
+                              self = selfCopy2;
                               v10 = v11;
                               v62 = v630;
-                              a4 = v636;
+                              error = v636;
                               v580 = [v186 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v444, @"speechPresenceProbability"];
                               v765 = v580;
                               v187 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v765 forKeys:&v764 count:1];
@@ -5846,28 +5846,28 @@ LABEL_585:
                             v582 = 0;
                             v47 = 0;
                             v65 = v629;
-                            self = v12;
+                            self = selfCopy2;
                             v10 = v11;
-                            a4 = v636;
+                            error = v636;
                             v62 = v630;
 LABEL_586:
 
                             goto LABEL_587;
                           }
 
-                          if (v13)
+                          if (errorCopy2)
                           {
                             v177 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v178 = *MEMORY[0x1E698F240];
                             v766 = *MEMORY[0x1E696A578];
-                            v619 = v13;
+                            v619 = errorCopy2;
                             v179 = objc_alloc(MEMORY[0x1E696AEC0]);
                             v443 = objc_opt_class();
                             v180 = v179;
-                            self = v12;
+                            self = selfCopy2;
                             v10 = v11;
                             v62 = v630;
-                            a4 = v636;
+                            error = v636;
                             v582 = [v180 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v443, @"volumeChangeFlag"];
                             v767 = v582;
                             v181 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v767 forKeys:&v766 count:1];
@@ -5884,28 +5884,28 @@ LABEL_586:
                           v584 = 0;
                           v47 = 0;
                           v65 = v629;
-                          self = v12;
+                          self = selfCopy2;
                           v10 = v11;
-                          a4 = v636;
+                          error = v636;
                           v62 = v630;
 LABEL_587:
 
                           goto LABEL_588;
                         }
 
-                        if (v13)
+                        if (errorCopy2)
                         {
                           v119 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v120 = *MEMORY[0x1E698F240];
                           v768 = *MEMORY[0x1E696A578];
-                          v618 = v13;
+                          v618 = errorCopy2;
                           v121 = objc_alloc(MEMORY[0x1E696AEC0]);
                           v442 = objc_opt_class();
                           v122 = v121;
-                          self = v12;
+                          self = selfCopy2;
                           v10 = v11;
                           v62 = v630;
-                          a4 = v636;
+                          error = v636;
                           v584 = [v122 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v442, @"windSpeechAggressorFlag"];
                           v769 = v584;
                           v123 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v769 forKeys:&v768 count:1];
@@ -5922,28 +5922,28 @@ LABEL_587:
                         v586 = 0;
                         v47 = 0;
                         v65 = v629;
-                        self = v12;
+                        self = selfCopy2;
                         v10 = v11;
-                        a4 = v636;
+                        error = v636;
                         v62 = v630;
 LABEL_588:
 
                         goto LABEL_589;
                       }
 
-                      if (v13)
+                      if (errorCopy2)
                       {
                         v112 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v601 = *MEMORY[0x1E698F240];
                         v770 = *MEMORY[0x1E696A578];
-                        v113 = v13;
+                        v113 = errorCopy2;
                         v114 = objc_alloc(MEMORY[0x1E696AEC0]);
                         v441 = objc_opt_class();
                         v115 = v114;
-                        self = v12;
+                        self = selfCopy2;
                         v10 = v11;
                         v62 = v630;
-                        a4 = v636;
+                        error = v636;
                         v586 = [v115 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v441, @"streamType"];
                         v771 = v586;
                         v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v771 forKeys:&v770 count:1];
@@ -5961,28 +5961,28 @@ LABEL_588:
                       v600 = 0;
                       v47 = 0;
                       v65 = v629;
-                      self = v12;
+                      self = selfCopy2;
                       v10 = v11;
-                      a4 = v636;
+                      error = v636;
                       v62 = v630;
 LABEL_589:
 
                       goto LABEL_590;
                     }
 
-                    if (v13)
+                    if (errorCopy2)
                     {
                       v105 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v604 = *MEMORY[0x1E698F240];
                       v772 = *MEMORY[0x1E696A578];
-                      v106 = v13;
+                      v106 = errorCopy2;
                       v107 = objc_alloc(MEMORY[0x1E696AEC0]);
                       v440 = objc_opt_class();
                       v108 = v107;
-                      self = v12;
+                      self = selfCopy2;
                       v10 = v11;
                       v62 = v630;
-                      a4 = v636;
+                      error = v636;
                       v600 = [v108 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v440, @"headphoneMode"];
                       v773 = v600;
                       v109 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v773 forKeys:&v772 count:1];
@@ -6000,28 +6000,28 @@ LABEL_589:
                     v603 = 0;
                     v47 = 0;
                     v65 = v629;
-                    self = v12;
+                    self = selfCopy2;
                     v10 = v11;
-                    a4 = v636;
+                    error = v636;
                     v62 = v630;
 LABEL_590:
 
                     goto LABEL_591;
                   }
 
-                  if (v13)
+                  if (errorCopy2)
                   {
                     v98 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v607 = *MEMORY[0x1E698F240];
                     v774 = *MEMORY[0x1E696A578];
-                    v99 = v13;
+                    v99 = errorCopy2;
                     v100 = objc_alloc(MEMORY[0x1E696AEC0]);
                     v439 = objc_opt_class();
                     v101 = v100;
-                    self = v12;
+                    self = selfCopy2;
                     v10 = v11;
                     v62 = v630;
-                    a4 = v636;
+                    error = v636;
                     v603 = [v101 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v439, @"lastUserVolChangeType"];
                     v775 = v603;
                     v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v775 forKeys:&v774 count:1];
@@ -6039,28 +6039,28 @@ LABEL_590:
                   v606 = 0;
                   v47 = 0;
                   v65 = v629;
-                  self = v12;
+                  self = selfCopy2;
                   v10 = v11;
-                  a4 = v636;
+                  error = v636;
                   v62 = v630;
 LABEL_591:
 
                   goto LABEL_592;
                 }
 
-                if (v13)
+                if (errorCopy2)
                 {
                   v91 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v610 = *MEMORY[0x1E698F240];
                   v776 = *MEMORY[0x1E696A578];
-                  v92 = v13;
+                  v92 = errorCopy2;
                   v93 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v438 = objc_opt_class();
                   v94 = v93;
-                  self = v12;
+                  self = selfCopy2;
                   v10 = v11;
                   v62 = v630;
-                  a4 = v636;
+                  error = v636;
                   v606 = [v94 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v438, @"currentVolumePrct"];
                   v777 = v606;
                   v95 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v777 forKeys:&v776 count:1];
@@ -6078,28 +6078,28 @@ LABEL_591:
                 v609 = 0;
                 v47 = 0;
                 v65 = v629;
-                self = v12;
+                self = selfCopy2;
                 v10 = v11;
-                a4 = v636;
+                error = v636;
                 v62 = v630;
 LABEL_592:
 
                 goto LABEL_593;
               }
 
-              if (v13)
+              if (errorCopy2)
               {
                 v85 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v624 = *MEMORY[0x1E698F240];
                 v778 = *MEMORY[0x1E696A578];
-                v617 = v13;
+                v617 = errorCopy2;
                 v86 = objc_alloc(MEMORY[0x1E696AEC0]);
                 v437 = objc_opt_class();
                 v87 = v86;
-                self = v12;
+                self = selfCopy2;
                 v10 = v11;
                 v62 = v630;
-                a4 = v636;
+                error = v636;
                 v609 = [v87 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v437, @"downlinkdBA"];
                 v779 = v609;
                 v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v779 forKeys:&v778 count:1];
@@ -6117,28 +6117,28 @@ LABEL_592:
               v623 = 0;
               v47 = 0;
               v65 = v629;
-              self = v12;
+              self = selfCopy2;
               v10 = v11;
-              a4 = v636;
+              error = v636;
               v62 = v630;
 LABEL_593:
 
               goto LABEL_594;
             }
 
-            if (v13)
+            if (errorCopy2)
             {
               v79 = objc_alloc(MEMORY[0x1E696ABC0]);
               v627 = *MEMORY[0x1E698F240];
               v780 = *MEMORY[0x1E696A578];
-              v616 = v13;
+              v616 = errorCopy2;
               v80 = objc_alloc(MEMORY[0x1E696AEC0]);
               v436 = objc_opt_class();
               v81 = v80;
-              self = v12;
+              self = selfCopy2;
               v10 = v11;
               v62 = v630;
-              a4 = v636;
+              error = v636;
               v623 = [v81 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v436, @"drumdBAPredicted"];
               v781 = v623;
               v82 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v781 forKeys:&v780 count:1];
@@ -6156,28 +6156,28 @@ LABEL_593:
             v626 = 0;
             v47 = 0;
             v65 = v629;
-            self = v12;
+            self = selfCopy2;
             v10 = v11;
-            a4 = v636;
+            error = v636;
             v62 = v630;
 LABEL_594:
 
             goto LABEL_595;
           }
 
-          if (v13)
+          if (errorCopy2)
           {
             v73 = objc_alloc(MEMORY[0x1E696ABC0]);
             v632 = *MEMORY[0x1E698F240];
             v782 = *MEMORY[0x1E696A578];
-            v615 = v13;
+            v615 = errorCopy2;
             v74 = objc_alloc(MEMORY[0x1E696AEC0]);
             v435 = objc_opt_class();
             v75 = v74;
-            self = v12;
+            self = selfCopy2;
             v10 = v11;
             v62 = v630;
-            a4 = v636;
+            error = v636;
             v626 = [v75 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v435, @"drumdBK"];
             v783 = v626;
             v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v783 forKeys:&v782 count:1];
@@ -6195,9 +6195,9 @@ LABEL_594:
           v631 = 0;
           v47 = 0;
           v65 = v629;
-          self = v12;
+          self = selfCopy2;
           v10 = v11;
-          a4 = v636;
+          error = v636;
           v62 = v630;
 LABEL_595:
 
@@ -6205,18 +6205,18 @@ LABEL_595:
         }
 
         v65 = v14;
-        if (v13)
+        if (errorCopy2)
         {
           v635 = objc_alloc(MEMORY[0x1E696ABC0]);
           v67 = *MEMORY[0x1E698F240];
           v784 = *MEMORY[0x1E696A578];
-          v614 = v13;
+          v614 = errorCopy2;
           v68 = objc_alloc(MEMORY[0x1E696AEC0]);
           v434 = objc_opt_class();
           v69 = v68;
-          self = v12;
+          self = selfCopy2;
           v10 = v11;
-          a4 = v636;
+          error = v636;
           v631 = [v69 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v434, @"drumdBA"];
           v785 = v631;
           v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v785 forKeys:&v784 count:1];
@@ -6231,23 +6231,23 @@ LABEL_595:
         }
 
         v47 = 0;
-        self = v12;
+        self = selfCopy2;
         v10 = v11;
         v62 = 0;
-        a4 = v636;
+        error = v636;
 LABEL_596:
 
         goto LABEL_597;
       }
 
-      if (a4)
+      if (error)
       {
         v53 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v54 = self;
+        selfCopy9 = self;
         v55 = *MEMORY[0x1E698F240];
         v786 = *MEMORY[0x1E696A578];
-        v613 = a4;
-        v56 = v6;
+        errorCopy3 = error;
+        v56 = dictionaryCopy;
         v57 = v7;
         v58 = v9;
         v59 = v10;
@@ -6257,18 +6257,18 @@ LABEL_596:
         v10 = v59;
         v9 = v58;
         v7 = v57;
-        v6 = v56;
+        dictionaryCopy = v56;
         v62 = [v61 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v433, @"refMicdBC"];
         v787 = v62;
         v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v787 forKeys:&v786 count:1];
         v64 = v53;
         v65 = v63;
         v66 = v55;
-        self = v54;
+        self = selfCopy9;
         v8 = v633;
-        a4 = 0;
+        error = 0;
         v47 = 0;
-        *v613 = [v64 initWithDomain:v66 code:2 userInfo:v63];
+        *errorCopy3 = [v64 initWithDomain:v66 code:2 userInfo:v63];
         goto LABEL_596;
       }
 
@@ -6278,21 +6278,21 @@ LABEL_597:
       goto LABEL_598;
     }
 
-    if (a4)
+    if (error)
     {
       v48 = objc_alloc(MEMORY[0x1E696ABC0]);
       v49 = *MEMORY[0x1E698F240];
       v788 = *MEMORY[0x1E696A578];
-      v50 = self;
-      v51 = a4;
-      a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"refMicdBA"];
-      v789 = a4;
-      v637 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v789 forKeys:&v788 count:1];
+      selfCopy10 = self;
+      errorCopy4 = error;
+      error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"refMicdBA"];
+      errorCopy5 = error;
+      v637 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy5 forKeys:&v788 count:1];
       v52 = [v48 initWithDomain:v49 code:2 userInfo:v637];
       v10 = 0;
       v47 = 0;
-      *v51 = v52;
-      self = v50;
+      *errorCopy4 = v52;
+      self = selfCopy10;
       goto LABEL_597;
     }
 
@@ -6303,10 +6303,10 @@ LABEL_598:
     goto LABEL_599;
   }
 
-  if (a4)
+  if (error)
   {
     v43 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v44 = a4;
+    errorCopy6 = error;
     v45 = *MEMORY[0x1E698F240];
     v790 = *MEMORY[0x1E696A578];
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"controllerVersion"];
@@ -6315,7 +6315,7 @@ LABEL_598:
     v46 = [v43 initWithDomain:v45 code:2 userInfo:v9];
     v8 = 0;
     v47 = 0;
-    *v44 = v46;
+    *errorCopy6 = v46;
     goto LABEL_598;
   }
 
@@ -6331,15 +6331,15 @@ LABEL_599:
 {
   v3 = objc_opt_new();
   [(BMDeviceAdaptiveVolume *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasControllerVersion)
   {
     controllerVersion = self->_controllerVersion;
@@ -6801,14 +6801,14 @@ LABEL_599:
   v79 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v9.receiver = self;
   v9.super_class = BMDeviceAdaptiveVolume;
   v5 = [(BMEventBase *)&v9 init];
   v6 = v5;
-  if (v5 && !BMDeviceAdaptiveVolumeReadFrom(v5, v4))
+  if (v5 && !BMDeviceAdaptiveVolumeReadFrom(v5, fromCopy))
   {
     v7 = 0;
   }
@@ -6857,8 +6857,8 @@ LABEL_599:
   v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume manualVolumeChangeFlag](self, "manualVolumeChangeFlag")}];
   v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume bigWindowSize](self, "bigWindowSize")}];
   v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume smallWindowSize](self, "smallWindowSize")}];
-  v38 = [(BMDeviceAdaptiveVolume *)self activeAppName];
-  v42 = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
+  activeAppName = [(BMDeviceAdaptiveVolume *)self activeAppName];
+  activeAirpodsSerialNumber = [(BMDeviceAdaptiveVolume *)self activeAirpodsSerialNumber];
   v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume anchorVol](self, "anchorVol")}];
   v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume anchorEnv](self, "anchorEnv")}];
   v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume personalizationCoeff](self, "personalizationCoeff")}];
@@ -6869,7 +6869,7 @@ LABEL_599:
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume cdEngagementFlag](self, "cdEngagementFlag")}];
   v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume activeStreamFlag](self, "activeStreamFlag")}];
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume pvFeatureEnableFlag](self, "pvFeatureEnableFlag")}];
-  v29 = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
+  envSpectralData32B = [(BMDeviceAdaptiveVolume *)self envSpectralData32B];
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume windStrength](self, "windStrength")}];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume windProb](self, "windProb")}];
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume mediaType](self, "mediaType")}];
@@ -6879,7 +6879,7 @@ LABEL_599:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume locationType](self, "locationType")}];
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume focusMode](self, "focusMode")}];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume streamingAppBundleId](self, "streamingAppBundleId")}];
-  v23 = [(BMDeviceAdaptiveVolume *)self noiseType4B];
+  noiseType4B = [(BMDeviceAdaptiveVolume *)self noiseType4B];
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume instdBA](self, "instdBA")}];
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume instdBC](self, "instdBC")}];
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume nonCAListeningMode](self, "nonCAListeningMode")}];
@@ -6892,74 +6892,74 @@ LABEL_599:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume DRCappSelfVoiceFlag](self, "DRCappSelfVoiceFlag")}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume drumDRC](self, "drumDRC")}];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceAdaptiveVolume routedDRCGain](self, "routedDRCGain")}];
-  v19 = [v18 initWithFormat:@"BMDeviceAdaptiveVolume with controllerVersion: %@, refMicdBA: %@, refMicdBC: %@, drumdBA: %@, drumdBK: %@, drumdBAPredicted: %@, downlinkdBA: %@, currentVolumePrct: %@, lastUserVolChangeType: %@, headphoneMode: %@, streamType: %@, windSpeechAggressorFlag: %@, volumeChangeFlag: %@, speechPresenceProbability: %@, personalizationParamSnr: %@, personalizationParamMistakes: %@, lastEMediadBA: %@, lastVolMediaPrct: %@, lastETelephonydBA: %@, lastVolTelephonyPrct: %@, lastESiridBA: %@, lastVolSiriPrct: %@, smoothEae: %@, desiredDeltaE: %@, predVolMediaPrct: %@, predVolTelephonyPrct: %@, predVolSiriPrct: %@, onStartPredictionFlag: %@, guardrailsAvoidFlag: %@, minMaxCutFlag: %@, manualVolumeChangeFlag: %@, bigWindowSize: %@, smallWindowSize: %@, activeAppName: %@, activeAirpodsSerialNumber: %@, anchorVol: %@, anchorEnv: %@, personalizationCoeff: %@, unsignedPredVolMediaPrct: %@, unsignedPredVolTelephonyPrct: %@, unsignedPredVolSiriPrct: %@, singleBudFlag: %@, cdEngagementFlag: %@, activeStreamFlag: %@, pvFeatureEnableFlag: %@, envSpectralData32B: %@, windStrength: %@, windProb: %@, mediaType: %@, sourceActivity: %@, budActivity: %@, location: %@, locationType: %@, focusMode: %@, streamingAppBundleId: %@, noiseType4B: %@, instdBA: %@, instdBC: %@, nonCAListeningMode: %@, fit: %@, fixedAutoAncGain: %@, adjustedAutoAncGain: %@, timestamp: %@, DRCenablementBit: %@, DRCwindFlag: %@, DRCappSelfVoiceFlag: %@, drumDRC: %@, routedDRCGain: %@", v69, v73, v72, v71, v70, v65, v68, v67, v66, v62, v64, v63, v59, v61, v60, v56, v58, v57, v53, v55, v54, v50, v52, v51, v48, v49, v45, v47, v44, v46, v41, v43, v40, v38, v42, v39, v35, v37, v34, v32, v36, v30, v33, v31, v17, v29, v16, v15, v28, v14, v27, v26, v25, v24, v13, v23, v22, v21, v20, v12];
+  v19 = [v18 initWithFormat:@"BMDeviceAdaptiveVolume with controllerVersion: %@, refMicdBA: %@, refMicdBC: %@, drumdBA: %@, drumdBK: %@, drumdBAPredicted: %@, downlinkdBA: %@, currentVolumePrct: %@, lastUserVolChangeType: %@, headphoneMode: %@, streamType: %@, windSpeechAggressorFlag: %@, volumeChangeFlag: %@, speechPresenceProbability: %@, personalizationParamSnr: %@, personalizationParamMistakes: %@, lastEMediadBA: %@, lastVolMediaPrct: %@, lastETelephonydBA: %@, lastVolTelephonyPrct: %@, lastESiridBA: %@, lastVolSiriPrct: %@, smoothEae: %@, desiredDeltaE: %@, predVolMediaPrct: %@, predVolTelephonyPrct: %@, predVolSiriPrct: %@, onStartPredictionFlag: %@, guardrailsAvoidFlag: %@, minMaxCutFlag: %@, manualVolumeChangeFlag: %@, bigWindowSize: %@, smallWindowSize: %@, activeAppName: %@, activeAirpodsSerialNumber: %@, anchorVol: %@, anchorEnv: %@, personalizationCoeff: %@, unsignedPredVolMediaPrct: %@, unsignedPredVolTelephonyPrct: %@, unsignedPredVolSiriPrct: %@, singleBudFlag: %@, cdEngagementFlag: %@, activeStreamFlag: %@, pvFeatureEnableFlag: %@, envSpectralData32B: %@, windStrength: %@, windProb: %@, mediaType: %@, sourceActivity: %@, budActivity: %@, location: %@, locationType: %@, focusMode: %@, streamingAppBundleId: %@, noiseType4B: %@, instdBA: %@, instdBC: %@, nonCAListeningMode: %@, fit: %@, fixedAutoAncGain: %@, adjustedAutoAncGain: %@, timestamp: %@, DRCenablementBit: %@, DRCwindFlag: %@, DRCappSelfVoiceFlag: %@, drumDRC: %@, routedDRCGain: %@", v69, v73, v72, v71, v70, v65, v68, v67, v66, v62, v64, v63, v59, v61, v60, v56, v58, v57, v53, v55, v54, v50, v52, v51, v48, v49, v45, v47, v44, v46, v41, v43, v40, activeAppName, activeAirpodsSerialNumber, v39, v35, v37, v34, v32, v36, v30, v33, v31, v17, envSpectralData32B, v16, v15, v28, v14, v27, v26, v25, v24, v13, noiseType4B, v22, v21, v20, v12];
 
   return v19;
 }
 
-- (BMDeviceAdaptiveVolume)initWithControllerVersion:(void *)a3 refMicdBA:(void *)a4 refMicdBC:(void *)a5 drumdBA:(void *)a6 drumdBK:(void *)a7 drumdBAPredicted:(void *)a8 downlinkdBA:(id)a9 currentVolumePrct:(id)a10 lastUserVolChangeType:(id)a11 headphoneMode:(id)a12 streamType:(id)a13 windSpeechAggressorFlag:(id)a14 volumeChangeFlag:(id)a15 speechPresenceProbability:(id)a16 personalizationParamSnr:(id)a17 personalizationParamMistakes:(id)a18 lastEMediadBA:(id)a19 lastVolMediaPrct:(id)a20 lastETelephonydBA:(id)a21 lastVolTelephonyPrct:(id)a22 lastESiridBA:(id)a23 lastVolSiriPrct:(id)a24 smoothEae:(id)a25 desiredDeltaE:(id)a26 predVolMediaPrct:(id)a27 predVolTelephonyPrct:(id)a28 predVolSiriPrct:(id)a29 onStartPredictionFlag:(id)a30 guardrailsAvoidFlag:(id)a31 minMaxCutFlag:(id)a32 manualVolumeChangeFlag:(id)a33 bigWindowSize:(id)a34 smallWindowSize:(id)a35 activeAppName:(id)a36 activeAirpodsSerialNumber:(id)a37 anchorVol:(id)a38 anchorEnv:(id)a39 personalizationCoeff:(id)a40 unsignedPredVolMediaPrct:(id)a41 unsignedPredVolTelephonyPrct:(id)a42 unsignedPredVolSiriPrct:(id)a43 singleBudFlag:(id)a44 cdEngagementFlag:(id)a45 activeStreamFlag:(id)a46 pvFeatureEnableFlag:(id)a47 envSpectralData32B:(id)a48 windStrength:(id)a49 windProb:(id)a50 mediaType:(id)a51 sourceActivity:(id)a52 budActivity:(id)a53 location:(id)a54 locationType:(id)a55 focusMode:(id)a56 streamingAppBundleId:(id)a57 noiseType4B:(id)a58 instdBA:(id)a59 instdBC:(id)a60 nonCAListeningMode:(id)a61 fit:(id)a62 fixedAutoAncGain:(id)a63 adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:
+- (BMDeviceAdaptiveVolume)initWithControllerVersion:(void *)version refMicdBA:(void *)a refMicdBC:(void *)c drumdBA:(void *)bA drumdBK:(void *)k drumdBAPredicted:(void *)predicted downlinkdBA:(id)downlinkdBA currentVolumePrct:(id)self0 lastUserVolChangeType:(id)self1 headphoneMode:(id)self2 streamType:(id)self3 windSpeechAggressorFlag:(id)self4 volumeChangeFlag:(id)self5 speechPresenceProbability:(id)self6 personalizationParamSnr:(id)self7 personalizationParamMistakes:(id)self8 lastEMediadBA:(id)self9 lastVolMediaPrct:(id)mediaPrct lastETelephonydBA:(id)telephonydBA lastVolTelephonyPrct:(id)telephonyPrct lastESiridBA:(id)siridBA lastVolSiriPrct:(id)siriPrct smoothEae:(id)eae desiredDeltaE:(id)e predVolMediaPrct:(id)volMediaPrct predVolTelephonyPrct:(id)volTelephonyPrct predVolSiriPrct:(id)volSiriPrct onStartPredictionFlag:(id)version0 guardrailsAvoidFlag:(id)version1 minMaxCutFlag:(id)version2 manualVolumeChangeFlag:(id)version3 bigWindowSize:(id)version4 smallWindowSize:(id)version5 activeAppName:(id)version6 activeAirpodsSerialNumber:(id)version7 anchorVol:(id)version8 anchorEnv:(id)version9 personalizationCoeff:(id)a0 unsignedPredVolMediaPrct:(id)a1 unsignedPredVolTelephonyPrct:(id)a2 unsignedPredVolSiriPrct:(id)a3 singleBudFlag:(id)a4 cdEngagementFlag:(id)c activeStreamFlag:(id)bA pvFeatureEnableFlag:(id)k envSpectralData32B:(id)predicted windStrength:(id)downlinkdBA windProb:(id)c0 mediaType:(id)c1 sourceActivity:(id)c2 budActivity:(id)c3 location:(id)c4 locationType:(id)c5 focusMode:(id)c6 streamingAppBundleId:(id)c7 noiseType4B:(id)c8 instdBA:(id)c9 instdBC:(id)bA0 nonCAListeningMode:(id)bA1 fit:(id)bA2 fixedAutoAncGain:(id)bA3 adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:
 {
-  v209 = a3;
-  v210 = a4;
-  v208 = a5;
-  v207 = a6;
-  v205 = a7;
-  v203 = a8;
-  v201 = a9;
-  v200 = a10;
-  v199 = a11;
-  v198 = a12;
-  v197 = a13;
-  v196 = a14;
-  v195 = a15;
-  v194 = a16;
-  v193 = a17;
-  v192 = a18;
-  v191 = a19;
-  v190 = a20;
-  v189 = a21;
-  v188 = a22;
-  v187 = a23;
-  v186 = a24;
-  v185 = a25;
-  v184 = a26;
-  v183 = a27;
-  v182 = a28;
-  v181 = a29;
-  v180 = a30;
-  v179 = a31;
-  v178 = a32;
-  v177 = a33;
-  v176 = a34;
-  v175 = a35;
-  v152 = a36;
-  v151 = a37;
-  v174 = a38;
-  v173 = a39;
-  v172 = a40;
-  v171 = a41;
-  v170 = a42;
-  v169 = a43;
-  v168 = a44;
-  v167 = a45;
-  v166 = a46;
-  v165 = a47;
-  v150 = a48;
-  v164 = a49;
-  v163 = a50;
-  v162 = a51;
-  v161 = a52;
-  v160 = a53;
-  v159 = a54;
-  v158 = a55;
-  v157 = a56;
-  v72 = a57;
-  v149 = a58;
-  v156 = a59;
-  v155 = a60;
-  v154 = a61;
-  v153 = a62;
-  v73 = a63;
+  versionCopy = version;
+  aCopy = a;
+  cCopy = c;
+  bACopy = bA;
+  kCopy = k;
+  predictedCopy = predicted;
+  downlinkdBACopy = downlinkdBA;
+  prctCopy = prct;
+  typeCopy = type;
+  modeCopy = mode;
+  streamTypeCopy = streamType;
+  flagCopy = flag;
+  changeFlagCopy = changeFlag;
+  probabilityCopy = probability;
+  snrCopy = snr;
+  mistakesCopy = mistakes;
+  mediadBACopy = mediadBA;
+  mediaPrctCopy = mediaPrct;
+  telephonydBACopy = telephonydBA;
+  telephonyPrctCopy = telephonyPrct;
+  siridBACopy = siridBA;
+  siriPrctCopy = siriPrct;
+  eaeCopy = eae;
+  eCopy = e;
+  volMediaPrctCopy = volMediaPrct;
+  volTelephonyPrctCopy = volTelephonyPrct;
+  volSiriPrctCopy = volSiriPrct;
+  predictionFlagCopy = predictionFlag;
+  avoidFlagCopy = avoidFlag;
+  cutFlagCopy = cutFlag;
+  volumeChangeFlagCopy = volumeChangeFlag;
+  sizeCopy = size;
+  windowSizeCopy = windowSize;
+  nameCopy = name;
+  numberCopy = number;
+  volCopy = vol;
+  envCopy = env;
+  coeffCopy = coeff;
+  predVolMediaPrctCopy = predVolMediaPrct;
+  predVolTelephonyPrctCopy = predVolTelephonyPrct;
+  predVolSiriPrctCopy = predVolSiriPrct;
+  budFlagCopy = budFlag;
+  engagementFlagCopy = engagementFlag;
+  streamFlagCopy = streamFlag;
+  enableFlagCopy = enableFlag;
+  bCopy = b;
+  strengthCopy = strength;
+  probCopy = prob;
+  mediaTypeCopy = mediaType;
+  activityCopy = activity;
+  budActivityCopy = budActivity;
+  locationCopy = location;
+  locationTypeCopy = locationType;
+  focusModeCopy = focusMode;
+  idCopy = id;
+  type4BCopy = type4B;
+  instdBACopy = instdBA;
+  bCCopy = bC;
+  listeningModeCopy = listeningMode;
+  fitCopy = fit;
+  gainCopy = gain;
   v74 = a64;
   v75 = a65;
   v76 = a66;
@@ -6967,70 +6967,70 @@ LABEL_599:
   v78 = a68;
   v79 = a69;
   v80 = a70;
-  v211.receiver = a1;
+  v211.receiver = self;
   v211.super_class = BMDeviceAdaptiveVolume;
   v81 = [(BMEventBase *)&v211 init];
 
   if (v81)
   {
     v81->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v209)
+    if (versionCopy)
     {
       v81->_hasControllerVersion = 1;
-      v82 = [v209 unsignedIntValue];
+      unsignedIntValue = [versionCopy unsignedIntValue];
     }
 
     else
     {
-      v82 = 0;
+      unsignedIntValue = 0;
       v81->_hasControllerVersion = 0;
     }
 
-    v81->_controllerVersion = v82;
-    if (v210)
+    v81->_controllerVersion = unsignedIntValue;
+    if (aCopy)
     {
       v81->_hasRefMicdBA = 1;
-      v83 = [v210 unsignedIntValue];
+      unsignedIntValue2 = [aCopy unsignedIntValue];
     }
 
     else
     {
-      v83 = 0;
+      unsignedIntValue2 = 0;
       v81->_hasRefMicdBA = 0;
     }
 
-    v81->_refMicdBA = v83;
-    if (v208)
+    v81->_refMicdBA = unsignedIntValue2;
+    if (cCopy)
     {
       v81->_hasRefMicdBC = 1;
-      v84 = [v208 unsignedIntValue];
+      unsignedIntValue3 = [cCopy unsignedIntValue];
     }
 
     else
     {
-      v84 = 0;
+      unsignedIntValue3 = 0;
       v81->_hasRefMicdBC = 0;
     }
 
-    v81->_refMicdBC = v84;
-    if (v207)
+    v81->_refMicdBC = unsignedIntValue3;
+    if (bACopy)
     {
       v81->_hasDrumdBA = 1;
-      v85 = [v207 unsignedIntValue];
+      unsignedIntValue4 = [bACopy unsignedIntValue];
     }
 
     else
     {
-      v85 = 0;
+      unsignedIntValue4 = 0;
       v81->_hasDrumdBA = 0;
     }
 
-    v81->_drumdBA = v85;
-    v86 = v205;
-    if (v205)
+    v81->_drumdBA = unsignedIntValue4;
+    unsignedIntValue5 = kCopy;
+    if (kCopy)
     {
       v81->_hasDrumdBK = 1;
-      v86 = [v205 unsignedIntValue];
+      unsignedIntValue5 = [kCopy unsignedIntValue];
     }
 
     else
@@ -7038,12 +7038,12 @@ LABEL_599:
       v81->_hasDrumdBK = 0;
     }
 
-    v81->_drumdBK = v86;
-    v87 = v203;
-    if (v203)
+    v81->_drumdBK = unsignedIntValue5;
+    unsignedIntValue6 = predictedCopy;
+    if (predictedCopy)
     {
       v81->_hasDrumdBAPredicted = 1;
-      v87 = [v203 unsignedIntValue];
+      unsignedIntValue6 = [predictedCopy unsignedIntValue];
     }
 
     else
@@ -7051,12 +7051,12 @@ LABEL_599:
       v81->_hasDrumdBAPredicted = 0;
     }
 
-    v81->_drumdBAPredicted = v87;
-    v88 = v201;
-    if (v201)
+    v81->_drumdBAPredicted = unsignedIntValue6;
+    unsignedIntValue7 = downlinkdBACopy;
+    if (downlinkdBACopy)
     {
       v81->_hasDownlinkdBA = 1;
-      v88 = [v201 unsignedIntValue];
+      unsignedIntValue7 = [downlinkdBACopy unsignedIntValue];
     }
 
     else
@@ -7064,12 +7064,12 @@ LABEL_599:
       v81->_hasDownlinkdBA = 0;
     }
 
-    v81->_downlinkdBA = v88;
-    v89 = v200;
-    if (v200)
+    v81->_downlinkdBA = unsignedIntValue7;
+    unsignedIntValue8 = prctCopy;
+    if (prctCopy)
     {
       v81->_hasCurrentVolumePrct = 1;
-      v89 = [v200 unsignedIntValue];
+      unsignedIntValue8 = [prctCopy unsignedIntValue];
     }
 
     else
@@ -7077,12 +7077,12 @@ LABEL_599:
       v81->_hasCurrentVolumePrct = 0;
     }
 
-    v81->_currentVolumePrct = v89;
-    v90 = v199;
-    if (v199)
+    v81->_currentVolumePrct = unsignedIntValue8;
+    unsignedIntValue9 = typeCopy;
+    if (typeCopy)
     {
       v81->_hasLastUserVolChangeType = 1;
-      v90 = [v199 unsignedIntValue];
+      unsignedIntValue9 = [typeCopy unsignedIntValue];
     }
 
     else
@@ -7090,12 +7090,12 @@ LABEL_599:
       v81->_hasLastUserVolChangeType = 0;
     }
 
-    v81->_lastUserVolChangeType = v90;
-    v91 = v198;
-    if (v198)
+    v81->_lastUserVolChangeType = unsignedIntValue9;
+    unsignedIntValue10 = modeCopy;
+    if (modeCopy)
     {
       v81->_hasHeadphoneMode = 1;
-      v91 = [v198 unsignedIntValue];
+      unsignedIntValue10 = [modeCopy unsignedIntValue];
     }
 
     else
@@ -7103,12 +7103,12 @@ LABEL_599:
       v81->_hasHeadphoneMode = 0;
     }
 
-    v81->_headphoneMode = v91;
-    v92 = v197;
-    if (v197)
+    v81->_headphoneMode = unsignedIntValue10;
+    unsignedIntValue11 = streamTypeCopy;
+    if (streamTypeCopy)
     {
       v81->_hasStreamType = 1;
-      v92 = [v197 unsignedIntValue];
+      unsignedIntValue11 = [streamTypeCopy unsignedIntValue];
     }
 
     else
@@ -7116,12 +7116,12 @@ LABEL_599:
       v81->_hasStreamType = 0;
     }
 
-    v81->_streamType = v92;
-    v93 = v196;
-    if (v196)
+    v81->_streamType = unsignedIntValue11;
+    unsignedIntValue12 = flagCopy;
+    if (flagCopy)
     {
       v81->_hasWindSpeechAggressorFlag = 1;
-      v93 = [v196 unsignedIntValue];
+      unsignedIntValue12 = [flagCopy unsignedIntValue];
     }
 
     else
@@ -7129,12 +7129,12 @@ LABEL_599:
       v81->_hasWindSpeechAggressorFlag = 0;
     }
 
-    v81->_windSpeechAggressorFlag = v93;
-    v94 = v195;
-    if (v195)
+    v81->_windSpeechAggressorFlag = unsignedIntValue12;
+    unsignedIntValue13 = changeFlagCopy;
+    if (changeFlagCopy)
     {
       v81->_hasVolumeChangeFlag = 1;
-      v94 = [v195 unsignedIntValue];
+      unsignedIntValue13 = [changeFlagCopy unsignedIntValue];
     }
 
     else
@@ -7142,12 +7142,12 @@ LABEL_599:
       v81->_hasVolumeChangeFlag = 0;
     }
 
-    v81->_volumeChangeFlag = v94;
-    v95 = v194;
-    if (v194)
+    v81->_volumeChangeFlag = unsignedIntValue13;
+    unsignedIntValue14 = probabilityCopy;
+    if (probabilityCopy)
     {
       v81->_hasSpeechPresenceProbability = 1;
-      v95 = [v194 unsignedIntValue];
+      unsignedIntValue14 = [probabilityCopy unsignedIntValue];
     }
 
     else
@@ -7155,38 +7155,38 @@ LABEL_599:
       v81->_hasSpeechPresenceProbability = 0;
     }
 
-    v81->_speechPresenceProbability = v95;
-    if (v193)
+    v81->_speechPresenceProbability = unsignedIntValue14;
+    if (snrCopy)
     {
       v81->_hasPersonalizationParamSnr = 1;
-      v96 = [v193 intValue];
+      intValue = [snrCopy intValue];
     }
 
     else
     {
       v81->_hasPersonalizationParamSnr = 0;
-      v96 = -1;
+      intValue = -1;
     }
 
-    v81->_personalizationParamSnr = v96;
-    if (v192)
+    v81->_personalizationParamSnr = intValue;
+    if (mistakesCopy)
     {
       v81->_hasPersonalizationParamMistakes = 1;
-      v97 = [v192 intValue];
+      intValue2 = [mistakesCopy intValue];
     }
 
     else
     {
       v81->_hasPersonalizationParamMistakes = 0;
-      v97 = -1;
+      intValue2 = -1;
     }
 
-    v81->_personalizationParamMistakes = v97;
-    v98 = v191;
-    if (v191)
+    v81->_personalizationParamMistakes = intValue2;
+    unsignedIntValue15 = mediadBACopy;
+    if (mediadBACopy)
     {
       v81->_hasLastEMediadBA = 1;
-      v98 = [v191 unsignedIntValue];
+      unsignedIntValue15 = [mediadBACopy unsignedIntValue];
     }
 
     else
@@ -7194,12 +7194,12 @@ LABEL_599:
       v81->_hasLastEMediadBA = 0;
     }
 
-    v81->_lastEMediadBA = v98;
-    v99 = v190;
-    if (v190)
+    v81->_lastEMediadBA = unsignedIntValue15;
+    unsignedIntValue16 = mediaPrctCopy;
+    if (mediaPrctCopy)
     {
       v81->_hasLastVolMediaPrct = 1;
-      v99 = [v190 unsignedIntValue];
+      unsignedIntValue16 = [mediaPrctCopy unsignedIntValue];
     }
 
     else
@@ -7207,12 +7207,12 @@ LABEL_599:
       v81->_hasLastVolMediaPrct = 0;
     }
 
-    v81->_lastVolMediaPrct = v99;
-    v100 = v189;
-    if (v189)
+    v81->_lastVolMediaPrct = unsignedIntValue16;
+    unsignedIntValue17 = telephonydBACopy;
+    if (telephonydBACopy)
     {
       v81->_hasLastETelephonydBA = 1;
-      v100 = [v189 unsignedIntValue];
+      unsignedIntValue17 = [telephonydBACopy unsignedIntValue];
     }
 
     else
@@ -7220,12 +7220,12 @@ LABEL_599:
       v81->_hasLastETelephonydBA = 0;
     }
 
-    v81->_lastETelephonydBA = v100;
-    v101 = v188;
-    if (v188)
+    v81->_lastETelephonydBA = unsignedIntValue17;
+    unsignedIntValue18 = telephonyPrctCopy;
+    if (telephonyPrctCopy)
     {
       v81->_hasLastVolTelephonyPrct = 1;
-      v101 = [v188 unsignedIntValue];
+      unsignedIntValue18 = [telephonyPrctCopy unsignedIntValue];
     }
 
     else
@@ -7233,12 +7233,12 @@ LABEL_599:
       v81->_hasLastVolTelephonyPrct = 0;
     }
 
-    v81->_lastVolTelephonyPrct = v101;
-    v102 = v187;
-    if (v187)
+    v81->_lastVolTelephonyPrct = unsignedIntValue18;
+    unsignedIntValue19 = siridBACopy;
+    if (siridBACopy)
     {
       v81->_hasLastESiridBA = 1;
-      v102 = [v187 unsignedIntValue];
+      unsignedIntValue19 = [siridBACopy unsignedIntValue];
     }
 
     else
@@ -7246,12 +7246,12 @@ LABEL_599:
       v81->_hasLastESiridBA = 0;
     }
 
-    v81->_lastESiridBA = v102;
-    v103 = v186;
-    if (v186)
+    v81->_lastESiridBA = unsignedIntValue19;
+    unsignedIntValue20 = siriPrctCopy;
+    if (siriPrctCopy)
     {
       v81->_hasLastVolSiriPrct = 1;
-      v103 = [v186 unsignedIntValue];
+      unsignedIntValue20 = [siriPrctCopy unsignedIntValue];
     }
 
     else
@@ -7259,12 +7259,12 @@ LABEL_599:
       v81->_hasLastVolSiriPrct = 0;
     }
 
-    v81->_lastVolSiriPrct = v103;
-    v104 = v185;
-    if (v185)
+    v81->_lastVolSiriPrct = unsignedIntValue20;
+    unsignedIntValue21 = eaeCopy;
+    if (eaeCopy)
     {
       v81->_hasSmoothEae = 1;
-      v104 = [v185 unsignedIntValue];
+      unsignedIntValue21 = [eaeCopy unsignedIntValue];
     }
 
     else
@@ -7272,64 +7272,64 @@ LABEL_599:
       v81->_hasSmoothEae = 0;
     }
 
-    v81->_smoothEae = v104;
-    if (v184)
+    v81->_smoothEae = unsignedIntValue21;
+    if (eCopy)
     {
       v81->_hasDesiredDeltaE = 1;
-      v105 = [v184 intValue];
+      intValue3 = [eCopy intValue];
     }
 
     else
     {
       v81->_hasDesiredDeltaE = 0;
-      v105 = -1;
+      intValue3 = -1;
     }
 
-    v81->_desiredDeltaE = v105;
-    if (v183)
+    v81->_desiredDeltaE = intValue3;
+    if (volMediaPrctCopy)
     {
       v81->_hasPredVolMediaPrct = 1;
-      v106 = [v183 intValue];
+      intValue4 = [volMediaPrctCopy intValue];
     }
 
     else
     {
       v81->_hasPredVolMediaPrct = 0;
-      v106 = -1;
+      intValue4 = -1;
     }
 
-    v81->_predVolMediaPrct = v106;
-    if (v182)
+    v81->_predVolMediaPrct = intValue4;
+    if (volTelephonyPrctCopy)
     {
       v81->_hasPredVolTelephonyPrct = 1;
-      v107 = [v182 intValue];
+      intValue5 = [volTelephonyPrctCopy intValue];
     }
 
     else
     {
       v81->_hasPredVolTelephonyPrct = 0;
-      v107 = -1;
+      intValue5 = -1;
     }
 
-    v81->_predVolTelephonyPrct = v107;
-    if (v181)
+    v81->_predVolTelephonyPrct = intValue5;
+    if (volSiriPrctCopy)
     {
       v81->_hasPredVolSiriPrct = 1;
-      v108 = [v181 intValue];
+      intValue6 = [volSiriPrctCopy intValue];
     }
 
     else
     {
       v81->_hasPredVolSiriPrct = 0;
-      v108 = -1;
+      intValue6 = -1;
     }
 
-    v81->_predVolSiriPrct = v108;
-    v109 = v180;
-    if (v180)
+    v81->_predVolSiriPrct = intValue6;
+    unsignedIntValue22 = predictionFlagCopy;
+    if (predictionFlagCopy)
     {
       v81->_hasOnStartPredictionFlag = 1;
-      v109 = [v180 unsignedIntValue];
+      unsignedIntValue22 = [predictionFlagCopy unsignedIntValue];
     }
 
     else
@@ -7337,12 +7337,12 @@ LABEL_599:
       v81->_hasOnStartPredictionFlag = 0;
     }
 
-    v81->_onStartPredictionFlag = v109;
-    v110 = v179;
-    if (v179)
+    v81->_onStartPredictionFlag = unsignedIntValue22;
+    unsignedIntValue23 = avoidFlagCopy;
+    if (avoidFlagCopy)
     {
       v81->_hasGuardrailsAvoidFlag = 1;
-      v110 = [v179 unsignedIntValue];
+      unsignedIntValue23 = [avoidFlagCopy unsignedIntValue];
     }
 
     else
@@ -7350,12 +7350,12 @@ LABEL_599:
       v81->_hasGuardrailsAvoidFlag = 0;
     }
 
-    v81->_guardrailsAvoidFlag = v110;
-    v111 = v178;
-    if (v178)
+    v81->_guardrailsAvoidFlag = unsignedIntValue23;
+    unsignedIntValue24 = cutFlagCopy;
+    if (cutFlagCopy)
     {
       v81->_hasMinMaxCutFlag = 1;
-      v111 = [v178 unsignedIntValue];
+      unsignedIntValue24 = [cutFlagCopy unsignedIntValue];
     }
 
     else
@@ -7363,12 +7363,12 @@ LABEL_599:
       v81->_hasMinMaxCutFlag = 0;
     }
 
-    v81->_minMaxCutFlag = v111;
-    v112 = v177;
-    if (v177)
+    v81->_minMaxCutFlag = unsignedIntValue24;
+    unsignedIntValue25 = volumeChangeFlagCopy;
+    if (volumeChangeFlagCopy)
     {
       v81->_hasManualVolumeChangeFlag = 1;
-      v112 = [v177 unsignedIntValue];
+      unsignedIntValue25 = [volumeChangeFlagCopy unsignedIntValue];
     }
 
     else
@@ -7376,12 +7376,12 @@ LABEL_599:
       v81->_hasManualVolumeChangeFlag = 0;
     }
 
-    v81->_manualVolumeChangeFlag = v112;
-    v113 = v176;
-    if (v176)
+    v81->_manualVolumeChangeFlag = unsignedIntValue25;
+    unsignedIntValue26 = sizeCopy;
+    if (sizeCopy)
     {
       v81->_hasBigWindowSize = 1;
-      v113 = [v176 unsignedIntValue];
+      unsignedIntValue26 = [sizeCopy unsignedIntValue];
     }
 
     else
@@ -7389,12 +7389,12 @@ LABEL_599:
       v81->_hasBigWindowSize = 0;
     }
 
-    v81->_bigWindowSize = v113;
-    v114 = v175;
-    if (v175)
+    v81->_bigWindowSize = unsignedIntValue26;
+    unsignedIntValue27 = windowSizeCopy;
+    if (windowSizeCopy)
     {
       v81->_hasSmallWindowSize = 1;
-      v114 = [v175 unsignedIntValue];
+      unsignedIntValue27 = [windowSizeCopy unsignedIntValue];
     }
 
     else
@@ -7402,14 +7402,14 @@ LABEL_599:
       v81->_hasSmallWindowSize = 0;
     }
 
-    v81->_smallWindowSize = v114;
-    objc_storeStrong(&v81->_activeAppName, a36);
-    objc_storeStrong(&v81->_activeAirpodsSerialNumber, a37);
-    v115 = v174;
-    if (v174)
+    v81->_smallWindowSize = unsignedIntValue27;
+    objc_storeStrong(&v81->_activeAppName, name);
+    objc_storeStrong(&v81->_activeAirpodsSerialNumber, number);
+    unsignedIntValue28 = volCopy;
+    if (volCopy)
     {
       v81->_hasAnchorVol = 1;
-      v115 = [v174 unsignedIntValue];
+      unsignedIntValue28 = [volCopy unsignedIntValue];
     }
 
     else
@@ -7417,12 +7417,12 @@ LABEL_599:
       v81->_hasAnchorVol = 0;
     }
 
-    v81->_anchorVol = v115;
-    v116 = v173;
-    if (v173)
+    v81->_anchorVol = unsignedIntValue28;
+    unsignedIntValue29 = envCopy;
+    if (envCopy)
     {
       v81->_hasAnchorEnv = 1;
-      v116 = [v173 unsignedIntValue];
+      unsignedIntValue29 = [envCopy unsignedIntValue];
     }
 
     else
@@ -7430,12 +7430,12 @@ LABEL_599:
       v81->_hasAnchorEnv = 0;
     }
 
-    v81->_anchorEnv = v116;
-    v117 = v172;
-    if (v172)
+    v81->_anchorEnv = unsignedIntValue29;
+    unsignedIntValue30 = coeffCopy;
+    if (coeffCopy)
     {
       v81->_hasPersonalizationCoeff = 1;
-      v117 = [v172 unsignedIntValue];
+      unsignedIntValue30 = [coeffCopy unsignedIntValue];
     }
 
     else
@@ -7443,12 +7443,12 @@ LABEL_599:
       v81->_hasPersonalizationCoeff = 0;
     }
 
-    v81->_personalizationCoeff = v117;
-    v118 = v171;
-    if (v171)
+    v81->_personalizationCoeff = unsignedIntValue30;
+    unsignedIntValue31 = predVolMediaPrctCopy;
+    if (predVolMediaPrctCopy)
     {
       v81->_hasUnsignedPredVolMediaPrct = 1;
-      v118 = [v171 unsignedIntValue];
+      unsignedIntValue31 = [predVolMediaPrctCopy unsignedIntValue];
     }
 
     else
@@ -7456,12 +7456,12 @@ LABEL_599:
       v81->_hasUnsignedPredVolMediaPrct = 0;
     }
 
-    v81->_unsignedPredVolMediaPrct = v118;
-    v119 = v170;
-    if (v170)
+    v81->_unsignedPredVolMediaPrct = unsignedIntValue31;
+    unsignedIntValue32 = predVolTelephonyPrctCopy;
+    if (predVolTelephonyPrctCopy)
     {
       v81->_hasUnsignedPredVolTelephonyPrct = 1;
-      v119 = [v170 unsignedIntValue];
+      unsignedIntValue32 = [predVolTelephonyPrctCopy unsignedIntValue];
     }
 
     else
@@ -7469,12 +7469,12 @@ LABEL_599:
       v81->_hasUnsignedPredVolTelephonyPrct = 0;
     }
 
-    v81->_unsignedPredVolTelephonyPrct = v119;
-    v120 = v169;
-    if (v169)
+    v81->_unsignedPredVolTelephonyPrct = unsignedIntValue32;
+    unsignedIntValue33 = predVolSiriPrctCopy;
+    if (predVolSiriPrctCopy)
     {
       v81->_hasUnsignedPredVolSiriPrct = 1;
-      v120 = [v169 unsignedIntValue];
+      unsignedIntValue33 = [predVolSiriPrctCopy unsignedIntValue];
     }
 
     else
@@ -7482,12 +7482,12 @@ LABEL_599:
       v81->_hasUnsignedPredVolSiriPrct = 0;
     }
 
-    v81->_unsignedPredVolSiriPrct = v120;
-    v121 = v168;
-    if (v168)
+    v81->_unsignedPredVolSiriPrct = unsignedIntValue33;
+    unsignedIntValue34 = budFlagCopy;
+    if (budFlagCopy)
     {
       v81->_hasSingleBudFlag = 1;
-      v121 = [v168 unsignedIntValue];
+      unsignedIntValue34 = [budFlagCopy unsignedIntValue];
     }
 
     else
@@ -7495,12 +7495,12 @@ LABEL_599:
       v81->_hasSingleBudFlag = 0;
     }
 
-    v81->_singleBudFlag = v121;
-    v122 = v167;
-    if (v167)
+    v81->_singleBudFlag = unsignedIntValue34;
+    unsignedIntValue35 = engagementFlagCopy;
+    if (engagementFlagCopy)
     {
       v81->_hasCdEngagementFlag = 1;
-      v122 = [v167 unsignedIntValue];
+      unsignedIntValue35 = [engagementFlagCopy unsignedIntValue];
     }
 
     else
@@ -7508,12 +7508,12 @@ LABEL_599:
       v81->_hasCdEngagementFlag = 0;
     }
 
-    v81->_cdEngagementFlag = v122;
-    v123 = v166;
-    if (v166)
+    v81->_cdEngagementFlag = unsignedIntValue35;
+    unsignedIntValue36 = streamFlagCopy;
+    if (streamFlagCopy)
     {
       v81->_hasActiveStreamFlag = 1;
-      v123 = [v166 unsignedIntValue];
+      unsignedIntValue36 = [streamFlagCopy unsignedIntValue];
     }
 
     else
@@ -7521,12 +7521,12 @@ LABEL_599:
       v81->_hasActiveStreamFlag = 0;
     }
 
-    v81->_activeStreamFlag = v123;
-    v124 = v165;
-    if (v165)
+    v81->_activeStreamFlag = unsignedIntValue36;
+    unsignedIntValue37 = enableFlagCopy;
+    if (enableFlagCopy)
     {
       v81->_hasPvFeatureEnableFlag = 1;
-      v124 = [v165 unsignedIntValue];
+      unsignedIntValue37 = [enableFlagCopy unsignedIntValue];
     }
 
     else
@@ -7534,13 +7534,13 @@ LABEL_599:
       v81->_hasPvFeatureEnableFlag = 0;
     }
 
-    v81->_pvFeatureEnableFlag = v124;
-    objc_storeStrong(&v81->_envSpectralData32B, a48);
-    v125 = v164;
-    if (v164)
+    v81->_pvFeatureEnableFlag = unsignedIntValue37;
+    objc_storeStrong(&v81->_envSpectralData32B, b);
+    unsignedIntValue38 = strengthCopy;
+    if (strengthCopy)
     {
       v81->_hasWindStrength = 1;
-      v125 = [v164 unsignedIntValue];
+      unsignedIntValue38 = [strengthCopy unsignedIntValue];
     }
 
     else
@@ -7548,12 +7548,12 @@ LABEL_599:
       v81->_hasWindStrength = 0;
     }
 
-    v81->_windStrength = v125;
-    v126 = v163;
-    if (v163)
+    v81->_windStrength = unsignedIntValue38;
+    unsignedIntValue39 = probCopy;
+    if (probCopy)
     {
       v81->_hasWindProb = 1;
-      v126 = [v163 unsignedIntValue];
+      unsignedIntValue39 = [probCopy unsignedIntValue];
     }
 
     else
@@ -7561,12 +7561,12 @@ LABEL_599:
       v81->_hasWindProb = 0;
     }
 
-    v81->_windProb = v126;
-    v127 = v162;
-    if (v162)
+    v81->_windProb = unsignedIntValue39;
+    unsignedIntValue40 = mediaTypeCopy;
+    if (mediaTypeCopy)
     {
       v81->_hasMediaType = 1;
-      v127 = [v162 unsignedIntValue];
+      unsignedIntValue40 = [mediaTypeCopy unsignedIntValue];
     }
 
     else
@@ -7574,12 +7574,12 @@ LABEL_599:
       v81->_hasMediaType = 0;
     }
 
-    v81->_mediaType = v127;
-    v128 = v161;
-    if (v161)
+    v81->_mediaType = unsignedIntValue40;
+    unsignedIntValue41 = activityCopy;
+    if (activityCopy)
     {
       v81->_hasSourceActivity = 1;
-      v128 = [v161 unsignedIntValue];
+      unsignedIntValue41 = [activityCopy unsignedIntValue];
     }
 
     else
@@ -7587,12 +7587,12 @@ LABEL_599:
       v81->_hasSourceActivity = 0;
     }
 
-    v81->_sourceActivity = v128;
-    v129 = v160;
-    if (v160)
+    v81->_sourceActivity = unsignedIntValue41;
+    unsignedIntValue42 = budActivityCopy;
+    if (budActivityCopy)
     {
       v81->_hasBudActivity = 1;
-      v129 = [v160 unsignedIntValue];
+      unsignedIntValue42 = [budActivityCopy unsignedIntValue];
     }
 
     else
@@ -7600,12 +7600,12 @@ LABEL_599:
       v81->_hasBudActivity = 0;
     }
 
-    v81->_budActivity = v129;
-    v130 = v159;
-    if (v159)
+    v81->_budActivity = unsignedIntValue42;
+    unsignedIntValue43 = locationCopy;
+    if (locationCopy)
     {
       v81->_hasLocation = 1;
-      v130 = [v159 unsignedIntValue];
+      unsignedIntValue43 = [locationCopy unsignedIntValue];
     }
 
     else
@@ -7613,12 +7613,12 @@ LABEL_599:
       v81->_hasLocation = 0;
     }
 
-    v81->_location = v130;
-    v131 = v158;
-    if (v158)
+    v81->_location = unsignedIntValue43;
+    unsignedIntValue44 = locationTypeCopy;
+    if (locationTypeCopy)
     {
       v81->_hasLocationType = 1;
-      v131 = [v158 unsignedIntValue];
+      unsignedIntValue44 = [locationTypeCopy unsignedIntValue];
     }
 
     else
@@ -7626,12 +7626,12 @@ LABEL_599:
       v81->_hasLocationType = 0;
     }
 
-    v81->_locationType = v131;
-    v132 = v157;
-    if (v157)
+    v81->_locationType = unsignedIntValue44;
+    unsignedIntValue45 = focusModeCopy;
+    if (focusModeCopy)
     {
       v81->_hasFocusMode = 1;
-      v132 = [v157 unsignedIntValue];
+      unsignedIntValue45 = [focusModeCopy unsignedIntValue];
     }
 
     else
@@ -7639,26 +7639,26 @@ LABEL_599:
       v81->_hasFocusMode = 0;
     }
 
-    v81->_focusMode = v132;
-    if (v72)
+    v81->_focusMode = unsignedIntValue45;
+    if (idCopy)
     {
       v81->_hasStreamingAppBundleId = 1;
-      v133 = [v72 unsignedIntValue];
+      unsignedIntValue46 = [idCopy unsignedIntValue];
     }
 
     else
     {
-      v133 = 0;
+      unsignedIntValue46 = 0;
       v81->_hasStreamingAppBundleId = 0;
     }
 
-    v81->_streamingAppBundleId = v133;
-    objc_storeStrong(&v81->_noiseType4B, a58);
-    v134 = v156;
-    if (v156)
+    v81->_streamingAppBundleId = unsignedIntValue46;
+    objc_storeStrong(&v81->_noiseType4B, type4B);
+    unsignedIntValue47 = instdBACopy;
+    if (instdBACopy)
     {
       v81->_hasInstdBA = 1;
-      v134 = [v156 unsignedIntValue];
+      unsignedIntValue47 = [instdBACopy unsignedIntValue];
     }
 
     else
@@ -7666,12 +7666,12 @@ LABEL_599:
       v81->_hasInstdBA = 0;
     }
 
-    v81->_instdBA = v134;
-    v135 = v155;
-    if (v155)
+    v81->_instdBA = unsignedIntValue47;
+    unsignedIntValue48 = bCCopy;
+    if (bCCopy)
     {
       v81->_hasInstdBC = 1;
-      v135 = [v155 unsignedIntValue];
+      unsignedIntValue48 = [bCCopy unsignedIntValue];
     }
 
     else
@@ -7679,12 +7679,12 @@ LABEL_599:
       v81->_hasInstdBC = 0;
     }
 
-    v81->_instdBC = v135;
-    v136 = v154;
-    if (v154)
+    v81->_instdBC = unsignedIntValue48;
+    unsignedIntValue49 = listeningModeCopy;
+    if (listeningModeCopy)
     {
       v81->_hasNonCAListeningMode = 1;
-      v136 = [v154 unsignedIntValue];
+      unsignedIntValue49 = [listeningModeCopy unsignedIntValue];
     }
 
     else
@@ -7692,12 +7692,12 @@ LABEL_599:
       v81->_hasNonCAListeningMode = 0;
     }
 
-    v81->_nonCAListeningMode = v136;
-    v137 = v153;
-    if (v153)
+    v81->_nonCAListeningMode = unsignedIntValue49;
+    unsignedIntValue50 = fitCopy;
+    if (fitCopy)
     {
       v81->_hasFit = 1;
-      v137 = [v153 unsignedIntValue];
+      unsignedIntValue50 = [fitCopy unsignedIntValue];
     }
 
     else
@@ -7705,12 +7705,12 @@ LABEL_599:
       v81->_hasFit = 0;
     }
 
-    v81->_fit = v137;
-    v138 = v73;
-    if (v73)
+    v81->_fit = unsignedIntValue50;
+    unsignedIntValue51 = gainCopy;
+    if (gainCopy)
     {
       v81->_hasFixedAutoAncGain = 1;
-      v138 = [v73 unsignedIntValue];
+      unsignedIntValue51 = [gainCopy unsignedIntValue];
     }
 
     else
@@ -7718,12 +7718,12 @@ LABEL_599:
       v81->_hasFixedAutoAncGain = 0;
     }
 
-    v81->_fixedAutoAncGain = v138;
-    v139 = v74;
+    v81->_fixedAutoAncGain = unsignedIntValue51;
+    unsignedIntValue52 = v74;
     if (v74)
     {
       v81->_hasAdjustedAutoAncGain = 1;
-      v139 = [v74 unsignedIntValue];
+      unsignedIntValue52 = [v74 unsignedIntValue];
     }
 
     else
@@ -7731,12 +7731,12 @@ LABEL_599:
       v81->_hasAdjustedAutoAncGain = 0;
     }
 
-    v81->_adjustedAutoAncGain = v139;
-    v140 = v75;
+    v81->_adjustedAutoAncGain = unsignedIntValue52;
+    unsignedIntValue53 = v75;
     if (v75)
     {
       v81->_hasTimestamp = 1;
-      v140 = [v75 unsignedIntValue];
+      unsignedIntValue53 = [v75 unsignedIntValue];
     }
 
     else
@@ -7744,72 +7744,72 @@ LABEL_599:
       v81->_hasTimestamp = 0;
     }
 
-    v81->_timestamp = v140;
+    v81->_timestamp = unsignedIntValue53;
     if (v76)
     {
       v81->_hasDRCenablementBit = 1;
-      v141 = [v76 unsignedIntValue];
+      unsignedIntValue54 = [v76 unsignedIntValue];
     }
 
     else
     {
-      v141 = 0;
+      unsignedIntValue54 = 0;
       v81->_hasDRCenablementBit = 0;
     }
 
-    v81->_DRCenablementBit = v141;
+    v81->_DRCenablementBit = unsignedIntValue54;
     if (v77)
     {
       v81->_hasDRCwindFlag = 1;
-      v142 = [v77 unsignedIntValue];
+      unsignedIntValue55 = [v77 unsignedIntValue];
     }
 
     else
     {
-      v142 = 0;
+      unsignedIntValue55 = 0;
       v81->_hasDRCwindFlag = 0;
     }
 
-    v81->_DRCwindFlag = v142;
+    v81->_DRCwindFlag = unsignedIntValue55;
     if (v78)
     {
       v81->_hasDRCappSelfVoiceFlag = 1;
-      v143 = [v78 unsignedIntValue];
+      unsignedIntValue56 = [v78 unsignedIntValue];
     }
 
     else
     {
-      v143 = 0;
+      unsignedIntValue56 = 0;
       v81->_hasDRCappSelfVoiceFlag = 0;
     }
 
-    v81->_DRCappSelfVoiceFlag = v143;
+    v81->_DRCappSelfVoiceFlag = unsignedIntValue56;
     if (v79)
     {
       v81->_hasDrumDRC = 1;
-      v144 = [v79 unsignedIntValue];
+      unsignedIntValue57 = [v79 unsignedIntValue];
     }
 
     else
     {
-      v144 = 0;
+      unsignedIntValue57 = 0;
       v81->_hasDrumDRC = 0;
     }
 
-    v81->_drumDRC = v144;
+    v81->_drumDRC = unsignedIntValue57;
     if (v80)
     {
       v81->_hasRoutedDRCGain = 1;
-      v145 = [v80 unsignedIntValue];
+      unsignedIntValue58 = [v80 unsignedIntValue];
     }
 
     else
     {
-      v145 = 0;
+      unsignedIntValue58 = 0;
       v81->_hasRoutedDRCGain = 0;
     }
 
-    v81->_routedDRCGain = v145;
+    v81->_routedDRCGain = unsignedIntValue58;
   }
 
   v146 = v81;
@@ -7999,9 +7999,9 @@ id __33__BMDeviceAdaptiveVolume_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -8009,8 +8009,8 @@ id __33__BMDeviceAdaptiveVolume_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceAdaptiveVolume alloc] initByReadFrom:v7];
     v4 = v8;
@@ -8023,18 +8023,18 @@ id __33__BMDeviceAdaptiveVolume_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (uint64_t)initWithControllerVersion:(void *)a1 refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:
+- (uint64_t)initWithControllerVersion:(void *)version refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:drumDRC:routedDRCGain:
 {
 
-  return [a1 initWithControllerVersion:? refMicdBA:? refMicdBC:? drumdBA:? drumdBK:? drumdBAPredicted:? downlinkdBA:? currentVolumePrct:? lastUserVolChangeType:? headphoneMode:? streamType:? windSpeechAggressorFlag:? volumeChangeFlag:? speechPresenceProbability:? personalizationParamSnr:? personalizationParamMistakes:? lastEMediadBA:? lastVolMediaPrct:? lastETelephonydBA:? lastVolTelephonyPrct:? lastESiridBA:? lastVolSiriPrct:? smoothEae:? desiredDeltaE:? predVolMediaPrct:? predVolTelephonyPrct:? predVolSiriPrct:? onStartPredictionFlag:? guardrailsAvoidFlag:? minMaxCutFlag:? manualVolumeChangeFlag:? bigWindowSize:? smallWindowSize:? activeAppName:? activeAirpodsSerialNumber:? anchorVol:? anchorEnv:? personalizationCoeff:? unsignedPredVolMediaPrct:? unsignedPredVolTelephonyPrct:? unsignedPredVolSiriPrct:? singleBudFlag:? cdEngagementFlag:? activeStreamFlag:? pvFeatureEnableFlag:? envSpectralData32B:? windStrength:? windProb:? mediaType:? sourceActivity:? budActivity:? location:? locationType:? focusMode:? streamingAppBundleId:? noiseType4B:? instdBA:? instdBC:? nonCAListeningMode:? fit:? fixedAutoAncGain:? adjustedAutoAncGain:? timestamp:? DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:? drumDRC:? routedDRCGain:?];
+  return [version initWithControllerVersion:? refMicdBA:? refMicdBC:? drumdBA:? drumdBK:? drumdBAPredicted:? downlinkdBA:? currentVolumePrct:? lastUserVolChangeType:? headphoneMode:? streamType:? windSpeechAggressorFlag:? volumeChangeFlag:? speechPresenceProbability:? personalizationParamSnr:? personalizationParamMistakes:? lastEMediadBA:? lastVolMediaPrct:? lastETelephonydBA:? lastVolTelephonyPrct:? lastESiridBA:? lastVolSiriPrct:? smoothEae:? desiredDeltaE:? predVolMediaPrct:? predVolTelephonyPrct:? predVolSiriPrct:? onStartPredictionFlag:? guardrailsAvoidFlag:? minMaxCutFlag:? manualVolumeChangeFlag:? bigWindowSize:? smallWindowSize:? activeAppName:? activeAirpodsSerialNumber:? anchorVol:? anchorEnv:? personalizationCoeff:? unsignedPredVolMediaPrct:? unsignedPredVolTelephonyPrct:? unsignedPredVolSiriPrct:? singleBudFlag:? cdEngagementFlag:? activeStreamFlag:? pvFeatureEnableFlag:? envSpectralData32B:? windStrength:? windProb:? mediaType:? sourceActivity:? budActivity:? location:? locationType:? focusMode:? streamingAppBundleId:? noiseType4B:? instdBA:? instdBC:? nonCAListeningMode:? fit:? fixedAutoAncGain:? adjustedAutoAncGain:? timestamp:? DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:? drumDRC:? routedDRCGain:?];
 }
 
-- (BMDeviceAdaptiveVolume)initWithControllerVersion:(id)a3 refMicdBA:(id)a4 refMicdBC:(id)a5 drumdBA:(id)a6 drumdBK:(id)a7 drumdBAPredicted:(id)a8 downlinkdBA:(id)a9 currentVolumePrct:(id)a10 lastUserVolChangeType:(id)a11 headphoneMode:(id)a12 streamType:(id)a13 windSpeechAggressorFlag:(id)a14 volumeChangeFlag:(id)a15 speechPresenceProbability:(id)a16 personalizationParamSnr:(id)a17 personalizationParamMistakes:(id)a18 lastEMediadBA:(id)a19 lastVolMediaPrct:(id)a20 lastETelephonydBA:(id)a21 lastVolTelephonyPrct:(id)a22 lastESiridBA:(id)a23 lastVolSiriPrct:(id)a24 smoothEae:(id)a25 desiredDeltaE:(id)a26 predVolMediaPrct:(id)a27 predVolTelephonyPrct:(id)a28 predVolSiriPrct:(id)a29 onStartPredictionFlag:(id)a30 guardrailsAvoidFlag:(id)a31 minMaxCutFlag:(id)a32 manualVolumeChangeFlag:(id)a33 bigWindowSize:(id)a34 smallWindowSize:(id)a35 activeAppName:(id)a36 activeAirpodsSerialNumber:(id)a37
+- (BMDeviceAdaptiveVolume)initWithControllerVersion:(id)version refMicdBA:(id)a refMicdBC:(id)c drumdBA:(id)bA drumdBK:(id)k drumdBAPredicted:(id)predicted downlinkdBA:(id)downlinkdBA currentVolumePrct:(id)self0 lastUserVolChangeType:(id)self1 headphoneMode:(id)self2 streamType:(id)self3 windSpeechAggressorFlag:(id)self4 volumeChangeFlag:(id)self5 speechPresenceProbability:(id)self6 personalizationParamSnr:(id)self7 personalizationParamMistakes:(id)self8 lastEMediadBA:(id)self9 lastVolMediaPrct:(id)mediaPrct lastETelephonydBA:(id)telephonydBA lastVolTelephonyPrct:(id)telephonyPrct lastESiridBA:(id)siridBA lastVolSiriPrct:(id)siriPrct smoothEae:(id)eae desiredDeltaE:(id)e predVolMediaPrct:(id)volMediaPrct predVolTelephonyPrct:(id)volTelephonyPrct predVolSiriPrct:(id)volSiriPrct onStartPredictionFlag:(id)version0 guardrailsAvoidFlag:(id)version1 minMaxCutFlag:(id)version2 manualVolumeChangeFlag:(id)version3 bigWindowSize:(id)version4 smallWindowSize:(id)version5 activeAppName:(id)version6 activeAirpodsSerialNumber:(id)version7
 {
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
-  return [BMDeviceAdaptiveVolume initWithControllerVersion:"initWithControllerVersion:refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:" refMicdBA:a3 refMicdBC:a4 drumdBA:a5 drumdBK:a6 drumdBAPredicted:a7 downlinkdBA:a8 currentVolumePrct:a9 lastUserVolChangeType:a10 headphoneMode:a11 streamType:a12 windSpeechAggressorFlag:a13 volumeChangeFlag:a14 speechPresenceProbability:a15 personalizationParamSnr:a16 personalizationParamMistakes:a17 lastEMediadBA:a18 lastVolMediaPrct:a19 lastETelephonydBA:a20 lastVolTelephonyPrct:a21 lastESiridBA:a22 lastVolSiriPrct:a23 smoothEae:a24 desiredDeltaE:a25 predVolMediaPrct:a26 predVolTelephonyPrct:a27 predVolSiriPrct:a28 onStartPredictionFlag:a29 guardrailsAvoidFlag:a30 minMaxCutFlag:a31 manualVolumeChangeFlag:a32 bigWindowSize:a33 smallWindowSize:a34 activeAppName:a35 activeAirpodsSerialNumber:a36 anchorVol:a37 anchorEnv:0 personalizationCoeff:0 unsignedPredVolMediaPrct:0 unsignedPredVolTelephonyPrct:0 unsignedPredVolSiriPrct:0 singleBudFlag:0 cdEngagementFlag:0 activeStreamFlag:0 pvFeatureEnableFlag:0 envSpectralData_32B:0 wind_strength:MEMORY[0x1E695E0F0] wind_prob:0 mediaType:0 sourceActivity:0 budActivity:0 location:0 locationType:0 focusMode:0 streamingAppBundleId:0 noiseType_4B:0 instdBA:MEMORY[0x1E695E0F0] instdBC:0 nonCAListeningMode:0 fit:0 fixedAutoAncGain:0 adjustedAutoAncGain:0 timestamp:? DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:?];
+  return [BMDeviceAdaptiveVolume initWithControllerVersion:"initWithControllerVersion:refMicdBA:refMicdBC:drumdBA:drumdBK:drumdBAPredicted:downlinkdBA:currentVolumePrct:lastUserVolChangeType:headphoneMode:streamType:windSpeechAggressorFlag:volumeChangeFlag:speechPresenceProbability:personalizationParamSnr:personalizationParamMistakes:lastEMediadBA:lastVolMediaPrct:lastETelephonydBA:lastVolTelephonyPrct:lastESiridBA:lastVolSiriPrct:smoothEae:desiredDeltaE:predVolMediaPrct:predVolTelephonyPrct:predVolSiriPrct:onStartPredictionFlag:guardrailsAvoidFlag:minMaxCutFlag:manualVolumeChangeFlag:bigWindowSize:smallWindowSize:activeAppName:activeAirpodsSerialNumber:anchorVol:anchorEnv:personalizationCoeff:unsignedPredVolMediaPrct:unsignedPredVolTelephonyPrct:unsignedPredVolSiriPrct:singleBudFlag:cdEngagementFlag:activeStreamFlag:pvFeatureEnableFlag:envSpectralData_32B:wind_strength:wind_prob:mediaType:sourceActivity:budActivity:location:locationType:focusMode:streamingAppBundleId:noiseType_4B:instdBA:instdBC:nonCAListeningMode:fit:fixedAutoAncGain:adjustedAutoAncGain:timestamp:DRCenablementBit:DRCwindFlag:DRCappSelfVoiceFlag:" refMicdBA:version refMicdBC:a drumdBA:c drumdBK:bA drumdBAPredicted:k downlinkdBA:predicted currentVolumePrct:downlinkdBA lastUserVolChangeType:prct headphoneMode:type streamType:mode windSpeechAggressorFlag:streamType volumeChangeFlag:flag speechPresenceProbability:changeFlag personalizationParamSnr:probability personalizationParamMistakes:snr lastEMediadBA:mistakes lastVolMediaPrct:mediadBA lastETelephonydBA:mediaPrct lastVolTelephonyPrct:telephonydBA lastESiridBA:telephonyPrct lastVolSiriPrct:siridBA smoothEae:siriPrct desiredDeltaE:eae predVolMediaPrct:e predVolTelephonyPrct:volMediaPrct predVolSiriPrct:volTelephonyPrct onStartPredictionFlag:volSiriPrct guardrailsAvoidFlag:predictionFlag minMaxCutFlag:avoidFlag manualVolumeChangeFlag:cutFlag bigWindowSize:volumeChangeFlag smallWindowSize:size activeAppName:windowSize activeAirpodsSerialNumber:name anchorVol:number anchorEnv:0 personalizationCoeff:0 unsignedPredVolMediaPrct:0 unsignedPredVolTelephonyPrct:0 unsignedPredVolSiriPrct:0 singleBudFlag:0 cdEngagementFlag:0 activeStreamFlag:0 pvFeatureEnableFlag:0 envSpectralData_32B:0 wind_strength:MEMORY[0x1E695E0F0] wind_prob:0 mediaType:0 sourceActivity:0 budActivity:0 location:0 locationType:0 focusMode:0 streamingAppBundleId:0 noiseType_4B:0 instdBA:MEMORY[0x1E695E0F0] instdBC:0 nonCAListeningMode:0 fit:0 fixedAutoAncGain:0 adjustedAutoAncGain:0 timestamp:? DRCenablementBit:? DRCwindFlag:? DRCappSelfVoiceFlag:?];
 }
 
 @end

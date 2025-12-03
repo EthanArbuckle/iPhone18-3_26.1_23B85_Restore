@@ -1,8 +1,8 @@
 @interface NumberedTextView
 - (NSString)details;
 - (NSString)title;
-- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithCoder:(id)a3;
-- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithFrame:(CGRect)a3;
+- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithCoder:(id)coder;
+- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NumberedTextView
@@ -35,14 +35,14 @@
   return v4;
 }
 
-- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithCoder:(id)coder
 {
   result = sub_251703584();
   __break(1u);
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithFrame:(CGRect)a3
+- (_TtC28HealthExposureNotificationUI16NumberedTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

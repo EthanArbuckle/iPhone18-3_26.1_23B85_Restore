@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityRentalCarReservation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityRentalCarReservation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityRentalCarReservation)initWithReservationID:(id)a3 eventName:(id)a4 provider:(id)a5 customerNames:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 startLocationTelephone:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 endLocationName:(id)a12 endLocationAddress:(id)a13 endLocationTelephone:(id)a14 endDate:(id)a15 endDateTimeZone:(id)a16 reservationForName:(id)a17 duration:(id)a18 cost:(id)a19 costCode:(id)a20 eventStatus:(id)a21 error:(id *)a22;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityRentalCarReservation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppIntentsExtractedEntityRentalCarReservation)initWithReservationID:(id)d eventName:(id)name provider:(id)provider customerNames:(id)names startLocationName:(id)locationName startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)self0 startDateTimeZone:(id)self1 endLocationName:(id)self2 endLocationAddress:(id)self3 endLocationTelephone:(id)self4 endDate:(id)self5 endDateTimeZone:(id)self6 reservationForName:(id)self7 duration:(id)self8 cost:(id)self9 costCode:(id)code eventStatus:(id)status error:(id *)error;
 - (NSArray)customerNames;
 - (NSString)cost;
 - (NSString)costCode;
@@ -21,41 +21,41 @@
 - (NSString)startLocationName;
 - (NSString)startLocationTelephone;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityRentalCarReservation
 
-- (CCAppIntentsExtractedEntityRentalCarReservation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityRentalCarReservation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v31 = [v6 objectForKeyedSubscript:@"reservationID"];
-    v30 = [v6 objectForKeyedSubscript:@"eventName"];
-    v29 = [v6 objectForKeyedSubscript:@"provider"];
-    v23 = [v6 objectForKeyedSubscript:@"customerNames"];
-    v22 = [v6 objectForKeyedSubscript:@"startLocationName"];
-    v21 = [v6 objectForKeyedSubscript:@"startLocationAddress"];
-    v28 = [v6 objectForKeyedSubscript:@"startLocationTelephone"];
-    v27 = [v6 objectForKeyedSubscript:@"startDate"];
-    v26 = [v6 objectForKeyedSubscript:@"startDateTimeZone"];
-    v19 = [v6 objectForKeyedSubscript:@"endLocationName"];
-    v20 = [v6 objectForKeyedSubscript:@"endLocationAddress"];
-    v18 = [v6 objectForKeyedSubscript:@"endLocationTelephone"];
-    v17 = [v6 objectForKeyedSubscript:@"endDate"];
-    [v6 objectForKeyedSubscript:@"endDateTimeZone"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"reservationID"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"eventName"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"customerNames"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"startLocationName"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"startLocationAddress"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"startLocationTelephone"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"startDateTimeZone"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"endLocationName"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"endLocationAddress"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"endLocationTelephone"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
+    [dictionaryCopy objectForKeyedSubscript:@"endDateTimeZone"];
     v16 = v24 = v8;
-    v15 = [v6 objectForKeyedSubscript:@"reservationForName"];
-    [v6 objectForKeyedSubscript:@"duration"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"reservationForName"];
+    [dictionaryCopy objectForKeyedSubscript:@"duration"];
     v9 = v25 = self;
-    v10 = [v6 objectForKeyedSubscript:@"cost"];
-    v11 = [v6 objectForKeyedSubscript:@"costCode"];
-    v12 = [v6 objectForKeyedSubscript:@"eventStatus"];
-    v13 = [[CCAppIntentsExtractedEntityRentalCarReservation alloc] initWithReservationID:v31 eventName:v30 provider:v29 customerNames:v23 startLocationName:v22 startLocationAddress:v21 startLocationTelephone:v28 startDate:v27 startDateTimeZone:v26 endLocationName:v19 endLocationAddress:v20 endLocationTelephone:v18 endDate:v17 endDateTimeZone:v16 reservationForName:v15 duration:v9 cost:v10 costCode:v11 eventStatus:v12 error:a4];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cost"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"costCode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventStatus"];
+    v13 = [[CCAppIntentsExtractedEntityRentalCarReservation alloc] initWithReservationID:v31 eventName:v30 provider:v29 customerNames:v23 startLocationName:v22 startLocationAddress:v21 startLocationTelephone:v28 startDate:v27 startDateTimeZone:v26 endLocationName:v19 endLocationAddress:v20 endLocationTelephone:v18 endDate:v17 endDateTimeZone:v16 reservationForName:v15 duration:v9 cost:v10 costCode:v11 eventStatus:v12 error:error];
 
     self = v25;
     v8 = v24;
@@ -75,92 +75,92 @@
   v3 = objc_opt_new();
   if (self->_reservationID)
   {
-    v4 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self reservationID];
-    [v3 setObject:v4 forKeyedSubscript:@"reservationID"];
+    reservationID = [(CCAppIntentsExtractedEntityRentalCarReservation *)self reservationID];
+    [v3 setObject:reservationID forKeyedSubscript:@"reservationID"];
   }
 
   if (self->_eventName)
   {
-    v5 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self eventName];
-    [v3 setObject:v5 forKeyedSubscript:@"eventName"];
+    eventName = [(CCAppIntentsExtractedEntityRentalCarReservation *)self eventName];
+    [v3 setObject:eventName forKeyedSubscript:@"eventName"];
   }
 
   if (self->_provider)
   {
-    v6 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self provider];
-    [v3 setObject:v6 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityRentalCarReservation *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_customerNames)
   {
-    v7 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self customerNames];
-    [v3 setObject:v7 forKeyedSubscript:@"customerNames"];
+    customerNames = [(CCAppIntentsExtractedEntityRentalCarReservation *)self customerNames];
+    [v3 setObject:customerNames forKeyedSubscript:@"customerNames"];
   }
 
   if (self->_startLocationName)
   {
-    v8 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationName];
-    [v3 setObject:v8 forKeyedSubscript:@"startLocationName"];
+    startLocationName = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationName];
+    [v3 setObject:startLocationName forKeyedSubscript:@"startLocationName"];
   }
 
   if (self->_startLocationAddress)
   {
-    v9 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationAddress];
-    [v3 setObject:v9 forKeyedSubscript:@"startLocationAddress"];
+    startLocationAddress = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationAddress];
+    [v3 setObject:startLocationAddress forKeyedSubscript:@"startLocationAddress"];
   }
 
   if (self->_startLocationTelephone)
   {
-    v10 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationTelephone];
-    [v3 setObject:v10 forKeyedSubscript:@"startLocationTelephone"];
+    startLocationTelephone = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startLocationTelephone];
+    [v3 setObject:startLocationTelephone forKeyedSubscript:@"startLocationTelephone"];
   }
 
   if (self->_startDate)
   {
-    v11 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startDate];
-    [v3 setObject:v11 forKeyedSubscript:@"startDate"];
+    startDate = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startDate];
+    [v3 setObject:startDate forKeyedSubscript:@"startDate"];
   }
 
   if (self->_startDateTimeZone)
   {
-    v12 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startDateTimeZone];
-    [v3 setObject:v12 forKeyedSubscript:@"startDateTimeZone"];
+    startDateTimeZone = [(CCAppIntentsExtractedEntityRentalCarReservation *)self startDateTimeZone];
+    [v3 setObject:startDateTimeZone forKeyedSubscript:@"startDateTimeZone"];
   }
 
   if (self->_endLocationName)
   {
-    v13 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationName];
-    [v3 setObject:v13 forKeyedSubscript:@"endLocationName"];
+    endLocationName = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationName];
+    [v3 setObject:endLocationName forKeyedSubscript:@"endLocationName"];
   }
 
   if (self->_endLocationAddress)
   {
-    v14 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationAddress];
-    [v3 setObject:v14 forKeyedSubscript:@"endLocationAddress"];
+    endLocationAddress = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationAddress];
+    [v3 setObject:endLocationAddress forKeyedSubscript:@"endLocationAddress"];
   }
 
   if (self->_endLocationTelephone)
   {
-    v15 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationTelephone];
-    [v3 setObject:v15 forKeyedSubscript:@"endLocationTelephone"];
+    endLocationTelephone = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endLocationTelephone];
+    [v3 setObject:endLocationTelephone forKeyedSubscript:@"endLocationTelephone"];
   }
 
   if (self->_endDate)
   {
-    v16 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endDate];
-    [v3 setObject:v16 forKeyedSubscript:@"endDate"];
+    endDate = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endDate];
+    [v3 setObject:endDate forKeyedSubscript:@"endDate"];
   }
 
   if (self->_endDateTimeZone)
   {
-    v17 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endDateTimeZone];
-    [v3 setObject:v17 forKeyedSubscript:@"endDateTimeZone"];
+    endDateTimeZone = [(CCAppIntentsExtractedEntityRentalCarReservation *)self endDateTimeZone];
+    [v3 setObject:endDateTimeZone forKeyedSubscript:@"endDateTimeZone"];
   }
 
   if (self->_reservationForName)
   {
-    v18 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self reservationForName];
-    [v3 setObject:v18 forKeyedSubscript:@"reservationForName"];
+    reservationForName = [(CCAppIntentsExtractedEntityRentalCarReservation *)self reservationForName];
+    [v3 setObject:reservationForName forKeyedSubscript:@"reservationForName"];
   }
 
   if (self->_hasDuration)
@@ -173,20 +173,20 @@
 
   if (self->_cost)
   {
-    v21 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self cost];
-    [v3 setObject:v21 forKeyedSubscript:@"cost"];
+    cost = [(CCAppIntentsExtractedEntityRentalCarReservation *)self cost];
+    [v3 setObject:cost forKeyedSubscript:@"cost"];
   }
 
   if (self->_costCode)
   {
-    v22 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self costCode];
-    [v3 setObject:v22 forKeyedSubscript:@"costCode"];
+    costCode = [(CCAppIntentsExtractedEntityRentalCarReservation *)self costCode];
+    [v3 setObject:costCode forKeyedSubscript:@"costCode"];
   }
 
   if (self->_eventStatus)
   {
-    v23 = [(CCAppIntentsExtractedEntityRentalCarReservation *)self eventStatus];
-    [v3 setObject:v23 forKeyedSubscript:@"eventStatus"];
+    eventStatus = [(CCAppIntentsExtractedEntityRentalCarReservation *)self eventStatus];
+    [v3 setObject:eventStatus forKeyedSubscript:@"eventStatus"];
   }
 
   v24 = [v3 copy];
@@ -194,124 +194,124 @@
   return v24;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v25 = a3;
+  blockCopy = block;
   if (self->_reservationID)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27394 stringValue:self->_reservationID];
-    v25[2](v25, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_eventName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27395 stringValue:self->_eventName];
-    v25[2](v25, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_provider)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27396 stringValue:self->_provider];
-    v25[2](v25, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_customerNames)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27397 repeatedStringValue:self->_customerNames];
-    v25[2](v25, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_startLocationName)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27398 stringValue:self->_startLocationName];
-    v25[2](v25, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_startLocationAddress)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27399 stringValue:self->_startLocationAddress];
-    v25[2](v25, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_startLocationTelephone)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27400 stringValue:self->_startLocationTelephone];
-    v25[2](v25, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_startDate)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27401 stringValue:self->_startDate];
-    v25[2](v25, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_startDateTimeZone)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27402 stringValue:self->_startDateTimeZone];
-    v25[2](v25, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_endLocationName)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27403 stringValue:self->_endLocationName];
-    v25[2](v25, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_endLocationAddress)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27404 stringValue:self->_endLocationAddress];
-    v25[2](v25, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_endLocationTelephone)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27405 stringValue:self->_endLocationTelephone];
-    v25[2](v25, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_endDate)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27406 stringValue:self->_endDate];
-    v25[2](v25, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_endDateTimeZone)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27407 stringValue:self->_endDateTimeZone];
-    v25[2](v25, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_reservationForName)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27408 stringValue:self->_reservationForName];
-    v25[2](v25, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_hasDuration)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27409 doubleValue:self->_duration];
-    v25[2](v25, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_cost)
   {
     v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27410 stringValue:self->_cost];
-    v25[2](v25, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
   if (self->_costCode)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27411 stringValue:self->_costCode];
-    v25[2](v25, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
-  v23 = v25;
+  v23 = blockCopy;
   if (self->_eventStatus)
   {
     v24 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27412 stringValue:self->_eventStatus];
-    v25[2](v25, v24);
+    blockCopy[2](blockCopy, v24);
 
-    v23 = v25;
+    v23 = blockCopy;
   }
 }
 
@@ -441,10 +441,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] >= *&v7[*MEMORY[0x1E6993AB0]])
@@ -650,13 +650,13 @@ LABEL_51:
           {
             v32 = objc_opt_class();
             NSStringFromClass(v32);
-            v46 = a4;
-            v34 = v33 = v6;
+            errorCopy = error;
+            v34 = v33 = dataCopy;
             v35 = *&v7[*v11];
             v10 = CCSkipFieldErrorForMessage();
 
-            v6 = v33;
-            a4 = v46;
+            dataCopy = v33;
+            error = errorCopy;
           }
 
           break;
@@ -688,10 +688,10 @@ LABEL_51:
     v40 = NSStringFromClass(v39);
     v41 = *&v7[*v38];
     CCInvalidBufferErrorForMessage();
-    v43 = v42 = v6;
+    v43 = v42 = dataCopy;
     CCSetError();
 
-    v6 = v42;
+    dataCopy = v42;
   }
 
   v44 = 0;
@@ -700,36 +700,36 @@ LABEL_63:
   return v44;
 }
 
-- (CCAppIntentsExtractedEntityRentalCarReservation)initWithReservationID:(id)a3 eventName:(id)a4 provider:(id)a5 customerNames:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 startLocationTelephone:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 endLocationName:(id)a12 endLocationAddress:(id)a13 endLocationTelephone:(id)a14 endDate:(id)a15 endDateTimeZone:(id)a16 reservationForName:(id)a17 duration:(id)a18 cost:(id)a19 costCode:(id)a20 eventStatus:(id)a21 error:(id *)a22
+- (CCAppIntentsExtractedEntityRentalCarReservation)initWithReservationID:(id)d eventName:(id)name provider:(id)provider customerNames:(id)names startLocationName:(id)locationName startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)self0 startDateTimeZone:(id)self1 endLocationName:(id)self2 endLocationAddress:(id)self3 endLocationTelephone:(id)self4 endDate:(id)self5 endDateTimeZone:(id)self6 reservationForName:(id)self7 duration:(id)self8 cost:(id)self9 costCode:(id)code eventStatus:(id)status error:(id *)error
 {
   v105 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v31 = a7;
-  v95 = a8;
-  v94 = a9;
-  v93 = a10;
-  v92 = a11;
-  v91 = a12;
-  v90 = a13;
-  v89 = a14;
-  v88 = a15;
-  v87 = a16;
-  v86 = a17;
-  v85 = a18;
-  v84 = a19;
-  v83 = a20;
-  v82 = a21;
+  dCopy = d;
+  nameCopy = name;
+  providerCopy = provider;
+  namesCopy = names;
+  locationNameCopy = locationName;
+  addressCopy = address;
+  telephoneCopy = telephone;
+  dateCopy = date;
+  zoneCopy = zone;
+  endLocationNameCopy = endLocationName;
+  locationAddressCopy = locationAddress;
+  locationTelephoneCopy = locationTelephone;
+  endDateCopy = endDate;
+  timeZoneCopy = timeZone;
+  forNameCopy = forName;
+  durationCopy = duration;
+  costCopy = cost;
+  codeCopy = code;
+  statusCopy = status;
   v32 = objc_opt_new();
   v33 = 0x1E696A000uLL;
-  if (!v27)
+  if (!dCopy)
   {
     v35 = 0;
 LABEL_5:
-    v80 = v27;
-    if (v28)
+    v80 = dCopy;
+    if (nameCopy)
     {
       objc_opt_class();
       v102 = v35;
@@ -742,11 +742,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v29)
+      if (!providerCopy)
       {
 LABEL_8:
         v35 = v37;
-        if (v30)
+        if (namesCopy)
         {
           goto LABEL_9;
         }
@@ -758,7 +758,7 @@ LABEL_8:
     else
     {
       v37 = v35;
-      if (!v29)
+      if (!providerCopy)
       {
         goto LABEL_8;
       }
@@ -775,7 +775,7 @@ LABEL_8:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v30)
+    if (namesCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -792,7 +792,7 @@ LABEL_9:
       v99 = 0u;
       v97 = 0u;
       v96 = 0u;
-      v39 = v30;
+      v39 = namesCopy;
       v40 = [v39 countByEnumeratingWithState:&v96 objects:v104 count:16];
       if (v40)
       {
@@ -818,7 +818,7 @@ LABEL_9:
       }
 
       v33 = 0x1E696A000;
-      if (!v31)
+      if (!locationNameCopy)
       {
         goto LABEL_18;
       }
@@ -828,12 +828,12 @@ LABEL_9:
 
 LABEL_23:
     v37 = v35;
-    if (!v31)
+    if (!locationNameCopy)
     {
 LABEL_18:
       v35 = v37;
 LABEL_26:
-      if (v95)
+      if (addressCopy)
       {
         v50 = *(v33 + 3776);
         objc_opt_class();
@@ -853,7 +853,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (v94)
+      if (telephoneCopy)
       {
         v52 = *(v33 + 3776);
         objc_opt_class();
@@ -873,7 +873,7 @@ LABEL_26:
         v35 = v37;
       }
 
-      if (v93)
+      if (dateCopy)
       {
         v54 = *(v33 + 3776);
         objc_opt_class();
@@ -893,7 +893,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (v92)
+      if (zoneCopy)
       {
         v56 = *(v33 + 3776);
         objc_opt_class();
@@ -913,7 +913,7 @@ LABEL_26:
         v35 = v37;
       }
 
-      if (v91)
+      if (endLocationNameCopy)
       {
         v58 = *(v33 + 3776);
         objc_opt_class();
@@ -933,7 +933,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (v90)
+      if (locationAddressCopy)
       {
         v60 = *(v33 + 3776);
         objc_opt_class();
@@ -953,7 +953,7 @@ LABEL_26:
         v35 = v37;
       }
 
-      if (v89)
+      if (locationTelephoneCopy)
       {
         v62 = *(v33 + 3776);
         objc_opt_class();
@@ -973,7 +973,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (v88)
+      if (endDateCopy)
       {
         v64 = *(v33 + 3776);
         objc_opt_class();
@@ -993,7 +993,7 @@ LABEL_26:
         v35 = v37;
       }
 
-      if (v87)
+      if (timeZoneCopy)
       {
         v66 = *(v33 + 3776);
         objc_opt_class();
@@ -1013,7 +1013,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (v86)
+      if (forNameCopy)
       {
         v68 = *(v33 + 3776);
         objc_opt_class();
@@ -1033,7 +1033,7 @@ LABEL_26:
         v35 = v37;
       }
 
-      if (v85)
+      if (durationCopy)
       {
         objc_opt_class();
         v70 = CCValidateIsInstanceOfExpectedClass();
@@ -1044,7 +1044,7 @@ LABEL_26:
           goto LABEL_77;
         }
 
-        [v85 doubleValue];
+        [durationCopy doubleValue];
         CCPBDataWriterWriteDoubleField();
       }
 
@@ -1053,7 +1053,7 @@ LABEL_26:
         v37 = v35;
       }
 
-      if (!v84)
+      if (!costCopy)
       {
         v35 = v37;
         goto LABEL_74;
@@ -1068,7 +1068,7 @@ LABEL_26:
       {
         CCPBDataWriterWriteStringField();
 LABEL_74:
-        if (!v83)
+        if (!codeCopy)
         {
           v37 = v35;
           goto LABEL_79;
@@ -1083,7 +1083,7 @@ LABEL_74:
         {
           CCPBDataWriterWriteStringField();
 LABEL_79:
-          if (!v82)
+          if (!statusCopy)
           {
             v35 = v37;
             goto LABEL_86;
@@ -1098,11 +1098,11 @@ LABEL_79:
           {
             CCPBDataWriterWriteStringField();
 LABEL_86:
-            v27 = v80;
-            v79 = [v32 immutableData];
-            v46 = [(CCItemMessage *)self initWithData:v79 error:a22];
+            dCopy = v80;
+            immutableData = [v32 immutableData];
+            selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v45 = v46;
+            v45 = selfCopy2;
             goto LABEL_84;
           }
 
@@ -1114,8 +1114,8 @@ LABEL_77:
         v45 = 0;
         v35 = v37;
 LABEL_83:
-        v46 = self;
-        v27 = v80;
+        selfCopy2 = self;
+        dCopy = v80;
         goto LABEL_84;
       }
 
@@ -1152,7 +1152,7 @@ LABEL_24:
 
   CCSetError();
   v45 = 0;
-  v46 = self;
+  selfCopy2 = self;
 LABEL_84:
 
   v77 = *MEMORY[0x1E69E9840];

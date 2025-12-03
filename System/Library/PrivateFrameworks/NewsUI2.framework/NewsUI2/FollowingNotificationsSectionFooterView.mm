@@ -1,27 +1,27 @@
 @interface FollowingNotificationsSectionFooterView
-- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithCoder:(id)a3;
-- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithFrame:(CGRect)a3;
+- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithCoder:(id)coder;
+- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FollowingNotificationsSectionFooterView
 
-- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithFrame:(CGRect)a3
+- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC7NewsUI239FollowingNotificationsSectionFooterView_textLabel;
   *(&self->super.super.super.isa + v9) = [objc_allocWithZone(MEMORY[0x277D756B8]) init];
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(FollowingNotificationsSectionFooterView *)&v12 initWithFrame:x, y, width, height];
-  [(FollowingNotificationsSectionFooterView *)v10 addSubview:*(&v10->super.super.super.isa + OBJC_IVAR____TtC7NewsUI239FollowingNotificationsSectionFooterView_textLabel)];
-  return v10;
+  height = [(FollowingNotificationsSectionFooterView *)&v12 initWithFrame:x, y, width, height];
+  [(FollowingNotificationsSectionFooterView *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC7NewsUI239FollowingNotificationsSectionFooterView_textLabel)];
+  return height;
 }
 
-- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithCoder:(id)a3
+- (_TtC7NewsUI239FollowingNotificationsSectionFooterView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7NewsUI239FollowingNotificationsSectionFooterView_textLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x277D756B8]) init];

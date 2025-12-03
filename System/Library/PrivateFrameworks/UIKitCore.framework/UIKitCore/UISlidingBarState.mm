@@ -2,7 +2,7 @@
 - (BOOL)_leadingEntirelyOverlapsMain;
 - (BOOL)_supplementaryEntirelyOverlapsMain;
 - (BOOL)_trailingEntirelyOverlapsMain;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLeadingVisible;
 - (BOOL)isSupplementaryVisible;
 - (BOOL)isTrailingVisible;
@@ -10,10 +10,10 @@
 - (BOOL)supplementaryOverlapsMain;
 - (BOOL)trailingOverlapsMain;
 - (UISlidingBarConfiguration)configuration;
-- (double)_absoluteDistanceFromRequest:(id)a3;
-- (double)_distanceFromRequest:(id)a3;
+- (double)_absoluteDistanceFromRequest:(id)request;
+- (double)_distanceFromRequest:(id)request;
 - (id)_interactiveStateRequest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stateRequest;
 - (unint64_t)hash;
@@ -21,7 +21,7 @@
 
 @implementation UISlidingBarState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(UISlidingBarState *)self leadingWidth];
@@ -55,8 +55,8 @@
   [v4 _setTreatLeadingHiddenAsOverlaps:{-[UISlidingBarState _treatLeadingHiddenAsOverlaps](self, "_treatLeadingHiddenAsOverlaps")}];
   [v4 _setTreatTrailingHiddenAsOverlaps:{-[UISlidingBarState _treatTrailingHiddenAsOverlaps](self, "_treatTrailingHiddenAsOverlaps")}];
   [v4 _setTreatSupplementaryHiddenAsOverlaps:{-[UISlidingBarState _treatSupplementaryHiddenAsOverlaps](self, "_treatSupplementaryHiddenAsOverlaps")}];
-  v5 = [(UISlidingBarState *)self configuration];
-  [v4 setConfiguration:v5];
+  configuration = [(UISlidingBarState *)self configuration];
+  [v4 setConfiguration:configuration];
 
   [v4 _setCollapsedState:{-[UISlidingBarState _collapsedState](self, "_collapsedState")}];
   [(UISlidingBarState *)self _keyboardAdjustment];
@@ -161,20 +161,20 @@ void __32__UISlidingBarState_description__block_invoke_2(uint64_t a1, int a2, vo
 LABEL_8:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(UISlidingBarState *)self leadingWidth];
     v7 = v6;
     [v5 leadingWidth];
     if (v7 == v8 && (-[UISlidingBarState _leadingOverlayWidth](self, "_leadingOverlayWidth"), v10 = v9, [v5 _leadingOverlayWidth], v10 == v11) && (-[UISlidingBarState leadingOffscreenWidth](self, "leadingOffscreenWidth"), v13 = v12, objc_msgSend(v5, "leadingOffscreenWidth"), v13 == v14) && (-[UISlidingBarState trailingWidth](self, "trailingWidth"), v16 = v15, objc_msgSend(v5, "trailingWidth"), v16 == v17) && (-[UISlidingBarState _trailingOverlayWidth](self, "_trailingOverlayWidth"), v19 = v18, objc_msgSend(v5, "_trailingOverlayWidth"), v19 == v20) && (-[UISlidingBarState trailingOffscreenWidth](self, "trailingOffscreenWidth"), v22 = v21, objc_msgSend(v5, "trailingOffscreenWidth"), v22 == v23) && (-[UISlidingBarState supplementaryWidth](self, "supplementaryWidth"), v25 = v24, objc_msgSend(v5, "supplementaryWidth"), v25 == v26) && (-[UISlidingBarState supplementaryOffscreenWidth](self, "supplementaryOffscreenWidth"), v28 = v27, objc_msgSend(v5, "supplementaryOffscreenWidth"), v28 == v29) && (-[UISlidingBarState _supplementaryOverlayWidth](self, "_supplementaryOverlayWidth"), v31 = v30, objc_msgSend(v5, "_supplementaryOverlayWidth"), v31 == v32) && (-[UISlidingBarState _rubberBandInset](self, "_rubberBandInset"), v34 = v33, objc_msgSend(v5, "_rubberBandInset"), v34 == v35) && (-[UISlidingBarState mainWidth](self, "mainWidth"), v37 = v36, objc_msgSend(v5, "mainWidth"), v37 == v38) && (-[UISlidingBarState leadingDragOffset](self, "leadingDragOffset"), v40 = v39, objc_msgSend(v5, "leadingDragOffset"), v40 == v41) && (-[UISlidingBarState trailingDragOffset](self, "trailingDragOffset"), v43 = v42, objc_msgSend(v5, "trailingDragOffset"), v43 == v44) && (-[UISlidingBarState supplementaryDragOffset](self, "supplementaryDragOffset"), v46 = v45, objc_msgSend(v5, "supplementaryDragOffset"), v46 == v47) && (v48 = -[UISlidingBarState leadingOverlapsMain](self, "leadingOverlapsMain"), v48 == objc_msgSend(v5, "leadingOverlapsMain")) && (v49 = -[UISlidingBarState trailingOverlapsMain](self, "trailingOverlapsMain"), v49 == objc_msgSend(v5, "trailingOverlapsMain")))
     {
-      v52 = [(UISlidingBarState *)self _configuration];
-      v53 = [v5 _configuration];
-      if ([v52 isEqual:v53] && (v54 = -[UISlidingBarState _collapsedState](self, "_collapsedState"), v54 == objc_msgSend(v5, "_collapsedState")))
+      _configuration = [(UISlidingBarState *)self _configuration];
+      _configuration2 = [v5 _configuration];
+      if ([_configuration isEqual:_configuration2] && (v54 = -[UISlidingBarState _collapsedState](self, "_collapsedState"), v54 == objc_msgSend(v5, "_collapsedState")))
       {
         [(UISlidingBarState *)self _keyboardAdjustment];
         v56 = v55;
@@ -210,8 +210,8 @@ LABEL_8:
   v6 = v5 ^ v4;
   [(UISlidingBarState *)self supplementaryWidth];
   v8 = v7;
-  v9 = [(UISlidingBarState *)self _configuration];
-  v10 = v8 ^ [v9 hash];
+  _configuration = [(UISlidingBarState *)self _configuration];
+  v10 = v8 ^ [_configuration hash];
 
   return v6 ^ v10;
 }
@@ -235,16 +235,16 @@ LABEL_8:
 
 - (BOOL)_supplementaryEntirelyOverlapsMain
 {
-  v3 = [(UISlidingBarState *)self supplementaryOverlapsMain];
-  if (v3)
+  supplementaryOverlapsMain = [(UISlidingBarState *)self supplementaryOverlapsMain];
+  if (supplementaryOverlapsMain)
   {
     [(UISlidingBarState *)self _supplementaryOverlayWidth];
     v5 = v4;
     [(UISlidingBarState *)self supplementaryWidth];
-    LOBYTE(v3) = v5 == v6;
+    LOBYTE(supplementaryOverlapsMain) = v5 == v6;
   }
 
-  return v3;
+  return supplementaryOverlapsMain;
 }
 
 - (BOOL)leadingOverlapsMain
@@ -261,12 +261,12 @@ LABEL_8:
     return 1;
   }
 
-  v5 = [(UISlidingBarState *)self _configuration];
-  if (![v5 supplementaryEdge])
+  _configuration = [(UISlidingBarState *)self _configuration];
+  if (![_configuration supplementaryEdge])
   {
-    v6 = [(UISlidingBarState *)self supplementaryOverlapsMain];
+    supplementaryOverlapsMain = [(UISlidingBarState *)self supplementaryOverlapsMain];
 
-    return v6;
+    return supplementaryOverlapsMain;
   }
 
   return 0;
@@ -285,12 +285,12 @@ LABEL_8:
     }
   }
 
-  v6 = [(UISlidingBarState *)self _configuration];
-  if (![v6 supplementaryEdge])
+  _configuration = [(UISlidingBarState *)self _configuration];
+  if (![_configuration supplementaryEdge])
   {
-    v7 = [(UISlidingBarState *)self _supplementaryEntirelyOverlapsMain];
+    _supplementaryEntirelyOverlapsMain = [(UISlidingBarState *)self _supplementaryEntirelyOverlapsMain];
 
-    return v7;
+    return _supplementaryEntirelyOverlapsMain;
   }
 
   return 0;
@@ -310,12 +310,12 @@ LABEL_8:
     return 1;
   }
 
-  v5 = [(UISlidingBarState *)self _configuration];
-  if ([v5 supplementaryEdge] == 1)
+  _configuration = [(UISlidingBarState *)self _configuration];
+  if ([_configuration supplementaryEdge] == 1)
   {
-    v6 = [(UISlidingBarState *)self supplementaryOverlapsMain];
+    supplementaryOverlapsMain = [(UISlidingBarState *)self supplementaryOverlapsMain];
 
-    if (v6)
+    if (supplementaryOverlapsMain)
     {
       return 1;
     }
@@ -341,12 +341,12 @@ LABEL_8:
     }
   }
 
-  v6 = [(UISlidingBarState *)self _configuration];
-  if ([v6 supplementaryEdge] == 1)
+  _configuration = [(UISlidingBarState *)self _configuration];
+  if ([_configuration supplementaryEdge] == 1)
   {
-    v7 = [(UISlidingBarState *)self _supplementaryEntirelyOverlapsMain];
+    _supplementaryEntirelyOverlapsMain = [(UISlidingBarState *)self _supplementaryEntirelyOverlapsMain];
 
-    if (v7)
+    if (_supplementaryEntirelyOverlapsMain)
     {
       return 1;
     }
@@ -359,49 +359,49 @@ LABEL_8:
   return 0;
 }
 
-- (double)_distanceFromRequest:(id)a3
+- (double)_distanceFromRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     return 1.79769313e308;
   }
 
-  v4 = a3;
+  requestCopy = request;
   [(UISlidingBarState *)self leadingWidth];
   v6 = v5;
-  [v4 leadingWidth];
+  [requestCopy leadingWidth];
   v8 = v6 - v7;
   [(UISlidingBarState *)self trailingWidth];
   v10 = v9;
-  [v4 trailingWidth];
+  [requestCopy trailingWidth];
   v12 = v8 + v10 - v11;
   [(UISlidingBarState *)self supplementaryWidth];
   v14 = v13;
-  [v4 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   v16 = v15;
 
   return v12 + v14 - v16;
 }
 
-- (double)_absoluteDistanceFromRequest:(id)a3
+- (double)_absoluteDistanceFromRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     return 1.79769313e308;
   }
 
-  v4 = a3;
+  requestCopy = request;
   [(UISlidingBarState *)self leadingWidth];
   v6 = v5;
-  [v4 leadingWidth];
+  [requestCopy leadingWidth];
   v8 = vabdd_f64(v6, v7);
   [(UISlidingBarState *)self trailingWidth];
   v10 = v9;
-  [v4 trailingWidth];
+  [requestCopy trailingWidth];
   v12 = v8 + vabdd_f64(v10, v11);
   [(UISlidingBarState *)self supplementaryWidth];
   v14 = v13;
-  [v4 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   v16 = v15;
 
   return v12 + vabdd_f64(v14, v16);
@@ -455,10 +455,10 @@ LABEL_8:
   }
 
   v5 = v4;
-  v6 = [(UISlidingBarState *)self _configuration];
-  v7 = [v6 supplementaryEdge];
+  _configuration = [(UISlidingBarState *)self _configuration];
+  supplementaryEdge = [_configuration supplementaryEdge];
 
-  if (!v7)
+  if (!supplementaryEdge)
   {
     [(UISlidingBarState *)self leadingWidth];
     v21 = v20;
@@ -518,10 +518,10 @@ LABEL_11:
 
 - (BOOL)isSupplementaryVisible
 {
-  v3 = [(UISlidingBarState *)self _configuration];
-  v4 = [v3 supplementaryEdge];
+  _configuration = [(UISlidingBarState *)self _configuration];
+  supplementaryEdge = [_configuration supplementaryEdge];
 
-  if (v4)
+  if (supplementaryEdge)
   {
     [(UISlidingBarState *)self trailingWidth];
     v6 = v5;

@@ -1,19 +1,19 @@
 @interface TopicRegistrationEntry
 - (_TtC9AskToCore22TopicRegistrationEntry)init;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TopicRegistrationEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TopicRegistrationEntry.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TopicRegistrationEntry.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = objc_allocWithZone(ObjectType);

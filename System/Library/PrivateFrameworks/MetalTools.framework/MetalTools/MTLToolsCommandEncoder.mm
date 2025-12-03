@@ -1,40 +1,40 @@
 @interface MTLToolsCommandEncoder
-- (MTLToolsCommandEncoder)initWithBaseObject:(id)a3 parallelRenderCommandEncoder:(id)a4;
-- (MTLToolsCommandEncoder)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsCommandEncoder)initWithBaseObject:(id)object parallelRenderCommandEncoder:(id)encoder;
+- (MTLToolsCommandEncoder)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (unint64_t)globalTraceObjectID;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
 - (void)endEncoding;
-- (void)insertDebugSignpost:(id)a3;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)insertSplit;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLToolsCommandEncoder
 
-- (MTLToolsCommandEncoder)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsCommandEncoder)initWithBaseObject:(id)object parent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = MTLToolsCommandEncoder;
-  result = [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:?];
+  result = [(MTLToolsObject *)&v6 initWithBaseObject:object parent:?];
   if (result)
   {
-    result->_commandBuffer = a4;
+    result->_commandBuffer = parent;
   }
 
   return result;
 }
 
-- (MTLToolsCommandEncoder)initWithBaseObject:(id)a3 parallelRenderCommandEncoder:(id)a4
+- (MTLToolsCommandEncoder)initWithBaseObject:(id)object parallelRenderCommandEncoder:(id)encoder
 {
   v7.receiver = self;
   v7.super_class = MTLToolsCommandEncoder;
-  v5 = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:?];
+  v5 = [(MTLToolsObject *)&v7 initWithBaseObject:object parent:?];
   if (v5)
   {
-    v5->_commandBuffer = [a4 commandBuffer];
+    v5->_commandBuffer = [encoder commandBuffer];
   }
 
   return v5;
@@ -42,65 +42,65 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)globalTraceObjectID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalTraceObjectID];
+  return [baseObject globalTraceObjectID];
 }
 
 - (void)endEncoding
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 endEncoding];
+  [baseObject endEncoding];
 }
 
 - (void)insertSplit
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 insertSplit];
+  [baseObject insertSplit];
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 barrierAfterQueueStages:a3 beforeStages:a4];
+  [baseObject barrierAfterQueueStages:stages beforeStages:beforeStages];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 insertDebugSignpost:a3];
+  [baseObject insertDebugSignpost:signpost];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 pushDebugGroup:a3];
+  [baseObject pushDebugGroup:group];
 }
 
 - (void)popDebugGroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 popDebugGroup];
+  [baseObject popDebugGroup];
 }
 
 @end

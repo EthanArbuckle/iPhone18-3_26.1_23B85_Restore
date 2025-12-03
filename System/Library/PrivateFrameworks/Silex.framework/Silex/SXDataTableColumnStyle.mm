@@ -1,27 +1,27 @@
 @interface SXDataTableColumnStyle
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
++ (id)valueClassBlockForPropertyWithName:(id)name;
 @end
 
 @implementation SXDataTableColumnStyle
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_63;
   }
 
-  else if ([v4 isEqualToString:@"selectors"])
+  else if ([nameCopy isEqualToString:@"selectors"])
   {
     v5 = &__block_literal_global_6_1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXDataTableColumnStyle;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;

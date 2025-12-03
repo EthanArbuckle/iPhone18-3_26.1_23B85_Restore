@@ -2,14 +2,14 @@
 - (void)broadcastCloudKitState;
 - (void)broadcastCloudKitStateAfterClearingErrors;
 - (void)broadcastCloudKitStateAfterFetchingAccountStatus;
-- (void)cancelSync:(id)a3;
+- (void)cancelSync:(id)sync;
 - (void)clearAnalyticDefaultsAndLocalSyncState;
 - (void)clearChatZoneSyncToken;
 - (void)clearDataFromCloudKit;
 - (void)clearLocalCloudKitSyncState;
 - (void)createAttachmentZone;
 - (void)createChatZone;
-- (void)currentStorageOnDeviceWithReply:(id)a3;
+- (void)currentStorageOnDeviceWithReply:(id)reply;
 - (void)deleteAttachmentZone;
 - (void)deleteChatZone;
 - (void)deleteExitRecord;
@@ -17,23 +17,23 @@
 - (void)deleteSalt;
 - (void)downloadAttachmentAssets;
 - (void)fetchAccountStatusAndUpdateMiCSwitchEligibility;
-- (void)fetchCloudKitSyncStateDebuggingInfo:(id)a3;
+- (void)fetchCloudKitSyncStateDebuggingInfo:(id)info;
 - (void)fetchExitRecord;
 - (void)fetchLatestRampState;
 - (void)fetchLatestSalt;
 - (void)fetchSyncStateStatistics;
 - (void)initiatePeriodicSync;
-- (void)loadDeletedMessagesWithLimit:(int64_t)a3;
-- (void)loadDirtyMessagesWithLimit:(int64_t)a3;
+- (void)loadDeletedMessagesWithLimit:(int64_t)limit;
+- (void)loadDirtyMessagesWithLimit:(int64_t)limit;
 - (void)markAllChatsAsDirty;
-- (void)metricAttachments:(int64_t)a3;
+- (void)metricAttachments:(int64_t)attachments;
 - (void)performAdditionalStorageRequiredCheck;
 - (void)printCachedRampState;
 - (void)printCachedSalt;
-- (void)purgeAttachments:(int64_t)a3;
-- (void)removePathFromiCloudBackups:(id)a3;
-- (void)reportMetricToCK:(id)a3 withDict:(id)a4;
-- (void)simulateCloudKitSyncWithSyncState:(id)a3;
+- (void)purgeAttachments:(int64_t)attachments;
+- (void)removePathFromiCloudBackups:(id)backups;
+- (void)reportMetricToCK:(id)k withDict:(id)dict;
+- (void)simulateCloudKitSyncWithSyncState:(id)state;
 - (void)startUserInitiatedSync;
 - (void)syncAttachments;
 - (void)syncDeletesToCloudKit;
@@ -43,7 +43,7 @@
 - (void)updateAttachmentFileSizes;
 - (void)uploadDailyAnalyticstoCloudKit;
 - (void)writeAttachments;
-- (void)writeCloudKitSyncCounts:(id)a3;
+- (void)writeCloudKitSyncCounts:(id)counts;
 - (void)writeDirtyChats;
 - (void)writeDirtyMessages;
 - (void)writeExitRecord;
@@ -359,9 +359,9 @@
   [v2 disableAllDevicesWithCompletion:&stru_100081CF8];
 }
 
-- (void)cancelSync:(id)a3
+- (void)cancelSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -373,10 +373,10 @@
   }
 
   v5 = +[IMDCKSyncController sharedInstance];
-  v6 = [v5 syncState];
+  syncState = [v5 syncState];
 
-  [v6 setSyncCancelled:1];
-  v3[2](v3, 1, [v6 syncType]);
+  [syncState setSyncCancelled:1];
+  syncCopy[2](syncCopy, 1, [syncState syncType]);
 }
 
 - (void)initiatePeriodicSync
@@ -411,12 +411,12 @@
   [v3 beginUserInitiatedSync];
 }
 
-- (void)loadDirtyMessagesWithLimit:(int64_t)a3
+- (void)loadDirtyMessagesWithLimit:(int64_t)limit
 {
   v4 = +[IMDMessageStore sharedInstance];
 }
 
-- (void)loadDeletedMessagesWithLimit:(int64_t)a3
+- (void)loadDeletedMessagesWithLimit:(int64_t)limit
 {
   if (IMOSLoggingEnabled())
   {
@@ -424,7 +424,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      limitCopy = limit;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "loadDeleted messages with limit %ld", &v6, 0xCu);
     }
   }
@@ -471,16 +471,16 @@
   [v10 postCoreAutomationNotificationWithAction:@"clearDataFromCloudKit"];
 }
 
-- (void)currentStorageOnDeviceWithReply:(id)a3
+- (void)currentStorageOnDeviceWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024034;
   block[3] = &unk_100081D20;
-  v7 = v3;
-  v5 = v3;
+  v7 = replyCopy;
+  v5 = replyCopy;
   dispatch_async(v4, block);
 }
 
@@ -519,10 +519,10 @@
   }
 
   v3 = +[IMDCKSyncController sharedInstance];
-  v4 = [v3 logCloudKitAnalytics];
+  logCloudKitAnalytics = [v3 logCloudKitAnalytics];
 
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (logCloudKitAnalytics)
   {
     if (!v5)
     {
@@ -606,9 +606,9 @@ LABEL_13:
     [v3 setValue:v2 forDomain:IMCloudKitDefinesDomain forKey:IMDCKLocalDBStatsKey];
 
     v4 = +[IMFeatureFlags sharedFeatureFlags];
-    v5 = [v4 isMessagesIniCloudVersion2];
+    isMessagesIniCloudVersion2 = [v4 isMessagesIniCloudVersion2];
 
-    if (v5)
+    if (isMessagesIniCloudVersion2)
     {
       v6 = [v2 mutableCopy];
       v7 = +[IMDMessagesSyncCoordinator readServerCountsFromDefaults];
@@ -643,8 +643,8 @@ LABEL_13:
       }
 
       v15 = +[IMDBroadcastController sharedProvider];
-      v16 = [v15 broadcasterForAllListeners];
-      [v16 didFetchSyncStateStats:v6];
+      broadcasterForAllListeners = [v15 broadcasterForAllListeners];
+      [broadcasterForAllListeners didFetchSyncStateStats:v6];
     }
 
     else
@@ -662,8 +662,8 @@ LABEL_13:
       }
 
       v6 = +[IMDBroadcastController sharedProvider];
-      v12 = [v6 broadcasterForAllListeners];
-      [v12 didFetchSyncStateStats:v2];
+      broadcasterForAllListeners2 = [v6 broadcasterForAllListeners];
+      [broadcasterForAllListeners2 didFetchSyncStateStats:v2];
     }
   }
 
@@ -683,9 +683,9 @@ LABEL_13:
   [v2 toggleiCloudBackupsIfNeeded:&stru_100081DE0];
 }
 
-- (void)removePathFromiCloudBackups:(id)a3
+- (void)removePathFromiCloudBackups:(id)backups
 {
-  v4 = a3;
+  backupsCopy = backups;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -695,24 +695,24 @@ LABEL_13:
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
-      v11 = v4;
+      v11 = backupsCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ (%@)", &v8, 0x16u);
     }
   }
 
   v7 = +[IMDCKBackupController sharedInstance];
-  [v7 removePathFromiCloudBackup:v4];
+  [v7 removePathFromiCloudBackup:backupsCopy];
 }
 
-- (void)writeCloudKitSyncCounts:(id)a3
+- (void)writeCloudKitSyncCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v3 description];
+      v5 = [countsCopy description];
       v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_100083400];
       v7 = 138412290;
       v8 = v6;
@@ -723,32 +723,32 @@ LABEL_13:
   _IMDMessageRecordSetCloudKitSyncCounts();
 }
 
-- (void)reportMetricToCK:(id)a3 withDict:(id)a4
+- (void)reportMetricToCK:(id)k withDict:(id)dict
 {
-  v5 = a3;
-  v6 = a4;
+  kCopy = k;
+  dictCopy = dict;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = kCopy;
       v11 = 2112;
-      v12 = v6;
+      v12 = dictCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "post metric to analytic zone with opGroupName: %@, dict: %@", &v9, 0x16u);
     }
   }
 
   v8 = +[IMDCKExitManager sharedInstance];
-  [v8 submitCloudKitAnalyticWithOperationGroupName:v5 analyticDictionary:v6];
+  [v8 submitCloudKitAnalyticWithOperationGroupName:kCopy analyticDictionary:dictCopy];
 }
 
-- (void)fetchCloudKitSyncStateDebuggingInfo:(id)a3
+- (void)fetchCloudKitSyncStateDebuggingInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[IMDCKSyncController sharedInstance];
-  v5 = [v4 syncStateDebuggingInfo:v3];
+  v5 = [v4 syncStateDebuggingInfo:infoCopy];
 
   if (IMOSLoggingEnabled())
   {
@@ -762,33 +762,33 @@ LABEL_13:
   }
 
   v7 = +[IMDBroadcastController sharedProvider];
-  v8 = [v7 broadcasterForAllListeners];
-  [v8 didFetchCloudKitSyncDebuggingInfo:v5];
+  broadcasterForAllListeners = [v7 broadcasterForAllListeners];
+  [broadcasterForAllListeners didFetchCloudKitSyncDebuggingInfo:v5];
 }
 
-- (void)simulateCloudKitSyncWithSyncState:(id)a3
+- (void)simulateCloudKitSyncWithSyncState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = stateCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "simulateCloudKitSyncWithSyncState called with sync state %@", &v7, 0xCu);
     }
   }
 
-  if (v3)
+  if (stateCopy)
   {
     v5 = +[IMDBroadcastController sharedProvider];
-    v6 = [v5 broadcasterForCloudSyncListeners];
-    [v6 updateCloudKitStateWithDictionary:v3];
+    broadcasterForCloudSyncListeners = [v5 broadcasterForCloudSyncListeners];
+    [broadcasterForCloudSyncListeners updateCloudKitStateWithDictionary:stateCopy];
   }
 }
 
-- (void)metricAttachments:(int64_t)a3
+- (void)metricAttachments:(int64_t)attachments
 {
   if (IMOSLoggingEnabled())
   {
@@ -796,22 +796,22 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      attachmentsCopy = attachments;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Calling to metric attachments with bytes: %lld", &v6, 0xCu);
     }
   }
 
   v5 = +[IMDCKCacheDeleteManager sharedInstance];
-  [v5 metricAttachmentsToPurge:a3 withActivity:0];
+  [v5 metricAttachmentsToPurge:attachments withActivity:0];
 }
 
-- (void)purgeAttachments:(int64_t)a3
+- (void)purgeAttachments:(int64_t)attachments
 {
   v4 = +[IMDCKUtilities sharedInstance];
-  v5 = [v4 cacheDeleteEnabled];
+  cacheDeleteEnabled = [v4 cacheDeleteEnabled];
 
   v6 = IMOSLoggingEnabled();
-  if (v5)
+  if (cacheDeleteEnabled)
   {
     if (v6)
     {
@@ -819,13 +819,13 @@ LABEL_13:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v10 = 134217984;
-        v11 = a3;
+        attachmentsCopy = attachments;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Calling to purge attachments with bytes: %lld", &v10, 0xCu);
       }
     }
 
     v8 = +[IMDCKCacheDeleteManager sharedInstance];
-    [v8 purgeAttachments:a3];
+    [v8 purgeAttachments:attachments];
     goto LABEL_13;
   }
 
@@ -861,9 +861,9 @@ LABEL_13:
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
     {
       v3 = +[IMDCKRecordSaltManager sharedInstance];
-      v4 = [v3 cachedSalt];
+      cachedSalt = [v3 cachedSalt];
       v5 = 138412290;
-      v6 = v4;
+      v6 = cachedSalt;
       _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "Current cached salt %@", &v5, 0xCu);
     }
   }

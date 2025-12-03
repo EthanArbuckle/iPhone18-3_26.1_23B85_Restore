@@ -16,14 +16,14 @@
       v5 = 1.0;
     }
 
-    [a1 setContentsEDRStrength:v5];
+    [self setContentsEDRStrength:v5];
   }
 }
 
 - (id)_ui_animationForHDRHeadroomUsageEnabled:()_UIHDRAnimations
 {
   v5 = +[_UIHDRUsageCoordinator sharedInstance];
-  v6 = [(_UIHDRUsageCoordinator *)v5 animationForHDRHeadroomUsage:a3 layer:a1];
+  v6 = [(_UIHDRUsageCoordinator *)v5 animationForHDRHeadroomUsage:a3 layer:self];
 
   return v6;
 }

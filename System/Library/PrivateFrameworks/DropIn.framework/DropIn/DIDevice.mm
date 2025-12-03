@@ -1,21 +1,21 @@
 @interface DIDevice
-+ (id)stringForDeviceState:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)stringForDeviceState:(int64_t)state;
+- (BOOL)isEqual:(id)equal;
 - (DIDevice)init;
-- (DIDevice)initWithCoder:(id)a3;
+- (DIDevice)initWithCoder:(id)coder;
 - (DIDeviceDelegate)delegate;
 - (DIXPCConnectionManager)connectionManager;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)notifyDeviceDidChange;
 - (void)notifyDidUpdateState;
-- (void)refreshStateWithCompletionHandler:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setStateExpiration:(id)a3;
-- (void)updateState:(int64_t)a3 reason:(id)a4 completionHandler:(id)a5;
-- (void)updateWithDevice:(id)a3 updateState:(BOOL)a4;
+- (void)refreshStateWithCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setStateExpiration:(id)expiration;
+- (void)updateState:(int64_t)state reason:(id)reason completionHandler:(id)handler;
+- (void)updateWithDevice:(id)device updateState:(BOOL)state;
 @end
 
 @implementation DIDevice
@@ -32,9 +32,9 @@
     v2->_name = &stru_285D02BA8;
 
     v3->_state = 0;
-    v5 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     stateExpiration = v3->_stateExpiration;
-    v3->_stateExpiration = v5;
+    v3->_stateExpiration = distantPast;
 
     stateReason = v3->_stateReason;
     v3->_stateReason = @"unknown";
@@ -52,28 +52,28 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = DILogHandleDevice();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = &stru_285D02BA8;
     v9 = 2112;
-    v10 = v4;
+    v10 = delegateCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Delegate set to %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -83,17 +83,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DIDevice *)self homeKitIdentifier];
-      v7 = [(DIDevice *)v5 homeKitIdentifier];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      homeKitIdentifier = [(DIDevice *)self homeKitIdentifier];
+      homeKitIdentifier2 = [(DIDevice *)v5 homeKitIdentifier];
+      v8 = [homeKitIdentifier isEqual:homeKitIdentifier2];
       if (v8)
       {
         goto LABEL_4;
       }
 
-      v12 = [(DIDevice *)self homeKitIdentifier];
-      if (v12)
+      homeKitIdentifier3 = [(DIDevice *)self homeKitIdentifier];
+      if (homeKitIdentifier3)
       {
         v11 = 0;
 LABEL_18:
@@ -101,13 +101,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = [(DIDevice *)v5 homeKitIdentifier];
-      if (!v14)
+      homeKitIdentifier4 = [(DIDevice *)v5 homeKitIdentifier];
+      if (!homeKitIdentifier4)
       {
 LABEL_4:
-        v9 = [(DIDevice *)self homeKitHomeIdentifier];
-        v10 = [(DIDevice *)v5 homeKitHomeIdentifier];
-        if ([v9 isEqual:v10])
+        homeKitHomeIdentifier = [(DIDevice *)self homeKitHomeIdentifier];
+        homeKitHomeIdentifier2 = [(DIDevice *)v5 homeKitHomeIdentifier];
+        if ([homeKitHomeIdentifier isEqual:homeKitHomeIdentifier2])
         {
 
           v11 = 1;
@@ -119,8 +119,8 @@ LABEL_4:
 
         else
         {
-          v13 = [(DIDevice *)self homeKitHomeIdentifier];
-          if (v13)
+          homeKitHomeIdentifier3 = [(DIDevice *)self homeKitHomeIdentifier];
+          if (homeKitHomeIdentifier3)
           {
 
             v11 = 0;
@@ -132,8 +132,8 @@ LABEL_4:
 
           else
           {
-            v15 = [(DIDevice *)v5 homeKitHomeIdentifier];
-            v11 = v15 == 0;
+            homeKitHomeIdentifier4 = [(DIDevice *)v5 homeKitHomeIdentifier];
+            v11 = homeKitHomeIdentifier4 == 0;
 
             if (v8)
             {
@@ -151,7 +151,7 @@ LABEL_19:
         v11 = 0;
       }
 
-      v12 = 0;
+      homeKitIdentifier3 = 0;
       goto LABEL_18;
     }
 
@@ -163,12 +163,12 @@ LABEL_20:
   return v11;
 }
 
-- (void)setStateExpiration:(id)a3
+- (void)setStateExpiration:(id)expiration
 {
-  v5 = a3;
-  objc_storeStrong(&self->_stateExpiration, a3);
+  expirationCopy = expiration;
+  objc_storeStrong(&self->_stateExpiration, expiration);
   [(DIDevice *)self setTimer:0];
-  [v5 timeIntervalSince1970];
+  [expirationCopy timeIntervalSince1970];
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
   [v8 timeIntervalSince1970];
@@ -176,13 +176,13 @@ LABEL_20:
 
   if (v7 > v10)
   {
-    [v5 timeIntervalSinceNow];
+    [expirationCopy timeIntervalSinceNow];
     v12 = v11;
-    v13 = [(DIDevice *)self homeKitIdentifier];
-    v14 = v13;
-    if (v13)
+    homeKitIdentifier = [(DIDevice *)self homeKitIdentifier];
+    v14 = homeKitIdentifier;
+    if (homeKitIdentifier)
     {
-      v15 = v13;
+      v15 = homeKitIdentifier;
     }
 
     else
@@ -244,9 +244,9 @@ uint64_t __31__DIDevice_setStateExpiration___block_invoke_39(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(DIDevice *)self homeKitIdentifier];
-  v3 = [v2 UUIDString];
-  v4 = [v3 hash];
+  homeKitIdentifier = [(DIDevice *)self homeKitIdentifier];
+  uUIDString = [homeKitIdentifier UUIDString];
+  v4 = [uUIDString hash];
 
   return v4;
 }
@@ -255,32 +255,32 @@ uint64_t __31__DIDevice_setStateExpiration___block_invoke_39(uint64_t a1)
 {
   v15 = MEMORY[0x277CCACA8];
   v14 = objc_opt_class();
-  v3 = [(DIDevice *)self name];
-  v4 = [(DIDevice *)self homeKitHomeIdentifier];
-  v5 = [(DIDevice *)self homeKitIdentifier];
+  name = [(DIDevice *)self name];
+  homeKitHomeIdentifier = [(DIDevice *)self homeKitHomeIdentifier];
+  homeKitIdentifier = [(DIDevice *)self homeKitIdentifier];
   v6 = [DIDevice stringForDeviceState:[(DIDevice *)self state]];
-  v7 = [(DIDevice *)self stateReason];
-  v8 = [(DIDevice *)self stateExpiration];
-  v9 = [(DIDevice *)self isCurrentDevice];
-  v10 = [(DIDevice *)self connectionManager];
-  v11 = [(DIDevice *)self delegate];
-  v12 = [v15 stringWithFormat:@"<%@: %p> Nm = %@, HmID = %@, AccID = %@, St = %@, Rsn = %@, Exp: %@, IsCurrDev = %d, ConnMgr = %p, Delegate = %@", v14, self, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  stateReason = [(DIDevice *)self stateReason];
+  stateExpiration = [(DIDevice *)self stateExpiration];
+  isCurrentDevice = [(DIDevice *)self isCurrentDevice];
+  connectionManager = [(DIDevice *)self connectionManager];
+  delegate = [(DIDevice *)self delegate];
+  v12 = [v15 stringWithFormat:@"<%@: %p> Nm = %@, HmID = %@, AccID = %@, St = %@, Rsn = %@, Exp: %@, IsCurrDev = %d, ConnMgr = %p, Delegate = %@", v14, self, name, homeKitHomeIdentifier, homeKitIdentifier, v6, stateReason, stateExpiration, isCurrentDevice, connectionManager, delegate];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(DIDevice *)self lock];
+  lock = [(DIDevice *)self lock];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __25__DIDevice_copyWithZone___block_invoke;
   v9[3] = &unk_278FB8E48;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 di_synchronize:v9];
+  selfCopy = self;
+  [lock di_synchronize:v9];
 
   v7 = v6;
   return v7;
@@ -319,52 +319,52 @@ uint64_t __25__DIDevice_copyWithZone___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)stringForDeviceState:(int64_t)a3
++ (id)stringForDeviceState:(int64_t)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     v5 = @"Drop In State Unknown";
   }
 
   else
   {
-    v5 = off_278FB9038[a3 - 1];
+    v5 = off_278FB9038[state - 1];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", state, v5, v3, v4];
 }
 
-- (void)updateState:(int64_t)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)updateState:(int64_t)state reason:(id)reason completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v10 = DILogHandleDevice();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = _Block_copy(v9);
+    v11 = _Block_copy(handlerCopy);
     *buf = 138413058;
     v28 = &stru_285D02BA8;
     v29 = 2048;
-    v30 = a3;
+    stateCopy = state;
     v31 = 2112;
     v32 = v11;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_249DA7000, v10, OS_LOG_TYPE_DEBUG, "%@Requesting state update to %ld. Handler = %@, Device = %@", buf, 0x2Au);
   }
 
   if ([(DIDevice *)self isCurrentDevice])
   {
-    v12 = [(DIDevice *)self stateUpdateThrottler];
+    stateUpdateThrottler = [(DIDevice *)self stateUpdateThrottler];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __49__DIDevice_updateState_reason_completionHandler___block_invoke_2;
     v22[3] = &unk_278FB8FF0;
     v22[4] = self;
-    v23 = v9;
-    v13 = v9;
-    [v12 handleState:a3 reason:v8 handler:v22];
+    v23 = handlerCopy;
+    v13 = handlerCopy;
+    [stateUpdateThrottler handleState:state reason:reasonCopy handler:v22];
 
     v14 = v23;
   }
@@ -378,22 +378,22 @@ uint64_t __25__DIDevice_copyWithZone___block_invoke(uint64_t a1)
       *buf = 138412546;
       v28 = &stru_285D02BA8;
       v29 = 2112;
-      v30 = v15;
+      stateCopy = v15;
       _os_log_impl(&dword_249DA7000, v16, OS_LOG_TYPE_ERROR, "%@Attempting to update state for non-current device %@", buf, 0x16u);
     }
 
-    v17 = [(DIDevice *)self connectionManager];
-    v18 = [v17 manager];
-    v19 = [v18 clientQueue];
+    connectionManager = [(DIDevice *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __49__DIDevice_updateState_reason_completionHandler___block_invoke;
     v24[3] = &unk_278FB8CF0;
     v25 = v15;
-    v26 = v9;
+    v26 = handlerCopy;
     v14 = v15;
-    v20 = v9;
-    [DIUtilities onQueue:v19 block:v24];
+    v20 = handlerCopy;
+    [DIUtilities onQueue:clientQueue block:v24];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -533,20 +533,20 @@ void __49__DIDevice_updateState_reason_completionHandler___block_invoke_2_67(uin
 
 - (void)notifyDeviceDidChange
 {
-  v3 = [(DIDevice *)self delegate];
+  delegate = [(DIDevice *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DIDevice *)self connectionManager];
-    v6 = [v5 manager];
-    v7 = [v6 clientQueue];
+    connectionManager = [(DIDevice *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __33__DIDevice_notifyDeviceDidChange__block_invoke;
     v8[3] = &unk_278FB8F78;
     v8[4] = self;
-    [DIUtilities onQueue:v7 block:v8];
+    [DIUtilities onQueue:clientQueue block:v8];
   }
 }
 
@@ -572,20 +572,20 @@ void __33__DIDevice_notifyDeviceDidChange__block_invoke(uint64_t a1)
 
 - (void)notifyDidUpdateState
 {
-  v3 = [(DIDevice *)self delegate];
+  delegate = [(DIDevice *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DIDevice *)self connectionManager];
-    v6 = [v5 manager];
-    v7 = [v6 clientQueue];
+    connectionManager = [(DIDevice *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__DIDevice_notifyDidUpdateState__block_invoke;
     v8[3] = &unk_278FB8F78;
     v8[4] = self;
-    [DIUtilities onQueue:v7 block:v8];
+    [DIUtilities onQueue:clientQueue block:v8];
   }
 }
 
@@ -609,11 +609,11 @@ void __32__DIDevice_notifyDidUpdateState__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithDevice:(id)a3 updateState:(BOOL)a4
+- (void)updateWithDevice:(id)device updateState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = DILogHandleDevice();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -622,7 +622,7 @@ void __32__DIDevice_notifyDidUpdateState__block_invoke(uint64_t a1)
     *&buf[12] = 2112;
     *&buf[14] = self;
     *&buf[22] = 2112;
-    v21 = v6;
+    v21 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v7, OS_LOG_TYPE_DEFAULT, "%@Update device:\n%@\n\nWith other device:\n%@", buf, 0x20u);
   }
 
@@ -630,20 +630,20 @@ void __32__DIDevice_notifyDidUpdateState__block_invoke(uint64_t a1)
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v21 = 0;
-  v8 = [(DIDevice *)self lock];
+  lock = [(DIDevice *)self lock];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __41__DIDevice_updateWithDevice_updateState___block_invoke;
   v15 = &unk_278FB9018;
-  v16 = self;
-  v9 = v6;
-  v19 = v4;
+  selfCopy = self;
+  v9 = deviceCopy;
+  v19 = stateCopy;
   v17 = v9;
   v18 = buf;
-  [v8 di_synchronize:&v12];
+  [lock di_synchronize:&v12];
 
   [(DIDevice *)self notifyDeviceDidChange:v12];
-  if (v4)
+  if (stateCopy)
   {
     v10 = *(*&buf[8] + 24);
     if (v10 != [(DIDevice *)self state])
@@ -683,20 +683,20 @@ void __41__DIDevice_updateWithDevice_updateState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)refreshStateWithCompletionHandler:(id)a3
+- (void)refreshStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DIDevice *)self connectionManager];
-  v6 = [v5 manager];
-  v7 = [v6 connection];
+  handlerCopy = handler;
+  connectionManager = [(DIDevice *)self connectionManager];
+  manager = [connectionManager manager];
+  connection = [manager connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__DIDevice_refreshStateWithCompletionHandler___block_invoke;
   v13[3] = &unk_278FB8D18;
   v13[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v14 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v13];
+  v9 = [connection remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__DIDevice_refreshStateWithCompletionHandler___block_invoke_2;
@@ -796,18 +796,18 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DIDevice *)self lock];
+  coderCopy = coder;
+  lock = [(DIDevice *)self lock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__DIDevice_encodeWithCoder___block_invoke;
   v7[3] = &unk_278FB8E48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 di_synchronize:v7];
+  v8 = coderCopy;
+  selfCopy = self;
+  v6 = coderCopy;
+  [lock di_synchronize:v7];
 }
 
 void __28__DIDevice_encodeWithCoder___block_invoke(uint64_t a1)
@@ -839,45 +839,45 @@ void __28__DIDevice_encodeWithCoder___block_invoke(uint64_t a1)
   [v12 encodeObject:v13 forKey:@"StateExpiration"];
 }
 
-- (DIDevice)initWithCoder:(id)a3
+- (DIDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIDevice *)self init];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
   if (v6)
   {
     objc_storeStrong(&v5->_name, v6);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StateExpiration"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StateExpiration"];
     if (v7)
     {
       v8 = v7;
       objc_storeStrong(&v5->_stateExpiration, v7);
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StateReason"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StateReason"];
       if (v9)
       {
         stateReason = v5->_stateReason;
         v5->_stateReason = v9;
         v11 = v9;
 
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomeKitIdentifier"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomeKitIdentifier"];
         homeKitIdentifier = v5->_homeKitIdentifier;
         v5->_homeKitIdentifier = v12;
 
-        v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomeKitHomeIdentifier"];
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomeKitHomeIdentifier"];
         homeKitHomeIdentifier = v5->_homeKitHomeIdentifier;
         v5->_homeKitHomeIdentifier = v14;
 
-        v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIdentifier"];
+        v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIdentifier"];
         idsIdentifier = v5->_idsIdentifier;
         v5->_idsIdentifier = v16;
 
-        v5->_isCurrentDevice = [v4 decodeBoolForKey:@"IsCurrentDevice"];
-        v5->_state = [v4 decodeIntegerForKey:@"State"];
+        v5->_isCurrentDevice = [coderCopy decodeBoolForKey:@"IsCurrentDevice"];
+        v5->_state = [coderCopy decodeIntegerForKey:@"State"];
 
 LABEL_6:
         v6 = v5;

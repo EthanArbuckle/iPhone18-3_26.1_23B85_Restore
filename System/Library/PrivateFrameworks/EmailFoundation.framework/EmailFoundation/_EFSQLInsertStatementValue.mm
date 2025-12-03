@@ -1,32 +1,32 @@
 @interface _EFSQLInsertStatementValue
-- (void)initWithRequiredColumns:(void *)a1;
+- (void)initWithRequiredColumns:(void *)columns;
 @end
 
 @implementation _EFSQLInsertStatementValue
 
-- (void)initWithRequiredColumns:(void *)a1
+- (void)initWithRequiredColumns:(void *)columns
 {
   v4 = a2;
-  if (a1)
+  if (columns)
   {
-    v11.receiver = a1;
+    v11.receiver = columns;
     v11.super_class = _EFSQLInsertStatementValue;
     v5 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v5;
+    columns = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_opt_new();
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = columns[2];
+      columns[2] = v6;
 
       v8 = objc_opt_new();
-      v9 = a1[3];
-      a1[3] = v8;
+      v9 = columns[3];
+      columns[3] = v8;
     }
   }
 
-  return a1;
+  return columns;
 }
 
 @end

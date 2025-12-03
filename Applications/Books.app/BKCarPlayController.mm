@@ -1,9 +1,9 @@
 @interface BKCarPlayController
 - (void)dealloc;
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4;
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4;
-- (void)templateWillAppear:(id)a3 animated:(BOOL)a4;
-- (void)templateWillDisappear:(id)a3 animated:(BOOL)a4;
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller;
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller;
+- (void)templateWillAppear:(id)appear animated:(BOOL)animated;
+- (void)templateWillDisappear:(id)disappear animated:(BOOL)animated;
 @end
 
 @implementation BKCarPlayController
@@ -14,16 +14,16 @@
   if (v3)
   {
     v4 = objc_opt_self();
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:v3];
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:v3];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
@@ -31,34 +31,34 @@
   [(BKCarPlayController *)&v8 dealloc];
 }
 
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CarPlayController.templateApplicationScene(_:didConnect:)(v6, v7);
+  sceneCopy = scene;
+  controllerCopy = controller;
+  selfCopy = self;
+  CarPlayController.templateApplicationScene(_:didConnect:)(sceneCopy, controllerCopy);
 }
 
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sceneCopy = scene;
+  controllerCopy = controller;
+  selfCopy = self;
   _s5Books17CarPlayControllerC24templateApplicationScene_022didDisconnectInterfaceD0ySo010CPTemplatefG0C_So011CPInterfaceD0CtF_0();
 }
 
-- (void)templateWillAppear:(id)a3 animated:(BOOL)a4
+- (void)templateWillAppear:(id)appear animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  _s5Books17CarPlayControllerC18templateWillAppear_8animatedySo10CPTemplateC_SbtF_0(v5);
+  appearCopy = appear;
+  selfCopy = self;
+  _s5Books17CarPlayControllerC18templateWillAppear_8animatedySo10CPTemplateC_SbtF_0(appearCopy);
 }
 
-- (void)templateWillDisappear:(id)a3 animated:(BOOL)a4
+- (void)templateWillDisappear:(id)disappear animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  _s5Books17CarPlayControllerC21templateWillDisappear_8animatedySo10CPTemplateC_SbtF_0(v5);
+  disappearCopy = disappear;
+  selfCopy = self;
+  _s5Books17CarPlayControllerC21templateWillDisappear_8animatedySo10CPTemplateC_SbtF_0(disappearCopy);
 }
 
 @end

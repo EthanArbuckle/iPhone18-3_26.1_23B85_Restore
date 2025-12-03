@@ -1,23 +1,23 @@
 @interface RTTransitMetricManager
-- (BOOL)isOverlappedVisit:(id)a3 locationsOfInterest:(id)a4;
-- (RTTransitMetricManager)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationManager:(id)a5 learnedLocationStore:(id)a6;
-- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)a3 handler:(id)a4;
-- (void)_performAnalyticsWitHomeLOIs:(id)a3 workLOIs:(id)a4 handler:(id)a5;
-- (void)_sendMetricsWithDevices:(id)a3 counts:(id)a4 primaryDeviceJourneyCount:(int64_t)a5 metricDurationDays:(int64_t)a6;
+- (BOOL)isOverlappedVisit:(id)visit locationsOfInterest:(id)interest;
+- (RTTransitMetricManager)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationManager:(id)locationManager learnedLocationStore:(id)store;
+- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)types handler:(id)handler;
+- (void)_performAnalyticsWitHomeLOIs:(id)is workLOIs:(id)oIs handler:(id)handler;
+- (void)_sendMetricsWithDevices:(id)devices counts:(id)counts primaryDeviceJourneyCount:(int64_t)count metricDurationDays:(int64_t)days;
 - (void)dealloc;
-- (void)performTransitAnalyticsWithHandler:(id)a3;
+- (void)performTransitAnalyticsWithHandler:(id)handler;
 @end
 
 @implementation RTTransitMetricManager
 
-- (RTTransitMetricManager)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationManager:(id)a5 learnedLocationStore:(id)a6
+- (RTTransitMetricManager)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationManager:(id)locationManager learnedLocationStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  locationManagerCopy = locationManager;
+  storeCopy = store;
+  v15 = storeCopy;
+  if (!managerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!calculatorCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -45,7 +45,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!locationManagerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!storeCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -85,7 +85,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(RTTransitMetricManager *)v17 UTF8String];
+      uTF8String = [(RTTransitMetricManager *)v17 UTF8String];
     }
 
     else
@@ -93,26 +93,26 @@ LABEL_17:
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v17];
       label = [v23 UTF8String];
 
-      v18 = label;
+      uTF8String = label;
     }
 
-    labela = dispatch_queue_create(v18, attr);
+    labela = dispatch_queue_create(uTF8String, attr);
 
     queue = v17->_queue;
     v17->_queue = labela;
 
-    objc_storeStrong(&v17->_defaultsManager, a3);
-    objc_storeStrong(&v17->_distanceCalculator, a4);
-    objc_storeStrong(&v17->_learnedLocationManager, a5);
-    objc_storeStrong(&v17->_learnedLocationStore, a6);
+    objc_storeStrong(&v17->_defaultsManager, manager);
+    objc_storeStrong(&v17->_distanceCalculator, calculator);
+    objc_storeStrong(&v17->_learnedLocationManager, locationManager);
+    objc_storeStrong(&v17->_learnedLocationStore, store);
     v16 = v28;
   }
 
   self = v16;
-  v21 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v21;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -122,15 +122,15 @@ LABEL_18:
   [(RTTransitMetricManager *)&v2 dealloc];
 }
 
-- (BOOL)isOverlappedVisit:(id)a3 locationsOfInterest:(id)a4
+- (BOOL)isOverlappedVisit:(id)visit locationsOfInterest:(id)interest
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  visitCopy = visit;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a4;
+  obj = interest;
   v6 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
@@ -147,23 +147,23 @@ LABEL_18:
 
         v10 = *(*(&v33 + 1) + 8 * i);
         distanceCalculator = self->_distanceCalculator;
-        v12 = [v10 location];
-        v13 = [v12 location];
-        v14 = [v5 location];
-        v15 = [v14 location];
+        location = [v10 location];
+        v12Location = [location location];
+        location2 = [visitCopy location];
+        v14Location = [location2 location];
         v32 = 0;
-        [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v13 toLocation:v15 error:&v32];
+        [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v12Location toLocation:v14Location error:&v32];
         v17 = v16;
         v18 = v32;
 
-        v19 = [v10 location];
+        location3 = [v10 location];
 
-        v20 = [v19 location];
-        [v20 horizontalUncertainty];
+        v19Location = [location3 location];
+        [v19Location horizontalUncertainty];
         v22 = v21;
-        v23 = [v5 location];
-        v24 = [v23 location];
-        [v24 horizontalUncertainty];
+        location4 = [visitCopy location];
+        v23Location = [location4 location];
+        [v23Location horizontalUncertainty];
         v26 = v22 + v25;
 
         if (v26 >= 50.0)
@@ -199,17 +199,17 @@ LABEL_14:
   return v28;
 }
 
-- (void)performTransitAnalyticsWithHandler:(id)a3
+- (void)performTransitAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__RTTransitMetricManager_performTransitAnalyticsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -434,14 +434,14 @@ void __61__RTTransitMetricManager_performTransitAnalyticsWithHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)a3 handler:(id)a4
+- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)types handler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v21 = v6;
-  if (!v6)
+  typesCopy = types;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v21 = typesCopy;
+  if (!typesCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -453,7 +453,7 @@ void __61__RTTransitMetricManager_performTransitAnalyticsWithHandler___block_inv
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -467,10 +467,10 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  if ([v6 count])
+  if ([typesCopy count])
   {
     v20 = v8;
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     *buf = 0;
     v37 = buf;
     v38 = 0x3032000000;
@@ -482,7 +482,7 @@ LABEL_14:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v6;
+    obj = typesCopy;
     v11 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v11)
     {
@@ -497,7 +497,7 @@ LABEL_14:
           }
 
           v14 = *(*(&v32 + 1) + 8 * i);
-          v15 = [v14 unsignedIntegerValue];
+          unsignedIntegerValue = [v14 unsignedIntegerValue];
           dispatch_group_enter(v10);
           learnedLocationManager = self->_learnedLocationManager;
           v27[0] = MEMORY[0x277D85DD0];
@@ -505,10 +505,10 @@ LABEL_14:
           v27[2] = __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_handler___block_invoke;
           v27[3] = &unk_2788C4640;
           v31 = buf;
-          v28 = v9;
+          v28 = dictionary;
           v29 = v14;
           v30 = v10;
-          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithPlaceType:v15 handler:v27];
+          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v27];
         }
 
         v11 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
@@ -517,16 +517,16 @@ LABEL_14:
       while (v11);
     }
 
-    v17 = [(RTTransitMetricManager *)self queue];
+    queue = [(RTTransitMetricManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_handler___block_invoke_2;
     block[3] = &unk_2788D1460;
     v26 = buf;
-    v24 = v9;
+    v24 = dictionary;
     v25 = v20;
-    v18 = v9;
-    dispatch_group_notify(v10, v17, block);
+    v18 = dictionary;
+    dispatch_group_notify(v10, queue, block);
 
     _Block_object_dispose(buf, 8);
     v8 = v20;
@@ -585,15 +585,15 @@ uint64_t __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_ha
   }
 }
 
-- (void)_performAnalyticsWitHomeLOIs:(id)a3 workLOIs:(id)a4 handler:(id)a5
+- (void)_performAnalyticsWitHomeLOIs:(id)is workLOIs:(id)oIs handler:(id)handler
 {
   v235[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v159 = a5;
-  v179 = v8;
-  v174 = v9;
-  if (!v8)
+  isCopy = is;
+  oIsCopy = oIs;
+  handlerCopy = handler;
+  v179 = isCopy;
+  v174 = oIsCopy;
+  if (!isCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -605,7 +605,7 @@ uint64_t __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_ha
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!oIsCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -617,7 +617,7 @@ uint64_t __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_ha
     goto LABEL_25;
   }
 
-  if (![v8 count])
+  if (![isCopy count])
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -629,7 +629,7 @@ uint64_t __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_ha
     goto LABEL_25;
   }
 
-  if (![v9 count])
+  if (![oIsCopy count])
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -641,7 +641,7 @@ uint64_t __74__RTTransitMetricManager__fetchLocationsOfInterestWithPlaceTypes_ha
     goto LABEL_25;
   }
 
-  if (!v159)
+  if (!handlerCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -668,21 +668,21 @@ LABEL_25:
   v214 = __Block_byref_object_dispose__168;
   v215 = 0;
   v10 = dispatch_semaphore_create(0);
-  v153 = [(RTLearnedLocationStore *)self->_learnedLocationStore predicateForObjectsFromCurrentDevice];
-  v152 = [(RTLearnedLocationStore *)self->_learnedLocationStore predicateForCompleteVisits];
+  predicateForObjectsFromCurrentDevice = [(RTLearnedLocationStore *)self->_learnedLocationStore predicateForObjectsFromCurrentDevice];
+  predicateForCompleteVisits = [(RTLearnedLocationStore *)self->_learnedLocationStore predicateForCompleteVisits];
   v158 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
-  v180 = self;
+  selfCopy = self;
   v11 = objc_alloc(MEMORY[0x277CCA970]);
-  v12 = [MEMORY[0x277CBEAA8] distantFuture];
-  v165 = [v11 initWithStartDate:v158 endDate:v12];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v165 = [v11 initWithStartDate:v158 endDate:distantFuture];
 
   learnedLocationStore = self->_learnedLocationStore;
-  v14 = [MEMORY[0x277CBEAA8] distantFuture];
-  v151 = [(RTLearnedLocationStore *)learnedLocationStore predicateForVisitsFromEntryDate:v158 exitDate:v14];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+  v151 = [(RTLearnedLocationStore *)learnedLocationStore predicateForVisitsFromEntryDate:v158 exitDate:distantFuture2];
 
   v15 = MEMORY[0x277CCA920];
-  v234[0] = v153;
-  v234[1] = v152;
+  v234[0] = predicateForObjectsFromCurrentDevice;
+  v234[1] = predicateForCompleteVisits;
   v234[2] = v151;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v234 count:3];
   v150 = [v15 andPredicateWithSubpredicates:v16];
@@ -713,11 +713,11 @@ LABEL_27:
   v23 = v22;
   v24 = objc_opt_new();
   v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_138];
-  v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v27 = [v26 filteredArrayUsingPredicate:v25];
-  v28 = [v27 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+  firstObject = [v27 firstObject];
 
-  [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+  [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
   v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
   {
@@ -764,15 +764,15 @@ LABEL_28:
 
   if (v211[5])
   {
-    v159[2]();
+    handlerCopy[2]();
     goto LABEL_121;
   }
 
-  v39 = [v217[5] lastObject];
-  v40 = [v39 exitDate];
-  v41 = [v217[5] firstObject];
-  v42 = [v41 entryDate];
-  [v40 timeIntervalSinceDate:v42];
+  lastObject = [v217[5] lastObject];
+  exitDate = [lastObject exitDate];
+  firstObject2 = [v217[5] firstObject];
+  entryDate = [firstObject2 entryDate];
+  [exitDate timeIntervalSinceDate:entryDate];
   v44 = v43;
 
   v146 = (v44 / 86400.0);
@@ -782,29 +782,29 @@ LABEL_28:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
       v138 = [v217[5] count];
-      v139 = [v217[5] firstObject];
-      v140 = [v139 entryDate];
-      v141 = [v140 stringFromDate];
-      v142 = [v217[5] lastObject];
-      v143 = [v142 exitDate];
-      v144 = [v143 stringFromDate];
-      v145 = [v158 stringFromDate];
+      firstObject3 = [v217[5] firstObject];
+      entryDate2 = [firstObject3 entryDate];
+      stringFromDate = [entryDate2 stringFromDate];
+      lastObject2 = [v217[5] lastObject];
+      exitDate2 = [lastObject2 exitDate];
+      stringFromDate2 = [exitDate2 stringFromDate];
+      stringFromDate3 = [v158 stringFromDate];
       *buf = 134219010;
       *&buf[4] = v138;
       *&buf[12] = 2112;
-      *&buf[14] = v141;
+      *&buf[14] = stringFromDate;
       *&buf[22] = 2112;
-      v227 = v144;
+      v227 = stringFromDate2;
       *v228 = 2048;
       *&v228[2] = (v44 / 86400.0);
       *&v228[10] = 2112;
-      *&v228[12] = v145;
+      *&v228[12] = stringFromDate3;
       _os_log_debug_impl(&dword_2304B3000, v45, OS_LOG_TYPE_DEBUG, "TransitMetrics, visits, %lu, startDate, %@, endDate, %@, duration, %lu, stats.startDate, %@", buf, 0x34u);
     }
   }
 
   v160 = objc_opt_new();
-  v46 = v180;
+  v46 = selfCopy;
   v204 = 0u;
   v205 = 0u;
   v202 = 0u;
@@ -815,14 +815,14 @@ LABEL_28:
   {
     v181 = 0;
     v182 = 0;
-    v184 = 0;
+    exitDate8 = 0;
     goto LABEL_86;
   }
 
   v48 = 0;
   v181 = 0;
   v182 = 0;
-  v184 = 0;
+  exitDate8 = 0;
   context = *v203;
   do
   {
@@ -839,26 +839,26 @@ LABEL_28:
       {
         if (v48 == 2)
         {
-          v51 = [v50 entryDate];
-          [v51 timeIntervalSinceDate:v181];
+          entryDate3 = [v50 entryDate];
+          [entryDate3 timeIntervalSinceDate:v181];
           if (v52 >= 900.0)
           {
             v60 = [v181 dateByAddingTimeInterval:300.0];
             if (v60)
             {
               v61 = [v181 dateByAddingTimeInterval:300.0];
-              v170 = [v61 earlierDate:v184];
+              v170 = [v61 earlierDate:exitDate8];
             }
 
             else
             {
-              v170 = v184;
+              v170 = exitDate8;
             }
 
-            v66 = [v51 dateByAddingTimeInterval:-300.0];
+            v66 = [entryDate3 dateByAddingTimeInterval:-300.0];
             if (v66)
             {
-              v67 = [v51 dateByAddingTimeInterval:-300.0];
+              v67 = [entryDate3 dateByAddingTimeInterval:-300.0];
               v168 = [v67 laterDate:v182];
             }
 
@@ -867,38 +867,38 @@ LABEL_28:
               v168 = v182;
             }
 
-            v68 = [v50 entryDate];
-            v69 = [v68 dateByAddingTimeInterval:300.0];
+            entryDate4 = [v50 entryDate];
+            v69 = [entryDate4 dateByAddingTimeInterval:300.0];
             if (v69)
             {
-              v70 = [v50 entryDate];
-              v71 = [v70 dateByAddingTimeInterval:300.0];
-              v72 = [v50 exitDate];
-              v73 = [v72 dateByAddingTimeInterval:-300.0];
+              entryDate5 = [v50 entryDate];
+              v71 = [entryDate5 dateByAddingTimeInterval:300.0];
+              exitDate3 = [v50 exitDate];
+              v73 = [exitDate3 dateByAddingTimeInterval:-300.0];
               v166 = [v71 earlierDate:v73];
             }
 
             else
             {
-              v70 = [v50 exitDate];
-              v166 = [v70 dateByAddingTimeInterval:-300.0];
+              entryDate5 = [v50 exitDate];
+              v166 = [entryDate5 dateByAddingTimeInterval:-300.0];
             }
 
-            v74 = [v50 entryDate];
-            v75 = [v74 dateByAddingTimeInterval:300.0];
+            entryDate6 = [v50 entryDate];
+            v75 = [entryDate6 dateByAddingTimeInterval:300.0];
             if (v75)
             {
-              v76 = [v50 entryDate];
-              v77 = [v76 dateByAddingTimeInterval:300.0];
-              v78 = [v50 exitDate];
-              v79 = [v78 dateByAddingTimeInterval:-300.0];
+              entryDate7 = [v50 entryDate];
+              v77 = [entryDate7 dateByAddingTimeInterval:300.0];
+              exitDate4 = [v50 exitDate];
+              v79 = [exitDate4 dateByAddingTimeInterval:-300.0];
               v80 = [v77 laterDate:v79];
             }
 
             else
             {
-              v76 = [v50 exitDate];
-              v80 = [v76 dateByAddingTimeInterval:-300.0];
+              entryDate7 = [v50 exitDate];
+              v80 = [entryDate7 dateByAddingTimeInterval:-300.0];
             }
 
             v81 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v170 endDate:v168];
@@ -911,30 +911,30 @@ LABEL_28:
               v84 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
               if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
               {
-                v86 = [v170 stringFromDate];
-                v163 = [v168 stringFromDate];
-                v161 = [v166 stringFromDate];
-                v156 = [v80 stringFromDate];
-                v87 = [v50 entryDate];
-                v154 = [v87 stringFromDate];
-                v148 = [v50 exitDate];
-                v88 = [v148 stringFromDate];
-                v89 = [v181 stringFromDate];
+                stringFromDate4 = [v170 stringFromDate];
+                stringFromDate5 = [v168 stringFromDate];
+                stringFromDate6 = [v166 stringFromDate];
+                stringFromDate7 = [v80 stringFromDate];
+                entryDate8 = [v50 entryDate];
+                stringFromDate8 = [entryDate8 stringFromDate];
+                exitDate5 = [v50 exitDate];
+                stringFromDate9 = [exitDate5 stringFromDate];
+                stringFromDate10 = [v181 stringFromDate];
                 *buf = 138413826;
-                v147 = v89;
-                *&buf[4] = v86;
+                v147 = stringFromDate10;
+                *&buf[4] = stringFromDate4;
                 *&buf[12] = 2112;
-                *&buf[14] = v163;
+                *&buf[14] = stringFromDate5;
                 *&buf[22] = 2112;
-                v227 = v161;
+                v227 = stringFromDate6;
                 *v228 = 2112;
-                *&v228[2] = v156;
+                *&v228[2] = stringFromDate7;
                 *&v228[10] = 2112;
-                *&v228[12] = v154;
+                *&v228[12] = stringFromDate8;
                 v229 = 2112;
-                v230 = v88;
+                v230 = stringFromDate9;
                 v231 = 2112;
-                v232 = v89;
+                v232 = stringFromDate10;
                 _os_log_debug_impl(&dword_2304B3000, v84, OS_LOG_TYPE_DEBUG, "TransitMetrics, create journey, startDate, %@, endDate, %@, home.entryDate.adjusted, %@, home.exitDate.adjusted, %@, home.entryDate, %@, home.exitDate, %@, home.prevExitDate, %@", buf, 0x48u);
               }
             }
@@ -948,13 +948,13 @@ LABEL_77:
             v53 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
             if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
             {
-              v54 = [v181 stringFromDate];
-              v55 = [v51 stringFromDate];
-              [v51 timeIntervalSinceDate:v181];
+              stringFromDate11 = [v181 stringFromDate];
+              stringFromDate12 = [entryDate3 stringFromDate];
+              [entryDate3 timeIntervalSinceDate:v181];
               *buf = 138412802;
-              *&buf[4] = v54;
+              *&buf[4] = stringFromDate11;
               *&buf[12] = 2112;
-              *&buf[14] = v55;
+              *&buf[14] = stringFromDate12;
               *&buf[22] = 2048;
               v227 = v56;
               _os_log_debug_impl(&dword_2304B3000, v53, OS_LOG_TYPE_DEBUG, "TransitMetrics, pass journey, startDate, %@, endDate, %@, interval, %f", buf, 0x20u);
@@ -964,12 +964,12 @@ LABEL_77:
           }
         }
 
-        v85 = [v50 exitDate];
+        exitDate6 = [v50 exitDate];
         v63 = 0;
         v59 = 0;
         v64 = v181;
         v48 = 1;
-        v181 = v85;
+        v181 = exitDate6;
         goto LABEL_80;
       }
 
@@ -983,25 +983,25 @@ LABEL_77:
         v48 = 2;
       }
 
-      v57 = [v50 entryDate];
-      if (v57)
+      entryDate9 = [v50 entryDate];
+      if (entryDate9)
       {
-        v58 = [v50 entryDate];
-        v59 = [v58 earlierDate:v184];
+        entryDate10 = [v50 entryDate];
+        v59 = [entryDate10 earlierDate:exitDate8];
       }
 
       else
       {
-        v59 = v184;
+        v59 = exitDate8;
       }
 
-      v62 = [v50 exitDate];
-      if (v62)
+      exitDate7 = [v50 exitDate];
+      if (exitDate7)
       {
-        v184 = [v50 exitDate];
-        v63 = [v184 laterDate:v182];
+        exitDate8 = [v50 exitDate];
+        v63 = [exitDate8 laterDate:v182];
         v64 = v182;
-        v182 = v62;
+        v182 = exitDate7;
 LABEL_80:
 
         v65 = v182;
@@ -1012,8 +1012,8 @@ LABEL_80:
       v65 = 0;
 LABEL_81:
 
-      v184 = v59;
-      v46 = v180;
+      exitDate8 = v59;
+      v46 = selfCopy;
     }
 
     v47 = [obj countByEnumeratingWithState:&v202 objects:v233 count:16];
@@ -1042,7 +1042,7 @@ LABEL_86:
   *&v228[8] = 0;
   v92 = dispatch_semaphore_create(0);
 
-  v93 = v180->_learnedLocationStore;
+  v93 = selfCopy->_learnedLocationStore;
   v198[0] = MEMORY[0x277D85DD0];
   v198[1] = 3221225472;
   v198[2] = __72__RTTransitMetricManager__performAnalyticsWitHomeLOIs_workLOIs_handler___block_invoke_44;
@@ -1065,11 +1065,11 @@ LABEL_86:
   v99 = v98;
   v100 = objc_opt_new();
   v101 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_138];
-  v102 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v103 = [v102 filteredArrayUsingPredicate:v101];
-  v104 = [v103 firstObject];
+  callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v103 = [callStackSymbols2 filteredArrayUsingPredicate:v101];
+  firstObject4 = [v103 firstObject];
 
-  [v100 submitToCoreAnalytics:v104 type:1 duration:v99];
+  [v100 submitToCoreAnalytics:firstObject4 type:1 duration:v99];
   v105 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v105, OS_LOG_TYPE_FAULT))
   {
@@ -1120,7 +1120,7 @@ LABEL_95:
 
   if (v211[5])
   {
-    v159[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -1132,7 +1132,7 @@ LABEL_95:
     aBlock[3] = &unk_2788D1488;
     v155 = v160;
     v193 = v155;
-    v194 = v180;
+    v194 = selfCopy;
     v195 = v174;
     v196 = v179;
     v157 = v115;
@@ -1165,7 +1165,7 @@ LABEL_95:
           contexta = objc_autoreleasePoolPush();
           v119 = dispatch_semaphore_create(0);
 
-          v120 = v180->_learnedLocationStore;
+          v120 = selfCopy->_learnedLocationStore;
           v185[0] = MEMORY[0x277D85DD0];
           v185[1] = 3221225472;
           v185[2] = __72__RTTransitMetricManager__performAnalyticsWitHomeLOIs_workLOIs_handler___block_invoke_48;
@@ -1188,11 +1188,11 @@ LABEL_95:
           v126 = v125;
           v127 = objc_opt_new();
           v128 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_138];
-          v129 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v130 = [v129 filteredArrayUsingPredicate:v128];
-          v131 = [v130 firstObject];
+          callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v130 = [callStackSymbols3 filteredArrayUsingPredicate:v128];
+          firstObject5 = [v130 firstObject];
 
-          [v127 submitToCoreAnalytics:v131 type:1 duration:v126];
+          [v127 submitToCoreAnalytics:firstObject5 type:1 duration:v126];
           v132 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v132, OS_LOG_TYPE_FAULT))
           {
@@ -1238,8 +1238,8 @@ LABEL_114:
       while (v116);
     }
 
-    -[RTTransitMetricManager _sendMetricsWithDevices:counts:primaryDeviceJourneyCount:metricDurationDays:](v180, "_sendMetricsWithDevices:counts:primaryDeviceJourneyCount:metricDurationDays:", *(*&buf[8] + 40), v157, [v155 count], v146);
-    (v159[2])(v159, 0);
+    -[RTTransitMetricManager _sendMetricsWithDevices:counts:primaryDeviceJourneyCount:metricDurationDays:](selfCopy, "_sendMetricsWithDevices:counts:primaryDeviceJourneyCount:metricDurationDays:", *(*&buf[8] + 40), v157, [v155 count], v146);
+    (handlerCopy[2])(handlerCopy, 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -1465,13 +1465,13 @@ void __72__RTTransitMetricManager__performAnalyticsWitHomeLOIs_workLOIs_handler_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_sendMetricsWithDevices:(id)a3 counts:(id)a4 primaryDeviceJourneyCount:(int64_t)a5 metricDurationDays:(int64_t)a6
+- (void)_sendMetricsWithDevices:(id)devices counts:(id)counts primaryDeviceJourneyCount:(int64_t)count metricDurationDays:(int64_t)days
 {
   v103 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  devicesCopy = devices;
+  countsCopy = counts;
+  v9 = countsCopy;
+  if (!devicesCopy)
   {
     log = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -1486,7 +1486,7 @@ LABEL_31:
     goto LABEL_29;
   }
 
-  if (!v8)
+  if (!countsCopy)
   {
     log = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -1504,8 +1504,8 @@ LABEL_31:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v58 = v7;
-  v10 = v7;
+  v58 = devicesCopy;
+  v10 = devicesCopy;
   v11 = [v10 countByEnumeratingWithState:&v74 objects:v102 count:16];
   if (v11)
   {
@@ -1521,8 +1521,8 @@ LABEL_31:
         }
 
         v15 = *(*(&v74 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = [v9 countForObject:v16];
+        identifier = [v15 identifier];
+        v17 = [v9 countForObject:identifier];
         if (v17 >= 1)
         {
           v101[0] = v15;
@@ -1543,7 +1543,7 @@ LABEL_31:
 
   v57 = v9;
   v20 = [v9 count];
-  v64 = [(RTTransitMetricManager *)self decimateInteger:a6];
+  v64 = [(RTTransitMetricManager *)self decimateInteger:days];
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"count" ascending:0];
   v99 = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v99 count:1];
@@ -1574,38 +1574,38 @@ LABEL_31:
         v28 = *(*(&v70 + 1) + 8 * v26);
         v29 = [v28 objectForKeyedSubscript:@"device"];
         v30 = [v28 objectForKeyedSubscript:@"count"];
-        v31 = [v30 longValue];
+        longValue = [v30 longValue];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v32 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v51 = [v29 identifier];
-            v52 = [v29 deviceName];
-            v53 = [v29 deviceClass];
-            v54 = [v29 deviceModel];
-            v55 = [v30 longValue];
+            identifier2 = [v29 identifier];
+            deviceName = [v29 deviceName];
+            deviceClass = [v29 deviceClass];
+            deviceModel = [v29 deviceModel];
+            longValue2 = [v30 longValue];
             *buf = 134219779;
-            v83 = a6;
+            daysCopy = days;
             v84 = 2112;
-            v85 = v51;
+            v85 = identifier2;
             v86 = 2112;
-            v87 = v52;
+            v87 = deviceName;
             v88 = 2112;
-            v89 = v53;
+            v89 = deviceClass;
             v90 = 2117;
-            v91 = v54;
+            v91 = deviceModel;
             v92 = 2048;
             v93 = v27;
             v94 = 2048;
-            v95 = v55;
+            v95 = longValue2;
             v96 = 2048;
-            v97 = a5;
+            countCopy = count;
             _os_log_debug_impl(&dword_2304B3000, v32, OS_LOG_TYPE_DEBUG, "TransitMetrics, send metrics, duration, %lu, device, %@, deviceName, %@, deviceClass, %@, deviceModel, %{sensitive}@, idx, %lu, carrying count, %lu, journey count, %lu", buf, 0x52u);
           }
         }
 
-        v33 = v31 / a5;
+        v33 = longValue / count;
         v68 = v27 + 1;
         v69 = v30;
         v34 = (v27 + 1) / v25;
@@ -1617,8 +1617,8 @@ LABEL_31:
         v35 = [MEMORY[0x277CCABB0] numberWithInteger:v64];
         v81[2] = v35;
         v80[3] = @"DeviceType";
-        v36 = [v29 deviceClass];
-        v81[3] = v36;
+        deviceClass2 = [v29 deviceClass];
+        v81[3] = deviceClass2;
         v80[4] = @"Priority";
         v37 = MEMORY[0x277CCABB0];
         v67 = v27;
@@ -1635,7 +1635,7 @@ LABEL_31:
         v42 = v41 = v29;
         v81[6] = v42;
         v80[7] = @"TransitsBinned";
-        v43 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTTransitMetricManager decimateInteger:](self, "decimateInteger:", a5)}];
+        v43 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTTransitMetricManager decimateInteger:](self, "decimateInteger:", count)}];
         v81[7] = v43;
         v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:8];
 
@@ -1650,15 +1650,15 @@ LABEL_31:
           v45 = [MEMORY[0x277CCABB0] numberWithInteger:v64];
           v79[2] = v45;
           v78[3] = @"DeviceType";
-          v46 = [v41 deviceClass];
-          v79[3] = v46;
+          deviceClass3 = [v41 deviceClass];
+          v79[3] = deviceClass3;
           v78[4] = @"ParityRate";
           v47 = MEMORY[0x277CCABB0];
           [(RTTransitMetricManager *)self decimateDoulbe:v33];
           v48 = [v47 numberWithDouble:?];
           v79[4] = v48;
           v78[5] = @"TransitsBinned";
-          v49 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTTransitMetricManager decimateInteger:](self, "decimateInteger:", a5)}];
+          v49 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTTransitMetricManager decimateInteger:](self, "decimateInteger:", count)}];
           v79[5] = v49;
           v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:6];
 
@@ -1678,7 +1678,7 @@ LABEL_31:
   }
 
   v9 = v57;
-  v7 = v58;
+  devicesCopy = v58;
 LABEL_29:
 }
 

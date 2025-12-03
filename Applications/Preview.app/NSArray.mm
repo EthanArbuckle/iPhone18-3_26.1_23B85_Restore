@@ -8,11 +8,11 @@
 - (id)localizedArrayValues
 {
   v3 = +[NSLocale autoupdatingCurrentLocale];
-  v4 = [v3 groupingSeparator];
+  groupingSeparator = [v3 groupingSeparator];
 
-  if ([v4 length])
+  if ([groupingSeparator length])
   {
-    v5 = [v4 stringByAppendingString:@" "];
+    v5 = [groupingSeparator stringByAppendingString:@" "];
   }
 
   else

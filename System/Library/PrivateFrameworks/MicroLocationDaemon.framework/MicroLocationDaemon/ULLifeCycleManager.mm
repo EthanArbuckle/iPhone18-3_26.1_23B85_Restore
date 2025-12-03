@@ -1,7 +1,7 @@
 @interface ULLifeCycleManager
 - (ULLifeCycleManager)init;
-- (id)_createSourceForSignal:(int)a3 withBlock:(id)a4;
-- (void)_exitWithDate:(id)a3;
+- (id)_createSourceForSignal:(int)signal withBlock:(id)block;
+- (void)_exitWithDate:(id)date;
 - (void)_spinUpListeners;
 - (void)_spinUpModulesConstructorsAndDependencies;
 - (void)_spinUpSignals;
@@ -52,9 +52,9 @@ void __48__ULLifeCycleManager__spinUpWakeUpNotifications__block_invoke_2(uint64_
     v3 = +[ULEnvironment standardEnvironment];
     [(ULLifeCycleManager *)v2 setEnvironment:v3];
 
-    v4 = [(ULLifeCycleManager *)v2 environment];
-    v5 = [v4 queue];
-    [(ULLifeCycleManager *)v2 setQueue:v5];
+    environment = [(ULLifeCycleManager *)v2 environment];
+    queue = [environment queue];
+    [(ULLifeCycleManager *)v2 setQueue:queue];
 
     v6 = [MEMORY[0x277CBEB58] set];
     [(ULLifeCycleManager *)v2 setSignals:v6];
@@ -65,8 +65,8 @@ void __48__ULLifeCycleManager__spinUpWakeUpNotifications__block_invoke_2(uint64_
 
 - (void)dealloc
 {
-  v3 = [(ULLifeCycleManager *)self signals];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_163];
+  signals = [(ULLifeCycleManager *)self signals];
+  [signals enumerateObjectsUsingBlock:&__block_literal_global_163];
 
   v4.receiver = self;
   v4.super_class = ULLifeCycleManager;
@@ -75,22 +75,22 @@ void __48__ULLifeCycleManager__spinUpWakeUpNotifications__block_invoke_2(uint64_
 
 - (void)start
 {
-  v3 = [(ULLifeCycleManager *)self queue];
+  queue = [(ULLifeCycleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__ULLifeCycleManager_start__block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_start
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(ULLifeCycleManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(ULLifeCycleManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (onceToken_MicroLocation_Default != -1)
   {
     [ULLifeCycleManager _start];
@@ -119,8 +119,8 @@ void __48__ULLifeCycleManager__spinUpWakeUpNotifications__block_invoke_2(uint64_
   {
     v9 = NSStringFromSelector(a2);
     v10 = MEMORY[0x277CCABB0];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSinceDate:v5];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:date];
     v12 = [v10 numberWithDouble:?];
     v14 = 138412546;
     v15 = v9;
@@ -135,14 +135,14 @@ void __48__ULLifeCycleManager__spinUpWakeUpNotifications__block_invoke_2(uint64_
 - (void)_spinUpSignals
 {
   objc_initWeak(&location, self);
-  v3 = [(ULLifeCycleManager *)self signals];
+  signals = [(ULLifeCycleManager *)self signals];
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __36__ULLifeCycleManager__spinUpSignals__block_invoke;
   v8 = &unk_2798D4348;
   objc_copyWeak(&v9, &location);
   v4 = [(ULLifeCycleManager *)self _createSourceForSignal:15 withBlock:&v5];
-  [v3 addObject:{v4, v5, v6, v7, v8}];
+  [signals addObject:{v4, v5, v6, v7, v8}];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -181,8 +181,8 @@ void __36__ULLifeCycleManager__spinUpSignals__block_invoke(uint64_t a1)
 
 - (void)_spinUpModulesConstructorsAndDependencies
 {
-  v2 = [(ULLifeCycleManager *)self queue];
-  [ULTimerFactory setPrimaryQueue:v2];
+  queue = [(ULLifeCycleManager *)self queue];
+  [ULTimerFactory setPrimaryQueue:queue];
 
   operator new();
 }
@@ -190,8 +190,8 @@ void __36__ULLifeCycleManager__spinUpSignals__block_invoke(uint64_t a1)
 - (void)_spinUpListeners
 {
   v4 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.milod.xpc.service"];
-  v3 = [(ULLifeCycleManager *)self server];
-  [v4 setDelegate:v3];
+  server = [(ULLifeCycleManager *)self server];
+  [v4 setDelegate:server];
 
   [v4 resume];
 }
@@ -206,13 +206,13 @@ void __36__ULLifeCycleManager__spinUpSignals__block_invoke(uint64_t a1)
   xpc_set_event_stream_handler("com.apple.notifyd.matching", MEMORY[0x277D85CD0], handler);
 }
 
-- (void)_exitWithDate:(id)a3
+- (void)_exitWithDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULLifeCycleManager *)self environment];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dateCopy = date;
+  environment = [(ULLifeCycleManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = +[ULTransactionManager shared];
   [v7 invalidateAllTransactions];
@@ -226,8 +226,8 @@ void __36__ULLifeCycleManager__spinUpSignals__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:dateCopy];
     v11 = [v9 numberWithDouble:?];
     v13 = 138412290;
     v14 = v11;
@@ -238,15 +238,15 @@ void __36__ULLifeCycleManager__spinUpSignals__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createSourceForSignal:(int)a3 withBlock:(id)a4
+- (id)_createSourceForSignal:(int)signal withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(ULLifeCycleManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  blockCopy = block;
+  queue = [(ULLifeCycleManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  signal(a3, 1);
-  v8 = dispatch_source_create(MEMORY[0x277D85D30], a3, 0, MEMORY[0x277D85CD0]);
-  dispatch_source_set_event_handler(v8, v6);
+  signal(signal, 1);
+  v8 = dispatch_source_create(MEMORY[0x277D85D30], signal, 0, MEMORY[0x277D85CD0]);
+  dispatch_source_set_event_handler(v8, blockCopy);
   dispatch_resume(v8);
 
   return v8;

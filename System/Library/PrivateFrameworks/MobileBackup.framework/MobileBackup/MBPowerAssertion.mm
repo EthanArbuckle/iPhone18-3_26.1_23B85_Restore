@@ -1,5 +1,5 @@
 @interface MBPowerAssertion
-- (MBPowerAssertion)initWithName:(id)a3 timeout:(double)a4;
+- (MBPowerAssertion)initWithName:(id)name timeout:(double)timeout;
 - (void)_drop;
 - (void)dealloc;
 - (void)drop;
@@ -8,17 +8,17 @@
 
 @implementation MBPowerAssertion
 
-- (MBPowerAssertion)initWithName:(id)a3 timeout:(double)a4
+- (MBPowerAssertion)initWithName:(id)name timeout:(double)timeout
 {
-  v7 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = MBPowerAssertion;
   v8 = [(MBPowerAssertion *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_timeout = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_timeout = timeout;
     v10 = objc_opt_class();
     Name = class_getName(v10);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

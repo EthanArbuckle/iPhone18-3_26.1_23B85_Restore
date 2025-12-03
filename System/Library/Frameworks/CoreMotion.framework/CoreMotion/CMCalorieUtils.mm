@@ -1,9 +1,9 @@
 @interface CMCalorieUtils
 + (BOOL)isAvailable;
-+ (CLBodyMetrics)CLBodyMetricsFromCMCalorieUserInfo:(SEL)a3 errorPtr:(id)a4;
-+ (id)lookupCalorieDataForCMWorkoutType:(int64_t)a3 duration:(double)a4 error:(id *)a5;
-+ (id)lookupCalorieDataForCMWorkoutType:(int64_t)a3 duration:(double)a4 userInfo:(id)a5 error:(id *)a6;
-+ (id)lookupCalorieDataForWorkoutConfiguration:(id)a3 duration:(double)a4 distance:(id)a5 userInfo:(id)a6 errorPtr:(id *)a7;
++ (CLBodyMetrics)CLBodyMetricsFromCMCalorieUserInfo:(SEL)info errorPtr:(id)ptr;
++ (id)lookupCalorieDataForCMWorkoutType:(int64_t)type duration:(double)duration error:(id *)error;
++ (id)lookupCalorieDataForCMWorkoutType:(int64_t)type duration:(double)duration userInfo:(id)info error:(id *)error;
++ (id)lookupCalorieDataForWorkoutConfiguration:(id)configuration duration:(double)duration distance:(id)distance userInfo:(id)info errorPtr:(id *)ptr;
 @end
 
 @implementation CMCalorieUtils
@@ -26,17 +26,17 @@
   return 0;
 }
 
-+ (CLBodyMetrics)CLBodyMetricsFromCMCalorieUserInfo:(SEL)a3 errorPtr:(id)a4
++ (CLBodyMetrics)CLBodyMetricsFromCMCalorieUserInfo:(SEL)info errorPtr:(id)ptr
 {
   *&retstr->var0 = xmmword_19B7BDCA4;
   *&retstr->var4 = unk_19B7BDCB4;
   *&retstr->var8 = xmmword_19B7BDCC4;
   *&retstr->var11 = *(&xmmword_19B7BDCC4 + 12);
-  if (objc_msgSend_gender(a4, a3, a4) && objc_msgSend_gender(a4, v8, v9) != 1)
+  if (objc_msgSend_gender(ptr, info, ptr) && objc_msgSend_gender(ptr, v8, v9) != 1)
   {
     if (!a5)
     {
-      objc_msgSend_height(a4, v8, v9);
+      objc_msgSend_height(ptr, v8, v9);
       if (v30 > 0.0)
       {
         goto LABEL_7;
@@ -50,14 +50,14 @@
 
   else
   {
-    retstr->var0 = objc_msgSend_gender(a4, v8, v9);
+    retstr->var0 = objc_msgSend_gender(ptr, v8, v9);
   }
 
-  objc_msgSend_height(a4, v10, v11);
+  objc_msgSend_height(ptr, v10, v11);
   if (v14 > 0.0)
   {
 LABEL_7:
-    objc_msgSend_height(a4, v12, v13);
+    objc_msgSend_height(ptr, v12, v13);
     *&v15 = v15;
     retstr->var15 = 1;
     retstr->var2 = *&v15;
@@ -70,12 +70,12 @@ LABEL_7:
   }
 
 LABEL_10:
-  objc_msgSend_weight(a4, v12, v13);
+  objc_msgSend_weight(ptr, v12, v13);
   if (v18 <= 0.0)
   {
     if (!a5)
     {
-      objc_msgSend_age(a4, v16, v17);
+      objc_msgSend_age(ptr, v16, v17);
       if (v26 <= 0.0)
       {
         goto LABEL_19;
@@ -89,17 +89,17 @@ LABEL_10:
 
   else
   {
-    objc_msgSend_weight(a4, v16, v17);
+    objc_msgSend_weight(ptr, v16, v17);
     *&v21 = v21;
     retstr->var16 = 1;
     retstr->var3 = *&v21;
   }
 
-  objc_msgSend_age(a4, v19, v20);
+  objc_msgSend_age(ptr, v19, v20);
   if (v24 > 0.0)
   {
 LABEL_15:
-    objc_msgSend_age(a4, v22, v23);
+    objc_msgSend_age(ptr, v22, v23);
     *&v25 = v25;
     retstr->var14 = 1;
     retstr->var5 = *&v25;
@@ -112,7 +112,7 @@ LABEL_15:
   }
 
 LABEL_19:
-  if (objc_msgSend_condition(a4, v22, v23) < 0 || objc_msgSend_condition(a4, v27, v28) > 6)
+  if (objc_msgSend_condition(ptr, v22, v23) < 0 || objc_msgSend_condition(ptr, v27, v28) > 6)
   {
     if (a5)
     {
@@ -122,10 +122,10 @@ LABEL_19:
 
   else
   {
-    retstr->var10 = objc_msgSend_condition(a4, v27, v28);
+    retstr->var10 = objc_msgSend_condition(ptr, v27, v28);
   }
 
-  result = objc_msgSend_betaBlockerUse(a4, v27, v28);
+  result = objc_msgSend_betaBlockerUse(ptr, v27, v28);
   if (result)
   {
     retstr->var12 = 1;
@@ -134,20 +134,20 @@ LABEL_19:
   return result;
 }
 
-+ (id)lookupCalorieDataForCMWorkoutType:(int64_t)a3 duration:(double)a4 userInfo:(id)a5 error:(id *)a6
++ (id)lookupCalorieDataForCMWorkoutType:(int64_t)type duration:(double)duration userInfo:(id)info error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!info)
   {
-    v32 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, a1, @"CMCalorieUtils.mm", 82, @"Invalid parameter not satisfying: %@", @"userInfo");
+    v32 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, type);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, self, @"CMCalorieUtils.mm", 82, @"Invalid parameter not satisfying: %@", @"userInfo");
   }
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], a2, @"CMErrorDomain", 107, 0);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], a2, @"CMErrorDomain", 107, 0);
     }
 
     if (qword_1ED71C830 != -1)
@@ -159,7 +159,7 @@ LABEL_19:
     if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v37 = a4;
+      durationCopy = duration;
       _os_log_impl(&dword_19B41C000, v13, OS_LOG_TYPE_ERROR, "Workout calorie lookup, duration must be positive, %f", buf, 0xCu);
     }
 
@@ -176,13 +176,13 @@ LABEL_19:
     }
 
     LODWORD(v35[0]) = 134217984;
-    *(v35 + 4) = a4;
+    *(v35 + 4) = duration;
     goto LABEL_26;
   }
 
   memset(v35, 0, 60);
-  objc_msgSend_CLBodyMetricsFromCMCalorieUserInfo_errorPtr_(CMCalorieUtils, a2, a5, a6);
-  if (*a6)
+  objc_msgSend_CLBodyMetricsFromCMCalorieUserInfo_errorPtr_(CMCalorieUtils, a2, info, error);
+  if (*error)
   {
     if (qword_1ED71C830 != -1)
     {
@@ -193,7 +193,7 @@ LABEL_19:
     if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = *&a5;
+      durationCopy = *&info;
       _os_log_impl(&dword_19B41C000, v11, OS_LOG_TYPE_ERROR, "Workout calorie lookup, invalid userInfo, %@", buf, 0xCu);
     }
 
@@ -222,13 +222,13 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v19 = objc_msgSend_CLMotionActivityTypeFromCMWorkoutType_(CMWorkout, v10, a3);
+  v19 = objc_msgSend_CLMotionActivityTypeFromCMWorkoutType_(CMWorkout, v10, type);
   v20 = sub_19B71A29C(v19);
   v21 = sub_19B73FF78(v35, (v19 < 0xC) & (0xC07u >> v19));
-  v22 = (v20 * *(v35 + 3)) * a4 / 3600.0;
-  v23 = (v21 * *(v35 + 3)) * a4 / 3600.0;
+  v22 = (v20 * *(v35 + 3)) * duration / 3600.0;
+  v23 = (v21 * *(v35 + 3)) * duration / 3600.0;
   v24 = [CMCalorieData alloc];
-  v16 = objc_msgSend_initWithWorkoutType_duration_mets_basalMets_totalCalories_basalCalories_(v24, v25, a3, a4, v20, v21, v22, v23);
+  v16 = objc_msgSend_initWithWorkoutType_duration_mets_basalMets_totalCalories_basalCalories_(v24, v25, type, duration, v20, v21, v22, v23);
   if (qword_1ED71C830 != -1)
   {
     dispatch_once(&qword_1ED71C830, &unk_1F0E2A6C0);
@@ -237,11 +237,11 @@ LABEL_28:
   v26 = off_1ED71C838;
   if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = *a6;
+    v27 = *error;
     *buf = 138412802;
-    v37 = *&v16;
+    durationCopy = *&v16;
     v38 = 2112;
-    v39 = a5;
+    infoCopy = info;
     v40 = 2112;
     v41 = v27;
     _os_log_impl(&dword_19B41C000, v26, OS_LOG_TYPE_DEFAULT, "Workout calorie lookup, %@, %@, %@", buf, 0x20u);
@@ -256,7 +256,7 @@ LABEL_28:
       dispatch_once(&qword_1ED71C830, &unk_1F0E2A6C0);
     }
 
-    v34 = *a6;
+    v34 = *error;
     v29 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "+[CMCalorieUtils lookupCalorieDataForCMWorkoutType:duration:userInfo:error:]", "CoreLocation: %s\n", v29);
     if (v29 != buf)
@@ -270,28 +270,28 @@ LABEL_29:
   return v16;
 }
 
-+ (id)lookupCalorieDataForCMWorkoutType:(int64_t)a3 duration:(double)a4 error:(id *)a5
++ (id)lookupCalorieDataForCMWorkoutType:(int64_t)type duration:(double)duration error:(id *)error
 {
   v6 = [CMCalorieUserInfo alloc];
   v8 = objc_msgSend_initWithAge_gender_height_weight_condition_betaBlockerUse_(v6, v7, 0, 0, 0, 30.0, 1.70000005, 68.0299988);
 
-  return MEMORY[0x1EEE66B58](CMCalorieUtils, sel_lookupCalorieDataForCMWorkoutType_duration_userInfo_error_, a3);
+  return MEMORY[0x1EEE66B58](CMCalorieUtils, sel_lookupCalorieDataForCMWorkoutType_duration_userInfo_error_, type);
 }
 
-+ (id)lookupCalorieDataForWorkoutConfiguration:(id)a3 duration:(double)a4 distance:(id)a5 userInfo:(id)a6 errorPtr:(id *)a7
++ (id)lookupCalorieDataForWorkoutConfiguration:(id)configuration duration:(double)duration distance:(id)distance userInfo:(id)info errorPtr:(id *)ptr
 {
   v55 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configuration)
   {
     v47 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, a2, a1, @"CMCalorieUtils.mm", 139, @"Invalid parameter not satisfying: %@", @"workoutConfiguration");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, a2, self, @"CMCalorieUtils.mm", 139, @"Invalid parameter not satisfying: %@", @"workoutConfiguration");
   }
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
-    if (a7)
+    if (ptr)
     {
-      *a7 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], a2, @"CMErrorDomain", 107, 0);
+      *ptr = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], a2, @"CMErrorDomain", 107, 0);
     }
 
     if (qword_1ED71C830 != -1)
@@ -303,7 +303,7 @@ LABEL_29:
     if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *&buf[4] = a4;
+      *&buf[4] = duration;
       _os_log_impl(&dword_19B41C000, v17, OS_LOG_TYPE_ERROR, "Workout calorie lookup, duration must be strictly positive, %f", buf, 0xCu);
     }
 
@@ -320,18 +320,18 @@ LABEL_29:
     }
 
     LODWORD(v50) = 134217984;
-    *(&v50 + 4) = a4;
+    *(&v50 + 4) = duration;
     goto LABEL_43;
   }
 
-  if (a5)
+  if (distance)
   {
-    objc_msgSend_floatValue(a5, a2, a3);
+    objc_msgSend_floatValue(distance, a2, configuration);
     if (v14 < 0.0)
     {
-      if (a7)
+      if (ptr)
       {
-        *a7 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 107, 0);
+        *ptr = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 107, 0);
       }
 
       if (qword_1ED71C830 != -1)
@@ -374,7 +374,7 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    objc_msgSend_floatValue(a5, v12, v13);
+    objc_msgSend_floatValue(distance, v12, v13);
     v19 = v20;
   }
 
@@ -387,10 +387,10 @@ LABEL_45:
   v51 = unk_19B7BDCB4;
   v52[0] = xmmword_19B7BDCC4;
   *(v52 + 12) = *(&xmmword_19B7BDCC4 + 12);
-  if (a6)
+  if (info)
   {
-    objc_msgSend_CLBodyMetricsFromCMCalorieUserInfo_errorPtr_(CMCalorieUtils, a2, a6, a7);
-    if (*a7)
+    objc_msgSend_CLBodyMetricsFromCMCalorieUserInfo_errorPtr_(CMCalorieUtils, a2, info, ptr);
+    if (*ptr)
     {
       if (qword_1ED71C830 != -1)
       {
@@ -401,7 +401,7 @@ LABEL_45:
       if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = a6;
+        *&buf[4] = info;
         _os_log_impl(&dword_19B41C000, v21, OS_LOG_TYPE_ERROR, "Workout calorie lookup, invalid userInfo, %@", buf, 0xCu);
       }
 
@@ -421,13 +421,13 @@ LABEL_45:
     }
   }
 
-  v27 = v19 / a4;
+  v27 = v19 / duration;
   v28 = sub_19B73FF78(&v50, 0);
   *buf = v50;
   *&buf[16] = v51;
   v54[0] = v52[0];
   *(v54 + 12) = *(v52 + 12);
-  sub_19B71A7B4(a3, buf, v29, v27);
+  sub_19B71A7B4(configuration, buf, v29, v27);
   if (v28 >= v30)
   {
     v31 = v28;
@@ -438,13 +438,13 @@ LABEL_45:
     v31 = v30;
   }
 
-  v32 = (v28 * *(&v50 + 3)) * a4 / 3600.0;
+  v32 = (v28 * *(&v50 + 3)) * duration / 3600.0;
   v33 = v32;
-  v34 = (v31 * *(&v50 + 3)) * a4 / 3600.0;
+  v34 = (v31 * *(&v50 + 3)) * duration / 3600.0;
   v35 = v34;
   v36 = [CMCalorieData alloc];
-  v39 = objc_msgSend_workoutType(a3, v37, v38);
-  v24 = objc_msgSend_initWithWorkoutType_duration_mets_basalMets_totalCalories_basalCalories_(v36, v40, v39, a4, v31, v28, v35, v33);
+  v39 = objc_msgSend_workoutType(configuration, v37, v38);
+  v24 = objc_msgSend_initWithWorkoutType_duration_mets_basalMets_totalCalories_basalCalories_(v36, v40, v39, duration, v31, v28, v35, v33);
   if (qword_1ED71C830 != -1)
   {
     dispatch_once(&qword_1ED71C830, &unk_1F0E2A6C0);
@@ -453,13 +453,13 @@ LABEL_45:
   v41 = off_1ED71C838;
   if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = *a7;
+    v42 = *ptr;
     *buf = 138413058;
     *&buf[4] = v24;
     *&buf[12] = 2112;
-    *&buf[14] = a3;
+    *&buf[14] = configuration;
     *&buf[22] = 2112;
-    *&buf[24] = a6;
+    *&buf[24] = info;
     LOWORD(v54[0]) = 2112;
     *(v54 + 2) = v42;
     _os_log_impl(&dword_19B41C000, v41, OS_LOG_TYPE_DEFAULT, "Workout calorie lookup, %@, %@, %@, %@", buf, 0x2Au);
@@ -474,7 +474,7 @@ LABEL_45:
       dispatch_once(&qword_1ED71C830, &unk_1F0E2A6C0);
     }
 
-    v49 = *a7;
+    v49 = *ptr;
     v44 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "+[CMCalorieUtils lookupCalorieDataForWorkoutConfiguration:duration:distance:userInfo:errorPtr:]", "CoreLocation: %s\n", v44);
     if (v44 != buf)

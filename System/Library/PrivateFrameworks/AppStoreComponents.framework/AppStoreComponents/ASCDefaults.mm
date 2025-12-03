@@ -1,11 +1,11 @@
 @interface ASCDefaults
 + (ASCDefaults)daemonDefaults;
-- (ASCDefaults)initWithBundleID:(id)a3;
+- (ASCDefaults)initWithBundleID:(id)d;
 - (BOOL)disableShutdownTimer;
 - (BOOL)enableWebInspector;
 - (BOOL)forceRightToLeftLayout;
 - (BOOL)forceStandaloneWatch;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)preferInternalJS;
 - (NSNumber)overlaysLoadTimeout;
 - (NSNumber)overlaysRateLimitRequestsPerSecond;
@@ -14,16 +14,16 @@
 - (NSString)jsVersion;
 - (NSString)storefrontLocaleID;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDisableShutdownTimer:(BOOL)a3;
-- (void)setEnableWebInspector:(BOOL)a3;
-- (void)setForceRightToLeftLayout:(BOOL)a3;
-- (void)setForceStandaloneWatch:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setPreferInternalJS:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDisableShutdownTimer:(BOOL)timer;
+- (void)setEnableWebInspector:(BOOL)inspector;
+- (void)setForceRightToLeftLayout:(BOOL)layout;
+- (void)setForceStandaloneWatch:(BOOL)watch;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setPreferInternalJS:(BOOL)s;
 @end
 
 @implementation ASCDefaults
@@ -47,15 +47,15 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCDefaults)initWithBundleID:(id)a3
+- (ASCDefaults)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = ASCDefaults;
   v5 = [(ASCDefaults *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
@@ -88,57 +88,57 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   [(ASCDefaults *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (ASCDefaultsKVOContext == a6)
+  if (ASCDefaultsKVOContext == context)
   {
     v11 = *MEMORY[0x277CCA2F0];
-    v12 = a3;
-    v15 = [a5 objectForKeyedSubscript:v11];
+    pathCopy = path;
+    v15 = [change objectForKeyedSubscript:v11];
     v13 = [[ASCCacheValue alloc] initWithValue:v15];
-    v14 = [(ASCDefaults *)self cachedValues];
-    [v14 setObject:v13 forKey:v12];
+    cachedValues = [(ASCDefaults *)self cachedValues];
+    [cachedValues setObject:v13 forKey:pathCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = ASCDefaults;
-    v10 = a3;
-    [(ASCDefaults *)&v16 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    pathCopy2 = path;
+    [(ASCDefaults *)&v16 observeValueForKeyPath:pathCopy2 ofObject:object change:change context:context];
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCDefaults *)self bundleID];
-  CFPreferencesSetAppValue(v6, v7, v8);
+  keyCopy = key;
+  objectCopy = object;
+  bundleID = [(ASCDefaults *)self bundleID];
+  CFPreferencesSetAppValue(keyCopy, objectCopy, bundleID);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASCDefaults *)self cachedValues];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  cachedValues = [(ASCDefaults *)self cachedValues];
+  v6 = [cachedValues objectForKey:keyCopy];
 
   if (v6)
   {
-    v7 = [v6 value];
+    value = [v6 value];
   }
 
   else
   {
-    v8 = [(ASCDefaults *)self bundleID];
-    v7 = CFPreferencesCopyAppValue(v4, v8);
+    bundleID = [(ASCDefaults *)self bundleID];
+    value = CFPreferencesCopyAppValue(keyCopy, bundleID);
 
-    v9 = [[ASCCacheValue alloc] initWithValue:v7];
-    v10 = [(ASCDefaults *)self cachedValues];
-    [v10 setObject:v9 forKey:v4];
+    v9 = [[ASCCacheValue alloc] initWithValue:value];
+    cachedValues2 = [(ASCDefaults *)self cachedValues];
+    [cachedValues2 setObject:v9 forKey:keyCopy];
   }
 
-  return v7;
+  return value;
 }
 
 - (NSString)storefrontLocaleID
@@ -191,14 +191,14 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   }
 
   v5 = v4;
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setForceRightToLeftLayout:(BOOL)a3
+- (void)setForceRightToLeftLayout:(BOOL)layout
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:layout];
   [(ASCDefaults *)self setObject:v4 forKey:@"ASCForceRightToLeftLayout"];
 }
 
@@ -225,14 +225,14 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   }
 
   v5 = v4;
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setDisableShutdownTimer:(BOOL)a3
+- (void)setDisableShutdownTimer:(BOOL)timer
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:timer];
   [(ASCDefaults *)self setObject:v4 forKey:@"ASCDisableShutdownTimer"];
 }
 
@@ -340,14 +340,14 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   }
 
   v5 = v4;
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setEnableWebInspector:(BOOL)a3
+- (void)setEnableWebInspector:(BOOL)inspector
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:inspector];
   [(ASCDefaults *)self setObject:v4 forKey:@"ASCEnableWebInspector"];
 }
 
@@ -374,14 +374,14 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   }
 
   v5 = v4;
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setForceStandaloneWatch:(BOOL)a3
+- (void)setForceStandaloneWatch:(BOOL)watch
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:watch];
   [(ASCDefaults *)self setObject:v4 forKey:@"ASCForceStandaloneWatch"];
 }
 
@@ -435,14 +435,14 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
   }
 
   v5 = v4;
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setPreferInternalJS:(BOOL)a3
+- (void)setPreferInternalJS:(BOOL)s
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:s];
   [(ASCDefaults *)self setObject:v4 forKey:@"ASCPreferInternalJS"];
 }
 
@@ -476,18 +476,18 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCDefaults *)self bundleID];
-  [(ASCHasher *)v3 combineObject:v4];
+  bundleID = [(ASCDefaults *)self bundleID];
+  [(ASCHasher *)v3 combineObject:bundleID];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -510,17 +510,17 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
 
   if (v7)
   {
-    v8 = [(ASCDefaults *)self bundleID];
-    v9 = [v7 bundleID];
-    v10 = v9;
-    if (v8 && v9)
+    bundleID = [(ASCDefaults *)self bundleID];
+    bundleID2 = [v7 bundleID];
+    v10 = bundleID2;
+    if (bundleID && bundleID2)
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [bundleID isEqual:bundleID2];
     }
 
     else
     {
-      v11 = v8 == v9;
+      v11 = bundleID == bundleID2;
     }
   }
 
@@ -535,12 +535,12 @@ uint64_t __29__ASCDefaults_daemonDefaults__block_invoke()
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCDefaults *)self bundleID];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"bundleID"];
+  bundleID = [(ASCDefaults *)self bundleID];
+  [(ASCDescriber *)v3 addObject:bundleID withName:@"bundleID"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

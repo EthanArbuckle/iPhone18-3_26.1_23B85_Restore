@@ -1,23 +1,23 @@
 @interface PGPlaceZeroKeywordGenerator
 - (PGPlaceZeroKeywordGenerator)init;
-- (PGPlaceZeroKeywordGenerator)initWithGraph:(id)a3 photoLibrary:(id)a4 searchComputationCache:(id)a5 options:(id)a6;
+- (PGPlaceZeroKeywordGenerator)initWithGraph:(id)graph photoLibrary:(id)library searchComputationCache:(id)cache options:(id)options;
 - (id)generatePlaceZeroKeywords;
 @end
 
 @implementation PGPlaceZeroKeywordGenerator
 
-- (PGPlaceZeroKeywordGenerator)initWithGraph:(id)a3 photoLibrary:(id)a4 searchComputationCache:(id)a5 options:(id)a6
+- (PGPlaceZeroKeywordGenerator)initWithGraph:(id)graph photoLibrary:(id)library searchComputationCache:(id)cache options:(id)options
 {
   v9 = sub_22F740CA0();
-  v10 = a3;
-  v11 = sub_22F3CF06C(v10, a4, a5, v9);
+  graphCopy = graph;
+  v11 = sub_22F3CF06C(graphCopy, library, cache, v9);
 
   return v11;
 }
 
 - (id)generatePlaceZeroKeywords
 {
-  v2 = self;
+  selfCopy = self;
   sub_22F3C5AF0();
 
   type metadata accessor for PlaceZeroKeyword();

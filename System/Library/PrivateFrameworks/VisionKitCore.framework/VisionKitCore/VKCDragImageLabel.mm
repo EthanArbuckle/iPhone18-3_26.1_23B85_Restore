@@ -1,17 +1,17 @@
 @interface VKCDragImageLabel
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)customEdgeInsets;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation VKCDragImageLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKCDragImageLabel *)self customEdgeInsets];
   v12.receiver = self;
   v12.super_class = VKCDragImageLabel;

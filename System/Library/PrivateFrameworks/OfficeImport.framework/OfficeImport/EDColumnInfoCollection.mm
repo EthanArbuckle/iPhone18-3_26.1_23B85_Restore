@@ -1,29 +1,29 @@
 @interface EDColumnInfoCollection
-- (EDColumnInfoCollection)initWithResources:(id)a3 worksheet:(id)a4;
-- (id)columnInfoCreateIfNilForColumnNumber:(int)a3;
-- (id)columnInfoForColumnNumber:(int)a3;
+- (EDColumnInfoCollection)initWithResources:(id)resources worksheet:(id)worksheet;
+- (id)columnInfoCreateIfNilForColumnNumber:(int)number;
+- (id)columnInfoForColumnNumber:(int)number;
 @end
 
 @implementation EDColumnInfoCollection
 
-- (EDColumnInfoCollection)initWithResources:(id)a3 worksheet:(id)a4
+- (EDColumnInfoCollection)initWithResources:(id)resources worksheet:(id)worksheet
 {
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  worksheetCopy = worksheet;
   v11.receiver = self;
   v11.super_class = EDColumnInfoCollection;
   v8 = [(EDCollection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->mWorksheet, v7);
-    objc_storeWeak(&v9->mResources, v6);
+    objc_storeWeak(&v8->mWorksheet, worksheetCopy);
+    objc_storeWeak(&v9->mResources, resourcesCopy);
   }
 
   return v9;
 }
 
-- (id)columnInfoForColumnNumber:(int)a3
+- (id)columnInfoForColumnNumber:(int)number
 {
   v5 = [(EDCollection *)self count];
   if (!v5)
@@ -38,19 +38,19 @@ LABEL_7:
   while (1)
   {
     v8 = [(EDCollection *)self objectAtIndex:v7];
-    v9 = [v8 range];
-    v10 = v9;
-    if (!v9)
+    range = [v8 range];
+    v10 = range;
+    if (!range)
     {
       goto LABEL_6;
     }
 
-    if ([v9 firstColumn] > a3)
+    if ([range firstColumn] > number)
     {
       break;
     }
 
-    if ([v10 lastColumn] >= a3)
+    if ([v10 lastColumn] >= number)
     {
       goto LABEL_9;
     }
@@ -72,26 +72,26 @@ LABEL_10:
   return v8;
 }
 
-- (id)columnInfoCreateIfNilForColumnNumber:(int)a3
+- (id)columnInfoCreateIfNilForColumnNumber:(int)number
 {
-  v3 = *&a3;
+  v3 = *&number;
   v5 = [(EDColumnInfoCollection *)self columnInfoForColumnNumber:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 range];
-    v8 = [v7 firstColumn];
-    v9 = [v7 lastColumn];
-    v10 = v9;
-    if (v8 != v3 || v9 != v3)
+    range = [v5 range];
+    firstColumn = [range firstColumn];
+    lastColumn = [range lastColumn];
+    v10 = lastColumn;
+    if (firstColumn != v3 || lastColumn != v3)
     {
       v11 = [EDReference referenceWithFirstRow:0xFFFFFFFFLL lastRow:0xFFFFFFFFLL firstColumn:v3 lastColumn:v3];
       [v6 setRange:v11];
 
-      if (v8 < v3)
+      if (firstColumn < v3)
       {
         v12 = [v6 copy];
-        v13 = [EDReference referenceWithFirstRow:0xFFFFFFFFLL lastRow:0xFFFFFFFFLL firstColumn:v8 lastColumn:(v3 - 1)];
+        v13 = [EDReference referenceWithFirstRow:0xFFFFFFFFLL lastRow:0xFFFFFFFFLL firstColumn:firstColumn lastColumn:(v3 - 1)];
         [v12 setRange:v13];
 
         [(EDSortedCollection *)self addObject:v12];

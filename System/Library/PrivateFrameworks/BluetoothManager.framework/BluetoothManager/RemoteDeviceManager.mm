@@ -1,8 +1,8 @@
 @interface RemoteDeviceManager
 - (RemoteDeviceManager)init;
 - (void)dealloc;
-- (void)disconnectDevice:(id)a3;
-- (void)sendMessage:(const char *)a3 args:(id)a4;
+- (void)disconnectDevice:(id)device;
+- (void)sendMessage:(const char *)message args:(id)args;
 @end
 
 @implementation RemoteDeviceManager
@@ -31,22 +31,22 @@
   [(RemoteDeviceManager *)&v3 dealloc];
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v5, "kDeviceAddress", [objc_msgSend(a3 "address")]);
+  xpc_dictionary_set_string(v5, "kDeviceAddress", [objc_msgSend(device "address")]);
   [(RemoteDeviceManager *)self sendMessage:"DisconnectClassicDevice" args:v5];
 
   xpc_release(v5);
 }
 
-- (void)sendMessage:(const char *)a3 args:(id)a4
+- (void)sendMessage:(const char *)message args:(id)args
 {
   v7 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v7, "kMsgId", a3);
-  if (a4)
+  xpc_dictionary_set_string(v7, "kMsgId", message);
+  if (args)
   {
-    xpc_dictionary_set_value(v7, "kMsgArgs", a4);
+    xpc_dictionary_set_value(v7, "kMsgArgs", args);
   }
 
   xpc_connection_send_message(self->_connection, v7);

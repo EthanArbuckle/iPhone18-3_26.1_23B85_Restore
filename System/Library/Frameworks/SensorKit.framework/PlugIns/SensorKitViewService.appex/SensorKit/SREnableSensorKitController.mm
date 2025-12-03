@@ -2,8 +2,8 @@
 + (void)initialize;
 - (void)cancelPrompt;
 - (void)dealloc;
-- (void)openSettings:(id)a3;
-- (void)postFollowUpWithCompletionHandler:(id)a3;
+- (void)openSettings:(id)settings;
+- (void)postFollowUpWithCompletionHandler:(id)handler;
 - (void)prerequesiteNotificationReceived;
 - (void)registerForPrerequisitesUpdated;
 - (void)unregisterForPrerequisitesUpdated;
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F28 = os_log_create("com.apple.SensorKit", "SREnableSensorKitController");
   }
@@ -44,7 +44,7 @@
   [(SREnableSensorKitController *)self postFollowUpWithCompletionHandler:v3];
 }
 
-- (void)postFollowUpWithCompletionHandler:(id)a3
+- (void)postFollowUpWithCompletionHandler:(id)handler
 {
   v5 = objc_alloc_init(FLFollowUpItem);
   [v5 setUniqueIdentifier:SRFollowUpEnableSKIdentifier];
@@ -53,13 +53,13 @@
   [v5 setTitle:{+[NSString srui_localizedStringForCode:](NSString, "srui_localizedStringForCode:", 68)}];
   [v5 setInformativeText:{+[NSString srui_localizedStringForCode:](NSString, "srui_localizedStringForCode:", 69)}];
   v13 = @"bundlePath";
-  v14 = [(NSBundle *)[(SREnableSensorKitController *)self appBundle] bundlePath];
-  [v5 setUserInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}];
+  bundlePath = [(NSBundle *)[(SREnableSensorKitController *)self appBundle] bundlePath];
+  [v5 setUserInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &bundlePath, &v13, 1)}];
   v6 = qword_100015F28;
   if (os_log_type_enabled(qword_100015F28, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = [(NSBundle *)[(SREnableSensorKitController *)self appBundle] bundlePath];
+    bundlePath2 = [(NSBundle *)[(SREnableSensorKitController *)self appBundle] bundlePath];
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Posting follow up for bundle path %{public}@", buf, 0xCu);
   }
 
@@ -70,11 +70,11 @@
   v7[2] = sub_100003388;
   v7[3] = &unk_100010480;
   v8 = objc_alloc_init(SRFollowUp);
-  v9 = a3;
+  handlerCopy = handler;
   [v8 postFollowUpItem:v5 completion:v7];
 }
 
-- (void)openSettings:(id)a3
+- (void)openSettings:(id)settings
 {
   [(SREnableSensorKitController *)self registerForPrerequisitesUpdated];
   v5 = 0;
@@ -94,10 +94,10 @@
 
 - (void)cancelPrompt
 {
-  v2 = [(SREnableSensorKitController *)self delegate];
-  [(SRAuthorizationTableDelegate *)v2 authorizationTable:0 foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
+  delegate = [(SREnableSensorKitController *)self delegate];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTable:0 foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
 
-  [(SRAuthorizationTableDelegate *)v2 authorizationTableCompletedPromptSuccessfully:0];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTableCompletedPromptSuccessfully:0];
 }
 
 - (void)registerForPrerequisitesUpdated
@@ -111,13 +111,13 @@
 
   objc_initWeak(&location, self);
   self->_registrationToken = -1;
-  v4 = [SRNotificationPreqUpdated UTF8String];
+  uTF8String = [SRNotificationPreqUpdated UTF8String];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000037EC;
   v8[3] = &unk_1000104A8;
   objc_copyWeak(&v9, &location);
-  v5 = notify_register_dispatch(v4, &self->_registrationToken, &_dispatch_main_q, v8);
+  v5 = notify_register_dispatch(uTF8String, &self->_registrationToken, &_dispatch_main_q, v8);
   if (v5 || self->_registrationToken == -1)
   {
     v6 = qword_100015F28;
@@ -138,18 +138,18 @@
 
 - (void)prerequesiteNotificationReceived
 {
-  v3 = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient dataCollectionEnabled];
+  dataCollectionEnabled = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient dataCollectionEnabled];
   skEnabled = self->_skEnabled;
-  self->_skEnabled = v3;
+  self->_skEnabled = dataCollectionEnabled;
   v5 = qword_100015F28;
   if (os_log_type_enabled(qword_100015F28, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67240192;
-    v7[1] = v3;
+    v7[1] = dataCollectionEnabled;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Got prerequisite notification. Data Collection Enabled: %{public, BOOL}d", v7, 8u);
   }
 
-  if (v3)
+  if (dataCollectionEnabled)
   {
     [(SREnableSensorKitController *)self unregisterForPrerequisitesUpdated];
     if (self->_skEnabled != skEnabled)

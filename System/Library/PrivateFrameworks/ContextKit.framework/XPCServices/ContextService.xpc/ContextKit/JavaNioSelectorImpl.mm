@@ -2,10 +2,10 @@
 - (id)checkClosed;
 - (id)ensurePollFdsCapacity;
 - (id)keys;
-- (id)register__WithJavaNioChannelsSpiAbstractSelectableChannel:(id)a3 withInt:(int)a4 withId:(id)a5;
+- (id)register__WithJavaNioChannelsSpiAbstractSelectableChannel:(id)channel withInt:(int)int withId:(id)id;
 - (id)selectedKeys;
 - (id)wakeup;
-- (int)selectWithLong:(int64_t)a3;
+- (int)selectWithLong:(int64_t)long;
 - (uint64_t)doCancel;
 - (void)dealloc;
 - (void)implCloseSelector;
@@ -70,14 +70,14 @@
 
 - (uint64_t)doCancel
 {
-  v2 = [a1 cancelledKeys];
-  objc_sync_enter(v2);
-  if (!v2)
+  cancelledKeys = [self cancelledKeys];
+  objc_sync_enter(cancelledKeys);
+  if (!cancelledKeys)
   {
     JreThrowNullPointerException();
   }
 
-  if ([v2 size] < 1)
+  if ([cancelledKeys size] < 1)
   {
     v3 = 0;
   }
@@ -89,7 +89,7 @@
     v11 = 0u;
     v12 = 0u;
     v3 = 0;
-    v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [cancelledKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = *v12;
@@ -99,10 +99,10 @@
         {
           if (*v12 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(cancelledKeys);
           }
 
-          v7 = a1[6];
+          v7 = self[6];
           if (!v7)
           {
             goto LABEL_17;
@@ -116,8 +116,8 @@
             JreThrowClassCastException();
           }
 
-          [a1 deregisterWithJavaNioChannelsSpiAbstractSelectionKey:v8];
-          v9 = a1[8];
+          [self deregisterWithJavaNioChannelsSpiAbstractSelectionKey:v8];
+          v9 = self[8];
           if (!v9)
           {
 LABEL_17:
@@ -127,28 +127,28 @@ LABEL_17:
           v3 = v3 + [v9 removeWithId:v8];
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [cancelledKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v4);
     }
 
-    [v2 clear];
+    [cancelledKeys clear];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(cancelledKeys);
   return v3;
 }
 
-- (id)register__WithJavaNioChannelsSpiAbstractSelectableChannel:(id)a3 withInt:(int)a4 withId:(id)a5
+- (id)register__WithJavaNioChannelsSpiAbstractSelectableChannel:(id)channel withInt:(int)int withId:(id)id
 {
-  v9 = [(JavaNioChannelsSpiAbstractSelector *)self provider];
-  if (!v9 || !a3)
+  provider = [(JavaNioChannelsSpiAbstractSelector *)self provider];
+  if (!provider || !channel)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v9 isEqual:{objc_msgSend(a3, "provider")}] & 1) == 0)
+  if (([provider isEqual:{objc_msgSend(channel, "provider")}] & 1) == 0)
   {
     v14 = new_JavaNioChannelsIllegalSelectorException_init();
     objc_exception_throw(v14);
@@ -157,7 +157,7 @@ LABEL_17:
   objc_sync_enter(self);
   unmodifiableKeys = self->unmodifiableKeys_;
   objc_sync_enter(unmodifiableKeys);
-  v11 = new_JavaNioSelectionKeyImpl_initWithJavaNioChannelsSpiAbstractSelectableChannel_withInt_withId_withJavaNioSelectorImpl_(a3, a4, a5, self);
+  v11 = new_JavaNioSelectionKeyImpl_initWithJavaNioChannelsSpiAbstractSelectableChannel_withInt_withId_withJavaNioSelectorImpl_(channel, int, id, self);
   mutableKeys = self->mutableKeys_;
   if (!mutableKeys)
   {
@@ -173,7 +173,7 @@ LABEL_17:
 
 - (id)ensurePollFdsCapacity
 {
-  v2 = *(a1 + 96);
+  v2 = *(self + 96);
   if (!v2)
   {
 LABEL_5:
@@ -183,7 +183,7 @@ LABEL_5:
   while (1)
   {
     v3 = [v2 size];
-    v4 = *(a1 + 48);
+    v4 = *(self + 48);
     if (!v4)
     {
       goto LABEL_5;
@@ -195,8 +195,8 @@ LABEL_5:
       return result;
     }
 
-    [*(a1 + 96) addWithId:new_LibcoreIoStructPollfd_init()];
-    v2 = *(a1 + 96);
+    [*(self + 96) addWithId:new_LibcoreIoStructPollfd_init()];
+    v2 = *(self + 96);
     if (!v2)
     {
       goto LABEL_5;
@@ -215,7 +215,7 @@ LABEL_5:
 
 - (id)checkClosed
 {
-  result = [a1 isOpen];
+  result = [self isOpen];
   if ((result & 1) == 0)
   {
     v2 = new_JavaNioChannelsClosedSelectorException_init();
@@ -225,26 +225,26 @@ LABEL_5:
   return result;
 }
 
-- (int)selectWithLong:(int64_t)a3
+- (int)selectWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
-    v11 = JreStrcat("$J", a2, a3, v3, v4, v5, v6, v7, @"timeout < 0: ");
+    v11 = JreStrcat("$J", a2, long, v3, v4, v5, v6, v7, @"timeout < 0: ");
     v12 = new_JavaLangIllegalArgumentException_initWithNSString_(v11);
     objc_exception_throw(v12);
   }
 
-  if (a3)
+  if (long)
   {
-    v9 = a3;
+    longCopy = long;
   }
 
   else
   {
-    v9 = -1;
+    longCopy = -1;
   }
 
-  return sub_1001A84E8(self, v9);
+  return sub_1001A84E8(self, longCopy);
 }
 
 - (id)selectedKeys

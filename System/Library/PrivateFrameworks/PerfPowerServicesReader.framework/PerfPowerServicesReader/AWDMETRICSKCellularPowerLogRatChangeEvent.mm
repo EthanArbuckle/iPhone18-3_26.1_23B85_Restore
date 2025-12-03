@@ -1,17 +1,17 @@
 @interface AWDMETRICSKCellularPowerLogRatChangeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEvent:(id)a3;
+- (int)StringAsEvent:(id)event;
 - (int)event;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEvent:(BOOL)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEvent:(BOOL)event;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogRatChangeEvent
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasEvent:(BOOL)a3
+- (void)setHasEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 2;
   }
@@ -44,185 +44,185 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEvent:(id)a3
+- (int)StringAsEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"START_2G_TO_2G"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"START_2G_TO_2G"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"START_2G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"START_2G_TO_3G"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"START_2G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"START_2G_TO_LTE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"START_3G_TO_2G"])
+  else if ([eventCopy isEqualToString:@"START_3G_TO_2G"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"START_3G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"START_3G_TO_3G"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"START_3G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"START_3G_TO_LTE"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"START_LTE_TO_2G"])
+  else if ([eventCopy isEqualToString:@"START_LTE_TO_2G"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"START_LTE_TO_3G"])
+  else if ([eventCopy isEqualToString:@"START_LTE_TO_3G"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"START_LTE_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"START_LTE_TO_LTE"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"START_LTE_TO_NR"])
+  else if ([eventCopy isEqualToString:@"START_LTE_TO_NR"])
   {
     v4 = 76;
   }
 
-  else if ([v3 isEqualToString:@"START_NR_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"START_NR_TO_LTE"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"START_NR_TO_NR"])
+  else if ([eventCopy isEqualToString:@"START_NR_TO_NR"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_2G_TO_2G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_2G_TO_2G"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_2G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_2G_TO_3G"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_2G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_2G_TO_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_3G_TO_2G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_3G_TO_2G"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_3G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_3G_TO_3G"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_3G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_3G_TO_LTE"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_LTE_TO_2G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_LTE_TO_2G"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_LTE_TO_3G"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_LTE_TO_3G"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_LTE_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_LTE_TO_LTE"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_LTE_TO_NR"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_LTE_TO_NR"])
   {
     v4 = 77;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_NR_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_NR_TO_LTE"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS_NR_TO_NR"])
+  else if ([eventCopy isEqualToString:@"SUCCESS_NR_TO_NR"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_2G_TO_2G"])
+  else if ([eventCopy isEqualToString:@"FAIL_2G_TO_2G"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_2G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"FAIL_2G_TO_3G"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_2G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"FAIL_2G_TO_LTE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_3G_TO_2G"])
+  else if ([eventCopy isEqualToString:@"FAIL_3G_TO_2G"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_3G_TO_3G"])
+  else if ([eventCopy isEqualToString:@"FAIL_3G_TO_3G"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_3G_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"FAIL_3G_TO_LTE"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_LTE_TO_2G"])
+  else if ([eventCopy isEqualToString:@"FAIL_LTE_TO_2G"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_LTE_TO_3G"])
+  else if ([eventCopy isEqualToString:@"FAIL_LTE_TO_3G"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_LTE_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"FAIL_LTE_TO_LTE"])
   {
     v4 = 74;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_LTE_TO_NR"])
+  else if ([eventCopy isEqualToString:@"FAIL_LTE_TO_NR"])
   {
     v4 = 78;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_NR_TO_LTE"])
+  else if ([eventCopy isEqualToString:@"FAIL_NR_TO_LTE"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"FAIL_NR_TO_NR"])
+  else if ([eventCopy isEqualToString:@"FAIL_NR_TO_NR"])
   {
     v4 = 110;
   }
@@ -235,9 +235,9 @@
   return v4;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -250,9 +250,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 8;
   }
@@ -271,20 +271,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogRatChangeEvent;
   v4 = [(AWDMETRICSKCellularPowerLogRatChangeEvent *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogRatChangeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogRatChangeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -499,7 +499,7 @@ LABEL_70:
   }
 
 LABEL_71:
-  [v3 setObject:v9 forKey:@"event"];
+  [dictionary setObject:v9 forKey:@"event"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -515,23 +515,23 @@ LABEL_4:
 
 LABEL_72:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v11 forKey:@"subs_id"];
+  [dictionary setObject:v11 forKey:@"subs_id"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-    [v3 setObject:v5 forKey:@"is_data_preferred"];
+    [dictionary setObject:v5 forKey:@"is_data_preferred"];
   }
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -582,14 +582,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -608,8 +608,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_event;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 4) = self->_event;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -623,21 +623,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v4 + 5) = self->_subsId;
-  *(v4 + 28) |= 4u;
+  *(toCopy + 5) = self->_subsId;
+  *(toCopy + 28) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 24) = self->_isDataPreferred;
-    *(v4 + 28) |= 8u;
+    *(toCopy + 24) = self->_isDataPreferred;
+    *(toCopy + 28) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -689,57 +689,57 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_event != *(v4 + 4))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_event != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_subsId != *(v4 + 5))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_subsId != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_19;
   }
 
-  v5 = (*(v4 + 28) & 8) == 0;
+  v5 = (*(equalCopy + 28) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0)
+    if ((*(equalCopy + 28) & 8) == 0)
     {
 LABEL_19:
       v5 = 0;
@@ -748,13 +748,13 @@ LABEL_19:
 
     if (self->_isDataPreferred)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_19;
     }
@@ -821,15 +821,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -842,14 +842,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_event = *(v4 + 4);
+  self->_event = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -862,12 +862,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_subsId = *(v4 + 5);
+  self->_subsId = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 28) & 8) != 0)
+  if ((*(fromCopy + 28) & 8) != 0)
   {
 LABEL_5:
-    self->_isDataPreferred = *(v4 + 24);
+    self->_isDataPreferred = *(fromCopy + 24);
     *&self->_has |= 8u;
   }
 

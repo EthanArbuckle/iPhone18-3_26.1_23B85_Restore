@@ -1,24 +1,24 @@
 @interface WBSOnDeviceModelEndpointInfo
-- (WBSOnDeviceModelEndpointInfo)initWithEndpointURL:(id)a3 sizeInBytes:(unint64_t)a4 checksumString:(id)a5;
+- (WBSOnDeviceModelEndpointInfo)initWithEndpointURL:(id)l sizeInBytes:(unint64_t)bytes checksumString:(id)string;
 @end
 
 @implementation WBSOnDeviceModelEndpointInfo
 
-- (WBSOnDeviceModelEndpointInfo)initWithEndpointURL:(id)a3 sizeInBytes:(unint64_t)a4 checksumString:(id)a5
+- (WBSOnDeviceModelEndpointInfo)initWithEndpointURL:(id)l sizeInBytes:(unint64_t)bytes checksumString:(id)string
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = WBSOnDeviceModelEndpointInfo;
   v10 = [(WBSOnDeviceModelEndpointInfo *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [lCopy copy];
     endpointURL = v10->_endpointURL;
     v10->_endpointURL = v11;
 
-    v10->_sizeInBytes = a4;
-    v13 = [v9 copy];
+    v10->_sizeInBytes = bytes;
+    v13 = [stringCopy copy];
     checksumString = v10->_checksumString;
     v10->_checksumString = v13;
 

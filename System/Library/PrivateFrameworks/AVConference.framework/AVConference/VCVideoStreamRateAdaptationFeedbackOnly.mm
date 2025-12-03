@@ -1,34 +1,34 @@
 @interface VCVideoStreamRateAdaptationFeedbackOnly
-- (VCVideoStreamRateAdaptationFeedbackOnly)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)a3;
+- (VCVideoStreamRateAdaptationFeedbackOnly)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)param;
 - (double)owrd;
 - (void)dealloc;
 - (void)sendRateControlFeedback;
-- (void)setEnableRateAdaptation:(BOOL)a3 maxBitrate:(unsigned int)a4 minBitrate:(unsigned int)a5 adaptationInterval:(double)a6;
+- (void)setEnableRateAdaptation:(BOOL)adaptation maxBitrate:(unsigned int)bitrate minBitrate:(unsigned int)minBitrate adaptationInterval:(double)interval;
 - (void)startFeedbackSource;
 - (void)stopFeedbackSource;
-- (void)updateRTPReceiveWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5 size:(unsigned int)a6 endOfFrame:(BOOL)a7;
-- (void)updateRateControlInfoWithStatisticsMessage:(tagVCStatisticsMessage *)a3;
+- (void)updateRTPReceiveWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time size:(unsigned int)size endOfFrame:(BOOL)frame;
+- (void)updateRateControlInfoWithStatisticsMessage:(tagVCStatisticsMessage *)message;
 @end
 
 @implementation VCVideoStreamRateAdaptationFeedbackOnly
 
-- (VCVideoStreamRateAdaptationFeedbackOnly)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)a3
+- (VCVideoStreamRateAdaptationFeedbackOnly)initWithMediaStreamRateAdaptationParam:(const tagVCMediaStreamRateAdaptationParams *)param
 {
   v28 = *MEMORY[0x1E69E9840];
-  var8 = a3->var8;
+  var8 = param->var8;
   v17.receiver = self;
   v17.super_class = VCVideoStreamRateAdaptationFeedbackOnly;
-  v5 = [(VCMediaStreamRateAdaptation *)&v17 initWithDelegate:var8 params:a3];
+  v5 = [(VCMediaStreamRateAdaptation *)&v17 initWithDelegate:var8 params:param];
   v6 = v5;
   if (v5)
   {
-    v5->super._rtpHandle = a3->var5;
-    v5->super._reportingAgent = a3->var2;
+    v5->super._rtpHandle = param->var5;
+    v5->super._reportingAgent = param->var2;
     v5->super._reportingModuleID = VCReporting_GetDynamicReportingModuleID();
     reportingInheritModuleSpecificInfoFromParent();
     v6->_statisticsCollector = [(AVCRateController *)v6->super.super._vcrcRateController statisticsCollector];
     v6->super._rateAdaptationEnabled = 0;
-    v6->_useLowPrecisionEchoTimeStamp = a3->var7;
+    v6->_useLowPrecisionEchoTimeStamp = param->var7;
     [VCDefaults getDoubleValueForKey:@"videoStreamAverageBitrateWindowDuration" defaultValue:1.0];
     v6->super._averageBitrateWindowDuration = v7;
     if (objc_opt_class() == v6)
@@ -147,7 +147,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -163,19 +163,19 @@ LABEL_11:
   [(VCVideoStreamRateAdaptation *)&v11 dealloc];
 }
 
-- (void)setEnableRateAdaptation:(BOOL)a3 maxBitrate:(unsigned int)a4 minBitrate:(unsigned int)a5 adaptationInterval:(double)a6
+- (void)setEnableRateAdaptation:(BOOL)adaptation maxBitrate:(unsigned int)bitrate minBitrate:(unsigned int)minBitrate adaptationInterval:(double)interval
 {
-  if (self->super._rateAdaptationEnabled != a3)
+  if (self->super._rateAdaptationEnabled != adaptation)
   {
-    self->super._rateAdaptationEnabled = a3;
-    if (a3)
+    self->super._rateAdaptationEnabled = adaptation;
+    if (adaptation)
     {
-      [(VCVideoStreamRateAdaptationFeedbackOnly *)self startFeedbackSource:a3];
+      [(VCVideoStreamRateAdaptationFeedbackOnly *)self startFeedbackSource:adaptation];
     }
 
     else
     {
-      [(VCVideoStreamRateAdaptationFeedbackOnly *)self stopFeedbackSource:a3];
+      [(VCVideoStreamRateAdaptationFeedbackOnly *)self stopFeedbackSource:adaptation];
     }
   }
 }
@@ -259,7 +259,7 @@ uint64_t __62__VCVideoStreamRateAdaptationFeedbackOnly_startFeedbackSource__bloc
       v17 = 2112;
       v18 = v3;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v6 = " [%s] %s:%d %@(%p) Stop VCRC rate control feedback";
       v7 = v10;
       v8 = 48;
@@ -282,7 +282,7 @@ LABEL_13:
   OUTLINED_FUNCTION_6_2(&dword_1DB56E000, v1, v2, " [%s] %s:%d Failed to send VCRC rate control feedback %X", v3, v4, v5, v6);
 }
 
-- (void)updateRTPReceiveWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5 size:(unsigned int)a6 endOfFrame:(BOOL)a7
+- (void)updateRTPReceiveWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time size:(unsigned int)size endOfFrame:(BOOL)frame
 {
   v24 = *MEMORY[0x1E69E9840];
   self->_didReceiveVideo = 1;
@@ -290,30 +290,30 @@ LABEL_13:
   previousRTPTimestamp = self->_previousRTPTimestamp;
   if (previousRTPTimestamp)
   {
-    if (a3 != previousRTPTimestamp && a3 - previousRTPTimestamp < 0x7FFFFFFF)
+    if (timestamp != previousRTPTimestamp && timestamp - previousRTPTimestamp < 0x7FFFFFFF)
     {
-      self->_lastTimestamp = a3;
-      self->_lastTimestampReceiveTime = a5;
+      self->_lastTimestamp = timestamp;
+      self->_lastTimestampReceiveTime = time;
       memset(&v23[8], 0, 144);
       totalPacketsReceived = self->_totalPacketsReceived;
       statisticsCollector = self->_statisticsCollector;
       v17 = 7;
-      v18 = a5;
+      timeCopy2 = time;
       *&v19 = 0;
       DWORD2(v19) = 4;
-      HIDWORD(v19) = a3;
-      v20 = a4;
-      v21 = totalPacketsReceived;
-      v22 = 0.0;
-      *v23 = a5;
+      HIDWORD(v19) = timestamp;
+      timestampCopy = rate;
+      sizeCopy = totalPacketsReceived;
+      timeCopy3 = 0.0;
+      *v23 = time;
       VCRateControlSetStatistics(statisticsCollector, &v17);
-      self->_previousRTPTimestamp = a3;
+      self->_previousRTPTimestamp = timestamp;
     }
   }
 
   else
   {
-    self->_previousRTPTimestamp = a3;
+    self->_previousRTPTimestamp = timestamp;
   }
 
   *(&v19 + 5) = 0;
@@ -321,40 +321,40 @@ LABEL_13:
   memset(&v23[4], 0, 148);
   v16 = self->_statisticsCollector;
   v17 = 4;
-  v18 = a5;
+  timeCopy2 = time;
   BYTE13(v19) = 1;
-  HIWORD(v19) = a7;
-  v20 = a3;
-  v21 = a6;
-  v22 = a5;
-  *v23 = a3;
+  HIWORD(v19) = frame;
+  timestampCopy = timestamp;
+  sizeCopy = size;
+  timeCopy3 = time;
+  *v23 = timestamp;
   VCRateControlSetStatistics(v16, &v17);
 }
 
-- (void)updateRateControlInfoWithStatisticsMessage:(tagVCStatisticsMessage *)a3
+- (void)updateRateControlInfoWithStatisticsMessage:(tagVCStatisticsMessage *)message
 {
   v12 = *MEMORY[0x1E69E9840];
   statisticsCollector = self->_statisticsCollector;
   if (statisticsCollector)
   {
-    v4 = *(&a3->var0.addRemoveEndPoint + 19);
-    v10[10] = *(&a3->var0.addRemoveEndPoint + 17);
+    v4 = *(&message->var0.addRemoveEndPoint + 19);
+    v10[10] = *(&message->var0.addRemoveEndPoint + 17);
     v10[11] = v4;
-    v11 = *(&a3->var0.addRemoveEndPoint + 21);
-    v5 = *(&a3->var0.addRemoveEndPoint + 11);
-    v10[6] = *(&a3->var0.addRemoveEndPoint + 9);
+    v11 = *(&message->var0.addRemoveEndPoint + 21);
+    v5 = *(&message->var0.addRemoveEndPoint + 11);
+    v10[6] = *(&message->var0.addRemoveEndPoint + 9);
     v10[7] = v5;
-    v6 = *(&a3->var0.addRemoveEndPoint + 15);
-    v10[8] = *(&a3->var0.addRemoveEndPoint + 13);
+    v6 = *(&message->var0.addRemoveEndPoint + 15);
+    v10[8] = *(&message->var0.addRemoveEndPoint + 13);
     v10[9] = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 3);
-    v10[2] = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v7 = *(&message->var0.addRemoveEndPoint + 3);
+    v10[2] = *&message->var0.rtcpRR.lastSequenceNumber;
     v10[3] = v7;
-    v8 = *(&a3->var0.addRemoveEndPoint + 7);
-    v10[4] = *(&a3->var0.addRemoveEndPoint + 5);
+    v8 = *(&message->var0.addRemoveEndPoint + 7);
+    v10[4] = *(&message->var0.addRemoveEndPoint + 5);
     v10[5] = v8;
-    v9 = *&a3->isVCRCInternal;
-    v10[0] = *&a3->type;
+    v9 = *&message->isVCRCInternal;
+    v10[0] = *&message->type;
     v10[1] = v9;
     VCRateControlSetStatistics(statisticsCollector, v10);
   }

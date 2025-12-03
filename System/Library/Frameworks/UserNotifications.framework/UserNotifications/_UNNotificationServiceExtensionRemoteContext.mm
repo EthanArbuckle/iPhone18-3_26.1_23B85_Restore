@@ -1,20 +1,20 @@
 @interface _UNNotificationServiceExtensionRemoteContext
-- (_UNNotificationServiceExtensionRemoteContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (id)_stageAttachmentsForNotificationContent:(id)a3;
-- (void)deleteAttachmentFilesInContentIfNecessary:(id)a3;
-- (void)didReceiveNotificationRequest:(id)a3 withCompletionHandler:(id)a4;
+- (_UNNotificationServiceExtensionRemoteContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (id)_stageAttachmentsForNotificationContent:(id)content;
+- (void)deleteAttachmentFilesInContentIfNecessary:(id)necessary;
+- (void)didReceiveNotificationRequest:(id)request withCompletionHandler:(id)handler;
 - (void)serviceExtensionPerformCleanup;
 - (void)serviceExtensionTimeWillExpire;
 @end
 
 @implementation _UNNotificationServiceExtensionRemoteContext
 
-- (_UNNotificationServiceExtensionRemoteContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_UNNotificationServiceExtensionRemoteContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = _UNNotificationServiceExtensionRemoteContext;
-  v5 = [(_UNNotificationServiceExtensionRemoteContext *)&v12 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(_UNNotificationServiceExtensionRemoteContext *)&v12 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   v6 = v5;
   if (v5)
   {
@@ -23,9 +23,9 @@
     if (os_log_type_enabled(UNLogServiceExtension, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(_UNNotificationServiceExtensionRemoteContext *)v6 _UUID];
+      _UUID = [(_UNNotificationServiceExtensionRemoteContext *)v6 _UUID];
       *buf = 138543362;
-      v14 = v9;
+      v14 = _UUID;
       _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Service extension context initialized", buf, 0xCu);
     }
   }
@@ -34,23 +34,23 @@
   return v6;
 }
 
-- (void)didReceiveNotificationRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)didReceiveNotificationRequest:(id)request withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UNNotificationServiceExtensionRemoteContext *)self extensionInstance];
+  requestCopy = request;
+  handlerCopy = handler;
+  extensionInstance = [(_UNNotificationServiceExtensionRemoteContext *)self extensionInstance];
   v9 = UNLogServiceExtension;
   if (os_log_type_enabled(UNLogServiceExtension, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
-    v12 = [v6 identifier];
-    v13 = [v12 un_logDigest];
+    _UUID = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
+    identifier = [requestCopy identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543618;
-    v21 = v11;
+    v21 = _UUID;
     v22 = 2114;
-    v23 = v13;
+    v23 = un_logDigest;
     _os_log_impl(&dword_1B85E3000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request replacement content for notification request %{public}@", buf, 0x16u);
   }
 
@@ -59,25 +59,25 @@
   v17[2] = __100___UNNotificationServiceExtensionRemoteContext_didReceiveNotificationRequest_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7CFF710;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v14 = v7;
-  v15 = v6;
-  [v8 didReceiveNotificationRequest:v15 withContentHandler:v17];
+  v18 = requestCopy;
+  v19 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = requestCopy;
+  [extensionInstance didReceiveNotificationRequest:v15 withContentHandler:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteAttachmentFilesInContentIfNecessary:(id)a3
+- (void)deleteAttachmentFilesInContentIfNecessary:(id)necessary
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (necessary)
   {
-    v7 = a3;
+    necessaryCopy = necessary;
     v3 = MEMORY[0x1E695DEC8];
-    v4 = a3;
-    v5 = [v3 arrayWithObjects:&v7 count:1];
-    [UNAttachmentUtilities deleteAttachmentFilesInContentsIfNecessary:v5, v7, v8];
+    necessaryCopy2 = necessary;
+    v5 = [v3 arrayWithObjects:&necessaryCopy count:1];
+    [UNAttachmentUtilities deleteAttachmentFilesInContentsIfNecessary:v5, necessaryCopy, v8];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -86,18 +86,18 @@
 - (void)serviceExtensionTimeWillExpire
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(_UNNotificationServiceExtensionRemoteContext *)self extensionInstance];
+  extensionInstance = [(_UNNotificationServiceExtensionRemoteContext *)self extensionInstance];
   v4 = UNLogServiceExtension;
   if (os_log_type_enabled(UNLogServiceExtension, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
+    _UUID = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
     v8 = 138543362;
-    v9 = v6;
+    v9 = _UUID;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Service extension time will expire", &v8, 0xCu);
   }
 
-  [v3 serviceExtensionTimeWillExpire];
+  [extensionInstance serviceExtensionTimeWillExpire];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -109,9 +109,9 @@
   if (os_log_type_enabled(UNLogServiceExtension, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
+    _UUID = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
     v7 = 138543362;
-    v8 = v5;
+    v8 = _UUID;
     _os_log_impl(&dword_1B85E3000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cleaning up extension", &v7, 0xCu);
   }
 
@@ -120,29 +120,29 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stageAttachmentsForNotificationContent:(id)a3
+- (id)_stageAttachmentsForNotificationContent:(id)content
 {
   v51 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v3 = [v35 attachments];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  contentCopy = content;
+  attachments = [contentCopy attachments];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = MEMORY[0x1E695DFF8];
   v6 = NSTemporaryDirectory();
   v7 = [v5 fileURLWithPath:v6 isDirectory:1];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = v3;
+  v9 = attachments;
   v10 = [v9 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v43;
     v38 = *v43;
-    v39 = v8;
+    v39 = array;
     v36 = v9;
     do
     {
@@ -158,37 +158,37 @@
         v14 = *(*(&v42 + 1) + 8 * v13);
         v15 = [v14 URL];
         v41 = 2;
-        [v4 getRelationship:&v41 ofDirectoryAtURL:v7 toItemAtURL:v15 error:0];
+        [defaultManager getRelationship:&v41 ofDirectoryAtURL:v7 toItemAtURL:v15 error:0];
         if (v41)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
 
         else
         {
-          v16 = [MEMORY[0x1E696AFB0] UUID];
-          v17 = [v16 UUIDString];
-          v18 = [v7 URLByAppendingPathComponent:v17];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          v18 = [v7 URLByAppendingPathComponent:uUIDString];
 
-          v19 = [v15 pathExtension];
-          v20 = [v18 URLByAppendingPathExtension:v19];
+          pathExtension = [v15 pathExtension];
+          v20 = [v18 URLByAppendingPathExtension:pathExtension];
 
-          v21 = [v4 moveItemAtURL:v15 toURL:v20 error:0];
+          v21 = [defaultManager moveItemAtURL:v15 toURL:v20 error:0];
           if (v21)
           {
             v22 = [UNNotificationAttachment alloc];
-            v23 = [v14 identifier];
+            identifier = [v14 identifier];
             [v14 type];
             v24 = v7;
-            v26 = v25 = v4;
-            v27 = [v14 options];
-            v28 = [(UNNotificationAttachment *)v22 initWithIdentifier:v23 URL:v20 type:v26 options:v27];
+            v26 = v25 = defaultManager;
+            options = [v14 options];
+            v28 = [(UNNotificationAttachment *)v22 initWithIdentifier:identifier URL:v20 type:v26 options:options];
 
-            v4 = v25;
+            defaultManager = v25;
             v7 = v24;
             v9 = v36;
 
-            v8 = v39;
+            array = v39;
             [v39 addObject:v28];
           }
 
@@ -196,14 +196,14 @@
           if (os_log_type_enabled(UNLogServiceExtension, OS_LOG_TYPE_DEFAULT))
           {
             v30 = v29;
-            v31 = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
+            _UUID = [(_UNNotificationServiceExtensionRemoteContext *)self _UUID];
             *buf = 138543618;
-            v47 = v31;
+            v47 = _UUID;
             v48 = 1024;
             v49 = v21;
             _os_log_impl(&dword_1B85E3000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handled temporary attachment %{BOOL}d", buf, 0x12u);
 
-            v8 = v39;
+            array = v39;
           }
 
           v12 = v38;
@@ -220,8 +220,8 @@
     while (v11);
   }
 
-  v32 = [v35 mutableCopy];
-  [v32 setAttachments:v8];
+  v32 = [contentCopy mutableCopy];
+  [v32 setAttachments:array];
 
   v33 = *MEMORY[0x1E69E9840];
 

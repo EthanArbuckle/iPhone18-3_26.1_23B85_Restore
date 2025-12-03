@@ -1,41 +1,41 @@
 @interface BMMomentsEventData
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMomentsEventData)initWithEvent:(id)a3 bundle:(id)a4 isBundle:(id)a5 IHAState:(id)a6 age:(id)a7 ageRange:(int)a8 biologicalSex:(int)a9;
-- (BMMomentsEventData)initWithEvent:(id)a3 bundle:(id)a4 isBundle:(id)a5 IHAState:(id)a6 age:(id)a7 ageRange:(int)a8 biologicalSex:(int)a9 startDate:(id)a10 endDate:(id)a11 categoryOfEvent:(id)a12 bundleInterface:(id)a13 bundleEvergreenType:(id)a14 sugSeetEngType:(id)a15 appEntryEngType:(id)a16 megaSignalTypeUsed:(id)a17 viewVisibleSuggestionsCount:(id)a18 viewTotalSuggestionsCount:(id)a19 onboardingFlowCompletionState:(int)a20 isJournalAppInstalled:(id)a21 isJournalAppLocked:(id)a22 isJournalSuggestionSkipped:(id)a23 isActivitySettingsSwitchEnabled:(id)a24 isCommunicationSettingsSwitchEnabled:(id)a25 isSignificantLocationSettingsSwitchEnabled:(id)a26 isMediaSettingsSwitchEnabled:(id)a27 isNearbyPeopleSettingsSwitchEnabled:(id)a28 isPhotoSettingsSwitchEnabled:(id)a29 isStateOfMindSettingsSwitchEnabled:(id)a30 isReflectionSettingsSwitchEnabled:(id)a31 isBroadSystemLocationSettingsSwitchEnabled:(id)a32;
-- (BMMomentsEventData)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMomentsEventData)initWithEvent:(id)event bundle:(id)bundle isBundle:(id)isBundle IHAState:(id)state age:(id)age ageRange:(int)range biologicalSex:(int)sex;
+- (BMMomentsEventData)initWithEvent:(id)event bundle:(id)bundle isBundle:(id)isBundle IHAState:(id)state age:(id)age ageRange:(int)range biologicalSex:(int)sex startDate:(id)self0 endDate:(id)self1 categoryOfEvent:(id)self2 bundleInterface:(id)self3 bundleEvergreenType:(id)self4 sugSeetEngType:(id)self5 appEntryEngType:(id)self6 megaSignalTypeUsed:(id)self7 viewVisibleSuggestionsCount:(id)self8 viewTotalSuggestionsCount:(id)self9 onboardingFlowCompletionState:(int)completionState isJournalAppInstalled:(id)installed isJournalAppLocked:(id)locked isJournalSuggestionSkipped:(id)skipped isActivitySettingsSwitchEnabled:(id)enabled isCommunicationSettingsSwitchEnabled:(id)switchEnabled isSignificantLocationSettingsSwitchEnabled:(id)settingsSwitchEnabled isMediaSettingsSwitchEnabled:(id)mediaSettingsSwitchEnabled isNearbyPeopleSettingsSwitchEnabled:(id)peopleSettingsSwitchEnabled isPhotoSettingsSwitchEnabled:(id)photoSettingsSwitchEnabled isStateOfMindSettingsSwitchEnabled:(id)event0 isReflectionSettingsSwitchEnabled:(id)event1 isBroadSystemLocationSettingsSwitchEnabled:(id)event2;
+- (BMMomentsEventData)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMomentsEventData
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMomentsEventData *)self event];
-    v7 = [v5 event];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    event = [(BMMomentsEventData *)self event];
+    event2 = [v5 event];
+    v8 = event2;
+    if (event == event2)
     {
     }
 
     else
     {
-      v9 = [(BMMomentsEventData *)self event];
-      v10 = [v5 event];
-      v11 = [v9 isEqual:v10];
+      event3 = [(BMMomentsEventData *)self event];
+      event4 = [v5 event];
+      v11 = [event3 isEqual:event4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMMomentsEventData *)self bundle];
-    v14 = [v5 bundle];
-    v15 = v14;
-    if (v13 == v14)
+    bundle = [(BMMomentsEventData *)self bundle];
+    bundle2 = [v5 bundle];
+    v15 = bundle2;
+    if (bundle == bundle2)
     {
     }
 
     else
     {
-      v16 = [(BMMomentsEventData *)self bundle];
-      v17 = [v5 bundle];
-      v18 = [v16 isEqual:v17];
+      bundle3 = [(BMMomentsEventData *)self bundle];
+      bundle4 = [v5 bundle];
+      v18 = [bundle3 isEqual:bundle4];
 
       if (!v18)
       {
@@ -74,8 +74,8 @@
         goto LABEL_131;
       }
 
-      v19 = [(BMMomentsEventData *)self isBundle];
-      if (v19 != [v5 isBundle])
+      isBundle = [(BMMomentsEventData *)self isBundle];
+      if (isBundle != [v5 isBundle])
       {
         goto LABEL_131;
       }
@@ -93,8 +93,8 @@
         goto LABEL_131;
       }
 
-      v20 = [(BMMomentsEventData *)self IHAState];
-      if (v20 != [v5 IHAState])
+      iHAState = [(BMMomentsEventData *)self IHAState];
+      if (iHAState != [v5 IHAState])
       {
         goto LABEL_131;
       }
@@ -119,30 +119,30 @@
       }
     }
 
-    v22 = [(BMMomentsEventData *)self ageRange];
-    if (v22 != [v5 ageRange])
+    ageRange = [(BMMomentsEventData *)self ageRange];
+    if (ageRange != [v5 ageRange])
     {
       goto LABEL_131;
     }
 
-    v23 = [(BMMomentsEventData *)self biologicalSex];
-    if (v23 != [v5 biologicalSex])
+    biologicalSex = [(BMMomentsEventData *)self biologicalSex];
+    if (biologicalSex != [v5 biologicalSex])
     {
       goto LABEL_131;
     }
 
-    v24 = [(BMMomentsEventData *)self startDate];
-    v25 = [v5 startDate];
-    v26 = v25;
-    if (v24 == v25)
+    startDate = [(BMMomentsEventData *)self startDate];
+    startDate2 = [v5 startDate];
+    v26 = startDate2;
+    if (startDate == startDate2)
     {
     }
 
     else
     {
-      v27 = [(BMMomentsEventData *)self startDate];
-      v28 = [v5 startDate];
-      v29 = [v27 isEqual:v28];
+      startDate3 = [(BMMomentsEventData *)self startDate];
+      startDate4 = [v5 startDate];
+      v29 = [startDate3 isEqual:startDate4];
 
       if (!v29)
       {
@@ -150,18 +150,18 @@
       }
     }
 
-    v30 = [(BMMomentsEventData *)self endDate];
-    v31 = [v5 endDate];
-    v32 = v31;
-    if (v30 == v31)
+    endDate = [(BMMomentsEventData *)self endDate];
+    endDate2 = [v5 endDate];
+    v32 = endDate2;
+    if (endDate == endDate2)
     {
     }
 
     else
     {
-      v33 = [(BMMomentsEventData *)self endDate];
-      v34 = [v5 endDate];
-      v35 = [v33 isEqual:v34];
+      endDate3 = [(BMMomentsEventData *)self endDate];
+      endDate4 = [v5 endDate];
+      v35 = [endDate3 isEqual:endDate4];
 
       if (!v35)
       {
@@ -169,18 +169,18 @@
       }
     }
 
-    v36 = [(BMMomentsEventData *)self categoryOfEvent];
-    v37 = [v5 categoryOfEvent];
-    v38 = v37;
-    if (v36 == v37)
+    categoryOfEvent = [(BMMomentsEventData *)self categoryOfEvent];
+    categoryOfEvent2 = [v5 categoryOfEvent];
+    v38 = categoryOfEvent2;
+    if (categoryOfEvent == categoryOfEvent2)
     {
     }
 
     else
     {
-      v39 = [(BMMomentsEventData *)self categoryOfEvent];
-      v40 = [v5 categoryOfEvent];
-      v41 = [v39 isEqual:v40];
+      categoryOfEvent3 = [(BMMomentsEventData *)self categoryOfEvent];
+      categoryOfEvent4 = [v5 categoryOfEvent];
+      v41 = [categoryOfEvent3 isEqual:categoryOfEvent4];
 
       if (!v41)
       {
@@ -188,18 +188,18 @@
       }
     }
 
-    v42 = [(BMMomentsEventData *)self bundleInterface];
-    v43 = [v5 bundleInterface];
-    v44 = v43;
-    if (v42 == v43)
+    bundleInterface = [(BMMomentsEventData *)self bundleInterface];
+    bundleInterface2 = [v5 bundleInterface];
+    v44 = bundleInterface2;
+    if (bundleInterface == bundleInterface2)
     {
     }
 
     else
     {
-      v45 = [(BMMomentsEventData *)self bundleInterface];
-      v46 = [v5 bundleInterface];
-      v47 = [v45 isEqual:v46];
+      bundleInterface3 = [(BMMomentsEventData *)self bundleInterface];
+      bundleInterface4 = [v5 bundleInterface];
+      v47 = [bundleInterface3 isEqual:bundleInterface4];
 
       if (!v47)
       {
@@ -207,18 +207,18 @@
       }
     }
 
-    v48 = [(BMMomentsEventData *)self bundleEvergreenType];
-    v49 = [v5 bundleEvergreenType];
-    v50 = v49;
-    if (v48 == v49)
+    bundleEvergreenType = [(BMMomentsEventData *)self bundleEvergreenType];
+    bundleEvergreenType2 = [v5 bundleEvergreenType];
+    v50 = bundleEvergreenType2;
+    if (bundleEvergreenType == bundleEvergreenType2)
     {
     }
 
     else
     {
-      v51 = [(BMMomentsEventData *)self bundleEvergreenType];
-      v52 = [v5 bundleEvergreenType];
-      v53 = [v51 isEqual:v52];
+      bundleEvergreenType3 = [(BMMomentsEventData *)self bundleEvergreenType];
+      bundleEvergreenType4 = [v5 bundleEvergreenType];
+      v53 = [bundleEvergreenType3 isEqual:bundleEvergreenType4];
 
       if (!v53)
       {
@@ -226,18 +226,18 @@
       }
     }
 
-    v54 = [(BMMomentsEventData *)self sugSeetEngType];
-    v55 = [v5 sugSeetEngType];
-    v56 = v55;
-    if (v54 == v55)
+    sugSeetEngType = [(BMMomentsEventData *)self sugSeetEngType];
+    sugSeetEngType2 = [v5 sugSeetEngType];
+    v56 = sugSeetEngType2;
+    if (sugSeetEngType == sugSeetEngType2)
     {
     }
 
     else
     {
-      v57 = [(BMMomentsEventData *)self sugSeetEngType];
-      v58 = [v5 sugSeetEngType];
-      v59 = [v57 isEqual:v58];
+      sugSeetEngType3 = [(BMMomentsEventData *)self sugSeetEngType];
+      sugSeetEngType4 = [v5 sugSeetEngType];
+      v59 = [sugSeetEngType3 isEqual:sugSeetEngType4];
 
       if (!v59)
       {
@@ -245,18 +245,18 @@
       }
     }
 
-    v60 = [(BMMomentsEventData *)self appEntryEngType];
-    v61 = [v5 appEntryEngType];
-    v62 = v61;
-    if (v60 == v61)
+    appEntryEngType = [(BMMomentsEventData *)self appEntryEngType];
+    appEntryEngType2 = [v5 appEntryEngType];
+    v62 = appEntryEngType2;
+    if (appEntryEngType == appEntryEngType2)
     {
     }
 
     else
     {
-      v63 = [(BMMomentsEventData *)self appEntryEngType];
-      v64 = [v5 appEntryEngType];
-      v65 = [v63 isEqual:v64];
+      appEntryEngType3 = [(BMMomentsEventData *)self appEntryEngType];
+      appEntryEngType4 = [v5 appEntryEngType];
+      v65 = [appEntryEngType3 isEqual:appEntryEngType4];
 
       if (!v65)
       {
@@ -264,18 +264,18 @@
       }
     }
 
-    v66 = [(BMMomentsEventData *)self megaSignalTypeUsed];
-    v67 = [v5 megaSignalTypeUsed];
-    v68 = v67;
-    if (v66 == v67)
+    megaSignalTypeUsed = [(BMMomentsEventData *)self megaSignalTypeUsed];
+    megaSignalTypeUsed2 = [v5 megaSignalTypeUsed];
+    v68 = megaSignalTypeUsed2;
+    if (megaSignalTypeUsed == megaSignalTypeUsed2)
     {
     }
 
     else
     {
-      v69 = [(BMMomentsEventData *)self megaSignalTypeUsed];
-      v70 = [v5 megaSignalTypeUsed];
-      v71 = [v69 isEqual:v70];
+      megaSignalTypeUsed3 = [(BMMomentsEventData *)self megaSignalTypeUsed];
+      megaSignalTypeUsed4 = [v5 megaSignalTypeUsed];
+      v71 = [megaSignalTypeUsed3 isEqual:megaSignalTypeUsed4];
 
       if (!v71)
       {
@@ -287,8 +287,8 @@
     {
       if (!-[BMMomentsEventData hasViewTotalSuggestionsCount](self, "hasViewTotalSuggestionsCount") && ![v5 hasViewTotalSuggestionsCount] || -[BMMomentsEventData hasViewTotalSuggestionsCount](self, "hasViewTotalSuggestionsCount") && objc_msgSend(v5, "hasViewTotalSuggestionsCount") && (v73 = -[BMMomentsEventData viewTotalSuggestionsCount](self, "viewTotalSuggestionsCount"), v73 == objc_msgSend(v5, "viewTotalSuggestionsCount")))
       {
-        v74 = [(BMMomentsEventData *)self onboardingFlowCompletionState];
-        if (v74 == [v5 onboardingFlowCompletionState])
+        onboardingFlowCompletionState = [(BMMomentsEventData *)self onboardingFlowCompletionState];
+        if (onboardingFlowCompletionState == [v5 onboardingFlowCompletionState])
         {
           if (!-[BMMomentsEventData hasIsJournalAppInstalled](self, "hasIsJournalAppInstalled") && ![v5 hasIsJournalAppInstalled] || -[BMMomentsEventData hasIsJournalAppInstalled](self, "hasIsJournalAppInstalled") && objc_msgSend(v5, "hasIsJournalAppInstalled") && (v75 = -[BMMomentsEventData isJournalAppInstalled](self, "isJournalAppInstalled"), v75 == objc_msgSend(v5, "isJournalAppInstalled")))
           {
@@ -320,8 +320,8 @@
 
                                 if (-[BMMomentsEventData hasIsBroadSystemLocationSettingsSwitchEnabled](self, "hasIsBroadSystemLocationSettingsSwitchEnabled") && [v5 hasIsBroadSystemLocationSettingsSwitchEnabled])
                                 {
-                                  v86 = [(BMMomentsEventData *)self isBroadSystemLocationSettingsSwitchEnabled];
-                                  v12 = v86 ^ [v5 isBroadSystemLocationSettingsSwitchEnabled] ^ 1;
+                                  isBroadSystemLocationSettingsSwitchEnabled = [(BMMomentsEventData *)self isBroadSystemLocationSettingsSwitchEnabled];
+                                  v12 = isBroadSystemLocationSettingsSwitchEnabled ^ [v5 isBroadSystemLocationSettingsSwitchEnabled] ^ 1;
 LABEL_132:
 
                                   goto LABEL_133;
@@ -389,11 +389,11 @@ LABEL_133:
 - (id)jsonDictionary
 {
   v105[30] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMomentsEventData *)self event];
-  v4 = [v3 jsonDictionary];
+  event = [(BMMomentsEventData *)self event];
+  jsonDictionary = [event jsonDictionary];
 
-  v5 = [(BMMomentsEventData *)self bundle];
-  v6 = [v5 jsonDictionary];
+  bundle = [(BMMomentsEventData *)self bundle];
+  jsonDictionary2 = [bundle jsonDictionary];
 
   if ([(BMMomentsEventData *)self hasIsBundle])
   {
@@ -427,12 +427,12 @@ LABEL_133:
 
   v103 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData ageRange](self, "ageRange")}];
   v102 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData biologicalSex](self, "biologicalSex")}];
-  v9 = [(BMMomentsEventData *)self startDate];
-  if (v9)
+  startDate = [(BMMomentsEventData *)self startDate];
+  if (startDate)
   {
     v10 = MEMORY[0x1E696AD98];
-    v11 = [(BMMomentsEventData *)self startDate];
-    [v11 timeIntervalSince1970];
+    startDate2 = [(BMMomentsEventData *)self startDate];
+    [startDate2 timeIntervalSince1970];
     v101 = [v10 numberWithDouble:?];
   }
 
@@ -441,12 +441,12 @@ LABEL_133:
     v101 = 0;
   }
 
-  v12 = [(BMMomentsEventData *)self endDate];
-  if (v12)
+  endDate = [(BMMomentsEventData *)self endDate];
+  if (endDate)
   {
     v13 = MEMORY[0x1E696AD98];
-    v14 = [(BMMomentsEventData *)self endDate];
-    [v14 timeIntervalSince1970];
+    endDate2 = [(BMMomentsEventData *)self endDate];
+    [endDate2 timeIntervalSince1970];
     v100 = [v13 numberWithDouble:?];
   }
 
@@ -455,12 +455,12 @@ LABEL_133:
     v100 = 0;
   }
 
-  v99 = [(BMMomentsEventData *)self categoryOfEvent];
-  v98 = [(BMMomentsEventData *)self bundleInterface];
-  v97 = [(BMMomentsEventData *)self bundleEvergreenType];
-  v96 = [(BMMomentsEventData *)self sugSeetEngType];
-  v95 = [(BMMomentsEventData *)self appEntryEngType];
-  v94 = [(BMMomentsEventData *)self megaSignalTypeUsed];
+  categoryOfEvent = [(BMMomentsEventData *)self categoryOfEvent];
+  bundleInterface = [(BMMomentsEventData *)self bundleInterface];
+  bundleEvergreenType = [(BMMomentsEventData *)self bundleEvergreenType];
+  sugSeetEngType = [(BMMomentsEventData *)self sugSeetEngType];
+  appEntryEngType = [(BMMomentsEventData *)self appEntryEngType];
+  megaSignalTypeUsed = [(BMMomentsEventData *)self megaSignalTypeUsed];
   if ([(BMMomentsEventData *)self hasViewVisibleSuggestionsCount])
   {
     v93 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData viewVisibleSuggestionsCount](self, "viewVisibleSuggestionsCount")}];
@@ -603,274 +603,274 @@ LABEL_133:
   }
 
   v104[0] = @"event";
-  v16 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v71 = v16;
-  v105[0] = v16;
+  v71 = null;
+  v105[0] = null;
   v104[1] = @"bundle";
-  v17 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v70 = v17;
-  v105[1] = v17;
+  v70 = null2;
+  v105[1] = null2;
   v104[2] = @"isBundle";
-  v18 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v18;
-  v105[2] = v18;
+  v69 = null3;
+  v105[2] = null3;
   v104[3] = @"IHAState";
-  v19 = v79;
+  null4 = v79;
   if (!v79)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v4;
-  v68 = v19;
-  v105[3] = v19;
+  v20 = jsonDictionary;
+  v68 = null4;
+  v105[3] = null4;
   v104[4] = @"age";
-  v21 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v21;
-  v105[4] = v21;
+  v67 = null5;
+  v105[4] = null5;
   v104[5] = @"ageRange";
-  v22 = v103;
+  null6 = v103;
   if (!v103)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[5] = v22;
+  v105[5] = null6;
   v104[6] = @"biologicalSex";
-  v23 = v102;
+  null7 = v102;
   if (!v102)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[6] = v23;
+  v105[6] = null7;
   v104[7] = @"startDate";
-  v24 = v101;
+  null8 = v101;
   if (!v101)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[7] = v24;
+  v105[7] = null8;
   v104[8] = @"endDate";
-  v25 = v100;
+  null9 = v100;
   if (!v100)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[8] = v25;
+  v105[8] = null9;
   v104[9] = @"categoryOfEvent";
-  v26 = v99;
-  if (!v99)
+  null10 = categoryOfEvent;
+  if (!categoryOfEvent)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v75 = v26;
-  v105[9] = v26;
+  v75 = null10;
+  v105[9] = null10;
   v104[10] = @"bundleInterface";
-  v27 = v98;
-  if (!v98)
+  null11 = bundleInterface;
+  if (!bundleInterface)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63 = v27;
-  v105[10] = v27;
+  v63 = null11;
+  v105[10] = null11;
   v104[11] = @"bundleEvergreenType";
-  v28 = v97;
-  if (!v97)
+  null12 = bundleEvergreenType;
+  if (!bundleEvergreenType)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v74 = v28;
-  v105[11] = v28;
+  v74 = null12;
+  v105[11] = null12;
   v104[12] = @"sugSeetEngType";
-  v29 = v96;
-  if (!v96)
+  null13 = sugSeetEngType;
+  if (!sugSeetEngType)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73 = v29;
-  v105[12] = v29;
+  v73 = null13;
+  v105[12] = null13;
   v104[13] = @"appEntryEngType";
-  v30 = v95;
-  if (!v95)
+  null14 = appEntryEngType;
+  if (!appEntryEngType)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v30;
-  v105[13] = v30;
+  v31 = null14;
+  v105[13] = null14;
   v104[14] = @"megaSignalTypeUsed";
-  v32 = v94;
-  if (!v94)
+  null15 = megaSignalTypeUsed;
+  if (!megaSignalTypeUsed)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v62 = v32;
-  v105[14] = v32;
+  v62 = null15;
+  v105[14] = null15;
   v104[15] = @"viewVisibleSuggestionsCount";
-  v33 = v93;
+  null16 = v93;
   if (!v93)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v61 = v33;
-  v105[15] = v33;
+  v61 = null16;
+  v105[15] = null16;
   v104[16] = @"viewTotalSuggestionsCount";
-  v34 = v92;
+  null17 = v92;
   if (!v92)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v34;
-  v105[16] = v34;
+  v60 = null17;
+  v105[16] = null17;
   v104[17] = @"onboardingFlowCompletionState";
-  v35 = v91;
+  null18 = v91;
   if (!v91)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v35;
-  v105[17] = v35;
+  v59 = null18;
+  v105[17] = null18;
   v104[18] = @"isJournalAppInstalled";
-  v36 = v90;
+  null19 = v90;
   if (!v90)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v36;
-  v105[18] = v36;
+  v58 = null19;
+  v105[18] = null19;
   v104[19] = @"isJournalAppLocked";
-  v37 = v89;
+  null20 = v89;
   if (!v89)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v37;
-  v105[19] = v37;
+  v57 = null20;
+  v105[19] = null20;
   v104[20] = @"isJournalSuggestionSkipped";
-  v38 = v88;
+  null21 = v88;
   if (!v88)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
   v77 = v7;
-  v56 = v38;
-  v105[20] = v38;
+  v56 = null21;
+  v105[20] = null21;
   v104[21] = @"isActivitySettingsSwitchEnabled";
-  v39 = v87;
+  null22 = v87;
   if (!v87)
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66 = v22;
-  v55 = v39;
-  v105[21] = v39;
+  v66 = null6;
+  v55 = null22;
+  v105[21] = null22;
   v104[22] = @"isCommunicationSettingsSwitchEnabled";
-  v40 = v86;
+  null23 = v86;
   if (!v86)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v65 = v23;
-  v54 = v40;
-  v105[22] = v40;
+  v65 = null7;
+  v54 = null23;
+  v105[22] = null23;
   v104[23] = @"isSignificantLocationSettingsSwitchEnabled";
-  v41 = v85;
+  null24 = v85;
   v42 = v20;
   if (!v85)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v78 = v6;
-  v53 = v41;
-  v105[23] = v41;
+  v78 = jsonDictionary2;
+  v53 = null24;
+  v105[23] = null24;
   v104[24] = @"isMediaSettingsSwitchEnabled";
-  v43 = v84;
+  null25 = v84;
   if (!v84)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v64 = v24;
+  v64 = null8;
   v76 = v8;
-  v105[24] = v43;
+  v105[24] = null25;
   v104[25] = @"isNearbyPeopleSettingsSwitchEnabled";
-  v44 = v83;
+  null26 = v83;
   if (!v83)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
   v45 = v42;
-  v105[25] = v44;
+  v105[25] = null26;
   v104[26] = @"isPhotoSettingsSwitchEnabled";
-  v46 = v82;
+  null27 = v82;
   if (!v82)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[26] = v46;
+  v105[26] = null27;
   v104[27] = @"isStateOfMindSettingsSwitchEnabled";
-  v47 = v81;
+  null28 = v81;
   if (!v81)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[27] = v47;
+  v105[27] = null28;
   v104[28] = @"isReflectionSettingsSwitchEnabled";
-  v48 = v80;
+  null29 = v80;
   if (!v80)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[28] = v48;
+  v105[28] = null29;
   v104[29] = @"isBroadSystemLocationSettingsSwitchEnabled";
-  v49 = v15;
+  null30 = v15;
   if (!v15)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105[29] = v49;
+  v105[29] = null30;
   v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:30];
   if (!v15)
   {
@@ -961,29 +961,29 @@ LABEL_133:
     v50 = v31;
   }
 
-  if (!v94)
+  if (!megaSignalTypeUsed)
   {
 
     v50 = v31;
   }
 
-  if (!v95)
+  if (!appEntryEngType)
   {
   }
 
-  if (!v96)
+  if (!sugSeetEngType)
   {
   }
 
-  if (!v97)
+  if (!bundleEvergreenType)
   {
   }
 
-  if (!v98)
+  if (!bundleInterface)
   {
   }
 
-  if (!v99)
+  if (!categoryOfEvent)
   {
   }
 
@@ -1074,11 +1074,11 @@ LABEL_172:
   return v72;
 }
 
-- (BMMomentsEventData)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMomentsEventData)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v356[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v294 = [v6 objectForKeyedSubscript:@"event"];
+  dictionaryCopy = dictionary;
+  v294 = [dictionaryCopy objectForKeyedSubscript:@"event"];
   if (!v294 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -1094,10 +1094,10 @@ LABEL_172:
     v12 = v296;
     if (v12)
     {
-      if (a4)
+      if (error)
       {
         v12 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
 LABEL_39:
@@ -1106,7 +1106,7 @@ LABEL_39:
     }
 
 LABEL_4:
-    v293 = [v6 objectForKeyedSubscript:@"bundle"];
+    v293 = [dictionaryCopy objectForKeyedSubscript:@"bundle"];
     if (!v293 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v289 = v7;
@@ -1123,10 +1123,10 @@ LABEL_4:
       v13 = v295;
       if (v13)
       {
-        if (a4)
+        if (error)
         {
           v13 = v13;
-          *a4 = v13;
+          *error = v13;
         }
 
         v14 = 0;
@@ -1136,14 +1136,14 @@ LABEL_4:
       v289 = v7;
 
 LABEL_7:
-      v292 = [v6 objectForKeyedSubscript:@"isBundle"];
-      v287 = self;
+      v292 = [dictionaryCopy objectForKeyedSubscript:@"isBundle"];
+      selfCopy = self;
       if (v292 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v8 = 0;
             v14 = 0;
@@ -1161,7 +1161,7 @@ LABEL_279:
           v291 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v352 forKeys:&v351 count:1];
           v8 = 0;
           v14 = 0;
-          *a4 = [v28 initWithDomain:v29 code:2 userInfo:v291];
+          *error = [v28 initWithDomain:v29 code:2 userInfo:v291];
           goto LABEL_278;
         }
 
@@ -1173,7 +1173,7 @@ LABEL_279:
         v8 = 0;
       }
 
-      [v6 objectForKeyedSubscript:@"IHAState"];
+      [dictionaryCopy objectForKeyedSubscript:@"IHAState"];
       v291 = v288 = v8;
       if (!v291 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -1186,11 +1186,11 @@ LABEL_279:
       {
         v284 = v291;
 LABEL_13:
-        v9 = [v6 objectForKeyedSubscript:@"age"];
+        v9 = [dictionaryCopy objectForKeyedSubscript:@"age"];
         v285 = v9;
         if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v279 = a4;
+          errorCopy2 = error;
           v280 = 0;
           goto LABEL_16;
         }
@@ -1198,10 +1198,10 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v279 = a4;
+          errorCopy2 = error;
           v280 = v9;
 LABEL_16:
-          v10 = [v6 objectForKeyedSubscript:@"ageRange"];
+          v10 = [dictionaryCopy objectForKeyedSubscript:@"ageRange"];
           v283 = v10;
           if (!v10 || (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -1216,7 +1216,7 @@ LABEL_16:
 LABEL_52:
 
 LABEL_53:
-            v42 = [v6 objectForKeyedSubscript:@"biologicalSex"];
+            v42 = [dictionaryCopy objectForKeyedSubscript:@"biologicalSex"];
             v277 = v42;
             if (!v42 || (v43 = v42, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -1231,7 +1231,7 @@ LABEL_53:
 LABEL_60:
 
 LABEL_61:
-              v45 = [v6 objectForKeyedSubscript:@"startDate"];
+              v45 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
               v276 = v45;
               if (!v45 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -1265,7 +1265,7 @@ LABEL_61:
               {
                 v275 = v45;
 LABEL_64:
-                v46 = [v6 objectForKeyedSubscript:@"endDate"];
+                v46 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
                 v273 = v46;
                 if (!v46 || (v47 = v46, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1299,14 +1299,14 @@ LABEL_64:
                 {
                   v48 = v47;
 LABEL_67:
-                  v49 = [v6 objectForKeyedSubscript:@"categoryOfEvent"];
+                  v49 = [dictionaryCopy objectForKeyedSubscript:@"categoryOfEvent"];
                   v272 = v49;
                   v274 = v48;
                   if (!v49 || (v50 = v49, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v51 = 0;
 LABEL_70:
-                    v282 = [v6 objectForKeyedSubscript:@"bundleInterface"];
+                    v282 = [dictionaryCopy objectForKeyedSubscript:@"bundleInterface"];
                     if (!v282)
                     {
                       v270 = 0;
@@ -1327,7 +1327,7 @@ LABEL_70:
                     {
                       v270 = v282;
 LABEL_82:
-                      v57 = [v6 objectForKeyedSubscript:@"bundleEvergreenType"];
+                      v57 = [dictionaryCopy objectForKeyedSubscript:@"bundleEvergreenType"];
                       v269 = v57;
                       if (!v57 || (v58 = v57, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
@@ -1340,19 +1340,19 @@ LABEL_82:
                       {
                         v59 = v58;
 LABEL_85:
-                        v271 = [v6 objectForKeyedSubscript:@"sugSeetEngType"];
+                        v271 = [dictionaryCopy objectForKeyedSubscript:@"sugSeetEngType"];
                         v268 = v59;
                         if (!v271 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
                           v60 = v52;
                           v267 = 0;
 LABEL_88:
-                          v61 = [v6 objectForKeyedSubscript:@"appEntryEngType"];
+                          v61 = [dictionaryCopy objectForKeyedSubscript:@"appEntryEngType"];
                           v266 = v61;
                           if (!v61)
                           {
 LABEL_102:
-                            v66 = [v6 objectForKeyedSubscript:@"megaSignalTypeUsed"];
+                            v66 = [dictionaryCopy objectForKeyedSubscript:@"megaSignalTypeUsed"];
                             v265 = v66;
                             if (!v66)
                             {
@@ -1369,7 +1369,7 @@ LABEL_102:
                             {
                               v69 = 0;
 LABEL_110:
-                              v72 = [v6 objectForKeyedSubscript:@"viewVisibleSuggestionsCount"];
+                              v72 = [dictionaryCopy objectForKeyedSubscript:@"viewVisibleSuggestionsCount"];
                               if (!v72)
                               {
                                 v264 = 0;
@@ -1391,13 +1391,13 @@ LABEL_110:
                                 v73 = v69;
                                 v264 = v72;
 LABEL_119:
-                                v76 = [v6 objectForKeyedSubscript:@"viewTotalSuggestionsCount"];
+                                v76 = [dictionaryCopy objectForKeyedSubscript:@"viewTotalSuggestionsCount"];
                                 v263 = v76;
                                 if (!v76 || (v77 = v76, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
                                   v260 = 0;
 LABEL_122:
-                                  v78 = [v6 objectForKeyedSubscript:@"onboardingFlowCompletionState"];
+                                  v78 = [dictionaryCopy objectForKeyedSubscript:@"onboardingFlowCompletionState"];
                                   v257 = v72;
                                   v261 = v78;
                                   if (v78 && (v79 = v78, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1413,7 +1413,7 @@ LABEL_122:
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        if (!v279)
+                                        if (!errorCopy2)
                                         {
                                           v262 = 0;
                                           v14 = 0;
@@ -1432,7 +1432,7 @@ LABEL_122:
                                         v258 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v322 forKeys:&v321 count:1];
                                         v262 = 0;
                                         v14 = 0;
-                                        *v279 = [v160 initWithDomain:v161 code:2 userInfo:?];
+                                        *errorCopy2 = [v160 initWithDomain:v161 code:2 userInfo:?];
                                         v30 = v284;
                                         v35 = v280;
                                         v72 = v257;
@@ -1452,20 +1452,20 @@ LABEL_122:
                                     v262 = 0;
                                   }
 
-                                  v117 = [v6 objectForKeyedSubscript:@"isJournalAppInstalled"];
+                                  v117 = [dictionaryCopy objectForKeyedSubscript:@"isJournalAppInstalled"];
                                   v258 = v117;
                                   if (!v117 || (v118 = v117, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
                                     v259 = 0;
 LABEL_165:
-                                    v119 = [v6 objectForKeyedSubscript:@"isJournalAppLocked"];
+                                    v119 = [dictionaryCopy objectForKeyedSubscript:@"isJournalAppLocked"];
                                     v254 = v119;
                                     if (v119 && (v120 = v119, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                     {
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        if (!v279)
+                                        if (!errorCopy2)
                                         {
                                           v255 = 0;
                                           v14 = 0;
@@ -1491,7 +1491,7 @@ LABEL_165:
                                         v252 = v146;
                                         v255 = 0;
                                         v14 = 0;
-                                        *v279 = [v147 initWithDomain:v143 code:2 userInfo:?];
+                                        *errorCopy2 = [v147 initWithDomain:v143 code:2 userInfo:?];
                                         v30 = v284;
                                         v35 = v280;
 LABEL_260:
@@ -1509,14 +1509,14 @@ LABEL_261:
                                       v255 = 0;
                                     }
 
-                                    v121 = [v6 objectForKeyedSubscript:@"isJournalSuggestionSkipped"];
+                                    v121 = [dictionaryCopy objectForKeyedSubscript:@"isJournalSuggestionSkipped"];
                                     v252 = v121;
                                     if (v121 && (v122 = v121, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                     {
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        if (!v279)
+                                        if (!errorCopy2)
                                         {
                                           v253 = 0;
                                           v14 = 0;
@@ -1542,7 +1542,7 @@ LABEL_261:
                                         v256 = v152;
                                         v253 = 0;
                                         v14 = 0;
-                                        *v279 = [v153 initWithDomain:v149 code:2 userInfo:v152];
+                                        *errorCopy2 = [v153 initWithDomain:v149 code:2 userInfo:v152];
                                         goto LABEL_294;
                                       }
 
@@ -1554,7 +1554,7 @@ LABEL_261:
                                       v253 = 0;
                                     }
 
-                                    [v6 objectForKeyedSubscript:@"isActivitySettingsSwitchEnabled"];
+                                    [dictionaryCopy objectForKeyedSubscript:@"isActivitySettingsSwitchEnabled"];
                                     v256 = v69 = v73;
                                     if (!v256 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
@@ -1567,7 +1567,7 @@ LABEL_261:
                                     {
                                       v251 = v256;
 LABEL_174:
-                                      v123 = [v6 objectForKeyedSubscript:@"isCommunicationSettingsSwitchEnabled"];
+                                      v123 = [dictionaryCopy objectForKeyedSubscript:@"isCommunicationSettingsSwitchEnabled"];
                                       v248 = v123;
                                       if (!v123 || (v124 = v123, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -1580,7 +1580,7 @@ LABEL_174:
                                       {
                                         v250 = v124;
 LABEL_177:
-                                        v125 = [v6 objectForKeyedSubscript:@"isSignificantLocationSettingsSwitchEnabled"];
+                                        v125 = [dictionaryCopy objectForKeyedSubscript:@"isSignificantLocationSettingsSwitchEnabled"];
                                         v246 = v125;
                                         if (!v125 || (v126 = v125, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                         {
@@ -1593,7 +1593,7 @@ LABEL_177:
                                         {
                                           v249 = v126;
 LABEL_180:
-                                          v127 = [v6 objectForKeyedSubscript:@"isMediaSettingsSwitchEnabled"];
+                                          v127 = [dictionaryCopy objectForKeyedSubscript:@"isMediaSettingsSwitchEnabled"];
                                           v244 = v127;
                                           if (!v127 || (v128 = v127, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -1606,7 +1606,7 @@ LABEL_180:
                                           {
                                             v245 = v128;
 LABEL_183:
-                                            v129 = [v6 objectForKeyedSubscript:@"isNearbyPeopleSettingsSwitchEnabled"];
+                                            v129 = [dictionaryCopy objectForKeyedSubscript:@"isNearbyPeopleSettingsSwitchEnabled"];
                                             v242 = v129;
                                             if (!v129 || (v130 = v129, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -1619,7 +1619,7 @@ LABEL_183:
                                             {
                                               v243 = v130;
 LABEL_186:
-                                              v131 = [v6 objectForKeyedSubscript:@"isPhotoSettingsSwitchEnabled"];
+                                              v131 = [dictionaryCopy objectForKeyedSubscript:@"isPhotoSettingsSwitchEnabled"];
                                               v239 = v131;
                                               if (!v131 || (v132 = v131, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
@@ -1632,13 +1632,13 @@ LABEL_186:
                                               {
                                                 v241 = v132;
 LABEL_189:
-                                                v133 = [v6 objectForKeyedSubscript:@"isStateOfMindSettingsSwitchEnabled"];
+                                                v133 = [dictionaryCopy objectForKeyedSubscript:@"isStateOfMindSettingsSwitchEnabled"];
                                                 v238 = v133;
                                                 if (!v133 || (v134 = v133, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                 {
                                                   v240 = 0;
 LABEL_192:
-                                                  v135 = [v6 objectForKeyedSubscript:@"isReflectionSettingsSwitchEnabled"];
+                                                  v135 = [dictionaryCopy objectForKeyedSubscript:@"isReflectionSettingsSwitchEnabled"];
                                                   v237 = v135;
                                                   if (!v135)
                                                   {
@@ -1657,7 +1657,7 @@ LABEL_192:
                                                   {
                                                     v135 = v135;
 LABEL_247:
-                                                    v174 = [v6 objectForKeyedSubscript:@"isBroadSystemLocationSettingsSwitchEnabled"];
+                                                    v174 = [dictionaryCopy objectForKeyedSubscript:@"isBroadSystemLocationSettingsSwitchEnabled"];
                                                     v236 = v174;
                                                     if (v174 && (v175 = v174, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                     {
@@ -1665,7 +1665,7 @@ LABEL_247:
                                                       v35 = v280;
                                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                                       {
-                                                        if (v279)
+                                                        if (errorCopy2)
                                                         {
                                                           v212 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                           v213 = *MEMORY[0x1E698F240];
@@ -1677,7 +1677,7 @@ LABEL_247:
                                                           v72 = v257;
                                                           v217 = v213;
                                                           v35 = v280;
-                                                          *v279 = [v216 initWithDomain:v217 code:2 userInfo:v215];
+                                                          *errorCopy2 = [v216 initWithDomain:v217 code:2 userInfo:v215];
 
                                                           v9 = v285;
                                                         }
@@ -1701,16 +1701,16 @@ LABEL_247:
                                                       v35 = v280;
                                                     }
 
-                                                    v178 = [v281 intValue];
-                                                    v179 = [v278 intValue];
+                                                    intValue = [v281 intValue];
+                                                    intValue2 = [v278 intValue];
                                                     v234 = v177;
                                                     v235 = v177;
                                                     v249 = v176;
                                                     LODWORD(v233) = [v262 intValue];
-                                                    LODWORD(v218) = v179;
+                                                    LODWORD(v218) = intValue2;
                                                     v30 = v284;
-                                                    v14 = [(BMMomentsEventData *)v287 initWithEvent:v289 bundle:v290 isBundle:v288 IHAState:v284 age:v35 ageRange:v178 biologicalSex:v218 startDate:v275 endDate:v274 categoryOfEvent:v52 bundleInterface:v270 bundleEvergreenType:v268 sugSeetEngType:v267 appEntryEngType:v61 megaSignalTypeUsed:v69 viewVisibleSuggestionsCount:v264 viewTotalSuggestionsCount:v260 onboardingFlowCompletionState:v233 isJournalAppInstalled:v259 isJournalAppLocked:v255 isJournalSuggestionSkipped:v253 isActivitySettingsSwitchEnabled:v251 isCommunicationSettingsSwitchEnabled:v250 isSignificantLocationSettingsSwitchEnabled:v176 isMediaSettingsSwitchEnabled:v245 isNearbyPeopleSettingsSwitchEnabled:v243 isPhotoSettingsSwitchEnabled:v241 isStateOfMindSettingsSwitchEnabled:v240 isReflectionSettingsSwitchEnabled:v286 isBroadSystemLocationSettingsSwitchEnabled:v234];
-                                                    v287 = v14;
+                                                    v14 = [(BMMomentsEventData *)selfCopy initWithEvent:v289 bundle:v290 isBundle:v288 IHAState:v284 age:v35 ageRange:intValue biologicalSex:v218 startDate:v275 endDate:v274 categoryOfEvent:v52 bundleInterface:v270 bundleEvergreenType:v268 sugSeetEngType:v267 appEntryEngType:v61 megaSignalTypeUsed:v69 viewVisibleSuggestionsCount:v264 viewTotalSuggestionsCount:v260 onboardingFlowCompletionState:v233 isJournalAppInstalled:v259 isJournalAppLocked:v255 isJournalSuggestionSkipped:v253 isActivitySettingsSwitchEnabled:v251 isCommunicationSettingsSwitchEnabled:v250 isSignificantLocationSettingsSwitchEnabled:v176 isMediaSettingsSwitchEnabled:v245 isNearbyPeopleSettingsSwitchEnabled:v243 isPhotoSettingsSwitchEnabled:v241 isStateOfMindSettingsSwitchEnabled:v240 isReflectionSettingsSwitchEnabled:v286 isBroadSystemLocationSettingsSwitchEnabled:v234];
+                                                    selfCopy = v14;
                                                     v72 = v257;
                                                     v135 = v286;
 LABEL_251:
@@ -1730,7 +1730,7 @@ LABEL_259:
                                                     goto LABEL_260;
                                                   }
 
-                                                  if (v279)
+                                                  if (errorCopy2)
                                                   {
                                                     v206 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v207 = *MEMORY[0x1E698F240];
@@ -1747,7 +1747,7 @@ LABEL_259:
                                                     v236 = v210;
                                                     v135 = 0;
                                                     v14 = 0;
-                                                    *v279 = [v211 initWithDomain:v207 code:2 userInfo:?];
+                                                    *errorCopy2 = [v211 initWithDomain:v207 code:2 userInfo:?];
                                                     v30 = v284;
                                                     v35 = v280;
                                                     goto LABEL_251;
@@ -1768,7 +1768,7 @@ LABEL_316:
                                                   goto LABEL_192;
                                                 }
 
-                                                if (v279)
+                                                if (errorCopy2)
                                                 {
                                                   v200 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                   v201 = *MEMORY[0x1E698F240];
@@ -1785,7 +1785,7 @@ LABEL_316:
                                                   v237 = v204;
                                                   v240 = 0;
                                                   v14 = 0;
-                                                  *v279 = [v205 initWithDomain:v201 code:2 userInfo:?];
+                                                  *errorCopy2 = [v205 initWithDomain:v201 code:2 userInfo:?];
                                                   goto LABEL_316;
                                                 }
 
@@ -1797,7 +1797,7 @@ LABEL_314:
                                                 goto LABEL_253;
                                               }
 
-                                              if (v279)
+                                              if (errorCopy2)
                                               {
                                                 v194 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v195 = *MEMORY[0x1E698F240];
@@ -1814,7 +1814,7 @@ LABEL_314:
                                                 v238 = v198;
                                                 v241 = 0;
                                                 v14 = 0;
-                                                *v279 = [v199 initWithDomain:v195 code:2 userInfo:?];
+                                                *errorCopy2 = [v199 initWithDomain:v195 code:2 userInfo:?];
                                                 goto LABEL_314;
                                               }
 
@@ -1826,7 +1826,7 @@ LABEL_312:
                                               goto LABEL_254;
                                             }
 
-                                            if (v279)
+                                            if (errorCopy2)
                                             {
                                               v188 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v189 = *MEMORY[0x1E698F240];
@@ -1843,7 +1843,7 @@ LABEL_312:
                                               v239 = v192;
                                               v243 = 0;
                                               v14 = 0;
-                                              *v279 = [v193 initWithDomain:v189 code:2 userInfo:?];
+                                              *errorCopy2 = [v193 initWithDomain:v189 code:2 userInfo:?];
                                               goto LABEL_312;
                                             }
 
@@ -1855,7 +1855,7 @@ LABEL_310:
                                             goto LABEL_255;
                                           }
 
-                                          if (v279)
+                                          if (errorCopy2)
                                           {
                                             v182 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v183 = *MEMORY[0x1E698F240];
@@ -1872,7 +1872,7 @@ LABEL_310:
                                             v242 = v186;
                                             v245 = 0;
                                             v14 = 0;
-                                            *v279 = [v187 initWithDomain:v183 code:2 userInfo:?];
+                                            *errorCopy2 = [v187 initWithDomain:v183 code:2 userInfo:?];
                                             goto LABEL_310;
                                           }
 
@@ -1884,7 +1884,7 @@ LABEL_308:
                                           goto LABEL_256;
                                         }
 
-                                        if (v279)
+                                        if (errorCopy2)
                                         {
                                           v168 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v169 = *MEMORY[0x1E698F240];
@@ -1901,7 +1901,7 @@ LABEL_308:
                                           v244 = v172;
                                           v249 = 0;
                                           v14 = 0;
-                                          *v279 = [v173 initWithDomain:v169 code:2 userInfo:?];
+                                          *errorCopy2 = [v173 initWithDomain:v169 code:2 userInfo:?];
                                           goto LABEL_308;
                                         }
 
@@ -1913,7 +1913,7 @@ LABEL_303:
                                         goto LABEL_257;
                                       }
 
-                                      if (v279)
+                                      if (errorCopy2)
                                       {
                                         v162 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v163 = *MEMORY[0x1E698F240];
@@ -1930,7 +1930,7 @@ LABEL_303:
                                         v246 = v166;
                                         v250 = 0;
                                         v14 = 0;
-                                        *v279 = [v167 initWithDomain:v163 code:2 userInfo:?];
+                                        *errorCopy2 = [v167 initWithDomain:v163 code:2 userInfo:?];
                                         goto LABEL_303;
                                       }
 
@@ -1942,7 +1942,7 @@ LABEL_299:
                                       goto LABEL_258;
                                     }
 
-                                    if (v279)
+                                    if (errorCopy2)
                                     {
                                       v154 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v155 = *MEMORY[0x1E698F240];
@@ -1960,7 +1960,7 @@ LABEL_299:
                                       v248 = v158;
                                       v251 = 0;
                                       v14 = 0;
-                                      *v279 = [v159 initWithDomain:v155 code:2 userInfo:?];
+                                      *errorCopy2 = [v159 initWithDomain:v155 code:2 userInfo:?];
                                       goto LABEL_299;
                                     }
 
@@ -1979,7 +1979,7 @@ LABEL_294:
                                     goto LABEL_165;
                                   }
 
-                                  if (v279)
+                                  if (errorCopy2)
                                   {
                                     v247 = v73;
                                     v136 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1999,7 +1999,7 @@ LABEL_294:
                                     v254 = v140;
                                     v259 = 0;
                                     v14 = 0;
-                                    *v279 = [v141 initWithDomain:v137 code:2 userInfo:?];
+                                    *errorCopy2 = [v141 initWithDomain:v137 code:2 userInfo:?];
                                     v30 = v284;
                                     v35 = v280;
 LABEL_262:
@@ -2026,7 +2026,7 @@ LABEL_263:
                                   goto LABEL_122;
                                 }
 
-                                if (v279)
+                                if (errorCopy2)
                                 {
                                   v105 = v72;
                                   v106 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -2045,7 +2045,7 @@ LABEL_263:
                                   v261 = v110;
                                   v104 = 0;
                                   v14 = 0;
-                                  *v279 = [v111 initWithDomain:v107 code:2 userInfo:?];
+                                  *errorCopy2 = [v111 initWithDomain:v107 code:2 userInfo:?];
                                   v30 = v284;
                                   v35 = v280;
 LABEL_264:
@@ -2063,7 +2063,7 @@ LABEL_265:
                                 goto LABEL_266;
                               }
 
-                              if (v279)
+                              if (errorCopy2)
                               {
                                 v96 = v69;
                                 v97 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -2082,7 +2082,7 @@ LABEL_265:
                                 v263 = v102;
                                 v264 = 0;
                                 v14 = 0;
-                                *v279 = [v103 initWithDomain:v98 code:2 userInfo:?];
+                                *errorCopy2 = [v103 initWithDomain:v98 code:2 userInfo:?];
                                 v30 = v284;
                                 v35 = v280;
                                 goto LABEL_265;
@@ -2105,7 +2105,7 @@ LABEL_266:
                               goto LABEL_110;
                             }
 
-                            if (v279)
+                            if (errorCopy2)
                             {
                               v92 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v93 = *MEMORY[0x1E698F240];
@@ -2117,7 +2117,7 @@ LABEL_266:
                               v72 = v94;
                               v69 = 0;
                               v14 = 0;
-                              *v279 = [v95 initWithDomain:v93 code:2 userInfo:v94];
+                              *errorCopy2 = [v95 initWithDomain:v93 code:2 userInfo:v94];
                               v30 = v284;
                               goto LABEL_227;
                             }
@@ -2146,7 +2146,7 @@ LABEL_267:
                             goto LABEL_102;
                           }
 
-                          if (v279)
+                          if (errorCopy2)
                           {
                             v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v91 = *MEMORY[0x1E698F240];
@@ -2156,7 +2156,7 @@ LABEL_267:
                             v265 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v330 forKeys:&v329 count:1];
                             v61 = 0;
                             v14 = 0;
-                            *v279 = [v90 initWithDomain:v91 code:2 userInfo:?];
+                            *errorCopy2 = [v90 initWithDomain:v91 code:2 userInfo:?];
                             v30 = v284;
                             v35 = v280;
                             v52 = v60;
@@ -2181,7 +2181,7 @@ LABEL_268:
                           goto LABEL_88;
                         }
 
-                        if (v279)
+                        if (errorCopy2)
                         {
                           v84 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v85 = *MEMORY[0x1E698F240];
@@ -2191,7 +2191,7 @@ LABEL_268:
                           v266 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v332 forKeys:&v331 count:1];
                           v267 = 0;
                           v14 = 0;
-                          *v279 = [v84 initWithDomain:v85 code:2 userInfo:?];
+                          *errorCopy2 = [v84 initWithDomain:v85 code:2 userInfo:?];
                           v30 = v284;
                           v35 = v280;
                           goto LABEL_268;
@@ -2207,7 +2207,7 @@ LABEL_269:
                         goto LABEL_270;
                       }
 
-                      if (v279)
+                      if (errorCopy2)
                       {
                         v80 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v81 = *MEMORY[0x1E698F240];
@@ -2217,7 +2217,7 @@ LABEL_269:
                         v271 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v334 forKeys:&v333 count:1];
                         v268 = 0;
                         v14 = 0;
-                        *v279 = [v80 initWithDomain:v81 code:2 userInfo:v271];
+                        *errorCopy2 = [v80 initWithDomain:v81 code:2 userInfo:v271];
                         goto LABEL_209;
                       }
 
@@ -2231,7 +2231,7 @@ LABEL_270:
                       goto LABEL_271;
                     }
 
-                    if (v279)
+                    if (errorCopy2)
                     {
                       v74 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v75 = *MEMORY[0x1E698F240];
@@ -2241,7 +2241,7 @@ LABEL_270:
                       v269 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v336 forKeys:&v335 count:1];
                       v270 = 0;
                       v14 = 0;
-                      *v279 = [v74 initWithDomain:v75 code:2 userInfo:?];
+                      *errorCopy2 = [v74 initWithDomain:v75 code:2 userInfo:?];
                       goto LABEL_156;
                     }
 
@@ -2261,7 +2261,7 @@ LABEL_271:
                     goto LABEL_70;
                   }
 
-                  if (v279)
+                  if (errorCopy2)
                   {
                     v70 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v71 = *MEMORY[0x1E698F240];
@@ -2270,7 +2270,7 @@ LABEL_271:
                     v338 = v270;
                     v282 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v338 forKeys:&v337 count:1];
                     v14 = 0;
-                    *v279 = [v70 initWithDomain:v71 code:2 userInfo:v282];
+                    *errorCopy2 = [v70 initWithDomain:v71 code:2 userInfo:v282];
                     v30 = v284;
                     v35 = v280;
                     v52 = 0;
@@ -2287,7 +2287,7 @@ LABEL_272:
                   goto LABEL_273;
                 }
 
-                if (v279)
+                if (errorCopy2)
                 {
                   v114 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v115 = *MEMORY[0x1E698F240];
@@ -2297,7 +2297,7 @@ LABEL_272:
                   v272 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v340 forKeys:&v339 count:1];
                   v274 = 0;
                   v14 = 0;
-                  *v279 = [v114 initWithDomain:v115 code:2 userInfo:?];
+                  *errorCopy2 = [v114 initWithDomain:v115 code:2 userInfo:?];
                   v30 = v284;
                   v35 = v280;
                   goto LABEL_272;
@@ -2313,7 +2313,7 @@ LABEL_273:
                 goto LABEL_274;
               }
 
-              if (v279)
+              if (errorCopy2)
               {
                 v112 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v113 = *MEMORY[0x1E698F240];
@@ -2323,7 +2323,7 @@ LABEL_273:
                 v273 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v342 forKeys:&v341 count:1];
                 v275 = 0;
                 v14 = 0;
-                *v279 = [v112 initWithDomain:v113 code:2 userInfo:?];
+                *errorCopy2 = [v112 initWithDomain:v113 code:2 userInfo:?];
                 goto LABEL_242;
               }
 
@@ -2346,7 +2346,7 @@ LABEL_274:
               goto LABEL_60;
             }
 
-            if (v279)
+            if (errorCopy2)
             {
               v86 = objc_alloc(MEMORY[0x1E696ABC0]);
               v87 = *MEMORY[0x1E698F240];
@@ -2356,7 +2356,7 @@ LABEL_274:
               v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v344 forKeys:&v343 count:1];
               v278 = 0;
               v14 = 0;
-              *v279 = [v86 initWithDomain:v87 code:2 userInfo:v88];
+              *errorCopy2 = [v86 initWithDomain:v87 code:2 userInfo:v88];
               v45 = v88;
               goto LABEL_238;
             }
@@ -2380,7 +2380,7 @@ LABEL_275:
             goto LABEL_52;
           }
 
-          if (v279)
+          if (errorCopy2)
           {
             v82 = objc_alloc(MEMORY[0x1E696ABC0]);
             v83 = *MEMORY[0x1E698F240];
@@ -2390,7 +2390,7 @@ LABEL_275:
             v277 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v346 forKeys:&v345 count:1];
             v281 = 0;
             v14 = 0;
-            *v279 = [v82 initWithDomain:v83 code:2 userInfo:?];
+            *errorCopy2 = [v82 initWithDomain:v83 code:2 userInfo:?];
             goto LABEL_211;
           }
 
@@ -2403,7 +2403,7 @@ LABEL_276:
           goto LABEL_277;
         }
 
-        if (a4)
+        if (error)
         {
           v36 = objc_alloc(MEMORY[0x1E696ABC0]);
           v37 = *MEMORY[0x1E698F240];
@@ -2418,7 +2418,7 @@ LABEL_276:
           v40 = [v36 initWithDomain:v37 code:2 userInfo:?];
           v35 = 0;
           v14 = 0;
-          *a4 = v40;
+          *error = v40;
           v30 = v284;
           goto LABEL_276;
         }
@@ -2431,7 +2431,7 @@ LABEL_277:
         goto LABEL_278;
       }
 
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -2443,7 +2443,7 @@ LABEL_277:
         v35 = v33;
         v30 = 0;
         v14 = 0;
-        *a4 = [v34 initWithDomain:v32 code:2 userInfo:v9];
+        *error = [v34 initWithDomain:v32 code:2 userInfo:v9];
         goto LABEL_277;
       }
 
@@ -2451,15 +2451,15 @@ LABEL_277:
       v14 = 0;
 LABEL_278:
 
-      self = v287;
+      self = selfCopy;
       goto LABEL_279;
     }
 
-    if (a4)
+    if (error)
     {
       v22 = v7;
       v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v24 = self;
+      selfCopy2 = self;
       v25 = *MEMORY[0x1E698F240];
       v353 = *MEMORY[0x1E696A578];
       v290 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"bundle"];
@@ -2468,9 +2468,9 @@ LABEL_278:
       v26 = v23;
       v7 = v22;
       v27 = v25;
-      self = v24;
+      self = selfCopy2;
       v14 = 0;
-      *a4 = [v26 initWithDomain:v27 code:2 userInfo:v8];
+      *error = [v26 initWithDomain:v27 code:2 userInfo:v8];
 LABEL_280:
 
       goto LABEL_281;
@@ -2479,10 +2479,10 @@ LABEL_280:
     goto LABEL_39;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v16 = self;
+    selfCopy3 = self;
     v17 = *MEMORY[0x1E698F240];
     v355 = *MEMORY[0x1E696A578];
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"event"];
@@ -2491,10 +2491,10 @@ LABEL_280:
     v20 = v15;
     v7 = v18;
     v21 = v17;
-    self = v16;
+    self = selfCopy3;
     v293 = v19;
     v14 = 0;
-    *a4 = [v20 initWithDomain:v21 code:2 userInfo:?];
+    *error = [v20 initWithDomain:v21 code:2 userInfo:?];
 LABEL_281:
 
     goto LABEL_282;
@@ -2511,25 +2511,25 @@ LABEL_282:
 {
   v3 = objc_opt_new();
   [(BMMomentsEventData *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_event)
   {
     PBDataWriterPlaceMark();
-    [(BMMomentsEventDataEvent *)self->_event writeTo:v4];
+    [(BMMomentsEventDataEvent *)self->_event writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_bundle)
   {
     PBDataWriterPlaceMark();
-    [(BMMomentsEventDataEventBundle *)self->_bundle writeTo:v4];
+    [(BMMomentsEventDataEventBundle *)self->_bundle writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -2684,9 +2684,9 @@ LABEL_282:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v155.receiver = self;
   v155.super_class = BMMomentsEventData;
   v5 = [(BMEventBase *)&v155 init];
@@ -2699,8 +2699,8 @@ LABEL_280:
 
   while (1)
   {
-    v6 = [v4 position];
-    if (v6 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -2711,18 +2711,18 @@ LABEL_280:
     while (1)
     {
       LOBYTE(v156) = 0;
-      v10 = [v4 position] + 1;
-      if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+      v10 = [fromCopy position] + 1;
+      if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
       {
-        v12 = [v4 data];
-        [v12 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v9 |= (LOBYTE(v156) & 0x7F) << v7;
@@ -2740,9 +2740,9 @@ LABEL_280:
       }
     }
 
-    v14 = [v4 hasError] ? 0 : v9;
+    v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-    if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
     {
       break;
     }
@@ -2757,7 +2757,7 @@ LABEL_16:
           goto LABEL_279;
         }
 
-        v15 = [[BMMomentsEventDataEvent alloc] initByReadFrom:v4];
+        v15 = [[BMMomentsEventDataEvent alloc] initByReadFrom:fromCopy];
         if (!v15)
         {
           goto LABEL_279;
@@ -2773,7 +2773,7 @@ LABEL_16:
           goto LABEL_279;
         }
 
-        v15 = [[BMMomentsEventDataEventBundle alloc] initByReadFrom:v4];
+        v15 = [[BMMomentsEventDataEventBundle alloc] initByReadFrom:fromCopy];
         if (!v15)
         {
           goto LABEL_279;
@@ -2794,18 +2794,18 @@ LABEL_104:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v55 = [v4 position] + 1;
-          if (v55 >= [v4 position] && (v56 = objc_msgSend(v4, "position") + 1, v56 <= objc_msgSend(v4, "length")))
+          v55 = [fromCopy position] + 1;
+          if (v55 >= [fromCopy position] && (v56 = objc_msgSend(fromCopy, "position") + 1, v56 <= objc_msgSend(fromCopy, "length")))
           {
-            v57 = [v4 data];
-            [v57 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v54 |= (LOBYTE(v156) & 0x7F) << v52;
@@ -2823,7 +2823,7 @@ LABEL_104:
           }
         }
 
-        v23 = (v54 != 0) & ~[v4 hasError];
+        v23 = (v54 != 0) & ~[fromCopy hasError];
 LABEL_236:
         v150 = 48;
         goto LABEL_273;
@@ -2835,18 +2835,18 @@ LABEL_236:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v68 = [v4 position] + 1;
-          if (v68 >= [v4 position] && (v69 = objc_msgSend(v4, "position") + 1, v69 <= objc_msgSend(v4, "length")))
+          v68 = [fromCopy position] + 1;
+          if (v68 >= [fromCopy position] && (v69 = objc_msgSend(fromCopy, "position") + 1, v69 <= objc_msgSend(fromCopy, "length")))
           {
-            v70 = [v4 data];
-            [v70 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v67 |= (LOBYTE(v156) & 0x7F) << v65;
@@ -2864,7 +2864,7 @@ LABEL_236:
           }
         }
 
-        v23 = (v67 != 0) & ~[v4 hasError];
+        v23 = (v67 != 0) & ~[fromCopy hasError];
 LABEL_242:
         v150 = 50;
         goto LABEL_273;
@@ -2876,18 +2876,18 @@ LABEL_242:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v36 = [v4 position] + 1;
-          if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+          v36 = [fromCopy position] + 1;
+          if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
           {
-            v38 = [v4 data];
-            [v38 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v35 |= (LOBYTE(v156) & 0x7F) << v33;
@@ -2905,7 +2905,7 @@ LABEL_242:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v39 = 0;
         }
@@ -2925,18 +2925,18 @@ LABEL_230:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v90 = [v4 position] + 1;
-          if (v90 >= [v4 position] && (v91 = objc_msgSend(v4, "position") + 1, v91 <= objc_msgSend(v4, "length")))
+          v90 = [fromCopy position] + 1;
+          if (v90 >= [fromCopy position] && (v91 = objc_msgSend(fromCopy, "position") + 1, v91 <= objc_msgSend(fromCopy, "length")))
           {
-            v92 = [v4 data];
-            [v92 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v89 |= (LOBYTE(v156) & 0x7F) << v87;
@@ -2953,7 +2953,7 @@ LABEL_230:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v89 > 6)
+        if (([fromCopy hasError] & 1) != 0 || v89 > 6)
         {
 LABEL_251:
           LODWORD(v89) = 0;
@@ -2968,18 +2968,18 @@ LABEL_251:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v102 = [v4 position] + 1;
-          if (v102 >= [v4 position] && (v103 = objc_msgSend(v4, "position") + 1, v103 <= objc_msgSend(v4, "length")))
+          v102 = [fromCopy position] + 1;
+          if (v102 >= [fromCopy position] && (v103 = objc_msgSend(fromCopy, "position") + 1, v103 <= objc_msgSend(fromCopy, "length")))
           {
-            v104 = [v4 data];
-            [v104 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v101 |= (LOBYTE(v156) & 0x7F) << v99;
@@ -2996,7 +2996,7 @@ LABEL_251:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v101 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v101 > 3)
         {
 LABEL_257:
           LODWORD(v101) = 0;
@@ -3007,18 +3007,18 @@ LABEL_257:
       case 8u:
         v5->_hasRaw_startDate = 1;
         v156 = 0.0;
-        v71 = [v4 position] + 8;
-        if (v71 >= [v4 position] && (v72 = objc_msgSend(v4, "position") + 8, v72 <= objc_msgSend(v4, "length")))
+        v71 = [fromCopy position] + 8;
+        if (v71 >= [fromCopy position] && (v72 = objc_msgSend(fromCopy, "position") + 8, v72 <= objc_msgSend(fromCopy, "length")))
         {
-          v151 = [v4 data];
-          [v151 getBytes:&v156 range:{objc_msgSend(v4, "position"), 8}];
+          data7 = [fromCopy data];
+          [data7 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_startDate = v156;
@@ -3026,18 +3026,18 @@ LABEL_257:
       case 9u:
         v5->_hasRaw_endDate = 1;
         v156 = 0.0;
-        v112 = [v4 position] + 8;
-        if (v112 >= [v4 position] && (v113 = objc_msgSend(v4, "position") + 8, v113 <= objc_msgSend(v4, "length")))
+        v112 = [fromCopy position] + 8;
+        if (v112 >= [fromCopy position] && (v113 = objc_msgSend(fromCopy, "position") + 8, v113 <= objc_msgSend(fromCopy, "length")))
         {
-          v152 = [v4 data];
-          [v152 getBytes:&v156 range:{objc_msgSend(v4, "position"), 8}];
+          data8 = [fromCopy data];
+          [data8 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_endDate = v156;
@@ -3078,18 +3078,18 @@ LABEL_161:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v61 = [v4 position] + 1;
-          if (v61 >= [v4 position] && (v62 = objc_msgSend(v4, "position") + 1, v62 <= objc_msgSend(v4, "length")))
+          v61 = [fromCopy position] + 1;
+          if (v61 >= [fromCopy position] && (v62 = objc_msgSend(fromCopy, "position") + 1, v62 <= objc_msgSend(fromCopy, "length")))
           {
-            v63 = [v4 data];
-            [v63 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v60 |= (LOBYTE(v156) & 0x7F) << v58;
@@ -3107,7 +3107,7 @@ LABEL_161:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v64 = 0;
         }
@@ -3128,18 +3128,18 @@ LABEL_240:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v27 = [v4 position] + 1;
-          if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+          v27 = [fromCopy position] + 1;
+          if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
           {
-            v29 = [v4 data];
-            [v29 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data10 = [fromCopy data];
+            [data10 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v26 |= (LOBYTE(v156) & 0x7F) << v24;
@@ -3157,7 +3157,7 @@ LABEL_240:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v30 = 0;
         }
@@ -3177,18 +3177,18 @@ LABEL_226:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v77 = [v4 position] + 1;
-          if (v77 >= [v4 position] && (v78 = objc_msgSend(v4, "position") + 1, v78 <= objc_msgSend(v4, "length")))
+          v77 = [fromCopy position] + 1;
+          if (v77 >= [fromCopy position] && (v78 = objc_msgSend(fromCopy, "position") + 1, v78 <= objc_msgSend(fromCopy, "length")))
           {
-            v79 = [v4 data];
-            [v79 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data11 = [fromCopy data];
+            [data11 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v76 |= (LOBYTE(v156) & 0x7F) << v74;
@@ -3205,7 +3205,7 @@ LABEL_226:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v76 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v76 > 5)
         {
 LABEL_245:
           LODWORD(v76) = 0;
@@ -3221,18 +3221,18 @@ LABEL_245:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v108 = [v4 position] + 1;
-          if (v108 >= [v4 position] && (v109 = objc_msgSend(v4, "position") + 1, v109 <= objc_msgSend(v4, "length")))
+          v108 = [fromCopy position] + 1;
+          if (v108 >= [fromCopy position] && (v109 = objc_msgSend(fromCopy, "position") + 1, v109 <= objc_msgSend(fromCopy, "length")))
           {
-            v110 = [v4 data];
-            [v110 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data12 = [fromCopy data];
+            [data12 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v107 |= (LOBYTE(v156) & 0x7F) << v105;
@@ -3250,7 +3250,7 @@ LABEL_245:
           }
         }
 
-        v23 = (v107 != 0) & ~[v4 hasError];
+        v23 = (v107 != 0) & ~[fromCopy hasError];
 LABEL_260:
         v150 = 55;
         goto LABEL_273;
@@ -3262,18 +3262,18 @@ LABEL_260:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v123 = [v4 position] + 1;
-          if (v123 >= [v4 position] && (v124 = objc_msgSend(v4, "position") + 1, v124 <= objc_msgSend(v4, "length")))
+          v123 = [fromCopy position] + 1;
+          if (v123 >= [fromCopy position] && (v124 = objc_msgSend(fromCopy, "position") + 1, v124 <= objc_msgSend(fromCopy, "length")))
           {
-            v125 = [v4 data];
-            [v125 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data13 = [fromCopy data];
+            [data13 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v122 |= (LOBYTE(v156) & 0x7F) << v120;
@@ -3291,7 +3291,7 @@ LABEL_260:
           }
         }
 
-        v23 = (v122 != 0) & ~[v4 hasError];
+        v23 = (v122 != 0) & ~[fromCopy hasError];
 LABEL_264:
         v150 = 57;
         goto LABEL_273;
@@ -3303,18 +3303,18 @@ LABEL_264:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v84 = [v4 position] + 1;
-          if (v84 >= [v4 position] && (v85 = objc_msgSend(v4, "position") + 1, v85 <= objc_msgSend(v4, "length")))
+          v84 = [fromCopy position] + 1;
+          if (v84 >= [fromCopy position] && (v85 = objc_msgSend(fromCopy, "position") + 1, v85 <= objc_msgSend(fromCopy, "length")))
           {
-            v86 = [v4 data];
-            [v86 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data14 = [fromCopy data];
+            [data14 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v83 |= (LOBYTE(v156) & 0x7F) << v81;
@@ -3332,7 +3332,7 @@ LABEL_264:
           }
         }
 
-        v23 = (v83 != 0) & ~[v4 hasError];
+        v23 = (v83 != 0) & ~[fromCopy hasError];
 LABEL_248:
         v150 = 59;
         goto LABEL_273;
@@ -3344,18 +3344,18 @@ LABEL_248:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v96 = [v4 position] + 1;
-          if (v96 >= [v4 position] && (v97 = objc_msgSend(v4, "position") + 1, v97 <= objc_msgSend(v4, "length")))
+          v96 = [fromCopy position] + 1;
+          if (v96 >= [fromCopy position] && (v97 = objc_msgSend(fromCopy, "position") + 1, v97 <= objc_msgSend(fromCopy, "length")))
           {
-            v98 = [v4 data];
-            [v98 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data15 = [fromCopy data];
+            [data15 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v95 |= (LOBYTE(v156) & 0x7F) << v93;
@@ -3373,7 +3373,7 @@ LABEL_248:
           }
         }
 
-        v23 = (v95 != 0) & ~[v4 hasError];
+        v23 = (v95 != 0) & ~[fromCopy hasError];
 LABEL_254:
         v150 = 61;
         goto LABEL_273;
@@ -3385,18 +3385,18 @@ LABEL_254:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v117 = [v4 position] + 1;
-          if (v117 >= [v4 position] && (v118 = objc_msgSend(v4, "position") + 1, v118 <= objc_msgSend(v4, "length")))
+          v117 = [fromCopy position] + 1;
+          if (v117 >= [fromCopy position] && (v118 = objc_msgSend(fromCopy, "position") + 1, v118 <= objc_msgSend(fromCopy, "length")))
           {
-            v119 = [v4 data];
-            [v119 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data16 = [fromCopy data];
+            [data16 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v116 |= (LOBYTE(v156) & 0x7F) << v114;
@@ -3414,7 +3414,7 @@ LABEL_254:
           }
         }
 
-        v23 = (v116 != 0) & ~[v4 hasError];
+        v23 = (v116 != 0) & ~[fromCopy hasError];
 LABEL_262:
         v150 = 63;
         goto LABEL_273;
@@ -3426,18 +3426,18 @@ LABEL_262:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v129 = [v4 position] + 1;
-          if (v129 >= [v4 position] && (v130 = objc_msgSend(v4, "position") + 1, v130 <= objc_msgSend(v4, "length")))
+          v129 = [fromCopy position] + 1;
+          if (v129 >= [fromCopy position] && (v130 = objc_msgSend(fromCopy, "position") + 1, v130 <= objc_msgSend(fromCopy, "length")))
           {
-            v131 = [v4 data];
-            [v131 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data17 = [fromCopy data];
+            [data17 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v128 |= (LOBYTE(v156) & 0x7F) << v126;
@@ -3455,7 +3455,7 @@ LABEL_262:
           }
         }
 
-        v23 = (v128 != 0) & ~[v4 hasError];
+        v23 = (v128 != 0) & ~[fromCopy hasError];
 LABEL_266:
         v150 = 65;
         goto LABEL_273;
@@ -3467,18 +3467,18 @@ LABEL_266:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v49 = [v4 position] + 1;
-          if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 1, v50 <= objc_msgSend(v4, "length")))
+          v49 = [fromCopy position] + 1;
+          if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 1, v50 <= objc_msgSend(fromCopy, "length")))
           {
-            v51 = [v4 data];
-            [v51 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data18 = [fromCopy data];
+            [data18 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v48 |= (LOBYTE(v156) & 0x7F) << v46;
@@ -3496,7 +3496,7 @@ LABEL_266:
           }
         }
 
-        v23 = (v48 != 0) & ~[v4 hasError];
+        v23 = (v48 != 0) & ~[fromCopy hasError];
 LABEL_234:
         v150 = 67;
         goto LABEL_273;
@@ -3508,18 +3508,18 @@ LABEL_234:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v43 = [v4 position] + 1;
-          if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+          v43 = [fromCopy position] + 1;
+          if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
           {
-            v45 = [v4 data];
-            [v45 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data19 = [fromCopy data];
+            [data19 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v42 |= (LOBYTE(v156) & 0x7F) << v40;
@@ -3537,7 +3537,7 @@ LABEL_234:
           }
         }
 
-        v23 = (v42 != 0) & ~[v4 hasError];
+        v23 = (v42 != 0) & ~[fromCopy hasError];
 LABEL_232:
         v150 = 69;
         goto LABEL_273;
@@ -3549,18 +3549,18 @@ LABEL_232:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v147 = [v4 position] + 1;
-          if (v147 >= [v4 position] && (v148 = objc_msgSend(v4, "position") + 1, v148 <= objc_msgSend(v4, "length")))
+          v147 = [fromCopy position] + 1;
+          if (v147 >= [fromCopy position] && (v148 = objc_msgSend(fromCopy, "position") + 1, v148 <= objc_msgSend(fromCopy, "length")))
           {
-            v149 = [v4 data];
-            [v149 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data20 = [fromCopy data];
+            [data20 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v146 |= (LOBYTE(v156) & 0x7F) << v144;
@@ -3578,7 +3578,7 @@ LABEL_232:
           }
         }
 
-        v23 = (v146 != 0) & ~[v4 hasError];
+        v23 = (v146 != 0) & ~[fromCopy hasError];
 LABEL_272:
         v150 = 71;
         goto LABEL_273;
@@ -3590,18 +3590,18 @@ LABEL_272:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data21 = [fromCopy data];
+            [data21 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (LOBYTE(v156) & 0x7F) << v17;
@@ -3619,7 +3619,7 @@ LABEL_272:
           }
         }
 
-        v23 = (v19 != 0) & ~[v4 hasError];
+        v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_222:
         v150 = 73;
         goto LABEL_273;
@@ -3631,18 +3631,18 @@ LABEL_222:
         while (1)
         {
           LOBYTE(v156) = 0;
-          v135 = [v4 position] + 1;
-          if (v135 >= [v4 position] && (v136 = objc_msgSend(v4, "position") + 1, v136 <= objc_msgSend(v4, "length")))
+          v135 = [fromCopy position] + 1;
+          if (v135 >= [fromCopy position] && (v136 = objc_msgSend(fromCopy, "position") + 1, v136 <= objc_msgSend(fromCopy, "length")))
           {
-            v137 = [v4 data];
-            [v137 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+            data22 = [fromCopy data];
+            [data22 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v134 |= (LOBYTE(v156) & 0x7F) << v132;
@@ -3660,7 +3660,7 @@ LABEL_222:
           }
         }
 
-        v23 = (v134 != 0) & ~[v4 hasError];
+        v23 = (v134 != 0) & ~[fromCopy hasError];
 LABEL_268:
         v150 = 75;
         goto LABEL_273;
@@ -3682,18 +3682,18 @@ LABEL_268:
     while (1)
     {
       LOBYTE(v156) = 0;
-      v141 = [v4 position] + 1;
-      if (v141 >= [v4 position] && (v142 = objc_msgSend(v4, "position") + 1, v142 <= objc_msgSend(v4, "length")))
+      v141 = [fromCopy position] + 1;
+      if (v141 >= [fromCopy position] && (v142 = objc_msgSend(fromCopy, "position") + 1, v142 <= objc_msgSend(fromCopy, "length")))
       {
-        v143 = [v4 data];
-        [v143 getBytes:&v156 range:{objc_msgSend(v4, "position"), 1}];
+        data23 = [fromCopy data];
+        [data23 getBytes:&v156 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v140 |= (LOBYTE(v156) & 0x7F) << v138;
@@ -3711,14 +3711,14 @@ LABEL_268:
       }
     }
 
-    v23 = (v140 != 0) & ~[v4 hasError];
+    v23 = (v140 != 0) & ~[fromCopy hasError];
 LABEL_270:
     v150 = 77;
 LABEL_273:
     *(&v5->super.super.isa + v150) = v23;
   }
 
-  if (([v4 hasError] & 1) == 0)
+  if (([fromCopy hasError] & 1) == 0)
   {
     goto LABEL_280;
   }
@@ -3733,21 +3733,21 @@ LABEL_281:
 - (NSString)description
 {
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v35 = [(BMMomentsEventData *)self event];
-  v33 = [(BMMomentsEventData *)self bundle];
+  event = [(BMMomentsEventData *)self event];
+  bundle = [(BMMomentsEventData *)self bundle];
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventData isBundle](self, "isBundle")}];
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventData IHAState](self, "IHAState")}];
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData age](self, "age")}];
   v28 = BMMomentsEventDataAgeRangeTypeAsString([(BMMomentsEventData *)self ageRange]);
   v31 = BMMomentsEventDataBiologicalSexTypeAsString([(BMMomentsEventData *)self biologicalSex]);
-  v27 = [(BMMomentsEventData *)self startDate];
-  v26 = [(BMMomentsEventData *)self endDate];
-  v29 = [(BMMomentsEventData *)self categoryOfEvent];
-  v24 = [(BMMomentsEventData *)self bundleInterface];
-  v25 = [(BMMomentsEventData *)self bundleEvergreenType];
-  v23 = [(BMMomentsEventData *)self sugSeetEngType];
-  v17 = [(BMMomentsEventData *)self appEntryEngType];
-  v22 = [(BMMomentsEventData *)self megaSignalTypeUsed];
+  startDate = [(BMMomentsEventData *)self startDate];
+  endDate = [(BMMomentsEventData *)self endDate];
+  categoryOfEvent = [(BMMomentsEventData *)self categoryOfEvent];
+  bundleInterface = [(BMMomentsEventData *)self bundleInterface];
+  bundleEvergreenType = [(BMMomentsEventData *)self bundleEvergreenType];
+  sugSeetEngType = [(BMMomentsEventData *)self sugSeetEngType];
+  appEntryEngType = [(BMMomentsEventData *)self appEntryEngType];
+  megaSignalTypeUsed = [(BMMomentsEventData *)self megaSignalTypeUsed];
   v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData viewVisibleSuggestionsCount](self, "viewVisibleSuggestionsCount")}];
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEventData viewTotalSuggestionsCount](self, "viewTotalSuggestionsCount")}];
   v15 = BMMomentsEventDataOnboardingFlowCompletionAsString([(BMMomentsEventData *)self onboardingFlowCompletionState]);
@@ -3763,66 +3763,66 @@ LABEL_281:
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventData isStateOfMindSettingsSwitchEnabled](self, "isStateOfMindSettingsSwitchEnabled")}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventData isReflectionSettingsSwitchEnabled](self, "isReflectionSettingsSwitchEnabled")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventData isBroadSystemLocationSettingsSwitchEnabled](self, "isBroadSystemLocationSettingsSwitchEnabled")}];
-  v19 = [v18 initWithFormat:@"BMMomentsEventData with event: %@, bundle: %@, isBundle: %@, IHAState: %@, age: %@, ageRange: %@, biologicalSex: %@, startDate: %@, endDate: %@, categoryOfEvent: %@, bundleInterface: %@, bundleEvergreenType: %@, sugSeetEngType: %@, appEntryEngType: %@, megaSignalTypeUsed: %@, viewVisibleSuggestionsCount: %@, viewTotalSuggestionsCount: %@, onboardingFlowCompletionState: %@, isJournalAppInstalled: %@, isJournalAppLocked: %@, isJournalSuggestionSkipped: %@, isActivitySettingsSwitchEnabled: %@, isCommunicationSettingsSwitchEnabled: %@, isSignificantLocationSettingsSwitchEnabled: %@, isMediaSettingsSwitchEnabled: %@, isNearbyPeopleSettingsSwitchEnabled: %@, isPhotoSettingsSwitchEnabled: %@, isStateOfMindSettingsSwitchEnabled: %@, isReflectionSettingsSwitchEnabled: %@, isBroadSystemLocationSettingsSwitchEnabled: %@", v35, v33, v34, v30, v32, v28, v31, v27, v26, v29, v24, v25, v23, v17, v22, v16, v21, v15, v20, v14, v13, v12, v11, v10, v9, v3, v4, v5, v6, v7];
+  v19 = [v18 initWithFormat:@"BMMomentsEventData with event: %@, bundle: %@, isBundle: %@, IHAState: %@, age: %@, ageRange: %@, biologicalSex: %@, startDate: %@, endDate: %@, categoryOfEvent: %@, bundleInterface: %@, bundleEvergreenType: %@, sugSeetEngType: %@, appEntryEngType: %@, megaSignalTypeUsed: %@, viewVisibleSuggestionsCount: %@, viewTotalSuggestionsCount: %@, onboardingFlowCompletionState: %@, isJournalAppInstalled: %@, isJournalAppLocked: %@, isJournalSuggestionSkipped: %@, isActivitySettingsSwitchEnabled: %@, isCommunicationSettingsSwitchEnabled: %@, isSignificantLocationSettingsSwitchEnabled: %@, isMediaSettingsSwitchEnabled: %@, isNearbyPeopleSettingsSwitchEnabled: %@, isPhotoSettingsSwitchEnabled: %@, isStateOfMindSettingsSwitchEnabled: %@, isReflectionSettingsSwitchEnabled: %@, isBroadSystemLocationSettingsSwitchEnabled: %@", event, bundle, v34, v30, v32, v28, v31, startDate, endDate, categoryOfEvent, bundleInterface, bundleEvergreenType, sugSeetEngType, appEntryEngType, megaSignalTypeUsed, v16, v21, v15, v20, v14, v13, v12, v11, v10, v9, v3, v4, v5, v6, v7];
 
   return v19;
 }
 
-- (BMMomentsEventData)initWithEvent:(id)a3 bundle:(id)a4 isBundle:(id)a5 IHAState:(id)a6 age:(id)a7 ageRange:(int)a8 biologicalSex:(int)a9 startDate:(id)a10 endDate:(id)a11 categoryOfEvent:(id)a12 bundleInterface:(id)a13 bundleEvergreenType:(id)a14 sugSeetEngType:(id)a15 appEntryEngType:(id)a16 megaSignalTypeUsed:(id)a17 viewVisibleSuggestionsCount:(id)a18 viewTotalSuggestionsCount:(id)a19 onboardingFlowCompletionState:(int)a20 isJournalAppInstalled:(id)a21 isJournalAppLocked:(id)a22 isJournalSuggestionSkipped:(id)a23 isActivitySettingsSwitchEnabled:(id)a24 isCommunicationSettingsSwitchEnabled:(id)a25 isSignificantLocationSettingsSwitchEnabled:(id)a26 isMediaSettingsSwitchEnabled:(id)a27 isNearbyPeopleSettingsSwitchEnabled:(id)a28 isPhotoSettingsSwitchEnabled:(id)a29 isStateOfMindSettingsSwitchEnabled:(id)a30 isReflectionSettingsSwitchEnabled:(id)a31 isBroadSystemLocationSettingsSwitchEnabled:(id)a32
+- (BMMomentsEventData)initWithEvent:(id)event bundle:(id)bundle isBundle:(id)isBundle IHAState:(id)state age:(id)age ageRange:(int)range biologicalSex:(int)sex startDate:(id)self0 endDate:(id)self1 categoryOfEvent:(id)self2 bundleInterface:(id)self3 bundleEvergreenType:(id)self4 sugSeetEngType:(id)self5 appEntryEngType:(id)self6 megaSignalTypeUsed:(id)self7 viewVisibleSuggestionsCount:(id)self8 viewTotalSuggestionsCount:(id)self9 onboardingFlowCompletionState:(int)completionState isJournalAppInstalled:(id)installed isJournalAppLocked:(id)locked isJournalSuggestionSkipped:(id)skipped isActivitySettingsSwitchEnabled:(id)enabled isCommunicationSettingsSwitchEnabled:(id)switchEnabled isSignificantLocationSettingsSwitchEnabled:(id)settingsSwitchEnabled isMediaSettingsSwitchEnabled:(id)mediaSettingsSwitchEnabled isNearbyPeopleSettingsSwitchEnabled:(id)peopleSettingsSwitchEnabled isPhotoSettingsSwitchEnabled:(id)photoSettingsSwitchEnabled isStateOfMindSettingsSwitchEnabled:(id)event0 isReflectionSettingsSwitchEnabled:(id)event1 isBroadSystemLocationSettingsSwitchEnabled:(id)event2
 {
-  v57 = a3;
-  v47 = a4;
-  v56 = a4;
-  v35 = a5;
-  v68 = a6;
-  v73 = a7;
-  v71 = a10;
-  v65 = a11;
-  v55 = a12;
-  v54 = a13;
-  v53 = a14;
-  v52 = a15;
-  v51 = a16;
-  v50 = a17;
-  v69 = a18;
-  v70 = a19;
-  v67 = a21;
-  v66 = a22;
-  v36 = a23;
-  v64 = a24;
-  v63 = a25;
-  v62 = a26;
-  v61 = a27;
-  v60 = a28;
-  v59 = a29;
-  v58 = a30;
-  v37 = a31;
-  v38 = a32;
+  eventCopy = event;
+  bundleCopy = bundle;
+  bundleCopy2 = bundle;
+  isBundleCopy = isBundle;
+  stateCopy = state;
+  ageCopy = age;
+  dateCopy = date;
+  endDateCopy = endDate;
+  ofEventCopy = ofEvent;
+  interfaceCopy = interface;
+  typeCopy = type;
+  engTypeCopy = engType;
+  entryEngTypeCopy = entryEngType;
+  usedCopy = used;
+  countCopy = count;
+  suggestionsCountCopy = suggestionsCount;
+  installedCopy = installed;
+  lockedCopy = locked;
+  skippedCopy = skipped;
+  enabledCopy = enabled;
+  switchEnabledCopy = switchEnabled;
+  settingsSwitchEnabledCopy = settingsSwitchEnabled;
+  mediaSettingsSwitchEnabledCopy = mediaSettingsSwitchEnabled;
+  peopleSettingsSwitchEnabledCopy = peopleSettingsSwitchEnabled;
+  photoSettingsSwitchEnabledCopy = photoSettingsSwitchEnabled;
+  mindSettingsSwitchEnabledCopy = mindSettingsSwitchEnabled;
+  reflectionSettingsSwitchEnabledCopy = reflectionSettingsSwitchEnabled;
+  locationSettingsSwitchEnabledCopy = locationSettingsSwitchEnabled;
   v74.receiver = self;
   v74.super_class = BMMomentsEventData;
   v39 = [(BMEventBase *)&v74 init];
   if (v39)
   {
     v39->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v39->_event, a3);
-    objc_storeStrong(&v39->_bundle, v47);
-    if (v35)
+    objc_storeStrong(&v39->_event, event);
+    objc_storeStrong(&v39->_bundle, bundleCopy);
+    if (isBundleCopy)
     {
       v39->_hasIsBundle = 1;
-      v39->_isBundle = [v35 BOOLValue];
+      v39->_isBundle = [isBundleCopy BOOLValue];
     }
 
     else
     {
-      v35 = 0;
+      isBundleCopy = 0;
       v39->_hasIsBundle = 0;
       v39->_isBundle = 0;
     }
 
-    if (v68)
+    if (stateCopy)
     {
       v39->_hasIHAState = 1;
-      v39->_IHAState = [v68 BOOLValue];
+      v39->_IHAState = [stateCopy BOOLValue];
     }
 
     else
@@ -3831,25 +3831,25 @@ LABEL_281:
       v39->_IHAState = 0;
     }
 
-    if (v73)
+    if (ageCopy)
     {
       v39->_hasAge = 1;
-      v40 = [v73 intValue];
+      intValue = [ageCopy intValue];
     }
 
     else
     {
       v39->_hasAge = 0;
-      v40 = -1;
+      intValue = -1;
     }
 
-    v39->_age = v40;
-    v39->_ageRange = a8;
-    v39->_biologicalSex = a9;
-    if (v71)
+    v39->_age = intValue;
+    v39->_ageRange = range;
+    v39->_biologicalSex = sex;
+    if (dateCopy)
     {
       v39->_hasRaw_startDate = 1;
-      [v71 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -3859,10 +3859,10 @@ LABEL_281:
     }
 
     v39->_raw_startDate = v41;
-    if (v65)
+    if (endDateCopy)
     {
       v39->_hasRaw_endDate = 1;
-      [v65 timeIntervalSince1970];
+      [endDateCopy timeIntervalSince1970];
     }
 
     else
@@ -3872,43 +3872,43 @@ LABEL_281:
     }
 
     v39->_raw_endDate = v42;
-    objc_storeStrong(&v39->_categoryOfEvent, a12);
-    objc_storeStrong(&v39->_bundleInterface, a13);
-    objc_storeStrong(&v39->_bundleEvergreenType, a14);
-    objc_storeStrong(&v39->_sugSeetEngType, a15);
-    objc_storeStrong(&v39->_appEntryEngType, a16);
-    objc_storeStrong(&v39->_megaSignalTypeUsed, a17);
-    if (v69)
+    objc_storeStrong(&v39->_categoryOfEvent, ofEvent);
+    objc_storeStrong(&v39->_bundleInterface, interface);
+    objc_storeStrong(&v39->_bundleEvergreenType, type);
+    objc_storeStrong(&v39->_sugSeetEngType, engType);
+    objc_storeStrong(&v39->_appEntryEngType, entryEngType);
+    objc_storeStrong(&v39->_megaSignalTypeUsed, used);
+    if (countCopy)
     {
       v39->_hasViewVisibleSuggestionsCount = 1;
-      v43 = [v69 intValue];
+      intValue2 = [countCopy intValue];
     }
 
     else
     {
       v39->_hasViewVisibleSuggestionsCount = 0;
-      v43 = -1;
+      intValue2 = -1;
     }
 
-    v39->_viewVisibleSuggestionsCount = v43;
-    if (v70)
+    v39->_viewVisibleSuggestionsCount = intValue2;
+    if (suggestionsCountCopy)
     {
       v39->_hasViewTotalSuggestionsCount = 1;
-      v44 = [v70 intValue];
+      intValue3 = [suggestionsCountCopy intValue];
     }
 
     else
     {
       v39->_hasViewTotalSuggestionsCount = 0;
-      v44 = -1;
+      intValue3 = -1;
     }
 
-    v39->_viewTotalSuggestionsCount = v44;
-    v39->_onboardingFlowCompletionState = a20;
-    if (v67)
+    v39->_viewTotalSuggestionsCount = intValue3;
+    v39->_onboardingFlowCompletionState = completionState;
+    if (installedCopy)
     {
       v39->_hasIsJournalAppInstalled = 1;
-      v39->_isJournalAppInstalled = [v67 BOOLValue];
+      v39->_isJournalAppInstalled = [installedCopy BOOLValue];
     }
 
     else
@@ -3917,10 +3917,10 @@ LABEL_281:
       v39->_isJournalAppInstalled = 0;
     }
 
-    if (v66)
+    if (lockedCopy)
     {
       v39->_hasIsJournalAppLocked = 1;
-      v39->_isJournalAppLocked = [v66 BOOLValue];
+      v39->_isJournalAppLocked = [lockedCopy BOOLValue];
     }
 
     else
@@ -3929,10 +3929,10 @@ LABEL_281:
       v39->_isJournalAppLocked = 0;
     }
 
-    if (v36)
+    if (skippedCopy)
     {
       v39->_hasIsJournalSuggestionSkipped = 1;
-      v39->_isJournalSuggestionSkipped = [v36 BOOLValue];
+      v39->_isJournalSuggestionSkipped = [skippedCopy BOOLValue];
     }
 
     else
@@ -3941,10 +3941,10 @@ LABEL_281:
       v39->_isJournalSuggestionSkipped = 0;
     }
 
-    if (v64)
+    if (enabledCopy)
     {
       v39->_hasIsActivitySettingsSwitchEnabled = 1;
-      v39->_isActivitySettingsSwitchEnabled = [v64 BOOLValue];
+      v39->_isActivitySettingsSwitchEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -3953,10 +3953,10 @@ LABEL_281:
       v39->_isActivitySettingsSwitchEnabled = 0;
     }
 
-    if (v63)
+    if (switchEnabledCopy)
     {
       v39->_hasIsCommunicationSettingsSwitchEnabled = 1;
-      v39->_isCommunicationSettingsSwitchEnabled = [v63 BOOLValue];
+      v39->_isCommunicationSettingsSwitchEnabled = [switchEnabledCopy BOOLValue];
     }
 
     else
@@ -3965,10 +3965,10 @@ LABEL_281:
       v39->_isCommunicationSettingsSwitchEnabled = 0;
     }
 
-    if (v62)
+    if (settingsSwitchEnabledCopy)
     {
       v39->_hasIsSignificantLocationSettingsSwitchEnabled = 1;
-      v39->_isSignificantLocationSettingsSwitchEnabled = [v62 BOOLValue];
+      v39->_isSignificantLocationSettingsSwitchEnabled = [settingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -3977,10 +3977,10 @@ LABEL_281:
       v39->_isSignificantLocationSettingsSwitchEnabled = 0;
     }
 
-    if (v61)
+    if (mediaSettingsSwitchEnabledCopy)
     {
       v39->_hasIsMediaSettingsSwitchEnabled = 1;
-      v39->_isMediaSettingsSwitchEnabled = [v61 BOOLValue];
+      v39->_isMediaSettingsSwitchEnabled = [mediaSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -3989,10 +3989,10 @@ LABEL_281:
       v39->_isMediaSettingsSwitchEnabled = 0;
     }
 
-    if (v60)
+    if (peopleSettingsSwitchEnabledCopy)
     {
       v39->_hasIsNearbyPeopleSettingsSwitchEnabled = 1;
-      v39->_isNearbyPeopleSettingsSwitchEnabled = [v60 BOOLValue];
+      v39->_isNearbyPeopleSettingsSwitchEnabled = [peopleSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -4001,10 +4001,10 @@ LABEL_281:
       v39->_isNearbyPeopleSettingsSwitchEnabled = 0;
     }
 
-    if (v59)
+    if (photoSettingsSwitchEnabledCopy)
     {
       v39->_hasIsPhotoSettingsSwitchEnabled = 1;
-      v39->_isPhotoSettingsSwitchEnabled = [v59 BOOLValue];
+      v39->_isPhotoSettingsSwitchEnabled = [photoSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -4013,10 +4013,10 @@ LABEL_281:
       v39->_isPhotoSettingsSwitchEnabled = 0;
     }
 
-    if (v58)
+    if (mindSettingsSwitchEnabledCopy)
     {
       v39->_hasIsStateOfMindSettingsSwitchEnabled = 1;
-      v39->_isStateOfMindSettingsSwitchEnabled = [v58 BOOLValue];
+      v39->_isStateOfMindSettingsSwitchEnabled = [mindSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -4025,10 +4025,10 @@ LABEL_281:
       v39->_isStateOfMindSettingsSwitchEnabled = 0;
     }
 
-    if (v37)
+    if (reflectionSettingsSwitchEnabledCopy)
     {
       v39->_hasIsReflectionSettingsSwitchEnabled = 1;
-      v39->_isReflectionSettingsSwitchEnabled = [v37 BOOLValue];
+      v39->_isReflectionSettingsSwitchEnabled = [reflectionSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -4037,10 +4037,10 @@ LABEL_281:
       v39->_isReflectionSettingsSwitchEnabled = 0;
     }
 
-    if (v38)
+    if (locationSettingsSwitchEnabledCopy)
     {
       v39->_hasIsBroadSystemLocationSettingsSwitchEnabled = 1;
-      v39->_isBroadSystemLocationSettingsSwitchEnabled = [v38 BOOLValue];
+      v39->_isBroadSystemLocationSettingsSwitchEnabled = [locationSettingsSwitchEnabledCopy BOOLValue];
     }
 
     else
@@ -4213,9 +4213,9 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -4223,8 +4223,8 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMomentsEventData alloc] initByReadFrom:v7];
     v4 = v8;
@@ -4237,20 +4237,20 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BMMomentsEventData)initWithEvent:(id)a3 bundle:(id)a4 isBundle:(id)a5 IHAState:(id)a6 age:(id)a7 ageRange:(int)a8 biologicalSex:(int)a9
+- (BMMomentsEventData)initWithEvent:(id)event bundle:(id)bundle isBundle:(id)isBundle IHAState:(id)state age:(id)age ageRange:(int)range biologicalSex:(int)sex
 {
   v46[14] = *MEMORY[0x1E69E9840];
-  v35 = a7;
-  v34 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v33 = v14;
-  v31 = v16;
-  if ([v14 BOOLValue])
+  ageCopy = age;
+  stateCopy = state;
+  isBundleCopy = isBundle;
+  bundleCopy = bundle;
+  eventCopy = event;
+  v33 = isBundleCopy;
+  v31 = eventCopy;
+  if ([isBundleCopy BOOLValue])
   {
-    v38 = [v15 bundleStartDate];
-    v32 = [v15 bundleEndDate];
+    bundleStartDate = [bundleCopy bundleStartDate];
+    bundleEndDate = [bundleCopy bundleEndDate];
     v45[0] = &unk_1EF3EE0E8;
     v45[1] = &unk_1EF3EE100;
     v46[0] = @"Unknown";
@@ -4275,13 +4275,13 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
     v45[11] = &unk_1EF3EE1F0;
     v46[10] = @"PhotoMemory";
     v46[11] = @"Evergreen";
-    v29 = self;
+    selfCopy = self;
     v45[12] = &unk_1EF3EE208;
     v45[13] = &unk_1EF3EE220;
     v46[12] = @"TimeContext";
     v46[13] = @"Trip";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:14];
-    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "bundleInterfaceType")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(bundleCopy, "bundleInterfaceType")}];
     v30 = [v17 objectForKeyedSubscript:v18];
 
     v44[0] = @"Unknown";
@@ -4337,7 +4337,7 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
     v44[24] = @"Filtered";
     v44[25] = @"EntryCreatedWithUpdates";
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:26];
-    v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "suggestionType")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(bundleCopy, "suggestionType")}];
     v21 = [v19 objectForKeyedSubscript:v20];
 
     v41[0] = &unk_1EF3EE0E8;
@@ -4351,17 +4351,17 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
     v41[4] = &unk_1EF3EE148;
     v42[4] = @"EntryCancelled";
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:5];
-    v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "appEntryEventType")}];
+    v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(bundleCopy, "appEntryEventType")}];
     v24 = [v22 objectForKeyedSubscript:v23];
 
-    self = v29;
+    self = selfCopy;
     v25 = 0;
   }
 
   else
   {
-    v38 = [v16 startDate];
-    v32 = [v16 endDate];
+    bundleStartDate = [eventCopy startDate];
+    bundleEndDate = [eventCopy endDate];
     v39[0] = &unk_1EF3EE0E8;
     v39[1] = &unk_1EF3EE100;
     v40[0] = @"Unknown";
@@ -4411,15 +4411,15 @@ id __29__BMMomentsEventData_columns__block_invoke(uint64_t a1, void *a2)
     v40[22] = @"LifeEvent";
     v40[23] = @"PDenEvent";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:24];
-    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "category")}];
+    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "category")}];
     v25 = [v17 objectForKeyedSubscript:v19];
     v30 = 0;
     v21 = 0;
     v24 = 0;
   }
 
-  LODWORD(v28) = a9;
-  v37 = [(BMMomentsEventData *)self initWithEvent:v31 bundle:v15 isBundle:v33 IHAState:v34 age:v35 ageRange:a8 biologicalSex:v28 startDate:v38 endDate:v32 categoryOfEvent:v25 bundleInterface:v30 bundleEvergreenType:0 sugSeetEngType:v21 appEntryEngType:v24 megaSignalTypeUsed:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0];
+  LODWORD(v28) = sex;
+  v37 = [(BMMomentsEventData *)self initWithEvent:v31 bundle:bundleCopy isBundle:v33 IHAState:stateCopy age:ageCopy ageRange:range biologicalSex:v28 startDate:bundleStartDate endDate:bundleEndDate categoryOfEvent:v25 bundleInterface:v30 bundleEvergreenType:0 sugSeetEngType:v21 appEntryEngType:v24 megaSignalTypeUsed:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0];
 
   v26 = *MEMORY[0x1E69E9840];
   return v37;

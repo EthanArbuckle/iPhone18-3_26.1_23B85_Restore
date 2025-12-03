@@ -1,9 +1,9 @@
 @interface UIWindow
-+ (void)moveViewToEffectsWindowAboveStatusBar:(id)a3 zPosition:(double)a4 hostView:(id)a5;
++ (void)moveViewToEffectsWindowAboveStatusBar:(id)bar zPosition:(double)position hostView:(id)view;
 - (double)statusBarMinDimension;
 - (id)rootView;
-- (void)moveViewAboveStatusBar:(id)a3 zPosition:(double)a4 hostView:(id)a5;
-- (void)moveViewBackBelowStatusBar:(id)a3 preserveCurrentFrame:(BOOL)a4;
+- (void)moveViewAboveStatusBar:(id)bar zPosition:(double)position hostView:(id)view;
+- (void)moveViewBackBelowStatusBar:(id)bar preserveCurrentFrame:(BOOL)frame;
 @end
 
 @implementation UIWindow
@@ -22,136 +22,136 @@
   }
 }
 
-- (void)moveViewAboveStatusBar:(id)a3 zPosition:(double)a4 hostView:(id)a5
+- (void)moveViewAboveStatusBar:(id)bar zPosition:(double)position hostView:(id)view
 {
-  if (!a3)
+  if (!bar)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v9 = [a3 superview];
-  if (v9 == -[UIWindow rootView](self, "rootView") || [a3 stateRestoreBlock])
+  superview = [bar superview];
+  if (superview == -[UIWindow rootView](self, "rootView") || [bar stateRestoreBlock])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(bar "layer")];
   v11 = v10;
-  [a3 center];
+  [bar center];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1109B8;
   v19[3] = &unk_45DA20;
   v19[6] = v12;
   v19[7] = v13;
-  v19[4] = a3;
-  v19[5] = [a3 superview];
+  v19[4] = bar;
+  v19[5] = [bar superview];
   v19[8] = v11;
-  [a3 setStateRestoreBlock:v19];
-  v14 = [(UIWindow *)self rootView];
-  [a3 center];
+  [bar setStateRestoreBlock:v19];
+  rootView = [(UIWindow *)self rootView];
+  [bar center];
   v16 = v15;
   v18 = v17;
-  if ([a3 superview])
+  if ([bar superview])
   {
-    a5 = [a3 superview];
+    view = [bar superview];
   }
 
-  [v14 convertPoint:a5 fromView:{v16, v18}];
-  [a3 setCenter:?];
+  [rootView convertPoint:view fromView:{v16, v18}];
+  [bar setCenter:?];
   [-[UIWindow rootView](self "rootView")];
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(bar "layer")];
 }
 
-- (void)moveViewBackBelowStatusBar:(id)a3 preserveCurrentFrame:(BOOL)a4
+- (void)moveViewBackBelowStatusBar:(id)bar preserveCurrentFrame:(BOOL)frame
 {
-  v4 = a4;
+  frameCopy = frame;
   v7 = [TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:?];
-  if (!a3)
+  if (!bar)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([a3 superview] != v7 && (v8 = objc_msgSend(a3, "superview"), v8 != -[UIWindow rootView](self, "rootView")) || !objc_msgSend(a3, "stateRestoreBlock"))
+  if ([bar superview] != v7 && (v8 = objc_msgSend(bar, "superview"), v8 != -[UIWindow rootView](self, "rootView")) || !objc_msgSend(bar, "stateRestoreBlock"))
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v9 = [a3 superview];
-  [a3 frame];
+  superview = [bar superview];
+  [bar frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [a3 superview];
-  [a3 th_restoreState];
-  if (v4)
+  superview2 = [bar superview];
+  [bar th_restoreState];
+  if (frameCopy)
   {
-    [objc_msgSend(a3 "superview")];
-    [a3 setFrame:?];
+    [objc_msgSend(bar "superview")];
+    [bar setFrame:?];
   }
 
-  if (v9 != v7 && ![(UIWindow *)self hasRaisedViews])
+  if (superview != v7 && ![(UIWindow *)self hasRaisedViews])
   {
 
     [(UIWindow *)self th_restoreState];
   }
 }
 
-+ (void)moveViewToEffectsWindowAboveStatusBar:(id)a3 zPosition:(double)a4 hostView:(id)a5
++ (void)moveViewToEffectsWindowAboveStatusBar:(id)bar zPosition:(double)position hostView:(id)view
 {
-  v8 = [TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:a5];
-  if (!a3)
+  v8 = [TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:view];
+  if (!bar)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([a3 superview] == v8 || objc_msgSend(a3, "stateRestoreBlock"))
+  if ([bar superview] == v8 || objc_msgSend(bar, "stateRestoreBlock"))
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(bar "layer")];
   v10 = v9;
-  [a3 center];
+  [bar center];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_110EBC;
   v31[3] = &unk_45DA20;
   v31[6] = v11;
   v31[7] = v12;
-  v31[4] = a3;
-  v31[5] = [a3 superview];
+  v31[4] = bar;
+  v31[5] = [bar superview];
   v31[8] = v10;
-  [a3 setStateRestoreBlock:v31];
-  v13 = a5;
-  if ([a3 superview])
+  [bar setStateRestoreBlock:v31];
+  viewCopy = view;
+  if ([bar superview])
   {
-    v13 = [a3 superview];
+    viewCopy = [bar superview];
   }
 
-  if ([a3 window])
+  if ([bar window])
   {
-    v14 = a3;
+    viewCopy2 = bar;
   }
 
   else
   {
-    v14 = a5;
+    viewCopy2 = view;
   }
 
-  v15 = [v14 window];
-  [a3 center];
+  window = [viewCopy2 window];
+  [bar center];
   v18 = v17;
-  if (v13)
+  if (viewCopy)
   {
-    [v13 convertPoint:0 toView:?];
+    [viewCopy convertPoint:0 toView:?];
     v18 = v19;
   }
 
-  if (v15)
+  if (window)
   {
-    [v8 convertPoint:v15 fromWindow:?];
+    [v8 convertPoint:window fromWindow:?];
     v22 = v21;
   }
 
@@ -169,9 +169,9 @@
     v20 = (v28 % llroundf(v30));
   }
 
-  [a3 setCenter:{v22, v20}];
-  [v8 addSubview:a3];
-  [objc_msgSend(a3 "layer")];
+  [bar setCenter:{v22, v20}];
+  [v8 addSubview:bar];
+  [objc_msgSend(bar "layer")];
 }
 
 - (id)rootView
@@ -186,7 +186,7 @@
     v3 = [-[UIWindow subviews](self "subviews")];
     [(UIWindow *)self windowLevel];
     v5 = v4;
-    v6 = [(UIWindow *)self backgroundColor];
+    backgroundColor = [(UIWindow *)self backgroundColor];
     [v3 center];
     v8 = v7;
     v10 = v9;
@@ -247,7 +247,7 @@
     v26[2] = sub_111280;
     v26[3] = &unk_45DA48;
     v26[4] = self;
-    v26[5] = v6;
+    v26[5] = backgroundColor;
     v26[9] = v5;
     v26[10] = v8;
     v26[11] = v10;

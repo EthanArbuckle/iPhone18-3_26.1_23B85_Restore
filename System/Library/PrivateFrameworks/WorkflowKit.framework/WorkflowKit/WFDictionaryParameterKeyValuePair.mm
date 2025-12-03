@@ -1,19 +1,19 @@
 @interface WFDictionaryParameterKeyValuePair
-- (BOOL)isEqual:(id)a3;
-- (WFDictionaryParameterKeyValuePair)initWithKey:(id)a3 value:(id)a4;
-- (WFDictionaryParameterKeyValuePair)initWithKey:(id)a3 value:(id)a4 identity:(id)a5;
-- (WFDictionaryParameterKeyValuePair)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFDictionaryParameterKeyValuePair)initWithKey:(id)key value:(id)value;
+- (WFDictionaryParameterKeyValuePair)initWithKey:(id)key value:(id)value identity:(id)identity;
+- (WFDictionaryParameterKeyValuePair)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (WFPropertyListObject)serializedRepresentation;
 - (id)containedVariables;
-- (void)getProcessedPair:(id)a3 context:(id)a4 userInputRequiredHandler:(id)a5;
+- (void)getProcessedPair:(id)pair context:(id)context userInputRequiredHandler:(id)handler;
 @end
 
 @implementation WFDictionaryParameterKeyValuePair
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -21,11 +21,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[WFDictionaryParameterKeyValuePair key](v4, "key"), v5 = objc_claimAutoreleasedReturnValue(), -[WFDictionaryParameterKeyValuePair key](self, "key"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[WFDictionaryParameterKeyValuePair key](equalCopy, "key"), v5 = objc_claimAutoreleasedReturnValue(), -[WFDictionaryParameterKeyValuePair key](self, "key"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v7))
     {
-      v8 = [(WFDictionaryParameterKeyValuePair *)v4 value];
-      v9 = [(WFDictionaryParameterKeyValuePair *)self value];
-      v10 = [v8 isEqual:v9];
+      value = [(WFDictionaryParameterKeyValuePair *)equalCopy value];
+      value2 = [(WFDictionaryParameterKeyValuePair *)self value];
+      v10 = [value isEqual:value2];
     }
 
     else
@@ -44,23 +44,23 @@
   v5 = WFSerializedVariableObject(v4);
   [v3 setObject:v5 forKey:@"WFKey"];
 
-  v6 = [(WFDictionaryParameterKeyValuePair *)self value];
-  v7 = [v6 serializedRepresentation];
-  [v3 addEntriesFromDictionary:v7];
+  value = [(WFDictionaryParameterKeyValuePair *)self value];
+  serializedRepresentation = [value serializedRepresentation];
+  [v3 addEntriesFromDictionary:serializedRepresentation];
 
   return v3;
 }
 
-- (WFDictionaryParameterKeyValuePair)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFDictionaryParameterKeyValuePair)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKey:@"WFKey"];
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  v11 = [representationCopy objectForKey:@"WFKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = WFDeserializedVariableObject(v11, v9, v10);
+    v12 = WFDeserializedVariableObject(v11, providerCopy, parameterCopy);
 LABEL_5:
     v13 = v12;
     goto LABEL_7;
@@ -78,51 +78,51 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [[WFPropertyListParameterValue alloc] initWithSerializedRepresentation:v8 variableProvider:v9 parameter:v10];
+    v14 = [[WFPropertyListParameterValue alloc] initWithSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy];
     self = [(WFDictionaryParameterKeyValuePair *)self initWithKey:v13 value:v14];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)containedVariables
 {
   v3 = objc_opt_new();
   v4 = [(WFDictionaryParameterKeyValuePair *)self key];
-  v5 = [v4 variables];
-  [v3 addObjectsFromArray:v5];
+  variables = [v4 variables];
+  [v3 addObjectsFromArray:variables];
 
-  v6 = [(WFDictionaryParameterKeyValuePair *)self value];
-  v7 = [v6 containedVariables];
-  [v3 addObjectsFromArray:v7];
+  value = [(WFDictionaryParameterKeyValuePair *)self value];
+  containedVariables = [value containedVariables];
+  [v3 addObjectsFromArray:containedVariables];
 
   return v3;
 }
 
-- (void)getProcessedPair:(id)a3 context:(id)a4 userInputRequiredHandler:(id)a5
+- (void)getProcessedPair:(id)pair context:(id)context userInputRequiredHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairCopy = pair;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = [(WFDictionaryParameterKeyValuePair *)self key];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__WFDictionaryParameterKeyValuePair_getProcessedPair_context_userInputRequiredHandler___block_invoke;
   v15[3] = &unk_1E8376D08;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = contextCopy;
+  v17 = handlerCopy;
+  v18 = pairCopy;
+  v12 = pairCopy;
+  v13 = handlerCopy;
+  v14 = contextCopy;
   [v11 processWithContext:v14 completionHandler:v15];
 }
 
@@ -175,23 +175,23 @@ uint64_t __87__WFDictionaryParameterKeyValuePair_getProcessedPair_context_userIn
   return (*(a1[7] + 16))(a1[7], a1[4], a2, a1[8], a1[5], a3);
 }
 
-- (WFDictionaryParameterKeyValuePair)initWithKey:(id)a3 value:(id)a4 identity:(id)a5
+- (WFDictionaryParameterKeyValuePair)initWithKey:(id)key value:(id)value identity:(id)identity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  identityCopy = identity;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[key isKindOfClass:[WFVariableString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[key isKindOfClass:[WFVariableString class]]"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFPropertyListParameterValue class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFPropertyListParameterValue class]]"}];
   }
 
   v21.receiver = self;
@@ -199,28 +199,28 @@ uint64_t __87__WFDictionaryParameterKeyValuePair_getProcessedPair_context_userIn
   v12 = [(WFDictionaryParameterKeyValuePair *)&v21 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [keyCopy copy];
     key = v12->_key;
     v12->_key = v13;
 
-    v15 = [v10 copy];
+    v15 = [valueCopy copy];
     value = v12->_value;
     v12->_value = v15;
 
-    objc_storeStrong(&v12->_identity, a5);
+    objc_storeStrong(&v12->_identity, identity);
     v17 = v12;
   }
 
   return v12;
 }
 
-- (WFDictionaryParameterKeyValuePair)initWithKey:(id)a3 value:(id)a4
+- (WFDictionaryParameterKeyValuePair)initWithKey:(id)key value:(id)value
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(WFDictionaryParameterKeyValuePair *)self initWithKey:v8 value:v7 identity:v9];
+  valueCopy = value;
+  keyCopy = key;
+  uUID = [v6 UUID];
+  v10 = [(WFDictionaryParameterKeyValuePair *)self initWithKey:keyCopy value:valueCopy identity:uUID];
 
   return v10;
 }

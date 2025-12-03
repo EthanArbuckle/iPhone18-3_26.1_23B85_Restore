@@ -1,24 +1,24 @@
 @interface SISchemaUUFRSnippetViewSelected
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUFRSnippetViewSelected)initWithDictionary:(id)a3;
-- (SISchemaUUFRSnippetViewSelected)initWithJSON:(id)a3;
+- (SISchemaUUFRSnippetViewSelected)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRSnippetViewSelected)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRSnippetViewSelected
 
-- (SISchemaUUFRSnippetViewSelected)initWithDictionary:(id)a3
+- (SISchemaUUFRSnippetViewSelected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaUUFRSnippetViewSelected;
   v5 = [(SISchemaUUFRSnippetViewSelected *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"snippetAceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"snippetAceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SISchemaUUFRSnippetViewSelected)initWithJSON:(id)a3
+- (SISchemaUUFRSnippetViewSelected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRSnippetViewSelected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRSnippetViewSelected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRSnippetViewSelected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_snippetAceId)
   {
-    v4 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"snippetAceId"];
+    snippetAceId = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
+    v5 = [snippetAceId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"snippetAceId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
-    v6 = [v4 snippetAceId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    snippetAceId = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
+    snippetAceId2 = [equalCopy snippetAceId];
+    v7 = snippetAceId2;
+    if ((snippetAceId != 0) != (snippetAceId2 == 0))
     {
-      v8 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
-      if (!v8)
+      snippetAceId3 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
+      if (!snippetAceId3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
-      v11 = [v4 snippetAceId];
-      v12 = [v10 isEqual:v11];
+      v9 = snippetAceId3;
+      snippetAceId4 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
+      snippetAceId5 = [equalCopy snippetAceId];
+      v12 = [snippetAceId4 isEqual:snippetAceId5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
+  toCopy = to;
+  snippetAceId = [(SISchemaUUFRSnippetViewSelected *)self snippetAceId];
 
-  if (v4)
+  if (snippetAceId)
   {
     PBDataWriterWriteStringField();
   }

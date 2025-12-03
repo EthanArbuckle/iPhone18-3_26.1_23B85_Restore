@@ -1,22 +1,22 @@
 @interface SUUICrossFadingTabBarButton
-- (SUUICrossFadingTabBarButton)initWithFrame:(CGRect)a3;
+- (SUUICrossFadingTabBarButton)initWithFrame:(CGRect)frame;
 - (void)_positionBadge;
-- (void)_setBadgeValue:(id)a3;
+- (void)_setBadgeValue:(id)value;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setSelectedImage:(id)a3;
-- (void)setSelectionProgress:(double)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setSelectedImage:(id)image;
+- (void)setSelectionProgress:(double)progress;
+- (void)setTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUICrossFadingTabBarButton
 
-- (SUUICrossFadingTabBarButton)initWithFrame:(CGRect)a3
+- (SUUICrossFadingTabBarButton)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = SUUICrossFadingTabBarButton;
-  v3 = [(SUUICrossFadingTabBarButton *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICrossFadingTabBarButton *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -45,8 +45,8 @@
 
     [(UILabel *)v3->_selectedTitleLabel setOpaque:0];
     v14 = v3->_selectedTitleLabel;
-    v15 = [(SUUICrossFadingTabBarButton *)v3 tintColor];
-    [(UILabel *)v14 setTextColor:v15];
+    tintColor = [(SUUICrossFadingTabBarButton *)v3 tintColor];
+    [(UILabel *)v14 setTextColor:tintColor];
 
     [(UILabel *)v3->_selectedTitleLabel setBackgroundColor:0];
     [(SUUICrossFadingTabBarButton *)v3 addSubview:v3->_selectedTitleLabel];
@@ -65,8 +65,8 @@
     [(SUUICrossFadingTabBarButton *)v3 addSubview:v3->_selectedImageView];
     [(UILabel *)v3->_standardTitleLabel _setDrawsAsBackdropOverlayWithBlendMode:1];
     [(UIImageView *)v3->_standardImageView _setDrawsAsBackdropOverlayWithBlendMode:1];
-    v20 = [(SUUICrossFadingTabBarButton *)v3 layer];
-    [v20 setAllowsGroupOpacity:0];
+    layer = [(SUUICrossFadingTabBarButton *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v3;
@@ -186,76 +186,76 @@
   v6.receiver = self;
   v6.super_class = SUUICrossFadingTabBarButton;
   [(SUUICrossFadingTabBarButton *)&v6 tintColorDidChange];
-  v3 = [(SUUICrossFadingTabBarButton *)self tintColor];
-  [(UILabel *)self->_selectedTitleLabel setTextColor:v3];
+  tintColor = [(SUUICrossFadingTabBarButton *)self tintColor];
+  [(UILabel *)self->_selectedTitleLabel setTextColor:tintColor];
   selectedImageView = self->_selectedImageView;
-  v5 = [(UIImage *)self->_selectedImage _flatImageWithColor:v3];
+  v5 = [(UIImage *)self->_selectedImage _flatImageWithColor:tintColor];
   [(UIImageView *)selectedImageView setImage:v5];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    titleCopy = title;
+    v5 = [titleCopy copy];
     title = self->_title;
     self->_title = v5;
 
-    [(UILabel *)self->_selectedTitleLabel setText:v4];
-    [(UILabel *)self->_standardTitleLabel setText:v4];
+    [(UILabel *)self->_selectedTitleLabel setText:titleCopy];
+    [(UILabel *)self->_standardTitleLabel setText:titleCopy];
 
     [(SUUICrossFadingTabBarButton *)self setNeedsLayout];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     standardImageView = self->_standardImageView;
-    v7 = [(UILabel *)self->_standardTitleLabel textColor];
-    v8 = [(UIImage *)v9 _flatImageWithColor:v7];
+    textColor = [(UILabel *)self->_standardTitleLabel textColor];
+    v8 = [(UIImage *)v9 _flatImageWithColor:textColor];
     [(UIImageView *)standardImageView setImage:v8];
 
     [(SUUICrossFadingTabBarButton *)self setNeedsLayout];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setSelectedImage:(id)a3
+- (void)setSelectedImage:(id)image
 {
-  v5 = a3;
-  if (self->_selectedImage != v5)
+  imageCopy = image;
+  if (self->_selectedImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_selectedImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_selectedImage, image);
     selectedImageView = self->_selectedImageView;
-    v7 = [(SUUICrossFadingTabBarButton *)self tintColor];
-    v8 = [(UIImage *)v9 _flatImageWithColor:v7];
+    tintColor = [(SUUICrossFadingTabBarButton *)self tintColor];
+    v8 = [(UIImage *)v9 _flatImageWithColor:tintColor];
     [(UIImageView *)selectedImageView setImage:v8];
 
     [(SUUICrossFadingTabBarButton *)self setNeedsLayout];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setSelectionProgress:(double)a3
+- (void)setSelectionProgress:(double)progress
 {
-  if (self->_selectionProgress != a3)
+  if (self->_selectionProgress != progress)
   {
     v12 = v7;
     v13 = v3;
-    self->_selectionProgress = a3;
-    if (a3 < 0.0)
+    self->_selectionProgress = progress;
+    if (progress < 0.0)
     {
-      a3 = 0.0;
+      progress = 0.0;
     }
 
-    v10 = fmin(a3, 1.0);
+    v10 = fmin(progress, 1.0);
     [(UILabel *)self->_selectedTitleLabel setAlpha:v10, v8, v12, v4, v13, v5];
     [(UILabel *)self->_standardTitleLabel setAlpha:1.0 - v10];
     [(UIImageView *)self->_selectedImageView setAlpha:v10];
@@ -265,9 +265,9 @@
   }
 }
 
-- (void)_setBadgeValue:(id)a3
+- (void)_setBadgeValue:(id)value
 {
-  v12 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -282,7 +282,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = v12;
+  v4 = valueCopy;
   if (![v4 length])
   {
     goto LABEL_9;
@@ -325,11 +325,11 @@ LABEL_11:
 
 - (void)_positionBadge
 {
-  v3 = [(SUUICrossFadingTabBarButton *)self superview];
+  superview = [(SUUICrossFadingTabBarButton *)self superview];
   badge = self->_badge;
   if (badge)
   {
-    v5 = v3 == 0;
+    v5 = superview == 0;
   }
 
   else
@@ -339,13 +339,13 @@ LABEL_11:
 
   if (!v5)
   {
-    v19 = v3;
+    v19 = superview;
     [(_Badge *)badge frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(SUUICrossFadingTabBarButton *)self superview];
-    [(SUUICrossFadingTabBarButton *)self convertPoint:v12 fromView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+    superview2 = [(SUUICrossFadingTabBarButton *)self superview];
+    [(SUUICrossFadingTabBarButton *)self convertPoint:superview2 fromView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     v14 = v13 + 3.0;
 
     [(UIImageView *)self->_standardImageView frame];
@@ -361,10 +361,10 @@ LABEL_11:
     v23.size.width = v9;
     v23.size.height = v11;
     badge = [(_Badge *)self->_badge setFrame:fmax(fmin(v16, v18 - CGRectGetWidth(v23)), 0.0), v14, v9, v11];
-    v3 = v19;
+    superview = v19;
   }
 
-  MEMORY[0x2821F96F8](badge, v3);
+  MEMORY[0x2821F96F8](badge, superview);
 }
 
 @end

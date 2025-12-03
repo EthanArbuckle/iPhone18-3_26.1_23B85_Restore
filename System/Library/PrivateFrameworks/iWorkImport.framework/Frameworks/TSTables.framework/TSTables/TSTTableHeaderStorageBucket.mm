@@ -1,17 +1,17 @@
 @interface TSTTableHeaderStorageBucket
-- (TSTTableHeaderStorageBucket)initWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (TSTTableHeaderStorageBucket)initWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTTableHeaderStorageBucket
 
-- (TSTTableHeaderStorageBucket)initWithContext:(id)a3
+- (TSTTableHeaderStorageBucket)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = TSTTableHeaderStorageBucket;
-  v5 = [(TSTTableHeaderStorageBucket *)&v10 initWithContext:v4];
+  v5 = [(TSTTableHeaderStorageBucket *)&v10 initWithContext:contextCopy];
   v6 = v5;
   if (v5)
   {
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[48], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[48], v6, v7);
 
   if (*(v8 + 48) != 1)
   {
@@ -42,7 +42,7 @@
   }
 
   v24 = *(v8 + 32);
-  v25 = objc_msgSend_preUFFVersion(v4, v9, v10, v11, v12);
+  v25 = objc_msgSend_preUFFVersion(unarchiverCopy, v9, v10, v11, v12);
   v26 = objc_alloc_init(MEMORY[0x277D81330]);
   data = self->_data;
   self->_data = v26;
@@ -56,7 +56,7 @@
     {
       TST::HeaderStorageBucket_Header::HeaderStorageBucket_Header(v41, *(*(v8 + 40) + v32));
       v40 = 0;
-      v33 = sub_22148024C([TSTTableHeaderInfo alloc], v41, v4, &v40);
+      v33 = sub_22148024C([TSTTableHeaderInfo alloc], v41, unarchiverCopy, &v40);
       v36 = v33;
       if (v25 <= 0x5200561C4 && sub_2216F7E9C(v33) && sub_2216F7E9C(v36) != 1)
       {
@@ -85,14 +85,14 @@
   v39[2] = sub_2211AE1D8;
   v39[3] = &unk_27845E3F8;
   v39[4] = self;
-  objc_msgSend_addFinalizeHandler_(v4, v28, v39, v29, v30);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v28, v39, v29, v30);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2211AE538, off_2812E4498[48], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2211AE538, off_2812E4498[48], v6);
 
   *(v7 + 16) |= 1u;
   *(v7 + 48) = 1;
@@ -106,7 +106,7 @@
   v25 = sub_2211AE40C;
   v26 = &unk_278460968;
   v29 = v7;
-  v9 = v4;
+  v9 = archiverCopy;
   v27 = v9;
   v28 = &v30;
   objc_msgSend_foreach_(data, v10, &v23, v11, v12);

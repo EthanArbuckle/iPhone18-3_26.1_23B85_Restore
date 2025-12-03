@@ -1,14 +1,14 @@
 @interface IMSandboxedResource
 + (Class)resourceClass;
-- (BOOL)accessResourceByConsumingSandboxExtensionWithBlock:(id)a3;
-- (IMSandboxedResource)initWithCoder:(id)a3;
-- (char)_sandboxExtensionForAuditToken:(id *)a3;
-- (char)_sandboxExtensionForPID:(int)a3;
+- (BOOL)accessResourceByConsumingSandboxExtensionWithBlock:(id)block;
+- (IMSandboxedResource)initWithCoder:(id)coder;
+- (char)_sandboxExtensionForAuditToken:(id *)token;
+- (char)_sandboxExtensionForPID:(int)d;
 - (id)description;
-- (void)authorizeForAuditToken:(id *)a3;
-- (void)authorizeForPID:(int)a3;
+- (void)authorizeForAuditToken:(id *)token;
+- (void)authorizeForPID:(int)d;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMSandboxedResource
@@ -16,15 +16,15 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IMSandboxedResource *)self resource];
-  v5 = [(IMSandboxedResource *)self sandboxExtension];
+  resource = [(IMSandboxedResource *)self resource];
+  sandboxExtension = [(IMSandboxedResource *)self sandboxExtension];
   v6 = @"YES";
-  if (!v5)
+  if (!sandboxExtension)
   {
     v6 = @"NO";
   }
 
-  v7 = [v3 stringWithFormat:@"<IMSandboxedResource resource: %@ hasSandboxExtension: %@>", v4, v6];
+  v7 = [v3 stringWithFormat:@"<IMSandboxedResource resource: %@ hasSandboxExtension: %@>", resource, v6];
 
   return v7;
 }
@@ -42,7 +42,7 @@
   [(IMSandboxedResource *)&v3 dealloc];
 }
 
-- (void)authorizeForPID:(int)a3
+- (void)authorizeForPID:(int)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = [(IMSandboxedResource *)self _sandboxExtensionForPID:?];
@@ -62,16 +62,16 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Unable to obtain sandbox extension for PID: %llu", &v10, 0xCu);
     }
   }
 }
 
-- (void)authorizeForAuditToken:(id *)a3
+- (void)authorizeForAuditToken:(id *)token
 {
-  v4 = *&a3->var0[4];
-  v10[0] = *a3->var0;
+  v4 = *&token->var0[4];
+  v10[0] = *token->var0;
   v10[1] = v4;
   v5 = [(IMSandboxedResource *)self _sandboxExtensionForAuditToken:v10];
   if (v5)
@@ -95,12 +95,12 @@
   }
 }
 
-- (BOOL)accessResourceByConsumingSandboxExtensionWithBlock:(id)a3
+- (BOOL)accessResourceByConsumingSandboxExtensionWithBlock:(id)block
 {
   *&v17[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IMSandboxedResource *)self sandboxExtension];
-  v6 = [v5 length];
+  blockCopy = block;
+  sandboxExtension = [(IMSandboxedResource *)self sandboxExtension];
+  v6 = [sandboxExtension length];
 
   if (!v6)
   {
@@ -114,9 +114,9 @@ LABEL_11:
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(IMSandboxedResource *)self resource];
+      resource = [(IMSandboxedResource *)self resource];
       v16 = 138412290;
-      *v17 = v11;
+      *v17 = resource;
       _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Unable to access protected resource (missing sandbox extension): %@", &v16, 0xCu);
     }
 
@@ -145,11 +145,11 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v14 = *__error();
-        v15 = [(IMSandboxedResource *)self resource];
+        resource2 = [(IMSandboxedResource *)self resource];
         v16 = 67109378;
         v17[0] = v14;
         LOWORD(v17[1]) = 2112;
-        *(&v17[1] + 2) = v15;
+        *(&v17[1] + 2) = resource2;
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Unable to access protected resource, error: %d resource: %@", &v16, 0x12u);
       }
 
@@ -157,10 +157,10 @@ LABEL_10:
     }
   }
 
-  if (v4)
+  if (blockCopy)
   {
-    v8 = [(IMSandboxedResource *)self resource];
-    v4[2](v4, v8);
+    resource3 = [(IMSandboxedResource *)self resource];
+    blockCopy[2](blockCopy, resource3);
   }
 
   v9 = 1;
@@ -182,7 +182,7 @@ LABEL_12:
   objc_exception_throw(v7);
 }
 
-- (char)_sandboxExtensionForPID:(int)a3
+- (char)_sandboxExtensionForPID:(int)d
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -195,7 +195,7 @@ LABEL_12:
   objc_exception_throw(v8);
 }
 
-- (char)_sandboxExtensionForAuditToken:(id *)a3
+- (char)_sandboxExtensionForAuditToken:(id *)token
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -208,15 +208,15 @@ LABEL_12:
   objc_exception_throw(v8);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IMSandboxedResource *)self sandboxExtension];
-    v7 = [v6 length];
+    v5 = coderCopy;
+    sandboxExtension = [(IMSandboxedResource *)self sandboxExtension];
+    v7 = [sandboxExtension length];
 
     if (v7)
     {
@@ -224,36 +224,36 @@ LABEL_12:
       v12 = 3221225472;
       v13 = sub_1A861AA08;
       v14 = &unk_1E7826268;
-      v15 = self;
+      selfCopy = self;
       v16 = v5;
       [(IMSandboxedResource *)self accessResourceByConsumingSandboxExtensionWithBlock:&v11];
     }
 
     else
     {
-      v8 = [v5 connection];
-      -[IMSandboxedResource authorizeForPID:](self, "authorizeForPID:", [v8 processIdentifier]);
+      connection = [v5 connection];
+      -[IMSandboxedResource authorizeForPID:](self, "authorizeForPID:", [connection processIdentifier]);
     }
   }
 
   v9 = [(IMSandboxedResource *)self sandboxExtension:v11];
-  [v4 encodeObject:v9 forKey:@"sandboxExtension"];
+  [coderCopy encodeObject:v9 forKey:@"sandboxExtension"];
 
-  v10 = [(IMSandboxedResource *)self resource];
-  [v4 encodeObject:v10 forKey:@"resource"];
+  resource = [(IMSandboxedResource *)self resource];
+  [coderCopy encodeObject:resource forKey:@"resource"];
 }
 
-- (IMSandboxedResource)initWithCoder:(id)a3
+- (IMSandboxedResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(IMSandboxedResource *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
     sandboxExtension = v5->_sandboxExtension;
     v5->_sandboxExtension = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_msgSend(objc_opt_class() forKey:{"resourceClass"), @"resource"}];
+    v8 = [coderCopy decodeObjectOfClass:objc_msgSend(objc_opt_class() forKey:{"resourceClass"), @"resource"}];
     resource = v5->_resource;
     v5->_resource = v8;
   }

@@ -27,12 +27,12 @@
 
 - (id)attachmentList
 {
-  v3 = [(WeatherDiagnosticExtensionExtension *)self databaseManager];
-  [v3 checkpoint];
+  databaseManager = [(WeatherDiagnosticExtensionExtension *)self databaseManager];
+  [databaseManager checkpoint];
 
-  v4 = [(WeatherDiagnosticExtensionExtension *)self fileProvider];
+  fileProvider = [(WeatherDiagnosticExtensionExtension *)self fileProvider];
   v23 = 0;
-  v5 = [v4 exportDirectoryAndReturnError:&v23];
+  v5 = [fileProvider exportDirectoryAndReturnError:&v23];
   v6 = v23;
 
   if (v6)

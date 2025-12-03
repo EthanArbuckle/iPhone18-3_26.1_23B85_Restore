@@ -1,49 +1,49 @@
 @interface CKDDownloadAssetsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)_download;
 - (BOOL)_postProcess;
 - (BOOL)_prepareForDownload;
 - (BOOL)makeStateTransition;
-- (BOOL)shouldDownloadAssetFromTranscoder:(id)a3;
-- (CKDDownloadAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (BOOL)shouldDownloadAssetFromTranscoder:(id)transcoder;
+- (CKDDownloadAssetsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)CKStatusReportLogGroups;
-- (id)_tryToFillInTheDerivativeTemplateWithAsset:(id)a3;
+- (id)_tryToFillInTheDerivativeTemplateWithAsset:(id)asset;
 - (id)activityCreate;
-- (void)_collectMetricsFromCompletedItemGroup:(id)a3;
-- (void)_collectMetricsFromCompletedItemGroupSet:(id)a3;
-- (void)_collectMetricsFromMMCSOperationMetrics:(id)a3;
-- (void)_didCommandForAsset:(id)a3 command:(id)a4;
-- (void)_didCommandForMMCSItem:(id)a3 command:(id)a4;
-- (void)_didDownloadAsset:(id)a3 error:(id)a4;
-- (void)_didDownloadMMCSItem:(id)a3 inMemory:(BOOL)a4 error:(id)a5;
-- (void)_didDownloadMMCSSectionItem:(id)a3 task:(id)a4 error:(id)a5;
-- (void)_didDownloadMMCSSectionItems:(id)a3 task:(id)a4 error:(id)a5;
-- (void)_didMakeProgressForAsset:(id)a3 progress:(double)a4;
-- (void)_didMakeProgressForMMCSSectionItem:(id)a3 task:(id)a4;
-- (void)_didPrepareAsset:(id)a3;
-- (void)_downloadMMCSItems:(id)a3 downloadTasksByPackages:(id)a4 shouldFetchAssetContentInMemory:(BOOL)a5;
-- (void)_downloadPackageSectionAtIndex:(int64_t)a3 task:(id)a4 completionBlock:(id)a5;
-- (void)_downloadPackageSectionsWithPendingTasks:(id)a3 downloadingTasks:(id)a4 completedTasks:(id)a5;
-- (void)_downloadPackageSectionsWithSectionEnumerator:(id)a3 task:(id)a4 completionBlock:(id)a5;
-- (void)_downloadPackageSectionsWithTask:(id)a3 completionBlock:(id)a4;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_prepareAssetForDownload:(id)a3;
-- (void)_preparePackageForDataDownload:(id)a3;
-- (void)_preparePackageForDownload:(id)a3;
-- (void)_preparePackageForMetadataDownload:(id)a3;
-- (void)_removeUntrackedMMCSItems:(id)a3;
+- (void)_collectMetricsFromCompletedItemGroup:(id)group;
+- (void)_collectMetricsFromCompletedItemGroupSet:(id)set;
+- (void)_collectMetricsFromMMCSOperationMetrics:(id)metrics;
+- (void)_didCommandForAsset:(id)asset command:(id)command;
+- (void)_didCommandForMMCSItem:(id)item command:(id)command;
+- (void)_didDownloadAsset:(id)asset error:(id)error;
+- (void)_didDownloadMMCSItem:(id)item inMemory:(BOOL)memory error:(id)error;
+- (void)_didDownloadMMCSSectionItem:(id)item task:(id)task error:(id)error;
+- (void)_didDownloadMMCSSectionItems:(id)items task:(id)task error:(id)error;
+- (void)_didMakeProgressForAsset:(id)asset progress:(double)progress;
+- (void)_didMakeProgressForMMCSSectionItem:(id)item task:(id)task;
+- (void)_didPrepareAsset:(id)asset;
+- (void)_downloadMMCSItems:(id)items downloadTasksByPackages:(id)packages shouldFetchAssetContentInMemory:(BOOL)memory;
+- (void)_downloadPackageSectionAtIndex:(int64_t)index task:(id)task completionBlock:(id)block;
+- (void)_downloadPackageSectionsWithPendingTasks:(id)tasks downloadingTasks:(id)downloadingTasks completedTasks:(id)completedTasks;
+- (void)_downloadPackageSectionsWithSectionEnumerator:(id)enumerator task:(id)task completionBlock:(id)block;
+- (void)_downloadPackageSectionsWithTask:(id)task completionBlock:(id)block;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_prepareAssetForDownload:(id)download;
+- (void)_preparePackageForDataDownload:(id)download;
+- (void)_preparePackageForDownload:(id)download;
+- (void)_preparePackageForMetadataDownload:(id)download;
+- (void)_removeUntrackedMMCSItems:(id)items;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation CKDDownloadAssetsOperation
 
-- (CKDDownloadAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDDownloadAssetsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v32.receiver = self;
   v32.super_class = CKDDownloadAssetsOperation;
-  v7 = [(CKDDatabaseOperation *)&v32 initWithOperationInfo:v6 container:a4];
+  v7 = [(CKDDatabaseOperation *)&v32 initWithOperationInfo:infoCopy container:container];
   if (v7)
   {
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -58,19 +58,19 @@
     cancelTokens = v7->_cancelTokens;
     v7->_cancelTokens = v15;
 
-    v19 = objc_msgSend_assetsToDownload(v6, v17, v18);
+    v19 = objc_msgSend_assetsToDownload(infoCopy, v17, v18);
     assetsToDownload = v7->_assetsToDownload;
     v7->_assetsToDownload = v19;
 
-    v23 = objc_msgSend_assetsToDownloadInMemory(v6, v21, v22);
+    v23 = objc_msgSend_assetsToDownloadInMemory(infoCopy, v21, v22);
     assetsToDownloadInMemory = v7->_assetsToDownloadInMemory;
     v7->_assetsToDownloadInMemory = v23;
 
-    v27 = objc_msgSend_assetURLInfosToFillOut(v6, v25, v26);
+    v27 = objc_msgSend_assetURLInfosToFillOut(infoCopy, v25, v26);
     assetURLInfosToFillOut = v7->_assetURLInfosToFillOut;
     v7->_assetURLInfosToFillOut = v27;
 
-    v7->_shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(v6, v29, v30);
+    v7->_shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(infoCopy, v29, v30);
   }
 
   return v7;
@@ -87,26 +87,26 @@
 {
   v17.receiver = self;
   v17.super_class = CKDDownloadAssetsOperation;
-  v3 = [(CKDOperation *)&v17 CKStatusReportLogGroups];
+  cKStatusReportLogGroups = [(CKDOperation *)&v17 CKStatusReportLogGroups];
   if (os_unfair_lock_trylock(&self->_prepareLock))
   {
-    if (!v3)
+    if (!cKStatusReportLogGroups)
     {
-      v3 = objc_opt_new();
+      cKStatusReportLogGroups = objc_opt_new();
     }
 
     v6 = objc_msgSend_MMCSItemsToDownload(self, v4, v5);
     v8 = objc_msgSend_CKMap_(v6, v7, &unk_28385D360);
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v9, v8, @"MMCS Items");
+    objc_msgSend_setObject_forKeyedSubscript_(cKStatusReportLogGroups, v9, v8, @"MMCS Items");
 
     v12 = objc_msgSend_MMCSItemsToDownloadInMemory(self, v10, v11);
     v14 = objc_msgSend_CKMap_(v12, v13, &unk_28385D380);
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v15, v14, @"MMCS In Memory Items");
+    objc_msgSend_setObject_forKeyedSubscript_(cKStatusReportLogGroups, v15, v14, @"MMCS In Memory Items");
 
     os_unfair_lock_unlock(&self->_prepareLock);
   }
 
-  return v3;
+  return cKStatusReportLogGroups;
 }
 
 - (BOOL)makeStateTransition
@@ -162,34 +162,34 @@
   }
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDDownloadAssetsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548B18[a3 - 2];
+    v5 = off_278548B18[state - 2];
   }
 
   return v5;
 }
 
-- (void)_removeUntrackedMMCSItems:(id)a3
+- (void)_removeUntrackedMMCSItems:(id)items
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v22, v26, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v4, &v22, v26, 16);
   if (v5)
   {
     v8 = v5;
@@ -200,7 +200,7 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
@@ -221,7 +221,7 @@
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v22, v26, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v6, &v22, v26, 16);
     }
 
     while (v8);
@@ -230,10 +230,10 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didPrepareAsset:(id)a3
+- (void)_didPrepareAsset:(id)asset
 {
-  v7 = a3;
-  if (!v7)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CKDDownloadAssetsOperation.m", 271, @"Expected non-nil asset for %@", self);
@@ -245,15 +245,15 @@
   block[2] = sub_2251A707C;
   block[3] = &unk_278545898;
   block[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = assetCopy;
+  v9 = assetCopy;
   dispatch_async(v8, block);
 }
 
-- (void)_didMakeProgressForAsset:(id)a3 progress:(double)a4
+- (void)_didMakeProgressForAsset:(id)asset progress:(double)progress
 {
-  v9 = a3;
-  if (!v9)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKDDownloadAssetsOperation.m", 279, @"Expected non-nil asset for %@", self);
@@ -265,24 +265,24 @@
   block[2] = sub_2251A720C;
   block[3] = &unk_278545E20;
   block[4] = self;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
+  v15 = assetCopy;
+  progressCopy = progress;
+  v11 = assetCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_didCommandForAsset:(id)a3 command:(id)a4
+- (void)_didCommandForAsset:(id)asset command:(id)command
 {
-  v7 = a3;
-  v10 = a4;
-  if (!v7)
+  assetCopy = asset;
+  commandCopy = command;
+  if (!assetCopy)
   {
     v31 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, self, @"CKDDownloadAssetsOperation.m", 287, @"Expected non-nil asset for %@", self);
   }
 
-  v11 = v7;
-  v14 = objc_msgSend_mutableCopy(v10, v12, v13);
+  v11 = assetCopy;
+  v14 = objc_msgSend_mutableCopy(commandCopy, v12, v13);
   v17 = objc_msgSend_recordKey(v11, v15, v16);
   objc_msgSend_setObject_forKeyedSubscript_(v14, v18, v17, @"RecordKey");
 
@@ -304,11 +304,11 @@
   dispatch_async(v28, block);
 }
 
-- (void)_didDownloadAsset:(id)a3 error:(id)a4
+- (void)_didDownloadAsset:(id)asset error:(id)error
 {
-  v7 = a3;
-  v10 = a4;
-  if (!v7)
+  assetCopy = asset;
+  errorCopy = error;
+  if (!assetCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDownloadAssetsOperation.m", 298, @"Expected non-nil asset for %@", self);
@@ -320,17 +320,17 @@
   block[2] = sub_2251A75F0;
   block[3] = &unk_278546990;
   block[4] = self;
-  v17 = v7;
-  v18 = v10;
-  v12 = v10;
-  v13 = v7;
+  v17 = assetCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = assetCopy;
   dispatch_async(v11, block);
 }
 
-- (id)_tryToFillInTheDerivativeTemplateWithAsset:(id)a3
+- (id)_tryToFillInTheDerivativeTemplateWithAsset:(id)asset
 {
   v139 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v7 = objc_msgSend_deviceContext(self, v5, v6);
   v10 = objc_msgSend_accountDataSecurityObserver(v7, v8, v9);
   v13 = objc_msgSend_container(self, v11, v12);
@@ -339,12 +339,12 @@
 
   if (v18)
   {
-    v21 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v19, *MEMORY[0x277CBC120], 5013, @"Cannot fill in derivative template due to walrus enabled for asset %@", v4);
+    v21 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v19, *MEMORY[0x277CBC120], 5013, @"Cannot fill in derivative template due to walrus enabled for asset %@", assetCopy);
     goto LABEL_55;
   }
 
   v22 = MEMORY[0x277CBC190];
-  v23 = objc_msgSend_constructedAssetDownloadURLTemplate(v4, v19, v20);
+  v23 = objc_msgSend_constructedAssetDownloadURLTemplate(assetCopy, v19, v20);
   v25 = objc_msgSend__canonicalizeTemplateURL_(v22, v24, v23);
 
   v27 = objc_msgSend_componentsWithURL_resolvingAgainstBaseURL_(MEMORY[0x277CCACE0], v26, v25, 0);
@@ -355,7 +355,7 @@
 
   v38 = objc_msgSend_host(v25, v36, v37);
   v39 = MEMORY[0x277CBC190];
-  v42 = objc_msgSend_constructedAssetDownloadURLTemplate(v4, v40, v41);
+  v42 = objc_msgSend_constructedAssetDownloadURLTemplate(assetCopy, v40, v41);
   LOBYTE(v39) = objc_msgSend__templateURLRequiresAssetKey_(v39, v43, v42);
 
   v46 = MEMORY[0x277CBC830];
@@ -371,7 +371,7 @@
     if (os_log_type_enabled(*v46, OS_LOG_TYPE_DEBUG))
     {
       v93 = v63;
-      v96 = objc_msgSend_signature(v4, v94, v95);
+      v96 = objc_msgSend_signature(assetCopy, v94, v95);
       *buf = 138412290;
       v138 = v96;
       _os_log_debug_impl(&dword_22506F000, v93, OS_LOG_TYPE_DEBUG, "Not filling in key for constructed asset URL template for asset %@ because it doesn't require a key", buf, 0xCu);
@@ -386,7 +386,7 @@
 
   if (!v38)
   {
-    v68 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v44, *MEMORY[0x277CBC120], 1000, @"asset %@ has constructedAssetDownloadURLTemplate but cannot parse out host string", v4);
+    v68 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v44, *MEMORY[0x277CBC120], 1000, @"asset %@ has constructedAssetDownloadURLTemplate but cannot parse out host string", assetCopy);
     v67 = 0;
     v66 = 0;
     v62 = v46;
@@ -405,7 +405,7 @@ LABEL_40:
     }
 
     v102 = MEMORY[0x277CBC190];
-    v103 = objc_msgSend_constructedAssetDownloadURLTemplate(v4, v100, v101);
+    v103 = objc_msgSend_constructedAssetDownloadURLTemplate(assetCopy, v100, v101);
     v105 = objc_msgSend__expandTemplateURL_fieldValues_(v102, v104, v103, v98);
 
     if (v134)
@@ -416,9 +416,9 @@ LABEL_40:
     }
 
     v108 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v106, v105);
-    objc_msgSend_setConstructedAssetDownloadURL_(v4, v109, v108);
+    objc_msgSend_setConstructedAssetDownloadURL_(assetCopy, v109, v108);
 
-    v112 = objc_msgSend_constructedAssetDownloadURL(v4, v110, v111);
+    v112 = objc_msgSend_constructedAssetDownloadURL(assetCopy, v110, v111);
 
     if (v112)
     {
@@ -440,7 +440,7 @@ LABEL_40:
       }
 
       v125 = v114;
-      v131 = objc_msgSend_constructedAssetDownloadURLTemplate(v4, v126, v127);
+      v131 = objc_msgSend_constructedAssetDownloadURLTemplate(assetCopy, v126, v127);
       *buf = 138543362;
       v138 = v131;
       _os_log_error_impl(&dword_22506F000, v125, OS_LOG_TYPE_ERROR, "Couldn't create asset download URL from template %{public}@", buf, 0xCu);
@@ -456,7 +456,7 @@ LABEL_51:
     if (os_log_type_enabled(*v62, OS_LOG_TYPE_INFO))
     {
       v116 = v115;
-      objc_msgSend_constructedAssetDownloadURLTemplate(v4, v117, v118);
+      objc_msgSend_constructedAssetDownloadURLTemplate(assetCopy, v117, v118);
       v119 = v27;
       v120 = v25;
       v122 = v121 = v38;
@@ -478,7 +478,7 @@ LABEL_51:
 
   if (!v49)
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v50, *MEMORY[0x277CBC120], 1000, @"no public cert result for host %@ asset %@", v38, v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v50, *MEMORY[0x277CBC120], 1000, @"no public cert result for host %@ asset %@", v38, assetCopy);
     goto LABEL_28;
   }
 
@@ -497,7 +497,7 @@ LABEL_29:
       goto LABEL_39;
     }
 
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v69, *MEMORY[0x277CBC120], 1000, @"unknown public cert result for host %@ asset %@", v38, v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v69, *MEMORY[0x277CBC120], 1000, @"unknown public cert result for host %@ asset %@", v38, assetCopy);
     v70 = LABEL_28:;
     goto LABEL_29;
   }
@@ -506,17 +506,17 @@ LABEL_29:
   v130 = v51;
   if (objc_msgSend_useEncryption(self, v52, v53))
   {
-    v56 = objc_msgSend_assetKey(v4, v54, v55);
+    v56 = objc_msgSend_assetKey(assetCopy, v54, v55);
 
     if (v56)
     {
-      v59 = objc_msgSend_assetKey(v4, v57, v58);
+      v59 = objc_msgSend_assetKey(assetCopy, v57, v58);
       v62 = v46;
       goto LABEL_23;
     }
 
     v62 = v46;
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v57, *MEMORY[0x277CBC120], 1000, @"expected assetKey for asset %@", v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v57, *MEMORY[0x277CBC120], 1000, @"expected assetKey for asset %@", assetCopy);
   }
 
   else
@@ -527,11 +527,11 @@ LABEL_29:
     }
 
     v62 = v46;
-    v73 = objc_msgSend_clearAssetKey(v4, v71, v72);
+    v73 = objc_msgSend_clearAssetKey(assetCopy, v71, v72);
 
     if (v73)
     {
-      v59 = objc_msgSend_clearAssetKey(v4, v74, v75);
+      v59 = objc_msgSend_clearAssetKey(assetCopy, v74, v75);
 LABEL_23:
       v128 = v59;
       if (v59)
@@ -580,7 +580,7 @@ LABEL_59:
       __assert_rtn("[CKDDownloadAssetsOperation _tryToFillInTheDerivativeTemplateWithAsset:]", "CKDDownloadAssetsOperation.m", 349, "assetKey && assetKey expected");
     }
 
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v74, *MEMORY[0x277CBC120], 1000, @"expected clearAssetKey for asset %@", v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v74, *MEMORY[0x277CBC120], 1000, @"expected clearAssetKey for asset %@", assetCopy);
   }
   v97 = ;
   if (!v97)
@@ -608,19 +608,19 @@ LABEL_55:
   return v21;
 }
 
-- (void)_prepareAssetForDownload:(id)a3
+- (void)_prepareAssetForDownload:(id)download
 {
   v104 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = objc_msgSend_signature(v5, v6, v7);
+  downloadCopy = download;
+  v8 = objc_msgSend_signature(downloadCopy, v6, v7);
 
   if (v8)
   {
-    if (!objc_msgSend_paddedFileSize(v5, v9, v10) || (objc_msgSend_authToken(v5, v11, v12), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (!objc_msgSend_paddedFileSize(downloadCopy, v9, v10) || (objc_msgSend_authToken(downloadCopy, v11, v12), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       v13 = objc_msgSend_container(self, v11, v12);
       v8 = MEMORY[0x277CBC6A8];
-      v16 = objc_msgSend_signature(v5, v14, v15);
+      v16 = objc_msgSend_signature(downloadCopy, v14, v15);
       LODWORD(v8) = objc_msgSend_isValidV2Signature_(v8, v17, v16);
 
       v20 = objc_msgSend_options(v13, v18, v19);
@@ -642,17 +642,17 @@ LABEL_55:
         goto LABEL_11;
       }
 
-      if (objc_msgSend_size(v5, v24, v25) || (objc_msgSend_signature(v5, v30, v31), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend_zeroSizeFileSignature(CKDMMCS, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), isEqualToData = objc_msgSend_isEqualToData_(v32, v36, v35), v35, v32, (isEqualToData & 1) == 0))
+      if (objc_msgSend_size(downloadCopy, v24, v25) || (objc_msgSend_signature(downloadCopy, v30, v31), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend_zeroSizeFileSignature(CKDMMCS, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), isEqualToData = objc_msgSend_isEqualToData_(v32, v36, v35), v35, v32, (isEqualToData & 1) == 0))
       {
         v39 = *MEMORY[0x277CBC120];
         if (v8)
         {
-          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v30, v39, 1000, @"Inconsistent signature type for asset %@, Asset was %@, container does not support", v5, @"V2");
+          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v30, v39, 1000, @"Inconsistent signature type for asset %@, Asset was %@, container does not support", downloadCopy, @"V2");
         }
 
         else
         {
-          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v30, v39, 1000, @"Inconsistent signature type for asset %@, Asset was %@, container does not support", v5, @"V1");
+          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v30, v39, 1000, @"Inconsistent signature type for asset %@, Asset was %@, container does not support", downloadCopy, @"V1");
         }
         v38 = ;
 LABEL_16:
@@ -663,7 +663,7 @@ LABEL_16:
         }
 
 LABEL_21:
-        objc_msgSend_shouldDownloadAssetFromTranscoder_(self, v40, v5);
+        objc_msgSend_shouldDownloadAssetFromTranscoder_(self, v40, downloadCopy);
         goto LABEL_22;
       }
 
@@ -672,12 +672,12 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 1000, @"Missing download token for asset %@", v5);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 1000, @"Missing download token for asset %@", downloadCopy);
   }
 
   else
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v9, *MEMORY[0x277CBC120], 1000, @"Missing signature for asset %@", v5);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v9, *MEMORY[0x277CBC120], 1000, @"Missing signature for asset %@", downloadCopy);
   }
   v38 = ;
   if (v38)
@@ -686,11 +686,11 @@ LABEL_11:
   }
 
 LABEL_17:
-  v42 = objc_msgSend_constructedAssetDownloadURLTemplate(v5, v40, v41);
+  v42 = objc_msgSend_constructedAssetDownloadURLTemplate(downloadCopy, v40, v41);
 
   if (v42)
   {
-    v38 = objc_msgSend__tryToFillInTheDerivativeTemplateWithAsset_(self, v43, v5);
+    v38 = objc_msgSend__tryToFillInTheDerivativeTemplateWithAsset_(self, v43, downloadCopy);
   }
 
   else
@@ -698,7 +698,7 @@ LABEL_17:
     v38 = 0;
   }
 
-  shouldDownloadAssetFromTranscoder = objc_msgSend_shouldDownloadAssetFromTranscoder_(self, v43, v5);
+  shouldDownloadAssetFromTranscoder = objc_msgSend_shouldDownloadAssetFromTranscoder_(self, v43, downloadCopy);
   v49 = shouldDownloadAssetFromTranscoder;
   if (v38 || (shouldDownloadAssetFromTranscoder & 1) != 0)
   {
@@ -712,9 +712,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!objc_msgSend_paddedFileSize(v5, v44, v48))
+  if (!objc_msgSend_paddedFileSize(downloadCopy, v44, v48))
   {
-    v50 = objc_msgSend_constructedAssetDownloadURLTemplate(v5, v44, v48);
+    v50 = objc_msgSend_constructedAssetDownloadURLTemplate(downloadCopy, v44, v48);
 
     if (!v50)
     {
@@ -723,7 +723,7 @@ LABEL_22:
       v57 = objc_msgSend_MMCS(v54, v55, v56);
 
       v60 = objc_msgSend_assetCache(v57, v58, v59);
-      v63 = objc_msgSend_signature(v5, v61, v62);
+      v63 = objc_msgSend_signature(downloadCopy, v61, v62);
       v100 = v51;
       v101 = 0;
       v45 = objc_msgSend_trackDownloadedData_signature_error_(v60, v64, v51, v63, &v101);
@@ -732,7 +732,7 @@ LABEL_22:
       if (!(v45 | v38))
       {
         v83 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v65, v66);
-        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v83, v84, a2, self, @"CKDDownloadAssetsOperation.m", 442, @"Expected non-nil error for asset %@", v5);
+        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v83, v84, a2, self, @"CKDDownloadAssetsOperation.m", 442, @"Expected non-nil error for asset %@", downloadCopy);
 
         if (v49)
         {
@@ -745,16 +745,16 @@ LABEL_22:
       if (v45)
       {
         v67 = objc_msgSend_fileURL(v45, v65, v66);
-        objc_msgSend_setFileURL_(v5, v68, v67);
+        objc_msgSend_setFileURL_(downloadCopy, v68, v67);
 
         v71 = objc_msgSend_trackingUUID(v45, v69, v70);
-        objc_msgSend_setUUID_(v5, v72, v71);
+        objc_msgSend_setUUID_(downloadCopy, v72, v71);
 
-        objc_msgSend_setWasCached_(v5, v73, 1);
+        objc_msgSend_setWasCached_(downloadCopy, v73, 1);
         if (!v38)
         {
-          v75 = objc_msgSend_fileURL(v5, v44, v74);
-          objc_msgSend_setDownloaded_(v5, v76, v75 != 0);
+          v75 = objc_msgSend_fileURL(downloadCopy, v44, v74);
+          objc_msgSend_setDownloaded_(downloadCopy, v76, v75 != 0);
 
           if (*MEMORY[0x277CBC880] != -1)
           {
@@ -765,18 +765,18 @@ LABEL_22:
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v103 = v5;
+            v103 = downloadCopy;
             _os_log_debug_impl(&dword_22506F000, v77, OS_LOG_TYPE_DEBUG, "Returning asset from cache: %@", buf, 0xCu);
           }
 
-          objc_msgSend__didPrepareAsset_(self, v78, v5);
-          objc_msgSend__didMakeProgressForAsset_progress_(self, v79, v5, 1.0);
-          objc_msgSend__didDownloadAsset_error_(self, v80, v5, 0);
+          objc_msgSend__didPrepareAsset_(self, v78, downloadCopy);
+          objc_msgSend__didMakeProgressForAsset_progress_(self, v79, downloadCopy, 1.0);
+          objc_msgSend__didDownloadAsset_error_(self, v80, downloadCopy, 0);
           goto LABEL_24;
         }
 
 LABEL_23:
-        objc_msgSend__didDownloadAsset_error_(self, v44, v5, v38);
+        objc_msgSend__didDownloadAsset_error_(self, v44, downloadCopy, v38);
 
         goto LABEL_24;
       }
@@ -793,7 +793,7 @@ LABEL_39:
   {
 LABEL_40:
     v81 = objc_msgSend_assetsToDownloadFromTranscoder(self, v44, v48);
-    objc_msgSend_addObject_(v81, v82, v5);
+    objc_msgSend_addObject_(v81, v82, downloadCopy);
 
     v45 = 0;
     goto LABEL_24;
@@ -801,12 +801,12 @@ LABEL_40:
 
 LABEL_44:
   v85 = [CKDMMCSItem alloc];
-  v45 = objc_msgSend_initWithAsset_(v85, v86, v5);
-  v89 = objc_msgSend_paddedFileSize(v5, v87, v88);
+  v45 = objc_msgSend_initWithAsset_(v85, v86, downloadCopy);
+  v89 = objc_msgSend_paddedFileSize(downloadCopy, v87, v88);
   objc_msgSend_setPaddedFileSize_(v45, v90, v89);
   if ((v8 & 1) == 0)
   {
-    v93 = objc_msgSend_size(v5, v91, v92);
+    v93 = objc_msgSend_size(downloadCopy, v91, v92);
     objc_msgSend_setFileSize_(v45, v94, v93);
   }
 
@@ -824,12 +824,12 @@ LABEL_24:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preparePackageForDataDownload:(id)a3
+- (void)_preparePackageForDataDownload:(id)download
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downloadCopy = download;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = objc_msgSend_assets(v4, v6, v7);
+  v8 = objc_msgSend_assets(downloadCopy, v6, v7);
   v11 = objc_msgSend_count(v8, v9, v10);
   v13 = objc_msgSend_initWithCapacity_(v5, v12, v11);
 
@@ -837,13 +837,13 @@ LABEL_24:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v16 = objc_msgSend_assets(v4, v14, v15);
+  v16 = objc_msgSend_assets(downloadCopy, v14, v15);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v57, v61, 16);
   v19 = 0x277CBC000uLL;
   v20 = MEMORY[0x277CBC120];
   if (v18)
   {
-    v56 = self;
+    selfCopy = self;
     v21 = 0;
     v22 = *v58;
     while (2)
@@ -864,8 +864,8 @@ LABEL_24:
         {
           v19 = 0x277CBC000uLL;
           v20 = MEMORY[0x277CBC120];
-          v18 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v26, *MEMORY[0x277CBC120], 1000, @"Invalid package manifest for package %@", v4);
-          self = v56;
+          v18 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v26, *MEMORY[0x277CBC120], 1000, @"Invalid package manifest for package %@", downloadCopy);
+          self = selfCopy;
           goto LABEL_14;
         }
 
@@ -889,7 +889,7 @@ LABEL_24:
     }
 
     v24 = v21;
-    self = v56;
+    self = selfCopy;
     v19 = 0x277CBC000;
     v20 = MEMORY[0x277CBC120];
   }
@@ -903,47 +903,47 @@ LABEL_14:
 
   if (!v18 && !v24)
   {
-    v18 = objc_msgSend_errorWithDomain_code_format_(*(v19 + 1376), v27, *v20, 1000, @"No package manifest found for package %@", v4);
+    v18 = objc_msgSend_errorWithDomain_code_format_(*(v19 + 1376), v27, *v20, 1000, @"No package manifest found for package %@", downloadCopy);
   }
 
   if (v18)
   {
-    objc_msgSend__didDownloadAsset_error_(self, v27, v4, v18);
+    objc_msgSend__didDownloadAsset_error_(self, v27, downloadCopy, v18);
   }
 
   else
   {
-    v29 = objc_msgSend_assets(v4, v27, v28);
+    v29 = objc_msgSend_assets(downloadCopy, v27, v28);
     v32 = objc_msgSend_firstObject(v29, v30, v31);
 
     v33 = [CKDMMCSItem alloc];
     v35 = objc_msgSend_initWithAsset_(v33, v34, v32);
     v38 = objc_msgSend_size(v32, v36, v37);
     objc_msgSend_setFileSize_(v35, v39, v38);
-    objc_msgSend_setPackage_(v35, v40, v4);
+    objc_msgSend_setPackage_(v35, v40, downloadCopy);
     objc_msgSend_setIsPackageManifest_(v35, v41, 1);
     objc_msgSend_addObject_(self->_prepareMMCSItemsToDownload, v42, v35);
     v43 = [CKPackageDownloadTask alloc];
     v46 = objc_msgSend_downloadProgressBlock(self, v44, v45);
-    v48 = objc_msgSend_initWithPackage_trackProgress_(v43, v47, v4, v46 != 0);
+    v48 = objc_msgSend_initWithPackage_trackProgress_(v43, v47, downloadCopy, v46 != 0);
 
     objc_msgSend_setManifestAsset_(v48, v49, v32);
     objc_msgSend_setSectionAssets_(v48, v50, v13);
     v53 = objc_msgSend_downloadTasksByPackages(self, v51, v52);
-    objc_msgSend_setObject_forKey_(v53, v54, v48, v4);
+    objc_msgSend_setObject_forKey_(v53, v54, v48, downloadCopy);
   }
 
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preparePackageForMetadataDownload:(id)a3
+- (void)_preparePackageForMetadataDownload:(id)download
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = objc_msgSend_assets(a3, a2, a3, 0);
+  v4 = objc_msgSend_assets(download, a2, download, 0);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
   if (v6)
   {
@@ -972,17 +972,17 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preparePackageForDownload:(id)a3
+- (void)_preparePackageForDownload:(id)download
 {
-  v7 = a3;
+  downloadCopy = download;
   if (sub_2251A88B0(self, v4, v5))
   {
-    objc_msgSend__preparePackageForMetadataDownload_(self, v6, v7);
+    objc_msgSend__preparePackageForMetadataDownload_(self, v6, downloadCopy);
   }
 
   else
   {
-    objc_msgSend__preparePackageForDataDownload_(self, v6, v7);
+    objc_msgSend__preparePackageForDataDownload_(self, v6, downloadCopy);
   }
 }
 
@@ -1332,14 +1332,14 @@ LABEL_64:
   return v157;
 }
 
-- (void)_didDownloadMMCSItem:(id)a3 inMemory:(BOOL)a4 error:(id)a5
+- (void)_didDownloadMMCSItem:(id)item inMemory:(BOOL)memory error:(id)error
 {
   v104[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v12 = objc_msgSend_package(v8, v10, v11);
-  v15 = objc_msgSend_asset(v8, v13, v14);
-  v18 = objc_msgSend_error(v8, v16, v17);
+  itemCopy = item;
+  errorCopy = error;
+  v12 = objc_msgSend_package(itemCopy, v10, v11);
+  v15 = objc_msgSend_asset(itemCopy, v13, v14);
+  v18 = objc_msgSend_error(itemCopy, v16, v17);
   v19 = v18;
   if (v18)
   {
@@ -1348,14 +1348,14 @@ LABEL_64:
 
   else
   {
-    v20 = v9;
+    v20 = errorCopy;
   }
 
   v21 = v20;
 
   if (v21)
   {
-    v104[0] = v8;
+    v104[0] = itemCopy;
     v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v104, 1);
     objc_msgSend__removeUntrackedMMCSItems_(self, v25, v24);
 
@@ -1376,7 +1376,7 @@ LABEL_64:
         v84 = v32;
         v87 = objc_msgSend_operationID(self, v85, v86);
         *buf = 138413058;
-        v97 = v8;
+        v97 = itemCopy;
         v98 = 2112;
         v99 = v12;
         v100 = 2114;
@@ -1404,7 +1404,7 @@ LABEL_64:
         v88 = v80;
         v91 = objc_msgSend_operationID(self, v89, v90);
         *buf = 138412802;
-        v97 = v8;
+        v97 = itemCopy;
         v98 = 2114;
         v99 = v91;
         v100 = 2112;
@@ -1421,38 +1421,38 @@ LABEL_64:
     if (!v15)
     {
       v92 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v22, v23);
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v92, v93, a2, self, @"CKDDownloadAssetsOperation.m", 643, @"Expected non-nil asset for item %@", v8);
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v92, v93, a2, self, @"CKDDownloadAssetsOperation.m", 643, @"Expected non-nil asset for item %@", itemCopy);
     }
 
-    v37 = objc_msgSend_fileSize(v8, v22, v23);
+    v37 = objc_msgSend_fileSize(itemCopy, v22, v23);
     objc_msgSend_setSize_(v15, v38, v37);
-    v41 = objc_msgSend_paddedFileSize(v8, v39, v40);
+    v41 = objc_msgSend_paddedFileSize(itemCopy, v39, v40);
     objc_msgSend_setPaddedFileSize_(v15, v42, v41);
-    v45 = objc_msgSend_verificationKey(v8, v43, v44);
+    v45 = objc_msgSend_verificationKey(itemCopy, v43, v44);
     objc_msgSend_setVerificationKey_(v15, v46, v45);
 
     if (sub_2251A88B0(self, v47, v48))
     {
-      v51 = objc_msgSend_itemID(v8, v49, v50);
+      v51 = objc_msgSend_itemID(itemCopy, v49, v50);
       objc_msgSend_setReReferenceItemID_(v15, v52, v51);
     }
 
-    if (!v8)
+    if (!itemCopy)
     {
       v94 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v49, v50);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v94, v95, a2, self, @"CKDDownloadAssetsOperation.m", 668, @"Expected non-nil MMCS item");
     }
 
-    v53 = objc_msgSend_trackingUUID(v8, v49, v50);
+    v53 = objc_msgSend_trackingUUID(itemCopy, v49, v50);
     objc_msgSend_setUUID_(v15, v54, v53);
 
-    if (objc_msgSend_downloadLooksOkay(v8, v55, v56))
+    if (objc_msgSend_downloadLooksOkay(itemCopy, v55, v56))
     {
       objc_msgSend_setDownloaded_(v15, v57, 1);
-      v61 = objc_msgSend_fileURL(v8, v59, v60);
+      v61 = objc_msgSend_fileURL(itemCopy, v59, v60);
       objc_msgSend_setFileURL_(v15, v62, v61);
 
-      v65 = objc_msgSend_fileHandle(v8, v63, v64);
+      v65 = objc_msgSend_fileHandle(itemCopy, v63, v64);
       objc_msgSend_setFileHandle_(v15, v66, v65);
     }
 
@@ -1480,24 +1480,24 @@ LABEL_64:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectMetricsFromMMCSOperationMetrics:(id)a3
+- (void)_collectMetricsFromMMCSOperationMetrics:(id)metrics
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  metricsCopy = metrics;
+  if (objc_msgSend_count(metricsCopy, v5, v6))
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_2251A99AC;
     v8[3] = &unk_2785487F8;
-    v9 = v4;
+    v9 = metricsCopy;
     objc_msgSend_updateMMCSMetrics_(self, v7, v8);
   }
 }
 
-- (void)_collectMetricsFromCompletedItemGroup:(id)a3
+- (void)_collectMetricsFromCompletedItemGroup:(id)group
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_metrics(a3, a2, a3);
+  v4 = objc_msgSend_metrics(group, a2, group);
   v6 = v4;
   if (v4)
   {
@@ -1509,27 +1509,27 @@ LABEL_64:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectMetricsFromCompletedItemGroupSet:(id)a3
+- (void)_collectMetricsFromCompletedItemGroupSet:(id)set
 {
-  v4 = objc_msgSend_itemsGroups(a3, a2, a3);
+  v4 = objc_msgSend_itemsGroups(set, a2, set);
   v7 = objc_msgSend_CKCompactMap_(v4, v5, &unk_28385D3A0);
 
   objc_msgSend__collectMetricsFromMMCSOperationMetrics_(self, v6, v7);
 }
 
-- (void)_didCommandForMMCSItem:(id)a3 command:(id)a4
+- (void)_didCommandForMMCSItem:(id)item command:(id)command
 {
-  v6 = a4;
-  v10 = objc_msgSend_asset(a3, v7, v8);
-  objc_msgSend__didCommandForAsset_command_(self, v9, v10, v6);
+  commandCopy = command;
+  v10 = objc_msgSend_asset(item, v7, v8);
+  objc_msgSend__didCommandForAsset_command_(self, v9, v10, commandCopy);
 }
 
-- (void)_didDownloadMMCSSectionItem:(id)a3 task:(id)a4 error:(id)a5
+- (void)_didDownloadMMCSSectionItem:(id)item task:(id)task error:(id)error
 {
   v145 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  taskCopy = task;
+  errorCopy = error;
   v14 = objc_msgSend_mmcs(self, v12, v13);
   v17 = objc_msgSend_container(self, v15, v16);
 
@@ -1545,8 +1545,8 @@ LABEL_64:
     }
   }
 
-  v129 = objc_msgSend_package(v10, v18, v19);
-  v23 = objc_msgSend_error(v9, v21, v22);
+  v129 = objc_msgSend_package(taskCopy, v18, v19);
+  v23 = objc_msgSend_error(itemCopy, v21, v22);
   v24 = v23;
   if (v23)
   {
@@ -1555,7 +1555,7 @@ LABEL_64:
 
   else
   {
-    v25 = v11;
+    v25 = errorCopy;
   }
 
   v26 = v25;
@@ -1574,7 +1574,7 @@ LABEL_8:
       v108 = v29;
       v111 = objc_msgSend_operationID(self, v109, v110);
       *buf = 138413058;
-      v137 = v9;
+      v137 = itemCopy;
       v138 = 2112;
       v139 = v129;
       v140 = 2114;
@@ -1584,8 +1584,8 @@ LABEL_8:
       _os_log_debug_impl(&dword_22506F000, v108, OS_LOG_TYPE_DEBUG, "Failed to download MMCS section item %@ for package %@ and operation %{public}@: %@", buf, 0x2Au);
     }
 
-    objc_msgSend_setError_(v10, v30, v26);
-    v33 = objc_msgSend_sectionItems(v9, v31, v32);
+    objc_msgSend_setError_(taskCopy, v30, v26);
+    v33 = objc_msgSend_sectionItems(itemCopy, v31, v32);
     objc_msgSend__removeUntrackedMMCSItems_(self, v34, v33);
 
     goto LABEL_48;
@@ -1597,16 +1597,16 @@ LABEL_8:
   }
 
   v125 = a2;
-  v126 = self;
+  selfCopy = self;
   v121 = v14;
-  v122 = v11;
-  v123 = v10;
+  v122 = errorCopy;
+  v123 = taskCopy;
   v35 = objc_alloc(MEMORY[0x277CBEB18]);
   v37 = objc_msgSend_initWithCapacity_(v35, v36, 100);
   v38 = objc_alloc(MEMORY[0x277CBEB18]);
   v40 = objc_msgSend_initWithCapacity_(v38, v39, 100);
-  v124 = v9;
-  v43 = objc_msgSend_sectionItems(v9, v41, v42);
+  v124 = itemCopy;
+  v43 = objc_msgSend_sectionItems(itemCopy, v41, v42);
   v128 = objc_msgSend_objectEnumerator(v43, v44, v45);
 
   v48 = 0;
@@ -1649,7 +1649,7 @@ LABEL_25:
         }
 
         v58 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v56, v57);
-        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v58, v59, v125, v126, @"CKDDownloadAssetsOperation.m", 771, @"Expected non-nil fileURL for %@", v48);
+        objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v58, v59, v125, selfCopy, @"CKDDownloadAssetsOperation.m", 771, @"Expected non-nil fileURL for %@", v48);
       }
 
       objc_msgSend_addObject_(v40, v53, v54);
@@ -1744,11 +1744,11 @@ LABEL_26:
   }
 
 LABEL_42:
-  v10 = v123;
-  v9 = v124;
+  taskCopy = v123;
+  itemCopy = v124;
   v14 = v121;
-  v11 = v122;
-  self = v126;
+  errorCopy = v122;
+  self = selfCopy;
   if (v26)
   {
     goto LABEL_8;
@@ -1766,7 +1766,7 @@ LABEL_43:
     v112 = v96;
     v115 = objc_msgSend_operationID(self, v113, v114);
     *buf = 138413058;
-    v137 = v9;
+    v137 = itemCopy;
     v138 = 2112;
     v139 = v129;
     v140 = 2114;
@@ -1776,9 +1776,9 @@ LABEL_43:
     _os_log_debug_impl(&dword_22506F000, v112, OS_LOG_TYPE_DEBUG, "Downloaded MMCS section item %@ for package %@ and operation %{public}@: %@", buf, 0x2Au);
   }
 
-  v26 = objc_msgSend_asset(v9, v97, v98);
+  v26 = objc_msgSend_asset(itemCopy, v97, v98);
   objc_msgSend_setDownloaded_(v26, v99, 1);
-  v102 = objc_msgSend_progressTracker(v10, v100, v101);
+  v102 = objc_msgSend_progressTracker(taskCopy, v100, v101);
   objc_msgSend_updateProgressWithItem_progress_(v102, v103, v26, 1.0);
   v105 = v104;
 
@@ -1788,17 +1788,17 @@ LABEL_48:
   v107 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didDownloadMMCSSectionItems:(id)a3 task:(id)a4 error:(id)a5
+- (void)_didDownloadMMCSSectionItems:(id)items task:(id)task error:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  taskCopy = task;
+  errorCopy = error;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v11, &v26, v34, 16);
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v11, &v26, v34, 16);
   if (v12)
   {
     v15 = v12;
@@ -1809,24 +1809,24 @@ LABEL_48:
       {
         if (*v27 != v16)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
         if ((objc_msgSend_finished(v18, v13, v14) & 1) == 0)
         {
           objc_msgSend_setFinished_(v18, v13, 1);
-          objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v19, v18, v9, v10);
+          objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v19, v18, taskCopy, errorCopy);
         }
       }
 
-      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v13, &v26, v34, 16);
+      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v13, &v26, v34, 16);
     }
 
     while (v15);
   }
 
-  if (v10)
+  if (errorCopy)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -1837,11 +1837,11 @@ LABEL_48:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v22 = v20;
-      v25 = objc_msgSend_count(v8, v23, v24);
+      v25 = objc_msgSend_count(itemsCopy, v23, v24);
       *buf = 134218242;
       v31 = v25;
       v32 = 2112;
-      v33 = v10;
+      v33 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v22, OS_LOG_TYPE_DEBUG, "Failed to download %lu MMCS section items: %@", buf, 0x16u);
     }
   }
@@ -1849,28 +1849,28 @@ LABEL_48:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didMakeProgressForMMCSSectionItem:(id)a3 task:(id)a4
+- (void)_didMakeProgressForMMCSSectionItem:(id)item task:(id)task
 {
-  v30 = a3;
-  v6 = a4;
-  if (objc_msgSend_finished(v30, v7, v8))
+  itemCopy = item;
+  taskCopy = task;
+  if (objc_msgSend_finished(itemCopy, v7, v8))
   {
-    v11 = objc_msgSend_error(v30, v9, v10);
-    objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v12, v30, v6, v11);
+    v11 = objc_msgSend_error(itemCopy, v9, v10);
+    objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v12, itemCopy, taskCopy, v11);
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  objc_msgSend_progress(v30, v9, v10);
+  objc_msgSend_progress(itemCopy, v9, v10);
   v14 = v13;
-  v17 = objc_msgSend_error(v30, v15, v16);
+  v17 = objc_msgSend_error(itemCopy, v15, v16);
 
   if (!v17 && v14 >= 0.0)
   {
-    v11 = objc_msgSend_package(v30, v18, v19);
-    v22 = objc_msgSend_progressTracker(v6, v20, v21);
-    v25 = objc_msgSend_asset(v30, v23, v24);
+    v11 = objc_msgSend_package(itemCopy, v18, v19);
+    v22 = objc_msgSend_progressTracker(taskCopy, v20, v21);
+    v25 = objc_msgSend_asset(itemCopy, v23, v24);
     objc_msgSend_updateProgressWithItem_progress_(v22, v26, v25, v14);
     v28 = v27;
 
@@ -1881,21 +1881,21 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_downloadPackageSectionAtIndex:(int64_t)a3 task:(id)a4 completionBlock:(id)a5
+- (void)_downloadPackageSectionAtIndex:(int64_t)index task:(id)task completionBlock:(id)block
 {
   v177 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v12 = a5;
-  if (a3 < 0)
+  taskCopy = task;
+  blockCopy = block;
+  if (index < 0)
   {
     v114 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v114, v115, a2, self, @"CKDDownloadAssetsOperation.m", 840, @"Expected a valid sectionIndex: %ld", a3);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v114, v115, a2, self, @"CKDDownloadAssetsOperation.m", 840, @"Expected a valid sectionIndex: %ld", index);
   }
 
   if (!objc_msgSend_isCancelled(self, v10, v11))
   {
     v125 = objc_msgSend_mmcs(self, v13, v14);
-    v19 = objc_msgSend_package(v9, v17, v18);
+    v19 = objc_msgSend_package(taskCopy, v17, v18);
     v126 = objc_msgSend_downloadItemIndices(v19, v20, v21);
     v162 = 0;
     v163 = &v162;
@@ -1904,16 +1904,16 @@ LABEL_7:
     v166 = sub_225073574;
     v167 = 0;
     v161 = 0;
-    v23 = objc_msgSend_sectionAtIndex_error_(v19, v22, a3, &v161);
+    v23 = objc_msgSend_sectionAtIndex_error_(v19, v22, index, &v161);
     objc_storeStrong(&v167, v161);
     if (!v23)
     {
-      v32 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v24, *MEMORY[0x277CBC120], 1000, @"Couldn't find section at index %ld for package %@, error: %@", a3, v19, v163[5]);
-      objc_msgSend_setError_(v9, v33, v32);
+      v32 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v24, *MEMORY[0x277CBC120], 1000, @"Couldn't find section at index %ld for package %@, error: %@", index, v19, v163[5]);
+      objc_msgSend_setError_(taskCopy, v33, v32);
 
-      if (v12)
+      if (blockCopy)
       {
-        v12[2](v12);
+        blockCopy[2](blockCopy);
       }
 
       goto LABEL_24;
@@ -1947,11 +1947,11 @@ LABEL_7:
     if (v163[5])
     {
       v30 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v28, *MEMORY[0x277CBC120], 1000, @"Error creating download package items: %@", v163[5]);
-      objc_msgSend_setError_(v9, v31, v30);
+      objc_msgSend_setError_(taskCopy, v31, v30);
 
-      if (v12)
+      if (blockCopy)
       {
-        v12[2](v12);
+        blockCopy[2](blockCopy);
       }
 
       goto LABEL_23;
@@ -1963,9 +1963,9 @@ LABEL_7:
     if (v163[5])
     {
       v36 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v34, *MEMORY[0x277CBC120], 1000, @"Error determining section size: %@", v163[5]);
-      objc_msgSend_setError_(v9, v37, v36);
+      objc_msgSend_setError_(taskCopy, v37, v36);
 
-      if (v12)
+      if (blockCopy)
       {
         goto LABEL_20;
       }
@@ -1982,12 +1982,12 @@ LABEL_7:
         v53 = objc_msgSend_assets(v25, v38, v39);
         v56 = objc_msgSend_count(v53, v54, v55);
         v58 = objc_msgSend_errorWithDomain_code_format_(v52, v57, *MEMORY[0x277CBC120], 1000, @"Invalid section index %llu(%lu) for package %@", v120, v56, v25);
-        objc_msgSend_setError_(v9, v59, v58);
+        objc_msgSend_setError_(taskCopy, v59, v58);
 
-        if (v12)
+        if (blockCopy)
         {
 LABEL_20:
-          v12[2](v12);
+          blockCopy[2](blockCopy);
         }
 
 LABEL_21:
@@ -2037,7 +2037,7 @@ LABEL_24:
         *location = 138413314;
         *&location[4] = v121;
         v169 = 2048;
-        v170 = a3;
+        indexCopy = index;
         v171 = 2112;
         v172 = v112;
         v173 = 2112;
@@ -2052,7 +2052,7 @@ LABEL_24:
       v78 = objc_msgSend_record(v25, v76, v77);
       v81 = objc_msgSend_recordID(v78, v79, v80);
       v84 = objc_msgSend_recordName(v81, v82, v83);
-      v124 = objc_msgSend_initWithFormat_(v123, v85, @"down|%@|%@|section:%lu", v75, v84, a3);
+      v124 = objc_msgSend_initWithFormat_(v123, v85, @"down|%@|%@|section:%lu", v75, v84, index);
 
       v86 = [CKDProgressTracker alloc];
       v88 = objc_msgSend_initWithTrackingID_(v86, v87, v124);
@@ -2060,7 +2060,7 @@ LABEL_24:
       v90 = dispatch_group_create();
       dispatch_group_enter(v90);
       objc_initWeak(location, self);
-      v119 = objc_msgSend_MMCSRequestOptions(v9, v91, v92);
+      v119 = objc_msgSend_MMCSRequestOptions(taskCopy, v91, v92);
       v137[0] = MEMORY[0x277D85DD0];
       v137[1] = 3221225472;
       v137[2] = sub_2251AB7B4;
@@ -2069,7 +2069,7 @@ LABEL_24:
       v138 = v118;
       v139 = v121;
       objc_copyWeak(&v141, location);
-      v140 = v9;
+      v140 = taskCopy;
       v131[0] = MEMORY[0x277D85DD0];
       v131[1] = 3221225472;
       v131[2] = sub_2251AB860;
@@ -2096,7 +2096,7 @@ LABEL_24:
       block[3] = &unk_278546C30;
       v128 = v93;
       v129 = v96;
-      v130 = v12;
+      v130 = blockCopy;
       v104 = v96;
       dispatch_group_notify(v94, v103, block);
 
@@ -2116,10 +2116,10 @@ LABEL_24:
       v109 = objc_msgSend_trackCachedButNotRegisteredMMCSItems_error_(v107, v108, v150[5], 0);
 
       objc_msgSend_setSectionItems_(v121, v110, v150[5]);
-      objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v111, v121, v9, 0);
-      if (v12)
+      objc_msgSend__didDownloadMMCSSectionItem_task_error_(self, v111, v121, taskCopy, 0);
+      if (blockCopy)
       {
-        v12[2](v12);
+        blockCopy[2](blockCopy);
         v60 = v121;
         goto LABEL_22;
       }
@@ -2130,11 +2130,11 @@ LABEL_24:
   }
 
   v15 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBC120], 1, @"Operation was cancelled");
-  objc_msgSend_setError_(v9, v16, v15);
+  objc_msgSend_setError_(taskCopy, v16, v15);
 
-  if (v12)
+  if (blockCopy)
   {
-    v12[2](v12);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_25:
@@ -2142,18 +2142,18 @@ LABEL_25:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadPackageSectionsWithSectionEnumerator:(id)a3 task:(id)a4 completionBlock:(id)a5
+- (void)_downloadPackageSectionsWithSectionEnumerator:(id)enumerator task:(id)task completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_error(v9, v11, v12);
+  enumeratorCopy = enumerator;
+  taskCopy = task;
+  blockCopy = block;
+  v13 = objc_msgSend_error(taskCopy, v11, v12);
 
-  if (v13 || (objc_msgSend_nextObject(v8, v14, v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v13 || (objc_msgSend_nextObject(enumeratorCopy, v14, v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (v10)
+    if (blockCopy)
     {
-      v10[2](v10);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -2166,24 +2166,24 @@ LABEL_25:
     v22[2] = sub_2251ABC50;
     v22[3] = &unk_2785488E0;
     v22[4] = self;
-    v23 = v8;
-    v24 = v9;
-    v25 = v10;
+    v23 = enumeratorCopy;
+    v24 = taskCopy;
+    v25 = blockCopy;
     objc_msgSend__downloadPackageSectionAtIndex_task_completionBlock_(self, v21, v20, v24, v22);
   }
 }
 
-- (void)_downloadPackageSectionsWithTask:(id)a3 completionBlock:(id)a4
+- (void)_downloadPackageSectionsWithTask:(id)task completionBlock:(id)block
 {
   v114 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  blockCopy = block;
   if (objc_msgSend_isCancelled(self, v8, v9))
   {
     v12 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v10, *MEMORY[0x277CBC120], 1, @"Operation was cancelled");
-    objc_msgSend_setError_(v6, v13, v12);
+    objc_msgSend_setError_(taskCopy, v13, v12);
 
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_33;
     }
@@ -2191,14 +2191,14 @@ LABEL_25:
     goto LABEL_6;
   }
 
-  v14 = objc_msgSend_error(v6, v10, v11);
+  v14 = objc_msgSend_error(taskCopy, v10, v11);
 
   if (v14)
   {
-    if (v7)
+    if (blockCopy)
     {
 LABEL_6:
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -2210,8 +2210,8 @@ LABEL_6:
     v102 = sub_225073FD0;
     v103 = sub_225073574;
     v104 = 0;
-    v17 = objc_msgSend_package(v6, v15, v16);
-    v20 = objc_msgSend_manifestAsset(v6, v18, v19);
+    v17 = objc_msgSend_package(taskCopy, v15, v16);
+    v20 = objc_msgSend_manifestAsset(taskCopy, v18, v19);
     v23 = objc_msgSend_fileURL(v20, v21, v22);
     v26 = objc_msgSend_path(v23, v24, v25);
 
@@ -2262,10 +2262,10 @@ LABEL_6:
         v44 = v100[5];
         if (v44)
         {
-          objc_msgSend_setError_(v6, v43, v44);
-          if (v7)
+          objc_msgSend_setError_(taskCopy, v43, v44);
+          if (blockCopy)
           {
-            v7[2](v7);
+            blockCopy[2](blockCopy);
           }
         }
 
@@ -2286,19 +2286,19 @@ LABEL_6:
             objc_msgSend_setZoneNames_(v84, v70, v69);
           }
 
-          objc_msgSend_setMMCSRequestOptions_(v6, v68, v84, v81);
-          objc_msgSend_setSectionIndices_(v6, v71, v41);
+          objc_msgSend_setMMCSRequestOptions_(taskCopy, v68, v84, v81);
+          objc_msgSend_setSectionIndices_(taskCopy, v71, v41);
           v74 = objc_msgSend_objectEnumerator(v82, v72, v73);
           v87[0] = MEMORY[0x277D85DD0];
           v87[1] = 3221225472;
           v87[2] = sub_2251AC4AC;
           v87[3] = &unk_278548950;
-          v88 = v6;
+          v88 = taskCopy;
           v93 = v85;
           v89 = v40;
           v90 = v41;
-          v91 = self;
-          v92 = v7;
+          selfCopy = self;
+          v92 = blockCopy;
           objc_msgSend__downloadPackageSectionsWithSectionEnumerator_task_completionBlock_(self, v75, v74, v88, v87);
         }
       }
@@ -2326,10 +2326,10 @@ LABEL_6:
           _os_log_error_impl(&dword_22506F000, v51, OS_LOG_TYPE_ERROR, "Failed to read the manifest file at %@ for package %@ and operation %{public}@: %@", buf, 0x2Au);
         }
 
-        objc_msgSend_setError_(v6, v54, v100[5]);
-        if (v7)
+        objc_msgSend_setError_(taskCopy, v54, v100[5]);
+        if (blockCopy)
         {
-          v7[2](v7);
+          blockCopy[2](blockCopy);
         }
       }
     }
@@ -2359,10 +2359,10 @@ LABEL_6:
         _os_log_error_impl(&dword_22506F000, v47, OS_LOG_TYPE_ERROR, "Missing path for package manifest for package %@ and operation %{public}@: %@", buf, 0x20u);
       }
 
-      objc_msgSend_setError_(v6, v50, v100[5]);
-      if (v7)
+      objc_msgSend_setError_(taskCopy, v50, v100[5]);
+      if (blockCopy)
       {
-        v7[2](v7);
+        blockCopy[2](blockCopy);
       }
     }
 
@@ -2374,38 +2374,38 @@ LABEL_33:
   v76 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadPackageSectionsWithPendingTasks:(id)a3 downloadingTasks:(id)a4 completedTasks:(id)a5
+- (void)_downloadPackageSectionsWithPendingTasks:(id)tasks downloadingTasks:(id)downloadingTasks completedTasks:(id)completedTasks
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tasksCopy = tasks;
+  downloadingTasksCopy = downloadingTasks;
+  completedTasksCopy = completedTasks;
   if (!objc_msgSend_maxPackageDownloadsPerBatch(self, v12, v13))
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDDownloadAssetsOperation.m", 1082, @"Expected non-0 maxPackageDownloadsPerBatch");
   }
 
-  v16 = objc_msgSend_count(v10, v14, v15);
+  v16 = objc_msgSend_count(downloadingTasksCopy, v14, v15);
   if (v16 > objc_msgSend_maxPackageDownloadsPerBatch(self, v17, v18))
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDDownloadAssetsOperation.m", 1083, @"Expected max downloading tasks: %@", v10);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDDownloadAssetsOperation.m", 1083, @"Expected max downloading tasks: %@", downloadingTasksCopy);
 
-    if (!v11)
+    if (!completedTasksCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v11)
+  else if (!completedTasksCopy)
   {
     goto LABEL_7;
   }
 
-  if (!objc_msgSend_count(v11, v19, v20))
+  if (!objc_msgSend_count(completedTasksCopy, v19, v20))
   {
     v29 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CKDDownloadAssetsOperation.m", 1084, @"Expected completed tasks: %@", v11);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CKDDownloadAssetsOperation.m", 1084, @"Expected completed tasks: %@", completedTasksCopy);
   }
 
 LABEL_7:
@@ -2414,13 +2414,13 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_2251AC840;
   block[3] = &unk_2785463D0;
-  v32 = v10;
-  v33 = v11;
-  v34 = self;
-  v35 = v9;
-  v22 = v9;
-  v23 = v11;
-  v24 = v10;
+  v32 = downloadingTasksCopy;
+  v33 = completedTasksCopy;
+  selfCopy = self;
+  v35 = tasksCopy;
+  v22 = tasksCopy;
+  v23 = completedTasksCopy;
+  v24 = downloadingTasksCopy;
   dispatch_async(v21, block);
 }
 
@@ -2547,12 +2547,12 @@ LABEL_26:
   return v44;
 }
 
-- (void)_downloadMMCSItems:(id)a3 downloadTasksByPackages:(id)a4 shouldFetchAssetContentInMemory:(BOOL)a5
+- (void)_downloadMMCSItems:(id)items downloadTasksByPackages:(id)packages shouldFetchAssetContentInMemory:(BOOL)memory
 {
-  v135 = a5;
+  memoryCopy = memory;
   v178 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v133 = a4;
+  itemsCopy = items;
+  packagesCopy = packages;
   val = self;
   v134 = objc_msgSend_mmcs(self, v8, v9);
   group = dispatch_group_create();
@@ -2564,7 +2564,7 @@ LABEL_26:
   v171 = 0u;
   v168 = 0u;
   v169 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v168, v177, 16);
   if (v16)
   {
@@ -2748,7 +2748,7 @@ LABEL_26:
 
   if (*MEMORY[0x277CBC810] == 1 && (objc_msgSend_unitTestOverrides(val, v112, v113), v114 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v114, v115, @"DownloadAssetsFakeMMCSError"), v116 = objc_claimAutoreleasedReturnValue(), v114, v116))
   {
-    objc_msgSend__didDownloadMMCSItems_inMemory_error_(val, v117, obj, v135, v116);
+    objc_msgSend__didDownloadMMCSItems_inMemory_error_(val, v117, obj, memoryCopy, v116);
     dispatch_group_leave(group);
 
     v120 = 0;
@@ -2762,7 +2762,7 @@ LABEL_26:
     v151[2] = sub_2251ADC68;
     v151[3] = &unk_2785489A0;
     objc_copyWeak(&v152, location);
-    v153 = v135;
+    v153 = memoryCopy;
     v149[0] = MEMORY[0x277D85DD0];
     v149[1] = 3221225472;
     v149[2] = sub_2251ADCC8;
@@ -2774,9 +2774,9 @@ LABEL_26:
     v145[3] = &unk_2785489F0;
     v145[4] = val;
     v146 = obj;
-    v148 = v135;
+    v148 = memoryCopy;
     v147 = group;
-    v120 = objc_msgSend_getItemGroupSet_operation_shouldFetchAssetContentInMemory_options_progress_command_completionHandler_(v134, v121, v136, val, v135, v137, v151, v149, v145);
+    v120 = objc_msgSend_getItemGroupSet_operation_shouldFetchAssetContentInMemory_options_progress_command_completionHandler_(v134, v121, v136, val, memoryCopy, v137, v151, v149, v145);
     v124 = objc_msgSend_cancelTokens(val, v122, v123);
     objc_msgSend_addCancelToken_withOperation_(v124, v125, v120, val);
 
@@ -2870,9 +2870,9 @@ LABEL_26:
   objc_msgSend_cancel(v5, v6, v7);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_hash(self, v5, v6);
   kdebug_trace();
   objc_msgSend_setDownloadPreparationBlock_(self, v7, 0);
@@ -2885,7 +2885,7 @@ LABEL_26:
 
   v17.receiver = self;
   v17.super_class = CKDDownloadAssetsOperation;
-  [(CKDOperation *)&v17 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v17 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)main
@@ -2938,12 +2938,12 @@ LABEL_26:
 LABEL_12:
 }
 
-- (BOOL)shouldDownloadAssetFromTranscoder:(id)a3
+- (BOOL)shouldDownloadAssetFromTranscoder:(id)transcoder
 {
-  v4 = a3;
+  transcoderCopy = transcoder;
   if (_os_feature_enabled_impl())
   {
-    v7 = objc_msgSend_constructedAssetDownloadParameters(v4, v5, v6);
+    v7 = objc_msgSend_constructedAssetDownloadParameters(transcoderCopy, v5, v6);
     v8 = v7 != 0;
   }
 

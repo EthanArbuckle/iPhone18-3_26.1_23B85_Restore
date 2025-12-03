@@ -1,50 +1,50 @@
 @interface WFDictionarySubstitutableParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)a3;
-- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)a3 identity:(id)a4;
-- (WFDictionarySubstitutableParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)pairs;
+- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)pairs identity:(id)identity;
+- (WFDictionarySubstitutableParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (id)containedVariables;
-- (void)getObjectRepresentationOfVariableWithContext:(id)a3 processingValueClass:(Class)a4 valueHandler:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)getObjectRepresentationOfVariableWithContext:(id)context processingValueClass:(Class)class valueHandler:(id)handler;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFDictionarySubstitutableParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
     v14.receiver = self;
     v14.super_class = WFDictionarySubstitutableParameterState;
-    [(WFVariableSubstitutableParameterState *)&v14 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v14 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
     v12 = objc_opt_class();
-    v13 = [(WFVariableSubstitutableParameterState *)self value];
-    [v12 processValues:v13 context:v8 processingClass:objc_opt_class() userInputRequiredHandler:v9 valueHandler:v10];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    [v12 processValues:value context:contextCopy processingClass:objc_opt_class() userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 }
 
-- (void)getObjectRepresentationOfVariableWithContext:(id)a3 processingValueClass:(Class)a4 valueHandler:(id)a5
+- (void)getObjectRepresentationOfVariableWithContext:(id)context processingValueClass:(Class)class valueHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(WFVariableSubstitutableParameterState *)self variable];
+  handlerCopy = handler;
+  contextCopy = context;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVariableWithContext_processingValueClass_valueHandler___block_invoke;
   v11[3] = &unk_1E837DC20;
-  v12 = v7;
-  v10 = v7;
-  [v9 getContentWithContext:v8 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [variable getContentWithContext:contextCopy completionHandler:v11];
 }
 
 void __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVariableWithContext_processingValueClass_valueHandler___block_invoke(uint64_t a1, void *a2)
@@ -75,30 +75,30 @@ void __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVar
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v9.receiver = self;
   v9.super_class = WFDictionarySubstitutableParameterState;
-  v4 = [(WFVariableSubstitutableParameterState *)&v9 containedVariables];
-  v5 = [v3 initWithArray:v4];
+  containedVariables = [(WFVariableSubstitutableParameterState *)&v9 containedVariables];
+  v5 = [v3 initWithArray:containedVariables];
 
-  v6 = [(WFDictionarySubstitutableParameterState *)self keyValuePairs];
-  v7 = [v6 valueForKeyPath:@"@unionOfArrays.containedVariables"];
+  keyValuePairs = [(WFDictionarySubstitutableParameterState *)self keyValuePairs];
+  v7 = [keyValuePairs valueForKeyPath:@"@unionOfArrays.containedVariables"];
   [v5 addObjectsFromArray:v7];
 
   return v5;
 }
 
-- (WFDictionarySubstitutableParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFDictionarySubstitutableParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = WFDeserializedVariableObject(v8, v9, v10);
+    v11 = WFDeserializedVariableObject(representationCopy, providerCopy, parameterCopy);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 keyValuePairs];
-      self = [(WFDictionarySubstitutableParameterState *)self initWithKeyValuePairs:v12];
+      keyValuePairs = [v11 keyValuePairs];
+      self = [(WFDictionarySubstitutableParameterState *)self initWithKeyValuePairs:keyValuePairs];
     }
 
     objc_opt_class();
@@ -112,34 +112,34 @@ void __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVar
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 representsSingleContentVariable])
       {
-        v13 = [v11 stringsAndVariables];
-        v14 = [v13 firstObject];
-        self = [(WFVariableSubstitutableParameterState *)self initWithVariable:v14];
+        stringsAndVariables = [v11 stringsAndVariables];
+        firstObject = [stringsAndVariables firstObject];
+        self = [(WFVariableSubstitutableParameterState *)self initWithVariable:firstObject];
       }
     }
   }
 
-  v15 = [objc_opt_class() valueFromSerializedRepresentation:v8 variableProvider:v9 parameter:v10];
+  v15 = [objc_opt_class() valueFromSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy];
   if (v15)
   {
     self = [(WFVariableSubstitutableParameterState *)self initWithValue:v15];
   }
 
-  v16 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   identity = self->_identity;
-  self->_identity = v16;
+  self->_identity = uUID;
 
   return self;
 }
 
-- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)a3 identity:(id)a4
+- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)pairs identity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pairsCopy = pairs;
+  identityCopy = identity;
+  v9 = identityCopy;
+  if (pairsCopy)
   {
-    if (v8)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -147,8 +147,8 @@ void __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVar
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFDictionarySubstitutableParameterState.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"keyValuePairs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDictionarySubstitutableParameterState.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"keyValuePairs"}];
 
     if (v9)
     {
@@ -156,37 +156,37 @@ void __122__WFDictionarySubstitutableParameterState_getObjectRepresentationOfVar
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"WFDictionarySubstitutableParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDictionarySubstitutableParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
 
 LABEL_3:
   v16.receiver = self;
   v16.super_class = WFDictionarySubstitutableParameterState;
-  v10 = [(WFVariableSubstitutableParameterState *)&v16 initWithValue:v7];
+  v10 = [(WFVariableSubstitutableParameterState *)&v16 initWithValue:pairsCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identity, a4);
+    objc_storeStrong(&v10->_identity, identity);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)a3
+- (WFDictionarySubstitutableParameterState)initWithKeyValuePairs:(id)pairs
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(WFDictionarySubstitutableParameterState *)self initWithKeyValuePairs:v5 identity:v6];
+  pairsCopy = pairs;
+  uUID = [v4 UUID];
+  v7 = [(WFDictionarySubstitutableParameterState *)self initWithKeyValuePairs:pairsCopy identity:uUID];
 
   return v7;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 if_map:&__block_literal_global_64374];
+  v3 = [value if_map:&__block_literal_global_64374];
   v9 = v3;
   v10[0] = @"WFSerializationType";
   v10[1] = @"Value";
@@ -201,13 +201,13 @@ LABEL_3:
   return v5;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v10 = objc_opt_class();
-  v11 = WFEnforceClass_1501(v9, v10);
+  v11 = WFEnforceClass_1501(representationCopy, v10);
 
   v12 = [v11 objectForKey:@"Value"];
   v13 = objc_opt_class();
@@ -223,8 +223,8 @@ LABEL_3:
     v20[1] = 3221225472;
     v20[2] = __104__WFDictionarySubstitutableParameterState_valueFromSerializedRepresentation_variableProvider_parameter___block_invoke;
     v20[3] = &unk_1E837DBB0;
-    v21 = v7;
-    v22 = v8;
+    v21 = providerCopy;
+    v22 = parameterCopy;
     v18 = [v17 if_compactMap:v20];
   }
 

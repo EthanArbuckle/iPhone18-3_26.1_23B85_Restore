@@ -1,9 +1,9 @@
 @interface WFManagedConfigurationProfile
 + (WFManagedConfigurationProfile)defaultProfile;
 - (ACAccount)primaryAppleAccount;
-- (BOOL)isAccountBasedSourceApp:(id)a3;
-- (BOOL)isAccountManaged:(id)a3;
-- (BOOL)isAppManaged:(id)a3;
+- (BOOL)isAccountBasedSourceApp:(id)app;
+- (BOOL)isAccountManaged:(id)managed;
+- (BOOL)isAppManaged:(id)managed;
 - (BOOL)isBluetoothModificationAllowed;
 - (BOOL)isOpenInRestrictionInEffect;
 - (BOOL)isScreenShotAllowed;
@@ -13,28 +13,28 @@
 - (BOOL)mayOpenFromUnmanagedToManaged;
 - (NSSet)managedAppBundleIDs;
 - (WFManagedConfigurationProfile)init;
-- (WFManagedConfigurationProfile)initWithProfileConnection:(id)a3 accountStore:(id)a4;
-- (id)accountIdentifiersEnabledForDataclass:(id)a3;
-- (id)accountWithIdentifier:(id)a3;
-- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(id)a3 originatingAppBundleID:(id)a4 originatingAccountIsManaged:(BOOL)a5;
-- (unint64_t)managedLevelForContentOfURL:(id)a3;
-- (unint64_t)managedLevelForContentOfURLs:(id)a3;
-- (void)handleAccountStoreDidChangeNotification:(id)a3;
-- (void)handleManagedAppDidChangeNotification:(id)a3;
-- (void)removeCachedChildrenAccountForAccount:(id)a3;
+- (WFManagedConfigurationProfile)initWithProfileConnection:(id)connection accountStore:(id)store;
+- (id)accountIdentifiersEnabledForDataclass:(id)dataclass;
+- (id)accountWithIdentifier:(id)identifier;
+- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(id)ds originatingAppBundleID:(id)d originatingAccountIsManaged:(BOOL)managed;
+- (unint64_t)managedLevelForContentOfURL:(id)l;
+- (unint64_t)managedLevelForContentOfURLs:(id)ls;
+- (void)handleAccountStoreDidChangeNotification:(id)notification;
+- (void)handleManagedAppDidChangeNotification:(id)notification;
+- (void)removeCachedChildrenAccountForAccount:(id)account;
 @end
 
 @implementation WFManagedConfigurationProfile
 
-- (void)handleManagedAppDidChangeNotification:(id)a3
+- (void)handleManagedAppDidChangeNotification:(id)notification
 {
-  v4 = [(WFManagedConfigurationProfile *)self operatingQueue];
+  operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__WFManagedConfigurationProfile_handleManagedAppDidChangeNotification___block_invoke;
   block[3] = &unk_278349550;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(operatingQueue, block);
 }
 
 void __71__WFManagedConfigurationProfile_handleManagedAppDidChangeNotification___block_invoke(uint64_t a1)
@@ -47,22 +47,22 @@ void __71__WFManagedConfigurationProfile_handleManagedAppDidChangeNotification__
   }
 }
 
-- (void)handleAccountStoreDidChangeNotification:(id)a3
+- (void)handleAccountStoreDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = getACAccountIdentifierKey();
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [userInfo objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [(WFManagedConfigurationProfile *)self operatingQueue];
+    operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __73__WFManagedConfigurationProfile_handleAccountStoreDidChangeNotification___block_invoke;
     v8[3] = &unk_278347FF0;
     v8[4] = self;
     v9 = v6;
-    dispatch_async(v7, v8);
+    dispatch_async(operatingQueue, v8);
   }
 }
 
@@ -100,26 +100,26 @@ void __73__WFManagedConfigurationProfile_handleAccountStoreDidChangeNotification
   [v11 removeAllObjects];
 }
 
-- (void)removeCachedChildrenAccountForAccount:(id)a3
+- (void)removeCachedChildrenAccountForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 childAccounts];
-  v6 = [v5 count];
+  accountCopy = account;
+  childAccounts = [accountCopy childAccounts];
+  v6 = [childAccounts count];
 
   if (v6)
   {
-    v7 = [(WFManagedConfigurationProfile *)self accounts];
-    v8 = [v4 childAccounts];
-    v9 = [v8 valueForKey:@"identifier"];
-    [v7 removeObjectsForKeys:v9];
+    accounts = [(WFManagedConfigurationProfile *)self accounts];
+    childAccounts2 = [accountCopy childAccounts];
+    v9 = [childAccounts2 valueForKey:@"identifier"];
+    [accounts removeObjectsForKeys:v9];
 
-    v10 = [v4 childAccounts];
+    childAccounts3 = [accountCopy childAccounts];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __71__WFManagedConfigurationProfile_removeCachedChildrenAccountForAccount___block_invoke;
     v11[3] = &unk_278347FC8;
     v11[4] = self;
-    [v10 enumerateObjectsUsingBlock:v11];
+    [childAccounts3 enumerateObjectsUsingBlock:v11];
   }
 }
 
@@ -131,14 +131,14 @@ void __73__WFManagedConfigurationProfile_handleAccountStoreDidChangeNotification
   v10 = __Block_byref_object_copy__16614;
   v11 = __Block_byref_object_dispose__16615;
   v12 = 0;
-  v3 = [(WFManagedConfigurationProfile *)self operatingQueue];
+  operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__WFManagedConfigurationProfile_managedAppBundleIDs__block_invoke;
   v6[3] = &unk_278347FA0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(operatingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -175,14 +175,14 @@ void __52__WFManagedConfigurationProfile_managedAppBundleIDs__block_invoke(uint6
   v10 = __Block_byref_object_copy__16614;
   v11 = __Block_byref_object_dispose__16615;
   v12 = 0;
-  v3 = [(WFManagedConfigurationProfile *)self operatingQueue];
+  operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__WFManagedConfigurationProfile_primaryAppleAccount__block_invoke;
   v6[3] = &unk_278347FA0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(operatingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -210,10 +210,10 @@ void __52__WFManagedConfigurationProfile_primaryAppleAccount__block_invoke(uint6
   objc_storeStrong(v8, v3);
 }
 
-- (WFManagedConfigurationProfile)initWithProfileConnection:(id)a3 accountStore:(id)a4
+- (WFManagedConfigurationProfile)initWithProfileConnection:(id)connection accountStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  storeCopy = store;
   v22.receiver = self;
   v22.super_class = WFManagedConfigurationProfile;
   v9 = [(WFManagedConfigurationProfile *)&v22 init];
@@ -228,16 +228,16 @@ void __52__WFManagedConfigurationProfile_primaryAppleAccount__block_invoke(uint6
     accounts = v9->_accounts;
     v9->_accounts = v13;
 
-    objc_storeStrong(&v9->_accountStore, a4);
-    objc_storeStrong(&v9->_profileConnection, a3);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v9->_accountStore, store);
+    objc_storeStrong(&v9->_profileConnection, connection);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v16 = getMCManagedAppsChangedNotification();
-    v17 = [(WFManagedConfigurationProfile *)v9 profileConnection];
-    [v15 addObserver:v9 selector:sel_handleManagedAppDidChangeNotification_ name:v16 object:v17];
+    profileConnection = [(WFManagedConfigurationProfile *)v9 profileConnection];
+    [defaultCenter addObserver:v9 selector:sel_handleManagedAppDidChangeNotification_ name:v16 object:profileConnection];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = getACDAccountStoreDidChangeNotification();
-    [v18 addObserver:v9 selector:sel_handleAccountStoreDidChangeNotification_ name:v19 object:0];
+    [defaultCenter2 addObserver:v9 selector:sel_handleAccountStoreDidChangeNotification_ name:v19 object:0];
 
     v20 = v9;
   }
@@ -247,10 +247,10 @@ void __52__WFManagedConfigurationProfile_primaryAppleAccount__block_invoke(uint6
 
 - (WFManagedConfigurationProfile)init
 {
-  v3 = [(objc_class *)getMCProfileConnectionClass() sharedConnection];
+  sharedConnection = [(objc_class *)getMCProfileConnectionClass() sharedConnection];
   getACAccountStoreClass();
   v4 = objc_opt_new();
-  v5 = [(WFManagedConfigurationProfile *)self initWithProfileConnection:v3 accountStore:v4];
+  v5 = [(WFManagedConfigurationProfile *)self initWithProfileConnection:sharedConnection accountStore:v4];
 
   return v5;
 }
@@ -276,56 +276,56 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
 
 - (BOOL)isWallpaperModificationAllowed
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 isWallpaperModificationAllowed];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  isWallpaperModificationAllowed = [profileConnection isWallpaperModificationAllowed];
 
-  return v3;
+  return isWallpaperModificationAllowed;
 }
 
 - (BOOL)isScreenShotAllowed
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 isScreenShotAllowed];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  isScreenShotAllowed = [profileConnection isScreenShotAllowed];
 
-  return v3;
+  return isScreenShotAllowed;
 }
 
 - (BOOL)isBluetoothModificationAllowed
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 isBluetoothModificationAllowed];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  isBluetoothModificationAllowed = [profileConnection isBluetoothModificationAllowed];
 
-  return v3;
+  return isBluetoothModificationAllowed;
 }
 
 - (BOOL)isWiFiPowerModificationAllowed
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 isWiFiPowerModificationAllowed];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  isWiFiPowerModificationAllowed = [profileConnection isWiFiPowerModificationAllowed];
 
-  return v3;
+  return isWiFiPowerModificationAllowed;
 }
 
-- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(id)a3 originatingAppBundleID:(id)a4 originatingAccountIsManaged:(BOOL)a5
+- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(id)ds originatingAppBundleID:(id)d originatingAccountIsManaged:(BOOL)managed
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v11 = [v10 allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:v9 originatingAppBundleID:v8 originatingAccountIsManaged:v5];
+  managedCopy = managed;
+  dCopy = d;
+  dsCopy = ds;
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  v11 = [profileConnection allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:dsCopy originatingAppBundleID:dCopy originatingAccountIsManaged:managedCopy];
 
   return v11;
 }
 
-- (unint64_t)managedLevelForContentOfURLs:(id)a3
+- (unint64_t)managedLevelForContentOfURLs:(id)ls
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lsCopy = ls;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [lsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -338,7 +338,7 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(lsCopy);
         }
 
         v11 = [(WFManagedConfigurationProfile *)self managedLevelForContentOfURL:*(*(&v14 + 1) + 8 * i)];
@@ -353,7 +353,7 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [lsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -381,11 +381,11 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
   return v12;
 }
 
-- (unint64_t)managedLevelForContentOfURL:(id)a3
+- (unint64_t)managedLevelForContentOfURL:(id)l
 {
-  v4 = a3;
-  v5 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v6 = [v5 isURLManaged:v4];
+  lCopy = l;
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  v6 = [profileConnection isURLManaged:lCopy];
 
   if (v6)
   {
@@ -400,11 +400,11 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
   return v7;
 }
 
-- (BOOL)isAccountBasedSourceApp:(id)a3
+- (BOOL)isAccountBasedSourceApp:(id)app
 {
-  if (a3)
+  if (app)
   {
-    return softLinkMCIsAppAccountBasedSourceForOpenIn(a3);
+    return softLinkMCIsAppAccountBasedSourceForOpenIn(app);
   }
 
   else
@@ -413,66 +413,66 @@ uint64_t __47__WFManagedConfigurationProfile_defaultProfile__block_invoke()
   }
 }
 
-- (BOOL)isAccountManaged:(id)a3
+- (BOOL)isAccountManaged:(id)managed
 {
-  v3 = [(WFManagedConfigurationProfile *)self accountWithIdentifier:a3];
-  v4 = [v3 MCIsManaged];
+  v3 = [(WFManagedConfigurationProfile *)self accountWithIdentifier:managed];
+  mCIsManaged = [v3 MCIsManaged];
 
-  return v4;
+  return mCIsManaged;
 }
 
-- (BOOL)isAppManaged:(id)a3
+- (BOOL)isAppManaged:(id)managed
 {
-  v4 = a3;
-  v5 = [(WFManagedConfigurationProfile *)self managedAppBundleIDs];
-  v6 = [v5 containsObject:v4];
+  managedCopy = managed;
+  managedAppBundleIDs = [(WFManagedConfigurationProfile *)self managedAppBundleIDs];
+  v6 = [managedAppBundleIDs containsObject:managedCopy];
 
   return v6;
 }
 
 - (BOOL)mayOpenFromManagedToUnmanaged
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 mayOpenFromManagedToUnmanaged];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  mayOpenFromManagedToUnmanaged = [profileConnection mayOpenFromManagedToUnmanaged];
 
-  return v3;
+  return mayOpenFromManagedToUnmanaged;
 }
 
 - (BOOL)mayOpenFromUnmanagedToManaged
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 mayOpenFromUnmanagedToManaged];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  mayOpenFromUnmanagedToManaged = [profileConnection mayOpenFromUnmanagedToManaged];
 
-  return v3;
+  return mayOpenFromUnmanagedToManaged;
 }
 
 - (BOOL)isOpenInRestrictionInEffect
 {
-  v2 = [(WFManagedConfigurationProfile *)self profileConnection];
-  v3 = [v2 isOpenInRestrictionInEffect];
+  profileConnection = [(WFManagedConfigurationProfile *)self profileConnection];
+  isOpenInRestrictionInEffect = [profileConnection isOpenInRestrictionInEffect];
 
-  return v3;
+  return isOpenInRestrictionInEffect;
 }
 
-- (id)accountIdentifiersEnabledForDataclass:(id)a3
+- (id)accountIdentifiersEnabledForDataclass:(id)dataclass
 {
-  v4 = a3;
+  dataclassCopy = dataclass;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__16614;
   v16 = __Block_byref_object_dispose__16615;
   v17 = 0;
-  v5 = [(WFManagedConfigurationProfile *)self operatingQueue];
+  operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__WFManagedConfigurationProfile_Account__accountIdentifiersEnabledForDataclass___block_invoke;
   block[3] = &unk_278348018;
-  v10 = v4;
+  v10 = dataclassCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dataclassCopy;
+  dispatch_sync(operatingQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -505,10 +505,10 @@ void __80__WFManagedConfigurationProfile_Account__accountIdentifiersEnabledForDa
   }
 }
 
-- (id)accountWithIdentifier:(id)a3
+- (id)accountWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -516,15 +516,15 @@ void __80__WFManagedConfigurationProfile_Account__accountIdentifiersEnabledForDa
     v14 = __Block_byref_object_copy__16614;
     v15 = __Block_byref_object_dispose__16615;
     v16 = 0;
-    v5 = [(WFManagedConfigurationProfile *)self operatingQueue];
+    operatingQueue = [(WFManagedConfigurationProfile *)self operatingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__WFManagedConfigurationProfile_Account__accountWithIdentifier___block_invoke;
     block[3] = &unk_278348018;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
-    dispatch_sync(v5, block);
+    v9 = identifierCopy;
+    dispatch_sync(operatingQueue, block);
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);

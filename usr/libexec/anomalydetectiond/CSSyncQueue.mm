@@ -1,35 +1,35 @@
 @interface CSSyncQueue
-+ (id)lastSlowSample:(id)a3;
-+ (unint64_t)nextCheckpoint:(id)a3;
++ (id)lastSlowSample:(id)sample;
++ (unint64_t)nextCheckpoint:(id)checkpoint;
 - (CSSyncQueue)init;
-- (id)getNextSortedArrayAndFlush:(BOOL)a3;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (id)getNextSortedArrayAndFlush:(BOOL)flush;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
 @end
 
 @implementation CSSyncQueue
 
-+ (id)lastSlowSample:(id)a3
++ (id)lastSlowSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   v4 = +[CSPlatformInfo sharedInstance];
-  v5 = [v4 isMDevice];
+  isMDevice = [v4 isMDevice];
 
   v6 = &off_100410B78;
-  if (!v5)
+  if (!isMDevice)
   {
     v6 = off_100410B70;
   }
 
   v7 = *v6;
   objc_opt_class();
-  v8 = [v3 count];
+  v8 = [sampleCopy count];
   if (v8)
   {
     v9 = v8 - 1;
     while (1)
     {
-      v10 = [v3 objectAtIndexedSubscript:v9];
+      v10 = [sampleCopy objectAtIndexedSubscript:v9];
       if (objc_opt_isKindOfClass())
       {
         break;
@@ -51,22 +51,22 @@ LABEL_7:
   return v10;
 }
 
-+ (unint64_t)nextCheckpoint:(id)a3
++ (unint64_t)nextCheckpoint:(id)checkpoint
 {
-  v3 = a3;
+  checkpointCopy = checkpoint;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v3 timestamp] >> 6 >= 0xC35)
+      if ([checkpointCopy timestamp] >> 6 >= 0xC35)
       {
-        v4 = [v3 timestamp] - 200000;
+        v4 = [checkpointCopy timestamp] - 200000;
         goto LABEL_13;
       }
 
-      v6 = [v3 timestamp];
+      timestamp = [checkpointCopy timestamp];
     }
 
     else
@@ -83,14 +83,14 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "Unexpected checkpoint class", v8, 2u);
       }
 
-      v6 = [v3 timestamp];
+      timestamp = [checkpointCopy timestamp];
     }
 
-    v4 = v6;
+    v4 = timestamp;
     goto LABEL_13;
   }
 
-  v4 = [v3 timestamp] + 1251;
+  v4 = [checkpointCopy timestamp] + 1251;
 LABEL_13:
 
   return v4;
@@ -114,30 +114,30 @@ LABEL_13:
   return v2;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(NSMutableArray *)self->_syncQ addObject:?];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !self->_checkpoint)
   {
-    self->_checkpoint = [v4 timestamp] - 3000000;
+    self->_checkpoint = [objectCopy timestamp] - 3000000;
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v6 = a3;
-  for (i = 0; i < [v6 count]; ++i)
+  arrayCopy = array;
+  for (i = 0; i < [arrayCopy count]; ++i)
   {
-    v5 = [v6 objectAtIndexedSubscript:i];
+    v5 = [arrayCopy objectAtIndexedSubscript:i];
     [(CSSyncQueue *)self addObject:v5];
   }
 }
 
-- (id)getNextSortedArrayAndFlush:(BOOL)a3
+- (id)getNextSortedArrayAndFlush:(BOOL)flush
 {
-  v3 = a3;
+  flushCopy = flush;
   v5 = +[CSTimeManager SPU_estimate_current_timestamp];
   if (![(NSMutableArray *)self->_syncQ count])
   {
@@ -150,7 +150,7 @@ LABEL_13:
   v7 = [v6 mutableCopy];
 
   [(NSMutableArray *)self->_syncQ removeAllObjects];
-  if (v3)
+  if (flushCopy)
   {
     if (qword_100456808 != -1)
     {
@@ -179,7 +179,7 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218242;
-      v48 = [v9 timestamp];
+      timestamp = [v9 timestamp];
       v49 = 2112;
       v50 = COERCE_DOUBLE(objc_opt_class());
       v11 = *&v50;
@@ -207,7 +207,7 @@ LABEL_13:
 
       checkpoint = self->_checkpoint;
       *buf = 134218240;
-      v48 = checkpoint;
+      timestamp = checkpoint;
       v49 = 2048;
       v50 = (v5 - checkpoint) / 1000000.0;
       v16 = "no slowest sample on this queue, default to %llu (%f sec ago)";
@@ -217,8 +217,8 @@ LABEL_13:
 
     else
     {
-      v13 = [v7 lastObject];
-      self->_checkpoint = [v13 timestamp] - 1000000;
+      lastObject = [v7 lastObject];
+      self->_checkpoint = [lastObject timestamp] - 1000000;
 
       if (qword_100456808 != -1)
       {
@@ -233,7 +233,7 @@ LABEL_13:
 
       v15 = self->_checkpoint;
       *buf = 134218240;
-      v48 = v15;
+      timestamp = v15;
       v49 = 2048;
       v50 = v12 / 1000000.0;
       v16 = "no slowest sample on this queue, but it has been too long, moving to %llu (%f sec ago)";
@@ -259,7 +259,7 @@ LABEL_25:
     sub_1002BF320();
   }
 
-  v25 = v45;
+  firstObject = v45;
   v26 = qword_100456810;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
@@ -267,64 +267,64 @@ LABEL_25:
     v44 = [v7 count];
     if (v44)
     {
-      v25 = [v7 firstObject];
-      v27 = [v25 timestamp];
+      firstObject = [v7 firstObject];
+      timestamp2 = [firstObject timestamp];
     }
 
     else
     {
-      v27 = 0;
+      timestamp2 = 0;
     }
 
-    v42 = v25;
+    v42 = firstObject;
     v28 = [v7 count];
     if (v28)
     {
-      v40 = [v7 lastObject];
-      v29 = [v40 timestamp];
+      lastObject2 = [v7 lastObject];
+      timestamp3 = [lastObject2 timestamp];
     }
 
     else
     {
-      v29 = 0;
+      timestamp3 = 0;
     }
 
     v30 = [(NSMutableArray *)self->_syncQ count];
     v41 = v28;
     if (v30)
     {
-      v39 = [(NSMutableArray *)self->_syncQ firstObject];
-      v31 = [v39 timestamp];
+      firstObject2 = [(NSMutableArray *)self->_syncQ firstObject];
+      timestamp4 = [firstObject2 timestamp];
     }
 
     else
     {
-      v31 = 0;
+      timestamp4 = 0;
     }
 
     v32 = [(NSMutableArray *)self->_syncQ count];
     if (v32)
     {
-      v38 = [(NSMutableArray *)self->_syncQ lastObject];
-      v33 = [v38 timestamp];
+      lastObject3 = [(NSMutableArray *)self->_syncQ lastObject];
+      timestamp5 = [lastObject3 timestamp];
     }
 
     else
     {
-      v33 = 0;
+      timestamp5 = 0;
     }
 
     v34 = +[CSTimeManager SPU_estimate_current_timestamp];
     v35 = [(NSMutableArray *)self->_syncQ count];
     v36 = self->_checkpoint;
     *buf = 134219520;
-    v48 = v27;
+    timestamp = timestamp2;
     v49 = 2048;
-    v50 = *&v29;
+    v50 = *&timestamp3;
     v51 = 2048;
-    v52 = v31;
+    v52 = timestamp4;
     v53 = 2048;
-    v54 = v33;
+    v54 = timestamp5;
     v55 = 2048;
     v56 = v34;
     v57 = 2048;
@@ -337,7 +337,7 @@ LABEL_25:
     {
     }
 
-    v25 = v45;
+    firstObject = v45;
     if (v30)
     {
     }

@@ -1,8 +1,8 @@
 @interface AccessoryUSBBillboardDeviceManager
 + (id)sharedManager;
 - (AccessoryUSBBillboardDeviceManager)init;
-- (BOOL)isStartedDetectUSBBillboardDeviceWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4;
-- (BOOL)stopDetectUSBBillboardDeviceWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4;
+- (BOOL)isStartedDetectUSBBillboardDeviceWithVID:(unsigned __int16)d PID:(unsigned __int16)iD;
+- (BOOL)stopDetectUSBBillboardDeviceWithVID:(unsigned __int16)d PID:(unsigned __int16)iD;
 - (id)copyDetectedBillboardDevices;
 - (void)dealloc;
 - (void)stopDetectUSBBillboardDeviceAll;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -80,10 +80,10 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
   return v4;
 }
 
-- (BOOL)stopDetectUSBBillboardDeviceWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4
+- (BOOL)stopDetectUSBBillboardDeviceWithVID:(unsigned __int16)d PID:(unsigned __int16)iD
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4 | (a3 << 16);
+  v5 = iD | (d << 16);
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v5];
   v7 = self->_usbBillboardDeviceListeners;
   objc_sync_enter(v7);
@@ -91,8 +91,8 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 started];
-    v11 = v10;
+    started = [v8 started];
+    v11 = started;
     if (gLogObjects)
     {
       v12 = gNumLogObjects <= 0;
@@ -104,7 +104,7 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
     }
 
     v13 = !v12;
-    if (v10)
+    if (started)
     {
       if (v13)
       {
@@ -240,8 +240,8 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_usbBillboardDeviceListeners allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_usbBillboardDeviceListeners allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -252,14 +252,14 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) stopDetectUSBBillboardDevice];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -271,25 +271,25 @@ uint64_t __51__AccessoryUSBBillboardDeviceManager_sharedManager__block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isStartedDetectUSBBillboardDeviceWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4
+- (BOOL)isStartedDetectUSBBillboardDeviceWithVID:(unsigned __int16)d PID:(unsigned __int16)iD
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4 | (a3 << 16)];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:iD | (d << 16)];
   v6 = self->_usbBillboardDeviceListeners;
   objc_sync_enter(v6);
   v7 = [(NSMutableDictionary *)self->_usbBillboardDeviceListeners objectForKey:v5];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 started];
+    started = [v7 started];
   }
 
   else
   {
-    v9 = 0;
+    started = 0;
   }
 
   objc_sync_exit(v6);
-  return v9;
+  return started;
 }
 
 - (void)startDetectUSBBillboardDeviceWithVID:PID:.cold.5()

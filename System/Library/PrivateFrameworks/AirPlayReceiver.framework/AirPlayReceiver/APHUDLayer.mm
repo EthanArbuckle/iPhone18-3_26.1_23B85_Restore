@@ -1,19 +1,19 @@
 @interface APHUDLayer
 - (APHUDLayer)init;
-- (void)addLine:(__CFString *)a3 withColorIndex:(int)a4;
+- (void)addLine:(__CFString *)line withColorIndex:(int)index;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setValue:(__CFString *)a3 atIndex:(int)a4;
-- (void)setValueAtIndex:(int)a3 format:(id)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)setValue:(__CFString *)value atIndex:(int)index;
+- (void)setValueAtIndex:(int)index format:(id)format;
 @end
 
 @implementation APHUDLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   value = CGColorCreateWithRGB();
   CGAffineTransformMakeScale(&v18, 1.0, -1.0);
-  CGContextSetTextMatrix(a3, &v18);
+  CGContextSetTextMatrix(context, &v18);
   v16 = *MEMORY[0x277CBEEE8];
   if (self->_Font == *MEMORY[0x277CBEEE8])
   {
@@ -36,10 +36,10 @@
     v13 = CFAttributedStringCreate(v8, v10, self->_TextAttributes);
     v14 = CTLineCreateWithAttributedString(v12);
     v15 = CTLineCreateWithAttributedString(v13);
-    CGContextSetTextPosition(a3, 0.0, (++v6 * 12.0));
-    CTLineDraw(v14, a3);
-    CGContextSetTextPosition(a3, 60.0, (v6 * 12.0));
-    CTLineDraw(v15, a3);
+    CGContextSetTextPosition(context, 0.0, (++v6 * 12.0));
+    CTLineDraw(v14, context);
+    CGContextSetTextPosition(context, 60.0, (v6 * 12.0));
+    CTLineDraw(v15, context);
     CFRelease(v14);
     CFRelease(v15);
     CFRelease(v12);
@@ -50,30 +50,30 @@
   CFRelease(value);
 }
 
-- (void)setValueAtIndex:(int)a3 format:(id)a4
+- (void)setValueAtIndex:(int)index format:(id)format
 {
-  if (CFArrayGetCount(self->_Values) > a3)
+  if (CFArrayGetCount(self->_Values) > index)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a4 arguments:&v8];
-    CFArraySetValueAtIndex(self->_Values, a3, v7);
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v8];
+    CFArraySetValueAtIndex(self->_Values, index, v7);
   }
 }
 
-- (void)setValue:(__CFString *)a3 atIndex:(int)a4
+- (void)setValue:(__CFString *)value atIndex:(int)index
 {
-  if (CFArrayGetCount(self->_Values) > a4)
+  if (CFArrayGetCount(self->_Values) > index)
   {
-    Copy = CFStringCreateCopy(*MEMORY[0x277CBECE8], a3);
-    CFArraySetValueAtIndex(self->_Values, a4, Copy);
+    Copy = CFStringCreateCopy(*MEMORY[0x277CBECE8], value);
+    CFArraySetValueAtIndex(self->_Values, index, Copy);
 
     CFRelease(Copy);
   }
 }
 
-- (void)addLine:(__CFString *)a3 withColorIndex:(int)a4
+- (void)addLine:(__CFString *)line withColorIndex:(int)index
 {
-  v6 = [APGraphLayer copyGraphColorWithIndex:*&a4];
-  Copy = CFStringCreateCopy(*MEMORY[0x277CBECE8], a3);
+  v6 = [APGraphLayer copyGraphColorWithIndex:*&index];
+  Copy = CFStringCreateCopy(*MEMORY[0x277CBECE8], line);
   CFArrayAppendValue(self->_Labels, Copy);
   CFArrayAppendValue(self->_Colors, v6);
   CFArrayAppendValue(self->_Values, *MEMORY[0x277CBEEE8]);

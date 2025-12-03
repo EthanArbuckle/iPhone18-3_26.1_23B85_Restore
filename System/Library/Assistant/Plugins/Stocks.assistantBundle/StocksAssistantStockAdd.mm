@@ -1,7 +1,7 @@
 @interface StocksAssistantStockAdd
 - (id)addStocks;
 - (id)validateCommandArguments;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation StocksAssistantStockAdd
@@ -31,16 +31,16 @@
         }
 
         v8 = *(*(&v34 + 1) + 8 * i);
-        v9 = [v8 symbol];
-        v10 = [v9 length];
+        symbol = [v8 symbol];
+        v10 = [symbol length];
 
         if (!v10)
         {
           [v3 addObject:@"SAStockAdd.stocksToAdd.symbol Missing Stock symbol."];
         }
 
-        v11 = [v8 name];
-        v12 = [v11 length];
+        name = [v8 name];
+        v12 = [name length];
 
         if (!v12)
         {
@@ -48,35 +48,35 @@
         }
 
         v13 = +[StockManager sharedManager];
-        v14 = [v8 symbol];
-        v15 = [v13 stockWithSymbol:v14];
+        symbol2 = [v8 symbol];
+        v15 = [v13 stockWithSymbol:symbol2];
 
         if (!v15)
         {
-          v16 = [v8 symbol];
-          v17 = [v8 name];
-          v18 = [NSDictionary dictionaryWithObjectsAndKeys:v16, v32, v17, v31, 0];
+          symbol3 = [v8 symbol];
+          name2 = [v8 name];
+          v18 = [NSDictionary dictionaryWithObjectsAndKeys:symbol3, v32, name2, v31, 0];
 
           v19 = [[Stock alloc] initWithDictionary:v18];
           if (v19)
           {
-            v20 = [(StocksAssistantStockAdd *)self createdStocks];
+            createdStocks = [(StocksAssistantStockAdd *)self createdStocks];
 
-            if (!v20)
+            if (!createdStocks)
             {
               v21 = +[NSMutableArray array];
               [(StocksAssistantStockAdd *)self setCreatedStocks:v21];
             }
 
-            v22 = [(StocksAssistantStockAdd *)self createdStocks];
-            [v22 addObject:v19];
+            createdStocks2 = [(StocksAssistantStockAdd *)self createdStocks];
+            [createdStocks2 addObject:v19];
           }
 
           else
           {
-            v22 = [v8 name];
-            v23 = [v8 symbol];
-            v24 = [NSString stringWithFormat:@"SAStockAdd.stocksToAdd.stockCreation Failed to create stock object for: %@ (%@)", v22, v23];
+            createdStocks2 = [v8 name];
+            symbol4 = [v8 symbol];
+            v24 = [NSString stringWithFormat:@"SAStockAdd.stocksToAdd.stockCreation Failed to create stock object for: %@ (%@)", createdStocks2, symbol4];
             [v3 addObject:v24];
           }
         }
@@ -88,8 +88,8 @@
     while (v5);
   }
 
-  v25 = [(StocksAssistantStockAdd *)self createdStocks];
-  v26 = [v25 count];
+  createdStocks3 = [(StocksAssistantStockAdd *)self createdStocks];
+  v26 = [createdStocks3 count];
 
   if (!v26)
   {
@@ -118,8 +118,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(StocksAssistantStockAdd *)self createdStocks];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  createdStocks = [(StocksAssistantStockAdd *)self createdStocks];
+  v5 = [createdStocks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -130,7 +130,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(createdStocks);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -138,16 +138,16 @@
         [v10 addStock:v9];
 
         v11 = +[SAStockObject object];
-        v12 = [v9 companyName];
-        [v11 setName:v12];
+        companyName = [v9 companyName];
+        [v11 setName:companyName];
 
-        v13 = [v9 symbol];
-        [v11 setSymbol:v13];
+        symbol = [v9 symbol];
+        [v11 setSymbol:symbol];
 
         [v3 addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [createdStocks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -159,18 +159,18 @@
   return v14;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(StocksAssistantStockAdd *)self validateCommandArguments];
-  if (!v5)
+  completionCopy = completion;
+  validateCommandArguments = [(StocksAssistantStockAdd *)self validateCommandArguments];
+  if (!validateCommandArguments)
   {
-    v5 = [(StocksAssistantStockAdd *)self addStocks];
+    validateCommandArguments = [(StocksAssistantStockAdd *)self addStocks];
   }
 
-  v7 = v5;
-  v6 = [v5 dictionary];
-  v4[2](v4, v6);
+  v7 = validateCommandArguments;
+  dictionary = [validateCommandArguments dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

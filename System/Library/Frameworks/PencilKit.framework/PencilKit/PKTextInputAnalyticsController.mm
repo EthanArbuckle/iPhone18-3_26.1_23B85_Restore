@@ -6,13 +6,13 @@
 - (void)_dispatchPencilSettingsAnalytics;
 - (void)_setupAnalyticsTimer;
 - (void)_updateAnalyticsTracking;
-- (void)activePencilUsage:(id)a3;
+- (void)activePencilUsage:(id)usage;
 - (void)dealloc;
 - (void)didBeginSession;
-- (void)didEndMatchingAccumulatorName:(id)a3;
-- (void)eventSourceDidChange:(id)a3;
-- (void)messageHandwritingAnalyticsWithProxyBlock:(id)a3;
-- (void)q_didEndMatchingAccumulatorName:(id)a3 inputMode:(id)a4;
+- (void)didEndMatchingAccumulatorName:(id)name;
+- (void)eventSourceDidChange:(id)change;
+- (void)messageHandwritingAnalyticsWithProxyBlock:(id)block;
+- (void)q_didEndMatchingAccumulatorName:(id)name inputMode:(id)mode;
 @end
 
 @implementation PKTextInputAnalyticsController
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __48__PKTextInputAnalyticsController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6A5260 != -1)
   {
     dispatch_once(&qword_1ED6A5260, block);
@@ -71,11 +71,11 @@ void __48__PKTextInputAnalyticsController_sharedInstance__block_invoke(uint64_t 
     if (PK_UIApplicationIsSystemShell___result == 1)
     {
       [(PKTextInputAnalyticsController *)v2 _setupAnalyticsTimer];
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v2 selector:sel_eventSourceDidChange_ name:*MEMORY[0x1E69DE710] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel_eventSourceDidChange_ name:*MEMORY[0x1E69DE710] object:0];
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:v2 selector:sel_activePencilUsage_ name:@"com.apple.pencilkit.pkactivepencilusage" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v2 selector:sel_activePencilUsage_ name:@"com.apple.pencilkit.pkactivepencilusage" object:0];
     }
   }
 
@@ -84,8 +84,8 @@ void __48__PKTextInputAnalyticsController_sharedInstance__block_invoke(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE710] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE710] object:0];
 
   v4.receiver = self;
   v4.super_class = PKTextInputAnalyticsController;
@@ -132,15 +132,15 @@ void __51__PKTextInputAnalyticsController_q_didBeginSession__block_invoke(uint64
   }
 }
 
-- (void)didEndMatchingAccumulatorName:(id)a3
+- (void)didEndMatchingAccumulatorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __64__PKTextInputAnalyticsController_didEndMatchingAccumulatorName___block_invoke;
   v10 = &unk_1E82D6E70;
-  v11 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = nameCopy;
   v12 = v5;
   v6 = _Block_copy(&v7);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -173,11 +173,11 @@ void __64__PKTextInputAnalyticsController_didEndMatchingAccumulatorName___block_
   dispatch_async(v6, block);
 }
 
-- (void)q_didEndMatchingAccumulatorName:(id)a3 inputMode:(id)a4
+- (void)q_didEndMatchingAccumulatorName:(id)name inputMode:(id)mode
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x1E69DE6F8]])
+  nameCopy = name;
+  modeCopy = mode;
+  if ([nameCopy isEqualToString:*MEMORY[0x1E69DE6F8]])
   {
     v8 = v11;
     v11[0] = MEMORY[0x1E69E9820];
@@ -186,13 +186,13 @@ void __64__PKTextInputAnalyticsController_didEndMatchingAccumulatorName___block_
 LABEL_5:
     v8[2] = v9;
     v8[3] = &unk_1E82DAD10;
-    v8[4] = v7;
+    v8[4] = modeCopy;
     [(PKTextInputAnalyticsController *)self messageHandwritingAnalyticsWithProxyBlock:v8];
 
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E69DE700]])
+  if ([nameCopy isEqualToString:*MEMORY[0x1E69DE700]])
   {
     v8 = v10;
     v10[0] = MEMORY[0x1E69E9820];
@@ -204,10 +204,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)messageHandwritingAnalyticsWithProxyBlock:(id)a3
+- (void)messageHandwritingAnalyticsWithProxyBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy = block;
+  if (blockCopy)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.handwritingd.pkanalytics" options:0];
     v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F485D600];
@@ -225,7 +225,7 @@ LABEL_6:
     v6 = [v4 remoteObjectProxyWithErrorHandler:v7];
     if ((v9[3] & 1) == 0)
     {
-      v3[2](v3, v6);
+      blockCopy[2](blockCopy, v6);
     }
 
     [v4 invalidate];
@@ -249,24 +249,24 @@ void __76__PKTextInputAnalyticsController_messageHandwritingAnalyticsWithProxyBl
   *(*(*(a1 + 32) + 8) + 24) = 1;
 }
 
-- (void)eventSourceDidChange:(id)a3
+- (void)eventSourceDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DE708]];
-  v6 = [v5 integerValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DE708]];
+  integerValue = [v5 integerValue];
 
-  [(PKTextInputAnalyticsController *)self didUpdateToEventSource:v6];
+  [(PKTextInputAnalyticsController *)self didUpdateToEventSource:integerValue];
 }
 
-- (void)activePencilUsage:(id)a3
+- (void)activePencilUsage:(id)usage
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v9 = [v5 objectForKeyedSubscript:@"com.apple.pencilkit.pkactivepencilusage.type"];
+  usageCopy = usage;
+  userInfo = [usageCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"com.apple.pencilkit.pkactivepencilusage.type"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [usageCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"com.apple.pencilkit.pkactivepencilusage.interval"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"com.apple.pencilkit.pkactivepencilusage.interval"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -313,8 +313,8 @@ void __58__PKTextInputAnalyticsController__updateAnalyticsTracking__block_invoke
 
 - (void)_setupAnalyticsTimer
 {
-  v3 = [(PKTextInputAnalyticsController *)self eventSourceTimer];
-  [v3 invalidate];
+  eventSourceTimer = [(PKTextInputAnalyticsController *)self eventSourceTimer];
+  [eventSourceTimer invalidate];
 
   self->_eventSourceUsage[8] = 0;
   *&self->_eventSourceUsage[4] = 0u;
@@ -322,18 +322,18 @@ void __58__PKTextInputAnalyticsController__updateAnalyticsTracking__block_invoke
   *self->_eventSourceUsage = 0u;
   *&self->_eventSourceUsage[2] = 0u;
   self->_activePencilUsage = 0.0;
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [v14 startOfDayForDate:v4];
-  v6 = [v14 dateByAddingUnit:16 value:1 toDate:v5 options:0];
-  v7 = [v14 dateByAddingUnit:64 value:30 toDate:v6 options:0];
+  v5 = [currentCalendar startOfDayForDate:v4];
+  v6 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v5 options:0];
+  v7 = [currentCalendar dateByAddingUnit:64 value:30 toDate:v6 options:0];
   if (MGGetBoolAnswer())
   {
     v8 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.PencilKit"];
     v9 = [v8 integerForKey:@"DailyAnalyticsFrequencyInMinutesForTesting"];
     if (v9 >= 1)
     {
-      v10 = [v14 dateByAddingUnit:64 value:v9 toDate:v4 options:0];
+      v10 = [currentCalendar dateByAddingUnit:64 value:v9 toDate:v4 options:0];
 
       v7 = v10;
     }
@@ -342,9 +342,9 @@ void __58__PKTextInputAnalyticsController__updateAnalyticsTracking__block_invoke
   v11 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v7 interval:self target:sel__dispatchAnalytics selector:0 userInfo:0 repeats:1000.0];
   [(PKTextInputAnalyticsController *)self setEventSourceTimer:v11];
 
-  v12 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  v13 = [(PKTextInputAnalyticsController *)self eventSourceTimer];
-  [v12 addTimer:v13 forMode:*MEMORY[0x1E695D918]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  eventSourceTimer2 = [(PKTextInputAnalyticsController *)self eventSourceTimer];
+  [currentRunLoop addTimer:eventSourceTimer2 forMode:*MEMORY[0x1E695D918]];
 }
 
 - (void)_dispatchAnalytics
@@ -427,8 +427,8 @@ id __52__PKTextInputAnalyticsController__dispatchAnalytics__block_invoke_3(unsig
 
 - (id)configuredSystemActionBundleIdentifier
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"SBPencilSystemShortcutAction"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"SBPencilSystemShortcutAction"];
 
   if (!v3)
   {
@@ -464,11 +464,11 @@ LABEL_6:
     v8 = 0;
   }
 
-  v9 = [v8 associatedBundleIdentifier];
-  v10 = v9;
-  if (v9)
+  associatedBundleIdentifier = [v8 associatedBundleIdentifier];
+  v10 = associatedBundleIdentifier;
+  if (associatedBundleIdentifier)
   {
-    v11 = v9;
+    v11 = associatedBundleIdentifier;
   }
 
   else
@@ -503,7 +503,7 @@ LABEL_6:
   v10 = +[PKHoverSettings sharedSettings];
   [v10 toolShadowActive];
 
-  v11 = [(PKTextInputAnalyticsController *)self configuredSystemActionBundleIdentifier];
+  configuredSystemActionBundleIdentifier = [(PKTextInputAnalyticsController *)self configuredSystemActionBundleIdentifier];
   v12 = +[PKStatisticsManager sharedStatisticsManager];
   -[PKStatisticsManager analyticsActionFromPreferredAction:](v12, [MEMORY[0x1E69DCD58] preferredSqueezeAction]);
 
@@ -511,7 +511,7 @@ LABEL_6:
   +[PKPencilSqueezeAnalyticsController currentSqueezeThresholdIndex];
   [MEMORY[0x1E69DCD58] preferredSqueezeAction];
   v15 = v7;
-  v13 = v11;
+  v13 = configuredSystemActionBundleIdentifier;
   v14 = v7;
   AnalyticsSendEventLazy();
 }

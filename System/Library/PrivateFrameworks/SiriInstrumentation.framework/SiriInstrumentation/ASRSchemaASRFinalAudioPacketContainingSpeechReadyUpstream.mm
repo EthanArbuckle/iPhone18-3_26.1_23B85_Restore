@@ -1,26 +1,26 @@
 @interface ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithDictionary:(id)a3;
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream
 
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithDictionary:(id)a3
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream;
   v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loggableSharedUserId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loggableSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)v5 setLoggableSharedUserId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"loggableUserIdHash"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"loggableUserIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithJSON:(id)a3
+- (ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,31 +86,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_loggableSharedUserId)
   {
-    v4 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
+    loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
+    v5 = [loggableSharedUserId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
   }
 
   if (self->_loggableUserIdHash)
   {
-    v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
+    loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
+    v7 = [loggableUserIdHash copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
   }
 
   if (self->_resultCandidateId)
   {
-    v8 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
+    v9 = [resultCandidateId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,28 +120,28 @@
   return v4 ^ [(NSString *)self->_loggableUserIdHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
-  v6 = [v4 loggableSharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
+  loggableSharedUserId2 = [equalCopy loggableSharedUserId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
-  if (v7)
+  loggableSharedUserId3 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
+  if (loggableSharedUserId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
-    v10 = [v4 loggableSharedUserId];
-    v11 = [v9 isEqual:v10];
+    v8 = loggableSharedUserId3;
+    loggableSharedUserId4 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
+    loggableSharedUserId5 = [equalCopy loggableSharedUserId];
+    v11 = [loggableSharedUserId4 isEqual:loggableSharedUserId5];
 
     if (!v11)
     {
@@ -153,20 +153,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
+  loggableSharedUserId2 = [equalCopy resultCandidateId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -178,12 +178,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
-  v6 = [v4 loggableUserIdHash];
-  if ((v5 != 0) != (v6 == 0))
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
+  loggableSharedUserId2 = [equalCopy loggableUserIdHash];
+  if ((loggableSharedUserId != 0) != (loggableSharedUserId2 == 0))
   {
-    v17 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
-    if (!v17)
+    loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
+    if (!loggableUserIdHash)
     {
 
 LABEL_20:
@@ -191,10 +191,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
-    v20 = [v4 loggableUserIdHash];
-    v21 = [v19 isEqual:v20];
+    v18 = loggableUserIdHash;
+    loggableUserIdHash2 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
+    loggableUserIdHash3 = [equalCopy loggableUserIdHash];
+    v21 = [loggableUserIdHash2 isEqual:loggableUserIdHash3];
 
     if (v21)
     {
@@ -214,40 +214,40 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
+  toCopy = to;
+  loggableSharedUserId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableSharedUserId];
 
-  if (v4)
+  if (loggableSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
+  resultCandidateId = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self resultCandidateId];
 
-  if (v5)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
+  loggableUserIdHash = [(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream *)self loggableUserIdHash];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (loggableUserIdHash)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{8, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{8, v8.receiver, v8.super_class}];
 
   if (v6)
   {

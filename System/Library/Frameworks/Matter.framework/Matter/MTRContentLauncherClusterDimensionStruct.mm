@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterDimensionStruct
 - (MTRContentLauncherClusterDimensionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterDimensionStruct);
-  v5 = [(MTRContentLauncherClusterDimensionStruct *)self width];
-  [(MTRContentLauncherClusterDimensionStruct *)v4 setWidth:v5];
+  width = [(MTRContentLauncherClusterDimensionStruct *)self width];
+  [(MTRContentLauncherClusterDimensionStruct *)v4 setWidth:width];
 
-  v6 = [(MTRContentLauncherClusterDimensionStruct *)self height];
-  [(MTRContentLauncherClusterDimensionStruct *)v4 setHeight:v6];
+  height = [(MTRContentLauncherClusterDimensionStruct *)self height];
+  [(MTRContentLauncherClusterDimensionStruct *)v4 setHeight:height];
 
-  v7 = [(MTRContentLauncherClusterDimensionStruct *)self metric];
-  [(MTRContentLauncherClusterDimensionStruct *)v4 setMetric:v7];
+  metric = [(MTRContentLauncherClusterDimensionStruct *)self metric];
+  [(MTRContentLauncherClusterDimensionStruct *)v4 setMetric:metric];
 
   return v4;
 }

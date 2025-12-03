@@ -2,7 +2,7 @@
 - (NSString)propertyDescription;
 - (NSString)shortDescription;
 - (_HMDSecureRemoteQueuedMessage)init;
-- (_HMDSecureRemoteQueuedMessage)initWithMessage:(id)a3;
+- (_HMDSecureRemoteQueuedMessage)initWithMessage:(id)message;
 @end
 
 @implementation _HMDSecureRemoteQueuedMessage
@@ -10,8 +10,8 @@
 - (NSString)propertyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(_HMDSecureRemoteQueuedMessage *)self message];
-  v4 = [v2 stringWithFormat:@", Message = %@", v3];
+  message = [(_HMDSecureRemoteQueuedMessage *)self message];
+  v4 = [v2 stringWithFormat:@", Message = %@", message];
 
   return v4;
 }
@@ -19,26 +19,26 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(_HMDSecureRemoteQueuedMessage *)self message];
-  v6 = [v5 identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@ %@", v4, v7];
+  shortDescription = [objc_opt_class() shortDescription];
+  message = [(_HMDSecureRemoteQueuedMessage *)self message];
+  identifier = [message identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v8;
 }
 
-- (_HMDSecureRemoteQueuedMessage)initWithMessage:(id)a3
+- (_HMDSecureRemoteQueuedMessage)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = _HMDSecureRemoteQueuedMessage;
   v6 = [(_HMDSecureRemoteQueuedMessage *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
-    [v5 timeout];
+    objc_storeStrong(&v6->_message, message);
+    [messageCopy timeout];
     if (v8 <= 0.0)
     {
       v10 = *&secureSessionMessageTimeout;
@@ -46,7 +46,7 @@
 
     else
     {
-      [v5 timeout];
+      [messageCopy timeout];
       v10 = v9;
     }
 

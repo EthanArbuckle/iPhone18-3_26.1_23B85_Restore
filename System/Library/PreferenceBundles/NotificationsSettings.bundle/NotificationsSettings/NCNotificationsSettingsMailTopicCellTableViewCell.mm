@@ -1,22 +1,22 @@
 @interface NCNotificationsSettingsMailTopicCellTableViewCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation NCNotificationsSettingsMailTopicCellTableViewCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v32.receiver = self;
   v32.super_class = NCNotificationsSettingsMailTopicCellTableViewCell;
-  v4 = a3;
-  [(NCNotificationsSettingsMailTopicCellTableViewCell *)&v32 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"BBSECTION_INFO_KEY", v32.receiver, v32.super_class}];
+  specifierCopy = specifier;
+  [(NCNotificationsSettingsMailTopicCellTableViewCell *)&v32 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"BBSECTION_INFO_KEY", v32.receiver, v32.super_class}];
 
   if ([v5 allowsNotifications] && (objc_msgSend(v5, "sectionID"), v6 = objc_claimAutoreleasedReturnValue(), v7 = +[TLAlert bb_toneLibraryAlertTypeForSectionID:](TLAlert, "bb_toneLibraryAlertTypeForSectionID:", v6), v6, v7))
   {
     v8 = +[TLToneManager sharedToneManager];
-    v9 = [v5 subsectionID];
-    v10 = [v8 currentToneIdentifierForAlertType:v7 topic:v9];
+    subsectionID = [v5 subsectionID];
+    v10 = [v8 currentToneIdentifierForAlertType:v7 topic:subsectionID];
 
     if (v10)
     {
@@ -31,8 +31,8 @@
     if (MGGetBoolAnswer())
     {
       v13 = +[TLVibrationManager sharedVibrationManager];
-      v14 = [v5 subsectionID];
-      v15 = [v13 currentVibrationIdentifierForAlertType:v7 topic:v14];
+      subsectionID2 = [v5 subsectionID];
+      v15 = [v13 currentVibrationIdentifierForAlertType:v7 topic:subsectionID2];
 
       if (v15)
       {
@@ -59,8 +59,8 @@
 
   if (([v5 suppressedSettings] & 0x2000) == 0 && (objc_msgSend(v5, "pushSettings") & 8) != 0)
   {
-    v17 = [v5 parentSection];
-    v16 = ([v17 pushSettings] >> 3) & 1;
+    parentSection = [v5 parentSection];
+    v16 = ([parentSection pushSettings] >> 3) & 1;
   }
 
   else
@@ -111,8 +111,8 @@
   v29 = [v28 localizedStringForKey:@"SEPERATOR" value:&stru_4E3F0 table:@"NotificationsSettings"];
   v30 = [v18 componentsJoinedByString:v29];
 
-  v31 = [(NCNotificationsSettingsMailTopicCellTableViewCell *)self detailTextLabel];
-  [v31 setText:v30];
+  detailTextLabel = [(NCNotificationsSettingsMailTopicCellTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:v30];
 }
 
 @end

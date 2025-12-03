@@ -1,16 +1,16 @@
 @interface CNDonationStore
 - (CNDonationStore)init;
-- (CNDonationStore)initWithAdapter:(id)a3;
-- (id)changeFromAccount:(id)a3 toAccount:(id)a4;
+- (CNDonationStore)initWithAdapter:(id)adapter;
+- (id)changeFromAccount:(id)account toAccount:(id)toAccount;
 - (id)donatedMeCard;
 - (id)donatedMeCardEither;
 - (id)meCardDonations;
-- (void)donateMeCardValues:(id)a3 completionHandler:(id)a4;
-- (void)fetchDonatedMeCard:(id)a3;
-- (void)rejectValueWithDonationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)rejectValuesWithClusterIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeAllRejectionsWithCompletionHandler:(id)a3;
-- (void)removeDonatedMeCardValuesForIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)donateMeCardValues:(id)values completionHandler:(id)handler;
+- (void)fetchDonatedMeCard:(id)card;
+- (void)rejectValueWithDonationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)rejectValuesWithClusterIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeAllRejectionsWithCompletionHandler:(id)handler;
+- (void)removeDonatedMeCardValuesForIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation CNDonationStore
@@ -23,34 +23,34 @@
   return v4;
 }
 
-- (CNDonationStore)initWithAdapter:(id)a3
+- (CNDonationStore)initWithAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v10.receiver = self;
   v10.super_class = CNDonationStore;
   v6 = [(CNDonationStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_adapter, a3);
+    objc_storeStrong(&v6->_adapter, adapter);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)donateMeCardValues:(id)a3 completionHandler:(id)a4
+- (void)donateMeCardValues:(id)values completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDonationStore *)self adapter];
-  v9 = [v8 donateMeCardValues:v7];
+  handlerCopy = handler;
+  valuesCopy = values;
+  adapter = [(CNDonationStore *)self adapter];
+  v9 = [adapter donateMeCardValues:valuesCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__CNDonationStore_donateMeCardValues_completionHandler___block_invoke;
   v14[3] = &unk_278569BA8;
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   [v9 addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
@@ -62,18 +62,18 @@
   [v9 addFailureBlock:v12];
 }
 
-- (void)removeDonatedMeCardValuesForIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeDonatedMeCardValuesForIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDonationStore *)self adapter];
-  v9 = [v8 removeDonatedMeCardValuesForIdentifiers:v7];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  adapter = [(CNDonationStore *)self adapter];
+  v9 = [adapter removeDonatedMeCardValuesForIdentifiers:identifiersCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__CNDonationStore_removeDonatedMeCardValuesForIdentifiers_completionHandler___block_invoke;
   v14[3] = &unk_278569BA8;
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   [v9 addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
@@ -85,74 +85,74 @@
   [v9 addFailureBlock:v12];
 }
 
-- (void)fetchDonatedMeCard:(id)a3
+- (void)fetchDonatedMeCard:(id)card
 {
-  v4 = a3;
-  v5 = [(CNDonationStore *)self adapter];
-  v6 = [v5 fetchDonatedMeCard];
+  cardCopy = card;
+  adapter = [(CNDonationStore *)self adapter];
+  fetchDonatedMeCard = [adapter fetchDonatedMeCard];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__CNDonationStore_fetchDonatedMeCard___block_invoke;
   v11[3] = &unk_278569BF8;
-  v7 = v4;
+  v7 = cardCopy;
   v12 = v7;
-  [v6 addSuccessBlock:v11];
+  [fetchDonatedMeCard addSuccessBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__CNDonationStore_fetchDonatedMeCard___block_invoke_2;
   v9[3] = &unk_278569BD0;
   v10 = v7;
   v8 = v7;
-  [v6 addFailureBlock:v9];
+  [fetchDonatedMeCard addFailureBlock:v9];
 }
 
 - (id)donatedMeCard
 {
-  v2 = [(CNDonationStore *)self adapter];
-  v3 = [v2 fetchDonatedMeCard];
+  adapter = [(CNDonationStore *)self adapter];
+  fetchDonatedMeCard = [adapter fetchDonatedMeCard];
 
-  return v3;
+  return fetchDonatedMeCard;
 }
 
 - (id)donatedMeCardEither
 {
-  v2 = [(CNDonationStore *)self adapter];
-  v3 = [v2 donatedMeCardEither];
+  adapter = [(CNDonationStore *)self adapter];
+  donatedMeCardEither = [adapter donatedMeCardEither];
 
-  return v3;
+  return donatedMeCardEither;
 }
 
 - (id)meCardDonations
 {
-  v2 = [(CNDonationStore *)self adapter];
-  v3 = [v2 meCardDonations];
+  adapter = [(CNDonationStore *)self adapter];
+  meCardDonations = [adapter meCardDonations];
 
-  return v3;
+  return meCardDonations;
 }
 
-- (id)changeFromAccount:(id)a3 toAccount:(id)a4
+- (id)changeFromAccount:(id)account toAccount:(id)toAccount
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDonationStore *)self adapter];
-  v9 = [v8 changeFromAccount:v7 toAccount:v6];
+  toAccountCopy = toAccount;
+  accountCopy = account;
+  adapter = [(CNDonationStore *)self adapter];
+  v9 = [adapter changeFromAccount:accountCopy toAccount:toAccountCopy];
 
   return v9;
 }
 
-- (void)rejectValueWithDonationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)rejectValueWithDonationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDonationStore *)self adapter];
-  v9 = [v8 rejectValueWithDonationIdentifier:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  adapter = [(CNDonationStore *)self adapter];
+  v9 = [adapter rejectValueWithDonationIdentifier:identifierCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__CNDonationStore_rejectValueWithDonationIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_278569BA8;
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   [v9 addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
@@ -164,18 +164,18 @@
   [v9 addFailureBlock:v12];
 }
 
-- (void)rejectValuesWithClusterIdentifier:(id)a3 completionHandler:(id)a4
+- (void)rejectValuesWithClusterIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNDonationStore *)self adapter];
-  v9 = [v8 rejectValuesWithClusterIdentifier:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  adapter = [(CNDonationStore *)self adapter];
+  v9 = [adapter rejectValuesWithClusterIdentifier:identifierCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__CNDonationStore_rejectValuesWithClusterIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_278569BA8;
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   [v9 addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
@@ -187,26 +187,26 @@
   [v9 addFailureBlock:v12];
 }
 
-- (void)removeAllRejectionsWithCompletionHandler:(id)a3
+- (void)removeAllRejectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CNDonationStore *)self adapter];
-  v6 = [v5 removeAllRejections];
+  handlerCopy = handler;
+  adapter = [(CNDonationStore *)self adapter];
+  removeAllRejections = [adapter removeAllRejections];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__CNDonationStore_removeAllRejectionsWithCompletionHandler___block_invoke;
   v11[3] = &unk_278569BA8;
-  v7 = v4;
+  v7 = handlerCopy;
   v12 = v7;
-  [v6 addSuccessBlock:v11];
+  [removeAllRejections addSuccessBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__CNDonationStore_removeAllRejectionsWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_278569BD0;
   v10 = v7;
   v8 = v7;
-  [v6 addFailureBlock:v9];
+  [removeAllRejections addFailureBlock:v9];
 }
 
 @end

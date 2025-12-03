@@ -1,8 +1,8 @@
 @interface TCCDPlatformIOSFamily
 - (BOOL)isChinaSKUDevice;
-- (BOOL)isNonAppBundleIdentifierValid:(id)a3;
-- (BOOL)removalOfAppBundleIdentifierRequiresPruning:(id)a3;
-- (id)prefixOfBundleIdentifiersToResetAfterResetOfAppBundleIdentifier:(id)a3;
+- (BOOL)isNonAppBundleIdentifierValid:(id)valid;
+- (BOOL)removalOfAppBundleIdentifierRequiresPruning:(id)pruning;
+- (id)prefixOfBundleIdentifiersToResetAfterResetOfAppBundleIdentifier:(id)identifier;
 - (void)prepareForAbort;
 @end
 
@@ -21,23 +21,23 @@
 - (void)prepareForAbort
 {
   v2 = +[TCCDPlatform currentPlatform];
-  v3 = [v2 syncController];
+  syncController = [v2 syncController];
 
-  if (v3)
+  if (syncController)
   {
     v5 = +[TCCDPlatform currentPlatform];
-    v4 = [v5 syncController];
-    [v4 willShutdown];
+    syncController2 = [v5 syncController];
+    [syncController2 willShutdown];
   }
 }
 
-- (BOOL)isNonAppBundleIdentifierValid:(id)a3
+- (BOOL)isNonAppBundleIdentifierValid:(id)valid
 {
-  v4 = a3;
-  v5 = [(TCCDPlatform *)self server];
-  if ([v5 allowsInternalSecurityPolicies])
+  validCopy = valid;
+  server = [(TCCDPlatform *)self server];
+  if ([server allowsInternalSecurityPolicies])
   {
-    v6 = [v4 hasPrefix:@"com.appleinternal.health.Lime."];
+    v6 = [validCopy hasPrefix:@"com.appleinternal.health.Lime."];
 
     if (v6)
     {
@@ -50,9 +50,9 @@
   {
   }
 
-  if (![v4 hasPrefix:@"com.apple.Research.study."])
+  if (![validCopy hasPrefix:@"com.apple.Research.study."])
   {
-    v11 = 0;
+    isInstalled = 0;
     goto LABEL_12;
   }
 
@@ -62,33 +62,33 @@ LABEL_7:
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 appState];
-    v11 = [v10 isInstalled];
+    appState = [v8 appState];
+    isInstalled = [appState isInstalled];
   }
 
   else
   {
-    v11 = 0;
+    isInstalled = 0;
   }
 
 LABEL_12:
-  return v11;
+  return isInstalled;
 }
 
-- (BOOL)removalOfAppBundleIdentifierRequiresPruning:(id)a3
+- (BOOL)removalOfAppBundleIdentifierRequiresPruning:(id)pruning
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.Research"])
+  pruningCopy = pruning;
+  if ([pruningCopy isEqualToString:@"com.apple.Research"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(TCCDPlatform *)self server];
-    if ([v6 allowsInternalSecurityPolicies])
+    server = [(TCCDPlatform *)self server];
+    if ([server allowsInternalSecurityPolicies])
     {
-      v5 = [v4 isEqualToString:@"com.appleinternal.health.Lime"];
+      v5 = [pruningCopy isEqualToString:@"com.appleinternal.health.Lime"];
     }
 
     else
@@ -100,16 +100,16 @@ LABEL_12:
   return v5;
 }
 
-- (id)prefixOfBundleIdentifiersToResetAfterResetOfAppBundleIdentifier:(id)a3
+- (id)prefixOfBundleIdentifiersToResetAfterResetOfAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.Research"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.Research"])
   {
     goto LABEL_2;
   }
 
-  v6 = [(TCCDPlatform *)self server];
-  if (([v6 allowsInternalSecurityPolicies] & 1) == 0)
+  server = [(TCCDPlatform *)self server];
+  if (([server allowsInternalSecurityPolicies] & 1) == 0)
   {
 
 LABEL_7:
@@ -117,7 +117,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v4 isEqualToString:@"com.appleinternal.health.Lime"];
+  v7 = [identifierCopy isEqualToString:@"com.appleinternal.health.Lime"];
 
   if (!v7)
   {

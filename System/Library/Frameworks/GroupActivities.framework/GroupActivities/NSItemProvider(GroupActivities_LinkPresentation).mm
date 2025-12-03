@@ -15,7 +15,7 @@
   v9 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 registerItemForTypeIdentifier:v7 loadHandler:v8];
+  [self registerItemForTypeIdentifier:v7 loadHandler:v8];
 }
 
 @end

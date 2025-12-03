@@ -1,61 +1,61 @@
 @interface AAUICustodianStartApprovalHook
-- (AAUICustodianStartApprovalHook)initWithTelemetryFlowID:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUICustodianStartApprovalHook)initWithTelemetryFlowID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_startApprovalWithServerAttributes:(id)a3 objectModel:(id)a4 completion:(id)a5;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_startApprovalWithServerAttributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUICustodianStartApprovalHook
 
-- (AAUICustodianStartApprovalHook)initWithTelemetryFlowID:(id)a3
+- (AAUICustodianStartApprovalHook)initWithTelemetryFlowID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AAUICustodianStartApprovalHook;
   v6 = [(AAUICustodianStartApprovalHook *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_telemetryFlowID, a3);
+    objc_storeStrong(&v6->_telemetryFlowID, d);
   }
 
   return v7;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"custodian:startApproval"];
+  name = [element name];
+  v4 = [name isEqualToString:@"custodian:startApproval"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:@"action"];
   v5 = [v4 isEqualToString:@"custodian:startApproval"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 clientInfo];
-  [(AAUICustodianStartApprovalHook *)self _startApprovalWithServerAttributes:v8 objectModel:v7 completion:v6];
+  completionCopy = completion;
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  [(AAUICustodianStartApprovalHook *)self _startApprovalWithServerAttributes:clientInfo objectModel:modelCopy completion:completionCopy];
 }
 
-- (void)_startApprovalWithServerAttributes:(id)a3 objectModel:(id)a4 completion:(id)a5
+- (void)_startApprovalWithServerAttributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 objectForKeyedSubscript:@"sessionId"];
-  v12 = [v10 objectForKeyedSubscript:@"resetEligible"];
+  modelCopy = model;
+  completionCopy = completion;
+  attributesCopy = attributes;
+  v11 = [attributesCopy objectForKeyedSubscript:@"sessionId"];
+  v12 = [attributesCopy objectForKeyedSubscript:@"resetEligible"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = [WeakRetained presentationContextForHook:self];
@@ -66,10 +66,10 @@
   v18[1] = 3221225472;
   v18[2] = __92__AAUICustodianStartApprovalHook__startApprovalWithServerAttributes_objectModel_completion___block_invoke;
   v18[3] = &unk_1E820E018;
-  v19 = v8;
-  v20 = v9;
-  v16 = v8;
-  v17 = v9;
+  v19 = modelCopy;
+  v20 = completionCopy;
+  v16 = modelCopy;
+  v17 = completionCopy;
   [v15 validateRecoveryCodeWithCompletion:v18];
 }
 

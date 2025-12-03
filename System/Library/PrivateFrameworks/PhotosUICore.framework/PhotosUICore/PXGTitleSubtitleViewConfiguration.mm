@@ -1,6 +1,6 @@
 @interface PXGTitleSubtitleViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -8,20 +8,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXGTitleSubtitleViewConfiguration *)self title];
-  v4 = [v3 hash];
-  v5 = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
-  v6 = v4 ^ (2 * [v5 hash]);
-  v7 = [(PXGTitleSubtitleViewConfiguration *)self spec];
-  v8 = v6 ^ (4 * [v7 hash]);
+  title = [(PXGTitleSubtitleViewConfiguration *)self title];
+  v4 = [title hash];
+  subtitle = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
+  v6 = v4 ^ (2 * [subtitle hash]);
+  spec = [(PXGTitleSubtitleViewConfiguration *)self spec];
+  v8 = v6 ^ (4 * [spec hash]);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -31,25 +31,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGTitleSubtitleViewConfiguration *)self title];
-      v7 = [(PXGTitleSubtitleViewConfiguration *)v5 title];
-      if (v6 == v7 || [v6 isEqualToString:v7])
+      v5 = equalCopy;
+      title = [(PXGTitleSubtitleViewConfiguration *)self title];
+      title2 = [(PXGTitleSubtitleViewConfiguration *)v5 title];
+      if (title == title2 || [title isEqualToString:title2])
       {
-        v8 = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
-        v9 = [(PXGTitleSubtitleViewConfiguration *)v5 subtitle];
-        if (v8 == v9 || [v8 isEqualToString:v9])
+        subtitle = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
+        subtitle2 = [(PXGTitleSubtitleViewConfiguration *)v5 subtitle];
+        if (subtitle == subtitle2 || [subtitle isEqualToString:subtitle2])
         {
-          v10 = [(PXGTitleSubtitleViewConfiguration *)self spec];
-          v11 = [(PXGTitleSubtitleViewConfiguration *)v5 spec];
-          if (v10 == v11)
+          spec = [(PXGTitleSubtitleViewConfiguration *)self spec];
+          spec2 = [(PXGTitleSubtitleViewConfiguration *)v5 spec];
+          if (spec == spec2)
           {
             v12 = 1;
           }
 
           else
           {
-            v12 = [v10 isEqual:v11];
+            v12 = [spec isEqual:spec2];
           }
         }
 
@@ -74,17 +74,17 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXGTitleSubtitleViewConfiguration *)self title];
-  [v4 setTitle:v5];
+  title = [(PXGTitleSubtitleViewConfiguration *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
-  [v4 setSubtitle:v6];
+  subtitle = [(PXGTitleSubtitleViewConfiguration *)self subtitle];
+  [v4 setSubtitle:subtitle];
 
-  v7 = [(PXGTitleSubtitleViewConfiguration *)self spec];
-  [v4 setSpec:v7];
+  spec = [(PXGTitleSubtitleViewConfiguration *)self spec];
+  [v4 setSpec:spec];
 
   [v4 setFloatingAxis:{-[PXGTitleSubtitleViewConfiguration floatingAxis](self, "floatingAxis")}];
   return v4;

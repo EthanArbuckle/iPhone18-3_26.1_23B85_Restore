@@ -1,16 +1,16 @@
 @interface PCPMapItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPlaceType:(id)a3;
+- (int)StringAsPlaceType:(id)type;
 - (int)placeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPlaceSource:(BOOL)a3;
-- (void)setHasPlaceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPlaceSource:(BOOL)source;
+- (void)setHasPlaceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPMapItem
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasPlaceType:(BOOL)a3
+- (void)setHasPlaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,115 +43,115 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPlaceType:(id)a3
+- (int)StringAsPlaceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PlaceType_Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PlaceType_Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AreaOfInterest"])
+  else if ([typeCopy isEqualToString:@"AreaOfInterest"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PointOfInterest"])
+  else if ([typeCopy isEqualToString:@"PointOfInterest"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Address"])
+  else if ([typeCopy isEqualToString:@"Address"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Country"])
+  else if ([typeCopy isEqualToString:@"Country"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AdministrativeArea"])
+  else if ([typeCopy isEqualToString:@"AdministrativeArea"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SubAdministrativeArea"])
+  else if ([typeCopy isEqualToString:@"SubAdministrativeArea"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Locality"])
+  else if ([typeCopy isEqualToString:@"Locality"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"TimeZone"])
+  else if ([typeCopy isEqualToString:@"TimeZone"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SubLocality"])
+  else if ([typeCopy isEqualToString:@"SubLocality"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Ocean"])
+  else if ([typeCopy isEqualToString:@"Ocean"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"InlandWater"])
+  else if ([typeCopy isEqualToString:@"InlandWater"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Island"])
+  else if ([typeCopy isEqualToString:@"Island"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Street"])
+  else if ([typeCopy isEqualToString:@"Street"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"Admin"])
+  else if ([typeCopy isEqualToString:@"Admin"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Postal"])
+  else if ([typeCopy isEqualToString:@"Postal"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"Intersection"])
+  else if ([typeCopy isEqualToString:@"Intersection"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Building"])
+  else if ([typeCopy isEqualToString:@"Building"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"Continent"])
+  else if ([typeCopy isEqualToString:@"Continent"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Region"])
+  else if ([typeCopy isEqualToString:@"Region"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Division"])
+  else if ([typeCopy isEqualToString:@"Division"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Undefined"])
+  else if ([typeCopy isEqualToString:@"Undefined"])
   {
     v4 = 1000;
   }
@@ -164,9 +164,9 @@
   return v4;
 }
 
-- (void)setHasPlaceSource:(BOOL)a3
+- (void)setHasPlaceSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -185,20 +185,20 @@
   v8.receiver = self;
   v8.super_class = PCPMapItem;
   v4 = [(PCPMapItem *)&v8 description];
-  v5 = [(PCPMapItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPMapItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   placeName = self->_placeName;
   if (placeName)
   {
-    [v3 setObject:placeName forKey:@"placeName"];
+    [dictionary setObject:placeName forKey:@"placeName"];
   }
 
   category = self->_category;
@@ -312,20 +312,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_placeName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_category)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -333,7 +333,7 @@
   {
     placeType = self->_placeType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -354,39 +354,39 @@ LABEL_7:
 
   placeSource = self->_placeSource;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_8:
     mapItemMUID = self->_mapItemMUID;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_placeName)
   {
-    [v4 setPlaceName:?];
-    v4 = v6;
+    [toCopy setPlaceName:?];
+    toCopy = v6;
   }
 
   if (self->_category)
   {
     [v6 setCategory:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 10) = self->_placeType;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 10) = self->_placeType;
+    *(toCopy + 44) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -405,26 +405,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = self->_placeSource;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 2) = self->_placeSource;
+  *(toCopy + 44) |= 2u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v4 + 1) = self->_mapItemMUID;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_mapItemMUID;
+    *(toCopy + 44) |= 1u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_placeName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_placeName copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_category copyWithZone:a3];
+  v8 = [(NSString *)self->_category copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -466,16 +466,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   placeName = self->_placeName;
-  if (placeName | *(v4 + 4))
+  if (placeName | *(equalCopy + 4))
   {
     if (![(NSString *)placeName isEqual:?])
     {
@@ -484,7 +484,7 @@ LABEL_4:
   }
 
   category = self->_category;
-  if (category | *(v4 + 3))
+  if (category | *(equalCopy + 3))
   {
     if (![(NSString *)category isEqual:?])
     {
@@ -494,13 +494,13 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_placeType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_placeType != *(equalCopy + 10))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -509,21 +509,21 @@ LABEL_20:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_placeSource != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_placeSource != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 44) & 1) == 0;
+  v7 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_mapItemMUID != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_mapItemMUID != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
@@ -578,28 +578,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PCPMapItem *)self setPlaceName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PCPMapItem *)self setCategory:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) != 0)
   {
-    self->_placeType = *(v4 + 10);
+    self->_placeType = *(fromCopy + 10);
     *&self->_has |= 4u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -612,17 +612,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_placeSource = *(v4 + 2);
+  self->_placeSource = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
 LABEL_8:
-    self->_mapItemMUID = *(v4 + 1);
+    self->_mapItemMUID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

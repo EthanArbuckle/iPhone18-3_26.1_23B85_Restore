@@ -1,7 +1,7 @@
 @interface FaceIdViewControllerAccessibility
 - (id)_accessibilityNotificationFeedbackGenerator;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
 @end
 
 @implementation FaceIdViewControllerAccessibility
@@ -15,21 +15,21 @@
 
 - (id)_accessibilityNotificationFeedbackGenerator
 {
-  v3 = [(FaceIdViewControllerAccessibility *)self _axNotificationFeedbackGenerator];
-  if (!v3)
+  _axNotificationFeedbackGenerator = [(FaceIdViewControllerAccessibility *)self _axNotificationFeedbackGenerator];
+  if (!_axNotificationFeedbackGenerator)
   {
-    v3 = objc_alloc_init(MEMORY[0x29EDC7B90]);
-    [(FaceIdViewControllerAccessibility *)self _setAXNotificationFeedbackGenerator:v3];
+    _axNotificationFeedbackGenerator = objc_alloc_init(MEMORY[0x29EDC7B90]);
+    [(FaceIdViewControllerAccessibility *)self _setAXNotificationFeedbackGenerator:_axNotificationFeedbackGenerator];
   }
 
-  return v3;
+  return _axNotificationFeedbackGenerator;
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
   v5.receiver = self;
   v5.super_class = FaceIdViewControllerAccessibility;
-  [(FaceIdViewControllerAccessibility *)&v5 mechanismEvent:a3 value:a4 reply:a5];
+  [(FaceIdViewControllerAccessibility *)&v5 mechanismEvent:event value:value reply:reply];
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 

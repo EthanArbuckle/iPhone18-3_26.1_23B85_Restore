@@ -1,9 +1,9 @@
 @interface ARGeoAnchor
-- (ARGeoAnchor)initWithAnchor:(id)a3;
-- (ARGeoAnchor)initWithCoder:(id)a3;
-- (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)a3 altitude:(double)a4 altitudeSource:(int64_t)a5 isAltitudeAvailable:(BOOL)a6 undulation:(double)a7;
+- (ARGeoAnchor)initWithAnchor:(id)anchor;
+- (ARGeoAnchor)initWithCoder:(id)coder;
 - (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)coordinate altitude:(CLLocationDistance)altitude;
+- (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)coordinate altitude:(double)altitude altitudeSource:(int64_t)source isAltitudeAvailable:(BOOL)available undulation:(double)undulation;
 - (ARGeoAnchor)initWithName:(NSString *)name coordinate:(CLLocationCoordinate2D)coordinate;
 - (ARGeoAnchor)initWithName:(NSString *)name coordinate:(CLLocationCoordinate2D)coordinate altitude:(CLLocationDistance)altitude;
 - (CLLocationCoordinate2D)coordinate;
@@ -11,7 +11,7 @@
 - (__n128)ecefFromAnchor;
 - (__n128)locationECEF;
 - (__n128)locationLLA;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARGeoAnchor
@@ -80,18 +80,18 @@
   return v9;
 }
 
-- (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)a3 altitude:(double)a4 altitudeSource:(int64_t)a5 isAltitudeAvailable:(BOOL)a6 undulation:(double)a7
+- (ARGeoAnchor)initWithCoordinate:(CLLocationCoordinate2D)coordinate altitude:(double)altitude altitudeSource:(int64_t)source isAltitudeAvailable:(BOOL)available undulation:(double)undulation
 {
   v38 = *MEMORY[0x1E69E9840];
-  self->_altitudeSource = a5;
-  self->_isAltitudeAvailable = a6;
-  self->_undulation = a7;
-  self->_coordinate = a3;
-  latitude = a3.latitude;
-  longitude = a3.longitude;
-  v10 = a3.longitude;
-  *self->_locationLLA = a3;
-  *&self->_locationLLA[16] = *&a4;
+  self->_altitudeSource = source;
+  self->_isAltitudeAvailable = available;
+  self->_undulation = undulation;
+  self->_coordinate = coordinate;
+  latitude = coordinate.latitude;
+  longitude = coordinate.longitude;
+  v10 = coordinate.longitude;
+  *self->_locationLLA = coordinate;
+  *&self->_locationLLA[16] = *&altitude;
   if (_ARLogTechnique_onceToken_18 != -1)
   {
     [ARGeoAnchor initWithCoordinate:altitude:altitudeSource:isAltitudeAvailable:undulation:];
@@ -112,13 +112,13 @@
     *v33 = 2049;
     *&v33[2] = longitude;
     *&v33[10] = 2048;
-    *&v33[12] = a5;
+    *&v33[12] = source;
     _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_INFO, "%{public}@ <%p>: GeoAnchor<- %{private}.8f,%{private}.8f,%li", buf, 0x34u);
   }
 
   v26 = *self->_locationLLA;
   v28 = *&self->_locationLLA[16];
-  v15 = ARMSLToWGS84Altitude(a4, a7);
+  v15 = ARMSLToWGS84Altitude(altitude, undulation);
   *(&v16 + 1) = *(&v28 + 1);
   *&v16 = v15;
   v29 = v16;
@@ -158,83 +158,83 @@
   longitude = self->_coordinate.longitude;
   [(ARGeoAnchor *)self altitude];
   v9 = v8;
-  v10 = [(ARGeoAnchor *)self altitudeSource];
-  if (v10 > ARAltitudeSourceUserDefined)
+  altitudeSource = [(ARGeoAnchor *)self altitudeSource];
+  if (altitudeSource > ARAltitudeSourceUserDefined)
   {
     v11 = @"???";
   }
 
   else
   {
-    v11 = off_1E817D688[v10];
+    v11 = off_1E817D688[altitudeSource];
   }
 
-  v12 = [(ARGeoAnchor *)self isAltitudeAvailable];
+  isAltitudeAvailable = [(ARGeoAnchor *)self isAltitudeAvailable];
   [(ARGeoAnchor *)self undulation];
-  v14 = [v5 stringWithFormat:@" coordinate=(%f, %f, %f) altitudeSource=%@ isAltitudeAvailable=%d undulation=%f>", *&latitude, *&longitude, v9, v11, v12, v13];
+  v14 = [v5 stringWithFormat:@" coordinate=(%f, %f, %f) altitudeSource=%@ isAltitudeAvailable=%d undulation=%f>", *&latitude, *&longitude, v9, v11, isAltitudeAvailable, v13];
   v15 = [v3 stringByReplacingCharactersInRange:v4 - 1 withString:{1, v14}];
 
   return v15;
 }
 
-- (ARGeoAnchor)initWithAnchor:(id)a3
+- (ARGeoAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v16.receiver = self;
   v16.super_class = ARGeoAnchor;
-  v5 = [(ARAnchor *)&v16 initWithAnchor:v4];
+  v5 = [(ARAnchor *)&v16 initWithAnchor:anchorCopy];
   if (v5)
   {
-    [v4 coordinate];
+    [anchorCopy coordinate];
     v7 = v6;
     v9 = v8;
-    [v4 altitude];
+    [anchorCopy altitude];
     v11 = v10;
-    v12 = [v4 altitudeSource];
-    v13 = [v4 isAltitudeAvailable];
-    [v4 undulation];
-    [(ARGeoAnchor *)v5 initWithCoordinate:v12 altitude:v13 altitudeSource:v7 isAltitudeAvailable:v9 undulation:v11, v14];
-    -[ARGeoAnchor setIsTracked:](v5, "setIsTracked:", [v4 isTracked]);
+    altitudeSource = [anchorCopy altitudeSource];
+    isAltitudeAvailable = [anchorCopy isAltitudeAvailable];
+    [anchorCopy undulation];
+    [(ARGeoAnchor *)v5 initWithCoordinate:altitudeSource altitude:isAltitudeAvailable altitudeSource:v7 isAltitudeAvailable:v9 undulation:v11, v14];
+    -[ARGeoAnchor setIsTracked:](v5, "setIsTracked:", [anchorCopy isTracked]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ARGeoAnchor;
-  v4 = a3;
-  [(ARAnchor *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"latitude" forKey:{self->_coordinate.latitude, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"longitude" forKey:self->_coordinate.longitude];
+  coderCopy = coder;
+  [(ARAnchor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"latitude" forKey:{self->_coordinate.latitude, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_coordinate.longitude];
   [(ARGeoAnchor *)self altitude];
-  [v4 encodeDouble:@"altitude" forKey:?];
-  [v4 encodeInteger:self->_altitudeSource forKey:@"altitudeSource"];
-  [v4 encodeBool:self->_isAltitudeAvailable forKey:@"isAltitudeAvailable"];
-  [v4 encodeDouble:@"undulation" forKey:self->_undulation];
-  [v4 encodeBool:self->_isTracked forKey:@"tracked"];
+  [coderCopy encodeDouble:@"altitude" forKey:?];
+  [coderCopy encodeInteger:self->_altitudeSource forKey:@"altitudeSource"];
+  [coderCopy encodeBool:self->_isAltitudeAvailable forKey:@"isAltitudeAvailable"];
+  [coderCopy encodeDouble:@"undulation" forKey:self->_undulation];
+  [coderCopy encodeBool:self->_isTracked forKey:@"tracked"];
 }
 
-- (ARGeoAnchor)initWithCoder:(id)a3
+- (ARGeoAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ARGeoAnchor;
-  v5 = [(ARAnchor *)&v16 initWithCoder:v4];
+  v5 = [(ARAnchor *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"altitude"];
+    [coderCopy decodeDoubleForKey:@"altitude"];
     v11 = v10;
-    v12 = [v4 decodeIntegerForKey:@"altitudeSource"];
-    v13 = [v4 decodeBoolForKey:@"isAltitudeAvailable"];
-    [v4 decodeDoubleForKey:@"undulation"];
+    v12 = [coderCopy decodeIntegerForKey:@"altitudeSource"];
+    v13 = [coderCopy decodeBoolForKey:@"isAltitudeAvailable"];
+    [coderCopy decodeDoubleForKey:@"undulation"];
     [(ARGeoAnchor *)v5 initWithCoordinate:v12 altitude:v13 altitudeSource:v7 isAltitudeAvailable:v9 undulation:v11, v14];
-    v5->_isTracked = [v4 decodeBoolForKey:@"tracked"];
+    v5->_isTracked = [coderCopy decodeBoolForKey:@"tracked"];
   }
 
   return v5;
@@ -251,33 +251,33 @@
 
 - (__n128)locationLLA
 {
-  result = a1[14];
-  a2[1].n128_u64[0] = a1[15].n128_u64[0];
+  result = self[14];
+  a2[1].n128_u64[0] = self[15].n128_u64[0];
   *a2 = result;
   return result;
 }
 
 - (__n128)locationECEF
 {
-  result = a1[16];
-  a2[1].n128_u64[0] = a1[17].n128_u64[0];
+  result = self[16];
+  a2[1].n128_u64[0] = self[17].n128_u64[0];
   *a2 = result;
   return result;
 }
 
 - (__n128)ecefFromAnchor
 {
-  v2 = *(a1 + 368);
-  *(a2 + 64) = *(a1 + 352);
+  v2 = *(self + 368);
+  *(a2 + 64) = *(self + 352);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 400);
-  *(a2 + 96) = *(a1 + 384);
+  v3 = *(self + 400);
+  *(a2 + 96) = *(self + 384);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 304);
-  *a2 = *(a1 + 288);
+  v4 = *(self + 304);
+  *a2 = *(self + 288);
   *(a2 + 16) = v4;
-  result = *(a1 + 320);
-  v6 = *(a1 + 336);
+  result = *(self + 320);
+  v6 = *(self + 336);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;

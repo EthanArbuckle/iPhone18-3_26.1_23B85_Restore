@@ -6,39 +6,39 @@
 
 - (void)popRecursivelyToRootController
 {
-  v2 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (v2)
+  if (presentedViewController)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __73__UIViewController_PSControllerAdditions__popRecursivelyToRootController__block_invoke;
     v7[3] = &unk_1E71DBE20;
-    v7[4] = a1;
+    v7[4] = self;
     [MEMORY[0x1E69DD258] _performWithoutDeferringTransitions:v7];
   }
 
-  v3 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [a1 parentViewController];
+    parentViewController2 = [self parentViewController];
   }
 
   else
   {
-    v5 = [a1 presentingViewController];
+    presentingViewController = [self presentingViewController];
 
-    if (!v5)
+    if (!presentingViewController)
     {
       return;
     }
 
-    v4 = [a1 presentingViewController];
+    parentViewController2 = [self presentingViewController];
   }
 
-  v6 = v4;
-  [v4 popRecursivelyToRootController];
+  v6 = parentViewController2;
+  [parentViewController2 popRecursivelyToRootController];
 }
 
 @end

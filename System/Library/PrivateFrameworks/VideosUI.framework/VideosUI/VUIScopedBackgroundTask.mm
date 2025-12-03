@@ -1,15 +1,15 @@
 @interface VUIScopedBackgroundTask
-- (VUIScopedBackgroundTask)initWithIdentifier:(id)a3 expirationHandler:(id)a4;
+- (VUIScopedBackgroundTask)initWithIdentifier:(id)identifier expirationHandler:(id)handler;
 - (void)_endTask;
 - (void)dealloc;
 @end
 
 @implementation VUIScopedBackgroundTask
 
-- (VUIScopedBackgroundTask)initWithIdentifier:(id)a3 expirationHandler:(id)a4
+- (VUIScopedBackgroundTask)initWithIdentifier:(id)identifier expirationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = VUIScopedBackgroundTask;
   v8 = [(VUIScopedBackgroundTask *)&v22 init];
@@ -21,12 +21,12 @@
     v16 = __64__VUIScopedBackgroundTask_initWithIdentifier_expirationHandler___block_invoke;
     v17 = &unk_1E872DE00;
     objc_copyWeak(&v20, &location);
-    v9 = v6;
+    v9 = identifierCopy;
     v18 = v9;
-    v19 = v7;
+    v19 = handlerCopy;
     v10 = _Block_copy(&v14);
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 beginBackgroundTaskWithName:v9 expirationHandler:v10];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v12 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:v9 expirationHandler:v10];
 
     [(VUIScopedBackgroundTask *)v8 setTaskIdentifier:v12];
     objc_destroyWeak(&v20);
@@ -72,12 +72,12 @@ void __64__VUIScopedBackgroundTask_initWithIdentifier_expirationHandler___block_
 
 - (void)_endTask
 {
-  v3 = [(VUIScopedBackgroundTask *)self taskIdentifier];
+  taskIdentifier = [(VUIScopedBackgroundTask *)self taskIdentifier];
   v4 = *MEMORY[0x1E69DDBE8];
-  if (v3 != *MEMORY[0x1E69DDBE8])
+  if (taskIdentifier != *MEMORY[0x1E69DDBE8])
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 endBackgroundTask:{-[VUIScopedBackgroundTask taskIdentifier](self, "taskIdentifier")}];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:{-[VUIScopedBackgroundTask taskIdentifier](self, "taskIdentifier")}];
 
     [(VUIScopedBackgroundTask *)self setTaskIdentifier:v4];
   }

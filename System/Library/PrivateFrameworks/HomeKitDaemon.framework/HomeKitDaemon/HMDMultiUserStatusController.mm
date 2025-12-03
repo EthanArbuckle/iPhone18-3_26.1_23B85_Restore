@@ -1,12 +1,12 @@
 @interface HMDMultiUserStatusController
 + (id)logCategory;
-- (HMDMultiUserStatusController)initWithQueue:(id)a3 delegate:(id)a4;
+- (HMDMultiUserStatusController)initWithQueue:(id)queue delegate:(id)delegate;
 - (HMDMultiUserStatusControllerDelegate)delegate;
 - (int64_t)multiUserState;
 - (uint64_t)_recalculateState;
-- (void)didChangeHasActiveAccountState:(BOOL)a3;
-- (void)didUpdateDataSyncState:(unint64_t)a3;
-- (void)setMultiUserState:(int64_t)a3;
+- (void)didChangeHasActiveAccountState:(BOOL)state;
+- (void)didUpdateDataSyncState:(unint64_t)state;
+- (void)setMultiUserState:(int64_t)state;
 @end
 
 @implementation HMDMultiUserStatusController
@@ -18,18 +18,18 @@
   return WeakRetained;
 }
 
-- (void)didChangeHasActiveAccountState:(BOOL)a3
+- (void)didChangeHasActiveAccountState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDMultiUserStatusController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HMDMultiUserStatusController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDMultiUserStatusController *)self haveActiveSignedInAccount]!= v3)
+  if ([(HMDMultiUserStatusController *)self haveActiveSignedInAccount]!= stateCopy)
   {
-    v6 = v3;
+    v6 = stateCopy;
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -43,16 +43,16 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDMultiUserStatusController *)v8 setHaveActiveSignedInAccount:v6];
-    if (v8)
+    [(HMDMultiUserStatusController *)selfCopy setHaveActiveSignedInAccount:v6];
+    if (selfCopy)
     {
-      v12 = [(HMDMultiUserStatusController *)v8 queue];
-      dispatch_assert_queue_V2(v12);
+      queue2 = [(HMDMultiUserStatusController *)selfCopy queue];
+      dispatch_assert_queue_V2(queue2);
 
-      if ([(HMDMultiUserStatusController *)v8 _recalculateState])
+      if ([(HMDMultiUserStatusController *)selfCopy _recalculateState])
       {
-        v13 = [(HMDMultiUserStatusController *)v8 delegate];
-        [v13 multiUserStatusController:v8 statusDidChange:{-[HMDMultiUserStatusController multiUserState](v8, "multiUserState")}];
+        delegate = [(HMDMultiUserStatusController *)selfCopy delegate];
+        [delegate multiUserStatusController:selfCopy statusDidChange:{-[HMDMultiUserStatusController multiUserState](selfCopy, "multiUserState")}];
       }
     }
   }
@@ -66,14 +66,14 @@
   if (result)
   {
     v1 = result;
-    v2 = [result queue];
-    dispatch_assert_queue_V2(v2);
+    queue = [result queue];
+    dispatch_assert_queue_V2(queue);
 
-    v3 = [v1 queue];
-    dispatch_assert_queue_V2(v3);
+    queue2 = [v1 queue];
+    dispatch_assert_queue_V2(queue2);
 
-    v4 = [v1 queue];
-    dispatch_assert_queue_V2(v4);
+    queue3 = [v1 queue];
+    dispatch_assert_queue_V2(queue3);
 
     v5 = [v1 dataSyncState] == 1;
     if ([v1 multiUserState] == v5)
@@ -107,16 +107,16 @@
   return result;
 }
 
-- (void)didUpdateDataSyncState:(unint64_t)a3
+- (void)didUpdateDataSyncState:(unint64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDMultiUserStatusController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HMDMultiUserStatusController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDMultiUserStatusController *)self dataSyncState]!= a3)
+  if ([(HMDMultiUserStatusController *)self dataSyncState]!= state)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -130,17 +130,17 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDMultiUserStatusController *)v7 setDataSyncState:a3];
-    [(HMDMultiUserStatusController *)v7 _recalculateState];
+    [(HMDMultiUserStatusController *)selfCopy setDataSyncState:state];
+    [(HMDMultiUserStatusController *)selfCopy _recalculateState];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMultiUserState:(int64_t)a3
+- (void)setMultiUserState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_multiUserState = a3;
+  self->_multiUserState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -153,20 +153,20 @@
   return multiUserState;
 }
 
-- (HMDMultiUserStatusController)initWithQueue:(id)a3 delegate:(id)a4
+- (HMDMultiUserStatusController)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HMDMultiUserStatusController;
   v9 = [(HMDMultiUserStatusController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v10->_multiUserState = 0;
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

@@ -1,15 +1,15 @@
 @interface _WKWebExtensionWebNavigationURLPredicate
-- (BOOL)matchesURL:(id)a3;
-- (_WKWebExtensionWebNavigationURLPredicate)initWithTypeString:(id)a3 value:(id)a4 outErrorMessage:(id *)a5;
+- (BOOL)matchesURL:(id)l;
+- (_WKWebExtensionWebNavigationURLPredicate)initWithTypeString:(id)string value:(id)value outErrorMessage:(id *)message;
 @end
 
 @implementation _WKWebExtensionWebNavigationURLPredicate
 
-- (_WKWebExtensionWebNavigationURLPredicate)initWithTypeString:(id)a3 value:(id)a4 outErrorMessage:(id *)a5
+- (_WKWebExtensionWebNavigationURLPredicate)initWithTypeString:(id)string value:(id)value outErrorMessage:(id *)message
 {
   v105[20] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  valueCopy = value;
   v101.receiver = self;
   v101.super_class = _WKWebExtensionWebNavigationURLPredicate;
   v10 = [(_WKWebExtensionWebNavigationURLPredicate *)&v101 init];
@@ -71,22 +71,22 @@
     _MergedGlobals_40 = 1;
   }
 
-  v12 = [v11 objectForKeyedSubscript:v8];
-  v13 = [v12 integerValue];
-  v10->_type = v13;
-  if (v13 < 0xE)
+  v12 = [v11 objectForKeyedSubscript:stringCopy];
+  integerValue = [v12 integerValue];
+  v10->_type = integerValue;
+  if (integerValue < 0xE)
   {
     goto LABEL_5;
   }
 
-  if (v13 <= 15)
+  if (integerValue <= 15)
   {
-    if ((v13 - 14) >= 2)
+    if ((integerValue - 14) >= 2)
     {
       goto LABEL_7;
     }
 
-    v37 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v9 options:0 error:0];
+    v37 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:valueCopy options:0 error:0];
     value = v10->_value;
     v10->_value = v37;
 
@@ -97,7 +97,7 @@
 
     MEMORY[0x19EB02040](&v98, @"originAndPathMatches");
     MEMORY[0x19EB02040](&v97, @"'%@' is not a valid regular expression");
-    WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, v9);
+    WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, valueCopy);
     v39 = v99;
     if (v99)
     {
@@ -116,7 +116,7 @@
 
     v43 = v100;
     v100 = 0;
-    *a5 = v43;
+    *message = v43;
     v44 = v100;
     v100 = 0;
 
@@ -144,9 +144,9 @@
     goto LABEL_71;
   }
 
-  if ((v13 - 16) >= 2 && v13 != 18)
+  if ((integerValue - 16) >= 2 && integerValue != 18)
   {
-    if (v13 != 19)
+    if (integerValue != 19)
     {
       goto LABEL_7;
     }
@@ -163,7 +163,7 @@
       byte_1ED6417B9 = 1;
     }
 
-    v18 = WTF::dynamic_objc_cast<NSArray>(v9);
+    v18 = WTF::dynamic_objc_cast<NSArray>(valueCopy);
     v86 = [v18 count];
 
     if (!v86)
@@ -181,9 +181,9 @@ LABEL_37:
     v83 = v12;
     while (1)
     {
-      v20 = [v9 objectAtIndexedSubscript:v19];
+      v20 = [valueCopy objectAtIndexedSubscript:v19];
       v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@[%lu]"];
-      v22 = WebKit::validateObject(v20, v21, qword_1ED6417C8, a5);
+      v22 = WebKit::validateObject(v20, v21, qword_1ED6417C8, message);
 
       if (!v22)
       {
@@ -194,12 +194,12 @@ LABEL_37:
       v24 = v23;
       if (v23)
       {
-        v25 = [v23 integerValue];
-        if (v25 >= 0x10000)
+        integerValue2 = [v23 integerValue];
+        if (integerValue2 >= 0x10000)
         {
           MEMORY[0x19EB02040](&v98, @"ports");
           MEMORY[0x19EB02040](&v96, @"'%zd' is not a valid port");
-          WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, v25);
+          WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, integerValue2);
           v55 = v99;
           if (v99)
           {
@@ -218,7 +218,7 @@ LABEL_37:
 
           v59 = v100;
           v100 = 0;
-          *a5 = v59;
+          *message = v59;
           v60 = v100;
           v100 = 0;
 
@@ -248,7 +248,7 @@ LABEL_69:
           break;
         }
 
-        [v87 addIndex:v25];
+        [v87 addIndex:integerValue2];
       }
 
       else
@@ -282,7 +282,7 @@ LABEL_69:
 
             v67 = v100;
             v100 = 0;
-            *a5 = v67;
+            *message = v67;
             v68 = v100;
             v100 = 0;
 
@@ -329,14 +329,14 @@ LABEL_69:
                   objc_enumerationMutation(obj);
                 }
 
-                v31 = [*(*(&v91 + 1) + 8 * i) integerValue];
-                if (v31 >= 0x10000)
+                integerValue3 = [*(*(&v91 + 1) + 8 * i) integerValue];
+                if (integerValue3 >= 0x10000)
                 {
                   MEMORY[0x19EB02040](&v98, @"ports");
                   v12 = v83;
                   v20 = v84;
                   MEMORY[0x19EB02040](&v90, @"'%zd' is not a valid port");
-                  WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, v31);
+                  WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, integerValue3);
                   v41 = v99;
                   if (v99)
                   {
@@ -355,7 +355,7 @@ LABEL_69:
 
                   v49 = v100;
                   v100 = 0;
-                  *a5 = v49;
+                  *message = v49;
                   v50 = v100;
                   v100 = 0;
 
@@ -397,16 +397,16 @@ LABEL_69:
           v12 = v83;
           v20 = v84;
           v32 = [obj objectAtIndexedSubscript:0];
-          v82 = [v32 unsignedIntegerValue];
+          unsignedIntegerValue = [v32 unsignedIntegerValue];
 
           v33 = [obj objectAtIndexedSubscript:1];
-          v34 = [v33 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v33 unsignedIntegerValue];
 
-          if (v34 <= v82)
+          if (unsignedIntegerValue2 <= unsignedIntegerValue)
           {
             MEMORY[0x19EB02040](&v98, @"ports");
             MEMORY[0x19EB02040](&v89, @"'%zd-%zd' is not a valid port range");
-            WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, v82);
+            WebKit::toErrorString(MEMORY[0x1E696EBA0], &v98, &v99, unsignedIntegerValue);
             v65 = v99;
             if (v99)
             {
@@ -425,7 +425,7 @@ LABEL_69:
 
             v73 = v100;
             v100 = 0;
-            *a5 = v73;
+            *message = v73;
             v74 = v100;
             v100 = 0;
 
@@ -472,7 +472,7 @@ LABEL_71:
   }
 
 LABEL_5:
-  v14 = [v9 copy];
+  v14 = [valueCopy copy];
   v15 = v10->_value;
   v10->_value = v14;
 LABEL_6:
@@ -485,9 +485,9 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = self->_value;
   v6 = self->_value;
   v7 = self->_value;
@@ -495,11 +495,11 @@ LABEL_10:
   switch(self->_type)
   {
     case 0:
-      v9 = [v4 host];
-      v10 = v9;
-      if (v9)
+      host = [lCopy host];
+      host2 = host;
+      if (host)
       {
-        v11 = v9;
+        v11 = host;
       }
 
       else
@@ -507,97 +507,97 @@ LABEL_10:
         v11 = &stru_1F1147748;
       }
 
-      v12 = [@"." stringByAppendingString:v11];
-      v13 = [v12 containsString:v5];
+      absoluteString = [@"." stringByAppendingString:v11];
+      v13 = [absoluteString containsString:v5];
       goto LABEL_21;
     case 1:
-      v10 = [v4 host];
-      v16 = [v10 isEqualToString:v5];
+      host2 = [lCopy host];
+      v16 = [host2 isEqualToString:v5];
       goto LABEL_28;
     case 2:
-      v10 = [v4 host];
-      v16 = [v10 hasPrefix:v5];
+      host2 = [lCopy host];
+      v16 = [host2 hasPrefix:v5];
       goto LABEL_28;
     case 3:
-      v10 = [v4 host];
-      v16 = [v10 hasSuffix:v5];
+      host2 = [lCopy host];
+      v16 = [host2 hasSuffix:v5];
       goto LABEL_28;
     case 4:
-      v10 = [v4 path];
-      v16 = [v10 containsString:v5];
+      host2 = [lCopy path];
+      v16 = [host2 containsString:v5];
       goto LABEL_28;
     case 5:
-      v10 = [v4 path];
-      v16 = [v10 isEqualToString:v5];
+      host2 = [lCopy path];
+      v16 = [host2 isEqualToString:v5];
       goto LABEL_28;
     case 6:
-      v10 = [v4 path];
-      v16 = [v10 hasPrefix:v5];
+      host2 = [lCopy path];
+      v16 = [host2 hasPrefix:v5];
       goto LABEL_28;
     case 7:
-      v10 = [v4 path];
-      v16 = [v10 hasSuffix:v5];
+      host2 = [lCopy path];
+      v16 = [host2 hasSuffix:v5];
       goto LABEL_28;
     case 8:
-      v10 = [v4 query];
-      v16 = [v10 containsString:v5];
+      host2 = [lCopy query];
+      v16 = [host2 containsString:v5];
       goto LABEL_28;
     case 9:
-      v10 = [v4 query];
-      v16 = [v10 isEqualToString:v5];
+      host2 = [lCopy query];
+      v16 = [host2 isEqualToString:v5];
       goto LABEL_28;
     case 0xALL:
-      v10 = [v4 query];
-      v16 = [v10 hasPrefix:v5];
+      host2 = [lCopy query];
+      v16 = [host2 hasPrefix:v5];
       goto LABEL_28;
     case 0xBLL:
-      v10 = [v4 query];
-      v16 = [v10 hasSuffix:v5];
+      host2 = [lCopy query];
+      v16 = [host2 hasSuffix:v5];
       goto LABEL_28;
     case 0xCLL:
-      v10 = [v4 _webkit_URLByRemovingFragment];
-      v12 = [v10 absoluteString];
-      v13 = [v12 containsString:v5];
+      host2 = [lCopy _webkit_URLByRemovingFragment];
+      absoluteString = [host2 absoluteString];
+      v13 = [absoluteString containsString:v5];
       goto LABEL_21;
     case 0xDLL:
-      v10 = [v4 _webkit_URLByRemovingFragment];
-      v12 = [v10 absoluteString];
-      v13 = [v12 isEqualToString:v5];
+      host2 = [lCopy _webkit_URLByRemovingFragment];
+      absoluteString = [host2 absoluteString];
+      v13 = [absoluteString isEqualToString:v5];
       goto LABEL_21;
     case 0xELL:
-      v14 = [v4 _webkit_URLByRemovingFragment];
-      v10 = [v14 absoluteString];
+      _webkit_URLByRemovingFragment = [lCopy _webkit_URLByRemovingFragment];
+      host2 = [_webkit_URLByRemovingFragment absoluteString];
 
-      v15 = [v8 rangeOfFirstMatchInString:v10 options:0 range:{0, objc_msgSend(v10, "length")}] != 0x7FFFFFFFFFFFFFFFLL;
+      v15 = [v8 rangeOfFirstMatchInString:host2 options:0 range:{0, objc_msgSend(host2, "length")}] != 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_29;
     case 0xFLL:
-      v10 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:0];
-      [v10 setFragment:0];
-      [v10 setQuery:0];
-      v12 = [v10 string];
-      v15 = [v8 rangeOfFirstMatchInString:v12 options:0 range:{0, objc_msgSend(v12, "length")}] != 0x7FFFFFFFFFFFFFFFLL;
+      host2 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+      [host2 setFragment:0];
+      [host2 setQuery:0];
+      absoluteString = [host2 string];
+      v15 = [v8 rangeOfFirstMatchInString:absoluteString options:0 range:{0, objc_msgSend(absoluteString, "length")}] != 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_22;
     case 0x10:
-      v10 = [v4 _webkit_URLByRemovingFragment];
-      v12 = [v10 absoluteString];
-      v13 = [v12 hasPrefix:v5];
+      host2 = [lCopy _webkit_URLByRemovingFragment];
+      absoluteString = [host2 absoluteString];
+      v13 = [absoluteString hasPrefix:v5];
       goto LABEL_21;
     case 0x11:
-      v10 = [v4 _webkit_URLByRemovingFragment];
-      v12 = [v10 absoluteString];
-      v13 = [v12 hasSuffix:v5];
+      host2 = [lCopy _webkit_URLByRemovingFragment];
+      absoluteString = [host2 absoluteString];
+      v13 = [absoluteString hasSuffix:v5];
 LABEL_21:
       v15 = v13;
 LABEL_22:
 
       goto LABEL_29;
     case 0x12:
-      v10 = [v4 scheme];
-      v16 = [v6 containsObject:v10];
+      host2 = [lCopy scheme];
+      v16 = [v6 containsObject:host2];
       goto LABEL_28;
     case 0x13:
-      v10 = [v4 port];
-      v16 = [v7 containsIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
+      host2 = [lCopy port];
+      v16 = [v7 containsIndex:{objc_msgSend(host2, "unsignedIntegerValue")}];
 LABEL_28:
       v15 = v16;
 LABEL_29:

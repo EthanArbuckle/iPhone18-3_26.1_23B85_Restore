@@ -1,10 +1,10 @@
 @interface SessionAudioPlayerPresenter
-- (void)handleRouteChanged:(id)a3;
+- (void)handleRouteChanged:(id)changed;
 @end
 
 @implementation SessionAudioPlayerPresenter
 
-- (void)handleRouteChanged:(id)a3
+- (void)handleRouteChanged:(id)changed
 {
   v3 = sub_20C132614();
   v4 = *(v3 - 8);

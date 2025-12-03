@@ -1,27 +1,27 @@
 @interface PRSiriSchemaPRResponseGenerationRequestStart
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PRSiriSchemaPRResponseGenerationRequestStart)initWithDictionary:(id)a3;
-- (PRSiriSchemaPRResponseGenerationRequestStart)initWithJSON:(id)a3;
+- (PRSiriSchemaPRResponseGenerationRequestStart)initWithDictionary:(id)dictionary;
+- (PRSiriSchemaPRResponseGenerationRequestStart)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)actionStatementIdAtIndex:(unint64_t)a3;
-- (void)addActionStatementId:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)actionStatementIdAtIndex:(unint64_t)index;
+- (void)addActionStatementId:(unsigned int)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PRSiriSchemaPRResponseGenerationRequestStart
 
-- (PRSiriSchemaPRResponseGenerationRequestStart)initWithDictionary:(id)a3
+- (PRSiriSchemaPRResponseGenerationRequestStart)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PRSiriSchemaPRResponseGenerationRequestStart;
   v5 = [(PRSiriSchemaPRResponseGenerationRequestStart *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionStatementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (PRSiriSchemaPRResponseGenerationRequestStart)initWithJSON:(id)a3
+- (PRSiriSchemaPRResponseGenerationRequestStart)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRSiriSchemaPRResponseGenerationRequestStart *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PRSiriSchemaPRResponseGenerationRequestStart *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionStatementIds count])
   {
-    v4 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actionStatementId"];
+    actionStatementIds = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
+    v5 = [actionStatementIds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionStatementId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
-    v6 = [v4 actionStatementIds];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    actionStatementIds = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
+    actionStatementIds2 = [equalCopy actionStatementIds];
+    v7 = actionStatementIds2;
+    if ((actionStatementIds != 0) != (actionStatementIds2 == 0))
     {
-      v8 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
-      if (!v8)
+      actionStatementIds3 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
+      if (!actionStatementIds3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
-      v11 = [v4 actionStatementIds];
-      v12 = [v10 isEqual:v11];
+      v9 = actionStatementIds3;
+      actionStatementIds4 = [(PRSiriSchemaPRResponseGenerationRequestStart *)self actionStatementIds];
+      actionStatementIds5 = [equalCopy actionStatementIds];
+      v12 = [actionStatementIds4 isEqual:actionStatementIds5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (unsigned)actionStatementIdAtIndex:(unint64_t)a3
+- (unsigned)actionStatementIdAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_actionStatementIds objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_actionStatementIds objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addActionStatementId:(unsigned int)a3
+- (void)addActionStatementId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   actionStatementIds = self->_actionStatementIds;
   if (!actionStatementIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actionStatementIds;
-    self->_actionStatementIds = v6;
+    self->_actionStatementIds = array;
 
     actionStatementIds = self->_actionStatementIds;
   }

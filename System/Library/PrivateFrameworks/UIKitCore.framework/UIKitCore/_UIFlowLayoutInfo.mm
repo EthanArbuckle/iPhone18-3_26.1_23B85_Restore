@@ -2,11 +2,11 @@
 - (_UIFlowLayoutInfo)init;
 - (_UIFlowLayoutSection)addSection;
 - (id)copy;
-- (id)setSize:(double)a3 forItemAtIndexPath:(double)a4;
+- (id)setSize:(double)size forItemAtIndexPath:(double)path;
 - (id)specifiedItemSizes;
-- (void)didUpdateSizeForSection:(double)a3 withDelta:;
-- (void)invalidate:(uint64_t)a1;
-- (void)setSizes:(void *)a3 forItemsAtIndexPaths:;
+- (void)didUpdateSizeForSection:(double)section withDelta:;
+- (void)invalidate:(uint64_t)invalidate;
+- (void)setSizes:(void *)sizes forItemsAtIndexPaths:;
 @end
 
 @implementation _UIFlowLayoutInfo
@@ -30,16 +30,16 @@
 
 - (_UIFlowLayoutSection)addSection
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_UIFlowLayoutSection);
     v3 = v2;
     if (v2)
     {
-      objc_storeWeak(&v2->_layoutInfo, a1);
+      objc_storeWeak(&v2->_layoutInfo, self);
     }
 
-    [a1[13] addObject:v3];
+    [self[13] addObject:v3];
   }
 
   else
@@ -50,25 +50,25 @@
   return v3;
 }
 
-- (void)didUpdateSizeForSection:(double)a3 withDelta:
+- (void)didUpdateSizeForSection:(double)section withDelta:
 {
-  if (a1)
+  if (self)
   {
-    for (i = a2 + 1; i < [*(a1 + 104) count]; ++i)
+    for (i = a2 + 1; i < [*(self + 104) count]; ++i)
     {
-      v6 = [*(a1 + 104) objectAtIndexedSubscript:i];
+      v6 = [*(self + 104) objectAtIndexedSubscript:i];
       if (v6)
       {
         v7 = v6[39];
         v8 = v6[40];
-        if (*(a1 + 97))
+        if (*(self + 97))
         {
-          v7 = v7 + a3;
+          v7 = v7 + section;
         }
 
         else
         {
-          v8 = v8 + a3;
+          v8 = v8 + section;
         }
 
         v6[39] = v7;
@@ -76,24 +76,24 @@
       }
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
-    [WeakRetained _updateContentSizeScrollingDimensionWithDelta:a3];
+    WeakRetained = objc_loadWeakRetained((self + 120));
+    [WeakRetained _updateContentSizeScrollingDimensionWithDelta:section];
   }
 }
 
-- (void)invalidate:(uint64_t)a1
+- (void)invalidate:(uint64_t)invalidate
 {
-  if (a1)
+  if (invalidate)
   {
-    *(a1 + 72) = *MEMORY[0x1E695F060];
-    *(a1 + 88) = 0;
-    *(a1 + 64) = 0;
-    if (!a2 || (WeakRetained = objc_loadWeakRetained((a1 + 120)), v4 = [WeakRetained _estimatesSizes], WeakRetained, v4))
+    *(invalidate + 72) = *MEMORY[0x1E695F060];
+    *(invalidate + 88) = 0;
+    *(invalidate + 64) = 0;
+    if (!a2 || (WeakRetained = objc_loadWeakRetained((invalidate + 120)), v4 = [WeakRetained _estimatesSizes], WeakRetained, v4))
     {
-      v5 = *(a1 + 104);
+      v5 = *(invalidate + 104);
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 104);
-      *(a1 + 104) = v6;
+      v7 = *(invalidate + 104);
+      *(invalidate + 104) = v6;
 
       v8 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -318,27 +318,27 @@
   return p_isa;
 }
 
-- (void)setSizes:(void *)a3 forItemsAtIndexPaths:
+- (void)setSizes:(void *)sizes forItemsAtIndexPaths:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sizesCopy = sizes;
+  if (self)
   {
     v7 = [v5 count];
-    if (v7 != [v6 count])
+    if (v7 != [sizesCopy count])
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:sel_setSizes_forItemsAtIndexPaths_ object:a1 file:@"UIFlowLayoutSupport.m" lineNumber:2011 description:{@"Invalid parameter not satisfying: %@", @"sizes.count == indexPaths.count"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setSizes_forItemsAtIndexPaths_ object:self file:@"UIFlowLayoutSupport.m" lineNumber:2011 description:{@"Invalid parameter not satisfying: %@", @"sizes.count == indexPaths.count"}];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
-    v9 = [WeakRetained _estimatesSizes];
+    WeakRetained = objc_loadWeakRetained((self + 120));
+    _estimatesSizes = [WeakRetained _estimatesSizes];
 
-    if ((v9 & 1) == 0)
+    if ((_estimatesSizes & 1) == 0)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v34 = NSStringFromSelector(sel_setSizes_forItemsAtIndexPaths_);
-      [v33 handleFailureInMethod:sel_setSizes_forItemsAtIndexPaths_ object:a1 file:@"UIFlowLayoutSupport.m" lineNumber:2012 description:{@"This method %@ should only be called for layouts with estimated item sizes.", v34}];
+      [currentHandler2 handleFailureInMethod:sel_setSizes_forItemsAtIndexPaths_ object:self file:@"UIFlowLayoutSupport.m" lineNumber:2012 description:{@"This method %@ should only be called for layouts with estimated item sizes.", v34}];
     }
 
     v35 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -353,15 +353,15 @@
         v36 = v14;
         v37 = v13;
 
-        v15 = v6;
-        v16 = [v6 objectAtIndexedSubscript:v11];
+        v15 = sizesCopy;
+        v16 = [sizesCopy objectAtIndexedSubscript:v11];
         [v35 addIndex:{objc_msgSend(v16, "section")}];
         v17.f64[0] = v37;
         v17.f64[1] = v36;
-        *(a1 + 72) = vaddq_f64(v17, *(a1 + 72));
-        ++*(a1 + 88);
-        v18 = *(a1 + 104);
-        v19 = objc_loadWeakRetained((a1 + 120));
+        *(self + 72) = vaddq_f64(v17, *(self + 72));
+        ++*(self + 88);
+        v18 = *(self + 104);
+        v19 = objc_loadWeakRetained((self + 120));
         v20 = [v18 objectAtIndex:{objc_msgSend(v19, "_sectionArrayIndexForIndexPath:", v16)}];
 
         v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v16, "section")}];
@@ -381,8 +381,8 @@
             v25 = 0;
           }
 
-          v26 = [v16 item];
-          if (v26 >= v25 && v26 - v25 < v24)
+          item = [v16 item];
+          if (item >= v25 && item - v25 < v24)
           {
             [(_UIFlowLayoutSection *)v20 frameForItemAtIndexPath:v16];
             if (v28 != v37 || v27 != v36)
@@ -406,7 +406,7 @@
         }
 
         ++v11;
-        v6 = v15;
+        sizesCopy = v15;
       }
 
       while (v11 < [v5 count]);
@@ -416,47 +416,47 @@
     v38[1] = 3221225472;
     v38[2] = __51___UIFlowLayoutInfo_setSizes_forItemsAtIndexPaths___block_invoke;
     v38[3] = &unk_1E7100338;
-    v38[4] = a1;
+    v38[4] = self;
     [v10 enumerateKeysAndObjectsUsingBlock:v38];
   }
 }
 
-- (id)setSize:(double)a3 forItemAtIndexPath:(double)a4
+- (id)setSize:(double)size forItemAtIndexPath:(double)path
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
-    v7 = [WeakRetained _estimatesSizes];
+    WeakRetained = objc_loadWeakRetained((self + 120));
+    _estimatesSizes = [WeakRetained _estimatesSizes];
 
-    if (v7)
+    if (_estimatesSizes)
     {
-      v8.f64[0] = a3;
-      v8.f64[1] = a4;
-      *(a1 + 72) = vaddq_f64(v8, *(a1 + 72));
-      ++*(a1 + 88);
+      v8.f64[0] = size;
+      v8.f64[1] = path;
+      *(self + 72) = vaddq_f64(v8, *(self + 72));
+      ++*(self + 88);
     }
 
-    v9 = objc_loadWeakRetained((a1 + 120));
+    v9 = objc_loadWeakRetained((self + 120));
     v10 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v81 = [MEMORY[0x1E696AAA8] currentHandler];
-      v82 = objc_loadWeakRetained((a1 + 120));
-      v83 = [objc_opt_class() invalidationContextClass];
-      v84 = NSStringFromClass(v83);
-      [v81 handleFailureInMethod:sel_setSize_forItemAtIndexPath_ object:a1 file:@"UIFlowLayoutSupport.m" lineNumber:2063 description:{@"Invalidation context class (%@) must be a subclass of UICollectionViewFlowLayoutInvalidationContext.", v84}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v82 = objc_loadWeakRetained((self + 120));
+      invalidationContextClass = [objc_opt_class() invalidationContextClass];
+      v84 = NSStringFromClass(invalidationContextClass);
+      [currentHandler handleFailureInMethod:sel_setSize_forItemAtIndexPath_ object:self file:@"UIFlowLayoutSupport.m" lineNumber:2063 description:{@"Invalidation context class (%@) must be a subclass of UICollectionViewFlowLayoutInvalidationContext.", v84}];
     }
 
     [v10 setInvalidateFlowLayoutAttributes:0];
     [v10 setInvalidateFlowLayoutDelegateMetrics:0];
-    v11 = objc_loadWeakRetained((a1 + 120));
+    v11 = objc_loadWeakRetained((self + 120));
     v12 = [v11 _sectionArrayIndexForIndexPath:a2];
 
-    if ((v12 & 0x8000000000000000) == 0 && v12 < [*(a1 + 104) count])
+    if ((v12 & 0x8000000000000000) == 0 && v12 < [*(self + 104) count])
     {
-      v13 = *(a1 + 104);
+      v13 = *(self + 104);
       if (v13)
       {
         v14 = [v13 objectAtIndexedSubscript:v12];
@@ -467,15 +467,15 @@ LABEL_64:
           goto LABEL_40;
         }
 
-        v15 = [a2 item];
-        if (v15 >= [*(v14 + 96) count])
+        item = [a2 item];
+        if (item >= [*(v14 + 96) count])
         {
           v92[0] = MEMORY[0x1E69E9820];
           v92[1] = 3221225472;
           v92[2] = __71___UIFlowLayoutSection_setSize_forItemAtIndexPath_invalidationContext___block_invoke;
           v92[3] = &unk_1E70F32F0;
           v92[4] = v14;
-          v92[5] = v15;
+          v92[5] = item;
           if (_MergedGlobals_1043 != -1)
           {
             dispatch_once(&_MergedGlobals_1043, v92);
@@ -484,7 +484,7 @@ LABEL_64:
           goto LABEL_64;
         }
 
-        v16 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v17 = [*(v14 + 96) objectAtIndexedSubscript:{objc_msgSend(a2, "item")}];
         v18 = v17;
         if (v17)
@@ -503,11 +503,11 @@ LABEL_64:
           v20 = 0.0;
         }
 
-        if (v21 != a3 || v22 != a4)
+        if (v21 != size || v22 != path)
         {
           v23 = *(v14 + 264);
-          v24 = v15 >= v23;
-          v25 = v15 - v23;
+          v24 = item >= v23;
+          v25 = item - v23;
           if (!v24 || v25 >= *(v14 + 272))
           {
             if (v17)
@@ -536,20 +536,20 @@ LABEL_64:
           {
             *(v18 + 32) = v20;
             *(v18 + 40) = v19;
-            *(v18 + 48) = a3;
-            *(v18 + 56) = a4;
+            *(v18 + 48) = size;
+            *(v18 + 56) = path;
             *(v18 + 8) |= 4u;
           }
 
-          v28 = [a2 section];
-          if (v15 < *(v14 + 272) + *(v14 + 264))
+          section = [a2 section];
+          if (item < *(v14 + 272) + *(v14 + 264))
           {
-            v29 = v15;
+            v29 = item;
             do
             {
-              v30 = [MEMORY[0x1E696AC88] indexPathForItem:v29 inSection:v28];
+              v30 = [MEMORY[0x1E696AC88] indexPathForItem:v29 inSection:section];
               [(_UIFlowLayoutSection *)v14 addInvalidatedIndexPath:v30];
-              [v16 addObject:v30];
+              [array addObject:v30];
 
               ++v29;
             }
@@ -560,7 +560,7 @@ LABEL_64:
           v31 = objc_loadWeakRetained((v14 + 144));
           if (v31 && (v32 = v31[97], v31, (v32 & 1) != 0))
           {
-            if (a4 < Height)
+            if (path < Height)
             {
               if (v18)
               {
@@ -618,17 +618,17 @@ LABEL_64:
                 v48 = CGRectGetWidth(*&v44);
                 if (v43 >= 1)
                 {
-                  v49 = v15 - v43;
+                  v49 = item - v43;
                   do
                   {
-                    v50 = [MEMORY[0x1E696AC88] indexPathForItem:v49 inSection:v28];
+                    v50 = [MEMORY[0x1E696AC88] indexPathForItem:v49 inSection:section];
                     [(_UIFlowLayoutSection *)v14 addInvalidatedIndexPath:v50];
-                    [v16 addObject:v50];
+                    [array addObject:v50];
 
                     ++v49;
                   }
 
-                  while (v49 < v15);
+                  while (v49 < item);
                 }
 
                 v40 = v40 + v48;
@@ -644,18 +644,18 @@ LABEL_64:
               v51 = CGRectGetMaxX(v96);
               MinY = CGRectGetMinY(*(v14 + 16));
               v53 = CGRectGetHeight(*(v14 + 16));
-              v54 = [a2 section];
+              section2 = [a2 section];
               v55 = v14;
               v56 = v51;
               v57 = MinY;
               v58 = v40;
               v59 = v53;
 LABEL_60:
-              [(_UIFlowLayoutSection *)v55 computeLayoutInRect:v54 forSection:1u invalidating:v10 invalidationContext:v56, v57, v58, v59];
+              [(_UIFlowLayoutSection *)v55 computeLayoutInRect:section2 forSection:1u invalidating:v10 invalidationContext:v56, v57, v58, v59];
             }
           }
 
-          else if (a3 < Width)
+          else if (size < Width)
           {
             if (v18)
             {
@@ -713,17 +713,17 @@ LABEL_60:
               v75 = CGRectGetHeight(*&v71);
               if (v70 >= 1)
               {
-                v76 = v15 - v70;
+                v76 = item - v70;
                 do
                 {
-                  v77 = [MEMORY[0x1E696AC88] indexPathForItem:v76 inSection:v28];
+                  v77 = [MEMORY[0x1E696AC88] indexPathForItem:v76 inSection:section];
                   [(_UIFlowLayoutSection *)v14 addInvalidatedIndexPath:v77];
-                  [v16 addObject:v77];
+                  [array addObject:v77];
 
                   ++v76;
                 }
 
-                while (v76 < v15);
+                while (v76 < item);
               }
 
               v67 = v67 + v75;
@@ -739,7 +739,7 @@ LABEL_60:
             MinX = CGRectGetMinX(v97);
             v79 = CGRectGetMaxY(*(v14 + 16));
             v80 = CGRectGetWidth(*(v14 + 16));
-            v54 = [a2 section];
+            section2 = [a2 section];
             v55 = v14;
             v56 = MinX;
             v57 = v79;
@@ -750,9 +750,9 @@ LABEL_60:
         }
 
 LABEL_61:
-        if ([v16 count])
+        if ([array count])
         {
-          [v10 invalidateItemsAtIndexPaths:v16];
+          [v10 invalidateItemsAtIndexPaths:array];
         }
 
         goto LABEL_64;
@@ -763,7 +763,7 @@ LABEL_61:
     block[1] = 3221225472;
     block[2] = __48___UIFlowLayoutInfo_setSize_forItemAtIndexPath___block_invoke;
     block[3] = &unk_1E70F32F0;
-    block[4] = a1;
+    block[4] = self;
     block[5] = v12;
     if (qword_1ED49D6B0 != -1)
     {
@@ -784,14 +784,14 @@ LABEL_40:
 - (id)specifiedItemSizes
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = *(a1 + 104);
+    obj = *(self + 104);
     v18 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v18)
     {
@@ -839,7 +839,7 @@ LABEL_40:
                 {
                   v13 = [MEMORY[0x1E696AC88] indexPathForItem:v9 inSection:v3];
                   v14 = [MEMORY[0x1E696B098] valueWithCGSize:{*(v12 + 48), *(v12 + 56)}];
-                  [v2 setObject:v14 forKeyedSubscript:v13];
+                  [dictionary setObject:v14 forKeyedSubscript:v13];
                 }
 
                 ++v9;
@@ -865,10 +865,10 @@ LABEL_40:
 
   else
   {
-    v2 = 0;
+    dictionary = 0;
   }
 
-  return v2;
+  return dictionary;
 }
 
 @end

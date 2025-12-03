@@ -1,10 +1,10 @@
 @interface _TUIFlexibleStrictEqualWidthLayoutController
-- (double)adjustedNaturalLengthWithMeasured:(double)a3 computed:(double)a4;
+- (double)adjustedNaturalLengthWithMeasured:(double)measured computed:(double)computed;
 @end
 
 @implementation _TUIFlexibleStrictEqualWidthLayoutController
 
-- (double)adjustedNaturalLengthWithMeasured:(double)a3 computed:(double)a4
+- (double)adjustedNaturalLengthWithMeasured:(double)measured computed:(double)computed
 {
   if ([(NSMutableArray *)self->super.super._layouts count]< 2)
   {
@@ -46,8 +46,8 @@
     v10 = 0.0;
   }
 
-  v14 = v10 * [(NSMutableArray *)self->super.super._layouts count]- self->super.super._layoutTotalLength + a3;
-  IsLessThanOrAlmostEqualFloat = TUICGFloatIsLessThanOrAlmostEqualFloat(v14, a4);
+  v14 = v10 * [(NSMutableArray *)self->super.super._layouts count]- self->super.super._layoutTotalLength + measured;
+  IsLessThanOrAlmostEqualFloat = TUICGFloatIsLessThanOrAlmostEqualFloat(v14, computed);
   result = NAN;
   if (!IsLessThanOrAlmostEqualFloat)
   {

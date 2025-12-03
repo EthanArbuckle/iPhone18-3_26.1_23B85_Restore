@@ -1,20 +1,20 @@
 @interface PKPaymentSummaryItemValidator
-+ (id)validatorWithObject:(id)a3;
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4;
-- (PKPaymentSummaryItemValidator)initWithPaymentSummaryItem:(id)a3;
++ (id)validatorWithObject:(id)object;
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error;
+- (PKPaymentSummaryItemValidator)initWithPaymentSummaryItem:(id)item;
 @end
 
 @implementation PKPaymentSummaryItemValidator
 
-+ (id)validatorWithObject:(id)a3
++ (id)validatorWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = PKRecurringPaymentSummaryItemValidator;
 LABEL_11:
-    v5 = [(__objc2_class *)v4 validatorWithObject:v3];
+    v5 = [(__objc2_class *)v4 validatorWithObject:objectCopy];
     goto LABEL_12;
   }
 
@@ -46,47 +46,47 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = [objc_alloc(objc_opt_class()) initWithPaymentSummaryItem:v3];
+  v5 = [objc_alloc(objc_opt_class()) initWithPaymentSummaryItem:objectCopy];
 LABEL_12:
   v6 = v5;
 
   return v6;
 }
 
-- (PKPaymentSummaryItemValidator)initWithPaymentSummaryItem:(id)a3
+- (PKPaymentSummaryItemValidator)initWithPaymentSummaryItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PKPaymentSummaryItemValidator;
   v6 = [(PKPaymentSummaryItemValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
 }
 
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = [(PKPaymentSummaryItem *)self->_item amount];
-  v9 = [MEMORY[0x1E696AB90] notANumber];
-  v10 = [v8 isEqualToNumber:v9];
+  amount = [(PKPaymentSummaryItem *)self->_item amount];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v10 = [amount isEqualToNumber:notANumber];
 
   if ((isKindOfClass & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       IsValidCurrencyAmount = 0;
       v14 = 0;
       goto LABEL_24;
     }
 
-    if ((a3 - 1) >= 2)
+    if ((type - 1) >= 2)
     {
       v16 = @"PKPaymentSummaryItem has an invalid label or amount property";
     }
@@ -102,7 +102,7 @@ LABEL_12:
   item = self->_item;
   v12 = objc_opt_class();
   v34 = 0;
-  v13 = _PKPaymentValidateProperty(item, @"label", v12, 1, a3, &v34);
+  v13 = _PKPaymentValidateProperty(item, @"label", v12, 1, type, &v34);
   v14 = v34;
   if (v10 & 1 | ((v13 & 1) == 0))
   {
@@ -120,24 +120,24 @@ LABEL_12:
     v25 = self->_item;
     v26 = objc_opt_class();
     v33 = v14;
-    v27 = _PKPaymentValidateProperty(v25, @"amount", v26, 1, a3, &v33);
+    v27 = _PKPaymentValidateProperty(v25, @"amount", v26, 1, type, &v33);
     v28 = v33;
 
     if (v27)
     {
-      v29 = [(PKPaymentSummaryItemValidator *)self currencyCode];
+      currencyCode = [(PKPaymentSummaryItemValidator *)self currencyCode];
 
-      if (!v29)
+      if (!currencyCode)
       {
         IsValidCurrencyAmount = 1;
         v14 = v28;
         goto LABEL_24;
       }
 
-      v30 = [(PKPaymentSummaryItem *)self->_item amount];
-      v31 = [(PKPaymentSummaryItemValidator *)self currencyCode];
+      amount2 = [(PKPaymentSummaryItem *)self->_item amount];
+      currencyCode2 = [(PKPaymentSummaryItemValidator *)self currencyCode];
       v32 = v28;
-      IsValidCurrencyAmount = _PKPaymentIsValidCurrencyAmount(v30, v31, &v32);
+      IsValidCurrencyAmount = _PKPaymentIsValidCurrencyAmount(amount2, currencyCode2, &v32);
       v14 = v32;
     }
 
@@ -148,9 +148,9 @@ LABEL_12:
     }
   }
 
-  if (a4 && (IsValidCurrencyAmount & 1) == 0)
+  if (error && (IsValidCurrencyAmount & 1) == 0)
   {
-    if ((a3 - 1) >= 2)
+    if ((type - 1) >= 2)
     {
       v16 = @"PKPaymentSummaryItem has an invalid label or amount property";
     }
@@ -171,7 +171,7 @@ LABEL_20:
       v36[0] = v16;
       v36[1] = v14;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-      *a4 = [v21 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v23];
+      *error = [v21 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v23];
 
       IsValidCurrencyAmount = 0;
       goto LABEL_24;

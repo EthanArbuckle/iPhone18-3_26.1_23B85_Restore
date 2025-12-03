@@ -1,27 +1,27 @@
 @interface DRIMainViewController
-- (BOOL)shouldAppendDefaultDismissActionsForPreviewController:(id)a3;
+- (BOOL)shouldAppendDefaultDismissActionsForPreviewController:(id)controller;
 - (DOCConfiguration)configuration;
-- (_TtC5Files21DRIMainViewController)initWithConfiguration:(id)a3;
-- (id)dismissActionsForPreviewController:(id)a3;
-- (id)excludedActivityTypesForPreviewController:(id)a3;
-- (id)initForOpeningContentTypes:(id)a3;
-- (id)initForOpeningFilesWithContentTypes:(id)a3;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5;
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5;
-- (void)previewController:(id)a3 willSaveEditedItem:(id)a4;
-- (void)previewControllerDidDismiss:(id)a3;
+- (_TtC5Files21DRIMainViewController)initWithConfiguration:(id)configuration;
+- (id)dismissActionsForPreviewController:(id)controller;
+- (id)excludedActivityTypesForPreviewController:(id)controller;
+- (id)initForOpeningContentTypes:(id)types;
+- (id)initForOpeningFilesWithContentTypes:(id)types;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location;
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l;
+- (void)previewController:(id)controller willSaveEditedItem:(id)item;
+- (void)previewControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation DRIMainViewController
 
-- (id)initForOpeningContentTypes:(id)a3
+- (id)initForOpeningContentTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
     type metadata accessor for UTType();
     v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -37,7 +37,7 @@
 
 - (DOCConfiguration)configuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005458();
 
   return v3;
@@ -45,23 +45,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000057BC();
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000593F8(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_1000593F8(dismissCopy);
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v5 = a3;
+    controllerCopy = controller;
     swift_unknownObjectRetain();
     v6 = dispatch thunk of DOCPreviewController.previewController(_:transitionViewFor:)();
 
@@ -76,7 +76,7 @@
   return v6;
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
   type metadata accessor for DOCPreviewController();
   if (!swift_dynamicCastClass())
@@ -84,7 +84,7 @@
     return 1;
   }
 
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
   v6 = dispatch thunk of DOCPreviewController.previewController(_:editingModeFor:)();
 
@@ -92,12 +92,12 @@
   return v6;
 }
 
-- (id)dismissActionsForPreviewController:(id)a3
+- (id)dismissActionsForPreviewController:(id)controller
 {
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v4 = a3;
+    controllerCopy = controller;
     dispatch thunk of DOCPreviewController.dismissActions(for:)();
   }
 
@@ -107,12 +107,12 @@
   return v5.super.isa;
 }
 
-- (BOOL)shouldAppendDefaultDismissActionsForPreviewController:(id)a3
+- (BOOL)shouldAppendDefaultDismissActionsForPreviewController:(id)controller
 {
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v4 = a3;
+    controllerCopy = controller;
     v5 = dispatch thunk of DOCPreviewController.shouldAppendDefaultDismissActions(for:)();
   }
 
@@ -124,12 +124,12 @@
   return v5 & 1;
 }
 
-- (void)previewController:(id)a3 willSaveEditedItem:(id)a4
+- (void)previewController:(id)controller willSaveEditedItem:(id)item
 {
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v5 = a3;
+    controllerCopy = controller;
     swift_unknownObjectRetain();
     dispatch thunk of DOCPreviewController.previewController(_:willSaveEditedItem:)();
 
@@ -137,12 +137,12 @@
   }
 }
 
-- (id)excludedActivityTypesForPreviewController:(id)a3
+- (id)excludedActivityTypesForPreviewController:(id)controller
 {
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v4 = a3;
+    controllerCopy = controller;
     dispatch thunk of DOCPreviewController.excludedActivityTypes(for:)();
   }
 
@@ -151,7 +151,7 @@
   return v5.super.isa;
 }
 
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -162,7 +162,7 @@
   type metadata accessor for DOCPreviewController();
   if (swift_dynamicCastClass())
   {
-    v11 = a3;
+    controllerCopy = controller;
     swift_unknownObjectRetain();
     dispatch thunk of DOCPreviewController.previewController(_:didSaveEditedCopyOf:at:)();
 
@@ -172,9 +172,9 @@
   (*(v7 + 8))(v10, v6);
 }
 
-- (id)initForOpeningFilesWithContentTypes:(id)a3
+- (id)initForOpeningFilesWithContentTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
     v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -187,15 +187,15 @@
   return sub_100059D9C(v3);
 }
 
-- (_TtC5Files21DRIMainViewController)initWithConfiguration:(id)a3
+- (_TtC5Files21DRIMainViewController)initWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = sub_10005FAD0(v3);
+  configurationCopy = configuration;
+  v4 = sub_10005FAD0(configurationCopy);
 
   return v4;
 }
 
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -203,29 +203,29 @@
   __chkstk_darwin(v7);
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a4;
-  v13 = self;
-  v14 = [(DRIMainViewController *)v13 effectiveFullBrowser];
+  controllerCopy = controller;
+  selfCopy = self;
+  effectiveFullBrowser = [(DRIMainViewController *)selfCopy effectiveFullBrowser];
   URL._bridgeToObjectiveC()(v15);
   v17 = v16;
-  [v14 importScannedDocumentAt:v16 presentingController:v12 importToCurrentLocation:0];
+  [effectiveFullBrowser importScannedDocumentAt:v16 presentingController:controllerCopy importToCurrentLocation:0];
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  UIViewController.doc_documentCameraViewControllerDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  UIViewController.doc_documentCameraViewControllerDidCancel(_:)(cancelCopy);
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  UIViewController.doc_documentCameraViewController(_:didFinishWith:)(v6, v7);
+  controllerCopy = controller;
+  scanCopy = scan;
+  selfCopy = self;
+  UIViewController.doc_documentCameraViewController(_:didFinishWith:)(controllerCopy, scanCopy);
 }
 
 @end

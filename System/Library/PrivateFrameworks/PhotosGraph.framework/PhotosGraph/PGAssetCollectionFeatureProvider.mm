@@ -1,17 +1,17 @@
 @interface PGAssetCollectionFeatureProvider
-- (BOOL)isEqual:(id)a3;
-- (PGAssetCollectionFeatureProvider)initWithCoder:(id)a3;
-- (PGAssetCollectionFeatureProvider)initWithFeatureSpecifications:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PGAssetCollectionFeatureProvider)initWithCoder:(id)coder;
+- (PGAssetCollectionFeatureProvider)initWithFeatureSpecifications:(id)specifications;
 - (id)description;
-- (id)featureInstancesWithMomentNode:(id)a3 atMomentIngest:(BOOL)a4;
+- (id)featureInstancesWithMomentNode:(id)node atMomentIngest:(BOOL)ingest;
 @end
 
 @implementation PGAssetCollectionFeatureProvider
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -23,8 +23,8 @@
     {
       v5 = [MEMORY[0x277CBEB98] setWithArray:self->_featureSpecifications];
       v6 = MEMORY[0x277CBEB98];
-      v7 = [(PGAssetCollectionFeatureProvider *)v4 featureSpecifications];
-      v8 = [v6 setWithArray:v7];
+      featureSpecifications = [(PGAssetCollectionFeatureProvider *)equalCopy featureSpecifications];
+      v8 = [v6 setWithArray:featureSpecifications];
 
       v9 = [v5 isEqualToSet:v8];
     }
@@ -50,21 +50,21 @@
   return v6;
 }
 
-- (PGAssetCollectionFeatureProvider)initWithCoder:(id)a3
+- (PGAssetCollectionFeatureProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"featureSpecifications"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"featureSpecifications"];
 
   v6 = [(PGAssetCollectionFeatureProvider *)self initWithFeatureSpecifications:v5];
   return v6;
 }
 
-- (id)featureInstancesWithMomentNode:(id)a3 atMomentIngest:(BOOL)a4
+- (id)featureInstancesWithMomentNode:(id)node atMomentIngest:(BOOL)ingest
 {
-  v4 = a4;
+  ingestCopy = ingest;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  nodeCopy = node;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -85,12 +85,12 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 shouldRunAtMomentIngest] == v4)
+        if ([v13 shouldRunAtMomentIngest] == ingestCopy)
         {
-          v14 = [v13 instanceWithMomentNode:v6];
+          v14 = [v13 instanceWithMomentNode:nodeCopy];
           if (v14)
           {
-            [v7 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -103,19 +103,19 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (PGAssetCollectionFeatureProvider)initWithFeatureSpecifications:(id)a3
+- (PGAssetCollectionFeatureProvider)initWithFeatureSpecifications:(id)specifications
 {
-  v5 = a3;
+  specificationsCopy = specifications;
   v9.receiver = self;
   v9.super_class = PGAssetCollectionFeatureProvider;
   v6 = [(PGAssetCollectionFeatureProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_featureSpecifications, a3);
+    objc_storeStrong(&v6->_featureSpecifications, specifications);
   }
 
   return v7;

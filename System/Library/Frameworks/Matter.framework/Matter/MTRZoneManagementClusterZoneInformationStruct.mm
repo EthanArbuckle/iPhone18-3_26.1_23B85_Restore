@@ -1,6 +1,6 @@
 @interface MTRZoneManagementClusterZoneInformationStruct
 - (MTRZoneManagementClusterZoneInformationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterZoneInformationStruct);
-  v5 = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneID];
-  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneID:v5];
+  zoneID = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneID];
+  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneID:zoneID];
 
-  v6 = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneType];
-  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneType:v6];
+  zoneType = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneType];
+  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneType:zoneType];
 
-  v7 = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneSource];
-  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneSource:v7];
+  zoneSource = [(MTRZoneManagementClusterZoneInformationStruct *)self zoneSource];
+  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setZoneSource:zoneSource];
 
-  v8 = [(MTRZoneManagementClusterZoneInformationStruct *)self twoDCartesianZone];
-  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setTwoDCartesianZone:v8];
+  twoDCartesianZone = [(MTRZoneManagementClusterZoneInformationStruct *)self twoDCartesianZone];
+  [(MTRZoneManagementClusterZoneInformationStruct *)v4 setTwoDCartesianZone:twoDCartesianZone];
 
   return v4;
 }

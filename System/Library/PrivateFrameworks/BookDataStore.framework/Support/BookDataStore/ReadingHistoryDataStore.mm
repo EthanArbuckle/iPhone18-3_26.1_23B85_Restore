@@ -1,10 +1,10 @@
 @interface ReadingHistoryDataStore
-- (void)_handleSignificantDateChange:(id)a3;
+- (void)_handleSignificantDateChange:(id)change;
 @end
 
 @implementation ReadingHistoryDataStore
 
-- (void)_handleSignificantDateChange:(id)a3
+- (void)_handleSignificantDateChange:(id)change
 {
   v3 = sub_1001C4868();
   v4 = *(v3 - 8);

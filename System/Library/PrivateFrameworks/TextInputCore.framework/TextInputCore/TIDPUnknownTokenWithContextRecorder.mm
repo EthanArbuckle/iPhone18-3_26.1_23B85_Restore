@@ -8,12 +8,12 @@
 - (id)records
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(TIDPRecorder *)self typingSessionAligned];
-  v5 = [v4 alignedEntries];
+  typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries = [typingSessionAligned alignedEntries];
 
-  v6 = [(TIDPRecorder *)self typingSessionAligned];
-  v7 = [v6 alignedEntries];
-  v8 = [v7 indexesOfObjectsPassingTest:&__block_literal_global_1889];
+  typingSessionAligned2 = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries2 = [typingSessionAligned2 alignedEntries];
+  v8 = [alignedEntries2 indexesOfObjectsPassingTest:&__block_literal_global_1889];
 
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v15[0] = MEMORY[0x277D85DD0];
@@ -21,10 +21,10 @@
   v15[2] = __46__TIDPUnknownTokenWithContextRecorder_records__block_invoke_2;
   v15[3] = &unk_278730430;
   v16 = v9;
-  v17 = v5;
+  v17 = alignedEntries;
   v18 = v3;
   v10 = v3;
-  v11 = v5;
+  v11 = alignedEntries;
   v12 = v9;
   [v8 enumerateIndexesUsingBlock:v15];
   v13 = [v10 copy];
@@ -99,8 +99,8 @@ uint64_t __46__TIDPUnknownTokenWithContextRecorder_records__block_invoke(uint64_
 
 - (id)recordingKey
 {
-  v2 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-  v3 = [@"com.apple.TextInput.UnknownTokenWithContext." stringByAppendingString:v2];
+  recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+  v3 = [@"com.apple.TextInput.UnknownTokenWithContext." stringByAppendingString:recordingKeyLocaleSubstring];
 
   return v3;
 }

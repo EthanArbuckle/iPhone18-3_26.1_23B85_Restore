@@ -8,49 +8,49 @@
 
 - (id)_wb_stringByStandardizingDAVServerID
 {
-  v2 = [MEMORY[0x277CCACE0] componentsWithString:a1];
-  v3 = [v2 path];
+  v2 = [MEMORY[0x277CCACE0] componentsWithString:self];
+  path = [v2 path];
 
-  if ([v3 length])
+  if ([path length])
   {
-    v4 = v3;
+    selfCopy = path;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = [v4 _wb_stringByDeletingTrailingSlash];
+  _wb_stringByDeletingTrailingSlash = [selfCopy _wb_stringByDeletingTrailingSlash];
 
-  return v5;
+  return _wb_stringByDeletingTrailingSlash;
 }
 
 - (id)_wb_stringByDeletingTrailingSlash
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)wb_bestURLForUserTypedString
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 safari_bestURLForUserTypedString];
+    [self safari_bestURLForUserTypedString];
   }
 
   else
   {
-    [a1 _web_bestURLForUserTypedString];
+    [self _web_bestURLForUserTypedString];
   }
   v2 = ;
 

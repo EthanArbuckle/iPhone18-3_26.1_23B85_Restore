@@ -1,59 +1,59 @@
 @interface PUActivitySharingViewModel
 - (PUActivitySharingViewModel)init;
-- (PUActivitySharingViewModel)initWithActivitySharingConfiguration:(id)a3;
-- (void)performChanges:(id)a3;
+- (PUActivitySharingViewModel)initWithActivitySharingConfiguration:(id)configuration;
+- (void)performChanges:(id)changes;
 @end
 
 @implementation PUActivitySharingViewModel
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUActivitySharingViewModel;
-  [(PUActivitySharingViewModel *)&v3 performChanges:a3];
+  [(PUActivitySharingViewModel *)&v3 performChanges:changes];
 }
 
 - (PUActivitySharingViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUActivitySharingViewModel.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PUActivitySharingViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingViewModel.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PUActivitySharingViewModel init]"}];
 
   abort();
 }
 
-- (PUActivitySharingViewModel)initWithActivitySharingConfiguration:(id)a3
+- (PUActivitySharingViewModel)initWithActivitySharingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = PUActivitySharingViewModel;
   v5 = [(PUActivitySharingViewModel *)&v19 init];
   if (v5)
   {
-    v6 = [v4 collectionListFetchResult];
+    collectionListFetchResult = [configurationCopy collectionListFetchResult];
     collectionListFetchResult = v5->_collectionListFetchResult;
-    v5->_collectionListFetchResult = v6;
+    v5->_collectionListFetchResult = collectionListFetchResult;
 
-    v8 = [v4 selectionManager];
+    selectionManager = [configurationCopy selectionManager];
     selectionManager = v5->_selectionManager;
-    v5->_selectionManager = v8;
+    v5->_selectionManager = selectionManager;
 
-    v10 = [v4 photosDataSource];
+    photosDataSource = [configurationCopy photosDataSource];
     photosDataSource = v5->_photosDataSource;
-    v5->_photosDataSource = v10;
+    v5->_photosDataSource = photosDataSource;
 
-    v12 = [v4 keyAsset];
+    keyAsset = [configurationCopy keyAsset];
     keyAsset = v5->_keyAsset;
-    v5->_keyAsset = v12;
+    v5->_keyAsset = keyAsset;
 
-    v14 = [v4 person];
+    person = [configurationCopy person];
     person = v5->_person;
-    v5->_person = v14;
+    v5->_person = person;
 
-    v16 = [v4 socialGroup];
+    socialGroup = [configurationCopy socialGroup];
     socialGroup = v5->_socialGroup;
-    v5->_socialGroup = v16;
+    v5->_socialGroup = socialGroup;
 
-    v5->_sourceOrigin = [v4 sourceOrigin];
+    v5->_sourceOrigin = [configurationCopy sourceOrigin];
   }
 
   return v5;

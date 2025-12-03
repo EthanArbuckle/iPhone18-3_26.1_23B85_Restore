@@ -1,17 +1,17 @@
 @interface PUJoiningDataSourceManager
-- (PUJoiningDataSourceManager)initWithDataSourceManagers:(id)a3;
-- (id)assetsDataSourceManagerInterestingAssetReferences:(id)a3;
-- (void)_handleScheduledUpdateWithID:(int64_t)a3;
+- (PUJoiningDataSourceManager)initWithDataSourceManagers:(id)managers;
+- (id)assetsDataSourceManagerInterestingAssetReferences:(id)references;
+- (void)_handleScheduledUpdateWithID:(int64_t)d;
 - (void)_scheduleUpdate;
 - (void)_update;
 @end
 
 @implementation PUJoiningDataSourceManager
 
-- (id)assetsDataSourceManagerInterestingAssetReferences:(id)a3
+- (id)assetsDataSourceManagerInterestingAssetReferences:(id)references
 {
-  v4 = [(PUAssetsDataSourceManager *)self delegate];
-  v5 = [v4 assetsDataSourceManagerInterestingAssetReferences:self];
+  delegate = [(PUAssetsDataSourceManager *)self delegate];
+  v5 = [delegate assetsDataSourceManagerInterestingAssetReferences:self];
 
   return v5;
 }
@@ -20,15 +20,15 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PUJoiningDataSourceManager *)self dataSourceManagers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  dataSourceManagers = [(PUJoiningDataSourceManager *)self dataSourceManagers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(dataSourceManagers, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(PUJoiningDataSourceManager *)self dataSourceManagers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dataSourceManagers2 = [(PUJoiningDataSourceManager *)self dataSourceManagers];
+  v7 = [dataSourceManagers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -40,17 +40,17 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dataSourceManagers2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) assetsDataSource];
-        [v5 addObject:v11];
+        assetsDataSource = [*(*(&v13 + 1) + 8 * v10) assetsDataSource];
+        [v5 addObject:assetsDataSource];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [dataSourceManagers2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -60,9 +60,9 @@
   [(PUAssetsDataSourceManager *)self setAssetsDataSource:v12];
 }
 
-- (void)_handleScheduledUpdateWithID:(int64_t)a3
+- (void)_handleScheduledUpdateWithID:(int64_t)d
 {
-  if ([(PUJoiningDataSourceManager *)self _currentUpdateID]== a3)
+  if ([(PUJoiningDataSourceManager *)self _currentUpdateID]== d)
   {
 
     [(PUJoiningDataSourceManager *)self _update];
@@ -91,22 +91,22 @@ void __45__PUJoiningDataSourceManager__scheduleUpdate__block_invoke(uint64_t a1)
   [WeakRetained _handleScheduledUpdateWithID:*(a1 + 40)];
 }
 
-- (PUJoiningDataSourceManager)initWithDataSourceManagers:(id)a3
+- (PUJoiningDataSourceManager)initWithDataSourceManagers:(id)managers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  managersCopy = managers;
   v18.receiver = self;
   v18.super_class = PUJoiningDataSourceManager;
   v6 = [(PUJoiningDataSourceManager *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceManagers, a3);
+    objc_storeStrong(&v6->_dataSourceManagers, managers);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v5;
+    v8 = managersCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {

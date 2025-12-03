@@ -1,14 +1,14 @@
 @interface _MLCGPUTranspose
-+ (id)layerWithDevice:(id)a3 shape:(id)a4;
-- (_MLCGPUTranspose)initWithDevice:(id)a3 shape:(id)a4;
++ (id)layerWithDevice:(id)device shape:(id)shape;
+- (_MLCGPUTranspose)initWithDevice:(id)device shape:(id)shape;
 @end
 
 @implementation _MLCGPUTranspose
 
-- (_MLCGPUTranspose)initWithDevice:(id)a3 shape:(id)a4
+- (_MLCGPUTranspose)initWithDevice:(id)device shape:(id)shape
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  shapeCopy = shape;
   v37.receiver = self;
   v37.super_class = _MLCGPUTranspose;
   v8 = [(_MLCGPUTranspose *)&v37 init];
@@ -17,32 +17,32 @@
   {
     v34 = v8;
     v35 = [MEMORY[0x277CBEBF8] mutableCopy];
-    v10 = [v6 deviceList];
-    v11 = [v10 count];
+    deviceList = [deviceCopy deviceList];
+    v11 = [deviceList count];
 
     if (v11)
     {
       v12 = 0;
       do
       {
-        v13 = [v6 deviceList];
-        v14 = [v13 objectAtIndexedSubscript:v12];
+        deviceList2 = [deviceCopy deviceList];
+        v14 = [deviceList2 objectAtIndexedSubscript:v12];
 
         v15 = [MEMORY[0x277CBEBF8] mutableCopy];
-        if ([v7 count])
+        if ([shapeCopy count])
         {
           v16 = 0;
           do
           {
-            if ([v7 count])
+            if ([shapeCopy count])
             {
               v17 = 0;
               do
               {
-                v18 = [v7 objectAtIndexedSubscript:v17];
-                v19 = [v18 unsignedIntegerValue];
+                v18 = [shapeCopy objectAtIndexedSubscript:v17];
+                unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-                if (v16 == v19)
+                if (v16 == unsignedIntegerValue)
                 {
                   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
                   [v15 setObject:v20 atIndexedSubscript:v16];
@@ -51,28 +51,28 @@
                 ++v17;
               }
 
-              while (v17 < [v7 count]);
+              while (v17 < [shapeCopy count]);
             }
 
             ++v16;
           }
 
-          while (v16 < [v7 count]);
+          while (v16 < [shapeCopy count]);
         }
 
-        if ([v7 count] == 2)
+        if ([shapeCopy count] == 2)
         {
-          v21 = [v6 gpuLibrary];
-          v22 = [v21 objectAtIndexedSubscript:v12];
+          gpuLibrary = [deviceCopy gpuLibrary];
+          v22 = [gpuLibrary objectAtIndexedSubscript:v12];
           v23 = v22;
           v24 = @"transpose_two_dims";
         }
 
         else
         {
-          v25 = [v7 count];
-          v21 = [v6 gpuLibrary];
-          v22 = [v21 objectAtIndexedSubscript:v12];
+          v25 = [shapeCopy count];
+          gpuLibrary = [deviceCopy gpuLibrary];
+          v22 = [gpuLibrary objectAtIndexedSubscript:v12];
           v23 = v22;
           if (v25 == 3)
           {
@@ -91,7 +91,7 @@
         v28 = [MLCGPUDeviceOps deviceOpsWithForwardKernel:v27];
         if (v28)
         {
-          v29 = [v7 mutableCopy];
+          v29 = [shapeCopy mutableCopy];
           [v28 setTransposeShape:v29];
 
           [v28 setTransposeGradientShape:v15];
@@ -103,8 +103,8 @@
         }
 
         ++v12;
-        v30 = [v6 deviceList];
-        v31 = [v30 count];
+        deviceList3 = [deviceCopy deviceList];
+        v31 = [deviceList3 count];
       }
 
       while (v12 < v31);
@@ -120,11 +120,11 @@
   return v9;
 }
 
-+ (id)layerWithDevice:(id)a3 shape:(id)a4
++ (id)layerWithDevice:(id)device shape:(id)shape
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDevice:v7 shape:v6];
+  shapeCopy = shape;
+  deviceCopy = device;
+  v8 = [[self alloc] initWithDevice:deviceCopy shape:shapeCopy];
 
   return v8;
 }

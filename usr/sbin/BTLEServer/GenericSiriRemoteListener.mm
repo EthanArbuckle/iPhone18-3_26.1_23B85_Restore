@@ -3,11 +3,11 @@
 - (GenericSiriRemoteListener)init;
 - (id)allocHIDQueue;
 - (void)dealloc;
-- (void)doapAudioDidStop:(id)a3;
-- (void)doapAudioWillStart:(id)a3;
-- (void)handleAudioData:(id)a3;
+- (void)doapAudioDidStop:(id)stop;
+- (void)doapAudioWillStart:(id)start;
+- (void)handleAudioData:(id)data;
 - (void)setUpHidHandlers;
-- (void)waitForSiriAudioToStop:(id)a3;
+- (void)waitForSiriAudioToStop:(id)stop;
 @end
 
 @implementation GenericSiriRemoteListener
@@ -92,19 +92,19 @@
     hidManager = v2->_hidManager;
     v2->_hidManager = v7;
 
-    v9 = [(GenericSiriRemoteListener *)v2 allocHIDQueue];
+    allocHIDQueue = [(GenericSiriRemoteListener *)v2 allocHIDQueue];
     eventQueue = v2->_eventQueue;
-    v2->_eventQueue = v9;
+    v2->_eventQueue = allocHIDQueue;
   }
 
   return v2;
 }
 
-- (void)handleAudioData:(id)a3
+- (void)handleAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17 = 0;
-  if ([v4 length] <= 3)
+  if ([dataCopy length] <= 3)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -114,18 +114,18 @@
     goto LABEL_22;
   }
 
-  [v4 getBytes:&v17 range:{4, 1}];
+  [dataCopy getBytes:&v17 range:{4, 1}];
   if ([(GenericSiriRemoteListener *)self state]== 4)
   {
     goto LABEL_22;
   }
 
-  if (v4 && v17)
+  if (dataCopy && v17)
   {
     v5 = +[NSDate date];
     [(GenericSiriRemoteListener *)self setLastAudioDate:v5];
 
-    v6 = [NSData dataWithData:v4];
+    selfCopy2 = [NSData dataWithData:dataCopy];
     if (objc_opt_class())
     {
       v7 = +[SLGLog sharedInstance];
@@ -133,27 +133,27 @@
       v15[1] = 3221225472;
       v15[2] = sub_100018564;
       v15[3] = &unk_1000BD3E8;
-      v16 = v6;
+      v16 = selfCopy2;
       [v7 logBlock:v15];
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(GenericSiriRemoteListener *)v8 audioBuffer];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    audioBuffer = [(GenericSiriRemoteListener *)selfCopy audioBuffer];
 
-    if (v9)
+    if (audioBuffer)
     {
-      v10 = [(GenericSiriRemoteListener *)v8 audioBuffer];
-      [v10 addObject:v6];
+      audioBuffer2 = [(GenericSiriRemoteListener *)selfCopy audioBuffer];
+      [audioBuffer2 addObject:selfCopy2];
     }
 
     else
     {
-      v10 = [(GenericSiriRemoteListener *)v8 doapAudioRelay];
-      [v10 sendAudioFrame:v6];
+      audioBuffer2 = [(GenericSiriRemoteListener *)selfCopy doapAudioRelay];
+      [audioBuffer2 sendAudioFrame:selfCopy2];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 LABEL_21:
 
     goto LABEL_22;
@@ -167,20 +167,20 @@ LABEL_21:
       [v11 logBlock:&stru_1000BD748];
     }
 
-    v12 = [(GenericSiriRemoteListener *)self doapAudioStop];
+    doapAudioStop = [(GenericSiriRemoteListener *)self doapAudioStop];
 
-    if (v12)
+    if (doapAudioStop)
     {
-      v13 = [(GenericSiriRemoteListener *)self doapAudioStop];
-      dispatch_semaphore_signal(v13);
+      doapAudioStop2 = [(GenericSiriRemoteListener *)self doapAudioStop];
+      dispatch_semaphore_signal(doapAudioStop2);
     }
 
-    v6 = self;
-    objc_sync_enter(v6);
-    v14 = [(GenericSiriRemoteListener *)v6 audioBuffer];
-    [v14 removeAllObjects];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    audioBuffer3 = [(GenericSiriRemoteListener *)selfCopy2 audioBuffer];
+    [audioBuffer3 removeAllObjects];
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy2);
     goto LABEL_21;
   }
 
@@ -192,9 +192,9 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)doapAudioWillStart:(id)a3
+- (void)doapAudioWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if ([(GenericSiriRemoteListener *)self state]== 4)
   {
     v5 = [NSString stringWithFormat:@"GenericSiriRemote stopped (disconnected)"];
@@ -203,7 +203,7 @@ LABEL_22:
     v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v7 = [NSError errorWithDomain:NSMachErrorDomain code:-536870185 userInfo:v6];
 
-    v4[2](v4, v7);
+    startCopy[2](startCopy, v7);
   }
 
   else
@@ -214,14 +214,14 @@ LABEL_22:
     block[2] = sub_1000187A4;
     block[3] = &unk_1000BD770;
     block[4] = self;
-    v10 = v4;
+    v10 = startCopy;
     dispatch_async(eventQueue, block);
   }
 }
 
-- (void)waitForSiriAudioToStop:(id)a3
+- (void)waitForSiriAudioToStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   if ([(GenericSiriRemoteListener *)self state]== 4)
   {
     v5 = [NSString stringWithFormat:@"GenericSiriRemote stopped (disconnected)"];
@@ -230,15 +230,15 @@ LABEL_22:
     v6 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     v7 = [NSError errorWithDomain:NSMachErrorDomain code:-536870185 userInfo:v6];
 
-    v4[2](v4, v7);
-    v8 = [(GenericSiriRemoteListener *)self doapAudioStart];
-    dispatch_semaphore_signal(v8);
+    stopCopy[2](stopCopy, v7);
+    doapAudioStart = [(GenericSiriRemoteListener *)self doapAudioStart];
+    dispatch_semaphore_signal(doapAudioStart);
 
     goto LABEL_18;
   }
 
-  v9 = [(GenericSiriRemoteListener *)self lastAudioDate];
-  [v9 timeIntervalSinceNow];
+  lastAudioDate = [(GenericSiriRemoteListener *)self lastAudioDate];
+  [lastAudioDate timeIntervalSinceNow];
   v11 = fabs(v10);
 
   if (v11 >= 0.105)
@@ -247,8 +247,8 @@ LABEL_22:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v26 = v25;
-      v27 = [(GenericSiriRemoteListener *)self lastAudioDate];
-      [v27 timeIntervalSinceNow];
+      lastAudioDate2 = [(GenericSiriRemoteListener *)self lastAudioDate];
+      [lastAudioDate2 timeIntervalSinceNow];
       *buf = 134217984;
       v42 = fabs(v28) * 1000.0;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Have not received audio data for %f ms. Stop Siri session.", buf, 0xCu);
@@ -257,17 +257,17 @@ LABEL_22:
     goto LABEL_17;
   }
 
-  v12 = [(GenericSiriRemoteListener *)self doapAudioStop];
+  doapAudioStop = [(GenericSiriRemoteListener *)self doapAudioStop];
 
-  if (v12)
+  if (doapAudioStop)
   {
-    v13 = [(GenericSiriRemoteListener *)self lastAudioDate];
-    [v13 timeIntervalSinceNow];
+    lastAudioDate3 = [(GenericSiriRemoteListener *)self lastAudioDate];
+    [lastAudioDate3 timeIntervalSinceNow];
     v15 = v14;
 
-    v16 = [(GenericSiriRemoteListener *)self doapAudioStop];
+    doapAudioStop2 = [(GenericSiriRemoteListener *)self doapAudioStop];
     v17 = dispatch_time(0, 1000000 * vcvtpd_s64_f64((v15 + 0.105) * 1000.0));
-    v18 = dispatch_semaphore_wait(v16, v17);
+    v18 = dispatch_semaphore_wait(doapAudioStop2, v17);
 
     v19 = qword_1000DDBC8;
     v20 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
@@ -276,8 +276,8 @@ LABEL_22:
       if (v20)
       {
         v21 = v19;
-        v22 = [(GenericSiriRemoteListener *)self lastAudioDate];
-        [v22 timeIntervalSinceNow];
+        lastAudioDate4 = [(GenericSiriRemoteListener *)self lastAudioDate];
+        [lastAudioDate4 timeIntervalSinceNow];
         *buf = 134217984;
         v42 = fabs(v23) * 1000.0;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received Siri audio data %f ms ago.", buf, 0xCu);
@@ -289,7 +289,7 @@ LABEL_22:
       v37[2] = sub_100019134;
       v37[3] = &unk_1000BD770;
       v37[4] = self;
-      v38 = v4;
+      v38 = stopCopy;
       dispatch_async(eventQueue, v37);
 
       goto LABEL_18;
@@ -303,16 +303,16 @@ LABEL_22:
 
 LABEL_17:
     [(GenericSiriRemoteListener *)self setDoapAudioStop:0];
-    v4[2](v4, 0);
-    v34 = [(GenericSiriRemoteListener *)self doapAudioStart];
-    dispatch_semaphore_signal(v34);
+    stopCopy[2](stopCopy, 0);
+    doapAudioStart2 = [(GenericSiriRemoteListener *)self doapAudioStart];
+    dispatch_semaphore_signal(doapAudioStart2);
 
-    v35 = self;
-    objc_sync_enter(v35);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v36 = objc_alloc_init(NSMutableArray);
-    [(GenericSiriRemoteListener *)v35 setAudioBuffer:v36];
+    [(GenericSiriRemoteListener *)selfCopy setAudioBuffer:v36];
 
-    objc_sync_exit(v35);
+    objc_sync_exit(selfCopy);
     goto LABEL_18;
   }
 
@@ -326,22 +326,22 @@ LABEL_17:
   v29 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v30 = [NSError errorWithDomain:NSMachErrorDomain code:-536870165 userInfo:v29];
 
-  v4[2](v4, v30);
-  v31 = [(GenericSiriRemoteListener *)self doapAudioStart];
-  dispatch_semaphore_signal(v31);
+  stopCopy[2](stopCopy, v30);
+  doapAudioStart3 = [(GenericSiriRemoteListener *)self doapAudioStart];
+  dispatch_semaphore_signal(doapAudioStart3);
 
-  v32 = self;
-  objc_sync_enter(v32);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v33 = objc_alloc_init(NSMutableArray);
-  [(GenericSiriRemoteListener *)v32 setAudioBuffer:v33];
+  [(GenericSiriRemoteListener *)selfCopy2 setAudioBuffer:v33];
 
-  objc_sync_exit(v32);
+  objc_sync_exit(selfCopy2);
 LABEL_18:
 }
 
-- (void)doapAudioDidStop:(id)a3
+- (void)doapAudioDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   if ([(GenericSiriRemoteListener *)self state]== 4)
   {
     v5 = [NSString stringWithFormat:@"GenericSiriRemote stopped (disconnected)"];
@@ -350,9 +350,9 @@ LABEL_18:
     v6 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v7 = [NSError errorWithDomain:NSMachErrorDomain code:-536870185 userInfo:v6];
 
-    v4[2](v4, v7);
-    v8 = [(GenericSiriRemoteListener *)self doapAudioStart];
-    dispatch_semaphore_signal(v8);
+    stopCopy[2](stopCopy, v7);
+    doapAudioStart = [(GenericSiriRemoteListener *)self doapAudioStart];
+    dispatch_semaphore_signal(doapAudioStart);
   }
 
   else
@@ -363,7 +363,7 @@ LABEL_18:
     block[2] = sub_1000192E4;
     block[3] = &unk_1000BD770;
     block[4] = self;
-    v11 = v4;
+    v11 = stopCopy;
     dispatch_async(eventQueue, block);
   }
 }

@@ -1,15 +1,15 @@
 @interface CKMentionSuggestionAccessoryCell
-- (CKMentionSuggestionAccessoryCell)initWithFrame:(CGRect)a3;
+- (CKMentionSuggestionAccessoryCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CKMentionSuggestionAccessoryCell
 
-- (CKMentionSuggestionAccessoryCell)initWithFrame:(CGRect)a3
+- (CKMentionSuggestionAccessoryCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = CKMentionSuggestionAccessoryCell;
-  v3 = [(CKMentionSuggestionAccessoryCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMentionSuggestionAccessoryCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC730] effectWithStyle:8];
@@ -17,11 +17,11 @@
     v6 = [MEMORY[0x1E69DD248] effectForBlurEffect:v4 style:7];
     v7 = [v5 initWithEffect:v6];
 
-    v8 = [v7 contentView];
+    contentView = [v7 contentView];
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 theme];
-    v11 = [v10 paddleSeparatorColor];
-    [v8 setBackgroundColor:v11];
+    theme = [v9 theme];
+    paddleSeparatorColor = [theme paddleSeparatorColor];
+    [contentView setBackgroundColor:paddleSeparatorColor];
 
     [(CKMentionSuggestionAccessoryCell *)v3 addSubview:v7];
     [(CKMentionSuggestionAccessoryCell *)v3 setSeparatorView:v7];
@@ -53,8 +53,8 @@
   width = v21.size.width;
   height = v21.size.height;
 
-  v18 = [(CKMentionSuggestionAccessoryCell *)self separatorView];
-  [v18 setFrame:{x, y, width, height}];
+  separatorView = [(CKMentionSuggestionAccessoryCell *)self separatorView];
+  [separatorView setFrame:{x, y, width, height}];
 }
 
 @end

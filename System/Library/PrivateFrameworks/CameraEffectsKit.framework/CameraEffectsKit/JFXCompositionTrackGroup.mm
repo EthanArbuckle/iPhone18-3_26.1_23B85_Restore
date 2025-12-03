@@ -1,55 +1,55 @@
 @interface JFXCompositionTrackGroup
-+ (id)visualDescriptionForSegments:(id)a3;
-- (BOOL)commitPendingVolumeToTime:(id *)a3;
++ (id)visualDescriptionForSegments:(id)segments;
+- (BOOL)commitPendingVolumeToTime:(id *)time;
 - (BOOL)containsAudioSegments;
 - (BOOL)containsSegments;
 - (BOOL)containsVideoSegments;
-- (BOOL)requestVolume:(float)a3 atTime:(id *)a4;
-- (BOOL)requestVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5;
-- (BOOL)requestVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 fillEmptySegment:(BOOL)a6;
-- (BOOL)shouldCommitVolume:(float)a3;
+- (BOOL)requestVolume:(float)volume atTime:(id *)time;
+- (BOOL)requestVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range;
+- (BOOL)requestVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range fillEmptySegment:(BOOL)segment;
+- (BOOL)shouldCommitVolume:(float)volume;
 - (BOOL)validate;
-- (JFXCompositionTrackGroup)initWithLabel:(id)a3 timeScale:(int)a4;
-- (float)linearFadeOutValueForTime:(id *)a3;
-- (float)setFadedVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5;
-- (id)applyToTrack:(id)a3 withSegments:(id)a4 assets:(id)a5;
+- (JFXCompositionTrackGroup)initWithLabel:(id)label timeScale:(int)scale;
+- (float)linearFadeOutValueForTime:(id *)time;
+- (float)setFadedVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range;
+- (id)applyToTrack:(id)track withSegments:(id)segments assets:(id)assets;
 - (id)description;
 - (int)usableVideoTrackID;
-- (void)addExtraAudioTrackGroup:(id)a3;
-- (void)apply:(id)a3;
-- (void)applyAudioMixParameters:(id)a3;
-- (void)applyCompositionItem:(id)a3 atTime:(id *)a4 skipAudio:(BOOL)a5;
-- (void)applyCompositionItem:(id)a3 skipAudio:(BOOL)a4;
-- (void)applyCompositionItemAsLoopedAudio:(id)a3 forTimeRange:(id *)a4;
-- (void)applyPaddingToTime:(id *)a3;
-- (void)commitVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5;
+- (void)addExtraAudioTrackGroup:(id)group;
+- (void)apply:(id)apply;
+- (void)applyAudioMixParameters:(id)parameters;
+- (void)applyCompositionItem:(id)item atTime:(id *)time skipAudio:(BOOL)audio;
+- (void)applyCompositionItem:(id)item skipAudio:(BOOL)audio;
+- (void)applyCompositionItemAsLoopedAudio:(id)audio forTimeRange:(id *)range;
+- (void)applyPaddingToTime:(id *)time;
+- (void)commitVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range;
 - (void)dealloc;
 - (void)markDirty;
 - (void)removeExtraAudioTrackGroups;
 - (void)resetVolumeState;
-- (void)setAudioTrack:(id)a3;
-- (void)setFadeOutDuration:(id *)a3;
-- (void)setFadeOutStart:(id *)a3;
-- (void)setLastRampToZeroEnd:(id *)a3;
-- (void)setTimeOfLastRequest:(id *)a3;
-- (void)setTimeOfLastVolumeChange:(id *)a3;
+- (void)setAudioTrack:(id)track;
+- (void)setFadeOutDuration:(id *)duration;
+- (void)setFadeOutStart:(id *)start;
+- (void)setLastRampToZeroEnd:(id *)end;
+- (void)setTimeOfLastRequest:(id *)request;
+- (void)setTimeOfLastVolumeChange:(id *)change;
 @end
 
 @implementation JFXCompositionTrackGroup
 
-- (JFXCompositionTrackGroup)initWithLabel:(id)a3 timeScale:(int)a4
+- (JFXCompositionTrackGroup)initWithLabel:(id)label timeScale:(int)scale
 {
-  v6 = a3;
+  labelCopy = label;
   v18.receiver = self;
   v18.super_class = JFXCompositionTrackGroup;
   v7 = [(JFXCompositionTrackGroup *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    [(JFXCompositionTrackGroup *)v7 setLabel:v6];
-    CMTimeMake(&v17, 0, a4);
+    [(JFXCompositionTrackGroup *)v7 setLabel:labelCopy];
+    CMTimeMake(&v17, 0, scale);
     v8->_cursor = v17;
-    CMTimeMake(&v17, 0, a4);
+    CMTimeMake(&v17, 0, scale);
     v8->_cursorForMovieAudio = v17;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     videoSegments = v8->_videoSegments;
@@ -66,7 +66,7 @@
     v8->_fadeOutStart.epoch = v15;
     *&v8->_fadeOutDuration.value = v14;
     v8->_fadeOutDuration.epoch = v15;
-    v8->_timeScale = a4;
+    v8->_timeScale = scale;
   }
 
   return v8;
@@ -130,13 +130,13 @@
   return [(JFXCompositionTrackGroup *)self containsAudioSegments];
 }
 
-- (void)setAudioTrack:(id)a3
+- (void)setAudioTrack:(id)track
 {
-  v8 = a3;
-  if (self->_audioTrack != v8)
+  trackCopy = track;
+  if (self->_audioTrack != trackCopy)
   {
-    objc_storeStrong(&self->_audioTrack, a3);
-    v5 = [MEMORY[0x277CE6540] audioMixInputParametersWithTrack:v8];
+    objc_storeStrong(&self->_audioTrack, track);
+    v5 = [MEMORY[0x277CE6540] audioMixInputParametersWithTrack:trackCopy];
     audioParameters = self->_audioParameters;
     self->_audioParameters = v5;
 
@@ -166,16 +166,16 @@
   }
 }
 
-+ (id)visualDescriptionForSegments:(id)a3
++ (id)visualDescriptionForSegments:(id)segments
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
+  segmentsCopy = segments;
+  string = [MEMORY[0x277CCAB68] string];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = segmentsCopy;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v5)
   {
@@ -210,10 +210,10 @@
         time = v28[1];
         CMTimeRangeGetEnd(&v26, &time);
         CMTimeConvertScale(&v24, &v26, 30, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-        [v4 appendFormat:@"\n[%lld\t%lld]", value, v24.value];
+        [string appendFormat:@"\n[%lld\t%lld]", value, v24.value];
         if (v10)
         {
-          [v4 appendFormat:@" (empty)"];
+          [string appendFormat:@" (empty)"];
         }
 
         else
@@ -228,13 +228,13 @@
           v13 = v6;
           v14 = v7;
           v15 = v22.value;
-          v16 = [v9 sourceURL];
-          v17 = [v16 path];
-          v18 = [v17 lastPathComponent];
+          sourceURL = [v9 sourceURL];
+          path = [sourceURL path];
+          lastPathComponent = [path lastPathComponent];
           v20 = v15;
           v7 = v14;
           v6 = v13;
-          [v4 appendFormat:@"\t source -> [%lld\t%lld] (%@)", v12, v20, v18];
+          [string appendFormat:@"\t source -> [%lld\t%lld] (%@)", v12, v20, lastPathComponent];
         }
       }
 
@@ -244,7 +244,7 @@
     while (v6);
   }
 
-  return v4;
+  return string;
 }
 
 - (id)description
@@ -255,10 +255,10 @@
     if ([(AVMutableCompositionTrack *)self->_videoTrack trackID]>= 1)
     {
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(AVMutableCompositionTrack *)self->_videoTrack trackID];
+      trackID = [(AVMutableCompositionTrack *)self->_videoTrack trackID];
       label = self->_label;
       v7 = [JFXCompositionTrackGroup visualDescriptionForSegments:self->_videoSegments];
-      v8 = [v4 stringWithFormat:@"ID%d %@-Video: %@\n", v5, label, v7];
+      v8 = [v4 stringWithFormat:@"ID%d %@-Video: %@\n", trackID, label, v7];
 
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v3, v8];
 
@@ -268,10 +268,10 @@
     if ([(AVMutableCompositionTrack *)self->_audioTrack trackID]>= 1)
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [(AVMutableCompositionTrack *)self->_audioTrack trackID];
+      trackID2 = [(AVMutableCompositionTrack *)self->_audioTrack trackID];
       v12 = self->_label;
       v13 = [JFXCompositionTrackGroup visualDescriptionForSegments:self->_audioSegments];
-      v14 = [v10 stringWithFormat:@"ID%d %@-Audio: %@\n", v11, v12, v13];
+      v14 = [v10 stringWithFormat:@"ID%d %@-Audio: %@\n", trackID2, v12, v13];
 
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v3, v14];
 
@@ -282,19 +282,19 @@
   return v3;
 }
 
-- (void)addExtraAudioTrackGroup:(id)a3
+- (void)addExtraAudioTrackGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
+  groupCopy = group;
+  extraAudioTrackGroups = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
 
-  if (!v5)
+  if (!extraAudioTrackGroups)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    [(JFXCompositionTrackGroup *)self setExtraAudioTrackGroups:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(JFXCompositionTrackGroup *)self setExtraAudioTrackGroups:array];
   }
 
-  v7 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
-  [v7 addObject:v4];
+  extraAudioTrackGroups2 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
+  [extraAudioTrackGroups2 addObject:groupCopy];
 }
 
 - (void)removeExtraAudioTrackGroups
@@ -304,8 +304,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  extraAudioTrackGroups = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
+  v4 = [extraAudioTrackGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -317,22 +317,22 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(extraAudioTrackGroups);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(JFXCompositionTrackGroup *)self composition];
-        v10 = [v8 audioTrack];
-        [v9 removeTrack:v10];
+        composition = [(JFXCompositionTrackGroup *)self composition];
+        audioTrack = [v8 audioTrack];
+        [composition removeTrack:audioTrack];
 
-        v11 = [v8 audioTrack];
-        [v11 setSegments:0];
+        audioTrack2 = [v8 audioTrack];
+        [audioTrack2 setSegments:0];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [extraAudioTrackGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -341,11 +341,11 @@
   [(JFXCompositionTrackGroup *)self setExtraAudioTrackGroups:0];
 }
 
-- (void)applyCompositionItem:(id)a3 skipAudio:(BOOL)a4
+- (void)applyCompositionItem:(id)item skipAudio:(BOOL)audio
 {
-  v4 = a4;
+  audioCopy = audio;
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   cursor = self->_cursor;
   memset(&v55, 0, sizeof(v55));
   CMTimeMake(&v55, 0, [(JFXCompositionTrackGroup *)self timeScale]);
@@ -356,9 +356,9 @@
 
   else
   {
-    v7 = [v6 hasVideoContent];
+    hasVideoContent = [itemCopy hasVideoContent];
     videoTrack = self->_videoTrack;
-    self->_videoTrackInUse = v7;
+    self->_videoTrackInUse = hasVideoContent;
     if (!videoTrack)
     {
       goto LABEL_18;
@@ -368,9 +368,9 @@
   *&self->_cursorAtLastVideoInsertion.value = *&self->_cursor.value;
   self->_cursorAtLastVideoInsertion.epoch = self->_cursor.epoch;
   memset(&v54, 0, sizeof(v54));
-  if (v6)
+  if (itemCopy)
   {
-    [v6 destinationDuration];
+    [itemCopy destinationDuration];
   }
 
   else
@@ -386,7 +386,7 @@
   v52 = 0u;
   v53 = 0u;
   duration = v54;
-  v9 = [v6 videoTrackSegmentsWithDestinationRange:&duration];
+  v9 = [itemCopy videoTrackSegmentsWithDestinationRange:&duration];
   v10 = [v9 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v10)
   {
@@ -431,13 +431,13 @@
   }
 
 LABEL_18:
-  v15 = [v6 isFinalClip];
-  if (v15)
+  isFinalClip = [itemCopy isFinalClip];
+  if (isFinalClip)
   {
-    v15 = [v6 needSilenceAtEnd];
+    isFinalClip = [itemCopy needSilenceAtEnd];
   }
 
-  if (self->_audioTrack && ((!v4 | v15) & 1) != 0)
+  if (self->_audioTrack && ((!audioCopy | isFinalClip) & 1) != 0)
   {
     if (self->_videoTrack)
     {
@@ -454,12 +454,12 @@ LABEL_18:
       [(JFXCompositionTrackGroup *)self lastRampToZeroEnd];
     }
 
-    v26 = v6;
-    if ([v6 needAudioLoop])
+    v26 = itemCopy;
+    if ([itemCopy needAudioLoop])
     {
       *&v54.start.value = *&self->_cursor.value;
       v54.start.epoch = self->_cursor.epoch;
-      [v6 audioTrackSegmentsLoopedWithDestinationTime:&v54];
+      [itemCopy audioTrackSegmentsLoopedWithDestinationTime:&v54];
     }
 
     else
@@ -467,7 +467,7 @@ LABEL_18:
       *&v54.start.value = *&self->_cursor.value;
       v54.start.epoch = self->_cursor.epoch;
       duration.start = v42;
-      [v6 audioTrackSegmentsWithDestinationTime:&v54 paddedFromTime:&duration];
+      [itemCopy audioTrackSegmentsWithDestinationTime:&v54 paddedFromTime:&duration];
     }
     v16 = ;
     v40 = 0u;
@@ -593,7 +593,7 @@ LABEL_47:
     *&self->_cursorForMovieAudio.value = *&v54.start.value;
     self->_cursorForMovieAudio.epoch = v54.start.epoch;
 
-    v6 = v26;
+    itemCopy = v26;
   }
 
   *&duration.start.value = *&self->_cursor.value;
@@ -604,14 +604,14 @@ LABEL_47:
   self->_cursor.epoch = v54.start.epoch;
 }
 
-- (void)applyPaddingToTime:(id *)a3
+- (void)applyPaddingToTime:(id *)time
 {
   memset(&v18, 0, sizeof(v18));
   CMTimeMake(&v18, 0, [(JFXCompositionTrackGroup *)self timeScale]);
   memset(&v17, 0, sizeof(v17));
   [(JFXCompositionTrackGroup *)self cursor];
   [(JFXCompositionTrackGroup *)self cursor];
-  lhs = *a3;
+  lhs = *time;
   CMTimeSubtract(&duration, &lhs, &rhs);
   CMTimeRangeMake(&v17, &start.start, &duration);
   v5 = MEMORY[0x277CC08F0];
@@ -640,8 +640,8 @@ LABEL_47:
 
     if (self->_videoTrack)
     {
-      *&start.start.value = *&a3->var0;
-      start.start.epoch = a3->var3;
+      *&start.start.value = *&time->var0;
+      start.start.epoch = time->var3;
       rhs = self->_cursorForMovieAudio;
       CMTimeSubtract(&duration, &start.start, &rhs);
       rhs = self->_cursorForMovieAudio;
@@ -702,25 +702,25 @@ LABEL_47:
   self->_cursor.epoch = start.start.epoch;
 }
 
-- (void)applyCompositionItem:(id)a3 atTime:(id *)a4 skipAudio:(BOOL)a5
+- (void)applyCompositionItem:(id)item atTime:(id *)time skipAudio:(BOOL)audio
 {
-  v5 = a5;
-  v8 = a3;
+  audioCopy = audio;
+  itemCopy = item;
   [(JFXCompositionTrackGroup *)self cursor];
-  v9 = *a4;
+  v9 = *time;
   if ((CMTimeCompare(&v9, &time2) & 0x80000000) == 0)
   {
-    time2 = *a4;
+    time2 = *time;
     [(JFXCompositionTrackGroup *)self applyPaddingToTime:&time2];
   }
 
-  [(JFXCompositionTrackGroup *)self applyCompositionItem:v8 skipAudio:v5];
+  [(JFXCompositionTrackGroup *)self applyCompositionItem:itemCopy skipAudio:audioCopy];
 }
 
-- (void)applyCompositionItemAsLoopedAudio:(id)a3 forTimeRange:(id *)a4
+- (void)applyCompositionItemAsLoopedAudio:(id)audio forTimeRange:(id *)range
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  audioCopy = audio;
   memset(&v28, 0, sizeof(v28));
   CMTimeMake(&v28, 0, [(JFXCompositionTrackGroup *)self timeScale]);
   videoTrack = self->_videoTrack;
@@ -728,11 +728,11 @@ LABEL_47:
 
   if (self->_audioTrack)
   {
-    v8 = *&a4->var0.var3;
-    *v26 = *&a4->var0.var0;
+    v8 = *&range->var0.var3;
+    *v26 = *&range->var0.var0;
     *&v26[16] = v8;
-    v27 = *&a4->var1.var1;
-    v9 = [v6 audioTrackSegmentsLoopedForDestinationTimeRange:v26];
+    v27 = *&range->var1.var1;
+    v9 = [audioCopy audioTrackSegmentsLoopedForDestinationTimeRange:v26];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -846,20 +846,20 @@ LABEL_8:
   return v8;
 }
 
-- (id)applyToTrack:(id)a3 withSegments:(id)a4 assets:(id)a5
+- (id)applyToTrack:(id)track withSegments:(id)segments assets:(id)assets
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
+  trackCopy = track;
+  segmentsCopy = segments;
+  assetsCopy = assets;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
   v54 = __Block_byref_object_copy__13;
   v55 = __Block_byref_object_dispose__13;
   v56 = 0;
-  v36 = v7;
-  if (!v7 || !v8)
+  v36 = trackCopy;
+  if (!trackCopy || !segmentsCopy)
   {
     v29 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-1 userInfo:0];
     v30 = v52[5];
@@ -874,8 +874,8 @@ LABEL_8:
   start = **&MEMORY[0x277CC08F0];
   CMTimeRangeMake(&v50, &start, &duration.start);
   duration = v50;
-  [v7 removeTimeRange:&duration];
-  [v7 setSegments:0];
+  [trackCopy removeTimeRange:&duration];
+  [trackCopy setSegments:0];
   duration.start.value = 0;
   *&duration.start.timescale = &duration;
   duration.start.epoch = 0x2020000000;
@@ -889,7 +889,7 @@ LABEL_8:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v12 = v8;
+  v12 = segmentsCopy;
   v13 = [v12 countByEnumeratingWithState:&v45 objects:v57 count:16];
   if (v13)
   {
@@ -906,8 +906,8 @@ LABEL_8:
         v16 = *(*(&v45 + 1) + 8 * i);
         if (([v16 isEmpty] & 1) == 0)
         {
-          v17 = [v16 sourceURL];
-          v18 = [v37 objectForKey:v17];
+          sourceURL = [v16 sourceURL];
+          v18 = [assetsCopy objectForKey:sourceURL];
 
           if (v18)
           {
@@ -915,14 +915,14 @@ LABEL_8:
           }
 
           v19 = MEMORY[0x277CE6650];
-          v20 = [v16 sourceURL];
-          v18 = [v19 URLAssetWithURL:v20 options:v34];
+          sourceURL2 = [v16 sourceURL];
+          v18 = [v19 URLAssetWithURL:sourceURL2 options:v34];
 
           v21 = JFXLog_playback();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v16 sourceURL];
-            [(JFXCompositionTrackGroup *)v22 applyToTrack:(&start.value + 4) withSegments:v21 assets:?];
+            sourceURL3 = [v16 sourceURL];
+            [(JFXCompositionTrackGroup *)sourceURL3 applyToTrack:(&start.value + 4) withSegments:v21 assets:?];
           }
 
           if (v18)
@@ -938,7 +938,7 @@ LABEL_13:
             v40 = v16;
             v43 = &v51;
             p_duration = &duration;
-            v41 = self;
+            selfCopy = self;
             v42 = v11;
             [v18 findCompatibleTrackForCompositionTrack:v23 completionHandler:v38];
           }
@@ -957,17 +957,17 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v24 = [(AVMutableAudioMixInputParameters *)self->_audioParameters audioTimePitchAlgorithm];
-  v25 = [(JFXCompositionTrackGroup *)self preferredAudioTimePitchAlgorithm];
-  v26 = [v24 isEqualToString:v25];
+  audioTimePitchAlgorithm = [(AVMutableAudioMixInputParameters *)self->_audioParameters audioTimePitchAlgorithm];
+  preferredAudioTimePitchAlgorithm = [(JFXCompositionTrackGroup *)self preferredAudioTimePitchAlgorithm];
+  v26 = [audioTimePitchAlgorithm isEqualToString:preferredAudioTimePitchAlgorithm];
 
   if (v26)
   {
     if ((*(*&duration.start.timescale + 24) & 1) == 0)
     {
 LABEL_19:
-      v27 = [(AVMutableAudioMixInputParameters *)self->_audioParameters audioTimePitchAlgorithm];
-      v28 = v27 == 0;
+      audioTimePitchAlgorithm2 = [(AVMutableAudioMixInputParameters *)self->_audioParameters audioTimePitchAlgorithm];
+      v28 = audioTimePitchAlgorithm2 == 0;
 
       if (!v28)
       {
@@ -978,8 +978,8 @@ LABEL_19:
 
   else
   {
-    v32 = [(JFXCompositionTrackGroup *)self preferredAudioTimePitchAlgorithm];
-    [(AVMutableAudioMixInputParameters *)self->_audioParameters setAudioTimePitchAlgorithm:v32];
+    preferredAudioTimePitchAlgorithm2 = [(JFXCompositionTrackGroup *)self preferredAudioTimePitchAlgorithm];
+    [(AVMutableAudioMixInputParameters *)self->_audioParameters setAudioTimePitchAlgorithm:preferredAudioTimePitchAlgorithm2];
   }
 
   v31 = v52[5];
@@ -1137,18 +1137,18 @@ LABEL_26:
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JFXCompositionTrackGroup *)self applyToTrack:self->_videoTrack withSegments:self->_videoSegments assets:v4];
-  v6 = [(JFXCompositionTrackGroup *)self applyToTrack:self->_audioTrack withSegments:self->_audioSegments assets:v4];
+  applyCopy = apply;
+  v5 = [(JFXCompositionTrackGroup *)self applyToTrack:self->_videoTrack withSegments:self->_videoSegments assets:applyCopy];
+  v6 = [(JFXCompositionTrackGroup *)self applyToTrack:self->_audioTrack withSegments:self->_audioSegments assets:applyCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  extraAudioTrackGroups = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
+  v8 = [extraAudioTrackGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1160,37 +1160,37 @@ LABEL_26:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(extraAudioTrackGroups);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) apply:v4];
+        [*(*(&v12 + 1) + 8 * v11++) apply:applyCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [extraAudioTrackGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)applyAudioMixParameters:(id)a3
+- (void)applyAudioMixParameters:(id)parameters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JFXCompositionTrackGroup *)self audioParameters];
+  parametersCopy = parameters;
+  audioParameters = [(JFXCompositionTrackGroup *)self audioParameters];
 
-  if (v5)
+  if (audioParameters)
   {
-    v6 = [(JFXCompositionTrackGroup *)self audioParameters];
-    [v4 addObject:v6];
+    audioParameters2 = [(JFXCompositionTrackGroup *)self audioParameters];
+    [parametersCopy addObject:audioParameters2];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    extraAudioTrackGroups = [(JFXCompositionTrackGroup *)self extraAudioTrackGroups];
+    v8 = [extraAudioTrackGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1202,24 +1202,24 @@ LABEL_26:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(extraAudioTrackGroups);
           }
 
           v12 = *(*(&v16 + 1) + 8 * v11);
-          v13 = [(JFXCompositionTrackGroup *)self audioParameters];
-          v14 = [v13 mutableCopy];
+          audioParameters3 = [(JFXCompositionTrackGroup *)self audioParameters];
+          v14 = [audioParameters3 mutableCopy];
 
-          v15 = [v12 audioTrack];
-          [v14 setTrackID:{objc_msgSend(v15, "trackID")}];
+          audioTrack = [v12 audioTrack];
+          [v14 setTrackID:{objc_msgSend(audioTrack, "trackID")}];
 
           [v12 setAudioParameters:v14];
-          [v4 addObject:v14];
+          [parametersCopy addObject:v14];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [extraAudioTrackGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -1266,13 +1266,13 @@ LABEL_26:
   [(JFXCompositionTrackGroup *)self setLastRampToZeroEnd:&v5];
 }
 
-- (float)linearFadeOutValueForTime:(id *)a3
+- (float)linearFadeOutValueForTime:(id *)time
 {
   [(JFXCompositionTrackGroup *)self fadeOutStart];
   Seconds = CMTimeGetSeconds(&v10);
   [(JFXCompositionTrackGroup *)self fadeOutDuration];
   v6 = CMTimeGetSeconds(&v10);
-  v10 = *a3;
+  v10 = *time;
   v7 = CMTimeGetSeconds(&v10);
   result = 0.0;
   if (v6 > 0.0)
@@ -1292,7 +1292,7 @@ LABEL_26:
   return result;
 }
 
-- (float)setFadedVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5
+- (float)setFadedVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range
 {
   v87 = *MEMORY[0x277D85DE8];
   memset(&v84, 0, sizeof(v84));
@@ -1307,23 +1307,23 @@ LABEL_26:
     if (!CMTimeCompare(start, &duration.start))
     {
       audioParameters = self->_audioParameters;
-      v37 = *&a5->var0.var3;
-      *start = *&a5->var0.var0;
+      v37 = *&range->var0.var3;
+      *start = *&range->var0.var0;
       *&start[16] = v37;
-      *v86 = *&a5->var1.var1;
-      *&v37 = a4;
-      [(AVMutableAudioMixInputParameters *)audioParameters setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v86[4] timeRange:LODWORD(a3))), *&v37];
+      *v86 = *&range->var1.var1;
+      *&v37 = endVolume;
+      [(AVMutableAudioMixInputParameters *)audioParameters setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v86[4] timeRange:LODWORD(volume))), *&v37];
       v17 = JFXLog_DebugComposition();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         label = self->_label;
-        *start = *&a5->var0.var0;
-        *&start[16] = a5->var0.var3;
+        *start = *&range->var0.var0;
+        *&start[16] = range->var0.var3;
         Seconds = CMTimeGetSeconds(start);
-        v40 = *&a5->var0.var3;
-        *start = *&a5->var0.var0;
+        v40 = *&range->var0.var3;
+        *start = *&range->var0.var0;
         *&start[16] = v40;
-        *v86 = *&a5->var1.var1;
+        *v86 = *&range->var1.var1;
         CMTimeRangeGetEnd(&duration.start, start);
         v41 = CMTimeGetSeconds(&duration.start);
         *start = 138413314;
@@ -1331,11 +1331,11 @@ LABEL_26:
         *&start[12] = 2048;
         *&start[14] = Seconds;
         *&start[22] = 2048;
-        *&start[24] = a3;
+        *&start[24] = volume;
         *v86 = 2048;
         *&v86[2] = v41;
         *&v86[10] = 2048;
-        *&v86[12] = a4;
+        *&v86[12] = endVolume;
         v22 = "  beforeFadeZone - VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f";
         goto LABEL_38;
       }
@@ -1345,13 +1345,13 @@ LABEL_26:
   }
 
   memset(&duration.start.epoch, 0, 32);
-  v9 = a4 <= 0.0 && a3 <= 0.0;
-  v10 = a4 > 0.0 && a3 <= 0.0;
-  v11 = a4 <= 0.0 && a3 > 0.0;
-  v12 = *&a5->var0.var3;
-  *start = *&a5->var0.var0;
+  v9 = endVolume <= 0.0 && volume <= 0.0;
+  v10 = endVolume > 0.0 && volume <= 0.0;
+  v11 = endVolume <= 0.0 && volume > 0.0;
+  v12 = *&range->var0.var3;
+  *start = *&range->var0.var0;
   *&start[16] = v12;
-  *v86 = *&a5->var1.var1;
+  *v86 = *&range->var1.var1;
   otherRange = v84;
   *&duration.start.value = 0uLL;
   CMTimeRangeGetIntersection(&duration, start, &otherRange);
@@ -1362,27 +1362,27 @@ LABEL_26:
   *v86 = *&v84.duration.timescale;
   CMTimeRangeGetEnd(&otherRange.start, start);
   v14 = CMTimeGetSeconds(&otherRange.start);
-  *start = *&a5->var0.var0;
-  *&start[16] = a5->var0.var3;
+  *start = *&range->var0.var0;
+  *&start[16] = range->var0.var3;
   if (CMTimeGetSeconds(start) > v14)
   {
     v15 = self->_audioParameters;
-    v16 = *&a5->var0.var3;
-    *start = *&a5->var0.var0;
+    v16 = *&range->var0.var3;
+    *start = *&range->var0.var0;
     *&start[16] = v16;
-    *v86 = *&a5->var1.var1;
+    *v86 = *&range->var1.var1;
     [(AVMutableAudioMixInputParameters *)v15 setVolumeRampFromStartVolume:start toEndVolume:0.0 timeRange:0.0];
     v17 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v18 = self->_label;
-      *start = *&a5->var0.var0;
-      *&start[16] = a5->var0.var3;
+      *start = *&range->var0.var0;
+      *&start[16] = range->var0.var3;
       v19 = CMTimeGetSeconds(start);
-      v20 = *&a5->var0.var3;
-      *start = *&a5->var0.var0;
+      v20 = *&range->var0.var3;
+      *start = *&range->var0.var0;
       *&start[16] = v20;
-      *v86 = *&a5->var1.var1;
+      *v86 = *&range->var1.var1;
       CMTimeRangeGetEnd(&otherRange.start, start);
       v21 = CMTimeGetSeconds(&otherRange.start);
       *start = 138413314;
@@ -1404,27 +1404,27 @@ LABEL_38:
     goto LABEL_20;
   }
 
-  v23 = a3;
+  volumeCopy = volume;
   if ((duration.start.flags & 1) == 0 || (duration.duration.flags & 1) == 0 || duration.duration.epoch || (duration.duration.value < 0 ? (v27 = 1) : (v27 = v9), (v27 & 1) != 0 || v13 <= 0.0))
   {
     v24 = self->_audioParameters;
-    v25 = *&a5->var0.var3;
-    *start = *&a5->var0.var0;
+    v25 = *&range->var0.var3;
+    *start = *&range->var0.var0;
     *&start[16] = v25;
-    *v86 = *&a5->var1.var1;
-    *&v25 = a4;
-    [(AVMutableAudioMixInputParameters *)v24 setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v86[4] timeRange:LODWORD(a3))), *&v25];
+    *v86 = *&range->var1.var1;
+    *&v25 = endVolume;
+    [(AVMutableAudioMixInputParameters *)v24 setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v86[4] timeRange:LODWORD(volume))), *&v25];
     v17 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v50 = self->_label;
-      *start = *&a5->var0.var0;
-      *&start[16] = a5->var0.var3;
+      *start = *&range->var0.var0;
+      *&start[16] = range->var0.var3;
       v51 = CMTimeGetSeconds(start);
-      v52 = *&a5->var0.var3;
-      *start = *&a5->var0.var0;
+      v52 = *&range->var0.var3;
+      *start = *&range->var0.var0;
       *&start[16] = v52;
-      *v86 = *&a5->var1.var1;
+      *v86 = *&range->var1.var1;
       CMTimeRangeGetEnd(&otherRange.start, start);
       v53 = CMTimeGetSeconds(&otherRange.start);
       *start = 138413314;
@@ -1432,11 +1432,11 @@ LABEL_38:
       *&start[12] = 2048;
       *&start[14] = v51;
       *&start[22] = 2048;
-      *&start[24] = v23;
+      *&start[24] = volumeCopy;
       *v86 = 2048;
       *&v86[2] = v53;
       *&v86[10] = 2048;
-      *&v86[12] = a4;
+      *&v86[12] = endVolume;
       v22 = "  outOfFadeZone or zeroRamp - VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f";
       goto LABEL_38;
     }
@@ -1446,31 +1446,31 @@ LABEL_38:
 
   if (v10)
   {
-    v28 = *&a5->var0.var3;
-    *start = *&a5->var0.var0;
+    v28 = *&range->var0.var3;
+    *start = *&range->var0.var0;
     *&start[16] = v28;
-    *v86 = *&a5->var1.var1;
+    *v86 = *&range->var1.var1;
     CMTimeRangeGetEnd(&otherRange.start, start);
     [(JFXCompositionTrackGroup *)self linearFadeOutValueForTime:&otherRange];
-    a4 = v29 * a4;
+    endVolume = v29 * endVolume;
     v30 = self->_audioParameters;
-    v31 = *&a5->var0.var3;
-    *start = *&a5->var0.var0;
+    v31 = *&range->var0.var3;
+    *start = *&range->var0.var0;
     *&start[16] = v31;
-    *v86 = *&a5->var1.var1;
-    *&v31 = a4;
+    *v86 = *&range->var1.var1;
+    *&v31 = endVolume;
     [(AVMutableAudioMixInputParameters *)v30 setVolumeRampFromStartVolume:start toEndVolume:0.0 timeRange:*&v31];
     v17 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v32 = self->_label;
-      *start = *&a5->var0.var0;
-      *&start[16] = a5->var0.var3;
+      *start = *&range->var0.var0;
+      *&start[16] = range->var0.var3;
       v33 = CMTimeGetSeconds(start);
-      v34 = *&a5->var0.var3;
-      *start = *&a5->var0.var0;
+      v34 = *&range->var0.var3;
+      *start = *&range->var0.var0;
       *&start[16] = v34;
-      *v86 = *&a5->var1.var1;
+      *v86 = *&range->var1.var1;
       CMTimeRangeGetEnd(&otherRange.start, start);
       v35 = CMTimeGetSeconds(&otherRange.start);
       *start = 138413314;
@@ -1482,14 +1482,14 @@ LABEL_38:
       *v86 = 2048;
       *&v86[2] = v35;
       *&v86[10] = 2048;
-      *&v86[12] = a4;
+      *&v86[12] = endVolume;
       v22 = "  rampIsFadeIn - VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f";
       goto LABEL_38;
     }
 
 LABEL_20:
 
-    return a4;
+    return endVolume;
   }
 
   if (v11)
@@ -1497,24 +1497,24 @@ LABEL_20:
     [(JFXCompositionTrackGroup *)self volumeAtLastVolumeChange];
     v43 = *&v42;
     v44 = self->_audioParameters;
-    v45 = *&a5->var0.var3;
-    *start = *&a5->var0.var0;
+    v45 = *&range->var0.var3;
+    *start = *&range->var0.var0;
     *&start[16] = v45;
-    *v86 = *&a5->var1.var1;
+    *v86 = *&range->var1.var1;
     HIDWORD(v42) = *&v86[4];
-    a4 = 0.0;
+    endVolume = 0.0;
     [(AVMutableAudioMixInputParameters *)v44 setVolumeRampFromStartVolume:start toEndVolume:v42 timeRange:0.0];
     v17 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v46 = self->_label;
-      *start = *&a5->var0.var0;
-      *&start[16] = a5->var0.var3;
+      *start = *&range->var0.var0;
+      *&start[16] = range->var0.var3;
       v47 = CMTimeGetSeconds(start);
-      v48 = *&a5->var0.var3;
-      *start = *&a5->var0.var0;
+      v48 = *&range->var0.var3;
+      *start = *&range->var0.var0;
       *&start[16] = v48;
-      *v86 = *&a5->var1.var1;
+      *v86 = *&range->var1.var1;
       CMTimeRangeGetEnd(&otherRange.start, start);
       v49 = CMTimeGetSeconds(&otherRange.start);
       *start = 138413314;
@@ -1537,32 +1537,32 @@ LABEL_20:
   memset(&v81, 0, sizeof(v81));
   *start = *&duration.start.value;
   *&start[16] = duration.start.epoch;
-  *&otherRange.start.value = *&a5->var0.var0;
-  otherRange.start.epoch = a5->var0.var3;
+  *&otherRange.start.value = *&range->var0.var0;
+  otherRange.start.epoch = range->var0.var3;
   CMTimeSubtract(&v81, start, &otherRange.start);
   value = duration.duration.value;
   v80 = *&duration.duration.timescale;
   memset(&v79, 0, sizeof(v79));
-  v55 = *&a5->var0.var3;
-  *start = *&a5->var0.var0;
+  v55 = *&range->var0.var3;
+  *start = *&range->var0.var0;
   *&start[16] = v55;
-  *v86 = *&a5->var1.var1;
+  *v86 = *&range->var1.var1;
   CMTimeRangeGetEnd(&otherRange.start, start);
   *start = *&duration.start.value;
   *&start[16] = *&duration.start.epoch;
   *v86 = *&duration.duration.timescale;
   CMTimeRangeGetEnd(&rhs, start);
   CMTimeSubtract(&v79, &otherRange.start, &rhs);
-  rhs = a5->var0;
+  rhs = range->var0;
   if (v81.value >= 1)
   {
     v56 = self->_audioParameters;
-    *&otherRange.start.value = *&a5->var0.var0;
-    otherRange.start.epoch = a5->var0.var3;
+    *&otherRange.start.value = *&range->var0.var0;
+    otherRange.start.epoch = range->var0.var3;
     lhs = v81;
     CMTimeRangeMake(start, &otherRange.start, &lhs);
-    *&v57 = a3;
-    *&v58 = a3;
+    *&v57 = volume;
+    *&v58 = volume;
     [(AVMutableAudioMixInputParameters *)v56 setVolumeRampFromStartVolume:start toEndVolume:v57 timeRange:v58];
     v59 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -1577,11 +1577,11 @@ LABEL_20:
       *&start[12] = 2048;
       *&start[14] = v68;
       *&start[22] = 2048;
-      *&start[24] = a3;
+      *&start[24] = volume;
       *v86 = 2048;
       *&v86[2] = v69;
       *&v86[10] = 2048;
-      *&v86[12] = a3;
+      *&v86[12] = volume;
       _os_log_debug_impl(&dword_242A3B000, v59, OS_LOG_TYPE_DEBUG, "  durationBefore - VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f", start, 0x34u);
     }
 
@@ -1600,18 +1600,18 @@ LABEL_20:
     *start = *&otherRange.start.value;
     *&start[16] = otherRange.start.epoch;
     [(JFXCompositionTrackGroup *)self linearFadeOutValueForTime:start];
-    v61 = v60 * a3;
+    v61 = v60 * volume;
     *start = *&otherRange.start.value;
     *&start[16] = *&otherRange.start.epoch;
     *v86 = *&otherRange.duration.timescale;
     CMTimeRangeGetEnd(&lhs, start);
     [(JFXCompositionTrackGroup *)self linearFadeOutValueForTime:&lhs];
-    a4 = v62 * a4;
+    endVolume = v62 * endVolume;
     v63 = self->_audioParameters;
     *start = *&otherRange.start.value;
     *&start[16] = *&otherRange.start.epoch;
     *v86 = *&otherRange.duration.timescale;
-    [(AVMutableAudioMixInputParameters *)v63 setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(otherRange.duration.flags timeRange:LODWORD(v61))), COERCE_DOUBLE(__PAIR64__(HIDWORD(otherRange.start.epoch), LODWORD(a4)))];
+    [(AVMutableAudioMixInputParameters *)v63 setVolumeRampFromStartVolume:start toEndVolume:COERCE_DOUBLE(__PAIR64__(otherRange.duration.flags timeRange:LODWORD(v61))), COERCE_DOUBLE(__PAIR64__(HIDWORD(otherRange.start.epoch), LODWORD(endVolume)))];
     v64 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
     {
@@ -1630,7 +1630,7 @@ LABEL_20:
       *v86 = 2048;
       *&v86[2] = v72;
       *&v86[10] = 2048;
-      *&v86[12] = a4;
+      *&v86[12] = endVolume;
       _os_log_debug_impl(&dword_242A3B000, v64, OS_LOG_TYPE_DEBUG, "  durationDuring - VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f", start, 0x34u);
     }
 
@@ -1647,7 +1647,7 @@ LABEL_20:
     otherRange.start = rhs;
     lhs = v79;
     CMTimeRangeMake(start, &otherRange.start, &lhs);
-    a4 = 0.0;
+    endVolume = 0.0;
     [(AVMutableAudioMixInputParameters *)v65 setVolumeRampFromStartVolume:start toEndVolume:0.0 timeRange:0.0];
     v66 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
@@ -1671,24 +1671,24 @@ LABEL_20:
     }
   }
 
-  return a4;
+  return endVolume;
 }
 
-- (void)commitVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5
+- (void)commitVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range
 {
   v48 = *MEMORY[0x277D85DE8];
   memset(&v45, 0, sizeof(v45));
   CMTimeMake(&v45, 1, [(JFXCompositionTrackGroup *)self timeScale]);
   [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-  *&time1.start.value = *&a5->var0.var0;
-  time1.start.epoch = a5->var0.var3;
+  *&time1.start.value = *&range->var0.var0;
+  time1.start.epoch = range->var0.var3;
   if (CMTimeCompare(&time1.start, time2) >= 1)
   {
     v9 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      *time2 = *&a5->var0.var0;
-      *&time2[16] = a5->var0.var3;
+      *time2 = *&range->var0.var0;
+      *&time2[16] = range->var0.var3;
       Seconds = CMTimeGetSeconds(time2);
       [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
       v30 = CMTimeGetSeconds(time2);
@@ -1700,32 +1700,32 @@ LABEL_20:
     }
 
     [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-    v10 = *&a5->var0.var3;
-    *time2 = *&a5->var0.var0;
+    v10 = *&range->var0.var3;
+    *time2 = *&range->var0.var0;
     *&time2[16] = v10;
-    *v47 = *&a5->var1.var1;
+    *v47 = *&range->var1.var1;
     CMTimeRangeGetEnd(&end.start, time2);
     CMTimeRangeFromTimeToTime(time2, &time1.start, &end.start);
     v11 = *&time2[16];
-    *&a5->var0.var0 = *time2;
-    *&a5->var0.var3 = v11;
-    *&a5->var1.var1 = *v47;
+    *&range->var0.var0 = *time2;
+    *&range->var0.var3 = v11;
+    *&range->var1.var1 = *v47;
   }
 
   v12 = JFXLog_DebugComposition();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  if (a3 == a4)
+  if (volume == endVolume)
   {
     if (v13)
     {
       label = self->_label;
-      *time2 = *&a5->var0.var0;
-      *&time2[16] = a5->var0.var3;
+      *time2 = *&range->var0.var0;
+      *&time2[16] = range->var0.var3;
       v15 = CMTimeGetSeconds(time2);
-      v16 = *&a5->var0.var3;
-      *time2 = *&a5->var0.var0;
+      v16 = *&range->var0.var3;
+      *time2 = *&range->var0.var0;
       *&time2[16] = v16;
-      *v47 = *&a5->var1.var1;
+      *v47 = *&range->var1.var1;
       CMTimeRangeGetEnd(&time1.start, time2);
       v17 = CMTimeGetSeconds(&time1.start);
       *time2 = 138413314;
@@ -1733,11 +1733,11 @@ LABEL_20:
       *&time2[12] = 2048;
       *&time2[14] = v15;
       *&time2[22] = 2048;
-      *&time2[24] = a3;
+      *&time2[24] = volume;
       *v47 = 2048;
       *&v47[2] = v17;
       *&v47[10] = 2048;
-      *&v47[12] = a4;
+      *&v47[12] = endVolume;
       v18 = "VOLUME RANGE :%@  time %f volume %f  -  time %f volume %f";
 LABEL_21:
       _os_log_debug_impl(&dword_242A3B000, v12, OS_LOG_TYPE_DEBUG, v18, time2, 0x34u);
@@ -1747,13 +1747,13 @@ LABEL_21:
   else if (v13)
   {
     v31 = self->_label;
-    *time2 = *&a5->var0.var0;
-    *&time2[16] = a5->var0.var3;
+    *time2 = *&range->var0.var0;
+    *&time2[16] = range->var0.var3;
     v32 = CMTimeGetSeconds(time2);
-    v33 = *&a5->var0.var3;
-    *time2 = *&a5->var0.var0;
+    v33 = *&range->var0.var3;
+    *time2 = *&range->var0.var0;
     *&time2[16] = v33;
-    *v47 = *&a5->var1.var1;
+    *v47 = *&range->var1.var1;
     CMTimeRangeGetEnd(&time1.start, time2);
     v34 = CMTimeGetSeconds(&time1.start);
     *time2 = 138413314;
@@ -1761,17 +1761,17 @@ LABEL_21:
     *&time2[12] = 2048;
     *&time2[14] = v32;
     *&time2[22] = 2048;
-    *&time2[24] = a3;
+    *&time2[24] = volume;
     *v47 = 2048;
     *&v47[2] = v34;
     *&v47[10] = 2048;
-    *&v47[12] = a4;
+    *&v47[12] = endVolume;
     v18 = "VOLUME FADE  :%@  time %f volume %f  -  time %f volume %f";
     goto LABEL_21;
   }
 
-  *time2 = *&a5->var1.var0;
-  *&time2[16] = a5->var1.var3;
+  *time2 = *&range->var1.var0;
+  *&time2[16] = range->var1.var3;
   time1.start = v45;
   if (CMTimeCompare(time2, &time1.start) < 0 && ![(JFXCompositionTrackGroup *)self isFlexMusic])
   {
@@ -1779,13 +1779,13 @@ LABEL_21:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       v35 = self->_label;
-      *&time1.start.value = *&a5->var0.var0;
-      time1.start.epoch = a5->var0.var3;
+      *&time1.start.value = *&range->var0.var0;
+      time1.start.epoch = range->var0.var3;
       v36 = CMTimeGetSeconds(&time1.start);
-      v37 = *&a5->var0.var3;
-      *&time1.start.value = *&a5->var0.var0;
+      v37 = *&range->var0.var3;
+      *&time1.start.value = *&range->var0.var0;
       *&time1.start.epoch = v37;
-      *&time1.duration.timescale = *&a5->var1.var1;
+      *&time1.duration.timescale = *&range->var1.var1;
       CMTimeRangeGetEnd(&time, &time1);
       v38 = CMTimeGetSeconds(&time);
       *time2 = 138413314;
@@ -1793,11 +1793,11 @@ LABEL_21:
       *&time2[12] = 2048;
       *&time2[14] = v36;
       *&time2[22] = 2048;
-      *&time2[24] = a3;
+      *&time2[24] = volume;
       *v47 = 2048;
       *&v47[2] = v38;
       *&v47[10] = 2048;
-      *&v47[12] = a4;
+      *&v47[12] = endVolume;
       _os_log_debug_impl(&dword_242A3B000, v19, OS_LOG_TYPE_DEBUG, "setVolumeRamp:%@  time %f volume %f  -  time %f volume %f", time2, 0x34u);
     }
 
@@ -1807,38 +1807,38 @@ LABEL_21:
       [JFXCompositionTrackGroup commitVolumeRampFromStartVolume:v20 toEndVolume:? timeRange:?];
     }
 
-    a5->var1 = v45;
+    range->var1 = v45;
   }
 
-  v21 = *&a5->var0.var3;
-  *time2 = *&a5->var0.var0;
+  v21 = *&range->var0.var3;
+  *time2 = *&range->var0.var0;
   *&time2[16] = v21;
-  *v47 = *&a5->var1.var1;
-  *&v21 = a4;
-  [(JFXCompositionTrackGroup *)self setFadedVolumeRampFromStartVolume:time2 toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v47[4] timeRange:LODWORD(a3))), *&v21];
+  *v47 = *&range->var1.var1;
+  *&v21 = endVolume;
+  [(JFXCompositionTrackGroup *)self setFadedVolumeRampFromStartVolume:time2 toEndVolume:COERCE_DOUBLE(__PAIR64__(*&v47[4] timeRange:LODWORD(volume))), *&v21];
   v23 = v22;
-  v24 = *&a5->var0.var3;
-  *&end.start.value = *&a5->var0.var0;
+  v24 = *&range->var0.var3;
+  *&end.start.value = *&range->var0.var0;
   *&end.start.epoch = v24;
-  *&end.duration.timescale = *&a5->var1.var1;
+  *&end.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v42, &end);
   end.start = v42;
   [(JFXCompositionTrackGroup *)self setTimeOfLastVolumeChange:&end];
-  v25 = *&a5->var0.var3;
-  *&end.start.value = *&a5->var0.var0;
+  v25 = *&range->var0.var3;
+  *&end.start.value = *&range->var0.var0;
   *&end.start.epoch = v25;
-  *&end.duration.timescale = *&a5->var1.var1;
+  *&end.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v40, &end);
   end.start = v40;
   [(JFXCompositionTrackGroup *)self setTimeOfLastRequest:&end];
   *&v26 = v23;
   [(JFXCompositionTrackGroup *)self setVolumeAtLastVolumeChange:v26];
-  if (a3 > 0.0 && v23 <= 0.0)
+  if (volume > 0.0 && v23 <= 0.0)
   {
-    v28 = *&a5->var0.var3;
-    *&end.start.value = *&a5->var0.var0;
+    v28 = *&range->var0.var3;
+    *&end.start.value = *&range->var0.var0;
     *&end.start.epoch = v28;
-    *&end.duration.timescale = *&a5->var1.var1;
+    *&end.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(&v39, &end);
     end.start = v39;
     [(JFXCompositionTrackGroup *)self setLastRampToZeroEnd:&end];
@@ -1848,17 +1848,17 @@ LABEL_21:
   [(JFXCompositionTrackGroup *)self setVolumeChangePending:v27];
 }
 
-- (BOOL)commitPendingVolumeToTime:(id *)a3
+- (BOOL)commitPendingVolumeToTime:(id *)time
 {
   [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-  v13.start = *a3;
+  v13.start = *time;
   v5 = CMTimeCompare(&v13.start, &time2.start);
   if (v5 <= 0)
   {
     v11 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [JFXCompositionTrackGroup commitPendingVolumeToTime:a3];
+      [JFXCompositionTrackGroup commitPendingVolumeToTime:time];
     }
   }
 
@@ -1872,7 +1872,7 @@ LABEL_21:
 
     memset(&time2, 0, sizeof(time2));
     [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-    end = *a3;
+    end = *time;
     CMTimeRangeFromTimeToTime(&time2, &v13.start, &end);
     [(JFXCompositionTrackGroup *)self volumeChangePending];
     v8 = v7;
@@ -1885,7 +1885,7 @@ LABEL_21:
   return v5 > 0;
 }
 
-- (BOOL)shouldCommitVolume:(float)a3
+- (BOOL)shouldCommitVolume:(float)volume
 {
   [(JFXCompositionTrackGroup *)self volumeChangePending];
   if (v5 == -1.0)
@@ -1894,13 +1894,13 @@ LABEL_21:
   }
 
   [(JFXCompositionTrackGroup *)self volumeChangePending];
-  return v7 != a3;
+  return v7 != volume;
 }
 
-- (BOOL)requestVolume:(float)a3 atTime:(id *)a4
+- (BOOL)requestVolume:(float)volume atTime:(id *)time
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = *a4;
+  v14 = *time;
   [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
   v13 = v14;
   if (CMTimeCompare(&v13, &time2) < 0)
@@ -1908,7 +1908,7 @@ LABEL_21:
     v8 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      time2 = *a4;
+      time2 = *time;
       Seconds = CMTimeGetSeconds(&time2);
       [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
       v12 = CMTimeGetSeconds(&time2);
@@ -1920,47 +1920,47 @@ LABEL_21:
     }
   }
 
-  *&v7 = a3;
+  *&v7 = volume;
   if ([(JFXCompositionTrackGroup *)self shouldCommitVolume:v7])
   {
     time2 = v14;
     [(JFXCompositionTrackGroup *)self commitPendingVolumeToTime:&time2];
   }
 
-  *&v9 = a3;
+  *&v9 = volume;
   [(JFXCompositionTrackGroup *)self setVolumeChangePending:v9];
-  time2 = *a4;
+  time2 = *time;
   [(JFXCompositionTrackGroup *)self setTimeOfLastRequest:&time2];
   return 1;
 }
 
-- (BOOL)requestVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 fillEmptySegment:(BOOL)a6
+- (BOOL)requestVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range fillEmptySegment:(BOOL)segment
 {
-  v6 = a6;
+  segmentCopy = segment;
   v29 = *MEMORY[0x277D85DE8];
-  v11 = *&a5->var0.var3;
-  *&v27.start.value = *&a5->var0.var0;
+  v11 = *&range->var0.var3;
+  *&v27.start.value = *&range->var0.var0;
   *&v27.start.epoch = v11;
-  *&v27.duration.timescale = *&a5->var1.var1;
-  if (a3 == a4)
+  *&v27.duration.timescale = *&range->var1.var1;
+  if (volume == endVolume)
   {
-    *&range.start.value = *&a5->var0.var0;
-    range.start.epoch = a5->var0.var3;
-    [(JFXCompositionTrackGroup *)self requestVolume:&range atTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(range.start.value), LODWORD(a4)))];
+    *&range.start.value = *&range->var0.var0;
+    range.start.epoch = range->var0.var3;
+    [(JFXCompositionTrackGroup *)self requestVolume:&range atTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(range.start.value), LODWORD(endVolume)))];
   }
 
   range = v27;
-  CMTimeRangeGetEnd(&v23.start, &range);
+  CMTimeRangeGetEnd(&rangeCopy.start, &range);
   [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-  v12 = CMTimeCompare(&v23.start, &range.start);
+  v12 = CMTimeCompare(&rangeCopy.start, &range.start);
   if (v12 < 0)
   {
     v17 = JFXLog_DebugComposition();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       range = v27;
-      CMTimeRangeGetEnd(&v23.start, &range);
-      Seconds = CMTimeGetSeconds(&v23.start);
+      CMTimeRangeGetEnd(&rangeCopy.start, &range);
+      Seconds = CMTimeGetSeconds(&rangeCopy.start);
       [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
       v20 = CMTimeGetSeconds(&range.start);
       LODWORD(range.start.value) = 134218240;
@@ -1974,15 +1974,15 @@ LABEL_21:
   else
   {
     [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-    *&v23.start.value = *&v27.start.value;
-    v23.start.epoch = v27.start.epoch;
-    if (CMTimeCompare(&v23.start, &range.start) < 0)
+    *&rangeCopy.start.value = *&v27.start.value;
+    rangeCopy.start.epoch = v27.start.epoch;
+    if (CMTimeCompare(&rangeCopy.start, &range.start) < 0)
     {
       v13 = JFXLog_DebugComposition();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        *&range.start.value = *&a5->var0.var0;
-        range.start.epoch = a5->var0.var3;
+        *&range.start.value = *&range->var0.var0;
+        range.start.epoch = range->var0.var3;
         v21 = CMTimeGetSeconds(&range.start);
         [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
         v22 = CMTimeGetSeconds(&range.start);
@@ -1996,7 +1996,7 @@ LABEL_21:
       [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
       range = v27;
       CMTimeRangeGetEnd(&end, &range);
-      CMTimeRangeFromTimeToTime(&v27, &v23.start, &end);
+      CMTimeRangeFromTimeToTime(&v27, &rangeCopy.start, &end);
     }
 
     [(JFXCompositionTrackGroup *)self volumeChangePending];
@@ -2006,22 +2006,22 @@ LABEL_21:
       [(JFXCompositionTrackGroup *)self setVolumeChangePending:?];
     }
 
-    if (v6)
+    if (segmentCopy)
     {
       [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
-      *&v23.start.value = *&v27.start.value;
-      v23.start.epoch = v27.start.epoch;
-      if (CMTimeCompare(&v23.start, &range.start) >= 1)
+      *&rangeCopy.start.value = *&v27.start.value;
+      rangeCopy.start.epoch = v27.start.epoch;
+      if (CMTimeCompare(&rangeCopy.start, &range.start) >= 1)
       {
         memset(&range, 0, sizeof(range));
         [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
         [(JFXCompositionTrackGroup *)self timeOfLastVolumeChange];
         lhs = v27.start;
         CMTimeSubtract(&end, &lhs, &rhs);
-        CMTimeRangeMake(&range, &v23.start, &end);
+        CMTimeRangeMake(&range, &rangeCopy.start, &end);
         *&v15 = self->_volumeAtLastVolumeChange;
-        v23 = range;
-        [(JFXCompositionTrackGroup *)self commitVolumeRampFromStartVolume:&v23 toEndVolume:v15 timeRange:COERCE_DOUBLE(__PAIR64__(range.duration.flags, LODWORD(v15)))];
+        rangeCopy = range;
+        [(JFXCompositionTrackGroup *)self commitVolumeRampFromStartVolume:&rangeCopy toEndVolume:v15 timeRange:COERCE_DOUBLE(__PAIR64__(range.duration.flags, LODWORD(v15)))];
         if (self->_volumeAtLastVolumeChange != 0.0)
         {
           v16 = JFXLog_DebugComposition();
@@ -2037,53 +2037,53 @@ LABEL_21:
     range.start.epoch = v27.start.epoch;
     [(JFXCompositionTrackGroup *)self commitPendingVolumeToTime:&range];
     range = v27;
-    [(JFXCompositionTrackGroup *)self commitVolumeRampFromStartVolume:&range toEndVolume:COERCE_DOUBLE(__PAIR64__(v27.duration.flags timeRange:LODWORD(a3))), COERCE_DOUBLE(__PAIR64__(HIDWORD(v27.start.epoch), LODWORD(a4)))];
+    [(JFXCompositionTrackGroup *)self commitVolumeRampFromStartVolume:&range toEndVolume:COERCE_DOUBLE(__PAIR64__(v27.duration.flags timeRange:LODWORD(volume))), COERCE_DOUBLE(__PAIR64__(HIDWORD(v27.start.epoch), LODWORD(endVolume)))];
   }
 
   return v12 >= 0;
 }
 
-- (BOOL)requestVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5
+- (BOOL)requestVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range
 {
-  v5 = *&a5->var0.var3;
-  v7[0] = *&a5->var0.var0;
+  v5 = *&range->var0.var3;
+  v7[0] = *&range->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a5->var1.var1;
+  v7[2] = *&range->var1.var1;
   return [JFXCompositionTrackGroup requestVolumeRampFromStartVolume:"requestVolumeRampFromStartVolume:toEndVolume:timeRange:fillEmptySegment:" toEndVolume:v7 timeRange:0 fillEmptySegment:?];
 }
 
-- (void)setTimeOfLastVolumeChange:(id *)a3
+- (void)setTimeOfLastVolumeChange:(id *)change
 {
-  v3 = *&a3->var0;
-  self->_timeOfLastVolumeChange.epoch = a3->var3;
+  v3 = *&change->var0;
+  self->_timeOfLastVolumeChange.epoch = change->var3;
   *&self->_timeOfLastVolumeChange.value = v3;
 }
 
-- (void)setTimeOfLastRequest:(id *)a3
+- (void)setTimeOfLastRequest:(id *)request
 {
-  v3 = *&a3->var0;
-  self->_timeOfLastRequest.epoch = a3->var3;
+  v3 = *&request->var0;
+  self->_timeOfLastRequest.epoch = request->var3;
   *&self->_timeOfLastRequest.value = v3;
 }
 
-- (void)setFadeOutStart:(id *)a3
+- (void)setFadeOutStart:(id *)start
 {
-  v3 = *&a3->var0;
-  self->_fadeOutStart.epoch = a3->var3;
+  v3 = *&start->var0;
+  self->_fadeOutStart.epoch = start->var3;
   *&self->_fadeOutStart.value = v3;
 }
 
-- (void)setFadeOutDuration:(id *)a3
+- (void)setFadeOutDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_fadeOutDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_fadeOutDuration.epoch = duration->var3;
   *&self->_fadeOutDuration.value = v3;
 }
 
-- (void)setLastRampToZeroEnd:(id *)a3
+- (void)setLastRampToZeroEnd:(id *)end
 {
-  v3 = *&a3->var0;
-  self->_lastRampToZeroEnd.epoch = a3->var3;
+  v3 = *&end->var0;
+  self->_lastRampToZeroEnd.epoch = end->var3;
   *&self->_lastRampToZeroEnd.value = v3;
 }
 

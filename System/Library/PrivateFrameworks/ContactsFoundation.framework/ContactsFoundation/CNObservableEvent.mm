@@ -1,20 +1,20 @@
 @interface CNObservableEvent
-+ (CNObservableEvent)eventWithResult:(id)a3;
++ (CNObservableEvent)eventWithResult:(id)result;
 + (id)completionEvent;
-+ (id)failureEventWithError:(id)a3;
++ (id)failureEventWithError:(id)error;
 - (BOOL)hasValue;
 - (NSError)error;
 - (id)value;
 - (unint64_t)eventType;
-- (void)dematerializeWithObserver:(id)a3;
+- (void)dematerializeWithObserver:(id)observer;
 @end
 
 @implementation CNObservableEvent
 
-+ (CNObservableEvent)eventWithResult:(id)a3
++ (CNObservableEvent)eventWithResult:(id)result
 {
-  v3 = a3;
-  v4 = [[_CNObservableResultEvent alloc] initWithResult:v3];
+  resultCopy = result;
+  v4 = [[_CNObservableResultEvent alloc] initWithResult:resultCopy];
 
   return v4;
 }
@@ -40,10 +40,10 @@ uint64_t __36__CNObservableEvent_completionEvent__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)failureEventWithError:(id)a3
++ (id)failureEventWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[_CNObservableFailureEvent alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[_CNObservableFailureEvent alloc] initWithError:errorCopy];
 
   return v4;
 }
@@ -72,9 +72,9 @@ uint64_t __36__CNObservableEvent_completionEvent__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (void)dematerializeWithObserver:(id)a3
+- (void)dematerializeWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = CNAbstractMethodException(self, a2);
   objc_exception_throw(v6);
 }

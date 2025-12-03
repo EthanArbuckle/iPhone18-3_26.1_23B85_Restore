@@ -1,54 +1,54 @@
 @interface IDSSession
 - (BOOL)isAudioEnabled;
 - (BOOL)isMuted;
-- (BOOL)sendData:(id)a3 error:(id *)a4;
+- (BOOL)sendData:(id)data error:(id *)error;
 - (BOOL)shouldUseSocketForTransport;
 - (IDSLinkSelectionStrategy)linkSelectionStrategy;
-- (IDSSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5;
-- (IDSSession)initWithAccount:(id)a3 destinations:(id)a4 transportType:(int64_t)a5;
+- (IDSSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options;
+- (IDSSession)initWithAccount:(id)account destinations:(id)destinations transportType:(int64_t)type;
 - (NSString)destination;
 - (NSString)sessionID;
-- (id)_initWithAccount:(id)a3 destinations:(id)a4 transportType:(int64_t)a5 uniqueID:(id)a6;
+- (id)_initWithAccount:(id)account destinations:(id)destinations transportType:(int64_t)type uniqueID:(id)d;
 - (id)_internal;
 - (id)_streamPreferences;
 - (id)description;
 - (int)socket;
 - (int64_t)invitationTimeOut;
-- (unint64_t)MTUForAddressFamily:(unint64_t)a3;
+- (unint64_t)MTUForAddressFamily:(unint64_t)family;
 - (unint64_t)initialLinkType;
 - (unsigned)sessionEndedReason;
 - (unsigned)state;
 - (void)acceptInvitation;
-- (void)acceptInvitationWithData:(id)a3;
+- (void)acceptInvitationWithData:(id)data;
 - (void)cancelInvitation;
-- (void)cancelInvitationWithData:(id)a3;
-- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)a3;
+- (void)cancelInvitationWithData:(id)data;
+- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)override;
 - (void)dealloc;
 - (void)declineInvitation;
-- (void)declineInvitationWithData:(id)a3;
+- (void)declineInvitationWithData:(id)data;
 - (void)endSession;
-- (void)endSessionWithData:(id)a3;
+- (void)endSessionWithData:(id)data;
 - (void)reconnectSession;
-- (void)sendAllocationRequest:(id)a3;
-- (void)sendInvitationWithData:(id)a3 declineOnError:(BOOL)a4;
-- (void)sendInvitationWithOptions:(id)a3;
-- (void)sendSessionMessage:(id)a3;
-- (void)sendSessionMessage:(id)a3 toDestinations:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setInvitationTimeOut:(int64_t)a3;
-- (void)setIsAudioEnabled:(BOOL)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setLinkSelectionStrategy:(id)a3;
-- (void)setPreferences:(id)a3;
-- (void)setStreamPreferences:(id)a3;
+- (void)sendAllocationRequest:(id)request;
+- (void)sendInvitationWithData:(id)data declineOnError:(BOOL)error;
+- (void)sendInvitationWithOptions:(id)options;
+- (void)sendSessionMessage:(id)message;
+- (void)sendSessionMessage:(id)message toDestinations:(id)destinations;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setInvitationTimeOut:(int64_t)out;
+- (void)setIsAudioEnabled:(BOOL)enabled;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setLinkSelectionStrategy:(id)strategy;
+- (void)setPreferences:(id)preferences;
+- (void)setStreamPreferences:(id)preferences;
 @end
 
 @implementation IDSSession
 
-- (IDSSession)initWithAccount:(id)a3 destinations:(id)a4 transportType:(int64_t)a5
+- (IDSSession)initWithAccount:(id)account destinations:(id)destinations transportType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  destinationsCopy = destinations;
   if (_IDSRunningInDaemon())
   {
     v10 = +[IDSLogging _IDSService];
@@ -57,18 +57,18 @@
       sub_195B26A7C();
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v12 = +[IDSInternalQueueController sharedInstance];
-    v13 = [v12 assertQueueIsNotCurrent];
+    assertQueueIsNotCurrent = [v12 assertQueueIsNotCurrent];
 
-    if (v13)
+    if (assertQueueIsNotCurrent)
     {
-      v14 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2A494();
       }
@@ -87,24 +87,24 @@
       v19[2] = sub_195A47854;
       v19[3] = &unk_1E743E698;
       v20 = v16;
-      v21 = v8;
-      v22 = v9;
-      v23 = a5;
+      v21 = accountCopy;
+      v22 = destinationsCopy;
+      typeCopy = type;
       [v17 performBlock:v19 waitUntilDone:1];
     }
 
     self = v16;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (IDSSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5
+- (IDSSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   if (_IDSRunningInDaemon())
   {
     v11 = +[IDSLogging _IDSService];
@@ -113,18 +113,18 @@
       sub_195B26A7C();
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v13 = +[IDSInternalQueueController sharedInstance];
-    v14 = [v13 assertQueueIsNotCurrent];
+    assertQueueIsNotCurrent = [v13 assertQueueIsNotCurrent];
 
-    if (v14)
+    if (assertQueueIsNotCurrent)
     {
-      v15 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2A534();
       }
@@ -143,24 +143,24 @@
       v20[2] = sub_195A47AD4;
       v20[3] = &unk_1E743EEE8;
       v21 = v17;
-      v22 = v8;
-      v23 = v9;
-      v24 = v10;
+      v22 = accountCopy;
+      v23 = destinationsCopy;
+      v24 = optionsCopy;
       [v18 performBlock:v20 waitUntilDone:1];
     }
 
     self = v17;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_initWithAccount:(id)a3 destinations:(id)a4 transportType:(int64_t)a5 uniqueID:(id)a6
+- (id)_initWithAccount:(id)account destinations:(id)destinations transportType:(int64_t)type uniqueID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  dCopy = d;
   if (_IDSRunningInDaemon())
   {
     v13 = +[IDSLogging _IDSService];
@@ -169,18 +169,18 @@
       sub_195B26A7C();
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v15 = +[IDSInternalQueueController sharedInstance];
-    v16 = [v15 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v15 assertQueueIsCurrent];
 
-    if (v16)
+    if (assertQueueIsCurrent)
     {
-      v17 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2A5D4();
       }
@@ -191,14 +191,14 @@
     v18 = [(IDSSession *)&v25 init];
     if (v18)
     {
-      v19 = [[_IDSSession alloc] initWithAccount:v10 destinations:v11 transportType:a5 uniqueID:v12 delegateContext:v18];
+      v19 = [[_IDSSession alloc] initWithAccount:accountCopy destinations:destinationsCopy transportType:type uniqueID:dCopy delegateContext:v18];
       internal = v18->_internal;
       v18->_internal = v19;
 
       v18->_uniqueIDLock._os_unfair_lock_opaque = 0;
       os_unfair_lock_lock(&v18->_uniqueIDLock);
-      v21 = [(_IDSSession *)v18->_internal uniqueID];
-      v22 = [v21 copy];
+      uniqueID = [(_IDSSession *)v18->_internal uniqueID];
+      v22 = [uniqueID copy];
       uniqueID = v18->_uniqueID;
       v18->_uniqueID = v22;
 
@@ -206,10 +206,10 @@
     }
 
     self = v18;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -264,18 +264,18 @@
 - (NSString)sessionID
 {
   os_unfair_lock_lock(&self->_uniqueIDLock);
-  v3 = [(IDSSession *)self uniqueID];
+  uniqueID = [(IDSSession *)self uniqueID];
   os_unfair_lock_unlock(&self->_uniqueIDLock);
 
-  return v3;
+  return uniqueID;
 }
 
 - (NSString)destination
 {
   os_unfair_lock_lock(&self->_uniqueIDLock);
-  v3 = [(IDSSession *)self uniqueID];
+  uniqueID = [(IDSSession *)self uniqueID];
   os_unfair_lock_unlock(&self->_uniqueIDLock);
-  v4 = [@"session:" stringByAppendingString:v3];
+  v4 = [@"session:" stringByAppendingString:uniqueID];
 
   return v4;
 }
@@ -283,10 +283,10 @@
 - (id)description
 {
   os_unfair_lock_lock(&self->_uniqueIDLock);
-  v3 = [(IDSSession *)self uniqueID];
+  uniqueID = [(IDSSession *)self uniqueID];
   os_unfair_lock_unlock(&self->_uniqueIDLock);
 
-  return v3;
+  return uniqueID;
 }
 
 - (unsigned)state
@@ -309,32 +309,32 @@
   return self;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A482F4;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11];
 }
 
 - (id)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2A674();
     }
@@ -365,18 +365,18 @@
   return v4;
 }
 
-- (void)sendInvitationWithOptions:(id)a3
+- (void)sendInvitationWithOptions:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"direction"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:@"direction"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = +[IDSLogging IDSSession];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = optionsCopy;
       _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_INFO, "Received invalid options %@, bailing", buf, 0xCu);
     }
   }
@@ -399,32 +399,32 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendInvitationWithData:(id)a3 declineOnError:(BOOL)a4
+- (void)sendInvitationWithData:(id)data declineOnError:(BOOL)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = +[IDSInternalQueueController sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_195A4875C;
   v9[3] = &unk_1E743FCA8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dataCopy;
+  errorCopy = error;
+  v8 = dataCopy;
   [v7 performBlock:v9];
 }
 
-- (void)setStreamPreferences:(id)a3
+- (void)setStreamPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A48828;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preferencesCopy;
+  v6 = preferencesCopy;
   [v5 performBlock:v7];
 }
 
@@ -451,7 +451,7 @@
   return v4;
 }
 
-- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)a3
+- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)override
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -459,49 +459,49 @@
   v6[2] = sub_195A48A4C;
   v6[3] = &unk_1E743FCD0;
   v6[4] = self;
-  v7 = a3;
+  overrideCopy = override;
   [v5 performBlock:v6];
 }
 
-- (void)cancelInvitationWithData:(id)a3
+- (void)cancelInvitationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A48B18;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [v5 performBlock:v7];
 }
 
-- (void)acceptInvitationWithData:(id)a3
+- (void)acceptInvitationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A48BDC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [v5 performBlock:v7];
 }
 
-- (void)declineInvitationWithData:(id)a3
+- (void)declineInvitationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A48CA0;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [v5 performBlock:v7];
 }
 
@@ -549,66 +549,66 @@
   [v3 performBlock:v4];
 }
 
-- (void)endSessionWithData:(id)a3
+- (void)endSessionWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A48FD4;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [v5 performBlock:v7];
 }
 
-- (void)sendSessionMessage:(id)a3
+- (void)sendSessionMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A49098;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   [v5 performBlock:v7];
 }
 
-- (void)sendSessionMessage:(id)a3 toDestinations:(id)a4
+- (void)sendSessionMessage:(id)message toDestinations:(id)destinations
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  destinationsCopy = destinations;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A49180;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = destinationsCopy;
+  v9 = destinationsCopy;
+  v10 = messageCopy;
   [v8 performBlock:v11];
 }
 
-- (void)sendAllocationRequest:(id)a3
+- (void)sendAllocationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A4924C;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   [v5 performBlock:v7];
 }
 
-- (void)setIsAudioEnabled:(BOOL)a3
+- (void)setIsAudioEnabled:(BOOL)enabled
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -616,7 +616,7 @@
   v6[2] = sub_195A492F8;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  enabledCopy = enabled;
   [v5 performBlock:v6];
 }
 
@@ -640,7 +640,7 @@
   return self;
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -648,7 +648,7 @@
   v6[2] = sub_195A494CC;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  mutedCopy = muted;
   [v5 performBlock:v6];
 }
 
@@ -672,9 +672,9 @@
   return self;
 }
 
-- (BOOL)sendData:(id)a3 error:(id *)a4
+- (BOOL)sendData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -686,18 +686,18 @@
   v10[3] = &unk_1E743FCF8;
   v12 = &v14;
   v10[4] = self;
-  v8 = v6;
+  v8 = dataCopy;
   v11 = v8;
-  v13 = a4;
+  errorCopy = error;
   [v7 performBlock:v10 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v15 + 24);
+  LOBYTE(error) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
 
-  return a4;
+  return error;
 }
 
-- (void)setInvitationTimeOut:(int64_t)a3
+- (void)setInvitationTimeOut:(int64_t)out
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -705,7 +705,7 @@
   v6[2] = sub_195A497F8;
   v6[3] = &unk_1E743E6C0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = out;
   [v5 performBlock:v6];
 }
 
@@ -760,9 +760,9 @@
   return self;
 }
 
-- (void)setPreferences:(id)a3
+- (void)setPreferences:(id)preferences
 {
-  v4 = [a3 copy];
+  v4 = [preferences copy];
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -797,17 +797,17 @@
   return v4;
 }
 
-- (void)setLinkSelectionStrategy:(id)a3
+- (void)setLinkSelectionStrategy:(id)strategy
 {
-  v4 = a3;
+  strategyCopy = strategy;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A49DD8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = strategyCopy;
+  v6 = strategyCopy;
   [v5 performBlock:v7];
 }
 
@@ -831,7 +831,7 @@
   return self;
 }
 
-- (unint64_t)MTUForAddressFamily:(unint64_t)a3
+- (unint64_t)MTUForAddressFamily:(unint64_t)family
 {
   v9 = 0;
   v10 = &v9;
@@ -844,7 +844,7 @@
   v8[3] = &unk_1E743F670;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = family;
   [v5 performBlock:v8 waitUntilDone:1];
 
   v6 = v10[3];

@@ -1,12 +1,12 @@
 @interface MPCPlayerPathCache
 + (MPCPlayerPathCache)sharedCache;
 - (id)_init;
-- (id)observationTokenDescriptionForPlayerPath:(id)a3;
-- (id)resolvedPlayerPathForPlayerPath:(id)a3;
-- (void)_onQueue_clearObserversForPlayerPath:(id)a3;
-- (void)_onQueue_registerForEndpointChangeWithUnresolvedPlayerPath:(id)a3 routeResolvedPlayerPath:(id)a4;
-- (void)_onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath:(id)a3 routeResolvedPlayerPath:(id)a4;
-- (void)_onQueue_registerForInvalidationWithUnresolvedPlayerPath:(id)a3 invalidationPlayerPath:(void *)a4;
+- (id)observationTokenDescriptionForPlayerPath:(id)path;
+- (id)resolvedPlayerPathForPlayerPath:(id)path;
+- (void)_onQueue_clearObserversForPlayerPath:(id)path;
+- (void)_onQueue_registerForEndpointChangeWithUnresolvedPlayerPath:(id)path routeResolvedPlayerPath:(id)playerPath;
+- (void)_onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath:(id)path routeResolvedPlayerPath:(id)playerPath;
+- (void)_onQueue_registerForInvalidationWithUnresolvedPlayerPath:(id)path invalidationPlayerPath:(void *)playerPath;
 - (void)dealloc;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __33__MPCPlayerPathCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache___onceToken != -1)
   {
     dispatch_once(&sharedCache___onceToken, block);
@@ -49,21 +49,21 @@ uint64_t __33__MPCPlayerPathCache_sharedCache__block_invoke(uint64_t a1)
   v2 = [(MPCPlayerPathCache *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     playerPathResolutions = v2->_playerPathResolutions;
-    v2->_playerPathResolutions = v3;
+    v2->_playerPathResolutions = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     playerPathObservers = v2->_playerPathObservers;
-    v2->_playerPathObservers = v5;
+    v2->_playerPathObservers = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     endpointObservers = v2->_endpointObservers;
-    v2->_endpointObservers = v7;
+    v2->_endpointObservers = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     endpointInvalidationObservers = v2->_endpointInvalidationObservers;
-    v2->_endpointInvalidationObservers = v9;
+    v2->_endpointInvalidationObservers = dictionary4;
 
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.MediaPlaybackCore/MPCPlayerPathCache", v11);
@@ -81,73 +81,73 @@ uint64_t __33__MPCPlayerPathCache_sharedCache__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_onQueue_clearObserversForPlayerPath:(id)a3
+- (void)_onQueue_clearObserversForPlayerPath:(id)path
 {
-  v9 = a3;
+  pathCopy = path;
   v4 = [(NSMutableDictionary *)self->_endpointObservers objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     MEMORY[0x1C6954BA0](v4);
-    [(NSMutableDictionary *)self->_endpointObservers setObject:0 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_endpointObservers setObject:0 forKeyedSubscript:pathCopy];
   }
 
-  v6 = [(NSMutableDictionary *)self->_playerPathObservers objectForKeyedSubscript:v9];
+  v6 = [(NSMutableDictionary *)self->_playerPathObservers objectForKeyedSubscript:pathCopy];
   if (v6)
   {
     MRMediaRemoteRemovePlayerPathInvalidationHandler();
-    [(NSMutableDictionary *)self->_playerPathObservers setObject:0 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_playerPathObservers setObject:0 forKeyedSubscript:pathCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_endpointInvalidationObservers objectForKeyedSubscript:v9];
+  v7 = [(NSMutableDictionary *)self->_endpointInvalidationObservers objectForKeyedSubscript:pathCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:v7];
 
-    [(NSMutableDictionary *)self->_endpointInvalidationObservers setObject:0 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_endpointInvalidationObservers setObject:0 forKeyedSubscript:pathCopy];
   }
 }
 
-- (void)_onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath:(id)a3 routeResolvedPlayerPath:(id)a4
+- (void)_onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath:(id)path routeResolvedPlayerPath:(id)playerPath
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  playerPathCopy = playerPath;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [v7 route];
+  route = [playerPathCopy route];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 route];
-    v11 = [v10 endpoint];
-    v12 = [v10 connection];
-    if (v12)
+    route2 = [playerPathCopy route];
+    endpoint = [route2 endpoint];
+    connection = [route2 connection];
+    if (connection)
     {
       v13 = os_log_create("com.apple.amp.mediaplaybackcore", "MediaRemote");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v11 debugName];
+        debugName = [endpoint debugName];
         *buf = 138412546;
-        v26 = v6;
+        v26 = pathCopy;
         v27 = 2112;
-        v28 = v14;
+        v28 = debugName;
         _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEBUG, "MRCPPC: Registering for endpoint invalidations unresolved player path: %@, endpoint: %@", buf, 0x16u);
       }
 
       objc_initWeak(buf, self);
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __112__MPCPlayerPathCache__onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath_routeResolvedPlayerPath___block_invoke;
       v22 = &unk_1E82385D8;
       objc_copyWeak(&v24, buf);
       v16 = *MEMORY[0x1E6970A80];
-      v17 = v6;
+      v17 = pathCopy;
       v23 = v17;
-      v18 = [v15 addObserverForName:v16 object:v12 queue:0 usingBlock:&v19];
+      v18 = [defaultCenter addObserverForName:v16 object:connection queue:0 usingBlock:&v19];
 
       [(NSMutableDictionary *)self->_endpointInvalidationObservers setObject:v18 forKeyedSubscript:v17, v19, v20, v21, v22];
       objc_destroyWeak(&v24);
@@ -196,39 +196,39 @@ void __112__MPCPlayerPathCache__onQueue_registerForEndpointInvalidationsWithUnre
   [*(a1 + 32) _onQueue_clearObserversForPlayerPath:*(a1 + 40)];
 }
 
-- (void)_onQueue_registerForEndpointChangeWithUnresolvedPlayerPath:(id)a3 routeResolvedPlayerPath:(id)a4
+- (void)_onQueue_registerForEndpointChangeWithUnresolvedPlayerPath:(id)path routeResolvedPlayerPath:(id)playerPath
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  playerPathCopy = playerPath;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [v6 deviceUID];
-  if (v8)
+  deviceUID = [pathCopy deviceUID];
+  if (deviceUID)
   {
-    v9 = [v7 route];
+    route = [playerPathCopy route];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [v7 route];
-      v12 = [v11 endpoint];
-      v13 = [v12 uniqueIdentifier];
+      route2 = [playerPathCopy route];
+      endpoint = [route2 endpoint];
+      uniqueIdentifier = [endpoint uniqueIdentifier];
       v14 = os_log_create("com.apple.amp.mediaplaybackcore", "MediaRemote");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v20 = v6;
+        v20 = pathCopy;
         v21 = 2112;
-        v22 = v13;
+        v22 = uniqueIdentifier;
         _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEBUG, "MRCPPC: Registering for endpoint topology changes with unresolved player path: %@, endpoint identifier: %@", buf, 0x16u);
       }
 
       objc_initWeak(buf, self);
       v15 = MRAVEndpointObserverCreateWithOutputDeviceUID();
       objc_copyWeak(&v18, buf);
-      v16 = v6;
-      v17 = v13;
+      v16 = pathCopy;
+      v17 = uniqueIdentifier;
       MRAVEndpointObserverAddEndpointChangedCallback();
       [(NSMutableDictionary *)self->_endpointObservers setObject:v15 forKeyedSubscript:v16];
 
@@ -283,24 +283,24 @@ void __105__MPCPlayerPathCache__onQueue_registerForEndpointChangeWithUnresolvedP
   }
 }
 
-- (void)_onQueue_registerForInvalidationWithUnresolvedPlayerPath:(id)a3 invalidationPlayerPath:(void *)a4
+- (void)_onQueue_registerForInvalidationWithUnresolvedPlayerPath:(id)path invalidationPlayerPath:(void *)playerPath
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_accessQueue);
   objc_initWeak(&location, self);
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "MediaRemote");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v13 = a4;
+    playerPathCopy = playerPath;
     v14 = 2112;
-    v15 = v6;
+    v15 = pathCopy;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEBUG, "MRCPPC: Registering for invalidation with player path %@ (unresolved %@)", buf, 0x16u);
   }
 
   objc_copyWeak(&v10, &location);
-  v9 = v6;
+  v9 = pathCopy;
   v8 = MRMediaRemoteAddPlayerPathInvalidationHandler();
   [(NSMutableDictionary *)self->_playerPathObservers setObject:v8 forKeyedSubscript:v9];
 
@@ -333,9 +333,9 @@ void __102__MPCPlayerPathCache__onQueue_registerForInvalidationWithUnresolvedPla
   }
 }
 
-- (id)resolvedPlayerPathForPlayerPath:(id)a3
+- (id)resolvedPlayerPathForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -347,10 +347,10 @@ void __102__MPCPlayerPathCache__onQueue_registerForInvalidationWithUnresolvedPla
   block[1] = 3221225472;
   block[2] = __54__MPCPlayerPathCache_resolvedPlayerPathForPlayerPath___block_invoke;
   block[3] = &unk_1E8238A50;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -460,9 +460,9 @@ uint64_t __54__MPCPlayerPathCache_resolvedPlayerPathForPlayerPath___block_invoke
   return [v2 _onQueue_registerForEndpointInvalidationsWithUnresolvedPlayerPath:v3 routeResolvedPlayerPath:v4];
 }
 
-- (id)observationTokenDescriptionForPlayerPath:(id)a3
+- (id)observationTokenDescriptionForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -474,10 +474,10 @@ uint64_t __54__MPCPlayerPathCache_resolvedPlayerPathForPlayerPath___block_invoke
   block[1] = 3221225472;
   block[2] = __63__MPCPlayerPathCache_observationTokenDescriptionForPlayerPath___block_invoke;
   block[3] = &unk_1E8238A50;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -503,8 +503,8 @@ void __63__MPCPlayerPathCache_observationTokenDescriptionForPlayerPath___block_i
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSMutableDictionary *)self->_playerPathObservers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_playerPathObservers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -516,7 +516,7 @@ void __63__MPCPlayerPathCache_observationTokenDescriptionForPlayerPath___block_i
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         MRMediaRemoteRemovePlayerPathInvalidationHandler();
@@ -524,7 +524,7 @@ void __63__MPCPlayerPathCache_observationTokenDescriptionForPlayerPath___block_i
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

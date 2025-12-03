@@ -1,29 +1,29 @@
 @interface ASCMetricsScrollObserver
-+ (id)observerForScrollView:(id)a3;
-- (ASCMetricsScrollObserver)initWithScrollView:(id)a3;
-- (BOOL)hasModelAppeared:(id)a3;
-- (BOOL)hasModelRendered:(id)a3;
-- (BOOL)isDelegateAdded:(id)a3;
-- (CGPoint)centerOfView:(id)a3;
++ (id)observerForScrollView:(id)view;
+- (ASCMetricsScrollObserver)initWithScrollView:(id)view;
+- (BOOL)hasModelAppeared:(id)appeared;
+- (BOOL)hasModelRendered:(id)rendered;
+- (BOOL)isDelegateAdded:(id)added;
+- (CGPoint)centerOfView:(id)view;
 - (CGRect)visibleRect;
 - (CGSize)contentSize;
 - (UIScrollView)scrollView;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)addDelegate:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)modelDidAppear:(id)a3;
-- (void)modelDidDisappear:(id)a3;
-- (void)modelDidRender:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)modelDidAppear:(id)appear;
+- (void)modelDidDisappear:(id)disappear;
+- (void)modelDidRender:(id)render;
+- (void)removeDelegate:(id)delegate;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation ASCMetricsScrollObserver
 
-+ (id)observerForScrollView:(id)a3
++ (id)observerForScrollView:(id)view
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, "ASCMetricsScrollObserver");
+  viewCopy = view;
+  v4 = objc_getAssociatedObject(viewCopy, "ASCMetricsScrollObserver");
   v5 = v4;
   if (v4)
   {
@@ -32,26 +32,26 @@
 
   else
   {
-    v6 = [[ASCMetricsScrollObserver alloc] initWithScrollView:v3];
-    objc_setAssociatedObject(v3, "ASCMetricsScrollObserver", v6, 1);
+    v6 = [[ASCMetricsScrollObserver alloc] initWithScrollView:viewCopy];
+    objc_setAssociatedObject(viewCopy, "ASCMetricsScrollObserver", v6, 1);
   }
 
   return v6;
 }
 
-- (ASCMetricsScrollObserver)initWithScrollView:(id)a3
+- (ASCMetricsScrollObserver)initWithScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = ASCMetricsScrollObserver;
   v5 = [(ASCMetricsScrollObserver *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrollView, v4);
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v5->_scrollView, viewCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v6->_delegates;
-    v6->_delegates = v7;
+    v6->_delegates = weakObjectsHashTable;
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     appearedModelIDs = v6->_appearedModelIDs;
@@ -80,8 +80,8 @@
 
 - (CGSize)contentSize
 {
-  v2 = [(ASCMetricsScrollObserver *)self scrollView];
-  [v2 contentSize];
+  scrollView = [(ASCMetricsScrollObserver *)self scrollView];
+  [scrollView contentSize];
   v4 = v3;
   v6 = v5;
 
@@ -94,8 +94,8 @@
 
 - (CGRect)visibleRect
 {
-  v2 = [(ASCMetricsScrollObserver *)self scrollView];
-  [v2 bounds];
+  scrollView = [(ASCMetricsScrollObserver *)self scrollView];
+  [scrollView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -112,10 +112,10 @@
   return result;
 }
 
-- (CGPoint)centerOfView:(id)a3
+- (CGPoint)centerOfView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -126,8 +126,8 @@
   v20.size.width = width;
   v20.size.height = height;
   v10 = floor(CGRectGetHeight(v20) * 0.5);
-  v11 = [(ASCMetricsScrollObserver *)self scrollView];
-  [v11 convertPoint:v4 fromView:{v9, v10}];
+  scrollView = [(ASCMetricsScrollObserver *)self scrollView];
+  [scrollView convertPoint:viewCopy fromView:{v9, v10}];
   v13 = v12;
   v15 = v14;
 
@@ -138,39 +138,39 @@
   return result;
 }
 
-- (BOOL)isDelegateAdded:(id)a3
+- (BOOL)isDelegateAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(ASCMetricsScrollObserver *)self delegates];
-  v6 = [v5 containsObject:v4];
+  addedCopy = added;
+  delegates = [(ASCMetricsScrollObserver *)self delegates];
+  v6 = [delegates containsObject:addedCopy];
 
   return v6;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ASCMetricsScrollObserver *)self delegates];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  delegates = [(ASCMetricsScrollObserver *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ASCMetricsScrollObserver *)self delegates];
-  [v5 removeObject:v4];
+  delegateCopy = delegate;
+  delegates = [(ASCMetricsScrollObserver *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scrollCopy = scroll;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(ASCMetricsScrollObserver *)self delegates];
-  v6 = [v5 copy];
+  delegates = [(ASCMetricsScrollObserver *)self delegates];
+  v6 = [delegates copy];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -187,7 +187,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) scrollViewDidScroll:v4];
+        [*(*(&v11 + 1) + 8 * v10++) scrollViewDidScroll:scrollCopy];
       }
 
       while (v8 != v10);
@@ -198,57 +198,57 @@
   }
 }
 
-- (void)modelDidAppear:(id)a3
+- (void)modelDidAppear:(id)appear
 {
-  v4 = a3;
-  v6 = [(ASCMetricsScrollObserver *)self appearedModelIDs];
-  v5 = [v4 id];
+  appearCopy = appear;
+  appearedModelIDs = [(ASCMetricsScrollObserver *)self appearedModelIDs];
+  v5 = [appearCopy id];
 
-  [v6 addObject:v5];
+  [appearedModelIDs addObject:v5];
 }
 
-- (void)modelDidDisappear:(id)a3
+- (void)modelDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(ASCMetricsScrollObserver *)self appearedModelIDs];
-  v5 = [v4 id];
+  disappearCopy = disappear;
+  appearedModelIDs = [(ASCMetricsScrollObserver *)self appearedModelIDs];
+  v5 = [disappearCopy id];
 
-  [v6 removeObject:v5];
+  [appearedModelIDs removeObject:v5];
 }
 
-- (BOOL)hasModelAppeared:(id)a3
+- (BOOL)hasModelAppeared:(id)appeared
 {
-  v4 = a3;
-  v5 = [(ASCMetricsScrollObserver *)self appearedModelIDs];
-  v6 = [v4 id];
+  appearedCopy = appeared;
+  appearedModelIDs = [(ASCMetricsScrollObserver *)self appearedModelIDs];
+  v6 = [appearedCopy id];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(appearedCopy) = [appearedModelIDs containsObject:v6];
+  return appearedCopy;
 }
 
-- (void)modelDidRender:(id)a3
+- (void)modelDidRender:(id)render
 {
-  v4 = a3;
-  v6 = [(ASCMetricsScrollObserver *)self renderedModelIDs];
-  v5 = [v4 id];
+  renderCopy = render;
+  renderedModelIDs = [(ASCMetricsScrollObserver *)self renderedModelIDs];
+  v5 = [renderCopy id];
 
-  [v6 addObject:v5];
+  [renderedModelIDs addObject:v5];
 }
 
-- (BOOL)hasModelRendered:(id)a3
+- (BOOL)hasModelRendered:(id)rendered
 {
-  v4 = a3;
-  v5 = [(ASCMetricsScrollObserver *)self renderedModelIDs];
-  v6 = [v4 id];
+  renderedCopy = rendered;
+  renderedModelIDs = [(ASCMetricsScrollObserver *)self renderedModelIDs];
+  v6 = [renderedCopy id];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(renderedCopy) = [renderedModelIDs containsObject:v6];
+  return renderedCopy;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = [(ASCMetricsScrollObserver *)self scrollView];
-  [(ASCMetricsScrollObserver *)self scrollViewDidScroll:v4];
+  scrollView = [(ASCMetricsScrollObserver *)self scrollView];
+  [(ASCMetricsScrollObserver *)self scrollViewDidScroll:scrollView];
 }
 
 - (UIScrollView)scrollView

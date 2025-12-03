@@ -9,7 +9,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCV17AppleVisionProApp20LearnMoreLinkWebView11Coordinator_onClose);
   v3 = *&self->onClose[OBJC_IVAR____TtCV17AppleVisionProApp20LearnMoreLinkWebView11Coordinator_onClose];
-  v4 = self;
+  selfCopy = self;
   v2();
 }
 

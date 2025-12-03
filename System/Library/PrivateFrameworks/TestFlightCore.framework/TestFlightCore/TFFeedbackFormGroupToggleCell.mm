@@ -1,18 +1,18 @@
 @interface TFFeedbackFormGroupToggleCell
-- (TFFeedbackFormGroupToggleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)applyContentsOfEntry:(id)a3;
-- (void)didUpdateToggleSwitchValue:(id)a3;
+- (TFFeedbackFormGroupToggleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)applyContentsOfEntry:(id)entry;
+- (void)didUpdateToggleSwitchValue:(id)value;
 - (void)prepareForReuse;
-- (void)setDisplayedDataGroupInclusionBool:(BOOL)a3;
+- (void)setDisplayedDataGroupInclusionBool:(BOOL)bool;
 @end
 
 @implementation TFFeedbackFormGroupToggleCell
 
-- (TFFeedbackFormGroupToggleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TFFeedbackFormGroupToggleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TFFeedbackFormGroupToggleCell;
-  v4 = [(TFFeedbackFormBaseCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TFFeedbackFormBaseCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75AE8]);
@@ -35,36 +35,36 @@
   [(TFFeedbackFormGroupToggleCell *)self setGroupToggleEntry:0];
 }
 
-- (void)applyContentsOfEntry:(id)a3
+- (void)applyContentsOfEntry:(id)entry
 {
-  v7 = a3;
-  if ([v7 type] == 2)
+  entryCopy = entry;
+  if ([entryCopy type] == 2)
   {
-    [(TFFeedbackFormGroupToggleCell *)self setGroupToggleEntry:v7];
-    v4 = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
-    v5 = [v4 title];
-    v6 = [(TFFeedbackFormGroupToggleCell *)self textLabel];
-    [v6 setText:v5];
+    [(TFFeedbackFormGroupToggleCell *)self setGroupToggleEntry:entryCopy];
+    groupToggleEntry = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
+    title = [groupToggleEntry title];
+    textLabel = [(TFFeedbackFormGroupToggleCell *)self textLabel];
+    [textLabel setText:title];
   }
 }
 
-- (void)setDisplayedDataGroupInclusionBool:(BOOL)a3
+- (void)setDisplayedDataGroupInclusionBool:(BOOL)bool
 {
-  v3 = a3;
-  v4 = [(TFFeedbackFormGroupToggleCell *)self toggleSwitch];
-  [v4 setOn:v3];
+  boolCopy = bool;
+  toggleSwitch = [(TFFeedbackFormGroupToggleCell *)self toggleSwitch];
+  [toggleSwitch setOn:boolCopy];
 }
 
-- (void)didUpdateToggleSwitchValue:(id)a3
+- (void)didUpdateToggleSwitchValue:(id)value
 {
-  v4 = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
+  groupToggleEntry = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
 
-  if (v4)
+  if (groupToggleEntry)
   {
-    v7 = [(TFFeedbackFormBaseCell *)self updateProxy];
-    v5 = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
-    v6 = [(TFFeedbackFormGroupToggleCell *)self toggleSwitch];
-    [v7 didUpdateEntry:v5 toGroupInclusionBool:{objc_msgSend(v6, "isOn")}];
+    updateProxy = [(TFFeedbackFormBaseCell *)self updateProxy];
+    groupToggleEntry2 = [(TFFeedbackFormGroupToggleCell *)self groupToggleEntry];
+    toggleSwitch = [(TFFeedbackFormGroupToggleCell *)self toggleSwitch];
+    [updateProxy didUpdateEntry:groupToggleEntry2 toGroupInclusionBool:{objc_msgSend(toggleSwitch, "isOn")}];
   }
 }
 

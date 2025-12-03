@@ -1,23 +1,23 @@
 @interface CRKTable
-+ (CRKTable)tableWithHeaders:(id)a3 keyPaths:(id)a4 objects:(id)a5;
-+ (id)parsableTableWithKeyValuePairs:(id)a3;
-- (CRKTable)initWithEntries:(id)a3;
++ (CRKTable)tableWithHeaders:(id)headers keyPaths:(id)paths objects:(id)objects;
++ (id)parsableTableWithKeyValuePairs:(id)pairs;
+- (CRKTable)initWithEntries:(id)entries;
 - (NSString)stringValue;
 - (id)columnLengths;
-- (unint64_t)lengthOfLongestObjectInColumn:(unint64_t)a3;
+- (unint64_t)lengthOfLongestObjectInColumn:(unint64_t)column;
 - (void)stringValue;
 @end
 
 @implementation CRKTable
 
-+ (CRKTable)tableWithHeaders:(id)a3 keyPaths:(id)a4 objects:(id)a5
++ (CRKTable)tableWithHeaders:(id)headers keyPaths:(id)paths objects:(id)objects
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[CRKDictionaryRowTableEntries alloc] initWithDictionaryObjects:v9 keys:v8];
-  if (v7)
+  headersCopy = headers;
+  pathsCopy = paths;
+  objectsCopy = objects;
+  v10 = [[CRKDictionaryRowTableEntries alloc] initWithDictionaryObjects:objectsCopy keys:pathsCopy];
+  if (headersCopy)
   {
     v11 = [CRKTableEntriesWithRowSpacer alloc];
     v12 = [[CRKRepeatedCharacterTableEntry alloc] initWithCharacter:45];
@@ -28,7 +28,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = v7;
+    v14 = headersCopy;
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
@@ -61,17 +61,17 @@
   return v20;
 }
 
-+ (id)parsableTableWithKeyValuePairs:(id)a3
++ (id)parsableTableWithKeyValuePairs:(id)pairs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 valueForKey:@"value"];
+  pairsCopy = pairs;
+  v4 = [pairsCopy valueForKey:@"value"];
   v5 = [[CRKListTableEntries alloc] initWithArray:v4];
   v6 = [CRKTableEntriesWithColumnSpacer alloc];
   v7 = [[CRKRightPaddingTableEntry alloc] initWithObject:@"\t"];
   v8 = [(CRKTableEntriesWithColumnSpacer *)v6 initWithOrigin:v5 index:0 spacerEntry:v7];
 
-  v9 = [v3 valueForKey:@"key"];
+  v9 = [pairsCopy valueForKey:@"key"];
   v10 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -112,10 +112,10 @@
   return v21;
 }
 
-- (CRKTable)initWithEntries:(id)a3
+- (CRKTable)initWithEntries:(id)entries
 {
-  v6 = a3;
-  if (!v6)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     [(CRKTable *)a2 initWithEntries:?];
   }
@@ -126,7 +126,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->mEntries, a3);
+    objc_storeStrong(&v7->mEntries, entries);
   }
 
   return v8;
@@ -135,7 +135,7 @@
 - (NSString)stringValue
 {
   v3 = objc_opt_new();
-  v4 = [(CRKTable *)self columnLengths];
+  columnLengths = [(CRKTable *)self columnLengths];
   if ([(CRKTableEntries *)self->mEntries rowCount])
   {
     v5 = 0;
@@ -148,13 +148,13 @@
         do
         {
           v8 = [(CRKTableEntries *)self->mEntries entryAtRow:v5 column:v7];
-          v9 = [v4 objectAtIndexedSubscript:v7];
-          v10 = [v9 unsignedIntegerValue];
+          v9 = [columnLengths objectAtIndexedSubscript:v7];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-          v11 = [v8 stringValueWithLength:v10];
-          if ([v11 length] != v10)
+          v11 = [v8 stringValueWithLength:unsignedIntegerValue];
+          if ([v11 length] != unsignedIntegerValue)
           {
-            [(CRKTable *)v10 stringValue:v11];
+            [(CRKTable *)unsignedIntegerValue stringValue:v11];
           }
 
           [v6 addObject:v11];
@@ -199,7 +199,7 @@
   return v3;
 }
 
-- (unint64_t)lengthOfLongestObjectInColumn:(unint64_t)a3
+- (unint64_t)lengthOfLongestObjectInColumn:(unint64_t)column
 {
   v5 = 0;
   if ([(CRKTableEntries *)self->mEntries rowCount])
@@ -207,9 +207,9 @@
     v6 = 0;
     do
     {
-      v7 = [(CRKTableEntries *)self->mEntries entryAtRow:v6 column:a3];
-      v8 = [v7 rawStringValue];
-      v9 = [v8 length];
+      v7 = [(CRKTableEntries *)self->mEntries entryAtRow:v6 column:column];
+      rawStringValue = [v7 rawStringValue];
+      v9 = [rawStringValue length];
 
       if (v5 <= v9)
       {
@@ -233,10 +233,10 @@
 
 - (void)stringValue
 {
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a1];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a2, "length")}];
-  [v10 handleFailureInMethod:a3 object:a4 file:@"CRKTable.m" lineNumber:84 description:{@"Invalid entry width. Required: %@, Found: %@.", v8, v9}];
+  [currentHandler handleFailureInMethod:a3 object:a4 file:@"CRKTable.m" lineNumber:84 description:{@"Invalid entry width. Required: %@, Found: %@.", v8, v9}];
 }
 
 @end

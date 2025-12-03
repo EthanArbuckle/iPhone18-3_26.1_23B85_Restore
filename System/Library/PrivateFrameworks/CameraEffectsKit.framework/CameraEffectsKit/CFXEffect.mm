@@ -1,23 +1,23 @@
 @interface CFXEffect
-+ (CFXEffect)effectWithIdentifier:(id)a3 forEffectType:(id)a4;
-+ (CFXEffect)effectWithJTEffect:(id)a3;
-+ (id)effectIdentifiersForEffectType:(id)a3;
++ (CFXEffect)effectWithIdentifier:(id)identifier forEffectType:(id)type;
++ (CFXEffect)effectWithJTEffect:(id)effect;
++ (id)effectIdentifiersForEffectType:(id)type;
 + (void)initEffectRegistry;
 + (void)preWarmShaderCache;
 + (void)setupFactoryDelegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CFXEffect)initWithJTEffect:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CFXEffect)initWithJTEffect:(id)effect;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CFXEffect
 
-- (CFXEffect)initWithJTEffect:(id)a3
+- (CFXEffect)initWithJTEffect:(id)effect
 {
-  v5 = a3;
-  if (v5)
+  effectCopy = effect;
+  if (effectCopy)
   {
     v17.receiver = self;
     v17.super_class = CFXEffect;
@@ -25,38 +25,38 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_jtEffect, a3);
-      v8 = [v5 displayName];
+      objc_storeStrong(&v6->_jtEffect, effect);
+      displayName = [effectCopy displayName];
       localizedTitle = v7->_localizedTitle;
-      v7->_localizedTitle = v8;
+      v7->_localizedTitle = displayName;
 
-      v10 = [v5 effectID];
+      effectID = [effectCopy effectID];
       identifier = v7->_identifier;
-      v7->_identifier = v10;
+      v7->_identifier = effectID;
 
-      if ([v5 type] == 1)
+      if ([effectCopy type] == 1)
       {
-        v12 = [v5 contentDataSource];
+        contentDataSource = [effectCopy contentDataSource];
 
-        if (v12)
+        if (contentDataSource)
         {
-          v13 = v5;
-          v14 = [v13 contentProperties];
-          [v13 addEffectParameters:v14];
+          v13 = effectCopy;
+          contentProperties = [v13 contentProperties];
+          [v13 addEffectParameters:contentProperties];
         }
       }
     }
 
     self = v7;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 + (void)initEffectRegistry
@@ -87,7 +87,7 @@ void __31__CFXEffect_initEffectRegistry__block_invoke()
   block[1] = 3221225472;
   block[2] = __31__CFXEffect_preWarmShaderCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v3, block);
 }
 
@@ -167,14 +167,14 @@ intptr_t __31__CFXEffect_preWarmShaderCache__block_invoke_2(uint64_t a1)
   return dispatch_semaphore_signal(v2);
 }
 
-+ (CFXEffect)effectWithIdentifier:(id)a3 forEffectType:(id)a4
++ (CFXEffect)effectWithIdentifier:(id)identifier forEffectType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   v7 = +[JFXEffectFactory sharedInstance];
-  v8 = [v5 jtEffectType];
+  jtEffectType = [typeCopy jtEffectType];
 
-  v9 = [v7 createEffectForType:v8 fromID:v6 withProperties:0];
+  v9 = [v7 createEffectForType:jtEffectType fromID:identifierCopy withProperties:0];
 
   if (v9)
   {
@@ -189,25 +189,25 @@ intptr_t __31__CFXEffect_preWarmShaderCache__block_invoke_2(uint64_t a1)
   return v10;
 }
 
-+ (id)effectIdentifiersForEffectType:(id)a3
++ (id)effectIdentifiersForEffectType:(id)type
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"Text"];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
+  v5 = [identifier isEqualToString:@"Text"];
 
-  v6 = [v3 identifier];
-  v7 = [v6 isEqualToString:@"Shapes"];
+  identifier2 = [typeCopy identifier];
+  v7 = [identifier2 isEqualToString:@"Shapes"];
 
-  v8 = [v3 identifier];
-  LOBYTE(v6) = [v8 isEqualToString:@"EmojiStickers"];
+  identifier3 = [typeCopy identifier];
+  LOBYTE(identifier2) = [identifier3 isEqualToString:@"EmojiStickers"];
 
-  v9 = [v3 identifier];
-  v10 = [v9 isEqualToString:@"Filter"];
+  identifier4 = [typeCopy identifier];
+  v10 = [identifier4 isEqualToString:@"Filter"];
 
-  LOBYTE(v9) = v5 | v7 | v6;
+  LOBYTE(identifier4) = v5 | v7 | identifier2;
   v11 = dispatch_semaphore_create(0);
-  if (v9)
+  if (identifier4)
   {
     v46 = 0;
     v47 = &v46;
@@ -244,8 +244,8 @@ intptr_t __31__CFXEffect_preWarmShaderCache__block_invoke_2(uint64_t a1)
     v39 = 0u;
     v40 = 0u;
     v17 = v47[5];
-    v18 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
-    if (v18)
+    effectIDs = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+    if (effectIDs)
     {
       v19 = *v40;
 LABEL_8:
@@ -258,18 +258,18 @@ LABEL_8:
         }
 
         v21 = *(*(&v39 + 1) + 8 * v20);
-        v22 = [v21 categoryID];
-        v23 = [v22 isEqualToString:v16];
+        categoryID = [v21 categoryID];
+        v23 = [categoryID isEqualToString:v16];
 
         if (v23)
         {
           break;
         }
 
-        if (v18 == ++v20)
+        if (effectIDs == ++v20)
         {
-          v18 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
-          if (v18)
+          effectIDs = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+          if (effectIDs)
           {
             goto LABEL_8;
           }
@@ -282,12 +282,12 @@ LABEL_8:
 
       if (v28)
       {
-        v18 = [v28 effectIDs];
+        effectIDs = [v28 effectIDs];
         v17 = v28;
         goto LABEL_20;
       }
 
-      v18 = 0;
+      effectIDs = 0;
     }
 
     else
@@ -322,12 +322,12 @@ LABEL_20:
     if (v26)
     {
       v27 = [v26 objectAtIndexedSubscript:0];
-      v18 = [v27 effectIDs];
+      effectIDs = [v27 effectIDs];
     }
 
     else
     {
-      v18 = 0;
+      effectIDs = 0;
     }
 
     _Block_object_dispose(&v46, 8);
@@ -342,7 +342,7 @@ LABEL_20:
     v50 = __Block_byref_object_dispose__12;
     v51 = 0;
     v29 = +[JFXEffectFactory sharedInstance];
-    v30 = [v3 jtEffectType];
+    jtEffectType = [typeCopy jtEffectType];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __44__CFXEffect_effectIdentifiersForEffectType___block_invoke_3;
@@ -350,15 +350,15 @@ LABEL_20:
     v35 = &v46;
     v31 = v11;
     v34 = v31;
-    [v29 effectIDsForType:v30 completion:v33];
+    [v29 effectIDsForType:jtEffectType completion:v33];
 
     dispatch_semaphore_wait(v31, 0xFFFFFFFFFFFFFFFFLL);
-    v18 = v47[5];
+    effectIDs = v47[5];
 
     _Block_object_dispose(&v46, 8);
   }
 
-  return v18;
+  return effectIDs;
 }
 
 void __44__CFXEffect_effectIdentifiersForEffectType___block_invoke(uint64_t a1, void *a2)
@@ -382,23 +382,23 @@ void __44__CFXEffect_effectIdentifiersForEffectType___block_invoke_3(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (CFXEffect)effectWithJTEffect:(id)a3
++ (CFXEffect)effectWithJTEffect:(id)effect
 {
-  v3 = a3;
-  v4 = [[CFXEffect alloc] initWithJTEffect:v3];
+  effectCopy = effect;
+  v4 = [[CFXEffect alloc] initWithJTEffect:effectCopy];
 
   return v4;
 }
 
 - (BOOL)isNone
 {
-  v2 = [(CFXEffect *)self jtEffect];
-  v3 = [v2 isNone];
+  jtEffect = [(CFXEffect *)self jtEffect];
+  isNone = [jtEffect isNone];
 
-  return v3;
+  return isNone;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [(JFXEffect *)self->_jtEffect copy];
   v4 = [[CFXEffect alloc] initWithJTEffect:v3];
@@ -406,10 +406,10 @@ void __44__CFXEffect_effectIdentifiersForEffectType___block_invoke_3(uint64_t a1
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -419,11 +419,11 @@ void __44__CFXEffect_effectIdentifiersForEffectType___block_invoke_3(uint64_t a1
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CFXEffect *)self jtEffect];
-      v7 = [(CFXEffect *)v5 jtEffect];
+      v5 = equalCopy;
+      jtEffect = [(CFXEffect *)self jtEffect];
+      jtEffect2 = [(CFXEffect *)v5 jtEffect];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [jtEffect isEqual:jtEffect2];
     }
 
     else
@@ -437,8 +437,8 @@ void __44__CFXEffect_effectIdentifiersForEffectType___block_invoke_3(uint64_t a1
 
 - (unint64_t)hash
 {
-  v2 = [(CFXEffect *)self jtEffect];
-  v3 = [v2 hash];
+  jtEffect = [(CFXEffect *)self jtEffect];
+  v3 = [jtEffect hash];
 
   return v3;
 }

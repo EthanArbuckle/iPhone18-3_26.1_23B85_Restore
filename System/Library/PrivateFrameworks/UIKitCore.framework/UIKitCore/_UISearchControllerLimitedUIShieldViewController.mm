@@ -1,5 +1,5 @@
 @interface _UISearchControllerLimitedUIShieldViewController
-- (void)_backButtonPressed:(id)a3;
+- (void)_backButtonPressed:(id)pressed;
 - (void)dealloc;
 - (void)loadView;
 @end
@@ -22,22 +22,22 @@
   v4 = [(_UISearchControllerLimitedAccessView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(_UISearchControllerLimitedUIShieldViewController *)self setLimitedAccessView:v4];
 
-  v5 = [(_UISearchControllerLimitedUIShieldViewController *)self limitedAccessView];
-  v6 = [v5 backButton];
-  [v6 addTarget:self action:sel__backButtonPressed_ forControlEvents:0x2000];
+  limitedAccessView = [(_UISearchControllerLimitedUIShieldViewController *)self limitedAccessView];
+  backButton = [limitedAccessView backButton];
+  [backButton addTarget:self action:sel__backButtonPressed_ forControlEvents:0x2000];
 
-  v7 = [(_UISearchControllerLimitedUIShieldViewController *)self limitedAccessView];
-  [(UIViewController *)self setView:v7];
+  limitedAccessView2 = [(_UISearchControllerLimitedUIShieldViewController *)self limitedAccessView];
+  [(UIViewController *)self setView:limitedAccessView2];
 }
 
-- (void)_backButtonPressed:(id)a3
+- (void)_backButtonPressed:(id)pressed
 {
-  v4 = [(_UISearchControllerLimitedUIShieldViewController *)self dismissAction];
+  dismissAction = [(_UISearchControllerLimitedUIShieldViewController *)self dismissAction];
 
-  if (v4)
+  if (dismissAction)
   {
-    v5 = [(_UISearchControllerLimitedUIShieldViewController *)self dismissAction];
-    v5[2]();
+    dismissAction2 = [(_UISearchControllerLimitedUIShieldViewController *)self dismissAction];
+    dismissAction2[2]();
   }
 }
 

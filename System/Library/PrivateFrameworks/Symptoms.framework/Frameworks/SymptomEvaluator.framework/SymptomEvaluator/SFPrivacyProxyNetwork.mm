@@ -1,5 +1,5 @@
 @interface SFPrivacyProxyNetwork
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,7 +15,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SFPrivacyProxyNetwork allocWithZone:?]];
   [(SFPrivacyProxyNetwork *)v4 setType:[(SFPrivacyProxyNetwork *)self type]];

@@ -7,8 +7,8 @@
 
 - (double)timestamp
 {
-  v2 = [(MSPMutableHistoryEntry *)self usageDate];
-  [v2 timeIntervalSinceReferenceDate];
+  usageDate = [(MSPMutableHistoryEntry *)self usageDate];
+  [usageDate timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -16,10 +16,10 @@
 
 - (NSString)_maps_diffableDataSourceIdentifier
 {
-  v2 = [(MSPMutableHistoryEntry *)self storageIdentifier];
-  v3 = [v2 UUIDString];
+  storageIdentifier = [(MSPMutableHistoryEntry *)self storageIdentifier];
+  uUIDString = [storageIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 @end

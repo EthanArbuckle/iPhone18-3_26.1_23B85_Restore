@@ -1,23 +1,23 @@
 @interface SiriSetupViewController.Delegate
-- (BOOL)siriSetupViewController:(id)a3 openURL:(id)a4;
+- (BOOL)siriSetupViewController:(id)controller openURL:(id)l;
 - (_TtCV20VisualIntelligenceUI23SiriSetupViewControllerP33_22C67463BC5DB27F499695934EEC52688Delegate)init;
-- (void)dismissSiriSetupViewController:(void *)a1;
+- (void)dismissSiriSetupViewController:(void *)controller;
 @end
 
 @implementation SiriSetupViewController.Delegate
 
-- (void)dismissSiriSetupViewController:(void *)a1
+- (void)dismissSiriSetupViewController:(void *)controller
 {
-  v1 = a1;
+  controllerCopy = controller;
   sub_21DFE1ED4();
 }
 
-- (BOOL)siriSetupViewController:(id)a3 openURL:(id)a4
+- (BOOL)siriSetupViewController:(id)controller openURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEA9990);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a4)
+  if (l)
   {
     sub_21E13D214();
     v8 = sub_21E13D264();

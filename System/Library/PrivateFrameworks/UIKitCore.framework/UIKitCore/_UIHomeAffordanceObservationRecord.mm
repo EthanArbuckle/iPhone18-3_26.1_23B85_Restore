@@ -1,11 +1,11 @@
 @interface _UIHomeAffordanceObservationRecord
 - (NSString)debugDescription;
 - (_UIHomeAffordanceObservationRecord)init;
-- (id)initWithObserver:(void *)a3 window:(void *)a4 viewServiceSessionIdentifier:;
+- (id)initWithObserver:(void *)observer window:(void *)window viewServiceSessionIdentifier:;
 - (id)observer;
 - (id)succinctDescription;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)setLegacyViewServiceSessionIdentifier:(uint64_t)a1;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)setLegacyViewServiceSessionIdentifier:(uint64_t)identifier;
 @end
 
 @implementation _UIHomeAffordanceObservationRecord
@@ -23,49 +23,49 @@
 
 - (_UIHomeAffordanceObservationRecord)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:421 description:{@"%s: init is not allowed on %@", "-[_UIHomeAffordanceObservationRecord init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:421 description:{@"%s: init is not allowed on %@", "-[_UIHomeAffordanceObservationRecord init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)initWithObserver:(void *)a3 window:(void *)a4 viewServiceSessionIdentifier:
+- (id)initWithObserver:(void *)observer window:(void *)window viewServiceSessionIdentifier:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = _UIHomeAffordanceObservationRecord;
   v7 = objc_msgSendSuper2(&v11, sel_init);
   if (v7)
   {
     if (a2)
     {
-      if (a3)
+      if (observer)
       {
 LABEL_5:
         objc_storeWeak(v7 + 1, a2);
-        objc_storeWeak(v7 + 2, a3);
-        objc_storeStrong(v7 + 3, a4);
+        objc_storeWeak(v7 + 2, observer);
+        objc_storeStrong(v7 + 3, window);
         return v7;
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel_initWithObserver_window_viewServiceSessionIdentifier_ object:v7 file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:430 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithObserver_window_viewServiceSessionIdentifier_ object:v7 file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:430 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
 
-      if (a3)
+      if (observer)
       {
         goto LABEL_5;
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:sel_initWithObserver_window_viewServiceSessionIdentifier_ object:v7 file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"window"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_initWithObserver_window_viewServiceSessionIdentifier_ object:v7 file:@"_UIHomeAffordanceSceneNotifier.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"window"}];
 
     goto LABEL_5;
   }
@@ -73,32 +73,32 @@ LABEL_5:
   return v7;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64___UIHomeAffordanceObservationRecord_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v6[4] = a3;
+  v6[4] = stream;
   v6[5] = self;
-  [a3 appendProem:self block:v6];
-  if ([a3 hasDebugStyle])
+  [stream appendProem:self block:v6];
+  if ([stream hasDebugStyle])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __64___UIHomeAffordanceObservationRecord_appendDescriptionToStream___block_invoke_2;
     v5[3] = &unk_1E70F35B8;
-    v5[4] = a3;
+    v5[4] = stream;
     v5[5] = self;
-    [a3 appendBodySectionWithName:0 block:v5];
+    [stream appendBodySectionWithName:0 block:v5];
   }
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -106,17 +106,17 @@ LABEL_5:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (void)setLegacyViewServiceSessionIdentifier:(uint64_t)a1
+- (void)setLegacyViewServiceSessionIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((identifier + 24), a2);
   }
 }
 

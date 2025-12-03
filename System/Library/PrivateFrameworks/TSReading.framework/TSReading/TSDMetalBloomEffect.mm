@@ -1,19 +1,19 @@
 @interface TSDMetalBloomEffect
-- (TSDMetalBloomEffect)initWithEffectSize:(CGSize)a3 blurScale:(double)a4 metalContext:(id)a5;
-- (id)p_blurTextureWithTexture:(id)a3 metalContext:(id)a4 MVPMatrix:(CATransform3D *)a5;
-- (void)drawBloomEffectWithTexture:(id)a3 metalContext:(id)a4 encoder:(id)a5 MVPMatrix:(CATransform3D *)a6 bloomAmount:(double)a7;
-- (void)p_setupBuffersWithMetalContext:(id)a3;
-- (void)p_setupShadersWithMetalContext:(id)a3;
+- (TSDMetalBloomEffect)initWithEffectSize:(CGSize)size blurScale:(double)scale metalContext:(id)context;
+- (id)p_blurTextureWithTexture:(id)texture metalContext:(id)context MVPMatrix:(CATransform3D *)matrix;
+- (void)drawBloomEffectWithTexture:(id)texture metalContext:(id)context encoder:(id)encoder MVPMatrix:(CATransform3D *)matrix bloomAmount:(double)amount;
+- (void)p_setupBuffersWithMetalContext:(id)context;
+- (void)p_setupShadersWithMetalContext:(id)context;
 - (void)teardown;
 @end
 
 @implementation TSDMetalBloomEffect
 
-- (TSDMetalBloomEffect)initWithEffectSize:(CGSize)a3 blurScale:(double)a4 metalContext:(id)a5
+- (TSDMetalBloomEffect)initWithEffectSize:(CGSize)size blurScale:(double)scale metalContext:(id)context
 {
-  v22 = *&a3.height;
-  v24 = *&a4;
-  v6 = a5;
+  v22 = *&size.height;
+  v24 = *&scale;
+  contextCopy = context;
   v25.receiver = self;
   v25.super_class = TSDMetalBloomEffect;
   v7 = [(TSDMetalBloomEffect *)&v25 init];
@@ -21,19 +21,19 @@
   if (v7)
   {
     v9 = *&v22;
-    v7->_effectSize.width = a3.width;
+    v7->_effectSize.width = size.width;
     *&v7->_effectSize.height = v22;
     v10 = v24;
-    v11.f64[0] = a3.width;
+    v11.f64[0] = size.width;
     if (*&v24 < 1.0)
     {
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalBloomEffect initWithEffectSize:blurScale:metalContext:]"];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalBloomEffect.m"];
-      [v12 handleFailureInFunction:v13 file:v14 lineNumber:47 description:@"blurScale must be >= 1.0!"];
+      [currentHandler handleFailureInFunction:v13 file:v14 lineNumber:47 description:@"blurScale must be >= 1.0!"];
 
       v9 = *&v22;
-      v11.f64[0] = a3.width;
+      v11.f64[0] = size.width;
       v10 = v24;
     }
 
@@ -42,8 +42,8 @@
     __asm { FMOV            V1.2S, #16.0 }
 
     v8->_blurBufferSize = vcvtq_f64_f32(vbsl_s8(vcge_f32(_D1, v15), _D1, v15));
-    [(TSDMetalBloomEffect *)v8 p_setupShadersWithMetalContext:v6, v22, a3, v24];
-    [(TSDMetalBloomEffect *)v8 p_setupBuffersWithMetalContext:v6];
+    [(TSDMetalBloomEffect *)v8 p_setupShadersWithMetalContext:contextCopy, v22, size, v24];
+    [(TSDMetalBloomEffect *)v8 p_setupBuffersWithMetalContext:contextCopy];
   }
 
   return v8;
@@ -76,21 +76,21 @@
   self->_verticalBlurRenderTarget = 0;
 }
 
-- (void)p_setupShadersWithMetalContext:(id)a3
+- (void)p_setupShadersWithMetalContext:(id)context
 {
   v4 = MEMORY[0x277CD6F68];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
-  [v6 setPixelFormat:objc_msgSend(v5, "pixelFormat")];
+  [v6 setPixelFormat:objc_msgSend(contextCopy, "pixelFormat")];
   v7 = [TSDMetalShader alloc];
-  v8 = [v5 device];
-  v9 = [(TSDMetalShader *)v7 initDefaultTextureShaderWithDevice:v8 colorAttachment:v6];
+  device = [contextCopy device];
+  v9 = [(TSDMetalShader *)v7 initDefaultTextureShaderWithDevice:device colorAttachment:v6];
   fboTransferShader = self->_fboTransferShader;
   self->_fboTransferShader = v9;
 
   v11 = [TSDMetalShader alloc];
-  v12 = [v5 device];
-  v13 = [(TSDMetalShader *)v11 initDefaultGaussianBlurShaderWithDevice:v12 colorAttachment:v6 halfSizedRadius:0];
+  device2 = [contextCopy device];
+  v13 = [(TSDMetalShader *)v11 initDefaultGaussianBlurShaderWithDevice:device2 colorAttachment:v6 halfSizedRadius:0];
   blurShader = self->_blurShader;
   self->_blurShader = v13;
 
@@ -98,9 +98,9 @@
   [v6 setDestinationRGBBlendFactor:5];
   [v6 setDestinationAlphaBlendFactor:5];
   v15 = [TSDMetalShader alloc];
-  v16 = [v5 device];
+  device3 = [contextCopy device];
 
-  v17 = [(TSDMetalShader *)v15 initDefaultBloomShaderWithDevice:v16 colorAttachment:v6];
+  v17 = [(TSDMetalShader *)v15 initDefaultBloomShaderWithDevice:device3 colorAttachment:v6];
   bloomShader = self->_bloomShader;
   self->_bloomShader = v17;
 
@@ -125,15 +125,15 @@
   self[1].super.isa = vcvt_f32_f64(vdivq_f64(_Q1, self->_blurBufferSize));
 }
 
-- (void)p_setupBuffersWithMetalContext:(id)a3
+- (void)p_setupBuffersWithMetalContext:(id)context
 {
   v5 = TSDRectWithSize();
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = a3;
-  v13 = [v12 device];
-  v14 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v13 textureRect:v5 device:v7, v9, v11, 0.0, 0.0, 1.0, 1.0];
+  contextCopy = context;
+  device = [contextCopy device];
+  v14 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:v5 device:v7, v9, v11, 0.0, 0.0, 1.0, 1.0];
   dataBuffer = self->_dataBuffer;
   self->_dataBuffer = v14;
 
@@ -141,99 +141,99 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v12 device];
-  v24 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v23 textureRect:v16 device:v18, v20, v22, 0.0, 0.0, 1.0, 1.0];
+  device2 = [contextCopy device];
+  v24 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device2 textureRect:v16 device:v18, v20, v22, 0.0, 0.0, 1.0, 1.0];
   blurDataBuffer = self->_blurDataBuffer;
   self->_blurDataBuffer = v24;
 
-  v26 = [[TSDMetalRenderTarget alloc] initWithSize:v12 metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
+  v26 = [[TSDMetalRenderTarget alloc] initWithSize:contextCopy metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
   downSampleRenderTarget = self->_downSampleRenderTarget;
   self->_downSampleRenderTarget = v26;
 
-  v28 = [[TSDMetalRenderTarget alloc] initWithSize:v12 metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
+  v28 = [[TSDMetalRenderTarget alloc] initWithSize:contextCopy metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
   horizontalBlurRenderTarget = self->_horizontalBlurRenderTarget;
   self->_horizontalBlurRenderTarget = v28;
 
-  v30 = [[TSDMetalRenderTarget alloc] initWithSize:v12 metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
+  v30 = [[TSDMetalRenderTarget alloc] initWithSize:contextCopy metalContext:self->_blurBufferSize.width, self->_blurBufferSize.height];
   verticalBlurRenderTarget = self->_verticalBlurRenderTarget;
   self->_verticalBlurRenderTarget = v30;
 }
 
-- (id)p_blurTextureWithTexture:(id)a3 metalContext:(id)a4 MVPMatrix:(CATransform3D *)a5
+- (id)p_blurTextureWithTexture:(id)texture metalContext:(id)context MVPMatrix:(CATransform3D *)matrix
 {
-  v8 = a3;
-  v9 = [a4 commandQueue];
-  v10 = [v9 commandBuffer];
+  textureCopy = texture;
+  commandQueue = [context commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  v11 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a5->m21), *&a5->m23);
-  v12 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a5->m31), *&a5->m33);
-  v13 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a5->m41), *&a5->m43);
-  v24 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a5->m11), *&a5->m13);
+  v11 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m21), *&matrix->m23);
+  v12 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m31), *&matrix->m33);
+  v13 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m41), *&matrix->m43);
+  v24 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m11), *&matrix->m13);
   v14 = [(TSDMetalRenderTarget *)self->_downSampleRenderTarget passDescriptor:*&v24];
-  v15 = [v10 renderCommandEncoderWithDescriptor:v14];
+  v15 = [commandBuffer renderCommandEncoderWithDescriptor:v14];
 
   [(TSDMetalShader *)self->_fboTransferShader setPipelineStateWithEncoder:v15 vertexBytes:&v24];
-  [v15 setFragmentTexture:v8 atIndex:0];
+  [v15 setFragmentTexture:textureCopy atIndex:0];
 
   [(TSDMTLDataBuffer *)self->_dataBuffer drawWithEncoder:v15 atIndex:[(TSDMetalShader *)self->_fboTransferShader bufferIndex]];
   [v15 endEncoding];
-  v16 = [(TSDMetalRenderTarget *)self->_horizontalBlurRenderTarget passDescriptor];
-  v17 = [v10 renderCommandEncoderWithDescriptor:v16];
+  passDescriptor = [(TSDMetalRenderTarget *)self->_horizontalBlurRenderTarget passDescriptor];
+  v17 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
 
   LOBYTE(self[1]._effectSize.width) = 1;
   [(TSDMetalShader *)self->_blurShader setPipelineStateWithEncoder:v17 vertexBytes:self->_anon_70 fragmentBytes:&self[1]];
-  v18 = [(TSDMetalRenderTarget *)self->_downSampleRenderTarget texture];
-  [v17 setFragmentTexture:v18 atIndex:0];
+  texture = [(TSDMetalRenderTarget *)self->_downSampleRenderTarget texture];
+  [v17 setFragmentTexture:texture atIndex:0];
 
   [(TSDMTLDataBuffer *)self->_blurDataBuffer drawWithEncoder:v17 atIndex:[(TSDMetalShader *)self->_blurShader bufferIndex]];
   [v17 endEncoding];
-  v19 = [(TSDMetalRenderTarget *)self->_verticalBlurRenderTarget passDescriptor];
-  v20 = [v10 renderCommandEncoderWithDescriptor:v19];
+  passDescriptor2 = [(TSDMetalRenderTarget *)self->_verticalBlurRenderTarget passDescriptor];
+  v20 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor2];
 
   LOBYTE(self[1]._effectSize.width) = 0;
   [(TSDMetalShader *)self->_blurShader setPipelineStateWithEncoder:v20 vertexBytes:self->_anon_70 fragmentBytes:&self[1]];
-  v21 = [(TSDMetalRenderTarget *)self->_horizontalBlurRenderTarget texture];
-  [v20 setFragmentTexture:v21 atIndex:0];
+  texture2 = [(TSDMetalRenderTarget *)self->_horizontalBlurRenderTarget texture];
+  [v20 setFragmentTexture:texture2 atIndex:0];
 
   [(TSDMTLDataBuffer *)self->_blurDataBuffer drawWithEncoder:v20 atIndex:[(TSDMetalShader *)self->_blurShader bufferIndex]];
   [v20 endEncoding];
-  [v10 commit];
-  v22 = [(TSDMetalRenderTarget *)self->_verticalBlurRenderTarget texture];
+  [commandBuffer commit];
+  texture3 = [(TSDMetalRenderTarget *)self->_verticalBlurRenderTarget texture];
 
-  return v22;
+  return texture3;
 }
 
-- (void)drawBloomEffectWithTexture:(id)a3 metalContext:(id)a4 encoder:(id)a5 MVPMatrix:(CATransform3D *)a6 bloomAmount:(double)a7
+- (void)drawBloomEffectWithTexture:(id)texture metalContext:(id)context encoder:(id)encoder MVPMatrix:(CATransform3D *)matrix bloomAmount:(double)amount
 {
-  v12 = *&a6->m33;
-  v28 = *&a6->m31;
+  v12 = *&matrix->m33;
+  v28 = *&matrix->m31;
   v29 = v12;
-  v13 = *&a6->m43;
-  v30 = *&a6->m41;
+  v13 = *&matrix->m43;
+  v30 = *&matrix->m41;
   v31 = v13;
-  v14 = *&a6->m13;
-  v24 = *&a6->m11;
+  v14 = *&matrix->m13;
+  v24 = *&matrix->m11;
   v25 = v14;
-  v15 = *&a6->m23;
-  v26 = *&a6->m21;
+  v15 = *&matrix->m23;
+  v26 = *&matrix->m21;
   v27 = v15;
-  v16 = a5;
-  v17 = a3;
-  v18 = [(TSDMetalBloomEffect *)self p_blurTextureWithTexture:v17 metalContext:a4 MVPMatrix:&v24];
-  v19 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a6->m21), *&a6->m23);
-  v20 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a6->m31), *&a6->m33);
-  v21 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a6->m41), *&a6->m43);
-  v24 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a6->m11), *&a6->m13);
+  encoderCopy = encoder;
+  textureCopy = texture;
+  v18 = [(TSDMetalBloomEffect *)self p_blurTextureWithTexture:textureCopy metalContext:context MVPMatrix:&v24];
+  v19 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m21), *&matrix->m23);
+  v20 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m31), *&matrix->m33);
+  v21 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m41), *&matrix->m43);
+  v24 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m11), *&matrix->m13);
   v25 = v19;
   v26 = v20;
   v27 = v21;
-  v22 = a7;
-  v23 = v22;
-  [(TSDMetalShader *)self->_bloomShader setPipelineStateWithEncoder:v16 vertexBytes:&v24 fragmentBytes:&v23];
-  [v16 setFragmentTexture:v17 atIndex:0];
+  amountCopy = amount;
+  v23 = amountCopy;
+  [(TSDMetalShader *)self->_bloomShader setPipelineStateWithEncoder:encoderCopy vertexBytes:&v24 fragmentBytes:&v23];
+  [encoderCopy setFragmentTexture:textureCopy atIndex:0];
 
-  [v16 setFragmentTexture:v18 atIndex:1];
-  [(TSDMTLDataBuffer *)self->_dataBuffer drawWithEncoder:v16 atIndex:[(TSDMetalShader *)self->_bloomShader bufferIndex]];
+  [encoderCopy setFragmentTexture:v18 atIndex:1];
+  [(TSDMTLDataBuffer *)self->_dataBuffer drawWithEncoder:encoderCopy atIndex:[(TSDMetalShader *)self->_bloomShader bufferIndex]];
 }
 
 @end

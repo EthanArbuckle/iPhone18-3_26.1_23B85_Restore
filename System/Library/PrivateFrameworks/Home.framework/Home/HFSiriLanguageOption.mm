@@ -1,10 +1,10 @@
 @interface HFSiriLanguageOption
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFSiriLanguageOption)init;
-- (HFSiriLanguageOption)initWithHomeKitSettingLanguageValue:(id)a3;
-- (HFSiriLanguageOption)initWithRecognitionLanguage:(id)a3 outputLanguage:(id)a4 outputGender:(int64_t)a5 voiceName:(id)a6 defaultVoiceForRecognitionLanguage:(BOOL)a7;
-- (HFSiriLanguageOption)initWithSerializedRepresentation:(id)a3;
+- (HFSiriLanguageOption)initWithHomeKitSettingLanguageValue:(id)value;
+- (HFSiriLanguageOption)initWithRecognitionLanguage:(id)language outputLanguage:(id)outputLanguage outputGender:(int64_t)gender voiceName:(id)name defaultVoiceForRecognitionLanguage:(BOOL)recognitionLanguage;
+- (HFSiriLanguageOption)initWithSerializedRepresentation:(id)representation;
 - (NSString)description;
 - (NSString)localizedOutputVoice;
 - (NSString)localizedOutputVoiceAccent;
@@ -21,30 +21,30 @@
 
 - (HFSiriLanguageOption)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRecognitionLanguage_outputLanguage_outputGender_voiceName_defaultVoiceForRecognitionLanguage_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFSiriLanguageOption init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFSiriLanguageOption init]", v5}];
 
   return 0;
 }
 
-- (HFSiriLanguageOption)initWithRecognitionLanguage:(id)a3 outputLanguage:(id)a4 outputGender:(int64_t)a5 voiceName:(id)a6 defaultVoiceForRecognitionLanguage:(BOOL)a7
+- (HFSiriLanguageOption)initWithRecognitionLanguage:(id)language outputLanguage:(id)outputLanguage outputGender:(int64_t)gender voiceName:(id)name defaultVoiceForRecognitionLanguage:(BOOL)recognitionLanguage
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  if (v13)
+  languageCopy = language;
+  outputLanguageCopy = outputLanguage;
+  nameCopy = name;
+  if (languageCopy)
   {
-    if (v14)
+    if (outputLanguageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"outputLanguage"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"outputLanguage"}];
 
-    if (!v15)
+    if (!nameCopy)
     {
       goto LABEL_7;
     }
@@ -52,29 +52,29 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"recognitionLanguage"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFSiriLanguageOption.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"recognitionLanguage"}];
 
-  if (!v14)
+  if (!outputLanguageCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (!v15)
+  if (!nameCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v16 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v17 = [v16 voiceNamesForOutputLanguageCode:v14 gender:a5];
-  v18 = [v17 firstObject];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  v17 = [mEMORY[0x277CEF2D8] voiceNamesForOutputLanguageCode:outputLanguageCopy gender:gender];
+  firstObject = [v17 firstObject];
 
-  if ([v18 isEqualToString:v15])
+  if ([firstObject isEqualToString:nameCopy])
   {
 
-    v15 = 0;
+    nameCopy = 0;
   }
 
 LABEL_7:
@@ -83,45 +83,45 @@ LABEL_7:
   v19 = [(HFSiriLanguageOption *)&v27 init];
   if (v19)
   {
-    v20 = [v13 copy];
+    v20 = [languageCopy copy];
     recognitionLanguage = v19->_recognitionLanguage;
     v19->_recognitionLanguage = v20;
 
-    v22 = [v14 copy];
+    v22 = [outputLanguageCopy copy];
     outputLanguage = v19->_outputLanguage;
     v19->_outputLanguage = v22;
 
-    v19->_outputGender = a5;
-    v19->_defaultVoiceForRecognitionLanguage = a7;
-    objc_storeStrong(&v19->_serializableVoiceName, v15);
+    v19->_outputGender = gender;
+    v19->_defaultVoiceForRecognitionLanguage = recognitionLanguage;
+    objc_storeStrong(&v19->_serializableVoiceName, nameCopy);
   }
 
   return v19;
 }
 
-- (HFSiriLanguageOption)initWithHomeKitSettingLanguageValue:(id)a3
+- (HFSiriLanguageOption)initWithHomeKitSettingLanguageValue:(id)value
 {
-  v5 = a3;
-  v6 = [HFUtilities voiceInfoFromSettingLanguageValue:v5];
-  v7 = [v5 inputLanguageCode];
-  v8 = [v5 outputVoiceLanguageCode];
-  v9 = [v6 gender];
-  v10 = [v6 name];
-  v11 = [(HFSiriLanguageOption *)self initWithRecognitionLanguage:v7 outputLanguage:v8 outputGender:v9 voiceName:v10 defaultVoiceForRecognitionLanguage:1];
+  valueCopy = value;
+  v6 = [HFUtilities voiceInfoFromSettingLanguageValue:valueCopy];
+  inputLanguageCode = [valueCopy inputLanguageCode];
+  outputVoiceLanguageCode = [valueCopy outputVoiceLanguageCode];
+  gender = [v6 gender];
+  name = [v6 name];
+  v11 = [(HFSiriLanguageOption *)self initWithRecognitionLanguage:inputLanguageCode outputLanguage:outputVoiceLanguageCode outputGender:gender voiceName:name defaultVoiceForRecognitionLanguage:1];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_settingLanguageValue, a3);
+    objc_storeStrong(&v11->_settingLanguageValue, value);
   }
 
   return v11;
 }
 
-- (HFSiriLanguageOption)initWithSerializedRepresentation:(id)a3
+- (HFSiriLanguageOption)initWithSerializedRepresentation:(id)representation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:{@", "}];
+  representationCopy = representation;
+  v5 = [representationCopy componentsSeparatedByString:{@", "}];
   if ([v5 count] > 3)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
@@ -144,7 +144,7 @@ LABEL_7:
 
     self = [(HFSiriLanguageOption *)self initWithRecognitionLanguage:v6 outputLanguage:v8 outputGender:v10 voiceName:v13 defaultVoiceForRecognitionLanguage:v12];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -153,15 +153,15 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = representationCopy;
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "Unexpected Siri language format %@", buf, 0xCu);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __57__HFSiriLanguageOption_initWithSerializedRepresentation___block_invoke(uint64_t a1)
@@ -209,19 +209,19 @@ uint64_t __57__HFSiriLanguageOption_initWithSerializedRepresentation___block_inv
     v4 = off_277E02508[v3];
   }
 
-  v5 = [(HFSiriLanguageOption *)self isDefaultVoiceForRecognitionLanguage];
+  isDefaultVoiceForRecognitionLanguage = [(HFSiriLanguageOption *)self isDefaultVoiceForRecognitionLanguage];
   v6 = @"n";
-  if (v5)
+  if (isDefaultVoiceForRecognitionLanguage)
   {
     v6 = @"d";
   }
 
   v7 = v6;
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(HFSiriLanguageOption *)self recognitionLanguage];
-  v16[0] = v9;
-  v10 = [(HFSiriLanguageOption *)self outputLanguage];
-  v16[1] = v10;
+  recognitionLanguage = [(HFSiriLanguageOption *)self recognitionLanguage];
+  v16[0] = recognitionLanguage;
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  v16[1] = outputLanguage;
   v16[2] = v4;
   v16[3] = v7;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:4];
@@ -291,20 +291,20 @@ __CFString *__48__HFSiriLanguageOption_serializedRepresentation__block_invoke(ui
 
   v9 = v8;
   v10 = MEMORY[0x277CBEB18];
-  v11 = [(HFSiriLanguageOption *)self recognitionLanguage];
-  v31[0] = v11;
-  v12 = [(HFSiriLanguageOption *)self outputLanguage];
-  v31[1] = v12;
+  recognitionLanguage = [(HFSiriLanguageOption *)self recognitionLanguage];
+  v31[0] = recognitionLanguage;
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  v31[1] = outputLanguage;
   v31[2] = v5;
   v31[3] = v7;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
   v14 = [v10 arrayWithArray:v13];
 
   v15 = MEMORY[0x277CBEB18];
-  v16 = [(HFSiriLanguageOption *)self recognitionLanguage];
-  v30[0] = v16;
-  v17 = [(HFSiriLanguageOption *)self outputLanguage];
-  v30[1] = v17;
+  recognitionLanguage2 = [(HFSiriLanguageOption *)self recognitionLanguage];
+  v30[0] = recognitionLanguage2;
+  outputLanguage2 = [(HFSiriLanguageOption *)self outputLanguage];
+  v30[1] = outputLanguage2;
   v30[2] = v5;
   v30[3] = v9;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
@@ -324,18 +324,18 @@ __CFString *__48__HFSiriLanguageOption_serializedRepresentation__block_invoke(ui
     v21 = [v19 componentsJoinedByString:{@", "}];
     [v3 addObject:v21];
 
-    v22 = [(HFSiriLanguageOption *)self voiceName];
+    voiceName = [(HFSiriLanguageOption *)self voiceName];
 
-    if (!v22)
+    if (!voiceName)
     {
       goto LABEL_15;
     }
 
-    v23 = [(HFSiriLanguageOption *)self voiceName];
-    [v14 addObject:v23];
+    voiceName2 = [(HFSiriLanguageOption *)self voiceName];
+    [v14 addObject:voiceName2];
 
-    v24 = [(HFSiriLanguageOption *)self voiceName];
-    [v19 addObject:v24];
+    voiceName3 = [(HFSiriLanguageOption *)self voiceName];
+    [v19 addObject:voiceName3];
   }
 
   v25 = [v14 componentsJoinedByString:{@", "}];
@@ -408,19 +408,19 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -428,11 +428,11 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFSiriLanguageOption *)self recognitionLanguage];
-  [v3 appendString:v4 withName:@"recognitionLanguage"];
+  recognitionLanguage = [(HFSiriLanguageOption *)self recognitionLanguage];
+  [v3 appendString:recognitionLanguage withName:@"recognitionLanguage"];
 
-  v5 = [(HFSiriLanguageOption *)self outputLanguage];
-  [v3 appendString:v5 withName:@"outputLanguage"];
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  [v3 appendString:outputLanguage withName:@"outputLanguage"];
 
   v6 = [(HFSiriLanguageOption *)self outputGender]- 1;
   if (v6 > 2)
@@ -446,25 +446,25 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
   }
 
   [v3 appendString:v7 withName:@"outputGender"];
-  v8 = [(HFSiriLanguageOption *)self serializableVoiceName];
+  serializableVoiceName = [(HFSiriLanguageOption *)self serializableVoiceName];
   v9 = [HFSiriLanguageOptionSerializableVoiceName copy];
-  [v3 appendString:v8 withName:v9];
+  [v3 appendString:serializableVoiceName withName:v9];
 
-  v10 = [(HFSiriLanguageOption *)self voiceName];
+  voiceName = [(HFSiriLanguageOption *)self voiceName];
   v11 = [HFSiriLanguageOptionVoiceName copy];
-  [v3 appendString:v10 withName:v11];
+  [v3 appendString:voiceName withName:v11];
 
   v12 = [v3 appendBool:-[HFSiriLanguageOption isDefaultVoiceForRecognitionLanguage](self withName:{"isDefaultVoiceForRecognitionLanguage"), @"defaultVoice"}];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 - (NSString)localizedRecognitionLanguage
 {
-  v3 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v4 = [(HFSiriLanguageOption *)self recognitionLanguage];
-  v5 = [v3 localizedNameForSiriLanguage:v4 inDisplayLanguage:0];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  recognitionLanguage = [(HFSiriLanguageOption *)self recognitionLanguage];
+  v5 = [mEMORY[0x277CEF2D8] localizedNameForSiriLanguage:recognitionLanguage inDisplayLanguage:0];
 
   if (![v5 length])
   {
@@ -472,10 +472,10 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
     if (+[HFUtilities isInternalInstall])
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [(HFSiriLanguageOption *)self recognitionLanguage];
-      v9 = [v7 stringWithFormat:@"%@ (%@)", v6, v8];
+      recognitionLanguage2 = [(HFSiriLanguageOption *)self recognitionLanguage];
+      v9 = [v7 stringWithFormat:@"%@ (%@)", v6, recognitionLanguage2];
 
-      v5 = v8;
+      v5 = recognitionLanguage2;
     }
 
     else
@@ -491,22 +491,22 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
 
 - (NSString)localizedOutputVoice
 {
-  v3 = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
-  v4 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v5 = [(HFSiriLanguageOption *)self outputLanguage];
-  v6 = [v4 outputVoiceDescriptorForOutputLanguageCode:v5 voiceName:v3];
-  v7 = [v6 localizedDisplayWithRegion];
+  voiceNameWithDefaultFallback = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  v6 = [mEMORY[0x277CEF2D8] outputVoiceDescriptorForOutputLanguageCode:outputLanguage voiceName:voiceNameWithDefaultFallback];
+  localizedDisplayWithRegion = [v6 localizedDisplayWithRegion];
 
-  if (![v7 length])
+  if (![localizedDisplayWithRegion length])
   {
     v8 = _HFLocalizedStringWithDefaultValue(@"HFSiriOutputVoiceUnknownName", @"HFSiriOutputVoiceUnknownName", 1);
     if (+[HFUtilities isInternalInstall])
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(HFSiriLanguageOption *)self voiceName];
-      v11 = [v9 stringWithFormat:@"%@ (%@, %@)", v8, v10, v3];
+      voiceName = [(HFSiriLanguageOption *)self voiceName];
+      v11 = [v9 stringWithFormat:@"%@ (%@, %@)", v8, voiceName, voiceNameWithDefaultFallback];
 
-      v7 = v10;
+      localizedDisplayWithRegion = voiceName;
     }
 
     else
@@ -514,54 +514,54 @@ uint64_t __35__HFSiriLanguageOption_na_identity__block_invoke_7(uint64_t a1, voi
       v11 = v8;
     }
 
-    v7 = v11;
+    localizedDisplayWithRegion = v11;
   }
 
-  return v7;
+  return localizedDisplayWithRegion;
 }
 
 - (NSString)localizedOutputVoiceAccent
 {
-  v3 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v4 = [(HFSiriLanguageOption *)self outputVoice];
-  v5 = [v3 localizedNameOfOutputVoice:v4 inDisplayLanguage:0];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  outputVoice = [(HFSiriLanguageOption *)self outputVoice];
+  v5 = [mEMORY[0x277CEF2D8] localizedNameOfOutputVoice:outputVoice inDisplayLanguage:0];
 
   return v5;
 }
 
 - (id)outputVoice
 {
-  v3 = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
+  voiceNameWithDefaultFallback = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
   v4 = objc_alloc(MEMORY[0x277CEF528]);
-  v5 = [(HFSiriLanguageOption *)self outputLanguage];
-  v6 = [v4 initWithLanguageCode:v5 gender:-[HFSiriLanguageOption outputGender](self isCustom:"outputGender") name:0 footprint:v3 contentVersion:0 masteredVersion:{0, 0}];
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  v6 = [v4 initWithLanguageCode:outputLanguage gender:-[HFSiriLanguageOption outputGender](self isCustom:"outputGender") name:0 footprint:voiceNameWithDefaultFallback contentVersion:0 masteredVersion:{0, 0}];
 
   return v6;
 }
 
 - (NSString)localizedOutputVoiceColor
 {
-  v3 = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
-  v4 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v5 = [(HFSiriLanguageOption *)self outputLanguage];
-  v6 = [v4 outputVoiceDescriptorForOutputLanguageCode:v5 voiceName:v3];
-  v7 = [v6 localizedDisplay];
+  voiceNameWithDefaultFallback = [(HFSiriLanguageOption *)self voiceNameWithDefaultFallback];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+  v6 = [mEMORY[0x277CEF2D8] outputVoiceDescriptorForOutputLanguageCode:outputLanguage voiceName:voiceNameWithDefaultFallback];
+  localizedDisplay = [v6 localizedDisplay];
 
-  return v7;
+  return localizedDisplay;
 }
 
 - (NSString)voiceNameWithDefaultFallback
 {
-  v3 = self->_serializableVoiceName;
-  if (!v3)
+  firstObject = self->_serializableVoiceName;
+  if (!firstObject)
   {
-    v4 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v5 = [(HFSiriLanguageOption *)self outputLanguage];
-    v6 = [v4 voiceNamesForOutputLanguageCode:v5 gender:{-[HFSiriLanguageOption outputGender](self, "outputGender")}];
-    v3 = [v6 firstObject];
+    mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+    outputLanguage = [(HFSiriLanguageOption *)self outputLanguage];
+    v6 = [mEMORY[0x277CEF2D8] voiceNamesForOutputLanguageCode:outputLanguage gender:{-[HFSiriLanguageOption outputGender](self, "outputGender")}];
+    firstObject = [v6 firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 @end

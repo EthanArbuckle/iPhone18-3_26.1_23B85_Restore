@@ -1,32 +1,32 @@
 @interface SIRINLUEXTERNALResponseStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCode:(id)a3;
+- (int)StringAsCode:(id)code;
 - (int)code;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALResponseStatus
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
-    self->_code = v4[2];
+    self->_code = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(SIRINLUEXTERNALResponseStatus *)self setDescriptionA:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -45,24 +45,24 @@
   return [(NSString *)self->_descriptionA hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_code != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_code != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -70,7 +70,7 @@ LABEL_9:
   }
 
   descriptionA = self->_descriptionA;
-  if (descriptionA | *(v4 + 2))
+  if (descriptionA | *(equalCopy + 2))
   {
     v7 = [(NSString *)descriptionA isEqual:?];
   }
@@ -85,9 +85,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -95,51 +95,51 @@ LABEL_10:
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_descriptionA copyWithZone:a3];
+  v7 = [(NSString *)self->_descriptionA copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_code;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_code;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_descriptionA)
   {
-    v5 = v4;
-    [v4 setDescriptionA:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setDescriptionA:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     code = self->_code;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_descriptionA)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     code = self->_code;
@@ -200,7 +200,7 @@ LABEL_10:
       {
         v5 = @"INPUT";
 LABEL_21:
-        [v3 setObject:v5 forKey:@"code"];
+        [dictionary setObject:v5 forKey:@"code"];
 
         goto LABEL_22;
       }
@@ -214,10 +214,10 @@ LABEL_22:
   descriptionA = self->_descriptionA;
   if (descriptionA)
   {
-    [v3 setObject:descriptionA forKey:@"description_a"];
+    [dictionary setObject:descriptionA forKey:@"description_a"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -226,51 +226,51 @@ LABEL_22:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALResponseStatus;
   v4 = [(SIRINLUEXTERNALResponseStatus *)&v8 description];
-  v5 = [(SIRINLUEXTERNALResponseStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALResponseStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsCode:(id)a3
+- (int)StringAsCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INPUT"])
+  else if ([codeCopy isEqualToString:@"INPUT"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"EMPTY_NLU_REQUEST"])
+  else if ([codeCopy isEqualToString:@"EMPTY_NLU_REQUEST"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"PROCESSING"])
+  else if ([codeCopy isEqualToString:@"PROCESSING"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"INTERNAL_ERROR"])
+  else if ([codeCopy isEqualToString:@"INTERNAL_ERROR"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"INITIALISATION_ERROR"])
+  else if ([codeCopy isEqualToString:@"INITIALISATION_ERROR"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"FEATURE_EXTRACTION_ERROR"])
+  else if ([codeCopy isEqualToString:@"FEATURE_EXTRACTION_ERROR"])
   {
     v4 = 303;
   }
 
-  else if ([v3 isEqualToString:@"COMMUNICATION"])
+  else if ([codeCopy isEqualToString:@"COMMUNICATION"])
   {
     v4 = 500;
   }

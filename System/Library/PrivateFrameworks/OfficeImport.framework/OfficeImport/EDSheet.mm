@@ -1,19 +1,19 @@
 @interface EDSheet
-+ (EDSheet)sheetWithWorkbook:(id)a3;
-- (EDSheet)initWithWorkbook:(id)a3;
++ (EDSheet)sheetWithWorkbook:(id)workbook;
+- (EDSheet)initWithWorkbook:(id)workbook;
 - (EDWorkbook)workbook;
 - (id)description;
-- (id)edCommentForShape:(id)a3;
-- (id)edTextBoxForShape:(id)a3;
-- (void)addDrawable:(id)a3;
+- (id)edCommentForShape:(id)shape;
+- (id)edTextBoxForShape:(id)shape;
+- (void)addDrawable:(id)drawable;
 - (void)applyProcessors;
 - (void)dealloc;
 - (void)doneWithNonRowContent;
-- (void)setDefaultGridlineColor:(id)a3;
-- (void)setDefaultGridlineColorReference:(id)a3;
-- (void)setHeaderFooter:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPageSetup:(id)a3;
+- (void)setDefaultGridlineColor:(id)color;
+- (void)setDefaultGridlineColorReference:(id)reference;
+- (void)setHeaderFooter:(id)footer;
+- (void)setName:(id)name;
+- (void)setPageSetup:(id)setup;
 - (void)setup;
 - (void)teardown;
 @end
@@ -45,8 +45,8 @@
   self->mCommentMap = v13;
 
   v15 = objc_loadWeakRetained(&self->mWorkbook);
-  v16 = [v15 resources];
-  v17 = [EDColorReference colorReferenceWithSystemColorID:13 resources:v16];
+  resources = [v15 resources];
+  v17 = [EDColorReference colorReferenceWithSystemColorID:13 resources:resources];
   [(EDSheet *)self setDefaultGridlineColorReference:v17];
 
   self->mHidden = 0;
@@ -124,24 +124,24 @@
   return WeakRetained;
 }
 
-- (EDSheet)initWithWorkbook:(id)a3
+- (EDSheet)initWithWorkbook:(id)workbook
 {
-  v4 = a3;
+  workbookCopy = workbook;
   v5 = [(EDSheet *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mWorkbook, v4);
+    objc_storeWeak(&v5->mWorkbook, workbookCopy);
     [(EDSheet *)v6 setup];
   }
 
   return v6;
 }
 
-+ (EDSheet)sheetWithWorkbook:(id)a3
++ (EDSheet)sheetWithWorkbook:(id)workbook
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithWorkbook:v3];
+  workbookCopy = workbook;
+  v4 = [objc_alloc(objc_opt_class()) initWithWorkbook:workbookCopy];
 
   return v4;
 }
@@ -159,78 +159,78 @@
   self->mCommentMap = 0;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  if (self->mName != v5)
+  nameCopy = name;
+  if (self->mName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->mName, name);
+    nameCopy = v6;
   }
 }
 
-- (void)setDefaultGridlineColor:(id)a3
+- (void)setDefaultGridlineColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   v4 = [EDColorReference alloc];
   WeakRetained = objc_loadWeakRetained(&self->mWorkbook);
-  v6 = [WeakRetained resources];
-  v7 = [(EDColorReference *)v4 initWithColor:v9 resources:v6];
+  resources = [WeakRetained resources];
+  v7 = [(EDColorReference *)v4 initWithColor:colorCopy resources:resources];
   mDefaultGridlineColorReference = self->mDefaultGridlineColorReference;
   self->mDefaultGridlineColorReference = v7;
 }
 
-- (void)setHeaderFooter:(id)a3
+- (void)setHeaderFooter:(id)footer
 {
-  v5 = a3;
-  if (self->mHeaderFooter != v5)
+  footerCopy = footer;
+  if (self->mHeaderFooter != footerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mHeaderFooter, a3);
-    v5 = v6;
+    v6 = footerCopy;
+    objc_storeStrong(&self->mHeaderFooter, footer);
+    footerCopy = v6;
   }
 }
 
-- (void)setPageSetup:(id)a3
+- (void)setPageSetup:(id)setup
 {
-  v5 = a3;
-  if (self->mPageSetup != v5)
+  setupCopy = setup;
+  if (self->mPageSetup != setupCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mPageSetup, a3);
-    v5 = v6;
+    v6 = setupCopy;
+    objc_storeStrong(&self->mPageSetup, setup);
+    setupCopy = v6;
   }
 }
 
-- (void)addDrawable:(id)a3
+- (void)addDrawable:(id)drawable
 {
-  v6 = a3;
-  if (v6)
+  drawableCopy = drawable;
+  if (drawableCopy)
   {
-    v4 = [(EDSheet *)self workbook];
-    v5 = [v4 defaultTextStyle];
-    [v6 setParentTextListStyle:v5];
+    workbook = [(EDSheet *)self workbook];
+    defaultTextStyle = [workbook defaultTextStyle];
+    [drawableCopy setParentTextListStyle:defaultTextStyle];
 
-    [(NSMutableArray *)self->mDrawables addObject:v6];
+    [(NSMutableArray *)self->mDrawables addObject:drawableCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 setSheet:self];
+      [drawableCopy setSheet:self];
     }
   }
 }
 
-- (id)edTextBoxForShape:(id)a3
+- (id)edTextBoxForShape:(id)shape
 {
-  v3 = [(OITSUNoCopyDictionary *)self->mTextBoxMap objectForKey:a3];
+  v3 = [(OITSUNoCopyDictionary *)self->mTextBoxMap objectForKey:shape];
 
   return v3;
 }
 
-- (id)edCommentForShape:(id)a3
+- (id)edCommentForShape:(id)shape
 {
-  v3 = [(OITSUNoCopyDictionary *)self->mCommentMap objectForKey:a3];
+  v3 = [(OITSUNoCopyDictionary *)self->mCommentMap objectForKey:shape];
 
   return v3;
 }
@@ -244,14 +244,14 @@
   return v2;
 }
 
-- (void)setDefaultGridlineColorReference:(id)a3
+- (void)setDefaultGridlineColorReference:(id)reference
 {
-  v5 = a3;
-  if (self->mDefaultGridlineColorReference != v5)
+  referenceCopy = reference;
+  if (self->mDefaultGridlineColorReference != referenceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mDefaultGridlineColorReference, a3);
-    v5 = v6;
+    v6 = referenceCopy;
+    objc_storeStrong(&self->mDefaultGridlineColorReference, reference);
+    referenceCopy = v6;
   }
 }
 

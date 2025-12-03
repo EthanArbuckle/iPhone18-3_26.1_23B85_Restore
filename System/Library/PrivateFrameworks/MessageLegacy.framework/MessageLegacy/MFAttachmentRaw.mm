@@ -1,17 +1,17 @@
 @interface MFAttachmentRaw
-+ (id)attachmentData:(id)a3 fileName:(id)a4 mimeType:(id)a5 contentID:(id)a6;
++ (id)attachmentData:(id)data fileName:(id)name mimeType:(id)type contentID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation MFAttachmentRaw
 
-+ (id)attachmentData:(id)a3 fileName:(id)a4 mimeType:(id)a5 contentID:(id)a6
++ (id)attachmentData:(id)data fileName:(id)name mimeType:(id)type contentID:(id)d
 {
   v10 = objc_alloc_init(MFAttachmentRaw);
-  [(MFAttachmentRaw *)v10 setData:a3];
-  [(MFAttachmentRaw *)v10 setFileName:a4];
-  [(MFAttachmentRaw *)v10 setMimeType:a5];
-  [(MFAttachmentRaw *)v10 setContentID:a6];
+  [(MFAttachmentRaw *)v10 setData:data];
+  [(MFAttachmentRaw *)v10 setFileName:name];
+  [(MFAttachmentRaw *)v10 setMimeType:type];
+  [(MFAttachmentRaw *)v10 setContentID:d];
   return v10;
 }
 

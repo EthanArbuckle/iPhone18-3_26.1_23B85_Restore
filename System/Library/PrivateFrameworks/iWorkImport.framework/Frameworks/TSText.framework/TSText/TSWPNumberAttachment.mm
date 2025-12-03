@@ -1,23 +1,23 @@
 @interface TSWPNumberAttachment
-+ (Class)classForUnarchiver:(id)a3;
-- (TSWPNumberAttachment)initWithContext:(id)a3;
-- (id)copyWithContext:(id)a3;
++ (Class)classForUnarchiver:(id)unarchiver;
+- (TSWPNumberAttachment)initWithContext:(id)context;
+- (id)copyWithContext:(id)context;
 - (id)stringEquivalent;
-- (id)stringEquivalentWithNumberProvider:(id)a3;
-- (id)stringWithNumber:(unint64_t)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)performTemplateLocalization:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (id)stringEquivalentWithNumberProvider:(id)provider;
+- (id)stringWithNumber:(unint64_t)number;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)performTemplateLocalization:(id)localization;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPNumberAttachment
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_opt_class() == a1)
+  unarchiverCopy = unarchiver;
+  if (objc_opt_class() == self)
   {
-    v5 = v4;
+    v5 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v7 = objc_msgSend_messageWithDescriptor_(v5, v6, off_2812DC408[134]);
 
@@ -29,7 +29,7 @@
         v12 = *(v9 + 32);
         if (v12 < 2)
         {
-          a1 = objc_opt_class();
+          self = objc_opt_class();
           goto LABEL_5;
         }
 
@@ -45,20 +45,20 @@
       }
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_5:
-  v10 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
-- (TSWPNumberAttachment)initWithContext:(id)a3
+- (TSWPNumberAttachment)initWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = TSWPNumberAttachment;
-  v3 = [(TSWPAttachment *)&v8 initWithContext:a3];
+  v3 = [(TSWPAttachment *)&v8 initWithContext:context];
   v4 = v3;
   if (v3)
   {
@@ -72,11 +72,11 @@ LABEL_5:
   return v4;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithContext_(v5, v6, v4);
+  v7 = objc_msgSend_initWithContext_(v5, v6, contextCopy);
   v10 = objc_msgSend_copy(self->_numberFormat, v8, v9);
   v11 = v7[10];
   v7[10] = v10;
@@ -88,14 +88,14 @@ LABEL_5:
   return v7;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   numberFormat = self->_numberFormat;
   self->_numberFormat = @"decimal";
 
-  hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(v4, v6, v7);
-  v9 = v4;
+  hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(unarchiverCopy, v6, v7);
+  v9 = unarchiverCopy;
   if (hasPreUFFVersion)
   {
     google::protobuf::internal::AssignDescriptors();
@@ -156,11 +156,11 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DD0A2C, off_2812DC408[134]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DD0A2C, off_2812DC408[134]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -178,7 +178,7 @@ LABEL_14:
 
   v21.receiver = self;
   v21.super_class = TSWPNumberAttachment;
-  [(TSWPTextualAttachment *)&v21 saveToArchive:v7 archiver:v4];
+  [(TSWPTextualAttachment *)&v21 saveToArchive:v7 archiver:archiverCopy];
   v10 = objc_msgSend_pageNumberFormatTypeForName_(TSWPItemNumbering, v9, self->_numberFormat);
   *(v6 + 16) |= 8u;
   *(v6 + 48) = v10;
@@ -193,7 +193,7 @@ LABEL_14:
 
   if (objc_msgSend_length(self->_stringValue, v14, v15))
   {
-    if (objc_msgSend_targetType(v4, v16, v17) == 1)
+    if (objc_msgSend_targetType(archiverCopy, v16, v17) == 1)
     {
       v20 = objc_msgSend_tsp_protobufString(self->_stringValue, v18, v19);
       *(v6 + 16) |= 1u;
@@ -220,13 +220,13 @@ LABEL_14:
   }
 }
 
-- (id)stringEquivalentWithNumberProvider:(id)a3
+- (id)stringEquivalentWithNumberProvider:(id)provider
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (providerCopy)
   {
-    v8 = objc_msgSend_pageCountForAttachment_(v4, v5, self);
+    v8 = objc_msgSend_pageCountForAttachment_(providerCopy, v5, self);
     v11 = objc_msgSend_pageNumberForAttachment_(v7, v9, self);
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -261,20 +261,20 @@ LABEL_14:
   return v27;
 }
 
-- (id)stringWithNumber:(unint64_t)a3
+- (id)stringWithNumber:(unint64_t)number
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (number == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 1;
+    numberCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    numberCopy = number;
   }
 
-  v5 = objc_msgSend_numberFormat(self, a2, a3);
-  v7 = objc_msgSend_stringFromNumber_forFormatName_(TSWPItemNumbering, v6, v4, v5);
+  v5 = objc_msgSend_numberFormat(self, a2, number);
+  v7 = objc_msgSend_stringFromNumber_forFormatName_(TSWPItemNumbering, v6, numberCopy, v5);
 
   v10 = objc_msgSend_parentStorage(self, v8, v9);
   v13 = objc_msgSend_wpKind(v10, v11, v12);
@@ -287,9 +287,9 @@ LABEL_14:
   return v7;
 }
 
-- (void)performTemplateLocalization:(id)a3
+- (void)performTemplateLocalization:(id)localization
 {
-  v7 = objc_msgSend_locale(a3, a2, a3);
+  v7 = objc_msgSend_locale(localization, a2, localization);
   v5 = objc_msgSend_defaultPageNumberFormatForLocale_(TSWPItemNumbering, v4, v7);
   objc_msgSend_setNumberFormat_(self, v6, v5);
 }

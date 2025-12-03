@@ -3,19 +3,19 @@
 - (BOOL)isPoorLinkQuality;
 - (NSString)linkQualityString;
 - (PCInterfaceUsabilityMonitorDelegate)delegate;
-- (PCNonCellularUsabilityMonitor)initWithDelegateQueue:(id)a3;
+- (PCNonCellularUsabilityMonitor)initWithDelegateQueue:(id)queue;
 - (int)_linkQualityOnIvarQueue;
 - (int)linkQuality;
 - (void)_addMonitor;
-- (void)_callDelegateOnIvarQueueWithBlock:(id)a3;
+- (void)_callDelegateOnIvarQueueWithBlock:(id)block;
 - (void)_forwardConfigurationOnIvarQueue;
 - (void)dealloc;
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4;
-- (void)interfaceReachabilityChanged:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setThresholdOffTransitionCount:(unint64_t)a3;
-- (void)setTrackUsability:(BOOL)a3;
-- (void)setTrackedTimeInterval:(double)a3;
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality;
+- (void)interfaceReachabilityChanged:(id)changed;
+- (void)setDelegate:(id)delegate;
+- (void)setThresholdOffTransitionCount:(unint64_t)count;
+- (void)setTrackUsability:(BOOL)usability;
+- (void)setTrackedTimeInterval:(double)interval;
 @end
 
 @implementation PCNonCellularUsabilityMonitor
@@ -69,15 +69,15 @@ uint64_t __44__PCNonCellularUsabilityMonitor_linkQuality__block_invoke(uint64_t 
 
 - (NSString)linkQualityString
 {
-  v2 = [(PCNonCellularUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCNonCellularUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor stringForLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor stringForLinkQuality:linkQuality];
 }
 
-- (PCNonCellularUsabilityMonitor)initWithDelegateQueue:(id)a3
+- (PCNonCellularUsabilityMonitor)initWithDelegateQueue:(id)queue
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = PCNonCellularUsabilityMonitor;
   v6 = [(PCNonCellularUsabilityMonitor *)&v17 init];
@@ -91,7 +91,7 @@ uint64_t __44__PCNonCellularUsabilityMonitor_linkQuality__block_invoke(uint64_t 
     monitorDelegateQueue = v6->_monitorDelegateQueue;
     v6->_monitorDelegateQueue = v9;
 
-    objc_storeStrong(&v6->_delegateQueue, a3);
+    objc_storeStrong(&v6->_delegateQueue, queue);
     v6->_previousLinkQuality = -2;
     v11 = CFPreferencesCopyAppValue(@"PCWiFiInterface", @"com.apple.persistentconnection");
     demoOverrideInterface = v6->_demoOverrideInterface;
@@ -160,7 +160,7 @@ void __44__PCNonCellularUsabilityMonitor__addMonitor__block_invoke(uint64_t a1)
   [(PCInterfaceUsabilityMonitor *)monitor setThresholdOffTransitionCount:thresholdOffTransitionCount];
 }
 
-- (void)setTrackUsability:(BOOL)a3
+- (void)setTrackUsability:(BOOL)usability
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -168,7 +168,7 @@ void __44__PCNonCellularUsabilityMonitor__addMonitor__block_invoke(uint64_t a1)
   v4[2] = __51__PCNonCellularUsabilityMonitor_setTrackUsability___block_invoke;
   v4[3] = &unk_279A1A130;
   v4[4] = self;
-  v5 = a3;
+  usabilityCopy = usability;
   dispatch_async(ivarQueue, v4);
 }
 
@@ -201,7 +201,7 @@ uint64_t __51__PCNonCellularUsabilityMonitor_setTrackUsability___block_invoke(ui
   return result;
 }
 
-- (void)setThresholdOffTransitionCount:(unint64_t)a3
+- (void)setThresholdOffTransitionCount:(unint64_t)count
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -209,7 +209,7 @@ uint64_t __51__PCNonCellularUsabilityMonitor_setTrackUsability___block_invoke(ui
   v4[2] = __64__PCNonCellularUsabilityMonitor_setThresholdOffTransitionCount___block_invoke;
   v4[3] = &unk_279A1A158;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = count;
   dispatch_async(ivarQueue, v4);
 }
 
@@ -226,14 +226,14 @@ uint64_t __64__PCNonCellularUsabilityMonitor_setThresholdOffTransitionCount___bl
   return result;
 }
 
-- (void)setTrackedTimeInterval:(double)a3
+- (void)setTrackedTimeInterval:(double)interval
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__PCNonCellularUsabilityMonitor_setTrackedTimeInterval___block_invoke;
   v4[3] = &unk_279A1A158;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   v4[4] = self;
   dispatch_async(ivarQueue, v4);
 }
@@ -253,16 +253,16 @@ uint64_t __56__PCNonCellularUsabilityMonitor_setTrackedTimeInterval___block_invo
 
 - (BOOL)isPoorLinkQuality
 {
-  v2 = [(PCNonCellularUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCNonCellularUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor isPoorLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor isPoorLinkQuality:linkQuality];
 }
 
 - (BOOL)isBadLinkQuality
 {
-  v2 = [(PCNonCellularUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCNonCellularUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor isBadLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor isBadLinkQuality:linkQuality];
 }
 
 - (PCInterfaceUsabilityMonitorDelegate)delegate
@@ -297,17 +297,17 @@ uint64_t __41__PCNonCellularUsabilityMonitor_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PCNonCellularUsabilityMonitor_setDelegate___block_invoke;
   v7[3] = &unk_279A19D48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
@@ -328,9 +328,9 @@ void __45__PCNonCellularUsabilityMonitor_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_callDelegateOnIvarQueueWithBlock:(id)a3
+- (void)_callDelegateOnIvarQueueWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   delegateReference = self->_delegateReference;
   if (delegateReference && self->_delegateQueue)
   {
@@ -341,7 +341,7 @@ void __45__PCNonCellularUsabilityMonitor_setDelegate___block_invoke(uint64_t a1)
     v9[2] = __67__PCNonCellularUsabilityMonitor__callDelegateOnIvarQueueWithBlock___block_invoke;
     v9[3] = &unk_279A1A090;
     v10 = v6;
-    v11 = v4;
+    v11 = blockCopy;
     v8 = v6;
     dispatch_async(delegateQueue, v9);
   }
@@ -359,7 +359,7 @@ void __67__PCNonCellularUsabilityMonitor__callDelegateOnIvarQueueWithBlock___blo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality
 {
   ivarQueue = self->_ivarQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -416,17 +416,17 @@ void __81__PCNonCellularUsabilityMonitor_interfaceLinkQualityChanged_previousLin
   }
 }
 
-- (void)interfaceReachabilityChanged:(id)a3
+- (void)interfaceReachabilityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__PCNonCellularUsabilityMonitor_interfaceReachabilityChanged___block_invoke;
   v7[3] = &unk_279A19D48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(ivarQueue, v7);
 }
 

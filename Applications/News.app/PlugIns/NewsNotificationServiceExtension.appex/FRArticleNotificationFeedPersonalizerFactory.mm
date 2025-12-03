@@ -1,28 +1,28 @@
 @interface FRArticleNotificationFeedPersonalizerFactory
 - (FRArticleNotificationFeedPersonalizerFactory)init;
-- (FRArticleNotificationFeedPersonalizerFactory)initWithTranslationProvider:(id)a3;
-- (id)newFeedPersonalizerWithAggregateStore:(id)a3 appConfigurationManager:(id)a4 todayPrivateData:(id)a5;
+- (FRArticleNotificationFeedPersonalizerFactory)initWithTranslationProvider:(id)provider;
+- (id)newFeedPersonalizerWithAggregateStore:(id)store appConfigurationManager:(id)manager todayPrivateData:(id)data;
 @end
 
 @implementation FRArticleNotificationFeedPersonalizerFactory
 
-- (FRArticleNotificationFeedPersonalizerFactory)initWithTranslationProvider:(id)a3
+- (FRArticleNotificationFeedPersonalizerFactory)initWithTranslationProvider:(id)provider
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___FRArticleNotificationFeedPersonalizerFactory_translationProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___FRArticleNotificationFeedPersonalizerFactory_translationProvider) = provider;
   v7.receiver = self;
   v7.super_class = ObjectType;
   swift_unknownObjectRetain();
   return [(FRArticleNotificationFeedPersonalizerFactory *)&v7 init];
 }
 
-- (id)newFeedPersonalizerWithAggregateStore:(id)a3 appConfigurationManager:(id)a4 todayPrivateData:(id)a5
+- (id)newFeedPersonalizerWithAggregateStore:(id)store appConfigurationManager:(id)manager todayPrivateData:(id)data
 {
-  v6 = a3;
+  storeCopy = store;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_100007140(v6);
+  selfCopy = self;
+  v8 = sub_100007140(storeCopy);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

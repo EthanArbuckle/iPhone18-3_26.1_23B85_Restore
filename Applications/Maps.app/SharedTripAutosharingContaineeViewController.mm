@@ -1,14 +1,14 @@
 @interface SharedTripAutosharingContaineeViewController
 - (NSArray)contacts;
-- (SharedTripAutosharingContaineeViewController)initWithContacts:(id)a3;
+- (SharedTripAutosharingContaineeViewController)initWithContacts:(id)contacts;
 - (SharedTripAutosharingContaineeViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_addContact:(id)a3;
-- (void)_deleteContact:(id)a3;
-- (void)_updateImage:(id)a3 forContact:(id)a4;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)setContacts:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_addContact:(id)contact;
+- (void)_deleteContact:(id)contact;
+- (void)_updateImage:(id)image forContact:(id)contact;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)setContacts:(id)contacts;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -21,9 +21,9 @@
   return WeakRetained;
 }
 
-- (void)_deleteContact:(id)a3
+- (void)_deleteContact:(id)contact
 {
-  v4 = [(NSMutableArray *)self->_contacts indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_contacts indexOfObject:contact];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)_addContact:(id)a3
+- (void)_addContact:(id)contact
 {
-  [(NSMutableArray *)self->_contacts addObject:a3];
+  [(NSMutableArray *)self->_contacts addObject:contact];
   tableView = self->_tableView;
   v5 = [NSIndexPath indexPathForRow:[(NSMutableArray *)self->_contacts count]- 1 inSection:0];
   v7 = v5;
@@ -46,34 +46,34 @@
   [(UITableView *)tableView insertRowsAtIndexPaths:v6 withRowAnimation:100];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 >= [(NSMutableArray *)self->_contacts count])
   {
     objc_initWeak(&location, self);
-    v9 = [(SharedTripAutosharingContaineeViewController *)self delegate];
+    delegate = [(SharedTripAutosharingContaineeViewController *)self delegate];
     contacts = self->_contacts;
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_100CF5878;
     v14 = &unk_101650DD8;
     objc_copyWeak(&v15, &location);
-    [v9 autosharingController:self wantsToSearchWithExistingContacts:contacts selectionHandler:&v11];
+    [delegate autosharingController:self wantsToSearchWithExistingContacts:contacts selectionHandler:&v11];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:{1, v11, v12, v13, v14}];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v11, v12, v13, v14}];
 }
 
-- (void)_updateImage:(id)a3 forContact:(id)a4
+- (void)_updateImage:(id)image forContact:(id)contact
 {
-  v11 = a3;
-  v6 = [(NSMutableArray *)self->_contacts indexOfObject:a4];
+  imageCopy = image;
+  v6 = [(NSMutableArray *)self->_contacts indexOfObject:contact];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     tableView = self->_tableView;
@@ -82,29 +82,29 @@
 
     if (v9)
     {
-      v10 = [v9 contentConfiguration];
-      [v10 setImage:v11];
-      [v9 setContentConfiguration:v10];
+      contentConfiguration = [v9 contentConfiguration];
+      [contentConfiguration setImage:imageCopy];
+      [v9 setContentConfiguration:contentConfiguration];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v35 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v7 = +[UIListContentConfiguration cellConfiguration];
   [v7 setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
-  v8 = [v7 imageProperties];
-  [v8 setReservedLayoutSize:{35.0, 35.0}];
+  imageProperties = [v7 imageProperties];
+  [imageProperties setReservedLayoutSize:{35.0, 35.0}];
 
-  v9 = [v6 row];
+  v9 = [pathCopy row];
   if (v9 >= [(NSMutableArray *)self->_contacts count])
   {
-    v36 = [v35 dequeueReusableCellWithIdentifier:@"AddPerson" forIndexPath:v6];
-    v24 = [(SharedTripAutosharingContaineeViewController *)self theme];
-    v25 = [v24 keyColor];
-    v51[0] = v25;
+    v36 = [viewCopy dequeueReusableCellWithIdentifier:@"AddPerson" forIndexPath:pathCopy];
+    theme = [(SharedTripAutosharingContaineeViewController *)self theme];
+    keyColor = [theme keyColor];
+    v51[0] = keyColor;
     v26 = +[UIColor quaternarySystemFillColor];
     v51[1] = v26;
     v27 = [NSArray arrayWithObjects:v51 count:2];
@@ -115,34 +115,34 @@
 
     v12 = [UIImage systemImageNamed:@"magnifyingglass.circle.fill"];
     [v7 setImage:v12];
-    v30 = [v7 imageProperties];
-    [v30 setPreferredSymbolConfiguration:v22];
+    imageProperties2 = [v7 imageProperties];
+    [imageProperties2 setPreferredSymbolConfiguration:v22];
 
     v31 = +[NSBundle mainBundle];
     v32 = [v31 localizedStringForKey:@"[Share ETA value:Autosharing] Add Person" table:{@"localized string not found", 0}];
     [v7 setText:v32];
 
-    v13 = [(SharedTripAutosharingContaineeViewController *)self theme];
-    v15 = [v13 keyColor];
-    v33 = [v7 textProperties];
-    [v33 setColor:v15];
+    theme2 = [(SharedTripAutosharingContaineeViewController *)self theme];
+    keyColor2 = [theme2 keyColor];
+    textProperties = [v7 textProperties];
+    [textProperties setColor:keyColor2];
   }
 
   else
   {
-    v36 = [v35 dequeueReusableCellWithIdentifier:@"Contact" forIndexPath:v6];
-    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_contacts, "objectAtIndexedSubscript:", [v6 row]);
-    v11 = [v10 displayName];
-    [v7 setText:v11];
+    v36 = [viewCopy dequeueReusableCellWithIdentifier:@"Contact" forIndexPath:pathCopy];
+    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_contacts, "objectAtIndexedSubscript:", [pathCopy row]);
+    displayName = [v10 displayName];
+    [v7 setText:displayName];
 
     v12 = +[UIButtonConfiguration plainButtonConfiguration];
     [v12 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
-    v13 = +[UIImageSymbolConfiguration configurationPreferringMonochrome];
-    v14 = [v7 imageProperties];
-    [v14 setPreferredSymbolConfiguration:v13];
+    theme2 = +[UIImageSymbolConfiguration configurationPreferringMonochrome];
+    imageProperties3 = [v7 imageProperties];
+    [imageProperties3 setPreferredSymbolConfiguration:theme2];
 
-    v15 = [UIImage systemImageNamed:@"minus.circle.fill"];
-    [v12 setImage:v15];
+    keyColor2 = [UIImage systemImageNamed:@"minus.circle.fill"];
+    [v12 setImage:keyColor2];
     objc_initWeak(&location, self);
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
@@ -166,7 +166,7 @@
     v45 = sub_100CF6074;
     v46 = v7;
     v20 = +[MapsUIImageCache sharedCache];
-    v21 = [v16 contact];
+    contact = [v16 contact];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100CF607C;
@@ -175,7 +175,7 @@
     v39 = &v41;
     v22 = v16;
     v38 = v22;
-    [v20 getImageForContact:v21 size:v37 completion:35.0];
+    [v20 getImageForContact:contact size:v37 completion:35.0];
 
     v23 = v42[5];
     v42[5] = 0;
@@ -192,9 +192,9 @@
   return v36;
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v6 = [(SharedTripAutosharingContaineeViewController *)self delegate:a3];
+  v6 = [(SharedTripAutosharingContaineeViewController *)self delegate:tapped];
   v5 = [(NSMutableArray *)self->_contacts copy];
   [v6 autosharingController:self didUpdateContacts:v5];
 }
@@ -220,12 +220,12 @@
   [(ContainerHeaderView *)self->_headerView setCustomTitleFont:v7];
 
   [(ContainerHeaderView *)self->_headerView setVerticalAlignmentOffset:4.0];
-  v8 = [(SharedTripAutosharingContaineeViewController *)self view];
-  [v8 addSubview:self->_headerView];
+  view = [(SharedTripAutosharingContaineeViewController *)self view];
+  [view addSubview:self->_headerView];
 
   v9 = [UITableView alloc];
-  v10 = [(SharedTripAutosharingContaineeViewController *)self contentView];
-  [v10 bounds];
+  contentView = [(SharedTripAutosharingContaineeViewController *)self contentView];
+  [contentView bounds];
   v11 = [v9 initWithFrame:2 style:?];
   tableView = self->_tableView;
   self->_tableView = v11;
@@ -239,42 +239,42 @@
   [(UITableView *)self->_tableView _setTopPadding:12.0];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Contact"];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"AddPerson"];
-  v14 = [(SharedTripAutosharingContaineeViewController *)self view];
-  [v14 addSubview:self->_tableView];
+  view2 = [(SharedTripAutosharingContaineeViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
-  v41 = [(ContainerHeaderView *)self->_headerView topAnchor];
-  v42 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  topAnchor = [(ContainerHeaderView *)self->_headerView topAnchor];
+  view3 = [(SharedTripAutosharingContaineeViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[0] = v39;
-  v37 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
-  v38 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor = [(ContainerHeaderView *)self->_headerView leadingAnchor];
+  view4 = [(SharedTripAutosharingContaineeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[1] = v35;
-  v34 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v33 = [v34 trailingAnchor];
-  v32 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  view5 = [(SharedTripAutosharingContaineeViewController *)self view];
+  trailingAnchor = [view5 trailingAnchor];
+  trailingAnchor2 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
+  v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[2] = v31;
-  v30 = [(UITableView *)self->_tableView topAnchor];
-  v29 = [(ContainerHeaderView *)self->_headerView bottomAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor = [(ContainerHeaderView *)self->_headerView bottomAnchor];
+  v28 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v45[3] = v28;
-  v26 = [(UITableView *)self->_tableView leadingAnchor];
-  v27 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v15 = [v26 constraintEqualToAnchor:v25];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  view6 = [(SharedTripAutosharingContaineeViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v45[4] = v15;
-  v16 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v17 = [v16 trailingAnchor];
-  v18 = [(UITableView *)self->_tableView trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  view7 = [(SharedTripAutosharingContaineeViewController *)self view];
+  trailingAnchor3 = [view7 trailingAnchor];
+  trailingAnchor4 = [(UITableView *)self->_tableView trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v45[5] = v19;
-  v20 = [(SharedTripAutosharingContaineeViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [(UITableView *)self->_tableView bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  view8 = [(SharedTripAutosharingContaineeViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  bottomAnchor3 = [(UITableView *)self->_tableView bottomAnchor];
+  v23 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v45[6] = v23;
   v24 = [NSArray arrayWithObjects:v45 count:7];
   [v43 addObjectsFromArray:v24];
@@ -282,9 +282,9 @@
   [NSLayoutConstraint activateConstraints:v43];
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   contacts = self->_contacts;
   self->_contacts = v4;
 
@@ -300,15 +300,15 @@
   return v2;
 }
 
-- (SharedTripAutosharingContaineeViewController)initWithContacts:(id)a3
+- (SharedTripAutosharingContaineeViewController)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v9.receiver = self;
   v9.super_class = SharedTripAutosharingContaineeViewController;
   v5 = [(SharedTripAutosharingContaineeViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [contactsCopy mutableCopy];
     contacts = v5->_contacts;
     v5->_contacts = v6;
   }

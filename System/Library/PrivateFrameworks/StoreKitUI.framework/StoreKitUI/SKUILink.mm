@@ -1,17 +1,17 @@
 @interface SKUILink
 - (NSDictionary)linkDictionary;
-- (SKUILink)initWithComponentContext:(id)a3;
-- (SKUILink)initWithLinkDictionary:(id)a3;
-- (SKUILink)initWithURL:(id)a3 title:(id)a4 targetString:(id)a5;
-- (id)valueForMetricsField:(id)a3;
-- (void)_setItem:(id)a3;
+- (SKUILink)initWithComponentContext:(id)context;
+- (SKUILink)initWithLinkDictionary:(id)dictionary;
+- (SKUILink)initWithURL:(id)l title:(id)title targetString:(id)string;
+- (id)valueForMetricsField:(id)field;
+- (void)_setItem:(id)item;
 @end
 
 @implementation SKUILink
 
-- (SKUILink)initWithLinkDictionary:(id)a3
+- (SKUILink)initWithLinkDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -29,7 +29,7 @@
   v13 = [(SKUILink *)&v24 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"label"];
+    v14 = [dictionaryCopy objectForKey:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       v13->_title = v15;
     }
 
-    v17 = [v4 objectForKey:@"url"];
+    v17 = [dictionaryCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -48,7 +48,7 @@
       v13->_url = v18;
     }
 
-    v20 = [v4 objectForKey:@"target"];
+    v20 = [dictionaryCopy objectForKey:@"target"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -62,9 +62,9 @@
   return v13;
 }
 
-- (SKUILink)initWithComponentContext:(id)a3
+- (SKUILink)initWithComponentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -82,8 +82,8 @@
   v13 = [(SKUILink *)&v32 init];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
-    v15 = [v14 objectForKey:@"label"];
+    componentDictionary = [contextCopy componentDictionary];
+    v15 = [componentDictionary objectForKey:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       v13->_title = v16;
     }
 
-    v18 = [v14 objectForKey:@"url"];
+    v18 = [componentDictionary objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -102,7 +102,7 @@
       v13->_url = v19;
     }
 
-    v21 = [v14 objectForKey:@"lockupData"];
+    v21 = [componentDictionary objectForKey:@"lockupData"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@
 
     else
     {
-      v24 = [v14 objectForKey:@"adamId"];
+      v24 = [componentDictionary objectForKey:@"adamId"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -122,11 +122,11 @@
         goto LABEL_16;
       }
 
-      v26 = [v4 itemForItemIdentifier:v24];
+      v26 = [contextCopy itemForItemIdentifier:v24];
       item = v13->_item;
       v13->_item = v26;
 
-      if (v13->_item || ([v4 isUnavailableItemIdentifier:v24] & 1) != 0)
+      if (v13->_item || ([contextCopy isUnavailableItemIdentifier:v24] & 1) != 0)
       {
         goto LABEL_16;
       }
@@ -139,7 +139,7 @@
     *(&v13->super.isa + v23) = v22;
 
 LABEL_16:
-    v28 = [v14 objectForKey:@"target"];
+    v28 = [componentDictionary objectForKey:@"target"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -153,11 +153,11 @@ LABEL_16:
   return v13;
 }
 
-- (SKUILink)initWithURL:(id)a3 title:(id)a4 targetString:(id)a5
+- (SKUILink)initWithURL:(id)l title:(id)title targetString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  titleCopy = title;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -175,15 +175,15 @@ LABEL_16:
   v19 = [(SKUILink *)&v27 init];
   if (v19)
   {
-    v20 = [v10 copy];
+    v20 = [stringCopy copy];
     target = v19->_target;
     v19->_target = v20;
 
-    v22 = [v9 copy];
+    v22 = [titleCopy copy];
     title = v19->_title;
     v19->_title = v22;
 
-    v24 = [v8 copy];
+    v24 = [lCopy copy];
     url = v19->_url;
     v19->_url = v24;
   }
@@ -193,12 +193,12 @@ LABEL_16:
 
 - (NSDictionary)linkDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   target = self->_target;
   if (target)
   {
-    [v3 setObject:target forKey:@"target"];
+    [dictionary setObject:target forKey:@"target"];
   }
 
   title = self->_title;
@@ -210,37 +210,37 @@ LABEL_16:
   url = self->_url;
   if (url)
   {
-    v8 = [(NSURL *)url absoluteString];
-    [v4 setObject:v8 forKey:@"url"];
+    absoluteString = [(NSURL *)url absoluteString];
+    [v4 setObject:absoluteString forKey:@"url"];
   }
 
   return v4;
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A490]])
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A490]])
   {
     item = self->_item;
     if (item)
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[SKUIItem itemIdentifier](item, "itemIdentifier")}];
+      title = [MEMORY[0x277CCABB0] numberWithLongLong:{-[SKUIItem itemIdentifier](item, "itemIdentifier")}];
     }
 
     else
     {
-      v6 = self->_itemIdentifier;
+      title = self->_itemIdentifier;
     }
 
     goto LABEL_8;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A8]))
+  if (([fieldCopy isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A8]))
   {
-    v6 = [(SKUILink *)self title];
+    title = [(SKUILink *)self title];
 LABEL_8:
-    v7 = v6;
+    v7 = title;
     goto LABEL_9;
   }
 
@@ -250,16 +250,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)_setItem:(id)a3
+- (void)_setItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   item = self->_item;
   p_item = &self->_item;
-  if (item != v5)
+  if (item != itemCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_item, a3);
-    v5 = v8;
+    v8 = itemCopy;
+    objc_storeStrong(p_item, item);
+    itemCopy = v8;
   }
 }
 

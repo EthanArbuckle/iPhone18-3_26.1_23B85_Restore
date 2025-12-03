@@ -1,43 +1,43 @@
 @interface MKTransitDepartureContainerHeaderView
-- (MKTransitDepartureContainerHeaderView)initWithFrame:(CGRect)a3;
+- (MKTransitDepartureContainerHeaderView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateAppearance;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MKTransitDepartureContainerHeaderView
 
 - (void)_updateAppearance
 {
-  v3 = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel titleText];
-  [(_MKUILabel *)self->_containerTitleLabel setText:v3];
+  titleText = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel titleText];
+  [(_MKUILabel *)self->_containerTitleLabel setText:titleText];
 
-  v4 = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel labelItems];
-  [(MKTransitInfoLabelView *)self->_containerArtworkView setLabelItems:v4];
+  labelItems = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel labelItems];
+  [(MKTransitInfoLabelView *)self->_containerArtworkView setLabelItems:labelItems];
 
   [(UIImageView *)self->_incidentImageView setHidden:[(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel showIncidentsIcon]^ 1];
-  v5 = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel showIncidentsIcon];
+  showIncidentsIcon = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel showIncidentsIcon];
   incidentImageView = self->_incidentImageView;
-  if (v5)
+  if (showIncidentsIcon)
   {
     [(UIImageView *)incidentImageView setHidden:0];
-    v7 = [(UIImageView *)self->_incidentImageView image];
+    image = [(UIImageView *)self->_incidentImageView image];
 
-    if (!v7)
+    if (!image)
     {
-      v8 = [(MKTransitDepartureContainerHeaderView *)self window];
-      v9 = [v8 screen];
-      v10 = v9;
-      if (v9)
+      window = [(MKTransitDepartureContainerHeaderView *)self window];
+      screen = [window screen];
+      v10 = screen;
+      if (screen)
       {
-        [v9 scale];
+        [screen scale];
         v12 = v11;
       }
 
       else
       {
-        v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v13 scale];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen scale];
         v12 = v14;
       }
 
@@ -51,8 +51,8 @@
     [(UIImageView *)incidentImageView setHidden:1];
   }
 
-  v16 = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel labelItems];
-  v17 = [v16 count];
+  labelItems2 = [(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel labelItems];
+  v17 = [labelItems2 count];
 
   if (v17)
   {
@@ -70,12 +70,12 @@
   [(NSLayoutConstraint *)artworkToTitleLabelHorizontalSpacingConstraint setConstant:v18];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MKTransitDepartureContainerHeaderViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MKTransitDepartureContainerHeaderView *)self _updateAppearance];
   }
 }
@@ -83,8 +83,8 @@
 - (void)_commonInit
 {
   v79[15] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] separatorColor];
-  [(MKViewWithHairline *)self setHairlineColor:v3];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [(MKViewWithHairline *)self setHairlineColor:separatorColor];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -135,93 +135,93 @@
   self->_contentLayoutGuide = v20;
 
   [(MKTransitDepartureContainerHeaderView *)self addLayoutGuide:self->_contentLayoutGuide];
-  v22 = [(MKTransitInfoLabelView *)self->_containerArtworkView trailingAnchor];
-  v23 = [(_MKUILabel *)self->_containerTitleLabel leadingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  trailingAnchor = [(MKTransitInfoLabelView *)self->_containerArtworkView trailingAnchor];
+  leadingAnchor = [(_MKUILabel *)self->_containerTitleLabel leadingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:leadingAnchor];
   artworkToTitleLabelHorizontalSpacingConstraint = self->_artworkToTitleLabelHorizontalSpacingConstraint;
   self->_artworkToTitleLabelHorizontalSpacingConstraint = v24;
 
-  v26 = [(UIImageView *)self->_incidentImageView image];
-  [v26 size];
+  image = [(UIImageView *)self->_incidentImageView image];
+  [image size];
   v28 = v27;
 
   v29 = 10.0;
   if (v28 > 0.0)
   {
-    v30 = [(UIImageView *)self->_incidentImageView image];
-    [v30 size];
+    image2 = [(UIImageView *)self->_incidentImageView image];
+    [image2 size];
     v32 = v31;
-    v33 = [(UIImageView *)self->_incidentImageView image];
-    [v33 size];
+    image3 = [(UIImageView *)self->_incidentImageView image];
+    [image3 size];
     v29 = v32 / v34 * 10.0;
   }
 
   v62 = MEMORY[0x1E696ACD8];
-  v77 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-  v76 = [(MKTransitDepartureContainerHeaderView *)self leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76 constant:16.0];
+  leadingAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+  leadingAnchor3 = [(MKTransitDepartureContainerHeaderView *)self leadingAnchor];
+  v75 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
   v79[0] = v75;
-  v74 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-  v73 = [(MKTransitDepartureContainerHeaderView *)self topAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73 constant:12.0];
+  topAnchor = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+  topAnchor2 = [(MKTransitDepartureContainerHeaderView *)self topAnchor];
+  v72 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
   v79[1] = v72;
-  v71 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-  v70 = [(MKTransitDepartureContainerHeaderView *)self bottomAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70 constant:-12.0];
+  bottomAnchor = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(MKTransitDepartureContainerHeaderView *)self bottomAnchor];
+  v69 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
   v79[2] = v69;
-  v68 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-  v67 = [(MKTransitDepartureContainerHeaderView *)self trailingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:-16.0];
+  trailingAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+  trailingAnchor3 = [(MKTransitDepartureContainerHeaderView *)self trailingAnchor];
+  v66 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   v79[3] = v66;
-  v65 = [(MKTransitInfoLabelView *)self->_containerArtworkView leadingAnchor];
-  v64 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  leadingAnchor4 = [(MKTransitInfoLabelView *)self->_containerArtworkView leadingAnchor];
+  leadingAnchor5 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+  v63 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v79[4] = v63;
-  v61 = [(MKTransitInfoLabelView *)self->_containerArtworkView topAnchor];
-  v60 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  topAnchor3 = [(MKTransitInfoLabelView *)self->_containerArtworkView topAnchor];
+  topAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v79[5] = v59;
-  v58 = [(MKTransitInfoLabelView *)self->_containerArtworkView bottomAnchor];
-  v57 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  bottomAnchor3 = [(MKTransitInfoLabelView *)self->_containerArtworkView bottomAnchor];
+  bottomAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v35 = self->_artworkToTitleLabelHorizontalSpacingConstraint;
   v79[6] = v56;
   v79[7] = v35;
-  v55 = [(UIImageView *)self->_incidentImageView bottomAnchor];
-  v54 = [(MKTransitInfoLabelView *)self->_containerArtworkView bottomAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  bottomAnchor5 = [(UIImageView *)self->_incidentImageView bottomAnchor];
+  bottomAnchor6 = [(MKTransitInfoLabelView *)self->_containerArtworkView bottomAnchor];
+  v53 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v79[8] = v53;
-  v52 = [(UIImageView *)self->_incidentImageView leadingAnchor];
-  v51 = [(_MKUILabel *)self->_containerTitleLabel leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:-15.0];
+  leadingAnchor6 = [(UIImageView *)self->_incidentImageView leadingAnchor];
+  leadingAnchor7 = [(_MKUILabel *)self->_containerTitleLabel leadingAnchor];
+  v50 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:-15.0];
   v79[9] = v50;
-  v49 = [(UIImageView *)self->_incidentImageView widthAnchor];
-  v48 = [v49 constraintEqualToConstant:10.0];
+  widthAnchor = [(UIImageView *)self->_incidentImageView widthAnchor];
+  v48 = [widthAnchor constraintEqualToConstant:10.0];
   v79[10] = v48;
-  v47 = [(UIImageView *)self->_incidentImageView heightAnchor];
-  v46 = [v47 constraintEqualToConstant:v29];
+  heightAnchor = [(UIImageView *)self->_incidentImageView heightAnchor];
+  v46 = [heightAnchor constraintEqualToConstant:v29];
   v79[11] = v46;
-  v36 = [(_MKUILabel *)self->_containerTitleLabel trailingAnchor];
-  v37 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-  v38 = [v36 constraintLessThanOrEqualToAnchor:v37];
+  trailingAnchor4 = [(_MKUILabel *)self->_containerTitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+  v38 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
   v79[12] = v38;
-  v39 = [(_MKUILabel *)self->_containerTitleLabel topAnchor];
-  v40 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  topAnchor5 = [(_MKUILabel *)self->_containerTitleLabel topAnchor];
+  topAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+  v41 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v79[13] = v41;
-  v42 = [(_MKUILabel *)self->_containerTitleLabel bottomAnchor];
-  v43 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  bottomAnchor7 = [(_MKUILabel *)self->_containerTitleLabel bottomAnchor];
+  bottomAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  v44 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v79[14] = v44;
   v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:15];
   [v62 activateConstraints:v45];
 }
 
-- (MKTransitDepartureContainerHeaderView)initWithFrame:(CGRect)a3
+- (MKTransitDepartureContainerHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKTransitDepartureContainerHeaderView;
-  v3 = [(MKViewWithHairline *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKViewWithHairline *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,17 +1,17 @@
 @interface LifetimeServoAFLUT
-- (LifetimeServoAFLUT)initWithAFTableColumns:(id)a3;
+- (LifetimeServoAFLUT)initWithAFTableColumns:(id)columns;
 @end
 
 @implementation LifetimeServoAFLUT
 
-- (LifetimeServoAFLUT)initWithAFTableColumns:(id)a3
+- (LifetimeServoAFLUT)initWithAFTableColumns:(id)columns
 {
   v17.receiver = self;
   v17.super_class = LifetimeServoAFLUT;
   v4 = [(LifetimeServoAFLUT *)&v17 init];
   if (v4)
   {
-    v5 = [a3 count];
+    v5 = [columns count];
     v4->_columnCount = v5;
     if (v5 <= 26)
     {
@@ -20,7 +20,7 @@
         v7 = 0;
         do
         {
-          v8 = [a3 objectAtIndex:v7];
+          v8 = [columns objectAtIndex:v7];
           v4->_afLUTColumns[v7++] = -[LifetimeServoAFLUTColumn initWithLUTColumn:voltage:]([LifetimeServoAFLUTColumn alloc], "initWithLUTColumn:voltage:", [v8 objectForKey:@"afColumn"], objc_msgSend(objc_msgSend(v8, "objectForKey:", @"voltage"), "intValue"));
           columnCount = v4->_columnCount;
         }
@@ -32,8 +32,8 @@
           v11 = &v4->_afLUTColumns[1];
           do
           {
-            v12 = [*(v11 - 1) voltage];
-            if (v12 >= [*v11 voltage])
+            voltage = [*(v11 - 1) voltage];
+            if (voltage >= [*v11 voltage])
             {
               v13 = qword_1000AB718;
               if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))

@@ -1,6 +1,6 @@
 @interface IMPodcastFeed
 - (BOOL)hasEpisodes;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMPodcastFeed)init;
 - (unint64_t)offerTypesAsFlagBits;
 @end
@@ -21,116 +21,116 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IMPodcastFeed *)self feedDescription];
-    v7 = [(IMPodcastFeed *)self feedDescription];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    feedDescription = [(IMPodcastFeed *)self feedDescription];
+    feedDescription2 = [(IMPodcastFeed *)self feedDescription];
+    if (feedDescription == feedDescription2 || [feedDescription isEqual:feedDescription2])
     {
-      v8 = [(IMPodcastFeed *)self author];
-      v9 = [v5 author];
-      if (v8 == v9 || [v8 isEqual:v9])
+      author = [(IMPodcastFeed *)self author];
+      author2 = [v5 author];
+      if (author == author2 || [author isEqual:author2])
       {
-        v10 = [(IMPodcastFeed *)self category];
-        v11 = [v5 category];
-        if (v10 == v11 || [v10 isEqual:v11])
+        category = [(IMPodcastFeed *)self category];
+        category2 = [v5 category];
+        if (category == category2 || [category isEqual:category2])
         {
-          v67 = v10;
-          v12 = [(IMPodcastFeed *)self imageURL];
-          v13 = [v5 imageURL];
-          if (v12 == v13 || [v12 isEqual:v13])
+          v67 = category;
+          imageURL = [(IMPodcastFeed *)self imageURL];
+          imageURL2 = [v5 imageURL];
+          if (imageURL == imageURL2 || [imageURL isEqual:imageURL2])
           {
-            v65 = v11;
-            v66 = v13;
-            v14 = [(IMPodcastFeed *)self globalImageURL];
-            v15 = [v5 globalImageURL];
-            if (v14 == v15 || [v14 isEqual:v15])
+            v65 = category2;
+            v66 = imageURL2;
+            globalImageURL = [(IMPodcastFeed *)self globalImageURL];
+            globalImageURL2 = [v5 globalImageURL];
+            if (globalImageURL == globalImageURL2 || [globalImageURL isEqual:globalImageURL2])
             {
-              v63 = v8;
-              v64 = v15;
-              v16 = [(IMPodcastFeed *)self items];
-              v17 = [v5 items];
-              if (v16 == v17 || [v16 isEqual:v17])
+              v63 = author;
+              v64 = globalImageURL2;
+              items = [(IMPodcastFeed *)self items];
+              items2 = [v5 items];
+              if (items == items2 || [items isEqual:items2])
               {
-                v61 = v9;
-                v62 = v17;
-                v18 = [(IMPodcastFeed *)self provider];
-                v19 = [v5 provider];
-                v60 = v18;
-                if (v18 == v19 || [v18 isEqual:v19])
+                v61 = author2;
+                v62 = items2;
+                provider = [(IMPodcastFeed *)self provider];
+                provider2 = [v5 provider];
+                v60 = provider;
+                if (provider == provider2 || [provider isEqual:provider2])
                 {
-                  v59 = v19;
-                  v20 = [(IMPodcastFeed *)self category];
-                  v21 = [v5 category];
-                  v58 = v20;
-                  if (v20 == v21 || [v20 isEqual:v21])
+                  v59 = provider2;
+                  category3 = [(IMPodcastFeed *)self category];
+                  category4 = [v5 category];
+                  v58 = category3;
+                  if (category3 == category4 || [category3 isEqual:category4])
                   {
-                    v57 = v21;
-                    v22 = [(IMPodcastFeed *)self updatedFeedURL];
-                    v23 = [v5 updatedFeedURL];
-                    v56 = v22;
-                    if (v22 == v23 || [v22 isEqual:v23])
+                    v57 = category4;
+                    updatedFeedURL = [(IMPodcastFeed *)self updatedFeedURL];
+                    updatedFeedURL2 = [v5 updatedFeedURL];
+                    v56 = updatedFeedURL;
+                    if (updatedFeedURL == updatedFeedURL2 || [updatedFeedURL isEqual:updatedFeedURL2])
                     {
-                      v55 = v23;
-                      v24 = [(IMPodcastFeed *)self title];
-                      v25 = [v5 title];
-                      v54 = v24;
-                      if (v24 == v25 || [v24 isEqual:v25])
+                      v55 = updatedFeedURL2;
+                      title = [(IMPodcastFeed *)self title];
+                      title2 = [v5 title];
+                      v54 = title;
+                      if (title == title2 || [title isEqual:title2])
                       {
-                        v53 = v25;
-                        v26 = [(IMPodcastFeed *)self isExplicit];
-                        if (v26 == [v5 isExplicit] && (v27 = -[IMPodcastFeed isNotSubscribable](self, "isNotSubscribable"), v27 == objc_msgSend(v5, "isNotSubscribable")))
+                        v53 = title2;
+                        isExplicit = [(IMPodcastFeed *)self isExplicit];
+                        if (isExplicit == [v5 isExplicit] && (v27 = -[IMPodcastFeed isNotSubscribable](self, "isNotSubscribable"), v27 == objc_msgSend(v5, "isNotSubscribable")))
                         {
-                          v29 = [(IMPodcastFeed *)self shareURL];
-                          v30 = [v5 shareURL];
-                          v52 = v29;
-                          if (v29 == v30 || [v29 isEqual:v30])
+                          shareURL = [(IMPodcastFeed *)self shareURL];
+                          shareURL2 = [v5 shareURL];
+                          v52 = shareURL;
+                          if (shareURL == shareURL2 || [shareURL isEqual:shareURL2])
                           {
-                            v51 = v30;
-                            v31 = [(IMPodcastFeed *)self showType];
-                            v32 = [v5 showType];
-                            v50 = v31;
-                            if (v31 == v32 || [v31 isEqual:v32])
+                            v51 = shareURL2;
+                            showType = [(IMPodcastFeed *)self showType];
+                            showType2 = [v5 showType];
+                            v50 = showType;
+                            if (showType == showType2 || [showType isEqual:showType2])
                             {
-                              v49 = v32;
-                              v33 = [(IMPodcastFeed *)self webpageURL];
-                              v34 = [v5 webpageURL];
-                              v48 = v33;
-                              if (v33 == v34 || [v33 isEqual:v34])
+                              v49 = showType2;
+                              webpageURL = [(IMPodcastFeed *)self webpageURL];
+                              webpageURL2 = [v5 webpageURL];
+                              v48 = webpageURL;
+                              if (webpageURL == webpageURL2 || [webpageURL isEqual:webpageURL2])
                               {
-                                v47 = v34;
-                                v35 = [(IMPodcastFeed *)self displayType];
-                                v36 = [v5 displayType];
-                                v46 = v35;
-                                if (v35 == v36 || [v35 isEqual:v36])
+                                v47 = webpageURL2;
+                                displayType = [(IMPodcastFeed *)self displayType];
+                                displayType2 = [v5 displayType];
+                                v46 = displayType;
+                                if (displayType == displayType2 || [displayType isEqual:displayType2])
                                 {
-                                  v45 = v36;
-                                  v37 = [(IMPodcastFeed *)self offers];
-                                  v38 = [(IMPodcastFeed *)self offers];
-                                  if (v37 == v38 || [v37 isEqual:v38])
+                                  v45 = displayType2;
+                                  offers = [(IMPodcastFeed *)self offers];
+                                  offers2 = [(IMPodcastFeed *)self offers];
+                                  if (offers == offers2 || [offers isEqual:offers2])
                                   {
-                                    v44 = v38;
-                                    v39 = [(IMPodcastFeed *)self showSpecificUpsellCopy];
-                                    v40 = [(IMPodcastFeed *)self showSpecificUpsellCopy];
-                                    if (v39 == v40)
+                                    v44 = offers2;
+                                    showSpecificUpsellCopy = [(IMPodcastFeed *)self showSpecificUpsellCopy];
+                                    showSpecificUpsellCopy2 = [(IMPodcastFeed *)self showSpecificUpsellCopy];
+                                    if (showSpecificUpsellCopy == showSpecificUpsellCopy2)
                                     {
                                       v28 = 1;
                                     }
 
                                     else
                                     {
-                                      v41 = v40;
-                                      v42 = [v39 isEqual:v40];
-                                      v40 = v41;
+                                      v41 = showSpecificUpsellCopy2;
+                                      v42 = [showSpecificUpsellCopy isEqual:showSpecificUpsellCopy2];
+                                      showSpecificUpsellCopy2 = v41;
                                       v28 = v42;
                                     }
 
-                                    v38 = v44;
+                                    offers2 = v44;
                                   }
 
                                   else
@@ -138,7 +138,7 @@
                                     v28 = 0;
                                   }
 
-                                  v36 = v45;
+                                  displayType2 = v45;
                                 }
 
                                 else
@@ -146,7 +146,7 @@
                                   v28 = 0;
                                 }
 
-                                v34 = v47;
+                                webpageURL2 = v47;
                               }
 
                               else
@@ -154,7 +154,7 @@
                                 v28 = 0;
                               }
 
-                              v32 = v49;
+                              showType2 = v49;
                             }
 
                             else
@@ -162,7 +162,7 @@
                               v28 = 0;
                             }
 
-                            v30 = v51;
+                            shareURL2 = v51;
                           }
 
                           else
@@ -176,7 +176,7 @@
                           v28 = 0;
                         }
 
-                        v25 = v53;
+                        title2 = v53;
                       }
 
                       else
@@ -184,7 +184,7 @@
                         v28 = 0;
                       }
 
-                      v23 = v55;
+                      updatedFeedURL2 = v55;
                     }
 
                     else
@@ -192,7 +192,7 @@
                       v28 = 0;
                     }
 
-                    v21 = v57;
+                    category4 = v57;
                   }
 
                   else
@@ -200,7 +200,7 @@
                     v28 = 0;
                   }
 
-                  v19 = v59;
+                  provider2 = v59;
                 }
 
                 else
@@ -208,8 +208,8 @@
                   v28 = 0;
                 }
 
-                v17 = v62;
-                v9 = v61;
+                items2 = v62;
+                author2 = v61;
               }
 
               else
@@ -217,8 +217,8 @@
                 v28 = 0;
               }
 
-              v8 = v63;
-              v15 = v64;
+              author = v63;
+              globalImageURL2 = v64;
             }
 
             else
@@ -226,8 +226,8 @@
               v28 = 0;
             }
 
-            v11 = v65;
-            v13 = v66;
+            category2 = v65;
+            imageURL2 = v66;
           }
 
           else
@@ -235,7 +235,7 @@
             v28 = 0;
           }
 
-          v10 = v67;
+          category = v67;
         }
 
         else
@@ -271,8 +271,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(IMPodcastFeed *)self offers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  offers = [(IMPodcastFeed *)self offers];
+  v3 = [offers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -284,13 +284,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(offers);
         }
 
         v5 |= [*(*(&v10 + 1) + 8 * i) offerTypeAsFlagBit];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [offers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -307,8 +307,8 @@
 
 - (BOOL)hasEpisodes
 {
-  v2 = [(IMPodcastFeed *)self items];
-  v3 = [v2 count] != 0;
+  items = [(IMPodcastFeed *)self items];
+  v3 = [items count] != 0;
 
   return v3;
 }

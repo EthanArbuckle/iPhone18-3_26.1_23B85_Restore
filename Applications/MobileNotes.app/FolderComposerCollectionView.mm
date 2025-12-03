@@ -1,7 +1,7 @@
 @interface FolderComposerCollectionView
 - (_TtC11MobileNotes28FolderComposerCollectionView)init;
-- (_TtC11MobileNotes28FolderComposerCollectionView)initWithCoder:(id)a3;
-- (_TtC11MobileNotes28FolderComposerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC11MobileNotes28FolderComposerCollectionView)initWithCoder:(id)coder;
+- (_TtC11MobileNotes28FolderComposerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation FolderComposerCollectionView
@@ -29,14 +29,14 @@
   return v8;
 }
 
-- (_TtC11MobileNotes28FolderComposerCollectionView)initWithCoder:(id)a3
+- (_TtC11MobileNotes28FolderComposerCollectionView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC11MobileNotes28FolderComposerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC11MobileNotes28FolderComposerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

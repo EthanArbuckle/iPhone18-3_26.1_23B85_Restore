@@ -1,7 +1,7 @@
 @interface TPSCollection
 + (id)na_identity;
 - (BOOL)isChecklist;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHardwareWelcome;
 - (BOOL)isSoftwareWelcome;
 - (BOOL)isSwitcherWelcome;
@@ -12,97 +12,97 @@
 - (NSString)title;
 - (TPSAssets)featuredAssets;
 - (TPSAssets)tileAssets;
-- (TPSCollection)initWithCoder:(id)a3;
-- (TPSCollection)initWithDictionary:(id)a3 metadata:(id)a4;
+- (TPSCollection)initWithCoder:(id)coder;
+- (TPSCollection)initWithDictionary:(id)dictionary metadata:(id)metadata;
 - (TPSGradient)gradient;
-- (id)URLWithReferrer:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)URLWithReferrer:(id)referrer;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (int64_t)count;
 - (int64_t)countExcludingBookends;
 - (int64_t)priority;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions;
 @end
 
 @implementation TPSCollection
 
-- (TPSCollection)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSCollection)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
   v5.receiver = self;
   v5.super_class = TPSCollection;
-  return [(TPSDocument *)&v5 initWithDictionary:a3 metadata:a4 identifierKey:@"collectionLabel"];
+  return [(TPSDocument *)&v5 initWithDictionary:dictionary metadata:metadata identifierKey:@"collectionLabel"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = TPSCollection;
-  v4 = [(TPSDocument *)&v13 copyWithZone:a3];
+  v4 = [(TPSDocument *)&v13 copyWithZone:zone];
   [v4 setContainsIntroTip:{-[TPSCollection containsIntroTip](self, "containsIntroTip")}];
-  v5 = [(TPSCollection *)self shortTitle];
-  [v4 setShortTitle:v5];
+  shortTitle = [(TPSCollection *)self shortTitle];
+  [v4 setShortTitle:shortTitle];
 
-  v6 = [(TPSCollection *)self tipIdentifiers];
-  [v4 setTipIdentifiers:v6];
+  tipIdentifiers = [(TPSCollection *)self tipIdentifiers];
+  [v4 setTipIdentifiers:tipIdentifiers];
 
-  v7 = [(TPSCollection *)self featuredContent];
-  [v4 setFeaturedContent:v7];
+  featuredContent = [(TPSCollection *)self featuredContent];
+  [v4 setFeaturedContent:featuredContent];
 
-  v8 = [(TPSCollection *)self tileContent];
-  [v4 setTileContent:v8];
+  tileContent = [(TPSCollection *)self tileContent];
+  [v4 setTileContent:tileContent];
 
-  v9 = [(TPSCollection *)self tocAssets];
-  [v4 setTocAssets:v9];
+  tocAssets = [(TPSCollection *)self tocAssets];
+  [v4 setTocAssets:tocAssets];
 
-  v10 = [(TPSCollection *)self collectionAssets];
-  [v4 setCollectionAssets:v10];
+  collectionAssets = [(TPSCollection *)self collectionAssets];
+  [v4 setCollectionAssets:collectionAssets];
 
-  v11 = [(TPSCollection *)self gradient];
-  [v4 setGradient:v11];
+  gradient = [(TPSCollection *)self gradient];
+  [v4 setGradient:gradient];
 
   return v4;
 }
 
-- (TPSCollection)initWithCoder:(id)a3
+- (TPSCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = TPSCollection;
-  v5 = [(TPSDocument *)&v24 initWithCoder:v4];
+  v5 = [(TPSDocument *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_containsIntroTip = [v4 decodeBoolForKey:@"containsIntroTip"];
-    v5->_containsOutroTip = [v4 decodeBoolForKey:@"containsOutroTip"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortTitle"];
+    v5->_containsIntroTip = [coderCopy decodeBoolForKey:@"containsIntroTip"];
+    v5->_containsOutroTip = [coderCopy decodeBoolForKey:@"containsOutroTip"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortTitle"];
     shortTitle = v5->_shortTitle;
     v5->_shortTitle = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"documentIds"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"documentIds"];
     tipIdentifiers = v5->_tipIdentifiers;
     v5->_tipIdentifiers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featured"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featured"];
     featuredContent = v5->_featuredContent;
     v5->_featuredContent = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tile"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tile"];
     tileContent = v5->_tileContent;
     v5->_tileContent = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tocIcon"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tocIcon"];
     tocAssets = v5->_tocAssets;
     v5->_tocAssets = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionIcon"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionIcon"];
     collectionAssets = v5->_collectionAssets;
     v5->_collectionAssets = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
     gradient = v5->_gradient;
     v5->_gradient = v21;
   }
@@ -110,58 +110,58 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = TPSCollection;
-  v4 = a3;
-  [(TPSDocument *)&v12 encodeWithCoder:v4];
-  [v4 encodeBool:-[TPSCollection containsIntroTip](self forKey:{"containsIntroTip", v12.receiver, v12.super_class), @"containsIntroTip"}];
-  [v4 encodeBool:-[TPSCollection containsOutroTip](self forKey:{"containsOutroTip"), @"containsOutroTip"}];
-  v5 = [(TPSCollection *)self shortTitle];
-  [v4 encodeObject:v5 forKey:@"shortTitle"];
+  coderCopy = coder;
+  [(TPSDocument *)&v12 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[TPSCollection containsIntroTip](self forKey:{"containsIntroTip", v12.receiver, v12.super_class), @"containsIntroTip"}];
+  [coderCopy encodeBool:-[TPSCollection containsOutroTip](self forKey:{"containsOutroTip"), @"containsOutroTip"}];
+  shortTitle = [(TPSCollection *)self shortTitle];
+  [coderCopy encodeObject:shortTitle forKey:@"shortTitle"];
 
-  v6 = [(TPSCollection *)self tipIdentifiers];
-  [v4 encodeObject:v6 forKey:@"documentIds"];
+  tipIdentifiers = [(TPSCollection *)self tipIdentifiers];
+  [coderCopy encodeObject:tipIdentifiers forKey:@"documentIds"];
 
-  v7 = [(TPSCollection *)self featuredContent];
-  [v4 encodeObject:v7 forKey:@"featured"];
+  featuredContent = [(TPSCollection *)self featuredContent];
+  [coderCopy encodeObject:featuredContent forKey:@"featured"];
 
-  v8 = [(TPSCollection *)self tileContent];
-  [v4 encodeObject:v8 forKey:@"tile"];
+  tileContent = [(TPSCollection *)self tileContent];
+  [coderCopy encodeObject:tileContent forKey:@"tile"];
 
-  v9 = [(TPSCollection *)self tocAssets];
-  [v4 encodeObject:v9 forKey:@"tocIcon"];
+  tocAssets = [(TPSCollection *)self tocAssets];
+  [coderCopy encodeObject:tocAssets forKey:@"tocIcon"];
 
-  v10 = [(TPSCollection *)self collectionAssets];
-  [v4 encodeObject:v10 forKey:@"collectionIcon"];
+  collectionAssets = [(TPSCollection *)self collectionAssets];
+  [coderCopy encodeObject:collectionAssets forKey:@"collectionIcon"];
 
-  v11 = [(TPSCollection *)self gradient];
-  [v4 encodeObject:v11 forKey:@"gradient"];
+  gradient = [(TPSCollection *)self gradient];
+  [coderCopy encodeObject:gradient forKey:@"gradient"];
 }
 
 - (int64_t)count
 {
-  v2 = [(TPSCollection *)self tipIdentifiers];
-  v3 = [v2 count];
+  tipIdentifiers = [(TPSCollection *)self tipIdentifiers];
+  v3 = [tipIdentifiers count];
 
   return v3;
 }
 
 - (int64_t)countExcludingBookends
 {
-  v3 = [(TPSCollection *)self tipIdentifiers];
-  v4 = [v3 count];
+  tipIdentifiers = [(TPSCollection *)self tipIdentifiers];
+  v4 = [tipIdentifiers count];
 
   v5 = v4 - [(TPSCollection *)self containsIntroTip];
   return v5 - [(TPSCollection *)self containsOutroTip];
 }
 
-- (id)URLWithReferrer:(id)a3
+- (id)URLWithReferrer:(id)referrer
 {
-  v4 = a3;
-  v5 = [(TPSDocument *)self identifier];
-  v6 = [TPSDocument URLWithTipIdentifier:0 collectionIdentifier:v5 referrer:v4];
+  referrerCopy = referrer;
+  identifier = [(TPSDocument *)self identifier];
+  v6 = [TPSDocument URLWithTipIdentifier:0 collectionIdentifier:identifier referrer:referrerCopy];
 
   return v6;
 }
@@ -171,13 +171,13 @@
   countText = self->_countText;
   if (!countText)
   {
-    v4 = [(TPSCollection *)self countExcludingBookends];
+    countExcludingBookends = [(TPSCollection *)self countExcludingBookends];
     v5 = +[TPSCommonDefines tipsCoreFrameworkBundle];
     v6 = [v5 localizedStringForKey:@"NUMBER_TIPS" value:0 table:0];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 localizedStringForKey:v6 value:&stru_1F3F2F4B8 table:0];
-    v10 = [v7 localizedStringWithFormat:v9, v4];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v9 = [mainBundle localizedStringForKey:v6 value:&stru_1F3F2F4B8 table:0];
+    v10 = [v7 localizedStringWithFormat:v9, countExcludingBookends];
     v11 = self->_countText;
     self->_countText = v10;
 
@@ -187,37 +187,37 @@
   return countText;
 }
 
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions
 {
   v27.receiver = self;
   v27.super_class = TPSCollection;
-  v12 = a4;
-  v13 = a3;
-  [(TPSDocument *)&v27 updateWithContentDictionary:v13 metadata:v12 clientConditionIdentifier:a5 fileIdMap:a6 clientConditions:a7];
-  v14 = [v13 TPSSafeStringForKey:{@"shortTitle", v27.receiver, v27.super_class}];
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
+  [(TPSDocument *)&v27 updateWithContentDictionary:dictionaryCopy metadata:metadataCopy clientConditionIdentifier:identifier fileIdMap:map clientConditions:conditions];
+  v14 = [dictionaryCopy TPSSafeStringForKey:{@"shortTitle", v27.receiver, v27.super_class}];
   [(TPSCollection *)self setShortTitle:v14];
 
-  v15 = [v13 TPSSafeDictionaryForKey:@"tile"];
-  v16 = [[TPSContent alloc] initWithDictionary:v15 metadata:v12];
+  v15 = [dictionaryCopy TPSSafeDictionaryForKey:@"tile"];
+  v16 = [[TPSContent alloc] initWithDictionary:v15 metadata:metadataCopy];
   [(TPSCollection *)self setTileContent:v16];
 
-  v17 = [v13 TPSSafeDictionaryForKey:@"featured"];
-  v18 = [[TPSContent alloc] initWithDictionary:v17 metadata:v12];
+  v17 = [dictionaryCopy TPSSafeDictionaryForKey:@"featured"];
+  v18 = [[TPSContent alloc] initWithDictionary:v17 metadata:metadataCopy];
   [(TPSCollection *)self setFeaturedContent:v18];
 
-  v19 = [(TPSCollection *)self tileAssets];
-  v20 = [(TPSDocument *)self notification];
-  [v20 setAssets:v19];
+  tileAssets = [(TPSCollection *)self tileAssets];
+  notification = [(TPSDocument *)self notification];
+  [notification setAssets:tileAssets];
 
-  v21 = [v13 TPSSafeDictionaryForKey:@"tocIcon"];
-  v22 = [[TPSAssets alloc] initWithDictionary:v21 metadata:v12];
+  v21 = [dictionaryCopy TPSSafeDictionaryForKey:@"tocIcon"];
+  v22 = [[TPSAssets alloc] initWithDictionary:v21 metadata:metadataCopy];
   [(TPSCollection *)self setTocAssets:v22];
 
-  v23 = [v13 TPSSafeDictionaryForKey:@"collectionIcon"];
-  v24 = [[TPSAssets alloc] initWithDictionary:v23 metadata:v12];
+  v23 = [dictionaryCopy TPSSafeDictionaryForKey:@"collectionIcon"];
+  v24 = [[TPSAssets alloc] initWithDictionary:v23 metadata:metadataCopy];
 
   [(TPSCollection *)self setCollectionAssets:v24];
-  v25 = [v13 TPSSafeDictionaryForKey:@"gradient"];
+  v25 = [dictionaryCopy TPSSafeDictionaryForKey:@"gradient"];
 
   v26 = [[TPSGradient alloc] initWithDictionary:v25];
   [(TPSCollection *)self setGradient:v26];
@@ -225,29 +225,29 @@
 
 - (BOOL)isChecklist
 {
-  v2 = [(TPSDocument *)self identifier];
+  identifier = [(TPSDocument *)self identifier];
   v3 = +[TPSCommonDefines checklistCollectionIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [identifier isEqualToString:v3];
 
   return v4;
 }
 
 - (int64_t)priority
 {
-  v2 = [(TPSCollection *)self featuredContent];
-  v3 = v2 != 0;
+  featuredContent = [(TPSCollection *)self featuredContent];
+  v3 = featuredContent != 0;
 
   return v3;
 }
 
 - (NSString)title
 {
-  v2 = [(TPSCollection *)self tileContent];
-  v3 = [v2 title];
-  v4 = v3;
-  if (v3)
+  tileContent = [(TPSCollection *)self tileContent];
+  title = [tileContent title];
+  v4 = title;
+  if (title)
   {
-    v5 = v3;
+    v5 = title;
   }
 
   else
@@ -262,64 +262,64 @@
 
 - (NSString)text
 {
-  v2 = [(TPSCollection *)self tileContent];
-  v3 = [v2 bodyText];
+  tileContent = [(TPSCollection *)self tileContent];
+  bodyText = [tileContent bodyText];
 
-  return v3;
+  return bodyText;
 }
 
 - (NSString)featuredTitle
 {
-  v3 = [(TPSCollection *)self featuredContent];
-  v4 = [v3 title];
-  v5 = v4;
-  if (v4)
+  featuredContent = [(TPSCollection *)self featuredContent];
+  title = [featuredContent title];
+  v5 = title;
+  if (title)
   {
-    v6 = v4;
+    title2 = title;
   }
 
   else
   {
-    v6 = [(TPSCollection *)self title];
+    title2 = [(TPSCollection *)self title];
   }
 
-  v7 = v6;
+  v7 = title2;
 
   return v7;
 }
 
 - (NSString)featuredText
 {
-  v2 = [(TPSCollection *)self featuredContent];
-  v3 = [v2 bodyText];
+  featuredContent = [(TPSCollection *)self featuredContent];
+  bodyText = [featuredContent bodyText];
 
-  return v3;
+  return bodyText;
 }
 
 - (TPSAssets)featuredAssets
 {
-  v2 = [(TPSCollection *)self featuredContent];
-  v3 = [v2 assets];
+  featuredContent = [(TPSCollection *)self featuredContent];
+  assets = [featuredContent assets];
 
-  return v3;
+  return assets;
 }
 
 - (TPSAssets)tileAssets
 {
-  v3 = [(TPSCollection *)self tileContent];
-  v4 = [v3 assets];
-  v5 = v4;
-  if (v4)
+  tileContent = [(TPSCollection *)self tileContent];
+  assets = [tileContent assets];
+  v5 = assets;
+  if (assets)
   {
-    v6 = v4;
+    collectionAssets = assets;
   }
 
   else
   {
-    v6 = [(TPSCollection *)self collectionAssets];
+    collectionAssets = [(TPSCollection *)self collectionAssets];
   }
 
-  v7 = v6;
+  v7 = collectionAssets;
 
   return v7;
 }
@@ -329,41 +329,41 @@
   gradient = self->_gradient;
   if (gradient)
   {
-    v3 = gradient;
+    gradient = gradient;
   }
 
   else
   {
-    v4 = [(TPSCollection *)self collectionAssets];
-    v3 = [v4 gradient];
+    collectionAssets = [(TPSCollection *)self collectionAssets];
+    gradient = [collectionAssets gradient];
   }
 
-  return v3;
+  return gradient;
 }
 
 - (BOOL)isHardwareWelcome
 {
-  v2 = [(TPSDocument *)self identifier];
+  identifier = [(TPSDocument *)self identifier];
   v3 = +[TPSCommonDefines hardwareWelcomeCollectionIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [identifier isEqualToString:v3];
 
   return v4;
 }
 
 - (BOOL)isSoftwareWelcome
 {
-  v2 = [(TPSDocument *)self identifier];
+  identifier = [(TPSDocument *)self identifier];
   v3 = +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [identifier isEqualToString:v3];
 
   return v4;
 }
 
 - (BOOL)isSwitcherWelcome
 {
-  v2 = [(TPSDocument *)self identifier];
+  identifier = [(TPSDocument *)self identifier];
   v3 = +[TPSCommonDefines switcherWelcomeCollectionIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [identifier isEqualToString:v3];
 
   return v4;
 }
@@ -377,59 +377,59 @@
   v5 = [v3 initWithString:v4];
 
   [v5 appendFormat:@"%@ = %ld\n", @"Priority", -[TPSCollection priority](self, "priority")];
-  v6 = [(TPSCollection *)self tipIdentifiers];
-  [v5 appendFormat:@"%@ = %@\n", @"documentIds", v6];
+  tipIdentifiers = [(TPSCollection *)self tipIdentifiers];
+  [v5 appendFormat:@"%@ = %@\n", @"documentIds", tipIdentifiers];
 
-  v7 = [(TPSCollection *)self shortTitle];
+  shortTitle = [(TPSCollection *)self shortTitle];
 
-  if (v7)
+  if (shortTitle)
   {
-    v8 = [(TPSCollection *)self shortTitle];
-    [v5 appendFormat:@"%@ = %@\n", @"shortTitle", v8];
+    shortTitle2 = [(TPSCollection *)self shortTitle];
+    [v5 appendFormat:@"%@ = %@\n", @"shortTitle", shortTitle2];
   }
 
-  v9 = [(TPSCollection *)self featuredContent];
+  featuredContent = [(TPSCollection *)self featuredContent];
 
-  if (v9)
+  if (featuredContent)
   {
-    v10 = [(TPSCollection *)self featuredContent];
-    v11 = [v10 debugDescription];
+    featuredContent2 = [(TPSCollection *)self featuredContent];
+    v11 = [featuredContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"featured", v11];
   }
 
-  v12 = [(TPSCollection *)self tileContent];
+  tileContent = [(TPSCollection *)self tileContent];
 
-  if (v12)
+  if (tileContent)
   {
-    v13 = [(TPSCollection *)self tileContent];
-    v14 = [v13 debugDescription];
+    tileContent2 = [(TPSCollection *)self tileContent];
+    v14 = [tileContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"tile", v14];
   }
 
-  v15 = [(TPSCollection *)self tocAssets];
+  tocAssets = [(TPSCollection *)self tocAssets];
 
-  if (v15)
+  if (tocAssets)
   {
-    v16 = [(TPSCollection *)self tocAssets];
-    v17 = [v16 debugDescription];
+    tocAssets2 = [(TPSCollection *)self tocAssets];
+    v17 = [tocAssets2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"tocIcon", v17];
   }
 
-  v18 = [(TPSCollection *)self collectionAssets];
+  collectionAssets = [(TPSCollection *)self collectionAssets];
 
-  if (v18)
+  if (collectionAssets)
   {
-    v19 = [(TPSCollection *)self collectionAssets];
-    v20 = [v19 debugDescription];
+    collectionAssets2 = [(TPSCollection *)self collectionAssets];
+    v20 = [collectionAssets2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"collectionIcon", v20];
   }
 
-  v21 = [(TPSCollection *)self gradient];
+  gradient = [(TPSCollection *)self gradient];
 
-  if (v21)
+  if (gradient)
   {
-    v22 = [(TPSCollection *)self gradient];
-    v23 = [v22 debugDescription];
+    gradient2 = [(TPSCollection *)self gradient];
+    v23 = [gradient2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"gradient", v23];
   }
 
@@ -442,7 +442,7 @@
   v4[1] = 3221225472;
   v4[2] = __28__TPSCollection_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __28__TPSCollection_na_identity__block_invoke(v4);
 
   return v2;
@@ -505,19 +505,19 @@ uint64_t __28__TPSCollection_na_identity__block_invoke_4(uint64_t a1, void *a2)
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

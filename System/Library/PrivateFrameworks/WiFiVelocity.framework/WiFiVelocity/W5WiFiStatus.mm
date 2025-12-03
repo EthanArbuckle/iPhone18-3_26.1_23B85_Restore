@@ -1,19 +1,19 @@
 @interface W5WiFiStatus
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWiFiStatus:(id)a3;
-- (W5WiFiStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWiFiStatus:(id)status;
+- (W5WiFiStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCachedScanResults:(id)a3;
-- (void)setDnsAddresses:(id)a3;
-- (void)setIpv4Addresses:(id)a3;
-- (void)setIpv6Addresses:(id)a3;
-- (void)setLinkQualityUpdates:(id)a3;
-- (void)setSupportedChannels:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCachedScanResults:(id)results;
+- (void)setDnsAddresses:(id)addresses;
+- (void)setIpv4Addresses:(id)addresses;
+- (void)setIpv6Addresses:(id)addresses;
+- (void)setLinkQualityUpdates:(id)updates;
+- (void)setSupportedChannels:(id)channels;
 @end
 
 @implementation W5WiFiStatus
@@ -25,16 +25,16 @@
   [(W5WiFiStatus *)&v3 dealloc];
 }
 
-- (void)setIpv4Addresses:(id)a3
+- (void)setIpv4Addresses:(id)addresses
 {
   ipv4Addresses = self->_ipv4Addresses;
-  if (ipv4Addresses != a3)
+  if (ipv4Addresses != addresses)
   {
 
     self->_ipv4Addresses = 0;
-    if (a3)
+    if (addresses)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:addresses requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -47,16 +47,16 @@
   }
 }
 
-- (void)setIpv6Addresses:(id)a3
+- (void)setIpv6Addresses:(id)addresses
 {
   ipv6Addresses = self->_ipv6Addresses;
-  if (ipv6Addresses != a3)
+  if (ipv6Addresses != addresses)
   {
 
     self->_ipv6Addresses = 0;
-    if (a3)
+    if (addresses)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:addresses requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -69,16 +69,16 @@
   }
 }
 
-- (void)setDnsAddresses:(id)a3
+- (void)setDnsAddresses:(id)addresses
 {
   dnsAddresses = self->_dnsAddresses;
-  if (dnsAddresses != a3)
+  if (dnsAddresses != addresses)
   {
 
     self->_dnsAddresses = 0;
-    if (a3)
+    if (addresses)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:addresses requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -91,16 +91,16 @@
   }
 }
 
-- (void)setCachedScanResults:(id)a3
+- (void)setCachedScanResults:(id)results
 {
   cachedScanResults = self->_cachedScanResults;
-  if (cachedScanResults != a3)
+  if (cachedScanResults != results)
   {
 
     self->_cachedScanResults = 0;
-    if (a3)
+    if (results)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:results requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -113,16 +113,16 @@
   }
 }
 
-- (void)setSupportedChannels:(id)a3
+- (void)setSupportedChannels:(id)channels
 {
   supportedChannels = self->_supportedChannels;
-  if (supportedChannels != a3)
+  if (supportedChannels != channels)
   {
 
     self->_supportedChannels = 0;
-    if (a3)
+    if (channels)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:channels requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -135,16 +135,16 @@
   }
 }
 
-- (void)setLinkQualityUpdates:(id)a3
+- (void)setLinkQualityUpdates:(id)updates
 {
   linkQualityUpdates = self->_linkQualityUpdates;
-  if (linkQualityUpdates != a3)
+  if (linkQualityUpdates != updates)
   {
 
     self->_linkQualityUpdates = 0;
-    if (a3)
+    if (updates)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:updates requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -174,15 +174,15 @@
   }
 
   v5 = [(NSData *)self->_power length];
-  v6 = 0;
+  bytes = 0;
   if (v5 == 24)
   {
-    v6 = [(NSData *)self->_power bytes];
+    bytes = [(NSData *)self->_power bytes];
   }
 
-  [v3 appendFormat:@"Power: %s [%@]\n", v4, W5DescriptionForPower(v6)];
+  [v3 appendFormat:@"Power: %s [%@]\n", v4, W5DescriptionForPower(bytes)];
   [v3 appendFormat:@"Mode: %@\n", W5DescriptionForOpMode(self->_opMode)];
-  v7 = [(NSString *)self->_ssidString redactedForWiFi];
+  redactedForWiFi = [(NSString *)self->_ssidString redactedForWiFi];
   if ([MEMORY[0x277D02B10] logRedactionDisabled])
   {
     ssid = self->_ssid;
@@ -193,7 +193,7 @@
     ssid = @"<redacted>";
   }
 
-  [v3 appendFormat:@"SSID: %@ (%@)\n", v7, ssid];
+  [v3 appendFormat:@"SSID: %@ (%@)\n", redactedForWiFi, ssid];
   [v3 appendFormat:@"BSSID: %@\n", -[NSString redactedForWiFi](self->_bssid, "redactedForWiFi")];
   [v3 appendFormat:@"RSSI: %ld\n", self->_rssi];
   [v3 appendFormat:@"CCA: %ld\n", self->_cca];
@@ -357,16 +357,16 @@
         {
           if ([(NSData *)self->_btcProfiles2GHz length]== 572)
           {
-            v33 = [(NSData *)self->_btcProfiles2GHz bytes];
+            bytes2 = [(NSData *)self->_btcProfiles2GHz bytes];
           }
 
           else
           {
-            v33 = 0;
+            bytes2 = 0;
           }
 
           [(NSData *)self->_btcConfig length];
-          v34 = &v33[140 * *([(NSData *)self->_btcConfig bytes]+ 8)];
+          v34 = &bytes2[140 * *([(NSData *)self->_btcConfig bytes]+ 8)];
           v64 = *(v34 + 12);
           v35 = *(v34 + 28);
           v36 = *(v34 + 44);
@@ -401,16 +401,16 @@
         {
           if ([(NSData *)self->_btcProfiles5GHz length]== 572)
           {
-            v43 = [(NSData *)self->_btcProfiles5GHz bytes];
+            bytes3 = [(NSData *)self->_btcProfiles5GHz bytes];
           }
 
           else
           {
-            v43 = 0;
+            bytes3 = 0;
           }
 
           [(NSData *)self->_btcConfig length];
-          v44 = &v43[140 * *([(NSData *)self->_btcConfig bytes]+ 16)];
+          v44 = &bytes3[140 * *([(NSData *)self->_btcConfig bytes]+ 16)];
           v64 = *(v44 + 12);
           v45 = *(v44 + 28);
           v46 = *(v44 + 44);
@@ -434,15 +434,15 @@
 
   if ([(NSData *)self->_chainAck length]== 24)
   {
-    v51 = [(NSData *)self->_chainAck bytes];
+    bytes4 = [(NSData *)self->_chainAck bytes];
   }
 
   else
   {
-    v51 = 0;
+    bytes4 = 0;
   }
 
-  [v3 appendFormat:@"Chain Ack: [%@]\n", W5DescriptionForChainAck(v51)];
+  [v3 appendFormat:@"Chain Ack: [%@]\n", W5DescriptionForChainAck(bytes4)];
   txChainPower = self->_txChainPower;
   if (txChainPower)
   {
@@ -462,9 +462,9 @@
           if (*([(NSData *)self->_txChainPower bytes]+ v54) == 2)
           {
             [(NSData *)self->_txChainPower length];
-            v55 = [(NSData *)self->_txChainPower bytes];
-            v56 = *&v55[v54];
-            LODWORD(v65) = *&v55[v54 + 16];
+            bytes5 = [(NSData *)self->_txChainPower bytes];
+            v56 = *&bytes5[v54];
+            LODWORD(v65) = *&bytes5[v54 + 16];
             v64 = v56;
             [v3 appendString:{W5DescriptionForTxChainPower(&v64, @"\t"}];
           }
@@ -484,25 +484,25 @@
   {
     if ([(NSData *)desense length]== 16)
     {
-      v58 = [(NSData *)self->_desense bytes];
+      bytes6 = [(NSData *)self->_desense bytes];
     }
 
     else
     {
-      v58 = 0;
+      bytes6 = 0;
     }
 
     if ([(NSData *)self->_desenseLevel length]== 8)
     {
-      v59 = [(NSData *)self->_desenseLevel bytes];
+      bytes7 = [(NSData *)self->_desenseLevel bytes];
     }
 
     else
     {
-      v59 = 0;
+      bytes7 = 0;
     }
 
-    [v3 appendFormat:@"Desense: %@\n", W5DescriptionForDesense(v58, v59)];
+    [v3 appendFormat:@"Desense: %@\n", W5DescriptionForDesense(bytes6, bytes7)];
   }
 
   if (self->_smartCCADesenseSupported)
@@ -532,27 +532,27 @@
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5WiFiStatus;
-  if (-[W5WiFiStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5WiFiStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToWiFiStatus:(id)a3
+- (BOOL)isEqualToWiFiStatus:(id)status
 {
   macAddress = self->_macAddress;
   if (!macAddress)
   {
-    if (![a3 macAddress])
+    if (![status macAddress])
     {
       goto LABEL_5;
     }
@@ -560,7 +560,7 @@
     macAddress = self->_macAddress;
   }
 
-  v6 = -[NSString isEqual:](macAddress, "isEqual:", [a3 macAddress]);
+  v6 = -[NSString isEqual:](macAddress, "isEqual:", [status macAddress]);
   if (!v6)
   {
     return v6;
@@ -570,7 +570,7 @@ LABEL_5:
   hardwareMACAddress = self->_hardwareMACAddress;
   if (!hardwareMACAddress)
   {
-    if (![a3 hardwareMACAddress])
+    if (![status hardwareMACAddress])
     {
       goto LABEL_9;
     }
@@ -578,7 +578,7 @@ LABEL_5:
     hardwareMACAddress = self->_hardwareMACAddress;
   }
 
-  v6 = -[NSString isEqual:](hardwareMACAddress, "isEqual:", [a3 hardwareMACAddress]);
+  v6 = -[NSString isEqual:](hardwareMACAddress, "isEqual:", [status hardwareMACAddress]);
   if (!v6)
   {
     return v6;
@@ -588,7 +588,7 @@ LABEL_9:
   interfaceName = self->_interfaceName;
   if (!interfaceName)
   {
-    if (![a3 interfaceName])
+    if (![status interfaceName])
     {
       goto LABEL_13;
     }
@@ -596,7 +596,7 @@ LABEL_9:
     interfaceName = self->_interfaceName;
   }
 
-  v6 = -[NSString isEqual:](interfaceName, "isEqual:", [a3 interfaceName]);
+  v6 = -[NSString isEqual:](interfaceName, "isEqual:", [status interfaceName]);
   if (!v6)
   {
     return v6;
@@ -606,7 +606,7 @@ LABEL_13:
   capabilities = self->_capabilities;
   if (!capabilities)
   {
-    if (![a3 capabilities])
+    if (![status capabilities])
     {
       goto LABEL_17;
     }
@@ -614,7 +614,7 @@ LABEL_13:
     capabilities = self->_capabilities;
   }
 
-  v6 = -[NSArray isEqual:](capabilities, "isEqual:", [a3 capabilities]);
+  v6 = -[NSArray isEqual:](capabilities, "isEqual:", [status capabilities]);
   if (!v6)
   {
     return v6;
@@ -622,19 +622,19 @@ LABEL_13:
 
 LABEL_17:
   powerOn = self->_powerOn;
-  if (powerOn != [a3 powerOn])
+  if (powerOn != [status powerOn])
   {
     goto LABEL_130;
   }
 
-  v6 = -[NSData isEqualToData:](self->_power, "isEqualToData:", [a3 power]);
+  v6 = -[NSData isEqualToData:](self->_power, "isEqualToData:", [status power]);
   if (!v6)
   {
     return v6;
   }
 
   opMode = self->_opMode;
-  if (opMode != [a3 opMode])
+  if (opMode != [status opMode])
   {
     goto LABEL_130;
   }
@@ -642,7 +642,7 @@ LABEL_17:
   ssidString = self->_ssidString;
   if (!ssidString)
   {
-    if (![a3 ssidString])
+    if (![status ssidString])
     {
       goto LABEL_24;
     }
@@ -650,7 +650,7 @@ LABEL_17:
     ssidString = self->_ssidString;
   }
 
-  v6 = -[NSString isEqual:](ssidString, "isEqual:", [a3 ssidString]);
+  v6 = -[NSString isEqual:](ssidString, "isEqual:", [status ssidString]);
   if (!v6)
   {
     return v6;
@@ -660,7 +660,7 @@ LABEL_24:
   ssid = self->_ssid;
   if (!ssid)
   {
-    if (![a3 ssid])
+    if (![status ssid])
     {
       goto LABEL_28;
     }
@@ -668,7 +668,7 @@ LABEL_24:
     ssid = self->_ssid;
   }
 
-  v6 = -[NSData isEqual:](ssid, "isEqual:", [a3 ssid]);
+  v6 = -[NSData isEqual:](ssid, "isEqual:", [status ssid]);
   if (!v6)
   {
     return v6;
@@ -678,7 +678,7 @@ LABEL_28:
   bssid = self->_bssid;
   if (!bssid)
   {
-    if (![a3 bssid])
+    if (![status bssid])
     {
       goto LABEL_32;
     }
@@ -686,7 +686,7 @@ LABEL_28:
     bssid = self->_bssid;
   }
 
-  v6 = -[NSString isEqual:](bssid, "isEqual:", [a3 bssid]);
+  v6 = -[NSString isEqual:](bssid, "isEqual:", [status bssid]);
   if (!v6)
   {
     return v6;
@@ -694,74 +694,74 @@ LABEL_28:
 
 LABEL_32:
   rssi = self->_rssi;
-  if (rssi != [a3 rssi])
+  if (rssi != [status rssi])
   {
     goto LABEL_130;
   }
 
   cca = self->_cca;
-  if (cca != [a3 cca])
+  if (cca != [status cca])
   {
     goto LABEL_130;
   }
 
   txPacketErrorRate = self->_txPacketErrorRate;
-  if (txPacketErrorRate != [a3 txPacketErrorRate])
+  if (txPacketErrorRate != [status txPacketErrorRate])
   {
     goto LABEL_130;
   }
 
   noise = self->_noise;
-  if (noise != [a3 noise])
+  if (noise != [status noise])
   {
     goto LABEL_130;
   }
 
   txRate = self->_txRate;
-  [a3 txRate];
+  [status txRate];
   if (txRate != v20)
   {
     goto LABEL_130;
   }
 
   security = self->_security;
-  if (security != [a3 security])
+  if (security != [status security])
   {
     goto LABEL_130;
   }
 
   eapolControlMode = self->_eapolControlMode;
-  if (eapolControlMode != [a3 eapolControlMode])
+  if (eapolControlMode != [status eapolControlMode])
   {
     goto LABEL_130;
   }
 
   eapolSupplicantState = self->_eapolSupplicantState;
-  if (eapolSupplicantState != [a3 eapolSupplicantState])
+  if (eapolSupplicantState != [status eapolSupplicantState])
   {
     goto LABEL_130;
   }
 
   phyMode = self->_phyMode;
-  if (phyMode != [a3 phyMode])
+  if (phyMode != [status phyMode])
   {
     goto LABEL_130;
   }
 
   mcsIndex = self->_mcsIndex;
-  if (mcsIndex != [a3 mcsIndex])
+  if (mcsIndex != [status mcsIndex])
   {
     goto LABEL_130;
   }
 
   guardInterval = self->_guardInterval;
-  if (guardInterval != [a3 guardInterval])
+  if (guardInterval != [status guardInterval])
   {
     goto LABEL_130;
   }
 
   numberOfSpacialStreams = self->_numberOfSpacialStreams;
-  if (numberOfSpacialStreams != [a3 numberOfSpacialStreams])
+  if (numberOfSpacialStreams != [status numberOfSpacialStreams])
   {
     goto LABEL_130;
   }
@@ -769,7 +769,7 @@ LABEL_32:
   channel = self->_channel;
   if (!channel)
   {
-    if (![a3 channel])
+    if (![status channel])
     {
       goto LABEL_48;
     }
@@ -777,7 +777,7 @@ LABEL_32:
     channel = self->_channel;
   }
 
-  v6 = -[W5WiFiChannel isEqual:](channel, "isEqual:", [a3 channel]);
+  v6 = -[W5WiFiChannel isEqual:](channel, "isEqual:", [status channel]);
   if (!v6)
   {
     return v6;
@@ -787,7 +787,7 @@ LABEL_48:
   supportedChannels = self->_supportedChannels;
   if (!supportedChannels)
   {
-    if (![a3 supportedChannels])
+    if (![status supportedChannels])
     {
       goto LABEL_52;
     }
@@ -795,7 +795,7 @@ LABEL_48:
     supportedChannels = self->_supportedChannels;
   }
 
-  v6 = -[NSArray isEqual:](supportedChannels, "isEqual:", [a3 supportedChannels]);
+  v6 = -[NSArray isEqual:](supportedChannels, "isEqual:", [status supportedChannels]);
   if (!v6)
   {
     return v6;
@@ -805,7 +805,7 @@ LABEL_52:
   countryCode = self->_countryCode;
   if (!countryCode)
   {
-    if (![a3 countryCode])
+    if (![status countryCode])
     {
       goto LABEL_56;
     }
@@ -813,7 +813,7 @@ LABEL_52:
     countryCode = self->_countryCode;
   }
 
-  v6 = -[NSString isEqual:](countryCode, "isEqual:", [a3 countryCode]);
+  v6 = -[NSString isEqual:](countryCode, "isEqual:", [status countryCode]);
   if (!v6)
   {
     return v6;
@@ -823,7 +823,7 @@ LABEL_56:
   networkServiceID = self->_networkServiceID;
   if (!networkServiceID)
   {
-    if (![a3 networkServiceID])
+    if (![status networkServiceID])
     {
       goto LABEL_60;
     }
@@ -831,7 +831,7 @@ LABEL_56:
     networkServiceID = self->_networkServiceID;
   }
 
-  v6 = -[NSString isEqual:](networkServiceID, "isEqual:", [a3 networkServiceID]);
+  v6 = -[NSString isEqual:](networkServiceID, "isEqual:", [status networkServiceID]);
   if (!v6)
   {
     return v6;
@@ -839,13 +839,13 @@ LABEL_56:
 
 LABEL_60:
   ipv4ConfigMethod = self->_ipv4ConfigMethod;
-  if (ipv4ConfigMethod != [a3 ipv4ConfigMethod])
+  if (ipv4ConfigMethod != [status ipv4ConfigMethod])
   {
     goto LABEL_130;
   }
 
   ipv6ConfigMethod = self->_ipv6ConfigMethod;
-  if (ipv6ConfigMethod != [a3 ipv6ConfigMethod])
+  if (ipv6ConfigMethod != [status ipv6ConfigMethod])
   {
     goto LABEL_130;
   }
@@ -853,7 +853,7 @@ LABEL_60:
   ipv4Addresses = self->_ipv4Addresses;
   if (!ipv4Addresses)
   {
-    if (![a3 ipv4Addresses])
+    if (![status ipv4Addresses])
     {
       goto LABEL_66;
     }
@@ -861,7 +861,7 @@ LABEL_60:
     ipv4Addresses = self->_ipv4Addresses;
   }
 
-  v6 = -[NSArray isEqual:](ipv4Addresses, "isEqual:", [a3 ipv4Addresses]);
+  v6 = -[NSArray isEqual:](ipv4Addresses, "isEqual:", [status ipv4Addresses]);
   if (!v6)
   {
     return v6;
@@ -871,7 +871,7 @@ LABEL_66:
   ipv6Addresses = self->_ipv6Addresses;
   if (!ipv6Addresses)
   {
-    if (![a3 ipv6Addresses])
+    if (![status ipv6Addresses])
     {
       goto LABEL_70;
     }
@@ -879,7 +879,7 @@ LABEL_66:
     ipv6Addresses = self->_ipv6Addresses;
   }
 
-  v6 = -[NSArray isEqual:](ipv6Addresses, "isEqual:", [a3 ipv6Addresses]);
+  v6 = -[NSArray isEqual:](ipv6Addresses, "isEqual:", [status ipv6Addresses]);
   if (!v6)
   {
     return v6;
@@ -889,7 +889,7 @@ LABEL_70:
   ipv4RouterAddress = self->_ipv4RouterAddress;
   if (!ipv4RouterAddress)
   {
-    if (![a3 ipv4RouterAddress])
+    if (![status ipv4RouterAddress])
     {
       goto LABEL_74;
     }
@@ -897,7 +897,7 @@ LABEL_70:
     ipv4RouterAddress = self->_ipv4RouterAddress;
   }
 
-  v6 = -[NSString isEqual:](ipv4RouterAddress, "isEqual:", [a3 ipv4RouterAddress]);
+  v6 = -[NSString isEqual:](ipv4RouterAddress, "isEqual:", [status ipv4RouterAddress]);
   if (!v6)
   {
     return v6;
@@ -907,7 +907,7 @@ LABEL_74:
   ipv6RouterAddress = self->_ipv6RouterAddress;
   if (!ipv6RouterAddress)
   {
-    if (![a3 ipv6RouterAddress])
+    if (![status ipv6RouterAddress])
     {
       goto LABEL_78;
     }
@@ -915,7 +915,7 @@ LABEL_74:
     ipv6RouterAddress = self->_ipv6RouterAddress;
   }
 
-  v6 = -[NSString isEqual:](ipv6RouterAddress, "isEqual:", [a3 ipv6RouterAddress]);
+  v6 = -[NSString isEqual:](ipv6RouterAddress, "isEqual:", [status ipv6RouterAddress]);
   if (!v6)
   {
     return v6;
@@ -925,7 +925,7 @@ LABEL_78:
   dnsAddresses = self->_dnsAddresses;
   if (!dnsAddresses)
   {
-    if (![a3 dnsAddresses])
+    if (![status dnsAddresses])
     {
       goto LABEL_82;
     }
@@ -933,7 +933,7 @@ LABEL_78:
     dnsAddresses = self->_dnsAddresses;
   }
 
-  v6 = -[NSArray isEqual:](dnsAddresses, "isEqual:", [a3 dnsAddresses]);
+  v6 = -[NSArray isEqual:](dnsAddresses, "isEqual:", [status dnsAddresses]);
   if (!v6)
   {
     return v6;
@@ -943,7 +943,7 @@ LABEL_82:
   chainAck = self->_chainAck;
   if (!chainAck)
   {
-    if (![a3 chainAck])
+    if (![status chainAck])
     {
       goto LABEL_86;
     }
@@ -951,7 +951,7 @@ LABEL_82:
     chainAck = self->_chainAck;
   }
 
-  v6 = -[NSData isEqualToData:](chainAck, "isEqualToData:", [a3 chainAck]);
+  v6 = -[NSData isEqualToData:](chainAck, "isEqualToData:", [status chainAck]);
   if (!v6)
   {
     return v6;
@@ -961,7 +961,7 @@ LABEL_86:
   txChainPower = self->_txChainPower;
   if (!txChainPower)
   {
-    if (![a3 txChainPower])
+    if (![status txChainPower])
     {
       goto LABEL_90;
     }
@@ -969,7 +969,7 @@ LABEL_86:
     txChainPower = self->_txChainPower;
   }
 
-  v6 = -[NSData isEqualToData:](txChainPower, "isEqualToData:", [a3 txChainPower]);
+  v6 = -[NSData isEqualToData:](txChainPower, "isEqualToData:", [status txChainPower]);
   if (!v6)
   {
     return v6;
@@ -979,7 +979,7 @@ LABEL_90:
   desense = self->_desense;
   if (!desense)
   {
-    if (![a3 desense])
+    if (![status desense])
     {
       goto LABEL_94;
     }
@@ -987,7 +987,7 @@ LABEL_90:
     desense = self->_desense;
   }
 
-  v6 = -[NSData isEqualToData:](desense, "isEqualToData:", [a3 desense]);
+  v6 = -[NSData isEqualToData:](desense, "isEqualToData:", [status desense]);
   if (!v6)
   {
     return v6;
@@ -997,7 +997,7 @@ LABEL_94:
   desenseLevel = self->_desenseLevel;
   if (!desenseLevel)
   {
-    if (![a3 desenseLevel])
+    if (![status desenseLevel])
     {
       goto LABEL_98;
     }
@@ -1005,7 +1005,7 @@ LABEL_94:
     desenseLevel = self->_desenseLevel;
   }
 
-  v6 = -[NSData isEqualToData:](desenseLevel, "isEqualToData:", [a3 desenseLevel]);
+  v6 = -[NSData isEqualToData:](desenseLevel, "isEqualToData:", [status desenseLevel]);
   if (!v6)
   {
     return v6;
@@ -1015,7 +1015,7 @@ LABEL_98:
   btcConfig = self->_btcConfig;
   if (!btcConfig)
   {
-    if (![a3 btcConfig])
+    if (![status btcConfig])
     {
       goto LABEL_102;
     }
@@ -1023,7 +1023,7 @@ LABEL_98:
     btcConfig = self->_btcConfig;
   }
 
-  v6 = -[NSData isEqualToData:](btcConfig, "isEqualToData:", [a3 btcConfig]);
+  v6 = -[NSData isEqualToData:](btcConfig, "isEqualToData:", [status btcConfig]);
   if (!v6)
   {
     return v6;
@@ -1033,7 +1033,7 @@ LABEL_102:
   btcProfiles2GHz = self->_btcProfiles2GHz;
   if (!btcProfiles2GHz)
   {
-    if (![a3 btcProfiles2GHz])
+    if (![status btcProfiles2GHz])
     {
       goto LABEL_106;
     }
@@ -1041,7 +1041,7 @@ LABEL_102:
     btcProfiles2GHz = self->_btcProfiles2GHz;
   }
 
-  v6 = -[NSData isEqualToData:](btcProfiles2GHz, "isEqualToData:", [a3 btcProfiles2GHz]);
+  v6 = -[NSData isEqualToData:](btcProfiles2GHz, "isEqualToData:", [status btcProfiles2GHz]);
   if (!v6)
   {
     return v6;
@@ -1051,7 +1051,7 @@ LABEL_106:
   btcProfiles5GHz = self->_btcProfiles5GHz;
   if (!btcProfiles5GHz)
   {
-    if (![a3 btcProfiles5GHz])
+    if (![status btcProfiles5GHz])
     {
       goto LABEL_110;
     }
@@ -1059,7 +1059,7 @@ LABEL_106:
     btcProfiles5GHz = self->_btcProfiles5GHz;
   }
 
-  v6 = -[NSData isEqualToData:](btcProfiles5GHz, "isEqualToData:", [a3 btcProfiles5GHz]);
+  v6 = -[NSData isEqualToData:](btcProfiles5GHz, "isEqualToData:", [status btcProfiles5GHz]);
   if (!v6)
   {
     return v6;
@@ -1067,7 +1067,7 @@ LABEL_106:
 
 LABEL_110:
   btcMode = self->_btcMode;
-  if (btcMode != [a3 btcMode])
+  if (btcMode != [status btcMode])
   {
     goto LABEL_130;
   }
@@ -1075,7 +1075,7 @@ LABEL_110:
   linkQualityUpdates = self->_linkQualityUpdates;
   if (!linkQualityUpdates)
   {
-    if (![a3 linkQualityUpdates])
+    if (![status linkQualityUpdates])
     {
       goto LABEL_115;
     }
@@ -1083,7 +1083,7 @@ LABEL_110:
     linkQualityUpdates = self->_linkQualityUpdates;
   }
 
-  v6 = -[NSArray isEqual:](linkQualityUpdates, "isEqual:", [a3 linkQualityUpdates]);
+  v6 = -[NSArray isEqual:](linkQualityUpdates, "isEqual:", [status linkQualityUpdates]);
   if (!v6)
   {
     return v6;
@@ -1093,7 +1093,7 @@ LABEL_115:
   lastJoinedScanResult = self->_lastJoinedScanResult;
   if (!lastJoinedScanResult)
   {
-    if (![a3 lastJoinedScanResult])
+    if (![status lastJoinedScanResult])
     {
       goto LABEL_119;
     }
@@ -1101,7 +1101,7 @@ LABEL_115:
     lastJoinedScanResult = self->_lastJoinedScanResult;
   }
 
-  v6 = -[W5WiFiScanResult isEqual:](lastJoinedScanResult, "isEqual:", [a3 lastJoinedScanResult]);
+  v6 = -[W5WiFiScanResult isEqual:](lastJoinedScanResult, "isEqual:", [status lastJoinedScanResult]);
   if (!v6)
   {
     return v6;
@@ -1114,11 +1114,11 @@ LABEL_119:
     goto LABEL_122;
   }
 
-  if ([a3 lastJoinedPreferredNetwork])
+  if ([status lastJoinedPreferredNetwork])
   {
     lastJoinedPreferredNetwork = self->_lastJoinedPreferredNetwork;
 LABEL_122:
-    v6 = -[W5WiFiPreferredNetwork isEqual:](lastJoinedPreferredNetwork, "isEqual:", [a3 lastJoinedPreferredNetwork]);
+    v6 = -[W5WiFiPreferredNetwork isEqual:](lastJoinedPreferredNetwork, "isEqual:", [status lastJoinedPreferredNetwork]);
     if (!v6)
     {
       return v6;
@@ -1128,17 +1128,17 @@ LABEL_122:
   cachedScanResults = self->_cachedScanResults;
   if (!cachedScanResults)
   {
-    if (![a3 cachedScanResults])
+    if (![status cachedScanResults])
     {
 LABEL_127:
       smartCCADesenseSupported = self->_smartCCADesenseSupported;
-      if (smartCCADesenseSupported == [a3 smartCCADesenseSupported])
+      if (smartCCADesenseSupported == [status smartCCADesenseSupported])
       {
         smartCCADesenseUSBPresence = self->_smartCCADesenseUSBPresence;
-        if (smartCCADesenseUSBPresence == [a3 smartCCADesenseUSBPresence])
+        if (smartCCADesenseUSBPresence == [status smartCCADesenseUSBPresence])
         {
           isSnifferSupported = self->_isSnifferSupported;
-          LOBYTE(v6) = isSnifferSupported == [a3 isSnifferSupported];
+          LOBYTE(v6) = isSnifferSupported == [status isSnifferSupported];
           return v6;
         }
       }
@@ -1151,7 +1151,7 @@ LABEL_130:
     cachedScanResults = self->_cachedScanResults;
   }
 
-  v6 = -[NSArray isEqual:](cachedScanResults, "isEqual:", [a3 cachedScanResults]);
+  v6 = -[NSArray isEqual:](cachedScanResults, "isEqual:", [status cachedScanResults]);
   if (v6)
   {
     goto LABEL_127;
@@ -1160,14 +1160,14 @@ LABEL_130:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -1178,7 +1178,7 @@ LABEL_130:
     return 0;
   }
 
-  return [(W5WiFiStatus *)self isEqualToWiFiStatus:a3];
+  return [(W5WiFiStatus *)self isEqualToWiFiStatus:equal];
 }
 
 - (unint64_t)hash
@@ -1231,7 +1231,7 @@ LABEL_130:
   return *&veor_s8(*v14.i8, *&vextq_s8(v14, v14, 8uLL)) ^ ipv4ConfigMethod ^ ipv6ConfigMethod ^ opMode ^ eapolControlMode ^ eapolSupplicantState ^ phyMode ^ btcMode ^ v13 ^ v12 ^ v11 ^ v10 ^ (powerOn ^ self->_smartCCADesenseSupported ^ self->_smartCCADesenseUSBPresence ^ self->_isSnifferSupported) & 1 ^ v9 ^ v8 ^ v6 ^ v5 ^ v4 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v23 ^ v28 ^ v31 ^ v32 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37 ^ v39 ^ v43 ^ v40 ^ v42 ^ v44 ^ v45 ^ v46 ^ v47 ^ v48;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5WiFiStatus allocWithZone:?]];
   [(W5WiFiStatus *)v4 setMacAddress:self->_macAddress];
@@ -1285,130 +1285,130 @@ LABEL_130:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_macAddress forKey:@"_macAddress"];
-  [a3 encodeObject:self->_hardwareMACAddress forKey:@"_hardwareMACAddress"];
-  [a3 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
-  [a3 encodeObject:self->_capabilities forKey:@"_capabilities"];
-  [a3 encodeBool:self->_powerOn forKey:@"_powerOn"];
-  [a3 encodeObject:self->_power forKey:@"_power"];
-  [a3 encodeInt:self->_opMode forKey:@"_opMode"];
-  [a3 encodeObject:self->_ssidString forKey:@"_ssidString"];
-  [a3 encodeObject:self->_ssid forKey:@"_ssid"];
-  [a3 encodeObject:self->_bssid forKey:@"_bssid"];
-  [a3 encodeInteger:self->_rssi forKey:@"_rssi"];
-  [a3 encodeInteger:self->_cca forKey:@"_cca"];
-  [a3 encodeInteger:self->_txPacketErrorRate forKey:@"_txPacketErrorRate"];
-  [a3 encodeInteger:self->_noise forKey:@"_noise"];
-  [a3 encodeDouble:@"_txRate" forKey:self->_txRate];
-  [a3 encodeInteger:self->_security forKey:@"_security"];
-  [a3 encodeInt:self->_eapolControlMode forKey:@"_eapolControlMode"];
-  [a3 encodeInt:self->_eapolSupplicantState forKey:@"_eapolSupplicantState"];
-  [a3 encodeInt:self->_phyMode forKey:@"_phyMode"];
-  [a3 encodeInteger:self->_mcsIndex forKey:@"_mcsIndex"];
-  [a3 encodeInteger:self->_guardInterval forKey:@"_guardInterval"];
-  [a3 encodeInteger:self->_numberOfSpacialStreams forKey:@"_numberOfSpacialStreams"];
-  [a3 encodeObject:self->_channel forKey:@"_channel"];
-  [a3 encodeObject:self->_supportedChannels forKey:@"_supportedChannels"];
-  [a3 encodeObject:self->_countryCode forKey:@"_countryCode"];
-  [a3 encodeObject:self->_networkServiceID forKey:@"_networkServiceID"];
-  [a3 encodeInteger:self->_ipv4ConfigMethod forKey:@"_ipv4ConfigMethod"];
-  [a3 encodeInteger:self->_ipv6ConfigMethod forKey:@"_ipv6ConfigMethod"];
-  [a3 encodeObject:self->_ipv4Addresses forKey:@"_ipv4Addresses"];
-  [a3 encodeObject:self->_ipv6Addresses forKey:@"_ipv6Addresses"];
-  [a3 encodeObject:self->_ipv4RouterAddress forKey:@"_ipv4RouterAddress"];
-  [a3 encodeObject:self->_ipv6RouterAddress forKey:@"_ipv6RouterAddress"];
-  [a3 encodeObject:self->_dnsAddresses forKey:@"_dnsAddresses"];
-  [a3 encodeObject:self->_chainAck forKey:@"_chainAck"];
-  [a3 encodeObject:self->_txChainPower forKey:@"_txChainPower"];
-  [a3 encodeObject:self->_desense forKey:@"_desense"];
-  [a3 encodeObject:self->_desenseLevel forKey:@"_desenseLevel"];
-  [a3 encodeObject:self->_btcConfig forKey:@"_btcConfig"];
-  [a3 encodeObject:self->_btcProfiles2GHz forKey:@"_btcProfiles2GHz"];
-  [a3 encodeObject:self->_btcProfiles5GHz forKey:@"_btcProfiles5GHz"];
-  [a3 encodeInt:self->_btcMode forKey:@"_btcMode"];
-  [a3 encodeObject:self->_linkQualityUpdates forKey:@"_linkQualityUpdates"];
-  [a3 encodeObject:self->_lastJoinedScanResult forKey:@"_lastJoinedScanResult"];
-  [a3 encodeObject:self->_lastJoinedPreferredNetwork forKey:@"_lastJoinedPreferredNetwork"];
-  [a3 encodeObject:self->_cachedScanResults forKey:@"_cachedScanResults"];
-  [a3 encodeBool:self->_smartCCADesenseSupported forKey:@"_smartCCADesenseSupported"];
-  [a3 encodeBool:self->_smartCCADesenseUSBPresence forKey:@"_smartCCADesenseUSBPresence"];
+  [coder encodeObject:self->_macAddress forKey:@"_macAddress"];
+  [coder encodeObject:self->_hardwareMACAddress forKey:@"_hardwareMACAddress"];
+  [coder encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  [coder encodeObject:self->_capabilities forKey:@"_capabilities"];
+  [coder encodeBool:self->_powerOn forKey:@"_powerOn"];
+  [coder encodeObject:self->_power forKey:@"_power"];
+  [coder encodeInt:self->_opMode forKey:@"_opMode"];
+  [coder encodeObject:self->_ssidString forKey:@"_ssidString"];
+  [coder encodeObject:self->_ssid forKey:@"_ssid"];
+  [coder encodeObject:self->_bssid forKey:@"_bssid"];
+  [coder encodeInteger:self->_rssi forKey:@"_rssi"];
+  [coder encodeInteger:self->_cca forKey:@"_cca"];
+  [coder encodeInteger:self->_txPacketErrorRate forKey:@"_txPacketErrorRate"];
+  [coder encodeInteger:self->_noise forKey:@"_noise"];
+  [coder encodeDouble:@"_txRate" forKey:self->_txRate];
+  [coder encodeInteger:self->_security forKey:@"_security"];
+  [coder encodeInt:self->_eapolControlMode forKey:@"_eapolControlMode"];
+  [coder encodeInt:self->_eapolSupplicantState forKey:@"_eapolSupplicantState"];
+  [coder encodeInt:self->_phyMode forKey:@"_phyMode"];
+  [coder encodeInteger:self->_mcsIndex forKey:@"_mcsIndex"];
+  [coder encodeInteger:self->_guardInterval forKey:@"_guardInterval"];
+  [coder encodeInteger:self->_numberOfSpacialStreams forKey:@"_numberOfSpacialStreams"];
+  [coder encodeObject:self->_channel forKey:@"_channel"];
+  [coder encodeObject:self->_supportedChannels forKey:@"_supportedChannels"];
+  [coder encodeObject:self->_countryCode forKey:@"_countryCode"];
+  [coder encodeObject:self->_networkServiceID forKey:@"_networkServiceID"];
+  [coder encodeInteger:self->_ipv4ConfigMethod forKey:@"_ipv4ConfigMethod"];
+  [coder encodeInteger:self->_ipv6ConfigMethod forKey:@"_ipv6ConfigMethod"];
+  [coder encodeObject:self->_ipv4Addresses forKey:@"_ipv4Addresses"];
+  [coder encodeObject:self->_ipv6Addresses forKey:@"_ipv6Addresses"];
+  [coder encodeObject:self->_ipv4RouterAddress forKey:@"_ipv4RouterAddress"];
+  [coder encodeObject:self->_ipv6RouterAddress forKey:@"_ipv6RouterAddress"];
+  [coder encodeObject:self->_dnsAddresses forKey:@"_dnsAddresses"];
+  [coder encodeObject:self->_chainAck forKey:@"_chainAck"];
+  [coder encodeObject:self->_txChainPower forKey:@"_txChainPower"];
+  [coder encodeObject:self->_desense forKey:@"_desense"];
+  [coder encodeObject:self->_desenseLevel forKey:@"_desenseLevel"];
+  [coder encodeObject:self->_btcConfig forKey:@"_btcConfig"];
+  [coder encodeObject:self->_btcProfiles2GHz forKey:@"_btcProfiles2GHz"];
+  [coder encodeObject:self->_btcProfiles5GHz forKey:@"_btcProfiles5GHz"];
+  [coder encodeInt:self->_btcMode forKey:@"_btcMode"];
+  [coder encodeObject:self->_linkQualityUpdates forKey:@"_linkQualityUpdates"];
+  [coder encodeObject:self->_lastJoinedScanResult forKey:@"_lastJoinedScanResult"];
+  [coder encodeObject:self->_lastJoinedPreferredNetwork forKey:@"_lastJoinedPreferredNetwork"];
+  [coder encodeObject:self->_cachedScanResults forKey:@"_cachedScanResults"];
+  [coder encodeBool:self->_smartCCADesenseSupported forKey:@"_smartCCADesenseSupported"];
+  [coder encodeBool:self->_smartCCADesenseUSBPresence forKey:@"_smartCCADesenseUSBPresence"];
   isSnifferSupported = self->_isSnifferSupported;
 
-  [a3 encodeBool:isSnifferSupported forKey:@"_isSnifferSupported"];
+  [coder encodeBool:isSnifferSupported forKey:@"_isSnifferSupported"];
 }
 
-- (W5WiFiStatus)initWithCoder:(id)a3
+- (W5WiFiStatus)initWithCoder:(id)coder
 {
   v21.receiver = self;
   v21.super_class = W5WiFiStatus;
   v4 = [(W5WiFiStatus *)&v21 init];
   if (v4)
   {
-    v4->_macAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_macAddress", "copy"}];
-    v4->_hardwareMACAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_hardwareMACAddress", "copy"}];
-    v4->_interfaceName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
+    v4->_macAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_macAddress", "copy"}];
+    v4->_hardwareMACAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_hardwareMACAddress", "copy"}];
+    v4->_interfaceName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->_capabilities = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_capabilities", "copy"}];
-    v4->_powerOn = [a3 decodeBoolForKey:@"_powerOn"];
-    v4->_power = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_power", "copy"}];
-    v4->_opMode = [a3 decodeIntForKey:@"_opMode"];
-    v4->_ssidString = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ssidString", "copy"}];
-    v4->_ssid = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ssid", "copy"}];
-    v4->_bssid = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_bssid", "copy"}];
-    v4->_rssi = [a3 decodeIntegerForKey:@"_rssi"];
-    v4->_cca = [a3 decodeIntegerForKey:@"_cca"];
-    v4->_txPacketErrorRate = [a3 decodeIntegerForKey:@"_txPacketErrorRate"];
-    v4->_noise = [a3 decodeIntegerForKey:@"_noise"];
-    [a3 decodeDoubleForKey:@"_txRate"];
+    v4->_capabilities = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_capabilities", "copy"}];
+    v4->_powerOn = [coder decodeBoolForKey:@"_powerOn"];
+    v4->_power = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_power", "copy"}];
+    v4->_opMode = [coder decodeIntForKey:@"_opMode"];
+    v4->_ssidString = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ssidString", "copy"}];
+    v4->_ssid = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ssid", "copy"}];
+    v4->_bssid = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_bssid", "copy"}];
+    v4->_rssi = [coder decodeIntegerForKey:@"_rssi"];
+    v4->_cca = [coder decodeIntegerForKey:@"_cca"];
+    v4->_txPacketErrorRate = [coder decodeIntegerForKey:@"_txPacketErrorRate"];
+    v4->_noise = [coder decodeIntegerForKey:@"_noise"];
+    [coder decodeDoubleForKey:@"_txRate"];
     v4->_txRate = v7;
-    v4->_security = [a3 decodeIntegerForKey:@"_security"];
-    v4->_eapolControlMode = [a3 decodeIntForKey:@"_eapolControlMode"];
-    v4->_eapolSupplicantState = [a3 decodeIntForKey:@"_eapolSupplicantState"];
-    v4->_phyMode = [a3 decodeIntForKey:@"_phyMode"];
-    v4->_mcsIndex = [a3 decodeIntegerForKey:@"_mcsIndex"];
-    v4->_guardInterval = [a3 decodeIntegerForKey:@"_guardInterval"];
-    v4->_numberOfSpacialStreams = [a3 decodeIntegerForKey:@"_numberOfSpacialStreams"];
-    v4->_channel = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_channel", "copy"}];
+    v4->_security = [coder decodeIntegerForKey:@"_security"];
+    v4->_eapolControlMode = [coder decodeIntForKey:@"_eapolControlMode"];
+    v4->_eapolSupplicantState = [coder decodeIntForKey:@"_eapolSupplicantState"];
+    v4->_phyMode = [coder decodeIntForKey:@"_phyMode"];
+    v4->_mcsIndex = [coder decodeIntegerForKey:@"_mcsIndex"];
+    v4->_guardInterval = [coder decodeIntegerForKey:@"_guardInterval"];
+    v4->_numberOfSpacialStreams = [coder decodeIntegerForKey:@"_numberOfSpacialStreams"];
+    v4->_channel = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_channel", "copy"}];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
-    v4->_supportedChannels = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"_supportedChannels", "copy"}];
-    v4->_countryCode = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_countryCode", "copy"}];
-    v4->_networkServiceID = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_networkServiceID", "copy"}];
-    v4->_ipv4ConfigMethod = [a3 decodeIntegerForKey:@"_ipv4ConfigMethod"];
-    v4->_ipv6ConfigMethod = [a3 decodeIntegerForKey:@"_ipv6ConfigMethod"];
+    v4->_supportedChannels = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"_supportedChannels", "copy"}];
+    v4->_countryCode = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_countryCode", "copy"}];
+    v4->_networkServiceID = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_networkServiceID", "copy"}];
+    v4->_ipv4ConfigMethod = [coder decodeIntegerForKey:@"_ipv4ConfigMethod"];
+    v4->_ipv6ConfigMethod = [coder decodeIntegerForKey:@"_ipv6ConfigMethod"];
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
-    v4->_ipv4Addresses = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"_ipv4Addresses", "copy"}];
+    v4->_ipv4Addresses = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"_ipv4Addresses", "copy"}];
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
-    v4->_ipv6Addresses = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, objc_opt_class(), 0), @"_ipv6Addresses", "copy"}];
-    v4->_ipv4RouterAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ipv4RouterAddress", "copy"}];
-    v4->_ipv6RouterAddress = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_ipv6RouterAddress", "copy"}];
+    v4->_ipv6Addresses = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, objc_opt_class(), 0), @"_ipv6Addresses", "copy"}];
+    v4->_ipv4RouterAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ipv4RouterAddress", "copy"}];
+    v4->_ipv6RouterAddress = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_ipv6RouterAddress", "copy"}];
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
-    v4->_dnsAddresses = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, objc_opt_class(), 0), @"_dnsAddresses", "copy"}];
-    v4->_chainAck = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_chainAck", "copy"}];
-    v4->_txChainPower = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_txChainPower", "copy"}];
-    v4->_desense = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_desense", "copy"}];
-    v4->_desenseLevel = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_desenseLevel", "copy"}];
-    v4->_btcConfig = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_btcConfig", "copy"}];
-    v4->_btcProfiles2GHz = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_btcProfiles2GHz", "copy"}];
-    v4->_btcProfiles5GHz = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_btcProfiles5GHz", "copy"}];
-    v4->_btcMode = [a3 decodeIntForKey:@"_btcMode"];
+    v4->_dnsAddresses = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, objc_opt_class(), 0), @"_dnsAddresses", "copy"}];
+    v4->_chainAck = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_chainAck", "copy"}];
+    v4->_txChainPower = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_txChainPower", "copy"}];
+    v4->_desense = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_desense", "copy"}];
+    v4->_desenseLevel = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_desenseLevel", "copy"}];
+    v4->_btcConfig = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_btcConfig", "copy"}];
+    v4->_btcProfiles2GHz = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_btcProfiles2GHz", "copy"}];
+    v4->_btcProfiles5GHz = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_btcProfiles5GHz", "copy"}];
+    v4->_btcMode = [coder decodeIntForKey:@"_btcMode"];
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
-    v4->_linkQualityUpdates = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"_linkQualityUpdates", "copy"}];
-    v4->_lastJoinedScanResult = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedScanResult", "copy"}];
-    v4->_lastJoinedPreferredNetwork = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedPreferredNetwork", "copy"}];
+    v4->_linkQualityUpdates = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"_linkQualityUpdates", "copy"}];
+    v4->_lastJoinedScanResult = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedScanResult", "copy"}];
+    v4->_lastJoinedPreferredNetwork = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastJoinedPreferredNetwork", "copy"}];
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
-    v4->_cachedScanResults = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v18 forKey:{"setWithObjects:", v19, objc_opt_class(), 0), @"_cachedScanResults", "copy"}];
-    v4->_smartCCADesenseSupported = [a3 decodeBoolForKey:@"_smartCCADesenseSupported"];
-    v4->_smartCCADesenseUSBPresence = [a3 decodeBoolForKey:@"_smartCCADesenseUSBPresence"];
-    v4->_isSnifferSupported = [a3 decodeBoolForKey:@"_isSnifferSupported"];
+    v4->_cachedScanResults = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v18 forKey:{"setWithObjects:", v19, objc_opt_class(), 0), @"_cachedScanResults", "copy"}];
+    v4->_smartCCADesenseSupported = [coder decodeBoolForKey:@"_smartCCADesenseSupported"];
+    v4->_smartCCADesenseUSBPresence = [coder decodeBoolForKey:@"_smartCCADesenseUSBPresence"];
+    v4->_isSnifferSupported = [coder decodeBoolForKey:@"_isSnifferSupported"];
   }
 
   return v4;

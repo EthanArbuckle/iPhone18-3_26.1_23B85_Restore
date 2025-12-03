@@ -1,110 +1,110 @@
 @interface SearchUIGridSectionModel
 - (BOOL)needsHorizontalNavigation;
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4;
-- (SearchUIGridSectionModel)initWithRowModels:(id)a3 numberOfColumns:(int64_t)a4 gridStyle:(int)a5 section:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5;
-- (id)rfHeroImageGridLayoutSectionForCardSection:(id)a3;
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3;
-- (void)setCornerMaskRulesOnRowModels:(id)a3 forColumnCount:(unint64_t)a4;
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index;
+- (SearchUIGridSectionModel)initWithRowModels:(id)models numberOfColumns:(int64_t)columns gridStyle:(int)style section:(id)section;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source;
+- (id)rfHeroImageGridLayoutSectionForCardSection:(id)section;
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes;
+- (void)setCornerMaskRulesOnRowModels:(id)models forColumnCount:(unint64_t)count;
 @end
 
 @implementation SearchUIGridSectionModel
 
-- (SearchUIGridSectionModel)initWithRowModels:(id)a3 numberOfColumns:(int64_t)a4 gridStyle:(int)a5 section:(id)a6
+- (SearchUIGridSectionModel)initWithRowModels:(id)models numberOfColumns:(int64_t)columns gridStyle:(int)style section:(id)section
 {
-  v6 = *&a5;
+  v6 = *&style;
   v11.receiver = self;
   v11.super_class = SearchUIGridSectionModel;
-  v8 = [(SearchUISectionModel *)&v11 initWithRowModels:a3 section:a6];
+  v8 = [(SearchUISectionModel *)&v11 initWithRowModels:models section:section];
   v9 = v8;
   if (v8)
   {
-    [(SearchUIGridSectionModel *)v8 setNumberOfColumns:a4];
+    [(SearchUIGridSectionModel *)v8 setNumberOfColumns:columns];
     [(SearchUIGridSectionModel *)v9 setGridStyle:v6];
   }
 
   return v9;
 }
 
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source
 {
-  v7 = a3;
-  v8 = [a5 snapshot];
-  v9 = [v8 itemIdentifiersInSectionWithIdentifier:self];
+  environmentCopy = environment;
+  snapshot = [source snapshot];
+  v9 = [snapshot itemIdentifiersInSectionWithIdentifier:self];
 
-  v10 = [(SearchUIGridSectionModel *)self numberOfColumns];
-  if (!v10)
+  numberOfColumns = [(SearchUIGridSectionModel *)self numberOfColumns];
+  if (!numberOfColumns)
   {
-    v11 = [v7 container];
-    [v11 effectiveContentSize];
+    container = [environmentCopy container];
+    [container effectiveContentSize];
     v13 = v12;
 
     if ([MEMORY[0x1E69D9240] isMacOS] && v13 > 500.0)
     {
-      v10 = 6;
+      numberOfColumns = 6;
     }
 
     else if (+[SearchUIUtilities isIpad]&& v13 > 500.0)
     {
-      v10 = 5;
+      numberOfColumns = 5;
     }
 
     else if ([MEMORY[0x1E69D9240] isWatchOS])
     {
-      v10 = 2;
+      numberOfColumns = 2;
     }
 
     else
     {
-      v10 = 4;
+      numberOfColumns = 4;
     }
   }
 
-  v14 = [v9 firstObject];
-  v15 = [v14 cardSection];
+  firstObject = [v9 firstObject];
+  cardSection = [firstObject cardSection];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v9 count] == 1)
     {
-      v10 = 1;
+      numberOfColumns = 1;
     }
 
-    v16 = [v9 firstObject];
-    [v16 setShouldFillAvailableSpace:v10 == 1];
+    firstObject2 = [v9 firstObject];
+    [firstObject2 setShouldFillAvailableSpace:numberOfColumns == 1];
   }
 
   if ([(SearchUIGridSectionModel *)self gridStyle]== 1 || [(SearchUIGridSectionModel *)self gridStyle]== 2)
   {
     if (([MEMORY[0x1E69D9240] isWatchOS] & 1) == 0)
     {
-      [(SearchUIGridSectionModel *)self setCornerMaskRulesOnRowModels:v9 forColumnCount:v10];
-      v18 = [(SearchUIGridSectionModel *)self rfHeroImageGridLayoutSectionForCardSection:v15];
+      [(SearchUIGridSectionModel *)self setCornerMaskRulesOnRowModels:v9 forColumnCount:numberOfColumns];
+      v18 = [(SearchUIGridSectionModel *)self rfHeroImageGridLayoutSectionForCardSection:cardSection];
       goto LABEL_38;
     }
 
-    v10 = 2;
+    numberOfColumns = 2;
   }
 
   objc_opt_class();
-  v39 = v7;
+  v39 = environmentCopy;
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v17 = [MEMORY[0x1E69D9240] isSiri];
+    isSiri = [MEMORY[0x1E69D9240] isSiri];
   }
 
   else
   {
-    v17 = 0;
+    isSiri = 0;
   }
 
-  v19 = [(SearchUISectionModel *)self section];
-  v40 = [v19 isBrowseSection];
+  section = [(SearchUISectionModel *)self section];
+  isBrowseSection = [section isBrowseSection];
 
-  v20 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0 / v10];
-  v21 = [v15 searchUIGridSectionModel_heightDimensionWithColumnCount:v10];
+  v20 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0 / numberOfColumns];
+  v21 = [cardSection searchUIGridSectionModel_heightDimensionWithColumnCount:numberOfColumns];
   v22 = v21;
   if (v21)
   {
@@ -121,7 +121,7 @@
   v38 = v24;
   v37 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v20 heightDimension:v24];
   v25 = [MEMORY[0x1E6995578] itemWithLayoutSize:?];
-  if (v17)
+  if (isSiri)
   {
     +[SearchUIUtilities imageGridItemContentInset];
     [v25 setContentInsets:{v26, v26, v26, v26}];
@@ -129,7 +129,7 @@
 
   v27 = MEMORY[0x1E6995588];
   v28 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
-  if (v17)
+  if (isSiri)
   {
     v29 = [v27 sizeWithWidthDimension:v28 heightDimension:v20];
   }
@@ -140,11 +140,11 @@
     v29 = [v27 sizeWithWidthDimension:v28 heightDimension:v30];
   }
 
-  v7 = v39;
+  environmentCopy = v39;
 
-  v31 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v29 repeatingSubitem:v25 count:v10];
+  v31 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v29 repeatingSubitem:v25 count:numberOfColumns];
   v32 = v31;
-  if (v40)
+  if (isBrowseSection)
   {
     [v31 setInterItemSpacing:0];
   }
@@ -152,33 +152,33 @@
   else
   {
     v33 = MEMORY[0x1E6995590];
-    [v15 searchUIGridSectionModel_interItemSpacing];
+    [cardSection searchUIGridSectionModel_interItemSpacing];
     v34 = [v33 fixedSpacing:?];
     [v32 setInterItemSpacing:v34];
   }
 
-  [v15 searchUIGridSectionModel_groupInsetFor:v39];
+  [cardSection searchUIGridSectionModel_groupInsetFor:v39];
   [v32 setContentInsets:?];
   v18 = [MEMORY[0x1E6995580] sectionWithGroup:v32];
   v35 = 10.0;
-  if ((v40 & 1) == 0)
+  if ((isBrowseSection & 1) == 0)
   {
-    [v15 searchUIGridSectionModel_interItemSpacing];
+    [cardSection searchUIGridSectionModel_interItemSpacing];
   }
 
   [v18 setInterGroupSpacing:v35];
-  [(SearchUIGridSectionModel *)self setCornerMaskRulesOnRowModels:v9 forColumnCount:v10];
+  [(SearchUIGridSectionModel *)self setCornerMaskRulesOnRowModels:v9 forColumnCount:numberOfColumns];
 
 LABEL_38:
 
   return v18;
 }
 
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes
 {
-  v4 = [(SearchUISectionModel *)self rowModels];
-  v5 = [v4 firstObject];
-  v6 = [v5 cardSection];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  cardSection = [firstObject cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -197,10 +197,10 @@ LABEL_38:
 
   else
   {
-    v9 = [(SearchUISectionModel *)self rowModels];
-    v10 = [v9 firstObject];
-    v11 = [v10 cardSection];
-    if ([v11 searchUIGridSectionModel_useBackground])
+    rowModels2 = [(SearchUISectionModel *)self rowModels];
+    firstObject2 = [rowModels2 firstObject];
+    cardSection2 = [firstObject2 cardSection];
+    if ([cardSection2 searchUIGridSectionModel_useBackground])
     {
       v8 = 3;
     }
@@ -214,9 +214,9 @@ LABEL_38:
   return v8;
 }
 
-- (void)setCornerMaskRulesOnRowModels:(id)a3 forColumnCount:(unint64_t)a4
+- (void)setCornerMaskRulesOnRowModels:(id)models forColumnCount:(unint64_t)count
 {
-  v6 = a3;
+  modelsCopy = models;
   if ([(SearchUIGridSectionModel *)self gridStyle]== 1)
   {
     v7 = [MEMORY[0x1E69D9240] isWatchOS] ^ 1;
@@ -239,9 +239,9 @@ LABEL_38:
 
   if ([MEMORY[0x1E69D9240] isSiri])
   {
-    v9 = [(SearchUISectionModel *)self rowModels];
-    v10 = [v9 firstObject];
-    v11 = [v10 cardSection];
+    rowModels = [(SearchUISectionModel *)self rowModels];
+    firstObject = [rowModels firstObject];
+    cardSection = [firstObject cardSection];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -251,9 +251,9 @@ LABEL_38:
     isKindOfClass = 0;
   }
 
-  v13 = [v6 count];
-  v14 = vcvtps_u32_f32(v13 / a4);
-  v15 = a4 - 1;
+  v13 = [modelsCopy count];
+  v14 = vcvtps_u32_f32(v13 / count);
+  v15 = count - 1;
   if (v8)
   {
     v15 = 2;
@@ -264,7 +264,7 @@ LABEL_38:
     v15 = 1;
   }
 
-  v16 = v14 * a4;
+  v16 = v14 * count;
   if ((v7 | v8))
   {
     v16 = v13;
@@ -308,7 +308,7 @@ LABEL_38:
     v22 = v18;
   }
 
-  v23 = v20 * a4;
+  v23 = v20 * count;
   if ((v7 | v8))
   {
     v24 = 3;
@@ -319,18 +319,18 @@ LABEL_38:
     v24 = v23;
   }
 
-  v25 = [MEMORY[0x1E69D91A8] isLTR];
+  isLTR = [MEMORY[0x1E69D91A8] isLTR];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount___block_invoke;
   v26[3] = &__block_descriptor_66_e33_v32__0__SearchUIRowModel_8Q16_B24l;
-  v27 = v25 ^ 1;
+  v27 = isLTR ^ 1;
   v26[4] = 0;
   v26[5] = v21;
   v26[6] = v22;
   v26[7] = v24;
   v28 = isKindOfClass & 1;
-  [v6 enumerateObjectsUsingBlock:v26];
+  [modelsCopy enumerateObjectsUsingBlock:v26];
 }
 
 void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -393,23 +393,23 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
 
 - (BOOL)needsHorizontalNavigation
 {
-  v2 = [(SearchUISectionModel *)self rowModels];
-  v3 = [v2 count] > 1;
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v3 = [rowModels count] > 1;
 
   return v3;
 }
 
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(SearchUISectionModel *)self section];
-  v8 = [v7 isBrowseSection];
+  attributesCopy = attributes;
+  section = [(SearchUISectionModel *)self section];
+  isBrowseSection = [section isBrowseSection];
 
-  if (v8)
+  if (isBrowseSection)
   {
     v36.receiver = self;
     v36.super_class = SearchUIGridSectionModel;
-    [(SearchUISectionModel *)&v36 sectionInsetsWithAttributes:v6 sectionIndex:a4];
+    [(SearchUISectionModel *)&v36 sectionInsetsWithAttributes:attributesCopy sectionIndex:index];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -423,17 +423,17 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
 
   else
   {
-    v16 = [(SearchUISectionModel *)self rowModels];
-    v17 = [v16 firstObject];
-    v18 = [v17 cardSection];
-    v19 = [v18 searchUIGridSectionModel_useCustomSectionInset];
+    rowModels = [(SearchUISectionModel *)self rowModels];
+    firstObject = [rowModels firstObject];
+    cardSection = [firstObject cardSection];
+    searchUIGridSectionModel_useCustomSectionInset = [cardSection searchUIGridSectionModel_useCustomSectionInset];
 
-    if (v19)
+    if (searchUIGridSectionModel_useCustomSectionInset)
     {
-      v20 = [(SearchUISectionModel *)self rowModels];
-      v21 = [v20 firstObject];
-      v22 = [v21 cardSection];
-      [v22 searchUIGridSectionModel_customSectionInsets];
+      rowModels2 = [(SearchUISectionModel *)self rowModels];
+      firstObject2 = [rowModels2 firstObject];
+      cardSection2 = [firstObject2 cardSection];
+      [cardSection2 searchUIGridSectionModel_customSectionInsets];
       v10 = v23;
       v12 = v24;
       v15 = v25;
@@ -444,7 +444,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
     {
       v35.receiver = self;
       v35.super_class = SearchUIGridSectionModel;
-      [(SearchUISectionModel *)&v35 sectionInsetsWithAttributes:v6 sectionIndex:a4];
+      [(SearchUISectionModel *)&v35 sectionInsetsWithAttributes:attributesCopy sectionIndex:index];
       v10 = v27;
       v12 = v28;
       v15 = v29;
@@ -463,13 +463,13 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   return result;
 }
 
-- (id)rfHeroImageGridLayoutSectionForCardSection:(id)a3
+- (id)rfHeroImageGridLayoutSectionForCardSection:(id)section
 {
   v77[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D9240] isXROS];
+  isXROS = [MEMORY[0x1E69D9240] isXROS];
   v5 = MEMORY[0x1E6995588];
   v6 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.666666667];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -485,7 +485,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v9 = [MEMORY[0x1E6995578] itemWithLayoutSize:v8];
   v10 = MEMORY[0x1E6995588];
   v11 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -501,7 +501,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v14 = [MEMORY[0x1E6995578] itemWithLayoutSize:v13];
   v15 = MEMORY[0x1E6995588];
   v16 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.5];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -517,7 +517,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v72 = [MEMORY[0x1E6995578] itemWithLayoutSize:v18];
   v19 = MEMORY[0x1E6995588];
   v20 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.333333333];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -540,7 +540,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   [v23 setContentInsets:{v25, v25, v25, v25}];
   v26 = MEMORY[0x1E6995588];
   v27 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.333333333];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -556,7 +556,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v30 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v29 repeatingSubitem:v14 count:2];
   v31 = MEMORY[0x1E6995588];
   v32 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -589,7 +589,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v37 = MEMORY[0x1E6995588];
   v38 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.666666667];
   v62 = v34;
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -606,7 +606,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v42 = MEMORY[0x1E6995588];
   v43 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
   v68 = v14;
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -639,7 +639,7 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   v50 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v45 subitems:v49];
   v51 = MEMORY[0x1E6995588];
   v52 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
-  if (v4)
+  if (isXROS)
   {
     [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }
@@ -662,11 +662,11 @@ void __73__SearchUIGridSectionModel_setCornerMaskRulesOnRowModels_forColumnCount
   return v58;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SearchUIGridSectionModel;
-  v4 = [(SearchUISectionModel *)&v6 copyWithZone:a3];
+  v4 = [(SearchUISectionModel *)&v6 copyWithZone:zone];
   [v4 setNumberOfColumns:{-[SearchUIGridSectionModel numberOfColumns](self, "numberOfColumns")}];
   return v4;
 }

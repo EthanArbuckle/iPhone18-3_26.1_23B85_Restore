@@ -2,14 +2,14 @@
 - (CAFRoute)route;
 - (CPVehicleStateManager)init;
 - (CPVehicleStateManagerDelegate)delegate;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 - (void)clearRoute;
 - (void)clearRouteLine;
 - (void)didUpdateNavigationOwnership;
-- (void)sendGuidanceState:(unsigned __int8)a3;
-- (void)sendRouteLine:(id)a3;
-- (void)setSupportsRouteSharing:(BOOL)a3;
+- (void)sendGuidanceState:(unsigned __int8)state;
+- (void)sendRouteLine:(id)line;
+- (void)setSupportsRouteSharing:(BOOL)sharing;
 - (void)willReleaseNavigationOwnership;
 @end
 
@@ -24,67 +24,67 @@
 
 - (CAFRoute)route
 {
-  v2 = self;
-  v3 = [(CPVehicleStateManager *)v2 navigation];
-  if (v3)
+  selfCopy = self;
+  navigation = [(CPVehicleStateManager *)selfCopy navigation];
+  if (navigation)
   {
-    v4 = v3;
-    v5 = [(CAFNavigation *)v3 route];
+    v4 = navigation;
+    route = [(CAFNavigation *)navigation route];
   }
 
   else
   {
-    v5 = 0;
+    route = 0;
   }
 
-  return v5;
+  return route;
 }
 
 - (void)willReleaseNavigationOwnership
 {
-  v2 = self;
+  selfCopy = self;
   CPVehicleStateManager.willReleaseNavigationOwnership()();
 }
 
 - (void)didUpdateNavigationOwnership
 {
-  v2 = self;
+  selfCopy = self;
   CPVehicleStateManager.didUpdateNavigationOwnership()();
 }
 
-- (void)sendGuidanceState:(unsigned __int8)a3
+- (void)sendGuidanceState:(unsigned __int8)state
 {
-  v4 = self;
-  CPVehicleStateManager.send(_:)(a3);
+  selfCopy = self;
+  CPVehicleStateManager.send(_:)(state);
 }
 
-- (void)setSupportsRouteSharing:(BOOL)a3
+- (void)setSupportsRouteSharing:(BOOL)sharing
 {
-  *(*(self + OBJC_IVAR___CPVehicleStateManager_routeSharingState) + 32) = a3;
-  v3 = self;
+  *(*(self + OBJC_IVAR___CPVehicleStateManager_routeSharingState) + 32) = sharing;
+  selfCopy = self;
 
   RouteSharingState.supportsRouteSharing.didset();
 
   CPVehicleStateManager.forceUserEnabledIfAllowed(reason:)(1u);
 }
 
-- (void)sendRouteLine:(id)a3
+- (void)sendRouteLine:(id)line
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  CPVehicleStateManager.send(_:)(a3);
+  selfCopy = self;
+  CPVehicleStateManager.send(_:)(line);
   swift_unknownObjectRelease();
 }
 
 - (void)clearRoute
 {
-  v2 = self;
+  selfCopy = self;
   CPVehicleStateManager.clearRoute()();
 }
 
 - (void)clearRouteLine
 {
-  v2 = self;
+  selfCopy = self;
   CPVehicleStateManager.clearRouteLine()();
 }
 
@@ -95,26 +95,26 @@
   return result;
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  if (a4)
+  if (car)
   {
-    v6 = self;
-    v5 = a4;
-    [v5 registerObserver_];
-    [(CPVehicleStateManager *)v6 carDidUpdateAccessories:v5];
+    selfCopy = self;
+    carCopy = car;
+    [carCopy registerObserver_];
+    [(CPVehicleStateManager *)selfCopy carDidUpdateAccessories:carCopy];
   }
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v7 = self;
-  v3 = [(CPVehicleStateManager *)v7 route];
-  if (v3)
+  selfCopy = self;
+  route = [(CPVehicleStateManager *)selfCopy route];
+  if (route)
   {
-    v4 = v3;
-    [(CAFRoute *)v3 registerObserver:v7];
-    v5 = *(v7 + OBJC_IVAR___CPVehicleStateManager_routeSharingState);
+    v4 = route;
+    [(CAFRoute *)route registerObserver:selfCopy];
+    v5 = *(selfCopy + OBJC_IVAR___CPVehicleStateManager_routeSharingState);
 
     swift_unknownObjectWeakAssign();
 
@@ -123,7 +123,7 @@
 
   else
   {
-    v6 = v7;
+    v6 = selfCopy;
   }
 }
 

@@ -1,17 +1,17 @@
 @interface SCNMTLLibraryManager
-+ (id)hashCodeForSource:(id)a3 macros:(id)a4;
-- (SCNMTLLibraryManager)initWithDevice:(id)a3;
++ (id)hashCodeForSource:(id)source macros:(id)macros;
+- (SCNMTLLibraryManager)initWithDevice:(id)device;
 - (id)defaultLibrary;
-- (id)libraryForFile:(id)a3;
-- (id)libraryForSourceCode:(id)a3 options:(id)a4;
+- (id)libraryForFile:(id)file;
+- (id)libraryForSourceCode:(id)code options:(id)options;
 - (void)clearCompiledLibraries;
 - (void)dealloc;
-- (void)libraryForProgramDesc:(id *)a3 completionHandler:(id)a4;
+- (void)libraryForProgramDesc:(id *)desc completionHandler:(id)handler;
 @end
 
 @implementation SCNMTLLibraryManager
 
-- (SCNMTLLibraryManager)initWithDevice:(id)a3
+- (SCNMTLLibraryManager)initWithDevice:(id)device
 {
   v30 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_device = a3;
+    v4->_device = device;
     v4->_frameworkLibrary = -[SCNMTLLibrary initWithPath:manager:]([SCNMTLLibrary alloc], "initWithPath:manager:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "pathForResource:ofType:", @"default", @"metallib"}], v4);
     v5->_availableLibraries = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v5->_availableCompiledLibraries = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
@@ -59,13 +59,13 @@
         v25[3] = &unk_2782FE8C8;
         v25[4] = v9;
         v5->_commonProfileCacheLibraryProviderBlock = _Block_copy(v25);
-        v11 = [(MTLLibrary *)v5->_commonProfileCacheLibrary functionNames];
+        functionNames = [(MTLLibrary *)v5->_commonProfileCacheLibrary functionNames];
         v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v13 = [functionNames countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v13)
         {
           v14 = v13;
@@ -76,7 +76,7 @@
             {
               if (*v22 != v15)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(functionNames);
               }
 
               v17 = *(*(&v21 + 1) + 8 * i);
@@ -87,7 +87,7 @@
               }
             }
 
-            v14 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v14 = [functionNames countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v14);
@@ -130,12 +130,12 @@
   [(SCNMTLLibraryManager *)&v3 dealloc];
 }
 
-+ (id)hashCodeForSource:(id)a3 macros:(id)a4
++ (id)hashCodeForSource:(id)source macros:(id)macros
 {
   v32 = *MEMORY[0x277D85DE8];
   CC_SHA256_Init(&c);
   CFStringUpdateHash();
-  v5 = [objc_msgSend(a4 "allKeys")];
+  v5 = [objc_msgSend(macros "allKeys")];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -154,7 +154,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [a4 objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
+        v10 = [macros objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
         CFStringUpdateHash();
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -238,7 +238,7 @@ SCNMTLLibrary *__38__SCNMTLLibraryManager_defaultLibrary__block_invoke(uint64_t 
   return result;
 }
 
-- (id)libraryForFile:(id)a3
+- (id)libraryForFile:(id)file
 {
   v7 = 0;
   v8 = &v7;
@@ -252,7 +252,7 @@ SCNMTLLibrary *__38__SCNMTLLibraryManager_defaultLibrary__block_invoke(uint64_t 
   block[2] = __39__SCNMTLLibraryManager_libraryForFile___block_invoke;
   block[3] = &unk_2782FE8F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = file;
   block[6] = &v7;
   dispatch_sync(deviceQueue, block);
   v4 = v8[5];
@@ -274,9 +274,9 @@ uint64_t __39__SCNMTLLibraryManager_libraryForFile___block_invoke(void *a1)
   return result;
 }
 
-- (id)libraryForSourceCode:(id)a3 options:(id)a4
+- (id)libraryForSourceCode:(id)code options:(id)options
 {
-  v7 = +[SCNMTLLibraryManager hashCodeForSource:macros:](SCNMTLLibraryManager, "hashCodeForSource:macros:", a3, [a4 preprocessorMacros]);
+  v7 = +[SCNMTLLibraryManager hashCodeForSource:macros:](SCNMTLLibraryManager, "hashCodeForSource:macros:", code, [options preprocessorMacros]);
   os_unfair_lock_lock(&self->_availableCompiledLibrariesLock);
   Value = CFDictionaryGetValue(self->_availableCompiledLibraries, v7);
   if (!Value)
@@ -284,7 +284,7 @@ uint64_t __39__SCNMTLLibraryManager_libraryForFile___block_invoke(void *a1)
     v12 = 0;
     ++self->__engineStats->onlineShaderCount;
     v9 = CACurrentMediaTime();
-    Value = [(MTLDevice *)self->_device newLibraryWithSource:a3 options:a4 error:&v12];
+    Value = [(MTLDevice *)self->_device newLibraryWithSource:code options:options error:&v12];
     self->__engineStats->onlineShaderCompilationTime = CACurrentMediaTime() - v9 + self->__engineStats->onlineShaderCompilationTime;
     if (Value)
     {
@@ -305,16 +305,16 @@ uint64_t __39__SCNMTLLibraryManager_libraryForFile___block_invoke(void *a1)
   return Value;
 }
 
-- (void)libraryForProgramDesc:(id *)a3 completionHandler:(id)a4
+- (void)libraryForProgramDesc:(id *)desc completionHandler:(id)handler
 {
-  if (a3->var0)
+  if (desc->var0)
   {
     TypeID = C3DFXMetalProgramGetTypeID();
-    if (TypeID == CFGetTypeID(a3->var0))
+    if (TypeID == CFGetTypeID(desc->var0))
     {
-      var0 = a3->var0;
-      LibraryProviderBlock = C3DFXMetalProgramGetLibraryProviderBlock(&a3->var0->var0.var0.var0.var0);
-      if (!LibraryProviderBlock || (v10 = (*(LibraryProviderBlock + 16))(LibraryProviderBlock, self->_device)) == 0)
+      var0 = desc->var0;
+      LibraryProviderBlock = C3DFXMetalProgramGetLibraryProviderBlock(&desc->var0->var0.var0.var0.var0);
+      if (!LibraryProviderBlock || (defaultLibrary = (*(LibraryProviderBlock + 16))(LibraryProviderBlock, self->_device)) == 0)
       {
         SourceCode = C3DFXMetalProgramGetSourceCode(var0);
         if (SourceCode)
@@ -327,12 +327,12 @@ uint64_t __39__SCNMTLLibraryManager_libraryForFile___block_invoke(void *a1)
           os_unfair_lock_unlock(&self->_availableCompiledLibrariesLock);
           if (Value)
           {
-            v16 = *(a4 + 2);
-            v17 = a4;
+            v16 = *(handler + 2);
+            handlerCopy3 = handler;
             commonProfileCacheLibrary = Value;
 LABEL_19:
 
-            v16(v17, commonProfileCacheLibrary, 0);
+            v16(handlerCopy3, commonProfileCacheLibrary, 0);
             return;
           }
 
@@ -363,28 +363,28 @@ LABEL_34:
             v46[1] = 3221225472;
             v47 = __64__SCNMTLLibraryManager_libraryForProgramDesc_completionHandler___block_invoke_49;
             v48 = &unk_2782FE9B8;
-            v32 = *&a3->var13;
-            v57 = *&a3->var11;
+            v32 = *&desc->var13;
+            v57 = *&desc->var11;
             v58 = v32;
-            var16 = a3->var16;
-            var17 = a3->var17;
-            v34 = *&a3->var2;
-            v53 = *&a3->var0;
+            var16 = desc->var16;
+            var17 = desc->var17;
+            v34 = *&desc->var2;
+            v53 = *&desc->var0;
             v54 = v34;
-            v35 = *&a3->var6;
-            v55 = *&a3->var4;
+            v35 = *&desc->var6;
+            v55 = *&desc->var4;
             v56 = v35;
             v60 = var17;
             v61 = OverrideMaterial;
             v49 = v12;
-            v50 = self;
+            selfCopy = self;
             v51 = v14;
-            v52 = a4;
+            handlerCopy2 = handler;
             v62 = var0;
             ++self->__engineStats->onlineShaderCount;
             v36 = CACurrentMediaTime();
-            var14 = a3->var14;
-            if (a3->var14)
+            var14 = desc->var14;
+            if (desc->var14)
             {
               if (var14 == 2)
               {
@@ -507,21 +507,21 @@ LABEL_46:
           goto LABEL_34;
         }
 
-        if (C3DFXProgramIsClientProgram(a3->var0))
+        if (C3DFXProgramIsClientProgram(desc->var0))
         {
-          v10 = [(SCNMTLLibraryManager *)self defaultLibrary];
+          defaultLibrary = [(SCNMTLLibraryManager *)self defaultLibrary];
         }
 
         else
         {
-          v10 = [(SCNMTLLibraryManager *)self frameworkLibrary];
+          defaultLibrary = [(SCNMTLLibraryManager *)self frameworkLibrary];
         }
       }
 
-      commonProfileCacheLibrary = v10;
+      commonProfileCacheLibrary = defaultLibrary;
 LABEL_18:
-      v16 = *(a4 + 2);
-      v17 = a4;
+      v16 = *(handler + 2);
+      handlerCopy3 = handler;
       goto LABEL_19;
     }
   }

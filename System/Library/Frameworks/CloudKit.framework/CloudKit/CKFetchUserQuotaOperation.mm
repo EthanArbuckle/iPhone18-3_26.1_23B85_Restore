@@ -1,14 +1,14 @@
 @interface CKFetchUserQuotaOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchUserQuotaOperation)init;
 - (id)activityCreate;
 - (id)fetchUserQuotaCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)handleOperationDidCompleteWithQuotaAvailable:(unint64_t)a3 metrics:(id)a4 error:(id)a5;
-- (void)setFetchUserQuotaCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)handleOperationDidCompleteWithQuotaAvailable:(unint64_t)available metrics:(id)metrics error:(id)error;
+- (void)setFetchUserQuotaCompletionBlock:(id)block;
 @end
 
 @implementation CKFetchUserQuotaOperation
@@ -20,9 +20,9 @@
   return [(CKOperation *)&v3 init];
 }
 
-- (void)setFetchUserQuotaCompletionBlock:(id)a3
+- (void)setFetchUserQuotaCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -36,16 +36,16 @@
     v12[2] = sub_18860700C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchUserQuotaCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchUserQuotaCompletionBlock != v6)
+  if (self->_fetchUserQuotaCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchUserQuotaCompletionBlock = self->_fetchUserQuotaCompletionBlock;
     self->_fetchUserQuotaCompletionBlock = v9;
 LABEL_9:
@@ -103,14 +103,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)handleOperationDidCompleteWithQuotaAvailable:(unint64_t)a3 metrics:(id)a4 error:(id)a5
+- (void)handleOperationDidCompleteWithQuotaAvailable:(unint64_t)available metrics:(id)metrics error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
+  errorCopy = error;
+  metricsCopy = metrics;
   if ((objc_msgSend_isCancelled(self, v10, v11) & 1) == 0)
   {
-    objc_msgSend_setQuotaAvailable_(self, v12, a3);
+    objc_msgSend_setQuotaAvailable_(self, v12, available);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -126,20 +126,20 @@ LABEL_9:
     *buf = 138543618;
     v21 = v18;
     v22 = 2048;
-    v23 = a3;
+    availableCopy = available;
     _os_log_debug_impl(&dword_1883EA000, v15, OS_LOG_TYPE_DEBUG, "Received completion callback for operation %{public}@ with quota %llu;", buf, 0x16u);
   }
 
   v19.receiver = self;
   v19.super_class = CKFetchUserQuotaOperation;
-  [(CKOperation *)&v19 handleOperationDidCompleteWithMetrics:v9 error:v8];
+  [(CKOperation *)&v19 handleOperationDidCompleteWithMetrics:metricsCopy error:errorCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -203,7 +203,7 @@ LABEL_9:
   if (v23)
   {
     v27 = objc_msgSend_quotaAvailable(self, v25, v26);
-    v30 = objc_msgSend_CKClientSuitableError(v4, v28, v29);
+    v30 = objc_msgSend_CKClientSuitableError(errorCopy, v28, v29);
     v23[2](v23, v27, v30);
 
     objc_msgSend_setFetchUserQuotaCompletionBlock_(self, v31, 0);
@@ -211,7 +211,7 @@ LABEL_9:
 
   v32.receiver = self;
   v32.super_class = CKFetchUserQuotaOperation;
-  [(CKOperation *)&v32 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v32 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -288,10 +288,10 @@ LABEL_9:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -335,7 +335,7 @@ LABEL_9:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchUserQuotaOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -350,15 +350,15 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleOperationDidCompleteWithQuotaAvailable_metrics_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleOperationDidCompleteWithQuotaAvailable_metrics_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchUserQuotaOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

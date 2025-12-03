@@ -1,23 +1,23 @@
 @interface RAPCategoriesDownloader
 + (id)adjustedPreferredLanguages;
-+ (id)preferredTranslationInTitles:(id)a3 givenPreferredLanguagesList:(id)a4;
-+ (void)fetchCategories:(id)a3;
++ (id)preferredTranslationInTitles:(id)titles givenPreferredLanguagesList:(id)list;
++ (void)fetchCategories:(id)categories;
 @end
 
 @implementation RAPCategoriesDownloader
 
-+ (id)preferredTranslationInTitles:(id)a3 givenPreferredLanguagesList:(id)a4
++ (id)preferredTranslationInTitles:(id)titles givenPreferredLanguagesList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
-  v32 = v5;
-  if ([v6 count])
+  titlesCopy = titles;
+  listCopy = list;
+  v32 = titlesCopy;
+  if ([listCopy count])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v7 = v5;
+    v7 = titlesCopy;
     v8 = [v7 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v8)
     {
@@ -34,7 +34,7 @@
 
           v12 = *(*(&v41 + 1) + 8 * i);
           v13 = [v12 objectForKeyedSubscript:@"language"];
-          v14 = [v6 objectAtIndexedSubscript:0];
+          v14 = [listCopy objectAtIndexedSubscript:0];
           v15 = [v13 isEqualToString:v14];
 
           if (v15)
@@ -54,15 +54,15 @@
       }
     }
 
-    v5 = v32;
+    titlesCopy = v32;
   }
 
-  v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+  v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [titlesCopy count]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v16 = v5;
+  v16 = titlesCopy;
   v17 = [v16 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v17)
   {
@@ -93,8 +93,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v24 = v6;
-  v25 = [v24 countByEnumeratingWithState:&v33 objects:v45 count:16];
+  firstObject = listCopy;
+  v25 = [firstObject countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v25)
   {
     v26 = v25;
@@ -105,7 +105,7 @@ LABEL_20:
     {
       if (*v34 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(firstObject);
       }
 
       v29 = [v7 objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v28)];
@@ -116,7 +116,7 @@ LABEL_20:
 
       if (v26 == ++v28)
       {
-        v26 = [v24 countByEnumeratingWithState:&v33 objects:v45 count:16];
+        v26 = [firstObject countByEnumeratingWithState:&v33 objects:v45 count:16];
         if (v26)
         {
           goto LABEL_20;
@@ -131,8 +131,8 @@ LABEL_20:
   {
 LABEL_26:
 
-    v24 = [v16 firstObject];
-    v29 = [v24 objectForKeyedSubscript:@"value"];
+    firstObject = [v16 firstObject];
+    v29 = [firstObject objectForKeyedSubscript:@"value"];
   }
 
   v30 = v29;
@@ -195,9 +195,9 @@ LABEL_29:
   return v14;
 }
 
-+ (void)fetchCategories:(id)a3
++ (void)fetchCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   v5 = GEOURLString();
   v6 = [NSURL URLWithString:v5];
 
@@ -207,9 +207,9 @@ LABEL_29:
   v12 = 3221225472;
   v13 = sub_10087F178;
   v14 = &unk_10162C8C0;
-  v15 = v4;
-  v16 = a1;
-  v9 = v4;
+  v15 = categoriesCopy;
+  selfCopy = self;
+  v9 = categoriesCopy;
   v10 = [v8 dataTaskWithRequest:v7 completionHandler:&v11];
   [v10 resume];
 }

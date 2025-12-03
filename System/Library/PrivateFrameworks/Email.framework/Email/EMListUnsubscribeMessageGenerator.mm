@@ -1,38 +1,38 @@
 @interface EMListUnsubscribeMessageGenerator
 + (id)dateString;
-+ (id)localizedBodyForCommand:(id)a3;
-+ (id)messageHeadersWithCommand:(id)a3 headersFactory:(id)a4;
-+ (id)senderForCommand:(id)a3;
++ (id)localizedBodyForCommand:(id)command;
++ (id)messageHeadersWithCommand:(id)command headersFactory:(id)factory;
++ (id)senderForCommand:(id)command;
 @end
 
 @implementation EMListUnsubscribeMessageGenerator
 
-+ (id)messageHeadersWithCommand:(id)a3 headersFactory:(id)a4
++ (id)messageHeadersWithCommand:(id)command headersFactory:(id)factory
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  commandCopy = command;
+  factoryCopy = factory;
+  if (!commandCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"EMListUnsubscribeMessageGenerator.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"command"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeMessageGenerator.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"command"}];
   }
 
-  v9 = [v8 mutableMessageHeaders];
-  [v9 setHeader:@"auto-replied" forKey:*MEMORY[0x1E699B080]];
-  [v9 setHeader:@"true" forKey:*MEMORY[0x1E699B198]];
-  v10 = [v7 mailtoValues];
-  if (!v10)
+  mutableMessageHeaders = [factoryCopy mutableMessageHeaders];
+  [mutableMessageHeaders setHeader:@"auto-replied" forKey:*MEMORY[0x1E699B080]];
+  [mutableMessageHeaders setHeader:@"true" forKey:*MEMORY[0x1E699B198]];
+  mailtoValues = [commandCopy mailtoValues];
+  if (!mailtoValues)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"EMListUnsubscribeMessageGenerator.m" lineNumber:26 description:@"Mailto value are missing"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeMessageGenerator.m" lineNumber:26 description:@"Mailto value are missing"];
   }
 
-  v11 = [v10 subject];
-  v12 = v11;
-  if (v11)
+  subject = [mailtoValues subject];
+  v12 = subject;
+  if (subject)
   {
-    v13 = v11;
+    v13 = subject;
   }
 
   else
@@ -40,51 +40,51 @@
     v13 = &stru_1F45FD218;
   }
 
-  [v9 setHeader:v13 forKey:*MEMORY[0x1E699B178]];
+  [mutableMessageHeaders setHeader:v13 forKey:*MEMORY[0x1E699B178]];
 
-  v14 = [v10 address];
-  v24[0] = v14;
+  address = [mailtoValues address];
+  v24[0] = address;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  [v9 setAddressListForTo:v15];
+  [mutableMessageHeaders setAddressListForTo:v15];
 
-  v16 = [a1 senderForCommand:v7];
+  v16 = [self senderForCommand:commandCopy];
   v23 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-  [v9 setAddressListForSender:v17];
+  [mutableMessageHeaders setAddressListForSender:v17];
 
-  v18 = [a1 dateString];
-  [v9 setHeader:v18 forKey:*MEMORY[0x1E699B0D8]];
+  dateString = [self dateString];
+  [mutableMessageHeaders setHeader:dateString forKey:*MEMORY[0x1E699B0D8]];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return mutableMessageHeaders;
 }
 
-+ (id)localizedBodyForCommand:(id)a3
++ (id)localizedBodyForCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   v4 = MEMORY[0x1E696AEC0];
   v5 = _EFLocalizedString();
-  v6 = [v3 mailtoValues];
-  v7 = [v6 subject];
-  v8 = [v4 stringWithFormat:v5, v7];
+  mailtoValues = [commandCopy mailtoValues];
+  subject = [mailtoValues subject];
+  v8 = [v4 stringWithFormat:v5, subject];
 
   return v8;
 }
 
-+ (id)senderForCommand:(id)a3
++ (id)senderForCommand:(id)command
 {
-  v5 = a3;
-  [a1 doesNotRecognizeSelector:a2];
+  commandCopy = command;
+  [self doesNotRecognizeSelector:a2];
   __assert_rtn("+[EMListUnsubscribeMessageGenerator senderForCommand:]", "EMListUnsubscribeMessageGenerator.m", 43, "0");
 }
 
 + (id)dateString
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v2 ec_descriptionForMimeHeaders];
+  date = [MEMORY[0x1E695DF00] date];
+  ec_descriptionForMimeHeaders = [date ec_descriptionForMimeHeaders];
 
-  return v3;
+  return ec_descriptionForMimeHeaders;
 }
 
 @end

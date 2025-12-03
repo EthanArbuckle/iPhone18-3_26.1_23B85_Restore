@@ -1,6 +1,6 @@
 @interface AutocompleteItemSource
-- (AutocompleteItemSource)initWithAutocompleteItems:(id)a3;
-- (AutocompleteItemSource)initWithServerCompletions:(id)a3 serverSections:(id)a4;
+- (AutocompleteItemSource)initWithAutocompleteItems:(id)items;
+- (AutocompleteItemSource)initWithServerCompletions:(id)completions serverSections:(id)sections;
 - (id)debugDescription;
 @end
 
@@ -8,9 +8,9 @@
 
 - (id)debugDescription
 {
-  v3 = [(AutocompleteItemSource *)self sourceType];
+  sourceType = [(AutocompleteItemSource *)self sourceType];
   v4 = @"Client Results";
-  if (v3 == 1)
+  if (sourceType == 1)
   {
     v4 = @"Server results";
   }
@@ -18,15 +18,15 @@
   return [NSString stringWithFormat:@"%@ - type: %@", self, v4];
 }
 
-- (AutocompleteItemSource)initWithAutocompleteItems:(id)a3
+- (AutocompleteItemSource)initWithAutocompleteItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = AutocompleteItemSource;
   v5 = [(AutocompleteItemSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     allItems = v5->_allItems;
     v5->_allItems = v6;
   }
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (AutocompleteItemSource)initWithServerCompletions:(id)a3 serverSections:(id)a4
+- (AutocompleteItemSource)initWithServerCompletions:(id)completions serverSections:(id)sections
 {
-  v19 = self;
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  selfCopy = self;
+  completionsCopy = completions;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [completionsCopy count]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = completionsCopy;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -59,20 +59,20 @@
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 hasSortPriority];
-        if (v11)
+        hasSortPriority = [v10 hasSortPriority];
+        if (hasSortPriority)
         {
-          v12 = [v10 sortPriority];
+          sortPriority = [v10 sortPriority];
         }
 
         else
         {
-          v12 = 0;
+          sortPriority = 0;
         }
 
         v13 = [AutocompleteItem alloc];
-        v14 = [v10 serverResultScoreMetadata];
-        v15 = [(AutocompleteItem *)v13 initWithServerCompletion:v10 hasPriorityOverride:v11 priorityOverride:v12 serverResultScoreMetadata:v14];
+        serverResultScoreMetadata = [v10 serverResultScoreMetadata];
+        v15 = [(AutocompleteItem *)v13 initWithServerCompletion:v10 hasPriorityOverride:hasSortPriority priorityOverride:sortPriority serverResultScoreMetadata:serverResultScoreMetadata];
 
         [v5 addObject:v15];
       }
@@ -84,7 +84,7 @@
   }
 
   v16 = [v5 copy];
-  v17 = [(AutocompleteItemSource *)v19 initWithAutocompleteItems:v16];
+  v17 = [(AutocompleteItemSource *)selfCopy initWithAutocompleteItems:v16];
 
   if (v17)
   {

@@ -1,13 +1,13 @@
 @interface CWFActivity
-+ (id)activityWithType:(int64_t)a3 reason:(id)a4;
-+ (id)activityWithType:(int64_t)a3 reason:(id)a4 UUID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActivity:(id)a3;
++ (id)activityWithType:(int64_t)type reason:(id)reason;
++ (id)activityWithType:(int64_t)type reason:(id)reason UUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActivity:(id)activity;
 - (CWFActivity)init;
-- (CWFActivity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CWFActivity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFActivity
@@ -18,8 +18,8 @@
   type = self->_type;
   timeout = self->_timeout;
   reason = self->_reason;
-  v6 = [(NSUUID *)self->_UUID UUIDString];
-  v7 = [v6 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v7 = [uUIDString substringToIndex:5];
   v8 = [v2 stringWithFormat:@"type=%ld reason=%@ timeout=%lluns uuid=%@", type, reason, timeout, v7];
 
   return v8;
@@ -32,52 +32,52 @@
   v2 = [(CWFActivity *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
   }
 
   return v2;
 }
 
-+ (id)activityWithType:(int64_t)a3 reason:(id)a4
++ (id)activityWithType:(int64_t)type reason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   v6 = objc_alloc_init(CWFActivity);
-  [(CWFActivity *)v6 setType:a3];
-  [(CWFActivity *)v6 setReason:v5];
+  [(CWFActivity *)v6 setType:type];
+  [(CWFActivity *)v6 setReason:reasonCopy];
 
   return v6;
 }
 
-+ (id)activityWithType:(int64_t)a3 reason:(id)a4 UUID:(id)a5
++ (id)activityWithType:(int64_t)type reason:(id)reason UUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
+  dCopy = d;
+  reasonCopy = reason;
   v9 = objc_alloc_init(CWFActivity);
-  [(CWFActivity *)v9 setType:a3];
-  [(CWFActivity *)v9 setReason:v8];
+  [(CWFActivity *)v9 setType:type];
+  [(CWFActivity *)v9 setReason:reasonCopy];
 
-  if (v7)
+  if (dCopy)
   {
-    [(CWFActivity *)v9 setUUID:v7];
+    [(CWFActivity *)v9 setUUID:dCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToActivity:(id)a3
+- (BOOL)isEqualToActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
+  activityCopy = activity;
+  v5 = activityCopy;
   if (self->_UUID)
   {
-    v6 = [v4 UUID];
-    if (v6)
+    uUID = [activityCopy UUID];
+    if (uUID)
     {
       UUID = self->_UUID;
-      v8 = [v5 UUID];
-      if ([(NSUUID *)UUID isEqual:v8])
+      uUID2 = [v5 UUID];
+      if ([(NSUUID *)UUID isEqual:uUID2])
       {
         type = self->_type;
         v10 = type == [v5 type];
@@ -103,24 +103,24 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFActivity *)self isEqualToActivity:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFActivity *)self isEqualToActivity:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFActivity allocWithZone:?]];
   [(CWFActivity *)v4 setUUID:self->_UUID];
@@ -130,35 +130,35 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"_UUID"];
-  [v5 encodeObject:self->_reason forKey:@"_reason"];
-  [v5 encodeInteger:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"_UUID"];
+  [coderCopy encodeObject:self->_reason forKey:@"_reason"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timeout];
-  [v5 encodeObject:v6 forKey:@"_timeout"];
+  [coderCopy encodeObject:v6 forKey:@"_timeout"];
 }
 
-- (CWFActivity)initWithCoder:(id)a3
+- (CWFActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CWFActivity;
   v5 = [(CWFActivity *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_reason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_reason"];
     reason = v5->_reason;
     v5->_reason = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeout"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeout"];
     v5->_timeout = [v10 unsignedLongLongValue];
   }
 

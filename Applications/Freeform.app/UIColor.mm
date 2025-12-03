@@ -4,7 +4,7 @@
 + (id)crl_sidebarPrimaryContentColor;
 + (id)crl_sliderMaximumTrackTintColor;
 + (id)crl_tableViewCellDarkBlueTextColor;
-- (id)crl_withReducedAlpha:(double)a3;
+- (id)crl_withReducedAlpha:(double)alpha;
 @end
 
 @implementation UIColor
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (id)crl_withReducedAlpha:(double)a3
+- (id)crl_withReducedAlpha:(double)alpha
 {
   [(UIColor *)self alphaComponent];
-  v6 = v5 * a3;
+  v6 = v5 * alpha;
 
   return [(UIColor *)self colorWithAlphaComponent:v6];
 }

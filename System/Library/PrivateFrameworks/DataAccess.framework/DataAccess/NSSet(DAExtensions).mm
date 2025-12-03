@@ -7,11 +7,11 @@
 - (id)DACompactDescription
 {
   v2 = [MEMORY[0x277CCAB68] stringWithString:@"["];
-  v3 = [a1 objectEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  objectEnumerator = [self objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
     v6 = 1;
     do
     {
@@ -23,13 +23,13 @@
       v7 = [v5 description];
       [v2 appendString:v7];
 
-      v8 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
       v6 = 0;
-      v5 = v8;
+      v5 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   [v2 appendString:@"]"];

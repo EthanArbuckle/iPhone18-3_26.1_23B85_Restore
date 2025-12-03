@@ -1,25 +1,25 @@
 @interface NEVPNProtocolIPSec
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)needToUpdateKeychain;
-- (NEVPNProtocolIPSec)initWithCoder:(id)a3;
-- (NEVPNProtocolIPSec)initWithType:(int64_t)a3;
+- (NEVPNProtocolIPSec)initWithCoder:(id)coder;
+- (NEVPNProtocolIPSec)initWithType:(int64_t)type;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)migratePasswordsFromPreferences:(__SCPreferences *)a3;
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)migratePasswordsFromPreferences:(__SCPreferences *)preferences;
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix;
 @end
 
 @implementation NEVPNProtocolIPSec
 
-- (void)migratePasswordsFromPreferences:(__SCPreferences *)a3
+- (void)migratePasswordsFromPreferences:(__SCPreferences *)preferences
 {
-  v5 = [(NEVPNProtocol *)self passwordKeychainItem];
-  [v5 migrateFromPreferences:a3];
+  passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
+  [passwordKeychainItem migrateFromPreferences:preferences];
 
-  v6 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-  [v6 migrateFromPreferences:a3];
+  sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  [sharedSecretKeychainItem migrateFromPreferences:preferences];
 }
 
 - (BOOL)needToUpdateKeychain
@@ -31,12 +31,12 @@
     return 1;
   }
 
-  v4 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-  if (v4)
+  sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  if (sharedSecretKeychainItem)
   {
-    v5 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-    v6 = [v5 password];
-    v3 = [v6 length] != 0;
+    sharedSecretKeychainItem2 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    password = [sharedSecretKeychainItem2 password];
+    v3 = [password length] != 0;
   }
 
   else
@@ -47,14 +47,14 @@
   return v3;
 }
 
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  configurationCopy = configuration;
+  suffixCopy = suffix;
+  v10 = suffixCopy;
+  if (suffixCopy)
   {
-    v11 = [v9 stringByAppendingString:@".XAUTH"];
+    v11 = [suffixCopy stringByAppendingString:@".XAUTH"];
     v12 = [v10 stringByAppendingString:@".SS"];
     v13 = [v10 stringByAppendingString:@".IDDATA"];
   }
@@ -68,20 +68,20 @@
 
   v58.receiver = self;
   v58.super_class = NEVPNProtocolIPSec;
-  [(NEVPNProtocol *)&v58 syncWithKeychainInDomainCommon:a3];
-  v14 = [(NEVPNProtocol *)self username];
-  if (v14)
+  [(NEVPNProtocol *)&v58 syncWithKeychainInDomainCommon:domain];
+  username = [(NEVPNProtocol *)self username];
+  if (username)
   {
-    v15 = v14;
-    v16 = [(NEVPNProtocol *)self passwordKeychainItem];
+    v15 = username;
+    passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
 
-    if (!v16)
+    if (!passwordKeychainItem)
     {
       v56 = v13;
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [v8 identifier];
-      v19 = [v18 UUIDString];
-      v20 = [v17 stringWithFormat:@"%@.%@", v19, v11];
+      identifier = [configurationCopy identifier];
+      uUIDString = [identifier UUIDString];
+      v20 = [v17 stringWithFormat:@"%@.%@", uUIDString, v11];
 
       v22 = [NEKeychainItem alloc];
       if (self)
@@ -104,32 +104,32 @@
     }
   }
 
-  v27 = [(NEVPNProtocol *)self passwordKeychainItem];
-  if (v27)
+  passwordKeychainItem2 = [(NEVPNProtocol *)self passwordKeychainItem];
+  if (passwordKeychainItem2)
   {
-    v28 = v27;
-    v29 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v30 = [v29 domain];
+    v28 = passwordKeychainItem2;
+    passwordKeychainItem3 = [(NEVPNProtocol *)self passwordKeychainItem];
+    domain = [passwordKeychainItem3 domain];
 
-    if (v30 == a3)
+    if (domain == domain)
     {
-      v31 = [(NEVPNProtocol *)self passwordKeychainItem];
-      v32 = [(NEVPNProtocol *)self username];
-      [v31 syncUsingConfiguration:v8 accountName:v32 passwordType:1 identifierSuffix:v11];
+      passwordKeychainItem4 = [(NEVPNProtocol *)self passwordKeychainItem];
+      username2 = [(NEVPNProtocol *)self username];
+      [passwordKeychainItem4 syncUsingConfiguration:configurationCopy accountName:username2 passwordType:1 identifierSuffix:v11];
     }
   }
 
   if ([(NEVPNProtocolIPSec *)self authenticationMethod]== NEVPNIKEAuthenticationMethodSharedSecret)
   {
-    v33 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
 
-    if (!v33)
+    if (!sharedSecretKeychainItem)
     {
       v57 = v13;
       v34 = MEMORY[0x1E696AEC0];
-      v35 = [v8 identifier];
-      v36 = [v35 UUIDString];
-      v37 = [v34 stringWithFormat:@"%@.%@", v36, v12];
+      identifier2 = [configurationCopy identifier];
+      uUIDString2 = [identifier2 UUIDString];
+      v37 = [v34 stringWithFormat:@"%@.%@", uUIDString2, v12];
 
       v39 = [NEKeychainItem alloc];
       if (self)
@@ -152,47 +152,47 @@
     }
   }
 
-  v44 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-  if (v44)
+  sharedSecretKeychainItem2 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  if (sharedSecretKeychainItem2)
   {
-    v45 = v44;
-    v46 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-    v47 = [v46 domain];
+    v45 = sharedSecretKeychainItem2;
+    sharedSecretKeychainItem3 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    domain2 = [sharedSecretKeychainItem3 domain];
 
-    if (v47 == a3)
+    if (domain2 == domain)
     {
-      v48 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-      v49 = [(NEVPNProtocolIPSec *)self localIdentifier];
-      [v48 syncUsingConfiguration:v8 accountName:v49 passwordType:2 identifierSuffix:v12];
+      sharedSecretKeychainItem4 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+      localIdentifier = [(NEVPNProtocolIPSec *)self localIdentifier];
+      [sharedSecretKeychainItem4 syncUsingConfiguration:configurationCopy accountName:localIdentifier passwordType:2 identifierSuffix:v12];
     }
   }
 
-  v50 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
-  if (v50)
+  identityDataPasswordKeychainItem = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
+  if (identityDataPasswordKeychainItem)
   {
-    v51 = v50;
-    v52 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
-    v53 = [v52 domain];
+    v51 = identityDataPasswordKeychainItem;
+    identityDataPasswordKeychainItem2 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
+    domain3 = [identityDataPasswordKeychainItem2 domain];
 
-    if (v53 == a3)
+    if (domain3 == domain)
     {
-      v54 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
-      v55 = [(NEVPNProtocolIPSec *)self localIdentifier];
-      [v54 syncUsingConfiguration:v8 accountName:v55 passwordType:3 identifierSuffix:v13];
+      identityDataPasswordKeychainItem3 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
+      localIdentifier2 = [(NEVPNProtocolIPSec *)self localIdentifier];
+      [identityDataPasswordKeychainItem3 syncUsingConfiguration:configurationCopy accountName:localIdentifier2 passwordType:3 identifierSuffix:v13];
     }
   }
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
   v6 = isa_nsuuid(v5);
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
     v8 = [(NEVPNProtocol *)self initWithProtocolIdentifier:v7];
 
     if (!v8)
@@ -211,35 +211,35 @@
   }
 
   v9 = *MEMORY[0x1E6982428];
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982428]];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982428]];
   v11 = isa_nsstring(v10);
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:v9];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v9];
     [(NEVPNProtocol *)v8 setServerAddress:v12];
   }
 
   v13 = *MEMORY[0x1E6982448];
-  v14 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982448]];
+  v14 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982448]];
   v15 = isa_nsstring(v14);
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     [(NEVPNProtocol *)v8 setUsername:v16];
 
     [(NEVPNProtocolIPSec *)v8 setUseExtendedAuthentication:1];
   }
 
-  v17 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982458]];
+  v17 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982458]];
   if (isa_nsstring(v17) && [v17 isEqualToString:*MEMORY[0x1E6982890]])
   {
     [(NEVPNProtocolIPSec *)v8 setExtendedAuthPasswordPrompt:1];
   }
 
   v18 = *MEMORY[0x1E6982450];
-  v19 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982450]];
+  v19 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982450]];
   v20 = isa_nsstring(v19);
 
   if (v20)
@@ -247,19 +247,19 @@
     if (isa_nsstring(v17) && [v17 isEqualToString:*MEMORY[0x1E6982888]])
     {
       v21 = [NEKeychainItem alloc];
-      v22 = [v4 objectForKeyedSubscript:v18];
+      v22 = [dictionaryCopy objectForKeyedSubscript:v18];
       keychainDomain = v8->super._keychainDomain;
       v25 = objc_getProperty(v8, v24, 88, 1);
       v26 = [(NEKeychainItem *)v21 initWithLegacyIdentifier:v22 domain:keychainDomain accessGroup:v25];
       [(NEVPNProtocol *)v8 setPasswordKeychainItem:v26];
     }
 
-    v27 = [(NEVPNProtocol *)v8 passwordKeychainItem];
+    passwordKeychainItem = [(NEVPNProtocol *)v8 passwordKeychainItem];
 
-    if (!v27)
+    if (!passwordKeychainItem)
     {
       v28 = [NEKeychainItem alloc];
-      v29 = [v4 objectForKeyedSubscript:v18];
+      v29 = [dictionaryCopy objectForKeyedSubscript:v18];
       v30 = v8->super._keychainDomain;
       v32 = objc_getProperty(v8, v31, 88, 1);
       v33 = [(NEKeychainItem *)v28 initWithPassword:v29 domain:v30 accessGroup:v32];
@@ -269,43 +269,43 @@
     [(NEVPNProtocolIPSec *)v8 setUseExtendedAuthentication:1];
   }
 
-  v34 = [v4 objectForKeyedSubscript:@"PasswordReference"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"PasswordReference"];
   v35 = isa_nsdata(v34);
 
   if (v35)
   {
-    v36 = [v4 objectForKeyedSubscript:@"PasswordReference"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"PasswordReference"];
     [(NEVPNProtocol *)v8 setPasswordReference:v36];
   }
 
   v37 = *MEMORY[0x1E6982440];
-  v38 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982440]];
+  v38 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982440]];
   v39 = isa_nsnumber(v38);
 
   if (v39)
   {
-    v40 = [v4 objectForKeyedSubscript:v37];
+    v40 = [dictionaryCopy objectForKeyedSubscript:v37];
     -[NEVPNProtocolIPSec setUseExtendedAuthentication:](v8, "setUseExtendedAuthentication:", [v40 BOOLValue]);
   }
 
   v41 = *MEMORY[0x1E6982410];
-  v42 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982410]];
+  v42 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982410]];
   v43 = isa_nsdata(v42);
 
   if (v43)
   {
-    v44 = [v4 objectForKeyedSubscript:v41];
+    v44 = [dictionaryCopy objectForKeyedSubscript:v41];
     [(NEVPNProtocol *)v8 setIdentityReferenceInternal:v44];
   }
 
   v45 = *MEMORY[0x1E6982430];
-  v46 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982430]];
+  v46 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982430]];
   v47 = isa_nsstring(v46);
 
   if (v47)
   {
     v48 = [NEKeychainItem alloc];
-    v49 = [v4 objectForKeyedSubscript:v45];
+    v49 = [dictionaryCopy objectForKeyedSubscript:v45];
     v50 = v8->super._keychainDomain;
     v52 = objc_getProperty(v8, v51, 88, 1);
     v53 = [(NEKeychainItem *)v48 initWithLegacyIdentifier:v49 domain:v50 accessGroup:v52];
@@ -314,24 +314,24 @@
   }
 
   v55 = *MEMORY[0x1E6982418];
-  v56 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982418]];
+  v56 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982418]];
   v57 = isa_nsstring(v56);
 
   if (v57)
   {
-    v58 = [v4 objectForKeyedSubscript:v55];
+    v58 = [dictionaryCopy objectForKeyedSubscript:v55];
     v59 = [v58 copy];
     localIdentifier = v8->_localIdentifier;
     v8->_localIdentifier = v59;
   }
 
   v61 = *MEMORY[0x1E6982408];
-  v62 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982408]];
+  v62 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982408]];
   v63 = isa_nsstring(v62);
 
   if (v63)
   {
-    v64 = [v4 objectForKeyedSubscript:v61];
+    v64 = [dictionaryCopy objectForKeyedSubscript:v61];
     if ([v64 isEqualToString:*MEMORY[0x1E6982870]])
     {
       v65 = 2;
@@ -355,22 +355,22 @@ LABEL_36:
 
   v8->_authenticationMethod = 0;
 LABEL_37:
-  v66 = [v4 objectForKeyedSubscript:@"ExchangeMode"];
+  v66 = [dictionaryCopy objectForKeyedSubscript:@"ExchangeMode"];
   v67 = isa_nsarray(v66);
 
   if (v67)
   {
-    v68 = [v4 objectForKeyedSubscript:@"ExchangeMode"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"ExchangeMode"];
     [(NEVPNProtocolIPSec *)v8 setLegacyExchangeMode:v68];
   }
 
-  v69 = [v4 objectForKeyedSubscript:@"Proposals"];
+  v69 = [dictionaryCopy objectForKeyedSubscript:@"Proposals"];
   v70 = isa_nsarray(v69);
 
   if (v70)
   {
-    v71 = [MEMORY[0x1E695DF70] array];
-    v72 = [v4 objectForKeyedSubscript:@"Proposals"];
+    array = [MEMORY[0x1E695DF70] array];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"Proposals"];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -392,7 +392,7 @@ LABEL_37:
           v77 = [[NEVPNIKEv1ProposalParameters alloc] initFromLegacyDictionary:*(*(&v81 + 1) + 8 * i)];
           if (v77)
           {
-            [v71 addObject:v77];
+            [array addObject:v77];
           }
         }
 
@@ -402,13 +402,13 @@ LABEL_37:
       while (v74);
     }
 
-    if ([v71 count])
+    if ([array count])
     {
-      [(NEVPNProtocolIPSec *)v8 setLegacyProposals:v71];
+      [(NEVPNProtocolIPSec *)v8 setLegacyProposals:array];
     }
   }
 
-  [(NEVPNProtocol *)v8 initDisconnectOptions:v4];
+  [(NEVPNProtocol *)v8 initDisconnectOptions:dictionaryCopy];
   v78 = v8;
 
 LABEL_53:
@@ -420,12 +420,12 @@ LABEL_53:
 {
   v64 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NEVPNProtocol *)self serverAddress];
+  serverAddress = [(NEVPNProtocol *)self serverAddress];
 
-  if (v4)
+  if (serverAddress)
   {
-    v5 = [(NEVPNProtocol *)self serverAddress];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6982428]];
+    serverAddress2 = [(NEVPNProtocol *)self serverAddress];
+    [v3 setObject:serverAddress2 forKeyedSubscript:*MEMORY[0x1E6982428]];
   }
 
   if ([(NEVPNProtocolIPSec *)self authenticationMethod]== NEVPNIKEAuthenticationMethodCertificate)
@@ -445,29 +445,29 @@ LABEL_53:
 
   [v3 setObject:*v6 forKeyedSubscript:*MEMORY[0x1E6982408]];
 LABEL_8:
-  v7 = [(NEVPNProtocol *)self username];
+  username = [(NEVPNProtocol *)self username];
 
-  if (v7)
+  if (username)
   {
-    v8 = [(NEVPNProtocol *)self username];
-    [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6982448]];
+    username2 = [(NEVPNProtocol *)self username];
+    [v3 setObject:username2 forKeyedSubscript:*MEMORY[0x1E6982448]];
   }
 
-  v9 = [(NEVPNProtocol *)self passwordKeychainItem];
+  passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
 
-  if (v9)
+  if (passwordKeychainItem)
   {
-    v10 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v11 = [v10 password];
+    passwordKeychainItem2 = [(NEVPNProtocol *)self passwordKeychainItem];
+    password = [passwordKeychainItem2 password];
 
-    v12 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v13 = v12;
-    if (v11)
+    passwordKeychainItem3 = [(NEVPNProtocol *)self passwordKeychainItem];
+    identifier2 = passwordKeychainItem3;
+    if (password)
     {
-      v14 = [v12 password];
+      password2 = [passwordKeychainItem3 password];
 
-      v13 = v14;
-      if (!v14)
+      identifier2 = password2;
+      if (!password2)
       {
         goto LABEL_19;
       }
@@ -475,71 +475,71 @@ LABEL_8:
       goto LABEL_13;
     }
 
-    v15 = [v12 identifier];
-    if (!v15)
+    identifier = [passwordKeychainItem3 identifier];
+    if (!identifier)
     {
       goto LABEL_18;
     }
 
-    v16 = v15;
-    v17 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v18 = [v17 persistentReference];
+    v16 = identifier;
+    passwordKeychainItem4 = [(NEVPNProtocol *)self passwordKeychainItem];
+    persistentReference = [passwordKeychainItem4 persistentReference];
 
-    if (v18)
+    if (persistentReference)
     {
-      v19 = [(NEVPNProtocol *)self passwordKeychainItem];
-      v13 = [v19 identifier];
+      passwordKeychainItem5 = [(NEVPNProtocol *)self passwordKeychainItem];
+      identifier2 = [passwordKeychainItem5 identifier];
 
       [v3 setObject:*MEMORY[0x1E6982888] forKeyedSubscript:*MEMORY[0x1E6982458]];
-      if (v13)
+      if (identifier2)
       {
 LABEL_13:
-        [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6982450]];
+        [v3 setObject:identifier2 forKeyedSubscript:*MEMORY[0x1E6982450]];
 LABEL_18:
       }
     }
   }
 
 LABEL_19:
-  v20 = [(NEVPNProtocol *)self passwordReference];
+  passwordReference = [(NEVPNProtocol *)self passwordReference];
 
-  if (v20)
+  if (passwordReference)
   {
-    v21 = [(NEVPNProtocol *)self passwordReference];
-    [v3 setObject:v21 forKeyedSubscript:@"PasswordReference"];
+    passwordReference2 = [(NEVPNProtocol *)self passwordReference];
+    [v3 setObject:passwordReference2 forKeyedSubscript:@"PasswordReference"];
   }
 
-  v22 = [(NEVPNProtocolIPSec *)self sharedSecretReference];
+  sharedSecretReference = [(NEVPNProtocolIPSec *)self sharedSecretReference];
 
-  if (v22)
+  if (sharedSecretReference)
   {
-    v23 = [(NEVPNProtocolIPSec *)self sharedSecretReference];
-    [v3 setObject:v23 forKeyedSubscript:@"SharedSecretReference"];
+    sharedSecretReference2 = [(NEVPNProtocolIPSec *)self sharedSecretReference];
+    [v3 setObject:sharedSecretReference2 forKeyedSubscript:@"SharedSecretReference"];
   }
 
-  v24 = [(NEVPNProtocol *)self identityReferenceInternal];
+  identityReferenceInternal = [(NEVPNProtocol *)self identityReferenceInternal];
 
-  if (v24)
+  if (identityReferenceInternal)
   {
-    v25 = [(NEVPNProtocol *)self identityReferenceInternal];
-    [v3 setObject:v25 forKeyedSubscript:*MEMORY[0x1E6982410]];
+    identityReferenceInternal2 = [(NEVPNProtocol *)self identityReferenceInternal];
+    [v3 setObject:identityReferenceInternal2 forKeyedSubscript:*MEMORY[0x1E6982410]];
   }
 
-  v26 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
 
-  if (v26)
+  if (sharedSecretKeychainItem)
   {
-    v27 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-    v28 = [v27 password];
+    sharedSecretKeychainItem2 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    password3 = [sharedSecretKeychainItem2 password];
 
-    v29 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-    v30 = v29;
-    if (v28)
+    sharedSecretKeychainItem3 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    identifier4 = sharedSecretKeychainItem3;
+    if (password3)
     {
-      v31 = [v29 password];
+      password4 = [sharedSecretKeychainItem3 password];
 
-      v30 = v31;
-      if (!v31)
+      identifier4 = password4;
+      if (!password4)
       {
         goto LABEL_34;
       }
@@ -547,52 +547,52 @@ LABEL_19:
       goto LABEL_28;
     }
 
-    v32 = [v29 identifier];
-    if (!v32)
+    identifier3 = [sharedSecretKeychainItem3 identifier];
+    if (!identifier3)
     {
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-    v35 = [v34 persistentReference];
+    v33 = identifier3;
+    sharedSecretKeychainItem4 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+    persistentReference2 = [sharedSecretKeychainItem4 persistentReference];
 
-    if (v35)
+    if (persistentReference2)
     {
-      v36 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-      v30 = [v36 identifier];
+      sharedSecretKeychainItem5 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+      identifier4 = [sharedSecretKeychainItem5 identifier];
 
       [v3 setObject:*MEMORY[0x1E6982880] forKeyedSubscript:*MEMORY[0x1E6982438]];
-      if (v30)
+      if (identifier4)
       {
 LABEL_28:
-        [v3 setObject:v30 forKeyedSubscript:*MEMORY[0x1E6982430]];
+        [v3 setObject:identifier4 forKeyedSubscript:*MEMORY[0x1E6982430]];
 LABEL_33:
       }
     }
   }
 
 LABEL_34:
-  v37 = [(NEVPNProtocol *)self identityDataPassword];
+  identityDataPassword = [(NEVPNProtocol *)self identityDataPassword];
 
-  if (v37)
+  if (identityDataPassword)
   {
-    v38 = [(NEVPNProtocol *)self identityDataPassword];
+    identityDataPassword2 = [(NEVPNProtocol *)self identityDataPassword];
 LABEL_36:
-    [v3 setObject:v38 forKeyedSubscript:@"IdentityDataPasswordKeyStr"];
+    [v3 setObject:identityDataPassword2 forKeyedSubscript:@"IdentityDataPasswordKeyStr"];
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  v57 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
+  identityDataPasswordKeychainItem = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
 
-  if (v57)
+  if (identityDataPasswordKeychainItem)
   {
-    v58 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
-    v38 = [v58 password];
+    identityDataPasswordKeychainItem2 = [(NEVPNProtocol *)self identityDataPasswordKeychainItem];
+    identityDataPassword2 = [identityDataPasswordKeychainItem2 password];
 
-    if (!v38)
+    if (!identityDataPassword2)
     {
       goto LABEL_37;
     }
@@ -601,22 +601,22 @@ LABEL_37:
   }
 
 LABEL_38:
-  v39 = [(NEVPNProtocolIPSec *)self localIdentifier];
+  localIdentifier = [(NEVPNProtocolIPSec *)self localIdentifier];
 
-  if (v39)
+  if (localIdentifier)
   {
-    v40 = [(NEVPNProtocolIPSec *)self localIdentifier];
-    [v3 setObject:v40 forKeyedSubscript:*MEMORY[0x1E6982418]];
+    localIdentifier2 = [(NEVPNProtocolIPSec *)self localIdentifier];
+    [v3 setObject:localIdentifier2 forKeyedSubscript:*MEMORY[0x1E6982418]];
 
     [v3 setObject:*MEMORY[0x1E6982878] forKeyedSubscript:*MEMORY[0x1E6982420]];
   }
 
-  v41 = [(NEVPNProtocolIPSec *)self remoteIdentifier];
+  remoteIdentifier = [(NEVPNProtocolIPSec *)self remoteIdentifier];
 
-  if (v41)
+  if (remoteIdentifier)
   {
-    v42 = [(NEVPNProtocolIPSec *)self remoteIdentifier];
-    [v3 setObject:v42 forKeyedSubscript:@"RemoteIdentifier"];
+    remoteIdentifier2 = [(NEVPNProtocolIPSec *)self remoteIdentifier];
+    [v3 setObject:remoteIdentifier2 forKeyedSubscript:@"RemoteIdentifier"];
   }
 
   if ([(NEVPNProtocolIPSec *)self useExtendedAuthentication])
@@ -630,26 +630,26 @@ LABEL_38:
   }
 
   [v3 setObject:v43 forKeyedSubscript:*MEMORY[0x1E6982440]];
-  v44 = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
-  v45 = isa_nsarray(v44);
+  legacyExchangeMode = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
+  v45 = isa_nsarray(legacyExchangeMode);
 
   if (v45)
   {
-    v46 = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
-    [v3 setObject:v46 forKeyedSubscript:@"ExchangeMode"];
+    legacyExchangeMode2 = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
+    [v3 setObject:legacyExchangeMode2 forKeyedSubscript:@"ExchangeMode"];
   }
 
-  v47 = [(NEVPNProtocolIPSec *)self legacyProposals];
+  legacyProposals = [(NEVPNProtocolIPSec *)self legacyProposals];
 
-  if (v47)
+  if (legacyProposals)
   {
-    v48 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v49 = [(NEVPNProtocolIPSec *)self legacyProposals];
-    v50 = [v49 countByEnumeratingWithState:&v59 objects:v63 count:16];
+    legacyProposals2 = [(NEVPNProtocolIPSec *)self legacyProposals];
+    v50 = [legacyProposals2 countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v50)
     {
       v51 = v50;
@@ -660,23 +660,23 @@ LABEL_38:
         {
           if (*v60 != v52)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(legacyProposals2);
           }
 
-          v54 = [*(*(&v59 + 1) + 8 * i) copyLegacyDictionary];
-          if (v54)
+          copyLegacyDictionary = [*(*(&v59 + 1) + 8 * i) copyLegacyDictionary];
+          if (copyLegacyDictionary)
           {
-            [v48 addObject:v54];
+            [array addObject:copyLegacyDictionary];
           }
         }
 
-        v51 = [v49 countByEnumeratingWithState:&v59 objects:v63 count:16];
+        v51 = [legacyProposals2 countByEnumeratingWithState:&v59 objects:v63 count:16];
       }
 
       while (v51);
     }
 
-    [v3 setObject:v48 forKeyedSubscript:@"Proposals"];
+    [v3 setObject:array forKeyedSubscript:@"Proposals"];
   }
 
   if ([(NEVPNProtocolIPSec *)self extendedAuthPasswordPrompt])
@@ -689,32 +689,32 @@ LABEL_38:
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v13.receiver = self;
   v13.super_class = NEVPNProtocolIPSec;
-  v5 = [(NEVPNProtocol *)&v13 checkValidityAndCollectErrors:v4];
+  v5 = [(NEVPNProtocol *)&v13 checkValidityAndCollectErrors:errorsCopy];
   if ([(NEVPNProtocolIPSec *)self authenticationMethod])
   {
     if ([(NEVPNProtocolIPSec *)self authenticationMethod]== NEVPNIKEAuthenticationMethodCertificate)
     {
-      v6 = [(NEVPNProtocol *)self identityReferenceInternal];
-      if (v6)
+      identityReferenceInternal = [(NEVPNProtocol *)self identityReferenceInternal];
+      if (identityReferenceInternal)
       {
 
         goto LABEL_13;
       }
 
-      v8 = [(NEVPNProtocol *)self identityDataInternal];
-      if (v8 || [(NEVPNProtocolIPSec *)self useExtendedAuthentication]&& [(NEVPNProtocol *)self type]== 5)
+      identityDataInternal = [(NEVPNProtocol *)self identityDataInternal];
+      if (identityDataInternal || [(NEVPNProtocolIPSec *)self useExtendedAuthentication]&& [(NEVPNProtocol *)self type]== 5)
       {
 
         goto LABEL_13;
       }
 
-      v10 = [(NEVPNProtocol *)self extensibleSSOProvider];
-      if (!v10 || (v11 = v10, v12 = [(NEVPNProtocol *)self type], v11, v12 != 5))
+      extensibleSSOProvider = [(NEVPNProtocol *)self extensibleSSOProvider];
+      if (!extensibleSSOProvider || (v11 = extensibleSSOProvider, v12 = [(NEVPNProtocol *)self type], v11, v12 != 5))
       {
         v7 = @"Missing identity";
         goto LABEL_7;
@@ -726,7 +726,7 @@ LABEL_38:
   {
     v7 = @"Unsupported authenticationMethod";
 LABEL_7:
-    [NEConfiguration addError:v7 toList:v4];
+    [NEConfiguration addError:v7 toList:errorsCopy];
     v5 = 0;
   }
 
@@ -735,115 +735,115 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = NEVPNProtocolIPSec;
-  v4 = [(NEVPNProtocol *)&v12 copyWithZone:a3];
+  v4 = [(NEVPNProtocol *)&v12 copyWithZone:zone];
   [v4 setAuthenticationMethod:{-[NEVPNProtocolIPSec authenticationMethod](self, "authenticationMethod")}];
-  v5 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-  [v4 setSharedSecretKeychainItem:v5];
+  sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  [v4 setSharedSecretKeychainItem:sharedSecretKeychainItem];
 
-  v6 = [(NEVPNProtocolIPSec *)self sharedSecretReference];
-  [v4 setSharedSecretReference:v6];
+  sharedSecretReference = [(NEVPNProtocolIPSec *)self sharedSecretReference];
+  [v4 setSharedSecretReference:sharedSecretReference];
 
-  v7 = [(NEVPNProtocolIPSec *)self localIdentifier];
-  [v4 setLocalIdentifier:v7];
+  localIdentifier = [(NEVPNProtocolIPSec *)self localIdentifier];
+  [v4 setLocalIdentifier:localIdentifier];
 
-  v8 = [(NEVPNProtocolIPSec *)self remoteIdentifier];
-  [v4 setRemoteIdentifier:v8];
+  remoteIdentifier = [(NEVPNProtocolIPSec *)self remoteIdentifier];
+  [v4 setRemoteIdentifier:remoteIdentifier];
 
   [v4 setUseExtendedAuthentication:{-[NEVPNProtocolIPSec useExtendedAuthentication](self, "useExtendedAuthentication")}];
-  v9 = [(NEVPNProtocolIPSec *)self legacyProposals];
-  [v4 setLegacyProposals:v9];
+  legacyProposals = [(NEVPNProtocolIPSec *)self legacyProposals];
+  [v4 setLegacyProposals:legacyProposals];
 
-  v10 = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
-  [v4 setLegacyExchangeMode:v10];
+  legacyExchangeMode = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
+  [v4 setLegacyExchangeMode:legacyExchangeMode];
 
   [v4 setExtendedAuthPasswordPrompt:{-[NEVPNProtocolIPSec extendedAuthPasswordPrompt](self, "extendedAuthPasswordPrompt")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = NEVPNProtocolIPSec;
-  v4 = a3;
-  [(NEVPNProtocol *)&v11 encodeWithCoder:v4];
-  [v4 encodeInt32:-[NEVPNProtocolIPSec authenticationMethod](self forKey:{"authenticationMethod", v11.receiver, v11.super_class), @"AuthenticationMethod"}];
-  v5 = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
-  [v4 encodeObject:v5 forKey:@"SharedSecret"];
+  coderCopy = coder;
+  [(NEVPNProtocol *)&v11 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:-[NEVPNProtocolIPSec authenticationMethod](self forKey:{"authenticationMethod", v11.receiver, v11.super_class), @"AuthenticationMethod"}];
+  sharedSecretKeychainItem = [(NEVPNProtocolIPSec *)self sharedSecretKeychainItem];
+  [coderCopy encodeObject:sharedSecretKeychainItem forKey:@"SharedSecret"];
 
-  v6 = [(NEVPNProtocolIPSec *)self sharedSecretReference];
-  [v4 encodeObject:v6 forKey:@"SharedSecretReference"];
+  sharedSecretReference = [(NEVPNProtocolIPSec *)self sharedSecretReference];
+  [coderCopy encodeObject:sharedSecretReference forKey:@"SharedSecretReference"];
 
-  v7 = [(NEVPNProtocolIPSec *)self localIdentifier];
-  [v4 encodeObject:v7 forKey:@"LocalIdentifier"];
+  localIdentifier = [(NEVPNProtocolIPSec *)self localIdentifier];
+  [coderCopy encodeObject:localIdentifier forKey:@"LocalIdentifier"];
 
-  v8 = [(NEVPNProtocolIPSec *)self remoteIdentifier];
-  [v4 encodeObject:v8 forKey:@"RemoteIdentifier"];
+  remoteIdentifier = [(NEVPNProtocolIPSec *)self remoteIdentifier];
+  [coderCopy encodeObject:remoteIdentifier forKey:@"RemoteIdentifier"];
 
-  [v4 encodeBool:-[NEVPNProtocolIPSec useExtendedAuthentication](self forKey:{"useExtendedAuthentication"), @"UseExtendedAuthentication"}];
-  v9 = [(NEVPNProtocolIPSec *)self legacyProposals];
-  [v4 encodeObject:v9 forKey:@"LegacyProposals"];
+  [coderCopy encodeBool:-[NEVPNProtocolIPSec useExtendedAuthentication](self forKey:{"useExtendedAuthentication"), @"UseExtendedAuthentication"}];
+  legacyProposals = [(NEVPNProtocolIPSec *)self legacyProposals];
+  [coderCopy encodeObject:legacyProposals forKey:@"LegacyProposals"];
 
-  v10 = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
-  [v4 encodeObject:v10 forKey:@"LegacyExchangeMode"];
+  legacyExchangeMode = [(NEVPNProtocolIPSec *)self legacyExchangeMode];
+  [coderCopy encodeObject:legacyExchangeMode forKey:@"LegacyExchangeMode"];
 
-  [v4 encodeBool:-[NEVPNProtocolIPSec extendedAuthPasswordPrompt](self forKey:{"extendedAuthPasswordPrompt"), @"ExtendedAuthPasswordPrompt"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIPSec extendedAuthPasswordPrompt](self forKey:{"extendedAuthPasswordPrompt"), @"ExtendedAuthPasswordPrompt"}];
 }
 
-- (NEVPNProtocolIPSec)initWithCoder:(id)a3
+- (NEVPNProtocolIPSec)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = NEVPNProtocolIPSec;
-  v5 = [(NEVPNProtocol *)&v25 initWithCoder:v4];
+  v5 = [(NEVPNProtocol *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_authenticationMethod = [v4 decodeInt32ForKey:@"AuthenticationMethod"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecret"];
+    v5->_authenticationMethod = [coderCopy decodeInt32ForKey:@"AuthenticationMethod"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecret"];
     sharedSecretKeychainItem = v5->_sharedSecretKeychainItem;
     v5->_sharedSecretKeychainItem = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecretReference"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecretReference"];
     sharedSecretReference = v5->_sharedSecretReference;
     v5->_sharedSecretReference = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LocalIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocalIdentifier"];
     localIdentifier = v5->_localIdentifier;
     v5->_localIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteIdentifier"];
     remoteIdentifier = v5->_remoteIdentifier;
     v5->_remoteIdentifier = v12;
 
-    v5->_useExtendedAuthentication = [v4 decodeBoolForKey:@"UseExtendedAuthentication"];
+    v5->_useExtendedAuthentication = [coderCopy decodeBoolForKey:@"UseExtendedAuthentication"];
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"LegacyProposals"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"LegacyProposals"];
     legacyProposals = v5->_legacyProposals;
     v5->_legacyProposals = v17;
 
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"LegacyExchangeMode"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"LegacyExchangeMode"];
     legacyExchangeMode = v5->_legacyExchangeMode;
     v5->_legacyExchangeMode = v22;
 
-    v5->_extendedAuthPasswordPrompt = [v4 decodeBoolForKey:@"ExtendedAuthPasswordPrompt"];
+    v5->_extendedAuthPasswordPrompt = [coderCopy decodeBoolForKey:@"ExtendedAuthPasswordPrompt"];
   }
 
   return v5;
 }
 
-- (NEVPNProtocolIPSec)initWithType:(int64_t)a3
+- (NEVPNProtocolIPSec)initWithType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = NEVPNProtocolIPSec;
-  v3 = [(NEVPNProtocol *)&v6 initWithType:a3];
+  v3 = [(NEVPNProtocol *)&v6 initWithType:type];
   v4 = v3;
   if (v3)
   {

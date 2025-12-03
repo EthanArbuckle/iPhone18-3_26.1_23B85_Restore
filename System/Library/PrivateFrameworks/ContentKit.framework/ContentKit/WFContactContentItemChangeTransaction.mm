@@ -1,70 +1,70 @@
 @interface WFContactContentItemChangeTransaction
-- (WFContactContentItemChangeTransaction)initWithContentItem:(id)a3;
-- (void)saveWithCompletionHandler:(id)a3 isNew:(BOOL)a4;
-- (void)updateEmailAddresses:(id)a3;
-- (void)updatePhoneNumbers:(id)a3;
-- (void)updateStreetAddresses:(id)a3;
-- (void)updateURLs:(id)a3;
+- (WFContactContentItemChangeTransaction)initWithContentItem:(id)item;
+- (void)saveWithCompletionHandler:(id)handler isNew:(BOOL)new;
+- (void)updateEmailAddresses:(id)addresses;
+- (void)updatePhoneNumbers:(id)numbers;
+- (void)updateStreetAddresses:(id)addresses;
+- (void)updateURLs:(id)ls;
 @end
 
 @implementation WFContactContentItemChangeTransaction
 
-- (void)updateURLs:(id)a3
+- (void)updateURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(WFContentItemChangeTransaction *)self mode];
-  v6 = [v5 isEqualToString:@"Append"];
+  lsCopy = ls;
+  mode = [(WFContentItemChangeTransaction *)self mode];
+  v6 = [mode isEqualToString:@"Append"];
 
   if (v6)
   {
-    v7 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    v8 = [v7 urlAddresses];
-    v9 = [v4 if_map:&__block_literal_global_223_14289];
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
-    v11 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v11 setUrlAddresses:v10];
+    mutableContact = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    urlAddresses = [mutableContact urlAddresses];
+    v9 = [lsCopy if_map:&__block_literal_global_223_14289];
+    v10 = [urlAddresses arrayByAddingObjectsFromArray:v9];
+    mutableContact2 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact2 setUrlAddresses:v10];
   }
 
   else
   {
-    v12 = [(WFContentItemChangeTransaction *)self mode];
-    v13 = [v12 isEqualToString:@"Remove"];
+    mode2 = [(WFContentItemChangeTransaction *)self mode];
+    v13 = [mode2 isEqualToString:@"Remove"];
 
     if (v13)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v4 valueForKey:@"absoluteString"];
+      v15 = [lsCopy valueForKey:@"absoluteString"];
       v16 = [v14 setWithArray:v15];
 
-      v17 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      v18 = [v17 urlAddresses];
+      mutableContact3 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      urlAddresses2 = [mutableContact3 urlAddresses];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __52__WFContactContentItemChangeTransaction_updateURLs___block_invoke;
       v26[3] = &unk_278347920;
       v27 = v16;
       v19 = v16;
-      v20 = [v18 if_objectsPassingTest:v26];
-      v21 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v21 setUrlAddresses:v20];
+      v20 = [urlAddresses2 if_objectsPassingTest:v26];
+      mutableContact4 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact4 setUrlAddresses:v20];
 
       goto LABEL_8;
     }
 
-    v22 = [(WFContentItemChangeTransaction *)self mode];
-    v23 = [v22 isEqualToString:@"RemoveAll"];
+    mode3 = [(WFContentItemChangeTransaction *)self mode];
+    v23 = [mode3 isEqualToString:@"RemoveAll"];
 
     if (v23)
     {
-      v24 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v24 setUrlAddresses:MEMORY[0x277CBEBF8]];
+      mutableContact5 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact5 setUrlAddresses:MEMORY[0x277CBEBF8]];
 
       goto LABEL_8;
     }
 
-    v7 = [v4 if_map:&__block_literal_global_223_14289];
-    v25 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v25 setUrlAddresses:v7];
+    mutableContact = [lsCopy if_map:&__block_literal_global_223_14289];
+    mutableContact6 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact6 setUrlAddresses:mutableContact];
   }
 
 LABEL_8:
@@ -79,62 +79,62 @@ uint64_t __52__WFContactContentItemChangeTransaction_updateURLs___block_invoke(u
   return v2 ^ 1;
 }
 
-- (void)updateStreetAddresses:(id)a3
+- (void)updateStreetAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(WFContentItemChangeTransaction *)self mode];
-  v6 = [v5 isEqualToString:@"Append"];
+  addressesCopy = addresses;
+  mode = [(WFContentItemChangeTransaction *)self mode];
+  v6 = [mode isEqualToString:@"Append"];
 
   if (v6)
   {
-    v7 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    v8 = [v7 postalAddresses];
-    v9 = [v4 if_map:&__block_literal_global_220];
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
-    v11 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v11 setPostalAddresses:v10];
+    mutableContact = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    postalAddresses = [mutableContact postalAddresses];
+    v9 = [addressesCopy if_map:&__block_literal_global_220];
+    v10 = [postalAddresses arrayByAddingObjectsFromArray:v9];
+    mutableContact2 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact2 setPostalAddresses:v10];
   }
 
   else
   {
-    v12 = [(WFContentItemChangeTransaction *)self mode];
-    v13 = [v12 isEqualToString:@"Remove"];
+    mode2 = [(WFContentItemChangeTransaction *)self mode];
+    v13 = [mode2 isEqualToString:@"Remove"];
 
     if (v13)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v4 valueForKey:@"postalAddress"];
+      v15 = [addressesCopy valueForKey:@"postalAddress"];
       v16 = [v14 setWithArray:v15];
 
-      v17 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      v18 = [v17 postalAddresses];
+      mutableContact3 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      postalAddresses2 = [mutableContact3 postalAddresses];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __63__WFContactContentItemChangeTransaction_updateStreetAddresses___block_invoke;
       v26[3] = &unk_278347920;
       v27 = v16;
       v19 = v16;
-      v20 = [v18 if_objectsPassingTest:v26];
-      v21 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v21 setPostalAddresses:v20];
+      v20 = [postalAddresses2 if_objectsPassingTest:v26];
+      mutableContact4 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact4 setPostalAddresses:v20];
 
       goto LABEL_8;
     }
 
-    v22 = [(WFContentItemChangeTransaction *)self mode];
-    v23 = [v22 isEqualToString:@"RemoveAll"];
+    mode3 = [(WFContentItemChangeTransaction *)self mode];
+    v23 = [mode3 isEqualToString:@"RemoveAll"];
 
     if (v23)
     {
-      v24 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v24 setPostalAddresses:MEMORY[0x277CBEBF8]];
+      mutableContact5 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact5 setPostalAddresses:MEMORY[0x277CBEBF8]];
 
       goto LABEL_8;
     }
 
-    v7 = [v4 if_map:&__block_literal_global_220];
-    v25 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v25 setPostalAddresses:v7];
+    mutableContact = [addressesCopy if_map:&__block_literal_global_220];
+    mutableContact6 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact6 setPostalAddresses:mutableContact];
   }
 
 LABEL_8:
@@ -149,62 +149,62 @@ uint64_t __63__WFContactContentItemChangeTransaction_updateStreetAddresses___blo
   return v2 ^ 1;
 }
 
-- (void)updateEmailAddresses:(id)a3
+- (void)updateEmailAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(WFContentItemChangeTransaction *)self mode];
-  v6 = [v5 isEqualToString:@"Append"];
+  addressesCopy = addresses;
+  mode = [(WFContentItemChangeTransaction *)self mode];
+  v6 = [mode isEqualToString:@"Append"];
 
   if (v6)
   {
-    v7 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    v8 = [v7 emailAddresses];
-    v9 = [v4 if_map:&__block_literal_global_217_14322];
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
-    v11 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v11 setEmailAddresses:v10];
+    mutableContact = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    emailAddresses = [mutableContact emailAddresses];
+    v9 = [addressesCopy if_map:&__block_literal_global_217_14322];
+    v10 = [emailAddresses arrayByAddingObjectsFromArray:v9];
+    mutableContact2 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact2 setEmailAddresses:v10];
   }
 
   else
   {
-    v12 = [(WFContentItemChangeTransaction *)self mode];
-    v13 = [v12 isEqualToString:@"Remove"];
+    mode2 = [(WFContentItemChangeTransaction *)self mode];
+    v13 = [mode2 isEqualToString:@"Remove"];
 
     if (v13)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v4 valueForKey:@"address"];
+      v15 = [addressesCopy valueForKey:@"address"];
       v16 = [v14 setWithArray:v15];
 
-      v17 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      v18 = [v17 emailAddresses];
+      mutableContact3 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      emailAddresses2 = [mutableContact3 emailAddresses];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __62__WFContactContentItemChangeTransaction_updateEmailAddresses___block_invoke;
       v26[3] = &unk_278347920;
       v27 = v16;
       v19 = v16;
-      v20 = [v18 if_objectsPassingTest:v26];
-      v21 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v21 setEmailAddresses:v20];
+      v20 = [emailAddresses2 if_objectsPassingTest:v26];
+      mutableContact4 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact4 setEmailAddresses:v20];
 
       goto LABEL_8;
     }
 
-    v22 = [(WFContentItemChangeTransaction *)self mode];
-    v23 = [v22 isEqualToString:@"RemoveAll"];
+    mode3 = [(WFContentItemChangeTransaction *)self mode];
+    v23 = [mode3 isEqualToString:@"RemoveAll"];
 
     if (v23)
     {
-      v24 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v24 setEmailAddresses:MEMORY[0x277CBEBF8]];
+      mutableContact5 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact5 setEmailAddresses:MEMORY[0x277CBEBF8]];
 
       goto LABEL_8;
     }
 
-    v7 = [v4 if_map:&__block_literal_global_217_14322];
-    v25 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v25 setEmailAddresses:v7];
+    mutableContact = [addressesCopy if_map:&__block_literal_global_217_14322];
+    mutableContact6 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact6 setEmailAddresses:mutableContact];
   }
 
 LABEL_8:
@@ -219,62 +219,62 @@ uint64_t __62__WFContactContentItemChangeTransaction_updateEmailAddresses___bloc
   return v2 ^ 1;
 }
 
-- (void)updatePhoneNumbers:(id)a3
+- (void)updatePhoneNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = [(WFContentItemChangeTransaction *)self mode];
-  v6 = [v5 isEqualToString:@"Append"];
+  numbersCopy = numbers;
+  mode = [(WFContentItemChangeTransaction *)self mode];
+  v6 = [mode isEqualToString:@"Append"];
 
   if (v6)
   {
-    v7 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    v8 = [v7 phoneNumbers];
-    v9 = [v4 if_map:&__block_literal_global_14328];
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
-    v11 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v11 setPhoneNumbers:v10];
+    mutableContact = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    phoneNumbers = [mutableContact phoneNumbers];
+    v9 = [numbersCopy if_map:&__block_literal_global_14328];
+    v10 = [phoneNumbers arrayByAddingObjectsFromArray:v9];
+    mutableContact2 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact2 setPhoneNumbers:v10];
   }
 
   else
   {
-    v12 = [(WFContentItemChangeTransaction *)self mode];
-    v13 = [v12 isEqualToString:@"Remove"];
+    mode2 = [(WFContentItemChangeTransaction *)self mode];
+    v13 = [mode2 isEqualToString:@"Remove"];
 
     if (v13)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v4 valueForKey:@"normalizedPhoneNumber"];
+      v15 = [numbersCopy valueForKey:@"normalizedPhoneNumber"];
       v16 = [v14 setWithArray:v15];
 
-      v17 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      v18 = [v17 phoneNumbers];
+      mutableContact3 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      phoneNumbers2 = [mutableContact3 phoneNumbers];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_invoke;
       v26[3] = &unk_278347920;
       v27 = v16;
       v19 = v16;
-      v20 = [v18 if_objectsPassingTest:v26];
-      v21 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v21 setPhoneNumbers:v20];
+      v20 = [phoneNumbers2 if_objectsPassingTest:v26];
+      mutableContact4 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact4 setPhoneNumbers:v20];
 
       goto LABEL_8;
     }
 
-    v22 = [(WFContentItemChangeTransaction *)self mode];
-    v23 = [v22 isEqualToString:@"RemoveAll"];
+    mode3 = [(WFContentItemChangeTransaction *)self mode];
+    v23 = [mode3 isEqualToString:@"RemoveAll"];
 
     if (v23)
     {
-      v24 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-      [v24 setPhoneNumbers:MEMORY[0x277CBEBF8]];
+      mutableContact5 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+      [mutableContact5 setPhoneNumbers:MEMORY[0x277CBEBF8]];
 
       goto LABEL_8;
     }
 
-    v7 = [v4 if_map:&__block_literal_global_14328];
-    v25 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    [v25 setPhoneNumbers:v7];
+    mutableContact = [numbersCopy if_map:&__block_literal_global_14328];
+    mutableContact6 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    [mutableContact6 setPhoneNumbers:mutableContact];
   }
 
 LABEL_8:
@@ -290,11 +290,11 @@ uint64_t __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_
   return v2 ^ 1;
 }
 
-- (void)saveWithCompletionHandler:(id)a3 isNew:(BOOL)a4
+- (void)saveWithCompletionHandler:(id)handler isNew:(BOOL)new
 {
-  v4 = a4;
+  newCopy = new;
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2050000000;
@@ -311,25 +311,25 @@ uint64_t __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_
     v7 = v47[3];
   }
 
-  v36 = v6;
+  v36 = handlerCopy;
   v8 = v7;
   _Block_object_dispose(&v46, 8);
   v9 = objc_alloc_init(v7);
   v38 = objc_alloc_init(getCNContactStoreClass_14340());
-  v10 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-  if (v4)
+  mutableContact = [(WFContactContentItemChangeTransaction *)self mutableContact];
+  if (newCopy)
   {
-    [v9 addContact:v10 toContainerWithIdentifier:0];
+    [v9 addContact:mutableContact toContainerWithIdentifier:0];
   }
 
   else
   {
-    [v9 updateContact:v10];
+    [v9 updateContact:mutableContact];
   }
 
-  v11 = [(WFContactContentItemChangeTransaction *)self groupChangeRequest];
+  groupChangeRequest = [(WFContactContentItemChangeTransaction *)self groupChangeRequest];
 
-  if (v11)
+  if (groupChangeRequest)
   {
     v12 = +[WFCNContactGroup allContactGroups];
     v43 = 0u;
@@ -351,26 +351,26 @@ uint64_t __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_
           }
 
           v16 = *(*(&v41 + 1) + 8 * v15);
-          v17 = [(WFContentItemChangeTransaction *)self contentItem];
-          v18 = [v17 contact];
-          v19 = [v16 containsContact:v18];
+          contentItem = [(WFContentItemChangeTransaction *)self contentItem];
+          contact = [contentItem contact];
+          v19 = [v16 containsContact:contact];
 
           if (v19)
           {
-            v20 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-            v21 = [v16 group];
-            [v9 removeMember:v20 fromGroup:v21];
+            mutableContact2 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+            group = [v16 group];
+            [v9 removeMember:mutableContact2 fromGroup:group];
           }
 
-          v22 = [(WFContactContentItemChangeTransaction *)self groupChangeRequest];
-          v23 = [v16 name];
-          v24 = [v22 containsObject:v23];
+          groupChangeRequest2 = [(WFContactContentItemChangeTransaction *)self groupChangeRequest];
+          name = [v16 name];
+          v24 = [groupChangeRequest2 containsObject:name];
 
           if (v24)
           {
-            v25 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-            v26 = [v16 group];
-            [v9 addMember:v25 toGroup:v26];
+            mutableContact3 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+            group2 = [v16 group];
+            [v9 addMember:mutableContact3 toGroup:group2];
           }
 
           ++v15;
@@ -390,10 +390,10 @@ uint64_t __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_
   if (v27)
   {
     v29 = +[WFCNContact requiredKeysToFetch];
-    v30 = [(WFContactContentItemChangeTransaction *)self mutableContact];
-    v31 = [v30 identifier];
+    mutableContact4 = [(WFContactContentItemChangeTransaction *)self mutableContact];
+    identifier = [mutableContact4 identifier];
     v39 = v28;
-    v32 = [v38 unifiedContactWithIdentifier:v31 keysToFetch:v29 error:&v39];
+    v32 = [v38 unifiedContactWithIdentifier:identifier keysToFetch:v29 error:&v39];
     v33 = v39;
 
     if (v32)
@@ -417,22 +417,22 @@ uint64_t __60__WFContactContentItemChangeTransaction_updatePhoneNumbers___block_
   }
 }
 
-- (WFContactContentItemChangeTransaction)initWithContentItem:(id)a3
+- (WFContactContentItemChangeTransaction)initWithContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = WFContactContentItemChangeTransaction;
-  v5 = [(WFContentItemChangeTransaction *)&v17 initWithContentItem:v4];
+  v5 = [(WFContentItemChangeTransaction *)&v17 initWithContentItem:itemCopy];
   if (v5)
   {
-    v6 = [v4 contact];
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    contact = [itemCopy contact];
+    if (contact && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = objc_alloc_init(getCNContactStoreClass_14340());
-      v8 = [v6 contactIdentifier];
+      contactIdentifier = [contact contactIdentifier];
       v9 = +[WFCNContact requiredKeysToFetch];
       v16 = 0;
-      v10 = [v7 unifiedContactWithIdentifier:v8 keysToFetch:v9 error:&v16];
+      v10 = [v7 unifiedContactWithIdentifier:contactIdentifier keysToFetch:v9 error:&v16];
       v11 = v16;
 
       if (v10)

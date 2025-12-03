@@ -10,8 +10,8 @@
   v19 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectForKeyedSubscript:v6];
-  v9 = [a1 objectForKeyedSubscript:v7];
+  v8 = [self objectForKeyedSubscript:v6];
+  v9 = [self objectForKeyedSubscript:v7];
   v10 = v9;
   if (v8 && v9)
   {
@@ -20,8 +20,8 @@
     [v10 doubleValue];
     if (v13 < v12)
     {
-      [a1 setObject:v10 forKeyedSubscript:v6];
-      [a1 setObject:v8 forKeyedSubscript:v7];
+      [self setObject:v10 forKeyedSubscript:v6];
+      [self setObject:v8 forKeyedSubscript:v7];
     }
   }
 
@@ -44,8 +44,8 @@
   v26 = *MEMORY[0x1E69E9840];
   v8 = a4;
   v9 = a5;
-  v10 = [a1 objectForKeyedSubscript:v8];
-  v11 = [a1 objectForKeyedSubscript:v9];
+  v10 = [self objectForKeyedSubscript:v8];
+  v11 = [self objectForKeyedSubscript:v9];
   v12 = v11;
   if (v10 && v11)
   {
@@ -55,10 +55,10 @@
     v16 = PLOrientationTransformImagePoint(a3, 1.0, 1.0, v14, v15);
     v18 = v17;
     v19 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
-    [a1 setObject:v19 forKeyedSubscript:v8];
+    [self setObject:v19 forKeyedSubscript:v8];
 
     v20 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
-    [a1 setObject:v20 forKeyedSubscript:v9];
+    [self setObject:v20 forKeyedSubscript:v9];
   }
 
   else

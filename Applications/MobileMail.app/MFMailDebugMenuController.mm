@@ -1,5 +1,5 @@
 @interface MFMailDebugMenuController
-- (MFMailDebugMenuController)initWithScene:(id)a3;
+- (MFMailDebugMenuController)initWithScene:(id)scene;
 - (MFMailDebugMenuPresenter)presenter;
 - (MailScene)scene;
 - (id)_navBarBackgroundImage;
@@ -17,36 +17,36 @@
 - (id)_setupSearchSection;
 - (id)_setupTestingSupportSection;
 - (id)_setupThreadingSection;
-- (id)_tableViewCellsForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)_tableViewCellsForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)userActivity;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_clearAllUnseenState;
 - (void)_clearRestorationState;
 - (void)_debugDone;
-- (void)_invokeTapToRadarWithDescription:(id)a3;
+- (void)_invokeTapToRadarWithDescription:(id)description;
 - (void)_recategorizeAllMail;
 - (void)_refreshMailCleanup;
 - (void)_resetDatabaseOnNextLaunch;
 - (void)_resetGroupingLogic;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MFMailDebugMenuController
 
-- (MFMailDebugMenuController)initWithScene:(id)a3
+- (MFMailDebugMenuController)initWithScene:(id)scene
 {
-  v25 = a3;
+  sceneCopy = scene;
   v30.receiver = self;
   v30.super_class = MFMailDebugMenuController;
   v4 = [(MFMailDebugMenuController *)&v30 initWithNibName:0 bundle:0];
   v5 = v4;
   if (v4)
   {
-    [(MFMailDebugMenuController *)v4 setScene:v25];
+    [(MFMailDebugMenuController *)v4 setScene:sceneCopy];
     v24 = [[NSMutableArray alloc] initWithObjects:{&stru_100662A88, @"Search 🔍", @"Experiments", @"Threading", @"Message Display", @"Blank Cells", @"Remote Content", @"S/MIME", @"Debug Information", @"Testing Support", @"Database Support", @"Greymatter", 0}];
     if (_os_feature_enabled_impl())
     {
@@ -87,80 +87,80 @@
           v14 = *(*(&v26 + 1) + 8 * i);
           if ([v14 isEqualToString:&stru_100662A88])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _noTitleSectionForButtons];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:&stru_100662A88];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _noTitleSectionForButtons];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:&stru_100662A88];
           }
 
           else if ([v14 isEqualToString:@"Search 🔍"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupSearchSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Search 🔍"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupSearchSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Search 🔍"];
           }
 
           else if ([v14 isEqualToString:@"Experiments"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupExperimentsSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Experiments"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupExperimentsSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Experiments"];
           }
 
           else if ([v14 isEqualToString:@"Threading"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupThreadingSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Threading"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupThreadingSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Threading"];
           }
 
           else if ([v14 isEqualToString:@"Message Display"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupMessageDisplaySection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Message Display"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupMessageDisplaySection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Message Display"];
           }
 
           else if ([v14 isEqualToString:@"Blank Cells"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupBlankCellsSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Blank Cells"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupBlankCellsSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Blank Cells"];
           }
 
           else if ([v14 isEqualToString:@"Remote Content"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupRemoteContentSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Remote Content"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupRemoteContentSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Remote Content"];
           }
 
           else if ([v14 isEqualToString:@"S/MIME"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupSMIMESection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"S/MIME"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupSMIMESection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"S/MIME"];
           }
 
           else if ([v14 isEqualToString:@"Debug Information"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupDebugInformationsSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Debug Information"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupDebugInformationsSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Debug Information"];
           }
 
           else if ([v14 isEqualToString:@"Testing Support"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupTestingSupportSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Testing Support"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupTestingSupportSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Testing Support"];
           }
 
           else if ([v14 isEqualToString:@"Greymatter"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupGreymatterSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Greymatter"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupGreymatterSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Greymatter"];
           }
 
           else if ([v14 isEqualToString:@"Black Pearl"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupBlackPearlSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Black Pearl"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupBlackPearlSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Black Pearl"];
           }
 
           else if ([v14 isEqualToString:@"iCloud Mail Cleanup"])
           {
-            v15 = [(MFMailDebugMenuController *)v5 _setupMailCleanupSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"iCloud Mail Cleanup"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupMailCleanupSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"iCloud Mail Cleanup"];
           }
 
           else
@@ -170,8 +170,8 @@
               continue;
             }
 
-            v15 = [(MFMailDebugMenuController *)v5 _setupDatabaseSection];
-            [(NSMutableDictionary *)v5->_cellsBySection setObject:v15 forKeyedSubscript:@"Database Support"];
+            _noTitleSectionForButtons = [(MFMailDebugMenuController *)v5 _setupDatabaseSection];
+            [(NSMutableDictionary *)v5->_cellsBySection setObject:_noTitleSectionForButtons forKeyedSubscript:@"Database Support"];
           }
         }
 
@@ -182,8 +182,8 @@
     }
 
     v16 = [UITableView alloc];
-    v17 = [(MFMailDebugMenuController *)v5 view];
-    [v17 bounds];
+    view = [(MFMailDebugMenuController *)v5 view];
+    [view bounds];
     v18 = [v16 initWithFrame:1 style:?];
     tableView = v5->_tableView;
     v5->_tableView = v18;
@@ -194,8 +194,8 @@
     [v20 setTableView:v5->_tableView];
     [v20 setTitle:@"Debug Menu"];
     v21 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v5 action:"_debugDone"];
-    v22 = [v20 navigationItem];
-    [v22 setRightBarButtonItem:v21];
+    navigationItem = [v20 navigationItem];
+    [navigationItem setRightBarButtonItem:v21];
 
     [(MFMailDebugMenuController *)v5 pushViewController:v20 animated:1];
     [(MFMailDebugMenuController *)v5 setDelegate:v5];
@@ -209,31 +209,31 @@
   v13.receiver = self;
   v13.super_class = MFMailDebugMenuController;
   [(MFMailDebugMenuController *)&v13 viewDidLoad];
-  v3 = [(MFMailDebugMenuController *)self navigationBar];
-  v4 = [v3 standardAppearance];
-  [v4 configureWithOpaqueBackground];
+  navigationBar = [(MFMailDebugMenuController *)self navigationBar];
+  standardAppearance = [navigationBar standardAppearance];
+  [standardAppearance configureWithOpaqueBackground];
 
-  v5 = [(MFMailDebugMenuController *)self _navBarBackgroundImage];
-  v6 = [(MFMailDebugMenuController *)self navigationBar];
-  v7 = [v6 standardAppearance];
-  [v7 setBackgroundImage:v5];
+  _navBarBackgroundImage = [(MFMailDebugMenuController *)self _navBarBackgroundImage];
+  navigationBar2 = [(MFMailDebugMenuController *)self navigationBar];
+  standardAppearance2 = [navigationBar2 standardAppearance];
+  [standardAppearance2 setBackgroundImage:_navBarBackgroundImage];
 
-  v8 = [(MFMailDebugMenuController *)self navigationBar];
-  v9 = [v8 standardAppearance];
-  [v9 setBackgroundImageContentMode:2];
+  navigationBar3 = [(MFMailDebugMenuController *)self navigationBar];
+  standardAppearance3 = [navigationBar3 standardAppearance];
+  [standardAppearance3 setBackgroundImageContentMode:2];
 
-  v10 = [(MFMailDebugMenuController *)self navigationBar];
-  v11 = [v10 standardAppearance];
-  v12 = [(MFMailDebugMenuController *)self navigationBar];
-  [v12 setScrollEdgeAppearance:v11];
+  navigationBar4 = [(MFMailDebugMenuController *)self navigationBar];
+  standardAppearance4 = [navigationBar4 standardAppearance];
+  navigationBar5 = [(MFMailDebugMenuController *)self navigationBar];
+  [navigationBar5 setScrollEdgeAppearance:standardAppearance4];
 }
 
 - (void)_debugDone
 {
-  v3 = [(MFMailDebugMenuController *)self presenter];
-  if (v3)
+  presenter = [(MFMailDebugMenuController *)self presenter];
+  if (presenter)
   {
-    [v3 debugMenuWantsDismissal:self];
+    [presenter debugMenuWantsDismissal:self];
   }
 
   else
@@ -242,27 +242,27 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(MFMailDebugMenuController *)self sectionNames];
-  v4 = [v3 count];
+  sectionNames = [(MFMailDebugMenuController *)self sectionNames];
+  v4 = [sectionNames count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MFMailDebugMenuController *)self _tableViewCellsForSection:a4];
+  v4 = [(MFMailDebugMenuController *)self _tableViewCellsForSection:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[MFMailDebugMenuController _tableViewCellsForSection:](self, "_tableViewCellsForSection:", [v5 section]);
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  v6 = -[MFMailDebugMenuController _tableViewCellsForSection:](self, "_tableViewCellsForSection:", [pathCopy section]);
+  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -272,35 +272,35 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(MFMailDebugMenuController *)self sectionNames];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sectionNames = [(MFMailDebugMenuController *)self sectionNames];
+  v6 = [sectionNames objectAtIndexedSubscript:section];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 cellForRowAtIndexPath:v5];
+  viewCopy = view;
+  pathCopy = path;
+  v6 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v6 invokeAction];
   }
 
-  [v7 deselectRowAtIndexPath:v5 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)_tableViewCellsForSection:(int64_t)a3
+- (id)_tableViewCellsForSection:(int64_t)section
 {
-  v5 = [(MFMailDebugMenuController *)self sectionNames];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  sectionNames = [(MFMailDebugMenuController *)self sectionNames];
+  v6 = [sectionNames objectAtIndexedSubscript:section];
 
-  v7 = [(MFMailDebugMenuController *)self cellsBySection];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  cellsBySection = [(MFMailDebugMenuController *)self cellsBySection];
+  v8 = [cellsBySection objectForKeyedSubscript:v6];
 
   return v8;
 }
@@ -456,14 +456,14 @@
 - (id)_noTitleSectionForButtons
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKey:@"CFBundleVersion"];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [infoDictionary objectForKey:@"CFBundleVersion"];
 
   objc_initWeak(&location, self);
   v6 = v5;
   v7 = objc_alloc_init(UITableViewCell);
-  v8 = [v7 textLabel];
-  [v8 setText:@"Mail Version"];
+  textLabel = [v7 textLabel];
+  [textLabel setText:@"Mail Version"];
 
   v9 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v9 setText:v6];
@@ -528,16 +528,16 @@
 
 - (void)_clearRestorationState
 {
-  v3 = [(MFMailDebugMenuController *)self tableView];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  tableView = [(MFMailDebugMenuController *)self tableView];
+  window = [tableView window];
+  windowScene = [window windowScene];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001E27D0;
   v6[3] = &unk_10064D028;
   v6[4] = self;
-  [MailRestorationStateClearer clearAllRestorationStates:v5 errorHandler:v6];
+  [MailRestorationStateClearer clearAllRestorationStates:windowScene errorHandler:v6];
 }
 
 - (id)_setupGreymatterSection
@@ -599,27 +599,27 @@
 - (void)_clearAllUnseenState
 {
   v9 = +[UIApplication sharedApplication];
-  v3 = [v9 mailboxCategoryCloudStorage];
-  [v3 clearAll];
+  mailboxCategoryCloudStorage = [v9 mailboxCategoryCloudStorage];
+  [mailboxCategoryCloudStorage clearAll];
 
-  v10 = [(MFMailDebugMenuController *)self scene];
-  v4 = [v10 splitViewController];
-  v5 = [v4 messageListViewController];
-  v6 = [v5 bucketsViewController];
+  scene = [(MFMailDebugMenuController *)self scene];
+  splitViewController = [scene splitViewController];
+  messageListViewController = [splitViewController messageListViewController];
+  bucketsViewController = [messageListViewController bucketsViewController];
 
-  [v6 clearSessionState];
-  v7 = [v10 daemonInterface];
-  v8 = [v7 messageRepository];
-  [v8 removeAllEntriesFromBusinessCloudStorage];
+  [bucketsViewController clearSessionState];
+  daemonInterface = [scene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository removeAllEntriesFromBusinessCloudStorage];
 }
 
 - (void)_recategorizeAllMail
 {
-  v5 = [(MFMailDebugMenuController *)self scene];
-  v2 = [v5 daemonInterface];
-  v3 = [v2 messageRepository];
+  scene = [(MFMailDebugMenuController *)self scene];
+  daemonInterface = [scene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
   v4 = +[NSDate distantPast];
-  [v3 recategorizeMessageSinceDate:v4];
+  [messageRepository recategorizeMessageSinceDate:v4];
 }
 
 - (void)_resetGroupingLogic
@@ -651,8 +651,8 @@
 - (void)_refreshMailCleanup
 {
   v3 = +[UIApplication sharedApplication];
-  v2 = [v3 getiCloudMailCleanupService];
-  [v2 forceSync];
+  getiCloudMailCleanupService = [v3 getiCloudMailCleanupService];
+  [getiCloudMailCleanupService forceSync];
 }
 
 - (id)_setupDatabaseSection
@@ -674,18 +674,18 @@
   [(MFMailDebugMenuController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_invokeTapToRadarWithDescription:(id)a3
+- (void)_invokeTapToRadarWithDescription:(id)description
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001E37D4;
   v8[3] = &unk_100654878;
-  v4 = a3;
-  v9 = v4;
+  descriptionCopy = description;
+  v9 = descriptionCopy;
   v5 = objc_retainBlock(v8);
   v6 = [MSRadarInteraction interactionWithTitle:@"Mail Issue?" message:@"See something wrong with Mail? Please provide as much information to help us track it down for you." builder:v5];
-  v7 = [v6 interactionViewController];
-  [(MFMailDebugMenuController *)self presentViewController:v7 animated:1 completion:0];
+  interactionViewController = [v6 interactionViewController];
+  [(MFMailDebugMenuController *)self presentViewController:interactionViewController animated:1 completion:0];
 }
 
 - (id)userActivity

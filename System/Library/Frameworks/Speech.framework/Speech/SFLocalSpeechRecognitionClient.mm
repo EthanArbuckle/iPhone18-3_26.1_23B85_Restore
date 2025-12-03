@@ -1,62 +1,62 @@
 @interface SFLocalSpeechRecognitionClient
-+ (void)cleanupCacheWithCompletion:(id)a3;
++ (void)cleanupCacheWithCompletion:(id)completion;
 + (void)initialize;
-+ (void)logCoreAnalyticsEvent:(id)a3 withAnalytics:(id)a4;
++ (void)logCoreAnalyticsEvent:(id)event withAnalytics:(id)analytics;
 - (SFLocalSpeechRecognitionClient)init;
-- (SFLocalSpeechRecognitionClient)initWithDelegate:(id)a3;
+- (SFLocalSpeechRecognitionClient)initWithDelegate:(id)delegate;
 - (SFLocalSpeechRecognitionDelegate)delegate;
-- (id)_asynchronousServiceProxyWithErrorHandler:(uint64_t)a1;
-- (void)_serviceProxyWithErrorHandler:(void *)a1;
-- (void)addAudioPacket:(id)a3;
-- (void)addProns:(id)a3 forWord:(id)a4 completion:(id)a5;
-- (void)addSentenceToNgramCounts:(id)a3;
-- (void)addSentenceToNgramCounts:(id)a3 completion:(id)a4;
-- (void)appLmNeedsRebuild:(id)a3 language:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6;
+- (id)_asynchronousServiceProxyWithErrorHandler:(uint64_t)handler;
+- (void)_serviceProxyWithErrorHandler:(void *)handler;
+- (void)addAudioPacket:(id)packet;
+- (void)addProns:(id)prons forWord:(id)word completion:(id)completion;
+- (void)addSentenceToNgramCounts:(id)counts;
+- (void)addSentenceToNgramCounts:(id)counts completion:(id)completion;
+- (void)appLmNeedsRebuild:(id)rebuild language:(id)language sandboxExtensions:(id)extensions completion:(id)completion;
 - (void)cancelSpeech;
-- (void)configParametersForVoicemailWithLanguage:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 writeToDirectory:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6;
-- (void)createPhraseCountsArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8;
+- (void)configParametersForVoicemailWithLanguage:(id)language clientID:(id)d completion:(id)completion;
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
+- (void)createPhraseCountsArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
 - (void)dealloc;
-- (void)deserializeNgramCountsData:(id)a3 completion:(id)a4;
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 detailedProgress:(id)a6 completionHandler:(id)a7;
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (void)fetchAssetsForLanguage:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)generateNgramCountsSerializeDataWithCompletion:(id)a3;
-- (void)initializeLmWithAssetPath:(id)a3 completion:(id)a4;
-- (void)initializeLmWithLocale:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)initializeWithSandboxExtensions:(id)a3;
-- (void)installationStateForAssetConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)installedLanguagesForAssetType:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5;
+- (void)deserializeNgramCountsData:(id)data completion:(id)completion;
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration detailedProgress:(id)progress completionHandler:(id)handler;
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration progress:(id)progress completionHandler:(id)handler;
+- (void)fetchAssetsForLanguage:(id)language clientID:(id)d completion:(id)completion;
+- (void)generateNgramCountsSerializeDataWithCompletion:(id)completion;
+- (void)initializeLmWithAssetPath:(id)path completion:(id)completion;
+- (void)initializeLmWithLocale:(id)locale clientID:(id)d completion:(id)completion;
+- (void)initializeWithSandboxExtensions:(id)extensions;
+- (void)installationStateForAssetConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)installedLanguagesForAssetType:(unint64_t)type synchronous:(BOOL)synchronous completion:(id)completion;
 - (void)invalidate;
-- (void)lmeThresholdWithCompletion:(id)a3;
-- (void)localSpeechRecognitionDidDownloadAssetsWithProgress:(unint64_t)a3 isStalled:(BOOL)a4;
-- (void)localSpeechRecognitionDidFail:(id)a3;
-- (void)localSpeechRecognitionDidFinishDownloadingAssets:(id)a3 error:(id)a4;
-- (void)localSpeechRecognitionDidFinishRecognition:(id)a3;
-- (void)localSpeechRecognitionDidProcessAudioDuration:(double)a3;
-- (void)localSpeechRecognitionDidRecognizePartialResult:(id)a3 rawPartialResult:(id)a4;
+- (void)lmeThresholdWithCompletion:(id)completion;
+- (void)localSpeechRecognitionDidDownloadAssetsWithProgress:(unint64_t)progress isStalled:(BOOL)stalled;
+- (void)localSpeechRecognitionDidFail:(id)fail;
+- (void)localSpeechRecognitionDidFinishDownloadingAssets:(id)assets error:(id)error;
+- (void)localSpeechRecognitionDidFinishRecognition:(id)recognition;
+- (void)localSpeechRecognitionDidProcessAudioDuration:(double)duration;
+- (void)localSpeechRecognitionDidRecognizePartialResult:(id)result rawPartialResult:(id)partialResult;
 - (void)localSpeechRecognitionDidSucceed;
-- (void)metricsWithCompletion:(id)a3;
-- (void)oovWordsAndFrequenciesWithCompletion:(id)a3;
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 asyncCompletion:(id)a5;
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)preloadRecognizerForLanguage:(id)a3 task:(id)a4 clientID:(id)a5 recognitionOverrides:(id)a6 modelOverrideURL:(id)a7 completion:(id)a8;
-- (void)setPurgeabilityForAssetWithConfig:(id)a3 purgeable:(BOOL)a4 clientID:(id)a5 completion:(id)a6;
-- (void)startRecordedAudioDictationWithParameters:(id)a3;
+- (void)metricsWithCompletion:(id)completion;
+- (void)oovWordsAndFrequenciesWithCompletion:(id)completion;
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d asyncCompletion:(id)completion;
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)preloadRecognizerForLanguage:(id)language task:(id)task clientID:(id)d recognitionOverrides:(id)overrides modelOverrideURL:(id)l completion:(id)completion;
+- (void)setPurgeabilityForAssetWithConfig:(id)config purgeable:(BOOL)purgeable clientID:(id)d completion:(id)completion;
+- (void)startRecordedAudioDictationWithParameters:(id)parameters;
 - (void)stopSpeech;
-- (void)subscriptionsForClientId:(id)a3 completion:(id)a4;
-- (void)supportedLanguagesForAssetType:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5;
-- (void)synchronousComputeEuclidEmbeddingsForSources:(id)a3 completion:(id)a4;
-- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)a3 clientID:(id)a4 inputFormat:(int64_t)a5 loadingOption:(int64_t)a6 completion:(id)a7;
-- (void)synchronousEuclidConfigPathForLanguageStr:(id)a3 completion:(id)a4;
-- (void)synchronousEuclidNearestNeighborsForSource:(id)a3 numberOfNeighbors:(id)a4 completion:(id)a5;
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8;
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtension:(id)a7 completion:(id)a8;
-- (void)trainFromPlainTextAndWriteToDirectory:(id)a3 sandboxExtension:(id)a4 completion:(id)a5;
-- (void)unsubscribeFromAssetWithConfig:(id)a3 clientID:(id)a4 asyncCompletion:(id)a5;
-- (void)unsubscribeFromAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)versionOfAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)wakeUpWithCompletion:(id)a3;
+- (void)subscriptionsForClientId:(id)id completion:(id)completion;
+- (void)supportedLanguagesForAssetType:(unint64_t)type synchronous:(BOOL)synchronous completion:(id)completion;
+- (void)synchronousComputeEuclidEmbeddingsForSources:(id)sources completion:(id)completion;
+- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)str clientID:(id)d inputFormat:(int64_t)format loadingOption:(int64_t)option completion:(id)completion;
+- (void)synchronousEuclidConfigPathForLanguageStr:(id)str completion:(id)completion;
+- (void)synchronousEuclidNearestNeighborsForSource:(id)source numberOfNeighbors:(id)neighbors completion:(id)completion;
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion;
+- (void)trainFromPlainTextAndWriteToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion;
+- (void)unsubscribeFromAssetWithConfig:(id)config clientID:(id)d asyncCompletion:(id)completion;
+- (void)unsubscribeFromAssetWithConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)versionOfAssetWithConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)wakeUpWithCompletion:(id)completion;
 @end
 
 @implementation SFLocalSpeechRecognitionClient
@@ -114,7 +114,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.speech.localspeechrecognition", "SFLocalSpeechRecognitionClient");
 
@@ -220,20 +220,20 @@ void __38__SFLocalSpeechRecognitionClient_init__block_invoke_2(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)localSpeechRecognitionDidFinishDownloadingAssets:(id)a3 error:(id)a4
+- (void)localSpeechRecognitionDidFinishDownloadingAssets:(id)assets error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidFinishDownloadingAssets_error___block_invoke;
   block[3] = &unk_1E797C460;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetsCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = assetsCopy;
   dispatch_async(queue, block);
 }
 
@@ -261,7 +261,7 @@ void __89__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidFinishDownloa
   }
 }
 
-- (void)localSpeechRecognitionDidDownloadAssetsWithProgress:(unint64_t)a3 isStalled:(BOOL)a4
+- (void)localSpeechRecognitionDidDownloadAssetsWithProgress:(unint64_t)progress isStalled:(BOOL)stalled
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -269,8 +269,8 @@ void __89__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidFinishDownloa
   block[2] = __96__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidDownloadAssetsWithProgress_isStalled___block_invoke;
   block[3] = &unk_1E797C300;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = progress;
+  stalledCopy = stalled;
   dispatch_async(queue, block);
 }
 
@@ -299,32 +299,32 @@ void __96__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidDownloadAsset
   dispatch_async(queue, block);
 }
 
-- (void)localSpeechRecognitionDidRecognizePartialResult:(id)a3 rawPartialResult:(id)a4
+- (void)localSpeechRecognitionDidRecognizePartialResult:(id)result rawPartialResult:(id)partialResult
 {
-  v6 = a4;
-  v7 = a3;
+  partialResultCopy = partialResult;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognitionClient:self didRecognizePartialResult:v7 rawPartialResult:v6];
+  [WeakRetained localSpeechRecognitionClient:self didRecognizePartialResult:resultCopy rawPartialResult:partialResultCopy];
 }
 
-- (void)localSpeechRecognitionDidProcessAudioDuration:(double)a3
+- (void)localSpeechRecognitionDidProcessAudioDuration:(double)duration
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognitionClient:self didProcessAudioDuration:a3];
+  [WeakRetained localSpeechRecognitionClient:self didProcessAudioDuration:duration];
 }
 
-- (void)localSpeechRecognitionDidFinishRecognition:(id)a3
+- (void)localSpeechRecognitionDidFinishRecognition:(id)recognition
 {
-  v4 = a3;
+  recognitionCopy = recognition;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognitionClient:self didFinishRecognition:v4];
+  [WeakRetained localSpeechRecognitionClient:self didFinishRecognition:recognitionCopy];
 }
 
-- (void)localSpeechRecognitionDidFail:(id)a3
+- (void)localSpeechRecognitionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognitionClient:self speechRecognitionDidFail:v4];
+  [WeakRetained localSpeechRecognitionClient:self speechRecognitionDidFail:failCopy];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -335,18 +335,18 @@ void __96__SFLocalSpeechRecognitionClient_localSpeechRecognitionDidDownloadAsset
   dispatch_async(queue, block);
 }
 
-- (void)synchronousEuclidConfigPathForLanguageStr:(id)a3 completion:(id)a4
+- (void)synchronousEuclidConfigPathForLanguageStr:(id)str completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__SFLocalSpeechRecognitionClient_synchronousEuclidConfigPathForLanguageStr_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  strCopy = str;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 synchronousEuclidConfigPathForLanguageStr:v8 completion:v7];
+  [v9 synchronousEuclidConfigPathForLanguageStr:strCopy completion:v7];
 }
 
 void __87__SFLocalSpeechRecognitionClient_synchronousEuclidConfigPathForLanguageStr_completion___block_invoke(uint64_t a1, void *a2)
@@ -372,10 +372,10 @@ void __87__SFLocalSpeechRecognitionClient_synchronousEuclidConfigPathForLanguage
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_serviceProxyWithErrorHandler:(void *)a1
+- (void)_serviceProxyWithErrorHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
     v14 = 0;
     v15 = &v14;
@@ -389,25 +389,25 @@ void __87__SFLocalSpeechRecognitionClient_synchronousEuclidConfigPathForLanguage
     v11 = __Block_byref_object_copy__1723;
     v12 = __Block_byref_object_dispose__1724;
     v13 = 0;
-    v4 = a1[1];
+    v4 = handler[1];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__SFLocalSpeechRecognitionClient__serviceProxyWithErrorHandler___block_invoke;
     block[3] = &unk_1E797C178;
-    block[4] = a1;
+    block[4] = handler;
     block[5] = &v14;
     block[6] = &v8;
     dispatch_sync(v4, block);
     v5 = v15[5];
     if (v5)
     {
-      a1 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v3];
+      handler = [v5 synchronousRemoteObjectProxyWithErrorHandler:v3];
     }
 
     else
     {
       v3[2](v3, v9[5]);
-      a1 = 0;
+      handler = 0;
     }
 
     _Block_object_dispose(&v8, 8);
@@ -415,7 +415,7 @@ void __87__SFLocalSpeechRecognitionClient_synchronousEuclidConfigPathForLanguage
     _Block_object_dispose(&v14, 8);
   }
 
-  return a1;
+  return handler;
 }
 
 void __64__SFLocalSpeechRecognitionClient__serviceProxyWithErrorHandler___block_invoke(void *a1)
@@ -427,19 +427,19 @@ void __64__SFLocalSpeechRecognitionClient__serviceProxyWithErrorHandler___block_
   objc_storeStrong(v3, v2);
 }
 
-- (void)synchronousEuclidNearestNeighborsForSource:(id)a3 numberOfNeighbors:(id)a4 completion:(id)a5
+- (void)synchronousEuclidNearestNeighborsForSource:(id)source numberOfNeighbors:(id)neighbors completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__SFLocalSpeechRecognitionClient_synchronousEuclidNearestNeighborsForSource_numberOfNeighbors_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  neighborsCopy = neighbors;
+  sourceCopy = source;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 synchronousEuclidNearestNeighborsForSource:v11 numberOfNeighbors:v10 completion:v9];
+  [v12 synchronousEuclidNearestNeighborsForSource:sourceCopy numberOfNeighbors:neighborsCopy completion:v9];
 }
 
 void __106__SFLocalSpeechRecognitionClient_synchronousEuclidNearestNeighborsForSource_numberOfNeighbors_completion___block_invoke(uint64_t a1, void *a2)
@@ -465,18 +465,18 @@ void __106__SFLocalSpeechRecognitionClient_synchronousEuclidNearestNeighborsForS
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synchronousComputeEuclidEmbeddingsForSources:(id)a3 completion:(id)a4
+- (void)synchronousComputeEuclidEmbeddingsForSources:(id)sources completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__SFLocalSpeechRecognitionClient_synchronousComputeEuclidEmbeddingsForSources_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  sourcesCopy = sources;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 synchronousComputeEuclidEmbeddingsForSources:v8 completion:v7];
+  [v9 synchronousComputeEuclidEmbeddingsForSources:sourcesCopy completion:v7];
 }
 
 void __90__SFLocalSpeechRecognitionClient_synchronousComputeEuclidEmbeddingsForSources_completion___block_invoke(uint64_t a1, void *a2)
@@ -502,19 +502,19 @@ void __90__SFLocalSpeechRecognitionClient_synchronousComputeEuclidEmbeddingsForS
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)a3 clientID:(id)a4 inputFormat:(int64_t)a5 loadingOption:(int64_t)a6 completion:(id)a7
+- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)str clientID:(id)d inputFormat:(int64_t)format loadingOption:(int64_t)option completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __126__SFLocalSpeechRecognitionClient_synchronousCreateEuclidInstanceForLanguageStr_clientID_inputFormat_loadingOption_completion___block_invoke;
   v17[3] = &unk_1E797C1C8;
-  v18 = v12;
-  v13 = v12;
-  v14 = a4;
-  v15 = a3;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  dCopy = d;
+  strCopy = str;
   v16 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v17];
-  [v16 synchronousCreateEuclidInstanceForLanguageStr:v15 clientID:v14 inputFormat:a5 loadingOption:a6 completion:v13];
+  [v16 synchronousCreateEuclidInstanceForLanguageStr:strCopy clientID:dCopy inputFormat:format loadingOption:option completion:v13];
 }
 
 void __126__SFLocalSpeechRecognitionClient_synchronousCreateEuclidInstanceForLanguageStr_clientID_inputFormat_loadingOption_completion___block_invoke(uint64_t a1, void *a2)
@@ -540,20 +540,20 @@ void __126__SFLocalSpeechRecognitionClient_synchronousCreateEuclidInstanceForLan
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)appLmNeedsRebuild:(id)a3 language:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6
+- (void)appLmNeedsRebuild:(id)rebuild language:(id)language sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__SFLocalSpeechRecognitionClient_appLmNeedsRebuild_language_sandboxExtensions_completion___block_invoke;
   v16[3] = &unk_1E797C1C8;
-  v17 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  extensionsCopy = extensions;
+  languageCopy = language;
+  rebuildCopy = rebuild;
   v15 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v16];
-  [v15 appLmNeedsRebuild:v14 language:v13 sandboxExtensions:v12 completion:v11];
+  [v15 appLmNeedsRebuild:rebuildCopy language:languageCopy sandboxExtensions:extensionsCopy completion:v11];
 }
 
 void __90__SFLocalSpeechRecognitionClient_appLmNeedsRebuild_language_sandboxExtensions_completion___block_invoke(uint64_t a1, void *a2)
@@ -579,22 +579,22 @@ void __90__SFLocalSpeechRecognitionClient_appLmNeedsRebuild_language_sandboxExte
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __130__SFLocalSpeechRecognitionClient_trainAppLmFromNgramCountsArtifact_forApp_language_writeToDirectory_sandboxExtensions_completion___block_invoke;
   v22[3] = &unk_1E797C1C8;
-  v23 = v14;
-  v15 = v14;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  extensionsCopy = extensions;
+  directoryCopy = directory;
+  languageCopy = language;
+  appCopy = app;
+  artifactCopy = artifact;
   v21 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v22];
-  [v21 trainAppLmFromNgramCountsArtifact:v20 forApp:v19 language:v18 writeToDirectory:v17 sandboxExtensions:v16 completion:v15];
+  [v21 trainAppLmFromNgramCountsArtifact:artifactCopy forApp:appCopy language:languageCopy writeToDirectory:directoryCopy sandboxExtensions:extensionsCopy completion:v15];
 }
 
 void __130__SFLocalSpeechRecognitionClient_trainAppLmFromNgramCountsArtifact_forApp_language_writeToDirectory_sandboxExtensions_completion___block_invoke(uint64_t a1, void *a2)
@@ -620,20 +620,20 @@ void __130__SFLocalSpeechRecognitionClient_trainAppLmFromNgramCountsArtifact_for
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 writeToDirectory:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __129__SFLocalSpeechRecognitionClient_createNgramCountsArtifactFromPhraseCountArtifact_writeToDirectory_sandboxExtensions_completion___block_invoke;
   v16[3] = &unk_1E797C1C8;
-  v17 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  extensionsCopy = extensions;
+  directoryCopy = directory;
+  artifactCopy = artifact;
   v15 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v16];
-  [v15 createNgramCountsArtifactFromPhraseCountArtifact:v14 writeToDirectory:v13 sandboxExtensions:v12 completion:v11];
+  [v15 createNgramCountsArtifactFromPhraseCountArtifact:artifactCopy writeToDirectory:directoryCopy sandboxExtensions:extensionsCopy completion:v11];
 }
 
 void __129__SFLocalSpeechRecognitionClient_createNgramCountsArtifactFromPhraseCountArtifact_writeToDirectory_sandboxExtensions_completion___block_invoke(uint64_t a1, void *a2)
@@ -659,22 +659,22 @@ void __129__SFLocalSpeechRecognitionClient_createNgramCountsArtifactFromPhraseCo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createPhraseCountsArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8
+- (void)createPhraseCountsArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __166__SFLocalSpeechRecognitionClient_createPhraseCountsArtifactWithIdentifier_rawPhraseCountsPath_customPronunciationsPath_writeToDirectory_sandboxExtensions_completion___block_invoke;
   v22[3] = &unk_1E797C1C8;
-  v23 = v14;
-  v15 = v14;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  extensionsCopy = extensions;
+  directoryCopy = directory;
+  pronunciationsPathCopy = pronunciationsPath;
+  pathCopy = path;
+  identifierCopy = identifier;
   v21 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v22];
-  [v21 createPhraseCountsArtifactWithIdentifier:v20 rawPhraseCountsPath:v19 customPronunciationsPath:v18 writeToDirectory:v17 sandboxExtensions:v16 completion:v15];
+  [v21 createPhraseCountsArtifactWithIdentifier:identifierCopy rawPhraseCountsPath:pathCopy customPronunciationsPath:pronunciationsPathCopy writeToDirectory:directoryCopy sandboxExtensions:extensionsCopy completion:v15];
 }
 
 void __166__SFLocalSpeechRecognitionClient_createPhraseCountsArtifactWithIdentifier_rawPhraseCountsPath_customPronunciationsPath_writeToDirectory_sandboxExtensions_completion___block_invoke(uint64_t a1, void *a2)
@@ -700,22 +700,22 @@ void __166__SFLocalSpeechRecognitionClient_createPhraseCountsArtifactWithIdentif
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtension:(id)a7 completion:(id)a8
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __139__SFLocalSpeechRecognitionClient_trainAppLmFromNgramsSerializedData_customPronsData_language_writeToDirectory_sandboxExtension_completion___block_invoke;
   v22[3] = &unk_1E797C1C8;
-  v23 = v14;
-  v15 = v14;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  extensionCopy = extension;
+  directoryCopy = directory;
+  languageCopy = language;
+  pronsDataCopy = pronsData;
+  dataCopy = data;
   v21 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v22];
-  [v21 trainAppLmFromNgramsSerializedData:v20 customPronsData:v19 language:v18 writeToDirectory:v17 sandboxExtension:v16 completion:v15];
+  [v21 trainAppLmFromNgramsSerializedData:dataCopy customPronsData:pronsDataCopy language:languageCopy writeToDirectory:directoryCopy sandboxExtension:extensionCopy completion:v15];
 }
 
 void __139__SFLocalSpeechRecognitionClient_trainAppLmFromNgramsSerializedData_customPronsData_language_writeToDirectory_sandboxExtension_completion___block_invoke(uint64_t a1, void *a2)
@@ -741,15 +741,15 @@ void __139__SFLocalSpeechRecognitionClient_trainAppLmFromNgramsSerializedData_cu
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)wakeUpWithCompletion:(id)a3
+- (void)wakeUpWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SFLocalSpeechRecognitionClient_wakeUpWithCompletion___block_invoke;
   v7[3] = &unk_1E797C1C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v7];
   [v6 wakeUpWithCompletion:v5];
 }
@@ -777,15 +777,15 @@ void __55__SFLocalSpeechRecognitionClient_wakeUpWithCompletion___block_invoke(ui
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)metricsWithCompletion:(id)a3
+- (void)metricsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SFLocalSpeechRecognitionClient_metricsWithCompletion___block_invoke;
   v7[3] = &unk_1E797C1C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v7];
   [v6 metricsWithCompletion:v5];
 }
@@ -813,15 +813,15 @@ void __56__SFLocalSpeechRecognitionClient_metricsWithCompletion___block_invoke(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lmeThresholdWithCompletion:(id)a3
+- (void)lmeThresholdWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SFLocalSpeechRecognitionClient_lmeThresholdWithCompletion___block_invoke;
   v7[3] = &unk_1E797C1C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v7];
   [v6 lmeThresholdWithCompletion:v5];
 }
@@ -849,18 +849,18 @@ void __61__SFLocalSpeechRecognitionClient_lmeThresholdWithCompletion___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deserializeNgramCountsData:(id)a3 completion:(id)a4
+- (void)deserializeNgramCountsData:(id)data completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__SFLocalSpeechRecognitionClient_deserializeNgramCountsData_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  dataCopy = data;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 deserializeNgramCountsData:v8 completion:v7];
+  [v9 deserializeNgramCountsData:dataCopy completion:v7];
 }
 
 void __72__SFLocalSpeechRecognitionClient_deserializeNgramCountsData_completion___block_invoke(uint64_t a1, void *a2)
@@ -886,15 +886,15 @@ void __72__SFLocalSpeechRecognitionClient_deserializeNgramCountsData_completion_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateNgramCountsSerializeDataWithCompletion:(id)a3
+- (void)generateNgramCountsSerializeDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__SFLocalSpeechRecognitionClient_generateNgramCountsSerializeDataWithCompletion___block_invoke;
   v7[3] = &unk_1E797C1C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v7];
   [v6 generateNgramCountsSerializeDataWithCompletion:v5];
 }
@@ -922,19 +922,19 @@ void __81__SFLocalSpeechRecognitionClient_generateNgramCountsSerializeDataWithCo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trainFromPlainTextAndWriteToDirectory:(id)a3 sandboxExtension:(id)a4 completion:(id)a5
+- (void)trainFromPlainTextAndWriteToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__SFLocalSpeechRecognitionClient_trainFromPlainTextAndWriteToDirectory_sandboxExtension_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  extensionCopy = extension;
+  directoryCopy = directory;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 trainFromPlainTextAndWriteToDirectory:v11 sandboxExtension:v10 completion:v9];
+  [v12 trainFromPlainTextAndWriteToDirectory:directoryCopy sandboxExtension:extensionCopy completion:v9];
 }
 
 void __100__SFLocalSpeechRecognitionClient_trainFromPlainTextAndWriteToDirectory_sandboxExtension_completion___block_invoke(uint64_t a1, void *a2)
@@ -960,15 +960,15 @@ void __100__SFLocalSpeechRecognitionClient_trainFromPlainTextAndWriteToDirectory
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)oovWordsAndFrequenciesWithCompletion:(id)a3
+- (void)oovWordsAndFrequenciesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__SFLocalSpeechRecognitionClient_oovWordsAndFrequenciesWithCompletion___block_invoke;
   v7[3] = &unk_1E797C1C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v7];
   [v6 oovWordsAndFrequenciesWithCompletion:v5];
 }
@@ -996,19 +996,19 @@ void __71__SFLocalSpeechRecognitionClient_oovWordsAndFrequenciesWithCompletion__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addProns:(id)a3 forWord:(id)a4 completion:(id)a5
+- (void)addProns:(id)prons forWord:(id)word completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__SFLocalSpeechRecognitionClient_addProns_forWord_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  wordCopy = word;
+  pronsCopy = prons;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 addProns:v11 forWord:v10 completion:v9];
+  [v12 addProns:pronsCopy forWord:wordCopy completion:v9];
 }
 
 void __62__SFLocalSpeechRecognitionClient_addProns_forWord_completion___block_invoke(uint64_t a1, void *a2)
@@ -1034,18 +1034,18 @@ void __62__SFLocalSpeechRecognitionClient_addProns_forWord_completion___block_in
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSentenceToNgramCounts:(id)a3 completion:(id)a4
+- (void)addSentenceToNgramCounts:(id)counts completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__SFLocalSpeechRecognitionClient_addSentenceToNgramCounts_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  countsCopy = counts;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 addSentenceToNgramCounts:v8 completion:v7];
+  [v9 addSentenceToNgramCounts:countsCopy completion:v7];
 }
 
 void __70__SFLocalSpeechRecognitionClient_addSentenceToNgramCounts_completion___block_invoke(uint64_t a1, void *a2)
@@ -1071,11 +1071,11 @@ void __70__SFLocalSpeechRecognitionClient_addSentenceToNgramCounts_completion___
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSentenceToNgramCounts:(id)a3
+- (void)addSentenceToNgramCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v5 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:?];
-  [v5 addSentenceToNgramCounts:v4];
+  [v5 addSentenceToNgramCounts:countsCopy];
 }
 
 void __59__SFLocalSpeechRecognitionClient_addSentenceToNgramCounts___block_invoke(uint64_t a1, void *a2)
@@ -1095,18 +1095,18 @@ void __59__SFLocalSpeechRecognitionClient_addSentenceToNgramCounts___block_invok
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initializeLmWithAssetPath:(id)a3 completion:(id)a4
+- (void)initializeLmWithAssetPath:(id)path completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__SFLocalSpeechRecognitionClient_initializeLmWithAssetPath_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  pathCopy = path;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 initializeLmWithAssetPath:v8 completion:v7];
+  [v9 initializeLmWithAssetPath:pathCopy completion:v7];
 }
 
 void __71__SFLocalSpeechRecognitionClient_initializeLmWithAssetPath_completion___block_invoke(uint64_t a1, void *a2)
@@ -1132,19 +1132,19 @@ void __71__SFLocalSpeechRecognitionClient_initializeLmWithAssetPath_completion__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initializeLmWithLocale:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)initializeLmWithLocale:(id)locale clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__SFLocalSpeechRecognitionClient_initializeLmWithLocale_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  localeCopy = locale;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 initializeLmWithLocale:v11 clientID:v10 completion:v9];
+  [v12 initializeLmWithLocale:localeCopy clientID:dCopy completion:v9];
 }
 
 void __77__SFLocalSpeechRecognitionClient_initializeLmWithLocale_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1170,24 +1170,24 @@ void __77__SFLocalSpeechRecognitionClient_initializeLmWithLocale_clientID_comple
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPurgeabilityForAssetWithConfig:(id)a3 purgeable:(BOOL)a4 clientID:(id)a5 completion:(id)a6
+- (void)setPurgeabilityForAssetWithConfig:(id)config purgeable:(BOOL)purgeable clientID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  configCopy = config;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__SFLocalSpeechRecognitionClient_setPurgeabilityForAssetWithConfig_purgeable_clientID_completion___block_invoke;
   block[3] = &unk_1E797C2D8;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = configCopy;
+  purgeableCopy = purgeable;
+  v19 = dCopy;
+  v20 = completionCopy;
+  v14 = dCopy;
+  v15 = configCopy;
+  v16 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1226,40 +1226,40 @@ void __98__SFLocalSpeechRecognitionClient_setPurgeabilityForAssetWithConfig_purg
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_asynchronousServiceProxyWithErrorHandler:(uint64_t)a1
+- (id)_asynchronousServiceProxyWithErrorHandler:(uint64_t)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = *(a1 + 16);
+    dispatch_assert_queue_V2(*(handler + 8));
+    v4 = *(handler + 16);
     if (v4)
     {
-      a1 = [v4 remoteObjectProxyWithErrorHandler:v3];
+      handler = [v4 remoteObjectProxyWithErrorHandler:v3];
     }
 
     else
     {
-      v3[2](v3, *(a1 + 24));
-      a1 = 0;
+      v3[2](v3, *(handler + 24));
+      handler = 0;
     }
   }
 
-  return a1;
+  return handler;
 }
 
-- (void)subscriptionsForClientId:(id)a3 completion:(id)a4
+- (void)subscriptionsForClientId:(id)id completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__SFLocalSpeechRecognitionClient_subscriptionsForClientId_completion___block_invoke;
   v10[3] = &unk_1E797C1C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  idCopy = id;
   v9 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v10];
-  [v9 subscriptionsForClientId:v8 completion:v7];
+  [v9 subscriptionsForClientId:idCopy completion:v7];
 }
 
 void __70__SFLocalSpeechRecognitionClient_subscriptionsForClientId_completion___block_invoke(uint64_t a1, void *a2)
@@ -1285,19 +1285,19 @@ void __70__SFLocalSpeechRecognitionClient_subscriptionsForClientId_completion___
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsubscribeFromAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)unsubscribeFromAssetWithConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__SFLocalSpeechRecognitionClient_unsubscribeFromAssetWithConfig_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  configCopy = config;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 unsubscribeFromAssetWithConfig:v11 clientID:v10 completion:v9];
+  [v12 unsubscribeFromAssetWithConfig:configCopy clientID:dCopy completion:v9];
 }
 
 void __85__SFLocalSpeechRecognitionClient_unsubscribeFromAssetWithConfig_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1323,23 +1323,23 @@ void __85__SFLocalSpeechRecognitionClient_unsubscribeFromAssetWithConfig_clientI
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsubscribeFromAssetWithConfig:(id)a3 clientID:(id)a4 asyncCompletion:(id)a5
+- (void)unsubscribeFromAssetWithConfig:(id)config clientID:(id)d asyncCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__SFLocalSpeechRecognitionClient_unsubscribeFromAssetWithConfig_clientID_asyncCompletion___block_invoke;
   v15[3] = &unk_1E797C218;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = configCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v12 = dCopy;
+  v13 = configCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1378,19 +1378,19 @@ void __90__SFLocalSpeechRecognitionClient_unsubscribeFromAssetWithConfig_clientI
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configParametersForVoicemailWithLanguage:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)configParametersForVoicemailWithLanguage:(id)language clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__SFLocalSpeechRecognitionClient_configParametersForVoicemailWithLanguage_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  languageCopy = language;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 configParametersForVoicemailWithLanguage:v11 clientID:v10 completion:v9];
+  [v12 configParametersForVoicemailWithLanguage:languageCopy clientID:dCopy completion:v9];
 }
 
 void __95__SFLocalSpeechRecognitionClient_configParametersForVoicemailWithLanguage_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1416,19 +1416,19 @@ void __95__SFLocalSpeechRecognitionClient_configParametersForVoicemailWithLangua
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAssetsForLanguage:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)fetchAssetsForLanguage:(id)language clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__SFLocalSpeechRecognitionClient_fetchAssetsForLanguage_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  languageCopy = language;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 fetchAssetsForLanguage:v11 clientID:v10 completion:v9];
+  [v12 fetchAssetsForLanguage:languageCopy clientID:dCopy completion:v9];
 }
 
 void __77__SFLocalSpeechRecognitionClient_fetchAssetsForLanguage_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1454,29 +1454,29 @@ void __77__SFLocalSpeechRecognitionClient_fetchAssetsForLanguage_clientID_comple
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 detailedProgress:(id)a6 completionHandler:(id)a7
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration detailedProgress:(id)progress completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  configCopy = config;
+  dCopy = d;
+  expirationCopy = expiration;
+  progressCopy = progress;
+  handlerCopy = handler;
   queue = self->_queue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __113__SFLocalSpeechRecognitionClient_downloadAssetsForConfig_clientID_expiration_detailedProgress_completionHandler___block_invoke;
   v23[3] = &unk_1E797C2B0;
-  v27 = v15;
-  v28 = v16;
+  v27 = progressCopy;
+  v28 = handlerCopy;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v16;
-  v22 = v15;
+  v24 = configCopy;
+  v25 = dCopy;
+  v26 = expirationCopy;
+  v18 = expirationCopy;
+  v19 = dCopy;
+  v20 = configCopy;
+  v21 = handlerCopy;
+  v22 = progressCopy;
   dispatch_async(queue, v23);
 }
 
@@ -1555,29 +1555,29 @@ uint64_t __113__SFLocalSpeechRecognitionClient_downloadAssetsForConfig_clientID_
   return result;
 }
 
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration progress:(id)progress completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  configCopy = config;
+  dCopy = d;
+  expirationCopy = expiration;
+  progressCopy = progress;
+  handlerCopy = handler;
   queue = self->_queue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __105__SFLocalSpeechRecognitionClient_downloadAssetsForConfig_clientID_expiration_progress_completionHandler___block_invoke;
   v23[3] = &unk_1E797C2B0;
-  v27 = v15;
-  v28 = v16;
+  v27 = progressCopy;
+  v28 = handlerCopy;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v16;
-  v22 = v15;
+  v24 = configCopy;
+  v25 = dCopy;
+  v26 = expirationCopy;
+  v18 = expirationCopy;
+  v19 = dCopy;
+  v20 = configCopy;
+  v21 = handlerCopy;
+  v22 = progressCopy;
   dispatch_async(queue, v23);
 }
 
@@ -1672,17 +1672,17 @@ uint64_t __105__SFLocalSpeechRecognitionClient_downloadAssetsForConfig_clientID_
   return result;
 }
 
-- (void)initializeWithSandboxExtensions:(id)a3
+- (void)initializeWithSandboxExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SFLocalSpeechRecognitionClient_initializeWithSandboxExtensions___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = extensionsCopy;
+  v6 = extensionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1718,21 +1718,21 @@ void __66__SFLocalSpeechRecognitionClient_initializeWithSandboxExtensions___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)installedLanguagesForAssetType:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5
+- (void)installedLanguagesForAssetType:(unint64_t)type synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v5)
+  synchronousCopy = synchronous;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (synchronousCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __88__SFLocalSpeechRecognitionClient_installedLanguagesForAssetType_synchronous_completion___block_invoke;
     v17[3] = &unk_1E797C1C8;
-    v10 = v8;
+    v10 = completionCopy;
     v18 = v10;
     v11 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v17];
-    [v11 installedLanguagesForAssetType:a3 completion:v10];
+    [v11 installedLanguagesForAssetType:type completion:v10];
 
     v12 = v18;
   }
@@ -1745,8 +1745,8 @@ void __66__SFLocalSpeechRecognitionClient_initializeWithSandboxExtensions___bloc
     v14[2] = __88__SFLocalSpeechRecognitionClient_installedLanguagesForAssetType_synchronous_completion___block_invoke_52;
     v14[3] = &unk_1E797C240;
     v14[4] = self;
-    v15 = v8;
-    v16 = a3;
+    v15 = completionCopy;
+    typeCopy = type;
     dispatch_async(queue, v14);
     v12 = v15;
   }
@@ -1812,21 +1812,21 @@ void __88__SFLocalSpeechRecognitionClient_installedLanguagesForAssetType_synchro
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)supportedLanguagesForAssetType:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5
+- (void)supportedLanguagesForAssetType:(unint64_t)type synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v5)
+  synchronousCopy = synchronous;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (synchronousCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __88__SFLocalSpeechRecognitionClient_supportedLanguagesForAssetType_synchronous_completion___block_invoke;
     v17[3] = &unk_1E797C1C8;
-    v10 = v8;
+    v10 = completionCopy;
     v18 = v10;
     v11 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v17];
-    [v11 supportedLanguagesForAssetType:a3 completion:v10];
+    [v11 supportedLanguagesForAssetType:type completion:v10];
 
     v12 = v18;
   }
@@ -1839,8 +1839,8 @@ void __88__SFLocalSpeechRecognitionClient_installedLanguagesForAssetType_synchro
     v14[2] = __88__SFLocalSpeechRecognitionClient_supportedLanguagesForAssetType_synchronous_completion___block_invoke_50;
     v14[3] = &unk_1E797C240;
     v14[4] = self;
-    v15 = v8;
-    v16 = a3;
+    v15 = completionCopy;
+    typeCopy = type;
     dispatch_async(queue, v14);
     v12 = v15;
   }
@@ -1906,19 +1906,19 @@ void __88__SFLocalSpeechRecognitionClient_supportedLanguagesForAssetType_synchro
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)versionOfAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)versionOfAssetWithConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SFLocalSpeechRecognitionClient_versionOfAssetWithConfig_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  configCopy = config;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 versionOfAssetWithConfig:v11 clientID:v10 completion:v9];
+  [v12 versionOfAssetWithConfig:configCopy clientID:dCopy completion:v9];
 }
 
 void __79__SFLocalSpeechRecognitionClient_versionOfAssetWithConfig_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1944,19 +1944,19 @@ void __79__SFLocalSpeechRecognitionClient_versionOfAssetWithConfig_clientID_comp
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)installationStateForAssetConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)installationStateForAssetConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__SFLocalSpeechRecognitionClient_installationStateForAssetConfig_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  configCopy = config;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 installationStateForAssetConfig:v11 clientID:v10 completion:v9];
+  [v12 installationStateForAssetConfig:configCopy clientID:dCopy completion:v9];
 }
 
 void __86__SFLocalSpeechRecognitionClient_installationStateForAssetConfig_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -1982,23 +1982,23 @@ void __86__SFLocalSpeechRecognitionClient_installationStateForAssetConfig_client
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 asyncCompletion:(id)a5
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d asyncCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__SFLocalSpeechRecognitionClient_pathToAssetWithConfig_clientID_asyncCompletion___block_invoke;
   v15[3] = &unk_1E797C218;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = configCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v12 = dCopy;
+  v13 = configCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2037,19 +2037,19 @@ void __81__SFLocalSpeechRecognitionClient_pathToAssetWithConfig_clientID_asyncCo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__SFLocalSpeechRecognitionClient_pathToAssetWithConfig_clientID_completion___block_invoke;
   v13[3] = &unk_1E797C1C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  dCopy = d;
+  configCopy = config;
   v12 = [(SFLocalSpeechRecognitionClient *)self _serviceProxyWithErrorHandler:v13];
-  [v12 pathToAssetWithConfig:v11 clientID:v10 completion:v9];
+  [v12 pathToAssetWithConfig:configCopy clientID:dCopy completion:v9];
 }
 
 void __76__SFLocalSpeechRecognitionClient_pathToAssetWithConfig_clientID_completion___block_invoke(uint64_t a1, void *a2)
@@ -2075,32 +2075,32 @@ void __76__SFLocalSpeechRecognitionClient_pathToAssetWithConfig_clientID_complet
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preloadRecognizerForLanguage:(id)a3 task:(id)a4 clientID:(id)a5 recognitionOverrides:(id)a6 modelOverrideURL:(id)a7 completion:(id)a8
+- (void)preloadRecognizerForLanguage:(id)language task:(id)task clientID:(id)d recognitionOverrides:(id)overrides modelOverrideURL:(id)l completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  languageCopy = language;
+  taskCopy = task;
+  dCopy = d;
+  overridesCopy = overrides;
+  lCopy = l;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __126__SFLocalSpeechRecognitionClient_preloadRecognizerForLanguage_task_clientID_recognitionOverrides_modelOverrideURL_completion___block_invoke;
   block[3] = &unk_1E797C1F0;
-  v32 = v18;
-  v33 = v19;
+  v32 = lCopy;
+  v33 = completionCopy;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v19;
+  v28 = languageCopy;
+  v29 = taskCopy;
+  v30 = dCopy;
+  v31 = overridesCopy;
+  v21 = lCopy;
+  v22 = overridesCopy;
+  v23 = dCopy;
+  v24 = taskCopy;
+  v25 = languageCopy;
+  v26 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -2225,17 +2225,17 @@ void __44__SFLocalSpeechRecognitionClient_stopSpeech__block_invoke_2(uint64_t a1
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAudioPacket:(id)a3
+- (void)addAudioPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SFLocalSpeechRecognitionClient_addAudioPacket___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = packetCopy;
+  v6 = packetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2271,17 +2271,17 @@ void __49__SFLocalSpeechRecognitionClient_addAudioPacket___block_invoke_2(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecordedAudioDictationWithParameters:(id)a3
+- (void)startRecordedAudioDictationWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__SFLocalSpeechRecognitionClient_startRecordedAudioDictationWithParameters___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2391,21 +2391,21 @@ uint64_t __38__SFLocalSpeechRecognitionClient_init__block_invoke_41(uint64_t a1)
   return [v7 localSpeechRecognitionDidFinishDownloadingAssets:0 error:v9];
 }
 
-- (SFLocalSpeechRecognitionClient)initWithDelegate:(id)a3
+- (SFLocalSpeechRecognitionClient)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(SFLocalSpeechRecognitionClient *)self init];
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
 
   return v5;
 }
 
-+ (void)cleanupCacheWithCompletion:(id)a3
++ (void)cleanupCacheWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(SFLocalSpeechRecognitionClient);
   v4 = [(SFLocalSpeechRecognitionClient *)v5 _serviceProxyWithErrorHandler:?];
-  [v4 cleanupCacheWithCompletion:v3];
+  [v4 cleanupCacheWithCompletion:completionCopy];
 
   [(SFLocalSpeechRecognitionClient *)v5 invalidate];
 }
@@ -2427,10 +2427,10 @@ void __61__SFLocalSpeechRecognitionClient_cleanupCacheWithCompletion___block_inv
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logCoreAnalyticsEvent:(id)a3 withAnalytics:(id)a4
++ (void)logCoreAnalyticsEvent:(id)event withAnalytics:(id)analytics
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  analyticsCopy = analytics;
   v7 = objc_alloc_init(SFLocalSpeechRecognitionClient);
   queue = v7->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2438,10 +2438,10 @@ void __61__SFLocalSpeechRecognitionClient_cleanupCacheWithCompletion___block_inv
   block[2] = __70__SFLocalSpeechRecognitionClient_logCoreAnalyticsEvent_withAnalytics___block_invoke;
   block[3] = &unk_1E797C460;
   v13 = v7;
-  v14 = v5;
-  v15 = v6;
-  v9 = v6;
-  v10 = v5;
+  v14 = eventCopy;
+  v15 = analyticsCopy;
+  v9 = analyticsCopy;
+  v10 = eventCopy;
   v11 = v7;
   dispatch_async(queue, block);
 }

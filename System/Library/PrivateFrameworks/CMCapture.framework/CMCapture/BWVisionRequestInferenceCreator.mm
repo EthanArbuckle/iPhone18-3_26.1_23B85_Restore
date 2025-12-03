@@ -1,31 +1,31 @@
 @interface BWVisionRequestInferenceCreator
-+ (id)requestForDescriptor:(id)a3 adapter:(id)a4 requestInitializationCustomizer:(id)a5 outStatus:(int *)a6;
++ (id)requestForDescriptor:(id)descriptor adapter:(id)adapter requestInitializationCustomizer:(id)customizer outStatus:(int *)status;
 @end
 
 @implementation BWVisionRequestInferenceCreator
 
-+ (id)requestForDescriptor:(id)a3 adapter:(id)a4 requestInitializationCustomizer:(id)a5 outStatus:(int *)a6
++ (id)requestForDescriptor:(id)descriptor adapter:(id)adapter requestInitializationCustomizer:(id)customizer outStatus:(int *)status
 {
-  result = [objc_msgSend(a4 "visionRequestByDescriptor")];
+  result = [objc_msgSend(adapter "visionRequestByDescriptor")];
   if (!result)
   {
-    v11 = objc_alloc_init([a3 requestClass]);
-    [v11 setProcessingDevice:{objc_msgSend(a3, "processingDevice")}];
-    if ([a3 ioSurfaceMemoryPoolId])
+    v11 = objc_alloc_init([descriptor requestClass]);
+    [v11 setProcessingDevice:{objc_msgSend(descriptor, "processingDevice")}];
+    if ([descriptor ioSurfaceMemoryPoolId])
     {
-      [v11 setIoSurfaceMemoryPoolId:{objc_msgSend(a3, "ioSurfaceMemoryPoolId")}];
+      [v11 setIoSurfaceMemoryPoolId:{objc_msgSend(descriptor, "ioSurfaceMemoryPoolId")}];
     }
 
-    if ([a3 revision] != -1)
+    if ([descriptor revision] != -1)
     {
-      [v11 setRevision:{objc_msgSend(a3, "revision")}];
+      [v11 setRevision:{objc_msgSend(descriptor, "revision")}];
     }
 
-    if (a5 && (v12 = (*(a5 + 2))(a5, v11)) != 0)
+    if (customizer && (v12 = (*(customizer + 2))(customizer, v11)) != 0)
     {
-      if (a6)
+      if (status)
       {
-        *a6 = v12;
+        *status = v12;
       }
 
       return 0;
@@ -33,10 +33,10 @@
 
     else
     {
-      [objc_msgSend(a4 "visionRequestByDescriptor")];
-      if (a6)
+      [objc_msgSend(adapter "visionRequestByDescriptor")];
+      if (status)
       {
-        *a6 = 0;
+        *status = 0;
       }
 
       return v11;

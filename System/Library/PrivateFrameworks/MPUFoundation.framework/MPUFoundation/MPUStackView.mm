@@ -2,13 +2,13 @@
 - (CGPoint)vanishingPoint;
 - (CGSize)baseSize;
 - (CGSize)sizeInsetStep;
-- (CGSize)sizeOfItemAtIndex:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPUStackView)initWithFrame:(CGRect)a3;
-- (MPUStackView)initWithFrame:(CGRect)a3 itemClass:(Class)a4 itemReuseIdentifier:(id)a5;
+- (CGSize)sizeOfItemAtIndex:(double)index;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPUStackView)initWithFrame:(CGRect)frame;
+- (MPUStackView)initWithFrame:(CGRect)frame itemClass:(Class)class itemReuseIdentifier:(id)identifier;
 - (MPUStackViewDataSource)dataSource;
 - (UIOffset)maximumRelativeOffsetStep;
-- (UIOffset)relativeOffsetOfItemAtIndex:(double)a3 withCenter:(CGPoint)a4;
+- (UIOffset)relativeOffsetOfItemAtIndex:(double)index withCenter:(CGPoint)center;
 - (UIView)perspectiveTargetView;
 - (void)_updateGeometryFieldsInConfiguration;
 - (void)dealloc;
@@ -16,50 +16,50 @@
 - (void)didMoveToWindow;
 - (void)endIgnoringDistanceUpdates;
 - (void)layoutSubviews;
-- (void)reloadDataWithTransition:(int64_t)a3;
-- (void)setBaseSize:(CGSize)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setDataSource:(id)a3;
-- (void)setForcesIntegralX:(BOOL)a3;
-- (void)setForcesIntegralY:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaximumRelativeOffsetStep:(UIOffset)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSizeInsetStep:(CGSize)a3;
-- (void)setVanishingPoint:(CGPoint)a3;
+- (void)reloadDataWithTransition:(int64_t)transition;
+- (void)setBaseSize:(CGSize)size;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setDataSource:(id)source;
+- (void)setForcesIntegralX:(BOOL)x;
+- (void)setForcesIntegralY:(BOOL)y;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaximumRelativeOffsetStep:(UIOffset)step;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSizeInsetStep:(CGSize)step;
+- (void)setVanishingPoint:(CGPoint)point;
 - (void)updateForChangedDistanceFromVanishingPoint;
 @end
 
 @implementation MPUStackView
 
-- (MPUStackView)initWithFrame:(CGRect)a3
+- (MPUStackView)initWithFrame:(CGRect)frame
 {
-  [MEMORY[0x277CBEAD8] raise:@"MPUStackViewInitializationException" format:{@"Do not use -initWithFrame:. Please use -initWithFrame:itemClass:itemReuseIdentifier: instead.", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  [MEMORY[0x277CBEAD8] raise:@"MPUStackViewInitializationException" format:{@"Do not use -initWithFrame:. Please use -initWithFrame:itemClass:itemReuseIdentifier: instead.", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
 
   return 0;
 }
 
-- (MPUStackView)initWithFrame:(CGRect)a3 itemClass:(Class)a4 itemReuseIdentifier:(id)a5
+- (MPUStackView)initWithFrame:(CGRect)frame itemClass:(Class)class itemReuseIdentifier:(id)identifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = MPUStackView;
-  v12 = [(MPUStackView *)&v19 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(MPUStackView *)&v19 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    objc_storeStrong(&v12->_itemClass, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&height->_itemClass, class);
+    v14 = [identifierCopy copy];
     itemReuseIdentifier = v13->_itemReuseIdentifier;
     v13->_itemReuseIdentifier = v14;
 
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13->_configuration.scale = v17;
 
     [_MPUStackItemReuseCache registerStackViewForReuseIdentifier:v13->_itemReuseIdentifier];
@@ -121,18 +121,18 @@
   v9.receiver = self;
   v9.super_class = MPUStackView;
   [(MPUStackView *)&v9 didMoveToWindow];
-  v3 = [(MPUStackView *)self window];
+  window = [(MPUStackView *)self window];
   window = self->_window;
-  self->_window = v3;
+  self->_window = window;
 
-  v5 = [(UIWindow *)self->_window screen];
-  [v5 scale];
+  screen = [(UIWindow *)self->_window screen];
+  [screen scale];
   self->_configuration.scale = v6;
 
   if (self->_configuration.scale < 0.00000011920929)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     self->_configuration.scale = v8;
   }
 
@@ -147,31 +147,31 @@
   [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = MPUStackView;
-  [(MPUStackView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MPUStackView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(MPUStackView *)self _updateGeometryFieldsInConfiguration];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = MPUStackView;
-  [(MPUStackView *)&v4 setCenter:a3.x, a3.y];
+  [(MPUStackView *)&v4 setCenter:center.x, center.y];
   [(MPUStackView *)self _updateGeometryFieldsInConfiguration];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MPUStackView;
-  [(MPUStackView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MPUStackView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MPUStackView *)self _updateGeometryFieldsInConfiguration];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_configuration.baseSize.width;
   height = self->_configuration.baseSize.height;
@@ -189,11 +189,11 @@
   return result;
 }
 
-- (void)setBaseSize:(CGSize)a3
+- (void)setBaseSize:(CGSize)size
 {
-  if (self->_configuration.baseSize.width != a3.width || self->_configuration.baseSize.height != a3.height)
+  if (self->_configuration.baseSize.width != size.width || self->_configuration.baseSize.height != size.height)
   {
-    self->_configuration.baseSize = a3;
+    self->_configuration.baseSize = size;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
@@ -207,9 +207,9 @@
   return result;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -221,36 +221,36 @@
   }
 }
 
-- (void)setForcesIntegralX:(BOOL)a3
+- (void)setForcesIntegralX:(BOOL)x
 {
-  if (self->_configuration.forcesIntegralX != a3)
+  if (self->_configuration.forcesIntegralX != x)
   {
-    self->_configuration.forcesIntegralX = a3;
+    self->_configuration.forcesIntegralX = x;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)setForcesIntegralY:(BOOL)a3
+- (void)setForcesIntegralY:(BOOL)y
 {
-  if (self->_configuration.forcesIntegralY != a3)
+  if (self->_configuration.forcesIntegralY != y)
   {
-    self->_configuration.forcesIntegralY = a3;
+    self->_configuration.forcesIntegralY = y;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)setMaximumRelativeOffsetStep:(UIOffset)a3
+- (void)setMaximumRelativeOffsetStep:(UIOffset)step
 {
-  if (self->_configuration.maximumRelativeOffsetStep.horizontal != a3.horizontal || self->_configuration.maximumRelativeOffsetStep.vertical != a3.vertical)
+  if (self->_configuration.maximumRelativeOffsetStep.horizontal != step.horizontal || self->_configuration.maximumRelativeOffsetStep.vertical != step.vertical)
   {
-    self->_configuration.maximumRelativeOffsetStep = a3;
+    self->_configuration.maximumRelativeOffsetStep = step;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_perspectiveTargetView);
 
   v5 = obj;
@@ -262,20 +262,20 @@
   }
 }
 
-- (void)setSizeInsetStep:(CGSize)a3
+- (void)setSizeInsetStep:(CGSize)step
 {
-  if (self->_configuration.sizeInsetStep.width != a3.width || self->_configuration.sizeInsetStep.height != a3.height)
+  if (self->_configuration.sizeInsetStep.width != step.width || self->_configuration.sizeInsetStep.height != step.height)
   {
-    self->_configuration.sizeInsetStep = a3;
+    self->_configuration.sizeInsetStep = step;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)setVanishingPoint:(CGPoint)a3
+- (void)setVanishingPoint:(CGPoint)point
 {
-  if (self->_configuration.vanishingPoint.x != a3.x || self->_configuration.vanishingPoint.y != a3.y)
+  if (self->_configuration.vanishingPoint.x != point.x || self->_configuration.vanishingPoint.y != point.y)
   {
-    self->_configuration.vanishingPoint = a3;
+    self->_configuration.vanishingPoint = point;
     [(MPUStackView *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
@@ -314,9 +314,9 @@
   }
 }
 
-- (UIOffset)relativeOffsetOfItemAtIndex:(double)a3 withCenter:(CGPoint)a4
+- (UIOffset)relativeOffsetOfItemAtIndex:(double)index withCenter:(CGPoint)center
 {
-  y = a4.y;
+  y = center.y;
   WeakRetained = objc_loadWeakRetained(&self->_perspectiveTargetView);
   if (WeakRetained)
   {
@@ -345,21 +345,21 @@ LABEL_5:
 
   v15 = *MEMORY[0x277CBF3A8];
 LABEL_6:
-  v16 = -a3;
-  if (a3 >= 0.0)
+  indexCopy = -index;
+  if (index >= 0.0)
   {
-    v16 = a3;
+    indexCopy = index;
   }
 
-  v17 = vmulq_n_f64(vaddq_f64(p_configuration->sizeInsetStep, p_configuration->sizeInsetStep), v16);
-  v18 = vmulq_n_f64(p_configuration->maximumRelativeOffsetStep, v16);
+  v17 = vmulq_n_f64(vaddq_f64(p_configuration->sizeInsetStep, p_configuration->sizeInsetStep), indexCopy);
+  v18 = vmulq_n_f64(p_configuration->maximumRelativeOffsetStep, indexCopy);
   __asm { FMOV            V3.2D, #0.5 }
 
   v24 = vmulq_f64(v17, _Q3);
   v25 = vsubq_f64(vnegq_f64(v18), v24);
   v26 = vaddq_f64(v18, v24);
   v27 = vmlaq_f64(v25, vaddq_f64(vmulq_f64(v15, _Q3), _Q3), vaddq_f64(vbslq_s8(vcltzq_f64(v25), vnegq_f64(v25), v25), vbslq_s8(vcltzq_f64(v26), vnegq_f64(v26), v26)));
-  *&v24.f64[0] = vdup_n_s32(a3 < 0.0);
+  *&v24.f64[0] = vdup_n_s32(index < 0.0);
   v28.i64[0] = LODWORD(v24.f64[0]);
   v28.i64[1] = HIDWORD(v24.f64[0]);
   v29 = vbslq_s8(vcltzq_s64(vshlq_n_s64(v28, 0x3FuLL)), vnegq_f64(v27), v27);
@@ -369,7 +369,7 @@ LABEL_6:
   return result;
 }
 
-- (void)reloadDataWithTransition:(int64_t)a3
+- (void)reloadDataWithTransition:(int64_t)transition
 {
   numberOfItems = self->_numberOfItems;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
@@ -377,7 +377,7 @@ LABEL_6:
   self->_numberOfItems = v7;
   if (numberOfItems)
   {
-    v8 = a3 == 0;
+    v8 = transition == 0;
   }
 
   else
@@ -387,7 +387,7 @@ LABEL_6:
 
   if (!v8 && v7 == numberOfItems)
   {
-    if (a3 == 1)
+    if (transition == 1)
     {
       v22 = [(NSMutableArray *)self->_items objectAtIndex:0];
       [(NSMutableArray *)self->_items removeObjectAtIndex:0];
@@ -396,7 +396,7 @@ LABEL_6:
       v82 = 0x3032000000;
       v83 = __Block_byref_object_copy_;
       v84 = __Block_byref_object_dispose_;
-      v85 = [(MPUStackView *)self _dequeueReusableItem];
+      _dequeueReusableItem = [(MPUStackView *)self _dequeueReusableItem];
       v76 = 0;
       v77 = &v76;
       v78 = 0x2020000000;
@@ -418,10 +418,10 @@ LABEL_6:
         v23 = v81[5];
       }
 
-      v25 = [v23 superview];
+      superview = [v23 superview];
 
       v26 = v81[5];
-      if (v25 == self)
+      if (superview == self)
       {
         [(MPUStackView *)self sendSubviewToBack:v26];
       }
@@ -492,7 +492,7 @@ LABEL_6:
       v53[3] = &unk_27984C4F0;
       v39 = v22;
       v54 = v39;
-      v55 = self;
+      selfCopy = self;
       v57 = v61;
       v40 = v38;
       v56 = v40;
@@ -547,7 +547,7 @@ LABEL_6:
           v12 = [(NSMutableArray *)self->_items objectAtIndex:v10];
         }
 
-        v85 = v12;
+        _dequeueReusableItem = v12;
         v76 = 0;
         v77 = &v76;
         v78 = 0x2020000000;
@@ -555,9 +555,9 @@ LABEL_6:
         v13 = v81;
         if (!v81[5])
         {
-          v14 = [(MPUStackView *)self _dequeueReusableItem];
+          _dequeueReusableItem2 = [(MPUStackView *)self _dequeueReusableItem];
           v15 = v81[5];
-          v81[5] = v14;
+          v81[5] = _dequeueReusableItem2;
 
           v13 = v81;
           if (!v81[5])
@@ -585,10 +585,10 @@ LABEL_6:
 
         [WeakRetained stackView:self applyAttributesToItem:v13[5] atIndex:v10];
         [v81[5] didCompleteItemViewConfiguration];
-        v17 = [v81[5] superview];
+        superview2 = [v81[5] superview];
 
         v18 = v81[5];
-        if (v17 == self)
+        if (superview2 == self)
         {
           [(MPUStackView *)self sendSubviewToBack:v18];
         }
@@ -737,9 +737,9 @@ uint64_t __41__MPUStackView_reloadDataWithTransition___block_invoke_6(uint64_t a
   return [*(*(*(a1 + 48) + 8) + 40) setAlpha:1.0];
 }
 
-- (CGSize)sizeOfItemAtIndex:(double)a3
+- (CGSize)sizeOfItemAtIndex:(double)index
 {
-  v3 = vsubq_f64(self->_configuration.baseSize, vmulq_n_f64(vaddq_f64(self->_configuration.sizeInsetStep, self->_configuration.sizeInsetStep), a3));
+  v3 = vsubq_f64(self->_configuration.baseSize, vmulq_n_f64(vaddq_f64(self->_configuration.sizeInsetStep, self->_configuration.sizeInsetStep), index));
   v4 = v3.f64[1];
   result.width = v3.f64[0];
   result.height = v4;
@@ -751,8 +751,8 @@ uint64_t __41__MPUStackView_reloadDataWithTransition___block_invoke_6(uint64_t a
   v27 = *MEMORY[0x277D85DE8];
   if (self->_distanceIgnoreCount <= 0)
   {
-    v3 = [MEMORY[0x277D75D18] _isInAnimationBlock];
-    if ((v3 & 1) == 0)
+    _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
+    if ((_isInAnimationBlock & 1) == 0)
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -814,7 +814,7 @@ uint64_t __41__MPUStackView_reloadDataWithTransition___block_invoke_6(uint64_t a
       while (v15);
     }
 
-    if ((v3 & 1) == 0)
+    if ((_isInAnimationBlock & 1) == 0)
     {
       [MEMORY[0x277CD9FF0] commit];
     }

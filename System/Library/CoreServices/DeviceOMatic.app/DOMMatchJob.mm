@@ -7,10 +7,10 @@
 
 - (void)kick
 {
-  v3 = [(DOMMatchJob *)self kickMe];
-  v4 = [(DOMMatchJob *)self msgID];
-  [(DOMMatchJob *)self setMsgID:(v4 + 1)];
-  v5 = CFMessagePortSendRequest(v3, v4, 0, 0.0, 0.0, 0, 0);
+  kickMe = [(DOMMatchJob *)self kickMe];
+  msgID = [(DOMMatchJob *)self msgID];
+  [(DOMMatchJob *)self setMsgID:(msgID + 1)];
+  v5 = CFMessagePortSendRequest(kickMe, msgID, 0, 0.0, 0.0, 0, 0);
   if (v5)
   {
     v6 = v5;

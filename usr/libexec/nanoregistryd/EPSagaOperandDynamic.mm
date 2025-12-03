@@ -1,24 +1,24 @@
 @interface EPSagaOperandDynamic
 - (EPRoutingSlip)routingSlip;
-- (EPSagaOperandDynamic)initWithCoder:(id)a3;
-- (EPSagaOperandDynamic)initWithEntryName:(id)a3 operandName:(id)a4;
+- (EPSagaOperandDynamic)initWithCoder:(id)coder;
+- (EPSagaOperandDynamic)initWithEntryName:(id)name operandName:(id)operandName;
 - (NSObject)value;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EPSagaOperandDynamic
 
-- (EPSagaOperandDynamic)initWithEntryName:(id)a3 operandName:(id)a4
+- (EPSagaOperandDynamic)initWithEntryName:(id)name operandName:(id)operandName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  operandNameCopy = operandName;
   v9 = [(EPSagaOperandDynamic *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryName, a3);
-    objc_storeStrong(&v10->_operandName, a4);
+    objc_storeStrong(&v9->_entryName, name);
+    objc_storeStrong(&v10->_operandName, operandName);
   }
 
   return v10;
@@ -26,26 +26,26 @@
 
 - (NSObject)value
 {
-  v3 = [(EPSagaOperandDynamic *)self routingSlip];
-  v4 = [(EPSagaOperandDynamic *)self entryName];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [(EPSagaOperandDynamic *)self operandName];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  routingSlip = [(EPSagaOperandDynamic *)self routingSlip];
+  entryName = [(EPSagaOperandDynamic *)self entryName];
+  v5 = [routingSlip objectForKeyedSubscript:entryName];
+  operandName = [(EPSagaOperandDynamic *)self operandName];
+  v7 = [v5 objectForKeyedSubscript:operandName];
 
   return v7;
 }
 
-- (EPSagaOperandDynamic)initWithCoder:(id)a3
+- (EPSagaOperandDynamic)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPSagaOperandDynamic *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryName"];
     entryName = v5->_entryName;
     v5->_entryName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operandName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operandName"];
     operandName = v5->_operandName;
     v5->_operandName = v8;
   }
@@ -53,22 +53,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entryName = self->_entryName;
-  v5 = a3;
-  [v5 encodeObject:entryName forKey:@"entryName"];
-  [v5 encodeObject:self->_operandName forKey:@"operandName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entryName forKey:@"entryName"];
+  [coderCopy encodeObject:self->_operandName forKey:@"operandName"];
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(EPSagaOperandDynamic *)self entryName];
-  v6 = [(EPSagaOperandDynamic *)self operandName];
-  v7 = [(EPSagaOperandDynamic *)self value];
-  v8 = [NSString stringWithFormat:@"%@: %@[%@] = %@", v4, v5, v6, v7];
+  entryName = [(EPSagaOperandDynamic *)self entryName];
+  operandName = [(EPSagaOperandDynamic *)self operandName];
+  value = [(EPSagaOperandDynamic *)self value];
+  v8 = [NSString stringWithFormat:@"%@: %@[%@] = %@", v4, entryName, operandName, value];
 
   return v8;
 }

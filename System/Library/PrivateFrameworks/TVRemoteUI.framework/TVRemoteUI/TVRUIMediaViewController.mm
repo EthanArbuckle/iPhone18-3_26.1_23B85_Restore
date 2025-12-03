@@ -6,25 +6,25 @@
 - (_TVRUIAvatarGenerator)avatarGenerator;
 - (id)_collectionViewLayout;
 - (id)actionButtonMenu;
-- (void)_addToUpNext:(id)a3;
+- (void)_addToUpNext:(id)next;
 - (void)_configureHierarchy;
 - (void)_didBeginUpNextCommand;
 - (void)_gotoMediaInfo;
-- (void)_markAsWatched:(id)a3;
-- (void)_removeFromUpNext:(id)a3;
-- (void)_requestMediaInfoWithID:(id)a3;
+- (void)_markAsWatched:(id)watched;
+- (void)_removeFromUpNext:(id)next;
+- (void)_requestMediaInfoWithID:(id)d;
 - (void)_shareMediaInfo;
-- (void)_upNextCommand:(id)a3 didCompleteWithError:(id)a4;
+- (void)_upNextCommand:(id)command didCompleteWithError:(id)error;
 - (void)_updateBarButtonItemFromCurrentState;
-- (void)_updateMediaInfo:(id)a3;
+- (void)_updateMediaInfo:(id)info;
 - (void)_updateUIFromCurrentState;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6;
-- (void)setMediaIdentifier:(id)a3;
-- (void)setMediaInfo:(id)a3;
-- (void)setMediaTitle:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion;
+- (void)setMediaIdentifier:(id)identifier;
+- (void)setMediaInfo:(id)info;
+- (void)setMediaTitle:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -39,49 +39,49 @@
   [(TVRUIMediaViewController *)self _updateUIFromCurrentState];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = TVRUIMediaViewController;
-  [(TVRUIMediaViewController *)&v8 viewDidAppear:a3];
-  v4 = [(TVRUIMediaViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  [(TVRUIMediaViewController *)&v8 viewDidAppear:appear];
+  collectionView = [(TVRUIMediaViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  if ([v5 count])
+  if ([indexPathsForSelectedItems count])
   {
-    v6 = [(TVRUIMediaViewController *)self collectionView];
-    v7 = [v5 firstObject];
-    [v6 deselectItemAtIndexPath:v7 animated:1];
+    collectionView2 = [(TVRUIMediaViewController *)self collectionView];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [collectionView2 deselectItemAtIndexPath:firstObject animated:1];
   }
 }
 
-- (void)setMediaIdentifier:(id)a3
+- (void)setMediaIdentifier:(id)identifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_mediaIdentifier, a3);
-  if ([v5 length])
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_mediaIdentifier, identifier);
+  if ([identifierCopy length])
   {
-    [(TVRUIMediaViewController *)self _requestMediaInfoWithID:v5];
+    [(TVRUIMediaViewController *)self _requestMediaInfoWithID:identifierCopy];
   }
 }
 
-- (void)setMediaTitle:(id)a3
+- (void)setMediaTitle:(id)title
 {
-  objc_storeStrong(&self->_mediaTitle, a3);
-  v5 = a3;
-  v6 = [(TVRUIMediaViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  objc_storeStrong(&self->_mediaTitle, title);
+  titleCopy = title;
+  navigationItem = [(TVRUIMediaViewController *)self navigationItem];
+  [navigationItem setTitle:titleCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(TVRUIMediaViewController *)self infosDidChangeNotificationObserver];
+  infosDidChangeNotificationObserver = [(TVRUIMediaViewController *)self infosDidChangeNotificationObserver];
 
-  if (v3)
+  if (infosDidChangeNotificationObserver)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [(TVRUIMediaViewController *)self infosDidChangeNotificationObserver];
-    [v4 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    infosDidChangeNotificationObserver2 = [(TVRUIMediaViewController *)self infosDidChangeNotificationObserver];
+    [defaultCenter removeObserver:infosDidChangeNotificationObserver2];
   }
 
   v6.receiver = self;
@@ -89,9 +89,9 @@
   [(TVRUIMediaViewController *)&v6 dealloc];
 }
 
-- (void)setMediaInfo:(id)a3
+- (void)setMediaInfo:(id)info
 {
-  objc_storeStrong(&self->_mediaInfo, a3);
+  objc_storeStrong(&self->_mediaInfo, info);
 
   [(TVRUIMediaViewController *)self _updateUIFromCurrentState];
 }
@@ -131,9 +131,9 @@
   v84 = *MEMORY[0x277D85DE8];
   [(TVRUIMediaViewController *)self setOverrideUserInterfaceStyle:2];
   val = self;
-  v3 = [(TVRUIMediaViewController *)self view];
+  view = [(TVRUIMediaViewController *)self view];
   v4 = [MEMORY[0x277D75348] colorWithWhite:0.1 alpha:1.0];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v59 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
   v5 = [MEMORY[0x277D752B0] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_1];
@@ -147,8 +147,8 @@
   objc_copyWeak(&v79, &location);
   v8 = [v6 registrationWithCellClass:v7 configurationHandler:v78];
   v9 = objc_alloc(MEMORY[0x277D752A0]);
-  v10 = [(TVRUIMediaViewController *)val _collectionViewLayout];
-  v61 = [v9 initWithFrame:v10 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _collectionViewLayout = [(TVRUIMediaViewController *)val _collectionViewLayout];
+  v61 = [v9 initWithFrame:_collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v61 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v61 setClipsToBounds:1];
@@ -224,7 +224,7 @@
 
         v30 = *(*(&v64 + 1) + 8 * i);
         [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v3 addSubview:v30];
+        [view addSubview:v30];
       }
 
       v27 = [v26 countByEnumeratingWithState:&v64 objects:v83 count:16];
@@ -234,30 +234,30 @@
   }
 
   v42 = MEMORY[0x277CCAAD0];
-  v57 = [v59 centerXAnchor];
-  v56 = [v3 centerXAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  centerXAnchor = [v59 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v55 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v81[0] = v55;
-  v54 = [v59 centerYAnchor];
-  v53 = [v3 centerYAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  centerYAnchor = [v59 centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v52 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v81[1] = v52;
-  v50 = [v61 topAnchor];
-  v51 = [v3 safeAreaLayoutGuide];
-  v49 = [v51 topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  topAnchor = [v61 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v81[2] = v48;
-  v47 = [v61 leadingAnchor];
-  v31 = [v3 leadingAnchor];
-  v32 = [v47 constraintEqualToAnchor:v31];
+  leadingAnchor = [v61 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v81[3] = v32;
-  v33 = [v61 trailingAnchor];
-  v34 = [v3 trailingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  trailingAnchor = [v61 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v81[4] = v35;
-  v36 = [v61 bottomAnchor];
-  v37 = [v3 bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  bottomAnchor = [v61 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v81[5] = v38;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:6];
   [v42 activateConstraints:v39];
@@ -265,13 +265,13 @@
   [(TVRUIMediaViewController *)val setActivityIndicatorView:v59];
   [(TVRUIMediaViewController *)val setCollectionView:v61];
   [(TVRUIMediaViewController *)val setDataSource:v58];
-  v40 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __47__TVRUIMediaViewController__configureHierarchy__block_invoke_7;
   v62[3] = &unk_279D87E10;
   objc_copyWeak(&v63, &location);
-  v41 = [v40 addObserverForName:@"TVRUIUpNextInfosDidChangeNotification" object:0 queue:0 usingBlock:v62];
+  v41 = [defaultCenter addObserverForName:@"TVRUIUpNextInfosDidChangeNotification" object:0 queue:0 usingBlock:v62];
   [(TVRUIMediaViewController *)val setInfosDidChangeNotificationObserver:v41];
 
   objc_destroyWeak(&v63);
@@ -388,9 +388,9 @@ void __47__TVRUIMediaViewController__configureHierarchy__block_invoke_7(uint64_t
   v56[2] = *MEMORY[0x277D85DE8];
   v38 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.right.square"];
   v36 = [MEMORY[0x277D755B8] systemImageNamed:@"square.and.arrow.up"];
-  v39 = [(TVRUIMediaViewController *)self mediaInfo];
-  v3 = [v39 kind];
-  switch(v3)
+  mediaInfo = [(TVRUIMediaViewController *)self mediaInfo];
+  kind = [mediaInfo kind];
+  switch(kind)
   {
     case 2:
       v4 = @"TVRUIShareMovie";
@@ -431,8 +431,8 @@ LABEL_9:
   v49[3] = &unk_279D87C68;
   objc_copyWeak(&v50, &location);
   v33 = [v9 actionWithTitle:v35 image:v36 identifier:0 handler:v49];
-  v10 = [(TVRUIMediaViewController *)self upNextProvider];
-  v11 = [v10 isItemInUpNextForMediaInfo:v39];
+  upNextProvider = [(TVRUIMediaViewController *)self upNextProvider];
+  v11 = [upNextProvider isItemInUpNextForMediaInfo:mediaInfo];
 
   v12 = MEMORY[0x277D750C8];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -446,7 +446,7 @@ LABEL_9:
     v46[3] = &unk_279D87E38;
     v15 = &v48;
     objc_copyWeak(&v48, &location);
-    v16 = v39;
+    v16 = mediaInfo;
     v47 = v16;
     v17 = [v12 actionWithTitle:v32 image:v14 identifier:0 handler:v46];
     v56[0] = v17;
@@ -478,7 +478,7 @@ LABEL_9:
     v40[3] = &unk_279D87E38;
     v15 = &v42;
     objc_copyWeak(&v42, &location);
-    v41 = v39;
+    v41 = mediaInfo;
     v27 = [v12 actionWithTitle:v25 image:v26 identifier:0 handler:v40];
     v55 = v27;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
@@ -640,27 +640,27 @@ id __49__TVRUIMediaViewController__collectionViewLayout__block_invoke(uint64_t a
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"ellipsis.circle" withConfiguration:v3];
     v8 = [v6 actionWithTitle:&stru_287E6AEF8 image:v7 identifier:0 handler:&__block_literal_global_95];
 
-    v9 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    v10 = [MEMORY[0x277D75220] buttonWithConfiguration:v9 primaryAction:v8];
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [v10 setTintColor:v11];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    v10 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v10 setTintColor:whiteColor];
 
     [v10 setOverrideUserInterfaceStyle:2];
-    v12 = [(TVRUIMediaViewController *)self actionButtonMenu];
-    [v10 setMenu:v12];
+    actionButtonMenu = [(TVRUIMediaViewController *)self actionButtonMenu];
+    [v10 setMenu:actionButtonMenu];
 
     [v10 setShowsMenuAsPrimaryAction:1];
     [(TVRUIMediaViewController *)self setActionButton:v10];
     v14 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v10];
   }
 
-  v13 = [(TVRUIMediaViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v14];
+  navigationItem = [(TVRUIMediaViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v14];
 }
 
-- (void)_requestMediaInfoWithID:(id)a3
+- (void)_requestMediaInfoWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(TVRUIMediaViewController *)self isRequestingMediaInfo])
   {
     [(TVRUIMediaViewController *)self setIsRequestingMediaInfo:1];
@@ -671,7 +671,7 @@ id __49__TVRUIMediaViewController__collectionViewLayout__block_invoke(uint64_t a
     v6[2] = __52__TVRUIMediaViewController__requestMediaInfoWithID___block_invoke;
     v6[3] = &unk_279D87EA0;
     objc_copyWeak(&v7, &location);
-    [v5 requestForCanonicalID:v4 includeRoles:1 completion:v6];
+    [v5 requestForCanonicalID:dCopy includeRoles:1 completion:v6];
     objc_destroyWeak(&v7);
 
     objc_destroyWeak(&location);
@@ -694,19 +694,19 @@ void __52__TVRUIMediaViewController__requestMediaInfoWithID___block_invoke(uint6
   }
 }
 
-- (void)_updateMediaInfo:(id)a3
+- (void)_updateMediaInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_mediaInfo, a3);
-  if (v5)
+  infoCopy = info;
+  objc_storeStrong(&self->_mediaInfo, info);
+  if (infoCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [v5 roles];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    roles = [infoCopy roles];
+    v7 = [roles countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
       v8 = *v24;
@@ -716,34 +716,34 @@ void __52__TVRUIMediaViewController__requestMediaInfoWithID___block_invoke(uint6
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(roles);
           }
 
           v10 = *(*(&v23 + 1) + 8 * i);
-          v11 = [v10 imageURLTemplate];
+          imageURLTemplate = [v10 imageURLTemplate];
           +[_TVRUIRoleCell preferredImageSize];
           v13 = v12;
           v15 = v14;
-          v16 = [v10 canonicalID];
-          [(TVRUIMediaViewController *)self requestImageForTemplate:v11 size:v16 identifier:&__block_literal_global_102 completion:v13, v15];
+          canonicalID = [v10 canonicalID];
+          [(TVRUIMediaViewController *)self requestImageForTemplate:imageURLTemplate size:canonicalID identifier:&__block_literal_global_102 completion:v13, v15];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v7 = [roles countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v7);
     }
 
     objc_initWeak(&location, self);
-    v17 = [(TVRUIMediaViewController *)self imageFetcher];
-    v18 = [v5 imageURLTemplate];
-    v19 = [v5 identifier];
+    imageFetcher = [(TVRUIMediaViewController *)self imageFetcher];
+    imageURLTemplate2 = [infoCopy imageURLTemplate];
+    identifier = [infoCopy identifier];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2;
     v20[3] = &unk_279D87EC8;
     objc_copyWeak(&v21, &location);
-    [v17 fetchImageWithTemplateString:v18 size:v19 identifier:v20 completion:{600.0, 338.0}];
+    [imageFetcher fetchImageWithTemplateString:imageURLTemplate2 size:identifier identifier:v20 completion:{600.0, 338.0}];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -766,31 +766,31 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
 {
   v47 = *MEMORY[0x277D85DE8];
   [(TVRUIMediaViewController *)self _updateBarButtonItemFromCurrentState];
-  v3 = [(TVRUIMediaViewController *)self mediaInfo];
-  v4 = [(TVRUIMediaViewController *)self _canShowMediaInfo];
-  v5 = [(TVRUIMediaViewController *)self activityIndicatorView];
-  [v5 setHidden:v4];
+  mediaInfo = [(TVRUIMediaViewController *)self mediaInfo];
+  _canShowMediaInfo = [(TVRUIMediaViewController *)self _canShowMediaInfo];
+  activityIndicatorView = [(TVRUIMediaViewController *)self activityIndicatorView];
+  [activityIndicatorView setHidden:_canShowMediaInfo];
 
-  if (v4)
+  if (_canShowMediaInfo)
   {
     v6 = objc_alloc_init(MEMORY[0x277CFB890]);
     [v6 appendSectionsWithIdentifiers:&unk_287E84A80];
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [v3 tvrui_formattedSummary];
-    if ([v8 length])
+    tvrui_formattedSummary = [mediaInfo tvrui_formattedSummary];
+    if ([tvrui_formattedSummary length])
     {
-      v9 = [_TVRUIFactoidItem factoidWithText:v8 options:1];
+      v9 = [_TVRUIFactoidItem factoidWithText:tvrui_formattedSummary options:1];
       v10 = [_TVRUIMediaItem itemWithFactoidItem:v9];
       [v7 addObject:v10];
     }
 
-    v11 = [v3 extendedDescription];
-    v12 = [v11 length];
+    extendedDescription = [mediaInfo extendedDescription];
+    v12 = [extendedDescription length];
 
     if (v12)
     {
-      v13 = [v3 extendedDescription];
-      v14 = [_TVRUIFactoidItem factoidWithText:v13 options:6];
+      extendedDescription2 = [mediaInfo extendedDescription];
+      v14 = [_TVRUIFactoidItem factoidWithText:extendedDescription2 options:6];
       v15 = [_TVRUIMediaItem itemWithFactoidItem:v14];
       [v7 addObject:v15];
     }
@@ -801,8 +801,8 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v33 = v3;
-    obj = [v3 roleCategories];
+    v33 = mediaInfo;
+    obj = [mediaInfo roleCategories];
     v16 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v16)
     {
@@ -818,8 +818,8 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
           }
 
           v19 = *(*(&v40 + 1) + 8 * i);
-          v20 = [v19 roleDescription];
-          v45 = v20;
+          roleDescription = [v19 roleDescription];
+          v45 = roleDescription;
           v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
           [v6 appendSectionsWithIdentifiers:v21];
 
@@ -828,8 +828,8 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v23 = [v19 roles];
-          v24 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          roles = [v19 roles];
+          v24 = [roles countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v24)
           {
             v25 = v24;
@@ -840,14 +840,14 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
               {
                 if (*v37 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(roles);
                 }
 
                 v28 = [_TVRUIMediaItem itemWithRole:*(*(&v36 + 1) + 8 * j)];
                 [v22 addObject:v28];
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+              v25 = [roles countByEnumeratingWithState:&v36 objects:v44 count:16];
             }
 
             while (v25);
@@ -862,28 +862,28 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
       while (v17);
     }
 
-    v29 = [(TVRUIMediaViewController *)self dataSource];
-    [v29 applySnapshot:v6 animatingDifferences:0];
+    dataSource = [(TVRUIMediaViewController *)self dataSource];
+    [dataSource applySnapshot:v6 animatingDifferences:0];
 
-    v3 = v33;
+    mediaInfo = v33;
   }
 
   else
   {
-    v30 = [(TVRUIMediaViewController *)self activityIndicatorView];
-    [v30 startAnimating];
+    activityIndicatorView2 = [(TVRUIMediaViewController *)self activityIndicatorView];
+    [activityIndicatorView2 startAnimating];
   }
 }
 
 - (BOOL)_canShowMediaInfo
 {
-  v3 = [(TVRUIMediaViewController *)self mediaInfo];
+  mediaInfo = [(TVRUIMediaViewController *)self mediaInfo];
 
-  v4 = [(TVRUIMediaViewController *)self mediaImage];
+  mediaImage = [(TVRUIMediaViewController *)self mediaImage];
 
-  if (v3)
+  if (mediaInfo)
   {
-    v5 = v4 == 0;
+    v5 = mediaImage == 0;
   }
 
   else
@@ -896,45 +896,45 @@ void __45__TVRUIMediaViewController__updateMediaInfo___block_invoke_2(uint64_t a
 
 - (void)_shareMediaInfo
 {
-  v3 = [(TVRUIMediaViewController *)self mediaInfo];
-  v6 = [v3 productURL];
+  mediaInfo = [(TVRUIMediaViewController *)self mediaInfo];
+  productURL = [mediaInfo productURL];
 
-  if (v6)
+  if (productURL)
   {
-    v4 = [(TVRUIMediaViewController *)self actionProvider];
-    v5 = [(TVRUIMediaViewController *)self view];
-    [v4 shareItem:v6 presentingViewController:self sourceView:v5];
+    actionProvider = [(TVRUIMediaViewController *)self actionProvider];
+    view = [(TVRUIMediaViewController *)self view];
+    [actionProvider shareItem:productURL presentingViewController:self sourceView:view];
   }
 }
 
 - (void)_gotoMediaInfo
 {
-  v3 = [(TVRUIMediaViewController *)self mediaInfo];
-  v5 = [v3 productURL];
+  mediaInfo = [(TVRUIMediaViewController *)self mediaInfo];
+  productURL = [mediaInfo productURL];
 
-  if (v5)
+  if (productURL)
   {
-    v4 = [(TVRUIMediaViewController *)self actionProvider];
-    [v4 openURL:v5];
+    actionProvider = [(TVRUIMediaViewController *)self actionProvider];
+    [actionProvider openURL:productURL];
   }
 }
 
-- (void)_addToUpNext:(id)a3
+- (void)_addToUpNext:(id)next
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  if ([v6 length])
+  nextCopy = next;
+  identifier = [nextCopy identifier];
+  if ([identifier length])
   {
     [(TVRUIMediaViewController *)self _didBeginUpNextCommand];
     objc_initWeak(&location, self);
-    v7 = [(TVRUIMediaViewController *)self upNextProvider];
+    upNextProvider = [(TVRUIMediaViewController *)self upNextProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __41__TVRUIMediaViewController__addToUpNext___block_invoke;
     v8[3] = &unk_279D87EF0;
     objc_copyWeak(v9, &location);
     v9[1] = a2;
-    [v7 addItemWithMediaIdentifier:v6 completion:v8];
+    [upNextProvider addItemWithMediaIdentifier:identifier completion:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -949,22 +949,22 @@ void __41__TVRUIMediaViewController__addToUpNext___block_invoke(uint64_t a1, voi
   [WeakRetained _upNextCommand:v4 didCompleteWithError:v3];
 }
 
-- (void)_removeFromUpNext:(id)a3
+- (void)_removeFromUpNext:(id)next
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  if ([v6 length])
+  nextCopy = next;
+  identifier = [nextCopy identifier];
+  if ([identifier length])
   {
     [(TVRUIMediaViewController *)self _didBeginUpNextCommand];
     objc_initWeak(&location, self);
-    v7 = [(TVRUIMediaViewController *)self upNextProvider];
+    upNextProvider = [(TVRUIMediaViewController *)self upNextProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __46__TVRUIMediaViewController__removeFromUpNext___block_invoke;
     v8[3] = &unk_279D87EF0;
     objc_copyWeak(v9, &location);
     v9[1] = a2;
-    [v7 removeItemWithMediaIdentifier:v6 completion:v8];
+    [upNextProvider removeItemWithMediaIdentifier:identifier completion:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -979,22 +979,22 @@ void __46__TVRUIMediaViewController__removeFromUpNext___block_invoke(uint64_t a1
   [WeakRetained _upNextCommand:v4 didCompleteWithError:v3];
 }
 
-- (void)_markAsWatched:(id)a3
+- (void)_markAsWatched:(id)watched
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  if ([v6 length])
+  watchedCopy = watched;
+  identifier = [watchedCopy identifier];
+  if ([identifier length])
   {
     [(TVRUIMediaViewController *)self _didBeginUpNextCommand];
     objc_initWeak(&location, self);
-    v7 = [(TVRUIMediaViewController *)self upNextProvider];
+    upNextProvider = [(TVRUIMediaViewController *)self upNextProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __43__TVRUIMediaViewController__markAsWatched___block_invoke;
     v8[3] = &unk_279D87EF0;
     objc_copyWeak(v9, &location);
     v9[1] = a2;
-    [v7 markAsWatchedWithMediaIdentifier:v6 completion:v8];
+    [upNextProvider markAsWatchedWithMediaIdentifier:identifier completion:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -1016,16 +1016,16 @@ void __43__TVRUIMediaViewController__markAsWatched___block_invoke(uint64_t a1, v
   [(TVRUIMediaViewController *)self _updateBarButtonItemFromCurrentState];
 }
 
-- (void)_upNextCommand:(id)a3 didCompleteWithError:(id)a4
+- (void)_upNextCommand:(id)command didCompleteWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  commandCopy = command;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = _TVRUINowPlayingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(TVRUIMediaViewController *)v6 _upNextCommand:v7 didCompleteWithError:v8];
+      [(TVRUIMediaViewController *)commandCopy _upNextCommand:errorCopy didCompleteWithError:v8];
     }
 
     [(TVRUIMediaViewController *)self setUpNextOperationInProgress:0];
@@ -1033,45 +1033,45 @@ void __43__TVRUIMediaViewController__markAsWatched___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(TVRUIMediaViewController *)self imageFetcher];
-  [v14 fetchImageWithTemplateString:v13 size:v12 identifier:v11 completion:{width, height}];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  templateCopy = template;
+  imageFetcher = [(TVRUIMediaViewController *)self imageFetcher];
+  [imageFetcher fetchImageWithTemplateString:templateCopy size:identifierCopy identifier:completionCopy completion:{width, height}];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(TVRUIMediaViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(TVRUIMediaViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([v7 isFactoid] && objc_msgSend(v7, "isExpandable"))
   {
     [v7 setIsExpanded:{objc_msgSend(v7, "isExpanded") ^ 1}];
-    v8 = [(TVRUIMediaViewController *)self dataSource];
-    v9 = [v8 snapshot];
+    dataSource2 = [(TVRUIMediaViewController *)self dataSource];
+    snapshot = [dataSource2 snapshot];
 
     v16[0] = v7;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    [v9 reconfigureItemsWithIdentifiers:v10];
+    [snapshot reconfigureItemsWithIdentifiers:v10];
 
-    v11 = [(TVRUIMediaViewController *)self dataSource];
-    [v11 applySnapshot:v9 animatingDifferences:0];
+    dataSource3 = [(TVRUIMediaViewController *)self dataSource];
+    [dataSource3 applySnapshot:snapshot animatingDifferences:0];
   }
 
   else if ([v7 isRole])
   {
-    v12 = [v7 role];
-    v13 = [(TVRUIMediaViewController *)self actionProvider];
-    v14 = [v12 canonicalID];
-    v15 = [v12 actorName];
-    [v13 presentPersonWithID:v14 name:v15 image:0 presentingViewController:self];
+    role = [v7 role];
+    actionProvider = [(TVRUIMediaViewController *)self actionProvider];
+    canonicalID = [role canonicalID];
+    actorName = [role actorName];
+    [actionProvider presentPersonWithID:canonicalID name:actorName image:0 presentingViewController:self];
   }
 }
 

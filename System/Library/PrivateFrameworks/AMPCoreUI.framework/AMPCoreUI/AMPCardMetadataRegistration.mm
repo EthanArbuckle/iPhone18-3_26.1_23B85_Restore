@@ -1,40 +1,40 @@
 @interface AMPCardMetadataRegistration
-+ (id)_cardArtworkForPaymentPass:(id)a3 width:(double)a4;
-+ (id)_passesForPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-+ (id)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 size:(id)a5;
++ (id)_cardArtworkForPaymentPass:(id)pass width:(double)width;
++ (id)_passesForPassTypeIdentifier:(id)identifier serialNumber:(id)number;
++ (id)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number size:(id)size;
 @end
 
 @implementation AMPCardMetadataRegistration
 
-+ (id)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 size:(id)a5
++ (id)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number size:(id)size
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v27 = a5;
+  identifierCopy = identifier;
+  numberCopy = number;
+  sizeCopy = size;
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [a1 _passesForPassTypeIdentifier:v8 serialNumber:v9];
-  v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v11)
+  v10 = [self _passesForPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v11 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
-  if ([v11 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v12 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v13 = [v11 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = v12;
+    v14 = shouldLog;
   }
 
   else
   {
-    v14 = v12 & 2;
+    v14 = shouldLog & 2;
   }
 
   if (v14)
@@ -61,13 +61,13 @@
   {
   }
 
-  objc_initWeak(location, a1);
+  objc_initWeak(location, self);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __79__AMPCardMetadataRegistration_metadataForPassTypeIdentifier_serialNumber_size___block_invoke;
   v28[3] = &unk_278BC2098;
   objc_copyWeak(&v31, location);
-  v20 = v27;
+  v20 = sizeCopy;
   v29 = v20;
   v21 = v26;
   v30 = v21;
@@ -385,16 +385,16 @@ uint64_t __79__AMPCardMetadataRegistration_metadataForPassTypeIdentifier_serialN
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_cardArtworkForPaymentPass:(id)a3 width:(double)a4
++ (id)_cardArtworkForPaymentPass:(id)pass width:(double)width
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  passCopy = pass;
   if (_cardArtworkForPaymentPass_width__onceToken != -1)
   {
     +[AMPCardMetadataRegistration _cardArtworkForPaymentPass:width:];
   }
 
-  v6 = [v5 cardImageWithDimensions:{a4, a4}];
+  v6 = [passCopy cardImageWithDimensions:{width, width}];
   v7 = v6;
   if (v6)
   {
@@ -402,25 +402,25 @@ uint64_t __79__AMPCardMetadataRegistration_metadataForPassTypeIdentifier_serialN
     goto LABEL_17;
   }
 
-  v9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v9)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v9 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 &= 2u;
   }
@@ -438,7 +438,7 @@ uint64_t __79__AMPCardMetadataRegistration_metadataForPassTypeIdentifier_serialN
 
   if (v14)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v18, v17, v18}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v18, v17, v18}];
     free(v14);
     SSFileLog();
 LABEL_15:
@@ -460,34 +460,34 @@ void __64__AMPCardMetadataRegistration__cardArtworkForPaymentPass_width___block_
   }
 }
 
-+ (id)_passesForPassTypeIdentifier:(id)a3 serialNumber:(id)a4
++ (id)_passesForPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v7 = objc_alloc_init(getPKPassLibraryClass());
-  v8 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  v9 = v8;
-  if (!v5 || !v6)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  mEMORY[0x277D69B38]2 = mEMORY[0x277D69B38];
+  if (!identifierCopy || !numberCopy)
   {
-    if (!v8)
+    if (!mEMORY[0x277D69B38])
     {
-      v9 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v18 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -509,33 +509,33 @@ LABEL_27:
         goto LABEL_41;
       }
 
-      v20 = [MEMORY[0x277CCACA8] stringWithCString:v22 encoding:{4, &v36, v34}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v22 encoding:{4, &v36, v34}];
       free(v22);
-      v33 = v20;
+      v33 = oSLogObject;
       SSFileLog();
     }
 
     goto LABEL_27;
   }
 
-  if (!v8)
+  if (!mEMORY[0x277D69B38])
   {
-    v9 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog2 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog2;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -554,36 +554,36 @@ LABEL_27:
       goto LABEL_14;
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v36, v34}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v36, v34}];
     free(v14);
-    v33 = v12;
+    v33 = oSLogObject2;
     SSFileLog();
   }
 
 LABEL_14:
-  v15 = [v7 passWithPassTypeIdentifier:v5 serialNumber:v6];
+  v15 = [v7 passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
   v16 = v15;
   if (!v15)
   {
-    v23 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v23)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v23 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v24 = [v23 shouldLog];
-    if ([v23 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog3 | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog3;
     }
 
-    v26 = [v23 OSLogObject];
-    if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v25 &= 2u;
     }
@@ -606,9 +606,9 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v26 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v36, v34}];
+      oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v36, v34}];
       free(v29);
-      v33 = v26;
+      v33 = oSLogObject3;
       SSFileLog();
     }
 

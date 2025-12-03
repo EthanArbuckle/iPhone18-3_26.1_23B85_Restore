@@ -2,9 +2,9 @@
 - (UIFontPickerViewController)delegateFontPickerViewController;
 - (_UIFontPickerSceneHostingImpl)init;
 - (void)_pickerDidCancel;
-- (void)_pickerDidSelectFont:(id)a3;
+- (void)_pickerDidSelectFont:(id)font;
 - (void)clientIsReady;
-- (void)setRemoteSelectedFontDescriptors:(id)a3 scrollToVisible:(BOOL)a4;
+- (void)setRemoteSelectedFontDescriptors:(id)descriptors scrollToVisible:(BOOL)visible;
 - (void)setupRemoteHosting;
 @end
 
@@ -19,46 +19,46 @@
 
 - (void)setupRemoteHosting
 {
-  v2 = self;
+  selfCopy = self;
   sub_18917B230();
 }
 
-- (void)setRemoteSelectedFontDescriptors:(id)a3 scrollToVisible:(BOOL)a4
+- (void)setRemoteSelectedFontDescriptors:(id)descriptors scrollToVisible:(BOOL)visible
 {
-  v5 = a3;
-  if (a3)
+  descriptorsCopy = descriptors;
+  if (descriptors)
   {
     sub_188A34624(0, &qword_1EA93ECE8);
-    v5 = sub_18A4A7548();
+    descriptorsCopy = sub_18A4A7548();
   }
 
-  v7 = self;
-  sub_18917B7C8(v5, a4);
+  selfCopy = self;
+  sub_18917B7C8(descriptorsCopy, visible);
 }
 
-- (void)_pickerDidSelectFont:(id)a3
+- (void)_pickerDidSelectFont:(id)font
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(_UIFontPickerSceneHostingImpl *)v6 delegateFontPickerViewController];
-  [(UIFontPickerViewController *)v5 _pickerDidSelectFont:v4];
+  fontCopy = font;
+  selfCopy = self;
+  delegateFontPickerViewController = [(_UIFontPickerSceneHostingImpl *)selfCopy delegateFontPickerViewController];
+  [(UIFontPickerViewController *)delegateFontPickerViewController _pickerDidSelectFont:fontCopy];
 }
 
 - (void)_pickerDidCancel
 {
-  v3 = self;
-  v2 = [(_UIFontPickerSceneHostingImpl *)v3 delegateFontPickerViewController];
-  [(UIFontPickerViewController *)v2 _pickerDidCancel];
+  selfCopy = self;
+  delegateFontPickerViewController = [(_UIFontPickerSceneHostingImpl *)selfCopy delegateFontPickerViewController];
+  [(UIFontPickerViewController *)delegateFontPickerViewController _pickerDidCancel];
 }
 
 - (void)clientIsReady
 {
-  v4 = self;
-  v2 = [(_UIFontPickerSceneHostingImpl *)v4 delegateFontPickerViewController];
-  if (v2)
+  selfCopy = self;
+  delegateFontPickerViewController = [(_UIFontPickerSceneHostingImpl *)selfCopy delegateFontPickerViewController];
+  if (delegateFontPickerViewController)
   {
-    v3 = v2;
-    [(UIViewController *)v2 _endDelayingPresentation];
+    v3 = delegateFontPickerViewController;
+    [(UIViewController *)delegateFontPickerViewController _endDelayingPresentation];
   }
 }
 

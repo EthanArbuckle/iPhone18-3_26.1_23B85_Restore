@@ -1,61 +1,61 @@
 @interface MusicKit_SoftLinking_MPModelCurator
-+ (int64_t)kindForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForKind:(int64_t)a3;
-+ (int64_t)rawValueForSubKind:(int64_t)a3;
-+ (int64_t)subKindForRawValue:(int64_t)a3;
++ (int64_t)kindForRawValue:(int64_t)value;
++ (int64_t)rawValueForKind:(int64_t)kind;
++ (int64_t)rawValueForSubKind:(int64_t)kind;
++ (int64_t)subKindForRawValue:(int64_t)value;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelCurator
 
-+ (int64_t)kindForRawValue:(int64_t)a3
++ (int64_t)kindForRawValue:(int64_t)value
 {
-  if ((a3 - 1) >= 4)
+  if ((value - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 
-+ (int64_t)rawValueForKind:(int64_t)a3
++ (int64_t)rawValueForKind:(int64_t)kind
 {
-  if ((a3 - 1) >= 4)
+  if ((kind - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return kind;
   }
 }
 
-+ (int64_t)subKindForRawValue:(int64_t)a3
++ (int64_t)subKindForRawValue:(int64_t)value
 {
-  if ((a3 - 1) >= 3)
+  if ((value - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 
-+ (int64_t)rawValueForSubKind:(int64_t)a3
++ (int64_t)rawValueForSubKind:(int64_t)kind
 {
-  if ((a3 - 1) >= 3)
+  if ((kind - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return kind;
   }
 }
 

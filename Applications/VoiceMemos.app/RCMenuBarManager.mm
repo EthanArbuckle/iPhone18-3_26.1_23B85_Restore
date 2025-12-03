@@ -4,11 +4,11 @@
 - (id)editMenu;
 - (id)fileMenu;
 - (id)resetIdentifierAction;
-- (void)_replaceSettingsChildren:(id)a3;
-- (void)addControlsMenuItemsToBuilder:(id)a3;
-- (void)addEditMenuItemsToBuilder:(id)a3;
-- (void)addFileMenuItemsToBuilder:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_replaceSettingsChildren:(id)children;
+- (void)addControlsMenuItemsToBuilder:(id)builder;
+- (void)addEditMenuItemsToBuilder:(id)builder;
+- (void)addFileMenuItemsToBuilder:(id)builder;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation RCMenuBarManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009C944;
   block[3] = &unk_10028A308;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D7108 != -1)
   {
     dispatch_once(&qword_1002D7108, block);
@@ -30,32 +30,32 @@
   return v2;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
-  [v4 removeMenuForIdentifier:UIMenuFormat];
-  [v4 removeMenuForIdentifier:UIMenuToolbar];
-  [(RCMenuBarManager *)self addApplicationMenuItemsToBuilder:v4];
-  [(RCMenuBarManager *)self addFileMenuItemsToBuilder:v4];
-  [(RCMenuBarManager *)self addEditMenuItemsToBuilder:v4];
-  [(RCMenuBarManager *)self addControlsMenuItemsToBuilder:v4];
+  builderCopy = builder;
+  [builderCopy removeMenuForIdentifier:UIMenuFormat];
+  [builderCopy removeMenuForIdentifier:UIMenuToolbar];
+  [(RCMenuBarManager *)self addApplicationMenuItemsToBuilder:builderCopy];
+  [(RCMenuBarManager *)self addFileMenuItemsToBuilder:builderCopy];
+  [(RCMenuBarManager *)self addEditMenuItemsToBuilder:builderCopy];
+  [(RCMenuBarManager *)self addControlsMenuItemsToBuilder:builderCopy];
 }
 
-- (void)addFileMenuItemsToBuilder:(id)a3
+- (void)addFileMenuItemsToBuilder:(id)builder
 {
-  v4 = a3;
-  [(RCMenuBarManager *)self _removeDefaultDocumentCommandsInBuilder:v4];
-  v5 = [(RCMenuBarManager *)self fileMenu];
-  [v4 insertChildMenu:v5 atStartOfMenuForIdentifier:UIMenuFile];
+  builderCopy = builder;
+  [(RCMenuBarManager *)self _removeDefaultDocumentCommandsInBuilder:builderCopy];
+  fileMenu = [(RCMenuBarManager *)self fileMenu];
+  [builderCopy insertChildMenu:fileMenu atStartOfMenuForIdentifier:UIMenuFile];
 }
 
-- (void)addEditMenuItemsToBuilder:(id)a3
+- (void)addEditMenuItemsToBuilder:(id)builder
 {
-  v4 = a3;
-  [(RCMenuBarManager *)self _removeDefaultFindCommandsInBuilder:v4];
-  [(RCMenuBarManager *)self _replaceDefaultDeleteCommandWithCustomCommandInBuilder:v4];
-  v5 = [(RCMenuBarManager *)self editMenu];
-  [v4 insertSiblingMenu:v5 afterMenuForIdentifier:UIMenuStandardEdit];
+  builderCopy = builder;
+  [(RCMenuBarManager *)self _removeDefaultFindCommandsInBuilder:builderCopy];
+  [(RCMenuBarManager *)self _replaceDefaultDeleteCommandWithCustomCommandInBuilder:builderCopy];
+  editMenu = [(RCMenuBarManager *)self editMenu];
+  [builderCopy insertSiblingMenu:editMenu afterMenuForIdentifier:UIMenuStandardEdit];
 }
 
 - (id)resetIdentifierAction
@@ -63,27 +63,27 @@
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"SETTINGS_MENU_RESET_IDENTIFIER_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v5 = [v2 resetIdentifierImage];
-  v6 = [UIAction actionWithTitle:v4 image:v5 identifier:@"RCResetIDIdentifier" handler:&stru_10028C010];
+  resetIdentifierImage = [v2 resetIdentifierImage];
+  v6 = [UIAction actionWithTitle:v4 image:resetIdentifierImage identifier:@"RCResetIDIdentifier" handler:&stru_10028C010];
 
   return v6;
 }
 
-- (void)_replaceSettingsChildren:(id)a3
+- (void)_replaceSettingsChildren:(id)children
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10009D0A8;
   v3[3] = &unk_10028C078;
   v3[4] = self;
-  [a3 replaceChildrenOfMenuForIdentifier:UIMenuPreferences fromChildrenBlock:v3];
+  [children replaceChildrenOfMenuForIdentifier:UIMenuPreferences fromChildrenBlock:v3];
 }
 
-- (void)addControlsMenuItemsToBuilder:(id)a3
+- (void)addControlsMenuItemsToBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(RCMenuBarManager *)self controlsMenu];
-  [v4 insertSiblingMenu:v5 afterMenuForIdentifier:UIMenuView];
+  builderCopy = builder;
+  controlsMenu = [(RCMenuBarManager *)self controlsMenu];
+  [builderCopy insertSiblingMenu:controlsMenu afterMenuForIdentifier:UIMenuView];
 }
 
 - (id)fileMenu
@@ -91,24 +91,24 @@
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"DONE_EDITING" value:? table:?];
-  v5 = [v2 doneEditingImage];
-  v26 = [UIKeyCommand commandWithTitle:v4 image:v5 action:"handleDone:" input:@"s" modifierFlags:0x100000 propertyList:0];
+  doneEditingImage = [v2 doneEditingImage];
+  v26 = [UIKeyCommand commandWithTitle:v4 image:doneEditingImage action:"handleDone:" input:@"s" modifierFlags:0x100000 propertyList:0];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"START_NEW_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v8 = [v2 startNewRecordingImage];
-  v9 = [UIKeyCommand commandWithTitle:v7 image:v8 action:"startNewRecording:" input:@"n" modifierFlags:0x100000 propertyList:0];
+  startNewRecordingImage = [v2 startNewRecordingImage];
+  v9 = [UIKeyCommand commandWithTitle:v7 image:startNewRecordingImage action:"startNewRecording:" input:@"n" modifierFlags:0x100000 propertyList:0];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"DUPLICATE_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v12 = [v2 duplicateActivitySystemImageName];
-  v13 = [UIImage systemImageNamed:v12];
+  duplicateActivitySystemImageName = [v2 duplicateActivitySystemImageName];
+  v13 = [UIImage systemImageNamed:duplicateActivitySystemImageName];
   v14 = [UIKeyCommand commandWithTitle:v11 image:v13 action:"duplicateRecording:" input:@"d" modifierFlags:0x100000 propertyList:0];
 
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"RENAME_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v17 = [v2 renameRecordingSystemImageName];
-  v18 = [UIImage systemImageNamed:v17];
+  renameRecordingSystemImageName = [v2 renameRecordingSystemImageName];
+  v18 = [UIImage systemImageNamed:renameRecordingSystemImageName];
   v19 = [UICommand commandWithTitle:v16 image:v18 action:"renameRecording:" propertyList:0];
 
   v20 = +[NSBundle mainBundle];
@@ -132,37 +132,37 @@
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"EDIT_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v5 = [v2 editButtonImage];
-  v30 = [UICommand commandWithTitle:v4 image:v5 action:"editRecording:" propertyList:0];
+  editButtonImage = [v2 editButtonImage];
+  v30 = [UICommand commandWithTitle:v4 image:editButtonImage action:"editRecording:" propertyList:0];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"TRIM_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v8 = [v2 trimImage];
-  v28 = [UIKeyCommand commandWithTitle:v7 image:v8 action:"trimRecording:" input:@"t" modifierFlags:0x100000 propertyList:0];
+  trimImage = [v2 trimImage];
+  v28 = [UIKeyCommand commandWithTitle:v7 image:trimImage action:"trimRecording:" input:@"t" modifierFlags:0x100000 propertyList:0];
 
   v9 = +[NSBundle mainBundle];
   v29 = [v9 localizedStringForKey:@"FAVORITE_RECORDING" value:&stru_100295BB8 table:0];
 
-  v10 = [v2 notFavoriteImage];
-  v26 = [UICommand commandWithTitle:v29 image:v10 action:"toggleFavorite:" propertyList:0];
+  notFavoriteImage = [v2 notFavoriteImage];
+  v26 = [UICommand commandWithTitle:v29 image:notFavoriteImage action:"toggleFavorite:" propertyList:0];
 
   v11 = +[NSBundle mainBundle];
   v27 = [v11 localizedStringForKey:@"ENHANCE_RECORDING_SETTING" value:&stru_100295BB8 table:0];
 
-  v12 = [v2 enhanceRecordingImage];
-  v24 = [UIKeyCommand commandWithTitle:v27 image:v12 action:"toggleEnhance:" input:@"e" modifierFlags:1179648 propertyList:0];
+  enhanceRecordingImage = [v2 enhanceRecordingImage];
+  v24 = [UIKeyCommand commandWithTitle:v27 image:enhanceRecordingImage action:"toggleEnhance:" input:@"e" modifierFlags:1179648 propertyList:0];
 
   v13 = +[NSBundle mainBundle];
   v25 = [v13 localizedStringForKey:@"SKIP_SILENCE_SETTING" value:&stru_100295BB8 table:0];
 
-  v14 = [v2 skipSilenceImage];
-  v15 = [UIKeyCommand commandWithTitle:v25 image:v14 action:"toggleRemoveSilence:" input:@"x" modifierFlags:1179648 propertyList:0];
+  skipSilenceImage = [v2 skipSilenceImage];
+  v15 = [UIKeyCommand commandWithTitle:v25 image:skipSilenceImage action:"toggleRemoveSilence:" input:@"x" modifierFlags:1179648 propertyList:0];
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"STUDIO_VOICE_TITLE" value:&stru_100295BB8 table:0];
 
-  v18 = [v2 speechIsolatorImageName];
-  v19 = [UIImage systemImageNamed:v18];
+  speechIsolatorImageName = [v2 speechIsolatorImageName];
+  v19 = [UIImage systemImageNamed:speechIsolatorImageName];
 
   v20 = [UIKeyCommand commandWithTitle:v17 image:v19 action:"toggleSpeechIsolator:" input:@"s" modifierFlags:1179648 propertyList:0];
   v31[0] = v30;
@@ -182,25 +182,25 @@
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"PLAY_PAUSE_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
-  v5 = [v2 playPauseImage];
-  v6 = [UIKeyCommand commandWithTitle:v4 image:v5 action:"playRecording:" input:@" " modifierFlags:0 propertyList:0];
-  v7 = [v6 _nonRepeatableKeyCommand];
+  playPauseImage = [v2 playPauseImage];
+  v6 = [UIKeyCommand commandWithTitle:v4 image:playPauseImage action:"playRecording:" input:@" " modifierFlags:0 propertyList:0];
+  _nonRepeatableKeyCommand = [v6 _nonRepeatableKeyCommand];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SKIP_BACKWARD" value:&stru_100295BB8 table:0];
-  v10 = [v2 goBackwardMenuBarImage];
-  v11 = [UIKeyCommand commandWithTitle:v9 image:v10 action:"jumpSelectionBackward:" input:UIKeyInputLeftArrow modifierFlags:0x100000 propertyList:0];
+  goBackwardMenuBarImage = [v2 goBackwardMenuBarImage];
+  v11 = [UIKeyCommand commandWithTitle:v9 image:goBackwardMenuBarImage action:"jumpSelectionBackward:" input:UIKeyInputLeftArrow modifierFlags:0x100000 propertyList:0];
 
   [v11 setAllowsAutomaticMirroring:0];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"SKIP_FORWARD" value:&stru_100295BB8 table:0];
-  v14 = [v2 goForwardMenuBarImage];
-  v15 = [UIKeyCommand commandWithTitle:v13 image:v14 action:"jumpSelectionForward:" input:UIKeyInputRightArrow modifierFlags:0x100000 propertyList:0];
+  goForwardMenuBarImage = [v2 goForwardMenuBarImage];
+  v15 = [UIKeyCommand commandWithTitle:v13 image:goForwardMenuBarImage action:"jumpSelectionForward:" input:UIKeyInputRightArrow modifierFlags:0x100000 propertyList:0];
 
   [v15 setAllowsAutomaticMirroring:0];
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"CONTROLS_MENU_NAME" value:&stru_100295BB8 table:0];
-  v21[0] = v7;
+  v21[0] = _nonRepeatableKeyCommand;
   v21[1] = v11;
   v21[2] = v15;
   v18 = [NSArray arrayWithObjects:v21 count:3];

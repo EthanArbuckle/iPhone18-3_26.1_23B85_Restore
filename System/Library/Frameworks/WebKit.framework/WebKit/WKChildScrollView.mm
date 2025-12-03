@@ -1,16 +1,16 @@
 @interface WKChildScrollView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (WKChildScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (WKChildScrollView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WKChildScrollView
 
-- (WKChildScrollView)initWithFrame:(CGRect)a3
+- (WKChildScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WKChildScrollView;
-  v3 = [(WKBaseScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WKBaseScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -28,10 +28,10 @@
     return 0;
   }
 
-  return [a4 shouldDeferGestureRecognizer:a3];
+  return [gestureRecognizer shouldDeferGestureRecognizer:recognizer];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -39,7 +39,7 @@
     return 0;
   }
 
-  return [a3 shouldDeferGestureRecognizer:a4];
+  return [recognizer shouldDeferGestureRecognizer:gestureRecognizer];
 }
 
 @end

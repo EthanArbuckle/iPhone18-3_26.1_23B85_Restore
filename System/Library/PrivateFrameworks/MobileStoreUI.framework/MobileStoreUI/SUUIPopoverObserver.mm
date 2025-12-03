@@ -1,22 +1,22 @@
 @interface SUUIPopoverObserver
-- (SUUIPopoverObserver)initWithPopoverController:(id)a3;
+- (SUUIPopoverObserver)initWithPopoverController:(id)controller;
 - (void)dealloc;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)setTarget:(id)a3 selector:(SEL)a4;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)setTarget:(id)target selector:(SEL)selector;
 @end
 
 @implementation SUUIPopoverObserver
 
-- (SUUIPopoverObserver)initWithPopoverController:(id)a3
+- (SUUIPopoverObserver)initWithPopoverController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SUUIPopoverObserver;
   v6 = [(SUUIPopoverObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_popoverController, a3);
+    objc_storeStrong(&v6->_popoverController, controller);
     [(UIPopoverController *)v7->_popoverController setDelegate:v7];
   }
 
@@ -31,29 +31,29 @@
   [(SUUIPopoverObserver *)&v3 dealloc];
 }
 
-- (void)setTarget:(id)a3 selector:(SEL)a4
+- (void)setTarget:(id)target selector:(SEL)selector
 {
-  objc_initWeak(&location, a3);
-  if (a4)
+  objc_initWeak(&location, target);
+  if (selector)
   {
-    v6 = a4;
+    selectorCopy = selector;
   }
 
   else
   {
-    v6 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v6;
+  self->_selector = selectorCopy;
   v7 = objc_loadWeakRetained(&location);
   objc_storeWeak(&self->_target, v7);
 
   objc_destroyWeak(&location);
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
-  v9 = a3;
+  popoverCopy = popover;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (WeakRetained)
   {

@@ -17,55 +17,55 @@
   [(SBHIconSettings *)self setLightAngleDebugUIEnabled:0];
   [(SBHIconSettings *)self setSheenEffectStrength:0.5];
   [(SBHIconSettings *)self setSheenEffectMinimumMovementToBecomeVisible:7.5];
-  v3 = [(SBHIconSettings *)self sheenEffectFadeInSettings];
-  [v3 setAnimationType:0];
+  sheenEffectFadeInSettings = [(SBHIconSettings *)self sheenEffectFadeInSettings];
+  [sheenEffectFadeInSettings setAnimationType:0];
 
-  v4 = [(SBHIconSettings *)self sheenEffectFadeInSettings];
-  [v4 setDuration:0.75];
+  sheenEffectFadeInSettings2 = [(SBHIconSettings *)self sheenEffectFadeInSettings];
+  [sheenEffectFadeInSettings2 setDuration:0.75];
 
-  v5 = [(SBHIconSettings *)self sheenEffectFadeInSettings];
-  [v5 setCurve:0];
+  sheenEffectFadeInSettings3 = [(SBHIconSettings *)self sheenEffectFadeInSettings];
+  [sheenEffectFadeInSettings3 setCurve:0];
 
-  v6 = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
-  [v6 setAnimationType:0];
+  sheenEffectFadeOutSettings = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
+  [sheenEffectFadeOutSettings setAnimationType:0];
 
-  v7 = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
-  [v7 setDuration:3.0];
+  sheenEffectFadeOutSettings2 = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
+  [sheenEffectFadeOutSettings2 setDuration:3.0];
 
-  v8 = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
-  [v8 setCurve:0];
+  sheenEffectFadeOutSettings3 = [(SBHIconSettings *)self sheenEffectFadeOutSettings];
+  [sheenEffectFadeOutSettings3 setCurve:0];
 
   [(SBHIconSettings *)self setSheenEffectDebugUIEnabled:0];
-  v9 = [(SBHIconSettings *)self badgeParallaxSettings];
-  [v9 setSlideEnabled:1];
+  badgeParallaxSettings = [(SBHIconSettings *)self badgeParallaxSettings];
+  [badgeParallaxSettings setSlideEnabled:1];
 
-  v10 = [(SBHIconSettings *)self badgeParallaxSettings];
-  [v10 setSlideDirectionX:1];
+  badgeParallaxSettings2 = [(SBHIconSettings *)self badgeParallaxSettings];
+  [badgeParallaxSettings2 setSlideDirectionX:1];
 
-  v11 = [(SBHIconSettings *)self badgeParallaxSettings];
-  [v11 setSlideDirectionY:1];
+  badgeParallaxSettings3 = [(SBHIconSettings *)self badgeParallaxSettings];
+  [badgeParallaxSettings3 setSlideDirectionY:1];
 
-  v12 = [(SBHIconSettings *)self badgeParallaxSettings];
-  [v12 setSlidePixelsX:8.0];
+  badgeParallaxSettings4 = [(SBHIconSettings *)self badgeParallaxSettings];
+  [badgeParallaxSettings4 setSlidePixelsX:8.0];
 
-  v13 = [(SBHIconSettings *)self badgeParallaxSettings];
-  [v13 setSlidePixelsY:8.0];
+  badgeParallaxSettings5 = [(SBHIconSettings *)self badgeParallaxSettings];
+  [badgeParallaxSettings5 setSlidePixelsY:8.0];
 
-  v14 = [(SBHIconSettings *)self iconParallaxSettings];
-  [v14 setSlideEnabled:1];
+  iconParallaxSettings = [(SBHIconSettings *)self iconParallaxSettings];
+  [iconParallaxSettings setSlideEnabled:1];
 
-  v15 = [(SBHIconSettings *)self iconParallaxSettings];
-  [v15 setSlideDirectionX:1];
+  iconParallaxSettings2 = [(SBHIconSettings *)self iconParallaxSettings];
+  [iconParallaxSettings2 setSlideDirectionX:1];
 
-  v16 = [(SBHIconSettings *)self iconParallaxSettings];
-  [v16 setSlideDirectionY:1];
+  iconParallaxSettings3 = [(SBHIconSettings *)self iconParallaxSettings];
+  [iconParallaxSettings3 setSlideDirectionY:1];
 
   v17 = *MEMORY[0x1E69DEAF0];
-  v18 = [(SBHIconSettings *)self iconParallaxSettings];
-  [v18 setSlidePixelsX:v17];
+  iconParallaxSettings4 = [(SBHIconSettings *)self iconParallaxSettings];
+  [iconParallaxSettings4 setSlidePixelsX:v17];
 
-  v19 = [(SBHIconSettings *)self iconParallaxSettings];
-  [v19 setSlidePixelsY:v17];
+  iconParallaxSettings5 = [(SBHIconSettings *)self iconParallaxSettings];
+  [iconParallaxSettings5 setSlidePixelsY:v17];
 }
 
 + (id)settingsControllerModule
@@ -125,8 +125,8 @@
 
   v30 = [MEMORY[0x1E69C6638] sectionWithRows:v29];
   v31 = MEMORY[0x1E69C65E8];
-  v32 = [MEMORY[0x1E69C6640] action];
-  v33 = [v31 rowWithTitle:@"Restore Defaults" action:v32];
+  action = [MEMORY[0x1E69C6640] action];
+  v33 = [v31 rowWithTitle:@"Restore Defaults" action:action];
   v45 = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
 

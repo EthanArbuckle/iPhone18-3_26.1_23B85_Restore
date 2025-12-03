@@ -1,5 +1,5 @@
 @interface IDSRegistrationDailyPNRStatusMetric
-- (IDSRegistrationDailyPNRStatusMetric)initWithPNRCurrentlyRegistered:(BOOL)a3 pnrRegisteredToday:(BOOL)a4 pnrMechanism:(id)a5 errorCode:(id)a6 hasMultipleSIMs:(BOOL)a7;
+- (IDSRegistrationDailyPNRStatusMetric)initWithPNRCurrentlyRegistered:(BOOL)registered pnrRegisteredToday:(BOOL)today pnrMechanism:(id)mechanism errorCode:(id)code hasMultipleSIMs:(BOOL)ms;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -41,21 +41,21 @@
   return v3;
 }
 
-- (IDSRegistrationDailyPNRStatusMetric)initWithPNRCurrentlyRegistered:(BOOL)a3 pnrRegisteredToday:(BOOL)a4 pnrMechanism:(id)a5 errorCode:(id)a6 hasMultipleSIMs:(BOOL)a7
+- (IDSRegistrationDailyPNRStatusMetric)initWithPNRCurrentlyRegistered:(BOOL)registered pnrRegisteredToday:(BOOL)today pnrMechanism:(id)mechanism errorCode:(id)code hasMultipleSIMs:(BOOL)ms
 {
-  v13 = a5;
-  v14 = a6;
+  mechanismCopy = mechanism;
+  codeCopy = code;
   v18.receiver = self;
   v18.super_class = IDSRegistrationDailyPNRStatusMetric;
   v15 = [(IDSRegistrationDailyPNRStatusMetric *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_pnrCurrentlyRegistered = a3;
-    v15->_pnrRegisteredToday = a4;
-    objc_storeStrong(&v15->_pnrMechanism, a5);
-    objc_storeStrong(&v16->_errorCode, a6);
-    v16->_hasMultipleSIMs = a7;
+    v15->_pnrCurrentlyRegistered = registered;
+    v15->_pnrRegisteredToday = today;
+    objc_storeStrong(&v15->_pnrMechanism, mechanism);
+    objc_storeStrong(&v16->_errorCode, code);
+    v16->_hasMultipleSIMs = ms;
   }
 
   return v16;

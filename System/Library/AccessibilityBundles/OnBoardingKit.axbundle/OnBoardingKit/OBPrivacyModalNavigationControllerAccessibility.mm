@@ -1,15 +1,15 @@
 @interface OBPrivacyModalNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation OBPrivacyModalNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBPrivacyModalNavigationController" hasInstanceMethod:@"_doneButtonPressed" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"OBPrivacyModalNavigationController" isKindOfClass:@"UINavigationController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBPrivacyModalNavigationController" hasInstanceMethod:@"_doneButtonPressed" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"OBPrivacyModalNavigationController" isKindOfClass:@"UINavigationController"];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -29,10 +29,10 @@
     v9 = 3221225472;
     v10 = __77__OBPrivacyModalNavigationControllerAccessibility_accessibilityPerformEscape__block_invoke;
     v11 = &unk_29F2DFE28;
-    v12 = self;
+    selfCopy = self;
     v13 = &v14;
     AXPerformSafeBlock();
-    v5 = *(v15 + 24);
+    accessibilityPerformEscape = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }
 
@@ -40,10 +40,10 @@
   {
     v7.receiver = self;
     v7.super_class = OBPrivacyModalNavigationControllerAccessibility;
-    v5 = [(OBPrivacyModalNavigationControllerAccessibility *)&v7 accessibilityPerformEscape];
+    accessibilityPerformEscape = [(OBPrivacyModalNavigationControllerAccessibility *)&v7 accessibilityPerformEscape];
   }
 
-  return v5 & 1;
+  return accessibilityPerformEscape & 1;
 }
 
 uint64_t __77__OBPrivacyModalNavigationControllerAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1)

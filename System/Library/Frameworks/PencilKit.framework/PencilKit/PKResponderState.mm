@@ -4,8 +4,8 @@
 - (id)copy;
 - (int64_t)_currentToolPickerVisibility;
 - (void)_requestToolPickerVisibilityUpdate;
-- (void)setActiveToolPicker:(id)a3;
-- (void)setToolPickerVisibility:(int64_t)a3;
+- (void)setActiveToolPicker:(id)picker;
+- (void)setToolPickerVisibility:(int64_t)visibility;
 @end
 
 @implementation PKResponderState
@@ -13,43 +13,43 @@
 - (id)copy
 {
   v3 = objc_alloc_init(PKResponderState);
-  v4 = [(PKResponderState *)self activeToolPicker];
-  [(PKResponderState *)v3 setActiveToolPicker:v4];
+  activeToolPicker = [(PKResponderState *)self activeToolPicker];
+  [(PKResponderState *)v3 setActiveToolPicker:activeToolPicker];
 
   [(PKResponderState *)v3 setToolPickerVisibility:[(PKResponderState *)self toolPickerVisibility]];
   return v3;
 }
 
-- (void)setToolPickerVisibility:(int64_t)a3
+- (void)setToolPickerVisibility:(int64_t)visibility
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.pencilkit", "PKResponderState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = PKToolPickerVisibilityDescription(a3);
+    v6 = PKToolPickerVisibilityDescription(visibility);
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "set tool picker visibility: %@", &v7, 0xCu);
   }
 
-  self->_toolPickerVisibility = a3;
+  self->_toolPickerVisibility = visibility;
   [(PKResponderState *)self _requestToolPickerVisibilityUpdate];
 }
 
-- (void)setActiveToolPicker:(id)a3
+- (void)setActiveToolPicker:(id)picker
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pickerCopy = picker;
   v5 = os_log_create("com.apple.pencilkit", "PKResponderState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = v4;
+    v8 = pickerCopy;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "set active tool picker: %p", &v7, 0xCu);
   }
 
   activeToolPicker = self->_activeToolPicker;
-  self->_activeToolPicker = v4;
+  self->_activeToolPicker = pickerCopy;
 
   [(PKResponderState *)self _requestToolPickerVisibilityUpdate];
 }
@@ -65,34 +65,34 @@
       v5 = v4;
       if (v4)
       {
-        v6 = [v4 activeToolPicker];
+        activeToolPicker = [v4 activeToolPicker];
 
-        if (v6)
+        if (activeToolPicker)
         {
           break;
         }
       }
 
-      v7 = [v3 nextResponder];
+      nextResponder = [v3 nextResponder];
 
-      v3 = v7;
-      if (!v7)
+      v3 = nextResponder;
+      if (!nextResponder)
       {
         goto LABEL_9;
       }
     }
 
-    v7 = [v5 activeToolPicker];
+    nextResponder = [v5 activeToolPicker];
   }
 
   else
   {
-    v7 = 0;
+    nextResponder = 0;
   }
 
 LABEL_9:
 
-  return v7;
+  return nextResponder;
 }
 
 - (int64_t)_currentToolPickerVisibility
@@ -102,13 +102,13 @@ LABEL_9:
     return 3;
   }
 
-  v2 = [(PKResponderState *)self _responder];
-  if (!v2)
+  _responder = [(PKResponderState *)self _responder];
+  if (!_responder)
   {
     return 3;
   }
 
-  v3 = v2;
+  v3 = _responder;
   while (1)
   {
     v4 = [_responderPKConfigurations objectForKey:v3];
@@ -121,29 +121,29 @@ LABEL_9:
       }
     }
 
-    v6 = [v3 nextResponder];
+    nextResponder = [v3 nextResponder];
 
-    v3 = v6;
-    if (!v6)
+    v3 = nextResponder;
+    if (!nextResponder)
     {
       return 3;
     }
   }
 
-  v8 = [v5 toolPickerVisibility];
+  toolPickerVisibility = [v5 toolPickerVisibility];
 
-  return v8;
+  return toolPickerVisibility;
 }
 
 - (void)_requestToolPickerVisibilityUpdate
 {
-  v3 = [(PKResponderState *)self _responder];
-  v4 = [v3 isFirstResponder];
+  _responder = [(PKResponderState *)self _responder];
+  isFirstResponder = [_responder isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(PKResponderState *)self _responder];
-    [PKToolPicker _updateToolPickerVisibilityForFirstResponder:v5];
+    _responder2 = [(PKResponderState *)self _responder];
+    [PKToolPicker _updateToolPickerVisibilityForFirstResponder:_responder2];
   }
 }
 

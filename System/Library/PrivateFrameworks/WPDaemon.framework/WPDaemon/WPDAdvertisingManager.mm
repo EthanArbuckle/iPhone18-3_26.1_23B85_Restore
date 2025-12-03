@@ -1,43 +1,43 @@
 @interface WPDAdvertisingManager
-- (BOOL)addressChangeNotificationNeeded:(id)a3 advertiserTypeString:(id)a4;
-- (BOOL)heySiriAdvertActive:(BOOL)a3;
+- (BOOL)addressChangeNotificationNeeded:(id)needed advertiserTypeString:(id)string;
+- (BOOL)heySiriAdvertActive:(BOOL)active;
 - (BOOL)heySiriAdvertActiveAllDevices;
 - (BOOL)isAdvertiserTestMode;
 - (BOOL)platformSupportsMultipleAdvertising;
-- (WPDAdvertisingManager)initWithServer:(id)a3;
-- (id)NSUUIDfromCBUUID:(id)a3;
-- (id)addAdvertisingRequest:(id)a3 forClient:(id)a4;
+- (WPDAdvertisingManager)initWithServer:(id)server;
+- (id)NSUUIDfromCBUUID:(id)d;
+- (id)addAdvertisingRequest:(id)request forClient:(id)client;
 - (id)advertisingRules;
 - (id)advertisingRulesCBStackAdvertiser;
-- (id)clientForAdvRequest:(id)a3;
+- (id)clientForAdvRequest:(id)request;
 - (id)generateStateDumpStrings;
-- (id)getCharacteristicForClient:(id)a3;
-- (id)getClientUUIDsForCharacteristic:(id)a3;
+- (id)getCharacteristicForClient:(id)client;
+- (id)getClientUUIDsForCharacteristic:(id)characteristic;
 - (id)getCurrentAdvertisers;
-- (id)removeAdvertisingRequest:(id)a3 forClient:(id)a4 shouldUpdate:(BOOL)a5;
-- (id)requestFromAdvertisingDataFromInstance:(int64_t)a3 AddressChangeNotificationNeeded:(BOOL)a4;
-- (id)setWPDaemonAdvDataFrom:(id)a3;
-- (id)setWPDaemonAdvDataFromWPAdvertisingRequest:(id)a3;
+- (id)removeAdvertisingRequest:(id)request forClient:(id)client shouldUpdate:(BOOL)update;
+- (id)requestFromAdvertisingDataFromInstance:(int64_t)instance AddressChangeNotificationNeeded:(BOOL)needed;
+- (id)setWPDaemonAdvDataFrom:(id)from;
+- (id)setWPDaemonAdvDataFromWPAdvertisingRequest:(id)request;
 - (int)maxAdvertisingRules;
-- (void)addAdvertisingRequest:(id)a3 forDaemon:(id)a4;
-- (void)addCharacteristic:(id)a3 Properties:(unint64_t)a4 Permissions:(unint64_t)a5 Service:(id)a6 Name:(id)a7;
-- (void)addCharacteristic:(id)a3 forService:(id)a4 forClient:(id)a5;
-- (void)enableRanging:(BOOL)a3 forClient:(id)a4;
-- (void)informClientsAdvertisingPending:(id)a3;
+- (void)addAdvertisingRequest:(id)request forDaemon:(id)daemon;
+- (void)addCharacteristic:(id)characteristic Properties:(unint64_t)properties Permissions:(unint64_t)permissions Service:(id)service Name:(id)name;
+- (void)addCharacteristic:(id)characteristic forService:(id)service forClient:(id)client;
+- (void)enableRanging:(BOOL)ranging forClient:(id)client;
+- (void)informClientsAdvertisingPending:(id)pending;
 - (void)isAdvertiserTestMode;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)peripheralManager:(id)a3 didStopAdvertisingWithError:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)peripheralManager:(id)manager didStopAdvertisingWithError:(id)error;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers;
 - (void)preallocateServices;
-- (void)removeAdvertisingRequest:(id)a3 forDaemon:(id)a4;
-- (void)removeServiceForClient:(id)a3;
+- (void)removeAdvertisingRequest:(id)request forDaemon:(id)daemon;
+- (void)removeServiceForClient:(id)client;
 - (void)resetAdvertisingManager;
-- (void)setupStackAdvertiser:(id)a3;
+- (void)setupStackAdvertiser:(id)advertiser;
 - (void)statsExportTimerFired;
 - (void)update;
 - (void)updateAdvertiser;
@@ -174,18 +174,18 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
 {
   v6 = *a2;
   v7 = a3;
-  v8 = [v6 wpDaemonData];
-  v9 = [v8 advInstanceType];
-  *a1 = 67109120;
-  *a4 = v9;
+  wpDaemonData = [v6 wpDaemonData];
+  advInstanceType = [wpDaemonData advInstanceType];
+  *self = 67109120;
+  *a4 = advInstanceType;
   OUTLINED_FUNCTION_3_3(&dword_272965000, v10, v11, "wpDaemonData advInstance %d has no data, stop advertising");
 }
 
 - (id)advertisingRules
 {
   v174 = *MEMORY[0x277D85DE8];
-  v3 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v4 = [v3 count];
+  advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+  v4 = [advertisingRequests count];
 
   if (!v4)
   {
@@ -199,22 +199,22 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
   v8 = [MEMORY[0x277CBEB58] set];
   v136 = [MEMORY[0x277CBEB58] set];
   v133 = [MEMORY[0x277CBEB58] set];
-  v9 = [(WPDAdvertisingManager *)self currentAdvertisers];
-  [v9 removeAllIndexes];
+  currentAdvertisers = [(WPDAdvertisingManager *)self currentAdvertisers];
+  [currentAdvertisers removeAllIndexes];
 
-  v141 = [(WPDAdvertisingManager *)self isAdvertiserTestMode];
+  isAdvertiserTestMode = [(WPDAdvertisingManager *)self isAdvertiserTestMode];
   v147 = [(WPDAdvertisingManager *)self heySiriAdvertActive:?];
-  v10 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v11 = [v10 allRequests];
+  advertisingRequests2 = [(WPDAdvertisingManager *)self advertisingRequests];
+  allRequests = [advertisingRequests2 allRequests];
 
-  v12 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v13 = [v12 count];
+  advertisingRequests3 = [(WPDAdvertisingManager *)self advertisingRequests];
+  v13 = [advertisingRequests3 count];
 
   if (v13 >= 2)
   {
-    v14 = [v11 sortedArrayUsingSelector:sel_compare_];
+    v14 = [allRequests sortedArrayUsingSelector:sel_compare_];
 
-    v11 = v14;
+    allRequests = v14;
   }
 
   v130 = v8;
@@ -222,7 +222,7 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v15 = v11;
+  v15 = allRequests;
   v16 = [v15 countByEnumeratingWithState:&v160 objects:v167 count:16];
   v131 = v6;
   v132 = v5;
@@ -231,7 +231,7 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
   if (v16)
   {
     v18 = v16;
-    v134 = 0;
+    longLongValue = 0;
     v148 = *v161;
     *&v17 = 138412802;
     v128 = v17;
@@ -260,9 +260,9 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
             {
               v32 = v40;
-              v41 = [v20 clientType];
+              clientType = [v20 clientType];
               *buf = 134217984;
-              v169 = v41;
+              v169 = clientType;
               v34 = v32;
               v35 = OS_LOG_TYPE_INFO;
               v36 = "Not advertising for client type (%ld) when HeySiri is active";
@@ -272,30 +272,30 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
 
           else
           {
-            v21 = [(WPDAdvertisingManager *)self clientForAdvRequest:v20, v128];
-            v149 = v21;
-            if (!v141 || v21 && (-[WPDManager server](self, "server"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 isClientTestMode:v149], v22, (v23 & 1) != 0))
+            v128 = [(WPDAdvertisingManager *)self clientForAdvRequest:v20, v128];
+            v149 = v128;
+            if (!isAdvertiserTestMode || v128 && (-[WPDManager server](self, "server"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 isClientTestMode:v149], v22, (v23 & 1) != 0))
             {
-              v24 = [v20 advertisementRequestedAt];
-              if (v24)
+              advertisementRequestedAt = [v20 advertisementRequestedAt];
+              if (advertisementRequestedAt)
               {
                 heySiriAdvEnabled = self->_heySiriAdvEnabled;
 
                 if (!heySiriAdvEnabled)
                 {
-                  v26 = [v20 advertisementRequestedAt];
-                  v134 = [v26 longLongValue];
+                  advertisementRequestedAt2 = [v20 advertisementRequestedAt];
+                  longLongValue = [advertisementRequestedAt2 longLongValue];
                 }
               }
 
-              v27 = [(WPDManager *)self server];
-              v28 = [v27 getClientForUUID:v149];
+              server = [(WPDManager *)self server];
+              v28 = [server getClientForUUID:v149];
 
-              LODWORD(v27) = [v20 connectable];
-              v138 = [v20 clientType];
-              v146 = v27;
+              LODWORD(server) = [v20 connectable];
+              clientType2 = [v20 clientType];
+              v146 = server;
               v29 = &OBJC_IVAR___WPDAdvertisingManager__nonConnectableAdvTotalCount;
-              if (v27)
+              if (server)
               {
                 v29 = &OBJC_IVAR___WPDAdvertisingManager__connectableAdvTotalCount;
               }
@@ -309,35 +309,35 @@ void __41__WPDAdvertisingManager_updateAdvertiser__block_invoke_381(uint64_t a1,
                 v143 = 1;
 LABEL_68:
                 -[AdvMetrics incrementTotalAdvCountforType:](self->_advMetrics, "incrementTotalAdvCountforType:", [v20 clientType]);
-                if ([(WPDAdvertisingManager *)self platformSupportsMultipleAdvertising]&& !(v146 & 1 | ((+[WPDaemonServer supportsNC2AdvertisingInstance]& v140 & 1) == 0)) && v138 == 19)
+                if ([(WPDAdvertisingManager *)self platformSupportsMultipleAdvertising]&& !(v146 & 1 | ((+[WPDaemonServer supportsNC2AdvertisingInstance]& v140 & 1) == 0)) && clientType2 == 19)
                 {
                   v67 = v7;
-                  v68 = [v28 bundleID];
+                  bundleID = [v28 bundleID];
 
                   v69 = v133;
-                  if (!v68)
+                  if (!bundleID)
                   {
                     goto LABEL_80;
                   }
 
 LABEL_79:
-                  v72 = [v28 bundleID];
-                  [v69 addObject:v72];
+                  bundleID2 = [v28 bundleID];
+                  [v69 addObject:bundleID2];
 
 LABEL_80:
                   [v67 addAdvertisingRequest:v20];
                   if ([(WPDAdvertisingManager *)self isRanging])
                   {
-                    v73 = [(WPDAdvertisingManager *)self rangingTypes];
-                    v74 = [v73 containsIndex:{objc_msgSend(v20, "clientType")}];
+                    rangingTypes = [(WPDAdvertisingManager *)self rangingTypes];
+                    v74 = [rangingTypes containsIndex:{objc_msgSend(v20, "clientType")}];
 
                     if (v74)
                     {
                       if ([v20 clientType] == 2)
                       {
-                        v75 = [v20 advertisingData];
-                        v76 = [v75 length];
-                        v77 = [v67 isRanging];
+                        advertisingData = [v20 advertisingData];
+                        v76 = [advertisingData length];
+                        isRanging = [v67 isRanging];
                         if (v76 == 22)
                         {
                           v78 = 1;
@@ -345,7 +345,7 @@ LABEL_80:
 
                         else
                         {
-                          v78 = v77;
+                          v78 = isRanging;
                         }
 
                         [v67 setIsRanging:v78];
@@ -361,9 +361,9 @@ LABEL_80:
                   [v67 setAssertPower:{objc_msgSend(v20, "holdVoucher") | objc_msgSend(v67, "assertPower")}];
                   if ([v20 stopOnAdvertisingAddressChange])
                   {
-                    v88 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
+                    clientsToNotifyOnAddressChange = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
                     v89 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v20, "clientType")}];
-                    [v88 addObject:v89];
+                    [clientsToNotifyOnAddressChange addObject:v89];
                   }
 
                   if (![(WPDAdvertisingManager *)self allowCompoundAdvertisements])
@@ -383,10 +383,10 @@ LABEL_118:
                 if (!(v146 & 1 | ((v143 & [(WPDAdvertisingManager *)self platformSupportsMultipleAdvertising]& 1) == 0)))
                 {
                   v67 = v6;
-                  v71 = [v28 bundleID];
+                  bundleID3 = [v28 bundleID];
 
                   v69 = v136;
-                  if (v71)
+                  if (bundleID3)
                   {
                     goto LABEL_79;
                   }
@@ -399,10 +399,10 @@ LABEL_118:
                   if ([v20 isValidOnConnectableInstance])
                   {
                     v67 = v5;
-                    v70 = [v28 bundleID];
+                    bundleID4 = [v28 bundleID];
 
                     v69 = v130;
-                    if (!v70)
+                    if (!bundleID4)
                     {
                       goto LABEL_80;
                     }
@@ -423,8 +423,8 @@ LABEL_101:
                   v155 = 0u;
                   v152 = 0u;
                   v153 = 0u;
-                  v79 = [v6 types];
-                  v84 = [v79 countByEnumeratingWithState:&v152 objects:v165 count:16];
+                  types = [v6 types];
+                  v84 = [types countByEnumeratingWithState:&v152 objects:v165 count:16];
                   if (v84)
                   {
                     v85 = v84;
@@ -435,13 +435,13 @@ LABEL_101:
                       {
                         if (*v153 != v86)
                         {
-                          objc_enumerationMutation(v79);
+                          objc_enumerationMutation(types);
                         }
 
                         -[AdvMetrics incrementDroppedAdvCountforType:by:](self->_advMetrics, "incrementDroppedAdvCountforType:by:", [v20 clientType], objc_msgSend(*(*(&v152 + 1) + 8 * i), "unsignedShortValue"));
                       }
 
-                      v85 = [v79 countByEnumeratingWithState:&v152 objects:v165 count:16];
+                      v85 = [types countByEnumeratingWithState:&v152 objects:v165 count:16];
                     }
 
                     while (v85);
@@ -470,8 +470,8 @@ LABEL_116:
                     v159 = 0u;
                     v156 = 0u;
                     v157 = 0u;
-                    v79 = [v5 types];
-                    v80 = [v79 countByEnumeratingWithState:&v156 objects:v166 count:16];
+                    types = [v5 types];
+                    v80 = [types countByEnumeratingWithState:&v156 objects:v166 count:16];
                     if (!v80)
                     {
                       goto LABEL_116;
@@ -485,13 +485,13 @@ LABEL_116:
                       {
                         if (*v157 != v82)
                         {
-                          objc_enumerationMutation(v79);
+                          objc_enumerationMutation(types);
                         }
 
                         -[AdvMetrics incrementDroppedAdvCountforType:by:](self->_advMetrics, "incrementDroppedAdvCountforType:by:", [v20 clientType], objc_msgSend(*(*(&v156 + 1) + 8 * j), "unsignedShortValue"));
                       }
 
-                      v81 = [v79 countByEnumeratingWithState:&v156 objects:v166 count:16];
+                      v81 = [types countByEnumeratingWithState:&v156 objects:v166 count:16];
                     }
 
                     while (v81);
@@ -548,9 +548,9 @@ LABEL_117:
                 if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
                 {
                   v64 = v63;
-                  v65 = [v42 advertisingData];
+                  advertisingData2 = [v42 advertisingData];
                   *buf = 138412546;
-                  v169 = v65;
+                  v169 = advertisingData2;
                   v170 = 2112;
                   v171 = v145;
                   _os_log_impl(&dword_272965000, v64, OS_LOG_TYPE_DEFAULT, "AirPlaySource old: %@, new: %@", buf, 0x16u);
@@ -594,22 +594,22 @@ LABEL_122:
 
               v42 = [v20 copy];
               v144 = v6;
-              v48 = 0;
+              advertisingData3 = 0;
               if (v6)
               {
                 if (v42)
                 {
-                  v48 = [v42 advertisingData];
-                  if (v48)
+                  advertisingData3 = [v42 advertisingData];
+                  if (advertisingData3)
                   {
-                    v49 = [v42 advertisingRandomData];
+                    advertisingRandomData = [v42 advertisingRandomData];
 
-                    if (v49)
+                    if (advertisingRandomData)
                     {
                       v50 = MEMORY[0x277CBEB28];
-                      v51 = [v48 length];
-                      v52 = [v42 advertisingRandomData];
-                      v53 = [v48 subdataWithRange:{0, v51 - objc_msgSend(v52, "length")}];
+                      v51 = [advertisingData3 length];
+                      advertisingRandomData2 = [v42 advertisingRandomData];
+                      v53 = [advertisingData3 subdataWithRange:{0, v51 - objc_msgSend(advertisingRandomData2, "length")}];
                       v54 = [v50 dataWithData:v53];
 
                       v129 = v54;
@@ -625,9 +625,9 @@ LABEL_122:
                       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
                       {
                         v58 = v57;
-                        v59 = [v42 advertisingRandomData];
+                        advertisingRandomData3 = [v42 advertisingRandomData];
                         *buf = v128;
-                        v169 = v59;
+                        v169 = advertisingRandomData3;
                         v170 = 2112;
                         v171 = v129;
                         v172 = 1024;
@@ -671,11 +671,11 @@ LABEL_122:
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
             {
               v38 = v37;
-              v39 = [v20 clientType];
+              clientType3 = [v20 clientType];
               *buf = 138412546;
               v169 = v149;
               v170 = 2048;
-              v171 = v39;
+              v171 = clientType3;
               _os_log_impl(&dword_272965000, v38, OS_LOG_TYPE_INFO, "Not advertising for non-test client UUID: %@ type (%ld) when in test mode", buf, 0x16u);
             }
           }
@@ -692,9 +692,9 @@ LABEL_122:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             v32 = v31;
-            v33 = [v20 clientType];
+            clientType4 = [v20 clientType];
             *buf = 134217984;
-            v169 = v33;
+            v169 = clientType4;
             v34 = v32;
             v35 = OS_LOG_TYPE_DEFAULT;
             v36 = "Not advertising for client type (%ld) when denylisted or not allowlisted";
@@ -718,19 +718,19 @@ LABEL_119:
     }
   }
 
-  v134 = 0;
+  longLongValue = 0;
 LABEL_128:
 
-  v92 = [v5 types];
-  v93 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:v92 advertiserTypeString:@"connectable"];
+  types2 = [v5 types];
+  v93 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:types2 advertiserTypeString:@"connectable"];
 
-  v94 = [v6 types];
-  v95 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:v94 advertiserTypeString:@"non-connectable"];
+  types3 = [v6 types];
+  v95 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:types3 advertiserTypeString:@"non-connectable"];
 
   if (+[WPDaemonServer supportsNC2AdvertisingInstance])
   {
-    v96 = [v7 types];
-    v150 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:v96 advertiserTypeString:@"non-connectable secondary"];
+    types4 = [v7 types];
+    v150 = [(WPDAdvertisingManager *)self addressChangeNotificationNeeded:types4 advertiserTypeString:@"non-connectable secondary"];
   }
 
   else
@@ -739,16 +739,16 @@ LABEL_128:
   }
 
   v97 = MEMORY[0x277CBEB58];
-  v98 = [v5 types];
-  v99 = [v97 setWithSet:v98];
+  types5 = [v5 types];
+  v99 = [v97 setWithSet:types5];
 
-  v100 = [v6 types];
-  [v99 unionSet:v100];
+  types6 = [v6 types];
+  [v99 unionSet:types6];
 
   if (+[WPDaemonServer supportsNC2AdvertisingInstance])
   {
-    v101 = [v7 types];
-    [v99 unionSet:v101];
+    types7 = [v7 types];
+    [v99 unionSet:types7];
   }
 
   v151[0] = MEMORY[0x277D85DD0];
@@ -765,24 +765,24 @@ LABEL_128:
   v102 = WiProxLog;
   if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
   {
-    v103 = [(WPDAdvertisingManager *)self getCurrentAdvertisers];
+    getCurrentAdvertisers = [(WPDAdvertisingManager *)self getCurrentAdvertisers];
     *buf = 138543362;
-    v169 = v103;
+    v169 = getCurrentAdvertisers;
     _os_log_impl(&dword_272965000, v102, OS_LOG_TYPE_DEFAULT, "AdvertisingRulesiOS - current advertisers: %{public}@", buf, 0xCu);
   }
 
-  v104 = [(WPDAdvertisingManager *)self currentAdvertisers];
-  v105 = [v104 count];
+  currentAdvertisers2 = [(WPDAdvertisingManager *)self currentAdvertisers];
+  v105 = [currentAdvertisers2 count];
 
-  v106 = [MEMORY[0x277CBEB18] array];
-  v107 = [(WPDAdvertisingManager *)self currentConnectableAdvertisingData];
-  if (![v5 isEqualToData:v107])
+  array = [MEMORY[0x277CBEB18] array];
+  currentConnectableAdvertisingData = [(WPDAdvertisingManager *)self currentConnectableAdvertisingData];
+  if (![v5 isEqualToData:currentConnectableAdvertisingData])
   {
     goto LABEL_142;
   }
 
-  v108 = [(WPDAdvertisingManager *)self currentNonConnectableAdvertisingData];
-  if (([v131 isEqualToData:v108] & 1) == 0)
+  currentNonConnectableAdvertisingData = [(WPDAdvertisingManager *)self currentNonConnectableAdvertisingData];
+  if (([v131 isEqualToData:currentNonConnectableAdvertisingData] & 1) == 0)
   {
 
     v5 = v132;
@@ -792,8 +792,8 @@ LABEL_142:
     goto LABEL_143;
   }
 
-  v109 = [(WPDAdvertisingManager *)self currentNonConnectableSecondaryAdvertisingData];
-  v110 = [v135 isEqualToData:v109];
+  currentNonConnectableSecondaryAdvertisingData = [(WPDAdvertisingManager *)self currentNonConnectableSecondaryAdvertisingData];
+  v110 = [v135 isEqualToData:currentNonConnectableSecondaryAdvertisingData];
 
   v7 = v135;
   v111 = v131;
@@ -810,11 +810,11 @@ LABEL_143:
       v113 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v112];
       if ([v130 count])
       {
-        v114 = [v130 allObjects];
-        [v113 setObject:v114 forKeyedSubscript:*MEMORY[0x277CBDF00]];
+        allObjects = [v130 allObjects];
+        [v113 setObject:allObjects forKeyedSubscript:*MEMORY[0x277CBDF00]];
       }
 
-      [v106 addObject:v113];
+      [array addObject:v113];
 
       v111 = v131;
     }
@@ -826,11 +826,11 @@ LABEL_143:
       v116 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v115];
       if ([v136 count])
       {
-        v117 = [v136 allObjects];
-        [v116 setObject:v117 forKeyedSubscript:*MEMORY[0x277CBDF00]];
+        allObjects2 = [v136 allObjects];
+        [v116 setObject:allObjects2 forKeyedSubscript:*MEMORY[0x277CBDF00]];
       }
 
-      if (v134)
+      if (longLongValue)
       {
         v118 = MEMORY[0x277CBEB38];
         v119 = [(WPDAdvertisingManager *)self addXPCDelayTiming:v116 IsMetricOnly:1 UseCase:22 timeStamp:?];
@@ -840,7 +840,7 @@ LABEL_143:
         v116 = v120;
       }
 
-      [v106 addObject:v116];
+      [array addObject:v116];
     }
 
     if (+[WPDaemonServer supportsNC2AdvertisingInstance])
@@ -852,11 +852,11 @@ LABEL_143:
         v122 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v121];
         if ([v133 count])
         {
-          v123 = [v133 allObjects];
-          [v122 setObject:v123 forKeyedSubscript:*MEMORY[0x277CBDF00]];
+          allObjects3 = [v133 allObjects];
+          [v122 setObject:allObjects3 forKeyedSubscript:*MEMORY[0x277CBDF00]];
         }
 
-        [v106 addObject:v122];
+        [array addObject:v122];
       }
     }
 
@@ -877,15 +877,15 @@ LABEL_143:
   if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v169 = v106;
+    v169 = array;
     _os_log_impl(&dword_272965000, v124, OS_LOG_TYPE_DEFAULT, "AdvertisingRulesiOS - advertising packets: %{public}@", buf, 0xCu);
   }
 
   if (v105)
   {
-    if ([v106 count])
+    if ([array count])
     {
-      v91 = v106;
+      v91 = array;
     }
 
     else
@@ -899,8 +899,8 @@ LABEL_143:
     [(WPDAdvertisingManager *)self setCurrentConnectableAdvertisingData:0];
     [(WPDAdvertisingManager *)self setCurrentNonConnectableAdvertisingData:0];
     [(WPDAdvertisingManager *)self setCurrentNonConnectableSecondaryAdvertisingData:0];
-    v125 = [(WPDAdvertisingManager *)self currentAdvertisers];
-    [v125 removeAllIndexes];
+    currentAdvertisers3 = [(WPDAdvertisingManager *)self currentAdvertisers];
+    [currentAdvertisers3 removeAllIndexes];
 
     v91 = 0;
   }
@@ -913,15 +913,15 @@ LABEL_170:
 
 - (id)getCurrentAdvertisers
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(WPDAdvertisingManager *)self currentAdvertisers];
+  string = [MEMORY[0x277CCAB68] string];
+  currentAdvertisers = [(WPDAdvertisingManager *)self currentAdvertisers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__WPDAdvertisingManager_getCurrentAdvertisers__block_invoke;
   v7[3] = &unk_279E597A0;
-  v5 = v3;
+  v5 = string;
   v8 = v5;
-  [v4 enumerateIndexesUsingBlock:v7];
+  [currentAdvertisers enumerateIndexesUsingBlock:v7];
 
   return v5;
 }
@@ -934,14 +934,14 @@ LABEL_170:
   v9 = 0;
   if ([(WPDManager *)self testMode])
   {
-    v3 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+    clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__WPDAdvertisingManager_isAdvertiserTestMode__block_invoke;
     v6[3] = &unk_279E595C8;
     v6[4] = self;
     v6[5] = &v7;
-    [v3 enumerateKeysAndObjectsUsingBlock:v6];
+    [clientAdvertisingRequests enumerateKeysAndObjectsUsingBlock:v6];
 
     if (WPLogInitOnce != -1)
     {
@@ -991,10 +991,10 @@ void __41__WPDAdvertisingManager_advertisingRules__block_invoke_423(uint64_t a1,
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v4 = [v3 allRequests];
+  advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+  allRequests = [advertisingRequests allRequests];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v5 = [allRequests countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1005,7 +1005,7 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allRequests);
       }
 
       if ([*(*(&v15 + 1) + 8 * v8) clientType] == 8)
@@ -1015,7 +1015,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v6 = [allRequests countByEnumeratingWithState:&v15 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1078,56 +1078,56 @@ LABEL_17:
   return v9;
 }
 
-- (WPDAdvertisingManager)initWithServer:(id)a3
+- (WPDAdvertisingManager)initWithServer:(id)server
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   v77.receiver = self;
   v77.super_class = WPDAdvertisingManager;
-  v5 = [(WPDManager *)&v77 initWithServer:v4 Name:@"Peripheral"];
+  v5 = [(WPDManager *)&v77 initWithServer:serverCopy Name:@"Peripheral"];
   if (v5)
   {
     v6 = objc_alloc_init(WPAdvertisingRequestsQueue);
     advertisingRequests = v5->_advertisingRequests;
     v5->_advertisingRequests = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clientAdvertisingRequests = v5->_clientAdvertisingRequests;
-    v5->_clientAdvertisingRequests = v8;
+    v5->_clientAdvertisingRequests = dictionary;
 
-    v10 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     currentAdvertisers = v5->_currentAdvertisers;
-    v5->_currentAdvertisers = v10;
+    v5->_currentAdvertisers = indexSet;
 
     v12 = [MEMORY[0x277CBEB58] set];
     clientsToNotifyOnAddressChange = v5->_clientsToNotifyOnAddressChange;
     v5->_clientsToNotifyOnAddressChange = v12;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     publishedServices = v5->_publishedServices;
-    v5->_publishedServices = v14;
+    v5->_publishedServices = dictionary2;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     preallocatedServices = v5->_preallocatedServices;
-    v5->_preallocatedServices = v16;
+    v5->_preallocatedServices = dictionary3;
 
     v18 = objc_alloc(MEMORY[0x277CBE068]);
-    v19 = [v4 serverQueue];
+    serverQueue = [serverCopy serverQueue];
     v86 = *MEMORY[0x277CBDF08];
     v20 = v86;
     v21 = MEMORY[0x277CBEC38];
     v87[0] = MEMORY[0x277CBEC38];
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:&v86 count:1];
-    v23 = [v18 initWithDelegate:v5 queue:v19 options:v22];
+    v23 = [v18 initWithDelegate:v5 queue:serverQueue options:v22];
     connectablePeripheralManager = v5->_connectablePeripheralManager;
     v5->_connectablePeripheralManager = v23;
 
     v25 = objc_alloc(MEMORY[0x277CBE068]);
-    v26 = [v4 serverQueue];
+    serverQueue2 = [serverCopy serverQueue];
     v84 = v20;
     v85 = v21;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-    v28 = [v25 initWithDelegate:v5 queue:v26 options:v27];
+    v28 = [v25 initWithDelegate:v5 queue:serverQueue2 options:v27];
     nonConnectablePeripheralManager = v5->_nonConnectablePeripheralManager;
     v5->_nonConnectablePeripheralManager = v28;
 
@@ -1149,24 +1149,24 @@ LABEL_17:
       }
 
       v33 = objc_alloc(MEMORY[0x277CBE068]);
-      v34 = [v4 serverQueue];
+      serverQueue3 = [serverCopy serverQueue];
       v80 = v20;
       v81 = v21;
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-      v36 = [v33 initWithDelegate:v5 queue:v34 options:v35];
+      v36 = [v33 initWithDelegate:v5 queue:serverQueue3 options:v35];
       nonConnectableSecondaryPeripheralManager = v5->_nonConnectableSecondaryPeripheralManager;
       v5->_nonConnectableSecondaryPeripheralManager = v36;
     }
 
     v5->_allowCompoundAdvertisements = 1;
-    v38 = [MEMORY[0x277CCAB58] indexSet];
-    [v38 addIndex:15];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+    [indexSet2 addIndex:15];
     if (+[WPDaemonServer supportsRanging])
     {
-      [v38 addIndex:19];
+      [indexSet2 addIndex:19];
     }
 
-    v39 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:v38];
+    v39 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:indexSet2];
     rangingTypes = v5->_rangingTypes;
     v5->_rangingTypes = v39;
 
@@ -1174,8 +1174,8 @@ LABEL_17:
     rangingClients = v5->_rangingClients;
     v5->_rangingClients = v41;
 
-    v43 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v44 = [v43 persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v44 = [standardUserDefaults persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
     v45 = [v44 objectForKeyedSubscript:@"WIPROX"];
 
     v74 = v45;
@@ -1221,16 +1221,16 @@ LABEL_17:
     v55 = [v49 setWithArray:v54];
     [(WPDManager *)v5 setCbManagers:v55];
 
-    v56 = [v4 wpdState];
-    [v56 registerManager:v5->_connectablePeripheralManager];
+    wpdState = [serverCopy wpdState];
+    [wpdState registerManager:v5->_connectablePeripheralManager];
 
-    v57 = [v4 wpdState];
-    [v57 registerManager:v5->_nonConnectablePeripheralManager];
+    wpdState2 = [serverCopy wpdState];
+    [wpdState2 registerManager:v5->_nonConnectablePeripheralManager];
 
     if (+[WPDaemonServer supportsNC2AdvertisingInstance])
     {
-      v58 = [v4 wpdState];
-      [v58 registerManager:v5->_nonConnectableSecondaryPeripheralManager];
+      wpdState3 = [serverCopy wpdState];
+      [wpdState3 registerManager:v5->_nonConnectableSecondaryPeripheralManager];
     }
 
     v59 = objc_alloc_init(AdvMetrics);
@@ -1249,25 +1249,25 @@ LABEL_17:
     v62 = v5;
     v76 = v62;
     xpc_activity_register("com.apple.Bluetoooth.WPDAdvertisingManager", v61, handler);
-    v63 = [(WPDManager *)v62 server];
-    v64 = [v63 stackAdaptor];
+    server = [(WPDManager *)v62 server];
+    stackAdaptor = [server stackAdaptor];
 
-    if (v64)
+    if (stackAdaptor)
     {
       if (_os_feature_enabled_impl())
       {
-        v65 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary4 = [MEMORY[0x277CBEB38] dictionary];
         clientStackAdvertisers = v62->_clientStackAdvertisers;
-        v62->_clientStackAdvertisers = v65;
+        v62->_clientStackAdvertisers = dictionary4;
       }
 
       else
       {
         for (i = 0; i != 3; ++i)
         {
-          v68 = [(WPDManager *)v62 server];
-          v69 = [v68 stackAdaptor];
-          [v69 bleAdvertiserClass];
+          server2 = [(WPDManager *)v62 server];
+          stackAdaptor2 = [server2 stackAdaptor];
+          [stackAdaptor2 bleAdvertiserClass];
           v70 = objc_alloc_init(objc_opt_class());
 
           [(WPDAdvertisingManager *)v62 setupStackAdvertiser:v70];
@@ -1286,46 +1286,46 @@ LABEL_17:
 
 - (id)generateStateDumpStrings
 {
-  v2 = self;
+  selfCopy = self;
   v85 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
   v81.receiver = self;
   v81.super_class = WPDAdvertisingManager;
-  v4 = [(WPDManager *)&v81 generateStateDumpStrings];
-  v5 = [v3 arrayWithArray:v4];
+  generateStateDumpStrings = [(WPDManager *)&v81 generateStateDumpStrings];
+  v5 = [v3 arrayWithArray:generateStateDumpStrings];
 
-  if ([(WPDManager *)v2 isInternalBuild])
+  if ([(WPDManager *)selfCopy isInternalBuild])
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(WPDManager *)v2 advAllowlist];
-    if (v7)
+    advAllowlist = [(WPDManager *)selfCopy advAllowlist];
+    if (advAllowlist)
     {
-      v8 = [(WPDManager *)v2 advAllowlist];
+      advAllowlist2 = [(WPDManager *)selfCopy advAllowlist];
     }
 
     else
     {
-      v8 = @"all";
+      advAllowlist2 = @"all";
     }
 
-    v9 = [v6 stringWithFormat:@"allowlisted adv types: %@\n", v8];
+    v9 = [v6 stringWithFormat:@"allowlisted adv types: %@\n", advAllowlist2];
     [v5 addObject:v9];
 
-    if (v7)
+    if (advAllowlist)
     {
     }
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(WPDAdvertisingManager *)v2 isRanging];
-  v12 = [(WPDAdvertisingManager *)v2 rangingClients];
-  v13 = [v10 stringWithFormat:@"ranging %d for clients: %@\n", v11, v12];
+  isRanging = [(WPDAdvertisingManager *)selfCopy isRanging];
+  rangingClients = [(WPDAdvertisingManager *)selfCopy rangingClients];
+  v13 = [v10 stringWithFormat:@"ranging %d for clients: %@\n", isRanging, rangingClients];
   [v5 addObject:v13];
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(WPDAdvertisingManager *)v2 allowCompoundAdvertisements];
+  allowCompoundAdvertisements = [(WPDAdvertisingManager *)selfCopy allowCompoundAdvertisements];
   v16 = "no";
-  if (v15)
+  if (allowCompoundAdvertisements)
   {
     v16 = "yes";
   }
@@ -1334,22 +1334,22 @@ LABEL_17:
   v63 = v5;
   [v5 addObject:v17];
 
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v19 = [(WPDAdvertisingManager *)v2 clientAdvertisingRequests];
-  v20 = [v19 allKeys];
+  clientAdvertisingRequests = [(WPDAdvertisingManager *)selfCopy clientAdvertisingRequests];
+  allKeys = [clientAdvertisingRequests allKeys];
 
-  obj = v20;
-  v21 = [v20 countByEnumeratingWithState:&v77 objects:v84 count:16];
+  obj = allKeys;
+  v21 = [allKeys countByEnumeratingWithState:&v77 objects:v84 count:16];
   if (v21)
   {
     v22 = v21;
     v23 = *v78;
     v64 = *v78;
-    v65 = v2;
+    v65 = selfCopy;
     do
     {
       v24 = 0;
@@ -1362,8 +1362,8 @@ LABEL_17:
         }
 
         v25 = *(*(&v77 + 1) + 8 * v24);
-        v26 = [(WPDAdvertisingManager *)v2 clientAdvertisingRequests];
-        v27 = [v26 objectForKeyedSubscript:v25];
+        clientAdvertisingRequests2 = [(WPDAdvertisingManager *)selfCopy clientAdvertisingRequests];
+        v27 = [clientAdvertisingRequests2 objectForKeyedSubscript:v25];
 
         if (v27 && [v27 count])
         {
@@ -1388,7 +1388,7 @@ LABEL_17:
                 }
 
                 v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@: %@\n", v25, *(*(&v73 + 1) + 8 * i)];
-                [v18 addObject:v33];
+                [array addObject:v33];
               }
 
               v30 = [v28 countByEnumeratingWithState:&v73 objects:v83 count:16];
@@ -1398,7 +1398,7 @@ LABEL_17:
           }
 
           v23 = v64;
-          v2 = v65;
+          selfCopy = v65;
           v22 = v66;
           v27 = v68;
         }
@@ -1413,23 +1413,23 @@ LABEL_17:
     while (v22);
   }
 
-  v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"all advertising requests (%ld):\n", objc_msgSend(v18, "count")];
+  v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"all advertising requests (%ld):\n", objc_msgSend(array, "count")];
   [v63 addObject:v34];
 
-  [v63 addObjectsFromArray:v18];
+  [v63 addObjectsFromArray:array];
   v35 = MEMORY[0x277CCACA8];
-  v36 = [(WPDAdvertisingManager *)v2 advertisingRequests];
-  v37 = [v35 stringWithFormat:@"currently active requests (%ld):\n", objc_msgSend(v36, "count")];
+  advertisingRequests = [(WPDAdvertisingManager *)selfCopy advertisingRequests];
+  v37 = [v35 stringWithFormat:@"currently active requests (%ld):\n", objc_msgSend(advertisingRequests, "count")];
   [v63 addObject:v37];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v38 = [(WPDAdvertisingManager *)v2 advertisingRequests];
-  v39 = [v38 allRequests];
+  advertisingRequests2 = [(WPDAdvertisingManager *)selfCopy advertisingRequests];
+  allRequests = [advertisingRequests2 allRequests];
 
-  v40 = [v39 countByEnumeratingWithState:&v69 objects:v82 count:16];
+  v40 = [allRequests countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v40)
   {
     v41 = v40;
@@ -1440,14 +1440,14 @@ LABEL_17:
       {
         if (*v70 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(allRequests);
         }
 
         v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@\n", *(*(&v69 + 1) + 8 * j)];
         [v63 addObject:v44];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v69 objects:v82 count:16];
+      v41 = [allRequests countByEnumeratingWithState:&v69 objects:v82 count:16];
     }
 
     while (v41);
@@ -1455,28 +1455,28 @@ LABEL_17:
 
   [v63 addObject:@"currently advertising:\n"];
   v45 = MEMORY[0x277CCACA8];
-  v46 = [(WPDAdvertisingManager *)v2 currentConnectableAdvertisingData];
-  v47 = [v45 stringWithFormat:@"    connectable: %@\n", v46];
+  currentConnectableAdvertisingData = [(WPDAdvertisingManager *)selfCopy currentConnectableAdvertisingData];
+  v47 = [v45 stringWithFormat:@"    connectable: %@\n", currentConnectableAdvertisingData];
   [v63 addObject:v47];
 
   v48 = MEMORY[0x277CCACA8];
-  v49 = [(WPDAdvertisingManager *)v2 currentNonConnectableAdvertisingData];
-  v50 = [v48 stringWithFormat:@"    non-connectable: %@\n", v49];
+  currentNonConnectableAdvertisingData = [(WPDAdvertisingManager *)selfCopy currentNonConnectableAdvertisingData];
+  v50 = [v48 stringWithFormat:@"    non-connectable: %@\n", currentNonConnectableAdvertisingData];
   [v63 addObject:v50];
 
   v51 = MEMORY[0x277CCACA8];
-  v52 = [(WPDAdvertisingManager *)v2 getCurrentAdvertisers];
-  v53 = [v51 stringWithFormat:@"    types: %@\n", v52];
+  getCurrentAdvertisers = [(WPDAdvertisingManager *)selfCopy getCurrentAdvertisers];
+  v53 = [v51 stringWithFormat:@"    types: %@\n", getCurrentAdvertisers];
   [v63 addObject:v53];
 
   v54 = MEMORY[0x277CCACA8];
-  v55 = [(WPDAdvertisingManager *)v2 preallocatedServices];
-  v56 = [v54 stringWithFormat:@"preallocated services: %@\n", v55];
+  preallocatedServices = [(WPDAdvertisingManager *)selfCopy preallocatedServices];
+  v56 = [v54 stringWithFormat:@"preallocated services: %@\n", preallocatedServices];
   [v63 addObject:v56];
 
   v57 = MEMORY[0x277CCACA8];
-  v58 = [(WPDAdvertisingManager *)v2 publishedServices];
-  v59 = [v57 stringWithFormat:@"published services: %@\n", v58];
+  publishedServices = [(WPDAdvertisingManager *)selfCopy publishedServices];
+  v59 = [v57 stringWithFormat:@"published services: %@\n", publishedServices];
   [v63 addObject:v59];
 
   v60 = [MEMORY[0x277CBEA60] arrayWithArray:v63];
@@ -1486,15 +1486,15 @@ LABEL_17:
   return v60;
 }
 
-- (void)addCharacteristic:(id)a3 Properties:(unint64_t)a4 Permissions:(unint64_t)a5 Service:(id)a6 Name:(id)a7
+- (void)addCharacteristic:(id)characteristic Properties:(unint64_t)properties Permissions:(unint64_t)permissions Service:(id)service Name:(id)name
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v33 = a7;
-  v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
-  v15 = [(WPDAdvertisingManager *)self preallocatedServices];
-  v16 = [v15 objectForKeyedSubscript:v14];
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  nameCopy = name;
+  v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:serviceCopy];
+  preallocatedServices = [(WPDAdvertisingManager *)self preallocatedServices];
+  v16 = [preallocatedServices objectForKeyedSubscript:v14];
 
   if (v16)
   {
@@ -1507,7 +1507,7 @@ LABEL_17:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v13;
+      v36 = serviceCopy;
       _os_log_impl(&dword_272965000, v17, OS_LOG_TYPE_DEFAULT, "Service with UUID %@ was already pre-allocated", buf, 0xCu);
     }
   }
@@ -1523,25 +1523,25 @@ LABEL_17:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v36 = v33;
+      v36 = nameCopy;
       v37 = 2114;
-      v38 = v13;
+      v38 = serviceCopy;
       v39 = 2114;
-      v40 = v12;
+      v40 = characteristicCopy;
       _os_log_impl(&dword_272965000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ pre-populate GATT database for service: %{public}@, characteristic: %{public}@", buf, 0x20u);
     }
 
-    v32 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v12];
+    v32 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:characteristicCopy];
     v31 = [MEMORY[0x277CBE0A0] UUIDWithNSUUID:?];
-    v19 = [objc_alloc(MEMORY[0x277CBE048]) initWithType:v31 properties:a4 value:0 permissions:a5];
+    v19 = [objc_alloc(MEMORY[0x277CBE048]) initWithType:v31 properties:properties value:0 permissions:permissions];
     v20 = [MEMORY[0x277CBE0A0] UUIDWithNSUUID:v14];
     v21 = [objc_alloc(MEMORY[0x277CBE050]) initWithType:v20 primary:1];
     v34 = v19;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
     [v21 setCharacteristics:v22];
 
-    v23 = [(WPDAdvertisingManager *)self preallocatedServices];
-    [v23 setObject:v21 forKeyedSubscript:v14];
+    preallocatedServices2 = [(WPDAdvertisingManager *)self preallocatedServices];
+    [preallocatedServices2 setObject:v21 forKeyedSubscript:v14];
 
     if (WPLogInitOnce != -1)
     {
@@ -1552,18 +1552,18 @@ LABEL_17:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v21 UUID];
-      v27 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-      v28 = [v27 state];
+      uUID = [v21 UUID];
+      connectablePeripheralManager = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+      state = [connectablePeripheralManager state];
       *buf = 138543618;
-      v36 = v26;
+      v36 = uUID;
       v37 = 2048;
-      v38 = v28;
+      v38 = state;
       _os_log_impl(&dword_272965000, v25, OS_LOG_TYPE_DEFAULT, "Adding service with UUID %{public}@ with peripheral manager state %ld", buf, 0x16u);
     }
 
-    v29 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-    [v29 addService:v21];
+    connectablePeripheralManager2 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+    [connectablePeripheralManager2 addService:v21];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -1577,19 +1577,19 @@ LABEL_17:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCharacteristic:(id)a3 forService:(id)a4 forClient:(id)a5
+- (void)addCharacteristic:(id)characteristic forService:(id)service forClient:(id)client
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBE0A0] UUIDWithNSUUID:v9];
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  clientCopy = client;
+  v11 = [MEMORY[0x277CBE0A0] UUIDWithNSUUID:serviceCopy];
   v12 = MEMORY[0x277CBE0A0];
-  v13 = [v8 uuid];
-  v14 = [v12 UUIDWithNSUUID:v13];
+  uuid = [characteristicCopy uuid];
+  v14 = [v12 UUIDWithNSUUID:uuid];
 
-  v15 = [(WPDAdvertisingManager *)self publishedServices];
-  v16 = [v15 objectForKeyedSubscript:v10];
+  publishedServices = [(WPDAdvertisingManager *)self publishedServices];
+  v16 = [publishedServices objectForKeyedSubscript:clientCopy];
 
   if (v16 && (v17 = v11, [v16 UUID], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", v17), v17, v18, v19))
   {
@@ -1604,13 +1604,13 @@ LABEL_17:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v21 = v20;
-        v22 = [v8 uuid];
+        uuid2 = [characteristicCopy uuid];
         *buf = 138543874;
-        v60 = v9;
+        v60 = serviceCopy;
         v61 = 2114;
-        v62 = v22;
+        v62 = uuid2;
         v63 = 2114;
-        v64 = v10;
+        v64 = clientCopy;
         _os_log_impl(&dword_272965000, v21, OS_LOG_TYPE_DEFAULT, "Already published service %{public}@ with characteristic %{public}@ for client %{public}@", buf, 0x20u);
       }
     }
@@ -1625,7 +1625,7 @@ LABEL_17:
       v50 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [WPDAdvertisingManager addCharacteristic:v9 forService:v50 forClient:v8];
+        [WPDAdvertisingManager addCharacteristic:serviceCopy forService:v50 forClient:characteristicCopy];
       }
 
       [MEMORY[0x277CBEAD8] raise:@"WPServiceWithoutCharacteristic" format:@"Published service does not have the characteristic"];
@@ -1635,10 +1635,10 @@ LABEL_17:
   else
   {
     v23 = v16;
-    v24 = v8;
+    v24 = characteristicCopy;
     v57 = v11;
-    v25 = [(WPDAdvertisingManager *)self preallocatedServices];
-    v26 = [v25 objectForKeyedSubscript:v9];
+    preallocatedServices = [(WPDAdvertisingManager *)self preallocatedServices];
+    v26 = [preallocatedServices objectForKeyedSubscript:serviceCopy];
 
     if (!v26)
     {
@@ -1665,22 +1665,22 @@ LABEL_17:
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           v32 = v31;
-          v33 = [v24 uuid];
+          uuid3 = [v24 uuid];
           *buf = 138543874;
-          v60 = v9;
+          v60 = serviceCopy;
           v61 = 2114;
-          v62 = v33;
+          v62 = uuid3;
           v63 = 2114;
-          v64 = v10;
+          v64 = clientCopy;
           _os_log_impl(&dword_272965000, v32, OS_LOG_TYPE_DEFAULT, "Using pre-allocated service %{public}@ with characteristic %{public}@ for client %{public}@", buf, 0x20u);
 
           v26 = v28;
         }
 
-        v34 = [(WPDAdvertisingManager *)self publishedServices];
-        [v34 setObject:v26 forKeyedSubscript:v10];
+        publishedServices2 = [(WPDAdvertisingManager *)self publishedServices];
+        [publishedServices2 setObject:v26 forKeyedSubscript:clientCopy];
 
-        v8 = v24;
+        characteristicCopy = v24;
         v16 = v23;
       }
 
@@ -1692,12 +1692,12 @@ LABEL_17:
           [WPDAdvertisingManager addCharacteristic:forService:forClient:];
         }
 
-        v8 = v24;
+        characteristicCopy = v24;
         v51 = WiProxLog;
         v16 = v23;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
-          [WPDAdvertisingManager addCharacteristic:v9 forService:v51 forClient:v8];
+          [WPDAdvertisingManager addCharacteristic:serviceCopy forService:v51 forClient:characteristicCopy];
         }
 
         [MEMORY[0x277CBEAD8] raise:@"WPServiceWithoutCharacteristic" format:@"Pre-allocated service does not have the characteristic"];
@@ -1707,7 +1707,7 @@ LABEL_17:
     else
     {
 LABEL_16:
-      v56 = v10;
+      v56 = clientCopy;
       v55 = v14;
       v52 = v26;
       if (WPLogInitOnce != -1)
@@ -1715,31 +1715,31 @@ LABEL_16:
         [WPDAdvertisingManager addCharacteristic:forService:forClient:];
       }
 
-      v8 = v24;
+      characteristicCopy = v24;
       v35 = WiProxLog;
       v16 = v23;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v36 = v35;
-        v37 = [v8 uuid];
+        uuid4 = [characteristicCopy uuid];
         *buf = 138543874;
-        v60 = v9;
+        v60 = serviceCopy;
         v61 = 2114;
-        v62 = v37;
+        v62 = uuid4;
         v63 = 2114;
-        v64 = v10;
+        v64 = clientCopy;
         _os_log_impl(&dword_272965000, v36, OS_LOG_TYPE_DEFAULT, "Publishing service %{public}@ with characteritic %{public}@ for client %{public}@", buf, 0x20u);
       }
 
-      v54 = v9;
-      v38 = [objc_alloc(MEMORY[0x277CBE048]) initWithType:v14 properties:objc_msgSend(v8 value:"properties") permissions:{0, objc_msgSend(v8, "permissions")}];
+      v54 = serviceCopy;
+      v38 = [objc_alloc(MEMORY[0x277CBE048]) initWithType:v14 properties:objc_msgSend(characteristicCopy value:"properties") permissions:{0, objc_msgSend(characteristicCopy, "permissions")}];
       v39 = [objc_alloc(MEMORY[0x277CBE050]) initWithType:v57 primary:1];
       v58 = v38;
       v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
       [v39 setCharacteristics:v40];
 
-      v41 = [(WPDAdvertisingManager *)self publishedServices];
-      [v41 setObject:v39 forKeyedSubscript:v10];
+      publishedServices3 = [(WPDAdvertisingManager *)self publishedServices];
+      [publishedServices3 setObject:v39 forKeyedSubscript:clientCopy];
 
       if (WPLogInitOnce != -1)
       {
@@ -1750,23 +1750,23 @@ LABEL_16:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v43 = v42;
-        v44 = [v39 UUID];
-        v45 = [v44 UUIDString];
-        v46 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-        v47 = [v46 state];
+        uUID = [v39 UUID];
+        uUIDString = [uUID UUIDString];
+        connectablePeripheralManager = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+        state = [connectablePeripheralManager state];
         *buf = 138412546;
-        v60 = v45;
+        v60 = uUIDString;
         v61 = 2048;
-        v62 = v47;
+        v62 = state;
         _os_log_impl(&dword_272965000, v43, OS_LOG_TYPE_DEFAULT, "Adding service with UUID %@ with peripheral manager state %ld", buf, 0x16u);
       }
 
-      v48 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-      [v48 addService:v39];
+      connectablePeripheralManager2 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+      [connectablePeripheralManager2 addService:v39];
 
-      v9 = v54;
+      serviceCopy = v54;
       v14 = v55;
-      v10 = v56;
+      clientCopy = v56;
       v11 = v57;
       v26 = v53;
     }
@@ -1775,12 +1775,12 @@ LABEL_16:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeServiceForClient:(id)a3
+- (void)removeServiceForClient:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WPDAdvertisingManager *)self publishedServices];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientCopy = client;
+  publishedServices = [(WPDAdvertisingManager *)self publishedServices];
+  v6 = [publishedServices objectForKeyedSubscript:clientCopy];
 
   if (v6)
   {
@@ -1793,19 +1793,19 @@ LABEL_16:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v6 UUID];
+      uUID = [v6 UUID];
       v18 = 138543618;
-      v19 = v9;
+      v19 = uUID;
       v20 = 2114;
-      v21 = v4;
+      v21 = clientCopy;
       _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "Removing service %{public}@ for client %{public}@", &v18, 0x16u);
     }
 
-    v10 = [v6 UUID];
-    v11 = [(WPDAdvertisingManager *)self NSUUIDfromCBUUID:v10];
+    uUID2 = [v6 UUID];
+    v11 = [(WPDAdvertisingManager *)self NSUUIDfromCBUUID:uUID2];
 
-    v12 = [(WPDAdvertisingManager *)self preallocatedServices];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    preallocatedServices = [(WPDAdvertisingManager *)self preallocatedServices];
+    v13 = [preallocatedServices objectForKeyedSubscript:v11];
 
     if (!v13)
     {
@@ -1822,24 +1822,24 @@ LABEL_16:
         _os_log_impl(&dword_272965000, v14, OS_LOG_TYPE_DEFAULT, "Unpublishing service %{public}@, since it was not pre-allocated", &v18, 0xCu);
       }
 
-      v15 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-      [v15 removeService:v6];
+      connectablePeripheralManager = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+      [connectablePeripheralManager removeService:v6];
     }
 
-    v16 = [(WPDAdvertisingManager *)self publishedServices];
-    [v16 removeObjectForKey:v4];
+    publishedServices2 = [(WPDAdvertisingManager *)self publishedServices];
+    [publishedServices2 removeObjectForKey:clientCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  managerCopy = manager;
+  serviceCopy = service;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -1849,7 +1849,7 @@ LABEL_16:
     v11 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [WPDAdvertisingManager peripheralManager:v11 didAddService:v9 error:v10];
+      [WPDAdvertisingManager peripheralManager:v11 didAddService:serviceCopy error:errorCopy];
     }
   }
 
@@ -1864,12 +1864,12 @@ LABEL_16:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v9 UUID];
-      v15 = [v9 characteristics];
+      uUID = [serviceCopy UUID];
+      characteristics = [serviceCopy characteristics];
       v17 = 138543618;
-      v18 = v14;
+      v18 = uUID;
       v19 = 2114;
-      v20 = v15;
+      v20 = characteristics;
       _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "Added service with UUID %{public}@ and characteristics %{public}@", &v17, 0x16u);
     }
 
@@ -1879,11 +1879,11 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableRanging:(BOOL)a3 forClient:(id)a4
+- (void)enableRanging:(BOOL)ranging forClient:(id)client
 {
-  v4 = a3;
+  rangingCopy = ranging;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager enableRanging:forClient:];
@@ -1893,22 +1893,22 @@ LABEL_16:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109378;
-    v12[1] = v4;
+    v12[1] = rangingCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = clientCopy;
     _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "WPAdvertisingManager enable ranging:%d for client: %@", v12, 0x12u);
   }
 
-  v8 = [(WPDAdvertisingManager *)self rangingClients];
-  v9 = v8;
-  if (v4)
+  rangingClients = [(WPDAdvertisingManager *)self rangingClients];
+  v9 = rangingClients;
+  if (rangingCopy)
   {
-    [v8 addObject:v6];
+    [rangingClients addObject:clientCopy];
   }
 
   else
   {
-    [v8 removeObject:v6];
+    [rangingClients removeObject:clientCopy];
   }
 
   if (WPLogInitOnce != -1)
@@ -1919,7 +1919,7 @@ LABEL_16:
   v10 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPDAdvertisingManager *)v4 enableRanging:v10 forClient:self];
+    [(WPDAdvertisingManager *)rangingCopy enableRanging:v10 forClient:self];
   }
 
   if ([(WPDManager *)self state]== 3)
@@ -1930,52 +1930,52 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addAdvertisingRequest:(id)a3 forClient:(id)a4
+- (id)addAdvertisingRequest:(id)request forClient:(id)client
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientType];
-  v9 = [v6 advertisingData];
-  v10 = [v9 length];
+  requestCopy = request;
+  clientCopy = client;
+  clientType = [requestCopy clientType];
+  advertisingData = [requestCopy advertisingData];
+  v10 = [advertisingData length];
 
   if (v10 < 0x17)
   {
     if ([(WPDManager *)self state]== 3)
     {
-      v15 = [v6 clientType];
-      v16 = [(WPDManager *)self server];
-      v17 = [v16 statsManager];
-      [v17 startActivity:1 forType:v15];
+      clientType2 = [requestCopy clientType];
+      server = [(WPDManager *)self server];
+      statsManager = [server statsManager];
+      [statsManager startActivity:1 forType:clientType2];
 
-      v18 = [(WPDManager *)self server];
-      v19 = [v18 statsManager];
-      [v19 resetActivity:1 forType:v15];
+      server2 = [(WPDManager *)self server];
+      statsManager2 = [server2 statsManager];
+      [statsManager2 resetActivity:1 forType:clientType2];
 
-      v20 = [(WPDAdvertisingManager *)self advertisingRequests];
-      v21 = [v20 isAdvertisingForClientType:v8];
+      advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+      v21 = [advertisingRequests isAdvertisingForClientType:clientType];
 
       if (v21)
       {
-        v22 = [(WPDAdvertisingManager *)self removeAdvertisingRequest:v6 forClient:v7 shouldUpdate:0];
+        v22 = [(WPDAdvertisingManager *)self removeAdvertisingRequest:requestCopy forClient:clientCopy shouldUpdate:0];
       }
 
-      v23 = [(WPDAdvertisingManager *)self advertisingRequests];
-      [v23 add:v6];
+      advertisingRequests2 = [(WPDAdvertisingManager *)self advertisingRequests];
+      [advertisingRequests2 add:requestCopy];
 
-      v24 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
-      v25 = [v24 objectForKeyedSubscript:v7];
+      clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+      v25 = [clientAdvertisingRequests objectForKeyedSubscript:clientCopy];
 
       if (!v25)
       {
         v26 = [MEMORY[0x277CBEB58] set];
-        v27 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
-        [v27 setObject:v26 forKeyedSubscript:v7];
+        clientAdvertisingRequests2 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+        [clientAdvertisingRequests2 setObject:v26 forKeyedSubscript:clientCopy];
       }
 
-      v28 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
-      v29 = [v28 objectForKeyedSubscript:v7];
-      [v29 addObject:v6];
+      clientAdvertisingRequests3 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+      v29 = [clientAdvertisingRequests3 objectForKeyedSubscript:clientCopy];
+      [v29 addObject:requestCopy];
 
       [(WPDAdvertisingManager *)self updateAdvertiser];
       v13 = 0;
@@ -1997,7 +1997,7 @@ LABEL_16:
       v32 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [(WPDAdvertisingManager *)v32 addAdvertisingRequest:v6 forClient:self];
+        [(WPDAdvertisingManager *)v32 addAdvertisingRequest:requestCopy forClient:self];
       }
     }
   }
@@ -2027,22 +2027,22 @@ LABEL_16:
   return v13;
 }
 
-- (void)addAdvertisingRequest:(id)a3 forDaemon:(id)a4
+- (void)addAdvertisingRequest:(id)request forDaemon:(id)daemon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPDManager *)self server];
-  v9 = [v8 serverQueue];
+  requestCopy = request;
+  daemonCopy = daemon;
+  server = [(WPDManager *)self server];
+  serverQueue = [server serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__WPDAdvertisingManager_addAdvertisingRequest_forDaemon___block_invoke;
   block[3] = &unk_279E59A48;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = requestCopy;
+  v14 = daemonCopy;
+  v10 = daemonCopy;
+  v11 = requestCopy;
+  dispatch_async(serverQueue, block);
 }
 
 uint64_t __57__WPDAdvertisingManager_addAdvertisingRequest_forDaemon___block_invoke(uint64_t a1)
@@ -2056,22 +2056,22 @@ uint64_t __57__WPDAdvertisingManager_addAdvertisingRequest_forDaemon___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeAdvertisingRequest:(id)a3 forDaemon:(id)a4
+- (void)removeAdvertisingRequest:(id)request forDaemon:(id)daemon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPDManager *)self server];
-  v9 = [v8 serverQueue];
+  requestCopy = request;
+  daemonCopy = daemon;
+  server = [(WPDManager *)self server];
+  serverQueue = [server serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WPDAdvertisingManager_removeAdvertisingRequest_forDaemon___block_invoke;
   block[3] = &unk_279E59A48;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = requestCopy;
+  v14 = daemonCopy;
+  v10 = daemonCopy;
+  v11 = requestCopy;
+  dispatch_async(serverQueue, block);
 }
 
 void __60__WPDAdvertisingManager_removeAdvertisingRequest_forDaemon___block_invoke(uint64_t a1)
@@ -2089,14 +2089,14 @@ void __60__WPDAdvertisingManager_removeAdvertisingRequest_forDaemon___block_invo
   }
 }
 
-- (id)removeAdvertisingRequest:(id)a3 forClient:(id)a4 shouldUpdate:(BOOL)a5
+- (id)removeAdvertisingRequest:(id)request forClient:(id)client shouldUpdate:(BOOL)update
 {
-  v5 = a5;
+  updateCopy = update;
   v37[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
-  v11 = [v10 count];
+  requestCopy = request;
+  clientCopy = client;
+  clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+  v11 = [clientAdvertisingRequests count];
 
   if (v11)
   {
@@ -2107,22 +2107,22 @@ void __60__WPDAdvertisingManager_removeAdvertisingRequest_forDaemon___block_invo
     v34 = __Block_byref_object_dispose__4;
     v12 = MEMORY[0x277CCA9B8];
     v36 = *MEMORY[0x277CCA450];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"CoreBluetooth isn't advertising for client type %d", objc_msgSend(v8, "clientType")];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"CoreBluetooth isn't advertising for client type %d", objc_msgSend(requestCopy, "clientType")];
     v37[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v35 = [v12 errorWithDomain:@"WPErrorDomain" code:11 userInfo:v14];
 
-    v15 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
-    v16 = [v15 objectForKeyedSubscript:v9];
+    clientAdvertisingRequests2 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+    v16 = [clientAdvertisingRequests2 objectForKeyedSubscript:clientCopy];
 
     v17 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v16, "count")}];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __73__WPDAdvertisingManager_removeAdvertisingRequest_forClient_shouldUpdate___block_invoke_326;
     v25[3] = &unk_279E59A70;
-    v18 = v8;
+    v18 = requestCopy;
     v26 = v18;
-    v27 = self;
+    selfCopy = self;
     v29 = buf;
     v19 = v17;
     v28 = v19;
@@ -2130,15 +2130,15 @@ void __60__WPDAdvertisingManager_removeAdvertisingRequest_forDaemon___block_invo
     [(WPDAdvertisingManager *)self clientAdvertisingRequests];
     if (v18)
       v20 = {;
-      [v20 setObject:v19 forKeyedSubscript:v9];
+      [v20 setObject:v19 forKeyedSubscript:clientCopy];
     }
 
     else
       v20 = {;
-      [v20 removeObjectForKey:v9];
+      [v20 removeObjectForKey:clientCopy];
     }
 
-    if (v5)
+    if (updateCopy)
     {
       [(WPDAdvertisingManager *)self updateAdvertiser];
     }
@@ -2237,14 +2237,14 @@ void __73__WPDAdvertisingManager_removeAdvertisingRequest_forClient_shouldUpdate
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupStackAdvertiser:(id)a3
+- (void)setupStackAdvertiser:(id)advertiser
 {
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke;
   v14[3] = &unk_279E59A98;
   v14[4] = self;
-  v4 = a3;
+  advertiserCopy = advertiser;
   v5 = MEMORY[0x2743D14E0](v14);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2253,7 +2253,7 @@ void __73__WPDAdvertisingManager_removeAdvertisingRequest_forClient_shouldUpdate
   v12[4] = self;
   v6 = v5;
   v13 = v6;
-  [v4 setAdvStartedHandler:v12];
+  [advertiserCopy setAdvStartedHandler:v12];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_4;
@@ -2261,10 +2261,10 @@ void __73__WPDAdvertisingManager_removeAdvertisingRequest_forClient_shouldUpdate
   v10[4] = self;
   v11 = v6;
   v7 = v6;
-  [v4 setAdvStoppedHandler:v10];
-  v8 = [(WPDManager *)self server];
-  v9 = [v8 serverQueue];
-  [v4 setDispatchQueue:v9];
+  [advertiserCopy setAdvStoppedHandler:v10];
+  server = [(WPDManager *)self server];
+  serverQueue = [server serverQueue];
+  [advertiserCopy setDispatchQueue:serverQueue];
 }
 
 id __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke(uint64_t a1, int a2)
@@ -2340,21 +2340,21 @@ void __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_5(uint64_t 
   [v2 peripheralManager:v4 didStopAdvertisingWithError:*(a1 + 40)];
 }
 
-- (id)setWPDaemonAdvDataFromWPAdvertisingRequest:(id)a3
+- (id)setWPDaemonAdvDataFromWPAdvertisingRequest:(id)request
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBE0B8]);
-    v6 = [v4 connectable];
-    v7 = [v4 clientType];
-    if ([(WPDAdvertisingManager *)self platformSupportsMultipleAdvertising]&& !(v6 & 1 | !+[WPDaemonServer supportsNC2AdvertisingInstance]) && v7 == 19)
+    connectable = [requestCopy connectable];
+    clientType = [requestCopy clientType];
+    if ([(WPDAdvertisingManager *)self platformSupportsMultipleAdvertising]&& !(connectable & 1 | !+[WPDaemonServer supportsNC2AdvertisingInstance]) && clientType == 19)
     {
       v8 = 4;
     }
 
-    else if (v6)
+    else if (connectable)
     {
       v8 = 1;
     }
@@ -2365,50 +2365,50 @@ void __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_5(uint64_t 
     }
 
     [v5 setAdvInstanceType:v8];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v4, "clientType")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(requestCopy, "clientType")}];
     v26 = v9;
-    v10 = [v4 advertisingData];
-    v27[0] = v10;
+    advertisingData = [requestCopy advertisingData];
+    v27[0] = advertisingData;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     [v5 setAdvDataPerType:v11];
 
-    [v5 setAdvInterval:{objc_msgSend(v4, "advertisingRate")}];
+    [v5 setAdvInterval:{objc_msgSend(requestCopy, "advertisingRate")}];
     if ([(WPDAdvertisingManager *)self isRanging])
     {
-      v12 = [(WPDAdvertisingManager *)self rangingTypes];
-      v13 = [v12 containsIndex:{objc_msgSend(v4, "clientType")}];
+      rangingTypes = [(WPDAdvertisingManager *)self rangingTypes];
+      v13 = [rangingTypes containsIndex:{objc_msgSend(requestCopy, "clientType")}];
 
       if (v13)
       {
-        [v5 setEnableObjectLocatorResponseOnAdvertisingInstance:{objc_msgSend(v4, "isRanging")}];
+        [v5 setEnableObjectLocatorResponseOnAdvertisingInstance:{objc_msgSend(requestCopy, "isRanging")}];
       }
     }
 
-    [v5 setStopOnAdvertisingAddressChange:{objc_msgSend(v4, "stopOnAdvertisingAddressChange")}];
-    [v5 setEnableAdvertisingWithPowerAssertion:{objc_msgSend(v4, "holdVoucher")}];
-    [v5 setEnableEPAForAdvertisement:{objc_msgSend(v4, "enableEPAForAdvertising")}];
-    v14 = [v4 advertisementRequestedAt];
-    if (v14)
+    [v5 setStopOnAdvertisingAddressChange:{objc_msgSend(requestCopy, "stopOnAdvertisingAddressChange")}];
+    [v5 setEnableAdvertisingWithPowerAssertion:{objc_msgSend(requestCopy, "holdVoucher")}];
+    [v5 setEnableEPAForAdvertisement:{objc_msgSend(requestCopy, "enableEPAForAdvertising")}];
+    advertisementRequestedAt = [requestCopy advertisementRequestedAt];
+    if (advertisementRequestedAt)
     {
       heySiriAdvEnabled = self->_heySiriAdvEnabled;
 
       if (!heySiriAdvEnabled)
       {
-        v16 = [v4 advertisementRequestedAt];
-        [v5 setWiProxUpdateTimestamp:v16];
+        advertisementRequestedAt2 = [requestCopy advertisementRequestedAt];
+        [v5 setWiProxUpdateTimestamp:advertisementRequestedAt2];
       }
     }
 
-    v17 = [(WPDAdvertisingManager *)self clientForAdvRequest:v4];
-    v18 = [(WPDManager *)self server];
-    v19 = [v18 getClientForUUID:v17];
+    v17 = [(WPDAdvertisingManager *)self clientForAdvRequest:requestCopy];
+    server = [(WPDManager *)self server];
+    v19 = [server getClientForUUID:v17];
 
-    v20 = [v19 bundleID];
+    bundleID = [v19 bundleID];
 
-    if (v20)
+    if (bundleID)
     {
-      v21 = [v19 bundleID];
-      v25 = v21;
+      bundleID2 = [v19 bundleID];
+      v25 = bundleID2;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
       [v5 setListOfClients:v22];
     }
@@ -2424,13 +2424,13 @@ void __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_5(uint64_t 
   return v5;
 }
 
-- (id)setWPDaemonAdvDataFrom:(id)a3
+- (id)setWPDaemonAdvDataFrom:(id)from
 {
-  v3 = a3;
-  if (v3)
+  fromCopy = from;
+  if (fromCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBE0B8]);
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDCF0]];
+    v5 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDCF0]];
     if ([v5 BOOLValue])
     {
       v6 = 1;
@@ -2444,11 +2444,11 @@ void __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_5(uint64_t 
     [v4 setAdvInstanceType:v6];
 
     v7 = *MEMORY[0x277CBDCF8];
-    v8 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDCF8]];
+    v8 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDCF8]];
     if (v8)
     {
       v9 = v8;
-      v10 = [v3 objectForKeyedSubscript:v7];
+      v10 = [fromCopy objectForKeyedSubscript:v7];
       if ([v10 BOOLValue])
       {
         v11 = +[WPDaemonServer supportsNC2AdvertisingInstance];
@@ -2464,67 +2464,67 @@ void __46__WPDAdvertisingManager_setupStackAdvertiser___block_invoke_5(uint64_t 
       }
     }
 
-    v12 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDCD0]];
+    v12 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDCD0]];
     [v4 setMfgData:v12];
 
-    v13 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDF18]];
+    v13 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDF18]];
     [v4 setAdvInterval:{objc_msgSend(v13, "intValue")}];
 
     v14 = *MEMORY[0x277CBDCC0];
-    v15 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDCC0]];
+    v15 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDCC0]];
 
     if (v15)
     {
-      v16 = [v3 objectForKeyedSubscript:v14];
+      v16 = [fromCopy objectForKeyedSubscript:v14];
       [v4 setEnableObjectLocatorResponseOnAdvertisingInstance:{objc_msgSend(v16, "BOOLValue")}];
     }
 
     v17 = *MEMORY[0x277CBDCC8];
-    v18 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDCC8]];
+    v18 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDCC8]];
 
     if (v18)
     {
-      v19 = [v3 objectForKeyedSubscript:v17];
+      v19 = [fromCopy objectForKeyedSubscript:v17];
       [v4 setStopOnAdvertisingAddressChange:{objc_msgSend(v19, "BOOLValue")}];
     }
 
     v20 = *MEMORY[0x277CBDF20];
-    v21 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDF20]];
+    v21 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDF20]];
 
     if (v21)
     {
-      v22 = [v3 objectForKeyedSubscript:v20];
+      v22 = [fromCopy objectForKeyedSubscript:v20];
       [v4 setEnableAdvertisingWithPowerAssertion:{objc_msgSend(v22, "BOOLValue")}];
     }
 
     v23 = *MEMORY[0x277CBDD58];
-    v24 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDD58]];
+    v24 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDD58]];
 
     if (v24)
     {
-      v25 = [v3 objectForKeyedSubscript:v23];
+      v25 = [fromCopy objectForKeyedSubscript:v23];
       [v4 setEnableEPAForAdvertisement:{objc_msgSend(v25, "BOOLValue")}];
     }
 
     v26 = *MEMORY[0x277CBDF00];
-    v27 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDF00]];
+    v27 = [fromCopy objectForKeyedSubscript:*MEMORY[0x277CBDF00]];
 
     if (v27)
     {
-      v28 = [v3 objectForKeyedSubscript:v26];
+      v28 = [fromCopy objectForKeyedSubscript:v26];
       [v4 setListOfClients:v28];
     }
 
-    v29 = [v3 objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
+    v29 = [fromCopy objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
 
     if (v29)
     {
-      v30 = [v3 objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
+      v30 = [fromCopy objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
       v31 = [v30 objectForKeyedSubscript:@"kCBMsgArgTimeXpcWiProxUpdateAdv"];
 
       if (v31)
       {
-        v32 = [v3 objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
+        v32 = [fromCopy objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
         v33 = [v32 objectForKeyedSubscript:@"kCBMsgArgTimeXpcWiProxUpdateAdv"];
         [v4 setWiProxUpdateTimestamp:v33];
       }
@@ -2671,41 +2671,41 @@ LABEL_9:
   [v5 startAdvertising:v10];
 }
 
-- (id)requestFromAdvertisingDataFromInstance:(int64_t)a3 AddressChangeNotificationNeeded:(BOOL)a4
+- (id)requestFromAdvertisingDataFromInstance:(int64_t)instance AddressChangeNotificationNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v37 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (instance == 2)
   {
-    v6 = [(WPDAdvertisingManager *)self currentNonConnectableSecondaryAdvertisingData];
+    currentNonConnectableSecondaryAdvertisingData = [(WPDAdvertisingManager *)self currentNonConnectableSecondaryAdvertisingData];
   }
 
-  else if (a3 == 1)
+  else if (instance == 1)
   {
-    v6 = [(WPDAdvertisingManager *)self currentNonConnectableAdvertisingData];
+    currentNonConnectableSecondaryAdvertisingData = [(WPDAdvertisingManager *)self currentNonConnectableAdvertisingData];
   }
 
   else
   {
-    if (a3)
+    if (instance)
     {
       v7 = 0;
       goto LABEL_34;
     }
 
-    v6 = [(WPDAdvertisingManager *)self currentConnectableAdvertisingData];
+    currentNonConnectableSecondaryAdvertisingData = [(WPDAdvertisingManager *)self currentConnectableAdvertisingData];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = currentNonConnectableSecondaryAdvertisingData;
+  if (!currentNonConnectableSecondaryAdvertisingData)
   {
 LABEL_34:
-    v8 = 0;
+    getData = 0;
     goto LABEL_35;
   }
 
-  v8 = [v6 getData];
-  if (!v8)
+  getData = [currentNonConnectableSecondaryAdvertisingData getData];
+  if (!getData)
   {
 LABEL_35:
     v15 = 0;
@@ -2713,46 +2713,46 @@ LABEL_35:
   }
 
   context = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277CBDCD0]];
-  [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDEF8]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:getData forKeyedSubscript:*MEMORY[0x277CBDCD0]];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDEF8]];
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "advertRate")}];
-  [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277CBDF18]];
+  [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277CBDF18]];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 0];
-  [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CBDCF0]];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:instance == 0];
+  [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x277CBDCF0]];
 
-  v12 = [v7 isRanging];
-  if (v12)
+  isRanging = [v7 isRanging];
+  if (isRanging)
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCC0]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCC0]];
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCC8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCC8]];
   }
 
-  v13 = [v7 assertPower];
-  if (v13)
+  assertPower = [v7 assertPower];
+  if (assertPower)
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDF20]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDF20]];
   }
 
   v14 = "";
   if ([v7 enableEPAForAdvertisement])
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDD58]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDD58]];
     v14 = "[enableEPA]";
   }
 
-  if (a3 == 2)
+  if (instance == 2)
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCF8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CBDCF8]];
   }
 
-  v15 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
-  if ((v12 | v4 | v13) == 1)
+  v15 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
+  if ((isRanging | neededCopy | assertPower) == 1)
   {
     if (WPLogInitOnce != -1)
     {
@@ -2765,18 +2765,18 @@ LABEL_35:
       v17 = "[Privacy] ";
       *buf = 136316418;
       v18 = "[Ranging] ";
-      if (!v12)
+      if (!isRanging)
       {
         v18 = "";
       }
 
       v19 = "[AssertPower] ";
-      if (!v13)
+      if (!assertPower)
       {
         v19 = "";
       }
 
-      if (!v4)
+      if (!neededCopy)
       {
         v17 = "";
       }
@@ -2788,7 +2788,7 @@ LABEL_35:
       v30 = v19;
       v31 = 2080;
       v20 = "AddrChangeNotificationNeeded ";
-      if (!v4)
+      if (!neededCopy)
       {
         v20 = "";
       }
@@ -2813,17 +2813,17 @@ LABEL_36:
 - (id)advertisingRulesCBStackAdvertiser
 {
   v43 = *MEMORY[0x277D85DE8];
-  v33 = [(WPDAdvertisingManager *)self isAdvertiserTestMode];
+  isAdvertiserTestMode = [(WPDAdvertisingManager *)self isAdvertiserTestMode];
   v3 = [(WPDAdvertisingManager *)self heySiriAdvertActive:?];
-  v32 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v5 = [v4 allRequests];
+  advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+  allRequests = [advertisingRequests allRequests];
 
-  v6 = [v5 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v6 = [allRequests countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v6)
   {
     v8 = v6;
@@ -2837,7 +2837,7 @@ LABEL_36:
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allRequests);
         }
 
         v11 = *(*(&v34 + 1) + 8 * v10);
@@ -2847,11 +2847,11 @@ LABEL_36:
           {
             v12 = [(WPDAdvertisingManager *)self clientForAdvRequest:v11];
             v13 = v12;
-            if (!v33 || v12 && (-[WPDManager server](self, "server"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isClientTestMode:v13], v14, (v15 & 1) != 0))
+            if (!isAdvertiserTestMode || v12 && (-[WPDManager server](self, "server"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isClientTestMode:v13], v14, (v15 & 1) != 0))
             {
               v16 = [(WPDAdvertisingManager *)self setWPDaemonAdvDataFromWPAdvertisingRequest:v11];
               v17 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v11, "clientType")}];
-              [v32 setObject:v16 forKeyedSubscript:v17];
+              [dictionary setObject:v16 forKeyedSubscript:v17];
             }
 
             else
@@ -2868,11 +2868,11 @@ LABEL_36:
               }
 
               v16 = v23;
-              v24 = [v11 clientType];
+              clientType = [v11 clientType];
               *buf = v31;
               v39 = v13;
               v40 = 2048;
-              v41 = v24;
+              v41 = clientType;
               _os_log_impl(&dword_272965000, v16, OS_LOG_TYPE_INFO, "Not advertising for non-test client UUID: %@ type (%ld) when in test mode", buf, 0x16u);
             }
 
@@ -2889,9 +2889,9 @@ LABEL_23:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
           {
             v13 = v25;
-            v26 = [v11 clientType];
+            clientType2 = [v11 clientType];
             *buf = 134217984;
-            v39 = v26;
+            v39 = clientType2;
             v20 = v13;
             v21 = OS_LOG_TYPE_INFO;
             v22 = "Not advertising for client type (%ld) when HeySiri is active";
@@ -2912,9 +2912,9 @@ LABEL_17:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             v13 = v18;
-            v19 = [v11 clientType];
+            clientType3 = [v11 clientType];
             *buf = 134217984;
-            v39 = v19;
+            v39 = clientType3;
             v20 = v13;
             v21 = OS_LOG_TYPE_DEFAULT;
             v22 = "Not advertising for client type (%ld) when denylisted or not allowlisted";
@@ -2927,7 +2927,7 @@ LABEL_24:
       }
 
       while (v8 != v10);
-      v27 = [v5 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v27 = [allRequests countByEnumeratingWithState:&v34 objects:v42 count:16];
       v8 = v27;
     }
 
@@ -2943,13 +2943,13 @@ LABEL_24:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v32;
+    v39 = dictionary;
     _os_log_impl(&dword_272965000, v28, OS_LOG_TYPE_DEFAULT, "AdvertisingRulesCBStackAdvertiser - advertising rules: %@", buf, 0xCu);
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return dictionary;
 }
 
 void __45__WPDAdvertisingManager_isAdvertiserTestMode__block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -2976,18 +2976,18 @@ void __45__WPDAdvertisingManager_isAdvertiserTestMode__block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)heySiriAdvertActive:(BOOL)a3
+- (BOOL)heySiriAdvertActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v29 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(WPDAdvertisingManager *)self advertisingRequests];
-  v6 = [v5 allRequests];
+  advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+  allRequests = [advertisingRequests allRequests];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v7 = [allRequests countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2998,13 +2998,13 @@ LABEL_3:
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allRequests);
       }
 
       v11 = *(*(&v22 + 1) + 8 * v10);
       if ([v11 clientType] == 8)
       {
-        if (!v3)
+        if (!activeCopy)
         {
           break;
         }
@@ -3013,8 +3013,8 @@ LABEL_3:
         if (v12)
         {
           v13 = v12;
-          v14 = [(WPDManager *)self server];
-          v15 = [v14 isClientTestMode:v13];
+          server = [(WPDManager *)self server];
+          v15 = [server isClientTestMode:v13];
 
           if (v15)
           {
@@ -3025,7 +3025,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v8 = [allRequests countByEnumeratingWithState:&v22 objects:v28 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -3088,24 +3088,24 @@ LABEL_21:
   return v16;
 }
 
-- (id)clientForAdvRequest:(id)a3
+- (id)clientForAdvRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v5 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+  clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__WPDAdvertisingManager_clientForAdvRequest___block_invoke;
   v9[3] = &unk_279E595C8;
-  v6 = v4;
+  v6 = requestCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [clientAdvertisingRequests enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3123,20 +3123,20 @@ void __45__WPDAdvertisingManager_clientForAdvRequest___block_invoke(uint64_t a1,
   }
 }
 
-- (void)informClientsAdvertisingPending:(id)a3
+- (void)informClientsAdvertisingPending:(id)pending
 {
-  v4 = a3;
+  pendingCopy = pending;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+  clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__WPDAdvertisingManager_informClientsAdvertisingPending___block_invoke;
   v12[3] = &unk_279E59900;
-  v7 = v4;
+  v7 = pendingCopy;
   v13 = v7;
   v14 = v5;
   v8 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  [clientAdvertisingRequests enumerateKeysAndObjectsUsingBlock:v12];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -3203,26 +3203,26 @@ void __57__WPDAdvertisingManager_informClientsAdvertisingPending___block_invoke_
 
 - (void)resetAdvertisingManager
 {
-  v3 = [(WPDManager *)self server];
-  v4 = [v3 statsManager];
-  [v4 stopActivity:1];
+  server = [(WPDManager *)self server];
+  statsManager = [server statsManager];
+  [statsManager stopActivity:1];
 
   [(WPDAdvertisingManager *)self setCurrentConnectableAdvertisingData:0];
   [(WPDAdvertisingManager *)self setCurrentNonConnectableAdvertisingData:0];
   [(WPDAdvertisingManager *)self setCurrentNonConnectableSecondaryAdvertisingData:0];
-  v5 = [(WPDAdvertisingManager *)self publishedServices];
-  [v5 removeAllObjects];
+  publishedServices = [(WPDAdvertisingManager *)self publishedServices];
+  [publishedServices removeAllObjects];
 
-  v6 = [(WPDAdvertisingManager *)self preallocatedServices];
-  [v6 removeAllObjects];
+  preallocatedServices = [(WPDAdvertisingManager *)self preallocatedServices];
+  [preallocatedServices removeAllObjects];
 }
 
 - (void)update
 {
-  v3 = [(WPDManager *)self state];
-  if (v3 > 1)
+  state = [(WPDManager *)self state];
+  if (state > 1)
   {
-    if (v3 == 3)
+    if (state == 3)
     {
       if (WPLogInitOnce != -1)
       {
@@ -3241,7 +3241,7 @@ void __57__WPDAdvertisingManager_informClientsAdvertisingPending___block_invoke_
 
     else
     {
-      if (v3 != 2)
+      if (state != 2)
       {
         return;
       }
@@ -3258,17 +3258,17 @@ void __57__WPDAdvertisingManager_informClientsAdvertisingPending___block_invoke_
         _os_log_impl(&dword_272965000, v5, OS_LOG_TYPE_DEFAULT, "Peripheral manager is powered off, unauthorized or not supported", v13, 2u);
       }
 
-      v6 = [(WPDManager *)self server];
-      v7 = [v6 statsManager];
-      [v7 stopActivity:1];
+      server = [(WPDManager *)self server];
+      statsManager = [server statsManager];
+      [statsManager stopActivity:1];
     }
 
     [(WPDAdvertisingManager *)self updateAdvertiser];
   }
 
-  else if (v3)
+  else if (state)
   {
-    if (v3 == 1)
+    if (state == 1)
     {
       if (WPLogInitOnce != -1)
       {
@@ -3302,22 +3302,22 @@ void __57__WPDAdvertisingManager_informClientsAdvertisingPending___block_invoke_
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WPDAdvertisingManager *)self nonConnectablePeripheralManager];
-  if (v9 != v7)
+  advertisingCopy = advertising;
+  errorCopy = error;
+  nonConnectablePeripheralManager = [(WPDAdvertisingManager *)self nonConnectablePeripheralManager];
+  if (nonConnectablePeripheralManager != advertisingCopy)
   {
-    v10 = [(WPDAdvertisingManager *)self nonConnectableSecondaryPeripheralManager];
-    v4 = v10;
-    if (v10 != v7)
+    nonConnectableSecondaryPeripheralManager = [(WPDAdvertisingManager *)self nonConnectableSecondaryPeripheralManager];
+    v4 = nonConnectableSecondaryPeripheralManager;
+    if (nonConnectableSecondaryPeripheralManager != advertisingCopy)
     {
 
 LABEL_7:
-      v13 = [(WPDAdvertisingManager *)self currentAdvertisers];
-      v14 = [v13 count];
+      currentAdvertisers = [(WPDAdvertisingManager *)self currentAdvertisers];
+      v14 = [currentAdvertisers count];
 
       if (v14)
       {
@@ -3330,13 +3330,13 @@ LABEL_7:
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
         {
           v16 = v15;
-          v17 = [(WPDAdvertisingManager *)self getCurrentAdvertisers];
+          getCurrentAdvertisers = [(WPDAdvertisingManager *)self getCurrentAdvertisers];
           *buf = 138543362;
-          v29 = v17;
+          v29 = getCurrentAdvertisers;
           _os_log_impl(&dword_272965000, v16, OS_LOG_TYPE_INFO, "Current advertisers %{public}@", buf, 0xCu);
         }
 
-        if (v8)
+        if (errorCopy)
         {
           if (WPLogInitOnce != -1)
           {
@@ -3346,26 +3346,26 @@ LABEL_7:
           v18 = WiProxLog;
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
           {
-            [WPDAdvertisingManager peripheralManagerDidStartAdvertising:v18 error:v8];
+            [WPDAdvertisingManager peripheralManagerDidStartAdvertising:v18 error:errorCopy];
           }
         }
 
         v19 = [MEMORY[0x277CBEB58] set];
-        v20 = [(WPDAdvertisingManager *)self currentAdvertisers];
+        currentAdvertisers2 = [(WPDAdvertisingManager *)self currentAdvertisers];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___block_invoke_480;
         v26[3] = &unk_279E597A0;
         v27 = v19;
         v21 = v19;
-        [v20 enumerateIndexesUsingBlock:v26];
+        [currentAdvertisers2 enumerateIndexesUsingBlock:v26];
 
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___block_invoke_483;
         v24[3] = &unk_279E59C48;
         v24[4] = self;
-        v25 = v8;
+        v25 = errorCopy;
         [v21 enumerateObjectsUsingBlock:v24];
       }
 
@@ -3383,21 +3383,21 @@ LABEL_7:
           _os_log_impl(&dword_272965000, v22, OS_LOG_TYPE_DEFAULT, "Started advertising while client asked to stop advertising - stopping advertising", buf, 2u);
         }
 
-        [v7 stopAdvertising];
+        [advertisingCopy stopAdvertising];
       }
 
       goto LABEL_23;
     }
   }
 
-  v11 = [(WPDAdvertisingManager *)self connectablePeripheralManager];
-  v12 = [v11 isAdvertising];
+  connectablePeripheralManager = [(WPDAdvertisingManager *)self connectablePeripheralManager];
+  isAdvertising = [connectablePeripheralManager isAdvertising];
 
-  if (v9 != v7)
+  if (nonConnectablePeripheralManager != advertisingCopy)
   {
   }
 
-  if ((v12 & 1) == 0)
+  if ((isAdvertising & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -3534,11 +3534,11 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManager:(id)a3 didStopAdvertisingWithError:(id)a4
+- (void)peripheralManager:(id)manager didStopAdvertisingWithError:(id)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager peripheralManager:didStopAdvertisingWithError:];
@@ -3548,16 +3548,16 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = localizedDescription;
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "[Privacy] Did stop advertising with error: %@", &buf, 0xCu);
   }
 
-  if ([v7 code] == 8)
+  if ([errorCopy code] == 8)
   {
-    v11 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
-    v12 = [v11 count] == 0;
+    clientsToNotifyOnAddressChange = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
+    v12 = [clientsToNotifyOnAddressChange count] == 0;
 
     if (!v12)
     {
@@ -3567,8 +3567,8 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
       v45 = __Block_byref_object_copy__4;
       v46 = __Block_byref_object_dispose__4;
       v47 = [MEMORY[0x277CBEB58] set];
-      v13 = [(WPDAdvertisingManager *)self advertisingRequests];
-      v14 = [v13 allRequests];
+      advertisingRequests = [(WPDAdvertisingManager *)self advertisingRequests];
+      allRequests = [advertisingRequests allRequests];
 
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
@@ -3576,7 +3576,7 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
       v33[3] = &unk_279E59C70;
       v33[4] = self;
       v33[5] = &buf;
-      [v14 enumerateObjectsUsingBlock:v33];
+      [allRequests enumerateObjectsUsingBlock:v33];
       if (WPLogInitOnce != -1)
       {
         [WPDAdvertisingManager peripheralManager:didStopAdvertisingWithError:];
@@ -3587,7 +3587,7 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
       {
         v16 = *(*(&buf + 1) + 40);
         *v39 = 138412546;
-        *&v39[4] = v14;
+        *&v39[4] = allRequests;
         *&v39[12] = 2112;
         *&v39[14] = v16;
         _os_log_impl(&dword_272965000, v15, OS_LOG_TYPE_DEFAULT, "[Privacy] current all adv requests: %@, advRequestsToRemove: %@", v39, 0x16u);
@@ -3601,20 +3601,20 @@ void __68__WPDAdvertisingManager_peripheralManagerDidStartAdvertising_error___bl
       v17 = WiProxLog;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
+        clientAdvertisingRequests = [(WPDAdvertisingManager *)self clientAdvertisingRequests];
         *v39 = 138412290;
-        *&v39[4] = v18;
+        *&v39[4] = clientAdvertisingRequests;
         _os_log_impl(&dword_272965000, v17, OS_LOG_TYPE_DEFAULT, "[Privacy] advertising clients: %@", v39, 0xCu);
       }
 
-      v19 = [(WPDAdvertisingManager *)self nonConnectablePeripheralManager];
-      v20 = v19;
-      if (v19 != v6)
+      nonConnectablePeripheralManager = [(WPDAdvertisingManager *)self nonConnectablePeripheralManager];
+      v20 = nonConnectablePeripheralManager;
+      if (nonConnectablePeripheralManager != managerCopy)
       {
         if (+[WPDaemonServer supportsNC2AdvertisingInstance])
         {
-          v21 = [(WPDAdvertisingManager *)self nonConnectableSecondaryPeripheralManager];
-          v22 = v21 == v6;
+          nonConnectableSecondaryPeripheralManager = [(WPDAdvertisingManager *)self nonConnectableSecondaryPeripheralManager];
+          v22 = nonConnectableSecondaryPeripheralManager == managerCopy;
 
           if (v22)
           {
@@ -3638,7 +3638,7 @@ LABEL_27:
       *&v39[16] = 0x3032000000;
       v40 = __Block_byref_object_copy__4;
       v41 = __Block_byref_object_dispose__4;
-      v42 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v25 = *(*(&buf + 1) + 40);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
@@ -3788,22 +3788,22 @@ void __71__WPDAdvertisingManager_peripheralManager_didStopAdvertisingWithError__
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v39 = v7;
-  v9 = [v7 identifier];
-  v10 = [v8 UUID];
-  v41 = [v10 UUIDString];
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  v39 = centralCopy;
+  identifier = [centralCopy identifier];
+  uUID = [characteristicCopy UUID];
+  uUIDString = [uUID UUIDString];
 
-  v11 = [v8 service];
-  v12 = [v11 UUID];
-  v40 = [v12 UUIDString];
+  service = [characteristicCopy service];
+  uUID2 = [service UUID];
+  uUIDString2 = [uUID2 UUIDString];
 
-  v38 = v8;
-  v13 = [(WPDAdvertisingManager *)self getClientUUIDsForCharacteristic:v8];
+  v38 = characteristicCopy;
+  v13 = [(WPDAdvertisingManager *)self getClientUUIDsForCharacteristic:characteristicCopy];
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager peripheralManager:central:didSubscribeToCharacteristic:];
@@ -3813,14 +3813,14 @@ void __71__WPDAdvertisingManager_peripheralManager_didStopAdvertisingWithError__
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v39 identifier];
-    v17 = [v16 UUIDString];
+    identifier2 = [v39 identifier];
+    uUIDString3 = [identifier2 UUIDString];
     *buf = 138543874;
     v51 = v13;
     v52 = 2114;
-    v53 = v41;
+    v53 = uUIDString;
     v54 = 2114;
-    v55 = v17;
+    v55 = uUIDString3;
     _os_log_impl(&dword_272965000, v15, OS_LOG_TYPE_DEFAULT, "Clients %{public}@ subscribed for characteristic %{public}@ for central %{public}@", buf, 0x20u);
   }
 
@@ -3845,12 +3845,12 @@ void __71__WPDAdvertisingManager_peripheralManager_didStopAdvertisingWithError__
         }
 
         v22 = *(*(&v45 + 1) + 8 * v21);
-        v23 = [(WPDManager *)self server];
-        v24 = [v23 getClientForUUID:v22];
+        server = [(WPDManager *)self server];
+        v24 = [server getClientForUUID:v22];
 
         if (v24)
         {
-          v25 = [v24 connectionForUUID:v9];
+          v25 = [v24 connectionForUUID:identifier];
           if (v25)
           {
             v26 = v25;
@@ -3869,16 +3869,16 @@ void __71__WPDAdvertisingManager_peripheralManager_didStopAdvertisingWithError__
               _os_log_error_impl(&dword_272965000, v27, OS_LOG_TYPE_ERROR, "We already have a %@ for client %@", buf, 0x16u);
             }
 
-            v28 = [(WPDConnection *)v26 getCentral];
-            if (v28)
+            getCentral = [(WPDConnection *)v26 getCentral];
+            if (getCentral)
             {
 
               goto LABEL_28;
             }
 
-            v34 = [(WPDConnection *)v26 getPeripheral];
+            getPeripheral = [(WPDConnection *)v26 getPeripheral];
 
-            if (v34)
+            if (getPeripheral)
             {
 LABEL_28:
               if (![(WPDConnection *)v26 didConnectSent]&& (![(WPDConnection *)v26 fetchConnectionType]|| [(WPDConnection *)v26 fetchConnectionType]== 2))
@@ -3894,7 +3894,7 @@ LABEL_28:
                   [WPDAdvertisingManager peripheralManager:v44 central:v35 didSubscribeToCharacteristic:?];
                 }
 
-                [v24 central:v9 subscribed:1 toCharacteristic:v41 inService:v40];
+                [v24 central:identifier subscribed:1 toCharacteristic:uUIDString inService:uUIDString2];
               }
 
               goto LABEL_36;
@@ -3913,11 +3913,11 @@ LABEL_28:
             {
 LABEL_25:
               v32 = v31;
-              v33 = [(WPDConnection *)v22 UUIDString];
+              uUIDString4 = [(WPDConnection *)v22 UUIDString];
               *buf = 138543618;
               v51 = v26;
               v52 = 2114;
-              v53 = v33;
+              v53 = uUIDString4;
               _os_log_impl(&dword_272965000, v32, OS_LOG_TYPE_DEFAULT, "Created central connection %{public}@ for client %{public}@ - send didSubscribe", buf, 0x16u);
             }
           }
@@ -3940,7 +3940,7 @@ LABEL_25:
             }
           }
 
-          [v24 central:v9 subscribed:1 toCharacteristic:v41 inService:v40];
+          [v24 central:identifier subscribed:1 toCharacteristic:uUIDString inService:uUIDString2];
 
 LABEL_36:
           goto LABEL_37;
@@ -3957,7 +3957,7 @@ LABEL_36:
           *buf = 138412546;
           v51 = v22;
           v52 = 2112;
-          v53 = v41;
+          v53 = uUIDString;
           _os_log_error_impl(&dword_272965000, v29, OS_LOG_TYPE_ERROR, "Couldn't find client %@ associated with this characteristic %@ (subscribing)", buf, 0x16u);
         }
 
@@ -3977,21 +3977,21 @@ LABEL_37:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 identifier];
-  v10 = [v8 UUID];
-  v11 = [v10 UUIDString];
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  identifier = [centralCopy identifier];
+  uUID = [characteristicCopy UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [v8 service];
-  v13 = [v12 UUID];
-  v40 = [v13 UUIDString];
+  service = [characteristicCopy service];
+  uUID2 = [service UUID];
+  uUIDString2 = [uUID2 UUIDString];
 
-  v38 = v8;
-  v14 = [(WPDAdvertisingManager *)self getClientUUIDsForCharacteristic:v8];
+  v38 = characteristicCopy;
+  v14 = [(WPDAdvertisingManager *)self getClientUUIDsForCharacteristic:characteristicCopy];
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager peripheralManager:central:didUnsubscribeFromCharacteristic:];
@@ -4001,18 +4001,18 @@ LABEL_37:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v7 identifier];
-    v18 = [v17 UUIDString];
+    identifier2 = [centralCopy identifier];
+    uUIDString3 = [identifier2 UUIDString];
     *buf = 138543874;
     v48 = v14;
     v49 = 2114;
-    v50 = v11;
+    v50 = uUIDString;
     v51 = 2114;
-    v52 = v18;
+    v52 = uUIDString3;
     _os_log_impl(&dword_272965000, v16, OS_LOG_TYPE_DEFAULT, "Clients %{public}@ unsubscribed for characteristic %{public}@ for central %{public}@", buf, 0x20u);
   }
 
-  v39 = v7;
+  v39 = centralCopy;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -4034,10 +4034,10 @@ LABEL_37:
         }
 
         v23 = *(*(&v42 + 1) + 8 * v22);
-        v24 = [(WPDManager *)self server];
-        v25 = [v24 getClientForUUID:v23];
+        server = [(WPDManager *)self server];
+        v25 = [server getClientForUUID:v23];
 
-        v26 = [v25 connectionForUUID:v9];
+        v26 = [v25 connectionForUUID:identifier];
         v27 = v26;
         if (v25)
         {
@@ -4062,17 +4062,17 @@ LABEL_37:
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
             {
               v33 = v32;
-              v34 = [v25 clientUUID];
+              clientUUID = [v25 clientUUID];
               *buf = 138543874;
-              v48 = v9;
+              v48 = identifier;
               v49 = 2114;
-              v50 = v11;
+              v50 = uUIDString;
               v51 = 2114;
-              v52 = v34;
+              v52 = clientUUID;
               _os_log_impl(&dword_272965000, v33, OS_LOG_TYPE_DEFAULT, "Central %{public}@ unsubsribed from characteristic %{public}@ for client %{public}@ - send didUnSubsribe", buf, 0x20u);
             }
 
-            [v25 central:v9 subscribed:0 toCharacteristic:v11 inService:v40];
+            [v25 central:identifier subscribed:0 toCharacteristic:uUIDString inService:uUIDString2];
             goto LABEL_37;
           }
 
@@ -4088,7 +4088,7 @@ LABEL_28:
             *buf = 138412546;
             v48 = v23;
             v49 = 2112;
-            v50 = v11;
+            v50 = uUIDString;
             v30 = v35;
             v31 = "Couldn't find client %@ associated with this characteristic %@ (unsubscribing)";
             goto LABEL_36;
@@ -4110,7 +4110,7 @@ LABEL_28:
             *buf = 138412546;
             v48 = v23;
             v49 = 2112;
-            v50 = v11;
+            v50 = uUIDString;
             v30 = v36;
             v31 = "client associated with client UUID %@ doesn't exist and characteristic %@ (unsubscribing)";
             goto LABEL_36;
@@ -4135,7 +4135,7 @@ LABEL_28:
           *buf = 138412546;
           v48 = v23;
           v49 = 2112;
-          v50 = v11;
+          v50 = uUIDString;
           v30 = v29;
           v31 = "connection associated with client UUID %@ doesn't exist and characteristic %@ (unsubscribing)";
 LABEL_36:
@@ -4157,10 +4157,10 @@ LABEL_37:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager peripheralManager:didReceiveReadRequest:];
@@ -4174,23 +4174,23 @@ LABEL_37:
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = a4;
+  obj = requests;
   v40 = [obj countByEnumeratingWithState:&v55 objects:v70 count:16];
   if (v40)
   {
     v39 = *v56;
     *&v7 = 138412290;
     v37 = v7;
-    v44 = v6;
-    v43 = self;
+    v44 = managerCopy;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -4202,7 +4202,7 @@ LABEL_37:
         }
 
         v9 = *(*(&v55 + 1) + 8 * v8);
-        v46 = [v9 characteristic];
+        characteristic = [v9 characteristic];
         v10 = [(WPDAdvertisingManager *)self getClientUUIDsForCharacteristic:?];
         if ([v10 count])
         {
@@ -4229,13 +4229,13 @@ LABEL_37:
                 }
 
                 v12 = *(*(&v51 + 1) + 8 * v11);
-                v13 = [(WPDManager *)self server];
-                v14 = [v13 getClientForUUID:v12];
+                server = [(WPDManager *)self server];
+                v14 = [server getClientForUUID:v12];
 
-                v15 = [v9 central];
-                v16 = [v15 identifier];
+                central = [v9 central];
+                identifier = [central identifier];
 
-                v17 = [v14 connectionForUUID:v16];
+                v17 = [v14 connectionForUUID:identifier];
                 v18 = v17;
                 if (v14)
                 {
@@ -4258,34 +4258,34 @@ LABEL_37:
                   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
                   {
                     v31 = v20;
-                    v32 = [v14 clientUUID];
-                    v33 = [v14 processName];
-                    v34 = [v18 fetchConnectionType];
+                    clientUUID = [v14 clientUUID];
+                    processName = [v14 processName];
+                    fetchConnectionType = [v18 fetchConnectionType];
                     *buf = 134219010;
                     v60 = v14;
                     v61 = 2112;
-                    v62 = v32;
+                    v62 = clientUUID;
                     v63 = 2112;
-                    v64 = v33;
+                    v64 = processName;
                     v65 = 2048;
                     v66 = v18;
                     v67 = 2048;
-                    v68 = v34;
+                    v68 = fetchConnectionType;
                     _os_log_error_impl(&dword_272965000, v31, OS_LOG_TYPE_ERROR, "client %p, client UUID %@, client name %@, connection %p or connection type %ld is invalid, send RequestNotSupported", buf, 0x34u);
                   }
 
-                  [v6 respondToRequest:v9 withResult:6];
+                  [managerCopy respondToRequest:v9 withResult:6];
                 }
 
                 else
                 {
-                  v48 = [v9 value];
-                  v21 = [v46 UUID];
-                  v22 = [v21 UUIDString];
+                  value = [v9 value];
+                  uUID = [characteristic UUID];
+                  uUIDString = [uUID UUIDString];
 
-                  v23 = [v46 service];
-                  v24 = [v23 UUID];
-                  v25 = [v24 UUIDString];
+                  service = [characteristic service];
+                  uUID2 = [service UUID];
+                  uUIDString2 = [uUID2 UUIDString];
 
                   if (WPLogInitOnce != -1)
                   {
@@ -4296,24 +4296,24 @@ LABEL_37:
                   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
                   {
                     v27 = v26;
-                    v28 = [v16 UUIDString];
-                    v29 = [v14 clientUUID];
-                    v30 = [v29 UUIDString];
+                    uUIDString3 = [identifier UUIDString];
+                    clientUUID2 = [v14 clientUUID];
+                    uUIDString4 = [clientUUID2 UUIDString];
                     *buf = 138412802;
-                    v60 = v28;
+                    v60 = uUIDString3;
                     v61 = 2112;
-                    v62 = v22;
+                    v62 = uUIDString;
                     v63 = 2112;
-                    v64 = v30;
+                    v64 = uUIDString4;
                     _os_log_impl(&dword_272965000, v27, OS_LOG_TYPE_INFO, "Received Write Request from Central %@ for characteristic %@ for client %@", buf, 0x20u);
 
-                    self = v43;
-                    v6 = v44;
+                    self = selfCopy;
+                    managerCopy = v44;
                   }
 
-                  [v14 receivedData:v48 fromCharacteristic:v22 inService:v25 forPeripheral:v16];
+                  [v14 receivedData:value fromCharacteristic:uUIDString inService:uUIDString2 forPeripheral:identifier];
                   v9 = v45;
-                  [v6 respondToRequest:v45 withResult:0];
+                  [managerCopy respondToRequest:v45 withResult:0];
                 }
 
                 ++v11;
@@ -4341,11 +4341,11 @@ LABEL_37:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
           {
             *buf = v37;
-            v60 = v46;
+            v60 = characteristic;
             _os_log_error_impl(&dword_272965000, v35, OS_LOG_TYPE_ERROR, "Received Write Request for characteristic %@ for which no centrals have subscribed, send RequestNotSupported", buf, 0xCu);
           }
 
-          [v6 respondToRequest:v9 withResult:6];
+          [managerCopy respondToRequest:v9 withResult:6];
         }
 
         ++v8;
@@ -4361,9 +4361,9 @@ LABEL_37:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers
 {
-  v4 = a3;
+  subscribersCopy = subscribers;
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager peripheralManagerIsReadyToUpdateSubscribers:];
@@ -4376,17 +4376,17 @@ LABEL_37:
     _os_log_impl(&dword_272965000, v5, OS_LOG_TYPE_INFO, "Peripheral Manager is now ready to update subscribers", v8, 2u);
   }
 
-  v6 = [(WPDManager *)self server];
-  v7 = [v6 getAllClients];
+  server = [(WPDManager *)self server];
+  getAllClients = [server getAllClients];
 
-  [v7 enumerateObjectsUsingBlock:&__block_literal_global_555_0];
+  [getAllClients enumerateObjectsUsingBlock:&__block_literal_global_555_0];
 }
 
-- (BOOL)addressChangeNotificationNeeded:(id)a3 advertiserTypeString:(id)a4
+- (BOOL)addressChangeNotificationNeeded:(id)needed advertiserTypeString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB58] setWithSet:a3];
+  stringCopy = string;
+  v7 = [MEMORY[0x277CBEB58] setWithSet:needed];
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingManager addressChangeNotificationNeeded:advertiserTypeString:];
@@ -4396,18 +4396,18 @@ LABEL_37:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
+    clientsToNotifyOnAddressChange = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
     v18 = 138412802;
-    v19 = v6;
+    v19 = stringCopy;
     v20 = 2112;
     v21 = v7;
     v22 = 2112;
-    v23 = v10;
+    v23 = clientsToNotifyOnAddressChange;
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "[Privacy] AdvertisingRulesiOS: current %@ advertisers: %@, current clients for address change notification: %@", &v18, 0x20u);
   }
 
-  v11 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
-  [v7 minusSet:v11];
+  clientsToNotifyOnAddressChange2 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
+  [v7 minusSet:clientsToNotifyOnAddressChange2];
 
   if (WPLogInitOnce != -1)
   {
@@ -4418,13 +4418,13 @@ LABEL_37:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
+    clientsToNotifyOnAddressChange3 = [(WPDAdvertisingManager *)self clientsToNotifyOnAddressChange];
     v18 = 138412802;
-    v19 = v6;
+    v19 = stringCopy;
     v20 = 2112;
     v21 = v7;
     v22 = 2112;
-    v23 = v14;
+    v23 = clientsToNotifyOnAddressChange3;
     _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "[Privacy] AdvertisingRulesiOS: remaining %@ advertisers: %@, notification clients: %@", &v18, 0x20u);
   }
 
@@ -4447,14 +4447,14 @@ LABEL_37:
   }
 }
 
-- (id)NSUUIDfromCBUUID:(id)a3
+- (id)NSUUIDfromCBUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 alloc];
-  v6 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v7 = [v5 initWithUUIDString:v6];
+  v7 = [v5 initWithUUIDString:uUIDString];
 
   return v7;
 }
@@ -4491,20 +4491,20 @@ void __60__WPDAdvertisingManager_platformSupportsMultipleAdvertising__block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getClientUUIDsForCharacteristic:(id)a3
+- (id)getClientUUIDsForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(WPDAdvertisingManager *)self publishedServices];
+  characteristicCopy = characteristic;
+  array = [MEMORY[0x277CBEB18] array];
+  publishedServices = [(WPDAdvertisingManager *)self publishedServices];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__WPDAdvertisingManager_getClientUUIDsForCharacteristic___block_invoke;
   v12[3] = &unk_279E59D10;
-  v13 = v4;
-  v7 = v5;
+  v13 = characteristicCopy;
+  v7 = array;
   v14 = v7;
-  v8 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = characteristicCopy;
+  [publishedServices enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -4530,11 +4530,11 @@ void __57__WPDAdvertisingManager_getClientUUIDsForCharacteristic___block_invoke(
   }
 }
 
-- (id)getCharacteristicForClient:(id)a3
+- (id)getCharacteristicForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(WPDAdvertisingManager *)self publishedServices];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientCopy = client;
+  publishedServices = [(WPDAdvertisingManager *)self publishedServices];
+  v6 = [publishedServices objectForKeyedSubscript:clientCopy];
 
   v7 = getFirstCharacteristicForService(v6);
 
@@ -4543,14 +4543,14 @@ void __57__WPDAdvertisingManager_getClientUUIDsForCharacteristic___block_invoke(
 
 - (void)statsExportTimerFired
 {
-  v3 = [(WPDManager *)self server];
-  v4 = [v3 serverQueue];
+  server = [(WPDManager *)self server];
+  serverQueue = [server serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__WPDAdvertisingManager_statsExportTimerFired__block_invoke;
   block[3] = &unk_279E59078;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serverQueue, block);
 }
 
 void __46__WPDAdvertisingManager_statsExportTimerFired__block_invoke(uint64_t a1)
@@ -4794,7 +4794,7 @@ void __46__WPDAdvertisingManager_statsExportTimerFired__block_invoke(uint64_t a1
 - (void)isAdvertiserTestMode
 {
   v7 = *MEMORY[0x277D85DE8];
-  *(*a1 + 24);
+  *(*self + 24);
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

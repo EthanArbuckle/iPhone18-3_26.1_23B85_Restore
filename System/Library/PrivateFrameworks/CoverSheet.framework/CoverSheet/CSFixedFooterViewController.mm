@@ -1,14 +1,14 @@
 @interface CSFixedFooterViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CSFixedFooterViewController)init;
 - (void)_addStatusTextViewControllerIfNecessary;
-- (void)_updateCallToActionTextAnimated:(BOOL)a3;
-- (void)coverSheetStatusTextViewControllerContentDidChange:(id)a3;
+- (void)_updateCallToActionTextAnimated:(BOOL)animated;
+- (void)coverSheetStatusTextViewControllerContentDidChange:(id)change;
 - (void)updateCallToActionForMesaMatchFailure;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSFixedFooterViewController
@@ -57,33 +57,33 @@
   [(CSCoverSheetViewControllerBase *)&v3 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSFixedFooterViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSFixedFooterViewController *)self _addStatusTextViewControllerIfNecessary];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSFixedFooterViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
   [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:0];
-  v4 = [(CSFixedFooterViewController *)self fixedFooterView];
-  v5 = [v4 callToActionLabel];
-  [v5 fadeIn];
+  fixedFooterView = [(CSFixedFooterViewController *)self fixedFooterView];
+  callToActionLabel = [fixedFooterView callToActionLabel];
+  [callToActionLabel fadeIn];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CSFixedFooterViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:a3];
-  v4 = [(CSFixedFooterViewController *)self fixedFooterView];
-  v5 = [v4 callToActionLabel];
-  [v5 fadeOut];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappear];
+  fixedFooterView = [(CSFixedFooterViewController *)self fixedFooterView];
+  callToActionLabel = [fixedFooterView callToActionLabel];
+  [callToActionLabel fadeOut];
 }
 
 void __70__CSFixedFooterViewController__addStatusTextViewControllerIfNecessary__block_invoke(uint64_t a1, void *a2)
@@ -97,9 +97,9 @@ void __70__CSFixedFooterViewController__addStatusTextViewControllerIfNecessary__
   v6[2]();
 }
 
-- (void)_updateCallToActionTextAnimated:(BOOL)a3
+- (void)_updateCallToActionTextAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     return;
@@ -131,41 +131,41 @@ LABEL_7:
 LABEL_8:
   v22 = v9;
   v10 = [(NSString *)v9 length];
-  v11 = [(CSFixedFooterViewController *)self fixedFooterView];
-  v12 = v11;
+  fixedFooterView = [(CSFixedFooterViewController *)self fixedFooterView];
+  v12 = fixedFooterView;
   if (v10)
   {
-    v13 = [v11 callToActionLabel];
+    callToActionLabel = [fixedFooterView callToActionLabel];
 
-    if (!v13)
+    if (!callToActionLabel)
     {
-      v13 = objc_alloc_init(MEMORY[0x277D67CA8]);
-      v14 = [(CSFixedFooterViewController *)self fixedFooterView];
-      [v14 setCallToActionLabel:v13];
+      callToActionLabel = objc_alloc_init(MEMORY[0x277D67CA8]);
+      fixedFooterView2 = [(CSFixedFooterViewController *)self fixedFooterView];
+      [fixedFooterView2 setCallToActionLabel:callToActionLabel];
     }
 
-    v15 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-    v16 = [v15 componentForType:9 property:1];
-    v17 = [v16 isHidden];
+    activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+    v16 = [activeAppearance componentForType:9 property:1];
+    isHidden = [v16 isHidden];
 
-    [v13 setVisible:v17 ^ 1u animated:v3];
+    [callToActionLabel setVisible:isHidden ^ 1u animated:animatedCopy];
     v18 = 1.0;
-    if (v17)
+    if (isHidden)
     {
       v18 = 0.0;
     }
 
-    [v13 setAlpha:v18];
-    v19 = [MEMORY[0x277CBEAF8] currentLocale];
-    v20 = [v19 localeIdentifier];
-    [v13 setText:v22 forLanguage:v20 animated:v3];
+    [callToActionLabel setAlpha:v18];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    [callToActionLabel setText:v22 forLanguage:localeIdentifier animated:animatedCopy];
 
-    v12 = v13;
+    v12 = callToActionLabel;
   }
 
   else
   {
-    [v11 setCallToActionLabel:0];
+    [fixedFooterView setCallToActionLabel:0];
   }
 
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
@@ -173,15 +173,15 @@ LABEL_8:
 
 - (void)updateCallToActionForMesaMatchFailure
 {
-  v3 = [(CSFixedFooterViewController *)self fixedFooterView];
-  v4 = [v3 callToActionShakeView];
+  fixedFooterView = [(CSFixedFooterViewController *)self fixedFooterView];
+  callToActionShakeView = [fixedFooterView callToActionShakeView];
 
-  v5 = [(CSFixedFooterViewController *)self fixedFooterView];
-  v6 = [v5 callToActionLabel];
+  fixedFooterView2 = [(CSFixedFooterViewController *)self fixedFooterView];
+  callToActionLabel = [fixedFooterView2 callToActionLabel];
 
   self->_temporaryMesaFailureTextActive = 1;
   [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:0];
-  [v6 setVisible:1 animated:0];
+  [callToActionLabel setVisible:1 animated:0];
   ++updateCallToActionForMesaMatchFailure___token;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -189,9 +189,9 @@ LABEL_8:
   v8[3] = &unk_27838D500;
   v10 = updateCallToActionForMesaMatchFailure___token;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [v4 beginShakingWithCompletion:v8];
+  v9 = callToActionLabel;
+  v7 = callToActionLabel;
+  [callToActionShakeView beginShakingWithCompletion:v8];
 }
 
 void __68__CSFixedFooterViewController_updateCallToActionForMesaMatchFailure__block_invoke(uint64_t a1)
@@ -226,22 +226,22 @@ void __68__CSFixedFooterViewController_updateCallToActionForMesaMatchFailure__bl
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = CSFixedFooterViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v27, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v27, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 10)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type <= 10)
     {
-      if (v6 > 5)
+      if (type > 5)
       {
-        if (v6 != 6)
+        if (type != 6)
         {
-          if (v6 != 8)
+          if (type != 8)
           {
             goto LABEL_34;
           }
@@ -252,20 +252,20 @@ void __68__CSFixedFooterViewController_updateCallToActionForMesaMatchFailure__bl
         goto LABEL_22;
       }
 
-      if (v6 == 1)
+      if (type == 1)
       {
         [(CSFixedFooterViewController *)self _addStatusTextViewControllerIfNecessary];
         [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:0];
-        v15 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-        v16 = [v15 legibilitySettings];
+        activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+        legibilitySettings = [activeAppearance legibilitySettings];
 
-        v17 = [(CSFixedFooterViewController *)self fixedFooterView];
-        [v17 updateForLegibilitySettings:v16];
+        fixedFooterView = [(CSFixedFooterViewController *)self fixedFooterView];
+        [fixedFooterView updateForLegibilitySettings:legibilitySettings];
       }
 
       else
       {
-        if (v6 != 2)
+        if (type != 2)
         {
           goto LABEL_34;
         }
@@ -276,19 +276,19 @@ void __68__CSFixedFooterViewController_updateCallToActionForMesaMatchFailure__bl
 
     else
     {
-      if (v6 > 15)
+      if (type > 15)
       {
-        if (v6 == 16)
+        if (type == 16)
         {
-          v18 = [v4 value];
-          [v18 floatValue];
+          value = [eventCopy value];
+          [value floatValue];
           v20 = v19;
 
           if (v20 <= 0.0)
           {
-            v21 = [(CSFixedFooterViewController *)self fixedFooterView];
-            v22 = [v21 callToActionLabel];
-            [v22 fadeOut];
+            fixedFooterView2 = [(CSFixedFooterViewController *)self fixedFooterView];
+            callToActionLabel = [fixedFooterView2 callToActionLabel];
+            [callToActionLabel fadeOut];
           }
 
           else
@@ -299,31 +299,31 @@ void __68__CSFixedFooterViewController_updateCallToActionForMesaMatchFailure__bl
             }
 
             [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:0];
-            v21 = [(CSFixedFooterViewController *)self fixedFooterView];
-            v22 = [v21 callToActionLabel];
-            [v22 fadeIn];
+            fixedFooterView2 = [(CSFixedFooterViewController *)self fixedFooterView];
+            callToActionLabel = [fixedFooterView2 callToActionLabel];
+            [callToActionLabel fadeIn];
           }
 
 LABEL_32:
           goto LABEL_33;
         }
 
-        if (v6 != 25)
+        if (type != 25)
         {
-          if (v6 != 34)
+          if (type != 34)
           {
             goto LABEL_34;
           }
 
-          v7 = [(CSFixedFooterViewController *)self fixedFooterView];
-          v8 = [v7 callToActionLabel];
+          fixedFooterView3 = [(CSFixedFooterViewController *)self fixedFooterView];
+          callToActionLabel2 = [fixedFooterView3 callToActionLabel];
 
-          v9 = [MEMORY[0x277D67C98] sharedInstance];
-          v10 = [v9 hasBiometricAuthenticationCapabilityEnabled];
+          mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+          hasBiometricAuthenticationCapabilityEnabled = [mEMORY[0x277D67C98] hasBiometricAuthenticationCapabilityEnabled];
 
-          if (v10)
+          if (hasBiometricAuthenticationCapabilityEnabled)
           {
-            [v8 cancelFadeInTimerIfNecessary];
+            [callToActionLabel2 cancelFadeInTimerIfNecessary];
             v11 = 1000000000;
           }
 
@@ -338,8 +338,8 @@ LABEL_32:
           v25[2] = __43__CSFixedFooterViewController_handleEvent___block_invoke;
           v25[3] = &unk_27838B838;
           v25[4] = self;
-          v26 = v8;
-          v21 = v8;
+          v26 = callToActionLabel2;
+          fixedFooterView2 = callToActionLabel2;
           dispatch_after(v23, MEMORY[0x277D85CD0], v25);
 
           goto LABEL_32;
@@ -350,23 +350,23 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (v6 == 11)
+      if (type == 11)
       {
 LABEL_23:
         [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:0];
         goto LABEL_33;
       }
 
-      if (v6 != 13)
+      if (type != 13)
       {
         goto LABEL_34;
       }
 
-      v12 = [v4 value];
-      v13 = [v12 BOOLValue];
+      value2 = [eventCopy value];
+      bOOLValue = [value2 BOOLValue];
 
-      [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:v13];
-      if (v13)
+      [(CSFixedFooterViewController *)self _updateCallToActionTextAnimated:bOOLValue];
+      if (bOOLValue)
       {
         self->_temporaryMesaFailureTextActive = 0;
         self->_authenticatedSinceFingerOn = 1;
@@ -376,14 +376,14 @@ LABEL_23:
     }
 
 LABEL_33:
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_34;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_34:
 
-  return v5;
+  return isConsumable;
 }
 
 _BYTE *__43__CSFixedFooterViewController_handleEvent___block_invoke(uint64_t a1)
@@ -400,10 +400,10 @@ _BYTE *__43__CSFixedFooterViewController_handleEvent___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)coverSheetStatusTextViewControllerContentDidChange:(id)a3
+- (void)coverSheetStatusTextViewControllerContentDidChange:(id)change
 {
-  v4 = [(CSFixedFooterViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(CSFixedFooterViewController *)self view];
+  [view setNeedsLayout];
 
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
 }

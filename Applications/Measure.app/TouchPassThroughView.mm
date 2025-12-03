@@ -1,20 +1,20 @@
 @interface TouchPassThroughView
-- (_TtC7Measure20TouchPassThroughView)initWithCoder:(id)a3;
-- (_TtC7Measure20TouchPassThroughView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7Measure20TouchPassThroughView)initWithCoder:(id)coder;
+- (_TtC7Measure20TouchPassThroughView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation TouchPassThroughView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = type metadata accessor for TouchPassThroughView();
   v7 = v14.receiver;
-  v8 = a4;
-  v9 = [(TouchPassThroughView *)&v14 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(TouchPassThroughView *)&v14 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -38,23 +38,23 @@ LABEL_7:
   return v11;
 }
 
-- (_TtC7Measure20TouchPassThroughView)initWithFrame:(CGRect)a3
+- (_TtC7Measure20TouchPassThroughView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TouchPassThroughView();
   return [(TouchPassThroughView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Measure20TouchPassThroughView)initWithCoder:(id)a3
+- (_TtC7Measure20TouchPassThroughView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TouchPassThroughView();
-  v4 = a3;
-  v5 = [(TouchPassThroughView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TouchPassThroughView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

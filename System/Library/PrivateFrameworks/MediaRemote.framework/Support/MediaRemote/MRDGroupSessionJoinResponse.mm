@@ -1,26 +1,26 @@
 @interface MRDGroupSessionJoinResponse
-- (MRDGroupSessionJoinResponse)initWithNearbyGroup:(id)a3 publicSigningKeyData:(id)a4 joinToken:(id)a5;
+- (MRDGroupSessionJoinResponse)initWithNearbyGroup:(id)group publicSigningKeyData:(id)data joinToken:(id)token;
 @end
 
 @implementation MRDGroupSessionJoinResponse
 
-- (MRDGroupSessionJoinResponse)initWithNearbyGroup:(id)a3 publicSigningKeyData:(id)a4 joinToken:(id)a5
+- (MRDGroupSessionJoinResponse)initWithNearbyGroup:(id)group publicSigningKeyData:(id)data joinToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  dataCopy = data;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = MRDGroupSessionJoinResponse;
   v12 = [(MRDGroupSessionJoinResponse *)&v16 init];
   if (v12)
   {
-    v13 = [v9 identifier];
+    identifier = [groupCopy identifier];
     sessionIdentifier = v12->_sessionIdentifier;
-    v12->_sessionIdentifier = v13;
+    v12->_sessionIdentifier = identifier;
 
-    objc_storeStrong(&v12->_nearbyGroup, a3);
-    objc_storeStrong(&v12->_publicSigningKeyData, a4);
-    objc_storeStrong(&v12->_joinToken, a5);
+    objc_storeStrong(&v12->_nearbyGroup, group);
+    objc_storeStrong(&v12->_publicSigningKeyData, data);
+    objc_storeStrong(&v12->_joinToken, token);
   }
 
   return v12;

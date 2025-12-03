@@ -1,18 +1,18 @@
 @interface _UIAlertControlleriOSActionSheetCancelBackgroundView
-- (_UIAlertControlleriOSActionSheetCancelBackgroundView)initWithFrame:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (_UIAlertControlleriOSActionSheetCancelBackgroundView)initWithFrame:(CGRect)frame;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 @end
 
 @implementation _UIAlertControlleriOSActionSheetCancelBackgroundView
 
-- (_UIAlertControlleriOSActionSheetCancelBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControlleriOSActionSheetCancelBackgroundView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = _UIAlertControlleriOSActionSheetCancelBackgroundView;
-  v3 = [(UIView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -39,8 +39,8 @@
     v15 = [UIVibrancyEffect _effectForBlurEffect:v14 vibrancyStyle:112];
     v16 = [[UIVisualEffectView alloc] initWithEffect:v15];
     v17 = +[UIColor whiteColor];
-    v18 = [(UIVisualEffectView *)v16 contentView];
-    [v18 setBackgroundColor:v17];
+    contentView = [(UIVisualEffectView *)v16 contentView];
+    [contentView setBackgroundColor:v17];
 
     highlightView = v3->highlightView;
     v3->highlightView = &v16->super;
@@ -65,44 +65,44 @@
   return v3;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   [(UIView *)self->backgroundView _setContinuousCornerRadius:?];
-  [(UIView *)self->highlightBackgroundView _setContinuousCornerRadius:a3];
+  [(UIView *)self->highlightBackgroundView _setContinuousCornerRadius:radius];
   highlightView = self->highlightView;
 
-  [(UIView *)highlightView _setContinuousCornerRadius:a3];
+  [(UIView *)highlightView _setContinuousCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(UIView *)self->backgroundView _setContinuousCornerRadius:?];
-  [(UIView *)self->highlightBackgroundView _setContinuousCornerRadius:a3];
+  [(UIView *)self->highlightBackgroundView _setContinuousCornerRadius:radius];
   highlightView = self->highlightView;
 
-  [(UIView *)highlightView _setContinuousCornerRadius:a3];
+  [(UIView *)highlightView _setContinuousCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v5 = [(UIView *)self->backgroundView layer];
-  [v5 setMaskedCorners:a3];
+  layer = [(UIView *)self->backgroundView layer];
+  [layer setMaskedCorners:position];
 
-  v6 = [(UIView *)self->highlightBackgroundView layer];
-  [v6 setMaskedCorners:a3];
+  layer2 = [(UIView *)self->highlightBackgroundView layer];
+  [layer2 setMaskedCorners:position];
 
-  v7 = [(UIView *)self->highlightView layer];
-  [v7 setMaskedCorners:a3];
+  layer3 = [(UIView *)self->highlightView layer];
+  [layer3 setMaskedCorners:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(UIView *)self->backgroundView setHidden:?];
-  [(UIView *)self->highlightBackgroundView setHidden:!v3];
+  [(UIView *)self->highlightBackgroundView setHidden:!highlightedCopy];
   highlightView = self->highlightView;
 
-  [(UIView *)highlightView setHidden:!v3];
+  [(UIView *)highlightView setHidden:!highlightedCopy];
 }
 
 @end

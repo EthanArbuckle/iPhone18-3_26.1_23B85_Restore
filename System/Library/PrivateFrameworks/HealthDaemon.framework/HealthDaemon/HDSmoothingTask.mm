@@ -1,31 +1,31 @@
 @interface HDSmoothingTask
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithWorkout:(id)a3 routes:(id)a4 analyticsSubmissionCoordinator:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithWorkout:(id)workout routes:(id)routes analyticsSubmissionCoordinator:(id)coordinator;
 - (id)description;
-- (void)setSmoothingError:(uint64_t)a1;
-- (void)setTransaction:(uint64_t)a1;
+- (void)setSmoothingError:(uint64_t)error;
+- (void)setTransaction:(uint64_t)transaction;
 @end
 
 @implementation HDSmoothingTask
 
-- (id)_initWithWorkout:(id)a3 routes:(id)a4 analyticsSubmissionCoordinator:(id)a5
+- (id)_initWithWorkout:(id)workout routes:(id)routes analyticsSubmissionCoordinator:(id)coordinator
 {
   v80 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  workoutCopy = workout;
+  routesCopy = routes;
+  coordinatorCopy = coordinator;
   v74.receiver = self;
   v74.super_class = HDSmoothingTask;
   v11 = [(HDSmoothingTask *)&v74 init];
   if (v11)
   {
-    v70 = v10;
-    v12 = [v8 copy];
+    v70 = coordinatorCopy;
+    v12 = [workoutCopy copy];
     workout = v11->_workout;
     v11->_workout = v12;
 
-    v72 = v9;
-    v14 = [v9 copy];
+    v72 = routesCopy;
+    v14 = [routesCopy copy];
     routes = v11->_routes;
     v11->_routes = v14;
 
@@ -68,9 +68,9 @@
     }
 
     v11->_totalLocations = v20;
-    v73 = v8;
-    v23 = [v8 metadata];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277CCE188]];
+    v73 = workoutCopy;
+    metadata = [workoutCopy metadata];
+    v24 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE188]];
     v11->_extendedMode = [v24 BOOLValue];
 
     v25 = 360.0;
@@ -91,20 +91,20 @@
     v71 = v11;
     v30 = v11->_workout;
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v32 = [(HKWorkout *)v30 metadata];
+    metadata2 = [(HKWorkout *)v30 metadata];
     v33 = *MEMORY[0x277CCE1A0];
-    v34 = [v32 objectForKeyedSubscript:*MEMORY[0x277CCE1A0]];
+    v34 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CCE1A0]];
 
     if (v34)
     {
-      v35 = [(HKWorkout *)v30 startDate];
-      v36 = [v35 hk_isBeforeDate:v34];
+      startDate = [(HKWorkout *)v30 startDate];
+      v36 = [startDate hk_isBeforeDate:v34];
 
       if (v36)
       {
         v37 = objc_alloc(MEMORY[0x277CCA970]);
-        v38 = [(HKWorkout *)v30 startDate];
-        v39 = [v37 initWithStartDate:v38 endDate:v34];
+        startDate2 = [(HKWorkout *)v30 startDate];
+        v39 = [v37 initWithStartDate:startDate2 endDate:v34];
 
         [(NSArray *)v31 addObject:v39];
       }
@@ -116,8 +116,8 @@
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v40 = [(HKWorkout *)v30 workoutEvents];
-    v41 = [v40 countByEnumeratingWithState:&v75 objects:buf count:16];
+    workoutEvents = [(HKWorkout *)v30 workoutEvents];
+    v41 = [workoutEvents countByEnumeratingWithState:&v75 objects:buf count:16];
     if (v41)
     {
       v42 = v41;
@@ -128,27 +128,27 @@
         {
           if (*v76 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(workoutEvents);
           }
 
           v45 = *(*(&v75 + 1) + 8 * j);
-          v46 = [v45 metadata];
-          v47 = [v46 objectForKeyedSubscript:v33];
+          metadata3 = [v45 metadata];
+          v47 = [metadata3 objectForKeyedSubscript:v33];
 
           if (v47)
           {
-            v48 = [v45 dateInterval];
-            v49 = [v48 startDate];
+            dateInterval = [v45 dateInterval];
+            startDate3 = [dateInterval startDate];
 
-            if ([v49 hk_isBeforeDate:v47])
+            if ([startDate3 hk_isBeforeDate:v47])
             {
-              v50 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v49 endDate:v47];
+              v50 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate3 endDate:v47];
               [(NSArray *)v31 addObject:v50];
             }
           }
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v75 objects:buf count:16];
+        v42 = [workoutEvents countByEnumeratingWithState:&v75 objects:buf count:16];
       }
 
       while (v42);
@@ -158,37 +158,37 @@
     workoutIntervals = v71->_workoutIntervals;
     v71->_workoutIntervals = v31;
 
-    v52 = [(HKWorkout *)v71->_workout _routeSmoothingActivities];
+    _routeSmoothingActivities = [(HKWorkout *)v71->_workout _routeSmoothingActivities];
     routeSmoothingActivities = v71->_routeSmoothingActivities;
-    v71->_routeSmoothingActivities = v52;
+    v71->_routeSmoothingActivities = _routeSmoothingActivities;
 
     v54 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = v73;
-    v55 = [v73 metadata];
-    v56 = [v55 objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
+    workoutCopy = v73;
+    metadata4 = [v73 metadata];
+    v56 = [metadata4 objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
     v57 = [v54 initWithUUIDString:v56];
 
     if (v57)
     {
-      v58 = [v73 workoutActivityType];
+      workoutActivityType = [v73 workoutActivityType];
       [v73 duration];
       v60 = v59;
-      v61 = [v73 workoutActivities];
-      v62 = [v61 count];
+      workoutActivities = [v73 workoutActivities];
+      v62 = [workoutActivities count];
       LOBYTE(v67) = 0;
       LOBYTE(v66) = v71->_extendedMode;
-      v10 = v70;
-      [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:v70 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskCreated" sessionIdentifier:v57 activityType:v58 duration:v60 activityCount:v62 extendedMode:v66 totalLocations:v71->_totalLocations routeSmoothingRetryCount:0 activityID:0 failure:v67];
+      coordinatorCopy = v70;
+      [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:v70 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskCreated" sessionIdentifier:v57 activityType:workoutActivityType duration:v60 activityCount:v62 extendedMode:v66 totalLocations:v71->_totalLocations routeSmoothingRetryCount:0 activityID:0 failure:v67];
 
-      v9 = v72;
+      routesCopy = v72;
     }
 
     else
     {
       _HKInitializeLogging();
       v63 = *MEMORY[0x277CCC330];
-      v9 = v72;
-      v10 = v70;
+      routesCopy = v72;
+      coordinatorCopy = v70;
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -201,13 +201,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(HKWorkout *)self->_workout UUID];
-  if (v4)
+  equalCopy = equal;
+  uUID = [(HKWorkout *)self->_workout UUID];
+  if (equalCopy)
   {
-    v6 = v4[2];
+    v6 = equalCopy[2];
   }
 
   else
@@ -215,8 +215,8 @@
     v6 = 0;
   }
 
-  v7 = [v6 UUID];
-  v8 = [v5 isEqual:v7];
+  uUID2 = [v6 UUID];
+  v8 = [uUID isEqual:uUID2];
 
   return v8;
 }
@@ -224,29 +224,29 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HKWorkout *)self->_workout UUID];
+  uUID = [(HKWorkout *)self->_workout UUID];
   totalLocations = self->_totalLocations;
   v9.receiver = self;
   v9.super_class = HDSmoothingTask;
   v6 = [(HDSmoothingTask *)&v9 description];
-  v7 = [v3 stringWithFormat:@"<%@ totalLocations=%tu %@>", v4, totalLocations, v6];
+  v7 = [v3 stringWithFormat:@"<%@ totalLocations=%tu %@>", uUID, totalLocations, v6];
 
   return v7;
 }
 
-- (void)setTransaction:(uint64_t)a1
+- (void)setTransaction:(uint64_t)transaction
 {
-  if (a1)
+  if (transaction)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((transaction + 48), a2);
   }
 }
 
-- (void)setSmoothingError:(uint64_t)a1
+- (void)setSmoothingError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 96), a2);
+    objc_storeStrong((error + 96), a2);
   }
 }
 

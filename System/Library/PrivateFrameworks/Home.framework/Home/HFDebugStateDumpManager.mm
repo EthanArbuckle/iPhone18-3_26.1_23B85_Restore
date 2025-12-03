@@ -1,8 +1,8 @@
 @interface HFDebugStateDumpManager
 + (id)sharedInstance;
 - (HFDebugStateDumpManager)init;
-- (id)_performStateDump:(BOOL)a3;
-- (id)registerStateDumpHandler:(id)a3 withName:(id)a4;
+- (id)_performStateDump:(BOOL)dump;
+- (id)registerStateDumpHandler:(id)handler withName:(id)name;
 - (void)_listenForAttachmentRequestNotifications;
 - (void)_writeStateDump;
 - (void)dealloc;
@@ -76,20 +76,20 @@ void __31__HFDebugStateDumpManager_init__block_invoke(uint64_t a1)
   [(HFDebugStateDumpManager *)&v4 dealloc];
 }
 
-- (id)registerStateDumpHandler:(id)a3 withName:(id)a4
+- (id)registerStateDumpHandler:(id)handler withName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  nameCopy = name;
+  if (!handlerCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFDebugStateDumpManager.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"stateDumpHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDebugStateDumpManager.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"stateDumpHandler"}];
   }
 
-  v9 = [v7 copy];
+  v9 = [handlerCopy copy];
   v10 = _Block_copy(v9);
-  v11 = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
-  [v11 setObject:v10 forKeyedSubscript:v8];
+  stateDumpHandlersByName = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
+  [stateDumpHandlersByName setObject:v10 forKeyedSubscript:nameCopy];
 
   objc_initWeak(&location, self);
   v12 = MEMORY[0x277D2C8C8];
@@ -98,7 +98,7 @@ void __31__HFDebugStateDumpManager_init__block_invoke(uint64_t a1)
   v17[2] = __61__HFDebugStateDumpManager_registerStateDumpHandler_withName___block_invoke;
   v17[3] = &unk_277DF3A68;
   objc_copyWeak(&v19, &location);
-  v13 = v8;
+  v13 = nameCopy;
   v18 = v13;
   v14 = [v12 tokenWithCancelationBlock:v17];
 
@@ -115,29 +115,29 @@ void __61__HFDebugStateDumpManager_registerStateDumpHandler_withName___block_inv
   [v2 removeObjectForKey:*(a1 + 32)];
 }
 
-- (id)_performStateDump:(BOOL)a3
+- (id)_performStateDump:(BOOL)dump
 {
-  v3 = a3;
+  dumpCopy = dump;
   v19 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[HFExecutionEnvironment sharedInstance];
     v11 = 138413058;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[HFDebugStateDumpManager _performStateDump:]";
     v15 = 1024;
-    v16 = v3;
+    v16 = dumpCopy;
     v17 = 2048;
-    v18 = [v6 hostProcess];
+    hostProcess = [v6 hostProcess];
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "(%@:%s) logToConsole = %{BOOL}d. Process = %lu", &v11, 0x26u);
   }
 
-  v7 = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
-  v8 = [v7 na_dictionaryByMappingValues:&__block_literal_global_24_4];
+  stateDumpHandlersByName = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
+  v8 = [stateDumpHandlersByName na_dictionaryByMappingValues:&__block_literal_global_24_4];
 
-  if (v3 && +[HFExecutionEnvironment isHomeRelatedProcess])
+  if (dumpCopy && +[HFExecutionEnvironment isHomeRelatedProcess])
   {
     [v8 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_27_7];
   }
@@ -187,29 +187,29 @@ void __45__HFDebugStateDumpManager__performStateDump___block_invoke_2(uint64_t a
     v3 = HFLogForCategory(0x45uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [MEMORY[0x277CCA8D8] mainBundle];
-      v5 = [v4 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       *buf = 138412290;
-      v28 = v5;
+      v28 = bundleIdentifier;
       _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to write state dump from %@", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
-    v8 = [v7 na_dictionaryByMappingValues:&__block_literal_global_35_1];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    stateDumpHandlersByName = [(HFDebugStateDumpManager *)self stateDumpHandlersByName];
+    v8 = [stateDumpHandlersByName na_dictionaryByMappingValues:&__block_literal_global_35_1];
 
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
 
     v11 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v11 setDateFormat:@"MM-dd-yyyy_HH:mm:ss"];
     v12 = [MEMORY[0x277CBEAA8] now];
     v13 = [v11 stringFromDate:v12];
 
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"home_state_dump_%@_%@.plist", v10, v13];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"home_state_dump_%@_%@.plist", bundleIdentifier2, v13];
     v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/var/mobile/Library/Caches/com.apple.home" isDirectory:1 relativeToURL:0];
-    v16 = [v15 absoluteString];
-    v17 = [v6 fileExistsAtPath:v16];
+    absoluteString = [v15 absoluteString];
+    v17 = [defaultManager fileExistsAtPath:absoluteString];
 
     if (v17)
     {
@@ -218,9 +218,9 @@ void __45__HFDebugStateDumpManager__performStateDump___block_invoke_2(uint64_t a
 
     else
     {
-      v19 = [v15 absoluteString];
+      absoluteString2 = [v15 absoluteString];
       v26 = 0;
-      [v6 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v26];
+      [defaultManager createDirectoryAtPath:absoluteString2 withIntermediateDirectories:1 attributes:0 error:&v26];
       v18 = v26;
 
       if (v18)

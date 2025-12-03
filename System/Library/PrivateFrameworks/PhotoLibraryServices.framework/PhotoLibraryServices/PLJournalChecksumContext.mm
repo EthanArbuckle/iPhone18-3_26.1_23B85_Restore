@@ -1,7 +1,7 @@
 @interface PLJournalChecksumContext
 - (PLJournalChecksumContext)init;
 - (id)finalizedChecksum;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation PLJournalChecksumContext
@@ -29,14 +29,14 @@
   return finalizedChecksum;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  updateCopy = update;
+  updateCopy2 = update;
+  bytes = [updateCopy2 bytes];
+  v8 = [updateCopy2 length];
 
-  CC_SHA256_Update(&self->_context, v7, v8);
+  CC_SHA256_Update(&self->_context, bytes, v8);
 }
 
 - (PLJournalChecksumContext)init

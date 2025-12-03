@@ -26,74 +26,74 @@
 
 + (BOOL)shouldEnableCoreAnalyticEvent
 {
-  v3 = [a1 userDefaults];
-  v4 = [a1 enableCoreAnalyticEventKey];
-  v5 = [v3 objectForKey:v4];
+  userDefaults = [self userDefaults];
+  enableCoreAnalyticEventKey = [self enableCoreAnalyticEventKey];
+  v5 = [userDefaults objectForKey:enableCoreAnalyticEventKey];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (BOOL)isSurveyEnabled
 {
-  v3 = [a1 userDefaults];
-  v4 = [a1 internalSurveyEnabledKey];
-  v5 = [v3 objectForKey:v4];
+  userDefaults = [self userDefaults];
+  internalSurveyEnabledKey = [self internalSurveyEnabledKey];
+  v5 = [userDefaults objectForKey:internalSurveyEnabledKey];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = [a1 shouldAllowSurveyByDefault];
+    bOOLValue = [self shouldAllowSurveyByDefault];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 + (void)disableInternalUIDSurveyNotifications
 {
-  v4 = [a1 userDefaults];
-  v3 = [a1 internalSurveyEnabledKey];
-  [v4 setObject:&__kCFBooleanFalse forKey:v3];
+  userDefaults = [self userDefaults];
+  internalSurveyEnabledKey = [self internalSurveyEnabledKey];
+  [userDefaults setObject:&__kCFBooleanFalse forKey:internalSurveyEnabledKey];
 }
 
 + (void)recordDateOfSurveyInteraction
 {
-  v5 = [a1 userDefaults];
+  userDefaults = [self userDefaults];
   v3 = +[NSDate date];
-  v4 = [a1 lastSurveyReportKey];
-  [v5 setObject:v3 forKey:v4];
+  lastSurveyReportKey = [self lastSurveyReportKey];
+  [userDefaults setObject:v3 forKey:lastSurveyReportKey];
 }
 
 + (BOOL)meetsThresholdForPresenting
 {
-  if (arc4random_uniform([a1 _sampleRate]))
+  if (arc4random_uniform([self _sampleRate]))
   {
     return 0;
   }
 
-  return [a1 minimumTimeBetweenLastReportHasElapsed];
+  return [self minimumTimeBetweenLastReportHasElapsed];
 }
 
 + (BOOL)minimumTimeBetweenLastReportHasElapsed
 {
-  v2 = [a1 _dateOfLastReport];
-  v3 = [v2 dateByAddingTimeInterval:2419200.0];
-  if (v2)
+  _dateOfLastReport = [self _dateOfLastReport];
+  v3 = [_dateOfLastReport dateByAddingTimeInterval:2419200.0];
+  if (_dateOfLastReport)
   {
     v4 = +[NSDate date];
     v5 = [v4 compare:v3] == 1;
@@ -109,30 +109,30 @@
 
 + (id)_dateOfLastReport
 {
-  v3 = [a1 userDefaults];
-  v4 = [a1 lastSurveyReportKey];
-  v5 = [v3 objectForKey:v4];
+  userDefaults = [self userDefaults];
+  lastSurveyReportKey = [self lastSurveyReportKey];
+  v5 = [userDefaults objectForKey:lastSurveyReportKey];
 
   return v5;
 }
 
 + (unsigned)_sampleRate
 {
-  v3 = [a1 userDefaults];
-  v4 = [a1 surveySampleRateKey];
-  v5 = [v3 objectForKey:v4];
+  userDefaults = [self userDefaults];
+  surveySampleRateKey = [self surveySampleRateKey];
+  v5 = [userDefaults objectForKey:surveySampleRateKey];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 10;
+    intValue = 10;
   }
 
-  return v6;
+  return intValue;
 }
 
 @end

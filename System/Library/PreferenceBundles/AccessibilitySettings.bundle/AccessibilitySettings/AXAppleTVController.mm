@@ -1,9 +1,9 @@
 @interface AXAppleTVController
-- (id)_liveTVButtonsEnabled:(id)a3;
-- (id)_simpleGestures:(id)a3;
+- (id)_liveTVButtonsEnabled:(id)enabled;
+- (id)_simpleGestures:(id)gestures;
 - (id)specifiers;
-- (void)_setLiveTVButtonsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setSimpleGestures:(id)a3 specifier:(id)a4;
+- (void)_setLiveTVButtonsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setSimpleGestures:(id)gestures specifier:(id)specifier;
 @end
 
 @implementation AXAppleTVController
@@ -47,28 +47,28 @@
   return v4;
 }
 
-- (void)_setSimpleGestures:(id)a3 specifier:(id)a4
+- (void)_setSimpleGestures:(id)gestures specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [gestures BOOLValue];
 
-  __AXSSetAppleTVRemoteUsesSimpleGestures(v4);
+  __AXSSetAppleTVRemoteUsesSimpleGestures(bOOLValue);
 }
 
-- (id)_simpleGestures:(id)a3
+- (id)_simpleGestures:(id)gestures
 {
   v3 = _AXSAppleTVRemoteUsesSimpleGestures();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)_setLiveTVButtonsEnabled:(id)a3 specifier:(id)a4
+- (void)_setLiveTVButtonsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSSetAppleTVRemoteForceLiveTVButtons(v4);
+  __AXSSetAppleTVRemoteForceLiveTVButtons(bOOLValue);
 }
 
-- (id)_liveTVButtonsEnabled:(id)a3
+- (id)_liveTVButtonsEnabled:(id)enabled
 {
   v3 = _AXSAppleTVRemoteForceLiveTVButtons();
 

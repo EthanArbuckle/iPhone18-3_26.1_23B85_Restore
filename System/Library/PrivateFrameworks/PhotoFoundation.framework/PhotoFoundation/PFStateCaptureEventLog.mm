@@ -1,6 +1,6 @@
 @interface PFStateCaptureEventLog
 - (NSArray)eventDescriptions;
-- (PFStateCaptureEventLog)initWithEventClass:(Class)a3 maxEvents:(unint64_t)a4;
+- (PFStateCaptureEventLog)initWithEventClass:(Class)class maxEvents:(unint64_t)events;
 - (id)addEvent;
 - (unint64_t)count;
 @end
@@ -34,15 +34,15 @@
   v3 = [(NSMutableArray *)self->_lock_events copy];
   lock_headIndex = self->_lock_headIndex;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v3 count])
   {
     v6 = 0;
     do
     {
       v7 = [v3 objectAtIndexedSubscript:lock_headIndex];
-      v8 = [v7 eventDescription];
-      [v5 addObject:v8];
+      eventDescription = [v7 eventDescription];
+      [array addObject:eventDescription];
 
       lock_headIndex = (lock_headIndex + 1) % self->_maxEvents;
       ++v6;
@@ -51,7 +51,7 @@
     while (v6 < [v3 count]);
   }
 
-  v9 = [v5 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (PFStateCaptureEventLog)initWithEventClass:(Class)a3 maxEvents:(unint64_t)a4
+- (PFStateCaptureEventLog)initWithEventClass:(Class)class maxEvents:(unint64_t)events
 {
   v12.receiver = self;
   v12.super_class = PFStateCaptureEventLog;
@@ -72,8 +72,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_eventClass = a3;
-    v6->_maxEvents = a4;
+    v6->_eventClass = class;
+    v6->_maxEvents = events;
     v6->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     lock_events = v7->_lock_events;

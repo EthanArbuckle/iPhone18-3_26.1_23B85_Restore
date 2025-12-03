@@ -1,24 +1,24 @@
 @interface PXZoomablePhotosViewModelSynchronization
-+ (void)updatePhotosViewModel:(id)a3 fromZoomablePhotosViewModel:(id)a4 changeDescriptor:(unint64_t)a5;
-+ (void)updateZoomablePhotosViewModel:(id)a3 fromPhotosViewModel:(id)a4 changeDescriptor:(unint64_t)a5 overrideZoomColumn:(id)a6;
++ (void)updatePhotosViewModel:(id)model fromZoomablePhotosViewModel:(id)viewModel changeDescriptor:(unint64_t)descriptor;
++ (void)updateZoomablePhotosViewModel:(id)model fromPhotosViewModel:(id)viewModel changeDescriptor:(unint64_t)descriptor overrideZoomColumn:(id)column;
 @end
 
 @implementation PXZoomablePhotosViewModelSynchronization
 
-+ (void)updateZoomablePhotosViewModel:(id)a3 fromPhotosViewModel:(id)a4 changeDescriptor:(unint64_t)a5 overrideZoomColumn:(id)a6
++ (void)updateZoomablePhotosViewModel:(id)model fromPhotosViewModel:(id)viewModel changeDescriptor:(unint64_t)descriptor overrideZoomColumn:(id)column
 {
-  v9 = a4;
-  v10 = a6;
+  viewModelCopy = viewModel;
+  columnCopy = column;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __130__PXZoomablePhotosViewModelSynchronization_updateZoomablePhotosViewModel_fromPhotosViewModel_changeDescriptor_overrideZoomColumn___block_invoke;
   v13[3] = &unk_2782994F0;
-  v14 = v9;
-  v15 = v10;
-  v16 = a5;
-  v11 = v10;
-  v12 = v9;
-  [a3 performChanges:v13];
+  v14 = viewModelCopy;
+  v15 = columnCopy;
+  descriptorCopy = descriptor;
+  v11 = columnCopy;
+  v12 = viewModelCopy;
+  [model performChanges:v13];
 }
 
 void __130__PXZoomablePhotosViewModelSynchronization_updateZoomablePhotosViewModel_fromPhotosViewModel_changeDescriptor_overrideZoomColumn___block_invoke(uint64_t a1, void *a2)
@@ -123,19 +123,19 @@ LABEL_12:
   }
 }
 
-+ (void)updatePhotosViewModel:(id)a3 fromZoomablePhotosViewModel:(id)a4 changeDescriptor:(unint64_t)a5
++ (void)updatePhotosViewModel:(id)model fromZoomablePhotosViewModel:(id)viewModel changeDescriptor:(unint64_t)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  viewModelCopy = viewModel;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __111__PXZoomablePhotosViewModelSynchronization_updatePhotosViewModel_fromZoomablePhotosViewModel_changeDescriptor___block_invoke;
   v11[3] = &unk_2782994C8;
-  v13 = v7;
-  v14 = a5;
-  v12 = v8;
-  v9 = v7;
-  v10 = v8;
+  v13 = modelCopy;
+  descriptorCopy = descriptor;
+  v12 = viewModelCopy;
+  v9 = modelCopy;
+  v10 = viewModelCopy;
   [v9 performChanges:v11];
 }
 

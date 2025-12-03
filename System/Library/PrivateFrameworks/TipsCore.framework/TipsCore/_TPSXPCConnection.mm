@@ -1,13 +1,13 @@
 @interface _TPSXPCConnection
-- (_TPSXPCConnection)initWithListenerEndpoint:(id)a3;
-- (_TPSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
-- (_TPSXPCConnection)initWithServiceName:(id)a3;
-- (_TPSXPCConnection)initWithUnderlyingConnection:(id)a3;
+- (_TPSXPCConnection)initWithListenerEndpoint:(id)endpoint;
+- (_TPSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options;
+- (_TPSXPCConnection)initWithServiceName:(id)name;
+- (_TPSXPCConnection)initWithUnderlyingConnection:(id)connection;
 - (_TPSXPCExportable)exportedObject;
 - (void)dealloc;
 - (void)resume;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation _TPSXPCConnection
@@ -21,14 +21,14 @@
   [(_TPSXPCConnection *)&v3 dealloc];
 }
 
-- (_TPSXPCConnection)initWithServiceName:(id)a3
+- (_TPSXPCConnection)initWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:v4];
+  nameCopy = name;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:nameCopy];
   if (v5)
   {
     self = [(_TPSXPCConnection *)self initWithUnderlyingConnection:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -36,23 +36,23 @@
     v7 = +[TPSLogger data];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(_TPSXPCConnection *)v4 initWithServiceName:v7];
+      [(_TPSXPCConnection *)nameCopy initWithServiceName:v7];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_TPSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (_TPSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:options];
   if (v7)
   {
     self = [(_TPSXPCConnection *)self initWithUnderlyingConnection:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -60,35 +60,35 @@
     v9 = +[TPSLogger data];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(_TPSXPCConnection *)v6 initWithServiceName:v9];
+      [(_TPSXPCConnection *)nameCopy initWithServiceName:v9];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (_TPSXPCConnection)initWithListenerEndpoint:(id)a3
+- (_TPSXPCConnection)initWithListenerEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithListenerEndpoint:v5];
+  endpointCopy = endpoint;
+  v6 = [[v4 alloc] initWithListenerEndpoint:endpointCopy];
 
   v7 = [(_TPSXPCConnection *)self initWithUnderlyingConnection:v6];
   return v7;
 }
 
-- (_TPSXPCConnection)initWithUnderlyingConnection:(id)a3
+- (_TPSXPCConnection)initWithUnderlyingConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = _TPSXPCConnection;
   v6 = [(_TPSXPCConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingConnection, a3);
+    objc_storeStrong(&v6->_underlyingConnection, connection);
     [(_TPSXPCConnection *)v7 setInterruptionHandler:0];
     [(_TPSXPCConnection *)v7 setInvalidationHandler:0];
   }
@@ -111,12 +111,12 @@
       v4 = &stru_1F3F2F4B8;
     }
 
-    v5 = [(NSXPCConnection *)self->_underlyingConnection serviceName];
-    v6 = v5;
+    serviceName = [(NSXPCConnection *)self->_underlyingConnection serviceName];
+    v6 = serviceName;
     v7 = @"<anonymous>";
-    if (v5)
+    if (serviceName)
     {
-      v7 = v5;
+      v7 = serviceName;
     }
 
     v8 = v7;
@@ -145,12 +145,12 @@
     v22 = v14;
     [(NSXPCConnection *)v12 setInvalidationHandler:v20];
     v15 = self->_underlyingConnection;
-    v16 = [WeakRetained exportedInterface];
-    [(NSXPCConnection *)v15 setExportedInterface:v16];
+    exportedInterface = [WeakRetained exportedInterface];
+    [(NSXPCConnection *)v15 setExportedInterface:exportedInterface];
 
     v17 = self->_underlyingConnection;
-    v18 = [WeakRetained remoteInterface];
-    [(NSXPCConnection *)v17 setRemoteObjectInterface:v18];
+    remoteInterface = [WeakRetained remoteInterface];
+    [(NSXPCConnection *)v17 setRemoteObjectInterface:remoteInterface];
 
     v19 = objc_alloc_init(_TPSXPCExportedObjectProxy);
     [(_TPSXPCExportedObjectProxy *)v19 setWeakExportedObject:WeakRetained];
@@ -168,10 +168,10 @@
   [(NSXPCConnection *)self->_underlyingConnection resume];
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -179,20 +179,20 @@
     v7[2] = __44___TPSXPCConnection_setInterruptionHandler___block_invoke;
     v7[3] = &unk_1E8101890;
     objc_copyWeak(&v8, &location);
-    v4 = _Block_copy(v7);
+    handlerCopy = _Block_copy(v7);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v5;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -200,12 +200,12 @@
     v7[2] = __44___TPSXPCConnection_setInvalidationHandler___block_invoke;
     v7[3] = &unk_1E8101890;
     objc_copyWeak(&v8, &location);
-    v4 = _Block_copy(v7);
+    handlerCopy = _Block_copy(v7);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v5;
 }

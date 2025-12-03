@@ -1,57 +1,57 @@
 @interface AXSensitivitySliderCell
-+ (id)specifierWithSensitivityNames:(id)a3 minimumValue:(float)a4 maximumValue:(float)a5 target:(id)a6 set:(SEL)a7 get:(SEL)a8;
-- (AXSensitivitySliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (id)specifierWithSensitivityNames:(id)names minimumValue:(float)value maximumValue:(float)maximumValue target:(id)target set:(SEL)set get:(SEL)get;
+- (AXSensitivitySliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)accessibilityValue;
 - (int64_t)_sliderLevel;
-- (int64_t)_sliderLevelForValue:(float)a3;
+- (int64_t)_sliderLevelForValue:(float)value;
 - (int64_t)sensitivitySliderLevel;
-- (void)_accessibilityIncrementOrDecrement:(BOOL)a3;
+- (void)_accessibilityIncrementOrDecrement:(BOOL)decrement;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setSensitivitySliderLevel:(int64_t)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setSensitivitySliderLevel:(int64_t)level;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation AXSensitivitySliderCell
 
-+ (id)specifierWithSensitivityNames:(id)a3 minimumValue:(float)a4 maximumValue:(float)a5 target:(id)a6 set:(SEL)a7 get:(SEL)a8
++ (id)specifierWithSensitivityNames:(id)names minimumValue:(float)value maximumValue:(float)maximumValue target:(id)target set:(SEL)set get:(SEL)get
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = [PSSpecifier preferenceSpecifierNamed:0 target:v14 set:a7 get:a8 detail:0 cell:5 edit:0];
+  namesCopy = names;
+  targetCopy = target;
+  v15 = [PSSpecifier preferenceSpecifierNamed:0 target:targetCopy set:set get:get detail:0 cell:5 edit:0];
   [v15 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v15 setProperty:&__kCFBooleanTrue forKey:PSSliderIsSegmented];
   [v15 setProperty:&off_27A410 forKey:PSSliderSegmentCount];
   [v15 setProperty:&__kCFBooleanFalse forKey:PSSliderIsContinuous];
-  v16 = [v14 performSelector:a8 withObject:v15];
+  v16 = [targetCopy performSelector:get withObject:v15];
 
   [v15 setProperty:v16 forKey:PSValueKey];
-  *&v17 = a4;
+  *&v17 = value;
   v18 = [NSNumber numberWithFloat:v17];
   [v15 setProperty:v18 forKey:PSControlMinimumKey];
 
-  *&v19 = a5;
+  *&v19 = maximumValue;
   v20 = [NSNumber numberWithFloat:v19];
   [v15 setProperty:v20 forKey:PSControlMaximumKey];
 
-  if ([v13 count] != &dword_0 + 3)
+  if ([namesCopy count] != &dword_0 + 3)
   {
-    v22 = v13;
+    v22 = namesCopy;
     _AXAssert();
   }
 
-  [v15 setProperty:v13 forKey:{@"SensitivityNames", v22}];
+  [v15 setProperty:namesCopy forKey:{@"SensitivityNames", v22}];
 
   return v15;
 }
 
-- (AXSensitivitySliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXSensitivitySliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v75.receiver = self;
   v75.super_class = AXSensitivitySliderCell;
-  v69 = a4;
-  v70 = a5;
-  v7 = [(AXSensitivitySliderCell *)&v75 initWithStyle:a3 reuseIdentifier:v69 specifier:?];
+  identifierCopy = identifier;
+  specifierCopy = specifier;
+  v7 = [(AXSensitivitySliderCell *)&v75 initWithStyle:style reuseIdentifier:identifierCopy specifier:?];
   if (v7)
   {
     v8 = objc_alloc_init(UILabel);
@@ -64,8 +64,8 @@
     [(UILabel *)v7->_leftLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v7->_leftLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v7->_leftLabel sizeToFit];
-    v11 = [(AXSensitivitySliderCell *)v7 contentView];
-    [v11 addSubview:v7->_leftLabel];
+    contentView = [(AXSensitivitySliderCell *)v7 contentView];
+    [contentView addSubview:v7->_leftLabel];
 
     IsAccessibilityCategory = AXPreferredContentSizeCategoryIsAccessibilityCategory();
     if ((IsAccessibilityCategory & 1) == 0)
@@ -80,8 +80,8 @@
       [(UILabel *)v7->_centerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v7->_centerLabel setAdjustsFontForContentSizeCategory:1];
       [(UILabel *)v7->_centerLabel sizeToFit];
-      v15 = [(AXSensitivitySliderCell *)v7 contentView];
-      [v15 addSubview:v7->_centerLabel];
+      contentView2 = [(AXSensitivitySliderCell *)v7 contentView];
+      [contentView2 addSubview:v7->_centerLabel];
     }
 
     v16 = objc_alloc_init(UILabel);
@@ -94,79 +94,79 @@
     [(UILabel *)v7->_rightLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v7->_rightLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v7->_rightLabel sizeToFit];
-    v19 = [(AXSensitivitySliderCell *)v7 contentView];
-    [v19 addSubview:v7->_rightLabel];
+    contentView3 = [(AXSensitivitySliderCell *)v7 contentView];
+    [contentView3 addSubview:v7->_rightLabel];
 
-    v71 = [(AXSensitivitySliderCell *)v7 control];
-    [v71 setTranslatesAutoresizingMaskIntoConstraints:0];
+    control = [(AXSensitivitySliderCell *)v7 control];
+    [control setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_initWeak(&location, v7);
     v72[0] = _NSConcreteStackBlock;
     v72[1] = 3221225472;
     v72[2] = __67__AXSensitivitySliderCell_initWithStyle_reuseIdentifier_specifier___block_invoke;
     v72[3] = &unk_255F00;
     objc_copyWeak(&v73, &location);
-    [v71 _setAccessibilityValueBlock:v72];
-    v63 = [v71 bottomAnchor];
-    v65 = [(AXSensitivitySliderCell *)v7 contentView];
-    v62 = [v65 bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:-10.0];
+    [control _setAccessibilityValueBlock:v72];
+    bottomAnchor = [control bottomAnchor];
+    contentView4 = [(AXSensitivitySliderCell *)v7 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v61 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v77[0] = v61;
-    v59 = [v71 widthAnchor];
-    v60 = [(AXSensitivitySliderCell *)v7 contentView];
-    v58 = [v60 widthAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:-60.0];
+    widthAnchor = [control widthAnchor];
+    contentView5 = [(AXSensitivitySliderCell *)v7 contentView];
+    widthAnchor2 = [contentView5 widthAnchor];
+    v57 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-60.0];
     v77[1] = v57;
-    v55 = [v71 centerXAnchor];
-    v56 = [(AXSensitivitySliderCell *)v7 contentView];
-    v54 = [v56 centerXAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:0.0];
+    centerXAnchor = [control centerXAnchor];
+    contentView6 = [(AXSensitivitySliderCell *)v7 contentView];
+    centerXAnchor2 = [contentView6 centerXAnchor];
+    v53 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
     v77[2] = v53;
-    v52 = [v71 topAnchor];
-    v51 = [(UILabel *)v7->_rightLabel lastBaselineAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51 constant:5.0];
+    topAnchor = [control topAnchor];
+    lastBaselineAnchor = [(UILabel *)v7->_rightLabel lastBaselineAnchor];
+    v50 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:5.0];
     v77[3] = v50;
-    v49 = [v71 topAnchor];
-    v48 = [(UILabel *)v7->_leftLabel lastBaselineAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:5.0];
+    topAnchor2 = [control topAnchor];
+    lastBaselineAnchor2 = [(UILabel *)v7->_leftLabel lastBaselineAnchor];
+    v47 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:5.0];
     v77[4] = v47;
-    v45 = [(UILabel *)v7->_rightLabel topAnchor];
-    v46 = [(AXSensitivitySliderCell *)v7 contentView];
-    v44 = [v46 topAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:10.0];
+    topAnchor3 = [(UILabel *)v7->_rightLabel topAnchor];
+    contentView7 = [(AXSensitivitySliderCell *)v7 contentView];
+    topAnchor4 = [contentView7 topAnchor];
+    v43 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
     v77[5] = v43;
-    v41 = [(UILabel *)v7->_rightLabel trailingAnchor];
-    v42 = [(AXSensitivitySliderCell *)v7 contentView];
-    v40 = [v42 trailingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:-10.0];
+    trailingAnchor = [(UILabel *)v7->_rightLabel trailingAnchor];
+    contentView8 = [(AXSensitivitySliderCell *)v7 contentView];
+    trailingAnchor2 = [contentView8 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     v77[6] = v39;
-    v20 = [(UILabel *)v7->_leftLabel topAnchor];
-    v21 = [(AXSensitivitySliderCell *)v7 contentView];
-    v22 = [v21 topAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:10.0];
+    topAnchor5 = [(UILabel *)v7->_leftLabel topAnchor];
+    contentView9 = [(AXSensitivitySliderCell *)v7 contentView];
+    topAnchor6 = [contentView9 topAnchor];
+    v23 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:10.0];
     v77[7] = v23;
-    v24 = [(UILabel *)v7->_leftLabel leadingAnchor];
-    v25 = [(AXSensitivitySliderCell *)v7 contentView];
-    v26 = [v25 leadingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26 constant:10.0];
+    leadingAnchor = [(UILabel *)v7->_leftLabel leadingAnchor];
+    contentView10 = [(AXSensitivitySliderCell *)v7 contentView];
+    leadingAnchor2 = [contentView10 leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v77[8] = v27;
     v28 = [NSArray arrayWithObjects:v77 count:9];
     [NSLayoutConstraint activateConstraints:v28];
 
     if ((IsAccessibilityCategory & 1) == 0)
     {
-      v66 = [(UILabel *)v7->_centerLabel topAnchor];
-      v68 = [(AXSensitivitySliderCell *)v7 contentView];
-      v64 = [v68 topAnchor];
-      v29 = [v66 constraintEqualToAnchor:v64 constant:10.0];
+      topAnchor7 = [(UILabel *)v7->_centerLabel topAnchor];
+      contentView11 = [(AXSensitivitySliderCell *)v7 contentView];
+      topAnchor8 = [contentView11 topAnchor];
+      v29 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:10.0];
       v76[0] = v29;
-      v30 = [(UILabel *)v7->_centerLabel centerXAnchor];
-      v31 = [(AXSensitivitySliderCell *)v7 contentView];
-      v32 = [v31 centerXAnchor];
-      v33 = [v30 constraintEqualToAnchor:v32 constant:0.0];
+      centerXAnchor3 = [(UILabel *)v7->_centerLabel centerXAnchor];
+      contentView12 = [(AXSensitivitySliderCell *)v7 contentView];
+      centerXAnchor4 = [contentView12 centerXAnchor];
+      v33 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:0.0];
       v76[1] = v33;
-      v34 = [v71 topAnchor];
-      v35 = [(UILabel *)v7->_centerLabel lastBaselineAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35 constant:5.0];
+      topAnchor9 = [control topAnchor];
+      lastBaselineAnchor3 = [(UILabel *)v7->_centerLabel lastBaselineAnchor];
+      v36 = [topAnchor9 constraintEqualToAnchor:lastBaselineAnchor3 constant:5.0];
       v76[2] = v36;
       v37 = [NSArray arrayWithObjects:v76 count:3];
       [NSLayoutConstraint activateConstraints:v37];
@@ -187,15 +187,15 @@ id __67__AXSensitivitySliderCell_initWithStyle_reuseIdentifier_specifier___block
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v10.receiver = self;
   v10.super_class = AXSensitivitySliderCell;
-  [(AXSensitivitySliderCell *)&v10 setSpecifier:v4];
-  if (v4)
+  [(AXSensitivitySliderCell *)&v10 setSpecifier:specifierCopy];
+  if (specifierCopy)
   {
-    v5 = [v4 propertyForKey:@"SensitivityNames"];
+    v5 = [specifierCopy propertyForKey:@"SensitivityNames"];
     if ([v5 count] != &dword_0 + 3)
     {
       v9 = 3;
@@ -216,28 +216,28 @@ id __67__AXSensitivitySliderCell_initWithStyle_reuseIdentifier_specifier___block
   }
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = AXSensitivitySliderCell;
-  v4 = a3;
-  [(AXSensitivitySliderCell *)&v5 setAccessibilityLabel:v4];
-  [*&self->PSSliderTableCell_opaque[OBJC_IVAR___PSControlTableCell__control] setAccessibilityLabel:{v4, v5.receiver, v5.super_class}];
+  labelCopy = label;
+  [(AXSensitivitySliderCell *)&v5 setAccessibilityLabel:labelCopy];
+  [*&self->PSSliderTableCell_opaque[OBJC_IVAR___PSControlTableCell__control] setAccessibilityLabel:{labelCopy, v5.receiver, v5.super_class}];
 }
 
-- (void)_accessibilityIncrementOrDecrement:(BOOL)a3
+- (void)_accessibilityIncrementOrDecrement:(BOOL)decrement
 {
-  v3 = a3;
-  v12 = [(AXSensitivitySliderCell *)self control];
-  [v12 minimumValue];
+  decrementCopy = decrement;
+  control = [(AXSensitivitySliderCell *)self control];
+  [control minimumValue];
   v6 = v5;
-  [v12 maximumValue];
+  [control maximumValue];
   v8 = v7;
   v9 = (v6 + v7) * 0.5;
-  v10 = [(AXSensitivitySliderCell *)self _sliderLevel];
-  if (v10 == 2)
+  _sliderLevel = [(AXSensitivitySliderCell *)self _sliderLevel];
+  if (_sliderLevel == 2)
   {
-    if (v3)
+    if (decrementCopy)
     {
       goto LABEL_11;
     }
@@ -245,9 +245,9 @@ id __67__AXSensitivitySliderCell_initWithStyle_reuseIdentifier_specifier___block
     goto LABEL_10;
   }
 
-  if (v10 == 1)
+  if (_sliderLevel == 1)
   {
-    if (v3)
+    if (decrementCopy)
     {
       v9 = v8;
     }
@@ -260,26 +260,26 @@ id __67__AXSensitivitySliderCell_initWithStyle_reuseIdentifier_specifier___block
     goto LABEL_10;
   }
 
-  if (!v10 && v3)
+  if (!_sliderLevel && decrementCopy)
   {
 LABEL_10:
     *&v11 = v9;
-    [v12 setValue:v11];
+    [control setValue:v11];
   }
 
 LABEL_11:
-  [v12 sendActionsForControlEvents:4096];
+  [control sendActionsForControlEvents:4096];
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(AXSensitivitySliderCell *)self specifier];
-  v4 = [v3 propertyForKey:@"SensitivityNames"];
+  specifier = [(AXSensitivitySliderCell *)self specifier];
+  v4 = [specifier propertyForKey:@"SensitivityNames"];
 
   if ([v4 count] == &dword_0 + 3)
   {
-    v5 = [(AXSensitivitySliderCell *)self _sliderLevel];
-    switch(v5)
+    _sliderLevel = [(AXSensitivitySliderCell *)self _sliderLevel];
+    switch(_sliderLevel)
     {
       case 2:
         v6 = v4;
@@ -298,18 +298,18 @@ LABEL_11:
     }
   }
 
-  v8 = [(AXSensitivitySliderCell *)self specifier];
+  specifier2 = [(AXSensitivitySliderCell *)self specifier];
 
-  if (v8)
+  if (specifier2)
   {
-    v12 = self;
+    selfCopy = self;
     v13 = v4;
     _AXAssert();
   }
 
   v14.receiver = self;
   v14.super_class = AXSensitivitySliderCell;
-  v9 = [(AXSensitivitySliderCell *)&v14 accessibilityValue:v12];
+  v9 = [(AXSensitivitySliderCell *)&v14 accessibilityValue:selfCopy];
 LABEL_12:
   v10 = v9;
 
@@ -321,43 +321,43 @@ LABEL_12:
   v11.receiver = self;
   v11.super_class = AXSensitivitySliderCell;
   [(AXSensitivitySliderCell *)&v11 layoutSubviews];
-  v3 = [(AXSensitivitySliderCell *)self control];
-  [v3 frame];
+  control = [(AXSensitivitySliderCell *)self control];
+  [control frame];
 
   [(UILabel *)self->_leftLabel _lastLineBaselineFrameOriginY];
   v5 = v4 + 5.0;
-  v6 = [(AXSensitivitySliderCell *)self contentView];
-  [v6 bounds];
+  contentView = [(AXSensitivitySliderCell *)self contentView];
+  [contentView bounds];
   v7 = CGRectGetWidth(v12) + -60.0;
 
-  v8 = [(AXSensitivitySliderCell *)self contentView];
-  [v8 bounds];
+  contentView2 = [(AXSensitivitySliderCell *)self contentView];
+  [contentView2 bounds];
   v9 = CGRectGetMaxY(v13) + -10.0 - v5;
 
-  v10 = [(AXSensitivitySliderCell *)self control];
-  [v10 setFrame:{30.0, v5, v7, v9}];
+  control2 = [(AXSensitivitySliderCell *)self control];
+  [control2 setFrame:{30.0, v5, v7, v9}];
 }
 
 - (int64_t)_sliderLevel
 {
-  v3 = [(AXSensitivitySliderCell *)self control];
-  [v3 value];
+  control = [(AXSensitivitySliderCell *)self control];
+  [control value];
   v4 = [(AXSensitivitySliderCell *)self _sliderLevelForValue:?];
 
   return v4;
 }
 
-- (int64_t)_sliderLevelForValue:(float)a3
+- (int64_t)_sliderLevelForValue:(float)value
 {
-  v4 = [(AXSensitivitySliderCell *)self control];
-  [v4 minimumValue];
+  control = [(AXSensitivitySliderCell *)self control];
+  [control minimumValue];
   v6 = v5;
-  [v4 maximumValue];
-  if (vabds_f32(a3, v6) >= 0.00000011921)
+  [control maximumValue];
+  if (vabds_f32(value, v6) >= 0.00000011921)
   {
-    if (fabsf(a3 + ((v6 + v7) * -0.5)) >= 0.00000011921)
+    if (fabsf(value + ((v6 + v7) * -0.5)) >= 0.00000011921)
     {
-      if (vabds_f32(a3, v7) < 0.00000011921)
+      if (vabds_f32(value, v7) < 0.00000011921)
       {
         v8 = 2;
         goto LABEL_8;
@@ -376,7 +376,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)setSensitivitySliderLevel:(int64_t)a3
+- (void)setSensitivitySliderLevel:(int64_t)level
 {
   objc_opt_class();
 

@@ -1,51 +1,51 @@
 @interface TVImageProxy
 + (id)_imageDecoratorQueue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isImageAvailable;
-- (BOOL)isOfSameOriginAs:(id)a3;
+- (BOOL)isOfSameOriginAs:(id)as;
 - (CGSize)expectedSize;
 - (IKNetworkRequestLoader)requestLoader;
-- (TVImageProxy)initWithObject:(id)a3 imageLoader:(id)a4 groupType:(int64_t)a5;
-- (id)_assetKeyWithImageLoaderKey:(id)a3 decoratorIdentifier:(id)a4;
+- (TVImageProxy)initWithObject:(id)object imageLoader:(id)loader groupType:(int64_t)type;
+- (id)_assetKeyWithImageLoaderKey:(id)key decoratorIdentifier:(id)identifier;
 - (id)_decoratedImageAssetKey;
 - (id)_decoratedImageAssetPath;
 - (id)_decoratorIdentifier;
-- (id)_imageAssetPathWithAssetKey:(id)a3;
+- (id)_imageAssetPathWithAssetKey:(id)key;
 - (id)_imageLoaderKey;
 - (id)_originalImageAssetKey;
 - (id)_originalImageAssetPath;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_callCompletionHandlerWithImage:(id)a3 error:(id)a4 finished:(BOOL)a5;
-- (void)_callWriteCompletionHandlerWithPath:(id)a3 error:(id)a4 finished:(BOOL)a5;
-- (void)_completeImageLoadWithImage:(id)a3 imagePath:(id)a4 error:(id)a5 assetKey:(id)a6 expiryDate:(id)a7 tags:(id)a8 requestRecord:(id)a9;
-- (void)_decorateAndWriteImage:(id)a3 imagePath:(id)a4 scaleToSize:(CGSize)a5 cropToFit:(BOOL)a6 scalingResult:(unint64_t)a7 assetKey:(id)a8 expiryDate:(id)a9 tags:(id)a10 requestRecord:(id)a11;
-- (void)_imageDidWriteHandler:(id)a3;
+- (void)_callCompletionHandlerWithImage:(id)image error:(id)error finished:(BOOL)finished;
+- (void)_callWriteCompletionHandlerWithPath:(id)path error:(id)error finished:(BOOL)finished;
+- (void)_completeImageLoadWithImage:(id)image imagePath:(id)path error:(id)error assetKey:(id)key expiryDate:(id)date tags:(id)tags requestRecord:(id)record;
+- (void)_decorateAndWriteImage:(id)image imagePath:(id)path scaleToSize:(CGSize)size cropToFit:(BOOL)fit scalingResult:(unint64_t)result assetKey:(id)key expiryDate:(id)date tags:(id)self0 requestRecord:(id)self1;
+- (void)_imageDidWriteHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 - (void)load;
-- (void)loadWithWeakObject:(id)a3 completionHandler:(id)a4;
-- (void)setIsLoading:(BOOL)a3;
+- (void)loadWithWeakObject:(id)object completionHandler:(id)handler;
+- (void)setIsLoading:(BOOL)loading;
 @end
 
 @implementation TVImageProxy
 
-- (TVImageProxy)initWithObject:(id)a3 imageLoader:(id)a4 groupType:(int64_t)a5
+- (TVImageProxy)initWithObject:(id)object imageLoader:(id)loader groupType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  objectCopy = object;
+  loaderCopy = loader;
   v14.receiver = self;
   v14.super_class = TVImageProxy;
   v11 = [(TVImageProxy *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_object, a3);
-    objc_storeStrong(&v12->_imageLoader, a4);
+    objc_storeStrong(&v11->_object, object);
+    objc_storeStrong(&v12->_imageLoader, loader);
     v12->_writeToAssetLibrary = 1;
     v12->_imageDirection = 0;
-    v12->_groupType = a5;
+    v12->_groupType = type;
   }
 
   return v12;
@@ -55,8 +55,8 @@
 {
   if (self->_imageDidWriteObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_imageDidWriteObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_imageDidWriteObserver];
   }
 
   v4.receiver = self;
@@ -70,17 +70,17 @@
   v9.receiver = self;
   v9.super_class = TVImageProxy;
   v4 = [(TVImageProxy *)&v9 description];
-  v5 = [(TVImageProxy *)self object];
-  v6 = [v5 description];
+  object = [(TVImageProxy *)self object];
+  v6 = [object description];
   v7 = [v3 stringWithFormat:@"%@ - %@", v4, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -90,10 +90,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TVImageProxy *)v5 object];
+      v5 = equalCopy;
+      object = [(TVImageProxy *)v5 object];
       object = self->_object;
-      v8 = v6;
+      v8 = object;
       v9 = object;
       v10 = v9;
       if (v8 == v9)
@@ -115,9 +115,9 @@
         }
       }
 
-      v13 = [(TVImageProxy *)v5 imageLoader];
+      imageLoader = [(TVImageProxy *)v5 imageLoader];
       imageLoader = self->_imageLoader;
-      v8 = v13;
+      v8 = imageLoader;
       v15 = imageLoader;
       v10 = v15;
       if (v8 == v15)
@@ -139,9 +139,9 @@
         }
       }
 
-      v17 = [(TVImageProxy *)v5 decorator];
+      decorator = [(TVImageProxy *)v5 decorator];
       decorator = self->_decorator;
-      v8 = v17;
+      v8 = decorator;
       v19 = decorator;
       v10 = v19;
       if (v8 == v19)
@@ -188,24 +188,24 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(TVImageProxy *)self object];
-  v4 = [v3 hash];
-  v5 = [(TVImageProxy *)self imageLoader];
-  v6 = [v5 hash] + v4;
-  v7 = [(TVImageProxy *)self groupType];
+  object = [(TVImageProxy *)self object];
+  v4 = [object hash];
+  imageLoader = [(TVImageProxy *)self imageLoader];
+  v6 = [imageLoader hash] + v4;
+  groupType = [(TVImageProxy *)self groupType];
 
-  return v6 + v7;
+  return v6 + groupType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TVImageProxy *)self object];
-  v6 = [(TVImageProxy *)self imageLoader];
-  v7 = [v4 initWithObject:v5 imageLoader:v6 groupType:{-[TVImageProxy groupType](self, "groupType")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  object = [(TVImageProxy *)self object];
+  imageLoader = [(TVImageProxy *)self imageLoader];
+  v7 = [v4 initWithObject:object imageLoader:imageLoader groupType:{-[TVImageProxy groupType](self, "groupType")}];
 
-  v8 = [(TVImageProxy *)self decorator];
-  [v7 setDecorator:v8];
+  decorator = [(TVImageProxy *)self decorator];
+  [v7 setDecorator:decorator];
 
   [v7 setCacheOnLoad:{-[TVImageProxy cacheOnLoad](self, "cacheOnLoad")}];
   [v7 setLoadSynchronouslyIfCached:{-[TVImageProxy loadSynchronouslyIfCached](self, "loadSynchronouslyIfCached")}];
@@ -213,14 +213,14 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)isOfSameOriginAs:(id)a3
+- (BOOL)isOfSameOriginAs:(id)as
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if ([v5 isEqual:self->_object])
+  asCopy = as;
+  object = [asCopy object];
+  if ([object isEqual:self->_object])
   {
-    v6 = [v4 imageLoader];
-    v7 = [v6 isEqual:self->_imageLoader] && objc_msgSend(v4, "groupType") == self->_groupType && objc_msgSend(v4, "imageDirection") == self->_imageDirection;
+    imageLoader = [asCopy imageLoader];
+    v7 = [imageLoader isEqual:self->_imageLoader] && objc_msgSend(asCopy, "groupType") == self->_groupType && objc_msgSend(asCopy, "imageDirection") == self->_imageDirection;
   }
 
   else
@@ -233,8 +233,8 @@ LABEL_25:
 
 - (CGSize)expectedSize
 {
-  v2 = [(TVImageProxy *)self decorator];
-  [v2 expectedSize];
+  decorator = [(TVImageProxy *)self decorator];
+  [decorator expectedSize];
   v4 = v3;
   v6 = v5;
 
@@ -245,12 +245,12 @@ LABEL_25:
   return result;
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
-    self->_isLoading = a3;
-    if (!a3)
+    self->_isLoading = loading;
+    if (!loading)
     {
       [(TVImageProxy *)self setDecoratorRequestToken:0];
     }
@@ -259,8 +259,8 @@ LABEL_25:
 
 - (BOOL)isImageAvailable
 {
-  v2 = [(TVImageProxy *)self _decoratedImageAssetPath];
-  v3 = [v2 length] != 0;
+  _decoratedImageAssetPath = [(TVImageProxy *)self _decoratedImageAssetPath];
+  v3 = [_decoratedImageAssetPath length] != 0;
 
   return v3;
 }
@@ -271,27 +271,27 @@ LABEL_25:
   {
     [_TVPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:1];
     objc_initWeak(location, self);
-    v3 = [(TVImageProxy *)self _imageLoaderKey];
-    v4 = [(TVImageProxy *)self imageLoader];
+    _imageLoaderKey = [(TVImageProxy *)self _imageLoaderKey];
+    imageLoader = [(TVImageProxy *)self imageLoader];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(TVImageProxy *)self imageLoader];
-      v6 = [(TVImageProxy *)self object];
-      v7 = [v5 URLForObject:v6];
+      imageLoader2 = [(TVImageProxy *)self imageLoader];
+      object = [(TVImageProxy *)self object];
+      v7 = [imageLoader2 URLForObject:object];
     }
 
     else
     {
       v8 = MEMORY[0x277CBEBC0];
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"imageKey://%@", v3];
-      v7 = [v8 URLWithString:v5];
+      imageLoader2 = [MEMORY[0x277CCACA8] stringWithFormat:@"imageKey://%@", _imageLoaderKey];
+      v7 = [v8 URLWithString:imageLoader2];
     }
 
-    v9 = [(TVImageProxy *)self requestLoader];
-    v10 = [v9 recordForResource:3 withInitiator:2];
+    requestLoader = [(TVImageProxy *)self requestLoader];
+    v10 = [requestLoader recordForResource:3 withInitiator:2];
 
-    v11 = [(TVImageProxy *)self decorator];
-    if (v11)
+    decorator = [(TVImageProxy *)self decorator];
+    if (decorator)
     {
       [(TVImageProxy *)self _decoratedImageAssetPath];
     }
@@ -319,7 +319,7 @@ LABEL_29:
         return;
       }
 
-      v30 = [objc_opt_class() _imageDecoratorQueue];
+      _imageDecoratorQueue = [objc_opt_class() _imageDecoratorQueue];
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
       v60[2] = __20__TVImageProxy_load__block_invoke;
@@ -328,7 +328,7 @@ LABEL_29:
       v12 = v12;
       v61 = v12;
       v62 = v10;
-      dispatch_async(v30, v60);
+      dispatch_async(_imageDecoratorQueue, v60);
 
       v29 = &v63;
 LABEL_19:
@@ -337,7 +337,7 @@ LABEL_19:
     }
 
     [(TVImageProxy *)self setIsLoading:1];
-    if (!v3)
+    if (!_imageLoaderKey)
     {
       v28 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -353,34 +353,34 @@ LABEL_19:
     }
 
     v41 = v7;
-    v43 = [(TVImageProxy *)self _originalImageAssetKey];
-    v42 = [(TVImageProxy *)self _decoratedImageAssetKey];
-    v15 = [(TVImageProxy *)self decorator];
+    _originalImageAssetKey = [(TVImageProxy *)self _originalImageAssetKey];
+    _decoratedImageAssetKey = [(TVImageProxy *)self _decoratedImageAssetKey];
+    decorator2 = [(TVImageProxy *)self decorator];
 
-    if (v15)
+    if (decorator2)
     {
-      v16 = [(TVImageProxy *)self decorator];
-      [v16 loaderScaleToSize];
+      decorator3 = [(TVImageProxy *)self decorator];
+      [decorator3 loaderScaleToSize];
       v18 = v17;
       v20 = v19;
 
-      v21 = [(TVImageProxy *)self decorator];
-      v22 = [v21 loaderCropToFit];
+      decorator4 = [(TVImageProxy *)self decorator];
+      loaderCropToFit = [decorator4 loaderCropToFit];
 
-      v23 = [(TVImageProxy *)self _originalImageAssetPath];
+      _originalImageAssetPath = [(TVImageProxy *)self _originalImageAssetPath];
 
-      if (v23)
+      if (_originalImageAssetPath)
       {
         v24 = [MEMORY[0x277CCAD20] requestWithURL:v7];
         [v10 willSendRequest:v24];
 
         v25 = +[TVAssetLibrary sharedInstance];
-        v26 = [v25 assetExpiryDateForKey:v43 inGroupOfType:{-[TVImageProxy groupType](self, "groupType")}];
+        v26 = [v25 assetExpiryDateForKey:_originalImageAssetKey inGroupOfType:{-[TVImageProxy groupType](self, "groupType")}];
 
-        v27 = [MEMORY[0x277CBEB98] setWithObject:v3];
-        [(TVImageProxy *)self _decorateAndWriteImage:0 imagePath:v23 scaleToSize:v22 cropToFit:0 scalingResult:v42 assetKey:v26 expiryDate:*&v18 tags:*&v20 requestRecord:v27, v10];
+        v27 = [MEMORY[0x277CBEB98] setWithObject:_imageLoaderKey];
+        [(TVImageProxy *)self _decorateAndWriteImage:0 imagePath:_originalImageAssetPath scaleToSize:loaderCropToFit cropToFit:0 scalingResult:_decoratedImageAssetKey assetKey:v26 expiryDate:*&v18 tags:*&v20 requestRecord:v27, v10];
 
-        v12 = v23;
+        v12 = _originalImageAssetPath;
 LABEL_28:
 
         v7 = v41;
@@ -392,7 +392,7 @@ LABEL_28:
 
     else
     {
-      v22 = 0;
+      loaderCropToFit = 0;
       v18 = *MEMORY[0x277CBF3A8];
       v20 = *(MEMORY[0x277CBF3A8] + 8);
     }
@@ -409,40 +409,40 @@ LABEL_28:
     v44[3] = &unk_279D6F360;
     objc_copyWeak(v49, location);
     v48 = &v51;
-    v45 = v43;
-    v46 = v3;
+    v45 = _originalImageAssetKey;
+    v46 = _imageLoaderKey;
     v49[1] = v18;
     v49[2] = v20;
-    v50 = v22;
-    v47 = v42;
+    v50 = loaderCropToFit;
+    v47 = _decoratedImageAssetKey;
     v31 = MEMORY[0x26D6AFBB0](v44);
-    v32 = [(TVImageProxy *)self imageLoader];
+    imageLoader3 = [(TVImageProxy *)self imageLoader];
     v33 = objc_opt_respondsToSelector();
 
     if (v33)
     {
-      v34 = [(TVImageProxy *)self imageLoader];
-      v35 = [(TVImageProxy *)self object];
-      v36 = [(TVImageProxy *)self imageDirection];
-      v37 = [(TVImageProxy *)self requestLoader];
-      v38 = [v34 loadImageForObject:v35 scaleToSize:v22 cropToFit:v36 imageDirection:v37 requestLoader:v31 completionHandler:{*&v18, *&v20}];
+      imageLoader4 = [(TVImageProxy *)self imageLoader];
+      object2 = [(TVImageProxy *)self object];
+      imageDirection = [(TVImageProxy *)self imageDirection];
+      requestLoader2 = [(TVImageProxy *)self requestLoader];
+      v38 = [imageLoader4 loadImageForObject:object2 scaleToSize:loaderCropToFit cropToFit:imageDirection imageDirection:requestLoader2 requestLoader:v31 completionHandler:{*&v18, *&v20}];
     }
 
     else
     {
-      v39 = [(TVImageProxy *)self imageLoader];
+      imageLoader5 = [(TVImageProxy *)self imageLoader];
       v40 = objc_opt_respondsToSelector();
 
-      v34 = [(TVImageProxy *)self imageLoader];
+      imageLoader4 = [(TVImageProxy *)self imageLoader];
       [(TVImageProxy *)self object];
       if (v40)
-        v35 = {;
-        [v34 loadImageForObject:v35 scaleToSize:v22 cropToFit:-[TVImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v31, *&v18, *&v20}];
+        object2 = {;
+        [imageLoader4 loadImageForObject:object2 scaleToSize:loaderCropToFit cropToFit:-[TVImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v31, *&v18, *&v20}];
       }
 
       else
-        v35 = {;
-        [v34 loadImageForObject:v35 scaleToSize:v22 cropToFit:v31 completionHandler:{*&v18, *&v20}];
+        object2 = {;
+        [imageLoader4 loadImageForObject:object2 scaleToSize:loaderCropToFit cropToFit:v31 completionHandler:{*&v18, *&v20}];
       }
       v38 = ;
     }
@@ -597,49 +597,49 @@ uint64_t __36__TVImageProxy__imageDecoratorQueue__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)_decorateAndWriteImage:(id)a3 imagePath:(id)a4 scaleToSize:(CGSize)a5 cropToFit:(BOOL)a6 scalingResult:(unint64_t)a7 assetKey:(id)a8 expiryDate:(id)a9 tags:(id)a10 requestRecord:(id)a11
+- (void)_decorateAndWriteImage:(id)image imagePath:(id)path scaleToSize:(CGSize)size cropToFit:(BOOL)fit scalingResult:(unint64_t)result assetKey:(id)key expiryDate:(id)date tags:(id)self0 requestRecord:(id)self1
 {
-  height = a5.height;
-  width = a5.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = [(TVImageProxy *)self decorator];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  pathCopy = path;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  recordCopy = record;
+  decorator = [(TVImageProxy *)self decorator];
   cacheOnLoad = self->_cacheOnLoad;
   v25 = objc_alloc_init(_TVDecoratorRequest);
   [(TVImageProxy *)self setDecoratorRequestToken:v25];
   objc_initWeak(location, self);
-  v26 = [objc_opt_class() _imageDecoratorQueue];
+  _imageDecoratorQueue = [objc_opt_class() _imageDecoratorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __124__TVImageProxy__decorateAndWriteImage_imagePath_scaleToSize_cropToFit_scalingResult_assetKey_expiryDate_tags_requestRecord___block_invoke;
   block[3] = &unk_279D6F3B0;
   objc_copyWeak(v46, location);
-  v38 = v17;
-  v39 = v18;
+  v38 = imageCopy;
+  v39 = pathCopy;
   v47 = cacheOnLoad;
-  v46[1] = a7;
+  v46[1] = result;
   v46[2] = *&width;
   v46[3] = *&height;
-  v48 = a6;
+  fitCopy = fit;
   v40 = v25;
-  v41 = v23;
-  v42 = v19;
-  v43 = v20;
-  v44 = v21;
-  v45 = v22;
-  v27 = v22;
-  v28 = v21;
-  v29 = v20;
-  v30 = v19;
-  v31 = v23;
+  v41 = decorator;
+  v42 = keyCopy;
+  v43 = dateCopy;
+  v44 = tagsCopy;
+  v45 = recordCopy;
+  v27 = recordCopy;
+  v28 = tagsCopy;
+  v29 = dateCopy;
+  v30 = keyCopy;
+  v31 = decorator;
   v32 = v25;
-  v33 = v18;
-  v34 = v17;
-  dispatch_async(v26, block);
+  v33 = pathCopy;
+  v34 = imageCopy;
+  dispatch_async(_imageDecoratorQueue, block);
 
   objc_destroyWeak(v46);
   objc_destroyWeak(location);
@@ -739,66 +739,66 @@ void __124__TVImageProxy__decorateAndWriteImage_imagePath_scaleToSize_cropToFit_
   }
 }
 
-- (void)_completeImageLoadWithImage:(id)a3 imagePath:(id)a4 error:(id)a5 assetKey:(id)a6 expiryDate:(id)a7 tags:(id)a8 requestRecord:(id)a9
+- (void)_completeImageLoadWithImage:(id)image imagePath:(id)path error:(id)error assetKey:(id)key expiryDate:(id)date tags:(id)tags requestRecord:(id)record
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (v16)
+  imageCopy = image;
+  pathCopy = path;
+  errorCopy = error;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  recordCopy = record;
+  v22 = recordCopy;
+  if (pathCopy)
   {
-    v23 = [(TVImageProxy *)self completionHandler];
+    completionHandler = [(TVImageProxy *)self completionHandler];
 
-    if (v23)
+    if (completionHandler)
     {
-      if (v15)
+      if (imageCopy)
       {
-        v24 = v15;
+        v24 = imageCopy;
       }
 
       else
       {
-        v24 = [TVImage imageWithPath:v16 cacheImmediately:self->_cacheOnLoad];
+        v24 = [TVImage imageWithPath:pathCopy cacheImmediately:self->_cacheOnLoad];
       }
 
       v31 = v24;
       [(TVImageProxy *)self _callCompletionHandlerWithImage:v24 error:0 finished:1];
     }
 
-    [ITMLUtilities image:v15 didCompleteLoadingForCache:1 requestRecord:v22];
-    v32 = self;
-    v33 = v16;
+    [ITMLUtilities image:imageCopy didCompleteLoadingForCache:1 requestRecord:v22];
+    selfCopy2 = self;
+    v33 = pathCopy;
     v34 = 0;
 LABEL_17:
-    [(TVImageProxy *)v32 _callWriteCompletionHandlerWithPath:v33 error:v34 finished:1];
+    [(TVImageProxy *)selfCopy2 _callWriteCompletionHandlerWithPath:v33 error:v34 finished:1];
 LABEL_18:
     [(TVImageProxy *)self setIsLoading:0];
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!imageCopy)
   {
-    if (v21)
+    if (recordCopy)
     {
       v35 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVMLKitErrorDomain" code:11 userInfo:0];
       [v22 didFailWithError:v35];
     }
 
-    [(TVImageProxy *)self _callCompletionHandlerWithImage:0 error:v17 finished:1];
-    v32 = self;
+    [(TVImageProxy *)self _callCompletionHandlerWithImage:0 error:errorCopy finished:1];
+    selfCopy2 = self;
     v33 = 0;
-    v34 = v17;
+    v34 = errorCopy;
     goto LABEL_17;
   }
 
   if (self->_writeToAssetLibrary && ([(TVImageProxy *)self writeCompletionHandler], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
   {
     objc_initWeak(&location, self);
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v26 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v36 = @"ATVAssetDidWriteNotification";
     v38[0] = MEMORY[0x277D85DD0];
@@ -806,7 +806,7 @@ LABEL_18:
     v38[2] = __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_expiryDate_tags_requestRecord___block_invoke;
     v38[3] = &unk_279D6F3D8;
     objc_copyWeak(&v39, &location);
-    v27 = [v37 addObserverForName:@"ATVAssetDidWriteNotification" object:v18 queue:v26 usingBlock:v38];
+    v27 = [defaultCenter addObserverForName:@"ATVAssetDidWriteNotification" object:keyCopy queue:v26 usingBlock:v38];
     imageDidWriteObserver = self->_imageDidWriteObserver;
     self->_imageDidWriteObserver = v27;
 
@@ -823,11 +823,11 @@ LABEL_18:
   if (self->_writeToAssetLibrary)
   {
     v30 = +[TVAssetLibrary sharedInstance];
-    [v30 setImageAsset:v15 forKey:v18 inGroupOfType:-[TVImageProxy groupType](self expiryDate:"groupType") tags:{v19, v20}];
+    [v30 setImageAsset:imageCopy forKey:keyCopy inGroupOfType:-[TVImageProxy groupType](self expiryDate:"groupType") tags:{dateCopy, tagsCopy}];
   }
 
-  [ITMLUtilities image:v15 didCompleteLoadingForCache:1 requestRecord:v22, v36];
-  [(TVImageProxy *)self _callCompletionHandlerWithImage:v15 error:0 finished:1];
+  [ITMLUtilities image:imageCopy didCompleteLoadingForCache:1 requestRecord:v22, v36];
+  [(TVImageProxy *)self _callCompletionHandlerWithImage:imageCopy error:0 finished:1];
   if ((v29 & 1) == 0)
   {
     goto LABEL_18;
@@ -847,35 +847,35 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
   }
 }
 
-- (void)_imageDidWriteHandler:(id)a3
+- (void)_imageDidWriteHandler:(id)handler
 {
-  v7 = self;
-  v4 = [a3 userInfo];
-  if ([(TVImageProxy *)v7 isLoading])
+  selfCopy = self;
+  userInfo = [handler userInfo];
+  if ([(TVImageProxy *)selfCopy isLoading])
   {
-    v5 = [v4 objectForKey:@"ATVAssetDidWriteNotificationAssetPathKey"];
-    v6 = [v4 objectForKey:@"ATVAssetDidWriteNotificationErrorKey"];
-    [(TVImageProxy *)v7 _callWriteCompletionHandlerWithPath:v5 error:v6 finished:1];
+    v5 = [userInfo objectForKey:@"ATVAssetDidWriteNotificationAssetPathKey"];
+    v6 = [userInfo objectForKey:@"ATVAssetDidWriteNotificationErrorKey"];
+    [(TVImageProxy *)selfCopy _callWriteCompletionHandlerWithPath:v5 error:v6 finished:1];
   }
 
-  [(TVImageProxy *)v7 setIsLoading:0];
+  [(TVImageProxy *)selfCopy setIsLoading:0];
 }
 
 - (id)_decoratorIdentifier
 {
-  v2 = [(TVImageProxy *)self decorator];
-  v3 = [v2 decoratorIdentifier];
+  decorator = [(TVImageProxy *)self decorator];
+  decoratorIdentifier = [decorator decoratorIdentifier];
 
-  return v3;
+  return decoratorIdentifier;
 }
 
-- (id)_assetKeyWithImageLoaderKey:(id)a3 decoratorIdentifier:(id)a4
+- (id)_assetKeyWithImageLoaderKey:(id)key decoratorIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (keyCopy)
   {
-    v8 = [MEMORY[0x277CCAB68] stringWithString:v6];
+    v8 = [MEMORY[0x277CCAB68] stringWithString:keyCopy];
     [v8 appendString:@"_"];
     if ([(TVImageProxy *)self imageDirection])
     {
@@ -888,10 +888,10 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
     }
 
     [v8 appendString:v9];
-    if (v7)
+    if (identifierCopy)
     {
       [v8 appendString:@"_"];
-      [v8 appendString:v7];
+      [v8 appendString:identifierCopy];
     }
   }
 
@@ -905,17 +905,17 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
 
 - (id)_imageLoaderKey
 {
-  v3 = [(TVImageProxy *)self imageLoader];
-  v4 = [(TVImageProxy *)self object];
-  v5 = [v3 imageKeyForObject:v4];
+  imageLoader = [(TVImageProxy *)self imageLoader];
+  object = [(TVImageProxy *)self object];
+  v5 = [imageLoader imageKeyForObject:object];
 
   return v5;
 }
 
 - (id)_originalImageAssetKey
 {
-  v3 = [(TVImageProxy *)self _imageLoaderKey];
-  v4 = [(TVImageProxy *)self _assetKeyWithImageLoaderKey:v3 decoratorIdentifier:0];
+  _imageLoaderKey = [(TVImageProxy *)self _imageLoaderKey];
+  v4 = [(TVImageProxy *)self _assetKeyWithImageLoaderKey:_imageLoaderKey decoratorIdentifier:0];
   if ([(TVImageProxy *)self allowsSubstitutionForOriginal])
   {
     v5 = [(TVImageProxy *)self _imageAssetPathWithAssetKey:v4];
@@ -923,7 +923,7 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
     if (!v5)
     {
       v6 = +[TVAssetLibrary sharedInstance];
-      v7 = [MEMORY[0x277CBEB98] setWithObject:v3];
+      v7 = [MEMORY[0x277CBEB98] setWithObject:_imageLoaderKey];
       v8 = [v6 keyForAssetWithTags:v7 inGroupOfType:{-[TVImageProxy groupType](self, "groupType")}];
 
       if (v8)
@@ -940,36 +940,36 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
 
 - (id)_decoratedImageAssetKey
 {
-  v3 = [(TVImageProxy *)self _imageLoaderKey];
-  v4 = [(TVImageProxy *)self _decoratorIdentifier];
-  v5 = [(TVImageProxy *)self _assetKeyWithImageLoaderKey:v3 decoratorIdentifier:v4];
+  _imageLoaderKey = [(TVImageProxy *)self _imageLoaderKey];
+  _decoratorIdentifier = [(TVImageProxy *)self _decoratorIdentifier];
+  v5 = [(TVImageProxy *)self _assetKeyWithImageLoaderKey:_imageLoaderKey decoratorIdentifier:_decoratorIdentifier];
 
   return v5;
 }
 
 - (id)_originalImageAssetPath
 {
-  v3 = [(TVImageProxy *)self _originalImageAssetKey];
-  v4 = [(TVImageProxy *)self _imageAssetPathWithAssetKey:v3];
+  _originalImageAssetKey = [(TVImageProxy *)self _originalImageAssetKey];
+  v4 = [(TVImageProxy *)self _imageAssetPathWithAssetKey:_originalImageAssetKey];
 
   return v4;
 }
 
 - (id)_decoratedImageAssetPath
 {
-  v3 = [(TVImageProxy *)self _decoratedImageAssetKey];
-  v4 = [(TVImageProxy *)self _imageAssetPathWithAssetKey:v3];
+  _decoratedImageAssetKey = [(TVImageProxy *)self _decoratedImageAssetKey];
+  v4 = [(TVImageProxy *)self _imageAssetPathWithAssetKey:_decoratedImageAssetKey];
 
   return v4;
 }
 
-- (id)_imageAssetPathWithAssetKey:(id)a3
+- (id)_imageAssetPathWithAssetKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
+    keyCopy = key;
     v5 = +[TVAssetLibrary sharedInstance];
-    v6 = [v5 assetPathForKey:v4 inGroupOfType:{-[TVImageProxy groupType](self, "groupType")}];
+    v6 = [v5 assetPathForKey:keyCopy inGroupOfType:{-[TVImageProxy groupType](self, "groupType")}];
   }
 
   else
@@ -984,63 +984,63 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
 {
   if ([(TVImageProxy *)self isLoading])
   {
-    v9 = self;
-    if (v9->_imageDidWriteObserver)
+    selfCopy = self;
+    if (selfCopy->_imageDidWriteObserver)
     {
-      v3 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v3 removeObserver:v9->_imageDidWriteObserver];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:selfCopy->_imageDidWriteObserver];
 
-      imageDidWriteObserver = v9->_imageDidWriteObserver;
-      v9->_imageDidWriteObserver = 0;
+      imageDidWriteObserver = selfCopy->_imageDidWriteObserver;
+      selfCopy->_imageDidWriteObserver = 0;
     }
 
-    v5 = [(TVImageProxy *)v9 requestToken];
+    requestToken = [(TVImageProxy *)selfCopy requestToken];
 
-    if (v5)
+    if (requestToken)
     {
-      v6 = [(TVImageProxy *)v9 imageLoader];
-      v7 = [(TVImageProxy *)v9 requestToken];
-      [v6 cancelLoad:v7];
+      imageLoader = [(TVImageProxy *)selfCopy imageLoader];
+      requestToken2 = [(TVImageProxy *)selfCopy requestToken];
+      [imageLoader cancelLoad:requestToken2];
 
-      [(TVImageProxy *)v9 setRequestToken:0];
+      [(TVImageProxy *)selfCopy setRequestToken:0];
     }
 
-    v8 = [(TVImageProxy *)v9 decoratorRequestToken];
-    [v8 setStatusCancelled:1];
+    decoratorRequestToken = [(TVImageProxy *)selfCopy decoratorRequestToken];
+    [decoratorRequestToken setStatusCancelled:1];
 
-    [(TVImageProxy *)v9 setDecoratorRequestToken:0];
-    [(TVImageProxy *)v9 setIsLoading:0];
-    [(TVImageProxy *)v9 _callCompletionHandlerWithImage:0 error:0 finished:0];
-    [(TVImageProxy *)v9 _callWriteCompletionHandlerWithPath:0 error:0 finished:0];
+    [(TVImageProxy *)selfCopy setDecoratorRequestToken:0];
+    [(TVImageProxy *)selfCopy setIsLoading:0];
+    [(TVImageProxy *)selfCopy _callCompletionHandlerWithImage:0 error:0 finished:0];
+    [(TVImageProxy *)selfCopy _callWriteCompletionHandlerWithPath:0 error:0 finished:0];
   }
 }
 
-- (void)_callCompletionHandlerWithImage:(id)a3 error:(id)a4 finished:(BOOL)a5
+- (void)_callCompletionHandlerWithImage:(id)image error:(id)error finished:(BOOL)finished
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  finishedCopy = finished;
+  imageCopy = image;
+  errorCopy = error;
   [_TVPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:0];
-  v9 = [(TVImageProxy *)self completionHandler];
-  v10 = [v9 copy];
+  completionHandler = [(TVImageProxy *)self completionHandler];
+  v10 = [completionHandler copy];
 
   if (v10)
   {
-    (v10)[2](v10, v11, v8, v5);
+    (v10)[2](v10, imageCopy, errorCopy, finishedCopy);
   }
 }
 
-- (void)_callWriteCompletionHandlerWithPath:(id)a3 error:(id)a4 finished:(BOOL)a5
+- (void)_callWriteCompletionHandlerWithPath:(id)path error:(id)error finished:(BOOL)finished
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = [(TVImageProxy *)self writeCompletionHandler];
-  v10 = [v9 copy];
+  finishedCopy = finished;
+  pathCopy = path;
+  errorCopy = error;
+  writeCompletionHandler = [(TVImageProxy *)self writeCompletionHandler];
+  v10 = [writeCompletionHandler copy];
 
   if (v10)
   {
-    (v10)[2](v10, v11, v8, v5);
+    (v10)[2](v10, pathCopy, errorCopy, finishedCopy);
   }
 }
 
@@ -1051,11 +1051,11 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
   return WeakRetained;
 }
 
-- (void)loadWithWeakObject:(id)a3 completionHandler:(id)a4
+- (void)loadWithWeakObject:(id)object completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v6);
+  objectCopy = object;
+  handlerCopy = handler;
+  objc_initWeak(&location, objectCopy);
   objc_initWeak(&from, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1063,7 +1063,7 @@ void __99__TVImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_exp
   v9[3] = &unk_279D6F668;
   objc_copyWeak(&v11, &from);
   objc_copyWeak(&v12, &location);
-  v8 = v7;
+  v8 = handlerCopy;
   v10 = v8;
   [(TVImageProxy *)self setCompletionHandler:v9];
   [(TVImageProxy *)self load];

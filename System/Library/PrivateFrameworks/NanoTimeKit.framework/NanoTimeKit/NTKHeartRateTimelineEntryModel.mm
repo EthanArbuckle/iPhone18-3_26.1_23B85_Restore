@@ -2,18 +2,18 @@
 - (id)_bpmString;
 - (id)_heartrateString;
 - (id)_metadataWithCurrentMeasurements;
-- (id)_newCircularTemplateUsingMediumSize:(BOOL)a3;
+- (id)_newCircularTemplateUsingMediumSize:(BOOL)size;
 - (id)_newModularLargeTemplate;
 - (id)_newSignatureBezelTemplate;
 - (id)_newSignatureRectangularTemplate;
 - (id)_newUtilitarianLargeTemplate;
 - (id)_signatureBezelTextProvider;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKHeartRateTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = _NTKLoggingObjectForDomain(14, "NTKLoggingDomainDebug");
@@ -22,107 +22,107 @@
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = a3;
+    familyCopy = family;
     v6 = v13;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting template for %ld family.", &v12, 0x16u);
   }
 
   v7 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v8 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCircularTemplate];
+          _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCircularTemplate];
           break;
         case 11:
-          v8 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureRectangularTemplate];
+          _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureRectangularTemplate];
           break;
         case 12:
-          v8 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureExtraLargeCircularTemplate];
+          _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_30;
       }
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
-      v8 = [(NTKHeartRateTimelineEntryModel *)self _newExtraLargeTemplate];
+      _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newExtraLargeTemplate];
     }
 
-    else if (a3 == 8)
+    else if (family == 8)
     {
-      v8 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCornerTemplate];
+      _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCornerTemplate];
     }
 
     else
     {
-      v8 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureBezelTemplate];
+      _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureBezelTemplate];
     }
   }
 
-  else if (a3 > 2)
+  else if (family > 2)
   {
-    switch(a3)
+    switch(family)
     {
       case 3:
-        v8 = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianLargeTemplate];
+        _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianLargeTemplate];
         break;
       case 4:
-        v8 = [(NTKHeartRateTimelineEntryModel *)self _newCircularTemplateUsingMediumSize:0];
+        _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newCircularTemplateUsingMediumSize:0];
         break;
       case 6:
-        v8 = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianSmallFlatTemplate];
+        _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianSmallFlatTemplate];
         break;
       default:
         goto LABEL_30;
     }
   }
 
-  else if (a3)
+  else if (family)
   {
-    if (a3 == 1)
+    if (family == 1)
     {
-      v8 = [(NTKHeartRateTimelineEntryModel *)self _newModularLargeTemplate];
+      _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newModularLargeTemplate];
     }
 
     else
     {
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_30;
       }
 
-      v8 = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianSmallTemplate];
+      _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianSmallTemplate];
     }
   }
 
   else
   {
-    v8 = [(NTKHeartRateTimelineEntryModel *)self _newModularSmallTemplate];
+    _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newModularSmallTemplate];
   }
 
-  v7 = v8;
+  v7 = _newSignatureCircularTemplate;
 LABEL_30:
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
-    v9 = [(NTKHeartRateTimelineEntryModel *)self _newCircularTemplateUsingMediumSize:1];
+    _newUtilitarianLargeTemplate = [(NTKHeartRateTimelineEntryModel *)self _newCircularTemplateUsingMediumSize:1];
   }
 
   else
   {
-    if (a3 != 104)
+    if (family != 104)
     {
       goto LABEL_35;
     }
 
-    v9 = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianLargeTemplate];
+    _newUtilitarianLargeTemplate = [(NTKHeartRateTimelineEntryModel *)self _newUtilitarianLargeTemplate];
   }
 
-  v10 = v9;
+  v10 = _newUtilitarianLargeTemplate;
 
   v7 = v10;
 LABEL_35:
@@ -155,9 +155,9 @@ LABEL_35:
   return v6;
 }
 
-- (id)_newCircularTemplateUsingMediumSize:(BOOL)a3
+- (id)_newCircularTemplateUsingMediumSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = @"VictoryNTKHeartrate";
   }
@@ -186,8 +186,8 @@ LABEL_35:
     v6 = [v4 textProviderWithText:v5];
 
     v7 = MEMORY[0x277CBBB88];
-    v8 = [(NTKHeartRateTimelineEntryModel *)self _heartrateString];
-    v9 = [v7 textProviderWithText:v8];
+    _heartrateString = [(NTKHeartRateTimelineEntryModel *)self _heartrateString];
+    v9 = [v7 textProviderWithText:_heartrateString];
 
     if (self->_lessThanMinute)
     {
@@ -236,9 +236,9 @@ LABEL_35:
 - (id)_newSignatureBezelTemplate
 {
   v3 = MEMORY[0x277CBB810];
-  v4 = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCircularTemplate];
-  v5 = [(NTKHeartRateTimelineEntryModel *)self _signatureBezelTextProvider];
-  v6 = [v3 templateWithCircularTemplate:v4 textProvider:v5];
+  _newSignatureCircularTemplate = [(NTKHeartRateTimelineEntryModel *)self _newSignatureCircularTemplate];
+  _signatureBezelTextProvider = [(NTKHeartRateTimelineEntryModel *)self _signatureBezelTextProvider];
+  v6 = [v3 templateWithCircularTemplate:_newSignatureCircularTemplate textProvider:_signatureBezelTextProvider];
 
   return v6;
 }
@@ -270,8 +270,8 @@ LABEL_35:
     }
 
     v6 = MEMORY[0x277CBBB88];
-    v7 = [(NTKHeartRateTimelineEntryModel *)self _heartrateString];
-    v3 = [v6 textProviderWithText:v7];
+    _heartrateString = [(NTKHeartRateTimelineEntryModel *)self _heartrateString];
+    v3 = [v6 textProviderWithText:_heartrateString];
 
     if (self->_lessThanMinute)
     {
@@ -307,13 +307,13 @@ LABEL_14:
 
 - (id)_metadataWithCurrentMeasurements
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NTKHeartRateTimelineEntryModel *)self isLocked])
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[NTKHeartRateTimelineEntryModel isLocked](self, "isLocked")}];
+    chartPoints2 = [MEMORY[0x277CCABB0] numberWithBool:{-[NTKHeartRateTimelineEntryModel isLocked](self, "isLocked")}];
     v5 = NTKHeartRateRichComplicationMetadataKeyIsLocked;
 LABEL_8:
-    [v3 setObject:v4 forKeyedSubscript:*v5];
+    [dictionary setObject:chartPoints2 forKeyedSubscript:*v5];
 
     goto LABEL_9;
   }
@@ -321,34 +321,34 @@ LABEL_8:
   if ([(NTKHeartRateTimelineEntryModel *)self hasBPM])
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_BPM];
-    [v3 setObject:v6 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyBPM"];
+    [dictionary setObject:v6 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyBPM"];
 
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_lessThanMinute];
-    [v3 setObject:v7 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsNow"];
+    [dictionary setObject:v7 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsNow"];
 
-    [v3 setObject:self->_measurementDate forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDate"];
+    [dictionary setObject:self->_measurementDate forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDate"];
   }
 
   if ([(NTKHeartRateTimelineEntryModel *)self hasSummary])
   {
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_dailyHighBPM];
-    [v3 setObject:v8 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyHighBPM"];
+    [dictionary setObject:v8 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyHighBPM"];
 
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_dailyLowBPM];
-    [v3 setObject:v9 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyLowBPM"];
+    [dictionary setObject:v9 forKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyLowBPM"];
 
-    v10 = [(NTKHeartRateTimelineEntryModel *)self chartPoints];
+    chartPoints = [(NTKHeartRateTimelineEntryModel *)self chartPoints];
 
-    if (v10)
+    if (chartPoints)
     {
-      v4 = [(NTKHeartRateTimelineEntryModel *)self chartPoints];
+      chartPoints2 = [(NTKHeartRateTimelineEntryModel *)self chartPoints];
       v5 = NTKHeartRateRichComplicationMetadataKeyChartPoints;
       goto LABEL_8;
     }
   }
 
 LABEL_9:
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
@@ -356,8 +356,8 @@ LABEL_9:
 - (id)_newSignatureRectangularTemplate
 {
   v2 = MEMORY[0x277CBB9C8];
-  v3 = [(NTKHeartRateTimelineEntryModel *)self _metadataWithCurrentMeasurements];
-  v4 = [v2 templateWithMetadata:v3];
+  _metadataWithCurrentMeasurements = [(NTKHeartRateTimelineEntryModel *)self _metadataWithCurrentMeasurements];
+  v4 = [v2 templateWithMetadata:_metadataWithCurrentMeasurements];
 
   return v4;
 }
@@ -366,8 +366,8 @@ LABEL_9:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NTKClockFaceLocalizedString(@"HEART_RATE_READING", 0);
-  v5 = [(NTKHeartRateTimelineEntryModel *)self _bpmString];
-  v6 = [v3 stringWithFormat:v4, v5];
+  _bpmString = [(NTKHeartRateTimelineEntryModel *)self _bpmString];
+  v6 = [v3 stringWithFormat:v4, _bpmString];
 
   return v6;
 }

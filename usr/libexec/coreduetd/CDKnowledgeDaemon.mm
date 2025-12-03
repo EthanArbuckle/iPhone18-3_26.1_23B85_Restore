@@ -1,35 +1,35 @@
 @interface CDKnowledgeDaemon
 + (id)defaultDaemon;
 + (id)defaultUserDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CDKnowledgeDaemon)initWithMachServiceName:(id)a3;
-- (CDKnowledgeDaemon)initWithMachServiceName:(id)a3 storePath:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CDKnowledgeDaemon)initWithMachServiceName:(id)name;
+- (CDKnowledgeDaemon)initWithMachServiceName:(id)name storePath:(id)path;
 - (id)classCError;
 - (id)confirmDatabaseConnectionError;
-- (void)confirmDatabaseConnectionWithReply:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)deleteAllEventsInEventStreamNamed:(id)a3 reply:(id)a4;
-- (void)deleteAllEventsMatchingPredicate:(id)a3 reply:(id)a4;
-- (void)deleteObjects:(id)a3 reply:(id)a4;
-- (void)deleteRemoteState:(id)a3;
-- (void)deviceUUIDWithReply:(id)a3;
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5;
-- (void)executeQuery:(id)a3 reply:(id)a4;
-- (void)handleError:(id)a3;
-- (void)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5;
-- (void)logSizeOfStorage:(id)a3;
-- (void)maintainPrivacyWithActivity:(id)a3;
+- (void)confirmDatabaseConnectionWithReply:(id)reply;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)deleteAllEventsInEventStreamNamed:(id)named reply:(id)reply;
+- (void)deleteAllEventsMatchingPredicate:(id)predicate reply:(id)reply;
+- (void)deleteObjects:(id)objects reply:(id)reply;
+- (void)deleteRemoteState:(id)state;
+- (void)deviceUUIDWithReply:(id)reply;
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply;
+- (void)executeQuery:(id)query reply:(id)reply;
+- (void)handleError:(id)error;
+- (void)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply;
+- (void)logSizeOfStorage:(id)storage;
+- (void)maintainPrivacyWithActivity:(id)activity;
 - (void)registerARPHomeControlNotificationTask;
 - (void)registerAirPlayTasks;
 - (void)registerDataCollectionTasks;
 - (void)registerMediaAnalysisProcessingTask;
 - (void)registerPSBackgroundProcessingTask;
 - (void)reportEventStatistics;
-- (void)requestBiomeEndpoint:(BOOL)a3 reply:(id)a4;
-- (void)saveObjects:(id)a3 reply:(id)a4;
-- (void)sourceDeviceIdentityWithReply:(id)a3;
-- (void)synchronizeWithReply:(id)a3;
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 reply:(id)a5;
+- (void)requestBiomeEndpoint:(BOOL)endpoint reply:(id)reply;
+- (void)saveObjects:(id)objects reply:(id)reply;
+- (void)sourceDeviceIdentityWithReply:(id)reply;
+- (void)synchronizeWithReply:(id)reply;
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client reply:(id)reply;
 @end
 
 @implementation CDKnowledgeDaemon
@@ -58,30 +58,30 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _DKDaemonInterface();
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [v5 valueForEntitlement:@"com.apple.coreduetd.allow"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.coreduetd.allow"];
   v8 = v7;
   if (v7 && [v7 BOOLValue])
   {
     v9 = objc_alloc_init(CDKnowledgeDaemonConnection);
     [(CDKnowledgeDaemonConnection *)v9 setDaemon:self];
     memset(&audittoken, 0, sizeof(audittoken));
-    if (v5)
+    if (connectionCopy)
     {
-      [v5 auditToken];
+      [connectionCopy auditToken];
     }
 
     if (proc_pidpath_audittoken(&audittoken, buffer, 0x1000u) < 1)
     {
-      v12 = [v5 valueForEntitlement:@"application-identifier"];
+      v12 = [connectionCopy valueForEntitlement:@"application-identifier"];
       if (!v12)
       {
-        v19 = [v5 valueForEntitlement:@"com.apple.application-identifier"];
+        v19 = [connectionCopy valueForEntitlement:@"com.apple.application-identifier"];
         [(CDKnowledgeDaemonConnection *)v9 setProcessName:v19];
 
         goto LABEL_15;
@@ -107,27 +107,27 @@
     [(CDKnowledgeDaemonConnection *)v9 setProcessName:v12];
 LABEL_15:
 
-    v14 = [(CDKnowledgeDaemonConnection *)v9 processName];
+    processName = [(CDKnowledgeDaemonConnection *)v9 processName];
 
-    if (!v14)
+    if (!processName)
     {
-      v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"pid:%d", [v5 processIdentifier]);
+      v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"pid:%d", [connectionCopy processIdentifier]);
       [(CDKnowledgeDaemonConnection *)v9 setProcessName:v15];
     }
 
     [(CDKnowledgeDaemonConnection *)v9 setAuthorizedEventStreamsToRead:0];
-    [v5 setExportedObject:v9];
-    [v5 setDelegate:self];
+    [connectionCopy setExportedObject:v9];
+    [connectionCopy setDelegate:self];
     v16 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 67109120;
-      v22 = v17;
+      v22 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Connection from PID %d accepted", buf, 8u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
     v13 = 1;
     goto LABEL_20;
   }
@@ -135,7 +135,7 @@ LABEL_15:
   v9 = +[_CDLogging knowledgeChannel];
   if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
   {
-    sub_100022B0C(v5);
+    sub_100022B0C(connectionCopy);
   }
 
   v13 = 0;
@@ -144,25 +144,25 @@ LABEL_20:
   return v13;
 }
 
-- (CDKnowledgeDaemon)initWithMachServiceName:(id)a3
+- (CDKnowledgeDaemon)initWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[CDDPaths knowledgeDatabaseDirectory];
-  v6 = [(CDKnowledgeDaemon *)self initWithMachServiceName:v4 storePath:v5];
+  v6 = [(CDKnowledgeDaemon *)self initWithMachServiceName:nameCopy storePath:v5];
 
   return v6;
 }
 
-- (CDKnowledgeDaemon)initWithMachServiceName:(id)a3 storePath:(id)a4
+- (CDKnowledgeDaemon)initWithMachServiceName:(id)name storePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v42.receiver = self;
   v42.super_class = CDKnowledgeDaemon;
-  v8 = [(CDKnowledgeDaemon *)&v42 initWithMachServiceName:v6];
+  v8 = [(CDKnowledgeDaemon *)&v42 initWithMachServiceName:nameCopy];
   if (v8)
   {
-    v9 = [_DKKnowledgeStorage storageWithDirectory:v7 readOnly:0];
+    v9 = [_DKKnowledgeStorage storageWithDirectory:pathCopy readOnly:0];
     storage = v8->_storage;
     v8->_storage = v9;
 
@@ -198,7 +198,7 @@ LABEL_20:
     v38 = &unk_10003D018;
     v39 = 0;
     objc_copyWeak(&v40, &location);
-    v22 = [_CDPeriodicSchedulerJob jobWithInterval:v6 schedulerJobName:&v35 handler:v21];
+    v22 = [_CDPeriodicSchedulerJob jobWithInterval:nameCopy schedulerJobName:&v35 handler:v21];
 
     state.opaque[0] = XPC_ACTIVITY_INTERVAL;
     state.opaque[1] = XPC_ACTIVITY_REPEATING;
@@ -245,10 +245,10 @@ LABEL_20:
   return v8;
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v4 = a3;
-  if (v4 && [_CDErrorUtilities isCoreDataFatalError:v4])
+  errorCopy = error;
+  if (errorCopy && [_CDErrorUtilities isCoreDataFatalError:errorCopy])
   {
     v5 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -270,20 +270,20 @@ LABEL_20:
   return v3;
 }
 
-- (void)saveObjects:(id)a3 reply:(id)a4
+- (void)saveObjects:(id)objects reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v8 = [(CDKnowledgeDaemon *)self classCError];
-    v7[2](v7, 0, v8);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer filterObjectsByEnforcingRateLimit:v6];
+    v10 = [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer filterObjectsByEnforcingRateLimit:objectsCopy];
     v11 = [(_DKPrivacyPolicyEnforcer *)self->_privacyEnforcer enforcePrivacy:v10];
     v12 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -295,10 +295,10 @@ LABEL_20:
     v17 = 0;
     v14 = [(_DKKnowledgeStorage *)storage saveObjects:v11 error:&v17];
     v15 = v17;
-    if (v7)
+    if (replyCopy)
     {
       v16 = [_CDErrorUtilities transformErrorForNSSecureCoding:v15];
-      (v7)[2](v7, v14, v16);
+      (replyCopy)[2](replyCopy, v14, v16);
     }
 
     [(CDKnowledgeDaemon *)self handleError:v15];
@@ -307,34 +307,34 @@ LABEL_20:
   }
 }
 
-- (void)deleteObjects:(id)a3 reply:(id)a4
+- (void)deleteObjects:(id)objects reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v8 = [(CDKnowledgeDaemon *)self classCError];
-    v7[2](v7, 0, v8);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
-    [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:v6];
+    [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:objectsCopy];
     v9 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_100022CC0(v6);
+      sub_100022CC0(objectsCopy);
     }
 
     v10 = objc_autoreleasePoolPush();
     storage = self->_storage;
     v15 = 0;
-    v12 = [(_DKKnowledgeStorage *)storage deleteObjects:v6 error:&v15];
+    v12 = [(_DKKnowledgeStorage *)storage deleteObjects:objectsCopy error:&v15];
     v13 = v15;
-    if (v7)
+    if (replyCopy)
     {
       v14 = [_CDErrorUtilities transformErrorForNSSecureCoding:v13];
-      (v7)[2](v7, v12, v14);
+      (replyCopy)[2](replyCopy, v12, v14);
     }
 
     [(CDKnowledgeDaemon *)self handleError:v13];
@@ -343,23 +343,23 @@ LABEL_20:
   }
 }
 
-- (void)deleteAllEventsInEventStreamNamed:(id)a3 reply:(id)a4
+- (void)deleteAllEventsInEventStreamNamed:(id)named reply:(id)reply
 {
-  v6 = a4;
-  v7 = [_DKQuery predicateForEventsWithStreamName:a3];
-  [(CDKnowledgeDaemon *)self deleteAllEventsMatchingPredicate:v7 reply:v6];
+  replyCopy = reply;
+  v7 = [_DKQuery predicateForEventsWithStreamName:named];
+  [(CDKnowledgeDaemon *)self deleteAllEventsMatchingPredicate:v7 reply:replyCopy];
 }
 
-- (void)deleteAllEventsMatchingPredicate:(id)a3 reply:(id)a4
+- (void)deleteAllEventsMatchingPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  replyCopy = reply;
   if (![(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    if (v6)
+    if (predicateCopy)
     {
       v15 = 0;
-      v9 = [_DKPredicateValidator validatePredicate:v6 allowedKeys:0 error:&v15];
+      v9 = [_DKPredicateValidator validatePredicate:predicateCopy allowedKeys:0 error:&v15];
       v10 = v15;
       if (!v9)
       {
@@ -369,64 +369,64 @@ LABEL_20:
           sub_100022D38();
         }
 
-        v7[2](v7, 0, v10);
+        replyCopy[2](replyCopy, 0, v10);
         goto LABEL_10;
       }
 
-      [v6 allowEvaluation];
+      [predicateCopy allowEvaluation];
     }
 
     storage = self->_storage;
     v14 = 0;
-    v12 = [(_DKKnowledgeStorage *)storage deleteAllEventsMatchingPredicate:v6 error:&v14];
+    v12 = [(_DKKnowledgeStorage *)storage deleteAllEventsMatchingPredicate:predicateCopy error:&v14];
     v10 = v14;
-    (v7)[2](v7, v12, v10);
+    (replyCopy)[2](replyCopy, v12, v10);
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v8 = [(CDKnowledgeDaemon *)self classCError];
-  v7[2](v7, 0, v8);
+  classCError = [(CDKnowledgeDaemon *)self classCError];
+  replyCopy[2](replyCopy, 0, classCError);
 
 LABEL_11:
 }
 
-- (void)executeQuery:(id)a3 reply:(id)a4
+- (void)executeQuery:(id)query reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v8 = [(CDKnowledgeDaemon *)self classCError];
-    v7[2](v7, 0, v8);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
     storage = self->_storage;
     v13 = 0;
-    v10 = [(_DKKnowledgeStorage *)storage executeQuery:v6 error:&v13];
+    v10 = [(_DKKnowledgeStorage *)storage executeQuery:queryCopy error:&v13];
     v11 = v13;
     v12 = [_CDErrorUtilities transformErrorForNSSecureCoding:v11];
-    (v7)[2](v7, v10, v12);
+    (replyCopy)[2](replyCopy, v10, v12);
 
     [(CDKnowledgeDaemon *)self handleError:v11];
   }
 }
 
-- (void)maintainPrivacyWithActivity:(id)a3
+- (void)maintainPrivacyWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy2 = activity;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
-  v44 = self;
-  [_DKStandingQueryExecutor executeAllStandingQueriesWithStorage:self->_storage activity:v4];
+  selfCopy = self;
+  [_DKStandingQueryExecutor executeAllStandingQueriesWithStorage:self->_storage activity:activityCopy2];
   objc_autoreleasePoolPop(v6);
-  if (!v4 || !xpc_activity_should_defer(v4))
+  if (!activityCopy2 || !xpc_activity_should_defer(activityCopy2))
   {
     v41 = v5;
-    activity = v4;
+    activity = activityCopy2;
     v46 = objc_alloc_init(NSMutableArray);
     v8 = objc_alloc_init(NSMutableArray);
     [LSApplicationRecord enumeratorWithOptions:0];
@@ -450,18 +450,18 @@ LABEL_11:
 
           v12 = *(*(&v53 + 1) + 8 * i);
           v13 = objc_autoreleasePoolPush();
-          v14 = [v12 bundleIdentifier];
-          if (v14)
+          bundleIdentifier = [v12 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [v46 addObject:v14];
+            [v46 addObject:bundleIdentifier];
           }
 
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v15 = [v12 applicationExtensionRecords];
-          v16 = [v15 countByEnumeratingWithState:&v49 objects:v58 count:16];
+          applicationExtensionRecords = [v12 applicationExtensionRecords];
+          v16 = [applicationExtensionRecords countByEnumeratingWithState:&v49 objects:v58 count:16];
           if (v16)
           {
             v17 = v16;
@@ -472,17 +472,17 @@ LABEL_11:
               {
                 if (*v50 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(applicationExtensionRecords);
                 }
 
-                v20 = [*(*(&v49 + 1) + 8 * j) effectiveBundleIdentifier];
-                if (v20)
+                effectiveBundleIdentifier = [*(*(&v49 + 1) + 8 * j) effectiveBundleIdentifier];
+                if (effectiveBundleIdentifier)
                 {
-                  [v8 addObject:v20];
+                  [v8 addObject:effectiveBundleIdentifier];
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v49 objects:v58 count:16];
+              v17 = [applicationExtensionRecords countByEnumeratingWithState:&v49 objects:v58 count:16];
             }
 
             while (v17);
@@ -499,10 +499,10 @@ LABEL_11:
 
     v7 = v46;
     v21 = v8;
-    v4 = activity;
+    activityCopy2 = activity;
     if (activity)
     {
-      v22 = v44;
+      v22 = selfCopy;
       if (xpc_activity_should_defer(activity))
       {
         v23 = +[_CDLogging knowledgeChannel];
@@ -519,7 +519,7 @@ LABEL_31:
       }
 
       v26 = objc_autoreleasePoolPush();
-      [_DKPrivacyMaintainer maintainPrivacyWithKnowledgeStorage:v44->_storage installedApps:v7 installedAppExtensions:v21 deleteMaxCount:4000 objectMaxCount:100000 objectMaxLifespan:activity activity:2419200.0];
+      [_DKPrivacyMaintainer maintainPrivacyWithKnowledgeStorage:selfCopy->_storage installedApps:v7 installedAppExtensions:v21 deleteMaxCount:4000 objectMaxCount:100000 objectMaxLifespan:activity activity:2419200.0];
       objc_autoreleasePoolPop(v26);
       if (xpc_activity_should_defer(activity))
       {
@@ -543,14 +543,14 @@ LABEL_42:
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v22 = v44;
-      [_DKPrivacyMaintainer maintainPrivacyWithKnowledgeStorage:v44->_storage installedApps:v7 installedAppExtensions:v21 deleteMaxCount:4000 objectMaxCount:100000 objectMaxLifespan:0 activity:2419200.0];
+      v22 = selfCopy;
+      [_DKPrivacyMaintainer maintainPrivacyWithKnowledgeStorage:selfCopy->_storage installedApps:v7 installedAppExtensions:v21 deleteMaxCount:4000 objectMaxCount:100000 objectMaxLifespan:0 activity:2419200.0];
       objc_autoreleasePoolPop(v25);
     }
 
     v27 = objc_autoreleasePoolPush();
-    v28 = [(CDKnowledgeDaemon *)v22 airplayTaskScheduler];
-    [v28 executeCorrelationTask];
+    airplayTaskScheduler = [(CDKnowledgeDaemon *)v22 airplayTaskScheduler];
+    [airplayTaskScheduler executeCorrelationTask];
 
     v29 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.AirPlayRoutePrediction"];
     v30 = +[NSDate date];
@@ -585,12 +585,12 @@ LABEL_42:
     v48[3] = &unk_10003CA78;
     v48[4] = v22;
     v38 = objc_retainBlock(v48);
-    v39 = [(CDKnowledgeDaemon *)v22 intentSpotlightIndex];
+    intentSpotlightIndex = [(CDKnowledgeDaemon *)v22 intentSpotlightIndex];
 
-    if (v39)
+    if (intentSpotlightIndex)
     {
-      v40 = [(CDKnowledgeDaemon *)v22 intentSpotlightIndex];
-      [v40 triggerIndexIncludingAdditions:1 completion:v38];
+      intentSpotlightIndex2 = [(CDKnowledgeDaemon *)v22 intentSpotlightIndex];
+      [intentSpotlightIndex2 triggerIndexIncludingAdditions:1 completion:v38];
     }
 
     else
@@ -613,21 +613,21 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)logSizeOfStorage:(id)a3
+- (void)logSizeOfStorage:(id)storage
 {
-  v3 = a3;
-  v4 = [v3 directory];
-  if (v4)
+  storageCopy = storage;
+  directory = [storageCopy directory];
+  if (directory)
   {
-    v5 = v4;
-    v6 = [v3 databaseName];
+    v5 = directory;
+    databaseName = [storageCopy databaseName];
 
-    if (v6)
+    if (databaseName)
     {
-      v7 = [v3 directory];
-      v29[0] = v7;
-      v8 = [v3 databaseName];
-      v29[1] = v8;
+      directory2 = [storageCopy directory];
+      v29[0] = directory2;
+      databaseName2 = [storageCopy databaseName];
+      v29[1] = databaseName2;
       v9 = [NSArray arrayWithObjects:v29 count:2];
       v10 = [NSString pathWithComponents:v9];
 
@@ -642,7 +642,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = [v13 fileSize];
+      fileSize = [v13 fileSize];
       v15 = [NSString stringWithFormat:@"%@C.db-wal", v10];
       v16 = +[NSFileManager defaultManager];
       v17 = [v16 attributesOfItemAtPath:v15 error:0];
@@ -652,7 +652,7 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      v18 = &v14[[v17 fileSize]];
+      v18 = &fileSize[[v17 fileSize]];
       v19 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -670,8 +670,8 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v20 = [v3 databaseName];
-      v21 = [v20 containsString:@"sync"];
+      databaseName3 = [storageCopy databaseName];
+      v21 = [databaseName3 containsString:@"sync"];
 
       v22 = +[_CDLogging knowledgeSignpost];
       v23 = os_signpost_enabled(v22);
@@ -716,12 +716,12 @@ LABEL_19:
   os_activity_scope_enter(v3, &state);
   os_activity_scope_leave(&state);
 
-  v4 = [(_DKKnowledgeStorage *)self->_storage eventCountPerStreamName];
+  eventCountPerStreamName = [(_DKKnowledgeStorage *)self->_storage eventCountPerStreamName];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v5 = [eventCountPerStreamName countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -732,28 +732,28 @@ LABEL_19:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventCountPerStreamName);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [eventCountPerStreamName objectForKeyedSubscript:v9];
         [v10 unsignedIntegerValue];
 
         v11 = [v9 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
         _cdknowledge_signpost_event_count();
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [eventCountPerStreamName countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [(_DKKnowledgeStorage *)self->_storage storage];
-  [(CDKnowledgeDaemon *)self logSizeOfStorage:v12];
+  storage = [(_DKKnowledgeStorage *)self->_storage storage];
+  [(CDKnowledgeDaemon *)self logSizeOfStorage:storage];
 
-  v13 = [(_DKKnowledgeStorage *)self->_storage syncStorage];
-  [(CDKnowledgeDaemon *)self logSizeOfStorage:v13];
+  syncStorage = [(_DKKnowledgeStorage *)self->_storage syncStorage];
+  [(CDKnowledgeDaemon *)self logSizeOfStorage:syncStorage];
 }
 
 - (id)confirmDatabaseConnectionError
@@ -766,44 +766,44 @@ LABEL_19:
   return v3;
 }
 
-- (void)confirmDatabaseConnectionWithReply:(id)a3
+- (void)confirmDatabaseConnectionWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v4 = [(CDKnowledgeDaemon *)self classCError];
-    v8[2](v8, 0, v4);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
-    v5 = [(CDKnowledgeDaemon *)self storage];
-    v6 = [v5 storage];
-    v7 = [v6 confirmDatabaseConnectionFor:NSFileProtectionCompleteUntilFirstUserAuthentication];
+    storage = [(CDKnowledgeDaemon *)self storage];
+    v5Storage = [storage storage];
+    v7 = [v5Storage confirmDatabaseConnectionFor:NSFileProtectionCompleteUntilFirstUserAuthentication];
 
     if (v7)
     {
-      v8[2](v8, 1, 0);
+      replyCopy[2](replyCopy, 1, 0);
       goto LABEL_7;
     }
 
-    v4 = [(CDKnowledgeDaemon *)self confirmDatabaseConnectionError];
-    v8[2](v8, 0, v4);
+    classCError = [(CDKnowledgeDaemon *)self confirmDatabaseConnectionError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
 LABEL_7:
 }
 
-- (void)requestBiomeEndpoint:(BOOL)a3 reply:(id)a4
+- (void)requestBiomeEndpoint:(BOOL)endpoint reply:(id)reply
 {
-  v4 = a3;
-  v5 = a4;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v6 = [BMAccessClient alloc];
   v7 = [v6 initWithUseCase:BMUseCaseConnectionProxy];
   v10 = 0;
-  v8 = [v7 requestEndpointForDomain:v4 error:&v10];
+  v8 = [v7 requestEndpointForDomain:endpointCopy error:&v10];
   v9 = v10;
-  v5[2](v5, v8, v9);
+  replyCopy[2](replyCopy, v8, v9);
 }
 
 - (void)registerDataCollectionTasks
@@ -827,8 +827,8 @@ LABEL_7:
   if (!self->_airplayTaskScheduler)
   {
     v3 = [ARPCorrelationTaskScheduler alloc];
-    v6 = [(CDKnowledgeDaemon *)self storage];
-    v4 = [v3 initWithKnowledgeStore:v6];
+    storage = [(CDKnowledgeDaemon *)self storage];
+    v4 = [v3 initWithKnowledgeStore:storage];
     airplayTaskScheduler = self->_airplayTaskScheduler;
     self->_airplayTaskScheduler = v4;
   }
@@ -847,8 +847,8 @@ LABEL_7:
 
 - (void)registerPSBackgroundProcessingTask
 {
-  v2 = [sub_10001BE88() sharedScheduler];
-  v3 = [v2 registerForTaskWithIdentifier:@"com.apple.proactive.psbackgroundprocessingtask" usingQueue:0 launchHandler:&stru_10003D138];
+  sharedScheduler = [sub_10001BE88() sharedScheduler];
+  v3 = [sharedScheduler registerForTaskWithIdentifier:@"com.apple.proactive.psbackgroundprocessingtask" usingQueue:0 launchHandler:&stru_10003D138];
 
   v4 = +[_CDLogging psBackgroundProcessingChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -866,8 +866,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Task registration for %@ %s", buf, 0x16u);
   }
 
-  v6 = [sub_10001BE88() sharedScheduler];
-  v7 = [v6 taskRequestForIdentifier:@"com.apple.proactive.psbackgroundprocessingtask"];
+  sharedScheduler2 = [sub_10001BE88() sharedScheduler];
+  v7 = [sharedScheduler2 taskRequestForIdentifier:@"com.apple.proactive.psbackgroundprocessingtask"];
 
   if (!v7)
   {
@@ -896,9 +896,9 @@ LABEL_7:
     [v11 setInterval:86400.0];
     [v11 setMinDurationBetweenInstances:69120.0];
     [v11 setRequiresExternalPower:1];
-    v12 = [sub_10001BE88() sharedScheduler];
+    sharedScheduler3 = [sub_10001BE88() sharedScheduler];
     v16 = 0;
-    v13 = [v12 submitTaskRequest:v11 error:&v16];
+    v13 = [sharedScheduler3 submitTaskRequest:v11 error:&v16];
     v14 = v16;
 
     if ((v13 & 1) == 0)
@@ -928,169 +928,169 @@ LABEL_7:
   xpc_activity_register("com.apple.coreduetd.mediaanalysis.proc.task", XPC_ACTIVITY_CHECK_IN, handler);
 }
 
-- (void)synchronizeWithReply:(id)a3
+- (void)synchronizeWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemon *)self syncCoordinator];
+  replyCopy = reply;
+  syncCoordinator = [(CDKnowledgeDaemon *)self syncCoordinator];
 
-  if (v5)
+  if (syncCoordinator)
   {
-    v6 = [(CDKnowledgeDaemon *)self syncCoordinator];
+    syncCoordinator2 = [(CDKnowledgeDaemon *)self syncCoordinator];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10001C464;
     v8[3] = &unk_10003D180;
-    v9 = v4;
-    [v6 syncWithReply:v8];
+    v9 = replyCopy;
+    [syncCoordinator2 syncWithReply:v8];
   }
 
   else
   {
     v7 = +[_DKSyncErrors unavailableForCurrentUser];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(replyCopy + 2))(replyCopy, 0, v7);
   }
 }
 
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 reply:(id)a5
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CDKnowledgeDaemon *)self syncCoordinator];
+  clientCopy = client;
+  replyCopy = reply;
+  syncCoordinator = [(CDKnowledgeDaemon *)self syncCoordinator];
 
-  if (v10)
+  if (syncCoordinator)
   {
-    v11 = [(CDKnowledgeDaemon *)self syncCoordinator];
+    syncCoordinator2 = [(CDKnowledgeDaemon *)self syncCoordinator];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10001C5F0;
     v13[3] = &unk_10003D180;
-    v14 = v9;
-    [v11 synchronizeWithUrgency:a3 client:v8 reply:v13];
+    v14 = replyCopy;
+    [syncCoordinator2 synchronizeWithUrgency:urgency client:clientCopy reply:v13];
   }
 
   else
   {
     v12 = +[_DKSyncErrors unavailableForCurrentUser];
-    (*(v9 + 2))(v9, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)deleteRemoteState:(id)a3
+- (void)deleteRemoteState:(id)state
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemon *)self syncCoordinator];
+  stateCopy = state;
+  syncCoordinator = [(CDKnowledgeDaemon *)self syncCoordinator];
 
-  if (v5)
+  if (syncCoordinator)
   {
-    v6 = [(CDKnowledgeDaemon *)self syncCoordinator];
+    syncCoordinator2 = [(CDKnowledgeDaemon *)self syncCoordinator];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10001C758;
     v8[3] = &unk_10003D180;
-    v9 = v4;
-    [v6 deleteRemoteStateWithReply:v8];
+    v9 = stateCopy;
+    [syncCoordinator2 deleteRemoteStateWithReply:v8];
   }
 
   else
   {
     v7 = +[_DKSyncErrors unavailableForCurrentUser];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(stateCopy + 2))(stateCopy, 0, v7);
   }
 }
 
-- (void)sourceDeviceIdentityWithReply:(id)a3
+- (void)sourceDeviceIdentityWithReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v4 = [(CDKnowledgeDaemon *)self classCError];
-    v7[2](v7, 0, v4);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
-    v5 = [(CDKnowledgeDaemon *)self storage];
-    v4 = [v5 sourceDeviceIdentity];
+    storage = [(CDKnowledgeDaemon *)self storage];
+    classCError = [storage sourceDeviceIdentity];
 
-    if (v4)
+    if (classCError)
     {
-      (v7)[2](v7, v4, 0);
+      (replyCopy)[2](replyCopy, classCError, 0);
     }
 
     else
     {
       v6 = +[_DKSyncErrors unavailableForCurrentUser];
-      v7[2](v7, 0, v6);
+      replyCopy[2](replyCopy, 0, v6);
     }
   }
 }
 
-- (void)deviceUUIDWithReply:(id)a3
+- (void)deviceUUIDWithReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   if ([(CDKnowledgeDaemon *)self isClassCLocked])
   {
-    v4 = [(CDKnowledgeDaemon *)self classCError];
-    v7[2](v7, 0, v4);
+    classCError = [(CDKnowledgeDaemon *)self classCError];
+    replyCopy[2](replyCopy, 0, classCError);
   }
 
   else
   {
-    v5 = [(CDKnowledgeDaemon *)self storage];
-    v4 = [v5 deviceUUID];
+    storage = [(CDKnowledgeDaemon *)self storage];
+    classCError = [storage deviceUUID];
 
-    if (v4)
+    if (classCError)
     {
-      (v7)[2](v7, v4, 0);
+      (replyCopy)[2](replyCopy, classCError, 0);
     }
 
     else
     {
       v6 = +[_DKSyncErrors unavailableForCurrentUser];
-      v7[2](v7, 0, v6);
+      replyCopy[2](replyCopy, 0, v6);
     }
   }
 }
 
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply
 {
-  v7 = a5;
-  [_DKSync2Policy disableSyncPolicyForFeature:a3 transportType:a4 disabled:1];
-  v7[2](v7, 1, 0);
+  replyCopy = reply;
+  [_DKSync2Policy disableSyncPolicyForFeature:feature transportType:type disabled:1];
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5
+- (void)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply
 {
-  v7 = a5;
-  (*(v7 + 2))(v7, [_DKSync2Policy isSyncPolicyDisabledForFeature:a3 transportType:a4], 0);
+  replyCopy = reply;
+  (*(replyCopy + 2))(replyCopy, [_DKSync2Policy isSyncPolicyDisabledForFeature:feature transportType:type], 0);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a5;
-  v7 = a4;
-  v12 = v7;
-  if (v5)
+  replyCopy = reply;
+  invocationCopy = invocation;
+  v12 = invocationCopy;
+  if (replyCopy)
   {
-    [v7 invoke];
+    [invocationCopy invoke];
   }
 
   else
   {
-    v8 = [a3 exportedObject];
-    v9 = [v8 processName];
+    exportedObject = [connection exportedObject];
+    processName = [exportedObject processName];
 
-    v10 = [&off_10003FA60 objectForKeyedSubscript:v9];
-    v11 = [v10 unsignedIntValue];
+    v10 = [&off_10003FA60 objectForKeyedSubscript:processName];
+    unsignedIntValue = [v10 unsignedIntValue];
 
-    if (v11 > 0x32)
+    if (unsignedIntValue > 0x32)
     {
       [v12 invoke];
     }
 
     else
     {
-      (*(&off_10003D1A0 + v11))(v12);
+      (*(&off_10003D1A0 + unsignedIntValue))(v12);
     }
   }
 }

@@ -1,139 +1,139 @@
 @interface PBUIWallpaperOptions
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8;
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10;
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperKitData:(id)a11;
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperMode:(int64_t)a11 wallpaperStatus:(int64_t)a12;
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperMode:(int64_t)a11 wallpaperStatus:(int64_t)a12 wallpaperKitData:(id)a13;
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 supportsRotation:(BOOL)a8 rotationAngle:(double)a9 portrait:(BOOL)a10 hasVideo:(BOOL)a11 stillTimeInVideo:(double)a12 wallpaperMode:(int64_t)a13 wallpaperStatus:(int64_t)a14;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLooselyEqualToWallpaperOptions:(id)a3;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperKitData:(id)self1;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperMode:(int64_t)self1 wallpaperStatus:(int64_t)self2;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperMode:(int64_t)self1 wallpaperStatus:(int64_t)self2 wallpaperKitData:(id)self3;
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect supportsRotation:(BOOL)rotation rotationAngle:(double)angle portrait:(BOOL)self0 hasVideo:(BOOL)self1 stillTimeInVideo:(double)self2 wallpaperMode:(int64_t)self3 wallpaperStatus:(int64_t)self4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLooselyEqualToWallpaperOptions:(id)options;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (CGRect)cropRect;
-- (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)a3 wallpaperScale:(double)a4 deviceType:(int64_t)a5 imageScale:(double)a6;
+- (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)size wallpaperScale:(double)scale deviceType:(int64_t)type imageScale:(double)imageScale;
 - (NSData)persistentDataRepresentation;
 - (PBUIWallpaperOptions)init;
-- (PBUIWallpaperOptions)initWithCoder:(id)a3;
-- (PBUIWallpaperOptions)initWithContentsOfURL:(id)a3;
-- (PBUIWallpaperOptions)initWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 supportsRotation:(BOOL)a8 rotationAngle:(double)a9 portrait:(BOOL)a10 hasVideo:(BOOL)a11 stillTimeInVideo:(double)a12 wallpaperMode:(int64_t)a13 wallpaperStatus:(int64_t)a14 wallpaperKitData:(id)a15;
-- (PBUIWallpaperOptions)initWithPersistentDataRepresentation:(id)a3;
-- (PBUIWallpaperOptions)initWithStream:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PBUIWallpaperOptions)initWithCoder:(id)coder;
+- (PBUIWallpaperOptions)initWithContentsOfURL:(id)l;
+- (PBUIWallpaperOptions)initWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect supportsRotation:(BOOL)rotation rotationAngle:(double)angle portrait:(BOOL)self0 hasVideo:(BOOL)self1 stillTimeInVideo:(double)self2 wallpaperMode:(int64_t)self3 wallpaperStatus:(int64_t)self4 wallpaperKitData:(id)self5;
+- (PBUIWallpaperOptions)initWithPersistentDataRepresentation:(id)representation;
+- (PBUIWallpaperOptions)initWithStream:(id)stream;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)persistentPropertyList;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBUIWallpaperOptions
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait
 {
-  v8 = a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a6;
-  v17 = a3;
-  v18 = [[a1 alloc] initWithName:v17 parallaxFactor:v13 zoomScale:0 supportsCropping:v8 cropRect:0 supportsRotation:0 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, 0.0, 0, 0}];
+  portraitCopy = portrait;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  croppingCopy = cropping;
+  nameCopy = name;
+  v18 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:0 supportsCropping:portraitCopy cropRect:0 supportsRotation:0 rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, 0.0, 0, 0}];
 
   return v18;
 }
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0
 {
-  v11 = a9;
-  v12 = a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v17 = a6;
-  v21 = a3;
-  v22 = [[a1 alloc] initWithName:v21 parallaxFactor:v17 zoomScale:0 supportsCropping:v12 cropRect:v11 supportsRotation:0 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, a10, 0, 0}];
+  videoCopy = video;
+  portraitCopy = portrait;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  croppingCopy = cropping;
+  nameCopy = name;
+  v22 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:0 supportsCropping:portraitCopy cropRect:videoCopy supportsRotation:0 rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, inVideo, 0, 0}];
 
   return v22;
 }
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperKitData:(id)a11
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperKitData:(id)self1
 {
-  v12 = a9;
-  v13 = a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v18 = a6;
-  v23 = a11;
-  v24 = a3;
-  v25 = [[a1 alloc] initWithName:v24 parallaxFactor:v18 zoomScale:0 supportsCropping:v13 cropRect:v12 supportsRotation:0 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, a10, 0, v23}];
+  videoCopy = video;
+  portraitCopy = portrait;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  croppingCopy = cropping;
+  dataCopy = data;
+  nameCopy = name;
+  v25 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:0 supportsCropping:portraitCopy cropRect:videoCopy supportsRotation:0 rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, inVideo, 0, dataCopy}];
 
   return v25;
 }
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperMode:(int64_t)a11 wallpaperStatus:(int64_t)a12
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperMode:(int64_t)self1 wallpaperStatus:(int64_t)self2
 {
-  v15 = a9;
-  v16 = a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v21 = a6;
-  v25 = a3;
-  v26 = [[a1 alloc] initWithName:v25 parallaxFactor:v21 zoomScale:0 supportsCropping:v16 cropRect:v15 supportsRotation:a11 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, a10, a12, 0}];
+  videoCopy = video;
+  portraitCopy = portrait;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  croppingCopy = cropping;
+  nameCopy = name;
+  v26 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:0 supportsCropping:portraitCopy cropRect:videoCopy supportsRotation:mode rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, inVideo, status, 0}];
 
   return v26;
 }
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 supportsRotation:(BOOL)a8 rotationAngle:(double)a9 portrait:(BOOL)a10 hasVideo:(BOOL)a11 stillTimeInVideo:(double)a12 wallpaperMode:(int64_t)a13 wallpaperStatus:(int64_t)a14
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect supportsRotation:(BOOL)rotation rotationAngle:(double)angle portrait:(BOOL)self0 hasVideo:(BOOL)self1 stillTimeInVideo:(double)self2 wallpaperMode:(int64_t)self3 wallpaperStatus:(int64_t)self4
 {
-  v15 = a11;
-  v16 = a10;
-  v17 = a8;
-  v18 = a6;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v28 = a3;
-  v29 = [[a1 alloc] initWithName:v28 parallaxFactor:v18 zoomScale:v17 supportsCropping:v16 cropRect:v15 supportsRotation:a13 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{a9, a12, a14, 0}];
+  videoCopy = video;
+  portraitCopy = portrait;
+  rotationCopy = rotation;
+  croppingCopy = cropping;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  nameCopy = name;
+  v29 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:rotationCopy supportsCropping:portraitCopy cropRect:videoCopy supportsRotation:mode rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{angle, inVideo, status, 0}];
 
   return v29;
 }
 
-+ (id)optionsWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 portrait:(BOOL)a8 hasVideo:(BOOL)a9 stillTimeInVideo:(double)a10 wallpaperMode:(int64_t)a11 wallpaperStatus:(int64_t)a12 wallpaperKitData:(id)a13
++ (id)optionsWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect portrait:(BOOL)portrait hasVideo:(BOOL)video stillTimeInVideo:(double)self0 wallpaperMode:(int64_t)self1 wallpaperStatus:(int64_t)self2 wallpaperKitData:(id)self3
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a6;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v27 = a13;
-  v28 = a3;
-  v29 = [[a1 alloc] initWithName:v28 parallaxFactor:v17 zoomScale:0 supportsCropping:v16 cropRect:v15 supportsRotation:a11 rotationAngle:a4 portrait:a5 hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, a10, a12, v27}];
+  videoCopy = video;
+  portraitCopy = portrait;
+  croppingCopy = cropping;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  nameCopy = name;
+  v29 = [[self alloc] initWithName:nameCopy parallaxFactor:croppingCopy zoomScale:0 supportsCropping:portraitCopy cropRect:videoCopy supportsRotation:mode rotationAngle:factor portrait:scale hasVideo:x stillTimeInVideo:y wallpaperMode:width wallpaperStatus:height wallpaperKitData:{0.0, inVideo, status, dataCopy}];
 
   return v29;
 }
 
-- (PBUIWallpaperOptions)initWithName:(id)a3 parallaxFactor:(double)a4 zoomScale:(double)a5 supportsCropping:(BOOL)a6 cropRect:(CGRect)a7 supportsRotation:(BOOL)a8 rotationAngle:(double)a9 portrait:(BOOL)a10 hasVideo:(BOOL)a11 stillTimeInVideo:(double)a12 wallpaperMode:(int64_t)a13 wallpaperStatus:(int64_t)a14 wallpaperKitData:(id)a15
+- (PBUIWallpaperOptions)initWithName:(id)name parallaxFactor:(double)factor zoomScale:(double)scale supportsCropping:(BOOL)cropping cropRect:(CGRect)rect supportsRotation:(BOOL)rotation rotationAngle:(double)angle portrait:(BOOL)self0 hasVideo:(BOOL)self1 stillTimeInVideo:(double)self2 wallpaperMode:(int64_t)self3 wallpaperStatus:(int64_t)self4 wallpaperKitData:(id)self5
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v29 = a3;
-  v30 = a15;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  nameCopy = name;
+  dataCopy = data;
   v38.receiver = self;
   v38.super_class = PBUIWallpaperOptions;
   v31 = [(PBUIWallpaperOptions *)&v38 init];
   if (v31)
   {
-    v32 = [v29 copy];
+    v32 = [nameCopy copy];
     name = v31->_name;
     v31->_name = v32;
 
@@ -141,17 +141,17 @@
     v31->_cropRect.origin.y = y;
     v31->_cropRect.size.width = width;
     v31->_cropRect.size.height = height;
-    v31->_supportsCropping = a6;
-    v31->_supportsRotation = a8;
-    v31->_parallaxFactor = a4;
-    v31->_zoomScale = a5;
-    v31->_portrait = a10;
-    v31->_hasVideo = a11;
-    v31->_rotationAngle = a9;
-    v31->_stillTimeInVideo = a12;
-    v31->_wallpaperMode = a13;
-    v31->_wallpaperStatus = a14;
-    v34 = [v30 copy];
+    v31->_supportsCropping = cropping;
+    v31->_supportsRotation = rotation;
+    v31->_parallaxFactor = factor;
+    v31->_zoomScale = scale;
+    v31->_portrait = portrait;
+    v31->_hasVideo = video;
+    v31->_rotationAngle = angle;
+    v31->_stillTimeInVideo = inVideo;
+    v31->_wallpaperMode = mode;
+    v31->_wallpaperStatus = status;
+    v34 = [dataCopy copy];
     wallpaperKitData = v31->_wallpaperKitData;
     v31->_wallpaperKitData = v34;
 
@@ -178,11 +178,11 @@
   return result;
 }
 
-- (PBUIWallpaperOptions)initWithContentsOfURL:(id)a3
+- (PBUIWallpaperOptions)initWithContentsOfURL:(id)l
 {
   v4 = MEMORY[0x277CBEAE0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   [v6 open];
   v7 = [(PBUIWallpaperOptions *)self initWithStream:v6];
@@ -191,11 +191,11 @@
   return v7;
 }
 
-- (PBUIWallpaperOptions)initWithPersistentDataRepresentation:(id)a3
+- (PBUIWallpaperOptions)initWithPersistentDataRepresentation:(id)representation
 {
   v4 = MEMORY[0x277CBEAE0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5];
+  representationCopy = representation;
+  v6 = [[v4 alloc] initWithData:representationCopy];
 
   [v6 open];
   v7 = [(PBUIWallpaperOptions *)self initWithStream:v6];
@@ -204,9 +204,9 @@
   return v7;
 }
 
-- (PBUIWallpaperOptions)initWithStream:(id)a3
+- (PBUIWallpaperOptions)initWithStream:(id)stream
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithStream:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithStream:stream options:0 format:0 error:0];
   if (v4)
   {
     v5 = [(PBUIWallpaperOptions *)self init];
@@ -315,21 +315,21 @@
     }
 
     self = v5;
-    v32 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v32 = 0;
+    selfCopy = 0;
   }
 
-  return v32;
+  return selfCopy;
 }
 
-- (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)a3 wallpaperScale:(double)a4 deviceType:(int64_t)a5 imageScale:(double)a6
+- (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)size wallpaperScale:(double)scale deviceType:(int64_t)type imageScale:(double)imageScale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PBUIWallpaperOptions *)self cropRect];
   v12 = v11;
   v14 = v13;
@@ -339,7 +339,7 @@
   memset(&v50, 0, sizeof(v50));
   CGAffineTransformMakeScale(&v50, v19, v19);
   memset(&v49, 0, sizeof(v49));
-  CGAffineTransformMakeScale(&v49, a6, a6);
+  CGAffineTransformMakeScale(&v49, imageScale, imageScale);
   v48 = v50;
   v52.origin.x = v12;
   v52.origin.y = v14;
@@ -355,11 +355,11 @@
   v22 = v54.size.width;
   v23 = v54.size.height;
   [(PBUIWallpaperOptions *)self parallaxFactor];
-  [PBUIWallpaperParallaxSettings bestWallpaperSizeForWallpaperSize:a5 deviceType:[(PBUIWallpaperOptions *)self isPortrait] parallaxFactor:width portrait:height, v24];
+  [PBUIWallpaperParallaxSettings bestWallpaperSizeForWallpaperSize:type deviceType:[(PBUIWallpaperOptions *)self isPortrait] parallaxFactor:width portrait:height, v24];
   v26 = v25;
   v28 = v27;
   memset(&v48, 0, sizeof(v48));
-  CGAffineTransformMakeScale(&v48, a4, a4);
+  CGAffineTransformMakeScale(&v48, scale, scale);
   v29 = v28 * v48.c + v48.a * v26;
   v30 = v28 * v48.d + v48.b * v26;
   if (v29 < v22 && v30 < v23)
@@ -424,7 +424,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PBUIWallpaperOptions);
   if (v4)
@@ -456,10 +456,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v45 = 1;
   }
@@ -471,20 +471,20 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PBUIWallpaperOptions *)self name];
-      v9 = [(PBUIWallpaperOptions *)v7 name];
+      v7 = equalCopy;
+      name = [(PBUIWallpaperOptions *)self name];
+      name2 = [(PBUIWallpaperOptions *)v7 name];
       v10 = BSEqualObjects();
 
       if (v10 && ([(PBUIWallpaperOptions *)self cropRect], v12 = v11, v14 = v13, v16 = v15, v18 = v17, [(PBUIWallpaperOptions *)v7 cropRect], v48.origin.x = v19, v48.origin.y = v20, v48.size.width = v21, v48.size.height = v22, v47.origin.x = v12, v47.origin.y = v14, v47.size.width = v16, v47.size.height = v18, CGRectEqualToRect(v47, v48)) && ([(PBUIWallpaperOptions *)self rotationAngle], v24 = v23, [(PBUIWallpaperOptions *)v7 rotationAngle], v24 == v25) && ([(PBUIWallpaperOptions *)self parallaxFactor], v27 = v26, [(PBUIWallpaperOptions *)v7 parallaxFactor], v27 == v28) && (v29 = [(PBUIWallpaperOptions *)self supportsCropping], v29 == [(PBUIWallpaperOptions *)v7 supportsCropping]) && (v30 = [(PBUIWallpaperOptions *)self supportsRotation], v30 == [(PBUIWallpaperOptions *)v7 supportsRotation]) && (v31 = [(PBUIWallpaperOptions *)self isMagnifyEnabled], v31 == [(PBUIWallpaperOptions *)v7 isMagnifyEnabled]) && ([(PBUIWallpaperOptions *)self zoomScale], v33 = v32, [(PBUIWallpaperOptions *)v7 zoomScale], v33 == v34) && (v35 = [(PBUIWallpaperOptions *)self isPortrait], v35 == [(PBUIWallpaperOptions *)v7 isPortrait]) && (v36 = [(PBUIWallpaperOptions *)self hasVideo], v36 == [(PBUIWallpaperOptions *)v7 hasVideo]) && ([(PBUIWallpaperOptions *)self stillTimeInVideo], v38 = v37, [(PBUIWallpaperOptions *)v7 stillTimeInVideo], v38 == v39) && (v40 = [(PBUIWallpaperOptions *)self wallpaperMode], v40 == [(PBUIWallpaperOptions *)v7 wallpaperMode]))
       {
-        v41 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-        if (v41)
+        wallpaperKitData = [(PBUIWallpaperOptions *)self wallpaperKitData];
+        if (wallpaperKitData)
         {
-          v42 = v41;
-          v43 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-          v44 = [(PBUIWallpaperOptions *)v7 wallpaperKitData];
-          v45 = [v43 isEqual:v44];
+          v42 = wallpaperKitData;
+          wallpaperKitData2 = [(PBUIWallpaperOptions *)self wallpaperKitData];
+          wallpaperKitData3 = [(PBUIWallpaperOptions *)v7 wallpaperKitData];
+          v45 = [wallpaperKitData2 isEqual:wallpaperKitData3];
         }
 
         else
@@ -508,10 +508,10 @@
   return v45 & 1;
 }
 
-- (BOOL)isLooselyEqualToWallpaperOptions:(id)a3
+- (BOOL)isLooselyEqualToWallpaperOptions:(id)options
 {
-  v4 = a3;
-  if ([(PBUIWallpaperOptions *)self isEqual:v4])
+  optionsCopy = options;
+  if ([(PBUIWallpaperOptions *)self isEqual:optionsCopy])
   {
     goto LABEL_2;
   }
@@ -521,14 +521,14 @@
   v41.origin.x = v9;
   v11 = v10;
   v13 = v12;
-  [v4 cropRect];
+  [optionsCopy cropRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
   [(PBUIWallpaperOptions *)self zoomScale];
   rect_24 = v22;
-  [v4 zoomScale];
+  [optionsCopy zoomScale];
   v24 = v23;
   rect_8 = v21;
   v42.origin.x = v8;
@@ -616,15 +616,15 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v3 = [(PBUIWallpaperOptions *)self supportsCropping];
-  v4 = [(PBUIWallpaperOptions *)self isMagnifyEnabled];
+  supportsCropping = [(PBUIWallpaperOptions *)self supportsCropping];
+  isMagnifyEnabled = [(PBUIWallpaperOptions *)self isMagnifyEnabled];
   v5 = 2;
-  if (!v4)
+  if (!isMagnifyEnabled)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | supportsCropping;
   if ([(PBUIWallpaperOptions *)self isPortrait])
   {
     v7 = 4;
@@ -635,24 +635,24 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = [(PBUIWallpaperOptions *)self hasVideo];
+  hasVideo = [(PBUIWallpaperOptions *)self hasVideo];
   v9 = 8;
-  if (!v8)
+  if (!hasVideo)
   {
     v9 = 0;
   }
 
   v10 = v6 | v7 | v9;
-  v11 = [(PBUIWallpaperOptions *)self supportsRotation];
+  supportsRotation = [(PBUIWallpaperOptions *)self supportsRotation];
   v12 = 16;
-  if (!v11)
+  if (!supportsRotation)
   {
     v12 = 0;
   }
 
   v13 = v10 | v12;
-  v14 = [(PBUIWallpaperOptions *)self name];
-  v15 = (v13 + [v14 hash]);
+  name = [(PBUIWallpaperOptions *)self name];
+  v15 = (v13 + [name hash]);
   [(PBUIWallpaperOptions *)self parallaxFactor];
   v17 = v16 + v15;
   [(PBUIWallpaperOptions *)self zoomScale];
@@ -661,91 +661,91 @@ LABEL_3:
   v21 = v20 + v19 + [(PBUIWallpaperOptions *)self wallpaperMode];
   [(PBUIWallpaperOptions *)self rotationAngle];
   v23 = v22 + v21;
-  v24 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-  v25 = (v23 + [v24 hash]);
+  wallpaperKitData = [(PBUIWallpaperOptions *)self wallpaperKitData];
+  v25 = (v23 + [wallpaperKitData hash]);
 
   return v25;
 }
 
 - (id)persistentPropertyList
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(PBUIWallpaperOptions *)self name];
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(PBUIWallpaperOptions *)self name];
+  if (name)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"Name"];
+    [dictionary setObject:name forKeyedSubscript:@"Name"];
   }
 
   v5 = MEMORY[0x277CCABB0];
   [(PBUIWallpaperOptions *)self parallaxFactor];
   v6 = [v5 numberWithDouble:?];
-  [v3 setObject:v6 forKeyedSubscript:@"ParallaxFactor"];
+  [dictionary setObject:v6 forKeyedSubscript:@"ParallaxFactor"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[PBUIWallpaperOptions isMagnifyEnabled](self, "isMagnifyEnabled")}];
-  [v3 setObject:v7 forKeyedSubscript:@"MagnifyEnabled"];
+  [dictionary setObject:v7 forKeyedSubscript:@"MagnifyEnabled"];
 
   v8 = MEMORY[0x277CCABB0];
   [(PBUIWallpaperOptions *)self zoomScale];
   v9 = [v8 numberWithDouble:?];
-  [v3 setObject:v9 forKeyedSubscript:@"ZoomScale"];
+  [dictionary setObject:v9 forKeyedSubscript:@"ZoomScale"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[PBUIWallpaperOptions supportsCropping](self, "supportsCropping")}];
-  [v3 setObject:v10 forKeyedSubscript:@"SupportsCropping"];
+  [dictionary setObject:v10 forKeyedSubscript:@"SupportsCropping"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[PBUIWallpaperOptions supportsRotation](self, "supportsRotation")}];
-  [v3 setObject:v11 forKeyedSubscript:@"SupportsRotation"];
+  [dictionary setObject:v11 forKeyedSubscript:@"SupportsRotation"];
 
   [(PBUIWallpaperOptions *)self cropRect];
   v12 = NSStringFromCGRect(v23);
-  [v3 setObject:v12 forKeyedSubscript:@"CropRect"];
+  [dictionary setObject:v12 forKeyedSubscript:@"CropRect"];
 
   v13 = MEMORY[0x277CCABB0];
   [(PBUIWallpaperOptions *)self rotationAngle];
   v14 = [v13 numberWithDouble:?];
-  [v3 setObject:v14 forKeyedSubscript:@"RotationAngle"];
+  [dictionary setObject:v14 forKeyedSubscript:@"RotationAngle"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[PBUIWallpaperOptions isPortrait](self, "isPortrait")}];
-  [v3 setObject:v15 forKeyedSubscript:@"Portrait"];
+  [dictionary setObject:v15 forKeyedSubscript:@"Portrait"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[PBUIWallpaperOptions hasVideo](self, "hasVideo")}];
-  [v3 setObject:v16 forKeyedSubscript:@"HasVideo"];
+  [dictionary setObject:v16 forKeyedSubscript:@"HasVideo"];
 
   v17 = MEMORY[0x277CCABB0];
   [(PBUIWallpaperOptions *)self stillTimeInVideo];
   v18 = [v17 numberWithDouble:?];
-  [v3 setObject:v18 forKeyedSubscript:@"StillTimeInVideo"];
+  [dictionary setObject:v18 forKeyedSubscript:@"StillTimeInVideo"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PBUIWallpaperOptions wallpaperMode](self, "wallpaperMode")}];
-  [v3 setObject:v19 forKeyedSubscript:@"WallpaperMode"];
+  [dictionary setObject:v19 forKeyedSubscript:@"WallpaperMode"];
 
-  v20 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-  [v3 setObject:v20 forKeyedSubscript:@"WallpaperKitData"];
+  wallpaperKitData = [(PBUIWallpaperOptions *)self wallpaperKitData];
+  [dictionary setObject:wallpaperKitData forKeyedSubscript:@"WallpaperKitData"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277CBEB78];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithURL:v7 append:0];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithURL:lCopy append:0];
 
   [v8 open];
-  v9 = [(PBUIWallpaperOptions *)self persistentPropertyList];
-  LOBYTE(a4) = [MEMORY[0x277CCAC58] writePropertyList:v9 toStream:v8 format:200 options:0 error:a4] != 0;
+  persistentPropertyList = [(PBUIWallpaperOptions *)self persistentPropertyList];
+  LOBYTE(error) = [MEMORY[0x277CCAC58] writePropertyList:persistentPropertyList toStream:v8 format:200 options:0 error:error] != 0;
   [v8 close];
 
-  return a4;
+  return error;
 }
 
 - (NSData)persistentDataRepresentation
 {
-  v3 = [objc_alloc(MEMORY[0x277CBEB78]) initToMemory];
-  [v3 open];
-  v4 = [(PBUIWallpaperOptions *)self persistentPropertyList];
-  v5 = [MEMORY[0x277CCAC58] writePropertyList:v4 toStream:v3 format:200 options:0 error:0];
-  [v3 close];
-  if (!v5 || ([v3 propertyForKey:*MEMORY[0x277CBE740]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  initToMemory = [objc_alloc(MEMORY[0x277CBEB78]) initToMemory];
+  [initToMemory open];
+  persistentPropertyList = [(PBUIWallpaperOptions *)self persistentPropertyList];
+  v5 = [MEMORY[0x277CCAC58] writePropertyList:persistentPropertyList toStream:initToMemory format:200 options:0 error:0];
+  [initToMemory close];
+  if (!v5 || ([initToMemory propertyForKey:*MEMORY[0x277CBE740]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Failed to make persistentDataRepresentation" userInfo:0];
     objc_exception_throw(v9);
@@ -756,19 +756,19 @@ LABEL_3:
   return v7;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(PBUIWallpaperOptions *)self name];
-  v6 = [v4 appendObject:v5 withName:@"name"];
+  name = [(PBUIWallpaperOptions *)self name];
+  v6 = [v4 appendObject:name withName:@"name"];
 
   [(PBUIWallpaperOptions *)self cropRect];
   v7 = [v4 appendRect:@"cropRect" withName:?];
@@ -788,91 +788,91 @@ LABEL_3:
   v17 = PBUIStringForWallpaperMode([(PBUIWallpaperOptions *)self wallpaperMode]);
   [v4 appendString:v17 withName:@"wallpaperMode"];
 
-  v18 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-  v19 = [v4 appendObject:v18 withName:@"wallpaperKitData"];
+  wallpaperKitData = [(PBUIWallpaperOptions *)self wallpaperKitData];
+  v19 = [v4 appendObject:wallpaperKitData withName:@"wallpaperKitData"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(PBUIWallpaperOptions *)self name];
-  [v9 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(PBUIWallpaperOptions *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
   [(PBUIWallpaperOptions *)self cropRect];
-  [v9 encodeCGRect:@"cropRect" forKey:?];
+  [coderCopy encodeCGRect:@"cropRect" forKey:?];
   [(PBUIWallpaperOptions *)self rotationAngle];
-  [v9 encodeDouble:@"rotationAngle" forKey:?];
+  [coderCopy encodeDouble:@"rotationAngle" forKey:?];
   [(PBUIWallpaperOptions *)self parallaxFactor];
-  [v9 encodeDouble:@"parallaxFactor" forKey:?];
-  [v9 encodeBool:-[PBUIWallpaperOptions supportsCropping](self forKey:{"supportsCropping"), @"supportsCropping"}];
-  [v9 encodeBool:-[PBUIWallpaperOptions supportsRotation](self forKey:{"supportsRotation"), @"supportsRotation"}];
-  [v9 encodeBool:-[PBUIWallpaperOptions isMagnifyEnabled](self forKey:{"isMagnifyEnabled"), @"magnifyEnabled"}];
+  [coderCopy encodeDouble:@"parallaxFactor" forKey:?];
+  [coderCopy encodeBool:-[PBUIWallpaperOptions supportsCropping](self forKey:{"supportsCropping"), @"supportsCropping"}];
+  [coderCopy encodeBool:-[PBUIWallpaperOptions supportsRotation](self forKey:{"supportsRotation"), @"supportsRotation"}];
+  [coderCopy encodeBool:-[PBUIWallpaperOptions isMagnifyEnabled](self forKey:{"isMagnifyEnabled"), @"magnifyEnabled"}];
   [(PBUIWallpaperOptions *)self zoomScale];
-  [v9 encodeDouble:@"zoomScale" forKey:?];
-  [v9 encodeBool:-[PBUIWallpaperOptions isPortrait](self forKey:{"isPortrait"), @"portrait"}];
-  [v9 encodeBool:-[PBUIWallpaperOptions hasVideo](self forKey:{"hasVideo"), @"hasVideo"}];
+  [coderCopy encodeDouble:@"zoomScale" forKey:?];
+  [coderCopy encodeBool:-[PBUIWallpaperOptions isPortrait](self forKey:{"isPortrait"), @"portrait"}];
+  [coderCopy encodeBool:-[PBUIWallpaperOptions hasVideo](self forKey:{"hasVideo"), @"hasVideo"}];
   [(PBUIWallpaperOptions *)self stillTimeInVideo];
-  [v9 encodeDouble:@"stillTimeInVideo" forKey:?];
-  [v9 encodeInteger:-[PBUIWallpaperOptions wallpaperMode](self forKey:{"wallpaperMode"), @"wallpaperMode"}];
-  [v9 encodeInteger:-[PBUIWallpaperOptions wallpaperStatus](self forKey:{"wallpaperStatus"), @"wallpaperStatus"}];
-  v5 = [(PBUIWallpaperOptions *)self wallpaperKitData];
+  [coderCopy encodeDouble:@"stillTimeInVideo" forKey:?];
+  [coderCopy encodeInteger:-[PBUIWallpaperOptions wallpaperMode](self forKey:{"wallpaperMode"), @"wallpaperMode"}];
+  [coderCopy encodeInteger:-[PBUIWallpaperOptions wallpaperStatus](self forKey:{"wallpaperStatus"), @"wallpaperStatus"}];
+  wallpaperKitData = [(PBUIWallpaperOptions *)self wallpaperKitData];
 
-  if (v5)
+  if (wallpaperKitData)
   {
     v6 = MEMORY[0x277CCAC58];
-    v7 = [(PBUIWallpaperOptions *)self wallpaperKitData];
-    v8 = [v6 dataWithPropertyList:v7 format:200 options:0 error:0];
+    wallpaperKitData2 = [(PBUIWallpaperOptions *)self wallpaperKitData];
+    v8 = [v6 dataWithPropertyList:wallpaperKitData2 format:200 options:0 error:0];
 
-    [v9 encodeObject:v8 forKey:@"wallpaperKitData"];
+    [coderCopy encodeObject:v8 forKey:@"wallpaperKitData"];
   }
 }
 
-- (PBUIWallpaperOptions)initWithCoder:(id)a3
+- (PBUIWallpaperOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PBUIWallpaperOptions;
   v5 = [(PBUIWallpaperOptions *)&v23 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"name"];
     v8 = [v7 copy];
     name = v5->_name;
     v5->_name = v8;
 
-    [v4 decodeCGRectForKey:@"cropRect"];
+    [coderCopy decodeCGRectForKey:@"cropRect"];
     v5->_cropRect.origin.x = v10;
     v5->_cropRect.origin.y = v11;
     v5->_cropRect.size.width = v12;
     v5->_cropRect.size.height = v13;
-    [v4 decodeDoubleForKey:@"rotationAngle"];
+    [coderCopy decodeDoubleForKey:@"rotationAngle"];
     v5->_rotationAngle = v14;
-    [v4 decodeDoubleForKey:@"parallaxFactor"];
+    [coderCopy decodeDoubleForKey:@"parallaxFactor"];
     v5->_parallaxFactor = v15;
-    v5->_supportsCropping = [v4 decodeBoolForKey:@"supportsCropping"];
-    v5->_supportsRotation = [v4 decodeBoolForKey:@"supportsRotation"];
-    v5->_magnifyEnabled = [v4 decodeBoolForKey:@"magnifyEnabled"];
-    [v4 decodeDoubleForKey:@"zoomScale"];
+    v5->_supportsCropping = [coderCopy decodeBoolForKey:@"supportsCropping"];
+    v5->_supportsRotation = [coderCopy decodeBoolForKey:@"supportsRotation"];
+    v5->_magnifyEnabled = [coderCopy decodeBoolForKey:@"magnifyEnabled"];
+    [coderCopy decodeDoubleForKey:@"zoomScale"];
     v5->_zoomScale = v16;
-    v5->_portrait = [v4 decodeBoolForKey:@"portrait"];
-    v5->_hasVideo = [v4 decodeBoolForKey:@"hasVideo"];
-    [v4 decodeDoubleForKey:@"stillTimeInVideo"];
+    v5->_portrait = [coderCopy decodeBoolForKey:@"portrait"];
+    v5->_hasVideo = [coderCopy decodeBoolForKey:@"hasVideo"];
+    [coderCopy decodeDoubleForKey:@"stillTimeInVideo"];
     v5->_stillTimeInVideo = v17;
-    v5->_wallpaperMode = [v4 decodeIntegerForKey:@"wallpaperMode"];
-    v5->_wallpaperStatus = [v4 decodeIntegerForKey:@"wallpaperStatus"];
+    v5->_wallpaperMode = [coderCopy decodeIntegerForKey:@"wallpaperMode"];
+    v5->_wallpaperStatus = [coderCopy decodeIntegerForKey:@"wallpaperStatus"];
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"wallpaperKitData"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"wallpaperKitData"];
 
     if (v19)
     {

@@ -1,58 +1,58 @@
 @interface TSCHChartGridAdapter
-- (TSCHChartGridAdapter)initWithChartGrid:(id)a3 index:(unint64_t)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (TSCHChartGridAdapter)initWithChartGrid:(id)grid index:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation TSCHChartGridAdapter
 
-- (TSCHChartGridAdapter)initWithChartGrid:(id)a3 index:(unint64_t)a4
+- (TSCHChartGridAdapter)initWithChartGrid:(id)grid index:(unint64_t)index
 {
-  v7 = a3;
+  gridCopy = grid;
   v11.receiver = self;
   v11.super_class = TSCHChartGridAdapter;
   v8 = [(TSCHChartGridAdapter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_grid, a3);
-    v9->_index = a4;
+    objc_storeStrong(&v8->_grid, grid);
+    v9->_index = index;
   }
 
   return v9;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v12 = objc_msgSend_count(self, a2, v5, v6, v7);
-  var0 = a3->var0;
-  v18 = v12 - a3->var0;
-  if (v12 <= a3->var0)
+  var0 = state->var0;
+  v18 = v12 - state->var0;
+  if (v12 <= state->var0)
   {
     return 0;
   }
 
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
-  if (v18 < a5)
+  state->var1 = objects;
+  state->var2 = &state->var2;
+  if (v18 < count)
   {
-    a5 = v18;
+    count = v18;
   }
 
-  if (a5)
+  if (count)
   {
     v19 = 0;
     do
     {
-      a4[v19] = objc_msgSend_valueAtIndex_(self, v13, v14, v15, v16, v19 + a3->var0);
+      objects[v19] = objc_msgSend_valueAtIndex_(self, v13, v14, v15, v16, v19 + state->var0);
       ++v19;
     }
 
-    while (a5 != v19);
-    var0 = a3->var0;
+    while (count != v19);
+    var0 = state->var0;
   }
 
-  a3->var0 = var0 + a5;
-  return a5;
+  state->var0 = var0 + count;
+  return count;
 }
 
 @end

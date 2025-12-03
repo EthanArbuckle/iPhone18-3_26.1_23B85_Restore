@@ -1,16 +1,16 @@
 @interface HUCameraEventSpacerCell
-- (HUCameraEventSpacerCell)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)updateWithRecordingEvent:(id)a3 previousEvent:(id)a4 spanningMultipleDays:(BOOL)a5;
+- (HUCameraEventSpacerCell)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)updateWithRecordingEvent:(id)event previousEvent:(id)previousEvent spanningMultipleDays:(BOOL)days;
 @end
 
 @implementation HUCameraEventSpacerCell
 
-- (HUCameraEventSpacerCell)initWithFrame:(CGRect)a3
+- (HUCameraEventSpacerCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUCameraEventSpacerCell;
-  v3 = [(HUCameraEventSpacerCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraEventSpacerCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,23 +20,23 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineDash(CurrentContext, 2.0, drawRect__lengths_0, 2uLL);
-  v9 = [MEMORY[0x277D75208] bezierPath];
-  [v9 setLineWidth:2.0];
-  [v9 setLineCapStyle:1];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath setLineWidth:2.0];
+  [bezierPath setLineCapStyle:1];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
   MidY = CGRectGetMidY(v21);
-  [v9 moveToPoint:{0.0, MidY}];
+  [bezierPath moveToPoint:{0.0, MidY}];
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
@@ -44,50 +44,50 @@
   MidX = CGRectGetMidX(v22);
   if ([(HUCameraEventSpacerCell *)self spansMultipleDays])
   {
-    [v9 moveToPoint:{2.0, MidY}];
-    [v9 addLineToPoint:{MidX + -3.0, MidY}];
-    [v9 moveToPoint:{MidX + 3.0, MidY}];
+    [bezierPath moveToPoint:{2.0, MidY}];
+    [bezierPath addLineToPoint:{MidX + -3.0, MidY}];
+    [bezierPath moveToPoint:{MidX + 3.0, MidY}];
   }
 
-  v12 = [(HUCameraEventSpacerCell *)self needsFullDashedLineWidth];
+  needsFullDashedLineWidth = [(HUCameraEventSpacerCell *)self needsFullDashedLineWidth];
   v13 = -9.0;
-  if (v12)
+  if (needsFullDashedLineWidth)
   {
     v13 = 1.0;
   }
 
-  [v9 addLineToPoint:{width + v13, MidY}];
+  [bezierPath addLineToPoint:{width + v13, MidY}];
   v19 = 0.0;
   v20 = 0.0;
   v18 = 0.0;
-  v14 = [MEMORY[0x277D75348] systemMidGrayColor];
-  [v14 getRed:&v20 green:&v19 blue:&v18 alpha:0];
+  systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+  [systemMidGrayColor getRed:&v20 green:&v19 blue:&v18 alpha:0];
 
   v15 = [MEMORY[0x277D75348] colorWithRed:v20 green:v19 blue:v18 alpha:0.35];
   [v15 setStroke];
 
-  [v9 stroke];
+  [bezierPath stroke];
   if ([(HUCameraEventSpacerCell *)self spansMultipleDays])
   {
     v16 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:MidX cornerRadius:{7.0, 1.0, 33.0, 2.0}];
 
-    v17 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v17 setStroke];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [systemWhiteColor setStroke];
 
     CGContextSetLineDash(CurrentContext, 0.0, 0, 0);
     [v16 stroke];
-    v9 = v16;
+    bezierPath = v16;
   }
 }
 
-- (void)updateWithRecordingEvent:(id)a3 previousEvent:(id)a4 spanningMultipleDays:(BOOL)a5
+- (void)updateWithRecordingEvent:(id)event previousEvent:(id)previousEvent spanningMultipleDays:(BOOL)days
 {
-  v5 = a5;
-  v7 = [a3 containerType];
-  if ([(HUCameraEventSpacerCell *)self spansMultipleDays]!= v5 || (v7 == 2) != [(HUCameraEventSpacerCell *)self needsFullDashedLineWidth])
+  daysCopy = days;
+  containerType = [event containerType];
+  if ([(HUCameraEventSpacerCell *)self spansMultipleDays]!= daysCopy || (containerType == 2) != [(HUCameraEventSpacerCell *)self needsFullDashedLineWidth])
   {
-    [(HUCameraEventSpacerCell *)self setSpansMultipleDays:v5];
-    [(HUCameraEventSpacerCell *)self setNeedsFullDashedLineWidth:v7 == 2];
+    [(HUCameraEventSpacerCell *)self setSpansMultipleDays:daysCopy];
+    [(HUCameraEventSpacerCell *)self setNeedsFullDashedLineWidth:containerType == 2];
 
     [(HUCameraEventSpacerCell *)self setNeedsDisplay];
   }

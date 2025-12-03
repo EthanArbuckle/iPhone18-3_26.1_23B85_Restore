@@ -1,8 +1,8 @@
 @interface CTPhoneBookEntry
-- (CTPhoneBookEntry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPhoneBookEntry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPhoneBookEntry
@@ -11,107 +11,107 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", isHidden=%d", -[CTPhoneBookEntry isHidden](self, "isHidden")];
-  v4 = [(CTPhoneBookEntry *)self name];
-  [v3 appendFormat:@", name=%@", v4];
+  name = [(CTPhoneBookEntry *)self name];
+  [v3 appendFormat:@", name=%@", name];
 
-  v5 = [(CTPhoneBookEntry *)self number];
-  [v3 appendFormat:@", number=%@", v5];
+  number = [(CTPhoneBookEntry *)self number];
+  [v3 appendFormat:@", number=%@", number];
 
-  v6 = [(CTPhoneBookEntry *)self altNumber];
-  [v3 appendFormat:@", altNumber=%@", v6];
+  altNumber = [(CTPhoneBookEntry *)self altNumber];
+  [v3 appendFormat:@", altNumber=%@", altNumber];
 
-  v7 = [(CTPhoneBookEntry *)self altText];
-  [v3 appendFormat:@", altText=%@", v7];
+  altText = [(CTPhoneBookEntry *)self altText];
+  [v3 appendFormat:@", altText=%@", altText];
 
-  v8 = [(CTPhoneBookEntry *)self email];
-  [v3 appendFormat:@", email=%@", v8];
+  email = [(CTPhoneBookEntry *)self email];
+  [v3 appendFormat:@", email=%@", email];
 
-  v9 = [(CTPhoneBookEntry *)self group];
-  [v3 appendFormat:@", group=%@", v9];
+  group = [(CTPhoneBookEntry *)self group];
+  [v3 appendFormat:@", group=%@", group];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsHidden:{-[CTPhoneBookEntry isHidden](self, "isHidden")}];
-  v5 = [(CTPhoneBookEntry *)self name];
-  [v4 setName:v5];
+  name = [(CTPhoneBookEntry *)self name];
+  [v4 setName:name];
 
-  v6 = [(CTPhoneBookEntry *)self number];
-  [v4 setNumber:v6];
+  number = [(CTPhoneBookEntry *)self number];
+  [v4 setNumber:number];
 
-  v7 = [(CTPhoneBookEntry *)self altNumber];
-  [v4 setAltNumber:v7];
+  altNumber = [(CTPhoneBookEntry *)self altNumber];
+  [v4 setAltNumber:altNumber];
 
-  v8 = [(CTPhoneBookEntry *)self altText];
-  [v4 setAltText:v8];
+  altText = [(CTPhoneBookEntry *)self altText];
+  [v4 setAltText:altText];
 
-  v9 = [(CTPhoneBookEntry *)self email];
-  [v4 setEmail:v9];
+  email = [(CTPhoneBookEntry *)self email];
+  [v4 setEmail:email];
 
-  v10 = [(CTPhoneBookEntry *)self group];
-  [v4 setGroup:v10];
+  group = [(CTPhoneBookEntry *)self group];
+  [v4 setGroup:group];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTPhoneBookEntry isHidden](self forKey:{"isHidden"), @"isHidden"}];
-  v5 = [(CTPhoneBookEntry *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTPhoneBookEntry isHidden](self forKey:{"isHidden"), @"isHidden"}];
+  name = [(CTPhoneBookEntry *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(CTPhoneBookEntry *)self number];
-  [v4 encodeObject:v6 forKey:@"number"];
+  number = [(CTPhoneBookEntry *)self number];
+  [coderCopy encodeObject:number forKey:@"number"];
 
-  v7 = [(CTPhoneBookEntry *)self altNumber];
-  [v4 encodeObject:v7 forKey:@"altNumber"];
+  altNumber = [(CTPhoneBookEntry *)self altNumber];
+  [coderCopy encodeObject:altNumber forKey:@"altNumber"];
 
-  v8 = [(CTPhoneBookEntry *)self altText];
-  [v4 encodeObject:v8 forKey:@"altText"];
+  altText = [(CTPhoneBookEntry *)self altText];
+  [coderCopy encodeObject:altText forKey:@"altText"];
 
-  v9 = [(CTPhoneBookEntry *)self email];
-  [v4 encodeObject:v9 forKey:@"email"];
+  email = [(CTPhoneBookEntry *)self email];
+  [coderCopy encodeObject:email forKey:@"email"];
 
-  v10 = [(CTPhoneBookEntry *)self group];
-  [v4 encodeObject:v10 forKey:@"group"];
+  group = [(CTPhoneBookEntry *)self group];
+  [coderCopy encodeObject:group forKey:@"group"];
 }
 
-- (CTPhoneBookEntry)initWithCoder:(id)a3
+- (CTPhoneBookEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTPhoneBookEntry;
   v5 = [(CTPhoneBookEntry *)&v19 init];
   if (v5)
   {
-    v5->_isHidden = [v4 decodeBoolForKey:@"isHidden"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_isHidden = [coderCopy decodeBoolForKey:@"isHidden"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"number"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"number"];
     number = v5->_number;
     v5->_number = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altNumber"];
     altNumber = v5->_altNumber;
     v5->_altNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
     altText = v5->_altText;
     v5->_altText = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     email = v5->_email;
     v5->_email = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"group"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"group"];
     group = v5->_group;
     v5->_group = v16;
   }

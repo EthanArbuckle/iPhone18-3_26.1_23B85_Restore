@@ -1,18 +1,18 @@
 @interface BLNotificationService
-- (BLNotificationService)initWithAutomaticDownloadProcessor:(id)a3;
-- (void)_handleBagChangedNotification:(id)a3;
-- (void)_handleCheckDownloadQueueMessage:(id)a3;
-- (void)_handleNotification:(id)a3 notificationType:(id)a4;
-- (void)_handlePreorderAvailableNotificationForMessage:(id)a3;
+- (BLNotificationService)initWithAutomaticDownloadProcessor:(id)processor;
+- (void)_handleBagChangedNotification:(id)notification;
+- (void)_handleCheckDownloadQueueMessage:(id)message;
+- (void)_handleNotification:(id)notification notificationType:(id)type;
+- (void)_handlePreorderAvailableNotificationForMessage:(id)message;
 - (void)_initializeConnections;
-- (void)connection:(id)a3 didRecieveMessage:(id)a4;
+- (void)connection:(id)connection didRecieveMessage:(id)message;
 @end
 
 @implementation BLNotificationService
 
-- (BLNotificationService)initWithAutomaticDownloadProcessor:(id)a3
+- (BLNotificationService)initWithAutomaticDownloadProcessor:(id)processor
 {
-  v5 = a3;
+  processorCopy = processor;
   v20.receiver = self;
   v20.super_class = BLNotificationService;
   v6 = [(BLNotificationService *)&v20 init];
@@ -31,7 +31,7 @@
     pushHandler = v6->_pushHandler;
     v6->_pushHandler = v13;
 
-    objc_storeStrong(&v6->_automaticDownloadProcessor, a3);
+    objc_storeStrong(&v6->_automaticDownloadProcessor, processor);
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 addObserver:v6 selector:"_handleBagChangedNotification:" name:AMSBagChangedNotification object:0];
 
@@ -50,16 +50,16 @@
 - (void)_initializeConnections
 {
   v3 = +[BUBag defaultBag];
-  v4 = [v3 pushNotificationsEnvironment];
+  pushNotificationsEnvironment = [v3 pushNotificationsEnvironment];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006415C;
   v5[3] = &unk_10011D0A0;
   v5[4] = self;
-  [v4 valueWithCompletion:v5];
+  [pushNotificationsEnvironment valueWithCompletion:v5];
 }
 
-- (void)_handleBagChangedNotification:(id)a3
+- (void)_handleBagChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -70,34 +70,34 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)connection:(id)a3 didRecieveMessage:(id)a4
+- (void)connection:(id)connection didRecieveMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100064630;
   block[3] = &unk_10011D0C8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = messageCopy;
+  selfCopy = self;
+  v9 = messageCopy;
+  v10 = connectionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleCheckDownloadQueueMessage:(id)a3
+- (void)_handleCheckDownloadQueueMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[BUAccountsProvider sharedProvider];
-  v6 = [v5 activeStoreAccount];
-  v7 = [v6 ams_DSID];
+  activeStoreAccount = [v5 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  v8 = [v4 accountID];
-  LODWORD(v6) = [v7 isEqualToNumber:v8];
+  accountID = [messageCopy accountID];
+  LODWORD(activeStoreAccount) = [ams_DSID isEqualToNumber:accountID];
 
-  if (v6)
+  if (activeStoreAccount)
   {
     v9 = _os_activity_create(&_mh_execute_header, "checkDownloadQueue notification", &_os_activity_none, OS_ACTIVITY_FLAG_DEFAULT);
     block[0] = _NSConcreteStackBlock;
@@ -113,23 +113,23 @@
     v9 = BLServiceNotificationLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 accountID];
+      accountID2 = [messageCopy accountID];
       *buf = 138412546;
-      v13 = v10;
+      v13 = accountID2;
       v14 = 2112;
-      v15 = v7;
+      v15 = ams_DSID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received checkDownloadQueue notification for account %@ but active account is %@, so ignoring it", buf, 0x16u);
     }
   }
 }
 
-- (void)_handleNotification:(id)a3 notificationType:(id)a4
+- (void)_handleNotification:(id)notification notificationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  typeCopy = type;
   objc_opt_class();
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"aps"];
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"aps"];
   v10 = [v9 objectForKeyedSubscript:@"_mt"];
   v11 = [v10 objectForKeyedSubscript:@"details"];
   v12 = [v11 objectForKeyedSubscript:@"contentAdamId"];
@@ -142,10 +142,10 @@
     block[1] = 3221225472;
     block[2] = sub_100064D80;
     block[3] = &unk_10011D130;
-    v17 = v7;
+    v17 = typeCopy;
     v18 = v13;
-    v19 = self;
-    v20 = v6;
+    selfCopy = self;
+    v20 = notificationCopy;
     os_activity_apply(v14, block);
   }
 
@@ -160,13 +160,13 @@
   }
 }
 
-- (void)_handlePreorderAvailableNotificationForMessage:(id)a3
+- (void)_handlePreorderAvailableNotificationForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   objc_opt_class();
-  v4 = [v3 userInfo];
+  userInfo = [messageCopy userInfo];
 
-  v5 = [v4 objectForKeyedSubscript:@"aps"];
+  v5 = [userInfo objectForKeyedSubscript:@"aps"];
   v6 = [v5 objectForKeyedSubscript:@"_mt"];
   v7 = [v6 objectForKeyedSubscript:@"details"];
   v8 = [v7 objectForKeyedSubscript:@"contentAdamId"];

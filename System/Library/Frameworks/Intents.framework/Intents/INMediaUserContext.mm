@@ -1,18 +1,18 @@
 @interface INMediaUserContext
 + (id)_sharedFormatter;
 - (INMediaUserContext)init;
-- (INMediaUserContext)initWithCoder:(id)a3;
+- (INMediaUserContext)initWithCoder:(id)coder;
 - (id)safeLibraryItems;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMediaUserContext
 
 - (id)safeLibraryItems
 {
-  v3 = [(INMediaUserContext *)self numberOfLibraryItems];
+  numberOfLibraryItems = [(INMediaUserContext *)self numberOfLibraryItems];
 
-  if (v3)
+  if (numberOfLibraryItems)
   {
     v4 = +[INMediaUserContext _sharedFormatter];
     v5 = [v4 stringFromNumber:self->_numberOfLibraryItems];
@@ -29,30 +29,30 @@
   return v7;
 }
 
-- (INMediaUserContext)initWithCoder:(id)a3
+- (INMediaUserContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INMediaUserContext;
-  v5 = [(INUserContext *)&v9 _init];
-  if (v5)
+  _init = [(INUserContext *)&v9 _init];
+  if (_init)
   {
-    v5->_subscriptionStatus = [v4 decodeIntForKey:@"SubscriptionStatus"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NumberOfLibraryItems"];
-    numberOfLibraryItems = v5->_numberOfLibraryItems;
-    v5->_numberOfLibraryItems = v6;
+    _init->_subscriptionStatus = [coderCopy decodeIntForKey:@"SubscriptionStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NumberOfLibraryItems"];
+    numberOfLibraryItems = _init->_numberOfLibraryItems;
+    _init->_numberOfLibraryItems = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subscriptionStatus = self->_subscriptionStatus;
-  v5 = a3;
-  [v5 encodeInteger:subscriptionStatus forKey:@"SubscriptionStatus"];
-  v6 = [(INMediaUserContext *)self safeLibraryItems];
-  [v5 encodeObject:v6 forKey:@"NumberOfLibraryItems"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:subscriptionStatus forKey:@"SubscriptionStatus"];
+  safeLibraryItems = [(INMediaUserContext *)self safeLibraryItems];
+  [coderCopy encodeObject:safeLibraryItems forKey:@"NumberOfLibraryItems"];
 }
 
 - (INMediaUserContext)init

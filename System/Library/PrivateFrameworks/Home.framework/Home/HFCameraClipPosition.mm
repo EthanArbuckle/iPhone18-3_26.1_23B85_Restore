@@ -1,40 +1,40 @@
 @interface HFCameraClipPosition
-+ (HFCameraClipPosition)positionWithClip:(id)a3 offset:(double)a4;
-+ (HFCameraClipPosition)positionWithEvent:(id)a3 offset:(double)a4;
++ (HFCameraClipPosition)positionWithClip:(id)clip offset:(double)offset;
++ (HFCameraClipPosition)positionWithEvent:(id)event offset:(double)offset;
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFCameraClipPosition)initWithEvent:(id)a3 offset:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFCameraClipPosition)initWithEvent:(id)event offset:(double)offset;
 - (NSDate)date;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HFCameraClipPosition
 
-+ (HFCameraClipPosition)positionWithClip:(id)a3 offset:(double)a4
++ (HFCameraClipPosition)positionWithClip:(id)clip offset:(double)offset
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithEvent:v6 offset:a4];
+  clipCopy = clip;
+  v7 = [[self alloc] initWithEvent:clipCopy offset:offset];
 
   return v7;
 }
 
-+ (HFCameraClipPosition)positionWithEvent:(id)a3 offset:(double)a4
++ (HFCameraClipPosition)positionWithEvent:(id)event offset:(double)offset
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithEvent:v6 offset:a4];
+  eventCopy = event;
+  v7 = [[self alloc] initWithEvent:eventCopy offset:offset];
 
   return v7;
 }
 
-- (HFCameraClipPosition)initWithEvent:(id)a3 offset:(double)a4
+- (HFCameraClipPosition)initWithEvent:(id)event offset:(double)offset
 {
-  v8 = a3;
-  if (!v8)
+  eventCopy = event;
+  if (!eventCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HMCameraClipManager+HFAdditions.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"event != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HMCameraClipManager+HFAdditions.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"event != nil"}];
   }
 
   v13.receiver = self;
@@ -43,8 +43,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_event, a3);
-    v10->_offset = a4;
+    objc_storeStrong(&v9->_event, event);
+    v10->_offset = offset;
   }
 
   return v10;
@@ -52,20 +52,20 @@
 
 - (NSDate)date
 {
-  v3 = [(HFCameraClipPosition *)self event];
-  v4 = [v3 dateOfOccurrence];
+  event = [(HFCameraClipPosition *)self event];
+  dateOfOccurrence = [event dateOfOccurrence];
   [(HFCameraClipPosition *)self offset];
-  v5 = [v4 dateByAddingTimeInterval:?];
+  v5 = [dateOfOccurrence dateByAddingTimeInterval:?];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFCameraClipPosition *)self event];
+  event = [(HFCameraClipPosition *)self event];
   [(HFCameraClipPosition *)self offset];
-  v6 = [v4 initWithEvent:v5 offset:?];
+  v6 = [v4 initWithEvent:event offset:?];
 
   return v6;
 }
@@ -95,17 +95,17 @@ void __35__HFCameraClipPosition_na_identity__block_invoke_2()
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
@@ -113,15 +113,15 @@ void __35__HFCameraClipPosition_na_identity__block_invoke_2()
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFCameraClipPosition *)self event];
-  v5 = [v4 hf_prettyDescription];
-  v6 = [v3 appendObject:v5 withName:@"clip"];
+  event = [(HFCameraClipPosition *)self event];
+  hf_prettyDescription = [event hf_prettyDescription];
+  v6 = [v3 appendObject:hf_prettyDescription withName:@"clip"];
 
   [(HFCameraClipPosition *)self offset];
   v7 = [v3 appendDouble:@"offset" withName:3 decimalPrecision:?];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface NetworkDiagnosticsReportGenerator
-- (BOOL)startNetDiagnosticsTaskWithReply:(id)a3;
+- (BOOL)startNetDiagnosticsTaskWithReply:(id)reply;
 - (BOOL)startReportGeneration;
 - (NetDiagnosticsShim)netDiags;
-- (NetworkDiagnosticsReportGenerator)initWithQueue:(id)a3;
-- (id)createDefaultTaskDictionaryWithTaskName:(const char *)a3;
-- (void)netDiagnosticTaskStatusChangedFor:(id)a3 toStatus:(int)a4;
-- (void)setNetDiags:(id)a3;
+- (NetworkDiagnosticsReportGenerator)initWithQueue:(id)queue;
+- (id)createDefaultTaskDictionaryWithTaskName:(const char *)name;
+- (void)netDiagnosticTaskStatusChangedFor:(id)for toStatus:(int)status;
+- (void)setNetDiags:(id)diags;
 @end
 
 @implementation NetworkDiagnosticsReportGenerator
 
-- (NetworkDiagnosticsReportGenerator)initWithQueue:(id)a3
+- (NetworkDiagnosticsReportGenerator)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = NetworkDiagnosticsReportGenerator;
-  v3 = [(DiagnosticReportGenerator *)&v6 initWithQueue:a3];
+  v3 = [(DiagnosticReportGenerator *)&v6 initWithQueue:queue];
   v4 = v3;
   if (v3)
   {
@@ -24,30 +24,30 @@
   return v4;
 }
 
-- (void)setNetDiags:(id)a3
+- (void)setNetDiags:(id)diags
 {
-  v5 = a3;
+  diagsCopy = diags;
   netDiags = self->_netDiags;
-  if (netDiags != v5)
+  if (netDiags != diagsCopy)
   {
-    v7 = v5;
+    v7 = diagsCopy;
     if (netDiags)
     {
       [(NetDiagnosticsShim *)netDiags setDelegate:0];
       [(NetDiagnosticsShim *)self->_netDiags invalidateConnections];
-      v5 = v7;
+      diagsCopy = v7;
     }
 
-    if (v5)
+    if (diagsCopy)
     {
       [(NetDiagnosticsShim *)v7 setDelegate:self];
     }
 
-    objc_storeStrong(&self->_netDiags, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_netDiags, diags);
+    diagsCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](netDiags, v5);
+  MEMORY[0x2821F96F8](netDiags, diagsCopy);
 }
 
 - (NetDiagnosticsShim)netDiags
@@ -56,10 +56,10 @@
   if (!netDiags)
   {
     v4 = [NetDiagnosticsShim alloc];
-    v5 = [(NetworkDiagnosticsReportGenerator *)self options];
-    v6 = [v5 objectForKeyedSubscript:@"taskName"];
-    v7 = [(DiagnosticReportGenerator *)self queue];
-    v8 = [(NetDiagnosticsShim *)v4 initWithTaskName:v6 queue:v7];
+    options = [(NetworkDiagnosticsReportGenerator *)self options];
+    v6 = [options objectForKeyedSubscript:@"taskName"];
+    queue = [(DiagnosticReportGenerator *)self queue];
+    v8 = [(NetDiagnosticsShim *)v4 initWithTaskName:v6 queue:queue];
     [(NetworkDiagnosticsReportGenerator *)self setNetDiags:v8];
 
     netDiags = self->_netDiags;
@@ -68,18 +68,18 @@
   return netDiags;
 }
 
-- (BOOL)startNetDiagnosticsTaskWithReply:(id)a3
+- (BOOL)startNetDiagnosticsTaskWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NetworkDiagnosticsReportGenerator *)self netDiags];
-  v6 = [(NetworkDiagnosticsReportGenerator *)self options];
+  replyCopy = reply;
+  netDiags = [(NetworkDiagnosticsReportGenerator *)self netDiags];
+  options = [(NetworkDiagnosticsReportGenerator *)self options];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__NetworkDiagnosticsReportGenerator_startNetDiagnosticsTaskWithReply___block_invoke;
   v10[3] = &unk_278CF2288;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 startNetDiagnosticTaskWithOptions:v6 reply:v10];
+  v11 = replyCopy;
+  v7 = replyCopy;
+  v8 = [netDiags startNetDiagnosticTaskWithOptions:options reply:v10];
 
   return v8;
 }
@@ -241,25 +241,25 @@ LABEL_30:
 
 - (BOOL)startReportGeneration
 {
-  v2 = self;
-  v3 = [(NetworkDiagnosticsReportGenerator *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"taskName"];
+  selfCopy = self;
+  options = [(NetworkDiagnosticsReportGenerator *)self options];
+  v4 = [options objectForKeyedSubscript:@"taskName"];
 
-  [(DiagnosticReportGenerator *)v2 setReportGenerated:0];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  reportStart = v2->_reportStart;
-  v2->_reportStart = v5;
+  [(DiagnosticReportGenerator *)selfCopy setReportGenerated:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  reportStart = selfCopy->_reportStart;
+  selfCopy->_reportStart = date;
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__NetworkDiagnosticsReportGenerator_startReportGeneration__block_invoke;
   v9[3] = &unk_278CF22B0;
   v10 = v4;
-  v11 = v2;
+  v11 = selfCopy;
   v7 = v4;
-  LOBYTE(v2) = [(NetworkDiagnosticsReportGenerator *)v2 startNetDiagnosticsTaskWithReply:v9];
+  LOBYTE(selfCopy) = [(NetworkDiagnosticsReportGenerator *)selfCopy startNetDiagnosticsTaskWithReply:v9];
 
-  return v2;
+  return selfCopy;
 }
 
 void __58__NetworkDiagnosticsReportGenerator_startReportGeneration__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -373,30 +373,30 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netDiagnosticTaskStatusChangedFor:(id)a3 toStatus:(int)a4
+- (void)netDiagnosticTaskStatusChangedFor:(id)for toStatus:(int)status
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NetworkDiagnosticsReportGenerator *)self options];
-  v8 = [v7 objectForKeyedSubscript:@"taskName"];
+  forCopy = for;
+  options = [(NetworkDiagnosticsReportGenerator *)self options];
+  v8 = [options objectForKeyedSubscript:@"taskName"];
 
-  v9 = [v6 isEqualToString:v8];
-  if (a4 == 3 && v9)
+  v9 = [forCopy isEqualToString:v8];
+  if (status == 3 && v9)
   {
     v10 = diagreportLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
+      netDiagsResults = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
       v25 = 138412546;
-      v26 = v6;
+      v26 = forCopy;
       v27 = 2112;
-      v28 = v11;
+      v28 = netDiagsResults;
       _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_DEFAULT, "%@ changed to ending. Signaling completion with results %@", &v25, 0x16u);
     }
 
-    v12 = [(DiagnosticReportGenerator *)self delegate];
-    v13 = [(DiagnosticReportGenerator *)self completionHandler];
-    if (v13)
+    delegate = [(DiagnosticReportGenerator *)self delegate];
+    completionHandler = [(DiagnosticReportGenerator *)self completionHandler];
+    if (completionHandler)
     {
       v14 = 1;
     }
@@ -406,9 +406,9 @@ LABEL_21:
       v14 = objc_opt_respondsToSelector();
     }
 
-    v15 = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
+    netDiagsResults2 = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
 
-    if (v15 && (v14 & 1) != 0)
+    if (netDiagsResults2 && (v14 & 1) != 0)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v16 setObject:self->_reportStart forKey:@"reportStart"];
@@ -416,28 +416,28 @@ LABEL_21:
       v18 = NSStringFromClass(v17);
       [v16 setObject:v18 forKey:@"reportCreator"];
 
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v16 setObject:v19 forKey:@"reportEnd"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v16 setObject:date forKey:@"reportEnd"];
 
       [v16 setObject:@"Success" forKey:@"reportEndStatus"];
-      v20 = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
-      v21 = [v20 objectForKeyedSubscript:@"attachments"];
+      netDiagsResults3 = [(NetworkDiagnosticsReportGenerator *)self netDiagsResults];
+      v21 = [netDiagsResults3 objectForKeyedSubscript:@"attachments"];
       [v16 setObject:v21 forKey:@"attachments"];
 
       [(DiagnosticReportGenerator *)self setReportGenerated:1];
-      v22 = [(DiagnosticReportGenerator *)self completionHandler];
+      completionHandler2 = [(DiagnosticReportGenerator *)self completionHandler];
 
-      if (v22)
+      if (completionHandler2)
       {
-        v23 = [(DiagnosticReportGenerator *)self completionHandler];
-        (v23)[2](v23, v16, 0);
+        completionHandler3 = [(DiagnosticReportGenerator *)self completionHandler];
+        (completionHandler3)[2](completionHandler3, v16, 0);
 
         [(DiagnosticReportGenerator *)self setCompletionHandler:0];
       }
 
       else
       {
-        [v12 reportGeneratorEnded:self reportInfo:v16 error:0];
+        [delegate reportGeneratorEnded:self reportInfo:v16 error:0];
       }
 
       [(NetworkDiagnosticsReportGenerator *)self setNetDiagsResults:0];
@@ -450,28 +450,28 @@ LABEL_21:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createDefaultTaskDictionaryWithTaskName:(const char *)a3
+- (id)createDefaultTaskDictionaryWithTaskName:(const char *)name
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
-  [v4 setObject:v5 forKeyedSubscript:@"taskName"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
+  [dictionary setObject:v5 forKeyedSubscript:@"taskName"];
 
   v6 = +[ABCAdministrator sharedInstance];
-  v7 = [v6 configurationManager];
+  configurationManager = [v6 configurationManager];
 
-  v8 = [v7 logArchivePath];
-  v9 = [v8 stringByAppendingString:@"/"];
-  [v4 setObject:v9 forKeyedSubscript:@"filename"];
+  logArchivePath = [configurationManager logArchivePath];
+  v9 = [logArchivePath stringByAppendingString:@"/"];
+  [dictionary setObject:v9 forKeyedSubscript:@"filename"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "logArchiveUID")}];
-  [v4 setObject:v10 forKeyedSubscript:@"taskFileUserID"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(configurationManager, "logArchiveUID")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"taskFileUserID"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "logArchiveGID")}];
-  [v4 setObject:v11 forKeyedSubscript:@"taskFileGroupID"];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(configurationManager, "logArchiveGID")}];
+  [dictionary setObject:v11 forKeyedSubscript:@"taskFileGroupID"];
 
-  [v4 setObject:&unk_28537A2A8 forKeyedSubscript:@"taskFileMode"];
+  [dictionary setObject:&unk_28537A2A8 forKeyedSubscript:@"taskFileMode"];
 
-  return v4;
+  return dictionary;
 }
 
 @end

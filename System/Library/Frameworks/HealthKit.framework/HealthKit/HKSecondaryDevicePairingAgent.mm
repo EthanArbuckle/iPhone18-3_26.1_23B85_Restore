@@ -1,31 +1,31 @@
 @interface HKSecondaryDevicePairingAgent
-- (HKSecondaryDevicePairingAgent)initWithHealthStore:(id)a3;
+- (HKSecondaryDevicePairingAgent)initWithHealthStore:(id)store;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (void)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4;
-- (void)fetchSharingStatusWithPairedGuardianWithCompletion:(id)a3;
-- (void)performEndToEndCloudSyncWithNRDeviceUUID:(id)a3 syncParticipantFirst:(BOOL)a4 completion:(id)a5;
-- (void)requestTinkerSharingOptInWithGuardianDisplayName:(id)a3 NRDeviceUUID:(id)a4 completion:(id)a5;
-- (void)setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)a3 completion:(id)a4;
-- (void)tearDownHealthSharingWithPairedGuardianWithCompletion:(id)a3;
-- (void)tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)a3 completion:(id)a4;
+- (void)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion;
+- (void)fetchSharingStatusWithPairedGuardianWithCompletion:(id)completion;
+- (void)performEndToEndCloudSyncWithNRDeviceUUID:(id)d syncParticipantFirst:(BOOL)first completion:(id)completion;
+- (void)requestTinkerSharingOptInWithGuardianDisplayName:(id)name NRDeviceUUID:(id)d completion:(id)completion;
+- (void)setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)configuration completion:(id)completion;
+- (void)tearDownHealthSharingWithPairedGuardianWithCompletion:(id)completion;
+- (void)tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HKSecondaryDevicePairingAgent
 
-- (HKSecondaryDevicePairingAgent)initWithHealthStore:(id)a3
+- (HKSecondaryDevicePairingAgent)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKSecondaryDevicePairingAgent;
   v6 = [(HKSecondaryDevicePairingAgent *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v6->_healthStore, store);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = uUID;
 
     v10 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v7->_healthStore taskIdentifier:@"HKSecondaryDevicePairingAgentServerIdentifier" exportedObject:v7 taskUUID:v7->_identifier];
     proxyProvider = v7->_proxyProvider;
@@ -37,12 +37,12 @@
   return v7;
 }
 
-- (void)requestTinkerSharingOptInWithGuardianDisplayName:(id)a3 NRDeviceUUID:(id)a4 completion:(id)a5
+- (void)requestTinkerSharingOptInWithGuardianDisplayName:(id)name NRDeviceUUID:(id)d completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
   _HKInitializeLogging();
   v12 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -50,13 +50,13 @@
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544130;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v14;
     v31 = 2114;
-    v32 = v9;
+    v32 = nameCopy;
     v33 = 2114;
-    v34 = v10;
+    v34 = dCopy;
     _os_log_impl(&dword_19197B000, v13, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called with guardian display name: %{public}@, NRDevice UUID: %{public}@ (#t0)", buf, 0x2Au);
   }
 
@@ -65,9 +65,9 @@
   v23[1] = 3221225472;
   v23[2] = __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianDisplayName_NRDeviceUUID_completion___block_invoke;
   v23[3] = &unk_1E7384848;
-  v24 = v9;
-  v25 = v10;
-  v26 = v11;
+  v24 = nameCopy;
+  v25 = dCopy;
+  v26 = completionCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianDisplayName_NRDeviceUUID_completion___block_invoke_2;
@@ -76,8 +76,8 @@
   v22 = a2;
   v20[4] = self;
   v16 = v26;
-  v17 = v10;
-  v18 = v9;
+  v17 = dCopy;
+  v18 = nameCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v20];
 
   v19 = *MEMORY[0x1E69E9840];
@@ -96,11 +96,11 @@ void __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianD
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)a3 completion:(id)a4
+- (void)setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)configuration completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -108,11 +108,11 @@ void __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianD
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
     v25 = v11;
     v26 = 2114;
-    v27 = v7;
+    v27 = configurationCopy;
     _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called with configuration: %{public}@ (#t0)", buf, 0x20u);
   }
 
@@ -121,8 +121,8 @@ void __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianD
   v19[1] = 3221225472;
   v19[2] = __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDeviceWithConfiguration_completion___block_invoke;
   v19[3] = &unk_1E7384870;
-  v20 = v7;
-  v21 = v8;
+  v20 = configurationCopy;
+  v21 = completionCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDeviceWithConfiguration_completion___block_invoke_2;
@@ -131,7 +131,7 @@ void __106__HKSecondaryDevicePairingAgent_requestTinkerSharingOptInWithGuardianD
   v18 = a2;
   v16[4] = self;
   v13 = v21;
-  v14 = v7;
+  v14 = configurationCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -150,12 +150,12 @@ void __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDe
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performEndToEndCloudSyncWithNRDeviceUUID:(id)a3 syncParticipantFirst:(BOOL)a4 completion:(id)a5
+- (void)performEndToEndCloudSyncWithNRDeviceUUID:(id)d syncParticipantFirst:(BOOL)first completion:(id)completion
 {
-  v6 = a4;
+  firstCopy = first;
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -165,8 +165,8 @@ void __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDe
     v14 = v13;
     v15 = @"NO";
     *buf = 138544130;
-    v28 = self;
-    if (v6)
+    selfCopy = self;
+    if (firstCopy)
     {
       v15 = @"YES";
     }
@@ -174,7 +174,7 @@ void __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDe
     v29 = 2114;
     v30 = v13;
     v31 = 2114;
-    v32 = v9;
+    v32 = dCopy;
     v33 = 2114;
     v34 = v15;
     _os_log_impl(&dword_19197B000, v12, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called with NRDevice UUID: %{public}@, syncParticipantFirst: %{public}@ (#t0)", buf, 0x2Au);
@@ -185,9 +185,9 @@ void __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDe
   v23[1] = 3221225472;
   v23[2] = __106__HKSecondaryDevicePairingAgent_performEndToEndCloudSyncWithNRDeviceUUID_syncParticipantFirst_completion___block_invoke;
   v23[3] = &unk_1E7384898;
-  v24 = v9;
-  v26 = v6;
-  v25 = v10;
+  v24 = dCopy;
+  v26 = firstCopy;
+  v25 = completionCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __106__HKSecondaryDevicePairingAgent_performEndToEndCloudSyncWithNRDeviceUUID_syncParticipantFirst_completion___block_invoke_2;
@@ -196,7 +196,7 @@ void __104__HKSecondaryDevicePairingAgent_setupHealthSharingForSecondaryPairedDe
   v22 = a2;
   v20[4] = self;
   v17 = v25;
-  v18 = v9;
+  v18 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v20];
 
   v19 = *MEMORY[0x1E69E9840];
@@ -215,10 +215,10 @@ void __106__HKSecondaryDevicePairingAgent_performEndToEndCloudSyncWithNRDeviceUU
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)tearDownHealthSharingWithPairedGuardianWithCompletion:(id)a3
+- (void)tearDownHealthSharingWithPairedGuardianWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -226,7 +226,7 @@ void __106__HKSecondaryDevicePairingAgent_performEndToEndCloudSyncWithNRDeviceUU
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v8;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called (#t0)", buf, 0x16u);
@@ -237,7 +237,7 @@ void __106__HKSecondaryDevicePairingAgent_performEndToEndCloudSyncWithNRDeviceUU
   v15[1] = 3221225472;
   v15[2] = __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardianWithCompletion___block_invoke;
   v15[3] = &unk_1E73848C0;
-  v16 = v5;
+  v16 = completionCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardianWithCompletion___block_invoke_2;
@@ -264,11 +264,11 @@ void __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardian
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)a3 completion:(id)a4
+- (void)tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)d completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -276,7 +276,7 @@ void __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardian
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
     v25 = v11;
     _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called (#t0)", buf, 0x16u);
@@ -287,8 +287,8 @@ void __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardian
   v19[1] = 3221225472;
   v19[2] = __92__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithTinkerDeviceWithNRUUID_completion___block_invoke;
   v19[3] = &unk_1E7384870;
-  v20 = v7;
-  v21 = v8;
+  v20 = dCopy;
+  v21 = completionCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithTinkerDeviceWithNRUUID_completion___block_invoke_2;
@@ -297,7 +297,7 @@ void __87__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithPairedGuardian
   v18 = a2;
   v16[4] = self;
   v13 = v21;
-  v14 = v7;
+  v14 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -316,10 +316,10 @@ void __92__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithTinkerDeviceWi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSharingStatusWithPairedGuardianWithCompletion:(id)a3
+- (void)fetchSharingStatusWithPairedGuardianWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_INFO))
@@ -327,13 +327,13 @@ void __92__HKSecondaryDevicePairingAgent_tearDownHealthSharingWithTinkerDeviceWi
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v8;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_INFO, "[sharing-setup] %{public}@ %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v5];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v16[0] = MEMORY[0x1E69E9820];
@@ -367,11 +367,11 @@ void __84__HKSecondaryDevicePairingAgent_fetchSharingStatusWithPairedGuardianWit
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4
+- (void)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_INFO))
@@ -379,20 +379,20 @@ void __84__HKSecondaryDevicePairingAgent_fetchSharingStatusWithPairedGuardianWit
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = v11;
     _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_INFO, "[sharing-setup] %{public}@ %{public}@", buf, 0x16u);
   }
 
-  v12 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v12 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __101__HKSecondaryDevicePairingAgent_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress_completion___block_invoke;
   v20[3] = &unk_1E7384870;
-  v21 = v7;
+  v21 = addressCopy;
   v22 = v12;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -402,7 +402,7 @@ void __84__HKSecondaryDevicePairingAgent_fetchSharingStatusWithPairedGuardianWit
   v19 = a2;
   v17[4] = self;
   v14 = v22;
-  v15 = v7;
+  v15 = addressCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v20 errorHandler:v17];
 
   v16 = *MEMORY[0x1E69E9840];

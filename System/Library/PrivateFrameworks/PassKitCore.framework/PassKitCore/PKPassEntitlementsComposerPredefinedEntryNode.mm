@@ -1,10 +1,10 @@
 @interface PKPassEntitlementsComposerPredefinedEntryNode
 - (BOOL)possibleIntraAccountSharing;
-- (PKPassEntitlementsComposerPredefinedEntryNode)initWithPredefinedSelection:(id)a3 parentEntitlementComposer:(id)a4;
+- (PKPassEntitlementsComposerPredefinedEntryNode)initWithPredefinedSelection:(id)selection parentEntitlementComposer:(id)composer;
 - (id)allPossibleManageability;
 - (id)allPossibleShareability;
 - (id)allPossibleVisibility;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)possibleManageability;
 - (unint64_t)possibleShareability;
 - (unint64_t)possibleVisibility;
@@ -12,18 +12,18 @@
 
 @implementation PKPassEntitlementsComposerPredefinedEntryNode
 
-- (PKPassEntitlementsComposerPredefinedEntryNode)initWithPredefinedSelection:(id)a3 parentEntitlementComposer:(id)a4
+- (PKPassEntitlementsComposerPredefinedEntryNode)initWithPredefinedSelection:(id)selection parentEntitlementComposer:(id)composer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
+  selectionCopy = selection;
+  composerCopy = composer;
+  identifier = [selectionCopy identifier];
   v12.receiver = self;
   v12.super_class = PKPassEntitlementsComposerPredefinedEntryNode;
-  v10 = [(PKPassEntitlementsComposerEntryNode *)&v12 initWithIdentifier:v9 parentEntitlementComposer:v8];
+  v10 = [(PKPassEntitlementsComposerEntryNode *)&v12 initWithIdentifier:identifier parentEntitlementComposer:composerCopy];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_predefinedSelection, a3);
+    objc_storeStrong(&v10->_predefinedSelection, selection);
     [(PKPassEntitlementsComposerEntryNode *)v10 setEditable:0];
   }
 
@@ -32,38 +32,38 @@
 
 - (unint64_t)possibleShareability
 {
-  v2 = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
-  v3 = [v2 firstObject];
-  v4 = [v3 recipientShareability];
+  sharedEntitlements = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
+  firstObject = [sharedEntitlements firstObject];
+  recipientShareability = [firstObject recipientShareability];
 
-  return v4;
+  return recipientShareability;
 }
 
 - (unint64_t)possibleVisibility
 {
-  v2 = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
-  v3 = [v2 firstObject];
-  v4 = [v3 recipientVisibility];
+  sharedEntitlements = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
+  firstObject = [sharedEntitlements firstObject];
+  recipientVisibility = [firstObject recipientVisibility];
 
-  return v4;
+  return recipientVisibility;
 }
 
 - (unint64_t)possibleManageability
 {
-  v2 = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
-  v3 = [v2 firstObject];
-  v4 = [v3 recipientManageability];
+  sharedEntitlements = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
+  firstObject = [sharedEntitlements firstObject];
+  recipientManageability = [firstObject recipientManageability];
 
-  return v4;
+  return recipientManageability;
 }
 
 - (BOOL)possibleIntraAccountSharing
 {
-  v2 = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
-  v3 = [v2 firstObject];
-  v4 = [v3 intraAccountSharingEnabled];
+  sharedEntitlements = [(PKPredefinedSharedEntitlementSelection *)self->_predefinedSelection sharedEntitlements];
+  firstObject = [sharedEntitlements firstObject];
+  intraAccountSharingEnabled = [firstObject intraAccountSharingEnabled];
 
-  return v4;
+  return intraAccountSharingEnabled;
 }
 
 - (id)allPossibleShareability
@@ -96,11 +96,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKPassEntitlementsComposerPredefinedEntryNode;
-  v4 = [(PKPassEntitlementsComposerEntryNode *)&v6 copyWithZone:a3];
+  v4 = [(PKPassEntitlementsComposerEntryNode *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 7, self->_predefinedSelection);
   return v4;
 }

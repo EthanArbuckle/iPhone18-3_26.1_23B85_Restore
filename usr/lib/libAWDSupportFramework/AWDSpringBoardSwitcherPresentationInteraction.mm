@@ -1,14 +1,14 @@
 @interface AWDSpringBoardSwitcherPresentationInteraction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDidCommit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDidCommit:(BOOL)commit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardSwitcherPresentationInteraction
@@ -21,9 +21,9 @@
   [(AWDSpringBoardSwitcherPresentationInteraction *)&v3 dealloc];
 }
 
-- (void)setHasDidCommit:(BOOL)a3
+- (void)setHasDidCommit:(BOOL)commit
 {
-  if (a3)
+  if (commit)
   {
     v3 = 2;
   }
@@ -45,27 +45,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   source = self->_source;
   if (source)
   {
-    [v3 setObject:source forKey:@"source"];
+    [dictionary setObject:source forKey:@"source"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didCommit), @"didCommit"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didCommit), @"didCommit"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -86,29 +86,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if (self->_source)
   {
-    [a3 setSource:?];
+    [to setSource:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 24) = self->_didCommit;
-    *(a3 + 28) |= 2u;
+    *(to + 24) = self->_didCommit;
+    *(to + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -116,7 +116,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_source copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_source copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 24) = self->_didCommit;
@@ -126,28 +126,28 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_12;
     }
 
     source = self->_source;
-    if (source | *(a3 + 2))
+    if (source | *(equal + 2))
     {
       v5 = [(NSString *)source isEqual:?];
       if (!v5)
@@ -158,10 +158,10 @@
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0)
+      if ((*(equal + 28) & 2) == 0)
       {
 LABEL_12:
         LOBYTE(v5) = 0;
@@ -170,13 +170,13 @@ LABEL_12:
 
       if (self->_didCommit)
       {
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(equal + 24) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
         goto LABEL_12;
       }
@@ -214,22 +214,22 @@ LABEL_12:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDSpringBoardSwitcherPresentationInteraction *)self setSource:?];
   }
 
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
-    self->_didCommit = *(a3 + 24);
+    self->_didCommit = *(from + 24);
     *&self->_has |= 2u;
   }
 }

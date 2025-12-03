@@ -1,33 +1,33 @@
 @interface HAPWACAccessoryBrowser
 + (id)logCategory;
 - (HAPAirPlayAccessoryBrowserDelegate)airplayDelegate;
-- (HAPWACAccessoryBrowser)initWithDelegate:(id)a3 queue:(id)a4;
+- (HAPWACAccessoryBrowser)initWithDelegate:(id)delegate queue:(id)queue;
 - (HAPWACAccessoryBrowserDelegate)delegate;
-- (id)_removeUnconfiguredWACDevice:(id)a3;
+- (id)_removeUnconfiguredWACDevice:(id)device;
 - (id)visible2Pt4Networks;
-- (void)_addFoundUnconfiguredUnpairedWACDevice:(id)a3;
+- (void)_addFoundUnconfiguredUnpairedWACDevice:(id)device;
 - (void)_handleBrowsingBackOffTimerExpiry;
-- (void)_handleChangeUnconfiguredPairedWACAccessory:(id)a3;
-- (void)_handleChangeUnconfiguredUnpairedWACAccessory:(id)a3;
-- (void)_handleNewUnconfiguredUnpairedWACDevice:(id)a3;
-- (void)_handleUnconfiguredPairedWACDevice:(id)a3;
-- (void)_initWiFiScannerWithScanner:(id)a3;
-- (void)_reportFound2Pt4Network:(id)a3;
+- (void)_handleChangeUnconfiguredPairedWACAccessory:(id)accessory;
+- (void)_handleChangeUnconfiguredUnpairedWACAccessory:(id)accessory;
+- (void)_handleNewUnconfiguredUnpairedWACDevice:(id)device;
+- (void)_handleUnconfiguredPairedWACDevice:(id)device;
+- (void)_initWiFiScannerWithScanner:(id)scanner;
+- (void)_reportFound2Pt4Network:(id)network;
 - (void)_restartBrowsingWithAllNetworks;
 - (void)_startBrowsingForWACAccessories;
 - (void)_stopBrowsingForWACAccessories;
-- (void)discoverAccessoryServerWithIdentifier:(id)a3;
-- (void)handleChangeUnconfiguredWACDevice:(id)a3;
-- (void)handleFoundAPDevice:(id)a3;
-- (void)handleFoundUnconfiguredPairedWACDevice:(id)a3;
-- (void)handleFoundUnconfiguredUnpairedWACDevice:(id)a3;
-- (void)handleRemovedUnconfiguredWACDevice:(id)a3;
-- (void)initWiFiScannerWithScanner:(id)a3;
-- (void)scan2Pt4APWithSSID:(id)a3 completion:(id)a4;
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier;
+- (void)handleChangeUnconfiguredWACDevice:(id)device;
+- (void)handleFoundAPDevice:(id)device;
+- (void)handleFoundUnconfiguredPairedWACDevice:(id)device;
+- (void)handleFoundUnconfiguredUnpairedWACDevice:(id)device;
+- (void)handleRemovedUnconfiguredWACDevice:(id)device;
+- (void)initWiFiScannerWithScanner:(id)scanner;
+- (void)scan2Pt4APWithSSID:(id)d completion:(id)completion;
 - (void)startDiscoveringAccessoryServers;
-- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)a3;
+- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)delegate;
 - (void)stopDiscoveringAccessoryServers;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HAPWACAccessoryBrowser
@@ -46,22 +46,22 @@
   return WeakRetained;
 }
 
-- (void)_reportFound2Pt4Network:(id)a3
+- (void)_reportFound2Pt4Network:(id)network
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPWACAccessoryBrowser *)self found2Pt4Completion];
-  if (v5)
+  networkCopy = network;
+  found2Pt4Completion = [(HAPWACAccessoryBrowser *)self found2Pt4Completion];
+  if (found2Pt4Completion)
   {
-    v6 = v5;
-    v7 = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
+    v6 = found2Pt4Completion;
+    scanning2Pt4SSID = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
 
-    if (v7)
+    if (scanning2Pt4SSID)
     {
-      if (!v4)
+      if (!networkCopy)
       {
         v10 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
@@ -77,8 +77,8 @@
 LABEL_10:
 
         objc_autoreleasePoolPop(v10);
-        v16 = [(HAPWACAccessoryBrowser *)self found2Pt4Completion];
-        (v16)[2](v16, v4 != 0);
+        found2Pt4Completion2 = [(HAPWACAccessoryBrowser *)self found2Pt4Completion];
+        (found2Pt4Completion2)[2](found2Pt4Completion2, networkCopy != 0);
 
         [(HAPWACAccessoryBrowser *)self setFound2Pt4Completion:0];
         [(HAPWACAccessoryBrowser *)self setScanning2Pt4SSID:0];
@@ -86,13 +86,13 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v8 = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
-      v9 = [v8 isEqual:v4];
+      scanning2Pt4SSID2 = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
+      v9 = [scanning2Pt4SSID2 isEqual:networkCopy];
 
       if (v9)
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy2 = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
@@ -100,7 +100,7 @@ LABEL_10:
           v18 = 138543618;
           v19 = v13;
           v20 = 2112;
-          v21 = v4;
+          v21 = networkCopy;
           v14 = "%{public}@Found 2.4 AP found with ssid: %@";
 LABEL_9:
           _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_DEBUG, v14, &v18, 0x16u);
@@ -118,13 +118,13 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scan2Pt4APWithSSID:(id)a3 completion:(id)a4
+- (void)scan2Pt4APWithSSID:(id)d completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -132,22 +132,22 @@ LABEL_11:
     *buf = 138543618;
     v20 = v11;
     v21 = 2112;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Scanning for 2.4 AP SSID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HAPAccessoryServerBrowser *)v9 workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HAPWACAccessoryBrowser_scan2Pt4APWithSSID_completion___block_invoke;
   block[3] = &unk_2786D69E0;
-  block[4] = v9;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  dispatch_async(v12, block);
+  block[4] = selfCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  dispatch_async(workQueue, block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -178,22 +178,22 @@ uint64_t __56__HAPWACAccessoryBrowser_scan2Pt4APWithSSID_completion___block_invo
 
 - (id)visible2Pt4Networks
 {
-  v2 = [(HAPWACAccessoryBrowser *)self found2Pt4Networks];
-  v3 = [v2 copy];
+  found2Pt4Networks = [(HAPWACAccessoryBrowser *)self found2Pt4Networks];
+  v3 = [found2Pt4Networks copy];
 
   return v3;
 }
 
-- (id)_removeUnconfiguredWACDevice:(id)a3
+- (id)_removeUnconfiguredWACDevice:(id)device
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
+  v6 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v6)
   {
     v7 = v6;
@@ -204,13 +204,13 @@ LABEL_3:
     {
       if (*v27 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(foundUnconfiguredUnpairedAccessories);
       }
 
       v10 = *(*(&v26 + 1) + 8 * v9);
-      v11 = [v10 deviceId];
-      v12 = [v4 deviceId];
-      v13 = [v11 isEqual:v12];
+      deviceId = [v10 deviceId];
+      deviceId2 = [deviceCopy deviceId];
+      v13 = [deviceId isEqual:deviceId2];
 
       if (v13)
       {
@@ -219,7 +219,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v7 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -230,7 +230,7 @@ LABEL_3:
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -238,7 +238,7 @@ LABEL_3:
       *buf = 138543618;
       v31 = v18;
       v32 = 2112;
-      v33 = v4;
+      v33 = deviceCopy;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Removing accessory: %@", buf, 0x16u);
     }
 
@@ -247,11 +247,11 @@ LABEL_3:
 
     if (v14)
     {
-      v19 = [(HAPWACAccessoryBrowser *)v16 foundUnconfiguredUnpairedAccessories];
-      [v19 removeObject:v14];
+      foundUnconfiguredUnpairedAccessories2 = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredUnpairedAccessories];
+      [foundUnconfiguredUnpairedAccessories2 removeObject:v14];
 
       v20 = objc_autoreleasePoolPush();
-      v21 = v16;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
@@ -264,8 +264,8 @@ LABEL_3:
       }
 
       objc_autoreleasePoolPop(v20);
-      v5 = [(HAPWACAccessoryBrowser *)v21 delegate];
-      [v5 wacBrowser:v21 didRemoveHAPWACAccessory:v14];
+      foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)v21 delegate];
+      [foundUnconfiguredUnpairedAccessories wacBrowser:v21 didRemoveHAPWACAccessory:v14];
       goto LABEL_16;
     }
   }
@@ -282,18 +282,18 @@ LABEL_16:
   return v14;
 }
 
-- (void)handleRemovedUnconfiguredWACDevice:(id)a3
+- (void)handleRemovedUnconfiguredWACDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_invoke(uint64_t a1)
@@ -317,16 +317,16 @@ void __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_inv
   }
 }
 
-- (void)_handleChangeUnconfiguredPairedWACAccessory:(id)a3
+- (void)_handleChangeUnconfiguredPairedWACAccessory:(id)accessory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(HAPWACAccessoryBrowser *)self foundUnconfiguredPairedAccessories];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  foundUnconfiguredPairedAccessories = [(HAPWACAccessoryBrowser *)self foundUnconfiguredPairedAccessories];
+  v6 = [foundUnconfiguredPairedAccessories countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -337,23 +337,23 @@ void __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_inv
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(foundUnconfiguredPairedAccessories);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 deviceId];
-        v12 = [v4 deviceId];
-        v13 = [v11 isEqual:v12];
+        deviceId = [v10 deviceId];
+        deviceId2 = [accessoryCopy deviceId];
+        v13 = [deviceId isEqual:deviceId2];
 
         if (v13)
         {
-          [v10 updateWithHAPWACAccessory:v4];
+          [v10 updateWithHAPWACAccessory:accessoryCopy];
 
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v7 = [foundUnconfiguredPairedAccessories countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v7)
       {
         continue;
@@ -364,7 +364,7 @@ void __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_inv
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -372,32 +372,32 @@ void __61__HAPWACAccessoryBrowser_handleRemovedUnconfiguredWACDevice___block_inv
     *buf = 138543618;
     v26 = v17;
     v27 = 2112;
-    v28 = v4;
+    v28 = accessoryCopy;
     _os_log_impl(&dword_22AADC000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Changed paired accessory %@ did not match previously found - handle as new", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = [(HAPWACAccessoryBrowser *)v15 browsingStartTime];
-  [v18 timeIntervalSinceDate:v19];
-  [v4 setDiscoveryTime:?];
+  date = [MEMORY[0x277CBEAA8] date];
+  browsingStartTime = [(HAPWACAccessoryBrowser *)selfCopy browsingStartTime];
+  [date timeIntervalSinceDate:browsingStartTime];
+  [accessoryCopy setDiscoveryTime:?];
 
-  [(HAPWACAccessoryBrowser *)v15 _handleUnconfiguredPairedWACDevice:v4];
+  [(HAPWACAccessoryBrowser *)selfCopy _handleUnconfiguredPairedWACDevice:accessoryCopy];
 LABEL_13:
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleChangeUnconfiguredUnpairedWACAccessory:(id)a3
+- (void)_handleChangeUnconfiguredUnpairedWACAccessory:(id)accessory
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
+  v6 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -408,25 +408,25 @@ LABEL_13:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(foundUnconfiguredUnpairedAccessories);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 deviceId];
-        v12 = [v4 deviceId];
-        v13 = [v11 isEqual:v12];
+        deviceId = [v10 deviceId];
+        deviceId2 = [accessoryCopy deviceId];
+        v13 = [deviceId isEqual:deviceId2];
 
         if (v13)
         {
-          [v10 updateWithHAPWACAccessory:v4];
-          if ([v4 supportsAirPlay])
+          [v10 updateWithHAPWACAccessory:accessoryCopy];
+          if ([accessoryCopy supportsAirPlay])
           {
-            v20 = [(HAPWACAccessoryBrowser *)self airplayDelegate];
+            airplayDelegate = [(HAPWACAccessoryBrowser *)self airplayDelegate];
 
-            if (v20)
+            if (airplayDelegate)
             {
               v21 = objc_autoreleasePoolPush();
-              v22 = self;
+              selfCopy = self;
               v23 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
               {
@@ -434,14 +434,14 @@ LABEL_13:
                 *buf = 138543618;
                 v33 = v24;
                 v34 = 2112;
-                v35 = v4;
+                v35 = accessoryCopy;
                 _os_log_impl(&dword_22AADC000, v23, OS_LOG_TYPE_DEBUG, "%{public}@Changed AirPlay WAC Accessory: %@", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v21);
-              v25 = [(HAPWACAccessoryBrowser *)v22 airplayDelegate];
-              v26 = [v4 cuWiFiDevice];
-              [v25 wacBrowser:v22 didUpdateAirPlayDevice:v26];
+              airplayDelegate2 = [(HAPWACAccessoryBrowser *)selfCopy airplayDelegate];
+              cuWiFiDevice = [accessoryCopy cuWiFiDevice];
+              [airplayDelegate2 wacBrowser:selfCopy didUpdateAirPlayDevice:cuWiFiDevice];
             }
           }
 
@@ -449,7 +449,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v7 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v7)
       {
         continue;
@@ -460,7 +460,7 @@ LABEL_13:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -468,34 +468,34 @@ LABEL_13:
     *buf = 138543618;
     v33 = v17;
     v34 = 2112;
-    v35 = v4;
+    v35 = accessoryCopy;
     _os_log_impl(&dword_22AADC000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Changed accessory %@ did not match previously found - handle as new", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = [(HAPWACAccessoryBrowser *)v15 browsingStartTime];
-  [v18 timeIntervalSinceDate:v19];
-  [v4 setDiscoveryTime:?];
+  date = [MEMORY[0x277CBEAA8] date];
+  browsingStartTime = [(HAPWACAccessoryBrowser *)selfCopy2 browsingStartTime];
+  [date timeIntervalSinceDate:browsingStartTime];
+  [accessoryCopy setDiscoveryTime:?];
 
-  [(HAPWACAccessoryBrowser *)v15 _addFoundUnconfiguredUnpairedWACDevice:v4];
+  [(HAPWACAccessoryBrowser *)selfCopy2 _addFoundUnconfiguredUnpairedWACDevice:accessoryCopy];
 LABEL_18:
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleChangeUnconfiguredWACDevice:(id)a3
+- (void)handleChangeUnconfiguredWACDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HAPWACAccessoryBrowser_handleChangeUnconfiguredWACDevice___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __60__HAPWACAccessoryBrowser_handleChangeUnconfiguredWACDevice___block_invoke(uint64_t a1)
@@ -514,19 +514,19 @@ void __60__HAPWACAccessoryBrowser_handleChangeUnconfiguredWACDevice___block_invo
   }
 }
 
-- (void)_handleUnconfiguredPairedWACDevice:(id)a3
+- (void)_handleUnconfiguredPairedWACDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPWACAccessoryBrowser *)self foundUnconfiguredPairedAccessories];
-  [v5 addObject:v4];
+  deviceCopy = device;
+  foundUnconfiguredPairedAccessories = [(HAPWACAccessoryBrowser *)self foundUnconfiguredPairedAccessories];
+  [foundUnconfiguredPairedAccessories addObject:deviceCopy];
 
-  v6 = [(HAPWACAccessoryBrowser *)self browsingIdentifier];
+  browsingIdentifier = [(HAPWACAccessoryBrowser *)self browsingIdentifier];
 
-  if (!v6 || (-[HAPWACAccessoryBrowser browsingIdentifier](self, "browsingIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), [v4 deviceId], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
+  if (!browsingIdentifier || (-[HAPWACAccessoryBrowser browsingIdentifier](self, "browsingIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), [deviceCopy deviceId], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -534,30 +534,30 @@ void __60__HAPWACAccessoryBrowser_handleChangeUnconfiguredWACDevice___block_invo
       v16 = 138543618;
       v17 = v13;
       v18 = 2112;
-      v19 = v4;
+      v19 = deviceCopy;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Reporting HomeKit Paired WAC Accessory: %@", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HAPWACAccessoryBrowser *)v11 delegate];
-    [v14 wacBrowser:v11 didFindUnconfiguredPairedHAPWACAccessory:v4];
+    delegate = [(HAPWACAccessoryBrowser *)selfCopy delegate];
+    [delegate wacBrowser:selfCopy didFindUnconfiguredPairedHAPWACAccessory:deviceCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFoundUnconfiguredPairedWACDevice:(id)a3
+- (void)handleFoundUnconfiguredPairedWACDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HAPWACAccessoryBrowser_handleFoundUnconfiguredPairedWACDevice___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __65__HAPWACAccessoryBrowser_handleFoundUnconfiguredPairedWACDevice___block_invoke(uint64_t a1)
@@ -574,20 +574,20 @@ void __65__HAPWACAccessoryBrowser_handleFoundUnconfiguredPairedWACDevice___block
   }
 }
 
-- (void)_handleNewUnconfiguredUnpairedWACDevice:(id)a3
+- (void)_handleNewUnconfiguredUnpairedWACDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPWACAccessoryBrowser *)self _removeUnconfiguredWACDevice:v4];
-  v6 = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
-  [v6 addObject:v4];
+  deviceCopy = device;
+  v5 = [(HAPWACAccessoryBrowser *)self _removeUnconfiguredWACDevice:deviceCopy];
+  foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)self foundUnconfiguredUnpairedAccessories];
+  [foundUnconfiguredUnpairedAccessories addObject:deviceCopy];
 
-  v7 = [(HAPWACAccessoryBrowser *)self browsingIdentifier];
+  browsingIdentifier = [(HAPWACAccessoryBrowser *)self browsingIdentifier];
 
-  if (!v7 || (-[HAPWACAccessoryBrowser browsingIdentifier](self, "browsingIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), [v4 deviceId], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
+  if (!browsingIdentifier || (-[HAPWACAccessoryBrowser browsingIdentifier](self, "browsingIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), [deviceCopy deviceId], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -595,30 +595,30 @@ void __65__HAPWACAccessoryBrowser_handleFoundUnconfiguredPairedWACDevice___block
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v4;
+      v20 = deviceCopy;
       _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Reporting new HAP WAC Accessory: %@", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HAPWACAccessoryBrowser *)v12 delegate];
-    [v15 wacBrowser:v12 didFindHAPWACAccessory:v4];
+    delegate = [(HAPWACAccessoryBrowser *)selfCopy delegate];
+    [delegate wacBrowser:selfCopy didFindHAPWACAccessory:deviceCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFoundAPDevice:(id)a3
+- (void)handleFoundAPDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HAPWACAccessoryBrowser_handleFoundAPDevice___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __46__HAPWACAccessoryBrowser_handleFoundAPDevice___block_invoke(uint64_t a1)
@@ -669,18 +669,18 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addFoundUnconfiguredUnpairedWACDevice:(id)a3
+- (void)_addFoundUnconfiguredUnpairedWACDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 supportsAirPlay])
+  deviceCopy = device;
+  if ([deviceCopy supportsAirPlay])
   {
-    v5 = [(HAPWACAccessoryBrowser *)self airplayDelegate];
+    airplayDelegate = [(HAPWACAccessoryBrowser *)self airplayDelegate];
 
-    if (v5)
+    if (airplayDelegate)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
@@ -688,34 +688,34 @@ LABEL_7:
         v13 = 138543618;
         v14 = v9;
         v15 = 2112;
-        v16 = v4;
+        v16 = deviceCopy;
         _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, "%{public}@Found AirPlay WAC Accessory: %@", &v13, 0x16u);
       }
 
       objc_autoreleasePoolPop(v6);
-      v10 = [(HAPWACAccessoryBrowser *)v7 airplayDelegate];
-      v11 = [v4 cuWiFiDevice];
-      [v10 wacBrowser:v7 didFindAirPlayDevice:v11];
+      airplayDelegate2 = [(HAPWACAccessoryBrowser *)selfCopy airplayDelegate];
+      cuWiFiDevice = [deviceCopy cuWiFiDevice];
+      [airplayDelegate2 wacBrowser:selfCopy didFindAirPlayDevice:cuWiFiDevice];
     }
   }
 
-  [(HAPWACAccessoryBrowser *)self _handleNewUnconfiguredUnpairedWACDevice:v4];
+  [(HAPWACAccessoryBrowser *)self _handleNewUnconfiguredUnpairedWACDevice:deviceCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFoundUnconfiguredUnpairedWACDevice:(id)a3
+- (void)handleFoundUnconfiguredUnpairedWACDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HAPWACAccessoryBrowser_handleFoundUnconfiguredUnpairedWACDevice___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __67__HAPWACAccessoryBrowser_handleFoundUnconfiguredUnpairedWACDevice___block_invoke(uint64_t a1)
@@ -736,8 +736,8 @@ void __67__HAPWACAccessoryBrowser_handleFoundUnconfiguredUnpairedWACDevice___blo
 {
   if ([(HAPWACAccessoryBrowser *)self state]== 2)
   {
-    v3 = [(HAPWACAccessoryBrowser *)self cuWiFiScanner];
-    [v3 suspend];
+    cuWiFiScanner = [(HAPWACAccessoryBrowser *)self cuWiFiScanner];
+    [cuWiFiScanner suspend];
 
     v4 = 4;
   }
@@ -753,15 +753,15 @@ void __67__HAPWACAccessoryBrowser_handleFoundUnconfiguredUnpairedWACDevice___blo
   }
 
   [(HAPWACAccessoryBrowser *)self setState:v4];
-  v5 = [(HAPWACAccessoryBrowser *)self backoffTimer];
-  [v5 resume];
+  backoffTimer = [(HAPWACAccessoryBrowser *)self backoffTimer];
+  [backoffTimer resume];
 }
 
 - (void)stopDiscoveringAccessoryServers
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -775,13 +775,13 @@ void __67__HAPWACAccessoryBrowser_handleFoundUnconfiguredUnpairedWACDevice___blo
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(HAPAccessoryServerBrowser *)v5 workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
-  block[4] = v5;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -798,7 +798,7 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
 {
   v63 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -809,29 +809,29 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
+  cuWiFiScanner = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
 
-  if (!v7)
+  if (!cuWiFiScanner)
   {
     v8 = objc_alloc_init(MEMORY[0x277D02958]);
-    [(HAPWACAccessoryBrowser *)v4 setCuWiFiScanner:v8];
+    [(HAPWACAccessoryBrowser *)selfCopy setCuWiFiScanner:v8];
 
-    v9 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-    [(HAPWACAccessoryBrowser *)v4 _initWiFiScannerWithScanner:v9];
+    cuWiFiScanner2 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+    [(HAPWACAccessoryBrowser *)selfCopy _initWiFiScannerWithScanner:cuWiFiScanner2];
   }
 
-  v10 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
+  cuWiFiScanner3 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
 
-  if (v10)
+  if (cuWiFiScanner3)
   {
-    if ([(HAPWACAccessoryBrowser *)v4 state])
+    if ([(HAPWACAccessoryBrowser *)selfCopy state])
     {
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v11 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredUnpairedAccessories];
-      v12 = [v11 countByEnumeratingWithState:&v53 objects:v62 count:16];
+      foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredUnpairedAccessories];
+      v12 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v53 objects:v62 count:16];
       if (v12)
       {
         v14 = v12;
@@ -845,12 +845,12 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
           {
             if (*v54 != v15)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(foundUnconfiguredUnpairedAccessories);
             }
 
             v17 = *(*(&v53 + 1) + 8 * v16);
             v18 = objc_autoreleasePoolPush();
-            v19 = v4;
+            v19 = selfCopy;
             v20 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
@@ -863,14 +863,14 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
             }
 
             objc_autoreleasePoolPop(v18);
-            v22 = [(HAPWACAccessoryBrowser *)v19 delegate];
-            [v22 wacBrowser:v19 didFindHAPWACAccessory:v17];
+            delegate = [(HAPWACAccessoryBrowser *)v19 delegate];
+            [delegate wacBrowser:v19 didFindHAPWACAccessory:v17];
 
             ++v16;
           }
 
           while (v14 != v16);
-          v14 = [v11 countByEnumeratingWithState:&v53 objects:v62 count:16];
+          v14 = [foundUnconfiguredUnpairedAccessories countByEnumeratingWithState:&v53 objects:v62 count:16];
         }
 
         while (v14);
@@ -880,8 +880,8 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v23 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredPairedAccessories];
-      v24 = [v23 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      foundUnconfiguredPairedAccessories = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredPairedAccessories];
+      v24 = [foundUnconfiguredPairedAccessories countByEnumeratingWithState:&v49 objects:v57 count:16];
       if (v24)
       {
         v26 = v24;
@@ -895,12 +895,12 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
           {
             if (*v50 != v27)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(foundUnconfiguredPairedAccessories);
             }
 
             v29 = *(*(&v49 + 1) + 8 * v28);
             v30 = objc_autoreleasePoolPush();
-            v31 = v4;
+            v31 = selfCopy;
             v32 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
             {
@@ -913,53 +913,53 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
             }
 
             objc_autoreleasePoolPop(v30);
-            v34 = [(HAPWACAccessoryBrowser *)v31 delegate];
-            [v34 wacBrowser:v31 didFindUnconfiguredPairedHAPWACAccessory:v29];
+            delegate2 = [(HAPWACAccessoryBrowser *)v31 delegate];
+            [delegate2 wacBrowser:v31 didFindUnconfiguredPairedHAPWACAccessory:v29];
 
             ++v28;
           }
 
           while (v26 != v28);
-          v26 = [v23 countByEnumeratingWithState:&v49 objects:v57 count:16];
+          v26 = [foundUnconfiguredPairedAccessories countByEnumeratingWithState:&v49 objects:v57 count:16];
         }
 
         while (v26);
       }
     }
 
-    v35 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-    [v35 setScanFlags:1];
+    cuWiFiScanner4 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+    [cuWiFiScanner4 setScanFlags:1];
 
-    v36 = [(HAPWACAccessoryBrowser *)v4 scanning2Pt4SSID];
-    v37 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-    [v37 setSsid:v36];
+    scanning2Pt4SSID = [(HAPWACAccessoryBrowser *)selfCopy scanning2Pt4SSID];
+    cuWiFiScanner5 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+    [cuWiFiScanner5 setSsid:scanning2Pt4SSID];
 
-    v38 = [MEMORY[0x277CBEAA8] date];
-    [(HAPWACAccessoryBrowser *)v4 setBrowsingStartTime:v38];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HAPWACAccessoryBrowser *)selfCopy setBrowsingStartTime:date];
 
-    v39 = [(HAPWACAccessoryBrowser *)v4 backoffTimer];
-    [v39 resume];
+    backoffTimer = [(HAPWACAccessoryBrowser *)selfCopy backoffTimer];
+    [backoffTimer resume];
 
-    v40 = [(HAPWACAccessoryBrowser *)v4 state];
-    v41 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-    v42 = v41;
-    if (v40 == 4)
+    state = [(HAPWACAccessoryBrowser *)selfCopy state];
+    cuWiFiScanner6 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+    v42 = cuWiFiScanner6;
+    if (state == 4)
     {
-      [v41 resume];
+      [cuWiFiScanner6 resume];
     }
 
     else
     {
-      [v41 activate];
+      [cuWiFiScanner6 activate];
     }
 
-    [(HAPWACAccessoryBrowser *)v4 setState:1];
+    [(HAPWACAccessoryBrowser *)selfCopy setState:1];
   }
 
   else
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = v4;
+    v44 = selfCopy;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -975,12 +975,12 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discoverAccessoryServerWithIdentifier:(id)a3
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -988,20 +988,20 @@ uint64_t __57__HAPWACAccessoryBrowser_stopDiscoveringAccessoryServers__block_inv
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Discovering with identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPAccessoryServerBrowser *)v6 workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__HAPWACAccessoryBrowser_discoverAccessoryServerWithIdentifier___block_invoke;
   v12[3] = &unk_2786D7050;
-  v12[4] = v6;
-  v13 = v4;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v12[4] = selfCopy;
+  v13 = identifierCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1014,12 +1014,12 @@ uint64_t __64__HAPWACAccessoryBrowser_discoverAccessoryServerWithIdentifier___bl
   return [v2 _startBrowsingForWACAccessories];
 }
 
-- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)a3
+- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)delegate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1030,15 +1030,15 @@ uint64_t __64__HAPWACAccessoryBrowser_discoverAccessoryServerWithIdentifier___bl
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPAccessoryServerBrowser *)v6 workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__HAPWACAccessoryBrowser_startDiscoveringAirPlayAccessoriesWithDelegate___block_invoke;
   v12[3] = &unk_2786D7050;
-  v12[4] = v6;
-  v13 = v4;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v12[4] = selfCopy;
+  v13 = delegateCopy;
+  v10 = delegateCopy;
+  dispatch_async(workQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1055,7 +1055,7 @@ uint64_t __73__HAPWACAccessoryBrowser_startDiscoveringAirPlayAccessoriesWithDele
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1069,13 +1069,13 @@ uint64_t __73__HAPWACAccessoryBrowser_startDiscoveringAirPlayAccessoriesWithDele
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(HAPAccessoryServerBrowser *)v5 workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
-  block[4] = v5;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -1092,7 +1092,7 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1103,15 +1103,15 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-  [v7 suspend];
+  cuWiFiScanner = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+  [cuWiFiScanner suspend];
 
-  v8 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-  [v8 setScanFlags:3];
+  cuWiFiScanner2 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+  [cuWiFiScanner2 setScanFlags:3];
 
-  [(HAPWACAccessoryBrowser *)v4 setState:2];
-  v9 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-  [v9 resume];
+  [(HAPWACAccessoryBrowser *)selfCopy setState:2];
+  cuWiFiScanner3 = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+  [cuWiFiScanner3 resume];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -1120,67 +1120,67 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredUnpairedAccessories];
-    v8 = [(HAPWACAccessoryBrowser *)v4 found2Pt4Networks];
-    v9 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredPairedAccessories];
+    foundUnconfiguredUnpairedAccessories = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredUnpairedAccessories];
+    found2Pt4Networks = [(HAPWACAccessoryBrowser *)selfCopy found2Pt4Networks];
+    foundUnconfiguredPairedAccessories = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredPairedAccessories];
     v16 = 138544130;
     v17 = v6;
     v18 = 2112;
-    v19 = v7;
+    v19 = foundUnconfiguredUnpairedAccessories;
     v20 = 2112;
-    v21 = v8;
+    v21 = found2Pt4Networks;
     v22 = 2112;
-    v23 = v9;
+    v23 = foundUnconfiguredPairedAccessories;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEBUG, "%{public}@Stopping the suspended browse, clearing foundUnconfiguredUnpairedAccessories %@, foundNetworks: %@, foundUnconfiguredPairedAccessories: %@", &v16, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v3);
-  v10 = [(HAPWACAccessoryBrowser *)v4 cuWiFiScanner];
-  [v10 invalidate];
+  cuWiFiScanner = [(HAPWACAccessoryBrowser *)selfCopy cuWiFiScanner];
+  [cuWiFiScanner invalidate];
 
-  [(HAPWACAccessoryBrowser *)v4 setCuWiFiScanner:0];
-  v11 = [(HAPWACAccessoryBrowser *)v4 backoffTimer];
-  [v11 suspend];
+  [(HAPWACAccessoryBrowser *)selfCopy setCuWiFiScanner:0];
+  backoffTimer = [(HAPWACAccessoryBrowser *)selfCopy backoffTimer];
+  [backoffTimer suspend];
 
-  [(HAPWACAccessoryBrowser *)v4 setState:0];
-  v12 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredUnpairedAccessories];
-  [v12 removeAllObjects];
+  [(HAPWACAccessoryBrowser *)selfCopy setState:0];
+  foundUnconfiguredUnpairedAccessories2 = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredUnpairedAccessories];
+  [foundUnconfiguredUnpairedAccessories2 removeAllObjects];
 
-  v13 = [(HAPWACAccessoryBrowser *)v4 found2Pt4Networks];
-  [v13 removeAllObjects];
+  found2Pt4Networks2 = [(HAPWACAccessoryBrowser *)selfCopy found2Pt4Networks];
+  [found2Pt4Networks2 removeAllObjects];
 
-  v14 = [(HAPWACAccessoryBrowser *)v4 foundUnconfiguredPairedAccessories];
-  [v14 removeAllObjects];
+  foundUnconfiguredPairedAccessories2 = [(HAPWACAccessoryBrowser *)selfCopy foundUnconfiguredPairedAccessories];
+  [foundUnconfiguredPairedAccessories2 removeAllObjects];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HAPWACAccessoryBrowser *)self backoffTimer];
+  backoffTimer = [(HAPWACAccessoryBrowser *)self backoffTimer];
 
-  if (v6 == v4)
+  if (backoffTimer == fireCopy)
   {
     if ([(HAPWACAccessoryBrowser *)self state]!= 4)
     {
       if ([(HAPWACAccessoryBrowser *)self state]== 3)
       {
         [(HAPWACAccessoryBrowser *)self setState:4];
-        v12 = [(HAPWACAccessoryBrowser *)self cuWiFiScanner];
-        [v12 suspend];
+        cuWiFiScanner = [(HAPWACAccessoryBrowser *)self cuWiFiScanner];
+        [cuWiFiScanner suspend];
 
-        v13 = [(HAPWACAccessoryBrowser *)self backoffTimer];
-        [v13 resume];
+        backoffTimer2 = [(HAPWACAccessoryBrowser *)self backoffTimer];
+        [backoffTimer2 resume];
 
         goto LABEL_10;
       }
@@ -1188,7 +1188,7 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
       if ([(HAPWACAccessoryBrowser *)self state]!= 1)
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = self;
+        selfCopy2 = self;
         v9 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
@@ -1199,14 +1199,14 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
         v16 = 138543618;
         v17 = v10;
         v18 = 2048;
-        v19 = [(HAPWACAccessoryBrowser *)v8 state];
+        state = [(HAPWACAccessoryBrowser *)selfCopy2 state];
         _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "%{public}@Incorrect state %tu on backoff timer expiry", &v16, 0x16u);
         goto LABEL_4;
       }
 
-      v15 = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
+      scanning2Pt4SSID = [(HAPWACAccessoryBrowser *)self scanning2Pt4SSID];
 
-      if (!v15)
+      if (!scanning2Pt4SSID)
       {
         [(HAPWACAccessoryBrowser *)self _restartBrowsingWithAllNetworks];
         goto LABEL_10;
@@ -1220,18 +1220,18 @@ uint64_t __58__HAPWACAccessoryBrowser_startDiscoveringAccessoryServers__block_in
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HAPWACAccessoryBrowser *)v8 backoffTimer];
+    backoffTimer3 = [(HAPWACAccessoryBrowser *)selfCopy2 backoffTimer];
     v16 = 138543874;
     v17 = v10;
     v18 = 2112;
-    v19 = v4;
+    state = fireCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = backoffTimer3;
     _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "%{public}@Timer mismatch: %@/%@", &v16, 0x20u);
 
 LABEL_4:
@@ -1245,13 +1245,13 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initWiFiScannerWithScanner:(id)a3
+- (void)_initWiFiScannerWithScanner:(id)scanner
 {
-  v4 = a3;
-  [(HAPWACAccessoryBrowser *)self setCuWiFiScanner:v4];
-  [v4 setLabel:@"HAPWACBrowser"];
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  [v4 setDispatchQueue:v5];
+  scannerCopy = scanner;
+  [(HAPWACAccessoryBrowser *)self setCuWiFiScanner:scannerCopy];
+  [scannerCopy setLabel:@"HAPWACBrowser"];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  [scannerCopy setDispatchQueue:workQueue];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -1259,19 +1259,19 @@ LABEL_10:
   v10[2] = __54__HAPWACAccessoryBrowser__initWiFiScannerWithScanner___block_invoke;
   v10[3] = &unk_2786D6990;
   objc_copyWeak(&v11, &location);
-  [v4 setDeviceFoundHandler:v10];
+  [scannerCopy setDeviceFoundHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HAPWACAccessoryBrowser__initWiFiScannerWithScanner___block_invoke_151;
   v8[3] = &unk_2786D6990;
   objc_copyWeak(&v9, &location);
-  [v4 setDeviceLostHandler:v8];
+  [scannerCopy setDeviceLostHandler:v8];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HAPWACAccessoryBrowser__initWiFiScannerWithScanner___block_invoke_152;
   v6[3] = &unk_2786D69B8;
   objc_copyWeak(&v7, &location);
-  [v4 setDeviceChangedHandler:v6];
+  [scannerCopy setDeviceChangedHandler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -1408,35 +1408,35 @@ void __54__HAPWACAccessoryBrowser__initWiFiScannerWithScanner___block_invoke_152
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initWiFiScannerWithScanner:(id)a3
+- (void)initWiFiScannerWithScanner:(id)scanner
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  scannerCopy = scanner;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HAPWACAccessoryBrowser_initWiFiScannerWithScanner___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = scannerCopy;
+  v6 = scannerCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (HAPWACAccessoryBrowser)initWithDelegate:(id)a3 queue:(id)a4
+- (HAPWACAccessoryBrowser)initWithDelegate:(id)delegate queue:(id)queue
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (delegateCopy && queueCopy)
   {
     v29.receiver = self;
     v29.super_class = HAPWACAccessoryBrowser;
-    v9 = [(HAPAccessoryServerBrowser *)&v29 initWithQueue:v7];
+    v9 = [(HAPAccessoryServerBrowser *)&v29 initWithQueue:queueCopy];
     v10 = v9;
     if (v9)
     {
-      objc_storeWeak(&v9->_delegate, v6);
+      objc_storeWeak(&v9->_delegate, delegateCopy);
       v11 = [MEMORY[0x277CBEB58] set];
       foundUnconfiguredUnpairedAccessories = v10->_foundUnconfiguredUnpairedAccessories;
       v10->_foundUnconfiguredUnpairedAccessories = v11;
@@ -1459,18 +1459,18 @@ void __54__HAPWACAccessoryBrowser__initWiFiScannerWithScanner___block_invoke_152
 
       [(HMFTimer *)v10->_backoffTimer setDelegate:v10];
       v20 = v10->_backoffTimer;
-      v21 = [(HAPAccessoryServerBrowser *)v10 workQueue];
-      [(HMFTimer *)v20 setDelegateQueue:v21];
+      workQueue = [(HAPAccessoryServerBrowser *)v10 workQueue];
+      [(HMFTimer *)v20 setDelegateQueue:workQueue];
     }
 
-    v22 = v10;
-    v23 = v22;
+    selfCopy = v10;
+    v23 = selfCopy;
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {

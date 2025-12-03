@@ -17,7 +17,7 @@
   if (a3)
   {
     v11 = [v9 safeArrayForKey:@"preferredForwardJumpIntervals"];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -25,8 +25,8 @@
     {
       v14 = @"ff.button";
 LABEL_6:
-      v17 = [v11 firstObject];
-      [v17 doubleValue];
+      firstObject2 = [v11 firstObject];
+      [firstObject2 doubleValue];
       v19 = v18;
 
       v20 = MEMORY[0x29EDBA0F8];
@@ -40,7 +40,7 @@ LABEL_6:
   else
   {
     v11 = [v9 safeArrayForKey:@"preferredBackwardJumpIntervals"];
-    v15 = [v11 firstObject];
+    firstObject3 = [v11 firstObject];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 

@@ -1,5 +1,5 @@
 @interface MIODefaultFrameProcessor
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (opaqueCMFormatDescription)formatDescriptionForEncoding;
 - (unsigned)encodedPixelFormat;
 - (void)dealloc;
@@ -35,16 +35,16 @@
 
 - (unsigned)encodedPixelFormat
 {
-  v2 = [(MIOFrameProcessor *)self formatDesc];
+  formatDesc = [(MIOFrameProcessor *)self formatDesc];
 
-  return CMFormatDescriptionGetMediaSubType(v2);
+  return CMFormatDescriptionGetMediaSubType(formatDesc);
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
-  v6 = [(MIOPixelBufferUtility *)PixelBufferUtility newPixelBufferRefCopy:a3 attachmentKeysToCopy:a4, a5];
-  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:v6 currentFormatDescription:self->_formatDescForEncoding];
-  return v6;
+  error = [(MIOPixelBufferUtility *)PixelBufferUtility newPixelBufferRefCopy:buffer attachmentKeysToCopy:attachments, error];
+  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:error currentFormatDescription:self->_formatDescForEncoding];
+  return error;
 }
 
 @end

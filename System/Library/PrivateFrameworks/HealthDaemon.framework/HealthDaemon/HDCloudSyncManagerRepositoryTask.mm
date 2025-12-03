@@ -1,24 +1,24 @@
 @interface HDCloudSyncManagerRepositoryTask
 - (HDCloudSyncManager)manager;
-- (HDCloudSyncManagerRepositoryTask)initWithManager:(id)a3 context:(id)a4;
+- (HDCloudSyncManagerRepositoryTask)initWithManager:(id)manager context:(id)context;
 - (void)main;
-- (void)mainWithRepositories:(id)a3 error:(id)a4;
+- (void)mainWithRepositories:(id)repositories error:(id)error;
 @end
 
 @implementation HDCloudSyncManagerRepositoryTask
 
-- (HDCloudSyncManagerRepositoryTask)initWithManager:(id)a3 context:(id)a4
+- (HDCloudSyncManagerRepositoryTask)initWithManager:(id)manager context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = HDCloudSyncManagerRepositoryTask;
   v8 = [(HDCloudSyncManagerTask *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_manager, managerCopy);
+    v10 = [contextCopy copy];
     context = v9->_context;
     v9->_context = v10;
   }
@@ -28,8 +28,8 @@
 
 - (void)main
 {
-  v3 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  if (!v3)
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  if (!manager)
   {
     v6 = [MEMORY[0x277CCA9B8] hk_error:100 format:@"Manager has gone nil before starting task."];
     goto LABEL_7;
@@ -38,7 +38,7 @@
   if (![(HDCloudSyncManagerRepositoryTask *)self runWhenSyncProhibited])
   {
     v9 = 0;
-    v4 = [v3 canPerformCloudSyncWithError:&v9];
+    v4 = [manager canPerformCloudSyncWithError:&v9];
     v5 = v9;
     v6 = v5;
     if (v4)
@@ -60,7 +60,7 @@ LABEL_5:
   v8[2] = __40__HDCloudSyncManagerRepositoryTask_main__block_invoke;
   v8[3] = &unk_27861BB60;
   v8[4] = self;
-  [v3 cloudSyncRepositoriesForClient:client completion:v8];
+  [manager cloudSyncRepositoriesForClient:client completion:v8];
 LABEL_8:
 }
 
@@ -87,7 +87,7 @@ void __40__HDCloudSyncManagerRepositoryTask_main__block_invoke(uint64_t a1, void
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mainWithRepositories:(id)a3 error:(id)a4
+- (void)mainWithRepositories:(id)repositories error:(id)error
 {
   objc_opt_class();
 

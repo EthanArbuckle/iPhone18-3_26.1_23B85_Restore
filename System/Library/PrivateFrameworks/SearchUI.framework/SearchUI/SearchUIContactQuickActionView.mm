@@ -1,18 +1,18 @@
 @interface SearchUIContactQuickActionView
 - (SearchUIContactButtonItem)buttonItem;
 - (SearchUIContactButtonItemGenerator)generator;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SearchUIContactQuickActionView
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    v4 = [(SearchUIContactQuickActionView *)self generator];
-    [v4 updateButtons];
+    self->_enabled = enabled;
+    generator = [(SearchUIContactQuickActionView *)self generator];
+    [generator updateButtons];
   }
 }
 

@@ -1,36 +1,36 @@
 @interface AIDAServiceContext
-+ (id)contextWithContext:(id)a3;
++ (id)contextWithContext:(id)context;
 - (AIDAServiceContext)init;
 - (CDPStateUIProvider)cdpUiProvider;
 @end
 
 @implementation AIDAServiceContext
 
-+ (id)contextWithContext:(id)a3
++ (id)contextWithContext:(id)context
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4[1] copy];
+  contextCopy = context;
+  v5 = objc_alloc_init(self);
+  v6 = [contextCopy[1] copy];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
-  objc_storeStrong(v5 + 4, v4[4]);
-  *(v5 + 16) = *(v4 + 16);
-  *(v5 + 3) = v4[3];
-  v8 = [v4[7] copy];
+  objc_storeStrong(v5 + 4, contextCopy[4]);
+  *(v5 + 16) = *(contextCopy + 16);
+  *(v5 + 3) = contextCopy[3];
+  v8 = [contextCopy[7] copy];
   v9 = *(v5 + 7);
   *(v5 + 7) = v8;
 
-  v10 = [v4[8] copy];
+  v10 = [contextCopy[8] copy];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  objc_storeStrong(v5 + 5, v4[5]);
-  objc_storeStrong(v5 + 6, v4[6]);
-  WeakRetained = objc_loadWeakRetained(v4 + 9);
+  objc_storeStrong(v5 + 5, contextCopy[5]);
+  objc_storeStrong(v5 + 6, contextCopy[6]);
+  WeakRetained = objc_loadWeakRetained(contextCopy + 9);
   objc_storeWeak(v5 + 9, WeakRetained);
 
-  v13 = [v4[10] mutableCopy];
+  v13 = [contextCopy[10] mutableCopy];
   v14 = *(v5 + 10);
   *(v5 + 10) = v13;
 

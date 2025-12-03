@@ -6,8 +6,8 @@
 
 - (int64_t)_accessibilitySortPriority
 {
-  v3 = [(TitleHeaderViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 containsString:@"scrollablePill"];
+  accessibilityIdentifier = [(TitleHeaderViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier containsString:@"scrollablePill"];
 
   if (v4)
   {

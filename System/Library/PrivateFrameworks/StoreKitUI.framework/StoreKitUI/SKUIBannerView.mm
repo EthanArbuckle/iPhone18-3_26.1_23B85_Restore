@@ -1,30 +1,30 @@
 @interface SKUIBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)screenshotImages;
-- (SKUIBannerView)initWithFrame:(CGRect)a3;
+- (SKUIBannerView)initWithFrame:(CGRect)frame;
 - (UIControl)itemOfferButton;
 - (id)_newDefaultLabel;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_reloadItemState;
 - (void)layoutSubviews;
-- (void)setArtistName:(id)a3;
-- (void)setClientContext:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setItemOffer:(id)a3;
-- (void)setItemState:(id)a3;
-- (void)setScreenshotImages:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(float)a3;
+- (void)setArtistName:(id)name;
+- (void)setClientContext:(id)context;
+- (void)setIconImage:(id)image;
+- (void)setItemOffer:(id)offer;
+- (void)setItemState:(id)state;
+- (void)setScreenshotImages:(id)images;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(float)rating;
 @end
 
 @implementation SKUIBannerView
 
-- (SKUIBannerView)initWithFrame:(CGRect)a3
+- (SKUIBannerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIBannerView initWithFrame:];
@@ -32,49 +32,49 @@
 
   v24.receiver = self;
   v24.super_class = SKUIBannerView;
-  v8 = [(SKUIBannerView *)&v24 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIBannerView *)&v24 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(SKUIBannerCloseButton);
-    closeButton = v8->_closeButton;
-    v8->_closeButton = &v9->super;
+    closeButton = height->_closeButton;
+    height->_closeButton = &v9->super;
 
-    [(UIButton *)v8->_closeButton setAdjustsImageWhenHighlighted:0];
-    v11 = v8->_closeButton;
+    [(UIButton *)height->_closeButton setAdjustsImageWhenHighlighted:0];
+    v11 = height->_closeButton;
     v12 = [MEMORY[0x277D755B8] symbolImageNamed:@"xmark"];
     [(UIButton *)v11 setImage:v12 forState:0];
 
-    [(UIButton *)v8->_closeButton setSize:11.0, 11.0];
-    v13 = v8->_closeButton;
-    v14 = [MEMORY[0x277D75348] _secondaryLabelColor];
-    [(UIButton *)v13 setTintColor:v14];
+    [(UIButton *)height->_closeButton setSize:11.0, 11.0];
+    v13 = height->_closeButton;
+    _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+    [(UIButton *)v13 setTintColor:_secondaryLabelColor];
 
-    [(SKUIBannerView *)v8 addSubview:v8->_closeButton];
-    v15 = [MEMORY[0x277D75348] _separatorColor];
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    [(SKUIBannerView *)height addSubview:height->_closeButton];
+    _separatorColor = [MEMORY[0x277D75348] _separatorColor];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v17 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v18 = objc_alloc_init(MEMORY[0x277D75D18]);
-      separatorView = v8->_separatorView;
-      v8->_separatorView = v18;
+      separatorView = height->_separatorView;
+      height->_separatorView = v18;
 
-      [(UIView *)v8->_separatorView setBackgroundColor:v15];
-      [(SKUIBannerView *)v8 addSubview:v8->_separatorView];
+      [(UIView *)height->_separatorView setBackgroundColor:_separatorColor];
+      [(SKUIBannerView *)height addSubview:height->_separatorView];
     }
 
     v20 = objc_alloc_init(MEMORY[0x277D75D18]);
-    bottomBorderView = v8->_bottomBorderView;
-    v8->_bottomBorderView = v20;
+    bottomBorderView = height->_bottomBorderView;
+    height->_bottomBorderView = v20;
 
-    [(UIView *)v8->_bottomBorderView setBackgroundColor:v15];
-    [(SKUIBannerView *)v8 addSubview:v8->_bottomBorderView];
-    v22 = [MEMORY[0x277D75348] _secondarySystemBackgroundColor];
-    [(SKUIBannerView *)v8 setBackgroundColor:v22];
+    [(UIView *)height->_bottomBorderView setBackgroundColor:_separatorColor];
+    [(SKUIBannerView *)height addSubview:height->_bottomBorderView];
+    _secondarySystemBackgroundColor = [MEMORY[0x277D75348] _secondarySystemBackgroundColor];
+    [(SKUIBannerView *)height setBackgroundColor:_secondarySystemBackgroundColor];
   }
 
-  return v8;
+  return height;
 }
 
 - (UIControl)itemOfferButton
@@ -87,9 +87,9 @@
     self->_itemOfferButton = v4;
 
     [(UIButton *)self->_itemOfferButton setHidden:1];
-    v6 = [(UIButton *)self->_itemOfferButton titleLabel];
+    titleLabel = [(UIButton *)self->_itemOfferButton titleLabel];
     v7 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v6 setFont:v7];
+    [titleLabel setFont:v7];
 
     [(SKUIBannerView *)self addSubview:self->_itemOfferButton];
     itemOfferButton = self->_itemOfferButton;
@@ -101,7 +101,7 @@
 - (NSArray)screenshotImages
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -121,8 +121,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) image];
-        [v3 addObject:v9];
+        image = [*(*(&v11 + 1) + 8 * i) image];
+        [array addObject:image];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -131,23 +131,23 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v9 = a3;
-  v4 = [(SKUIBannerView *)self artistName];
-  if (v4 != v9 && ([v9 isEqualToString:v4] & 1) == 0)
+  nameCopy = name;
+  artistName = [(SKUIBannerView *)self artistName];
+  if (artistName != nameCopy && ([nameCopy isEqualToString:artistName] & 1) == 0)
   {
     artistNameLabel = self->_artistNameLabel;
-    if (v9)
+    if (nameCopy)
     {
       if (!artistNameLabel)
       {
-        v6 = [(SKUIBannerView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SKUIBannerView *)self _newDefaultLabel];
         v7 = self->_artistNameLabel;
-        self->_artistNameLabel = v6;
+        self->_artistNameLabel = _newDefaultLabel;
 
         [(SKUIBannerView *)self addSubview:self->_artistNameLabel];
         artistNameLabel = self->_artistNameLabel;
@@ -168,13 +168,13 @@
   }
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v9 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     closeButton = self->_closeButton;
     clientContext = self->_clientContext;
     if (clientContext)
@@ -190,14 +190,14 @@
     [(UIButton *)closeButton setAccessibilityLabel:v8];
 
     [(SKUIBannerView *)self _reloadItemState];
-    v5 = v9;
+    contextCopy = v9;
   }
 }
 
-- (void)setScreenshotImages:(id)a3
+- (void)setScreenshotImages:(id)images
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imagesCopy = images;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -236,7 +236,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v4;
+  v12 = imagesCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v13)
   {
@@ -271,15 +271,15 @@
   [(SKUIBannerView *)self setNeedsLayout];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v10 = a3;
-  v4 = [(UIImageView *)self->_iconImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (v4 != v10)
+  if (image != imageCopy)
   {
     iconImageView = self->_iconImageView;
-    if (v10)
+    if (imageCopy)
     {
       if (!iconImageView)
       {
@@ -302,44 +302,44 @@
       self->_iconImageView = 0;
     }
 
-    v5 = [(SKUIBannerView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIBannerView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setItemOffer:(id)a3
+- (void)setItemOffer:(id)offer
 {
-  v5 = a3;
-  if (self->_itemOffer != v5)
+  offerCopy = offer;
+  if (self->_itemOffer != offerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemOffer, a3);
+    v6 = offerCopy;
+    objc_storeStrong(&self->_itemOffer, offer);
     [(SKUIBannerView *)self _reloadItemState];
-    v5 = v6;
+    offerCopy = v6;
   }
 }
 
-- (void)setItemState:(id)a3
+- (void)setItemState:(id)state
 {
-  v5 = a3;
-  if (self->_itemState != v5)
+  stateCopy = state;
+  if (self->_itemState != stateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemState, a3);
+    v6 = stateCopy;
+    objc_storeStrong(&self->_itemState, state);
     [(SKUIBannerView *)self _reloadItemState];
-    v5 = v6;
+    stateCopy = v6;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SKUIBannerView *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIBannerView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -348,8 +348,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -357,8 +357,8 @@
 
         [(UILabel *)self->_titleLabel setNumberOfLines:2];
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] _labelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        _labelColor = [MEMORY[0x277D75348] _labelColor];
+        [(UILabel *)v12 setTextColor:_labelColor];
 
         [(SKUIBannerView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
@@ -378,10 +378,10 @@
   }
 }
 
-- (void)setUserRating:(float)a3
+- (void)setUserRating:(float)rating
 {
   userRatingStarImageView = self->_userRatingStarImageView;
-  if (self->_userRating == a3)
+  if (self->_userRating == rating)
   {
     if (userRatingStarImageView)
     {
@@ -401,7 +401,7 @@ LABEL_5:
     [(SKUIBannerView *)self addSubview:self->_userRatingStarImageView];
   }
 
-  self->_userRating = a3;
+  self->_userRating = rating;
   v10 = [SKUIRatingStarsCache cacheWithProperties:1];
   v8 = self->_userRatingStarImageView;
   v9 = [v10 ratingStarsImageForRating:self->_userRating];
@@ -410,13 +410,13 @@ LABEL_5:
   [(UIImageView *)self->_userRatingStarImageView sizeToFit];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v11.receiver = self;
   v11.super_class = SKUIBannerView;
-  v7 = [(SKUIBannerView *)&v11 hitTest:a4 withEvent:?];
+  v7 = [(SKUIBannerView *)&v11 hitTest:event withEvent:?];
   if (v7 == self)
   {
     p_closeButton = &self->_closeButton;
@@ -449,11 +449,11 @@ LABEL_5:
   v13 = v4 + v12;
   v14 = v6 + 0.0;
   v16 = v8 - (v12 + v15);
-  v17 = [(SKUIBannerView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(SKUIBannerView *)self _shouldReverseLayoutDirection];
   [(UIButton *)self->_closeButton frame];
   v19 = v18;
   v21 = v20;
-  if (v17)
+  if (_shouldReverseLayoutDirection)
   {
     v187.origin.x = v13;
     v187.origin.y = v14;
@@ -476,7 +476,7 @@ LABEL_5:
   v26 = v14;
   v27 = v16;
   v28 = v10;
-  if (v17)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMinX(*&v25);
     v29 = MinX + 10.0;
@@ -507,7 +507,7 @@ LABEL_5:
     [(UIImageView *)iconImageView frame];
     v35 = v34;
     v37 = v36;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v38 = v32 - v34;
     }
@@ -522,7 +522,7 @@ LABEL_5:
     v40 = v38;
     v41 = v35;
     v42 = v37;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v43 = CGRectGetMinX(*&v40);
       v44 = -8.0;
@@ -543,7 +543,7 @@ LABEL_5:
     [(UIButton *)self->_itemOfferButton frame];
     v48 = v46;
     v49 = v47;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v50 = v29;
     }
@@ -560,14 +560,14 @@ LABEL_5:
     v54 = v52;
     v55 = v48;
     v56 = v49;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v57 = CGRectGetMaxX(*&v53);
-      v58 = [MEMORY[0x277D75418] currentDevice];
-      v59 = [v58 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v60 = 5.0;
-      if ((v59 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v60 = 30.0;
       }
@@ -578,11 +578,11 @@ LABEL_5:
     else
     {
       v61 = CGRectGetMinX(*&v53);
-      v62 = [MEMORY[0x277D75418] currentDevice];
-      v63 = [v62 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
       v64 = 5.0;
-      if ((v63 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v64 = 30.0;
       }
@@ -601,8 +601,8 @@ LABEL_5:
     [(UILabel *)artistNameLabel frame];
     v70 = v69;
     v72 = v71;
-    v73 = [MEMORY[0x277D759A0] mainScreen];
-    [v73 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v75 = 1.0 / v74 + 2.0;
   }
 
@@ -630,8 +630,8 @@ LABEL_5:
   {
     [(UILabel *)titleLabel sizeThatFits:v29 - v32, 1.79769313e308];
     v82 = v81;
-    v83 = [MEMORY[0x277D759A0] mainScreen];
-    [v83 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v75 = v75 + 1.0 / v84;
   }
 
@@ -654,8 +654,8 @@ LABEL_5:
       v190.size.height = v82;
       v92 = v72;
       MaxY = CGRectGetMaxY(v190);
-      v94 = [MEMORY[0x277D759A0] mainScreen];
-      [v94 scale];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 scale];
       v96 = MaxY + 1.0 / v95;
 
       v174 = v91;
@@ -685,8 +685,8 @@ LABEL_5:
       [(UIImageView *)userRatingStarImageView frame];
       v166 = v86;
       v67 = v87;
-      v88 = [MEMORY[0x277D759A0] mainScreen];
-      [v88 scale];
+      mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen4 scale];
       v75 = v75 + 1.0 / v89 + 2.0;
     }
 
@@ -704,8 +704,8 @@ LABEL_5:
       v191.size.width = v79;
       v191.size.height = v82;
       v102 = CGRectGetMaxY(v191);
-      v103 = [MEMORY[0x277D759A0] mainScreen];
-      [v103 scale];
+      mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen5 scale];
       v105 = v102 + 1.0 / v104;
 
       v174 = v91;
@@ -719,8 +719,8 @@ LABEL_5:
       v192.size.width = v79;
       v192.size.height = v72;
       v106 = CGRectGetMaxY(v192);
-      v107 = [MEMORY[0x277D759A0] mainScreen];
-      [v107 scale];
+      mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen6 scale];
       v109 = v106 + 1.0 / v108 + 2.0;
     }
 
@@ -737,14 +737,14 @@ LABEL_5:
     }
 
     v110 = -1.0;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v110 = 1.0;
     }
 
     v111 = v110 + v173;
     v100 = v166;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v97 = v111 - v166;
     }
@@ -754,8 +754,8 @@ LABEL_5:
       v97 = v111;
     }
 
-    v112 = [MEMORY[0x277D759A0] mainScreen];
-    [v112 scale];
+    mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen7 scale];
     v98 = v109 + 1.0 / v113;
 
     [(UIImageView *)self->_userRatingStarImageView setFrame:v97, v98, v100, v67];
@@ -766,8 +766,8 @@ LABEL_5:
   v193.size.width = v100;
   v193.size.height = v67;
   v114 = CGRectGetMaxY(v193);
-  v115 = [MEMORY[0x277D759A0] mainScreen];
-  [v115 scale];
+  mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen8 scale];
   v109 = v114 + 1.0 / v116 + 2.0;
 
 LABEL_57:
@@ -791,8 +791,8 @@ LABEL_58:
   if (separatorView)
   {
     [(UIView *)separatorView frame];
-    v120 = [MEMORY[0x277D759A0] mainScreen];
-    [v120 scale];
+    mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen9 scale];
     v122 = 1.0 / v121;
 
     [(UIView *)self->_separatorView setFrame:MinX, 10.0, v122, v10 + -20.0];
@@ -806,7 +806,7 @@ LABEL_58:
   v127 = rect;
   if (!v123)
   {
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v128 = -15.0;
     }
@@ -817,7 +817,7 @@ LABEL_58:
     }
 
     v129 = v10;
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v130 = CGRectGetMinX(*&v125) + 15.0;
     }
@@ -862,7 +862,7 @@ LABEL_58:
     v140 = v131 - floorf(v139);
     v141 = (v130 - v131 - v132) * 0.5;
     v142 = v131 + floorf(v141);
-    if (v17)
+    if (_shouldReverseLayoutDirection)
     {
       v143 = v140;
     }
@@ -915,24 +915,24 @@ LABEL_58:
   bottomBorderView = self->_bottomBorderView;
   [(SKUIBannerView *)self bounds:v125];
   v158 = v157;
-  v159 = [MEMORY[0x277D759A0] mainScreen];
-  [v159 scale];
+  mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen10 scale];
   v161 = v158 - 1.0 / v160;
   [(SKUIBannerView *)self bounds];
   v163 = v162;
-  v164 = [MEMORY[0x277D759A0] mainScreen];
-  [v164 scale];
+  mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen11 scale];
   [(UIView *)bottomBorderView setFrame:0.0, v161, v163, 1.0 / v165];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  width = fits.width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v6 = 95.0;
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v6 = 84.0;
   }
@@ -946,14 +946,14 @@ LABEL_58:
 - (id)_newDefaultLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SKUIBannerView *)self backgroundColor];
-  [v3 setBackgroundColor:v4];
+  backgroundColor = [(SKUIBannerView *)self backgroundColor];
+  [v3 setBackgroundColor:backgroundColor];
 
   v5 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
   [v3 setFont:v5];
 
-  v6 = [MEMORY[0x277D75348] _secondaryLabelColor];
-  [v3 setTextColor:v6];
+  _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+  [v3 setTextColor:_secondaryLabelColor];
 
   return v3;
 }
@@ -965,8 +965,8 @@ LABEL_58:
     return;
   }
 
-  v3 = [(SKUIItemState *)self->_itemState state];
-  if ((v3 & 4) == 0)
+  state = [(SKUIItemState *)self->_itemState state];
+  if ((state & 4) == 0)
   {
     itemOffer = self->_itemOffer;
     if (!itemOffer)
@@ -975,30 +975,30 @@ LABEL_58:
       goto LABEL_33;
     }
 
-    v6 = [(SSLookupItemOffer *)itemOffer price];
-    [v6 floatValue];
+    price = [(SSLookupItemOffer *)itemOffer price];
+    [price floatValue];
     v8 = v7;
 
     v9 = self->_itemOffer;
     if (v8 >= 0.00000011921)
     {
-      v11 = [(SSLookupItemOffer *)v9 formattedPrice];
+      formattedPrice = [(SSLookupItemOffer *)v9 formattedPrice];
     }
 
     else
     {
       v10 = [(SSLookupItemOffer *)v9 actionTextForType:*MEMORY[0x277D6A2C0]];
-      v11 = [v10 uppercaseString];
+      formattedPrice = [v10 uppercaseString];
     }
 
-    if (![v11 length])
+    if (![formattedPrice length])
     {
       v28 = 0;
       goto LABEL_29;
     }
 
-    v15 = [(SSLookupItemOffer *)self->_itemOffer subscriptionType];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D6A2B8]];
+    subscriptionType = [(SSLookupItemOffer *)self->_itemOffer subscriptionType];
+    v16 = [subscriptionType isEqualToString:*MEMORY[0x277D6A2B8]];
 
     clientContext = self->_clientContext;
     if (v16)
@@ -1010,7 +1010,7 @@ LABEL_24:
         v19 = [(SKUIClientContext *)clientContext localizedStringForKey:v18];
 LABEL_28:
         v21 = v19;
-        v28 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@" error:0, v11];
+        v28 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@" error:0, formattedPrice];
 
 LABEL_29:
         v22 = self->_clientContext;
@@ -1081,10 +1081,10 @@ LABEL_33:
   }
 
 LABEL_15:
-  v14 = [(SKUIBannerView *)self itemOfferButton];
-  [v14 setHidden:0];
-  [v14 setTitle:v13 forState:0];
-  [v14 sizeToFit];
+  itemOfferButton = [(SKUIBannerView *)self itemOfferButton];
+  [itemOfferButton setHidden:0];
+  [itemOfferButton setTitle:v13 forState:0];
+  [itemOfferButton sizeToFit];
 
 LABEL_34:
   itemStateLabel = self->_itemStateLabel;
@@ -1093,9 +1093,9 @@ LABEL_34:
   {
     if (!itemStateLabel)
     {
-      v25 = [(SKUIBannerView *)self _newDefaultLabel];
+      _newDefaultLabel = [(SKUIBannerView *)self _newDefaultLabel];
       v26 = self->_itemStateLabel;
-      self->_itemStateLabel = v25;
+      self->_itemStateLabel = _newDefaultLabel;
 
       [(SKUIBannerView *)self addSubview:self->_itemStateLabel];
       v24 = v28;
@@ -1113,7 +1113,7 @@ LABEL_34:
     self->_itemStateLabel = 0;
   }
 
-  [(UIImageView *)self->_userRatingStarImageView setHidden:(v3 >> 2) & 1];
+  [(UIImageView *)self->_userRatingStarImageView setHidden:(state >> 2) & 1];
   [(SKUIBannerView *)self setNeedsLayout];
 }
 

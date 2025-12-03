@@ -1,7 +1,7 @@
 @interface ASDSRCAudioDevice
-- (ASDSRCAudioDevice)initWithDeviceUID:(id)a3 underlyingDevice:(id)a4 plugin:(id)a5;
-- (BOOL)changeSamplingRate:(double)a3;
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4;
+- (ASDSRCAudioDevice)initWithDeviceUID:(id)d underlyingDevice:(id)device plugin:(id)plugin;
+- (BOOL)changeSamplingRate:(double)rate;
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block;
 - (double)sampleRateRatio;
 - (double)samplingRate;
 - (id)getZeroTimestampBlock;
@@ -9,54 +9,54 @@
 - (id)willDoReadInputBlock;
 - (id)willDoWriteMixBlock;
 - (int)performStopIO;
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4;
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case;
 - (unsigned)inputSafetyOffset;
 - (unsigned)outputSafetyOffset;
 - (unsigned)timestampPeriod;
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4;
-- (void)setSamplingRate:(double)a3;
-- (void)setSamplingRates:(id)a3;
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object;
+- (void)setSamplingRate:(double)rate;
+- (void)setSamplingRates:(id)rates;
 @end
 
 @implementation ASDSRCAudioDevice
 
-- (ASDSRCAudioDevice)initWithDeviceUID:(id)a3 underlyingDevice:(id)a4 plugin:(id)a5
+- (ASDSRCAudioDevice)initWithDeviceUID:(id)d underlyingDevice:(id)device plugin:(id)plugin
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v48.receiver = self;
   v48.super_class = ASDSRCAudioDevice;
-  v10 = [(ASDAudioDevice *)&v48 initWithDeviceUID:v8 withPlugin:a5];
+  v10 = [(ASDAudioDevice *)&v48 initWithDeviceUID:dCopy withPlugin:plugin];
   if (v10)
   {
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v11 bundleIdentifier];
-    objc_storeStrong(&v10->_underlyingDevice, a4);
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.sampleRate", v12, v8];
-    v14 = dispatch_queue_create([v13 UTF8String], 0);
+    bundleIdentifier = [v11 bundleIdentifier];
+    objc_storeStrong(&v10->_underlyingDevice, device);
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.sampleRate", bundleIdentifier, dCopy];
+    v14 = dispatch_queue_create([dCopy UTF8String], 0);
     sampleRateQueue = v10->_sampleRateQueue;
     v10->_sampleRateQueue = v14;
 
     *&v10->_lastTimestamp.valid = 0u;
     *&v10->_lastTimestamp.hostTime = 0u;
-    if (v9)
+    if (deviceCopy)
     {
       v16 = MEMORY[0x277CBEB18];
-      v17 = [(ASDAudioDevice *)v10->_underlyingDevice samplingRates];
-      v18 = [v16 arrayWithArray:v17];
+      samplingRates = [(ASDAudioDevice *)v10->_underlyingDevice samplingRates];
+      v18 = [v16 arrayWithArray:samplingRates];
       [(ASDSRCAudioDevice *)v10 setSamplingRates:v18];
 
       [(ASDAudioDevice *)v10->_underlyingDevice samplingRate];
       [(ASDSRCAudioDevice *)v10 setSamplingRate:?];
-      [v9 setConfigurationChangeDelegate:v10];
-      [v9 setPropertyChangedDelegate:v10];
+      [deviceCopy setConfigurationChangeDelegate:v10];
+      [deviceCopy setPropertyChangedDelegate:v10];
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v19 = [v9 inputStreams];
-      v20 = [v19 countByEnumeratingWithState:&v44 objects:v51 count:16];
+      inputStreams = [deviceCopy inputStreams];
+      v20 = [inputStreams countByEnumeratingWithState:&v44 objects:v51 count:16];
       if (v20)
       {
         v21 = v20;
@@ -67,13 +67,13 @@
           {
             if (*v45 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(inputStreams);
             }
 
             [*(*(&v44 + 1) + 8 * i) setPropertyChangedDelegate:v10];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v44 objects:v51 count:16];
+          v21 = [inputStreams countByEnumeratingWithState:&v44 objects:v51 count:16];
         }
 
         while (v21);
@@ -83,8 +83,8 @@
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v24 = [v9 outputStreams];
-      v25 = [v24 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      outputStreams = [deviceCopy outputStreams];
+      v25 = [outputStreams countByEnumeratingWithState:&v40 objects:v50 count:16];
       if (v25)
       {
         v26 = v25;
@@ -95,13 +95,13 @@
           {
             if (*v41 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(outputStreams);
             }
 
             [*(*(&v40 + 1) + 8 * j) setPropertyChangedDelegate:v10];
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v40 objects:v50 count:16];
+          v26 = [outputStreams countByEnumeratingWithState:&v40 objects:v50 count:16];
         }
 
         while (v26);
@@ -111,8 +111,8 @@
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v29 = [v9 controls];
-      v30 = [v29 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      controls = [deviceCopy controls];
+      v30 = [controls countByEnumeratingWithState:&v36 objects:v49 count:16];
       if (v30)
       {
         v31 = v30;
@@ -123,13 +123,13 @@
           {
             if (*v37 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(controls);
             }
 
             [*(*(&v36 + 1) + 8 * k) setPropertyChangedDelegate:v10];
           }
 
-          v31 = [v29 countByEnumeratingWithState:&v36 objects:v49 count:16];
+          v31 = [controls countByEnumeratingWithState:&v36 objects:v49 count:16];
         }
 
         while (v31);
@@ -138,7 +138,7 @@
 
     else
     {
-      v29 = v10;
+      controls = v10;
       v10 = 0;
     }
   }
@@ -147,10 +147,10 @@
   return v10;
 }
 
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -158,8 +158,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 underlyingStreams];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    underlyingStreams = [streamCopy underlyingStreams];
+    v8 = [underlyingStreams countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -171,17 +171,17 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(underlyingStreams);
           }
 
-          v13 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:*(*(&v16 + 1) + 8 * i) useCase:a4];
+          v13 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:*(*(&v16 + 1) + 8 * i) useCase:case];
           if (v13)
           {
             v10 = v13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [underlyingStreams countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -195,14 +195,14 @@
 
   else
   {
-    v10 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:v6 useCase:a4];
+    v10 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:streamCopy useCase:case];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)setSamplingRate:(double)a3
+- (void)setSamplingRate:(double)rate
 {
   sampleRateQueue = self->_sampleRateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -210,7 +210,7 @@
   block[2] = __37__ASDSRCAudioDevice_setSamplingRate___block_invoke;
   block[3] = &unk_278CE3F90;
   block[4] = self;
-  *&block[5] = a3;
+  *&block[5] = rate;
   dispatch_sync(sampleRateQueue, block);
   LODWORD(v7) = 0;
   v5 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626E737274];
@@ -375,35 +375,35 @@ double __33__ASDSRCAudioDevice_samplingRate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)changeSamplingRate:(double)a3
+- (BOOL)changeSamplingRate:(double)rate
 {
   v27 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = NSStringFromSelector(a2);
     *buf = 136315906;
-    v20 = v8;
+    v20 = uTF8String;
     v21 = 2048;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2080;
-    v24 = [v9 UTF8String];
+    uTF8String2 = [v9 UTF8String];
     v25 = 2048;
-    v26 = a3;
+    rateCopy = rate;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "+ %s(%p)::%s(%f)\n", buf, 0x2Au);
   }
 
   [(ASDSRCAudioDevice *)self samplingRate];
-  if (v10 != a3)
+  if (v10 != rate)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __40__ASDSRCAudioDevice_changeSamplingRate___block_invoke;
     v18[3] = &unk_278CE4120;
     v18[4] = self;
-    *&v18[5] = a3;
+    *&v18[5] = rate;
     v18[6] = a2;
     [(ASDAudioDevice *)self requestConfigurationChange:v18];
   }
@@ -412,17 +412,17 @@ double __33__ASDSRCAudioDevice_samplingRate__block_invoke(uint64_t a1)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v12 UTF8String];
+    uTF8String3 = [v12 UTF8String];
     v14 = NSStringFromSelector(a2);
-    v15 = [v14 UTF8String];
+    uTF8String4 = [v14 UTF8String];
     *buf = 136315906;
-    v20 = v13;
+    v20 = uTF8String3;
     v21 = 2048;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2080;
-    v24 = v15;
+    uTF8String2 = uTF8String4;
     v25 = 1024;
-    LODWORD(v26) = 1;
+    LODWORD(rateCopy) = 1;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "- %s(%p)::%s(%d)\n", buf, 0x26u);
   }
 
@@ -527,17 +527,17 @@ void __40__ASDSRCAudioDevice_changeSamplingRate___block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSamplingRates:(id)a3
+- (void)setSamplingRates:(id)rates
 {
-  v4 = a3;
+  ratesCopy = rates;
   sampleRateQueue = self->_sampleRateQueue;
   block = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __38__ASDSRCAudioDevice_setSamplingRates___block_invoke;
   v13 = &unk_278CE3E78;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = ratesCopy;
+  v6 = ratesCopy;
   dispatch_sync(sampleRateQueue, &block);
   LODWORD(v9) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626E737223];
@@ -595,9 +595,9 @@ uint64_t __34__ASDSRCAudioDevice_samplingRates__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v4 = [(ASDAudioDevice *)self->_underlyingDevice timestampPeriod];
+  timestampPeriod = [(ASDAudioDevice *)self->_underlyingDevice timestampPeriod];
   [(ASDSRCAudioDevice *)self samplingRate];
-  v6 = v4 * v5;
+  v6 = timestampPeriod * v5;
   [(ASDAudioDevice *)self->_underlyingDevice samplingRate];
   return v6 / v7;
 }
@@ -617,16 +617,16 @@ uint64_t __34__ASDSRCAudioDevice_samplingRates__block_invoke(uint64_t a1)
 
 - (unsigned)inputSafetyOffset
 {
-  v3 = [(ASDAudioDevice *)self->_underlyingDevice inputSafetyOffset];
+  inputSafetyOffset = [(ASDAudioDevice *)self->_underlyingDevice inputSafetyOffset];
   [(ASDSRCAudioDevice *)self sampleRateRatio];
-  return v3 * vcvtpd_s64_f64(v4);
+  return inputSafetyOffset * vcvtpd_s64_f64(v4);
 }
 
 - (unsigned)outputSafetyOffset
 {
-  v3 = [(ASDAudioDevice *)self->_underlyingDevice outputSafetyOffset];
+  outputSafetyOffset = [(ASDAudioDevice *)self->_underlyingDevice outputSafetyOffset];
   [(ASDSRCAudioDevice *)self sampleRateRatio];
-  return v3 * vcvtpd_s64_f64(v4);
+  return outputSafetyOffset * vcvtpd_s64_f64(v4);
 }
 
 - (int)performStopIO
@@ -645,12 +645,12 @@ uint64_t __34__ASDSRCAudioDevice_samplingRates__block_invoke(uint64_t a1)
   v4 = v3;
   [(ASDAudioDevice *)self->_underlyingDevice samplingRate];
   v6 = v4 / v5;
-  v7 = [(ASDAudioDevice *)self->_underlyingDevice getZeroTimestampBlock];
+  getZeroTimestampBlock = [(ASDAudioDevice *)self->_underlyingDevice getZeroTimestampBlock];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__ASDSRCAudioDevice_getZeroTimestampBlock__block_invoke;
   v10[3] = &unk_278CE4148;
-  v10[4] = v7;
+  v10[4] = getZeroTimestampBlock;
   *&v10[5] = v6;
   v8 = MEMORY[0x245CEBEA0](v10);
 
@@ -669,12 +669,12 @@ double __42__ASDSRCAudioDevice_getZeroTimestampBlock__block_invoke(uint64_t a1, 
 
 - (id)willDoReadInputBlock
 {
-  v2 = [(ASDAudioDevice *)self hasInput];
+  hasInput = [(ASDAudioDevice *)self hasInput];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__ASDSRCAudioDevice_willDoReadInputBlock__block_invoke;
   v5[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v6 = v2;
+  v6 = hasInput;
   v3 = MEMORY[0x245CEBEA0](v5);
 
   return v3;
@@ -689,12 +689,12 @@ uint64_t __41__ASDSRCAudioDevice_willDoReadInputBlock__block_invoke(uint64_t a1,
 
 - (id)willDoWriteMixBlock
 {
-  v2 = [(ASDAudioDevice *)self hasOutput];
+  hasOutput = [(ASDAudioDevice *)self hasOutput];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ASDSRCAudioDevice_willDoWriteMixBlock__block_invoke;
   v5[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v6 = v2;
+  v6 = hasOutput;
   v3 = MEMORY[0x245CEBEA0](v5);
 
   return v3;
@@ -707,25 +707,25 @@ uint64_t __40__ASDSRCAudioDevice_willDoWriteMixBlock__block_invoke(uint64_t a1, 
   return 0;
 }
 
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(ASDObject *)self plugin];
+  blockCopy = block;
+  plugin = [(ASDObject *)self plugin];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__ASDSRCAudioDevice_requestConfigurationChangeForDevice_withBlock___block_invoke;
   v9[3] = &unk_278CE4190;
-  v10 = v5;
-  v7 = v5;
-  LOBYTE(self) = [v6 requestConfigurationChangeForDevice:self withBlock:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  LOBYTE(self) = [plugin requestConfigurationChangeForDevice:self withBlock:v9];
 
   return self;
 }
 
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object
 {
-  v6 = [(ASDObject *)self plugin:a3];
-  [v6 changedProperty:a3 forObject:self];
+  v6 = [(ASDObject *)self plugin:property];
+  [v6 changedProperty:property forObject:self];
 }
 
 - (void)startIOForClient:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

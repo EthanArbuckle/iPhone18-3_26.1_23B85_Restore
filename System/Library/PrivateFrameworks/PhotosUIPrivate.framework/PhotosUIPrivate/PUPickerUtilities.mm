@@ -1,18 +1,18 @@
 @interface PUPickerUtilities
-+ (id)_pickerConfigurationForAddToCollectionWithAssetsToAdd:(id)a3 sourceType:(int64_t)a4;
-+ (id)_pickerConfigurationForAlbumPickerForPhotoLibrary:(id)a3;
++ (id)_pickerConfigurationForAddToCollectionWithAssetsToAdd:(id)add sourceType:(int64_t)type;
++ (id)_pickerConfigurationForAlbumPickerForPhotoLibrary:(id)library;
 + (void)presentDataAccessEducationViewController;
 + (void)presentInternalAndDeveloperModeOnlyTouchAuthenticationAlertIfNeeded;
-+ (void)presentUserSafetyViewControllerForNonPreviewableAnalysisResults:(PXSharingUserSafetyAnalysisResults)a3 completionHandler:(id)a4;
++ (void)presentUserSafetyViewControllerForNonPreviewableAnalysisResults:(PXSharingUserSafetyAnalysisResults)results completionHandler:(id)handler;
 @end
 
 @implementation PUPickerUtilities
 
-+ (id)_pickerConfigurationForAlbumPickerForPhotoLibrary:(id)a3
++ (id)_pickerConfigurationForAlbumPickerForPhotoLibrary:(id)library
 {
   v3 = MEMORY[0x1E69790E0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [[v3 alloc] initWithPhotoLibrary:libraryCopy];
 
   if (v5)
   {
@@ -29,33 +29,33 @@
   return v5;
 }
 
-+ (id)_pickerConfigurationForAddToCollectionWithAssetsToAdd:(id)a3 sourceType:(int64_t)a4
++ (id)_pickerConfigurationForAddToCollectionWithAssetsToAdd:(id)add sourceType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
-  v7 = [v6 photoLibrary];
+  addCopy = add;
+  firstObject = [addCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  if (v7)
+  if (photoLibrary)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69790E0]) _initWithPhotoLibrary:v7 onlyReturnsIdentifiers:0];
+    v8 = [objc_alloc(MEMORY[0x1E69790E0]) _initWithPhotoLibrary:photoLibrary onlyReturnsIdentifiers:0];
     v9 = v8;
     if (v8)
     {
       [v8 setSelectionLimit:1];
-      [v9 _setSourceType:a4];
+      [v9 _setSourceType:type];
       [v9 _setDisabledPrivateCapabilities:49152];
       v10 = PXLocalizedString();
       [v9 setTitle:v10];
 
       v11 = objc_alloc_init(MEMORY[0x1E6979160]);
-      v12 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __86__PUPickerUtilities__pickerConfigurationForAddToCollectionWithAssetsToAdd_sourceType___block_invoke;
       v17[3] = &unk_1E7B80D68;
-      v18 = v12;
-      v13 = v12;
-      [v5 enumerateObjectsUsingBlock:v17];
+      v18 = array;
+      v13 = array;
+      [addCopy enumerateObjectsUsingBlock:v17];
       [v11 setAssetsToAddIdentifiers:v13];
       [v9 _setAlbumsConfiguration:v11];
     }
@@ -132,28 +132,28 @@ LABEL_6:
 LABEL_12:
 }
 
-+ (void)presentUserSafetyViewControllerForNonPreviewableAnalysisResults:(PXSharingUserSafetyAnalysisResults)a3 completionHandler:(id)a4
++ (void)presentUserSafetyViewControllerForNonPreviewableAnalysisResults:(PXSharingUserSafetyAnalysisResults)results completionHandler:(id)handler
 {
-  var0 = a3.var0;
-  v5 = a4;
+  var0 = results.var0;
+  handlerCopy = handler;
   v6 = [objc_alloc(MEMORY[0x1E69D42A0]) initWithServiceName:@"com.apple.Photos.PhotosUIService" viewControllerClassName:@"PhotosUIServiceUserSafetyViewController"];
   v7 = objc_alloc_init(MEMORY[0x1E69D4298]);
   v8 = [MEMORY[0x1E69D42B8] newHandleWithDefinition:v6 configurationContext:v7];
   v9 = objc_alloc_init(MEMORY[0x1E69D4288]);
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:var0];
-  [v10 setValue:v11 forKey:@"nonPreviewableCompactSCSensitivityAnalysis"];
+  [dictionary setValue:v11 forKey:@"nonPreviewableCompactSCSensitivityAnalysis"];
 
-  [v9 setUserInfo:v10];
+  [v9 setUserInfo:dictionary];
   v12 = MEMORY[0x1E698E5F8];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __103__PUPickerUtilities_presentUserSafetyViewControllerForNonPreviewableAnalysisResults_completionHandler___block_invoke;
   v22 = &unk_1E7B80D40;
   v23 = v8;
-  v24 = v5;
+  v24 = handlerCopy;
   v13 = v8;
-  v14 = v5;
+  v14 = handlerCopy;
   v15 = [v12 responderWithHandler:&v19];
   [v15 setQueue:{MEMORY[0x1E69E96A0], v19, v20, v21, v22}];
   v16 = MEMORY[0x1E695DFD8];

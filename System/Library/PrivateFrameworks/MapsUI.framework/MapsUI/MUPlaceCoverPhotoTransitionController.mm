@@ -1,24 +1,24 @@
 @interface MUPlaceCoverPhotoTransitionController
-- (MUPlaceCoverPhotoTransitionController)initWithMetrics:(MUPlaceHeaderMetrics *)a3 updateHandler:(id)a4;
+- (MUPlaceCoverPhotoTransitionController)initWithMetrics:(MUPlaceHeaderMetrics *)metrics updateHandler:(id)handler;
 - (MUPlaceHeaderMetrics)metrics;
 - (double)_logoImageAlphaForVerticalDrag;
-- (double)coverPhotoHeightForProposedWidth:(double)a3;
+- (double)coverPhotoHeightForProposedWidth:(double)width;
 - (double)interpolatedCoverPhotoToTitleSpacing;
 - (double)logoImageAlpha;
-- (void)_updateWithOldProgress:(double)a3;
-- (void)setExpansionProgress:(double)a3;
-- (void)setMetrics:(MUPlaceHeaderMetrics *)a3;
+- (void)_updateWithOldProgress:(double)progress;
+- (void)setExpansionProgress:(double)progress;
+- (void)setMetrics:(MUPlaceHeaderMetrics *)metrics;
 @end
 
 @implementation MUPlaceCoverPhotoTransitionController
 
-- (void)setMetrics:(MUPlaceHeaderMetrics *)a3
+- (void)setMetrics:(MUPlaceHeaderMetrics *)metrics
 {
-  *&self->_metrics.topToTitleSpacing = *&a3->topToTitleSpacing;
-  v3 = *&a3->coverPhotoMetrics.hasLogo;
-  v4 = *&a3->coverPhotoMetrics.logoSize.height;
-  v5 = *&a3->coverPhotoMetrics.coverPhotoContainerToTitleSpacing;
-  self->_metrics.coverPhotoMetrics.endingLogoAlphaTransitionValue = a3->coverPhotoMetrics.endingLogoAlphaTransitionValue;
+  *&self->_metrics.topToTitleSpacing = *&metrics->topToTitleSpacing;
+  v3 = *&metrics->coverPhotoMetrics.hasLogo;
+  v4 = *&metrics->coverPhotoMetrics.logoSize.height;
+  v5 = *&metrics->coverPhotoMetrics.coverPhotoContainerToTitleSpacing;
+  self->_metrics.coverPhotoMetrics.endingLogoAlphaTransitionValue = metrics->coverPhotoMetrics.endingLogoAlphaTransitionValue;
   *&self->_metrics.coverPhotoMetrics.logoSize.height = v4;
   *&self->_metrics.coverPhotoMetrics.coverPhotoContainerToTitleSpacing = v5;
   *&self->_metrics.coverPhotoMetrics.hasLogo = v3;
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (void)_updateWithOldProgress:(double)a3
+- (void)_updateWithOldProgress:(double)progress
 {
   expansionProgress = self->_expansionProgress;
-  if (expansionProgress <= a3)
+  if (expansionProgress <= progress)
   {
-    if (expansionProgress >= a3)
+    if (expansionProgress >= progress)
     {
       goto LABEL_6;
     }
@@ -125,7 +125,7 @@ LABEL_6:
   }
 }
 
-- (double)coverPhotoHeightForProposedWidth:(double)a3
+- (double)coverPhotoHeightForProposedWidth:(double)width
 {
   coverPhotoBottomToLogoBottomSpacing = 0.0;
   if (!self->_metrics.coverPhotoMetrics.hasLogo)
@@ -137,19 +137,19 @@ LABEL_6:
   {
     coverPhotoBottomToLogoBottomSpacing = self->_metrics.coverPhotoMetrics.coverPhotoBottomToLogoBottomSpacing;
 LABEL_4:
-    v4 = coverPhotoBottomToLogoBottomSpacing + self->_metrics.coverPhotoMetrics.aspectRatio * a3;
+    v4 = coverPhotoBottomToLogoBottomSpacing + self->_metrics.coverPhotoMetrics.aspectRatio * width;
     [(MUPlaceCoverPhotoTransitionController *)self expansionProgress];
     return v4 * v5;
   }
 
   height = self->_metrics.coverPhotoMetrics.logoSize.height;
-  [(MUPlaceCoverPhotoTransitionController *)self expansionProgress:a3];
+  [(MUPlaceCoverPhotoTransitionController *)self expansionProgress:width];
   return v8 * height;
 }
 
-- (void)setExpansionProgress:(double)a3
+- (void)setExpansionProgress:(double)progress
 {
-  v3 = fmin(fmax(a3, 0.0), 1.0);
+  v3 = fmin(fmax(progress, 0.0), 1.0);
   if (self->_expansionProgress != v3)
   {
     self->_expansionProgress = v3;
@@ -157,24 +157,24 @@ LABEL_4:
   }
 }
 
-- (MUPlaceCoverPhotoTransitionController)initWithMetrics:(MUPlaceHeaderMetrics *)a3 updateHandler:(id)a4
+- (MUPlaceCoverPhotoTransitionController)initWithMetrics:(MUPlaceHeaderMetrics *)metrics updateHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = MUPlaceCoverPhotoTransitionController;
   v7 = [(MUPlaceCoverPhotoTransitionController *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    *&v7->_metrics.topToTitleSpacing = *&a3->topToTitleSpacing;
-    v9 = *&a3->coverPhotoMetrics.hasLogo;
-    v10 = *&a3->coverPhotoMetrics.logoSize.height;
-    v11 = *&a3->coverPhotoMetrics.coverPhotoContainerToTitleSpacing;
-    v7->_metrics.coverPhotoMetrics.endingLogoAlphaTransitionValue = a3->coverPhotoMetrics.endingLogoAlphaTransitionValue;
+    *&v7->_metrics.topToTitleSpacing = *&metrics->topToTitleSpacing;
+    v9 = *&metrics->coverPhotoMetrics.hasLogo;
+    v10 = *&metrics->coverPhotoMetrics.logoSize.height;
+    v11 = *&metrics->coverPhotoMetrics.coverPhotoContainerToTitleSpacing;
+    v7->_metrics.coverPhotoMetrics.endingLogoAlphaTransitionValue = metrics->coverPhotoMetrics.endingLogoAlphaTransitionValue;
     *&v7->_metrics.coverPhotoMetrics.logoSize.height = v10;
     *&v7->_metrics.coverPhotoMetrics.coverPhotoContainerToTitleSpacing = v11;
     *&v7->_metrics.coverPhotoMetrics.hasLogo = v9;
-    v12 = _Block_copy(v6);
+    v12 = _Block_copy(handlerCopy);
     updateHandler = v8->_updateHandler;
     v8->_updateHandler = v12;
   }

@@ -1,30 +1,30 @@
 @interface SearchUIContentConfigurator
-+ (BOOL)supportsConfigurationFor:(id)a3;
-+ (void)applyConfigurationTo:(id)a3 rowModel:(id)a4 cardSections:(id)a5 interactionDelegate:(id)a6;
-+ (void)applyConfigurationTo:(id)a3 rowModel:(id)a4 interactionDelegate:(id)a5;
++ (BOOL)supportsConfigurationFor:(id)for;
++ (void)applyConfigurationTo:(id)to rowModel:(id)model cardSections:(id)sections interactionDelegate:(id)delegate;
++ (void)applyConfigurationTo:(id)to rowModel:(id)model interactionDelegate:(id)delegate;
 - (SearchUIContentConfigurator)init;
 @end
 
 @implementation SearchUIContentConfigurator
 
-+ (BOOL)supportsConfigurationFor:(id)a3
++ (BOOL)supportsConfigurationFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 cardSection];
-  if (v4)
+  forCopy = for;
+  cardSection = [forCopy cardSection];
+  if (cardSection)
   {
 
-    v5 = [v3 cardSection];
-    if (!v5)
+    cardSection2 = [forCopy cardSection];
+    if (!cardSection2)
     {
       __break(1u);
-      return v5;
+      return cardSection2;
     }
 
-    v6 = v5;
-    v7 = [v5 supportsConfiguration];
+    v6 = cardSection2;
+    supportsConfiguration = [cardSection2 supportsConfiguration];
 
-    if (v7)
+    if (supportsConfiguration)
     {
       v8 = 1;
     }
@@ -41,28 +41,28 @@
     v8 = 0;
   }
 
-  LOBYTE(v5) = v8;
-  return v5;
+  LOBYTE(cardSection2) = v8;
+  return cardSection2;
 }
 
-+ (void)applyConfigurationTo:(id)a3 rowModel:(id)a4 cardSections:(id)a5 interactionDelegate:(id)a6
++ (void)applyConfigurationTo:(id)to rowModel:(id)model cardSections:(id)sections interactionDelegate:(id)delegate
 {
   sub_1DA173718(0, &unk_1EDAE5400);
   v8 = sub_1DA25F324();
-  v9 = a3;
-  v10 = a4;
+  toCopy = to;
+  modelCopy = model;
   swift_unknownObjectRetain();
-  sub_1DA232FF4(v9, v10, v8);
+  sub_1DA232FF4(toCopy, modelCopy, v8);
 
   swift_unknownObjectRelease();
 }
 
-+ (void)applyConfigurationTo:(id)a3 rowModel:(id)a4 interactionDelegate:(id)a5
++ (void)applyConfigurationTo:(id)to rowModel:(id)model interactionDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  toCopy = to;
+  modelCopy = model;
   swift_unknownObjectRetain();
-  sub_1DA233660(v7, v8, a5);
+  sub_1DA233660(toCopy, modelCopy, delegate);
 
   swift_unknownObjectRelease();
 }

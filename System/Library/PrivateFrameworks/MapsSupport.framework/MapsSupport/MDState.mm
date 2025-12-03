@@ -1,43 +1,43 @@
 @interface MDState
-+ (id)getDefault:(id)a3;
-+ (void)setDefault:(id)a3 value:(id)a4;
++ (id)getDefault:(id)default;
++ (void)setDefault:(id)default value:(id)value;
 - (MDLocationManager)locationManager;
 - (MDNotificationCenter)notificationCenter;
 - (MDState)init;
 - (NSLock)peerConnectionsLock;
 - (NSMutableArray)peerConnections;
-- (void)setLocationManager:(id)a3;
-- (void)setNotificationCenter:(id)a3;
+- (void)setLocationManager:(id)manager;
+- (void)setNotificationCenter:(id)center;
 @end
 
 @implementation MDState
 
 - (NSLock)peerConnectionsLock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_peerConnectionsLock;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_peerConnectionsLock;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSMutableArray)peerConnections
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_peerConnections;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_peerConnections;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (MDLocationManager)locationManager
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_locationManager;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_locationManager;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -61,46 +61,46 @@
   return v2;
 }
 
-- (void)setLocationManager:(id)a3
+- (void)setLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   obj = self;
   objc_sync_enter(obj);
   locationManager = obj->_locationManager;
-  obj->_locationManager = v4;
+  obj->_locationManager = managerCopy;
 
   objc_sync_exit(obj);
 }
 
 - (MDNotificationCenter)notificationCenter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_notificationCenter;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_notificationCenter;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNotificationCenter:(id)a3
+- (void)setNotificationCenter:(id)center
 {
-  v4 = a3;
+  centerCopy = center;
   obj = self;
   objc_sync_enter(obj);
   notificationCenter = obj->_notificationCenter;
-  obj->_notificationCenter = v4;
+  obj->_notificationCenter = centerCopy;
 
   objc_sync_exit(obj);
 }
 
-+ (id)getDefault:(id)a3
++ (id)getDefault:(id)default
 {
-  v3 = a3;
+  defaultCopy = default;
   if ([GEOKeyBagNotification canAccessFilesWithProtection:3])
   {
     v4 = +[NSFileManager defaultManager];
     v5 = [v4 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-    v6 = [v5 path];
+    path = [v5 path];
     v7 = _CFPreferencesCopyAppValueWithContainer();
   }
 
@@ -112,15 +112,15 @@
   return v7;
 }
 
-+ (void)setDefault:(id)a3 value:(id)a4
++ (void)setDefault:(id)default value:(id)value
 {
-  v9 = a3;
-  v5 = a4;
+  defaultCopy = default;
+  valueCopy = value;
   if ([GEOKeyBagNotification canAccessFilesWithProtection:3])
   {
     v6 = +[NSFileManager defaultManager];
     v7 = [v6 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-    v8 = [v7 path];
+    path = [v7 path];
     _CFPreferencesSetAppValueWithContainer();
   }
 }

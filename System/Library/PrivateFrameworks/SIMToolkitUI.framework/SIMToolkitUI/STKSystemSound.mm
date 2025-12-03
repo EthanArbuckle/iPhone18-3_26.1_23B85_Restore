@@ -1,19 +1,19 @@
 @interface STKSystemSound
-- (id)initForSystemSoundID:(unsigned int)a3 duration:(double)a4;
+- (id)initForSystemSoundID:(unsigned int)d duration:(double)duration;
 - (void)_reallyPlaySound;
 - (void)_reallyStopSound;
 @end
 
 @implementation STKSystemSound
 
-- (id)initForSystemSoundID:(unsigned int)a3 duration:(double)a4
+- (id)initForSystemSoundID:(unsigned int)d duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = STKSystemSound;
-  result = [(STKBaseSound *)&v6 initWithDuration:a4];
+  result = [(STKBaseSound *)&v6 initWithDuration:duration];
   if (result)
   {
-    *(result + 7) = a3;
+    *(result + 7) = d;
   }
 
   return result;
@@ -22,16 +22,16 @@
 - (void)_reallyPlaySound
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(STKBaseSound *)self playsOnce];
+  playsOnce = [(STKBaseSound *)self playsOnce];
   v4 = STKCommonLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (playsOnce)
   {
     if (v5)
     {
       v6 = *(&self->super._isPlaying + 3);
       v11 = 134218240;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1024;
       v14 = v6;
       _os_log_impl(&dword_262BB4000, v4, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Playing %d sound once.", &v11, 0x12u);
@@ -47,7 +47,7 @@
       v7 = *(&self->super._isPlaying + 3);
       [(STKBaseSound *)self duration];
       v11 = 134218496;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1024;
       v14 = v7;
       v15 = 2048;
@@ -69,7 +69,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262BB4000, v3, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Actually stopping system sound explicitly.", &v6, 0xCu);
   }
 

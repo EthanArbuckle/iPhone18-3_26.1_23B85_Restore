@@ -1,49 +1,49 @@
 @interface PPMutableNamedEntityRecord
 - (PPMutableNamedEntityRecord)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAlgorithm:(unint64_t)a3;
-- (void)setExtractionOsBuild:(id)a3;
-- (void)setSource:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAlgorithm:(unint64_t)algorithm;
+- (void)setExtractionOsBuild:(id)build;
+- (void)setSource:(id)source;
 @end
 
 @implementation PPMutableNamedEntityRecord
 
-- (void)setExtractionOsBuild:(id)a3
+- (void)setExtractionOsBuild:(id)build
 {
-  v4 = a3;
+  buildCopy = build;
   v7 = PPGetStringInternPool();
-  v5 = [v7 intern:v4];
+  v5 = [v7 intern:buildCopy];
 
   extractionOsBuild = self->super._extractionOsBuild;
   self->super._extractionOsBuild = v5;
 }
 
-- (void)setAlgorithm:(unint64_t)a3
+- (void)setAlgorithm:(unint64_t)algorithm
 {
-  v3 = a3;
-  if (a3 >= 0x100)
+  algorithmCopy = algorithm;
+  if (algorithm >= 0x100)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:672 description:@"Algorithm storage too small"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:672 description:@"Algorithm storage too small"];
   }
 
-  self->super._algorithm = v3;
+  self->super._algorithm = algorithmCopy;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v7 = PPGetSourceInternPool();
-  v5 = [v7 intern:v4];
+  v5 = [v7 intern:sourceCopy];
 
   source = self->super._source;
   self->super._source = v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PPNamedEntityRecord allocWithZone:](PPNamedEntityRecord init];
-  v6 = [(PPNamedEntity *)self->super._entity copyWithZone:a3];
+  v6 = [(PPNamedEntity *)self->super._entity copyWithZone:zone];
   entity = v5->_entity;
   v5->_entity = v6;
 
@@ -55,7 +55,7 @@
   v5->_extractionAssetVersion = self->super._extractionAssetVersion;
   v5->_changeType = self->super._changeType;
   v5->_bucketizedSentimentScore = self->super._bucketizedSentimentScore;
-  v8 = [(PPNamedEntityMetadata *)self->super._metadata copyWithZone:a3];
+  v8 = [(PPNamedEntityMetadata *)self->super._metadata copyWithZone:zone];
   metadata = v5->_metadata;
   v5->_metadata = v8;
 

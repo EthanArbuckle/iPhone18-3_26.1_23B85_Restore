@@ -1,17 +1,17 @@
 @interface PXSharedAlbumPublicURLActivityItemSource
-- (PXSharedAlbumPublicURLActivityItemSource)initWithSharedAlbum:(id)a3;
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItems:(id)a3;
-- (id)activityViewControllerSubject:(id)a3;
+- (PXSharedAlbumPublicURLActivityItemSource)initWithSharedAlbum:(id)album;
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItems:(id)items;
+- (id)activityViewControllerSubject:(id)subject;
 @end
 
 @implementation PXSharedAlbumPublicURLActivityItemSource
 
-- (id)activityViewControllerSubject:(id)a3
+- (id)activityViewControllerSubject:(id)subject
 {
-  v3 = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
-  [v3 localizedTitle];
+  sharedAlbum = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
+  [sharedAlbum localizedTitle];
   objc_claimAutoreleasedReturnValue();
 
   PLServicesLocalizedFrameworkString();
@@ -19,26 +19,26 @@
   PXStringWithValidatedFormat();
 }
 
-- (id)activityViewController:(id)a3 thumbnailForActivityType:(id)a4
+- (id)activityViewController:(id)controller thumbnailForActivityType:(id)type
 {
   v4 = MEMORY[0x1E6978650];
-  v5 = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum:a3];
+  v5 = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum:controller];
   v6 = [v4 posterImageForAssetCollection:v5];
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type
 {
-  v5 = a4;
-  v6 = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
-  v7 = [v6 localizedTitle];
-  v8 = [PXSharedAlbumsUtilities publicURLForSharedAlbum:v6];
-  if ([v5 isEqualToString:*MEMORY[0x1E69CDAA0]])
+  typeCopy = type;
+  sharedAlbum = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
+  localizedTitle = [sharedAlbum localizedTitle];
+  v8 = [PXSharedAlbumsUtilities publicURLForSharedAlbum:sharedAlbum];
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69CDAA0]])
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = PLServicesLocalizedFrameworkString();
-    v11 = [v7 mutableCopy];
+    v11 = [localizedTitle mutableCopy];
     if (CFStringTransform(v11, 0, @"Any-Hex/XML", 0))
     {
       v12 = v11;
@@ -56,14 +56,14 @@
 
   else
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E69CDAB0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69CDAB0]])
     {
       PLServicesLocalizedFrameworkString();
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
 
-    if (([v5 isEqualToString:*MEMORY[0x1E69CDAC0]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69CDAE8]))
+    if (([typeCopy isEqualToString:*MEMORY[0x1E69CDAC0]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69CDAE8]))
     {
       PLServicesLocalizedFrameworkString();
       objc_claimAutoreleasedReturnValue();
@@ -76,17 +76,17 @@
   return v14;
 }
 
-- (id)activityViewControllerPlaceholderItems:(id)a3
+- (id)activityViewControllerPlaceholderItems:(id)items
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
-  v4 = [v3 localizedTitle];
-  v5 = [PXSharedAlbumsUtilities publicURLForSharedAlbum:v3];
-  v6 = [v5 absoluteString];
+  sharedAlbum = [(PXSharedAlbumPublicURLActivityItemSource *)self sharedAlbum];
+  localizedTitle = [sharedAlbum localizedTitle];
+  v5 = [PXSharedAlbumsUtilities publicURLForSharedAlbum:sharedAlbum];
+  absoluteString = [v5 absoluteString];
 
-  if (v6)
+  if (absoluteString)
   {
-    v7 = v6;
+    v7 = absoluteString;
   }
 
   else
@@ -95,28 +95,28 @@
   }
 
   v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
-  v11[0] = v4;
+  v11[0] = localizedTitle;
   v11[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
 
   return v9;
 }
 
-- (PXSharedAlbumPublicURLActivityItemSource)initWithSharedAlbum:(id)a3
+- (PXSharedAlbumPublicURLActivityItemSource)initWithSharedAlbum:(id)album
 {
-  v6 = a3;
+  albumCopy = album;
   v10.receiver = self;
   v10.super_class = PXSharedAlbumPublicURLActivityItemSource;
   v7 = [(PXSharedAlbumPublicURLActivityItemSource *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!albumCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"PXAlbumStreamingUtilities.m" lineNumber:46 description:@"Missing album for PXSharedAlbumPublicURLActivityItemSource"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PXAlbumStreamingUtilities.m" lineNumber:46 description:@"Missing album for PXSharedAlbumPublicURLActivityItemSource"];
     }
 
-    objc_storeStrong(&v7->_sharedAlbum, a3);
+    objc_storeStrong(&v7->_sharedAlbum, album);
   }
 
   return v7;

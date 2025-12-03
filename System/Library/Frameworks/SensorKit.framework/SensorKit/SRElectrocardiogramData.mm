@@ -1,12 +1,12 @@
 @interface SRElectrocardiogramData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToECGData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToECGData:(id)data;
 - (NSMeasurement)value;
 - (SRElectrocardiogramData)init;
-- (SRElectrocardiogramData)initWithCoder:(id)a3;
-- (SRElectrocardiogramData)initWithFlags:(unint64_t)a3 value:(double)a4;
+- (SRElectrocardiogramData)initWithCoder:(id)coder;
+- (SRElectrocardiogramData)initWithFlags:(unint64_t)flags value:(double)value;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRElectrocardiogramData
@@ -18,23 +18,23 @@
   return 0;
 }
 
-- (SRElectrocardiogramData)initWithFlags:(unint64_t)a3 value:(double)a4
+- (SRElectrocardiogramData)initWithFlags:(unint64_t)flags value:(double)value
 {
   v7.receiver = self;
   v7.super_class = SRElectrocardiogramData;
   result = [(SRElectrocardiogramData *)&v7 init];
   if (result)
   {
-    result->_val = a4;
-    result->_flags = a3;
+    result->_val = value;
+    result->_flags = flags;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -45,16 +45,16 @@
     return 0;
   }
 
-  return [(SRElectrocardiogramData *)self isEqualToECGData:a3];
+  return [(SRElectrocardiogramData *)self isEqualToECGData:equal];
 }
 
-- (BOOL)isEqualToECGData:(id)a3
+- (BOOL)isEqualToECGData:(id)data
 {
-  v5 = -[NSMeasurement isEqual:](-[SRElectrocardiogramData value](self, "value"), "isEqual:", [a3 value]);
+  v5 = -[NSMeasurement isEqual:](-[SRElectrocardiogramData value](self, "value"), "isEqual:", [data value]);
   if (v5)
   {
     flags = self->_flags;
-    LOBYTE(v5) = flags == [a3 flags];
+    LOBYTE(v5) = flags == [data flags];
   }
 
   return v5;
@@ -67,29 +67,29 @@
   return [v3 stringWithFormat:@"%@ (%p): flags: %lu, value: %@", NSStringFromClass(v4), self, self->_flags, -[SRElectrocardiogramData value](self, "value")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeDouble:@"value" forKey:self->_val];
+  [coder encodeDouble:@"value" forKey:self->_val];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_flags];
 
-  [a3 encodeObject:v6 forKey:@"flags"];
+  [coder encodeObject:v6 forKey:@"flags"];
 }
 
-- (SRElectrocardiogramData)initWithCoder:(id)a3
+- (SRElectrocardiogramData)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 decodeDoubleForKey:@"value"];
+  [coder decodeDoubleForKey:@"value"];
   v7 = v6;
-  v8 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"flags", "unsignedIntegerValue"}];
+  v8 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"flags", "unsignedIntegerValue"}];
 
   return [(SRElectrocardiogramData *)self initWithFlags:v8 value:v7];
 }

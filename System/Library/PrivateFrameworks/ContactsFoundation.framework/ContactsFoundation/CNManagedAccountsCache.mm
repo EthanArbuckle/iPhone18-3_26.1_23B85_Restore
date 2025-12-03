@@ -1,8 +1,8 @@
 @interface CNManagedAccountsCache
 + (id)sharedCache;
 - (CNManagedAccountsCache)init;
-- (id)accountForIdentifier:(id)a3;
-- (id)accountsForIdentifiers:(id)a3;
+- (id)accountForIdentifier:(id)identifier;
+- (id)accountsForIdentifiers:(id)identifiers;
 - (void)clearCache;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __37__CNManagedAccountsCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_cn_once_token_2 != -1)
   {
     dispatch_once(&sharedCache_cn_once_token_2, block);
@@ -53,18 +53,18 @@ uint64_t __37__CNManagedAccountsCache_sharedCache__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)accountForIdentifier:(id)a3
+- (id)accountForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNManagedAccountsCache *)self accountsCache];
+  identifierCopy = identifier;
+  accountsCache = [(CNManagedAccountsCache *)self accountsCache];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__CNManagedAccountsCache_accountForIdentifier___block_invoke;
   v9[3] = &unk_1E6ED5C60;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 objectForKey:v6 onCacheMiss:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [accountsCache objectForKey:v6 onCacheMiss:v9];
 
   return v7;
 }
@@ -77,16 +77,16 @@ id __47__CNManagedAccountsCache_accountForIdentifier___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)accountsForIdentifiers:(id)a3
+- (id)accountsForIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -104,7 +104,7 @@ id __47__CNManagedAccountsCache_accountForIdentifier___block_invoke(uint64_t a1)
         v11 = [(CNManagedAccountsCache *)self accountForIdentifier:*(*(&v14 + 1) + 8 * i), v14];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -116,13 +116,13 @@ id __47__CNManagedAccountsCache_accountForIdentifier___block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (void)clearCache
 {
-  v2 = [(CNManagedAccountsCache *)self accountsCache];
-  [v2 removeAllObjects];
+  accountsCache = [(CNManagedAccountsCache *)self accountsCache];
+  [accountsCache removeAllObjects];
 }
 
 @end

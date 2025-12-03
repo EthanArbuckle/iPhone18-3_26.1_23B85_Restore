@@ -1,7 +1,7 @@
 @interface AuthenticateAccountsPresenter
 - (_TtC18SharingViewService29AuthenticateAccountsPresenter)init;
 - (void)dealloc;
-- (void)handleDeviceSetupWithNotification:(id)a3;
+- (void)handleDeviceSetupWithNotification:(id)notification;
 - (void)proxCardFlowDidDismiss;
 @end
 
@@ -10,12 +10,12 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
   v6 = String._bridgeToObjectiveC()();
-  [v5 removeObserver:v4 name:v6 object:0];
+  [defaultCenter removeObserver:selfCopy name:v6 object:0];
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for AuthenticateAccountsPresenter();
   [(AuthenticateAccountsPresenter *)&v7 dealloc];
 }
@@ -27,18 +27,18 @@
   return result;
 }
 
-- (void)handleDeviceSetupWithNotification:(id)a3
+- (void)handleDeviceSetupWithNotification:(id)notification
 {
-  v5 = a3;
-  v4 = self;
-  sub_10007BC78(v5);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_10007BC78(notificationCopy);
 }
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ACF08();
-  *(&v2->super.isa + OBJC_IVAR____TtC18SharingViewService29AuthenticateAccountsPresenter_currentState) = 9;
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC18SharingViewService29AuthenticateAccountsPresenter_currentState) = 9;
 }
 
 @end

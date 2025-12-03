@@ -2,29 +2,29 @@
 + (id)outgoingGroupSpecifiers;
 + (id)outgoingSpecifiers;
 - (BOOL)haveEnoughValues;
-- (id)accountPropertyWithSpecifier:(id)a3;
-- (id)authSchemeTitlesForSpecifier:(id)a3;
-- (id)authSchemeValuesForSpecifier:(id)a3;
-- (id)isEnabled:(id)a3;
+- (id)accountPropertyWithSpecifier:(id)specifier;
+- (id)authSchemeTitlesForSpecifier:(id)specifier;
+- (id)authSchemeValuesForSpecifier:(id)specifier;
+- (id)isEnabled:(id)enabled;
 - (id)specifiers;
 - (id)specifiersForExistingAccount;
 - (id)specifiersForNewAccount;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_bottomDescriptionWithSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_bottomDescriptionWithSpecifier:(id)specifier;
 - (void)_finishedAccountSetup;
 - (void)_reallyDeleteOutgoingAccount;
 - (void)_resetDeliveryAccountsForViewingAccount;
 - (void)_saveAccounts;
 - (void)_updateDoneButton;
 - (void)applicationWillSuspend;
-- (void)cancelButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)deleteOutgoingAccount;
-- (void)didFinishSaveAccountAnywaysSheetWithResult:(BOOL)a3;
-- (void)handleValidAccount:(id)a3;
-- (void)processValidationResult:(int64_t)a3;
+- (void)didFinishSaveAccountAnywaysSheetWithResult:(BOOL)result;
+- (void)handleValidAccount:(id)account;
+- (void)processValidationResult:(int64_t)result;
 - (void)saveAndDismiss;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setEnabled:(id)a3 withSpecifier:(id)a4;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
+- (void)setEnabled:(id)enabled withSpecifier:(id)specifier;
 - (void)validateForExistingAccount;
 - (void)validateForNewAccount;
 - (void)viewDidLoad;
@@ -37,7 +37,7 @@
   v23 = [NSMutableArray arrayWithCapacity:3];
   v2 = [NSBundle bundleForClass:objc_opt_class()];
   v3 = [v2 localizedStringForKey:@"HOST_NAME" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v4 = [PSTextFieldSpecifier preferenceSpecifierNamed:v3 target:a1 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
+  v4 = [PSTextFieldSpecifier preferenceSpecifierNamed:v3 target:self set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
   [v4 setKeyboardType:3 autoCaps:0 autoCorrection:1];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -50,7 +50,7 @@
   [v23 addObject:v4];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"USER_NAME" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v10 = [PSTextFieldSpecifier preferenceSpecifierNamed:v9 target:a1 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
+  v10 = [PSTextFieldSpecifier preferenceSpecifierNamed:v9 target:self set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
   if (+[UIDevice mf_isPadIdiom])
   {
@@ -73,7 +73,7 @@
   [v23 addObject:v10];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"PASSWORD" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v17 = [PSTextFieldSpecifier preferenceSpecifierNamed:v16 target:a1 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
+  v17 = [PSTextFieldSpecifier preferenceSpecifierNamed:v16 target:self set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
   [v17 setKeyboardType:1 autoCaps:0 autoCorrection:1];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
@@ -111,13 +111,13 @@
     sub_79688();
   }
 
-  v4 = [v3 userInfo];
-  v22 = [v4 objectForKey:@"OutgoingAccountViewingAccountKey"];
+  userInfo = [v3 userInfo];
+  v22 = [userInfo objectForKey:@"OutgoingAccountViewingAccountKey"];
   objc_storeStrong(&self->_viewingAccount, v22);
-  v5 = [v4 objectForKey:@"OutgoingAccountAccountKey"];
+  v5 = [userInfo objectForKey:@"OutgoingAccountAccountKey"];
   [(AccountPSDetailControllerBase *)self setAccount:v5];
 
-  v6 = [v4 objectForKey:@"OutgoingAccountIsPrimaryAccountKey"];
+  v6 = [userInfo objectForKey:@"OutgoingAccountIsPrimaryAccountKey"];
   *(self + 224) = *(self + 224) & 0xFE | [v6 BOOLValue];
 
   if (*(self + 224))
@@ -139,7 +139,7 @@
   }
 
   *(self + 224) = *(self + 224) & 0xFD | v7;
-  v8 = [v4 objectForKey:@"OutgoingAccountIsCarrierAccountKey"];
+  v8 = [userInfo objectForKey:@"OutgoingAccountIsCarrierAccountKey"];
   if ([v8 BOOLValue])
   {
     v9 = 4;
@@ -180,9 +180,9 @@
 
           v13 = *(*(&v24 + 1) + 8 * v15);
 
-          v17 = [v13 deliveryAccount];
-          v18 = [(AccountPSDetailControllerBase *)self account];
-          v19 = v17 == v18;
+          deliveryAccount = [v13 deliveryAccount];
+          account = [(AccountPSDetailControllerBase *)self account];
+          v19 = deliveryAccount == account;
 
           if (v19)
           {
@@ -220,26 +220,26 @@ LABEL_21:
 - (void)applicationWillSuspend
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 isMultitaskingSupported];
+  isMultitaskingSupported = [v3 isMultitaskingSupported];
 
-  if ((v4 & 1) == 0)
+  if ((isMultitaskingSupported & 1) == 0)
   {
     if (*(&self->super + 184))
     {
       [(AccountPSDetailControllerBase *)self cancelAccountValidation];
     }
 
-    v5 = [(AccountPSOutgoingDetailController *)self navigationController];
-    v6 = [v5 topViewController];
+    navigationController = [(AccountPSOutgoingDetailController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v6 == self)
+    if (topViewController == self)
     {
-      v7 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-      [v7 resignFirstResponder];
+      firstResponder = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+      [firstResponder resignFirstResponder];
 
       v8 = [(AccountPSDetailControllerBase *)self fixAccountInputValues:self->super._accountValues];
-      v9 = [(AccountPSDetailControllerBase *)self account];
-      [v9 setAccountPropertiesWithDictionary:v8];
+      account = [(AccountPSDetailControllerBase *)self account];
+      [account setAccountPropertiesWithDictionary:v8];
 
       [(AccountPSOutgoingDetailController *)self _saveAccounts];
     }
@@ -250,15 +250,15 @@ LABEL_21:
   [(AccountPSOutgoingDetailController *)&v10 applicationWillSuspend];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = [(AccountPSOutgoingDetailController *)self parentController];
+  parentController = [(AccountPSOutgoingDetailController *)self parentController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AccountPSOutgoingDetailController *)self parentController];
-    [v6 performSelector:"canceledAccountSetup"];
+    parentController2 = [(AccountPSOutgoingDetailController *)self parentController];
+    [parentController2 performSelector:"canceledAccountSetup"];
   }
 
   [(AccountPSOutgoingDetailController *)self dismissAnimated:1];
@@ -299,17 +299,17 @@ LABEL_21:
 - (id)specifiersForExistingAccount
 {
   v59 = +[NSMutableArray array];
-  v2 = [(AccountPSDetailControllerBase *)self account];
+  account = [(AccountPSDetailControllerBase *)self account];
 
-  if (v2)
+  if (account)
   {
-    v3 = [(AccountPSDetailControllerBase *)self account];
-    v4 = [objc_opt_class() isSSLEditable];
+    account2 = [(AccountPSDetailControllerBase *)self account];
+    isSSLEditable = [objc_opt_class() isSSLEditable];
   }
 
   else
   {
-    v4 = 1;
+    isSSLEditable = 1;
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -322,10 +322,10 @@ LABEL_21:
   v62 = PSIDKey;
   [v7 setProperty:@"TOGGLE_BUTTON" forKey:?];
   [v59 addObject:v7];
-  v55 = [objc_opt_class() outgoingGroupSpecifiers];
-  v57 = [v55 objectAtIndex:0];
-  [v59 addObjectsFromArray:v55];
-  if (v4)
+  outgoingGroupSpecifiers = [objc_opt_class() outgoingGroupSpecifiers];
+  v57 = [outgoingGroupSpecifiers objectAtIndex:0];
+  [v59 addObjectsFromArray:outgoingGroupSpecifiers];
+  if (isSSLEditable)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"USE_SSL" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -360,9 +360,9 @@ LABEL_21:
   [v58 setUserInfo:v21];
 
   [v59 addObject:v58];
-  v22 = self;
-  v23 = [(AccountPSDetailControllerBase *)self account];
-  v60 = [v23 isManaged];
+  selfCopy2 = self;
+  account3 = [(AccountPSDetailControllerBase *)self account];
+  isManaged = [account3 isManaged];
 
   v24 = +[MCProfileConnection sharedConnection];
   v25 = [v24 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed];
@@ -388,7 +388,7 @@ LABEL_21:
         }
 
         v30 = *(*(&v64 + 1) + 8 * v29);
-        [v30 setTarget:v22];
+        [v30 setTarget:selfCopy2];
         v31 = [v30 propertyForKey:v62];
         v32 = [v31 isEqualToString:@"TOGGLE_BUTTON"];
         if (v25 == 2)
@@ -406,7 +406,7 @@ LABEL_21:
           goto LABEL_15;
         }
 
-        if (v60 && ([v30 userInfo], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "objectForKey:", @"disableForManagedAccounts"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "BOOLValue"), v36, v35, (v37 & 1) != 0) || v25 == 2 && (objc_msgSend(v30, "userInfo"), v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "objectForKeyedSubscript:", @"disableForModificationRestrictions"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "BOOLValue"), v39, v38, (v40 & 1) != 0) || self->_primaryForAccount)
+        if (isManaged && ([v30 userInfo], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "objectForKey:", @"disableForManagedAccounts"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "BOOLValue"), v36, v35, (v37 & 1) != 0) || v25 == 2 && (objc_msgSend(v30, "userInfo"), v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "objectForKeyedSubscript:", @"disableForModificationRestrictions"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "BOOLValue"), v39, v38, (v40 & 1) != 0) || self->_primaryForAccount)
         {
 LABEL_21:
           v34 = @"NO";
@@ -429,8 +429,8 @@ LABEL_21:
           goto LABEL_15;
         }
 
-        v42 = [(AccountPSDetailControllerBase *)self account];
-        if (([v42 hasNoReferences] & 1) == 0)
+        account4 = [(AccountPSDetailControllerBase *)self account];
+        if (([account4 hasNoReferences] & 1) == 0)
         {
 
 LABEL_15:
@@ -453,7 +453,7 @@ LABEL_15:
 LABEL_22:
         [v30 setProperty:v34 forKey:v28];
         v29 = v29 + 1;
-        v22 = self;
+        selfCopy2 = self;
       }
 
       while (v26 != v29);
@@ -464,14 +464,14 @@ LABEL_22:
     while (v44);
   }
 
-  v45 = self;
+  selfCopy5 = self;
   if ((*(self + 224) & 4) == 0)
   {
-    v46 = [(AccountPSDetailControllerBase *)self account];
-    v47 = [v46 hasNoReferences];
+    account5 = [(AccountPSDetailControllerBase *)self account];
+    hasNoReferences = [account5 hasNoReferences];
 
-    v45 = self;
-    if (v47)
+    selfCopy5 = self;
+    if (hasNoReferences)
     {
       v48 = +[PSSpecifier emptyGroupSpecifier];
       [obj addObject:v48];
@@ -485,24 +485,24 @@ LABEL_22:
       [v51 setProperty:v53 forKey:v62];
 
       [obj addObject:v51];
-      v45 = self;
+      selfCopy5 = self;
     }
   }
 
-  [(AccountPSOutgoingDetailController *)v45 _bottomDescriptionWithSpecifier:v57];
+  [(AccountPSOutgoingDetailController *)selfCopy5 _bottomDescriptionWithSpecifier:v57];
 
   return obj;
 }
 
 - (id)specifiers
 {
-  v3 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v4 = [v3 objectForKey:@"OutgoingAccountAccountKey"];
+  userInfo = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v4 = [userInfo objectForKey:@"OutgoingAccountAccountKey"];
   [(AccountPSDetailControllerBase *)self setAccount:v4];
 
-  v5 = [(AccountPSDetailControllerBase *)self account];
+  account = [(AccountPSDetailControllerBase *)self account];
 
-  if (v5)
+  if (account)
   {
     [(AccountPSOutgoingDetailController *)self specifiersForExistingAccount];
   }
@@ -522,24 +522,24 @@ LABEL_22:
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = AccountPSOutgoingDetailController;
-  v8 = [(AccountPSOutgoingDetailController *)&v13 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(AccountPSOutgoingDetailController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 textField];
-    if (v9)
+    textField = [v8 textField];
+    if (textField)
     {
       v10 = +[NSNotificationCenter defaultCenter];
-      [v10 removeObserver:self name:0 object:v9];
+      [v10 removeObserver:self name:0 object:textField];
 
       v11 = +[NSNotificationCenter defaultCenter];
-      [v11 addObserver:self selector:"propertyValueChanged:" name:UITextFieldTextDidChangeNotification object:v9];
+      [v11 addObserver:self selector:"propertyValueChanged:" name:UITextFieldTextDidChangeNotification object:textField];
     }
   }
 
@@ -550,15 +550,15 @@ LABEL_22:
 {
   [(AccountPSOutgoingDetailController *)self _resetDeliveryAccountsForViewingAccount];
   [(MailAccount *)self->_viewingAccount savePersistentAccount];
-  v3 = [(AccountPSDetailControllerBase *)self account];
-  [v3 savePersistentAccount];
+  account = [(AccountPSDetailControllerBase *)self account];
+  [account savePersistentAccount];
 
   [(AccountPSOutgoingDetailController *)self _finishedAccountSetup];
 }
 
-- (void)processValidationResult:(int64_t)a3
+- (void)processValidationResult:(int64_t)result
 {
-  if (a3 != 2 && a3 != 4)
+  if (result != 2 && result != 4)
   {
     *(&self->super + 184) &= ~1u;
     [(AccountPSDetailControllerBase *)self setViewsEnabled:1];
@@ -620,27 +620,27 @@ LABEL_11:
   if (self->super._accountValues)
   {
     v7 = [(AccountPSDetailControllerBase *)self fixAccountInputValues:?];
-    v3 = [(AccountPSDetailControllerBase *)self account];
-    [v3 setAccountPropertiesWithDictionary:v7];
+    account = [(AccountPSDetailControllerBase *)self account];
+    [account setAccountPropertiesWithDictionary:v7];
 
-    v4 = [(AccountPSDetailControllerBase *)self account];
-    v5 = [v4 defaultConnectionSettings];
+    account2 = [(AccountPSDetailControllerBase *)self account];
+    defaultConnectionSettings = [account2 defaultConnectionSettings];
     originalConnectionSettings = self->super._originalConnectionSettings;
-    self->super._originalConnectionSettings = v5;
+    self->super._originalConnectionSettings = defaultConnectionSettings;
 
     [(AccountPSOutgoingDetailController *)self processValidationResult:[(AccountPSDetailControllerBase *)self validateAccount]];
   }
 }
 
-- (void)handleValidAccount:(id)a3
+- (void)handleValidAccount:(id)account
 {
-  v7 = a3;
-  v4 = [(AccountPSDetailControllerBase *)self account];
+  accountCopy = account;
+  account = [(AccountPSDetailControllerBase *)self account];
 
-  if (!v4)
+  if (!account)
   {
-    [DeliveryAccount addDeliveryAccount:v7];
-    [(AccountPSDetailControllerBase *)self setAccount:v7];
+    [DeliveryAccount addDeliveryAccount:accountCopy];
+    [(AccountPSDetailControllerBase *)self setAccount:accountCopy];
   }
 
   *(self + 224) |= 8u;
@@ -657,40 +657,40 @@ LABEL_11:
 {
   [(AccountPSOutgoingDetailController *)self _resetDeliveryAccountsForViewingAccount];
   [(MailAccount *)self->_viewingAccount savePersistentAccount];
-  v3 = [(AccountPSDetailControllerBase *)self account];
-  [v3 savePersistentAccount];
+  account = [(AccountPSDetailControllerBase *)self account];
+  [account savePersistentAccount];
 
-  v4 = [(AccountPSOutgoingDetailController *)self parentController];
-  [v4 reloadOutgoingAccounts];
+  parentController = [(AccountPSOutgoingDetailController *)self parentController];
+  [parentController reloadOutgoingAccounts];
 }
 
-- (void)_bottomDescriptionWithSpecifier:(id)a3
+- (void)_bottomDescriptionWithSpecifier:(id)specifier
 {
-  v12 = a3;
-  v4 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v5 = [v4 objectForKey:@"OutgoingAccountViewingAccountKey"];
-  v6 = [v4 objectForKey:@"OutgoingAccountAccountKey"];
-  v7 = [v6 isManaged];
+  specifierCopy = specifier;
+  userInfo = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v5 = [userInfo objectForKey:@"OutgoingAccountViewingAccountKey"];
+  v6 = [userInfo objectForKey:@"OutgoingAccountAccountKey"];
+  isManaged = [v6 isManaged];
   if (self->_primaryForAccount)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
-    v9 = [v8 localizedStringForKey:@"ALREADY_PRIMARY_ACCOUNT_DESCRIPTION" value:&stru_B9FC8 table:@"AccountPreferences"];
+    managedAccountFooterText = [v8 localizedStringForKey:@"ALREADY_PRIMARY_ACCOUNT_DESCRIPTION" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-    v10 = [(MailAccount *)self->_primaryForAccount displayName];
-    v11 = [NSString stringWithFormat:v9, v10];
+    displayName = [(MailAccount *)self->_primaryForAccount displayName];
+    v11 = [NSString stringWithFormat:managedAccountFooterText, displayName];
 
-    [v12 setProperty:v11 forKey:PSFooterTextGroupKey];
+    [specifierCopy setProperty:v11 forKey:PSFooterTextGroupKey];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  if (v7)
+  if (isManaged)
   {
-    v9 = [v5 managedAccountFooterText];
-    if (v9)
+    managedAccountFooterText = [v5 managedAccountFooterText];
+    if (managedAccountFooterText)
     {
-      [v12 setProperty:v9 forKey:PSFooterTextGroupKey];
+      [specifierCopy setProperty:managedAccountFooterText forKey:PSFooterTextGroupKey];
     }
 
     goto LABEL_3;
@@ -701,8 +701,8 @@ LABEL_4:
 
 - (void)_updateDoneButton
 {
-  v8 = [(AccountPSOutgoingDetailController *)self navigationItem];
-  v3 = [v8 rightBarButtonItem];
+  navigationItem = [(AccountPSOutgoingDetailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   if ([(AccountPSOutgoingDetailController *)self haveEnoughValues])
   {
     v4 = (*(&self->super + 184) & 1) == 0;
@@ -713,15 +713,15 @@ LABEL_4:
     v4 = 0;
   }
 
-  [v3 setEnabled:v4];
+  [rightBarButtonItem setEnabled:v4];
 
   if (!self->super._account)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v9 localizedStringForKey:@"SAVE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v6 = [(AccountPSOutgoingDetailController *)self navigationItem];
-    v7 = [v6 rightBarButtonItem];
-    [v7 setTitle:v5];
+    navigationItem2 = [(AccountPSOutgoingDetailController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem2 setTitle:v5];
   }
 }
 
@@ -736,9 +736,9 @@ LABEL_4:
     while (1)
     {
       v4 = [*&self->super.ACUIViewController_opaque[v21] objectAtIndex:v3];
-      v5 = [v4 userInfo];
-      v6 = [v4 properties];
-      v7 = [v5 objectForKey:@"AccountPreferenceRequired"];
+      userInfo = [v4 userInfo];
+      properties = [v4 properties];
+      v7 = [userInfo objectForKey:@"AccountPreferenceRequired"];
 
       if (!v7)
       {
@@ -749,9 +749,9 @@ LABEL_4:
       v8 = [(AccountPSOutgoingDetailController *)self indexPathForIndex:v3];
       v9 = OBJC_IVAR___PSListController__table;
       v10 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] cellForRowAtIndexPath:v8];
-      v11 = [v10 isEditing];
+      isEditing = [v10 isEditing];
 
-      if (!v11)
+      if (!isEditing)
       {
         break;
       }
@@ -760,9 +760,9 @@ LABEL_4:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 textField];
-        v14 = [v13 text];
-        v15 = [v14 length] != 0;
+        textField = [v12 textField];
+        text = [textField text];
+        v15 = [text length] != 0;
 
 LABEL_18:
         goto LABEL_19;
@@ -778,27 +778,27 @@ LABEL_20:
       }
     }
 
-    v12 = [v5 objectForKey:@"outgoing_key"];
+    v12 = [userInfo objectForKey:@"outgoing_key"];
     accountValues = self->super._accountValues;
     if (v12)
     {
-      v13 = [(NSMutableDictionary *)self->super._accountValues objectForKey:v12];
+      textField = [(NSMutableDictionary *)self->super._accountValues objectForKey:v12];
     }
 
     else
     {
-      v17 = [v6 objectForKey:v19];
-      v13 = [(NSMutableDictionary *)accountValues objectForKey:v17];
+      v17 = [properties objectForKey:v19];
+      textField = [(NSMutableDictionary *)accountValues objectForKey:v17];
     }
 
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isEqualToString:&stru_B9FC8] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && !objc_msgSend(v13, "count"))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([textField isEqualToString:&stru_B9FC8] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && !objc_msgSend(textField, "count"))
     {
 
-      v13 = 0;
+      textField = 0;
     }
 
-    v15 = v13 != 0;
+    v15 = textField != 0;
     goto LABEL_18;
   }
 
@@ -820,7 +820,7 @@ LABEL_20:
     if (*(self + 224))
     {
       v10 = self->_viewingAccount;
-      v17 = [(AccountPSDetailControllerBase *)self account];
+      account = [(AccountPSDetailControllerBase *)self account];
       [(MailAccount *)v10 setDeliveryAccount:?];
 LABEL_20:
 
@@ -831,43 +831,43 @@ LABEL_20:
     v4 = self->_viewingAccount;
     if ((v3 & 4) == 0)
     {
-      v16 = [(MailAccount *)v4 deliveryAccountAlternates];
-      v5 = [v16 mutableCopy];
+      deliveryAccountAlternates = [(MailAccount *)v4 deliveryAccountAlternates];
+      v5 = [deliveryAccountAlternates mutableCopy];
 
-      v17 = v5;
+      account = v5;
       if (!v5)
       {
-        v17 = objc_alloc_init(NSMutableArray);
+        account = objc_alloc_init(NSMutableArray);
       }
 
       if ((*(self + 224) & 8) != 0)
       {
-        v12 = [(AccountPSDetailControllerBase *)self account];
-        if (v12)
+        account2 = [(AccountPSDetailControllerBase *)self account];
+        if (account2)
         {
-          v13 = [(AccountPSDetailControllerBase *)self account];
-          v14 = [v17 containsObject:v13];
+          account3 = [(AccountPSDetailControllerBase *)self account];
+          v14 = [account containsObject:account3];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [(AccountPSDetailControllerBase *)self account];
-            [v17 addObject:v15];
+            account4 = [(AccountPSDetailControllerBase *)self account];
+            [account addObject:account4];
           }
         }
       }
 
       else
       {
-        v6 = [(AccountPSDetailControllerBase *)self account];
-        v7 = [v17 indexOfObject:v6];
+        account5 = [(AccountPSDetailControllerBase *)self account];
+        v7 = [account indexOfObject:account5];
 
         if (v7 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v17 removeObjectAtIndex:v7];
+          [account removeObjectAtIndex:v7];
         }
       }
 
-      [(MailAccount *)self->_viewingAccount setDeliveryAccountAlternates:v17];
+      [(MailAccount *)self->_viewingAccount setDeliveryAccountAlternates:account];
       goto LABEL_20;
     }
 
@@ -879,13 +879,13 @@ LABEL_20:
 
 - (void)_finishedAccountSetup
 {
-  v3 = [(AccountPSOutgoingDetailController *)self parentController];
+  parentController = [(AccountPSOutgoingDetailController *)self parentController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AccountPSOutgoingDetailController *)self parentController];
-    [v5 performSelector:"finishedAccountSetup"];
+    parentController2 = [(AccountPSOutgoingDetailController *)self parentController];
+    [parentController2 performSelector:"finishedAccountSetup"];
   }
 
   [(AccountPSOutgoingDetailController *)self dismissAnimated:1];
@@ -893,13 +893,13 @@ LABEL_20:
   [(AccountPSOutgoingDetailController *)self setTaskCompletionAssertionEnabled:0];
 }
 
-- (id)isEnabled:(id)a3
+- (id)isEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if ((*(self + 224) & 2) != 0)
   {
-    v8 = [(MailAccount *)self->_viewingAccount isPrimaryDeliveryAccountDisabled];
-    if (v8)
+    isPrimaryDeliveryAccountDisabled = [(MailAccount *)self->_viewingAccount isPrimaryDeliveryAccountDisabled];
+    if (isPrimaryDeliveryAccountDisabled)
     {
       v9 = 16;
     }
@@ -910,13 +910,13 @@ LABEL_20:
     }
 
     *(self + 224) = *(self + 224) & 0xEF | v9;
-    v7 = (v8 ^ 1);
+    bOOLValue = (isPrimaryDeliveryAccountDisabled ^ 1);
   }
 
   else if (*(self + 224))
   {
     v10 = [(NSMutableDictionary *)self->super._accountValues objectForKey:@"MailAccountIsActive"];
-    v7 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
@@ -924,16 +924,16 @@ LABEL_20:
     viewingAccount = self->_viewingAccount;
     if ((*(self + 224) & 4) != 0)
     {
-      v7 = [(MailAccount *)self->_viewingAccount canUseCarrierDeliveryFallback];
+      bOOLValue = [(MailAccount *)self->_viewingAccount canUseCarrierDeliveryFallback];
     }
 
     else
     {
-      v6 = [(AccountPSDetailControllerBase *)self account];
-      v7 = [(MailAccount *)viewingAccount canUseDeliveryAccount:v6];
+      account = [(AccountPSDetailControllerBase *)self account];
+      bOOLValue = [(MailAccount *)viewingAccount canUseDeliveryAccount:account];
     }
 
-    if (v7)
+    if (bOOLValue)
     {
       v11 = 8;
     }
@@ -946,18 +946,18 @@ LABEL_20:
     *(self + 224) = *(self + 224) & 0xF7 | v11;
   }
 
-  v12 = [NSNumber numberWithBool:v7];
+  v12 = [NSNumber numberWithBool:bOOLValue];
 
   return v12;
 }
 
-- (void)setEnabled:(id)a3 withSpecifier:(id)a4
+- (void)setEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  v9 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   if ((*(self + 224) & 2) != 0)
   {
-    if ([v9 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v7 = 0;
     }
@@ -973,7 +973,7 @@ LABEL_20:
 
   if ((*(self + 224) & 1) == 0)
   {
-    if ([v9 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v7 = 8;
     }
@@ -989,17 +989,17 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  [(NSMutableDictionary *)self->super._accountValues setObject:v9 forKey:@"MailAccountIsActive"];
+  [(NSMutableDictionary *)self->super._accountValues setObject:enabledCopy forKey:@"MailAccountIsActive"];
 LABEL_13:
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v11 = a3;
-  v6 = [a4 userInfo];
-  v7 = [v6 objectForKey:@"outgoing_key"];
+  propertyCopy = property;
+  userInfo = [specifier userInfo];
+  v7 = [userInfo objectForKey:@"outgoing_key"];
   accountValues = self->super._accountValues;
-  if (v11)
+  if (propertyCopy)
   {
     if (!accountValues)
     {
@@ -1010,7 +1010,7 @@ LABEL_13:
       accountValues = self->super._accountValues;
     }
 
-    [(NSMutableDictionary *)accountValues setObject:v11 forKey:v7];
+    [(NSMutableDictionary *)accountValues setObject:propertyCopy forKey:v7];
   }
 
   else
@@ -1019,29 +1019,29 @@ LABEL_13:
   }
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"outgoing_key"];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  v6 = [userInfo objectForKey:@"outgoing_key"];
   v7 = [(NSMutableDictionary *)self->super._accountValues objectForKey:v6];
   if ([v6 isEqualToString:MailAccountHostname])
   {
-    v8 = [(AccountPSDetailControllerBase *)self account];
+    account = [(AccountPSDetailControllerBase *)self account];
 
-    if (v8)
+    if (account)
     {
-      v9 = [(AccountPSDetailControllerBase *)self account];
-      v10 = [v9 displayHostname];
-      v11 = [v7 isEqualToString:v10];
+      account2 = [(AccountPSDetailControllerBase *)self account];
+      displayHostname = [account2 displayHostname];
+      v11 = [v7 isEqualToString:displayHostname];
 
       if ((v11 & 1) == 0)
       {
-        v12 = [(AccountPSDetailControllerBase *)self account];
-        v13 = [v12 displayHostname];
+        account3 = [(AccountPSDetailControllerBase *)self account];
+        displayHostname2 = [account3 displayHostname];
 
-        [v4 setProperty:@"NO" forKey:PSEnabledKey];
-        v7 = v13;
+        [specifierCopy setProperty:@"NO" forKey:PSEnabledKey];
+        v7 = displayHostname2;
       }
     }
   }
@@ -1049,20 +1049,20 @@ LABEL_13:
   return v7;
 }
 
-- (id)authSchemeValuesForSpecifier:(id)a3
+- (id)authSchemeValuesForSpecifier:(id)specifier
 {
-  v3 = [(AccountPSDetailControllerBase *)self account];
-  v4 = [objc_opt_class() authSchemeValues];
+  account = [(AccountPSDetailControllerBase *)self account];
+  authSchemeValues = [objc_opt_class() authSchemeValues];
 
-  return v4;
+  return authSchemeValues;
 }
 
-- (id)authSchemeTitlesForSpecifier:(id)a3
+- (id)authSchemeTitlesForSpecifier:(id)specifier
 {
-  v3 = [(AccountPSDetailControllerBase *)self account];
-  v4 = [objc_opt_class() authSchemeTitles];
+  account = [(AccountPSDetailControllerBase *)self account];
+  authSchemeTitles = [objc_opt_class() authSchemeTitles];
 
-  return v4;
+  return authSchemeTitles;
 }
 
 - (void)deleteOutgoingAccount
@@ -1109,37 +1109,37 @@ LABEL_13:
 
 - (void)_reallyDeleteOutgoingAccount
 {
-  v4 = [(AccountPSDetailControllerBase *)self account];
+  account = [(AccountPSDetailControllerBase *)self account];
   [DeliveryAccount removeDeliveryAccount:?];
 
   *(self + 224) &= ~8u;
   [(AccountPSOutgoingDetailController *)self _resetDeliveryAccountsForViewingAccount];
-  v5 = [(AccountPSOutgoingDetailController *)self parentController];
-  [v5 reloadOutgoingAccounts];
+  parentController = [(AccountPSOutgoingDetailController *)self parentController];
+  [parentController reloadOutgoingAccounts];
 
-  v6 = [(AccountPSOutgoingDetailController *)self rootController];
-  v3 = [v6 popViewControllerAnimated:1];
+  rootController = [(AccountPSOutgoingDetailController *)self rootController];
+  v3 = [rootController popViewControllerAnimated:1];
 }
 
-- (void)didFinishSaveAccountAnywaysSheetWithResult:(BOOL)a3
+- (void)didFinishSaveAccountAnywaysSheetWithResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [(AccountPSDetailControllerBase *)self accountValues];
-    v7 = [(AccountPSDetailControllerBase *)self fixAccountInputValues:v4];
+    accountValues = [(AccountPSDetailControllerBase *)self accountValues];
+    v7 = [(AccountPSDetailControllerBase *)self fixAccountInputValues:accountValues];
 
-    v5 = [(AccountPSDetailControllerBase *)self account];
+    account = [(AccountPSDetailControllerBase *)self account];
 
-    if (v5)
+    if (account)
     {
-      v6 = [(AccountPSDetailControllerBase *)self account];
-      [v6 setAccountPropertiesWithDictionary:v7];
+      account2 = [(AccountPSDetailControllerBase *)self account];
+      [account2 setAccountPropertiesWithDictionary:v7];
     }
 
     else
     {
-      v6 = [(objc_class *)[(AccountPSOutgoingDetailController *)self accountClass] newAccountWithDictionary:v7];
-      [DeliveryAccount addDeliveryAccount:v6];
+      account2 = [(objc_class *)[(AccountPSOutgoingDetailController *)self accountClass] newAccountWithDictionary:v7];
+      [DeliveryAccount addDeliveryAccount:account2];
     }
 
     [(AccountPSOutgoingDetailController *)self saveAndDismiss];

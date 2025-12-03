@@ -1,26 +1,26 @@
 @interface TKTokenConfigurationConnection
-- (TKTokenConfigurationConnection)initWithEndpoint:(id)a3;
+- (TKTokenConfigurationConnection)initWithEndpoint:(id)endpoint;
 - (id)configurationProtocol;
 - (void)dealloc;
-- (void)registerForConfigurationChange:(id)a3;
-- (void)tokenConfigurationChanged:(id)a3;
+- (void)registerForConfigurationChange:(id)change;
+- (void)tokenConfigurationChanged:(id)changed;
 @end
 
 @implementation TKTokenConfigurationConnection
 
-- (TKTokenConfigurationConnection)initWithEndpoint:(id)a3
+- (TKTokenConfigurationConnection)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = TKTokenConfigurationConnection;
   v6 = [(TKTokenConfigurationConnection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_endpoint, endpoint);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     configurationConnections = v7->_configurationConnections;
-    v7->_configurationConnections = v8;
+    v7->_configurationConnections = weakObjectsHashTable;
   }
 
   return v7;
@@ -61,12 +61,12 @@ void __55__TKTokenConfigurationConnection_configurationProtocol__block_invoke(ui
   }
 }
 
-- (void)registerForConfigurationChange:(id)a3
+- (void)registerForConfigurationChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v4 = self->_configurationConnections;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_configurationConnections addObject:v5];
+  [(NSHashTable *)self->_configurationConnections addObject:changeCopy];
   objc_sync_exit(v4);
 }
 
@@ -78,10 +78,10 @@ void __55__TKTokenConfigurationConnection_configurationProtocol__block_invoke(ui
   [(TKTokenConfigurationConnection *)&v3 dealloc];
 }
 
-- (void)tokenConfigurationChanged:(id)a3
+- (void)tokenConfigurationChanged:(id)changed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = self->_configurationConnections;
   objc_sync_enter(v5);
   v11 = 0u;
@@ -103,7 +103,7 @@ void __55__TKTokenConfigurationConnection_configurationProtocol__block_invoke(ui
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) tokenConfigurationChanged:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) tokenConfigurationChanged:{changedCopy, v11}];
       }
 
       while (v7 != v9);

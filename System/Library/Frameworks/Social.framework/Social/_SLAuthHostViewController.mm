@@ -1,23 +1,23 @@
 @interface _SLAuthHostViewController
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _SLAuthHostViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   _SLLog(v3, 3, @"_SLAuthHostViewController: (this may be harmless) viewServiceDidTerminateWithError: %@");
   v8.receiver = self;
   v8.super_class = _SLAuthHostViewController;
-  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:v5, v5];
+  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:errorCopy, errorCopy];
 
-  v6 = [(_SLAuthHostViewController *)self viewServiceTerminationBlock];
+  viewServiceTerminationBlock = [(_SLAuthHostViewController *)self viewServiceTerminationBlock];
 
-  if (v6)
+  if (viewServiceTerminationBlock)
   {
-    v7 = [(_SLAuthHostViewController *)self viewServiceTerminationBlock];
-    v7[2]();
+    viewServiceTerminationBlock2 = [(_SLAuthHostViewController *)self viewServiceTerminationBlock];
+    viewServiceTerminationBlock2[2]();
   }
 }
 

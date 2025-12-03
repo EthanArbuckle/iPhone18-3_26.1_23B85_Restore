@@ -1,33 +1,33 @@
 @interface FusionRemixUniforms
-- (FusionRemixUniforms)initWithMetal:(id)a3 heap:(id)a4;
+- (FusionRemixUniforms)initWithMetal:(id)metal heap:(id)heap;
 @end
 
 @implementation FusionRemixUniforms
 
-- (FusionRemixUniforms)initWithMetal:(id)a3 heap:(id)a4
+- (FusionRemixUniforms)initWithMetal:(id)metal heap:(id)heap
 {
-  v5 = a4;
+  heapCopy = heap;
   v40.receiver = self;
   v40.super_class = FusionRemixUniforms;
   v9 = [(FusionRemixUniforms *)&v40 init];
   if (v9)
   {
-    v10 = objc_msgSend_resourceOptions(v5, v6, v7, v8);
-    v12 = objc_msgSend_newBufferWithLength_options_(v5, v11, 1520, v10);
+    v10 = objc_msgSend_resourceOptions(heapCopy, v6, v7, v8);
+    v12 = objc_msgSend_newBufferWithLength_options_(heapCopy, v11, 1520, v10);
     fragUniBufSBP = v9->_fragUniBufSBP;
     v9->_fragUniBufSBP = v12;
 
     if (v9->_fragUniBufSBP)
     {
-      v17 = objc_msgSend_resourceOptions(v5, v14, v15, v16);
-      v19 = objc_msgSend_newBufferWithLength_options_(v5, v18, 24, v17);
+      v17 = objc_msgSend_resourceOptions(heapCopy, v14, v15, v16);
+      v19 = objc_msgSend_newBufferWithLength_options_(heapCopy, v18, 24, v17);
       fragUniBufInt = v9->_fragUniBufInt;
       v9->_fragUniBufInt = v19;
 
       if (v9->_fragUniBufInt)
       {
-        v24 = objc_msgSend_resourceOptions(v5, v21, v22, v23);
-        v26 = objc_msgSend_newBufferWithLength_options_(v5, v25, 1360, v24);
+        v24 = objc_msgSend_resourceOptions(heapCopy, v21, v22, v23);
+        v26 = objc_msgSend_newBufferWithLength_options_(heapCopy, v25, 1360, v24);
         vertexUniBufSBP = v9->_vertexUniBufSBP;
         v9->_vertexUniBufSBP = v26;
 

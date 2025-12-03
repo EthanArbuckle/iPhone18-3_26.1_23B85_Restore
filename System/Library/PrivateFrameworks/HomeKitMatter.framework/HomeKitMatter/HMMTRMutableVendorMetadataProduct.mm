@@ -1,27 +1,27 @@
 @interface HMMTRMutableVendorMetadataProduct
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMTRMutableVendorMetadataProduct
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMTRVendorMetadataProduct allocWithZone:a3];
-  v5 = [(HMMTRVendorMetadataProduct *)self identifier];
-  v6 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
-  v7 = [(HMMTRVendorMetadataProduct *)v4 initWithIdentifier:v5 categoryNumber:v6 isInvalid:[(HMMTRVendorMetadataProduct *)self isInvalid]];
+  v4 = [HMMTRVendorMetadataProduct allocWithZone:zone];
+  identifier = [(HMMTRVendorMetadataProduct *)self identifier];
+  categoryNumber = [(HMMTRVendorMetadataProduct *)self categoryNumber];
+  v7 = [(HMMTRVendorMetadataProduct *)v4 initWithIdentifier:identifier categoryNumber:categoryNumber isInvalid:[(HMMTRVendorMetadataProduct *)self isInvalid]];
 
-  v8 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
-  [(HMMTRVendorMetadataProduct *)v7 setDeviceTypeID:v8];
+  deviceTypeID = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+  [(HMMTRVendorMetadataProduct *)v7 setDeviceTypeID:deviceTypeID];
 
-  v9 = [(HMMTRVendorMetadataProduct *)self name];
-  [(HMMTRVendorMetadataProduct *)v7 setName:v9];
+  name = [(HMMTRVendorMetadataProduct *)self name];
+  [(HMMTRVendorMetadataProduct *)v7 setName:name];
 
-  v10 = [(HMMTRVendorMetadataProduct *)self label];
-  [(HMMTRVendorMetadataProduct *)v7 setLabel:v10];
+  label = [(HMMTRVendorMetadataProduct *)self label];
+  [(HMMTRVendorMetadataProduct *)v7 setLabel:label];
 
-  v11 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
-  [(HMMTRVendorMetadataProduct *)v7 setInstallationGuideURL:v11];
+  installationGuideURL = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+  [(HMMTRVendorMetadataProduct *)v7 setInstallationGuideURL:installationGuideURL];
 
   return v7;
 }

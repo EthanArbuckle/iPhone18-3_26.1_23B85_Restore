@@ -1,15 +1,15 @@
 @interface CPInformationTemplate
-- (CPInformationTemplate)initWithCoder:(id)a3;
+- (CPInformationTemplate)initWithCoder:(id)coder;
 - (CPInformationTemplate)initWithTitle:(NSString *)title layout:(CPInformationTemplateLayout)layout items:(NSArray *)items actions:(NSArray *)actions;
-- (id)_sanitizeButtons:(id)a3;
-- (id)_sanitizeItems:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (id)_sanitizeButtons:(id)buttons;
+- (id)_sanitizeItems:(id)items;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)performUpdate;
 - (void)setActions:(NSArray *)actions;
 - (void)setItems:(NSArray *)items;
 - (void)setTitle:(NSString *)title;
-- (void)updateTemplatePropertiesFromTemplate:(id)a3;
+- (void)updateTemplatePropertiesFromTemplate:(id)template;
 @end
 
 @implementation CPInformationTemplate
@@ -41,29 +41,29 @@
   return v13;
 }
 
-- (id)_sanitizeItems:(id)a3
+- (id)_sanitizeItems:(id)items
 {
-  v3 = a3;
-  if ([v3 count] >= 0xB)
+  itemsCopy = items;
+  if ([itemsCopy count] >= 0xB)
   {
-    v4 = [v3 subarrayWithRange:{0, 10}];
+    v4 = [itemsCopy subarrayWithRange:{0, 10}];
 
-    v3 = v4;
+    itemsCopy = v4;
   }
 
-  v5 = [v3 copy];
+  v5 = [itemsCopy copy];
 
   return v5;
 }
 
-- (id)_sanitizeButtons:(id)a3
+- (id)_sanitizeButtons:(id)buttons
 {
-  v4 = a3;
-  if ([v4 count] >= 4)
+  buttonsCopy = buttons;
+  if ([buttonsCopy count] >= 4)
   {
-    v5 = [v4 subarrayWithRange:{0, 3}];
+    v5 = [buttonsCopy subarrayWithRange:{0, 3}];
 
-    v4 = v5;
+    buttonsCopy = v5;
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -71,8 +71,8 @@
   v8[2] = __42__CPInformationTemplate__sanitizeButtons___block_invoke;
   v8[3] = &unk_278A116C8;
   v8[4] = self;
-  [v4 enumerateObjectsUsingBlock:v8];
-  v6 = [v4 copy];
+  [buttonsCopy enumerateObjectsUsingBlock:v8];
+  v6 = [buttonsCopy copy];
 
   return v6;
 }
@@ -85,31 +85,31 @@ void __42__CPInformationTemplate__sanitizeButtons___block_invoke(uint64_t a1, vo
   [v4 setAssociatedTemplate:*(a1 + 32)];
 }
 
-- (CPInformationTemplate)initWithCoder:(id)a3
+- (CPInformationTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CPInformationTemplate;
-  v5 = [(CPTemplate *)&v20 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationTemplateTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationTemplateTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v5->_layout = [v4 decodeIntegerForKey:@"kCPInformationTemplateLayoutKey"];
+    v5->_layout = [coderCopy decodeIntegerForKey:@"kCPInformationTemplateLayoutKey"];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"kCPInformationTemplateItemsKey"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"kCPInformationTemplateItemsKey"];
     items = v5->_items;
     v5->_items = v12;
 
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"kCPInformationTemplateActionsKey"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"kCPInformationTemplateActionsKey"];
     actions = v5->_actions;
     v5->_actions = v17;
   }
@@ -117,21 +117,21 @@ void __42__CPInformationTemplate__sanitizeButtons___block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CPInformationTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CPInformationTemplate *)self title:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPInformationTemplateTitleKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPInformationTemplateTitleKey"];
 
-  [v4 encodeInteger:-[CPInformationTemplate layout](self forKey:{"layout"), @"kCPInformationTemplateLayoutKey"}];
-  v6 = [(CPInformationTemplate *)self items];
-  [v4 encodeObject:v6 forKey:@"kCPInformationTemplateItemsKey"];
+  [coderCopy encodeInteger:-[CPInformationTemplate layout](self forKey:{"layout"), @"kCPInformationTemplateLayoutKey"}];
+  items = [(CPInformationTemplate *)self items];
+  [coderCopy encodeObject:items forKey:@"kCPInformationTemplateItemsKey"];
 
-  v7 = [(CPInformationTemplate *)self actions];
-  [v4 encodeObject:v7 forKey:@"kCPInformationTemplateActionsKey"];
+  actions = [(CPInformationTemplate *)self actions];
+  [coderCopy encodeObject:actions forKey:@"kCPInformationTemplateActionsKey"];
 }
 
 - (void)setTitle:(NSString *)title
@@ -181,13 +181,13 @@ void __42__CPInformationTemplate__sanitizeButtons___block_invoke(uint64_t a1, vo
   v8.super_class = CPInformationTemplate;
   [(CPTemplate *)&v8 performUpdate];
   objc_initWeak(&location, self);
-  v3 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__CPInformationTemplate_performUpdate__block_invoke;
   v5[3] = &unk_278A116F0;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addSuccessBlock:v5];
+  v4 = [templateProviderFuture addSuccessBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -200,16 +200,16 @@ void __38__CPInformationTemplate_performUpdate__block_invoke(uint64_t a1, void *
   [v3 updateWithInformationTemplate:WeakRetained];
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__CPInformationTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -276,17 +276,17 @@ void __58__CPInformationTemplate_handleActionForControlIdentifier___block_invoke
   }
 }
 
-- (void)updateTemplatePropertiesFromTemplate:(id)a3
+- (void)updateTemplatePropertiesFromTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [v4 items];
-  v6 = [v5 copy];
+  templateCopy = template;
+  items = [templateCopy items];
+  v6 = [items copy];
   items = self->_items;
   self->_items = v6;
 
-  v10 = [v4 actions];
+  actions = [templateCopy actions];
 
-  v8 = [v10 copy];
+  v8 = [actions copy];
   actions = self->_actions;
   self->_actions = v8;
 }

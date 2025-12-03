@@ -1,62 +1,62 @@
 @interface _INPBIntentSlotResolutionResult
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentSlotResolutionResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentSlotResolutionResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentSlotResolutionResult
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"_payloadConfirmation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+  dictionaryRepresentation = [payloadConfirmation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"_payloadConfirmation"];
 
-  v6 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"_payloadNeedsDisambiguation"];
+  payloadNeedsDisambiguation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+  dictionaryRepresentation2 = [payloadNeedsDisambiguation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"_payloadNeedsDisambiguation"];
 
-  v8 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"_payloadNeedsExecuteIntent"];
+  payloadNeedsExecuteIntent = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+  dictionaryRepresentation3 = [payloadNeedsExecuteIntent dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"_payloadNeedsExecuteIntent"];
 
-  v10 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"_payloadNeedsValue"];
+  payloadNeedsValue = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+  dictionaryRepresentation4 = [payloadNeedsValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"_payloadNeedsValue"];
 
-  v12 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"_payloadSuccess"];
+  payloadSuccess = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+  dictionaryRepresentation5 = [payloadSuccess dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"_payloadSuccess"];
 
-  v14 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"_payloadUnsupported"];
+  payloadUnsupported = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+  dictionaryRepresentation6 = [payloadUnsupported dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"_payloadUnsupported"];
 
   if ([(_INPBIntentSlotResolutionResult *)self hasType])
   {
-    v16 = [(_INPBIntentSlotResolutionResult *)self type];
-    v17 = v16 - 1;
-    if (v16 - 1) < 0xB && ((0x7EFu >> v17))
+    type = [(_INPBIntentSlotResolutionResult *)self type];
+    v17 = type - 1;
+    if (type - 1) < 0xB && ((0x7EFu >> v17))
     {
       v18 = off_1E7283B28[v17];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"type"];
+    [dictionary setObject:v18 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -80,28 +80,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
-  v6 = [v4 payloadConfirmation];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+  payloadConfirmation2 = [equalCopy payloadConfirmation];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
-  if (v7)
+  payloadConfirmation3 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+  if (payloadConfirmation3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
-    v10 = [v4 payloadConfirmation];
-    v11 = [v9 isEqual:v10];
+    v8 = payloadConfirmation3;
+    payloadConfirmation4 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+    payloadConfirmation5 = [equalCopy payloadConfirmation];
+    v11 = [payloadConfirmation4 isEqual:payloadConfirmation5];
 
     if (!v11)
     {
@@ -113,20 +113,20 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
-  v6 = [v4 payloadNeedsDisambiguation];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+  payloadConfirmation2 = [equalCopy payloadNeedsDisambiguation];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
-  if (v12)
+  payloadNeedsDisambiguation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+  if (payloadNeedsDisambiguation)
   {
-    v13 = v12;
-    v14 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
-    v15 = [v4 payloadNeedsDisambiguation];
-    v16 = [v14 isEqual:v15];
+    v13 = payloadNeedsDisambiguation;
+    payloadNeedsDisambiguation2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+    payloadNeedsDisambiguation3 = [equalCopy payloadNeedsDisambiguation];
+    v16 = [payloadNeedsDisambiguation2 isEqual:payloadNeedsDisambiguation3];
 
     if (!v16)
     {
@@ -138,20 +138,20 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
-  v6 = [v4 payloadNeedsExecuteIntent];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+  payloadConfirmation2 = [equalCopy payloadNeedsExecuteIntent];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
-  if (v17)
+  payloadNeedsExecuteIntent = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+  if (payloadNeedsExecuteIntent)
   {
-    v18 = v17;
-    v19 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
-    v20 = [v4 payloadNeedsExecuteIntent];
-    v21 = [v19 isEqual:v20];
+    v18 = payloadNeedsExecuteIntent;
+    payloadNeedsExecuteIntent2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+    payloadNeedsExecuteIntent3 = [equalCopy payloadNeedsExecuteIntent];
+    v21 = [payloadNeedsExecuteIntent2 isEqual:payloadNeedsExecuteIntent3];
 
     if (!v21)
     {
@@ -163,20 +163,20 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
-  v6 = [v4 payloadNeedsValue];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+  payloadConfirmation2 = [equalCopy payloadNeedsValue];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
-  if (v22)
+  payloadNeedsValue = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+  if (payloadNeedsValue)
   {
-    v23 = v22;
-    v24 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
-    v25 = [v4 payloadNeedsValue];
-    v26 = [v24 isEqual:v25];
+    v23 = payloadNeedsValue;
+    payloadNeedsValue2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+    payloadNeedsValue3 = [equalCopy payloadNeedsValue];
+    v26 = [payloadNeedsValue2 isEqual:payloadNeedsValue3];
 
     if (!v26)
     {
@@ -188,20 +188,20 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
-  v6 = [v4 payloadSuccess];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+  payloadConfirmation2 = [equalCopy payloadSuccess];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
-  if (v27)
+  payloadSuccess = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+  if (payloadSuccess)
   {
-    v28 = v27;
-    v29 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
-    v30 = [v4 payloadSuccess];
-    v31 = [v29 isEqual:v30];
+    v28 = payloadSuccess;
+    payloadSuccess2 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+    payloadSuccess3 = [equalCopy payloadSuccess];
+    v31 = [payloadSuccess2 isEqual:payloadSuccess3];
 
     if (!v31)
     {
@@ -213,22 +213,22 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
-  v6 = [v4 payloadUnsupported];
-  if ((v5 != 0) == (v6 == 0))
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+  payloadConfirmation2 = [equalCopy payloadUnsupported];
+  if ((payloadConfirmation != 0) == (payloadConfirmation2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
-  if (v32)
+  payloadUnsupported = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+  if (payloadUnsupported)
   {
-    v33 = v32;
-    v34 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
-    v35 = [v4 payloadUnsupported];
-    v36 = [v34 isEqual:v35];
+    v33 = payloadUnsupported;
+    payloadUnsupported2 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+    payloadUnsupported3 = [equalCopy payloadUnsupported];
+    v36 = [payloadUnsupported2 isEqual:payloadUnsupported3];
 
     if (!v36)
     {
@@ -240,10 +240,10 @@ LABEL_31:
   {
   }
 
-  v39 = [(_INPBIntentSlotResolutionResult *)self hasType];
-  if (v39 == [v4 hasType])
+  hasType = [(_INPBIntentSlotResolutionResult *)self hasType];
+  if (hasType == [equalCopy hasType])
   {
-    if (!-[_INPBIntentSlotResolutionResult hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+    if (!-[_INPBIntentSlotResolutionResult hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
     {
       v37 = 1;
       goto LABEL_33;
@@ -257,25 +257,25 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentSlotResolutionResult allocWithZone:](_INPBIntentSlotResolutionResult init];
-  v6 = [(_INPBPayloadConfirmation *)self->_payloadConfirmation copyWithZone:a3];
+  v6 = [(_INPBPayloadConfirmation *)self->_payloadConfirmation copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadConfirmation:v6];
 
-  v7 = [(_INPBPayloadNeedsDisambiguation *)self->_payloadNeedsDisambiguation copyWithZone:a3];
+  v7 = [(_INPBPayloadNeedsDisambiguation *)self->_payloadNeedsDisambiguation copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadNeedsDisambiguation:v7];
 
-  v8 = [(_INPBPayloadNeedsExecuteIntent *)self->_payloadNeedsExecuteIntent copyWithZone:a3];
+  v8 = [(_INPBPayloadNeedsExecuteIntent *)self->_payloadNeedsExecuteIntent copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadNeedsExecuteIntent:v8];
 
-  v9 = [(_INPBPayloadNeedsValue *)self->_payloadNeedsValue copyWithZone:a3];
+  v9 = [(_INPBPayloadNeedsValue *)self->_payloadNeedsValue copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadNeedsValue:v9];
 
-  v10 = [(_INPBPayloadSuccess *)self->_payloadSuccess copyWithZone:a3];
+  v10 = [(_INPBPayloadSuccess *)self->_payloadSuccess copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadSuccess:v10];
 
-  v11 = [(_INPBPayloadUnsupported *)self->_payloadUnsupported copyWithZone:a3];
+  v11 = [(_INPBPayloadUnsupported *)self->_payloadUnsupported copyWithZone:zone];
   [(_INPBIntentSlotResolutionResult *)v5 setPayloadUnsupported:v11];
 
   if ([(_INPBIntentSlotResolutionResult *)self hasType])
@@ -286,78 +286,78 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentSlotResolutionResult *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentSlotResolutionResult *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentSlotResolutionResult)initWithCoder:(id)a3
+- (_INPBIntentSlotResolutionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentSlotResolutionResult *)self initWithData:v6];
+    self = [(_INPBIntentSlotResolutionResult *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
-  v4 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+  toCopy = to;
+  payloadConfirmation = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
 
-  if (v4)
+  if (payloadConfirmation)
   {
-    v5 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
+    payloadConfirmation2 = [(_INPBIntentSlotResolutionResult *)self payloadConfirmation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+  payloadNeedsDisambiguation = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
 
-  if (v6)
+  if (payloadNeedsDisambiguation)
   {
-    v7 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
+    payloadNeedsDisambiguation2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsDisambiguation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+  payloadNeedsExecuteIntent = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
 
-  if (v8)
+  if (payloadNeedsExecuteIntent)
   {
-    v9 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
+    payloadNeedsExecuteIntent2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsExecuteIntent];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+  payloadNeedsValue = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
 
-  if (v10)
+  if (payloadNeedsValue)
   {
-    v11 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
+    payloadNeedsValue2 = [(_INPBIntentSlotResolutionResult *)self payloadNeedsValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+  payloadSuccess = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
 
-  if (v12)
+  if (payloadSuccess)
   {
-    v13 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
+    payloadSuccess2 = [(_INPBIntentSlotResolutionResult *)self payloadSuccess];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+  payloadUnsupported = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
 
-  if (v14)
+  if (payloadUnsupported)
   {
-    v15 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
+    payloadUnsupported2 = [(_INPBIntentSlotResolutionResult *)self payloadUnsupported];
     PBDataWriterWriteSubmessage();
   }
 
@@ -368,55 +368,55 @@ LABEL_33:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Success"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Success"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Unsupported"])
+  else if ([typeCopy isEqualToString:@"Unsupported"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NeedsValue"])
+  else if ([typeCopy isEqualToString:@"NeedsValue"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NeedsDisambiguation"])
+  else if ([typeCopy isEqualToString:@"NeedsDisambiguation"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NeedsConfirmation"])
+  else if ([typeCopy isEqualToString:@"NeedsConfirmation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NotRequired"])
+  else if ([typeCopy isEqualToString:@"NotRequired"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CallerToResolve"])
+  else if ([typeCopy isEqualToString:@"CallerToResolve"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CalleeNotImplemented"])
+  else if ([typeCopy isEqualToString:@"CalleeNotImplemented"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AuthenticationRequired"])
+  else if ([typeCopy isEqualToString:@"AuthenticationRequired"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NeedsExecuteIntent"])
+  else if ([typeCopy isEqualToString:@"NeedsExecuteIntent"])
   {
     v4 = 11;
   }
@@ -429,10 +429,10 @@ LABEL_33:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -440,7 +440,7 @@ LABEL_33:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 

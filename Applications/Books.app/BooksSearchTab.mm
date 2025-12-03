@@ -1,12 +1,12 @@
 @interface BooksSearchTab
-- (_TtC5BooksP33_9FFBDA032BCF050E6BC76F7B78641C4314BooksSearchTab)initWithViewControllerProvider:(id)a3;
+- (_TtC5BooksP33_9FFBDA032BCF050E6BC76F7B78641C4314BooksSearchTab)initWithViewControllerProvider:(id)provider;
 @end
 
 @implementation BooksSearchTab
 
-- (_TtC5BooksP33_9FFBDA032BCF050E6BC76F7B78641C4314BooksSearchTab)initWithViewControllerProvider:(id)a3
+- (_TtC5BooksP33_9FFBDA032BCF050E6BC76F7B78641C4314BooksSearchTab)initWithViewControllerProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     v5 = swift_allocObject();

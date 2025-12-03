@@ -12,9 +12,9 @@
   v7 = [objc_alloc(MEMORY[0x277D3F888]) initWithCLLocation:v5];
   [v6 setLocation:v7];
 
-  v8 = [v5 timestamp];
+  timestamp = [v5 timestamp];
 
-  [v8 timeIntervalSinceReferenceDate];
+  [timestamp timeIntervalSinceReferenceDate];
   [v6 setTimeCFAbsolute:?];
 
   return v6;

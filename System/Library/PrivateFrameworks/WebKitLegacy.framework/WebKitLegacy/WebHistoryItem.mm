@@ -1,6 +1,6 @@
 @interface WebHistoryItem
-+ (id)entryWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)entryWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)_scrollPoint;
 - (CGPoint)scrollPoint;
 - (NSString)URLString;
@@ -8,29 +8,29 @@
 - (NSString)originalURLString;
 - (NSString)title;
 - (WebHistoryItem)init;
-- (WebHistoryItem)initWithURL:(id)a3 title:(id)a4;
+- (WebHistoryItem)initWithURL:(id)l title:(id)title;
 - (WebHistoryItem)initWithURLString:(NSString *)URLString title:(NSString *)title lastVisitedTimeInterval:(NSTimeInterval)time;
-- (WebHistoryItem)initWithURLString:(id)a3 title:(id)a4 displayTitle:(id)a5 lastVisitedTimeInterval:(double)a6;
-- (WebHistoryItem)initWithWebCoreHistoryItem:(void *)a3;
+- (WebHistoryItem)initWithURLString:(id)string title:(id)title displayTitle:(id)displayTitle lastVisitedTimeInterval:(double)interval;
+- (WebHistoryItem)initWithWebCoreHistoryItem:(void *)item;
 - (id)RSSFeedReferrer;
 - (id)URL;
 - (id)_redirectURLs;
 - (id)_viewportArguments;
 - (id)children;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)dictionaryRepresentationIncludingChildren:(BOOL)a3;
-- (id)initFromDictionaryRepresentation:(id)a3;
+- (id)dictionaryRepresentationIncludingChildren:(BOOL)children;
+- (id)initFromDictionaryRepresentation:(id)representation;
 - (id)target;
 - (unint64_t)hash;
-- (void)_setScale:(float)a3 isInitial:(BOOL)a4;
-- (void)_setScrollPoint:(CGPoint)a3;
-- (void)_setViewportArguments:(id)a3;
-- (void)_visitedWithTitle:(id)a3;
+- (void)_setScale:(float)scale isInitial:(BOOL)initial;
+- (void)_setScrollPoint:(CGPoint)point;
+- (void)_setViewportArguments:(id)arguments;
+- (void)_visitedWithTitle:(id)title;
 - (void)dealloc;
 - (void)setAlternateTitle:(NSString *)alternateTitle;
-- (void)setRSSFeedReferrer:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setRSSFeedReferrer:(id)referrer;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WebHistoryItem
@@ -280,7 +280,7 @@ LABEL_19:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   WebCore::HistoryItem::copy(&v33, self->_private->_historyItem.m_ptr);
@@ -588,13 +588,13 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     v6 = WebCore::HistoryItem::urlString(self->_private->_historyItem.m_ptr);
-    v7 = *WebCore::HistoryItem::urlString(*(*(a3 + 1) + 8));
+    v7 = *WebCore::HistoryItem::urlString(*(*(equal + 1) + 8));
     v9 = *v6;
 
     LOBYTE(v5) = WTF::equal(v9, v7, v8);
@@ -704,9 +704,9 @@ LABEL_22:
   return result;
 }
 
-+ (id)entryWithURL:(id)a3
++ (id)entryWithURL:(id)l
 {
-  result = [[a1 alloc] initWithURL:a3 title:0];
+  result = [[self alloc] initWithURL:l title:0];
   if (result)
   {
     v4 = result;
@@ -717,26 +717,26 @@ LABEL_22:
   return result;
 }
 
-- (WebHistoryItem)initWithURLString:(id)a3 title:(id)a4 displayTitle:(id)a5 lastVisitedTimeInterval:(double)a6
+- (WebHistoryItem)initWithURLString:(id)string title:(id)title displayTitle:(id)displayTitle lastVisitedTimeInterval:(double)interval
 {
-  v9 = a3;
+  stringCopy2 = string;
   {
     v11 = LegacyHistoryItemClient::singleton(void)::client;
   }
 
   else
   {
-    v23 = WebCore::HistoryItemClient::operator new(0x10, a3);
-    v9 = a3;
+    v23 = WebCore::HistoryItemClient::operator new(0x10, string);
+    stringCopy2 = string;
     v11 = v23;
     *(v23 + 8) = 1;
     *v23 = &unk_1F472A738;
     LegacyHistoryItemClient::singleton(void)::client = v23;
   }
 
-  MEMORY[0x1CCA63A40](&v26, v9);
-  MEMORY[0x1CCA63A40](&v25, a4);
-  MEMORY[0x1CCA63A40](&v24, a5);
+  MEMORY[0x1CCA63A40](&v26, stringCopy2);
+  MEMORY[0x1CCA63A40](&v25, title);
+  MEMORY[0x1CCA63A40](&v24, displayTitle);
   v12 = WTF::fastMalloc(0x1D0);
   v29[0] = 0;
   v29[16] = 0;
@@ -798,13 +798,13 @@ LABEL_9:
 
   if (v14)
   {
-    v14->_private->_lastVisitedTime = a6;
+    v14->_private->_lastVisitedTime = interval;
   }
 
   return v14;
 }
 
-- (WebHistoryItem)initWithWebCoreHistoryItem:(void *)a3
+- (WebHistoryItem)initWithWebCoreHistoryItem:(void *)item
 {
   v34.receiver = self;
   v34.super_class = WebHistoryItem;
@@ -816,8 +816,8 @@ LABEL_9:
 
   v5 = objc_alloc_init(WebHistoryItemPrivate);
   v4->_private = v5;
-  v6 = *a3;
-  *a3 = 0;
+  v6 = *item;
+  *item = 0;
   m_ptr = v5->_historyItem.m_ptr;
   v5->_historyItem.m_ptr = v6;
   if (!m_ptr)
@@ -1035,9 +1035,9 @@ LABEL_18:
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  MEMORY[0x1CCA63A40](&v5, a3);
+  MEMORY[0x1CCA63A40](&v5, title);
   WebCore::HistoryItem::setTitle();
   v4 = v5;
   v5 = 0;
@@ -1050,12 +1050,12 @@ LABEL_18:
   }
 }
 
-- (id)initFromDictionaryRepresentation:(id)a3
+- (id)initFromDictionaryRepresentation:(id)representation
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = [a3 _webkit_stringForKey:&stru_1F472E7E8];
-  v6 = [a3 _webkit_stringForKey:@"title"];
-  v7 = [a3 _webkit_stringForKey:@"lastVisitedDate"];
+  v5 = [representation _webkit_stringForKey:&stru_1F472E7E8];
+  v6 = [representation _webkit_stringForKey:@"title"];
+  v7 = [representation _webkit_stringForKey:@"lastVisitedDate"];
   if (v7)
   {
     [v7 doubleValue];
@@ -1067,7 +1067,7 @@ LABEL_18:
     v9 = 0.0;
   }
 
-  v10 = -[WebHistoryItem initWithURLString:title:displayTitle:lastVisitedTimeInterval:](self, "initWithURLString:title:displayTitle:lastVisitedTimeInterval:", v5, v6, [a3 _webkit_stringForKey:@"displayTitle"], v9);
+  v10 = -[WebHistoryItem initWithURLString:title:displayTitle:lastVisitedTimeInterval:](self, "initWithURLString:title:displayTitle:lastVisitedTimeInterval:", v5, v6, [representation _webkit_stringForKey:@"displayTitle"], v9);
   if (([v5 canBeConvertedToEncoding:5] & 1) == 0)
   {
     v11 = [objc_msgSend(MEMORY[0x1E695DFF8] _webkit_URLWithUserTypedString:{v5), "_web_originalDataAsString"}];
@@ -1092,12 +1092,12 @@ LABEL_18:
     }
   }
 
-  if ([a3 _webkit_BOOLForKey:@"lastVisitWasFailure"])
+  if ([representation _webkit_BOOLForKey:@"lastVisitWasFailure"])
   {
     *(v10->_private->_historyItem.m_ptr + 136) = 1;
   }
 
-  v18 = [a3 _webkit_arrayForKey:@"redirectURLs"];
+  v18 = [representation _webkit_arrayForKey:@"redirectURLs"];
   if (v18)
   {
     v64 = v18;
@@ -1186,7 +1186,7 @@ LABEL_18:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v32 = [objc_msgSend(a3 objectForKey:{@"children", 0), "reverseObjectEnumerator"}];
+  v32 = [objc_msgSend(representation objectForKey:{@"children", 0), "reverseObjectEnumerator"}];
   v33 = [v32 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v33)
   {
@@ -1228,35 +1228,35 @@ LABEL_18:
     while (v33);
   }
 
-  v41 = [a3 objectForKey:@"scale"];
-  v42 = [a3 objectForKey:@"scaleIsInitial"];
+  v41 = [representation objectForKey:@"scale"];
+  v42 = [representation objectForKey:@"scaleIsInitial"];
   if (v41 && v42)
   {
     v43 = v10->_private->_historyItem.m_ptr;
     v44 = v42;
     [v41 floatValue];
     v46 = v45;
-    v47 = [v44 BOOLValue];
+    bOOLValue = [v44 BOOLValue];
     *(v43 + 64) = v46;
-    *(v43 + 260) = v47;
+    *(v43 + 260) = bOOLValue;
   }
 
-  v48 = [a3 objectForKey:@"WebViewportArguments"];
+  v48 = [representation objectForKey:@"WebViewportArguments"];
   if (v48)
   {
     [(WebHistoryItem *)v10 _setViewportArguments:v48];
   }
 
-  v49 = [a3 objectForKey:@"scrollPointX"];
-  v50 = [a3 objectForKey:@"scrollPointY"];
+  v49 = [representation objectForKey:@"scrollPointX"];
+  v50 = [representation objectForKey:@"scrollPointY"];
   if (v49 && v50)
   {
     v51 = v10->_private->_historyItem.m_ptr;
     v52 = v50;
-    v53 = [v49 intValue];
-    v54 = [v52 intValue];
-    v60.var0 = v53;
-    v60.var1 = v54;
+    intValue = [v49 intValue];
+    intValue2 = [v52 intValue];
+    v60.var0 = intValue;
+    v60.var1 = intValue2;
     WebCore::HistoryItem::setScrollPosition(v51, &v60);
   }
 
@@ -1273,9 +1273,9 @@ LABEL_18:
   return result;
 }
 
-- (void)_visitedWithTitle:(id)a3
+- (void)_visitedWithTitle:(id)title
 {
-  MEMORY[0x1CCA63A40](&v7, a3);
+  MEMORY[0x1CCA63A40](&v7, title);
   WebCore::HistoryItem::setTitle();
   v5 = v7;
   v7 = 0;
@@ -1288,16 +1288,16 @@ LABEL_18:
   self->_private->_lastVisitedTime = v6;
 }
 
-- (WebHistoryItem)initWithURL:(id)a3 title:(id)a4
+- (WebHistoryItem)initWithURL:(id)l title:(id)title
 {
-  v6 = [a3 _web_originalDataAsString];
+  _web_originalDataAsString = [l _web_originalDataAsString];
 
-  return [(WebHistoryItem *)self initWithURLString:v6 title:a4 lastVisitedTimeInterval:0.0];
+  return [(WebHistoryItem *)self initWithURLString:_web_originalDataAsString title:title lastVisitedTimeInterval:0.0];
 }
 
-- (id)dictionaryRepresentationIncludingChildren:(BOOL)a3
+- (id)dictionaryRepresentationIncludingChildren:(BOOL)children
 {
-  v3 = a3;
+  childrenCopy = children;
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:8];
   m_ptr = self->_private->_historyItem.m_ptr;
   v7 = *WebCore::HistoryItem::urlString(m_ptr);
@@ -1406,7 +1406,7 @@ LABEL_18:
     }
   }
 
-  if (!v3 || !*(WebCore::HistoryItem::children(m_ptr) + 12))
+  if (!childrenCopy || !*(WebCore::HistoryItem::children(m_ptr) + 12))
   {
     goto LABEL_35;
   }
@@ -1424,10 +1424,10 @@ LABEL_35:
     LODWORD(lastVisitedTime) = *(self->_private->_historyItem.m_ptr + 64);
     [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", lastVisitedTime), @"scale"}];
     [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", *(self->_private->_historyItem.m_ptr + 260)), @"scaleIsInitial"}];
-    v27 = [(WebHistoryItem *)self _viewportArguments];
-    if (v27)
+    _viewportArguments = [(WebHistoryItem *)self _viewportArguments];
+    if (_viewportArguments)
     {
-      [v5 setObject:v27 forKey:@"WebViewportArguments"];
+      [v5 setObject:_viewportArguments forKey:@"WebViewportArguments"];
     }
 
     v28 = WebCore::HistoryItem::scrollPosition(self->_private->_historyItem.m_ptr);
@@ -1472,9 +1472,9 @@ LABEL_35:
   return WTF::StringImpl::operator NSString *();
 }
 
-- (void)setRSSFeedReferrer:(id)a3
+- (void)setRSSFeedReferrer:(id)referrer
 {
-  MEMORY[0x1CCA63A40](&v5, a3);
+  MEMORY[0x1CCA63A40](&v5, referrer);
   WebCore::HistoryItem::setReferrer();
   v4 = v5;
   v5 = 0;
@@ -1589,56 +1589,56 @@ LABEL_35:
   return v3;
 }
 
-- (void)_setScale:(float)a3 isInitial:(BOOL)a4
+- (void)_setScale:(float)scale isInitial:(BOOL)initial
 {
   m_ptr = self->_private->_historyItem.m_ptr;
-  *(m_ptr + 64) = a3;
-  *(m_ptr + 260) = a4;
+  *(m_ptr + 64) = scale;
+  *(m_ptr + 260) = initial;
 }
 
 - (id)_viewportArguments
 {
   m_ptr = self->_private->_historyItem.m_ptr;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   LODWORD(v4) = *(m_ptr + 69);
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:WebViewportInitialScaleKey];
+  [dictionary setObject:v5 forKey:WebViewportInitialScaleKey];
   LODWORD(v6) = *(m_ptr + 70);
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:WebViewportMinimumScaleKey];
+  [dictionary setObject:v7 forKey:WebViewportMinimumScaleKey];
   LODWORD(v8) = *(m_ptr + 71);
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  [v3 setObject:v9 forKey:WebViewportMaximumScaleKey];
+  [dictionary setObject:v9 forKey:WebViewportMaximumScaleKey];
   LODWORD(v10) = *(m_ptr + 67);
   v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
-  [v3 setObject:v11 forKey:WebViewportWidthKey];
+  [dictionary setObject:v11 forKey:WebViewportWidthKey];
   LODWORD(v12) = *(m_ptr + 68);
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-  [v3 setObject:v13 forKey:WebViewportHeightKey];
+  [dictionary setObject:v13 forKey:WebViewportHeightKey];
   LODWORD(v14) = *(m_ptr + 72);
   v15 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
-  [v3 setObject:v15 forKey:WebViewportUserScalableKey];
+  [dictionary setObject:v15 forKey:WebViewportUserScalableKey];
   LODWORD(v16) = *(m_ptr + 74);
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
-  [v3 setObject:v17 forKey:WebViewportShrinkToFitKey];
-  return v3;
+  [dictionary setObject:v17 forKey:WebViewportShrinkToFitKey];
+  return dictionary;
 }
 
-- (void)_setViewportArguments:(id)a3
+- (void)_setViewportArguments:(id)arguments
 {
-  [objc_msgSend(a3 objectForKey:{WebViewportInitialScaleKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportInitialScaleKey), "floatValue"}];
   v6 = v5;
-  [objc_msgSend(a3 objectForKey:{WebViewportMinimumScaleKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportMinimumScaleKey), "floatValue"}];
   v8 = v7;
-  [objc_msgSend(a3 objectForKey:{WebViewportMaximumScaleKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportMaximumScaleKey), "floatValue"}];
   v10 = v9;
-  [objc_msgSend(a3 objectForKey:{WebViewportWidthKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportWidthKey), "floatValue"}];
   v12 = v11;
-  [objc_msgSend(a3 objectForKey:{WebViewportHeightKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportHeightKey), "floatValue"}];
   v14 = v13;
-  [objc_msgSend(a3 objectForKey:{WebViewportUserScalableKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportUserScalableKey), "floatValue"}];
   v16 = v15;
-  [objc_msgSend(a3 objectForKey:{WebViewportShrinkToFitKey), "floatValue"}];
+  [objc_msgSend(arguments objectForKey:{WebViewportShrinkToFitKey), "floatValue"}];
   m_ptr = self->_private->_historyItem.m_ptr;
   *(m_ptr + 264) = 0;
   *(m_ptr + 67) = v12;
@@ -1662,11 +1662,11 @@ LABEL_35:
   return result;
 }
 
-- (void)_setScrollPoint:(CGPoint)a3
+- (void)_setScrollPoint:(CGPoint)point
 {
-  v5 = a3;
+  pointCopy = point;
   m_ptr = self->_private->_historyItem.m_ptr;
-  WebCore::IntPoint::IntPoint(&v4, &v5);
+  WebCore::IntPoint::IntPoint(&v4, &pointCopy);
   WebCore::HistoryItem::setScrollPosition(m_ptr, &v4);
 }
 

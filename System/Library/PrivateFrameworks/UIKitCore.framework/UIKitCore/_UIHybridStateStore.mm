@@ -1,13 +1,13 @@
 @interface _UIHybridStateStore
-+ (_UIHybridStateStore)stateStoreForSceneSession:(uint64_t)a1;
++ (_UIHybridStateStore)stateStoreForSceneSession:(uint64_t)session;
 - (id)description;
-- (id)objectForKey:(uint64_t)a1;
-- (void)setObject:(uint64_t)a3 forKey:;
+- (id)objectForKey:(uint64_t)key;
+- (void)setObject:(uint64_t)object forKey:;
 @end
 
 @implementation _UIHybridStateStore
 
-+ (_UIHybridStateStore)stateStoreForSceneSession:(uint64_t)a1
++ (_UIHybridStateStore)stateStoreForSceneSession:(uint64_t)session
 {
   objc_opt_self();
   v3 = _stores;
@@ -26,8 +26,8 @@
     {
       if (!a2)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:sel_initWithSceneSession_ object:v5 file:@"_UIHybridStateStore.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"sceneSession != nil"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_initWithSceneSession_ object:v5 file:@"_UIHybridStateStore.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"sceneSession != nil"}];
       }
 
       v9.receiver = v5;
@@ -46,18 +46,18 @@
   return v5;
 }
 
-- (id)objectForKey:(uint64_t)a1
+- (id)objectForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     if (!a2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel_objectForKey_ object:a1 file:@"_UIHybridStateStore.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_objectForKey_ object:key file:@"_UIHybridStateStore.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
     }
 
-    v4 = [(UISceneSession *)*(a1 + 8) _internalUserInfo];
-    v5 = [v4 objectForKey:a2];
+    _internalUserInfo = [(UISceneSession *)*(key + 8) _internalUserInfo];
+    v5 = [_internalUserInfo objectForKey:a2];
 
     if (v5)
     {
@@ -66,8 +66,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v7 objectForKey:a2];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults objectForKey:a2];
 
       if (v6)
       {
@@ -84,28 +84,28 @@
   return v6;
 }
 
-- (void)setObject:(uint64_t)a3 forKey:
+- (void)setObject:(uint64_t)object forKey:
 {
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!object)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel_setObject_forKey_ object:a1 file:@"_UIHybridStateStore.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setObject_forKey_ object:self file:@"_UIHybridStateStore.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
     }
 
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     v7 = MEMORY[0x1E695DF90];
     v8 = v6;
     v9 = [v7 alloc];
-    v10 = [(UISceneSession *)v8 _internalUserInfo];
-    v13 = [v9 initWithDictionary:v10];
+    _internalUserInfo = [(UISceneSession *)v8 _internalUserInfo];
+    v13 = [v9 initWithDictionary:_internalUserInfo];
 
-    [v13 setObject:a2 forKey:a3];
+    [v13 setObject:a2 forKey:object];
     [(UISceneSession *)v8 _setInternalUserInfo:v13];
 
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v11 setObject:a2 forKey:a3];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:a2 forKey:object];
   }
 }
 
@@ -125,9 +125,9 @@
     sceneSession = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p sceneSession = %@>", v5, self, sceneSession];;
+  sceneSession = [v3 stringWithFormat:@"<%@: %p sceneSession = %@>", v5, self, sceneSession];;
 
-  return v8;
+  return sceneSession;
 }
 
 @end

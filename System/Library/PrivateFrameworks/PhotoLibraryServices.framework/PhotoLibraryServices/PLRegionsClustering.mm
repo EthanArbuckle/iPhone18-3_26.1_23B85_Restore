@@ -1,16 +1,16 @@
 @interface PLRegionsClustering
-+ (id)performClustering:(unint64_t)a3 dataset:(id)a4 progressBlock:(id)a5;
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4;
++ (id)performClustering:(unint64_t)clustering dataset:(id)dataset progressBlock:(id)block;
+- (id)performWithDataset:(id)dataset progressBlock:(id)block;
 @end
 
 @implementation PLRegionsClustering
 
-+ (id)performClustering:(unint64_t)a3 dataset:(id)a4 progressBlock:(id)a5
++ (id)performClustering:(unint64_t)clustering dataset:(id)dataset progressBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  datasetCopy = dataset;
+  blockCopy = block;
+  if (clustering == 1)
   {
     v11 = objc_alloc_init(PLRegionsDensityClustering);
     [(PLRegionsDensityClustering *)v11 setAlgorithm:0];
@@ -21,11 +21,11 @@
     }
 
 LABEL_7:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLRegionsClustering.m" lineNumber:49 description:{@"No clustering initialized for algorithm %lu", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLRegionsClustering.m" lineNumber:49 description:{@"No clustering initialized for algorithm %lu", clustering}];
 
     v11 = 0;
-    if (v9)
+    if (datasetCopy)
     {
       goto LABEL_5;
     }
@@ -33,7 +33,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (clustering)
   {
     goto LABEL_7;
   }
@@ -46,10 +46,10 @@ LABEL_7:
   }
 
 LABEL_4:
-  if (v9)
+  if (datasetCopy)
   {
 LABEL_5:
-    v12 = [(PLRegionsDensityClustering *)v11 performWithDataset:v9 progressBlock:v10];
+    v12 = [(PLRegionsDensityClustering *)v11 performWithDataset:datasetCopy progressBlock:blockCopy];
     goto LABEL_11;
   }
 
@@ -72,10 +72,10 @@ LABEL_11:
   return v12;
 }
 
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4
+- (id)performWithDataset:(id)dataset progressBlock:(id)block
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLRegionsClustering.m" lineNumber:68 description:{@"%s needs to be implemented by subclasses", "-[PLRegionsClustering performWithDataset:progressBlock:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLRegionsClustering.m" lineNumber:68 description:{@"%s needs to be implemented by subclasses", "-[PLRegionsClustering performWithDataset:progressBlock:]"}];
 
   return MEMORY[0x1E695E0F8];
 }

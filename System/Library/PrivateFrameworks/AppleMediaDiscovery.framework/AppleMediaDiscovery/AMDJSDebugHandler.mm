@@ -1,25 +1,25 @@
 @interface AMDJSDebugHandler
-+ (id)handleDebugRequest:(id)a3 error:(id *)a4;
-+ (id)testInference:(id)a3 error:(id *)a4;
-+ (void)handleAsyncDebugRequest:(id)a3 withCompletionHandler:(id)a4;
++ (id)handleDebugRequest:(id)request error:(id *)error;
++ (id)testInference:(id)inference error:(id *)error;
++ (void)handleAsyncDebugRequest:(id)request withCompletionHandler:(id)handler;
 @end
 
 @implementation AMDJSDebugHandler
 
-+ (id)handleDebugRequest:(id)a3 error:(id *)a4
++ (id)handleDebugRequest:(id)request error:(id *)error
 {
   v474 = *MEMORY[0x277D85DE8];
-  v406 = a1;
+  selfCopy = self;
   v405[1] = a2;
   v405[0] = 0;
-  objc_storeStrong(v405, a3);
-  v404 = a4;
+  objc_storeStrong(v405, request);
+  errorCopy = error;
   v403 = [v405[0] objectForKey:@"event"];
   v402 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if ([v403 isEqualToString:@"fetch_taste_profiles"])
   {
-    v401 = [AMDTasteProfile fetchTasteProfile:v404];
-    if (*v404)
+    v401 = [AMDTasteProfile fetchTasteProfile:errorCopy];
+    if (*errorCopy)
     {
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v399 = 1;
@@ -27,11 +27,11 @@
       {
         log = oslog;
         type = v399;
-        v172 = [*v404 localizedDescription];
-        v398 = MEMORY[0x277D82BE0](v172);
+        localizedDescription = [*errorCopy localizedDescription];
+        v398 = MEMORY[0x277D82BE0](localizedDescription);
         __os_log_helper_16_2_1_8_64(v473, v398);
         _os_log_impl(&dword_240CB9000, log, type, "Error fetching all the Taste Profiles: %@", v473, 0xCu);
-        MEMORY[0x277D82BD8](v172);
+        MEMORY[0x277D82BD8](localizedDescription);
         objc_storeStrong(&v398, 0);
       }
 
@@ -55,8 +55,8 @@
 
   else if ([v403 isEqualToString:@"fetch_events"])
   {
-    v396 = [AMDAppEvent fetchEvents:v404];
-    if (*v404)
+    v396 = [AMDAppEvent fetchEvents:errorCopy];
+    if (*errorCopy)
     {
       v395 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v394 = 1;
@@ -64,11 +64,11 @@
       {
         v167 = v395;
         v168 = v394;
-        v169 = [*v404 localizedDescription];
-        v393 = MEMORY[0x277D82BE0](v169);
+        localizedDescription2 = [*errorCopy localizedDescription];
+        v393 = MEMORY[0x277D82BE0](localizedDescription2);
         __os_log_helper_16_2_1_8_64(v472, v393);
         _os_log_impl(&dword_240CB9000, v167, v168, "Error fetching all the Events: %@", v472, 0xCu);
-        MEMORY[0x277D82BD8](v169);
+        MEMORY[0x277D82BD8](localizedDescription2);
         objc_storeStrong(&v393, 0);
       }
 
@@ -92,8 +92,8 @@
 
   else if ([v403 isEqualToString:@"fetch_tab_info"])
   {
-    v392 = [AMDAppTabInfo fetchAllTabInfo:v404];
-    if (*v404)
+    v392 = [AMDAppTabInfo fetchAllTabInfo:errorCopy];
+    if (*errorCopy)
     {
       v391 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v390 = 1;
@@ -101,11 +101,11 @@
       {
         v164 = v391;
         v165 = v390;
-        v166 = [*v404 localizedDescription];
-        v389 = MEMORY[0x277D82BE0](v166);
+        localizedDescription3 = [*errorCopy localizedDescription];
+        v389 = MEMORY[0x277D82BE0](localizedDescription3);
         __os_log_helper_16_2_1_8_64(v471, v389);
         _os_log_impl(&dword_240CB9000, v164, v165, "Error fetching tab info: %@", v471, 0xCu);
-        MEMORY[0x277D82BD8](v166);
+        MEMORY[0x277D82BD8](localizedDescription3);
         objc_storeStrong(&v389, 0);
       }
 
@@ -129,8 +129,8 @@
 
   else if ([v403 isEqualToString:@"fetch_model_urls"])
   {
-    v388 = [AMDModel fetchAll:v404];
-    if (*v404)
+    v388 = [AMDModel fetchAll:errorCopy];
+    if (*errorCopy)
     {
       v387 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v386 = 1;
@@ -138,11 +138,11 @@
       {
         v161 = v387;
         v162 = v386;
-        v163 = [*v404 localizedDescription];
-        v385 = MEMORY[0x277D82BE0](v163);
+        localizedDescription4 = [*errorCopy localizedDescription];
+        v385 = MEMORY[0x277D82BE0](localizedDescription4);
         __os_log_helper_16_2_1_8_64(v470, v385);
         _os_log_impl(&dword_240CB9000, v161, v162, "Error fetching all the ModelUrls: %@", v470, 0xCu);
-        MEMORY[0x277D82BD8](v163);
+        MEMORY[0x277D82BD8](localizedDescription4);
         objc_storeStrong(&v385, 0);
       }
 
@@ -166,8 +166,8 @@
 
   else if ([v403 isEqualToString:@"fetch_coldstart_urls"])
   {
-    v384 = [AMDColdstartURL fetchAll:v404];
-    if (*v404)
+    v384 = [AMDColdstartURL fetchAll:errorCopy];
+    if (*errorCopy)
     {
       v383 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v382 = 1;
@@ -175,11 +175,11 @@
       {
         v158 = v383;
         v159 = v382;
-        v160 = [*v404 localizedDescription];
-        v381 = MEMORY[0x277D82BE0](v160);
+        localizedDescription5 = [*errorCopy localizedDescription];
+        v381 = MEMORY[0x277D82BE0](localizedDescription5);
         __os_log_helper_16_2_1_8_64(v469, v381);
         _os_log_impl(&dword_240CB9000, v158, v159, "Error fetching all the ColdstartUrls: %@", v469, 0xCu);
-        MEMORY[0x277D82BD8](v160);
+        MEMORY[0x277D82BD8](localizedDescription5);
         objc_storeStrong(&v381, 0);
       }
 
@@ -203,8 +203,8 @@
 
   else if ([v403 isEqualToString:@"fetch_descriptors"])
   {
-    v380 = [AMDDescriptor getDescriptorsForDomain:[AMDDomains getCodeForDomain:@"apps"] error:v404];
-    if (*v404)
+    v380 = [AMDDescriptor getDescriptorsForDomain:[AMDDomains getCodeForDomain:@"apps"] error:errorCopy];
+    if (*errorCopy)
     {
       v379 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v378 = 1;
@@ -212,11 +212,11 @@
       {
         v155 = v379;
         v156 = v378;
-        v157 = [*v404 localizedDescription];
-        v377 = MEMORY[0x277D82BE0](v157);
+        localizedDescription6 = [*errorCopy localizedDescription];
+        v377 = MEMORY[0x277D82BE0](localizedDescription6);
         __os_log_helper_16_2_1_8_64(v468, v377);
         _os_log_impl(&dword_240CB9000, v155, v156, "Error getting descriptors: %@", v468, 0xCu);
-        MEMORY[0x277D82BD8](v157);
+        MEMORY[0x277D82BD8](localizedDescription6);
         objc_storeStrong(&v377, 0);
       }
 
@@ -240,8 +240,8 @@
 
   else if ([v403 isEqualToString:@"fetch_segments"])
   {
-    v376 = [AMDAppSegment getSegmentsDictForAllTreatments:v404];
-    if (*v404)
+    v376 = [AMDAppSegment getSegmentsDictForAllTreatments:errorCopy];
+    if (*errorCopy)
     {
       v375 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v374 = 1;
@@ -249,11 +249,11 @@
       {
         v152 = v375;
         v153 = v374;
-        v154 = [*v404 localizedDescription];
-        v373 = MEMORY[0x277D82BE0](v154);
+        localizedDescription7 = [*errorCopy localizedDescription];
+        v373 = MEMORY[0x277D82BE0](localizedDescription7);
         __os_log_helper_16_2_1_8_64(v467, v373);
         _os_log_impl(&dword_240CB9000, v152, v153, "Error fetching the Segments Dict: %@", v467, 0xCu);
-        MEMORY[0x277D82BD8](v154);
+        MEMORY[0x277D82BD8](localizedDescription7);
         objc_storeStrong(&v373, 0);
       }
 
@@ -285,16 +285,16 @@
           v369 = [v376 objectForKey:v371];
           v142 = v372;
           v464[0] = @"segmentsData";
-          v145 = [v369 first];
-          v465[0] = v145;
+          first = [v369 first];
+          v465[0] = first;
           v464[1] = @"algoId";
-          v144 = [v369 second];
-          v465[1] = v144;
+          second = [v369 second];
+          v465[1] = second;
           v143 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v465 forKeys:v464 count:2];
           [v142 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v143);
-          MEMORY[0x277D82BD8](v144);
-          MEMORY[0x277D82BD8](v145);
+          MEMORY[0x277D82BD8](second);
+          MEMORY[0x277D82BD8](first);
           objc_storeStrong(&v369, 0);
           ++v148;
           if (v146 + 1 >= v149)
@@ -324,8 +324,8 @@
 
   else if ([v403 isEqualToString:@"delete_taste_profiles"])
   {
-    v368 = [AMDTasteProfile deleteAll:v404];
-    if (*v404)
+    v368 = [AMDTasteProfile deleteAll:errorCopy];
+    if (*errorCopy)
     {
       v367 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v366 = 1;
@@ -333,11 +333,11 @@
       {
         v139 = v367;
         v140 = v366;
-        v141 = [*v404 localizedDescription];
-        v365 = MEMORY[0x277D82BE0](v141);
+        localizedDescription8 = [*errorCopy localizedDescription];
+        v365 = MEMORY[0x277D82BE0](localizedDescription8);
         __os_log_helper_16_2_1_8_64(v463, v365);
         _os_log_impl(&dword_240CB9000, v139, v140, "Error clearing the Taste Profile table: %@", v463, 0xCu);
-        MEMORY[0x277D82BD8](v141);
+        MEMORY[0x277D82BD8](localizedDescription8);
         objc_storeStrong(&v365, 0);
       }
 
@@ -361,8 +361,8 @@
 
   else if ([v403 isEqualToString:@"delete_events"])
   {
-    v364 = [AMDAppEvent deleteAllEvents:v404];
-    if (*v404)
+    v364 = [AMDAppEvent deleteAllEvents:errorCopy];
+    if (*errorCopy)
     {
       v363 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v362 = 1;
@@ -370,11 +370,11 @@
       {
         v136 = v363;
         v137 = v362;
-        v138 = [*v404 localizedDescription];
-        v361 = MEMORY[0x277D82BE0](v138);
+        localizedDescription9 = [*errorCopy localizedDescription];
+        v361 = MEMORY[0x277D82BE0](localizedDescription9);
         __os_log_helper_16_2_1_8_64(v462, v361);
         _os_log_impl(&dword_240CB9000, v136, v137, "Error clearing the events table: %@", v462, 0xCu);
-        MEMORY[0x277D82BD8](v138);
+        MEMORY[0x277D82BD8](localizedDescription9);
         objc_storeStrong(&v361, 0);
       }
 
@@ -398,8 +398,8 @@
 
   else if ([v403 isEqualToString:@"clear_core_data"])
   {
-    v360 = [AMDAppTabInfo deleteAllTabs:v404];
-    if (*v404)
+    v360 = [AMDAppTabInfo deleteAllTabs:errorCopy];
+    if (*errorCopy)
     {
       v359 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v358 = 1;
@@ -407,11 +407,11 @@
       {
         v133 = v359;
         v134 = v358;
-        v135 = [*v404 localizedDescription];
-        v357 = MEMORY[0x277D82BE0](v135);
+        localizedDescription10 = [*errorCopy localizedDescription];
+        v357 = MEMORY[0x277D82BE0](localizedDescription10);
         __os_log_helper_16_2_1_8_64(v461, v357);
         _os_log_impl(&dword_240CB9000, v133, v134, "Error clearing the AppTabInfo table: %@", v461, 0xCu);
-        MEMORY[0x277D82BD8](v135);
+        MEMORY[0x277D82BD8](localizedDescription10);
         objc_storeStrong(&v357, 0);
       }
 
@@ -432,8 +432,8 @@
 
       objc_storeStrong(&v356, 0);
       [v402 setObject:v360 forKey:@"tabs_deleted"];
-      v354 = [AMDDescriptor deleteAll:v404];
-      if (*v404)
+      v354 = [AMDDescriptor deleteAll:errorCopy];
+      if (*errorCopy)
       {
         v353 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v352 = 1;
@@ -441,11 +441,11 @@
         {
           v130 = v353;
           v131 = v352;
-          v132 = [*v404 localizedDescription];
-          v351 = MEMORY[0x277D82BE0](v132);
+          localizedDescription11 = [*errorCopy localizedDescription];
+          v351 = MEMORY[0x277D82BE0](localizedDescription11);
           __os_log_helper_16_2_1_8_64(v459, v351);
           _os_log_impl(&dword_240CB9000, v130, v131, "Error clearing the descriptors table: %@", v459, 0xCu);
-          MEMORY[0x277D82BD8](v132);
+          MEMORY[0x277D82BD8](localizedDescription11);
           objc_storeStrong(&v351, 0);
         }
 
@@ -466,8 +466,8 @@
 
         objc_storeStrong(&v350, 0);
         [v402 setObject:v354 forKey:@"descriptors_deleted"];
-        v348 = [AMDModel deleteAllModelUrls:v404];
-        if (*v404)
+        v348 = [AMDModel deleteAllModelUrls:errorCopy];
+        if (*errorCopy)
         {
           v347 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v346 = 1;
@@ -475,11 +475,11 @@
           {
             v127 = v347;
             v128 = v346;
-            v129 = [*v404 localizedDescription];
-            v345 = MEMORY[0x277D82BE0](v129);
+            localizedDescription12 = [*errorCopy localizedDescription];
+            v345 = MEMORY[0x277D82BE0](localizedDescription12);
             __os_log_helper_16_2_1_8_64(v457, v345);
             _os_log_impl(&dword_240CB9000, v127, v128, "Error clearing the Model Url table: %@", v457, 0xCu);
-            MEMORY[0x277D82BD8](v129);
+            MEMORY[0x277D82BD8](localizedDescription12);
             objc_storeStrong(&v345, 0);
           }
 
@@ -500,8 +500,8 @@
 
           objc_storeStrong(&v344, 0);
           [v402 setObject:v348 forKey:@"model_urls_deleted"];
-          v342 = [AMDColdstartURL deleteAllColdstartUrls:v404];
-          if (*v404)
+          v342 = [AMDColdstartURL deleteAllColdstartUrls:errorCopy];
+          if (*errorCopy)
           {
             v341 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             v340 = 1;
@@ -509,11 +509,11 @@
             {
               v124 = v341;
               v125 = v340;
-              v126 = [*v404 localizedDescription];
-              v339 = MEMORY[0x277D82BE0](v126);
+              localizedDescription13 = [*errorCopy localizedDescription];
+              v339 = MEMORY[0x277D82BE0](localizedDescription13);
               __os_log_helper_16_2_1_8_64(v455, v339);
               _os_log_impl(&dword_240CB9000, v124, v125, "Error clearing the Coldstart Url table: %@", v455, 0xCu);
-              MEMORY[0x277D82BD8](v126);
+              MEMORY[0x277D82BD8](localizedDescription13);
               objc_storeStrong(&v339, 0);
             }
 
@@ -534,8 +534,8 @@
 
             objc_storeStrong(&v338, 0);
             [v402 setObject:v342 forKey:@"coldstart_urls_deleted"];
-            v336 = [AMDUserDataManager deleteAllUserData:v404];
-            if (*v404)
+            v336 = [AMDUserDataManager deleteAllUserData:errorCopy];
+            if (*errorCopy)
             {
               v335 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
               v334 = 1;
@@ -543,11 +543,11 @@
               {
                 v121 = v335;
                 v122 = v334;
-                v123 = [*v404 localizedDescription];
-                v333 = MEMORY[0x277D82BE0](v123);
+                localizedDescription14 = [*errorCopy localizedDescription];
+                v333 = MEMORY[0x277D82BE0](localizedDescription14);
                 __os_log_helper_16_2_1_8_64(v453, v333);
                 _os_log_impl(&dword_240CB9000, v121, v122, "Error clearing the User Data tables: %@", v453, 0xCu);
-                MEMORY[0x277D82BD8](v123);
+                MEMORY[0x277D82BD8](localizedDescription14);
                 objc_storeStrong(&v333, 0);
               }
 
@@ -568,8 +568,8 @@
 
               objc_storeStrong(&v332, 0);
               [v402 setObject:v336 forKey:@"user_data_deleted"];
-              v330 = [AMDWorkflow deleteAllWorkflows:v404];
-              if (*v404)
+              v330 = [AMDWorkflow deleteAllWorkflows:errorCopy];
+              if (*errorCopy)
               {
                 v329 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                 v328 = OS_LOG_TYPE_INFO;
@@ -577,11 +577,11 @@
                 {
                   v118 = v329;
                   v119 = v328;
-                  v120 = [*v404 localizedDescription];
-                  v327 = MEMORY[0x277D82BE0](v120);
+                  localizedDescription15 = [*errorCopy localizedDescription];
+                  v327 = MEMORY[0x277D82BE0](localizedDescription15);
                   __os_log_helper_16_2_1_8_64(v451, v327);
                   _os_log_impl(&dword_240CB9000, v118, v119, "Error clearing the Workflow table: %@", v451, 0xCu);
-                  MEMORY[0x277D82BD8](v120);
+                  MEMORY[0x277D82BD8](localizedDescription15);
                   objc_storeStrong(&v327, 0);
                 }
 
@@ -602,8 +602,8 @@
 
                 objc_storeStrong(&v326, 0);
                 [v402 setObject:v330 forKey:@"workflows_deleted"];
-                v324 = [AMDWorkflowInFlight deleteAllInflightWorkflows:v404];
-                if (*v404)
+                v324 = [AMDWorkflowInFlight deleteAllInflightWorkflows:errorCopy];
+                if (*errorCopy)
                 {
                   v323 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                   v322 = OS_LOG_TYPE_INFO;
@@ -611,11 +611,11 @@
                   {
                     v115 = v323;
                     v116 = v322;
-                    v117 = [*v404 localizedDescription];
-                    v321 = MEMORY[0x277D82BE0](v117);
+                    localizedDescription16 = [*errorCopy localizedDescription];
+                    v321 = MEMORY[0x277D82BE0](localizedDescription16);
                     __os_log_helper_16_2_1_8_64(v449, v321);
                     _os_log_impl(&dword_240CB9000, v115, v116, "Error clearing the Inflight Workflow table: %@", v449, 0xCu);
-                    MEMORY[0x277D82BD8](v117);
+                    MEMORY[0x277D82BD8](localizedDescription16);
                     objc_storeStrong(&v321, 0);
                   }
 
@@ -636,8 +636,8 @@
 
                   objc_storeStrong(&v320, 0);
                   [v402 setObject:v324 forKey:@"inflight_workflows_deleted"];
-                  v318 = [AMDAppStoreEvent deleteAllEvents:v404];
-                  if (*v404)
+                  v318 = [AMDAppStoreEvent deleteAllEvents:errorCopy];
+                  if (*errorCopy)
                   {
                     v317 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                     v316 = OS_LOG_TYPE_INFO;
@@ -645,11 +645,11 @@
                     {
                       v112 = v317;
                       v113 = v316;
-                      v114 = [*v404 localizedDescription];
-                      v315 = MEMORY[0x277D82BE0](v114);
+                      localizedDescription17 = [*errorCopy localizedDescription];
+                      v315 = MEMORY[0x277D82BE0](localizedDescription17);
                       __os_log_helper_16_2_1_8_64(v447, v315);
                       _os_log_impl(&dword_240CB9000, v112, v113, "Error clearing the Appstore events table: %@", v447, 0xCu);
-                      MEMORY[0x277D82BD8](v114);
+                      MEMORY[0x277D82BD8](localizedDescription17);
                       objc_storeStrong(&v315, 0);
                     }
 
@@ -670,8 +670,8 @@
 
                     objc_storeStrong(&v314, 0);
                     [v402 setObject:v318 forKey:@"deleted_appstore_events"];
-                    v312 = [AMDKVStore deleteWithPredicate:0 error:v404];
-                    if (*v404)
+                    v312 = [AMDKVStore deleteWithPredicate:0 error:errorCopy];
+                    if (*errorCopy)
                     {
                       v311 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                       v310 = OS_LOG_TYPE_INFO;
@@ -679,11 +679,11 @@
                       {
                         v109 = v311;
                         v110 = v310;
-                        v111 = [*v404 localizedDescription];
-                        v309 = MEMORY[0x277D82BE0](v111);
+                        localizedDescription18 = [*errorCopy localizedDescription];
+                        v309 = MEMORY[0x277D82BE0](localizedDescription18);
                         __os_log_helper_16_2_1_8_64(v445, v309);
                         _os_log_impl(&dword_240CB9000, v109, v110, "Error clearing the KVStore table: %@", v445, 0xCu);
-                        MEMORY[0x277D82BD8](v111);
+                        MEMORY[0x277D82BD8](localizedDescription18);
                         objc_storeStrong(&v309, 0);
                       }
 
@@ -740,8 +740,8 @@
 
   else if ([v403 isEqualToString:@"fetch_workflows"])
   {
-    v306 = [AMDWorkflow fetchAllWorkflows:v404];
-    if (*v404)
+    v306 = [AMDWorkflow fetchAllWorkflows:errorCopy];
+    if (*errorCopy)
     {
       v305 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v304 = OS_LOG_TYPE_INFO;
@@ -749,11 +749,11 @@
       {
         v106 = v305;
         v107 = v304;
-        v108 = [*v404 localizedDescription];
-        v303 = MEMORY[0x277D82BE0](v108);
+        localizedDescription19 = [*errorCopy localizedDescription];
+        v303 = MEMORY[0x277D82BE0](localizedDescription19);
         __os_log_helper_16_2_1_8_64(v443, v303);
         _os_log_impl(&dword_240CB9000, v106, v107, "Error getting workflows: %@", v443, 0xCu);
-        MEMORY[0x277D82BD8](v108);
+        MEMORY[0x277D82BD8](localizedDescription19);
         objc_storeStrong(&v303, 0);
       }
 
@@ -777,8 +777,8 @@
 
   else if ([v403 isEqualToString:@"fetch_appstore_events"])
   {
-    v302 = [AMDAppStoreEvent fetchEvents:v404];
-    if (*v404)
+    v302 = [AMDAppStoreEvent fetchEvents:errorCopy];
+    if (*errorCopy)
     {
       v301 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v300 = OS_LOG_TYPE_INFO;
@@ -786,11 +786,11 @@
       {
         v103 = v301;
         v104 = v300;
-        v105 = [*v404 localizedDescription];
-        v299 = MEMORY[0x277D82BE0](v105);
+        localizedDescription20 = [*errorCopy localizedDescription];
+        v299 = MEMORY[0x277D82BE0](localizedDescription20);
         __os_log_helper_16_2_1_8_64(v442, v299);
         _os_log_impl(&dword_240CB9000, v103, v104, "Error getting appstore events: %@", v442, 0xCu);
-        MEMORY[0x277D82BD8](v105);
+        MEMORY[0x277D82BD8](localizedDescription20);
         objc_storeStrong(&v299, 0);
       }
 
@@ -814,8 +814,8 @@
 
   else if ([v403 isEqualToString:@"fetch_inflight_workflows"])
   {
-    v298 = [AMDWorkflowInFlight fetchAllWorkflows:v404];
-    if (*v404)
+    v298 = [AMDWorkflowInFlight fetchAllWorkflows:errorCopy];
+    if (*errorCopy)
     {
       v297 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v296 = OS_LOG_TYPE_INFO;
@@ -823,11 +823,11 @@
       {
         v100 = v297;
         v101 = v296;
-        v102 = [*v404 localizedDescription];
-        v295 = MEMORY[0x277D82BE0](v102);
+        localizedDescription21 = [*errorCopy localizedDescription];
+        v295 = MEMORY[0x277D82BE0](localizedDescription21);
         __os_log_helper_16_2_1_8_64(v441, v295);
         _os_log_impl(&dword_240CB9000, v100, v101, "Error getting inflight workflows: %@", v441, 0xCu);
-        MEMORY[0x277D82BD8](v102);
+        MEMORY[0x277D82BD8](localizedDescription21);
         objc_storeStrong(&v295, 0);
       }
 
@@ -851,8 +851,8 @@
 
   else if ([v403 isEqualToString:@"fetch_arcade_games"])
   {
-    v294 = [AMDTasteProfile getPurchasedArcadeGamesSet:v404];
-    if (*v404)
+    v294 = [AMDTasteProfile getPurchasedArcadeGamesSet:errorCopy];
+    if (*errorCopy)
     {
       v293 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v292 = OS_LOG_TYPE_INFO;
@@ -860,11 +860,11 @@
       {
         v97 = v293;
         v98 = v292;
-        v99 = [*v404 localizedDescription];
-        v291 = MEMORY[0x277D82BE0](v99);
+        localizedDescription22 = [*errorCopy localizedDescription];
+        v291 = MEMORY[0x277D82BE0](localizedDescription22);
         __os_log_helper_16_2_1_8_64(v440, v291);
         _os_log_impl(&dword_240CB9000, v97, v98, "Error fetching purchased arcade games: %@", v440, 0xCu);
-        MEMORY[0x277D82BD8](v99);
+        MEMORY[0x277D82BD8](localizedDescription22);
         objc_storeStrong(&v291, 0);
       }
 
@@ -875,9 +875,9 @@
 
     else
     {
-      v96 = [v294 allObjects];
+      allObjects = [v294 allObjects];
       [v402 setObject:? forKey:?];
-      MEMORY[0x277D82BD8](v96);
+      MEMORY[0x277D82BD8](allObjects);
       v397 = 0;
     }
 
@@ -902,9 +902,9 @@
         if (v286)
         {
           v89 = v402;
-          v90 = [v286 localizedDescription];
+          localizedDescription23 = [v286 localizedDescription];
           [v89 setObject:? forKey:?];
-          MEMORY[0x277D82BD8](v90);
+          MEMORY[0x277D82BD8](localizedDescription23);
         }
 
         else
@@ -921,7 +921,7 @@
         if ([v403 isEqualToString:@"test_segment_computation"])
         {
           v283 = MEMORY[0x277D82BE0](&unk_2852BB308);
-          v282 = [AMDAppSegment assignSegmentsWithParameters:v283 error:v404];
+          v282 = [AMDAppSegment assignSegmentsWithParameters:v283 error:errorCopy];
           if (v282)
           {
             v281 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -944,9 +944,9 @@
                 v280 = *(__b[1] + 8 * v85);
                 v80 = v281;
                 v82 = [v282 objectForKey:v280];
-                v81 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v280];
+                v280 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v280];
                 [v80 setObject:v82 forKey:?];
-                MEMORY[0x277D82BD8](v81);
+                MEMORY[0x277D82BD8](v280);
                 MEMORY[0x277D82BD8](v82);
                 ++v85;
                 if (v83 + 1 >= v86)
@@ -1136,13 +1136,13 @@ LABEL_222:
           if (v266)
           {
             v434 = @"failure";
-            v63 = [v266 localizedDescription];
-            v435 = v63;
+            localizedDescription24 = [v266 localizedDescription];
+            v435 = localizedDescription24;
             v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v435 forKeys:&v434 count:1];
             v6 = v264;
             v264 = v5;
             MEMORY[0x277D82BD8](v6);
-            MEMORY[0x277D82BD8](v63);
+            MEMORY[0x277D82BD8](localizedDescription24);
           }
 
           else
@@ -1171,25 +1171,25 @@ LABEL_222:
           if (v261)
           {
             v432 = @"failure";
-            v61 = [v261 localizedDescription];
-            v433 = v61;
+            localizedDescription25 = [v261 localizedDescription];
+            v433 = localizedDescription25;
             v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v433 forKeys:&v432 count:1];
             v8 = v258;
             v258 = v7;
             MEMORY[0x277D82BD8](v8);
-            MEMORY[0x277D82BD8](v61);
+            MEMORY[0x277D82BD8](localizedDescription25);
           }
 
           else
           {
             v430 = @"featureValue";
-            v60 = [v257 getValue];
-            v431 = v60;
+            getValue = [v257 getValue];
+            v431 = getValue;
             v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v431 forKeys:&v430 count:1];
             v10 = v258;
             v258 = v9;
             MEMORY[0x277D82BD8](v10);
-            MEMORY[0x277D82BD8](v60);
+            MEMORY[0x277D82BD8](getValue);
           }
 
           [v402 setObject:v258 forKey:@"memoryFeatureProviderFetchTestStatus"];
@@ -1206,20 +1206,20 @@ LABEL_222:
           v255 = 0;
           v254 = [v405[0] objectForKey:@"testPayload"];
           v252 = v255;
-          v59 = [v406 testInference:v254 error:&v252];
+          v59 = [selfCopy testInference:v254 error:&v252];
           objc_storeStrong(&v255, v252);
           v253 = v59;
           v251 = 0;
           if (v255)
           {
             v428 = @"failure";
-            v58 = [v255 localizedDescription];
-            v429 = v58;
+            localizedDescription26 = [v255 localizedDescription];
+            v429 = localizedDescription26;
             v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v429 forKeys:&v428 count:1];
             v12 = v251;
             v251 = v11;
             MEMORY[0x277D82BD8](v12);
-            MEMORY[0x277D82BD8](v58);
+            MEMORY[0x277D82BD8](localizedDescription26);
           }
 
           else
@@ -1251,13 +1251,13 @@ LABEL_222:
           if (v250)
           {
             v424 = @"failure";
-            v56 = [v250 localizedDescription];
-            v425 = v56;
+            localizedDescription27 = [v250 localizedDescription];
+            v425 = localizedDescription27;
             v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v425 forKeys:&v424 count:1];
             v16 = v246;
             v246 = v15;
             MEMORY[0x277D82BD8](v16);
-            MEMORY[0x277D82BD8](v56);
+            MEMORY[0x277D82BD8](localizedDescription27);
           }
 
           else
@@ -1379,9 +1379,9 @@ LABEL_222:
           if (v222)
           {
             v46 = v402;
-            v47 = [v222 localizedDescription];
+            localizedDescription28 = [v222 localizedDescription];
             [v46 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v47);
+            MEMORY[0x277D82BD8](localizedDescription28);
           }
 
           else
@@ -1403,9 +1403,9 @@ LABEL_222:
           if (v219)
           {
             v43 = v402;
-            v44 = [v219 localizedDescription];
+            localizedDescription29 = [v219 localizedDescription];
             [v43 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v44);
+            MEMORY[0x277D82BD8](localizedDescription29);
           }
 
           else
@@ -1426,9 +1426,9 @@ LABEL_222:
           if (v216)
           {
             v41 = v402;
-            v42 = [v216 localizedDescription];
+            localizedDescription30 = [v216 localizedDescription];
             [v41 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v42);
+            MEMORY[0x277D82BD8](localizedDescription30);
           }
 
           else
@@ -1450,7 +1450,7 @@ LABEL_222:
 
         else if ([v403 isEqualToString:@"test_batched_sql_queries"])
         {
-          v213 = [AMDJSCustomAggregator runBatchedSQLDescriptorsUsing:v405[0] error:v404];
+          v213 = [AMDJSCustomAggregator runBatchedSQLDescriptorsUsing:v405[0] error:errorCopy];
           [v402 setObject:v213 forKey:@"aggregationResult"];
           objc_storeStrong(&v213, 0);
         }
@@ -1460,11 +1460,11 @@ LABEL_222:
           v39 = [v405[0] objectForKey:@"testPayload"];
           v212 = [AMDSQLite trimEventsForStreams:"trimEventsForStreams:error:" error:?];
           MEMORY[0x277D82BD8](v39);
-          if (*v404)
+          if (*errorCopy)
           {
-            v38 = [*v404 localizedDescription];
+            localizedDescription31 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v38);
+            MEMORY[0x277D82BD8](localizedDescription31);
           }
 
           else
@@ -1491,12 +1491,12 @@ LABEL_222:
           v421 = v36;
           v210 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v421 forKeys:&v420 count:1];
           MEMORY[0x277D82BD8](v36);
-          v209 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager createVectorDBWithCreateDBPayload:v210 error:v404];
-          if (*v404)
+          v209 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager createVectorDBWithCreateDBPayload:v210 error:errorCopy];
+          if (*errorCopy)
           {
-            v35 = [*v404 localizedDescription];
+            localizedDescription32 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v35);
+            MEMORY[0x277D82BD8](localizedDescription32);
           }
 
           else
@@ -1526,9 +1526,9 @@ LABEL_222:
             v418 = v206;
             v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v418 count:1];
             v32 = [MEMORY[0x277CCABB0] numberWithInt:j];
-            v31 = [v32 stringValue];
+            stringValue = [v32 stringValue];
             [v207 setObject:v33 forKey:?];
-            MEMORY[0x277D82BD8](v31);
+            MEMORY[0x277D82BD8](stringValue);
             MEMORY[0x277D82BD8](v32);
             MEMORY[0x277D82BD8](v33);
           }
@@ -1538,12 +1538,12 @@ LABEL_222:
           v416[1] = @"vectorDict";
           v417[1] = v207;
           v203 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v417 forKeys:v416 count:2];
-          v202 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager insertVectorsHandlerWithInsertVectorsPayload:v203 error:v404];
-          if (*v404)
+          v202 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager insertVectorsHandlerWithInsertVectorsPayload:v203 error:errorCopy];
+          if (*errorCopy)
           {
-            v30 = [*v404 localizedDescription];
+            localizedDescription33 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v30);
+            MEMORY[0x277D82BD8](localizedDescription33);
           }
 
           else
@@ -1577,12 +1577,12 @@ LABEL_222:
           v412[1] = @"queryDict";
           v413[1] = v198;
           v197 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v413 forKeys:v412 count:2];
-          v196 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager runVectorDBSearchWithSearchPayload:v197 error:v404];
-          if (*v404)
+          v196 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager runVectorDBSearchWithSearchPayload:v197 error:errorCopy];
+          if (*errorCopy)
           {
-            v28 = [*v404 localizedDescription];
+            localizedDescription34 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v28);
+            MEMORY[0x277D82BD8](localizedDescription34);
           }
 
           else
@@ -1603,12 +1603,12 @@ LABEL_222:
           v410 = @"vectorDBConfig";
           v411 = v195;
           v194 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v411 forKeys:&v410 count:1];
-          v193 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager clearVectorsHandlerWithClearVectorDBPayload:v194 error:v404];
-          if (*v404)
+          v193 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager clearVectorsHandlerWithClearVectorDBPayload:v194 error:errorCopy];
+          if (*errorCopy)
           {
-            v27 = [*v404 localizedDescription];
+            localizedDescription35 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v27);
+            MEMORY[0x277D82BD8](localizedDescription35);
           }
 
           else
@@ -1627,12 +1627,12 @@ LABEL_222:
           v408 = @"dbName";
           v409 = v192;
           v191 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v409 forKeys:&v408 count:1];
-          v190 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager deleteVectorDatabaseWithDeletionPayload:v191 error:v404];
-          if (*v404)
+          v190 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager deleteVectorDatabaseWithDeletionPayload:v191 error:errorCopy];
+          if (*errorCopy)
           {
-            v26 = [*v404 localizedDescription];
+            localizedDescription36 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v26);
+            MEMORY[0x277D82BD8](localizedDescription36);
           }
 
           else
@@ -1659,24 +1659,24 @@ LABEL_222:
           v187 = [v405[0] objectForKey:@"table_name"];
           v186 = [v405[0] objectForKey:@"table_schema"];
           v185 = +[AMDSQLite getSharedInstance];
-          v184 = [v185 getDataSchema];
-          v183 = [v184 addTable:v187 withSchema:v186 error:v404];
-          if (*v404)
+          getDataSchema = [v185 getDataSchema];
+          v183 = [getDataSchema addTable:v187 withSchema:v186 error:errorCopy];
+          if (*errorCopy)
           {
-            v25 = [*v404 localizedDescription];
+            localizedDescription37 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v25);
+            MEMORY[0x277D82BD8](localizedDescription37);
           }
 
           else
           {
             [v402 setObject:v183 forKey:@"schemaAddSummary"];
-            v182 = [v185 applySchema:v184 error:v404];
-            if (*v404)
+            v182 = [v185 applySchema:getDataSchema error:errorCopy];
+            if (*errorCopy)
             {
-              v24 = [*v404 localizedDescription];
+              localizedDescription38 = [*errorCopy localizedDescription];
               [v402 setObject:? forKey:?];
-              MEMORY[0x277D82BD8](v24);
+              MEMORY[0x277D82BD8](localizedDescription38);
             }
 
             else
@@ -1688,7 +1688,7 @@ LABEL_222:
           }
 
           objc_storeStrong(&v183, 0);
-          objc_storeStrong(&v184, 0);
+          objc_storeStrong(&getDataSchema, 0);
           objc_storeStrong(&v185, 0);
           objc_storeStrong(&v186, 0);
           objc_storeStrong(&v187, 0);
@@ -1698,24 +1698,24 @@ LABEL_222:
         {
           v181 = [v405[0] objectForKey:AMD_SQLITE_SCHEMA_INDICES];
           v180 = +[AMDSQLite getSharedInstance];
-          v179 = [v180 getDataSchema];
-          v178 = [v179 addIndices:v181 error:v404];
-          if (*v404)
+          getDataSchema2 = [v180 getDataSchema];
+          v178 = [getDataSchema2 addIndices:v181 error:errorCopy];
+          if (*errorCopy)
           {
-            v23 = [*v404 localizedDescription];
+            localizedDescription39 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v23);
+            MEMORY[0x277D82BD8](localizedDescription39);
           }
 
           else
           {
             [v402 setObject:v178 forKey:@"indexesAddSummary"];
-            v177 = [v180 applySchema:v179 error:v404];
-            if (*v404)
+            v177 = [v180 applySchema:getDataSchema2 error:errorCopy];
+            if (*errorCopy)
             {
-              v22 = [*v404 localizedDescription];
+              localizedDescription40 = [*errorCopy localizedDescription];
               [v402 setObject:? forKey:?];
-              MEMORY[0x277D82BD8](v22);
+              MEMORY[0x277D82BD8](localizedDescription40);
             }
 
             else
@@ -1727,7 +1727,7 @@ LABEL_222:
           }
 
           objc_storeStrong(&v178, 0);
-          objc_storeStrong(&v179, 0);
+          objc_storeStrong(&getDataSchema2, 0);
           objc_storeStrong(&v180, 0);
           objc_storeStrong(&v181, 0);
         }
@@ -1735,12 +1735,12 @@ LABEL_222:
         else if ([v403 isEqualToString:@"insert_app_lang_event"])
         {
           v176 = MEMORY[0x277D82BE0](&unk_2852BB420);
-          v175 = [AMDBiomeIntegration writeToBiome:v176 withError:v404];
-          if (*v404)
+          v175 = [AMDBiomeIntegration writeToBiome:v176 withError:errorCopy];
+          if (*errorCopy)
           {
-            v21 = [*v404 localizedDescription];
+            localizedDescription41 = [*errorCopy localizedDescription];
             [v402 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v21);
+            MEMORY[0x277D82BD8](localizedDescription41);
           }
 
           else
@@ -1754,9 +1754,9 @@ LABEL_222:
 
         else
         {
-          v174 = [MEMORY[0x277CCACA8] stringWithFormat:@"Action '%@' not found", v403];
-          [v402 setObject:v174 forKey:@"status"];
-          objc_storeStrong(&v174, 0);
+          v403 = [MEMORY[0x277CCACA8] stringWithFormat:@"Action '%@' not found", v403];
+          [v402 setObject:v403 forKey:@"status"];
+          objc_storeStrong(&v403, 0);
         }
       }
 
@@ -1766,8 +1766,8 @@ LABEL_350:
       goto LABEL_351;
     }
 
-    v290 = [AMDTasteProfile getPurchasedAppsSet:v404];
-    if (*v404)
+    v290 = [AMDTasteProfile getPurchasedAppsSet:errorCopy];
+    if (*errorCopy)
     {
       v289 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v288 = OS_LOG_TYPE_INFO;
@@ -1775,11 +1775,11 @@ LABEL_350:
       {
         v93 = v289;
         v94 = v288;
-        v95 = [*v404 localizedDescription];
-        v287 = MEMORY[0x277D82BE0](v95);
+        localizedDescription42 = [*errorCopy localizedDescription];
+        v287 = MEMORY[0x277D82BE0](localizedDescription42);
         __os_log_helper_16_2_1_8_64(v439, v287);
         _os_log_impl(&dword_240CB9000, v93, v94, "Error fetching purchased apps: %@", v439, 0xCu);
-        MEMORY[0x277D82BD8](v95);
+        MEMORY[0x277D82BD8](localizedDescription42);
         objc_storeStrong(&v287, 0);
       }
 
@@ -1790,9 +1790,9 @@ LABEL_350:
 
     else
     {
-      v92 = [v290 allObjects];
+      allObjects2 = [v290 allObjects];
       [v402 setObject:? forKey:?];
-      MEMORY[0x277D82BD8](v92);
+      MEMORY[0x277D82BD8](allObjects2);
       v397 = 0;
     }
 
@@ -1813,14 +1813,14 @@ LABEL_351:
   return v19;
 }
 
-+ (id)testInference:(id)a3 error:(id *)a4
++ (id)testInference:(id)inference error:(id *)error
 {
   v143 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v129 = a4;
+  objc_storeStrong(location, inference);
+  errorCopy = error;
   v128 = [location[0] objectForKey:@"inferencePayload"];
   if (v128)
   {
@@ -1837,7 +1837,7 @@ LABEL_351:
         v118 = [location[0] objectForKey:@"inferenceWorkflow"];
         if (v118)
         {
-          [AMDWorkflowInFlight saveWorkflow:v118 forDomain:v120 withCallUUID:@"TEST" error:v129];
+          [AMDWorkflowInFlight saveWorkflow:v118 forDomain:v120 withCallUUID:@"TEST" error:errorCopy];
           v114 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v113 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
@@ -1878,8 +1878,8 @@ LABEL_351:
               }
 
               v109 = *(__b[1] + 8 * v48);
-              v8 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v109 inDomain:@"apps" forSource:0x2852B1248 error:v129];
-              if (*v129)
+              v8 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v109 inDomain:@"apps" forSource:0x2852B1248 error:errorCopy];
+              if (*errorCopy)
               {
                 break;
               }
@@ -1933,8 +1933,8 @@ LABEL_28:
                 }
 
                 v106 = *(v105[1] + 8 * v42);
-                v9 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v106 inDomain:@"apps" forSource:0x2852B1228 error:v129];
-                if (*v129)
+                v9 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v106 inDomain:@"apps" forSource:0x2852B1228 error:errorCopy];
+                if (*errorCopy)
                 {
                   break;
                 }
@@ -1988,24 +1988,24 @@ LABEL_39:
 LABEL_44:
             v101 = [v118 objectForKey:0x2852A8E08];
             v100 = [v118 objectForKey:0x2852AAAC8];
-            v99 = [AMDModel getModelInfo:v101 error:v129];
-            if (!*v129 && v99)
+            v99 = [AMDModel getModelInfo:v101 error:errorCopy];
+            if (!*errorCopy && v99)
             {
-              [AMDModelDownloader deleteModelFromStorage:v99 isVersionChange:0 error:v129];
+              [AMDModelDownloader deleteModelFromStorage:v99 isVersionChange:0 error:errorCopy];
             }
 
             if (v100)
             {
-              v98 = [AMDModel getModelInfo:v100 error:v129];
-              if (!*v129 && v98)
+              v98 = [AMDModel getModelInfo:v100 error:errorCopy];
+              if (!*errorCopy && v98)
               {
-                [AMDModelDownloader deleteModelFromStorage:v98 isVersionChange:0 error:v129];
+                [AMDModelDownloader deleteModelFromStorage:v98 isVersionChange:0 error:errorCopy];
               }
 
               objc_storeStrong(&v98, 0);
             }
 
-            if (*v129)
+            if (*errorCopy)
             {
               v97 = MEMORY[0x277D82BE0](@"Unable to reset Models table and delete older models");
               v96 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -2019,7 +2019,7 @@ LABEL_44:
               objc_storeStrong(&v96, 0);
               v37 = [AMDError allocError:15 withMessage:v97];
               v10 = v37;
-              *v129 = v37;
+              *errorCopy = v37;
               v131 = 0;
               v124 = 1;
               objc_storeStrong(&v97, 0);
@@ -2027,7 +2027,7 @@ LABEL_44:
 
             else
             {
-              v11 = [AMDModel deleteAllModelUrls:v129];
+              v11 = [AMDModel deleteAllModelUrls:errorCopy];
               v94 = [location[0] objectForKey:@"modelDownloadPayload"];
               if (v94)
               {
@@ -2048,8 +2048,8 @@ LABEL_44:
                     }
 
                     v90 = *(v89[1] + 8 * v32);
-                    v13 = [AMDModelDownloader processModelDownload:v90 withStorefrontID:@"143441" error:v129];
-                    if (*v129)
+                    v13 = [AMDModelDownloader processModelDownload:v90 withStorefrontID:@"143441" error:errorCopy];
+                    if (*errorCopy)
                     {
                       break;
                     }
@@ -2101,15 +2101,15 @@ LABEL_70:
                     if (v83)
                     {
                       v81 = [v128 objectForKey:0x2852AB548];
-                      if (!v81 || ((v80 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, v123), [v80 storeFeatureData:v81 error:v129], !*v129) ? (v124 = 0) : (v131 = 0, v124 = 1), objc_storeStrong(&v80, 0), !v124))
+                      if (!v81 || ((v80 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, v123), [v80 storeFeatureData:v81 error:errorCopy], !*errorCopy) ? (v124 = 0) : (v131 = 0, v124 = 1), objc_storeStrong(&v80, 0), !v124))
                       {
                         v79 = [v128 objectForKey:@"auxillaryData"];
-                        if (!v79 || ((v78 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, v123), [v78 storeOutputRemapData:v79 error:v129], !*v129) ? (v124 = 0) : (v131 = 0, v124 = 1), objc_storeStrong(&v78, 0), !v124))
+                        if (!v79 || ((v78 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, v123), [v78 storeOutputRemapData:v79 error:errorCopy], !*errorCopy) ? (v124 = 0) : (v131 = 0, v124 = 1), objc_storeStrong(&v78, 0), !v124))
                         {
                           v77 = [v128 objectForKey:@"usecaseId"];
-                          v76 = [v128 objectForKey:0x2852AAB08];
-                          v75 = [AMDWorkflow getCurrentWorkflowForDomain:v120 andTreatmentId:v76 andUseCaseId:v77 error:v129];
-                          if (*v129)
+                          first = [v128 objectForKey:0x2852AAB08];
+                          v75 = [AMDWorkflow getCurrentWorkflowForDomain:v120 andTreatmentId:first andUseCaseId:v77 error:errorCopy];
+                          if (*errorCopy)
                           {
                             v131 = 0;
                             v124 = 1;
@@ -2117,22 +2117,22 @@ LABEL_70:
 
                           else
                           {
-                            v74 = [v75 second];
-                            if (!v76)
+                            second = [v75 second];
+                            if (!first)
                             {
-                              v76 = [v75 first];
+                              first = [v75 first];
                               MEMORY[0x277D82BD8](0);
                             }
 
-                            if (v74 && [v74 count])
+                            if (second && [second count])
                             {
-                              v70 = [[AMDUseCaseWorkflow alloc] initWithDictionary:v74];
+                              v70 = [[AMDUseCaseWorkflow alloc] initWithDictionary:second];
                               if ([v70 isValid])
                               {
-                                v22 = [v70 getMaxItemsToDisplay];
-                                v66 = [v70 getPredictions:(objc_msgSend(v22 forDomain:"unsignedIntValue") * 1.5) error:{v123, v129}];
+                                getMaxItemsToDisplay = [v70 getMaxItemsToDisplay];
+                                v66 = [v70 getPredictions:(objc_msgSend(getMaxItemsToDisplay forDomain:"unsignedIntValue") * 1.5) error:{v123, errorCopy}];
                                 MEMORY[0x277D82BD8](0);
-                                MEMORY[0x277D82BD8](v22);
+                                MEMORY[0x277D82BD8](getMaxItemsToDisplay);
                                 v65 = [v128 objectForKey:0x2852B19C8];
                                 if (v65)
                                 {
@@ -2153,7 +2153,7 @@ LABEL_70:
                                   objc_storeStrong(&v63, 0);
                                 }
 
-                                else if (*v129)
+                                else if (*errorCopy)
                                 {
                                   v131 = 0;
                                   v124 = 1;
@@ -2178,7 +2178,7 @@ LABEL_70:
                                   objc_storeStrong(&v61, 0);
                                   v21 = [AMDError allocError:15 withMessage:v62];
                                   v18 = v21;
-                                  *v129 = v21;
+                                  *errorCopy = v21;
                                   v131 = 0;
                                   v124 = 1;
                                   objc_storeStrong(&v62, 0);
@@ -2191,7 +2191,7 @@ LABEL_70:
 
                               else
                               {
-                                v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid workflow for use case %@, treatment %@", v77, v76];
+                                v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid workflow for use case %@, treatment %@", v77, first];
                                 v68 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                                 v67 = OS_LOG_TYPE_ERROR;
                                 if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
@@ -2203,7 +2203,7 @@ LABEL_70:
                                 objc_storeStrong(&v68, 0);
                                 v23 = [AMDError allocError:15 withMessage:v69];
                                 v17 = v23;
-                                *v129 = v23;
+                                *errorCopy = v23;
                                 v131 = 0;
                                 v124 = 1;
                                 objc_storeStrong(&v69, 0);
@@ -2214,7 +2214,7 @@ LABEL_70:
 
                             else
                             {
-                              v73 = [MEMORY[0x277CCACA8] stringWithFormat:@"no workflow for use case %@, treatment %@", v77, v76];
+                              v73 = [MEMORY[0x277CCACA8] stringWithFormat:@"no workflow for use case %@, treatment %@", v77, first];
                               oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                               v71 = OS_LOG_TYPE_ERROR;
                               if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -2226,17 +2226,17 @@ LABEL_70:
                               objc_storeStrong(&oslog, 0);
                               v24 = [AMDError allocError:15 withMessage:v73];
                               v16 = v24;
-                              *v129 = v24;
+                              *errorCopy = v24;
                               v131 = 0;
                               v124 = 1;
                               objc_storeStrong(&v73, 0);
                             }
 
-                            objc_storeStrong(&v74, 0);
+                            objc_storeStrong(&second, 0);
                           }
 
                           objc_storeStrong(&v75, 0);
-                          objc_storeStrong(&v76, 0);
+                          objc_storeStrong(&first, 0);
                           objc_storeStrong(&v77, 0);
                         }
 
@@ -2251,7 +2251,7 @@ LABEL_70:
                       v82 = MEMORY[0x277D82BE0](@"Missing dsId");
                       v25 = [AMDError allocError:15 withMessage:v82];
                       v15 = v25;
-                      *v129 = v25;
+                      *errorCopy = v25;
                       v131 = 0;
                       v124 = 1;
                       objc_storeStrong(&v82, 0);
@@ -2265,7 +2265,7 @@ LABEL_70:
                     v84 = MEMORY[0x277D82BE0](@"Missing storeFrontId");
                     v26 = [AMDError allocError:15 withMessage:v84];
                     v14 = v26;
-                    *v129 = v26;
+                    *errorCopy = v26;
                     v131 = 0;
                     v124 = 1;
                     objc_storeStrong(&v84, 0);
@@ -2289,7 +2289,7 @@ LABEL_70:
                 objc_storeStrong(&v92, 0);
                 v36 = [AMDError allocError:15 withMessage:v93];
                 v12 = v36;
-                *v129 = v36;
+                *errorCopy = v36;
                 v131 = 0;
                 v124 = 1;
                 objc_storeStrong(&v93, 0);
@@ -2320,7 +2320,7 @@ LABEL_70:
           objc_storeStrong(&v116, 0);
           v54 = [AMDError allocError:15 withMessage:v117];
           v7 = v54;
-          *v129 = v54;
+          *errorCopy = v54;
           v131 = 0;
           v124 = 1;
           objc_storeStrong(&v117, 0);
@@ -2334,7 +2334,7 @@ LABEL_70:
         v119 = MEMORY[0x277D82BE0](@"Unknown domain");
         v55 = [AMDError allocError:15 withMessage:v119];
         v6 = v55;
-        *v129 = v55;
+        *errorCopy = v55;
         v131 = 0;
         v124 = 1;
         objc_storeStrong(&v119, 0);
@@ -2346,7 +2346,7 @@ LABEL_70:
       v121 = MEMORY[0x277D82BE0](@"Missing domain or use cases");
       v56 = [AMDError allocError:15 withMessage:v121];
       v5 = v56;
-      *v129 = v56;
+      *errorCopy = v56;
       v131 = 0;
       v124 = 1;
       objc_storeStrong(&v121, 0);
@@ -2370,7 +2370,7 @@ LABEL_70:
     objc_storeStrong(&v126, 0);
     v59 = [AMDError allocError:15 withMessage:v127];
     v4 = v59;
-    *v129 = v59;
+    *errorCopy = v59;
     v131 = 0;
     v124 = 1;
     objc_storeStrong(&v127, 0);
@@ -2384,14 +2384,14 @@ LABEL_70:
   return v19;
 }
 
-+ (void)handleAsyncDebugRequest:(id)a3 withCompletionHandler:(id)a4
++ (void)handleAsyncDebugRequest:(id)request withCompletionHandler:(id)handler
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
+  objc_storeStrong(&v49, handler);
   v48 = 0;
   v47 = [location[0] objectForKey:@"event"];
   if ([v47 isEqualToString:@"query_search_tool"])

@@ -1,38 +1,38 @@
 @interface PUReviewScreenTopBarTileViewController
 - (id)loadView;
-- (void)_handleDoneButtonTapped:(id)a3;
-- (void)_handleRetakeButtonTapped:(id)a3;
+- (void)_handleDoneButtonTapped:(id)tapped;
+- (void)_handleRetakeButtonTapped:(id)tapped;
 - (void)_updateBarLayout;
 - (void)_updateControls;
-- (void)_updateVisibilityAnimated:(BOOL)a3;
+- (void)_updateVisibilityAnimated:(BOOL)animated;
 - (void)becomeReusable;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBarsModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBarsModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUReviewScreenTopBarTileViewController
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(PUReviewScreenTopBarTileViewController *)self browsingViewModel];
+  changeCopy = change;
+  modelCopy = model;
+  browsingViewModel = [(PUReviewScreenTopBarTileViewController *)self browsingViewModel];
 
-  if (v7 == v6 && [v8 chromeVisibilityDidChange])
+  if (browsingViewModel == modelCopy && [changeCopy chromeVisibilityDidChange])
   {
     [(PUReviewScreenTopBarTileViewController *)self _updateVisibilityAnimated:1];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PUReviewScreenTopBarContext == a5)
+  if (PUReviewScreenTopBarContext == context)
   {
-    v5 = a4;
+    changeCopy = change;
     [(PUReviewScreenTopBarTileViewController *)self _updateControls];
-    if ((v5 & 0x20) != 0)
+    if ((changeCopy & 0x20) != 0)
     {
 
       [(PUReviewScreenTopBarTileViewController *)self _updateBarLayout];
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)_updateVisibilityAnimated:(BOOL)a3
+- (void)_updateVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUReviewScreenTopBarTileViewController *)self browsingViewModel];
-  v6 = v5;
-  if (!v5)
+  animatedCopy = animated;
+  browsingViewModel = [(PUReviewScreenTopBarTileViewController *)self browsingViewModel];
+  v6 = browsingViewModel;
+  if (!browsingViewModel)
   {
-    v8 = [(PUReviewScreenTopBarTileViewController *)self _topBar];
+    _topBar = [(PUReviewScreenTopBarTileViewController *)self _topBar];
     v7 = 1.0;
-    if (v3)
+    if (animatedCopy)
     {
       v10 = +[PUOneUpSettings sharedInstance];
       [v10 chromeDefaultAnimationDuration];
@@ -59,11 +59,11 @@
     }
 
 LABEL_10:
-    [v8 setAlpha:v7];
+    [_topBar setAlpha:v7];
     goto LABEL_11;
   }
 
-  if ([v5 isChromeVisible])
+  if ([browsingViewModel isChromeVisible])
   {
     v7 = 1.0;
   }
@@ -73,8 +73,8 @@ LABEL_10:
     v7 = 0.0;
   }
 
-  v8 = [(PUReviewScreenTopBarTileViewController *)self _topBar];
-  if (!v3)
+  _topBar = [(PUReviewScreenTopBarTileViewController *)self _topBar];
+  if (!animatedCopy)
   {
     goto LABEL_10;
   }
@@ -86,8 +86,8 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __68__PUReviewScreenTopBarTileViewController__updateVisibilityAnimated___block_invoke;
   v13[3] = &unk_1E7B7FF70;
-  v8 = v8;
-  v14 = v8;
+  _topBar = _topBar;
+  v14 = _topBar;
   v15 = v7;
   [v12 animateWithDuration:6 delay:v13 options:0 animations:v9 completion:0.0];
 
@@ -96,12 +96,12 @@ LABEL_11:
 
 - (void)_updateBarLayout
 {
-  v7 = [(PUReviewScreenTopBarTileViewController *)self barsModel];
-  v3 = [(PUReviewScreenTopBarTileViewController *)self _topBar];
-  v4 = [v7 useVerticalControlLayout];
-  if (v4)
+  barsModel = [(PUReviewScreenTopBarTileViewController *)self barsModel];
+  _topBar = [(PUReviewScreenTopBarTileViewController *)self _topBar];
+  useVerticalControlLayout = [barsModel useVerticalControlLayout];
+  if (useVerticalControlLayout)
   {
-    [v7 controlCenterAlignmentPoint];
+    [barsModel controlCenterAlignmentPoint];
   }
 
   else
@@ -110,71 +110,71 @@ LABEL_11:
     v6 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  [v3 setDoneButtonCenterAlignmentPoint:{v5, v6}];
-  if ((v4 & [v7 lastControlAlignmentChangeForcedLayout]) == 1)
+  [_topBar setDoneButtonCenterAlignmentPoint:{v5, v6}];
+  if ((useVerticalControlLayout & [barsModel lastControlAlignmentChangeForcedLayout]) == 1)
   {
-    [v3 layoutIfNeeded];
+    [_topBar layoutIfNeeded];
   }
 }
 
 - (void)_updateControls
 {
-  v6 = [(PUReviewScreenTopBarTileViewController *)self _topBar];
-  v3 = [(PUReviewScreenTopBarTileViewController *)self barsModel];
-  v4 = [v3 availableControls];
-  [v6 setAvailableButtons:v4];
+  _topBar = [(PUReviewScreenTopBarTileViewController *)self _topBar];
+  barsModel = [(PUReviewScreenTopBarTileViewController *)self barsModel];
+  availableControls = [barsModel availableControls];
+  [_topBar setAvailableButtons:availableControls];
 
-  v5 = [v3 enabledControls];
-  [v6 setEnabledButtons:v5];
+  enabledControls = [barsModel enabledControls];
+  [_topBar setEnabledButtons:enabledControls];
 
-  [v6 setBackgroundStyle:{objc_msgSend(v3, "useVerticalControlLayout") ^ 1}];
+  [_topBar setBackgroundStyle:{objc_msgSend(barsModel, "useVerticalControlLayout") ^ 1}];
 }
 
-- (void)setBarsModel:(id)a3
+- (void)setBarsModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   barsModel = self->_barsModel;
-  if (barsModel != v5)
+  if (barsModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUReviewScreenBarsModel *)barsModel unregisterChangeObserver:self context:PUReviewScreenTopBarContext];
-    objc_storeStrong(&self->_barsModel, a3);
+    objc_storeStrong(&self->_barsModel, model);
     [(PUReviewScreenBarsModel *)self->_barsModel registerChangeObserver:self context:PUReviewScreenTopBarContext];
     [(PUReviewScreenTopBarTileViewController *)self _updateControls];
     barsModel = [(PUReviewScreenTopBarTileViewController *)self _updateBarLayout];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](barsModel, v5);
+  MEMORY[0x1EEE66BB8](barsModel, modelCopy);
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   browsingViewModel = self->_browsingViewModel;
-  if (browsingViewModel != v5)
+  if (browsingViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)browsingViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_browsingViewModel, a3);
+    objc_storeStrong(&self->_browsingViewModel, model);
     [(PUBrowsingViewModel *)self->_browsingViewModel registerChangeObserver:self];
     browsingViewModel = [(PUReviewScreenTopBarTileViewController *)self _updateVisibilityAnimated:0];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingViewModel, v5);
+  MEMORY[0x1EEE66BB8](browsingViewModel, modelCopy);
 }
 
-- (void)_handleRetakeButtonTapped:(id)a3
+- (void)_handleRetakeButtonTapped:(id)tapped
 {
-  v3 = [(PUReviewScreenTopBarTileViewController *)self barsModel];
-  [v3 invokeCallbackForBarButtonItemWithIdentifier:24];
+  barsModel = [(PUReviewScreenTopBarTileViewController *)self barsModel];
+  [barsModel invokeCallbackForBarButtonItemWithIdentifier:24];
 }
 
-- (void)_handleDoneButtonTapped:(id)a3
+- (void)_handleDoneButtonTapped:(id)tapped
 {
-  v3 = [(PUReviewScreenTopBarTileViewController *)self barsModel];
-  [v3 invokeCallbackForBarButtonItemWithIdentifier:22];
+  barsModel = [(PUReviewScreenTopBarTileViewController *)self barsModel];
+  [barsModel invokeCallbackForBarButtonItemWithIdentifier:22];
 }
 
 - (void)becomeReusable
@@ -192,11 +192,11 @@ LABEL_11:
   topBar = self->__topBar;
   self->__topBar = v3;
 
-  v5 = [(PUReviewScreenTopBar *)self->__topBar doneButton];
-  [v5 addTarget:self action:sel__handleDoneButtonTapped_ forControlEvents:64];
+  doneButton = [(PUReviewScreenTopBar *)self->__topBar doneButton];
+  [doneButton addTarget:self action:sel__handleDoneButtonTapped_ forControlEvents:64];
 
-  v6 = [(PUReviewScreenTopBar *)self->__topBar retakeButton];
-  [v6 addTarget:self action:sel__handleRetakeButtonTapped_ forControlEvents:64];
+  retakeButton = [(PUReviewScreenTopBar *)self->__topBar retakeButton];
+  [retakeButton addTarget:self action:sel__handleRetakeButtonTapped_ forControlEvents:64];
 
   [(PUReviewScreenTopBarTileViewController *)self _updateControls];
   v7 = self->__topBar;

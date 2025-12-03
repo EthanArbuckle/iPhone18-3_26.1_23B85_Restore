@@ -9,7 +9,7 @@
 
 - (id)aa_base64String
 {
-  v4 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v4 = [self dataUsingEncoding:4 allowLossyConversion:0];
   if (!v4)
   {
     [(NSString(AppleAccount) *)a2 aa_base64String];
@@ -22,16 +22,16 @@
 
 - (id)trim
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (__CFString)unredactedSuffixOfLength:()AppleAccount
 {
-  v4 = [a1 substringFromIndex:{objc_msgSend(a1, "length") - a3}];
-  if ([v4 isEqualToString:a1])
+  v4 = [self substringFromIndex:{objc_msgSend(self, "length") - a3}];
+  if ([v4 isEqualToString:self])
   {
     v5 = @"[REDACTED]";
   }
@@ -46,8 +46,8 @@
 
 - (void)aa_base64String
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"NSString+AppleAccount.m" lineNumber:17 description:@"Failed to get UTF8 encoding!"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"NSString+AppleAccount.m" lineNumber:17 description:@"Failed to get UTF8 encoding!"];
 }
 
 @end

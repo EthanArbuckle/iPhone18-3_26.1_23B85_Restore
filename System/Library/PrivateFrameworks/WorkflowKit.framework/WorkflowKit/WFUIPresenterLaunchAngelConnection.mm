@@ -4,13 +4,13 @@
 - (BSServiceConnectionClient)connection;
 - (WFUIPresenterHostInterface)host;
 - (WFUIPresenterLaunchAngelConnection)init;
-- (id)presenterWithErrorHandler:(id)a3;
-- (void)cleanUpWithReason:(id)a3;
+- (id)presenterWithErrorHandler:(id)handler;
+- (void)cleanUpWithReason:(id)reason;
 - (void)dealloc;
 - (void)prepareConnectionIfNecessary;
-- (void)setConnection:(id)a3;
-- (void)setConnectionInterrupted:(BOOL)a3;
-- (void)setHost:(id)a3;
+- (void)setConnection:(id)connection;
+- (void)setConnectionInterrupted:(BOOL)interrupted;
+- (void)setHost:(id)host;
 @end
 
 @implementation WFUIPresenterLaunchAngelConnection
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   os_unfair_lock_lock(&self->_hostLock);
   host = self->_host;
 
-  if (host != v4)
+  if (host != hostCopy)
   {
     [(WFUIPresenterLaunchAngelConnection *)self cleanUpWithReason:@"got a new host object, have to set up a bidirectional connection"];
   }
 
-  self->_host = v4;
+  self->_host = hostCopy;
 
   os_unfair_lock_unlock(&self->_hostLock);
 }
@@ -48,10 +48,10 @@
   return connectionInterrupted;
 }
 
-- (void)setConnectionInterrupted:(BOOL)a3
+- (void)setConnectionInterrupted:(BOOL)interrupted
 {
   os_unfair_lock_lock(&self->_stateLock);
-  self->_connectionInterrupted = a3;
+  self->_connectionInterrupted = interrupted;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_connectionLock);
   connection = self->_connection;
   if (connection)
@@ -81,23 +81,23 @@
     v6 = 0;
   }
 
-  self->_connection = v4;
+  self->_connection = connectionCopy;
 
   os_unfair_lock_unlock(&self->_connectionLock);
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(WFUIPresenterLaunchAngelConnection *)self connection];
-  v3 = v2 != 0;
+  connection = [(WFUIPresenterLaunchAngelConnection *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
 
-- (id)presenterWithErrorHandler:(id)a3
+- (id)presenterWithErrorHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = getWFXPCRunnerLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -109,13 +109,13 @@
   }
 
   [(WFUIPresenterLaunchAngelConnection *)self prepareConnectionIfNecessary];
-  [(WFUIPresenterLaunchAngelConnection *)self setErrorHandler:v4];
+  [(WFUIPresenterLaunchAngelConnection *)self setErrorHandler:handlerCopy];
 
-  v6 = [(WFUIPresenterLaunchAngelConnection *)self connection];
+  connection = [(WFUIPresenterLaunchAngelConnection *)self connection];
   v7 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v12 = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
-  v9 = [v6 remoteTargetWithLaunchingAssertionAttributes:v8];
+  v9 = [connection remoteTargetWithLaunchingAssertionAttributes:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -125,11 +125,11 @@
 - (void)prepareConnectionIfNecessary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(WFUIPresenterLaunchAngelConnection *)self connection];
-  if (v4 && (v5 = v4, v6 = [(WFUIPresenterLaunchAngelConnection *)self connectionInterrupted], v5, v6))
+  connection = [(WFUIPresenterLaunchAngelConnection *)self connection];
+  if (connection && (v5 = connection, v6 = [(WFUIPresenterLaunchAngelConnection *)self connectionInterrupted], v5, v6))
   {
-    v7 = [(WFUIPresenterLaunchAngelConnection *)self connection];
-    [v7 activate];
+    connection2 = [(WFUIPresenterLaunchAngelConnection *)self connection];
+    [connection2 activate];
 
     v8 = *MEMORY[0x1E69E9840];
 
@@ -138,15 +138,15 @@
 
   else
   {
-    v9 = [(WFUIPresenterLaunchAngelConnection *)self connection];
+    connection3 = [(WFUIPresenterLaunchAngelConnection *)self connection];
 
-    if (!v9)
+    if (!connection3)
     {
       v10 = [MEMORY[0x1E698F498] endpointForMachName:@"com.apple.shortcuts.view-service" service:@"com.apple.shortcuts.ui-presenter" instance:0];
       if (!v10)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"WFUIPresenterConnection.m" lineNumber:202 description:@"This process cannot connect to the view service endpoint."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"WFUIPresenterConnection.m" lineNumber:202 description:@"This process cannot connect to the view service endpoint."];
       }
 
       v11 = [MEMORY[0x1E698F490] connectionWithEndpoint:v10];
@@ -267,27 +267,27 @@ void __66__WFUIPresenterLaunchAngelConnection_prepareConnectionIfNecessary__bloc
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cleanUpWithReason:(id)a3
+- (void)cleanUpWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFUIPresenterLaunchAngelConnection *)self connection];
+  reasonCopy = reason;
+  connection = [(WFUIPresenterLaunchAngelConnection *)self connection];
 
   v6 = getWFLaunchAngelLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (connection)
   {
     if (v7)
     {
       v10 = 136315394;
       v11 = "[WFUIPresenterLaunchAngelConnection cleanUpWithReason:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = reasonCopy;
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s Invalidating launch angel connection because '%@'", &v10, 0x16u);
     }
 
-    v8 = [(WFUIPresenterLaunchAngelConnection *)self connection];
-    [v8 invalidate];
+    connection2 = [(WFUIPresenterLaunchAngelConnection *)self connection];
+    [connection2 invalidate];
 
     [(WFUIPresenterLaunchAngelConnection *)self setConnection:0];
   }
@@ -299,7 +299,7 @@ void __66__WFUIPresenterLaunchAngelConnection_prepareConnectionIfNecessary__bloc
       v10 = 136315394;
       v11 = "[WFUIPresenterLaunchAngelConnection cleanUpWithReason:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = reasonCopy;
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s Tried to invalidate any existing launch angel connections because '%@', but there aren't any. Moving on.", &v10, 0x16u);
     }
   }

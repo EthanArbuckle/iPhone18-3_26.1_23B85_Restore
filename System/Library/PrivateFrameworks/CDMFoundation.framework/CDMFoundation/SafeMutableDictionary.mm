@@ -1,29 +1,29 @@
 @interface SafeMutableDictionary
 - (SafeMutableDictionary)init;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SafeMutableDictionary
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->dictionary;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->dictionary objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->dictionary objectForKeyedSubscript:keyCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = self->dictionary;
   objc_sync_enter(v7);
-  [(NSMutableDictionary *)self->dictionary setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->dictionary setObject:objectCopy forKeyedSubscript:keyCopy];
   objc_sync_exit(v7);
 }
 

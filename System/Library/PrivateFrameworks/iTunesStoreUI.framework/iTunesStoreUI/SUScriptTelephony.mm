@@ -1,6 +1,6 @@
 @interface SUScriptTelephony
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)_checkIfIsAllowed;
 - (NSString)countryCode;
@@ -10,11 +10,11 @@
 - (NSString)phoneNumber;
 - (NSString)providerName;
 - (SUScriptTelephony)init;
-- (id)formattedPhoneNumber:(id)a3;
+- (id)formattedPhoneNumber:(id)number;
 - (id)isCellularRoaming;
 - (id)isGreenTea;
 - (id)scriptAttributeKeys;
-- (id)sendSMSWithBodyText:(id)a3 digits:(id)a4 countryCode:(id)a5;
+- (id)sendSMSWithBodyText:(id)text digits:(id)digits countryCode:(id)code;
 - (void)dealloc;
 @end
 
@@ -27,11 +27,11 @@
   v2 = [(SUScriptObject *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69D4A20] sharedController];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__handleOperatorNameChangedNotification_ name:*MEMORY[0x1E69D4D70] object:v3];
-    [v4 addObserver:v2 selector:sel__handlePhoneNumberChangedNotification_ name:*MEMORY[0x1E69D4D78] object:v3];
-    [v4 addObserver:v2 selector:sel__handleRegistrationChangedNotification_ name:*MEMORY[0x1E69D4D80] object:v3];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleOperatorNameChangedNotification_ name:*MEMORY[0x1E69D4D70] object:mEMORY[0x1E69D4A20]];
+    [defaultCenter addObserver:v2 selector:sel__handlePhoneNumberChangedNotification_ name:*MEMORY[0x1E69D4D78] object:mEMORY[0x1E69D4A20]];
+    [defaultCenter addObserver:v2 selector:sel__handleRegistrationChangedNotification_ name:*MEMORY[0x1E69D4D80] object:mEMORY[0x1E69D4A20]];
   }
 
   return v2;
@@ -39,11 +39,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69D4A20] sharedController];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69D4D70] object:v3];
-  [v4 removeObserver:self name:*MEMORY[0x1E69D4D78] object:v3];
-  [v4 removeObserver:self name:*MEMORY[0x1E69D4D80] object:v3];
+  mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4D70] object:mEMORY[0x1E69D4A20]];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4D78] object:mEMORY[0x1E69D4A20]];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4D80] object:mEMORY[0x1E69D4A20]];
 
   v5.receiver = self;
   v5.super_class = SUScriptTelephony;
@@ -120,85 +120,85 @@ LABEL_9:
 {
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
-    v2 = [MEMORY[0x1E69D4A20] sharedController];
-    v3 = [v2 mobileSubscriberCountryCode];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    mobileSubscriberCountryCode = [mEMORY[0x1E69D4A20] mobileSubscriberCountryCode];
   }
 
   else
   {
-    v3 = 0;
+    mobileSubscriberCountryCode = 0;
   }
 
-  return v3;
+  return mobileSubscriberCountryCode;
 }
 
 - (NSString)mobileNetworkCode
 {
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
-    v2 = [MEMORY[0x1E69D4A20] sharedController];
-    v3 = [v2 mobileSubscriberNetworkCode];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    mobileSubscriberNetworkCode = [mEMORY[0x1E69D4A20] mobileSubscriberNetworkCode];
   }
 
   else
   {
-    v3 = 0;
+    mobileSubscriberNetworkCode = 0;
   }
 
-  return v3;
+  return mobileSubscriberNetworkCode;
 }
 
 - (NSString)operatorName
 {
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
-    v2 = [MEMORY[0x1E69D4A20] sharedController];
-    v3 = [v2 operatorName];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    operatorName = [mEMORY[0x1E69D4A20] operatorName];
   }
 
   else
   {
-    v3 = 0;
+    operatorName = 0;
   }
 
-  return v3;
+  return operatorName;
 }
 
 - (NSString)phoneNumber
 {
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
-    v2 = [MEMORY[0x1E69D4A20] sharedController];
-    v3 = [v2 phoneNumber];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    phoneNumber = [mEMORY[0x1E69D4A20] phoneNumber];
   }
 
   else
   {
-    v3 = 0;
+    phoneNumber = 0;
   }
 
-  return v3;
+  return phoneNumber;
 }
 
 - (NSString)providerName
 {
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
-    v2 = [MEMORY[0x1E69D4A20] sharedController];
-    v3 = [v2 providerName];
+    mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+    providerName = [mEMORY[0x1E69D4A20] providerName];
   }
 
   else
   {
-    v3 = 0;
+    providerName = 0;
   }
 
-  return v3;
+  return providerName;
 }
 
-- (id)formattedPhoneNumber:(id)a3
+- (id)formattedPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(SUScriptTelephony *)self _checkIfIsAllowed])
   {
     v5 = CPPhoneNumberCopyFormattedStringForTextMessage();
@@ -212,11 +212,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)sendSMSWithBodyText:(id)a3 digits:(id)a4 countryCode:(id)a5
+- (id)sendSMSWithBodyText:(id)text digits:(id)digits countryCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  digitsCopy = digits;
+  codeCopy = code;
   if (![(SUScriptTelephony *)self _checkIfIsAllowed])
   {
     goto LABEL_13;
@@ -226,11 +226,11 @@ LABEL_9:
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v10 = 0;
+    codeCopy = 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || codeCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
 LABEL_13:
@@ -238,8 +238,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [MEMORY[0x1E69D4A20] sharedController];
-  v12 = [v11 sendSMSWithText:v8 toPhoneNumber:v9 countryCode:v10 error:0];
+  mEMORY[0x1E69D4A20] = [MEMORY[0x1E69D4A20] sharedController];
+  v12 = [mEMORY[0x1E69D4A20] sendSMSWithText:textCopy toPhoneNumber:digitsCopy countryCode:codeCopy error:0];
 
   v13 = MEMORY[0x1E695E4D0];
   if ((v12 & 1) == 0)
@@ -258,27 +258,27 @@ LABEL_14:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(SUScriptAccessSecurity);
-  v4 = [(SUScriptObject *)self webFrame];
+  webFrame = [(SUScriptObject *)self webFrame];
   v16 = 0;
-  v5 = [(SUScriptAccessSecurity *)v3 canAccessTelephonyInFrame:v4 error:&v16];
+  v5 = [(SUScriptAccessSecurity *)v3 canAccessTelephonyInFrame:webFrame error:&v16];
   v6 = v16;
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69D4938] sharedConfig];
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -301,7 +301,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v17, v15}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v17, v15}];
       free(v13);
       SSFileLog();
     }
@@ -314,28 +314,28 @@ LABEL_12:
   return v5;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_55 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_55 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptTelephony;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_40, 2);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_40, 2);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptTelephony;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -345,16 +345,16 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = SUScriptTelephony;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_55 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_55 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_40 = sel_formattedPhoneNumber_;
     *algn_1EBF3B4C8 = @"formattedPhoneNumber";

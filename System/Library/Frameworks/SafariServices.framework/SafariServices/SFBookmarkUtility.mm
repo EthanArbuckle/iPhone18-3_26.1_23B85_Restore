@@ -1,62 +1,62 @@
 @interface SFBookmarkUtility
-- (SFBookmarkUtility)initWithCollection:(id)a3 syntheticBookmarkProvider:(id)a4;
+- (SFBookmarkUtility)initWithCollection:(id)collection syntheticBookmarkProvider:(id)provider;
 - (_SFSyntheticBookmarkProvider)syntheticBookmarkProvider;
-- (id)saveBookmark:(id)a3 children:(id)a4 inFolder:(id)a5;
-- (id)saveBookmark:(id)a3 inSyntheticFolder:(id)a4;
+- (id)saveBookmark:(id)bookmark children:(id)children inFolder:(id)folder;
+- (id)saveBookmark:(id)bookmark inSyntheticFolder:(id)folder;
 @end
 
 @implementation SFBookmarkUtility
 
-- (SFBookmarkUtility)initWithCollection:(id)a3 syntheticBookmarkProvider:(id)a4
+- (SFBookmarkUtility)initWithCollection:(id)collection syntheticBookmarkProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = SFBookmarkUtility;
   v9 = [(SFBookmarkUtility *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    objc_storeWeak(&v10->_syntheticBookmarkProvider, v8);
+    objc_storeStrong(&v9->_collection, collection);
+    objc_storeWeak(&v10->_syntheticBookmarkProvider, providerCopy);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)saveBookmark:(id)a3 children:(id)a4 inFolder:(id)a5
+- (id)saveBookmark:(id)bookmark children:(id)children inFolder:(id)folder
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 subtype] == 1)
+  bookmarkCopy = bookmark;
+  childrenCopy = children;
+  folderCopy = folder;
+  if ([bookmarkCopy subtype] == 1)
   {
-    v11 = [v8 UUID];
+    uUID = [bookmarkCopy UUID];
     v12 = objc_alloc(MEMORY[0x1E69E20F0]);
-    v13 = [v8 title];
-    v14 = [v8 address];
-    v15 = [v10 identifier];
-    v16 = [(WebBookmarkCollection *)self->_collection configuration];
-    v17 = [v12 initWithTitle:v13 address:v14 parentID:v15 collectionType:{objc_msgSend(v16, "collectionType")}];
+    title = [bookmarkCopy title];
+    address = [bookmarkCopy address];
+    identifier = [folderCopy identifier];
+    configuration = [(WebBookmarkCollection *)self->_collection configuration];
+    v17 = [v12 initWithTitle:title address:address parentID:identifier collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-    v18 = v11;
+    v18 = uUID;
   }
 
   else
   {
-    v17 = v8;
+    v17 = bookmarkCopy;
     v18 = 0;
   }
 
-  v36 = [MEMORY[0x1E69E20F8] isLockedSync];
-  if ((v36 & 1) != 0 || ([MEMORY[0x1E69E20F8] lockSync] & 1) != 0 || (objc_msgSend(v17, "isInserted") & 1) != 0 || (objc_msgSend(MEMORY[0x1E69B1B18], "sharedFeatureManager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isInMemoryBookmarkChangeTrackingAvailable"), v19, (v20 & 1) == 0))
+  isLockedSync = [MEMORY[0x1E69E20F8] isLockedSync];
+  if ((isLockedSync & 1) != 0 || ([MEMORY[0x1E69E20F8] lockSync] & 1) != 0 || (objc_msgSend(v17, "isInserted") & 1) != 0 || (objc_msgSend(MEMORY[0x1E69B1B18], "sharedFeatureManager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isInMemoryBookmarkChangeTrackingAvailable"), v19, (v20 & 1) == 0))
   {
-    v22 = [v10 identifier];
-    if (v22 != [v17 parentID])
+    identifier2 = [folderCopy identifier];
+    if (identifier2 != [v17 parentID])
     {
-      -[WebBookmarkCollection moveBookmark:toFolderWithID:](self->_collection, "moveBookmark:toFolderWithID:", v17, [v10 identifier]);
+      -[WebBookmarkCollection moveBookmark:toFolderWithID:](self->_collection, "moveBookmark:toFolderWithID:", v17, [folderCopy identifier]);
     }
 
     v21 = 0;
@@ -75,12 +75,12 @@
   }
 
   collection = self->_collection;
-  v38 = v8;
+  v38 = bookmarkCopy;
   if (v21)
   {
-    -[WebBookmarkCollection addBookmarkInMemory:toFolderWithID:](collection, "addBookmarkInMemory:toFolderWithID:", v17, [v10 identifier]);
-    v24 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v24 didAddNumberOfBookmarksInMemory:{objc_msgSend(v9, "count") + 1}];
+    -[WebBookmarkCollection addBookmarkInMemory:toFolderWithID:](collection, "addBookmarkInMemory:toFolderWithID:", v17, [folderCopy identifier]);
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didAddNumberOfBookmarksInMemory:{objc_msgSend(childrenCopy, "count") + 1}];
   }
 
   else
@@ -88,7 +88,7 @@
     [(WebBookmarkCollection *)collection saveBookmark:v17];
   }
 
-  v37 = v10;
+  v37 = folderCopy;
   if (v18)
   {
     WeakRetained = objc_loadWeakRetained(&self->_syntheticBookmarkProvider);
@@ -100,7 +100,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v27 = v9;
+  v27 = childrenCopy;
   v28 = [v27 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v28)
   {
@@ -117,15 +117,15 @@
 
         v32 = *(*(&v39 + 1) + 8 * i);
         v33 = self->_collection;
-        v34 = [v17 identifier];
+        identifier3 = [v17 identifier];
         if (v21)
         {
-          [(WebBookmarkCollection *)v33 addBookmarkInMemory:v32 toFolderWithID:v34];
+          [(WebBookmarkCollection *)v33 addBookmarkInMemory:v32 toFolderWithID:identifier3];
         }
 
         else
         {
-          [(WebBookmarkCollection *)v33 saveAndMoveBookmark:v32 toFolderID:v34];
+          [(WebBookmarkCollection *)v33 saveAndMoveBookmark:v32 toFolderID:identifier3];
         }
       }
 
@@ -135,7 +135,7 @@
     while (v29);
   }
 
-  if (((v36 | v21) & 1) == 0)
+  if (((isLockedSync | v21) & 1) == 0)
   {
     [MEMORY[0x1E69E20F8] unlockSync];
   }
@@ -143,48 +143,48 @@
   return v17;
 }
 
-- (id)saveBookmark:(id)a3 inSyntheticFolder:(id)a4
+- (id)saveBookmark:(id)bookmark inSyntheticFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  folderCopy = folder;
   WeakRetained = objc_loadWeakRetained(&self->_syntheticBookmarkProvider);
-  v9 = [v7 bookmarkList];
+  bookmarkList = [folderCopy bookmarkList];
 
-  v10 = [v9 folderID];
-  v11 = [v6 subtype];
-  if (v11 == 1 && [v6 parentID] == v10)
+  folderID = [bookmarkList folderID];
+  subtype = [bookmarkCopy subtype];
+  if (subtype == 1 && [bookmarkCopy parentID] == folderID)
   {
-    v12 = [v6 UUID];
-    v13 = [v6 title];
-    v14 = [v6 address];
-    [WeakRetained updateScopedBookmarkWithUUID:v12 title:v13 address:v14];
+    uUID = [bookmarkCopy UUID];
+    title = [bookmarkCopy title];
+    address = [bookmarkCopy address];
+    [WeakRetained updateScopedBookmarkWithUUID:uUID title:title address:address];
 
-    v15 = v6;
+    v15 = bookmarkCopy;
   }
 
   else
   {
-    v23 = v9;
+    v23 = bookmarkList;
     v16 = objc_alloc(MEMORY[0x1E69E20F0]);
-    v17 = [v6 title];
-    v18 = [v6 address];
-    v19 = [WeakRetained deviceIdentifier];
-    v20 = [(WebBookmarkCollection *)self->_collection configuration];
-    v15 = [v16 initWithTitle:v17 address:v18 parentID:v10 subtype:1 deviceIdentifier:v19 collectionType:{objc_msgSend(v20, "collectionType")}];
+    title2 = [bookmarkCopy title];
+    address2 = [bookmarkCopy address];
+    deviceIdentifier = [WeakRetained deviceIdentifier];
+    configuration = [(WebBookmarkCollection *)self->_collection configuration];
+    v15 = [v16 initWithTitle:title2 address:address2 parentID:folderID subtype:1 deviceIdentifier:deviceIdentifier collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-    [WeakRetained insertPerTabGroupBookmark:v15 inPerTabGroupBookmarkFolderWithID:v10];
-    if (v11 == 1)
+    [WeakRetained insertPerTabGroupBookmark:v15 inPerTabGroupBookmarkFolderWithID:folderID];
+    if (subtype == 1)
     {
-      v21 = [v6 UUID];
-      [WeakRetained deleteScopedBookmarkWithUUID:v21 completionHandler:0];
+      uUID2 = [bookmarkCopy UUID];
+      [WeakRetained deleteScopedBookmarkWithUUID:uUID2 completionHandler:0];
     }
 
-    else if ([v6 isInserted])
+    else if ([bookmarkCopy isInserted])
     {
-      [(WebBookmarkCollection *)self->_collection deleteBookmark:v6];
+      [(WebBookmarkCollection *)self->_collection deleteBookmark:bookmarkCopy];
     }
 
-    v9 = v23;
+    bookmarkList = v23;
   }
 
   return v15;

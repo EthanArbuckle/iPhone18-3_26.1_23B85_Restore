@@ -1,30 +1,30 @@
 @interface HKChartAxisDimensionUsingTable
-- (HKChartAxisDimensionUsingTable)initWithStepSizeTable:(HKStepSizeTableEntryDefn *)a3 stepSizeTableSize:(int64_t)a4 displayType:(id)a5 unitController:(id)a6;
-- (HKStepSizeTableEntryDefn)_findStepSize:(double)a3 allowEqual:(BOOL)a4;
+- (HKChartAxisDimensionUsingTable)initWithStepSizeTable:(HKStepSizeTableEntryDefn *)table stepSizeTableSize:(int64_t)size displayType:(id)type unitController:(id)controller;
+- (HKStepSizeTableEntryDefn)_findStepSize:(double)size allowEqual:(BOOL)equal;
 @end
 
 @implementation HKChartAxisDimensionUsingTable
 
-- (HKChartAxisDimensionUsingTable)initWithStepSizeTable:(HKStepSizeTableEntryDefn *)a3 stepSizeTableSize:(int64_t)a4 displayType:(id)a5 unitController:(id)a6
+- (HKChartAxisDimensionUsingTable)initWithStepSizeTable:(HKStepSizeTableEntryDefn *)table stepSizeTableSize:(int64_t)size displayType:(id)type unitController:(id)controller
 {
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = HKChartAxisDimensionUsingTable;
   v13 = [(HKChartAxisDimensionUsingTable *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_stepSizeTable = a3;
-    v13->_stepSizeTableSize = a4;
-    objc_storeStrong(&v13->_displayType, a5);
-    objc_storeStrong(&v14->_unitController, a6);
+    v13->_stepSizeTable = table;
+    v13->_stepSizeTableSize = size;
+    objc_storeStrong(&v13->_displayType, type);
+    objc_storeStrong(&v14->_unitController, controller);
   }
 
   return v14;
 }
 
-- (HKStepSizeTableEntryDefn)_findStepSize:(double)a3 allowEqual:(BOOL)a4
+- (HKStepSizeTableEntryDefn)_findStepSize:(double)size allowEqual:(BOOL)equal
 {
   stepSizeTable = self->_stepSizeTable;
   stepSizeTableSize = self->_stepSizeTableSize;
@@ -33,15 +33,15 @@
   {
     do
     {
-      if (a4)
+      if (equal)
       {
-        if (stepSizeTable->var0 >= a3)
+        if (stepSizeTable->var0 >= size)
         {
           return stepSizeTable;
         }
       }
 
-      else if (stepSizeTable->var0 > a3)
+      else if (stepSizeTable->var0 > size)
       {
         return stepSizeTable;
       }

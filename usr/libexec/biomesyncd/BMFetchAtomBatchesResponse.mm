@@ -1,24 +1,24 @@
 @interface BMFetchAtomBatchesResponse
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation BMFetchAtomBatchesResponse
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = BMFetchAtomBatchesResponse;
-  v5 = [(BMPeerToPeerMessage *)&v26 initFromDictionary:v4];
+  v5 = [(BMPeerToPeerMessage *)&v26 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"unseenPeers"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"unseenPeers"];
     v7 = v5[6];
     v5[6] = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = [v4 objectForKeyedSubscript:@"atomBatches"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"atomBatches"];
     if (!v9 || (+[NSNull null], v10 = objc_claimAutoreleasedReturnValue(), v10, v9 == v10))
     {
       v15 = 0;
@@ -49,13 +49,13 @@
     v5[7] = v15;
     v19 = v15;
 
-    v20 = [v4 objectForKeyedSubscript:@"moreComing"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"moreComing"];
     *(v5 + 40) = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"batchSequenceNumber"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"batchSequenceNumber"];
     v5[10] = [v21 unsignedIntegerValue];
 
-    v22 = [v4 objectForKeyedSubscript:@"deletedLocations"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"deletedLocations"];
     v23 = v5[9];
     v5[9] = v22;
 
@@ -151,8 +151,8 @@
 LABEL_17:
   v21.receiver = self;
   v21.super_class = BMFetchAtomBatchesResponse;
-  v18 = [(BMPeerToPeerMessage *)&v21 dictionaryRepresentation];
-  [v17 addEntriesFromDictionary:v18];
+  dictionaryRepresentation = [(BMPeerToPeerMessage *)&v21 dictionaryRepresentation];
+  [v17 addEntriesFromDictionary:dictionaryRepresentation];
 
   return v17;
 }

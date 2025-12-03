@@ -1,14 +1,14 @@
 @interface MRConcreteEndpoint
 - (BOOL)canModifyGroupMembership;
-- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)a3 outputDevices:(id)a4 preferredSuffix:(id)a5;
-- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)a3 outputDevices:(id)a4 preferredSuffix:(id)a5 connectionType:(int64_t)a6;
+- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)leader outputDevices:(id)devices preferredSuffix:(id)suffix;
+- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)leader outputDevices:(id)devices preferredSuffix:(id)suffix connectionType:(int64_t)type;
 - (NSArray)outputDevices;
 - (id)externalDevice;
 - (id)uniqueIdentifier;
-- (void)_handleConnectionStateDidChangeNotification:(id)a3;
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3;
-- (void)setExternalDevice:(id)a3;
-- (void)setOutputDevices:(id)a3;
+- (void)_handleConnectionStateDidChangeNotification:(id)notification;
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification;
+- (void)setExternalDevice:(id)device;
+- (void)setOutputDevices:(id)devices;
 @end
 
 @implementation MRConcreteEndpoint
@@ -160,90 +160,90 @@ void __46__MRConcreteEndpoint_canModifyGroupMembership__block_invoke(uint64_t a1
   return v3;
 }
 
-- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)a3 outputDevices:(id)a4 preferredSuffix:(id)a5
+- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)leader outputDevices:(id)devices preferredSuffix:(id)suffix
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 primaryID];
+  leaderCopy = leader;
+  devicesCopy = devices;
+  suffixCopy = suffix;
+  primaryID = [leaderCopy primaryID];
   v13 = MRMediaRemoteCopyDeviceUID();
-  v14 = [v12 isEqualToString:v13];
+  v14 = [primaryID isEqualToString:v13];
 
   if (v14)
   {
     v15 = 6;
   }
 
-  else if ([v9 supportsMultiplayer])
+  else if ([leaderCopy supportsMultiplayer])
   {
     v15 = 5;
   }
 
-  else if ([v9 isRemoteControllable])
+  else if ([leaderCopy isRemoteControllable])
   {
     v15 = 2;
   }
 
-  else if ([v9 canRelayCommunicationChannel])
+  else if ([leaderCopy canRelayCommunicationChannel])
   {
     v15 = 3;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    v17 = [v9 uid];
-    [v16 handleFailureInMethod:a2 object:self file:@"MRConcreteEndpoint.m" lineNumber:41 description:{@"Unknown connection type for endpoint with leader: %@, devices: %@", v17, v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v17 = [leaderCopy uid];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MRConcreteEndpoint.m" lineNumber:41 description:{@"Unknown connection type for endpoint with leader: %@, devices: %@", v17, devicesCopy}];
 
     v15 = 0;
   }
 
-  v18 = [(MRConcreteEndpoint *)self initWithDesignatedGroupLeader:v9 outputDevices:v10 preferredSuffix:v11 connectionType:v15];
+  v18 = [(MRConcreteEndpoint *)self initWithDesignatedGroupLeader:leaderCopy outputDevices:devicesCopy preferredSuffix:suffixCopy connectionType:v15];
 
   return v18;
 }
 
-- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)a3 outputDevices:(id)a4 preferredSuffix:(id)a5 connectionType:(int64_t)a6
+- (MRConcreteEndpoint)initWithDesignatedGroupLeader:(id)leader outputDevices:(id)devices preferredSuffix:(id)suffix connectionType:(int64_t)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  leaderCopy = leader;
+  devicesCopy = devices;
+  suffixCopy = suffix;
   v36.receiver = self;
   v36.super_class = MRConcreteEndpoint;
-  v15 = [(MRAVEndpoint *)&v36 _init];
-  if (!v15)
+  _init = [(MRAVEndpoint *)&v36 _init];
+  if (!_init)
   {
     goto LABEL_15;
   }
 
   v16 = objc_opt_class();
-  if (![v16 isEqual:objc_opt_class()] || objc_msgSend(v13, "count"))
+  if (![v16 isEqual:objc_opt_class()] || objc_msgSend(devicesCopy, "count"))
   {
-    if (v12)
+    if (leaderCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_17:
-    [MRConcreteEndpoint initWithDesignatedGroupLeader:a2 outputDevices:v15 preferredSuffix:? connectionType:?];
-    if (a6)
+    [MRConcreteEndpoint initWithDesignatedGroupLeader:a2 outputDevices:_init preferredSuffix:? connectionType:?];
+    if (type)
     {
       goto LABEL_6;
     }
 
 LABEL_18:
-    [MRConcreteEndpoint initWithDesignatedGroupLeader:v12 outputDevices:a2 preferredSuffix:v15 connectionType:v13];
+    [MRConcreteEndpoint initWithDesignatedGroupLeader:leaderCopy outputDevices:a2 preferredSuffix:_init connectionType:devicesCopy];
     goto LABEL_6;
   }
 
-  [MRConcreteEndpoint initWithDesignatedGroupLeader:a2 outputDevices:v15 preferredSuffix:? connectionType:?];
-  if (!v12)
+  [MRConcreteEndpoint initWithDesignatedGroupLeader:a2 outputDevices:_init preferredSuffix:? connectionType:?];
+  if (!leaderCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_5:
-  if (!a6)
+  if (!type)
   {
     goto LABEL_18;
   }
@@ -253,66 +253,66 @@ LABEL_6:
   Name = class_getName(v17);
   v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v20 = dispatch_queue_create(Name, v19);
-  serialQueue = v15->_serialQueue;
-  v15->_serialQueue = v20;
+  serialQueue = _init->_serialQueue;
+  _init->_serialQueue = v20;
 
-  v22 = [v13 copy];
-  outputDevices = v15->_outputDevices;
-  v15->_outputDevices = v22;
+  v22 = [devicesCopy copy];
+  outputDevices = _init->_outputDevices;
+  _init->_outputDevices = v22;
 
-  objc_storeStrong(&v15->_designatedGroupLeader, a3);
-  v15->_connectionType = a6;
-  if (a6 == 5)
+  objc_storeStrong(&_init->_designatedGroupLeader, leader);
+  _init->_connectionType = type;
+  if (type == 5)
   {
-    v24 = [v13 firstObject];
-    v25 = [v24 groupID];
+    firstObject = [devicesCopy firstObject];
+    groupID = [firstObject groupID];
   }
 
   else
   {
-    v25 = [v12 groupID];
+    groupID = [leaderCopy groupID];
   }
 
-  if (v14)
+  if (suffixCopy)
   {
-    v26 = v14;
+    v26 = suffixCopy;
   }
 
   else
   {
-    v26 = v25;
+    v26 = groupID;
   }
 
   v27 = v26;
-  connectionType = v15->_connectionType;
-  v29 = [v12 primaryID];
-  v30 = MRAVEndpointCreateUniqueIdentifier(connectionType, v29, v27);
-  uniqueIdentifier = v15->_uniqueIdentifier;
-  v15->_uniqueIdentifier = v30;
+  connectionType = _init->_connectionType;
+  primaryID = [leaderCopy primaryID];
+  v30 = MRAVEndpointCreateUniqueIdentifier(connectionType, primaryID, v27);
+  uniqueIdentifier = _init->_uniqueIdentifier;
+  _init->_uniqueIdentifier = v30;
 
-  if (![(NSString *)v15->_uniqueIdentifier length])
+  if (![(NSString *)_init->_uniqueIdentifier length])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    v34 = NSStringFromMRAVEndpointConnectionType(v15->_connectionType);
-    v35 = [v12 primaryID];
-    [v33 handleFailureInMethod:a2 object:v15 file:@"MRConcreteEndpoint.m" lineNumber:71 description:{@"Invalid endpoint with type: %@ leader UID: %@, suffix: %@", v34, v35, v27}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v34 = NSStringFromMRAVEndpointConnectionType(_init->_connectionType);
+    primaryID2 = [leaderCopy primaryID];
+    [currentHandler handleFailureInMethod:a2 object:_init file:@"MRConcreteEndpoint.m" lineNumber:71 description:{@"Invalid endpoint with type: %@ leader UID: %@, suffix: %@", v34, primaryID2, v27}];
   }
 
 LABEL_15:
-  return v15;
+  return _init;
 }
 
-- (void)setOutputDevices:(id)a3
+- (void)setOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__MRConcreteEndpoint_setOutputDevices___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -357,17 +357,17 @@ void __39__MRConcreteEndpoint_setOutputDevices___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExternalDevice:(id)a3
+- (void)setExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__MRConcreteEndpoint_setExternalDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -402,50 +402,50 @@ void __40__MRConcreteEndpoint_setExternalDevice___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleConnectionStateDidChangeNotification:(id)a3
+- (void)_handleConnectionStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v9 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"kMRExternalDeviceConnectionStateUserInfoKey"];
-  v8 = [v7 intValue];
+  v7 = [userInfo2 objectForKeyedSubscript:@"kMRExternalDeviceConnectionStateUserInfoKey"];
+  intValue = [v7 intValue];
 
-  if (v8 == 3)
+  if (intValue == 3)
   {
     [objc_opt_class() _notifyEndpointDidDisconnect:self withError:v9];
   }
 
-  else if (v8 == 2)
+  else if (intValue == 2)
   {
     [objc_opt_class() _notifyEndpointDidConnect:self];
   }
 }
 
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v18 = [v5 objectForKey:@"MRExternalDeviceDeviceInfoUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v18 = [userInfo objectForKey:@"MRExternalDeviceDeviceInfoUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"MRExternalDevicePreviousDeviceInfoUserInfoKey"];
+  v7 = [userInfo2 objectForKey:@"MRExternalDevicePreviousDeviceInfoUserInfoKey"];
 
   if (v7)
   {
-    v8 = [v7 groupSessionToken];
-    v9 = [v18 groupSessionToken];
-    v10 = v9;
-    if (v8 == v9)
+    groupSessionToken = [v7 groupSessionToken];
+    groupSessionToken2 = [v18 groupSessionToken];
+    v10 = groupSessionToken2;
+    if (groupSessionToken == groupSessionToken2)
     {
     }
 
     else
     {
-      v11 = [(MRGroupSessionInfo *)v8 isEqual:v9];
+      v11 = [(MRGroupSessionInfo *)groupSessionToken isEqual:groupSessionToken2];
 
       if (v11)
       {
@@ -453,15 +453,15 @@ void __40__MRConcreteEndpoint_setExternalDevice___block_invoke(uint64_t a1)
       }
 
       v12 = [MRGroupSessionInfo alloc];
-      v13 = [v18 groupSessionToken];
-      v8 = [(MRGroupSessionInfo *)v12 initWithToken:v13 isHosted:0];
+      groupSessionToken3 = [v18 groupSessionToken];
+      groupSessionToken = [(MRGroupSessionInfo *)v12 initWithToken:groupSessionToken3 isHosted:0];
 
-      [objc_opt_class() _notifyGroupSessionInfoDidChange:v8 endpoint:self];
+      [objc_opt_class() _notifyGroupSessionInfoDidChange:groupSessionToken endpoint:self];
     }
 
 LABEL_8:
-    v17 = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
-    if (v17 == [v18 isEligibleForHostingGroupSessionExcludingAcknowledgements])
+    isEligibleForHostingGroupSessionExcludingAcknowledgements = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+    if (isEligibleForHostingGroupSessionExcludingAcknowledgements == [v18 isEligibleForHostingGroupSessionExcludingAcknowledgements])
     {
       goto LABEL_10;
     }
@@ -470,8 +470,8 @@ LABEL_8:
   }
 
   v14 = [MRGroupSessionInfo alloc];
-  v15 = [v18 groupSessionToken];
-  v16 = [(MRGroupSessionInfo *)v14 initWithToken:v15 isHosted:0];
+  groupSessionToken4 = [v18 groupSessionToken];
+  v16 = [(MRGroupSessionInfo *)v14 initWithToken:groupSessionToken4 isHosted:0];
 
   [objc_opt_class() _notifyGroupSessionInfoDidChange:v16 endpoint:self];
 LABEL_9:

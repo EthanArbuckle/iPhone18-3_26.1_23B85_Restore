@@ -1,25 +1,25 @@
 @interface VCPProtoMovieHumanPoseResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieHumanPoseResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v15, 0, sizeof(v15));
-  CMTimeRangeMakeFromDictionary(&v15, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
-  v5 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"flags"];
+  CMTimeRangeMakeFromDictionary(&v15, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
+  v5 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"flags"];
   v6 = [v4 objectForKeyedSubscript:@"humanConfidence"];
   v7 = [v4 objectForKeyedSubscript:@"humanBounds"];
   v8 = v7;
@@ -31,7 +31,7 @@
       v9 = 0;
       if ((v15.duration.value & 0x8000000000000000) == 0 && v6 && v7 && v5)
       {
-        v11 = [v5 unsignedIntegerValue];
+        unsignedIntegerValue = [v5 unsignedIntegerValue];
         v9 = objc_alloc_init(VCPProtoMovieHumanPoseResult);
         v14 = v15;
         v12 = [VCPProtoTimeRange timeRangeWithCMTimeRange:&v14];
@@ -43,7 +43,7 @@
         v13 = [VCPProtoBounds boundsWithCGRect:v17.origin.x, v17.origin.y, v17.size.width, v17.size.height];
         [(VCPProtoMovieHumanPoseResult *)v9 setBounds:v13];
 
-        [(VCPProtoMovieHumanPoseResult *)v9 setFlags:v11];
+        [(VCPProtoMovieHumanPoseResult *)v9 setFlags:unsignedIntegerValue];
       }
     }
   }
@@ -59,11 +59,11 @@
 - (id)exportToLegacyDictionary
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoMovieHumanPoseResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieHumanPoseResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -84,8 +84,8 @@
   v9 = [v8 numberWithFloat:?];
   v17[0] = v9;
   v16[1] = @"humanBounds";
-  v10 = [(VCPProtoMovieHumanPoseResult *)self bounds];
-  [v10 rectValue];
+  bounds = [(VCPProtoMovieHumanPoseResult *)self bounds];
+  [bounds rectValue];
   v11 = NSStringFromRect(v19);
   v17[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -100,67 +100,67 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieHumanPoseResult;
   v4 = [(VCPProtoMovieHumanPoseResult *)&v8 description];
-  v5 = [(VCPProtoMovieHumanPoseResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieHumanPoseResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v6 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   *&v4 = self->_confidence;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"confidence"];
+  [dictionary setObject:v7 forKey:@"confidence"];
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v9 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"bounds"];
+    dictionaryRepresentation2 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"bounds"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:self->_flags];
-  [v3 setObject:v10 forKey:@"flags"];
+  [dictionary setObject:v10 forKey:@"flags"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  *(v5 + 4) = LODWORD(self->_confidence);
-  [v5 setBounds:self->_bounds];
-  *(v5 + 5) = self->_flags;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  *(toCopy + 4) = LODWORD(self->_confidence);
+  [toCopy setBounds:self->_bounds];
+  *(toCopy + 5) = self->_flags;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 16) = self->_confidence;
-  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -168,10 +168,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v7 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_confidence == *(v4 + 4) && ((bounds = self->_bounds, !(bounds | *(v4 + 1))) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_flags == *(v4 + 5);
+  equalCopy = equal;
+  v7 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_confidence == *(equalCopy + 4) && ((bounds = self->_bounds, !(bounds | *(equalCopy + 1))) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_flags == *(equalCopy + 5);
 
   return v7;
 }
@@ -212,12 +212,12 @@
   return v12 ^ v3 ^ [(VCPProtoBounds *)self->_bounds hash]^ (2654435761 * self->_flags);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -238,11 +238,11 @@
     [(VCPProtoMovieHumanPoseResult *)self setTimeRange:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  self->_confidence = *(v4 + 4);
+  self->_confidence = *(fromCopy + 4);
   bounds = self->_bounds;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (bounds)
   {
     if (!v8)
@@ -263,9 +263,9 @@ LABEL_7:
     [(VCPProtoMovieHumanPoseResult *)self setBounds:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  self->_flags = *(v4 + 5);
+  self->_flags = *(fromCopy + 5);
 }
 
 @end

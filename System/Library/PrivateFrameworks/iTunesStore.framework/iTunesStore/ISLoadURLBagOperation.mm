@@ -3,21 +3,21 @@
 + (id)_networkCounters;
 + (id)_networkSynchronyQueue;
 + (id)storeFrontHeaderSuffix;
-+ (id)storeFrontHeaderSuffixForBundleIdentifier:(id)a3;
-+ (void)_addStoreFrontHeaderSuffix:(id)a3 forBundleIdentifier:(id)a4;
-+ (void)decrementNetworkCounterForBagContext:(id)a3;
-+ (void)incrementNetworkCounterForBagContext:(id)a3;
-- (BOOL)_setURLBagWithDictionary:(id)a3 response:(id)a4 error:(id *)a5;
-- (BOOL)operation:(id)a3 shouldSetStoreFrontID:(id)a4;
++ (id)storeFrontHeaderSuffixForBundleIdentifier:(id)identifier;
++ (void)_addStoreFrontHeaderSuffix:(id)suffix forBundleIdentifier:(id)identifier;
++ (void)decrementNetworkCounterForBagContext:(id)context;
++ (void)incrementNetworkCounterForBagContext:(id)context;
+- (BOOL)_setURLBagWithDictionary:(id)dictionary response:(id)response error:(id *)error;
+- (BOOL)operation:(id)operation shouldSetStoreFrontID:(id)d;
 - (ISLoadURLBagOperation)init;
-- (ISLoadURLBagOperation)initWithBagContext:(id)a3;
+- (ISLoadURLBagOperation)initWithBagContext:(id)context;
 - (ISURLBag)URLBag;
 - (id)uniqueKey;
-- (void)_addHeadersToRequestProperties:(id)a3;
-- (void)_postBagDidLoadNotificationWithURLBag:(id)a3;
-- (void)_sendPingsForURLBag:(id)a3;
-- (void)_setOutputURLBag:(id)a3;
-- (void)operation:(id)a3 willSendRequest:(id)a4;
+- (void)_addHeadersToRequestProperties:(id)properties;
+- (void)_postBagDidLoadNotificationWithURLBag:(id)bag;
+- (void)_sendPingsForURLBag:(id)bag;
+- (void)_setOutputURLBag:(id)bag;
+- (void)operation:(id)operation willSendRequest:(id)request;
 - (void)run;
 @end
 
@@ -32,15 +32,15 @@
   return v4;
 }
 
-- (ISLoadURLBagOperation)initWithBagContext:(id)a3
+- (ISLoadURLBagOperation)initWithBagContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ISLoadURLBagOperation;
   v5 = [(ISOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -48,19 +48,19 @@
   return v5;
 }
 
-+ (void)decrementNetworkCounterForBagContext:(id)a3
++ (void)decrementNetworkCounterForBagContext:(id)context
 {
-  v4 = [a3 cacheKey];
-  if ([v4 length])
+  cacheKey = [context cacheKey];
+  if ([cacheKey length])
   {
-    v5 = [a1 _networkSynchronyQueue];
+    _networkSynchronyQueue = [self _networkSynchronyQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__ISLoadURLBagOperation_decrementNetworkCounterForBagContext___block_invoke;
     v6[3] = &unk_27A670AA0;
-    v8 = a1;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    selfCopy = self;
+    v7 = cacheKey;
+    dispatch_sync(_networkSynchronyQueue, v6);
   }
 }
 
@@ -85,19 +85,19 @@ void __62__ISLoadURLBagOperation_decrementNetworkCounterForBagContext___block_in
   }
 }
 
-+ (void)incrementNetworkCounterForBagContext:(id)a3
++ (void)incrementNetworkCounterForBagContext:(id)context
 {
-  v4 = [a3 cacheKey];
-  if ([v4 length])
+  cacheKey = [context cacheKey];
+  if ([cacheKey length])
   {
-    v5 = [a1 _networkSynchronyQueue];
+    _networkSynchronyQueue = [self _networkSynchronyQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__ISLoadURLBagOperation_incrementNetworkCounterForBagContext___block_invoke;
     v6[3] = &unk_27A670AA0;
-    v8 = a1;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    selfCopy = self;
+    v7 = cacheKey;
+    dispatch_sync(_networkSynchronyQueue, v6);
   }
 }
 
@@ -122,20 +122,20 @@ void __62__ISLoadURLBagOperation_incrementNetworkCounterForBagContext___block_in
 
 + (id)storeFrontHeaderSuffix
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [a1 storeFrontHeaderSuffixForBundleIdentifier:v4];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [self storeFrontHeaderSuffixForBundleIdentifier:bundleIdentifier];
 
   return v5;
 }
 
-+ (id)storeFrontHeaderSuffixForBundleIdentifier:(id)a3
++ (id)storeFrontHeaderSuffixForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v4 = CFPreferencesCopyValue(@"ISURLBagStorefrontHeaderSuffixes", *MEMORY[0x277D6A708], *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -160,29 +160,29 @@ void __62__ISLoadURLBagOperation_incrementNetworkCounterForBagContext___block_in
   v87 = *MEMORY[0x277D85DE8];
   +[ISURLOperation sharedCFURLCache];
   v3 = +[ISURLBagCache sharedCache];
-  v4 = [(ISLoadURLBagOperation *)self context];
-  v5 = [v3 URLBagForContext:v4];
+  context = [(ISLoadURLBagOperation *)self context];
+  v5 = [v3 URLBagForContext:context];
   if (v5)
   {
-    v6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v6)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v6 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v10 = v8;
     }
@@ -196,7 +196,7 @@ void __62__ISLoadURLBagOperation_incrementNetworkCounterForBagContext___block_in
     {
       v11 = objc_opt_class();
       v12 = v11;
-      [v4 cacheKey];
+      [context cacheKey];
       *v85 = 138412546;
       *&v85[4] = v11;
       *&v85[14] = *&v85[12] = 2112;
@@ -220,22 +220,22 @@ void __62__ISLoadURLBagOperation_incrementNetworkCounterForBagContext___block_in
     goto LABEL_77;
   }
 
-  if (![v4 usesCachedBagsOnly])
+  if (![context usesCachedBagsOnly])
   {
     *v85 = 0;
     *&v85[8] = v85;
     *&v85[16] = 0x2020000000;
     v86 = 0;
-    v23 = [objc_opt_class() _networkSynchronyQueue];
+    _networkSynchronyQueue = [objc_opt_class() _networkSynchronyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__ISLoadURLBagOperation_run__block_invoke;
     block[3] = &unk_27A670AC8;
-    v24 = v4;
+    v24 = context;
     v78 = v24;
-    v79 = self;
+    selfCopy = self;
     v80 = v85;
-    dispatch_sync(v23, block);
+    dispatch_sync(_networkSynchronyQueue, block);
 
     if ((*(*&v85[8] + 24) & 1) == 0)
     {
@@ -252,8 +252,8 @@ LABEL_76:
     [(ISURLOperation *)v25 setTracksPerformanceMetrics:SSDebugShouldTrackPerformance()];
     [(ISStoreURLOperation *)v25 setURLBagRequest:1];
     [(ISStoreURLOperation *)v25 setUrlKnownToBeTrusted:1];
-    v26 = [(ISLoadURLBagOperation *)self accountDSID];
-    [(ISURLOperation *)v25 _setAccountDSIDOverride:v26];
+    accountDSID = [(ISLoadURLBagOperation *)self accountDSID];
+    [(ISURLOperation *)v25 _setAccountDSIDOverride:accountDSID];
 
     v27 = +[(ISDataProvider *)ISProtocolDataProvider];
     [v27 setShouldProcessProtocol:0];
@@ -269,13 +269,13 @@ LABEL_76:
       [v74 setAllowsBootstrapCellularData:1];
     }
 
-    v30 = [v24 clientAuditTokenData];
-    v31 = v30 == 0;
+    clientAuditTokenData = [v24 clientAuditTokenData];
+    v31 = clientAuditTokenData == 0;
 
     if (!v31)
     {
-      v32 = [v24 clientAuditTokenData];
-      [v74 setClientAuditTokenData:v32];
+      clientAuditTokenData2 = [v24 clientAuditTokenData];
+      [v74 setClientAuditTokenData:clientAuditTokenData2];
     }
 
     if ([v24 ignoresCaches])
@@ -292,10 +292,10 @@ LABEL_76:
     v35 = v34;
     if (v33)
     {
-      v36 = [v72 output];
-      v37 = [(ISURLOperation *)v25 response];
+      output = [v72 output];
+      response = [(ISURLOperation *)v25 response];
       v75 = v35;
-      v38 = [(ISLoadURLBagOperation *)self _setURLBagWithDictionary:v36 response:v37 error:&v75];
+      v38 = [(ISLoadURLBagOperation *)self _setURLBagWithDictionary:output response:response error:&v75];
       v73 = v75;
 
       if (v38)
@@ -316,27 +316,27 @@ LABEL_76:
       goto LABEL_55;
     }
 
-    v40 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v40)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v40 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v41 = [v40 shouldLog];
-    v42 = [v40 shouldLogToDisk];
-    v43 = [v40 OSLogObject];
-    v44 = v43;
-    if (v42)
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    v44 = oSLogObject2;
+    if (shouldLogToDisk)
     {
-      v41 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v41 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v41)
+    if (shouldLog2)
     {
       v45 = objc_opt_class();
       v81 = 138412290;
@@ -368,65 +368,65 @@ LABEL_75:
           goto LABEL_76;
         }
 
-        v48 = [v24 clientBundleIdentifier];
-        v49 = v48;
-        if (v48)
+        clientBundleIdentifier = [v24 clientBundleIdentifier];
+        v49 = clientBundleIdentifier;
+        if (clientBundleIdentifier)
         {
-          v50 = v48;
+          bundleIdentifier = clientBundleIdentifier;
         }
 
         else
         {
-          v51 = [MEMORY[0x277CCA8D8] mainBundle];
-          v50 = [v51 bundleIdentifier];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
         }
 
-        if (![v50 isEqualToString:@"com.apple.itunesstored"] || (objc_msgSend(v24, "cacheKey"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "containsString:", @"itunesstored"), v52, (v53 & 1) != 0))
+        if (![bundleIdentifier isEqualToString:@"com.apple.itunesstored"] || (objc_msgSend(v24, "cacheKey"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "containsString:", @"itunesstored"), v52, (v53 & 1) != 0))
         {
 LABEL_74:
           v64 = objc_opt_class();
           v65 = [(ISURLBag *)self->_outputBag valueForKey:@"storefront-header-suffix"];
-          [v64 _addStoreFrontHeaderSuffix:v65 forBundleIdentifier:v50];
+          [v64 _addStoreFrontHeaderSuffix:v65 forBundleIdentifier:bundleIdentifier];
 
           goto LABEL_75;
         }
 
-        v54 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v54)
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]3)
         {
-          v54 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v55 = v54;
-        v56 = [v54 shouldLog];
-        v57 = [v55 shouldLogToDisk];
+        v55 = mEMORY[0x277D69B38]3;
+        shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+        shouldLogToDisk2 = [v55 shouldLogToDisk];
         v70 = v55;
-        v58 = [v55 OSLogObject];
-        v59 = v58;
-        if (v57)
+        oSLogObject3 = [v55 OSLogObject];
+        v59 = oSLogObject3;
+        if (shouldLogToDisk2)
         {
-          v56 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v60 = v56;
+          v60 = shouldLog3;
         }
 
         else
         {
-          v60 = v56 & 2;
+          v60 = shouldLog3 & 2;
         }
 
         if (v60)
         {
           v61 = v70;
           v69 = objc_opt_class();
-          v62 = [v24 cacheKey];
+          cacheKey = [v24 cacheKey];
           v81 = 138412546;
           v82 = v69;
           v83 = 2112;
-          v84 = v62;
+          v84 = cacheKey;
           LODWORD(v68) = 22;
           v63 = _os_log_send_and_compose_impl();
 
@@ -434,7 +434,7 @@ LABEL_74:
           {
 LABEL_73:
 
-            v50 = 0;
+            bundleIdentifier = 0;
             goto LABEL_74;
           }
 
@@ -460,25 +460,25 @@ LABEL_73:
     goto LABEL_51;
   }
 
-  v15 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v15)
+  mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]4)
   {
-    v15 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v16 = [v15 shouldLog];
-  if ([v15 shouldLogToDisk])
+  shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+  if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
   {
-    v17 = v16 | 2;
+    v17 = shouldLog4 | 2;
   }
 
   else
   {
-    v17 = v16;
+    v17 = shouldLog4;
   }
 
-  v18 = [v15 OSLogObject];
-  if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [mEMORY[0x277D69B38]4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
     v17 &= 2u;
   }
@@ -487,7 +487,7 @@ LABEL_73:
   {
     v19 = objc_opt_class();
     v20 = v19;
-    [v4 cacheKey];
+    [context cacheKey];
     *v85 = 138412546;
     *&v85[4] = v19;
     *&v85[14] = *&v85[12] = 2112;
@@ -595,41 +595,41 @@ LABEL_20:
 - (id)uniqueKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ISLoadURLBagOperation *)self context];
-  v4 = [v3 cacheKey];
-  v5 = [v2 stringWithFormat:@"com.apple.iTunesStore.LoadURLBag-%@", v4];
+  context = [(ISLoadURLBagOperation *)self context];
+  cacheKey = [context cacheKey];
+  v5 = [v2 stringWithFormat:@"com.apple.iTunesStore.LoadURLBag-%@", cacheKey];
 
   return v5;
 }
 
-- (BOOL)operation:(id)a3 shouldSetStoreFrontID:(id)a4
+- (BOOL)operation:(id)operation shouldSetStoreFrontID:(id)d
 {
-  v4 = [(ISLoadURLBagOperation *)self context:a3];
+  v4 = [(ISLoadURLBagOperation *)self context:operation];
   v5 = [v4 bagType] != 1;
 
   return v5;
 }
 
-- (void)operation:(id)a3 willSendRequest:(id)a4
+- (void)operation:(id)operation willSendRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 valueForHTTPHeaderField:@"X-Apple-Synched-Store-Front"];
+  requestCopy = request;
+  v5 = [requestCopy valueForHTTPHeaderField:@"X-Apple-Synched-Store-Front"];
   if (v5)
   {
     v6 = *MEMORY[0x277D6A708];
     v7 = CFPreferencesCopyAppValue(@"LastSynchedStoreFront", *MEMORY[0x277D6A708]);
     if (([v5 isEqualToString:v7] & 1) == 0)
     {
-      [v4 setValue:0 forHTTPHeaderField:*MEMORY[0x277D6A190]];
+      [requestCopy setValue:0 forHTTPHeaderField:*MEMORY[0x277D6A190]];
       CFPreferencesSetAppValue(@"LastSynchedStoreFront", v5, v6);
       CFPreferencesAppSynchronize(v6);
     }
   }
 
   v22 = v5;
-  v8 = [v4 allHTTPHeaderFields];
-  v9 = ISDictionaryValueForCaseInsensitiveString(v8, @"Cookie");
+  allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+  v9 = ISDictionaryValueForCaseInsensitiveString(allHTTPHeaderFields, @"Cookie");
 
   v10 = [v9 componentsSeparatedByString:@""];;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -653,8 +653,8 @@ LABEL_20:
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v19 = [v17 stringByTrimmingCharactersInSet:v18];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v19 = [v17 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if (([v19 hasPrefix:@"xp_ci"] & 1) == 0)
         {
@@ -669,32 +669,32 @@ LABEL_20:
   }
 
   v20 = [v11 componentsJoinedByString:@" "];;
-  [v4 setValue:v20 forHTTPHeaderField:@"Cookie"];
+  [requestCopy setValue:v20 forHTTPHeaderField:@"Cookie"];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addHeadersToRequestProperties:(id)a3
+- (void)_addHeadersToRequestProperties:(id)properties
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [(SSURLBagContext *)self->_context allHTTPHeaders];
-  if (v5)
+  allHTTPHeaders = [(SSURLBagContext *)self->_context allHTTPHeaders];
+  if (allHTTPHeaders)
   {
-    [v4 addEntriesFromDictionary:v5];
+    [v4 addEntriesFromDictionary:allHTTPHeaders];
   }
 
   if ([v4 count])
   {
-    [v6 setHTTPHeaders:v4];
+    [propertiesCopy setHTTPHeaders:v4];
   }
 }
 
-+ (void)_addStoreFrontHeaderSuffix:(id)a3 forBundleIdentifier:(id)a4
++ (void)_addStoreFrontHeaderSuffix:(id)suffix forBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v5 = a4;
-  if ([v5 length])
+  suffixCopy = suffix;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v6 = *MEMORY[0x277D6A708];
     v7 = CFPreferencesCopyValue(@"ISURLBagStorefrontHeaderSuffixes", *MEMORY[0x277D6A708], *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
@@ -704,14 +704,14 @@ LABEL_20:
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    if ([v9 length])
+    if ([suffixCopy length])
     {
-      [v8 setObject:v9 forKey:v5];
+      [v8 setObject:suffixCopy forKey:identifierCopy];
     }
 
     else
     {
-      [v8 removeObjectForKey:v5];
+      [v8 removeObjectForKey:identifierCopy];
     }
 
     if (([v8 isEqualToDictionary:v7] & 1) == 0)
@@ -724,8 +724,8 @@ LABEL_20:
 
 + (id)_executedNetworkRequests
 {
-  v2 = [a1 _networkSynchronyQueue];
-  dispatch_assert_queue_V2(v2);
+  _networkSynchronyQueue = [self _networkSynchronyQueue];
+  dispatch_assert_queue_V2(_networkSynchronyQueue);
 
   if (_executedNetworkRequests_ams_once_token___COUNTER__ != -1)
   {
@@ -746,8 +746,8 @@ uint64_t __49__ISLoadURLBagOperation__executedNetworkRequests__block_invoke()
 
 + (id)_networkCounters
 {
-  v2 = [a1 _networkSynchronyQueue];
-  dispatch_assert_queue_V2(v2);
+  _networkSynchronyQueue = [self _networkSynchronyQueue];
+  dispatch_assert_queue_V2(_networkSynchronyQueue);
 
   if (_networkCounters_ams_once_token___COUNTER__ != -1)
   {
@@ -785,20 +785,20 @@ uint64_t __47__ISLoadURLBagOperation__networkSynchronyQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_postBagDidLoadNotificationWithURLBag:(id)a3
+- (void)_postBagDidLoadNotificationWithURLBag:(id)bag
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  v6 = [v5 mainThreadProxy];
+  bagCopy = bag;
+  defaultCenter = [v3 defaultCenter];
+  mainThreadProxy = [defaultCenter mainThreadProxy];
 
-  [v6 postNotificationName:@"ISURLBagDidLoadNotification" object:v4];
+  [mainThreadProxy postNotificationName:@"ISURLBagDidLoadNotification" object:bagCopy];
 }
 
-- (void)_sendPingsForURLBag:(id)a3
+- (void)_sendPingsForURLBag:(id)bag
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [a3 valueForKey:@"pingUrls"];
+  v3 = [bag valueForKey:@"pingUrls"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -840,25 +840,25 @@ uint64_t __47__ISLoadURLBagOperation__networkSynchronyQueue__block_invoke()
             v14 = [objc_alloc(*(v9 + 3008)) initWithString:v12];
             if (v14)
             {
-              v15 = [*(v10 + 2872) sharediTunesStoreConfig];
-              if (!v15)
+              sharediTunesStoreConfig = [*(v10 + 2872) sharediTunesStoreConfig];
+              if (!sharediTunesStoreConfig)
               {
-                v15 = [*(v10 + 2872) sharedConfig];
+                sharediTunesStoreConfig = [*(v10 + 2872) sharedConfig];
               }
 
-              v16 = [v15 shouldLog];
-              if ([v15 shouldLogToDisk])
+              shouldLog = [sharediTunesStoreConfig shouldLog];
+              if ([sharediTunesStoreConfig shouldLogToDisk])
               {
-                v16 |= 2u;
+                shouldLog |= 2u;
               }
 
-              v17 = [v15 OSLogObject];
-              if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+              oSLogObject = [sharediTunesStoreConfig OSLogObject];
+              if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
               {
-                v16 &= 2u;
+                shouldLog &= 2u;
               }
 
-              if (v16)
+              if (shouldLog)
               {
                 v18 = objc_opt_class();
                 v35 = 138412546;
@@ -882,9 +882,9 @@ uint64_t __47__ISLoadURLBagOperation__networkSynchronyQueue__block_invoke()
 
                 if (v24)
                 {
-                  v17 = [*(v8 + 3240) stringWithCString:v24 encoding:{4, &v35, v28}];
+                  oSLogObject = [*(v8 + 3240) stringWithCString:v24 encoding:{4, &v35, v28}];
                   free(v24);
-                  v27 = v17;
+                  v27 = oSLogObject;
                   SSFileLog();
                   goto LABEL_20;
                 }
@@ -932,43 +932,43 @@ uint64_t __45__ISLoadURLBagOperation__sendPingsForURLBag___block_invoke()
   return [v2 setName:@"com.apple.iTunesStore.URLBagPingQueue"];
 }
 
-- (void)_setOutputURLBag:(id)a3
+- (void)_setOutputURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   [(ISOperation *)self lock];
   outputBag = self->_outputBag;
-  self->_outputBag = v4;
+  self->_outputBag = bagCopy;
 
   [(ISOperation *)self unlock];
 }
 
-- (BOOL)_setURLBagWithDictionary:(id)a3 response:(id)a4 error:(id *)a5
+- (BOOL)_setURLBagWithDictionary:(id)dictionary response:(id)response error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  responseCopy = response;
+  dictionaryCopy = dictionary;
   v10 = objc_alloc_init(ISURLBag);
-  v11 = [(ISLoadURLBagOperation *)self context];
-  [(ISURLBag *)v10 setURLBagContext:v11];
+  context = [(ISLoadURLBagOperation *)self context];
+  [(ISURLBag *)v10 setURLBagContext:context];
   v36 = 0;
-  v12 = [(ISURLBag *)v10 loadFromDictionary:v9 returningError:&v36];
+  v12 = [(ISURLBag *)v10 loadFromDictionary:dictionaryCopy returningError:&v36];
 
   v13 = v36;
   if (v12)
   {
-    [v8 itunes_expirationInterval];
+    [responseCopy itunes_expirationInterval];
     [(ISURLBag *)v10 setInvalidationTimeWithExprationInterval:?];
     if (SSIsDaemon())
     {
-      if (![v11 bagType])
+      if (![context bagType])
       {
-        v14 = [v11 userIdentifier];
+        userIdentifier = [context userIdentifier];
 
-        if (!v14)
+        if (!userIdentifier)
         {
           v15 = MEMORY[0x277D69A80];
-          v16 = [(ISURLBag *)v10 availableStorefrontItemKinds];
-          LODWORD(v15) = [v15 setCachedAvailableItemKinds:v16];
+          availableStorefrontItemKinds = [(ISURLBag *)v10 availableStorefrontItemKinds];
+          LODWORD(v15) = [v15 setCachedAvailableItemKinds:availableStorefrontItemKinds];
 
           if (v15)
           {
@@ -978,11 +978,11 @@ uint64_t __45__ISLoadURLBagOperation__sendPingsForURLBag___block_invoke()
       }
     }
 
-    v17 = [v8 allHeaderFields];
-    v18 = ISDictionaryValueForCaseInsensitiveString(v17, *MEMORY[0x277D6A1D0]);
+    allHeaderFields = [responseCopy allHeaderFields];
+    v18 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A1D0]);
     if (!v18)
     {
-      v18 = ISDictionaryValueForCaseInsensitiveString(v17, *MEMORY[0x277D6A180]);
+      v18 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A180]);
     }
 
     [(ISURLBag *)v10 setStoreFrontIdentifier:v18];
@@ -996,27 +996,27 @@ uint64_t __45__ISLoadURLBagOperation__sendPingsForURLBag___block_invoke()
     goto LABEL_25;
   }
 
-  v34 = a5;
+  errorCopy = error;
   v35 = v12;
-  v20 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v20)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v20 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v21 = [v20 shouldLog];
-  if ([v20 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v22 = v21 | 2;
+    v22 = shouldLog | 2;
   }
 
   else
   {
-    v22 = v21;
+    v22 = shouldLog;
   }
 
-  v23 = [v20 OSLogObject];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v24 = v22;
   }
@@ -1030,7 +1030,7 @@ uint64_t __45__ISLoadURLBagOperation__sendPingsForURLBag___block_invoke()
   {
     v25 = objc_opt_class();
     v26 = v25;
-    v27 = [v8 URL];
+    v27 = [responseCopy URL];
     v37 = 138412802;
     v38 = v25;
     v39 = 2112;
@@ -1040,28 +1040,28 @@ uint64_t __45__ISLoadURLBagOperation__sendPingsForURLBag___block_invoke()
     LODWORD(v33) = 32;
     v28 = _os_log_send_and_compose_impl();
 
-    v29 = v34;
+    errorCopy2 = errorCopy;
     if (!v28)
     {
       goto LABEL_23;
     }
 
-    v23 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v37, v33}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v37, v33}];
     free(v28);
     SSFileLog();
   }
 
   else
   {
-    v29 = a5;
+    errorCopy2 = error;
   }
 
 LABEL_23:
   v12 = v35;
-  if (v29)
+  if (errorCopy2)
   {
     v30 = v13;
-    *v29 = v13;
+    *errorCopy2 = v13;
   }
 
 LABEL_25:

@@ -1,33 +1,33 @@
 @interface PUCompositeVideoGenerator
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_overlapDurationBetweenAsset:(SEL)a3 andAsset:(id)a4;
-+ ($3EB3F8852E00619D46CABBEC9C374A75)conformRange:(SEL)a3 inRange:(id *)a4;
-+ (BOOL)canMergeAsset:(id)a3 withConsecutiveAsset:(id)a4;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_overlapDurationBetweenAsset:(SEL)asset andAsset:(id)andAsset;
++ ($3EB3F8852E00619D46CABBEC9C374A75)conformRange:(SEL)range inRange:(id *)inRange;
++ (BOOL)canMergeAsset:(id)asset withConsecutiveAsset:(id)consecutiveAsset;
 - (AVAssetExportSession)exportSession;
 - (NSError)error;
 - (PUCompositeVideoGenerator)init;
-- (PUCompositeVideoGenerator)initWithAssets:(id)a3 outputType:(int64_t)a4 onlyAllowOverlappingAssets:(BOOL)a5 dataCache:(id)a6;
+- (PUCompositeVideoGenerator)initWithAssets:(id)assets outputType:(int64_t)type onlyAllowOverlappingAssets:(BOOL)overlappingAssets dataCache:(id)cache;
 - (PUMergedLivePhotosVideo)playbackVideo;
 - (int64_t)state;
-- (void)_workQueue_finishWithError:(id)a3;
-- (void)_workQueue_finishWithExportSession:(id)a3 error:(id)a4;
-- (void)_workQueue_finishWithPlaybackVideo:(id)a3 error:(id)a4;
-- (void)_workQueue_generateVideoWithAVAssets:(id)a3;
-- (void)_workQueue_generateVideoWithSingleAssetExportSession:(id)a3;
-- (void)_workQueue_generateVideoWithSingleAssetPlayerItem:(id)a3;
+- (void)_workQueue_finishWithError:(id)error;
+- (void)_workQueue_finishWithExportSession:(id)session error:(id)error;
+- (void)_workQueue_finishWithPlaybackVideo:(id)video error:(id)error;
+- (void)_workQueue_generateVideoWithAVAssets:(id)assets;
+- (void)_workQueue_generateVideoWithSingleAssetExportSession:(id)session;
+- (void)_workQueue_generateVideoWithSingleAssetPlayerItem:(id)item;
 - (void)_workQueue_start;
-- (void)setError:(id)a3;
-- (void)setExportSession:(id)a3;
-- (void)setPlaybackVideo:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)setError:(id)error;
+- (void)setExportSession:(id)session;
+- (void)setPlaybackVideo:(id)video;
+- (void)setState:(int64_t)state;
 - (void)start;
 @end
 
 @implementation PUCompositeVideoGenerator
 
-- (void)_workQueue_finishWithError:(id)a3
+- (void)_workQueue_finishWithError:(id)error
 {
-  v4 = a3;
-  v3 = v4;
+  errorCopy = error;
+  v3 = errorCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -41,12 +41,12 @@ uint64_t __56__PUCompositeVideoGenerator__workQueue_finishWithError___block_invo
   return [v2 setState:2];
 }
 
-- (void)_workQueue_finishWithExportSession:(id)a3 error:(id)a4
+- (void)_workQueue_finishWithExportSession:(id)session error:(id)error
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  sessionCopy = session;
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = sessionCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -60,12 +60,12 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithExportSession_erro
   return [v2 setState:2];
 }
 
-- (void)_workQueue_finishWithPlaybackVideo:(id)a3 error:(id)a4
+- (void)_workQueue_finishWithPlaybackVideo:(id)video error:(id)error
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  videoCopy = video;
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = videoCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -79,19 +79,19 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
   return [v2 setState:2];
 }
 
-- (void)_workQueue_generateVideoWithAVAssets:(id)a3
+- (void)_workQueue_generateVideoWithAVAssets:(id)assets
 {
   v205 = *MEMORY[0x1E69E9840];
-  v162 = a3;
+  assetsCopy = assets;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v144 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v144 handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:366 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithAVAssets:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:366 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithAVAssets:]"}];
   }
 
   v5 = PLLivePhotoPlaybackGetLog();
-  v6 = [(PUCompositeVideoGenerator *)self assets];
-  v7 = os_signpost_id_make_with_pointer(v5, v6);
+  assets = [(PUCompositeVideoGenerator *)self assets];
+  v7 = os_signpost_id_make_with_pointer(v5, assets);
 
   v8 = v5;
   v9 = v8;
@@ -105,8 +105,8 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
   spid = v7;
   v146 = v9;
 
-  v10 = [(PUCompositeVideoGenerator *)self assets];
-  v11 = [v10 count];
+  assets2 = [(PUCompositeVideoGenerator *)self assets];
+  v11 = [assets2 count];
 
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v11];
   v168 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v11];
@@ -124,7 +124,7 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
   v190 = 0u;
   v191 = 0u;
   v192 = 0u;
-  v155 = self;
+  selfCopy = self;
   obj = [(PUCompositeVideoGenerator *)self assets];
   v163 = v12;
   v157 = [obj countByEnumeratingWithState:&v189 objects:v204 count:16];
@@ -154,7 +154,7 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
       }
 
       v21 = *(*(&v189 + 1) + 8 * v17);
-      v22 = [v162 objectForKeyedSubscript:v21];
+      v22 = [assetsCopy objectForKeyedSubscript:v21];
       if (!v22)
       {
         goto LABEL_90;
@@ -162,31 +162,31 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
 
       v23 = v22;
       v24 = [*(v16 + 1800) tracksWithMediaType:v160 forAsset:v22];
-      v25 = [v24 firstObject];
+      firstObject = [v24 firstObject];
 
-      if (!v25)
+      if (!firstObject)
       {
-        v25 = PLLivePhotoPlaybackGetLog();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        firstObject = PLLivePhotoPlaybackGetLog();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf.a) = 138412290;
           *(&buf.a + 4) = v23;
-          _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_ERROR, "Encountered an asset with no video track: %@", &buf, 0xCu);
+          _os_log_impl(&dword_1B36F3000, firstObject, OS_LOG_TYPE_ERROR, "Encountered an asset with no video track: %@", &buf, 0xCu);
         }
 
         goto LABEL_89;
       }
 
       v26 = [*(v16 + 1800) tracksWithMediaType:v156 forAsset:v23];
-      v172 = [v26 firstObject];
+      firstObject2 = [v26 firstObject];
 
       v187 = 0uLL;
       v188 = 0.0;
       [v23 duration];
       v185 = 0uLL;
       v186 = 0.0;
-      v27 = [v12 lastObject];
-      [PUCompositeVideoGenerator _overlapDurationBetweenAsset:v27 andAsset:v21];
+      lastObject = [v12 lastObject];
+      [PUCompositeVideoGenerator _overlapDurationBetweenAsset:lastObject andAsset:v21];
 
       memset(&v184, 0, sizeof(v184));
       v28 = v165;
@@ -215,7 +215,7 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
       }
 
       CMTimeAdd(&v184, &buf, &lhs.start);
-      [v25 px_transformedNaturalSize];
+      [firstObject px_transformedNaturalSize];
       v30 = v29;
       v32 = v31;
       memset(&buf, 0, sizeof(buf));
@@ -236,7 +236,7 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
         rhs.c = v33;
         if (CMTimeCompare(&lhs.start, &rhs) < 1)
         {
-          if (-[PUCompositeVideoGenerator onlyAllowOverlappingAssets](v155, "onlyAllowOverlappingAssets") && [v12 count])
+          if (-[PUCompositeVideoGenerator onlyAllowOverlappingAssets](selfCopy, "onlyAllowOverlappingAssets") && [v12 count])
           {
             goto LABEL_81;
           }
@@ -271,7 +271,7 @@ uint64_t __70__PUCompositeVideoGenerator__workQueue_finishWithPlaybackVideo_erro
           v39 = [v34 initWithObjects:v38];
 
           v154 = v39;
-          v40 = [(NSCache *)v155->_dataCache objectForKey:v39];
+          v40 = [(NSCache *)selfCopy->_dataCache objectForKey:v39];
           v41 = v40;
           v42 = v150;
           flags = v149;
@@ -301,7 +301,7 @@ LABEL_30:
           v42 = *&lhs.start.epoch;
           if (v154)
           {
-            dataCache = v155->_dataCache;
+            dataCache = selfCopy->_dataCache;
             lhs.start.value = *&t1.a;
             lhs.start.timescale = LODWORD(t1.b);
             v45 = [MEMORY[0x1E696B098] valueWithCMTime:&lhs];
@@ -345,7 +345,7 @@ LABEL_32:
         DWORD2(v200) = lhs.start.timescale;
         if ((lhs.start.flags & 1) == 0 || (lhs.duration.flags & 1) == 0 || lhs.duration.epoch || lhs.duration.value < 0)
         {
-          if ([(PUCompositeVideoGenerator *)v155 onlyAllowOverlappingAssets:*&lhs.start.epoch])
+          if ([(PUCompositeVideoGenerator *)selfCopy onlyAllowOverlappingAssets:*&lhs.start.epoch])
           {
             v59 = PLLivePhotoPlaybackGetLog();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -384,7 +384,7 @@ LABEL_46:
       }
 
       memset(&lhs, 0, sizeof(lhs));
-      [v25 timeRange];
+      [firstObject timeRange];
       start = buf;
       PXConformCMTimeRangeWithinRange();
       if ((lhs.start.flags & 1) == 0 || (lhs.duration.flags & 1) == 0 || lhs.duration.epoch || lhs.duration.value < 0 || (*&rhs.a = *&lhs.duration.value, *&rhs.c = lhs.duration.epoch, *&start.a = v166, start.c = v33, CMTimeCompare(&rhs, &start) < 1))
@@ -393,7 +393,7 @@ LABEL_46:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(rhs.a) = 138412290;
-          *(&rhs.a + 4) = v25;
+          *(&rhs.a + 4) = firstObject;
           _os_log_impl(&dword_1B36F3000, v47, OS_LOG_TYPE_DEFAULT, "Skipping insertion of video track %@ into merged composition. Nothing to insert.", &rhs, 0xCu);
         }
       }
@@ -404,7 +404,7 @@ LABEL_46:
         rhs = lhs;
         *&start.a = *MEMORY[0x1E6960C70];
         start.c = v150;
-        v50 = [v159 insertTimeRange:&rhs ofTrack:v25 atTime:&start error:&v182];
+        v50 = [v159 insertTimeRange:&rhs ofTrack:firstObject atTime:&start error:&v182];
         v51 = v182;
 
         if ((v50 & 1) == 0)
@@ -417,7 +417,7 @@ LABEL_46:
             LODWORD(rhs.a) = 138412802;
             *(&rhs.a + 4) = v62;
             WORD2(rhs.b) = 2112;
-            *(&rhs.b + 6) = v25;
+            *(&rhs.b + 6) = firstObject;
             HIWORD(rhs.c) = 2112;
             *&rhs.d = v51;
             _os_log_impl(&dword_1B36F3000, v61, OS_LOG_TYPE_ERROR, "Unable to insert time range %@ of video track %@ into merged composition. Error: %@", &rhs, 0x20u);
@@ -444,13 +444,13 @@ LABEL_90:
       }
 
       v16 = 0x1E69C0000;
-      if (v172)
+      if (firstObject2)
       {
         memset(&rhs, 0, sizeof(rhs));
-        [v172 timeRange];
+        [firstObject2 timeRange];
         end = buf;
         PXConformCMTimeRangeWithinRange();
-        [v25 timeRange];
+        [firstObject timeRange];
         t1 = rhs;
         PXConformCMTimeRangeWithinRange();
         rhs = start;
@@ -460,7 +460,7 @@ LABEL_90:
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(start.a) = 138412290;
-            *(&start.a + 4) = v172;
+            *(&start.a + 4) = firstObject2;
             _os_log_impl(&dword_1B36F3000, v48, OS_LOG_TYPE_DEFAULT, "Skipping insertion of audio track %@ into merged composition. Nothing to insert.", &start, 0xCu);
           }
         }
@@ -471,7 +471,7 @@ LABEL_90:
           start = rhs;
           *&end.start.value = *MEMORY[0x1E6960C70];
           *&end.start.epoch = v150;
-          v57 = [v148 insertTimeRange:&start ofTrack:v172 atTime:&end error:&v180];
+          v57 = [v148 insertTimeRange:&start ofTrack:firstObject2 atTime:&end error:&v180];
           v51 = v180;
 
           if ((v57 & 1) == 0)
@@ -485,7 +485,7 @@ LABEL_90:
               LODWORD(start.a) = 138412802;
               *(&start.a + 4) = v64;
               WORD2(start.b) = 2112;
-              *(&start.b + 6) = v172;
+              *(&start.b + 6) = firstObject2;
               HIWORD(start.c) = 2112;
               *&start.d = v51;
               _os_log_impl(&dword_1B36F3000, v63, OS_LOG_TYPE_ERROR, "Unable to insert time range %@ of audio track %@ into merged composition. Error: %@", &start, 0x20u);
@@ -525,7 +525,7 @@ LABEL_90:
       [v164 setObject:v54 forKeyedSubscript:v21];
 
       memset(&rhs, 0, sizeof(rhs));
-      [v25 px_preferredTransformBasedOnNaturalSize];
+      [firstObject px_preferredTransformBasedOnNaturalSize];
       v55 = fmax(v14 / v30, v13 / v32);
       CGAffineTransformMakeScale(&end, v55, v55);
       t1 = rhs;
@@ -558,22 +558,22 @@ LABEL_91:
       _os_log_impl(&dword_1B36F3000, v68, OS_LOG_TYPE_ERROR, "Unable to generate merged live photo video with error: %@", &buf, 0xCu);
     }
 
-    if ([(PUCompositeVideoGenerator *)v155 outputType])
+    if ([(PUCompositeVideoGenerator *)selfCopy outputType])
     {
       goto LABEL_179;
     }
 
-    v69 = [(PUCompositeVideoGenerator *)v155 assets];
-    v70 = [v69 firstObject];
+    assets3 = [(PUCompositeVideoGenerator *)selfCopy assets];
+    firstObject3 = [assets3 firstObject];
 
-    v71 = [v162 objectForKeyedSubscript:v70];
-    v72 = [v161 objectForKeyedSubscript:v70];
-    v73 = [(PUCompositeVideoGenerator *)v155 assets];
-    v74 = [v73 firstObject];
+    v71 = [assetsCopy objectForKeyedSubscript:firstObject3];
+    v72 = [v161 objectForKeyedSubscript:firstObject3];
+    assets4 = [(PUCompositeVideoGenerator *)selfCopy assets];
+    firstObject4 = [assets4 firstObject];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v75 = v74;
+      v75 = firstObject4;
     }
 
     else
@@ -589,18 +589,18 @@ LABEL_91:
       v78 = PLLivePhotoPlaybackGetLog();
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v79 = [(PUCompositeVideoGenerator *)v155 assets];
-        v80 = [v79 firstObject];
+        assets5 = [(PUCompositeVideoGenerator *)selfCopy assets];
+        firstObject5 = [assets5 firstObject];
         LODWORD(buf.a) = 138412290;
-        *(&buf.a + 4) = v80;
+        *(&buf.a + 4) = firstObject5;
         _os_log_impl(&dword_1B36F3000, v78, OS_LOG_TYPE_ERROR, "Attempting fallback to first asset: %@", &buf, 0xCu);
 
         v77 = v163;
       }
 
-      v81 = fabs([v70 pixelWidth] / objc_msgSend(v70, "pixelHeight"));
-      v82 = [v77 firstObject];
-      v83 = [v162 objectForKeyedSubscript:v82];
+      v81 = fabs([firstObject3 pixelWidth] / objc_msgSend(firstObject3, "pixelHeight"));
+      firstObject6 = [v77 firstObject];
+      v83 = [assetsCopy objectForKeyedSubscript:firstObject6];
       v84 = v83;
       if (v83)
       {
@@ -627,7 +627,7 @@ LABEL_91:
       v85 = [(PUMergedLivePhotosVideo *)v136 initWithAssets:v137 startTimes:v140 keyTimes:v141 videoAsset:v71 videoComposition:0 videoAspectRatio:v170 options:v81];
 
       v75 = v138;
-      [(PUCompositeVideoGenerator *)v155 _workQueue_finishWithPlaybackVideo:v85 error:0];
+      [(PUCompositeVideoGenerator *)selfCopy _workQueue_finishWithPlaybackVideo:v85 error:0];
 LABEL_176:
 
       goto LABEL_177;
@@ -655,16 +655,16 @@ LABEL_114:
         v88 = PLLivePhotoPlaybackGetLog();
         if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
         {
-          v89 = [(PUCompositeVideoGenerator *)v155 assets];
-          v90 = [v89 firstObject];
+          assets6 = [(PUCompositeVideoGenerator *)selfCopy assets];
+          firstObject7 = [assets6 firstObject];
           LODWORD(buf.a) = 138412546;
-          *(&buf.a + 4) = v90;
+          *(&buf.a + 4) = firstObject7;
           WORD2(buf.b) = 2112;
           *(&buf.b + 6) = v85;
           _os_log_impl(&dword_1B36F3000, v88, OS_LOG_TYPE_ERROR, "Unable to fallback to first asset: %@. Reason: %@", &buf, 0x16u);
         }
 
-        [(PUCompositeVideoGenerator *)v155 _workQueue_finishWithError:v153];
+        [(PUCompositeVideoGenerator *)selfCopy _workQueue_finishWithError:v153];
         goto LABEL_176;
       }
     }
@@ -691,9 +691,9 @@ LABEL_114:
 
   else
   {
-    v65 = [v12 lastObject];
+    lastObject2 = [v12 lastObject];
     memset(&buf, 0, sizeof(buf));
-    v66 = [v167 objectForKeyedSubscript:v65];
+    v66 = [v167 objectForKeyedSubscript:lastObject2];
     v67 = v66;
     if (v66)
     {
@@ -705,7 +705,7 @@ LABEL_114:
       memset(&buf, 0, sizeof(buf));
     }
 
-    v91 = [v164 objectForKeyedSubscript:v65];
+    v91 = [v164 objectForKeyedSubscript:lastObject2];
     [v91 CGSizeValue];
     v93 = v92;
     v95 = v94;
@@ -785,8 +785,8 @@ LABEL_135:
   if (v76)
   {
     v12 = v163;
-    v107 = [v163 firstObject];
-    v108 = [v167 objectForKeyedSubscript:v107];
+    firstObject8 = [v163 firstObject];
+    v108 = [v167 objectForKeyedSubscript:firstObject8];
     v109 = v108;
     if (v108)
     {
@@ -800,19 +800,19 @@ LABEL_135:
 
     buf = v179;
     [v159 setPreferredTransform:&buf];
-    v70 = 0;
+    firstObject3 = 0;
   }
 
   else
   {
     v12 = v163;
-    v107 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v163, "count")}];
+    firstObject8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v163, "count")}];
     if ([v163 count])
     {
       v110 = 1;
       v174 = *MEMORY[0x1E6960CC0];
       v171 = *(MEMORY[0x1E6960CC0] + 16);
-      v111 = v107;
+      v111 = firstObject8;
       do
       {
         v112 = [v12 objectAtIndexedSubscript:v110 - 1];
@@ -889,10 +889,10 @@ LABEL_135:
         CMTimeConvertScale(&lhs.start, &end.start, 600, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
         *&start.a = *&lhs.start.value;
         *&start.c = lhs.start.epoch;
-        v121 = [MEMORY[0x1E6988068] videoCompositionInstruction];
+        videoCompositionInstruction = [MEMORY[0x1E6988068] videoCompositionInstruction];
         v196 = v114;
         v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v196 count:1];
-        [v121 setLayerInstructions:v122];
+        [videoCompositionInstruction setLayerInstructions:v122];
 
         *&lhs.start.value = *&rhs.a;
         lhs.start.epoch = *&rhs.c;
@@ -900,9 +900,9 @@ LABEL_135:
         end.start.epoch = *&start.c;
         CMTimeRangeFromTimeToTime(&v178, &lhs.start, &end.start);
         lhs = v178;
-        [v121 setTimeRange:&lhs];
-        v107 = v111;
-        [v111 addObject:v121];
+        [videoCompositionInstruction setTimeRange:&lhs];
+        firstObject8 = v111;
+        [v111 addObject:videoCompositionInstruction];
 
         v12 = v163;
       }
@@ -910,38 +910,38 @@ LABEL_135:
       while (v110++ < [v163 count]);
     }
 
-    v70 = [MEMORY[0x1E6988060] videoComposition];
-    [v70 setRenderSize:{v14, v13}];
+    firstObject3 = [MEMORY[0x1E6988060] videoComposition];
+    [firstObject3 setRenderSize:{v14, v13}];
     CMTimeMake(&v177, 1, 30);
     *&buf.a = v177;
-    [v70 setFrameDuration:&buf];
-    v109 = [v107 copy];
-    [v70 setInstructions:v109];
+    [firstObject3 setFrameDuration:&buf];
+    v109 = [firstObject8 copy];
+    [firstObject3 setInstructions:v109];
   }
 
-  v124 = [(PUCompositeVideoGenerator *)v155 outputType];
-  if (v124 == 1)
+  outputType = [(PUCompositeVideoGenerator *)selfCopy outputType];
+  if (outputType == 1)
   {
     v132 = objc_alloc(MEMORY[0x1E6987E60]);
     v133 = [v165 copy];
     v71 = [v132 initWithAsset:v133 presetName:*MEMORY[0x1E69872D8]];
 
-    v134 = [v70 copy];
+    v134 = [firstObject3 copy];
     [v71 setVideoComposition:v134];
 
-    [(PUCompositeVideoGenerator *)v155 _workQueue_finishWithExportSession:v71 error:0];
+    [(PUCompositeVideoGenerator *)selfCopy _workQueue_finishWithExportSession:v71 error:0];
     goto LABEL_177;
   }
 
-  if (!v124)
+  if (!outputType)
   {
     v176 = v168;
     v125 = PXMap();
     v175 = v161;
     v126 = PXMap();
     v127 = fabs(v14 / v13);
-    v128 = [v163 firstObject];
-    v129 = [v162 objectForKeyedSubscript:v128];
+    firstObject9 = [v163 firstObject];
+    v129 = [assetsCopy objectForKeyedSubscript:firstObject9];
     v130 = v129;
     if (v129)
     {
@@ -953,8 +953,8 @@ LABEL_135:
       v131 = 0;
     }
 
-    v135 = [[PUMergedLivePhotosVideo alloc] initWithAssets:v163 startTimes:v125 keyTimes:v126 videoAsset:v165 videoComposition:v70 videoAspectRatio:v131 options:v127];
-    [(PUCompositeVideoGenerator *)v155 _workQueue_finishWithPlaybackVideo:v135 error:0];
+    v135 = [[PUMergedLivePhotosVideo alloc] initWithAssets:v163 startTimes:v125 keyTimes:v126 videoAsset:v165 videoComposition:firstObject3 videoAspectRatio:v131 options:v127];
+    [(PUCompositeVideoGenerator *)selfCopy _workQueue_finishWithPlaybackVideo:v135 error:0];
 
     v71 = v176;
 LABEL_177:
@@ -972,19 +972,19 @@ LABEL_179:
   }
 }
 
-- (void)_workQueue_generateVideoWithSingleAssetExportSession:(id)a3
+- (void)_workQueue_generateVideoWithSingleAssetExportSession:(id)session
 {
   v5 = MEMORY[0x1E696AF00];
-  v6 = a3;
+  sessionCopy = session;
   if ([v5 isMainThread])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:347 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithSingleAssetExportSession:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:347 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithSingleAssetExportSession:]"}];
   }
 
   v7 = PLLivePhotoPlaybackGetLog();
-  v8 = [(PUCompositeVideoGenerator *)self assets];
-  v9 = os_signpost_id_make_with_pointer(v7, v8);
+  assets = [(PUCompositeVideoGenerator *)self assets];
+  v9 = os_signpost_id_make_with_pointer(v7, assets);
 
   v10 = v7;
   v11 = v10;
@@ -994,12 +994,12 @@ LABEL_179:
     _os_signpost_emit_with_name_impl(&dword_1B36F3000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "CompositeVideoGeneration", "", buf, 2u);
   }
 
-  v12 = [v6 asset];
-  v13 = [v12 metadata];
+  asset = [sessionCopy asset];
+  metadata = [asset metadata];
   v14 = PXFilter();
-  [v6 setMetadata:v14];
+  [sessionCopy setMetadata:v14];
 
-  [(PUCompositeVideoGenerator *)self _workQueue_finishWithExportSession:v6 error:0];
+  [(PUCompositeVideoGenerator *)self _workQueue_finishWithExportSession:sessionCopy error:0];
   v15 = v11;
   v16 = v15;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -1027,19 +1027,19 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
   return v5;
 }
 
-- (void)_workQueue_generateVideoWithSingleAssetPlayerItem:(id)a3
+- (void)_workQueue_generateVideoWithSingleAssetPlayerItem:(id)item
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:330 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithSingleAssetPlayerItem:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:330 description:{@"%s must NOT be called on the main thread", "-[PUCompositeVideoGenerator _workQueue_generateVideoWithSingleAssetPlayerItem:]"}];
   }
 
   v6 = PLLivePhotoPlaybackGetLog();
-  v7 = [(PUCompositeVideoGenerator *)self assets];
-  v8 = os_signpost_id_make_with_pointer(v6, v7);
+  assets = [(PUCompositeVideoGenerator *)self assets];
+  v8 = os_signpost_id_make_with_pointer(v6, assets);
 
   v9 = v6;
   v10 = v9;
@@ -1052,9 +1052,9 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
 
   spid = v8;
 
-  v31 = self;
-  v11 = [(PUCompositeVideoGenerator *)self assets];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  selfCopy = self;
+  assets2 = [(PUCompositeVideoGenerator *)self assets];
+  v12 = [assets2 objectAtIndexedSubscript:0];
 
   *buf = *MEMORY[0x1E6960CC0];
   v33 = *(MEMORY[0x1E6960CC0] + 16);
@@ -1078,11 +1078,11 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
   v35 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
 
-  v18 = [v5 asset];
-  v19 = v18;
-  if (v18)
+  asset = [itemCopy asset];
+  v19 = asset;
+  if (asset)
   {
-    v20 = [v18 pu_supportsVitality] ^ 1;
+    v20 = [asset pu_supportsVitality] ^ 1;
   }
 
   else
@@ -1093,12 +1093,12 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
   v21 = [PUMergedLivePhotosVideo alloc];
   v34 = v12;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-  v23 = [v5 asset];
-  v24 = [v5 videoComposition];
+  asset2 = [itemCopy asset];
+  videoComposition = [itemCopy videoComposition];
   [v12 aspectRatio];
-  v25 = [(PUMergedLivePhotosVideo *)v21 initWithAssets:v22 startTimes:v14 keyTimes:v17 videoAsset:v23 videoComposition:v24 videoAspectRatio:v20 options:?];
+  v25 = [(PUMergedLivePhotosVideo *)v21 initWithAssets:v22 startTimes:v14 keyTimes:v17 videoAsset:asset2 videoComposition:videoComposition videoAspectRatio:v20 options:?];
 
-  [(PUCompositeVideoGenerator *)v31 _workQueue_finishWithPlaybackVideo:v25 error:0];
+  [(PUCompositeVideoGenerator *)selfCopy _workQueue_finishWithPlaybackVideo:v25 error:0];
   v26 = v10;
   v27 = v26;
   if (v30 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -1114,7 +1114,7 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
   if (![(PUCompositeVideoGenerator *)self state])
   {
     [(PUCompositeVideoGenerator *)self setState:1];
-    v40 = self;
+    selfCopy = self;
     objc_initWeak(&location, self);
     group = self->_videoAssetsByAssetGroup;
     ptr = [(PUCompositeVideoGenerator *)self assets];
@@ -1154,22 +1154,22 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
     [v41 setNetworkAccessAllowed:1];
     if ([ptr count] == 1)
     {
-      v10 = [(PUCompositeVideoGenerator *)v40 outputType];
-      if (v10)
+      outputType = [(PUCompositeVideoGenerator *)selfCopy outputType];
+      if (outputType)
       {
-        if (v10 == 1)
+        if (outputType == 1)
         {
-          v11 = [MEMORY[0x1E6978860] defaultManager];
+          defaultManager = [MEMORY[0x1E6978860] defaultManager];
           v12 = [ptr objectAtIndexedSubscript:0];
           v58[0] = MEMORY[0x1E69E9820];
           v58[1] = 3221225472;
           v58[2] = __45__PUCompositeVideoGenerator__workQueue_start__block_invoke_214;
           v58[3] = &unk_1E7B7EA70;
-          v58[4] = v40;
+          v58[4] = selfCopy;
           v59 = v37;
           v60[1] = v4;
           objc_copyWeak(v60, &location);
-          [v11 requestExportSessionForVideo:v12 options:v41 exportPreset:*MEMORY[0x1E6987338] resultHandler:v58];
+          [defaultManager requestExportSessionForVideo:v12 options:v41 exportPreset:*MEMORY[0x1E6987338] resultHandler:v58];
 
           objc_destroyWeak(v60);
         }
@@ -1180,18 +1180,18 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
         [v41 setDownloadIntent:3];
         [v41 setDownloadPriority:0];
         v30 = [ptr objectAtIndexedSubscript:0];
-        v31 = [MEMORY[0x1E6978860] defaultManager];
+        defaultManager2 = [MEMORY[0x1E6978860] defaultManager];
         v61[0] = MEMORY[0x1E69E9820];
         v61[1] = 3221225472;
         v61[2] = __45__PUCompositeVideoGenerator__workQueue_start__block_invoke;
         v61[3] = &unk_1E7B7EA48;
         v32 = v30;
         v62 = v32;
-        v63 = v40;
+        v63 = selfCopy;
         v64 = v37;
         v65[1] = v4;
         objc_copyWeak(v65, &location);
-        [v31 requestPlayerItemForVideo:v32 options:v41 resultHandler:v61];
+        [defaultManager2 requestPlayerItemForVideo:v32 options:v41 resultHandler:v61];
 
         objc_destroyWeak(v65);
       }
@@ -1230,18 +1230,18 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
 
     else
     {
-      if ([(PUCompositeVideoGenerator *)v40 outputType]== 1)
+      if ([(PUCompositeVideoGenerator *)selfCopy outputType]== 1)
       {
         [v41 setDeliveryMode:1];
       }
 
       v13 = objc_alloc(MEMORY[0x1E695DF90]);
-      v14 = [(PUCompositeVideoGenerator *)v40 assets];
-      v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+      assets = [(PUCompositeVideoGenerator *)selfCopy assets];
+      v15 = [v13 initWithCapacity:{objc_msgSend(assets, "count")}];
 
       v16 = objc_alloc(MEMORY[0x1E695DF90]);
-      v17 = [(PUCompositeVideoGenerator *)v40 assets];
-      v18 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+      assets2 = [(PUCompositeVideoGenerator *)selfCopy assets];
+      v18 = [v16 initWithCapacity:{objc_msgSend(assets2, "count")}];
 
       v56 = 0u;
       v57 = 0u;
@@ -1263,17 +1263,17 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
 
             v22 = *(*(&v54 + 1) + 8 * i);
             dispatch_group_enter(group);
-            v23 = [MEMORY[0x1E6978860] defaultManager];
+            defaultManager3 = [MEMORY[0x1E6978860] defaultManager];
             v50[0] = MEMORY[0x1E69E9820];
             v50[1] = 3221225472;
             v50[2] = __45__PUCompositeVideoGenerator__workQueue_start__block_invoke_218;
             v50[3] = &unk_1E7B7EAC0;
-            v50[4] = v40;
+            v50[4] = selfCopy;
             v50[5] = v22;
             v51 = v15;
             v52 = v18;
             v53 = group;
-            [v23 requestAVAssetForVideo:v22 options:v41 resultHandler:v50];
+            [defaultManager3 requestAVAssetForVideo:v22 options:v41 resultHandler:v50];
           }
 
           v19 = [obj countByEnumeratingWithState:&v54 objects:v68 count:16];
@@ -1282,13 +1282,13 @@ uint64_t __82__PUCompositeVideoGenerator__workQueue_generateVideoWithSingleAsset
         while (v19);
       }
 
-      workQueue = v40->_workQueue;
+      workQueue = selfCopy->_workQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __45__PUCompositeVideoGenerator__workQueue_start__block_invoke_3;
       block[3] = &unk_1E7B7EAE8;
       v44 = v37;
-      v45 = v40;
+      v45 = selfCopy;
       v49[1] = spid;
       v46 = v15;
       v47 = obj;
@@ -1517,56 +1517,56 @@ void __45__PUCompositeVideoGenerator__workQueue_start__block_invoke_2(uint64_t a
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PUCompositeVideoGenerator_setError___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)setExportSession:(id)a3
+- (void)setExportSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PUCompositeVideoGenerator_setExportSession___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)setPlaybackVideo:(id)a3
+- (void)setPlaybackVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PUCompositeVideoGenerator_setPlaybackVideo___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = videoCopy;
+  v6 = videoCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __38__PUCompositeVideoGenerator_setState___block_invoke;
   v3[3] = &unk_1E7B7E9F8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(PUCompositeVideoGenerator *)self performChanges:v3];
 }
 
@@ -1711,26 +1711,26 @@ void __34__PUCompositeVideoGenerator_start__block_invoke(uint64_t a1)
 
 - (PUCompositeVideoGenerator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:75 description:{@"%s is not available as initializer", "-[PUCompositeVideoGenerator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:75 description:{@"%s is not available as initializer", "-[PUCompositeVideoGenerator init]"}];
 
   abort();
 }
 
-- (PUCompositeVideoGenerator)initWithAssets:(id)a3 outputType:(int64_t)a4 onlyAllowOverlappingAssets:(BOOL)a5 dataCache:(id)a6
+- (PUCompositeVideoGenerator)initWithAssets:(id)assets outputType:(int64_t)type onlyAllowOverlappingAssets:(BOOL)overlappingAssets dataCache:(id)cache
 {
-  v10 = a3;
-  v11 = a6;
+  assetsCopy = assets;
+  cacheCopy = cache;
   v25.receiver = self;
   v25.super_class = PUCompositeVideoGenerator;
   v12 = [(PUCompositeVideoGenerator *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataCache, a6);
-    v13->_outputType = a4;
-    v13->_onlyAllowOverlappingAssets = a5;
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_dataCache, cache);
+    v13->_outputType = type;
+    v13->_onlyAllowOverlappingAssets = overlappingAssets;
+    v14 = [assetsCopy copy];
     assets = v13->_assets;
     v13->_assets = v14;
 
@@ -1752,7 +1752,7 @@ void __34__PUCompositeVideoGenerator_start__block_invoke(uint64_t a1)
   return v13;
 }
 
-+ ($3EB3F8852E00619D46CABBEC9C374A75)conformRange:(SEL)a3 inRange:(id *)a4
++ ($3EB3F8852E00619D46CABBEC9C374A75)conformRange:(SEL)range inRange:(id *)inRange
 {
   if (a5->var0.var1 <= a5->var1.var1)
   {
@@ -1765,12 +1765,12 @@ void __34__PUCompositeVideoGenerator_start__block_invoke(uint64_t a1)
   }
 
   memset(&v19, 0, sizeof(v19));
-  *&time.start.value = *&a4->var0.var0;
-  time.start.epoch = a4->var0.var3;
+  *&time.start.value = *&inRange->var0.var0;
+  time.start.epoch = inRange->var0.var3;
   CMTimeConvertScale(&v19, &time.start, var1, kCMTimeRoundingMethod_RoundAwayFromZero);
   memset(&v18, 0, sizeof(v18));
-  *&time.start.value = *&a4->var1.var0;
-  time.start.epoch = a4->var1.var3;
+  *&time.start.value = *&inRange->var1.var0;
+  time.start.epoch = inRange->var1.var3;
   CMTimeConvertScale(&v18, &time.start, var1, kCMTimeRoundingMethod_RoundTowardZero);
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
@@ -1807,30 +1807,30 @@ void __34__PUCompositeVideoGenerator_start__block_invoke(uint64_t a1)
   return result;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_overlapDurationBetweenAsset:(SEL)a3 andAsset:(id)a4
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_overlapDurationBetweenAsset:(SEL)asset andAsset:(id)andAsset
 {
-  v7 = a4;
+  andAssetCopy = andAsset;
   v8 = a5;
   v9 = v8;
-  if (v7 && v8)
+  if (andAssetCopy && v8)
   {
-    v10 = [v7 creationDate];
-    v11 = [v9 creationDate];
-    if ([v7 playbackStyle] == 3)
+    creationDate = [andAssetCopy creationDate];
+    creationDate2 = [v9 creationDate];
+    if ([andAssetCopy playbackStyle] == 3)
     {
-      v12 = [v9 playbackStyle];
-      v13 = [v10 compare:v11];
-      if (v12 == 3 && v13 == -1)
+      playbackStyle = [v9 playbackStyle];
+      v13 = [creationDate compare:creationDate2];
+      if (playbackStyle == 3 && v13 == -1)
       {
         memset(&v34, 0, sizeof(v34));
-        [v11 timeIntervalSinceDate:v10];
+        [creationDate2 timeIntervalSinceDate:creationDate];
         CMTimeMakeWithSeconds(&v34, v14, 600);
         v32 = 0uLL;
         v33 = 0;
-        [v7 photoIrisStillDisplayTime];
+        [andAssetCopy photoIrisStillDisplayTime];
         v30 = 0uLL;
         v31 = 0;
-        [v7 photoIrisVideoDuration];
+        [andAssetCopy photoIrisVideoDuration];
         v28 = 0uLL;
         v29 = 0;
         [v9 photoIrisStillDisplayTime];
@@ -1879,7 +1879,7 @@ LABEL_11:
 
     else
     {
-      [v10 compare:v11];
+      [creationDate compare:creationDate2];
     }
 
     v17 = MEMORY[0x1E6960CC0];
@@ -1896,29 +1896,29 @@ LABEL_13:
   return result;
 }
 
-+ (BOOL)canMergeAsset:(id)a3 withConsecutiveAsset:(id)a4
++ (BOOL)canMergeAsset:(id)asset withConsecutiveAsset:(id)consecutiveAsset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  assetCopy = asset;
+  consecutiveAssetCopy = consecutiveAsset;
+  v9 = consecutiveAssetCopy;
   v10 = 0;
-  if (v7 && v8)
+  if (assetCopy && consecutiveAssetCopy)
   {
-    [a1 _overlapDurationBetweenAsset:v7 andAsset:v8];
+    [self _overlapDurationBetweenAsset:assetCopy andAsset:consecutiveAssetCopy];
     time2 = **&MEMORY[0x1E6960CC0];
     v11 = CMTimeCompare(&time1, &time2);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v7;
+      v12 = assetCopy;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v29 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v32 = [v12 px_descriptionForAssertionMessage];
-        [v29 handleFailureInMethod:a2 object:a1 file:@"PUCompositeVideoGenerator.m" lineNumber:128 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"fromAsset", v31, v32}];
+        px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:128 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"fromAsset", v31, px_descriptionForAssertionMessage}];
       }
 
       v13 = [v12 hasAdjustments] ^ 1;
@@ -1938,11 +1938,11 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v34 = objc_opt_class();
         v35 = NSStringFromClass(v34);
-        v36 = [v16 px_descriptionForAssertionMessage];
-        [v33 handleFailureInMethod:a2 object:a1 file:@"PUCompositeVideoGenerator.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"toAsset", v35, v36}];
+        px_descriptionForAssertionMessage2 = [v16 px_descriptionForAssertionMessage];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCompositeVideoGenerator.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"toAsset", v35, px_descriptionForAssertionMessage2}];
       }
 
       v15 = [v16 hasAdjustments] ^ 1;
@@ -1963,7 +1963,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v7;
+      v19 = assetCopy;
     }
 
     else
@@ -1978,18 +1978,18 @@ LABEL_13:
       [v20 fetchPropertySetsIfNeeded];
       if (v15)
       {
-        v21 = [v18 photosInfoPanelExtendedProperties];
-        v22 = [v21 semanticStylePreset];
-        v23 = [v20 photosInfoPanelExtendedProperties];
-        v24 = [v23 semanticStylePreset];
-        if (v22 == v24)
+        photosInfoPanelExtendedProperties = [v18 photosInfoPanelExtendedProperties];
+        semanticStylePreset = [photosInfoPanelExtendedProperties semanticStylePreset];
+        photosInfoPanelExtendedProperties2 = [v20 photosInfoPanelExtendedProperties];
+        semanticStylePreset2 = [photosInfoPanelExtendedProperties2 semanticStylePreset];
+        if (semanticStylePreset == semanticStylePreset2)
         {
           v15 = 1;
         }
 
         else
         {
-          v15 = [v22 isEqual:v24];
+          v15 = [semanticStylePreset isEqual:semanticStylePreset2];
         }
       }
 
@@ -1999,10 +1999,10 @@ LABEL_13:
       }
     }
 
-    v25 = [v7 canPlayPhotoIris];
-    if (v25)
+    canPlayPhotoIris = [assetCopy canPlayPhotoIris];
+    if (canPlayPhotoIris)
     {
-      LOBYTE(v25) = [v9 canPlayPhotoIris];
+      LOBYTE(canPlayPhotoIris) = [v9 canPlayPhotoIris];
     }
 
     if (v11 <= 0)
@@ -2021,7 +2021,7 @@ LABEL_13:
     {
       if (v15)
       {
-        if (v25)
+        if (canPlayPhotoIris)
         {
           v10 = 1;
 LABEL_40:

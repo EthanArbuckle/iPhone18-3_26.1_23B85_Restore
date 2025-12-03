@@ -1,18 +1,18 @@
 @interface AudioPlayer
-- (void)didPlayToEndWithNotification:(id)a3;
-- (void)handleAudioSessionInterruption:(id)a3;
+- (void)didPlayToEndWithNotification:(id)notification;
+- (void)handleAudioSessionInterruption:(id)interruption;
 @end
 
 @implementation AudioPlayer
 
-- (void)didPlayToEndWithNotification:(id)a3
+- (void)didPlayToEndWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1004CAC8C(v3);
+  sub_1004CAC8C(notificationCopy);
 }
 
-- (void)handleAudioSessionInterruption:(id)a3
+- (void)handleAudioSessionInterruption:(id)interruption
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

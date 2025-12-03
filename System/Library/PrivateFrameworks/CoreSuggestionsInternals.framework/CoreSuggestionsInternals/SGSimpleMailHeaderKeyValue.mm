@@ -1,10 +1,10 @@
 @interface SGSimpleMailHeaderKeyValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSimpleMailHeaderKeyValue:(id)a3;
-- (SGSimpleMailHeaderKeyValue)initWithCoder:(id)a3;
-- (SGSimpleMailHeaderKeyValue)initWithKey:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSimpleMailHeaderKeyValue:(id)value;
+- (SGSimpleMailHeaderKeyValue)initWithCoder:(id)coder;
+- (SGSimpleMailHeaderKeyValue)initWithKey:(id)key value:(id)value;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGSimpleMailHeaderKeyValue
@@ -16,24 +16,24 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"key"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (SGSimpleMailHeaderKeyValue)initWithCoder:(id)a3
+- (SGSimpleMailHeaderKeyValue)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SGSimpleMailHeaderKeyValue;
   v6 = [(SGSimpleMailHeaderKeyValue *)&v16 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"key"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"key"];
 
     if (v8)
     {
@@ -49,7 +49,7 @@
     }
 
     v11 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"value"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"value"];
 
     if (v12)
     {
@@ -68,12 +68,12 @@
   return v6;
 }
 
-- (BOOL)isEqualToSimpleMailHeaderKeyValue:(id)a3
+- (BOOL)isEqualToSimpleMailHeaderKeyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = self->_key;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == valueCopy[1])
   {
   }
 
@@ -90,7 +90,7 @@
 
   v9 = self->_value;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == valueCopy[2])
   {
     v8 = 1;
   }
@@ -104,35 +104,35 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleMailHeaderKeyValue *)self isEqualToSimpleMailHeaderKeyValue:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleMailHeaderKeyValue *)self isEqualToSimpleMailHeaderKeyValue:v5];
   }
 
   return v6;
 }
 
-- (SGSimpleMailHeaderKeyValue)initWithKey:(id)a3 value:(id)a4
+- (SGSimpleMailHeaderKeyValue)initWithKey:(id)key value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = SGSimpleMailHeaderKeyValue;
   v9 = [(SGSimpleMailHeaderKeyValue *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;

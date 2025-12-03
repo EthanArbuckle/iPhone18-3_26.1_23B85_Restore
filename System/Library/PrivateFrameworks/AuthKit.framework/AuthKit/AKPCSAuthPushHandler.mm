@@ -1,64 +1,64 @@
 @interface AKPCSAuthPushHandler
-- (AKPCSAuthPushHandler)initWithAccountManager:(id)a3 webSessionPCSKeyProvider:(id)a4;
-- (BOOL)_isPrimaryAccountAltDSID:(id)a3;
-- (double)_safeTTL:(double)a3;
-- (id)_teardownPayloadWithPushMessage:(id)a3 isArmed:(BOOL)a4;
-- (void)armDeviceWithPCSAuthorizationContextForMessage:(id)a3 completion:(id)a4;
+- (AKPCSAuthPushHandler)initWithAccountManager:(id)manager webSessionPCSKeyProvider:(id)provider;
+- (BOOL)_isPrimaryAccountAltDSID:(id)d;
+- (double)_safeTTL:(double)l;
+- (id)_teardownPayloadWithPushMessage:(id)message isArmed:(BOOL)armed;
+- (void)armDeviceWithPCSAuthorizationContextForMessage:(id)message completion:(id)completion;
 @end
 
 @implementation AKPCSAuthPushHandler
 
-- (AKPCSAuthPushHandler)initWithAccountManager:(id)a3 webSessionPCSKeyProvider:(id)a4
+- (AKPCSAuthPushHandler)initWithAccountManager:(id)manager webSessionPCSKeyProvider:(id)provider
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, provider);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKPCSAuthPushHandler;
-  v11 = [(AKPCSAuthPushHandler *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKPCSAuthPushHandler *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_accountManager, location[0]);
-    objc_storeStrong(&v11->_webSessionKeyProvider, v9);
+    objc_storeStrong(&selfCopy->_accountManager, location[0]);
+    objc_storeStrong(&selfCopy->_webSessionKeyProvider, v9);
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)armDeviceWithPCSAuthorizationContextForMessage:(id)a3 completion:(id)a4
+- (void)armDeviceWithPCSAuthorizationContextForMessage:(id)message completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
-  v22 = [location[0] webSessionUUID];
+  objc_storeStrong(&v46, completion);
+  webSessionUUID = [location[0] webSessionUUID];
   v44 = 0;
   v23 = 1;
-  if (v22)
+  if (webSessionUUID)
   {
-    v45 = [location[0] timestamp];
+    timestamp = [location[0] timestamp];
     v44 = 1;
-    v23 = v45 == 0;
+    v23 = timestamp == 0;
   }
 
   if (v44)
   {
-    _objc_release(v45);
+    _objc_release(timestamp);
   }
 
-  _objc_release(v22);
+  _objc_release(webSessionUUID);
   if (v23)
   {
     v43 = _AKLogSystem();
@@ -78,24 +78,24 @@
 
   else
   {
-    v16 = v48;
-    v17 = [location[0] altDSID];
+    v16 = selfCopy;
+    altDSID = [location[0] altDSID];
     v18 = [(AKPCSAuthPushHandler *)v16 _isPrimaryAccountAltDSID:?];
-    _objc_release(v17);
+    _objc_release(altDSID);
     if (v18)
     {
-      v9 = v48;
-      v10 = [location[0] ttlInMinutes];
-      [v10 doubleValue];
+      v9 = selfCopy;
+      ttlInMinutes = [location[0] ttlInMinutes];
+      [ttlInMinutes doubleValue];
       [(AKPCSAuthPushHandler *)v9 _safeTTL:v4 * 60.0];
       v11 = v5;
-      _objc_release(v10);
+      _objc_release(ttlInMinutes);
       v36[1] = v11;
       v36[0] = [NSDate dateWithTimeIntervalSinceNow:*&v11];
       v12 = [AKPCSAuthContext alloc];
-      v13 = [location[0] webSessionUUID];
+      webSessionUUID2 = [location[0] webSessionUUID];
       v35 = [v12 initWithWebSessionIdentifier:? expiryDate:? userInfo:?];
-      _objc_release(v13);
+      _objc_release(webSessionUUID2);
       v34 = _AKLogSystem();
       v33 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -107,7 +107,7 @@
       }
 
       objc_storeStrong(&v34, 0);
-      webSessionKeyProvider = v48->_webSessionKeyProvider;
+      webSessionKeyProvider = selfCopy->_webSessionKeyProvider;
       v6 = v35;
       v24 = _NSConcreteStackBlock;
       v25 = -1073741824;
@@ -116,7 +116,7 @@
       v28 = &unk_100323DB8;
       v29 = _objc_retain(v35);
       v32 = _objc_retain(v46);
-      v30 = _objc_retain(v48);
+      v30 = _objc_retain(selfCopy);
       v31 = _objc_retain(location[0]);
       [(AKWebSessionPCSKeyProvider *)webSessionKeyProvider saveContext:v6 completion:&v24];
       objc_storeStrong(&v31, 0);
@@ -150,53 +150,53 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isPrimaryAccountAltDSID:(id)a3
+- (BOOL)_isPrimaryAccountAltDSID:(id)d
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v7->_accountManager altDSIDforPrimaryiCloudAccount];
-  v5 = [v4 isEqualToString:location[0]];
-  _objc_release(v4);
+  objc_storeStrong(location, d);
+  altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)selfCopy->_accountManager altDSIDforPrimaryiCloudAccount];
+  v5 = [altDSIDforPrimaryiCloudAccount isEqualToString:location[0]];
+  _objc_release(altDSIDforPrimaryiCloudAccount);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (id)_teardownPayloadWithPushMessage:(id)a3 isArmed:(BOOL)a4
+- (id)_teardownPayloadWithPushMessage:(id)message isArmed:(BOOL)armed
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v14[0] = @"idmsdata";
-  v10 = [location[0] idmsData];
-  v15[0] = v10;
+  idmsData = [location[0] idmsData];
+  v15[0] = idmsData;
   v14[1] = @"srdwa";
   v12[0] = @"wscUUID";
-  v9 = [location[0] webSessionUUID];
-  v13[0] = v9;
+  webSessionUUID = [location[0] webSessionUUID];
+  v13[0] = webSessionUUID;
   v12[1] = @"PCSKeysArmedEligible";
-  v8 = [NSNumber numberWithBool:a4];
+  v8 = [NSNumber numberWithBool:armed];
   v13[1] = v8;
   v6 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:?];
   v15[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
   _objc_release(v6);
   _objc_release(v8);
-  _objc_release(v9);
-  _objc_release(v10);
+  _objc_release(webSessionUUID);
+  _objc_release(idmsData);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (double)_safeTTL:(double)a3
+- (double)_safeTTL:(double)l
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = *&a3;
-  if (a3 <= 3600.0)
+  v5 = *&l;
+  if (l <= 3600.0)
   {
     return *&v5;
   }

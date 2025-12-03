@@ -7,8 +7,8 @@
 - (void)_updateSublayers;
 - (void)dealloc;
 - (void)removeFromSuperlayer;
-- (void)setGeometry:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setImage:(id)image;
 @end
 
 @implementation NUTiledImageLayer
@@ -25,37 +25,37 @@
 
 - (NSString)debugDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(NUTiledImageLayer *)self name];
-  [v3 appendFormat:@"<%@ - name:%@\n", self, v4];
+  string = [MEMORY[0x277CCAB68] string];
+  name = [(NUTiledImageLayer *)self name];
+  [string appendFormat:@"<%@ - name:%@\n", self, name];
 
-  v5 = [(NUTiledImageLayer *)self delegate];
-  [v3 appendFormat:@"\tdelegate:%@\n", v5];
+  delegate = [(NUTiledImageLayer *)self delegate];
+  [string appendFormat:@"\tdelegate:%@\n", delegate];
 
   [(NUTiledImageLayer *)self position];
   v6 = NSStringFromPoint(v23);
-  [v3 appendFormat:@"\tposition:%@\n", v6];
+  [string appendFormat:@"\tposition:%@\n", v6];
 
   [(NUTiledImageLayer *)self bounds];
   v7 = NSStringFromRect(v25);
-  [v3 appendFormat:@"\tbounds:%@\n", v7];
+  [string appendFormat:@"\tbounds:%@\n", v7];
 
   [(NUTiledImageLayer *)self contentsScale];
-  [v3 appendFormat:@"\tcontentScale:%f\n", v8];
+  [string appendFormat:@"\tcontentScale:%f\n", v8];
   [(NUTiledImageLayer *)self anchorPoint];
   v9 = NSStringFromPoint(v24);
-  [v3 appendFormat:@"\tanchorPoint:%@\n", v9];
+  [string appendFormat:@"\tanchorPoint:%@\n", v9];
 
   [(NUTiledImageLayer *)self transform];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g, %.15g}", v13, v14, v15, v16, v17, v18, v19, v20, v21];
-  [v3 appendFormat:@"\ttransform:%@\n", v10];
+  [string appendFormat:@"\ttransform:%@\n", v10];
 
-  v11 = [(NUTiledImageLayer *)self image];
-  [v3 appendFormat:@"\timage:%@\n", v11];
+  image = [(NUTiledImageLayer *)self image];
+  [string appendFormat:@"\timage:%@\n", image];
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
 - (id)snapshotImage
@@ -71,8 +71,8 @@
   v21 = __Block_byref_object_copy__264;
   v22 = __Block_byref_object_dispose__265;
   v11 = objc_alloc(MEMORY[0x277CBF758]);
-  v12 = [MEMORY[0x277CBF730] redColor];
-  v13 = [v11 initWithColor:v12];
+  redColor = [MEMORY[0x277CBF730] redColor];
+  v13 = [v11 initWithColor:redColor];
   v23 = [v13 imageByCroppingToRect:{v4, v6, v8, v10}];
 
   accessQueue = self->_accessQueue;
@@ -145,24 +145,24 @@ void __34__NUTiledImageLayer_snapshotImage__block_invoke(uint64_t a1)
 
 - (void)_updateSublayers
 {
-  v3 = [(NUTiledImageLayer *)self superlayer];
+  superlayer = [(NUTiledImageLayer *)self superlayer];
 
-  if (v3)
+  if (superlayer)
   {
     [(NUTiledImageLayer *)self _recycleTiles];
-    v4 = [(NUTiledImageLayer *)self image];
-    if (v4)
+    image = [(NUTiledImageLayer *)self image];
+    if (image)
     {
-      v5 = [(NUTiledImageLayer *)self geometry];
+      geometry = [(NUTiledImageLayer *)self geometry];
 
-      if (v5)
+      if (geometry)
       {
         [(NUTiledImageLayer *)self position];
         [(NUTiledImageLayer *)self anchorPoint];
         [(NUTiledImageLayer *)self bounds];
         NUAbsolutePointInRect();
-        v6 = [(NUTiledImageLayer *)self geometry];
-        [v6 renderScale];
+        geometry2 = [(NUTiledImageLayer *)self geometry];
+        [geometry2 renderScale];
         NUScaleToDouble();
 
         [(NUTiledImageLayer *)self bounds];
@@ -173,7 +173,7 @@ void __34__NUTiledImageLayer_snapshotImage__block_invoke(uint64_t a1)
         {
           v25 = 0;
           v26 = 0;
-          v27 = [v4 size];
+          v27 = [image size];
           v28 = v7;
           v23 = v31;
           v24 = v32;
@@ -185,22 +185,22 @@ void __34__NUTiledImageLayer_snapshotImage__block_invoke(uint64_t a1)
         v29 = v31;
         v30 = v32;
         v8 = [MEMORY[0x277D2D008] regionWithRect:&v29];
-        v9 = [v4 validRegion];
-        v10 = [(NUTiledImageLayer *)self validRegionInsets];
-        v12 = [v9 regionByShrinkingBy:{v10, v11}];
+        validRegion = [image validRegion];
+        validRegionInsets = [(NUTiledImageLayer *)self validRegionInsets];
+        v12 = [validRegion regionByShrinkingBy:{validRegionInsets, v11}];
 
         v13 = [v12 regionByClippingToRegion:v8];
         if (([v13 isEmpty] & 1) == 0)
         {
-          v14 = [v4 colorSpace];
-          if ([v14 isHDR])
+          colorSpace = [image colorSpace];
+          if ([colorSpace isHDR])
           {
-            v15 = 1;
+            isExtended = 1;
           }
 
           else
           {
-            v15 = [v14 isExtended];
+            isExtended = [colorSpace isExtended];
           }
 
           v16[0] = MEMORY[0x277D85DD0];
@@ -208,11 +208,11 @@ void __34__NUTiledImageLayer_snapshotImage__block_invoke(uint64_t a1)
           v16[2] = __37__NUTiledImageLayer__updateSublayers__block_invoke;
           v16[3] = &unk_279973DE0;
           v17 = v13;
-          v18 = self;
+          selfCopy = self;
           v20 = v31;
           v21 = v32;
-          v19 = v4;
-          v22 = v15;
+          v19 = image;
+          v22 = isExtended;
           [v19 readSurfaceRegion:v17 withBlock:v16];
         }
       }
@@ -382,15 +382,15 @@ void __34__NUTiledImageLayer__recycleTiles__block_invoke(uint64_t a1)
   [v7 removeAllObjects];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NUTiledImageLayer *)self _geometry];
-  [(NUTiledImageLayer *)self set_geometry:v4];
-  if (!v5 || ([v4 renderScale], objc_msgSend(v5, "renderScale"), (NUScaleEqual() & 1) == 0))
+  geometryCopy = geometry;
+  _geometry = [(NUTiledImageLayer *)self _geometry];
+  [(NUTiledImageLayer *)self set_geometry:geometryCopy];
+  if (!_geometry || ([geometryCopy renderScale], objc_msgSend(_geometry, "renderScale"), (NUScaleEqual() & 1) == 0))
   {
-    [v4 renderScale];
+    [geometryCopy renderScale];
     NUScaleInvert();
     NUScaleToDouble();
     CATransform3DMakeScale(&v10, v6, v6, 1.0);
@@ -413,15 +413,15 @@ void __34__NUTiledImageLayer__recycleTiles__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(NUTiledImageLayer *)self _image];
-  [v5 endAccess];
+  imageCopy = image;
+  _image = [(NUTiledImageLayer *)self _image];
+  [_image endAccess];
 
-  [(NUTiledImageLayer *)self set_image:v4];
-  v6 = [(NUTiledImageLayer *)self _image];
-  [v6 beginAccess];
+  [(NUTiledImageLayer *)self set_image:imageCopy];
+  _image2 = [(NUTiledImageLayer *)self _image];
+  [_image2 beginAccess];
 
   [(NUTiledImageLayer *)self setNeedsLayout];
 }
@@ -436,8 +436,8 @@ void __34__NUTiledImageLayer__recycleTiles__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(NUTiledImageLayer *)self _image];
-  [v3 endAccess];
+  _image = [(NUTiledImageLayer *)self _image];
+  [_image endAccess];
 
   [(NUTiledImageLayer *)self set_image:0];
   [(NUTiledImageLayer *)self _recycleTiles];

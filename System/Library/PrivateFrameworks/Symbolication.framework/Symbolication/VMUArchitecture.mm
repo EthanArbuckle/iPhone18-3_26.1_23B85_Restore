@@ -1,15 +1,15 @@
 @interface VMUArchitecture
 + (void)initialize;
 - (BOOL)is64Bit;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToArchitecture:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToArchitecture:(id)architecture;
 - (BOOL)isLittleEndian;
-- (BOOL)matchesArchitecture:(id)a3;
-- (VMUArchitecture)initWithCoder:(id)a3;
-- (VMUArchitecture)initWithCpuType:(int)a3 cpuSubtype:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)matchesArchitecture:(id)architecture;
+- (VMUArchitecture)initWithCoder:(id)coder;
+- (VMUArchitecture)initWithCpuType:(int)type cpuSubtype:(int)subtype;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMUArchitecture
@@ -18,7 +18,7 @@
 {
   if (!currentArchitecture)
   {
-    v2 = MEMORY[0x1C695E740](a1, a2);
+    v2 = MEMORY[0x1C695E740](self, a2);
     v20 = 0u;
     v21 = 0u;
     *host_info_out = 0u;
@@ -58,46 +58,46 @@
   }
 }
 
-- (VMUArchitecture)initWithCpuType:(int)a3 cpuSubtype:(int)a4
+- (VMUArchitecture)initWithCpuType:(int)type cpuSubtype:(int)subtype
 {
   v7.receiver = self;
   v7.super_class = VMUArchitecture;
   result = [(VMUArchitecture *)&v7 init];
   if (result)
   {
-    result->_cpuType = a3;
-    result->_cpuSubtype = a4;
+    result->_cpuType = type;
+    result->_cpuSubtype = subtype;
   }
 
   return result;
 }
 
-- (VMUArchitecture)initWithCoder:(id)a3
+- (VMUArchitecture)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VMUArchitecture;
   v5 = [(VMUArchitecture *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v4 decodeValueOfObjCType:"i" at:&v5->_cpuType size:4];
-    [v4 decodeValueOfObjCType:"i" at:&v6->_cpuSubtype size:4];
+    [coderCopy decodeValueOfObjCType:"i" at:&v5->_cpuType size:4];
+    [coderCopy decodeValueOfObjCType:"i" at:&v6->_cpuSubtype size:4];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeValueOfObjCType:"i" at:&self->_cpuType];
-  [v4 encodeValueOfObjCType:"i" at:&self->_cpuSubtype];
+  coderCopy = coder;
+  [coderCopy encodeValueOfObjCType:"i" at:&self->_cpuType];
+  [coderCopy encodeValueOfObjCType:"i" at:&self->_cpuSubtype];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VMUArchitecture allocWithZone:a3];
+  v4 = [VMUArchitecture allocWithZone:zone];
   cpuType = self->_cpuType;
   cpuSubtype = self->_cpuSubtype;
 
@@ -152,14 +152,14 @@
   return 1;
 }
 
-- (BOOL)isEqualToArchitecture:(id)a3
+- (BOOL)isEqualToArchitecture:(id)architecture
 {
-  v4 = a3;
+  architectureCopy = architecture;
   cpuType = self->_cpuType;
-  if (cpuType == [v4 cpuType])
+  if (cpuType == [architectureCopy cpuType])
   {
     cpuSubtype = self->_cpuSubtype;
-    v7 = cpuSubtype == [v4 cpuSubtype];
+    v7 = cpuSubtype == [architectureCopy cpuSubtype];
   }
 
   else
@@ -170,20 +170,20 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(VMUArchitecture *)self isEqualToArchitecture:v4];
+    v5 = [(VMUArchitecture *)self isEqualToArchitecture:equalCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VMUArchitecture;
-    v5 = [(VMUArchitecture *)&v8 isEqual:v4];
+    v5 = [(VMUArchitecture *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -191,11 +191,11 @@
   return v6;
 }
 
-- (BOOL)matchesArchitecture:(id)a3
+- (BOOL)matchesArchitecture:(id)architecture
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_cpuType == -1 || [v4 cpuType] == -1)
+  architectureCopy = architecture;
+  v5 = architectureCopy;
+  if (self->_cpuType == -1 || [architectureCopy cpuType] == -1)
   {
     goto LABEL_14;
   }
@@ -248,9 +248,9 @@ LABEL_15:
     v6 = @"64b";
   }
 
-  v7 = [(VMUArchitecture *)self isBigEndian];
+  isBigEndian = [(VMUArchitecture *)self isBigEndian];
   v8 = @"LittleEndian";
-  if (v7)
+  if (isBigEndian)
   {
     v8 = @"BigEndian";
   }

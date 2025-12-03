@@ -1,10 +1,10 @@
 @interface SBSSwitcherDemoCommands
-- (BOOL)loadStashedSwitcherModelFromPath:(id)a3;
-- (BOOL)setShouldDisableSwitcherModelUpdates:(BOOL)a3;
-- (BOOL)stashSwitcherModelToPath:(id)a3;
-- (BOOL)updateHiddenApplicationBundleIDs:(id)a3;
+- (BOOL)loadStashedSwitcherModelFromPath:(id)path;
+- (BOOL)setShouldDisableSwitcherModelUpdates:(BOOL)updates;
+- (BOOL)stashSwitcherModelToPath:(id)path;
+- (BOOL)updateHiddenApplicationBundleIDs:(id)ds;
 - (SBSSwitcherDemoCommands)init;
-- (id)_standardizedAbsolutePathForPath:(id)a3;
+- (id)_standardizedAbsolutePathForPath:(id)path;
 - (void)_connectionQueue_invalidate;
 - (void)_connectionQueue_setupAndActivate;
 - (void)invalidate;
@@ -19,7 +19,7 @@
   v2 = [(SBSSwitcherDemoCommands *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E698E698] serial];
+    serial = [MEMORY[0x1E698E698] serial];
     v4 = BSDispatchQueueCreate();
     connectionQueue = v2->_connectionQueue;
     v2->_connectionQueue = v4;
@@ -47,9 +47,9 @@
   dispatch_sync(connectionQueue, block);
 }
 
-- (BOOL)stashSwitcherModelToPath:(id)a3
+- (BOOL)stashSwitcherModelToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -59,10 +59,10 @@
   block[1] = 3221225472;
   block[2] = __52__SBSSwitcherDemoCommands_stashSwitcherModelToPath___block_invoke;
   block[3] = &unk_1E73618A8;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(connectionQueue, block);
   LOBYTE(connectionQueue) = *(v12 + 24);
 
@@ -77,9 +77,9 @@ void __52__SBSSwitcherDemoCommands_stashSwitcherModelToPath___block_invoke(uint6
   *(*(*(a1 + 48) + 8) + 24) = [v3 stashSwitcherModelToPath:v2];
 }
 
-- (BOOL)loadStashedSwitcherModelFromPath:(id)a3
+- (BOOL)loadStashedSwitcherModelFromPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -89,10 +89,10 @@ void __52__SBSSwitcherDemoCommands_stashSwitcherModelToPath___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __60__SBSSwitcherDemoCommands_loadStashedSwitcherModelFromPath___block_invoke;
   block[3] = &unk_1E73618A8;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(connectionQueue, block);
   LOBYTE(connectionQueue) = *(v12 + 24);
 
@@ -107,7 +107,7 @@ void __60__SBSSwitcherDemoCommands_loadStashedSwitcherModelFromPath___block_invo
   *(*(*(a1 + 48) + 8) + 24) = [v3 loadStashedSwitcherModelFromPath:v2];
 }
 
-- (BOOL)setShouldDisableSwitcherModelUpdates:(BOOL)a3
+- (BOOL)setShouldDisableSwitcherModelUpdates:(BOOL)updates
 {
   v8 = 0;
   v9 = &v8;
@@ -120,7 +120,7 @@ void __60__SBSSwitcherDemoCommands_loadStashedSwitcherModelFromPath___block_invo
   block[3] = &unk_1E73618D0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  updatesCopy = updates;
   dispatch_sync(connectionQueue, block);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -134,9 +134,9 @@ void __64__SBSSwitcherDemoCommands_setShouldDisableSwitcherModelUpdates___block_
   *(*(*(a1 + 40) + 8) + 24) = [v3 setShouldDisableSwitcherModelUpdates:v2];
 }
 
-- (BOOL)updateHiddenApplicationBundleIDs:(id)a3
+- (BOOL)updateHiddenApplicationBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -146,10 +146,10 @@ void __64__SBSSwitcherDemoCommands_setShouldDisableSwitcherModelUpdates___block_
   block[1] = 3221225472;
   block[2] = __60__SBSSwitcherDemoCommands_updateHiddenApplicationBundleIDs___block_invoke;
   block[3] = &unk_1E73618A8;
-  v9 = v4;
+  v9 = dsCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dsCopy;
   dispatch_sync(connectionQueue, block);
   LOBYTE(connectionQueue) = *(v12 + 24);
 
@@ -167,9 +167,9 @@ void __60__SBSSwitcherDemoCommands_updateHiddenApplicationBundleIDs___block_invo
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698F498];
-  v4 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v5 = +[SBSSwitcherDemoCommandsSessionSpecification identifier];
-  v6 = [v3 endpointForMachName:v4 service:v5 instance:0];
+  v6 = [v3 endpointForMachName:defaultShellMachName service:v5 instance:0];
 
   v7 = [MEMORY[0x1E698F490] connectionWithEndpoint:v6];
   connection = self->_connection;
@@ -268,24 +268,24 @@ void __60__SBSSwitcherDemoCommands__connectionQueue_setupAndActivate__block_invo
   self->_connection = 0;
 }
 
-- (id)_standardizedAbsolutePathForPath:(id)a3
+- (id)_standardizedAbsolutePathForPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isAbsolutePath])
+  pathCopy = path;
+  if ([pathCopy isAbsolutePath])
   {
-    v4 = v3;
+    v4 = pathCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 currentDirectoryPath];
-    v4 = [v6 stringByAppendingPathComponent:v3];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    currentDirectoryPath = [defaultManager currentDirectoryPath];
+    v4 = [currentDirectoryPath stringByAppendingPathComponent:pathCopy];
   }
 
-  v7 = [v3 stringByStandardizingPath];
+  stringByStandardizingPath = [pathCopy stringByStandardizingPath];
 
-  return v7;
+  return stringByStandardizingPath;
 }
 
 @end

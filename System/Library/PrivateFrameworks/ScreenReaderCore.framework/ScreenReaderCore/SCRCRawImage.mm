@@ -1,5 +1,5 @@
 @interface SCRCRawImage
-+ (id)rawImageForImage:(CGImage *)a3;
++ (id)rawImageForImage:(CGImage *)image;
 - (void)dealloc;
 @end
 
@@ -25,10 +25,10 @@
   [(SCRCRawImage *)&v5 dealloc];
 }
 
-+ (id)rawImageForImage:(CGImage *)a3
++ (id)rawImageForImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v6 = 0;
   if (Width)
   {
@@ -45,14 +45,14 @@
         v13.size.height = v7;
         v13.origin.x = 0.0;
         v13.origin.y = 0.0;
-        CGContextDrawImage(v10, v13, a3);
+        CGContextDrawImage(v10, v13, image);
         CGContextRelease(v6);
         v6 = objc_alloc_init(SCRCRawImage);
         [(CGContext *)v6 setData:v8];
         [(CGContext *)v6 setWidth:Width];
         [(CGContext *)v6 setHeight:v7];
         [(CGContext *)v6 setBytesPerPixel:4];
-        [(CGContext *)v6 setImageRef:a3];
+        [(CGContext *)v6 setImageRef:image];
       }
 
       CGColorSpaceRelease(DeviceRGB);

@@ -1,31 +1,31 @@
 @interface SFManagedBookmarkCompletionMatch
-- (SFManagedBookmarkCompletionMatch)initWithManagedBookmark:(id)a3 userInput:(id)a4 forQueryID:(int64_t)a5;
+- (SFManagedBookmarkCompletionMatch)initWithManagedBookmark:(id)bookmark userInput:(id)input forQueryID:(int64_t)d;
 @end
 
 @implementation SFManagedBookmarkCompletionMatch
 
-- (SFManagedBookmarkCompletionMatch)initWithManagedBookmark:(id)a3 userInput:(id)a4 forQueryID:(int64_t)a5
+- (SFManagedBookmarkCompletionMatch)initWithManagedBookmark:(id)bookmark userInput:(id)input forQueryID:(int64_t)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [objc_alloc(MEMORY[0x1E69C90C8]) initWithString:v10];
+  bookmarkCopy = bookmark;
+  inputCopy = input;
+  v11 = [objc_alloc(MEMORY[0x1E69C90C8]) initWithString:inputCopy];
   v12 = MEMORY[0x1E69C90C0];
-  v13 = [v9 title];
-  v14 = [v12 matchLocationForString:v11 inTitle:v13];
+  title = [bookmarkCopy title];
+  v14 = [v12 matchLocationForString:v11 inTitle:title];
 
-  if ((v14 > 2 || (v15 = MEMORY[0x1E69C90C0], [v9 urlString], v16 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v15, "matchLocationForString:inURLString:", v11, v16), v16, v14 >= 2)) && (v20.receiver = self, v20.super_class = SFManagedBookmarkCompletionMatch, v17 = -[SFManagedBookmarkCompletionMatch initWithMatchLocation:userInput:forQueryID:](&v20, sel_initWithMatchLocation_userInput_forQueryID_, v14, v10, a5), (self = v17) != 0))
+  if ((v14 > 2 || (v15 = MEMORY[0x1E69C90C0], [bookmarkCopy urlString], v16 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v15, "matchLocationForString:inURLString:", v11, v16), v16, v14 >= 2)) && (v20.receiver = self, v20.super_class = SFManagedBookmarkCompletionMatch, v17 = -[SFManagedBookmarkCompletionMatch initWithMatchLocation:userInput:forQueryID:](&v20, sel_initWithMatchLocation_userInput_forQueryID_, v14, inputCopy, d), (self = v17) != 0))
   {
-    objc_storeStrong(&v17->_managedBookmark, a3);
+    objc_storeStrong(&v17->_managedBookmark, bookmark);
     self = self;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

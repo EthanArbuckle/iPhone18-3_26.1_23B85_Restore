@@ -1,12 +1,12 @@
 @interface MCMChildParentMapCache
-- (MCMChildParentMapCache)initWithDB:(id)a3 queue:(id)a4;
+- (MCMChildParentMapCache)initWithDB:(id)b queue:(id)queue;
 - (MCMSQLiteDB)db;
 - (NSMutableDictionary)cache;
 - (OS_dispatch_queue)queue;
-- (id)childBundleIdentifiersForParentIdentifier:(id)a3;
-- (id)parentIdentifierForChildIdentifier:(id)a3;
-- (void)codeSigningDB:(id)a3 addChildIdentifier:(id)a4 forParentIdentifier:(id)a5;
-- (void)codeSigningDB:(id)a3 removeParentIdentifier:(id)a4;
+- (id)childBundleIdentifiersForParentIdentifier:(id)identifier;
+- (id)parentIdentifierForChildIdentifier:(id)identifier;
+- (void)codeSigningDB:(id)b addChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier;
+- (void)codeSigningDB:(id)b removeParentIdentifier:(id)identifier;
 @end
 
 @implementation MCMChildParentMapCache
@@ -35,17 +35,17 @@
   return result;
 }
 
-- (void)codeSigningDB:(id)a3 removeParentIdentifier:(id)a4
+- (void)codeSigningDB:(id)b removeParentIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(MCMChildParentMapCache *)self cache];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  cache = [(MCMChildParentMapCache *)self cache];
+  v8 = [cache countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -57,14 +57,14 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cache);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
-        v13 = [(MCMChildParentMapCache *)self cache];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        cache2 = [(MCMChildParentMapCache *)self cache];
+        v14 = [cache2 objectForKeyedSubscript:v12];
 
-        if ([v14 isEqualToString:v5])
+        if ([v14 isEqualToString:identifierCopy])
         {
           [v6 addObject:v12];
         }
@@ -73,58 +73,58 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v9 = [cache countByEnumeratingWithState:&v19 objects:v18 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [(MCMChildParentMapCache *)self cache];
-  v16 = [v6 allObjects];
-  [v15 removeObjectsForKeys:v16];
+  cache3 = [(MCMChildParentMapCache *)self cache];
+  allObjects = [v6 allObjects];
+  [cache3 removeObjectsForKeys:allObjects];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)codeSigningDB:(id)a3 addChildIdentifier:(id)a4 forParentIdentifier:(id)a5
+- (void)codeSigningDB:(id)b addChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v10 = [(MCMChildParentMapCache *)self cache];
-  [v10 setObject:v7 forKeyedSubscript:v8];
+  parentIdentifierCopy = parentIdentifier;
+  identifierCopy = identifier;
+  cache = [(MCMChildParentMapCache *)self cache];
+  [cache setObject:parentIdentifierCopy forKeyedSubscript:identifierCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)parentIdentifierForChildIdentifier:(id)a3
+- (id)parentIdentifierForChildIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MCMChildParentMapCache *)v5 cache];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MCMChildParentMapCache *)selfCopy cache];
+  v7 = [cache objectForKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)childBundleIdentifiersForParentIdentifier:(id)a3
+- (id)childBundleIdentifiersForParentIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(MCMChildParentMapCache *)v5 cache];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  cache = [(MCMChildParentMapCache *)selfCopy cache];
+  v8 = [cache countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -134,54 +134,54 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cache);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(MCMChildParentMapCache *)v5 cache];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        cache2 = [(MCMChildParentMapCache *)selfCopy cache];
+        v13 = [cache2 objectForKeyedSubscript:v11];
 
-        if ([v13 isEqualToString:v4])
+        if ([v13 isEqualToString:identifierCopy])
         {
           [v6 addObject:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v8 = [cache countByEnumeratingWithState:&v18 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   v14 = [v6 copy];
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (MCMChildParentMapCache)initWithDB:(id)a3 queue:(id)a4
+- (MCMChildParentMapCache)initWithDB:(id)b queue:(id)queue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  bCopy = b;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = MCMChildParentMapCache;
   v9 = [(MCMChildParentMapCache *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_db, a3);
-    [v7 setPeerageDelegate:v10];
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_db, b);
+    [bCopy setPeerageDelegate:v10];
+    objc_storeStrong(&v10->_queue, queue);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__MCMChildParentMapCache_initWithDB_queue___block_invoke;
     block[3] = &unk_1E86B0CC8;
     v14 = v10;
-    v15 = v7;
-    dispatch_sync(v8, block);
+    v15 = bCopy;
+    dispatch_sync(queueCopy, block);
   }
 
   v11 = *MEMORY[0x1E69E9840];

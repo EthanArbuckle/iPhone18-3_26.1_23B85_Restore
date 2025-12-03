@@ -1,7 +1,7 @@
 @interface THModelDynamicAnchor
-- ($239FB631065AF17ADF03FBE2E8B25B94)p_anchorPointFromXPointer:(SEL)a3;
-- (THModelDynamicAnchor)initWithContentNode:(id)a3 startElementId:(id)a4 startPattern:(id)a5 startOccurrence:(unint64_t)a6 startRange:(_NSRange)a7 endElementId:(id)a8 endPattern:(id)a9 endOccurrence:(unint64_t)a10 endRange:(_NSRange)a11;
-- (THModelDynamicAnchor)initWithContentNode:(id)a3 startXPointer:(id)a4 endXPointer:(id)a5;
+- ($239FB631065AF17ADF03FBE2E8B25B94)p_anchorPointFromXPointer:(SEL)pointer;
+- (THModelDynamicAnchor)initWithContentNode:(id)node startElementId:(id)id startPattern:(id)pattern startOccurrence:(unint64_t)occurrence startRange:(_NSRange)range endElementId:(id)elementId endPattern:(id)endPattern endOccurrence:(unint64_t)self0 endRange:(_NSRange)self1;
+- (THModelDynamicAnchor)initWithContentNode:(id)node startXPointer:(id)pointer endXPointer:(id)xPointer;
 - (_NSRange)endRange;
 - (_NSRange)startRange;
 - (void)dealloc;
@@ -9,39 +9,39 @@
 
 @implementation THModelDynamicAnchor
 
-- (THModelDynamicAnchor)initWithContentNode:(id)a3 startElementId:(id)a4 startPattern:(id)a5 startOccurrence:(unint64_t)a6 startRange:(_NSRange)a7 endElementId:(id)a8 endPattern:(id)a9 endOccurrence:(unint64_t)a10 endRange:(_NSRange)a11
+- (THModelDynamicAnchor)initWithContentNode:(id)node startElementId:(id)id startPattern:(id)pattern startOccurrence:(unint64_t)occurrence startRange:(_NSRange)range endElementId:(id)elementId endPattern:(id)endPattern endOccurrence:(unint64_t)self0 endRange:(_NSRange)self1
 {
-  length = a7.length;
-  location = a7.location;
+  length = range.length;
+  location = range.location;
   v19.receiver = self;
   v19.super_class = THModelDynamicAnchor;
-  v16 = [(THModelBoundAnchor *)&v19 initWithContentNode:a3];
+  v16 = [(THModelBoundAnchor *)&v19 initWithContentNode:node];
   v17 = v16;
   if (v16)
   {
-    [(THModelDynamicAnchor *)v16 setStartElementId:a4];
-    [(THModelDynamicAnchor *)v17 setStartPattern:a5];
-    [(THModelDynamicAnchor *)v17 setStartOccurrence:a6];
+    [(THModelDynamicAnchor *)v16 setStartElementId:id];
+    [(THModelDynamicAnchor *)v17 setStartPattern:pattern];
+    [(THModelDynamicAnchor *)v17 setStartOccurrence:occurrence];
     [(THModelDynamicAnchor *)v17 setStartRange:location, length];
-    [(THModelDynamicAnchor *)v17 setEndElementId:a8];
-    [(THModelDynamicAnchor *)v17 setEndPattern:a9];
-    [(THModelDynamicAnchor *)v17 setEndOccurrence:a10];
-    [(THModelDynamicAnchor *)v17 setEndRange:a11.location, a11.length];
+    [(THModelDynamicAnchor *)v17 setEndElementId:elementId];
+    [(THModelDynamicAnchor *)v17 setEndPattern:endPattern];
+    [(THModelDynamicAnchor *)v17 setEndOccurrence:endOccurrence];
+    [(THModelDynamicAnchor *)v17 setEndRange:endRange.location, endRange.length];
   }
 
   return v17;
 }
 
-- (THModelDynamicAnchor)initWithContentNode:(id)a3 startXPointer:(id)a4 endXPointer:(id)a5
+- (THModelDynamicAnchor)initWithContentNode:(id)node startXPointer:(id)pointer endXPointer:(id)xPointer
 {
   if (!self)
   {
-    return [THModelDynamicAnchor initWithContentNode:"initWithContentNode:startElementId:startPattern:startOccurrence:startRange:endElementId:endPattern:endOccurrence:endRange:" startElementId:a3 startPattern:0 startOccurrence:0 startRange:0 endElementId:0 endPattern:0 endOccurrence:0 endRange:?];
+    return [THModelDynamicAnchor initWithContentNode:"initWithContentNode:startElementId:startPattern:startOccurrence:startRange:endElementId:endPattern:endOccurrence:endRange:" startElementId:node startPattern:0 startOccurrence:0 startRange:0 endElementId:0 endPattern:0 endOccurrence:0 endRange:?];
   }
 
-  [(THModelDynamicAnchor *)self p_anchorPointFromXPointer:a4];
-  [(THModelDynamicAnchor *)self p_anchorPointFromXPointer:a5];
-  return [THModelDynamicAnchor initWithContentNode:"initWithContentNode:startElementId:startPattern:startOccurrence:startRange:endElementId:endPattern:endOccurrence:endRange:" startElementId:a3 startPattern:0 startOccurrence:0 startRange:0 endElementId:0 endPattern:0 endOccurrence:0 endRange:?];
+  [(THModelDynamicAnchor *)self p_anchorPointFromXPointer:pointer];
+  [(THModelDynamicAnchor *)self p_anchorPointFromXPointer:xPointer];
+  return [THModelDynamicAnchor initWithContentNode:"initWithContentNode:startElementId:startPattern:startOccurrence:startRange:endElementId:endPattern:endOccurrence:endRange:" startElementId:node startPattern:0 startOccurrence:0 startRange:0 endElementId:0 endPattern:0 endOccurrence:0 endRange:?];
 }
 
 - (void)dealloc
@@ -55,7 +55,7 @@
   [(THModelBoundAnchor *)&v3 dealloc];
 }
 
-- ($239FB631065AF17ADF03FBE2E8B25B94)p_anchorPointFromXPointer:(SEL)a3
+- ($239FB631065AF17ADF03FBE2E8B25B94)p_anchorPointFromXPointer:(SEL)pointer
 {
   retstr->var0 = &stru_471858;
   retstr->var1 = &stru_471858;

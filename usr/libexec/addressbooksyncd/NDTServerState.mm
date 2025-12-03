@@ -1,28 +1,28 @@
 @interface NDTServerState
-- (BOOL)getBoolValueForKey:(id)a3 default:(BOOL)a4;
-- (NDTServerState)initWithPath:(id)a3;
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4;
-- (id)getStringValueForKey:(id)a3 default:(id)a4;
-- (int64_t)getIntegerValueForKey:(id)a3 default:(int64_t)a4;
-- (void)_migrateFrom:(id)a3 to:(id)a4;
-- (void)deleteKey:(id)a3;
-- (void)setBoolValue:(BOOL)a3 forKey:(id)a4;
-- (void)setDoubleValue:(double)a3 forKey:(id)a4;
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4;
-- (void)setStringValue:(id)a3 forKey:(id)a4;
+- (BOOL)getBoolValueForKey:(id)key default:(BOOL)default;
+- (NDTServerState)initWithPath:(id)path;
+- (double)getDoubleValueForKey:(id)key default:(double)default;
+- (id)getStringValueForKey:(id)key default:(id)default;
+- (int64_t)getIntegerValueForKey:(id)key default:(int64_t)default;
+- (void)_migrateFrom:(id)from to:(id)to;
+- (void)deleteKey:(id)key;
+- (void)setBoolValue:(BOOL)value forKey:(id)key;
+- (void)setDoubleValue:(double)value forKey:(id)key;
+- (void)setIntegerValue:(int64_t)value forKey:(id)key;
+- (void)setStringValue:(id)value forKey:(id)key;
 @end
 
 @implementation NDTServerState
 
-- (NDTServerState)initWithPath:(id)a3
+- (NDTServerState)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = NDTServerState;
   v5 = [(NDTServerState *)&v15 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = pathCopy;
     v7 = v6;
     if ([v6 hasSuffix:@".plist"])
     {
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (void)_migrateFrom:(id)a3 to:(id)a4
+- (void)_migrateFrom:(id)from to:(id)to
 {
-  v5 = [NSMutableDictionary dictionaryWithContentsOfFile:a3, a4];
+  v5 = [NSMutableDictionary dictionaryWithContentsOfFile:from, to];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -114,93 +114,93 @@ LABEL_13:
   }
 }
 
-- (void)setStringValue:(id)a3 forKey:(id)a4
+- (void)setStringValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store setString:v7 forKey:v6];
+  [(NDTSQKeyValueStore *)self->_store setString:valueCopy forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)getStringValueForKey:(id)a3 default:(id)a4
+- (id)getStringValueForKey:(id)key default:(id)default
 {
-  v6 = a4;
-  v7 = a3;
+  defaultCopy = default;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NDTSQKeyValueStore *)self->_store getStringForKey:v7 default:v6];
+  v8 = [(NDTSQKeyValueStore *)self->_store getStringForKey:keyCopy default:defaultCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4
+- (void)setIntegerValue:(int64_t)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store setInteger:a3 forKey:v6];
+  [(NDTSQKeyValueStore *)self->_store setInteger:value forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int64_t)getIntegerValueForKey:(id)a3 default:(int64_t)a4
+- (int64_t)getIntegerValueForKey:(id)key default:(int64_t)default
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NDTSQKeyValueStore *)self->_store getIntegerForKey:v6 default:a4];
+  v7 = [(NDTSQKeyValueStore *)self->_store getIntegerForKey:keyCopy default:default];
 
   os_unfair_lock_unlock(&self->_lock);
   return v7;
 }
 
-- (void)setDoubleValue:(double)a3 forKey:(id)a4
+- (void)setDoubleValue:(double)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store setDouble:v6 forKey:a3];
+  [(NDTSQKeyValueStore *)self->_store setDouble:keyCopy forKey:value];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4
+- (double)getDoubleValueForKey:(id)key default:(double)default
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store getDoubleForKey:v6 default:a4];
+  [(NDTSQKeyValueStore *)self->_store getDoubleForKey:keyCopy default:default];
   v8 = v7;
 
   os_unfair_lock_unlock(&self->_lock);
   return v8;
 }
 
-- (void)setBoolValue:(BOOL)a3 forKey:(id)a4
+- (void)setBoolValue:(BOOL)value forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store setInteger:v4 forKey:v6];
+  [(NDTSQKeyValueStore *)self->_store setInteger:valueCopy forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)getBoolValueForKey:(id)a3 default:(BOOL)a4
+- (BOOL)getBoolValueForKey:(id)key default:(BOOL)default
 {
-  v4 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NDTSQKeyValueStore *)self->_store getIntegerForKey:v6 default:v4];
+  v7 = [(NDTSQKeyValueStore *)self->_store getIntegerForKey:keyCopy default:defaultCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v7 != 0;
 }
 
-- (void)deleteKey:(id)a3
+- (void)deleteKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NDTSQKeyValueStore *)self->_store deleteValueForKey:v4];
+  [(NDTSQKeyValueStore *)self->_store deleteValueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

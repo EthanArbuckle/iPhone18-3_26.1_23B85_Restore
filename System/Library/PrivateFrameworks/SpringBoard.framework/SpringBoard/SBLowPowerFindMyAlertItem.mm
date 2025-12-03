@@ -1,7 +1,7 @@
 @interface SBLowPowerFindMyAlertItem
-+ (void)_readSupportsFindMy:(id)a3;
++ (void)_readSupportsFindMy:(id)my;
 - (BOOL)shouldShowInLockScreen;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBLowPowerFindMyAlertItem
@@ -16,24 +16,24 @@ void __44__SBLowPowerFindMyAlertItem_showFindMyAlert__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v6 = [(SBAlertItem *)self alertController:a3];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v8 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"LOW_BATT_FIND_MY_TITLE"];
-  v9 = [v7 localizedStringForKey:v8 value:&stru_283094718 table:@"SpringBoard"];
+  v9 = [mainBundle localizedStringForKey:v8 value:&stru_283094718 table:@"SpringBoard"];
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
   v11 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"LOW_BATT_FIND_MY"];
-  v12 = [v10 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
+  v12 = [mainBundle2 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
 
   [v6 setTitle:v9];
   [v6 setMessage:v12];
-  if (!a3)
+  if (!configure)
   {
     v13 = MEMORY[0x277D750F8];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle3 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __65__SBLowPowerFindMyAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -76,24 +76,24 @@ uint64_t __65__SBLowPowerFindMyAlertItem_configure_requirePasscodeForActions___b
 
 - (BOOL)shouldShowInLockScreen
 {
-  v2 = [SBApp notificationDispatcher];
-  v3 = [v2 isCarDestinationActive];
+  notificationDispatcher = [SBApp notificationDispatcher];
+  isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
-  return v3;
+  return isCarDestinationActive;
 }
 
-+ (void)_readSupportsFindMy:(id)a3
++ (void)_readSupportsFindMy:(id)my
 {
-  v3 = a3;
+  myCopy = my;
   v4 = objc_alloc_init(MEMORY[0x277D49638]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SBLowPowerFindMyAlertItem__readSupportsFindMy___block_invoke;
   v7[3] = &unk_2783B3B78;
   v8 = v4;
-  v9 = v3;
+  v9 = myCopy;
   v5 = v4;
-  v6 = v3;
+  v6 = myCopy;
   [v5 isLPEMModeSupported:v7];
 }
 

@@ -1,14 +1,14 @@
 @interface CarReroutingGuidanceSign
-- (CarReroutingGuidanceSign)initWithDestination:(unint64_t)a3;
+- (CarReroutingGuidanceSign)initWithDestination:(unint64_t)destination;
 @end
 
 @implementation CarReroutingGuidanceSign
 
-- (CarReroutingGuidanceSign)initWithDestination:(unint64_t)a3
+- (CarReroutingGuidanceSign)initWithDestination:(unint64_t)destination
 {
   v9.receiver = self;
   v9.super_class = CarReroutingGuidanceSign;
-  v3 = [(CarSpinnerGuidanceSign *)&v9 initWithDestination:a3];
+  v3 = [(CarSpinnerGuidanceSign *)&v9 initWithDestination:destination];
   if (v3)
   {
     v4 = +[NSBundle mainBundle];

@@ -1,13 +1,13 @@
 @interface SUUIReviewMetadata
-- (SUUIReviewMetadata)initWithReviewDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIReviewMetadata)initWithReviewDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUUIReviewMetadata
 
-- (SUUIReviewMetadata)initWithReviewDictionary:(id)a3
+- (SUUIReviewMetadata)initWithReviewDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -21,12 +21,12 @@
   v5 = [(SUUIReviewMetadata *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"metadata"];
+    v6 = [dictionaryCopy objectForKey:@"metadata"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_21:
-      v18 = [v4 objectForKey:@"review-info"];
+      v18 = [dictionaryCopy objectForKey:@"review-info"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -76,9 +76,9 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 unsignedIntegerValue];
-      v5->_bodyMaxLength = v8;
-      if (!v8)
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
+      v5->_bodyMaxLength = unsignedIntegerValue;
+      if (!unsignedIntegerValue)
       {
         goto LABEL_9;
       }
@@ -95,11 +95,11 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v9 unsignedIntegerValue];
       v11 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v10)
+      if (unsignedIntegerValue2)
       {
-        v11 = v10;
+        v11 = unsignedIntegerValue2;
       }
 
       v5->_nicknameMaxLength = v11;
@@ -120,11 +120,11 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v15 unsignedIntegerValue];
       v17 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v16)
+      if (unsignedIntegerValue3)
       {
-        v17 = v16;
+        v17 = unsignedIntegerValue3;
       }
 
       v5->_titleMaxLength = v17;
@@ -138,25 +138,25 @@ LABEL_32:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_body copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_body copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   *(v5 + 16) = self->_bodyMaxLength;
-  v8 = [(NSString *)self->_nickname copyWithZone:a3];
+  v8 = [(NSString *)self->_nickname copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   *(v5 + 32) = self->_nicknameMaxLength;
   *(v5 + 40) = self->_rating;
-  v10 = [(NSURL *)self->_submitURL copyWithZone:a3];
+  v10 = [(NSURL *)self->_submitURL copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_title copyWithZone:a3];
+  v12 = [(NSString *)self->_title copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 

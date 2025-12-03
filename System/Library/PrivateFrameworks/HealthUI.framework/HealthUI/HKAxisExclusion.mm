@@ -1,5 +1,5 @@
 @interface HKAxisExclusion
-- (BOOL)excludeRect:(CGRect)a3;
+- (BOOL)excludeRect:(CGRect)rect;
 - (HKAxisExclusion)init;
 - (void)unifyExclusion;
 @end
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (BOOL)excludeRect:(CGRect)a3
+- (BOOL)excludeRect:(CGRect)rect
 {
   v3 = 0;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3.size.width > 0.0)
+  if (rect.size.width > 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height > 0.0)
+    height = rect.size.height;
+    if (rect.size.height > 0.0)
     {
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;

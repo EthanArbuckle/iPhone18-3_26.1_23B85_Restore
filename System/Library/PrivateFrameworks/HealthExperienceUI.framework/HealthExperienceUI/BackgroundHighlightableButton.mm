@@ -1,8 +1,8 @@
 @interface BackgroundHighlightableButton
 - (BOOL)isHighlighted;
-- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation BackgroundHighlightableButton
@@ -14,16 +14,16 @@
   return [(BackgroundHighlightableButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BackgroundHighlightableButton();
   v4 = v7.receiver;
-  [(BackgroundHighlightableButton *)&v7 setHighlighted:v3];
-  v5 = [v4 isHighlighted];
+  [(BackgroundHighlightableButton *)&v7 setHighlighted:highlightedCopy];
+  isHighlighted = [v4 isHighlighted];
   v6 = &OBJC_IVAR____TtC18HealthExperienceUI29BackgroundHighlightableButton_highlightedColor;
-  if (!v5)
+  if (!isHighlighted)
   {
     v6 = &OBJC_IVAR____TtC18HealthExperienceUI29BackgroundHighlightableButton_regularColor;
   }
@@ -31,14 +31,14 @@
   [v4 setBackgroundColor_];
 }
 
-- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI29BackgroundHighlightableButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,30 +1,30 @@
 @interface PIParallaxStyleUserURLProvider
 - (PIParallaxStyleUserURLProvider)init;
-- (PIParallaxStyleUserURLProvider)initWithBaseURL:(id)a3;
-- (id)urlForIdentifier:(id)a3;
+- (PIParallaxStyleUserURLProvider)initWithBaseURL:(id)l;
+- (id)urlForIdentifier:(id)identifier;
 @end
 
 @implementation PIParallaxStyleUserURLProvider
 
-- (id)urlForIdentifier:(id)a3
+- (id)urlForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PIParallaxStyleUserURLProvider *)self baseURL];
-  v6 = [v5 URLByAppendingPathComponent:v4];
+  identifierCopy = identifier;
+  baseURL = [(PIParallaxStyleUserURLProvider *)self baseURL];
+  v6 = [baseURL URLByAppendingPathComponent:identifierCopy];
 
   v7 = [v6 URLByAppendingPathExtension:@"plist"];
 
   return v7;
 }
 
-- (PIParallaxStyleUserURLProvider)initWithBaseURL:(id)a3
+- (PIParallaxStyleUserURLProvider)initWithBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = PIParallaxStyleUserURLProvider;
   v5 = [(PIParallaxStyleUserURLProvider *)&v8 init];
   baseURL = v5->_baseURL;
-  v5->_baseURL = v4;
+  v5->_baseURL = lCopy;
 
   return v5;
 }
@@ -70,8 +70,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -98,8 +98,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

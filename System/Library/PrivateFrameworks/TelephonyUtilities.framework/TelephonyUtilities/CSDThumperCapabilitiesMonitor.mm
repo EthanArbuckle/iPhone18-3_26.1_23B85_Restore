@@ -1,27 +1,27 @@
 @interface CSDThumperCapabilitiesMonitor
-- (BOOL)shouldEnrollDefaultPairedDeviceForAccountID:(id)a3;
-- (BOOL)shouldUnenrollDefaultPairedDeviceForAccountID:(id)a3;
+- (BOOL)shouldEnrollDefaultPairedDeviceForAccountID:(id)d;
+- (BOOL)shouldUnenrollDefaultPairedDeviceForAccountID:(id)d;
 - (BOOL)thumperCallingAllowedOnDefaultPairedDeviceDefault;
 - (CSDThumperCapabilitiesMonitor)init;
 - (CSDThumperCapabilitiesMonitorDataSource)dataSource;
 - (NPSDomainAccessor)domainAccessor;
-- (id)thumperCapabilitiesStatesForPreferenceKey:(__CFString *)a3;
+- (id)thumperCapabilitiesStatesForPreferenceKey:(__CFString *)key;
 - (void)_checkIfDevicesShouldBeUnenrolled;
-- (void)_thumperIsNoLongerEnabledForAccountID:(id)a3;
-- (void)_thumperIsNoLongerSupportedForAccountID:(id)a3;
-- (void)_thumperIsNowEnabledForAccountID:(id)a3;
+- (void)_thumperIsNoLongerEnabledForAccountID:(id)d;
+- (void)_thumperIsNoLongerSupportedForAccountID:(id)d;
+- (void)_thumperIsNowEnabledForAccountID:(id)d;
 - (void)_updateDefaultPairedDeviceUniqueIDDefault;
 - (void)_updateThumperCallingPreferences;
-- (void)didAddCapabilitiesForSenderIdentityWithUUID:(id)a3;
-- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)a3;
-- (void)didRemoveCapabilitiesForSenderIdentityWithUUID:(id)a3;
+- (void)didAddCapabilitiesForSenderIdentityWithUUID:(id)d;
+- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)d;
+- (void)didRemoveCapabilitiesForSenderIdentityWithUUID:(id)d;
 - (void)enrollDefaultPairedDevice;
-- (void)enrollDefaultPairedDeviceForAccountID:(id)a3;
-- (void)handleIDSDeviceListChangedNotification:(id)a3;
-- (void)saveThumperCapabilitiesStates:(id)a3 forPreferenceKey:(__CFString *)a4;
+- (void)enrollDefaultPairedDeviceForAccountID:(id)d;
+- (void)handleIDSDeviceListChangedNotification:(id)notification;
+- (void)saveThumperCapabilitiesStates:(id)states forPreferenceKey:(__CFString *)key;
 - (void)showEmergencyAddressDisclaimerOnSecondaryDevice;
 - (void)showReminderNotificationOnSecondaryDevice;
-- (void)unenrollDefaultPairedDeviceForAccountID:(id)a3;
+- (void)unenrollDefaultPairedDeviceForAccountID:(id)d;
 - (void)updateState;
 @end
 
@@ -53,13 +53,13 @@
 
 - (void)updateState
 {
-  v3 = [(CSDThumperCapabilitiesMonitor *)self queue];
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C9BD4;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (NPSDomainAccessor)domainAccessor
@@ -80,8 +80,8 @@
 - (BOOL)thumperCallingAllowedOnDefaultPairedDeviceDefault
 {
   v6 = 0;
-  v2 = [(CSDThumperCapabilitiesMonitor *)self domainAccessor];
-  v3 = [v2 BOOLForKey:@"thumperCallingAllowedOnDefaultPairedDevice" keyExistsAndHasValidFormat:&v6];
+  domainAccessor = [(CSDThumperCapabilitiesMonitor *)self domainAccessor];
+  v3 = [domainAccessor BOOLForKey:@"thumperCallingAllowedOnDefaultPairedDevice" keyExistsAndHasValidFormat:&v6];
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -96,42 +96,42 @@
   return v3 & 1 | ((v6 & 1) == 0);
 }
 
-- (void)_thumperIsNoLongerSupportedForAccountID:(id)a3
+- (void)_thumperIsNoLongerSupportedForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing Thumper available notification on secondary device for account ID %@", &v6, 0xCu);
   }
 
   [(CSDThumperCapabilitiesMonitor *)self removeReminderNotificationOnSecondaryDevice];
 }
 
-- (void)_thumperIsNowEnabledForAccountID:(id)a3
+- (void)_thumperIsNowEnabledForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Displaying Thumper enabled disclaimer on secondary device for account ID %@", &v6, 0xCu);
   }
 
   [(CSDThumperCapabilitiesMonitor *)self showEmergencyAddressDisclaimerOnSecondaryDevice];
 }
 
-- (void)_thumperIsNoLongerEnabledForAccountID:(id)a3
+- (void)_thumperIsNoLongerEnabledForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing Thumper enabled disclaimer on secondary device for account ID %@", &v6, 0xCu);
   }
 
@@ -142,18 +142,18 @@
 {
   if (+[TUCallCapabilities areCTCapabilitiesValid])
   {
-    v39 = self;
-    v3 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-    v4 = [v3 thumperCallingCapabilitiesStateByUUID];
+    selfCopy = self;
+    dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+    thumperCallingCapabilitiesStateByUUID = [dataSource thumperCallingCapabilitiesStateByUUID];
 
-    v51 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    v51 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [thumperCallingCapabilitiesStateByUUID count]);
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v44 = v4;
-    v5 = [v4 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v60 objects:v70 count:16];
+    v44 = thumperCallingCapabilitiesStateByUUID;
+    allKeys = [thumperCallingCapabilitiesStateByUUID allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v60 objects:v70 count:16];
     if (v6)
     {
       v7 = v6;
@@ -164,17 +164,17 @@
         {
           if (*v61 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v60 + 1) + 8 * i);
           v11 = [v44 objectForKeyedSubscript:v10];
-          v12 = [v11 publiclyAccessibleCopy];
+          publiclyAccessibleCopy = [v11 publiclyAccessibleCopy];
 
-          v13 = [v12 accountID];
-          if (v13)
+          accountID = [publiclyAccessibleCopy accountID];
+          if (accountID)
           {
-            [v51 setObject:v12 forKeyedSubscript:v13];
+            [v51 setObject:publiclyAccessibleCopy forKeyedSubscript:accountID];
           }
 
           else
@@ -185,21 +185,21 @@
               *buf = 138412546;
               v67 = v10;
               v68 = 2112;
-              v69 = v12;
+              v69 = publiclyAccessibleCopy;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Could not obtain Thumper account identifier for sender identity UUID %@ from data source capabilities state %@", buf, 0x16u);
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v60 objects:v70 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v60 objects:v70 count:16];
       }
 
       while (v7);
     }
 
     v43 = +[TUCallCapabilities supportsPrimaryCalling];
-    v15 = v39;
-    v45 = [(CSDThumperCapabilitiesMonitor *)v39 thumperCapabilitiesStatesForPreferenceKey:@"thumperCallingCapabilitiesStates"];
+    v15 = selfCopy;
+    v45 = [(CSDThumperCapabilitiesMonitor *)selfCopy thumperCapabilitiesStatesForPreferenceKey:@"thumperCallingCapabilitiesStates"];
     v16 = sub_100004778();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -214,8 +214,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v17 = [v51 allKeys];
-    v46 = [v17 countByEnumeratingWithState:&v56 objects:v65 count:16];
+    allKeys2 = [v51 allKeys];
+    v46 = [allKeys2 countByEnumeratingWithState:&v56 objects:v65 count:16];
     if (v46)
     {
       v41 = 0;
@@ -223,22 +223,22 @@
       v42 = *v57;
       *&v18 = 138412290;
       v37 = v18;
-      v40 = v17;
+      v40 = allKeys2;
       do
       {
         for (j = 0; j != v46; j = j + 1)
         {
           if (*v57 != v42)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys2);
           }
 
           v20 = *(*(&v56 + 1) + 8 * j);
           v21 = [v51 objectForKeyedSubscript:{v20, v37}];
-          v22 = [v21 isAssociated];
-          v23 = [v21 isSupported];
-          v50 = [v21 isEnabled];
-          v49 = [v21 supportsDefaultPairedDevice];
+          isAssociated = [v21 isAssociated];
+          isSupported = [v21 isSupported];
+          isEnabled = [v21 isEnabled];
+          supportsDefaultPairedDevice = [v21 supportsDefaultPairedDevice];
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
@@ -247,8 +247,8 @@
           v25 = [v24 countByEnumeratingWithState:&v52 objects:v64 count:16];
           if (v25)
           {
-            v47 = v23;
-            v48 = v22;
+            v47 = isSupported;
+            v48 = isAssociated;
             v26 = *v53;
             while (2)
             {
@@ -260,14 +260,14 @@
                 }
 
                 v28 = *(*(&v52 + 1) + 8 * k);
-                v29 = [v28 accountID];
+                accountID2 = [v28 accountID];
                 v30 = TUStringsAreCaseInsensitiveEqual();
 
                 if (v30)
                 {
                   LODWORD(v25) = [v28 isAssociated];
-                  v32 = [v28 isSupported];
-                  v31 = [v28 supportsDefaultPairedDevice];
+                  isSupported2 = [v28 isSupported];
+                  supportsDefaultPairedDevice2 = [v28 supportsDefaultPairedDevice];
                   goto LABEL_31;
                 }
               }
@@ -281,40 +281,40 @@
               break;
             }
 
-            v31 = 0;
-            v32 = 0;
+            supportsDefaultPairedDevice2 = 0;
+            isSupported2 = 0;
 LABEL_31:
-            v17 = v40;
-            v23 = v47;
-            v22 = v48;
+            allKeys2 = v40;
+            isSupported = v47;
+            isAssociated = v48;
           }
 
           else
           {
-            v31 = 0;
-            v32 = 0;
+            supportsDefaultPairedDevice2 = 0;
+            isSupported2 = 0;
           }
 
           if (v43)
           {
-            if (v31 != v49)
+            if (supportsDefaultPairedDevice2 != supportsDefaultPairedDevice)
             {
-              if (v49)
+              if (supportsDefaultPairedDevice)
               {
-                [(CSDThumperCapabilitiesMonitor *)v39 enrollDefaultPairedDeviceForAccountID:v20];
+                [(CSDThumperCapabilitiesMonitor *)selfCopy enrollDefaultPairedDeviceForAccountID:v20];
               }
 
               else
               {
-                [(CSDThumperCapabilitiesMonitor *)v39 unenrollDefaultPairedDeviceForAccountID:v20];
+                [(CSDThumperCapabilitiesMonitor *)selfCopy unenrollDefaultPairedDeviceForAccountID:v20];
               }
             }
           }
 
           else
           {
-            v34 = v25 == v22 && v32 == v23;
-            if ((v34 || (v22 & 1) == 0 || (v23 & 1) == 0) | v50 & 1)
+            v34 = v25 == isAssociated && isSupported2 == isSupported;
+            if ((v34 || (isAssociated & 1) == 0 || (isSupported & 1) == 0) | isEnabled & 1)
             {
               v41 |= !v34;
             }
@@ -335,22 +335,22 @@ LABEL_31:
           }
         }
 
-        v46 = [v17 countByEnumeratingWithState:&v56 objects:v65 count:16];
+        v46 = [allKeys2 countByEnumeratingWithState:&v56 objects:v65 count:16];
       }
 
       while (v46);
 
-      v15 = v39;
+      v15 = selfCopy;
       if (!(v43 & 1 | ((v41 & 1) == 0)))
       {
         if (v38)
         {
-          [(CSDThumperCapabilitiesMonitor *)v39 showReminderNotificationOnSecondaryDevice];
+          [(CSDThumperCapabilitiesMonitor *)selfCopy showReminderNotificationOnSecondaryDevice];
         }
 
         else
         {
-          [(CSDThumperCapabilitiesMonitor *)v39 removeReminderNotificationOnSecondaryDevice];
+          [(CSDThumperCapabilitiesMonitor *)selfCopy removeReminderNotificationOnSecondaryDevice];
         }
       }
     }
@@ -359,8 +359,8 @@ LABEL_31:
     {
     }
 
-    v36 = [v51 allValues];
-    [(CSDThumperCapabilitiesMonitor *)v15 saveThumperCapabilitiesStates:v36 forPreferenceKey:@"thumperCallingCapabilitiesStates"];
+    allValues = [v51 allValues];
+    [(CSDThumperCapabilitiesMonitor *)v15 saveThumperCapabilitiesStates:allValues forPreferenceKey:@"thumperCallingCapabilitiesStates"];
   }
 }
 
@@ -369,8 +369,8 @@ LABEL_31:
   v3 = TUBundleIdentifierTelephonyUtilitiesFramework;
   v4 = CFPreferencesCopyAppValue(@"PreviousDefaultPairedDeviceUniqueID", TUBundleIdentifierTelephonyUtilitiesFramework);
   v5 = +[CSDThumperIDSService sharedInstance];
-  v6 = [v5 defaultPairedDevice];
-  v7 = [v6 uniqueIDOverride];
+  defaultPairedDevice = [v5 defaultPairedDevice];
+  uniqueIDOverride = [defaultPairedDevice uniqueIDOverride];
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -378,7 +378,7 @@ LABEL_31:
     v11 = 138412546;
     v12 = v4;
     v13 = 2112;
-    v14 = v7;
+    v14 = uniqueIDOverride;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Default paired device unique ID was %@ and is now %@", &v11, 0x16u);
   }
 
@@ -386,7 +386,7 @@ LABEL_31:
   {
     if ((TUStringsAreEqualOrNil() & 1) == 0)
     {
-      CFPreferencesSetAppValue(@"PreviousDefaultPairedDeviceUniqueID", v7, v3);
+      CFPreferencesSetAppValue(@"PreviousDefaultPairedDeviceUniqueID", uniqueIDOverride, v3);
       CFPreferencesAppSynchronize(v3);
       v9 = sub_100004778();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -397,11 +397,11 @@ LABEL_31:
 
       if ([v4 length])
       {
-        v10 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-        [v10 removeThumperRegisteredDeviceID:v4 forThumperAccountID:0];
+        dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+        [dataSource removeThumperRegisteredDeviceID:v4 forThumperAccountID:0];
       }
 
-      if ([v7 length])
+      if ([uniqueIDOverride length])
       {
         [(CSDThumperCapabilitiesMonitor *)self enrollDefaultPairedDevice];
       }
@@ -413,8 +413,8 @@ LABEL_31:
 {
   if (+[TUCallCapabilities supportsPrimaryCalling])
   {
-    v3 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-    if (v3)
+    dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+    if (dataSource)
     {
       v4 = sub_100004778();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -424,13 +424,13 @@ LABEL_31:
       }
 
       v5 = +[CSDThumperIDSService sharedInstance];
-      v6 = [v5 devices];
-      v7 = [v6 valueForKey:@"uniqueIDOverride"];
+      devices = [v5 devices];
+      v7 = [devices valueForKey:@"uniqueIDOverride"];
       v8 = [NSSet setWithArray:v7];
 
       if ([v8 count])
       {
-        [v3 localThumperAccounts];
+        [dataSource localThumperAccounts];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -455,8 +455,8 @@ LABEL_31:
               v23 = 0u;
               v24 = 0u;
               v25 = 0u;
-              v11 = [v10 allowedSecondaryDeviceIDs];
-              v12 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
+              allowedSecondaryDeviceIDs = [v10 allowedSecondaryDeviceIDs];
+              v12 = [allowedSecondaryDeviceIDs countByEnumeratingWithState:&v22 objects:v32 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -467,7 +467,7 @@ LABEL_31:
                   {
                     if (*v23 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(allowedSecondaryDeviceIDs);
                     }
 
                     v16 = *(*(&v22 + 1) + 8 * i);
@@ -481,11 +481,11 @@ LABEL_31:
                         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Device with the uniqueID %@ will be unpaired from Thumper because it is no longer on the IDSService.", buf, 0xCu);
                       }
 
-                      [v3 removeThumperRegisteredDeviceID:v16 forThumperAccountID:0];
+                      [dataSource removeThumperRegisteredDeviceID:v16 forThumperAccountID:0];
                     }
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
+                  v13 = [allowedSecondaryDeviceIDs countByEnumeratingWithState:&v22 objects:v32 count:16];
                 }
 
                 while (v13);
@@ -505,27 +505,27 @@ LABEL_31:
   }
 }
 
-- (void)didAddCapabilitiesForSenderIdentityWithUUID:(id)a3
+- (void)didAddCapabilitiesForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDThumperCapabilitiesMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v6)
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ is handling add capabilities for sender identity UUID %@", &v12, 0x16u);
     }
 
-    v8 = [v6 thumperCallingCapabilitiesStateByUUID];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    thumperCallingCapabilitiesStateByUUID = [dataSource thumperCallingCapabilitiesStateByUUID];
+    v9 = [thumperCallingCapabilitiesStateByUUID objectForKeyedSubscript:dCopy];
 
     v10 = sub_100004778();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -534,7 +534,7 @@ LABEL_31:
       if (v11)
       {
         v12 = 138412290;
-        v13 = v4;
+        selfCopy = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Thumper calling preferences update initiated by add capabilities for sender identity UUID %@", &v12, 0xCu);
       }
 
@@ -546,35 +546,35 @@ LABEL_31:
       if (v11)
       {
         v12 = 138412290;
-        v13 = v4;
+        selfCopy = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Skipping Thumper preferences update; Thumper capabilities state does not exist for UUID %@", &v12, 0xCu);
       }
     }
   }
 }
 
-- (void)didRemoveCapabilitiesForSenderIdentityWithUUID:(id)a3
+- (void)didRemoveCapabilitiesForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDThumperCapabilitiesMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v6)
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = v4;
+      v29 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ is handling remove capabilities for sender identity UUID %@", buf, 0x16u);
     }
 
-    v20 = self;
+    selfCopy2 = self;
 
-    [v6 secondaryThumperAccounts];
+    [dataSource secondaryThumperAccounts];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -593,15 +593,15 @@ LABEL_31:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v21 + 1) + 8 * i) accountID];
-          if (v13)
+          accountID = [*(*(&v21 + 1) + 8 * i) accountID];
+          if (accountID)
           {
-            v14 = [CTXPCContextInfo csd_unknownContextInfoForAccountID:v13];
+            v14 = [CTXPCContextInfo csd_unknownContextInfoForAccountID:accountID];
             v15 = v14;
             if (v14)
             {
-              v16 = [v14 uuid];
-              v17 = [v16 isEqual:v4];
+              uuid = [v14 uuid];
+              v17 = [uuid isEqual:dCopy];
 
               if (v17)
               {
@@ -610,7 +610,7 @@ LABEL_31:
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v27 = v4;
+                  selfCopy = dCopy;
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Skipping Thumper calling preferences update; unknown context info found for sender identity UUID %@", buf, 0xCu);
                 }
 
@@ -634,43 +634,43 @@ LABEL_31:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v4;
+      selfCopy = dCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Thumper calling preferences update initiated by remove capabilities for sender identity UUID %@", buf, 0xCu);
     }
 
-    [(CSDThumperCapabilitiesMonitor *)v20 _updateThumperCallingPreferences];
+    [(CSDThumperCapabilitiesMonitor *)selfCopy2 _updateThumperCallingPreferences];
 LABEL_21:
   }
 }
 
-- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)a3
+- (void)didChangeThumperCallingCapabilitiesForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDThumperCapabilitiesMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is handling change Thumper calling capabilities for sender identity with UUID %@", &v7, 0x16u);
   }
 
   [(CSDThumperCapabilitiesMonitor *)self _updateThumperCallingPreferences];
 }
 
-- (void)handleIDSDeviceListChangedNotification:(id)a3
+- (void)handleIDSDeviceListChangedNotification:(id)notification
 {
-  v4 = [(CSDThumperCapabilitiesMonitor *)self queue];
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CB194;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)showReminderNotificationOnSecondaryDevice
@@ -751,22 +751,22 @@ LABEL_21:
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)saveThumperCapabilitiesStates:(id)a3 forPreferenceKey:(__CFString *)a4
+- (void)saveThumperCapabilitiesStates:(id)states forPreferenceKey:(__CFString *)key
 {
-  v6 = a3;
-  v7 = [(CSDThumperCapabilitiesMonitor *)self queue];
-  dispatch_assert_queue_V2(v7);
+  statesCopy = states;
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v6)
+  if (statesCopy)
   {
-    v19 = a4;
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    keyCopy = key;
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [statesCopy count]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v6;
-    v9 = v6;
+    v20 = statesCopy;
+    v9 = statesCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v10)
     {
@@ -813,8 +813,8 @@ LABEL_21:
       while (v11);
     }
 
-    a4 = v19;
-    v6 = v20;
+    key = keyCopy;
+    statesCopy = v20;
   }
 
   else
@@ -822,15 +822,15 @@ LABEL_21:
     v8 = 0;
   }
 
-  CFPreferencesSetAppValue(a4, v8, TUBundleIdentifierTelephonyUtilitiesFramework);
+  CFPreferencesSetAppValue(key, v8, TUBundleIdentifierTelephonyUtilitiesFramework);
 }
 
-- (id)thumperCapabilitiesStatesForPreferenceKey:(__CFString *)a3
+- (id)thumperCapabilitiesStatesForPreferenceKey:(__CFString *)key
 {
-  v4 = [(CSDThumperCapabilitiesMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDThumperCapabilitiesMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = CFPreferencesCopyAppValue(a3, TUBundleIdentifierTelephonyUtilitiesFramework);
+  v5 = CFPreferencesCopyAppValue(key, TUBundleIdentifierTelephonyUtilitiesFramework);
   if (v5)
   {
     objc_opt_class();
@@ -933,16 +933,16 @@ LABEL_24:
 
 - (void)enrollDefaultPairedDevice
 {
-  v3 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 localThumperAccounts];
+    localThumperAccounts = [dataSource localThumperAccounts];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [localThumperAccounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -954,21 +954,21 @@ LABEL_24:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(localThumperAccounts);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) accountID];
-          v11 = [v4 thumperCallingCapabilitiesStateForAccountID:v10];
+          accountID = [*(*(&v12 + 1) + 8 * v9) accountID];
+          v11 = [v4 thumperCallingCapabilitiesStateForAccountID:accountID];
           if ([v11 supportsDefaultPairedDevice])
           {
-            [(CSDThumperCapabilitiesMonitor *)self enrollDefaultPairedDeviceForAccountID:v10];
+            [(CSDThumperCapabilitiesMonitor *)self enrollDefaultPairedDeviceForAccountID:accountID];
           }
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [localThumperAccounts countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -976,83 +976,83 @@ LABEL_24:
   }
 }
 
-- (void)enrollDefaultPairedDeviceForAccountID:(id)a3
+- (void)enrollDefaultPairedDeviceForAccountID:(id)d
 {
-  v8 = a3;
-  v4 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v4)
+  dCopy = d;
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v5 = +[CSDThumperIDSService sharedInstance];
-    v6 = [v5 defaultPairedDevice];
-    v7 = [v6 uniqueIDOverride];
+    defaultPairedDevice = [v5 defaultPairedDevice];
+    uniqueIDOverride = [defaultPairedDevice uniqueIDOverride];
 
-    if ([v7 length] && -[CSDThumperCapabilitiesMonitor shouldEnrollDefaultPairedDeviceForAccountID:](self, "shouldEnrollDefaultPairedDeviceForAccountID:", v8))
+    if ([uniqueIDOverride length] && -[CSDThumperCapabilitiesMonitor shouldEnrollDefaultPairedDeviceForAccountID:](self, "shouldEnrollDefaultPairedDeviceForAccountID:", dCopy))
     {
-      [v4 removeThumperRegisteredDeviceID:v7 forThumperAccountID:0];
-      [v4 addThumperRegisteredDeviceID:v7 forThumperAccountID:v8];
+      [dataSource removeThumperRegisteredDeviceID:uniqueIDOverride forThumperAccountID:0];
+      [dataSource addThumperRegisteredDeviceID:uniqueIDOverride forThumperAccountID:dCopy];
     }
   }
 }
 
-- (void)unenrollDefaultPairedDeviceForAccountID:(id)a3
+- (void)unenrollDefaultPairedDeviceForAccountID:(id)d
 {
-  v8 = a3;
-  v4 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v4)
+  dCopy = d;
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v5 = +[CSDThumperIDSService sharedInstance];
-    v6 = [v5 defaultPairedDevice];
-    v7 = [v6 uniqueIDOverride];
+    defaultPairedDevice = [v5 defaultPairedDevice];
+    uniqueIDOverride = [defaultPairedDevice uniqueIDOverride];
 
-    if ([v7 length] && (!v8 || -[CSDThumperCapabilitiesMonitor shouldUnenrollDefaultPairedDeviceForAccountID:](self, "shouldUnenrollDefaultPairedDeviceForAccountID:", v8)))
+    if ([uniqueIDOverride length] && (!dCopy || -[CSDThumperCapabilitiesMonitor shouldUnenrollDefaultPairedDeviceForAccountID:](self, "shouldUnenrollDefaultPairedDeviceForAccountID:", dCopy)))
     {
-      [v4 removeThumperRegisteredDeviceID:v7 forThumperAccountID:v8];
+      [dataSource removeThumperRegisteredDeviceID:uniqueIDOverride forThumperAccountID:dCopy];
     }
   }
 }
 
-- (BOOL)shouldEnrollDefaultPairedDeviceForAccountID:(id)a3
+- (BOOL)shouldEnrollDefaultPairedDeviceForAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v5)
+  dCopy = d;
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v6 = +[CSDThumperIDSService sharedInstance];
-    v7 = [v6 defaultPairedDevice];
-    v8 = [v7 uniqueIDOverride];
+    defaultPairedDevice = [v6 defaultPairedDevice];
+    uniqueIDOverride = [defaultPairedDevice uniqueIDOverride];
 
-    v9 = [v5 thumperCallingCapabilitiesStateForAccountID:v4];
-    if (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") && [v8 length] && (objc_msgSend(v5, "isThumperRegisteredDeviceID:forThumperAccountID:", v8, v4) & 1) == 0 && -[CSDThumperCapabilitiesMonitor thumperCallingAllowedOnDefaultPairedDeviceDefault](self, "thumperCallingAllowedOnDefaultPairedDeviceDefault") && objc_msgSend(v9, "isSupported") && objc_msgSend(v9, "isEnabled"))
+    v9 = [dataSource thumperCallingCapabilitiesStateForAccountID:dCopy];
+    if (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") && [uniqueIDOverride length] && (objc_msgSend(dataSource, "isThumperRegisteredDeviceID:forThumperAccountID:", uniqueIDOverride, dCopy) & 1) == 0 && -[CSDThumperCapabilitiesMonitor thumperCallingAllowedOnDefaultPairedDeviceDefault](self, "thumperCallingAllowedOnDefaultPairedDeviceDefault") && objc_msgSend(v9, "isSupported") && objc_msgSend(v9, "isEnabled"))
     {
-      v10 = [v9 supportsDefaultPairedDevice];
+      supportsDefaultPairedDevice = [v9 supportsDefaultPairedDevice];
     }
 
     else
     {
-      v10 = 0;
+      supportsDefaultPairedDevice = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    supportsDefaultPairedDevice = 0;
   }
 
-  return v10;
+  return supportsDefaultPairedDevice;
 }
 
-- (BOOL)shouldUnenrollDefaultPairedDeviceForAccountID:(id)a3
+- (BOOL)shouldUnenrollDefaultPairedDeviceForAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDThumperCapabilitiesMonitor *)self dataSource];
-  if (v5)
+  dCopy = d;
+  dataSource = [(CSDThumperCapabilitiesMonitor *)self dataSource];
+  if (dataSource)
   {
     v6 = +[CSDThumperIDSService sharedInstance];
-    v7 = [v6 defaultPairedDevice];
-    v8 = [v7 uniqueIDOverride];
+    defaultPairedDevice = [v6 defaultPairedDevice];
+    uniqueIDOverride = [defaultPairedDevice uniqueIDOverride];
 
-    v9 = [v5 thumperCallingCapabilitiesStateForAccountID:v4];
-    if (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") && [v8 length] && objc_msgSend(v5, "isThumperRegisteredDeviceID:forThumperAccountID:", v8, v4))
+    v9 = [dataSource thumperCallingCapabilitiesStateForAccountID:dCopy];
+    if (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") && [uniqueIDOverride length] && objc_msgSend(dataSource, "isThumperRegisteredDeviceID:forThumperAccountID:", uniqueIDOverride, dCopy))
     {
       if ([(CSDThumperCapabilitiesMonitor *)self thumperCallingAllowedOnDefaultPairedDeviceDefault])
       {

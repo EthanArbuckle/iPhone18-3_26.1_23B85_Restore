@@ -1,61 +1,61 @@
 @interface MTSDeviceSetupManager
 + (id)logCategory;
 - (MTSDeviceSetupManager)init;
-- (MTSDeviceSetupManager)initWithServerProxy:(id)a3;
+- (MTSDeviceSetupManager)initWithServerProxy:(id)proxy;
 - (void)dealloc;
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4;
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MTSDeviceSetupManager
 
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!requestCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
   v9 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Performing Matter device setup"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v24 = v13;
     v25 = 2114;
-    v26 = v15;
+    v26 = shortDescription;
     v27 = 2112;
-    v28 = v6;
+    v28 = requestCopy;
     _os_log_impl(&dword_239824000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Performing Matter device setup using request: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v16 = [(MTSDeviceSetupManager *)v11 serverProxy];
+  serverProxy = [(MTSDeviceSetupManager *)selfCopy serverProxy];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74__MTSDeviceSetupManager_performDeviceSetupUsingRequest_completionHandler___block_invoke;
   v20[3] = &unk_278AA1928;
-  v20[4] = v11;
+  v20[4] = selfCopy;
   v21 = v9;
   v22 = v8;
   v17 = v8;
   v18 = v9;
-  [v16 performDeviceSetupUsingRequest:v6 completionHandler:v20];
+  [serverProxy performDeviceSetupUsingRequest:requestCopy completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -119,19 +119,19 @@ void __74__MTSDeviceSetupManager_performDeviceSetupUsingRequest_completionHandle
   [(MTSDeviceSetupManager *)&v3 dealloc];
 }
 
-- (MTSDeviceSetupManager)initWithServerProxy:(id)a3
+- (MTSDeviceSetupManager)initWithServerProxy:(id)proxy
 {
-  v5 = a3;
-  if (v5)
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v6 = v5;
+    v6 = proxyCopy;
     v12.receiver = self;
     v12.super_class = MTSDeviceSetupManager;
     v7 = [(MTSDeviceSetupManager *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_serverProxy, a3);
+      objc_storeStrong(&v7->_serverProxy, proxy);
     }
 
     return v8;

@@ -1,23 +1,23 @@
 @interface WDTableViewController
-- (WDTableViewController)initWithCoder:(id)a3;
-- (WDTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WDTableViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_sectionAtIndexPath:(id)a3;
-- (id)indexPathForCell:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WDTableViewController)initWithCoder:(id)coder;
+- (WDTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WDTableViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_sectionAtIndexPath:(id)path;
+- (id)indexPathForCell:(id)cell;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addObservers;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)dealloc;
 - (void)reloadTable;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -25,16 +25,16 @@
 
 - (void)_addObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
-  [v3 addObserver:self selector:sel_applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
 }
 
-- (WDTableViewController)initWithStyle:(int64_t)a3
+- (WDTableViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = WDTableViewController;
-  v3 = [(WDTableViewController *)&v6 initWithStyle:a3];
+  v3 = [(WDTableViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -44,11 +44,11 @@
   return v4;
 }
 
-- (WDTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WDTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = WDTableViewController;
-  v4 = [(WDTableViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(WDTableViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -58,11 +58,11 @@
   return v5;
 }
 
-- (WDTableViewController)initWithCoder:(id)a3
+- (WDTableViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WDTableViewController;
-  v3 = [(WDTableViewController *)&v6 initWithCoder:a3];
+  v3 = [(WDTableViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -74,9 +74,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
 
   v4.receiver = self;
   v4.super_class = WDTableViewController;
@@ -161,18 +161,18 @@
   v21.receiver = self;
   v21.super_class = WDTableViewController;
   [(HKTableViewController *)&v21 viewDidLoad];
-  v3 = [(WDTableViewController *)self tableView];
-  v4 = [(WDTableViewController *)self tableView];
-  [v4 rowHeight];
-  [v3 setEstimatedRowHeight:?];
+  tableView = [(WDTableViewController *)self tableView];
+  tableView2 = [(WDTableViewController *)self tableView];
+  [tableView2 rowHeight];
+  [tableView setEstimatedRowHeight:?];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [objc_opt_class() tableViewSectionClasses];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  tableViewSectionClasses = [objc_opt_class() tableViewSectionClasses];
+  v7 = [tableViewSectionClasses countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -186,26 +186,26 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tableViewSectionClasses);
         }
 
         v9 = v12 + 1;
         v13 = [objc_alloc(*(*(&v17 + 1) + 8 * v11)) initWithDelegate:self atSection:v12];
         [v13 setUpWithTableViewController:self];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v11;
         v12 = v9;
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [tableViewSectionClasses countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
+  v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   tableSections = self->_tableSections;
   self->_tableSections = v14;
 
@@ -215,60 +215,60 @@
 
 - (void)reloadTable
 {
-  v2 = [(WDTableViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WDTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WDTableViewController *)self _section:a4];
-  v5 = [v4 numberOfRows];
+  v4 = [(WDTableViewController *)self _section:section];
+  numberOfRows = [v4 numberOfRows];
 
-  return v5;
+  return numberOfRows;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WDTableViewController *)self _sectionAtIndexPath:v6];
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(WDTableViewController *)self _sectionAtIndexPath:pathCopy];
+  v9 = [pathCopy row];
 
-  v10 = [v8 cellForRow:v9 table:v7];
+  v10 = [v8 cellForRow:v9 table:viewCopy];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WDTableViewController *)self _section:a4];
-  v5 = [v4 titleForHeader];
+  v4 = [(WDTableViewController *)self _section:section];
+  titleForHeader = [v4 titleForHeader];
 
-  return v5;
+  return titleForHeader;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(WDTableViewController *)self _section:a4];
-  v5 = [v4 titleForFooter];
+  v4 = [(WDTableViewController *)self _section:section];
+  titleForFooter = [v4 titleForFooter];
 
-  return v5;
+  return titleForFooter;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WDTableViewController *)self _section:a4];
-  v8 = [v7 viewForFooter:v6];
+  viewCopy = view;
+  v7 = [(WDTableViewController *)self _section:section];
+  v8 = [v7 viewForFooter:viewCopy];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WDTableViewController *)self _sectionAtIndexPath:v5];
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = [(WDTableViewController *)self _sectionAtIndexPath:pathCopy];
+  v7 = [pathCopy row];
 
   [v6 estimatedHeightForRow:v7];
   v9 = v8;
@@ -276,28 +276,28 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = a4;
-  v7 = [(WDTableViewController *)self _sectionAtIndexPath:v5];
-  v6 = [v5 row];
+  pathCopy = path;
+  v7 = [(WDTableViewController *)self _sectionAtIndexPath:pathCopy];
+  v6 = [pathCopy row];
 
   [v7 accessoryButtonTappedForRow:v6];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WDTableViewController *)self _sectionAtIndexPath:v5];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  v6 = [(WDTableViewController *)self _sectionAtIndexPath:pathCopy];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "row")}];
   v8 = [v6 willSelectRow:v7];
 
   if (v8)
   {
-    v9 = [v8 integerValue];
-    if (v9 == [v5 row])
+    integerValue = [v8 integerValue];
+    if (integerValue == [pathCopy row])
     {
-      v10 = v5;
+      v10 = pathCopy;
     }
 
     else
@@ -316,21 +316,21 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WDTableViewController *)self _sectionAtIndexPath:v6];
-  v9 = [v6 row];
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(WDTableViewController *)self _sectionAtIndexPath:pathCopy];
+  v9 = [pathCopy row];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__WDTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v12[3] = &unk_2796E6B90;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = pathCopy;
+  v11 = pathCopy;
   [v8 didSelectRow:v9 representedByCell:v10 withCompletion:v12];
 }
 
@@ -356,19 +356,19 @@ void __59__WDTableViewController_tableView_didSelectRowAtIndexPath___block_invok
   [v2 deselectRowAtIndexPath:*(a1 + 40) animated:*(a1 + 48)];
 }
 
-- (id)_sectionAtIndexPath:(id)a3
+- (id)_sectionAtIndexPath:(id)path
 {
   tableSections = self->_tableSections;
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(NSArray *)tableSections objectAtIndexedSubscript:v4];
+  return [(NSArray *)tableSections objectAtIndexedSubscript:section];
 }
 
-- (id)indexPathForCell:(id)a3
+- (id)indexPathForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WDTableViewController *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(WDTableViewController *)self tableView];
+  v6 = [tableView indexPathForCell:cellCopy];
 
   return v6;
 }

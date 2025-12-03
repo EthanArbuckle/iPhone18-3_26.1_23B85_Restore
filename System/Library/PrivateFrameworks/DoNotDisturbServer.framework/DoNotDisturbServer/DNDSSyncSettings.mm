@@ -1,22 +1,22 @@
 @interface DNDSSyncSettings
-- (BOOL)isEqual:(id)a3;
-- (DNDSSyncSettings)initWithPairSyncEnabled:(BOOL)a3 cloudSyncEnabled:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (DNDSSyncSettings)initWithPairSyncEnabled:(BOOL)enabled cloudSyncEnabled:(BOOL)syncEnabled;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSSyncSettings
 
-- (DNDSSyncSettings)initWithPairSyncEnabled:(BOOL)a3 cloudSyncEnabled:(BOOL)a4
+- (DNDSSyncSettings)initWithPairSyncEnabled:(BOOL)enabled cloudSyncEnabled:(BOOL)syncEnabled
 {
   v7.receiver = self;
   v7.super_class = DNDSSyncSettings;
   result = [(DNDSSyncSettings *)&v7 init];
   if (result)
   {
-    result->_pairSyncEnabled = a3;
-    result->_cloudSyncEnabled = a4;
+    result->_pairSyncEnabled = enabled;
+    result->_cloudSyncEnabled = syncEnabled;
   }
 
   return result;
@@ -24,21 +24,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSSyncSettings *)self isPairSyncEnabled];
-  v4 = [(DNDSSyncSettings *)self isCloudSyncEnabled];
+  isPairSyncEnabled = [(DNDSSyncSettings *)self isPairSyncEnabled];
+  isCloudSyncEnabled = [(DNDSSyncSettings *)self isCloudSyncEnabled];
   v5 = 2;
-  if (!v4)
+  if (!isCloudSyncEnabled)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | isPairSyncEnabled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -48,12 +48,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSSyncSettings *)self isPairSyncEnabled];
-      if (v6 == [(DNDSSyncSettings *)v5 isPairSyncEnabled])
+      v5 = equalCopy;
+      isPairSyncEnabled = [(DNDSSyncSettings *)self isPairSyncEnabled];
+      if (isPairSyncEnabled == [(DNDSSyncSettings *)v5 isPairSyncEnabled])
       {
-        v8 = [(DNDSSyncSettings *)self isCloudSyncEnabled];
-        v7 = v8 ^ [(DNDSSyncSettings *)v5 isCloudSyncEnabled]^ 1;
+        isCloudSyncEnabled = [(DNDSSyncSettings *)self isCloudSyncEnabled];
+        v7 = isCloudSyncEnabled ^ [(DNDSSyncSettings *)v5 isCloudSyncEnabled]^ 1;
       }
 
       else
@@ -98,13 +98,13 @@
   return [v3 stringWithFormat:@"<%@: %p; pairSyncEnabled: %@; cloudSyncEnabled: %@>", v4, self, v5, v6];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableSyncSettings alloc];
-  v5 = [(DNDSSyncSettings *)self isPairSyncEnabled];
-  v6 = [(DNDSSyncSettings *)self isCloudSyncEnabled];
+  isPairSyncEnabled = [(DNDSSyncSettings *)self isPairSyncEnabled];
+  isCloudSyncEnabled = [(DNDSSyncSettings *)self isCloudSyncEnabled];
 
-  return [(DNDSSyncSettings *)v4 initWithPairSyncEnabled:v5 cloudSyncEnabled:v6];
+  return [(DNDSSyncSettings *)v4 initWithPairSyncEnabled:isPairSyncEnabled cloudSyncEnabled:isCloudSyncEnabled];
 }
 
 @end

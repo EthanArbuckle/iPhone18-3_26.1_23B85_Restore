@@ -1,10 +1,10 @@
 @interface _UIProgressView
 - (CGSize)intrinsicContentSize;
-- (_UIProgressView)initWithFrame:(CGRect)a3;
+- (_UIProgressView)initWithFrame:(CGRect)frame;
 - (void)_updateProgressValue;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setTrackedProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setTrackedProgress:(id)progress;
 @end
 
 @implementation _UIProgressView
@@ -22,11 +22,11 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (_UIProgressView)initWithFrame:(CGRect)a3
+- (_UIProgressView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIProgressView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, 65.0, 65.0];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, 65.0, 65.0];
   if (v3)
   {
     v4 = [_UICircleProgressView alloc];
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (void)setTrackedProgress:(id)a3
+- (void)setTrackedProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   trackedProgress = self->_trackedProgress;
   if (trackedProgress)
   {
@@ -67,15 +67,15 @@
     v6 = 0;
   }
 
-  self->_trackedProgress = v4;
-  v7 = v4;
+  self->_trackedProgress = progressCopy;
+  v7 = progressCopy;
 
   [(NSProgress *)self->_trackedProgress addObserver:self forKeyPath:@"fractionCompleted" options:1 context:0];
 
   [(_UIProgressView *)self _updateProgressValue];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

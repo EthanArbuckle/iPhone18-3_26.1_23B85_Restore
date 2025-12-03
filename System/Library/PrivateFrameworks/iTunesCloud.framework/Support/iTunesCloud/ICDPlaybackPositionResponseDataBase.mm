@@ -1,19 +1,19 @@
 @interface ICDPlaybackPositionResponseDataBase
-- (ICDPlaybackPositionResponseDataBase)initWithDomain:(id)a3;
-- (id)dataByInflatingWithNoZipHeader:(id)a3;
-- (id)metadataWithItemIdentifier:(id)a3 keyValueStorePayload:(id)a4 failuresOkay:(BOOL)a5;
+- (ICDPlaybackPositionResponseDataBase)initWithDomain:(id)domain;
+- (id)dataByInflatingWithNoZipHeader:(id)header;
+- (id)metadataWithItemIdentifier:(id)identifier keyValueStorePayload:(id)payload failuresOkay:(BOOL)okay;
 @end
 
 @implementation ICDPlaybackPositionResponseDataBase
 
-- (id)metadataWithItemIdentifier:(id)a3 keyValueStorePayload:(id)a4 failuresOkay:(BOOL)a5
+- (id)metadataWithItemIdentifier:(id)identifier keyValueStorePayload:(id)payload failuresOkay:(BOOL)okay
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v34 = 0;
-    v11 = [NSPropertyListSerialization propertyListWithData:v10 options:1 format:0 error:&v34];
+    v11 = [NSPropertyListSerialization propertyListWithData:payloadCopy options:1 format:0 error:&v34];
     v12 = v34;
     if (v12)
     {
@@ -22,7 +22,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2114;
         v38 = v13;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ metadataWithItemIdentifier - error deserializing data. error=%{public}@,", buf, 0x16u);
@@ -37,7 +37,7 @@
     else
     {
       v33 = 0;
-      v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v10 error:&v33];
+      v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:payloadCopy error:&v33];
       v32 = v33;
       [v5 setDecodingFailurePolicy:0];
       v15 = objc_opt_class();
@@ -49,15 +49,15 @@
       [v5 finishDecoding];
       if (!v11)
       {
-        if (!a5)
+        if (!okay)
         {
           v29 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v36 = self;
+            selfCopy3 = self;
             v37 = 2112;
-            v38 = v9;
+            v38 = identifierCopy;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%{public}@ metadataWithItemIdentifier - encountered invalid data while unarchiving payload for itemIdentifier: %@", buf, 0x16u);
           }
 
@@ -84,7 +84,7 @@ LABEL_38:
     if (!v19 || ([v11 objectForKey:@"pver"], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v22 = [v11 objectForKey:@"pver"];
-      v21 = [v22 integerValue];
+      integerValue = [v22 integerValue];
 
       if (!v19)
       {
@@ -95,14 +95,14 @@ LABEL_38:
     else
     {
       v20 = [v11 objectForKey:@"pver"];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
     }
 
 LABEL_18:
-    if (!v21)
+    if (!integerValue)
     {
       v14 = [[ICPlaybackPositionEntity alloc] initWithDomain:self->_domain];
-      [v14 setPlaybackPositionKey:v9];
+      [v14 setPlaybackPositionKey:identifierCopy];
       v23 = [v11 objectForKey:@"bktm"];
       if (_NSIsNSNumber())
       {
@@ -163,7 +163,7 @@ LABEL_37:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v36 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@ metadataWithItemIdentifier - keyValueStorePayload=nil", buf, 0xCu);
   }
 
@@ -173,7 +173,7 @@ LABEL_39:
   return v14;
 }
 
-- (id)dataByInflatingWithNoZipHeader:(id)a3
+- (id)dataByInflatingWithNoZipHeader:(id)header
 {
   v3 = __chkstk_darwin(self);
   v5 = v4;
@@ -257,16 +257,16 @@ LABEL_16:
   return v7;
 }
 
-- (ICDPlaybackPositionResponseDataBase)initWithDomain:(id)a3
+- (ICDPlaybackPositionResponseDataBase)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = ICDPlaybackPositionResponseDataBase;
   v6 = [(ICDPlaybackPositionResponseDataBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domain, a3);
+    objc_storeStrong(&v6->_domain, domain);
   }
 
   return v7;

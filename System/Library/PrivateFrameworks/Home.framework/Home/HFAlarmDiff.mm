@@ -1,20 +1,20 @@
 @interface HFAlarmDiff
-+ (id)generateAlarmDiffFromSet:(id)a3 toSet:(id)a4;
++ (id)generateAlarmDiffFromSet:(id)set toSet:(id)toSet;
 - (BOOL)inputWasEqual;
 - (id)description;
 @end
 
 @implementation HFAlarmDiff
 
-+ (id)generateAlarmDiffFromSet:(id)a3 toSet:(id)a4
++ (id)generateAlarmDiffFromSet:(id)set toSet:(id)toSet
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = a4;
-  if ([MEMORY[0x277D296D0] hf_areAlarms:v5 equalToAlarms:? includeModificationDate:?])
+  setCopy = set;
+  toSetCopy = toSet;
+  if ([MEMORY[0x277D296D0] hf_areAlarms:setCopy equalToAlarms:? includeModificationDate:?])
   {
     v6 = objc_opt_new();
-    [v6 setUnmodifiedAlarms:v5];
+    [v6 setUnmodifiedAlarms:setCopy];
   }
 
   else
@@ -27,8 +27,8 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v28 = v5;
-    v9 = v5;
+    v28 = setCopy;
+    v9 = setCopy;
     v10 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v10)
     {
@@ -49,7 +49,7 @@
           v38[2] = __46__HFAlarmDiff_generateAlarmDiffFromSet_toSet___block_invoke;
           v38[3] = &unk_277DFBFA0;
           v38[4] = v14;
-          v15 = [v31 na_firstObjectPassingTest:{v38, v28}];
+          v15 = [toSetCopy na_firstObjectPassingTest:{v38, v28}];
           v16 = v7;
           if (v15)
           {
@@ -77,7 +77,7 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v31;
+    obj = toSetCopy;
     v17 = [obj countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v17)
     {
@@ -120,7 +120,7 @@
     [v6 setUpdatedAlarms:v32];
     [v6 setUnmodifiedAlarms:v8];
 
-    v5 = v28;
+    setCopy = v28;
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -148,24 +148,24 @@ uint64_t __46__HFAlarmDiff_generateAlarmDiffFromSet_toSet___block_invoke_2(uint6
 
 - (BOOL)inputWasEqual
 {
-  v3 = [(HFAlarmDiff *)self addedAlarms];
-  if ([v3 count])
+  addedAlarms = [(HFAlarmDiff *)self addedAlarms];
+  if ([addedAlarms count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HFAlarmDiff *)self deletedAlarms];
-    if ([v5 count])
+    deletedAlarms = [(HFAlarmDiff *)self deletedAlarms];
+    if ([deletedAlarms count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(HFAlarmDiff *)self updatedAlarms];
-      v4 = [v6 count] == 0;
+      updatedAlarms = [(HFAlarmDiff *)self updatedAlarms];
+      v4 = [updatedAlarms count] == 0;
     }
   }
 
@@ -175,25 +175,25 @@ uint64_t __46__HFAlarmDiff_generateAlarmDiffFromSet_toSet___block_invoke_2(uint6
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFAlarmDiff *)self addedAlarms];
-  v5 = [v4 allObjects];
-  [v3 appendArraySection:v5 withName:@"addedAlarms" skipIfEmpty:1 objectTransformer:0];
+  addedAlarms = [(HFAlarmDiff *)self addedAlarms];
+  allObjects = [addedAlarms allObjects];
+  [v3 appendArraySection:allObjects withName:@"addedAlarms" skipIfEmpty:1 objectTransformer:0];
 
-  v6 = [(HFAlarmDiff *)self deletedAlarms];
-  v7 = [v6 allObjects];
-  [v3 appendArraySection:v7 withName:@"deletedAlarms" skipIfEmpty:1 objectTransformer:0];
+  deletedAlarms = [(HFAlarmDiff *)self deletedAlarms];
+  allObjects2 = [deletedAlarms allObjects];
+  [v3 appendArraySection:allObjects2 withName:@"deletedAlarms" skipIfEmpty:1 objectTransformer:0];
 
-  v8 = [(HFAlarmDiff *)self updatedAlarms];
-  v9 = [v8 allObjects];
-  [v3 appendArraySection:v9 withName:@"updatedAlarms" skipIfEmpty:1 objectTransformer:0];
+  updatedAlarms = [(HFAlarmDiff *)self updatedAlarms];
+  allObjects3 = [updatedAlarms allObjects];
+  [v3 appendArraySection:allObjects3 withName:@"updatedAlarms" skipIfEmpty:1 objectTransformer:0];
 
-  v10 = [(HFAlarmDiff *)self unmodifiedAlarms];
-  v11 = [v10 allObjects];
-  [v3 appendArraySection:v11 withName:@"unmodifiedAlarms" skipIfEmpty:1 objectTransformer:0];
+  unmodifiedAlarms = [(HFAlarmDiff *)self unmodifiedAlarms];
+  allObjects4 = [unmodifiedAlarms allObjects];
+  [v3 appendArraySection:allObjects4 withName:@"unmodifiedAlarms" skipIfEmpty:1 objectTransformer:0];
 
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 @end

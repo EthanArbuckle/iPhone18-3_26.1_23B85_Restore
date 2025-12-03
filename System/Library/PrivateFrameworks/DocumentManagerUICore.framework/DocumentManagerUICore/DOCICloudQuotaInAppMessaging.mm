@@ -2,7 +2,7 @@
 + (DOCICloudQuotaInAppMessaging)shared;
 + (NSString)currentInAppMessageChangedNotification;
 - (DOCICloudQuotaInAppMessaging)init;
-- (id)fetchMessageFromNotification:(id)a3;
+- (id)fetchMessageFromNotification:(id)notification;
 - (void)startObservingUpdates;
 - (void)stopObservingUpdates;
 @end
@@ -50,29 +50,29 @@ uint64_t __38__DOCICloudQuotaInAppMessaging_shared__block_invoke()
   v9.super_class = DOCICloudQuotaInAppMessaging;
   v2 = [(DOCICloudQuotaInAppMessaging *)&v9 init];
   Helper_x8__OBJC_CLASS___ICQInAppMessaging = gotLoadHelper_x8__OBJC_CLASS___ICQInAppMessaging(v3);
-  v6 = [*(v5 + 1160) shared];
+  shared = [*(v5 + 1160) shared];
   messaging = v2->_messaging;
-  v2->_messaging = v6;
+  v2->_messaging = shared;
 
   return v2;
 }
 
 - (void)startObservingUpdates
 {
-  v2 = [(DOCICloudQuotaInAppMessaging *)self messaging];
-  [v2 observeUpdates];
+  messaging = [(DOCICloudQuotaInAppMessaging *)self messaging];
+  [messaging observeUpdates];
 }
 
 - (void)stopObservingUpdates
 {
-  v2 = [(DOCICloudQuotaInAppMessaging *)self messaging];
-  [v2 stopObservingUpdates];
+  messaging = [(DOCICloudQuotaInAppMessaging *)self messaging];
+  [messaging stopObservingUpdates];
 }
 
-- (id)fetchMessageFromNotification:(id)a3
+- (id)fetchMessageFromNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [a3 userInfo];
+  userInfo = [notification userInfo];
   Helper_x8__ICQInAppMessageKey = gotLoadHelper_x8__ICQInAppMessageKey(v4);
   v8 = [v7 objectForKeyedSubscript:{**(v6 + 1128), Helper_x8__ICQInAppMessageKey}];
 
@@ -97,12 +97,12 @@ uint64_t __38__DOCICloudQuotaInAppMessaging_shared__block_invoke()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [v8 contentType];
-        v15 = [v8 title];
+        contentType = [v8 contentType];
+        title = [v8 title];
         v18[0] = 67109378;
-        v18[1] = v14;
+        v18[1] = contentType;
         v19 = 2114;
-        v20 = v15;
+        v20 = title;
         _os_log_impl(&dword_249CE0000, v13, OS_LOG_TYPE_DEFAULT, "DOCICQ: Ignoring unknown content type(%d) for message %{public}@", v18, 0x12u);
       }
 

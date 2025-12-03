@@ -1,15 +1,15 @@
 @interface VUIMediaEntityPropertyDescriptor
-+ (id)_classNameFromPropertyType:(unint64_t)a3;
++ (id)_classNameFromPropertyType:(unint64_t)type;
 - (NSSet)sourcePropertyNames;
 - (NSString)propertyValueClassName;
 - (VUIMediaEntityPropertyDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultValue;
 - (id)description;
 - (void)_updateSourceSupportsFiltering;
-- (void)setSourceFilterBlock:(id)a3;
-- (void)setSourceFilterValueBlock:(id)a3;
-- (void)setSourceSupportsFiltering:(BOOL)a3;
+- (void)setSourceFilterBlock:(id)block;
+- (void)setSourceFilterValueBlock:(id)block;
+- (void)setSourceSupportsFiltering:(BOOL)filtering;
 @end
 
 @implementation VUIMediaEntityPropertyDescriptor
@@ -51,20 +51,20 @@
 {
   if (!self->_defaultValue && [(VUIMediaEntityPropertyDescriptor *)self allowsDefaultValue])
   {
-    v3 = [(VUIMediaEntityPropertyDescriptor *)self propertyType];
-    if (v3 <= 3)
+    propertyType = [(VUIMediaEntityPropertyDescriptor *)self propertyType];
+    if (propertyType <= 3)
     {
-      if (v3)
+      if (propertyType)
       {
-        if (v3 == 1)
+        if (propertyType == 1)
         {
-          v10 = [MEMORY[0x1E695DEF0] data];
+          data = [MEMORY[0x1E695DEF0] data];
           defaultValue = self->_defaultValue;
-          self->_defaultValue = v10;
+          self->_defaultValue = data;
           goto LABEL_19;
         }
 
-        if (v3 != 3)
+        if (propertyType != 3)
         {
           goto LABEL_20;
         }
@@ -80,9 +80,9 @@
       }
     }
 
-    else if (v3 > 6)
+    else if (propertyType > 6)
     {
-      if (v3 == 7)
+      if (propertyType == 7)
       {
         defaultValue = self->_defaultValue;
         v7 = MEMORY[0x1E695E0F0];
@@ -90,7 +90,7 @@
 
       else
       {
-        if (v3 != 8)
+        if (propertyType != 8)
         {
           goto LABEL_20;
         }
@@ -102,9 +102,9 @@
 
     else
     {
-      if (v3 != 4)
+      if (propertyType != 4)
       {
-        if (v3 != 6)
+        if (propertyType != 6)
         {
           goto LABEL_20;
         }
@@ -137,8 +137,8 @@ LABEL_20:
   if (!sourcePropertyNames)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [(VUIMediaEntityPropertyDescriptor *)self name];
-    v6 = [v4 setWithObjects:{v5, 0}];
+    name = [(VUIMediaEntityPropertyDescriptor *)self name];
+    v6 = [v4 setWithObjects:{name, 0}];
     v7 = self->_sourcePropertyNames;
     self->_sourcePropertyNames = v6;
 
@@ -148,10 +148,10 @@ LABEL_20:
   return sourcePropertyNames;
 }
 
-- (void)setSourceSupportsFiltering:(BOOL)a3
+- (void)setSourceSupportsFiltering:(BOOL)filtering
 {
-  self->_sourceSupportsFiltering = a3;
-  if (!a3)
+  self->_sourceSupportsFiltering = filtering;
+  if (!filtering)
   {
     sourceFilterValueBlock = self->_sourceFilterValueBlock;
     self->_sourceFilterValueBlock = 0;
@@ -161,25 +161,25 @@ LABEL_20:
   }
 }
 
-- (void)setSourceFilterValueBlock:(id)a3
+- (void)setSourceFilterValueBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   sourceFilterValueBlock = self->_sourceFilterValueBlock;
   self->_sourceFilterValueBlock = v4;
 
   [(VUIMediaEntityPropertyDescriptor *)self _updateSourceSupportsFiltering];
 }
 
-- (void)setSourceFilterBlock:(id)a3
+- (void)setSourceFilterBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   sourceFilterBlock = self->_sourceFilterBlock;
   self->_sourceFilterBlock = v4;
 
   [(VUIMediaEntityPropertyDescriptor *)self _updateSourceSupportsFiltering];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIMediaEntityPropertyDescriptor);
   v5 = [(NSString *)self->_name copy];
@@ -223,13 +223,13 @@ LABEL_20:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntityPropertyDescriptor *)self name];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"name", v6];
+  name = [(VUIMediaEntityPropertyDescriptor *)self name];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"name", name];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntityPropertyDescriptor *)self sortAsName];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"sortAsName", v9];
+  sortAsName = [(VUIMediaEntityPropertyDescriptor *)self sortAsName];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"sortAsName", sortAsName];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
@@ -238,8 +238,8 @@ LABEL_20:
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(VUIMediaEntityPropertyDescriptor *)self propertyValueClassName];
-  v16 = [v14 stringWithFormat:@"%@=%@", @"propertyValueClassName", v15];
+  propertyValueClassName = [(VUIMediaEntityPropertyDescriptor *)self propertyValueClassName];
+  v16 = [v14 stringWithFormat:@"%@=%@", @"propertyValueClassName", propertyValueClassName];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];
@@ -249,13 +249,13 @@ LABEL_20:
   [v3 addObject:v19];
 
   v20 = MEMORY[0x1E696AEC0];
-  v21 = [(VUIMediaEntityPropertyDescriptor *)self defaultValue];
-  v22 = [v20 stringWithFormat:@"%@=%@", @"defaultValue", v21];
+  defaultValue = [(VUIMediaEntityPropertyDescriptor *)self defaultValue];
+  v22 = [v20 stringWithFormat:@"%@=%@", @"defaultValue", defaultValue];
   [v3 addObject:v22];
 
   v23 = MEMORY[0x1E696AEC0];
-  v24 = [(VUIMediaEntityPropertyDescriptor *)self sourcePropertyNames];
-  v25 = [v23 stringWithFormat:@"%@=%@", @"sourcePropertyNames", v24];
+  sourcePropertyNames = [(VUIMediaEntityPropertyDescriptor *)self sourcePropertyNames];
+  v25 = [v23 stringWithFormat:@"%@=%@", @"sourcePropertyNames", sourcePropertyNames];
   [v3 addObject:v25];
 
   v26 = MEMORY[0x1E696AEC0];
@@ -271,13 +271,13 @@ LABEL_20:
   [v3 addObject:v31];
 
   v32 = MEMORY[0x1E696AEC0];
-  v33 = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterValueBlock];
-  v34 = [v32 stringWithFormat:@"%@=%@", @"sourceFilterValueBlock", v33];
+  sourceFilterValueBlock = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterValueBlock];
+  v34 = [v32 stringWithFormat:@"%@=%@", @"sourceFilterValueBlock", sourceFilterValueBlock];
   [v3 addObject:v34];
 
   v35 = MEMORY[0x1E696AEC0];
-  v36 = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterBlock];
-  v37 = [v35 stringWithFormat:@"%@=%@", @"sourceFilterBlock", v36];
+  sourceFilterBlock = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterBlock];
+  v37 = [v35 stringWithFormat:@"%@=%@", @"sourceFilterBlock", sourceFilterBlock];
   [v3 addObject:v37];
 
   v38 = MEMORY[0x1E696AEC0];
@@ -287,12 +287,12 @@ LABEL_20:
   return v40;
 }
 
-+ (id)_classNameFromPropertyType:(unint64_t)a3
++ (id)_classNameFromPropertyType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if ((a3 & 0x8000000000000000) != 0)
+    if ((type & 0x8000000000000000) != 0)
     {
       goto LABEL_12;
     }
@@ -302,19 +302,19 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
     goto LABEL_11;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Property value class names cannot be derived for object based attributes"];
     v3 = 0;
     goto LABEL_12;
   }
 
-  if (a3 == 7 || a3 == 8)
+  if (type == 7 || type == 8)
   {
     goto LABEL_11;
   }
@@ -328,16 +328,16 @@ LABEL_12:
 {
   if (![(VUIMediaEntityPropertyDescriptor *)self sourceSupportsFiltering])
   {
-    v3 = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterValueBlock];
-    if (v3)
+    sourceFilterValueBlock = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterValueBlock];
+    if (sourceFilterValueBlock)
     {
     }
 
     else
     {
-      v4 = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterBlock];
+      sourceFilterBlock = [(VUIMediaEntityPropertyDescriptor *)self sourceFilterBlock];
 
-      if (!v4)
+      if (!sourceFilterBlock)
       {
         return;
       }

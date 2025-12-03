@@ -1,18 +1,18 @@
 @interface MFLocalizedMessageHeaders
-+ (id)englishHeadersFromLocalizedHeaders:(id)a3;
++ (id)englishHeadersFromLocalizedHeaders:(id)headers;
 + (id)localizedHeaders;
-+ (id)localizedHeadersFromEnglishHeaders:(id)a3;
-- (id)copyFormattedHeaderValueFromAddressList:(id)a3;
++ (id)localizedHeadersFromEnglishHeaders:(id)headers;
+- (id)copyFormattedHeaderValueFromAddressList:(id)list;
 - (id)markupString;
-- (void)appendHeaderMarkupForKey:(id)a3 value:(id)a4 toString:(id)a5;
+- (void)appendHeaderMarkupForKey:(id)key value:(id)value toString:(id)string;
 @end
 
 @implementation MFLocalizedMessageHeaders
 
-- (id)copyFormattedHeaderValueFromAddressList:(id)a3
+- (id)copyFormattedHeaderValueFromAddressList:(id)list
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  [v4 appendString:{objc_msgSend(a3, "componentsJoinedByString:", @", ")}];
+  [v4 appendString:{objc_msgSend(list, "componentsJoinedByString:", @", ")}];
   if ([v4 length])
   {
     sanitizeStringForMarkup(v4);
@@ -22,25 +22,25 @@
   return v4;
 }
 
-- (void)appendHeaderMarkupForKey:(id)a3 value:(id)a4 toString:(id)a5
+- (void)appendHeaderMarkupForKey:(id)key value:(id)value toString:(id)string
 {
-  v9 = [+[MFLocalizedMessageHeaders localizedHeaders](MFLocalizedMessageHeaders "localizedHeaders")];
-  if (!v9)
+  keyCopy = [+[MFLocalizedMessageHeaders localizedHeaders](MFLocalizedMessageHeaders "localizedHeaders")];
+  if (!keyCopy)
   {
-    v9 = a3;
+    keyCopy = key;
   }
 
-  v10 = [v9 mutableCopy];
+  v10 = [keyCopy mutableCopy];
   sanitizeStringForMarkup(v10);
   v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<B>%@:</B> ", v10];
-  [a5 appendString:v11];
+  [string appendString:v11];
 
-  if (a3)
+  if (key)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (![objc_opt_class() isStructuredHeaderKey:a3])
+      if (![objc_opt_class() isStructuredHeaderKey:key])
       {
         return;
       }
@@ -51,7 +51,7 @@
         return;
       }
 
-      v15 = [(MFLocalizedMessageHeaders *)self copyFormattedHeaderValueFromAddressList:a4];
+      v15 = [(MFLocalizedMessageHeaders *)self copyFormattedHeaderValueFromAddressList:value];
       if (!v15)
       {
         return;
@@ -60,19 +60,19 @@
       goto LABEL_17;
     }
 
-    v12 = [a3 lowercaseString];
-    if ([v12 isEqualToString:*MEMORY[0x277D07030]])
+    lowercaseString = [key lowercaseString];
+    if ([lowercaseString isEqualToString:*MEMORY[0x277D07030]])
     {
-      v13 = [objc_msgSend(a4 "mf_stringByLocalizingReOrFwdPrefix")];
+      v13 = [objc_msgSend(value "mf_stringByLocalizingReOrFwdPrefix")];
       sanitizeStringForMarkup(v13);
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<B>%@</B><BR>", v13];
     }
 
     else
     {
-      if ([v12 isEqualToString:*MEMORY[0x277D06F98]])
+      if ([lowercaseString isEqualToString:*MEMORY[0x277D06F98]])
       {
-        v16 = [MEMORY[0x277CBEAA8] mf_copyDateInCommonFormatsWithString:a4];
+        v16 = [MEMORY[0x277CBEAA8] mf_copyDateInCommonFormatsWithString:value];
         if (!v16)
         {
           return;
@@ -95,7 +95,7 @@
         goto LABEL_17;
       }
 
-      v22 = [a4 mutableCopy];
+      v22 = [value mutableCopy];
       sanitizeStringForMarkup(v22);
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@<BR>", v22];
     }
@@ -108,7 +108,7 @@
 
 LABEL_17:
     v24 = v15;
-    [a5 appendString:v15];
+    [string appendString:v15];
   }
 }
 
@@ -226,15 +226,15 @@ LABEL_17:
   return result;
 }
 
-+ (id)localizedHeadersFromEnglishHeaders:(id)a3
++ (id)localizedHeadersFromEnglishHeaders:(id)headers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(headers, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [headers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -246,7 +246,7 @@ LABEL_17:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(headers);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
@@ -268,7 +268,7 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [headers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -278,18 +278,18 @@ LABEL_17:
   return v4;
 }
 
-+ (id)englishHeadersFromLocalizedHeaders:(id)a3
++ (id)englishHeadersFromLocalizedHeaders:(id)headers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(headers, "count")}];
   v5 = +[MFLocalizedMessageHeaders localizedHeaders];
-  v6 = [v5 allValues];
-  v7 = [v5 allKeys];
+  allValues = [v5 allValues];
+  allKeys = [v5 allKeys];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [headers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -300,20 +300,20 @@ LABEL_17:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(headers);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v6 indexOfObject:v12];
+        v13 = [allValues indexOfObject:v12];
         if (v13 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v12 = [v7 objectAtIndex:v13];
+          v12 = [allKeys objectAtIndex:v13];
         }
 
         [v4 addObject:v12];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [headers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

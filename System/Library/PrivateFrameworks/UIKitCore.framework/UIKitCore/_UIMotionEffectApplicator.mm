@@ -1,30 +1,30 @@
 @interface _UIMotionEffectApplicator
-+ (void)applyMotionEffect:(id)a3 toViews:(id)a4 usingPose:(id)a5 transformedForTargetInterfaceOrientation:(int64_t)a6;
-+ (void)unapplyMotionEffect:(id)a3 toViews:(id)a4;
++ (void)applyMotionEffect:(id)effect toViews:(id)views usingPose:(id)pose transformedForTargetInterfaceOrientation:(int64_t)orientation;
++ (void)unapplyMotionEffect:(id)effect toViews:(id)views;
 @end
 
 @implementation _UIMotionEffectApplicator
 
-+ (void)applyMotionEffect:(id)a3 toViews:(id)a4 usingPose:(id)a5 transformedForTargetInterfaceOrientation:(int64_t)a6
++ (void)applyMotionEffect:(id)effect toViews:(id)views usingPose:(id)pose transformedForTargetInterfaceOrientation:(int64_t)orientation
 {
   v46 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  effectCopy = effect;
+  viewsCopy = views;
+  poseCopy = pose;
+  v11 = poseCopy;
   v35 = 0.0;
   v34 = 0.0;
-  if (a6 != 1)
+  if (orientation != 1)
   {
-    [v10 viewerOffset];
+    [poseCopy viewerOffset];
     v34 = v12;
     v35 = v13;
-    if (a6 == 3)
+    if (orientation == 3)
     {
       v14 = 1.57079633;
     }
 
-    else if (a6 == 4)
+    else if (orientation == 4)
     {
       v14 = -1.57079633;
     }
@@ -32,7 +32,7 @@
     else
     {
       v14 = 3.14159265;
-      if (a6 != 2)
+      if (orientation != 2)
       {
         v14 = 0.0;
       }
@@ -43,15 +43,15 @@
   }
 
   v33 = v11;
-  v15 = v36;
-  v38 = [v36 _keyPathsAndRelativeValuesForPose:{v11, a6}];
+  v15 = effectCopy;
+  v38 = [effectCopy _keyPathsAndRelativeValuesForPose:{v11, orientation}];
   v16 = [_UIViewKeyValueAnimationFactory animationForKeyPathsAndRelativeValues:?];
-  v17 = [v36 _animationIdentifier];
+  _animationIdentifier = [effectCopy _animationIdentifier];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v9;
+  obj = viewsCopy;
   v18 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v18)
   {
@@ -102,10 +102,10 @@
           }
 
           [_UICAAnimationPositionQuantizer quantizePositionsInAnimation:v16 givenView:v23];
-          v25 = [v23 layer];
-          v26 = [v25 animationForKey:v17];
+          layer = [v23 layer];
+          layer3 = [layer animationForKey:_animationIdentifier];
 
-          if (v26 && (_fromValuesAreEqual(v16, v26) & 1) != 0)
+          if (layer3 && (_fromValuesAreEqual(v16, layer3) & 1) != 0)
           {
             v20 = 1;
             v21 = 1;
@@ -119,8 +119,8 @@ LABEL_34:
         if (v21)
         {
 LABEL_23:
-          v27 = [v23 layer];
-          v28 = [v27 animationForKey:v17];
+          layer2 = [v23 layer];
+          v28 = [layer2 animationForKey:_animationIdentifier];
 
           if (v28)
           {
@@ -132,16 +132,16 @@ LABEL_23:
 LABEL_31:
         if (([v23 _applyKeyPathsAndRelativeValues:v38 forMotionEffect:v15] & 1) == 0)
         {
-          _applyTransitionAnimationToView(v23, v17, v16);
+          _applyTransitionAnimationToView(v23, _animationIdentifier, v16);
           if (v16)
           {
             v30 = v16;
-            v31 = v17;
-            v26 = [v23 layer];
-            [v26 removeAnimationForKey:v31];
-            [v26 addAnimation:v30 forKey:v31];
+            v31 = _animationIdentifier;
+            layer3 = [v23 layer];
+            [layer3 removeAnimationForKey:v31];
+            [layer3 addAnimation:v30 forKey:v31];
 
-            v15 = v36;
+            v15 = effectCopy;
             goto LABEL_34;
           }
         }
@@ -159,16 +159,16 @@ LABEL_31:
   }
 }
 
-+ (void)unapplyMotionEffect:(id)a3 toViews:(id)a4
++ (void)unapplyMotionEffect:(id)effect toViews:(id)views
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  effectCopy = effect;
+  viewsCopy = views;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -180,23 +180,23 @@ LABEL_31:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [v5 _animationIdentifier];
-        if (([v11 _unapplyMotionEffect:v5] & 1) == 0)
+        _animationIdentifier = [effectCopy _animationIdentifier];
+        if (([v11 _unapplyMotionEffect:effectCopy] & 1) == 0)
         {
-          _applyTransitionAnimationToView(v11, v12, 0);
-          v13 = [v11 layer];
-          [v13 removeAnimationForKey:v12];
+          _applyTransitionAnimationToView(v11, _animationIdentifier, 0);
+          layer = [v11 layer];
+          [layer removeAnimationForKey:_animationIdentifier];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

@@ -1,17 +1,17 @@
 @interface UARPHostPersonalizationManager
-- (UARPHostPersonalizationManager)initWithListener:(id)a3;
+- (UARPHostPersonalizationManager)initWithListener:(id)listener;
 - (void)dealloc;
-- (void)personalizeAssetWithSSO:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5 tssServerURL:(id)a6;
-- (void)personalizeAssetWithXPCEvent:(id)a3;
-- (void)reportPersonalizationTicket:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5;
+- (void)personalizeAssetWithSSO:(id)o endpointUUID:(id)d tssOptions:(id)options tssServerURL:(id)l;
+- (void)personalizeAssetWithXPCEvent:(id)event;
+- (void)reportPersonalizationTicket:(id)ticket endpointUUID:(id)d tssOptions:(id)options;
 - (void)setupXpcConnection;
 @end
 
 @implementation UARPHostPersonalizationManager
 
-- (UARPHostPersonalizationManager)initWithListener:(id)a3
+- (UARPHostPersonalizationManager)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v14.receiver = self;
   v14.super_class = UARPHostPersonalizationManager;
   v6 = [(UARPHostPersonalizationManager *)&v14 init];
@@ -29,7 +29,7 @@
     log = v6->_log;
     v6->_log = v11;
 
-    objc_storeStrong(&v6->_xpcListener, a3);
+    objc_storeStrong(&v6->_xpcListener, listener);
   }
 
   return v6;
@@ -43,42 +43,42 @@
   [(UARPHostPersonalizationManager *)&v3 dealloc];
 }
 
-- (void)personalizeAssetWithXPCEvent:(id)a3
+- (void)personalizeAssetWithXPCEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001C7C0;
   v7[3] = &unk_1000B8A88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)personalizeAssetWithSSO:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5 tssServerURL:(id)a6
+- (void)personalizeAssetWithSSO:(id)o endpointUUID:(id)d tssOptions:(id)options tssServerURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  oCopy = o;
+  dCopy = d;
+  optionsCopy = options;
+  lCopy = l;
   v14 = objc_alloc_init(UARPAssetPersonalizer);
   v39 = 0;
-  v15 = [(UARPAssetPersonalizer *)v14 prepareAsAppleConnectSSO:v13 error:&v39];
+  v15 = [(UARPAssetPersonalizer *)v14 prepareAsAppleConnectSSO:lCopy error:&v39];
   v16 = v39;
   v17 = v16;
   if (v15)
   {
-    v33 = v10;
+    v33 = oCopy;
     v34 = v16;
-    v31 = self;
-    v32 = v11;
+    selfCopy = self;
+    v32 = dCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v18 = v12;
+    v18 = optionsCopy;
     v19 = [v18 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v19)
     {
@@ -94,12 +94,12 @@
           }
 
           v23 = *(*(&v35 + 1) + 8 * i);
-          v24 = [v23 tssRequest];
+          tssRequest = [v23 tssRequest];
 
-          if (v24)
+          if (tssRequest)
           {
-            v25 = [v23 tssRequest];
-            v26 = [(UARPAssetPersonalizer *)v14 performTatsuRequest:v25];
+            tssRequest2 = [v23 tssRequest];
+            v26 = [(UARPAssetPersonalizer *)v14 performTatsuRequest:tssRequest2];
             [v23 setTssResponse:v26];
 
             [v23 tssResponse];
@@ -112,9 +112,9 @@
       while (v20);
     }
 
-    v11 = v32;
-    v10 = v33;
-    [(UARPHostPersonalizationManager *)v31 reportPersonalizationTicket:v33 endpointUUID:v32 tssOptions:v18];
+    dCopy = v32;
+    oCopy = v33;
+    [(UARPHostPersonalizationManager *)selfCopy reportPersonalizationTicket:v33 endpointUUID:v32 tssOptions:v18];
     v17 = v34;
   }
 
@@ -124,22 +124,22 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v28 = log;
-      v29 = [v10 UUIDString];
-      v30 = [v11 UUIDString];
+      uUIDString = [oCopy UUIDString];
+      uUIDString2 = [dCopy UUIDString];
       *buf = 136316162;
       v42 = "[UARPHostPersonalizationManager personalizeAssetWithSSO:endpointUUID:tssOptions:tssServerURL:]";
       v43 = 2112;
-      v44 = v29;
+      v44 = uUIDString;
       v45 = 2112;
-      v46 = v30;
+      v46 = uUIDString2;
       v47 = 2112;
-      v48 = v13;
+      v48 = lCopy;
       v49 = 2112;
-      v50 = v12;
+      v50 = optionsCopy;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s: Failed to prepare for personalization; Asset UUID is %@, Endpoint UUID is %@, server URL is %@tss options are %@", buf, 0x34u);
     }
 
-    [(UARPHostPersonalizationManager *)self reportPersonalizationTicket:v10 endpointUUID:v11 tssOptions:v12];
+    [(UARPHostPersonalizationManager *)self reportPersonalizationTicket:oCopy endpointUUID:dCopy tssOptions:optionsCopy];
   }
 }
 
@@ -169,8 +169,8 @@
       }
 
       v7 = [NSXPCConnection alloc];
-      v8 = [(NSXPCListener *)self->_xpcListener endpoint];
-      v9 = [v7 initWithListenerEndpoint:v8];
+      endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
+      v9 = [v7 initWithListenerEndpoint:endpoint];
       xpcConnection = self->_xpcConnection;
       self->_xpcConnection = v9;
     }
@@ -186,7 +186,7 @@
       }
 
       v12 = [[NSXPCConnection alloc] initWithMachServiceName:v11 options:4096];
-      v8 = self->_xpcConnection;
+      endpoint = self->_xpcConnection;
       self->_xpcConnection = v12;
     }
 
@@ -215,7 +215,7 @@
     v21 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPAssetPersonalizationCompleteProtocol, v23, v24, v25, v26];
     [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v21];
 
-    v22 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+    remoteObjectInterface = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
     UARPAssetPersonalizationCompleteProtocolSetupInterface();
 
     [(NSXPCConnection *)self->_xpcConnection setExportedInterface:0];
@@ -228,11 +228,11 @@
   }
 }
 
-- (void)reportPersonalizationTicket:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5
+- (void)reportPersonalizationTicket:(id)ticket endpointUUID:(id)d tssOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ticketCopy = ticket;
+  dCopy = d;
+  optionsCopy = options;
   [(UARPHostPersonalizationManager *)self setupXpcConnection];
   xpcQueue = self->_xpcQueue;
   v15[0] = _NSConcreteStackBlock;
@@ -240,12 +240,12 @@
   v15[2] = sub_10001D3D8;
   v15[3] = &unk_1000B8BF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = ticketCopy;
+  v17 = dCopy;
+  v18 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = dCopy;
+  v14 = ticketCopy;
   dispatch_async(xpcQueue, v15);
 }
 

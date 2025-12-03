@@ -1,12 +1,12 @@
 @interface CRSWidget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRSWidget)init;
-- (CRSWidget)initWithID:(id)a3 chsWidget:(id)a4 suggestionSource:(int64_t)a5;
+- (CRSWidget)initWithID:(id)d chsWidget:(id)widget suggestionSource:(int64_t)source;
 - (NSString)description;
 - (NSUUID)id;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRSWidget
@@ -25,9 +25,9 @@
   return v8;
 }
 
-- (CRSWidget)initWithID:(id)a3 chsWidget:(id)a4 suggestionSource:(int64_t)a5
+- (CRSWidget)initWithID:(id)d chsWidget:(id)widget suggestionSource:(int64_t)source
 {
-  v24 = a5;
+  sourceCopy = source;
   v7 = sub_242FCB2CC();
   v8 = *(v7 - 8);
   v9 = v8[8];
@@ -43,13 +43,13 @@
   v15(&v17[*((*MEMORY[0x277D85000] & *v17) + 0x58)], v12, v7);
   v26.receiver = v17;
   v26.super_class = v16;
-  v18 = a4;
+  widgetCopy = widget;
   v19 = [(CRSWidget *)&v26 init];
   v20 = v8[1];
   v20(v12, v7);
   *(&self->super.isa + OBJC_IVAR___CRSWidget__id) = v19;
-  *(&self->super.isa + OBJC_IVAR___CRSWidget_chsWidget) = v18;
-  *(&self->super.isa + OBJC_IVAR___CRSWidget_suggestionSource) = v24;
+  *(&self->super.isa + OBJC_IVAR___CRSWidget_chsWidget) = widgetCopy;
+  *(&self->super.isa + OBJC_IVAR___CRSWidget_suggestionSource) = sourceCopy;
   v25.receiver = self;
   v25.super_class = CRSWidget;
   v21 = [(CRSWidget *)&v25 init];
@@ -57,9 +57,9 @@
   return v21;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_242FC90C4(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -68,18 +68,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRSWidget.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRSWidget.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_242FCB3BC();
     swift_unknownObjectRelease();
@@ -88,7 +88,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRSWidget.isEqual(_:)(v8);
@@ -99,7 +99,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRSWidget.hash.getter();
 
   return v3;
@@ -107,7 +107,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRSWidget.description.getter();
 
   v3 = sub_242FCB2DC();

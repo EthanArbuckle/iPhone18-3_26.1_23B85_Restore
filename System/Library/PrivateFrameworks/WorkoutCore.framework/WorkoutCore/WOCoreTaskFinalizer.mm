@@ -1,10 +1,10 @@
 @interface WOCoreTaskFinalizer
-+ (void)finalizeWithIdentifier:(id)a3;
++ (void)finalizeWithIdentifier:(id)identifier;
 @end
 
 @implementation WOCoreTaskFinalizer
 
-+ (void)finalizeWithIdentifier:(id)a3
++ (void)finalizeWithIdentifier:(id)identifier
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

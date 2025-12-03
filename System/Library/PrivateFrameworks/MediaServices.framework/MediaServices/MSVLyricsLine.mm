@@ -1,5 +1,5 @@
 @interface MSVLyricsLine
-- (BOOL)containsTimeOffset:(double)a3 withErrorMargin:(double)a4;
+- (BOOL)containsTimeOffset:(double)offset withErrorMargin:(double)margin;
 - (MSVLyricsLine)init;
 - (MSVLyricsSection)parentSection;
 - (NSAttributedString)primaryVocalText;
@@ -20,57 +20,57 @@
 {
   if ([(MSVLyricsLine *)self hasBackgroundVocal])
   {
-    v3 = self->_primaryVocalText;
+    lyricsText = self->_primaryVocalText;
   }
 
   else
   {
-    v3 = [(MSVLyricsTextElement *)self lyricsText];
+    lyricsText = [(MSVLyricsTextElement *)self lyricsText];
   }
 
-  return v3;
+  return lyricsText;
 }
 
 - (id)agent
 {
   v8.receiver = self;
   v8.super_class = MSVLyricsLine;
-  v3 = [(MSVLyricsElement *)&v8 agent];
-  v4 = v3;
-  if (v3)
+  agent = [(MSVLyricsElement *)&v8 agent];
+  v4 = agent;
+  if (agent)
   {
-    v5 = v3;
+    agent2 = agent;
   }
 
   else
   {
-    v6 = [(MSVLyricsLine *)self parentSection];
-    v5 = [v6 agent];
+    parentSection = [(MSVLyricsLine *)self parentSection];
+    agent2 = [parentSection agent];
   }
 
-  return v5;
+  return agent2;
 }
 
-- (BOOL)containsTimeOffset:(double)a3 withErrorMargin:(double)a4
+- (BOOL)containsTimeOffset:(double)offset withErrorMargin:(double)margin
 {
   [(MSVLyricsElement *)self startTime];
-  if (v7 - a4 > a3)
+  if (v7 - margin > offset)
   {
     return 0;
   }
 
   [(MSVLyricsElement *)self endTime];
-  return v9 + a4 >= a3;
+  return v9 + margin >= offset;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MSVLyricsLine *)self lineIndex];
+  lineIndex = [(MSVLyricsLine *)self lineIndex];
   v8.receiver = self;
   v8.super_class = MSVLyricsLine;
   v5 = [(MSVLyricsTextElement *)&v8 description];
-  v6 = [v3 stringWithFormat:@"Line index: %ld, lyrics text element: %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"Line index: %ld, lyrics text element: %@", lineIndex, v5];
 
   return v6;
 }

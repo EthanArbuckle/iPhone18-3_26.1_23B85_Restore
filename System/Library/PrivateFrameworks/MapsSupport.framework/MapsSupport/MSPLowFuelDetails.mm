@@ -1,72 +1,72 @@
 @interface MSPLowFuelDetails
-- (MSPLowFuelDetails)initWithCoder:(id)a3;
-- (MSPLowFuelDetails)initWithTitle:(id)a3 subtitle:(id)a4 engineType:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (MSPLowFuelDetails)initWithCoder:(id)coder;
+- (MSPLowFuelDetails)initWithTitle:(id)title subtitle:(id)subtitle engineType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSPLowFuelDetails
 
-- (MSPLowFuelDetails)initWithTitle:(id)a3 subtitle:(id)a4 engineType:(id)a5
+- (MSPLowFuelDetails)initWithTitle:(id)title subtitle:(id)subtitle engineType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = MSPLowFuelDetails;
   v12 = [(MSPLowFuelDetails *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_subtitle, a4);
-    objc_storeStrong(&v13->_engineType, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_subtitle, subtitle);
+    objc_storeStrong(&v13->_engineType, type);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_title forKey:@"title"];
-  [v6 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v6 encodeObject:self->_engineType forKey:@"engineType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_engineType forKey:@"engineType"];
   iconData = self->_iconData;
   if (iconData)
   {
-    [v6 encodeObject:iconData forKey:@"iconData"];
+    [coderCopy encodeObject:iconData forKey:@"iconData"];
   }
 
   iconDataCarPlay = self->_iconDataCarPlay;
   if (iconDataCarPlay)
   {
-    [v6 encodeObject:iconDataCarPlay forKey:@"iconDataCarPlay"];
+    [coderCopy encodeObject:iconDataCarPlay forKey:@"iconDataCarPlay"];
   }
 }
 
-- (MSPLowFuelDetails)initWithCoder:(id)a3
+- (MSPLowFuelDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MSPLowFuelDetails *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"engineType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"engineType"];
     engineType = v5->_engineType;
     v5->_engineType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
     iconData = v5->_iconData;
     v5->_iconData = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconDataCarPlay"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconDataCarPlay"];
     iconDataCarPlay = v5->_iconDataCarPlay;
     v5->_iconDataCarPlay = v14;
   }

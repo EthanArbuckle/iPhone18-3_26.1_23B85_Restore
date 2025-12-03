@@ -12,48 +12,48 @@
   v17.receiver = self;
   v17.super_class = _UISearchBarSearchPresentationTransitioner;
   [(_UISearchBarTransitionerBase *)&v17 prepare];
-  v3 = [(_UISearchBarTransitionerBase *)self transitionContext];
-  v4 = [v3 fromLayout];
-  v5 = [v3 toLayout];
+  transitionContext = [(_UISearchBarTransitionerBase *)self transitionContext];
+  fromLayout = [transitionContext fromLayout];
+  toLayout = [transitionContext toLayout];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v7 = [v4 representedLayoutState];
+  representedLayoutState = [fromLayout representedLayoutState];
   if (has_internal_diagnostics)
   {
-    if ((v7 - 1) > 1 || [v5 representedLayoutState] != 3)
+    if ((representedLayoutState - 1) > 1 || [toLayout representedLayoutState] != 3)
     {
       v14 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v19 = v4;
+        v19 = fromLayout;
         v20 = 2112;
-        v21 = v5;
+        v21 = toLayout;
         _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Incorrect transition object for transitioning from layout, %@, to layout, %@. This is a UIKit bug.", buf, 0x16u);
       }
     }
   }
 
-  else if ((v7 - 1) > 1 || [v5 representedLayoutState] != 3)
+  else if ((representedLayoutState - 1) > 1 || [toLayout representedLayoutState] != 3)
   {
     v13 = *(__UILogGetCategoryCachedImpl("Assert", &_MergedGlobals_1017) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = fromLayout;
       v20 = 2112;
-      v21 = v5;
+      v21 = toLayout;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Incorrect transition object for transitioning from layout, %@, to layout, %@. This is a UIKit bug.", buf, 0x16u);
     }
   }
 
-  v8 = [(_UISearchBarTransitionerBase *)self searchBar];
-  [v8 layoutIfNeeded];
+  searchBar = [(_UISearchBarTransitionerBase *)self searchBar];
+  [searchBar layoutIfNeeded];
 
-  v9 = [v4 hasScopeBar];
-  v10 = [v5 hasScopeBar];
+  hasScopeBar = [fromLayout hasScopeBar];
+  hasScopeBar2 = [toLayout hasScopeBar];
   if (os_variant_has_internal_diagnostics())
   {
-    if (((v9 ^ 1 | v10) & 1) == 0)
+    if (((hasScopeBar ^ 1 | hasScopeBar2) & 1) == 0)
     {
       v15 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -64,7 +64,7 @@
     }
   }
 
-  else if (((v9 ^ 1 | v10) & 1) == 0)
+  else if (((hasScopeBar ^ 1 | hasScopeBar2) & 1) == 0)
   {
     v16 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49CA60) + 8);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -74,9 +74,9 @@
     }
   }
 
-  if (v4)
+  if (fromLayout)
   {
-    v11 = (v4[113] & 6) != 0;
+    v11 = (fromLayout[113] & 6) != 0;
   }
 
   else
@@ -84,12 +84,12 @@
     v11 = 0;
   }
 
-  if (!((v11 || (v10 & 1) == 0) | v9 & 1))
+  if (!((v11 || (hasScopeBar2 & 1) == 0) | hasScopeBar & 1))
   {
-    v12 = [v5 scopeBarContainer];
-    [v12 setAlpha:0.0];
-    [v12 setHidden:0];
-    [v5 applyScopeContainerSublayout];
+    scopeBarContainer = [toLayout scopeBarContainer];
+    [scopeBarContainer setAlpha:0.0];
+    [scopeBarContainer setHidden:0];
+    [toLayout applyScopeContainerSublayout];
   }
 }
 
@@ -98,50 +98,50 @@
   v18.receiver = self;
   v18.super_class = _UISearchBarSearchPresentationTransitioner;
   [(_UISearchBarTransitionerBase *)&v18 animate];
-  v3 = [(_UISearchBarTransitionerBase *)self transitionContext];
-  v4 = [v3 fromLayout];
-  v5 = [v3 toLayout];
-  v6 = [v4 hasCancelButton];
-  v7 = [v5 hasCancelButton];
-  v8 = [v4 hasScopeBar];
-  v9 = [v5 hasScopeBar];
-  v10 = v6 ^ v7;
-  v11 = v8 ^ v9;
+  transitionContext = [(_UISearchBarTransitionerBase *)self transitionContext];
+  fromLayout = [transitionContext fromLayout];
+  toLayout = [transitionContext toLayout];
+  hasCancelButton = [fromLayout hasCancelButton];
+  hasCancelButton2 = [toLayout hasCancelButton];
+  hasScopeBar = [fromLayout hasScopeBar];
+  hasScopeBar2 = [toLayout hasScopeBar];
+  v10 = hasCancelButton ^ hasCancelButton2;
+  v11 = hasScopeBar ^ hasScopeBar2;
   if ((v10 & 1) != 0 || v11)
   {
-    v12 = [(_UISearchBarTransitionerBase *)self searchBar];
-    [v12 setNeedsLayout];
+    searchBar = [(_UISearchBarTransitionerBase *)self searchBar];
+    [searchBar setNeedsLayout];
 
     if (v10)
     {
-      v13 = [v5 searchFieldContainer];
-      [v13 setNeedsLayout];
+      searchFieldContainer = [toLayout searchFieldContainer];
+      [searchFieldContainer setNeedsLayout];
     }
 
     if (v11)
     {
-      v14 = [v5 scopeBarContainer];
-      [v14 setNeedsLayout];
+      scopeBarContainer = [toLayout scopeBarContainer];
+      [scopeBarContainer setNeedsLayout];
     }
   }
 
-  v15 = [(_UISearchBarTransitionerBase *)self searchBar];
-  [v15 _updateEffectiveContentInset];
-  [v15 _effectiveContentInset];
-  [v5 setContentInset:?];
-  [v15 layoutIfNeeded];
-  if (v4)
+  searchBar2 = [(_UISearchBarTransitionerBase *)self searchBar];
+  [searchBar2 _updateEffectiveContentInset];
+  [searchBar2 _effectiveContentInset];
+  [toLayout setContentInset:?];
+  [searchBar2 layoutIfNeeded];
+  if (fromLayout)
   {
-    v8 |= (v4[113] & 6) != 0;
+    hasScopeBar |= (fromLayout[113] & 6) != 0;
   }
 
-  if (v9 & ~v8)
+  if (hasScopeBar2 & ~hasScopeBar)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __53___UISearchBarSearchPresentationTransitioner_animate__block_invoke;
     v16[3] = &unk_1E70F3590;
-    v17 = v5;
+    v17 = toLayout;
     [UIView animateKeyframesWithDuration:0 delay:v16 options:0 animations:0.0 completion:0.0];
   }
 }
@@ -151,11 +151,11 @@
   v12.receiver = self;
   v12.super_class = _UISearchBarSearchPresentationTransitioner;
   [(_UISearchBarTransitionerBase *)&v12 cancel];
-  v3 = [(_UISearchBarTransitionerBase *)self transitionContext];
-  v4 = [v3 fromLayout];
-  if (v4)
+  transitionContext = [(_UISearchBarTransitionerBase *)self transitionContext];
+  fromLayout = [transitionContext fromLayout];
+  if (fromLayout)
   {
-    v5 = v4[28] & 0x600;
+    v5 = fromLayout[28] & 0x600;
 
     if (v5)
     {
@@ -167,18 +167,18 @@
   {
   }
 
-  v6 = [(_UISearchBarTransitionerBase *)self transitionContext];
-  v7 = [v6 fromLayout];
-  v8 = [v7 hasScopeBar];
-  v9 = [v6 toLayout];
-  v10 = [v9 hasScopeBar];
+  transitionContext2 = [(_UISearchBarTransitionerBase *)self transitionContext];
+  fromLayout2 = [transitionContext2 fromLayout];
+  hasScopeBar = [fromLayout2 hasScopeBar];
+  toLayout = [transitionContext2 toLayout];
+  hasScopeBar2 = [toLayout hasScopeBar];
 
-  if (v10)
+  if (hasScopeBar2)
   {
-    if ((v8 & 1) == 0)
+    if ((hasScopeBar & 1) == 0)
     {
-      v11 = [v7 scopeBarContainer];
-      [v11 setAlpha:0.0];
+      scopeBarContainer = [fromLayout2 scopeBarContainer];
+      [scopeBarContainer setAlpha:0.0];
     }
   }
 }

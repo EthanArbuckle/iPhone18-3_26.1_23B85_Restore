@@ -1,16 +1,16 @@
 @interface ASAccessoryResetWiFiViewController
-- (ASAccessoryResetWiFiViewController)initWithDevices:(id)a3;
-- (id)imageWithTypeIdentifier:(id)a3;
+- (ASAccessoryResetWiFiViewController)initWithDevices:(id)devices;
+- (id)imageWithTypeIdentifier:(id)identifier;
 - (id)settingsIconImageDescriptor;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)didTapConfirm:(id)a3;
-- (void)handleDAEvent:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)didTapConfirm:(id)confirm;
+- (void)handleDAEvent:(id)event;
 - (void)viewDidLoad;
 @end
 
 @implementation ASAccessoryResetWiFiViewController
 
-- (ASAccessoryResetWiFiViewController)initWithDevices:(id)a3
+- (ASAccessoryResetWiFiViewController)initWithDevices:(id)devices
 {
   v4 = +[ASAccessoryInfoViewFactory resetWiFiControllerTitle];
   v5 = +[ASAccessoryInfoViewFactory resetWiFiControllerDetailText];
@@ -53,53 +53,53 @@
   v21.super_class = ASAccessoryResetWiFiViewController;
   [(OBTableWelcomeController *)&v21 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277D75B40]);
-  v4 = [(ASAccessoryResetWiFiViewController *)self view];
-  [v4 bounds];
+  view = [(ASAccessoryResetWiFiViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:2 style:?];
   [(OBTableWelcomeController *)self setTableView:v5];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setBackgroundColor:clearColor];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setAllowsSelection:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setAllowsSelection:0];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setDelegate:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v11 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   confirmButton = self->_confirmButton;
-  self->_confirmButton = v11;
+  self->_confirmButton = boldButton;
 
   v13 = self->_confirmButton;
   v14 = +[ASAccessoryInfoViewFactory resetWiFiControllerButtonTitle];
   [(OBBoldTrayButton *)v13 setTitle:v14 forState:0];
 
   [(OBBoldTrayButton *)self->_confirmButton addTarget:self action:sel_didTapConfirm_ forControlEvents:64];
-  v15 = [(OBBoldTrayButton *)self->_confirmButton configuration];
-  v16 = [MEMORY[0x277D75348] systemRedColor];
-  [v15 setBaseBackgroundColor:v16];
+  configuration = [(OBBoldTrayButton *)self->_confirmButton configuration];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [configuration setBaseBackgroundColor:systemRedColor];
 
-  [(OBBoldTrayButton *)self->_confirmButton setConfiguration:v15];
-  v17 = [(ASAccessoryResetWiFiViewController *)self buttonTray];
-  [v17 addButton:self->_confirmButton];
+  [(OBBoldTrayButton *)self->_confirmButton setConfiguration:configuration];
+  buttonTray = [(ASAccessoryResetWiFiViewController *)self buttonTray];
+  [buttonTray addButton:self->_confirmButton];
 
   v18 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_didTapCancel_];
-  v19 = [(OBBaseWelcomeController *)self navigationItem];
-  [v19 setRightBarButtonItem:v18];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v18];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 reloadData];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 reloadData];
 }
 
-- (void)handleDAEvent:(id)a3
+- (void)handleDAEvent:(id)event
 {
-  v4 = [a3 eventType];
-  if (v4 <= 0x2A && ((1 << v4) & 0x70000000400) != 0)
+  eventType = [event eventType];
+  if (eventType <= 0x2A && ((1 << eventType) & 0x70000000400) != 0)
   {
     session = self->_session;
     v6[0] = MEMORY[0x277D85DD0];
@@ -185,9 +185,9 @@ BOOL __52__ASAccessoryResetWiFiViewController_handleDAEvent___block_invoke_3(uin
   return v5 < v6;
 }
 
-- (void)didTapConfirm:(id)a3
+- (void)didTapConfirm:(id)confirm
 {
-  v4 = a3;
+  confirmCopy = confirm;
   if (gLogCategory_ASAccessoryResetWiFiViewController <= 30 && (gLogCategory_ASAccessoryResetWiFiViewController != -1 || _LogCategory_Initialize()))
   {
     [ASAccessoryResetWiFiViewController didTapConfirm:];
@@ -197,50 +197,50 @@ BOOL __52__ASAccessoryResetWiFiViewController_handleDAEvent___block_invoke_3(uin
   [(ASAccessoryResetWiFiViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"accessory_cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"accessory_cell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"accessory_cell"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_wifiAwareDevices, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [v7 defaultContentConfiguration];
-  v10 = [v8 name];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_wifiAwareDevices, "objectAtIndexedSubscript:", [pathCopy row]);
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  name = [v8 name];
   v34 = v7;
-  v35 = v6;
-  if (v10 && (v11 = v10, [v8 name], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_28499D698), v12, v11, (v13 & 1) == 0))
+  v35 = pathCopy;
+  if (name && (v11 = name, [v8 name], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_28499D698), v12, v11, (v13 & 1) == 0))
   {
-    v14 = [v8 name];
+    name2 = [v8 name];
   }
 
   else
   {
-    v14 = [v8 bluetoothOTAName];
-    if (!v14)
+    name2 = [v8 bluetoothOTAName];
+    if (!name2)
     {
-      v15 = [v8 wifiAwareOTAName];
-      [v9 setText:v15];
+      wifiAwareOTAName = [v8 wifiAwareOTAName];
+      [defaultContentConfiguration setText:wifiAwareOTAName];
 
       goto LABEL_9;
     }
   }
 
-  [v9 setText:v14];
+  [defaultContentConfiguration setText:name2];
 LABEL_9:
 
-  v16 = [v8 appAccessInfoMap];
-  v17 = [v16 allKeys];
+  appAccessInfoMap = [v8 appAccessInfoMap];
+  allKeys = [appAccessInfoMap allKeys];
 
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v19 = v17;
+  v19 = allKeys;
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v20)
   {
@@ -256,8 +256,8 @@ LABEL_9:
         }
 
         v24 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:*(*(&v36 + 1) + 8 * i) allowPlaceholder:1 error:0];
-        v25 = [v24 localizedName];
-        [v18 addObject:v25];
+        localizedName = [v24 localizedName];
+        [array addObject:localizedName];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -266,52 +266,52 @@ LABEL_9:
     while (v21);
   }
 
-  v26 = [v18 sortedArrayUsingComparator:&__block_literal_global_34];
-  v27 = [v26 firstObject];
+  v26 = [array sortedArrayUsingComparator:&__block_literal_global_34];
+  firstObject = [v26 firstObject];
 
   if (([v8 flags] & 0x400) != 0)
   {
-    [ASAccessoryInfoViewFactory resetWiFiControllerCellSubtitlePairedDevice:v27];
+    [ASAccessoryInfoViewFactory resetWiFiControllerCellSubtitlePairedDevice:firstObject];
   }
 
   else
   {
-    [ASAccessoryInfoViewFactory resetWiFiControllerCellSubtitleAccessory:v27];
+    [ASAccessoryInfoViewFactory resetWiFiControllerCellSubtitleAccessory:firstObject];
   }
   v28 = ;
-  [v9 setSecondaryText:v28];
+  [defaultContentConfiguration setSecondaryText:v28];
 
-  v29 = [v8 bluetoothIdentifier];
+  bluetoothIdentifier = [v8 bluetoothIdentifier];
 
   v30 = &OBJC_IVAR___ASAccessoryResetWiFiViewController__multiTechIcon;
-  if (!v29)
+  if (!bluetoothIdentifier)
   {
     v30 = &OBJC_IVAR___ASAccessoryResetWiFiViewController__wifiIcon;
   }
 
-  [v9 setImage:*(&self->super.super.super.super.super.super.isa + *v30)];
-  [v34 setContentConfiguration:v9];
-  v31 = [MEMORY[0x277D75348] secondarySystemFillColor];
-  [v34 setBackgroundColor:v31];
+  [defaultContentConfiguration setImage:*(&self->super.super.super.super.super.super.isa + *v30)];
+  [v34 setContentConfiguration:defaultContentConfiguration];
+  secondarySystemFillColor = [MEMORY[0x277D75348] secondarySystemFillColor];
+  [v34 setBackgroundColor:secondarySystemFillColor];
 
   v32 = *MEMORY[0x277D85DE8];
 
   return v34;
 }
 
-- (id)imageWithTypeIdentifier:(id)a3
+- (id)imageWithTypeIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D1B1A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithType:v5];
+  identifierCopy = identifier;
+  v6 = [[v4 alloc] initWithType:identifierCopy];
 
-  v7 = [(ASAccessoryResetWiFiViewController *)self settingsIconImageDescriptor];
-  v8 = [v6 prepareImageForDescriptor:v7];
+  settingsIconImageDescriptor = [(ASAccessoryResetWiFiViewController *)self settingsIconImageDescriptor];
+  v8 = [v6 prepareImageForDescriptor:settingsIconImageDescriptor];
 
   v9 = MEMORY[0x277D755B8];
-  v10 = [v8 CGImage];
+  cGImage = [v8 CGImage];
   [v8 scale];
-  v11 = [v9 imageWithCGImage:v10 scale:0 orientation:?];
+  v11 = [v9 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v11;
 }
@@ -320,11 +320,11 @@ LABEL_9:
 {
   v2 = [MEMORY[0x277D1B1C8] imageDescriptorNamed:*MEMORY[0x277D1B240]];
   [v2 setDrawBorder:1];
-  v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-  [v2 setAppearance:{objc_msgSend(v3, "userInterfaceStyle") != 1}];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  [v2 setAppearance:{objc_msgSend(currentTraitCollection, "userInterfaceStyle") != 1}];
 
-  v4 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v4 layoutDirection])
+  currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection2 layoutDirection])
   {
     v5 = 2;
   }
@@ -336,8 +336,8 @@ LABEL_9:
 
   [v2 setLanguageDirection:v5];
 
-  v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-  [v2 setContrast:{objc_msgSend(v6, "accessibilityContrast") == 1}];
+  currentTraitCollection3 = [MEMORY[0x277D75C80] currentTraitCollection];
+  [v2 setContrast:{objc_msgSend(currentTraitCollection3, "accessibilityContrast") == 1}];
 
   return v2;
 }

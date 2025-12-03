@@ -1,23 +1,23 @@
 @interface DynamicEffectLayer
 - (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)init;
-- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)initWithCoder:(id)a3;
-- (void)drawInDisplayList:(id)a3;
+- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)initWithCoder:(id)coder;
+- (void)drawInDisplayList:(id)list;
 @end
 
 @implementation DynamicEffectLayer
 
-- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)initWithCoder:(id)a3
+- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)drawInDisplayList:(id)a3
+- (void)drawInDisplayList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  DynamicEffectLayer.draw(inDisplayList:)(v4);
+  listCopy = list;
+  selfCopy = self;
+  DynamicEffectLayer.draw(inDisplayList:)(listCopy);
 }
 
 - (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418DynamicEffectLayer)init

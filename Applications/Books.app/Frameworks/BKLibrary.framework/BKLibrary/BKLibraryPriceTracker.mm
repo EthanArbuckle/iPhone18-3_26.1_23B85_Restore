@@ -1,6 +1,6 @@
 @interface BKLibraryPriceTracker
 - (BKLibraryPriceTracker)init;
-- (BKLibraryPriceTracker)initWithLibraryManager:(id)a3 bdsPriceTracker:(id)a4;
+- (BKLibraryPriceTracker)initWithLibraryManager:(id)manager bdsPriceTracker:(id)tracker;
 - (void)setNeedsConfigurationUpdate;
 @end
 
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (BKLibraryPriceTracker)initWithLibraryManager:(id)a3 bdsPriceTracker:(id)a4
+- (BKLibraryPriceTracker)initWithLibraryManager:(id)manager bdsPriceTracker:(id)tracker
 {
-  v5 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  return PriceTracker.init(libraryManager:bdsPriceTracker:)(v5, a4);
+  return PriceTracker.init(libraryManager:bdsPriceTracker:)(managerCopy, tracker);
 }
 
 - (void)setNeedsConfigurationUpdate

@@ -1,20 +1,20 @@
 @interface HMImmutableSettingsProtoLanguageSettingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMImmutableSettingsProtoLanguageSettingEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   value = self->_value;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (value)
   {
     if (!v6)
@@ -22,7 +22,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     value = [(HMImmutableSettingsProtoLanguageValueEvent *)value mergeFrom:?];
   }
 
@@ -33,23 +33,23 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     value = [(HMImmutableSettingsProtoLanguageSettingEvent *)self setValue:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](value, v4);
+  MEMORY[0x1EEE66BB8](value, fromCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     value = self->_value;
-    if (value | v4[1])
+    if (value | equalCopy[1])
     {
       v6 = [(HMImmutableSettingsProtoLanguageValueEvent *)value isEqual:?];
     }
@@ -68,26 +68,26 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HMImmutableSettingsProtoLanguageValueEvent *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HMImmutableSettingsProtoLanguageValueEvent *)self->_value copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   value = self->_value;
   if (value)
   {
-    [a3 setValue:value];
+    [to setValue:value];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_value)
   {
@@ -97,15 +97,15 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   value = self->_value;
   if (value)
   {
-    v5 = [(HMImmutableSettingsProtoLanguageValueEvent *)value dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"value"];
+    dictionaryRepresentation = [(HMImmutableSettingsProtoLanguageValueEvent *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -114,8 +114,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = HMImmutableSettingsProtoLanguageSettingEvent;
   v4 = [(HMImmutableSettingsProtoLanguageSettingEvent *)&v8 description];
-  v5 = [(HMImmutableSettingsProtoLanguageSettingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMImmutableSettingsProtoLanguageSettingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -9,9 +9,9 @@
 - (void)initializeToDefaultThreshold;
 - (void)initializeToDefaultThresholdIfUninitialized;
 - (void)resetAutoCalibration;
-- (void)setAutoCalibrationInProgress:(BOOL)a3;
-- (void)setSqueezeOnboardingModeEnabled:(BOOL)a3;
-- (void)setSqueezeThreshold:(id)a3;
+- (void)setAutoCalibrationInProgress:(BOOL)progress;
+- (void)setSqueezeOnboardingModeEnabled:(BOOL)enabled;
+- (void)setSqueezeThreshold:(id)threshold;
 - (void)synchronizeSqueezeThresholdToBackboard;
 @end
 
@@ -47,14 +47,14 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
     _os_log_impl(&dword_25E1BC000, v3, OS_LOG_TYPE_DEFAULT, "startAutoCalibrationIfNecessary", v6, 2u);
   }
 
-  v4 = [(PNPSqueezeThresholdController *)self autoCalibrationInProgress];
-  if (!v4)
+  autoCalibrationInProgress = [(PNPSqueezeThresholdController *)self autoCalibrationInProgress];
+  if (!autoCalibrationInProgress)
   {
     [(PNPSqueezeThresholdController *)self setAutoCalibrationInProgress:1];
     [(PNPSqueezeThresholdController *)self setSqueezeOnboardingModeEnabled:1];
   }
 
-  return !v4;
+  return !autoCalibrationInProgress;
 }
 
 - (void)resetAutoCalibration
@@ -152,14 +152,14 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
     _os_log_impl(&dword_25E1BC000, v3, OS_LOG_TYPE_DEFAULT, "initializeToDefaultThresholdIfUninitialized", &v6, 2u);
   }
 
-  v4 = [(PNPSqueezeThresholdController *)self squeezeThreshold];
-  if (v4)
+  squeezeThreshold = [(PNPSqueezeThresholdController *)self squeezeThreshold];
+  if (squeezeThreshold)
   {
     v5 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = squeezeThreshold;
       _os_log_impl(&dword_25E1BC000, v5, OS_LOG_TYPE_DEFAULT, "Squeeze threshold already set in backboard: %@", &v6, 0xCu);
     }
   }
@@ -203,24 +203,24 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
   }
 }
 
-- (void)setAutoCalibrationInProgress:(BOOL)a3
+- (void)setAutoCalibrationInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
   v12 = @"SqueezeAutoCalibrationEnabled";
   v13[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v7 = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
+  opaqueTouchSenderDescriptor = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
   BKSHIDServicesSetPersistentServiceProperties();
 
   v8 = os_log_create("com.apple.pencilpairingui", "");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109376;
-    v9[1] = v3;
+    v9[1] = progressCopy;
     v10 = 1024;
-    v11 = [(PNPSqueezeThresholdController *)self autoCalibrationInProgress];
+    autoCalibrationInProgress = [(PNPSqueezeThresholdController *)self autoCalibrationInProgress];
     _os_log_impl(&dword_25E1BC000, v8, OS_LOG_TYPE_DEFAULT, "setAutoCalibrationInProgress: %d (readback: %d)", v9, 0xEu);
   }
 }
@@ -228,29 +228,29 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
 - (BOOL)autoCalibrationInProgress
 {
   v2 = getOpaqueTouchValue(@"SqueezeAutoCalibrationEnabled");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSqueezeOnboardingModeEnabled:(BOOL)a3
+- (void)setSqueezeOnboardingModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
   v12 = @"SqueezeOnboardingModeEnabled";
   v13[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v7 = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
+  opaqueTouchSenderDescriptor = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
   BKSHIDServicesSetPersistentServiceProperties();
 
   v8 = os_log_create("com.apple.pencilpairingui", "");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109376;
-    v9[1] = v3;
+    v9[1] = enabledCopy;
     v10 = 1024;
-    v11 = [(PNPSqueezeThresholdController *)self squeezeOnboardingModeEnabled];
+    squeezeOnboardingModeEnabled = [(PNPSqueezeThresholdController *)self squeezeOnboardingModeEnabled];
     _os_log_impl(&dword_25E1BC000, v8, OS_LOG_TYPE_DEFAULT, "setSqueezeOnboardingModeEnabled: %d (readback: %d)", v9, 0xEu);
   }
 }
@@ -258,14 +258,14 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
 - (BOOL)squeezeOnboardingModeEnabled
 {
   v2 = getOpaqueTouchValue(@"SqueezeOnboardingModeEnabled");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)squeezeThreshold
 {
-  v2 = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
+  opaqueTouchSenderDescriptor = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
   v3 = [MEMORY[0x277CBEB98] setWithObject:@"SqueezeThreshold"];
   v4 = BKSHIDServicesGetPersistentServiceProperties();
 
@@ -274,24 +274,24 @@ uint64_t __49__PNPSqueezeThresholdController_sharedController__block_invoke()
   return v5;
 }
 
-- (void)setSqueezeThreshold:(id)a3
+- (void)setSqueezeThreshold:(id)threshold
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  thresholdCopy = threshold;
+  if (thresholdCopy)
   {
     v5 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = thresholdCopy;
       _os_log_impl(&dword_25E1BC000, v5, OS_LOG_TYPE_DEFAULT, "Setting squeeze threshold: %@", buf, 0xCu);
     }
 
     v8 = @"SqueezeThreshold";
-    v9 = v4;
+    v9 = thresholdCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-    v7 = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
+    opaqueTouchSenderDescriptor = [(PNPSqueezeThresholdController *)self opaqueTouchSenderDescriptor];
     BKSHIDServicesSetPersistentServiceProperties();
   }
 }

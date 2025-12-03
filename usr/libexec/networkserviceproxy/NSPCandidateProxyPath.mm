@@ -1,30 +1,30 @@
 @interface NSPCandidateProxyPath
-- (BOOL)matchEgress:(id)a3;
-- (BOOL)matchIngress:(id)a3;
+- (BOOL)matchEgress:(id)egress;
+- (BOOL)matchIngress:(id)ingress;
 - (BOOL)proxyPathReady;
-- (NSPCandidateProxyPath)initWithCoder:(id)a3;
-- (NSPCandidateProxyPath)initWithIngressProxy:(id)a3 egressProxy:(id)a4 proxyPathWeight:(unint64_t)a5 preferredPathConfigURI:(id)a6 preferredPathPatterns:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchDomainFilter:(id)a3;
+- (NSPCandidateProxyPath)initWithCoder:(id)coder;
+- (NSPCandidateProxyPath)initWithIngressProxy:(id)proxy egressProxy:(id)egressProxy proxyPathWeight:(unint64_t)weight preferredPathConfigURI:(id)i preferredPathPatterns:(id)patterns;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchDomainFilter:(id)filter;
 @end
 
 @implementation NSPCandidateProxyPath
 
-- (NSPCandidateProxyPath)initWithIngressProxy:(id)a3 egressProxy:(id)a4 proxyPathWeight:(unint64_t)a5 preferredPathConfigURI:(id)a6 preferredPathPatterns:(id)a7
+- (NSPCandidateProxyPath)initWithIngressProxy:(id)proxy egressProxy:(id)egressProxy proxyPathWeight:(unint64_t)weight preferredPathConfigURI:(id)i preferredPathPatterns:(id)patterns
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  proxyCopy = proxy;
+  egressProxyCopy = egressProxy;
+  iCopy = i;
+  patternsCopy = patterns;
+  if (!proxyCopy)
   {
     v22 = nplog_obj();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
 LABEL_10:
 
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
@@ -36,7 +36,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v14)
+  if (!egressProxyCopy)
   {
     v22 = nplog_obj();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -56,46 +56,46 @@ LABEL_12:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_ingressProxy, a3);
-    objc_storeStrong(&v18->_egressProxy, a4);
-    v18->_proxyPathWeight = a5;
-    objc_storeStrong(&v18->_preferredPathConfigURI, a6);
-    objc_storeStrong(&v18->_preferredPathPatterns, a7);
+    objc_storeStrong(&v17->_ingressProxy, proxy);
+    objc_storeStrong(&v18->_egressProxy, egressProxy);
+    v18->_proxyPathWeight = weight;
+    objc_storeStrong(&v18->_preferredPathConfigURI, i);
+    objc_storeStrong(&v18->_preferredPathPatterns, patterns);
     domainFilter = v18->_domainFilter;
     v18->_domainFilter = 0;
   }
 
   self = v18;
-  v20 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v20;
+  return selfCopy;
 }
 
-- (NSPCandidateProxyPath)initWithCoder:(id)a3
+- (NSPCandidateProxyPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NSPCandidateProxyPath;
   v5 = [(NSPCandidateProxyPath *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPathIngressProxy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPathIngressProxy"];
     ingressProxy = v5->_ingressProxy;
     v5->_ingressProxy = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPathEgressProxy"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPathEgressProxy"];
     egressProxy = v5->_egressProxy;
     v5->_egressProxy = v8;
 
-    v5->_proxyPathWeight = [v4 decodeIntegerForKey:@"candidateProxyPathWeight"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPreferredPathConfigURI"];
+    v5->_proxyPathWeight = [coderCopy decodeIntegerForKey:@"candidateProxyPathWeight"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateProxyPreferredPathConfigURI"];
     preferredPathConfigURI = v5->_preferredPathConfigURI;
     v5->_preferredPathConfigURI = v10;
 
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"candidateProxyPreferredPathPatterns"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"candidateProxyPreferredPathPatterns"];
     preferredPathPatterns = v5->_preferredPathPatterns;
     v5->_preferredPathPatterns = v14;
   }
@@ -103,54 +103,54 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NSPCandidateProxyPath *)self ingressProxy];
-  [v4 encodeObject:v5 forKey:@"candidateProxyPathIngressProxy"];
+  coderCopy = coder;
+  ingressProxy = [(NSPCandidateProxyPath *)self ingressProxy];
+  [coderCopy encodeObject:ingressProxy forKey:@"candidateProxyPathIngressProxy"];
 
-  v6 = [(NSPCandidateProxyPath *)self egressProxy];
-  [v4 encodeObject:v6 forKey:@"candidateProxyPathEgressProxy"];
+  egressProxy = [(NSPCandidateProxyPath *)self egressProxy];
+  [coderCopy encodeObject:egressProxy forKey:@"candidateProxyPathEgressProxy"];
 
-  [v4 encodeInteger:-[NSPCandidateProxyPath proxyPathWeight](self forKey:{"proxyPathWeight"), @"candidateProxyPathWeight"}];
-  v7 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
-  [v4 encodeObject:v7 forKey:@"candidateProxyPreferredPathConfigURI"];
+  [coderCopy encodeInteger:-[NSPCandidateProxyPath proxyPathWeight](self forKey:{"proxyPathWeight"), @"candidateProxyPathWeight"}];
+  preferredPathConfigURI = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+  [coderCopy encodeObject:preferredPathConfigURI forKey:@"candidateProxyPreferredPathConfigURI"];
 
-  v8 = [(NSPCandidateProxyPath *)self preferredPathPatterns];
-  [v4 encodeObject:v8 forKey:@"candidateProxyPreferredPathPatterns"];
+  preferredPathPatterns = [(NSPCandidateProxyPath *)self preferredPathPatterns];
+  [coderCopy encodeObject:preferredPathPatterns forKey:@"candidateProxyPreferredPathPatterns"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPCandidateProxyPath allocWithZone:?]];
-  v5 = [(NSPCandidateProxyPath *)self ingressProxy];
-  [(NSPCandidateProxyPath *)v4 setIngressProxy:v5];
+  ingressProxy = [(NSPCandidateProxyPath *)self ingressProxy];
+  [(NSPCandidateProxyPath *)v4 setIngressProxy:ingressProxy];
 
-  v6 = [(NSPCandidateProxyPath *)self egressProxy];
-  [(NSPCandidateProxyPath *)v4 setEgressProxy:v6];
+  egressProxy = [(NSPCandidateProxyPath *)self egressProxy];
+  [(NSPCandidateProxyPath *)v4 setEgressProxy:egressProxy];
 
   [(NSPCandidateProxyPath *)v4 setProxyPathWeight:[(NSPCandidateProxyPath *)self proxyPathWeight]];
-  v7 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
-  [(NSPCandidateProxyPath *)v4 setPreferredPathConfigURI:v7];
+  preferredPathConfigURI = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+  [(NSPCandidateProxyPath *)v4 setPreferredPathConfigURI:preferredPathConfigURI];
 
-  v8 = [(NSPCandidateProxyPath *)self preferredPathPatterns];
-  [(NSPCandidateProxyPath *)v4 setPreferredPathPatterns:v8];
+  preferredPathPatterns = [(NSPCandidateProxyPath *)self preferredPathPatterns];
+  [(NSPCandidateProxyPath *)v4 setPreferredPathPatterns:preferredPathPatterns];
 
-  v9 = [(NSPCandidateProxyPath *)self domainFilter];
-  [(NSPCandidateProxyPath *)v4 setDomainFilter:v9];
+  domainFilter = [(NSPCandidateProxyPath *)self domainFilter];
+  [(NSPCandidateProxyPath *)v4 setDomainFilter:domainFilter];
 
   return v4;
 }
 
 - (BOOL)proxyPathReady
 {
-  v3 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
-  if (v3)
+  preferredPathConfigURI = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+  if (preferredPathConfigURI)
   {
-    v4 = v3;
-    v5 = [(NSPCandidateProxyPath *)self domainFilter];
+    v4 = preferredPathConfigURI;
+    domainFilter = [(NSPCandidateProxyPath *)self domainFilter];
 
-    if (!v5)
+    if (!domainFilter)
     {
       v11 = nplog_obj();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -163,26 +163,26 @@ LABEL_6:
     }
   }
 
-  v6 = [(NSPCandidateProxyPath *)self ingressProxy];
-  if (sub_100004F70(v6))
+  ingressProxy = [(NSPCandidateProxyPath *)self ingressProxy];
+  if (sub_100004F70(ingressProxy))
   {
-    v7 = [(NSPCandidateProxyPath *)self ingressProxy];
-    v8 = sub_1000071A0(v7);
-    v9 = [(NSPCandidateProxyPath *)self ingressProxy];
-    v10 = sub_100006674(v9);
+    ingressProxy2 = [(NSPCandidateProxyPath *)self ingressProxy];
+    v8 = sub_1000071A0(ingressProxy2);
+    ingressProxy3 = [(NSPCandidateProxyPath *)self ingressProxy];
+    v10 = sub_100006674(ingressProxy3);
 
     if (v8 <= v10)
     {
       v11 = nplog_obj();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(NSPCandidateProxyPath *)self ingressProxy];
-        v13 = sub_1000071A0(v12);
-        v14 = [(NSPCandidateProxyPath *)self ingressProxy];
-        v15 = v14;
-        if (v14)
+        ingressProxy4 = [(NSPCandidateProxyPath *)self ingressProxy];
+        v13 = sub_1000071A0(ingressProxy4);
+        ingressProxy5 = [(NSPCandidateProxyPath *)self ingressProxy];
+        v15 = ingressProxy5;
+        if (ingressProxy5)
         {
-          v16 = *(v14 + 24);
+          v16 = *(ingressProxy5 + 24);
         }
 
         else
@@ -191,14 +191,14 @@ LABEL_6:
         }
 
         v17 = v16;
-        v18 = [v17 vendor];
-        v19 = [(NSPCandidateProxyPath *)self ingressProxy];
+        vendor = [v17 vendor];
+        ingressProxy6 = [(NSPCandidateProxyPath *)self ingressProxy];
         v41 = 134218498;
         v42 = v13;
         v43 = 2112;
-        v44 = v18;
+        v44 = vendor;
         v45 = 2048;
-        v46 = sub_100006674(v19);
+        v46 = sub_100006674(ingressProxy6);
         v20 = "proxy path is not ready due to insufficient ingress proxy tokens (cache+agent: %lu) for [%@], (ingress proxy low-water mark: %lu)";
 LABEL_16:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, v20, &v41, 0x20u);
@@ -214,26 +214,26 @@ LABEL_16:
   {
   }
 
-  v21 = [(NSPCandidateProxyPath *)self egressProxy];
-  if (sub_100004F70(v21))
+  egressProxy = [(NSPCandidateProxyPath *)self egressProxy];
+  if (sub_100004F70(egressProxy))
   {
-    v22 = [(NSPCandidateProxyPath *)self egressProxy];
-    v23 = sub_1000071A0(v22);
-    v24 = [(NSPCandidateProxyPath *)self egressProxy];
-    v25 = sub_100006674(v24);
+    egressProxy2 = [(NSPCandidateProxyPath *)self egressProxy];
+    v23 = sub_1000071A0(egressProxy2);
+    egressProxy3 = [(NSPCandidateProxyPath *)self egressProxy];
+    v25 = sub_100006674(egressProxy3);
 
     if (v23 <= v25)
     {
       v11 = nplog_obj();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(NSPCandidateProxyPath *)self egressProxy];
-        v26 = sub_1000071A0(v12);
-        v27 = [(NSPCandidateProxyPath *)self egressProxy];
-        v15 = v27;
-        if (v27)
+        ingressProxy4 = [(NSPCandidateProxyPath *)self egressProxy];
+        v26 = sub_1000071A0(ingressProxy4);
+        egressProxy4 = [(NSPCandidateProxyPath *)self egressProxy];
+        v15 = egressProxy4;
+        if (egressProxy4)
         {
-          v28 = *(v27 + 24);
+          v28 = *(egressProxy4 + 24);
         }
 
         else
@@ -242,14 +242,14 @@ LABEL_16:
         }
 
         v17 = v28;
-        v18 = [v17 vendor];
-        v19 = [(NSPCandidateProxyPath *)self egressProxy];
+        vendor = [v17 vendor];
+        ingressProxy6 = [(NSPCandidateProxyPath *)self egressProxy];
         v41 = 134218498;
         v42 = v26;
         v43 = 2112;
-        v44 = v18;
+        v44 = vendor;
         v45 = 2048;
-        v46 = sub_100006674(v19);
+        v46 = sub_100006674(ingressProxy6);
         v20 = "proxy path is not ready due to insufficient egress proxy tokens (cache+agent: %lu) for [%@], (egress proxy low-water mark: %lu)";
         goto LABEL_16;
       }
@@ -268,11 +268,11 @@ LABEL_26:
   v29 = 1;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v30 = [(NSPCandidateProxyPath *)self ingressProxy];
-    v31 = v30;
-    if (v30)
+    ingressProxy7 = [(NSPCandidateProxyPath *)self ingressProxy];
+    v31 = ingressProxy7;
+    if (ingressProxy7)
     {
-      v32 = *(v30 + 24);
+      v32 = *(ingressProxy7 + 24);
     }
 
     else
@@ -281,12 +281,12 @@ LABEL_26:
     }
 
     v33 = v32;
-    v34 = [v33 vendor];
-    v35 = [(NSPCandidateProxyPath *)self egressProxy];
-    v36 = v35;
-    if (v35)
+    vendor2 = [v33 vendor];
+    egressProxy5 = [(NSPCandidateProxyPath *)self egressProxy];
+    v36 = egressProxy5;
+    if (egressProxy5)
     {
-      v37 = *(v35 + 24);
+      v37 = *(egressProxy5 + 24);
     }
 
     else
@@ -295,11 +295,11 @@ LABEL_26:
     }
 
     v38 = v37;
-    v39 = [v38 vendor];
+    vendor3 = [v38 vendor];
     v41 = 138412546;
-    v42 = v34;
+    v42 = vendor2;
     v43 = 2112;
-    v44 = v39;
+    v44 = vendor3;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "proxy path [%@:%@] is ready", &v41, 0x16u);
   }
 
@@ -308,10 +308,10 @@ LABEL_27:
   return v29;
 }
 
-- (BOOL)matchIngress:(id)a3
+- (BOOL)matchIngress:(id)ingress
 {
-  v4 = a3;
-  if (!v4)
+  ingressCopy = ingress;
+  if (!ingressCopy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -330,9 +330,9 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v5 = [(NSPCandidateProxyPath *)self ingressProxy];
+  ingressProxy = [(NSPCandidateProxyPath *)self ingressProxy];
 
-  if (!v5)
+  if (!ingressProxy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -346,11 +346,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [(NSPCandidateProxyPath *)self ingressProxy];
-  v7 = v6;
-  if (v6)
+  ingressProxy2 = [(NSPCandidateProxyPath *)self ingressProxy];
+  v7 = ingressProxy2;
+  if (ingressProxy2)
   {
-    v8 = *(v6 + 24);
+    v8 = *(ingressProxy2 + 24);
   }
 
   else
@@ -359,18 +359,18 @@ LABEL_12:
   }
 
   v9 = v8;
-  v10 = [v9 proxyURL];
-  v11 = [v4[3] proxyURL];
-  v12 = [v10 isEqualToString:v11];
+  proxyURL = [v9 proxyURL];
+  proxyURL2 = [ingressCopy[3] proxyURL];
+  v12 = [proxyURL isEqualToString:proxyURL2];
 
 LABEL_6:
   return v12;
 }
 
-- (BOOL)matchEgress:(id)a3
+- (BOOL)matchEgress:(id)egress
 {
-  v4 = a3;
-  if (!v4)
+  egressCopy = egress;
+  if (!egressCopy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -389,9 +389,9 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v5 = [(NSPCandidateProxyPath *)self egressProxy];
+  egressProxy = [(NSPCandidateProxyPath *)self egressProxy];
 
-  if (!v5)
+  if (!egressProxy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -405,11 +405,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [(NSPCandidateProxyPath *)self egressProxy];
-  v7 = v6;
-  if (v6)
+  egressProxy2 = [(NSPCandidateProxyPath *)self egressProxy];
+  v7 = egressProxy2;
+  if (egressProxy2)
   {
-    v8 = *(v6 + 24);
+    v8 = *(egressProxy2 + 24);
   }
 
   else
@@ -418,22 +418,22 @@ LABEL_12:
   }
 
   v9 = v8;
-  v10 = [v9 proxyURL];
-  v11 = [v4[3] proxyURL];
-  v12 = [v10 isEqualToString:v11];
+  proxyURL = [v9 proxyURL];
+  proxyURL2 = [egressCopy[3] proxyURL];
+  v12 = [proxyURL isEqualToString:proxyURL2];
 
 LABEL_6:
   return v12;
 }
 
-- (void)fetchDomainFilter:(id)a3
+- (void)fetchDomainFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
-  if (v5 && ([(NSPCandidateProxyPath *)self domainFilter], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  filterCopy = filter;
+  preferredPathConfigURI = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+  if (preferredPathConfigURI && ([(NSPCandidateProxyPath *)self domainFilter], v6 = objc_claimAutoreleasedReturnValue(), v6, preferredPathConfigURI, !v6))
   {
-    v7 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
-    v8 = [NSURL URLWithString:v7];
+    preferredPathConfigURI2 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+    v8 = [NSURL URLWithString:preferredPathConfigURI2];
 
     v9 = [NSMutableURLRequest requestWithURL:v8];
     if (v9)
@@ -492,7 +492,7 @@ LABEL_6:
       v26 = &v29;
       objc_copyWeak(&v28, &location);
       v24 = v8;
-      v25 = v4;
+      v25 = filterCopy;
       v27 = &v40;
       v20 = [v19 dataTaskWithRequest:v9 completionHandler:v23];
 
@@ -511,22 +511,22 @@ LABEL_6:
       v21 = nplog_obj();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
+        preferredPathConfigURI3 = [(NSPCandidateProxyPath *)self preferredPathConfigURI];
         LODWORD(v40) = 138412290;
-        *(&v40 + 4) = v22;
+        *(&v40 + 4) = preferredPathConfigURI3;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to create request for preferred path URL %@", &v40, 0xCu);
       }
 
-      if (v4)
+      if (filterCopy)
       {
-        (*(v4 + 2))(v4, 0);
+        (*(filterCopy + 2))(filterCopy, 0);
       }
     }
   }
 
-  else if (v4)
+  else if (filterCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(filterCopy + 2))(filterCopy, 1);
   }
 }
 

@@ -7,27 +7,27 @@
 - (void)_registerForceEndPointTimeout;
 - (void)_registerVoiceTriggerTimeout;
 - (void)_reportStopListening;
-- (void)audioSessionDidStartRecording:(BOOL)a3 error:(id)a4;
-- (void)audioSessionDidStopRecording:(int64_t)a3;
+- (void)audioSessionDidStartRecording:(BOOL)recording error:(id)error;
+- (void)audioSessionDidStopRecording:(int64_t)recording;
 - (void)didDetectBeginOfSpeech;
-- (void)didDetectEndOfSpeech:(int64_t)a3;
-- (void)handleAudioInput:(id)a3;
-- (void)matchRecognitionResult:(id)a3 withMatchedBlock:(id)a4 withNonMatchedBlock:(id)a5;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4;
+- (void)didDetectEndOfSpeech:(int64_t)speech;
+- (void)handleAudioInput:(id)input;
+- (void)matchRecognitionResult:(id)result withMatchedBlock:(id)block withNonMatchedBlock:(id)matchedBlock;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription;
 - (void)startTraining;
 @end
 
 @implementation CSVTUITrainingSessionWithPayload
 
-- (void)matchRecognitionResult:(id)a3 withMatchedBlock:(id)a4 withNonMatchedBlock:(id)a5
+- (void)matchRecognitionResult:(id)result withMatchedBlock:(id)block withNonMatchedBlock:(id)matchedBlock
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  resultCopy = result;
+  blockCopy = block;
+  matchedBlockCopy = matchedBlock;
+  if (resultCopy)
   {
     v11 = +[CSVTUIASRGrammars sharedGrammars];
     v12 = [v11 getTrailingPatternsForUtt:self->super._utteranceId Locale:self->super._locale];
@@ -41,7 +41,7 @@
     v17 = 0;
     if (v12 && v14 && v16)
     {
-      v17 = [CSVTUIRegularExpressionMatcher matchWithString:v8 TrailingStr:v12 LeadingStr:v14 Pattern:v16];
+      v17 = [CSVTUIRegularExpressionMatcher matchWithString:resultCopy TrailingStr:v12 LeadingStr:v14 Pattern:v16];
     }
 
     v18 = MEMORY[0x277D015D8];
@@ -72,7 +72,7 @@
       _os_log_impl(&dword_225E12000, v19, OS_LOG_TYPE_DEFAULT, "%s Recog Result: [%{public}ld]", &v23, 0x16u);
     }
 
-    if (v9 && (v21 = v9, v17 == 1) || v10 && (v21 = v10, !v17))
+    if (blockCopy && (v21 = blockCopy, v17 == 1) || matchedBlockCopy && (v21 = matchedBlockCopy, !v17))
     {
       v21[2]();
     }
@@ -81,9 +81,9 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
-  if (self->super._speechRecognitionTask == a3 && !a4)
+  if (self->super._speechRecognitionTask == task && !successfully)
   {
     block[5] = v4;
     block[6] = v5;
@@ -112,10 +112,10 @@ void __80__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didFinishSucce
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
-  v6 = a4;
-  if (self->super._speechRecognitionTask == a3)
+  recognitionCopy = recognition;
+  if (self->super._speechRecognitionTask == task)
   {
     objc_initWeak(&location, self);
     queue = self->super._queue;
@@ -125,7 +125,7 @@ void __80__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didFinishSucce
     v8[3] = &unk_278578C38;
     v8[4] = self;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
+    v9 = recognitionCopy;
     dispatch_async(queue, v8);
 
     objc_destroyWeak(&v10);
@@ -206,10 +206,10 @@ uint64_t __79__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didFinishR
   return result;
 }
 
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription
 {
-  v6 = a4;
-  if (self->super._speechRecognitionTask == a3)
+  transcriptionCopy = transcription;
+  if (self->super._speechRecognitionTask == task)
   {
     objc_initWeak(&location, self);
     queue = self->super._queue;
@@ -219,7 +219,7 @@ uint64_t __79__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didFinishR
     v8[3] = &unk_278578C38;
     v8[4] = self;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
+    v9 = transcriptionCopy;
     dispatch_async(queue, v8);
 
     objc_destroyWeak(&v10);
@@ -277,7 +277,7 @@ uint64_t __86__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didHypothe
   return result;
 }
 
-- (void)didDetectEndOfSpeech:(int64_t)a3
+- (void)didDetectEndOfSpeech:(int64_t)speech
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D015D8];
@@ -287,12 +287,12 @@ uint64_t __86__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didHypothe
     *buf = 136315394;
     v18 = "[CSVTUITrainingSessionWithPayload didDetectEndOfSpeech:]";
     v19 = 2050;
-    v20 = a3;
+    speechCopy = speech;
     _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_DEFAULT, "%s End of speech detected with endpoint type: %{public}ld", buf, 0x16u);
   }
 
   objc_initWeak(&location, self);
-  if (a3 == 2)
+  if (speech == 2)
   {
     queue = self->super._queue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -305,7 +305,7 @@ uint64_t __86__CSVTUITrainingSessionWithPayload_speechRecognitionTask_didHypothe
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (speech == 1)
   {
     v7 = self->super._queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -382,7 +382,7 @@ uint64_t __58__CSVTUITrainingSessionWithPayload_didDetectBeginOfSpeech__block_in
   return result;
 }
 
-- (void)audioSessionDidStopRecording:(int64_t)a3
+- (void)audioSessionDidStopRecording:(int64_t)recording
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015D8];
@@ -393,7 +393,7 @@ uint64_t __58__CSVTUITrainingSessionWithPayload_didDetectBeginOfSpeech__block_in
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s AudioSession Stopped", &v7, 0xCu);
   }
 
-  if (a3)
+  if (recording)
   {
     [(CSVTUITrainingSessionWithPayload *)self closeSessionWithStatus:5 successfully:0];
   }
@@ -401,7 +401,7 @@ uint64_t __58__CSVTUITrainingSessionWithPayload_didDetectBeginOfSpeech__block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionDidStartRecording:(BOOL)a3 error:(id)a4
+- (void)audioSessionDidStartRecording:(BOOL)recording error:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015D8];
@@ -415,9 +415,9 @@ uint64_t __58__CSVTUITrainingSessionWithPayload_didDetectBeginOfSpeech__block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAudioInput:(id)a3
+- (void)handleAudioInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   objc_initWeak(&location, self);
   queue = self->super._queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -425,9 +425,9 @@ uint64_t __58__CSVTUITrainingSessionWithPayload_didDetectBeginOfSpeech__block_in
   v7[2] = __53__CSVTUITrainingSessionWithPayload_handleAudioInput___block_invoke;
   v7[3] = &unk_278578C38;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = inputCopy;
+  selfCopy = self;
+  v6 = inputCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v10);
@@ -634,9 +634,9 @@ void __60__CSVTUITrainingSessionWithPayload__registerEndPointTimeout__block_invo
     return 0.0;
   }
 
-  v3 = [(SFSpeechRecognizer *)speechRecognizer isAvailable];
+  isAvailable = [(SFSpeechRecognizer *)speechRecognizer isAvailable];
   result = 1.5;
-  if (!v3)
+  if (!isAvailable)
   {
     return 0.0;
   }

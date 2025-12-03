@@ -1,13 +1,13 @@
 @interface CalDAVOfficeHour
 + (id)_gregorianGMTCalendar;
-+ (id)dataFromOfficeHours:(id)a3;
-+ (id)icsFromOfficeHours:(id)a3;
++ (id)dataFromOfficeHours:(id)hours;
++ (id)icsFromOfficeHours:(id)hours;
 + (id)logHandle;
-+ (id)officeHoursFromData:(id)a3;
-+ (id)officeHoursFromICS:(id)a3;
-- (CalDAVOfficeHour)initWithCoder:(id)a3;
++ (id)officeHoursFromData:(id)data;
++ (id)officeHoursFromICS:(id)s;
+- (CalDAVOfficeHour)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CalDAVOfficeHour
@@ -31,21 +31,21 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CalDAVOfficeHour)initWithCoder:(id)a3
+- (CalDAVOfficeHour)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CalDAVOfficeHour;
   v5 = [(CalDAVOfficeHour *)&v13 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDay"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDay"];
     v7 = [v6 copy];
     startDate = v5->_startDate;
     v5->_startDate = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     v10 = [v9 copy];
     endDate = v5->_endDate;
     v5->_endDate = v10;
@@ -54,15 +54,15 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CalDAVOfficeHour enabled](self forKey:{"enabled"), @"enabled"}];
-  v5 = [(CalDAVOfficeHour *)self startDate];
-  [v4 encodeObject:v5 forKey:@"startDay"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CalDAVOfficeHour enabled](self forKey:{"enabled"), @"enabled"}];
+  startDate = [(CalDAVOfficeHour *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDay"];
 
-  v6 = [(CalDAVOfficeHour *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(CalDAVOfficeHour *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 }
 
 - (id)description
@@ -80,20 +80,20 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
     v6 = @"disabled";
   }
 
-  v7 = [(CalDAVOfficeHour *)self startDate];
-  v8 = [(CalDAVOfficeHour *)self endDate];
-  v9 = [v3 stringWithFormat:@"%@ <%p> {%@, %@, %@}", v5, self, v6, v7, v8];
+  startDate = [(CalDAVOfficeHour *)self startDate];
+  endDate = [(CalDAVOfficeHour *)self endDate];
+  v9 = [v3 stringWithFormat:@"%@ <%p> {%@, %@, %@}", v5, self, v6, startDate, endDate];
 
   return v9;
 }
 
-+ (id)officeHoursFromData:(id)a3
++ (id)officeHoursFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277D7F108];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithData:v4 options:0 error:0];
+    dataCopy = data;
+    v5 = [[v3 alloc] initWithData:dataCopy options:0 error:0];
 
     v6 = [CalDAVOfficeHour officeHoursFromICS:v5];
   }
@@ -106,10 +106,10 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
   return v6;
 }
 
-+ (id)officeHoursFromICS:(id)a3
++ (id)officeHoursFromICS:(id)s
 {
   v112 = *MEMORY[0x277D85DE8];
-  v69 = a3;
+  sCopy = s;
   v3 = 7;
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:7];
   do
@@ -121,23 +121,23 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
   }
 
   while (v3);
-  v71 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v69 calendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  calendar = [sCopy calendar];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v7 = [v69 calendar];
-  v8 = [v7 components];
+  calendar2 = [sCopy calendar];
+  components = [calendar2 components];
 
-  obj = v8;
+  obj = components;
   v9 = v4;
-  v74 = [v8 countByEnumeratingWithState:&v105 objects:v111 count:16];
+  v74 = [components countByEnumeratingWithState:&v105 objects:v111 count:16];
   if (v74)
   {
     v10 = 0x277D7F000uLL;
     v73 = *v106;
-    v77 = v6;
+    v77 = calendar;
     do
     {
       v11 = 0;
@@ -157,21 +157,21 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
         }
 
         v13 = v12;
-        v14 = [v13 dtstart];
-        v15 = [v6 systemDateForDate:v14 options:0];
+        dtstart = [v13 dtstart];
+        v15 = [calendar systemDateForDate:dtstart options:0];
 
         v80 = v13;
-        v16 = [v13 dtend];
-        v17 = [v6 systemDateForDate:v16 options:0];
+        dtend = [v13 dtend];
+        v17 = [calendar systemDateForDate:dtend options:0];
 
         v75 = v17;
         if (!v17)
         {
-          v18 = [v80 duration];
-          v19 = v18;
-          if (v18)
+          duration = [v80 duration];
+          v19 = duration;
+          if (duration)
           {
-            [v18 timeInterval];
+            [duration timeInterval];
             v75 = [v15 dateByAddingTimeInterval:?];
           }
 
@@ -182,14 +182,14 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
         }
 
         v20 = v15;
-        if ((!v15 || [v71 compare:v15] == 1) && (!v75 || objc_msgSend(v71, "compare:", v75) == -1))
+        if ((!v15 || [date compare:v15] == 1) && (!v75 || objc_msgSend(date, "compare:", v75) == -1))
         {
           v103 = 0u;
           v104 = 0u;
           v101 = 0u;
           v102 = 0u;
-          v21 = [v80 components];
-          v22 = [v21 countByEnumeratingWithState:&v101 objects:v110 count:16];
+          components2 = [v80 components];
+          v22 = [components2 countByEnumeratingWithState:&v101 objects:v110 count:16];
           if (!v22)
           {
             goto LABEL_70;
@@ -199,7 +199,7 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
           v70 = v20;
           v24 = *v102;
           v78 = *v102;
-          v79 = v21;
+          v79 = components2;
           while (1)
           {
             v25 = 0;
@@ -208,7 +208,7 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
             {
               if (*v102 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(components2);
               }
 
               v26 = *(*(&v101 + 1) + 8 * v25);
@@ -217,15 +217,15 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
               if (objc_opt_isKindOfClass())
               {
                 v28 = v26;
-                v29 = [v28 dtstart];
+                dtstart2 = [v28 dtstart];
                 v88 = v28;
-                v30 = [v28 dtend];
-                v90 = [v6 systemDateForDate:v29 options:0];
-                v87 = v29;
-                v89 = [v6 systemCalendarForDate:v29 options:0];
-                v31 = [v6 systemDateForDate:v30 options:0];
-                v86 = v30;
-                v32 = [v6 systemCalendarForDate:v30 options:0];
+                dtend2 = [v28 dtend];
+                v90 = [calendar systemDateForDate:dtstart2 options:0];
+                v87 = dtstart2;
+                v89 = [calendar systemCalendarForDate:dtstart2 options:0];
+                v31 = [calendar systemDateForDate:dtend2 options:0];
+                v86 = dtend2;
+                v32 = [calendar systemCalendarForDate:dtend2 options:0];
                 v33 = v32;
                 v91 = v31;
                 if (v31)
@@ -236,15 +236,15 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
                 else
                 {
                   v35 = v24;
-                  v36 = v6;
-                  v37 = v21;
+                  v36 = calendar;
+                  v37 = components2;
                   v38 = v10;
                   v39 = v32;
-                  v40 = [v80 duration];
-                  v41 = v40;
-                  if (v40)
+                  duration2 = [v80 duration];
+                  v41 = duration2;
+                  if (duration2)
                   {
-                    [v40 timeInterval];
+                    [duration2 timeInterval];
                     v91 = [v90 dateByAddingTimeInterval:?];
                   }
 
@@ -257,8 +257,8 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
                   v33 = v89;
 
                   v10 = v38;
-                  v21 = v37;
-                  v6 = v36;
+                  components2 = v37;
+                  calendar = v36;
                   v24 = v35;
                   v23 = v84;
                 }
@@ -267,27 +267,27 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
                 v93 = v33;
                 v43 = [v33 components:764 fromDate:v91];
                 v95 = v42;
-                v44 = [v42 weekday];
+                weekday = [v42 weekday];
                 v94 = v43;
-                if (v44 == [v43 weekday])
+                if (weekday == [v43 weekday])
                 {
-                  v45 = [v88 rrule];
-                  if ([v45 count]== 1)
+                  rrule = [v88 rrule];
+                  if ([rrule count]== 1)
                   {
-                    v46 = [v45 lastObject];
-                    v47 = [v46 byday];
-                    v48 = v47;
+                    lastObject = [rrule lastObject];
+                    byday = [lastObject byday];
+                    v48 = byday;
                     v49 = v89;
-                    v82 = v45;
+                    v82 = rrule;
                     v83 = v25;
-                    v81 = v46;
-                    if (v47)
+                    v81 = lastObject;
+                    if (byday)
                     {
                       v99 = 0u;
                       v100 = 0u;
                       v97 = 0u;
                       v98 = 0u;
-                      v50 = [v47 countByEnumeratingWithState:&v97 objects:v109 count:16];
+                      v50 = [byday countByEnumeratingWithState:&v97 objects:v109 count:16];
                       if (!v50)
                       {
                         goto LABEL_64;
@@ -307,8 +307,8 @@ uint64_t __29__CalDAVOfficeHour_logHandle__block_invoke()
 
                           v54 = [v9 objectAtIndex:{objc_msgSend(*(*(&v97 + 1) + 8 * i), "weekday") - 1}];
                           [v54 setEnabled:1];
-                          v55 = [v54 startDate];
-                          if (!v55)
+                          startDate = [v54 startDate];
+                          if (!startDate)
                           {
                             v57 = 0;
 LABEL_45:
@@ -316,7 +316,7 @@ LABEL_45:
                             goto LABEL_46;
                           }
 
-                          v56 = [v49 dateFromComponents:v55];
+                          v56 = [v49 dateFromComponents:startDate];
                           v57 = v56;
                           if (!v56)
                           {
@@ -331,8 +331,8 @@ LABEL_45:
                           }
 
 LABEL_46:
-                          v59 = [v54 endDate];
-                          if (!v59)
+                          endDate = [v54 endDate];
+                          if (!endDate)
                           {
                             v61 = 0;
 LABEL_52:
@@ -340,7 +340,7 @@ LABEL_52:
                             goto LABEL_53;
                           }
 
-                          v60 = [v93 dateFromComponents:v59];
+                          v60 = [v93 dateFromComponents:endDate];
                           v61 = v60;
                           if (!v60)
                           {
@@ -370,43 +370,43 @@ LABEL_53:
                       }
                     }
 
-                    v66 = [a1 logHandle];
-                    if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
+                    logHandle = [self logHandle];
+                    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      _os_log_impl(&dword_2243BD000, v66, OS_LOG_TYPE_DEFAULT, "Discarding overly-complex recurrence for AVAILABLE, iCal doesn't understand it.", buf, 2u);
+                      _os_log_impl(&dword_2243BD000, logHandle, OS_LOG_TYPE_DEFAULT, "Discarding overly-complex recurrence for AVAILABLE, iCal doesn't understand it.", buf, 2u);
                     }
 
 LABEL_64:
-                    v6 = v77;
+                    calendar = v77;
                     v24 = v78;
                     v10 = 0x277D7F000;
-                    v21 = v79;
+                    components2 = v79;
                     v25 = v83;
                     v23 = v84;
-                    v65 = v81;
-                    v45 = v82;
+                    logHandle2 = v81;
+                    rrule = v82;
                   }
 
                   else
                   {
-                    v65 = [a1 logHandle];
+                    logHandle2 = [self logHandle];
                     v49 = v89;
-                    if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
+                    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      _os_log_impl(&dword_2243BD000, v65, OS_LOG_TYPE_DEFAULT, "Discarding non-recurring AVAILABLE, iCal doesn't understand it.", buf, 2u);
+                      _os_log_impl(&dword_2243BD000, logHandle2, OS_LOG_TYPE_DEFAULT, "Discarding non-recurring AVAILABLE, iCal doesn't understand it.", buf, 2u);
                     }
                   }
                 }
 
                 else
                 {
-                  v45 = [a1 logHandle];
-                  if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+                  rrule = [self logHandle];
+                  if (os_log_type_enabled(rrule, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 0;
-                    _os_log_impl(&dword_2243BD000, v45, OS_LOG_TYPE_DEFAULT, "Discarding non-same-day AVAILABLE, iCal doesn't understand it.", buf, 2u);
+                    _os_log_impl(&dword_2243BD000, rrule, OS_LOG_TYPE_DEFAULT, "Discarding non-same-day AVAILABLE, iCal doesn't understand it.", buf, 2u);
                   }
 
                   v49 = v89;
@@ -417,7 +417,7 @@ LABEL_64:
             }
 
             while (v25 != v23);
-            v23 = [v21 countByEnumeratingWithState:&v101 objects:v110 count:16];
+            v23 = [components2 countByEnumeratingWithState:&v101 objects:v110 count:16];
             if (!v23)
             {
               v20 = v70;
@@ -426,11 +426,11 @@ LABEL_64:
           }
         }
 
-        v21 = [a1 logHandle];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        components2 = [self logHandle];
+        if (os_log_type_enabled(components2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_2243BD000, v21, OS_LOG_TYPE_DEFAULT, "Discarding non-current VAVAILABILITY, iCal doesn't understand it.", buf, 2u);
+          _os_log_impl(&dword_2243BD000, components2, OS_LOG_TYPE_DEFAULT, "Discarding non-current VAVAILABILITY, iCal doesn't understand it.", buf, 2u);
         }
 
 LABEL_70:
@@ -451,9 +451,9 @@ LABEL_71:
   return v9;
 }
 
-+ (id)dataFromOfficeHours:(id)a3
++ (id)dataFromOfficeHours:(id)hours
 {
-  v3 = [CalDAVOfficeHour icsFromOfficeHours:a3];
+  v3 = [CalDAVOfficeHour icsFromOfficeHours:hours];
   v4 = [v3 ICSDataWithOptions:0];
 
   return v4;
@@ -482,65 +482,65 @@ void __41__CalDAVOfficeHour__gregorianGMTCalendar__block_invoke()
   [_gregorianGMTCalendar_gregorianGMTCalendar setTimeZone:v3];
 }
 
-+ (id)icsFromOfficeHours:(id)a3
++ (id)icsFromOfficeHours:(id)hours
 {
-  v74 = a3;
-  if ([v74 count] != 7)
+  hoursCopy = hours;
+  if ([hoursCopy count] != 7)
   {
-    [(CalDAVOfficeHour *)a2 icsFromOfficeHours:a1];
+    [(CalDAVOfficeHour *)a2 icsFromOfficeHours:self];
   }
 
   v5 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
-  v6 = [a1 _gregorianGMTCalendar];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v66 = v6;
-  v8 = [v6 components:764 fromDate:v7];
+  _gregorianGMTCalendar = [self _gregorianGMTCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v66 = _gregorianGMTCalendar;
+  v8 = [_gregorianGMTCalendar components:764 fromDate:date];
 
   v62 = v5;
   v64 = [objc_alloc(MEMORY[0x277D7F0E8]) initWithYear:objc_msgSend(v8 month:"year") day:objc_msgSend(v8 hour:"month") minute:objc_msgSend(v8 second:"day") timeZone:{objc_msgSend(v8, "hour"), objc_msgSend(v8, "minute"), objc_msgSend(v8, "second"), v5}];
   v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v65 = v8;
-  v9 = [v8 weekday];
+  weekday = [v8 weekday];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   for (i = 0; i != 7; ++i)
   {
-    v15 = [v74 objectAtIndex:v9 - 1];
+    v15 = [hoursCopy objectAtIndex:weekday - 1];
     if (![v15 enabled])
     {
       goto LABEL_21;
     }
 
     v77 = i;
-    v16 = [v15 startDate];
+    startDate = [v15 startDate];
     v73 = v15;
-    v75 = [v15 endDate];
-    v76 = v16;
+    endDate = [v15 endDate];
+    v76 = startDate;
     if (!v11 || !v12)
     {
       goto LABEL_17;
     }
 
-    v17 = [v16 hour];
-    v18 = [v12 value];
-    if (v17 != [v18 hour])
+    hour = [startDate hour];
+    value = [v12 value];
+    if (hour != [value hour])
     {
       goto LABEL_16;
     }
 
-    v19 = [v16 minute];
-    v20 = [v12 value];
-    if (v19 != [v20 minute] || !v13)
+    minute = [startDate minute];
+    value2 = [v12 value];
+    if (minute != [value2 minute] || !v13)
     {
       goto LABEL_15;
     }
 
     v21 = v12;
-    v22 = [v75 hour];
-    v23 = [v13 value];
-    if (v22 != [v23 hour])
+    hour2 = [endDate hour];
+    value3 = [v13 value];
+    if (hour2 != [value3 hour])
     {
 
       v12 = v21;
@@ -548,12 +548,12 @@ LABEL_15:
 
 LABEL_16:
 LABEL_17:
-      v72 = v9;
+      v72 = weekday;
       v31 = v13;
       if (v10)
       {
-        v32 = [MEMORY[0x277D7F0E0] makeUID];
-        [v10 setUid:v32];
+        makeUID = [MEMORY[0x277D7F0E0] makeUID];
+        [v10 setUid:makeUID];
 
         [v10 setDtstamp:v64];
         [v10 setDtstart:v12];
@@ -572,56 +572,56 @@ LABEL_17:
       [v34 setMonth:{objc_msgSend(v65, "month") - 1}];
       [v34 setDay:{objc_msgSend(v65, "day") + v77}];
       v35 = [v66 dateFromComponents:v34];
-      v28 = [v66 components:28 fromDate:v35];
+      byday = [v66 components:28 fromDate:v35];
 
       v36 = objc_alloc(MEMORY[0x277D7F0E8]);
-      v37 = [v28 year];
+      year = [byday year];
       v38 = v12;
-      v39 = [v28 month];
-      v40 = [v28 day];
-      v41 = [v16 hour];
-      v42 = [v16 minute];
+      month = [byday month];
+      v40 = [byday day];
+      hour3 = [startDate hour];
+      minute2 = [startDate minute];
       [MEMORY[0x277CBEBB0] defaultTimeZone];
       v43 = v67 = v31;
-      v68 = [v36 initWithYear:v37 month:v39 day:v40 hour:v41 minute:v42 second:0 timeZone:v43];
+      v68 = [v36 initWithYear:year month:month day:v40 hour:hour3 minute:minute2 second:0 timeZone:v43];
 
       v44 = objc_alloc(MEMORY[0x277D7F0E8]);
-      v45 = [v28 year];
-      v46 = [v28 month];
-      v47 = [v28 day];
-      v48 = [v75 hour];
-      v49 = [v75 minute];
-      v50 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-      v13 = [v44 initWithYear:v45 month:v46 day:v47 hour:v48 minute:v49 second:0 timeZone:v50];
+      year2 = [byday year];
+      month2 = [byday month];
+      v47 = [byday day];
+      hour4 = [endDate hour];
+      minute3 = [endDate minute];
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      v13 = [v44 initWithYear:year2 month:month2 day:v47 hour:hour4 minute:minute3 second:0 timeZone:defaultTimeZone];
 
       v11 = [objc_alloc(MEMORY[0x277D7F138]) initWithFrequency:5];
-      v9 = v72;
+      weekday = v72;
       v29 = [objc_alloc(MEMORY[0x277D7F0C8]) initWithWeekday:v72];
       v30 = [MEMORY[0x277CBEA60] arrayWithObject:v29];
       [v11 setByday:v30];
       v21 = v68;
-      v27 = v75;
+      v27 = endDate;
       i = v77;
       v10 = v70;
       goto LABEL_20;
     }
 
-    v71 = [v75 minute];
-    v24 = [v13 value];
-    v25 = [v24 minute];
+    minute4 = [endDate minute];
+    value4 = [v13 value];
+    minute5 = [value4 minute];
 
-    v26 = v71 == v25;
+    v26 = minute4 == minute5;
     v12 = v21;
-    v16 = v76;
-    v27 = v75;
+    startDate = v76;
+    v27 = endDate;
     if (!v26)
     {
       goto LABEL_17;
     }
 
-    v28 = [v11 byday];
-    v29 = [objc_alloc(MEMORY[0x277D7F0C8]) initWithWeekday:v9];
-    v30 = [v28 arrayByAddingObject:v29];
+    byday = [v11 byday];
+    v29 = [objc_alloc(MEMORY[0x277D7F0C8]) initWithWeekday:weekday];
+    v30 = [byday arrayByAddingObject:v29];
     [v11 setByday:v30];
     i = v77;
 LABEL_20:
@@ -629,15 +629,15 @@ LABEL_20:
     v12 = v21;
     v15 = v73;
 LABEL_21:
-    v9 = v9 % 7 + 1;
+    weekday = weekday % 7 + 1;
   }
 
   v51 = v12;
   v52 = v13;
   if (v10)
   {
-    v53 = [MEMORY[0x277D7F0E0] makeUID];
-    [v10 setUid:v53];
+    makeUID2 = [MEMORY[0x277D7F0E0] makeUID];
+    [v10 setUid:makeUID2];
 
     [v10 setDtstamp:v64];
     [v10 setDtstart:v51];
@@ -649,8 +649,8 @@ LABEL_21:
   }
 
   v55 = objc_alloc_init(MEMORY[0x277D7F0B8]);
-  v56 = [MEMORY[0x277D7F0E0] makeUID];
-  [v55 setUid:v56];
+  makeUID3 = [MEMORY[0x277D7F0E0] makeUID];
+  [v55 setUid:makeUID3];
 
   [v55 setDtstamp:v64];
   [v55 setComponents:v63];

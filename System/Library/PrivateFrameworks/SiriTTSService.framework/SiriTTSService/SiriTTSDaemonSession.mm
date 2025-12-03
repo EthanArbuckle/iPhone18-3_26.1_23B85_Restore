@@ -1,49 +1,49 @@
 @interface SiriTTSDaemonSession
-- (SiriTTSDaemonSession)initWithAccessoryId:(id)a3;
-- (void)adjustVolume:(float)a3 rampTime:(double)a4 didFinish:(id)a5;
-- (void)cancelWithRequest:(id)a3;
+- (SiriTTSDaemonSession)initWithAccessoryId:(id)id;
+- (void)adjustVolume:(float)volume rampTime:(double)time didFinish:(id)finish;
+- (void)cancelWithRequest:(id)request;
 - (void)clearDeviceCache;
-- (void)didGenerateAudioWithRequestId:(unint64_t)a3 audio:(id)a4;
-- (void)didGenerateWordTimingsWithRequestId:(unint64_t)a3 wordTimingInfo:(id)a4;
-- (void)didReportInstrumentWithRequestId:(unint64_t)a3 instrumentationMetrics:(id)a4;
-- (void)didStartSpeakingWithRequestId:(unint64_t)a3;
-- (void)forwardWithStreamObject:(id)a3;
+- (void)didGenerateAudioWithRequestId:(unint64_t)id audio:(id)audio;
+- (void)didGenerateWordTimingsWithRequestId:(unint64_t)id wordTimingInfo:(id)info;
+- (void)didReportInstrumentWithRequestId:(unint64_t)id instrumentationMetrics:(id)metrics;
+- (void)didStartSpeakingWithRequestId:(unint64_t)id;
+- (void)forwardWithStreamObject:(id)object;
 - (void)killDaemon;
-- (void)signalWithInlineStreaming:(id)a3;
-- (void)subscribeWithVoices:(id)a3 reply:(id)a4;
+- (void)signalWithInlineStreaming:(id)streaming;
+- (void)subscribeWithVoices:(id)voices reply:(id)reply;
 @end
 
 @implementation SiriTTSDaemonSession
 
-- (void)didStartSpeakingWithRequestId:(unint64_t)a3
+- (void)didStartSpeakingWithRequestId:(unint64_t)id
 {
-  v4 = self;
-  DaemonSession.didStartSpeaking(requestId:)(a3);
+  selfCopy = self;
+  DaemonSession.didStartSpeaking(requestId:)(id);
 }
 
-- (void)didGenerateAudioWithRequestId:(unint64_t)a3 audio:(id)a4
+- (void)didGenerateAudioWithRequestId:(unint64_t)id audio:(id)audio
 {
-  v6 = a4;
-  v7 = self;
-  DaemonSession.didGenerateAudio(requestId:audio:)(a3, v6);
+  audioCopy = audio;
+  selfCopy = self;
+  DaemonSession.didGenerateAudio(requestId:audio:)(id, audioCopy);
 }
 
-- (void)didReportInstrumentWithRequestId:(unint64_t)a3 instrumentationMetrics:(id)a4
+- (void)didReportInstrumentWithRequestId:(unint64_t)id instrumentationMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = self;
-  DaemonSession.didReportInstrument(requestId:instrumentationMetrics:)(a3, v6);
+  metricsCopy = metrics;
+  selfCopy = self;
+  DaemonSession.didReportInstrument(requestId:instrumentationMetrics:)(id, metricsCopy);
 }
 
-- (void)didGenerateWordTimingsWithRequestId:(unint64_t)a3 wordTimingInfo:(id)a4
+- (void)didGenerateWordTimingsWithRequestId:(unint64_t)id wordTimingInfo:(id)info
 {
   type metadata accessor for WordTimingInfo();
   v6 = sub_1B1C2CE78();
-  v7 = self;
-  DaemonSession.didGenerateWordTimings(requestId:wordTimingInfo:)(a3, v6);
+  selfCopy = self;
+  DaemonSession.didGenerateWordTimings(requestId:wordTimingInfo:)(id, v6);
 }
 
-- (SiriTTSDaemonSession)initWithAccessoryId:(id)a3
+- (SiriTTSDaemonSession)initWithAccessoryId:(id)id
 {
   v3 = sub_1B1C2C478();
   v4 = *(*(v3 - 8) + 64);
@@ -53,56 +53,56 @@
   return result;
 }
 
-- (void)cancelWithRequest:(id)a3
+- (void)cancelWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BF2758(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1B1BF2758(requestCopy);
 }
 
-- (void)signalWithInlineStreaming:(id)a3
+- (void)signalWithInlineStreaming:(id)streaming
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BF27D4(v4);
+  streamingCopy = streaming;
+  selfCopy = self;
+  sub_1B1BF27D4(streamingCopy);
 }
 
-- (void)forwardWithStreamObject:(id)a3
+- (void)forwardWithStreamObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BF29A8(v4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B1BF29A8(objectCopy);
 }
 
-- (void)adjustVolume:(float)a3 rampTime:(double)a4 didFinish:(id)a5
+- (void)adjustVolume:(float)volume rampTime:(double)time didFinish:(id)finish
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(finish);
   _Block_copy(v8);
-  v9 = self;
-  sub_1B1BF3124(v9, v8, a3, a4);
+  selfCopy = self;
+  sub_1B1BF3124(selfCopy, v8, volume, time);
   _Block_release(v8);
 }
 
-- (void)subscribeWithVoices:(id)a3 reply:(id)a4
+- (void)subscribeWithVoices:(id)voices reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   type metadata accessor for SynthesisVoice();
   v6 = sub_1B1C2CE78();
   _Block_copy(v5);
-  v7 = self;
-  sub_1B1BF4FB0(v6, v7, v5);
+  selfCopy = self;
+  sub_1B1BF4FB0(v6, selfCopy, v5);
   _Block_release(v5);
 }
 
 - (void)clearDeviceCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1BF7EF0();
 }
 
 - (void)killDaemon
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1BF8120();
 }
 

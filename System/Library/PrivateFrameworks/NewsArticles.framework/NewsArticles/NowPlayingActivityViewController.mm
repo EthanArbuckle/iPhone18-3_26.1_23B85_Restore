@@ -1,28 +1,28 @@
 @interface NowPlayingActivityViewController
-- (_TtC12NewsArticles32NowPlayingActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
+- (_TtC12NewsArticles32NowPlayingActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
 @end
 
 @implementation NowPlayingActivityViewController
 
-- (_TtC12NewsArticles32NowPlayingActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (_TtC12NewsArticles32NowPlayingActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (activities)
   {
     sub_1D7A000E8();
     sub_1D7D3063C();
-    v8 = a3;
-    a4 = sub_1D7D3062C();
+    itemsCopy = items;
+    activities = sub_1D7D3062C();
   }
 
   else
   {
-    v9 = a3;
+    itemsCopy2 = items;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(NowPlayingActivityViewController *)&v12 initWithActivityItems:a3 applicationActivities:a4];
+  v10 = [(NowPlayingActivityViewController *)&v12 initWithActivityItems:items applicationActivities:activities];
 
   return v10;
 }

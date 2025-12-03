@@ -1,13 +1,13 @@
 @interface CNAutocompleteQueryCacheHelper
 + (id)cache_os_log;
-+ (id)stringByRemovingLastCharacterFromString:(id)a3;
-- (CNAutocompleteQueryCacheHelper)initWithCache:(id)a3 searchString:(id)a4 serverSearchObservable:(id)a5;
-- (CNAutocompleteQueryCacheHelper)initWithCache:(id)a3 searchString:(id)a4 serverSearchObservable:(id)a5 cacheMissAuditor:(id)a6 schedulerProvider:(id)a7;
-- (id)cachedFutureForSearchString:(id)a3;
++ (id)stringByRemovingLastCharacterFromString:(id)string;
+- (CNAutocompleteQueryCacheHelper)initWithCache:(id)cache searchString:(id)string serverSearchObservable:(id)observable;
+- (CNAutocompleteQueryCacheHelper)initWithCache:(id)cache searchString:(id)string serverSearchObservable:(id)observable cacheMissAuditor:(id)auditor schedulerProvider:(id)provider;
+- (id)cachedFutureForSearchString:(id)string;
 - (id)cachedResultsObservable;
-- (id)observablesForSearchString:(id)a3 withCachedResults:(id)a4;
-- (id)remoteResultsForSearchString:(id)a3;
-- (id)remoteResultsForSearchString:(id)a3 andCompletePromise:(id)a4;
+- (id)observablesForSearchString:(id)string withCachedResults:(id)results;
+- (id)remoteResultsForSearchString:(id)string;
+- (id)remoteResultsForSearchString:(id)string andCompletePromise:(id)promise;
 - (id)uncachedResultsObservable;
 @end
 
@@ -32,40 +32,40 @@ uint64_t __46__CNAutocompleteQueryCacheHelper_cache_os_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CNAutocompleteQueryCacheHelper)initWithCache:(id)a3 searchString:(id)a4 serverSearchObservable:(id)a5
+- (CNAutocompleteQueryCacheHelper)initWithCache:(id)cache searchString:(id)string serverSearchObservable:(id)observable
 {
   v8 = MEMORY[0x277CFBEB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 defaultProvider];
+  observableCopy = observable;
+  stringCopy = string;
+  cacheCopy = cache;
+  defaultProvider = [v8 defaultProvider];
   v13 = objc_alloc_init(CNAutocompleteQueryCacheMissAuditor);
-  v14 = [(CNAutocompleteQueryCacheHelper *)self initWithCache:v11 searchString:v10 serverSearchObservable:v9 cacheMissAuditor:v13 schedulerProvider:v12];
+  v14 = [(CNAutocompleteQueryCacheHelper *)self initWithCache:cacheCopy searchString:stringCopy serverSearchObservable:observableCopy cacheMissAuditor:v13 schedulerProvider:defaultProvider];
 
   return v14;
 }
 
-- (CNAutocompleteQueryCacheHelper)initWithCache:(id)a3 searchString:(id)a4 serverSearchObservable:(id)a5 cacheMissAuditor:(id)a6 schedulerProvider:(id)a7
+- (CNAutocompleteQueryCacheHelper)initWithCache:(id)cache searchString:(id)string serverSearchObservable:(id)observable cacheMissAuditor:(id)auditor schedulerProvider:(id)provider
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  cacheCopy = cache;
+  stringCopy = string;
+  observableCopy = observable;
+  auditorCopy = auditor;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = CNAutocompleteQueryCacheHelper;
   v18 = [(CNAutocompleteQueryCacheHelper *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_cache, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_cache, cache);
+    v20 = [stringCopy copy];
     searchString = v19->_searchString;
     v19->_searchString = v20;
 
-    objc_storeStrong(&v19->_serverSearchObservable, a5);
-    objc_storeStrong(&v19->_cacheMissAuditor, a6);
-    objc_storeStrong(&v19->_schedulerProvider, a7);
+    objc_storeStrong(&v19->_serverSearchObservable, observable);
+    objc_storeStrong(&v19->_cacheMissAuditor, auditor);
+    objc_storeStrong(&v19->_schedulerProvider, provider);
     v22 = v19;
   }
 
@@ -74,8 +74,8 @@ uint64_t __46__CNAutocompleteQueryCacheHelper_cache_os_log__block_invoke()
 
 - (id)cachedResultsObservable
 {
-  v3 = [(CNAutocompleteQueryCacheHelper *)self searchString];
-  v4 = [(CNAutocompleteQueryCacheHelper *)self cachedFutureForSearchString:v3];
+  searchString = [(CNAutocompleteQueryCacheHelper *)self searchString];
+  v4 = [(CNAutocompleteQueryCacheHelper *)self cachedFutureForSearchString:searchString];
   if (v4)
   {
     [MEMORY[0x277CFBE60] observableWithFuture:v4];
@@ -90,8 +90,8 @@ uint64_t __46__CNAutocompleteQueryCacheHelper_cache_os_log__block_invoke()
   v16[1] = 3221225472;
   v16[2] = __57__CNAutocompleteQueryCacheHelper_cachedResultsObservable__block_invoke;
   v16[3] = &unk_2781C48D8;
-  v17 = v3;
-  v6 = v3;
+  v17 = searchString;
+  v6 = searchString;
   v7 = [v5 map:v16];
 
   v8 = [v7 filter:&__block_literal_global_9];
@@ -110,8 +110,8 @@ uint64_t __46__CNAutocompleteQueryCacheHelper_cache_os_log__block_invoke()
   v14[4] = self;
   v10 = [v9 doOnError:v14];
 
-  v11 = [MEMORY[0x277CFBE60] emptyObservable];
-  v12 = [v10 onError:v11];
+  emptyObservable = [MEMORY[0x277CFBE60] emptyObservable];
+  v12 = [v10 onError:emptyObservable];
 
   return v12;
 }
@@ -161,12 +161,12 @@ void __57__CNAutocompleteQueryCacheHelper_cachedResultsObservable__block_invoke_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedFutureForSearchString:(id)a3
+- (id)cachedFutureForSearchString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_cache;
-  v6 = v4;
+  v6 = stringCopy;
   v7 = v5;
   objc_sync_enter(v7);
   v8 = 0;
@@ -178,8 +178,8 @@ void __57__CNAutocompleteQueryCacheHelper_cachedResultsObservable__block_invoke_
     v8 = [(CNCache *)v7 objectForKeyedSubscript:v10];
     if (v8)
     {
-      v11 = [objc_opt_class() cache_os_log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      cache_os_log = [objc_opt_class() cache_os_log];
+      if (os_log_type_enabled(cache_os_log, OS_LOG_TYPE_DEFAULT))
       {
         v12 = [v10 length];
         v13 = [v6 length];
@@ -189,22 +189,22 @@ void __57__CNAutocompleteQueryCacheHelper_cachedResultsObservable__block_invoke_
         v21 = v12;
         v22 = 2048;
         v23 = v13;
-        _os_log_impl(&dword_2155FE000, v11, OS_LOG_TYPE_DEFAULT, "Found entry in reuse cache (key “%@”, length %lu/%lu)", buf, 0x20u);
+        _os_log_impl(&dword_2155FE000, cache_os_log, OS_LOG_TYPE_DEFAULT, "Found entry in reuse cache (key “%@”, length %lu/%lu)", buf, 0x20u);
       }
     }
 
     else
     {
-      v14 = [objc_opt_class() cache_os_log];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      cache_os_log2 = [objc_opt_class() cache_os_log];
+      if (os_log_type_enabled(cache_os_log2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v17;
         v19 = v10;
-        _os_log_impl(&dword_2155FE000, v14, OS_LOG_TYPE_DEFAULT, "No cache entry for “%@”", buf, 0xCu);
+        _os_log_impl(&dword_2155FE000, cache_os_log2, OS_LOG_TYPE_DEFAULT, "No cache entry for “%@”", buf, 0xCu);
       }
 
       [objc_opt_class() stringByRemovingLastCharacterFromString:v10];
-      v10 = v11 = v10;
+      v10 = cache_os_log = v10;
     }
   }
 
@@ -223,7 +223,7 @@ void __57__CNAutocompleteQueryCacheHelper_cachedResultsObservable__block_invoke_
   v12 = 3221225472;
   v13 = __59__CNAutocompleteQueryCacheHelper_uncachedResultsObservable__block_invoke;
   v14 = &unk_2781C4928;
-  v15 = self;
+  selfCopy = self;
   v16 = v3;
   v5 = v3;
   v6 = [v4 observableWithBlock:&v11];
@@ -341,23 +341,23 @@ uint64_t __59__CNAutocompleteQueryCacheHelper_uncachedResultsObservable__block_i
   return [v2 observerDidComplete];
 }
 
-+ (id)stringByRemovingLastCharacterFromString:(id)a3
++ (id)stringByRemovingLastCharacterFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 substringToIndex:{objc_msgSend(v3, "rangeOfComposedCharacterSequenceAtIndex:", objc_msgSend(v3, "length") - 1)}];
+  stringCopy = string;
+  v4 = [stringCopy substringToIndex:{objc_msgSend(stringCopy, "rangeOfComposedCharacterSequenceAtIndex:", objc_msgSend(stringCopy, "length") - 1)}];
 
   return v4;
 }
 
-- (id)remoteResultsForSearchString:(id)a3
+- (id)remoteResultsForSearchString:(id)string
 {
-  v4 = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
+  serverSearchObservable = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString___block_invoke;
   v7[3] = &unk_2781C4418;
   v7[4] = self;
-  v5 = [v4 doOnNext:v7];
+  v5 = [serverSearchObservable doOnNext:v7];
 
   return v5;
 }
@@ -370,24 +370,24 @@ void __63__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString___block_i
   [v4 didReturnLiveResults:v3];
 }
 
-- (id)remoteResultsForSearchString:(id)a3 andCompletePromise:(id)a4
+- (id)remoteResultsForSearchString:(id)string andCompletePromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  promiseCopy = promise;
   v8 = self->_cache;
-  v9 = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
+  serverSearchObservable = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __82__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString_andCompletePromise___block_invoke;
   v42[3] = &unk_2781C4950;
   v42[4] = self;
-  v10 = v6;
+  v10 = stringCopy;
   v43 = v10;
-  v11 = v7;
+  v11 = promiseCopy;
   v44 = v11;
   v12 = v8;
   v45 = v12;
-  v13 = [v9 doOnNext:v42];
+  v13 = [serverSearchObservable doOnNext:v42];
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -402,7 +402,7 @@ void __63__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString___block_i
   v36[3] = &unk_2781C4978;
   v15 = v12;
   v37 = v15;
-  v38 = self;
+  selfCopy = self;
   v16 = v10;
   v39 = v16;
   v17 = v11;
@@ -415,7 +415,7 @@ void __63__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString___block_i
   v32[3] = &unk_2781C4048;
   v19 = v15;
   v33 = v19;
-  v34 = self;
+  selfCopy2 = self;
   v20 = v17;
   v35 = v20;
   v21 = [v18 doOnCompletion:v32];
@@ -425,7 +425,7 @@ void __63__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString___block_i
   v27[2] = __82__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString_andCompletePromise___block_invoke_27;
   v27[3] = &unk_2781C4900;
   v28 = v19;
-  v29 = self;
+  selfCopy3 = self;
   v30 = v20;
   v31 = v16;
   v22 = v16;
@@ -568,16 +568,16 @@ void __82__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString_andComple
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)observablesForSearchString:(id)a3 withCachedResults:(id)a4
+- (id)observablesForSearchString:(id)string withCachedResults:(id)results
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CFBE60] observableWithFuture:a4];
+  stringCopy = string;
+  v7 = [MEMORY[0x277CFBE60] observableWithFuture:results];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __79__CNAutocompleteQueryCacheHelper_observablesForSearchString_withCachedResults___block_invoke;
   v22[3] = &unk_2781C48D8;
-  v23 = v6;
-  v8 = v6;
+  v23 = stringCopy;
+  v8 = stringCopy;
   v9 = [v7 map:v22];
 
   v10 = [v9 filter:&__block_literal_global_29];
@@ -596,16 +596,16 @@ void __82__CNAutocompleteQueryCacheHelper_remoteResultsForSearchString_andComple
   v20[4] = self;
   v12 = [v11 doOnError:v20];
 
-  v13 = [MEMORY[0x277CFBE60] emptyObservable];
-  v14 = [v12 onError:v13];
+  emptyObservable = [MEMORY[0x277CFBE60] emptyObservable];
+  v14 = [v12 onError:emptyObservable];
 
-  v15 = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
+  serverSearchObservable = [(CNAutocompleteQueryCacheHelper *)self serverSearchObservable];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__CNAutocompleteQueryCacheHelper_observablesForSearchString_withCachedResults___block_invoke_31;
   v19[3] = &unk_2781C4418;
   v19[4] = self;
-  v16 = [v15 doOnNext:v19];
+  v16 = [serverSearchObservable doOnNext:v19];
 
   v17 = [MEMORY[0x277CFBE70] pairWithFirst:v14 second:v16];
 

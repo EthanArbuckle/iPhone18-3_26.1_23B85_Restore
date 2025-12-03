@@ -1,19 +1,19 @@
 @interface VSAMSChannelAppsResponseDictionaryValueTransformer
-- (id)parseAppData:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)parseAppData:(id)data;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAMSChannelAppsResponseDictionaryValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v4;
+    v42 = valueCopy;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Handling response %@", buf, 0xCu);
   }
 
@@ -27,9 +27,9 @@
     goto LABEL_26;
   }
 
-  v10 = [v4 vs_arrayOfDictionariesForKey:@"data"];
-  v11 = [v10 firstObject];
-  v12 = [v11 vs_dictionaryForKey:@"relationships"];
+  v10 = [valueCopy vs_arrayOfDictionariesForKey:@"data"];
+  firstObject = [v10 firstObject];
+  v12 = [firstObject vs_dictionaryForKey:@"relationships"];
 
   v13 = [v12 vs_dictionaryForKey:@"subscription-apps"];
   v14 = [v12 vs_dictionaryForKey:@"channel-apps"];
@@ -46,13 +46,13 @@
   {
     v9 = 0x277CE2000uLL;
     v30 = MEMORY[0x277CE2250];
-    v20 = [(VSAMSChannelAppsResponseDictionaryValueTransformer *)self parseAppData:v4];
+    v20 = [(VSAMSChannelAppsResponseDictionaryValueTransformer *)self parseAppData:valueCopy];
     v29 = [v30 failableWithObject:v20];
   }
 
   else
   {
-    v34 = self;
+    selfCopy = self;
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = [v13 vs_arrayForKey:@"data"];
     if (v21)
@@ -76,14 +76,14 @@
 
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v24 setObject:v20 forKey:@"data"];
-    v25 = [(VSAMSChannelAppsResponseDictionaryValueTransformer *)v34 parseAppData:v24];
-    v26 = [v25 allApps];
-    [v7 addObjectsFromArray:v26];
+    v25 = [(VSAMSChannelAppsResponseDictionaryValueTransformer *)selfCopy parseAppData:v24];
+    allApps = [v25 allApps];
+    [v7 addObjectsFromArray:allApps];
 
-    v27 = [v25 appsByChannelID];
+    appsByChannelID = [v25 appsByChannelID];
     v35 = v7;
     v28 = v23;
-    v29 = [v27 mutableCopy];
+    v29 = [appsByChannelID mutableCopy];
     [v8 addEntriesFromDictionary:v29];
 
     v7 = v35;
@@ -103,10 +103,10 @@ LABEL_26:
   return v29;
 }
 
-- (id)parseAppData:(id)a3
+- (id)parseAppData:(id)data
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v28 = objc_alloc_init(VSIdentityProviderChannelAppsResponse);
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -115,8 +115,8 @@ LABEL_26:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v27 = v3;
-  obj = [v3 vs_arrayOfDictionariesForKey:@"data"];
+  v27 = dataCopy;
+  obj = [dataCopy vs_arrayOfDictionariesForKey:@"data"];
   v33 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v33)
   {

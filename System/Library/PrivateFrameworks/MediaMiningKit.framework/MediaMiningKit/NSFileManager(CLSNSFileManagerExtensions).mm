@@ -14,7 +14,7 @@
   v11 = [v8 stringByAppendingPathComponent:v9];
   v12 = [v11 stringByAppendingPathExtension:v10];
 
-  if ([a1 fileExistsAtPath:v12])
+  if ([self fileExistsAtPath:v12])
   {
     v13 = 2;
     do
@@ -26,7 +26,7 @@
       v12 = v15;
     }
 
-    while (([a1 fileExistsAtPath:v15] & 1) != 0);
+    while (([self fileExistsAtPath:v15] & 1) != 0);
   }
 
   else
@@ -42,7 +42,7 @@
   v17 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v12 = 0;
-  if ([a1 fileExistsAtPath:v4 isDirectory:&v12])
+  if ([self fileExistsAtPath:v4 isDirectory:&v12])
   {
     v5 = v12;
   }
@@ -50,21 +50,21 @@
   else
   {
     v11 = 0;
-    v5 = [a1 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+    v5 = [self createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
     v6 = v11;
     if ((v5 & 1) == 0)
     {
       v7 = +[CLSLogging sharedLogging];
-      v8 = [v7 loggingConnection];
+      loggingConnection = [v7 loggingConnection];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 localizedDescription];
+        localizedDescription = [v6 localizedDescription];
         *buf = 138412546;
         v14 = v4;
         v15 = 2112;
-        v16 = v10;
-        _os_log_error_impl(&dword_22F907000, v8, OS_LOG_TYPE_ERROR, "An error occured creating a directory at %@: %@", buf, 0x16u);
+        v16 = localizedDescription;
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "An error occured creating a directory at %@: %@", buf, 0x16u);
       }
     }
   }
@@ -76,8 +76,8 @@
 {
   v3 = a3;
   v4 = NSTemporaryDirectory();
-  v5 = [MEMORY[0x277CCACA8] cls_generateUUID];
-  v6 = [v5 stringByAppendingPathExtension:v3];
+  cls_generateUUID = [MEMORY[0x277CCACA8] cls_generateUUID];
+  v6 = [cls_generateUUID stringByAppendingPathExtension:v3];
 
   v7 = [v4 stringByAppendingPathComponent:v6];
 

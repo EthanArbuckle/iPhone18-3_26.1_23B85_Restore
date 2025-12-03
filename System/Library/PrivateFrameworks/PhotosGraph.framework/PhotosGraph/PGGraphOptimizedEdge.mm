@@ -1,23 +1,23 @@
 @interface PGGraphOptimizedEdge
 - (id)description;
 - (id)edgeDescription;
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4;
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys;
 @end
 
 @implementation PGGraphOptimizedEdge
 
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MAEdge *)self propertyDictionary];
+  propertiesCopy = properties;
+  keysCopy = keys;
+  propertyDictionary = [(MAEdge *)self propertyDictionary];
   v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v6;
+  v9 = propertiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v10)
   {
@@ -35,14 +35,14 @@
 
         v14 = *(*(&v24 + 1) + 8 * v13);
         v15 = [v9 objectForKeyedSubscript:v14];
-        v16 = [v8 objectForKey:v14];
+        v16 = [propertyDictionary objectForKey:v14];
 
         if (!v16)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || ([v15 doubleValue], v17 != 0.0))
           {
-            if (([v7 containsObject:v14] & 1) == 0)
+            if (([keysCopy containsObject:v14] & 1) == 0)
             {
               [v23 addObject:v14];
             }
@@ -63,8 +63,8 @@
   if ([v23 count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v20 = objc_opt_class();
-    v21 = [v23 allObjects];
-    v22 = [v21 componentsJoinedByString:{@", "}];
+    allObjects = [v23 allObjects];
+    v22 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138412546;
     v29 = v20;
     v30 = 2112;
@@ -78,10 +78,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PGGraphOptimizedEdge *)self edgeDescription];
-  v5 = [(MAEdge *)self sourceNode];
-  v6 = [(MAEdge *)self targetNode];
-  v7 = [v3 stringWithFormat:@"%@\n\tsourceNode: %@\n\ttargetNode: %@", v4, v5, v6];
+  edgeDescription = [(PGGraphOptimizedEdge *)self edgeDescription];
+  sourceNode = [(MAEdge *)self sourceNode];
+  targetNode = [(MAEdge *)self targetNode];
+  v7 = [v3 stringWithFormat:@"%@\n\tsourceNode: %@\n\ttargetNode: %@", edgeDescription, sourceNode, targetNode];
 
   return v7;
 }
@@ -90,8 +90,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PGGraphOptimizedEdge *)self label];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  label = [(PGGraphOptimizedEdge *)self label];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, label];
 
   return v6;
 }

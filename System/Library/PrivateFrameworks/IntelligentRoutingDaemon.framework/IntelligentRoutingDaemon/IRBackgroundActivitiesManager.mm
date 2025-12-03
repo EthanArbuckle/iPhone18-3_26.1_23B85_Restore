@@ -1,23 +1,23 @@
 @interface IRBackgroundActivitiesManager
-- (IRBackgroundActivitiesManager)initWithServer:(id)a3;
+- (IRBackgroundActivitiesManager)initWithServer:(id)server;
 - (IRSessionServer)server;
-- (void)registerForRepeatingBackgroundXPCActivityWithIdentifier:(id)a3 interval:(int64_t)a4 isDiskIntensive:(BOOL)a5 isMemoryIntensive:(BOOL)a6 handler:(id)a7;
+- (void)registerForRepeatingBackgroundXPCActivityWithIdentifier:(id)identifier interval:(int64_t)interval isDiskIntensive:(BOOL)intensive isMemoryIntensive:(BOOL)memoryIntensive handler:(id)handler;
 @end
 
 @implementation IRBackgroundActivitiesManager
 
-- (IRBackgroundActivitiesManager)initWithServer:(id)a3
+- (IRBackgroundActivitiesManager)initWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = IRBackgroundActivitiesManager;
   v5 = [(IRBackgroundActivitiesManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(IRBackgroundActivitiesManager *)v5 setServer:v4];
-    v7 = [MEMORY[0x277CF0810] sharedScheduler];
-    [(IRBackgroundActivitiesManager *)v6 setScheduler:v7];
+    [(IRBackgroundActivitiesManager *)v5 setServer:serverCopy];
+    mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+    [(IRBackgroundActivitiesManager *)v6 setScheduler:mEMORY[0x277CF0810]];
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.intelligentroutingd.IRBackgroundActivitiesManager", v8);
@@ -27,24 +27,24 @@
   return v6;
 }
 
-- (void)registerForRepeatingBackgroundXPCActivityWithIdentifier:(id)a3 interval:(int64_t)a4 isDiskIntensive:(BOOL)a5 isMemoryIntensive:(BOOL)a6 handler:(id)a7
+- (void)registerForRepeatingBackgroundXPCActivityWithIdentifier:(id)identifier interval:(int64_t)interval isDiskIntensive:(BOOL)intensive isMemoryIntensive:(BOOL)memoryIntensive handler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(IRBackgroundActivitiesManager *)self queue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(IRBackgroundActivitiesManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __140__IRBackgroundActivitiesManager_registerForRepeatingBackgroundXPCActivityWithIdentifier_interval_isDiskIntensive_isMemoryIntensive_handler___block_invoke;
   block[3] = &unk_2797E2440;
   block[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v15 = v13;
-  v16 = v12;
-  dispatch_async(v14, block);
+  v18 = identifierCopy;
+  v19 = handlerCopy;
+  intervalCopy = interval;
+  intensiveCopy = intensive;
+  memoryIntensiveCopy = memoryIntensive;
+  v15 = handlerCopy;
+  v16 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __140__IRBackgroundActivitiesManager_registerForRepeatingBackgroundXPCActivityWithIdentifier_interval_isDiskIntensive_isMemoryIntensive_handler___block_invoke(uint64_t a1)

@@ -1,63 +1,63 @@
 @interface _SBContinuitySessionStateMachineStateLaunching
 - (_SBContinuitySessionStateMachineClientExternallyBlockedReasonsProvider)clientExternallyBlockedReasonsProvider;
-- (_SBContinuitySessionStateMachineStateLaunching)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4;
+- (_SBContinuitySessionStateMachineStateLaunching)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator;
 - (void)_evaluateClientExternallyBlockedReasons;
 - (void)_evaluateLockState;
 - (void)_evaluateSystemEvents;
-- (void)_reevaluateStateForReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)didHandleLaunchEvent:(id)a3;
-- (void)didReceiveLaunchEvent:(id)a3;
-- (void)enteredStateFrom:(unint64_t)a3;
+- (void)_reevaluateStateForReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)didHandleLaunchEvent:(id)event;
+- (void)didReceiveLaunchEvent:(id)event;
+- (void)enteredStateFrom:(unint64_t)from;
 - (void)invalidate;
 @end
 
 @implementation _SBContinuitySessionStateMachineStateLaunching
 
-- (_SBContinuitySessionStateMachineStateLaunching)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4
+- (_SBContinuitySessionStateMachineStateLaunching)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = _SBContinuitySessionStateMachineStateLaunching;
   v9 = [(_SBContinuitySessionStateMachineStateLaunching *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemEventMonitor, a3);
-    [v7 addObserver:v10];
-    v11 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_systemEventMonitor, monitor);
+    [monitorCopy addObserver:v10];
+    array = [MEMORY[0x277CBEB18] array];
     handlingLaunchEvents = v10->_handlingLaunchEvents;
-    v10->_handlingLaunchEvents = v11;
+    v10->_handlingLaunchEvents = array;
 
-    objc_storeStrong(&v10->_authenticationCoordinator, a4);
+    objc_storeStrong(&v10->_authenticationCoordinator, coordinator);
     [(SBContinuityDisplayAuthenticationCoordinator *)v10->_authenticationCoordinator addObserver:v10];
   }
 
   return v10;
 }
 
-- (void)didReceiveLaunchEvent:(id)a3
+- (void)didReceiveLaunchEvent:(id)event
 {
   handlingLaunchEvents = self->_handlingLaunchEvents;
-  v5 = a3;
-  [(NSMutableArray *)handlingLaunchEvents addObject:v5];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"did receive launch event %@", v5];
+  eventCopy = event;
+  [(NSMutableArray *)handlingLaunchEvents addObject:eventCopy];
+  eventCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"did receive launch event %@", eventCopy];
 
-  [(_SBContinuitySessionStateMachineStateLaunching *)self _reevaluateStateForReason:v6];
+  [(_SBContinuitySessionStateMachineStateLaunching *)self _reevaluateStateForReason:eventCopy];
 }
 
-- (void)didHandleLaunchEvent:(id)a3
+- (void)didHandleLaunchEvent:(id)event
 {
   handlingLaunchEvents = self->_handlingLaunchEvents;
-  v5 = a3;
-  [(NSMutableArray *)handlingLaunchEvents removeObject:v5];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"did handle launch event %@", v5];
+  eventCopy = event;
+  [(NSMutableArray *)handlingLaunchEvents removeObject:eventCopy];
+  eventCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"did handle launch event %@", eventCopy];
 
-  [(_SBContinuitySessionStateMachineStateLaunching *)self _reevaluateStateForReason:v6];
+  [(_SBContinuitySessionStateMachineStateLaunching *)self _reevaluateStateForReason:eventCopy];
 }
 
-- (void)enteredStateFrom:(unint64_t)a3
+- (void)enteredStateFrom:(unint64_t)from
 {
   self->_isCurrentState = 1;
   self->_radar124642623 = [(NSMutableArray *)self->_handlingLaunchEvents count]== 0;
@@ -65,7 +65,7 @@
   [(_SBContinuitySessionStateMachineStateLaunching *)self _evaluateLockState];
   [(_SBContinuitySessionStateMachineStateLaunching *)self _evaluateSystemEvents];
   v5 = MEMORY[0x277CCACA8];
-  v6 = NSStringFromSBContinuitySessionState(a3);
+  v6 = NSStringFromSBContinuitySessionState(from);
   v7 = [v5 stringWithFormat:@"entered state from: %@", v6];
   [(_SBContinuitySessionStateMachineStateLaunching *)self _reevaluateStateForReason:v7];
 
@@ -95,30 +95,30 @@
   self->_invalidStateHandler = 0;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76___SBContinuitySessionStateMachineStateLaunching_appendDescriptionToStream___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v6 overlayStyle:v5 block:v7];
+  v8 = streamCopy;
+  selfCopy = self;
+  v6 = streamCopy;
+  [v6 overlayStyle:collectionLineBreakNoneStyle block:v7];
 }
 
 - (void)_evaluateClientExternallyBlockedReasons
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBContinuitySessionStateMachineStateLaunching.m" lineNumber:132 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBContinuitySessionStateMachineStateLaunching.m" lineNumber:132 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
 }
 
 - (void)_evaluateSystemEvents
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBContinuitySessionStateMachineStateLaunching.m" lineNumber:202 description:@"Must have invalid reason"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBContinuitySessionStateMachineStateLaunching.m" lineNumber:202 description:@"Must have invalid reason"];
 }
 
 - (void)_evaluateLockState
@@ -127,8 +127,8 @@
   {
     v12 = v2;
     v13 = v3;
-    v5 = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
-    if (v5 == 2)
+    lockState = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
+    if (lockState == 2)
     {
       if (!self->_isCurrentState)
       {
@@ -146,7 +146,7 @@
       goto LABEL_12;
     }
 
-    if (!v5 && self->_isCurrentState)
+    if (!lockState && self->_isCurrentState)
     {
       v6 = SBLogContinuitySession();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -165,17 +165,17 @@ LABEL_12:
   }
 }
 
-- (void)_reevaluateStateForReason:(id)a3
+- (void)_reevaluateStateForReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_isCurrentState)
   {
     v5 = SBLogContinuitySession();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v4;
+      v16 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[State.Launching] Re-evaluating state for reason: %{public}@", &v15, 0xCu);
     }
 
@@ -213,9 +213,9 @@ LABEL_12:
     {
       if (v12)
       {
-        v13 = [v6 bs_array];
+        bs_array = [v6 bs_array];
         v15 = 138543362;
-        v16 = v13;
+        v16 = bs_array;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[State.Launching] still blocked by %{public}@", &v15, 0xCu);
       }
 

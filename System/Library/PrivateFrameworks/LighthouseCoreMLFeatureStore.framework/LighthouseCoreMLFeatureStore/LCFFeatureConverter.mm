@@ -1,20 +1,20 @@
 @interface LCFFeatureConverter
-+ (id)fromBiomeLabeledDataFeatureValue:(id)a3;
-+ (id)fromFeatureSetToLabeledData:(id)a3;
-+ (id)fromFeatureValueToLabeledData:(id)a3;
-+ (id)fromLabeledDataBiomeFeatureStore:(id)a3 timestamp:(id)a4;
++ (id)fromBiomeLabeledDataFeatureValue:(id)value;
++ (id)fromFeatureSetToLabeledData:(id)data;
++ (id)fromFeatureValueToLabeledData:(id)data;
++ (id)fromLabeledDataBiomeFeatureStore:(id)store timestamp:(id)timestamp;
 @end
 
 @implementation LCFFeatureConverter
 
-+ (id)fromBiomeLabeledDataFeatureValue:(id)a3
++ (id)fromBiomeLabeledDataFeatureValue:(id)value
 {
-  v3 = a3;
-  if ([v3 hasIntValue])
+  valueCopy = value;
+  if ([valueCopy hasIntValue])
   {
     v4 = [LCFFeatureValue alloc];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v3, "intValue")}];
-    v6 = [(LCFFeatureValue *)v4 initWithIntValue:v5];
+    stringValue2 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(valueCopy, "intValue")}];
+    v6 = [(LCFFeatureValue *)v4 initWithIntValue:stringValue2];
 LABEL_9:
     v12 = v6;
 LABEL_10:
@@ -22,51 +22,51 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v3 hasBoolValue])
+  if ([valueCopy hasBoolValue])
   {
     v7 = [LCFFeatureValue alloc];
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "BOOLValue")}];
-    v6 = [(LCFFeatureValue *)v7 initWithBoolValue:v5];
+    stringValue2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(valueCopy, "BOOLValue")}];
+    v6 = [(LCFFeatureValue *)v7 initWithBoolValue:stringValue2];
     goto LABEL_9;
   }
 
-  if ([v3 hasDoubleValue])
+  if ([valueCopy hasDoubleValue])
   {
     v8 = [LCFFeatureValue alloc];
     v9 = MEMORY[0x277CCABB0];
-    [v3 doubleValue];
-    v5 = [v9 numberWithDouble:?];
-    v6 = [(LCFFeatureValue *)v8 initWithDoubleValue:v5];
+    [valueCopy doubleValue];
+    stringValue2 = [v9 numberWithDouble:?];
+    v6 = [(LCFFeatureValue *)v8 initWithDoubleValue:stringValue2];
     goto LABEL_9;
   }
 
-  v10 = [v3 stringValue];
+  stringValue = [valueCopy stringValue];
 
-  if (v10)
+  if (stringValue)
   {
     v11 = [LCFFeatureValue alloc];
-    v5 = [v3 stringValue];
-    v6 = [(LCFFeatureValue *)v11 initWithStringValue:v5];
+    stringValue2 = [valueCopy stringValue];
+    v6 = [(LCFFeatureValue *)v11 initWithStringValue:stringValue2];
     goto LABEL_9;
   }
 
-  v14 = [v3 doubleValuedVectorValue];
+  doubleValuedVectorValue = [valueCopy doubleValuedVectorValue];
 
-  if (v14)
+  if (doubleValuedVectorValue)
   {
     v15 = [LCFFeatureValue alloc];
-    v5 = [v3 doubleValuedVectorValue];
-    v16 = [v5 vectorWithDoubles];
-    v12 = [(LCFFeatureValue *)v15 initWithDoubleArray:v16];
+    stringValue2 = [valueCopy doubleValuedVectorValue];
+    vectorWithDoubles = [stringValue2 vectorWithDoubles];
+    v12 = [(LCFFeatureValue *)v15 initWithDoubleArray:vectorWithDoubles];
 
     goto LABEL_10;
   }
 
-  if ([v3 timeBucketValue])
+  if ([valueCopy timeBucketValue])
   {
     v17 = [LCFFeatureValue alloc];
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "timeBucketValue")}];
-    v6 = [(LCFFeatureValue *)v17 initWithTimeBucketValue:v5];
+    stringValue2 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(valueCopy, "timeBucketValue")}];
+    v6 = [(LCFFeatureValue *)v17 initWithTimeBucketValue:stringValue2];
     goto LABEL_9;
   }
 
@@ -76,20 +76,20 @@ LABEL_11:
   return v12;
 }
 
-+ (id)fromLabeledDataBiomeFeatureStore:(id)a3 timestamp:(id)a4
++ (id)fromLabeledDataBiomeFeatureStore:(id)store timestamp:(id)timestamp
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v38 = a4;
-  v37 = [v5 itemIdentifier];
-  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "featureVersion")}];
+  storeCopy = store;
+  timestampCopy = timestamp;
+  itemIdentifier = [storeCopy itemIdentifier];
+  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(storeCopy, "featureVersion")}];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = [v5 featureVector];
-  v8 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  featureVector = [storeCopy featureVector];
+  v8 = [featureVector countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
     v9 = v8;
@@ -100,189 +100,189 @@ LABEL_11:
       {
         if (*v40 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(featureVector);
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
         [v12 featureName];
         v13 = BMMLSEVirtualFeatureStoreFeaturefeatureNameAsString();
-        v14 = [v12 featureValue];
-        v15 = [LCFFeatureConverter fromBiomeLabeledDataFeatureValue:v14];
+        featureValue = [v12 featureValue];
+        v15 = [LCFFeatureConverter fromBiomeLabeledDataFeatureValue:featureValue];
 
         [v6 setValue:v15 forKey:v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v9 = [featureVector countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v9);
   }
 
-  if ([v5 hasIsPositiveLabeled])
+  if ([storeCopy hasIsPositiveLabeled])
   {
     v16 = [LCFFeatureValue alloc];
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "isPositiveLabeled")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(storeCopy, "isPositiveLabeled")}];
     v18 = [(LCFFeatureValue *)v16 initWithBoolValue:v17];
 
     [v6 setValue:v18 forKey:@"_isPositiveLabeled"];
   }
 
-  if ([v5 hasLabelingPolicyVersion])
+  if ([storeCopy hasLabelingPolicyVersion])
   {
     v19 = [LCFFeatureValue alloc];
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "labelingPolicyVersion")}];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(storeCopy, "labelingPolicyVersion")}];
     v21 = [(LCFFeatureValue *)v19 initWithIntValue:v20];
 
     [v6 setValue:v21 forKey:@"_labelingPolicyVersion"];
   }
 
   v22 = [LCFFeatureValue alloc];
-  v23 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "labelingEvidence")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(storeCopy, "labelingEvidence")}];
   v24 = [(LCFFeatureValue *)v22 initWithIntValue:v23];
   [v6 setValue:v24 forKey:@"_labelingEvidence"];
 
-  v25 = [v5 sharingEventUID];
+  sharingEventUID = [storeCopy sharingEventUID];
 
-  if (v25)
+  if (sharingEventUID)
   {
     v26 = [LCFFeatureValue alloc];
-    v27 = [v5 sharingEventUID];
-    v28 = [(LCFFeatureValue *)v26 initWithStringValue:v27];
+    sharingEventUID2 = [storeCopy sharingEventUID];
+    v28 = [(LCFFeatureValue *)v26 initWithStringValue:sharingEventUID2];
 
     [v6 setValue:v28 forKey:@"_sharingEventUID"];
   }
 
-  v29 = [v5 configurationInfo];
+  configurationInfo = [storeCopy configurationInfo];
 
-  if (v29)
+  if (configurationInfo)
   {
     v30 = [LCFFeatureValue alloc];
-    v31 = [v5 configurationInfo];
-    v32 = [(LCFFeatureValue *)v30 initWithStringValue:v31];
+    configurationInfo2 = [storeCopy configurationInfo];
+    v32 = [(LCFFeatureValue *)v30 initWithStringValue:configurationInfo2];
 
     [v6 setValue:v32 forKey:@"_configurationInfo"];
   }
 
-  v33 = [[LCFFeatureSet alloc] initWithIdentifier:v37 featureVersion:v36 timestamp:v38 featureValues:v6];
+  v33 = [[LCFFeatureSet alloc] initWithIdentifier:itemIdentifier featureVersion:v36 timestamp:timestampCopy featureValues:v6];
 
   v34 = *MEMORY[0x277D85DE8];
 
   return v33;
 }
 
-+ (id)fromFeatureValueToLabeledData:(id)a3
++ (id)fromFeatureValueToLabeledData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 intValue];
+  dataCopy = data;
+  intValue = [dataCopy intValue];
 
-  if (v4)
+  if (intValue)
   {
     v5 = objc_alloc(MEMORY[0x277CF12F0]);
-    v6 = [v3 intValue];
+    intValue2 = [dataCopy intValue];
     v7 = v5;
-    v8 = v6;
+    v8 = intValue2;
     v9 = 0;
 LABEL_5:
     v12 = 0;
 LABEL_6:
     v13 = 0;
 LABEL_7:
-    v14 = [v7 initWithIntValue:v8 doubleValue:v9 stringValue:v12 BOOLValue:v13 timeBucketValue:0 doubleValuedVectorValue:0];
+    timeBucketValue = [v7 initWithIntValue:v8 doubleValue:v9 stringValue:v12 BOOLValue:v13 timeBucketValue:0 doubleValuedVectorValue:0];
 
     goto LABEL_8;
   }
 
-  v10 = [v3 doubleValue];
+  doubleValue = [dataCopy doubleValue];
 
-  if (v10)
+  if (doubleValue)
   {
     v11 = objc_alloc(MEMORY[0x277CF12F0]);
-    v6 = [v3 doubleValue];
+    intValue2 = [dataCopy doubleValue];
     v7 = v11;
     v8 = 0;
-    v9 = v6;
+    v9 = intValue2;
     goto LABEL_5;
   }
 
-  v16 = [v3 stringValue];
+  stringValue = [dataCopy stringValue];
 
-  if (v16)
+  if (stringValue)
   {
     v17 = objc_alloc(MEMORY[0x277CF12F0]);
-    v6 = [v3 stringValue];
+    intValue2 = [dataCopy stringValue];
     v7 = v17;
     v8 = 0;
     v9 = 0;
-    v12 = v6;
+    v12 = intValue2;
     goto LABEL_6;
   }
 
-  v18 = [v3 BOOLValue];
+  bOOLValue = [dataCopy BOOLValue];
 
-  if (v18)
+  if (bOOLValue)
   {
     v19 = objc_alloc(MEMORY[0x277CF12F0]);
-    v6 = [v3 BOOLValue];
+    intValue2 = [dataCopy BOOLValue];
     v7 = v19;
     v8 = 0;
     v9 = 0;
     v12 = 0;
-    v13 = v6;
+    v13 = intValue2;
     goto LABEL_7;
   }
 
-  v20 = [v3 doubleArray];
+  doubleArray = [dataCopy doubleArray];
 
-  if (v20)
+  if (doubleArray)
   {
     v21 = objc_alloc(MEMORY[0x277CF12F0]);
     v22 = objc_alloc(MEMORY[0x277CF12F8]);
-    v23 = [v3 doubleArray];
-    v24 = [v22 initWithVectorWithDoubles:v23];
-    v14 = [v21 initWithIntValue:0 doubleValue:0 stringValue:0 BOOLValue:0 timeBucketValue:0 doubleValuedVectorValue:v24];
+    doubleArray2 = [dataCopy doubleArray];
+    v24 = [v22 initWithVectorWithDoubles:doubleArray2];
+    timeBucketValue = [v21 initWithIntValue:0 doubleValue:0 stringValue:0 BOOLValue:0 timeBucketValue:0 doubleValuedVectorValue:v24];
   }
 
   else
   {
-    v14 = [v3 timeBucketValue];
+    timeBucketValue = [dataCopy timeBucketValue];
 
-    if (v14)
+    if (timeBucketValue)
     {
-      v25 = [v3 timeBucketValue];
-      v26 = [v25 intValue];
+      timeBucketValue2 = [dataCopy timeBucketValue];
+      intValue3 = [timeBucketValue2 intValue];
 
-      v14 = [objc_alloc(MEMORY[0x277CF12F0]) initWithIntValue:0 doubleValue:0 stringValue:0 BOOLValue:0 timeBucketValue:v26 doubleValuedVectorValue:0];
+      timeBucketValue = [objc_alloc(MEMORY[0x277CF12F0]) initWithIntValue:0 doubleValue:0 stringValue:0 BOOLValue:0 timeBucketValue:intValue3 doubleValuedVectorValue:0];
     }
   }
 
 LABEL_8:
 
-  return v14;
+  return timeBucketValue;
 }
 
-+ (id)fromFeatureSetToLabeledData:(id)a3
++ (id)fromFeatureSetToLabeledData:(id)data
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v37 = [v3 itemIdentifier];
-  v36 = [v3 featureVersion];
+  dataCopy = data;
+  itemIdentifier = [dataCopy itemIdentifier];
+  featureVersion = [dataCopy featureVersion];
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v4 = [v3 featureValues];
-  v5 = [v4 allKeys];
+  featureValues = [dataCopy featureValues];
+  allKeys = [featureValues allKeys];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  obj = allKeys;
+  v6 = [allKeys countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (!v6)
   {
     v41 = 0;
     v42 = 0;
     v39 = 0;
     v40 = 0;
-    v38 = 0;
+    v27IntValue = 0;
     goto LABEL_23;
   }
 
@@ -291,7 +291,7 @@ LABEL_8:
   v42 = 0;
   v39 = 0;
   v40 = 0;
-  v38 = 0;
+  v27IntValue = 0;
   v8 = *v46;
   v9 = @"_isPositiveLabeled";
   do
@@ -308,13 +308,13 @@ LABEL_8:
       if (v12)
       {
         v13 = v12;
-        [v3 featureValues];
+        [dataCopy featureValues];
         v15 = v14 = v9;
         v16 = [v15 objectForKeyedSubscript:v11];
-        v17 = [LCFFeatureConverter fromFeatureValueToLabeledData:v16];
+        featureValues6 = [LCFFeatureConverter fromFeatureValueToLabeledData:v16];
 
         v9 = v14;
-        v18 = [objc_alloc(MEMORY[0x277CF12E8]) initWithFeatureName:v13 featureValue:v17 featureItselfVersion:0 featureFreshnessInHours:0 eventVolumeToComputeFeature:0 timeSpentToComputeFeature:0];
+        v18 = [objc_alloc(MEMORY[0x277CF12E8]) initWithFeatureName:v13 featureValue:featureValues6 featureItselfVersion:0 featureFreshnessInHours:0 eventVolumeToComputeFeature:0 timeSpentToComputeFeature:0];
         [v44 addObject:v18];
 LABEL_18:
 
@@ -323,46 +323,46 @@ LABEL_18:
 
       if ([v11 isEqualToString:v9])
       {
-        v19 = [v3 featureValues];
-        v20 = [v19 objectForKeyedSubscript:v9];
-        v21 = [v20 BOOLValue];
+        featureValues2 = [dataCopy featureValues];
+        v20 = [featureValues2 objectForKeyedSubscript:v9];
+        bOOLValue = [v20 BOOLValue];
 
-        v41 = v21;
+        v41 = bOOLValue;
       }
 
       if ([v11 isEqualToString:@"_labelingPolicyVersion"])
       {
-        v22 = [v3 featureValues];
-        v23 = [v22 objectForKeyedSubscript:@"_labelingPolicyVersion"];
-        v24 = [v23 intValue];
+        featureValues3 = [dataCopy featureValues];
+        v23 = [featureValues3 objectForKeyedSubscript:@"_labelingPolicyVersion"];
+        intValue = [v23 intValue];
 
-        v39 = v24;
+        v39 = intValue;
       }
 
       if ([v11 isEqualToString:@"_labelingEvidence"])
       {
-        v25 = [v3 featureValues];
-        v26 = [v25 objectForKeyedSubscript:@"_labelingEvidence"];
-        v27 = [v26 intValue];
-        v38 = [v27 intValue];
+        featureValues4 = [dataCopy featureValues];
+        v26 = [featureValues4 objectForKeyedSubscript:@"_labelingEvidence"];
+        intValue2 = [v26 intValue];
+        v27IntValue = [intValue2 intValue];
       }
 
       if ([v11 isEqualToString:@"_sharingEventUID"])
       {
-        v28 = [v3 featureValues];
-        v29 = [v28 objectForKeyedSubscript:@"_sharingEventUID"];
-        v30 = [v29 stringValue];
+        featureValues5 = [dataCopy featureValues];
+        v29 = [featureValues5 objectForKeyedSubscript:@"_sharingEventUID"];
+        stringValue = [v29 stringValue];
 
-        v40 = v30;
+        v40 = stringValue;
       }
 
       if ([v11 isEqualToString:@"_configurationInfo"])
       {
-        v17 = [v3 featureValues];
-        v18 = [v17 objectForKeyedSubscript:@"_configurationInfo"];
-        v31 = [v18 stringValue];
+        featureValues6 = [dataCopy featureValues];
+        v18 = [featureValues6 objectForKeyedSubscript:@"_configurationInfo"];
+        stringValue2 = [v18 stringValue];
 
-        v42 = v31;
+        v42 = stringValue2;
         goto LABEL_18;
       }
     }
@@ -373,8 +373,8 @@ LABEL_18:
   while (v7);
 LABEL_23:
 
-  LODWORD(v35) = v38;
-  v32 = [objc_alloc(MEMORY[0x277CF12E0]) initWithItemIdentifier:v37 featureVersion:v36 featureVector:v44 deviceIdentifier:0 isPositiveLabeled:v41 labelingPolicyVersion:v39 labelingEvidence:v35 sharingEventUID:v40 configurationInfo:v42];
+  LODWORD(v35) = v27IntValue;
+  v32 = [objc_alloc(MEMORY[0x277CF12E0]) initWithItemIdentifier:itemIdentifier featureVersion:featureVersion featureVector:v44 deviceIdentifier:0 isPositiveLabeled:v41 labelingPolicyVersion:v39 labelingEvidence:v35 sharingEventUID:v40 configurationInfo:v42];
 
   v33 = *MEMORY[0x277D85DE8];
 

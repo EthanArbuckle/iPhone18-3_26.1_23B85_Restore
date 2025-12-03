@@ -1,53 +1,53 @@
 @interface CSUTextEncoder
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)reLoadResources:(id *)a3;
-- (CSUTextEncoder)initWithConfiguration:(id)a3;
-- (void)runOnInput:(id)a3 error:(id *)a4;
-- (void)runOnInputText:(id)a3 error:(id *)a4;
-- (void)setContextLength:(unint64_t)a3 error:(id *)a4;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)reLoadResources:(id *)resources;
+- (CSUTextEncoder)initWithConfiguration:(id)configuration;
+- (void)runOnInput:(id)input error:(id *)error;
+- (void)runOnInputText:(id)text error:(id *)error;
+- (void)setContextLength:(unint64_t)length error:(id *)error;
 @end
 
 @implementation CSUTextEncoder
 
-- (CSUTextEncoder)initWithConfiguration:(id)a3
+- (CSUTextEncoder)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  objc_storeStrong(&self->_configuration, a3);
-  v10 = objc_msgSend_revision(v5, v6, v7, v8, v9);
-  v11 = 0;
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_configuration, configuration);
+  v10 = objc_msgSend_revision(configurationCopy, v6, v7, v8, v9);
+  selfCopy = 0;
   if (v10 <= 0xC && ((1 << v10) & 0x19C0) != 0)
   {
     v12 = [CSUTextEncoderE5ML alloc];
-    v17 = objc_msgSend_textEncoderE5MLConfig(v5, v13, v14, v15, v16);
+    v17 = objc_msgSend_textEncoderE5MLConfig(configurationCopy, v13, v14, v15, v16);
     v21 = objc_msgSend_initWithConfiguration_(v12, v18, v17, v19, v20);
     textEncoderE5ML = self->_textEncoderE5ML;
     self->_textEncoderE5ML = v21;
 
     if (self->_textEncoderE5ML)
     {
-      v27 = objc_msgSend_textEncoderE5MLConfig(v5, v23, v24, v25, v26);
+      v27 = objc_msgSend_textEncoderE5MLConfig(configurationCopy, v23, v24, v25, v26);
       v32 = objc_msgSend_contextLength(v27, v28, v29, v30, v31);
       objc_msgSend_setContextLength_(self->_configuration, v33, v32, v34, v35);
 
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
-  *a3 = 0;
-  v7 = objc_msgSend_revision(self->_configuration, a2, a3, v3, v4);
+  *resources = 0;
+  v7 = objc_msgSend_revision(self->_configuration, a2, resources, v3, v4);
   if (v7 > 0xC || ((1 << v7) & 0x19C0) == 0)
   {
-    *a3 = objc_msgSend_errorForInvalidArgumentWithLocalizedDescription_(CSUError, v8, @"Text encoder revision not supported in loadResources(...)", v9, v10);
+    *resources = objc_msgSend_errorForInvalidArgumentWithLocalizedDescription_(CSUError, v8, @"Text encoder revision not supported in loadResources(...)", v9, v10);
     return 0;
   }
 
@@ -55,17 +55,17 @@
   {
     textEncoderE5ML = self->_textEncoderE5ML;
 
-    return objc_msgSend_loadResources_(textEncoderE5ML, v8, a3, v9, v10);
+    return objc_msgSend_loadResources_(textEncoderE5ML, v8, resources, v9, v10);
   }
 }
 
-- (BOOL)reLoadResources:(id *)a3
+- (BOOL)reLoadResources:(id *)resources
 {
-  *a3 = 0;
-  v7 = objc_msgSend_revision(self->_configuration, a2, a3, v3, v4);
+  *resources = 0;
+  v7 = objc_msgSend_revision(self->_configuration, a2, resources, v3, v4);
   if (v7 > 0xC || ((1 << v7) & 0x19C0) == 0)
   {
-    *a3 = objc_msgSend_errorForInvalidArgumentWithLocalizedDescription_(CSUError, v8, @"Text encoder revision not supported in reLoadResources(...)", v9, v10);
+    *resources = objc_msgSend_errorForInvalidArgumentWithLocalizedDescription_(CSUError, v8, @"Text encoder revision not supported in reLoadResources(...)", v9, v10);
     return 0;
   }
 
@@ -73,14 +73,14 @@
   {
     textEncoderE5ML = self->_textEncoderE5ML;
 
-    return objc_msgSend_reLoadResources_(textEncoderE5ML, v8, a3, v9, v10);
+    return objc_msgSend_reLoadResources_(textEncoderE5ML, v8, resources, v9, v10);
   }
 }
 
-- (void)runOnInput:(id)a3 error:(id *)a4
+- (void)runOnInput:(id)input error:(id *)error
 {
   v100 = *MEMORY[0x1E69E9840];
-  v84 = a3;
+  inputCopy = input;
   v90 = 0;
   v91 = &v90;
   v92 = 0x3032000000;
@@ -88,7 +88,7 @@
   v94 = sub_1AC087C08;
   v95 = 0;
   v9 = objc_msgSend_revision(self->_configuration, v5, v6, v7, v8);
-  v82 = self;
+  selfCopy = self;
   if (v9 > 0xC || ((1 << v9) & 0x19C0) == 0)
   {
     v70 = MEMORY[0x1E696AEC0];
@@ -120,7 +120,7 @@
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v20 = v84;
+    v20 = inputCopy;
     v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v21, &v86, v96, 16);
     if (v22)
     {
@@ -190,12 +190,12 @@
 
 LABEL_23:
 
-    textEncoderE5ML = v82->_textEncoderE5ML;
+    textEncoderE5ML = selfCopy->_textEncoderE5ML;
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
     v85[2] = sub_1AC087C10;
     v85[3] = &unk_1E7967F90;
-    v85[4] = v82;
+    v85[4] = selfCopy;
     v85[5] = &v90;
     objc_msgSend_runOnInput_completion_(textEncoderE5ML, v67, v19, v85, v68);
 
@@ -218,9 +218,9 @@ LABEL_23:
     objc_autoreleasePoolPop(context);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v91[5];
+    *error = v91[5];
   }
 
   _Block_object_dispose(&v90, 8);
@@ -228,9 +228,9 @@ LABEL_23:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runOnInputText:(id)a3 error:(id *)a4
+- (void)runOnInputText:(id)text error:(id *)error
 {
-  v6 = a3;
+  textCopy = text;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -246,7 +246,7 @@ LABEL_23:
     v31 = v34[5];
     v34[5] = v30;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -262,26 +262,26 @@ LABEL_23:
   v32[3] = &unk_1E7967F90;
   v32[4] = self;
   v32[5] = &v33;
-  objc_msgSend_runOnInputText_completion_(textEncoderE5ML, v19, v6, v32, v20);
+  objc_msgSend_runOnInputText_completion_(textEncoderE5ML, v19, textCopy, v32, v20);
   objc_autoreleasePoolPop(v17);
-  if (a4)
+  if (error)
   {
 LABEL_6:
-    *a4 = v34[5];
+    *error = v34[5];
   }
 
 LABEL_7:
   _Block_object_dispose(&v33, 8);
 }
 
-- (void)setContextLength:(unint64_t)a3 error:(id *)a4
+- (void)setContextLength:(unint64_t)length error:(id *)error
 {
-  if (objc_msgSend_contextLength(self->_configuration, a2, a3, a4, v4) != a3)
+  if (objc_msgSend_contextLength(self->_configuration, a2, length, error, v4) != length)
   {
-    NSLog(&cfstr_SettingNewCont.isa, a3);
-    objc_msgSend_setContextLength_(self->_configuration, v8, a3, v9, v10);
+    NSLog(&cfstr_SettingNewCont.isa, length);
+    objc_msgSend_setContextLength_(self->_configuration, v8, length, v9, v10);
 
-    objc_msgSend_reLoadResources_(self, v11, a4, v12, v13);
+    objc_msgSend_reLoadResources_(self, v11, error, v12, v13);
   }
 }
 

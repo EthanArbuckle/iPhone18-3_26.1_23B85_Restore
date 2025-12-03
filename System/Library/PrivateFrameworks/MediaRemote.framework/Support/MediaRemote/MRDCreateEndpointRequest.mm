@@ -1,30 +1,30 @@
 @interface MRDCreateEndpointRequest
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 completion:(id)a6;
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 groupUIDCompletion:(id)a6;
-- (id)_createEndpointForOutputDeviceUIDs:(id)a3;
-- (int64_t)_calculateOperationTypeForEndpoint:(id)a3;
-- (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 analytics:(id)a6 completion:(id)a7;
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details completion:(id)completion;
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details groupUIDCompletion:(id)completion;
+- (id)_createEndpointForOutputDeviceUIDs:(id)ds;
+- (int64_t)_calculateOperationTypeForEndpoint:(id)endpoint;
+- (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details analytics:(id)analytics completion:(id)completion;
 @end
 
 @implementation MRDCreateEndpointRequest
 
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 completion:(id)a6
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dsCopy = ds;
+  detailsCopy = details;
+  completionCopy = completion;
   v12 = [MRDCreateEndpointAnalytics alloc];
-  v13 = [v10 requestID];
-  v14 = [(MRDCreateEndpointAnalytics *)v12 initWithRequestID:v13];
+  requestID = [detailsCopy requestID];
+  v14 = [(MRDCreateEndpointAnalytics *)v12 initWithRequestID:requestID];
 
   v15 = +[NSDate now];
   v16 = [NSMutableString alloc];
-  v17 = [v10 requestID];
-  v18 = [v16 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs", v17];
+  requestID2 = [detailsCopy requestID];
+  v18 = [v16 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs", requestID2];
 
-  if (v9)
+  if (dsCopy)
   {
-    [v18 appendFormat:@" for %@", v9];
+    [v18 appendFormat:@" for %@", dsCopy];
   }
 
   v19 = _MRLogForCategory();
@@ -40,13 +40,13 @@
   v35[2] = sub_10018C7D8;
   v35[3] = &unk_1004BAE50;
   v36 = @"CreateEndpointWithOutputDeviceUIDs";
-  v20 = v10;
+  v20 = detailsCopy;
   v37 = v20;
   v38 = v15;
   v21 = v14;
   v39 = v21;
-  v40 = v11;
-  v22 = v11;
+  v40 = completionCopy;
+  v22 = completionCopy;
   v23 = v15;
   v24 = objc_retainBlock(v35);
   v29[0] = _NSConcreteStackBlock;
@@ -55,33 +55,33 @@
   v29[3] = &unk_1004BAE78;
   v30 = objc_alloc_init(MRDCreateEndpointRequest);
   v31 = v21;
-  v34 = a4;
+  timeoutCopy = timeout;
   v32 = v20;
   v33 = v24;
   v25 = v24;
   v26 = v20;
   v27 = v21;
   v28 = v30;
-  [(MRDCreateEndpointRequest *)v28 createEndpointWithOutputDeviceUIDs:v9 timeout:v26 details:v27 analytics:v29 completion:a4];
+  [(MRDCreateEndpointRequest *)v28 createEndpointWithOutputDeviceUIDs:dsCopy timeout:v26 details:v27 analytics:v29 completion:timeout];
 }
 
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 groupUIDCompletion:(id)a6
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details groupUIDCompletion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dsCopy = ds;
+  detailsCopy = details;
+  completionCopy = completion;
   v12 = [MRDCreateEndpointAnalytics alloc];
-  v13 = [v10 requestID];
-  v14 = [(MRDCreateEndpointAnalytics *)v12 initWithRequestID:v13];
+  requestID = [detailsCopy requestID];
+  v14 = [(MRDCreateEndpointAnalytics *)v12 initWithRequestID:requestID];
 
   v15 = +[NSDate now];
   v16 = [NSMutableString alloc];
-  v17 = [v10 requestID];
-  v18 = [v16 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs", v17];
+  requestID2 = [detailsCopy requestID];
+  v18 = [v16 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs", requestID2];
 
-  if (v9)
+  if (dsCopy)
   {
-    [v18 appendFormat:@" for %@", v9];
+    [v18 appendFormat:@" for %@", dsCopy];
   }
 
   v19 = _MRLogForCategory();
@@ -97,14 +97,14 @@
   v30[2] = sub_10018CEF0;
   v30[3] = &unk_1004BAD38;
   v31 = @"CreateEndpointWithOutputDeviceUIDs";
-  v32 = v10;
+  v32 = detailsCopy;
   v33 = v15;
   v34 = v14;
-  v35 = v11;
-  v20 = v11;
+  v35 = completionCopy;
+  v20 = completionCopy;
   v21 = v14;
   v22 = v15;
-  v23 = v10;
+  v23 = detailsCopy;
   v24 = objc_retainBlock(v30);
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
@@ -114,23 +114,23 @@
   v29 = v24;
   v25 = v24;
   v26 = v28;
-  [(MRDCreateEndpointRequest *)v26 createEndpointWithOutputDeviceUIDs:v9 timeout:v23 details:v21 analytics:v27 completion:a4];
+  [(MRDCreateEndpointRequest *)v26 createEndpointWithOutputDeviceUIDs:dsCopy timeout:v23 details:v21 analytics:v27 completion:timeout];
 }
 
-- (void)createEndpointWithOutputDeviceUIDs:(id)a3 timeout:(double)a4 details:(id)a5 analytics:(id)a6 completion:(id)a7
+- (void)createEndpointWithOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details analytics:(id)analytics completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dsCopy = ds;
+  detailsCopy = details;
+  analyticsCopy = analytics;
+  completionCopy = completion;
   v16 = +[NSDate now];
   v17 = [NSMutableString alloc];
-  v18 = [v13 requestID];
-  v19 = [v17 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs.perform", v18];
+  requestID = [detailsCopy requestID];
+  v19 = [v17 initWithFormat:@"%@<%@>", @"CreateEndpointWithOutputDeviceUIDs.perform", requestID];
 
-  if (v12)
+  if (dsCopy)
   {
-    [v19 appendFormat:@" for %@", v12];
+    [v19 appendFormat:@" for %@", dsCopy];
   }
 
   v20 = _MRLogForCategory();
@@ -146,22 +146,22 @@
   v76[2] = sub_10018D948;
   v76[3] = &unk_1004BAEA0;
   v77 = @"CreateEndpointWithOutputDeviceUIDs.perform";
-  v21 = v13;
+  v21 = detailsCopy;
   v78 = v21;
   v52 = v16;
   v79 = v52;
-  v50 = v15;
+  v50 = completionCopy;
   v80 = v50;
   v22 = objc_retainBlock(v76);
   v23 = [MRBlockGuard alloc];
-  v24 = [v21 requestReasonID];
+  requestReasonID = [v21 requestReasonID];
   v74[0] = _NSConcreteStackBlock;
   v74[1] = 3221225472;
   v74[2] = sub_10018DB50;
   v74[3] = &unk_1004B6FE8;
   v25 = v22;
   v75 = v25;
-  v26 = [v23 initWithTimeout:v24 reason:v74 handler:a4];
+  v26 = [v23 initWithTimeout:requestReasonID reason:v74 handler:timeout];
 
   v71[0] = _NSConcreteStackBlock;
   v71[1] = 3221225472;
@@ -172,47 +172,47 @@
   v51 = v25;
   v73 = v51;
   v27 = objc_retainBlock(v71);
-  v28 = [(MRDCreateEndpointRequest *)self _createEndpointForOutputDeviceUIDs:v12];
+  v28 = [(MRDCreateEndpointRequest *)self _createEndpointForOutputDeviceUIDs:dsCopy];
   v29 = [(MRDCreateEndpointRequest *)self _calculateOperationTypeForEndpoint:v28];
-  [v14 setOperationType:v29];
+  [analyticsCopy setOperationType:v29];
   if (v29 > 1)
   {
     if (v29 == 2)
     {
-      [v14 setOperationTypeString:@"CreateRemoteHostedEndpoint"];
-      v47 = [v14 createRemoteHostedEndpoint];
-      [v47 start];
+      [analyticsCopy setOperationTypeString:@"CreateRemoteHostedEndpoint"];
+      createRemoteHostedEndpoint = [analyticsCopy createRemoteHostedEndpoint];
+      [createRemoteHostedEndpoint start];
 
-      v48 = [v28 groupLeader];
-      v49 = [v48 uid];
+      groupLeader = [v28 groupLeader];
+      v49 = [groupLeader uid];
       v65[0] = _NSConcreteStackBlock;
       v65[1] = 3221225472;
       v65[2] = sub_10018DC74;
       v65[3] = &unk_1004BADD8;
-      v66 = v14;
+      v66 = analyticsCopy;
       v67 = v27;
-      [MRDCreateRemoteHostedEndpointRequest createRemoteHostedEndpointWithGroupLeaderOutputDeviceUID:v49 withOutputDeviceUIDs:v12 timeout:v21 details:v65 groupUIDCompletion:a4];
+      [MRDCreateRemoteHostedEndpointRequest createRemoteHostedEndpointWithGroupLeaderOutputDeviceUID:v49 withOutputDeviceUIDs:dsCopy timeout:v21 details:v65 groupUIDCompletion:timeout];
 
       goto LABEL_15;
     }
 
     if (v29 == 3)
     {
-      [v14 setOperationTypeString:@"ModifyOutputContext"];
+      [analyticsCopy setOperationTypeString:@"ModifyOutputContext"];
       v31 = dispatch_group_create();
       dispatch_group_enter(v31);
-      v32 = [v14 removeFromParent];
-      [v32 start];
+      removeFromParent = [analyticsCopy removeFromParent];
+      [removeFromParent start];
 
-      v33 = [v28 designatedGroupLeader];
-      v34 = [v33 uid];
+      designatedGroupLeader = [v28 designatedGroupLeader];
+      v34 = [designatedGroupLeader uid];
       v35 = qos_class_self();
       v36 = dispatch_get_global_queue(v35, 0);
       v62[0] = _NSConcreteStackBlock;
       v62[1] = 3221225472;
       v62[2] = sub_10018DD08;
       v62[3] = &unk_1004B9C80;
-      v37 = v14;
+      v37 = analyticsCopy;
       v63 = v37;
       v38 = v31;
       v64 = v38;
@@ -224,11 +224,11 @@
       v83 = sub_10003525C;
       v84 = sub_100035AE4;
       v85 = 0;
-      v39 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v21 type:3 outputDeviceUIDs:v12];
+      v39 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v21 type:3 outputDeviceUIDs:dsCopy];
       [v39 setSuppressErrorDialog:1];
       dispatch_group_enter(v38);
-      v40 = [v37 modifyOutputContext];
-      [v40 start];
+      modifyOutputContext = [v37 modifyOutputContext];
+      [modifyOutputContext start];
 
       v41 = qos_class_self();
       v42 = dispatch_get_global_queue(v41, 0);
@@ -258,13 +258,13 @@
     }
 
 LABEL_12:
-    [v14 setOperationTypeString:@"?"];
+    [analyticsCopy setOperationTypeString:@"?"];
     goto LABEL_15;
   }
 
   if (!v29)
   {
-    [v14 setOperationTypeString:@"None"];
+    [analyticsCopy setOperationTypeString:@"None"];
     v46 = [[NSError alloc] initWithMRError:47];
     (v27[2])(v27, 0, v46);
 
@@ -276,46 +276,46 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v14 setOperationTypeString:@"CreateHostedEndpoint"];
-  v30 = [v14 createHostedEndpoint];
-  [v30 start];
+  [analyticsCopy setOperationTypeString:@"CreateHostedEndpoint"];
+  createHostedEndpoint = [analyticsCopy createHostedEndpoint];
+  [createHostedEndpoint start];
 
   v68[0] = _NSConcreteStackBlock;
   v68[1] = 3221225472;
   v68[2] = sub_10018DBE0;
   v68[3] = &unk_1004C04F8;
-  v69 = v14;
+  v69 = analyticsCopy;
   v70 = v27;
-  [MRDCreateHostedEndpointRequest createHostedEndpointWithOutputDeviceUIDs:v12 timeout:v21 details:v68 groupUIDCompletion:a4];
+  [MRDCreateHostedEndpointRequest createHostedEndpointWithOutputDeviceUIDs:dsCopy timeout:v21 details:v68 groupUIDCompletion:timeout];
 
 LABEL_15:
 }
 
-- (id)_createEndpointForOutputDeviceUIDs:(id)a3
+- (id)_createEndpointForOutputDeviceUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 routingServer];
-  v6 = [v5 hostedRoutingService];
-  v7 = [v6 hostedRoutingController];
+  routingServer = [v4 routingServer];
+  hostedRoutingService = [routingServer hostedRoutingService];
+  hostedRoutingController = [hostedRoutingService hostedRoutingController];
 
-  v8 = [v7 makeEndpointWithOutputDeviceUIDs:v3 options:190];
+  v8 = [hostedRoutingController makeEndpointWithOutputDeviceUIDs:dsCopy options:190];
 
   return v8;
 }
 
-- (int64_t)_calculateOperationTypeForEndpoint:(id)a3
+- (int64_t)_calculateOperationTypeForEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 supportPTOTRefactorPart1];
+  supportPTOTRefactorPart1 = [v4 supportPTOTRefactorPart1];
 
-  if (v5)
+  if (supportPTOTRefactorPart1)
   {
     v6 = +[MRUserSettings currentSettings];
     if ([v6 supportMultiplayerHost])
     {
-      if ([v3 connectionType] == 1)
+      if ([endpointCopy connectionType] == 1)
       {
 
 LABEL_15:
@@ -323,9 +323,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [v3 connectionType];
+      connectionType = [endpointCopy connectionType];
 
-      if (v11 == 6)
+      if (connectionType == 6)
       {
         goto LABEL_15;
       }
@@ -335,16 +335,16 @@ LABEL_15:
     {
     }
 
-    v8 = [v3 designatedGroupLeader];
-    v9 = [v8 supportsMultiplayer];
+    designatedGroupLeader = [endpointCopy designatedGroupLeader];
+    supportsMultiplayer = [designatedGroupLeader supportsMultiplayer];
 
     v10 = 3;
-    if (!v3)
+    if (!endpointCopy)
     {
       v10 = 0;
     }
 
-    if (v9)
+    if (supportsMultiplayer)
     {
       v7 = 2;
     }
@@ -355,7 +355,7 @@ LABEL_15:
     }
   }
 
-  else if (v3)
+  else if (endpointCopy)
   {
     v7 = 3;
   }

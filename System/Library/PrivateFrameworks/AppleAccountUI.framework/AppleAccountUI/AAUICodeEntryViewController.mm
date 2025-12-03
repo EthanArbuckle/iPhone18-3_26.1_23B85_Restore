@@ -1,6 +1,6 @@
 @interface AAUICodeEntryViewController
-- (AAUICodeEntryViewController)initWithContext:(id)a3;
-- (BOOL)validatePIN:(id)a3;
+- (AAUICodeEntryViewController)initWithContext:(id)context;
+- (BOOL)validatePIN:(id)n;
 - (CGSize)preferredContentSize;
 - (id)pinInstructionsPrompt;
 - (id)stringsBundle;
@@ -8,23 +8,23 @@
 - (void)_enableUserInteractionAndStopSpinner;
 - (void)_showIncorrectCodeAlert;
 - (void)didCancelEnteringPIN;
-- (void)setPane:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setPane:(id)pane;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AAUICodeEntryViewController
 
-- (AAUICodeEntryViewController)initWithContext:(id)a3
+- (AAUICodeEntryViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = AAUICodeEntryViewController;
   v6 = [(DevicePINController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = [MEMORY[0x1E69C5748] preferenceSpecifierNamed:@"AAUICodeEntry" target:0 set:0 get:0 detail:0 cell:13 edit:0];
     [v8 setEditPaneClass:objc_opt_class()];
     [(DevicePINController *)v7 setSpecifier:v8];
@@ -34,44 +34,44 @@
     [(DevicePINController *)v7 setHidesNavigationButtons:0];
     [(DevicePINController *)v7 setPinDelegate:v7];
     [(DevicePINController *)v7 setPinLength:6];
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom] != 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v10 = [currentDevice userInterfaceIdiom] != 1;
 
     [(DevicePINController *)v7 setNumericPIN:v10];
-    v11 = [MEMORY[0x1E69C5710] appearance];
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [v11 setTextColor:v12];
+    appearance = [MEMORY[0x1E69C5710] appearance];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [appearance setTextColor:labelColor];
 
-    v13 = [MEMORY[0x1E69C5710] appearance];
-    v14 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v13 setBackgroundColor:v14];
+    appearance2 = [MEMORY[0x1E69C5710] appearance];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [appearance2 setBackgroundColor:systemBackgroundColor];
   }
 
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = AAUICodeEntryViewController;
-  [(DevicePINController *)&v9 viewWillAppear:a3];
-  v4 = [(AAUICodeEntryViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  [(DevicePINController *)&v9 viewWillAppear:appear];
+  navigationController = [(AAUICodeEntryViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6 == self)
+  if (firstObject == self)
   {
-    v7 = [(AAUICodeEntryViewController *)self navigationController];
-    v8 = [v7 navigationBar];
-    [v8 _setBackgroundOpacity:0.0];
+    navigationController2 = [(AAUICodeEntryViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar _setBackgroundOpacity:0.0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AAUICodeEntryViewController;
-  [(DevicePINController *)&v4 viewDidDisappear:a3];
+  [(DevicePINController *)&v4 viewDidDisappear:disappear];
   [(AAUICodeEntryViewController *)self _enableUserInteractionAndStopSpinner];
 }
 
@@ -92,16 +92,16 @@
   return result;
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v5.receiver = self;
   v5.super_class = AAUICodeEntryViewController;
-  [(DevicePINController *)&v5 setPane:v4];
+  [(DevicePINController *)&v5 setPane:paneCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setContext:self->_context];
+    [paneCopy setContext:self->_context];
   }
 }
 
@@ -120,24 +120,24 @@
 
 - (void)didCancelEnteringPIN
 {
-  v3 = [(AAUICodeEntryContext *)self->_context cancelEntryAction];
+  cancelEntryAction = [(AAUICodeEntryContext *)self->_context cancelEntryAction];
 
-  if (v3)
+  if (cancelEntryAction)
   {
-    v4 = [(AAUICodeEntryContext *)self->_context cancelEntryAction];
-    v4[2]();
+    cancelEntryAction2 = [(AAUICodeEntryContext *)self->_context cancelEntryAction];
+    cancelEntryAction2[2]();
   }
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
-  v4 = a3;
-  v5 = [(PSDetailController *)self pane];
-  [v5 resignFirstResponder];
+  nCopy = n;
+  pane = [(PSDetailController *)self pane];
+  [pane resignFirstResponder];
 
-  v6 = [(AAUICodeEntryContext *)self->_context codeEnteredAction];
+  codeEnteredAction = [(AAUICodeEntryContext *)self->_context codeEnteredAction];
 
-  if (v6)
+  if (codeEnteredAction)
   {
     [(AAUICodeEntryViewController *)self _disableUserInteractionAndStartSpinner];
     v20 = 0;
@@ -149,7 +149,7 @@
     v18 = 0x2020000000;
     v19 = 0;
     v7 = dispatch_semaphore_create(0);
-    v8 = [(AAUICodeEntryContext *)self->_context codeEnteredAction];
+    codeEnteredAction2 = [(AAUICodeEntryContext *)self->_context codeEnteredAction];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__AAUICodeEntryViewController_validatePIN___block_invoke;
@@ -158,7 +158,7 @@
     v15 = &v16;
     v9 = v7;
     v13 = v9;
-    (v8)[2](v8, v4, v12);
+    (codeEnteredAction2)[2](codeEnteredAction2, nCopy, v12);
 
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     if ((v21[3] & 1) == 0)
@@ -231,21 +231,21 @@ void __54__AAUICodeEntryViewController__showIncorrectCodeAlert__block_invoke(uin
 
 - (void)_disableUserInteractionAndStartSpinner
 {
-  v3 = [MEMORY[0x1E69C5730] sharedSpinnerManager];
-  v4 = [(AAUICodeEntryViewController *)self navigationItem];
-  [v3 startAnimatingInNavItem:v4 forIdentifier:@"aauiCodeEntryValidator" hideBackButton:1];
+  mEMORY[0x1E69C5730] = [MEMORY[0x1E69C5730] sharedSpinnerManager];
+  navigationItem = [(AAUICodeEntryViewController *)self navigationItem];
+  [mEMORY[0x1E69C5730] startAnimatingInNavItem:navigationItem forIdentifier:@"aauiCodeEntryValidator" hideBackButton:1];
 
-  v5 = [(AAUICodeEntryViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view = [(AAUICodeEntryViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)_enableUserInteractionAndStopSpinner
 {
-  v2 = [(AAUICodeEntryViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(AAUICodeEntryViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v3 = [MEMORY[0x1E69C5730] sharedSpinnerManager];
-  [v3 stopAnimatingForIdentifier:@"aauiCodeEntryValidator"];
+  mEMORY[0x1E69C5730] = [MEMORY[0x1E69C5730] sharedSpinnerManager];
+  [mEMORY[0x1E69C5730] stopAnimatingForIdentifier:@"aauiCodeEntryValidator"];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface PKIdentityHeroViewController
-- (PKIdentityHeroViewController)initWithConfiguration:(id)a3;
-- (void)primaryButtonClicked:(id)a3;
-- (void)secondaryButtonClicked:(id)a3;
+- (PKIdentityHeroViewController)initWithConfiguration:(id)configuration;
+- (void)primaryButtonClicked:(id)clicked;
+- (void)secondaryButtonClicked:(id)clicked;
 - (void)viewDidLoad;
 @end
 
 @implementation PKIdentityHeroViewController
 
-- (PKIdentityHeroViewController)initWithConfiguration:(id)a3
+- (PKIdentityHeroViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PKIdentityHeroViewController;
   v6 = [(PKExplanationViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -28,26 +28,26 @@
   v21.receiver = self;
   v21.super_class = PKIdentityHeroViewController;
   [(PKExplanationViewController *)&v21 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:64];
   [(PKIdentityHeroViewController *)self addChildViewController:v4];
-  [v3 setPrivacyLink:v4];
-  [v3 setShowPrivacyView:1];
+  [explanationView setPrivacyLink:v4];
+  [explanationView setShowPrivacyView:1];
   [v4 didMoveToParentViewController:self];
-  [v3 setDelegate:self];
-  [v3 setBodyDataDetectorTypes:0];
-  v5 = [(PKIdentityHeroViewConfiguration *)self->_configuration title];
-  [v3 setTitleText:v5];
+  [explanationView setDelegate:self];
+  [explanationView setBodyDataDetectorTypes:0];
+  title = [(PKIdentityHeroViewConfiguration *)self->_configuration title];
+  [explanationView setTitleText:title];
 
-  v6 = [(PKIdentityHeroViewConfiguration *)self->_configuration subtitle];
-  [v3 setBodyText:v6];
+  subtitle = [(PKIdentityHeroViewConfiguration *)self->_configuration subtitle];
+  [explanationView setBodyText:subtitle];
 
-  v7 = [(PKIdentityHeroViewConfiguration *)self->_configuration image];
-  if (v7)
+  image = [(PKIdentityHeroViewConfiguration *)self->_configuration image];
+  if (image)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69B8C10]);
     v9 = [PKPaymentSetupHeroView alloc];
-    v22[0] = v7;
+    v22[0] = image;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     v11 = [(PKPaymentSetupHeroView *)v9 initWithContext:0 heroImageController:v8 heroImages:v10];
   }
@@ -57,34 +57,34 @@
     v11 = 0;
   }
 
-  [v3 setHeroView:v11];
+  [explanationView setHeroView:v11];
   v12 = PKProvisioningSecondaryBackgroundColor();
-  [v3 setTopBackgroundColor:v12];
+  [explanationView setTopBackgroundColor:v12];
 
-  v13 = [v3 dockView];
-  v14 = [v13 primaryButton];
-  v15 = [(PKIdentityHeroViewConfiguration *)self->_configuration primaryButtonTitle];
-  [v14 setTitle:v15 forState:0];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  primaryButtonTitle = [(PKIdentityHeroViewConfiguration *)self->_configuration primaryButtonTitle];
+  [primaryButton setTitle:primaryButtonTitle forState:0];
 
-  [v14 addTarget:self action:sel_primaryButtonClicked_ forControlEvents:64];
-  v16 = [(PKIdentityHeroViewConfiguration *)self->_configuration secondaryButtonTitle];
+  [primaryButton addTarget:self action:sel_primaryButtonClicked_ forControlEvents:64];
+  secondaryButtonTitle = [(PKIdentityHeroViewConfiguration *)self->_configuration secondaryButtonTitle];
 
-  if (v16)
+  if (secondaryButtonTitle)
   {
-    v17 = [v3 dockView];
-    v18 = [v17 footerView];
+    dockView2 = [explanationView dockView];
+    footerView = [dockView2 footerView];
 
-    v19 = [v18 manualEntryButton];
-    v20 = [(PKIdentityHeroViewConfiguration *)self->_configuration secondaryButtonTitle];
-    [v19 setTitle:v20 forState:0];
+    manualEntryButton = [footerView manualEntryButton];
+    secondaryButtonTitle2 = [(PKIdentityHeroViewConfiguration *)self->_configuration secondaryButtonTitle];
+    [manualEntryButton setTitle:secondaryButtonTitle2 forState:0];
 
-    [v19 addTarget:self action:sel_secondaryButtonClicked_ forControlEvents:64];
+    [manualEntryButton addTarget:self action:sel_secondaryButtonClicked_ forControlEvents:64];
   }
 
   [(PKExplanationViewController *)self setShowCancelButton:0];
 }
 
-- (void)primaryButtonClicked:(id)a3
+- (void)primaryButtonClicked:(id)clicked
 {
   v3 = _Block_copy(self->_primaryButtonClickedBlock);
   if (v3)
@@ -95,7 +95,7 @@
   }
 }
 
-- (void)secondaryButtonClicked:(id)a3
+- (void)secondaryButtonClicked:(id)clicked
 {
   v3 = _Block_copy(self->_secondaryButtonClickedBlock);
   if (v3)

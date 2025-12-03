@@ -1,14 +1,14 @@
 @interface CPGridTemplate
 + (CGSize)maximumGridButtonImageSize;
-+ (void)_setMaximumGridButtonImageSize:(CGSize)a3;
-- (CPGridTemplate)initWithCoder:(id)a3;
++ (void)_setMaximumGridButtonImageSize:(CGSize)size;
+- (CPGridTemplate)initWithCoder:(id)coder;
 - (CPGridTemplate)initWithTitle:(NSString *)title gridButtons:(NSArray *)gridButtons;
-- (id)_prepareButtons:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)gridButton:(id)a3 setImageSet:(id)a4;
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4;
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (id)_prepareButtons:(id)buttons;
+- (void)encodeWithCoder:(id)coder;
+- (void)gridButton:(id)button setImageSet:(id)set;
+- (void)gridButton:(id)button setTitleVariants:(id)variants;
+- (void)gridButton:(id)button setUnread:(BOOL)unread;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)performUpdate;
 - (void)updateGridButtons:(NSArray *)gridButtons;
 - (void)updateTitle:(NSString *)title;
@@ -16,10 +16,10 @@
 
 @implementation CPGridTemplate
 
-+ (void)_setMaximumGridButtonImageSize:(CGSize)a3
++ (void)_setMaximumGridButtonImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11 = *MEMORY[0x277D85DE8];
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -72,22 +72,22 @@
   return v8;
 }
 
-- (CPGridTemplate)initWithCoder:(id)a3
+- (CPGridTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CPGridTemplate;
-  v5 = [(CPTemplate *)&v14 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCPGridTemplateButtonsKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCPGridTemplateButtonsKey"];
     gridButtons = v5->_gridButtons;
     v5->_gridButtons = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPGridItemTemplateTitleKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPGridItemTemplateTitleKey"];
     title = v5->_title;
     v5->_title = v11;
   }
@@ -95,29 +95,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPGridTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPGridTemplate *)self gridButtons:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPGridTemplateButtonsKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPGridTemplateButtonsKey"];
 
-  v6 = [(CPGridTemplate *)self title];
-  [v4 encodeObject:v6 forKey:@"kCPGridItemTemplateTitleKey"];
+  title = [(CPGridTemplate *)self title];
+  [coderCopy encodeObject:title forKey:@"kCPGridItemTemplateTitleKey"];
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CPGridTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -184,60 +184,60 @@ void __51__CPGridTemplate_handleActionForControlIdentifier___block_invoke_11(uin
   }
 }
 
-- (void)gridButton:(id)a3 setImageSet:(id)a4
+- (void)gridButton:(id)button setImageSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  setCopy = set;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__CPGridTemplate_gridButton_setImageSet___block_invoke;
   v12[3] = &unk_278A110C8;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v12];
+  v13 = buttonCopy;
+  v14 = setCopy;
+  v9 = setCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v12];
 }
 
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4
+- (void)gridButton:(id)button setTitleVariants:(id)variants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  variantsCopy = variants;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __46__CPGridTemplate_gridButton_setTitleVariants___block_invoke;
   v12[3] = &unk_278A110C8;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v12];
+  v13 = buttonCopy;
+  v14 = variantsCopy;
+  v9 = variantsCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v12];
 }
 
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4
+- (void)gridButton:(id)button setUnread:(BOOL)unread
 {
-  v6 = a3;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__CPGridTemplate_gridButton_setUnread___block_invoke;
   v10[3] = &unk_278A110F0;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
-  v9 = [v7 addSuccessBlock:v10];
+  v11 = buttonCopy;
+  unreadCopy = unread;
+  v8 = buttonCopy;
+  v9 = [templateProviderFuture addSuccessBlock:v10];
 }
 
-- (id)_prepareButtons:(id)a3
+- (id)_prepareButtons:(id)buttons
 {
-  v5 = a3;
-  if ([v5 count] >= 9)
+  buttonsCopy = buttons;
+  if ([buttonsCopy count] >= 9)
   {
-    v6 = [v5 subarrayWithRange:{0, 8}];
+    v6 = [buttonsCopy subarrayWithRange:{0, 8}];
 
-    v5 = v6;
+    buttonsCopy = v6;
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -246,9 +246,9 @@ void __51__CPGridTemplate_handleActionForControlIdentifier___block_invoke_11(uin
   v8[3] = &unk_278A11118;
   v8[4] = self;
   v8[5] = a2;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [buttonsCopy enumerateObjectsUsingBlock:v8];
 
-  return v5;
+  return buttonsCopy;
 }
 
 void __34__CPGridTemplate__prepareButtons___block_invoke(uint64_t a1, void *a2)
@@ -273,8 +273,8 @@ void __34__CPGridTemplate__prepareButtons___block_invoke(uint64_t a1, void *a2)
 - (void)updateGridButtons:(NSArray *)gridButtons
 {
   obj = [(CPGridTemplate *)self _prepareButtons:gridButtons];
-  v4 = [(CPGridTemplate *)self gridButtons];
-  v5 = [v4 isEqualToArray:obj];
+  gridButtons = [(CPGridTemplate *)self gridButtons];
+  v5 = [gridButtons isEqualToArray:obj];
 
   if ((v5 & 1) == 0)
   {
@@ -286,8 +286,8 @@ void __34__CPGridTemplate__prepareButtons___block_invoke(uint64_t a1, void *a2)
 - (void)updateTitle:(NSString *)title
 {
   v7 = title;
-  v5 = [(CPGridTemplate *)self title];
-  v6 = [v5 isEqualToString:v7];
+  title = [(CPGridTemplate *)self title];
+  v6 = [title isEqualToString:v7];
 
   if ((v6 & 1) == 0)
   {
@@ -302,13 +302,13 @@ void __34__CPGridTemplate__prepareButtons___block_invoke(uint64_t a1, void *a2)
   v8.super_class = CPGridTemplate;
   [(CPTemplate *)&v8 performUpdate];
   objc_initWeak(&location, self);
-  v3 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __31__CPGridTemplate_performUpdate__block_invoke;
   v5[3] = &unk_278A11140;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addSuccessBlock:v5];
+  v4 = [templateProviderFuture addSuccessBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

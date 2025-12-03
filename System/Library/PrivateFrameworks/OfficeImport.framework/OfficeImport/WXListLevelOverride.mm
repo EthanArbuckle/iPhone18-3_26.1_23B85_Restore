@@ -1,32 +1,32 @@
 @interface WXListLevelOverride
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXListLevelOverride
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  toCopy = to;
+  stateCopy = state;
   v15 = 0;
-  v9 = [v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "startOverride");
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "startOverride");
 
-  v11 = [v8 WXMainNamespace];
-  LODWORD(v10) = CXOptionalLongAttribute(v10, v11, "val", &v15);
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  LODWORD(v10) = CXOptionalLongAttribute(v10, wXMainNamespace2, "val", &v15);
 
   if (v10)
   {
-    [v7 setStartNumber:v15];
+    [toCopy setStartNumber:v15];
   }
 
-  v12 = [v8 WXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "lvl");
+  wXMainNamespace3 = [stateCopy WXMainNamespace];
+  v13 = OCXFindChild(from, wXMainNamespace3, "lvl");
 
   if (v13)
   {
-    v14 = [v7 mutableListLevel];
-    [WXListLevel readFrom:v13 to:v14 state:v8];
+    mutableListLevel = [toCopy mutableListLevel];
+    [WXListLevel readFrom:v13 to:mutableListLevel state:stateCopy];
   }
 }
 

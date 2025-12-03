@@ -1,44 +1,44 @@
 @interface BCSURLPatternMatchResult
-- (BCSURLPatternMatchResult)initWithOriginalURL:(id)a3 extractedURL:(id)a4 totalConsecutivePrefixMatches:(unint64_t)a5 totalExactMatches:(unint64_t)a6 totalAnyMatches:(unint64_t)a7 bundleID:(id)a8 pattern:(id)a9 expirationDate:(id)a10 dateHelper:(id)a11;
+- (BCSURLPatternMatchResult)initWithOriginalURL:(id)l extractedURL:(id)rL totalConsecutivePrefixMatches:(unint64_t)matches totalExactMatches:(unint64_t)exactMatches totalAnyMatches:(unint64_t)anyMatches bundleID:(id)d pattern:(id)pattern expirationDate:(id)self0 dateHelper:(id)self1;
 - (BOOL)isExpired;
 - (BOOL)matchFound;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BCSURLPatternMatchResult
 
-- (BCSURLPatternMatchResult)initWithOriginalURL:(id)a3 extractedURL:(id)a4 totalConsecutivePrefixMatches:(unint64_t)a5 totalExactMatches:(unint64_t)a6 totalAnyMatches:(unint64_t)a7 bundleID:(id)a8 pattern:(id)a9 expirationDate:(id)a10 dateHelper:(id)a11
+- (BCSURLPatternMatchResult)initWithOriginalURL:(id)l extractedURL:(id)rL totalConsecutivePrefixMatches:(unint64_t)matches totalExactMatches:(unint64_t)exactMatches totalAnyMatches:(unint64_t)anyMatches bundleID:(id)d pattern:(id)pattern expirationDate:(id)self0 dateHelper:(id)self1
 {
-  v30 = a3;
-  v29 = a4;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
-  v19 = a11;
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  patternCopy = pattern;
+  dateCopy = date;
+  helperCopy = helper;
   v31.receiver = self;
   v31.super_class = BCSURLPatternMatchResult;
   v20 = [(BCSURLPatternMatchResult *)&v31 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_originalURL, a3);
-    objc_storeStrong(&v21->_extractedURL, a4);
-    v21->_totalConsecutivePrefixMatches = a5;
-    v21->_totalExactMatches = a6;
-    v21->_totalAnyMatches = a7;
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_originalURL, l);
+    objc_storeStrong(&v21->_extractedURL, rL);
+    v21->_totalConsecutivePrefixMatches = matches;
+    v21->_totalExactMatches = exactMatches;
+    v21->_totalAnyMatches = anyMatches;
+    v22 = [dCopy copy];
     bundleID = v21->_bundleID;
     v21->_bundleID = v22;
 
-    v24 = [v17 copy];
+    v24 = [patternCopy copy];
     pattern = v21->_pattern;
     v21->_pattern = v24;
 
-    objc_storeStrong(&v21->_expirationDate, a10);
-    objc_storeStrong(&v21->_dateHelper, a11);
+    objc_storeStrong(&v21->_expirationDate, date);
+    objc_storeStrong(&v21->_dateHelper, helper);
   }
 
   return v21;
@@ -46,28 +46,28 @@
 
 - (BOOL)isExpired
 {
-  v3 = [(BCSURLPatternMatchResult *)self expirationDate];
-  v4 = [(BCSURLPatternMatchResult *)self dateHelper];
-  v5 = [v4 currentDate];
-  v6 = [v3 compare:v5] == -1;
+  expirationDate = [(BCSURLPatternMatchResult *)self expirationDate];
+  dateHelper = [(BCSURLPatternMatchResult *)self dateHelper];
+  currentDate = [dateHelper currentDate];
+  v6 = [expirationDate compare:currentDate] == -1;
 
   return v6;
 }
 
 - (BOOL)matchFound
 {
-  v2 = [(BCSURLPatternMatchResult *)self extractedURL];
-  v3 = v2 != 0;
+  extractedURL = [(BCSURLPatternMatchResult *)self extractedURL];
+  v3 = extractedURL != 0;
 
   return v3;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BCSURLPatternMatchResult *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCSURLPatternMatchResult *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -79,7 +79,7 @@
   v7[3] = &unk_278D38930;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendBodySectionWithName:0 multilinePrefix:0 block:v7];
   v5 = v4;
 
@@ -101,26 +101,26 @@ void __54__BCSURLPatternMatchResult_succinctDescriptionBuilder__block_invoke(uin
   v9 = [v8 appendObject:v10 withName:@"Pattern" skipIfNil:1];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCSURLPatternMatchResult *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCSURLPatternMatchResult *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BCSURLPatternMatchResult *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BCSURLPatternMatchResult *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__BCSURLPatternMatchResult_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_278D38930;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

@@ -1,30 +1,30 @@
 @interface CCWalletPaymentsCommerceTrackedOrderCustomer
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCWalletPaymentsCommerceTrackedOrderAddress)billingAddress;
-- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithFullName:(id)a3 phoneNumber:(id)a4 emailAddress:(id)a5 billingAddress:(id)a6 error:(id *)a7;
-- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithFullName:(id)name phoneNumber:(id)number emailAddress:(id)address billingAddress:(id)billingAddress error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)emailAddress;
 - (NSString)fullName;
 - (NSString)phoneNumber;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceTrackedOrderCustomer
 
-- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v19[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"fullName"];
-    v10 = [v6 objectForKeyedSubscript:@"phoneNumber"];
-    v11 = [v6 objectForKeyedSubscript:@"emailAddress"];
-    v12 = [v6 objectForKeyedSubscript:@"billingAddress"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"fullName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumber"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"emailAddress"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"billingAddress"];
     if (v12)
     {
       v13 = v12;
@@ -46,7 +46,7 @@
       v14 = 0;
     }
 
-    v17 = [[CCWalletPaymentsCommerceTrackedOrderCustomer alloc] initWithFullName:v9 phoneNumber:v10 emailAddress:v11 billingAddress:v14 error:a4];
+    v17 = [[CCWalletPaymentsCommerceTrackedOrderCustomer alloc] initWithFullName:v9 phoneNumber:v10 emailAddress:v11 billingAddress:v14 error:error];
     v13 = v14;
 LABEL_10:
 
@@ -65,27 +65,27 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_fullName)
   {
-    v4 = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self fullName];
-    [v3 setObject:v4 forKeyedSubscript:@"fullName"];
+    fullName = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self fullName];
+    [v3 setObject:fullName forKeyedSubscript:@"fullName"];
   }
 
   if (self->_phoneNumber)
   {
-    v5 = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self phoneNumber];
-    [v3 setObject:v5 forKeyedSubscript:@"phoneNumber"];
+    phoneNumber = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self phoneNumber];
+    [v3 setObject:phoneNumber forKeyedSubscript:@"phoneNumber"];
   }
 
   if (self->_emailAddress)
   {
-    v6 = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self emailAddress];
-    [v3 setObject:v6 forKeyedSubscript:@"emailAddress"];
+    emailAddress = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self emailAddress];
+    [v3 setObject:emailAddress forKeyedSubscript:@"emailAddress"];
   }
 
   if (self->_billingAddress)
   {
-    v7 = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self billingAddress];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"billingAddress"];
+    billingAddress = [(CCWalletPaymentsCommerceTrackedOrderCustomer *)self billingAddress];
+    jsonDictionary = [billingAddress jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"billingAddress"];
   }
 
   v9 = [v3 copy];
@@ -93,34 +93,34 @@ LABEL_11:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v10 = a3;
+  blockCopy = block;
   if (self->_fullName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7997 stringValue:self->_fullName];
-    v10[2](v10, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_phoneNumber)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7998 stringValue:self->_phoneNumber];
-    v10[2](v10, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_emailAddress)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7999 stringValue:self->_emailAddress];
-    v10[2](v10, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
-  v8 = v10;
+  v8 = blockCopy;
   if (self->_billingAddress)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8000 subMessageValue:self->_billingAddress];
-    v10[2](v10, v9);
+    blockCopy[2](blockCopy, v9);
 
-    v8 = v10;
+    v8 = blockCopy;
   }
 }
 
@@ -152,10 +152,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -331,14 +331,14 @@ LABEL_43:
   return v36;
 }
 
-- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithFullName:(id)a3 phoneNumber:(id)a4 emailAddress:(id)a5 billingAddress:(id)a6 error:(id *)a7
+- (CCWalletPaymentsCommerceTrackedOrderCustomer)initWithFullName:(id)name phoneNumber:(id)number emailAddress:(id)address billingAddress:(id)billingAddress error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  nameCopy = name;
+  numberCopy = number;
+  addressCopy = address;
+  billingAddressCopy = billingAddress;
   v16 = objc_opt_new();
-  if (v12)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -348,13 +348,13 @@ LABEL_43:
       goto LABEL_16;
     }
 
-    v27 = a7;
+    errorCopy2 = error;
     CCPBDataWriterWriteStringField();
-    if (!v13)
+    if (!numberCopy)
     {
 LABEL_4:
       v19 = v18;
-      if (v14)
+      if (addressCopy)
       {
         goto LABEL_5;
       }
@@ -365,9 +365,9 @@ LABEL_4:
 
   else
   {
-    v27 = a7;
+    errorCopy2 = error;
     v18 = 0;
-    if (!v13)
+    if (!numberCopy)
     {
       goto LABEL_4;
     }
@@ -383,7 +383,7 @@ LABEL_4:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v14)
+  if (addressCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -393,7 +393,7 @@ LABEL_5:
     if (v20)
     {
       CCPBDataWriterWriteStringField();
-      if (!v15)
+      if (!billingAddressCopy)
       {
         goto LABEL_14;
       }
@@ -405,7 +405,7 @@ LABEL_12:
 
       if (v22)
       {
-        v23 = [v15 data];
+        data = [billingAddressCopy data];
         CCPBDataWriterWriteDataField();
 
         v18 = v19;
@@ -414,32 +414,32 @@ LABEL_12:
 
 LABEL_15:
       CCSetError();
-      v25 = 0;
+      selfCopy = 0;
       v18 = v19;
       goto LABEL_17;
     }
 
 LABEL_16:
     CCSetError();
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
 LABEL_11:
   v18 = v19;
-  if (v15)
+  if (billingAddressCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_14:
-  v24 = [v16 immutableData];
-  self = [(CCItemMessage *)self initWithData:v24 error:v27];
+  immutableData = [v16 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:errorCopy2];
 
-  v25 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v25;
+  return selfCopy;
 }
 
 @end

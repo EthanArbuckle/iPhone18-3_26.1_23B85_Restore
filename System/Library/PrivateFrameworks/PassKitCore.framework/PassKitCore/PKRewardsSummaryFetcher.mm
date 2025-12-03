@@ -1,46 +1,46 @@
 @interface PKRewardsSummaryFetcher
-- (BOOL)isPaymentPassRelevant:(id)a3;
-- (BOOL)isTransactionSourceIdentifierRelevant:(id)a3;
-- (PKRewardsSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4;
+- (BOOL)isPaymentPassRelevant:(id)relevant;
+- (BOOL)isTransactionSourceIdentifierRelevant:(id)relevant;
+- (PKRewardsSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account;
 - (id)_relevantTransactionSourceIdentifiers;
-- (void)rewardsTierSummariesWithCompletion:(id)a3;
+- (void)rewardsTierSummariesWithCompletion:(id)completion;
 @end
 
 @implementation PKRewardsSummaryFetcher
 
-- (PKRewardsSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4
+- (PKRewardsSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = PKRewardsSummaryFetcher;
   v9 = [(PKRewardsSummaryFetcher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a4);
-    objc_storeStrong(&v10->_transactionSourceCollection, a3);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_transactionSourceCollection, collection);
   }
 
   return v10;
 }
 
-- (BOOL)isTransactionSourceIdentifierRelevant:(id)a3
+- (BOOL)isTransactionSourceIdentifierRelevant:(id)relevant
 {
-  v4 = a3;
-  v5 = [(PKRewardsSummaryFetcher *)self _relevantTransactionSourceIdentifiers];
-  v6 = [v5 containsObject:v4];
+  relevantCopy = relevant;
+  _relevantTransactionSourceIdentifiers = [(PKRewardsSummaryFetcher *)self _relevantTransactionSourceIdentifiers];
+  v6 = [_relevantTransactionSourceIdentifiers containsObject:relevantCopy];
 
   return v6;
 }
 
-- (BOOL)isPaymentPassRelevant:(id)a3
+- (BOOL)isPaymentPassRelevant:(id)relevant
 {
-  v4 = a3;
-  v5 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v6 = [v5 uniqueID];
-  v7 = v4;
-  v8 = v6;
+  relevantCopy = relevant;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  uniqueID = [paymentPass uniqueID];
+  v7 = relevantCopy;
+  v8 = uniqueID;
   v9 = v8;
   if (v8 == v7)
   {
@@ -59,9 +59,9 @@
   return v10;
 }
 
-- (void)rewardsTierSummariesWithCompletion:(id)a3
+- (void)rewardsTierSummariesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x3032000000;
@@ -85,9 +85,9 @@
   v7 = PKStartOfYear(v5);
   v8 = dispatch_group_create();
   v9 = +[PKAccountService sharedInstance];
-  v10 = [(PKRewardsSummaryFetcher *)self _relevantTransactionSourceIdentifiers];
-  v11 = [(PKAccount *)self->_account creditDetails];
-  v12 = [v11 currencyCode];
+  _relevantTransactionSourceIdentifiers = [(PKRewardsSummaryFetcher *)self _relevantTransactionSourceIdentifiers];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
   dispatch_group_enter(v8);
   v28[0] = MEMORY[0x1E69E9820];
@@ -97,7 +97,7 @@
   v30 = v35;
   v13 = v8;
   v29 = v13;
-  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:v10 currencyCode:v12 startDate:v6 endDate:0 completion:v28];
+  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:_relevantTransactionSourceIdentifiers currencyCode:currencyCode startDate:v6 endDate:0 completion:v28];
   dispatch_group_enter(v13);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -106,7 +106,7 @@
   v27 = v33;
   v14 = v13;
   v26 = v14;
-  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:v10 currencyCode:v12 startDate:v7 endDate:0 completion:v25];
+  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:_relevantTransactionSourceIdentifiers currencyCode:currencyCode startDate:v7 endDate:0 completion:v25];
   dispatch_group_enter(v14);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -115,16 +115,16 @@
   v24 = v31;
   v15 = v14;
   v23 = v15;
-  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:v10 currencyCode:v12 startDate:0 endDate:0 completion:v22];
+  [v9 rewardsTierSummaryForTransactionSourceIdentifiers:_relevantTransactionSourceIdentifiers currencyCode:currencyCode startDate:0 endDate:0 completion:v22];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __62__PKRewardsSummaryFetcher_rewardsTierSummariesWithCompletion___block_invoke_4;
   v17[3] = &unk_1E79D7848;
-  v18 = v4;
+  v18 = completionCopy;
   v19 = v35;
   v20 = v33;
   v21 = v31;
-  v16 = v4;
+  v16 = completionCopy;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], v17);
 
   _Block_object_dispose(v31, 8);
@@ -173,8 +173,8 @@ uint64_t __62__PKRewardsSummaryFetcher_rewardsTierSummariesWithCompletion___bloc
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSources];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  transactionSources = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSources];
+  v5 = [transactionSources countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -185,32 +185,32 @@ uint64_t __62__PKRewardsSummaryFetcher_rewardsTierSummariesWithCompletion___bloc
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(transactionSources);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 type];
-        if (v10)
+        type = [v9 type];
+        if (type)
         {
-          if (v10 != 2)
+          if (type != 2)
           {
             continue;
           }
 
-          v11 = [v9 accountUser];
-          v12 = [v11 isCurrentUser];
+          accountUser = [v9 accountUser];
+          isCurrentUser = [accountUser isCurrentUser];
 
-          if (!v12)
+          if (!isCurrentUser)
           {
             continue;
           }
         }
 
-        v13 = [v9 transactionSourceIdentifiers];
-        [v3 unionSet:v13];
+        transactionSourceIdentifiers = [v9 transactionSourceIdentifiers];
+        [v3 unionSet:transactionSourceIdentifiers];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [transactionSources countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);

@@ -1,60 +1,60 @@
 @interface CRLShapeControlKnobTrackerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxShouldAnnounceValueUponEndMovingKnob;
 - (id)_crlaxHUDString;
-- (void)p_updateHUDAtPoint:(CGPoint)a3;
+- (void)p_updateHUDAtPoint:(CGPoint)point;
 @end
 
 @implementation CRLShapeControlKnobTrackerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (BOOL)crlaxShouldAnnounceValueUponEndMovingKnob
 {
-  v2 = [(CRLShapeControlKnobTrackerAccessibility *)self _crlaxHUDString];
-  v3 = [v2 length] == 0;
+  _crlaxHUDString = [(CRLShapeControlKnobTrackerAccessibility *)self _crlaxHUDString];
+  v3 = [_crlaxHUDString length] == 0;
 
   return v3;
 }
 
-- (void)p_updateHUDAtPoint:(CGPoint)a3
+- (void)p_updateHUDAtPoint:(CGPoint)point
 {
   v11.receiver = self;
   v11.super_class = CRLShapeControlKnobTrackerAccessibility;
-  [(CRLShapeControlKnobTrackerAccessibility *)&v11 p_updateHUDAtPoint:a3.x, a3.y];
-  v4 = [(CRLShapeControlKnobTrackerAccessibility *)self _crlaxHUDString];
+  [(CRLShapeControlKnobTrackerAccessibility *)&v11 p_updateHUDAtPoint:point.x, point.y];
+  _crlaxHUDString = [(CRLShapeControlKnobTrackerAccessibility *)self _crlaxHUDString];
   v5 = +[NSDate now];
   v6 = +[CRLShapeControlKnobTrackerAccessibility _crlaxTimeOfLastHUDAnnouncement];
   [v5 timeIntervalSinceDate:v6];
   v8 = v7;
 
   v9 = +[CRLShapeControlKnobTrackerAccessibility _crlaxLastAnnouncedHUDString];
-  v10 = [v4 isEqualToString:v9];
+  v10 = [_crlaxHUDString isEqualToString:v9];
 
-  if ([v4 length] && ((v8 <= 1.0) & v10) == 0)
+  if ([_crlaxHUDString length] && ((v8 <= 1.0) & v10) == 0)
   {
     [CRLShapeControlKnobTrackerAccessibility set_crlaxTimeOfLastHUDAnnouncement:v5];
-    [CRLShapeControlKnobTrackerAccessibility set_crlaxLastAnnouncedHUDString:v4];
-    [(CRLCanvasKnobTrackerAccessibility *)self crlaxAnnounceString:v4];
+    [CRLShapeControlKnobTrackerAccessibility set_crlaxLastAnnouncedHUDString:_crlaxHUDString];
+    [(CRLCanvasKnobTrackerAccessibility *)self crlaxAnnounceString:_crlaxHUDString];
   }
 }
 
 - (id)_crlaxHUDString
 {
-  v3 = [(CRLShapeControlKnobTrackerAccessibility *)self crlaxTarget];
-  v4 = [v3 shapeControlLayout];
+  crlaxTarget = [(CRLShapeControlKnobTrackerAccessibility *)self crlaxTarget];
+  shapeControlLayout = [crlaxTarget shapeControlLayout];
 
-  v5 = [v4 smartPathSource];
-  v6 = [(CRLShapeControlKnobTrackerAccessibility *)self crlaxTarget];
-  v7 = [v6 knob];
-  v8 = [v5 getFeedbackStringForKnob:{objc_msgSend(v7, "tag")}];
+  smartPathSource = [shapeControlLayout smartPathSource];
+  crlaxTarget2 = [(CRLShapeControlKnobTrackerAccessibility *)self crlaxTarget];
+  knob = [crlaxTarget2 knob];
+  v8 = [smartPathSource getFeedbackStringForKnob:{objc_msgSend(knob, "tag")}];
 
   return v8;
 }

@@ -34,7 +34,7 @@
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   ArticleThumbnailView.removeFromSuperview()();
 }
 

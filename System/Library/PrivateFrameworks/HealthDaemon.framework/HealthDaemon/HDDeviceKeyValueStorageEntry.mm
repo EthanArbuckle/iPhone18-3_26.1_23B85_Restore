@@ -1,42 +1,42 @@
 @interface HDDeviceKeyValueStorageEntry
-- (BOOL)isEqual:(id)a3;
-- (HDDeviceKeyValueStorageEntry)initWithDomain:(id)a3 key:(id)a4 value:(id)a5 modificationDate:(id)a6 syncIdentity:(id)a7 category:(int64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateValue:(id *)a3;
-- (id)numberValue:(id *)a3;
-- (id)stringValue:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDDeviceKeyValueStorageEntry)initWithDomain:(id)domain key:(id)key value:(id)value modificationDate:(id)date syncIdentity:(id)identity category:(int64_t)category;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateValue:(id *)value;
+- (id)numberValue:(id *)value;
+- (id)stringValue:(id *)value;
 - (unint64_t)hash;
 @end
 
 @implementation HDDeviceKeyValueStorageEntry
 
-- (HDDeviceKeyValueStorageEntry)initWithDomain:(id)a3 key:(id)a4 value:(id)a5 modificationDate:(id)a6 syncIdentity:(id)a7 category:(int64_t)a8
+- (HDDeviceKeyValueStorageEntry)initWithDomain:(id)domain key:(id)key value:(id)value modificationDate:(id)date syncIdentity:(id)identity category:(int64_t)category
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  domainCopy = domain;
+  keyCopy = key;
+  valueCopy = value;
+  dateCopy = date;
+  identityCopy = identity;
   v23.receiver = self;
   v23.super_class = HDDeviceKeyValueStorageEntry;
   v18 = [(HDDeviceKeyValueStorageEntry *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_domain, a3);
-    objc_storeStrong(&v19->_key, a4);
-    objc_storeStrong(&v19->_value, a5);
-    objc_storeStrong(&v19->_modificationDate, a6);
-    objc_storeStrong(&v19->_syncIdentity, a7);
-    v19->_protectionCategory = a8;
+    objc_storeStrong(&v18->_domain, domain);
+    objc_storeStrong(&v19->_key, key);
+    objc_storeStrong(&v19->_value, value);
+    objc_storeStrong(&v19->_modificationDate, date);
+    objc_storeStrong(&v19->_syncIdentity, identity);
+    v19->_protectionCategory = category;
   }
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDDeviceKeyValueStorageEntry allocWithZone:a3];
+  v4 = [HDDeviceKeyValueStorageEntry allocWithZone:zone];
   domain = self->_domain;
   key = self->_key;
   value = self->_value;
@@ -47,10 +47,10 @@
   return [(HDDeviceKeyValueStorageEntry *)v4 initWithDomain:domain key:key value:value modificationDate:modificationDate syncIdentity:syncIdentity category:protectionCategory];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -60,22 +60,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       domain = self->_domain;
-      v8 = [(HDDeviceKeyValueStorageEntry *)v6 domain];
-      if (domain != v8)
+      domain = [(HDDeviceKeyValueStorageEntry *)v6 domain];
+      if (domain != domain)
       {
-        v9 = [(HDDeviceKeyValueStorageEntry *)v6 domain];
-        if (!v9)
+        domain2 = [(HDDeviceKeyValueStorageEntry *)v6 domain];
+        if (!domain2)
         {
           v12 = 0;
           goto LABEL_29;
         }
 
-        v3 = v9;
+        v3 = domain2;
         v10 = self->_domain;
-        v11 = [(HDDeviceKeyValueStorageEntry *)v6 domain];
-        if (![(NSString *)v10 isEqualToString:v11])
+        domain3 = [(HDDeviceKeyValueStorageEntry *)v6 domain];
+        if (![(NSString *)v10 isEqualToString:domain3])
         {
           v12 = 0;
 LABEL_28:
@@ -83,7 +83,7 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v34 = v11;
+        v34 = domain3;
       }
 
       key = self->_key;
@@ -112,8 +112,8 @@ LABEL_28:
       }
 
       value = self->_value;
-      v22 = [(HDDeviceKeyValueStorageEntry *)v6 value];
-      if (![(NSData *)value isEqual:v22])
+      value = [(HDDeviceKeyValueStorageEntry *)v6 value];
+      if (![(NSData *)value isEqual:value])
       {
 
         if (key == v14)
@@ -126,24 +126,24 @@ LABEL_28:
 
       v33 = v3;
       modificationDate = self->_modificationDate;
-      v24 = [(HDDeviceKeyValueStorageEntry *)v6 modificationDate];
-      if ([(NSDate *)modificationDate isEqualToDate:v24])
+      modificationDate = [(HDDeviceKeyValueStorageEntry *)v6 modificationDate];
+      if ([(NSDate *)modificationDate isEqualToDate:modificationDate])
       {
         protectionCategory = self->_protectionCategory;
         if (protectionCategory == [(HDDeviceKeyValueStorageEntry *)v6 protectionCategory])
         {
           syncIdentity = self->_syncIdentity;
-          v27 = [(HDDeviceKeyValueStorageEntry *)v6 syncIdentity];
-          v12 = [(HDSyncIdentity *)syncIdentity isEqual:v27];
+          syncIdentity = [(HDDeviceKeyValueStorageEntry *)v6 syncIdentity];
+          v12 = [(HDSyncIdentity *)syncIdentity isEqual:syncIdentity];
 
           if (key != v14)
           {
           }
 
-          v28 = domain == v8;
+          v28 = domain == domain;
           v3 = v33;
 LABEL_27:
-          v11 = v34;
+          domain3 = v34;
           if (!v28)
           {
             goto LABEL_28;
@@ -164,7 +164,7 @@ LABEL_24:
 LABEL_26:
 
       v12 = 0;
-      v28 = domain == v8;
+      v28 = domain == domain;
       goto LABEL_27;
     }
 
@@ -189,31 +189,31 @@ LABEL_30:
   return v7 ^ v9;
 }
 
-- (id)dateValue:(id *)a3
+- (id)dateValue:(id *)value
 {
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
-- (id)numberValue:(id *)a3
+- (id)numberValue:(id *)value
 {
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
-- (id)stringValue:(id *)a3
+- (id)stringValue:(id *)value
 {
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
   value = self->_value;
 
-  return [v5 unarchivedObjectOfClass:v6 fromData:value error:a3];
+  return [v5 unarchivedObjectOfClass:v6 fromData:value error:value];
 }
 
 @end

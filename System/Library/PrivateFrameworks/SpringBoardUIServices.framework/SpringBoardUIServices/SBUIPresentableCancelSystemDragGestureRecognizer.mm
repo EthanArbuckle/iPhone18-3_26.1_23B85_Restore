@@ -1,16 +1,16 @@
 @interface SBUIPresentableCancelSystemDragGestureRecognizer
-- (SBUIPresentableCancelSystemDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBUIPresentableCancelSystemDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (SBUIPresentableCancelSystemDragGestureRecognizerDelegate)delegate;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SBUIPresentableCancelSystemDragGestureRecognizer
 
-- (SBUIPresentableCancelSystemDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBUIPresentableCancelSystemDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = SBUIPresentableCancelSystemDragGestureRecognizer;
-  v4 = [(SBUIPresentableCancelSystemDragGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(SBUIPresentableCancelSystemDragGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v10 = a3;
-  v6 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([(SBUIPresentableCancelSystemDragGestureRecognizer *)self state])
   {
     v7 = 5;
@@ -33,8 +33,8 @@
 
   else
   {
-    v8 = [(SBUIPresentableCancelSystemDragGestureRecognizer *)self delegate];
-    v9 = [v8 gestureRecognizer:self shouldBeginWithTouches:v10 event:v6];
+    delegate = [(SBUIPresentableCancelSystemDragGestureRecognizer *)self delegate];
+    v9 = [delegate gestureRecognizer:self shouldBeginWithTouches:beganCopy event:eventCopy];
 
     if (v9)
     {

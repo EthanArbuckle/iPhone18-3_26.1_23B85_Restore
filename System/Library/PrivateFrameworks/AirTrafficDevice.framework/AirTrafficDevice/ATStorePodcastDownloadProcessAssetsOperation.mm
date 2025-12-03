@@ -7,9 +7,9 @@
 - (void)execute
 {
   v5 = objc_alloc_init(ATStoreDownloadOperationResult);
-  v3 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-  v4 = [v3 downloadFilePath];
-  [(ATStoreDownloadOperationResult *)v5 setDownloadFilePath:v4];
+  assetsOperationResult = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+  downloadFilePath = [assetsOperationResult downloadFilePath];
+  [(ATStoreDownloadOperationResult *)v5 setDownloadFilePath:downloadFilePath];
 
   [(ATStoreDownloadOperation *)self finishWithError:0 operationResult:v5];
 }

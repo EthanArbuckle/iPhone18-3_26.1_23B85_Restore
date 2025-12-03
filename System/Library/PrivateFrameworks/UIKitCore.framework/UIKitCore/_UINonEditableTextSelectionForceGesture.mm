@@ -1,5 +1,5 @@
 @interface _UINonEditableTextSelectionForceGesture
-- (_UINonEditableTextSelectionForceGesture)initWithTextInput:(id)a3;
+- (_UINonEditableTextSelectionForceGesture)initWithTextInput:(id)input;
 - (_UINonEditableTextSelectionForceGestureDelegate)forceGestureDelegate;
 - (void)dealloc;
 - (void)willBeginGesture;
@@ -7,17 +7,17 @@
 
 @implementation _UINonEditableTextSelectionForceGesture
 
-- (_UINonEditableTextSelectionForceGesture)initWithTextInput:(id)a3
+- (_UINonEditableTextSelectionForceGesture)initWithTextInput:(id)input
 {
-  v4 = a3;
-  if (v4)
+  inputCopy = input;
+  if (inputCopy)
   {
     v11.receiver = self;
     v11.super_class = _UINonEditableTextSelectionForceGesture;
     v5 = [(UIGestureRecognizer *)&v11 init];
     if (v5)
     {
-      v6 = [[_UIKeyboardTextSelectionController alloc] initWithInputDelegate:v4];
+      v6 = [[_UIKeyboardTextSelectionController alloc] initWithInputDelegate:inputCopy];
       textSelectionController = v5->_textSelectionController;
       v5->_textSelectionController = v6;
 
@@ -57,17 +57,17 @@
 
 - (void)willBeginGesture
 {
-  v3 = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
-  if (v3)
+  forceGestureDelegate = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
+  if (forceGestureDelegate)
   {
-    v4 = v3;
-    v5 = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
+    v4 = forceGestureDelegate;
+    forceGestureDelegate2 = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
-      [v7 willBeginGesture];
+      forceGestureDelegate3 = [(_UINonEditableTextSelectionForceGesture *)self forceGestureDelegate];
+      [forceGestureDelegate3 willBeginGesture];
     }
   }
 }

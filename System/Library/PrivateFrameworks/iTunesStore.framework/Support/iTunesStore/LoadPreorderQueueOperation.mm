@@ -1,5 +1,5 @@
 @interface LoadPreorderQueueOperation
-- (LoadPreorderQueueOperation)initWithAccountIdentifier:(id)a3;
+- (LoadPreorderQueueOperation)initWithAccountIdentifier:(id)identifier;
 - (NSArray)preorderItems;
 - (NSNumber)accountIdentifier;
 - (id)_newURLOperation;
@@ -9,14 +9,14 @@
 
 @implementation LoadPreorderQueueOperation
 
-- (LoadPreorderQueueOperation)initWithAccountIdentifier:(id)a3
+- (LoadPreorderQueueOperation)initWithAccountIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = LoadPreorderQueueOperation;
   v4 = [(LoadPreorderQueueOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountID = a3;
+    v4->_accountID = identifier;
   }
 
   return v4;
@@ -46,22 +46,22 @@
 
 - (void)run
 {
-  v3 = [(LoadPreorderQueueOperation *)self _newURLOperation];
+  _newURLOperation = [(LoadPreorderQueueOperation *)self _newURLOperation];
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -92,10 +92,10 @@
   }
 
   v47 = 0;
-  v11 = [(LoadPreorderQueueOperation *)self runSubOperation:v3 returningError:&v47, v39];
+  v11 = [(LoadPreorderQueueOperation *)self runSubOperation:_newURLOperation returningError:&v47, v39];
   if (v11)
   {
-    v12 = [objc_msgSend(v3 "dataProvider")];
+    v12 = [objc_msgSend(_newURLOperation "dataProvider")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = v3;
+        v42 = _newURLOperation;
         v14 = objc_alloc_init(NSMutableArray);
         v43 = 0u;
         v44 = 0u;
@@ -148,15 +148,15 @@
           v22 = +[SSLogConfig sharedConfig];
         }
 
-        v23 = [v22 shouldLog];
+        shouldLog2 = [v22 shouldLog];
         if ([v22 shouldLogToDisk])
         {
-          v24 = v23 | 2;
+          v24 = shouldLog2 | 2;
         }
 
         else
         {
-          v24 = v23;
+          v24 = shouldLog2;
         }
 
         if (os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_INFO))
@@ -195,7 +195,7 @@
         self->_items = [v14 copy];
         [(LoadPreorderQueueOperation *)self unlock];
 
-        v3 = v42;
+        _newURLOperation = v42;
       }
     }
   }
@@ -208,15 +208,15 @@
       v31 = +[SSLogConfig sharedConfig];
     }
 
-    v32 = [v31 shouldLog];
+    shouldLog3 = [v31 shouldLog];
     if ([v31 shouldLogToDisk])
     {
-      v33 = v32 | 2;
+      v33 = shouldLog3 | 2;
     }
 
     else
     {
-      v33 = v32;
+      v33 = shouldLog3;
     }
 
     if (os_log_type_enabled([v31 OSLogObject], OS_LOG_TYPE_DEFAULT))

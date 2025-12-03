@@ -1,33 +1,33 @@
 @interface PKOrderPhysicalCardViewController
-- (PKOrderPhysicalCardViewController)initWithController:(id)a3;
+- (PKOrderPhysicalCardViewController)initWithController:(id)controller;
 - (PKPaymentSetupViewControllerDelegate)delegate;
 - (void)_handleNextStep;
 - (void)_terminateSetupFlow;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)preflightWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PKOrderPhysicalCardViewController
 
-- (PKOrderPhysicalCardViewController)initWithController:(id)a3
+- (PKOrderPhysicalCardViewController)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PKOrderPhysicalCardViewController;
   v6 = [(PKExplanationViewController *)&v12 init];
   if (v6)
   {
-    v6->_context = [v5 paymentSetupContext];
-    objc_storeStrong(&v6->_controller, a3);
-    v6->_featureIdentifier = [v5 featureIdentifier];
-    v7 = [v5 nameOnCard];
+    v6->_context = [controllerCopy paymentSetupContext];
+    objc_storeStrong(&v6->_controller, controller);
+    v6->_featureIdentifier = [controllerCopy featureIdentifier];
+    nameOnCard = [controllerCopy nameOnCard];
     nameOnCard = v6->_nameOnCard;
-    v6->_nameOnCard = v7;
+    v6->_nameOnCard = nameOnCard;
 
-    v9 = [v5 selectedArtworkOption];
+    selectedArtworkOption = [controllerCopy selectedArtworkOption];
     artworkOption = v6->_artworkOption;
-    v6->_artworkOption = v9;
+    v6->_artworkOption = selectedArtworkOption;
 
     v6->_unavailableToOrder = [(PKPhysicalCardArtworkOption *)v6->_artworkOption optionUnavailable];
   }
@@ -42,29 +42,29 @@
   [(PKExplanationViewController *)&v29 viewDidLoad];
   [(PKExplanationViewController *)self setShowDoneButton:0];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v3 = [(PKOrderPhysicalCardViewController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKOrderPhysicalCardViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setDelegate:self];
-  [v4 setShowPrivacyView:0];
-  [v4 setForceShowSetupLaterButton:1];
-  [v4 setTitleHyphenationFactor:0.1];
-  [v4 setImageIgnoresTopSafeArea:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setForceShowSetupLaterButton:1];
+  [explanationView setTitleHyphenationFactor:0.1];
+  [explanationView setImageIgnoresTopSafeArea:1];
   v5 = objc_alloc_init(PKOrderPhysicalCardHeroView);
   physicalCardHeroView = self->_physicalCardHeroView;
   self->_physicalCardHeroView = v5;
 
-  v7 = [(PKOrderPhysicalCardHeroView *)self->_physicalCardHeroView artworkView];
-  v8 = [(PKOrderPhysicalCardController *)self->_controller nameOnCard];
-  [v7 setNameOnCard:v8];
+  artworkView = [(PKOrderPhysicalCardHeroView *)self->_physicalCardHeroView artworkView];
+  nameOnCard = [(PKOrderPhysicalCardController *)self->_controller nameOnCard];
+  [artworkView setNameOnCard:nameOnCard];
 
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [(PKPhysicalCardArtworkOption *)self->_artworkOption frontFaceImage];
-  v11 = [v9 imageWithPKImage:v10];
-  [v7 setArtworkImage:v11];
+  frontFaceImage = [(PKPhysicalCardArtworkOption *)self->_artworkOption frontFaceImage];
+  v11 = [v9 imageWithPKImage:frontFaceImage];
+  [artworkView setArtworkImage:v11];
 
-  [v4 setHeroView:self->_physicalCardHeroView];
+  [explanationView setHeroView:self->_physicalCardHeroView];
   if (self->_unavailableToOrder)
   {
     v12 = PKLocalizedFeatureString();
@@ -108,24 +108,24 @@
   v19 = PKLocalizedFeatureString();
 LABEL_12:
   v20 = v19;
-  [v4 setTitleText:v12];
-  [v4 setBodyText:v13];
-  v21 = [v4 dockView];
-  v22 = [v21 primaryButton];
-  [v22 setTitle:v20 forState:0];
+  [explanationView setTitleText:v12];
+  [explanationView setBodyText:v13];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setTitle:v20 forState:0];
 
-  v23 = [v4 dockView];
-  v24 = [v23 footerView];
+  dockView2 = [explanationView dockView];
+  footerView = [dockView2 footerView];
 
-  [v4 setForceShowSetupLaterButton:!self->_unavailableToOrder];
+  [explanationView setForceShowSetupLaterButton:!self->_unavailableToOrder];
   if (!self->_unavailableToOrder)
   {
-    v25 = [v24 setUpLaterButton];
-    v26 = v25;
+    setUpLaterButton = [footerView setUpLaterButton];
+    v26 = setUpLaterButton;
     secondaryButtonTitleOverride = self->_secondaryButtonTitleOverride;
     if (secondaryButtonTitleOverride)
     {
-      [v25 setTitle:secondaryButtonTitleOverride forState:0];
+      [setUpLaterButton setTitle:secondaryButtonTitleOverride forState:0];
     }
 
     else
@@ -136,7 +136,7 @@ LABEL_12:
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   if (self->_unavailableToOrder)
   {
@@ -150,13 +150,13 @@ LABEL_12:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [(PKOrderPhysicalCardAddressConfirmationViewController *)v4 setDelegate:WeakRetained];
 
-    v6 = [(PKOrderPhysicalCardViewController *)self navigationController];
+    navigationController = [(PKOrderPhysicalCardViewController *)self navigationController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__PKOrderPhysicalCardViewController_explanationViewDidSelectContinue___block_invoke;
     v7[3] = &unk_1E8011D28;
     v7[4] = self;
-    [v6 pk_presentPaymentSetupViewController:v4 animated:1 completion:v7];
+    [navigationController pk_presentPaymentSetupViewController:v4 animated:1 completion:v7];
   }
 }
 
@@ -229,21 +229,21 @@ uint64_t __52__PKOrderPhysicalCardViewController__handleNextStep__block_invoke_2
 
   else
   {
-    v4 = [(PKOrderPhysicalCardViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKOrderPhysicalCardViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   artworkOption = self->_artworkOption;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PKOrderPhysicalCardViewController_preflightWithCompletion___block_invoke;
   v8[3] = &unk_1E8011DC8;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = [(PKPhysicalCardArtworkOption *)artworkOption artworkImage:v8];
 }
 

@@ -7,8 +7,8 @@
 + (BOOL)isMessagesInstalled
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v3 = [v2 applicationIsInstalled:@"com.apple.MobileSMS"];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v3 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   _HKInitializeLogging();
   v4 = *MEMORY[0x1E696B968];

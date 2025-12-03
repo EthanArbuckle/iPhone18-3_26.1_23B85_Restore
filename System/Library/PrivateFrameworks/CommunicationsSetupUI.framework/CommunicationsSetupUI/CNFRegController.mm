@@ -1,38 +1,38 @@
 @interface CNFRegController
-+ (id)controllerForServiceType:(int64_t)a3;
-- (BOOL)__ensureSingleAppleIDAccountExistsWithLogin:(id)a3;
-- (BOOL)_accountHasValidatedLocale:(id)a3;
-- (BOOL)_addAliases:(id)a3 toAccount:(id)a4 validate:(BOOL)a5;
-- (BOOL)_aliasIsDevicePhoneNumber:(id)a3;
-- (BOOL)_aliasIsTemporaryDeviceAlias:(id)a3;
-- (BOOL)_isValidCallerIDAlias:(id)a3 forAccount:(id)a4;
-- (BOOL)_shouldFilterOutAlias:(id)a3 onAccount:(id)a4;
++ (id)controllerForServiceType:(int64_t)type;
+- (BOOL)__ensureSingleAppleIDAccountExistsWithLogin:(id)login;
+- (BOOL)_accountHasValidatedLocale:(id)locale;
+- (BOOL)_addAliases:(id)aliases toAccount:(id)account validate:(BOOL)validate;
+- (BOOL)_aliasIsDevicePhoneNumber:(id)number;
+- (BOOL)_aliasIsTemporaryDeviceAlias:(id)alias;
+- (BOOL)_isValidCallerIDAlias:(id)alias forAccount:(id)account;
+- (BOOL)_shouldFilterOutAlias:(id)alias onAccount:(id)account;
 - (BOOL)accountIsAuthenticating;
-- (BOOL)addAlias:(id)a3;
-- (BOOL)addAlias:(id)a3 toAccount:(id)a4;
-- (BOOL)canRemoveAlias:(id)a3;
+- (BOOL)addAlias:(id)alias;
+- (BOOL)addAlias:(id)alias toAccount:(id)account;
+- (BOOL)canRemoveAlias:(id)alias;
 - (BOOL)deviceCanTakeNetworkAction;
 - (BOOL)deviceHasSaneNetworkConnection;
-- (BOOL)hasAlias:(id)a3;
-- (BOOL)hasAliasNamed:(id)a3;
+- (BOOL)hasAlias:(id)alias;
+- (BOOL)hasAliasNamed:(id)named;
 - (BOOL)hasFailedLogin;
 - (BOOL)hasFailedLoginDueToBadLogin;
-- (BOOL)iMessageAccountMatchesiCloudAccount:(id)a3;
+- (BOOL)iMessageAccountMatchesiCloudAccount:(id)account;
 - (BOOL)isAccountKeyCDPSyncingOrWaitingForUser;
-- (BOOL)isAliasMDMRestricted:(id)a3;
+- (BOOL)isAliasMDMRestricted:(id)restricted;
 - (BOOL)isConnected;
 - (BOOL)isServiceEnabled;
 - (BOOL)isServiceSupported;
-- (BOOL)removeAlias:(id)a3 fromAccount:(id)a4;
+- (BOOL)removeAlias:(id)alias fromAccount:(id)account;
 - (BOOL)serviceSupportsDeviceAliasEnablement;
-- (BOOL)setAliases:(id)a3 onAccount:(id)a4;
-- (BOOL)setDisplayAlias:(id)a3;
-- (BOOL)shouldHandleAccountNotification:(id)a3;
-- (BOOL)shouldShowAlertForError:(id)a3;
-- (BOOL)unvalidateAlias:(id)a3;
-- (BOOL)validateAlias:(id)a3;
+- (BOOL)setAliases:(id)aliases onAccount:(id)account;
+- (BOOL)setDisplayAlias:(id)alias;
+- (BOOL)shouldHandleAccountNotification:(id)notification;
+- (BOOL)shouldShowAlertForError:(id)error;
+- (BOOL)unvalidateAlias:(id)alias;
+- (BOOL)validateAlias:(id)alias;
 - (CNFRegController)init;
-- (CNFRegController)initWithServiceType:(int64_t)a3;
+- (CNFRegController)initWithServiceType:(int64_t)type;
 - (IDSPhoneSubscriptionSelector)phoneSubscriptionSelector;
 - (IMAccount)systemAccount;
 - (IMServiceImpl)firstService;
@@ -54,30 +54,30 @@
 - (id)__filter_signedInPredicate;
 - (id)__filter_validatedAliasPredicate;
 - (id)__filter_validatedProfilePredicate;
-- (id)_accountForAlias:(id)a3 accounts:(id)a4;
-- (id)_accountsPassingTests:(id)a3 message:(id)a4;
-- (id)_aliasesForAccount:(id)a3;
-- (id)_aliasesFromAccounts:(id)a3 passingTest:(id)a4;
-- (id)_aliasesPassingTest:(id)a3;
-- (id)_allAvailableAliasesForAccount:(id)a3;
-- (id)_createAccountWithLogin:(id)a3 foundExisting:(BOOL *)a4;
-- (id)_guessedDisplayAliasFromAccounts:(id)a3;
+- (id)_accountForAlias:(id)alias accounts:(id)accounts;
+- (id)_accountsPassingTests:(id)tests message:(id)message;
+- (id)_aliasesForAccount:(id)account;
+- (id)_aliasesFromAccounts:(id)accounts passingTest:(id)test;
+- (id)_aliasesPassingTest:(id)test;
+- (id)_allAvailableAliasesForAccount:(id)account;
+- (id)_createAccountWithLogin:(id)login foundExisting:(BOOL *)existing;
+- (id)_guessedDisplayAliasFromAccounts:(id)accounts;
 - (id)_logName;
 - (id)_logSpace;
-- (id)_phoneSubscriptionMatchingLabel:(id)a3;
-- (id)_phoneSubscriptionMatchingPhoneNumber:(id)a3;
-- (id)_predicatesWithFilter:(int64_t)a3;
-- (id)_vettedAliasesForAccount:(id)a3;
-- (id)accountForAlias:(id)a3;
-- (id)accountWithLogin:(id)a3;
-- (id)accountsWithFilter:(int64_t)a3 message:(id)a4;
-- (id)aliasNamed:(id)a3;
-- (id)aliasSummaryString:(BOOL *)a3;
-- (id)aliasesForAccounts:(id)a3;
-- (id)allAvailableAliasesForAccounts:(id)a3;
-- (id)beginAccountSetupWithAccount:(id)a3;
-- (id)beginAccountSetupWithLogin:(id)a3 authID:(id)a4 authToken:(id)a5 regionInfo:(id)a6 foundExisting:(BOOL *)a7;
-- (id)beginAccountSetupWithLogin:(id)a3 password:(id)a4 foundExisting:(BOOL *)a5;
+- (id)_phoneSubscriptionMatchingLabel:(id)label;
+- (id)_phoneSubscriptionMatchingPhoneNumber:(id)number;
+- (id)_predicatesWithFilter:(int64_t)filter;
+- (id)_vettedAliasesForAccount:(id)account;
+- (id)accountForAlias:(id)alias;
+- (id)accountWithLogin:(id)login;
+- (id)accountsWithFilter:(int64_t)filter message:(id)message;
+- (id)aliasNamed:(id)named;
+- (id)aliasSummaryString:(BOOL *)string;
+- (id)aliasesForAccounts:(id)accounts;
+- (id)allAvailableAliasesForAccounts:(id)accounts;
+- (id)beginAccountSetupWithAccount:(id)account;
+- (id)beginAccountSetupWithLogin:(id)login authID:(id)d authToken:(id)token regionInfo:(id)info foundExisting:(BOOL *)existing;
+- (id)beginAccountSetupWithLogin:(id)login password:(id)password foundExisting:(BOOL *)existing;
 - (id)displayAccount;
 - (id)displayAlias;
 - (id)fetchSIMs;
@@ -86,74 +86,74 @@
 - (id)guessedAlias;
 - (id)guessedDisplayAlias;
 - (id)localPhoneNumberSentinelAlias;
-- (id)loginForAccount:(id)a3;
-- (id)networkSettingsURLAllowingCellular:(BOOL)a3;
+- (id)loginForAccount:(id)account;
+- (id)networkSettingsURLAllowingCellular:(BOOL)cellular;
 - (id)travelAliases;
 - (id)usableDeviceAliases;
-- (id)vettedAliasesForAccounts:(id)a3;
+- (id)vettedAliasesForAccounts:(id)accounts;
 - (unint64_t)accountState;
-- (unint64_t)accountState:(id)a3;
-- (unint64_t)accountStateForAccount:(id)a3;
+- (unint64_t)accountState:(id)state;
+- (unint64_t)accountStateForAccount:(id)account;
 - (void)__updateSystemAccount;
 - (void)_clearAccountCache;
 - (void)_clearCachedTemporaryDeviceAliases;
 - (void)_clearFilterCache;
 - (void)_decrementLogIndent;
 - (void)_handleCallerIDChanged;
-- (void)_handleCallerIDChangedForResume:(id)a3;
+- (void)_handleCallerIDChangedForResume:(id)resume;
 - (void)_postCallerIDChanged;
 - (void)_purgeExcessAccounts;
-- (void)_showNetworkAlertWithMessage:(id)a3 andViewController:(id)a4;
-- (void)_signOutAccount:(id)a3;
+- (void)_showNetworkAlertWithMessage:(id)message andViewController:(id)controller;
+- (void)_signOutAccount:(id)account;
 - (void)_startListeningForCallerIDChanges;
 - (void)_startWiFiAlertWatchTimer;
 - (void)_stopListeningForCallerIDChanges;
 - (void)_stopWiFiAlertWatchTimer;
-- (void)_wifiAlertWatchTimerFired:(id)a3;
-- (void)accountActivationStateChanged:(id)a3;
-- (void)accountAdded:(id)a3;
-- (void)accountRegistrationChanged:(id)a3;
-- (void)accountRemoved:(id)a3;
-- (void)activateAccountsExcludingAccounts:(id)a3;
-- (void)addDeviceAlias:(id)a3;
-- (void)aliasStatusChanged:(id)a3;
-- (void)aliasesChanged:(id)a3;
-- (void)authorizationCredentialsChanged:(id)a3;
-- (void)callerIdChanged:(id)a3;
+- (void)_wifiAlertWatchTimerFired:(id)fired;
+- (void)accountActivationStateChanged:(id)changed;
+- (void)accountAdded:(id)added;
+- (void)accountRegistrationChanged:(id)changed;
+- (void)accountRemoved:(id)removed;
+- (void)activateAccountsExcludingAccounts:(id)accounts;
+- (void)addDeviceAlias:(id)alias;
+- (void)aliasStatusChanged:(id)changed;
+- (void)aliasesChanged:(id)changed;
+- (void)authorizationCredentialsChanged:(id)changed;
+- (void)callerIdChanged:(id)changed;
 - (void)clearAllCaches;
-- (void)connect:(BOOL)a3;
+- (void)connect:(BOOL)connect;
 - (void)deactivateAccounts;
 - (void)dealloc;
-- (void)deviceCapabilityChanged:(id)a3;
-- (void)disableDeviceAlias:(id)a3;
+- (void)deviceCapabilityChanged:(id)changed;
+- (void)disableDeviceAlias:(id)alias;
 - (void)enablePhoneNumberRegistration;
-- (void)handleAliasAdded:(id)a3;
-- (void)handleAliasRemoved:(id)a3;
+- (void)handleAliasAdded:(id)added;
+- (void)handleAliasRemoved:(id)removed;
 - (void)nukeAllCallerIDSettings;
-- (void)openURL:(id)a3;
-- (void)profileChanged:(id)a3;
-- (void)profileValidationStateChanged:(id)a3;
+- (void)openURL:(id)l;
+- (void)profileChanged:(id)changed;
+- (void)profileValidationStateChanged:(id)changed;
 - (void)refreshSystemAccount;
 - (void)removeAllHandlers;
-- (void)removeDeviceAlias:(id)a3;
+- (void)removeDeviceAlias:(id)alias;
 - (void)resetNetworkFirstRunAlert;
-- (void)setServiceEnabled:(BOOL)a3;
-- (void)showNetworkAlert:(id)a3;
-- (void)showNetworkAlertIfNecessary:(id)a3;
-- (void)showNetworkFirstRunAlert:(id)a3;
-- (void)showSetupFaceTimeOverCellularAlertForServiceProviderName:(id)a3 serviceProviderPhoneNumber:(id)a4 serviceProviderURL:(id)a5 completion:(id)a6;
-- (void)showSetupFaceTimeOverCellularAlertWithCompletion:(id)a3;
+- (void)setServiceEnabled:(BOOL)enabled;
+- (void)showNetworkAlert:(id)alert;
+- (void)showNetworkAlertIfNecessary:(id)necessary;
+- (void)showNetworkFirstRunAlert:(id)alert;
+- (void)showSetupFaceTimeOverCellularAlertForServiceProviderName:(id)name serviceProviderPhoneNumber:(id)number serviceProviderURL:(id)l completion:(id)completion;
+- (void)showSetupFaceTimeOverCellularAlertWithCompletion:(id)completion;
 - (void)startListeningForAccountChanges;
 - (void)startRequiringWifi;
 - (void)stopListeningForAccountChanges;
 - (void)stopRequiringWifi;
-- (void)updateMDMRestrictedSubscriptions:(id)a3;
-- (void)vettedAliasesChanged:(id)a3;
+- (void)updateMDMRestrictedSubscriptions:(id)subscriptions;
+- (void)vettedAliasesChanged:(id)changed;
 @end
 
 @implementation CNFRegController
 
-+ (id)controllerForServiceType:(int64_t)a3
++ (id)controllerForServiceType:(int64_t)type
 {
   v5 = FTCServiceNameForServiceType();
   v6 = v5;
@@ -172,7 +172,7 @@
     v10 = [v7 objectForKey:v6];
     if (!v10)
     {
-      v10 = [[a1 alloc] initWithServiceType:a3];
+      v10 = [[self alloc] initWithServiceType:type];
       [controllerForServiceType__serviceMap setObject:v10 forKey:v6];
     }
   }
@@ -187,13 +187,13 @@
 
 - (CNFRegController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CNFRegController.m" lineNumber:102 description:@"Do not call init directly. Call +controllerForServices: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNFRegController.m" lineNumber:102 description:@"Do not call init directly. Call +controllerForServices: instead"];
 
   return 0;
 }
 
-- (CNFRegController)initWithServiceType:(int64_t)a3
+- (CNFRegController)initWithServiceType:(int64_t)type
 {
   v32 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
@@ -201,16 +201,16 @@
   v23 = [(CNFRegController *)&v28 init];
   if (v23)
   {
-    v4 = [MEMORY[0x277D192A8] sharedInstance];
-    [v4 addListener:v23];
+    mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+    [mEMORY[0x277D192A8] addListener:v23];
 
     v23->_systemAccountType = -1;
-    [(CNFRegController *)v23 setServiceType:a3];
+    [(CNFRegController *)v23 setServiceType:type];
     [(CNFRegController *)v23 _purgeExcessAccounts];
     v22 = FTCServiceNameForServiceType();
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@RegController", v22];
-    v5 = [MEMORY[0x277D18D68] sharedInstance];
-    [v5 addListenerID:v21 capabilities:*MEMORY[0x277D19338]];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68] addListenerID:v21 capabilities:*MEMORY[0x277D19338]];
 
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     v20 = [MEMORY[0x277D18DE0] serviceWithInternalName:v22];
@@ -225,7 +225,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v31 = v22;
+        typeCopy = v22;
         _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Error loading service with name : %@", buf, 0xCu);
       }
 
@@ -239,7 +239,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v31 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "Initializing with service type: %ld", buf, 0xCu);
     }
 
@@ -271,7 +271,7 @@
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v31 = v13;
+            typeCopy = v13;
             _os_log_impl(&dword_243BE5000, v14, OS_LOG_TYPE_DEFAULT, "  => Service: %@", buf, 0xCu);
           }
 
@@ -288,7 +288,7 @@
     }
 
     [(CNFRegController *)v23 setServices:v9];
-    v15 = [(CNFRegController *)v23 accounts];
+    accounts = [(CNFRegController *)v23 accounts];
     [(CNFRegController *)v23 connect];
     [(CNFRegController *)v23 _startListeningForCallerIDChanges];
     v16 = dispatch_queue_create("com.apple.conference.regcontroller.springboardnetworkflags", 0);
@@ -302,13 +302,13 @@
 
 - (IMServiceImpl)firstService
 {
-  v3 = [(CNFRegController *)self services];
-  v4 = [v3 count];
+  services = [(CNFRegController *)self services];
+  v4 = [services count];
 
   if (v4)
   {
-    v5 = [(CNFRegController *)self services];
-    v6 = [v5 objectAtIndex:0];
+    services2 = [(CNFRegController *)self services];
+    v6 = [services2 objectAtIndex:0];
   }
 
   else
@@ -327,8 +327,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CNFRegController *)self services];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  services = [(CNFRegController *)self services];
+  v5 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -339,14 +339,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) internalName];
-        [v3 addObject:v9];
+        internalName = [*(*(&v12 + 1) + 8 * i) internalName];
+        [v3 addObject:internalName];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -360,8 +360,8 @@
 - (void)dealloc
 {
   [(CNFRegController *)self _stopWiFiAlertWatchTimer];
-  v3 = [MEMORY[0x277D192A8] sharedInstance];
-  [v3 removeListener:self];
+  mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+  [mEMORY[0x277D192A8] removeListener:self];
 
   [(CNFRegController *)self stopListeningForAccountChanges];
   [(CNFRegController *)self _stopListeningForCallerIDChanges];
@@ -391,26 +391,26 @@
   accounts = self->_accounts;
   if (!accounts)
   {
-    v25 = self;
+    selfCopy = self;
     v4 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CNFRegController *)v25 firstService];
+      firstService = [(CNFRegController *)selfCopy firstService];
       *buf = 138412290;
-      v32 = v5;
+      v32 = firstService;
       _os_log_impl(&dword_243BE5000, v4, OS_LOG_TYPE_DEFAULT, "Reloading the account list for service: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v23 = [(CNFRegController *)v25 firstService];
+      firstService2 = [(CNFRegController *)selfCopy firstService];
       IMLogString();
     }
 
     CNFRegLogIndent();
-    v6 = [MEMORY[0x277D18D28] sharedInstance];
-    v7 = [(CNFRegController *)v25 firstService];
-    v24 = [v6 accountsForService:v7];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    firstService3 = [(CNFRegController *)selfCopy firstService];
+    v24 = [mEMORY[0x277D18D28] accountsForService:firstService3];
 
     if ([v24 count])
     {
@@ -445,12 +445,12 @@
 
             if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
             {
-              v23 = CNFRegStringForAccount(v13);
+              firstService2 = CNFRegStringForAccount(v13);
               IMLogString();
             }
 
-            v16 = [v13 uniqueID];
-            v17 = [v16 isEqualToString:@"PlaceholderAccount"];
+            uniqueID = [v13 uniqueID];
+            v17 = [uniqueID isEqualToString:@"PlaceholderAccount"];
 
             if ((v17 & 1) == 0)
             {
@@ -465,8 +465,8 @@
       }
 
       v18 = [v8 copy];
-      v19 = v25->_accounts;
-      v25->_accounts = v18;
+      v19 = selfCopy->_accounts;
+      selfCopy->_accounts = v18;
     }
 
     else
@@ -486,7 +486,7 @@
 
     CNFRegLogOutdent();
 
-    accounts = v25->_accounts;
+    accounts = selfCopy->_accounts;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -496,9 +496,9 @@
 
 - (id)firstAccount
 {
-  v2 = [(CNFRegController *)self accounts];
-  v3 = v2;
-  if (v2 && [v2 count])
+  accounts = [(CNFRegController *)self accounts];
+  v3 = accounts;
+  if (accounts && [accounts count])
   {
     v4 = [v3 objectAtIndex:0];
   }
@@ -511,19 +511,19 @@
   return v4;
 }
 
-- (id)accountWithLogin:(id)a3
+- (id)accountWithLogin:(id)login
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  loginCopy = login;
+  v5 = loginCopy;
+  if (loginCopy && [loginCopy length])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(CNFRegController *)self accounts];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    accounts = [(CNFRegController *)self accounts];
+    v7 = [accounts countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -534,7 +534,7 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(accounts);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
@@ -548,7 +548,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [accounts countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           continue;
@@ -575,22 +575,22 @@ LABEL_14:
 - (id)fetchSIMs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D18998] sharedInstance];
+  mEMORY[0x277D18998] = [MEMORY[0x277D18998] sharedInstance];
   v3 = objc_opt_respondsToSelector();
 
-  v4 = [MEMORY[0x277D18998] sharedInstance];
-  v5 = v4;
+  mEMORY[0x277D18998]2 = [MEMORY[0x277D18998] sharedInstance];
+  v5 = mEMORY[0x277D18998]2;
   if (v3)
   {
     v15 = 0;
-    v6 = [v4 currentSIMsWithFilterOptions:1 error:&v15];
+    v6 = [mEMORY[0x277D18998]2 currentSIMsWithFilterOptions:1 error:&v15];
     v7 = &v15;
   }
 
   else
   {
     v14 = 0;
-    v6 = [v4 currentSIMsWithError:&v14];
+    v6 = [mEMORY[0x277D18998]2 currentSIMsWithError:&v14];
     v7 = &v14;
   }
 
@@ -633,29 +633,29 @@ LABEL_14:
 - (void)_purgeExcessAccounts
 {
   v49 = *MEMORY[0x277D85DE8];
-  v2 = [(CNFRegController *)self serviceType];
-  if (v2)
+  serviceType = [(CNFRegController *)self serviceType];
+  if (serviceType)
   {
-    if (v2 != 1)
+    if (serviceType != 1)
     {
       goto LABEL_51;
     }
 
-    v28 = [MEMORY[0x277D18DD8] iMessageService];
+    iMessageService = [MEMORY[0x277D18DD8] iMessageService];
   }
 
   else
   {
-    v28 = [MEMORY[0x277D18DD8] facetimeService];
+    iMessageService = [MEMORY[0x277D18DD8] facetimeService];
   }
 
-  if (!v28)
+  if (!iMessageService)
   {
     goto LABEL_51;
   }
 
-  v30 = [MEMORY[0x277D18D28] sharedInstance];
-  v3 = [v30 accountsForService:v28];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  v3 = [mEMORY[0x277D18D28] accountsForService:iMessageService];
   v4 = [v3 mutableCopy];
 
   v42 = 0u;
@@ -815,7 +815,7 @@ LABEL_37:
           IMLogString();
         }
 
-        [v30 deleteAccount:{v24, v27}];
+        [mEMORY[0x277D18D28] deleteAccount:{v24, v27}];
       }
 
       v21 = [v20 countByEnumeratingWithState:&v32 objects:v46 count:16];
@@ -829,15 +829,15 @@ LABEL_51:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)__ensureSingleAppleIDAccountExistsWithLogin:(id)a3
+- (BOOL)__ensureSingleAppleIDAccountExistsWithLogin:(id)login
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  loginCopy = login;
+  if (loginCopy)
   {
-    v23 = self;
-    v5 = [(CNFRegController *)self appleIDAccounts];
-    v6 = [v5 copy];
+    selfCopy = self;
+    appleIDAccounts = [(CNFRegController *)self appleIDAccounts];
+    v6 = [appleIDAccounts copy];
 
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -874,8 +874,8 @@ LABEL_51:
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 login];
-          v15 = [v14 isEqualToIgnoringCase:v4];
+          login = [v13 login];
+          v15 = [login isEqualToIgnoringCase:loginCopy];
 
           if (v15)
           {
@@ -914,7 +914,7 @@ LABEL_51:
               IMLogString();
             }
 
-            [(CNFRegController *)v23 _signOutAccount:v13, v22];
+            [(CNFRegController *)selfCopy _signOutAccount:v13, v22];
           }
         }
 
@@ -936,20 +936,20 @@ LABEL_51:
   return v9 & 1;
 }
 
-- (id)_createAccountWithLogin:(id)a3 foundExisting:(BOOL *)a4
+- (id)_createAccountWithLogin:(id)login foundExisting:(BOOL *)existing
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 length])
+  loginCopy = login;
+  v7 = loginCopy;
+  if (loginCopy && [loginCopy length])
   {
     if (![(CNFRegController *)self isConnected])
     {
       [(CNFRegController *)self connect:1];
     }
 
-    v38 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v8 = [v7 stringByTrimmingCharactersInSet:v38];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v8 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v9 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -969,11 +969,11 @@ LABEL_51:
     {
       v37 = IMGenerateLoginID();
 
-      v10 = [(CNFRegController *)self accounts];
+      accounts = [(CNFRegController *)self accounts];
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v10 count];
+        v12 = [accounts count];
         *buf = 134217984;
         v45 = v12;
         _os_log_impl(&dword_243BE5000, v11, OS_LOG_TYPE_DEFAULT, "Checking %lu existing accounts for duplicates", buf, 0xCu);
@@ -981,7 +981,7 @@ LABEL_51:
 
       if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
       {
-        v36 = [v10 count];
+        v36 = [accounts count];
         IMLogString();
       }
 
@@ -989,7 +989,7 @@ LABEL_51:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v13 = v10;
+      v13 = accounts;
       v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v14)
       {
@@ -1004,7 +1004,7 @@ LABEL_18:
           }
 
           v17 = *(*(&v39 + 1) + 8 * v16);
-          v18 = [v17 login];
+          login = [v17 login];
           v19 = MEMORY[0x245D4D030]();
 
           if ([v7 isEqualToString:v19])
@@ -1069,8 +1069,8 @@ LABEL_24:
 
       CNFRegLogIndent();
       v26 = objc_alloc(MEMORY[0x277D18D20]);
-      v27 = [(CNFRegController *)self firstService];
-      v24 = [v26 initWithService:v27];
+      firstService = [(CNFRegController *)self firstService];
+      v24 = [v26 initWithService:firstService];
 
       [v24 setLogin:v37];
       [v24 setAutoLogin:1];
@@ -1101,8 +1101,8 @@ LABEL_24:
         IMLogString();
       }
 
-      v31 = [MEMORY[0x277D18D28] sharedInstance];
-      v32 = [v31 addAccount:v24];
+      mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+      v32 = [mEMORY[0x277D18D28] addAccount:v24];
 
       if ((v32 & 1) == 0)
       {
@@ -1125,9 +1125,9 @@ LABEL_24:
 
       CNFRegLogOutdent();
 LABEL_55:
-      if (a4)
+      if (existing)
       {
-        *a4 = v20;
+        *existing = v20;
       }
 
       [(CNFRegController *)self __ensureSingleAppleIDAccountExistsWithLogin:v37, v36];
@@ -1156,21 +1156,21 @@ LABEL_55:
   return v21;
 }
 
-- (id)beginAccountSetupWithLogin:(id)a3 authID:(id)a4 authToken:(id)a5 regionInfo:(id)a6 foundExisting:(BOOL *)a7
+- (id)beginAccountSetupWithLogin:(id)login authID:(id)d authToken:(id)token regionInfo:(id)info foundExisting:(BOOL *)existing
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  loginCopy = login;
+  dCopy = d;
+  tokenCopy = token;
+  infoCopy = info;
+  if (!loginCopy)
   {
     goto LABEL_17;
   }
 
-  v16 = [v12 length];
+  v16 = [loginCopy length];
   v17 = 0;
-  if (!v13)
+  if (!dCopy)
   {
     goto LABEL_18;
   }
@@ -1180,46 +1180,46 @@ LABEL_55:
     goto LABEL_18;
   }
 
-  v18 = [v13 length];
+  v18 = [dCopy length];
   v17 = 0;
-  if (!v14 || !v18)
+  if (!tokenCopy || !v18)
   {
     goto LABEL_18;
   }
 
-  if (![v14 length])
+  if (![tokenCopy length])
   {
 LABEL_17:
     v17 = 0;
     goto LABEL_18;
   }
 
-  v17 = [(CNFRegController *)self _createAccountWithLogin:v12 foundExisting:a7];
+  v17 = [(CNFRegController *)self _createAccountWithLogin:loginCopy foundExisting:existing];
   CNFRegLogIndent();
   if (v17)
   {
     v19 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v17 login];
+      login = [v17 login];
       *buf = 138412802;
-      *&buf[4] = v13;
+      *&buf[4] = dCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v20;
+      *&buf[14] = login;
       *&buf[22] = 2112;
-      v31 = v14;
+      v31 = tokenCopy;
       _os_log_impl(&dword_243BE5000, v19, OS_LOG_TYPE_DEFAULT, "Setting auth token (authID:'%@'   account:'%@'): %@", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v25 = [v17 login];
-      v26 = v14;
-      v24 = v13;
+      login2 = [v17 login];
+      v26 = tokenCopy;
+      v24 = dCopy;
       IMLogString();
     }
 
-    [v17 updateAuthorizationCredentials:v13 token:{v14, v24, v25, v26}];
+    [v17 updateAuthorizationCredentials:dCopy token:{tokenCopy, v24, login2, v26}];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -1231,7 +1231,7 @@ LABEL_17:
     v29 = buf;
     v21 = v17;
     v28 = v21;
-    [v15 enumerateKeysAndObjectsUsingBlock:v27];
+    [infoCopy enumerateKeysAndObjectsUsingBlock:v27];
     if (*(*&buf[8] + 24) == 1)
     {
       [v21 writeSettings];
@@ -1257,30 +1257,30 @@ uint64_t __89__CNFRegController_beginAccountSetupWithLogin_authID_authToken_regi
   return result;
 }
 
-- (id)beginAccountSetupWithLogin:(id)a3 password:(id)a4 foundExisting:(BOOL *)a5
+- (id)beginAccountSetupWithLogin:(id)login password:(id)password foundExisting:(BOOL *)existing
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  loginCopy = login;
+  passwordCopy = password;
+  if (!loginCopy)
   {
     goto LABEL_13;
   }
 
-  v10 = [v8 length];
+  v10 = [loginCopy length];
   v11 = 0;
-  if (!v9 || !v10)
+  if (!passwordCopy || !v10)
   {
     goto LABEL_14;
   }
 
-  if (![v9 length])
+  if (![passwordCopy length])
   {
 LABEL_13:
     v11 = 0;
     goto LABEL_14;
   }
 
-  v11 = [(CNFRegController *)self _createAccountWithLogin:v8 foundExisting:a5];
+  v11 = [(CNFRegController *)self _createAccountWithLogin:loginCopy foundExisting:existing];
   CNFRegLogIndent();
   if (v11)
   {
@@ -1297,9 +1297,9 @@ LABEL_13:
     }
 
     [v11 updateAuthorizationCredentials:0 token:0];
-    [v11 setTemporaryPassword:v9];
-    v13 = [MEMORY[0x277D18D28] sharedInstance];
-    [v13 activateAccount:v11];
+    [v11 setTemporaryPassword:passwordCopy];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    [mEMORY[0x277D18D28] activateAccount:v11];
 
     [v11 authenticateAccount];
     v14 = [MEMORY[0x277CBEB98] setWithObject:v11];
@@ -1312,27 +1312,27 @@ LABEL_14:
   return v11;
 }
 
-- (id)beginAccountSetupWithAccount:(id)a3
+- (id)beginAccountSetupWithAccount:(id)account
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = accountCopy;
       _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Setting up account: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v14 = v4;
+      v14 = accountCopy;
       IMLogString();
     }
 
-    [v4 setAutoLogin:{1, v14}];
+    [accountCopy setAutoLogin:{1, v14}];
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -1345,10 +1345,10 @@ LABEL_14:
       IMLogString();
     }
 
-    v7 = [MEMORY[0x277D18D28] sharedInstance];
-    v8 = [v7 addAccount:v4];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    v8 = [mEMORY[0x277D18D28] addAccount:accountCopy];
 
-    v9 = v4;
+    v9 = accountCopy;
     if ((v8 & 1) == 0)
     {
       v10 = OSLogHandleForIDSCategory();
@@ -1366,8 +1366,8 @@ LABEL_14:
       v9 = 0;
     }
 
-    v11 = [v9 login];
-    [(CNFRegController *)self __ensureSingleAppleIDAccountExistsWithLogin:v11];
+    login = [v9 login];
+    [(CNFRegController *)self __ensureSingleAppleIDAccountExistsWithLogin:login];
 
     [v9 removeObjectForKey:@"AccountSignedOut"];
     [v9 writeSettings];
@@ -1384,14 +1384,14 @@ LABEL_14:
   return v9;
 }
 
-- (void)_signOutAccount:(id)a3
+- (void)_signOutAccount:(id)account
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = CNFRegStringForAccount(v4);
+    v6 = CNFRegStringForAccount(accountCopy);
     *buf = 138412290;
     v23 = v6;
     _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Signing out account: %@", buf, 0xCu);
@@ -1399,12 +1399,12 @@ LABEL_14:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v21 = CNFRegStringForAccount(v4);
+    v21 = CNFRegStringForAccount(accountCopy);
     IMLogString();
   }
 
   CNFRegLogIndent();
-  if (v4)
+  if (accountCopy)
   {
     *&self->_controllerFlags |= 0x40u;
     [(CNFRegController *)self clearAllCaches];
@@ -1420,27 +1420,27 @@ LABEL_14:
       IMLogString();
     }
 
-    [v4 unregisterAccount];
-    [v4 setBool:1 forKey:@"AccountSignedOut"];
+    [accountCopy unregisterAccount];
+    [accountCopy setBool:1 forKey:@"AccountSignedOut"];
     v8 = objc_alloc(MEMORY[0x277CBEB18]);
-    v9 = [v4 aliases];
-    v10 = [v8 initWithArray:v9];
+    aliases = [accountCopy aliases];
+    v10 = [v8 initWithArray:aliases];
 
-    if ([v4 accountType] == 1)
+    if ([accountCopy accountType] == 1)
     {
       v11 = *MEMORY[0x277D19478];
-      v12 = [*MEMORY[0x277D19478] lowercaseString];
-      v13 = [v10 containsObject:v12];
+      lowercaseString = [*MEMORY[0x277D19478] lowercaseString];
+      v13 = [v10 containsObject:lowercaseString];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [v11 lowercaseString];
-        [v10 addObject:v14];
+        lowercaseString2 = [v11 lowercaseString];
+        [v10 addObject:lowercaseString2];
       }
     }
 
-    [v4 removeAliases:v10];
-    [v4 writeSettings];
+    [accountCopy removeAliases:v10];
+    [accountCopy writeSettings];
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -1453,8 +1453,8 @@ LABEL_14:
       IMLogString();
     }
 
-    v16 = [MEMORY[0x277D18D28] sharedInstance];
-    [v16 deactivateAccount:v4];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    [mEMORY[0x277D18D28] deactivateAccount:accountCopy];
 
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1468,7 +1468,7 @@ LABEL_14:
       IMLogString();
     }
 
-    [v4 updateAuthorizationCredentials:0 token:0];
+    [accountCopy updateAuthorizationCredentials:0 token:0];
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -1481,8 +1481,8 @@ LABEL_14:
       IMLogString();
     }
 
-    v19 = [MEMORY[0x277D18D28] sharedInstance];
-    [v19 deleteAccount:v4];
+    mEMORY[0x277D18D28]2 = [MEMORY[0x277D18D28] sharedInstance];
+    [mEMORY[0x277D18D28]2 deleteAccount:accountCopy];
 
     *&self->_controllerFlags &= ~0x40u;
   }
@@ -1492,11 +1492,11 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loginForAccount:(id)a3
+- (id)loginForAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
-    v3 = [a3 login];
+    login = [account login];
     v4 = MEMORY[0x245D4D030]();
   }
 
@@ -1535,11 +1535,11 @@ LABEL_14:
   CNFRegLogOutdent();
 }
 
-- (void)activateAccountsExcludingAccounts:(id)a3
+- (void)activateAccountsExcludingAccounts:(id)accounts
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v24 = self;
+  accountsCopy = accounts;
+  selfCopy = self;
   *&self->_controllerFlags |= 0x80u;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1553,7 +1553,7 @@ LABEL_14:
     IMLogString();
   }
 
-  if (![(CNFRegController *)v24 isConnected])
+  if (![(CNFRegController *)selfCopy isConnected])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1567,20 +1567,20 @@ LABEL_14:
       IMLogString();
     }
 
-    [(CNFRegController *)v24 connect:1];
+    [(CNFRegController *)selfCopy connect:1];
   }
 
-  [(CNFRegController *)v24 setServiceEnabled:1];
-  [(CNFRegController *)v24 enablePhoneNumberRegistration];
-  v23 = [(CNFRegController *)v24 accounts];
-  if ([v23 count])
+  [(CNFRegController *)selfCopy setServiceEnabled:1];
+  [(CNFRegController *)selfCopy enablePhoneNumberRegistration];
+  accounts = [(CNFRegController *)selfCopy accounts];
+  if ([accounts count])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v23, "count")}];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(accounts, "count")}];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = v23;
+    v8 = accounts;
     v9 = [v8 countByEnumeratingWithState:&v29 objects:v36 count:16];
     if (v9)
     {
@@ -1595,7 +1595,7 @@ LABEL_14:
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
-          if (([v4 containsObject:{v12, v22}] & 1) == 0)
+          if (([accountsCopy containsObject:{v12, v22}] & 1) == 0)
           {
             if ([v12 CNFRegIsSignedOut])
             {
@@ -1627,8 +1627,8 @@ LABEL_14:
       while (v9);
     }
 
-    v14 = [MEMORY[0x277D18D28] sharedInstance];
-    [v14 activateAccounts:v7];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    [mEMORY[0x277D18D28] activateAccounts:v7];
 
     v27 = 0u;
     v28 = 0u;
@@ -1677,7 +1677,7 @@ LABEL_14:
     }
   }
 
-  *&v24->_controllerFlags &= ~0x80u;
+  *&selfCopy->_controllerFlags &= ~0x80u;
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -1757,14 +1757,14 @@ void __49__CNFRegController_enablePhoneNumberRegistration__block_invoke(uint64_t
     [(CNFRegController *)self connect:1];
   }
 
-  v14 = [(CNFRegController *)self accounts];
-  if ([v14 count])
+  accounts = [(CNFRegController *)self accounts];
+  if ([accounts count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v14;
+    v4 = accounts;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v5)
     {
@@ -1806,8 +1806,8 @@ void __49__CNFRegController_enablePhoneNumberRegistration__block_invoke(uint64_t
       while (v5);
     }
 
-    v10 = [MEMORY[0x277D18D28] sharedInstance];
-    [v10 deactivateAccounts:v4];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    [mEMORY[0x277D18D28] deactivateAccounts:v4];
   }
 
   else
@@ -1831,20 +1831,20 @@ void __49__CNFRegController_enablePhoneNumberRegistration__block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_accountForAlias:(id)a3 accounts:(id)a4
+- (id)_accountForAlias:(id)alias accounts:(id)accounts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  aliasCopy = alias;
+  accountsCopy = accounts;
+  v7 = accountsCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (aliasCopy && accountsCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [accountsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1860,7 +1860,7 @@ void __49__CNFRegController_enablePhoneNumberRegistration__block_invoke(uint64_t
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if ([v13 hasAlias:v5])
+          if ([v13 hasAlias:aliasCopy])
           {
             v14 = v13;
 
@@ -1885,21 +1885,21 @@ void __49__CNFRegController_enablePhoneNumberRegistration__block_invoke(uint64_t
   return v8;
 }
 
-- (id)accountForAlias:(id)a3
+- (id)accountForAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [(CNFRegController *)self _accountForAlias:v4 accounts:v5];
+  aliasCopy = alias;
+  accounts = [(CNFRegController *)self accounts];
+  v6 = [(CNFRegController *)self _accountForAlias:aliasCopy accounts:accounts];
 
   return v6;
 }
 
-- (BOOL)_aliasIsDevicePhoneNumber:(id)a3
+- (BOOL)_aliasIsDevicePhoneNumber:(id)number
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 _appearsToBePhoneNumber])
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy && [numberCopy _appearsToBePhoneNumber])
   {
     v5 = v4;
     v6 = _IDSCopyMyPhoneNumbers();
@@ -1989,16 +1989,16 @@ LABEL_21:
   return v19;
 }
 
-- (BOOL)_aliasIsTemporaryDeviceAlias:(id)a3
+- (BOOL)_aliasIsTemporaryDeviceAlias:(id)alias
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 _appearsToBePhoneNumber])
+  aliasCopy = alias;
+  v5 = aliasCopy;
+  if (aliasCopy && [aliasCopy _appearsToBePhoneNumber])
   {
     v6 = v5;
-    v7 = [(CNFRegController *)self _temporaryDeviceAliases];
-    if ([v7 count])
+    _temporaryDeviceAliases = [(CNFRegController *)self _temporaryDeviceAliases];
+    if ([_temporaryDeviceAliases count])
     {
       active = CPPhoneNumberCopyActiveCountryCode();
       v9 = *MEMORY[0x277CBECE8];
@@ -2008,8 +2008,8 @@ LABEL_21:
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v23 = v7;
-      v11 = v7;
+      v23 = _temporaryDeviceAliases;
+      v11 = _temporaryDeviceAliases;
       v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v12)
       {
@@ -2066,7 +2066,7 @@ LABEL_21:
         CFRelease(active);
       }
 
-      v7 = v23;
+      _temporaryDeviceAliases = v23;
       v6 = v24;
     }
 
@@ -2098,9 +2098,9 @@ LABEL_21:
   temporaryDeviceAliases = self->__temporaryDeviceAliases;
   if (!temporaryDeviceAliases)
   {
-    v4 = [(CNFRegController *)self phoneSubscriptionSelector];
+    phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
     v11 = 0;
-    v5 = [v4 unselectedTemporaryPhoneAliasesWithError:&v11];
+    v5 = [phoneSubscriptionSelector unselectedTemporaryPhoneAliasesWithError:&v11];
     v6 = v11;
     v7 = self->__temporaryDeviceAliases;
     self->__temporaryDeviceAliases = v5;
@@ -2131,10 +2131,10 @@ LABEL_21:
 
 - (id)localPhoneNumberSentinelAlias
 {
-  v2 = [(CNFRegController *)self appleIDAccounts];
-  if ([v2 count])
+  appleIDAccounts = [(CNFRegController *)self appleIDAccounts];
+  if ([appleIDAccounts count])
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [appleIDAccounts objectAtIndex:0];
     if (v3)
     {
       v4 = [CNFRegAlias alloc];
@@ -2157,34 +2157,34 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_shouldFilterOutAlias:(id)a3 onAccount:(id)a4
+- (BOOL)_shouldFilterOutAlias:(id)alias onAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 typeForAlias:v6] == 2 && objc_msgSend(v7, "accountType") != 2 && (objc_msgSend(MEMORY[0x277D07DB0], "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "supportsSMSIdentification"), v8, v9) && (-[CNFRegController _aliasIsDevicePhoneNumber:](self, "_aliasIsDevicePhoneNumber:", v6) || -[CNFRegController _aliasIsTemporaryDeviceAlias:](self, "_aliasIsTemporaryDeviceAlias:", v6) || (objc_msgSend(v6, "isEqualToIgnoringCase:", *MEMORY[0x277D19478]) & 1) != 0))
+  aliasCopy = alias;
+  accountCopy = account;
+  if ([accountCopy typeForAlias:aliasCopy] == 2 && objc_msgSend(accountCopy, "accountType") != 2 && (objc_msgSend(MEMORY[0x277D07DB0], "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "supportsSMSIdentification"), v8, v9) && (-[CNFRegController _aliasIsDevicePhoneNumber:](self, "_aliasIsDevicePhoneNumber:", aliasCopy) || -[CNFRegController _aliasIsTemporaryDeviceAlias:](self, "_aliasIsTemporaryDeviceAlias:", aliasCopy) || (objc_msgSend(aliasCopy, "isEqualToIgnoringCase:", *MEMORY[0x277D19478]) & 1) != 0))
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = [v6 isEqualToIgnoringCase:*MEMORY[0x277D19478]];
+    v10 = [aliasCopy isEqualToIgnoringCase:*MEMORY[0x277D19478]];
   }
 
   return v10;
 }
 
-- (id)_aliasesForAccount:(id)a3
+- (id)_aliasesForAccount:(id)account
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (!accountCopy)
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 aliases];
+  aliases = [accountCopy aliases];
   v7 = _IDSCopyOrderedAliasStrings();
 
   if (!v7 || ![v7 count])
@@ -2241,19 +2241,19 @@ LABEL_17:
   return v8;
 }
 
-- (id)_vettedAliasesForAccount:(id)a3
+- (id)_vettedAliasesForAccount:(id)account
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 accountType] != 1)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (!accountCopy || [accountCopy accountType] != 1)
   {
     goto LABEL_17;
   }
 
-  v6 = [v5 vettedAliases];
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  vettedAliases = [v5 vettedAliases];
+  v7 = vettedAliases;
+  if (!vettedAliases || ![vettedAliases count])
   {
 
 LABEL_17:
@@ -2307,26 +2307,26 @@ LABEL_18:
   return v8;
 }
 
-- (id)_allAvailableAliasesForAccount:(id)a3
+- (id)_allAvailableAliasesForAccount:(id)account
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  accountCopy = account;
+  if (!accountCopy)
   {
 LABEL_49:
     v34 = objc_alloc_init(MEMORY[0x277CBEA60]);
     goto LABEL_50;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 vettedAliases];
+  array = [MEMORY[0x277CBEB18] array];
+  vettedAliases = [accountCopy vettedAliases];
   v7 = _IDSCopyOrderedAliasStrings();
 
-  v8 = [v4 aliases];
+  aliases = [accountCopy aliases];
   v9 = _IDSCopyOrderedAliasStrings();
 
-  v10 = [v4 accountType];
-  if (v10 == 1 || !v10 && ([MEMORY[0x277D07DB0] sharedInstance], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isTelephonyDevice"), v11, (v12 & 1) == 0))
+  accountType = [accountCopy accountType];
+  if (accountType == 1 || !accountType && ([MEMORY[0x277D07DB0] sharedInstance], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isTelephonyDevice"), v11, (v12 & 1) == 0))
   {
     v44 = v9;
     v60 = 0u;
@@ -2352,7 +2352,7 @@ LABEL_49:
           v27 = *(*(&v58 + 1) + 8 * i);
           if (![(CNFRegController *)self _aliasIsDevicePhoneNumber:v27]&& ![(CNFRegController *)self _aliasIsTemporaryDeviceAlias:v27])
           {
-            [v5 addObject:v27];
+            [array addObject:v27];
           }
         }
 
@@ -2365,8 +2365,8 @@ LABEL_49:
     goto LABEL_26;
   }
 
-  v13 = [v4 accountType];
-  if (v13 == 2 || !v13 && ([MEMORY[0x277D07DB0] sharedInstance], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isTelephonyDevice"), v14, v15))
+  accountType2 = [accountCopy accountType];
+  if (accountType2 == 2 || !accountType2 && ([MEMORY[0x277D07DB0] sharedInstance], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isTelephonyDevice"), v14, v15))
   {
     v44 = v9;
     v56 = 0u;
@@ -2389,7 +2389,7 @@ LABEL_49:
             objc_enumerationMutation(v17);
           }
 
-          [v5 addObject:*(*(&v54 + 1) + 8 * j)];
+          [array addObject:*(*(&v54 + 1) + 8 * j)];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v54 objects:v64 count:16];
@@ -2424,9 +2424,9 @@ LABEL_26:
         }
 
         v33 = *(*(&v50 + 1) + 8 * k);
-        if (([v5 containsObject:v33] & 1) == 0)
+        if (([array containsObject:v33] & 1) == 0)
         {
-          [v5 addObject:v33];
+          [array addObject:v33];
         }
       }
 
@@ -2436,15 +2436,15 @@ LABEL_26:
     while (v30);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v45 = v7;
-    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(array, "count")}];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v35 = v5;
+    v35 = array;
     v36 = [v35 countByEnumeratingWithState:&v46 objects:v62 count:16];
     if (v36)
     {
@@ -2460,9 +2460,9 @@ LABEL_26:
           }
 
           v40 = *(*(&v46 + 1) + 8 * m);
-          if (![(CNFRegController *)self _shouldFilterOutAlias:v40 onAccount:v4])
+          if (![(CNFRegController *)self _shouldFilterOutAlias:v40 onAccount:accountCopy])
           {
-            v41 = [[CNFRegAlias alloc] initWithAccount:v4 alias:v40];
+            v41 = [[CNFRegAlias alloc] initWithAccount:accountCopy alias:v40];
             [v34 addObject:v41];
           }
         }
@@ -2493,24 +2493,24 @@ LABEL_50:
   return v34;
 }
 
-- (id)_aliasesFromAccounts:(id)a3 passingTest:(id)a4
+- (id)_aliasesFromAccounts:(id)accounts passingTest:(id)test
 {
-  v6 = a4;
-  v7 = [(CNFRegController *)self aliasesForAccounts:a3];
+  testCopy = test;
+  v7 = [(CNFRegController *)self aliasesForAccounts:accounts];
   v8 = v7;
-  if (!v7 || ![v7 count] || (objc_msgSend(v8, "CNFRegArrayPassingTest:", v6), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v7 || ![v7 count] || (objc_msgSend(v8, "CNFRegArrayPassingTest:", testCopy), (array = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_aliasesPassingTest:(id)a3
+- (id)_aliasesPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [(CNFRegController *)self _aliasesFromAccounts:v5 passingTest:v4];
+  testCopy = test;
+  accounts = [(CNFRegController *)self accounts];
+  v6 = [(CNFRegController *)self _aliasesFromAccounts:accounts passingTest:testCopy];
 
   return v6;
 }
@@ -2559,16 +2559,16 @@ uint64_t __36__CNFRegController__aliasComparator__block_invoke(uint64_t a1, void
   return v11;
 }
 
-- (id)aliasesForAccounts:(id)a3
+- (id)aliasesForAccounts:(id)accounts
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2593,24 +2593,24 @@ uint64_t __36__CNFRegController__aliasComparator__block_invoke(uint64_t a1, void
     while (v8);
   }
 
-  v12 = [(CNFRegController *)self _aliasComparator];
-  [v5 sortUsingComparator:v12];
+  _aliasComparator = [(CNFRegController *)self _aliasComparator];
+  [v5 sortUsingComparator:_aliasComparator];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (id)vettedAliasesForAccounts:(id)a3
+- (id)vettedAliasesForAccounts:(id)accounts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -2639,25 +2639,25 @@ uint64_t __36__CNFRegController__aliasComparator__block_invoke(uint64_t a1, void
     while (v8);
   }
 
-  v13 = [(CNFRegController *)self _aliasComparator];
-  [v5 sortUsingComparator:v13];
+  _aliasComparator = [(CNFRegController *)self _aliasComparator];
+  [v5 sortUsingComparator:_aliasComparator];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (id)allAvailableAliasesForAccounts:(id)a3
+- (id)allAvailableAliasesForAccounts:(id)accounts
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(CNFRegController *)self _clearCachedTemporaryDeviceAliases];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v7)
   {
@@ -2684,7 +2684,7 @@ uint64_t __36__CNFRegController__aliasComparator__block_invoke(uint64_t a1, void
 
   v29 = v6;
 
-  v31 = self;
+  selfCopy = self;
   [(CNFRegController *)self usableDeviceAliases];
   v42 = 0u;
   v43 = 0u;
@@ -2733,12 +2733,12 @@ LABEL_25:
             }
 
             v19 = *(*(&v38 + 1) + 8 * k);
-            v20 = [v19 account];
-            v21 = [v20 objectForKey:v37];
+            account = [v19 account];
+            v21 = [account objectForKey:v37];
 
-            v22 = [v19 alias];
-            v23 = [v13 alias];
-            if ([v22 isEqualToString:v23])
+            alias = [v19 alias];
+            alias2 = [v13 alias];
+            if ([alias isEqualToString:alias2])
             {
 
 LABEL_27:
@@ -2747,8 +2747,8 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            v24 = [v13 deviceAliasIdentifier];
-            v25 = [v21 isEqualToString:v24];
+            deviceAliasIdentifier = [v13 deviceAliasIdentifier];
+            v25 = [v21 isEqualToString:deviceAliasIdentifier];
 
             if (v25)
             {
@@ -2782,8 +2782,8 @@ LABEL_28:
     while (v35);
   }
 
-  v26 = [(CNFRegController *)v31 _aliasComparator];
-  [v5 sortUsingComparator:v26];
+  _aliasComparator = [(CNFRegController *)selfCopy _aliasComparator];
+  [v5 sortUsingComparator:_aliasComparator];
 
   v27 = *MEMORY[0x277D85DE8];
 
@@ -2806,11 +2806,11 @@ BOOL __46__CNFRegController_useableAliasesForAccounts___block_invoke(uint64_t a1
   if ([(CNFRegController *)self serviceSupportsDeviceAliasEnablement])
   {
     [(CNFRegController *)self _clearCachedTemporaryDeviceAliases];
-    v48 = [(CNFRegController *)self fetchSIMs];
+    fetchSIMs = [(CNFRegController *)self fetchSIMs];
     v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v3 = [(CNFRegController *)self phoneSubscriptionSelector];
+    phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
     v64 = 0;
-    v50 = [v3 selectedSubscriptionsWithError:&v64];
+    v50 = [phoneSubscriptionSelector selectedSubscriptionsWithError:&v64];
     v44 = v64;
 
     [(CNFRegController *)self _temporaryDeviceAliases];
@@ -2834,13 +2834,13 @@ BOOL __46__CNFRegController_useableAliasesForAccounts___block_invoke(uint64_t a1
           v7 = *(*(&v60 + 1) + 8 * i);
           v8 = [CNFRegAlias alloc];
           v9 = [v7 URI];
-          v10 = [v9 unprefixedURI];
+          unprefixedURI = [v9 unprefixedURI];
           v11 = [v7 valueForKey:@"selected"];
-          v12 = -[CNFRegAlias initWithAlias:type:selected:deviceAliasIdentifier:](v8, "initWithAlias:type:selected:deviceAliasIdentifier:", v10, 2, [v11 BOOLValue], @"temp");
+          v12 = -[CNFRegAlias initWithAlias:type:selected:deviceAliasIdentifier:](v8, "initWithAlias:type:selected:deviceAliasIdentifier:", unprefixedURI, 2, [v11 BOOLValue], @"temp");
 
           [(CNFRegAlias *)v12 setIsTemporary:1];
-          v13 = [v7 expirationDate];
-          [(CNFRegAlias *)v12 set_expirationDate:v13];
+          expirationDate = [v7 expirationDate];
+          [(CNFRegAlias *)v12 set_expirationDate:expirationDate];
 
           [v51 addObject:v12];
         }
@@ -2851,25 +2851,25 @@ BOOL __46__CNFRegController_useableAliasesForAccounts___block_invoke(uint64_t a1
       while (v4);
     }
 
-    v14 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v14 isInDualPhoneIdentityMode])
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0] isInDualPhoneIdentityMode])
     {
       v45 = 0;
     }
 
     else
     {
-      v16 = [MEMORY[0x277D07E00] sharedInstance];
-      v17 = [v16 isDeviceInManualPhoneSelectionMode];
+      mEMORY[0x277D07E00] = [MEMORY[0x277D07E00] sharedInstance];
+      isDeviceInManualPhoneSelectionMode = [mEMORY[0x277D07E00] isDeviceInManualPhoneSelectionMode];
 
-      v45 = v17 ^ 1;
+      v45 = isDeviceInManualPhoneSelectionMode ^ 1;
     }
 
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v46 = v48;
+    v46 = fetchSIMs;
     v18 = [v46 countByEnumeratingWithState:&v56 objects:v72 count:16];
     if (v18)
     {
@@ -2903,9 +2903,9 @@ BOOL __46__CNFRegController_useableAliasesForAccounts___block_invoke(uint64_t a1
                 }
 
                 v25 = *(*(&v52 + 1) + 8 * k);
-                v26 = [v20 SIMIdentifier];
-                v27 = [v25 labelID];
-                LOBYTE(v25) = [v26 isEqualToString:v27];
+                sIMIdentifier = [v20 SIMIdentifier];
+                labelID = [v25 labelID];
+                LOBYTE(v25) = [sIMIdentifier isEqualToString:labelID];
 
                 if (v25)
                 {
@@ -2927,13 +2927,13 @@ BOOL __46__CNFRegController_useableAliasesForAccounts___block_invoke(uint64_t a1
           v28 = 0;
 LABEL_28:
 
-          v29 = [v20 phoneNumber];
-          v30 = [v20 label];
-          v31 = [v20 SIMIdentifier];
-          v32 = v29;
-          if (v29 || (v32 = v30, !((v30 == 0) | v45 & 1)))
+          phoneNumber = [v20 phoneNumber];
+          label = [v20 label];
+          sIMIdentifier2 = [v20 SIMIdentifier];
+          v32 = phoneNumber;
+          if (phoneNumber || (v32 = label, !((label == 0) | v45 & 1)))
           {
-            v33 = [[CNFRegAlias alloc] initWithAlias:v32 type:2 selected:v28 deviceAliasIdentifier:v31];
+            v33 = [[CNFRegAlias alloc] initWithAlias:v32 type:2 selected:v28 deviceAliasIdentifier:sIMIdentifier2];
             [v51 addObject:v33];
           }
         }
@@ -2947,8 +2947,8 @@ LABEL_28:
     v34 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [MEMORY[0x277D07DB0] sharedInstance];
-      if ([v35 isInDualPhoneIdentityMode])
+      mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+      if ([mEMORY[0x277D07DB0]2 isInDualPhoneIdentityMode])
       {
         v36 = @"YES";
       }
@@ -2958,10 +2958,10 @@ LABEL_28:
         v36 = @"NO";
       }
 
-      v37 = [MEMORY[0x277D07E00] sharedInstance];
-      v38 = [v37 isDeviceInManualPhoneSelectionMode];
+      mEMORY[0x277D07E00]2 = [MEMORY[0x277D07E00] sharedInstance];
+      isDeviceInManualPhoneSelectionMode2 = [mEMORY[0x277D07E00]2 isDeviceInManualPhoneSelectionMode];
       *buf = 138412802;
-      if (v38)
+      if (isDeviceInManualPhoneSelectionMode2)
       {
         v39 = @"YES";
       }
@@ -2981,10 +2981,10 @@ LABEL_28:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v40 = [MEMORY[0x277D07DB0] sharedInstance];
-      [v40 isInDualPhoneIdentityMode];
-      v41 = [MEMORY[0x277D07E00] sharedInstance];
-      [v41 isDeviceInManualPhoneSelectionMode];
+      mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+      [mEMORY[0x277D07DB0]3 isInDualPhoneIdentityMode];
+      mEMORY[0x277D07E00]3 = [MEMORY[0x277D07E00] sharedInstance];
+      [mEMORY[0x277D07E00]3 isDeviceInManualPhoneSelectionMode];
       IMLogString();
     }
 
@@ -3004,9 +3004,9 @@ LABEL_28:
 - (id)travelAliases
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D18998] sharedInstance];
+  mEMORY[0x277D18998] = [MEMORY[0x277D18998] sharedInstance];
   v50 = 0;
-  v34 = [v3 currentSIMsWithError:&v50];
+  v34 = [mEMORY[0x277D18998] currentSIMsWithError:&v50];
   v35 = v50;
 
   if (v35)
@@ -3030,23 +3030,23 @@ LABEL_28:
   else
   {
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(CNFRegController *)self phoneSubscriptionSelector];
+    phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
     v49 = 0;
-    v38 = [v6 selectedSubscriptionsWithError:&v49];
+    v38 = [phoneSubscriptionSelector selectedSubscriptionsWithError:&v49];
     v33 = v49;
 
-    v7 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v7 isInDualPhoneIdentityMode])
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0] isInDualPhoneIdentityMode])
     {
       v36 = 0;
     }
 
     else
     {
-      v8 = [MEMORY[0x277D07E00] sharedInstance];
-      v9 = [v8 isDeviceInManualPhoneSelectionMode];
+      mEMORY[0x277D07E00] = [MEMORY[0x277D07E00] sharedInstance];
+      isDeviceInManualPhoneSelectionMode = [mEMORY[0x277D07E00] isDeviceInManualPhoneSelectionMode];
 
-      v36 = v9 ^ 1;
+      v36 = isDeviceInManualPhoneSelectionMode ^ 1;
     }
 
     v47 = 0u;
@@ -3074,8 +3074,8 @@ LABEL_28:
             v44 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v13 = v38;
-            v14 = [v13 countByEnumeratingWithState:&v41 objects:v57 count:16];
+            phoneNumber = v38;
+            v14 = [phoneNumber countByEnumeratingWithState:&v41 objects:v57 count:16];
             if (v14)
             {
               v15 = *v42;
@@ -3085,24 +3085,24 @@ LABEL_28:
                 {
                   if (*v42 != v15)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(phoneNumber);
                   }
 
                   v17 = *(*(&v41 + 1) + 8 * j);
-                  v18 = [v12 SIMIdentifier];
-                  v19 = [v17 labelID];
-                  LOBYTE(v17) = [v18 isEqualToString:v19];
+                  sIMIdentifier = [v12 SIMIdentifier];
+                  labelID = [v17 labelID];
+                  LOBYTE(v17) = [sIMIdentifier isEqualToString:labelID];
 
                   if (v17)
                   {
 
-                    v13 = [v12 phoneNumber];
-                    v20 = [v12 label];
-                    v21 = [v12 SIMIdentifier];
-                    v22 = v13;
-                    if (v13 || (v22 = v20, !((v20 == 0) | v36 & 1)))
+                    phoneNumber = [v12 phoneNumber];
+                    label = [v12 label];
+                    sIMIdentifier2 = [v12 SIMIdentifier];
+                    v22 = phoneNumber;
+                    if (phoneNumber || (v22 = label, !((label == 0) | v36 & 1)))
                     {
-                      v23 = [[CNFRegAlias alloc] initWithAlias:v22 type:2 selected:1 deviceAliasIdentifier:v21];
+                      v23 = [[CNFRegAlias alloc] initWithAlias:v22 type:2 selected:1 deviceAliasIdentifier:sIMIdentifier2];
                       [v37 addObject:v23];
                     }
 
@@ -3110,7 +3110,7 @@ LABEL_28:
                   }
                 }
 
-                v14 = [v13 countByEnumeratingWithState:&v41 objects:v57 count:16];
+                v14 = [phoneNumber countByEnumeratingWithState:&v41 objects:v57 count:16];
                 if (v14)
                 {
                   continue;
@@ -3133,8 +3133,8 @@ LABEL_30:
     v24 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [MEMORY[0x277D07DB0] sharedInstance];
-      if ([v25 isInDualPhoneIdentityMode])
+      mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+      if ([mEMORY[0x277D07DB0]2 isInDualPhoneIdentityMode])
       {
         v26 = @"YES";
       }
@@ -3144,8 +3144,8 @@ LABEL_30:
         v26 = @"NO";
       }
 
-      v27 = [MEMORY[0x277D07E00] sharedInstance];
-      if ([v27 isDeviceInManualPhoneSelectionMode])
+      mEMORY[0x277D07E00]2 = [MEMORY[0x277D07E00] sharedInstance];
+      if ([mEMORY[0x277D07E00]2 isDeviceInManualPhoneSelectionMode])
       {
         v28 = @"YES";
       }
@@ -3166,10 +3166,10 @@ LABEL_30:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v29 = [MEMORY[0x277D07DB0] sharedInstance];
-      [v29 isInDualPhoneIdentityMode];
-      v30 = [MEMORY[0x277D07E00] sharedInstance];
-      [v30 isDeviceInManualPhoneSelectionMode];
+      mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+      [mEMORY[0x277D07DB0]3 isInDualPhoneIdentityMode];
+      mEMORY[0x277D07E00]3 = [MEMORY[0x277D07E00] sharedInstance];
+      [mEMORY[0x277D07E00]3 isDeviceInManualPhoneSelectionMode];
       IMLogString();
     }
 
@@ -3183,32 +3183,32 @@ LABEL_30:
 
 - (NSArray)aliases
 {
-  v3 = [(CNFRegController *)self accounts];
-  v4 = [(CNFRegController *)self aliasesForAccounts:v3];
+  accounts = [(CNFRegController *)self accounts];
+  v4 = [(CNFRegController *)self aliasesForAccounts:accounts];
 
   return v4;
 }
 
 - (NSArray)vettedAliases
 {
-  v3 = [(CNFRegController *)self accounts];
-  v4 = [(CNFRegController *)self vettedAliasesForAccounts:v3];
+  accounts = [(CNFRegController *)self accounts];
+  v4 = [(CNFRegController *)self vettedAliasesForAccounts:accounts];
 
   return v4;
 }
 
 - (NSArray)allAvailableAliases
 {
-  v3 = [(CNFRegController *)self accounts];
-  v4 = [(CNFRegController *)self allAvailableAliasesForAccounts:v3];
+  accounts = [(CNFRegController *)self accounts];
+  v4 = [(CNFRegController *)self allAvailableAliasesForAccounts:accounts];
 
   return v4;
 }
 
 - (NSArray)useableAliases
 {
-  v3 = [(CNFRegController *)self accounts];
-  v4 = [(CNFRegController *)self useableAliasesForAccounts:v3];
+  accounts = [(CNFRegController *)self accounts];
+  v4 = [(CNFRegController *)self useableAliasesForAccounts:accounts];
 
   return v4;
 }
@@ -3234,31 +3234,31 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)hasAliasNamed:(id)a3
+- (BOOL)hasAliasNamed:(id)named
 {
-  v3 = [(CNFRegController *)self accountForAlias:a3];
+  v3 = [(CNFRegController *)self accountForAlias:named];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)hasAlias:(id)a3
+- (BOOL)hasAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [v4 account];
+  aliasCopy = alias;
+  accounts = [(CNFRegController *)self accounts];
+  account = [aliasCopy account];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(aliasCopy) = [accounts containsObject:account];
+  return aliasCopy;
 }
 
-- (id)aliasNamed:(id)a3
+- (id)aliasNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accountForAlias:v4];
+  namedCopy = named;
+  v5 = [(CNFRegController *)self accountForAlias:namedCopy];
   if (v5)
   {
-    v6 = [[CNFRegAlias alloc] initWithAccount:v5 alias:v4];
+    v6 = [[CNFRegAlias alloc] initWithAccount:v5 alias:namedCopy];
   }
 
   else
@@ -3269,18 +3269,18 @@ LABEL_30:
   return v6;
 }
 
-- (BOOL)_addAliases:(id)a3 toAccount:(id)a4 validate:(BOOL)a5
+- (BOOL)_addAliases:(id)aliases toAccount:(id)account validate:(BOOL)validate
 {
-  v32 = a5;
+  validateCopy = validate;
   v45 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v6 = a4;
+  aliasesCopy = aliases;
+  accountCopy = account;
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = CNFRegStringForAccount(v6);
+    v8 = CNFRegStringForAccount(accountCopy);
     *buf = 138412546;
-    v42 = v33;
+    v42 = aliasesCopy;
     v43 = 2112;
     v44 = v8;
     _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to add aliases: %@ to account: %@", buf, 0x16u);
@@ -3288,22 +3288,22 @@ LABEL_30:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    CNFRegStringForAccount(v6);
-    v30 = v28 = v33;
+    CNFRegStringForAccount(accountCopy);
+    v30 = v28 = aliasesCopy;
     IMLogString();
   }
 
-  v9 = [v33 count];
+  v9 = [aliasesCopy count];
   v10 = 0;
-  if (v6 && v9)
+  if (accountCopy && v9)
   {
-    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v33, "count")}];
-    v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v33, "count")}];
+    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(aliasesCopy, "count")}];
+    v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(aliasesCopy, "count")}];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v33;
+    v11 = aliasesCopy;
     v12 = [v11 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (!v12)
     {
@@ -3323,9 +3323,9 @@ LABEL_30:
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        if ([v6 hasAlias:{v15, v29, v31}])
+        if ([accountCopy hasAlias:{v15, v29, v31}])
         {
-          if ([v6 validationStatusForAlias:v15] != 3)
+          if ([accountCopy validationStatusForAlias:v15] != 3)
           {
             [v34 addObject:v15];
           }
@@ -3333,12 +3333,12 @@ LABEL_30:
 
         else
         {
-          v16 = v6;
-          v17 = [v16 accountType];
-          if (v17)
+          v16 = accountCopy;
+          accountType = [v16 accountType];
+          if (accountType)
           {
 
-            if (v17 == 1)
+            if (accountType == 1)
             {
               goto LABEL_18;
             }
@@ -3346,10 +3346,10 @@ LABEL_30:
 
           else
           {
-            v18 = [MEMORY[0x277D07DB0] sharedInstance];
-            v19 = [v18 isTelephonyDevice];
+            mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+            isTelephonyDevice = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-            if ((v19 & 1) == 0)
+            if ((isTelephonyDevice & 1) == 0)
             {
 LABEL_18:
               [v35 addObject:v15];
@@ -3400,7 +3400,7 @@ LABEL_30:
             IMLogString();
           }
 
-          if ([v6 addAliases:{v35, v29}])
+          if ([accountCopy addAliases:{v35, v29}])
           {
             [v34 addObjectsFromArray:v35];
           }
@@ -3410,7 +3410,7 @@ LABEL_30:
             v23 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = CNFRegStringForAccount(v6);
+              v24 = CNFRegStringForAccount(accountCopy);
               *buf = 138412290;
               v42 = v24;
               _os_log_impl(&dword_243BE5000, v23, OS_LOG_TYPE_DEFAULT, "Could not add aliases to account: %@", buf, 0xCu);
@@ -3418,7 +3418,7 @@ LABEL_30:
 
             if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
             {
-              v29 = CNFRegStringForAccount(v6);
+              v29 = CNFRegStringForAccount(accountCopy);
               IMLogString();
             }
 
@@ -3426,7 +3426,7 @@ LABEL_30:
           }
         }
 
-        if (v32 && [v34 count])
+        if (validateCopy && [v34 count])
         {
           v25 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -3442,7 +3442,7 @@ LABEL_30:
             IMLogString();
           }
 
-          v10 &= [v6 validateAliases:{v34, v29}];
+          v10 &= [accountCopy validateAliases:{v34, v29}];
         }
 
         break;
@@ -3454,31 +3454,31 @@ LABEL_30:
   return v10 & 1;
 }
 
-- (BOOL)addAlias:(id)a3 toAccount:(id)a4
+- (BOOL)addAlias:(id)alias toAccount:(id)account
 {
-  if (!a3 || !a4)
+  if (!alias || !account)
   {
     return 0;
   }
 
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = [v6 arrayWithObject:a3];
-  LOBYTE(self) = [(CNFRegController *)self _addAliases:v8 toAccount:v7 validate:1];
+  accountCopy = account;
+  v8 = [v6 arrayWithObject:alias];
+  LOBYTE(self) = [(CNFRegController *)self _addAliases:v8 toAccount:accountCopy validate:1];
 
   return self;
 }
 
-- (BOOL)addAlias:(id)a3
+- (BOOL)addAlias:(id)alias
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  aliasCopy = alias;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  accounts = [(CNFRegController *)self accounts];
+  v6 = [accounts countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v6)
   {
     goto LABEL_17;
@@ -3491,7 +3491,7 @@ LABEL_30:
     {
       if (*v22 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(accounts);
       }
 
       v9 = *(*(&v21 + 1) + 8 * i);
@@ -3501,13 +3501,13 @@ LABEL_30:
         goto LABEL_11;
       }
 
-      v11 = [v9 accountType];
-      if (!v11)
+      accountType = [v9 accountType];
+      if (!accountType)
       {
-        v13 = [MEMORY[0x277D07DB0] sharedInstance];
-        v14 = [v13 isTelephonyDevice];
+        mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+        isTelephonyDevice = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-        if ((v14 & 1) == 0)
+        if ((isTelephonyDevice & 1) == 0)
         {
 
 LABEL_16:
@@ -3520,7 +3520,7 @@ LABEL_11:
         continue;
       }
 
-      v12 = v11;
+      v12 = accountType;
 
       if (v12 == 1)
       {
@@ -3528,7 +3528,7 @@ LABEL_11:
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v6 = [accounts countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v6)
     {
       continue;
@@ -3539,14 +3539,14 @@ LABEL_11:
 
 LABEL_17:
 
-  v15 = [(CNFRegController *)self addAlias:v4 toAccount:v6];
+  v15 = [(CNFRegController *)self addAlias:aliasCopy toAccount:v6];
   if (!v15)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __29__CNFRegController_addAlias___block_invoke;
     v18[3] = &unk_278DE81E0;
-    v19 = v4;
+    v19 = aliasCopy;
     v20 = v6;
     CNFRegLogIndent();
     __29__CNFRegController_addAlias___block_invoke(v18);
@@ -3582,40 +3582,40 @@ void __29__CNFRegController_addAlias___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeAlias:(id)a3 fromAccount:(id)a4
+- (BOOL)removeAlias:(id)alias fromAccount:(id)account
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  accountCopy = account;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = CNFRegStringForAccount(v7);
-    v10 = [v7 aliases];
+    v9 = CNFRegStringForAccount(accountCopy);
+    aliases = [accountCopy aliases];
     *buf = 138412802;
-    v26 = v6;
+    v26 = aliasCopy;
     v27 = 2112;
     v28 = v9;
     v29 = 2112;
-    v30 = v10;
+    v30 = aliases;
     _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "Removing alias: %@ from account: %@ (current aliases: %@)", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v11 = CNFRegStringForAccount(v7);
-    [v7 aliases];
+    v11 = CNFRegStringForAccount(accountCopy);
+    [accountCopy aliases];
     v24 = v22 = v11;
-    v21 = v6;
+    v21 = aliasCopy;
     IMLogString();
   }
 
   v12 = [(CNFRegController *)self accounts:v21];
-  v13 = [v12 containsObject:v7];
+  v13 = [v12 containsObject:accountCopy];
 
   if (v13)
   {
-    v14 = [v7 removeAlias:v6];
+    v14 = [accountCopy removeAlias:aliasCopy];
   }
 
   else
@@ -3623,19 +3623,19 @@ void __29__CNFRegController_addAlias___block_invoke(uint64_t a1)
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = CNFRegStringForAccount(v7);
-      v17 = [(CNFRegController *)self accounts];
+      v16 = CNFRegStringForAccount(accountCopy);
+      accounts = [(CNFRegController *)self accounts];
       *buf = 138412546;
       v26 = v16;
       v27 = 2112;
-      v28 = v17;
+      v28 = accounts;
       _os_log_impl(&dword_243BE5000, v15, OS_LOG_TYPE_DEFAULT, "Skipped alias removal from account: %@ because account isn't in list of accounts: %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v18 = CNFRegStringForAccount(v7);
-      v23 = [(CNFRegController *)self accounts];
+      v18 = CNFRegStringForAccount(accountCopy);
+      accounts2 = [(CNFRegController *)self accounts];
       IMLogString();
     }
 
@@ -3646,11 +3646,11 @@ void __29__CNFRegController_addAlias___block_invoke(uint64_t a1)
   return v14;
 }
 
-- (BOOL)canRemoveAlias:(id)a3
+- (BOOL)canRemoveAlias:(id)alias
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 2)
+  aliasCopy = alias;
+  if ([aliasCopy type] == 2)
   {
     LOBYTE(v5) = 0;
   }
@@ -3658,17 +3658,17 @@ void __29__CNFRegController_addAlias___block_invoke(uint64_t a1)
   else if (CNFRegSupportsLocalPhoneNumberSentinelAlias())
   {
     v5 = MEMORY[0x277CBEA60];
-    v6 = [v4 account];
-    v7 = [v5 arrayWithObject:v6];
+    account = [aliasCopy account];
+    v7 = [v5 arrayWithObject:account];
     v8 = [(CNFRegController *)self vettedAliasesForAccounts:v7];
     LOBYTE(v5) = [v8 count] != 0;
   }
 
-  else if ([v4 validationStatus] == 3)
+  else if ([aliasCopy validationStatus] == 3)
   {
     v9 = MEMORY[0x277CBEA60];
-    v10 = [v4 account];
-    v11 = [v9 arrayWithObject:v10];
+    account2 = [aliasCopy account];
+    v11 = [v9 arrayWithObject:account2];
     v12 = [(CNFRegController *)self aliasesForAccounts:v11];
 
     v24 = 0u;
@@ -3690,9 +3690,9 @@ void __29__CNFRegController_addAlias___block_invoke(uint64_t a1)
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v16 alias];
-          v18 = [v4 alias];
-          v19 = [v17 isEqualToIgnoringCase:v18];
+          alias = [v16 alias];
+          alias2 = [aliasCopy alias];
+          v19 = [alias isEqualToIgnoringCase:alias2];
 
           if ((v19 & 1) == 0 && [v16 type] != 2 && objc_msgSend(v16, "validationStatus") == 3)
           {
@@ -3723,17 +3723,17 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)setAliases:(id)a3 onAccount:(id)a4
+- (BOOL)setAliases:(id)aliases onAccount:(id)account
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  aliasesCopy = aliases;
+  accountCopy = account;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = CNFRegStringForAccount(v7);
+    v9 = CNFRegStringForAccount(accountCopy);
     *buf = 138412546;
-    v47 = v6;
+    v47 = aliasesCopy;
     v48 = 2112;
     v49 = v9;
     _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to set aliases: %@ on account: %@", buf, 0x16u);
@@ -3741,19 +3741,19 @@ LABEL_19:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    CNFRegStringForAccount(v7);
-    v33 = v31 = v6;
+    CNFRegStringForAccount(accountCopy);
+    v33 = v31 = aliasesCopy;
     IMLogString();
   }
 
-  v10 = [v6 count];
+  v10 = [aliasesCopy count];
   v11 = 0;
-  if (v7 && v10)
+  if (accountCopy && v10)
   {
-    v12 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
+    v12 = [MEMORY[0x277CBEA60] arrayWithObject:accountCopy];
     v36 = [(CNFRegController *)self aliasesForAccounts:v12];
 
-    v13 = [v6 mutableCopy];
+    v13 = [aliasesCopy mutableCopy];
     if ([v36 count])
     {
       v43 = 0u;
@@ -3775,12 +3775,12 @@ LABEL_19:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v41 + 1) + 8 * i) alias];
-            if (v19 && ![(CNFRegController *)self _shouldFilterOutAlias:v19 onAccount:v7])
+            alias = [*(*(&v41 + 1) + 8 * i) alias];
+            if (alias && ![(CNFRegController *)self _shouldFilterOutAlias:alias onAccount:accountCopy])
             {
-              if ([v6 containsObject:v19])
+              if ([aliasesCopy containsObject:alias])
               {
-                [v13 removeObject:v19];
+                [v13 removeObject:alias];
               }
 
               else
@@ -3790,7 +3790,7 @@ LABEL_19:
                   v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v14, "count")}];
                 }
 
-                [v15 addObject:v19];
+                [v15 addObject:alias];
               }
             }
           }
@@ -3823,7 +3823,7 @@ LABEL_19:
 
       if ([v13 count])
       {
-        v21 = [(CNFRegController *)self _addAliases:v13 toAccount:v7 validate:0];
+        v21 = [(CNFRegController *)self _addAliases:v13 toAccount:accountCopy validate:0];
       }
 
       else
@@ -3833,14 +3833,14 @@ LABEL_19:
 
       if ([v15 count])
       {
-        [v7 removeAliases:v15];
+        [accountCopy removeAliases:v15];
       }
 
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v22 = v6;
+      v22 = aliasesCopy;
       v23 = [v22 countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v23)
       {
@@ -3855,7 +3855,7 @@ LABEL_19:
               objc_enumerationMutation(v22);
             }
 
-            v25 = ([v7 validationStatusForAlias:*(*(&v37 + 1) + 8 * j)] == 3) & v25;
+            v25 = ([accountCopy validationStatusForAlias:*(*(&v37 + 1) + 8 * j)] == 3) & v25;
           }
 
           v23 = [v22 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -3869,7 +3869,7 @@ LABEL_19:
         v25 = 1;
       }
 
-      v27 = [v7 validateAliases:v22];
+      v27 = [accountCopy validateAliases:v22];
       if (v25)
       {
         v28 = OSLogHandleForIDSCategory();
@@ -3884,7 +3884,7 @@ LABEL_19:
           IMLogString();
         }
 
-        [v7 registerAccount];
+        [accountCopy registerAccount];
       }
 
       v11 = v27 & v21;
@@ -3892,7 +3892,7 @@ LABEL_19:
 
     else
     {
-      v11 = [(CNFRegController *)self _addAliases:v6 toAccount:v7 validate:1];
+      v11 = [(CNFRegController *)self _addAliases:aliasesCopy toAccount:accountCopy validate:1];
     }
   }
 
@@ -3900,18 +3900,18 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)validateAlias:(id)a3
+- (BOOL)validateAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [v4 account];
-  v7 = [v5 containsObject:v6];
+  aliasCopy = alias;
+  accounts = [(CNFRegController *)self accounts];
+  account = [aliasCopy account];
+  v7 = [accounts containsObject:account];
 
   if (v7)
   {
-    v8 = [v4 account];
-    v9 = [v4 alias];
-    v10 = [v8 validateAlias:v9];
+    account2 = [aliasCopy account];
+    alias = [aliasCopy alias];
+    v10 = [account2 validateAlias:alias];
   }
 
   else
@@ -3922,18 +3922,18 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)unvalidateAlias:(id)a3
+- (BOOL)unvalidateAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(CNFRegController *)self accounts];
-  v6 = [v4 account];
-  v7 = [v5 containsObject:v6];
+  aliasCopy = alias;
+  accounts = [(CNFRegController *)self accounts];
+  account = [aliasCopy account];
+  v7 = [accounts containsObject:account];
 
   if (v7)
   {
-    v8 = [v4 account];
-    v9 = [v4 alias];
-    v10 = [v8 unvalidateAlias:v9];
+    account2 = [aliasCopy account];
+    alias = [aliasCopy alias];
+    v10 = [account2 unvalidateAlias:alias];
   }
 
   else
@@ -3944,22 +3944,22 @@ LABEL_19:
   return v10;
 }
 
-- (id)_phoneSubscriptionMatchingPhoneNumber:(id)a3
+- (id)_phoneSubscriptionMatchingPhoneNumber:(id)number
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CNFRegController *)self fetchSIMs];
+  numberCopy = number;
+  fetchSIMs = [(CNFRegController *)self fetchSIMs];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v5;
+    v28 = fetchSIMs;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Fetched IDSCTSIMs %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v21 = v5;
+    v21 = fetchSIMs;
     IMLogString();
   }
 
@@ -3967,7 +3967,7 @@ LABEL_19:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = fetchSIMs;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -3981,23 +3981,23 @@ LABEL_19:
           objc_enumerationMutation(v7);
         }
 
-        if (v4)
+        if (numberCopy)
         {
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = MEMORY[0x277D18998];
-          v13 = [v11 phoneNumber];
-          LOBYTE(v12) = [v12 isPhoneNumber:v13 equivalentToExistingPhoneNumber:v4];
+          phoneNumber = [v11 phoneNumber];
+          LOBYTE(v12) = [v12 isPhoneNumber:phoneNumber equivalentToExistingPhoneNumber:numberCopy];
 
           if (v12)
           {
-            v14 = [v11 slot];
+            slot = [v11 slot];
             v15 = 1;
-            if (v14 == 1)
+            if (slot == 1)
             {
               v15 = 2;
             }
 
-            if (v14 == 2)
+            if (slot == 2)
             {
               v16 = 0;
             }
@@ -4008,8 +4008,8 @@ LABEL_19:
             }
 
             v17 = MEMORY[0x277D18750];
-            v18 = [v11 SIMIdentifier];
-            v8 = [v17 phoneSubscriptionWithSubscriptionSlot:v16 andLabelID:v18];
+            sIMIdentifier = [v11 SIMIdentifier];
+            v8 = [v17 phoneSubscriptionWithSubscriptionSlot:v16 andLabelID:sIMIdentifier];
 
             goto LABEL_22;
           }
@@ -4033,16 +4033,16 @@ LABEL_22:
   return v8;
 }
 
-- (id)_phoneSubscriptionMatchingLabel:(id)a3
+- (id)_phoneSubscriptionMatchingLabel:(id)label
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CNFRegController *)self fetchSIMs];
+  labelCopy = label;
+  fetchSIMs = [(CNFRegController *)self fetchSIMs];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v5;
+    v24 = fetchSIMs;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Fetched IDSCTSIMs %@", buf, 0xCu);
   }
 
@@ -4055,7 +4055,7 @@ LABEL_22:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = fetchSIMs;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -4069,17 +4069,17 @@ LABEL_22:
           objc_enumerationMutation(v7);
         }
 
-        if (v4)
+        if (labelCopy)
         {
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 label];
+          label = [v11 label];
           v13 = IMAreObjectsLogicallySame();
 
           if (v13)
           {
             v14 = MEMORY[0x277D18750];
-            v15 = [v11 SIMIdentifier];
-            v8 = [v14 phoneSubscriptionWithLabelID:v15];
+            sIMIdentifier = [v11 SIMIdentifier];
+            v8 = [v14 phoneSubscriptionWithLabelID:sIMIdentifier];
 
             goto LABEL_17;
           }
@@ -4103,21 +4103,21 @@ LABEL_17:
   return v8;
 }
 
-- (void)addDeviceAlias:(id)a3
+- (void)addDeviceAlias:(id)alias
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isDeviceAlias] & 1) != 0)
+  aliasCopy = alias;
+  v5 = aliasCopy;
+  if (aliasCopy && ([aliasCopy isDeviceAlias] & 1) != 0)
   {
     if ([v5 isTemporaryPhoneNumberAlias])
     {
-      v6 = [(CNFRegController *)self phoneSubscriptionSelector];
+      phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
       v7 = objc_alloc(MEMORY[0x277D18A48]);
-      v8 = [v5 alias];
-      v9 = [v7 initWithUnprefixedURI:v8];
+      alias = [v5 alias];
+      v9 = [v7 initWithUnprefixedURI:alias];
       v23 = 0;
-      [v6 enableTemporaryPhoneAlias:v9 withError:&v23];
+      [phoneSubscriptionSelector enableTemporaryPhoneAlias:v9 withError:&v23];
       v10 = v23;
 
       v11 = OSLogHandleForIDSCategory();
@@ -4136,14 +4136,14 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    v13 = [v5 alias];
-    v14 = [(CNFRegController *)self _phoneSubscriptionMatchingPhoneNumber:v13];
+    alias2 = [v5 alias];
+    v14 = [(CNFRegController *)self _phoneSubscriptionMatchingPhoneNumber:alias2];
 
     if (v14 || ([v5 alias], v15 = objc_claimAutoreleasedReturnValue(), -[CNFRegController _phoneSubscriptionMatchingLabel:](self, "_phoneSubscriptionMatchingLabel:", v15), v14 = objc_claimAutoreleasedReturnValue(), v15, v14))
     {
-      v16 = [(CNFRegController *)self phoneSubscriptionSelector];
+      phoneSubscriptionSelector2 = [(CNFRegController *)self phoneSubscriptionSelector];
       v22 = 0;
-      v17 = [v16 selectSubscription:v14 withError:&v22];
+      v17 = [phoneSubscriptionSelector2 selectSubscription:v14 withError:&v22];
       v18 = v22;
 
       v19 = OSLogHandleForIDSCategory();
@@ -4199,12 +4199,12 @@ LABEL_23:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDeviceAlias:(id)a3
+- (void)removeDeviceAlias:(id)alias
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (([v4 isPhoneNumberAliasOnPhoneNumberAccount] & 1) != 0 || (objc_msgSend(v5, "isTemporaryPhoneNumberAlias") & 1) != 0))
+  aliasCopy = alias;
+  v5 = aliasCopy;
+  if (aliasCopy && (([aliasCopy isPhoneNumberAliasOnPhoneNumberAccount] & 1) != 0 || (objc_msgSend(v5, "isTemporaryPhoneNumberAlias") & 1) != 0))
   {
     if ([v5 isTemporaryPhoneNumberAlias])
     {
@@ -4222,12 +4222,12 @@ LABEL_23:
         IMLogString();
       }
 
-      v7 = [(CNFRegController *)self phoneSubscriptionSelector];
+      phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
       v8 = objc_alloc(MEMORY[0x277D18A48]);
-      v9 = [v5 alias];
-      v10 = [v8 initWithUnprefixedURI:v9];
+      alias = [v5 alias];
+      v10 = [v8 initWithUnprefixedURI:alias];
       v27 = 0;
-      v11 = [v7 removeTemporaryPhoneAlias:v10 withError:&v27];
+      v11 = [phoneSubscriptionSelector removeTemporaryPhoneAlias:v10 withError:&v27];
       v12 = v27;
 
       v13 = OSLogHandleForIDSCategory();
@@ -4256,14 +4256,14 @@ LABEL_23:
       goto LABEL_31;
     }
 
-    v16 = [v5 alias];
-    v17 = [(CNFRegController *)self _phoneSubscriptionMatchingPhoneNumber:v16];
+    alias2 = [v5 alias];
+    v17 = [(CNFRegController *)self _phoneSubscriptionMatchingPhoneNumber:alias2];
 
     if (v17 || ([v5 alias], v18 = objc_claimAutoreleasedReturnValue(), -[CNFRegController _phoneSubscriptionMatchingLabel:](self, "_phoneSubscriptionMatchingLabel:", v18), v17 = objc_claimAutoreleasedReturnValue(), v18, v17))
     {
-      v19 = [(CNFRegController *)self phoneSubscriptionSelector];
+      phoneSubscriptionSelector2 = [(CNFRegController *)self phoneSubscriptionSelector];
       v26 = 0;
-      v20 = [v19 unselectSubscription:v17 withError:&v26];
+      v20 = [phoneSubscriptionSelector2 unselectSubscription:v17 withError:&v26];
       v21 = v26;
 
       v22 = OSLogHandleForIDSCategory();
@@ -4319,12 +4319,12 @@ LABEL_31:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableDeviceAlias:(id)a3
+- (void)disableDeviceAlias:(id)alias
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isPhoneNumberAliasOnPhoneNumberAccount] && (objc_msgSend(v5, "isTemporaryPhoneNumberAlias") & 1) != 0)
+  aliasCopy = alias;
+  v5 = aliasCopy;
+  if (aliasCopy && [aliasCopy isPhoneNumberAliasOnPhoneNumberAccount] && (objc_msgSend(v5, "isTemporaryPhoneNumberAlias") & 1) != 0)
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4340,12 +4340,12 @@ LABEL_31:
       IMLogString();
     }
 
-    v7 = [(CNFRegController *)self phoneSubscriptionSelector];
+    phoneSubscriptionSelector = [(CNFRegController *)self phoneSubscriptionSelector];
     v8 = objc_alloc(MEMORY[0x277D18A48]);
-    v9 = [v5 alias];
-    v10 = [v8 initWithUnprefixedURI:v9];
+    alias = [v5 alias];
+    v10 = [v8 initWithUnprefixedURI:alias];
     v18 = 0;
-    v11 = [v7 disableTemporaryPhoneAlias:v10 withError:&v18];
+    v11 = [phoneSubscriptionSelector disableTemporaryPhoneAlias:v10 withError:&v18];
     v12 = v18;
 
     v13 = OSLogHandleForIDSCategory();
@@ -4390,7 +4390,7 @@ LABEL_31:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)aliasSummaryString:(BOOL *)a3
+- (id)aliasSummaryString:(BOOL *)string
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = [(CNFRegController *)self _aliasesPassingTest:&__block_literal_global_315];
@@ -4436,7 +4436,7 @@ LABEL_31:
   if (v5 == 1)
   {
     v13 = [v6 objectAtIndex:0];
-    v15 = [v13 displayName];
+    displayName = [v13 displayName];
   }
 
   else
@@ -4457,25 +4457,25 @@ LABEL_31:
       }
 
       v18 = [v13 localizedStringForKey:v17 value:&stru_2856D3978 table:v14];
-      v15 = [v16 localizedStringWithFormat:v18, v5];
+      displayName = [v16 localizedStringWithFormat:v18, v5];
     }
 
     else
     {
       v13 = CommunicationsSetupUIBundle();
       v14 = CNFRegStringTableName();
-      v15 = [v13 localizedStringForKey:@"ALIAS_SUMMARY_NO_ADDRESSES" value:&stru_2856D3978 table:v14];
+      displayName = [v13 localizedStringForKey:@"ALIAS_SUMMARY_NO_ADDRESSES" value:&stru_2856D3978 table:v14];
     }
   }
 
-  if (a3)
+  if (string)
   {
-    *a3 = 0;
+    *string = 0;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return displayName;
 }
 
 BOOL __39__CNFRegController_aliasSummaryString___block_invoke(uint64_t a1, void *a2)
@@ -4487,44 +4487,44 @@ BOOL __39__CNFRegController_aliasSummaryString___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (BOOL)_accountHasValidatedLocale:(id)a3
+- (BOOL)_accountHasValidatedLocale:(id)locale
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  localeCopy = locale;
+  v4 = localeCopy;
+  if (!localeCopy)
   {
     goto LABEL_11;
   }
 
-  if ([v3 accountType] == 2 || objc_msgSend(v4, "accountType") == 1 && objc_msgSend(v4, "profileValidationStatus") == 3)
+  if ([localeCopy accountType] == 2 || objc_msgSend(v4, "accountType") == 1 && objc_msgSend(v4, "profileValidationStatus") == 3)
   {
     goto LABEL_3;
   }
 
-  v6 = [v4 accountType];
-  if (v6 == 2)
+  accountType = [v4 accountType];
+  if (accountType == 2)
   {
     goto LABEL_3;
   }
 
-  if (v6 == 1)
+  if (accountType == 1)
   {
 LABEL_10:
     v5 = [v4 profileValidationStatus] == 3;
     goto LABEL_12;
   }
 
-  if (v6)
+  if (accountType)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x277D07DB0] sharedInstance];
-  v8 = [v7 isTelephonyDevice];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  isTelephonyDevice = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-  if ((v8 & 1) == 0)
+  if ((isTelephonyDevice & 1) == 0)
   {
     goto LABEL_10;
   }
@@ -4536,14 +4536,14 @@ LABEL_12:
   return v5;
 }
 
-- (unint64_t)accountState:(id)a3
+- (unint64_t)accountState:(id)state
 {
   v53 = *MEMORY[0x277D85DE8];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = a3;
+  obj = state;
   v37 = [obj countByEnumeratingWithState:&v38 objects:v52 count:16];
   if (v37)
   {
@@ -4581,13 +4581,13 @@ LABEL_12:
         {
           v8 = [(CNFRegController *)self _accountIsAuthenticated:v5];
           v9 = [(CNFRegController *)self _accountHasValidatedLocale:v5];
-          v10 = [v5 CNFRegSignInComplete];
+          cNFRegSignInComplete = [v5 CNFRegSignInComplete];
           v11 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v12 = CNFRegStringForAccount(v5);
-            v13 = [v5 isActive];
-            if (v10)
+            isActive = [v5 isActive];
+            if (cNFRegSignInComplete)
             {
               v14 = @"YES";
             }
@@ -4621,7 +4621,7 @@ LABEL_12:
             }
 
             v45 = v16;
-            if (v13)
+            if (isActive)
             {
               v17 = @"YES";
             }
@@ -4663,7 +4663,7 @@ LABEL_12:
               v20 = @"NO";
             }
 
-            if (v10)
+            if (cNFRegSignInComplete)
             {
               v21 = @"YES";
             }
@@ -4673,9 +4673,9 @@ LABEL_12:
               v21 = @"NO";
             }
 
-            v22 = [v5 isActive];
+            isActive2 = [v5 isActive];
             v23 = @"NO";
-            if (v22)
+            if (isActive2)
             {
               v23 = @"YES";
             }
@@ -4694,7 +4694,7 @@ LABEL_12:
             v24 |= 2uLL;
           }
 
-          if (v10)
+          if (cNFRegSignInComplete)
           {
             v3 = v24 | 4;
           }
@@ -4704,11 +4704,11 @@ LABEL_12:
             v3 = v24;
           }
 
-          if ((v10 & v9) == 1)
+          if ((cNFRegSignInComplete & v9) == 1)
           {
-            v25 = [v5 isActive];
+            isActive3 = [v5 isActive];
             v26 = 1610612736;
-            if (v25)
+            if (isActive3)
             {
               v26 = 0x40000000;
             }
@@ -4733,13 +4733,13 @@ LABEL_12:
   return v3;
 }
 
-- (unint64_t)accountStateForAccount:(id)a3
+- (unint64_t)accountStateForAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
     v4 = MEMORY[0x277CBEA60];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithObjects:{v5, 0}];
+    accountCopy = account;
+    v6 = [[v4 alloc] initWithObjects:{accountCopy, 0}];
   }
 
   else
@@ -4754,8 +4754,8 @@ LABEL_12:
 
 - (unint64_t)accountState
 {
-  v3 = [(CNFRegController *)self accounts];
-  v4 = [(CNFRegController *)self accountState:v3];
+  accounts = [(CNFRegController *)self accounts];
+  v4 = [(CNFRegController *)self accountState:accounts];
 
   return v4;
 }
@@ -4767,8 +4767,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CNFRegController *)self accounts];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accounts = [(CNFRegController *)self accounts];
+  v3 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -4778,7 +4778,7 @@ LABEL_12:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accounts);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) registrationStatus] == 2)
@@ -4788,7 +4788,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -4811,8 +4811,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CNFRegController *)self accounts];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  accounts = [(CNFRegController *)self accounts];
+  v3 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4824,13 +4824,13 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accounts);
         }
 
         v5 |= [*(*(&v10 + 1) + 8 * i) registrationStatus] == -1;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -4854,8 +4854,8 @@ LABEL_11:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(CNFRegController *)self accounts];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    accounts = [(CNFRegController *)self accounts];
+    v4 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -4867,7 +4867,7 @@ LABEL_11:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(accounts);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
@@ -4877,7 +4877,7 @@ LABEL_11:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v5);
@@ -4898,10 +4898,10 @@ LABEL_11:
   return v6 & 1;
 }
 
-- (BOOL)iMessageAccountMatchesiCloudAccount:(id)a3
+- (BOOL)iMessageAccountMatchesiCloudAccount:(id)account
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -4922,29 +4922,29 @@ LABEL_11:
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 authorizationID];
+        authorizationID = [v9 authorizationID];
         v11 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v9 login];
+          login = [v9 login];
           *buf = 138412802;
-          v25 = v4;
+          v25 = accountCopy;
           v26 = 2112;
-          v27 = v10;
+          v27 = authorizationID;
           v28 = 2112;
-          v29 = v12;
+          v29 = login;
           _os_log_impl(&dword_243BE5000, v11, OS_LOG_TYPE_DEFAULT, "Check DSID of account, iCloud DSID: %@, iMessage account DSID : %@ for %@", buf, 0x20u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
         {
           [v9 login];
-          v18 = v17 = v10;
-          v16 = v4;
+          v18 = v17 = authorizationID;
+          v16 = accountCopy;
           IMLogString();
         }
 
-        v13 = [v10 isEqualToString:{v4, v16, v17, v18}];
+        v13 = [authorizationID isEqualToString:{accountCopy, v16, v17, v18}];
 
         v5 |= v13;
       }
@@ -4959,14 +4959,14 @@ LABEL_11:
   return v5 & 1;
 }
 
-- (BOOL)shouldShowAlertForError:(id)a3
+- (BOOL)shouldShowAlertForError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    if ([v4 code] == 20 || objc_msgSend(v5, "code") == 26)
+    if ([errorCopy code] == 20 || objc_msgSend(v5, "code") == 26)
     {
       v6 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -5021,21 +5021,21 @@ LABEL_17:
 {
   if ((*&self->_controllerFlags & 1) == 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_accountAdded_ name:*MEMORY[0x277D18C18] object:0];
-    [v3 addObserver:self selector:sel_accountRemoved_ name:*MEMORY[0x277D18C20] object:0];
-    [v3 addObserver:self selector:sel_accountRegistrationChanged_ name:*MEMORY[0x277D18CA8] object:0];
-    [v3 addObserver:self selector:sel_callerIdChanged_ name:*MEMORY[0x277D18C30] object:0];
-    [v3 addObserver:self selector:sel_aliasesChanged_ name:*MEMORY[0x277D18BF8] object:0];
-    [v3 addObserver:self selector:sel_vettedAliasesChanged_ name:*MEMORY[0x277D18CB0] object:0];
-    [v3 addObserver:self selector:sel_aliasStatusChanged_ name:*MEMORY[0x277D18BA8] object:0];
-    [v3 addObserver:self selector:sel_profileChanged_ name:*MEMORY[0x277D18C48] object:0];
-    [v3 addObserver:self selector:sel_profileValidationStateChanged_ name:*MEMORY[0x277D18C58] object:0];
-    [v3 addObserver:self selector:sel_authorizationCredentialsChanged_ name:*MEMORY[0x277D18C08] object:0];
-    [v3 addObserver:self selector:sel_authorizationCredentialsChanged_ name:*MEMORY[0x277D18C10] object:0];
-    [v3 addObserver:self selector:sel_accountActivationStateChanged_ name:*MEMORY[0x277D18B98] object:0];
-    [v3 addObserver:self selector:sel_accountActivationStateChanged_ name:*MEMORY[0x277D18C28] object:0];
-    [v3 addObserver:self selector:sel_deviceCapabilityChanged_ name:*MEMORY[0x277D07DA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_accountAdded_ name:*MEMORY[0x277D18C18] object:0];
+    [defaultCenter addObserver:self selector:sel_accountRemoved_ name:*MEMORY[0x277D18C20] object:0];
+    [defaultCenter addObserver:self selector:sel_accountRegistrationChanged_ name:*MEMORY[0x277D18CA8] object:0];
+    [defaultCenter addObserver:self selector:sel_callerIdChanged_ name:*MEMORY[0x277D18C30] object:0];
+    [defaultCenter addObserver:self selector:sel_aliasesChanged_ name:*MEMORY[0x277D18BF8] object:0];
+    [defaultCenter addObserver:self selector:sel_vettedAliasesChanged_ name:*MEMORY[0x277D18CB0] object:0];
+    [defaultCenter addObserver:self selector:sel_aliasStatusChanged_ name:*MEMORY[0x277D18BA8] object:0];
+    [defaultCenter addObserver:self selector:sel_profileChanged_ name:*MEMORY[0x277D18C48] object:0];
+    [defaultCenter addObserver:self selector:sel_profileValidationStateChanged_ name:*MEMORY[0x277D18C58] object:0];
+    [defaultCenter addObserver:self selector:sel_authorizationCredentialsChanged_ name:*MEMORY[0x277D18C08] object:0];
+    [defaultCenter addObserver:self selector:sel_authorizationCredentialsChanged_ name:*MEMORY[0x277D18C10] object:0];
+    [defaultCenter addObserver:self selector:sel_accountActivationStateChanged_ name:*MEMORY[0x277D18B98] object:0];
+    [defaultCenter addObserver:self selector:sel_accountActivationStateChanged_ name:*MEMORY[0x277D18C28] object:0];
+    [defaultCenter addObserver:self selector:sel_deviceCapabilityChanged_ name:*MEMORY[0x277D07DA0] object:0];
     *&self->_controllerFlags |= 1u;
   }
 }
@@ -5044,39 +5044,39 @@ LABEL_17:
 {
   if (*&self->_controllerFlags)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C20] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C18] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C30] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CB0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18D08] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18D10] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C48] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C58] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C08] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C10] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18B98] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C28] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D07DA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C20] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C18] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C30] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CB0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18D08] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18D10] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C48] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C58] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C08] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C10] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18B98] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C28] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D07DA0] object:0];
     *&self->_controllerFlags &= ~1u;
   }
 }
 
-- (BOOL)shouldHandleAccountNotification:(id)a3
+- (BOOL)shouldHandleAccountNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(CNFRegController *)self services];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    services = [(CNFRegController *)self services];
+    v6 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -5086,20 +5086,20 @@ LABEL_17:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(services);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v4 service];
+          service = [notificationCopy service];
 
-          if (v10 == v9)
+          if (service == v9)
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -5121,17 +5121,17 @@ LABEL_12:
   return v6;
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5]&& (*&self->_controllerFlags & 0x40) == 0)
+  addedCopy = added;
+  object = [addedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object]&& (*&self->_controllerFlags & 0x40) == 0)
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v15 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account added : %@", buf, 0xCu);
@@ -5139,21 +5139,21 @@ LABEL_12:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = CNFRegStringForAccount(v5);
+      v13 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     CNFRegLogIndent();
     [(CNFRegController *)self clearAllCaches];
-    v8 = [(CNFRegController *)self accountAddedBlock];
-    v9 = v8 == 0;
+    accountAddedBlock = [(CNFRegController *)self accountAddedBlock];
+    v9 = accountAddedBlock == 0;
 
     if (!v9)
     {
-      v10 = [(CNFRegController *)self accountAddedBlock];
-      v11 = [v10 copy];
+      accountAddedBlock2 = [(CNFRegController *)self accountAddedBlock];
+      v11 = [accountAddedBlock2 copy];
 
-      (v11)[2](v11, v5);
+      (v11)[2](v11, object);
     }
 
     CNFRegLogOutdent();
@@ -5162,17 +5162,17 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  removedCopy = removed;
+  object = [removedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v15 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account removed : %@", buf, 0xCu);
@@ -5180,21 +5180,21 @@ LABEL_12:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = CNFRegStringForAccount(v5);
+      v13 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     CNFRegLogIndent();
     [(CNFRegController *)self clearAllCaches];
-    v8 = [(CNFRegController *)self accountRemovedBlock];
-    v9 = v8 == 0;
+    accountRemovedBlock = [(CNFRegController *)self accountRemovedBlock];
+    v9 = accountRemovedBlock == 0;
 
     if (!v9)
     {
-      v10 = [(CNFRegController *)self accountRemovedBlock];
-      v11 = [v10 copy];
+      accountRemovedBlock2 = [(CNFRegController *)self accountRemovedBlock];
+      v11 = [accountRemovedBlock2 copy];
 
-      (v11)[2](v11, v5);
+      (v11)[2](v11, object);
     }
 
     CNFRegLogOutdent();
@@ -5203,34 +5203,34 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountRegistrationChanged:(id)a3
+- (void)accountRegistrationChanged:(id)changed
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v5;
+    v55 = object;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account registration changed : %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v41 = v5;
+    v41 = object;
     IMLogString();
   }
 
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5, v41])
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object, v41])
   {
     CNFRegLogIndent();
     [(CNFRegController *)self _clearFilterCache];
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = CNFRegNonLocStringForRegistrationStatus([v5 registrationStatus]);
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "registrationFailureReason")}];
+      v8 = CNFRegNonLocStringForRegistrationStatus([object registrationStatus]);
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(object, "registrationFailureReason")}];
       *buf = 138412546;
       v55 = v8;
       v56 = 2112;
@@ -5240,18 +5240,18 @@ LABEL_12:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v10 = CNFRegNonLocStringForRegistrationStatus([v5 registrationStatus]);
-      [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "registrationFailureReason")}];
+      v10 = CNFRegNonLocStringForRegistrationStatus([object registrationStatus]);
+      [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(object, "registrationFailureReason")}];
       v48 = v42 = v10;
       IMLogString();
     }
 
-    if ([v5 registrationStatus] == -1)
+    if ([object registrationStatus] == -1)
     {
-      v53 = [v4 userInfo];
-      v50 = [v53 objectForKey:*MEMORY[0x277D18CA0]];
+      userInfo = [changedCopy userInfo];
+      v50 = [userInfo objectForKey:*MEMORY[0x277D18CA0]];
       CNFRegLogIndent();
-      v12 = [v53 objectForKey:*MEMORY[0x277D18C90]];
+      v12 = [userInfo objectForKey:*MEMORY[0x277D18C90]];
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -5266,7 +5266,7 @@ LABEL_12:
         IMLogString();
       }
 
-      v52 = [v53 objectForKey:{*MEMORY[0x277D18C98], v43}];
+      v52 = [userInfo objectForKey:{*MEMORY[0x277D18C98], v43}];
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -5281,7 +5281,7 @@ LABEL_12:
         IMLogString();
       }
 
-      v51 = [v53 objectForKey:{*MEMORY[0x277D18C88], v44}];
+      v51 = [userInfo objectForKey:{*MEMORY[0x277D18C88], v44}];
       v15 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -5296,7 +5296,7 @@ LABEL_12:
         IMLogString();
       }
 
-      v16 = [v53 objectForKey:{*MEMORY[0x277D18C70], v45}];
+      v16 = [userInfo objectForKey:{*MEMORY[0x277D18C70], v45}];
       v17 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -5347,9 +5347,9 @@ LABEL_12:
       v24 = v23;
       if (!v23 || (v25 = v23, ![v23 length]))
       {
-        v26 = [v50 integerValue];
-        v27 = [(CNFRegController *)self loginForAccount:v5];
-        v25 = CNFRegStringForRegistrationFailure(v26, v27);
+        integerValue = [v50 integerValue];
+        v27 = [(CNFRegController *)self loginForAccount:object];
+        v25 = CNFRegStringForRegistrationFailure(integerValue, v27);
 
         v28 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -5366,25 +5366,25 @@ LABEL_12:
         }
       }
 
-      v29 = [MEMORY[0x277CBEB38] dictionary];
-      [v29 setObject:v25 forKey:*MEMORY[0x277CCA450]];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:v25 forKey:*MEMORY[0x277CCA450]];
       if (v52 && [v52 length])
       {
-        [v29 setObject:v52 forKey:@"cnf-customTitle"];
+        [dictionary setObject:v52 forKey:@"cnf-customTitle"];
       }
 
       if (v51 && [v51 length])
       {
-        [v29 setObject:v51 forKey:@"cnf-customButton"];
+        [dictionary setObject:v51 forKey:@"cnf-customButton"];
       }
 
       if (v20 && [v20 length] && v21 && objc_msgSend(v21, "length"))
       {
-        [v29 setObject:v20 forKey:@"cnf-customActionTitle"];
-        [v29 setObject:v21 forKey:@"cnf-customActionURLString"];
+        [dictionary setObject:v20 forKey:@"cnf-customActionTitle"];
+        [dictionary setObject:v21 forKey:@"cnf-customActionURLString"];
       }
 
-      v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:objc_msgSend(v50 userInfo:{"integerValue"), v29}];
+      v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:objc_msgSend(v50 userInfo:{"integerValue"), dictionary}];
     }
 
     else
@@ -5392,23 +5392,23 @@ LABEL_12:
       v11 = 0;
     }
 
-    if (![v5 CNFRegSignInComplete])
+    if (![object CNFRegSignInComplete])
     {
       goto LABEL_69;
     }
 
-    v30 = v5;
+    v30 = object;
     v31 = v30;
     if (!v30)
     {
       goto LABEL_68;
     }
 
-    v32 = [v30 accountType];
-    if (v32)
+    accountType = [v30 accountType];
+    if (accountType)
     {
 
-      if (v32 != 1)
+      if (accountType != 1)
       {
         goto LABEL_69;
       }
@@ -5416,23 +5416,23 @@ LABEL_12:
 
     else
     {
-      v33 = [MEMORY[0x277D07DB0] sharedInstance];
-      v34 = [v33 isTelephonyDevice];
+      mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+      isTelephonyDevice = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-      if (v34)
+      if (isTelephonyDevice)
       {
 LABEL_68:
 
 LABEL_69:
-        v36 = [(CNFRegController *)self accountRegistrationBlock];
-        v37 = v36 == 0;
+        accountRegistrationBlock = [(CNFRegController *)self accountRegistrationBlock];
+        v37 = accountRegistrationBlock == 0;
 
         if (!v37)
         {
-          v38 = [(CNFRegController *)self accountRegistrationBlock];
-          v39 = [v38 copy];
+          accountRegistrationBlock2 = [(CNFRegController *)self accountRegistrationBlock];
+          v39 = [accountRegistrationBlock2 copy];
 
-          (v39)[2](v39, v5, v11);
+          (v39)[2](v39, object, v11);
         }
 
         CNFRegLogOutdent();
@@ -5452,35 +5452,35 @@ LABEL_72:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callerIdChanged:(id)a3
+- (void)callerIdChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 displayName];
+      displayName = [object displayName];
       *buf = 138412290;
-      v15 = v7;
+      v15 = displayName;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account display name changed to: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = [v5 displayName];
+      displayName2 = [object displayName];
       IMLogString();
     }
 
-    v8 = [(CNFRegController *)self callerIdChangedBlock];
-    v9 = v8 == 0;
+    callerIdChangedBlock = [(CNFRegController *)self callerIdChangedBlock];
+    v9 = callerIdChangedBlock == 0;
 
     if (!v9)
     {
-      v10 = [(CNFRegController *)self callerIdChangedBlock];
-      v11 = [v10 copy];
+      callerIdChangedBlock2 = [(CNFRegController *)self callerIdChangedBlock];
+      v11 = [callerIdChangedBlock2 copy];
 
       v11[2](v11);
     }
@@ -5489,17 +5489,17 @@ LABEL_72:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileChanged:(id)a3
+- (void)profileChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v19 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account profile changed : %@", buf, 0xCu);
@@ -5507,14 +5507,14 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v17 = CNFRegStringForAccount(v5);
+      v17 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 profileValueForKey:*MEMORY[0x277D18C50]];
+      v9 = [object profileValueForKey:*MEMORY[0x277D18C50]];
       *buf = 138412290;
       v19 = v9;
       _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "  Region ID : %@", buf, 0xCu);
@@ -5522,14 +5522,14 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v17 = [v5 profileValueForKey:*MEMORY[0x277D18C50]];
+      v17 = [object profileValueForKey:*MEMORY[0x277D18C50]];
       IMLogString();
     }
 
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v5 profileValueForKey:*MEMORY[0x277D18C40]];
+      v11 = [object profileValueForKey:*MEMORY[0x277D18C40]];
       *buf = 138412290;
       v19 = v11;
       _os_log_impl(&dword_243BE5000, v10, OS_LOG_TYPE_DEFAULT, "  Base number : %@", buf, 0xCu);
@@ -5537,37 +5537,37 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v17 = [v5 profileValueForKey:*MEMORY[0x277D18C40]];
+      v17 = [object profileValueForKey:*MEMORY[0x277D18C40]];
       IMLogString();
     }
 
-    v12 = [(CNFRegController *)self profileChangedBlock];
-    v13 = v12 == 0;
+    profileChangedBlock = [(CNFRegController *)self profileChangedBlock];
+    v13 = profileChangedBlock == 0;
 
     if (!v13)
     {
-      v14 = [(CNFRegController *)self profileChangedBlock];
-      v15 = [v14 copy];
+      profileChangedBlock2 = [(CNFRegController *)self profileChangedBlock];
+      v15 = [profileChangedBlock2 copy];
 
-      (v15)[2](v15, v5);
+      (v15)[2](v15, object);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileValidationStateChanged:(id)a3
+- (void)profileValidationStateChanged:(id)changed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
-    v6 = [v5 profileValidationStatus];
+    profileValidationStatus = [object profileValidationStatus];
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = CNFRegStringForAccount(v5);
+      v8 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v26 = v8;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Account profile validation state changed : %@", buf, 0xCu);
@@ -5575,7 +5575,7 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v24 = CNFRegStringForAccount(v5);
+      v24 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
@@ -5584,7 +5584,7 @@ LABEL_72:
     v9 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = CNFRegNonLocStringForProfileValidationStatus(v6);
+      v10 = CNFRegNonLocStringForProfileValidationStatus(profileValidationStatus);
       *buf = 138412290;
       v26 = v10;
       _os_log_impl(&dword_243BE5000, v9, OS_LOG_TYPE_DEFAULT, "Profile status changed to %@", buf, 0xCu);
@@ -5592,20 +5592,20 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v24 = CNFRegNonLocStringForProfileValidationStatus(v6);
+      v24 = CNFRegNonLocStringForProfileValidationStatus(profileValidationStatus);
       IMLogString();
     }
 
-    if (v6 == -1)
+    if (profileValidationStatus == -1)
     {
       v12 = *MEMORY[0x277D18C60];
-      v13 = [v4 userInfo];
-      v14 = [v13 objectForKey:v12];
+      userInfo = [changedCopy userInfo];
+      v14 = [userInfo objectForKey:v12];
 
-      v15 = [v14 integerValue];
-      v16 = CNFRegStringForProfileValidationFailure(v15);
+      integerValue = [v14 integerValue];
+      v16 = CNFRegStringForProfileValidationFailure(integerValue);
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v16 forKey:*MEMORY[0x277CCA450]];
-      v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:v15 userInfo:v17];
+      v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:integerValue userInfo:v17];
       v18 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -5626,15 +5626,15 @@ LABEL_72:
       v11 = 0;
     }
 
-    v19 = [(CNFRegController *)self profileStatusChangedBlock];
-    v20 = v19 == 0;
+    profileStatusChangedBlock = [(CNFRegController *)self profileStatusChangedBlock];
+    v20 = profileStatusChangedBlock == 0;
 
     if (!v20)
     {
-      v21 = [(CNFRegController *)self profileStatusChangedBlock];
-      v22 = [v21 copy];
+      profileStatusChangedBlock2 = [(CNFRegController *)self profileStatusChangedBlock];
+      v22 = [profileStatusChangedBlock2 copy];
 
-      (v22)[2](v22, v5, v11);
+      (v22)[2](v22, object, v11);
     }
 
     CNFRegLogOutdent();
@@ -5643,17 +5643,17 @@ LABEL_72:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authorizationCredentialsChanged:(id)a3
+- (void)authorizationCredentialsChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v15 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Account authorization credentials changed : %@", buf, 0xCu);
@@ -5661,41 +5661,41 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = CNFRegStringForAccount(v5);
+      v13 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     [(CNFRegController *)self _clearFilterCache];
-    v8 = [(CNFRegController *)self accountAuthorizationChangedBlock];
-    v9 = v8 == 0;
+    accountAuthorizationChangedBlock = [(CNFRegController *)self accountAuthorizationChangedBlock];
+    v9 = accountAuthorizationChangedBlock == 0;
 
     if (!v9)
     {
-      v10 = [(CNFRegController *)self accountAuthorizationChangedBlock];
-      v11 = [v10 copy];
+      accountAuthorizationChangedBlock2 = [(CNFRegController *)self accountAuthorizationChangedBlock];
+      v11 = [accountAuthorizationChangedBlock2 copy];
 
-      (v11)[2](v11, v5, 0);
+      (v11)[2](v11, object, 0);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountActivationStateChanged:(id)a3
+- (void)accountActivationStateChanged:(id)changed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 isActive];
-      v8 = CNFRegStringForAccount(v5);
+      isActive = [object isActive];
+      v8 = CNFRegStringForAccount(object);
       v9 = v8;
       v10 = @"NO";
-      if (v7)
+      if (isActive)
       {
         v10 = @"YES";
       }
@@ -5709,22 +5709,22 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      [v5 isActive];
-      v16 = CNFRegStringForAccount(v5);
+      [object isActive];
+      v16 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     CNFRegLogIndent();
     [(CNFRegController *)self _clearFilterCache];
-    v11 = [(CNFRegController *)self accountActivationChangedBlock];
-    v12 = v11 == 0;
+    accountActivationChangedBlock = [(CNFRegController *)self accountActivationChangedBlock];
+    v12 = accountActivationChangedBlock == 0;
 
     if (!v12)
     {
-      v13 = [(CNFRegController *)self accountActivationChangedBlock];
-      v14 = [v13 copy];
+      accountActivationChangedBlock2 = [(CNFRegController *)self accountActivationChangedBlock];
+      v14 = [accountActivationChangedBlock2 copy];
 
-      (v14)[2](v14, v5);
+      (v14)[2](v14, object);
     }
 
     CNFRegLogOutdent();
@@ -5733,17 +5733,17 @@ LABEL_72:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)aliasStatusChanged:(id)a3
+- (void)aliasStatusChanged:(id)changed
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v48 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Received alias status change for account: %@", buf, 0xCu);
@@ -5751,21 +5751,21 @@ LABEL_72:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v35 = CNFRegStringForAccount(v5);
+      v35 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
     CNFRegLogIndent();
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:*MEMORY[0x277D18BA0]];
+    userInfo = [changedCopy userInfo];
+    v9 = [userInfo objectForKey:*MEMORY[0x277D18BA0]];
     [(CNFRegController *)self _clearFilterCache];
     if (v9)
     {
-      v10 = [v5 validationStatusForAlias:v9];
-      v11 = [v8 objectForKey:*MEMORY[0x277D18C38]];
-      v12 = [v11 integerValue];
+      v10 = [object validationStatusForAlias:v9];
+      v11 = [userInfo objectForKey:*MEMORY[0x277D18C38]];
+      integerValue = [v11 integerValue];
 
-      if (!v12 && v10 == 1)
+      if (!integerValue && v10 == 1)
       {
         goto LABEL_56;
       }
@@ -5773,7 +5773,7 @@ LABEL_72:
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = CNFRegNonLocStringForAliasValidationStatus(v12);
+        v14 = CNFRegNonLocStringForAliasValidationStatus(integerValue);
         v15 = CNFRegNonLocStringForAliasValidationStatus(v10);
         *buf = 138412802;
         v48 = v9;
@@ -5786,7 +5786,7 @@ LABEL_72:
 
       if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
       {
-        v16 = CNFRegNonLocStringForAliasValidationStatus(v12);
+        v16 = CNFRegNonLocStringForAliasValidationStatus(integerValue);
         CNFRegNonLocStringForAliasValidationStatus(v10);
         v39 = v37 = v16;
         v35 = v9;
@@ -5795,13 +5795,13 @@ LABEL_72:
 
       if (v10 == -1)
       {
-        v19 = [v4 userInfo];
-        v43 = [v19 objectForKey:*MEMORY[0x277D18BE8]];
+        userInfo2 = [changedCopy userInfo];
+        v43 = [userInfo2 objectForKey:*MEMORY[0x277D18BE8]];
 
-        v44 = [v8 objectForKey:*MEMORY[0x277D18BD8]];
-        v46 = [v8 objectForKey:*MEMORY[0x277D18BE0]];
-        v20 = [v8 objectForKey:*MEMORY[0x277D18BD0]];
-        v45 = [v8 objectForKey:*MEMORY[0x277D18BB8]];
+        v44 = [userInfo objectForKey:*MEMORY[0x277D18BD8]];
+        v46 = [userInfo objectForKey:*MEMORY[0x277D18BE0]];
+        v20 = [userInfo objectForKey:*MEMORY[0x277D18BD0]];
+        v45 = [userInfo objectForKey:*MEMORY[0x277D18BB8]];
         v21 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
@@ -5883,25 +5883,25 @@ LABEL_40:
           v28 = CNFRegStringForAliasValidationFailure([v43 integerValue]);
         }
 
-        v29 = [MEMORY[0x277CBEB38] dictionary];
-        [v29 setObject:v28 forKey:*MEMORY[0x277CCA450]];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary setObject:v28 forKey:*MEMORY[0x277CCA450]];
         if (v46 && [v46 length])
         {
-          [v29 setObject:v46 forKey:@"cnf-customTitle"];
+          [dictionary setObject:v46 forKey:@"cnf-customTitle"];
         }
 
         if (v20 && [v20 length])
         {
-          [v29 setObject:v20 forKey:@"cnf-customButton"];
+          [dictionary setObject:v20 forKey:@"cnf-customButton"];
         }
 
         if (v24 && [v24 length] && v42 && objc_msgSend(v42, "length"))
         {
-          [v29 setObject:v24 forKey:@"cnf-customActionTitle"];
-          [v29 setObject:v42 forKey:@"cnf-customActionURLString"];
+          [dictionary setObject:v24 forKey:@"cnf-customActionTitle"];
+          [dictionary setObject:v42 forKey:@"cnf-customActionURLString"];
         }
 
-        v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:objc_msgSend(v43 userInfo:{"integerValue", v36), v29}];
+        v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.conference.registration" code:objc_msgSend(v43 userInfo:{"integerValue", v36), dictionary}];
       }
 
       else
@@ -5909,14 +5909,14 @@ LABEL_40:
         v17 = 0;
       }
 
-      v18 = [[CNFRegAlias alloc] initWithAccount:v5 alias:v9];
-      v30 = [(CNFRegController *)self aliasStatusChangedBlock];
-      v31 = v30 == 0;
+      v18 = [[CNFRegAlias alloc] initWithAccount:object alias:v9];
+      aliasStatusChangedBlock = [(CNFRegController *)self aliasStatusChangedBlock];
+      v31 = aliasStatusChangedBlock == 0;
 
       if (!v31)
       {
-        v32 = [(CNFRegController *)self aliasStatusChangedBlock];
-        v33 = [v32 copy];
+        aliasStatusChangedBlock2 = [(CNFRegController *)self aliasStatusChangedBlock];
+        v33 = [aliasStatusChangedBlock2 copy];
 
         (v33)[2](v33, v18, v17);
       }
@@ -5936,66 +5936,66 @@ LABEL_56:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAliasAdded:(id)a3
+- (void)handleAliasAdded:(id)added
 {
-  v7 = a3;
-  if (v7)
+  addedCopy = added;
+  if (addedCopy)
   {
-    v4 = [(CNFRegController *)self aliasAddedBlock];
+    aliasAddedBlock = [(CNFRegController *)self aliasAddedBlock];
 
-    if (v4)
+    if (aliasAddedBlock)
     {
-      v5 = [(CNFRegController *)self aliasAddedBlock];
-      v6 = [v5 copy];
+      aliasAddedBlock2 = [(CNFRegController *)self aliasAddedBlock];
+      v6 = [aliasAddedBlock2 copy];
 
-      (v6)[2](v6, v7);
+      (v6)[2](v6, addedCopy);
     }
   }
 }
 
-- (void)handleAliasRemoved:(id)a3
+- (void)handleAliasRemoved:(id)removed
 {
-  v7 = a3;
-  if (v7)
+  removedCopy = removed;
+  if (removedCopy)
   {
-    v4 = [(CNFRegController *)self aliasRemovedBlock];
+    aliasRemovedBlock = [(CNFRegController *)self aliasRemovedBlock];
 
-    if (v4)
+    if (aliasRemovedBlock)
     {
-      v5 = [(CNFRegController *)self aliasRemovedBlock];
-      v6 = [v5 copy];
+      aliasRemovedBlock2 = [(CNFRegController *)self aliasRemovedBlock];
+      v6 = [aliasRemovedBlock2 copy];
 
-      (v6)[2](v6, v7);
+      (v6)[2](v6, removedCopy);
     }
   }
 }
 
-- (void)aliasesChanged:(id)a3
+- (void)aliasesChanged:(id)changed
 {
   v39 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v4 = [v23 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v4])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v4;
+      v38 = object;
       _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Aliases changed for account : %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v21 = v4;
+      v21 = object;
       IMLogString();
     }
 
     CNFRegLogIndent();
     [(CNFRegController *)self _clearFilterCache];
-    v22 = [v23 userInfo];
-    v6 = [v22 objectForKey:*MEMORY[0x277D18BF0]];
-    v24 = [v22 objectForKey:*MEMORY[0x277D18C00]];
+    userInfo = [changedCopy userInfo];
+    v6 = [userInfo objectForKey:*MEMORY[0x277D18BF0]];
+    v24 = [userInfo objectForKey:*MEMORY[0x277D18C00]];
     if ((!v6 || ![v6 count]) && (!v24 || !objc_msgSend(v24, "count")))
     {
       v7 = OSLogHandleForIDSCategory();
@@ -6030,7 +6030,7 @@ LABEL_56:
           }
 
           v11 = *(*(&v31 + 1) + 8 * i);
-          v12 = [[CNFRegAlias alloc] initWithAccount:v4 alias:v11];
+          v12 = [[CNFRegAlias alloc] initWithAccount:object alias:v11];
           v13 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
@@ -6073,7 +6073,7 @@ LABEL_56:
           }
 
           v17 = *(*(&v27 + 1) + 8 * j);
-          v18 = [[CNFRegAlias alloc] initWithAccount:v4 alias:v17];
+          v18 = [[CNFRegAlias alloc] initWithAccount:object alias:v17];
           v19 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
@@ -6103,17 +6103,17 @@ LABEL_56:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)vettedAliasesChanged:(id)a3
+- (void)vettedAliasesChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  if ([(CNFRegController *)self shouldHandleAccountNotification:v5])
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([(CNFRegController *)self shouldHandleAccountNotification:object])
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = CNFRegStringForAccount(v5);
+      v7 = CNFRegStringForAccount(object);
       *buf = 138412290;
       v15 = v7;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Vetted aliases changed for: %@", buf, 0xCu);
@@ -6121,19 +6121,19 @@ LABEL_56:
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = CNFRegStringForAccount(v5);
+      v13 = CNFRegStringForAccount(object);
       IMLogString();
     }
 
-    v8 = [(CNFRegController *)self vettedAliasesChangedBlock];
-    v9 = v8 == 0;
+    vettedAliasesChangedBlock = [(CNFRegController *)self vettedAliasesChangedBlock];
+    v9 = vettedAliasesChangedBlock == 0;
 
     if (!v9)
     {
-      v10 = [(CNFRegController *)self vettedAliasesChangedBlock];
-      v11 = [v10 copy];
+      vettedAliasesChangedBlock2 = [(CNFRegController *)self vettedAliasesChangedBlock];
+      v11 = [vettedAliasesChangedBlock2 copy];
 
-      (v11)[2](v11, v5);
+      (v11)[2](v11, object);
     }
   }
 
@@ -6159,11 +6159,11 @@ LABEL_56:
   [(CNFRegController *)self setAccountActivationChangedBlock:0];
 }
 
-- (void)setServiceEnabled:(BOOL)a3
+- (void)setServiceEnabled:(BOOL)enabled
 {
   if ((*&self->_controllerFlags & 0x80000000) == 0)
   {
-    if (a3)
+    if (enabled)
     {
 
       [(CNFRegController *)self activateAccounts];
@@ -6195,8 +6195,8 @@ LABEL_56:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v2 = [(CNFRegController *)self activeAccounts];
-  v3 = [v2 countByEnumeratingWithState:&v27 objects:v34 count:16];
+  activeAccounts = [(CNFRegController *)self activeAccounts];
+  v3 = [activeAccounts countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v3)
   {
     v4 = *v28;
@@ -6207,7 +6207,7 @@ LABEL_56:
       {
         if (*v28 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeAccounts);
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
@@ -6245,8 +6245,8 @@ LABEL_32:
 
           if ([v7 isActive])
           {
-            v8 = [v7 aliases];
-            v9 = [v8 count] == 0;
+            aliases = [v7 aliases];
+            v9 = [aliases count] == 0;
 
             if (v9)
             {
@@ -6258,8 +6258,8 @@ LABEL_32:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = [v7 aliases];
-          v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
+          aliases2 = [v7 aliases];
+          v11 = [aliases2 countByEnumeratingWithState:&v23 objects:v33 count:16];
           if (v11)
           {
             v12 = *v24;
@@ -6269,7 +6269,7 @@ LABEL_32:
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(aliases2);
                 }
 
                 if (![*(*(&v23 + 1) + 8 * j) isEqualToIgnoringCase:v5] || objc_msgSend(v7, "isActive"))
@@ -6291,7 +6291,7 @@ LABEL_32:
                 }
               }
 
-              v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
+              v11 = [aliases2 countByEnumeratingWithState:&v23 objects:v33 count:16];
               if (v11)
               {
                 continue;
@@ -6303,7 +6303,7 @@ LABEL_32:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v27 objects:v34 count:16];
+      v3 = [activeAccounts countByEnumeratingWithState:&v27 objects:v34 count:16];
       v14 = 0;
       if (v3)
       {
@@ -6324,17 +6324,17 @@ LABEL_34:
   v16 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CNFRegController *)self activeAccounts];
+    activeAccounts2 = [(CNFRegController *)self activeAccounts];
     *buf = 67109378;
     *v32 = v14;
     *&v32[4] = 2112;
-    *&v32[6] = v17;
+    *&v32[6] = activeAccounts2;
     _os_log_impl(&dword_243BE5000, v16, OS_LOG_TYPE_DEFAULT, "isServiceEnabled = %d (based on accounts %@)", buf, 0x12u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v21 = [(CNFRegController *)self activeAccounts];
+    activeAccounts3 = [(CNFRegController *)self activeAccounts];
     IMLogString();
   }
 
@@ -6349,8 +6349,8 @@ LABEL_34:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CNFRegController *)self failedAccounts];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  failedAccounts = [(CNFRegController *)self failedAccounts];
+  v3 = [failedAccounts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -6362,13 +6362,13 @@ LABEL_34:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(failedAccounts);
         }
 
         v5 |= [*(*(&v10 + 1) + 8 * i) isAccountKeyCDPSyncingOrWaitingForUser];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [failedAccounts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -6385,33 +6385,33 @@ LABEL_34:
 
 - (BOOL)isServiceSupported
 {
-  v3 = [MEMORY[0x277D07DB0] sharedInstance];
-  v4 = [(CNFRegController *)self serviceType];
-  if (v4)
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  serviceType = [(CNFRegController *)self serviceType];
+  if (serviceType)
   {
-    if (v4 == 2)
+    if (serviceType == 2)
     {
-      v5 = [v3 callingAvailable];
+      callingAvailable = [mEMORY[0x277D07DB0] callingAvailable];
     }
 
     else
     {
-      if (v4 != 1)
+      if (serviceType != 1)
       {
         v6 = 0;
         goto LABEL_9;
       }
 
-      v5 = [v3 iMessageAvailable];
+      callingAvailable = [mEMORY[0x277D07DB0] iMessageAvailable];
     }
   }
 
   else
   {
-    v5 = [v3 faceTimeAvailable];
+    callingAvailable = [mEMORY[0x277D07DB0] faceTimeAvailable];
   }
 
-  v6 = v5;
+  v6 = callingAvailable;
 LABEL_9:
 
   return v6;
@@ -6419,15 +6419,15 @@ LABEL_9:
 
 - (BOOL)serviceSupportsDeviceAliasEnablement
 {
-  v2 = [MEMORY[0x277D07DB0] sharedInstance];
-  v3 = [v2 supportsSMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsSMS = [mEMORY[0x277D07DB0] supportsSMS];
 
-  return v3;
+  return supportsSMS;
 }
 
-- (void)updateMDMRestrictedSubscriptions:(id)a3
+- (void)updateMDMRestrictedSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -6435,8 +6435,8 @@ LABEL_9:
   block[2] = __53__CNFRegController_updateMDMRestrictedSubscriptions___block_invoke;
   block[3] = &unk_278DE8208;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = subscriptionsCopy;
+  v6 = subscriptionsCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -6506,47 +6506,47 @@ void __53__CNFRegController_updateMDMRestrictedSubscriptions___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAliasMDMRestricted:(id)a3
+- (BOOL)isAliasMDMRestricted:(id)restricted
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 2)
+  restrictedCopy = restricted;
+  if ([restrictedCopy type] == 2)
   {
-    v5 = [(CNFRegController *)self mdmRestrictedSubscriptions];
+    mdmRestrictedSubscriptions = [(CNFRegController *)self mdmRestrictedSubscriptions];
 
-    if (v5)
+    if (mdmRestrictedSubscriptions)
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = [(CNFRegController *)self mdmRestrictedSubscriptions];
-      v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v5)
+      mdmRestrictedSubscriptions2 = [(CNFRegController *)self mdmRestrictedSubscriptions];
+      mdmRestrictedSubscriptions = [mdmRestrictedSubscriptions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (mdmRestrictedSubscriptions)
       {
         v7 = *v15;
         while (2)
         {
-          for (i = 0; i != v5; i = i + 1)
+          for (i = 0; i != mdmRestrictedSubscriptions; i = i + 1)
           {
             if (*v15 != v7)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(mdmRestrictedSubscriptions2);
             }
 
-            v9 = [*(*(&v14 + 1) + 8 * i) phoneNumber];
-            v10 = [v4 alias];
-            v11 = [v9 isEqualToString:v10];
+            phoneNumber = [*(*(&v14 + 1) + 8 * i) phoneNumber];
+            alias = [restrictedCopy alias];
+            v11 = [phoneNumber isEqualToString:alias];
 
             if (v11)
             {
-              LOBYTE(v5) = 1;
+              LOBYTE(mdmRestrictedSubscriptions) = 1;
               goto LABEL_14;
             }
           }
 
-          v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-          if (v5)
+          mdmRestrictedSubscriptions = [mdmRestrictedSubscriptions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          if (mdmRestrictedSubscriptions)
           {
             continue;
           }
@@ -6561,42 +6561,42 @@ LABEL_14:
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(mdmRestrictedSubscriptions) = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return mdmRestrictedSubscriptions;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [MEMORY[0x277D18D68] sharedInstance];
-  v3 = [v2 isConnected];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  isConnected = [mEMORY[0x277D18D68] isConnected];
 
-  return v3;
+  return isConnected;
 }
 
-- (void)connect:(BOOL)a3
+- (void)connect:(BOOL)connect
 {
-  v3 = a3;
+  connectCopy = connect;
   [(CNFRegController *)self startListeningForAccountChanges];
-  if (v3)
+  if (connectCopy)
   {
-    v4 = [MEMORY[0x277D18D68] sharedInstance];
-    [v4 blockUntilConnected];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68] blockUntilConnected];
   }
 }
 
-- (void)deviceCapabilityChanged:(id)a3
+- (void)deviceCapabilityChanged:(id)changed
 {
   if (![(CNFRegController *)self isServiceSupported])
   {
-    v4 = [(CNFRegController *)self serviceDidBecomeUnsupportedBlock];
+    serviceDidBecomeUnsupportedBlock = [(CNFRegController *)self serviceDidBecomeUnsupportedBlock];
 
-    if (v4)
+    if (serviceDidBecomeUnsupportedBlock)
     {
-      v5 = [(CNFRegController *)self serviceDidBecomeUnsupportedBlock];
-      v6 = [v5 copy];
+      serviceDidBecomeUnsupportedBlock2 = [(CNFRegController *)self serviceDidBecomeUnsupportedBlock];
+      v6 = [serviceDidBecomeUnsupportedBlock2 copy];
 
       v6[2]();
     }
@@ -6621,9 +6621,9 @@ LABEL_14:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.ft.CallerID.changed", 0, 0, 1u);
 }
 
-- (void)_handleCallerIDChangedForResume:(id)a3
+- (void)_handleCallerIDChangedForResume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -6654,12 +6654,12 @@ LABEL_14:
   }
 
   [(CNFRegController *)self _nukeCallerIDCache];
-  v4 = [(CNFRegController *)self callerIdChangedBlock];
+  callerIdChangedBlock = [(CNFRegController *)self callerIdChangedBlock];
 
-  if (v4)
+  if (callerIdChangedBlock)
   {
-    v5 = [(CNFRegController *)self callerIdChangedBlock];
-    v6 = [v5 copy];
+    callerIdChangedBlock2 = [(CNFRegController *)self callerIdChangedBlock];
+    v6 = [callerIdChangedBlock2 copy];
 
     v6[2](v6);
   }
@@ -6667,13 +6667,13 @@ LABEL_14:
 
 - (void)nukeAllCallerIDSettings
 {
-  v3 = [MEMORY[0x277D18DE0] facetimeService];
+  facetimeService = [MEMORY[0x277D18DE0] facetimeService];
   IMSetPreferredAccountForService();
 
-  v4 = [MEMORY[0x277D18DE0] iMessageService];
+  iMessageService = [MEMORY[0x277D18DE0] iMessageService];
   IMSetPreferredAccountForService();
 
-  v5 = [MEMORY[0x277D18DE0] callService];
+  callService = [MEMORY[0x277D18DE0] callService];
   IMSetPreferredAccountForService();
 
   [(CNFRegController *)self _nukeCallerIDCache];
@@ -6685,11 +6685,11 @@ LABEL_14:
 {
   if ((*&self->_controllerFlags & 2) == 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__handleCallerIDChangedForResume_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleCallerIDChangedForResume_ name:*MEMORY[0x277D76758] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__handleCallerIDChanged name:*MEMORY[0x277D18CF8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__handleCallerIDChanged name:*MEMORY[0x277D18CF8] object:0];
 
     *&self->_controllerFlags |= 2u;
   }
@@ -6699,11 +6699,11 @@ LABEL_14:
 {
   if ((*&self->_controllerFlags & 2) != 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CF8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277D18CF8] object:0];
 
     *&self->_controllerFlags &= ~2u;
   }
@@ -6711,7 +6711,7 @@ LABEL_14:
 
 - (id)displayAccount
 {
-  v2 = [(CNFRegController *)self firstService];
+  firstService = [(CNFRegController *)self firstService];
   v3 = IMPreferredAccountForService();
 
   return v3;
@@ -6719,42 +6719,42 @@ LABEL_14:
 
 - (id)displayAlias
 {
-  v3 = [(CNFRegController *)self firstService];
+  firstService = [(CNFRegController *)self firstService];
   v4 = IMPreferredAccountForService();
   v5 = v4;
-  if (!v4 || ([v4 displayName], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, v8 = -[CNFRegAlias initWithAccount:alias:]([CNFRegAlias alloc], "initWithAccount:alias:", v5, v6), v7, !v8))
+  if (!v4 || ([v4 displayName], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, guessedDisplayAlias = -[CNFRegAlias initWithAccount:alias:]([CNFRegAlias alloc], "initWithAccount:alias:", v5, v6), v7, !guessedDisplayAlias))
   {
-    v9 = [MEMORY[0x277D18D28] sharedInstance];
-    v10 = [(CNFRegController *)self firstService];
-    v11 = [v9 operationalAccountsForService:v10];
+    mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+    firstService2 = [(CNFRegController *)self firstService];
+    v11 = [mEMORY[0x277D18D28] operationalAccountsForService:firstService2];
 
     if ([v11 count])
     {
-      v8 = [(CNFRegController *)self guessedDisplayAlias];
+      guessedDisplayAlias = [(CNFRegController *)self guessedDisplayAlias];
     }
 
     else
     {
-      v8 = 0;
+      guessedDisplayAlias = 0;
     }
   }
 
-  v12 = [(CNFRegAlias *)v8 account];
-  v13 = [(CNFRegAlias *)v8 alias];
-  [v12 setDisplayName:v13];
+  account = [(CNFRegAlias *)guessedDisplayAlias account];
+  alias = [(CNFRegAlias *)guessedDisplayAlias alias];
+  [account setDisplayName:alias];
 
-  return v8;
+  return guessedDisplayAlias;
 }
 
-- (BOOL)setDisplayAlias:(id)a3
+- (BOOL)setDisplayAlias:(id)alias
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  aliasCopy = alias;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = aliasCopy;
     _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Request to set the display alias: %@", buf, 0xCu);
   }
 
@@ -6764,21 +6764,21 @@ LABEL_14:
   }
 
   CNFRegLogIndent();
-  v6 = [(CNFRegController *)self accounts];
-  v7 = [v4 account];
-  v8 = [v6 containsObject:v7];
+  accounts = [(CNFRegController *)self accounts];
+  account = [aliasCopy account];
+  v8 = [accounts containsObject:account];
 
   if (v8)
   {
-    v9 = [v4 account];
-    v10 = [v4 account];
-    v11 = [v10 service];
+    account2 = [aliasCopy account];
+    account3 = [aliasCopy account];
+    service = [account3 service];
     IMSetPreferredAccountForService();
 
     [(CNFRegController *)self _postCallerIDChanged];
-    v12 = [v4 account];
-    v13 = [v4 alias];
-    [v12 setDisplayName:v13];
+    account4 = [aliasCopy account];
+    alias = [aliasCopy alias];
+    [account4 setDisplayName:alias];
   }
 
   else
@@ -6857,9 +6857,9 @@ LABEL_14:
   }
 }
 
-- (void)showSetupFaceTimeOverCellularAlertWithCompletion:(id)a3
+- (void)showSetupFaceTimeOverCellularAlertWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   v4 = *MEMORY[0x277CBF040];
   v5 = *MEMORY[0x277CBF010];
   v6 = CFPreferencesCopyValue(@"CarrierName", @"com.apple.carrier", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
@@ -6875,29 +6875,29 @@ LABEL_14:
     v9 = 0;
   }
 
-  [(CNFRegController *)self showSetupFaceTimeOverCellularAlertForServiceProviderName:v6 serviceProviderPhoneNumber:v7 serviceProviderURL:v9 completion:v10];
+  [(CNFRegController *)self showSetupFaceTimeOverCellularAlertForServiceProviderName:v6 serviceProviderPhoneNumber:v7 serviceProviderURL:v9 completion:completionCopy];
 }
 
-- (void)showSetupFaceTimeOverCellularAlertForServiceProviderName:(id)a3 serviceProviderPhoneNumber:(id)a4 serviceProviderURL:(id)a5 completion:(id)a6
+- (void)showSetupFaceTimeOverCellularAlertForServiceProviderName:(id)name serviceProviderPhoneNumber:(id)number serviceProviderURL:(id)l completion:(id)completion
 {
-  v61 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v59 = self;
+  nameCopy = name;
+  numberCopy = number;
+  lCopy = l;
+  completionCopy = completion;
+  selfCopy = self;
   CNFRegSetStringTableForServiceType([(CNFRegController *)self serviceType]);
   v13 = CommunicationsSetupUIBundle();
   v14 = CNFRegStringTableName();
   v15 = [v13 localizedStringForKey:@"FACETIME_ALERT_CANCEL" value:&stru_2856D3978 table:v14];
 
-  v16 = [v10 length];
-  v60 = v11;
-  if (v11 || v16)
+  v16 = [numberCopy length];
+  v60 = lCopy;
+  if (lCopy || v16)
   {
-    v28 = [v10 length];
-    if (v11)
+    v28 = [numberCopy length];
+    if (lCopy)
     {
-      v17 = v10;
+      v17 = numberCopy;
       if (!v28)
       {
         v33 = MEMORY[0x277CCACA8];
@@ -6905,20 +6905,20 @@ LABEL_14:
         v25 = CNFStringKeyForNetwork(@"FACETIME_SETTINGS_SETUP_CELLULAR_NO_NUMBER");
         v27 = CNFRegStringTableName();
         v34 = [v24 localizedStringForKey:v25 value:&stru_2856D3978 table:v27];
-        v35 = [v60 absoluteString];
-        v23 = [v33 stringWithFormat:v34, v35];
+        absoluteString = [v60 absoluteString];
+        numberCopy = [v33 stringWithFormat:v34, absoluteString];
 
         v26 = v15;
         goto LABEL_12;
       }
 
       v26 = v15;
-      [v10 length];
+      [numberCopy length];
     }
 
     else
     {
-      v17 = v10;
+      v17 = numberCopy;
       v26 = v15;
       if (v28)
       {
@@ -6927,7 +6927,7 @@ LABEL_14:
         v25 = CNFStringKeyForNetwork(@"FACETIME_SETTINGS_SETUP_CELLULAR_NO_URL");
         v27 = CNFRegStringTableName();
         v30 = [v24 localizedStringForKey:v25 value:&stru_2856D3978 table:v27];
-        v23 = [v29 stringWithFormat:v30, v61, v10];
+        numberCopy = [v29 stringWithFormat:v30, nameCopy, numberCopy];
 LABEL_10:
 
         goto LABEL_12;
@@ -6939,19 +6939,19 @@ LABEL_10:
     v25 = CNFStringKeyForNetwork(@"FACETIME_SETTINGS_SETUP_CELLULAR_ALL_INFO");
     v27 = CNFRegStringTableName();
     v30 = [v24 localizedStringForKey:v25 value:&stru_2856D3978 table:v27];
-    v32 = [v60 absoluteString];
-    v23 = [v31 stringWithFormat:v30, v61, v17, v32];
+    absoluteString2 = [v60 absoluteString];
+    numberCopy = [v31 stringWithFormat:v30, nameCopy, v17, absoluteString2];
 
     goto LABEL_10;
   }
 
-  v17 = v10;
+  v17 = numberCopy;
   v18 = MEMORY[0x277CCACA8];
   v19 = CommunicationsSetupUIBundle();
   v20 = CNFStringKeyForNetwork(@"FACETIME_SETTINGS_SETUP_CELLULAR_NO_INFO");
   v21 = CNFRegStringTableName();
   v22 = [v19 localizedStringForKey:v20 value:&stru_2856D3978 table:v21];
-  v23 = [v18 stringWithFormat:v22, v61];
+  numberCopy = [v18 stringWithFormat:v22, nameCopy];
 
   v24 = CommunicationsSetupUIBundle();
   v25 = CNFRegStringTableName();
@@ -6963,24 +6963,24 @@ LABEL_12:
   v37 = CommunicationsSetupUIBundle();
   v38 = CNFRegStringTableName();
   v39 = [v37 localizedStringForKey:@"FACETIME_SETTINGS_SETUP_CELLULAR_TITLE" value:&stru_2856D3978 table:v38];
-  v40 = [v36 alertControllerWithTitle:v39 message:v23 preferredStyle:1];
+  v40 = [v36 alertControllerWithTitle:v39 message:numberCopy preferredStyle:1];
 
   v41 = MEMORY[0x277D750F8];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __142__CNFRegController_Alerts__showSetupFaceTimeOverCellularAlertForServiceProviderName_serviceProviderPhoneNumber_serviceProviderURL_completion___block_invoke;
   v68[3] = &unk_278DE8230;
-  v42 = v12;
+  v42 = completionCopy;
   v69 = v42;
   v43 = [v41 actionWithTitle:v26 style:1 handler:v68];
   [v40 addAction:v43];
 
   if ([v17 length])
   {
-    v44 = [MEMORY[0x277D07DB0] sharedInstance];
-    v45 = [v44 isTelephonyDevice];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    isTelephonyDevice = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-    if (v45)
+    if (isTelephonyDevice)
     {
       v46 = MEMORY[0x277D750F8];
       v47 = CommunicationsSetupUIBundle();
@@ -6990,7 +6990,7 @@ LABEL_12:
       v65[1] = 3221225472;
       v65[2] = __142__CNFRegController_Alerts__showSetupFaceTimeOverCellularAlertForServiceProviderName_serviceProviderPhoneNumber_serviceProviderURL_completion___block_invoke_2;
       v65[3] = &unk_278DE8258;
-      v65[4] = v59;
+      v65[4] = selfCopy;
       v66 = v17;
       v67 = v42;
       v50 = [v46 actionWithTitle:v49 style:0 handler:v65];
@@ -7008,18 +7008,18 @@ LABEL_12:
     v62[1] = 3221225472;
     v62[2] = __142__CNFRegController_Alerts__showSetupFaceTimeOverCellularAlertForServiceProviderName_serviceProviderPhoneNumber_serviceProviderURL_completion___block_invoke_3;
     v62[3] = &unk_278DE8258;
-    v62[4] = v59;
+    v62[4] = selfCopy;
     v63 = v60;
     v64 = v42;
     v55 = [v51 actionWithTitle:v54 style:0 handler:v62];
     [v40 addAction:v55];
   }
 
-  v56 = [MEMORY[0x277D75128] sharedApplication];
-  v57 = [v56 keyWindow];
-  v58 = [v57 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  [v58 presentViewController:v40 animated:1 completion:0];
+  [rootViewController presentViewController:v40 animated:1 completion:0];
 }
 
 uint64_t __142__CNFRegController_Alerts__showSetupFaceTimeOverCellularAlertForServiceProviderName_serviceProviderPhoneNumber_serviceProviderURL_completion___block_invoke(uint64_t a1)
@@ -7402,10 +7402,10 @@ uint64_t __60__CNFRegController_Filtering____filter_operationalPredicate__block_
   MEMORY[0x2821F96F8]();
 }
 
-- (id)accountsWithFilter:(int64_t)a3 message:(id)a4
+- (id)accountsWithFilter:(int64_t)filter message:(id)message
 {
-  v6 = a4;
-  v7 = [(CNFRegController *)self _predicatesWithFilter:a3];
+  messageCopy = message;
+  v7 = [(CNFRegController *)self _predicatesWithFilter:filter];
   if (!self->_accountFilterCache)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -7413,11 +7413,11 @@ uint64_t __60__CNFRegController_Filtering____filter_operationalPredicate__block_
     self->_accountFilterCache = v8;
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:filter];
   v11 = [(NSMutableDictionary *)self->_accountFilterCache objectForKey:v10];
   if (!v11)
   {
-    v11 = [(CNFRegController *)self _accountsPassingTests:v7 message:v6];
+    v11 = [(CNFRegController *)self _accountsPassingTests:v7 message:messageCopy];
     if (v11)
     {
       [(NSMutableDictionary *)self->_accountFilterCache setObject:v11 forKey:v10];
@@ -7427,38 +7427,38 @@ uint64_t __60__CNFRegController_Filtering____filter_operationalPredicate__block_
   return v11;
 }
 
-- (id)_accountsPassingTests:(id)a3 message:(id)a4
+- (id)_accountsPassingTests:(id)tests message:(id)message
 {
-  v5 = a3;
-  v6 = [(CNFRegController *)self accounts];
-  v7 = v6;
-  if (!v6 || ![v6 count] || (objc_msgSend(v7, "CNFRegArrayPassingTests:", v5), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  testsCopy = tests;
+  accounts = [(CNFRegController *)self accounts];
+  v7 = accounts;
+  if (!accounts || ![accounts count] || (objc_msgSend(v7, "CNFRegArrayPassingTests:", testsCopy), (array = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_predicatesWithFilter:(int64_t)a3
+- (id)_predicatesWithFilter:(int64_t)filter
 {
-  if (!a3)
+  if (!filter)
   {
     v5 = 0;
     goto LABEL_24;
   }
 
-  v3 = a3;
+  filterCopy = filter;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ((v3 & 4) != 0)
+  if ((filterCopy & 4) != 0)
   {
-    v6 = [(CNFRegController *)self __filter_appleIDAccountPredicate];
-    [v5 addObject:v6];
+    __filter_appleIDAccountPredicate = [(CNFRegController *)self __filter_appleIDAccountPredicate];
+    [v5 addObject:__filter_appleIDAccountPredicate];
 
-    if ((v3 & 8) == 0)
+    if ((filterCopy & 8) == 0)
     {
 LABEL_4:
-      if ((v3 & 1) == 0)
+      if ((filterCopy & 1) == 0)
       {
         goto LABEL_5;
       }
@@ -7467,18 +7467,18 @@ LABEL_4:
     }
   }
 
-  else if ((v3 & 8) == 0)
+  else if ((filterCopy & 8) == 0)
   {
     goto LABEL_4;
   }
 
-  v7 = [(CNFRegController *)self __filter_phoneAccountPredicate];
-  [v5 addObject:v7];
+  __filter_phoneAccountPredicate = [(CNFRegController *)self __filter_phoneAccountPredicate];
+  [v5 addObject:__filter_phoneAccountPredicate];
 
-  if ((v3 & 1) == 0)
+  if ((filterCopy & 1) == 0)
   {
 LABEL_5:
-    if ((v3 & 2) == 0)
+    if ((filterCopy & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -7487,13 +7487,13 @@ LABEL_5:
   }
 
 LABEL_16:
-  v8 = [(CNFRegController *)self __filter_activeAccountsPredicate];
-  [v5 addObject:v8];
+  __filter_activeAccountsPredicate = [(CNFRegController *)self __filter_activeAccountsPredicate];
+  [v5 addObject:__filter_activeAccountsPredicate];
 
-  if ((v3 & 2) == 0)
+  if ((filterCopy & 2) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x2000) == 0)
+    if ((filterCopy & 0x2000) == 0)
     {
       goto LABEL_7;
     }
@@ -7502,13 +7502,13 @@ LABEL_6:
   }
 
 LABEL_17:
-  v9 = [(CNFRegController *)self __filter_inactiveAccountsPredicate];
-  [v5 addObject:v9];
+  __filter_inactiveAccountsPredicate = [(CNFRegController *)self __filter_inactiveAccountsPredicate];
+  [v5 addObject:__filter_inactiveAccountsPredicate];
 
-  if ((v3 & 0x2000) == 0)
+  if ((filterCopy & 0x2000) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x4000) == 0)
+    if ((filterCopy & 0x4000) == 0)
     {
       goto LABEL_8;
     }
@@ -7517,13 +7517,13 @@ LABEL_7:
   }
 
 LABEL_18:
-  v10 = [(CNFRegController *)self __filter_failedAccountsPredicate];
-  [v5 addObject:v10];
+  __filter_failedAccountsPredicate = [(CNFRegController *)self __filter_failedAccountsPredicate];
+  [v5 addObject:__filter_failedAccountsPredicate];
 
-  if ((v3 & 0x4000) == 0)
+  if ((filterCopy & 0x4000) == 0)
   {
 LABEL_8:
-    if ((v3 & 0x1000) == 0)
+    if ((filterCopy & 0x1000) == 0)
     {
       goto LABEL_9;
     }
@@ -7532,13 +7532,13 @@ LABEL_8:
   }
 
 LABEL_19:
-  v11 = [(CNFRegController *)self __filter_validatedAliasPredicate];
-  [v5 addObject:v11];
+  __filter_validatedAliasPredicate = [(CNFRegController *)self __filter_validatedAliasPredicate];
+  [v5 addObject:__filter_validatedAliasPredicate];
 
-  if ((v3 & 0x1000) == 0)
+  if ((filterCopy & 0x1000) == 0)
   {
 LABEL_9:
-    if ((v3 & 0x800) == 0)
+    if ((filterCopy & 0x800) == 0)
     {
       goto LABEL_10;
     }
@@ -7547,22 +7547,22 @@ LABEL_9:
   }
 
 LABEL_20:
-  v12 = [(CNFRegController *)self __filter_signInCompletePredicate];
-  [v5 addObject:v12];
+  __filter_signInCompletePredicate = [(CNFRegController *)self __filter_signInCompletePredicate];
+  [v5 addObject:__filter_signInCompletePredicate];
 
-  if ((v3 & 0x800) == 0)
+  if ((filterCopy & 0x800) == 0)
   {
 LABEL_10:
-    if ((v3 & 0x8000) == 0)
+    if ((filterCopy & 0x8000) == 0)
     {
       goto LABEL_11;
     }
 
 LABEL_22:
-    v14 = [(CNFRegController *)self __filter_signedInPredicate];
-    [v5 addObject:v14];
+    __filter_signedInPredicate = [(CNFRegController *)self __filter_signedInPredicate];
+    [v5 addObject:__filter_signedInPredicate];
 
-    if ((v3 & 0x10000) == 0)
+    if ((filterCopy & 0x10000) == 0)
     {
       goto LABEL_24;
     }
@@ -7571,20 +7571,20 @@ LABEL_22:
   }
 
 LABEL_21:
-  v13 = [(CNFRegController *)self __filter_validatedProfilePredicate];
-  [v5 addObject:v13];
+  __filter_validatedProfilePredicate = [(CNFRegController *)self __filter_validatedProfilePredicate];
+  [v5 addObject:__filter_validatedProfilePredicate];
 
-  if ((v3 & 0x8000) != 0)
+  if ((filterCopy & 0x8000) != 0)
   {
     goto LABEL_22;
   }
 
 LABEL_11:
-  if ((v3 & 0x10000) != 0)
+  if ((filterCopy & 0x10000) != 0)
   {
 LABEL_23:
-    v15 = [(CNFRegController *)self __filter_operationalPredicate];
-    [v5 addObject:v15];
+    __filter_operationalPredicate = [(CNFRegController *)self __filter_operationalPredicate];
+    [v5 addObject:__filter_operationalPredicate];
   }
 
 LABEL_24:
@@ -7596,9 +7596,9 @@ LABEL_24:
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(CUTWeakLinkClass()) initWithEffectiveBundleID:@"com.apple.account.Madrid"];
-  v4 = [v3 aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
+  cNFRegSavedAccountName = [v3 aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
 
-  if (v4)
+  if (cNFRegSavedAccountName)
   {
     v5 = @"CNFRegAccountTypeIdentifieriMessage";
   }
@@ -7606,7 +7606,7 @@ LABEL_24:
   else
   {
     v6 = [objc_alloc(CUTWeakLinkClass()) initWithEffectiveBundleID:@"com.apple.account.FaceTime"];
-    v4 = [v6 aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
+    cNFRegSavedAccountName = [v6 aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
 
     v5 = @"CNFRegAccountTypeIdentifierFaceTime";
   }
@@ -7616,8 +7616,8 @@ LABEL_24:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(CNFRegController *)self accounts];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  accounts = [(CNFRegController *)self accounts];
+  v8 = [accounts countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v8)
   {
     v9 = *v25;
@@ -7627,23 +7627,23 @@ LABEL_24:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(accounts);
         }
 
-        if (!v4)
+        if (!cNFRegSavedAccountName)
         {
           v11 = *(*(&v24 + 1) + 8 * i);
           if (v11)
           {
-            v12 = [*(*(&v24 + 1) + 8 * i) accountType];
-            if (v12 == 1 || !v12 && ([MEMORY[0x277D07DB0] sharedInstance], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isTelephonyDevice"), v13, (v14 & 1) == 0))
+            accountType = [*(*(&v24 + 1) + 8 * i) accountType];
+            if (accountType == 1 || !accountType && ([MEMORY[0x277D07DB0] sharedInstance], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isTelephonyDevice"), v13, (v14 & 1) == 0))
             {
               v15 = [(CNFRegController *)self loginForAccount:v11];
               if (v15)
               {
 
                 v23 = @"a previous login";
-                v4 = v15;
+                cNFRegSavedAccountName = v15;
                 goto LABEL_22;
               }
             }
@@ -7651,7 +7651,7 @@ LABEL_24:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v8 = [accounts countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v8)
       {
         continue;
@@ -7661,13 +7661,13 @@ LABEL_24:
     }
   }
 
-  if (v4)
+  if (cNFRegSavedAccountName)
   {
     goto LABEL_22;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] CNFRegSavedAccountName];
-  if (v4)
+  cNFRegSavedAccountName = [MEMORY[0x277CBEBD0] CNFRegSavedAccountName];
+  if (cNFRegSavedAccountName)
   {
     v16 = @"a previously successful account name";
 LABEL_20:
@@ -7677,7 +7677,7 @@ LABEL_22:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v4;
+      v29 = cNFRegSavedAccountName;
       v30 = 2112;
       v31 = v23;
       _os_log_impl(&dword_243BE5000, v17, OS_LOG_TYPE_DEFAULT, "Guessed account name (%@) from %@", buf, 0x16u);
@@ -7693,11 +7693,11 @@ LABEL_22:
 
   if (CNFRegGetSSAccountStoreClass())
   {
-    v20 = [CNFRegGetSSAccountStoreClass() defaultStore];
-    v21 = [v20 activeAccount];
-    v4 = [v21 accountName];
+    defaultStore = [CNFRegGetSSAccountStoreClass() defaultStore];
+    activeAccount = [defaultStore activeAccount];
+    cNFRegSavedAccountName = [activeAccount accountName];
 
-    if (v4)
+    if (cNFRegSavedAccountName)
     {
       v16 = @"iTunes";
       goto LABEL_20;
@@ -7716,48 +7716,48 @@ LABEL_22:
     IMLogString();
   }
 
-  v4 = 0;
+  cNFRegSavedAccountName = 0;
 LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return cNFRegSavedAccountName;
 }
 
 - (id)guessedAlias
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegController *)self accounts];
-  if ([v3 count])
+  accounts = [(CNFRegController *)self accounts];
+  if ([accounts count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v4 = [(CNFRegController *)self aliases];
-    v5 = [v4 countByEnumeratingWithState:&v28 objects:v37 count:16];
-    if (v5)
+    aliases = [(CNFRegController *)self aliases];
+    alias = [aliases countByEnumeratingWithState:&v28 objects:v37 count:16];
+    if (alias)
     {
       v6 = *v29;
       while (2)
       {
-        for (i = 0; i != v5; ++i)
+        for (i = 0; i != alias; ++i)
         {
           if (*v29 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(aliases);
           }
 
           v8 = *(*(&v28 + 1) + 8 * i);
           if ([v8 type] == 1 && objc_msgSend(v8, "validationStatus") != 3)
           {
-            v5 = [v8 alias];
+            alias = [v8 alias];
             v9 = @"an un-registered alias";
             goto LABEL_14;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v28 objects:v37 count:16];
-        if (v5)
+        alias = [aliases countByEnumeratingWithState:&v28 objects:v37 count:16];
+        if (alias)
         {
           continue;
         }
@@ -7773,14 +7773,14 @@ LABEL_14:
   else
   {
     v9 = 0;
-    v5 = 0;
+    alias = 0;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v3;
+  v10 = accounts;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v11)
   {
@@ -7794,15 +7794,15 @@ LABEL_14:
           objc_enumerationMutation(v10);
         }
 
-        if (!v5)
+        if (!alias)
         {
           v14 = *(*(&v24 + 1) + 8 * j);
           if (v14)
           {
-            v15 = [*(*(&v24 + 1) + 8 * j) accountType];
-            if (v15 == 1 || !v15 && ([MEMORY[0x277D07DB0] sharedInstance], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isTelephonyDevice"), v16, (v17 & 1) == 0))
+            accountType = [*(*(&v24 + 1) + 8 * j) accountType];
+            if (accountType == 1 || !accountType && ([MEMORY[0x277D07DB0] sharedInstance], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isTelephonyDevice"), v16, (v17 & 1) == 0))
             {
-              v18 = [v14 login];
+              login = [v14 login];
               v19 = MEMORY[0x245D4D030]();
 
               if (v19 && [v19 length])
@@ -7825,7 +7825,7 @@ LABEL_14:
     }
   }
 
-  v19 = v5;
+  v19 = alias;
 LABEL_32:
 
   if (v9 && v19)
@@ -7867,17 +7867,17 @@ LABEL_43:
   return v19;
 }
 
-- (BOOL)_isValidCallerIDAlias:(id)a3 forAccount:(id)a4
+- (BOOL)_isValidCallerIDAlias:(id)alias forAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  aliasCopy = alias;
+  accountCopy = account;
+  v7 = accountCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (aliasCopy && accountCopy)
   {
-    if ([v6 hasAlias:v5])
+    if ([accountCopy hasAlias:aliasCopy])
     {
-      v8 = [v7 validationStatusForAlias:v5] == 3;
+      v8 = [v7 validationStatusForAlias:aliasCopy] == 3;
     }
 
     else
@@ -7889,14 +7889,14 @@ LABEL_43:
   return v8;
 }
 
-- (id)_guessedDisplayAliasFromAccounts:(id)a3
+- (id)_guessedDisplayAliasFromAccounts:(id)accounts
 {
   v39 = *MEMORY[0x277D85DE8];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a3;
+  obj = accounts;
   v26 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
@@ -7917,8 +7917,8 @@ LABEL_43:
         v6 = *(*(&v33 + 1) + 8 * v4);
         if ([v6 isActive])
         {
-          v7 = [v6 aliases];
-          v8 = [v7 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+          aliases = [v6 aliases];
+          v8 = [aliases sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
           v31 = 0u;
           v32 = 0u;
@@ -7950,8 +7950,8 @@ LABEL_43:
                     goto LABEL_25;
                   }
 
-                  v15 = [v6 loginDisplayString];
-                  v16 = [v15 isEqualToString:v14];
+                  loginDisplayString = [v6 loginDisplayString];
+                  v16 = [loginDisplayString isEqualToString:v14];
 
                   if ((v11 == 0) | v16 & 1)
                   {
@@ -8045,33 +8045,33 @@ LABEL_36:
   return v4;
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v8 = a3;
-  v4 = [(CNFRegController *)self willLaunchURLBlock];
+  lCopy = l;
+  willLaunchURLBlock = [(CNFRegController *)self willLaunchURLBlock];
 
-  if (v4)
+  if (willLaunchURLBlock)
   {
-    v5 = [(CNFRegController *)self willLaunchURLBlock];
-    v6 = [v5 copy];
+    willLaunchURLBlock2 = [(CNFRegController *)self willLaunchURLBlock];
+    v6 = [willLaunchURLBlock2 copy];
 
-    (v6)[2](v6, v8);
+    (v6)[2](v6, lCopy);
   }
 
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v7 openSensitiveURL:v8 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
 }
 
 - (BOOL)deviceHasSaneNetworkConnection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D07DD8] sharedInstance];
-  v3 = [v2 networkReachable];
+  mEMORY[0x277D07DD8] = [MEMORY[0x277D07DD8] sharedInstance];
+  networkReachable = [mEMORY[0x277D07DD8] networkReachable];
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (networkReachable)
     {
       v5 = @"YES";
     }
@@ -8086,14 +8086,14 @@ LABEL_36:
     IMLogString();
   }
 
-  if (v3)
+  if (networkReachable)
   {
-    v3 = [v2 networkActive];
+    networkReachable = [mEMORY[0x277D07DD8] networkActive];
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"NO";
-      if (v3)
+      if (networkReachable)
       {
         v7 = @"YES";
       }
@@ -8110,7 +8110,7 @@ LABEL_36:
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v3;
+  return networkReachable;
 }
 
 - (BOOL)deviceCanTakeNetworkAction
@@ -8135,25 +8135,25 @@ LABEL_36:
       IMLogString();
     }
 
-    v5 = [(CNFRegController *)self serviceType];
-    if (v5 > 2)
+    serviceType = [(CNFRegController *)self serviceType];
+    if (serviceType > 2)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_278DE8348[v5];
+      v6 = off_278DE8348[serviceType];
     }
 
-    v7 = [MEMORY[0x277D19270] sharedInstance];
-    v8 = [v7 isWiFiEnabled];
-    v9 = [v7 isDataSwitchEnabled];
+    mEMORY[0x277D19270] = [MEMORY[0x277D19270] sharedInstance];
+    isWiFiEnabled = [mEMORY[0x277D19270] isWiFiEnabled];
+    isDataSwitchEnabled = [mEMORY[0x277D19270] isDataSwitchEnabled];
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
-      if (v8)
+      if (isWiFiEnabled)
       {
         v12 = @"YES";
       }
@@ -8163,7 +8163,7 @@ LABEL_36:
         v12 = @"NO";
       }
 
-      if (v9)
+      if (isDataSwitchEnabled)
       {
         v11 = @"YES";
       }
@@ -8178,7 +8178,7 @@ LABEL_36:
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
       v13 = @"NO";
-      if (v8)
+      if (isWiFiEnabled)
       {
         v14 = @"YES";
       }
@@ -8188,7 +8188,7 @@ LABEL_36:
         v14 = @"NO";
       }
 
-      if (v9)
+      if (isDataSwitchEnabled)
       {
         v13 = @"YES";
       }
@@ -8198,10 +8198,10 @@ LABEL_36:
       IMLogString();
     }
 
-    if ((v8 | v9))
+    if ((isWiFiEnabled | isDataSwitchEnabled))
     {
-      v15 = [MEMORY[0x277D07DB0] sharedInstance];
-      v16 = [v15 wifiAllowedForBundleId:v6];
+      mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+      v16 = [mEMORY[0x277D07DB0] wifiAllowedForBundleId:v6];
 
       if ([(CNFRegController *)self serviceType]== 1)
       {
@@ -8210,12 +8210,12 @@ LABEL_36:
 
       else
       {
-        v18 = [MEMORY[0x277D07DB0] sharedInstance];
-        v17 = [v18 nonWifiAvailableForBundleId:v6];
+        mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+        v17 = [mEMORY[0x277D07DB0]2 nonWifiAvailableForBundleId:v6];
       }
 
-      v19 = [MEMORY[0x277D07DB0] sharedInstance];
-      v20 = [v19 wifiAllowedForBundleId:@"com.apple.Preferences"];
+      mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+      v20 = [mEMORY[0x277D07DB0]3 wifiAllowedForBundleId:@"com.apple.Preferences"];
 
       v3 = (v16 | v17) & (v20 ^ 1);
       v21 = OSLogHandleForIDSCategory();
@@ -8284,28 +8284,28 @@ LABEL_36:
   return v3 & 1;
 }
 
-- (id)networkSettingsURLAllowingCellular:(BOOL)a3
+- (id)networkSettingsURLAllowingCellular:(BOOL)cellular
 {
-  v3 = a3;
-  v4 = [(CNFRegController *)self serviceType];
-  if (v4 > 2)
+  cellularCopy = cellular;
+  serviceType = [(CNFRegController *)self serviceType];
+  if (serviceType > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_278DE8348[v4];
+    v5 = off_278DE8348[serviceType];
   }
 
-  v6 = [MEMORY[0x277D19270] sharedInstance];
+  mEMORY[0x277D19270] = [MEMORY[0x277D19270] sharedInstance];
   v7 = MGGetBoolAnswer();
   v8 = @"settings-navigation://com.apple.Settings.WiFi";
   if (v7)
   {
-    v9 = [v6 isWiFiEnabled];
-    v10 = [MEMORY[0x277D07DB0] sharedInstance];
-    v11 = [v10 wifiAllowedForBundleId:v5];
+    isWiFiEnabled = [mEMORY[0x277D19270] isWiFiEnabled];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    v11 = [mEMORY[0x277D07DB0] wifiAllowedForBundleId:v5];
 
     v12 = @"settings-navigation://com.apple.Settings.WiFi/WIRELESS_APP_DATA_USAGE_ID";
     if (v11)
@@ -8313,21 +8313,21 @@ LABEL_36:
       v12 = @"settings-navigation://com.apple.Settings.WiFi";
     }
 
-    if (v9)
+    if (isWiFiEnabled)
     {
       v8 = v12;
     }
   }
 
-  if (v3)
+  if (cellularCopy)
   {
-    v13 = [MEMORY[0x277D07DB0] sharedInstance];
-    v14 = [v13 supportsCellularData];
+    mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+    supportsCellularData = [mEMORY[0x277D07DB0]2 supportsCellularData];
 
-    if (v14)
+    if (supportsCellularData)
     {
-      v15 = [MEMORY[0x277D19270] sharedInstance];
-      v16 = [v15 isAirplaneModeEnabled];
+      mEMORY[0x277D19270]2 = [MEMORY[0x277D19270] sharedInstance];
+      isAirplaneModeEnabled = [mEMORY[0x277D19270]2 isAirplaneModeEnabled];
 
       SIMStatus = CTSIMSupportGetSIMStatus();
       if (SIMStatus == *MEMORY[0x277CC3ED8])
@@ -8337,7 +8337,7 @@ LABEL_36:
 
       else
       {
-        v18 = v16;
+        v18 = isAirplaneModeEnabled;
       }
 
       if (!v18)
@@ -8347,9 +8347,9 @@ LABEL_36:
 
       if (v7 && SIMStatus != *MEMORY[0x277CC3ED8])
       {
-        v19 = [v6 isDataSwitchEnabled];
-        v20 = [MEMORY[0x277D07DB0] sharedInstance];
-        v21 = [v20 nonWifiAvailableForBundleId:v5];
+        isDataSwitchEnabled = [mEMORY[0x277D19270] isDataSwitchEnabled];
+        mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+        v21 = [mEMORY[0x277D07DB0]3 nonWifiAvailableForBundleId:v5];
 
         v22 = @"settings-navigation://com.apple.Settings.Cellular/WIRELESS_APP_DATA_USAGE_ID";
         if (v21)
@@ -8357,7 +8357,7 @@ LABEL_36:
           v22 = v8;
         }
 
-        if (v19)
+        if (isDataSwitchEnabled)
         {
           v8 = v22;
         }
@@ -8375,10 +8375,10 @@ LABEL_36:
   return v23;
 }
 
-- (void)_showNetworkAlertWithMessage:(id)a3 andViewController:(id)a4
+- (void)_showNetworkAlertWithMessage:(id)message andViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  messageCopy = message;
   v8 = CommunicationsSetupUIBundle();
   v9 = CNFRegStringTableName();
   v10 = [v8 localizedStringForKey:@"FACETIME_NETWORK_ERROR_TITLE" value:&stru_2856D3978 table:v9];
@@ -8391,7 +8391,7 @@ LABEL_36:
   v15 = CNFRegStringTableName();
   v16 = [v14 localizedStringForKey:@"FACETIME_NETWORK_SETTINGS_BUTTON" value:&stru_2856D3978 table:v15];
 
-  v17 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v7 preferredStyle:1];
+  v17 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:messageCopy preferredStyle:1];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -8404,14 +8404,14 @@ LABEL_36:
   v19 = [MEMORY[0x277D750F8] actionWithTitle:v13 style:0 handler:0];
   [v17 addAction:v19];
 
-  if (!v6)
+  if (!controllerCopy)
   {
-    v20 = [MEMORY[0x277D75128] sharedApplication];
-    v21 = [v20 keyWindow];
-    v6 = [v21 rootViewController];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    controllerCopy = [keyWindow rootViewController];
   }
 
-  [v6 presentViewController:v17 animated:1 completion:0];
+  [controllerCopy presentViewController:v17 animated:1 completion:0];
 }
 
 void __76__CNFRegController_Network___showNetworkAlertWithMessage_andViewController___block_invoke(uint64_t a1)
@@ -8421,24 +8421,24 @@ void __76__CNFRegController_Network___showNetworkAlertWithMessage_andViewControl
   [v1 openURL:v2];
 }
 
-- (void)showNetworkAlert:(id)a3
+- (void)showNetworkAlert:(id)alert
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D07DB0] sharedInstance];
-  v6 = [v5 supportsCellularData];
-  v7 = [v5 supportsWiFi];
-  v8 = [v5 supportsWLAN];
-  v9 = v8;
-  if (v6)
+  alertCopy = alert;
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsCellularData = [mEMORY[0x277D07DB0] supportsCellularData];
+  supportsWiFi = [mEMORY[0x277D07DB0] supportsWiFi];
+  supportsWLAN = [mEMORY[0x277D07DB0] supportsWLAN];
+  v9 = supportsWLAN;
+  if (supportsCellularData)
   {
-    if ((v7 & 1) == 0)
+    if ((supportsWiFi & 1) == 0)
     {
       v10 = [@"FACETIME_NETWORK_ERROR_CELL" stringByAppendingString:@"_NO_WIFI"];
       goto LABEL_9;
     }
 
-    if (v8)
+    if (supportsWLAN)
     {
       v10 = [@"FACETIME_NETWORK_ERROR_CELL" stringByAppendingString:@"_WLAN"];
 LABEL_9:
@@ -8449,7 +8449,7 @@ LABEL_9:
     v11 = @"FACETIME_NETWORK_ERROR_CELL";
   }
 
-  else if (v8)
+  else if (supportsWLAN)
   {
     v11 = @"FACETIME_NETWORK_ERROR_WLAN";
   }
@@ -8477,7 +8477,7 @@ LABEL_11:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = @"NO";
-    if (v6)
+    if (supportsCellularData)
     {
       v14 = @"YES";
     }
@@ -8496,7 +8496,7 @@ LABEL_11:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"NO";
-    if (v7)
+    if (supportsWiFi)
     {
       v16 = @"YES";
     }
@@ -8533,24 +8533,24 @@ LABEL_11:
   v19 = CommunicationsSetupUIBundle();
   v20 = CNFRegStringTableName();
   v21 = [v19 localizedStringForKey:v11 value:&stru_2856D3978 table:v20];
-  [(CNFRegController *)self _showNetworkAlertWithMessage:v21 andViewController:v4];
+  [(CNFRegController *)self _showNetworkAlertWithMessage:v21 andViewController:alertCopy];
 
   *&self->_controllerFlags |= 0x20u;
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showNetworkAlertIfNecessary:(id)a3
+- (void)showNetworkAlertIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (![(CNFRegController *)self deviceCanTakeNetworkAction])
   {
-    [(CNFRegController *)self showNetworkAlert:v4];
+    [(CNFRegController *)self showNetworkAlert:necessaryCopy];
   }
 }
 
-- (void)showNetworkFirstRunAlert:(id)a3
+- (void)showNetworkFirstRunAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if ((*&self->_controllerFlags & 0x20) == 0)
   {
     v5 = OSLogHandleForIDSCategory();
@@ -8565,7 +8565,7 @@ LABEL_11:
       IMLogString();
     }
 
-    [(CNFRegController *)self showNetworkAlertIfNecessary:v4];
+    [(CNFRegController *)self showNetworkAlertIfNecessary:alertCopy];
     *&self->_controllerFlags |= 0x20u;
   }
 }
@@ -8583,20 +8583,20 @@ LABEL_11:
   *&self->_controllerFlags = controllerFlags & 0xEF;
 }
 
-- (void)_wifiAlertWatchTimerFired:(id)a3
+- (void)_wifiAlertWatchTimerFired:(id)fired
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_wifiAlertWatchTimer == v4)
+  firedCopy = fired;
+  if (self->_wifiAlertWatchTimer == firedCopy)
   {
-    v5 = [MEMORY[0x277D07DD8] sharedInstance];
-    v6 = [v5 validNetworkEnabled];
-    v7 = [v5 willSearchForNetwork];
+    mEMORY[0x277D07DD8] = [MEMORY[0x277D07DD8] sharedInstance];
+    validNetworkEnabled = [mEMORY[0x277D07DD8] validNetworkEnabled];
+    willSearchForNetwork = [mEMORY[0x277D07DD8] willSearchForNetwork];
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = @"NO";
-      if (v6)
+      if (validNetworkEnabled)
       {
         v10 = @"YES";
       }
@@ -8606,7 +8606,7 @@ LABEL_11:
         v10 = @"NO";
       }
 
-      if (v7)
+      if (willSearchForNetwork)
       {
         v9 = @"YES";
       }
@@ -8621,7 +8621,7 @@ LABEL_11:
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
       v11 = @"NO";
-      if (v6)
+      if (validNetworkEnabled)
       {
         v12 = @"YES";
       }
@@ -8631,7 +8631,7 @@ LABEL_11:
         v12 = @"NO";
       }
 
-      if (v7)
+      if (willSearchForNetwork)
       {
         v11 = @"YES";
       }
@@ -8641,7 +8641,7 @@ LABEL_11:
       IMLogString();
     }
 
-    if ((v6 & v7 & 1) == 0)
+    if ((validNetworkEnabled & willSearchForNetwork & 1) == 0)
     {
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -8904,8 +8904,8 @@ uint64_t __46__CNFRegController_Network__stopRequiringWifi__block_invoke(uint64_
 {
   if (self->_systemAccountType == -1)
   {
-    v3 = [(CNFRegController *)self appleIDAccounts];
-    v4 = [v3 count];
+    appleIDAccounts = [(CNFRegController *)self appleIDAccounts];
+    v4 = [appleIDAccounts count];
 
     if (v4)
     {
@@ -8915,9 +8915,9 @@ uint64_t __46__CNFRegController_Network__stopRequiringWifi__block_invoke(uint64_
 
     else
     {
-      v7 = [MEMORY[0x277D18D28] sharedInstance];
-      v8 = [(CNFRegController *)self firstService];
-      v5 = [v7 __iCloudSystemAccountForService:v8];
+      mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+      firstService = [(CNFRegController *)self firstService];
+      v5 = [mEMORY[0x277D18D28] __iCloudSystemAccountForService:firstService];
 
       v6 = v5 != 0;
     }

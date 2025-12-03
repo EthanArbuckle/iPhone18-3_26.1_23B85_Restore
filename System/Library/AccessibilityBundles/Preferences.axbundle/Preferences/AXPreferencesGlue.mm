@@ -8,30 +8,30 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_333 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_342];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_333 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_342];
 
     v3 = [objc_allocWithZone(AXPreferencesGlue) init];
     v4 = _Failover;
     _Failover = v3;
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_353 forFramework:@"CoreRecognition"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_353 forFramework:@"CoreRecognition"];
 
-    v6 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v6 addHandler:&__block_literal_global_366 forFramework:@"PassKit"];
+    mEMORY[0x29EDBD690]2 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]2 addHandler:&__block_literal_global_366 forFramework:@"PassKit"];
 
-    v7 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v7 addHandler:&__block_literal_global_376 forFramework:@"VoiceTriggerUI"];
+    mEMORY[0x29EDBD690]3 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]3 addHandler:&__block_literal_global_376 forFramework:@"VoiceTriggerUI"];
 
-    v8 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v8 addHandler:&__block_literal_global_386 forFramework:@"SetupAssistantUI"];
+    mEMORY[0x29EDBD690]4 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]4 addHandler:&__block_literal_global_386 forFramework:@"SetupAssistantUI"];
 
-    v9 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v9 addHandler:&__block_literal_global_396 forBundleName:@"StorageSettings"];
+    mEMORY[0x29EDBD690]5 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]5 addHandler:&__block_literal_global_396 forBundleName:@"StorageSettings"];
 
-    v10 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v10 addHandler:&__block_literal_global_406 forFramework:@"BiometricKitUI"];
+    mEMORY[0x29EDBD690]6 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]6 addHandler:&__block_literal_global_406 forFramework:@"BiometricKitUI"];
   }
 }
 

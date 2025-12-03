@@ -1,22 +1,22 @@
 @interface IDSEventTracingOperation
 - (IDSEventTracingOperation)init;
-- (IDSEventTracingOperation)initWithName:(id)a3 uniqueIdentifier:(id)a4;
+- (IDSEventTracingOperation)initWithName:(id)name uniqueIdentifier:(id)identifier;
 - (NSString)debugDescription;
 - (NSString)description;
-- (void)addDateSubfieldWithName:(id)a3 value:(id)a4;
-- (void)addFlagSubfieldWithName:(id)a3 value:(BOOL)a4;
-- (void)addStringSubfieldWithName:(id)a3 value:(id)a4;
-- (void)addSubOperationWithOperation:(id)a3;
+- (void)addDateSubfieldWithName:(id)name value:(id)value;
+- (void)addFlagSubfieldWithName:(id)name value:(BOOL)value;
+- (void)addStringSubfieldWithName:(id)name value:(id)value;
+- (void)addSubOperationWithOperation:(id)operation;
 - (void)stop;
-- (void)stopWithError:(id)a3;
+- (void)stopWithError:(id)error;
 @end
 
 @implementation IDSEventTracingOperation
 
-- (IDSEventTracingOperation)initWithName:(id)a3 uniqueIdentifier:(id)a4
+- (IDSEventTracingOperation)initWithName:(id)name uniqueIdentifier:(id)identifier
 {
   v5 = sub_1A7E22290();
-  if (a4)
+  if (identifier)
   {
     v7 = v5;
     v8 = v6;
@@ -35,21 +35,21 @@
   return EventTracingOperation.init(name:uniqueIdentifier:)(v5, v6, v9, v11);
 }
 
-- (void)addSubOperationWithOperation:(id)a3
+- (void)addSubOperationWithOperation:(id)operation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A7B0CF18(v4);
+  operationCopy = operation;
+  selfCopy = self;
+  sub_1A7B0CF18(operationCopy);
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A7B0DD98(a3);
+  errorCopy = error;
+  selfCopy = self;
+  sub_1A7B0DD98(error);
 }
 
-- (void)addDateSubfieldWithName:(id)a3 value:(id)a4
+- (void)addDateSubfieldWithName:(id)name value:(id)value
 {
   v5 = sub_1A7E21B00();
   v6 = *(v5 - 8);
@@ -58,40 +58,40 @@
   v10 = sub_1A7E22290();
   v12 = v11;
   sub_1A7E21AD0();
-  v13 = self;
+  selfCopy = self;
   sub_1A7B0EC10(v10, v12, v9);
 
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)addStringSubfieldWithName:(id)a3 value:(id)a4
+- (void)addStringSubfieldWithName:(id)name value:(id)value
 {
   v5 = sub_1A7E22290();
   v7 = v6;
   v8 = sub_1A7E22290();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1A7B0F04C(v5, v7, v8, v10);
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7B0DD98(0);
 }
 
-- (void)addFlagSubfieldWithName:(id)a3 value:(BOOL)a4
+- (void)addFlagSubfieldWithName:(id)name value:(BOOL)value
 {
   v6 = sub_1A7E22290();
   v8 = v7;
-  v9 = self;
-  sub_1A7D71340(v6, v8, a4);
+  selfCopy = self;
+  sub_1A7D71340(v6, v8, value);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
-  sub_1A7D71664(v2, 0, 0xE000000000000000);
+  selfCopy = self;
+  sub_1A7D71664(selfCopy, 0, 0xE000000000000000);
 
   v3 = sub_1A7E22260();
 
@@ -100,7 +100,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7D71B04();
 
   v3 = sub_1A7E22260();

@@ -1,68 +1,68 @@
 @interface AVTObservableAvatarStore
 - (AVTAvatarStoreDelegate)delegate;
-- (AVTObservableAvatarStore)initWithStore:(id)a3 callbackQueue:(id)a4;
-- (BOOL)canCreateAvatarWithError:(id *)a3;
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4;
-- (id)recentStickersForFetchRequest:(id)a3 error:(id *)a4;
-- (void)deleteAvatar:(id)a3 completionHandler:(id)a4;
-- (void)deleteAvatarWithIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)deleteRecentStickersForChangeTracker:(id)a3 completionHandler:(id)a4;
-- (void)deleteRecentStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)didUseStickerWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)duplicateAvatar:(id)a3 completionBlock:(id)a4;
-- (void)fetchAvatarsForFetchRequest:(id)a3 completionHandler:(id)a4;
-- (void)saveAvatarRecord:(id)a3 thumbnailAvatar:(id)a4 completionBlock:(id)a5 thumbnailGenerationCompletionBlock:(id)a6;
+- (AVTObservableAvatarStore)initWithStore:(id)store callbackQueue:(id)queue;
+- (BOOL)canCreateAvatarWithError:(id *)error;
+- (id)avatarsForFetchRequest:(id)request error:(id *)error;
+- (id)recentStickersForFetchRequest:(id)request error:(id *)error;
+- (void)deleteAvatar:(id)avatar completionHandler:(id)handler;
+- (void)deleteAvatarWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)deleteRecentStickersForChangeTracker:(id)tracker completionHandler:(id)handler;
+- (void)deleteRecentStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler;
+- (void)didUseStickerWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler;
+- (void)duplicateAvatar:(id)avatar completionBlock:(id)block;
+- (void)fetchAvatarsForFetchRequest:(id)request completionHandler:(id)handler;
+- (void)saveAvatarRecord:(id)record thumbnailAvatar:(id)avatar completionBlock:(id)block thumbnailGenerationCompletionBlock:(id)completionBlock;
 @end
 
 @implementation AVTObservableAvatarStore
 
-- (AVTObservableAvatarStore)initWithStore:(id)a3 callbackQueue:(id)a4
+- (AVTObservableAvatarStore)initWithStore:(id)store callbackQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = AVTObservableAvatarStore;
   v9 = [(AVTObservableAvatarStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeStrong(&v10->_callbackQueue, a4);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeStrong(&v10->_callbackQueue, queue);
   }
 
   return v10;
 }
 
-- (BOOL)canCreateAvatarWithError:(id *)a3
+- (BOOL)canCreateAvatarWithError:(id *)error
 {
-  v4 = [(AVTObservableAvatarStore *)self store];
-  LOBYTE(a3) = [v4 canCreateAvatarWithError:a3];
+  store = [(AVTObservableAvatarStore *)self store];
+  LOBYTE(error) = [store canCreateAvatarWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4
+- (id)avatarsForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTObservableAvatarStore *)self store];
-  v8 = [v7 avatarsForFetchRequest:v6 error:a4];
+  requestCopy = request;
+  store = [(AVTObservableAvatarStore *)self store];
+  v8 = [store avatarsForFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (void)fetchAvatarsForFetchRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchAvatarsForFetchRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTObservableAvatarStore *)self store];
+  handlerCopy = handler;
+  requestCopy = request;
+  store = [(AVTObservableAvatarStore *)self store];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__AVTObservableAvatarStore_fetchAvatarsForFetchRequest_completionHandler___block_invoke;
   v10[3] = &unk_278CFAA28;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchAvatarsForFetchRequest:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [store fetchAvatarsForFetchRequest:requestCopy completionHandler:v10];
 }
 
 void __74__AVTObservableAvatarStore_fetchAvatarsForFetchRequest_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -83,28 +83,28 @@ void __74__AVTObservableAvatarStore_fetchAvatarsForFetchRequest_completionHandle
   dispatch_async(v7, block);
 }
 
-- (void)deleteAvatar:(id)a3 completionHandler:(id)a4
+- (void)deleteAvatar:(id)avatar completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  [(AVTObservableAvatarStore *)self deleteAvatarWithIdentifier:v7 completionBlock:v6];
+  handlerCopy = handler;
+  identifier = [avatar identifier];
+  [(AVTObservableAvatarStore *)self deleteAvatarWithIdentifier:identifier completionBlock:handlerCopy];
 }
 
-- (void)deleteAvatarWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)deleteAvatarWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTObservableAvatarStore *)self store];
+  identifierCopy = identifier;
+  blockCopy = block;
+  store = [(AVTObservableAvatarStore *)self store];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__AVTObservableAvatarStore_deleteAvatarWithIdentifier_completionBlock___block_invoke;
   v11[3] = &unk_278CFAAA0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 deleteAvatarWithIdentifier:v10 completionBlock:v11];
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
+  [store deleteAvatarWithIdentifier:v10 completionBlock:v11];
 }
 
 void __71__AVTObservableAvatarStore_deleteAvatarWithIdentifier_completionBlock___block_invoke(uint64_t a1, char a2, void *a3)
@@ -175,23 +175,23 @@ uint64_t __71__AVTObservableAvatarStore_deleteAvatarWithIdentifier_completionBlo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)saveAvatarRecord:(id)a3 thumbnailAvatar:(id)a4 completionBlock:(id)a5 thumbnailGenerationCompletionBlock:(id)a6
+- (void)saveAvatarRecord:(id)record thumbnailAvatar:(id)avatar completionBlock:(id)block thumbnailGenerationCompletionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [(AVTObservableAvatarStore *)self store];
+  recordCopy = record;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  avatarCopy = avatar;
+  store = [(AVTObservableAvatarStore *)self store];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __112__AVTObservableAvatarStore_saveAvatarRecord_thumbnailAvatar_completionBlock_thumbnailGenerationCompletionBlock___block_invoke;
   v17[3] = &unk_278CFAAA0;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v15 = v11;
-  v16 = v10;
-  [v14 saveAvatarRecord:v16 thumbnailAvatar:v13 completionBlock:v17 thumbnailGenerationCompletionBlock:v12];
+  v18 = recordCopy;
+  v19 = blockCopy;
+  v15 = blockCopy;
+  v16 = recordCopy;
+  [store saveAvatarRecord:v16 thumbnailAvatar:avatarCopy completionBlock:v17 thumbnailGenerationCompletionBlock:completionBlockCopy];
 }
 
 void __112__AVTObservableAvatarStore_saveAvatarRecord_thumbnailAvatar_completionBlock_thumbnailGenerationCompletionBlock___block_invoke(uint64_t a1, char a2, void *a3)
@@ -262,21 +262,21 @@ uint64_t __112__AVTObservableAvatarStore_saveAvatarRecord_thumbnailAvatar_comple
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)duplicateAvatar:(id)a3 completionBlock:(id)a4
+- (void)duplicateAvatar:(id)avatar completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTObservableAvatarStore *)self store];
+  avatarCopy = avatar;
+  blockCopy = block;
+  store = [(AVTObservableAvatarStore *)self store];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__AVTObservableAvatarStore_duplicateAvatar_completionBlock___block_invoke;
   v11[3] = &unk_278CFAAF0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 duplicateAvatar:v10 completionBlock:v11];
+  v12 = avatarCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = avatarCopy;
+  [store duplicateAvatar:v10 completionBlock:v11];
 }
 
 void __60__AVTObservableAvatarStore_duplicateAvatar_completionBlock___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -352,39 +352,39 @@ uint64_t __60__AVTObservableAvatarStore_duplicateAvatar_completionBlock___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)deleteRecentStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteRecentStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTObservableAvatarStore *)self store];
-  [v11 deleteRecentStickersWithAvatarIdentifier:v10 stickerIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  stickerIdentifierCopy = stickerIdentifier;
+  identifierCopy = identifier;
+  store = [(AVTObservableAvatarStore *)self store];
+  [store deleteRecentStickersWithAvatarIdentifier:identifierCopy stickerIdentifier:stickerIdentifierCopy completionHandler:handlerCopy];
 }
 
-- (void)didUseStickerWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5
+- (void)didUseStickerWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTObservableAvatarStore *)self store];
-  [v11 didUseStickerWithAvatarIdentifier:v10 stickerIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  stickerIdentifierCopy = stickerIdentifier;
+  identifierCopy = identifier;
+  store = [(AVTObservableAvatarStore *)self store];
+  [store didUseStickerWithAvatarIdentifier:identifierCopy stickerIdentifier:stickerIdentifierCopy completionHandler:handlerCopy];
 }
 
-- (id)recentStickersForFetchRequest:(id)a3 error:(id *)a4
+- (id)recentStickersForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTObservableAvatarStore *)self store];
-  v8 = [v7 recentStickersForFetchRequest:v6 error:a4];
+  requestCopy = request;
+  store = [(AVTObservableAvatarStore *)self store];
+  v8 = [store recentStickersForFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (void)deleteRecentStickersForChangeTracker:(id)a3 completionHandler:(id)a4
+- (void)deleteRecentStickersForChangeTracker:(id)tracker completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTObservableAvatarStore *)self store];
-  [v8 deleteRecentStickersForChangeTracker:v7 completionHandler:v6];
+  handlerCopy = handler;
+  trackerCopy = tracker;
+  store = [(AVTObservableAvatarStore *)self store];
+  [store deleteRecentStickersForChangeTracker:trackerCopy completionHandler:handlerCopy];
 }
 
 - (AVTAvatarStoreDelegate)delegate

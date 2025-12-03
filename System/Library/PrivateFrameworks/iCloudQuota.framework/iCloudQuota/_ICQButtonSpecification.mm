@@ -1,22 +1,22 @@
 @interface _ICQButtonSpecification
-+ (id)buttonSpecificationSampleForLevel:(int64_t)a3;
++ (id)buttonSpecificationSampleForLevel:(int64_t)level;
 - (ICQLink)buttonLink;
-- (_ICQButtonSpecification)initWithServerDictionary:(id)a3;
-- (id)linkForBundleIdentifier:(id)a3;
+- (_ICQButtonSpecification)initWithServerDictionary:(id)dictionary;
+- (id)linkForBundleIdentifier:(id)identifier;
 @end
 
 @implementation _ICQButtonSpecification
 
-- (_ICQButtonSpecification)initWithServerDictionary:(id)a3
+- (_ICQButtonSpecification)initWithServerDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(_ICQButtonSpecification *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverDict, a3);
-    v8 = [v5 objectForKeyedSubscript:@"mesg"];
+    objc_storeStrong(&v6->_serverDict, dictionary);
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mesg"];
     v9 = _ICQStringForKey(v8, @"format");
     buttonFormat = v7->_buttonFormat;
     v7->_buttonFormat = v9;
@@ -71,34 +71,34 @@
 
   else
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v3 = [(_ICQButtonSpecification *)self linkForBundleIdentifier:v5];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v3 = [(_ICQButtonSpecification *)self linkForBundleIdentifier:bundleIdentifier];
   }
 
   return v3;
 }
 
-- (id)linkForBundleIdentifier:(id)a3
+- (id)linkForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_serverDict)
   {
-    v5 = [(_ICQButtonSpecification *)self buttonLink];
+    buttonLink = [(_ICQButtonSpecification *)self buttonLink];
   }
 
   else
   {
-    v6 = [(_ICQButtonSpecification *)self linkForBundleIdentifier];
-    v5 = [v6 objectForKeyedSubscript:v4];
+    linkForBundleIdentifier = [(_ICQButtonSpecification *)self linkForBundleIdentifier];
+    buttonLink = [linkForBundleIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
-  return v5;
+  return buttonLink;
 }
 
-+ (id)buttonSpecificationSampleForLevel:(int64_t)a3
++ (id)buttonSpecificationSampleForLevel:(int64_t)level
 {
-  if (a3 == 3)
+  if (level == 3)
   {
     if (_ButtonSpecificationSampleForFullLevel_onceToken != -1)
     {
@@ -109,7 +109,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     if (_ButtonSpecificationSampleForAlmostFullLevel_onceToken != -1)
     {

@@ -1,7 +1,7 @@
 @interface RAPPhotoCarouselCollectionViewCell
 + (NSString)reuseIdentifier;
 - (UGCPhotoCarouselController)carouselController;
-- (_TtC4Maps34RAPPhotoCarouselCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC4Maps34RAPPhotoCarouselCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation RAPPhotoCarouselCollectionViewCell
@@ -18,12 +18,12 @@
 
 - (UGCPhotoCarouselController)carouselController
 {
-  v2 = [*(&self->super + OBJC_IVAR____TtC4Maps34RAPPhotoCarouselCollectionViewCell_photoCarouselCell) carouselController];
+  carouselController = [*(&self->super + OBJC_IVAR____TtC4Maps34RAPPhotoCarouselCollectionViewCell_photoCarouselCell) carouselController];
 
-  return v2;
+  return carouselController;
 }
 
-- (_TtC4Maps34RAPPhotoCarouselCollectionViewCell)initWithCoder:(id)a3
+- (_TtC4Maps34RAPPhotoCarouselCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC4Maps34RAPPhotoCarouselCollectionViewCell_photoCarouselCell;
   *(&self->super + v3) = [objc_allocWithZone(UGCPhotoCarouselCell) init];

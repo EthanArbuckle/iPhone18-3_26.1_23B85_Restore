@@ -1,21 +1,21 @@
 @interface IMDSpamCheckRequeryTrackerRecord
-- (IMDSpamCheckRequeryTrackerRecord)initWithMessageGUID:(id)a3 chatGUID:(id)a4;
+- (IMDSpamCheckRequeryTrackerRecord)initWithMessageGUID:(id)d chatGUID:(id)iD;
 @end
 
 @implementation IMDSpamCheckRequeryTrackerRecord
 
-- (IMDSpamCheckRequeryTrackerRecord)initWithMessageGUID:(id)a3 chatGUID:(id)a4
+- (IMDSpamCheckRequeryTrackerRecord)initWithMessageGUID:(id)d chatGUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = IMDSpamCheckRequeryTrackerRecord;
   v8 = [(IMDSpamCheckRequeryTrackerRecord *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IMDSpamCheckRequeryTrackerRecord *)v8 setMessageGUID:v6];
-    [(IMDSpamCheckRequeryTrackerRecord *)v9 setChatGUID:v7];
+    [(IMDSpamCheckRequeryTrackerRecord *)v8 setMessageGUID:dCopy];
+    [(IMDSpamCheckRequeryTrackerRecord *)v9 setChatGUID:iDCopy];
   }
 
   return v9;

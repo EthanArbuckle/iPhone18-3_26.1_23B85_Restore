@@ -1,11 +1,11 @@
 @interface NumberedTextView
-- (_TtC5Heart16NumberedTextView)initWithCoder:(id)a3;
-- (_TtC5Heart16NumberedTextView)initWithFrame:(CGRect)a3;
+- (_TtC5Heart16NumberedTextView)initWithCoder:(id)coder;
+- (_TtC5Heart16NumberedTextView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NumberedTextView
 
-- (_TtC5Heart16NumberedTextView)initWithCoder:(id)a3
+- (_TtC5Heart16NumberedTextView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Heart16NumberedTextView_title);
   *v3 = 0;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC5Heart16NumberedTextView)initWithFrame:(CGRect)a3
+- (_TtC5Heart16NumberedTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

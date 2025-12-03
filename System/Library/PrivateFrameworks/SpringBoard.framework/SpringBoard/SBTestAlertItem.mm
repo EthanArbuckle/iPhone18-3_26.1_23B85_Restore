@@ -1,28 +1,28 @@
 @interface SBTestAlertItem
-+ (id)alertItemWithShowInLockScreen:(BOOL)a3 forcesModal:(BOOL)a4 superModal:(BOOL)a5;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
++ (id)alertItemWithShowInLockScreen:(BOOL)screen forcesModal:(BOOL)modal superModal:(BOOL)superModal;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBTestAlertItem
 
-+ (id)alertItemWithShowInLockScreen:(BOOL)a3 forcesModal:(BOOL)a4 superModal:(BOOL)a5
++ (id)alertItemWithShowInLockScreen:(BOOL)screen forcesModal:(BOOL)modal superModal:(BOOL)superModal
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setShouldShowInLockScreen:v7];
-  [v8 setForcesModalAlertAppearance:v6];
-  [v8 setBehavesSuperModally:v5];
+  superModalCopy = superModal;
+  modalCopy = modal;
+  screenCopy = screen;
+  v8 = objc_alloc_init(self);
+  [v8 setShouldShowInLockScreen:screenCopy];
+  [v8 setForcesModalAlertAppearance:modalCopy];
+  [v8 setBehavesSuperModally:superModalCopy];
 
   return v8;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [(SBTestAlertItem *)self title];
-  [v5 setTitle:v6];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  title = [(SBTestAlertItem *)self title];
+  [v5 setTitle:title];
 
   if (self->_message)
   {

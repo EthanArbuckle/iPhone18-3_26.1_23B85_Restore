@@ -1,8 +1,8 @@
 @interface FullScreenAssetCollectionViewCell
 - (UICellConfigurationState)_bridgedConfigurationState;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)updateConstraints;
 @end
 
@@ -19,14 +19,14 @@
   v10 = type metadata accessor for FullScreenAssetCollectionViewCell();
   v17.receiver = self;
   v17.super_class = v10;
-  v11 = self;
-  v12 = [(FullScreenAssetCollectionViewCell *)&v17 _bridgedConfigurationState];
+  selfCopy = self;
+  _bridgedConfigurationState = [(FullScreenAssetCollectionViewCell *)&v17 _bridgedConfigurationState];
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
 
-  v13 = [(FullScreenAssetCollectionViewCell *)v11 contentView];
-  v14 = [v13 isUserInteractionEnabled];
+  contentView = [(FullScreenAssetCollectionViewCell *)selfCopy contentView];
+  isUserInteractionEnabled = [contentView isUserInteractionEnabled];
 
-  if ((v14 & 1) == 0)
+  if ((isUserInteractionEnabled & 1) == 0)
   {
     UICellConfigurationState.isDisabled.setter();
   }
@@ -38,21 +38,21 @@
   return v15.super.super.isa;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006FD53C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1006FD53C(attributesCopy);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1006FD770();
 
   (*(v5 + 8))(v7, v4);
@@ -62,23 +62,23 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static UIView.Invalidating.subscript.getter();
 
   v4 = OBJC_IVAR____TtC7Journal33FullScreenAssetCollectionViewCell_aspectConstraint;
   swift_beginAccess();
-  sub_10031BEA8((&v3->super.super.super.super.super.isa + v4), v6, v7);
+  sub_10031BEA8((&selfCopy->super.super.super.super.super.isa + v4), v6, v7);
   swift_endAccess();
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for FullScreenAssetCollectionViewCell();
   [(FullScreenAssetCollectionViewCell *)&v5 updateConstraints];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1006FDA70(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_1006FDA70(attributesCopy);
 
   return v6;
 }

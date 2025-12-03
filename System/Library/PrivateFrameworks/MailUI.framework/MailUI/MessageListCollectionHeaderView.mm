@@ -2,13 +2,13 @@
 - (BOOL)useSplitViewStyling;
 - (MessageListCellLayoutValuesHelper)layoutValuesHelper;
 - (NSString)title;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyImage:(id)a3 hasAvatars:(BOOL)a4;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyImage:(id)image hasAvatars:(BOOL)avatars;
 - (void)prepareForReuse;
-- (void)setLayoutValuesHelper:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseSplitViewStyling:(BOOL)a3;
-- (void)showSortButtonWithIsHidden:(BOOL)a3 selectedOption:(int64_t)a4;
+- (void)setLayoutValuesHelper:(id)helper;
+- (void)setTitle:(id)title;
+- (void)setUseSplitViewStyling:(BOOL)styling;
+- (void)showSortButtonWithIsHidden:(BOOL)hidden selectedOption:(int64_t)option;
 @end
 
 @implementation MessageListCollectionHeaderView
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setLayoutValuesHelper:(id)a3
+- (void)setLayoutValuesHelper:(id)helper
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](helper);
   MEMORY[0x277D82BE0](self);
-  MessageListCollectionHeaderView.layoutValuesHelper.setter(a3);
+  MessageListCollectionHeaderView.layoutValuesHelper.setter(helper);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -38,7 +38,7 @@
   return sub_214CCD384() & 1;
 }
 
-- (void)setUseSplitViewStyling:(BOOL)a3
+- (void)setUseSplitViewStyling:(BOOL)styling
 {
   MEMORY[0x277D82BE0](self);
   v3 = sub_214CCD394();
@@ -67,15 +67,15 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](title);
   MEMORY[0x277D82BE0](self);
-  if (a3)
+  if (title)
   {
     v4 = sub_214CCF564();
     v5 = v3;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](title);
     v6 = v4;
     v7 = v5;
   }
@@ -90,14 +90,14 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)applyImage:(id)a3 hasAvatars:(BOOL)a4
+- (void)applyImage:(id)image hasAvatars:(BOOL)avatars
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](image);
   MEMORY[0x277D82BE0](self);
   v5 = sub_214CCD394();
-  MessageListCollectionHeaderView.apply(image:hasAvatars:)(a3, v5 & 1);
+  MessageListCollectionHeaderView.apply(image:hasAvatars:)(image, v5 & 1);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](image);
 }
 
 - (void)prepareForReuse
@@ -107,31 +107,31 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)showSortButtonWithIsHidden:(BOOL)a3 selectedOption:(int64_t)a4
+- (void)showSortButtonWithIsHidden:(BOOL)hidden selectedOption:(int64_t)option
 {
   MEMORY[0x277D82BE0](self);
   v4 = sub_214CCD394();
-  MessageListCollectionHeaderView.showSortButton(isHidden:selectedOption:)(v4 & 1, a4);
+  MessageListCollectionHeaderView.showSortButton(isHidden:selectedOption:)(v4 & 1, option);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
-  v13 = self;
-  v12 = a3;
+  selfCopy = self;
+  stateCopy = state;
   v11 = sub_214CCDB84();
   v8 = *(v11 - 8);
   v9 = v11 - 8;
   v7 = (*(v8 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v12);
+  MEMORY[0x28223BE20](stateCopy);
   v10 = &v6 - v7;
   MEMORY[0x277D82BE0](v4);
   MEMORY[0x277D82BE0](self);
   sub_214CCDB64();
   v5 = MessageListCollectionHeaderView.updateConfiguration(using:)(v10);
   (*(v8 + 8))(v10, v11, v5);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](stateCopy);
+  MEMORY[0x277D82BD8](selfCopy);
 }
 
 @end

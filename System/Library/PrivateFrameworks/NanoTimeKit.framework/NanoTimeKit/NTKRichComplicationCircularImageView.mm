@@ -1,14 +1,14 @@
 @interface NTKRichComplicationCircularImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationCircularImageView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationCircularImageView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,11 +22,11 @@
   return [(NTKRichComplicationBaseCircularImageView *)&v3 initWithFamily:10];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v7 = [a3 imageProvider];
-  v6 = [(NTKRichComplicationBaseCircularImageView *)self imageView];
-  [v6 setImageProvider:v7 reason:a4];
+  imageProvider = [template imageProvider];
+  imageView = [(NTKRichComplicationBaseCircularImageView *)self imageView];
+  [imageView setImageProvider:imageProvider reason:reason];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface AXBClarityUIManager
 + (id)sharedManager;
 - (AXBClarityUIManager)init;
-- (BOOL)validateAdminPasscode:(id)a3;
-- (void)setAdminPasscode:(id)a3;
+- (BOOL)validateAdminPasscode:(id)passcode;
+- (void)setAdminPasscode:(id)passcode;
 @end
 
 @implementation AXBClarityUIManager
@@ -43,14 +43,14 @@ uint64_t __36__AXBClarityUIManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)setAdminPasscode:(id)a3
+- (void)setAdminPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [v4 length];
+  passcodeCopy = passcode;
+  v5 = [passcodeCopy length];
   if (v5 == *MEMORY[0x29EDBDE30])
   {
-    v6 = [(AXBClarityUIManager *)self passcodeHandle];
-    [v6 attemptToSetPasscode:v4];
+    passcodeHandle = [(AXBClarityUIManager *)self passcodeHandle];
+    [passcodeHandle attemptToSetPasscode:passcodeCopy];
   }
 
   else
@@ -58,20 +58,20 @@ uint64_t __36__AXBClarityUIManager_sharedManager__block_invoke()
     v7 = CLFLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [AXBClarityUIManager setAdminPasscode:v4];
+      [AXBClarityUIManager setAdminPasscode:passcodeCopy];
     }
   }
 }
 
-- (BOOL)validateAdminPasscode:(id)a3
+- (BOOL)validateAdminPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [v4 length];
+  passcodeCopy = passcode;
+  v5 = [passcodeCopy length];
   if (v5 == *MEMORY[0x29EDBDE30])
   {
-    v6 = [(AXBClarityUIManager *)self passcodeHandle];
-    v7 = [v6 passcode];
-    v8 = [v7 isEqualToString:v4];
+    passcodeHandle = [(AXBClarityUIManager *)self passcodeHandle];
+    passcode = [passcodeHandle passcode];
+    v8 = [passcode isEqualToString:passcodeCopy];
   }
 
   else
@@ -79,7 +79,7 @@ uint64_t __36__AXBClarityUIManager_sharedManager__block_invoke()
     v9 = CLFLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [AXBClarityUIManager validateAdminPasscode:v4];
+      [AXBClarityUIManager validateAdminPasscode:passcodeCopy];
     }
 
     v8 = 0;

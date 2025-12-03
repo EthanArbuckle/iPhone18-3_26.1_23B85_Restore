@@ -1,19 +1,19 @@
 @interface GCDeviceCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCDeviceCollection)init;
 - (id)orderedCollection;
 - (id)underlyingCollection;
-- (void)initWithUnderlyingCollection:(void *)a1;
+- (void)initWithUnderlyingCollection:(void *)collection;
 @end
 
 @implementation GCDeviceCollection
 
 - (id)orderedCollection
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) allObjects];
-    v2 = [v1 sortedArrayUsingComparator:&__block_literal_global_11];
+    allObjects = [*(self + 8) allObjects];
+    v2 = [allObjects sortedArrayUsingComparator:&__block_literal_global_11];
   }
 
   else
@@ -44,15 +44,15 @@ uint64_t __39__GCDeviceCollection_orderedCollection__block_invoke(uint64_t a1, u
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     underlyingCollection = self->_underlyingCollection;
-    v8 = [(GCDeviceCollection *)v4 underlyingCollection];
-    v5 = [(NSSet *)underlyingCollection isEqualToSet:v8];
+    underlyingCollection = [(GCDeviceCollection *)equalCopy underlyingCollection];
+    v5 = [(NSSet *)underlyingCollection isEqualToSet:underlyingCollection];
   }
 
   else
@@ -63,14 +63,14 @@ uint64_t __39__GCDeviceCollection_orderedCollection__block_invoke(uint64_t a1, u
   return v5;
 }
 
-- (void)initWithUnderlyingCollection:(void *)a1
+- (void)initWithUnderlyingCollection:(void *)collection
 {
-  if (!a1)
+  if (!collection)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = collection;
   v7.super_class = GCDeviceCollection;
   v2 = a2;
   v3 = objc_msgSendSuper2(&v7, sel_init);
@@ -84,13 +84,13 @@ uint64_t __39__GCDeviceCollection_orderedCollection__block_invoke(uint64_t a1, u
 
 - (id)underlyingCollection
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

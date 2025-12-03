@@ -15,7 +15,7 @@
   v5[3] = &unk_27861CC70;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateKeysAndObjectsUsingBlock:v5];
+  [self enumerateKeysAndObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -24,15 +24,15 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 keyValuePairsCount];
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v4];
+  keyValuePairsCount = [v3 keyValuePairsCount];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:keyValuePairsCount];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v24 = v3;
-  v6 = [v3 keyValuePairs];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  keyValuePairs = [v3 keyValuePairs];
+  v7 = [keyValuePairs countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -44,16 +44,16 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyValuePairs);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         v12 = [v11 key];
         if ([v11 hasStringValue])
         {
-          v13 = [v11 stringValue];
+          stringValue = [v11 stringValue];
 LABEL_14:
-          v15 = v13;
+          v15 = stringValue;
           goto LABEL_15;
         }
 
@@ -61,28 +61,28 @@ LABEL_14:
         {
           v14 = MEMORY[0x277CCABB0];
           [v11 numberDoubleValue];
-          v13 = [v14 numberWithDouble:?];
+          stringValue = [v14 numberWithDouble:?];
           goto LABEL_14;
         }
 
         if ([v11 hasNumberIntValue])
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "numberIntValue")}];
+          stringValue = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "numberIntValue")}];
           goto LABEL_14;
         }
 
         if ([v11 hasDateValue])
         {
           [v11 dateValue];
-          v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
+          stringValue = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
           goto LABEL_14;
         }
 
         if ([v11 hasQuantityValue])
         {
           v17 = MEMORY[0x277CCD7E8];
-          v18 = [v11 quantityValue];
-          v19 = [v17 createWithCodable:v18];
+          quantityValue = [v11 quantityValue];
+          v19 = [v17 createWithCodable:quantityValue];
         }
 
         else
@@ -94,8 +94,8 @@ LABEL_14:
           }
 
           v20 = MEMORY[0x277CBEA90];
-          v18 = [v11 dataValue];
-          v19 = [v20 dataWithData:v18];
+          quantityValue = [v11 dataValue];
+          v19 = [v20 dataWithData:quantityValue];
         }
 
         v15 = v19;
@@ -122,7 +122,7 @@ LABEL_20:
       }
 
       while (v8 != v10);
-      v21 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v21 = [keyValuePairs countByEnumeratingWithState:&v25 objects:v29 count:16];
       v8 = v21;
     }
 
@@ -139,7 +139,7 @@ LABEL_20:
   v4 = a3;
   if ([v4 keyValuePairsCount])
   {
-    v5 = [a1 hk_dictionaryWithCodableMetadata:v4];
+    v5 = [self hk_dictionaryWithCodableMetadata:v4];
   }
 
   else

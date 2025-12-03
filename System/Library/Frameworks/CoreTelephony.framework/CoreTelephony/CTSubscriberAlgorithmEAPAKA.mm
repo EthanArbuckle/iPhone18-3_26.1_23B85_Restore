@@ -1,33 +1,33 @@
 @interface CTSubscriberAlgorithmEAPAKA
-- (CTSubscriberAlgorithmEAPAKA)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CTSubscriberAlgorithmEAPAKA)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSubscriberAlgorithmEAPAKA
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CTSubscriberAlgorithmEAPAKA *)self rand];
-  [v6 encodeObject:v4 forKey:@"rand"];
+  coderCopy = coder;
+  rand = [(CTSubscriberAlgorithmEAPAKA *)self rand];
+  [coderCopy encodeObject:rand forKey:@"rand"];
 
-  v5 = [(CTSubscriberAlgorithmEAPAKA *)self autn];
-  [v6 encodeObject:v5 forKey:@"autn"];
+  autn = [(CTSubscriberAlgorithmEAPAKA *)self autn];
+  [coderCopy encodeObject:autn forKey:@"autn"];
 }
 
-- (CTSubscriberAlgorithmEAPAKA)initWithCoder:(id)a3
+- (CTSubscriberAlgorithmEAPAKA)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTSubscriberAlgorithmEAPAKA;
   v5 = [(CTSubscriberAlgorithmEAPAKA *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rand"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rand"];
     rand = v5->_rand;
     v5->_rand = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autn"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autn"];
     autn = v5->_autn;
     v5->_autn = v8;
   }

@@ -1,10 +1,10 @@
 @interface ICQInlineTip
 + (NSArray)downwardArrowConfigurationStrings;
 + (NSArray)upwardArrowConfigurationStrings;
-- (ICQInlineTip)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICQInlineTip)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQInlineTip
@@ -68,7 +68,7 @@ void __49__ICQInlineTip_downwardArrowConfigurationStrings__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQInlineTip);
   [(ICQInlineTip *)v4 setId:self->_id];
@@ -84,44 +84,44 @@ void __49__ICQInlineTip_downwardArrowConfigurationStrings__block_invoke()
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   id = self->_id;
-  v5 = a3;
-  [v5 encodeObject:id forKey:@"id"];
-  [v5 encodeObject:self->_anchor forKey:@"anchor"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subTitle forKey:@"subTitle"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
-  [v5 encodeObject:self->_criteria forKey:@"criteria"];
-  [v5 encodeObject:self->_arrowConfiguration forKey:@"arrowConfiguration"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
-  [v5 encodeObject:self->_dismissURL forKey:@"dismissURL"];
-  [v5 encodeObject:self->_displayURL forKey:@"displayURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:id forKey:@"id"];
+  [coderCopy encodeObject:self->_anchor forKey:@"anchor"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subTitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_criteria forKey:@"criteria"];
+  [coderCopy encodeObject:self->_arrowConfiguration forKey:@"arrowConfiguration"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
+  [coderCopy encodeObject:self->_dismissURL forKey:@"dismissURL"];
+  [coderCopy encodeObject:self->_displayURL forKey:@"displayURL"];
 }
 
-- (ICQInlineTip)initWithCoder:(id)a3
+- (ICQInlineTip)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = ICQInlineTip;
   v5 = [(ICQInlineTip *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     id = v5->_id;
     v5->_id = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
     anchor = v5->_anchor;
     v5->_anchor = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subTitle = v5->_subTitle;
     v5->_subTitle = v12;
 
@@ -131,27 +131,27 @@ void __49__ICQInlineTip_downwardArrowConfigurationStrings__block_invoke()
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v16 = [v14 setWithArray:v15];
 
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"actions"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
     criteria = v5->_criteria;
     v5->_criteria = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrowConfiguration"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrowConfiguration"];
     arrowConfiguration = v5->_arrowConfiguration;
     v5->_arrowConfiguration = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
     dismissURL = v5->_dismissURL;
     v5->_dismissURL = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayURL"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayURL"];
     displayURL = v5->_displayURL;
     v5->_displayURL = v27;
   }

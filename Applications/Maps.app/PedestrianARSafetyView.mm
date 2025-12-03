@@ -1,9 +1,9 @@
 @interface PedestrianARSafetyView
-- (PedestrianARSafetyView)initWithFrame:(CGRect)a3;
+- (PedestrianARSafetyView)initWithFrame:(CGRect)frame;
 - (double)_imageSizeForCurrentContentSizeCategory;
-- (void)_deviceOrientationDidChange:(id)a3;
+- (void)_deviceOrientationDidChange:(id)change;
 - (void)_didStartWalkingCheck;
-- (void)_hideViews:(BOOL)a3;
+- (void)_hideViews:(BOOL)views;
 - (void)_setupViews;
 - (void)_startMonitoringDeviceMotion;
 - (void)_startWalkingWarningDismissTimer;
@@ -16,23 +16,23 @@
 - (void)dealloc;
 - (void)didEndARSession;
 - (void)didStartARSession;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)setState:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)setState:(int64_t)state;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PedestrianARSafetyView
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v10 = a4;
-  v5 = [v10 location];
+  frameCopy = frame;
+  location = [frameCopy location];
 
-  if (v5)
+  if (location)
   {
     v6 = [GEOLocation alloc];
-    v7 = [v10 location];
-    v8 = [v6 initWithCLLocation:v7];
+    location2 = [frameCopy location];
+    v8 = [v6 initWithCLLocation:location2];
     lastLocation = self->_lastLocation;
     self->_lastLocation = v8;
   }
@@ -40,8 +40,8 @@
 
 - (void)_stopWalkingWarningDismissTimer
 {
-  v3 = [(PedestrianARSafetyView *)self walkingWarningDisplayLimitTimer];
-  [v3 invalidate];
+  walkingWarningDisplayLimitTimer = [(PedestrianARSafetyView *)self walkingWarningDisplayLimitTimer];
+  [walkingWarningDisplayLimitTimer invalidate];
 
   [(PedestrianARSafetyView *)self setWalkingWarningDisplayLimitTimer:0];
 }
@@ -55,8 +55,8 @@
 
 - (void)_stopWalkingWarningDisplayTimer
 {
-  v3 = [(PedestrianARSafetyView *)self walkingWarningDisplayLimitTimer];
-  [v3 invalidate];
+  walkingWarningDisplayLimitTimer = [(PedestrianARSafetyView *)self walkingWarningDisplayLimitTimer];
+  [walkingWarningDisplayLimitTimer invalidate];
 
   [(PedestrianARSafetyView *)self setWalkingWarningDisplayLimitTimer:0];
 }
@@ -85,7 +85,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v12 = 134349312;
-        v13 = self;
+        selfCopy3 = self;
         v14 = 2048;
         v15 = v5;
         v9 = "[%{public}p] DeviceMotion - %f - walking";
@@ -103,7 +103,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v12 = 134349312;
-        v13 = self;
+        selfCopy3 = self;
         v14 = 2048;
         v15 = v5;
         v9 = "[%{public}p] DeviceMotion - %f - not walking";
@@ -121,7 +121,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v12 = 134349056;
-      v13 = self;
+      selfCopy3 = self;
       v9 = "[%{public}p] DeviceMotion no location";
       v10 = v8;
       v11 = 12;
@@ -135,8 +135,8 @@ LABEL_11:
 
 - (void)_stopMonitoringDeviceMotion
 {
-  v3 = [(PedestrianARSafetyView *)self deviceMotionTimer];
-  [v3 invalidate];
+  deviceMotionTimer = [(PedestrianARSafetyView *)self deviceMotionTimer];
+  [deviceMotionTimer invalidate];
 
   [(PedestrianARSafetyView *)self setDeviceMotionTimer:0];
   startWalkingLocation = self->_startWalkingLocation;
@@ -151,9 +151,9 @@ LABEL_11:
   [(PedestrianARSafetyView *)self setDeviceMotionTimer:v3];
 }
 
-- (void)_hideViews:(BOOL)a3
+- (void)_hideViews:(BOOL)views
 {
-  if (a3)
+  if (views)
   {
     [(NSDate *)self->_lastDisplayTime timeIntervalSinceNow];
     v5 = v4;
@@ -201,12 +201,12 @@ LABEL_11:
   [UIView animateWithDuration:0 delay:v15 options:0 animations:0.5 completion:v12];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3 && (a3 != 3 || state != 4))
+  if (state != state && (state != 3 || state != 4))
   {
-    self->_state = a3;
+    self->_state = state;
     v6 = sub_100956464();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -222,17 +222,17 @@ LABEL_11:
       }
 
       v10 = 134349314;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] state %@", &v10, 0x16u);
     }
 
-    if (a3 <= 2)
+    if (state <= 2)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
-        if (a3 != 2)
+        if (state != 2)
         {
           return;
         }
@@ -244,7 +244,7 @@ LABEL_11:
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (state == 3)
     {
       [(PedestrianARSafetyView *)self _startWalkingWarningDisplayTimer];
 LABEL_19:
@@ -252,7 +252,7 @@ LABEL_19:
       return;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       if (self->_showSafetyUI)
       {
@@ -289,9 +289,9 @@ LABEL_19:
   }
 
   v3 = qword_10195DDE0;
-  v4 = [(PedestrianARSafetyView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  if ([v3 containsObject:v5])
+  traitCollection = [(PedestrianARSafetyView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if ([v3 containsObject:preferredContentSizeCategory])
   {
     v6 = 60.0;
   }
@@ -304,7 +304,7 @@ LABEL_19:
   return v6;
 }
 
-- (void)_deviceOrientationDidChange:(id)a3
+- (void)_deviceOrientationDidChange:(id)change
 {
   [(PedestrianARSafetyView *)self _updateNumberOflines];
   instructionLabel = self->_instructionLabel;
@@ -334,20 +334,20 @@ LABEL_19:
 
 - (void)_updateFont
 {
-  v3 = [(PedestrianARSafetyView *)self traitCollection];
-  v5 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+  traitCollection = [(PedestrianARSafetyView *)self traitCollection];
+  v5 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
 
   v4 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v5 compatibleWithTraitCollection:UIFontWeightBold];
   [(UILabel *)self->_instructionLabel setFont:v4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PedestrianARSafetyView;
-  [(PedestrianARSafetyView *)&v9 traitCollectionDidChange:v4];
-  if (!v4 || (-[PedestrianARSafetyView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
+  [(PedestrianARSafetyView *)&v9 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (-[PedestrianARSafetyView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
   {
     [(PedestrianARSafetyView *)self _updateFont];
     [(PedestrianARSafetyView *)self _imageSizeForCurrentContentSizeCategory];
@@ -394,8 +394,8 @@ LABEL_19:
 
   [(UILabel *)self->_instructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_instructionLabel setAdjustsFontSizeToFitWidth:1];
-  v21 = [(UILabel *)self->_instructionLabel font];
-  [v21 pointSize];
+  font = [(UILabel *)self->_instructionLabel font];
+  [font pointSize];
   v23 = self->_instructionLabel;
   if (10.0 / v22 > 1.0)
   {
@@ -404,8 +404,8 @@ LABEL_19:
 
   else
   {
-    v24 = [(UILabel *)v23 font];
-    [v24 pointSize];
+    font2 = [(UILabel *)v23 font];
+    [font2 pointSize];
     [(UILabel *)self->_instructionLabel setMinimumScaleFactor:10.0 / v25];
   }
 
@@ -418,55 +418,55 @@ LABEL_19:
 
   [(UILabel *)self->_instructionLabel setTextAlignment:1];
   [(PedestrianARSafetyView *)self addSubview:self->_instructionLabel];
-  v29 = [(UIImageView *)self->_stopImageView heightAnchor];
+  heightAnchor = [(UIImageView *)self->_stopImageView heightAnchor];
   [(PedestrianARSafetyView *)self _imageSizeForCurrentContentSizeCategory];
-  v30 = [v29 constraintEqualToConstant:?];
+  v30 = [heightAnchor constraintEqualToConstant:?];
   imageViewHeightConstraint = self->_imageViewHeightConstraint;
   self->_imageViewHeightConstraint = v30;
 
-  v65 = [(PedestrianARGradientOverlay *)self->_gradientOverlay leadingAnchor];
-  v64 = [(PedestrianARSafetyView *)self leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  leadingAnchor = [(PedestrianARGradientOverlay *)self->_gradientOverlay leadingAnchor];
+  leadingAnchor2 = [(PedestrianARSafetyView *)self leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v67[0] = v63;
-  v62 = [(PedestrianARGradientOverlay *)self->_gradientOverlay trailingAnchor];
-  v61 = [(PedestrianARSafetyView *)self trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  trailingAnchor = [(PedestrianARGradientOverlay *)self->_gradientOverlay trailingAnchor];
+  trailingAnchor2 = [(PedestrianARSafetyView *)self trailingAnchor];
+  v60 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v67[1] = v60;
-  v59 = [(PedestrianARGradientOverlay *)self->_gradientOverlay bottomAnchor];
-  v58 = [(PedestrianARSafetyView *)self bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  bottomAnchor = [(PedestrianARGradientOverlay *)self->_gradientOverlay bottomAnchor];
+  bottomAnchor2 = [(PedestrianARSafetyView *)self bottomAnchor];
+  v57 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v67[2] = v57;
-  v56 = [(PedestrianARGradientOverlay *)self->_gradientOverlay topAnchor];
-  v55 = [(PedestrianARSafetyView *)self topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor = [(PedestrianARGradientOverlay *)self->_gradientOverlay topAnchor];
+  topAnchor2 = [(PedestrianARSafetyView *)self topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v67[3] = v54;
-  v52 = [(UILabel *)self->_instructionLabel leadingAnchor];
-  v53 = [(PedestrianARSafetyView *)self safeAreaLayoutGuide];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:26.0];
+  leadingAnchor3 = [(UILabel *)self->_instructionLabel leadingAnchor];
+  safeAreaLayoutGuide = [(PedestrianARSafetyView *)self safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:26.0];
   v67[4] = v50;
-  v48 = [(UILabel *)self->_instructionLabel trailingAnchor];
-  v49 = [(PedestrianARSafetyView *)self safeAreaLayoutGuide];
-  v47 = [v49 trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:-26.0];
+  trailingAnchor3 = [(UILabel *)self->_instructionLabel trailingAnchor];
+  safeAreaLayoutGuide2 = [(PedestrianARSafetyView *)self safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide2 trailingAnchor];
+  v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-26.0];
   v67[5] = v46;
-  v45 = [(UILabel *)self->_instructionLabel centerYAnchor];
-  v44 = [(PedestrianARSafetyView *)self centerYAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44 constant:6.5];
+  centerYAnchor = [(UILabel *)self->_instructionLabel centerYAnchor];
+  centerYAnchor2 = [(PedestrianARSafetyView *)self centerYAnchor];
+  v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:6.5];
   v67[6] = v43;
-  v42 = [(UIImageView *)self->_stopImageView bottomAnchor];
-  v32 = [(UILabel *)self->_instructionLabel topAnchor];
-  v33 = [v42 constraintEqualToAnchor:v32 constant:-13.0];
+  bottomAnchor3 = [(UIImageView *)self->_stopImageView bottomAnchor];
+  topAnchor3 = [(UILabel *)self->_instructionLabel topAnchor];
+  v33 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-13.0];
   v34 = self->_imageViewHeightConstraint;
   v67[7] = v33;
   v67[8] = v34;
-  v35 = [(UIImageView *)self->_stopImageView widthAnchor];
-  v36 = [(UIImageView *)self->_stopImageView heightAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  widthAnchor = [(UIImageView *)self->_stopImageView widthAnchor];
+  heightAnchor2 = [(UIImageView *)self->_stopImageView heightAnchor];
+  v37 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   v67[9] = v37;
-  v38 = [(UIImageView *)self->_stopImageView centerXAnchor];
-  v39 = [(PedestrianARSafetyView *)self centerXAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  centerXAnchor = [(UIImageView *)self->_stopImageView centerXAnchor];
+  centerXAnchor2 = [(PedestrianARSafetyView *)self centerXAnchor];
+  v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v67[10] = v40;
   v41 = [NSArray arrayWithObjects:v67 count:11];
   [NSLayoutConstraint activateConstraints:v41];
@@ -481,8 +481,8 @@ LABEL_19:
   [(PedestrianARSafetyView *)self didEndARSession];
   [(PedestrianARSafetyView *)self _stopWalkingWarningDismissTimer];
   [(PedestrianARSafetyView *)self _stopWalkingWarningDisplayTimer];
-  v3 = [(PedestrianARSafetyView *)self session];
-  [v3 _removeObserver:self];
+  session = [(PedestrianARSafetyView *)self session];
+  [session _removeObserver:self];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIDeviceOrientationDidChangeNotification object:0];
@@ -492,11 +492,11 @@ LABEL_19:
   [(PedestrianARSafetyView *)&v5 dealloc];
 }
 
-- (PedestrianARSafetyView)initWithFrame:(CGRect)a3
+- (PedestrianARSafetyView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PedestrianARSafetyView;
-  v3 = [(PedestrianARSafetyView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PedestrianARSafetyView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -504,12 +504,12 @@ LABEL_19:
     v4->_numberOfSafetyUIPerSession = 0;
     v4->_showSafetyUI = 1;
     v5 = +[MapsARSessionManager sharedManager];
-    v6 = [v5 session];
+    session = [v5 session];
     session = v4->_session;
-    v4->_session = v6;
+    v4->_session = session;
 
-    v8 = [(PedestrianARSafetyView *)v4 session];
-    [v8 _addObserver:v4];
+    session2 = [(PedestrianARSafetyView *)v4 session];
+    [session2 _addObserver:v4];
 
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v4 selector:"_deviceOrientationDidChange:" name:UIDeviceOrientationDidChangeNotification object:0];

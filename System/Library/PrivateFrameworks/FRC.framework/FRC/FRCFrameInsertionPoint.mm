@@ -1,21 +1,21 @@
 @interface FRCFrameInsertionPoint
-- (void)setInterpolatedFrameDuration:(id *)a3;
-- (void)setPresentationTimeStamp:(id *)a3;
+- (void)setInterpolatedFrameDuration:(id *)duration;
+- (void)setPresentationTimeStamp:(id *)stamp;
 @end
 
 @implementation FRCFrameInsertionPoint
 
-- (void)setPresentationTimeStamp:(id *)a3
+- (void)setPresentationTimeStamp:(id *)stamp
 {
-  v3 = *&a3->var0;
-  self->_presentationTimeStamp.epoch = a3->var3;
+  v3 = *&stamp->var0;
+  self->_presentationTimeStamp.epoch = stamp->var3;
   *&self->_presentationTimeStamp.value = v3;
 }
 
-- (void)setInterpolatedFrameDuration:(id *)a3
+- (void)setInterpolatedFrameDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_interpolatedFrameDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_interpolatedFrameDuration.epoch = duration->var3;
   *&self->_interpolatedFrameDuration.value = v3;
 }
 

@@ -1,7 +1,7 @@
 @interface DYToolsPluginDirectoryProvider
 - (DYToolsPluginDirectoryProvider)init;
-- (DYToolsPluginDirectoryProvider)initWithDeveloperPath:(id)a3 includePrivatePlugins:(BOOL)a4;
-- (void)enumerateDirectories:(id)a3;
+- (DYToolsPluginDirectoryProvider)initWithDeveloperPath:(id)path includePrivatePlugins:(BOOL)plugins;
+- (void)enumerateDirectories:(id)directories;
 @end
 
 @implementation DYToolsPluginDirectoryProvider
@@ -13,23 +13,23 @@
   return 0;
 }
 
-- (DYToolsPluginDirectoryProvider)initWithDeveloperPath:(id)a3 includePrivatePlugins:(BOOL)a4
+- (DYToolsPluginDirectoryProvider)initWithDeveloperPath:(id)path includePrivatePlugins:(BOOL)plugins
 {
   v8.receiver = self;
   v8.super_class = DYToolsPluginDirectoryProvider;
   v6 = [(DYPluginDirectoryProvider *)&v8 init];
   if (v6)
   {
-    v6->super._developerDirectory = [MEMORY[0x277CBEBC0] URLWithString:a3];
+    v6->super._developerDirectory = [MEMORY[0x277CBEBC0] URLWithString:path];
     v6->_toolsPluginBundle = @"GPUToolsPlatform";
     v6->_toolsPrivatePluginBundle = @"GPUToolsPlatformPrivate";
-    v6->_includePrivatePlugins = a4;
+    v6->_includePrivatePlugins = plugins;
   }
 
   return v6;
 }
 
-- (void)enumerateDirectories:(id)a3
+- (void)enumerateDirectories:(id)directories
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -58,7 +58,7 @@
           objc_enumerationMutation(v5);
         }
 
-        (*(a3 + 2))(a3, *(*(&v11 + 1) + 8 * v9++));
+        (*(directories + 2))(directories, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);

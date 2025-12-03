@@ -1,124 +1,124 @@
 @interface _CDAttachment
-+ (id)attachmentWithIdentifier:(id)a3 cloudIdentifier:(id)a4 type:(id)a5 sizeInBytes:(id)a6 creationDate:(id)a7;
-+ (id)attachmentWithIdentifier:(id)a3 cloudIdentifier:(id)a4 type:(id)a5 sizeInBytes:(id)a6 creationDate:(id)a7 contentURL:(id)a8 contentText:(id)a9;
-- (BOOL)isEqual:(id)a3;
-- (_CDAttachment)initWithCoder:(id)a3;
-- (_CDAttachment)initWithIdentifier:(id)a3 cloudIdentifier:(id)a4 photoLocalIdentifier:(id)a5 type:(id)a6 sizeInBytes:(id)a7 creationDate:(id)a8 contentURL:(id)a9 contentText:(id)a10 photoSceneDescriptor:(id)a11 personInPhoto:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionRedacted:(BOOL)a3;
++ (id)attachmentWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date;
++ (id)attachmentWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date contentURL:(id)l contentText:(id)text;
+- (BOOL)isEqual:(id)equal;
+- (_CDAttachment)initWithCoder:(id)coder;
+- (_CDAttachment)initWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier photoLocalIdentifier:(id)localIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date contentURL:(id)l contentText:(id)self0 photoSceneDescriptor:(id)self1 personInPhoto:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionRedacted:(BOOL)redacted;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContentText:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContentText:(id)text;
 @end
 
 @implementation _CDAttachment
 
-+ (id)attachmentWithIdentifier:(id)a3 cloudIdentifier:(id)a4 type:(id)a5 sizeInBytes:(id)a6 creationDate:(id)a7
++ (id)attachmentWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [objc_alloc(objc_opt_class()) initWithIdentifier:v15 cloudIdentifier:v14 type:v13 sizeInBytes:v12 creationDate:v11 contentURL:0 contentText:0];
+  dateCopy = date;
+  bytesCopy = bytes;
+  typeCopy = type;
+  cloudIdentifierCopy = cloudIdentifier;
+  identifierCopy = identifier;
+  v16 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy cloudIdentifier:cloudIdentifierCopy type:typeCopy sizeInBytes:bytesCopy creationDate:dateCopy contentURL:0 contentText:0];
 
   return v16;
 }
 
-+ (id)attachmentWithIdentifier:(id)a3 cloudIdentifier:(id)a4 type:(id)a5 sizeInBytes:(id)a6 creationDate:(id)a7 contentURL:(id)a8 contentText:(id)a9
++ (id)attachmentWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date contentURL:(id)l contentText:(id)text
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [objc_alloc(objc_opt_class()) initWithIdentifier:v21 cloudIdentifier:v20 type:v19 sizeInBytes:v18 creationDate:v17 contentURL:v16 contentText:v15];
+  textCopy = text;
+  lCopy = l;
+  dateCopy = date;
+  bytesCopy = bytes;
+  typeCopy = type;
+  cloudIdentifierCopy = cloudIdentifier;
+  identifierCopy = identifier;
+  v22 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy cloudIdentifier:cloudIdentifierCopy type:typeCopy sizeInBytes:bytesCopy creationDate:dateCopy contentURL:lCopy contentText:textCopy];
 
   return v22;
 }
 
-- (_CDAttachment)initWithIdentifier:(id)a3 cloudIdentifier:(id)a4 photoLocalIdentifier:(id)a5 type:(id)a6 sizeInBytes:(id)a7 creationDate:(id)a8 contentURL:(id)a9 contentText:(id)a10 photoSceneDescriptor:(id)a11 personInPhoto:(id)a12
+- (_CDAttachment)initWithIdentifier:(id)identifier cloudIdentifier:(id)cloudIdentifier photoLocalIdentifier:(id)localIdentifier type:(id)type sizeInBytes:(id)bytes creationDate:(id)date contentURL:(id)l contentText:(id)self0 photoSceneDescriptor:(id)self1 personInPhoto:(id)self2
 {
-  v34 = a3;
-  obj = a4;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v27 = a7;
-  v30 = a7;
-  v26 = a8;
-  v29 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
+  identifierCopy = identifier;
+  obj = cloudIdentifier;
+  cloudIdentifierCopy = cloudIdentifier;
+  localIdentifierCopy = localIdentifier;
+  typeCopy = type;
+  bytesCopy = bytes;
+  bytesCopy2 = bytes;
+  dateCopy = date;
+  dateCopy2 = date;
+  lCopy = l;
+  textCopy = text;
+  descriptorCopy = descriptor;
+  photoCopy = photo;
   v35.receiver = self;
   v35.super_class = _CDAttachment;
   v22 = [(_CDAttachment *)&v35 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_identifier, a3);
+    objc_storeStrong(&v22->_identifier, identifier);
     objc_storeStrong(&v23->_cloudIdentifier, obj);
-    objc_storeStrong(&v23->_photoLocalIdentifier, a5);
-    objc_storeStrong(&v23->_uti, a6);
-    objc_storeStrong(&v23->_creationDate, v26);
-    objc_storeStrong(&v23->_size, v27);
-    objc_storeStrong(&v23->_contentURL, a9);
-    [(_CDAttachment *)v23 setContentText:v19];
-    objc_storeStrong(&v23->_photoSceneDescriptor, a11);
-    objc_storeStrong(&v23->_personInPhoto, a12);
+    objc_storeStrong(&v23->_photoLocalIdentifier, localIdentifier);
+    objc_storeStrong(&v23->_uti, type);
+    objc_storeStrong(&v23->_creationDate, dateCopy);
+    objc_storeStrong(&v23->_size, bytesCopy);
+    objc_storeStrong(&v23->_contentURL, l);
+    [(_CDAttachment *)v23 setContentText:textCopy];
+    objc_storeStrong(&v23->_photoSceneDescriptor, descriptor);
+    objc_storeStrong(&v23->_personInPhoto, photo);
   }
 
   return v23;
 }
 
-- (_CDAttachment)initWithCoder:(id)a3
+- (_CDAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = _CDAttachment;
   v5 = [(_CDAttachment *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
     cloudIdentifier = v5->_cloudIdentifier;
     v5->_cloudIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLocalIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLocalIdentifier"];
     photoLocalIdentifier = v5->_photoLocalIdentifier;
     v5->_photoLocalIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
     uti = v5->_uti;
     v5->_uti = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     size = v5->_size;
     v5->_size = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
     contentURL = v5->_contentURL;
     v5->_contentURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentText"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentText"];
     [(_CDAttachment *)v5 setContentText:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personInPhoto"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personInPhoto"];
     personInPhoto = v5->_personInPhoto;
     v5->_personInPhoto = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoSceneDescriptor"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoSceneDescriptor"];
     photoSceneDescriptor = v5->_photoSceneDescriptor;
     v5->_photoSceneDescriptor = v23;
 
@@ -128,27 +128,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_cloudIdentifier forKey:@"cloudIdentifier"];
-  [v6 encodeObject:self->_photoLocalIdentifier forKey:@"photoLocalIdentifier"];
-  [v6 encodeObject:self->_uti forKey:@"uti"];
-  [v6 encodeObject:self->_size forKey:@"size"];
-  [v6 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v6 encodeObject:self->_contentURL forKey:@"contentURL"];
-  v5 = [(_CDAttachment *)self contentText];
-  [v6 encodeObject:v5 forKey:@"contentText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_cloudIdentifier forKey:@"cloudIdentifier"];
+  [coderCopy encodeObject:self->_photoLocalIdentifier forKey:@"photoLocalIdentifier"];
+  [coderCopy encodeObject:self->_uti forKey:@"uti"];
+  [coderCopy encodeObject:self->_size forKey:@"size"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_contentURL forKey:@"contentURL"];
+  contentText = [(_CDAttachment *)self contentText];
+  [coderCopy encodeObject:contentText forKey:@"contentText"];
 
-  [v6 encodeObject:self->_personInPhoto forKey:@"personInPhoto"];
-  [v6 encodeObject:self->_photoSceneDescriptor forKey:@"photoSceneDescriptor"];
+  [coderCopy encodeObject:self->_personInPhoto forKey:@"personInPhoto"];
+  [coderCopy encodeObject:self->_photoSceneDescriptor forKey:@"photoSceneDescriptor"];
 }
 
-- (void)setContentText:(id)a3
+- (void)setContentText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v3 = &stru_1F05B9908;
   }
@@ -161,33 +161,33 @@
   objc_storeStrong(&self->_contentText, v3);
 }
 
-- (id)descriptionRedacted:(BOOL)a3
+- (id)descriptionRedacted:(BOOL)redacted
 {
-  v3 = a3;
+  redactedCopy = redacted;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   objc_msgSend(v5, "appendString:", @"(");
-  v6 = [(_CDAttachment *)self identifier];
+  identifier = [(_CDAttachment *)self identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(_CDAttachment *)self identifier];
-    [v5 appendFormat:@"identifier: %@ ", v7];
+    identifier2 = [(_CDAttachment *)self identifier];
+    [v5 appendFormat:@"identifier: %@ ", identifier2];
   }
 
-  v8 = [(_CDAttachment *)self cloudIdentifier];
+  cloudIdentifier = [(_CDAttachment *)self cloudIdentifier];
 
-  if (v8)
+  if (cloudIdentifier)
   {
-    v9 = [(_CDAttachment *)self cloudIdentifier];
-    [v5 appendFormat:@"cloudIdentifier: %@ ", v9];
+    cloudIdentifier2 = [(_CDAttachment *)self cloudIdentifier];
+    [v5 appendFormat:@"cloudIdentifier: %@ ", cloudIdentifier2];
   }
 
-  v10 = [(_CDAttachment *)self photoLocalIdentifier];
+  photoLocalIdentifier = [(_CDAttachment *)self photoLocalIdentifier];
 
-  if (v10)
+  if (photoLocalIdentifier)
   {
-    v11 = [(_CDAttachment *)self photoLocalIdentifier];
-    [v5 appendFormat:@"photoLocalIdentifier: %@ ", v11];
+    photoLocalIdentifier2 = [(_CDAttachment *)self photoLocalIdentifier];
+    [v5 appendFormat:@"photoLocalIdentifier: %@ ", photoLocalIdentifier2];
   }
 
   v12 = [(_CDAttachment *)self uti];
@@ -206,75 +206,75 @@
     [v5 appendFormat:@"size: %@ ", v15];
   }
 
-  v16 = [(_CDAttachment *)self creationDate];
+  creationDate = [(_CDAttachment *)self creationDate];
 
-  if (v16)
+  if (creationDate)
   {
-    v17 = [(_CDAttachment *)self creationDate];
-    [v5 appendFormat:@"creationDate: %@ ", v17];
+    creationDate2 = [(_CDAttachment *)self creationDate];
+    [v5 appendFormat:@"creationDate: %@ ", creationDate2];
   }
 
-  v18 = [(_CDAttachment *)self contentURL];
+  contentURL = [(_CDAttachment *)self contentURL];
 
-  if (v18)
+  if (contentURL)
   {
-    if (v3)
+    if (redactedCopy)
     {
       [v5 appendFormat:@"contentURL: %@ ", @"redacted"];
     }
 
     else
     {
-      v19 = [(_CDAttachment *)self contentURL];
-      [v5 appendFormat:@"contentURL: %@ ", v19];
+      contentURL2 = [(_CDAttachment *)self contentURL];
+      [v5 appendFormat:@"contentURL: %@ ", contentURL2];
     }
   }
 
-  v20 = [(_CDAttachment *)self contentText];
+  contentText = [(_CDAttachment *)self contentText];
 
-  if (v20)
+  if (contentText)
   {
-    if (v3)
+    if (redactedCopy)
     {
       [v5 appendFormat:@"contentText: %@ ", @"redacted"];
     }
 
     else
     {
-      v21 = [(_CDAttachment *)self contentText];
-      [v5 appendFormat:@"contentText: %@ ", v21];
+      contentText2 = [(_CDAttachment *)self contentText];
+      [v5 appendFormat:@"contentText: %@ ", contentText2];
     }
   }
 
-  v22 = [(_CDAttachment *)self personInPhoto];
+  personInPhoto = [(_CDAttachment *)self personInPhoto];
 
-  if (v22)
+  if (personInPhoto)
   {
-    if (v3)
+    if (redactedCopy)
     {
       [v5 appendFormat:@"personInPhoto: %@ ", @"redacted"];
     }
 
     else
     {
-      v23 = [(_CDAttachment *)self personInPhoto];
-      [v5 appendFormat:@"personInPhoto: %@ ", v23];
+      personInPhoto2 = [(_CDAttachment *)self personInPhoto];
+      [v5 appendFormat:@"personInPhoto: %@ ", personInPhoto2];
     }
   }
 
-  v24 = [(_CDAttachment *)self photoSceneDescriptor];
+  photoSceneDescriptor = [(_CDAttachment *)self photoSceneDescriptor];
 
-  if (v24)
+  if (photoSceneDescriptor)
   {
-    if (v3)
+    if (redactedCopy)
     {
       [v5 appendFormat:@"photoSceneDescriptor: %@ ", @"redacted"];
     }
 
     else
     {
-      v25 = [(_CDAttachment *)self photoSceneDescriptor];
-      [v5 appendFormat:@"photoSceneDescriptor: %@ ", v25];
+      photoSceneDescriptor2 = [(_CDAttachment *)self photoSceneDescriptor];
+      [v5 appendFormat:@"photoSceneDescriptor: %@ ", photoSceneDescriptor2];
     }
   }
 
@@ -283,14 +283,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_CDAttachment allocWithZone:?]];
-  v5 = [(_CDAttachment *)self identifier];
-  [(_CDAttachment *)v4 setIdentifier:v5];
+  identifier = [(_CDAttachment *)self identifier];
+  [(_CDAttachment *)v4 setIdentifier:identifier];
 
-  v6 = [(_CDAttachment *)self cloudIdentifier];
-  [(_CDAttachment *)v4 setCloudIdentifier:v6];
+  cloudIdentifier = [(_CDAttachment *)self cloudIdentifier];
+  [(_CDAttachment *)v4 setCloudIdentifier:cloudIdentifier];
 
   v7 = [(_CDAttachment *)self uti];
   [(_CDAttachment *)v4 setUti:v7];
@@ -298,20 +298,20 @@
   v8 = [(_CDAttachment *)self size];
   [(_CDAttachment *)v4 setSize:v8];
 
-  v9 = [(_CDAttachment *)self creationDate];
-  [(_CDAttachment *)v4 setCreationDate:v9];
+  creationDate = [(_CDAttachment *)self creationDate];
+  [(_CDAttachment *)v4 setCreationDate:creationDate];
 
-  v10 = [(_CDAttachment *)self contentURL];
-  [(_CDAttachment *)v4 setContentURL:v10];
+  contentURL = [(_CDAttachment *)self contentURL];
+  [(_CDAttachment *)v4 setContentURL:contentURL];
 
-  v11 = [(_CDAttachment *)self contentText];
-  [(_CDAttachment *)v4 setContentText:v11];
+  contentText = [(_CDAttachment *)self contentText];
+  [(_CDAttachment *)v4 setContentText:contentText];
 
-  v12 = [(_CDAttachment *)self personInPhoto];
-  [(_CDAttachment *)v4 setPersonInPhoto:v12];
+  personInPhoto = [(_CDAttachment *)self personInPhoto];
+  [(_CDAttachment *)v4 setPersonInPhoto:personInPhoto];
 
-  v13 = [(_CDAttachment *)self photoSceneDescriptor];
-  [(_CDAttachment *)v4 setPhotoSceneDescriptor:v13];
+  photoSceneDescriptor = [(_CDAttachment *)self photoSceneDescriptor];
+  [(_CDAttachment *)v4 setPhotoSceneDescriptor:photoSceneDescriptor];
 
   return v4;
 }
@@ -323,18 +323,18 @@
   v5 = v4 ^ [(NSString *)self->_uti hash];
   v6 = v5 ^ [(NSNumber *)self->_size hash]^ v3;
   v7 = [(NSDate *)self->_creationDate hash];
-  v8 = [(_CDAttachment *)self personInPhoto];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(_CDAttachment *)self photoSceneDescriptor];
-  v11 = v9 ^ [v10 hash];
+  personInPhoto = [(_CDAttachment *)self personInPhoto];
+  v9 = v7 ^ [personInPhoto hash];
+  photoSceneDescriptor = [(_CDAttachment *)self photoSceneDescriptor];
+  v11 = v9 ^ [photoSceneDescriptor hash];
 
   return v6 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -344,7 +344,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_identifier;
       v7 = v6;
       if (v6 == v5->_identifier)

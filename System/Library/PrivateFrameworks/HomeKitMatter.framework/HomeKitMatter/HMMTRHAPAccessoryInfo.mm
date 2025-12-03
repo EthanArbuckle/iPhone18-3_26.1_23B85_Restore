@@ -1,14 +1,14 @@
 @interface HMMTRHAPAccessoryInfo
 - (HMMTRHAPAccessoryInfo)init;
-- (HMMTRHAPAccessoryInfo)initWithType:(id)a3;
-- (id)accessoryInfoForEndpoint:(id)a3;
+- (HMMTRHAPAccessoryInfo)initWithType:(id)type;
+- (id)accessoryInfoForEndpoint:(id)endpoint;
 - (id)attributeDescriptions;
-- (id)categoriesForEndpoint:(id)a3;
-- (id)fixedLabelsForEndpoint:(id)a3;
-- (id)nameForEndpoint:(id)a3;
-- (id)partsListForEndpoint:(id)a3;
-- (id)serviceDescriptionsForEndpoint:(id)a3;
-- (void)setAccessoryInfo:(id)a3 forEndpoint:(id)a4;
+- (id)categoriesForEndpoint:(id)endpoint;
+- (id)fixedLabelsForEndpoint:(id)endpoint;
+- (id)nameForEndpoint:(id)endpoint;
+- (id)partsListForEndpoint:(id)endpoint;
+- (id)serviceDescriptionsForEndpoint:(id)endpoint;
+- (void)setAccessoryInfo:(id)info forEndpoint:(id)endpoint;
 @end
 
 @implementation HMMTRHAPAccessoryInfo
@@ -17,8 +17,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoDictionary];
-  v5 = [v3 initWithName:@"AccessoryInfoDictionary" value:v4];
+  accessoryInfoDictionary = [(HMMTRHAPAccessoryInfo *)self accessoryInfoDictionary];
+  v5 = [v3 initWithName:@"AccessoryInfoDictionary" value:accessoryInfoDictionary];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -27,71 +27,71 @@
   return v6;
 }
 
-- (void)setAccessoryInfo:(id)a3 forEndpoint:(id)a4
+- (void)setAccessoryInfo:(id)info forEndpoint:(id)endpoint
 {
   accessoryInfoDictionary = self->_accessoryInfoDictionary;
-  v6 = a3;
-  v7 = [a4 stringValue];
-  [(NSMutableDictionary *)accessoryInfoDictionary setObject:v6 forKey:v7];
+  infoCopy = info;
+  stringValue = [endpoint stringValue];
+  [(NSMutableDictionary *)accessoryInfoDictionary setObject:infoCopy forKey:stringValue];
 }
 
-- (id)nameForEndpoint:(id)a3
+- (id)nameForEndpoint:(id)endpoint
 {
-  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:a3];
-  v4 = [v3 getName];
+  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:endpoint];
+  getName = [v3 getName];
 
-  return v4;
+  return getName;
 }
 
-- (id)fixedLabelsForEndpoint:(id)a3
+- (id)fixedLabelsForEndpoint:(id)endpoint
 {
-  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:a3];
-  v4 = [v3 getFixedLabels];
+  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:endpoint];
+  getFixedLabels = [v3 getFixedLabels];
 
-  return v4;
+  return getFixedLabels;
 }
 
-- (id)partsListForEndpoint:(id)a3
+- (id)partsListForEndpoint:(id)endpoint
 {
-  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:a3];
-  v4 = [v3 getPartsList];
+  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:endpoint];
+  getPartsList = [v3 getPartsList];
 
-  return v4;
+  return getPartsList;
 }
 
-- (id)serviceDescriptionsForEndpoint:(id)a3
+- (id)serviceDescriptionsForEndpoint:(id)endpoint
 {
-  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:a3];
-  v4 = [v3 getServiceDescriptions];
+  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:endpoint];
+  getServiceDescriptions = [v3 getServiceDescriptions];
 
-  return v4;
+  return getServiceDescriptions;
 }
 
-- (id)categoriesForEndpoint:(id)a3
+- (id)categoriesForEndpoint:(id)endpoint
 {
-  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:a3];
-  v4 = [v3 getCategories];
+  v3 = [(HMMTRHAPAccessoryInfo *)self accessoryInfoForEndpoint:endpoint];
+  getCategories = [v3 getCategories];
 
-  return v4;
+  return getCategories;
 }
 
-- (id)accessoryInfoForEndpoint:(id)a3
+- (id)accessoryInfoForEndpoint:(id)endpoint
 {
   accessoryInfoDictionary = self->_accessoryInfoDictionary;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)accessoryInfoDictionary objectForKey:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)accessoryInfoDictionary objectForKey:stringValue];
 
   return v5;
 }
 
-- (HMMTRHAPAccessoryInfo)initWithType:(id)a3
+- (HMMTRHAPAccessoryInfo)initWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(HMMTRHAPAccessoryInfo *)self init];
   v6 = v5;
   if (v5)
   {
-    [(NSMutableDictionary *)v5->_accessoryInfoDictionary addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)v5->_accessoryInfoDictionary addEntriesFromDictionary:typeCopy];
   }
 
   return v6;

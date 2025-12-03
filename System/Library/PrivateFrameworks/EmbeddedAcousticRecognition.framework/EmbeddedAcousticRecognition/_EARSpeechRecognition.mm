@@ -1,29 +1,29 @@
 @interface _EARSpeechRecognition
-+ (id)reconstructNBestFromSausage:(id)a3 interpretationIndices:(id)a4;
-+ (id)tokens:(id)a3 alignedToTokens:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithNBestList:(const void *)a3 useHatText:(BOOL)a4 endsOfSentencePunctuations:(id)a5 formattingInfo:(const void *)a6;
-- (id)_initWithTokenPhraseChoiceList:(const void *)a3 earNbest:(id)a4 endsOfSentencePunctuations:(id)a5;
-- (id)_initWithTokenPhraseChoiceList:(const void *)a3 nBestList:(const void *)a4 endsOfSentencePunctuations:(id)a5;
-- (id)_initWithTokenSausage:(id)a3 interpretationIndices:(id)a4 nBest:(id)a5 endsOfSentencePunctuations:(id)a6;
-- (id)adjustSpaceForTokens:(id)a3 currTokenIndex:(unint64_t)a4 endsOfSentencePunctuations:(id)a5 isPotentialCommandRecognition:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)reconstructNBestFromSausage:(id)sausage interpretationIndices:(id)indices;
++ (id)tokens:(id)tokens alignedToTokens:(id)toTokens;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithNBestList:(const void *)list useHatText:(BOOL)text endsOfSentencePunctuations:(id)punctuations formattingInfo:(const void *)info;
+- (id)_initWithTokenPhraseChoiceList:(const void *)list earNbest:(id)nbest endsOfSentencePunctuations:(id)punctuations;
+- (id)_initWithTokenPhraseChoiceList:(const void *)list nBestList:(const void *)bestList endsOfSentencePunctuations:(id)punctuations;
+- (id)_initWithTokenSausage:(id)sausage interpretationIndices:(id)indices nBest:(id)best endsOfSentencePunctuations:(id)punctuations;
+- (id)adjustSpaceForTokens:(id)tokens currTokenIndex:(unint64_t)index endsOfSentencePunctuations:(id)punctuations isPotentialCommandRecognition:(BOOL)recognition;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)granularizedRecognition;
 - (id)oneBest;
-- (id)oneBestAlignedToTokens:(id)a3;
-- (id)splitRecognitionWithPotentialCommandRecognition:(BOOL)a3;
+- (id)oneBestAlignedToTokens:(id)tokens;
+- (id)splitRecognitionWithPotentialCommandRecognition:(BOOL)recognition;
 - (pair<std::vector<std::vector<unsigned)_tokenPhraseChoiceList;
 @end
 
 @implementation _EARSpeechRecognition
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_tokenSausage isEqual:v4[1]]&& [(NSArray *)self->_interpretationIndices isEqual:v4[2]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_tokenSausage isEqual:equalCopy[1]]&& [(NSArray *)self->_interpretationIndices isEqual:equalCopy[2]])
   {
-    v5 = [(NSSet *)self->_endsOfSentencePunctuations isEqual:v4[4]];
+    v5 = [(NSSet *)self->_endsOfSentencePunctuations isEqual:equalCopy[4]];
   }
 
   else
@@ -34,30 +34,30 @@
   return v5;
 }
 
-- (id)_initWithTokenSausage:(id)a3 interpretationIndices:(id)a4 nBest:(id)a5 endsOfSentencePunctuations:(id)a6
+- (id)_initWithTokenSausage:(id)sausage interpretationIndices:(id)indices nBest:(id)best endsOfSentencePunctuations:(id)punctuations
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sausageCopy = sausage;
+  indicesCopy = indices;
+  bestCopy = best;
+  punctuationsCopy = punctuations;
   v24.receiver = self;
   v24.super_class = _EARSpeechRecognition;
   v14 = [(_EARSpeechRecognition *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [sausageCopy copy];
     tokenSausage = v14->_tokenSausage;
     v14->_tokenSausage = v15;
 
-    v17 = [v11 copy];
+    v17 = [indicesCopy copy];
     interpretationIndices = v14->_interpretationIndices;
     v14->_interpretationIndices = v17;
 
-    v19 = [v12 copy];
+    v19 = [bestCopy copy];
     nBest = v14->_nBest;
     v14->_nBest = v19;
 
-    v21 = [v13 copy];
+    v21 = [punctuationsCopy copy];
     endsOfSentencePunctuations = v14->_endsOfSentencePunctuations;
     v14->_endsOfSentencePunctuations = v21;
   }
@@ -65,17 +65,17 @@
   return v14;
 }
 
-- (id)_initWithNBestList:(const void *)a3 useHatText:(BOOL)a4 endsOfSentencePunctuations:(id)a5 formattingInfo:(const void *)a6
+- (id)_initWithNBestList:(const void *)list useHatText:(BOOL)text endsOfSentencePunctuations:(id)punctuations formattingInfo:(const void *)info
 {
-  v7 = a4;
-  v10 = a5;
+  textCopy = text;
+  punctuationsCopy = punctuations;
   v25 = 0;
   v26 = 0;
   v27 = 0;
-  v11 = std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(&v25, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
-  if (v7)
+  v11 = std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(&v25, *list, *(list + 1), 0xAAAAAAAAAAAAAAABLL * ((*(list + 1) - *list) >> 3));
+  if (textCopy)
   {
-    v12 = *(a6 + 32);
+    v12 = *(info + 32);
     v13 = v25;
     v14 = v26;
     if (v12 == 1)
@@ -126,7 +126,7 @@
 
   quasar::getTokenizedNBestListForEAR(&v25, 0, v24);
   quasar::getTokenizedTokenPhraseChoiceListForEAR(v24, 0, &v21);
-  v19 = [(_EARSpeechRecognition *)self _initWithTokenPhraseChoiceList:&v21 nBestList:v24 endsOfSentencePunctuations:v10];
+  v19 = [(_EARSpeechRecognition *)self _initWithTokenPhraseChoiceList:&v21 nBestList:v24 endsOfSentencePunctuations:punctuationsCopy];
   v28 = &v23;
   std::vector<std::vector<std::vector<quasar::Token>>>::__destroy_vector::operator()[abi:ne200100](&v28);
   v28 = &v21;
@@ -139,14 +139,14 @@
   return v19;
 }
 
-- (id)_initWithTokenPhraseChoiceList:(const void *)a3 earNbest:(id)a4 endsOfSentencePunctuations:(id)a5
+- (id)_initWithTokenPhraseChoiceList:(const void *)list earNbest:(id)nbest endsOfSentencePunctuations:(id)punctuations
 {
-  v29 = a4;
-  v28 = a5;
-  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a3 + 4) - *(a3 + 3)) >> 3)];
-  v7 = *(a3 + 3);
-  v27 = a3;
-  v31 = *(a3 + 4);
+  nbestCopy = nbest;
+  punctuationsCopy = punctuations;
+  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(list + 4) - *(list + 3)) >> 3)];
+  v7 = *(list + 3);
+  listCopy = list;
+  v31 = *(list + 4);
   if (v7 != v31)
   {
     do
@@ -227,10 +227,10 @@
     while (v33 + 3 != v31);
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3)];
-  v18 = *a3;
-  v19 = v27[1];
-  if (*v27 != v19)
+  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(list + 1) - *list) >> 3)];
+  v18 = *list;
+  v19 = listCopy[1];
+  if (*listCopy != v19)
   {
     do
     {
@@ -259,18 +259,18 @@
     while (v18 != v19);
   }
 
-  v25 = [(_EARSpeechRecognition *)self _initWithTokenSausage:v32 interpretationIndices:v17 nBest:v29 endsOfSentencePunctuations:v28, v27];
+  listCopy = [(_EARSpeechRecognition *)self _initWithTokenSausage:v32 interpretationIndices:v17 nBest:nbestCopy endsOfSentencePunctuations:punctuationsCopy, listCopy];
 
-  return v25;
+  return listCopy;
 }
 
-- (id)_initWithTokenPhraseChoiceList:(const void *)a3 nBestList:(const void *)a4 endsOfSentencePunctuations:(id)a5
+- (id)_initWithTokenPhraseChoiceList:(const void *)list nBestList:(const void *)bestList endsOfSentencePunctuations:(id)punctuations
 {
-  v16 = a5;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3)];
-  v7 = *a4;
-  v8 = *(a4 + 1);
-  if (*a4 != v8)
+  punctuationsCopy = punctuations;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(bestList + 1) - *bestList) >> 3)];
+  v7 = *bestList;
+  v8 = *(bestList + 1);
+  if (*bestList != v8)
   {
     do
     {
@@ -293,19 +293,19 @@
     while (v7 != v8);
   }
 
-  v13 = [(_EARSpeechRecognition *)self _initWithTokenPhraseChoiceList:a3 earNbest:v6 endsOfSentencePunctuations:v16];
+  v13 = [(_EARSpeechRecognition *)self _initWithTokenPhraseChoiceList:list earNbest:v6 endsOfSentencePunctuations:punctuationsCopy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_EARSpeechRecognition alloc];
-  v5 = [(_EARSpeechRecognition *)self tokenSausage];
-  v6 = [(_EARSpeechRecognition *)self interpretationIndices];
-  v7 = [(_EARSpeechRecognition *)self nBest];
-  v8 = [(_EARSpeechRecognition *)self endsOfSentencePunctuations];
-  v9 = [(_EARSpeechRecognition *)v4 _initWithTokenSausage:v5 interpretationIndices:v6 nBest:v7 endsOfSentencePunctuations:v8];
+  tokenSausage = [(_EARSpeechRecognition *)self tokenSausage];
+  interpretationIndices = [(_EARSpeechRecognition *)self interpretationIndices];
+  nBest = [(_EARSpeechRecognition *)self nBest];
+  endsOfSentencePunctuations = [(_EARSpeechRecognition *)self endsOfSentencePunctuations];
+  v9 = [(_EARSpeechRecognition *)v4 _initWithTokenSausage:tokenSausage interpretationIndices:interpretationIndices nBest:nBest endsOfSentencePunctuations:endsOfSentencePunctuations];
 
   return v9;
 }
@@ -325,11 +325,11 @@
   return v3;
 }
 
-+ (id)tokens:(id)a3 alignedToTokens:(id)a4
++ (id)tokens:(id)tokens alignedToTokens:(id)toTokens
 {
-  v5 = a4;
-  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(a3, v11);
-  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v5, v10);
+  toTokensCopy = toTokens;
+  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(tokens, v11);
+  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(toTokensCopy, v10);
   quasar::Align::Align(v9, v10, v11, 2);
   DestToks = quasar::Align::getDestToks(v9);
   v7 = EARHelpers::EARSpeechRecognitionTokensFromQuasarTokens(DestToks);
@@ -342,11 +342,11 @@
   return v7;
 }
 
-- (id)oneBestAlignedToTokens:(id)a3
+- (id)oneBestAlignedToTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [(_EARSpeechRecognition *)self oneBest];
-  v6 = [_EARSpeechRecognition tokens:v5 alignedToTokens:v4];
+  tokensCopy = tokens;
+  oneBest = [(_EARSpeechRecognition *)self oneBest];
+  v6 = [_EARSpeechRecognition tokens:oneBest alignedToTokens:tokensCopy];
 
   return v6;
 }
@@ -356,7 +356,7 @@
   v83 = *MEMORY[0x1E69E9840];
   *&retstr->var0.var2 = 0u;
   *&retstr->var1.var1 = 0u;
-  v35 = self;
+  selfCopy = self;
   *&retstr->var0.var0 = 0u;
   v3 = self->_interpretationIndices;
   *&v54 = 0;
@@ -389,7 +389,7 @@
         v68 = 0u;
         v69 = 0u;
         v7 = v6;
-        v8 = [v7 countByEnumeratingWithState:&v66 objects:v70 count:{16, v35}];
+        v8 = [v7 countByEnumeratingWithState:&v66 objects:v70 count:{16, selfCopy}];
         v43 = v5;
         if (v8)
         {
@@ -404,7 +404,7 @@
               }
 
               v11 = *(*(&v66 + 1) + 8 * i);
-              v12 = [v11 unsignedIntValue];
+              unsignedIntValue = [v11 unsignedIntValue];
               v13 = __src[1];
               if (__src[1] >= v58)
               {
@@ -438,7 +438,7 @@
                   std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(__src, v20);
                 }
 
-                *(4 * v17) = v12;
+                *(4 * v17) = unsignedIntValue;
                 v14 = (4 * v17 + 4);
                 memcpy(0, v15, v16);
                 v21 = __src[0];
@@ -453,7 +453,7 @@
 
               else
               {
-                *__src[1] = v12;
+                *__src[1] = unsignedIntValue;
                 v14 = v13 + 4;
               }
 
@@ -490,7 +490,7 @@
   v53 = 0uLL;
   v70[0] = &v53;
   std::vector<std::vector<int>>::__destroy_vector::operator()[abi:ne200100](v70);
-  v22 = v35->_tokenSausage;
+  v22 = selfCopy->_tokenSausage;
   v46 = 0;
   v45 = 0uLL;
   v48 = 0u;
@@ -661,28 +661,28 @@
   return v4;
 }
 
-- (id)adjustSpaceForTokens:(id)a3 currTokenIndex:(unint64_t)a4 endsOfSentencePunctuations:(id)a5 isPotentialCommandRecognition:(BOOL)a6
+- (id)adjustSpaceForTokens:(id)tokens currTokenIndex:(unint64_t)index endsOfSentencePunctuations:(id)punctuations isPotentialCommandRecognition:(BOOL)recognition
 {
-  v6 = a6;
-  v9 = a3;
-  v52 = a5;
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  recognitionCopy = recognition;
+  tokensCopy = tokens;
+  punctuationsCopy = punctuations;
+  v10 = [tokensCopy objectAtIndexedSubscript:index];
   v11 = [v10 copy];
 
-  if (a4 + 1 < [v9 count])
+  if (index + 1 < [tokensCopy count])
   {
-    v12 = [v9 objectAtIndexedSubscript:a4 + 1];
+    v12 = [tokensCopy objectAtIndexedSubscript:index + 1];
     if ([v12 appendedAutoPunctuation])
     {
-      if (v6)
+      if (recognitionCopy)
       {
       }
 
       else
       {
-        v13 = [v9 objectAtIndexedSubscript:a4 + 1];
-        v14 = [v13 tokenName];
-        v15 = [v52 containsObject:v14];
+        v13 = [tokensCopy objectAtIndexedSubscript:index + 1];
+        tokenName = [v13 tokenName];
+        v15 = [punctuationsCopy containsObject:tokenName];
 
         if (v15)
         {
@@ -690,9 +690,9 @@
         }
       }
 
-      v12 = [v9 objectAtIndexedSubscript:a4 + 1];
+      v12 = [tokensCopy objectAtIndexedSubscript:index + 1];
       v51 = [_EARSpeechRecognitionToken alloc];
-      v16 = [v11 tokenName];
+      tokenName2 = [v11 tokenName];
       [v11 start];
       v18 = v17;
       [v11 end];
@@ -701,35 +701,35 @@
       v22 = v21;
       [v11 confidence];
       v24 = v23;
-      v25 = [v12 hasSpaceAfter];
-      v26 = [v11 hasSpaceBefore];
-      v27 = [v11 phoneSequence];
-      v28 = [v11 ipaPhoneSequence];
-      v29 = [(_EARSpeechRecognitionToken *)v51 initWithTokenName:v16 start:v25 end:v26 silenceStart:v27 confidence:v28 hasSpaceAfter:v18 hasSpaceBefore:v20 phoneSequence:v22 ipaPhoneSequence:v24];
+      hasSpaceAfter = [v12 hasSpaceAfter];
+      hasSpaceBefore = [v11 hasSpaceBefore];
+      phoneSequence = [v11 phoneSequence];
+      ipaPhoneSequence = [v11 ipaPhoneSequence];
+      v29 = [(_EARSpeechRecognitionToken *)v51 initWithTokenName:tokenName2 start:hasSpaceAfter end:hasSpaceBefore silenceStart:phoneSequence confidence:ipaPhoneSequence hasSpaceAfter:v18 hasSpaceBefore:v20 phoneSequence:v22 ipaPhoneSequence:v24];
 
       v11 = v29;
     }
   }
 
 LABEL_8:
-  if (!a4)
+  if (!index)
   {
     goto LABEL_15;
   }
 
-  v30 = a4 - 1;
-  v31 = [v9 objectAtIndexedSubscript:a4 - 1];
+  v30 = index - 1;
+  v31 = [tokensCopy objectAtIndexedSubscript:index - 1];
   if ([v31 prependedAutoPunctuation])
   {
-    if (v6)
+    if (recognitionCopy)
     {
     }
 
     else
     {
-      v32 = [v9 objectAtIndexedSubscript:v30];
-      v33 = [v32 tokenName];
-      v34 = [v52 containsObject:v33];
+      v32 = [tokensCopy objectAtIndexedSubscript:v30];
+      tokenName3 = [v32 tokenName];
+      v34 = [punctuationsCopy containsObject:tokenName3];
 
       if (v34)
       {
@@ -737,9 +737,9 @@ LABEL_8:
       }
     }
 
-    v31 = [v9 objectAtIndexedSubscript:v30];
+    v31 = [tokensCopy objectAtIndexedSubscript:v30];
     v35 = [_EARSpeechRecognitionToken alloc];
-    v36 = [v11 tokenName];
+    tokenName4 = [v11 tokenName];
     [v11 start];
     v38 = v37;
     [v11 end];
@@ -748,11 +748,11 @@ LABEL_8:
     v42 = v41;
     [v11 confidence];
     v44 = v43;
-    v45 = [v11 hasSpaceAfter];
-    v46 = [v31 hasSpaceBefore];
-    v47 = [v11 phoneSequence];
-    v48 = [v11 ipaPhoneSequence];
-    v49 = [(_EARSpeechRecognitionToken *)v35 initWithTokenName:v36 start:v45 end:v46 silenceStart:v47 confidence:v48 hasSpaceAfter:v38 hasSpaceBefore:v40 phoneSequence:v42 ipaPhoneSequence:v44];
+    hasSpaceAfter2 = [v11 hasSpaceAfter];
+    hasSpaceBefore2 = [v31 hasSpaceBefore];
+    phoneSequence2 = [v11 phoneSequence];
+    ipaPhoneSequence2 = [v11 ipaPhoneSequence];
+    v49 = [(_EARSpeechRecognitionToken *)v35 initWithTokenName:tokenName4 start:hasSpaceAfter2 end:hasSpaceBefore2 silenceStart:phoneSequence2 confidence:ipaPhoneSequence2 hasSpaceAfter:v38 hasSpaceBefore:v40 phoneSequence:v42 ipaPhoneSequence:v44];
 
     v11 = v49;
   }
@@ -762,9 +762,9 @@ LABEL_15:
   return v11;
 }
 
-- (id)splitRecognitionWithPotentialCommandRecognition:(BOOL)a3
+- (id)splitRecognitionWithPotentialCommandRecognition:(BOOL)recognition
 {
-  v37 = a3;
+  recognitionCopy = recognition;
   v83 = *MEMORY[0x1E69E9840];
   if (quasar::gLogLevel >= 5)
   {
@@ -795,7 +795,7 @@ LABEL_15:
   if (v4 < 2)
   {
 LABEL_27:
-    if (v37)
+    if (recognitionCopy)
     {
       v21 = [[_EARSpeechRecognition alloc] _initWithTokenSausage:self->_tokenSausage interpretationIndices:self->_interpretationIndices nBest:self->_nBest endsOfSentencePunctuations:self->_endsOfSentencePunctuations];
     }
@@ -895,7 +895,7 @@ LABEL_20:
   }
 
   v22 = v9 + 1;
-  if (v37)
+  if (recognitionCopy)
   {
     v23 = v9 + 1;
     v22 = [(NSArray *)self->_tokenSausage count]+ ~v9;
@@ -982,7 +982,7 @@ LABEL_48:
   v42[1] = 3221225472;
   v42[2] = __73___EARSpeechRecognition_splitRecognitionWithPotentialCommandRecognition___block_invoke;
   v42[3] = &unk_1E7C1A398;
-  v45 = v37;
+  v45 = recognitionCopy;
   v42[4] = self;
   v32 = v36;
   v43 = v32;
@@ -999,17 +999,17 @@ LABEL_51:
   return v21;
 }
 
-+ (id)reconstructNBestFromSausage:(id)a3 interpretationIndices:(id)a4
++ (id)reconstructNBestFromSausage:(id)sausage interpretationIndices:(id)indices
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v17 = a4;
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v17, "count")}];
+  sausageCopy = sausage;
+  indicesCopy = indices;
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(indicesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v17;
+  obj = indicesCopy;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -1033,7 +1033,7 @@ LABEL_51:
           do
           {
             v13 = [v8 objectAtIndex:v12];
-            v14 = [v5 objectAtIndex:v12];
+            v14 = [sausageCopy objectAtIndex:v12];
             v15 = [v14 objectAtIndex:{objc_msgSend(v13, "intValue")}];
 
             [v11 addObjectsFromArray:v15];

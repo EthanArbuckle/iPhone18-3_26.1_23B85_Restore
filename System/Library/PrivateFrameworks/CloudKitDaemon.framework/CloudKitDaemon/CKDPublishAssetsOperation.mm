@@ -1,37 +1,37 @@
 @interface CKDPublishAssetsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDPublishAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDPublishAssetsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)_checkEntitlements;
 - (id)activityCreate;
-- (void)_dispatchAssetURLsForRecord:(id)a3 pcs:(_OpaquePCSShareProtection *)a4;
+- (void)_dispatchAssetURLsForRecord:(id)record pcs:(_OpaquePCSShareProtection *)pcs;
 - (void)_fetchPCSForRecords;
 - (void)_fetchRecords;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_finishPublishAssetsForRecord:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_finishPublishAssetsForRecord:(id)record;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation CKDPublishAssetsOperation
 
-- (CKDPublishAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDPublishAssetsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = CKDPublishAssetsOperation;
-  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordIDs(v6, v7, v8);
+    v10 = objc_msgSend_recordIDs(infoCopy, v7, v8);
     recordIDs = v9->_recordIDs;
     v9->_recordIDs = v10;
 
-    v14 = objc_msgSend_fileNamesByAssetFieldNames(v6, v12, v13);
+    v14 = objc_msgSend_fileNamesByAssetFieldNames(infoCopy, v12, v13);
     fileNamesByAssetFieldNames = v9->_fileNamesByAssetFieldNames;
     v9->_fileNamesByAssetFieldNames = v14;
 
-    v18 = objc_msgSend_requestedTTL(v6, v16, v17);
+    v18 = objc_msgSend_requestedTTL(infoCopy, v16, v17);
     v21 = 3600;
     if (v18)
     {
@@ -39,7 +39,7 @@
     }
 
     v9->_requestedTTL = v21;
-    v9->_URLOptions = objc_msgSend_URLOptions(v6, v19, v20);
+    v9->_URLOptions = objc_msgSend_URLOptions(infoCopy, v19, v20);
     v22 = objc_opt_new();
     fetchedRecordsByID = v9->_fetchedRecordsByID;
     v9->_fetchedRecordsByID = v22;
@@ -102,20 +102,20 @@ LABEL_10:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDPublishAssetsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548CE0[a3 - 2];
+    v5 = off_278548CE0[state - 2];
   }
 
   return v5;
@@ -136,11 +136,11 @@ LABEL_10:
   return v14;
 }
 
-- (void)_dispatchAssetURLsForRecord:(id)a3 pcs:(_OpaquePCSShareProtection *)a4
+- (void)_dispatchAssetURLsForRecord:(id)record pcs:(_OpaquePCSShareProtection *)pcs
 {
   v111 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v93 = objc_msgSend_recordID(v6, v7, v8);
+  recordCopy = record;
+  v93 = objc_msgSend_recordID(recordCopy, v7, v8);
   if (!v93)
   {
     v87 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
@@ -230,7 +230,7 @@ LABEL_22:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = objc_msgSend_allKeys(v6, v21, v22);
+  obj = objc_msgSend_allKeys(recordCopy, v21, v22);
   v35 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v34, &v102, v106, 16);
   if (v35)
   {
@@ -250,7 +250,7 @@ LABEL_22:
         }
 
         v41 = *(*(&v102 + 1) + 8 * v40);
-        v42 = objc_msgSend_objectForKey_(v6, v36, v41);
+        v42 = objc_msgSend_objectForKey_(recordCopy, v36, v41);
         v43 = *(v39 + 400);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -266,7 +266,7 @@ LABEL_22:
               dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
             }
 
-            v50 = v6;
+            v50 = recordCopy;
             v51 = *MEMORY[0x277CBC830];
             if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
             {
@@ -281,7 +281,7 @@ LABEL_22:
             v63 = objc_msgSend_useClearAssetEncryption(self, v61, v62);
             v101 = 0;
             LOBYTE(v89) = v91;
-            objc_msgSend_fillInDownloadURLsForAssetWithFieldName_fileName_recordPCS_pcsManager_useEncryption_useClearAssetEncryption_alwaysAllowKeyExport_outError_(v44, v64, v41, v49, a4, v57, v60, v63, v89, &v101);
+            objc_msgSend_fillInDownloadURLsForAssetWithFieldName_fileName_recordPCS_pcsManager_useEncryption_useClearAssetEncryption_alwaysAllowKeyExport_outError_(v44, v64, v41, v49, pcs, v57, v60, v63, v89, &v101);
             v65 = v101;
 
             v68 = objc_msgSend_callbackQueue(self, v66, v67);
@@ -297,7 +297,7 @@ LABEL_22:
             v69 = v65;
             dispatch_async(v68, block);
 
-            v6 = v50;
+            recordCopy = v50;
             v38 = v90;
             v37 = v94;
           }
@@ -318,15 +318,15 @@ LABEL_22:
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishPublishAssetsForRecord:(id)a3
+- (void)_finishPublishAssetsForRecord:(id)record
 {
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = a3;
-  obj = objc_msgSend_allKeys(v27, v4, v5);
+  recordCopy = record;
+  obj = objc_msgSend_allKeys(recordCopy, v4, v5);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v32, v36, 16);
   if (v7)
   {
@@ -348,7 +348,7 @@ LABEL_22:
 
         if (v16)
         {
-          v18 = objc_msgSend_objectForKey_(v27, v17, v13);
+          v18 = objc_msgSend_objectForKey_(recordCopy, v17, v13);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -360,7 +360,7 @@ LABEL_22:
             block[2] = sub_2251B4C3C;
             block[3] = &unk_2785463D0;
             block[4] = self;
-            v29 = v27;
+            v29 = recordCopy;
             v30 = v13;
             v31 = v19;
             v24 = v19;
@@ -490,13 +490,13 @@ LABEL_22:
   objc_msgSend_makeStateTransition_(self, v13, v12);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setAssetPublishedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDPublishAssetsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)cancel

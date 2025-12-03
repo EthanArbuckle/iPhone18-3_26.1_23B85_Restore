@@ -1,9 +1,9 @@
 @interface CacheDeleteCoordinator
 - (CacheDeleteCoordinator)init;
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d;
 - (void)dealloc;
 @end
 
@@ -100,16 +100,16 @@
   [(CacheDeleteCoordinator *)&v5 dealloc];
 }
 
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 2114;
-    v10 = v4;
+    v10 = dCopy;
     v6 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating purgeable storage after database rsynced for device: %{public}@", &v7, 0x16u);
   }
@@ -120,16 +120,16 @@
   }
 }
 
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v5;
+    v11 = dCopy;
     v7 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating purgeable storage after applications updated for device: %{public}@", &v8, 0x16u);
   }
@@ -140,16 +140,16 @@
   }
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v5;
+    v11 = dCopy;
     v7 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating purgeable storage after applications installed for device: %{public}@", &v8, 0x16u);
   }
@@ -160,16 +160,16 @@
   }
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v5;
+    v11 = dCopy;
     v7 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating purgeable storage after applications uninstalled for device: %{public}@", &v8, 0x16u);
   }

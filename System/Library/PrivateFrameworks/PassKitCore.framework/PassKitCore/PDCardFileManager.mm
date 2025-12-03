@@ -1,59 +1,59 @@
 @interface PDCardFileManager
-- (BOOL)_dc_deleteCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4;
-- (BOOL)_dc_writeCard:(id)a3 writtenCard:(id *)a4 diff:(id *)a5 daemonData:(id *)a6 undecryptableAssets:(id *)a7 error:(id *)a8;
-- (BOOL)writeCard:(id)a3 source:(int64_t)a4 error:(id *)a5;
-- (PDCardFileManager)initWithDelegate:(id)a3 cloudStoreCoordinatorDelegate:(id)a4;
-- (PDCardFileManager)initWithDelegate:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 maximumDownloadRetries:(unint64_t)a5 atURL:(id)a6;
-- (id)_cacheURLForUniqueID:(id)a3;
-- (id)_cachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6;
-- (id)_cachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6 cardDirectoryCoordinator:(id)a7;
-- (id)_cardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 error:(id *)a5;
-- (id)_contentForCardWithUniqueID:(id)a3;
-- (id)_dataAccessorForCardDirectoryCoordinator:(id)a3 error:(id *)a4;
-- (id)_dc_cardDirectoryCoordinatorForUniqueID:(id)a3;
-- (id)_dc_cardWithUniqueID:(id)a3 error:(id *)a4;
-- (id)_imageSetContainerForUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 ofType:(int64_t)a5 withDisplayProfile:(id)a6 suffix:(id)a7;
-- (id)_imageSetContainerForUniqueID:(id)a3 ofType:(int64_t)a4 withDisplayProfile:(id)a5 suffix:(id)a6;
-- (id)_objectURLForUniqueID:(id)a3;
+- (BOOL)_dc_deleteCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator;
+- (BOOL)_dc_writeCard:(id)card writtenCard:(id *)writtenCard diff:(id *)diff daemonData:(id *)data undecryptableAssets:(id *)assets error:(id *)error;
+- (BOOL)writeCard:(id)card source:(int64_t)source error:(id *)error;
+- (PDCardFileManager)initWithDelegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate;
+- (PDCardFileManager)initWithDelegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate maximumDownloadRetries:(unint64_t)retries atURL:(id)l;
+- (id)_cacheURLForUniqueID:(id)d;
+- (id)_cachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits;
+- (id)_cachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits cardDirectoryCoordinator:(id)coordinator;
+- (id)_cardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator error:(id *)error;
+- (id)_contentForCardWithUniqueID:(id)d;
+- (id)_dataAccessorForCardDirectoryCoordinator:(id)coordinator error:(id *)error;
+- (id)_dc_cardDirectoryCoordinatorForUniqueID:(id)d;
+- (id)_dc_cardWithUniqueID:(id)d error:(id *)error;
+- (id)_imageSetContainerForUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix;
+- (id)_imageSetContainerForUniqueID:(id)d ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix;
+- (id)_objectURLForUniqueID:(id)d;
 - (id)_ubiquityManager;
 - (id)catalogOfRecord;
-- (id)dataAccessorForObjectWithUniqueID:(id)a3;
+- (id)dataAccessorForObjectWithUniqueID:(id)d;
 - (id)localNonUbiquitousCatalogURL;
-- (id)objectWithUniqueID:(id)a3;
-- (id)passDaemonDataForUniqueID:(id)a3;
-- (id)passTilesForUniqueID:(id)a3 withDescriptorStatePairs:(id)a4;
+- (id)objectWithUniqueID:(id)d;
+- (id)passDaemonDataForUniqueID:(id)d;
+- (id)passTilesForUniqueID:(id)d withDescriptorStatePairs:(id)pairs;
 - (id)passUniqueIDs;
 - (id)passes;
-- (id)passesOfType:(unint64_t)a3;
-- (void)_checkRevocationStatusForPass:(id)a3 withCompletion:(id)a4;
-- (void)_createImageSetsForCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 displayProfile:(id)a5;
-- (void)_dc_invalidateCardDirectoryCoordinatorForUniqueID:(id)a3;
+- (id)passesOfType:(unint64_t)type;
+- (void)_checkRevocationStatusForPass:(id)pass withCompletion:(id)completion;
+- (void)_createImageSetsForCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator displayProfile:(id)profile;
+- (void)_dc_invalidateCardDirectoryCoordinatorForUniqueID:(id)d;
 - (void)_dc_performCacheMaintenanceActivity;
-- (void)_deleteCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 forReason:(unint64_t)a5 withDiagnosticReason:(id)a6;
-- (void)_deletePossibleInvalidCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4;
-- (void)_downloadRemoteAssetsForCardWithUniqueID:(id)a3 completion:(id)a4;
-- (void)_evaluateDownloadMissingAssetsActivityWithForcedReschedule:(BOOL)a3;
+- (void)_deleteCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason;
+- (void)_deletePossibleInvalidCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator;
+- (void)_downloadRemoteAssetsForCardWithUniqueID:(id)d completion:(id)completion;
+- (void)_evaluateDownloadMissingAssetsActivityWithForcedReschedule:(BOOL)reschedule;
 - (void)_performMissingAssetDownloadActivity;
 - (void)_performRevocationCheckActivity;
-- (void)_recursivelyCheckRevocationStatusForPassUniqueIdentifiers:(id)a3 osTransaction:(id)a4;
-- (void)decryptPassAssets:(id)a3 undecryptableAssets:(id *)a4;
-- (void)deleteAllWithDiagnosticReason:(id)a3;
-- (void)deleteCardWithUniqueID:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5;
-- (void)fetchCachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6 completion:(id)a7;
-- (void)fetchContentForUniqueID:(id)a3 withCompletion:(id)a4;
-- (void)fetchImageSetContainerForUniqueID:(id)a3 ofType:(int64_t)a4 withDisplayProfile:(id)a5 suffix:(id)a6 completion:(id)a7;
-- (void)performImageMigrationWithStartTime:(double)a3;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)receivedXPCEvent:(id)a3 forEventStream:(id)a4;
-- (void)registerDatabaseObject:(id)a3;
+- (void)_recursivelyCheckRevocationStatusForPassUniqueIdentifiers:(id)identifiers osTransaction:(id)transaction;
+- (void)decryptPassAssets:(id)assets undecryptableAssets:(id *)undecryptableAssets;
+- (void)deleteAllWithDiagnosticReason:(id)reason;
+- (void)deleteCardWithUniqueID:(id)d forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason;
+- (void)fetchCachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits completion:(id)completion;
+- (void)fetchContentForUniqueID:(id)d withCompletion:(id)completion;
+- (void)fetchImageSetContainerForUniqueID:(id)d ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix completion:(id)completion;
+- (void)performImageMigrationWithStartTime:(double)time;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)receivedXPCEvent:(id)event forEventStream:(id)stream;
+- (void)registerDatabaseObject:(id)object;
 - (void)restartUbiquity;
 - (void)scheduleImmediateRevocationCheck;
 - (void)startObservingUbiquityEvents;
 - (void)startUbiquity;
-- (void)ubiquitousCardDidChange:(id)a3;
-- (void)ubiquitousCardWithUniqueIDRemoved:(id)a3;
-- (void)ubiquitousCatalogDidChange:(id)a3;
-- (void)writeCatalogOfRecord:(id)a3 source:(int64_t)a4;
+- (void)ubiquitousCardDidChange:(id)change;
+- (void)ubiquitousCardWithUniqueIDRemoved:(id)removed;
+- (void)ubiquitousCatalogDidChange:(id)change;
+- (void)writeCatalogOfRecord:(id)record source:(int64_t)source;
 @end
 
 @implementation PDCardFileManager
@@ -71,32 +71,32 @@
   }
 }
 
-- (PDCardFileManager)initWithDelegate:(id)a3 cloudStoreCoordinatorDelegate:(id)a4
+- (PDCardFileManager)initWithDelegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate
 {
   v6 = qword_100924288;
-  v7 = a4;
-  v8 = a3;
+  coordinatorDelegateCopy = coordinatorDelegate;
+  delegateCopy = delegate;
   if (v6 != -1)
   {
     sub_1005C1A68();
   }
 
-  v9 = [(PDCardFileManager *)self initWithDelegate:v8 cloudStoreCoordinatorDelegate:v7 maximumDownloadRetries:3 atURL:qword_100924280];
+  v9 = [(PDCardFileManager *)self initWithDelegate:delegateCopy cloudStoreCoordinatorDelegate:coordinatorDelegateCopy maximumDownloadRetries:3 atURL:qword_100924280];
 
   return v9;
 }
 
-- (PDCardFileManager)initWithDelegate:(id)a3 cloudStoreCoordinatorDelegate:(id)a4 maximumDownloadRetries:(unint64_t)a5 atURL:(id)a6
+- (PDCardFileManager)initWithDelegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate maximumDownloadRetries:(unint64_t)retries atURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  delegateCopy = delegate;
+  coordinatorDelegateCopy = coordinatorDelegate;
+  lCopy = l;
   v34.receiver = self;
   v34.super_class = PDCardFileManager;
   v13 = [(PDCardFileManager *)&v34 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [lCopy copy];
     cardsURL = v13->_cardsURL;
     v13->_cardsURL = v14;
 
@@ -119,9 +119,9 @@
     missingAssetQueue = v13->_missingAssetQueue;
     v13->_missingAssetQueue = v24;
 
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_cloudStoreCoordinatorDelegate, a4);
-    v13->_maximumDownloadRetries = a5;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_cloudStoreCoordinatorDelegate, coordinatorDelegate);
+    v13->_maximumDownloadRetries = retries;
     v26 = PDDefaultQueue();
     PDScheduledActivityClientRegister();
 
@@ -161,8 +161,8 @@
 
 - (void)restartUbiquity
 {
-  v2 = [(PDCardFileManager *)self _ubiquityManager];
-  [v2 restart];
+  _ubiquityManager = [(PDCardFileManager *)self _ubiquityManager];
+  [_ubiquityManager restart];
 }
 
 - (void)startObservingUbiquityEvents
@@ -182,7 +182,7 @@
   }
 }
 
-- (void)performImageMigrationWithStartTime:(double)a3
+- (void)performImageMigrationWithStartTime:(double)time
 {
   v58 = 0;
   v59 = &v58;
@@ -191,8 +191,8 @@
   v62 = sub_10000B18C;
   v63 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PDCardFileManager *)self passUniqueIDs];
-  v7 = COERCE_DOUBLE([v6 count]);
+  passUniqueIDs = [(PDCardFileManager *)self passUniqueIDs];
+  v7 = COERCE_DOUBLE([passUniqueIDs count]);
   if (v7 != 0.0)
   {
     directoryCoordinator = self->_directoryCoordinator;
@@ -201,8 +201,8 @@
     v54[2] = sub_100119B1C;
     v54[3] = &unk_1008473B8;
     v57 = &v58;
-    v55 = v6;
-    v56 = self;
+    v55 = passUniqueIDs;
+    selfCopy = self;
     [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v54];
   }
 
@@ -210,7 +210,7 @@
   if (v7 != 0.0)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v10 = fmax(fmin(50.0 - fmax(Current - a3, 0.0), 30.0), 0.0);
+    v10 = fmax(fmin(50.0 - fmax(Current - time, 0.0), 30.0), 0.0);
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -251,9 +251,9 @@
     v39 = v12;
     v40 = v7;
     v43 = v10 < 2.0;
-    v6 = v6;
-    v32 = v6;
-    v33 = self;
+    passUniqueIDs = passUniqueIDs;
+    v32 = passUniqueIDs;
+    selfCopy2 = self;
     v41 = Current;
     v42 = v10;
     v34 = &v58;
@@ -282,7 +282,7 @@
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = [v6 objectsAtIndexes:*(*(&buf + 1) + 40)];
+      v19 = [passUniqueIDs objectsAtIndexes:*(*(&buf + 1) + 40)];
 
       v20 = [v59[5] objectsAtIndexes:*(*(&buf + 1) + 40)];
       v21 = v59[5];
@@ -295,10 +295,10 @@
       v25[2] = sub_10011A07C;
       v25[3] = &unk_100847408;
       v29 = v14;
-      v6 = v19;
-      v27 = self;
+      passUniqueIDs = v19;
+      selfCopy3 = self;
       v28 = &v58;
-      v26 = v6;
+      v26 = passUniqueIDs;
       v30 = Current;
       v23 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_DETACHED, v25);
       dispatch_async(v22, v23);
@@ -345,9 +345,9 @@
   return v6;
 }
 
-- (id)objectWithUniqueID:(id)a3
+- (id)objectWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v23 = 0;
   v24 = &v23;
@@ -362,7 +362,7 @@
   v20[3] = &unk_1008473B8;
   v22 = &v23;
   v20[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v21 = v7;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v20];
   v8 = v24[5];
@@ -386,7 +386,7 @@
     v14[3] = &unk_100841FE0;
     v15 = v10;
     v16 = v7;
-    v17 = self;
+    selfCopy = self;
     v18 = &v23;
     dispatch_async(v12, v14);
   }
@@ -397,9 +397,9 @@
   return v9;
 }
 
-- (id)dataAccessorForObjectWithUniqueID:(id)a3
+- (id)dataAccessorForObjectWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
   v14 = &v13;
@@ -414,7 +414,7 @@
   v10[3] = &unk_1008473B8;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v10];
   v8 = [(PDCardFileManager *)self _dataAccessorForCardDirectoryCoordinator:v14[5] error:0];
@@ -432,8 +432,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PDCardFileManager *)self passUniqueIDs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  passUniqueIDs = [(PDCardFileManager *)self passUniqueIDs];
+  v5 = [passUniqueIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -444,7 +444,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(passUniqueIDs);
         }
 
         v9 = [(PDCardFileManager *)self objectWithUniqueID:*(*(&v12 + 1) + 8 * i)];
@@ -454,7 +454,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [passUniqueIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -465,15 +465,15 @@
   return v10;
 }
 
-- (id)passesOfType:(unint64_t)a3
+- (id)passesOfType:(unint64_t)type
 {
   v5 = objc_alloc_init(NSMutableArray);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(PDCardFileManager *)self passUniqueIDs];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  passUniqueIDs = [(PDCardFileManager *)self passUniqueIDs];
+  v7 = [passUniqueIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -484,18 +484,18 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(passUniqueIDs);
         }
 
         v11 = [(PDCardFileManager *)self objectWithUniqueID:*(*(&v15 + 1) + 8 * i)];
         v12 = v11;
-        if (v11 && [v11 passType] == a3)
+        if (v11 && [v11 passType] == type)
         {
           [v5 addObject:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [passUniqueIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -527,11 +527,11 @@
   return v1;
 }
 
-- (void)fetchContentForUniqueID:(id)a3 withCompletion:(id)a4
+- (void)fetchContentForUniqueID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PDHeavyQueue();
     block[0] = _NSConcreteStackBlock;
@@ -539,15 +539,15 @@
     block[2] = sub_10011B088;
     block[3] = &unk_10083D320;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = dCopy;
+    v11 = completionCopy;
     dispatch_async(v8, block);
   }
 }
 
-- (id)passDaemonDataForUniqueID:(id)a3
+- (id)passDaemonDataForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -568,7 +568,7 @@
   v12[3] = &unk_1008473B8;
   v14 = &v15;
   v12[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v13 = v7;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v12];
   v8 = v16[5];
@@ -587,10 +587,10 @@
   return v9;
 }
 
-- (id)passTilesForUniqueID:(id)a3 withDescriptorStatePairs:(id)a4
+- (id)passTilesForUniqueID:(id)d withDescriptorStatePairs:(id)pairs
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  pairsCopy = pairs;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -611,7 +611,7 @@
   v18[3] = &unk_1008473B8;
   v20 = &v21;
   v18[4] = self;
-  v10 = v6;
+  v10 = dCopy;
   v19 = v10;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v18];
   v11 = v22[5];
@@ -619,7 +619,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_10011B688;
   v15[3] = &unk_100847480;
-  v12 = v7;
+  v12 = pairsCopy;
   v16 = v12;
   v17 = &v27;
   [v11 performCoordinatedAction:v15];
@@ -641,10 +641,10 @@
   return v13;
 }
 
-- (void)_deletePossibleInvalidCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4
+- (void)_deletePossibleInvalidCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  coordinatorCopy = coordinator;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -658,11 +658,11 @@
   v15 = 3221225472;
   v16 = sub_10011BBF0;
   v17 = &unk_1008474D0;
-  v9 = v7;
+  v9 = coordinatorCopy;
   v18 = v9;
   v20 = &v22;
   v21 = &v26;
-  v10 = v6;
+  v10 = dCopy;
   v19 = v10;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:&v14];
   if (*(v23 + 24) == 1)
@@ -695,59 +695,59 @@
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)fetchCachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6 completion:(id)a7
+- (void)fetchCachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  dCopy = d;
+  profileCopy = profile;
+  traitsCopy = traits;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v16 = PDDefaultQueue();
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10011BF90;
     v17[3] = &unk_1008474F8;
-    v21 = v15;
+    v21 = completionCopy;
     v17[4] = self;
-    v18 = v12;
-    v22 = a4;
-    v19 = v13;
-    v20 = v14;
+    v18 = dCopy;
+    typeCopy = type;
+    v19 = profileCopy;
+    v20 = traitsCopy;
     dispatch_async(v16, v17);
   }
 }
 
-- (void)fetchImageSetContainerForUniqueID:(id)a3 ofType:(int64_t)a4 withDisplayProfile:(id)a5 suffix:(id)a6 completion:(id)a7
+- (void)fetchImageSetContainerForUniqueID:(id)d ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  dCopy = d;
+  profileCopy = profile;
+  suffixCopy = suffix;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v16 = PDHeavyQueue();
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10011C154;
     v17[3] = &unk_1008474F8;
-    v21 = v15;
+    v21 = completionCopy;
     v17[4] = self;
-    v18 = v12;
-    v22 = a4;
-    v19 = v13;
-    v20 = v14;
+    v18 = dCopy;
+    typeCopy = type;
+    v19 = profileCopy;
+    v20 = suffixCopy;
     dispatch_async(v16, v17);
   }
 }
 
-- (BOOL)writeCard:(id)a3 source:(int64_t)a4 error:(id *)a5
+- (BOOL)writeCard:(id)card source:(int64_t)source error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 uniqueID];
+  cardCopy = card;
+  uniqueID = [cardCopy uniqueID];
   obj = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [WeakRetained shouldWritePass:v8 source:a4 error:&obj];
+  v11 = [WeakRetained shouldWritePass:cardCopy source:source error:&obj];
 
   if (v11)
   {
@@ -755,9 +755,9 @@
     v12 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 uniqueID];
+      uniqueID2 = [cardCopy uniqueID];
       *buf = 138543362;
-      *&buf[4] = v13;
+      *&buf[4] = uniqueID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: writing card %{public}@", buf, 0xCu);
     }
 
@@ -772,7 +772,7 @@
     v75 = sub_10000B18C;
     v76 = 0;
     context = objc_autoreleasePoolPush();
-    v32 = a4;
+    sourceCopy = source;
     obj = 0;
     p_obj = &obj;
     v63 = 0x3032000000;
@@ -797,7 +797,7 @@
     v46 = sub_100005B00;
     v47 = sub_10000B18C;
     v48 = 0;
-    v14 = v9;
+    v14 = uniqueID;
     directoryCoordinator = self->_directoryCoordinator;
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
@@ -805,16 +805,16 @@
     v35[3] = &unk_100847520;
     v37 = &v67;
     v35[4] = self;
-    v16 = v8;
+    v16 = cardCopy;
     v36 = v16;
     v38 = &obj;
     v39 = &v55;
-    v17 = a5;
+    errorCopy = error;
     v40 = &v49;
     v41 = &v43;
     v42 = buf;
     v18 = directoryCoordinator;
-    v9 = v14;
+    uniqueID = v14;
     [(PKDirectoryCoordinator *)v18 performCoordinatedAction:v35];
     v19 = p_obj[5];
     v20 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -827,16 +827,16 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: wrote card with unique ID %@.", v71, 0xCu);
       }
 
-      v21 = v32;
-      if (v32 != 3)
+      v21 = sourceCopy;
+      if (sourceCopy != 3)
       {
-        v21 = v32;
+        v21 = sourceCopy;
         if ([p_obj[5] supportsSyncing])
         {
-          v22 = [(PDCardFileManager *)self _ubiquityManager];
-          [v22 updateUbiquitousPass:v16];
+          _ubiquityManager = [(PDCardFileManager *)self _ubiquityManager];
+          [_ubiquityManager updateUbiquitousPass:v16];
 
-          v21 = v32;
+          v21 = sourceCopy;
         }
       }
 
@@ -877,9 +877,9 @@ LABEL_20:
     _Block_object_dispose(&obj, 8);
 
     objc_autoreleasePoolPop(context);
-    if (v17)
+    if (errorCopy)
     {
-      objc_storeStrong(v17, *(*&buf[8] + 40));
+      objc_storeStrong(errorCopy, *(*&buf[8] + 40));
     }
 
     v26 = *(v68 + 24);
@@ -892,17 +892,17 @@ LABEL_20:
   v24 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v8 uniqueID];
+    uniqueID3 = [cardCopy uniqueID];
     *buf = 138543618;
-    *&buf[4] = v25;
+    *&buf[4] = uniqueID3;
     *&buf[12] = 2114;
     *&buf[14] = obj;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: not allowed to write card %{public}@ %{public}@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
-    objc_storeStrong(a5, obj);
+    objc_storeStrong(error, obj);
   }
 
   v26 = 0;
@@ -911,34 +911,34 @@ LABEL_23:
   return v26 & 1;
 }
 
-- (void)writeCatalogOfRecord:(id)a3 source:(int64_t)a4
+- (void)writeCatalogOfRecord:(id)record source:(int64_t)source
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = objc_autoreleasePoolPush();
   directoryCoordinator = self->_directoryCoordinator;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10011C9B8;
   v12[3] = &unk_100847548;
-  v9 = v6;
+  v9 = recordCopy;
   v13 = v9;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v12];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogOfRecordWritten:v9 source:a4];
+  [WeakRetained catalogOfRecordWritten:v9 source:source];
 
-  if (a4 != 3)
+  if (source != 3)
   {
-    v11 = [(PDCardFileManager *)self _ubiquityManager];
-    [v11 updateUbiquitousCatalog:v9];
+    _ubiquityManager = [(PDCardFileManager *)self _ubiquityManager];
+    [_ubiquityManager updateUbiquitousCatalog:v9];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)deleteCardWithUniqueID:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5
+- (void)deleteCardWithUniqueID:(id)d forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  diagnosticReasonCopy = diagnosticReason;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -953,42 +953,42 @@ LABEL_23:
   v13[3] = &unk_1008473B8;
   v15 = &v16;
   v13[4] = self;
-  v12 = v8;
+  v12 = dCopy;
   v14 = v12;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v13];
 
   objc_autoreleasePoolPop(v10);
-  [(PDCardFileManager *)self _deleteCardWithUniqueID:v12 cardDirectoryCoordinator:v17[5] forReason:a4 withDiagnosticReason:v9];
+  [(PDCardFileManager *)self _deleteCardWithUniqueID:v12 cardDirectoryCoordinator:v17[5] forReason:reason withDiagnosticReason:diagnosticReasonCopy];
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_deleteCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 forReason:(unint64_t)a5 withDiagnosticReason:(id)a6
+- (void)_deleteCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  coordinatorCopy = coordinator;
+  diagnosticReasonCopy = diagnosticReason;
   v13 = objc_autoreleasePoolPush();
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [NSNumber numberWithUnsignedInteger:a5];
+    v15 = [NSNumber numberWithUnsignedInteger:reason];
     *buf = 138543874;
-    *&buf[4] = v10;
+    *&buf[4] = dCopy;
     *&buf[12] = 2114;
     *&buf[14] = v15;
     *&buf[22] = 2114;
-    v33 = v12;
+    v33 = diagnosticReasonCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: card %{public}@ will be removed: %{public}@ %{public}@", buf, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained passWithUniqueIdentifierWillDisappear:v10 forReason:a5 withDiagnosticReason:v12];
+  [WeakRetained passWithUniqueIdentifierWillDisappear:dCopy forReason:reason withDiagnosticReason:diagnosticReasonCopy];
 
   v17 = 0;
-  if (a5 <= 8 && ((1 << a5) & 0x11C) != 0)
+  if (reason <= 8 && ((1 << reason) & 0x11C) != 0)
   {
-    v18 = [(PDCardFileManager *)self _ubiquityManager];
-    [v18 prepareToRemoveUbiquitousPassWithUniqueID:v10];
+    _ubiquityManager = [(PDCardFileManager *)self _ubiquityManager];
+    [_ubiquityManager prepareToRemoveUbiquitousPassWithUniqueID:dCopy];
 
     v17 = 1;
   }
@@ -1003,31 +1003,31 @@ LABEL_23:
   v26 = sub_10011CE88;
   v27 = &unk_100847570;
   v31 = buf;
-  v28 = self;
-  v20 = v10;
+  selfCopy = self;
+  v20 = dCopy;
   v29 = v20;
-  v21 = v11;
+  v21 = coordinatorCopy;
   v30 = v21;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:&v24];
   if (*(*&buf[8] + 24) == 1)
   {
     v22 = objc_loadWeakRetained(&self->_delegate);
-    [v22 passWithUniqueIdentifierDidDisappear:v20 forReason:a5 withDiagnosticReason:{v12, v24, v25, v26, v27, v28, v29}];
+    [v22 passWithUniqueIdentifierDidDisappear:v20 forReason:reason withDiagnosticReason:{diagnosticReasonCopy, v24, v25, v26, v27, selfCopy, v29}];
   }
 
   if (v17)
   {
-    v23 = [(PDCardFileManager *)self _ubiquityManager];
-    [v23 removeUbiquitousPassWithUniqueID:v20 completed:*(*&buf[8] + 24)];
+    _ubiquityManager2 = [(PDCardFileManager *)self _ubiquityManager];
+    [_ubiquityManager2 removeUbiquitousPassWithUniqueID:v20 completed:*(*&buf[8] + 24)];
   }
 
   _Block_object_dispose(buf, 8);
   objc_autoreleasePoolPop(v13);
 }
 
-- (void)deleteAllWithDiagnosticReason:(id)a3
+- (void)deleteAllWithDiagnosticReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1040,8 +1040,8 @@ LABEL_23:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(PDCardFileManager *)self passUniqueIDs];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  passUniqueIDs = [(PDCardFileManager *)self passUniqueIDs];
+  v8 = [passUniqueIDs countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1053,15 +1053,15 @@ LABEL_23:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(passUniqueIDs);
         }
 
-        [(PDCardFileManager *)self deleteCardWithUniqueID:*(*(&v12 + 1) + 8 * v11) forReason:2 withDiagnosticReason:v4];
+        [(PDCardFileManager *)self deleteCardWithUniqueID:*(*(&v12 + 1) + 8 * v11) forReason:2 withDiagnosticReason:reasonCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v9 = [passUniqueIDs countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v9);
@@ -1070,12 +1070,12 @@ LABEL_23:
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)registerDatabaseObject:(id)a3
+- (void)registerDatabaseObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  v6 = v5;
-  if (v5)
+  objectCopy = object;
+  uniqueID = [objectCopy uniqueID];
+  v6 = uniqueID;
+  if (uniqueID)
   {
     v13 = 0;
     v14 = &v13;
@@ -1090,7 +1090,7 @@ LABEL_23:
     v10[3] = &unk_1008473B8;
     v12 = &v13;
     v10[4] = self;
-    v11 = v5;
+    v11 = uniqueID;
     [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v10];
     v8 = v14[5];
     if (v8)
@@ -1103,7 +1103,7 @@ LABEL_23:
       v9 = 0;
     }
 
-    [v4 setDataAccessor:v9];
+    [objectCopy setDataAccessor:v9];
 
     _Block_object_dispose(&v13, 8);
   }
@@ -1116,15 +1116,15 @@ LABEL_23:
   PDScheduledActivityRegister();
 }
 
-- (void)decryptPassAssets:(id)a3 undecryptableAssets:(id *)a4
+- (void)decryptPassAssets:(id)assets undecryptableAssets:(id *)undecryptableAssets
 {
-  v6 = a3;
-  v7 = [v6 secureElementPass];
-  if (v7)
+  assetsCopy = assets;
+  secureElementPass = [assetsCopy secureElementPass];
+  if (secureElementPass)
   {
-    v8 = [v6 dataAccessor];
-    v9 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-    v10 = [v8 remoteAssetManagerForSEIDs:v9];
+    dataAccessor = [assetsCopy dataAccessor];
+    secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+    v10 = [dataAccessor remoteAssetManagerForSEIDs:secureElementIdentifiers];
 
     v11 = objc_alloc_init(PDRemoteAssetDecryptionManager);
     v12 = objc_alloc_init(NSMutableArray);
@@ -1133,8 +1133,8 @@ LABEL_23:
     v24 = 0u;
     v25 = 0u;
     v21 = v10;
-    v13 = [v10 deviceSpecificItems];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    deviceSpecificItems = [v10 deviceSpecificItems];
+    v14 = [deviceSpecificItems countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1145,44 +1145,44 @@ LABEL_23:
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(deviceSpecificItems);
           }
 
           v18 = *(*(&v22 + 1) + 8 * i);
-          if ([(PDRemoteAssetDecryptionManager *)v11 assetRequiresDecryption:v18]&& ![(PDRemoteAssetDecryptionManager *)v11 decryptAsset:v18 forPass:v7])
+          if ([(PDRemoteAssetDecryptionManager *)v11 assetRequiresDecryption:v18]&& ![(PDRemoteAssetDecryptionManager *)v11 decryptAsset:v18 forPass:secureElementPass])
           {
             [v12 addObject:v18];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v15 = [deviceSpecificItems countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v15);
     }
 
-    if (a4)
+    if (undecryptableAssets)
     {
       v19 = [v12 copy];
-      v20 = *a4;
-      *a4 = v19;
+      v20 = *undecryptableAssets;
+      *undecryptableAssets = v19;
     }
   }
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: requested to perform scheduled activity with identifier:%@", buf, 0xCu);
   }
 
-  if ([v6 isEqualToString:@"CacheMaintenance"])
+  if ([identifierCopy isEqualToString:@"CacheMaintenance"])
   {
     directoryCoordinator = self->_directoryCoordinator;
     v10[0] = _NSConcreteStackBlock;
@@ -1193,12 +1193,12 @@ LABEL_23:
     [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v10];
   }
 
-  else if ([v6 isEqualToString:@"RevocationCheck"])
+  else if ([identifierCopy isEqualToString:@"RevocationCheck"])
   {
     [(PDCardFileManager *)self _performRevocationCheckActivity];
   }
 
-  else if ([v6 isEqualToString:@"PDCardFileManagerMissingRemoteAssetsActivityIdentifier"])
+  else if ([identifierCopy isEqualToString:@"PDCardFileManagerMissingRemoteAssetsActivityIdentifier"])
   {
     [(PDCardFileManager *)self _performMissingAssetDownloadActivity];
   }
@@ -1207,37 +1207,37 @@ LABEL_23:
 - (void)_performRevocationCheckActivity
 {
   v5 = PDOSTransactionCreate("PDCardFileManager.revocation_check");
-  v3 = [(PDCardFileManager *)self passUniqueIDs];
-  v4 = [v3 mutableCopy];
+  passUniqueIDs = [(PDCardFileManager *)self passUniqueIDs];
+  v4 = [passUniqueIDs mutableCopy];
   [(PDCardFileManager *)self _recursivelyCheckRevocationStatusForPassUniqueIdentifiers:v4 osTransaction:v5];
 }
 
-- (void)_recursivelyCheckRevocationStatusForPassUniqueIdentifiers:(id)a3 osTransaction:(id)a4
+- (void)_recursivelyCheckRevocationStatusForPassUniqueIdentifiers:(id)identifiers osTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 lastObject];
-  if (v8)
+  identifiersCopy = identifiers;
+  transactionCopy = transaction;
+  lastObject = [identifiersCopy lastObject];
+  if (lastObject)
   {
-    v9 = [(PDCardFileManager *)self objectWithUniqueID:v8];
-    [v6 removeObject:v8];
+    v9 = [(PDCardFileManager *)self objectWithUniqueID:lastObject];
+    [identifiersCopy removeObject:lastObject];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10011D73C;
     v10[3] = &unk_10083C4C0;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = identifiersCopy;
+    v12 = transactionCopy;
     [(PDCardFileManager *)self _checkRevocationStatusForPass:v9 withCompletion:v10];
   }
 }
 
-- (void)_checkRevocationStatusForPass:(id)a3 withCompletion:(id)a4
+- (void)_checkRevocationStatusForPass:(id)pass withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  passCopy = pass;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (passCopy)
   {
     v13[0] = 0;
     v13[1] = v13;
@@ -1249,7 +1249,7 @@ LABEL_23:
     v9[1] = 3221225472;
     v9[2] = sub_10011D8A0;
     v9[3] = &unk_1008475C0;
-    v10 = v6;
+    v10 = passCopy;
     v12 = v13;
     v11 = v8;
     [v10 revocationStatusWithCompletion:v9];
@@ -1257,26 +1257,26 @@ LABEL_23:
     _Block_object_dispose(v13, 8);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (void)_createImageSetsForCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 displayProfile:(id)a5
+- (void)_createImageSetsForCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator displayProfile:(id)profile
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v14 && v8)
+  dCopy = d;
+  coordinatorCopy = coordinator;
+  profileCopy = profile;
+  if (dCopy && coordinatorCopy)
   {
     for (i = 0; i != 9; ++i)
     {
-      if ([PKImageSet shouldCacheForDisplayProfile:v9 imageSetType:i])
+      if ([PKImageSet shouldCacheForDisplayProfile:profileCopy imageSetType:i])
       {
         v11 = +[PDCardFileManager defaultAssetSuffix];
         v12 = objc_autoreleasePoolPush();
-        v13 = [(PDCardFileManager *)self _imageSetContainerForUniqueID:v14 cardDirectoryCoordinator:v8 ofType:i withDisplayProfile:v9 suffix:v11];
+        v13 = [(PDCardFileManager *)self _imageSetContainerForUniqueID:dCopy cardDirectoryCoordinator:coordinatorCopy ofType:i withDisplayProfile:profileCopy suffix:v11];
         [v13 invalidate];
 
         objc_autoreleasePoolPop(v12);
@@ -1285,11 +1285,11 @@ LABEL_23:
   }
 }
 
-- (id)_cachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6
+- (id)_cachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  profileCopy = profile;
+  traitsCopy = traits;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1303,22 +1303,22 @@ LABEL_23:
   v17[3] = &unk_1008473B8;
   v19 = &v20;
   v17[4] = self;
-  v14 = v10;
+  v14 = dCopy;
   v18 = v14;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v17];
-  v15 = [(PDCardFileManager *)self _cachedImageSetContainerForUniqueID:v14 type:a4 withDisplayProfile:v11 displayTraits:v12 cardDirectoryCoordinator:v21[5]];
+  v15 = [(PDCardFileManager *)self _cachedImageSetContainerForUniqueID:v14 type:type withDisplayProfile:profileCopy displayTraits:traitsCopy cardDirectoryCoordinator:v21[5]];
 
   _Block_object_dispose(&v20, 8);
 
   return v15;
 }
 
-- (id)_cachedImageSetContainerForUniqueID:(id)a3 type:(int64_t)a4 withDisplayProfile:(id)a5 displayTraits:(id)a6 cardDirectoryCoordinator:(id)a7
+- (id)_cachedImageSetContainerForUniqueID:(id)d type:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits cardDirectoryCoordinator:(id)coordinator
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  profileCopy = profile;
+  traitsCopy = traits;
+  coordinatorCopy = coordinator;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1326,20 +1326,20 @@ LABEL_23:
   v33 = sub_10000B18C;
   v34 = 0;
   v16 = objc_autoreleasePoolPush();
-  v17 = [(PDCardFileManager *)self _cacheURLForUniqueID:v12];
+  v17 = [(PDCardFileManager *)self _cacheURLForUniqueID:dCopy];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10011E010;
   v23[3] = &unk_1008475E8;
   v27 = &v29;
-  v28 = a4;
-  v18 = v13;
+  typeCopy = type;
+  v18 = profileCopy;
   v24 = v18;
-  v19 = v14;
+  v19 = traitsCopy;
   v25 = v19;
   v20 = v17;
   v26 = v20;
-  [v15 performCoordinatedAction:v23];
+  [coordinatorCopy performCoordinatedAction:v23];
 
   objc_autoreleasePoolPop(v16);
   v21 = v30[5];
@@ -1348,11 +1348,11 @@ LABEL_23:
   return v21;
 }
 
-- (id)_imageSetContainerForUniqueID:(id)a3 ofType:(int64_t)a4 withDisplayProfile:(id)a5 suffix:(id)a6
+- (id)_imageSetContainerForUniqueID:(id)d ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  profileCopy = profile;
+  suffixCopy = suffix;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1366,22 +1366,22 @@ LABEL_23:
   v17[3] = &unk_1008473B8;
   v19 = &v20;
   v17[4] = self;
-  v14 = v10;
+  v14 = dCopy;
   v18 = v14;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v17];
-  v15 = [(PDCardFileManager *)self _imageSetContainerForUniqueID:v14 cardDirectoryCoordinator:v21[5] ofType:a4 withDisplayProfile:v11 suffix:v12];
+  v15 = [(PDCardFileManager *)self _imageSetContainerForUniqueID:v14 cardDirectoryCoordinator:v21[5] ofType:type withDisplayProfile:profileCopy suffix:suffixCopy];
 
   _Block_object_dispose(&v20, 8);
 
   return v15;
 }
 
-- (id)_imageSetContainerForUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 ofType:(int64_t)a5 withDisplayProfile:(id)a6 suffix:(id)a7
+- (id)_imageSetContainerForUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator ofType:(int64_t)type withDisplayProfile:(id)profile suffix:(id)suffix
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  coordinatorCopy = coordinator;
+  profileCopy = profile;
+  suffixCopy = suffix;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1389,20 +1389,20 @@ LABEL_23:
   v33 = sub_10000B18C;
   v34 = 0;
   v16 = objc_autoreleasePoolPush();
-  v17 = [(PDCardFileManager *)self _cacheURLForUniqueID:v12];
+  v17 = [(PDCardFileManager *)self _cacheURLForUniqueID:dCopy];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10011E400;
   v23[3] = &unk_1008475E8;
   v27 = &v29;
-  v28 = a5;
-  v18 = v14;
+  typeCopy = type;
+  v18 = profileCopy;
   v24 = v18;
-  v19 = v15;
+  v19 = suffixCopy;
   v25 = v19;
   v20 = v17;
   v26 = v20;
-  [v13 performCoordinatedAction:v23];
+  [coordinatorCopy performCoordinatedAction:v23];
 
   objc_autoreleasePoolPop(v16);
   v21 = v30[5];
@@ -1411,9 +1411,9 @@ LABEL_23:
   return v21;
 }
 
-- (id)_contentForCardWithUniqueID:(id)a3
+- (id)_contentForCardWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1434,7 +1434,7 @@ LABEL_23:
   v17[3] = &unk_1008473B8;
   v19 = &v20;
   v17[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v18 = v7;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v17];
   v8 = v21[5];
@@ -1452,7 +1452,7 @@ LABEL_23:
     block[2] = sub_10011E7F8;
     block[3] = &unk_100847610;
     v13 = v7;
-    v14 = self;
+    selfCopy = self;
     v15 = &v20;
     dispatch_async(v9, block);
   }
@@ -1465,24 +1465,24 @@ LABEL_23:
   return v10;
 }
 
-- (id)_dc_cardDirectoryCoordinatorForUniqueID:(id)a3
+- (id)_dc_cardDirectoryCoordinatorForUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMapTable *)self->_cardDirectoryCoordinators objectForKey:v4];
+    v5 = [(NSMapTable *)self->_cardDirectoryCoordinators objectForKey:dCopy];
     if (!v5)
     {
 LABEL_5:
-      v7 = [(PDCardFileManager *)self _objectURLForUniqueID:v4];
+      v7 = [(PDCardFileManager *)self _objectURLForUniqueID:dCopy];
       v8 = +[NSFileManager defaultManager];
-      v9 = [v7 path];
-      v10 = [v8 fileExistsAtPath:v9];
+      path = [v7 path];
+      v10 = [v8 fileExistsAtPath:path];
 
       if (v10)
       {
         v6 = [[PKDirectoryCoordinator alloc] initWithURL:v7];
-        [(NSMapTable *)self->_cardDirectoryCoordinators setObject:v6 forKey:v4];
+        [(NSMapTable *)self->_cardDirectoryCoordinators setObject:v6 forKey:dCopy];
       }
 
       else
@@ -1496,7 +1496,7 @@ LABEL_5:
     v6 = v5;
     if ([v5 isInvalidated])
     {
-      [(NSMapTable *)self->_cardDirectoryCoordinators removeObjectForKey:v4];
+      [(NSMapTable *)self->_cardDirectoryCoordinators removeObjectForKey:dCopy];
 
       goto LABEL_5;
     }
@@ -1512,14 +1512,14 @@ LABEL_10:
   return v6;
 }
 
-- (void)_dc_invalidateCardDirectoryCoordinatorForUniqueID:(id)a3
+- (void)_dc_invalidateCardDirectoryCoordinatorForUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
-    v8 = v4;
-    v6 = [(NSMapTable *)self->_cardDirectoryCoordinators objectForKey:v4];
+    v8 = dCopy;
+    v6 = [(NSMapTable *)self->_cardDirectoryCoordinators objectForKey:dCopy];
     v7 = v6;
     if (v6)
     {
@@ -1530,14 +1530,14 @@ LABEL_10:
     v5 = v8;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(dCopy, v5);
 }
 
-- (id)_dataAccessorForCardDirectoryCoordinator:(id)a3 error:(id *)a4
+- (id)_dataAccessorForCardDirectoryCoordinator:(id)coordinator error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  coordinatorCopy = coordinator;
+  v6 = coordinatorCopy;
+  if (coordinatorCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -1557,11 +1557,11 @@ LABEL_10:
     v9[3] = &unk_1008474A8;
     v11 = &v19;
     v12 = &v13;
-    v10 = v5;
+    v10 = coordinatorCopy;
     [v10 performCoordinatedAction:v9];
-    if (a4)
+    if (error)
     {
-      *a4 = v14[5];
+      *error = v14[5];
     }
 
     v7 = v20[5];
@@ -1578,15 +1578,15 @@ LABEL_10:
   return v7;
 }
 
-- (id)_dc_cardWithUniqueID:(id)a3 error:(id *)a4
+- (id)_dc_cardWithUniqueID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PDCardFileManager *)self _dc_cardDirectoryCoordinatorForUniqueID:v6];
+  v8 = [(PDCardFileManager *)self _dc_cardDirectoryCoordinatorForUniqueID:dCopy];
   objc_autoreleasePoolPop(v7);
   if (v8)
   {
-    v9 = [(PDCardFileManager *)self _cardWithUniqueID:v6 cardDirectoryCoordinator:v8 error:a4];
+    v9 = [(PDCardFileManager *)self _cardWithUniqueID:dCopy cardDirectoryCoordinator:v8 error:error];
   }
 
   else
@@ -1597,13 +1597,13 @@ LABEL_10:
   return v9;
 }
 
-- (id)_cardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4 error:(id *)a5
+- (id)_cardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  coordinatorCopy = coordinator;
   v10 = objc_autoreleasePoolPush();
   v19 = 0;
-  v11 = [(PDCardFileManager *)self _dataAccessorForCardDirectoryCoordinator:v9 error:&v19];
+  v11 = [(PDCardFileManager *)self _dataAccessorForCardDirectoryCoordinator:coordinatorCopy error:&v19];
   v12 = v19;
   if (!v11)
   {
@@ -1613,12 +1613,12 @@ LABEL_6:
     v16[1] = 3221225472;
     v16[2] = sub_10011EF18;
     v16[3] = &unk_100847430;
-    v17 = v8;
+    v17 = dCopy;
     v18 = v12;
-    [v9 performCoordinatedAction:v16];
+    [coordinatorCopy performCoordinatedAction:v16];
 
     v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1634,12 +1634,12 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [v13 setUniqueID:v8];
-  if (a5)
+  [v13 setUniqueID:dCopy];
+  if (error)
   {
 LABEL_7:
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_8:
@@ -1647,10 +1647,10 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)_dc_writeCard:(id)a3 writtenCard:(id *)a4 diff:(id *)a5 daemonData:(id *)a6 undecryptableAssets:(id *)a7 error:(id *)a8
+- (BOOL)_dc_writeCard:(id)card writtenCard:(id *)writtenCard diff:(id *)diff daemonData:(id *)data undecryptableAssets:(id *)assets error:(id *)error
 {
-  v10 = a3;
-  v11 = [v10 dataAccessor];
+  cardCopy = card;
+  dataAccessor = [cardCopy dataAccessor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1661,37 +1661,37 @@ LABEL_8:
     goto LABEL_49;
   }
 
-  v56 = [v10 dataAccessor];
-  v13 = [v10 uniqueID];
-  v55 = [v56 fileURL];
-  bundleURL = [(PDCardFileManager *)self _objectURLForUniqueID:v13];
+  dataAccessor2 = [cardCopy dataAccessor];
+  uniqueID = [cardCopy uniqueID];
+  fileURL = [dataAccessor2 fileURL];
+  bundleURL = [(PDCardFileManager *)self _objectURLForUniqueID:uniqueID];
   v61 = +[NSFileManager defaultManager];
-  if (!v13)
+  if (!uniqueID)
   {
-    v14 = [v10 passTypeIdentifier];
-    v15 = [v10 serialNumber];
-    v13 = PKGeneratePassUniqueID();
+    passTypeIdentifier = [cardCopy passTypeIdentifier];
+    serialNumber = [cardCopy serialNumber];
+    uniqueID = PKGeneratePassUniqueID();
 
-    [v10 setUniqueID:v13];
+    [cardCopy setUniqueID:uniqueID];
   }
 
-  v16 = [(PDCardFileManager *)self _dc_cardWithUniqueID:v13 error:0];
-  v60 = [v16 sequenceCounter];
-  v58 = [v10 sequenceCounter];
-  if (v60)
+  v16 = [(PDCardFileManager *)self _dc_cardWithUniqueID:uniqueID error:0];
+  sequenceCounter = [v16 sequenceCounter];
+  sequenceCounter2 = [cardCopy sequenceCounter];
+  if (sequenceCounter)
   {
-    if (v58)
+    if (sequenceCounter2)
     {
-      v17 = [v60 integerValue];
-      if (v17 > [v58 integerValue])
+      integerValue = [sequenceCounter integerValue];
+      if (integerValue > [sequenceCounter2 integerValue])
       {
         v18 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          *&buf[4] = [v60 integerValue];
+          *&buf[4] = [sequenceCounter integerValue];
           *&buf[12] = 2048;
-          *&buf[14] = [v58 integerValue];
+          *&buf[14] = [sequenceCounter2 integerValue];
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Existing pass sequence counter %lu is greater than incoming pass sequence counter %lu. Ignoring.", buf, 0x16u);
         }
 
@@ -1704,10 +1704,10 @@ LABEL_44:
     }
   }
 
-  if (!v16 || ([v10 manifestHash], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "manifestHash"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToData:", v22), v22, v21, (v23 & 1) == 0))
+  if (!v16 || ([cardCopy manifestHash], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "manifestHash"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToData:", v22), v22, v21, (v23 & 1) == 0))
   {
     v24 = PDOSTransactionCreate("PDCardFileManager");
-    [(PDCardFileManager *)self _dc_invalidateCardDirectoryCoordinatorForUniqueID:v13];
+    [(PDCardFileManager *)self _dc_invalidateCardDirectoryCoordinatorForUniqueID:uniqueID];
     missingAssetQueue = self->_missingAssetQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1715,8 +1715,8 @@ LABEL_44:
     block[3] = &unk_10083C4C0;
     v48 = v24;
     v73 = v48;
-    v74 = self;
-    v26 = v13;
+    selfCopy = self;
+    v26 = uniqueID;
     v75 = v26;
     v27 = missingAssetQueue;
     v28 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_DETACHED, block);
@@ -1735,21 +1735,21 @@ LABEL_44:
         [v16 setDataAccessor:v31];
 
 LABEL_23:
-        v20 = [v61 copyItemAtURL:v55 toURL:bundleURL error:a8];
+        v20 = [v61 copyItemAtURL:fileURL toURL:bundleURL error:error];
         if (v20)
         {
           v33 = [(PDCardFileManager *)self _dc_cardDirectoryCoordinatorForUniqueID:v26];
-          v47 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-          v19 = [v10 copy];
+          secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+          v19 = [cardCopy copy];
           v34 = [(PDCardFileManager *)self _dataAccessorForCardDirectoryCoordinator:v33 error:0];
           [v19 setDataAccessor:v34];
 
           if ([v19 passType] == 1)
           {
-            [v19 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v47];
+            [v19 updateDevicePaymentApplicationsWithSecureElementIdentifiers:secureElementIdentifiers];
           }
 
-          [(PDCardFileManager *)self decryptPassAssets:v19 undecryptableAssets:a7];
+          [(PDCardFileManager *)self decryptPassAssets:v19 undecryptableAssets:assets];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
@@ -1762,7 +1762,7 @@ LABEL_23:
           v71[3] = &unk_100847458;
           v71[4] = buf;
           [v33 performCoordinatedAction:v71];
-          objc_storeStrong(a6, *(*&buf[8] + 40));
+          objc_storeStrong(data, *(*&buf[8] + 40));
           v51 = v33;
           v35 = CFBundleCreate(kCFAllocatorDefault, bundleURL);
           if (v35)
@@ -1772,11 +1772,11 @@ LABEL_23:
             CFRelease(v35);
           }
 
-          if (a5 && v16)
+          if (diff && v16)
           {
             v36 = [v16 diff:v19];
-            v37 = *a5;
-            *a5 = v36;
+            v37 = *diff;
+            *diff = v36;
           }
 
           if (([v19 supportsSyncing] & 1) == 0 && (PKStoreDemoModeEnabled() & 1) == 0 && (PKUIOnlyDemoModeEnabled() & 1) == 0)
@@ -1789,7 +1789,7 @@ LABEL_23:
             [v61 removeItemAtURL:v30 error:0];
           }
 
-          v38 = [v19 displayProfile];
+          displayProfile = [v19 displayProfile];
           v39 = PDHeavyUtilityQueue();
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
@@ -1800,12 +1800,12 @@ LABEL_23:
           v68 = v40;
           v54 = v51;
           v69 = v54;
-          v52 = v38;
+          v52 = displayProfile;
           v70 = v52;
           v41 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_DETACHED, v67);
           dispatch_async(v39, v41);
 
-          if (([v19 remoteAssetsDownloadedForSEIDs:v47] & 1) == 0)
+          if (([v19 remoteAssetsDownloadedForSEIDs:secureElementIdentifiers] & 1) == 0)
           {
             v42 = self->_missingAssetQueue;
             v62[0] = _NSConcreteStackBlock;
@@ -1814,7 +1814,7 @@ LABEL_23:
             v62[3] = &unk_10083E088;
             v63 = v48;
             v64 = v54;
-            v65 = self;
+            selfCopy2 = self;
             v66 = v40;
             v43 = v42;
             v44 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_DETACHED, v62);
@@ -1864,14 +1864,14 @@ LABEL_23:
 LABEL_45:
 
   v45 = v20 ^ 1;
-  if (!a4)
+  if (!writtenCard)
   {
     v45 = 1;
   }
 
   if ((v45 & 1) == 0)
   {
-    objc_storeStrong(a4, v19);
+    objc_storeStrong(writtenCard, v19);
     LOBYTE(v20) = 1;
   }
 
@@ -1880,22 +1880,22 @@ LABEL_49:
   return v20;
 }
 
-- (BOOL)_dc_deleteCardWithUniqueID:(id)a3 cardDirectoryCoordinator:(id)a4
+- (BOOL)_dc_deleteCardWithUniqueID:(id)d cardDirectoryCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ([v7 isInvalidated] & 1) == 0)
+  dCopy = d;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
+  if (!coordinatorCopy || ([coordinatorCopy isInvalidated] & 1) == 0)
   {
     v10 = +[NSFileManager defaultManager];
-    [(PDCardFileManager *)self _dc_invalidateCardDirectoryCoordinatorForUniqueID:v6];
+    [(PDCardFileManager *)self _dc_invalidateCardDirectoryCoordinatorForUniqueID:dCopy];
     missingAssetQueue = self->_missingAssetQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10011FC78;
     block[3] = &unk_10083C420;
     block[4] = self;
-    v12 = v6;
+    v12 = dCopy;
     v24 = v12;
     v13 = missingAssetQueue;
     v14 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_DETACHED, block);
@@ -1943,7 +1943,7 @@ LABEL_11:
 {
   v3 = +[NSFileManager defaultManager];
   v4 = objc_autoreleasePoolPush();
-  v61 = self;
+  selfCopy = self;
   cardsURL = self->_cardsURL;
   v86 = 0;
   v6 = [v3 contentsOfDirectoryAtURL:cardsURL includingPropertiesForKeys:&__NSArray0__struct options:7 error:&v86];
@@ -1978,14 +1978,14 @@ LABEL_11:
           }
 
           v16 = *(*(&v82 + 1) + 8 * i);
-          v17 = [v16 lastPathComponent];
-          v18 = [v17 pathExtension];
+          lastPathComponent = [v16 lastPathComponent];
+          pathExtension = [lastPathComponent pathExtension];
 
           v19 = v9;
-          if (([v18 isEqualToString:v14] & 1) != 0 || (v19 = v65, objc_msgSend(v18, "isEqualToString:", @"cache")))
+          if (([pathExtension isEqualToString:v14] & 1) != 0 || (v19 = v65, objc_msgSend(pathExtension, "isEqualToString:", @"cache")))
           {
-            v20 = [v16 URLByStandardizingPath];
-            [v19 addObject:v20];
+            uRLByStandardizingPath = [v16 URLByStandardizingPath];
+            [v19 addObject:uRLByStandardizingPath];
           }
         }
 
@@ -2019,17 +2019,17 @@ LABEL_11:
           v23 = *(*(&v78 + 1) + 8 * v22);
           v24 = objc_autoreleasePoolPush();
           v25 = sub_10011A5CC(v23);
-          v26 = [(PDCardFileManager *)v61 _cacheURLForUniqueID:v25];
-          v27 = [v26 URLByStandardizingPath];
+          v26 = [(PDCardFileManager *)selfCopy _cacheURLForUniqueID:v25];
+          uRLByStandardizingPath2 = [v26 URLByStandardizingPath];
 
-          if (!v27 || ![v21 containsObject:v27])
+          if (!uRLByStandardizingPath2 || ![v21 containsObject:uRLByStandardizingPath2])
           {
             goto LABEL_44;
           }
 
-          [v21 removeObject:v27];
+          [v21 removeObject:uRLByStandardizingPath2];
           v77 = 0;
-          v28 = [v3 contentsOfDirectoryAtURL:v27 includingPropertiesForKeys:&__NSArray0__struct options:7 error:&v77];
+          v28 = [v3 contentsOfDirectoryAtURL:uRLByStandardizingPath2 includingPropertiesForKeys:&__NSArray0__struct options:7 error:&v77];
           v29 = v77;
           v30 = v29;
           if (!v28)
@@ -2048,7 +2048,7 @@ LABEL_44:
           }
 
           v62 = v22;
-          v63 = v27;
+          v63 = uRLByStandardizingPath2;
           v64 = v24;
 
           v76 = 0u;
@@ -2074,10 +2074,10 @@ LABEL_44:
               }
 
               v36 = *(*(&v73 + 1) + 8 * j);
-              v37 = [v36 lastPathComponent];
-              v38 = [v37 pathExtension];
+              lastPathComponent2 = [v36 lastPathComponent];
+              pathExtension2 = [lastPathComponent2 pathExtension];
 
-              if ([v38 isEqualToString:@"archive"])
+              if ([pathExtension2 isEqualToString:@"archive"])
               {
                 v72 = 0;
                 [v3 removeItemAtURL:v36 error:&v72];
@@ -2206,25 +2206,25 @@ LABEL_58:
 LABEL_59:
 }
 
-- (void)ubiquitousCardDidChange:(id)a3
+- (void)ubiquitousCardDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  v6 = [(PDCardFileManager *)self objectWithUniqueID:v5];
+  changeCopy = change;
+  uniqueID = [changeCopy uniqueID];
+  v6 = [(PDCardFileManager *)self objectWithUniqueID:uniqueID];
 
-  if (!v6 || ([v4 manifestHash], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "manifestHash"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToData:", v8), v8, v7, (v9 & 1) == 0))
+  if (!v6 || ([changeCopy manifestHash], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "manifestHash"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToData:", v8), v8, v7, (v9 & 1) == 0))
   {
     v17 = 0;
-    v12 = [(PDCardFileManager *)self writeCard:v4 source:3 error:&v17];
+    v12 = [(PDCardFileManager *)self writeCard:changeCopy source:3 error:&v17];
     v13 = PKLogFacilityTypeGetObject();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
     if (v12)
     {
       if (v14)
       {
-        v15 = [v4 uniqueID];
+        uniqueID2 = [changeCopy uniqueID];
         *buf = 138412290;
-        v19 = v15;
+        v19 = uniqueID2;
         v16 = "card updated via ubiquity: %@";
 LABEL_11:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v16, buf, 0xCu);
@@ -2233,9 +2233,9 @@ LABEL_11:
 
     else if (v14)
     {
-      v15 = [v17 localizedDescription];
+      uniqueID2 = [v17 localizedDescription];
       *buf = 138412290;
-      v19 = v15;
+      v19 = uniqueID2;
       v16 = "card update via ubiquity FAILED: %@";
       goto LABEL_11;
     }
@@ -2246,32 +2246,32 @@ LABEL_11:
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v4 uniqueID];
+    uniqueID3 = [changeCopy uniqueID];
     *buf = 138412290;
-    v19 = v11;
+    v19 = uniqueID3;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "card NOT updated via ubiquity - manifest hashes are equivalent: %@", buf, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (void)ubiquitousCardWithUniqueIDRemoved:(id)a3
+- (void)ubiquitousCardWithUniqueIDRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = removedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "card removed via ubiquity: %@", &v6, 0xCu);
   }
 
-  [(PDCardFileManager *)self deleteCardWithUniqueID:v4 forReason:1 withDiagnosticReason:@"Ubiquity"];
+  [(PDCardFileManager *)self deleteCardWithUniqueID:removedCopy forReason:1 withDiagnosticReason:@"Ubiquity"];
 }
 
-- (void)ubiquitousCatalogDidChange:(id)a3
+- (void)ubiquitousCatalogDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2279,9 +2279,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "catalog received via ubiquity", buf, 2u);
   }
 
-  v6 = [(PDCardFileManager *)self catalogOfRecord];
-  v7 = v6;
-  if (v6 && ([v6 isEquivalentToCatalog:v4] & 1) != 0)
+  catalogOfRecord = [(PDCardFileManager *)self catalogOfRecord];
+  v7 = catalogOfRecord;
+  if (catalogOfRecord && ([catalogOfRecord isEquivalentToCatalog:changeCopy] & 1) != 0)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -2295,7 +2295,7 @@ LABEL_9:
 
   else
   {
-    [(PDCardFileManager *)self writeCatalogOfRecord:v4 source:3];
+    [(PDCardFileManager *)self writeCatalogOfRecord:changeCopy source:3];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
@@ -2306,12 +2306,12 @@ LABEL_9:
   }
 }
 
-- (id)_objectURLForUniqueID:(id)a3
+- (id)_objectURLForUniqueID:(id)d
 {
-  if (a3)
+  if (d)
   {
     cardsURL = self->_cardsURL;
-    v4 = [a3 stringByAppendingPathExtension:PKRawPassExtension];
+    v4 = [d stringByAppendingPathExtension:PKRawPassExtension];
     v5 = [(NSURL *)cardsURL URLByAppendingPathComponent:v4 isDirectory:1];
   }
 
@@ -2323,12 +2323,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)_cacheURLForUniqueID:(id)a3
+- (id)_cacheURLForUniqueID:(id)d
 {
-  if (a3)
+  if (d)
   {
     cardsURL = self->_cardsURL;
-    v4 = [a3 stringByAppendingPathExtension:@"cache"];
+    v4 = [d stringByAppendingPathExtension:@"cache"];
     v5 = [(NSURL *)cardsURL URLByAppendingPathComponent:v4 isDirectory:1];
   }
 
@@ -2340,7 +2340,7 @@ LABEL_9:
   return v5;
 }
 
-- (void)receivedXPCEvent:(id)a3 forEventStream:(id)a4
+- (void)receivedXPCEvent:(id)event forEventStream:(id)stream
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2352,7 +2352,7 @@ LABEL_9:
   [(PDCardFileManager *)self startUbiquity];
 }
 
-- (void)_evaluateDownloadMissingAssetsActivityWithForcedReschedule:(BOOL)a3
+- (void)_evaluateDownloadMissingAssetsActivityWithForcedReschedule:(BOOL)reschedule
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2376,7 +2376,7 @@ LABEL_9:
 
   if (v7)
   {
-    if (a3 || (PDScheduledActivityExists() & 1) == 0)
+    if (reschedule || (PDScheduledActivityExists() & 1) == 0)
     {
       v10 = [NSDate dateWithTimeIntervalSinceNow:600.0];
       v11 = [PDScheduledActivityCriteria maintenanceActivityCriteriaWithStartDate:v10];
@@ -2503,15 +2503,15 @@ LABEL_17:
   }
 }
 
-- (void)_downloadRemoteAssetsForCardWithUniqueID:(id)a3 completion:(id)a4
+- (void)_downloadRemoteAssetsForCardWithUniqueID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v22 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PDCardFileManager: downloading missing assets for pass %@", &buf, 0xCu);
   }
 
@@ -2529,17 +2529,17 @@ LABEL_17:
   v46[3] = &unk_1008473B8;
   p_buf = &buf;
   v46[4] = self;
-  v19 = v6;
+  v19 = dCopy;
   v47 = v19;
   [(PKDirectoryCoordinator *)directoryCoordinator performCoordinatedAction:v46];
-  v21 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+  secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
   v9 = [(PDCardFileManager *)self _dataAccessorForCardDirectoryCoordinator:*(*(&buf + 1) + 40) error:0];
-  v25 = [v9 remoteAssetManagerForSEIDs:v21];
+  v25 = [v9 remoteAssetManagerForSEIDs:secureElementIdentifiers];
 
   if (*(*(&buf + 1) + 40) && v25)
   {
-    v10 = [v25 pendingRemoteAssetsItems];
-    v11 = [v10 count];
+    pendingRemoteAssetsItems = [v25 pendingRemoteAssetsItems];
+    v11 = [pendingRemoteAssetsItems count];
     if (v11)
     {
       v24 = objc_alloc_init(PKAsyncUnaryOperationComposer);
@@ -2552,7 +2552,7 @@ LABEL_17:
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      obj = v10;
+      obj = pendingRemoteAssetsItems;
       v12 = [obj countByEnumeratingWithState:&v41 objects:v49 count:16];
       if (v12)
       {
@@ -2574,7 +2574,7 @@ LABEL_17:
             v39 = &buf;
             v36 = v25;
             v37 = v15;
-            v38 = self;
+            selfCopy = self;
             v40 = v45;
             [v24 addOperation:v35];
           }
@@ -2598,8 +2598,8 @@ LABEL_17:
       v26[3] = &unk_1008476B0;
       v27 = v20;
       v31 = &buf;
-      v30 = v22;
-      v28 = self;
+      v30 = completionCopy;
+      selfCopy2 = self;
       v32 = v45;
       v33 = v18;
       v29 = v19;
@@ -2608,15 +2608,15 @@ LABEL_17:
       _Block_object_dispose(v45, 8);
     }
 
-    else if (v22)
+    else if (completionCopy)
     {
-      v22[2]();
+      completionCopy[2]();
     }
   }
 
-  else if (v22)
+  else if (completionCopy)
   {
-    v22[2]();
+    completionCopy[2]();
   }
 
   _Block_object_dispose(&buf, 8);

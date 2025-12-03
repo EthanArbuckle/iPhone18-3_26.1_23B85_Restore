@@ -1,14 +1,14 @@
 @interface MSPCompanionSyncedItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChangeType:(id)a3;
+- (int)StringAsChangeType:(id)type;
 - (int)changeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPCompanionSyncedItem
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Add"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Add"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Delete"])
+  else if ([typeCopy isEqualToString:@"Delete"])
   {
     v4 = 3;
   }
@@ -57,8 +57,8 @@
   v7.receiver = self;
   v7.super_class = MSPCompanionSyncedItem;
   v3 = [(MSPCompanionSyncedItem *)&v7 description];
-  v4 = [(MSPCompanionSyncedItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(MSPCompanionSyncedItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -92,123 +92,123 @@
   bookmark = self->_bookmark;
   if (bookmark)
   {
-    v9 = [(MSPBookmarkStorage *)bookmark dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"bookmark"];
+    dictionaryRepresentation = [(MSPBookmarkStorage *)bookmark dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"bookmark"];
   }
 
   pin = self->_pin;
   if (pin)
   {
-    v11 = [(MSPPinStorage *)pin dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"pin"];
+    dictionaryRepresentation2 = [(MSPPinStorage *)pin dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"pin"];
   }
 
   searchRequest = self->_searchRequest;
   if (searchRequest)
   {
-    v13 = [(MSPHistoryEntryStorage *)searchRequest dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"searchRequest"];
+    dictionaryRepresentation3 = [(MSPHistoryEntryStorage *)searchRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"searchRequest"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v15 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"Unknown Fields"];
+    dictionaryRepresentation4 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_syncId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bookmark)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_pin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_searchRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     changeType = self->_changeType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_syncId)
   {
-    [v4 setSyncId:?];
-    v4 = v5;
+    [toCopy setSyncId:?];
+    toCopy = v5;
   }
 
   if (self->_bookmark)
   {
     [v5 setBookmark:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_pin)
   {
     [v5 setPin:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_searchRequest)
   {
     [v5 setSearchRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_changeType;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 6) = self->_changeType;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_syncId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_syncId copyWithZone:zone];
   v7 = *(v5 + 6);
   *(v5 + 6) = v6;
 
-  v8 = [(MSPBookmarkStorage *)self->_bookmark copyWithZone:a3];
+  v8 = [(MSPBookmarkStorage *)self->_bookmark copyWithZone:zone];
   v9 = *(v5 + 2);
   *(v5 + 2) = v8;
 
-  v10 = [(MSPPinStorage *)self->_pin copyWithZone:a3];
+  v10 = [(MSPPinStorage *)self->_pin copyWithZone:zone];
   v11 = *(v5 + 4);
   *(v5 + 4) = v10;
 
-  v12 = [(MSPHistoryEntryStorage *)self->_searchRequest copyWithZone:a3];
+  v12 = [(MSPHistoryEntryStorage *)self->_searchRequest copyWithZone:zone];
   v13 = *(v5 + 5);
   *(v5 + 5) = v12;
 
@@ -222,16 +222,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   syncId = self->_syncId;
-  if (syncId | *(v4 + 6))
+  if (syncId | *(equalCopy + 6))
   {
     if (![(NSString *)syncId isEqual:?])
     {
@@ -240,7 +240,7 @@
   }
 
   bookmark = self->_bookmark;
-  if (bookmark | *(v4 + 2))
+  if (bookmark | *(equalCopy + 2))
   {
     if (![(MSPBookmarkStorage *)bookmark isEqual:?])
     {
@@ -249,7 +249,7 @@
   }
 
   pin = self->_pin;
-  if (pin | *(v4 + 4))
+  if (pin | *(equalCopy + 4))
   {
     if (![(MSPPinStorage *)pin isEqual:?])
     {
@@ -258,7 +258,7 @@
   }
 
   searchRequest = self->_searchRequest;
-  if (searchRequest | *(v4 + 5))
+  if (searchRequest | *(equalCopy + 5))
   {
     if (![(MSPHistoryEntryStorage *)searchRequest isEqual:?])
     {
@@ -266,10 +266,10 @@
     }
   }
 
-  v9 = (*(v4 + 56) & 1) == 0;
+  v9 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) != 0 && self->_changeType == *(v4 + 6))
+    if ((*(equalCopy + 56) & 1) != 0 && self->_changeType == *(equalCopy + 6))
     {
       v9 = 1;
       goto LABEL_15;
@@ -303,18 +303,18 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(MSPCompanionSyncedItem *)self setSyncId:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
   bookmark = self->_bookmark;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (bookmark)
   {
     if (!v6)
@@ -335,10 +335,10 @@ LABEL_15:
     [(MSPCompanionSyncedItem *)self setBookmark:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_9:
   pin = self->_pin;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (pin)
   {
     if (!v8)
@@ -359,10 +359,10 @@ LABEL_9:
     [(MSPCompanionSyncedItem *)self setPin:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_15:
   searchRequest = self->_searchRequest;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (searchRequest)
   {
     if (!v10)
@@ -383,11 +383,11 @@ LABEL_15:
     [(MSPCompanionSyncedItem *)self setSearchRequest:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_21:
-  if (v4[14])
+  if (fromCopy[14])
   {
-    self->_changeType = v4[6];
+    self->_changeType = fromCopy[6];
     *&self->_has |= 1u;
   }
 

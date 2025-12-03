@@ -1,19 +1,19 @@
 @interface IntentHandler
-- (BOOL)_intentWantsPlaybackQueueIncludedInNowPlayingInfo:(id)a3;
-- (id)_playbackRequestURLForIntent:(id)a3;
-- (id)_responseForCode:(int64_t)a3;
-- (id)_responseForMediaRemoteStatus:(unsigned int)a3 error:(unsigned int)a4;
-- (void)confirmPlayMedia:(id)a3 completion:(id)a4;
-- (void)handlePlayMedia:(id)a3 completion:(id)a4;
+- (BOOL)_intentWantsPlaybackQueueIncludedInNowPlayingInfo:(id)info;
+- (id)_playbackRequestURLForIntent:(id)intent;
+- (id)_responseForCode:(int64_t)code;
+- (id)_responseForMediaRemoteStatus:(unsigned int)status error:(unsigned int)error;
+- (void)confirmPlayMedia:(id)media completion:(id)completion;
+- (void)handlePlayMedia:(id)media completion:(id)completion;
 @end
 
 @implementation IntentHandler
 
-- (void)handlePlayMedia:(id)a3 completion:(id)a4
+- (void)handlePlayMedia:(id)media completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IntentHandler *)self _playbackRequestURLForIntent:v6];
+  mediaCopy = media;
+  completionCopy = completion;
+  v8 = [(IntentHandler *)self _playbackRequestURLForIntent:mediaCopy];
   if ([v8 length])
   {
     v12[0] = _NSConcreteStackBlock;
@@ -21,7 +21,7 @@
     v12[2] = sub_1001477DC;
     v12[3] = &unk_1004DDBF0;
     v12[4] = self;
-    v13 = v7;
+    v13 = completionCopy;
     [MTExtensionPlaybackController setQueueWithPlaybackRequestIdentifier:v8 mrCompletion:v12];
     v9 = v13;
 LABEL_7:
@@ -29,29 +29,29 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v10 = _MTLogCategorySiri();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 mediaContainer];
+      mediaContainer = [mediaCopy mediaContainer];
       *buf = 134217984;
-      v15 = [v11 type];
+      type = [mediaContainer type];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Siri Actions failed to play media.  Unhandled media container type: %lu", buf, 0xCu);
     }
 
     v9 = [(IntentHandler *)self _responseForCode:6];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)confirmPlayMedia:(id)a3 completion:(id)a4
+- (void)confirmPlayMedia:(id)media completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
+  mediaCopy = media;
+  completionCopy = completion;
   if (!self->_playbackController)
   {
     v7 = objc_alloc_init(MTExtensionPlaybackController);
@@ -59,14 +59,14 @@ LABEL_8:
     self->_playbackController = v7;
   }
 
-  v9 = [v15 mediaContainer];
-  v10 = [v9 identifier];
+  mediaContainer = [mediaCopy mediaContainer];
+  identifier = [mediaContainer identifier];
 
-  if ([v10 length])
+  if ([identifier length])
   {
-    v11 = [(IntentHandler *)self _playbackRequestURLForIntent:v15];
+    v11 = [(IntentHandler *)self _playbackRequestURLForIntent:mediaCopy];
     v12 = +[NSMutableDictionary dictionary];
-    if ([(IntentHandler *)self _intentWantsPlaybackQueueIncludedInNowPlayingInfo:v15])
+    if ([(IntentHandler *)self _intentWantsPlaybackQueueIncludedInNowPlayingInfo:mediaCopy])
     {
       [MTExtensionPlaybackController playbackQueueForIdentifier:v11 startPlayback:1 assetInfo:0];
       v13 = MRSystemAppPlaybackQueueCreateExternalRepresentation();
@@ -78,78 +78,78 @@ LABEL_8:
       MRSystemAppPlaybackQueueDestroy();
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v14 = [(IntentHandler *)self _responseForCode:4];
       [v14 setNowPlayingInfo:v12];
-      v6[2](v6, v14);
+      completionCopy[2](completionCopy, v14);
     }
   }
 
   else
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_14;
     }
 
     v11 = [(IntentHandler *)self _responseForCode:6];
-    v6[2](v6, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
 LABEL_14:
 }
 
-- (id)_playbackRequestURLForIntent:(id)a3
+- (id)_playbackRequestURLForIntent:(id)intent
 {
-  v3 = a3;
-  v4 = [v3 mediaContainer];
-  v5 = [v4 identifier];
+  intentCopy = intent;
+  mediaContainer = [intentCopy mediaContainer];
+  identifier = [mediaContainer identifier];
 
-  v6 = [v3 mediaItems];
-  v7 = [v6 firstObject];
-  v8 = [v7 identifier];
+  mediaItems = [intentCopy mediaItems];
+  firstObject = [mediaItems firstObject];
+  identifier2 = [firstObject identifier];
 
-  v9 = [[MTURLCommandRequest alloc] initWithURLString:v8];
-  v10 = [(MTURLCommandRequest *)v9 playQueueType];
+  v9 = [[MTURLCommandRequest alloc] initWithURLString:identifier2];
+  playQueueType = [(MTURLCommandRequest *)v9 playQueueType];
 
-  if (v10)
+  if (playQueueType)
   {
-    v11 = v8;
+    v11 = identifier2;
 LABEL_5:
     v14 = v11;
     goto LABEL_6;
   }
 
-  v12 = [[MTURLCommandRequest alloc] initWithURLString:v5];
-  v13 = [(MTURLCommandRequest *)v12 playQueueType];
+  v12 = [[MTURLCommandRequest alloc] initWithURLString:identifier];
+  playQueueType2 = [(MTURLCommandRequest *)v12 playQueueType];
 
-  if (v13)
+  if (playQueueType2)
   {
-    v11 = v5;
+    v11 = identifier;
     goto LABEL_5;
   }
 
-  v16 = [v3 mediaContainer];
-  v17 = [v16 type];
+  mediaContainer2 = [intentCopy mediaContainer];
+  type = [mediaContainer2 type];
 
-  if (v17 == 6)
+  if (type == 6)
   {
     v18 = +[MTPlaybackIdentifierUtil sharedInstance];
-    v19 = [v18 localPlaybackQueueIdentifierForPodcastUuid:v5 episodeUuid:v8 sampPlaybackOrder:SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue];
+    v19 = [v18 localPlaybackQueueIdentifierForPodcastUuid:identifier episodeUuid:identifier2 sampPlaybackOrder:SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue];
 LABEL_13:
     v14 = v19;
 
     goto LABEL_6;
   }
 
-  v20 = [v3 mediaContainer];
-  v21 = [v20 type];
+  mediaContainer3 = [intentCopy mediaContainer];
+  type2 = [mediaContainer3 type];
 
-  if (v21 == 8)
+  if (type2 == 8)
   {
     v18 = +[MTPlaybackIdentifierUtil sharedInstance];
-    v19 = [v18 localPlaybackQueueIdentifierForStationUuid:v5 episodeUuid:v8];
+    v19 = [v18 localPlaybackQueueIdentifierForStationUuid:identifier episodeUuid:identifier2];
     goto LABEL_13;
   }
 
@@ -159,36 +159,36 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_intentWantsPlaybackQueueIncludedInNowPlayingInfo:(id)a3
+- (BOOL)_intentWantsPlaybackQueueIncludedInNowPlayingInfo:(id)info
 {
-  v3 = [a3 mediaContainer];
-  v4 = [v3 identifier];
-  v5 = [v4 containsString:@"&includePlaybackQueue=true"];
+  mediaContainer = [info mediaContainer];
+  identifier = [mediaContainer identifier];
+  v5 = [identifier containsString:@"&includePlaybackQueue=true"];
 
   return v5;
 }
 
-- (id)_responseForMediaRemoteStatus:(unsigned int)a3 error:(unsigned int)a4
+- (id)_responseForMediaRemoteStatus:(unsigned int)status error:(unsigned int)error
 {
   v4 = 4;
   v5 = 10;
   v6 = 6;
-  if (a3 == 1)
+  if (status == 1)
   {
     v6 = 9;
   }
 
-  if (a3 != 10)
+  if (status != 10)
   {
     v5 = v6;
   }
 
-  if (a3)
+  if (status)
   {
     v4 = v5;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = 6;
   }
@@ -203,9 +203,9 @@ LABEL_6:
   return v8;
 }
 
-- (id)_responseForCode:(int64_t)a3
+- (id)_responseForCode:(int64_t)code
 {
-  v3 = [[INPlayMediaIntentResponse alloc] initWithCode:a3 userActivity:0];
+  v3 = [[INPlayMediaIntentResponse alloc] initWithCode:code userActivity:0];
 
   return v3;
 }

@@ -1,21 +1,21 @@
 @interface TXRAssetCatalogConfig
-- (TXRAssetCatalogConfig)initWithTexture:(id)a3;
-- (void)addFileAttributesForLevel:(unint64_t)a3;
-- (void)addFileAttributesForLevel:(unint64_t)a3 face:(unint64_t)a4;
+- (TXRAssetCatalogConfig)initWithTexture:(id)texture;
+- (void)addFileAttributesForLevel:(unint64_t)level;
+- (void)addFileAttributesForLevel:(unint64_t)level face:(unint64_t)face;
 @end
 
 @implementation TXRAssetCatalogConfig
 
-- (TXRAssetCatalogConfig)initWithTexture:(id)a3
+- (TXRAssetCatalogConfig)initWithTexture:(id)texture
 {
-  v5 = a3;
+  textureCopy = texture;
   v13.receiver = self;
   v13.super_class = TXRAssetCatalogConfig;
   v6 = [(TXRAssetCatalogConfig *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_texture, a3);
+    objc_storeStrong(&v6->_texture, texture);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     fileAttributesList = v7->_fileAttributesList;
     v7->_fileAttributesList = v8;
@@ -28,56 +28,56 @@
   return v7;
 }
 
-- (void)addFileAttributesForLevel:(unint64_t)a3
+- (void)addFileAttributesForLevel:(unint64_t)level
 {
   v9 = objc_alloc_init(TXRAssetCatalogMipFileAttributes);
-  [(TXRAssetCatalogMipFileAttributes *)v9 setLevel:a3];
-  v5 = [(NSMutableSet *)self->_fileAttributesList objectEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  [(TXRAssetCatalogMipFileAttributes *)v9 setLevel:level];
+  objectEnumerator = [(NSMutableSet *)self->_fileAttributesList objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
-      if ([v7 level] == a3)
+      if ([v7 level] == level)
       {
         [(NSMutableSet *)self->_fileAttributesList removeObject:v7];
       }
 
-      v8 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v7 = v8;
+      v7 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   [(NSMutableSet *)self->_fileAttributesList addObject:v9];
 }
 
-- (void)addFileAttributesForLevel:(unint64_t)a3 face:(unint64_t)a4
+- (void)addFileAttributesForLevel:(unint64_t)level face:(unint64_t)face
 {
   v11 = objc_alloc_init(TXRAssetCatalogMipFileAttributes);
-  [(TXRAssetCatalogMipFileAttributes *)v11 setLevel:a3];
-  [(TXRAssetCatalogMipFileAttributes *)v11 setFace:a4];
-  v7 = [(NSMutableSet *)self->_fileAttributesList objectEnumerator];
-  v8 = [v7 nextObject];
-  if (v8)
+  [(TXRAssetCatalogMipFileAttributes *)v11 setLevel:level];
+  [(TXRAssetCatalogMipFileAttributes *)v11 setFace:face];
+  objectEnumerator = [(NSMutableSet *)self->_fileAttributesList objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     do
     {
-      if ([v9 level] == a3 && (objc_msgSend(v9, "face") == a4 || objc_msgSend(v9, "doesSpecifyAllFaces")))
+      if ([v9 level] == level && (objc_msgSend(v9, "face") == face || objc_msgSend(v9, "doesSpecifyAllFaces")))
       {
         [(NSMutableSet *)self->_fileAttributesList removeObject:v9];
       }
 
-      v10 = [v7 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v9 = v10;
+      v9 = nextObject2;
     }
 
-    while (v10);
+    while (nextObject2);
   }
 
   [(NSMutableSet *)self->_fileAttributesList addObject:v11];

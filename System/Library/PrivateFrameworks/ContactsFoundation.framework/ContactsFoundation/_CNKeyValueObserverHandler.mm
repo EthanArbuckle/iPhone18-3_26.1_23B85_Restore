@@ -1,40 +1,40 @@
 @interface _CNKeyValueObserverHandler
-- (_CNKeyValueObserverHandler)initWithObject:(id)a3 keyPath:(id)a4 observer:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (_CNKeyValueObserverHandler)initWithObject:(id)object keyPath:(id)path observer:(id)observer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _CNKeyValueObserverHandler
 
-- (_CNKeyValueObserverHandler)initWithObject:(id)a3 keyPath:(id)a4 observer:(id)a5
+- (_CNKeyValueObserverHandler)initWithObject:(id)object keyPath:(id)path observer:(id)observer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  pathCopy = path;
+  observerCopy = observer;
   v18.receiver = self;
   v18.super_class = _CNKeyValueObserverHandler;
   v12 = [(_CNKeyValueObserverHandler *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_object, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_object, object);
+    v14 = [pathCopy copy];
     keyPath = v13->_keyPath;
     v13->_keyPath = v14;
 
-    objc_storeStrong(&v13->_observer, a5);
+    objc_storeStrong(&v13->_observer, observer);
     v16 = v13;
   }
 
   return v13;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (sHandlerContext == a6)
+  if (sHandlerContext == context)
   {
     observer = self->_observer;
 
-    [(CNObserver *)observer observerDidReceiveResult:a5, a4];
+    [(CNObserver *)observer observerDidReceiveResult:change, object];
   }
 
   else
@@ -43,7 +43,7 @@
     v11 = v7;
     v9.receiver = self;
     v9.super_class = _CNKeyValueObserverHandler;
-    [(_CNKeyValueObserverHandler *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_CNKeyValueObserverHandler *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

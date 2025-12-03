@@ -1,20 +1,20 @@
 @interface PSViewController
-- (void)ic_submitNavigationEventForIdentifier:(id)a3 titleStringKey:(id)a4 navigationComponents:(id)a5;
+- (void)ic_submitNavigationEventForIdentifier:(id)identifier titleStringKey:(id)key navigationComponents:(id)components;
 @end
 
 @implementation PSViewController
 
-- (void)ic_submitNavigationEventForIdentifier:(id)a3 titleStringKey:(id)a4 navigationComponents:(id)a5
+- (void)ic_submitNavigationEventForIdentifier:(id)identifier titleStringKey:(id)key navigationComponents:(id)components
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  componentsCopy = components;
   v10 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilenotes"];
   v11 = v10;
-  v32 = v7;
-  if (v7)
+  v32 = identifierCopy;
+  if (identifierCopy)
   {
-    v12 = [v10 URLByAppendingPathComponent:v7];
+    v12 = [v10 URLByAppendingPathComponent:identifierCopy];
 
     v30 = v12;
   }
@@ -27,16 +27,16 @@
   v13 = [_NSLocalizedStringResource alloc];
   v14 = +[NSLocale currentLocale];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
-  v16 = [v15 bundleURL];
-  v31 = v8;
-  v29 = [v13 initWithKey:v8 table:@"Settings" locale:v14 bundleURL:v16];
+  bundleURL = [v15 bundleURL];
+  v31 = keyCopy;
+  v29 = [v13 initWithKey:keyCopy table:@"Settings" locale:v14 bundleURL:bundleURL];
 
-  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v9;
+  obj = componentsCopy;
   v18 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v18)
   {
@@ -55,8 +55,8 @@
         v23 = [_NSLocalizedStringResource alloc];
         v24 = +[NSLocale currentLocale];
         v25 = [NSBundle bundleForClass:objc_opt_class()];
-        v26 = [v25 bundleURL];
-        v27 = [v23 initWithKey:v22 table:@"Settings" locale:v24 bundleURL:v26];
+        bundleURL2 = [v25 bundleURL];
+        v27 = [v23 initWithKey:v22 table:@"Settings" locale:v24 bundleURL:bundleURL2];
 
         if (v27)
         {

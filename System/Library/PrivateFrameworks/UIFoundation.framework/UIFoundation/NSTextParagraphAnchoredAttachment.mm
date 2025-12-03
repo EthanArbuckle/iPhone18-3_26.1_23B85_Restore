@@ -1,21 +1,21 @@
 @interface NSTextParagraphAnchoredAttachment
 - (CGRect)frame;
-- (NSTextParagraphAnchoredAttachment)initWithTextAttachment:(id)a3 position:(unint64_t)a4;
+- (NSTextParagraphAnchoredAttachment)initWithTextAttachment:(id)attachment position:(unint64_t)position;
 @end
 
 @implementation NSTextParagraphAnchoredAttachment
 
-- (NSTextParagraphAnchoredAttachment)initWithTextAttachment:(id)a3 position:(unint64_t)a4
+- (NSTextParagraphAnchoredAttachment)initWithTextAttachment:(id)attachment position:(unint64_t)position
 {
-  v7 = a3;
+  attachmentCopy = attachment;
   v11.receiver = self;
   v11.super_class = NSTextParagraphAnchoredAttachment;
   v8 = [(NSTextParagraphAnchoredAttachment *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_textAttachment, a3);
-    v9->_position = a4;
+    objc_storeStrong(&v8->_textAttachment, attachment);
+    v9->_position = position;
     v9->_excludesText = 1;
   }
 

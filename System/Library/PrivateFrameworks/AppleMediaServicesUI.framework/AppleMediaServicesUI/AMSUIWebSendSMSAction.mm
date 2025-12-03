@@ -1,20 +1,20 @@
 @interface AMSUIWebSendSMSAction
-- (AMSUIWebSendSMSAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebSendSMSAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 - (id)telephonyAccessPatterns;
 @end
 
 @implementation AMSUIWebSendSMSAction
 
-- (AMSUIWebSendSMSAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebSendSMSAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = AMSUIWebSendSMSAction;
-  v7 = [(AMSUIWebAction *)&v18 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v18 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"body"];
+    v8 = [objectCopy objectForKeyedSubscript:@"body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
     body = v7->_body;
     v7->_body = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"countryCode"];
+    v11 = [objectCopy objectForKeyedSubscript:@"countryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
     countryCode = v7->_countryCode;
     v7->_countryCode = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"digits"];
+    v14 = [objectCopy objectForKeyedSubscript:@"digits"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,43 +65,43 @@
 
 - (id)telephonyAccessPatterns
 {
-  v2 = [(AMSUIWebAction *)self context];
-  v3 = [v2 bag];
+  context = [(AMSUIWebAction *)self context];
+  v3 = [context bag];
   v4 = [v3 arrayForKey:@"telephony-access-patterns"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
-  return v5;
+  return valuePromise;
 }
 
 - (id)runAction
 {
   v17.receiver = self;
   v17.super_class = AMSUIWebSendSMSAction;
-  v3 = [(AMSUIWebAction *)&v17 runAction];
-  v4 = [(AMSUIWebAction *)self context];
-  v5 = [v4 webPage];
-  v6 = [v5 webView];
-  v7 = [v6 underlyingWebView];
-  v8 = [v7 URL];
-  v9 = [v8 absoluteString];
+  runAction = [(AMSUIWebAction *)&v17 runAction];
+  context = [(AMSUIWebAction *)self context];
+  webPage = [context webPage];
+  webView = [webPage webView];
+  underlyingWebView = [webView underlyingWebView];
+  v8 = [underlyingWebView URL];
+  absoluteString = [v8 absoluteString];
 
-  if (v9)
+  if (absoluteString)
   {
-    v10 = [(AMSUIWebSendSMSAction *)self telephonyAccessPatterns];
+    telephonyAccessPatterns = [(AMSUIWebSendSMSAction *)self telephonyAccessPatterns];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __34__AMSUIWebSendSMSAction_runAction__block_invoke;
     v14[3] = &unk_1E7F26158;
-    v15 = v9;
-    v16 = self;
-    v11 = [v10 thenWithBlock:v14];
+    v15 = absoluteString;
+    selfCopy = self;
+    v11 = [telephonyAccessPatterns thenWithBlock:v14];
   }
 
   else
   {
     v12 = MEMORY[0x1E698CAD0];
-    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69D4C28] code:107 userInfo:0];
-    v11 = [v12 promiseWithError:v10];
+    telephonyAccessPatterns = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69D4C28] code:107 userInfo:0];
+    v11 = [v12 promiseWithError:telephonyAccessPatterns];
   }
 
   return v11;

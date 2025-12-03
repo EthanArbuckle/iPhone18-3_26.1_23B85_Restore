@@ -1,23 +1,23 @@
 @interface NURenderTagNode
-+ (BOOL)validateName:(id)a3 error:(id *)a4;
-- (NURenderTagNode)initWithInput:(id)a3 name:(id)a4;
-- (NURenderTagNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_descriptionWithOffset:(int64_t)a3 showInputs:(BOOL)a4 map:(id)a5;
-- (id)_evaluateGeometrySpaceMap:(id *)a3;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
++ (BOOL)validateName:(id)name error:(id *)error;
+- (NURenderTagNode)initWithInput:(id)input name:(id)name;
+- (NURenderTagNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_descriptionWithOffset:(int64_t)offset showInputs:(BOOL)inputs map:(id)map;
+- (id)_evaluateGeometrySpaceMap:(id *)map;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NURenderTagNode
 
-- (id)_descriptionWithOffset:(int64_t)a3 showInputs:(BOOL)a4 map:(id)a5
+- (id)_descriptionWithOffset:(int64_t)offset showInputs:(BOOL)inputs map:(id)map
 {
-  v5 = a4;
-  v8 = a5;
+  inputsCopy = inputs;
+  mapCopy = map;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = self;
-  v11 = v10;
+  selfCopy = self;
+  input = selfCopy;
   while (1)
   {
     objc_opt_class();
@@ -26,71 +26,71 @@
       break;
     }
 
-    v12 = v11;
-    v13 = [v12 name];
-    [v9 addObject:v13];
+    v12 = input;
+    name = [v12 name];
+    [v9 addObject:name];
 
     v14 = v12;
-    v11 = [(NURenderTagNode *)v14 input];
+    input = [(NURenderTagNode *)v14 input];
 
-    v10 = v14;
+    selfCopy = v14;
   }
 
   v15 = MEMORY[0x1E696AD60];
   v16 = [v9 componentsJoinedByString:{@", "}];
   v17 = [v15 stringWithFormat:@"TAGS: %@", v16];
 
-  if (v5)
+  if (inputsCopy)
   {
-    [(NURenderNode *)v10 _appendInputsWithOffset:a3 to:v17 map:v8];
+    [(NURenderNode *)selfCopy _appendInputsWithOffset:offset to:v17 map:mapCopy];
   }
 
   return v17;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v4 = [(NURenderTagNode *)self input];
-  v5 = [v4 outputImageGeometry:a3];
+  input = [(NURenderTagNode *)self input];
+  v5 = [input outputImageGeometry:geometry];
 
   return v5;
 }
 
-- (id)_evaluateGeometrySpaceMap:(id *)a3
+- (id)_evaluateGeometrySpaceMap:(id *)map
 {
   v6.receiver = self;
   v6.super_class = NURenderTagNode;
-  v4 = [(NURenderNode *)&v6 _evaluateGeometrySpaceMap:a3];
+  v4 = [(NURenderNode *)&v6 _evaluateGeometrySpaceMap:map];
   [v4 addTagNode:self];
 
   return v4;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v4 = [(NURenderTagNode *)self input];
-  v5 = [v4 outputImage:a3];
+  input = [(NURenderTagNode *)self input];
+  v5 = [input outputImage:image];
 
   return v5;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v8 = *MEMORY[0x1E695FAB0];
-  v9 = a4;
-  v10 = a3;
+  stateCopy = state;
+  cacheCopy = cache;
   v11 = [(NURenderNode *)self inputForKey:v8];
-  v12 = [v11 nodeByReplayingAgainstCache:v10 pipelineState:v9 error:a5];
+  v12 = [v11 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
   return v12;
 }
 
-- (NURenderTagNode)initWithInput:(id)a3 name:(id)a4
+- (NURenderTagNode)initWithInput:(id)input name:(id)name
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  nameCopy = name;
+  if (!inputCopy)
   {
     v15 = NUAssertLogger_20879();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -111,8 +111,8 @@
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v29;
         v54 = 2114;
@@ -123,8 +123,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -133,8 +133,8 @@
     _NUAssertFailHandler("[NURenderTagNode initWithInput:name:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagNode.m", 24, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "input != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     v22 = NUAssertLogger_20879();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -155,8 +155,8 @@
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v38;
         v54 = 2114;
@@ -167,8 +167,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -178,10 +178,10 @@
   }
 
   v50 = @"name";
-  v51 = v7;
+  v51 = nameCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
   v48 = *MEMORY[0x1E695FAB0];
-  v49 = v6;
+  v49 = inputCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
   v47.receiver = self;
   v47.super_class = NURenderTagNode;
@@ -194,11 +194,11 @@
   return v11;
 }
 
-- (NURenderTagNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NURenderTagNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_20901);
@@ -242,8 +242,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -259,8 +259,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -276,11 +276,11 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderTagNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagNode.m", 18, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-+ (BOOL)validateName:(id)a3 error:(id *)a4
++ (BOOL)validateName:(id)name error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v9 = NUAssertLogger_20879();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -301,8 +301,8 @@ LABEL_14:
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -313,8 +313,8 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -323,7 +323,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NURenderTagNode validateName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagNode.m", 45, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "tagName != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_20879();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -344,8 +344,8 @@ LABEL_14:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -356,8 +356,8 @@ LABEL_14:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -366,11 +366,11 @@ LABEL_14:
     _NUAssertFailHandler("+[NURenderTagNode validateName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagNode.m", 46, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  if (([v5 isEqualToString:@"."] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"..") & 1) != 0 || (objc_msgSend(v6, "containsString:", @"/") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", &stru_1F3F4BA98))
+  v6 = nameCopy;
+  if (([nameCopy isEqualToString:@"."] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"..") & 1) != 0 || (objc_msgSend(v6, "containsString:", @"/") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", &stru_1F3F4BA98))
   {
     [NUError mismatchError:@"invalid tag : cannot be empty object:exactly '.' or '..' or contain '/' characters ", v6];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

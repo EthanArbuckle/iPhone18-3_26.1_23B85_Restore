@@ -1,17 +1,17 @@
 @interface NTKDateComplication
-+ (id)complicationWithDateStyle:(unint64_t)a3;
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (NTKDateComplication)initWithCoder:(id)a3;
-- (NTKDateComplication)initWithComplicationType:(unint64_t)a3;
++ (id)complicationWithDateStyle:(unint64_t)style;
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (NTKDateComplication)initWithCoder:(id)coder;
+- (NTKDateComplication)initWithComplicationType:(unint64_t)type;
 - (id)_generateUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot;
 - (id)ntk_sectionIdentifier;
 - (unint64_t)hash;
-- (void)_addKeysToJSONDictionary:(id)a3;
-- (void)_migrateFromSkiHillWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
+- (void)_migrateFromSkiHillWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKDateComplication
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot
 {
-  v4 = a4;
+  slotCopy = slot;
   v7 = [NTKDateComplicationController textForDateStyle:[(NTKDateComplication *)self dateStyle]];
   if (![v7 length])
   {
     v10.receiver = self;
     v10.super_class = NTKDateComplication;
-    v8 = [(NTKComplication *)&v10 ntk_localizedNameWithOptions:a3 forRichComplicationSlot:v4];
+    v8 = [(NTKComplication *)&v10 ntk_localizedNameWithOptions:options forRichComplicationSlot:slotCopy];
 
     v7 = v8;
   }
@@ -43,43 +43,43 @@
   return v7;
 }
 
-+ (id)complicationWithDateStyle:(unint64_t)a3
++ (id)complicationWithDateStyle:(unint64_t)style
 {
-  v4 = [[a1 alloc] initWithComplicationType:1];
-  v4[4] = a3;
-  v5 = [v4 _generateUniqueIdentifier];
+  v4 = [[self alloc] initWithComplicationType:1];
+  v4[4] = style;
+  _generateUniqueIdentifier = [v4 _generateUniqueIdentifier];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = _generateUniqueIdentifier;
 
   return v4;
 }
 
-- (NTKDateComplication)initWithComplicationType:(unint64_t)a3
+- (NTKDateComplication)initWithComplicationType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = NTKDateComplication;
-  v3 = [(NTKComplication *)&v8 initWithComplicationType:a3];
+  v3 = [(NTKComplication *)&v8 initWithComplicationType:type];
   v4 = v3;
   if (v3)
   {
     v3->_dateStyle = 0;
-    v5 = [(NTKDateComplication *)v3 _generateUniqueIdentifier];
+    _generateUniqueIdentifier = [(NTKDateComplication *)v3 _generateUniqueIdentifier];
     uniqueIdentifier = v4->super._uniqueIdentifier;
-    v4->super._uniqueIdentifier = v5;
+    v4->super._uniqueIdentifier = _generateUniqueIdentifier;
   }
 
   return v4;
 }
 
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 localeMatchesContext:v7])
+  contextCopy = context;
+  toContextCopy = toContext;
+  if ([contextCopy localeMatchesContext:toContextCopy])
   {
     if ([(NTKComplication *)self complicationType]== 16)
     {
-      v8 = [v6 lunarCalendarLocaleIDMatchesContext:v7] ^ 1;
+      v8 = [contextCopy lunarCalendarLocaleIDMatchesContext:toContextCopy] ^ 1;
     }
 
     else
@@ -100,9 +100,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTKComplication complicationType](self, "complicationType")}];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_dateStyle];
-  v7 = [v3 stringWithFormat:@"%@-datestyle:%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@-datestyle:%@", stringValue, v6];
 
   return v7;
 }
@@ -114,54 +114,54 @@
   return [(NTKComplication *)&v3 hash]+ 1000000 * self->_dateStyle;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NTKDateComplication;
-  result = [(NTKComplication *)&v5 copyWithZone:a3];
+  result = [(NTKComplication *)&v5 copyWithZone:zone];
   *(result + 4) = self->_dateStyle;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NTKDateComplication;
-  v4 = a3;
-  [(NTKComplication *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_dateStyle forKey:{@"DateComplicationDateStyleKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(NTKComplication *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_dateStyle forKey:{@"DateComplicationDateStyleKey", v5.receiver, v5.super_class}];
 }
 
-- (NTKDateComplication)initWithCoder:(id)a3
+- (NTKDateComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NTKDateComplication;
-  v5 = [(NTKComplication *)&v9 initWithCoder:v4];
+  v5 = [(NTKComplication *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"DateComplicationDateStyleKey"])
+    if ([coderCopy containsValueForKey:@"DateComplicationDateStyleKey"])
     {
-      v5->_dateStyle = [v4 decodeIntegerForKey:@"DateComplicationDateStyleKey"];
+      v5->_dateStyle = [coderCopy decodeIntegerForKey:@"DateComplicationDateStyleKey"];
     }
 
     else
     {
-      [(NTKDateComplication *)v5 _migrateFromSkiHillWithCoder:v4];
+      [(NTKDateComplication *)v5 _migrateFromSkiHillWithCoder:coderCopy];
     }
 
-    v6 = [(NTKDateComplication *)v5 _generateUniqueIdentifier];
+    _generateUniqueIdentifier = [(NTKDateComplication *)v5 _generateUniqueIdentifier];
     uniqueIdentifier = v5->super._uniqueIdentifier;
-    v5->super._uniqueIdentifier = v6;
+    v5->super._uniqueIdentifier = _generateUniqueIdentifier;
   }
 
   return v5;
 }
 
-- (void)_migrateFromSkiHillWithCoder:(id)a3
+- (void)_migrateFromSkiHillWithCoder:(id)coder
 {
-  v4 = [(NTKComplication *)self complicationType];
-  switch(v4)
+  complicationType = [(NTKComplication *)self complicationType];
+  switch(complicationType)
   {
     case 0x4000000uLL:
       v5 = 8;
@@ -177,7 +177,7 @@ LABEL_7:
     default:
       v6 = MEMORY[0x277CBEAD8];
       v7 = *MEMORY[0x277CCA2A8];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
       [v6 raise:v7 format:{@"Unknown date complication type %@", v8}];
 
       break;
@@ -186,29 +186,29 @@ LABEL_7:
   [(NTKComplication *)self _setComplicationType:1];
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = NTKDateComplication;
-  [(NTKComplication *)&v7 _addKeysToJSONDictionary:v4];
+  [(NTKComplication *)&v7 _addKeysToJSONDictionary:dictionaryCopy];
   dateStyle = self->_dateStyle;
   if (dateStyle)
   {
     v6 = NTKFaceBundleStringFromDateStyle(dateStyle);
-    [v4 setObject:v6 forKeyedSubscript:@"date style"];
+    [dictionaryCopy setObject:v6 forKeyedSubscript:@"date style"];
   }
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NTKDateComplication;
-  v7 = [(NTKComplication *)&v13 _initWithComplicationType:a3 JSONDictionary:v6];
+  v7 = [(NTKComplication *)&v13 _initWithComplicationType:type JSONDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"date style"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"date style"];
     if (v8)
     {
       objc_opt_class();
@@ -231,9 +231,9 @@ LABEL_7:
       v7[4] = 0;
     }
 
-    v9 = [v7 _generateUniqueIdentifier];
+    _generateUniqueIdentifier = [v7 _generateUniqueIdentifier];
     v10 = v7[1];
-    v7[1] = v9;
+    v7[1] = _generateUniqueIdentifier;
   }
 
   return v7;

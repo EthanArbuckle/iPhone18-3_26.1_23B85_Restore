@@ -1,23 +1,23 @@
 @interface ASDTIOA2LevelControl
-+ (VolumeCurve)volumeCurveFromControlInfo:(SEL)a3;
++ (VolumeCurve)volumeCurveFromControlInfo:(SEL)info;
 - (ASDTIOA2Device)ioa2Device;
-- (BOOL)changeScalarValue:(float)a3;
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)setProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int)a6 andData:(const void *)a7 forClient:(int)a8;
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3;
+- (BOOL)changeScalarValue:(float)value;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (BOOL)setProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int)dataSize andData:(const void *)andData forClient:(int)client;
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary;
 - (NSArray)propertySelectorInfo;
 - (id).cxx_construct;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
 - (void)dealloc;
-- (void)doSetValue:(unsigned int)a3;
-- (void)setDecibelValue:(float)a3;
+- (void)doSetValue:(unsigned int)value;
+- (void)setDecibelValue:(float)value;
 @end
 
 @implementation ASDTIOA2LevelControl
 
-+ (VolumeCurve)volumeCurveFromControlInfo:(SEL)a3
++ (VolumeCurve)volumeCurveFromControlInfo:(SEL)info
 {
   v5 = a4;
   ASDT::VolumeCurve::VolumeCurve(retstr);
@@ -112,19 +112,19 @@
   return v8;
 }
 
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     std::recursive_mutex::lock(&self->_lock);
-    v5 = [v4 objectForKeyedSubscript:@"property selectors"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"property selectors"];
     v6 = [(ASDControl *)self asdtAddControlProperties:v5];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"value"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"value"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -154,13 +154,13 @@
   return v6;
 }
 
-- (void)doSetValue:(unsigned int)a3
+- (void)doSetValue:(unsigned int)value
 {
   v30 = *MEMORY[0x277D85DE8];
   std::recursive_mutex::lock(&self->_lock);
-  if (self->_rawValue != a3)
+  if (self->_rawValue != value)
   {
-    self->_rawValue = a3;
+    self->_rawValue = value;
     v5 = NSStringFromSelector(sel_decibelValue);
     [(ASDTIOA2LevelControl *)self willChangeValueForKey:v5];
 
@@ -183,7 +183,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&self->_ioa2Device);
-      v11 = [WeakRetained deviceUID];
+      deviceUID = [WeakRetained deviceUID];
       if ([(ASDTIOA2LevelControl *)self objectClass]>> 29 && [(ASDTIOA2LevelControl *)self objectClass]>> 24 <= 0x7E)
       {
         v12 = [(ASDTIOA2LevelControl *)self objectClass]>> 24;
@@ -216,16 +216,16 @@
 
       if (([(ASDTIOA2LevelControl *)self objectClass]& 0xE0) != 0 && [(ASDTIOA2LevelControl *)self objectClass]<= 0x7Eu)
       {
-        v15 = [(ASDTIOA2LevelControl *)self objectClass];
+        objectClass = [(ASDTIOA2LevelControl *)self objectClass];
       }
 
       else
       {
-        v15 = 32;
+        objectClass = 32;
       }
 
       *buf = 138413570;
-      v19 = v11;
+      v19 = deviceUID;
       v20 = 1024;
       v21 = v12;
       v22 = 1024;
@@ -233,9 +233,9 @@
       v24 = 1024;
       v25 = v14;
       v26 = 1024;
-      v27 = v15;
+      v27 = objectClass;
       v28 = 1024;
-      v29 = a3;
+      valueCopy = value;
       _os_log_impl(&dword_2416BA000, v9, OS_LOG_TYPE_DEFAULT, "%@: Control '%c%c%c%c' changed to: %u", buf, 0x2Au);
     }
   }
@@ -244,9 +244,9 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDecibelValue:(float)a3
+- (void)setDecibelValue:(float)value
 {
-  v6 = ASDT::VolumeCurve::ConvertDBToRaw(&self->_volumeCurve, a3);
+  v6 = ASDT::VolumeCurve::ConvertDBToRaw(&self->_volumeCurve, value);
   WeakRetained = objc_loadWeakRetained(&self->_ioa2Device);
   v5 = [WeakRetained _setControlValue:&v6 forControl:self->_userClientID];
 
@@ -256,21 +256,21 @@
   }
 }
 
-- (BOOL)changeScalarValue:(float)a3
+- (BOOL)changeScalarValue:(float)value
 {
-  ASDT::VolumeCurve::ConvertScalarToDB(&self->_volumeCurve, a3);
+  ASDT::VolumeCurve::ConvertScalarToDB(&self->_volumeCurve, value);
 
   return [(ASDTIOA2LevelControl *)self changeDecibelValue:?];
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1818457190)
+  if (property->mSelector == 1818457190)
   {
     return 1;
   }
@@ -282,14 +282,14 @@
   return [(ASDLevelControl *)&v6 hasProperty:?];
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1818457190)
+  if (settable->mSelector == 1818457190)
   {
 
     return [(ASDLevelControl *)self isSettable];
@@ -305,14 +305,14 @@
   }
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1818457190)
+  if (property->mSelector == 1818457190)
   {
     return 4;
   }
@@ -324,14 +324,14 @@
   return [ASDLevelControl dataSizeForProperty:sel_dataSizeForProperty_withQualifierSize_andQualifierData_ withQualifierSize:? andQualifierData:?];
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector != 1818457190)
+  if (property->mSelector != 1818457190)
   {
     v13 = v8;
     v14 = v9;
@@ -341,11 +341,11 @@
   }
 
   v10 = 0;
-  if (a6 && a7)
+  if (dataSize && andData)
   {
-    if (*a6 >= 4)
+    if (*dataSize >= 4)
     {
-      *a7 = self->_volumeCurve.mTransferFunction;
+      *andData = self->_volumeCurve.mTransferFunction;
       return 1;
     }
 
@@ -355,19 +355,19 @@
   return v10;
 }
 
-- (BOOL)setProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int)a6 andData:(const void *)a7 forClient:(int)a8
+- (BOOL)setProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int)dataSize andData:(const void *)andData forClient:(int)client
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1818457190)
+  if (property->mSelector == 1818457190)
   {
     v8 = 0;
-    if (a6 >= 4 && a7)
+    if (dataSize >= 4 && andData)
     {
-      v9 = *a7;
+      v9 = *andData;
       ASDT::VolumeCurve::SetTransferFunction(&self->_volumeCurve);
       return 1;
     }

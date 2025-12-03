@@ -1,24 +1,24 @@
 @interface ADVisualDepthOutput
-+ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4;
-+ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4 confidenceForPrimaryPoV:(__CVBuffer *)a5 confidenceForSecondaryPoV:(__CVBuffer *)a6 occlusionForPrimaryPoV:(__CVBuffer *)a7 occlusionForSecondaryPoV:(__CVBuffer *)a8;
-- (ADVisualDepthOutput)initWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4 confidenceForPrimaryPoV:(__CVBuffer *)a5 confidenceForSecondaryPoV:(__CVBuffer *)a6 occlusionForPrimaryPoV:(__CVBuffer *)a7 occlusionForSecondaryPoV:(__CVBuffer *)a8;
-- (void)addPrimaryCalibration:(id)a3 secondaryCalibration:(id)a4 timestamp:(double)a5;
++ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV;
++ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV confidenceForPrimaryPoV:(__CVBuffer *)primaryPoV confidenceForSecondaryPoV:(__CVBuffer *)secondaryPoV occlusionForPrimaryPoV:(__CVBuffer *)forPrimaryPoV occlusionForSecondaryPoV:(__CVBuffer *)forSecondaryPoV;
+- (ADVisualDepthOutput)initWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV confidenceForPrimaryPoV:(__CVBuffer *)primaryPoV confidenceForSecondaryPoV:(__CVBuffer *)secondaryPoV occlusionForPrimaryPoV:(__CVBuffer *)forPrimaryPoV occlusionForSecondaryPoV:(__CVBuffer *)forSecondaryPoV;
+- (void)addPrimaryCalibration:(id)calibration secondaryCalibration:(id)secondaryCalibration timestamp:(double)timestamp;
 - (void)dealloc;
 @end
 
 @implementation ADVisualDepthOutput
 
-- (void)addPrimaryCalibration:(id)a3 secondaryCalibration:(id)a4 timestamp:(double)a5
+- (void)addPrimaryCalibration:(id)calibration secondaryCalibration:(id)secondaryCalibration timestamp:(double)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  self->_timestamp = a5;
+  calibrationCopy = calibration;
+  secondaryCalibrationCopy = secondaryCalibration;
+  self->_timestamp = timestamp;
   primaryPoVCameraCalibration = self->_primaryPoVCameraCalibration;
-  self->_primaryPoVCameraCalibration = v8;
-  v12 = v8;
+  self->_primaryPoVCameraCalibration = calibrationCopy;
+  v12 = calibrationCopy;
 
   secondaryPoVCameraCalibration = self->_secondaryPoVCameraCalibration;
-  self->_secondaryPoVCameraCalibration = v9;
+  self->_secondaryPoVCameraCalibration = secondaryCalibrationCopy;
 }
 
 - (void)dealloc
@@ -34,34 +34,34 @@
   [(ADVisualDepthOutput *)&v3 dealloc];
 }
 
-- (ADVisualDepthOutput)initWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4 confidenceForPrimaryPoV:(__CVBuffer *)a5 confidenceForSecondaryPoV:(__CVBuffer *)a6 occlusionForPrimaryPoV:(__CVBuffer *)a7 occlusionForSecondaryPoV:(__CVBuffer *)a8
+- (ADVisualDepthOutput)initWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV confidenceForPrimaryPoV:(__CVBuffer *)primaryPoV confidenceForSecondaryPoV:(__CVBuffer *)secondaryPoV occlusionForPrimaryPoV:(__CVBuffer *)forPrimaryPoV occlusionForSecondaryPoV:(__CVBuffer *)forSecondaryPoV
 {
   v16.receiver = self;
   v16.super_class = ADVisualDepthOutput;
   v14 = [(ADVisualDepthOutput *)&v16 init];
   if (v14)
   {
-    v14->_depthForPrimaryPoV = CVPixelBufferRetain(a3);
-    v14->_depthForSecondaryPoV = CVPixelBufferRetain(a4);
-    v14->_confidenceForPrimaryPoV = CVPixelBufferRetain(a5);
-    v14->_confidenceForSecondaryPoV = CVPixelBufferRetain(a6);
-    v14->_occlusionForPrimaryPoV = CVPixelBufferRetain(a7);
-    v14->_occlusionForSecondaryPoV = CVPixelBufferRetain(a8);
+    v14->_depthForPrimaryPoV = CVPixelBufferRetain(v);
+    v14->_depthForSecondaryPoV = CVPixelBufferRetain(poV);
+    v14->_confidenceForPrimaryPoV = CVPixelBufferRetain(primaryPoV);
+    v14->_confidenceForSecondaryPoV = CVPixelBufferRetain(secondaryPoV);
+    v14->_occlusionForPrimaryPoV = CVPixelBufferRetain(forPrimaryPoV);
+    v14->_occlusionForSecondaryPoV = CVPixelBufferRetain(forSecondaryPoV);
   }
 
   return v14;
 }
 
-+ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4 confidenceForPrimaryPoV:(__CVBuffer *)a5 confidenceForSecondaryPoV:(__CVBuffer *)a6 occlusionForPrimaryPoV:(__CVBuffer *)a7 occlusionForSecondaryPoV:(__CVBuffer *)a8
++ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV confidenceForPrimaryPoV:(__CVBuffer *)primaryPoV confidenceForSecondaryPoV:(__CVBuffer *)secondaryPoV occlusionForPrimaryPoV:(__CVBuffer *)forPrimaryPoV occlusionForSecondaryPoV:(__CVBuffer *)forSecondaryPoV
 {
-  v8 = [[ADVisualDepthOutput alloc] initWithDepthForPrimaryPoV:a3 depthForSecondaryPoV:a4 confidenceForPrimaryPoV:a5 confidenceForSecondaryPoV:a6 occlusionForPrimaryPoV:a7 occlusionForSecondaryPoV:a8];
+  v8 = [[ADVisualDepthOutput alloc] initWithDepthForPrimaryPoV:v depthForSecondaryPoV:poV confidenceForPrimaryPoV:primaryPoV confidenceForSecondaryPoV:secondaryPoV occlusionForPrimaryPoV:forPrimaryPoV occlusionForSecondaryPoV:forSecondaryPoV];
 
   return v8;
 }
 
-+ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)a3 depthForSecondaryPoV:(__CVBuffer *)a4
++ (id)outputWithDepthForPrimaryPoV:(__CVBuffer *)v depthForSecondaryPoV:(__CVBuffer *)poV
 {
-  v4 = [[ADVisualDepthOutput alloc] initWithDepthForPrimaryPoV:a3 depthForSecondaryPoV:a4 confidenceForPrimaryPoV:0 confidenceForSecondaryPoV:0 occlusionForPrimaryPoV:0 occlusionForSecondaryPoV:0];
+  v4 = [[ADVisualDepthOutput alloc] initWithDepthForPrimaryPoV:v depthForSecondaryPoV:poV confidenceForPrimaryPoV:0 confidenceForSecondaryPoV:0 occlusionForPrimaryPoV:0 occlusionForSecondaryPoV:0];
 
   return v4;
 }

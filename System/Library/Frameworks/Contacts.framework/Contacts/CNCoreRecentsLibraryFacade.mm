@@ -1,38 +1,38 @@
 @interface CNCoreRecentsLibraryFacade
-+ (id)facadeErrorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)facadeErrorWithUnderlyingError:(id)a3;
-- (BOOL)areSupportedDomains:(id)a3;
-- (BOOL)deleteContacts:(id)a3 error:(id *)a4;
-- (BOOL)removeRecentContactsWithRecentIDs:(id)a3 recentsDomain:(id)a4 error:(id *)a5;
-- (CNCoreRecentsLibraryFacade)initWithDomains:(id)a3 queryHandler:(id)a4;
++ (id)facadeErrorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)facadeErrorWithUnderlyingError:(id)error;
+- (BOOL)areSupportedDomains:(id)domains;
+- (BOOL)deleteContacts:(id)contacts error:(id *)error;
+- (BOOL)removeRecentContactsWithRecentIDs:(id)ds recentsDomain:(id)domain error:(id *)error;
+- (CNCoreRecentsLibraryFacade)initWithDomains:(id)domains queryHandler:(id)handler;
 - (CNCoreRecentsLibraryFacadeQueryHandler)queryHandler;
-- (id)_contactsForQuery:(id)a3 error:(id *)a4;
-- (id)_queryForContactsWithEmailAddresses:(id)a3 singleResult:(BOOL)a4;
-- (id)_queryForContactsWithHandles:(id)a3;
-- (id)_queryForContactsWithHandlesMatchingString:(id)a3;
-- (id)_queryForContactsWithName:(id)a3 prefixSearch:(BOOL)a4;
-- (id)_queryForContactsWithPhoneNumbers:(id)a3 singleResult:(BOOL)a4;
+- (id)_contactsForQuery:(id)query error:(id *)error;
+- (id)_queryForContactsWithEmailAddresses:(id)addresses singleResult:(BOOL)result;
+- (id)_queryForContactsWithHandles:(id)handles;
+- (id)_queryForContactsWithHandlesMatchingString:(id)string;
+- (id)_queryForContactsWithName:(id)name prefixSearch:(BOOL)search;
+- (id)_queryForContactsWithPhoneNumbers:(id)numbers singleResult:(BOOL)result;
 - (id)acceptedIntroductionsContainer;
-- (id)allContactsFromDomains:(id)a3 error:(id *)a4;
-- (id)allContactsWithError:(id *)a3;
-- (id)contactsWithEmailAddresses:(id)a3 error:(id *)a4;
-- (id)contactsWithHandles:(id)a3 error:(id *)a4;
-- (id)contactsWithHandlesMatchingString:(id)a3 error:(id *)a4;
-- (id)contactsWithInternalIdentifiers:(id)a3 error:(id *)a4;
-- (id)contactsWithName:(id)a3 prefixSearch:(BOOL)a4 error:(id *)a5;
-- (id)contactsWithPhoneNumbers:(id)a3 error:(id *)a4;
-- (id)containersForIdentifiers:(id)a3;
-- (id)recentContactsForQuery:(id)a3 error:(id *)a4;
-- (id)recentContactsWithIDs:(id)a3 error:(id *)a4;
-- (id)singleContactWithEmailAddress:(id)a3 error:(id *)a4;
-- (id)singleContactWithPhoneNumber:(id)a3 error:(id *)a4;
-- (int64_t)countAllContactsFromDomains:(id)a3 error:(id *)a4;
-- (int64_t)countAllContactsWithError:(id *)a3;
-- (int64_t)countOfContactsWithEmailAddresses:(id)a3 error:(id *)a4;
-- (int64_t)countOfContactsWithHandles:(id)a3 error:(id *)a4;
-- (int64_t)countOfContactsWithName:(id)a3 prefixSearch:(BOOL)a4 error:(id *)a5;
-- (int64_t)countOfContactsWithPhoneNumbers:(id)a3 error:(id *)a4;
-- (int64_t)countOfRecentContactsForQuery:(id)a3 error:(id *)a4;
+- (id)allContactsFromDomains:(id)domains error:(id *)error;
+- (id)allContactsWithError:(id *)error;
+- (id)contactsWithEmailAddresses:(id)addresses error:(id *)error;
+- (id)contactsWithHandles:(id)handles error:(id *)error;
+- (id)contactsWithHandlesMatchingString:(id)string error:(id *)error;
+- (id)contactsWithInternalIdentifiers:(id)identifiers error:(id *)error;
+- (id)contactsWithName:(id)name prefixSearch:(BOOL)search error:(id *)error;
+- (id)contactsWithPhoneNumbers:(id)numbers error:(id *)error;
+- (id)containersForIdentifiers:(id)identifiers;
+- (id)recentContactsForQuery:(id)query error:(id *)error;
+- (id)recentContactsWithIDs:(id)ds error:(id *)error;
+- (id)singleContactWithEmailAddress:(id)address error:(id *)error;
+- (id)singleContactWithPhoneNumber:(id)number error:(id *)error;
+- (int64_t)countAllContactsFromDomains:(id)domains error:(id *)error;
+- (int64_t)countAllContactsWithError:(id *)error;
+- (int64_t)countOfContactsWithEmailAddresses:(id)addresses error:(id *)error;
+- (int64_t)countOfContactsWithHandles:(id)handles error:(id *)error;
+- (int64_t)countOfContactsWithName:(id)name prefixSearch:(BOOL)search error:(id *)error;
+- (int64_t)countOfContactsWithPhoneNumbers:(id)numbers error:(id *)error;
+- (int64_t)countOfRecentContactsForQuery:(id)query error:(id *)error;
 @end
 
 @implementation CNCoreRecentsLibraryFacade
@@ -44,44 +44,44 @@
   return WeakRetained;
 }
 
-- (CNCoreRecentsLibraryFacade)initWithDomains:(id)a3 queryHandler:(id)a4
+- (CNCoreRecentsLibraryFacade)initWithDomains:(id)domains queryHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = CNCoreRecentsLibraryFacade;
   v8 = [(CNCoreRecentsLibraryFacade *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainsCopy copy];
     domains = v8->_domains;
     v8->_domains = v9;
 
-    objc_storeWeak(&v8->_queryHandler, v7);
+    objc_storeWeak(&v8->_queryHandler, handlerCopy);
   }
 
   return v8;
 }
 
-- (id)containersForIdentifiers:(id)a3
+- (id)containersForIdentifiers:(id)identifiers
 {
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__CNCoreRecentsLibraryFacade_containersForIdentifiers___block_invoke;
   v11[3] = &unk_1E7412440;
   v11[4] = self;
-  v4 = [a3 _cn_filter:v11];
-  v5 = [MEMORY[0x1E695DF70] array];
+  v4 = [identifiers _cn_filter:v11];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = +[CNCoreRecentsContactStore acceptedContactsDomainIdentifier];
   v7 = [v4 containsObject:v6];
 
   if (v7)
   {
-    v8 = [(CNCoreRecentsLibraryFacade *)self acceptedIntroductionsContainer];
-    [v5 _cn_addNonNilObject:v8];
+    acceptedIntroductionsContainer = [(CNCoreRecentsLibraryFacade *)self acceptedIntroductionsContainer];
+    [array _cn_addNonNilObject:acceptedIntroductionsContainer];
   }
 
-  v9 = [v5 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -96,9 +96,9 @@ uint64_t __55__CNCoreRecentsLibraryFacade_containersForIdentifiers___block_invok
   return v5;
 }
 
-- (id)contactsWithInternalIdentifiers:(id)a3 error:(id *)a4
+- (id)contactsWithInternalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   if (contactsWithInternalIdentifiers_error__cn_once_token_0 != -1)
   {
     [CNCoreRecentsLibraryFacade contactsWithInternalIdentifiers:error:];
@@ -111,10 +111,10 @@ uint64_t __55__CNCoreRecentsLibraryFacade_containersForIdentifiers___block_invok
   v22[3] = &unk_1E7412468;
   v8 = v7;
   v23 = v8;
-  v9 = [v6 _cn_compactMap:v22];
-  v10 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v9 = [identifiersCopy _cn_compactMap:v22];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
   v21 = 0;
-  v11 = [v10 recentContactsWithIDs:v9 error:&v21];
+  v11 = [queryHandler recentContactsWithIDs:v9 error:&v21];
   v12 = v21;
 
   v13 = [v11 _cn_compactMap:&__block_literal_global_8];
@@ -122,12 +122,12 @@ uint64_t __55__CNCoreRecentsLibraryFacade_containersForIdentifiers___block_invok
   v16[1] = 3221225472;
   v17 = __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error___block_invoke_4;
   v18 = &unk_1E74124B0;
-  v19 = self;
+  selfCopy = self;
   v14 = v12;
   v20 = v14;
-  if (a4 && !v13)
+  if (error && !v13)
   {
-    *a4 = v17(v16);
+    *error = v17(v16);
   }
 
   return v13;
@@ -166,48 +166,48 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
   return [v2 facadeErrorWithUnderlyingError:v3];
 }
 
-- (id)allContactsWithError:(id *)a3
+- (id)allContactsWithError:(id *)error
 {
   v5 = objc_alloc_init(getCRSearchQueryClass());
-  v6 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v6];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v5 error:a3];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v5 error:error];
 
   return v7;
 }
 
-- (int64_t)countAllContactsWithError:(id *)a3
+- (int64_t)countAllContactsWithError:(id *)error
 {
   v5 = objc_alloc_init(getCRSearchQueryClass());
-  v6 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v6];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v7 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v8 = [v7 countOfRecentContactsForQuery:v5 error:a3];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v8 = [queryHandler countOfRecentContactsForQuery:v5 error:error];
 
   return v8;
 }
 
-- (id)allContactsFromDomains:(id)a3 error:(id *)a4
+- (id)allContactsFromDomains:(id)domains error:(id *)error
 {
-  v6 = a3;
-  if ([(CNCoreRecentsLibraryFacade *)self areSupportedDomains:v6])
+  domainsCopy = domains;
+  if ([(CNCoreRecentsLibraryFacade *)self areSupportedDomains:domainsCopy])
   {
     v7 = objc_alloc_init(getCRSearchQueryClass());
-    [v7 setDomains:v6];
-    v8 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v7 error:a4];
+    [v7 setDomains:domainsCopy];
+    v8 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v7 error:error];
   }
 
   else
   {
     v9 = [objc_opt_class() facadeErrorWithCode:1];
     v7 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -219,26 +219,26 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
   return v8;
 }
 
-- (int64_t)countAllContactsFromDomains:(id)a3 error:(id *)a4
+- (int64_t)countAllContactsFromDomains:(id)domains error:(id *)error
 {
-  if ([(CNCoreRecentsLibraryFacade *)self areSupportedDomains:a3])
+  if ([(CNCoreRecentsLibraryFacade *)self areSupportedDomains:domains])
   {
     v6 = objc_alloc_init(getCRSearchQueryClass());
-    v7 = [(CNCoreRecentsLibraryFacade *)self domains];
-    [v6 setDomains:v7];
+    domains = [(CNCoreRecentsLibraryFacade *)self domains];
+    [v6 setDomains:domains];
 
-    v8 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-    v9 = [v8 countOfRecentContactsForQuery:v6 error:a4];
+    queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+    v9 = [queryHandler countOfRecentContactsForQuery:v6 error:error];
   }
 
   else
   {
     v10 = [objc_opt_class() facadeErrorWithCode:1];
     v6 = v10;
-    if (a4)
+    if (error)
     {
       v11 = v10;
-      *a4 = v6;
+      *error = v6;
     }
 
     v9 = 0x7FFFFFFFFFFFFFFFLL;
@@ -247,18 +247,18 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
   return v9;
 }
 
-- (BOOL)deleteContacts:(id)a3 error:(id *)a4
+- (BOOL)deleteContacts:(id)contacts error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contactsCopy = contacts;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __51__CNCoreRecentsLibraryFacade_deleteContacts_error___block_invoke;
   v28[3] = &unk_1E74124D8;
   v28[4] = self;
-  if ([v6 _cn_all:v28])
+  if ([contactsCopy _cn_all:v28])
   {
-    [v6 _cn_groupBy:&__block_literal_global_14];
+    [contactsCopy _cn_groupBy:&__block_literal_global_14];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -267,8 +267,8 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
     if (v8)
     {
       v9 = v8;
-      v21 = a4;
-      v22 = v6;
+      errorCopy = error;
+      v22 = contactsCopy;
       v10 = *v25;
       while (2)
       {
@@ -282,17 +282,17 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
           v12 = *(*(&v24 + 1) + 8 * i);
           v13 = [v7 objectForKeyedSubscript:v12];
           v14 = [(CNCoreRecentsLibraryFacade *)self _recentIdentifiersForContacts:v13];
-          v15 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+          queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
           v23 = 0;
-          v16 = [v15 removeRecentContactsWithRecentIDs:v14 recentsDomain:v12 error:&v23];
+          v16 = [queryHandler removeRecentContactsWithRecentIDs:v14 recentsDomain:v12 error:&v23];
           v17 = v23;
 
           if ((v16 & 1) == 0)
           {
-            if (v21)
+            if (errorCopy)
             {
               v19 = v17;
-              *v21 = v17;
+              *errorCopy = v17;
             }
 
             v18 = 0;
@@ -311,7 +311,7 @@ uint64_t __68__CNCoreRecentsLibraryFacade_contactsWithInternalIdentifiers_error_
 
       v18 = 1;
 LABEL_15:
-      v6 = v22;
+      contactsCopy = v22;
     }
 
     else
@@ -356,119 +356,119 @@ uint64_t __51__CNCoreRecentsLibraryFacade_deleteContacts_error___block_invoke(ui
   return v8;
 }
 
-- (id)contactsWithHandles:(id)a3 error:(id *)a4
+- (id)contactsWithHandles:(id)handles error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandles:a3];
-  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandles:handles];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:error];
 
   return v7;
 }
 
-- (int64_t)countOfContactsWithHandles:(id)a3 error:(id *)a4
+- (int64_t)countOfContactsWithHandles:(id)handles error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandles:a3];
-  v7 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v8 = [v7 countOfRecentContactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandles:handles];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v8 = [queryHandler countOfRecentContactsForQuery:v6 error:error];
 
   return v8;
 }
 
-- (id)contactsWithHandlesMatchingString:(id)a3 error:(id *)a4
+- (id)contactsWithHandlesMatchingString:(id)string error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandlesMatchingString:a3];
-  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithHandlesMatchingString:string];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:error];
 
   return v7;
 }
 
-- (id)contactsWithName:(id)a3 prefixSearch:(BOOL)a4 error:(id *)a5
+- (id)contactsWithName:(id)name prefixSearch:(BOOL)search error:(id *)error
 {
-  v7 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithName:a3 prefixSearch:a4];
-  v8 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v7 error:a5];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithName:name prefixSearch:search];
+  v8 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v7 error:error];
 
   return v8;
 }
 
-- (int64_t)countOfContactsWithName:(id)a3 prefixSearch:(BOOL)a4 error:(id *)a5
+- (int64_t)countOfContactsWithName:(id)name prefixSearch:(BOOL)search error:(id *)error
 {
-  v7 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithName:a3 prefixSearch:a4];
-  v8 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v9 = [v8 countOfRecentContactsForQuery:v7 error:a5];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithName:name prefixSearch:search];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v9 = [queryHandler countOfRecentContactsForQuery:v7 error:error];
 
   return v9;
 }
 
-- (id)contactsWithPhoneNumbers:(id)a3 error:(id *)a4
+- (id)contactsWithPhoneNumbers:(id)numbers error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:a3 singleResult:0];
-  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:numbers singleResult:0];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:error];
 
   return v7;
 }
 
-- (int64_t)countOfContactsWithPhoneNumbers:(id)a3 error:(id *)a4
+- (int64_t)countOfContactsWithPhoneNumbers:(id)numbers error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:a3 singleResult:0];
-  v7 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v8 = [v7 countOfRecentContactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:numbers singleResult:0];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v8 = [queryHandler countOfRecentContactsForQuery:v6 error:error];
 
   return v8;
 }
 
-- (id)singleContactWithPhoneNumber:(id)a3 error:(id *)a4
+- (id)singleContactWithPhoneNumber:(id)number error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  numberCopy = number;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v13 count:1];
+  numberCopy2 = number;
+  v8 = [v6 arrayWithObjects:&numberCopy count:1];
 
-  v9 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:v8 singleResult:1, v13, v14];
+  v9 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithPhoneNumbers:v8 singleResult:1, numberCopy, v14];
 
-  v10 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v9 error:a4];
-  v11 = [v10 firstObject];
+  v10 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v9 error:error];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)contactsWithEmailAddresses:(id)a3 error:(id *)a4
+- (id)contactsWithEmailAddresses:(id)addresses error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:a3 singleResult:0];
-  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:addresses singleResult:0];
+  v7 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v6 error:error];
 
   return v7;
 }
 
-- (int64_t)countOfContactsWithEmailAddresses:(id)a3 error:(id *)a4
+- (int64_t)countOfContactsWithEmailAddresses:(id)addresses error:(id *)error
 {
-  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:a3 singleResult:1];
-  v7 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v8 = [v7 countOfRecentContactsForQuery:v6 error:a4];
+  v6 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:addresses singleResult:1];
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v8 = [queryHandler countOfRecentContactsForQuery:v6 error:error];
 
   return v8;
 }
 
-- (id)singleContactWithEmailAddress:(id)a3 error:(id *)a4
+- (id)singleContactWithEmailAddress:(id)address error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  addressCopy = address;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v13 count:1];
+  addressCopy2 = address;
+  v8 = [v6 arrayWithObjects:&addressCopy count:1];
 
-  v9 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:v8 singleResult:1, v13, v14];
+  v9 = [(CNCoreRecentsLibraryFacade *)self _queryForContactsWithEmailAddresses:v8 singleResult:1, addressCopy, v14];
 
-  v10 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v9 error:a4];
-  v11 = [v10 firstObject];
+  v10 = [(CNCoreRecentsLibraryFacade *)self _contactsForQuery:v9 error:error];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)_contactsForQuery:(id)a3 error:(id *)a4
+- (id)_contactsForQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNCoreRecentsLibraryFacade *)self queryHandler];
-  v8 = [v7 recentContactsForQuery:v6 error:a4];
+  queryCopy = query;
+  queryHandler = [(CNCoreRecentsLibraryFacade *)self queryHandler];
+  v8 = [queryHandler recentContactsForQuery:queryCopy error:error];
 
   if (v8)
   {
@@ -478,10 +478,10 @@ uint64_t __51__CNCoreRecentsLibraryFacade_deleteContacts_error___block_invoke(ui
   else
   {
     v10 = [objc_opt_class() facadeErrorWithUnderlyingError:0];
-    if (a4)
+    if (error)
     {
       v10 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v9 = 0;
@@ -509,14 +509,14 @@ uint64_t __51__CNCoreRecentsLibraryFacade_deleteContacts_error___block_invoke(ui
   return v6;
 }
 
-- (BOOL)areSupportedDomains:(id)a3
+- (BOOL)areSupportedDomains:(id)domains
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke;
   v4[3] = &unk_1E7412440;
   v4[4] = self;
-  return [a3 _cn_all:v4];
+  return [domains _cn_all:v4];
 }
 
 uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uint64_t a1, void *a2)
@@ -529,49 +529,49 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
   return v5;
 }
 
-- (id)_queryForContactsWithHandles:(id)a3
+- (id)_queryForContactsWithHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   v5 = objc_alloc_init(getCRSearchQueryClass());
   CRSearchPredicateClass = getCRSearchPredicateClass();
   v7 = getCRRecentContactKeyAddress();
-  v8 = [CRSearchPredicateClass predicateForKey:v7 inCollection:v4];
+  v8 = [CRSearchPredicateClass predicateForKey:v7 inCollection:handlesCopy];
 
   [v5 setSearchPredicate:v8];
-  v9 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v9];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v10 = [getCRSearchQueryClass() frecencyComparator];
-  [v5 setComparator:v10];
+  frecencyComparator = [getCRSearchQueryClass() frecencyComparator];
+  [v5 setComparator:frecencyComparator];
 
   return v5;
 }
 
-- (id)_queryForContactsWithHandlesMatchingString:(id)a3
+- (id)_queryForContactsWithHandlesMatchingString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(getCRSearchQueryClass());
   CRSearchPredicateClass = getCRSearchPredicateClass();
   v7 = getCRRecentContactKeyAddress();
-  v8 = [CRSearchPredicateClass predicateForKey:v7 matchingText:v4 comparison:1];
+  v8 = [CRSearchPredicateClass predicateForKey:v7 matchingText:stringCopy comparison:1];
 
   [v5 setSearchPredicate:v8];
-  v9 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v9];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v10 = [getCRSearchQueryClass() frecencyComparator];
-  [v5 setComparator:v10];
+  frecencyComparator = [getCRSearchQueryClass() frecencyComparator];
+  [v5 setComparator:frecencyComparator];
 
   return v5;
 }
 
-- (id)_queryForContactsWithName:(id)a3 prefixSearch:(BOOL)a4
+- (id)_queryForContactsWithName:(id)name prefixSearch:(BOOL)search
 {
-  v4 = a4;
-  v6 = a3;
+  searchCopy = search;
+  nameCopy = name;
   CRSearchPredicateClass = getCRSearchPredicateClass();
   v8 = getCRRecentContactKeyDisplayName();
-  if (v4)
+  if (searchCopy)
   {
     v9 = 2;
   }
@@ -581,24 +581,24 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
     v9 = 1;
   }
 
-  v10 = [CRSearchPredicateClass predicateForKey:v8 matchingText:v6 comparison:v9];
+  v10 = [CRSearchPredicateClass predicateForKey:v8 matchingText:nameCopy comparison:v9];
 
   v11 = objc_alloc_init(getCRSearchQueryClass());
   [v11 setSearchPredicate:v10];
-  v12 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v11 setDomains:v12];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v11 setDomains:domains];
 
-  v13 = [getCRSearchQueryClass() frecencyComparator];
-  [v11 setComparator:v13];
+  frecencyComparator = [getCRSearchQueryClass() frecencyComparator];
+  [v11 setComparator:frecencyComparator];
 
   return v11;
 }
 
-- (id)_queryForContactsWithPhoneNumbers:(id)a3 singleResult:(BOOL)a4
+- (id)_queryForContactsWithPhoneNumbers:(id)numbers singleResult:(BOOL)result
 {
-  v25 = a4;
+  resultCopy = result;
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  numbersCopy = numbers;
   v5 = objc_alloc_init(getCRSearchQueryClass());
   v6 = MEMORY[0x1E695DF70];
   CRSearchPredicateClass = getCRSearchPredicateClass();
@@ -631,12 +631,12 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
   v31[0] = v14;
   v15 = getCRSearchPredicateClass();
   v16 = getCRRecentContactKeyAddress();
-  v17 = [v15 predicateForKey:v16 inCollection:v4];
+  v17 = [v15 predicateForKey:v16 inCollection:numbersCopy];
   v31[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
   v19 = [v6 arrayWithArray:v18];
 
-  if (v25)
+  if (resultCopy)
   {
     [v5 setPageRange:{0, 1}];
   }
@@ -644,20 +644,20 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
   v20 = [getCRSearchPredicateClass() predicateSatisfyingAllSubpredicates:v19];
   [v5 setSearchPredicate:v20];
 
-  v21 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v21];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v22 = [getCRSearchQueryClass() frecencyComparator];
-  [v5 setComparator:v22];
+  frecencyComparator = [getCRSearchQueryClass() frecencyComparator];
+  [v5 setComparator:frecencyComparator];
 
   return v5;
 }
 
-- (id)_queryForContactsWithEmailAddresses:(id)a3 singleResult:(BOOL)a4
+- (id)_queryForContactsWithEmailAddresses:(id)addresses singleResult:(BOOL)result
 {
-  v23 = a4;
+  resultCopy = result;
   v30[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressesCopy = addresses;
   v5 = objc_alloc_init(getCRSearchQueryClass());
   CRSearchPredicateClass = getCRSearchPredicateClass();
   v7 = getCRSearchPredicateClass();
@@ -690,19 +690,19 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
   v30[0] = v14;
   v15 = getCRSearchPredicateClass();
   v16 = getCRRecentContactKeyAddress();
-  v17 = [v15 predicateForKey:v16 inCollection:v4];
+  v17 = [v15 predicateForKey:v16 inCollection:addressesCopy];
   v30[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v19 = [CRSearchPredicateClass predicateSatisfyingAllSubpredicates:v18];
   [v5 setSearchPredicate:v19];
 
-  v20 = [(CNCoreRecentsLibraryFacade *)self domains];
-  [v5 setDomains:v20];
+  domains = [(CNCoreRecentsLibraryFacade *)self domains];
+  [v5 setDomains:domains];
 
-  v21 = [getCRSearchQueryClass() frecencyComparator];
-  [v5 setComparator:v21];
+  frecencyComparator = [getCRSearchQueryClass() frecencyComparator];
+  [v5 setComparator:frecencyComparator];
 
-  if (v23)
+  if (resultCopy)
   {
     [v5 setPageRange:{0, 1}];
   }
@@ -710,61 +710,61 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
   return v5;
 }
 
-- (int64_t)countOfRecentContactsForQuery:(id)a3 error:(id *)a4
+- (int64_t)countOfRecentContactsForQuery:(id)query error:(id *)error
 {
-  v5 = a3;
-  v6 = [getCRRecentContactsLibraryClass() defaultInstance];
-  v7 = [v6 countOfRecentContactsForQuery:v5 error:a4];
+  queryCopy = query;
+  defaultInstance = [getCRRecentContactsLibraryClass() defaultInstance];
+  v7 = [defaultInstance countOfRecentContactsForQuery:queryCopy error:error];
 
   return v7;
 }
 
-- (id)recentContactsForQuery:(id)a3 error:(id *)a4
+- (id)recentContactsForQuery:(id)query error:(id *)error
 {
-  v5 = a3;
-  v6 = [getCRRecentContactsLibraryClass() defaultInstance];
-  v7 = [v6 recentContactsForQuery:v5 error:a4];
+  queryCopy = query;
+  defaultInstance = [getCRRecentContactsLibraryClass() defaultInstance];
+  v7 = [defaultInstance recentContactsForQuery:queryCopy error:error];
 
   return v7;
 }
 
-- (id)recentContactsWithIDs:(id)a3 error:(id *)a4
+- (id)recentContactsWithIDs:(id)ds error:(id *)error
 {
-  v5 = a3;
-  v6 = [getCRRecentContactsLibraryClass() defaultInstance];
-  v7 = [v6 recentContactsWithIDs:v5 error:a4];
+  dsCopy = ds;
+  defaultInstance = [getCRRecentContactsLibraryClass() defaultInstance];
+  v7 = [defaultInstance recentContactsWithIDs:dsCopy error:error];
 
   return v7;
 }
 
-- (BOOL)removeRecentContactsWithRecentIDs:(id)a3 recentsDomain:(id)a4 error:(id *)a5
+- (BOOL)removeRecentContactsWithRecentIDs:(id)ds recentsDomain:(id)domain error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [getCRRecentContactsLibraryClass() defaultInstance];
-  LOBYTE(a5) = [v9 removeRecentContactsWithRecentIDs:v8 recentsDomain:v7 error:a5];
+  domainCopy = domain;
+  dsCopy = ds;
+  defaultInstance = [getCRRecentContactsLibraryClass() defaultInstance];
+  LOBYTE(error) = [defaultInstance removeRecentContactsWithRecentIDs:dsCopy recentsDomain:domainCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)facadeErrorWithUnderlyingError:(id)a3
++ (id)facadeErrorWithUnderlyingError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    if ([MEMORY[0x1E6996708] isXPCServiceError:v4])
+    if ([MEMORY[0x1E6996708] isXPCServiceError:errorCopy])
     {
-      v5 = a1;
+      selfCopy3 = self;
       v6 = 3;
     }
 
     else
     {
-      v8 = [v4 domain];
+      domain = [errorCopy domain];
       v9 = getCRRecentContactsErrorDomain();
-      v10 = [v8 isEqualToString:v9];
+      v10 = [domain isEqualToString:v9];
 
-      v5 = a1;
+      selfCopy3 = self;
       if (v10)
       {
         v6 = 2;
@@ -776,30 +776,30 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
       }
     }
 
-    v7 = v4;
+    v7 = errorCopy;
   }
 
   else
   {
-    v5 = a1;
+    selfCopy3 = self;
     v6 = 0;
     v7 = 0;
   }
 
-  v11 = [v5 facadeErrorWithCode:v6 underlyingError:v7];
+  v11 = [selfCopy3 facadeErrorWithCode:v6 underlyingError:v7];
 
   return v11;
 }
 
-+ (id)facadeErrorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)facadeErrorWithCode:(int64_t)code underlyingError:(id)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v10 = *MEMORY[0x1E696AA08];
-    v11[0] = v5;
+    v11[0] = errorCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -808,7 +808,7 @@ uint64_t __50__CNCoreRecentsLibraryFacade_areSupportedDomains___block_invoke(uin
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNCoreRecentsFacadeErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNCoreRecentsFacadeErrorDomain" code:code userInfo:v7];
 
   return v8;
 }

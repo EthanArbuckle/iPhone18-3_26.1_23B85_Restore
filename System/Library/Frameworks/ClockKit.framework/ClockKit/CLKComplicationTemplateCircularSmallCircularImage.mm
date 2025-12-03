@@ -1,48 +1,48 @@
 @interface CLKComplicationTemplateCircularSmallCircularImage
-+ (id)templateWithImageProvider:(id)a3;
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5;
-- (CLKComplicationTemplateCircularSmallCircularImage)initWithImageProvider:(id)a3;
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3;
++ (id)templateWithImageProvider:(id)provider;
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version;
+- (CLKComplicationTemplateCircularSmallCircularImage)initWithImageProvider:(id)provider;
+- (void)_enumerateImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateCircularSmallCircularImage
 
-- (CLKComplicationTemplateCircularSmallCircularImage)initWithImageProvider:(id)a3
+- (CLKComplicationTemplateCircularSmallCircularImage)initWithImageProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = CLKComplicationTemplateCircularSmallCircularImage;
-  v5 = [(CLKComplicationTemplate *)&v8 initPrivate];
-  v6 = v5;
-  if (v5)
+  initPrivate = [(CLKComplicationTemplate *)&v8 initPrivate];
+  v6 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateCircularSmallCircularImage *)v5 setImageProvider:v4];
+    [(CLKComplicationTemplateCircularSmallCircularImage *)initPrivate setImageProvider:providerCopy];
   }
 
   return v6;
 }
 
-+ (id)templateWithImageProvider:(id)a3
++ (id)templateWithImageProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithImageProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithImageProvider:providerCopy];
 
   return v5;
 }
 
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateImageProviderKeysWithBlock:(id)block
 {
   v9 = 0;
   v7 = 0.0;
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  v4 = a3;
+  blockCopy = block;
   [objc_opt_class() _imageSDKSize:&v7 deviceSize:&v5 forSDKVersion:{-[CLKComplicationTemplate sdkVersion](self, "sdkVersion")}];
-  (*(v4 + 2))(v4, @"imageProvider", 0, 1, 0, 4, 1, &v9, v7, v8, v5, v6);
+  (*(blockCopy + 2))(blockCopy, @"imageProvider", 0, 1, 0, 4, 1, &v9, v7, v8, v5, v6);
 }
 
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = &unk_284A34110;
@@ -50,7 +50,7 @@
   v10[0] = &unk_284A34DC8;
   v10[1] = &unk_284A34DD8;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  _SquareImageSizeScaled(v8, 1, a5, a3, a4, 32.0);
+  _SquareImageSizeScaled(v8, 1, version, size, deviceSize, 32.0);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PGMusicCuratorContext
-+ (id)contextWithPhotoLibrary:(id)a3 adamIDsWithNegativeUserFeedback:(id)a4 allowExplicitMusicContent:(id)a5 cache:(id)a6 musicBag:(id)a7 flexProviderName:(id)a8 recentlyUsedSongs:(id)a9 genre:(id)a10 isMemoryCreationCuration:(id)a11 configuration:(id)a12 error:(id *)a13;
++ (id)contextWithPhotoLibrary:(id)library adamIDsWithNegativeUserFeedback:(id)feedback allowExplicitMusicContent:(id)content cache:(id)cache musicBag:(id)bag flexProviderName:(id)name recentlyUsedSongs:(id)songs genre:(id)self0 isMemoryCreationCuration:(id)self1 configuration:(id)self2 error:(id *)self3;
 - (BOOL)allowChillMixElection;
 - (BOOL)allowGetUpMixElection;
 - (BOOL)bypassMusicForTopicElection;
@@ -12,17 +12,17 @@
 - (NSString)genre;
 - (PGFlexMusicSongProviderProtocol)flexSongProvider;
 - (PGMusicCuratorContext)init;
-- (id)extractSongIdKeywordMappings:(id *)a3;
-- (void)setAllowChillMixElection:(BOOL)a3;
-- (void)setAllowGetUpMixElection:(BOOL)a3;
-- (void)setBypassMusicForTopicElection:(BOOL)a3;
-- (void)setFlexSongProvider:(id)a3;
-- (void)setForceShareableInBestSuggestions:(BOOL)a3;
-- (void)setGenre:(id)a3;
-- (void)setIsMemoryCreationCuration:(BOOL)a3;
-- (void)setMusicCurationOverrideDictionary:(id)a3;
-- (void)setRefreshSongMetadata:(BOOL)a3;
-- (void)setUseOnlyMusicForTopicInTopPickSuggestions:(BOOL)a3;
+- (id)extractSongIdKeywordMappings:(id *)mappings;
+- (void)setAllowChillMixElection:(BOOL)election;
+- (void)setAllowGetUpMixElection:(BOOL)election;
+- (void)setBypassMusicForTopicElection:(BOOL)election;
+- (void)setFlexSongProvider:(id)provider;
+- (void)setForceShareableInBestSuggestions:(BOOL)suggestions;
+- (void)setGenre:(id)genre;
+- (void)setIsMemoryCreationCuration:(BOOL)curation;
+- (void)setMusicCurationOverrideDictionary:(id)dictionary;
+- (void)setRefreshSongMetadata:(BOOL)metadata;
+- (void)setUseOnlyMusicForTopicInTopPickSuggestions:(BOOL)suggestions;
 @end
 
 @implementation PGMusicCuratorContext
@@ -34,11 +34,11 @@
   return *(self + v3);
 }
 
-- (void)setUseOnlyMusicForTopicInTopPickSuggestions:(BOOL)a3
+- (void)setUseOnlyMusicForTopicInTopPickSuggestions:(BOOL)suggestions
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_useOnlyMusicForTopicInTopPickSuggestions;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = suggestions;
 }
 
 - (BOOL)allowChillMixElection
@@ -48,11 +48,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowChillMixElection:(BOOL)a3
+- (void)setAllowChillMixElection:(BOOL)election
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_allowChillMixElection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = election;
 }
 
 - (BOOL)allowGetUpMixElection
@@ -62,11 +62,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowGetUpMixElection:(BOOL)a3
+- (void)setAllowGetUpMixElection:(BOOL)election
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_allowGetUpMixElection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = election;
 }
 
 - (BOOL)refreshSongMetadata
@@ -76,11 +76,11 @@
   return *(self + v3);
 }
 
-- (void)setRefreshSongMetadata:(BOOL)a3
+- (void)setRefreshSongMetadata:(BOOL)metadata
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_refreshSongMetadata;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = metadata;
 }
 
 - (BOOL)forceShareableInBestSuggestions
@@ -90,11 +90,11 @@
   return *(self + v3);
 }
 
-- (void)setForceShareableInBestSuggestions:(BOOL)a3
+- (void)setForceShareableInBestSuggestions:(BOOL)suggestions
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_forceShareableInBestSuggestions;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = suggestions;
 }
 
 - (NSDictionary)musicCurationOverrideDictionary
@@ -115,9 +115,9 @@
   return v4;
 }
 
-- (void)setMusicCurationOverrideDictionary:(id)a3
+- (void)setMusicCurationOverrideDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = sub_22F740CA0();
   }
@@ -140,11 +140,11 @@
   return *(self + v3);
 }
 
-- (void)setBypassMusicForTopicElection:(BOOL)a3
+- (void)setBypassMusicForTopicElection:(BOOL)election
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_bypassMusicForTopicElection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = election;
 }
 
 - (NSString)genre
@@ -159,7 +159,7 @@
   return v5;
 }
 
-- (void)setGenre:(id)a3
+- (void)setGenre:(id)genre
 {
   v4 = sub_22F740E20();
   v6 = v5;
@@ -177,11 +177,11 @@
   return *(self + v3);
 }
 
-- (void)setIsMemoryCreationCuration:(BOOL)a3
+- (void)setIsMemoryCreationCuration:(BOOL)curation
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_isMemoryCreationCuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = curation;
 }
 
 - (PGFlexMusicSongProviderProtocol)flexSongProvider
@@ -194,22 +194,22 @@
   return v5;
 }
 
-- (void)setFlexSongProvider:(id)a3
+- (void)setFlexSongProvider:(id)provider
 {
   v5 = OBJC_IVAR___PGMusicCuratorContext_flexSongProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = provider;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-+ (id)contextWithPhotoLibrary:(id)a3 adamIDsWithNegativeUserFeedback:(id)a4 allowExplicitMusicContent:(id)a5 cache:(id)a6 musicBag:(id)a7 flexProviderName:(id)a8 recentlyUsedSongs:(id)a9 genre:(id)a10 isMemoryCreationCuration:(id)a11 configuration:(id)a12 error:(id *)a13
++ (id)contextWithPhotoLibrary:(id)library adamIDsWithNegativeUserFeedback:(id)feedback allowExplicitMusicContent:(id)content cache:(id)cache musicBag:(id)bag flexProviderName:(id)name recentlyUsedSongs:(id)songs genre:(id)self0 isMemoryCreationCuration:(id)self1 configuration:(id)self2 error:(id *)self3
 {
-  if (a4)
+  if (feedback)
   {
     v33 = sub_22F741420();
-    if (a8)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -217,7 +217,7 @@
 LABEL_6:
     v30 = 0;
     v32 = 0;
-    if (a10)
+    if (genre)
     {
       goto LABEL_4;
     }
@@ -226,7 +226,7 @@ LABEL_6:
   }
 
   v33 = 0;
-  if (!a8)
+  if (!name)
   {
     goto LABEL_6;
   }
@@ -234,7 +234,7 @@ LABEL_6:
 LABEL_3:
   v30 = sub_22F740E20();
   v32 = v18;
-  if (a10)
+  if (genre)
   {
 LABEL_4:
     v19 = sub_22F740E20();
@@ -246,14 +246,14 @@ LABEL_7:
   v19 = 0;
   v21 = 0;
 LABEL_8:
-  v22 = a3;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a9;
-  v23 = a11;
-  v24 = a12;
-  v31 = sub_22F2AB2F8(v22, v33, a5, a6, a7, v30, v32, a9, v19, v21, a11, a12);
+  libraryCopy = library;
+  contentCopy = content;
+  cacheCopy = cache;
+  bagCopy = bag;
+  songsCopy = songs;
+  curationCopy = curation;
+  configurationCopy = configuration;
+  v31 = sub_22F2AB2F8(libraryCopy, v33, content, cache, bag, v30, v32, songs, v19, v21, curation, configuration);
 
   return v31;
 }
@@ -267,7 +267,7 @@ LABEL_8:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MusicCuratorContext.description.getter();
 
   v3 = sub_22F740DF0();
@@ -275,9 +275,9 @@ LABEL_8:
   return v3;
 }
 
-- (id)extractSongIdKeywordMappings:(id *)a3
+- (id)extractSongIdKeywordMappings:(id *)mappings
 {
-  v3 = self;
+  selfCopy = self;
   MusicCuratorContext.extractSongIdKeywordMappings()();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAB0E90, &qword_22F7714A0);

@@ -1,11 +1,11 @@
 @interface AXFlashForLEDController
-- (id)flashWhileUnlocked:(id)a3;
-- (id)ledFlashEnabled:(id)a3;
-- (id)ringerSwitchControl:(id)a3;
+- (id)flashWhileUnlocked:(id)unlocked;
+- (id)ledFlashEnabled:(id)enabled;
+- (id)ringerSwitchControl:(id)control;
 - (id)specifiers;
-- (void)setFlashWhileUnlocked:(id)a3 specifier:(id)a4;
-- (void)setLEDFlashEnabled:(id)a3 specifier:(id)a4;
-- (void)setRingerSwitchControl:(id)a3 specifier:(id)a4;
+- (void)setFlashWhileUnlocked:(id)unlocked specifier:(id)specifier;
+- (void)setLEDFlashEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRingerSwitchControl:(id)control specifier:(id)specifier;
 @end
 
 @implementation AXFlashForLEDController
@@ -52,14 +52,14 @@
   return v4;
 }
 
-- (void)setFlashWhileUnlocked:(id)a3 specifier:(id)a4
+- (void)setFlashWhileUnlocked:(id)unlocked specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [unlocked BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setShouldFlashWhileUnlocked:v4];
+  [v5 setShouldFlashWhileUnlocked:bOOLValue];
 }
 
-- (id)flashWhileUnlocked:(id)a3
+- (id)flashWhileUnlocked:(id)unlocked
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldFlashWhileUnlocked]);
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)setRingerSwitchControl:(id)a3 specifier:(id)a4
+- (void)setRingerSwitchControl:(id)control specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [control BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setShouldFlashForAlertInSilentMode:v4];
+  [v5 setShouldFlashForAlertInSilentMode:bOOLValue];
 }
 
-- (id)ringerSwitchControl:(id)a3
+- (id)ringerSwitchControl:(id)control
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldFlashForAlertInSilentMode]);
@@ -82,14 +82,14 @@
   return v4;
 }
 
-- (void)setLEDFlashEnabled:(id)a3 specifier:(id)a4
+- (void)setLEDFlashEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSVisualAlertSetEnabled(v4);
+  __AXSVisualAlertSetEnabled(bOOLValue);
 }
 
-- (id)ledFlashEnabled:(id)a3
+- (id)ledFlashEnabled:(id)enabled
 {
   v3 = _AXSVisualAlertEnabled();
 

@@ -1,33 +1,33 @@
 @interface NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttestation:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttestation:(id)attestation;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse
 
-- (void)addAttestation:(id)a3
+- (void)addAttestation:(id)attestation
 {
-  v4 = a3;
+  attestationCopy = attestation;
   attestations = self->_attestations;
-  v8 = v4;
+  v8 = attestationCopy;
   if (!attestations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_attestations;
     self->_attestations = v6;
 
-    v4 = v8;
+    attestationCopy = v8;
     attestations = self->_attestations;
   }
 
-  [(NSMutableArray *)attestations addObject:v4];
+  [(NSMutableArray *)attestations addObject:attestationCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse;
   v4 = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)&v8 description];
-  v5 = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   attestations = self->_attestations;
   if (attestations)
   {
-    [v3 setObject:attestations forKey:@"attestation"];
+    [dictionary setObject:attestations forKey:@"attestation"];
   }
 
   authorization = self->_authorization;
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -116,41 +116,41 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self attestationsCount])
   {
-    [v9 clearAttestations];
-    v4 = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self attestationsCount];
-    if (v4)
+    [toCopy clearAttestations];
+    attestationsCount = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self attestationsCount];
+    if (attestationsCount)
     {
-      v5 = v4;
+      v5 = attestationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self attestationAtIndex:i];
-        [v9 addAttestation:v7];
+        [toCopy addAttestation:v7];
       }
     }
   }
 
   if (self->_authorization)
   {
-    [v9 setAuthorization:?];
+    [toCopy setAuthorization:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_errorData)
   {
-    [v9 setErrorData:?];
-    v8 = v9;
+    [toCopy setErrorData:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -171,7 +171,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{a3, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{zone, v18}];
         [v5 addAttestation:v11];
 
         ++v10;
@@ -184,11 +184,11 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_authorization copyWithZone:a3];
+  v12 = [(NSData *)self->_authorization copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSData *)self->_errorData copyWithZone:a3];
+  v14 = [(NSData *)self->_errorData copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
@@ -196,13 +196,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((attestations = self->_attestations, !(attestations | v4[1])) || -[NSMutableArray isEqual:](attestations, "isEqual:")) && ((authorization = self->_authorization, !(authorization | v4[2])) || -[NSData isEqual:](authorization, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((attestations = self->_attestations, !(attestations | equalCopy[1])) || -[NSMutableArray isEqual:](attestations, "isEqual:")) && ((authorization = self->_authorization, !(authorization | equalCopy[2])) || -[NSData isEqual:](authorization, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[3])
+    if (errorData | equalCopy[3])
     {
       v8 = [(NSData *)errorData isEqual:?];
     }
@@ -228,15 +228,15 @@
   return v4 ^ [(NSData *)self->_errorData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -260,12 +260,12 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self setAuthorization:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoGenerateISOEncryptionCertificateForSubCredentialIdResponse *)self setErrorData:?];
   }

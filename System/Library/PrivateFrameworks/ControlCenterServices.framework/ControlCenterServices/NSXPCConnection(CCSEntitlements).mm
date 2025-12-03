@@ -13,8 +13,8 @@
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = MEMORY[0x277CF0B98];
-  v6 = [a1 _xpcConnection];
-  v7 = [v5 tokenFromXPCConnection:v6];
+  _xpcConnection = [self _xpcConnection];
+  v7 = [v5 tokenFromXPCConnection:_xpcConnection];
 
   v8 = [v7 valueForEntitlement:@"com.apple.private.controlcenter.service.moduleidentifiers"];
   objc_opt_class();
@@ -53,8 +53,8 @@
 - (uint64_t)ccs_hasEntitlementForListingModuleIdentifiers
 {
   v1 = MEMORY[0x277CF0B98];
-  v2 = [a1 _xpcConnection];
-  v3 = [v1 tokenFromXPCConnection:v2];
+  _xpcConnection = [self _xpcConnection];
+  v3 = [v1 tokenFromXPCConnection:_xpcConnection];
 
   v4 = [v3 valueForEntitlement:@"application-identifier"];
   v5 = [v4 isEqual:@"com.apple.control-center.controlcentertool"];
@@ -65,8 +65,8 @@
 - (uint64_t)ccs_hasEntitlementForForciblyEnablingModules
 {
   v1 = MEMORY[0x277CF0B98];
-  v2 = [a1 _xpcConnection];
-  v3 = [v1 tokenFromXPCConnection:v2];
+  _xpcConnection = [self _xpcConnection];
+  v3 = [v1 tokenFromXPCConnection:_xpcConnection];
 
   v4 = [v3 valueForEntitlement:@"application-identifier"];
   if ([v4 isEqual:@"com.apple.control-center.controlcentertool"] & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiautomation") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.springboard") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.accessibility.AccessibilityUIServer") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiuntool.SystemExperienceAutomationAngel") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.accessibility.heard") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.tvremoted") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.Music") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.amp.MusicUI.MusicUIEngagementExtension") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.Preferences") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.Health") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.logind") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.BarcodeScanner.BarcodeSupportHelper") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.GenerativeFunctions.generativeexperiencesd"))
@@ -85,8 +85,8 @@
 - (uint64_t)ccs_hasEntitlementForHandlingControlCenterOperation
 {
   v1 = MEMORY[0x277CF0B98];
-  v2 = [a1 _xpcConnection];
-  v3 = [v1 tokenFromXPCConnection:v2];
+  _xpcConnection = [self _xpcConnection];
+  v3 = [v1 tokenFromXPCConnection:_xpcConnection];
 
   v4 = [v3 valueForEntitlement:@"application-identifier"];
   if ([v4 isEqual:@"com.apple.control-center.controlcentertool"] & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiautomation") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiuntool.SystemExperienceAutomationAngel") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.springboard") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.GameOverlayUI") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.GameOverlayUIInternal"))
@@ -105,8 +105,8 @@
 - (uint64_t)ccs_hasEntitlementToResetToDefaultLayout
 {
   v1 = MEMORY[0x277CF0B98];
-  v2 = [a1 _xpcConnection];
-  v3 = [v1 tokenFromXPCConnection:v2];
+  _xpcConnection = [self _xpcConnection];
+  v3 = [v1 tokenFromXPCConnection:_xpcConnection];
 
   v4 = [v3 valueForEntitlement:@"application-identifier"];
   if ([v4 isEqual:@"com.apple.control-center.controlcentertool"] & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiautomation") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"com.apple.internal.suiuntool.SystemExperienceAutomationAngel"))

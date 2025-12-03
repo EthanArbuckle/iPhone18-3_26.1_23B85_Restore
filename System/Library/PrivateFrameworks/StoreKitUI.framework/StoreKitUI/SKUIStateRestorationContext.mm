@@ -1,13 +1,13 @@
 @interface SKUIStateRestorationContext
 + (id)sharedContext;
-+ (void)setSharedContext:(id)a3;
++ (void)setSharedContext:(id)context;
 @end
 
 @implementation SKUIStateRestorationContext
 
-+ (void)setSharedContext:(id)a3
++ (void)setSharedContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -21,7 +21,7 @@
   }
 
   v12 = sContext;
-  sContext = v3;
+  sContext = contextCopy;
 }
 
 + (id)sharedContext

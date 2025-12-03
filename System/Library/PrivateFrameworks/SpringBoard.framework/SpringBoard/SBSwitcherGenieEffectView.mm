@@ -1,119 +1,119 @@
 @interface SBSwitcherGenieEffectView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SBSwitcherGenieEffectView)initWithCoder:(id)a3;
-- (SBSwitcherGenieEffectView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SBSwitcherGenieEffectView)initWithCoder:(id)coder;
+- (SBSwitcherGenieEffectView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (SBSwitcherGenieEffectViewDelegate)delegate;
-- (id)_addAndReturnPortaledContentView:(id)a3;
-- (id)_iconBadgeViewIfAnyInView:(id)a3;
-- (id)_iconViewIfAnyInView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addPortaledNotificationBadgeForContentViewIfNeeded:(id)a3;
+- (id)_addAndReturnPortaledContentView:(id)view;
+- (id)_iconBadgeViewIfAnyInView:(id)view;
+- (id)_iconViewIfAnyInView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addPortaledNotificationBadgeForContentViewIfNeeded:(id)needed;
 - (void)_invalidateContentViewPortalsIfNeeded;
 - (void)_invalidateGenie;
-- (void)_layoutContentAndContainerViewWithAttributes:(id)a3;
-- (void)_performGenieWithAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5;
-- (void)_setGlassHighlight:(SBSwitcherGenieGlassHighlight *)a3;
-- (void)_updateGenieMeshTransformForPresentationLayer:(BOOL)a3 properties:(id)a4 boundsProperty:(id)a5 attributes:(id)a6;
+- (void)_layoutContentAndContainerViewWithAttributes:(id)attributes;
+- (void)_performGenieWithAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion;
+- (void)_setGlassHighlight:(SBSwitcherGenieGlassHighlight *)highlight;
+- (void)_updateGenieMeshTransformForPresentationLayer:(BOOL)layer properties:(id)properties boundsProperty:(id)property attributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5;
-- (void)setChildContentView:(id)a3;
-- (void)setPortaledContentViews:(id)a3;
+- (void)setAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion;
+- (void)setChildContentView:(id)view;
+- (void)setPortaledContentViews:(id)views;
 @end
 
 @implementation SBSwitcherGenieEffectView
 
-- (SBSwitcherGenieEffectView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (SBSwitcherGenieEffectView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v40.receiver = self;
   v40.super_class = SBSwitcherGenieEffectView;
-  v11 = [(SBSwitcherGenieEffectView *)&v40 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(SBSwitcherGenieEffectView *)&v40 initWithFrame:x, y, width, height];
+  if (height)
   {
-    if (!v10)
+    if (!delegateCopy)
     {
-      [SBSwitcherGenieEffectView initWithFrame:a2 delegate:v11];
+      [SBSwitcherGenieEffectView initWithFrame:a2 delegate:height];
     }
 
-    objc_storeWeak(v11 + 72, v10);
-    *(v11 + 135) = 0;
+    objc_storeWeak(height + 72, delegateCopy);
+    *(height + 135) = 0;
     v12 = [_SBSwitcherGenieEffectContainerView alloc];
     v13 = *MEMORY[0x277CBF3A0];
     v14 = *(MEMORY[0x277CBF3A0] + 8);
     v15 = *(MEMORY[0x277CBF3A0] + 16);
     v16 = *(MEMORY[0x277CBF3A0] + 24);
     v17 = [(_SBSwitcherGenieEffectContainerView *)v12 initWithFrame:*MEMORY[0x277CBF3A0], v14, v15, v16];
-    v18 = *(v11 + 51);
-    *(v11 + 51) = v17;
+    v18 = *(height + 51);
+    *(height + 51) = v17;
 
-    v19 = [v11 traitCollection];
-    [v19 displayScale];
-    *(v11 + 70) = v20;
+    traitCollection = [height traitCollection];
+    [traitCollection displayScale];
+    *(height + 70) = v20;
 
-    v21 = [*(v11 + 51) layer];
-    [v21 setRasterizationScale:*(v11 + 70)];
+    layer = [*(height + 51) layer];
+    [layer setRasterizationScale:*(height + 70)];
 
-    [v11 addSubview:*(v11 + 51)];
+    [height addSubview:*(height + 51)];
     v22 = [[_SBSwitcherGenieEffectContentView alloc] initWithFrame:v13, v14, v15, v16];
-    v23 = *(v11 + 52);
-    *(v11 + 52) = v22;
+    v23 = *(height + 52);
+    *(height + 52) = v22;
 
-    [*(v11 + 51) addSubview:*(v11 + 52)];
+    [*(height + 51) addSubview:*(height + 52)];
     v24 = [[_SBSDFElementView alloc] initWithFrame:v13, v14, v15, v16];
-    v25 = *(v11 + 62);
-    *(v11 + 62) = v24;
+    v25 = *(height + 62);
+    *(height + 62) = v24;
 
-    v26 = [*(v11 + 62) layer];
-    [v26 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [*(height + 62) layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
-    [*(v11 + 52) addSubview:*(v11 + 62)];
+    [*(height + 52) addSubview:*(height + 62)];
     v27 = objc_alloc_init(_SBSDFView);
-    v28 = *(v11 + 60);
-    *(v11 + 60) = v27;
+    v28 = *(height + 60);
+    *(height + 60) = v27;
 
-    [*(v11 + 52) addSubview:*(v11 + 60)];
+    [*(height + 52) addSubview:*(height + 60)];
     v29 = objc_alloc_init(_SBSDFView);
-    v30 = *(v11 + 61);
-    *(v11 + 61) = v29;
+    v30 = *(height + 61);
+    *(height + 61) = v29;
 
-    v31 = [*(v11 + 61) layer];
-    [v31 setCompositingFilter:*MEMORY[0x277CDA5E8]];
+    layer3 = [*(height + 61) layer];
+    [layer3 setCompositingFilter:*MEMORY[0x277CDA5E8]];
 
-    [*(v11 + 52) addSubview:*(v11 + 61)];
+    [*(height + 52) addSubview:*(height + 61)];
     v32 = SBSwitcherGenieGlassHighlightDirectionNone();
     SBSwitcherGenieGlassHighlightMake(0, v38, v32, v33, v34, 0.0);
     v35 = v38[0];
     v36 = v38[1];
-    *(v11 + 59) = v39;
-    *(v11 + 440) = v35;
-    *(v11 + 456) = v36;
-    [v11 _setGlassHighlight:{v38, SBSwitcherGenieGlassHighlightNone(v38)}];
+    *(height + 59) = v39;
+    *(height + 440) = v35;
+    *(height + 456) = v36;
+    [height _setGlassHighlight:{v38, SBSwitcherGenieGlassHighlightNone(v38)}];
   }
 
-  return v11;
+  return height;
 }
 
-- (SBSwitcherGenieEffectView)initWithCoder:(id)a3
+- (SBSwitcherGenieEffectView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSwitcherGenieEffectView.m" lineNumber:149 description:{@"%@ %@ unsupported", v8, v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSwitcherGenieEffectView.m" lineNumber:149 description:{@"%@ %@ unsupported", v8, v9}];
 
   __break(1u);
   return result;
 }
 
-- (id)_addAndReturnPortaledContentView:(id)a3
+- (id)_addAndReturnPortaledContentView:(id)view
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (!self->_contentPortalViews)
   {
     v5 = objc_opt_new();
@@ -121,34 +121,34 @@
     self->_contentPortalViews = v5;
   }
 
-  v7 = [v4 isIconBadgeView];
+  isIconBadgeView = [viewCopy isIconBadgeView];
   v8 = objc_alloc(MEMORY[0x277D76180]);
   v9 = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v9 setSourceView:v4];
+  [v9 setSourceView:viewCopy];
   [v9 setHidesSourceView:1];
-  [v9 setMatchesPosition:(self->_portaledContentShouldMatchSource | v7) & 1];
-  [v9 setMatchesTransform:(self->_portaledContentShouldMatchSource | v7) & 1];
-  [v9 setMatchesAlpha:(self->_portaledContentShouldMatchSource | v7) & 1];
+  [v9 setMatchesPosition:(self->_portaledContentShouldMatchSource | isIconBadgeView) & 1];
+  [v9 setMatchesTransform:(self->_portaledContentShouldMatchSource | isIconBadgeView) & 1];
+  [v9 setMatchesAlpha:(self->_portaledContentShouldMatchSource | isIconBadgeView) & 1];
   [v9 setAllowsHitTesting:1];
   [v9 setForwardsClientHitTestingToSourceView:1];
   [v9 setName:@"com.apple.SpringBoard.genie.contentPortalView"];
   [(NSMutableArray *)self->_contentPortalViews addObject:v9];
   [(_SBSwitcherGenieEffectContentView *)self->_contentView addSubview:v9];
-  if (!self->_portaledContentShouldMatchSource && (v7 & 1) == 0)
+  if (!self->_portaledContentShouldMatchSource && (isIconBadgeView & 1) == 0)
   {
     [(UIView *)self->_childContentView frame];
     [v9 sb_setBoundsAndPositionFromFrame:?];
-    v10 = [MEMORY[0x277CD9EE8] animation];
-    v11 = [(UIView *)self->_childContentView layer];
-    [v10 setSourceLayer:v11];
+    animation = [MEMORY[0x277CD9EE8] animation];
+    layer = [(UIView *)self->_childContentView layer];
+    [animation setSourceLayer:layer];
 
-    [v10 setDuration:INFINITY];
-    [v10 setFillMode:*MEMORY[0x277CDA230]];
-    [v10 setRemovedOnCompletion:0];
-    [v10 setAppliesX:1];
-    [v10 setAppliesY:1];
-    [v10 setAppliesScale:1];
-    [v10 setUsesNormalizedCoordinates:1];
+    [animation setDuration:INFINITY];
+    [animation setFillMode:*MEMORY[0x277CDA230]];
+    [animation setRemovedOnCompletion:0];
+    [animation setAppliesX:1];
+    [animation setAppliesY:1];
+    [animation setAppliesScale:1];
+    [animation setUsesNormalizedCoordinates:1];
     v12 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, 0.0}];
     v19[0] = v12;
     v13 = [MEMORY[0x277CCAE60] valueWithCGPoint:{1.0, 0.0}];
@@ -158,28 +158,28 @@
     v15 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, 1.0}];
     v19[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:4];
-    [v10 setSourcePoints:v16];
+    [animation setSourcePoints:v16];
 
-    v17 = [v9 layer];
-    [v17 addAnimation:v10 forKey:@"SBGenieEffectViewMatchMoveAnimation"];
+    layer2 = [v9 layer];
+    [layer2 addAnimation:animation forKey:@"SBGenieEffectViewMatchMoveAnimation"];
   }
 
-  [(SBSwitcherGenieEffectView *)self _addPortaledNotificationBadgeForContentViewIfNeeded:v4];
+  [(SBSwitcherGenieEffectView *)self _addPortaledNotificationBadgeForContentViewIfNeeded:viewCopy];
   [(SBSwitcherGenieEffectView *)self setNeedsLayout];
 
   return v9;
 }
 
-- (void)setPortaledContentViews:(id)a3
+- (void)setPortaledContentViews:(id)views
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   [(SBSwitcherGenieEffectView *)self _invalidateContentViewPortalsIfNeeded];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = viewsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -206,15 +206,15 @@
   }
 }
 
-- (void)setChildContentView:(id)a3
+- (void)setChildContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childContentView = self->_childContentView;
-  v7 = v5;
-  if (childContentView != v5)
+  v7 = viewCopy;
+  if (childContentView != viewCopy)
   {
     [(UIView *)childContentView removeFromSuperview];
-    objc_storeStrong(&self->_childContentView, a3);
+    objc_storeStrong(&self->_childContentView, view);
     if (self->_childContentView)
     {
       [(_SBSwitcherGenieEffectContentView *)self->_contentView addSubview:?];
@@ -223,30 +223,30 @@
   }
 }
 
-- (void)setAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)setAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   attributes = self->_attributes;
-  if (v8)
+  if (attributesCopy)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
-      a4 = 2;
+      mode = 2;
     }
 
     v11 = attributes == 0;
     if (attributes)
     {
-      v12 = [(SBSwitcherGenieAttributes *)attributes active];
+      active = [(SBSwitcherGenieAttributes *)attributes active];
     }
 
     else
     {
-      v12 = 0;
+      active = 0;
     }
 
-    LODWORD(attributes) = [v8 active];
+    LODWORD(attributes) = [attributesCopy active];
   }
 
   else
@@ -256,10 +256,10 @@
       generationCount = self->_generationCount;
       if (self->_lastCompletedGenerationCount != generationCount)
       {
-        if (a4 != 2)
+        if (mode != 2)
         {
           self->_pendingCompletion = 1;
-          if (!v9)
+          if (!completionCopy)
           {
             goto LABEL_43;
           }
@@ -272,7 +272,7 @@
       }
 
       [(SBSwitcherGenieEffectView *)self _invalidateGenie];
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_43;
       }
@@ -280,16 +280,16 @@
       goto LABEL_39;
     }
 
-    v12 = 0;
-    if (a4 == 1)
+    active = 0;
+    if (mode == 1)
     {
-      a4 = 2;
+      mode = 2;
     }
 
     v11 = 1;
   }
 
-  if (v8)
+  if (attributesCopy)
   {
     v14 = v11;
   }
@@ -299,12 +299,12 @@
     v14 = 0;
   }
 
-  if (v14 || v12 != attributes)
+  if (v14 || active != attributes)
   {
     self->_pendingCompletion = 0;
     v16 = attributes ^ 1;
-    v17 = (v11 | attributes | ~v12) & (attributes | v12 | !v11) ^ 1;
-    if (!v8)
+    v17 = (v11 | attributes | ~active) & (attributes | active | !v11) ^ 1;
+    if (!attributesCopy)
     {
       v17 = 0;
     }
@@ -314,39 +314,39 @@
       v17 = 1;
     }
 
-    if (a4 != 2 && v17)
+    if (mode != 2 && v17)
     {
-      [v8 iconPosition];
+      [attributesCopy iconPosition];
       v57 = v19;
       v58 = v18;
-      [v8 windowPosition];
+      [attributesCopy windowPosition];
       v55 = v21;
       v56 = v20;
-      [v8 initialVelocity];
+      [attributesCopy initialVelocity];
       v53 = v23;
       v54 = v22;
-      [v8 windowSize];
+      [attributesCopy windowSize];
       v51 = v25;
       v52 = v24;
-      [v8 minimizedSize];
+      [attributesCopy minimizedSize];
       v49 = v27;
       v50 = v26;
-      [v8 minimizedScale];
+      [attributesCopy minimizedScale];
       v29 = v28;
-      [v8 containerSize];
+      [attributesCopy containerSize];
       v31 = v30;
       v33 = v32;
-      [v8 minimumOutsetSize];
+      [attributesCopy minimumOutsetSize];
       v35 = v34;
       v37 = v36;
-      [v8 genieScale];
+      [attributesCopy genieScale];
       v39 = v38;
-      [v8 multiplier];
+      [attributesCopy multiplier];
       v41 = v40;
       v43 = v42;
-      if (v8)
+      if (attributesCopy)
       {
-        [v8 glassHighlight];
+        [attributesCopy glassHighlight];
       }
 
       else
@@ -356,8 +356,8 @@
         v65 = 0u;
       }
 
-      v45 = [v8 layoutSettings];
-      v46 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:v16 windowPosition:location initialVelocity:v45 windowSize:v58 minimizedSize:v57 minimizedScale:v56 containerSize:v55 minimumOutsetSize:v54 genieScale:v53 multiplier:v52 active:v51 glassHighlight:v50 layoutSettings:v49, v29, v31, v33, v35, v37, v39, v41, v43];
+      layoutSettings = [attributesCopy layoutSettings];
+      v46 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:v16 windowPosition:location initialVelocity:layoutSettings windowSize:v58 minimizedSize:v57 minimizedScale:v56 containerSize:v55 minimumOutsetSize:v54 genieScale:v53 multiplier:v52 active:v51 glassHighlight:v50 layoutSettings:v49, v29, v31, v33, v35, v37, v39, v41, v43];
 
       v47 = MEMORY[0x277D75D18];
       v62[0] = MEMORY[0x277D85DD0];
@@ -377,8 +377,8 @@
     v59[2] = __59__SBSwitcherGenieEffectView_setAttributes_mode_completion___block_invoke_2;
     v59[3] = &unk_2783AEC78;
     objc_copyWeak(&v61, location);
-    v60 = v9;
-    [(SBSwitcherGenieEffectView *)self _performGenieWithAttributes:v8 mode:a4 completion:v59];
+    v60 = completionCopy;
+    [(SBSwitcherGenieEffectView *)self _performGenieWithAttributes:attributesCopy mode:mode completion:v59];
 
     objc_destroyWeak(&v61);
     objc_destroyWeak(location);
@@ -389,9 +389,9 @@
     v15 = self->_attributes;
     if (v15)
     {
-      if (v8)
+      if (attributesCopy)
       {
-        [v8 glassHighlight];
+        [attributesCopy glassHighlight];
       }
 
       else
@@ -418,10 +418,10 @@
       [(SBSwitcherGenieEffectView *)self _setGlassHighlight:location];
     }
 
-    if (v9)
+    if (completionCopy)
     {
 LABEL_39:
-      (*(v9 + 2))(v9, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -497,19 +497,19 @@ void __59__SBSwitcherGenieEffectView_setAttributes_mode_completion___block_invok
   }
 }
 
-- (void)_layoutContentAndContainerViewWithAttributes:(id)a3
+- (void)_layoutContentAndContainerViewWithAttributes:(id)attributes
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   [(SBSwitcherGenieEffectView *)self bounds];
   v7 = v5;
   v8 = v6;
-  if (v4)
+  if (attributesCopy)
   {
-    [v4 meshContainerOutset];
+    [attributesCopy meshContainerOutset];
     v10 = v9;
     v12 = v11;
-    [v4 windowSize];
+    [attributesCopy windowSize];
   }
 
   else
@@ -523,7 +523,7 @@ void __59__SBSwitcherGenieEffectView_setAttributes_mode_completion___block_invok
   v15 = v10 + v13;
   v16 = v12 + v14;
   [(_SBSwitcherGenieEffectContainerView *)self->_containerView setCenter:v13 * 0.5, v14 * 0.5];
-  if (v4)
+  if (attributesCopy)
   {
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -560,10 +560,10 @@ void __59__SBSwitcherGenieEffectView_setAttributes_mode_completion___block_invok
   v25 = self->_sdfElementView;
   SBRectWithSize();
   [(_SBSDFElementView *)v25 setBounds:?];
-  if (v4)
+  if (attributesCopy)
   {
-    [v4 minimizedScale];
-    [v4 genieScale];
+    [attributesCopy minimizedScale];
+    [attributesCopy genieScale];
     v26 = self->_keyFillHighlightSDFView;
     SBRectWithSize();
     [(_SBSDFView *)v26 setBounds:?];
@@ -634,18 +634,18 @@ uint64_t __74__SBSwitcherGenieEffectView__layoutContentAndContainerViewWithAttri
   return [v1 setBounds:?];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(SBSwitcherGenieEffectView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(SBSwitcherGenieEffectView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -656,19 +656,19 @@ uint64_t __74__SBSwitcherGenieEffectView__layoutContentAndContainerViewWithAttri
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         [(SBSwitcherGenieEffectView *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -684,11 +684,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBSwitcherGenieEffectView;
-  v5 = [(SBSwitcherGenieEffectView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBSwitcherGenieEffectView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -705,22 +705,22 @@ LABEL_11:
   return v7;
 }
 
-- (void)_performGenieWithAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)_performGenieWithAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion
 {
-  v9 = a3;
-  v70 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   modelUpdatesPaused = self->_modelUpdatesPaused;
   self->_modelUpdatesPaused = 1;
   os_unfair_lock_lock(&self->_c2_lock);
   c2_presentationUpdatePaused = self->_c2_presentationUpdatePaused;
   self->_c2_presentationUpdatePaused = 1;
   os_unfair_lock_unlock(&self->_c2_lock);
-  if (!v9)
+  if (!attributesCopy)
   {
     [SBSwitcherGenieEffectView _performGenieWithAttributes:a2 mode:self completion:?];
   }
 
-  objc_storeStrong(&self->_attributes, a3);
+  objc_storeStrong(&self->_attributes, attributes);
   attributes = self->_attributes;
   if (attributes)
   {
@@ -736,9 +736,9 @@ LABEL_11:
 
   [(SBSwitcherGenieEffectView *)self _setGlassHighlight:location];
   ++self->_generationCount;
-  v68 = [v9 rows];
-  v67 = [v9 columns];
-  v12 = sqrt([v9 vertexCount]);
+  rows = [attributesCopy rows];
+  columns = [attributesCopy columns];
+  v12 = sqrt([attributesCopy vertexCount]);
   if (!self->_animatableProperties)
   {
     v62 = c2_presentationUpdatePaused;
@@ -784,7 +784,7 @@ LABEL_11:
     v101 = v23;
     v24 = v21;
     v102 = v24;
-    v25 = v9;
+    v25 = attributesCopy;
     v103 = v25;
     v95[0] = MEMORY[0x277D85DD0];
     v95[1] = 3221225472;
@@ -805,41 +805,41 @@ LABEL_11:
     c2_presentationUpdatePaused = v62;
   }
 
-  if ([v9 active])
+  if ([attributesCopy active])
   {
-    [v9 minimizedSize];
+    [attributesCopy minimizedSize];
   }
 
   else
   {
-    [v9 windowSize];
+    [attributesCopy windowSize];
   }
 
   v30 = v28;
   v31 = v29;
-  [v9 genieAmount];
+  [attributesCopy genieAmount];
   v63 = v33;
   v64 = v32;
-  [v9 meshContainerOutset];
+  [attributesCopy meshContainerOutset];
   v65 = v35;
   v66 = v34;
-  [v9 meshContainerSizeForSize:{v30, v31}];
+  [attributesCopy meshContainerSizeForSize:{v30, v31}];
   v59 = v37;
   v61 = v36;
-  [v9 scaleProgress];
+  [attributesCopy scaleProgress];
   v58 = v38;
-  [v9 minimizedPositionForSize:{v30, v31}];
+  [attributesCopy minimizedPositionForSize:{v30, v31}];
   v57 = v39;
   v41 = v40;
-  v42 = [v9 layoutSettings];
-  [v42 dampingRatio];
+  layoutSettings = [attributesCopy layoutSettings];
+  [layoutSettings dampingRatio];
   v44 = v43;
 
-  v45 = [v9 layoutSettings];
-  [v45 response];
+  layoutSettings2 = [attributesCopy layoutSettings];
+  [layoutSettings2 response];
   v47 = v46;
 
-  [v9 multiplier];
+  [attributesCopy multiplier];
   v49 = v48;
   v51 = v50;
   generationCount = self->_generationCount;
@@ -855,14 +855,14 @@ LABEL_11:
   v78 = v47;
   v79 = v61;
   v80 = v59;
-  v81 = v67;
-  v82 = v68;
+  v81 = columns;
+  v82 = rows;
   v83 = v58;
   v84 = v57;
   v85 = v41;
   v86 = v64;
   v87 = v63;
-  v54 = v9;
+  v54 = attributesCopy;
   v75 = v54;
   v88 = v66;
   v89 = v65;
@@ -870,14 +870,14 @@ LABEL_11:
   v91 = v31;
   v92 = v49;
   v93 = v51;
-  v94 = a4;
+  modeCopy = mode;
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion___block_invoke_10;
   v71[3] = &unk_2783B3518;
   objc_copyWeak(v73, location);
   v73[1] = generationCount;
-  v55 = v70;
+  v55 = completionCopy;
   v72 = v55;
   [v53 perform:v74 finalCompletion:v71];
   self->_modelUpdatesPaused = modelUpdatesPaused;
@@ -1240,13 +1240,13 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
   }
 }
 
-- (void)_updateGenieMeshTransformForPresentationLayer:(BOOL)a3 properties:(id)a4 boundsProperty:(id)a5 attributes:(id)a6
+- (void)_updateGenieMeshTransformForPresentationLayer:(BOOL)layer properties:(id)properties boundsProperty:(id)property attributes:(id)attributes
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v8)
+  layerCopy = layer;
+  propertiesCopy = properties;
+  propertyCopy = property;
+  attributesCopy = attributes;
+  if (layerCopy)
   {
     os_unfair_lock_lock(&self->_c2_lock);
     c2_presentationUpdatePaused = self->_c2_presentationUpdatePaused;
@@ -1262,14 +1262,14 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
     goto LABEL_61;
   }
 
-  if ([v10 count])
+  if ([propertiesCopy count])
   {
-    v14 = [v11 isInvalidated];
-    if (v11)
+    isInvalidated = [propertyCopy isInvalidated];
+    if (propertyCopy)
     {
-      if ((v14 & 1) == 0)
+      if ((isInvalidated & 1) == 0)
       {
-        v15 = v12;
+        v15 = attributesCopy;
         v16 = v15;
         if (([v15 active] & 1) == 0)
         {
@@ -1313,8 +1313,8 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
             v138 = 0u;
           }
 
-          v43 = [v15 layoutSettings];
-          v16 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:1 windowPosition:&v137 initialVelocity:v43 windowSize:v133 minimizedSize:v135 minimizedScale:v131 containerSize:v129 minimumOutsetSize:v127 genieScale:v125 multiplier:v123 active:v120 glassHighlight:v119 layoutSettings:v117, v28, v30, v32, v34, v36, v38, v40, v42];
+          layoutSettings = [v15 layoutSettings];
+          v16 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:1 windowPosition:&v137 initialVelocity:layoutSettings windowSize:v133 minimizedSize:v135 minimizedScale:v131 containerSize:v129 minimumOutsetSize:v127 genieScale:v125 multiplier:v123 active:v120 glassHighlight:v119 layoutSettings:v117, v28, v30, v32, v34, v36, v38, v40, v42];
         }
 
         [v16 meshContainerOutset];
@@ -1327,14 +1327,14 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
         v51 = v45 + v50;
         [v16 windowSize];
         v136 = v47 + v52;
-        if (v8)
+        if (layerCopy)
         {
-          [v11 presentationValue];
+          [propertyCopy presentationValue];
         }
 
         else
         {
-          [v11 value];
+          [propertyCopy value];
         }
 
         v54 = v53;
@@ -1354,22 +1354,22 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
         [v16 minimizedSize];
         [v16 counterOffsetForSize:?];
         v126 = v67;
-        v68 = [v15 rows];
-        v69 = [v15 columns];
+        rows = [v15 rows];
+        columns = [v15 columns];
         v70 = sqrt([v15 vertexCount]);
-        v71 = [MEMORY[0x277CD9F18] meshTransform];
-        [v71 setDepthNormalization:@"none"];
-        v116 = v68;
-        v134 = v69;
-        v72 = 2 * (vcvtd_n_f64_s64(v69, 1uLL) + v70 * vcvtd_n_f64_s64(v68, 1uLL));
+        meshTransform = [MEMORY[0x277CD9F18] meshTransform];
+        [meshTransform setDepthNormalization:@"none"];
+        v116 = rows;
+        v134 = columns;
+        v72 = 2 * (vcvtd_n_f64_s64(columns, 1uLL) + v70 * vcvtd_n_f64_s64(rows, 1uLL));
         v73 = v72 | 1;
-        v74 = [v10 objectAtIndex:v72];
-        v75 = [v10 objectAtIndex:v73];
+        v74 = [propertiesCopy objectAtIndex:v72];
+        v75 = [propertiesCopy objectAtIndex:v73];
         if (([v74 isInvalidated] & 1) == 0 && (objc_msgSend(v75, "isInvalidated") & 1) == 0)
         {
           v121 = v66;
           v114 = v74;
-          if (v8)
+          if (layerCopy)
           {
             [v74 presentationValue];
             v124 = v76;
@@ -1390,19 +1390,19 @@ void __73__SBSwitcherGenieEffectView__performGenieWithAttributes_mode_completion
 LABEL_53:
             if (objc_opt_respondsToSelector())
             {
-              [v71 setPreallocatesBounds:1];
+              [meshTransform setPreallocatesBounds:1];
             }
 
             containerView = self->_containerView;
-            if (v8)
+            if (layerCopy)
             {
-              [(_SBSwitcherGenieEffectContainerView *)containerView _setPresentationValue:v71 forKey:@"meshTransform"];
+              [(_SBSwitcherGenieEffectContainerView *)containerView _setPresentationValue:meshTransform forKey:@"meshTransform"];
             }
 
             else
             {
-              v110 = [(_SBSwitcherGenieEffectContainerView *)containerView layer];
-              [v110 setValue:v71 forKey:@"meshTransform"];
+              layer = [(_SBSwitcherGenieEffectContainerView *)containerView layer];
+              [layer setValue:meshTransform forKey:@"meshTransform"];
             }
 
             v74 = v114;
@@ -1411,12 +1411,12 @@ LABEL_53:
           else
           {
             v113 = v75;
-            v128 = v71;
-            v111 = v12;
+            v128 = meshTransform;
+            v111 = attributesCopy;
             v118 = 0;
             v81 = (v64 + (1.0 - v62) * ((v58 * v60 + (1.0 - v54) * (1.0 - v58 * v60) - v58 * v60) / (1.0 - v58 * v60) + 0.0)) / (v58 * v60 + (1.0 - v54) * (1.0 - v58 * v60));
             v122 = (v126 * ((v81 + -1.0) / (1.0 / v121 + -1.0) + 0.0) + 0.0) / v49;
-            v82 = !v8;
+            v82 = !layerCopy;
             v112 = 2 * v70;
             v83 = 1;
             while (1)
@@ -1434,8 +1434,8 @@ LABEL_43:
               v80 = v134;
               if (v101)
               {
-                v12 = v111;
-                v71 = v128;
+                attributesCopy = v111;
+                meshTransform = v128;
                 v75 = v113;
                 if (v116)
                 {
@@ -1490,14 +1490,14 @@ LABEL_43:
             while (1)
             {
               v87 = v84 ? 1.0 / v134 * v84 : 0.0;
-              v88 = [v10 objectAtIndex:v83 - 1];
-              v89 = [v10 objectAtIndex:v83];
+              v88 = [propertiesCopy objectAtIndex:v83 - 1];
+              v89 = [propertiesCopy objectAtIndex:v83];
               if ([v88 isInvalidated] & 1) != 0 || (objc_msgSend(v89, "isInvalidated"))
               {
                 break;
               }
 
-              if (v8)
+              if (layerCopy)
               {
                 [v88 presentationValue];
                 v91 = v90;
@@ -1521,8 +1521,8 @@ LABEL_43:
 
               else
               {
-                v97 = [(SBSwitcherGenieEffectView *)self traitCollection];
-                [v97 displayScale];
+                traitCollection = [(SBSwitcherGenieEffectView *)self traitCollection];
+                [traitCollection displayScale];
                 v99 = 1.0 / v98;
 
                 v82 = (v84 | 2) == 2 && vabdd_f64(v94, v96) >= v99 / v51;
@@ -1547,8 +1547,8 @@ LABEL_43:
               }
             }
 
-            v12 = v111;
-            v71 = v128;
+            attributesCopy = v111;
+            meshTransform = v128;
             v75 = v113;
             v74 = v114;
           }
@@ -1560,14 +1560,14 @@ LABEL_43:
 LABEL_61:
 }
 
-- (void)_setGlassHighlight:(SBSwitcherGenieGlassHighlight *)a3
+- (void)_setGlassHighlight:(SBSwitcherGenieGlassHighlight *)highlight
 {
   v88 = *MEMORY[0x277D85DE8];
   p_glassHighlight = &self->_glassHighlight;
-  v6 = *&a3->direction.y;
-  v73 = *&a3->style;
+  v6 = *&highlight->direction.y;
+  v73 = *&highlight->style;
   v74 = v6;
-  *&v75 = a3->intensity;
+  *&v75 = highlight->intensity;
   v7 = *&self->_glassHighlight.direction.y;
   v82[0] = *&self->_glassHighlight.style;
   v82[1] = v7;
@@ -1575,11 +1575,11 @@ LABEL_61:
   if ((SBEqualSwitcherGenieGlassHighlights(&v73, v82) & 1) == 0)
   {
     style = p_glassHighlight->style;
-    v9 = a3->style;
-    v10 = a3->style == 1;
-    v11 = *&a3->style;
-    v12 = *&a3->direction.y;
-    p_glassHighlight->intensity = a3->intensity;
+    v9 = highlight->style;
+    v10 = highlight->style == 1;
+    v11 = *&highlight->style;
+    v12 = *&highlight->direction.y;
+    p_glassHighlight->intensity = highlight->intensity;
     *&p_glassHighlight->style = v11;
     *&p_glassHighlight->direction.y = v12;
     [(SBSwitcherGenieEffectView *)self setNeedsLayout];
@@ -1616,10 +1616,10 @@ LABEL_61:
               objc_enumerationMutation(v15);
             }
 
-            v20 = [*(*(&v78 + 1) + 8 * i) sourceView];
-            if (v20)
+            sourceView = [*(*(&v78 + 1) + 8 * i) sourceView];
+            if (sourceView)
             {
-              [(SBSwitcherGenieEffectView *)self _addPortaledNotificationBadgeForContentViewIfNeeded:v20];
+              [(SBSwitcherGenieEffectView *)self _addPortaledNotificationBadgeForContentViewIfNeeded:sourceView];
             }
           }
 
@@ -1639,8 +1639,8 @@ LABEL_61:
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v21 = [*(&self->super.super.super.isa + v13) subviews];
-      v22 = [v21 countByEnumeratingWithState:&v69 objects:v85 count:16];
+      subviews = [*(&self->super.super.super.isa + v13) subviews];
+      v22 = [subviews countByEnumeratingWithState:&v69 objects:v85 count:16];
       if (v22)
       {
         v23 = v22;
@@ -1651,27 +1651,27 @@ LABEL_61:
           {
             if (*v70 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v69 + 1) + 8 * j) removeFromSuperview];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v69 objects:v85 count:16];
+          v23 = [subviews countByEnumeratingWithState:&v69 objects:v85 count:16];
         }
 
         while (v23);
       }
 
-      v26 = [*(&self->super.super.super.isa + v13) layer];
-      [v26 setFilters:0];
+      layer = [*(&self->super.super.super.isa + v13) layer];
+      [layer setFilters:0];
 
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v27 = [*(&self->super.super.super.isa + v14) subviews];
-      v28 = [v27 countByEnumeratingWithState:&v65 objects:v84 count:16];
+      subviews2 = [*(&self->super.super.super.isa + v14) subviews];
+      v28 = [subviews2 countByEnumeratingWithState:&v65 objects:v84 count:16];
       if (v28)
       {
         v29 = v28;
@@ -1682,23 +1682,23 @@ LABEL_61:
           {
             if (*v66 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(subviews2);
             }
 
             [*(*(&v65 + 1) + 8 * k) removeFromSuperview];
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v65 objects:v84 count:16];
+          v29 = [subviews2 countByEnumeratingWithState:&v65 objects:v84 count:16];
         }
 
         while (v29);
       }
 
-      v32 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
-      [v32 setMinificationFilter:*MEMORY[0x277CDA560]];
+      layer2 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
+      [layer2 setMinificationFilter:*MEMORY[0x277CDA560]];
 
-      v33 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
-      [v33 setMinificationFilterBias:0.0];
+      layer3 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
+      [layer3 setMinificationFilterBias:0.0];
       goto LABEL_42;
     }
 
@@ -1706,16 +1706,16 @@ LABEL_31:
     v34 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer:v63];
     [v34 setMinificationFilter:*MEMORY[0x277CDA630]];
 
-    v35 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
+    layer4 = [(_SBSwitcherGenieEffectContainerView *)self->_containerView layer];
     LODWORD(v36) = -1.0;
-    [v35 setMinificationFilterBias:v36];
+    [layer4 setMinificationFilterBias:v36];
 
     if (style == 1)
     {
       v37 = objc_alloc_init(MEMORY[0x277D76180]);
-      v38 = [v37 layer];
-      v39 = [(_SBSDFElementView *)self->_sdfElementView layer];
-      [v38 setSourceLayer:v39];
+      layer5 = [v37 layer];
+      layer6 = [(_SBSDFElementView *)self->_sdfElementView layer];
+      [layer5 setSourceLayer:layer6];
 
       [v37 setHidesSourceView:1];
       [v37 setMatchesPosition:1];
@@ -1723,15 +1723,15 @@ LABEL_31:
       [*(&self->super.super.super.isa + v13) addSubview:v37];
     }
 
-    v33 = objc_alloc_init(MEMORY[0x277CD9F60]);
-    [v33 setKeySpreadScale:1.0];
-    [v33 setFillSpreadScale:1.0];
-    [v33 setKeySpreadOffset:0.0];
-    [v33 setFillSpreadOffset:0.0];
-    [v33 setKeyHeightScale:1.0];
-    [v33 setFillHeightScale:1.0];
-    [v33 setKeyHeightOffset:0.0];
-    [v33 setFillHeightOffset:0.0];
+    layer3 = objc_alloc_init(MEMORY[0x277CD9F60]);
+    [layer3 setKeySpreadScale:1.0];
+    [layer3 setFillSpreadScale:1.0];
+    [layer3 setKeySpreadOffset:0.0];
+    [layer3 setFillSpreadOffset:0.0];
+    [layer3 setKeyHeightScale:1.0];
+    [layer3 setFillHeightScale:1.0];
+    [layer3 setKeyHeightOffset:0.0];
+    [layer3 setFillHeightOffset:0.0];
     if (v9 == 2)
     {
       x = p_glassHighlight->direction.x;
@@ -1742,29 +1742,29 @@ LABEL_31:
       v53 = v52 * ((1.0 - v50 * v50) * 0.5 + 0.5);
       v54 = (v50 * v50 + 1.0) * 22.0 * 0.06640625;
       v44 = [MEMORY[0x277D75348] colorWithRed:1.1 green:1.1 blue:1.1 alpha:v53 * 0.6];
-      v46 = [MEMORY[0x277D75348] colorWithRed:1.1 green:1.1 blue:1.1 alpha:v53 * 0.4];
+      layer10 = [MEMORY[0x277D75348] colorWithRed:1.1 green:1.1 blue:1.1 alpha:v53 * 0.4];
       v47 = [MEMORY[0x277D75348] colorWithRed:1.0 green:1.0 blue:1.0 alpha:v52 * 0.08];
-      [v33 setKeyAmount:0.5];
-      [v33 setKeyAngle:v51];
-      [v33 setKeyHeight:v54];
-      [v33 setKeySpread:v50 * v50 * 1.78023584 + 1.36135682];
-      [v33 setKeyColor:{objc_msgSend(v44, "CGColor")}];
-      [v33 setFillAmount:0.5];
-      [v33 setFillAngle:v51 + 3.14159265];
-      [v33 setFillHeight:v54];
-      [v33 setFillSpread:v50 * v50 * 2.00712864 + 1.13446401];
-      [v33 setFillColor:{objc_msgSend(v46, "CGColor")}];
-      [v33 setCurvature:1.0];
-      [v33 setGlobal:0];
-      v55 = [*(&self->super.super.super.isa + v14) subviews];
-      v56 = [v55 count];
+      [layer3 setKeyAmount:0.5];
+      [layer3 setKeyAngle:v51];
+      [layer3 setKeyHeight:v54];
+      [layer3 setKeySpread:v50 * v50 * 1.78023584 + 1.36135682];
+      [layer3 setKeyColor:{objc_msgSend(v44, "CGColor")}];
+      [layer3 setFillAmount:0.5];
+      [layer3 setFillAngle:v51 + 3.14159265];
+      [layer3 setFillHeight:v54];
+      [layer3 setFillSpread:v50 * v50 * 2.00712864 + 1.13446401];
+      [layer3 setFillColor:{objc_msgSend(layer10, "CGColor")}];
+      [layer3 setCurvature:1.0];
+      [layer3 setGlobal:0];
+      subviews3 = [*(&self->super.super.super.isa + v14) subviews];
+      v56 = [subviews3 count];
 
       if (!v56)
       {
         v57 = objc_alloc_init(MEMORY[0x277D76180]);
-        v58 = [v57 layer];
-        v59 = [(_SBSDFElementView *)self->_sdfElementView layer];
-        [v58 setSourceLayer:v59];
+        layer7 = [v57 layer];
+        layer8 = [(_SBSDFElementView *)self->_sdfElementView layer];
+        [layer7 setSourceLayer:layer8];
 
         [v57 setHidesSourceView:1];
         [v57 setMatchesPosition:1];
@@ -1780,8 +1780,8 @@ LABEL_31:
       [v60 setColor:{objc_msgSend(v47, "CGColor")}];
       [v60 setCurvature:1.0];
       [v60 setGlobal:0];
-      v61 = [*(&self->super.super.super.isa + v14) layer];
-      [v61 setEffect:v60];
+      layer9 = [*(&self->super.super.super.isa + v14) layer];
+      [layer9 setEffect:v60];
     }
 
     else
@@ -1791,24 +1791,24 @@ LABEL_31:
         goto LABEL_41;
       }
 
-      [v33 setFillAmount:0.5];
-      [v33 setKeyAngle:0.0];
-      [v33 setKeyHeight:1.0];
-      v40 = [MEMORY[0x277D75348] whiteColor];
-      v41 = [v40 colorWithAlphaComponent:1.0];
-      [v33 setKeyColor:{objc_msgSend(v41, "CGColor")}];
+      [layer3 setFillAmount:0.5];
+      [layer3 setKeyAngle:0.0];
+      [layer3 setKeyHeight:1.0];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v41 = [whiteColor colorWithAlphaComponent:1.0];
+      [layer3 setKeyColor:{objc_msgSend(v41, "CGColor")}];
 
-      [v33 setGlobal:1];
-      [v33 setKeySpread:1.57079633];
-      [v33 setFillAngle:3.14159265];
-      v42 = [MEMORY[0x277D75348] whiteColor];
-      v43 = [v42 colorWithAlphaComponent:1.0];
-      [v33 setFillColor:{objc_msgSend(v43, "CGColor")}];
+      [layer3 setGlobal:1];
+      [layer3 setKeySpread:1.57079633];
+      [layer3 setFillAngle:3.14159265];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      v43 = [whiteColor2 colorWithAlphaComponent:1.0];
+      [layer3 setFillColor:{objc_msgSend(v43, "CGColor")}];
 
-      [v33 setKeyAmount:0.5];
-      [v33 setFillHeight:1.0];
-      [v33 setFillSpread:1.57079633];
-      [v33 setCurvature:0.7];
+      [layer3 setKeyAmount:0.5];
+      [layer3 setFillHeight:1.0];
+      [layer3 setFillSpread:1.57079633];
+      [layer3 setCurvature:0.7];
       if (style != 1)
       {
         goto LABEL_41;
@@ -1824,15 +1824,15 @@ LABEL_31:
       [v44 setValue:v45 forKey:@"inputColorMatrix"];
 
       [v44 setValue:&unk_28336F870 forKey:@"inputClamp"];
-      v46 = [*(&self->super.super.super.isa + v13) layer];
+      layer10 = [*(&self->super.super.super.isa + v13) layer];
       v86 = v44;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
-      [v46 setFilters:v47];
+      [layer10 setFilters:v47];
     }
 
 LABEL_41:
-    v62 = [*(&self->super.super.super.isa + v13) layer];
-    [v62 setEffect:v33];
+    layer11 = [*(&self->super.super.super.isa + v13) layer];
+    [layer11 setEffect:layer3];
 
 LABEL_42:
   }
@@ -1944,8 +1944,8 @@ void __45__SBSwitcherGenieEffectView__invalidateGenie__block_invoke(uint64_t a1)
 
           v11 = *(*(&v27 + 1) + 8 * i);
           [v11 removeFromSuperview];
-          v12 = [v11 layer];
-          [v12 removeAnimationForKey:@"SBGenieEffectViewMatchMoveAnimation"];
+          layer = [v11 layer];
+          [layer removeAnimationForKey:@"SBGenieEffectViewMatchMoveAnimation"];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -1983,8 +1983,8 @@ void __45__SBSwitcherGenieEffectView__invalidateGenie__block_invoke(uint64_t a1)
 
           v21 = *(*(&v23 + 1) + 8 * j);
           [v21 removeFromSuperview];
-          v22 = [v21 layer];
-          [v22 removeAnimationForKey:@"SBGenieEffectViewMatchMoveAnimation"];
+          layer2 = [v21 layer];
+          [layer2 removeAnimationForKey:@"SBGenieEffectViewMatchMoveAnimation"];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -1995,13 +1995,13 @@ void __45__SBSwitcherGenieEffectView__invalidateGenie__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addPortaledNotificationBadgeForContentViewIfNeeded:(id)a3
+- (void)_addPortaledNotificationBadgeForContentViewIfNeeded:(id)needed
 {
-  v13 = a3;
-  v4 = [v13 isIconBadgeView];
-  if ((v4 & 1) == 0)
+  neededCopy = needed;
+  isIconBadgeView = [neededCopy isIconBadgeView];
+  if ((isIconBadgeView & 1) == 0)
   {
-    v5 = [(SBSwitcherGenieEffectView *)self _iconBadgeViewIfAnyInView:v13];
+    v5 = [(SBSwitcherGenieEffectView *)self _iconBadgeViewIfAnyInView:neededCopy];
     if (v5)
     {
       v6 = [(SBSwitcherGenieEffectView *)self _addAndReturnPortaledContentView:v5];
@@ -2012,36 +2012,36 @@ void __45__SBSwitcherGenieEffectView__invalidateGenie__block_invoke(uint64_t a1)
         self->_contentNotificationBadgePortalViews = v7;
       }
 
-      v9 = [(SBSwitcherGenieEffectView *)self _iconViewIfAnyInView:v13];
+      v9 = [(SBSwitcherGenieEffectView *)self _iconViewIfAnyInView:neededCopy];
       if (v9)
       {
         v10 = objc_opt_new();
-        v11 = [v9 layer];
-        [v10 setSourceLayer:v11];
+        layer = [v9 layer];
+        [v10 setSourceLayer:layer];
 
         [v10 setKeyPath:@"opacity"];
         [v10 setDuration:INFINITY];
         [v10 setRemovedOnCompletion:0];
-        v12 = [v6 layer];
-        [v12 addAnimation:v10 forKey:@"com.apple.SpringBoard.genie.badgePortalView.matchOpacity"];
+        layer2 = [v6 layer];
+        [layer2 addAnimation:v10 forKey:@"com.apple.SpringBoard.genie.badgePortalView.matchOpacity"];
       }
 
       [(NSMutableArray *)self->_contentNotificationBadgePortalViews addObject:v6];
     }
   }
 
-  MEMORY[0x2821F9730](v4);
+  MEMORY[0x2821F9730](isIconBadgeView);
 }
 
-- (id)_iconViewIfAnyInView:(id)a3
+- (id)_iconViewIfAnyInView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [view subviews];
+  v5 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2052,7 +2052,7 @@ void __45__SBSwitcherGenieEffectView__invalidateGenie__block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2071,7 +2071,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v6)
       {
@@ -2092,15 +2092,15 @@ LABEL_14:
   return v11;
 }
 
-- (id)_iconBadgeViewIfAnyInView:(id)a3
+- (id)_iconBadgeViewIfAnyInView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [view subviews];
+  v5 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2111,7 +2111,7 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2130,7 +2130,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v6)
       {

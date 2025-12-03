@@ -1,66 +1,66 @@
 @interface _GCDeviceConfiguration
-+ (id)configurationWithIdentifier:(id)a3 priority:(unint64_t)a4 deviceIdentifier:(id)a5 deviceDependencies:(id)a6 deviceBuilder:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
++ (id)configurationWithIdentifier:(id)identifier priority:(unint64_t)priority deviceIdentifier:(id)deviceIdentifier deviceDependencies:(id)dependencies deviceBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (BOOL)isTransient;
 - (_GCDeviceConfiguration)init;
-- (_GCDeviceConfiguration)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 attributes:(id)a4;
+- (_GCDeviceConfiguration)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier attributes:(id)attributes;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)redactedDescription;
 - (unint64_t)priority;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCDeviceConfiguration
 
-+ (id)configurationWithIdentifier:(id)a3 priority:(unint64_t)a4 deviceIdentifier:(id)a5 deviceDependencies:(id)a6 deviceBuilder:(id)a7
++ (id)configurationWithIdentifier:(id)identifier priority:(unint64_t)priority deviceIdentifier:(id)deviceIdentifier deviceDependencies:(id)dependencies deviceBuilder:(id)builder
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [a1 alloc];
+  builderCopy = builder;
+  dependenciesCopy = dependencies;
+  deviceIdentifierCopy = deviceIdentifier;
+  identifierCopy = identifier;
+  v16 = [self alloc];
   v25[0] = @"Priority";
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
   v26[0] = v17;
   v25[1] = @"DeviceIdentifier";
-  v18 = [v14 copyWithZone:0];
+  v18 = [deviceIdentifierCopy copyWithZone:0];
 
   v26[1] = v18;
   v25[2] = @"DeviceDependencies";
-  v19 = [v13 copy];
+  v19 = [dependenciesCopy copy];
 
   v26[2] = v19;
   v25[3] = @"DeviceBuilderIdentifier";
-  v20 = [v12 copyWithZone:0];
+  v20 = [builderCopy copyWithZone:0];
 
   v26[3] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:4];
-  v22 = [v16 _initWithIdentifier:v15 attributes:v21];
+  v22 = [v16 _initWithIdentifier:identifierCopy attributes:v21];
 
   v23 = *MEMORY[0x1E69E9840];
 
   return v22;
 }
 
-- (id)_initWithIdentifier:(id)a3 attributes:(id)a4
+- (id)_initWithIdentifier:(id)identifier attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = _GCDeviceConfiguration;
   v8 = [(_GCDeviceConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_attributes, a4);
+    objc_storeStrong(&v8->_attributes, attributes);
   }
 
   return v8;
@@ -73,10 +73,10 @@
   return 0;
 }
 
-- (_GCDeviceConfiguration)initWithCoder:(id)a3
+- (_GCDeviceConfiguration)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _GCDeviceConfiguration;
   v5 = [(_GCDeviceConfiguration *)&v18 init];
@@ -87,7 +87,7 @@
     v20[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"identifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
@@ -99,7 +99,7 @@
     v19[4] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:5];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"attributes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v14;
   }
@@ -108,15 +108,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attributes = self->_attributes;
-  v5 = a3;
-  [v5 encodeObject:attributes forKey:@"attributes"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [_GCMutableDeviceConfiguration alloc];
   identifier = self->_identifier;
@@ -125,16 +125,16 @@
   return [(_GCMutableDeviceConfiguration *)v4 _initWithIdentifier:identifier attributes:attributes];
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   identifier = self->_identifier;
-  v6 = [v4 identifier];
-  if ([identifier isEqual:v6])
+  identifier = [configurationCopy identifier];
+  if ([identifier isEqual:identifier])
   {
     attributes = self->_attributes;
-    v8 = [v4 attributes];
-    v9 = [(NSDictionary *)attributes isEqualToDictionary:v8];
+    attributes = [configurationCopy attributes];
+    v9 = [(NSDictionary *)attributes isEqualToDictionary:attributes];
   }
 
   else
@@ -145,16 +145,16 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   identifier = self->_identifier;
   if (isKindOfClass)
   {
-    v7 = [v4 identifier];
-    v8 = [identifier isEqual:v7];
+    identifier = [equalCopy identifier];
+    v8 = [identifier isEqual:identifier];
   }
 
   else
@@ -163,7 +163,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [self->_identifier isEqual:v4];
+      v8 = [self->_identifier isEqual:equalCopy];
     }
 
     else
@@ -224,17 +224,17 @@
 - (unint64_t)priority
 {
   v2 = [(NSDictionary *)self->_attributes objectForKey:@"Priority"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isTransient
 {
   v2 = [(NSDictionary *)self->_attributes objectForKey:@"Transient"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

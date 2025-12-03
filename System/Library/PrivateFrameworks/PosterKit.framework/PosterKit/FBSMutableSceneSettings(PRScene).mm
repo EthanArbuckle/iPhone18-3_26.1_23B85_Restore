@@ -27,8 +27,8 @@
     }
   }
 
-  v5 = [a1 otherSettings];
-  [v5 setObject:v6 forSetting:20562];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v6 forSetting:20562];
 }
 
 - (void)pr_setPosterConfigurableOptions:()PRScene
@@ -43,8 +43,8 @@
     }
   }
 
-  v5 = [a1 otherSettings];
-  [v5 setObject:v6 forSetting:20563];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v6 forSetting:20563];
 }
 
 - (void)pr_setPosterConfiguredProperties:()PRScene
@@ -66,112 +66,112 @@
     v5 = 0;
   }
 
-  v6 = [a1 otherSettings];
-  [v6 setObject:v5 forSetting:20564];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v5 forSetting:20564];
 
-  v7 = [a1 transientLocalSettings];
-  [v7 setObject:v20 forSetting:20564];
+  transientLocalSettings = [self transientLocalSettings];
+  [transientLocalSettings setObject:v20 forSetting:20564];
 
-  v8 = [v20 complicationLayout];
-  v9 = [v20 renderingConfiguration];
-  v10 = [v8 complications];
-  v11 = [v10 count];
+  complicationLayout = [v20 complicationLayout];
+  renderingConfiguration = [v20 renderingConfiguration];
+  complications = [complicationLayout complications];
+  v11 = [complications count];
 
-  v12 = [v8 sidebarComplications];
-  v13 = [v12 count];
+  sidebarComplications = [complicationLayout sidebarComplications];
+  v13 = [sidebarComplications count];
 
-  v14 = [v8 inlineComplication];
+  inlineComplication = [complicationLayout inlineComplication];
 
-  v15 = [v8 complicationsUseBottomLayout];
-  if (v9)
+  complicationsUseBottomLayout = [complicationLayout complicationsUseBottomLayout];
+  if (renderingConfiguration)
   {
-    v16 = [v20 titleStyleConfiguration];
-    v17 = [v16 prefersVerticalTitleLayout];
+    titleStyleConfiguration = [v20 titleStyleConfiguration];
+    prefersVerticalTitleLayout = [titleStyleConfiguration prefersVerticalTitleLayout];
 
-    [a1 pr_setDepthEffectDisallowed:{(objc_msgSend(v9, "isDepthEffectDisabled") | v17) & 1}];
-    if ([v9 areMotionEffectsDisabled])
+    [self pr_setDepthEffectDisallowed:{(objc_msgSend(renderingConfiguration, "isDepthEffectDisabled") | prefersVerticalTitleLayout) & 1}];
+    if ([renderingConfiguration areMotionEffectsDisabled])
     {
-      [a1 pr_setEffectiveMotionEffectsMode:0];
+      [self pr_setEffectiveMotionEffectsMode:0];
     }
   }
 
-  v18 = [v20 titleStyleConfiguration];
-  v19 = [v18 isAlternateDateEnabled];
+  titleStyleConfiguration2 = [v20 titleStyleConfiguration];
+  isAlternateDateEnabled = [titleStyleConfiguration2 isAlternateDateEnabled];
 
-  [a1 pr_setAlternateDateEnabled:v19];
-  [a1 pui_setInlineComplicationConfigured:v14 != 0];
-  [a1 pui_setComplicationRowConfigured:v11 != 0];
-  [a1 pui_setComplicationSidebarConfigured:v13 != 0];
-  [a1 pui_setComplicationRowAtBottom:v15];
+  [self pr_setAlternateDateEnabled:isAlternateDateEnabled];
+  [self pui_setInlineComplicationConfigured:inlineComplication != 0];
+  [self pui_setComplicationRowConfigured:v11 != 0];
+  [self pui_setComplicationSidebarConfigured:v13 != 0];
+  [self pui_setComplicationRowAtBottom:complicationsUseBottomLayout];
 }
 
 - (void)pr_setPosterTitleStyleConfiguration:()PRScene
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20565];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20565];
 }
 
 - (void)pr_setPosterAmbientConfiguration:()PRScene
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20566];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20566];
 }
 
 - (void)pr_setDepthEffectDisallowed:()PRScene
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20567];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20567];
 }
 
 - (void)pr_setAlternateDateEnabled:()PRScene
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20763];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20763];
 }
 
 - (void)pr_setHorizontalTitleBoundingRect:()PRScene
 {
-  v9 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v11 = a2;
   *&v11[1] = a3;
   *&v11[2] = a4;
   *&v11[3] = a5;
   v10 = [MEMORY[0x1E696B098] valueWithBytes:v11 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v9 setObject:v10 forSetting:20572];
+  [otherSettings setObject:v10 forSetting:20572];
 }
 
 - (void)pr_setVerticalTitleBoundingRect:()PRScene
 {
-  v9 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v11 = a2;
   *&v11[1] = a3;
   *&v11[2] = a4;
   *&v11[3] = a5;
   v10 = [MEMORY[0x1E696B098] valueWithBytes:v11 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v9 setObject:v10 forSetting:20573];
+  [otherSettings setObject:v10 forSetting:20573];
 }
 
 - (void)pr_setEffectiveMotionEffectsMode:()PRScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20574];
+  [otherSettings setObject:v4 forSetting:20574];
 }
 
 - (void)pr_setDeviceMotionUpdateInterval:()PRScene
 {
-  v4 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v3 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
-  [v4 setObject:v3 forSetting:20576];
+  [otherSettings setObject:v3 forSetting:20576];
 }
 
 - (void)pr_setPosterHostedContentSettings:()PRScene
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20577];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20577];
 }
 
 - (void)pr_setCaseColor:()PRScene .cold.1(char *a1)

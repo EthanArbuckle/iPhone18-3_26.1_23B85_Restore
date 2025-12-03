@@ -1,6 +1,6 @@
 @interface _AFLocationSnapshotMutation
 - (BOOL)getPreciseLocationEnabled;
-- (_AFLocationSnapshotMutation)initWithBase:(id)a3;
+- (_AFLocationSnapshotMutation)initWithBase:(id)base;
 - (id)getAltitude;
 - (id)getDirection;
 - (id)getHorizontalAccuracy;
@@ -17,15 +17,15 @@
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_horizontalAccuracy;
+    horizontalAccuracy = self->_horizontalAccuracy;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base horizontalAccuracy];
+    horizontalAccuracy = [(AFLocationSnapshot *)self->_base horizontalAccuracy];
   }
 
-  return v2;
+  return horizontalAccuracy;
 }
 
 - (int64_t)getAccessState
@@ -45,75 +45,75 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_latitude;
+    latitude = self->_latitude;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base latitude];
+    latitude = [(AFLocationSnapshot *)self->_base latitude];
   }
 
-  return v2;
+  return latitude;
 }
 
 - (id)getAltitude
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_altitude;
+    altitude = self->_altitude;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base altitude];
+    altitude = [(AFLocationSnapshot *)self->_base altitude];
   }
 
-  return v2;
+  return altitude;
 }
 
 - (id)getDirection
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_direction;
+    direction = self->_direction;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base direction];
+    direction = [(AFLocationSnapshot *)self->_base direction];
   }
 
-  return v2;
+  return direction;
 }
 
 - (id)getSpeed
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_speed;
+    speed = self->_speed;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base speed];
+    speed = [(AFLocationSnapshot *)self->_base speed];
   }
 
-  return v2;
+  return speed;
 }
 
 - (id)getVerticalAccuracy
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_verticalAccuracy;
+    verticalAccuracy = self->_verticalAccuracy;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base verticalAccuracy];
+    verticalAccuracy = [(AFLocationSnapshot *)self->_base verticalAccuracy];
   }
 
-  return v2;
+  return verticalAccuracy;
 }
 
 - (BOOL)getPreciseLocationEnabled
@@ -133,27 +133,27 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_longitude;
+    longitude = self->_longitude;
   }
 
   else
   {
-    v2 = [(AFLocationSnapshot *)self->_base longitude];
+    longitude = [(AFLocationSnapshot *)self->_base longitude];
   }
 
-  return v2;
+  return longitude;
 }
 
-- (_AFLocationSnapshotMutation)initWithBase:(id)a3
+- (_AFLocationSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFLocationSnapshotMutation;
   v6 = [(_AFLocationSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

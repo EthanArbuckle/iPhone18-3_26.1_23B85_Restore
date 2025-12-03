@@ -6,7 +6,7 @@
 - (CGPoint)noseTip;
 - (CGPoint)rightEye;
 - (CGRect)faceRect;
-- (LightingFacePoints)initWithFaceLandmarkDictionary:(id)a3 forImageRect:(CGRect)a4;
+- (LightingFacePoints)initWithFaceLandmarkDictionary:(id)dictionary forImageRect:(CGRect)rect;
 @end
 
 @implementation LightingFacePoints
@@ -65,11 +65,11 @@
   return result;
 }
 
-- (LightingFacePoints)initWithFaceLandmarkDictionary:(id)a3 forImageRect:(CGRect)a4
+- (LightingFacePoints)initWithFaceLandmarkDictionary:(id)dictionary forImageRect:(CGRect)rect
 {
-  v99 = a4;
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"orientation", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"allPoints"];
+  rectCopy = rect;
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"orientation", "intValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"allPoints"];
   v8 = [v7 count];
   v9 = 65;
   if (v8 > 0x41)
@@ -78,7 +78,7 @@
   }
 
   v85 = [+[NSMutableData dataWithLength:](NSMutableData mutableBytes:16 * v9];
-  v10 = [a3 objectForKeyedSubscript:@"faceBoundingBox"];
+  v10 = [dictionary objectForKeyedSubscript:@"faceBoundingBox"];
   [objc_msgSend(v10 objectForKeyedSubscript:{@"x", "doubleValue"}];
   v12 = v11;
   [objc_msgSend(v10 objectForKeyedSubscript:{@"y", "doubleValue"}];
@@ -94,10 +94,10 @@
   v19 = v98;
   self->faceRect.origin = v97;
   self->faceRect.size = v19;
-  v84 = self;
-  if ([a3 objectForKeyedSubscript:@"faceOrientationIndex"])
+  selfCopy = self;
+  if ([dictionary objectForKeyedSubscript:@"faceOrientationIndex"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"faceOrientationIndex", "floatValue"}];
+    [objc_msgSend(dictionary objectForKeyedSubscript:{@"faceOrientationIndex", "floatValue"}];
     v21 = v20;
   }
 
@@ -145,9 +145,9 @@
     while (v23);
   }
 
-  v84->rightKickLights[0] = v85[48];
-  v84->rightKickLights[1] = v85[49];
-  v84->rightKickLights[2] = v85[50];
+  selfCopy->rightKickLights[0] = v85[48];
+  selfCopy->rightKickLights[1] = v85[49];
+  selfCopy->rightKickLights[2] = v85[50];
   v32 = 0.0;
   v33 = 0.0;
   if (v21 < 0.0)
@@ -156,28 +156,28 @@
     v33 = v34;
   }
 
-  v84->rightKickLights[0].x = v84->rightKickLights[0].x - v33;
-  v84->rightKickLights[1].x = v84->rightKickLights[1].x - v33;
-  v84->rightKickLights[2].x = v84->rightKickLights[2].x - v33;
-  v84->rightContour[0] = v85[46];
-  v84->rightContour[1] = v85[47];
-  v84->rightContour[2] = v85[48];
-  v84->rightContour[3] = v85[49];
-  v84->rightContour[4] = v85[50];
+  selfCopy->rightKickLights[0].x = selfCopy->rightKickLights[0].x - v33;
+  selfCopy->rightKickLights[1].x = selfCopy->rightKickLights[1].x - v33;
+  selfCopy->rightKickLights[2].x = selfCopy->rightKickLights[2].x - v33;
+  selfCopy->rightContour[0] = v85[46];
+  selfCopy->rightContour[1] = v85[47];
+  selfCopy->rightContour[2] = v85[48];
+  selfCopy->rightContour[3] = v85[49];
+  selfCopy->rightContour[4] = v85[50];
   if (v21 < 0.0)
   {
     v35 = fmax(v21 * 0.5 / 3.14159, -0.075);
     v32 = v35;
   }
 
-  v84->rightContour[0].x = v84->rightContour[0].x - v32;
-  v84->rightContour[1].x = v84->rightContour[1].x - v32;
-  v84->rightContour[2].x = v84->rightContour[2].x - v32;
-  v84->rightContour[3].x = v84->rightContour[3].x - v32;
-  v84->rightContour[4].x = v84->rightContour[4].x - v32;
-  v84->leftKickLights[0] = v85[40];
-  v84->leftKickLights[1] = v85[41];
-  v84->leftKickLights[2] = v85[42];
+  selfCopy->rightContour[0].x = selfCopy->rightContour[0].x - v32;
+  selfCopy->rightContour[1].x = selfCopy->rightContour[1].x - v32;
+  selfCopy->rightContour[2].x = selfCopy->rightContour[2].x - v32;
+  selfCopy->rightContour[3].x = selfCopy->rightContour[3].x - v32;
+  selfCopy->rightContour[4].x = selfCopy->rightContour[4].x - v32;
+  selfCopy->leftKickLights[0] = v85[40];
+  selfCopy->leftKickLights[1] = v85[41];
+  selfCopy->leftKickLights[2] = v85[42];
   v36 = 0.0;
   v37 = 0.0;
   if (v21 > 0.0)
@@ -186,112 +186,112 @@
     v37 = v38;
   }
 
-  v84->leftKickLights[0].x = v37 + v84->leftKickLights[0].x;
-  v84->leftKickLights[1].x = v37 + v84->leftKickLights[1].x;
-  v84->leftKickLights[2].x = v37 + v84->leftKickLights[2].x;
-  v84->leftContour[0] = v85[40];
-  v84->leftContour[1] = v85[41];
-  v84->leftContour[2] = v85[42];
-  v84->leftContour[3] = v85[43];
-  v84->leftContour[4] = v85[44];
+  selfCopy->leftKickLights[0].x = v37 + selfCopy->leftKickLights[0].x;
+  selfCopy->leftKickLights[1].x = v37 + selfCopy->leftKickLights[1].x;
+  selfCopy->leftKickLights[2].x = v37 + selfCopy->leftKickLights[2].x;
+  selfCopy->leftContour[0] = v85[40];
+  selfCopy->leftContour[1] = v85[41];
+  selfCopy->leftContour[2] = v85[42];
+  selfCopy->leftContour[3] = v85[43];
+  selfCopy->leftContour[4] = v85[44];
   if (v21 > 0.0)
   {
     v39 = fmin(v21 * 0.5 / 3.14159, 0.075);
     v36 = v39;
   }
 
-  p_leftEye = &v84->leftEye;
-  v84->leftContour[0].x = v36 + v84->leftContour[0].x;
-  v84->leftContour[1].x = v36 + v84->leftContour[1].x;
-  v84->leftContour[2].x = v36 + v84->leftContour[2].x;
-  v84->leftContour[3].x = v36 + v84->leftContour[3].x;
-  v84->leftContour[4].x = v36 + v84->leftContour[4].x;
-  v84->centerNose = v85[61];
+  p_leftEye = &selfCopy->leftEye;
+  selfCopy->leftContour[0].x = v36 + selfCopy->leftContour[0].x;
+  selfCopy->leftContour[1].x = v36 + selfCopy->leftContour[1].x;
+  selfCopy->leftContour[2].x = v36 + selfCopy->leftContour[2].x;
+  selfCopy->leftContour[3].x = v36 + selfCopy->leftContour[3].x;
+  selfCopy->leftContour[4].x = v36 + selfCopy->leftContour[4].x;
+  selfCopy->centerNose = v85[61];
   v41 = v18;
-  v84->faceHeight = v41;
+  selfCopy->faceHeight = v41;
   v42 = v16;
-  v84->faceWidth = v42;
-  v84->bottomShadow = v85[45];
-  v84->bottomShadow.y = v84->bottomShadow.y + v41 * -0.1;
+  selfCopy->faceWidth = v42;
+  selfCopy->bottomShadow = v85[45];
+  selfCopy->bottomShadow.y = selfCopy->bottomShadow.y + v41 * -0.1;
   __asm { FMOV            V0.2D, #0.5 }
 
-  v84->centerChin = vmulq_f64(vaddq_f64(v85[31], v85[45]), _Q0);
-  v84->leftNose[0] = v85[51];
-  v84->leftNose[1] = v85[52];
-  v84->leftNose[2] = v85[53];
-  v84->leftNose[2].x = v84->leftNose[2].x * 0.95;
-  v84->rightNose[0] = v85[57];
-  v84->rightNose[0].x = v84->rightNose[0].x * 1.05;
-  v84->rightNose[1] = v85[58];
-  v84->rightNose[2] = v85[59];
-  v84->noseStrobe[0] = v85[61];
-  v84->noseStrobe[1] = v85[55];
-  v84->noseProtect[0] = v85[62];
-  v84->noseProtect[1] = v85[53];
-  v84->noseProtect[2] = v85[57];
-  v84->leftCheekContour[0] = v85[40];
-  v84->leftCheekContour[1] = v85[41];
-  v84->leftCheekContour[2] = v85[53];
-  v84->leftCheekContour[2].y = (v85[53].f64[1] + v85[24].f64[1]) * 0.5;
-  v84->leftCheekStrobe[0] = v85[52];
-  v84->leftCheekStrobe[1] = v85[53];
-  v84->leftCheekStrobe[2] = v85[40];
-  v84->rightCheekContour[0] = v85[57];
-  v84->rightCheekContour[0].y = (v85[57].f64[1] + v85[28].f64[1]) * 0.5;
-  v84->rightCheekContour[1] = v85[50];
-  v84->rightCheekContour[2] = v85[49];
-  v84->rightCheekStrobe[0] = v85[57];
-  v84->rightCheekStrobe[1] = v85[58];
-  v84->rightCheekStrobe[2] = v85[50];
-  v84->leftChinContour[0] = v85[42];
-  v84->leftChinContour[1] = v85[43];
-  v84->leftChinContour[2] = v85[44];
-  v84->leftNoseContour[0] = v85[51];
-  v84->leftNoseContour[1] = v85[52];
-  v84->leftNoseContour[2] = v85[53];
-  v84->rightChinContour[0] = v85[46];
-  v84->rightChinContour[1] = v85[47];
-  v84->rightChinContour[2] = v85[48];
-  v84->rightNoseContour[0] = v85[57];
-  v84->rightNoseContour[1] = v85[58];
-  v84->rightNoseContour[2] = v85[59];
-  v84->leftLipContour[0] = v85[33];
-  v84->leftLipContour[1] = v85[43];
-  v84->leftLipContour[2] = v85[44];
-  v84->rightLipContour[0] = v85[29];
-  v84->rightLipContour[1] = v85[46];
-  v84->rightLipContour[2] = v85[47];
-  v84->neckContour1[0] = v85[44];
-  v84->neckContour1[1] = v85[46];
-  v84->neckContour1[2] = v85[45];
-  v84->neckContour1[0].y = v84->neckContour1[0].y + -0.03;
-  v84->neckContour1[1].y = v84->neckContour1[1].y + -0.03;
-  v48 = v84->neckContour1[2].y + -0.18;
-  v84->neckContour1[2].y = v48;
-  v84->neckContourLeft[0] = v85[43];
-  v84->neckContourLeft[1] = v85[44];
-  v84->neckContourLeft[2].x = (v85[43].f64[0] + v85[44].f64[0]) * 0.5;
+  selfCopy->centerChin = vmulq_f64(vaddq_f64(v85[31], v85[45]), _Q0);
+  selfCopy->leftNose[0] = v85[51];
+  selfCopy->leftNose[1] = v85[52];
+  selfCopy->leftNose[2] = v85[53];
+  selfCopy->leftNose[2].x = selfCopy->leftNose[2].x * 0.95;
+  selfCopy->rightNose[0] = v85[57];
+  selfCopy->rightNose[0].x = selfCopy->rightNose[0].x * 1.05;
+  selfCopy->rightNose[1] = v85[58];
+  selfCopy->rightNose[2] = v85[59];
+  selfCopy->noseStrobe[0] = v85[61];
+  selfCopy->noseStrobe[1] = v85[55];
+  selfCopy->noseProtect[0] = v85[62];
+  selfCopy->noseProtect[1] = v85[53];
+  selfCopy->noseProtect[2] = v85[57];
+  selfCopy->leftCheekContour[0] = v85[40];
+  selfCopy->leftCheekContour[1] = v85[41];
+  selfCopy->leftCheekContour[2] = v85[53];
+  selfCopy->leftCheekContour[2].y = (v85[53].f64[1] + v85[24].f64[1]) * 0.5;
+  selfCopy->leftCheekStrobe[0] = v85[52];
+  selfCopy->leftCheekStrobe[1] = v85[53];
+  selfCopy->leftCheekStrobe[2] = v85[40];
+  selfCopy->rightCheekContour[0] = v85[57];
+  selfCopy->rightCheekContour[0].y = (v85[57].f64[1] + v85[28].f64[1]) * 0.5;
+  selfCopy->rightCheekContour[1] = v85[50];
+  selfCopy->rightCheekContour[2] = v85[49];
+  selfCopy->rightCheekStrobe[0] = v85[57];
+  selfCopy->rightCheekStrobe[1] = v85[58];
+  selfCopy->rightCheekStrobe[2] = v85[50];
+  selfCopy->leftChinContour[0] = v85[42];
+  selfCopy->leftChinContour[1] = v85[43];
+  selfCopy->leftChinContour[2] = v85[44];
+  selfCopy->leftNoseContour[0] = v85[51];
+  selfCopy->leftNoseContour[1] = v85[52];
+  selfCopy->leftNoseContour[2] = v85[53];
+  selfCopy->rightChinContour[0] = v85[46];
+  selfCopy->rightChinContour[1] = v85[47];
+  selfCopy->rightChinContour[2] = v85[48];
+  selfCopy->rightNoseContour[0] = v85[57];
+  selfCopy->rightNoseContour[1] = v85[58];
+  selfCopy->rightNoseContour[2] = v85[59];
+  selfCopy->leftLipContour[0] = v85[33];
+  selfCopy->leftLipContour[1] = v85[43];
+  selfCopy->leftLipContour[2] = v85[44];
+  selfCopy->rightLipContour[0] = v85[29];
+  selfCopy->rightLipContour[1] = v85[46];
+  selfCopy->rightLipContour[2] = v85[47];
+  selfCopy->neckContour1[0] = v85[44];
+  selfCopy->neckContour1[1] = v85[46];
+  selfCopy->neckContour1[2] = v85[45];
+  selfCopy->neckContour1[0].y = selfCopy->neckContour1[0].y + -0.03;
+  selfCopy->neckContour1[1].y = selfCopy->neckContour1[1].y + -0.03;
+  v48 = selfCopy->neckContour1[2].y + -0.18;
+  selfCopy->neckContour1[2].y = v48;
+  selfCopy->neckContourLeft[0] = v85[43];
+  selfCopy->neckContourLeft[1] = v85[44];
+  selfCopy->neckContourLeft[2].x = (v85[43].f64[0] + v85[44].f64[0]) * 0.5;
   v49 = v48 + 0.02;
-  v84->neckContourLeft[2].y = v49;
-  v84->neckContourRight[0] = v85[46];
-  v84->neckContourRight[1] = v85[47];
-  v84->neckContourRight[2].x = (v85[46].f64[0] + v85[47].f64[0]) * 0.5;
-  v84->neckContourRight[2].y = v49;
-  v84->chinSpot[0].x = v85[32].f64[0];
-  v84->chinSpot[0].y = v85[45].f64[1] * 0.25 + v85[32].f64[1] * 0.75;
-  v84->chinSpot[1].x = v85[30].f64[0];
-  v84->chinSpot[1].y = v85[45].f64[1] * 0.25 + v85[30].f64[1] * 0.75;
-  v84->chinSpot[2].x = v85[45].f64[0];
-  v84->chinSpot[2].y = v85[31].f64[1] * 0.25 + v85[45].f64[1] * 0.75;
-  v84->noseTip = vmlaq_f64(vmulq_f64(v85[55], _Q0), _Q0, v85[62]);
-  v84->rightEyeOutline[0] = v85[16];
-  v84->rightEyeOutline[1] = v85[18];
-  v84->rightEyeOutline[2] = v85[20];
-  v84->rightEyeOutline[3] = v85[22];
-  v84->leftEyeOutline[0] = v85[8];
-  v84->leftEyeOutline[1] = v85[10];
-  v84->leftEyeOutline[2] = v85[12];
-  v84->leftEyeOutline[3] = v85[14];
+  selfCopy->neckContourLeft[2].y = v49;
+  selfCopy->neckContourRight[0] = v85[46];
+  selfCopy->neckContourRight[1] = v85[47];
+  selfCopy->neckContourRight[2].x = (v85[46].f64[0] + v85[47].f64[0]) * 0.5;
+  selfCopy->neckContourRight[2].y = v49;
+  selfCopy->chinSpot[0].x = v85[32].f64[0];
+  selfCopy->chinSpot[0].y = v85[45].f64[1] * 0.25 + v85[32].f64[1] * 0.75;
+  selfCopy->chinSpot[1].x = v85[30].f64[0];
+  selfCopy->chinSpot[1].y = v85[45].f64[1] * 0.25 + v85[30].f64[1] * 0.75;
+  selfCopy->chinSpot[2].x = v85[45].f64[0];
+  selfCopy->chinSpot[2].y = v85[31].f64[1] * 0.25 + v85[45].f64[1] * 0.75;
+  selfCopy->noseTip = vmlaq_f64(vmulq_f64(v85[55], _Q0), _Q0, v85[62]);
+  selfCopy->rightEyeOutline[0] = v85[16];
+  selfCopy->rightEyeOutline[1] = v85[18];
+  selfCopy->rightEyeOutline[2] = v85[20];
+  selfCopy->rightEyeOutline[3] = v85[22];
+  selfCopy->leftEyeOutline[0] = v85[8];
+  selfCopy->leftEyeOutline[1] = v85[10];
+  selfCopy->leftEyeOutline[2] = v85[12];
+  selfCopy->leftEyeOutline[3] = v85[14];
   v50 = 0;
   v51 = 8;
   do
@@ -322,7 +322,7 @@
   }
 
   v57 = 0;
-  v84->rightEye = vcvtq_f64_f32(vdiv_f32(vcvt_f32_f64(vaddq_f64(v85[16], vcvtq_f64_f32(v55))), _D0));
+  selfCopy->rightEye = vcvtq_f64_f32(vdiv_f32(vcvt_f32_f64(vaddq_f64(v85[16], vcvtq_f64_f32(v55))), _D0));
   v104 = v85[10];
   v100 = v85[14];
   v58 = v85[8];
@@ -339,99 +339,99 @@
   v90 = v61;
   do
   {
-    rightEye = v84->rightKickLights[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightKickLights[v57].x);
-    rightEye = v84->leftKickLights[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftKickLights[v57].x);
-    rightEye = v84->rightNose[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightNose[v57].x);
-    rightEye = v84->leftNose[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftNose[v57].x);
-    rightEye = v84->leftCheekContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftCheekContour[v57].x);
-    rightEye = v84->rightCheekContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightCheekContour[v57].x);
-    rightEye = v84->leftCheekStrobe[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftCheekStrobe[v57].x);
-    rightEye = v84->rightCheekStrobe[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightCheekStrobe[v57].x);
-    rightEye = v84->leftChinContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftChinContour[v57].x);
-    rightEye = v84->leftNoseContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftNoseContour[v57].x);
-    rightEye = v84->rightChinContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightChinContour[v57].x);
-    rightEye = v84->rightNoseContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightNoseContour[v57].x);
-    rightEye = v84->leftLipContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftLipContour[v57].x);
-    rightEye = v84->rightLipContour[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightLipContour[v57].x);
-    rightEye = v84->neckContour1[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->neckContour1[v57].x);
-    rightEye = v84->neckContourLeft[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->neckContourLeft[v57].x);
-    rightEye = v84->neckContourRight[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->neckContourRight[v57].x);
-    rightEye = v84->chinSpot[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->chinSpot[v57].x);
-    rightEye = v84->noseProtect[v57];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->noseProtect[v57++].x);
+    rightEye = selfCopy->rightKickLights[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightKickLights[v57].x);
+    rightEye = selfCopy->leftKickLights[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftKickLights[v57].x);
+    rightEye = selfCopy->rightNose[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightNose[v57].x);
+    rightEye = selfCopy->leftNose[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftNose[v57].x);
+    rightEye = selfCopy->leftCheekContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftCheekContour[v57].x);
+    rightEye = selfCopy->rightCheekContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightCheekContour[v57].x);
+    rightEye = selfCopy->leftCheekStrobe[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftCheekStrobe[v57].x);
+    rightEye = selfCopy->rightCheekStrobe[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightCheekStrobe[v57].x);
+    rightEye = selfCopy->leftChinContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftChinContour[v57].x);
+    rightEye = selfCopy->leftNoseContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftNoseContour[v57].x);
+    rightEye = selfCopy->rightChinContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightChinContour[v57].x);
+    rightEye = selfCopy->rightNoseContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightNoseContour[v57].x);
+    rightEye = selfCopy->leftLipContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftLipContour[v57].x);
+    rightEye = selfCopy->rightLipContour[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightLipContour[v57].x);
+    rightEye = selfCopy->neckContour1[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->neckContour1[v57].x);
+    rightEye = selfCopy->neckContourLeft[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->neckContourLeft[v57].x);
+    rightEye = selfCopy->neckContourRight[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->neckContourRight[v57].x);
+    rightEye = selfCopy->chinSpot[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->chinSpot[v57].x);
+    rightEye = selfCopy->noseProtect[v57];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->noseProtect[v57++].x);
   }
 
   while (v57 != 3);
   for (k = 0; k != 5; ++k)
   {
-    rightEye = v84->rightContour[k];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightContour[k].x);
-    rightEye = v84->leftContour[k];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftContour[k].x);
+    rightEye = selfCopy->rightContour[k];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightContour[k].x);
+    rightEye = selfCopy->leftContour[k];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftContour[k].x);
   }
 
   for (m = 0; m != 4; ++m)
   {
-    rightEye = v84->rightEyeOutline[m];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightEyeOutline[m].x);
-    rightEye = v84->leftEyeOutline[m];
-    sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftEyeOutline[m].x);
+    rightEye = selfCopy->rightEyeOutline[m];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightEyeOutline[m].x);
+    rightEye = selfCopy->leftEyeOutline[m];
+    sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftEyeOutline[m].x);
   }
 
   rightEye = *p_leftEye;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->leftEye.x);
-  rightEye = v84->rightEye;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->rightEye.x);
-  rightEye = v84->centerNose;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->centerNose.x);
-  rightEye = v84->bottomShadow;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->bottomShadow.x);
-  rightEye = v84->centerChin;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->centerChin.x);
-  rightEye = v84->noseStrobe[0];
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->noseStrobe[0].x);
-  rightEye = v84->noseStrobe[1];
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->noseStrobe[1].x);
-  rightEye = v84->noseTip;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, &v84->noseTip.x);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->leftEye.x);
+  rightEye = selfCopy->rightEye;
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->rightEye.x);
+  rightEye = selfCopy->centerNose;
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->centerNose.x);
+  rightEye = selfCopy->bottomShadow;
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->bottomShadow.x);
+  rightEye = selfCopy->centerChin;
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->centerChin.x);
+  rightEye = selfCopy->noseStrobe[0];
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->noseStrobe[0].x);
+  rightEye = selfCopy->noseStrobe[1];
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->noseStrobe[1].x);
+  rightEye = selfCopy->noseTip;
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, &selfCopy->noseTip.x);
   rightEye = v90;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v90.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v90.f64);
   rightEye = v89;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v89.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v89.f64);
   rightEye = v104;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v104.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v104.f64);
   rightEye = v100;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v100.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v100.f64);
   rightEye = v96;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v96.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v96.f64);
   rightEye = v95;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v95.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v95.f64);
   rightEye = v94;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v94.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v94.f64);
   rightEye = v93;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v93.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v93.f64);
   rightEye = v92;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v92.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v92.f64);
   rightEye = v91;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v91.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v91.f64);
   v64.f64[0] = v104.f64[1];
   v65.f64[0] = v100.f64[1];
   v66.f64[0] = v94.f64[1];
@@ -440,15 +440,15 @@
   v66.f64[1] = v92.f64[0];
   v65.f64[1] = v95.f64[0];
   v67.f64[1] = v91.f64[0];
-  *&v84->leftEyeHeight = vabsq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(vsubq_f64(v64, v65)), vsubq_f64(v66, v67)));
-  *v64.f64 = v84->leftNose[2].x - v84->rightNose[0].x;
-  v84->noseWidth = fabsf(*v64.f64);
+  *&selfCopy->leftEyeHeight = vabsq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(vsubq_f64(v64, v65)), vsubq_f64(v66, v67)));
+  *v64.f64 = selfCopy->leftNose[2].x - selfCopy->rightNose[0].x;
+  selfCopy->noseWidth = fabsf(*v64.f64);
   *v64.f64 = v90.f64[1] - v89.f64[1];
-  v84->noseHeight = fabsf(*v64.f64);
+  selfCopy->noseHeight = fabsf(*v64.f64);
   *&v66.f64[0] = vdup_n_s32((v6 - 5) < 4);
   v68.i64[0] = LODWORD(v66.f64[0]);
   v68.i64[1] = HIDWORD(v66.f64[0]);
-  *&v84->faceHeight = vcvt_f32_f64(vmulq_f64(vbslq_s8(vcltzq_s64(vshlq_n_s64(v68, 0x3FuLL)), v99.size, vextq_s8(v99.size, v99.size, 8uLL)), vcvtq_f64_f32(*&v84->faceHeight)));
+  *&selfCopy->faceHeight = vcvt_f32_f64(vmulq_f64(vbslq_s8(vcltzq_s64(vshlq_n_s64(v68, 0x3FuLL)), rectCopy.size, vextq_s8(rectCopy.size, rectCopy.size, 8uLL)), vcvtq_f64_f32(*&selfCopy->faceHeight)));
   v86 = *v85;
   v87 = v86;
   v69 = v86;
@@ -494,9 +494,9 @@
   v87.f64[0] = v69.f64[0];
   v86.f64[0] = v70.f64[0];
   rightEye = v87;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v87.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v87.f64);
   rightEye = v86;
-  sub_273DC(v6, rightEye.f64, &v97.x, &v99, v86.f64);
+  sub_273DC(v6, rightEye.f64, &v97.x, &rectCopy, v86.f64);
   if (v87.f64[0] >= v86.f64[0])
   {
     v78 = v86.f64[0];
@@ -519,11 +519,11 @@
 
   v80 = vabdd_f64(v86.f64[0], v87.f64[0]);
   v81 = vabdd_f64(v86.f64[1], v87.f64[1]);
-  v84->faceRect.origin.x = v78;
-  v84->faceRect.origin.y = v79;
-  v84->faceRect.size.width = v80;
-  v84->faceRect.size.height = v81;
-  return v84;
+  selfCopy->faceRect.origin.x = v78;
+  selfCopy->faceRect.origin.y = v79;
+  selfCopy->faceRect.size.width = v80;
+  selfCopy->faceRect.size.height = v81;
+  return selfCopy;
 }
 
 - (CGRect)faceRect

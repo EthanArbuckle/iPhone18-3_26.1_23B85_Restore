@@ -1,25 +1,25 @@
 @interface PKContinuousButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (void)setShowSpinner:(BOOL)a3;
+- (void)setShowSpinner:(BOOL)spinner;
 @end
 
 @implementation PKContinuousButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKContinuousButton" hasInstanceVariable:@"_activityIndicatorView" withType:"UIActivityIndicatorView"];
-  [v3 validateClass:@"PKContinuousButton" hasInstanceMethod:@"setShowSpinner:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKContinuousButton" hasInstanceVariable:@"_activityIndicatorView" withType:"UIActivityIndicatorView"];
+  [validationsCopy validateClass:@"PKContinuousButton" hasInstanceMethod:@"setShowSpinner:" withFullSignature:{"v", "B", 0}];
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v6.receiver = self;
   v6.super_class = PKContinuousButtonAccessibility;
   [(PKContinuousButtonAccessibility *)&v6 setShowSpinner:?];
-  if (v3)
+  if (spinnerCopy)
   {
     v4 = *MEMORY[0x29EDC7EA8];
     v5 = accessibilityLocalizedString(@"loading");
@@ -30,21 +30,21 @@
 - (id)accessibilityValue
 {
   v3 = [(PKContinuousButtonAccessibility *)self safeUIViewForKey:@"_activityIndicatorView"];
-  v4 = [v3 window];
+  window = [v3 window];
 
-  if (v4)
+  if (window)
   {
-    v5 = accessibilityLocalizedString(@"loading");
+    accessibilityValue = accessibilityLocalizedString(@"loading");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PKContinuousButtonAccessibility;
-    v5 = [(PKContinuousButtonAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(PKContinuousButtonAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface CMSedentaryTimerData
-- (CMSedentaryTimerData)initWithCoder:(id)a3;
-- (CMSedentaryTimerData)initWithStartDate:(double)a3 firedDate:(double)a4 alarmType:(int64_t)a5 didWake:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMSedentaryTimerData)initWithCoder:(id)coder;
+- (CMSedentaryTimerData)initWithStartDate:(double)date firedDate:(double)firedDate alarmType:(int64_t)type didWake:(BOOL)wake;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMSedentaryTimerData
 
-- (CMSedentaryTimerData)initWithStartDate:(double)a3 firedDate:(double)a4 alarmType:(int64_t)a5 didWake:(BOOL)a6
+- (CMSedentaryTimerData)initWithStartDate:(double)date firedDate:(double)firedDate alarmType:(int64_t)type didWake:(BOOL)wake
 {
   v11.receiver = self;
   v11.super_class = CMSedentaryTimerData;
   result = [(CMSedentaryTimerData *)&v11 init];
   if (result)
   {
-    result->fStartDate = a3;
-    result->fFiredDate = a4;
-    result->fAlarmType = a5;
-    result->fDidWake = a6;
+    result->fStartDate = date;
+    result->fFiredDate = firedDate;
+    result->fAlarmType = type;
+    result->fDidWake = wake;
   }
 
   return result;
 }
 
-- (CMSedentaryTimerData)initWithCoder:(id)a3
+- (CMSedentaryTimerData)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = CMSedentaryTimerData;
   v5 = [(CMSedentaryTimerData *)&v12 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kSedentaryTimerDataCodingKeyStartDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kSedentaryTimerDataCodingKeyStartDate");
     v5->fStartDate = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kSedentaryTimerDataCodingKeyFiredDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kSedentaryTimerDataCodingKeyFiredDate");
     v5->fFiredDate = v8;
-    v5->fAlarmType = objc_msgSend_decodeIntegerForKey_(a3, v9, @"kSedentaryTimerDataCodingKeyAlarmType");
-    v5->fDidWake = objc_msgSend_decodeBoolForKey_(a3, v10, @"kSedentaryTimerDataCodingKeyDidWake");
+    v5->fAlarmType = objc_msgSend_decodeIntegerForKey_(coder, v9, @"kSedentaryTimerDataCodingKeyAlarmType");
+    v5->fDidWake = objc_msgSend_decodeBoolForKey_(coder, v10, @"kSedentaryTimerDataCodingKeyDidWake");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fStartDate = self->fStartDate;
   fFiredDate = self->fFiredDate;
   fAlarmType = self->fAlarmType;
@@ -54,14 +54,14 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_firedDate_alarmType_didWake_, fAlarmType);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kSedentaryTimerDataCodingKeyStartDate", self->fStartDate);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kSedentaryTimerDataCodingKeyFiredDate", self->fFiredDate);
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->fAlarmType, @"kSedentaryTimerDataCodingKeyAlarmType");
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kSedentaryTimerDataCodingKeyStartDate", self->fStartDate);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kSedentaryTimerDataCodingKeyFiredDate", self->fFiredDate);
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->fAlarmType, @"kSedentaryTimerDataCodingKeyAlarmType");
   fDidWake = self->fDidWake;
 
-  objc_msgSend_encodeBool_forKey_(a3, v7, fDidWake, @"kSedentaryTimerDataCodingKeyDidWake");
+  objc_msgSend_encodeBool_forKey_(coder, v7, fDidWake, @"kSedentaryTimerDataCodingKeyDidWake");
 }
 
 - (id)description

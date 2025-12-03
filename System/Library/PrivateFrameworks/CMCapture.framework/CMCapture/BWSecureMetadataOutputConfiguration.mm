@@ -1,8 +1,8 @@
 @interface BWSecureMetadataOutputConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BWSecureMetadataOutputConfiguration)init;
 - (NSDictionary)metadataOutputConfigurationDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -22,7 +22,7 @@
   [(BWSecureMetadataOutputConfiguration *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BWSecureMetadataOutputConfiguration allocWithZone:?]];
   [(BWSecureMetadataOutputConfiguration *)v4 setObjectDetectionEnabled:self->_objectDetectionEnabled];
@@ -49,118 +49,118 @@
 
 - (NSDictionary)metadataOutputConfigurationDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_objectDetectionEnabled], *off_1E798AFA0);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_objectDetectionEnabled], *off_1E798AFA0);
   if (self->_objectDetectionEnabled)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACB8])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B920];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B920];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACC8])
     {
-      [v4 setObject:&unk_1F2245460 forKeyedSubscript:*off_1E798B930];
+      [dictionary2 setObject:&unk_1F2245460 forKeyedSubscript:*off_1E798B930];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACD0])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B938];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B938];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACB0])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B918];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B918];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACC0])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B928];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B928];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACA0])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B908];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B908];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798ACA8])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B910];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B910];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798AC90])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B8F8];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B8F8];
     }
 
     if ([(NSSet *)self->_enabledDetectedObjectTypes containsObject:*off_1E798AC98])
     {
-      [v4 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B900];
+      [dictionary2 setObject:&unk_1F2245448 forKeyedSubscript:*off_1E798B900];
     }
 
     if (self->_objectDetectionTargetFrameRate > 0.0)
     {
-      [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C718}];
+      [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C718}];
     }
 
-    [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_attentionDetectionEnabled), *off_1E798C398}];
-    [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_faceOcclusionDetectionEnabled), *off_1E798C3A0}];
-    [(NSDictionary *)v3 setObject:v4 forKeyedSubscript:*off_1E798AF98];
+    [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_attentionDetectionEnabled), *off_1E798C398}];
+    [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_faceOcclusionDetectionEnabled), *off_1E798C3A0}];
+    [(NSDictionary *)dictionary setObject:dictionary2 forKeyedSubscript:*off_1E798AF98];
   }
 
-  -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_faceTrackingEnabled], *off_1E798AF80);
+  -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_faceTrackingEnabled], *off_1E798AF80);
   if (self->_faceTrackingEnabled)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     if (self->_faceTrackingMaxNumTrackedFaces >= 1)
     {
-      [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), *off_1E798C380}];
+      [dictionary3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), *off_1E798C380}];
     }
 
     if (self->_faceTrackingNetworkFailureThresholdMultiplier > 0.0)
     {
-      [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C378}];
+      [dictionary3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C378}];
     }
 
     if (self->_faceTrackingFailureFieldOfViewModifier >= 0.0)
     {
-      [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C388}];
+      [dictionary3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), *off_1E798C388}];
     }
 
-    [(NSDictionary *)v3 setObject:v5 forKeyedSubscript:*off_1E798AF78];
+    [(NSDictionary *)dictionary setObject:dictionary3 forKeyedSubscript:*off_1E798AF78];
   }
 
-  -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_eyeReliefStatusDetectionEnabled], *off_1E798AF60);
-  -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_motionToWakeEnabled], *off_1E798AF90);
+  -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_eyeReliefStatusDetectionEnabled], *off_1E798AF60);
+  -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_motionToWakeEnabled], *off_1E798AF90);
   if (self->_motionToWakeEnabled && self->_motionToWakeTargetFrameRate > 0.0)
   {
     v9 = *off_1E798C390;
     v10 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-    -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1], *off_1E798AF88);
+    -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1], *off_1E798AF88);
   }
 
-  -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_faceIDReadinessEnabled], *off_1E798AF70);
+  -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:self->_faceIDReadinessEnabled], *off_1E798AF70);
   if (self->_faceIDReadinessEnabled)
   {
     v8[0] = [MEMORY[0x1E696AD98] numberWithBool:{self->_faceIDReadinessPeriocularEnabled, *off_1E798C370}];
     v7[1] = *off_1E798C368;
     v8[1] = [MEMORY[0x1E696AD98] numberWithBool:self->_faceIDReadinessAttentionRequired];
-    -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2], *off_1E798AF68);
+    -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2], *off_1E798AF68);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  result = (objc_opt_isKindOfClass() & 1) != 0 && self->_objectDetectionEnabled == [a3 objectDetectionEnabled] && objc_msgSend(a3, "enabledDetectedObjectTypes") == self->_enabledDetectedObjectTypes && (objc_msgSend(a3, "objectDetectionTargetFrameRate"), v5 == self->_objectDetectionTargetFrameRate) && self->_attentionDetectionEnabled == objc_msgSend(a3, "attentionDetectionEnabled") && self->_faceOcclusionDetectionEnabled == objc_msgSend(a3, "faceOcclusionDetectionEnabled") && self->_faceTrackingEnabled == objc_msgSend(a3, "faceTrackingEnabled") && objc_msgSend(a3, "faceTrackingMaxNumTrackedFaces") == self->_faceTrackingMaxNumTrackedFaces && (objc_msgSend(a3, "faceTrackingNetworkFailureThresholdMultiplier"), v6 == self->_faceTrackingNetworkFailureThresholdMultiplier) && (objc_msgSend(a3, "faceTrackingFailureFieldOfViewModifier"), v7 == self->_faceTrackingFailureFieldOfViewModifier) && self->_eyeReliefStatusDetectionEnabled == objc_msgSend(a3, "eyeReliefStatusDetectionEnabled") && self->_motionToWakeEnabled == objc_msgSend(a3, "motionToWakeEnabled") && (objc_msgSend(a3, "motionToWakeTargetFrameRate"), v8 == self->_motionToWakeTargetFrameRate) && self->_faceIDReadinessEnabled == objc_msgSend(a3, "faceIDReadinessEnabled") && self->_faceIDReadinessPeriocularEnabled == objc_msgSend(a3, "faceIDReadinessPeriocularEnabled") && self->_faceIDReadinessAttentionRequired == objc_msgSend(a3, "faceIDReadinessAttentionRequired");
+  result = (objc_opt_isKindOfClass() & 1) != 0 && self->_objectDetectionEnabled == [equal objectDetectionEnabled] && objc_msgSend(equal, "enabledDetectedObjectTypes") == self->_enabledDetectedObjectTypes && (objc_msgSend(equal, "objectDetectionTargetFrameRate"), v5 == self->_objectDetectionTargetFrameRate) && self->_attentionDetectionEnabled == objc_msgSend(equal, "attentionDetectionEnabled") && self->_faceOcclusionDetectionEnabled == objc_msgSend(equal, "faceOcclusionDetectionEnabled") && self->_faceTrackingEnabled == objc_msgSend(equal, "faceTrackingEnabled") && objc_msgSend(equal, "faceTrackingMaxNumTrackedFaces") == self->_faceTrackingMaxNumTrackedFaces && (objc_msgSend(equal, "faceTrackingNetworkFailureThresholdMultiplier"), v6 == self->_faceTrackingNetworkFailureThresholdMultiplier) && (objc_msgSend(equal, "faceTrackingFailureFieldOfViewModifier"), v7 == self->_faceTrackingFailureFieldOfViewModifier) && self->_eyeReliefStatusDetectionEnabled == objc_msgSend(equal, "eyeReliefStatusDetectionEnabled") && self->_motionToWakeEnabled == objc_msgSend(equal, "motionToWakeEnabled") && (objc_msgSend(equal, "motionToWakeTargetFrameRate"), v8 == self->_motionToWakeTargetFrameRate) && self->_faceIDReadinessEnabled == objc_msgSend(equal, "faceIDReadinessEnabled") && self->_faceIDReadinessPeriocularEnabled == objc_msgSend(equal, "faceIDReadinessPeriocularEnabled") && self->_faceIDReadinessAttentionRequired == objc_msgSend(equal, "faceIDReadinessAttentionRequired");
   return result;
 }
 

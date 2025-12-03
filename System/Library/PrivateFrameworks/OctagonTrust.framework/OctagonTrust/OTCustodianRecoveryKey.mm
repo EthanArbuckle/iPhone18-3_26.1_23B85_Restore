@@ -1,48 +1,48 @@
 @interface OTCustodianRecoveryKey
-- (BOOL)generateWrappingWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCustodianRecoveryKey:(id)a3;
-- (BOOL)unwrapWithError:(id *)a3;
-- (OTCustodianRecoveryKey)initWithCoder:(id)a3;
-- (OTCustodianRecoveryKey)initWithUUID:(id)a3 recoveryString:(id)a4 error:(id *)a5;
-- (OTCustodianRecoveryKey)initWithWrappedKey:(id)a3 wrappingKey:(id)a4 uuid:(id)a5 error:(id *)a6;
+- (BOOL)generateWrappingWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCustodianRecoveryKey:(id)key;
+- (BOOL)unwrapWithError:(id *)error;
+- (OTCustodianRecoveryKey)initWithCoder:(id)coder;
+- (OTCustodianRecoveryKey)initWithUUID:(id)d recoveryString:(id)string error:(id *)error;
+- (OTCustodianRecoveryKey)initWithWrappedKey:(id)key wrappingKey:(id)wrappingKey uuid:(id)uuid error:(id *)error;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OTCustodianRecoveryKey
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_wrappingKey forKey:@"wrappingKey"];
-  [v5 encodeObject:self->_wrappedKey forKey:@"wrappedKey"];
-  [v5 encodeObject:self->_recoveryString forKey:@"recoveryString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_wrappingKey forKey:@"wrappingKey"];
+  [coderCopy encodeObject:self->_wrappedKey forKey:@"wrappedKey"];
+  [coderCopy encodeObject:self->_recoveryString forKey:@"recoveryString"];
 }
 
-- (OTCustodianRecoveryKey)initWithCoder:(id)a3
+- (OTCustodianRecoveryKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = OTCustodianRecoveryKey;
   v5 = [(OTCustodianRecoveryKey *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappingKey"];
     wrappingKey = v5->_wrappingKey;
     v5->_wrappingKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappedKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappedKey"];
     wrappedKey = v5->_wrappedKey;
     v5->_wrappedKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recoveryString"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recoveryString"];
     recoveryString = v5->_recoveryString;
     v5->_recoveryString = v12;
   }
@@ -54,19 +54,19 @@
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v13[0] = @"uuid";
-  v3 = [(OTCustodianRecoveryKey *)self uuid];
-  v4 = [v3 description];
+  uuid = [(OTCustodianRecoveryKey *)self uuid];
+  v4 = [uuid description];
   v14[0] = v4;
   v13[1] = @"recoveryString";
-  v5 = [(OTCustodianRecoveryKey *)self recoveryString];
-  v14[1] = v5;
+  recoveryString = [(OTCustodianRecoveryKey *)self recoveryString];
+  v14[1] = recoveryString;
   v13[2] = @"wrappingKey";
-  v6 = [(OTCustodianRecoveryKey *)self wrappingKey];
-  v7 = [v6 base64EncodedStringWithOptions:0];
+  wrappingKey = [(OTCustodianRecoveryKey *)self wrappingKey];
+  v7 = [wrappingKey base64EncodedStringWithOptions:0];
   v14[2] = v7;
   v13[3] = @"wrappedKey";
-  v8 = [(OTCustodianRecoveryKey *)self wrappedKey];
-  v9 = [v8 base64EncodedStringWithOptions:0];
+  wrappedKey = [(OTCustodianRecoveryKey *)self wrappedKey];
+  v9 = [wrappedKey base64EncodedStringWithOptions:0];
   v14[3] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
 
@@ -75,10 +75,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -86,37 +86,37 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(OTCustodianRecoveryKey *)self isEqualToCustodianRecoveryKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(OTCustodianRecoveryKey *)self isEqualToCustodianRecoveryKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCustodianRecoveryKey:(id)a3
+- (BOOL)isEqualToCustodianRecoveryKey:(id)key
 {
-  v4 = a3;
-  if (self == v4)
+  keyCopy = key;
+  if (self == keyCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v5 = [(OTCustodianRecoveryKey *)self uuid];
-    v6 = [(OTCustodianRecoveryKey *)v4 uuid];
-    if ([v5 isEqual:v6])
+    uuid = [(OTCustodianRecoveryKey *)self uuid];
+    uuid2 = [(OTCustodianRecoveryKey *)keyCopy uuid];
+    if ([uuid isEqual:uuid2])
     {
-      v7 = [(OTCustodianRecoveryKey *)self wrappingKey];
-      v8 = [(OTCustodianRecoveryKey *)v4 wrappingKey];
-      if ([v7 isEqualToData:v8])
+      wrappingKey = [(OTCustodianRecoveryKey *)self wrappingKey];
+      wrappingKey2 = [(OTCustodianRecoveryKey *)keyCopy wrappingKey];
+      if ([wrappingKey isEqualToData:wrappingKey2])
       {
-        v9 = [(OTCustodianRecoveryKey *)self wrappedKey];
-        v10 = [(OTCustodianRecoveryKey *)v4 wrappedKey];
-        if ([v9 isEqualToData:v10])
+        wrappedKey = [(OTCustodianRecoveryKey *)self wrappedKey];
+        wrappedKey2 = [(OTCustodianRecoveryKey *)keyCopy wrappedKey];
+        if ([wrappedKey isEqualToData:wrappedKey2])
         {
-          v11 = [(OTCustodianRecoveryKey *)self recoveryString];
-          v12 = [(OTCustodianRecoveryKey *)v4 recoveryString];
-          v13 = [v11 isEqualToString:v12];
+          recoveryString = [(OTCustodianRecoveryKey *)self recoveryString];
+          recoveryString2 = [(OTCustodianRecoveryKey *)keyCopy recoveryString];
+          v13 = [recoveryString isEqualToString:recoveryString2];
         }
 
         else
@@ -140,16 +140,16 @@
   return v13;
 }
 
-- (OTCustodianRecoveryKey)initWithWrappedKey:(id)a3 wrappingKey:(id)a4 uuid:(id)a5 error:(id *)a6
+- (OTCustodianRecoveryKey)initWithWrappedKey:(id)key wrappingKey:(id)wrappingKey uuid:(id)uuid error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  keyCopy = key;
+  wrappingKeyCopy = wrappingKey;
+  uuidCopy = uuid;
   v18.receiver = self;
   v18.super_class = OTCustodianRecoveryKey;
   v14 = [(OTCustodianRecoveryKey *)&v18 init];
   p_isa = &v14->super.isa;
-  if (v14 && (objc_storeStrong(&v14->_uuid, a5), objc_storeStrong(p_isa + 3, a3), objc_storeStrong(p_isa + 2, a4), ![p_isa unwrapWithError:a6]))
+  if (v14 && (objc_storeStrong(&v14->_uuid, uuid), objc_storeStrong(p_isa + 3, key), objc_storeStrong(p_isa + 2, wrappingKey), ![p_isa unwrapWithError:error]))
   {
     v16 = 0;
   }
@@ -162,17 +162,17 @@
   return v16;
 }
 
-- (BOOL)unwrapWithError:(id *)a3
+- (BOOL)unwrapWithError:(id *)error
 {
   v5 = [objc_alloc(MEMORY[0x1E69CA628]) initWithBitSize:2];
-  v6 = [objc_alloc(MEMORY[0x1E69CA620]) initWithData:self->_wrappingKey specifier:v5 error:a3];
+  v6 = [objc_alloc(MEMORY[0x1E69CA620]) initWithData:self->_wrappingKey specifier:v5 error:error];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E69CA638]) initWithKeySpecifier:v5];
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:self->_wrappedKey error:a3];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:self->_wrappedKey error:error];
     if (v8)
     {
-      v9 = [v7 decrypt:v8 withKey:v6 error:a3];
+      v9 = [v7 decrypt:v8 withKey:v6 error:error];
       v10 = v9 != 0;
       if (v9)
       {
@@ -196,10 +196,10 @@
   return v10;
 }
 
-- (OTCustodianRecoveryKey)initWithUUID:(id)a3 recoveryString:(id)a4 error:(id *)a5
+- (OTCustodianRecoveryKey)initWithUUID:(id)d recoveryString:(id)string error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = OTCustodianRecoveryKey;
   v11 = [(OTCustodianRecoveryKey *)&v18 init];
@@ -209,8 +209,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v11->_uuid, a3);
-  objc_storeStrong(p_isa + 4, a4);
+  objc_storeStrong(&v11->_uuid, d);
+  objc_storeStrong(p_isa + 4, string);
   v17 = 0;
   v13 = [p_isa generateWrappingWithError:&v17];
   v14 = v17;
@@ -222,10 +222,10 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v15 = 0;
@@ -234,25 +234,25 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)generateWrappingWithError:(id *)a3
+- (BOOL)generateWrappingWithError:(id *)error
 {
   v5 = [objc_alloc(MEMORY[0x1E69CA628]) initWithBitSize:2];
-  v6 = [objc_alloc(MEMORY[0x1E69CA620]) initRandomKeyWithSpecifier:v5 error:a3];
+  v6 = [objc_alloc(MEMORY[0x1E69CA620]) initRandomKeyWithSpecifier:v5 error:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 keyData];
+    keyData = [v6 keyData];
     wrappingKey = self->_wrappingKey;
-    self->_wrappingKey = v8;
+    self->_wrappingKey = keyData;
 
     v10 = [objc_alloc(MEMORY[0x1E69CA638]) initWithKeySpecifier:v5];
     v11 = [(NSString *)self->_recoveryString dataUsingEncoding:4];
-    v12 = [MEMORY[0x1E695DEF0] data];
-    v13 = [v10 encrypt:v11 withKey:v7 additionalAuthenticatedData:v12 error:a3];
+    data = [MEMORY[0x1E695DEF0] data];
+    v13 = [v10 encrypt:v11 withKey:v7 additionalAuthenticatedData:data error:error];
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:a3];
+      v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:error];
       v15 = v14 != 0;
       if (v14)
       {

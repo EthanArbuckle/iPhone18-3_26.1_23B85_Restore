@@ -6,7 +6,7 @@
 
 + (BOOL)removeLog
 {
-  v38 = a1;
+  selfCopy = self;
   v37 = a2;
   v36 = 1;
   v35 = container_system_group_path_for_identifier();
@@ -33,9 +33,9 @@
 
       else if (v33)
       {
-        v28 = [v33 domain];
+        domain = [v33 domain];
         v27 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v28, [v33 code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v33 code]);
         v26 = v4;
         v25 = 1;
       }
@@ -101,9 +101,9 @@
 
               else if (v33)
               {
-                v18 = [v33 domain];
+                domain2 = [v33 domain];
                 v17 = 1;
-                v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v18, [v33 code]);
+                v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v33 code]);
                 v16 = v13;
                 v15 = 1;
               }

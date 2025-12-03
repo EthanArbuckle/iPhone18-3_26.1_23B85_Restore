@@ -1,29 +1,29 @@
 @interface EKUIAvailabilityRowView
-- (CGRect)frameForSpanView:(id)a3;
-- (EKUIAvailabilityRowView)initWithParticipant:(id)a3;
+- (CGRect)frameForSpanView:(id)view;
+- (EKUIAvailabilityRowView)initWithParticipant:(id)participant;
 - (NSArray)spans;
-- (double)convertDateIntoOffset:(id)a3;
-- (void)addToSpans:(id)a3;
+- (double)convertDateIntoOffset:(id)offset;
+- (void)addToSpans:(id)spans;
 - (void)completedLoad;
-- (void)setFrame:(CGRect)a3;
-- (void)startLoadForDate:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)startLoadForDate:(id)date;
 - (void)updateSpanViews;
 @end
 
 @implementation EKUIAvailabilityRowView
 
-- (EKUIAvailabilityRowView)initWithParticipant:(id)a3
+- (EKUIAvailabilityRowView)initWithParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   v14.receiver = self;
   v14.super_class = EKUIAvailabilityRowView;
   v6 = [(EKUIAvailabilityRowView *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_participant, a3);
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKUIAvailabilityRowView *)v7 setBackgroundColor:v8];
+    objc_storeStrong(&v6->_participant, participant);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKUIAvailabilityRowView *)v7 setBackgroundColor:clearColor];
 
     v9 = objc_opt_new();
     spanViews = v7->_spanViews;
@@ -37,11 +37,11 @@
   return v7;
 }
 
-- (void)startLoadForDate:(id)a3
+- (void)startLoadForDate:(id)date
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_startOfDay, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_startOfDay, date);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -71,68 +71,68 @@
     while (v7);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  [(NSMutableArray *)v10->_spans removeAllObjects];
-  spans = v10->_spans;
-  v10->_spans = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_spans removeAllObjects];
+  spans = selfCopy->_spans;
+  selfCopy->_spans = 0;
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)completedLoad
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_spans)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_spans)
   {
-    v3 = [(NSDate *)v2->_startOfDay dateByAddingTimeInterval:86399.0];
-    v4 = [objc_alloc(MEMORY[0x1E6966980]) initWithStartDate:v2->_startOfDay endDate:v3 type:0];
+    v3 = [(NSDate *)selfCopy->_startOfDay dateByAddingTimeInterval:86399.0];
+    v4 = [objc_alloc(MEMORY[0x1E6966980]) initWithStartDate:selfCopy->_startOfDay endDate:v3 type:0];
     v5 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
-    spans = v2->_spans;
-    v2->_spans = v5;
+    spans = selfCopy->_spans;
+    selfCopy->_spans = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__EKUIAvailabilityRowView_completedLoad__block_invoke;
   block[3] = &unk_1E843EC60;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
 - (NSArray)spans
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E695DEC8] arrayWithArray:v2->_spans];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x1E695DEC8] arrayWithArray:selfCopy->_spans];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)addToSpans:(id)a3
+- (void)addToSpans:(id)spans
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v9;
-  spans = v4->_spans;
+  spansCopy = spans;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = spansCopy;
+  spans = selfCopy->_spans;
   if (!spans)
   {
     v7 = objc_opt_new();
-    v8 = v4->_spans;
-    v4->_spans = v7;
+    v8 = selfCopy->_spans;
+    selfCopy->_spans = v7;
 
-    spans = v4->_spans;
-    v5 = v9;
+    spans = selfCopy->_spans;
+    v5 = spansCopy;
   }
 
   [(NSMutableArray *)spans addObjectsFromArray:v5];
-  [(NSMutableArray *)v4->_spans sortUsingComparator:&__block_literal_global_18];
-  objc_sync_exit(v4);
+  [(NSMutableArray *)selfCopy->_spans sortUsingComparator:&__block_literal_global_18];
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -199,36 +199,36 @@ uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, vo
         if ([v11 type] == 1 || objc_msgSend(v11, "type") == 5)
         {
           v12 = objc_opt_new();
-          v13 = [v11 startDate];
-          [v12 setStartDate:v13];
+          startDate = [v11 startDate];
+          [v12 setStartDate:startDate];
 
-          v14 = [v11 endDate];
-          [v12 setEndDate:v14];
+          endDate = [v11 endDate];
+          [v12 setEndDate:endDate];
 
           [v12 setInset:1];
           [(EKUIAvailabilityRowView *)self frameForSpanView:v12];
           [v12 setFrame:?];
-          v15 = [MEMORY[0x1E69DC888] systemGray2Color];
-          v16 = [v15 colorWithAlphaComponent:0.3];
-          v17 = [v16 CGColor];
-          v18 = [v12 layer];
-          [v18 setBackgroundColor:v17];
+          systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+          v16 = [systemGray2Color colorWithAlphaComponent:0.3];
+          cGColor = [v16 CGColor];
+          layer = [v12 layer];
+          [layer setBackgroundColor:cGColor];
 
-          v19 = [MEMORY[0x1E69DC888] systemGray2Color];
-          v20 = [v19 CGColor];
-          v21 = [v12 layer];
-          [v21 setBorderColor:v20];
+          systemGray2Color2 = [MEMORY[0x1E69DC888] systemGray2Color];
+          cGColor2 = [systemGray2Color2 CGColor];
+          layer2 = [v12 layer];
+          [layer2 setBorderColor:cGColor2];
 
-          v22 = [v12 layer];
-          [v22 setBorderWidth:1.5];
+          layer3 = [v12 layer];
+          [layer3 setBorderWidth:1.5];
 
           +[EKUIAvailabilityRowView cornerRadius];
           v24 = v23;
-          v25 = [v12 layer];
-          [v25 setCornerRadius:v24];
+          layer4 = [v12 layer];
+          [layer4 setCornerRadius:v24];
 
-          v26 = [v12 layer];
-          [v26 setMasksToBounds:1];
+          layer5 = [v12 layer];
+          [layer5 setMasksToBounds:1];
 
           [(NSMutableArray *)self->_spanViews addObject:v12];
           [(EKUIAvailabilityRowView *)self addSubview:v12];
@@ -237,17 +237,17 @@ uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, vo
         if ([MEMORY[0x1E6966988] showTypeAsUnavailable:{objc_msgSend(v11, "type")}])
         {
           v27 = objc_opt_new();
-          v28 = [v11 startDate];
-          [v27 setStartDate:v28];
+          startDate2 = [v11 startDate];
+          [v27 setStartDate:startDate2];
 
-          v29 = [v11 endDate];
-          [v27 setEndDate:v29];
+          endDate2 = [v11 endDate];
+          [v27 setEndDate:endDate2];
 
           [(EKUIAvailabilityRowView *)self frameForSpanView:v27];
           [v27 setFrame:?];
-          v30 = [MEMORY[0x1E69DC888] clearColor];
-          v31 = [MEMORY[0x1E69DC888] systemGray2Color];
-          v32 = [v31 colorWithAlphaComponent:0.3];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          systemGray2Color3 = [MEMORY[0x1E69DC888] systemGray2Color];
+          v32 = [systemGray2Color3 colorWithAlphaComponent:0.3];
           v33 = CUIKCreateStripedUIImage();
 
           v34 = [MEMORY[0x1E69DC888] colorWithPatternImage:v33];
@@ -268,23 +268,23 @@ uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, vo
   [(EKUIAvailabilityRowView *)self setNeedsDisplay];
 }
 
-- (CGRect)frameForSpanView:(id)a3
+- (CGRect)frameForSpanView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = 0.0;
-  if ([v4 inset])
+  if ([viewCopy inset])
   {
     +[EKUIAvailabilityRowView padInset];
     v5 = v6;
   }
 
-  v7 = [v4 startDate];
-  [(EKUIAvailabilityRowView *)self convertDateIntoOffset:v7];
+  startDate = [viewCopy startDate];
+  [(EKUIAvailabilityRowView *)self convertDateIntoOffset:startDate];
   v9 = v8;
 
-  v10 = [v4 endDate];
+  endDate = [viewCopy endDate];
 
-  [(EKUIAvailabilityRowView *)self convertDateIntoOffset:v10];
+  [(EKUIAvailabilityRowView *)self convertDateIntoOffset:endDate];
   v12 = v11;
 
   if (CalTimeDirectionIsLeftToRight())
@@ -314,12 +314,12 @@ uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = EKUIAvailabilityRowView;
-  [(EKUIAvailabilityRowView *)&v14 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(EKUIAvailabilityRowView *)&v14 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -351,9 +351,9 @@ uint64_t __38__EKUIAvailabilityRowView_addToSpans___block_invoke(uint64_t a1, vo
   }
 }
 
-- (double)convertDateIntoOffset:(id)a3
+- (double)convertDateIntoOffset:(id)offset
 {
-  [a3 timeIntervalSinceDate:self->_startOfDay];
+  [offset timeIntervalSinceDate:self->_startOfDay];
   v5 = v4;
   [(EKUIAvailabilityRowView *)self frame];
   v7 = v6;

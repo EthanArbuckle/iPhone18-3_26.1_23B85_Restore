@@ -1,35 +1,35 @@
 @interface CRLFreehandDrawingTransformInfo
 - (CRLCanvasElementInfo)parentInfo;
-- (CRLFreehandDrawingTransformInfo)initWithParentInfo:(id)a3;
+- (CRLFreehandDrawingTransformInfo)initWithParentInfo:(id)info;
 - (Class)editorClass;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setRepresentedShapeInfos:(id)a3 currentlyLaidOutOnLayoutController:(id)a4;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setRepresentedShapeInfos:(id)infos currentlyLaidOutOnLayoutController:(id)controller;
 @end
 
 @implementation CRLFreehandDrawingTransformInfo
 
-- (CRLFreehandDrawingTransformInfo)initWithParentInfo:(id)a3
+- (CRLFreehandDrawingTransformInfo)initWithParentInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = CRLFreehandDrawingTransformInfo;
   v5 = [(CRLFreehandDrawingTransformInfo *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parentInfo, v4);
+    objc_storeWeak(&v5->_parentInfo, infoCopy);
   }
 
   return v6;
 }
 
-- (void)setRepresentedShapeInfos:(id)a3 currentlyLaidOutOnLayoutController:(id)a4
+- (void)setRepresentedShapeInfos:(id)infos currentlyLaidOutOnLayoutController:(id)controller
 {
-  objc_storeStrong(&self->_representedShapeInfos, a3);
-  v7 = a3;
-  v8 = a4;
-  v11 = [v7 allObjects];
-  v9 = [_TtC8Freeform12CRLGroupItem groupGeometryFromChildrenInfos:v11 currentlyLaidOutWithLayoutController:v8];
+  objc_storeStrong(&self->_representedShapeInfos, infos);
+  infosCopy = infos;
+  controllerCopy = controller;
+  allObjects = [infosCopy allObjects];
+  v9 = [_TtC8Freeform12CRLGroupItem groupGeometryFromChildrenInfos:allObjects currentlyLaidOutWithLayoutController:controllerCopy];
 
   geometry = self->_geometry;
   self->_geometry = v9;
@@ -42,12 +42,12 @@
   return WeakRetained;
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_parentInfo);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == neededCopy)
   {
 
     objc_storeWeak(&self->_parentInfo, 0);

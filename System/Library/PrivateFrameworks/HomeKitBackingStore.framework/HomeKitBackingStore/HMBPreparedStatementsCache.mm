@@ -1,11 +1,11 @@
 @interface HMBPreparedStatementsCache
 - (HMBPreparedStatementsCache)init;
 - (id)evictAllStatements;
-- (sqlite3_stmt)_extractStatementForString:(id)a3;
+- (sqlite3_stmt)_extractStatementForString:(id)string;
 - (sqlite3_stmt)evictLeastRecentlyUsedStatement;
-- (sqlite3_stmt)statementForString:(id)a3;
+- (sqlite3_stmt)statementForString:(id)string;
 - (unint64_t)count;
-- (void)setStatement:(sqlite3_stmt *)a3 forString:(id)a4;
+- (void)setStatement:(sqlite3_stmt *)statement forString:(id)string;
 @end
 
 @implementation HMBPreparedStatementsCache
@@ -86,16 +86,16 @@ uint64_t __48__HMBPreparedStatementsCache_evictAllStatements__block_invoke(uint6
   }
 
   v4 = lruQueue;
-  v5 = [(NSMutableArray *)v4 firstObject];
-  v6 = [(HMBPreparedStatementsCache *)self _extractStatementForString:v5];
+  firstObject = [(NSMutableArray *)v4 firstObject];
+  v6 = [(HMBPreparedStatementsCache *)self _extractStatementForString:firstObject];
 
   os_unfair_lock_unlock(&self->_lock.lock);
   return v6;
 }
 
-- (sqlite3_stmt)_extractStatementForString:(id)a3
+- (sqlite3_stmt)_extractStatementForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_autoreleasePoolPush();
   if (self)
   {
@@ -107,47 +107,47 @@ uint64_t __48__HMBPreparedStatementsCache_evictAllStatements__block_invoke(uint6
     statementsByStatementString = 0;
   }
 
-  v7 = [(NSMutableDictionary *)statementsByStatementString objectForKey:v4];
+  v7 = [(NSMutableDictionary *)statementsByStatementString objectForKey:stringCopy];
   if (v7)
   {
     if (self)
     {
-      [(NSMutableDictionary *)self->_statementsByStatementString removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_statementsByStatementString removeObjectForKey:stringCopy];
       lruQueue = self->_lruQueue;
     }
 
     else
     {
-      [0 removeObjectForKey:v4];
+      [0 removeObjectForKey:stringCopy];
       lruQueue = 0;
     }
 
-    [(NSMutableArray *)lruQueue removeObject:v4];
+    [(NSMutableArray *)lruQueue removeObject:stringCopy];
   }
 
-  v9 = [v7 statement];
+  statement = [v7 statement];
 
   objc_autoreleasePoolPop(v5);
-  return v9;
+  return statement;
 }
 
-- (void)setStatement:(sqlite3_stmt *)a3 forString:(id)a4
+- (void)setStatement:(sqlite3_stmt *)statement forString:(id)string
 {
-  v7 = a4;
-  if (!a3)
+  stringCopy = string;
+  if (!statement)
   {
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!stringCopy)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  v18 = v7;
+  v18 = stringCopy;
   os_unfair_lock_lock_with_options();
   v4 = objc_autoreleasePoolPush();
   if (self)
@@ -189,7 +189,7 @@ LABEL_5:
   }
 
   v14 = v13;
-  v15 = [[HMBSQLCachedPreparedStatement alloc] initWithStatement:a3];
+  v15 = [[HMBSQLCachedPreparedStatement alloc] initWithStatement:statement];
   [(NSMutableDictionary *)v14 setObject:v15 forKey:v18];
 
   if (self)
@@ -209,9 +209,9 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock.lock);
 }
 
-- (sqlite3_stmt)statementForString:(id)a3
+- (sqlite3_stmt)statementForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
   if (self)
@@ -225,7 +225,7 @@ LABEL_5:
   }
 
   v7 = statementsByStatementString;
-  v8 = [(NSMutableDictionary *)v7 objectForKey:v4];
+  v8 = [(NSMutableDictionary *)v7 objectForKey:stringCopy];
 
   if (v8)
   {
@@ -240,7 +240,7 @@ LABEL_5:
     }
 
     v10 = lruQueue;
-    [(NSMutableArray *)v10 removeObject:v4];
+    [(NSMutableArray *)v10 removeObject:stringCopy];
 
     if (self)
     {
@@ -253,15 +253,15 @@ LABEL_5:
     }
 
     v12 = v11;
-    [(NSMutableArray *)v12 addObject:v4];
+    [(NSMutableArray *)v12 addObject:stringCopy];
   }
 
-  v13 = [v8 statement];
+  statement = [v8 statement];
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_unlock(&self->_lock.lock);
 
-  return v13;
+  return statement;
 }
 
 - (unint64_t)count

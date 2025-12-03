@@ -1,12 +1,12 @@
 @interface LALocalizedString
-+ (id)_localizedStringWithKey:(uint64_t)a1;
-+ (id)_localizedStringWithKey:(void *)a3 tableSuffix:;
-+ (id)passcodeChangeBackoffMessage:(int64_t)a3;
-+ (id)passcodeChangeErrorInvalidPasscodeWithFailedAttemptsCount:(int64_t)a3;
++ (id)_localizedStringWithKey:(uint64_t)key;
++ (id)_localizedStringWithKey:(void *)key tableSuffix:;
++ (id)passcodeChangeBackoffMessage:(int64_t)message;
++ (id)passcodeChangeErrorInvalidPasscodeWithFailedAttemptsCount:(int64_t)count;
 + (id)passcodeRemovalNotAllowedTextFaceID;
 + (id)passcodeRemovalNotAllowedTextOpticID;
 + (id)passcodeRemovalNotAllowedTextTouchID;
-+ (id)passcodeRemovalNotAllowedTitle:(uint64_t)a1;
++ (id)passcodeRemovalNotAllowedTitle:(uint64_t)title;
 + (id)passcodeRemovalNotAllowedTitleFaceID;
 + (id)passcodeRemovalNotAllowedTitleOpticID;
 + (id)passcodeRemovalNotAllowedTitleTouchID;
@@ -14,7 +14,7 @@
 
 @implementation LALocalizedString
 
-+ (id)_localizedStringWithKey:(uint64_t)a1
++ (id)_localizedStringWithKey:(uint64_t)key
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -23,7 +23,7 @@
   return v4;
 }
 
-+ (id)passcodeRemovalNotAllowedTitle:(uint64_t)a1
++ (id)passcodeRemovalNotAllowedTitle:(uint64_t)title
 {
   v2 = a2;
   objc_opt_self();
@@ -95,39 +95,39 @@
   return v5;
 }
 
-+ (id)passcodeChangeErrorInvalidPasscodeWithFailedAttemptsCount:(int64_t)a3
++ (id)passcodeChangeErrorInvalidPasscodeWithFailedAttemptsCount:(int64_t)count
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"PASSCODE_RECOVERY_ERROR_FAILED_ATTEMPTS" value:&stru_284B7B4C0 table:@"Localizable"];
-  v7 = [v4 stringWithFormat:v6, a3];
+  v7 = [v4 stringWithFormat:v6, count];
 
   return v7;
 }
 
-+ (id)passcodeChangeBackoffMessage:(int64_t)a3
++ (id)passcodeChangeBackoffMessage:(int64_t)message
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"MINUTES_TO_UNBLOCK" value:&stru_284B7B4C0 table:@"Localizable"];
-  v7 = [v4 stringWithFormat:v6, a3];
+  message = [v4 stringWithFormat:v6, message];
 
-  return v7;
+  return message;
 }
 
-+ (id)_localizedStringWithKey:(void *)a3 tableSuffix:
++ (id)_localizedStringWithKey:(void *)key tableSuffix:
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = a2;
   objc_opt_self();
-  v6 = @"Localizable";
-  if ([v4 length])
+  keyCopy = @"Localizable";
+  if ([keyCopy length])
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"Localizable", v4];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"Localizable", keyCopy];
   }
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 localizedStringForKey:v5 value:&stru_284B7B4C0 table:v6];
+  v8 = [v7 localizedStringForKey:v5 value:&stru_284B7B4C0 table:keyCopy];
 
   return v8;
 }

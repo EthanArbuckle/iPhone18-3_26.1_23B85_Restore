@@ -1,17 +1,17 @@
 @interface LPCustomizationPickerViewController
-- (LPCustomizationPickerViewController)initWithCoder:(id)a3;
-- (LPCustomizationPickerViewController)initWithRootViewController:(id)a3;
-- (LPCustomizationPickerViewController)initWithSource:(id)a3;
+- (LPCustomizationPickerViewController)initWithCoder:(id)coder;
+- (LPCustomizationPickerViewController)initWithRootViewController:(id)controller;
+- (LPCustomizationPickerViewController)initWithSource:(id)source;
 - (LPCustomizationPickerViewControllerDelegate)customizationDelegate;
 - (UIImage)mask;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)createAnimatorFor:(id)a3 reversed:(BOOL)a4;
-- (void)handleTapGestureForLinkView:(id)a3;
-- (void)handleTapGestureForScrollView:(id)a3;
-- (void)setCustomizationDelegate:(id)a3;
-- (void)setMask:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)createAnimatorFor:(id)for reversed:(BOOL)reversed;
+- (void)handleTapGestureForLinkView:(id)view;
+- (void)handleTapGestureForScrollView:(id)view;
+- (void)setCustomizationDelegate:(id)delegate;
+- (void)setMask:(id)mask;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation LPCustomizationPickerViewController
@@ -33,7 +33,7 @@
   return v4;
 }
 
-- (void)setMask:(id)a3
+- (void)setMask:(id)mask
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -46,8 +46,8 @@
   v5 = OBJC_IVAR___LPCustomizationPickerViewController_mask;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = mask;
+  maskCopy = mask;
 }
 
 - (LPCustomizationPickerViewControllerDelegate)customizationDelegate
@@ -66,7 +66,7 @@
   return Strong;
 }
 
-- (void)setCustomizationDelegate:(id)a3
+- (void)setCustomizationDelegate:(id)delegate
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -80,7 +80,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (LPCustomizationPickerViewController)initWithSource:(id)a3
+- (LPCustomizationPickerViewController)initWithSource:(id)source
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -90,12 +90,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_1AE980704(a3);
+  v4 = sub_1AE980704(source);
 
   return v4;
 }
 
-- (LPCustomizationPickerViewController)initWithCoder:(id)a3
+- (LPCustomizationPickerViewController)initWithCoder:(id)coder
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -108,9 +108,9 @@
   _sSo35LPCustomizationPickerViewControllerC16LinkPresentationE5coderABSgSo7NSCoderC_tcfc_0();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   sub_1AE988824();
   sub_1AE988814();
   sub_1AE9887E4();
@@ -121,15 +121,15 @@
 
   v8.receiver = self;
   v8.super_class = LPCustomizationPickerViewController;
-  v5 = self;
-  [(LPCustomizationPickerViewController *)&v8 viewDidDisappear:v3];
+  selfCopy = self;
+  [(LPCustomizationPickerViewController *)&v8 viewDidDisappear:disappearCopy];
   v6 = OBJC_IVAR___LPCustomizationPickerViewController_source;
   swift_beginAccess();
-  v7 = *(v5 + v6);
+  v7 = *(selfCopy + v6);
   [v7 setAlpha_];
 }
 
-- (void)handleTapGestureForLinkView:(id)a3
+- (void)handleTapGestureForLinkView:(id)view
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -139,12 +139,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1AE981B18(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1AE981B18(viewCopy);
 }
 
-- (void)handleTapGestureForScrollView:(id)a3
+- (void)handleTapGestureForScrollView:(id)view
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -154,12 +154,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1AE982D00();
 }
 
-- (LPCustomizationPickerViewController)initWithRootViewController:(id)a3
+- (LPCustomizationPickerViewController)initWithRootViewController:(id)controller
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -174,7 +174,7 @@
   return result;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -184,12 +184,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = [(LPCustomizationPickerViewController *)self createAnimatorFor:a3 reversed:0];
+  v7 = [(LPCustomizationPickerViewController *)self createAnimatorFor:controller reversed:0];
 
   return v7;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -199,12 +199,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = [(LPCustomizationPickerViewController *)self createAnimatorFor:a3 reversed:1];
+  v5 = [(LPCustomizationPickerViewController *)self createAnimatorFor:controller reversed:1];
 
   return v5;
 }
 
-- (id)createAnimatorFor:(id)a3 reversed:(BOOL)a4
+- (id)createAnimatorFor:(id)for reversed:(BOOL)reversed
 {
   swift_getObjectType();
   sub_1AE988824();
@@ -220,8 +220,8 @@
   {
     v7 = v6;
     _s18TransitionAnimatorCMa();
-    v8 = a3;
-    v9 = sub_1AE96C7B4(v7, a4);
+    forCopy = for;
+    v9 = sub_1AE96C7B4(v7, reversed);
   }
 
   else

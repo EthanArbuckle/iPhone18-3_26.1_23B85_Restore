@@ -1,20 +1,20 @@
 @interface UserNotificationViewController
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation UserNotificationViewController
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v25 = a3;
+  notificationCopy = notification;
   v4 = [AMSUIUserNotificationViewController userNotificationFromNotification:?];
   if (!v4)
   {
-    v5 = [v25 request];
+    request = [notificationCopy request];
     if (self)
     {
-      v6 = sub_100001598(Bulletin, v5);
+      v6 = sub_100001598(Bulletin, request);
       v7 = [AMSUserNotification alloc];
       if (v6)
       {
@@ -120,28 +120,28 @@
   [(UserNotificationViewController *)self renderUserNotification:v4];
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 notification];
-  v9 = [AMSUIUserNotificationViewController userNotificationFromNotification:v8];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  v9 = [AMSUIUserNotificationViewController userNotificationFromNotification:notification];
 
   if (v9 && (v14.receiver = self, v14.super_class = UserNotificationViewController, [(UserNotificationViewController *)&v14 respondsToSelector:"didReceiveNotificationResponse:completionHandler:"]))
   {
     v13.receiver = self;
     v13.super_class = UserNotificationViewController;
-    [(UserNotificationViewController *)&v13 didReceiveNotificationResponse:v6 completionHandler:v7];
+    [(UserNotificationViewController *)&v13 didReceiveNotificationResponse:responseCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [v6 notification];
-    v11 = [v10 request];
-    v12 = sub_100001598(Bulletin, v11);
+    notification2 = [responseCopy notification];
+    request = [notification2 request];
+    v12 = sub_100001598(Bulletin, request);
 
-    sub_100001890(v12, v6);
-    v7[2](v7, 1);
+    sub_100001890(v12, responseCopy);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 

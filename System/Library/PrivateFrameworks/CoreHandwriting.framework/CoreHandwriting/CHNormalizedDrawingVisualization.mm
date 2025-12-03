@@ -1,16 +1,16 @@
 @interface CHNormalizedDrawingVisualization
-- (BOOL)shouldDrawStrokeGroup:(id)a3;
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (BOOL)shouldDrawStrokeGroup:(id)group;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHNormalizedDrawingVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
   v10.receiver = self;
   v10.super_class = CHNormalizedDrawingVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v10 dirtyRectForStrokeGroup:a3];
+  [(CHStrokeGroupBasedVisualization *)&v10 dirtyRectForStrokeGroup:group];
   y = v11.origin.y;
   height = v11.size.height;
   v5 = 200.0 - CGRectGetHeight(v11);
@@ -35,18 +35,18 @@
   return CGRectInset(*(&v6 - 1), -2.0, -2.0);
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  v7 = self;
+  height = bounds.size.height;
+  selfCopy = self;
   v278 = *MEMORY[0x1E69E9840];
   v273.receiver = self;
   v273.super_class = CHNormalizedDrawingVisualization;
-  x = a5.origin.x;
-  y = a5.origin.y;
-  width = a5.size.width;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  width = bounds.size.width;
   [CHStrokeGroupBasedVisualization drawVisualizationInRect:sel_drawVisualizationInRect_context_viewBounds_ context:? viewBounds:?];
-  v13 = objc_msgSend_resultDrawn(v7, v8, v9, v10, v11, v12);
+  v13 = objc_msgSend_resultDrawn(selfCopy, v8, v9, v10, v11, v12);
   objc_msgSend_strokeGroupingResult(v13, v14, v15, v16, v17, v18);
   v269 = 0u;
   v270 = 0u;
@@ -62,7 +62,7 @@
     v241 = *MEMORY[0x1E695F060];
     rect = height;
     v238 = v13;
-    v239 = v7;
+    v239 = selfCopy;
     do
     {
       v32 = 0;
@@ -75,17 +75,17 @@
         }
 
         v36 = *(*(&v269 + 1) + 8 * v32);
-        objc_msgSend_dirtyRectForStrokeGroup_(v7, v27, v36, v28, v29, v30);
+        objc_msgSend_dirtyRectForStrokeGroup_(selfCopy, v27, v36, v28, v29, v30);
         v38 = v37;
         v40 = v39;
         v42 = v41;
         v44 = v43;
-        shouldDrawStrokeGroup = objc_msgSend_shouldDrawStrokeGroup_(v7, v45, v36, v46, v47, v48);
+        shouldDrawStrokeGroup = objc_msgSend_shouldDrawStrokeGroup_(selfCopy, v45, v36, v46, v47, v48);
         v279.origin.x = v38;
         v279.origin.y = v40;
         v279.size.width = v42;
         v279.size.height = v44;
-        if (CGRectIntersectsRect(v279, a3) && shouldDrawStrokeGroup != 0)
+        if (CGRectIntersectsRect(v279, rect) && shouldDrawStrokeGroup != 0)
         {
           v52 = objc_msgSend_uniqueIdentifier(v36, v27, v50, v28, v29, v30);
           v33 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v13, v53, v52, v54, v55, v56);
@@ -100,7 +100,7 @@
             v71 = v70;
             v73 = v72;
             objc_msgSend_bounds(v36, v74, v75, v76, v77, v78);
-            if (v7)
+            if (selfCopy)
             {
               v245 = *(MEMORY[0x1E695EFD0] + 16);
               v246 = *MEMORY[0x1E695EFD0];
@@ -287,7 +287,7 @@
             v254 = v33;
             v255 = v32;
             v253 = v34;
-            if (v7)
+            if (selfCopy)
             {
               v113 = v306.origin.x;
               v114 = v306.origin.y;
@@ -305,20 +305,20 @@
               v121 = v308.size.width;
               v122 = v308.size.height;
               v123 = CGColorCreate(DeviceRGB, dbl_1839CE858);
-              CGContextSetFillColorWithColor(a4, v123);
+              CGContextSetFillColorWithColor(context, v123);
               v309.origin.x = v119;
               v309.origin.y = v120;
               v309.size.width = v121;
               v309.size.height = v122;
-              CGContextFillRect(a4, v309);
+              CGContextFillRect(context, v309);
               v124 = CGColorCreate(DeviceRGB, dbl_1839CE878);
-              CGContextSetStrokeColorWithColor(a4, v124);
-              CGContextSetLineWidth(a4, 1.0);
+              CGContextSetStrokeColorWithColor(context, v124);
+              CGContextSetLineWidth(context, 1.0);
               v310.origin.x = v119;
               v310.origin.y = v120;
               v310.size.width = v121;
               v310.size.height = v122;
-              CGContextStrokeRect(a4, v310);
+              CGContextStrokeRect(context, v310);
               CGColorRelease(v123);
               CGColorRelease(v124);
               CGColorSpaceRelease(DeviceRGB);
@@ -327,9 +327,9 @@
               v126 = CGColorSpaceCreateDeviceRGB();
               v127 = CGColorCreate(v126, dbl_1839CE898);
               v128 = CGColorCreate(v126, dbl_1839CE8B8);
-              CGContextSetLineWidth(a4, 1.0);
-              CGContextSetLineCap(a4, kCGLineCapRound);
-              CGContextSetLineJoin(a4, kCGLineJoinRound);
+              CGContextSetLineWidth(context, 1.0);
+              CGContextSetLineCap(context, kCGLineCapRound);
+              CGContextSetLineJoin(context, kCGLineJoinRound);
               Mutable = CGPathCreateMutable();
               if (objc_msgSend_strokeCount(v125, v130, v131, v132, v133, v134))
               {
@@ -361,11 +361,11 @@
                 }
               }
 
-              CGContextSetStrokeColorWithColor(a4, v127);
-              CGContextAddPath(a4, Mutable);
-              CGContextStrokePath(a4);
+              CGContextSetStrokeColorWithColor(context, v127);
+              CGContextAddPath(context, Mutable);
+              CGContextStrokePath(context);
               CGPathRelease(Mutable);
-              CGContextSetFillColorWithColor(a4, v128);
+              CGContextSetFillColorWithColor(context, v128);
               v13 = v117;
               if (objc_msgSend_strokeCount(v125, v163, v164, v165, v166, v167))
               {
@@ -384,7 +384,7 @@
                       v311.origin.y = v187 + -1.5;
                       v311.size.width = 3.0;
                       v311.size.height = 3.0;
-                      CGContextFillEllipseInRect(a4, v311);
+                      CGContextFillEllipseInRect(context, v311);
                       ++v183;
                     }
 
@@ -418,11 +418,11 @@ LABEL_49:
                 ty = v268.ty;
                 v35 = v197;
                 v204 = v34;
-                if (v7)
+                if (selfCopy)
                 {
                   spaceb = CGColorSpaceCreateDeviceRGB();
                   v205 = CGColorCreate(spaceb, dbl_1839CE8D8);
-                  CGContextSetFillColorWithColor(a4, v205);
+                  CGContextSetFillColorWithColor(context, v205);
                   v275 = 0u;
                   memset(&v274, 0, sizeof(v274));
                   v267 = v35;
@@ -451,7 +451,7 @@ LABEL_49:
                         v312.origin.y = v230 + -2.0;
                         v312.size.width = 4.0;
                         v312.size.height = 4.0;
-                        CGContextFillEllipseInRect(a4, v312);
+                        CGContextFillEllipseInRect(context, v312);
                       }
 
                       v214 = objc_msgSend_countByEnumeratingWithState_objects_count_(v206, v210, &v274, &m, 16, v213);
@@ -463,7 +463,7 @@ LABEL_49:
                   CGColorSpaceRelease(spaceb);
                   CGColorRelease(v205);
                   v13 = v238;
-                  v7 = v239;
+                  selfCopy = v239;
                   v31 = v244;
                   v33 = v254;
                   v32 = v255;
@@ -498,16 +498,16 @@ LABEL_49:
   }
 }
 
-- (BOOL)shouldDrawStrokeGroup:(id)a3
+- (BOOL)shouldDrawStrokeGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_class();
-  v11 = objc_msgSend_classification(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_classification(groupCopy, v6, v7, v8, v9, v10);
   if (objc_msgSend_isStrokeClassificationTextOrMath_(v5, v12, v11, v13, v14, v15))
   {
     v21 = objc_msgSend_activeStrokeGroupAncestorIdentifiers(self, v16, v17, v18, v19, v20);
     v22 = MEMORY[0x1E696AD98];
-    v28 = objc_msgSend_ancestorIdentifier(v4, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_ancestorIdentifier(groupCopy, v23, v24, v25, v26, v27);
     v33 = objc_msgSend_numberWithInteger_(v22, v29, v28, v30, v31, v32);
     LOBYTE(v22) = objc_msgSend_containsObject_(v21, v34, v33, v35, v36, v37);
 

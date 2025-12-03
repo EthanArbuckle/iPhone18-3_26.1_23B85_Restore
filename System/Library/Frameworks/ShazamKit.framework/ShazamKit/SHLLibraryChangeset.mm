@@ -7,11 +7,11 @@
 - (NSArray)tracksToDelete;
 - (SHLLibraryChangeset)init;
 - (id)description;
-- (void)addGroups:(id)a3;
-- (void)addTracks:(id)a3;
-- (void)deleteGroups:(id)a3;
-- (void)deleteTracks:(id)a3;
-- (void)mergeChangeset:(id)a3;
+- (void)addGroups:(id)groups;
+- (void)addTracks:(id)tracks;
+- (void)deleteGroups:(id)groups;
+- (void)deleteTracks:(id)tracks;
+- (void)mergeChangeset:(id)changeset;
 @end
 
 @implementation SHLLibraryChangeset
@@ -45,66 +45,66 @@
 
 - (NSArray)tracksToAdd
 {
-  v2 = [(SHLLibraryChangeset *)self trackSetToAdd];
-  v3 = [v2 allObjects];
+  trackSetToAdd = [(SHLLibraryChangeset *)self trackSetToAdd];
+  allObjects = [trackSetToAdd allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)tracksToDelete
 {
-  v2 = [(SHLLibraryChangeset *)self trackSetToDelete];
-  v3 = [v2 allObjects];
+  trackSetToDelete = [(SHLLibraryChangeset *)self trackSetToDelete];
+  allObjects = [trackSetToDelete allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)groupsToAdd
 {
-  v2 = [(SHLLibraryChangeset *)self groupSetToAdd];
-  v3 = [v2 allObjects];
+  groupSetToAdd = [(SHLLibraryChangeset *)self groupSetToAdd];
+  allObjects = [groupSetToAdd allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)groupsToDelete
 {
-  v2 = [(SHLLibraryChangeset *)self groupSetToDelete];
-  v3 = [v2 allObjects];
+  groupSetToDelete = [(SHLLibraryChangeset *)self groupSetToDelete];
+  allObjects = [groupSetToDelete allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)trackIDsToDelete
 {
-  v2 = [(SHLLibraryChangeset *)self trackSetToDelete];
+  trackSetToDelete = [(SHLLibraryChangeset *)self trackSetToDelete];
   v3 = NSStringFromSelector("identifier");
   v4 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", v3];
-  v5 = [v2 valueForKeyPath:v4];
+  v5 = [trackSetToDelete valueForKeyPath:v4];
 
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
 - (NSArray)groupIDsToDelete
 {
-  v2 = [(SHLLibraryChangeset *)self groupSetToDelete];
+  groupSetToDelete = [(SHLLibraryChangeset *)self groupSetToDelete];
   v3 = NSStringFromSelector("identifier");
   v4 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", v3];
-  v5 = [v2 valueForKeyPath:v4];
+  v5 = [groupSetToDelete valueForKeyPath:v4];
 
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)addTracks:(id)a3
+- (void)addTracks:(id)tracks
 {
-  v10 = a3;
+  tracksCopy = tracks;
   v4 = [NSMutableSet setWithArray:?];
-  v5 = [(SHLLibraryChangeset *)self trackSetToDelete];
-  [v4 intersectSet:v5];
+  trackSetToDelete = [(SHLLibraryChangeset *)self trackSetToDelete];
+  [v4 intersectSet:trackSetToDelete];
 
   if ([v4 count])
   {
@@ -115,16 +115,16 @@
     objc_exception_throw(v8);
   }
 
-  v6 = [(SHLLibraryChangeset *)self trackSetToAdd];
-  [v6 addObjectsFromArray:v10];
+  trackSetToAdd = [(SHLLibraryChangeset *)self trackSetToAdd];
+  [trackSetToAdd addObjectsFromArray:tracksCopy];
 }
 
-- (void)deleteTracks:(id)a3
+- (void)deleteTracks:(id)tracks
 {
-  v10 = a3;
+  tracksCopy = tracks;
   v4 = [NSMutableSet setWithArray:?];
-  v5 = [(SHLLibraryChangeset *)self trackSetToAdd];
-  [v4 intersectSet:v5];
+  trackSetToAdd = [(SHLLibraryChangeset *)self trackSetToAdd];
+  [v4 intersectSet:trackSetToAdd];
 
   if ([v4 count])
   {
@@ -135,16 +135,16 @@
     objc_exception_throw(v8);
   }
 
-  v6 = [(SHLLibraryChangeset *)self trackSetToDelete];
-  [v6 addObjectsFromArray:v10];
+  trackSetToDelete = [(SHLLibraryChangeset *)self trackSetToDelete];
+  [trackSetToDelete addObjectsFromArray:tracksCopy];
 }
 
-- (void)addGroups:(id)a3
+- (void)addGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [NSMutableSet setWithArray:v4];
-  v6 = [(SHLLibraryChangeset *)self groupSetToDelete];
-  [v5 intersectSet:v6];
+  groupsCopy = groups;
+  v5 = [NSMutableSet setWithArray:groupsCopy];
+  groupSetToDelete = [(SHLLibraryChangeset *)self groupSetToDelete];
+  [v5 intersectSet:groupSetToDelete];
 
   if ([v5 count])
   {
@@ -159,7 +159,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = groupsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -175,12 +175,12 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(SHLLibraryChangeset *)self groupSetToAdd];
-        [v13 addObject:v12];
+        groupSetToAdd = [(SHLLibraryChangeset *)self groupSetToAdd];
+        [groupSetToAdd addObject:v12];
 
-        v14 = [(SHLLibraryChangeset *)self trackSetToAdd];
-        v15 = [v12 tracksToSave];
-        [v14 addObjectsFromArray:v15];
+        trackSetToAdd = [(SHLLibraryChangeset *)self trackSetToAdd];
+        tracksToSave = [v12 tracksToSave];
+        [trackSetToAdd addObjectsFromArray:tracksToSave];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -190,12 +190,12 @@
   }
 }
 
-- (void)deleteGroups:(id)a3
+- (void)deleteGroups:(id)groups
 {
-  v10 = a3;
+  groupsCopy = groups;
   v4 = [NSMutableSet setWithArray:?];
-  v5 = [(SHLLibraryChangeset *)self groupSetToAdd];
-  [v4 intersectSet:v5];
+  groupSetToAdd = [(SHLLibraryChangeset *)self groupSetToAdd];
+  [v4 intersectSet:groupSetToAdd];
 
   if ([v4 count])
   {
@@ -206,40 +206,40 @@
     objc_exception_throw(v8);
   }
 
-  v6 = [(SHLLibraryChangeset *)self groupSetToDelete];
-  [v6 addObjectsFromArray:v10];
+  groupSetToDelete = [(SHLLibraryChangeset *)self groupSetToDelete];
+  [groupSetToDelete addObjectsFromArray:groupsCopy];
 }
 
-- (void)mergeChangeset:(id)a3
+- (void)mergeChangeset:(id)changeset
 {
-  if (self != a3)
+  if (self != changeset)
   {
-    v5 = a3;
-    v6 = [v5 tracksToAdd];
-    [(SHLLibraryChangeset *)self addTracks:v6];
+    changesetCopy = changeset;
+    tracksToAdd = [changesetCopy tracksToAdd];
+    [(SHLLibraryChangeset *)self addTracks:tracksToAdd];
 
-    v7 = [v5 tracksToDelete];
-    [(SHLLibraryChangeset *)self deleteTracks:v7];
+    tracksToDelete = [changesetCopy tracksToDelete];
+    [(SHLLibraryChangeset *)self deleteTracks:tracksToDelete];
 
-    v8 = [v5 groupsToAdd];
-    [(SHLLibraryChangeset *)self addGroups:v8];
+    groupsToAdd = [changesetCopy groupsToAdd];
+    [(SHLLibraryChangeset *)self addGroups:groupsToAdd];
 
-    v9 = [v5 groupsToDelete];
+    groupsToDelete = [changesetCopy groupsToDelete];
 
-    [(SHLLibraryChangeset *)self deleteGroups:v9];
+    [(SHLLibraryChangeset *)self deleteGroups:groupsToDelete];
   }
 }
 
 - (id)description
 {
-  v3 = [(SHLLibraryChangeset *)self trackSetToAdd];
-  v4 = [v3 count];
-  v5 = [(SHLLibraryChangeset *)self tracksToDelete];
-  v6 = [v5 count];
-  v7 = [(SHLLibraryChangeset *)self groupsToAdd];
-  v8 = [v7 count];
-  v9 = [(SHLLibraryChangeset *)self groupsToDelete];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"T: +%lu -%lu G: +%lu -%lu", v4, v6, v8, [v9 count]);
+  trackSetToAdd = [(SHLLibraryChangeset *)self trackSetToAdd];
+  v4 = [trackSetToAdd count];
+  tracksToDelete = [(SHLLibraryChangeset *)self tracksToDelete];
+  v6 = [tracksToDelete count];
+  groupsToAdd = [(SHLLibraryChangeset *)self groupsToAdd];
+  v8 = [groupsToAdd count];
+  groupsToDelete = [(SHLLibraryChangeset *)self groupsToDelete];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"T: +%lu -%lu G: +%lu -%lu", v4, v6, v8, [groupsToDelete count]);
 
   return v10;
 }

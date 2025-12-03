@@ -1,21 +1,21 @@
 @interface HDMHValenceDistributionSummaryBuilder
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HDMHValenceDistributionSummaryBuilder)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4;
+- (HDMHValenceDistributionSummaryBuilder)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar;
 - (double)_valenceMergeInterval;
 - (id)_calculateAverageDailyValenceDistribution;
 - (id)valenceDistributionSummary;
-- (void)_mergeAdjacentValenceDistributions:(id)a3;
-- (void)_mergeStatesOfMind:(id)a3 intoValenceDistributions:(id)a4;
-- (void)addDaySummary:(id)a3;
+- (void)_mergeAdjacentValenceDistributions:(id)distributions;
+- (void)_mergeStatesOfMind:(id)mind intoValenceDistributions:(id)distributions;
+- (void)addDaySummary:(id)summary;
 @end
 
 @implementation HDMHValenceDistributionSummaryBuilder
 
-- (HDMHValenceDistributionSummaryBuilder)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4
+- (HDMHValenceDistributionSummaryBuilder)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  calendarCopy = calendar;
   v17.receiver = self;
   v17.super_class = HDMHValenceDistributionSummaryBuilder;
   v9 = [(HDMHValenceDistributionSummaryBuilder *)&v17 init];
@@ -24,7 +24,7 @@
   {
     v9->_dayIndexRange.start = var0;
     v9->_dayIndexRange.duration = var1;
-    objc_storeStrong(&v9->_gregorianCalendar, a4);
+    objc_storeStrong(&v9->_gregorianCalendar, calendar);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     dailyValenceValues = v10->_dailyValenceValues;
     v10->_dailyValenceValues = v11;
@@ -40,22 +40,22 @@
   return v10;
 }
 
-- (void)addDaySummary:(id)a3
+- (void)addDaySummary:(id)summary
 {
-  v10 = a3;
-  v4 = [v10 momentaryStatesOfMind];
-  [(HDMHValenceDistributionSummaryBuilder *)self _mergeStatesOfMind:v4 intoValenceDistributions:self->_momentaryValenceDistributions];
+  summaryCopy = summary;
+  momentaryStatesOfMind = [summaryCopy momentaryStatesOfMind];
+  [(HDMHValenceDistributionSummaryBuilder *)self _mergeStatesOfMind:momentaryStatesOfMind intoValenceDistributions:self->_momentaryValenceDistributions];
 
-  v5 = [v10 dailyStateOfMind];
+  dailyStateOfMind = [summaryCopy dailyStateOfMind];
 
-  if (v5)
+  if (dailyStateOfMind)
   {
-    v6 = [(HDMHValenceDistributionSummaryBuilder *)self dailyValenceValues];
+    dailyValenceValues = [(HDMHValenceDistributionSummaryBuilder *)self dailyValenceValues];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v10 dailyStateOfMind];
-    [v8 valence];
+    dailyStateOfMind2 = [summaryCopy dailyStateOfMind];
+    [dailyStateOfMind2 valence];
     v9 = [v7 numberWithDouble:?];
-    [v6 addObject:v9];
+    [dailyValenceValues addObject:v9];
   }
 }
 
@@ -64,8 +64,8 @@
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:self->_momentaryValenceDistributions];
   if ([(NSMutableArray *)self->_dailyValenceValues count])
   {
-    v4 = [(HDMHValenceDistributionSummaryBuilder *)self _calculateAverageDailyValenceDistribution];
-    [v3 addObject:v4];
+    _calculateAverageDailyValenceDistribution = [(HDMHValenceDistributionSummaryBuilder *)self _calculateAverageDailyValenceDistribution];
+    [v3 addObject:_calculateAverageDailyValenceDistribution];
   }
 
   v5 = [objc_alloc(MEMORY[0x277D280C8]) initWithDayIndexRange:self->_dayIndexRange.start valenceDistributions:{self->_dayIndexRange.duration, v3}];
@@ -84,12 +84,12 @@
   return v6;
 }
 
-- (void)_mergeStatesOfMind:(id)a3 intoValenceDistributions:(id)a4
+- (void)_mergeStatesOfMind:(id)mind intoValenceDistributions:(id)distributions
 {
-  v6 = a4;
-  v7 = [a3 hk_map:&__block_literal_global];
-  [v6 addObjectsFromArray:v7];
-  [(HDMHValenceDistributionSummaryBuilder *)self _mergeAdjacentValenceDistributions:v6];
+  distributionsCopy = distributions;
+  v7 = [mind hk_map:&__block_literal_global];
+  [distributionsCopy addObjectsFromArray:v7];
+  [(HDMHValenceDistributionSummaryBuilder *)self _mergeAdjacentValenceDistributions:distributionsCopy];
 }
 
 id __85__HDMHValenceDistributionSummaryBuilder__mergeStatesOfMind_intoValenceDistributions___block_invoke(uint64_t a1, void *a2)
@@ -108,36 +108,36 @@ id __85__HDMHValenceDistributionSummaryBuilder__mergeStatesOfMind_intoValenceDis
   return v10;
 }
 
-- (void)_mergeAdjacentValenceDistributions:(id)a3
+- (void)_mergeAdjacentValenceDistributions:(id)distributions
 {
-  v18 = a3;
-  [v18 sortUsingComparator:&__block_literal_global_307];
-  if ([v18 count] >= 2)
+  distributionsCopy = distributions;
+  [distributionsCopy sortUsingComparator:&__block_literal_global_307];
+  if ([distributionsCopy count] >= 2)
   {
     v4 = 0;
     v5 = 1;
     v6 = 1;
     do
     {
-      v7 = [v18 objectAtIndexedSubscript:v5];
+      v7 = [distributionsCopy objectAtIndexedSubscript:v5];
       [v7 minimumValence];
       v9 = v8;
 
-      v10 = [v18 objectAtIndexedSubscript:v4];
+      v10 = [distributionsCopy objectAtIndexedSubscript:v4];
       [v10 minimumValence];
       v12 = v11 - self->_valenceMergeInterval;
 
-      v13 = [v18 objectAtIndexedSubscript:v4];
+      v13 = [distributionsCopy objectAtIndexedSubscript:v4];
       [v13 maximumValence];
       v15 = v14 + self->_valenceMergeInterval;
 
       if ([(HDMHValenceDistributionSummaryBuilder *)self _value:v9 isBetweenMinValue:v12 maxValue:v15])
       {
-        v16 = [v18 objectAtIndexedSubscript:v4];
-        v17 = [v18 objectAtIndexedSubscript:v5];
+        v16 = [distributionsCopy objectAtIndexedSubscript:v4];
+        v17 = [distributionsCopy objectAtIndexedSubscript:v5];
         [v16 addValenceDistribution:v17];
 
-        [v18 removeObjectAtIndex:v5];
+        [distributionsCopy removeObjectAtIndex:v5];
       }
 
       else
@@ -149,7 +149,7 @@ id __85__HDMHValenceDistributionSummaryBuilder__mergeStatesOfMind_intoValenceDis
       v5 = v6;
     }
 
-    while ([v18 count] > v6);
+    while ([distributionsCopy count] > v6);
   }
 }
 
@@ -169,16 +169,16 @@ uint64_t __76__HDMHValenceDistributionSummaryBuilder__mergeAdjacentValenceDistri
 
 - (double)_valenceMergeInterval
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"HDMHMentalHealthValenceMergeInterval"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"HDMHMentalHealthValenceMergeInterval"];
 
   v4 = 0.001;
   if (v3)
   {
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 isAppleInternalInstall];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-    if (v6)
+    if (isAppleInternalInstall)
     {
       [v3 doubleValue];
       v4 = v7;

@@ -1,48 +1,48 @@
 @interface PHHandsetDialerLCDViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)hasText;
 - (id)_accessibilitySubviews;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateContactResultButton;
-- (void)_voStatusChanged:(id)a3;
+- (void)_voStatusChanged:(id)changed;
 - (void)dealloc;
 - (void)deleteCharacter;
-- (void)insertText:(id)a3;
-- (void)setSenderIdentity:(id)a3;
+- (void)insertText:(id)text;
+- (void)setSenderIdentity:(id)identity;
 - (void)updateContactResultButtons;
 @end
 
 @implementation PHHandsetDialerLCDViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"updateAddAndDeleteButtonForText: name: animated:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"initWithFrame:forDialerType:appType:enableSmartDialer:enableSmartDialerExpandedSearch:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "i", "q", "B", "B", 0}];
-  [v3 validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"phonePadView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHDialerResultButtonView"];
-  [v3 validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"pillView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"setSenderIdentity:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TUSenderIdentity"];
-  [v3 validateClass:@"TUSenderIdentity" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"updateAddAndDeleteButtonForText: name: animated:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"initWithFrame:forDialerType:appType:enableSmartDialer:enableSmartDialerExpandedSearch:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "i", "q", "B", "B", 0}];
+  [validationsCopy validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"phonePadView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHDialerResultButtonView"];
+  [validationsCopy validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"pillView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHHandsetDialerLCDView" hasInstanceMethod:@"setSenderIdentity:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TUSenderIdentity"];
+  [validationsCopy validateClass:@"TUSenderIdentity" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PHHandsetDialerLCDViewAccessibility;
   [(PHHandsetDialerLCDViewAccessibility *)&v4 dealloc];
 }
 
-- (void)_voStatusChanged:(id)a3
+- (void)_voStatusChanged:(id)changed
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v4 = [MEMORY[0x29EDC7B08] activeInstance];
-    [v4 setDelegate:self];
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+    [activeInstance setDelegate:self];
   }
 }
 
@@ -94,8 +94,8 @@ id __67__PHHandsetDialerLCDViewAccessibility__axUpdateContactResultButton__block
   v20.receiver = self;
   v20.super_class = PHHandsetDialerLCDViewAccessibility;
   [(PHHandsetDialerLCDViewAccessibility *)&v20 _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__voStatusChanged_ name:*MEMORY[0x29EDC8000] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__voStatusChanged_ name:*MEMORY[0x29EDC8000] object:0];
 
   v4 = [(PHHandsetDialerLCDViewAccessibility *)self safeValueForKey:@"_numberTextField"];
   [v4 setAccessibilityIdentifier:@"PhoneNumberLabel"];
@@ -158,9 +158,9 @@ id __81__PHHandsetDialerLCDViewAccessibility__accessibilityLoadAccessibilityInfo
   return v4;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(PHHandsetDialerLCDViewAccessibility *)self safeValueForKey:@"delegate"];
   v6 = [v5 safeValueForKey:@"delegate"];
 
@@ -171,11 +171,11 @@ id __81__PHHandsetDialerLCDViewAccessibility__accessibilityLoadAccessibilityInfo
     goto LABEL_10;
   }
 
-  if ([v4 length] == 1)
+  if ([textCopy length] == 1)
   {
-    v7 = [v4 characterAtIndex:0];
-    v8 = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
-    v9 = [v8 characterIsMember:v7];
+    v7 = [textCopy characterAtIndex:0];
+    decimalDigitCharacterSet = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
+    v9 = [decimalDigitCharacterSet characterIsMember:v7];
 
     if ((v9 & 1) != 0 || v7 == 35)
     {
@@ -195,7 +195,7 @@ LABEL_8:
     {
 LABEL_7:
       v11 = v6;
-      v12 = v4;
+      v12 = textCopy;
       AXPerformSafeBlock();
 
       if (v7 == 61)
@@ -234,8 +234,8 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = PHHandsetDialerLCDViewAccessibility;
-  v2 = [(PHHandsetDialerLCDViewAccessibility *)&v5 _accessibilitySubviews];
-  v3 = [v2 axFilterObjectsUsingBlock:&__block_literal_global_0];
+  _accessibilitySubviews = [(PHHandsetDialerLCDViewAccessibility *)&v5 _accessibilitySubviews];
+  v3 = [_accessibilitySubviews axFilterObjectsUsingBlock:&__block_literal_global_0];
 
   return v3;
 }
@@ -258,14 +258,14 @@ uint64_t __61__PHHandsetDialerLCDViewAccessibility__accessibilitySubviews__block
   [(PHHandsetDialerLCDViewAccessibility *)self _axUpdateContactResultButton];
 }
 
-- (void)setSenderIdentity:(id)a3
+- (void)setSenderIdentity:(id)identity
 {
   v7.receiver = self;
   v7.super_class = PHHandsetDialerLCDViewAccessibility;
-  v4 = a3;
-  [(PHHandsetDialerLCDViewAccessibility *)&v7 setSenderIdentity:v4];
+  identityCopy = identity;
+  [(PHHandsetDialerLCDViewAccessibility *)&v7 setSenderIdentity:identityCopy];
   v5 = [(PHHandsetDialerLCDViewAccessibility *)self safeUIViewForKey:@"pillView", v7.receiver, v7.super_class];
-  v6 = [v4 safeStringForKey:@"localizedName"];
+  v6 = [identityCopy safeStringForKey:@"localizedName"];
 
   [v5 setAccessibilityLabel:v6];
 }

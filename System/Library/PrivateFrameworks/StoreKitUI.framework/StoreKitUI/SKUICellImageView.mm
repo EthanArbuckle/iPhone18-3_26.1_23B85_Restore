@@ -1,12 +1,12 @@
 @interface SKUICellImageView
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SKUICellImageView
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICellImageView setHighlighted:];
@@ -14,28 +14,28 @@
 
   v9.receiver = self;
   v9.super_class = SKUICellImageView;
-  if ([(SKUICellImageView *)&v9 isHighlighted]!= v3)
+  if ([(SKUICellImageView *)&v9 isHighlighted]!= highlightedCopy)
   {
-    if (v3)
+    if (highlightedCopy)
     {
-      v5 = [(SKUICellImageView *)self backgroundColor];
+      backgroundColor = [(SKUICellImageView *)self backgroundColor];
       cachedBackgroundColor = self->_cachedBackgroundColor;
-      self->_cachedBackgroundColor = v5;
+      self->_cachedBackgroundColor = backgroundColor;
 
-      v7 = [MEMORY[0x277D75348] clearColor];
-      [(SKUICellImageView *)self setBackgroundColor:v7];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SKUICellImageView *)self setBackgroundColor:clearColor];
     }
 
     else
     {
       [(SKUICellImageView *)self setBackgroundColor:self->_cachedBackgroundColor];
-      v7 = self->_cachedBackgroundColor;
+      clearColor = self->_cachedBackgroundColor;
       self->_cachedBackgroundColor = 0;
     }
 
     v8.receiver = self;
     v8.super_class = SKUICellImageView;
-    [(SKUICellImageView *)&v8 setHighlighted:v3];
+    [(SKUICellImageView *)&v8 setHighlighted:highlightedCopy];
   }
 }
 

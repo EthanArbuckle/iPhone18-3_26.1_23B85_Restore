@@ -14,41 +14,41 @@
   v4 = NSStringFromClass(v3);
   [(SBSystemActionCoachingSettings *)self setPolicyClassName:v4];
 
-  v5 = [(SBSystemActionCoachingSettings *)self trackPreviewsPolicySettings];
-  [v5 setDefaultValues];
+  trackPreviewsPolicySettings = [(SBSystemActionCoachingSettings *)self trackPreviewsPolicySettings];
+  [trackPreviewsPolicySettings setDefaultValues];
 
-  v6 = [(SBSystemActionCoachingSettings *)self pressWithinTimeIntervalPolicySettings];
-  [v6 setDefaultValues];
+  pressWithinTimeIntervalPolicySettings = [(SBSystemActionCoachingSettings *)self pressWithinTimeIntervalPolicySettings];
+  [pressWithinTimeIntervalPolicySettings setDefaultValues];
 
   [(SBSystemActionCoachingSettings *)self setDimmingAlpha:0.35];
   [(SBSystemActionCoachingSettings *)self setCoachingButtonShadowOpacity:0.25];
   [(SBSystemActionCoachingSettings *)self setCoachingButtonShadowRadius:15.0];
   [(SBSystemActionCoachingSettings *)self setCoachingLabelShadowOpacity:0.25];
   [(SBSystemActionCoachingSettings *)self setCoachingLabelShadowRadius:6.0];
-  v7 = [(SBSystemActionCoachingSettings *)self presentationSettings];
-  [v7 setDefaultValues];
-  [v7 setDampingRatio:1.0];
-  [v7 setDampingRatioSmoothing:0.0];
-  [v7 setResponse:0.5];
-  [v7 setResponseSmoothing:0.0];
-  v8 = [(SBSystemActionCoachingSettings *)self expansionSettings];
-  [v8 setDefaultValues];
-  [v8 setDampingRatio:1.0];
-  [v8 setDampingRatioSmoothing:0.0];
-  [v8 setResponse:0.8];
-  [v8 setResponseSmoothing:0.0];
-  v9 = [(SBSystemActionCoachingSettings *)self contractionSettings];
-  [v9 setDefaultValues];
-  [v9 setDampingRatio:1.0];
-  [v9 setDampingRatioSmoothing:0.0];
-  [v9 setResponse:0.5];
-  [v9 setResponseSmoothing:0.0];
-  v10 = [(SBSystemActionCoachingSettings *)self dismissalSettings];
-  [v10 setDefaultValues];
-  [v10 setDampingRatio:1.0];
-  [v10 setDampingRatioSmoothing:0.0];
-  [v10 setResponse:0.5];
-  [v10 setResponseSmoothing:0.0];
+  presentationSettings = [(SBSystemActionCoachingSettings *)self presentationSettings];
+  [presentationSettings setDefaultValues];
+  [presentationSettings setDampingRatio:1.0];
+  [presentationSettings setDampingRatioSmoothing:0.0];
+  [presentationSettings setResponse:0.5];
+  [presentationSettings setResponseSmoothing:0.0];
+  expansionSettings = [(SBSystemActionCoachingSettings *)self expansionSettings];
+  [expansionSettings setDefaultValues];
+  [expansionSettings setDampingRatio:1.0];
+  [expansionSettings setDampingRatioSmoothing:0.0];
+  [expansionSettings setResponse:0.8];
+  [expansionSettings setResponseSmoothing:0.0];
+  contractionSettings = [(SBSystemActionCoachingSettings *)self contractionSettings];
+  [contractionSettings setDefaultValues];
+  [contractionSettings setDampingRatio:1.0];
+  [contractionSettings setDampingRatioSmoothing:0.0];
+  [contractionSettings setResponse:0.5];
+  [contractionSettings setResponseSmoothing:0.0];
+  dismissalSettings = [(SBSystemActionCoachingSettings *)self dismissalSettings];
+  [dismissalSettings setDefaultValues];
+  [dismissalSettings setDampingRatio:1.0];
+  [dismissalSettings setDampingRatioSmoothing:0.0];
+  [dismissalSettings setResponse:0.5];
+  [dismissalSettings setResponseSmoothing:0.0];
 }
 
 + (id)settingsControllerModule

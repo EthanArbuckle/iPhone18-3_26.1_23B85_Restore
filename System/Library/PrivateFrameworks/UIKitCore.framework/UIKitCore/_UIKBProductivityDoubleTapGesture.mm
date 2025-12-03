@@ -1,25 +1,25 @@
 @interface _UIKBProductivityDoubleTapGesture
-+ (id)productivityDoubleTapGestureRecognizerWithTarget:(id)a3 action:(SEL)a4 delegate:(id)a5;
++ (id)productivityDoubleTapGestureRecognizerWithTarget:(id)target action:(SEL)action delegate:(id)delegate;
 @end
 
 @implementation _UIKBProductivityDoubleTapGesture
 
-+ (id)productivityDoubleTapGestureRecognizerWithTarget:(id)a3 action:(SEL)a4 delegate:(id)a5
++ (id)productivityDoubleTapGestureRecognizerWithTarget:(id)target action:(SEL)action delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(UITapGestureRecognizer *)[_UIKBProductivityDoubleTapGesture alloc] initWithTarget:v8 action:a4];
+  delegateCopy = delegate;
+  targetCopy = target;
+  v9 = [(UITapGestureRecognizer *)[_UIKBProductivityDoubleTapGesture alloc] initWithTarget:targetCopy action:action];
 
   if (v9)
   {
     [(UIGestureRecognizer *)v9 setAllowedTouchTypes:&unk_1EFE2C088];
     [(UIGestureRecognizer *)v9 setName:@"com.apple.UIKit.kbProductivity.threeFingerDoubleTap"];
-    [(UIGestureRecognizer *)v9 setDelegate:v7];
+    [(UIGestureRecognizer *)v9 setDelegate:delegateCopy];
     [(UITapGestureRecognizer *)v9 setNumberOfTapsRequired:2];
     [(UITapGestureRecognizer *)v9 setNumberOfTouchesRequired:3];
     [(UIGestureRecognizer *)v9 setDelaysTouchesBegan:0];
     [(UIGestureRecognizer *)v9 setDelaysTouchesEnded:0];
-    if (_systemGesturesDontCancelTouches(v7))
+    if (_systemGesturesDontCancelTouches(delegateCopy))
     {
       [(UIGestureRecognizer *)v9 setCancelsTouchesInView:0];
     }

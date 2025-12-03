@@ -1,18 +1,18 @@
 @interface IDSGetFeatureToggleStateMessage
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
 
 @implementation IDSGetFeatureToggleStateMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = IDSGetFeatureToggleStateMessage;
-  v4 = [(IDSGetFeatureToggleStateMessage *)&v7 copyWithZone:a3];
-  v5 = [(IDSGetFeatureToggleStateMessage *)self featureID];
-  [v4 setFeatureID:v5];
+  v4 = [(IDSGetFeatureToggleStateMessage *)&v7 copyWithZone:zone];
+  featureID = [(IDSGetFeatureToggleStateMessage *)self featureID];
+  [v4 setFeatureID:featureID];
 
   return v4;
 }
@@ -29,18 +29,18 @@
 {
   v7.receiver = self;
   v7.super_class = IDSGetFeatureToggleStateMessage;
-  v3 = [(IDSGetFeatureToggleStateMessage *)&v7 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSGetFeatureToggleStateMessage *)&v7 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSGetFeatureToggleStateMessage *)self featureID];
-  if (v5)
+  featureID = [(IDSGetFeatureToggleStateMessage *)self featureID];
+  if (featureID)
   {
-    CFDictionarySetValue(Mutable, @"user-flag", v5);
+    CFDictionarySetValue(Mutable, @"user-flag", featureID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

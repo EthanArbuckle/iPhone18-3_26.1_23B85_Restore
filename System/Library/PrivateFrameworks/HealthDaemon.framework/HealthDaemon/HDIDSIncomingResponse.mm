@@ -7,12 +7,12 @@
 
 - (id)nanoSyncDescription
 {
-  v3 = [(HDIDSIncomingResponse *)self pbResponse];
-  v4 = HDNanoSyncDescriptionSafe(v3);
+  pbResponse = [(HDIDSIncomingResponse *)self pbResponse];
+  v4 = HDNanoSyncDescriptionSafe(pbResponse);
 
-  LODWORD(v3) = [(HDIDSIncomingResponse *)self messageID];
-  v5 = [(HDIDSIncomingResponse *)self idsIdentifier];
-  v6 = FormattedMessageDescription(v3, 1, 0, v5, v4);
+  LODWORD(pbResponse) = [(HDIDSIncomingResponse *)self messageID];
+  idsIdentifier = [(HDIDSIncomingResponse *)self idsIdentifier];
+  v6 = FormattedMessageDescription(pbResponse, 1, 0, idsIdentifier, v4);
 
   return v6;
 }

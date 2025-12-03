@@ -1,29 +1,29 @@
 @interface NUVideoExportRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
-- (void)submitWithProgress:(id)a3 completion:(id)a4;
+- (void)submitWithProgress:(id)progress completion:(id)completion;
 @end
 
 @implementation NUVideoExportRequest
 
-- (void)submitWithProgress:(id)a3 completion:(id)a4
+- (void)submitWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
+  progressCopy = progress;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__NUVideoExportRequest_submitWithProgress_completion___block_invoke;
   v8[3] = &unk_1E8109FA8;
-  v9 = v6;
-  v7 = v6;
-  [(NURenderRequest *)self submitGenericConfiguringRequest:v8 completion:a4];
+  v9 = progressCopy;
+  v7 = progressCopy;
+  [(NURenderRequest *)self submitGenericConfiguringRequest:v8 completion:completion];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUVideoExportRequest;
-  v4 = [(NUExportRequest *)&v7 copyWithZone:a3];
+  v4 = [(NUExportRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -55,8 +55,8 @@
   outputSettings = self->_outputSettings;
   self->_outputSettings = MEMORY[0x1E695E0F8];
 
-  v4 = [(NURenderRequest *)self internalComposition];
-  v5 = [NUVideoUtilities defaultOutputColorSpaceForComposition:v4];
+  internalComposition = [(NURenderRequest *)self internalComposition];
+  v5 = [NUVideoUtilities defaultOutputColorSpaceForComposition:internalComposition];
   colorSpace = self->_colorSpace;
   self->_colorSpace = v5;
 

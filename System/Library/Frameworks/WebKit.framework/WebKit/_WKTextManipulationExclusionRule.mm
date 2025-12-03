@@ -1,13 +1,13 @@
 @interface _WKTextManipulationExclusionRule
 - (id).cxx_construct;
-- (id)initExclusion:(BOOL)a3 forAttribute:(id)a4 value:(id)a5;
-- (id)initExclusion:(BOOL)a3 forClass:(id)a4;
-- (id)initExclusion:(BOOL)a3 forElement:(id)a4;
+- (id)initExclusion:(BOOL)exclusion forAttribute:(id)attribute value:(id)value;
+- (id)initExclusion:(BOOL)exclusion forClass:(id)class;
+- (id)initExclusion:(BOOL)exclusion forElement:(id)element;
 @end
 
 @implementation _WKTextManipulationExclusionRule
 
-- (id)initExclusion:(BOOL)a3 forElement:(id)a4
+- (id)initExclusion:(BOOL)exclusion forElement:(id)element
 {
   v11.receiver = self;
   v11.super_class = _WKTextManipulationExclusionRule;
@@ -15,14 +15,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isExclusion = a3;
-    if (a4)
+    v6->_isExclusion = exclusion;
+    if (element)
     {
-      v8 = a4;
+      elementCopy = element;
     }
 
     m_ptr = v7->_elementName.m_ptr;
-    v7->_elementName.m_ptr = a4;
+    v7->_elementName.m_ptr = element;
     if (m_ptr)
     {
     }
@@ -31,7 +31,7 @@
   return v7;
 }
 
-- (id)initExclusion:(BOOL)a3 forAttribute:(id)a4 value:(id)a5
+- (id)initExclusion:(BOOL)exclusion forAttribute:(id)attribute value:(id)value
 {
   v15.receiver = self;
   v15.super_class = _WKTextManipulationExclusionRule;
@@ -39,25 +39,25 @@
   v9 = v8;
   if (v8)
   {
-    v8->_isExclusion = a3;
-    if (a4)
+    v8->_isExclusion = exclusion;
+    if (attribute)
     {
-      v10 = a4;
+      attributeCopy = attribute;
     }
 
     m_ptr = v9->_attributeName.m_ptr;
-    v9->_attributeName.m_ptr = a4;
+    v9->_attributeName.m_ptr = attribute;
     if (m_ptr)
     {
     }
 
-    if (a5)
+    if (value)
     {
-      v12 = a5;
+      valueCopy = value;
     }
 
     v13 = v9->_attributeValue.m_ptr;
-    v9->_attributeValue.m_ptr = a5;
+    v9->_attributeValue.m_ptr = value;
     if (v13)
     {
     }
@@ -66,7 +66,7 @@
   return v9;
 }
 
-- (id)initExclusion:(BOOL)a3 forClass:(id)a4
+- (id)initExclusion:(BOOL)exclusion forClass:(id)class
 {
   v11.receiver = self;
   v11.super_class = _WKTextManipulationExclusionRule;
@@ -74,14 +74,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isExclusion = a3;
-    if (a4)
+    v6->_isExclusion = exclusion;
+    if (class)
     {
-      v8 = a4;
+      classCopy = class;
     }
 
     m_ptr = v7->_className.m_ptr;
-    v7->_className.m_ptr = a4;
+    v7->_className.m_ptr = class;
     if (m_ptr)
     {
     }

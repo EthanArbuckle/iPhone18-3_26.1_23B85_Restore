@@ -3,20 +3,20 @@
 - (BOOL)isEmpty;
 - (BOOL)isNotEmpty;
 - (UIDictationStreamingOperations)init;
-- (double)delayAfterSelector:(SEL)a3;
+- (double)delayAfterSelector:(SEL)selector;
 - (id)pop;
 - (unint64_t)selectionChangeDelta;
-- (void)_performReplaceSelectedText:(id)a3;
+- (void)_performReplaceSelectedText:(id)text;
 - (void)clearOperations;
-- (void)performSelectRangeForSpeech:(_NSRange)a3;
+- (void)performSelectRangeForSpeech:(_NSRange)speech;
 - (void)popAndInvoke;
-- (void)pushInsertTextForSpeech:(id)a3;
-- (void)pushReplaceSelectionWithText:(id)a3;
-- (void)pushSelectRangeForSpeech:(_NSRange)a3;
-- (void)pushSpeechOperation:(id)a3;
-- (void)pushSpeechOperationWithSelectionChangeDelta:(int64_t)a3 block:(id)a4;
-- (void)setDocument:(id)a3;
-- (void)willEndEditingInInputDelegate:(id)a3;
+- (void)pushInsertTextForSpeech:(id)speech;
+- (void)pushReplaceSelectionWithText:(id)text;
+- (void)pushSelectRangeForSpeech:(_NSRange)speech;
+- (void)pushSpeechOperation:(id)operation;
+- (void)pushSpeechOperationWithSelectionChangeDelta:(int64_t)delta block:(id)block;
+- (void)setDocument:(id)document;
+- (void)willEndEditingInInputDelegate:(id)delegate;
 @end
 
 @implementation UIDictationStreamingOperations
@@ -28,8 +28,8 @@
   v2 = [(UIDictationStreamingOperations *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    [v2 setOperations:v3];
+    array = [MEMORY[0x1E695DF70] array];
+    [v2 setOperations:array];
 
     *(v2 + 8) = xmmword_18A67F5A0;
     v4 = v2;
@@ -40,8 +40,8 @@
 
 - (void)clearOperations
 {
-  v3 = [(UIDictationStreamingOperations *)self operations];
-  [v3 removeAllObjects];
+  operations = [(UIDictationStreamingOperations *)self operations];
+  [operations removeAllObjects];
 
   v4 = MEMORY[0x1E69E58C0];
 
@@ -50,24 +50,24 @@
 
 - (BOOL)hasOperations
 {
-  v2 = [(UIDictationStreamingOperations *)self operations];
-  v3 = [v2 count] != 0;
+  operations = [(UIDictationStreamingOperations *)self operations];
+  v3 = [operations count] != 0;
 
   return v3;
 }
 
 - (id)pop
 {
-  v3 = [(UIDictationStreamingOperations *)self operations];
-  v4 = [v3 count];
+  operations = [(UIDictationStreamingOperations *)self operations];
+  v4 = [operations count];
 
   if (v4)
   {
-    v5 = [(UIDictationStreamingOperations *)self operations];
-    v6 = [v5 objectAtIndex:0];
+    operations2 = [(UIDictationStreamingOperations *)self operations];
+    v6 = [operations2 objectAtIndex:0];
 
-    v7 = [(UIDictationStreamingOperations *)self operations];
-    [v7 removeObjectAtIndex:0];
+    operations3 = [(UIDictationStreamingOperations *)self operations];
+    [operations3 removeObjectAtIndex:0];
   }
 
   else
@@ -78,14 +78,14 @@
   return v6;
 }
 
-- (double)delayAfterSelector:(SEL)a3
+- (double)delayAfterSelector:(SEL)selector
 {
-  v4 = [(UIDictationStreamingOperations *)self operations];
+  operations = [(UIDictationStreamingOperations *)self operations];
   v5 = 1.0;
-  if ([v4 count] >= 3)
+  if ([operations count] >= 3)
   {
-    v6 = [(UIDictationStreamingOperations *)self operations];
-    v5 = vcvtd_n_f64_u64([v6 count], 1uLL);
+    operations2 = [(UIDictationStreamingOperations *)self operations];
+    v5 = vcvtd_n_f64_u64([operations2 count], 1uLL);
   }
 
   return 1.0 / v5 * self->_timeAfterInsertion;
@@ -110,39 +110,39 @@
   }
 }
 
-- (void)pushSpeechOperation:(id)a3
+- (void)pushSpeechOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(UIDictationStreamingOperations *)self operations];
-  [v5 addObject:v4];
+  operationCopy = operation;
+  operations = [(UIDictationStreamingOperations *)self operations];
+  [operations addObject:operationCopy];
 }
 
-- (void)pushSpeechOperationWithSelectionChangeDelta:(int64_t)a3 block:(id)a4
+- (void)pushSpeechOperationWithSelectionChangeDelta:(int64_t)delta block:(id)block
 {
-  v8 = a4;
+  blockCopy = block;
   if ([(UIDictationStreamingOperations *)self isEmpty])
   {
-    v8[2]();
-    v6 = v8;
+    blockCopy[2]();
+    v6 = blockCopy;
   }
 
   else
   {
-    v7 = [(NSBlockOperation *)UIDictationStreamingOperation blockOperationWithBlock:v8];
+    v7 = [(NSBlockOperation *)UIDictationStreamingOperation blockOperationWithBlock:blockCopy];
 
-    [v7 setSelectionChangeDelta:a3];
+    [v7 setSelectionChangeDelta:delta];
     [(UIDictationStreamingOperations *)self pushSpeechOperation:v7];
     v6 = v7;
   }
 }
 
-- (void)performSelectRangeForSpeech:(_NSRange)a3
+- (void)performSelectRangeForSpeech:(_NSRange)speech
 {
-  length = a3.length;
-  location = a3.location;
+  length = speech.length;
+  location = speech.location;
   v6 = self->_document;
-  v7 = [(UITextInput *)v6 beginningOfDocument];
-  v8 = [(UITextInput *)v6 positionFromPosition:v7 inDirection:2 offset:location];
+  beginningOfDocument = [(UITextInput *)v6 beginningOfDocument];
+  v8 = [(UITextInput *)v6 positionFromPosition:beginningOfDocument inDirection:2 offset:location];
 
   v9 = [(UITextInput *)v6 positionFromPosition:v8 inDirection:2 offset:length];
   v10 = [(UITextInput *)v6 textRangeFromPosition:v8 toPosition:v9];
@@ -150,24 +150,24 @@
   [(UITextInput *)self->_document setSelectedTextRange:v10];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v5 = a3;
-  if (self->_document != v5)
+  documentCopy = document;
+  if (self->_document != documentCopy)
   {
-    v6 = v5;
+    v6 = documentCopy;
     [(UIDictationStreamingOperations *)self clearOperations];
-    objc_storeStrong(&self->_document, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_document, document);
+    documentCopy = v6;
   }
 }
 
-- (void)pushSelectRangeForSpeech:(_NSRange)a3
+- (void)pushSelectRangeForSpeech:(_NSRange)speech
 {
   if (self->_document)
   {
-    length = a3.length;
-    v4 = a3.location;
+    length = speech.length;
+    v4 = speech.location;
     objc_initWeak(location, self);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -208,9 +208,9 @@ void __59__UIDictationStreamingOperations_pushSelectRangeForSpeech___block_invok
   [WeakRetained performSelectRangeForSpeech:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (void)pushInsertTextForSpeech:(id)a3
+- (void)pushInsertTextForSpeech:(id)speech
 {
-  v4 = a3;
+  speechCopy = speech;
   document = self->_document;
   if (document)
   {
@@ -220,7 +220,7 @@ void __59__UIDictationStreamingOperations_pushSelectRangeForSpeech___block_invok
     v8[2] = __58__UIDictationStreamingOperations_pushInsertTextForSpeech___block_invoke;
     v8[3] = &unk_1E70F2F80;
     objc_copyWeak(&v10, location);
-    v9 = v4;
+    v9 = speechCopy;
     [(UIDictationStreamingOperations *)self pushSpeechOperationWithSelectionChangeDelta:1 block:v8];
 
     objc_destroyWeak(&v10);
@@ -254,9 +254,9 @@ void __58__UIDictationStreamingOperations_pushInsertTextForSpeech___block_invoke
   [WeakRetained insertText:*(a1 + 32)];
 }
 
-- (void)_performReplaceSelectedText:(id)a3
+- (void)_performReplaceSelectedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   document = self->_document;
   if (has_internal_diagnostics)
@@ -283,13 +283,13 @@ void __58__UIDictationStreamingOperations_pushInsertTextForSpeech___block_invoke
   }
 
   v7 = self->_document;
-  v8 = [(UITextInput *)v7 selectedTextRange];
-  [(UITextInput *)v7 replaceRange:v8 withText:v4];
+  selectedTextRange = [(UITextInput *)v7 selectedTextRange];
+  [(UITextInput *)v7 replaceRange:selectedTextRange withText:textCopy];
 }
 
-- (void)pushReplaceSelectionWithText:(id)a3
+- (void)pushReplaceSelectionWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   document = self->_document;
   if (has_internal_diagnostics)
@@ -321,7 +321,7 @@ void __58__UIDictationStreamingOperations_pushInsertTextForSpeech___block_invoke
   v10[2] = __63__UIDictationStreamingOperations_pushReplaceSelectionWithText___block_invoke;
   v10[3] = &unk_1E70F2F80;
   objc_copyWeak(&v12, location);
-  v7 = v4;
+  v7 = textCopy;
   v11 = v7;
   [(UIDictationStreamingOperations *)self pushSpeechOperationWithSelectionChangeDelta:1 block:v10];
 
@@ -335,10 +335,10 @@ void __63__UIDictationStreamingOperations_pushReplaceSelectionWithText___block_i
   [WeakRetained _performReplaceSelectedText:*(a1 + 32)];
 }
 
-- (void)willEndEditingInInputDelegate:(id)a3
+- (void)willEndEditingInInputDelegate:(id)delegate
 {
-  v4 = a3;
-  if (self->_document == v4)
+  delegateCopy = delegate;
+  if (self->_document == delegateCopy)
   {
     [(UIDictationStreamingOperations *)self setDocument:0];
     [(UIDictationStreamingOperations *)self clearOperations];
@@ -367,16 +367,16 @@ void __63__UIDictationStreamingOperations_pushReplaceSelectionWithText___block_i
 
 - (BOOL)isEmpty
 {
-  v2 = [(UIDictationStreamingOperations *)self operations];
-  v3 = [v2 count] == 0;
+  operations = [(UIDictationStreamingOperations *)self operations];
+  v3 = [operations count] == 0;
 
   return v3;
 }
 
 - (BOOL)isNotEmpty
 {
-  v2 = [(UIDictationStreamingOperations *)self operations];
-  v3 = [v2 count] != 0;
+  operations = [(UIDictationStreamingOperations *)self operations];
+  v3 = [operations count] != 0;
 
   return v3;
 }
@@ -388,8 +388,8 @@ void __63__UIDictationStreamingOperations_pushReplaceSelectionWithText___block_i
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UIDictationStreamingOperations *)self operations];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  operations = [(UIDictationStreamingOperations *)self operations];
+  v3 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -401,13 +401,13 @@ void __63__UIDictationStreamingOperations_pushReplaceSelectionWithText___block_i
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(operations);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) selectionChangeDelta];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);

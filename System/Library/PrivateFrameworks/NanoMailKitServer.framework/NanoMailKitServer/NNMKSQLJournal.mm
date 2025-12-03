@@ -1,6 +1,6 @@
 @interface NNMKSQLJournal
-- (BOOL)appendSQLStatement:(id)a3;
-- (NNMKSQLJournal)initWithPath:(id)a3;
+- (BOOL)appendSQLStatement:(id)statement;
+- (NNMKSQLJournal)initWithPath:(id)path;
 - (id)_journalFilesEnumerator;
 - (id)_nextFilePath;
 - (id)_sortedJournalFiles;
@@ -8,36 +8,36 @@
 - (void)_flush;
 - (void)deleteJournalFiles;
 - (void)flushIfNeeded;
-- (void)mergeUsingBlock:(id)a3;
+- (void)mergeUsingBlock:(id)block;
 @end
 
 @implementation NNMKSQLJournal
 
-- (NNMKSQLJournal)initWithPath:(id)a3
+- (NNMKSQLJournal)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = NNMKSQLJournal;
   v6 = [(NNMKSQLJournal *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_directoryPath, a3);
+    objc_storeStrong(&v6->_directoryPath, path);
     v8 = dispatch_queue_create("com.apple.NanoMailKit.SQLJournal", 0);
     journalQueue = v7->_journalQueue;
     v7->_journalQueue = v8;
 
     v7->_filesCount = [(NNMKSQLJournal *)v7 _currentFilesCount];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    [v10 createDirectoryAtPath:v7->_directoryPath withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:v7->_directoryPath withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:0];
   }
 
   return v7;
 }
 
-- (BOOL)appendSQLStatement:(id)a3
+- (BOOL)appendSQLStatement:(id)statement
 {
-  v4 = a3;
+  statementCopy = statement;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -47,10 +47,10 @@
   block[1] = 3221225472;
   block[2] = __37__NNMKSQLJournal_appendSQLStatement___block_invoke;
   block[3] = &unk_279936570;
-  v9 = v4;
+  v9 = statementCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = statementCopy;
   dispatch_sync(journalQueue, block);
   LOBYTE(journalQueue) = *(v12 + 24);
 
@@ -113,9 +113,9 @@ void *__31__NNMKSQLJournal_flushIfNeeded__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)mergeUsingBlock:(id)a3
+- (void)mergeUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(NNMKSQLJournal *)self flushIfNeeded];
   journalQueue = self->_journalQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -123,8 +123,8 @@ void *__31__NNMKSQLJournal_flushIfNeeded__block_invoke(uint64_t a1)
   v7[2] = __34__NNMKSQLJournal_mergeUsingBlock___block_invoke;
   v7[3] = &unk_279936598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(journalQueue, v7);
 }
 
@@ -355,8 +355,8 @@ void __36__NNMKSQLJournal_deleteJournalFiles__block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NNMKSQLJournal *)self _journalFilesEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _journalFilesEnumerator = [(NNMKSQLJournal *)self _journalFilesEnumerator];
+  v3 = [_journalFilesEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = 0;
@@ -367,19 +367,19 @@ void __36__NNMKSQLJournal_deleteJournalFiles__block_invoke(uint64_t a1)
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_journalFilesEnumerator);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) lastPathComponent];
-        if ([v7 compare:v4] == 1)
+        lastPathComponent = [*(*(&v11 + 1) + 8 * i) lastPathComponent];
+        if ([lastPathComponent compare:v4] == 1)
         {
-          v8 = v7;
+          v8 = lastPathComponent;
 
           v4 = v8;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [_journalFilesEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v3);
@@ -391,7 +391,7 @@ void __36__NNMKSQLJournal_deleteJournalFiles__block_invoke(uint64_t a1)
     }
 
     v3 = [v4 longLongValue] + 1;
-    v2 = v4;
+    _journalFilesEnumerator = v4;
   }
 
 LABEL_14:
@@ -405,10 +405,10 @@ LABEL_14:
   v2 = [MEMORY[0x277CBEBC0] URLWithString:self->_directoryPath];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v8[0] = *MEMORY[0x277CBE8E8];
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-    v5 = [v3 enumeratorAtURL:v2 includingPropertiesForKeys:v4 options:5 errorHandler:&__block_literal_global_8];
+    v5 = [defaultManager enumeratorAtURL:v2 includingPropertiesForKeys:v4 options:5 errorHandler:&__block_literal_global_8];
   }
 
   else
@@ -436,7 +436,7 @@ uint64_t __41__NNMKSQLJournal__journalFilesEnumerator__block_invoke(uint64_t a1,
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_error_impl(&dword_25B19F000, log, OS_LOG_TYPE_ERROR, "Error flushing journal file. (Path: %{public}@ - Error: %{public}@).", &v4, 0x16u);
@@ -453,8 +453,8 @@ uint64_t __41__NNMKSQLJournal__journalFilesEnumerator__block_invoke(uint64_t a1,
 
 - (id)_sortedJournalFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:self->_directoryPath error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:self->_directoryPath error:0];
 
   v5 = [v4 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 

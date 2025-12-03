@@ -1,13 +1,13 @@
 @interface NavigationBarBottomPromptPaletteContentView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation NavigationBarBottomPromptPaletteContentView
 
-- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithCoder:(id)a3
+- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView_textLabel;
   *(&self->super.super.super.isa + v3) = sub_18E7B8();
@@ -39,7 +39,7 @@
   [v4 setFrame:{0.0, 0.0, Width, v7}];
 }
 
-- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication43NavigationBarBottomPromptPaletteContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

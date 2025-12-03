@@ -6,11 +6,11 @@
 + (id)_weekdayDateFormatter;
 - (BOOL)timeDesignatorAppearsBeforeTime;
 - (BOOL)use24HourTime;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)timeDesignatorSize;
 - (NSString)_dateString;
 - (NSString)timeDesignator;
-- (UIDateLabel)initWithFrame:(CGRect)a3;
+- (UIDateLabel)initWithFrame:(CGRect)frame;
 - (double)_noon;
 - (double)_today;
 - (double)_tomorrow;
@@ -18,20 +18,20 @@
 - (double)_yesterday;
 - (double)timeInterval;
 - (id)_calendar;
-- (id)_dateWithDayDiffFromToday:(int64_t)a3;
+- (id)_dateWithDayDiffFromToday:(int64_t)today;
 - (id)_stringDrawingContext;
 - (id)_todayDate;
 - (id)font;
 - (id)text;
 - (void)_recomputeTextIfNecessary;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)invalidate;
-- (void)setBoldForAllLocales:(BOOL)a3;
-- (void)setDate:(id)a3;
-- (void)setForceTimeOnly:(BOOL)a3;
-- (void)setTimeInterval:(double)a3;
+- (void)setBoldForAllLocales:(BOOL)locales;
+- (void)setDate:(id)date;
+- (void)setForceTimeOnly:(BOOL)only;
+- (void)setTimeInterval:(double)interval;
 @end
 
 @implementation UIDateLabel
@@ -66,7 +66,7 @@
 {
   if (self->_forceTimeOnly || ([(UIDateLabel *)self timeInterval], v6 = v5, [(UIDateLabel *)self _today], v6 >= v7) && ([(UIDateLabel *)self timeInterval], v9 = v8, [(UIDateLabel *)self _tomorrow], v9 < v10))
   {
-    v3 = [objc_opt_class() _timeOnlyDateFormatter];
+    _timeOnlyDateFormatter = [objc_opt_class() _timeOnlyDateFormatter];
     goto LABEL_3;
   }
 
@@ -80,7 +80,7 @@
     [(UIDateLabel *)self _yesterday];
     if (v15 >= v16)
     {
-      v3 = [objc_opt_class() _relativeDateFormatter];
+      _timeOnlyDateFormatter = [objc_opt_class() _relativeDateFormatter];
     }
 
     else
@@ -93,21 +93,21 @@
         goto LABEL_10;
       }
 
-      v3 = [objc_opt_class() _weekdayDateFormatter];
+      _timeOnlyDateFormatter = [objc_opt_class() _weekdayDateFormatter];
     }
 
 LABEL_3:
-    v4 = v3;
-    if (v3)
+    _dateFormatter = _timeOnlyDateFormatter;
+    if (_timeOnlyDateFormatter)
     {
       goto LABEL_11;
     }
   }
 
 LABEL_10:
-  v4 = [objc_opt_class() _dateFormatter];
+  _dateFormatter = [objc_opt_class() _dateFormatter];
 LABEL_11:
-  v20 = [v4 stringFromDate:self->_date];
+  v20 = [_dateFormatter stringFromDate:self->_date];
 
   return v20;
 }
@@ -116,16 +116,16 @@ LABEL_11:
 {
   if ([(UIDateLabel *)self shouldRecomputeText])
   {
-    v3 = [(UIDateLabel *)self _dateString];
-    [(UILabel *)self setText:v3];
-    v4 = [(UIDateLabel *)self boldForAllLocales];
+    _dateString = [(UIDateLabel *)self _dateString];
+    [(UILabel *)self setText:_dateString];
+    boldForAllLocales = [(UIDateLabel *)self boldForAllLocales];
     v9.receiver = self;
     v9.super_class = UIDateLabel;
-    v5 = [(UILabel *)&v9 font];
-    if (((v4 ^ (([v5 traits] & 2) == 0)) & 1) == 0)
+    font = [(UILabel *)&v9 font];
+    if (((boldForAllLocales ^ (([font traits] & 2) == 0)) & 1) == 0)
     {
-      v6 = [v5 familyName];
-      if (v4)
+      familyName = [font familyName];
+      if (boldForAllLocales)
       {
         v7 = 2;
       }
@@ -135,8 +135,8 @@ LABEL_11:
         v7 = 0;
       }
 
-      [v5 pointSize];
-      v8 = [off_1E70ECC18 fontWithFamilyName:v6 traits:v7 size:?];
+      [font pointSize];
+      v8 = [off_1E70ECC18 fontWithFamilyName:familyName traits:v7 size:?];
 
       [(UILabel *)self setFont:v8];
     }
@@ -151,13 +151,13 @@ LABEL_11:
   noon = self->_noon;
   if (!noon)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [(UIDateLabel *)self _calendar];
-    v6 = [v5 components:30 fromDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    _calendar = [(UIDateLabel *)self _calendar];
+    v6 = [_calendar components:30 fromDate:date];
 
     [v6 setHour:12];
-    v7 = [(UIDateLabel *)self _calendar];
-    v8 = [v7 dateFromComponents:v6];
+    _calendar2 = [(UIDateLabel *)self _calendar];
+    v8 = [_calendar2 dateFromComponents:v6];
     v9 = self->_noon;
     self->_noon = v8;
 
@@ -177,8 +177,8 @@ LABEL_11:
 
   else
   {
-    v4 = [objc_opt_class() _designatorFormatter];
-    v3 = [v4 stringFromDate:self->_date];
+    _designatorFormatter = [objc_opt_class() _designatorFormatter];
+    v3 = [_designatorFormatter stringFromDate:self->_date];
   }
 
   return v3;
@@ -188,9 +188,9 @@ LABEL_11:
 {
   if (!self->_calendar || ([MEMORY[0x1E695DF58] systemLocale], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "localeIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), -[NSCalendar calendarIdentifier](self->_calendar, "calendarIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToString:", v5), v5, v4, v3, (v6 & 1) == 0))
   {
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = self->_calendar;
-    self->_calendar = v7;
+    self->_calendar = currentCalendar;
   }
 
   v9 = self->_calendar;
@@ -203,12 +203,12 @@ LABEL_11:
   today = self->_today;
   if (!today)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [(UIDateLabel *)self _calendar];
-    v6 = [v5 components:30 fromDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    _calendar = [(UIDateLabel *)self _calendar];
+    v6 = [_calendar components:30 fromDate:date];
 
-    v7 = [(UIDateLabel *)self _calendar];
-    v8 = [v7 dateFromComponents:v6];
+    _calendar2 = [(UIDateLabel *)self _calendar];
+    v8 = [_calendar2 dateFromComponents:v6];
     v9 = self->_today;
     self->_today = v8;
 
@@ -220,8 +220,8 @@ LABEL_11:
 
 - (double)timeInterval
 {
-  v2 = [(UIDateLabel *)self date];
-  [v2 timeIntervalSinceReferenceDate];
+  date = [(UIDateLabel *)self date];
+  [date timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -232,15 +232,15 @@ LABEL_11:
   [(UIDateLabel *)self _recomputeTextIfNecessary];
   v5.receiver = self;
   v5.super_class = UIDateLabel;
-  v3 = [(UILabel *)&v5 text];
+  text = [(UILabel *)&v5 text];
 
-  return v3;
+  return text;
 }
 
 - (double)_today
 {
-  v2 = [(UIDateLabel *)self _todayDate];
-  [v2 timeIntervalSinceReferenceDate];
+  _todayDate = [(UIDateLabel *)self _todayDate];
+  [_todayDate timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -336,8 +336,8 @@ LABEL_11:
   if (!qword_1ED49AE88)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    [v3 setLocale:v4];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v3 setLocale:currentLocale];
 
     [v3 setDateStyle:1];
     [v3 setTimeStyle:0];
@@ -354,24 +354,24 @@ LABEL_11:
 {
   v4.receiver = self;
   v4.super_class = UIDateLabel;
-  v2 = [(UILabel *)&v4 _stringDrawingContext];
-  [v2 setCachesLayout:0];
+  _stringDrawingContext = [(UILabel *)&v4 _stringDrawingContext];
+  [_stringDrawingContext setCachesLayout:0];
 
-  return v2;
+  return _stringDrawingContext;
 }
 
 - (CGSize)timeDesignatorSize
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIDateLabel *)self timeDesignator];
-  if ([v3 length])
+  timeDesignator = [(UIDateLabel *)self timeDesignator];
+  if ([timeDesignator length])
   {
-    v4 = [(UIDateLabel *)self timeDesignatorFont];
+    timeDesignatorFont = [(UIDateLabel *)self timeDesignatorFont];
     v13 = *off_1E70EC918;
-    v14[0] = v4;
+    v14[0] = timeDesignatorFont;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v6 = [(UIDateLabel *)self _stringDrawingContext];
-    [v3 boundingRectWithSize:65 options:v5 attributes:v6 context:{3.40282347e38, 3.40282347e38}];
+    _stringDrawingContext = [(UIDateLabel *)self _stringDrawingContext];
+    [timeDesignator boundingRectWithSize:65 options:v5 attributes:_stringDrawingContext context:{3.40282347e38, 3.40282347e38}];
     v8 = v7;
     v10 = v9;
   }
@@ -391,12 +391,12 @@ LABEL_11:
 
 - (id)font
 {
-  v3 = [(UIDateLabel *)self text];
+  text = [(UIDateLabel *)self text];
   v6.receiver = self;
   v6.super_class = UIDateLabel;
-  v4 = [(UILabel *)&v6 font];
+  font = [(UILabel *)&v6 font];
 
-  return v4;
+  return font;
 }
 
 - (BOOL)timeDesignatorAppearsBeforeTime
@@ -409,21 +409,21 @@ LABEL_11:
   return byte_1ED49AE82;
 }
 
-- (UIDateLabel)initWithFrame:(CGRect)a3
+- (UIDateLabel)initWithFrame:(CGRect)frame
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = UIDateLabel;
-  v3 = [(UILabel *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UILabel *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_paddingFromTimeToDesignator = 2.0;
     [(UIDateLabel *)v3 setShouldRecomputeText:1];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_invalidate name:0x1EFB8EE90 object:UIApp];
-    [v5 addObserver:v4 selector:sel_invalidate name:0x1EFB8EED0 object:UIApp];
-    [v5 addObserver:v4 selector:sel_invalidate name:0x1EFB8EEF0 object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_invalidate name:0x1EFB8EE90 object:UIApp];
+    [defaultCenter addObserver:v4 selector:sel_invalidate name:0x1EFB8EED0 object:UIApp];
+    [defaultCenter addObserver:v4 selector:sel_invalidate name:0x1EFB8EEF0 object:UIApp];
     v6 = [UIColor colorWithRed:0.141176471 green:0.439215686 blue:0.847058824 alpha:1.0];
     [(UILabel *)v4 setTextColor:v6];
 
@@ -440,22 +440,22 @@ LABEL_11:
 - (void)dealloc
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = 0x1EFB8EE90;
   v6[1] = 0x1EFB8EED0;
   v6[2] = 0x1EFB8EEF0;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIDateLabel;
   [(UILabel *)&v5 dealloc];
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIDateLabel *)self _recomputeTextIfNecessary];
   v14.receiver = self;
   v14.super_class = UIDateLabel;
@@ -480,30 +480,30 @@ LABEL_11:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
 
   [(UIDateLabel *)self drawTextInRect:?];
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v57[3] = *MEMORY[0x1E69E9840];
   [(UIDateLabel *)self _recomputeTextIfNecessary];
-  v8 = [(UIDateLabel *)self timeDesignator];
-  v9 = [(UIDateLabel *)self timeDesignatorAppearsBeforeTime];
-  v10 = [v8 length];
+  timeDesignator = [(UIDateLabel *)self timeDesignator];
+  timeDesignatorAppearsBeforeTime = [(UIDateLabel *)self timeDesignatorAppearsBeforeTime];
+  v10 = [timeDesignator length];
   if (v10)
   {
-    v9 ^= [v8 _isNaturallyRTL];
+    timeDesignatorAppearsBeforeTime ^= [timeDesignator _isNaturallyRTL];
   }
 
-  v11 = [(UIDateLabel *)self timeDesignatorFont];
+  timeDesignatorFont = [(UIDateLabel *)self timeDesignatorFont];
   [(UILabel *)self textSize];
   if (v10)
   {
@@ -542,7 +542,7 @@ LABEL_11:
       v23 = v22;
     }
 
-    if (v9)
+    if (timeDesignatorAppearsBeforeTime)
     {
       v24 = v17;
     }
@@ -552,7 +552,7 @@ LABEL_11:
       v24 = v20;
     }
 
-    if (v9)
+    if (timeDesignatorAppearsBeforeTime)
     {
       v25 = x;
     }
@@ -562,7 +562,7 @@ LABEL_11:
       v25 = v19;
     }
 
-    if (v9)
+    if (timeDesignatorAppearsBeforeTime)
     {
       v26 = v23;
     }
@@ -597,11 +597,11 @@ LABEL_11:
     [(UILabel *)self _drawingRectForBounds:x, y, width, height];
     v37 = v36;
     v39 = v38;
-    v52 = [(UIDateLabel *)self _stringDrawingContext];
+    _stringDrawingContext = [(UIDateLabel *)self _stringDrawingContext];
     v40 = objc_alloc_init(off_1E70ECB80);
     [v40 setLineBreakMode:2];
-    v41 = [(UILabel *)self shadowColor];
-    if ([(UIView *)self isUserInteractionEnabled]&& v41)
+    shadowColor = [(UILabel *)self shadowColor];
+    if ([(UIView *)self isUserInteractionEnabled]&& shadowColor)
     {
       [(UILabel *)self shadowOffset];
       v43 = *off_1E70EC918;
@@ -609,94 +609,94 @@ LABEL_11:
       v45 = *off_1E70EC988;
       if (v46 == 0.0 && v42 == 0.0)
       {
-        v47 = v11;
+        v47 = timeDesignatorFont;
       }
 
       else
       {
         v56[0] = *off_1E70EC918;
         v56[1] = v44;
-        v47 = v11;
-        v57[0] = v11;
-        v57[1] = v41;
+        v47 = timeDesignatorFont;
+        v57[0] = timeDesignatorFont;
+        v57[1] = shadowColor;
         v56[2] = v45;
         v57[2] = v40;
         v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
-        [v8 drawWithRect:65 options:v48 attributes:v52 context:{v28, v37, v30, v39}];
+        [timeDesignator drawWithRect:65 options:v48 attributes:_stringDrawingContext context:{v28, v37, v30, v39}];
       }
     }
 
     else
     {
-      v47 = v11;
+      v47 = timeDesignatorFont;
       v43 = *off_1E70EC918;
       v44 = *off_1E70EC920;
       v45 = *off_1E70EC988;
     }
 
-    v49 = [(UILabel *)self currentTextColor];
-    [v49 set];
+    currentTextColor = [(UILabel *)self currentTextColor];
+    [currentTextColor set];
 
     v55[0] = v47;
     v54[0] = v43;
     v54[1] = v44;
-    v50 = [(UILabel *)self currentTextColor];
+    currentTextColor2 = [(UILabel *)self currentTextColor];
     v54[2] = v45;
-    v55[1] = v50;
+    v55[1] = currentTextColor2;
     v55[2] = v40;
-    v11 = v47;
+    timeDesignatorFont = v47;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:3];
 
-    [v8 drawWithRect:65 options:v51 attributes:v52 context:{v28, v37, v30, v39}];
+    [timeDesignator drawWithRect:65 options:v51 attributes:_stringDrawingContext context:{v28, v37, v30, v39}];
   }
 }
 
-- (id)_dateWithDayDiffFromToday:(int64_t)a3
+- (id)_dateWithDayDiffFromToday:(int64_t)today
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v5 setDay:a3];
-  v6 = [(UIDateLabel *)self _calendar];
-  v7 = [(UIDateLabel *)self _todayDate];
-  v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:0];
+  [v5 setDay:today];
+  _calendar = [(UIDateLabel *)self _calendar];
+  _todayDate = [(UIDateLabel *)self _todayDate];
+  v8 = [_calendar dateByAddingComponents:v5 toDate:_todayDate options:0];
 
   return v8;
 }
 
-- (void)setForceTimeOnly:(BOOL)a3
+- (void)setForceTimeOnly:(BOOL)only
 {
-  if (self->_forceTimeOnly != a3)
+  if (self->_forceTimeOnly != only)
   {
-    self->_forceTimeOnly = a3;
+    self->_forceTimeOnly = only;
     [(UIDateLabel *)self setShouldRecomputeText:1];
 
     [(UILabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setBoldForAllLocales:(BOOL)a3
+- (void)setBoldForAllLocales:(BOOL)locales
 {
-  if (self->_boldForAllLocales != a3)
+  if (self->_boldForAllLocales != locales)
   {
-    self->_boldForAllLocales = a3;
+    self->_boldForAllLocales = locales;
     [(UIDateLabel *)self setShouldRecomputeText:1];
 
     [(UILabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_date isEqualToDate:?])
   {
-    objc_storeStrong(&self->_date, a3);
+    objc_storeStrong(&self->_date, date);
     [(UIDateLabel *)self invalidate];
   }
 }
 
-- (void)setTimeInterval:(double)a3
+- (void)setTimeInterval:(double)interval
 {
-  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:interval];
   [(UIDateLabel *)self setDate:v4];
 }
 
@@ -711,8 +711,8 @@ LABEL_11:
   if (!qword_1ED49AE98)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    [v3 setLocale:v4];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v3 setLocale:currentLocale];
 
     [v3 setDateStyle:1];
     [v3 setTimeStyle:0];
@@ -737,8 +737,8 @@ LABEL_11:
   if (!qword_1ED49AEA0)
   {
     v3 = MEMORY[0x1E696AB78];
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    v5 = [v3 dateFormatFromTemplate:@"cccc" options:0 locale:v4];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v5 = [v3 dateFormatFromTemplate:@"cccc" options:0 locale:currentLocale];
 
     v6 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v6 setDateFormat:v5];
@@ -762,8 +762,8 @@ LABEL_11:
   if (!qword_1ED49AEA8)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    [v3 setLocale:v4];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v3 setLocale:currentLocale];
 
     if (_MergedGlobals_7_14)
     {

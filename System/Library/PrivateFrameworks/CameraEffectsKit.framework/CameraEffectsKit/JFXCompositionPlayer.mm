@@ -1,95 +1,95 @@
 @interface JFXCompositionPlayer
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentCMTime;
-- (BOOL)JFX_clipDataSourceHasClip:(id)a3;
+- (BOOL)JFX_clipDataSourceHasClip:(id)clip;
 - (BOOL)isAudioMuted;
 - (BOOL)isPlaying;
-- (BOOL)isRequestOfTypePendingOrQueued:(unint64_t)a3;
-- (BOOL)isRequestOfTypeQueued:(unint64_t)a3;
-- (BOOL)pause:(id)a3;
-- (BOOL)play:(id)a3;
-- (BOOL)setAudioMuted:(BOOL)a3 completionBlock:(id)a4;
-- (BOOL)updateComposition:(id)a3;
-- (BOOL)updateCompositionForClip:(id)a3 completion:(id)a4;
+- (BOOL)isRequestOfTypePendingOrQueued:(unint64_t)queued;
+- (BOOL)isRequestOfTypeQueued:(unint64_t)queued;
+- (BOOL)pause:(id)pause;
+- (BOOL)play:(id)play;
+- (BOOL)setAudioMuted:(BOOL)muted completionBlock:(id)block;
+- (BOOL)updateComposition:(id)composition;
+- (BOOL)updateCompositionForClip:(id)clip completion:(id)completion;
 - (CGSize)renderSize;
-- (JFXCompositionPlayer)initWithClipsDataSource:(id)a3 seekPosition:(int)a4 audioMuted:(BOOL)a5;
+- (JFXCompositionPlayer)initWithClipsDataSource:(id)source seekPosition:(int)position audioMuted:(BOOL)muted;
 - (JFXCompositionPlayerDelegate)playbackDelegate;
-- (id)firstQueuedRequestOfType:(unint64_t)a3;
+- (id)firstQueuedRequestOfType:(unint64_t)type;
 - (id)removeAllRequests;
-- (id)removeRequestOfType:(unint64_t)a3;
-- (id)requestWithBlock:(id)a3 ofType:(unint64_t)a4 completion:(id)a5;
+- (id)removeRequestOfType:(unint64_t)type;
+- (id)requestWithBlock:(id)block ofType:(unint64_t)type completion:(id)completion;
 - (int)currentTime;
 - (int)duration;
-- (void)appendRequests:(id)a3;
-- (void)cancelQueuedCompositionUpdateRequestFromClip:(id)a3;
-- (void)cancelQueuedRequestOfType:(unint64_t)a3;
+- (void)appendRequests:(id)requests;
+- (void)cancelQueuedCompositionUpdateRequestFromClip:(id)clip;
+- (void)cancelQueuedRequestOfType:(unint64_t)type;
 - (void)checkPendingRequestForTimeOut;
 - (void)clearQueuedRequests;
-- (void)completePendingRequest:(BOOL)a3 wasCancelled:(BOOL)a4 error:(id)a5;
-- (void)completeRequest:(id)a3 success:(BOOL)a4 wasCancelled:(BOOL)a5 error:(id)a6;
+- (void)completePendingRequest:(BOOL)request wasCancelled:(BOOL)cancelled error:(id)error;
+- (void)completeRequest:(id)request success:(BOOL)success wasCancelled:(BOOL)cancelled error:(id)error;
 - (void)configureCompositorCompletionBlock;
 - (void)createPlayer;
 - (void)dealloc;
 - (void)destroyPlayer;
-- (void)dispatchBlockWhenDone:(id)a3;
-- (void)doClipCompositionUpdate:(id)a3;
-- (void)doMuteAudio:(BOOL)a3;
+- (void)dispatchBlockWhenDone:(id)done;
+- (void)doClipCompositionUpdate:(id)update;
+- (void)doMuteAudio:(BOOL)audio;
 - (void)doPause;
 - (void)doPlay;
 - (void)doUpdateComposition;
-- (void)enqueueRequest:(id)a3;
+- (void)enqueueRequest:(id)request;
 - (void)executeNextRequest;
-- (void)executeRequestCompletionBlock:(id)a3 success:(BOOL)a4 wasCancelled:(BOOL)a5 error:(id)a6;
+- (void)executeRequestCompletionBlock:(id)block success:(BOOL)success wasCancelled:(BOOL)cancelled error:(id)error;
 - (void)handleChangeAudioMutedCompleted;
 - (void)handleClipCompositionUpdateTimedOut;
-- (void)handleCompositionRefreshCompleted:(BOOL)a3;
+- (void)handleCompositionRefreshCompleted:(BOOL)completed;
 - (void)handlePlaybackBegan;
 - (void)handlePlaybackPaused;
-- (void)handleReadyForDisplay:(BOOL)a3;
-- (void)handleSeekCompleted:(BOOL)a3;
-- (void)handleUpdateCompositionCompleted:(BOOL)a3 wasCancelled:(BOOL)a4 error:(id)a5;
-- (void)handleUpdateCompositionForClipCompleted:(BOOL)a3;
+- (void)handleReadyForDisplay:(BOOL)display;
+- (void)handleSeekCompleted:(BOOL)completed;
+- (void)handleUpdateCompositionCompleted:(BOOL)completed wasCancelled:(BOOL)cancelled error:(id)error;
+- (void)handleUpdateCompositionForClipCompleted:(BOOL)completed;
 - (void)notifyPlayerViewSizeChanged;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeCompositorCompletionBlock;
 - (void)resetPlaybackTimeChangedObserverInterval;
-- (void)seek:(int)a3 cancelQueuedRequest:(BOOL)a4 tolerance:(int)a5 completion:(id)a6;
-- (void)setCachedCurrentTimeForCompositionUpdate:(id *)a3;
-- (void)setPlaybackTimeChangedObserverInterval:(id *)a3;
-- (void)setPlayerView:(id)a3 completionBlock:(id)a4;
-- (void)setWasCurrentTime:(id *)a3;
+- (void)seek:(int)seek cancelQueuedRequest:(BOOL)request tolerance:(int)tolerance completion:(id)completion;
+- (void)setCachedCurrentTimeForCompositionUpdate:(id *)update;
+- (void)setPlaybackTimeChangedObserverInterval:(id *)interval;
+- (void)setPlayerView:(id)view completionBlock:(id)block;
+- (void)setWasCurrentTime:(id *)time;
 - (void)setupPlaybackTimeChangedObserver;
-- (void)teardownSetPlaceHolder:(BOOL)a3;
-- (void)throttleRequestWithCompletionBlock:(id)a3 ofType:(unint64_t)a4;
-- (void)warnTooManyLiveCompositors:(id)a3;
+- (void)teardownSetPlaceHolder:(BOOL)holder;
+- (void)throttleRequestWithCompletionBlock:(id)block ofType:(unint64_t)type;
+- (void)warnTooManyLiveCompositors:(id)compositors;
 @end
 
 @implementation JFXCompositionPlayer
 
-- (JFXCompositionPlayer)initWithClipsDataSource:(id)a3 seekPosition:(int)a4 audioMuted:(BOOL)a5
+- (JFXCompositionPlayer)initWithClipsDataSource:(id)source seekPosition:(int)position audioMuted:(BOOL)muted
 {
-  v9 = a3;
+  sourceCopy = source;
   v18.receiver = self;
   v18.super_class = JFXCompositionPlayer;
   v10 = [(JFXCompositionPlayer *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_clipsDataSource, a3);
+    objc_storeStrong(&v10->_clipsDataSource, source);
     v11->_playbackTimeChangedObserverInterval.epoch = 0;
     *&v11->_playbackTimeChangedObserverInterval.value = kDefaultPlaybackTimeObserverInterval;
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     requestQueue = v11->_requestQueue;
     v11->_requestQueue = v12;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v11 selector:sel_warnTooManyLiveCompositors_ name:*MEMORY[0x277D41B78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_warnTooManyLiveCompositors_ name:*MEMORY[0x277D41B78] object:0];
 
-    CMTimeFromFrameTime(a4, [(JFXCompositionPlayableElementsDataSource *)v11->_clipsDataSource frameRate], &v17);
+    CMTimeFromFrameTime(position, [(JFXCompositionPlayableElementsDataSource *)v11->_clipsDataSource frameRate], &v17);
     v11->_wasCurrentTime = v17;
     v15 = MEMORY[0x277CC08F0];
     *&v11->_cachedCurrentTimeForCompositionUpdate.value = *MEMORY[0x277CC08F0];
     v11->_cachedCurrentTimeForCompositionUpdate.epoch = *(v15 + 16);
-    v11->_wasAudioMuted = a5;
+    v11->_wasAudioMuted = muted;
     v11->_wasPlaying = 0;
     v11->_parentCode = -1;
   }
@@ -99,8 +99,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(JFXCompositionPlayer *)self teardownSetPlaceHolder:0];
   v4.receiver = self;
@@ -108,78 +108,78 @@
   [(JFXCompositionPlayer *)&v4 dealloc];
 }
 
-- (void)teardownSetPlaceHolder:(BOOL)a3
+- (void)teardownSetPlaceHolder:(BOOL)holder
 {
-  v3 = a3;
+  holderCopy = holder;
   v15 = *MEMORY[0x277D85DE8];
   v5 = JFXLog_DebugPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(JFXCompositionPlayer *)self displayName];
+    displayName = [(JFXCompositionPlayer *)self displayName];
     v13 = 138543362;
-    v14 = v6;
+    v14 = displayName;
     _os_log_impl(&dword_242A3B000, v5, OS_LOG_TYPE_DEFAULT, "Player %{public}@ Tear Down", &v13, 0xCu);
   }
 
-  v7 = [(JFXCompositionPlayer *)self playbackDelegate];
+  playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(JFXCompositionPlayer *)self playbackDelegate];
-    [v9 playbackReadyForDisplayChanged:self isReady:0 setPlaceHolder:v3];
+    playbackDelegate2 = [(JFXCompositionPlayer *)self playbackDelegate];
+    [playbackDelegate2 playbackReadyForDisplayChanged:self isReady:0 setPlaceHolder:holderCopy];
   }
 
   [(JFXCompositionPlayer *)self clearQueuedRequests];
-  v10 = [(JFXCompositionPlayer *)self pendingRequest];
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
 
-  if (v10)
+  if (pendingRequest)
   {
-    v11 = [(JFXCompositionPlayer *)self pendingRequest];
-    [(JFXCompositionPlayer *)self executeRequestCompletionBlock:v11 success:0 wasCancelled:1 error:0];
+    pendingRequest2 = [(JFXCompositionPlayer *)self pendingRequest];
+    [(JFXCompositionPlayer *)self executeRequestCompletionBlock:pendingRequest2 success:0 wasCancelled:1 error:0];
 
     [(JFXCompositionPlayer *)self setPendingRequest:0];
   }
 
   [(JFXCompositionPlayer *)self destroyPlayer];
-  v12 = [(JFXCompositionPlayer *)self playerView];
-  [v12 setPlayer:0];
+  playerView = [(JFXCompositionPlayer *)self playerView];
+  [playerView setPlayer:0];
 }
 
-- (id)requestWithBlock:(id)a3 ofType:(unint64_t)a4 completion:(id)a5
+- (id)requestWithBlock:(id)block ofType:(unint64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[JFXCompositionPlayerRequest alloc] initWithBlock:v9 ofType:a4];
+  completionCopy = completion;
+  blockCopy = block;
+  v10 = [[JFXCompositionPlayerRequest alloc] initWithBlock:blockCopy ofType:type];
 
   [(JFXCompositionPlayerRequest *)v10 setPlayer:self];
-  [(JFXCompositionPlayerRequest *)v10 setCompletionBlock:v8];
+  [(JFXCompositionPlayerRequest *)v10 setCompletionBlock:completionCopy];
 
   return v10;
 }
 
-- (BOOL)isRequestOfTypePendingOrQueued:(unint64_t)a3
+- (BOOL)isRequestOfTypePendingOrQueued:(unint64_t)queued
 {
-  v5 = [(JFXCompositionPlayer *)self pendingRequest];
-  v6 = [v5 type];
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v6 == a3)
+  if (type == queued)
   {
     return 1;
   }
 
-  return [(JFXCompositionPlayer *)self isRequestOfTypeQueued:a3];
+  return [(JFXCompositionPlayer *)self isRequestOfTypeQueued:queued];
 }
 
-- (id)firstQueuedRequestOfType:(unint64_t)a3
+- (id)firstQueuedRequestOfType:(unint64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(JFXCompositionPlayer *)self requestQueue];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v5 = [requestQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -190,18 +190,18 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestQueue);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 type] == a3)
+        if ([v9 type] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [requestQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -220,15 +220,15 @@ LABEL_11:
 - (void)checkPendingRequestForTimeOut
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [a1 pendingRequest];
+  pendingRequest = [self pendingRequest];
   v6 = 138543618;
-  v7 = v5;
+  v7 = pendingRequest;
   v8 = 2048;
   v9 = a3;
   _os_log_error_impl(&dword_242A3B000, a2, OS_LOG_TYPE_ERROR, "Request %{public}@ Timed Out because it had not completed executing in %f sec", &v6, 0x16u);
 }
 
-- (id)removeRequestOfType:(unint64_t)a3
+- (id)removeRequestOfType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -236,8 +236,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(JFXCompositionPlayer *)self requestQueue];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v7 = [requestQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -248,17 +248,17 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestQueue);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 type] == a3)
+        if ([v11 type] == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [requestQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -266,8 +266,8 @@ LABEL_11:
 
   if ([v5 count])
   {
-    v12 = [(JFXCompositionPlayer *)self requestQueue];
-    [v12 removeObjectsInArray:v5];
+    requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+    [requestQueue2 removeObjectsInArray:v5];
   }
 
   return v5;
@@ -276,40 +276,40 @@ LABEL_11:
 - (id)removeAllRequests
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(JFXCompositionPlayer *)self requestQueue];
-  v5 = [v4 count];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v5 = [requestQueue count];
 
   if (v5)
   {
-    v6 = [(JFXCompositionPlayer *)self requestQueue];
-    [v3 addObjectsFromArray:v6];
+    requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+    [v3 addObjectsFromArray:requestQueue2];
 
-    v7 = [(JFXCompositionPlayer *)self requestQueue];
-    [v7 removeAllObjects];
+    requestQueue3 = [(JFXCompositionPlayer *)self requestQueue];
+    [requestQueue3 removeAllObjects];
   }
 
   return v3;
 }
 
-- (void)appendRequests:(id)a3
+- (void)appendRequests:(id)requests
 {
-  v5 = a3;
-  if ([v5 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
-    v4 = [(JFXCompositionPlayer *)self requestQueue];
-    [v4 addObjectsFromArray:v5];
+    requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+    [requestQueue addObjectsFromArray:requestsCopy];
   }
 }
 
-- (BOOL)isRequestOfTypeQueued:(unint64_t)a3
+- (BOOL)isRequestOfTypeQueued:(unint64_t)queued
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(JFXCompositionPlayer *)self requestQueue];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v5 = [requestQueue countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -320,17 +320,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestQueue);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) type] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) type] == queued)
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [requestQueue countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -353,8 +353,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(JFXCompositionPlayer *)self requestQueue];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v4 = [requestQueue countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -366,32 +366,32 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestQueue);
         }
 
         [(JFXCompositionPlayer *)self executeRequestCompletionBlock:*(*(&v9 + 1) + 8 * v7++) success:0 wasCancelled:1 error:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [requestQueue countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(JFXCompositionPlayer *)self requestQueue];
-  [v8 removeAllObjects];
+  requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+  [requestQueue2 removeAllObjects];
 }
 
-- (void)cancelQueuedRequestOfType:(unint64_t)a3
+- (void)cancelQueuedRequestOfType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(JFXCompositionPlayer *)self requestQueue];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v6 = [requestQueue countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -402,18 +402,18 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(requestQueue);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([v10 type] == a3)
+      if ([v10 type] == type)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [requestQueue countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -431,29 +431,29 @@ LABEL_3:
     }
 
     [(JFXCompositionPlayer *)self executeRequestCompletionBlock:v11 success:0 wasCancelled:1 error:0];
-    v12 = [(JFXCompositionPlayer *)self requestQueue];
-    [v12 removeObjectIdenticalTo:v11];
+    requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+    [requestQueue2 removeObjectIdenticalTo:v11];
 
-    v5 = v11;
+    requestQueue = v11;
   }
 
 LABEL_12:
 }
 
-- (void)cancelQueuedCompositionUpdateRequestFromClip:(id)a3
+- (void)cancelQueuedCompositionUpdateRequestFromClip:(id)clip
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clipCopy = clip;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(JFXCompositionPlayer *)self requestQueue];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  v6 = [requestQueue countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v6)
   {
 LABEL_11:
-    v11 = v5;
+    v11 = requestQueue;
     goto LABEL_14;
   }
 
@@ -465,7 +465,7 @@ LABEL_3:
   {
     if (*v17 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(requestQueue);
     }
 
     v10 = *(*(&v16 + 1) + 8 * v9);
@@ -475,9 +475,9 @@ LABEL_3:
     }
 
     v11 = v10;
-    v12 = [v11 clipUUID];
-    v13 = [v4 uuid];
-    v14 = [v12 isEqualToString:v13];
+    clipUUID = [v11 clipUUID];
+    uuid = [clipCopy uuid];
+    v14 = [clipUUID isEqualToString:uuid];
 
     if (v14)
     {
@@ -487,7 +487,7 @@ LABEL_3:
 LABEL_9:
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [requestQueue countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -503,22 +503,22 @@ LABEL_9:
   }
 
   [(JFXCompositionPlayer *)self executeRequestCompletionBlock:v11 success:0 wasCancelled:1 error:0];
-  v15 = [(JFXCompositionPlayer *)self requestQueue];
-  [v15 removeObjectIdenticalTo:v11];
+  requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+  [requestQueue2 removeObjectIdenticalTo:v11];
 
 LABEL_14:
 LABEL_15:
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(JFXCompositionPlayer *)self requestQueue];
-  [v5 addObject:v4];
+  requestCopy = request;
+  requestQueue = [(JFXCompositionPlayer *)self requestQueue];
+  [requestQueue addObject:requestCopy];
 
-  [v4 didEnqueue];
+  [requestCopy didEnqueue];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  [v4 setStartTime:?];
+  [requestCopy setStartTime:?];
   v6 = JFXLog_DebugPlayback();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
 
@@ -527,19 +527,19 @@ LABEL_15:
     v8 = JFXLog_DebugPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(JFXCompositionPlayer *)v4 enqueueRequest:v8];
+      [(JFXCompositionPlayer *)requestCopy enqueueRequest:v8];
     }
   }
 
-  v9 = [(JFXCompositionPlayer *)self pendingRequest];
-  if (v9)
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  if (pendingRequest)
   {
   }
 
   else
   {
-    v10 = [(JFXCompositionPlayer *)self requestQueue];
-    v11 = [v10 count];
+    requestQueue2 = [(JFXCompositionPlayer *)self requestQueue];
+    v11 = [requestQueue2 count];
 
     if (v11 == 1)
     {
@@ -618,32 +618,32 @@ void __42__JFXCompositionPlayer_executeNextRequest__block_invoke_150(uint64_t a1
   [WeakRetained checkPendingRequestForTimeOut];
 }
 
-- (void)completePendingRequest:(BOOL)a3 wasCancelled:(BOOL)a4 error:(id)a5
+- (void)completePendingRequest:(BOOL)request wasCancelled:(BOOL)cancelled error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(JFXCompositionPlayer *)self pendingRequest];
-  [(JFXCompositionPlayer *)self executeRequestCompletionBlock:v9 success:v6 wasCancelled:v5 error:v8];
+  cancelledCopy = cancelled;
+  requestCopy = request;
+  errorCopy = error;
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  [(JFXCompositionPlayer *)self executeRequestCompletionBlock:pendingRequest success:requestCopy wasCancelled:cancelledCopy error:errorCopy];
 
   [(JFXCompositionPlayer *)self executeNextRequest];
 }
 
-- (void)completeRequest:(id)a3 success:(BOOL)a4 wasCancelled:(BOOL)a5 error:(id)a6
+- (void)completeRequest:(id)request success:(BOOL)success wasCancelled:(BOOL)cancelled error:(id)error
 {
-  v10 = a3;
-  v11 = a6;
+  requestCopy = request;
+  errorCopy = error;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__JFXCompositionPlayer_completeRequest_success_wasCancelled_error___block_invoke;
   v14[3] = &unk_278D7C270;
   v14[4] = self;
-  v15 = v10;
-  v17 = a4;
-  v18 = a5;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  v15 = requestCopy;
+  successCopy = success;
+  cancelledCopy = cancelled;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -724,16 +724,16 @@ LABEL_16:
   }
 }
 
-- (void)executeRequestCompletionBlock:(id)a3 success:(BOOL)a4 wasCancelled:(BOOL)a5 error:(id)a6
+- (void)executeRequestCompletionBlock:(id)block success:(BOOL)success wasCancelled:(BOOL)cancelled error:(id)error
 {
-  v7 = a5;
+  cancelledCopy = cancelled;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  blockCopy = block;
+  errorCopy = error;
   v12 = JFXLog_DebugPlayback();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
 
-  if (v7)
+  if (cancelledCopy)
   {
     if (v13)
     {
@@ -741,12 +741,12 @@ LABEL_16:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v10;
+        v29 = blockCopy;
         _os_log_impl(&dword_242A3B000, v14, OS_LOG_TYPE_DEFAULT, "Request %{public}@ was throttled", buf, 0xCu);
       }
     }
 
-    [v10 didCancel];
+    [blockCopy didCancel];
   }
 
   else
@@ -758,30 +758,30 @@ LABEL_16:
       {
         [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
         v17 = v16;
-        v18 = [(JFXCompositionPlayer *)self pendingRequest];
-        [v18 startTime];
+        pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+        [pendingRequest startTime];
         *buf = 138543618;
-        v29 = v10;
+        v29 = blockCopy;
         v30 = 2048;
         v31 = v17 - v19;
         _os_log_impl(&dword_242A3B000, v15, OS_LOG_TYPE_DEFAULT, "Request %{public}@ completed in %f sec", buf, 0x16u);
       }
     }
 
-    [v10 didComplete];
+    [blockCopy didComplete];
   }
 
-  v20 = [v10 completionBlock];
+  completionBlock = [blockCopy completionBlock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__JFXCompositionPlayer_executeRequestCompletionBlock_success_wasCancelled_error___block_invoke;
   block[3] = &unk_278D7C298;
-  v26 = a4;
-  v27 = v7;
-  v24 = v11;
-  v25 = v20;
-  v21 = v11;
-  v22 = v20;
+  successCopy = success;
+  v27 = cancelledCopy;
+  v24 = errorCopy;
+  v25 = completionBlock;
+  v21 = errorCopy;
+  v22 = completionBlock;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -796,19 +796,19 @@ uint64_t __81__JFXCompositionPlayer_executeRequestCompletionBlock_success_wasCan
   return result;
 }
 
-- (void)throttleRequestWithCompletionBlock:(id)a3 ofType:(unint64_t)a4
+- (void)throttleRequestWithCompletionBlock:(id)block ofType:(unint64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  blockCopy = block;
   v7 = JFXLog_DebugPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [JFXCompositionPlayerRequest stringFromRequestType:a4];
-    v9 = [(JFXCompositionPlayer *)self displayName];
+    v8 = [JFXCompositionPlayerRequest stringFromRequestType:type];
+    displayName = [(JFXCompositionPlayer *)self displayName];
     *buf = 138543618;
     v14 = v8;
     v15 = 2114;
-    v16 = v9;
+    v16 = displayName;
     _os_log_impl(&dword_242A3B000, v7, OS_LOG_TYPE_DEFAULT, "Request type %{public}@ for player %{public}@ throttled because already pending", buf, 0x16u);
   }
 
@@ -816,8 +816,8 @@ uint64_t __81__JFXCompositionPlayer_executeRequestCompletionBlock_success_wasCan
   block[1] = 3221225472;
   block[2] = __66__JFXCompositionPlayer_throttleRequestWithCompletionBlock_ofType___block_invoke;
   block[3] = &unk_278D7A168;
-  v12 = v6;
-  v10 = v6;
+  v12 = blockCopy;
+  v10 = blockCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -832,16 +832,16 @@ uint64_t __66__JFXCompositionPlayer_throttleRequestWithCompletionBlock_ofType___
   return result;
 }
 
-- (void)dispatchBlockWhenDone:(id)a3
+- (void)dispatchBlockWhenDone:(id)done
 {
-  v4 = a3;
+  doneCopy = done;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __46__JFXCompositionPlayer_dispatchBlockWhenDone___block_invoke;
   v9 = &unk_278D7C2C0;
   objc_copyWeak(&v10, &location);
-  v5 = [(JFXCompositionPlayer *)self requestWithBlock:&v6 ofType:6 completion:v4];
+  v5 = [(JFXCompositionPlayer *)self requestWithBlock:&v6 ofType:6 completion:doneCopy];
   [(JFXCompositionPlayer *)self enqueueRequest:v5, v6, v7, v8, v9];
 
   objc_destroyWeak(&v10);
@@ -855,13 +855,13 @@ void __46__JFXCompositionPlayer_dispatchBlockWhenDone___block_invoke(uint64_t a1
   [WeakRetained completeRequest:v3 success:1 wasCancelled:0 error:0];
 }
 
-- (BOOL)play:(id)a3
+- (BOOL)play:(id)play
 {
-  v4 = a3;
+  playCopy = play;
   v5 = [(JFXCompositionPlayer *)self isRequestOfTypePendingOrQueued:2];
   if (v5)
   {
-    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:v4 ofType:2];
+    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:playCopy ofType:2];
   }
 
   else
@@ -873,7 +873,7 @@ void __46__JFXCompositionPlayer_dispatchBlockWhenDone___block_invoke(uint64_t a1
     v12 = &unk_278D7C2C0;
     objc_copyWeak(&v13, &location);
     v6 = MEMORY[0x245D22230](&v9);
-    v7 = [(JFXCompositionPlayer *)self requestWithBlock:v6 ofType:2 completion:v4, v9, v10, v11, v12];
+    v7 = [(JFXCompositionPlayer *)self requestWithBlock:v6 ofType:2 completion:playCopy, v9, v10, v11, v12];
     [(JFXCompositionPlayer *)self enqueueRequest:v7];
 
     objc_destroyWeak(&v13);
@@ -905,16 +905,16 @@ void __29__JFXCompositionPlayer_play___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setPlaybackTimeChangedObserverInterval:(id *)a3
+- (void)setPlaybackTimeChangedObserverInterval:(id *)interval
 {
-  if (a3->var2)
+  if (interval->var2)
   {
-    time1 = *a3;
+    time1 = *interval;
     v6 = **&MEMORY[0x277CC08F0];
     if (CMTimeCompare(&time1, &v6))
     {
-      v5 = *&a3->var0;
-      self->_playbackTimeChangedObserverInterval.epoch = a3->var3;
+      v5 = *&interval->var0;
+      self->_playbackTimeChangedObserverInterval.epoch = interval->var3;
       *&self->_playbackTimeChangedObserverInterval.value = v5;
       [(JFXCompositionPlayer *)self setupPlaybackTimeChangedObserver];
     }
@@ -931,31 +931,31 @@ void __29__JFXCompositionPlayer_play___block_invoke(uint64_t a1, void *a2)
 - (void)handlePlaybackBegan
 {
   [(JFXCompositionPlayer *)self removeCompositorCompletionBlock];
-  v3 = [(JFXCompositionPlayer *)self pendingRequest];
-  v4 = [v3 type];
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
     [(JFXCompositionPlayer *)self completePendingRequest:1 wasCancelled:0 error:0];
   }
 
-  v5 = [(JFXCompositionPlayer *)self playbackDelegate];
+  playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(JFXCompositionPlayer *)self playbackDelegate];
-    [v7 playbackDidStart:self];
+    playbackDelegate2 = [(JFXCompositionPlayer *)self playbackDelegate];
+    [playbackDelegate2 playbackDidStart:self];
   }
 }
 
-- (BOOL)pause:(id)a3
+- (BOOL)pause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   v5 = [(JFXCompositionPlayer *)self isRequestOfTypePendingOrQueued:3];
   if (v5)
   {
-    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:v4 ofType:3];
+    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:pauseCopy ofType:3];
   }
 
   else
@@ -967,7 +967,7 @@ void __29__JFXCompositionPlayer_play___block_invoke(uint64_t a1, void *a2)
     v12 = &unk_278D7C2C0;
     objc_copyWeak(&v13, &location);
     v6 = MEMORY[0x245D22230](&v9);
-    v7 = [(JFXCompositionPlayer *)self requestWithBlock:v6 ofType:3 completion:v4, v9, v10, v11, v12];
+    v7 = [(JFXCompositionPlayer *)self requestWithBlock:v6 ofType:3 completion:pauseCopy, v9, v10, v11, v12];
     [(JFXCompositionPlayer *)self enqueueRequest:v7];
 
     objc_destroyWeak(&v13);
@@ -1000,21 +1000,21 @@ void __30__JFXCompositionPlayer_pause___block_invoke(uint64_t a1, void *a2)
 - (void)handlePlaybackPaused
 {
   [(JFXCompositionPlayer *)self configureCompositorCompletionBlock];
-  v3 = [(JFXCompositionPlayer *)self pendingRequest];
-  v4 = [v3 type];
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v4 == 3)
+  if (type == 3)
   {
     [(JFXCompositionPlayer *)self completePendingRequest:1 wasCancelled:0 error:0];
   }
 
   v18 = 0uLL;
   v19 = 0;
-  v5 = [(JFXCompositionPlayer *)self player];
-  v6 = v5;
-  if (v5)
+  player = [(JFXCompositionPlayer *)self player];
+  v6 = player;
+  if (player)
   {
-    [v5 currentTime];
+    [player currentTime];
   }
 
   else
@@ -1023,40 +1023,40 @@ void __30__JFXCompositionPlayer_pause___block_invoke(uint64_t a1, void *a2)
     v19 = 0;
   }
 
-  v7 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v8 = [v7 frameRate];
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  frameRate = [clipsDataSource frameRate];
   v16 = v18;
   v17 = v19;
-  v9 = FrameTimeFromCMTime(&v16, v8);
+  v9 = FrameTimeFromCMTime(&v16, frameRate);
 
-  v10 = [(JFXCompositionPlayer *)self player];
-  v11 = [v10 currentItem];
-  v12 = [v11 customVideoCompositor];
+  player2 = [(JFXCompositionPlayer *)self player];
+  currentItem = [player2 currentItem];
+  customVideoCompositor = [currentItem customVideoCompositor];
   v16 = v18;
   v17 = v19;
-  [v12 signalScheduling:&v16 playerRate:0.0];
+  [customVideoCompositor signalScheduling:&v16 playerRate:0.0];
 
-  v13 = [(JFXCompositionPlayer *)self playbackDelegate];
-  LOBYTE(v11) = objc_opt_respondsToSelector();
+  playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
+  LOBYTE(currentItem) = objc_opt_respondsToSelector();
 
-  if (v11)
+  if (currentItem)
   {
-    v14 = [(JFXCompositionPlayer *)self playbackDelegate];
-    [v14 playbackDidStop:self currentTime:v9];
+    playbackDelegate2 = [(JFXCompositionPlayer *)self playbackDelegate];
+    [playbackDelegate2 playbackDidStop:self currentTime:v9];
   }
 
-  v15 = [(JFXCompositionPlayer *)self composition];
+  composition = [(JFXCompositionPlayer *)self composition];
   v16 = v18;
   v17 = v19;
-  [v15 notifyPlaybackDidStopAtTime:&v16];
+  [composition notifyPlaybackDidStopAtTime:&v16];
 }
 
-- (void)seek:(int)a3 cancelQueuedRequest:(BOOL)a4 tolerance:(int)a5 completion:(id)a6
+- (void)seek:(int)seek cancelQueuedRequest:(BOOL)request tolerance:(int)tolerance completion:(id)completion
 {
-  v7 = a4;
-  v8 = *&a3;
-  v10 = a6;
-  if (v7)
+  requestCopy = request;
+  v8 = *&seek;
+  completionCopy = completion;
+  if (requestCopy)
   {
     [(JFXCompositionPlayer *)self cancelQueuedRequestOfType:4];
   }
@@ -1068,13 +1068,13 @@ void __30__JFXCompositionPlayer_pause___block_invoke(uint64_t a1, void *a2)
   v17 = &unk_278D7C338;
   objc_copyWeak(&v19, &location);
   v20 = v8;
-  v21 = a5;
-  v18 = self;
+  toleranceCopy = tolerance;
+  selfCopy = self;
   v11 = MEMORY[0x245D22230](&v14);
   v12 = [JFXCompositionSeekRequest alloc];
   v13 = [(JFXCompositionSeekRequest *)v12 initWithBlock:v11 withSeekTime:v8, v14, v15, v16, v17];
   [(JFXCompositionPlayerRequest *)v13 setPlayer:self];
-  [(JFXCompositionPlayerRequest *)v13 setCompletionBlock:v10];
+  [(JFXCompositionPlayerRequest *)v13 setCompletionBlock:completionCopy];
   [(JFXCompositionPlayer *)self enqueueRequest:v13];
 
   objc_destroyWeak(&v19);
@@ -1192,22 +1192,22 @@ uint64_t __70__JFXCompositionPlayer_seek_cancelQueuedRequest_tolerance_completio
   return [*(a1 + 32) handleSeekCompleted:*(a1 + 72)];
 }
 
-- (void)handleSeekCompleted:(BOOL)a3
+- (void)handleSeekCompleted:(BOOL)completed
 {
-  v3 = a3;
-  v5 = [(JFXCompositionPlayer *)self pendingRequest];
-  v6 = [v5 type];
+  completedCopy = completed;
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v6 == 4)
+  if (type == 4)
   {
 
-    [(JFXCompositionPlayer *)self completePendingRequest:v3 wasCancelled:0 error:0];
+    [(JFXCompositionPlayer *)self completePendingRequest:completedCopy wasCancelled:0 error:0];
   }
 }
 
-- (BOOL)setAudioMuted:(BOOL)a3 completionBlock:(id)a4
+- (BOOL)setAudioMuted:(BOOL)muted completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   [(JFXCompositionPlayer *)self cancelQueuedRequestOfType:7];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -1215,9 +1215,9 @@ uint64_t __70__JFXCompositionPlayer_seek_cancelQueuedRequest_tolerance_completio
   v10[2] = __54__JFXCompositionPlayer_setAudioMuted_completionBlock___block_invoke;
   v10[3] = &unk_278D7C360;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  mutedCopy = muted;
   v7 = MEMORY[0x245D22230](v10);
-  v8 = [(JFXCompositionPlayer *)self requestWithBlock:v7 ofType:7 completion:v6];
+  v8 = [(JFXCompositionPlayer *)self requestWithBlock:v7 ofType:7 completion:blockCopy];
   [(JFXCompositionPlayer *)self enqueueRequest:v8];
 
   objc_destroyWeak(&v11);
@@ -1252,59 +1252,59 @@ void __54__JFXCompositionPlayer_setAudioMuted_completionBlock___block_invoke(uin
 
 - (void)handleChangeAudioMutedCompleted
 {
-  v3 = [(JFXCompositionPlayer *)self pendingRequest];
-  v4 = [v3 type];
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v4 == 7)
+  if (type == 7)
   {
 
     [(JFXCompositionPlayer *)self completePendingRequest:1 wasCancelled:0 error:0];
   }
 }
 
-- (void)setPlayerView:(id)a3 completionBlock:(id)a4
+- (void)setPlayerView:(id)view completionBlock:(id)block
 {
-  v7 = a3;
+  viewCopy = view;
   p_playerView = &self->_playerView;
-  if (self->_playerView != v7)
+  if (self->_playerView != viewCopy)
   {
-    v10 = v7;
-    objc_storeStrong(p_playerView, a3);
-    v9 = a4;
-    [(JFXCompositionPlayer *)self updateComposition:v9];
+    v10 = viewCopy;
+    objc_storeStrong(p_playerView, view);
+    blockCopy = block;
+    [(JFXCompositionPlayer *)self updateComposition:blockCopy];
 
-    v7 = v10;
+    viewCopy = v10;
   }
 
-  MEMORY[0x2821F96F8](p_playerView, v7);
+  MEMORY[0x2821F96F8](p_playerView, viewCopy);
 }
 
 - (void)notifyPlayerViewSizeChanged
 {
-  v3 = [(JFXCompositionPlayer *)self playerView];
-  [v3 displaySize];
+  playerView = [(JFXCompositionPlayer *)self playerView];
+  [playerView displaySize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(JFXCompositionPlayer *)self composition];
-  [v8 viewSize];
+  composition = [(JFXCompositionPlayer *)self composition];
+  [composition viewSize];
   v10 = v9;
   v12 = v11;
 
   if ((v5 != v10 || v7 != v12) && (v5 != *MEMORY[0x277CBF3A8] || v7 != *(MEMORY[0x277CBF3A8] + 8)))
   {
-    v15 = [(JFXCompositionPlayer *)self composition];
-    [v15 setViewSize:{v5, v7}];
+    composition2 = [(JFXCompositionPlayer *)self composition];
+    [composition2 setViewSize:{v5, v7}];
   }
 }
 
-- (BOOL)updateComposition:(id)a3
+- (BOOL)updateComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v5 = [(JFXCompositionPlayer *)self isRequestOfTypeQueued:1];
   if (v5)
   {
-    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:v4 ofType:1];
+    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:compositionCopy ofType:1];
   }
 
   else
@@ -1328,7 +1328,7 @@ void __54__JFXCompositionPlayer_setAudioMuted_completionBlock___block_invoke(uin
     v6 = MEMORY[0x245D22230](&v10);
     v7 = [JFXCompositionUpdateRequest alloc];
     v8 = [(JFXCompositionUpdateRequest *)v7 initWithBlock:v6, v10, v11, v12, v13];
-    [(JFXCompositionPlayerRequest *)v8 setCompletionBlock:v4];
+    [(JFXCompositionPlayerRequest *)v8 setCompletionBlock:compositionCopy];
     [(JFXCompositionPlayerRequest *)v8 setPlayer:self];
     [(JFXCompositionPlayer *)self enqueueRequest:v8];
 
@@ -1348,33 +1348,33 @@ void __42__JFXCompositionPlayer_updateComposition___block_invoke(uint64_t a1)
 - (void)doUpdateComposition
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v4 = [v3 count];
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  v4 = [clipsDataSource count];
 
   if (v4 < 1)
   {
 LABEL_6:
-    v8 = [(JFXCompositionPlayer *)self playbackDelegate];
+    playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(JFXCompositionPlayer *)self playbackDelegate];
-      [v10 playbackReadyForDisplayChanged:self isReady:0 setPlaceHolder:1];
+      playbackDelegate2 = [(JFXCompositionPlayer *)self playbackDelegate];
+      [playbackDelegate2 playbackReadyForDisplayChanged:self isReady:0 setPlaceHolder:1];
     }
 
-    v11 = [(JFXCompositionPlayer *)self composition];
+    composition = [(JFXCompositionPlayer *)self composition];
 
-    if (v11)
+    if (composition)
     {
-      v12 = [(JFXCompositionPlayer *)self player];
-      -[JFXCompositionPlayer setWasPlaying:](self, "setWasPlaying:", [v12 timeControlStatus] == 2);
+      player = [(JFXCompositionPlayer *)self player];
+      -[JFXCompositionPlayer setWasPlaying:](self, "setWasPlaying:", [player timeControlStatus] == 2);
 
-      v13 = [(JFXCompositionPlayer *)self player];
-      v14 = v13;
-      if (v13)
+      player2 = [(JFXCompositionPlayer *)self player];
+      v14 = player2;
+      if (player2)
       {
-        [v13 currentTime];
+        [player2 currentTime];
       }
 
       else
@@ -1385,87 +1385,87 @@ LABEL_6:
       buf = location[2];
       [(JFXCompositionPlayer *)self setWasCurrentTime:&buf];
 
-      v23 = [(JFXCompositionPlayer *)self player];
-      -[JFXCompositionPlayer setWasAudioMuted:](self, "setWasAudioMuted:", [v23 isMuted]);
+      player3 = [(JFXCompositionPlayer *)self player];
+      -[JFXCompositionPlayer setWasAudioMuted:](self, "setWasAudioMuted:", [player3 isMuted]);
     }
 
     else
     {
       v15 = objc_alloc([objc_opt_class() compositionClass]);
-      v16 = [(JFXCompositionPlayer *)self clipsDataSource];
-      v17 = [v15 initWithClipsDataSource:v16];
+      clipsDataSource2 = [(JFXCompositionPlayer *)self clipsDataSource];
+      v17 = [v15 initWithClipsDataSource:clipsDataSource2];
       [(JFXCompositionPlayer *)self setComposition:v17];
 
       if ([(JFXCompositionPlayer *)self parentCode]!= -1)
       {
-        v18 = [(JFXCompositionPlayer *)self parentCode];
-        v19 = [(JFXCompositionPlayer *)self composition];
-        [v19 setParentCode:v18];
+        parentCode = [(JFXCompositionPlayer *)self parentCode];
+        composition2 = [(JFXCompositionPlayer *)self composition];
+        [composition2 setParentCode:parentCode];
       }
     }
 
     [(JFXCompositionPlayer *)self wasCurrentTime];
     buf = location[1];
     [(JFXCompositionPlayer *)self setCachedCurrentTimeForCompositionUpdate:&buf];
-    v24 = [(JFXCompositionPlayer *)self playerView];
-    [v24 displaySize];
+    playerView = [(JFXCompositionPlayer *)self playerView];
+    [playerView displaySize];
     v26 = v25;
     v28 = v27;
 
     if (v26 != *MEMORY[0x277CBF3A8] || v28 != *(MEMORY[0x277CBF3A8] + 8))
     {
-      v29 = [(JFXCompositionPlayer *)self composition];
-      [v29 setViewSize:{v26, v28}];
+      composition3 = [(JFXCompositionPlayer *)self composition];
+      [composition3 setViewSize:{v26, v28}];
     }
 
-    v30 = [(JFXCompositionPlayer *)self composition];
-    [v30 markDirty];
+    composition4 = [(JFXCompositionPlayer *)self composition];
+    [composition4 markDirty];
 
-    v31 = [(JFXCompositionPlayer *)self composition];
-    v32 = [v31 playerItem];
+    composition5 = [(JFXCompositionPlayer *)self composition];
+    playerItem = [composition5 playerItem];
 
     [(JFXCompositionPlayer *)self createPlayer];
-    v33 = [(JFXCompositionPlayer *)self player];
-    [v33 replaceCurrentItemWithPlayerItem:v32];
+    player4 = [(JFXCompositionPlayer *)self player];
+    [player4 replaceCurrentItemWithPlayerItem:playerItem];
 
-    v34 = [(JFXCompositionPlayer *)self clipsDataSource];
+    clipsDataSource3 = [(JFXCompositionPlayer *)self clipsDataSource];
     v35 = objc_opt_respondsToSelector();
 
-    if ((v35 & 1) == 0 || (v36 = MEMORY[0x277D415E0], [MEMORY[0x277D75418] currentDevice], v37 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v37, "jfx_displayColorSpace"), v38 = objc_claimAutoreleasedReturnValue(), -[JFXCompositionPlayer clipsDataSource](self, "clipsDataSource"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "colorSpace"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "jfx_compareAndChooseLesserColorSpace:right:", v38, v40), v41 = objc_claimAutoreleasedReturnValue(), v40, v39, v38, v37, !v41))
+    if ((v35 & 1) == 0 || (v36 = MEMORY[0x277D415E0], [MEMORY[0x277D75418] currentDevice], v37 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v37, "jfx_displayColorSpace"), v38 = objc_claimAutoreleasedReturnValue(), -[JFXCompositionPlayer clipsDataSource](self, "clipsDataSource"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "colorSpace"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "jfx_compareAndChooseLesserColorSpace:right:", v38, v40), rec709GammaColorSpace = objc_claimAutoreleasedReturnValue(), v40, v39, v38, v37, !rec709GammaColorSpace))
     {
-      v41 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+      rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
     }
 
-    v42 = [(JFXCompositionPlayer *)self playerView];
-    [v42 configureDisplayAttributesForColorSpace:v41];
+    playerView2 = [(JFXCompositionPlayer *)self playerView];
+    [playerView2 configureDisplayAttributesForColorSpace:rec709GammaColorSpace];
 
-    v43 = [(JFXCompositionPlayer *)self clipsDataSource];
+    clipsDataSource4 = [(JFXCompositionPlayer *)self clipsDataSource];
     v44 = objc_opt_respondsToSelector();
 
     if (v44)
     {
-      v45 = [(JFXCompositionPlayer *)self clipsDataSource];
-      v46 = [v45 playerAllowsExternalPlayback];
-      v47 = [(JFXCompositionPlayer *)self player];
-      [v47 setAllowsExternalPlayback:v46];
+      clipsDataSource5 = [(JFXCompositionPlayer *)self clipsDataSource];
+      playerAllowsExternalPlayback = [clipsDataSource5 playerAllowsExternalPlayback];
+      player5 = [(JFXCompositionPlayer *)self player];
+      [player5 setAllowsExternalPlayback:playerAllowsExternalPlayback];
     }
 
-    v48 = [(JFXCompositionPlayer *)self player];
-    v49 = [(JFXCompositionPlayer *)self playerView];
-    [v49 setPlayer:v48];
+    player6 = [(JFXCompositionPlayer *)self player];
+    playerView3 = [(JFXCompositionPlayer *)self playerView];
+    [playerView3 setPlayer:player6];
 
-    v50 = [(JFXCompositionPlayer *)self composition];
-    [v50 applyPlayerItemProperties];
+    composition6 = [(JFXCompositionPlayer *)self composition];
+    [composition6 applyPlayerItemProperties];
 
-    v51 = [v32 customVideoCompositor];
-    [v51 setCancelsPendingRequests:0];
+    customVideoCompositor = [playerItem customVideoCompositor];
+    [customVideoCompositor setCancelsPendingRequests:0];
     [(JFXCompositionPlayer *)self configureCompositorCompletionBlock];
     memset(&buf, 0, sizeof(buf));
-    v52 = [(JFXCompositionPlayer *)self composition];
-    v53 = v52;
-    if (v52)
+    composition7 = [(JFXCompositionPlayer *)self composition];
+    v53 = composition7;
+    if (composition7)
     {
-      [v52 duration];
+      [composition7 duration];
     }
 
     else
@@ -1473,9 +1473,9 @@ LABEL_6:
       memset(&buf, 0, sizeof(buf));
     }
 
-    v54 = [(JFXCompositionPlayer *)self composition];
-    v55 = v54;
-    if (v54 && (buf.flags & 1) != 0)
+    composition8 = [(JFXCompositionPlayer *)self composition];
+    v55 = composition8;
+    if (composition8 && (buf.flags & 1) != 0)
     {
       location[0] = buf;
       time2 = **&MEMORY[0x277CC08F0];
@@ -1509,8 +1509,8 @@ LABEL_33:
   v5 = 0;
   while (1)
   {
-    v6 = [(JFXCompositionPlayer *)self clipsDataSource];
-    v7 = [v6 playableElementAtIndex:v5];
+    clipsDataSource6 = [(JFXCompositionPlayer *)self clipsDataSource];
+    v7 = [clipsDataSource6 playableElementAtIndex:v5];
 
     if (([v7 isAssetUnavailable] & 1) == 0 && (objc_msgSend(v7, "isAssetLoaded") & 1) == 0)
     {
@@ -1526,9 +1526,9 @@ LABEL_33:
   v20 = JFXLog_DebugPlayback();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(JFXCompositionPlayer *)self displayName];
+    displayName = [(JFXCompositionPlayer *)self displayName];
     LODWORD(buf.value) = 138543618;
-    *(&buf.value + 4) = v21;
+    *(&buf.value + 4) = displayName;
     LOWORD(buf.flags) = 2114;
     *(&buf.flags + 2) = v7;
     _os_log_impl(&dword_242A3B000, v20, OS_LOG_TYPE_DEFAULT, "player %{public}@ doUpdateComposition %{public}@ clip not loaded, will try again in 10 mecs", &buf, 0x16u);
@@ -1564,23 +1564,23 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)handleUpdateCompositionCompleted:(BOOL)a3 wasCancelled:(BOOL)a4 error:(id)a5
+- (void)handleUpdateCompositionCompleted:(BOOL)completed wasCancelled:(BOOL)cancelled error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  cancelledCopy = cancelled;
+  completedCopy = completed;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  errorCopy = error;
   v9 = JFXLog_DebugPlayback();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(JFXCompositionPlayer *)self displayName];
+    displayName = [(JFXCompositionPlayer *)self displayName];
     LODWORD(buf.value) = 138543362;
-    *(&buf.value + 4) = v10;
+    *(&buf.value + 4) = displayName;
     _os_log_impl(&dword_242A3B000, v9, OS_LOG_TYPE_DEFAULT, "player %{public}@ composition update completed", &buf, 0xCu);
   }
 
-  v11 = [(JFXCompositionPlayer *)self pendingRequest];
-  v12 = [v11 type] == 1;
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  v12 = [pendingRequest type] == 1;
 
   if (v12)
   {
@@ -1607,7 +1607,7 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
       v27 = __76__JFXCompositionPlayer_handleUpdateCompositionCompleted_wasCancelled_error___block_invoke_2;
       v28 = &unk_278D7C388;
       objc_copyWeak(&v30, &buf);
-      v29 = self;
+      selfCopy = self;
       [(JFXCompositionPlayer *)self dispatchBlockWhenDone:&v25];
       objc_destroyWeak(&v30);
       objc_destroyWeak(&buf);
@@ -1618,11 +1618,11 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
       [(JFXCompositionPlayer *)self setRestoringPlayerStateAfterCompositionUpdate:1];
       memset(&buf, 0, sizeof(buf));
       memset(&v36, 0, sizeof(v36));
-      v17 = [(JFXCompositionPlayer *)self composition];
-      v18 = v17;
-      if (v17)
+      composition = [(JFXCompositionPlayer *)self composition];
+      v18 = composition;
+      if (composition)
       {
-        [v17 duration];
+        [composition duration];
       }
 
       else
@@ -1633,19 +1633,19 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
       [(JFXCompositionPlayer *)self wasCurrentTime];
       time2 = v36;
       CMTimeMinimum(&buf, &time1, &time2);
-      v19 = [(JFXCompositionPlayer *)self clipsDataSource];
-      CMTimeMake(&time2, 0, [v19 timeScale]);
+      clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+      CMTimeMake(&time2, 0, [clipsDataSource timeScale]);
       v33 = buf;
       CMTimeMaximum(&time1, &v33, &time2);
       buf = time1;
 
-      v20 = [(JFXCompositionPlayer *)self clipsDataSource];
-      v21 = [v20 timeScale];
+      clipsDataSource2 = [(JFXCompositionPlayer *)self clipsDataSource];
+      timeScale = [clipsDataSource2 timeScale];
       time1 = buf;
-      v22 = FrameTimeFromCMTime(&time1, v21);
+      v22 = FrameTimeFromCMTime(&time1, timeScale);
 
       v23 = [(JFXCompositionPlayer *)self isRequestOfTypePendingOrQueued:3];
-      v24 = [(JFXCompositionPlayer *)self removeAllRequests];
+      removeAllRequests = [(JFXCompositionPlayer *)self removeAllRequests];
       if (!v22)
       {
         [(JFXCompositionPlayer *)self seek:1 cancelQueuedRequest:0 tolerance:0 completion:0];
@@ -1664,7 +1664,7 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
         [(JFXCompositionPlayer *)self play:0];
       }
 
-      [(JFXCompositionPlayer *)self appendRequests:v24];
+      [(JFXCompositionPlayer *)self appendRequests:removeAllRequests];
       objc_destroyWeak(&v32);
       objc_destroyWeak(&time1);
     }
@@ -1674,7 +1674,7 @@ void __43__JFXCompositionPlayer_doUpdateComposition__block_invoke_2(uint64_t a1)
     [(JFXCompositionPlayer *)self setWasCurrentTime:&buf];
     [(JFXCompositionPlayer *)self setWasPlaying:0];
     [(JFXCompositionPlayer *)self setWasAudioMuted:0];
-    [(JFXCompositionPlayer *)self completePendingRequest:v6 wasCancelled:v5 error:v8];
+    [(JFXCompositionPlayer *)self completePendingRequest:completedCopy wasCancelled:cancelledCopy error:errorCopy];
   }
 }
 
@@ -1751,34 +1751,34 @@ void __76__JFXCompositionPlayer_handleUpdateCompositionCompleted_wasCancelled_er
   }
 }
 
-- (BOOL)updateCompositionForClip:(id)a3 completion:(id)a4
+- (BOOL)updateCompositionForClip:(id)clip completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  completionCopy = completion;
   v8 = [(JFXCompositionPlayer *)self isRequestOfTypeQueued:1];
   if (v8)
   {
-    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:v7 ofType:5];
+    [(JFXCompositionPlayer *)self throttleRequestWithCompletionBlock:completionCopy ofType:5];
   }
 
   else
   {
-    [(JFXCompositionPlayer *)self cancelQueuedCompositionUpdateRequestFromClip:v6];
+    [(JFXCompositionPlayer *)self cancelQueuedCompositionUpdateRequestFromClip:clipCopy];
     objc_initWeak(&location, self);
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __60__JFXCompositionPlayer_updateCompositionForClip_completion___block_invoke;
     v17 = &unk_278D7C3B0;
     objc_copyWeak(&v20, &location);
-    v18 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = clipCopy;
     v19 = v9;
     v10 = MEMORY[0x245D22230](&v14);
     v11 = [JFXCompositionPlayableElementUpdateRequest alloc];
-    v12 = [(JFXCompositionPlayableElementUpdateRequest *)v11 initWithBlock:v10 withClip:v9, v14, v15, v16, v17, v18];
-    [(JFXCompositionPlayerRequest *)v12 setPlayer:self];
-    [(JFXCompositionPlayerRequest *)v12 setCompletionBlock:v7];
-    [(JFXCompositionPlayer *)self enqueueRequest:v12];
+    selfCopy = [(JFXCompositionPlayableElementUpdateRequest *)v11 initWithBlock:v10 withClip:v9, v14, v15, v16, v17, selfCopy];
+    [(JFXCompositionPlayerRequest *)selfCopy setPlayer:self];
+    [(JFXCompositionPlayerRequest *)selfCopy setCompletionBlock:completionCopy];
+    [(JFXCompositionPlayer *)self enqueueRequest:selfCopy];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -1807,19 +1807,19 @@ void __60__JFXCompositionPlayer_updateCompositionForClip_completion___block_invo
   }
 }
 
-- (void)doClipCompositionUpdate:(id)a3
+- (void)doClipCompositionUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(JFXCompositionPlayer *)self composition];
-  [v5 noteEffectChangeForClip:v4];
+  updateCopy = update;
+  composition = [(JFXCompositionPlayer *)self composition];
+  [composition noteEffectChangeForClip:updateCopy];
 
-  v6 = [(JFXCompositionPlayer *)self player];
-  v7 = [v6 currentItem];
-  v8 = [v7 customVideoCompositor];
+  player = [(JFXCompositionPlayer *)self player];
+  currentItem = [player currentItem];
+  customVideoCompositor = [currentItem customVideoCompositor];
 
-  v9 = [v8 refreshCompletionBlock];
+  refreshCompletionBlock = [customVideoCompositor refreshCompletionBlock];
 
-  if (!v9)
+  if (!refreshCompletionBlock)
   {
     objc_initWeak(&v14, self);
     v10 = dispatch_time(0, 30000000);
@@ -1833,11 +1833,11 @@ void __60__JFXCompositionPlayer_updateCompositionForClip_completion___block_invo
     objc_destroyWeak(&v14);
   }
 
-  v11 = [(JFXCompositionPlayer *)self player];
-  v12 = v11;
-  if (v11)
+  player2 = [(JFXCompositionPlayer *)self player];
+  v12 = player2;
+  if (player2)
   {
-    [v11 currentTime];
+    [player2 currentTime];
   }
 
   else
@@ -1849,7 +1849,7 @@ void __60__JFXCompositionPlayer_updateCompositionForClip_completion___block_invo
 
   v13 = [(JFXCompositionPlayer *)self player:v14];
   [v13 rate];
-  [v8 signalScheduling:&v14 playerRate:?];
+  [customVideoCompositor signalScheduling:&v14 playerRate:?];
 }
 
 void __48__JFXCompositionPlayer_doClipCompositionUpdate___block_invoke(uint64_t a1)
@@ -1858,38 +1858,38 @@ void __48__JFXCompositionPlayer_doClipCompositionUpdate___block_invoke(uint64_t 
   [WeakRetained handleUpdateCompositionForClipCompleted:1];
 }
 
-- (void)handleUpdateCompositionForClipCompleted:(BOOL)a3
+- (void)handleUpdateCompositionForClipCompleted:(BOOL)completed
 {
-  v3 = a3;
-  v5 = [(JFXCompositionPlayer *)self pendingRequest];
-  v6 = [v5 type];
+  completedCopy = completed;
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v6 == 5)
+  if (type == 5)
   {
 
-    [(JFXCompositionPlayer *)self completePendingRequest:v3 wasCancelled:0 error:0];
+    [(JFXCompositionPlayer *)self completePendingRequest:completedCopy wasCancelled:0 error:0];
   }
 }
 
 - (void)configureCompositorCompletionBlock
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXCompositionPlayer *)self player];
-  v4 = [v3 currentItem];
-  v5 = [v4 customVideoCompositor];
+  player = [(JFXCompositionPlayer *)self player];
+  currentItem = [player currentItem];
+  customVideoCompositor = [currentItem customVideoCompositor];
 
   objc_initWeak(&location, self);
-  v6 = [v5 refreshCompletionBlock];
-  LOBYTE(v3) = v6 == 0;
+  refreshCompletionBlock = [customVideoCompositor refreshCompletionBlock];
+  LOBYTE(player) = refreshCompletionBlock == 0;
 
-  if (v3)
+  if (player)
   {
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke;
     v12 = &unk_278D7C400;
     objc_copyWeak(&v13, &location);
-    [v5 setRefreshCompletionBlock:&v9];
+    [customVideoCompositor setRefreshCompletionBlock:&v9];
     v7 = JFXLog_DebugPlayback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1923,23 +1923,23 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
   [WeakRetained handleCompositionRefreshCompleted:*(a1 + 40)];
 }
 
-- (void)handleCompositionRefreshCompleted:(BOOL)a3
+- (void)handleCompositionRefreshCompleted:(BOOL)completed
 {
-  v3 = a3;
-  v5 = [(JFXCompositionPlayer *)self pendingRequest];
-  v6 = [v5 type];
+  completedCopy = completed;
+  pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
+  type = [pendingRequest type];
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v7 = [(JFXCompositionPlayer *)self pendingRequest];
+    pendingRequest2 = [(JFXCompositionPlayer *)self pendingRequest];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(JFXCompositionPlayer *)self pendingRequest];
-      [v9 setRefreshCompletedReceived];
-      if ([v9 hasCompleted])
+      pendingRequest3 = [(JFXCompositionPlayer *)self pendingRequest];
+      [pendingRequest3 setRefreshCompletedReceived];
+      if ([pendingRequest3 hasCompleted])
       {
         [(JFXCompositionPlayer *)self handleUpdateCompositionCompleted:1 wasCancelled:0 error:0];
       }
@@ -1949,21 +1949,21 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
   else
   {
 
-    [(JFXCompositionPlayer *)self handleUpdateCompositionForClipCompleted:v3];
+    [(JFXCompositionPlayer *)self handleUpdateCompositionForClipCompleted:completedCopy];
   }
 }
 
 - (void)handleClipCompositionUpdateTimedOut
 {
-  v2 = [(JFXCompositionPlayer *)self player];
-  v3 = [v2 currentItem];
-  v4 = [v3 customVideoCompositor];
+  player = [(JFXCompositionPlayer *)self player];
+  currentItem = [player currentItem];
+  customVideoCompositor = [currentItem customVideoCompositor];
 
-  v5 = [v4 refreshCompletionBlock];
+  refreshCompletionBlock = [customVideoCompositor refreshCompletionBlock];
 
   v6 = JFXLog_playback();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5)
+  if (refreshCompletionBlock)
   {
     if (v7)
     {
@@ -1976,27 +1976,27 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     [(JFXCompositionPlayer *)v6 handleClipCompositionUpdateTimedOut:v8];
   }
 
-  [v4 setCancelsPendingRequests:1];
+  [customVideoCompositor setCancelsPendingRequests:1];
 }
 
 - (void)removeCompositorCompletionBlock
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXCompositionPlayer *)self player];
-  v4 = [v3 currentItem];
-  v5 = [v4 customVideoCompositor];
+  player = [(JFXCompositionPlayer *)self player];
+  currentItem = [player currentItem];
+  customVideoCompositor = [currentItem customVideoCompositor];
 
-  v6 = [v5 refreshCompletionBlock];
+  refreshCompletionBlock = [customVideoCompositor refreshCompletionBlock];
 
-  if (v6)
+  if (refreshCompletionBlock)
   {
-    [v5 setRefreshCompletionBlock:0];
+    [customVideoCompositor setRefreshCompletionBlock:0];
     v7 = JFXLog_DebugPlayback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(JFXCompositionPlayer *)self displayName];
+      displayName = [(JFXCompositionPlayer *)self displayName];
       v9 = 138543362;
-      v10 = v8;
+      v10 = displayName;
       _os_log_impl(&dword_242A3B000, v7, OS_LOG_TYPE_DEFAULT, "Player %{public}@ removed compositor refresh completion block", &v9, 0xCu);
     }
   }
@@ -2005,56 +2005,56 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
 - (void)doPlay
 {
   [(JFXCompositionPlayer *)self removeCompositorCompletionBlock];
-  v3 = [(JFXCompositionPlayer *)self player];
-  [v3 play];
+  player = [(JFXCompositionPlayer *)self player];
+  [player play];
 
-  v4 = [(JFXCompositionPlayer *)self composition];
-  [v4 notifyPlaybackWillBegin];
+  composition = [(JFXCompositionPlayer *)self composition];
+  [composition notifyPlaybackWillBegin];
 }
 
 - (void)doPause
 {
-  v2 = [(JFXCompositionPlayer *)self player];
-  [v2 pause];
+  player = [(JFXCompositionPlayer *)self player];
+  [player pause];
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(JFXCompositionPlayer *)self player];
-  v3 = [v2 timeControlStatus] == 2;
+  player = [(JFXCompositionPlayer *)self player];
+  v3 = [player timeControlStatus] == 2;
 
   return v3;
 }
 
-- (void)doMuteAudio:(BOOL)a3
+- (void)doMuteAudio:(BOOL)audio
 {
-  v3 = a3;
-  v4 = [(JFXCompositionPlayer *)self player];
-  [v4 setMuted:v3];
+  audioCopy = audio;
+  player = [(JFXCompositionPlayer *)self player];
+  [player setMuted:audioCopy];
 }
 
 - (BOOL)isAudioMuted
 {
-  v2 = [(JFXCompositionPlayer *)self player];
-  v3 = [v2 isMuted];
+  player = [(JFXCompositionPlayer *)self player];
+  isMuted = [player isMuted];
 
-  return v3;
+  return isMuted;
 }
 
 - (CGSize)renderSize
 {
-  v3 = [(JFXCompositionPlayer *)self composition];
-  if (v3 && (v4 = v3, -[JFXCompositionPlayer composition](self, "composition"), v5 = objc_claimAutoreleasedReturnValue(), [v5 videoComposition], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
+  composition = [(JFXCompositionPlayer *)self composition];
+  if (composition && (v4 = composition, -[JFXCompositionPlayer composition](self, "composition"), v5 = objc_claimAutoreleasedReturnValue(), [v5 videoComposition], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
-    v7 = [(JFXCompositionPlayer *)self composition];
-    v8 = [v7 videoComposition];
-    [v8 renderSize];
+    composition2 = [(JFXCompositionPlayer *)self composition];
+    videoComposition = [composition2 videoComposition];
+    [videoComposition renderSize];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(JFXCompositionPlayer *)self composition];
-    v14 = [v13 videoComposition];
-    [v14 renderScale];
+    composition3 = [(JFXCompositionPlayer *)self composition];
+    videoComposition2 = [composition3 videoComposition];
+    [videoComposition2 renderScale];
     v16 = v15;
 
     v17 = v10 * v16;
@@ -2063,8 +2063,8 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
 
   else
   {
-    v19 = [(JFXCompositionPlayer *)self playerView];
-    [v19 displaySize];
+    playerView = [(JFXCompositionPlayer *)self playerView];
+    [playerView displaySize];
     v21 = v20;
     v23 = v22;
     v17 = *MEMORY[0x277CBF3A8];
@@ -2072,18 +2072,18 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
 
     if (v21 != v17 || v23 != v18)
     {
-      v25 = [(JFXCompositionPlayer *)self clipsDataSource];
-      [v25 renderSize];
+      clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+      [clipsDataSource renderSize];
       v27 = v26;
       v29 = v28;
 
-      v30 = [(JFXCompositionPlayer *)self playerView];
-      [v30 displaySize];
+      playerView2 = [(JFXCompositionPlayer *)self playerView];
+      [playerView2 displaySize];
       v32 = v31;
       v34 = v33;
 
-      v35 = [(JFXCompositionPlayer *)self clipsDataSource];
-      [v35 imageScale];
+      clipsDataSource2 = [(JFXCompositionPlayer *)self clipsDataSource];
+      [clipsDataSource2 imageScale];
       v37 = v36;
 
       v38 = v32 * v37 / v27;
@@ -2116,11 +2116,11 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
-  v5 = [(JFXCompositionPlayer *)self player];
-  v6 = v5;
-  if (v5)
+  player = [(JFXCompositionPlayer *)self player];
+  v6 = player;
+  if (player)
   {
-    [v5 currentTime];
+    [player currentTime];
   }
 
   else
@@ -2135,22 +2135,22 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
   result = CMTimeCompare(&time1, &v14);
   if (result)
   {
-    v8 = [(JFXCompositionPlayer *)self clipsDataSource];
-    v9 = [v8 timeScale];
+    clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+    timeScale = [clipsDataSource timeScale];
 
     time1 = *retstr;
-    result = FrameTimeFromCMTime(&time1, v9);
+    result = FrameTimeFromCMTime(&time1, timeScale);
     if (result <= 1)
     {
       v10 = result;
       v11 = JFXLog_DebugPlayback();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [(JFXCompositionPlayer *)self displayName];
+        displayName = [(JFXCompositionPlayer *)self displayName];
         [(JFXCompositionPlayer *)self cachedCurrentTimeForCompositionUpdate];
-        v13 = FrameTimeFromCMTime(&time1, v9);
+        v13 = FrameTimeFromCMTime(&time1, timeScale);
         LODWORD(time1.value) = 138412802;
-        *(&time1.value + 4) = v12;
+        *(&time1.value + 4) = displayName;
         LOWORD(time1.flags) = 1024;
         *(&time1.flags + 2) = v13;
         WORD1(time1.epoch) = 1024;
@@ -2170,11 +2170,11 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
 {
   v15 = *MEMORY[0x277D85DE8];
   memset(&v13, 0, sizeof(v13));
-  v3 = [(JFXCompositionPlayer *)self player];
-  v4 = v3;
-  if (v3)
+  player = [(JFXCompositionPlayer *)self player];
+  v4 = player;
+  if (player)
   {
-    [v3 currentTime];
+    [player currentTime];
   }
 
   else
@@ -2182,11 +2182,11 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     memset(&v13, 0, sizeof(v13));
   }
 
-  v5 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v6 = [v5 timeScale];
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  timeScale = [clipsDataSource timeScale];
 
   time1 = v13;
-  v7 = FrameTimeFromCMTime(&time1, v6);
+  v7 = FrameTimeFromCMTime(&time1, timeScale);
   [(JFXCompositionPlayer *)self cachedCurrentTimeForCompositionUpdate];
   v12 = **&MEMORY[0x277CC08F0];
   if (CMTimeCompare(&time1, &v12) && v7 <= 1)
@@ -2194,11 +2194,11 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     v8 = JFXLog_DebugPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(JFXCompositionPlayer *)self displayName];
+      displayName = [(JFXCompositionPlayer *)self displayName];
       [(JFXCompositionPlayer *)self cachedCurrentTimeForCompositionUpdate];
-      v11 = FrameTimeFromCMTime(&time1, v6);
+      v11 = FrameTimeFromCMTime(&time1, timeScale);
       LODWORD(time1.value) = 138412802;
-      *(&time1.value + 4) = v10;
+      *(&time1.value + 4) = displayName;
       LOWORD(time1.flags) = 1024;
       *(&time1.flags + 2) = v11;
       WORD1(time1.epoch) = 1024;
@@ -2207,7 +2207,7 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     }
 
     [(JFXCompositionPlayer *)self cachedCurrentTimeForCompositionUpdate];
-    return FrameTimeFromCMTime(&time1, v6);
+    return FrameTimeFromCMTime(&time1, timeScale);
   }
 
   return v7;
@@ -2215,11 +2215,11 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
 
 - (int)duration
 {
-  v3 = [(JFXCompositionPlayer *)self composition];
-  v4 = v3;
-  if (v3)
+  composition = [(JFXCompositionPlayer *)self composition];
+  v4 = composition;
+  if (composition)
   {
-    [v3 duration];
+    [composition duration];
   }
 
   else
@@ -2227,51 +2227,51 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     memset(v8, 0, sizeof(v8));
   }
 
-  v5 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v6 = FrameTimeFromCMTime(v8, [v5 frameRate]);
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  v6 = FrameTimeFromCMTime(v8, [clipsDataSource frameRate]);
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 != &sJFXCompositionPlayerContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context != &sJFXCompositionPlayerContext)
   {
     v37.receiver = self;
     v37.super_class = JFXCompositionPlayer;
-    [(JFXCompositionPlayer *)&v37 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(JFXCompositionPlayer *)&v37 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_21;
   }
 
-  v13 = [(JFXCompositionPlayer *)self player];
-  if (v13)
+  player = [(JFXCompositionPlayer *)self player];
+  if (player)
   {
-    v14 = v13;
-    v15 = [(JFXCompositionPlayer *)self player];
-    v16 = v15;
-    if (v15 == v11)
+    v14 = player;
+    player2 = [(JFXCompositionPlayer *)self player];
+    v16 = player2;
+    if (player2 == objectCopy)
     {
-      v17 = [v10 isEqualToString:@"timeControlStatus"];
+      v17 = [pathCopy isEqualToString:@"timeControlStatus"];
 
       if (v17)
       {
-        v18 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v19 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v20 = v19;
+        v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        player5 = v19;
         if (v18 && v19 && ([v18 isEqual:v19] & 1) != 0)
         {
           goto LABEL_20;
         }
 
-        v21 = [(JFXCompositionPlayer *)self player];
-        v22 = [v21 timeControlStatus];
+        player3 = [(JFXCompositionPlayer *)self player];
+        timeControlStatus = [player3 timeControlStatus];
 
-        if (v22)
+        if (timeControlStatus)
         {
-          if (v22 != 2)
+          if (timeControlStatus != 2)
           {
             goto LABEL_20;
           }
@@ -2312,20 +2312,20 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     }
   }
 
-  v26 = [(JFXCompositionPlayer *)self playerView];
-  if (v26)
+  playerView = [(JFXCompositionPlayer *)self playerView];
+  if (playerView)
   {
-    v27 = v26;
-    v28 = [(JFXCompositionPlayer *)self playerView];
-    v29 = v28;
-    if (v28 == v11)
+    v27 = playerView;
+    playerView2 = [(JFXCompositionPlayer *)self playerView];
+    v29 = playerView2;
+    if (playerView2 == objectCopy)
     {
-      v30 = [v10 isEqualToString:@"readyForDisplay"];
+      v30 = [pathCopy isEqualToString:@"readyForDisplay"];
 
       if (v30)
       {
-        v31 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-        v32 = [v31 BOOLValue];
+        v31 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+        bOOLValue = [v31 BOOLValue];
 
         objc_initWeak(&location, self);
         block[0] = MEMORY[0x277D85DD0];
@@ -2333,7 +2333,7 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
         block[2] = __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context___block_invoke_3;
         block[3] = &unk_278D7C3D8;
         objc_copyWeak(&v39, &location);
-        v40 = v32;
+        v40 = bOOLValue;
         dispatch_async(MEMORY[0x277D85CD0], block);
         objc_destroyWeak(&v39);
         objc_destroyWeak(&location);
@@ -2346,29 +2346,29 @@ void __58__JFXCompositionPlayer_configureCompositorCompletionBlock__block_invoke
     }
   }
 
-  v33 = [(JFXCompositionPlayer *)self player];
-  if (!v33)
+  player4 = [(JFXCompositionPlayer *)self player];
+  if (!player4)
   {
     goto LABEL_21;
   }
 
-  v18 = v33;
-  v20 = [(JFXCompositionPlayer *)self player];
-  if (v20 != v11)
+  v18 = player4;
+  player5 = [(JFXCompositionPlayer *)self player];
+  if (player5 != objectCopy)
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v34 = [v10 isEqualToString:@"status"];
+  v34 = [pathCopy isEqualToString:@"status"];
 
   if (v34)
   {
-    v35 = [(JFXCompositionPlayer *)self player];
-    v36 = [v35 error];
+    player6 = [(JFXCompositionPlayer *)self player];
+    error = [player6 error];
 
-    if (v36 && [v36 code] == -11819)
+    if (error && [error code] == -11819)
     {
       dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_51);
     }
@@ -2401,12 +2401,12 @@ void __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context__
   [v0 postNotificationName:@"mediaserverdCrashed" object:0];
 }
 
-- (void)handleReadyForDisplay:(BOOL)a3
+- (void)handleReadyForDisplay:(BOOL)display
 {
-  v3 = a3;
-  if (a3 && (-[JFXCompositionPlayer pendingRequest](self, "pendingRequest"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v6 == 1))
+  displayCopy = display;
+  if (display && (-[JFXCompositionPlayer pendingRequest](self, "pendingRequest"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v6 == 1))
   {
-    v7 = [(JFXCompositionPlayer *)self pendingRequest];
+    pendingRequest = [(JFXCompositionPlayer *)self pendingRequest];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2415,17 +2415,17 @@ void __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context__
       return;
     }
 
-    v9 = [(JFXCompositionPlayer *)self pendingRequest];
-    [v9 setReadyForDisplayReceived];
-    v10 = [(JFXCompositionPlayer *)self player];
-    v11 = [v10 currentItem];
-    v12 = [v11 customVideoCompositor];
+    pendingRequest2 = [(JFXCompositionPlayer *)self pendingRequest];
+    [pendingRequest2 setReadyForDisplayReceived];
+    player = [(JFXCompositionPlayer *)self player];
+    currentItem = [player currentItem];
+    customVideoCompositor = [currentItem customVideoCompositor];
 
-    v13 = [v12 refreshCompletionBlock];
+    refreshCompletionBlock = [customVideoCompositor refreshCompletionBlock];
 
-    if (v13)
+    if (refreshCompletionBlock)
     {
-      if ([v9 hasCompleted])
+      if ([pendingRequest2 hasCompleted])
       {
         [(JFXCompositionPlayer *)self handleUpdateCompositionCompleted:1 wasCancelled:0 error:0];
       }
@@ -2433,10 +2433,10 @@ void __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context__
 
     else
     {
-      v16 = [(JFXCompositionPlayer *)self player];
-      v17 = [v16 timeControlStatus];
+      player2 = [(JFXCompositionPlayer *)self player];
+      timeControlStatus = [player2 timeControlStatus];
 
-      if (v17 == 2)
+      if (timeControlStatus == 2)
       {
         v18 = JFXLog_playback();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2460,7 +2460,7 @@ void __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context__
 
   else
   {
-    v14 = [(JFXCompositionPlayer *)self playbackDelegate];
+    playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if ((v15 & 1) == 0)
@@ -2468,15 +2468,15 @@ void __71__JFXCompositionPlayer_observeValueForKeyPath_ofObject_change_context__
       return;
     }
 
-    if (v3)
+    if (displayCopy)
     {
       v27 = *MEMORY[0x277CC08F0];
       v28 = *(MEMORY[0x277CC08F0] + 16);
       [(JFXCompositionPlayer *)self setCachedCurrentTimeForCompositionUpdate:&v27];
     }
 
-    v9 = [(JFXCompositionPlayer *)self playbackDelegate];
-    [v9 playbackReadyForDisplayChanged:self isReady:v3 setPlaceHolder:1];
+    pendingRequest2 = [(JFXCompositionPlayer *)self playbackDelegate];
+    [pendingRequest2 playbackReadyForDisplayChanged:self isReady:displayCopy setPlaceHolder:1];
   }
 }
 
@@ -2488,24 +2488,24 @@ void __46__JFXCompositionPlayer_handleReadyForDisplay___block_invoke(uint64_t a1
 
 - (void)createPlayer
 {
-  v3 = [(JFXCompositionPlayer *)self player];
+  player = [(JFXCompositionPlayer *)self player];
 
-  if (!v3)
+  if (!player)
   {
     v4 = objc_alloc(MEMORY[0x277CE6598]);
-    v5 = [(JFXCompositionPlayer *)self composition];
-    v6 = [v5 playerItem];
-    v7 = [v4 initWithPlayerItem:v6];
+    composition = [(JFXCompositionPlayer *)self composition];
+    playerItem = [composition playerItem];
+    v7 = [v4 initWithPlayerItem:playerItem];
     [(JFXCompositionPlayer *)self setPlayer:v7];
 
-    v8 = [(JFXCompositionPlayer *)self player];
-    [v8 addObserver:self forKeyPath:@"timeControlStatus" options:3 context:&sJFXCompositionPlayerContext];
+    player2 = [(JFXCompositionPlayer *)self player];
+    [player2 addObserver:self forKeyPath:@"timeControlStatus" options:3 context:&sJFXCompositionPlayerContext];
 
-    v9 = [(JFXCompositionPlayer *)self player];
-    [v9 setActionAtItemEnd:1];
+    player3 = [(JFXCompositionPlayer *)self player];
+    [player3 setActionAtItemEnd:1];
 
     objc_initWeak(&location, self);
-    v10 = [(JFXCompositionPlayer *)self player];
+    player4 = [(JFXCompositionPlayer *)self player];
     CMTimeMake(&v18, 1, 3);
     v11 = MEMORY[0x277D85CD0];
     v12 = MEMORY[0x277D85CD0];
@@ -2514,15 +2514,15 @@ void __46__JFXCompositionPlayer_handleReadyForDisplay___block_invoke(uint64_t a1
     v16[2] = __36__JFXCompositionPlayer_createPlayer__block_invoke;
     v16[3] = &unk_278D7A0A0;
     objc_copyWeak(&v17, &location);
-    v13 = [v10 addPeriodicTimeObserverForInterval:&v18 queue:v11 usingBlock:v16];
+    v13 = [player4 addPeriodicTimeObserverForInterval:&v18 queue:v11 usingBlock:v16];
     [(JFXCompositionPlayer *)self setPlayerProVideoPeriodicObserver:v13];
 
     [(JFXCompositionPlayer *)self setupPlaybackTimeChangedObserver];
-    v14 = [(JFXCompositionPlayer *)self playerView];
-    [v14 addObserver:self forKeyPath:@"readyForDisplay" options:1 context:&sJFXCompositionPlayerContext];
+    playerView = [(JFXCompositionPlayer *)self playerView];
+    [playerView addObserver:self forKeyPath:@"readyForDisplay" options:1 context:&sJFXCompositionPlayerContext];
 
-    v15 = [(JFXCompositionPlayer *)self player];
-    [v15 addObserver:self forKeyPath:@"status" options:1 context:&sJFXCompositionPlayerContext];
+    player5 = [(JFXCompositionPlayer *)self player];
+    [player5 addObserver:self forKeyPath:@"status" options:1 context:&sJFXCompositionPlayerContext];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -2545,22 +2545,22 @@ void __36__JFXCompositionPlayer_createPlayer__block_invoke(uint64_t a1, __int128
 
 - (void)setupPlaybackTimeChangedObserver
 {
-  v3 = [(JFXCompositionPlayer *)self player];
+  player = [(JFXCompositionPlayer *)self player];
 
-  if (v3)
+  if (player)
   {
-    v4 = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
+    playerPlaybackTimePeriodicObserver = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
 
-    if (v4)
+    if (playerPlaybackTimePeriodicObserver)
     {
-      v5 = [(JFXCompositionPlayer *)self player];
-      v6 = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
-      [v5 removeTimeObserver:v6];
+      player2 = [(JFXCompositionPlayer *)self player];
+      playerPlaybackTimePeriodicObserver2 = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
+      [player2 removeTimeObserver:playerPlaybackTimePeriodicObserver2];
     }
 
     v7 = objc_initWeak(&location, self);
-    v8 = [(JFXCompositionPlayer *)self clipsDataSource];
-    v9 = [v8 frameRate];
+    clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+    frameRate = [clipsDataSource frameRate];
 
     player = self->_player;
     [(JFXCompositionPlayer *)self playbackTimeChangedObserverInterval];
@@ -2570,7 +2570,7 @@ void __36__JFXCompositionPlayer_createPlayer__block_invoke(uint64_t a1, __int128
     v15 = 3221225472;
     v16 = __56__JFXCompositionPlayer_setupPlaybackTimeChangedObserver__block_invoke;
     v17 = &unk_278D7C430;
-    v19 = v9;
+    v19 = frameRate;
     objc_copyWeak(&v18, &location);
     v13 = [(AVPlayer *)player addPeriodicTimeObserverForInterval:v20 queue:v11 usingBlock:&v14];
     [(JFXCompositionPlayer *)self setPlayerPlaybackTimePeriodicObserver:v13, v14, v15, v16, v17];
@@ -2616,11 +2616,11 @@ LABEL_2:
 
 - (void)destroyPlayer
 {
-  v3 = [(JFXCompositionPlayer *)self player];
-  v4 = v3;
-  if (v3)
+  player = [(JFXCompositionPlayer *)self player];
+  v4 = player;
+  if (player)
   {
-    [v3 currentTime];
+    [player currentTime];
   }
 
   else
@@ -2628,81 +2628,81 @@ LABEL_2:
     memset(v25, 0, sizeof(v25));
   }
 
-  v5 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v6 = FrameTimeFromCMTime(v25, [v5 frameRate]);
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  v6 = FrameTimeFromCMTime(v25, [clipsDataSource frameRate]);
 
-  v7 = [(JFXCompositionPlayer *)self player];
-  v8 = [v7 timeControlStatus];
+  player2 = [(JFXCompositionPlayer *)self player];
+  timeControlStatus = [player2 timeControlStatus];
 
-  if (v8 == 2)
+  if (timeControlStatus == 2)
   {
-    v9 = [(JFXCompositionPlayer *)self playbackDelegate];
+    playbackDelegate = [(JFXCompositionPlayer *)self playbackDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(JFXCompositionPlayer *)self playbackDelegate];
-      [v11 playbackDidStop:self currentTime:v6];
+      playbackDelegate2 = [(JFXCompositionPlayer *)self playbackDelegate];
+      [playbackDelegate2 playbackDidStop:self currentTime:v6];
     }
   }
 
-  v12 = [(JFXCompositionPlayer *)self player];
+  player3 = [(JFXCompositionPlayer *)self player];
 
-  if (v12)
+  if (player3)
   {
-    v13 = [(JFXCompositionPlayer *)self playbackDelegate];
+    playbackDelegate3 = [(JFXCompositionPlayer *)self playbackDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(JFXCompositionPlayer *)self playbackDelegate];
-      [v15 playerWillBeDestroyed:self];
+      playbackDelegate4 = [(JFXCompositionPlayer *)self playbackDelegate];
+      [playbackDelegate4 playerWillBeDestroyed:self];
     }
 
-    v16 = [(JFXCompositionPlayer *)self player];
-    [v16 removeObserver:self forKeyPath:@"timeControlStatus" context:&sJFXCompositionPlayerContext];
+    player4 = [(JFXCompositionPlayer *)self player];
+    [player4 removeObserver:self forKeyPath:@"timeControlStatus" context:&sJFXCompositionPlayerContext];
 
-    v17 = [(JFXCompositionPlayer *)self playerView];
-    [v17 removeObserver:self forKeyPath:@"readyForDisplay" context:&sJFXCompositionPlayerContext];
+    playerView = [(JFXCompositionPlayer *)self playerView];
+    [playerView removeObserver:self forKeyPath:@"readyForDisplay" context:&sJFXCompositionPlayerContext];
 
-    v18 = [(JFXCompositionPlayer *)self player];
-    [v18 removeObserver:self forKeyPath:@"status" context:&sJFXCompositionPlayerContext];
+    player5 = [(JFXCompositionPlayer *)self player];
+    [player5 removeObserver:self forKeyPath:@"status" context:&sJFXCompositionPlayerContext];
 
-    v19 = [(JFXCompositionPlayer *)self player];
-    [v19 replaceCurrentItemWithPlayerItem:0];
+    player6 = [(JFXCompositionPlayer *)self player];
+    [player6 replaceCurrentItemWithPlayerItem:0];
 
-    v20 = [(JFXCompositionPlayer *)self player];
-    v21 = [(JFXCompositionPlayer *)self playerProVideoPeriodicObserver];
-    [v20 removeTimeObserver:v21];
+    player7 = [(JFXCompositionPlayer *)self player];
+    playerProVideoPeriodicObserver = [(JFXCompositionPlayer *)self playerProVideoPeriodicObserver];
+    [player7 removeTimeObserver:playerProVideoPeriodicObserver];
 
     [(JFXCompositionPlayer *)self setPlayerProVideoPeriodicObserver:0];
-    v22 = [(JFXCompositionPlayer *)self player];
-    v23 = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
-    [v22 removeTimeObserver:v23];
+    player8 = [(JFXCompositionPlayer *)self player];
+    playerPlaybackTimePeriodicObserver = [(JFXCompositionPlayer *)self playerPlaybackTimePeriodicObserver];
+    [player8 removeTimeObserver:playerPlaybackTimePeriodicObserver];
 
     [(JFXCompositionPlayer *)self setPlayerPlaybackTimePeriodicObserver:0];
-    v24 = [(JFXCompositionPlayer *)self playerView];
-    [v24 setPlayer:0];
+    playerView2 = [(JFXCompositionPlayer *)self playerView];
+    [playerView2 setPlayer:0];
   }
 
   [(JFXCompositionPlayer *)self setPlayer:0];
 }
 
-- (void)warnTooManyLiveCompositors:(id)a3
+- (void)warnTooManyLiveCompositors:(id)compositors
 {
-  v4 = a3;
+  compositorsCopy = compositors;
   v5 = JFXLog_playback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(JFXCompositionPlayer *)v4 warnTooManyLiveCompositors:v5];
+    [(JFXCompositionPlayer *)compositorsCopy warnTooManyLiveCompositors:v5];
   }
 }
 
-- (BOOL)JFX_clipDataSourceHasClip:(id)a3
+- (BOOL)JFX_clipDataSourceHasClip:(id)clip
 {
-  v4 = a3;
-  v5 = [(JFXCompositionPlayer *)self clipsDataSource];
-  v6 = [v5 count];
+  clipCopy = clip;
+  clipsDataSource = [(JFXCompositionPlayer *)self clipsDataSource];
+  v6 = [clipsDataSource count];
 
   if (v6 < 1)
   {
@@ -2711,11 +2711,11 @@ LABEL_2:
 
   else
   {
-    v7 = [(JFXCompositionPlayer *)self clipsDataSource];
-    v8 = [v7 playableElementAtIndex:0];
+    clipsDataSource2 = [(JFXCompositionPlayer *)self clipsDataSource];
+    v8 = [clipsDataSource2 playableElementAtIndex:0];
 
-    LOBYTE(v7) = [v8 isEqual:v4];
-    if (v7)
+    LOBYTE(clipsDataSource2) = [v8 isEqual:clipCopy];
+    if (clipsDataSource2)
     {
       v9 = 1;
     }
@@ -2731,14 +2731,14 @@ LABEL_2:
           break;
         }
 
-        v12 = [(JFXCompositionPlayer *)self clipsDataSource];
-        v13 = [v12 playableElementAtIndex:v11];
+        clipsDataSource3 = [(JFXCompositionPlayer *)self clipsDataSource];
+        v13 = [clipsDataSource3 playableElementAtIndex:v11];
 
-        LODWORD(v12) = [v13 isEqual:v4];
+        LODWORD(clipsDataSource3) = [v13 isEqual:clipCopy];
         v10 = v11 + 1;
       }
 
-      while (!v12);
+      while (!clipsDataSource3);
       v9 = v11 < v6;
     }
   }
@@ -2753,17 +2753,17 @@ LABEL_2:
   return WeakRetained;
 }
 
-- (void)setWasCurrentTime:(id *)a3
+- (void)setWasCurrentTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_wasCurrentTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_wasCurrentTime.epoch = time->var3;
   *&self->_wasCurrentTime.value = v3;
 }
 
-- (void)setCachedCurrentTimeForCompositionUpdate:(id *)a3
+- (void)setCachedCurrentTimeForCompositionUpdate:(id *)update
 {
-  v3 = *&a3->var0;
-  self->_cachedCurrentTimeForCompositionUpdate.epoch = a3->var3;
+  v3 = *&update->var0;
+  self->_cachedCurrentTimeForCompositionUpdate.epoch = update->var3;
   *&self->_cachedCurrentTimeForCompositionUpdate.value = v3;
 }
 

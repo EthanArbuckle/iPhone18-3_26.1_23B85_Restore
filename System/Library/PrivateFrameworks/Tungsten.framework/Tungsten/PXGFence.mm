@@ -1,6 +1,6 @@
 @interface PXGFence
 - (PXGFence)init;
-- (PXGFence)initWithLayout:(id)a3 type:(unint64_t)a4;
+- (PXGFence)initWithLayout:(id)layout type:(unint64_t)type;
 - (PXGLayout)layout;
 @end
 
@@ -15,23 +15,23 @@
 
 - (PXGFence)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGFence.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXGFence init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGFence.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXGFence init]"}];
 
   abort();
 }
 
-- (PXGFence)initWithLayout:(id)a3 type:(unint64_t)a4
+- (PXGFence)initWithLayout:(id)layout type:(unint64_t)type
 {
-  v6 = a3;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = PXGFence;
   v7 = [(PXGFence *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_layout, v6);
-    v8->_type = a4;
+    objc_storeWeak(&v7->_layout, layoutCopy);
+    v8->_type = type;
   }
 
   return v8;

@@ -1,22 +1,22 @@
 @interface GeraStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasSleepCycleCount:(BOOL)a3;
-- (void)setHasSleepDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasSleepCycleCount:(BOOL)count;
+- (void)setHasSleepDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GeraStats
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSleepDuration:(BOOL)a3
+- (void)setHasSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSleepCycleCount:(BOOL)a3
+- (void)setHasSleepCycleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = GeraStats;
   v4 = [(GeraStats *)&v8 description];
-  v5 = [(GeraStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(GeraStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v7 forKey:@"duration"];
+    [dictionary setObject:v7 forKey:@"duration"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -99,7 +99,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sleepDuration];
-  [v3 setObject:v8 forKey:@"sleep_duration"];
+  [dictionary setObject:v8 forKey:@"sleep_duration"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -115,23 +115,23 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sleepCycleCount];
-  [v3 setObject:v9 forKey:@"sleep_cycle_count"];
+  [dictionary setObject:v9 forKey:@"sleep_cycle_count"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_startTime];
-    [v3 setObject:v5 forKey:@"start_time"];
+    [dictionary setObject:v5 forKey:@"start_time"];
   }
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -182,14 +182,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[4] = self->_duration;
-    *(v4 + 28) |= 2u;
+    toCopy[4] = self->_duration;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -208,8 +208,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_sleepDuration;
-  *(v4 + 28) |= 8u;
+  toCopy[6] = self->_sleepDuration;
+  *(toCopy + 28) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -223,21 +223,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[5] = self->_sleepCycleCount;
-  *(v4 + 28) |= 4u;
+  toCopy[5] = self->_sleepCycleCount;
+  *(toCopy + 28) |= 4u;
   if (*&self->_has)
   {
 LABEL_5:
-    *(v4 + 1) = self->_startTime;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = self->_startTime;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -289,23 +289,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_21:
     v5 = 0;
@@ -314,34 +314,34 @@ LABEL_21:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_sleepDuration != *(v4 + 6))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_sleepDuration != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_sleepCycleCount != *(v4 + 5))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_sleepCycleCount != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 28) & 1) == 0;
+  v5 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_startTime != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_startTime != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
@@ -408,15 +408,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_duration = *(v4 + 4);
+    self->_duration = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -429,14 +429,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 8) == 0)
+  else if ((*(fromCopy + 28) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sleepDuration = *(v4 + 6);
+  self->_sleepDuration = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -449,12 +449,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_sleepCycleCount = *(v4 + 5);
+  self->_sleepCycleCount = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_5:
-    self->_startTime = *(v4 + 1);
+    self->_startTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

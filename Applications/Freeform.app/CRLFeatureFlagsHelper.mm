@@ -1,12 +1,12 @@
 @interface CRLFeatureFlagsHelper
-+ (BOOL)isOSFeatureEnabled:(int64_t)a3;
++ (BOOL)isOSFeatureEnabled:(int64_t)enabled;
 @end
 
 @implementation CRLFeatureFlagsHelper
 
-+ (BOOL)isOSFeatureEnabled:(int64_t)a3
++ (BOOL)isOSFeatureEnabled:(int64_t)enabled
 {
-  switch(a3)
+  switch(enabled)
   {
     case 0:
 

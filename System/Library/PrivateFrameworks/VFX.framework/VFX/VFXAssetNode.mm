@@ -1,41 +1,41 @@
 @interface VFXAssetNode
-+ (id)assetNodeWithAsset:(id)a3;
++ (id)assetNodeWithAsset:(id)asset;
 + (id)group;
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5;
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3;
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output;
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block;
 - (NSArray)childNodes;
 - (NSString)description;
 - (NSString)name;
 - (VFXAsset)asset;
 - (VFXAssetNode)init;
-- (VFXAssetNode)initWithCoder:(id)a3;
+- (VFXAssetNode)initWithCoder:(id)coder;
 - (__CFXWorld)worldRef;
-- (id)childNodeWithAssetName:(id)a3;
-- (id)childNodeWithName:(id)a3;
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4;
+- (id)childNodeWithAssetName:(id)name;
+- (id)childNodeWithName:(id)name;
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)enclosingPrefab;
 - (id)identifier;
-- (id)initPresentation:(id)a3;
+- (id)initPresentation:(id)presentation;
 - (id)presentationObject;
 - (id)registry;
-- (id)script_instantiate:(BOOL)a3;
-- (void)_removeChild:(id)a3;
-- (void)addChildNode:(id)a3;
-- (void)addWorldReference:(id)a3;
-- (void)copyTo:(id)a3 withContext:(id)a4;
+- (id)script_instantiate:(BOOL)script_instantiate;
+- (void)_removeChild:(id)child;
+- (void)addChildNode:(id)node;
+- (void)addWorldReference:(id)reference;
+- (void)copyTo:(id)to withContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateChildNodesUsingBlock:(id)a3;
-- (void)enumerateHierarchyUsingBlock:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)insertChildNode:(id)a3 atIndex:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateChildNodesUsingBlock:(id)block;
+- (void)enumerateHierarchyUsingBlock:(id)block;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)insertChildNode:(id)node atIndex:(unint64_t)index;
 - (void)removeFromParentNode;
-- (void)setChildNodes:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setWorld:(id)a3;
+- (void)setChildNodes:(id)nodes;
+- (void)setIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setWorld:(id)world;
 - (void)setupChildsArrayIfNeeded;
 @end
 
@@ -62,7 +62,7 @@
   [(VFXAssetNode *)&v3 dealloc];
 }
 
-- (id)initPresentation:(id)a3
+- (id)initPresentation:(id)presentation
 {
   v22.receiver = self;
   v22.super_class = VFXAssetNode;
@@ -71,12 +71,12 @@
   if (v4)
   {
     *(v4 + 64) |= 1u;
-    v4->_asset = objc_msgSend_asset(a3, v5, v6, v7);
-    v8->_isGroup = objc_msgSend_isGroup(a3, v9, v10, v11);
-    v8->_prefab = objc_msgSend_isPrefab(a3, v12, v13, v14);
-    v8->_name = objc_msgSend_name(a3, v15, v16, v17);
-    v8->_identifier = objc_msgSend_identifier(a3, v18, v19, v20);
-    v8->_world = *(a3 + 7);
+    v4->_asset = objc_msgSend_asset(presentation, v5, v6, v7);
+    v8->_isGroup = objc_msgSend_isGroup(presentation, v9, v10, v11);
+    v8->_prefab = objc_msgSend_isPrefab(presentation, v12, v13, v14);
+    v8->_name = objc_msgSend_name(presentation, v15, v16, v17);
+    v8->_identifier = objc_msgSend_identifier(presentation, v18, v19, v20);
+    v8->_world = *(presentation + 7);
   }
 
   return v8;
@@ -126,9 +126,9 @@
   return objc_msgSend_assetRegistry(v4, v5, v6, v7);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     v5 = sub_1AF0D5194();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -137,20 +137,20 @@
     }
   }
 
-  self->_identifier = a3;
+  self->_identifier = identifier;
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
-  *(a3 + 16) = self->_isGroup;
-  *(a3 + 17) = self->_prefab;
-  v7 = objc_msgSend_name(self, a2, a3, a4);
-  objc_msgSend_setName_(a3, v8, v7, v9);
+  *(to + 16) = self->_isGroup;
+  *(to + 17) = self->_prefab;
+  v7 = objc_msgSend_name(self, a2, to, context);
+  objc_msgSend_setName_(to, v8, v7, v9);
   v13 = objc_msgSend_asset(self, v10, v11, v12);
-  *(a3 + 1) = sub_1AF2BED30(v13, a4);
+  *(to + 1) = sub_1AF2BED30(v13, context);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_copyTo_withContext_(self, v5, v4, 0);
@@ -196,10 +196,10 @@
   return v5;
 }
 
-+ (id)assetNodeWithAsset:(id)a3
++ (id)assetNodeWithAsset:(id)asset
 {
   v4 = objc_alloc_init(VFXAssetNode);
-  v4->_asset = a3;
+  v4->_asset = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -230,7 +230,7 @@
   }
 }
 
-- (void)setChildNodes:(id)a3
+- (void)setChildNodes:(id)nodes
 {
   v38 = *MEMORY[0x1E69E9840];
   children = self->_children;
@@ -248,7 +248,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, a2, &v32, v37, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodes, a2, &v32, v37, 16);
   if (v8)
   {
     v11 = v8;
@@ -259,7 +259,7 @@
       {
         if (*v33 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(nodes);
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
@@ -272,7 +272,7 @@
         }
       }
 
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v32, v37, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodes, v9, &v32, v37, 16);
     }
 
     while (v11);
@@ -308,7 +308,7 @@
   }
 
   objc_msgSend_setupChildsArrayIfNeeded(self, v19, v20, v21);
-  objc_msgSend_setArray_(self->_children, v26, a3, v27);
+  objc_msgSend_setArray_(self->_children, v26, nodes, v27);
 }
 
 - (void)setupChildsArrayIfNeeded
@@ -319,42 +319,42 @@
   }
 }
 
-- (void)addChildNode:(id)a3
+- (void)addChildNode:(id)node
 {
-  if (*(a3 + 5))
+  if (*(node + 5))
   {
-    objc_msgSend_removeFromParent(a3, a2, a3, v3);
+    objc_msgSend_removeFromParent(node, a2, node, v3);
   }
 
-  *(a3 + 5) = self;
-  objc_msgSend_setWorld_(a3, a2, self->_world, v3);
+  *(node + 5) = self;
+  objc_msgSend_setWorld_(node, a2, self->_world, v3);
   objc_msgSend_setupChildsArrayIfNeeded(self, v6, v7, v8);
   children = self->_children;
 
-  objc_msgSend_addObject_(children, v9, a3, v10);
+  objc_msgSend_addObject_(children, v9, node, v10);
 }
 
-- (void)insertChildNode:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildNode:(id)node atIndex:(unint64_t)index
 {
-  if (*(a3 + 5))
+  if (*(node + 5))
   {
-    objc_msgSend_removeFromParent(a3, a2, a3, a4);
+    objc_msgSend_removeFromParent(node, a2, node, index);
   }
 
-  objc_msgSend_setWorld_(a3, a2, self->_world, a4);
-  *(a3 + 5) = self;
+  objc_msgSend_setWorld_(node, a2, self->_world, index);
+  *(node + 5) = self;
   objc_msgSend_setupChildsArrayIfNeeded(self, v7, v8, v9);
   children = self->_children;
 
-  objc_msgSend_insertObject_atIndex_(children, v10, a3, a4);
+  objc_msgSend_insertObject_atIndex_(children, v10, node, index);
 }
 
-- (void)_removeChild:(id)a3
+- (void)_removeChild:(id)child
 {
-  objc_msgSend_setWorld_(a3, a2, 0, v3);
+  objc_msgSend_setWorld_(child, a2, 0, v3);
   children = self->_children;
 
-  objc_msgSend_removeObject_(children, v6, a3, v7);
+  objc_msgSend_removeObject_(children, v6, child, v7);
 }
 
 - (void)removeFromParentNode
@@ -364,17 +364,17 @@
   self->_parent = 0;
 }
 
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output
 {
-  v6 = a4;
+  recursivelyCopy = recursively;
   v27 = *MEMORY[0x1E69E9840];
   v25 = 0;
-  if ((*(a3 + 2))(a3, self, &v25))
+  if ((*(test + 2))(test, self, &v25))
   {
-    objc_msgSend_addObject_(a5, v9, self, v11);
+    objc_msgSend_addObject_(output, v9, self, v11);
   }
 
-  if (v6 && (v25 & 1) == 0 && (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, v12 = objc_msgSend_childNodes(self, v9, v10, v11, 0), (v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v21, v26, 16)) != 0))
+  if (recursivelyCopy && (v25 & 1) == 0 && (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, v12 = objc_msgSend_childNodes(self, v9, v10, v11, 0), (v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v21, v26, 16)) != 0))
   {
     v16 = v14;
     v17 = *v22;
@@ -388,7 +388,7 @@ LABEL_7:
       }
 
       v19 = 1;
-      v25 = objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v21 + 1) + 8 * v18), v15, a3, 1, a5);
+      v25 = objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v21 + 1) + 8 * v18), v15, test, 1, output);
       if (v25)
       {
         break;
@@ -416,11 +416,11 @@ LABEL_13:
   return v19 & 1;
 }
 
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, a4);
+  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, test, recursively);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -440,7 +440,7 @@ LABEL_3:
         objc_enumerationMutation(v11);
       }
 
-      if (objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v19 + 1) + 8 * v17), v14, a3, v4, v7))
+      if (objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v19 + 1) + 8 * v17), v14, test, recursivelyCopy, v7))
       {
         break;
       }
@@ -461,11 +461,11 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
-  (*(a3 + 2))(a3, self, &v22);
+  (*(block + 2))(block, self, &v22);
   if ((v22 & 1) == 0)
   {
     v20 = 0u;
@@ -487,7 +487,7 @@ LABEL_3:
             objc_enumerationMutation(v8);
           }
 
-          v22 = objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v18 + 1) + 8 * i), v11, a3, v12);
+          v22 = objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v18 + 1) + 8 * i), v11, block, v12);
           if (v22)
           {
             v16 = 1;
@@ -510,14 +510,14 @@ LABEL_3:
   return v16 & 1;
 }
 
-- (void)enumerateChildNodesUsingBlock:(id)a3
+- (void)enumerateChildNodesUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = objc_msgSend_childNodes(self, a2, a3, v3, 0);
+  v5 = objc_msgSend_childNodes(self, a2, block, v3, 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v13, v17, 16);
   if (v7)
   {
@@ -532,7 +532,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v13 + 1) + 8 * v12), v8, a3, v9))
+      if (objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v13 + 1) + 8 * v12), v8, block, v9))
       {
         break;
       }
@@ -551,23 +551,23 @@ LABEL_3:
   }
 }
 
-- (void)enumerateHierarchyUsingBlock:(id)a3
+- (void)enumerateHierarchyUsingBlock:(id)block
 {
   v7 = 0;
-  (*(a3 + 2))(a3, self, &v7);
+  (*(block + 2))(block, self, &v7);
   if ((v7 & 1) == 0)
   {
-    objc_msgSend_enumerateChildNodesUsingBlock_(self, v5, a3, v6);
+    objc_msgSend_enumerateChildNodesUsingBlock_(self, v5, block, v6);
   }
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   asset = self->_asset;
   if (asset)
   {
-    (*(a4 + 2))(a4, asset, 0, 0);
+    (*(block + 2))(block, asset, 0, 0);
   }
 
   v15 = 0u;
@@ -590,7 +590,7 @@ LABEL_3:
           objc_enumerationMutation(children);
         }
 
-        (*(a4 + 2))(a4, *(*(&v13 + 1) + 8 * v11++), 0, 0);
+        (*(block + 2))(block, *(*(&v13 + 1) + 8 * v11++), 0, 0);
       }
 
       while (v9 != v11);
@@ -601,18 +601,18 @@ LABEL_3:
   }
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
-  if (self->_world != a3)
+  if (self->_world != reference)
   {
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -626,8 +626,8 @@ LABEL_3:
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -646,7 +646,7 @@ LABEL_3:
   return sub_1AF1C3FAC(v4);
 }
 
-- (id)childNodeWithAssetName:(id)a3
+- (id)childNodeWithAssetName:(id)name
 {
   v7 = 0;
   v8 = &v7;
@@ -658,7 +658,7 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = sub_1AF29A580;
   v6[3] = &unk_1E7A7E4B0;
-  v6[4] = a3;
+  v6[4] = name;
   v6[5] = &v7;
   objc_msgSend_enumerateChildNodesUsingBlock_(self, a2, v6, v3);
   v4 = v8[5];
@@ -666,7 +666,7 @@ LABEL_3:
   return v4;
 }
 
-- (id)childNodeWithName:(id)a3
+- (id)childNodeWithName:(id)name
 {
   v7 = 0;
   v8 = &v7;
@@ -678,7 +678,7 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = sub_1AF29A6BC;
   v6[3] = &unk_1E7A7E4B0;
-  v6[4] = a3;
+  v6[4] = name;
   v6[5] = &v7;
   objc_msgSend_enumerateChildNodesUsingBlock_(self, a2, v6, v3);
   v4 = v8[5];
@@ -690,16 +690,16 @@ LABEL_3:
 {
   while (1)
   {
-    v4 = self;
+    selfCopy = self;
     if (!self || (objc_msgSend_isPrefab(self, a2, v2, v3) & 1) != 0)
     {
       break;
     }
 
-    self = objc_msgSend_parentNode(v4, v5, v6, v7);
+    self = objc_msgSend_parentNode(selfCopy, v5, v6, v7);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (NSString)name
@@ -716,22 +716,22 @@ LABEL_3:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   asset = self->_asset;
   if (asset)
   {
 
-    objc_msgSend_setName_(asset, a2, a3, v3);
+    objc_msgSend_setName_(asset, a2, name, v3);
   }
 
   else
   {
     name = self->_name;
-    if (name != a3)
+    if (name != name)
     {
 
-      self->_name = a3;
+      self->_name = name;
     }
   }
 }
@@ -748,7 +748,7 @@ LABEL_3:
   return objc_msgSend_presentationObject(asset, v3, v4, v5);
 }
 
-- (VFXAssetNode)initWithCoder:(id)a3
+- (VFXAssetNode)initWithCoder:(id)coder
 {
   v57[8] = *MEMORY[0x1E69E9840];
   v54.receiver = self;
@@ -759,10 +759,10 @@ LABEL_3:
     return v6;
   }
 
-  v6->_isGroup = objc_msgSend_decodeBoolForKey_(a3, v4, @"isGroup", v5);
-  v6->_prefab = objc_msgSend_decodeBoolForKey_(a3, v7, @"isPrefab", v8);
+  v6->_isGroup = objc_msgSend_decodeBoolForKey_(coder, v4, @"isGroup", v5);
+  v6->_prefab = objc_msgSend_decodeBoolForKey_(coder, v7, @"isPrefab", v8);
   v9 = objc_opt_class();
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"identifier");
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"identifier");
   if (!v12)
   {
     v14 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v11, 0, v13);
@@ -773,7 +773,7 @@ LABEL_3:
   if (v6->_isGroup && !v6->_prefab)
   {
     v18 = objc_opt_class();
-    v6->_name = objc_msgSend_decodeObjectOfClass_forKey_(a3, v19, v18, @"name");
+    v6->_name = objc_msgSend_decodeObjectOfClass_forKey_(coder, v19, v18, @"name");
   }
 
   v20 = MEMORY[0x1E695DFD8];
@@ -787,7 +787,7 @@ LABEL_3:
   v57[7] = objc_opt_class();
   v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v21, v57, 8);
   v25 = objc_msgSend_setWithArray_(v20, v23, v22, v24);
-  v6->_asset = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v26, v25, @"asset");
+  v6->_asset = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v26, v25, @"asset");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -813,7 +813,7 @@ LABEL_12:
   v56[1] = objc_opt_class();
   v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v32, v56, 2);
   v36 = objc_msgSend_setWithArray_(v31, v34, v33, v35);
-  v38 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v37, v36, @"childNodes");
+  v38 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v37, v36, @"childNodes");
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -848,27 +848,27 @@ LABEL_12:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_identifier, @"identifier");
   if (self->_isGroup)
   {
-    objc_msgSend_encodeBool_forKey_(a3, v5, 1, @"isGroup");
+    objc_msgSend_encodeBool_forKey_(coder, v5, 1, @"isGroup");
     if (self->_prefab)
     {
-      objc_msgSend_encodeBool_forKey_(a3, v6, 1, @"isPrefab");
+      objc_msgSend_encodeBool_forKey_(coder, v6, 1, @"isPrefab");
     }
 
     else
     {
-      objc_msgSend_encodeObject_forKey_(a3, v6, self->_name, @"name");
+      objc_msgSend_encodeObject_forKey_(coder, v6, self->_name, @"name");
     }
   }
 
   asset = self->_asset;
   if (asset)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v5, asset, @"asset");
+    objc_msgSend_encodeObject_forKey_(coder, v5, asset, @"asset");
   }
 
   children = self->_children;
@@ -877,7 +877,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = objc_msgSend_options(a3, v9, v10, v11);
+      v12 = objc_msgSend_options(coder, v9, v10, v11);
       v15 = objc_msgSend_objectForKeyedSubscript_(v12, v13, @"VFXWorldExportOptimize", v14);
       if (objc_msgSend_BOOLValue(v15, v16, v17, v18))
       {
@@ -885,14 +885,14 @@ LABEL_12:
       }
     }
 
-    objc_msgSend_encodeObject_forKey_(a3, v9, children, @"childNodes");
+    objc_msgSend_encodeObject_forKey_(coder, v9, children, @"childNodes");
   }
 }
 
-- (id)script_instantiate:(BOOL)a3
+- (id)script_instantiate:(BOOL)script_instantiate
 {
-  v4 = a3;
-  objc_msgSend_asset(self, a2, a3, v3);
+  script_instantiateCopy = script_instantiate;
+  objc_msgSend_asset(self, a2, script_instantiate, v3);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -900,7 +900,7 @@ LABEL_12:
   }
 
   v9 = objc_msgSend_asset(self, v6, v7, v8);
-  v12 = objc_msgSend_instantiate_(v9, v10, v4, v11);
+  v12 = objc_msgSend_instantiate_(v9, v10, script_instantiateCopy, v11);
   v16 = objc_msgSend_world(self, v13, v14, v15);
   v20 = objc_msgSend_rootNode(v16, v17, v18, v19);
   objc_msgSend_addChildNode_(v20, v21, v12, v22);

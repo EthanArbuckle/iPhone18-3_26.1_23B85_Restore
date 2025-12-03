@@ -1,33 +1,33 @@
 @interface VCRateControlServerBag
-+ (id)groupKeysWithMode:(int)a3 primaryKey:(id)a4;
-+ (id)keysWithMode:(int)a3;
-+ (id)prefixForMode:(int)a3;
-- (BOOL)containsAllSecondaryKeysWithPrimaryKey:(id)a3;
++ (id)groupKeysWithMode:(int)mode primaryKey:(id)key;
++ (id)keysWithMode:(int)mode;
++ (id)prefixForMode:(int)mode;
+- (BOOL)containsAllSecondaryKeysWithPrimaryKey:(id)key;
 - (NSNumber)experimentGroupIndex;
-- (VCRateControlServerBag)initWithMode:(int)a3 serverBagDict:(id)a4;
-- (id)getExperimentConfig:(unsigned __int8)a3 defaultValue:(id)a4;
-- (id)getExperimentValueForKey:(id)a3;
-- (id)valueForSecondaryKeyWithPrimaryKey:(id)a3 secondaryKey:(id)a4 type:(int)a5;
-- (id)valueForType:(int)a3 value:(id)a4;
+- (VCRateControlServerBag)initWithMode:(int)mode serverBagDict:(id)dict;
+- (id)getExperimentConfig:(unsigned __int8)config defaultValue:(id)value;
+- (id)getExperimentValueForKey:(id)key;
+- (id)valueForSecondaryKeyWithPrimaryKey:(id)key secondaryKey:(id)secondaryKey type:(int)type;
+- (id)valueForType:(int)type value:(id)value;
 - (int)experimentVersion;
 - (void)dealloc;
 @end
 
 @implementation VCRateControlServerBag
 
-+ (id)keysWithMode:(int)a3
++ (id)keysWithMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v27 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v3 == 6 || v3 == 1)
   {
-    v6 = [&unk_1F579E738 allKeys];
+    allKeys = [&unk_1F579E738 allKeys];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v14 count:16];
+    v7 = [allKeys countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v7)
     {
       v8 = v7;
@@ -39,14 +39,14 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
-          [v5 addObjectsFromArray:{objc_msgSend(a1, "groupKeysWithMode:primaryKey:", v3, *(*(&v15 + 1) + 8 * v10++))}];
+          [v5 addObjectsFromArray:{objc_msgSend(self, "groupKeysWithMode:primaryKey:", v3, *(*(&v15 + 1) + 8 * v10++))}];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v15 objects:v14 count:16];
       }
 
       while (v8);
@@ -79,9 +79,9 @@
   }
 }
 
-+ (id)groupKeysWithMode:(int)a3 primaryKey:(id)a4
++ (id)groupKeysWithMode:(int)mode primaryKey:(id)key
 {
-  v5 = *&a3;
+  v5 = *&mode;
   v40 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   switch(v5)
@@ -96,12 +96,12 @@
       v8 = &unk_1F579E788;
 LABEL_7:
       v23 = v5;
-      v9 = [a1 prefixForMode:v5];
+      v9 = [self prefixForMode:v5];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = [v8 objectForKey:a4];
+      obj = [v8 objectForKey:key];
       v10 = [obj countByEnumeratingWithState:&v36 objects:v35 count:16];
       if (v10)
       {
@@ -117,7 +117,7 @@ LABEL_7:
               objc_enumerationMutation(obj);
             }
 
-            v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", v9, a4, *(*(&v36 + 1) + 8 * v13)];
+            v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", v9, key, *(*(&v36 + 1) + 8 * v13)];
             [v7 addObject:v14];
             if (VRTraceGetErrorLogLevelForModule() >= 8)
             {
@@ -128,7 +128,7 @@ LABEL_7:
               {
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                 {
-                  v18 = [v14 UTF8String];
+                  uTF8String = [v14 UTF8String];
                   *buf = 136316162;
                   v26 = v15;
                   v27 = 2080;
@@ -136,7 +136,7 @@ LABEL_7:
                   v29 = 1024;
                   v30 = 124;
                   v31 = 2080;
-                  v32 = v18;
+                  v32 = uTF8String;
                   v33 = 1024;
                   v34 = v23;
                   _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d Adding key:%s for mode %d", buf, 0x2Cu);
@@ -145,7 +145,7 @@ LABEL_7:
 
               else if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
-                v19 = [v14 UTF8String];
+                uTF8String2 = [v14 UTF8String];
                 *buf = 136316162;
                 v26 = v15;
                 v27 = 2080;
@@ -153,7 +153,7 @@ LABEL_7:
                 v29 = 1024;
                 v30 = 124;
                 v31 = 2080;
-                v32 = v19;
+                v32 = uTF8String2;
                 v33 = 1024;
                 v34 = v23;
                 _os_log_debug_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEBUG, "AVCRC [%s] %s:%d Adding key:%s for mode %d", buf, 0x2Cu);
@@ -194,10 +194,10 @@ LABEL_7:
   return 0;
 }
 
-+ (id)prefixForMode:(int)a3
++ (id)prefixForMode:(int)mode
 {
   v17 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(mode)
   {
     case 8:
       v4 = MEMORY[0x1E696AEC0];
@@ -226,7 +226,7 @@ LABEL_7:
       v13 = 1024;
       v14 = 142;
       v15 = 1024;
-      v16 = a3;
+      modeCopy = mode;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d Unsupported operating mode %d", buf, 0x22u);
     }
   }
@@ -234,7 +234,7 @@ LABEL_7:
   return &stru_1F570E008;
 }
 
-- (VCRateControlServerBag)initWithMode:(int)a3 serverBagDict:(id)a4
+- (VCRateControlServerBag)initWithMode:(int)mode serverBagDict:(id)dict
 {
   v32 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -245,7 +245,7 @@ LABEL_7:
     return v6;
   }
 
-  if (a3 > 8 || ((1 << a3) & 0x142) == 0)
+  if (mode > 8 || ((1 << mode) & 0x142) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
     {
@@ -266,14 +266,14 @@ LABEL_7:
     v24 = 1024;
     v25 = 155;
     v26 = 1024;
-    v27 = a3;
+    modeCopy2 = mode;
     v13 = "AVCRC [%s] %s:%d Unsupported operating mode %d";
     v14 = v17;
     v15 = 34;
     goto LABEL_14;
   }
 
-  if (![a4 count])
+  if (![dict count])
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
     {
@@ -303,8 +303,8 @@ LABEL_15:
     return 0;
   }
 
-  v6->_operatingMode = a3;
-  v6->_serverBagDict = a4;
+  v6->_operatingMode = mode;
+  v6->_serverBagDict = dict;
   v6->_experimentGroupIndex = &unk_1F579B4A8;
   v6->_experimentEnabled = VCDefaults_GetBoolValueForKey(@"enableVCRateControlExperiment", 1);
   v6->_defaultExperimentConfigString = VCDefaults_CopyStringValueForKey(@"vcrcExperimentConfig");
@@ -315,7 +315,7 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       experimentEnabled = v6->_experimentEnabled;
-      v10 = [objc_msgSend(objc_msgSend(a4 "allKeys")];
+      v10 = [objc_msgSend(objc_msgSend(dict "allKeys")];
       *buf = 136316418;
       v21 = v7;
       v22 = 2080;
@@ -323,7 +323,7 @@ LABEL_15:
       v24 = 1024;
       v25 = 171;
       v26 = 1024;
-      v27 = a3;
+      modeCopy2 = mode;
       v28 = 1024;
       v29 = experimentEnabled;
       v30 = 2080;
@@ -344,20 +344,20 @@ LABEL_15:
   [(VCRateControlServerBag *)&v3 dealloc];
 }
 
-- (BOOL)containsAllSecondaryKeysWithPrimaryKey:(id)a3
+- (BOOL)containsAllSecondaryKeysWithPrimaryKey:(id)key
 {
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:{-[NSDictionary allKeys](self->_serverBagDict, "allKeys")}];
   [v5 addObjectsFromArray:{objc_msgSend(-[VCRateControlServerBag getExperimentConfig:defaultValue:](self, "getExperimentConfig:defaultValue:", 1, &stru_1F570E008), "componentsSeparatedByString:", @", ")}];
-  v6 = [VCRateControlServerBag groupKeysWithMode:self->_operatingMode primaryKey:a3];
+  v6 = [VCRateControlServerBag groupKeysWithMode:self->_operatingMode primaryKey:key];
   v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v5];
 
   return [v7 isSubsetOfSet:v8];
 }
 
-- (id)valueForType:(int)a3 value:(id)a4
+- (id)valueForType:(int)type value:(id)value
 {
-  if (a3 == -1)
+  if (type == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -374,23 +374,23 @@ LABEL_15:
 
   else
   {
-    result = a4;
-    if (a3 == 2)
+    result = value;
+    if (type == 2)
     {
       v5 = MEMORY[0x1E696AD98];
-      [a4 doubleValue];
+      [value doubleValue];
       v7 = 100.0;
     }
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return result;
       }
 
       v5 = MEMORY[0x1E696AD98];
-      [a4 doubleValue];
+      [value doubleValue];
       v7 = 1000.0;
     }
 
@@ -400,13 +400,13 @@ LABEL_15:
   }
 }
 
-- (id)valueForSecondaryKeyWithPrimaryKey:(id)a3 secondaryKey:(id)a4 type:(int)a5
+- (id)valueForSecondaryKeyWithPrimaryKey:(id)key secondaryKey:(id)secondaryKey type:(int)type
 {
-  v5 = *&a5;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", +[VCRateControlServerBag prefixForMode:](VCRateControlServerBag, "prefixForMode:", self->_operatingMode), a3, a4];
-  if ([a3 isEqualToString:@"experiment"])
+  v5 = *&type;
+  secondaryKey = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", +[VCRateControlServerBag prefixForMode:](VCRateControlServerBag, "prefixForMode:", self->_operatingMode), key, secondaryKey];
+  if ([key isEqualToString:@"experiment"])
   {
-    if (![(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:v8])
+    if (![(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:secondaryKey])
     {
       return &stru_1F570E008;
     }
@@ -414,7 +414,7 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v10 = [(VCRateControlServerBag *)self getExperimentValueForKey:v8];
+  v10 = [(VCRateControlServerBag *)self getExperimentValueForKey:secondaryKey];
   if (v10)
   {
 LABEL_7:
@@ -422,10 +422,10 @@ LABEL_7:
     return [(VCRateControlServerBag *)self valueForType:v5 value:v10];
   }
 
-  if ([(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:v8])
+  if ([(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:secondaryKey])
   {
 LABEL_6:
-    v10 = [(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:v8];
+    v10 = [(NSDictionary *)self->_serverBagDict objectForKeyedSubscript:secondaryKey];
     goto LABEL_7;
   }
 
@@ -435,19 +435,19 @@ LABEL_6:
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [VCRateControlServerBag valueForSecondaryKeyWithPrimaryKey:v11 secondaryKey:v8 type:v12];
+      [VCRateControlServerBag valueForSecondaryKeyWithPrimaryKey:v11 secondaryKey:secondaryKey type:v12];
     }
   }
 
   return &unk_1F579B4A8;
 }
 
-- (id)getExperimentConfig:(unsigned __int8)a3 defaultValue:(id)a4
+- (id)getExperimentConfig:(unsigned __int8)config defaultValue:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_experimentEnabled)
   {
-    v5 = a3;
+    configCopy = config;
     v7 = [(VCRateControlServerBag *)self valueForSecondaryKeyWithPrimaryKey:@"experiment" secondaryKey:@"experimentConfig" type:0];
     defaultExperimentConfigString = self->_defaultExperimentConfigString;
     if (defaultExperimentConfigString)
@@ -478,11 +478,11 @@ LABEL_6:
 
     if (![(NSString *)defaultExperimentConfigString isEqualToString:&stru_1F570E008])
     {
-      return [(NSArray *)[(NSString *)defaultExperimentConfigString componentsSeparatedByString:@";"] objectAtIndexedSubscript:v5];
+      return [(NSArray *)[(NSString *)defaultExperimentConfigString componentsSeparatedByString:@";"] objectAtIndexedSubscript:configCopy];
     }
   }
 
-  return a4;
+  return value;
 }
 
 - (int)experimentVersion
@@ -602,22 +602,22 @@ LABEL_8:
   return v6;
 }
 
-- (id)getExperimentValueForKey:(id)a3
+- (id)getExperimentValueForKey:(id)key
 {
-  v5 = [(VCRateControlServerBag *)self experimentGroupIndex];
-  if ([(NSNumber *)v5 isEqualToNumber:&unk_1F579B4A8])
+  experimentGroupIndex = [(VCRateControlServerBag *)self experimentGroupIndex];
+  if ([(NSNumber *)experimentGroupIndex isEqualToNumber:&unk_1F579B4A8])
   {
     return 0;
   }
 
-  v6 = [objc_msgSend(-[VCRateControlServerBag getExperimentConfig:defaultValue:](self getExperimentConfig:1 defaultValue:{&stru_1F570E008), "componentsSeparatedByString:", @", "), "indexOfObject:", a3}];
+  v6 = [objc_msgSend(-[VCRateControlServerBag getExperimentConfig:defaultValue:](self getExperimentConfig:1 defaultValue:{&stru_1F570E008), "componentsSeparatedByString:", @", "), "indexOfObject:", key}];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v8 = v6;
-  v9 = [objc_msgSend(objc_msgSend(-[VCRateControlServerBag getExperimentConfig:defaultValue:](self getExperimentConfig:3 defaultValue:{&stru_1F570E008), "componentsSeparatedByString:", @", "), "objectAtIndexedSubscript:", -[NSNumber unsignedIntValue](v5, "unsignedIntValue")), "componentsSeparatedByString:", @"_"}];
+  v9 = [objc_msgSend(objc_msgSend(-[VCRateControlServerBag getExperimentConfig:defaultValue:](self getExperimentConfig:3 defaultValue:{&stru_1F570E008), "componentsSeparatedByString:", @", "), "objectAtIndexedSubscript:", -[NSNumber unsignedIntValue](experimentGroupIndex, "unsignedIntValue")), "componentsSeparatedByString:", @"_"}];
 
   return [v9 objectAtIndexedSubscript:v8];
 }

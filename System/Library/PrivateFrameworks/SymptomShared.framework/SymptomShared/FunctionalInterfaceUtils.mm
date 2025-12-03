@@ -1,29 +1,29 @@
 @interface FunctionalInterfaceUtils
-+ (id)stringForFunctionalInterfaceType:(unsigned __int8)a3;
-+ (unsigned)nwFunctionalInterfaceTypeForNWInterface:(id)a3;
++ (id)stringForFunctionalInterfaceType:(unsigned __int8)type;
++ (unsigned)nwFunctionalInterfaceTypeForNWInterface:(id)interface;
 @end
 
 @implementation FunctionalInterfaceUtils
 
-+ (unsigned)nwFunctionalInterfaceTypeForNWInterface:(id)a3
++ (unsigned)nwFunctionalInterfaceTypeForNWInterface:(id)interface
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 subtype];
+  interfaceCopy = interface;
+  type = [interfaceCopy type];
+  subtype = [interfaceCopy subtype];
 
-  return [FunctionalInterfaceUtils nwFunctionalInterfaceTypeForNWInterfaceType:v4 nwInterfaceSubtype:v5];
+  return [FunctionalInterfaceUtils nwFunctionalInterfaceTypeForNWInterfaceType:type nwInterfaceSubtype:subtype];
 }
 
-+ (id)stringForFunctionalInterfaceType:(unsigned __int8)a3
++ (id)stringForFunctionalInterfaceType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     return @"Other";
   }
 
   else
   {
-    return off_2789868A0[(a3 - 1)];
+    return off_2789868A0[(type - 1)];
   }
 }
 

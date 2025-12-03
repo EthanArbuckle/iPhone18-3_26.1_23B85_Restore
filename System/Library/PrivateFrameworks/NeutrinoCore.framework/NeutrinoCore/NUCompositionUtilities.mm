@@ -1,75 +1,75 @@
 @interface NUCompositionUtilities
-+ (BOOL)dumpComposition:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (BOOL)dumpComposition:(id)a3 withName:(id)a4;
-+ (BOOL)isHDRComposition:(id)a3;
-+ (id)debugDiagnosticNameForComposition:(id)a3;
++ (BOOL)dumpComposition:(id)composition toURL:(id)l error:(id *)error;
++ (BOOL)dumpComposition:(id)composition withName:(id)name;
++ (BOOL)isHDRComposition:(id)composition;
++ (id)debugDiagnosticNameForComposition:(id)composition;
 @end
 
 @implementation NUCompositionUtilities
 
-+ (id)debugDiagnosticNameForComposition:(id)a3
++ (id)debugDiagnosticNameForComposition:(id)composition
 {
-  v3 = [a3 objectForKeyedSubscript:@"source"];
+  v3 = [composition objectForKeyedSubscript:@"source"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 definition];
+    definition = [v3 definition];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 image];
+      image = [definition image];
 
-      v4 = v5;
+      definition = image;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 sourceDefinitions];
-      v7 = [v6 firstObject];
+      sourceDefinitions = [definition sourceDefinitions];
+      firstObject = [sourceDefinitions firstObject];
     }
 
     else
     {
-      v7 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  v8 = [v7 url];
+  v8 = [firstObject url];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 lastPathComponent];
-    v11 = [v10 stringByDeletingPathExtension];
+    lastPathComponent = [v8 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
   }
 
   else
   {
-    v11 = 0;
+    stringByDeletingPathExtension = 0;
   }
 
-  return v11;
+  return stringByDeletingPathExtension;
 }
 
-+ (BOOL)dumpComposition:(id)a3 withName:(id)a4
++ (BOOL)dumpComposition:(id)composition withName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  compositionCopy = composition;
   v8 = NSTemporaryDirectory();
   v9 = [v5 fileURLWithPath:v8 isDirectory:1];
-  v10 = [v9 URLByAppendingPathComponent:v6];
+  v10 = [v9 URLByAppendingPathComponent:nameCopy];
 
   v11 = [v10 URLByAppendingPathExtension:@"plist"];
 
   v19 = 0;
-  v12 = [NUCompositionUtilities dumpComposition:v7 toURL:v11 error:&v19];
+  v12 = [NUCompositionUtilities dumpComposition:compositionCopy toURL:v11 error:&v19];
 
   v13 = v19;
   if (v12)
@@ -83,9 +83,9 @@
     if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v11 path];
+      path = [v11 path];
       *buf = 138412290;
-      v21 = v16;
+      v21 = path;
       _os_log_impl(&dword_1C0184000, v15, OS_LOG_TYPE_INFO, "Successfully dumped the composition to file %@", buf, 0xCu);
     }
   }
@@ -109,14 +109,14 @@
   return v12;
 }
 
-+ (BOOL)dumpComposition:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)dumpComposition:(id)composition toURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = [NUAdjustmentSerialization propertyListFromComposition:a3 error:a5];
+  lCopy = l;
+  v8 = [NUAdjustmentSerialization propertyListFromComposition:composition error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 writeToURL:v7 error:a5];
+    v10 = [v8 writeToURL:lCopy error:error];
   }
 
   else
@@ -127,28 +127,28 @@
   return v10;
 }
 
-+ (BOOL)isHDRComposition:(id)a3
++ (BOOL)isHDRComposition:(id)composition
 {
-  v3 = a3;
-  if (!v3 || !+[NUGlobalSettings enableHDRSupport])
+  compositionCopy = composition;
+  if (!compositionCopy || !+[NUGlobalSettings enableHDRSupport])
   {
-    v4 = 0;
+    isHDR = 0;
     goto LABEL_6;
   }
 
   if (!+[NUGlobalSettings allAssetsCanUseHDRPipeline])
   {
-    if ([v3 mediaType] == 2)
+    if ([compositionCopy mediaType] == 2)
     {
-      v6 = [(NURenderRequest *)[NUVideoPropertiesRequest alloc] initWithComposition:v3];
+      v6 = [(NURenderRequest *)[NUVideoPropertiesRequest alloc] initWithComposition:compositionCopy];
       [(NURenderRequest *)v6 setName:@"NUCompositionUtilities-isHDRComposition-videoProperties"];
       v12 = 0;
       v7 = [(NUVideoPropertiesRequest *)v6 submitSynchronous:&v12];
-      v8 = [v7 properties];
+      properties = [v7 properties];
 
-      if (v8)
+      if (properties)
       {
-        v4 = [v8 isHDR];
+        isHDR = [properties isHDR];
 LABEL_12:
 
 LABEL_14:
@@ -158,29 +158,29 @@ LABEL_14:
 
     else
     {
-      v6 = [(NURenderRequest *)[NUImagePropertiesRequest alloc] initWithComposition:v3];
+      v6 = [(NURenderRequest *)[NUImagePropertiesRequest alloc] initWithComposition:compositionCopy];
       [(NURenderRequest *)v6 setName:@"NUCompositionUtilities-isHDRComposition-imageProperties"];
       v11 = 0;
       v9 = [(NUVideoPropertiesRequest *)v6 submitSynchronous:&v11];
-      v8 = [v9 properties];
+      properties = [v9 properties];
 
-      if (v8)
+      if (properties)
       {
-        v10 = [v8 colorSpace];
-        v4 = [v10 isHDR];
+        colorSpace = [properties colorSpace];
+        isHDR = [colorSpace isHDR];
 
         goto LABEL_12;
       }
     }
 
-    v4 = 0;
+    isHDR = 0;
     goto LABEL_14;
   }
 
-  v4 = 1;
+  isHDR = 1;
 LABEL_6:
 
-  return v4;
+  return isHDR;
 }
 
 @end

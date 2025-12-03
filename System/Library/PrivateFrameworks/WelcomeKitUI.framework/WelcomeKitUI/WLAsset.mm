@@ -1,23 +1,23 @@
 @interface WLAsset
 - (BOOL)download;
-- (WLAsset)initWithName:(id)a3 remoteURL:(id)a4;
+- (WLAsset)initWithName:(id)name remoteURL:(id)l;
 @end
 
 @implementation WLAsset
 
-- (WLAsset)initWithName:(id)a3 remoteURL:(id)a4
+- (WLAsset)initWithName:(id)name remoteURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = WLAsset;
   v8 = [(WLAsset *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(WLAsset *)v8 setName:v6];
-    [(WLAsset *)v9 setRemoteURL:v7];
-    v10 = [@"/Library/WelcomeKit/Downloads/" stringByAppendingPathComponent:v6];
+    [(WLAsset *)v8 setName:nameCopy];
+    [(WLAsset *)v9 setRemoteURL:lCopy];
+    v10 = [@"/Library/WelcomeKit/Downloads/" stringByAppendingPathComponent:nameCopy];
     v11 = NSHomeDirectory();
     v12 = [v11 stringByAppendingPathComponent:v10];
     [(WLAsset *)v9 setLocalFile:v12];
@@ -28,11 +28,11 @@
 
 - (BOOL)download
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSString *)self->_localFile stringByDeletingLastPathComponent];
-  if (([v3 fileExistsAtPath:v4] & 1) != 0 || (v55[0] = 0, objc_msgSend(v3, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 1, 0, v55), (v5 = v55[0]) == 0))
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [(NSString *)self->_localFile stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) != 0 || (v55[0] = 0, objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByDeletingLastPathComponent, 1, 0, v55), (v5 = v55[0]) == 0))
   {
-    if ([v3 fileExistsAtPath:self->_localFile])
+    if ([defaultManager fileExistsAtPath:self->_localFile])
     {
       localFile = self->_localFile;
       v7 = 1;
@@ -43,7 +43,7 @@
     {
       v8 = [MEMORY[0x277CBEBC0] URLWithString:self->_remoteURL];
       v9 = [MEMORY[0x277CCAD20] requestWithURL:v8];
-      v27 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+      defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
       v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:?];
       v11 = dispatch_semaphore_create(0);
       v51 = 0;
@@ -91,7 +91,7 @@
         v15 = v36[5];
         v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:{self->_localFile, v21, v23, v24, v25}];
         v28 = 0;
-        v17 = [v3 moveItemAtURL:v15 toURL:v16 error:&v28];
+        v17 = [defaultManager moveItemAtURL:v15 toURL:v16 error:&v28];
         v18 = v28;
         *(v52 + 24) = v17;
 

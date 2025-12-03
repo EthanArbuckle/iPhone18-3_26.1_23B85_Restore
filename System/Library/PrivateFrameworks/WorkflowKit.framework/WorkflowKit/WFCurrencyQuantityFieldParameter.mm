@@ -1,5 +1,5 @@
 @interface WFCurrencyQuantityFieldParameter
-- (WFCurrencyQuantityFieldParameter)initWithDefinition:(id)a3;
+- (WFCurrencyQuantityFieldParameter)initWithDefinition:(id)definition;
 - (id)defaultUnit;
 @end
 
@@ -7,30 +7,30 @@
 
 - (id)defaultUnit
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 currencyCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  currencyCode = [currentLocale currencyCode];
 
-  v5 = [(WFQuantityFieldParameter *)self possibleUnits];
-  if ([v5 containsObject:v4])
+  possibleUnits = [(WFQuantityFieldParameter *)self possibleUnits];
+  if ([possibleUnits containsObject:currencyCode])
   {
-    v6 = v4;
+    firstObject = currencyCode;
   }
 
   else
   {
-    v6 = [v5 firstObject];
+    firstObject = [possibleUnits firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject;
 
   return v7;
 }
 
-- (WFCurrencyQuantityFieldParameter)initWithDefinition:(id)a3
+- (WFCurrencyQuantityFieldParameter)initWithDefinition:(id)definition
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"PossibleUnits"];
+  definitionCopy = definition;
+  v5 = [definitionCopy objectForKey:@"PossibleUnits"];
   if (v5)
   {
     objc_opt_class();
@@ -54,20 +54,20 @@
 
   if (![v7 count])
   {
-    v8 = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
+    iSOCurrencyCodes = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
 
     v15 = @"PossibleUnits";
-    v16[0] = v8;
+    v16[0] = iSOCurrencyCodes;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v10 = [v4 definitionByAddingEntriesInDictionary:v9];
+    v10 = [definitionCopy definitionByAddingEntriesInDictionary:v9];
 
-    v7 = v8;
-    v4 = v10;
+    v7 = iSOCurrencyCodes;
+    definitionCopy = v10;
   }
 
   v14.receiver = self;
   v14.super_class = WFCurrencyQuantityFieldParameter;
-  v11 = [(WFQuantityFieldParameter *)&v14 initWithDefinition:v4];
+  v11 = [(WFQuantityFieldParameter *)&v14 initWithDefinition:definitionCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;

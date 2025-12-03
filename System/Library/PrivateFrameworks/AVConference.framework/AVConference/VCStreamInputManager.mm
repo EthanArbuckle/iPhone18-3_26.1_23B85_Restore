@@ -1,23 +1,23 @@
 @interface VCStreamInputManager
 + (id)allowablePublicAPINames;
 + (id)sharedInstance;
-- (BOOL)clientProcessDiedWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5;
-- (BOOL)getServerPidWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5;
-- (BOOL)initializeStreamInputWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5;
-- (BOOL)pushSampleBufferWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5;
-- (BOOL)terminateStreamInputWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5;
+- (BOOL)clientProcessDiedWithXPCArguments:(id)arguments result:(id *)result error:(id *)error;
+- (BOOL)getServerPidWithXPCArguments:(id)arguments result:(id *)result error:(id *)error;
+- (BOOL)initializeStreamInputWithXPCArguments:(id)arguments result:(id *)result error:(id *)error;
+- (BOOL)pushSampleBufferWithXPCArguments:(id)arguments result:(id *)result error:(id *)error;
+- (BOOL)terminateStreamInputWithXPCArguments:(id)arguments result:(id *)result error:(id *)error;
 - (VCStreamInputManager)init;
 - (id)newStreamInputID;
-- (id)streamInputWithID:(int64_t)a3;
+- (id)streamInputWithID:(int64_t)d;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)didResumeStreamInput:(id)a3;
-- (void)didStartStreamInput:(id)a3;
-- (void)didStopStreamInput:(id)a3;
-- (void)didSuspendStreamInput:(id)a3;
+- (void)didResumeStreamInput:(id)input;
+- (void)didStartStreamInput:(id)input;
+- (void)didStopStreamInput:(id)input;
+- (void)didSuspendStreamInput:(id)input;
 - (void)init;
 - (void)registerBlocksForService;
-- (void)registerService:(char *)a3 weakSelf:(id)a4 eventLogLevel:(int)a5 block:(id)a6;
+- (void)registerService:(char *)service weakSelf:(id)self eventLogLevel:(int)level block:(id)block;
 @end
 
 @implementation VCStreamInputManager
@@ -154,30 +154,30 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)initializeStreamInputWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5
+- (BOOL)initializeStreamInputWithXPCArguments:(id)arguments result:(id *)result error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = [a3 objectForKeyedSubscript:@"VCStreamInputID"];
+  newStreamInputID = [arguments objectForKeyedSubscript:@"VCStreamInputID"];
   [(VCObject *)self lock];
-  *a4 = 0;
-  v10 = [a3 objectForKeyedSubscript:@"USERXPCARGUMENTS"];
+  *result = 0;
+  v10 = [arguments objectForKeyedSubscript:@"USERXPCARGUMENTS"];
   v11 = VCStreamInputUtil_DecodeFormatDescription(v10);
   if (!v11)
   {
-    [(VCStreamInputManager *)v9 initializeStreamInputWithXPCArguments:&v39 result:buf error:?];
+    [(VCStreamInputManager *)newStreamInputID initializeStreamInputWithXPCArguments:&v39 result:buf error:?];
     v19 = v38;
-    v9 = v39;
+    newStreamInputID = v39;
     v17 = *buf;
     goto LABEL_25;
   }
 
   value = xpc_dictionary_get_value(v10, "VCStreamInputRemoteQueue");
-  if (!v9)
+  if (!newStreamInputID)
   {
-    v9 = [(VCStreamInputManager *)self newStreamInputID];
+    newStreamInputID = [(VCStreamInputManager *)self newStreamInputID];
   }
 
-  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v9])
+  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:newStreamInputID])
   {
     v17 = -2143682519;
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -204,7 +204,7 @@ LABEL_8:
     goto LABEL_25;
   }
 
-  v37 = a5;
+  errorCopy = error;
   MediaType = CMFormatDescriptionGetMediaType(v11);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -219,7 +219,7 @@ LABEL_8:
       v43 = 1024;
       v44 = 158;
       v45 = 2112;
-      v46 = AVCStreamInputID_ConvertToNSString([v9 integerValue]);
+      v46 = AVCStreamInputID_ConvertToNSString([newStreamInputID integerValue]);
       v47 = 2080;
       v48 = FourccToCStr(MediaType);
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamInputID=%@ mediaType=%s", buf, 0x30u);
@@ -239,7 +239,7 @@ LABEL_20:
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
           v27 = v11;
-          v28 = AVCStreamInputID_ConvertToNSString([v9 integerValue]);
+          v28 = AVCStreamInputID_ConvertToNSString([newStreamInputID integerValue]);
           v29 = FourccToCStr(MediaType);
           *buf = 136316162;
           *&buf[4] = v24;
@@ -260,7 +260,7 @@ LABEL_20:
     }
 
 LABEL_17:
-    v16 = [[VCStreamInputVideo alloc] initWithStreamInputID:v9 format:v11 delegate:self delegateQueue:self->_streamInputQueue remoteQueue:value];
+    v16 = [[VCStreamInputVideo alloc] initWithStreamInputID:newStreamInputID format:v11 delegate:self delegateQueue:self->_streamInputQueue remoteQueue:value];
     if (!v16)
     {
       v17 = -2143682558;
@@ -269,7 +269,7 @@ LABEL_17:
         v36 = VRTraceErrorLogLevelToCSTR();
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [VCStreamInputManager initializeStreamInputWithXPCArguments:v36 result:v9 error:?];
+          [VCStreamInputManager initializeStreamInputWithXPCArguments:v36 result:newStreamInputID error:?];
         }
       }
 
@@ -278,14 +278,14 @@ LABEL_17:
 
 LABEL_18:
     v19 = v16;
-    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v16, @"CONTEXT", v9, @"VCStreamInputID", 0}];
+    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v16, @"CONTEXT", newStreamInputID, @"VCStreamInputID", 0}];
     if (v20)
     {
       v21 = v20;
-      v22 = [(VCStreamInput *)v19 isStarted];
-      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v22), @"VCStreamInputDidStart"}];
-      [(NSMutableDictionary *)self->_streamInputs setObject:v19 forKeyedSubscript:v9];
-      *a4 = v21;
+      isStarted = [(VCStreamInput *)v19 isStarted];
+      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", isStarted), @"VCStreamInputDidStart"}];
+      [(NSMutableDictionary *)self->_streamInputs setObject:v19 forKeyedSubscript:newStreamInputID];
+      *result = v21;
       [(VCObject *)self unlock];
       v23 = 1;
       goto LABEL_28;
@@ -299,7 +299,7 @@ LABEL_18:
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
         v33 = v11;
-        v34 = AVCStreamInputID_ConvertToNSString([v9 integerValue]);
+        v34 = AVCStreamInputID_ConvertToNSString([newStreamInputID integerValue]);
         v35 = FourccToCStr(MediaType);
         *buf = 136316162;
         *&buf[4] = v31;
@@ -329,7 +329,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v16 = [[VCStreamInputAudio alloc] initWithStreamInputID:v9 format:v11 delegate:self delegateQueue:self->_streamInputQueue remoteQueue:value];
+  v16 = [[VCStreamInputAudio alloc] initWithStreamInputID:newStreamInputID format:v11 delegate:self delegateQueue:self->_streamInputQueue remoteQueue:value];
   if (v16)
   {
     goto LABEL_18;
@@ -341,19 +341,19 @@ LABEL_18:
     v18 = VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [VCStreamInputManager initializeStreamInputWithXPCArguments:v18 result:v9 error:?];
+      [VCStreamInputManager initializeStreamInputWithXPCArguments:v18 result:newStreamInputID error:?];
     }
   }
 
 LABEL_23:
   v19 = 0;
 LABEL_24:
-  a5 = v37;
+  error = errorCopy;
 LABEL_25:
   [(VCObject *)self unlock];
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamInputManager" code:v17 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamInputManager" code:v17 userInfo:0];
   }
 
   [(VCStreamInputVideo *)v19 invalidate];
@@ -368,10 +368,10 @@ LABEL_28:
   return v23;
 }
 
-- (BOOL)getServerPidWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5
+- (BOOL)getServerPidWithXPCArguments:(id)arguments result:(id *)result error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  *a4 = 0;
+  *result = 0;
   if (![VCDefaults BOOLeanValueForKey:@"enableFigRemoteQueueForAVCStreamInputOutput" defaultValue:1])
   {
     [VCStreamInputManager getServerPidWithXPCArguments:&v13 result:v14 error:?];
@@ -389,7 +389,7 @@ LABEL_28:
     {
       v9 = v8;
       [v7 setObject:v8 forKeyedSubscript:@"VCStreamInputServerPID"];
-      *a4 = v7;
+      *result = v7;
       v10 = 1;
       v7 = 0;
       goto LABEL_5;
@@ -405,9 +405,9 @@ LABEL_28:
 
   v10 = 0;
   v9 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamInputManager" code:-2143682558 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamInputManager" code:-2143682558 userInfo:0];
   }
 
 LABEL_5:
@@ -415,11 +415,11 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)terminateStreamInputWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5
+- (BOOL)terminateStreamInputWithXPCArguments:(id)arguments result:(id *)result error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  *a4 = 0;
-  v8 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  *result = 0;
+  v8 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   if (v8)
   {
     v9 = v8;
@@ -451,7 +451,7 @@ LABEL_5:
       {
         -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamInputs, "setObject:forKeyedSubscript:", 0, [v9 streamInputID]);
         v14 = objc_alloc(MEMORY[0x1E695DF20]);
-        *a4 = [v14 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E695DFB0], "null"), @"CONTEXT", 0}];
+        *result = [v14 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E695DFB0], "null"), @"CONTEXT", 0}];
         return 1;
       }
 
@@ -469,24 +469,24 @@ LABEL_5:
     [VCStreamInputManager terminateStreamInputWithXPCArguments:result:error:];
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
 
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamInputManager" code:-2143682559 userInfo:0];
   result = 0;
-  *a5 = v16;
+  *error = v16;
   return result;
 }
 
-- (BOOL)pushSampleBufferWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5
+- (BOOL)pushSampleBufferWithXPCArguments:(id)arguments result:(id *)result error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = VCStreamInputUtil_DecodeSampleBuffer([a3 objectForKeyedSubscript:{@"USERXPCARGUMENTS", a4, a5}]);
+  v6 = VCStreamInputUtil_DecodeSampleBuffer([arguments objectForKeyedSubscript:{@"USERXPCARGUMENTS", result, error}]);
   if (v6)
   {
-    v7 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+    v7 = [arguments objectForKeyedSubscript:@"CONTEXT"];
     if (v7)
     {
       v8 = v7;
@@ -523,15 +523,15 @@ LABEL_5:
   return v6 != 0;
 }
 
-- (void)registerService:(char *)a3 weakSelf:(id)a4 eventLogLevel:(int)a5 block:(id)a6
+- (void)registerService:(char *)service weakSelf:(id)self eventLogLevel:(int)level block:(id)block
 {
   v6[6] = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__VCStreamInputManager_registerService_weakSelf_eventLogLevel_block___block_invoke;
   v6[3] = &unk_1E85F5088;
-  v6[4] = a4;
-  v6[5] = a6;
+  v6[4] = self;
+  v6[5] = block;
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
@@ -592,7 +592,7 @@ uint64_t __50__VCStreamInputManager_registerDidClientDieBlock___block_invoke(uin
   [v2 deregisterFromService:"VCStreamInputInitialize"];
 }
 
-- (id)streamInputWithID:(int64_t)a3
+- (id)streamInputWithID:(int64_t)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -608,7 +608,7 @@ uint64_t __50__VCStreamInputManager_registerDidClientDieBlock___block_invoke(uin
   v6[3] = &unk_1E85F3930;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = d;
   dispatch_sync(xpcQueue, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -622,7 +622,7 @@ id __42__VCStreamInputManager_streamInputWithID___block_invoke(void *a1)
   return result;
 }
 
-- (void)didStartStreamInput:(id)a3
+- (void)didStartStreamInput:(id)input
 {
   v4[5] = *MEMORY[0x1E69E9840];
   xpcQueue = self->_xpcQueue;
@@ -630,7 +630,7 @@ id __42__VCStreamInputManager_streamInputWithID___block_invoke(void *a1)
   v4[1] = 3221225472;
   v4[2] = __44__VCStreamInputManager_didStartStreamInput___block_invoke;
   v4[3] = &unk_1E85F3778;
-  v4[4] = a3;
+  v4[4] = input;
   dispatch_async(xpcQueue, v4);
 }
 
@@ -642,7 +642,7 @@ uint64_t __44__VCStreamInputManager_didStartStreamInput___block_invoke(uint64_t 
   return [v2 sendMessageAsync:"VCStreamInputDidStart" arguments:0 context:v3];
 }
 
-- (void)didStopStreamInput:(id)a3
+- (void)didStopStreamInput:(id)input
 {
   v4[5] = *MEMORY[0x1E69E9840];
   xpcQueue = self->_xpcQueue;
@@ -650,7 +650,7 @@ uint64_t __44__VCStreamInputManager_didStartStreamInput___block_invoke(uint64_t 
   v4[1] = 3221225472;
   v4[2] = __43__VCStreamInputManager_didStopStreamInput___block_invoke;
   v4[3] = &unk_1E85F3778;
-  v4[4] = a3;
+  v4[4] = input;
   dispatch_async(xpcQueue, v4);
 }
 
@@ -662,7 +662,7 @@ uint64_t __43__VCStreamInputManager_didStopStreamInput___block_invoke(uint64_t a
   return [v2 sendMessageAsync:"VCStreamInputDidStop" arguments:0 context:v3];
 }
 
-- (void)didSuspendStreamInput:(id)a3
+- (void)didSuspendStreamInput:(id)input
 {
   v4[5] = *MEMORY[0x1E69E9840];
   xpcQueue = self->_xpcQueue;
@@ -670,7 +670,7 @@ uint64_t __43__VCStreamInputManager_didStopStreamInput___block_invoke(uint64_t a
   v4[1] = 3221225472;
   v4[2] = __46__VCStreamInputManager_didSuspendStreamInput___block_invoke;
   v4[3] = &unk_1E85F3778;
-  v4[4] = a3;
+  v4[4] = input;
   dispatch_async(xpcQueue, v4);
 }
 
@@ -682,7 +682,7 @@ uint64_t __46__VCStreamInputManager_didSuspendStreamInput___block_invoke(uint64_
   return [v2 sendMessageAsync:"VCStreamInputDidSuspend" arguments:0 context:v3];
 }
 
-- (void)didResumeStreamInput:(id)a3
+- (void)didResumeStreamInput:(id)input
 {
   v4[5] = *MEMORY[0x1E69E9840];
   xpcQueue = self->_xpcQueue;
@@ -690,7 +690,7 @@ uint64_t __46__VCStreamInputManager_didSuspendStreamInput___block_invoke(uint64_
   v4[1] = 3221225472;
   v4[2] = __45__VCStreamInputManager_didResumeStreamInput___block_invoke;
   v4[3] = &unk_1E85F3778;
-  v4[4] = a3;
+  v4[4] = input;
   dispatch_async(xpcQueue, v4);
 }
 
@@ -702,18 +702,18 @@ uint64_t __45__VCStreamInputManager_didResumeStreamInput___block_invoke(uint64_t
   return [v2 sendMessageAsync:"VCStreamInputDidResume" arguments:0 context:v3];
 }
 
-- (BOOL)clientProcessDiedWithXPCArguments:(id)a3 result:(id *)a4 error:(id *)a5
+- (BOOL)clientProcessDiedWithXPCArguments:(id)arguments result:(id *)result error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  *a4 = 0;
-  v9 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  *result = 0;
+  v9 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 1;
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"CLIENTPID"];
+  v10 = [arguments objectForKeyedSubscript:@"CLIENTPID"];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (!v10)
   {
@@ -752,7 +752,7 @@ uint64_t __45__VCStreamInputManager_didResumeStreamInput___block_invoke(uint64_t
     }
   }
 
-  return [(VCStreamInputManager *)self terminateStreamInputWithXPCArguments:a3 result:a4 error:a5, *v22];
+  return [(VCStreamInputManager *)self terminateStreamInputWithXPCArguments:arguments result:result error:error, *v22];
 }
 
 - (void)init

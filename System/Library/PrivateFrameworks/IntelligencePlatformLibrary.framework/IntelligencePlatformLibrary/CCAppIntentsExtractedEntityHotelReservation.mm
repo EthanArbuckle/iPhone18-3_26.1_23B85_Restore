@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityHotelReservation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityHotelReservation)initWithHotelReservationForName:(id)a3 provider:(id)a4 hotelReservationId:(id)a5 customerNames:(id)a6 roomNumbers:(id)a7 numberOfRooms:(id)a8 hotelReservationForAddress:(id)a9 hotelCheckinDate:(id)a10 hotelCheckinTime:(id)a11 hotelCheckoutDate:(id)a12 hotelCheckoutTime:(id)a13 hotelTimeZone:(id)a14 duration:(id)a15 hotelReservationForTelephone:(id)a16 cost:(id)a17 costCode:(id)a18 eventStatus:(id)a19 error:(id *)a20;
-- (CCAppIntentsExtractedEntityHotelReservation)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityHotelReservation)initWithHotelReservationForName:(id)name provider:(id)provider hotelReservationId:(id)id customerNames:(id)names roomNumbers:(id)numbers numberOfRooms:(id)rooms hotelReservationForAddress:(id)address hotelCheckinDate:(id)self0 hotelCheckinTime:(id)self1 hotelCheckoutDate:(id)self2 hotelCheckoutTime:(id)self3 hotelTimeZone:(id)self4 duration:(id)self5 hotelReservationForTelephone:(id)self6 cost:(id)self7 costCode:(id)self8 eventStatus:(id)self9 error:(id *)error;
+- (CCAppIntentsExtractedEntityHotelReservation)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)customerNames;
 - (NSArray)roomNumbers;
 - (NSString)cost;
@@ -18,39 +18,39 @@
 - (NSString)hotelTimeZone;
 - (NSString)provider;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityHotelReservation
 
-- (CCAppIntentsExtractedEntityHotelReservation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityHotelReservation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v29 = [v6 objectForKeyedSubscript:@"hotelReservationForName"];
-    v28 = [v6 objectForKeyedSubscript:@"provider"];
-    v27 = [v6 objectForKeyedSubscript:@"hotelReservationId"];
-    v21 = [v6 objectForKeyedSubscript:@"customerNames"];
-    v20 = [v6 objectForKeyedSubscript:@"roomNumbers"];
-    v19 = [v6 objectForKeyedSubscript:@"numberOfRooms"];
-    v26 = [v6 objectForKeyedSubscript:@"hotelReservationForAddress"];
-    v25 = [v6 objectForKeyedSubscript:@"hotelCheckinDate"];
-    v24 = [v6 objectForKeyedSubscript:@"hotelCheckinTime"];
-    v17 = [v6 objectForKeyedSubscript:@"hotelCheckoutDate"];
-    v16 = [v6 objectForKeyedSubscript:@"hotelCheckoutTime"];
-    v18 = [v6 objectForKeyedSubscript:@"hotelTimeZone"];
-    v15 = [v6 objectForKeyedSubscript:@"duration"];
-    [v6 objectForKeyedSubscript:@"hotelReservationForTelephone"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"hotelReservationForName"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"hotelReservationId"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"customerNames"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"roomNumbers"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"numberOfRooms"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"hotelReservationForAddress"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"hotelCheckinDate"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"hotelCheckinTime"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hotelCheckoutDate"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"hotelCheckoutTime"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"hotelTimeZone"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+    [dictionaryCopy objectForKeyedSubscript:@"hotelReservationForTelephone"];
     v9 = v23 = v8;
-    v10 = [v6 objectForKeyedSubscript:@"cost"];
-    [v6 objectForKeyedSubscript:@"costCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cost"];
+    [dictionaryCopy objectForKeyedSubscript:@"costCode"];
     v11 = v22 = self;
-    v12 = [v6 objectForKeyedSubscript:@"eventStatus"];
-    v13 = [[CCAppIntentsExtractedEntityHotelReservation alloc] initWithHotelReservationForName:v29 provider:v28 hotelReservationId:v27 customerNames:v21 roomNumbers:v20 numberOfRooms:v19 hotelReservationForAddress:v26 hotelCheckinDate:v25 hotelCheckinTime:v24 hotelCheckoutDate:v17 hotelCheckoutTime:v16 hotelTimeZone:v18 duration:v15 hotelReservationForTelephone:v9 cost:v10 costCode:v11 eventStatus:v12 error:a4];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventStatus"];
+    v13 = [[CCAppIntentsExtractedEntityHotelReservation alloc] initWithHotelReservationForName:v29 provider:v28 hotelReservationId:v27 customerNames:v21 roomNumbers:v20 numberOfRooms:v19 hotelReservationForAddress:v26 hotelCheckinDate:v25 hotelCheckinTime:v24 hotelCheckoutDate:v17 hotelCheckoutTime:v16 hotelTimeZone:v18 duration:v15 hotelReservationForTelephone:v9 cost:v10 costCode:v11 eventStatus:v12 error:error];
 
     self = v22;
     v8 = v23;
@@ -70,32 +70,32 @@
   v3 = objc_opt_new();
   if (self->_hotelReservationForName)
   {
-    v4 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForName];
-    [v3 setObject:v4 forKeyedSubscript:@"hotelReservationForName"];
+    hotelReservationForName = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForName];
+    [v3 setObject:hotelReservationForName forKeyedSubscript:@"hotelReservationForName"];
   }
 
   if (self->_provider)
   {
-    v5 = [(CCAppIntentsExtractedEntityHotelReservation *)self provider];
-    [v3 setObject:v5 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityHotelReservation *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_hotelReservationId)
   {
-    v6 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationId];
-    [v3 setObject:v6 forKeyedSubscript:@"hotelReservationId"];
+    hotelReservationId = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationId];
+    [v3 setObject:hotelReservationId forKeyedSubscript:@"hotelReservationId"];
   }
 
   if (self->_customerNames)
   {
-    v7 = [(CCAppIntentsExtractedEntityHotelReservation *)self customerNames];
-    [v3 setObject:v7 forKeyedSubscript:@"customerNames"];
+    customerNames = [(CCAppIntentsExtractedEntityHotelReservation *)self customerNames];
+    [v3 setObject:customerNames forKeyedSubscript:@"customerNames"];
   }
 
   if (self->_roomNumbers)
   {
-    v8 = [(CCAppIntentsExtractedEntityHotelReservation *)self roomNumbers];
-    [v3 setObject:v8 forKeyedSubscript:@"roomNumbers"];
+    roomNumbers = [(CCAppIntentsExtractedEntityHotelReservation *)self roomNumbers];
+    [v3 setObject:roomNumbers forKeyedSubscript:@"roomNumbers"];
   }
 
   if (self->_hasNumberOfRooms)
@@ -106,38 +106,38 @@
 
   if (self->_hotelReservationForAddress)
   {
-    v10 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForAddress];
-    [v3 setObject:v10 forKeyedSubscript:@"hotelReservationForAddress"];
+    hotelReservationForAddress = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForAddress];
+    [v3 setObject:hotelReservationForAddress forKeyedSubscript:@"hotelReservationForAddress"];
   }
 
   if (self->_hotelCheckinDate)
   {
-    v11 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckinDate];
-    [v3 setObject:v11 forKeyedSubscript:@"hotelCheckinDate"];
+    hotelCheckinDate = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckinDate];
+    [v3 setObject:hotelCheckinDate forKeyedSubscript:@"hotelCheckinDate"];
   }
 
   if (self->_hotelCheckinTime)
   {
-    v12 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckinTime];
-    [v3 setObject:v12 forKeyedSubscript:@"hotelCheckinTime"];
+    hotelCheckinTime = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckinTime];
+    [v3 setObject:hotelCheckinTime forKeyedSubscript:@"hotelCheckinTime"];
   }
 
   if (self->_hotelCheckoutDate)
   {
-    v13 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckoutDate];
-    [v3 setObject:v13 forKeyedSubscript:@"hotelCheckoutDate"];
+    hotelCheckoutDate = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckoutDate];
+    [v3 setObject:hotelCheckoutDate forKeyedSubscript:@"hotelCheckoutDate"];
   }
 
   if (self->_hotelCheckoutTime)
   {
-    v14 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckoutTime];
-    [v3 setObject:v14 forKeyedSubscript:@"hotelCheckoutTime"];
+    hotelCheckoutTime = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelCheckoutTime];
+    [v3 setObject:hotelCheckoutTime forKeyedSubscript:@"hotelCheckoutTime"];
   }
 
   if (self->_hotelTimeZone)
   {
-    v15 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelTimeZone];
-    [v3 setObject:v15 forKeyedSubscript:@"hotelTimeZone"];
+    hotelTimeZone = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelTimeZone];
+    [v3 setObject:hotelTimeZone forKeyedSubscript:@"hotelTimeZone"];
   }
 
   if (self->_hasDuration)
@@ -150,26 +150,26 @@
 
   if (self->_hotelReservationForTelephone)
   {
-    v18 = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForTelephone];
-    [v3 setObject:v18 forKeyedSubscript:@"hotelReservationForTelephone"];
+    hotelReservationForTelephone = [(CCAppIntentsExtractedEntityHotelReservation *)self hotelReservationForTelephone];
+    [v3 setObject:hotelReservationForTelephone forKeyedSubscript:@"hotelReservationForTelephone"];
   }
 
   if (self->_cost)
   {
-    v19 = [(CCAppIntentsExtractedEntityHotelReservation *)self cost];
-    [v3 setObject:v19 forKeyedSubscript:@"cost"];
+    cost = [(CCAppIntentsExtractedEntityHotelReservation *)self cost];
+    [v3 setObject:cost forKeyedSubscript:@"cost"];
   }
 
   if (self->_costCode)
   {
-    v20 = [(CCAppIntentsExtractedEntityHotelReservation *)self costCode];
-    [v3 setObject:v20 forKeyedSubscript:@"costCode"];
+    costCode = [(CCAppIntentsExtractedEntityHotelReservation *)self costCode];
+    [v3 setObject:costCode forKeyedSubscript:@"costCode"];
   }
 
   if (self->_eventStatus)
   {
-    v21 = [(CCAppIntentsExtractedEntityHotelReservation *)self eventStatus];
-    [v3 setObject:v21 forKeyedSubscript:@"eventStatus"];
+    eventStatus = [(CCAppIntentsExtractedEntityHotelReservation *)self eventStatus];
+    [v3 setObject:eventStatus forKeyedSubscript:@"eventStatus"];
   }
 
   v22 = [v3 copy];
@@ -177,112 +177,112 @@
   return v22;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v23 = a3;
+  blockCopy = block;
   if (self->_hotelReservationForName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27364 stringValue:self->_hotelReservationForName];
-    v23[2](v23, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_provider)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27365 stringValue:self->_provider];
-    v23[2](v23, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hotelReservationId)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27366 stringValue:self->_hotelReservationId];
-    v23[2](v23, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_customerNames)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27367 repeatedStringValue:self->_customerNames];
-    v23[2](v23, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_roomNumbers)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27368 repeatedStringValue:self->_roomNumbers];
-    v23[2](v23, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_hasNumberOfRooms)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27369 uint32Value:self->_numberOfRooms];
-    v23[2](v23, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_hotelReservationForAddress)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27370 stringValue:self->_hotelReservationForAddress];
-    v23[2](v23, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_hotelCheckinDate)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27371 stringValue:self->_hotelCheckinDate];
-    v23[2](v23, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_hotelCheckinTime)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27372 stringValue:self->_hotelCheckinTime];
-    v23[2](v23, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_hotelCheckoutDate)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27373 stringValue:self->_hotelCheckoutDate];
-    v23[2](v23, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_hotelCheckoutTime)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27374 stringValue:self->_hotelCheckoutTime];
-    v23[2](v23, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_hotelTimeZone)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27375 stringValue:self->_hotelTimeZone];
-    v23[2](v23, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_hasDuration)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27376 doubleValue:self->_duration];
-    v23[2](v23, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_hotelReservationForTelephone)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27377 stringValue:self->_hotelReservationForTelephone];
-    v23[2](v23, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_cost)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27378 stringValue:self->_cost];
-    v23[2](v23, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_costCode)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27379 stringValue:self->_costCode];
-    v23[2](v23, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
-  v21 = v23;
+  v21 = blockCopy;
   if (self->_eventStatus)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27380 stringValue:self->_eventStatus];
-    v23[2](v23, v22);
+    blockCopy[2](blockCopy, v22);
 
-    v21 = v23;
+    v21 = blockCopy;
   }
 }
 
@@ -391,10 +391,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] >= *&v7[*MEMORY[0x1E6993AB0]])
@@ -611,13 +611,13 @@ LABEL_42:
           {
             v32 = objc_opt_class();
             NSStringFromClass(v32);
-            v57 = a4;
-            v34 = v33 = v6;
+            errorCopy = error;
+            v34 = v33 = dataCopy;
             v35 = *&v7[*v11];
             v10 = CCSkipFieldErrorForMessage();
 
-            v6 = v33;
-            a4 = v57;
+            dataCopy = v33;
+            error = errorCopy;
           }
 
           continue;
@@ -694,10 +694,10 @@ LABEL_67:
     v51 = NSStringFromClass(v50);
     v52 = *&v7[*v49];
     CCInvalidBufferErrorForMessage();
-    v54 = v53 = v6;
+    v54 = v53 = dataCopy;
     CCSetError();
 
-    v6 = v53;
+    dataCopy = v53;
   }
 
   v55 = 0;
@@ -706,34 +706,34 @@ LABEL_75:
   return v55;
 }
 
-- (CCAppIntentsExtractedEntityHotelReservation)initWithHotelReservationForName:(id)a3 provider:(id)a4 hotelReservationId:(id)a5 customerNames:(id)a6 roomNumbers:(id)a7 numberOfRooms:(id)a8 hotelReservationForAddress:(id)a9 hotelCheckinDate:(id)a10 hotelCheckinTime:(id)a11 hotelCheckoutDate:(id)a12 hotelCheckoutTime:(id)a13 hotelTimeZone:(id)a14 duration:(id)a15 hotelReservationForTelephone:(id)a16 cost:(id)a17 costCode:(id)a18 eventStatus:(id)a19 error:(id *)a20
+- (CCAppIntentsExtractedEntityHotelReservation)initWithHotelReservationForName:(id)name provider:(id)provider hotelReservationId:(id)id customerNames:(id)names roomNumbers:(id)numbers numberOfRooms:(id)rooms hotelReservationForAddress:(id)address hotelCheckinDate:(id)self0 hotelCheckinTime:(id)self1 hotelCheckoutDate:(id)self2 hotelCheckoutTime:(id)self3 hotelTimeZone:(id)self4 duration:(id)self5 hotelReservationForTelephone:(id)self6 cost:(id)self7 costCode:(id)self8 eventStatus:(id)self9 error:(id *)error
 {
   v108 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
-  v92 = a8;
-  v91 = a9;
-  v90 = a10;
-  v89 = a11;
-  v88 = a12;
-  v87 = a13;
-  v86 = a14;
-  v85 = a15;
-  v84 = a16;
-  v83 = a17;
-  v82 = a18;
-  v81 = a19;
+  nameCopy = name;
+  providerCopy = provider;
+  idCopy = id;
+  namesCopy = names;
+  numbersCopy = numbers;
+  roomsCopy = rooms;
+  addressCopy = address;
+  dateCopy = date;
+  timeCopy = time;
+  checkoutDateCopy = checkoutDate;
+  checkoutTimeCopy = checkoutTime;
+  zoneCopy = zone;
+  durationCopy = duration;
+  telephoneCopy = telephone;
+  costCopy = cost;
+  codeCopy = code;
+  statusCopy = status;
   v30 = objc_opt_new();
   v31 = 0x1E696A000uLL;
-  if (!v25)
+  if (!nameCopy)
   {
     v33 = 0;
 LABEL_5:
-    v79 = v25;
-    if (v26)
+    v79 = nameCopy;
+    if (providerCopy)
     {
       objc_opt_class();
       v104 = v33;
@@ -746,11 +746,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v27)
+      if (!idCopy)
       {
 LABEL_8:
         v33 = v35;
-        if (v28)
+        if (namesCopy)
         {
           goto LABEL_9;
         }
@@ -762,7 +762,7 @@ LABEL_8:
     else
     {
       v35 = v33;
-      if (!v27)
+      if (!idCopy)
       {
         goto LABEL_8;
       }
@@ -779,7 +779,7 @@ LABEL_8:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v28)
+    if (namesCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -796,7 +796,7 @@ LABEL_9:
       v101 = 0u;
       v98 = 0u;
       v99 = 0u;
-      v37 = v28;
+      v37 = namesCopy;
       v38 = [v37 countByEnumeratingWithState:&v98 objects:v107 count:16];
       if (v38)
       {
@@ -822,7 +822,7 @@ LABEL_9:
       }
 
       v31 = 0x1E696A000;
-      if (!v29)
+      if (!numbersCopy)
       {
         goto LABEL_18;
       }
@@ -832,12 +832,12 @@ LABEL_9:
 
 LABEL_23:
     v35 = v33;
-    if (!v29)
+    if (!numbersCopy)
     {
 LABEL_18:
       v33 = v35;
 LABEL_33:
-      if (v92)
+      if (roomsCopy)
       {
         objc_opt_class();
         v54 = CCValidateIsInstanceOfExpectedClass();
@@ -848,7 +848,7 @@ LABEL_33:
           goto LABEL_76;
         }
 
-        [v92 unsignedIntValue];
+        [roomsCopy unsignedIntValue];
         CCPBDataWriterWriteUint32Field();
       }
 
@@ -857,7 +857,7 @@ LABEL_33:
         v35 = v33;
       }
 
-      if (v91)
+      if (addressCopy)
       {
         v55 = *(v31 + 3776);
         objc_opt_class();
@@ -877,7 +877,7 @@ LABEL_33:
         v33 = v35;
       }
 
-      if (v90)
+      if (dateCopy)
       {
         v57 = *(v31 + 3776);
         objc_opt_class();
@@ -897,7 +897,7 @@ LABEL_33:
         v35 = v33;
       }
 
-      if (v89)
+      if (timeCopy)
       {
         v59 = *(v31 + 3776);
         objc_opt_class();
@@ -917,7 +917,7 @@ LABEL_33:
         v33 = v35;
       }
 
-      if (v88)
+      if (checkoutDateCopy)
       {
         v61 = *(v31 + 3776);
         objc_opt_class();
@@ -937,7 +937,7 @@ LABEL_33:
         v35 = v33;
       }
 
-      if (v87)
+      if (checkoutTimeCopy)
       {
         v63 = *(v31 + 3776);
         objc_opt_class();
@@ -957,7 +957,7 @@ LABEL_33:
         v33 = v35;
       }
 
-      if (v86)
+      if (zoneCopy)
       {
         v65 = *(v31 + 3776);
         objc_opt_class();
@@ -977,7 +977,7 @@ LABEL_33:
         v35 = v33;
       }
 
-      if (v85)
+      if (durationCopy)
       {
         objc_opt_class();
         v67 = CCValidateIsInstanceOfExpectedClass();
@@ -988,7 +988,7 @@ LABEL_33:
           goto LABEL_81;
         }
 
-        [v85 doubleValue];
+        [durationCopy doubleValue];
         CCPBDataWriterWriteDoubleField();
       }
 
@@ -997,7 +997,7 @@ LABEL_33:
         v33 = v35;
       }
 
-      if (v84)
+      if (telephoneCopy)
       {
         v68 = *(v31 + 3776);
         objc_opt_class();
@@ -1017,7 +1017,7 @@ LABEL_33:
         v35 = v33;
       }
 
-      if (!v83)
+      if (!costCopy)
       {
         v33 = v35;
         goto LABEL_73;
@@ -1032,7 +1032,7 @@ LABEL_33:
       {
         CCPBDataWriterWriteStringField();
 LABEL_73:
-        if (!v82)
+        if (!codeCopy)
         {
           v35 = v33;
           goto LABEL_78;
@@ -1047,7 +1047,7 @@ LABEL_73:
         {
           CCPBDataWriterWriteStringField();
 LABEL_78:
-          if (!v81)
+          if (!statusCopy)
           {
             v33 = v35;
             goto LABEL_85;
@@ -1062,11 +1062,11 @@ LABEL_78:
           {
             CCPBDataWriterWriteStringField();
 LABEL_85:
-            v25 = v79;
-            v78 = [v30 immutableData];
-            v44 = [(CCItemMessage *)self initWithData:v78 error:a20];
+            nameCopy = v79;
+            immutableData = [v30 immutableData];
+            selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v43 = v44;
+            v43 = selfCopy2;
             goto LABEL_83;
           }
 
@@ -1078,8 +1078,8 @@ LABEL_76:
         v43 = 0;
         v33 = v35;
 LABEL_82:
-        v44 = self;
-        v25 = v79;
+        selfCopy2 = self;
+        nameCopy = v79;
         goto LABEL_83;
       }
 
@@ -1105,7 +1105,7 @@ LABEL_24:
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v48 = v29;
+    v48 = numbersCopy;
     v49 = [v48 countByEnumeratingWithState:&v93 objects:v106 count:16];
     if (v49)
     {
@@ -1146,7 +1146,7 @@ LABEL_24:
 
   CCSetError();
   v43 = 0;
-  v44 = self;
+  selfCopy2 = self;
 LABEL_83:
 
   v76 = *MEMORY[0x1E69E9840];

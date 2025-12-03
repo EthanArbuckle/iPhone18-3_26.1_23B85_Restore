@@ -27,9 +27,9 @@
   v6 = [v3 appendPoint:@"absoluteTranslation" withName:{self->_absoluteTranslation.x, self->_absoluteTranslation.y}];
   v7 = [v3 appendFloat:@"scale" withName:self->_scale];
   v8 = [v3 appendFloat:@"rotation" withName:self->_rotation];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (CGPoint)translation

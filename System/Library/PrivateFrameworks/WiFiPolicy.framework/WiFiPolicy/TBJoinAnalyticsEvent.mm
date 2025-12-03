@@ -1,42 +1,42 @@
 @interface TBJoinAnalyticsEvent
-+ (id)joinAlertEventWithSource:(unint64_t)a3 action:(unint64_t)a4 visibleDuration:(id)a5;
-+ (id)joinRecommendationEventWithSource:(unint64_t)a3 action:(unint64_t)a4 BSSID:(id)a5 latitude:(id)a6 longitude:(id)a7 score:(id)a8 visibleDuration:(id)a9;
++ (id)joinAlertEventWithSource:(unint64_t)source action:(unint64_t)action visibleDuration:(id)duration;
++ (id)joinRecommendationEventWithSource:(unint64_t)source action:(unint64_t)action BSSID:(id)d latitude:(id)latitude longitude:(id)longitude score:(id)score visibleDuration:(id)duration;
 - (NSDictionary)eventDictionary;
 - (NSString)eventName;
 @end
 
 @implementation TBJoinAnalyticsEvent
 
-+ (id)joinRecommendationEventWithSource:(unint64_t)a3 action:(unint64_t)a4 BSSID:(id)a5 latitude:(id)a6 longitude:(id)a7 score:(id)a8 visibleDuration:(id)a9
++ (id)joinRecommendationEventWithSource:(unint64_t)source action:(unint64_t)action BSSID:(id)d latitude:(id)latitude longitude:(id)longitude score:(id)score visibleDuration:(id)duration
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
+  durationCopy = duration;
+  scoreCopy = score;
+  longitudeCopy = longitude;
+  latitudeCopy = latitude;
+  dCopy = d;
   v20 = objc_alloc_init(TBJoinAnalyticsEvent);
   [(TBJoinAnalyticsEvent *)v20 setType:0];
-  [(TBJoinAnalyticsEvent *)v20 setSource:a3];
-  [(TBJoinAnalyticsEvent *)v20 setAction:a4];
-  [(TBJoinAnalyticsEvent *)v20 setBssid:v19];
+  [(TBJoinAnalyticsEvent *)v20 setSource:source];
+  [(TBJoinAnalyticsEvent *)v20 setAction:action];
+  [(TBJoinAnalyticsEvent *)v20 setBssid:dCopy];
 
-  [(TBJoinAnalyticsEvent *)v20 setLatitude:v18];
-  [(TBJoinAnalyticsEvent *)v20 setLongitude:v17];
+  [(TBJoinAnalyticsEvent *)v20 setLatitude:latitudeCopy];
+  [(TBJoinAnalyticsEvent *)v20 setLongitude:longitudeCopy];
 
-  [(TBJoinAnalyticsEvent *)v20 setScore:v16];
-  [(TBJoinAnalyticsEvent *)v20 setVisibleDuration:v15];
+  [(TBJoinAnalyticsEvent *)v20 setScore:scoreCopy];
+  [(TBJoinAnalyticsEvent *)v20 setVisibleDuration:durationCopy];
 
   return v20;
 }
 
-+ (id)joinAlertEventWithSource:(unint64_t)a3 action:(unint64_t)a4 visibleDuration:(id)a5
++ (id)joinAlertEventWithSource:(unint64_t)source action:(unint64_t)action visibleDuration:(id)duration
 {
-  v7 = a5;
+  durationCopy = duration;
   v8 = objc_alloc_init(TBJoinAnalyticsEvent);
   [(TBJoinAnalyticsEvent *)v8 setType:1];
-  [(TBJoinAnalyticsEvent *)v8 setSource:a3];
-  [(TBJoinAnalyticsEvent *)v8 setAction:a4];
-  [(TBJoinAnalyticsEvent *)v8 setVisibleDuration:v7];
+  [(TBJoinAnalyticsEvent *)v8 setSource:source];
+  [(TBJoinAnalyticsEvent *)v8 setAction:action];
+  [(TBJoinAnalyticsEvent *)v8 setVisibleDuration:durationCopy];
 
   return v8;
 }
@@ -50,44 +50,44 @@
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TBJoinAnalyticsEvent source](self, "source")}];
   [v3 setObject:v5 forKey:@"source"];
 
-  v6 = [(TBJoinAnalyticsEvent *)self bssid];
+  bssid = [(TBJoinAnalyticsEvent *)self bssid];
 
-  if (v6)
+  if (bssid)
   {
-    v7 = [(TBJoinAnalyticsEvent *)self bssid];
-    [v3 setObject:v7 forKey:@"BSSID"];
+    bssid2 = [(TBJoinAnalyticsEvent *)self bssid];
+    [v3 setObject:bssid2 forKey:@"BSSID"];
   }
 
-  v8 = [(TBJoinAnalyticsEvent *)self latitude];
+  latitude = [(TBJoinAnalyticsEvent *)self latitude];
 
-  if (v8)
+  if (latitude)
   {
-    v9 = [(TBJoinAnalyticsEvent *)self latitude];
-    [v3 setObject:v9 forKey:@"latitude"];
+    latitude2 = [(TBJoinAnalyticsEvent *)self latitude];
+    [v3 setObject:latitude2 forKey:@"latitude"];
   }
 
-  v10 = [(TBJoinAnalyticsEvent *)self longitude];
+  longitude = [(TBJoinAnalyticsEvent *)self longitude];
 
-  if (v10)
+  if (longitude)
   {
-    v11 = [(TBJoinAnalyticsEvent *)self longitude];
-    [v3 setObject:v11 forKey:@"longitude"];
+    longitude2 = [(TBJoinAnalyticsEvent *)self longitude];
+    [v3 setObject:longitude2 forKey:@"longitude"];
   }
 
-  v12 = [(TBJoinAnalyticsEvent *)self score];
+  score = [(TBJoinAnalyticsEvent *)self score];
 
-  if (v12)
+  if (score)
   {
-    v13 = [(TBJoinAnalyticsEvent *)self score];
-    [v3 setObject:v13 forKey:@"score"];
+    score2 = [(TBJoinAnalyticsEvent *)self score];
+    [v3 setObject:score2 forKey:@"score"];
   }
 
-  v14 = [(TBJoinAnalyticsEvent *)self visibleDuration];
+  visibleDuration = [(TBJoinAnalyticsEvent *)self visibleDuration];
 
-  if (v14)
+  if (visibleDuration)
   {
-    v15 = [(TBJoinAnalyticsEvent *)self visibleDuration];
-    [v3 setObject:v15 forKey:@"visibleDuration"];
+    visibleDuration2 = [(TBJoinAnalyticsEvent *)self visibleDuration];
+    [v3 setObject:visibleDuration2 forKey:@"visibleDuration"];
   }
 
   return v3;

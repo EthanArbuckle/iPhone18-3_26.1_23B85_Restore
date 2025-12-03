@@ -1,5 +1,5 @@
 @interface UIActivityActionGroupCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityAXAttributedLabel;
 - (unint64_t)accessibilityTraits;
 - (unsigned)_accessibilitySlotID;
@@ -7,12 +7,12 @@
 
 @implementation UIActivityActionGroupCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIActivityActionGroupCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIActivityActionGroupCell" hasInstanceMethod:@"activityProxy" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIHostActivityProxy" hasInstanceMethod:@"labelSlotID" withFullSignature:{"I", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIActivityActionGroupCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIActivityActionGroupCell" hasInstanceMethod:@"activityProxy" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIHostActivityProxy" hasInstanceMethod:@"labelSlotID" withFullSignature:{"I", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -36,19 +36,19 @@
   {
     v3 = objc_alloc(MEMORY[0x29EDBD7E8]);
     v4 = accessibilityLocalizedString(@"sharing.activity");
-    v5 = [v3 initWithString:v4];
+    accessibilityLabel = [v3 initWithString:v4];
 
     v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[UIActivityActionGroupCellAccessibility _accessibilitySlotID](self, "_accessibilitySlotID")}];
-    [v5 setAttribute:v6 forKey:*MEMORY[0x29EDBD9B8]];
+    [accessibilityLabel setAttribute:v6 forKey:*MEMORY[0x29EDBD9B8]];
   }
 
   else
   {
     v6 = [(UIActivityActionGroupCellAccessibility *)self safeUIViewForKey:@"titleLabel"];
-    v5 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface CNFutureTask
 - (BOOL)cancel;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)run;
-- (CNFutureTask)initWithTask:(id)a3;
-- (id)flatMap:(id)a3;
+- (CNFutureTask)initWithTask:(id)task;
+- (id)flatMap:(id)map;
 - (id)futureResult;
-- (id)recover:(id)a3;
-- (id)result:(id *)a3;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
+- (id)recover:(id)recover;
+- (id)result:(id *)result;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3;
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4;
-- (void)addSuccessBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4;
+- (void)addFailureBlock:(id)block;
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler;
+- (void)addSuccessBlock:(id)block;
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler;
 @end
 
 @implementation CNFutureTask
 
-- (CNFutureTask)initWithTask:(id)a3
+- (CNFutureTask)initWithTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v16.receiver = self;
   v16.super_class = CNFutureTask;
   v6 = [(CNFutureTask *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_task, a3);
+    objc_storeStrong(&v6->_task, task);
     v8 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
     stateLock = v7->_stateLock;
     v7->_stateLock = v8;
@@ -49,34 +49,34 @@
   return v7;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [(CNFutureTask *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [(CNFutureTask *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:2 beforeDate:a3])
+  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:2 beforeDate:date])
   {
     v6 = [(CNFutureResult *)self->_futureResult copy];
     [(NSConditionLock *)self->_stateLock unlock];
-    v7 = [v6 result];
-    v8 = [v6 error];
-    v9 = [CNFoundationError ifResultIsNil:v7 setOutputError:a4 toError:v8];
+    result = [v6 result];
+    error = [v6 error];
+    v9 = [CNFoundationError ifResultIsNil:result setOutputError:error toError:error];
   }
 
   else
   {
     v10 = +[CNFoundationError timeoutError];
     v6 = v10;
-    if (a4)
+    if (error)
     {
       v11 = v10;
       v9 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -88,10 +88,10 @@
   return v9;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(CNFutureTask *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(CNFutureTask *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
@@ -99,9 +99,9 @@
 - (BOOL)isFinished
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(CNFutureTask *)self nts_isFinished];
+  nts_isFinished = [(CNFutureTask *)self nts_isFinished];
   [(NSConditionLock *)self->_stateLock unlock];
-  return v3;
+  return nts_isFinished;
 }
 
 - (BOOL)isCancelled
@@ -109,8 +109,8 @@
   [(NSConditionLock *)self->_stateLock lock];
   if ([(CNFutureTask *)self nts_isFinished])
   {
-    v3 = [(CNFutureResult *)self->_futureResult error];
-    v4 = [CNFoundationError isCanceledError:v3];
+    error = [(CNFutureResult *)self->_futureResult error];
+    v4 = [CNFoundationError isCanceledError:error];
   }
 
   else
@@ -125,8 +125,8 @@
 - (BOOL)cancel
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(NSConditionLock *)self->_stateLock condition];
-  if (v3 == 2)
+  condition = [(NSConditionLock *)self->_stateLock condition];
+  if (condition == 2)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
@@ -148,14 +148,14 @@
     [(CNFutureTask *)self didCancel];
   }
 
-  return v3 != 2;
+  return condition != 2;
 }
 
 - (BOOL)run
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(NSConditionLock *)self->_stateLock condition];
-  if (v3)
+  condition = [(NSConditionLock *)self->_stateLock condition];
+  if (condition)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
@@ -171,23 +171,23 @@
     [(CNFutureTask *)self finishWithResult:v6 error:v7];
   }
 
-  return v3 == 0;
+  return condition == 0;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(NSConditionLock *)self->_stateLock lock];
-  v8 = [(NSConditionLock *)self->_stateLock condition];
-  if (v8 == 2)
+  condition = [(NSConditionLock *)self->_stateLock condition];
+  if (condition == 2)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
 
   else
   {
-    [(CNFutureResult *)self->_futureResult setResult:v6 error:v7];
+    [(CNFutureResult *)self->_futureResult setResult:resultCopy error:errorCopy];
     [(CNFutureCompletionBlocks *)self->_completionBlocks setShouldCallImmediately:1];
     task = self->_task;
     self->_task = 0;
@@ -196,29 +196,29 @@
     [(CNFutureTask *)self _flushCompletionBlocks];
   }
 
-  return v8 != 2;
+  return condition != 2;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
   completionBlocks = self->_completionBlocks;
-  v5 = a3;
-  v6 = [(CNFutureTask *)self futureResult];
-  [(CNFutureCompletionBlocks *)completionBlocks addSuccessBlock:v5 orCallWithFutureResult:v6];
+  blockCopy = block;
+  futureResult = [(CNFutureTask *)self futureResult];
+  [(CNFutureCompletionBlocks *)completionBlocks addSuccessBlock:blockCopy orCallWithFutureResult:futureResult];
 }
 
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__CNFutureTask_addSuccessBlock_scheduler___block_invoke;
   v10[3] = &unk_1E6ED6A78;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(CNFutureTask *)self addSuccessBlock:v10];
 }
 
@@ -237,26 +237,26 @@ void __42__CNFutureTask_addSuccessBlock_scheduler___block_invoke(uint64_t a1, vo
   [v4 performBlock:v7];
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
   completionBlocks = self->_completionBlocks;
-  v5 = a3;
-  v6 = [(CNFutureTask *)self futureResult];
-  [(CNFutureCompletionBlocks *)completionBlocks addFailureBlock:v5 orCallWithFutureResult:v6];
+  blockCopy = block;
+  futureResult = [(CNFutureTask *)self futureResult];
+  [(CNFutureCompletionBlocks *)completionBlocks addFailureBlock:blockCopy orCallWithFutureResult:futureResult];
 }
 
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__CNFutureTask_addFailureBlock_scheduler___block_invoke;
   v10[3] = &unk_1E6ED69D8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(CNFutureTask *)self addFailureBlock:v10];
 }
 
@@ -287,24 +287,24 @@ void __42__CNFutureTask_addFailureBlock_scheduler___block_invoke(uint64_t a1, vo
 - (void)_flushCompletionBlocks
 {
   completionBlocks = self->_completionBlocks;
-  v3 = [(CNFutureTask *)self futureResult];
-  [(CNFutureCompletionBlocks *)completionBlocks flushCompletionBlocksWithFutureResult:v3];
+  futureResult = [(CNFutureTask *)self futureResult];
+  [(CNFutureCompletionBlocks *)completionBlocks flushCompletionBlocksWithFutureResult:futureResult];
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [CNFuture flatMap:self withBlock:v4 schedulerProvider:v5];
+  v6 = [CNFuture flatMap:self withBlock:mapCopy schedulerProvider:v5];
 
   return v6;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [CNFuture recover:self withBlock:v4 schedulerProvider:v5];
+  v6 = [CNFuture recover:self withBlock:recoverCopy schedulerProvider:v5];
 
   return v6;
 }

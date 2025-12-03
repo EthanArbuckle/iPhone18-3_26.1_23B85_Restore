@@ -9,7 +9,7 @@
 {
   v3 = OBJC_IVAR____TtC25HealthContentDaemonPlugin36ConcreteHealthContentDaemonExtension_ontologyBackingStore;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC25HealthContentDaemonPlugin36ConcreteHealthContentDaemonExtension_ontologyBackingStore);
-  v8 = self;
+  selfCopy = self;
   [v4 invalidate];
   v5 = *(&self->super.isa + v3);
   if (v5)
@@ -22,7 +22,7 @@
 
   else
   {
-    v7 = v8;
+    v7 = selfCopy;
   }
 }
 

@@ -7,7 +7,7 @@
 
 - (double)lastBaselineFromBottom
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIButton.lastBaselineFromBottom.getter();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (double)firstBaselineFromTop
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIButton.firstBaselineFromTop.getter();
 
   return v3;

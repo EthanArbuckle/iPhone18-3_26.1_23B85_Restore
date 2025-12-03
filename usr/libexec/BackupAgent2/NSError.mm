@@ -1,7 +1,7 @@
 @interface NSError
 - (BOOL)isNotFound;
 - (NSError)excludingNotFound;
-- (id)_errorWithSQL:(id)a3;
+- (id)_errorWithSQL:(id)l;
 @end
 
 @implementation NSError
@@ -10,15 +10,15 @@
 {
   if ([(NSError *)self isNotFound])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isNotFound
@@ -28,19 +28,19 @@
     return 0;
   }
 
-  v3 = [(NSError *)self domain];
-  v4 = [v3 isEqualToString:PQLSqliteErrorDomain];
+  domain = [(NSError *)self domain];
+  v4 = [domain isEqualToString:PQLSqliteErrorDomain];
 
   return v4;
 }
 
-- (id)_errorWithSQL:(id)a3
+- (id)_errorWithSQL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
-    v5 = [(NSError *)self userInfo];
-    v6 = [v5 mutableCopy];
+    lCopy = l;
+    userInfo = [(NSError *)self userInfo];
+    v6 = [userInfo mutableCopy];
     v7 = v6;
     if (v6)
     {
@@ -54,18 +54,18 @@
 
     v10 = v8;
 
-    [v10 setObject:v4 forKeyedSubscript:@"ExpandedSQL"];
+    [v10 setObject:lCopy forKeyedSubscript:@"ExpandedSQL"];
     v11 = [NSError alloc];
-    v12 = [(NSError *)self domain];
-    v9 = [v11 initWithDomain:v12 code:-[NSError code](self userInfo:{"code"), v10}];
+    domain = [(NSError *)self domain];
+    selfCopy = [v11 initWithDomain:domain code:-[NSError code](self userInfo:{"code"), v10}];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

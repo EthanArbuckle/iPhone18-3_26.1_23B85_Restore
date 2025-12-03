@@ -1,17 +1,17 @@
 @interface HMBSQLCachedPreparedStatement
-- (HMBSQLCachedPreparedStatement)initWithStatement:(sqlite3_stmt *)a3;
+- (HMBSQLCachedPreparedStatement)initWithStatement:(sqlite3_stmt *)statement;
 @end
 
 @implementation HMBSQLCachedPreparedStatement
 
-- (HMBSQLCachedPreparedStatement)initWithStatement:(sqlite3_stmt *)a3
+- (HMBSQLCachedPreparedStatement)initWithStatement:(sqlite3_stmt *)statement
 {
   v5.receiver = self;
   v5.super_class = HMBSQLCachedPreparedStatement;
   result = [(HMBSQLCachedPreparedStatement *)&v5 init];
   if (result)
   {
-    result->_statement = a3;
+    result->_statement = statement;
   }
 
   return result;

@@ -1,5 +1,5 @@
 @interface DOMNativeXPathNSResolver
-- (id)lookupNamespaceURI:(id)a3;
+- (id)lookupNamespaceURI:(id)i;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   {
     if (*(internal + 2) == 1)
     {
-      v3 = self;
+      selfCopy = self;
       (*(*internal + 8))(self->super._internal, a2);
-      self = v3;
+      self = selfCopy;
     }
 
     else
@@ -28,10 +28,10 @@
   [(DOMObject *)&v4 dealloc];
 }
 
-- (id)lookupNamespaceURI:(id)a3
+- (id)lookupNamespaceURI:(id)i
 {
   internal = self->super._internal;
-  WTF::AtomStringImpl::add(&v13, a3, a2);
+  WTF::AtomStringImpl::add(&v13, i, a2);
   (*(*internal + 16))(&v14, internal, &v13);
   v4 = v14;
   if (v14)

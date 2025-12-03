@@ -1,19 +1,19 @@
 @interface SCNMTLMorphDeformer
-+ (uint64_t)supportedOutputsForMorpher:(uint64_t)a1;
++ (uint64_t)supportedOutputsForMorpher:(uint64_t)morpher;
 - (uint64_t)setNextFrameRequiresFullMeshReset;
-- (unint64_t)morphIncrementallyWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5;
-- (unint64_t)morphSparseWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5;
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
-- (void)createSparseIndicesBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 indicesBuffer:(char *)a5 indicesBufferOffset:(unint64_t)a6 indexSize:(unint64_t)a7 originalToFirstDeindexedTable:(unsigned int *)a8 computeContext:(id)a9;
-- (void)createVertexBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 vertexBuffer:(char *)a5 vertexBufferOffset:(unint64_t)a6 indicesBuffer:(char *)a7 indicesBufferOffset:(unint64_t)a8 indexSize:(unint64_t)a9 originalToFirstDeindexedTable:(unsigned int *)a10 computeContext:(id)a11;
+- (unint64_t)morphIncrementallyWithComputeContext:(id)context positions:(id)positions normals:(id)normals;
+- (unint64_t)morphSparseWithComputeContext:(id)context positions:(id)positions normals:(id)normals;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
+- (void)createSparseIndicesBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget indicesBuffer:(char *)buffer indicesBufferOffset:(unint64_t)offset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)table computeContext:(id)context;
+- (void)createVertexBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget vertexBuffer:(char *)buffer vertexBufferOffset:(unint64_t)offset indicesBuffer:(char *)indicesBuffer indicesBufferOffset:(unint64_t)bufferOffset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)self0 computeContext:(id)self1;
 - (void)dealloc;
-- (void)initWithMorpher:(char)a3 outputs:(char)a4 dataKind:(uint64_t)a5 resourceManager:(uint64_t)a6 computeContext:;
-- (void)setupMorphTargetsWithComputeContext:(id)a3;
+- (void)initWithMorpher:(char)morpher outputs:(char)outputs dataKind:(uint64_t)kind resourceManager:(uint64_t)manager computeContext:;
+- (void)setupMorphTargetsWithComputeContext:(id)context;
 @end
 
 @implementation SCNMTLMorphDeformer
 
-+ (uint64_t)supportedOutputsForMorpher:(uint64_t)a1
++ (uint64_t)supportedOutputsForMorpher:(uint64_t)morpher
 {
   objc_opt_self();
   OverrideMaterial = C3DGeometryGetOverrideMaterial(a2);
@@ -45,7 +45,7 @@
   [(SCNMTLMorphDeformer *)&v4 dealloc];
 }
 
-- (void)setupMorphTargetsWithComputeContext:(id)a3
+- (void)setupMorphTargetsWithComputeContext:(id)context
 {
   BaseGeometry = C3DMorpherGetBaseGeometry(self->_morpher);
   v6 = C3DGeometryUsesDeformerBasedDynamicMesh(BaseGeometry);
@@ -140,8 +140,8 @@ LABEL_12:
 
   v188[0] = 0;
   v52 = self->_finalMeshDataKind;
-  v177 = self;
-  v175 = a3;
+  selfCopy = self;
+  contextCopy = context;
   v169 = SourceWithSemanticAtIndex;
   if (v6)
   {
@@ -205,34 +205,34 @@ LABEL_12:
     }
   }
 
-  v177->_vertexCountForComputeKernel = C3DMeshSourceGetCount(v55);
-  v177->_finalMeshVertexCount = C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
+  selfCopy->_vertexCountForComputeKernel = C3DMeshSourceGetCount(v55);
+  selfCopy->_finalMeshVertexCount = C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
   v75 = malloc_type_malloc(40 * v43, 0x10600401818AB88uLL);
   v184[0] = MEMORY[0x277D85DD0];
   v184[1] = 3221225472;
   v184[2] = __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invoke;
   v184[3] = &unk_2782FD170;
   v186 = IsUsingSparseTargets;
-  v184[4] = v177;
+  v184[4] = selfCopy;
   v184[5] = v10;
   v166 = v54;
   v167 = v55;
   v184[6] = v55;
   v184[7] = v54;
-  v76 = v177;
+  v76 = selfCopy;
   v185 = v188[0];
   v187 = v36;
   v184[8] = PositionDeindexedToOriginalTable;
   v184[9] = v75;
   C3DCFArrayApplyBlock(v170, v184);
-  runtimeMorphTargetCount = v177->_runtimeMorphTargetCount;
+  runtimeMorphTargetCount = selfCopy->_runtimeMorphTargetCount;
   if (runtimeMorphTargetCount)
   {
-    v177->_runtimeMorphTargets = malloc_type_malloc(32 * runtimeMorphTargetCount, 0x100004017768742uLL);
-    v78 = C3DSizeOfBaseType(v177->_morphTargetPositionDataType);
-    v79 = C3DSizeOfBaseType(v177->_morphTargetNormalDataType);
-    v80 = [(SCNMTLOpenSubdivComputeEvaluator *)v177->_resourceManager computeEvaluator];
-    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(v80))
+    selfCopy->_runtimeMorphTargets = malloc_type_malloc(32 * runtimeMorphTargetCount, 0x100004017768742uLL);
+    v78 = C3DSizeOfBaseType(selfCopy->_morphTargetPositionDataType);
+    v79 = C3DSizeOfBaseType(selfCopy->_morphTargetNormalDataType);
+    computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)selfCopy->_resourceManager computeEvaluator];
+    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(computeEvaluator))
     {
       v81 = (v79 + ((v78 + 3) & 0xFFFFFFFFFFFFFFFCLL) + 3) & 0xFFFFFFFFFFFFFFFCLL;
     }
@@ -243,7 +243,7 @@ LABEL_12:
     }
 
     v176 = v81;
-    v84 = v177->_vertexCountForComputeKernel - 1;
+    v84 = selfCopy->_vertexCountForComputeKernel - 1;
     v85 = 1;
     if (v84 > 0xFF)
     {
@@ -257,9 +257,9 @@ LABEL_12:
     }
 
     v171 = v85;
-    SCNMTLDataTypeFromC3DBaseType(v177->_morphTargetPositionDataType);
+    SCNMTLDataTypeFromC3DBaseType(selfCopy->_morphTargetPositionDataType);
     v165 = v75;
-    if (v177->_runtimeMorphTargetCount)
+    if (selfCopy->_runtimeMorphTargetCount)
     {
       v87 = 0;
       v88 = 0;
@@ -279,7 +279,7 @@ LABEL_12:
       {
         Alignment = MTLDataTypeGetAlignment();
         v93 = *v91;
-        if (*v91 != v177->_vertexCountForComputeKernel)
+        if (*v91 != selfCopy->_vertexCountForComputeKernel)
         {
           v94 = MTLDataTypeGetAlignment();
           v89 = ((v89 + v94 - 1) & -v94) + (*v91 << v90);
@@ -290,7 +290,7 @@ LABEL_12:
         v91 += 5;
       }
 
-      while (v87 < v177->_runtimeMorphTargetCount);
+      while (v87 < selfCopy->_runtimeMorphTargetCount);
       v173 = malloc_type_malloc(v88, 0x100004077774924uLL);
       if (v89)
       {
@@ -315,7 +315,7 @@ LABEL_12:
 
     v174 = v95;
     v164 = v89;
-    if (v177->_runtimeMorphTargetCount)
+    if (selfCopy->_runtimeMorphTargetCount)
     {
       v96 = 0;
       v97 = 0;
@@ -340,7 +340,7 @@ LABEL_12:
         v104 = (v97 + v103 - 1) & -v103;
         v105 = MTLDataTypeGetAlignment();
         v106 = (v98 + v105 - 1) & -v105;
-        [(SCNMTLMorphDeformer *)v76 createVertexBufferForMorphTarget:v102 - 1 withSetupTarget:v101 vertexBuffer:v173 vertexBufferOffset:v104 indicesBuffer:v174 indicesBufferOffset:v106 indexSize:v171 originalToFirstDeindexedTable:PositionOriginalToFirstDeindexedTable computeContext:v175];
+        [(SCNMTLMorphDeformer *)v76 createVertexBufferForMorphTarget:v102 - 1 withSetupTarget:v101 vertexBuffer:v173 vertexBufferOffset:v104 indicesBuffer:v174 indicesBufferOffset:v106 indexSize:v171 originalToFirstDeindexedTable:PositionOriginalToFirstDeindexedTable computeContext:contextCopy];
         v107 = *(v101 + 4);
         if (v107 == v76->_vertexCountForComputeKernel)
         {
@@ -363,12 +363,12 @@ LABEL_12:
         v97 = v104 + v107 * v176;
         v98 = v108 + v106;
         ++v96;
-        v76 = v177;
+        v76 = selfCopy;
         v100 += 32;
         v101 += 40;
       }
 
-      while (v96 < v177->_runtimeMorphTargetCount);
+      while (v96 < selfCopy->_runtimeMorphTargetCount);
     }
 
     else
@@ -378,12 +378,12 @@ LABEL_12:
     }
 
     free(v165);
-    v83 = v175;
-    v76->_morphTargetsVertexBuffer = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v76->_resourceManager, v173, v88, [v175 currentBlitEncoder]);
+    contextCopy2 = contextCopy;
+    v76->_morphTargetsVertexBuffer = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v76->_resourceManager, v173, v88, [contextCopy currentBlitEncoder]);
     free(v173);
     if (v174)
     {
-      v76->_morphTargetsSparseIndicesBuffer = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v76->_resourceManager, v174, v164, [v175 currentBlitEncoder]);
+      v76->_morphTargetsSparseIndicesBuffer = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v76->_resourceManager, v174, v164, [contextCopy currentBlitEncoder]);
       free(v174);
     }
 
@@ -411,19 +411,19 @@ LABEL_12:
   {
     free(v75);
     v82 = v169;
-    v83 = a3;
+    contextCopy2 = context;
   }
 
   v182 = 0;
   v183 = 0;
   v181 = 0;
   LOBYTE(v163) = 1;
-  v76->_baseBufferForComputeKernel = [v83 newBufferForDataKind:v76->_dataKindForComputeKernel positionSource:v167 normalSource:v166 positionDataType:v76->_basePositionDataType normalDataType:v76->_baseNormalDataType forStageInputOutputDescriptor:1 usePrivateStorageMode:v163 outStride:&v183 outPositionOffset:&v182 outNormalOffset:&v181];
+  v76->_baseBufferForComputeKernel = [contextCopy2 newBufferForDataKind:v76->_dataKindForComputeKernel positionSource:v167 normalSource:v166 positionDataType:v76->_basePositionDataType normalDataType:v76->_baseNormalDataType forStageInputOutputDescriptor:1 usePrivateStorageMode:v163 outStride:&v183 outPositionOffset:&v182 outNormalOffset:&v181];
   v126 = v76;
   v127 = C3DSizeOfBaseType(v76->_morphTargetPositionDataType);
   v128 = C3DSizeOfBaseType(v126->_morphTargetNormalDataType);
-  v129 = [(SCNMTLOpenSubdivComputeEvaluator *)v126->_resourceManager computeEvaluator];
-  if (!SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(v129))
+  computeEvaluator2 = [(SCNMTLOpenSubdivComputeEvaluator *)v126->_resourceManager computeEvaluator];
+  if (!SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(computeEvaluator2))
   {
     v130 = v128 + v127;
     if (!v82)
@@ -448,19 +448,19 @@ LABEL_85:
     C3DCFArrayApplyBlock(v170, &__block_literal_global_36);
   }
 
-  morphKind = v177->_morphKind;
+  morphKind = selfCopy->_morphKind;
   if (!morphKind)
   {
-    LOBYTE(v180) = v177->_morphNormals;
+    LOBYTE(v180) = selfCopy->_morphNormals;
     v133 = objc_alloc_init(MEMORY[0x277CD6D70]);
     [v133 setConstantValue:&v180 type:53 withName:@"morphNormal"];
     v139 = 45;
-    if (v177->_morphNormals)
+    if (selfCopy->_morphNormals)
     {
       v139 = 78;
     }
 
-    v140 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v139];
+    v139 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v139];
     v141 = objc_alloc_init(MEMORY[0x277CD6FF0]);
     v142 = 0;
     do
@@ -470,13 +470,13 @@ LABEL_85:
       [v144 setStepFunction:5];
       [v144 setStride:v130];
       v145 = [objc_msgSend(v141 "attributes")];
-      [v145 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_morphTargetPositionDataType)];
+      [v145 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_morphTargetPositionDataType)];
       [v145 setOffset:0];
       [v145 setBufferIndex:v142 + 1];
       if (v180 == 1)
       {
         v146 = [objc_msgSend(v141 "attributes")];
-        [v146 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_morphTargetNormalDataType)];
+        [v146 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_morphTargetNormalDataType)];
         [v146 setOffset:v127];
         [v146 setBufferIndex:v143];
       }
@@ -485,8 +485,8 @@ LABEL_85:
     }
 
     while (v143 != 8);
-    v177->_incrementalInitPipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:@"blend_inc_init_8x_generic" withStageDescriptor:v141 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v140];
-    v177->_incrementalAddPipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:@"blend_inc_add_8x_generic" withStageDescriptor:v141 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v140];
+    selfCopy->_incrementalInitPipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:@"blend_inc_init_8x_generic" withStageDescriptor:v141 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v139];
+    selfCopy->_incrementalAddPipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:@"blend_inc_add_8x_generic" withStageDescriptor:v141 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v139];
 
     goto LABEL_141;
   }
@@ -495,24 +495,24 @@ LABEL_85:
   {
     v179 = 0;
     v180 = 0;
-    if (!v177->_dataKindForComputeKernel && v177->_finalMeshDataKind == 1 && PositionOriginalToFirstDeindexedTable)
+    if (!selfCopy->_dataKindForComputeKernel && selfCopy->_finalMeshDataKind == 1 && PositionOriginalToFirstDeindexedTable)
     {
-      v132 = [v83 currentBlitEncoder];
-      v177->_originalToFirstDeindexedTableBuffer = [v83 originalToFirstDeindexedTableBufferWithBlitEncoder:v132 indexSizeOut:&v180];
-      v177->_deindexedToFirstDeindexedTableBuffer = [v83 deindexedToFirstDeindexedTableBufferWithBlitEncoder:v132 indexSizeOut:&v179];
+      currentBlitEncoder = [contextCopy2 currentBlitEncoder];
+      selfCopy->_originalToFirstDeindexedTableBuffer = [contextCopy2 originalToFirstDeindexedTableBufferWithBlitEncoder:currentBlitEncoder indexSizeOut:&v180];
+      selfCopy->_deindexedToFirstDeindexedTableBuffer = [contextCopy2 deindexedToFirstDeindexedTableBufferWithBlitEncoder:currentBlitEncoder indexSizeOut:&v179];
     }
 
-    morphNormals = v177->_morphNormals;
+    morphNormals = selfCopy->_morphNormals;
     v133 = objc_alloc_init(MEMORY[0x277CD6D70]);
     [v133 setConstantValue:&morphNormals type:53 withName:@"morphNormal"];
     v134 = 45;
-    if (v177->_morphNormals)
+    if (selfCopy->_morphNormals)
     {
       v134 = 78;
     }
 
-    v135 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v134];
-    if (v177->_originalToFirstDeindexedTableBuffer)
+    v134 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v134];
+    if (selfCopy->_originalToFirstDeindexedTableBuffer)
     {
       switch(v180)
       {
@@ -536,41 +536,41 @@ LABEL_114:
           [v150 setStepFunction:5];
           [v150 setStride:v183];
           v151 = [objc_msgSend(v149 "attributes")];
-          [v151 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_basePositionDataType)];
+          [v151 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_basePositionDataType)];
           [v151 setOffset:v182];
           [v151 setBufferIndex:1];
-          if (v177->_morphNormals)
+          if (selfCopy->_morphNormals)
           {
             v152 = [objc_msgSend(v149 "attributes")];
-            [v152 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_baseNormalDataType)];
+            [v152 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_baseNormalDataType)];
             [v152 setOffset:v181];
             [v152 setBufferIndex:1];
           }
 
-          v177->_copyBaseBufferPipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:v137 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v135];
+          selfCopy->_copyBaseBufferPipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v137 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v134];
           [v149 reset];
           v153 = [objc_msgSend(v149 "layouts")];
           [v153 setStepFunction:5];
           [v153 setStride:v130];
           v154 = [objc_msgSend(v149 "attributes")];
-          [v154 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_morphTargetPositionDataType)];
+          [v154 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_morphTargetPositionDataType)];
           [v154 setOffset:0];
           [v154 setBufferIndex:1];
           if (morphNormals)
           {
             v155 = [objc_msgSend(v149 "attributes")];
-            [v155 setFormat:SCNMTLVertexFormatFromC3DBaseType(v177->_morphTargetNormalDataType)];
+            [v155 setFormat:SCNMTLVertexFormatFromC3DBaseType(selfCopy->_morphTargetNormalDataType)];
             [v155 setOffset:v127];
             [v155 setBufferIndex:1];
           }
 
-          v177->_blendDensePipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:@"blend_generic" withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v135];
+          selfCopy->_blendDensePipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:@"blend_generic" withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v134];
           if ((v136 & 1) == 0)
           {
-            v177->_blendDenseIndexedPipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:v138 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v135];
+            selfCopy->_blendDenseIndexedPipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v138 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v134];
           }
 
-          v156 = v177->_vertexCountForComputeKernel - 1;
+          v156 = selfCopy->_vertexCountForComputeKernel - 1;
           v157 = 1;
           if (v156 > 0xFF)
           {
@@ -599,9 +599,9 @@ LABEL_114:
             v160 = @"blend_indexed_u16_generic";
           }
 
-          v177->_blendSparsePipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:v160 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v135];
+          selfCopy->_blendSparsePipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v160 withStageDescriptor:v149 stageDescriptorUpdateBlock:0 constants:v133 constantsHash:v134];
 
-          if (v177->_deindexedToFirstDeindexedTableBuffer)
+          if (selfCopy->_deindexedToFirstDeindexedTableBuffer)
           {
             switch(v179)
             {
@@ -625,7 +625,7 @@ LABEL_114:
                 break;
             }
 
-            v177->_splatPipeline = [(SCNMTLResourceManager *)v177->_resourceManager computePipelineStateForKernel:v161 constants:v133 constantsHash:v135];
+            selfCopy->_splatPipeline = [(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v161 constants:v133 constantsHash:v134];
           }
 
 LABEL_141:
@@ -892,28 +892,28 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
   }
 }
 
-- (void)createVertexBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 vertexBuffer:(char *)a5 vertexBufferOffset:(unint64_t)a6 indicesBuffer:(char *)a7 indicesBufferOffset:(unint64_t)a8 indexSize:(unint64_t)a9 originalToFirstDeindexedTable:(unsigned int *)a10 computeContext:(id)a11
+- (void)createVertexBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget vertexBuffer:(char *)buffer vertexBufferOffset:(unint64_t)offset indicesBuffer:(char *)indicesBuffer indicesBufferOffset:(unint64_t)bufferOffset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)self0 computeContext:(id)self1
 {
   v63 = 0u;
   v64 = 0u;
-  C3DMeshSourceGetContent(a4->var2, &v63);
+  C3DMeshSourceGetContent(setupTarget->var2, &v63);
   v61 = 0u;
   v62 = 0u;
   if (self->_morphNormals)
   {
-    C3DMeshSourceGetContent(a4->var3, &v61);
+    C3DMeshSourceGetContent(setupTarget->var3, &v61);
   }
 
   v18 = v64;
-  a3->var2 = a4->var4;
+  target->var2 = setupTarget->var4;
   if (self->_morphKind == 1)
   {
-    [(SCNMTLMorphDeformer *)self createSparseIndicesBufferForMorphTarget:a3 withSetupTarget:a4 indicesBuffer:a7 indicesBufferOffset:a8 indexSize:a9 originalToFirstDeindexedTable:a10 computeContext:a11];
+    [(SCNMTLMorphDeformer *)self createSparseIndicesBufferForMorphTarget:target withSetupTarget:setupTarget indicesBuffer:indicesBuffer indicesBufferOffset:bufferOffset indexSize:size originalToFirstDeindexedTable:table computeContext:context];
   }
 
   else
   {
-    a3->var4 = 0;
+    target->var4 = 0;
   }
 
   morphTargetPositionDataType = self->_morphTargetPositionDataType;
@@ -928,7 +928,7 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
       }
     }
 
-    v28 = vmaxvq_f32(C3DMeshSourceGetAbsoluteMaxValue(a4->var2));
+    v28 = vmaxvq_f32(C3DMeshSourceGetAbsoluteMaxValue(setupTarget->var2));
     LOWORD(morphTargetPositionDataType) = self->_morphTargetPositionDataType;
     v60 = 1.0 / v28;
   }
@@ -939,12 +939,12 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
     v28 = 1.0;
   }
 
-  a3->var0 = v28;
+  target->var0 = v28;
   v29 = C3DSizeOfBaseType(morphTargetPositionDataType);
   v30 = C3DSizeOfBaseType(self->_morphTargetNormalDataType);
   v31 = v30 + v29;
-  v32 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
-  if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(v32))
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
+  if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(computeEvaluator))
   {
     v31 = (v30 + ((v29 + 3) & 0xFFFFFFFFFFFFFFFCLL) + 3) & 0xFFFFFFFFFFFFFFFCLL;
     v36 = (v29 + 3) & 0xFFFFFFFFFFFFFFFCLL;
@@ -955,8 +955,8 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
     v36 = v29;
   }
 
-  v37 = v31 * a3->var2;
-  v38 = &a5[a6];
+  v37 = v31 * target->var2;
+  v38 = &buffer[offset];
   if (self->_morphKind == 1)
   {
     if (self->_morphNormals)
@@ -964,7 +964,7 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
       if (v18)
       {
         v39 = 0;
-        v40 = &a5[a6];
+        v40 = &buffer[offset];
         do
         {
           *v41.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v64), (v63 + v39 * BYTE6(v64)), v33, v34.f32[0], v35.f32[0]);
@@ -990,7 +990,7 @@ void __59__SCNMTLMorphDeformer_setupMorphTargetsWithComputeContext___block_invok
       }
 
 LABEL_36:
-      v40 = &a5[a6];
+      v40 = &buffer[offset];
       goto LABEL_37;
     }
 
@@ -1000,7 +1000,7 @@ LABEL_36:
     }
 
     v49 = 0;
-    v40 = &a5[a6];
+    v40 = &buffer[offset];
     do
     {
       *v33.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v64), (v63 + v49 * BYTE6(v64)), v33, v34.f32[0], v35.f32[0]);
@@ -1027,7 +1027,7 @@ LABEL_36:
     }
 
     v46 = 0;
-    v40 = &a5[a6];
+    v40 = &buffer[offset];
     do
     {
       *v47.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v64), (v63 + v46 * BYTE6(v64)), v33, v34.f32[0], v35.f32[0]);
@@ -1055,20 +1055,20 @@ LABEL_37:
     }
   }
 
-  a3->var3 = a6;
+  target->var3 = offset;
 }
 
-- (void)createSparseIndicesBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 indicesBuffer:(char *)a5 indicesBufferOffset:(unint64_t)a6 indexSize:(unint64_t)a7 originalToFirstDeindexedTable:(unsigned int *)a8 computeContext:(id)a9
+- (void)createSparseIndicesBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget indicesBuffer:(char *)buffer indicesBufferOffset:(unint64_t)offset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)table computeContext:(id)context
 {
-  v9 = a3;
-  if (a3->var2 == self->_vertexCountForComputeKernel)
+  targetCopy = target;
+  if (target->var2 == self->_vertexCountForComputeKernel)
   {
-    a3->var3 = 0;
-    a3->var4 = 0;
+    target->var3 = 0;
+    target->var4 = 0;
     return;
   }
 
-  var3 = a4->var3;
+  var3 = setupTarget->var3;
   if (self->_dataKindForComputeKernel)
   {
     v16 = 0;
@@ -1076,7 +1076,7 @@ LABEL_37:
 
   else
   {
-    if (a8)
+    if (table)
     {
       v17 = self->_finalMeshDataKind == 1;
     }
@@ -1091,18 +1091,18 @@ LABEL_37:
 
   v91 = 0u;
   v92 = 0u;
-  C3DMeshSourceGetContent(a4->var2, &v91);
+  C3DMeshSourceGetContent(setupTarget->var2, &v91);
   v89 = 0u;
   v90 = 0u;
   if (var3)
   {
-    C3DMeshSourceGetContent(a4->var3, &v89);
+    C3DMeshSourceGetContent(setupTarget->var3, &v89);
   }
 
-  v18 = &a5[a6];
-  if (a7 == 1)
+  v18 = &buffer[offset];
+  if (size == 1)
   {
-    v19 = &a5[a6];
+    v19 = &buffer[offset];
   }
 
   else
@@ -1110,9 +1110,9 @@ LABEL_37:
     v19 = 0;
   }
 
-  if (a7 == 2)
+  if (size == 2)
   {
-    v20 = &a5[a6];
+    v20 = &buffer[offset];
   }
 
   else
@@ -1120,7 +1120,7 @@ LABEL_37:
     v20 = 0;
   }
 
-  if (a7 == 4)
+  if (size == 4)
   {
     v21 = v18;
   }
@@ -1130,17 +1130,17 @@ LABEL_37:
     v21 = 0;
   }
 
-  Mesh = C3DGeometryGetMesh(a4->var1);
+  Mesh = C3DGeometryGetMesh(setupTarget->var1);
   if (C3DMeshGetElementsCount(Mesh) >= 1)
   {
-    v77 = v9;
+    v77 = targetCopy;
     ElementAtIndex = C3DMeshGetElementAtIndex(Mesh, 0, 0);
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
     C3DMeshElementGetContent(ElementAtIndex, 0, &v85);
-    v76 = a6;
+    offsetCopy = offset;
     if (var3)
     {
       if (v86)
@@ -1169,7 +1169,7 @@ LABEL_37:
             {
               if (v16)
               {
-                v38 = a8[i];
+                v38 = table[i];
                 if (v19)
                 {
                   goto LABEL_31;
@@ -1217,7 +1217,7 @@ LABEL_31:
 
       v29 = 0;
 LABEL_73:
-      v9 = v77;
+      targetCopy = v77;
       if (v29 == v77->var2)
       {
         goto LABEL_97;
@@ -1232,7 +1232,7 @@ LABEL_73:
 LABEL_96:
       [(SCNMTLMorphDeformer *)v56 createSparseIndicesBufferForMorphTarget:v57 withSetupTarget:v58 indicesBuffer:v59 indicesBufferOffset:v60 indexSize:v61 originalToFirstDeindexedTable:v62 computeContext:v63];
 LABEL_97:
-      a6 = v76;
+      offset = offsetCopy;
       goto LABEL_98;
     }
 
@@ -1240,7 +1240,7 @@ LABEL_97:
     {
       v48 = 0;
 LABEL_94:
-      v9 = v77;
+      targetCopy = v77;
       if (v48 == v77->var2)
       {
         goto LABEL_97;
@@ -1294,7 +1294,7 @@ LABEL_69:
 
     if (v16)
     {
-      v55 = a8[j];
+      v55 = table[j];
       if (v19)
       {
 LABEL_63:
@@ -1337,7 +1337,7 @@ LABEL_68:
     {
       v65 = 0;
 LABEL_100:
-      if (v65 == v9->var2)
+      if (v65 == targetCopy->var2)
       {
         goto LABEL_98;
       }
@@ -1374,7 +1374,7 @@ LABEL_87:
 
     if (v16)
     {
-      v67 = a8[v64];
+      v67 = table[v64];
       if (v19)
       {
 LABEL_81:
@@ -1435,7 +1435,7 @@ LABEL_86:
 
       if (v16)
       {
-        v45 = a8[v40];
+        v45 = table[v40];
         if (!v19)
         {
           goto LABEL_50;
@@ -1477,7 +1477,7 @@ LABEL_54:
 
   v41 = 0;
 LABEL_90:
-  if (v41 == v9->var2)
+  if (v41 == targetCopy->var2)
   {
     goto LABEL_98;
   }
@@ -1491,34 +1491,34 @@ LABEL_90:
 LABEL_92:
   [(SCNMTLMorphDeformer *)v68 createSparseIndicesBufferForMorphTarget:v69 withSetupTarget:v70 indicesBuffer:v71 indicesBufferOffset:v72 indexSize:v73 originalToFirstDeindexedTable:v74 computeContext:v75];
 LABEL_98:
-  v9->var4 = a6;
+  targetCopy->var4 = offset;
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = [a3 currentFrameHash];
-  if (self->_currentFrameHash == v7)
+  currentFrameHash = [context currentFrameHash];
+  if (self->_currentFrameHash == currentFrameHash)
   {
     return 0;
   }
 
-  self->_currentFrameHash = v7;
-  var1 = a4->var1;
-  var3 = a4->var3;
+  self->_currentFrameHash = currentFrameHash;
+  var1 = buffers->var1;
+  var3 = buffers->var3;
   if (self->_morphKind == 1)
   {
 
-    return [(SCNMTLMorphDeformer *)self morphSparseWithComputeContext:a3 positions:var1 normals:var3];
+    return [(SCNMTLMorphDeformer *)self morphSparseWithComputeContext:context positions:var1 normals:var3];
   }
 
   else
   {
 
-    return [(SCNMTLMorphDeformer *)self morphIncrementallyWithComputeContext:a3 positions:var1 normals:var3];
+    return [(SCNMTLMorphDeformer *)self morphIncrementallyWithComputeContext:context positions:var1 normals:var3];
   }
 }
 
-- (unint64_t)morphSparseWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5
+- (unint64_t)morphSparseWithComputeContext:(id)context positions:(id)positions normals:(id)normals
 {
   v46 = 0;
   v44 = 0;
@@ -1531,19 +1531,19 @@ LABEL_98:
   }
 
   v10 = v9;
-  v11 = [a3 currentComputeEncoder];
-  bzero(v11, 0x678uLL);
-  if (a4)
+  currentComputeEncoder = [context currentComputeEncoder];
+  bzero(currentComputeEncoder, 0x678uLL);
+  if (positions)
   {
-    v11->_buffers[0] = a4;
-    v11->_buffersToBind[0] |= 1uLL;
+    currentComputeEncoder->_buffers[0] = positions;
+    currentComputeEncoder->_buffersToBind[0] |= 1uLL;
   }
 
-  if (a5)
+  if (normals)
   {
-    if (v11->_buffers[4] == a5)
+    if (currentComputeEncoder->_buffers[4] == normals)
     {
-      if (!v11->_offsets[4])
+      if (!currentComputeEncoder->_offsets[4])
       {
         goto LABEL_10;
       }
@@ -1551,11 +1551,11 @@ LABEL_98:
 
     else
     {
-      v11->_buffers[4] = a5;
+      currentComputeEncoder->_buffers[4] = normals;
     }
 
-    v11->_offsets[4] = 0;
-    v11->_buffersToBind[0] |= 0x10uLL;
+    currentComputeEncoder->_offsets[4] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 0x10uLL;
   }
 
 LABEL_10:
@@ -1565,9 +1565,9 @@ LABEL_10:
   }
 
   baseBufferForComputeKernel = self->_baseBufferForComputeKernel;
-  if (v11->_buffers[1] == baseBufferForComputeKernel)
+  if (currentComputeEncoder->_buffers[1] == baseBufferForComputeKernel)
   {
-    if (!v11->_offsets[1])
+    if (!currentComputeEncoder->_offsets[1])
     {
       goto LABEL_15;
     }
@@ -1575,19 +1575,19 @@ LABEL_10:
 
   else
   {
-    v11->_buffers[1] = baseBufferForComputeKernel;
+    currentComputeEncoder->_buffers[1] = baseBufferForComputeKernel;
   }
 
-  v11->_offsets[1] = 0;
-  v11->_buffersToBind[0] |= 2uLL;
+  currentComputeEncoder->_offsets[1] = 0;
+  currentComputeEncoder->_buffersToBind[0] |= 2uLL;
 LABEL_15:
   vertexCountForComputeKernel = self->_vertexCountForComputeKernel;
   v41[0] = 0.0;
   var2 = vertexCountForComputeKernel;
-  SCNMTLComputeCommandEncoder::setBytes(v11, v41, 0xCuLL, 3uLL);
+  SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, v41, 0xCuLL, 3uLL);
   v47 = 0;
   v48 = 0;
-  encoder = v11->_encoder;
+  encoder = currentComputeEncoder->_encoder;
   v49 = 0;
   v50 = var2;
   v51 = vdupq_n_s64(1uLL);
@@ -1595,31 +1595,31 @@ LABEL_15:
   originalToFirstDeindexedTableBuffer = self->_originalToFirstDeindexedTableBuffer;
   if (originalToFirstDeindexedTableBuffer)
   {
-    if (v11->_buffers[2] != originalToFirstDeindexedTableBuffer)
+    if (currentComputeEncoder->_buffers[2] != originalToFirstDeindexedTableBuffer)
     {
-      v11->_buffers[2] = originalToFirstDeindexedTableBuffer;
+      currentComputeEncoder->_buffers[2] = originalToFirstDeindexedTableBuffer;
 LABEL_19:
-      v11->_offsets[2] = 0;
-      v11->_buffersToBind[0] |= 4uLL;
+      currentComputeEncoder->_offsets[2] = 0;
+      currentComputeEncoder->_buffersToBind[0] |= 4uLL;
       goto LABEL_20;
     }
 
-    if (v11->_offsets[2])
+    if (currentComputeEncoder->_offsets[2])
     {
       goto LABEL_19;
     }
   }
 
 LABEL_20:
-  v17 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_copyBaseBufferPipeline computeEvaluator];
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_copyBaseBufferPipeline computeEvaluator];
   v18 = var2;
-  if (v11->_computePipelineState != v17)
+  if (currentComputeEncoder->_computePipelineState != computeEvaluator)
   {
-    v11->_computePipelineState = v17;
-    [(MTLComputeCommandEncoder *)v11->_encoder setComputePipelineState:v17];
+    currentComputeEncoder->_computePipelineState = computeEvaluator;
+    [(MTLComputeCommandEncoder *)currentComputeEncoder->_encoder setComputePipelineState:computeEvaluator];
   }
 
-  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v11, v18);
+  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(currentComputeEncoder, v18);
   bzero(v45, 4 * v46);
 LABEL_23:
   if (self->_runtimeMorphTargetCount)
@@ -1651,14 +1651,14 @@ LABEL_46:
     v41[0] = v24 - v25;
     v41[1] = (v24 - v25) * v22->var0;
     var2 = v22->var2;
-    SCNMTLComputeCommandEncoder::setBytes(v11, v41, 0xCuLL, 3uLL);
+    SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, v41, 0xCuLL, 3uLL);
     v26 = v22->var2;
     v27 = self->_vertexCountForComputeKernel;
     morphTargetsVertexBuffer = self->_morphTargetsVertexBuffer;
     var3 = v22->var3;
-    if (v11->_buffers[1] == morphTargetsVertexBuffer)
+    if (currentComputeEncoder->_buffers[1] == morphTargetsVertexBuffer)
     {
-      if (v11->_offsets[1] == var3)
+      if (currentComputeEncoder->_offsets[1] == var3)
       {
         goto LABEL_30;
       }
@@ -1666,15 +1666,15 @@ LABEL_46:
 
     else
     {
-      v11->_buffers[1] = morphTargetsVertexBuffer;
+      currentComputeEncoder->_buffers[1] = morphTargetsVertexBuffer;
     }
 
-    v11->_offsets[1] = var3;
-    v11->_buffersToBind[0] |= 2uLL;
+    currentComputeEncoder->_offsets[1] = var3;
+    currentComputeEncoder->_buffersToBind[0] |= 2uLL;
 LABEL_30:
     v47 = 0;
     v48 = 0;
-    v30 = v11->_encoder;
+    v30 = currentComputeEncoder->_encoder;
     v49 = 0;
     v50 = var2;
     v51 = v40;
@@ -1684,9 +1684,9 @@ LABEL_30:
       v31 = self->_originalToFirstDeindexedTableBuffer;
       if (v31)
       {
-        if (v11->_buffers[2] == v31)
+        if (currentComputeEncoder->_buffers[2] == v31)
         {
-          if (!v11->_offsets[2])
+          if (!currentComputeEncoder->_offsets[2])
           {
 LABEL_42:
             blendDenseIndexedPipeline = self->_blendDenseIndexedPipeline;
@@ -1696,33 +1696,33 @@ LABEL_42:
 
         else
         {
-          v11->_buffers[2] = v31;
+          currentComputeEncoder->_buffers[2] = v31;
         }
 
-        v11->_offsets[2] = 0;
-        v11->_buffersToBind[0] |= 4uLL;
+        currentComputeEncoder->_offsets[2] = 0;
+        currentComputeEncoder->_buffersToBind[0] |= 4uLL;
         goto LABEL_42;
       }
 
       blendDenseIndexedPipeline = self->_blendDensePipeline;
 LABEL_43:
-      v35 = [(SCNMTLOpenSubdivComputeEvaluator *)blendDenseIndexedPipeline computeEvaluator];
+      computeEvaluator2 = [(SCNMTLOpenSubdivComputeEvaluator *)blendDenseIndexedPipeline computeEvaluator];
       v36 = var2;
-      if (v11->_computePipelineState != v35)
+      if (currentComputeEncoder->_computePipelineState != computeEvaluator2)
       {
-        v11->_computePipelineState = v35;
-        [(MTLComputeCommandEncoder *)v11->_encoder setComputePipelineState:v35];
+        currentComputeEncoder->_computePipelineState = computeEvaluator2;
+        [(MTLComputeCommandEncoder *)currentComputeEncoder->_encoder setComputePipelineState:computeEvaluator2];
       }
 
-      SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v11, v36);
+      SCNMTLComputeCommandEncoder::dispatchOnGrid1D(currentComputeEncoder, v36);
       goto LABEL_46;
     }
 
     morphTargetsSparseIndicesBuffer = self->_morphTargetsSparseIndicesBuffer;
     var4 = runtimeMorphTargets[v19].var4;
-    if (v11->_buffers[2] == morphTargetsSparseIndicesBuffer)
+    if (currentComputeEncoder->_buffers[2] == morphTargetsSparseIndicesBuffer)
     {
-      if (v11->_offsets[2] == var4)
+      if (currentComputeEncoder->_offsets[2] == var4)
       {
 LABEL_39:
         blendDenseIndexedPipeline = self->_blendSparsePipeline;
@@ -1732,11 +1732,11 @@ LABEL_39:
 
     else
     {
-      v11->_buffers[2] = morphTargetsSparseIndicesBuffer;
+      currentComputeEncoder->_buffers[2] = morphTargetsSparseIndicesBuffer;
     }
 
-    v11->_offsets[2] = var4;
-    v11->_buffersToBind[0] |= 4uLL;
+    currentComputeEncoder->_offsets[2] = var4;
+    currentComputeEncoder->_buffersToBind[0] |= 4uLL;
     goto LABEL_39;
   }
 
@@ -1748,39 +1748,39 @@ LABEL_47:
   }
 
   var2 = self->_finalMeshVertexCount;
-  if (v11->_buffers[2] != deindexedToFirstDeindexedTableBuffer)
+  if (currentComputeEncoder->_buffers[2] != deindexedToFirstDeindexedTableBuffer)
   {
-    v11->_buffers[2] = deindexedToFirstDeindexedTableBuffer;
+    currentComputeEncoder->_buffers[2] = deindexedToFirstDeindexedTableBuffer;
 LABEL_51:
-    v11->_offsets[2] = 0;
-    v11->_buffersToBind[0] |= 4uLL;
+    currentComputeEncoder->_offsets[2] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 4uLL;
     goto LABEL_52;
   }
 
-  if (v11->_offsets[2])
+  if (currentComputeEncoder->_offsets[2])
   {
     goto LABEL_51;
   }
 
 LABEL_52:
-  SCNMTLComputeCommandEncoder::setBytes(v11, v41, 0xCuLL, 3uLL);
-  v38 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_splatPipeline computeEvaluator];
+  SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, v41, 0xCuLL, 3uLL);
+  computeEvaluator3 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_splatPipeline computeEvaluator];
   finalMeshVertexCount = self->_finalMeshVertexCount;
-  if (v11->_computePipelineState != v38)
+  if (currentComputeEncoder->_computePipelineState != computeEvaluator3)
   {
-    v11->_computePipelineState = v38;
-    [(MTLComputeCommandEncoder *)v11->_encoder setComputePipelineState:v38];
+    currentComputeEncoder->_computePipelineState = computeEvaluator3;
+    [(MTLComputeCommandEncoder *)currentComputeEncoder->_encoder setComputePipelineState:computeEvaluator3];
   }
 
-  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v11, finalMeshVertexCount);
+  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(currentComputeEncoder, finalMeshVertexCount);
 LABEL_55:
   self->_lastMorpherIncrementalPassState = C3DMorpherEndIncrementalPass(self->_morpher);
   return 1;
 }
 
-- (unint64_t)morphIncrementallyWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5
+- (unint64_t)morphIncrementallyWithComputeContext:(id)context positions:(id)positions normals:(id)normals
 {
-  v68 = a4;
+  positionsCopy = positions;
   v85 = *MEMORY[0x277D85DE8];
   v79 = 0;
   v77 = 0;
@@ -1793,9 +1793,9 @@ LABEL_55:
   }
 
   v9 = v8;
-  v66 = a5;
-  v73 = [a3 currentComputeEncoder];
-  bzero(v73, 0x678uLL);
+  normalsCopy = normals;
+  currentComputeEncoder = [context currentComputeEncoder];
+  bzero(currentComputeEncoder, 0x678uLL);
   v63[1] = v63;
   v11 = MEMORY[0x28223BE20](v10);
   v13 = (v63 - v12);
@@ -1876,8 +1876,8 @@ LABEL_55:
   }
 
   memset(v83, 0, 32);
-  v64 = self;
-  v69 = [(SCNMTLOpenSubdivComputeEvaluator *)*(&self->super.isa + v38) computeEvaluator];
+  selfCopy = self;
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)*(&self->super.isa + v38) computeEvaluator];
   v67 = v20 + 7;
   if (v20 + 7 >= 8)
   {
@@ -1885,7 +1885,7 @@ LABEL_55:
     v40 = 0;
     v41 = 0;
     v65 = v67 >> 3;
-    p_baseBufferForComputeKernel = &v64->_baseBufferForComputeKernel;
+    p_baseBufferForComputeKernel = &selfCopy->_baseBufferForComputeKernel;
     do
     {
       v71 = v41;
@@ -1916,14 +1916,14 @@ LABEL_55:
 
       while (v43 != 8);
       v72 = v39;
-      v49 = v73;
-      SCNMTLComputeCommandEncoder::setBuffers(v73, v84, v83, 1, 8);
+      v49 = currentComputeEncoder;
+      SCNMTLComputeCommandEncoder::setBuffers(currentComputeEncoder, v84, v83, 1, 8);
       v50 = v49;
-      if (v49->_buffers[10] == v68)
+      if (v49->_buffers[10] == positionsCopy)
       {
         v53 = v49->_offsets[10];
-        v51 = v66;
-        v52 = v69;
+        v51 = normalsCopy;
+        v52 = computeEvaluator;
         if (!v53)
         {
           goto LABEL_31;
@@ -1932,9 +1932,9 @@ LABEL_55:
 
       else
       {
-        v49->_buffers[10] = v68;
-        v51 = v66;
-        v52 = v69;
+        v49->_buffers[10] = positionsCopy;
+        v51 = normalsCopy;
+        v52 = computeEvaluator;
       }
 
       v50->_offsets[10] = 0;
@@ -1960,20 +1960,20 @@ LABEL_35:
 LABEL_36:
       SCNMTLComputeCommandEncoder::setBytes(v50, v74, 0x24uLL, 0xCuLL);
       memset(v80, 0, sizeof(v80));
-      encoder = v73->_encoder;
+      encoder = currentComputeEncoder->_encoder;
       v81 = vertexCountForComputeKernel;
       v82 = vdupq_n_s64(1uLL);
       [(MTLComputeCommandEncoder *)encoder setStageInRegion:v80];
-      v55 = v73;
+      v55 = currentComputeEncoder;
       v56 = vertexCountForComputeKernel;
-      if (v73->_computePipelineState != v52)
+      if (currentComputeEncoder->_computePipelineState != v52)
       {
-        v73->_computePipelineState = v52;
+        currentComputeEncoder->_computePipelineState = v52;
         v57 = v52;
         v58 = v56;
         [(MTLComputeCommandEncoder *)v55->_encoder setComputePipelineState:v57];
         v56 = v58;
-        v55 = v73;
+        v55 = currentComputeEncoder;
       }
 
       v59 = v67 < 0x10;
@@ -1982,7 +1982,7 @@ LABEL_36:
       v61 = v71;
       if ((v60 & 1) == 0)
       {
-        v69 = [(SCNMTLOpenSubdivComputeEvaluator *)v64->_incrementalAddPipeline computeEvaluator];
+        computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)selfCopy->_incrementalAddPipeline computeEvaluator];
         v70 = 0;
       }
 
@@ -1996,19 +1996,19 @@ LABEL_36:
     while (v41 != v65);
   }
 
-  v62 = v64;
-  v62->_lastMorpherIncrementalPassState = C3DMorpherEndIncrementalPass(v64->_morpher);
+  v62 = selfCopy;
+  v62->_lastMorpherIncrementalPassState = C3DMorpherEndIncrementalPass(selfCopy->_morpher);
   return 1;
 }
 
-- (void)initWithMorpher:(char)a3 outputs:(char)a4 dataKind:(uint64_t)a5 resourceManager:(uint64_t)a6 computeContext:
+- (void)initWithMorpher:(char)morpher outputs:(char)outputs dataKind:(uint64_t)kind resourceManager:(uint64_t)manager computeContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = SCNMTLMorphDeformer;
   v11 = objc_msgSendSuper2(&v14, sel_init);
   if (v11)
@@ -2024,11 +2024,11 @@ LABEL_36:
     }
 
     v11[1] = v12;
-    *(v11 + 32) = (a3 & 2) != 0;
-    *(v11 + 16) = a4;
-    v11[3] = a5;
+    *(v11 + 32) = (morpher & 2) != 0;
+    *(v11 + 16) = outputs;
+    v11[3] = kind;
     *(v11 + 14) = -1;
-    [v11 setupMorphTargetsWithComputeContext:a6];
+    [v11 setupMorphTargetsWithComputeContext:manager];
   }
 
   return v11;

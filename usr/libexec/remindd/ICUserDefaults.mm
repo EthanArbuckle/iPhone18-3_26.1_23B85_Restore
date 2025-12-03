@@ -1,6 +1,6 @@
 @interface ICUserDefaults
 - (ICUserDefaults)init;
-- (ICUserDefaults)initWithCloudSchemaCatchUpSyncSchedulingStateStorage:(id)a3;
+- (ICUserDefaults)initWithCloudSchemaCatchUpSyncSchedulingStateStorage:(id)storage;
 - (id)userDefaults;
 @end
 
@@ -9,21 +9,21 @@
 - (id)userDefaults
 {
   v2 = +[REMUserDefaults daemonUserDefaults];
-  v3 = [v2 userDefaults];
+  userDefaults = [v2 userDefaults];
 
-  return v3;
+  return userDefaults;
 }
 
-- (ICUserDefaults)initWithCloudSchemaCatchUpSyncSchedulingStateStorage:(id)a3
+- (ICUserDefaults)initWithCloudSchemaCatchUpSyncSchedulingStateStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v8.receiver = self;
   v8.super_class = ICUserDefaults;
   v5 = [(ICUserDefaults *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICUserDefaults *)v5 setCloudSchemaCatchUpSyncSchedulingStateStorage:v4];
+    [(ICUserDefaults *)v5 setCloudSchemaCatchUpSyncSchedulingStateStorage:storageCopy];
   }
 
   return v6;

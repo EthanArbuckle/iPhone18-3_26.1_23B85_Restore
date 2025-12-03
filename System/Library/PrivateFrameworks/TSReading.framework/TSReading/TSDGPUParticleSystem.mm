@@ -1,95 +1,95 @@
 @interface TSDGPUParticleSystem
-+ (CGSize)p_particleSystemSizeWithRequestedNumber:(unint64_t)a3 objectSize:(CGSize)a4;
-+ (id)newParticleSystemWithNumberOfParticles:(unint64_t)a3 objectSize:(CGSize)a4 slideSize:(CGSize)a5 duration:(double)a6 direction:(unint64_t)a7 randomGenerator:(id)a8 shader:(id)a9 metalContext:(id)a10;
-+ (id)newParticleSystemWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9 shader:(id)a10 metalContext:(id)a11;
-- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)a3;
-- ($94F468A8D4C62B317260615823C2B210)colorTexCoordAtIndexPoint:(CGPoint)a3;
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)a3 particleIndexPoint:(CGPoint)a4;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (BOOL)visibilityAtIndexPoint:(CGPoint)a3;
-- (CGContext)newContextFromTexture:(id)a3;
-- (CGPoint)indexPointFromIndex:(unint64_t)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
++ (CGSize)p_particleSystemSizeWithRequestedNumber:(unint64_t)number objectSize:(CGSize)size;
++ (id)newParticleSystemWithNumberOfParticles:(unint64_t)particles objectSize:(CGSize)size slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)shader metalContext:(id)self0;
++ (id)newParticleSystemWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)self0 metalContext:(id)self1;
+- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)point;
+- ($94F468A8D4C62B317260615823C2B210)colorTexCoordAtIndexPoint:(CGPoint)point;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)index particleIndexPoint:(CGPoint)point;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (BOOL)visibilityAtIndexPoint:(CGPoint)point;
+- (CGContext)newContextFromTexture:(id)texture;
+- (CGPoint)indexPointFromIndex:(unint64_t)index;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
 - (CGSize)objectSize;
-- (CGSize)p_resizeSystemToFitWithinMaxVerticesWithSystemSize:(CGSize)a3;
+- (CGSize)p_resizeSystemToFitWithinMaxVerticesWithSystemSize:(CGSize)size;
 - (CGSize)particleSize;
 - (CGSize)slideSize;
 - (CGSize)vertexTextureSize;
 - (NSArray)dataBufferAttributes;
 - (NSString)description;
-- (TSDGPUParticleSystem)initWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9 shader:(id)a10 metalContext:(id)a11;
+- (TSDGPUParticleSystem)initWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)self0 metalContext:(id)self1;
 - (double)rotationMax;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 - (double)speedMax;
 - (void)dealloc;
-- (void)drawMetalWithEncoder:(id)a3;
+- (void)drawMetalWithEncoder:(id)encoder;
 - (void)p_logParticleInformation;
 - (void)p_reverseParticleDataDrawOrder;
-- (void)p_setDataBufferAttribute:(id *)a3 withName:(id)a4 defaultDataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7;
-- (void)p_setupDataBufferWithParticleCount:(unint64_t)a3 visibleParticleCount:(unint64_t)a4;
-- (void)p_setupParticleDataWithTexture:(id)a3;
-- (void)p_setupParticleSystemWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9;
-- (void)p_setupParticleTextureDataWithTexture:(id)a3 capabilities:(id)a4;
+- (void)p_setDataBufferAttribute:(id *)attribute withName:(id)name defaultDataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count;
+- (void)p_setupDataBufferWithParticleCount:(unint64_t)count visibleParticleCount:(unint64_t)particleCount;
+- (void)p_setupParticleDataWithTexture:(id)texture;
+- (void)p_setupParticleSystemWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator;
+- (void)p_setupParticleTextureDataWithTexture:(id)texture capabilities:(id)capabilities;
 - (void)p_setupVertexData;
-- (void)setupMetalWithShader:(id)a3;
-- (void)setupWithTexture:(id)a3 particleTextureSize:(CGSize)a4 reverseDrawOrder:(BOOL)a5 capabilities:(id)a6;
+- (void)setupMetalWithShader:(id)shader;
+- (void)setupWithTexture:(id)texture particleTextureSize:(CGSize)size reverseDrawOrder:(BOOL)order capabilities:(id)capabilities;
 @end
 
 @implementation TSDGPUParticleSystem
 
-+ (id)newParticleSystemWithNumberOfParticles:(unint64_t)a3 objectSize:(CGSize)a4 slideSize:(CGSize)a5 duration:(double)a6 direction:(unint64_t)a7 randomGenerator:(id)a8 shader:(id)a9 metalContext:(id)a10
++ (id)newParticleSystemWithNumberOfParticles:(unint64_t)particles objectSize:(CGSize)size slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)shader metalContext:(id)self0
 {
-  height = a5.height;
-  width = a5.width;
-  v16 = a4.height;
-  v17 = a4.width;
-  [TSDGPUParticleSystem p_particleSystemSizeWithRequestedNumber:a3 objectSize:?];
+  height = slideSize.height;
+  width = slideSize.width;
+  v16 = size.height;
+  v17 = size.width;
+  [TSDGPUParticleSystem p_particleSystemSizeWithRequestedNumber:particles objectSize:?];
   v20 = v19;
   v22 = v21;
-  if (!a8)
+  if (!generator)
   {
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDGPUParticleSystem newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:]"];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 72, @"invalid nil value for '%s'", "randomGenerator"}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 72, @"invalid nil value for '%s'", "randomGenerator"}];
   }
 
-  return [[a1 alloc] initWithParticleSize:a7 particleSystemSize:a8 objectSize:a9 slideSize:a10 duration:ceil(v17 / v20) direction:ceil(v16 / v22) randomGenerator:v20 shader:v22 metalContext:{v17, v16, width, height, *&a6}];
+  return [[self alloc] initWithParticleSize:direction particleSystemSize:generator objectSize:shader slideSize:context duration:ceil(v17 / v20) direction:ceil(v16 / v22) randomGenerator:v20 shader:v22 metalContext:{v17, v16, width, height, *&duration}];
 }
 
-+ (id)newParticleSystemWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9 shader:(id)a10 metalContext:(id)a11
++ (id)newParticleSystemWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)self0 metalContext:(id)self1
 {
-  height = a6.height;
-  width = a6.width;
-  v16 = a5.height;
-  v17 = a5.width;
-  v18 = a4.height;
-  v19 = a4.width;
-  v20 = a3.height;
-  v21 = a3.width;
-  v22 = [a1 alloc];
+  height = slideSize.height;
+  width = slideSize.width;
+  v16 = objectSize.height;
+  v17 = objectSize.width;
+  v18 = systemSize.height;
+  v19 = systemSize.width;
+  v20 = size.height;
+  v21 = size.width;
+  v22 = [self alloc];
 
-  return [v22 initWithParticleSize:a8 particleSystemSize:a9 objectSize:a10 slideSize:a11 duration:v21 direction:v20 randomGenerator:v19 shader:v18 metalContext:{v17, v16, width, height}];
+  return [v22 initWithParticleSize:direction particleSystemSize:generator objectSize:shader slideSize:context duration:v21 direction:v20 randomGenerator:v19 shader:v18 metalContext:{v17, v16, width, height}];
 }
 
-- (TSDGPUParticleSystem)initWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9 shader:(id)a10 metalContext:(id)a11
+- (TSDGPUParticleSystem)initWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator shader:(id)self0 metalContext:(id)self1
 {
-  height = a6.height;
-  width = a6.width;
-  v17 = a5.height;
-  v18 = a5.width;
-  v19 = a4.height;
-  v20 = a4.width;
-  v21 = a3.height;
-  v22 = a3.width;
-  v24 = [objc_opt_class() numberOfVerticesPerParticle];
-  if (v24 > 4 || ((1 << v24) & 0x1A) == 0)
+  height = slideSize.height;
+  width = slideSize.width;
+  v17 = objectSize.height;
+  v18 = objectSize.width;
+  v19 = systemSize.height;
+  v20 = systemSize.width;
+  v21 = size.height;
+  v22 = size.width;
+  numberOfVerticesPerParticle = [objc_opt_class() numberOfVerticesPerParticle];
+  if (numberOfVerticesPerParticle > 4 || ((1 << numberOfVerticesPerParticle) & 0x1A) == 0)
   {
-    v26 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem initWithParticleSize:particleSystemSize:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:]"];
-    [v26 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 115, @"%@: We don't support %d vertices per particle... aborting init.", objc_opt_class(), v24}];
+    [currentHandler handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 115, @"%@: We don't support %d vertices per particle... aborting init.", objc_opt_class(), numberOfVerticesPerParticle}];
   }
 
   v32.receiver = self;
@@ -98,13 +98,13 @@
   v29 = v28;
   if (v28)
   {
-    [(TSDGPUParticleSystem *)v28 p_setupParticleSystemWithParticleSize:a8 particleSystemSize:a9 objectSize:v22 slideSize:v21 duration:v20 direction:v19 randomGenerator:v18, v17, width, height, *&a7];
-    v29->_metalContext = a11;
-    v30 = [(TSDGPUParticleSystem *)v29 particleCount];
-    [(TSDGPUParticleSystem *)v29 setupMetalWithShader:a10];
+    [(TSDGPUParticleSystem *)v28 p_setupParticleSystemWithParticleSize:direction particleSystemSize:generator objectSize:v22 slideSize:v21 duration:v20 direction:v19 randomGenerator:v18, v17, width, height, *&duration];
+    v29->_metalContext = context;
+    particleCount = [(TSDGPUParticleSystem *)v29 particleCount];
+    [(TSDGPUParticleSystem *)v29 setupMetalWithShader:shader];
     if (([objc_opt_class() shouldDrawInvisibleParticles] & 1) == 0)
     {
-      v29->_visibilities = malloc_type_calloc(v30 * v24, 1uLL, 0x100004077774924uLL);
+      v29->_visibilities = malloc_type_calloc(particleCount * numberOfVerticesPerParticle, 1uLL, 0x100004077774924uLL);
     }
 
     [(TSDGPUParticleSystem *)v29 p_setupDataBufferWithParticleCount:[(TSDGPUParticleSystem *)v29 particleCount] visibleParticleCount:[(TSDGPUParticleSystem *)v29 visibleParticleCount]];
@@ -121,8 +121,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TSDGPUParticleSystem *)self dataBufferAttributes];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataBufferAttributes = [(TSDGPUParticleSystem *)self dataBufferAttributes];
+  v4 = [(NSArray *)dataBufferAttributes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -134,12 +134,12 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataBufferAttributes);
         }
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [(NSArray *)dataBufferAttributes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -158,31 +158,31 @@
   [(TSDGPUParticleSystem *)&v9 dealloc];
 }
 
-- (void)p_setupParticleSystemWithParticleSize:(CGSize)a3 particleSystemSize:(CGSize)a4 objectSize:(CGSize)a5 slideSize:(CGSize)a6 duration:(double)a7 direction:(unint64_t)a8 randomGenerator:(id)a9
+- (void)p_setupParticleSystemWithParticleSize:(CGSize)size particleSystemSize:(CGSize)systemSize objectSize:(CGSize)objectSize slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction randomGenerator:(id)generator
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a5.height;
-  v14 = a5.width;
-  v15 = a4.height;
-  v16 = a4.width;
-  v24 = a3.height;
-  v17 = a3.width;
-  if (!a9)
+  height = slideSize.height;
+  width = slideSize.width;
+  v13 = objectSize.height;
+  v14 = objectSize.width;
+  v15 = systemSize.height;
+  v16 = systemSize.width;
+  v24 = size.height;
+  v17 = size.width;
+  if (!generator)
   {
-    v19 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem p_setupParticleSystemWithParticleSize:particleSystemSize:objectSize:slideSize:duration:direction:randomGenerator:]"];
-    [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 166, @"invalid nil value for '%s'", "randomGenerator"}];
+    [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 166, @"invalid nil value for '%s'", "randomGenerator"}];
   }
 
-  self->_randomGenerator = a9;
+  self->_randomGenerator = generator;
   self->_shouldDraw = 1;
   self->_objectSize.width = v14;
   self->_objectSize.height = v13;
   self->_slideSize.width = width;
   self->_slideSize.height = height;
-  self->_duration = a7;
-  self->_direction = a8;
+  self->_duration = duration;
+  self->_direction = direction;
   if (v16 == *MEMORY[0x277CBF3A8] && v15 == *(MEMORY[0x277CBF3A8] + 8))
   {
     v16 = ceil(v14 / v17);
@@ -197,12 +197,12 @@
   self->_particleCount = v22 * v23;
 }
 
-- (void)setupWithTexture:(id)a3 particleTextureSize:(CGSize)a4 reverseDrawOrder:(BOOL)a5 capabilities:(id)a6
+- (void)setupWithTexture:(id)texture particleTextureSize:(CGSize)size reverseDrawOrder:(BOOL)order capabilities:(id)capabilities
 {
-  v6 = a5;
-  [(TSDGPUParticleSystem *)self p_setupParticleTextureDataWithTexture:a3 capabilities:a6, a4.width, a4.height];
-  [(TSDGPUParticleSystem *)self p_setupParticleDataWithTexture:a3];
-  if (v6)
+  orderCopy = order;
+  [(TSDGPUParticleSystem *)self p_setupParticleTextureDataWithTexture:texture capabilities:capabilities, size.width, size.height];
+  [(TSDGPUParticleSystem *)self p_setupParticleDataWithTexture:texture];
+  if (orderCopy)
   {
     [(TSDGPUParticleSystem *)self p_reverseParticleDataDrawOrder];
   }
@@ -216,7 +216,7 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_isInitialized)
   {
     v4 = @"YES";
@@ -227,7 +227,7 @@
     v4 = @"NO";
   }
 
-  [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"initialized:%@", v4)}];
+  [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"initialized:%@", v4)}];
   if (self->_isDataBufferInitialized)
   {
     v5 = @"YES";
@@ -238,24 +238,24 @@
     v5 = @"NO";
   }
 
-  [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dataBufferInitialized:%@", v5)}];
+  [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dataBufferInitialized:%@", v5)}];
   if (![(TSDGPUParticleSystem *)self shouldDraw])
   {
-    [v3 addObject:@"NOT drawing"];
+    [array addObject:@"NOT drawing"];
   }
 
-  [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"visibleParticleCount:%ld", -[TSDGPUParticleSystem visibleParticleCount](self, "visibleParticleCount"))}];
-  [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"particleSystemSize:%ldx%ld)", -[TSDGPUParticleSystem particlesWide](self, "particlesWide"), -[TSDGPUParticleSystem particlesHigh](self, "particlesHigh")}]);
-  [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dataBuffer:%@", -[TSDGPUParticleSystem dataBuffer](self, "dataBuffer"))}];
+  [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"visibleParticleCount:%ld", -[TSDGPUParticleSystem visibleParticleCount](self, "visibleParticleCount"))}];
+  [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"particleSystemSize:%ldx%ld)", -[TSDGPUParticleSystem particlesWide](self, "particlesWide"), -[TSDGPUParticleSystem particlesHigh](self, "particlesHigh")}]);
+  [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dataBuffer:%@", -[TSDGPUParticleSystem dataBuffer](self, "dataBuffer"))}];
   v7.receiver = self;
   v7.super_class = TSDGPUParticleSystem;
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@: {%@}", -[TSDGPUParticleSystem description](&v7, sel_description), objc_msgSend(v3, "componentsJoinedByString:", @", ")];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@: {%@}", -[TSDGPUParticleSystem description](&v7, sel_description), objc_msgSend(array, "componentsJoinedByString:", @", ")];
 }
 
-- (CGPoint)indexPointFromIndex:(unint64_t)a3
+- (CGPoint)indexPointFromIndex:(unint64_t)index
 {
-  v4 = (a3 / [(TSDGPUParticleSystem *)self particlesWide]);
-  v5 = a3 - v4;
+  v4 = (index / [(TSDGPUParticleSystem *)self particlesWide]);
+  v5 = index - v4;
   result.y = v4;
   result.x = v5;
   return result;
@@ -263,11 +263,11 @@
 
 - (NSArray)dataBufferAttributes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_positionAttribute)
   {
-    [(NSArray *)v3 addObject:?];
+    [(NSArray *)array addObject:?];
   }
 
   if (self->_centerAttribute)
@@ -318,20 +318,20 @@
   return v4;
 }
 
-- (CGContext)newContextFromTexture:(id)a3
+- (CGContext)newContextFromTexture:(id)texture
 {
-  if (!a3)
+  if (!texture)
   {
     return 0;
   }
 
-  v3 = [a3 image];
-  if (!v3)
+  image = [texture image];
+  if (!image)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = image;
   if ([objc_opt_class() willOverrideColors])
   {
     return 0;
@@ -345,11 +345,11 @@
   return v5;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)a3 particleIndexPoint:(CGPoint)a4
+- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)index particleIndexPoint:(CGPoint)point
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem vertexPositionAtVertexIndex:particleIndexPoint:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 310, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 310, @"Subclass should implement this method!"}];
   v6 = 0.0;
   v7 = 0.0;
   result.var1 = v7;
@@ -357,11 +357,11 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem centerAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 315, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 315, @"Subclass should implement this method!"}];
   v5 = 0.0;
   v6 = 0.0;
   result.var1 = v6;
@@ -369,11 +369,11 @@
   return result;
 }
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem startingPointAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 323, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 323, @"Subclass should implement this method!"}];
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
   result.y = v6;
@@ -381,11 +381,11 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem speedAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 328, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 328, @"Subclass should implement this method!"}];
   TSURandom();
   v6 = v5;
   TSURandom();
@@ -403,17 +403,17 @@
 
 - (double)speedMax
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem speedMax]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 332, @"TSDGPUParticleSystem kindly requests you also implement speedMax if you wanna use Speed!"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 332, @"TSDGPUParticleSystem kindly requests you also implement speedMax if you wanna use Speed!"}];
   return 1.0;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem rotationAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 337, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 337, @"Subclass should implement this method!"}];
   TSURandomBetween();
   v6 = v5;
   TSURandomBetween();
@@ -431,27 +431,27 @@
 
 - (double)rotationMax
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem rotationMax]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 341, @"TSDGPUParticleSystem kindly requests you also implement rotationMax if you wanna use Rotation!"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 341, @"TSDGPUParticleSystem kindly requests you also implement rotationMax if you wanna use Rotation!"}];
   return 1.0;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem scaleAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 346, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 346, @"Subclass should implement this method!"}];
 
   TSURandom();
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem lifeSpanAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 351, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 351, @"Subclass should implement this method!"}];
   v5 = 0.0;
   v6 = 1.0;
   result.var1 = v6;
@@ -459,11 +459,11 @@
   return result;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)a3
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem colorAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 359, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 359, @"Subclass should implement this method!"}];
   TSURandomBetween();
   v6 = v5;
   TSURandomBetween();
@@ -483,19 +483,19 @@
   return result;
 }
 
-- (BOOL)visibilityAtIndexPoint:(CGPoint)a3
+- (BOOL)visibilityAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem visibilityAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 370, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 370, @"Subclass should implement this method!"}];
   return 1;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)colorTexCoordAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)colorTexCoordAtIndexPoint:(CGPoint)point
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem colorTexCoordAtIndexPoint:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 380, @"Subclass should implement this method!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 380, @"Subclass should implement this method!"}];
   v5 = 0.0;
   v6 = 0.0;
   result.var1 = v6;
@@ -503,22 +503,22 @@
   return result;
 }
 
-- (void)setupMetalWithShader:(id)a3
+- (void)setupMetalWithShader:(id)shader
 {
   v28 = *MEMORY[0x277D85DE8];
   if (self->_shouldDraw)
   {
-    v4 = [a3 pipelineReflectionObject];
-    if (v4)
+    pipelineReflectionObject = [shader pipelineReflectionObject];
+    if (pipelineReflectionObject)
     {
-      v5 = v4;
+      v5 = pipelineReflectionObject;
       self->_attributesInShader = [MEMORY[0x277CBEB58] set];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v6 = [v5 vertexBindings];
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      vertexBindings = [v5 vertexBindings];
+      v7 = [vertexBindings countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v7)
       {
         v8 = v7;
@@ -530,7 +530,7 @@
           {
             if (*v23 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(vertexBindings);
             }
 
             v11 = *(*(&v22 + 1) + 8 * v10);
@@ -541,8 +541,8 @@
               v21 = 0u;
               v18 = 0u;
               v19 = 0u;
-              v13 = [objc_msgSend(v12 bufferStructType];
-              v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              bufferStructType = [objc_msgSend(v12 bufferStructType];
+              v14 = [bufferStructType countByEnumeratingWithState:&v18 objects:v26 count:16];
               if (v14)
               {
                 v15 = v14;
@@ -554,14 +554,14 @@
                   {
                     if (*v19 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(bufferStructType);
                     }
 
                     -[NSMutableSet addObject:](self->_attributesInShader, "addObject:", [*(*(&v18 + 1) + 8 * v17++) name]);
                   }
 
                   while (v15 != v17);
-                  v15 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+                  v15 = [bufferStructType countByEnumeratingWithState:&v18 objects:v26 count:16];
                 }
 
                 while (v15);
@@ -572,7 +572,7 @@
           }
 
           while (v10 != v8);
-          v8 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+          v8 = [vertexBindings countByEnumeratingWithState:&v22 objects:v27 count:16];
         }
 
         while (v8);
@@ -581,7 +581,7 @@
   }
 }
 
-- (void)drawMetalWithEncoder:(id)a3
+- (void)drawMetalWithEncoder:(id)encoder
 {
   if (self->_shouldDraw)
   {
@@ -599,7 +599,7 @@
 
     v9 = [(TSDGPUParticleSystem *)self dataBuffer:v10];
 
-    [(TSDGPUDataBuffer *)v9 drawWithEncoder:a3 atIndex:0];
+    [(TSDGPUDataBuffer *)v9 drawWithEncoder:encoder atIndex:0];
   }
 }
 
@@ -639,84 +639,84 @@
   return result;
 }
 
-- (void)p_setupParticleTextureDataWithTexture:(id)a3 capabilities:(id)a4
+- (void)p_setupParticleTextureDataWithTexture:(id)texture capabilities:(id)capabilities
 {
   if (self->_colorTexCoordAttribute && ([objc_opt_class() willOverrideColorTexCoords] & 1) == 0)
   {
-    v6 = [(TSDMetalContext *)self->_metalContext device];
-    v7 = [+[TSDMetalShaderLibraryLoader loadDefaultLibraryWithDevice:](TSDMetalShaderLibraryLoader loadDefaultLibraryWithDevice:{v6), "newFunctionWithName:", @"TSDMetalParticleSystem_ReduceTexture"}];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    v7 = [+[TSDMetalShaderLibraryLoader loadDefaultLibraryWithDevice:](TSDMetalShaderLibraryLoader loadDefaultLibraryWithDevice:{device), "newFunctionWithName:", @"TSDMetalParticleSystem_ReduceTexture"}];
     v23 = 0;
-    v8 = [(MTLDevice *)v6 newComputePipelineStateWithFunction:v7 error:&v23];
+    v8 = [(MTLDevice *)device newComputePipelineStateWithFunction:v7 error:&v23];
 
     if (v8)
     {
-      v9 = [a3 metalTexture];
-      v10 = [v9 width] >> 2;
-      v11 = [v9 height] >> 2;
+      metalTexture = [texture metalTexture];
+      v10 = [metalTexture width] >> 2;
+      v11 = [metalTexture height] >> 2;
       [(TSDGPUParticleSystem *)self particleSize];
       [(TSDGPUParticleSystem *)self particleSize];
       v12 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:-[TSDMetalContext pixelFormat](self->_metalContext width:"pixelFormat") height:v10 mipmapped:v11, 0];
       [v12 setUsage:3];
       [v12 setResourceOptions:32];
       [v12 setStorageMode:2];
-      self->_vertexColorTexture = [(MTLDevice *)v6 newTextureWithDescriptor:v12];
+      self->_vertexColorTexture = [(MTLDevice *)device newTextureWithDescriptor:v12];
       self->_vertexTextureSize.width = v10;
       self->_vertexTextureSize.height = v11;
-      v13 = [v8 threadExecutionWidth];
-      v14 = [v8 maxTotalThreadsPerThreadgroup] / v13;
-      v15 = (v13 + [v9 width] - 1) / v13;
-      v16 = (v14 + [v9 height] - 1) / v14;
-      v17 = [(MTLCommandQueue *)[(TSDMetalContext *)self->_metalContext commandQueue] commandBuffer];
-      v18 = [v17 computeCommandEncoder];
-      [v18 setComputePipelineState:v8];
-      [v18 setTexture:v9 atIndex:0];
-      [v18 setTexture:self->_vertexColorTexture atIndex:1];
+      threadExecutionWidth = [v8 threadExecutionWidth];
+      v14 = [v8 maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+      v15 = (threadExecutionWidth + [metalTexture width] - 1) / threadExecutionWidth;
+      v16 = (v14 + [metalTexture height] - 1) / v14;
+      commandBuffer = [(MTLCommandQueue *)[(TSDMetalContext *)self->_metalContext commandQueue] commandBuffer];
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      [computeCommandEncoder setComputePipelineState:v8];
+      [computeCommandEncoder setTexture:metalTexture atIndex:0];
+      [computeCommandEncoder setTexture:self->_vertexColorTexture atIndex:1];
       v22[0] = v15;
       v22[1] = v16;
       v22[2] = 1;
-      v21[0] = v13;
+      v21[0] = threadExecutionWidth;
       v21[1] = v14;
       v21[2] = 1;
-      [v18 dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
-      [v18 endEncoding];
-      [v17 commit];
+      [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
+      [computeCommandEncoder endEncoding];
+      [commandBuffer commit];
     }
 
     else
     {
-      v19 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem(Private) p_setupParticleTextureDataWithTexture:capabilities:]"];
-      [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 448, @"Failed to create compute shader"}];
+      [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 448, @"Failed to create compute shader"}];
     }
   }
 }
 
-- (void)p_setDataBufferAttribute:(id *)a3 withName:(id)a4 defaultDataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7
+- (void)p_setDataBufferAttribute:(id *)attribute withName:(id)name defaultDataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count
 {
-  v8 = a6;
+  normalizedCopy = normalized;
 
-  *a3 = 0;
-  if ([(NSMutableSet *)self->_attributesInShader containsObject:a4])
+  *attribute = 0;
+  if ([(NSMutableSet *)self->_attributesInShader containsObject:name])
   {
-    v13 = [objc_opt_class() newDataBufferAttributeWithName:a4];
-    *a3 = v13;
+    v13 = [objc_opt_class() newDataBufferAttributeWithName:name];
+    *attribute = v13;
     if (!v13)
     {
-      *a3 = [[TSDGPUDataBufferAttribute alloc] initWithName:a4 bufferUsage:35044 dataType:a5 normalized:v8 componentCount:a7];
+      *attribute = [[TSDGPUDataBufferAttribute alloc] initWithName:name bufferUsage:35044 dataType:type normalized:normalizedCopy componentCount:count];
     }
   }
 }
 
-- (void)p_setupDataBufferWithParticleCount:(unint64_t)a3 visibleParticleCount:(unint64_t)a4
+- (void)p_setupDataBufferWithParticleCount:(unint64_t)count visibleParticleCount:(unint64_t)particleCount
 {
-  self->_particleCount = a3;
-  self->_visibleParticleCount = a4;
+  self->_particleCount = count;
+  self->_visibleParticleCount = particleCount;
   [(TSDGPUParticleSystem *)self p_setDataBufferAttribute:&self->_positionAttribute withName:@"Position" defaultDataType:5 normalized:0 componentCount:2];
   if (!self->_positionAttribute)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem(Private) p_setupDataBufferWithParticleCount:visibleParticleCount:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 555, @"Always need a position attribute!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 555, @"Always need a position attribute!"}];
   }
 
   [(TSDGPUParticleSystem *)self p_setDataBufferAttribute:&self->_centerAttribute withName:@"Center" defaultDataType:5 normalized:0 componentCount:2];
@@ -729,31 +729,31 @@
   [(TSDGPUParticleSystem *)self p_setDataBufferAttribute:&self->_lifeSpanAttribute withName:@"LifeSpan" defaultDataType:3 normalized:1 componentCount:2];
   [(TSDGPUParticleSystem *)self p_setDataBufferAttribute:&self->_colorTexCoordAttribute withName:@"ColorTexCoord" defaultDataType:3 normalized:1 componentCount:2];
 
-  v7 = [objc_opt_class() numberOfVerticesPerParticle];
-  v8 = [(TSDGPUParticleSystem *)self dataBufferAttributes];
+  numberOfVerticesPerParticle = [objc_opt_class() numberOfVerticesPerParticle];
+  dataBufferAttributes = [(TSDGPUParticleSystem *)self dataBufferAttributes];
   particleCount = self->_particleCount;
-  if (v7 == 4)
+  if (numberOfVerticesPerParticle == 4)
   {
-    self->_dataBuffer = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:v8 quadParticleCount:particleCount device:[(TSDMetalContext *)self->_metalContext device]];
+    self->_dataBuffer = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:dataBufferAttributes quadParticleCount:particleCount device:[(TSDMetalContext *)self->_metalContext device]];
   }
 
   else
   {
-    v10 = +[TSDGPUDataBuffer newDataBufferWithVertexAttributes:vertexCount:indexElementCount:device:](TSDGPUDataBuffer, "newDataBufferWithVertexAttributes:vertexCount:indexElementCount:device:", v8, [objc_opt_class() numberOfVerticesPerParticle] * particleCount, 0, -[TSDMetalContext device](self->_metalContext, "device"));
+    v10 = +[TSDGPUDataBuffer newDataBufferWithVertexAttributes:vertexCount:indexElementCount:device:](TSDGPUDataBuffer, "newDataBufferWithVertexAttributes:vertexCount:indexElementCount:device:", dataBufferAttributes, [objc_opt_class() numberOfVerticesPerParticle] * particleCount, 0, -[TSDMetalContext device](self->_metalContext, "device"));
     self->_dataBuffer = v10;
 
     [(TSDGPUDataBuffer *)v10 setMetalDrawMode:3];
   }
 }
 
-- (void)p_setupParticleDataWithTexture:(id)a3
+- (void)p_setupParticleDataWithTexture:(id)texture
 {
-  v4 = [objc_opt_class() numberOfVerticesPerParticle];
-  if (v4 > 4 || ((1 << v4) & 0x1A) == 0)
+  numberOfVerticesPerParticle = [objc_opt_class() numberOfVerticesPerParticle];
+  if (numberOfVerticesPerParticle > 4 || ((1 << numberOfVerticesPerParticle) & 0x1A) == 0)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem(Private) p_setupParticleDataWithTexture:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 636, @"Only support 1, 3, or 4 vertices per particle!"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"), 636, @"Only support 1, 3, or 4 vertices per particle!"}];
   }
 
   width = self->_objectSize.width;
@@ -765,12 +765,12 @@
   v50 = v12;
   v14 = height != height || width != width;
   v15 = self->_texCoordAttribute != 0;
-  v16 = [objc_opt_class() willOverrideGeometry];
-  v17 = [(TSDGPUParticleSystem *)self dataBufferAttributes];
-  v18 = v17;
+  willOverrideGeometry = [objc_opt_class() willOverrideGeometry];
+  dataBufferAttributes = [(TSDGPUParticleSystem *)self dataBufferAttributes];
+  v18 = dataBufferAttributes;
   if (self->_positionAttribute)
   {
-    v48 = [(NSArray *)v17 indexOfObject:?];
+    v48 = [(NSArray *)dataBufferAttributes indexOfObject:?];
   }
 
   else
@@ -876,8 +876,8 @@
   v65 = &v64;
   v66 = 0x2020000000;
   v67 = 0;
-  v38 = [(TSDGPUParticleSystem *)self particlesHigh];
-  v37 = [(TSDGPUParticleSystem *)self particlesWide];
+  particlesHigh = [(TSDGPUParticleSystem *)self particlesHigh];
+  particlesWide = [(TSDGPUParticleSystem *)self particlesWide];
   [(TSDGPUParticleSystem *)self particleSize];
   v20 = v19;
   v22 = v21;
@@ -899,10 +899,10 @@
     v30 = v26;
   }
 
-  v32 = [objc_opt_class() willOverrideVisibilities];
-  v33 = [objc_opt_class() willOverrideStartingPoints];
-  v34 = [objc_opt_class() willOverrideColors];
-  v35 = [objc_opt_class() willOverrideColorTexCoords];
+  willOverrideVisibilities = [objc_opt_class() willOverrideVisibilities];
+  willOverrideStartingPoints = [objc_opt_class() willOverrideStartingPoints];
+  willOverrideColors = [objc_opt_class() willOverrideColors];
+  willOverrideColorTexCoords = [objc_opt_class() willOverrideColorTexCoords];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __64__TSDGPUParticleSystem_Private__p_setupParticleDataWithTexture___block_invoke;
@@ -917,9 +917,9 @@
   v53[15] = v41;
   v53[16] = v40;
   v53[17] = v39;
-  v53[18] = v38;
-  v53[19] = v37;
-  v53[20] = v4;
+  v53[18] = particlesHigh;
+  v53[19] = particlesWide;
+  v53[20] = numberOfVerticesPerParticle;
   v53[21] = v20;
   v53[22] = v22;
   v54 = v15;
@@ -946,13 +946,13 @@
   v53[37] = height;
   v53[38] = 0;
   v53[39] = 0;
-  v59 = v32;
+  v59 = willOverrideVisibilities;
   v53[6] = &v68;
   v53[7] = &v64;
-  v60 = v33;
-  v61 = v16;
-  v62 = v34;
-  v63 = v35;
+  v60 = willOverrideStartingPoints;
+  v61 = willOverrideGeometry;
+  v62 = willOverrideColors;
+  v63 = willOverrideColorTexCoords;
   [(TSDGPUDataBuffer *)[(TSDGPUParticleSystem *)self dataBuffer] updateMetalDataBufferAttributes:v18 withBlock:v53];
   visibilities = self->_visibilities;
   if (*(v69 + 24) == 1)
@@ -1939,8 +1939,8 @@ LABEL_149:
   v26 = *MEMORY[0x277D85DE8];
   if ([(TSDGPUParticleSystem *)self shouldDraw])
   {
-    v3 = [(TSDGPUParticleSystem *)self particleCount];
-    v4 = [objc_opt_class() numberOfVerticesPerParticle] * v3;
+    particleCount = [(TSDGPUParticleSystem *)self particleCount];
+    v4 = [objc_opt_class() numberOfVerticesPerParticle] * particleCount;
     visibilities = self->_visibilities;
     v6 = v4;
     if (visibilities)
@@ -1964,13 +1964,13 @@ LABEL_149:
     self->_visibleParticleCount = [(TSDGPUParticleSystem *)self particleCount];
     if (v6 != v4)
     {
-      v9 = [(TSDGPUParticleSystem *)self dataBuffer];
+      dataBuffer = [(TSDGPUParticleSystem *)self dataBuffer];
       [(TSDGPUParticleSystem *)self p_setupDataBufferWithParticleCount:self->_particleCount visibleParticleCount:self->_visibleParticleCount];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      obj = [(TSDGPUDataBuffer *)v9 vertexAttributes];
+      obj = [(TSDGPUDataBuffer *)dataBuffer vertexAttributes];
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
@@ -1997,7 +1997,7 @@ LABEL_149:
               {
                 if (self->_visibilities[v16])
                 {
-                  [(TSDGPUDataBuffer *)[(TSDGPUParticleSystem *)self dataBuffer] setDataForAttribute:v15 atIndex:v17++ fromAttribute:v13 dataBuffer:v9 index:v16];
+                  [(TSDGPUDataBuffer *)[(TSDGPUParticleSystem *)self dataBuffer] setDataForAttribute:v15 atIndex:v17++ fromAttribute:v13 dataBuffer:dataBuffer index:v16];
                 }
 
                 ++v16;
@@ -2028,10 +2028,10 @@ LABEL_149:
   }
 }
 
-- (CGSize)p_resizeSystemToFitWithinMaxVerticesWithSystemSize:(CGSize)a3
+- (CGSize)p_resizeSystemToFitWithinMaxVerticesWithSystemSize:(CGSize)size
 {
-  height = a3.height;
-  v4 = (a3.width * a3.height);
+  height = size.height;
+  v4 = (size.width * size.height);
   v5 = 0xFFFFuLL / [objc_opt_class() numberOfVerticesPerParticle];
   if (v5 >= v4)
   {
@@ -2049,37 +2049,37 @@ LABEL_149:
 {
   if ([(TSDGPUParticleSystem *)self shouldDraw])
   {
-    v2 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUParticleSystem(Private) p_reverseParticleDataDrawOrder]"];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUParticleSystem.m"];
 
-    [v2 handleFailureInFunction:v3 file:v4 lineNumber:1022 description:{@"Reversing particle order is not yet implemented, but probably should be if you're calling this!"}];
+    [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:1022 description:{@"Reversing particle order is not yet implemented, but probably should be if you're calling this!"}];
   }
 }
 
-+ (CGSize)p_particleSystemSizeWithRequestedNumber:(unint64_t)a3 objectSize:(CGSize)a4
++ (CGSize)p_particleSystemSizeWithRequestedNumber:(unint64_t)number objectSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  i = a4.height;
-  v8 = [objc_opt_class() numberOfVerticesPerParticle];
-  v9 = 0xFFFF / v8;
-  if (0xFFFF / v8 < a3)
+  height = size.height;
+  width = size.width;
+  i = size.height;
+  numberOfVerticesPerParticle = [objc_opt_class() numberOfVerticesPerParticle];
+  v9 = 0xFFFF / numberOfVerticesPerParticle;
+  if (0xFFFF / numberOfVerticesPerParticle < number)
   {
-    a3 = 0xFFFF / v8;
+    number = 0xFFFF / numberOfVerticesPerParticle;
   }
 
   v10 = width == *MEMORY[0x277CBF3A8] && i == *(MEMORY[0x277CBF3A8] + 8);
-  if (!v10 && ((v11 = [objc_opt_class() willOverrideStartingPoints], a3 != 1) ? (v12 = v11 == 0) : (v12 = 0), v12))
+  if (!v10 && ((v11 = [objc_opt_class() willOverrideStartingPoints], number != 1) ? (v12 = v11 == 0) : (v12 = 0), v12))
   {
-    v13 = width;
-    if (width * height > a3)
+    numberCopy = width;
+    if (width * height > number)
     {
-      if (a3)
+      if (number)
       {
         v15 = round(sqrt(width * height));
         v16 = (ceil(width / v15) * ceil(height / v15));
-        if (a3 <= v16)
+        if (number <= v16)
         {
           do
           {
@@ -2088,17 +2088,17 @@ LABEL_149:
             v16 = (ceil(width / v15) * ceil(height / v15));
           }
 
-          while (v15 > 2.0 && v16 > a3);
+          while (v15 > 2.0 && v16 > number);
           v18 = 2.0;
           if (v15 > 2.0)
           {
-            v20 = v16 - a3;
+            v20 = v16 - number;
             if (v20 < 0)
             {
               v20 = -v20;
             }
 
-            v21 = v19 - a3;
+            v21 = v19 - number;
             if (v21 < 0)
             {
               v21 = -v21;
@@ -2125,11 +2125,11 @@ LABEL_149:
             v16 = (ceil(width / v15) * ceil(height / v15));
           }
 
-          while (v15 > 2.0 && a3 > v16);
+          while (v15 > 2.0 && number > v16);
           v18 = 2.0;
           if (v15 > 2.0)
           {
-            if (vabdd_f64(v16, a3) <= vabdd_f64(v17, a3))
+            if (vabdd_f64(v16, number) <= vabdd_f64(v17, number))
             {
               v18 = v15;
             }
@@ -2141,31 +2141,31 @@ LABEL_149:
           }
         }
 
-        v13 = ceil(width / v18);
-        for (i = ceil(height / v18); v9 < (v13 * i); i = ceil(height / v18))
+        numberCopy = ceil(width / v18);
+        for (i = ceil(height / v18); v9 < (numberCopy * i); i = ceil(height / v18))
         {
           v18 = v18 + 1.0;
-          v13 = ceil(width / v18);
+          numberCopy = ceil(width / v18);
         }
       }
 
       else
       {
         i = 1.0;
-        v13 = 1.0;
+        numberCopy = 1.0;
       }
     }
   }
 
   else
   {
-    v13 = a3;
+    numberCopy = number;
     i = 1.0;
   }
 
   v14 = i;
   result.height = v14;
-  result.width = v13;
+  result.width = numberCopy;
   return result;
 }
 
@@ -2173,10 +2173,10 @@ LABEL_149:
 {
   NSLog(@"%@", a2, self);
   visibilities = self->_visibilities;
-  v4 = [(TSDGPUParticleSystem *)self particleCount];
+  particleCount = [(TSDGPUParticleSystem *)self particleCount];
   if (visibilities)
   {
-    if (v4)
+    if (particleCount)
     {
       v5 = 0;
       LODWORD(v6) = 0;
@@ -2199,7 +2199,7 @@ LABEL_149:
 
   else
   {
-    NSLog(@"TSDGPUParticleSystem: Particles visible: %li (ALL)", v4);
+    NSLog(@"TSDGPUParticleSystem: Particles visible: %li (ALL)", particleCount);
   }
 }
 

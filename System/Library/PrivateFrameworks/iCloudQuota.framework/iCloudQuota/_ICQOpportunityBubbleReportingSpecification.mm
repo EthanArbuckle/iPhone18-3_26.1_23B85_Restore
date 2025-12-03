@@ -1,22 +1,22 @@
 @interface _ICQOpportunityBubbleReportingSpecification
-- (_ICQOpportunityBubbleReportingSpecification)initWithServerDictionary:(id)a3;
-- (id)_getDismissReportingRuleFromServerDict:(id)a3;
-- (void)_setDisplayRuleFromServerDict:(id)a3;
+- (_ICQOpportunityBubbleReportingSpecification)initWithServerDictionary:(id)dictionary;
+- (id)_getDismissReportingRuleFromServerDict:(id)dict;
+- (void)_setDisplayRuleFromServerDict:(id)dict;
 @end
 
 @implementation _ICQOpportunityBubbleReportingSpecification
 
-- (_ICQOpportunityBubbleReportingSpecification)initWithServerDictionary:(id)a3
+- (_ICQOpportunityBubbleReportingSpecification)initWithServerDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _ICQOpportunityBubbleReportingSpecification;
   v5 = [(_ICQOpportunityBubbleReportingSpecification *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(_ICQOpportunityBubbleReportingSpecification *)v5 _setDisplayRuleFromServerDict:v4];
-    v7 = [(_ICQOpportunityBubbleReportingSpecification *)v6 _getDismissReportingRuleFromServerDict:v4];
+    [(_ICQOpportunityBubbleReportingSpecification *)v5 _setDisplayRuleFromServerDict:dictionaryCopy];
+    v7 = [(_ICQOpportunityBubbleReportingSpecification *)v6 _getDismissReportingRuleFromServerDict:dictionaryCopy];
     dimissServerParam = v6->_dimissServerParam;
     v6->_dimissServerParam = v7;
   }
@@ -24,9 +24,9 @@
   return v6;
 }
 
-- (void)_setDisplayRuleFromServerDict:(id)a3
+- (void)_setDisplayRuleFromServerDict:(id)dict
 {
-  v7 = [a3 objectForKeyedSubscript:@"rulesForDisplay"];
+  v7 = [dict objectForKeyedSubscript:@"rulesForDisplay"];
   v4 = [v7 objectForKey:@"delegateDecision"];
 
   if (v4)
@@ -52,10 +52,10 @@
   }
 }
 
-- (id)_getDismissReportingRuleFromServerDict:(id)a3
+- (id)_getDismissReportingRuleFromServerDict:(id)dict
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"onDismiss"];
+  v4 = [dict objectForKeyedSubscript:@"onDismiss"];
   v5 = [v4 objectForKeyedSubscript:@"onDismiss"];
   v6 = [v5 isEqualToString:@"UNIFIED_MESSAGING"];
 

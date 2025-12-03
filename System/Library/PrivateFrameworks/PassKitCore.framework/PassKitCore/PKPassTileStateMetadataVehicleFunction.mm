@@ -1,21 +1,21 @@
 @interface PKPassTileStateMetadataVehicleFunction
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (BOOL)isEqualToUnresolvedMetadata:(id)a3;
-- (PKPassTileStateMetadataVehicleFunction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (BOOL)isEqualToUnresolvedMetadata:(id)metadata;
+- (PKPassTileStateMetadataVehicleFunction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileStateMetadataVehicleFunction
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PKPassTileStateMetadataVehicleFunction;
-  v5 = [(PKPassTileStateMetadata *)&v23 _setUpWithDictionary:v4];
+  v5 = [(PKPassTileStateMetadata *)&v23 _setUpWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"vehicleFunctionStates"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"vehicleFunctionStates"];
     if (v6)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -110,19 +110,19 @@ void __63__PKPassTileStateMetadataVehicleFunction__setUpWithDictionary___block_i
 LABEL_16:
 }
 
-- (PKPassTileStateMetadataVehicleFunction)initWithCoder:(id)a3
+- (PKPassTileStateMetadataVehicleFunction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPassTileStateMetadataVehicleFunction;
-  v5 = [(PKPassTileStateMetadata *)&v13 initWithCoder:v4];
+  v5 = [(PKPassTileStateMetadata *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"vehicleFunctions"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"vehicleFunctions"];
     vehicleFunctionStates = v5->_vehicleFunctionStates;
     v5->_vehicleFunctionStates = v10;
   }
@@ -130,23 +130,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileStateMetadataVehicleFunction;
-  v4 = a3;
-  [(PKPassTileStateMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_vehicleFunctionStates forKey:{@"vehicleFunctionStates", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassTileStateMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_vehicleFunctionStates forKey:{@"vehicleFunctionStates", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqualToUnresolvedMetadata:(id)a3
+- (BOOL)isEqualToUnresolvedMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = PKPassTileStateMetadataVehicleFunction;
-  if ([(PKPassTileStateMetadata *)&v10 isEqualToUnresolvedMetadata:v4])
+  if ([(PKPassTileStateMetadata *)&v10 isEqualToUnresolvedMetadata:metadataCopy])
   {
-    v5 = v4[2];
+    v5 = metadataCopy[2];
     vehicleFunctionStates = self->_vehicleFunctionStates;
     if (v5)
     {

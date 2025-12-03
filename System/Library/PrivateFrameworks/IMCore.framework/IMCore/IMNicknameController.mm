@@ -3,57 +3,57 @@
 + (BOOL)multiplePhoneNumbersTiedToAppleID;
 + (id)sharedInstance;
 - (BOOL)_canUpdatePersonalNickname;
-- (BOOL)handleIsAllowedForSharing:(id)a3;
-- (BOOL)handleIsDeniedForSharing:(id)a3;
-- (BOOL)hasObservedTransitionForHandleID:(id)a3;
+- (BOOL)handleIsAllowedForSharing:(id)sharing;
+- (BOOL)handleIsDeniedForSharing:(id)sharing;
+- (BOOL)hasObservedTransitionForHandleID:(id)d;
 - (BOOL)iCloudSignedInToUseNicknames;
-- (BOOL)isActiveForNickname:(id)a3;
-- (BOOL)isIgnoredForNickname:(id)a3;
-- (BOOL)shouldOfferNicknameSharingForChat:(id)a3;
-- (BOOL)shouldOfferNicknameSharingForHandles:(id)a3;
+- (BOOL)isActiveForNickname:(id)nickname;
+- (BOOL)isIgnoredForNickname:(id)nickname;
+- (BOOL)shouldOfferNicknameSharingForChat:(id)chat;
+- (BOOL)shouldOfferNicknameSharingForHandles:(id)handles;
 - (IMNicknameController)init;
-- (id)_changedKeysForNewNicknameDictionary:(id)a3 oldNicknameDictionary:(id)a4 withComparisonOptions:(unint64_t)a5;
-- (id)_handleIDsForHandle:(id)a3;
-- (id)archivedNicknameForHandleIDs:(id)a3;
-- (id)createSharedProfileStateOracleForHandles:(id)a3;
-- (id)currentNicknameForHandleIDs:(id)a3;
+- (id)_changedKeysForNewNicknameDictionary:(id)dictionary oldNicknameDictionary:(id)nicknameDictionary withComparisonOptions:(unint64_t)options;
+- (id)_handleIDsForHandle:(id)handle;
+- (id)archivedNicknameForHandleIDs:(id)ds;
+- (id)createSharedProfileStateOracleForHandles:(id)handles;
+- (id)currentNicknameForHandleIDs:(id)ds;
 - (id)handlesForNicknamesUnderScrutiny;
-- (id)imageDataForHandle:(id)a3;
-- (id)nicknameForHandle:(id)a3;
-- (id)nicknameForHandleIDs:(id)a3;
-- (id)pendingNicknameForHandleIDs:(id)a3;
-- (id)personNameComponentsForHandle:(id)a3;
+- (id)imageDataForHandle:(id)handle;
+- (id)nicknameForHandle:(id)handle;
+- (id)nicknameForHandleIDs:(id)ds;
+- (id)pendingNicknameForHandleIDs:(id)ds;
+- (id)personNameComponentsForHandle:(id)handle;
 - (id)remoteDaemon;
-- (id)truncateNameIfNeeded:(id)a3;
-- (id)unknownSenderRecordInfoFor:(id)a3;
-- (unint64_t)nicknameUpdateForHandle:(id)a3 nicknameIfAvailable:(id *)a4;
-- (void)_broadcastNicknamePreferencesDidChange:(id)a3;
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4;
-- (void)clearHandleFromScrutiny:(id)a3;
-- (void)clearPendingNicknameUpdatesForHandle:(id)a3 forceClear:(BOOL)a4;
-- (void)clearPendingNicknameUpdatesForHandleIDs:(id)a3;
-- (void)denyHandlesForNicknameSharing:(id)a3;
-- (void)fetchPersonalNicknameWithCompletion:(id)a3;
-- (void)ignorePendingNicknameUpdatesForHandle:(id)a3;
-- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)a3;
+- (id)truncateNameIfNeeded:(id)needed;
+- (id)unknownSenderRecordInfoFor:(id)for;
+- (unint64_t)nicknameUpdateForHandle:(id)handle nicknameIfAvailable:(id *)available;
+- (void)_broadcastNicknamePreferencesDidChange:(id)change;
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type;
+- (void)clearHandleFromScrutiny:(id)scrutiny;
+- (void)clearPendingNicknameUpdatesForHandle:(id)handle forceClear:(BOOL)clear;
+- (void)clearPendingNicknameUpdatesForHandleIDs:(id)ds;
+- (void)denyHandlesForNicknameSharing:(id)sharing;
+- (void)fetchPersonalNicknameWithCompletion:(id)completion;
+- (void)ignorePendingNicknameUpdatesForHandle:(id)handle;
+- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)ds;
 - (void)markAllAsPending;
-- (void)markHandleUnderScrutiny:(id)a3;
-- (void)markNicknameAsIgnored:(id)a3;
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4;
-- (void)sendPersonalNicknameToHandle:(id)a3 fromHandle:(id)a4;
+- (void)markHandleUnderScrutiny:(id)scrutiny;
+- (void)markNicknameAsIgnored:(id)ignored;
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d;
+- (void)sendPersonalNicknameToHandle:(id)handle fromHandle:(id)fromHandle;
 - (void)setNicknameHandlesUnderScrutiny;
-- (void)setPersonalNickname:(id)a3;
-- (void)setPersonalNicknameFromOnboardingResult:(id)a3;
-- (void)updateIsActiveList:(id)a3;
-- (void)updateIsIgnoredList:(id)a3;
+- (void)setPersonalNickname:(id)nickname;
+- (void)setPersonalNicknameFromOnboardingResult:(id)result;
+- (void)updateIsActiveList:(id)list;
+- (void)updateIsIgnoredList:(id)list;
 - (void)updateLocalNicknameStore;
-- (void)updatePendingNicknameForHandleIDs:(id)a3;
-- (void)updatePendingNicknames:(id)a3 handledNicknames:(id)a4 archivedNicknames:(id)a5;
-- (void)updatePersonalNickname:(id)a3;
-- (void)updatePersonalNicknameIfNecessaryWithMeCardSharingResult:(id)a3;
-- (void)updateSharingAllowList:(id)a3 denyList:(id)a4;
-- (void)updateTransitionedNicknameHandles:(id)a3;
-- (void)updateUnknownSenderRecords:(id)a3;
+- (void)updatePendingNicknameForHandleIDs:(id)ds;
+- (void)updatePendingNicknames:(id)nicknames handledNicknames:(id)handledNicknames archivedNicknames:(id)archivedNicknames;
+- (void)updatePersonalNickname:(id)nickname;
+- (void)updatePersonalNicknameIfNecessaryWithMeCardSharingResult:(id)result;
+- (void)updateSharingAllowList:(id)list denyList:(id)denyList;
+- (void)updateTransitionedNicknameHandles:(id)handles;
+- (void)updateUnknownSenderRecords:(id)records;
 @end
 
 @implementation IMNicknameController
@@ -251,9 +251,9 @@
   return BoolFromDomain_forKey;
 }
 
-- (void)_broadcastNicknamePreferencesDidChange:(id)a3
+- (void)_broadcastNicknamePreferencesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -268,15 +268,15 @@
   objc_msgSend_nicknamePreferencesDidChange(v8, v9, v10);
 }
 
-- (id)nicknameForHandle:(id)a3
+- (id)nicknameForHandle:(id)handle
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
-    if (!IMSharedHelperCurrentRegionRequiresKnownSenderForNickname() || (v8 = MEMORY[0x1E69A7FD0], objc_msgSend_cnContactWithKeys_(v4, v7, MEMORY[0x1E695E0F0]), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v8) = objc_msgSend_isCNContactAKnownContact_(v8, v10, v9), v9, (v8 & 1) != 0))
+    if (!IMSharedHelperCurrentRegionRequiresKnownSenderForNickname() || (v8 = MEMORY[0x1E69A7FD0], objc_msgSend_cnContactWithKeys_(handleCopy, v7, MEMORY[0x1E695E0F0]), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v8) = objc_msgSend_isCNContactAKnownContact_(v8, v10, v9), v9, (v8 & 1) != 0))
     {
-      v11 = objc_msgSend__handleIDsForHandle_(self, v7, v4);
+      v11 = objc_msgSend__handleIDsForHandle_(self, v7, handleCopy);
       v13 = objc_msgSend_nicknameForHandleIDs_(self, v12, v11);
 
       goto LABEL_14;
@@ -288,7 +288,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v4;
+        v18 = handleCopy;
         _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Not returning nickname for handle %@, because their is no contact for the handle.", &v17, 0xCu);
       }
 
@@ -302,7 +302,7 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = handleCopy;
       _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Nickname feature not enabled, returning nil nickname for handle %@", &v17, 0xCu);
     }
 
@@ -317,14 +317,14 @@ LABEL_14:
   return v13;
 }
 
-- (unint64_t)nicknameUpdateForHandle:(id)a3 nicknameIfAvailable:(id *)a4
+- (unint64_t)nicknameUpdateForHandle:(id)handle nicknameIfAvailable:(id *)available
 {
   v155 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handleCopy = handle;
   if (objc_msgSend__nicknameFeatureEnabled(self, v6, v7))
   {
-    v135 = v5;
-    objc_msgSend__handleIDsForHandle_(self, v8, v5);
+    v135 = handleCopy;
+    objc_msgSend__handleIDsForHandle_(self, v8, handleCopy);
     v145 = 0u;
     v146 = 0u;
     v143 = 0u;
@@ -363,10 +363,10 @@ LABEL_4:
         }
       }
 
-      if (a4)
+      if (available)
       {
         v24 = v19;
-        *a4 = v19;
+        *available = v19;
       }
 
       v25 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v22, v23);
@@ -455,9 +455,9 @@ LABEL_23:
 
         objc_msgSend_clearPendingNicknameUpdatesForHandle_forceClear_(self, v99, v135, 1);
         v20 = 0;
-        if (a4)
+        if (available)
         {
-          *a4 = 0;
+          *available = 0;
         }
 
         goto LABEL_137;
@@ -825,7 +825,7 @@ LABEL_10:
     v19 = v9;
 LABEL_138:
 
-    v5 = v135;
+    handleCopy = v135;
   }
 
   else
@@ -836,7 +836,7 @@ LABEL_138:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v148 = v5;
+        v148 = handleCopy;
         _os_log_impl(&dword_1A823F000, v21, OS_LOG_TYPE_INFO, "Nickname feature not enabled, no update for handle %@", buf, 0xCu);
       }
     }
@@ -848,12 +848,12 @@ LABEL_138:
   return v20;
 }
 
-- (void)clearPendingNicknameUpdatesForHandle:(id)a3 forceClear:(BOOL)a4
+- (void)clearPendingNicknameUpdatesForHandle:(id)handle forceClear:(BOOL)clear
 {
-  v4 = a4;
+  clearCopy = clear;
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = objc_msgSend__handleIDsForHandle_(self, v7, v6);
+  handleCopy = handle;
+  v8 = objc_msgSend__handleIDsForHandle_(self, v7, handleCopy);
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -862,9 +862,9 @@ LABEL_138:
       v43 = 138412802;
       v44 = v8;
       v45 = 2112;
-      v46 = v6;
+      v46 = handleCopy;
       v47 = 1024;
-      v48 = v4;
+      v48 = clearCopy;
       _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Clearing pending nickname update for handle IDs %@ on handle %@, force clear: %{BOOL}d", &v43, 0x1Cu);
     }
   }
@@ -874,7 +874,7 @@ LABEL_138:
 
   if (objc_msgSend__nicknameFeatureEnabled(self, v16, v17))
   {
-    if (!isNameAndPhotoC3Enabled || v4)
+    if (!isNameAndPhotoC3Enabled || clearCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -955,17 +955,17 @@ LABEL_138:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearPendingNicknameUpdatesForHandleIDs:(id)a3
+- (void)clearPendingNicknameUpdatesForHandleIDs:(id)ds
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v32 = v4;
+      v32 = dsCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Clearing pending nickname update for handle IDs %@", buf, 0xCu);
     }
   }
@@ -976,7 +976,7 @@ LABEL_138:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v4;
+    v8 = dsCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v26, v30, 16);
     if (v12)
     {
@@ -1013,23 +1013,23 @@ LABEL_138:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ignorePendingNicknameUpdatesForHandle:(id)a3
+- (void)ignorePendingNicknameUpdatesForHandle:(id)handle
 {
-  v5 = objc_msgSend__handleIDsForHandle_(self, a2, a3);
+  v5 = objc_msgSend__handleIDsForHandle_(self, a2, handle);
   objc_msgSend_ignorePendingNicknameUpdatesForHandleIDs_(self, v4, v5);
 }
 
-- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)a3
+- (void)ignorePendingNicknameUpdatesForHandleIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = dsCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Ignoring pending nickname update for handle IDs %@", &v16, 0xCu);
     }
   }
@@ -1037,78 +1037,78 @@ LABEL_138:
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v10 = objc_msgSend_remoteDaemon(self, v8, v9);
-    v13 = objc_msgSend_allObjects(v4, v11, v12);
+    v13 = objc_msgSend_allObjects(dsCopy, v11, v12);
     objc_msgSend_ignorePendingNicknameUpdatesForHandleIDs_(v10, v14, v13);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type
 {
-  v12 = a3;
+  dCopy = d;
   v8 = objc_msgSend__nicknameFeatureEnabled(self, v6, v7);
-  if (v12 && v8)
+  if (dCopy && v8)
   {
-    v10 = objc_msgSend_remoteDaemon(self, v12, v9);
-    objc_msgSend_acceptPendingNicknameForHandleID_updateType_(v10, v11, v12, a4);
+    v10 = objc_msgSend_remoteDaemon(self, dCopy, v9);
+    objc_msgSend_acceptPendingNicknameForHandleID_updateType_(v10, v11, dCopy, type);
   }
 }
 
-- (BOOL)handleIsAllowedForSharing:(id)a3
+- (BOOL)handleIsAllowedForSharing:(id)sharing
 {
-  v4 = objc_msgSend__handleIDsForHandle_(self, a2, a3);
+  v4 = objc_msgSend__handleIDsForHandle_(self, a2, sharing);
   v7 = objc_msgSend_allowListedHandlesForSharing(self, v5, v6);
   v9 = objc_msgSend_intersectsSet_(v4, v8, v7);
 
   return v9;
 }
 
-- (BOOL)handleIsDeniedForSharing:(id)a3
+- (BOOL)handleIsDeniedForSharing:(id)sharing
 {
-  v4 = objc_msgSend__handleIDsForHandle_(self, a2, a3);
+  v4 = objc_msgSend__handleIDsForHandle_(self, a2, sharing);
   v7 = objc_msgSend_denyListedHandlesForSharing(self, v5, v6);
   v9 = objc_msgSend_intersectsSet_(v4, v8, v7);
 
   return v9;
 }
 
-- (void)sendPersonalNicknameToHandle:(id)a3 fromHandle:(id)a4
+- (void)sendPersonalNicknameToHandle:(id)handle fromHandle:(id)fromHandle
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  fromHandleCopy = fromHandle;
+  handleCopy = handle;
   v10 = objc_msgSend_sharedInstance(IMAccountController, v8, v9);
   v13 = objc_msgSend_iMessageService(IMServiceImpl, v11, v12);
   v15 = objc_msgSend_bestAccountForService_(v10, v14, v13);
 
-  v17 = objc_msgSend_imHandleWithID_alreadyCanonical_(v15, v16, v7, 0);
+  v17 = objc_msgSend_imHandleWithID_alreadyCanonical_(v15, v16, handleCopy, 0);
 
   if (v17)
   {
     v22[0] = v17;
     v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v22, 1);
-    objc_msgSend_allowHandlesForNicknameSharing_fromHandle_forceSend_(self, v20, v19, v6, 1);
+    objc_msgSend_allowHandlesForNicknameSharing_fromHandle_forceSend_(self, v20, v19, fromHandleCopy, 1);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d
 {
-  v13 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  dCopy = d;
   if (objc_msgSend__nicknameFeatureEnabled(self, v7, v8))
   {
     v11 = objc_msgSend_remoteDaemon(self, v9, v10);
-    objc_msgSend_sendNameOnlyToHandleIDs_fromHandleID_(v11, v12, v13, v6);
+    objc_msgSend_sendNameOnlyToHandleIDs_fromHandleID_(v11, v12, dsCopy, dCopy);
   }
 }
 
-- (void)denyHandlesForNicknameSharing:(id)a3
+- (void)denyHandlesForNicknameSharing:(id)sharing
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sharingCopy = sharing;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1116,7 +1116,7 @@ LABEL_138:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v4;
+    v8 = sharingCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v24, v29, 16);
     if (v11)
     {
@@ -1164,18 +1164,18 @@ LABEL_138:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isActiveForNickname:(id)a3
+- (BOOL)isActiveForNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v9 = objc_msgSend_activeRecords(self, v7, v8);
-    v12 = objc_msgSend_handle(v4, v10, v11);
+    v12 = objc_msgSend_handle(nicknameCopy, v10, v11);
     v14 = objc_msgSend_objectForKey_(v9, v13, v12);
 
     if (v14)
     {
-      v17 = objc_msgSend_recordID(v4, v15, v16);
+      v17 = objc_msgSend_recordID(nicknameCopy, v15, v16);
       isEqualToString = objc_msgSend_isEqualToString_(v14, v18, v17);
     }
 
@@ -1203,10 +1203,10 @@ LABEL_138:
   return isEqualToString;
 }
 
-- (void)markNicknameAsIgnored:(id)a3
+- (void)markNicknameAsIgnored:(id)ignored
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  ignoredCopy = ignored;
   if ((objc_msgSend__nicknameFeatureEnabled(self, v5, v6) & 1) == 0)
   {
     if (!IMOSLoggingEnabled())
@@ -1226,8 +1226,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = objc_msgSend_recordID(v4, v7, v8);
-  if (!v11 || (objc_msgSend_handle(v4, v9, v10), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
+  v11 = objc_msgSend_recordID(ignoredCopy, v7, v8);
+  if (!v11 || (objc_msgSend_handle(ignoredCopy, v9, v10), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1237,8 +1237,8 @@ LABEL_12:
     v25 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v28 = objc_msgSend_handle(v4, v26, v27);
-      v31 = objc_msgSend_recordID(v4, v29, v30);
+      v28 = objc_msgSend_handle(ignoredCopy, v26, v27);
+      v31 = objc_msgSend_recordID(ignoredCopy, v29, v30);
       v33 = 138412546;
       v34 = v28;
       v35 = 2112;
@@ -1250,9 +1250,9 @@ LABEL_12:
   }
 
   v15 = objc_msgSend_remoteDaemon(self, v13, v14);
-  v18 = objc_msgSend_handle(v4, v16, v17);
+  v18 = objc_msgSend_handle(ignoredCopy, v16, v17);
   v37 = v18;
-  v21 = objc_msgSend_recordID(v4, v19, v20);
+  v21 = objc_msgSend_recordID(ignoredCopy, v19, v20);
   v38[0] = v21;
   v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v22, v38, &v37, 1);
   objc_msgSend_markProfileRecordsAsIgnored_(v15, v24, v23);
@@ -1261,16 +1261,16 @@ LABEL_13:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isIgnoredForNickname:(id)a3
+- (BOOL)isIgnoredForNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   v7 = objc_msgSend_ignoredRecords(self, v5, v6);
-  v10 = objc_msgSend_handle(v4, v8, v9);
+  v10 = objc_msgSend_handle(nicknameCopy, v8, v9);
   v12 = objc_msgSend_objectForKey_(v7, v11, v10);
 
   if (v12)
   {
-    v15 = objc_msgSend_recordID(v4, v13, v14);
+    v15 = objc_msgSend_recordID(nicknameCopy, v13, v14);
     isEqualToString = objc_msgSend_isEqualToString_(v12, v16, v15);
   }
 
@@ -1282,10 +1282,10 @@ LABEL_13:
   return isEqualToString;
 }
 
-- (void)setPersonalNickname:(id)a3
+- (void)setPersonalNickname:(id)nickname
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nicknameCopy = nickname;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -1309,16 +1309,16 @@ LABEL_13:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v32 = 138412290;
-          v33 = v5;
+          v33 = nicknameCopy;
           _os_log_impl(&dword_1A823F000, v13, OS_LOG_TYPE_INFO, "Setting new personal nickname and notifying daemon %@", &v32, 0xCu);
         }
       }
 
-      if (v5)
+      if (nicknameCopy)
       {
-        objc_storeStrong(&self->_personalNickname, a3);
+        objc_storeStrong(&self->_personalNickname, nickname);
         v16 = objc_msgSend_remoteDaemon(self, v14, v15);
-        objc_msgSend_setNewPersonalNickname_(v16, v17, v5);
+        objc_msgSend_setNewPersonalNickname_(v16, v17, nicknameCopy);
 
         v20 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v18, v19);
         objc_msgSend_postNotificationName_object_(v20, v21, @"__kIMPersonalNicknameDidChangeNotification", 0);
@@ -1354,10 +1354,10 @@ LABEL_13:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPersonalNicknameWithCompletion:(id)a3
+- (void)fetchPersonalNicknameWithCompletion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     canUpdatePersonalNickname = objc_msgSend__canUpdatePersonalNickname(self, v7, v8);
@@ -1389,14 +1389,14 @@ LABEL_13:
           }
         }
 
-        if (v4)
+        if (completionCopy)
         {
           v20 = objc_msgSend_personalNickname(self, v17, v18);
-          v4[2](v4, v20);
+          completionCopy[2](completionCopy, v20);
         }
       }
 
-      else if (v4)
+      else if (completionCopy)
       {
         v30 = objc_msgSend_remoteDaemon(self, v15, v16);
         v33[0] = MEMORY[0x1E69E9820];
@@ -1404,7 +1404,7 @@ LABEL_13:
         v33[2] = sub_1A82B4FC4;
         v33[3] = &unk_1E7810EB0;
         v33[4] = self;
-        v34 = v4;
+        v34 = completionCopy;
         objc_msgSend_fetchPersonalNicknameWithReply_(v30, v31, v33);
       }
 
@@ -1426,10 +1426,10 @@ LABEL_13:
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
 LABEL_19:
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1445,7 +1445,7 @@ LABEL_19:
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
       goto LABEL_19;
     }
@@ -1456,16 +1456,16 @@ LABEL_28:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePersonalNickname:(id)a3
+- (void)updatePersonalNickname:(id)nickname
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nicknameCopy = nickname;
   v8 = objc_msgSend__nicknameFeatureEnabled(self, v6, v7);
-  if (!v5 || v8)
+  if (!nicknameCopy || v8)
   {
     canUpdatePersonalNickname = objc_msgSend__canUpdatePersonalNickname(self, v9, v10);
     v13 = IMOSLoggingEnabled();
-    if (!v5 || canUpdatePersonalNickname)
+    if (!nicknameCopy || canUpdatePersonalNickname)
     {
       if (v13)
       {
@@ -1473,12 +1473,12 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           v28 = 138412290;
-          v29 = v5;
+          v29 = nicknameCopy;
           _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_INFO, "Received personal nickname from daemon: %@", &v28, 0xCu);
         }
       }
 
-      objc_storeStrong(&self->_personalNickname, a3);
+      objc_storeStrong(&self->_personalNickname, nickname);
       v25 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v23, v24);
       objc_msgSend_postNotificationName_object_(v25, v26, @"__kIMPersonalNicknameDidChangeNotification", 0);
     }
@@ -1547,9 +1547,9 @@ LABEL_28:
   return BoolFromDomain_forKey;
 }
 
-- (BOOL)shouldOfferNicknameSharingForChat:(id)a3
+- (BOOL)shouldOfferNicknameSharingForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   if ((objc_msgSend__nicknameFeatureEnabled(self, v5, v6) & 1) == 0)
   {
     if (!IMOSLoggingEnabled())
@@ -1573,7 +1573,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (IMSharedHelperCurrentRegionRequiresKnownSenderForNickname() && (objc_msgSend_hasKnownParticipantsCache(v4, v7, v8) & 1) == 0)
+  if (IMSharedHelperCurrentRegionRequiresKnownSenderForNickname() && (objc_msgSend_hasKnownParticipantsCache(chatCopy, v7, v8) & 1) == 0)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1592,27 +1592,27 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (!objc_msgSend_hasMessageFromMe(v4, v7, v8))
+  if (!objc_msgSend_hasMessageFromMe(chatCopy, v7, v8))
   {
 LABEL_11:
     shouldOfferNicknameSharingForHandles = 0;
     goto LABEL_12;
   }
 
-  v11 = objc_msgSend_participants(v4, v9, v10);
+  v11 = objc_msgSend_participants(chatCopy, v9, v10);
   shouldOfferNicknameSharingForHandles = objc_msgSend_shouldOfferNicknameSharingForHandles_(self, v12, v11);
 
 LABEL_12:
   return shouldOfferNicknameSharingForHandles;
 }
 
-- (BOOL)shouldOfferNicknameSharingForHandles:(id)a3
+- (BOOL)shouldOfferNicknameSharingForHandles:(id)handles
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
-    v47 = v4;
+    v47 = handlesCopy;
     v9 = objc_msgSend_personalNickname(self, v7, v8);
 
     if (v9)
@@ -1629,7 +1629,7 @@ LABEL_11:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        obj = v4;
+        obj = handlesCopy;
         v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v24, &v49, v61, 16);
         if (v27)
         {
@@ -1726,7 +1726,7 @@ LABEL_34:
 
     v18 = 0;
 LABEL_35:
-    v4 = v47;
+    handlesCopy = v47;
     goto LABEL_36;
   }
 
@@ -1800,18 +1800,18 @@ LABEL_36:
   return v12;
 }
 
-- (void)markHandleUnderScrutiny:(id)a3
+- (void)markHandleUnderScrutiny:(id)scrutiny
 {
-  v10 = objc_msgSend_ID(a3, a2, a3);
+  v10 = objc_msgSend_ID(scrutiny, a2, scrutiny);
   v6 = objc_msgSend_scrutinyNicknameHandles(self, v4, v5);
   objc_msgSend_addObject_(v6, v7, v10);
 
   objc_msgSend_setNicknameHandlesUnderScrutiny(self, v8, v9);
 }
 
-- (void)clearHandleFromScrutiny:(id)a3
+- (void)clearHandleFromScrutiny:(id)scrutiny
 {
-  v12 = objc_msgSend_ID(a3, a2, a3);
+  v12 = objc_msgSend_ID(scrutiny, a2, scrutiny);
   if (objc_msgSend_length(v12, v4, v5))
   {
     v8 = objc_msgSend_scrutinyNicknameHandles(self, v6, v7);
@@ -1821,9 +1821,9 @@ LABEL_36:
   }
 }
 
-- (id)personNameComponentsForHandle:(id)a3
+- (id)personNameComponentsForHandle:(id)handle
 {
-  v3 = objc_msgSend_nicknameForHandle_(self, a2, a3);
+  v3 = objc_msgSend_nicknameForHandle_(self, a2, handle);
   v6 = objc_msgSend_firstName(v3, v4, v5);
   v9 = objc_msgSend_lastName(v3, v7, v8);
   v10 = objc_alloc_init(MEMORY[0x1E696ADF0]);
@@ -1841,9 +1841,9 @@ LABEL_36:
   return v12;
 }
 
-- (id)imageDataForHandle:(id)a3
+- (id)imageDataForHandle:(id)handle
 {
-  v3 = objc_msgSend_nicknameForHandle_(self, a2, a3);
+  v3 = objc_msgSend_nicknameForHandle_(self, a2, handle);
   v6 = objc_msgSend_avatar(v3, v4, v5);
   hasImage = objc_msgSend_hasImage(v6, v7, v8);
 
@@ -1861,13 +1861,13 @@ LABEL_36:
   return v15;
 }
 
-- (id)unknownSenderRecordInfoFor:(id)a3
+- (id)unknownSenderRecordInfoFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v9 = objc_msgSend_unknownSenderRecords(self, v7, v8);
-    v11 = objc_msgSend_objectForKey_(v9, v10, v4);
+    v11 = objc_msgSend_objectForKey_(v9, v10, forCopy);
 
     v13 = objc_msgSend_processSetOfUnknownSenderRecords_(MEMORY[0x1E69A8190], v12, v11);
   }
@@ -1890,17 +1890,17 @@ LABEL_36:
   return v13;
 }
 
-- (id)nicknameForHandleIDs:(id)a3
+- (id)nicknameForHandleIDs:(id)ds
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v7 = v4;
+    v7 = dsCopy;
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v36, v40, 16);
     if (v9)
     {
@@ -1981,7 +1981,7 @@ LABEL_26:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v42 = v4;
+        v42 = dsCopy;
         _os_log_impl(&dword_1A823F000, v32, OS_LOG_TYPE_INFO, "Nickname feature disabled, returning nil for nickname for handles %@", buf, 0xCu);
       }
     }
@@ -1994,17 +1994,17 @@ LABEL_26:
   return v31;
 }
 
-- (id)pendingNicknameForHandleIDs:(id)a3
+- (id)pendingNicknameForHandleIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v4;
+    v7 = dsCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v25, v33, 16);
     if (v11)
     {
@@ -2082,7 +2082,7 @@ LABEL_26:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = dsCopy;
       _os_log_impl(&dword_1A823F000, v19, OS_LOG_TYPE_INFO, "Nickname feature disabled, returning nil for pending nickname for %@", buf, 0xCu);
     }
   }
@@ -2095,17 +2095,17 @@ LABEL_28:
   return v20;
 }
 
-- (id)currentNicknameForHandleIDs:(id)a3
+- (id)currentNicknameForHandleIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v4;
+    v7 = dsCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v25, v33, 16);
     if (v11)
     {
@@ -2183,7 +2183,7 @@ LABEL_28:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = dsCopy;
       _os_log_impl(&dword_1A823F000, v19, OS_LOG_TYPE_INFO, "Nickname feature disabled, returning nil for current nickname for %@", buf, 0xCu);
     }
   }
@@ -2196,17 +2196,17 @@ LABEL_28:
   return v20;
 }
 
-- (id)archivedNicknameForHandleIDs:(id)a3
+- (id)archivedNicknameForHandleIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v4;
+    v7 = dsCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v25, v33, 16);
     if (v11)
     {
@@ -2284,7 +2284,7 @@ LABEL_28:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = dsCopy;
       _os_log_impl(&dword_1A823F000, v19, OS_LOG_TYPE_INFO, "Nickname feature disabled, returning nil for archived nickname for %@", buf, 0xCu);
     }
   }
@@ -2297,14 +2297,14 @@ LABEL_28:
   return v20;
 }
 
-- (BOOL)hasObservedTransitionForHandleID:(id)a3
+- (BOOL)hasObservedTransitionForHandleID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v9 = objc_msgSend_transitionedHandles(self, v7, v8);
-    v11 = objc_msgSend_containsObject_(v9, v10, v4);
+    v11 = objc_msgSend_containsObject_(v9, v10, dCopy);
   }
 
   else
@@ -2315,7 +2315,7 @@ LABEL_28:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = dCopy;
         _os_log_impl(&dword_1A823F000, v12, OS_LOG_TYPE_INFO, "Nickname feature disabled, returning NO for observed transition for %@", &v15, 0xCu);
       }
     }
@@ -2327,10 +2327,10 @@ LABEL_28:
   return v11;
 }
 
-- (id)createSharedProfileStateOracleForHandles:(id)a3
+- (id)createSharedProfileStateOracleForHandles:(id)handles
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     if (IMSharedHelperCurrentRegionRequiresKnownSenderForNickname())
@@ -2339,7 +2339,7 @@ LABEL_28:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v9 = v4;
+      v9 = handlesCopy;
       v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v51, v57, 16);
       if (v13)
       {
@@ -2390,10 +2390,10 @@ LABEL_28:
     else
     {
 LABEL_20:
-      if (objc_msgSend_count(v4, v7, v8))
+      if (objc_msgSend_count(handlesCopy, v7, v8))
       {
         v23 = objc_msgSend_sharedInstance(MEMORY[0x1E69A7FD0], v21, v22);
-        v26 = objc_msgSend_firstObject(v4, v24, v25);
+        v26 = objc_msgSend_firstObject(handlesCopy, v24, v25);
         v27 = *MEMORY[0x1E695C208];
         v56[0] = *MEMORY[0x1E695C330];
         v56[1] = v27;
@@ -2403,7 +2403,7 @@ LABEL_20:
         v34 = objc_msgSend_sharedInstance(MEMORY[0x1E69A7FD0], v32, v33);
         v37 = objc_msgSend_getContactStore(v34, v35, v36);
 
-        v39 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v38, v4);
+        v39 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v38, handlesCopy);
         v41 = objc_msgSend_currentNicknameForHandleIDs_(self, v40, v39);
         v43 = objc_msgSend_pendingNicknameForHandleIDs_(self, v42, v39);
         v45 = objc_msgSend_archivedNicknameForHandleIDs_(self, v44, v39);
@@ -2440,17 +2440,17 @@ LABEL_26:
   return v48;
 }
 
-- (id)_changedKeysForNewNicknameDictionary:(id)a3 oldNicknameDictionary:(id)a4 withComparisonOptions:(unint64_t)a5
+- (id)_changedKeysForNewNicknameDictionary:(id)dictionary oldNicknameDictionary:(id)nicknameDictionary withComparisonOptions:(unint64_t)options
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  nicknameDictionaryCopy = nicknameDictionary;
   v40 = objc_msgSend_set(MEMORY[0x1E695DFA8], v8, v9);
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v6;
+  obj = dictionaryCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v47, v52, 16);
   if (v11)
   {
@@ -2473,9 +2473,9 @@ LABEL_26:
         v20 = *(*(&v47 + 1) + 8 * v17);
         v14 = objc_msgSend_objectForKeyedSubscript_(obj, v12, v20);
 
-        v15 = objc_msgSend_objectForKeyedSubscript_(v7, v21, v20);
+        v15 = objc_msgSend_objectForKeyedSubscript_(nicknameDictionaryCopy, v21, v20);
 
-        if (!v15 || objc_msgSend_isUpdateFromNickname_withOptions_(v15, v12, v14, a5))
+        if (!v15 || objc_msgSend_isUpdateFromNickname_withOptions_(v15, v12, v14, options))
         {
           objc_msgSend_addObject_(v40, v12, v20);
         }
@@ -2502,7 +2502,7 @@ LABEL_26:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v22 = v7;
+  v22 = nicknameDictionaryCopy;
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v43, v51, 16);
   if (v24)
   {
@@ -2526,7 +2526,7 @@ LABEL_26:
 
           v34 = objc_msgSend_objectForKeyedSubscript_(obj, v33, v30);
 
-          if (!v34 || objc_msgSend_isUpdateFromNickname_withOptions_(v34, v25, v32, a5))
+          if (!v34 || objc_msgSend_isUpdateFromNickname_withOptions_(v34, v25, v32, options))
           {
             objc_msgSend_addObject_(v40, v25, v30);
           }
@@ -2555,12 +2555,12 @@ LABEL_26:
   return v37;
 }
 
-- (void)updatePendingNicknames:(id)a3 handledNicknames:(id)a4 archivedNicknames:(id)a5
+- (void)updatePendingNicknames:(id)nicknames handledNicknames:(id)handledNicknames archivedNicknames:(id)archivedNicknames
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nicknamesCopy = nicknames;
+  handledNicknamesCopy = handledNicknames;
+  archivedNicknamesCopy = archivedNicknames;
   v13 = objc_msgSend__nicknameFeatureEnabled(self, v11, v12);
   v14 = IMOSLoggingEnabled();
   if (v13)
@@ -2571,33 +2571,33 @@ LABEL_26:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 134218496;
-        v85 = objc_msgSend_count(v8, v18, v19);
+        v85 = objc_msgSend_count(nicknamesCopy, v18, v19);
         v86 = 2048;
-        v87 = objc_msgSend_count(v9, v20, v21);
+        v87 = objc_msgSend_count(handledNicknamesCopy, v20, v21);
         v88 = 2048;
-        v89 = objc_msgSend_count(v10, v22, v23);
+        v89 = objc_msgSend_count(archivedNicknamesCopy, v22, v23);
         _os_log_impl(&dword_1A823F000, v17, OS_LOG_TYPE_INFO, "Nickname store updated, got %lu pending, %lu handled nicknames, %lu archived nicknames", buf, 0x20u);
       }
     }
 
     v24 = objc_msgSend_set(MEMORY[0x1E695DFA8], v15, v16);
     v27 = objc_msgSend_pendingNicknameUpdates(self, v25, v26);
-    v29 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v28, v8, v27, 4);
+    v29 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v28, nicknamesCopy, v27, 4);
     objc_msgSend_addObjectsFromArray_(v24, v30, v29);
 
     v33 = objc_msgSend_handledNicknames(self, v31, v32);
-    v35 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v34, v9, v33, 4);
+    v35 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v34, handledNicknamesCopy, v33, 4);
     objc_msgSend_addObjectsFromArray_(v24, v36, v35);
 
     v39 = objc_msgSend_archivedNicknames(self, v37, v38);
-    v41 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v40, v10, v39, 4);
+    v41 = objc_msgSend__changedKeysForNewNicknameDictionary_oldNicknameDictionary_withComparisonOptions_(self, v40, archivedNicknamesCopy, v39, 4);
     objc_msgSend_addObjectsFromArray_(v24, v42, v41);
 
-    objc_msgSend_setPendingNicknameUpdates_(self, v43, v8);
-    objc_msgSend_setHandledNicknames_(self, v44, v9);
-    objc_msgSend_setArchivedNicknames_(self, v45, v10);
+    objc_msgSend_setPendingNicknameUpdates_(self, v43, nicknamesCopy);
+    objc_msgSend_setHandledNicknames_(self, v44, handledNicknamesCopy);
+    objc_msgSend_setArchivedNicknames_(self, v45, archivedNicknamesCopy);
     v82[0] = @"handleIDs";
-    v50 = objc_msgSend_allKeys(v9, v46, v47);
+    v50 = objc_msgSend_allKeys(handledNicknamesCopy, v46, v47);
     v51 = v50;
     if (!v50)
     {
@@ -2624,39 +2624,39 @@ LABEL_26:
     }
 
     v80[0] = @"pendingNicknames";
-    v58 = v8;
-    if (!v8)
+    v58 = nicknamesCopy;
+    if (!nicknamesCopy)
     {
       v58 = objc_msgSend_null(MEMORY[0x1E695DFB0], v56, v57);
     }
 
     v81[0] = v58;
     v80[1] = @"handledNicknames";
-    v59 = v9;
-    if (!v9)
+    v59 = handledNicknamesCopy;
+    if (!handledNicknamesCopy)
     {
       v59 = objc_msgSend_null(MEMORY[0x1E695DFB0], v56, v57);
     }
 
     v81[1] = v59;
     v80[2] = @"archivedNicknames";
-    v60 = v10;
-    if (!v10)
+    v60 = archivedNicknamesCopy;
+    if (!archivedNicknamesCopy)
     {
       v60 = objc_msgSend_null(MEMORY[0x1E695DFB0], v56, v57);
     }
 
     v81[2] = v60;
     v63 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v56, v81, v80, 3);
-    if (!v10)
+    if (!archivedNicknamesCopy)
     {
     }
 
-    if (!v9)
+    if (!handledNicknamesCopy)
     {
     }
 
-    if (!v8)
+    if (!nicknamesCopy)
     {
     }
 
@@ -2687,11 +2687,11 @@ LABEL_26:
   v78 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSharingAllowList:(id)a3 denyList:(id)a4
+- (void)updateSharingAllowList:(id)list denyList:(id)denyList
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  denyListCopy = denyList;
   v10 = objc_msgSend__nicknameFeatureEnabled(self, v8, v9);
   v11 = IMOSLoggingEnabled();
   if (v10)
@@ -2702,15 +2702,15 @@ LABEL_26:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v38 = objc_msgSend_count(v6, v14, v15);
+        v38 = objc_msgSend_count(listCopy, v14, v15);
         v39 = 2048;
-        v40 = objc_msgSend_count(v7, v16, v17);
+        v40 = objc_msgSend_count(denyListCopy, v16, v17);
         _os_log_impl(&dword_1A823F000, v13, OS_LOG_TYPE_INFO, "Got new allow list data, count: %lu, deny list count: %lu", buf, 0x16u);
       }
     }
 
-    objc_msgSend_setAllowListedHandlesForSharing_(self, v12, v6);
-    objc_msgSend_setDenyListedHandlesForSharing_(self, v18, v7);
+    objc_msgSend_setAllowListedHandlesForSharing_(self, v12, listCopy);
+    objc_msgSend_setDenyListedHandlesForSharing_(self, v18, denyListCopy);
     v21 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v19, v20);
     v24 = objc_msgSend_handledNicknames(self, v22, v23, @"handleIDs");
     v29 = objc_msgSend_allKeys(v24, v25, v26);
@@ -2742,10 +2742,10 @@ LABEL_26:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateTransitionedNicknameHandles:(id)a3
+- (void)updateTransitionedNicknameHandles:(id)handles
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   v7 = objc_msgSend__nicknameFeatureEnabled(self, v5, v6);
   v8 = IMOSLoggingEnabled();
   if (v7)
@@ -2756,7 +2756,7 @@ LABEL_26:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = MEMORY[0x1E696AD98];
-        v14 = objc_msgSend_count(v4, v11, v12);
+        v14 = objc_msgSend_count(handlesCopy, v11, v12);
         v16 = objc_msgSend_numberWithUnsignedInteger_(v13, v15, v14);
         v19 = 138412290;
         v20 = v16;
@@ -2764,7 +2764,7 @@ LABEL_26:
       }
     }
 
-    objc_msgSend_setTransitionedHandles_(self, v9, v4);
+    objc_msgSend_setTransitionedHandles_(self, v9, handlesCopy);
   }
 
   else if (v8)
@@ -2780,15 +2780,15 @@ LABEL_26:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateIsActiveList:(id)a3
+- (void)updateIsActiveList:(id)list
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v30[0] = @"activeRecords";
-    v9 = v4;
-    if (!v4)
+    v9 = listCopy;
+    if (!listCopy)
     {
       v9 = objc_msgSend_null(MEMORY[0x1E695DFB0], v7, v8);
     }
@@ -2809,7 +2809,7 @@ LABEL_26:
     {
     }
 
-    if (!v4)
+    if (!listCopy)
     {
     }
 
@@ -2822,12 +2822,12 @@ LABEL_26:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         v28 = 134217984;
-        v29 = objc_msgSend_count(v4, v24, v25);
+        v29 = objc_msgSend_count(listCopy, v24, v25);
         _os_log_impl(&dword_1A823F000, v23, OS_LOG_TYPE_INFO, "Got new active list data, count: %lu", &v28, 0xCu);
       }
     }
 
-    objc_msgSend_setActiveRecords_(self, v22, v4);
+    objc_msgSend_setActiveRecords_(self, v22, listCopy);
   }
 
   else if (IMOSLoggingEnabled())
@@ -2843,10 +2843,10 @@ LABEL_26:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateIsIgnoredList:(id)a3
+- (void)updateIsIgnoredList:(id)list
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v7 = objc_msgSend__nicknameFeatureEnabled(self, v5, v6);
   v8 = IMOSLoggingEnabled();
   if (v7)
@@ -2857,12 +2857,12 @@ LABEL_26:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v15 = 134217984;
-        v16 = objc_msgSend_count(v4, v11, v12);
+        v16 = objc_msgSend_count(listCopy, v11, v12);
         _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Got new ignored list data, count: %lu", &v15, 0xCu);
       }
     }
 
-    objc_msgSend_setIgnoredRecords_(self, v9, v4);
+    objc_msgSend_setIgnoredRecords_(self, v9, listCopy);
   }
 
   else if (v8)
@@ -2878,10 +2878,10 @@ LABEL_26:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateUnknownSenderRecords:(id)a3
+- (void)updateUnknownSenderRecords:(id)records
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v7 = objc_msgSend__nicknameFeatureEnabled(self, v5, v6);
   v8 = IMOSLoggingEnabled();
   if (v7)
@@ -2892,12 +2892,12 @@ LABEL_26:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v15 = 134217984;
-        v16 = objc_msgSend_count(v4, v11, v12);
+        v16 = objc_msgSend_count(recordsCopy, v11, v12);
         _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Got new unknown senders list data, count: %lu", &v15, 0xCu);
       }
     }
 
-    objc_msgSend_setUnknownSenderRecords_(self, v9, v4);
+    objc_msgSend_setUnknownSenderRecords_(self, v9, recordsCopy);
   }
 
   else if (v8)
@@ -2913,17 +2913,17 @@ LABEL_26:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleIDsForHandle:(id)a3
+- (id)_handleIDsForHandle:(id)handle
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handleCopy = handle;
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if (v3)
+  if (handleCopy)
   {
-    v7 = objc_msgSend_ID(v3, v4, v5);
+    v7 = objc_msgSend_ID(handleCopy, v4, v5);
     objc_msgSend_addObject_(v6, v8, v7);
 
-    v10 = objc_msgSend_cnContactWithKeys_(v3, v9, MEMORY[0x1E695E0F0]);
+    v10 = objc_msgSend_cnContactWithKeys_(handleCopy, v9, MEMORY[0x1E695E0F0]);
     v12 = objc_msgSend_phoneNumbersForCNContact_(MEMORY[0x1E69A7FD0], v11, v10);
     v14 = objc_msgSend_emailsForCNContact_(MEMORY[0x1E69A7FD0], v13, v10);
     if (objc_msgSend_count(v12, v15, v16))
@@ -2998,13 +2998,13 @@ LABEL_26:
   return v6;
 }
 
-- (void)updatePendingNicknameForHandleIDs:(id)a3
+- (void)updatePendingNicknameForHandleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     v9 = objc_msgSend_remoteDaemon(self, v7, v8);
-    objc_msgSend_clearPendingNicknamePhotoUpdateForHandleIDs_(v9, v10, v4);
+    objc_msgSend_clearPendingNicknamePhotoUpdateForHandleIDs_(v9, v10, dsCopy);
   }
 
   else
@@ -3025,10 +3025,10 @@ LABEL_26:
 LABEL_7:
 }
 
-- (void)setPersonalNicknameFromOnboardingResult:(id)a3
+- (void)setPersonalNicknameFromOnboardingResult:(id)result
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     if (objc_msgSend__canUpdatePersonalNickname(self, v7, v8))
@@ -3037,10 +3037,10 @@ LABEL_7:
       objc_msgSend_setSharingEnabled_(v11, v12, 1);
 
       v15 = objc_msgSend_sharedInstance(MEMORY[0x1E69A8108], v13, v14);
-      v18 = objc_msgSend_sharingAudience(v4, v16, v17);
+      v18 = objc_msgSend_sharingAudience(resultCopy, v16, v17);
       objc_msgSend_setSharingAudience_(v15, v19, v18);
 
-      v22 = objc_msgSend_didPersistImageToContact(v4, v20, v21);
+      v22 = objc_msgSend_didPersistImageToContact(resultCopy, v20, v21);
       if (IMOSLoggingEnabled())
       {
         v25 = OSLogHandleForIMFoundationCategory();
@@ -3062,15 +3062,15 @@ LABEL_7:
       objc_msgSend_setImageForkedFromMeCard_(v27, v28, v22 ^ 1u);
 
       v29 = objc_alloc_init(MEMORY[0x1E695CF18]);
-      v32 = objc_msgSend_givenName(v4, v30, v31);
+      v32 = objc_msgSend_givenName(resultCopy, v30, v31);
       v34 = objc_msgSend_truncateNameIfNeeded_(self, v33, v32);
 
-      v37 = objc_msgSend_familyName(v4, v35, v36);
+      v37 = objc_msgSend_familyName(resultCopy, v35, v36);
       v39 = objc_msgSend_truncateNameIfNeeded_(self, v38, v37);
 
       objc_msgSend_setGivenName_(v29, v40, v34);
       objc_msgSend_setFamilyName_(v29, v41, v39);
-      v44 = objc_msgSend_imageData(v4, v42, v43);
+      v44 = objc_msgSend_imageData(resultCopy, v42, v43);
       if (IMOSLoggingEnabled())
       {
         v47 = OSLogHandleForIMFoundationCategory();
@@ -3090,7 +3090,7 @@ LABEL_7:
 
       if (v44)
       {
-        objc_msgSend_cropRect(v4, v45, v46);
+        objc_msgSend_cropRect(resultCopy, v45, v46);
         v49 = IMCroppedImageDataFromDataWithCropRect();
 
         objc_msgSend_setImageData_(v29, v50, v49);
@@ -3101,10 +3101,10 @@ LABEL_7:
         v49 = 0;
       }
 
-      v60 = objc_msgSend_wallpaper(v4, v45, v46);
+      v60 = objc_msgSend_wallpaper(resultCopy, v45, v46);
       objc_msgSend_setWallpaper_(v29, v61, v60);
 
-      v64 = objc_msgSend_watchWallpaperImageData(v4, v62, v63);
+      v64 = objc_msgSend_watchWallpaperImageData(resultCopy, v62, v63);
       objc_msgSend_setWatchWallpaperImageData_(v29, v65, v64);
 
       v66 = objc_alloc(MEMORY[0x1E69A8190]);
@@ -3154,10 +3154,10 @@ LABEL_7:
   v75 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePersonalNicknameIfNecessaryWithMeCardSharingResult:(id)a3
+- (void)updatePersonalNicknameIfNecessaryWithMeCardSharingResult:(id)result
 {
   v145 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if (objc_msgSend__nicknameFeatureEnabled(self, v5, v6))
   {
     if (objc_msgSend__canUpdatePersonalNickname(self, v7, v8))
@@ -3171,7 +3171,7 @@ LABEL_22:
         v52 = objc_msgSend_meCardSharingState(self, v15, v16);
         v55 = objc_msgSend_imageForkedFromMeCard(v52, v53, v54);
 
-        v58 = objc_msgSend_didSaveImageToMeCard(v4, v56, v57);
+        v58 = objc_msgSend_didSaveImageToMeCard(resultCopy, v56, v57);
         if (v55 == v58)
         {
           if (IMOSLoggingEnabled())
@@ -3196,18 +3196,18 @@ LABEL_22:
         }
 
         v65 = objc_alloc_init(MEMORY[0x1E695CF18]);
-        v68 = objc_msgSend_givenName(v4, v66, v67);
+        v68 = objc_msgSend_givenName(resultCopy, v66, v67);
         v138 = objc_msgSend_truncateNameIfNeeded_(self, v69, v68);
 
-        v72 = objc_msgSend_familyName(v4, v70, v71);
+        v72 = objc_msgSend_familyName(resultCopy, v70, v71);
         v74 = objc_msgSend_truncateNameIfNeeded_(self, v73, v72);
 
         objc_msgSend_setGivenName_(v65, v75, v138);
         objc_msgSend_setFamilyName_(v65, v76, v74);
         v79 = objc_msgSend_personalNickname(self, v77, v78);
-        v82 = objc_msgSend_contactImage(v4, v80, v81);
+        v82 = objc_msgSend_contactImage(resultCopy, v80, v81);
 
-        if (v82 && (objc_msgSend_contactImage(v4, v83, v84), v85 = objc_claimAutoreleasedReturnValue(), objc_msgSend_imageData(v85, v86, v87), v88 = objc_claimAutoreleasedReturnValue(), v89 = v88 == 0, v88, v85, v89))
+        if (v82 && (objc_msgSend_contactImage(resultCopy, v83, v84), v85 = objc_claimAutoreleasedReturnValue(), objc_msgSend_imageData(v85, v86, v87), v88 = objc_claimAutoreleasedReturnValue(), v89 = v88 == 0, v88, v85, v89))
         {
           v101 = 0;
           v93 = 0;
@@ -3221,7 +3221,7 @@ LABEL_22:
 
           if (v82)
           {
-            v96 = objc_msgSend_contactImage(v4, v94, v95);
+            v96 = objc_msgSend_contactImage(resultCopy, v94, v95);
             v99 = objc_msgSend_imageData(v96, v97, v98);
 
             v100 = 0;
@@ -3279,7 +3279,7 @@ LABEL_22:
 
         if (v101)
         {
-          v108 = objc_msgSend_contactImage(v4, v102, v103);
+          v108 = objc_msgSend_contactImage(resultCopy, v102, v103);
           objc_msgSend_cropRect(v108, v109, v110);
           v111 = IMCroppedImageDataFromDataWithCropRect();
 
@@ -3287,10 +3287,10 @@ LABEL_22:
         }
 
         objc_msgSend_setImageData_(v65, v102, v93);
-        v114 = objc_msgSend_wallpaper(v4, v112, v113);
+        v114 = objc_msgSend_wallpaper(resultCopy, v112, v113);
         objc_msgSend_setWallpaper_(v65, v115, v114);
 
-        v118 = objc_msgSend_watchWallpaperImageData(v4, v116, v117);
+        v118 = objc_msgSend_watchWallpaperImageData(resultCopy, v116, v117);
         objc_msgSend_setWatchWallpaperImageData_(v65, v119, v118);
 
         v122 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v120, v121);
@@ -3298,7 +3298,7 @@ LABEL_22:
 
         if (isSwiftUIAvatarRenderingEnabled && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v128 = objc_msgSend_avatarRecipeData(v4, v126, v127);
+          v128 = objc_msgSend_avatarRecipeData(resultCopy, v126, v127);
           objc_msgSend_setAvatarRecipeData_(v65, v129, v128);
         }
 
@@ -3331,11 +3331,11 @@ LABEL_22:
       v22 = objc_msgSend_fetchMeContactWithKeys_(v17, v21, v20);
 
       v25 = objc_msgSend_givenName(v22, v23, v24);
-      v28 = objc_msgSend_givenName(v4, v26, v27);
+      v28 = objc_msgSend_givenName(resultCopy, v26, v27);
       if (objc_msgSend_isEqualToString_(v25, v29, v28))
       {
         v32 = objc_msgSend_familyName(v22, v30, v31);
-        v35 = objc_msgSend_familyName(v4, v33, v34);
+        v35 = objc_msgSend_familyName(resultCopy, v33, v34);
         isEqualToString = objc_msgSend_isEqualToString_(v32, v36, v35);
 
         if (isEqualToString)
@@ -3397,17 +3397,17 @@ LABEL_61:
   v137 = *MEMORY[0x1E69E9840];
 }
 
-- (id)truncateNameIfNeeded:(id)a3
+- (id)truncateNameIfNeeded:(id)needed
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5) < 0xC9)
+  neededCopy = needed;
+  if (objc_msgSend_length(neededCopy, v4, v5) < 0xC9)
   {
-    v7 = v3;
+    v7 = neededCopy;
   }
 
   else
   {
-    v7 = objc_msgSend_substringToIndex_(v3, v6, 200);
+    v7 = objc_msgSend_substringToIndex_(neededCopy, v6, 200);
   }
 
   v8 = v7;

@@ -1,15 +1,15 @@
 @interface StickersDaemon
 - (_TtC9stickersd14StickersDaemon)init;
-- (void)runOn:(id)a3;
+- (void)runOn:(id)on;
 @end
 
 @implementation StickersDaemon
 
-- (void)runOn:(id)a3
+- (void)runOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  sub_100006904(v4);
+  onCopy = on;
+  selfCopy = self;
+  sub_100006904(onCopy);
 }
 
 - (_TtC9stickersd14StickersDaemon)init

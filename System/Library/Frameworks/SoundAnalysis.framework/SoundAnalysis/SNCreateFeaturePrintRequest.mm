@@ -1,28 +1,28 @@
 @interface SNCreateFeaturePrintRequest
-+ (id)eagerlyAllocateModelsForRequest:(id)a3 error:(id *)a4;
++ (id)eagerlyAllocateModelsForRequest:(id)request error:(id *)error;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)windowDuration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SNTimeDurationConstraint)windowDurationConstraint;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOverlapFactor:(float)a3;
-- (void)setWindowDuration:(id *)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOverlapFactor:(float)factor;
+- (void)setWindowDuration:(id *)duration;
 @end
 
 @implementation SNCreateFeaturePrintRequest
 
 - (SNTimeDurationConstraint)windowDurationConstraint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C997D6C4();
 
   return v3;
 }
 
-- (void)setOverlapFactor:(float)a3
+- (void)setOverlapFactor:(float)factor
 {
-  v4 = self;
-  sub_1C997D8D0(a3);
+  selfCopy = self;
+  sub_1C997D8D0(factor);
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)windowDuration
@@ -35,18 +35,18 @@
   return result;
 }
 
-- (void)setWindowDuration:(id *)a3
+- (void)setWindowDuration:(id *)duration
 {
-  var0 = a3->var0;
-  v4 = *&a3->var1;
-  var3 = a3->var3;
-  v6 = self;
+  var0 = duration->var0;
+  v4 = *&duration->var1;
+  var3 = duration->var3;
+  selfCopy = self;
   sub_1C997DC00(var0, v4, var3);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNCreateFeaturePrintRequest.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -55,11 +55,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -68,7 +68,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNCreateFeaturePrintRequest.isEqual(_:)(v8);
@@ -77,17 +77,17 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNCreateFeaturePrintRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNCreateFeaturePrintRequest.encode(with:)(coderCopy);
 }
 
-+ (id)eagerlyAllocateModelsForRequest:(id)a3 error:(id *)a4
++ (id)eagerlyAllocateModelsForRequest:(id)request error:(id *)error
 {
-  v4 = a3;
-  sub_1C997E82C(v4, v7);
+  requestCopy = request;
+  sub_1C997E82C(requestCopy, v7);
 
   sub_1C97A5A8C(v7, v7[3]);
   v5 = sub_1C9A93B08();

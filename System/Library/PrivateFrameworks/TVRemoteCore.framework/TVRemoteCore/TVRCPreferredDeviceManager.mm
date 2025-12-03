@@ -4,7 +4,7 @@
 - (double)preferredDeviceSearchTimeout;
 - (id)preferredDeviceIdentifier;
 - (void)preferredDevice;
-- (void)setPreferredDevice:(id)a3;
+- (void)setPreferredDevice:(id)device;
 @end
 
 @implementation TVRCPreferredDeviceManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -35,10 +35,10 @@ uint64_t __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke(uint64_t 
 
 - (id)preferredDeviceIdentifier
 {
-  v2 = [(TVRCPreferredDeviceManager *)self preferredDevice];
-  v3 = [v2 identifier];
+  preferredDevice = [(TVRCPreferredDeviceManager *)self preferredDevice];
+  identifier = [preferredDevice identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (TVRCPreferredDevice)preferredDevice
@@ -106,13 +106,13 @@ uint64_t __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke(uint64_t 
   return v5;
 }
 
-- (void)setPreferredDevice:(id)a3
+- (void)setPreferredDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = _TVRCPreferredDeviceLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (deviceCopy)
   {
     if (v6)
     {
@@ -122,7 +122,7 @@ uint64_t __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke(uint64_t 
 
     CFPreferencesSetAppValue(@"TVRCDeviceIdentifierKey", 0, @"com.apple.TVRemoteCore");
     CFPreferencesSetAppValue(@"TVRCMostRecentlyConnectedIDKey", 0, @"com.apple.TVRemoteCore");
-    v7 = [[TVRCPreferredDevice alloc] initFromTVRCDevice:v4];
+    v7 = [[TVRCPreferredDevice alloc] initFromTVRCDevice:deviceCopy];
     device = self->_device;
     self->_device = v7;
 
@@ -135,9 +135,9 @@ uint64_t __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke(uint64_t 
       _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Setting preferred device %{public}@", buf, 0xCu);
     }
 
-    v11 = [(TVRCPreferredDeviceManager *)self device];
+    device = [(TVRCPreferredDeviceManager *)self device];
 
-    if (v11)
+    if (device)
     {
       v12 = self->_device;
       v17 = 0;
@@ -180,7 +180,7 @@ uint64_t __44__TVRCPreferredDeviceManager_sharedInstance__block_invoke(uint64_t 
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26CF7F000, a2, OS_LOG_TYPE_ERROR, "Unarchiving error - %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

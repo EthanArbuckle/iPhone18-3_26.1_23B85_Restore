@@ -1,17 +1,17 @@
 @interface ComAppleContextkitCategoriesConstellation_Request_$2
-- (ComAppleContextkitCategoriesConstellation_Request_$2)initWithComAppleContextkitCategoriesConstellation_Request:(id)a3 withInt:(int)a4 withInt:(int)a5 withJavaUtilConcurrentAtomicAtomicBoolean:(id)a6 withJavaUtilConcurrentAtomicAtomicInteger:(id)a7;
+- (ComAppleContextkitCategoriesConstellation_Request_$2)initWithComAppleContextkitCategoriesConstellation_Request:(id)request withInt:(int)int withInt:(int)withInt withJavaUtilConcurrentAtomicAtomicBoolean:(id)boolean withJavaUtilConcurrentAtomicAtomicInteger:(id)integer;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_Request_$2
 
-- (ComAppleContextkitCategoriesConstellation_Request_$2)initWithComAppleContextkitCategoriesConstellation_Request:(id)a3 withInt:(int)a4 withInt:(int)a5 withJavaUtilConcurrentAtomicAtomicBoolean:(id)a6 withJavaUtilConcurrentAtomicAtomicInteger:(id)a7
+- (ComAppleContextkitCategoriesConstellation_Request_$2)initWithComAppleContextkitCategoriesConstellation_Request:(id)request withInt:(int)int withInt:(int)withInt withJavaUtilConcurrentAtomicAtomicBoolean:(id)boolean withJavaUtilConcurrentAtomicAtomicInteger:(id)integer
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->val$count_ = a4;
-  self->val$weight_ = a5;
-  JreStrongAssign(&self->val$hasModifications_, a6);
-  JreStrongAssign(&self->val$numNonZeroesTouched_, a7);
+  JreStrongAssign(&self->this$0_, request);
+  self->val$count_ = int;
+  self->val$weight_ = withInt;
+  JreStrongAssign(&self->val$hasModifications_, boolean);
+  JreStrongAssign(&self->val$numNonZeroesTouched_, integer);
   return self;
 }
 

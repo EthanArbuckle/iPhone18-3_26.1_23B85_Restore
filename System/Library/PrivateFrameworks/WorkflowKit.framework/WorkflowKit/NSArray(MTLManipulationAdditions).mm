@@ -8,38 +8,38 @@
 
 - (id)mtl_arrayByRemovingLastObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 subarrayWithRange:{0, objc_msgSend(a1, "count") - 1}];
+    selfCopy = [self subarrayWithRange:{0, objc_msgSend(self, "count") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)mtl_arrayByRemovingFirstObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 subarrayWithRange:{1, objc_msgSend(a1, "count") - 1}];
+    selfCopy = [self subarrayWithRange:{1, objc_msgSend(self, "count") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)mtl_arrayByRemovingObject:()MTLManipulationAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObject:v4];
 
   return v5;

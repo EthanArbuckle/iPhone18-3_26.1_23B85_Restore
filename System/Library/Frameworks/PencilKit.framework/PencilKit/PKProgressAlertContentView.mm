@@ -1,9 +1,9 @@
 @interface PKProgressAlertContentView
 - (CGSize)intrinsicContentSize;
-- (PKProgressAlertContentView)initWithFrame:(CGRect)a3;
-- (id)_shapeLayerPathForProgress:(double)a3;
+- (PKProgressAlertContentView)initWithFrame:(CGRect)frame;
+- (id)_shapeLayerPathForProgress:(double)progress;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation PKProgressAlertContentView
@@ -18,22 +18,22 @@
   [(_PKAnimatableBorderCornerRadiusView *)self->_outerRingView setBorderWidth:4.0];
   [(_PKAnimatableBorderCornerRadiusView *)self->_outerRingView setCornerRadius:20.0];
   outerRingView = self->_outerRingView;
-  v4 = [(PKProgressAlertContentView *)self tintColor];
-  [(_PKAnimatableBorderCornerRadiusView *)outerRingView setBorderColor:v4];
+  tintColor = [(PKProgressAlertContentView *)self tintColor];
+  [(_PKAnimatableBorderCornerRadiusView *)outerRingView setBorderColor:tintColor];
 
   innerPieView = self->_innerPieView;
-  v6 = [(PKProgressAlertContentView *)self tintColor];
-  [(_PKPathView *)innerPieView setFillColor:v6];
+  tintColor2 = [(PKProgressAlertContentView *)self tintColor];
+  [(_PKPathView *)innerPieView setFillColor:tintColor2];
 }
 
-- (id)_shapeLayerPathForProgress:(double)a3
+- (id)_shapeLayerPathForProgress:(double)progress
 {
-  v4 = [MEMORY[0x1E69DC728] bezierPath];
-  [v4 moveToPoint:{18.0, 18.0}];
-  [v4 addArcWithCenter:1 radius:18.0 startAngle:18.0 endAngle:18.0 clockwise:{-1.57079633, a3 * 6.28318531 + -1.57079633}];
-  [v4 closePath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath moveToPoint:{18.0, 18.0}];
+  [bezierPath addArcWithCenter:1 radius:18.0 startAngle:18.0 endAngle:18.0 clockwise:{-1.57079633, progress * 6.28318531 + -1.57079633}];
+  [bezierPath closePath];
 
-  return v4;
+  return bezierPath;
 }
 
 - (CGSize)intrinsicContentSize
@@ -45,18 +45,18 @@
   return result;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   progress = self->_progress;
-  self->_progress = a3;
+  self->_progress = progress;
   if (progress < 0.1)
   {
     progress = 0.1;
   }
 
-  if (a3 < 0.1)
+  if (progress < 0.1)
   {
-    a3 = 0.1;
+    progress = 0.1;
   }
 
   v4[0] = MEMORY[0x1E69E9820];
@@ -66,7 +66,7 @@
   *&v4[6] = progress;
   v4[7] = 0x3F847AE147AE147BLL;
   v4[4] = self;
-  v4[5] = fmax((a3 - progress) / 0.01, 1.0);
+  v4[5] = fmax((progress - progress) / 0.01, 1.0);
   [MEMORY[0x1E69DD250] animateKeyframesWithDuration:4 delay:v4 options:0 animations:? completion:?];
 }
 
@@ -108,11 +108,11 @@ void __42__PKProgressAlertContentView_setProgress___block_invoke_2(uint64_t a1)
   [v1 setPath:v2];
 }
 
-- (PKProgressAlertContentView)initWithFrame:(CGRect)a3
+- (PKProgressAlertContentView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKProgressAlertContentView;
-  v3 = [(PKProgressAlertContentView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKProgressAlertContentView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(_PKAnimatableBorderCornerRadiusView);
   outerRingView = v3->_outerRingView;
   v3->_outerRingView = v4;

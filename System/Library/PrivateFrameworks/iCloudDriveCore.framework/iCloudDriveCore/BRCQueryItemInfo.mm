@@ -1,23 +1,23 @@
 @interface BRCQueryItemInfo
-+ (id)queryItemInfoForAppLibraryDocumentsFolder:(id)a3;
-+ (id)queryItemInfoForAppLibraryRoot:(id)a3;
-+ (id)queryItemInfoForItem:(id)a3;
++ (id)queryItemInfoForAppLibraryDocumentsFolder:(id)folder;
++ (id)queryItemInfoForAppLibraryRoot:(id)root;
++ (id)queryItemInfoForItem:(id)item;
 @end
 
 @implementation BRCQueryItemInfo
 
-+ (id)queryItemInfoForItem:(id)a3
++ (id)queryItemInfoForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(BRCQueryItemInfo);
-  v4->_isZoneRoot = [v3 isZoneRoot];
-  v5 = [v3 appLibrary];
-  v4->_isAppInstalled = [v5 isAppInstalled];
+  v4->_isZoneRoot = [itemCopy isZoneRoot];
+  appLibrary = [itemCopy appLibrary];
+  v4->_isAppInstalled = [appLibrary isAppInstalled];
 
-  if ([v3 isDocument])
+  if ([itemCopy isDocument])
   {
-    v6 = [v3 asDocument];
-    v4->_isGreedyDocument = [v6 shouldBeGreedy];
+    asDocument = [itemCopy asDocument];
+    v4->_isGreedyDocument = [asDocument shouldBeGreedy];
   }
 
   else
@@ -25,66 +25,66 @@
     v4->_isGreedyDocument = 0;
   }
 
-  v7 = [v3 appLibrary];
-  v4->_isCloudDocsAppLibrary = [v7 isCloudDocsAppLibrary];
+  appLibrary2 = [itemCopy appLibrary];
+  v4->_isCloudDocsAppLibrary = [appLibrary2 isCloudDocsAppLibrary];
 
-  v8 = [v3 itemID];
-  v4->_isDocumentsFolder = [v8 isDocumentsFolder];
+  itemID = [itemCopy itemID];
+  v4->_isDocumentsFolder = [itemID isDocumentsFolder];
 
-  v9 = [v3 appLibrary];
-  v4->_isDocumentScopePublic = [v9 isDocumentScopePublic];
+  appLibrary3 = [itemCopy appLibrary];
+  v4->_isDocumentScopePublic = [appLibrary3 isDocumentScopePublic];
 
-  v10 = [v3 appLibrary];
-  v11 = [v10 appLibraryID];
-  v4->_isWallet = [v11 isEqualToString:*MEMORY[0x277CFACE0]];
+  appLibrary4 = [itemCopy appLibrary];
+  appLibraryID = [appLibrary4 appLibraryID];
+  v4->_isWallet = [appLibraryID isEqualToString:*MEMORY[0x277CFACE0]];
 
   v12 = [BRCUserDefaults defaultsForMangledID:0];
-  v13 = [v12 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
-  v14 = [v3 appLibrary];
-  v15 = [v14 appLibraryID];
-  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v13 indexOfObject:v15] != 0x7FFFFFFFFFFFFFFFLL;
+  containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v12 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
+  appLibrary5 = [itemCopy appLibrary];
+  appLibraryID2 = [appLibrary5 appLibraryID];
+  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate indexOfObject:appLibraryID2] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (id)queryItemInfoForAppLibraryRoot:(id)a3
++ (id)queryItemInfoForAppLibraryRoot:(id)root
 {
-  v3 = a3;
+  rootCopy = root;
   v4 = objc_alloc_init(BRCQueryItemInfo);
   v4->_isZoneRoot = 1;
-  v4->_isAppInstalled = [v3 isAppInstalled];
-  v4->_isCloudDocsAppLibrary = [v3 isCloudDocsAppLibrary];
+  v4->_isAppInstalled = [rootCopy isAppInstalled];
+  v4->_isCloudDocsAppLibrary = [rootCopy isCloudDocsAppLibrary];
   v4->_isDocumentsFolder = 0;
-  v4->_isDocumentScopePublic = [v3 isDocumentScopePublic];
-  v5 = [v3 appLibraryID];
-  v4->_isWallet = [v5 isEqualToString:*MEMORY[0x277CFACE0]];
+  v4->_isDocumentScopePublic = [rootCopy isDocumentScopePublic];
+  appLibraryID = [rootCopy appLibraryID];
+  v4->_isWallet = [appLibraryID isEqualToString:*MEMORY[0x277CFACE0]];
 
   v6 = [BRCUserDefaults defaultsForMangledID:0];
-  v7 = [v6 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
-  v8 = [v3 appLibraryID];
+  containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v6 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
+  appLibraryID2 = [rootCopy appLibraryID];
 
-  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v7 indexOfObject:v8] != 0x7FFFFFFFFFFFFFFFLL;
+  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate indexOfObject:appLibraryID2] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (id)queryItemInfoForAppLibraryDocumentsFolder:(id)a3
++ (id)queryItemInfoForAppLibraryDocumentsFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v4 = objc_alloc_init(BRCQueryItemInfo);
   v4->_isZoneRoot = 0;
-  v4->_isAppInstalled = [v3 isAppInstalled];
-  v4->_isCloudDocsAppLibrary = [v3 isCloudDocsAppLibrary];
+  v4->_isAppInstalled = [folderCopy isAppInstalled];
+  v4->_isCloudDocsAppLibrary = [folderCopy isCloudDocsAppLibrary];
   v4->_isDocumentsFolder = 1;
-  v4->_isDocumentScopePublic = [v3 isDocumentScopePublic];
-  v5 = [v3 appLibraryID];
-  v4->_isWallet = [v5 isEqualToString:*MEMORY[0x277CFACE0]];
+  v4->_isDocumentScopePublic = [folderCopy isDocumentScopePublic];
+  appLibraryID = [folderCopy appLibraryID];
+  v4->_isWallet = [appLibraryID isEqualToString:*MEMORY[0x277CFACE0]];
 
   v6 = [BRCUserDefaults defaultsForMangledID:0];
-  v7 = [v6 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
-  v8 = [v3 appLibraryID];
+  containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v6 containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate];
+  appLibraryID2 = [folderCopy appLibraryID];
 
-  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [v7 indexOfObject:v8] != 0x7FFFFFFFFFFFFFFFLL;
+  v4->_isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate = [containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate indexOfObject:appLibraryID2] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }

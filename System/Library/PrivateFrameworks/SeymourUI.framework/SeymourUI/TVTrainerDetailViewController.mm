@@ -1,12 +1,12 @@
 @interface TVTrainerDetailViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithStyle:(int64_t)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithStyle:(int64_t)style;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVTrainerDetailViewController
@@ -25,7 +25,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -41,37 +41,37 @@
   [v2 showDetailViewController:*(*&v2[OBJC_IVAR____TtC9SeymourUI29TVTrainerDetailViewController_coordinator] + qword_27C79C010) sender:{0, v3.receiver, v3.super_class}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20C04AB54(a3);
+  selfCopy = self;
+  sub_20C04AB54(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20C04AE3C(a3);
+  selfCopy = self;
+  sub_20C04AE3C(disappear);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for TVTrainerDetailViewController();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(TVTrainerDetailViewController *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
-  sub_20BED0240(v6);
+  [(TVTrainerDetailViewController *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
+  sub_20BED0240(contextCopy);
 }
 
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC9SeymourUI29TVTrainerDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

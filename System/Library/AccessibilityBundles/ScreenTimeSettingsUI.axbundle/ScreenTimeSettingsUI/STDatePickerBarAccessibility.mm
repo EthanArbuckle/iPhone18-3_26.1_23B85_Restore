@@ -1,5 +1,5 @@
 @interface STDatePickerBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
@@ -7,20 +7,20 @@
 
 @implementation STDatePickerBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STDatePickerBar" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
-  [v3 validateClass:@"STDatePickerBar" hasInstanceMethod:@"rightArrowButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STDatePickerBar" hasInstanceMethod:@"leftArrowButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STDatePickerBar" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STDatePickerBar" hasInstanceMethod:@"rightArrowButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STDatePickerBar" hasInstanceMethod:@"leftArrowButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(STDatePickerBarAccessibility *)self safeUIViewForKey:@"_dateLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)accessibilityIncrement

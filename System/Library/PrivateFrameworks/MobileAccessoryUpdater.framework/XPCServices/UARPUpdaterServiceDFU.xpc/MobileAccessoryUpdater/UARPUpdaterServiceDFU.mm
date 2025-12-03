@@ -1,7 +1,7 @@
 @interface UARPUpdaterServiceDFU
 - (UARPUpdaterServiceDFU)init;
-- (void)firmwareStagingComplete:(id)a3 withStatus:(unint64_t)a4;
-- (void)firmwareStagingProgress:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
+- (void)firmwareStagingComplete:(id)complete withStatus:(unint64_t)status;
+- (void)firmwareStagingProgress:(id)progress bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
 @end
 
 @implementation UARPUpdaterServiceDFU
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (void)firmwareStagingProgress:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)firmwareStagingProgress:(id)progress bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -42,16 +42,16 @@
   }
 }
 
-- (void)firmwareStagingComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)firmwareStagingComplete:(id)complete withStatus:(unint64_t)status
 {
-  v6 = a3;
+  completeCopy = complete;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_100015E34(log, a4, v6);
+    sub_100015E34(log, status, completeCopy);
   }
 
-  [(UARPDFUUpdater *)self->_dfuOtpUpdater assetTransferComplete:v6 assetID:0 status:a4];
+  [(UARPDFUUpdater *)self->_dfuOtpUpdater assetTransferComplete:completeCopy assetID:0 status:status];
 }
 
 @end

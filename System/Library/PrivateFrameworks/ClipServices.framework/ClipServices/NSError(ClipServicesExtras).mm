@@ -10,18 +10,18 @@
 - (id)cps_privacyPreservingDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 domain];
-  v4 = [v2 stringWithFormat:@"(NSError: domain: %@, code: %ld)", v3, objc_msgSend(a1, "code")];
+  domain = [self domain];
+  v4 = [v2 stringWithFormat:@"(NSError: domain: %@, code: %ld)", domain, objc_msgSend(self, "code")];
 
   return v4;
 }
 
 - (BOOL)cps_isUserCanceledError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"CPSErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"CPSErrorDomain"])
   {
-    v3 = [a1 code] == 8;
+    v3 = [self code] == 8;
   }
 
   else

@@ -1,23 +1,23 @@
 @interface AKTextBoxAnnotationEventHandler
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKTextBoxAnnotationEventHandler
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AKAnnotationEventHandler *)self annotation];
-  [v8 rectangle];
+  y = point.y;
+  x = point.x;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  [annotation rectangle];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v21.receiver = self;
   v21.super_class = AKTextBoxAnnotationEventHandler;
-  [(AKRectangularAnnotationEventHandler *)&v21 updateModelWithCurrentPoint:a4 options:x, y];
-  [v8 rectangle];
+  [(AKRectangularAnnotationEventHandler *)&v21 updateModelWithCurrentPoint:options options:x, y];
+  [annotation rectangle];
   v23.origin.x = v17;
   v23.origin.y = v18;
   v23.size.width = v19;
@@ -28,14 +28,14 @@
   v22.size.height = v16;
   if (!CGRectEqualToRect(v22, v23))
   {
-    if (([v8 textIsFixedWidth] & 1) == 0)
+    if (([annotation textIsFixedWidth] & 1) == 0)
     {
-      [v8 setTextIsFixedWidth:1];
+      [annotation setTextIsFixedWidth:1];
     }
 
-    if ([v8 textIsClipped])
+    if ([annotation textIsClipped])
     {
-      [v8 setTextIsClipped:0];
+      [annotation setTextIsClipped:0];
     }
   }
 }

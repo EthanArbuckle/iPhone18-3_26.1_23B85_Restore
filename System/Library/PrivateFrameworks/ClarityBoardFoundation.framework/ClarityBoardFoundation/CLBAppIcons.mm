@@ -1,13 +1,13 @@
 @interface CLBAppIcons
-+ (BOOL)shouldDownloadForBundleIdentifier:(id)a3;
++ (BOOL)shouldDownloadForBundleIdentifier:(id)identifier;
 + (CGSize)size;
-+ (id)urlForBundleIdentifier:(id)a3;
++ (id)urlForBundleIdentifier:(id)identifier;
 - (CLBAppIcons)init;
 @end
 
 @implementation CLBAppIcons
 
-+ (id)urlForBundleIdentifier:(id)a3
++ (id)urlForBundleIdentifier:(id)identifier
 {
   v3 = sub_243517B0C();
   v4 = *(v3 - 8);
@@ -32,7 +32,7 @@
   return result;
 }
 
-+ (BOOL)shouldDownloadForBundleIdentifier:(id)a3
++ (BOOL)shouldDownloadForBundleIdentifier:(id)identifier
 {
   v3 = sub_243517C7C();
   v5 = v4;

@@ -105,7 +105,7 @@ LABEL_15:
 
     if (v9)
     {
-      v10 = [[a1 alloc] initWithType:v6 value:v9];
+      v10 = [[self alloc] initWithType:v6 value:v9];
     }
 
     else
@@ -126,7 +126,7 @@ LABEL_15:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -153,7 +153,7 @@ LABEL_15:
           v11 = [MEMORY[0x277CD1780] constraintWithDictonaryRepresentation:{v10, v15}];
           if (v11)
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -164,7 +164,7 @@ LABEL_15:
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;

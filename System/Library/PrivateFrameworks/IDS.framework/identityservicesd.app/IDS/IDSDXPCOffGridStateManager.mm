@@ -1,14 +1,14 @@
 @interface IDSDXPCOffGridStateManager
 - (BOOL)_isConnectedForIML;
-- (BOOL)_isExpiredProvisionedPayload:(id)a3;
+- (BOOL)_isExpiredProvisionedPayload:(id)payload;
 - (BOOL)_isIMLRegistered;
 - (BOOL)_isStewieAvailableForIML;
 - (BOOL)_isStewieAvailableForSMS;
 - (BOOL)_needsToRequestForSMS;
 - (BOOL)_needsToRequestForStewie;
 - (BOOL)_shouldProvisionOffGridPayloads;
-- (IDSDXPCOffGridStateManager)initWithQueue:(id)a3;
-- (IDSDXPCOffGridStateManager)initWithQueue:(id)a3 ctClient:(id)a4 ctMessagingClient:(id)a5 hkMedicalIDStore:(id)a6 familyManager:(id)a7 statusClient:(id)a8 connectionMonitor:(id)a9 systemMonitor:(id)a10 persistentMap:(id)a11;
+- (IDSDXPCOffGridStateManager)initWithQueue:(id)queue;
+- (IDSDXPCOffGridStateManager)initWithQueue:(id)queue ctClient:(id)client ctMessagingClient:(id)messagingClient hkMedicalIDStore:(id)store familyManager:(id)manager statusClient:(id)statusClient connectionMonitor:(id)monitor systemMonitor:(id)self0 persistentMap:(id)self1;
 - (double)_clearSendKeyOnConnectInterval;
 - (double)_failedProvisionInterval;
 - (double)_payloadValidityDuration;
@@ -21,61 +21,61 @@
 - (id)_errorForInvalidState;
 - (id)_errorForNoProvisionedPayload;
 - (id)_errorForStewieNotAvailable;
-- (id)_fetchFamilyContactsWithPhoneNumbersOnly:(BOOL)a3;
-- (id)_getDecryptionKeyForProvisionedPayloadWithStatus:(int64_t)a3;
+- (id)_fetchFamilyContactsWithPhoneNumbersOnly:(BOOL)only;
+- (id)_getDecryptionKeyForProvisionedPayloadWithStatus:(int64_t)status;
 - (int64_t)_getRequestReason;
 - (int64_t)_offGridModeDisableWhenOnlineForTimeInterval;
-- (int64_t)_offGridStatusFromStatusPayload:(id)a3;
+- (int64_t)_offGridStatusFromStatusPayload:(id)payload;
 - (unint64_t)_payloadCount;
 - (unint64_t)_payloadCountPerDuration;
-- (void)_areAllPrimaryContactsIMLReachableWithCompletion:(id)a3;
-- (void)_calloutToDelegateWithUpdatedContacts:(id)a3;
+- (void)_areAllPrimaryContactsIMLReachableWithCompletion:(id)completion;
+- (void)_calloutToDelegateWithUpdatedContacts:(id)contacts;
 - (void)_clearOffGridResetTimer;
 - (void)_clearSendKeyOnConnect;
 - (void)_clearSendKeyOnConnectTimerFired;
-- (void)_connectStewieWithContext:(id)a3 options:(id)a4 withCompletion:(id)a5;
+- (void)_connectStewieWithContext:(id)context options:(id)options withCompletion:(id)completion;
 - (void)_contactsDidChange;
 - (void)_disableOffGridModeViaStatusClient;
 - (void)_emergencyContactsDidChange;
-- (void)_exitStewieWithCompletion:(id)a3;
+- (void)_exitStewieWithCompletion:(id)completion;
 - (void)_familyContactsDidChange;
-- (void)_fetchEmergencyContactsWithCompletion:(id)a3;
+- (void)_fetchEmergencyContactsWithCompletion:(id)completion;
 - (void)_initializeOffGridModeAndPublishStatusFromDisk;
 - (void)_listenForContactsChangeNotifications;
-- (void)_markPayloadAsSentForDecryptionKey:(id)a3;
+- (void)_markPayloadAsSentForDecryptionKey:(id)key;
 - (void)_markProvisionRequestCompleted;
 - (void)_markProvisionRequestInProgress;
-- (void)_offGridPayloadProvisioningTimerFiredShouldForce:(BOOL)a3;
+- (void)_offGridPayloadProvisioningTimerFiredShouldForce:(BOOL)force;
 - (void)_offGridResetTimerFired;
-- (void)_provisionOffGridPayloadsShouldForce:(BOOL)a3;
+- (void)_provisionOffGridPayloadsShouldForce:(BOOL)force;
 - (void)_registerSysdiagnoseBlock;
-- (void)_reportOffGridEntryMetricWithService:(int64_t)a3 source:(id)a4 success:(BOOL)a5;
-- (void)_reportOffGridModeMetricWithPreviousMode:(int64_t)a3 currentMode:(int64_t)a4 previousPublishStatus:(int64_t)a5 currentPublishStatus:(int64_t)a6 previousStewieConnectionStatus:(BOOL)a7 currentStewieConnectionStatus:(BOOL)a8 previousNetworkConnectionStatus:(BOOL)a9 currentNetworkConnectionStatus:(BOOL)a10 duration:(double)a11;
+- (void)_reportOffGridEntryMetricWithService:(int64_t)service source:(id)source success:(BOOL)success;
+- (void)_reportOffGridModeMetricWithPreviousMode:(int64_t)mode currentMode:(int64_t)currentMode previousPublishStatus:(int64_t)status currentPublishStatus:(int64_t)publishStatus previousStewieConnectionStatus:(BOOL)connectionStatus currentStewieConnectionStatus:(BOOL)stewieConnectionStatus previousNetworkConnectionStatus:(BOOL)networkConnectionStatus currentNetworkConnectionStatus:(BOOL)self0 duration:(double)self1;
 - (void)_resetOffGridModeIfRequired;
 - (void)_scheduleClearSendOnConnectTimer;
-- (void)_scheduleOffGridPayloadProvisioningTimerWithInterval:(double)a3 shouldForce:(BOOL)a4;
-- (void)_scheduleOffGridResetTimerWithInterval:(double)a3;
+- (void)_scheduleOffGridPayloadProvisioningTimerWithInterval:(double)interval shouldForce:(BOOL)force;
+- (void)_scheduleOffGridResetTimerWithInterval:(double)interval;
 - (void)_scheduleOrClearOffGridResetTimerIfRequired;
 - (void)_sendOffGridStatusDecryptionKey;
-- (void)_setAndPersistOffGridMode:(int64_t)a3 publishStatus:(int64_t)a4;
-- (void)_stewieContextForPayloadKey:(id)a3 completion:(id)a4;
-- (void)_updateClientsWithCurrentStateAndError:(id)a3;
-- (void)_updateOffGridConnectActionWithPayloadKey:(id)a3;
-- (void)availabilityChangedForIML:(BOOL)a3;
-- (void)connectStewieWithCompletion:(id)a3;
-- (void)connectionMonitorDidUpdate:(id)a3;
+- (void)_setAndPersistOffGridMode:(int64_t)mode publishStatus:(int64_t)status;
+- (void)_stewieContextForPayloadKey:(id)key completion:(id)completion;
+- (void)_updateClientsWithCurrentStateAndError:(id)error;
+- (void)_updateOffGridConnectActionWithPayloadKey:(id)key;
+- (void)availabilityChangedForIML:(BOOL)l;
+- (void)connectStewieWithCompletion:(id)completion;
+- (void)connectionMonitorDidUpdate:(id)update;
 - (void)dealloc;
-- (void)disconnectStewieWithCompletion:(id)a3;
-- (void)fetchContactsOfType:(int64_t)a3 phoneNumbersOnly:(BOOL)a4 completion:(id)a5;
-- (void)fetchStewieAvailabilityWithCompletion:(id)a3;
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6;
-- (void)invitedHandlesWithCompletion:(id)a3;
-- (void)monitorConnection:(id)a3;
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3;
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4;
-- (void)setOffGridMode:(int64_t)a3 allowOnlineEnablement:(BOOL)a4 options:(id)a5 completion:(id)a6;
-- (void)setupOffGridStateManagerClient:(id)a3 withUUID:(id)a4 completion:(id)a5;
-- (void)statusClient:(id)a3 publishRequestCompletedForStatusPayload:(id)a4 successfully:(BOOL)a5 error:(id)a6;
+- (void)disconnectStewieWithCompletion:(id)completion;
+- (void)fetchContactsOfType:(int64_t)type phoneNumbersOnly:(BOOL)only completion:(id)completion;
+- (void)fetchStewieAvailabilityWithCompletion:(id)completion;
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion;
+- (void)invitedHandlesWithCompletion:(id)completion;
+- (void)monitorConnection:(id)connection;
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion;
+- (void)removeInvitedHandles:(id)handles completion:(id)completion;
+- (void)setOffGridMode:(int64_t)mode allowOnlineEnablement:(BOOL)enablement options:(id)options completion:(id)completion;
+- (void)setupOffGridStateManagerClient:(id)client withUUID:(id)d completion:(id)completion;
+- (void)statusClient:(id)client publishRequestCompletedForStatusPayload:(id)payload successfully:(BOOL)successfully error:(id)error;
 - (void)systemDidUnlock;
 @end
 
@@ -179,24 +179,24 @@
   }
 }
 
-- (IDSDXPCOffGridStateManager)initWithQueue:(id)a3 ctClient:(id)a4 ctMessagingClient:(id)a5 hkMedicalIDStore:(id)a6 familyManager:(id)a7 statusClient:(id)a8 connectionMonitor:(id)a9 systemMonitor:(id)a10 persistentMap:(id)a11
+- (IDSDXPCOffGridStateManager)initWithQueue:(id)queue ctClient:(id)client ctMessagingClient:(id)messagingClient hkMedicalIDStore:(id)store familyManager:(id)manager statusClient:(id)statusClient connectionMonitor:(id)monitor systemMonitor:(id)self0 persistentMap:(id)self1
 {
-  v39 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v17 = a9;
-  v18 = a10;
-  v33 = a11;
+  queueCopy = queue;
+  clientCopy = client;
+  messagingClientCopy = messagingClient;
+  storeCopy = store;
+  managerCopy = manager;
+  statusClientCopy = statusClient;
+  monitorCopy = monitor;
+  systemMonitorCopy = systemMonitor;
+  mapCopy = map;
   v40.receiver = self;
   v40.super_class = IDSDXPCOffGridStateManager;
   v19 = [(IDSDXPCOffGridStateManager *)&v40 init];
   if (v19)
   {
-    v31 = v18;
-    v20 = v17;
+    v31 = systemMonitorCopy;
+    v20 = monitorCopy;
     v21 = +[IDSFoundationLog IDSOffGridStateManager];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -206,14 +206,14 @@
     }
 
     v19[9] = 0;
-    objc_storeStrong(v19 + 4, a4);
-    objc_storeStrong(v19 + 5, a5);
+    objc_storeStrong(v19 + 4, client);
+    objc_storeStrong(v19 + 5, messagingClient);
     [*(v19 + 5) setAvailabilityDelegate:v19];
-    objc_storeStrong(v19 + 6, a6);
-    objc_storeStrong(v19 + 7, a7);
-    objc_storeStrong(v19 + 8, a8);
+    objc_storeStrong(v19 + 6, store);
+    objc_storeStrong(v19 + 7, manager);
+    objc_storeStrong(v19 + 8, statusClient);
     [*(v19 + 8) setDelegate:v19];
-    v17 = v20;
+    monitorCopy = v20;
     if (v20)
     {
       v22 = v20;
@@ -226,12 +226,12 @@
 
     v23 = *(v19 + 9);
     *(v19 + 9) = v22;
-    v18 = v31;
+    systemMonitorCopy = v31;
 
-    objc_storeStrong(v19 + 10, a10);
+    objc_storeStrong(v19 + 10, systemMonitor);
     [*(v19 + 10) addListener:v19];
-    objc_storeStrong(v19 + 15, a3);
-    objc_storeStrong(v19 + 18, a11);
+    objc_storeStrong(v19 + 15, queue);
+    objc_storeStrong(v19 + 18, map);
     v24 = *(v19 + 17);
     *(v19 + 17) = 0;
 
@@ -263,9 +263,9 @@
   return v19;
 }
 
-- (IDSDXPCOffGridStateManager)initWithQueue:(id)a3
+- (IDSDXPCOffGridStateManager)initWithQueue:(id)queue
 {
-  v35 = a3;
+  queueCopy = queue;
   v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v4 = dispatch_queue_attr_make_with_qos_class(v3, QOS_CLASS_DEFAULT, 0);
 
@@ -329,21 +329,21 @@
   v25 = [(IDSSKStatusClient *)v24 initWithStatusTypeIdentifier:kIDSOffGridModeStatusTypeIdentifier queue:v32];
   v26 = +[IMSystemMonitor sharedInstance];
   v27 = [[IDSPersistentMap alloc] initWithIdentifier:@"com.apple.identityservicesd.offgrid.provisioning.store" versionNumber:1 decodableClasses:v13 migrationBlock:0];
-  v29 = [(IDSDXPCOffGridStateManager *)v14 initWithQueue:v35 ctClient:v31 ctMessagingClient:v16 hkMedicalIDStore:v22 familyManager:v23 statusClient:v25 connectionMonitor:0 systemMonitor:v26 persistentMap:v27];
+  v29 = [(IDSDXPCOffGridStateManager *)v14 initWithQueue:queueCopy ctClient:v31 ctMessagingClient:v16 hkMedicalIDStore:v22 familyManager:v23 statusClient:v25 connectionMonitor:0 systemMonitor:v26 persistentMap:v27];
 
   return v29;
 }
 
-- (void)monitorConnection:(id)a3
+- (void)monitorConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSDXPCOffGridStateManager monitoring new connection {self: %p, connection: %@}", &v6, 0x16u);
   }
 }
@@ -363,31 +363,31 @@
   v14 = v3;
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
   v5 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"latest-publish-status"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
+    intValue2 = [v5 intValue];
   }
 
   else
   {
-    v7 = 1;
+    intValue2 = 1;
   }
 
   v8 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"latest-offgrid-mode-date"];
   if (v8 && (+[NSDate now](NSDate, "now"), v9 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceDate:v8], v11 = v10, -[IDSDXPCOffGridStateManager _statePersistenceTimeInterval](self, "_statePersistenceTimeInterval"), v13 = v12, v9, v11 < v13))
   {
-    self->_offGridMode = v4;
-    self->_publishStatus = v7;
+    self->_offGridMode = intValue;
+    self->_publishStatus = intValue2;
   }
 
   else
@@ -396,44 +396,44 @@
   }
 }
 
-- (void)setupOffGridStateManagerClient:(id)a3 withUUID:(id)a4 completion:(id)a5
+- (void)setupOffGridStateManagerClient:(id)client withUUID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  dCopy = d;
+  completionCopy = completion;
+  if (client)
   {
-    v10 = [a3 remoteObjectProxy];
+    remoteObjectProxy = [client remoteObjectProxy];
     v11 = +[IDSFoundationLog IDSOffGridStateManager];
-    v12 = v11;
-    if (v10)
+    clientRemoteObjects2 = v11;
+    if (remoteObjectProxy)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 134218242;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2112;
-        v22 = v8;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Adding OffGrid state manager client {self: %p, uuid: %@}", &v19, 0x16u);
+        v22 = dCopy;
+        _os_log_impl(&_mh_execute_header, clientRemoteObjects2, OS_LOG_TYPE_DEFAULT, "Adding OffGrid state manager client {self: %p, uuid: %@}", &v19, 0x16u);
       }
 
-      v13 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
+      clientRemoteObjects = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
 
-      if (!v13)
+      if (!clientRemoteObjects)
       {
         v14 = objc_alloc_init(NSMutableDictionary);
         [(IDSDXPCOffGridStateManager *)self setClientRemoteObjects:v14];
       }
 
-      v12 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
-      [v12 setObject:v10 forKeyedSubscript:v8];
+      clientRemoteObjects2 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
+      [clientRemoteObjects2 setObject:remoteObjectProxy forKeyedSubscript:dCopy];
     }
 
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10091C0C0(self, v8, v12);
+      sub_10091C0C0(self, dCopy, clientRemoteObjects2);
     }
 
-    v9[2](v9, self->_offGridMode, self->_publishStatus, 0);
+    completionCopy[2](completionCopy, self->_offGridMode, self->_publishStatus, 0);
   }
 
   else
@@ -442,17 +442,17 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134218242;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v8;
+      v22 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Removing OffGrid state manager client {self: %p, uuid: %@}", &v19, 0x16u);
     }
 
-    v16 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
-    [v16 setObject:0 forKeyedSubscript:v8];
+    clientRemoteObjects3 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
+    [clientRemoteObjects3 setObject:0 forKeyedSubscript:dCopy];
 
-    v17 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
-    v18 = [v17 count];
+    clientRemoteObjects4 = [(IDSDXPCOffGridStateManager *)self clientRemoteObjects];
+    v18 = [clientRemoteObjects4 count];
 
     if (!v18)
     {
@@ -461,10 +461,10 @@
   }
 }
 
-- (void)_setAndPersistOffGridMode:(int64_t)a3 publishStatus:(int64_t)a4
+- (void)_setAndPersistOffGridMode:(int64_t)mode publishStatus:(int64_t)status
 {
   v19 = +[NSDate now];
-  if (*&self->_offGridMode != __PAIR128__(a4, a3))
+  if (*&self->_offGridMode != __PAIR128__(status, mode))
   {
     v7 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"latest-metric-state-changed-date"];
     if (v7)
@@ -481,36 +481,36 @@
     offGridMode = self->_offGridMode;
     publishStatus = self->_publishStatus;
     isStewieConnectedForIML = self->_isStewieConnectedForIML;
-    v13 = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
+    _isDeviceOnline = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
     BYTE1(v18) = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
-    LOBYTE(v18) = v13;
-    [(IDSDXPCOffGridStateManager *)self _reportOffGridModeMetricWithPreviousMode:offGridMode currentMode:a3 previousPublishStatus:publishStatus currentPublishStatus:a4 previousStewieConnectionStatus:isStewieConnectedForIML currentStewieConnectionStatus:isStewieConnectedForIML previousNetworkConnectionStatus:v9 currentNetworkConnectionStatus:v18 duration:?];
+    LOBYTE(v18) = _isDeviceOnline;
+    [(IDSDXPCOffGridStateManager *)self _reportOffGridModeMetricWithPreviousMode:offGridMode currentMode:mode previousPublishStatus:publishStatus currentPublishStatus:status previousStewieConnectionStatus:isStewieConnectedForIML currentStewieConnectionStatus:isStewieConnectedForIML previousNetworkConnectionStatus:v9 currentNetworkConnectionStatus:v18 duration:?];
     [(IDSPersistentMap *)self->_persistentMap setObject:v19 forKey:@"latest-metric-state-changed-date"];
   }
 
-  self->_offGridMode = a3;
+  self->_offGridMode = mode;
   persistentMap = self->_persistentMap;
-  v15 = [NSNumber numberWithInteger:a3];
+  v15 = [NSNumber numberWithInteger:mode];
   [(IDSPersistentMap *)persistentMap setObject:v15 forKey:@"latest-offgrid-mode"];
 
-  self->_publishStatus = a4;
+  self->_publishStatus = status;
   v16 = self->_persistentMap;
-  v17 = [NSNumber numberWithInteger:a4];
+  v17 = [NSNumber numberWithInteger:status];
   [(IDSPersistentMap *)v16 setObject:v17 forKey:@"latest-publish-status"];
 
   [(IDSPersistentMap *)self->_persistentMap setObject:v19 forKey:@"latest-offgrid-mode-date"];
   [(IDSDXPCOffGridStateManager *)self _scheduleOrClearOffGridResetTimerIfRequired];
 }
 
-- (void)setOffGridMode:(int64_t)a3 allowOnlineEnablement:(BOOL)a4 options:(id)a5 completion:(id)a6
+- (void)setOffGridMode:(int64_t)mode allowOnlineEnablement:(BOOL)enablement options:(id)options completion:(id)completion
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
+  enablementCopy = enablement;
+  optionsCopy = options;
+  completionCopy = completion;
+  _isDeviceOnline = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
   v13 = +[IDSFoundationLog IDSOffGridStateManager];
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (enablementCopy)
   {
     if (!v14)
     {
@@ -520,7 +520,7 @@
     offGridMode = self->_offGridMode;
     publishStatus = self->_publishStatus;
     v17 = @"NO";
-    if (v12)
+    if (_isDeviceOnline)
     {
       v17 = @"YES";
     }
@@ -530,7 +530,7 @@
     v48 = 2048;
     v49 = publishStatus;
     v50 = 2048;
-    v51 = a3;
+    modeCopy2 = mode;
     v52 = 2112;
     v53 = v17;
     v18 = "[Online Enablement Allowed] Received request to set offgrid mode from {Mode:%ld PublishStatus:%ld} to {Mode:%ld} {isOnline: %@}";
@@ -546,7 +546,7 @@
     v19 = self->_offGridMode;
     v20 = self->_publishStatus;
     v21 = @"NO";
-    if (v12)
+    if (_isDeviceOnline)
     {
       v21 = @"YES";
     }
@@ -556,7 +556,7 @@
     v48 = 2048;
     v49 = v20;
     v50 = 2048;
-    v51 = a3;
+    modeCopy2 = mode;
     v52 = 2112;
     v53 = v21;
     v18 = "Received request to set offgrid mode from {Mode:%ld PublishStatus:%ld} to {Mode:%ld} {isOnline: %@}";
@@ -565,10 +565,10 @@
   _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v18, buf, 0x2Au);
 LABEL_11:
 
-  if (a3)
+  if (mode)
   {
-    v22 = [(IDSDXPCOffGridStateManager *)self _getDecryptionKeyForProvisionedPayloadWithStatus:a3];
-    if (!v22)
+    _errorForInvalidState2 = [(IDSDXPCOffGridStateManager *)self _getDecryptionKeyForProvisionedPayloadWithStatus:mode];
+    if (!_errorForInvalidState2)
     {
       v23 = +[IDSFoundationLog IDSOffGridStateManager];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -577,9 +577,9 @@ LABEL_11:
       }
     }
 
-    if (a3 != 2 || v7 || ((v12 ^ 1) & 1) != 0)
+    if (mode != 2 || enablementCopy || ((_isDeviceOnline ^ 1) & 1) != 0)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         v31 = +[IDSFoundationLog IDSOffGridStateManager];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -591,9 +591,9 @@ LABEL_11:
         [(IDSSKStatusClient *)self->_statusClient resetRateLimit];
       }
 
-      [(IDSDXPCOffGridStateManager *)self _setAndPersistOffGridMode:a3 publishStatus:0];
-      v11[2](v11, self->_offGridMode, self->_publishStatus, 0);
-      if (v12)
+      [(IDSDXPCOffGridStateManager *)self _setAndPersistOffGridMode:mode publishStatus:0];
+      completionCopy[2](completionCopy, self->_offGridMode, self->_publishStatus, 0);
+      if (_isDeviceOnline)
       {
         v32 = +[IDSFoundationLog IDSOffGridStateManager];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -608,7 +608,7 @@ LABEL_11:
         v45[2] = sub_1003E604C;
         v45[3] = &unk_100BD9F28;
         v45[4] = self;
-        [(IDSSKStatusClient *)statusClient publishStatus:a3 completion:v45];
+        [(IDSSKStatusClient *)statusClient publishStatus:mode completion:v45];
       }
 
       else
@@ -621,25 +621,25 @@ LABEL_11:
           v44[2] = sub_1003E6130;
           v44[3] = &unk_100BD7108;
           v44[4] = self;
-          [(IDSStewieCTMessagingClient *)ctMessagingClient sendOffGridStatusDecryptionKey:v22 completion:v44];
+          [(IDSStewieCTMessagingClient *)ctMessagingClient sendOffGridStatusDecryptionKey:_errorForInvalidState2 completion:v44];
         }
 
         else if ([(IDSStewieCTMessagingClient *)ctMessagingClient isActiveForIML])
         {
-          [(IDSDXPCOffGridStateManager *)self _updateOffGridConnectActionWithPayloadKey:v22];
+          [(IDSDXPCOffGridStateManager *)self _updateOffGridConnectActionWithPayloadKey:_errorForInvalidState2];
         }
 
         else
         {
-          v35 = [(IDSDXPCOffGridStateManager *)self _needsToRequestForStewie];
+          _needsToRequestForStewie = [(IDSDXPCOffGridStateManager *)self _needsToRequestForStewie];
           v36 = +[IDSFoundationLog IDSOffGridStateManager];
           v37 = v36;
-          if (v35)
+          if (_needsToRequestForStewie)
           {
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
               v38 = @"YES";
-              if (!v22)
+              if (!_errorForInvalidState2)
               {
                 v38 = @"NO";
               }
@@ -653,11 +653,11 @@ LABEL_11:
             v40[1] = 3221225472;
             v40[2] = sub_1003E6250;
             v40[3] = &unk_100BDA928;
-            v22 = v22;
-            v41 = v22;
-            v42 = self;
-            v43 = v10;
-            [(IDSDXPCOffGridStateManager *)self _stewieContextForPayloadKey:v22 completion:v40];
+            _errorForInvalidState2 = _errorForInvalidState2;
+            v41 = _errorForInvalidState2;
+            selfCopy = self;
+            v43 = optionsCopy;
+            [(IDSDXPCOffGridStateManager *)self _stewieContextForPayloadKey:_errorForInvalidState2 completion:v40];
           }
 
           else
@@ -669,8 +669,8 @@ LABEL_11:
 
             [(IDSDXPCOffGridStateManager *)self _updateOffGridConnectActionWithPayloadKey:0];
             [(IDSDXPCOffGridStateManager *)self _setAndPersistOffGridMode:self->_offGridMode publishStatus:2];
-            v39 = [(IDSDXPCOffGridStateManager *)self _errorForStewieNotAvailable];
-            [(IDSDXPCOffGridStateManager *)self _updateClientsWithCurrentStateAndError:v39];
+            _errorForStewieNotAvailable = [(IDSDXPCOffGridStateManager *)self _errorForStewieNotAvailable];
+            [(IDSDXPCOffGridStateManager *)self _updateClientsWithCurrentStateAndError:_errorForStewieNotAvailable];
           }
         }
       }
@@ -687,8 +687,8 @@ LABEL_11:
 
       v25 = self->_offGridMode;
       v26 = self->_publishStatus;
-      v27 = [(IDSDXPCOffGridStateManager *)self _errorForInvalidState];
-      (v11)[2](v11, v25, v26, v27);
+      _errorForInvalidState = [(IDSDXPCOffGridStateManager *)self _errorForInvalidState];
+      (completionCopy)[2](completionCopy, v25, v26, _errorForInvalidState);
     }
   }
 
@@ -703,46 +703,46 @@ LABEL_11:
 
     v29 = self->_offGridMode;
     v30 = self->_publishStatus;
-    v22 = [(IDSDXPCOffGridStateManager *)self _errorForInvalidState];
-    (v11)[2](v11, v29, v30, v22);
+    _errorForInvalidState2 = [(IDSDXPCOffGridStateManager *)self _errorForInvalidState];
+    (completionCopy)[2](completionCopy, v29, v30, _errorForInvalidState2);
   }
 }
 
-- (void)invitedHandlesWithCompletion:(id)a3
+- (void)invitedHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003E66FC;
   v7[3] = &unk_100BD7298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  completionCopy = completion;
   v14 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"YES";
     *buf = 138412802;
-    v26 = v11;
+    v26 = handleCopy;
     v27 = 2112;
-    if (!v12)
+    if (!payloadCopy)
     {
       v15 = @"NO";
     }
 
     v28 = v15;
     v29 = 2112;
-    v30 = v10;
+    v30 = handlesCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received request to send invite from sender handle %@ with payload %@ to %@", buf, 0x20u);
   }
 
@@ -758,7 +758,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Cannot invite, we are offline", buf, 2u);
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
 LABEL_10:
     statusClient = self->_statusClient;
@@ -766,32 +766,32 @@ LABEL_10:
     v19[1] = 3221225472;
     v19[2] = sub_1003E69E4;
     v19[3] = &unk_100BDA950;
-    v20 = v11;
-    v21 = v12;
-    v22 = v10;
-    v23 = self;
-    v24 = v13;
+    v20 = handleCopy;
+    v21 = payloadCopy;
+    v22 = handlesCopy;
+    selfCopy = self;
+    v24 = completionCopy;
     [(IDSSKStatusClient *)statusClient inviteHandles:v22 fromSenderHandle:v20 withDictionaryPayload:v21 completion:v19];
 
-    v17 = v20;
+    _errorForDeviceOffline = v20;
   }
 
   else
   {
-    v17 = [(IDSDXPCOffGridStateManager *)self _errorForDeviceOffline];
-    (*(v13 + 2))(v13, v10, v11, v12, v17);
+    _errorForDeviceOffline = [(IDSDXPCOffGridStateManager *)self _errorForDeviceOffline];
+    (*(completionCopy + 2))(completionCopy, handlesCopy, handleCopy, payloadCopy, _errorForDeviceOffline);
   }
 }
 
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4
+- (void)removeInvitedHandles:(id)handles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  completionCopy = completion;
   v8 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = handlesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received request to remove invite for handles %@", buf, 0xCu);
   }
 
@@ -807,7 +807,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Cannot remove invite, we are offline", buf, 2u);
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
 LABEL_8:
     statusClient = self->_statusClient;
@@ -815,24 +815,24 @@ LABEL_8:
     v12[1] = 3221225472;
     v12[2] = sub_1003E6D3C;
     v12[3] = &unk_100BDA978;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
+    v13 = handlesCopy;
+    selfCopy = self;
+    v15 = completionCopy;
     [(IDSSKStatusClient *)statusClient removeInvitedHandles:v13 completion:v12];
 
-    v10 = v13;
+    _errorForDeviceOffline = v13;
   }
 
   else
   {
-    v10 = [(IDSDXPCOffGridStateManager *)self _errorForDeviceOffline];
-    (*(v7 + 2))(v7, v6, v10);
+    _errorForDeviceOffline = [(IDSDXPCOffGridStateManager *)self _errorForDeviceOffline];
+    (*(completionCopy + 2))(completionCopy, handlesCopy, _errorForDeviceOffline);
   }
 }
 
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -840,22 +840,22 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to remove all invites", buf, 2u);
   }
 
-  v6 = [(IDSSKStatusClient *)self->_statusClient invitedHandles];
+  invitedHandles = [(IDSSKStatusClient *)self->_statusClient invitedHandles];
   statusClient = self->_statusClient;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1003E6FA0;
   v10[3] = &unk_100BDA9A0;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = invitedHandles;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = invitedHandles;
   [(IDSSKStatusClient *)statusClient removeAllInvitedHandlesWithCompletion:v10];
 }
 
-- (void)fetchStewieAvailabilityWithCompletion:(id)a3
+- (void)fetchStewieAvailabilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -863,8 +863,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to fetch Stewie availability", &v13, 2u);
   }
 
-  v6 = [(IDSDXPCOffGridStateManager *)self _isStewieAvailableForIML];
-  if (v6)
+  _isStewieAvailableForIML = [(IDSDXPCOffGridStateManager *)self _isStewieAvailableForIML];
+  if (_isStewieAvailableForIML)
   {
     v7 = 16;
   }
@@ -874,8 +874,8 @@ LABEL_8:
     v7 = 0;
   }
 
-  v8 = [(IDSDXPCOffGridStateManager *)self _isStewieAvailableForSMS];
-  if (v8)
+  _isStewieAvailableForSMS = [(IDSDXPCOffGridStateManager *)self _isStewieAvailableForSMS];
+  if (_isStewieAvailableForSMS)
   {
     v9 = v7 | 0x20;
   }
@@ -885,7 +885,7 @@ LABEL_8:
     v9 = v7;
   }
 
-  v10 = v8 | v6;
+  v10 = _isStewieAvailableForSMS | _isStewieAvailableForIML;
   v11 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -902,15 +902,15 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Fetched Stewie availability: %@, services available: %ld", &v13, 0x16u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, v10 & 1, v9, 0);
+    (*(completionCopy + 2))(completionCopy, v10 & 1, v9, 0);
   }
 }
 
-- (void)connectStewieWithCompletion:(id)a3
+- (void)connectStewieWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -923,14 +923,14 @@ LABEL_8:
   v7[2] = sub_1003E7300;
   v7[3] = &unk_100BDA9C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(IDSDXPCOffGridStateManager *)self _stewieContextForPayloadKey:0 completion:v7];
 }
 
-- (void)disconnectStewieWithCompletion:(id)a3
+- (void)disconnectStewieWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -938,12 +938,12 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to disconnect Stewie", v6, 2u);
   }
 
-  [(IDSDXPCOffGridStateManager *)self _exitStewieWithCompletion:v4];
+  [(IDSDXPCOffGridStateManager *)self _exitStewieWithCompletion:completionCopy];
 }
 
-- (void)_exitStewieWithCompletion:(id)a3
+- (void)_exitStewieWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(IDSStewieCTMessagingClient *)self->_ctMessagingClient isActiveForIML]|| [(IDSStewieCTMessagingClient *)self->_ctMessagingClient isActiveForSMS])
   {
     v5 = +[IDSFoundationLog IDSOffGridStateManager];
@@ -960,7 +960,7 @@ LABEL_8:
     v8[1] = 3221225472;
     v8[2] = sub_1003E75E4;
     v8[3] = &unk_100BDA9F0;
-    v9 = v4;
+    v9 = completionCopy;
     [(CoreTelephonyClient *)ctClient exitStewieWithContext:v6 completion:v8];
   }
 
@@ -974,11 +974,11 @@ LABEL_8:
   }
 }
 
-- (void)_connectStewieWithContext:(id)a3 options:(id)a4 withCompletion:(id)a5
+- (void)_connectStewieWithContext:(id)context options:(id)options withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -992,28 +992,28 @@ LABEL_8:
   v16[2] = sub_1003E77FC;
   v16[3] = &unk_100BDAA18;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = contextCopy;
+  v18 = optionsCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = optionsCopy;
+  v15 = contextCopy;
   [(CoreTelephonyClient *)ctClient requestStewieWithContext:v15 completion:v16];
 }
 
-- (void)fetchContactsOfType:(int64_t)a3 phoneNumbersOnly:(BOOL)a4 completion:(id)a5
+- (void)fetchContactsOfType:(int64_t)type phoneNumbersOnly:(BOOL)only completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  onlyCopy = only;
+  completionCopy = completion;
   v9 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = type;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Client requested fetch contacts of types: %ld", &buf, 0xCu);
   }
 
-  if ((a3 & 3) != 0 || !v8)
+  if ((type & 3) != 0 || !completionCopy)
   {
     v13 = +[NSMutableArray array];
     *&buf = 0;
@@ -1023,13 +1023,13 @@ LABEL_8:
     v29 = sub_10000BC14;
     v30 = 0;
     v14 = dispatch_group_create();
-    if ((a3 & 2) != 0)
+    if ((type & 2) != 0)
     {
-      v15 = [(IDSDXPCOffGridStateManager *)self _fetchFamilyContactsWithPhoneNumbersOnly:v5];
+      v15 = [(IDSDXPCOffGridStateManager *)self _fetchFamilyContactsWithPhoneNumbersOnly:onlyCopy];
       [v13 addObjectsFromArray:v15];
     }
 
-    if (a3)
+    if (type)
     {
       dispatch_group_enter(v14);
       v22[0] = _NSConcreteStackBlock;
@@ -1049,7 +1049,7 @@ LABEL_8:
     v18[3] = &unk_100BDAA68;
     v19 = v13;
     v21 = &buf;
-    v20 = v8;
+    v20 = completionCopy;
     v17 = v13;
     dispatch_group_notify(v14, v16, v18);
 
@@ -1063,16 +1063,16 @@ LABEL_8:
     v32 = @"No valid contact type provided.";
     v11 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v12 = [v10 initWithDomain:IDSOffGridStateManagerErrorDomain code:0 userInfo:v11];
-    (*(v8 + 2))(v8, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
-- (id)_fetchFamilyContactsWithPhoneNumbersOnly:(BOOL)a3
+- (id)_fetchFamilyContactsWithPhoneNumbersOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = +[NSMutableArray array];
-  v6 = [(IDSFamilyManager *)self->_familyManager familyHandles];
-  v7 = [v6 mutableCopy];
+  familyHandles = [(IDSFamilyManager *)self->_familyManager familyHandles];
+  v7 = [familyHandles mutableCopy];
 
   v8 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1108,7 +1108,7 @@ LABEL_8:
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        if (!v3 || IMStringIsPhoneNumber())
+        if (!onlyCopy || IMStringIsPhoneNumber())
         {
           v18 = [IDSOffGridContactInfo alloc];
           v19 = [IDSURI URIWithUnprefixedURI:v17];
@@ -1127,9 +1127,9 @@ LABEL_8:
   return v5;
 }
 
-- (void)_fetchEmergencyContactsWithCompletion:(id)a3
+- (void)_fetchEmergencyContactsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSMutableArray array];
   hkMedicalIDStore = self->_hkMedicalIDStore;
   v9[0] = _NSConcreteStackBlock;
@@ -1137,20 +1137,20 @@ LABEL_8:
   v9[2] = sub_1003E8080;
   v9[3] = &unk_100BDAA90;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(HKMedicalIDStore *)hkMedicalIDStore fetchMedicalIDEmergencyContactsWithCompletion:v9];
 }
 
-- (void)_scheduleOffGridResetTimerWithInterval:(double)a3
+- (void)_scheduleOffGridResetTimerWithInterval:(double)interval
 {
   [(IDSDXPCOffGridStateManager *)self _clearOffGridResetTimer];
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Scheduling a timer for resetting state if online for %fsec", buf, 0xCu);
   }
 
@@ -1161,7 +1161,7 @@ LABEL_8:
   v10[2] = sub_1003E8408;
   v10[3] = &unk_100BD9268;
   v10[4] = self;
-  v8 = [v6 initWithQueue:v7 interval:a3 repeats:0 handlerBlock:v10];
+  v8 = [v6 initWithQueue:v7 interval:interval repeats:0 handlerBlock:v10];
   stateResetTimer = self->_stateResetTimer;
   self->_stateResetTimer = v8;
 }
@@ -1220,8 +1220,8 @@ LABEL_8:
       return;
     }
 
-    v7 = [(IDSDXPCOffGridStateManager *)self _offGridModeDisableWhenOnlineForTimeInterval];
-    v5 = [NSDate dateWithTimeInterval:self->_onlineSince sinceDate:v7];
+    _offGridModeDisableWhenOnlineForTimeInterval = [(IDSDXPCOffGridStateManager *)self _offGridModeDisableWhenOnlineForTimeInterval];
+    v5 = [NSDate dateWithTimeInterval:self->_onlineSince sinceDate:_offGridModeDisableWhenOnlineForTimeInterval];
     v8 = +[IDSFoundationLog IDSOffGridStateManager];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -1239,7 +1239,7 @@ LABEL_8:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134217984;
-        v13 = v7;
+        v13 = _offGridModeDisableWhenOnlineForTimeInterval;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Disabling offgrid mode as we were online for more than %ldsec", &v12, 0xCu);
       }
 
@@ -1254,14 +1254,14 @@ LABEL_8:
   }
 }
 
-- (void)_calloutToDelegateWithUpdatedContacts:(id)a3
+- (void)_calloutToDelegateWithUpdatedContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = contactsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Contact infos changed - calling out to client delegate { updatedContacts: %@ }", buf, 0xCu);
   }
 
@@ -1269,8 +1269,8 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMutableDictionary *)self->_clientRemoteObjects allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_clientRemoteObjects allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1282,17 +1282,17 @@ LABEL_8:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = [(NSMutableDictionary *)self->_clientRemoteObjects objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v10)];
-        [v11 contactInfoUpdated:v4];
+        [v11 contactInfoUpdated:contactsCopy];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -1368,14 +1368,14 @@ LABEL_8:
   v4[1] = 3221225472;
   v4[2] = sub_1003E8C24;
   v5 = v4[3] = &unk_100BDAAB8;
-  v6 = self;
+  selfCopy = self;
   v3 = v5;
   [(IDSDXPCOffGridStateManager *)self _fetchEmergencyContactsWithCompletion:v4];
 }
 
-- (void)_scheduleOffGridPayloadProvisioningTimerWithInterval:(double)a3 shouldForce:(BOOL)a4
+- (void)_scheduleOffGridPayloadProvisioningTimerWithInterval:(double)interval shouldForce:(BOOL)force
 {
-  v4 = a4;
+  forceCopy = force;
   provisionTimer = self->_provisionTimer;
   if (provisionTimer)
   {
@@ -1388,13 +1388,13 @@ LABEL_8:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
-    if (v4)
+    if (forceCopy)
     {
       v10 = @"YES";
     }
 
     *buf = 134218242;
-    v18 = a3;
+    intervalCopy = interval;
     v19 = 2112;
     v20 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Scheduling a timer for provisioning payloads in: %fsec shouldForce %@", buf, 0x16u);
@@ -1407,13 +1407,13 @@ LABEL_8:
   v15[2] = sub_1003E8E20;
   v15[3] = &unk_100BDAAE0;
   v15[4] = self;
-  v16 = v4;
-  v13 = [v11 initWithQueue:v12 interval:a3 repeats:0 handlerBlock:v15];
+  v16 = forceCopy;
+  v13 = [v11 initWithQueue:v12 interval:interval repeats:0 handlerBlock:v15];
   v14 = self->_provisionTimer;
   self->_provisionTimer = v13;
 }
 
-- (void)_offGridPayloadProvisioningTimerFiredShouldForce:(BOOL)a3
+- (void)_offGridPayloadProvisioningTimerFiredShouldForce:(BOOL)force
 {
   [(IMDispatchTimer *)self->_provisionTimer invalidate];
   provisionTimer = self->_provisionTimer;
@@ -1432,16 +1432,16 @@ LABEL_8:
   v8[2] = sub_1003E8F28;
   v8[3] = &unk_100BD7478;
   v8[4] = self;
-  v9 = a3;
+  forceCopy = force;
   dispatch_async(v7, v8);
 }
 
-- (BOOL)_isExpiredProvisionedPayload:(id)a3
+- (BOOL)_isExpiredProvisionedPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[NSDate now];
-  v5 = [v3 validUntil];
-  v6 = [v4 laterDate:v5];
+  validUntil = [payloadCopy validUntil];
+  v6 = [v4 laterDate:validUntil];
   v7 = [v6 isEqualToDate:v4];
 
   if (v7)
@@ -1450,7 +1450,7 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v3;
+      v11 = payloadCopy;
       v12 = 2112;
       v13 = v4;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Provisioned payload is expired. { provisionedPayload: %@, currentDate: %@ }", &v10, 0x16u);
@@ -1556,10 +1556,10 @@ LABEL_28:
   return v3;
 }
 
-- (void)_provisionOffGridPayloadsShouldForce:(BOOL)a3
+- (void)_provisionOffGridPayloadsShouldForce:(BOOL)force
 {
   v5 = IMWeakLinkClass();
-  if (a3 || [(IDSDXPCOffGridStateManager *)self _shouldProvisionOffGridPayloads])
+  if (force || [(IDSDXPCOffGridStateManager *)self _shouldProvisionOffGridPayloads])
   {
     [(IDSDXPCOffGridStateManager *)self _markProvisionRequestInProgress];
     v6 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"sent-payload-id"];
@@ -1579,15 +1579,15 @@ LABEL_28:
     [(IDSDXPCOffGridStateManager *)self _payloadValidityDuration];
     v10 = [v9 dateByAddingTimeInterval:?];
     v11 = objc_alloc_init(NSMutableArray);
-    v12 = [(IDSDXPCOffGridStateManager *)self _payloadCount];
-    v27 = [(IDSDXPCOffGridStateManager *)self _payloadCountPerDuration];
-    v28 = v12;
-    if (v12)
+    _payloadCount = [(IDSDXPCOffGridStateManager *)self _payloadCount];
+    _payloadCountPerDuration = [(IDSDXPCOffGridStateManager *)self _payloadCountPerDuration];
+    v28 = _payloadCount;
+    if (_payloadCount)
     {
       v13 = 0;
       do
       {
-        for (i = v27; i; --i)
+        for (i = _payloadCountPerDuration; i; --i)
         {
           v15 = [v5 alloc];
           v16 = [(IDSSKStatusClient *)self->_statusClient statusPayloadForOffGridMode:2];
@@ -1662,13 +1662,13 @@ LABEL_28:
   os_unfair_lock_unlock(&self->_provisionLock);
 }
 
-- (void)_updateOffGridConnectActionWithPayloadKey:(id)a3
+- (void)_updateOffGridConnectActionWithPayloadKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_offGridConnectActionLock);
-  if (v4)
+  if (keyCopy)
   {
-    v5 = v4;
+    v5 = keyCopy;
     v6 = 1;
   }
 
@@ -1697,18 +1697,18 @@ LABEL_28:
   os_unfair_lock_unlock(&self->_offGridConnectActionLock);
 }
 
-- (void)_markPayloadAsSentForDecryptionKey:(id)a3
+- (void)_markPayloadAsSentForDecryptionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"provisioned-payloads"];
   v6 = v5;
-  if (!v4 || !v5 || ![v5 count])
+  if (!keyCopy || !v5 || ![v5 count])
   {
     v7 = +[IDSFoundationLog IDSOffGridStateManager];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = keyCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not find payload with decryption key %@", buf, 0xCu);
     }
   }
@@ -1719,7 +1719,7 @@ LABEL_28:
   v23 = 0u;
   v8 = v6;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
-  v10 = v8;
+  identifier = v8;
   if (v9)
   {
     v11 = v9;
@@ -1734,8 +1734,8 @@ LABEL_9:
       }
 
       v14 = *(*(&v22 + 1) + 8 * v13);
-      v15 = [v14 decryptionKey];
-      v16 = [v15 isEqualToData:v4];
+      decryptionKey = [v14 decryptionKey];
+      v16 = [decryptionKey isEqualToData:keyCopy];
 
       if (v16)
       {
@@ -1750,14 +1750,14 @@ LABEL_9:
           goto LABEL_9;
         }
 
-        v10 = v8;
+        identifier = v8;
         goto LABEL_22;
       }
     }
 
-    v10 = [v14 identifier];
+    identifier = [v14 identifier];
 
-    if (!v10)
+    if (!identifier)
     {
       goto LABEL_23;
     }
@@ -1766,7 +1766,7 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v10;
+      v28 = identifier;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Saving sent payload identifier %@", buf, 0xCu);
     }
 
@@ -1778,7 +1778,7 @@ LABEL_9:
       v19 = objc_alloc_init(NSMutableSet);
     }
 
-    [v19 addObject:v10];
+    [v19 addObject:identifier];
     persistentMap = self->_persistentMap;
     v21 = [v19 copy];
     [(IDSPersistentMap *)persistentMap setObject:v21 forKey:@"sent-payload-id"];
@@ -1789,9 +1789,9 @@ LABEL_22:
 LABEL_23:
 }
 
-- (id)_getDecryptionKeyForProvisionedPayloadWithStatus:(int64_t)a3
+- (id)_getDecryptionKeyForProvisionedPayloadWithStatus:(int64_t)status
 {
-  v3 = self;
+  selfCopy = self;
   persistentMap = self->_persistentMap;
   if (persistentMap)
   {
@@ -1799,7 +1799,7 @@ LABEL_23:
     v7 = v6;
     if (v6 && [v6 count])
     {
-      v31 = [(IDSPersistentMap *)v3->_persistentMap objectForKey:@"sent-payload-id"];
+      v31 = [(IDSPersistentMap *)selfCopy->_persistentMap objectForKey:@"sent-payload-id"];
       if (!v31)
       {
         v31 = objc_alloc_init(NSSet);
@@ -1817,10 +1817,10 @@ LABEL_23:
       {
         v11 = v10;
         v12 = *v42;
-        v37 = a3;
+        statusCopy = status;
         v38 = v8;
         v35 = v9;
-        v36 = v3;
+        v36 = selfCopy;
         v39 = *v42;
 LABEL_8:
         v13 = 0;
@@ -1833,32 +1833,32 @@ LABEL_8:
           }
 
           v14 = *(*(&v41 + 1) + 8 * v13);
-          v15 = [v14 statusPayload];
-          if ([(IDSDXPCOffGridStateManager *)v3 _offGridStatusFromStatusPayload:v15]== a3)
+          statusPayload = [v14 statusPayload];
+          if ([(IDSDXPCOffGridStateManager *)selfCopy _offGridStatusFromStatusPayload:statusPayload]== status)
           {
-            v16 = [v14 validFrom];
-            v17 = [v16 earlierDate:v8];
-            v18 = [v14 validFrom];
-            if (v17 == v18)
+            validFrom = [v14 validFrom];
+            v17 = [validFrom earlierDate:v8];
+            validFrom2 = [v14 validFrom];
+            if (v17 == validFrom2)
             {
-              [(IDSDXPCOffGridStateManager *)v3 _payloadValidityRequirement];
+              [(IDSDXPCOffGridStateManager *)selfCopy _payloadValidityRequirement];
               v19 = [v8 dateByAddingTimeInterval:?];
-              v20 = [v14 validUntil];
-              v21 = [v19 laterDate:v20];
-              v22 = [v14 validUntil];
-              if (v21 == v22)
+              validUntil = [v14 validUntil];
+              v21 = [v19 laterDate:validUntil];
+              validUntil2 = [v14 validUntil];
+              if (v21 == validUntil2)
               {
-                v23 = [v14 decryptionKey];
-                if (v23)
+                decryptionKey = [v14 decryptionKey];
+                if (decryptionKey)
                 {
-                  v33 = v23;
-                  v32 = [v14 identifier];
-                  v34 = [v31 containsObject:v32];
+                  v33 = decryptionKey;
+                  identifier = [v14 identifier];
+                  v34 = [v31 containsObject:identifier];
 
-                  a3 = v37;
+                  status = statusCopy;
                   v8 = v38;
                   v9 = v35;
-                  v3 = v36;
+                  selfCopy = v36;
                   v12 = v39;
                   v11 = v40;
                   if ((v34 & 1) == 0)
@@ -1874,7 +1874,7 @@ LABEL_8:
                     v25 = v14;
                     if (v25)
                     {
-                      v26 = [v25 decryptionKey];
+                      decryptionKey2 = [v25 decryptionKey];
                       goto LABEL_36;
                     }
 
@@ -1885,10 +1885,10 @@ LABEL_8:
                 }
               }
 
-              a3 = v37;
+              status = statusCopy;
               v8 = v38;
               v9 = v35;
-              v3 = v36;
+              selfCopy = v36;
             }
 
             v12 = v39;
@@ -1917,7 +1917,7 @@ LABEL_25:
         sub_10091C44C();
       }
 
-      v26 = 0;
+      decryptionKey2 = 0;
 LABEL_36:
       v7 = v30;
     }
@@ -1930,37 +1930,37 @@ LABEL_36:
         sub_10091C488();
       }
 
-      v26 = 0;
+      decryptionKey2 = 0;
     }
   }
 
   else
   {
-    v26 = 0;
+    decryptionKey2 = 0;
   }
 
-  return v26;
+  return decryptionKey2;
 }
 
 - (BOOL)_isStewieAvailableForIML
 {
-  v3 = [(IDSDXPCOffGridStateManager *)self _isIMLRegistered];
-  if (v3)
+  _isIMLRegistered = [(IDSDXPCOffGridStateManager *)self _isIMLRegistered];
+  if (_isIMLRegistered)
   {
     if ([(IDSStewieCTMessagingClient *)self->_ctMessagingClient isAvailableForIML])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_isIMLRegistered) = 1;
     }
 
     else
     {
       ctMessagingClient = self->_ctMessagingClient;
 
-      LOBYTE(v3) = [(IDSStewieCTMessagingClient *)ctMessagingClient isActiveForIML];
+      LOBYTE(_isIMLRegistered) = [(IDSStewieCTMessagingClient *)ctMessagingClient isActiveForIML];
     }
   }
 
-  return v3;
+  return _isIMLRegistered;
 }
 
 - (BOOL)_isStewieAvailableForSMS
@@ -2007,8 +2007,8 @@ LABEL_36:
 
   if (v5)
   {
-    v6 = [v5 firstObject];
-    v7 = v6 != 0;
+    firstObject = [v5 firstObject];
+    v7 = firstObject != 0;
   }
 
   else
@@ -2042,13 +2042,13 @@ LABEL_36:
   return self->_isStewieConnectedForIML;
 }
 
-- (void)_stewieContextForPayloadKey:(id)a3 completion:(id)a4
+- (void)_stewieContextForPayloadKey:(id)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(CTStewieRequestContext);
   [v7 setReason:{-[IDSDXPCOffGridStateManager _getRequestReason](self, "_getRequestReason")}];
   v8 = +[NSMutableDictionary dictionary];
-  if (a3 && ([v7 reason] == 8 || objc_msgSend(v7, "reason") == 9))
+  if (key && ([v7 reason] == 8 || objc_msgSend(v7, "reason") == 9))
   {
     CFDictionarySetValue(v8, kCTStewieRequestWaitForOffGridModeMessage, &__kCFBooleanTrue);
   }
@@ -2059,8 +2059,8 @@ LABEL_36:
   v12[3] = &unk_100BDAB08;
   v13 = v8;
   v14 = v7;
-  v15 = v6;
-  v9 = v6;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
   v11 = v8;
   [(IDSDXPCOffGridStateManager *)self _areAllPrimaryContactsIMLReachableWithCompletion:v12];
@@ -2135,28 +2135,28 @@ LABEL_36:
   return v4;
 }
 
-- (void)_reportOffGridModeMetricWithPreviousMode:(int64_t)a3 currentMode:(int64_t)a4 previousPublishStatus:(int64_t)a5 currentPublishStatus:(int64_t)a6 previousStewieConnectionStatus:(BOOL)a7 currentStewieConnectionStatus:(BOOL)a8 previousNetworkConnectionStatus:(BOOL)a9 currentNetworkConnectionStatus:(BOOL)a10 duration:(double)a11
+- (void)_reportOffGridModeMetricWithPreviousMode:(int64_t)mode currentMode:(int64_t)currentMode previousPublishStatus:(int64_t)status currentPublishStatus:(int64_t)publishStatus previousStewieConnectionStatus:(BOOL)connectionStatus currentStewieConnectionStatus:(BOOL)stewieConnectionStatus previousNetworkConnectionStatus:(BOOL)networkConnectionStatus currentNetworkConnectionStatus:(BOOL)self0 duration:(double)self1
 {
-  v12 = a8;
-  v13 = a7;
+  stewieConnectionStatusCopy = stewieConnectionStatus;
+  connectionStatusCopy = connectionStatus;
   v18 = [IDSOffTheGridModeMetric alloc];
-  v19 = [NSNumber numberWithInteger:a3];
-  v20 = [NSNumber numberWithInteger:a4];
-  v21 = [NSNumber numberWithInteger:a5];
-  v22 = [NSNumber numberWithInteger:a6];
-  v23 = [NSNumber numberWithDouble:a11];
-  LOWORD(v29) = __PAIR16__(a10, a9);
-  v24 = [v18 initWithPreviousMode:v19 currentMode:v20 previousPublishStatus:v21 currentPublishStatus:v22 previousStewieConnectionState:v13 currentStewieConnectionState:v12 previousNetworkConnectionState:v29 currentNetworkConnectionState:v23 duration:?];
+  v19 = [NSNumber numberWithInteger:mode];
+  v20 = [NSNumber numberWithInteger:currentMode];
+  v21 = [NSNumber numberWithInteger:status];
+  v22 = [NSNumber numberWithInteger:publishStatus];
+  v23 = [NSNumber numberWithDouble:duration];
+  LOWORD(v29) = __PAIR16__(currentNetworkConnectionStatus, networkConnectionStatus);
+  v24 = [v18 initWithPreviousMode:v19 currentMode:v20 previousPublishStatus:v21 currentPublishStatus:v22 previousStewieConnectionState:connectionStatusCopy currentStewieConnectionState:stewieConnectionStatusCopy previousNetworkConnectionState:v29 currentNetworkConnectionState:v23 duration:?];
 
   v25 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v24 name];
-    v27 = [v24 dictionaryRepresentation];
+    name = [v24 name];
+    dictionaryRepresentation = [v24 dictionaryRepresentation];
     *buf = 138412546;
-    v31 = v26;
+    v31 = name;
     v32 = 2112;
-    v33 = v27;
+    v33 = dictionaryRepresentation;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Metrics: Reporting %@ with %@", buf, 0x16u);
   }
 
@@ -2164,27 +2164,27 @@ LABEL_36:
   [v28 logMetric:v24];
 }
 
-- (void)_reportOffGridEntryMetricWithService:(int64_t)a3 source:(id)a4 success:(BOOL)a5
+- (void)_reportOffGridEntryMetricWithService:(int64_t)service source:(id)source success:(BOOL)success
 {
-  v5 = a5;
-  v7 = a4;
+  successCopy = success;
+  sourceCopy = source;
   v8 = [IDSOffGridEntryMetric alloc];
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:service];
   v10 = +[NSDate now];
-  v12 = [v8 initWithService:v9 source:v7 date:v10 success:v5];
+  v12 = [v8 initWithService:v9 source:sourceCopy date:v10 success:successCopy];
 
   v11 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v11 logMetric:v12];
 }
 
-- (void)_areAllPrimaryContactsIMLReachableWithCompletion:(id)a3
+- (void)_areAllPrimaryContactsIMLReachableWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1003EAC20;
   v5[3] = &unk_100BDAB30;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(IDSDXPCOffGridStateManager *)self fetchContactsOfType:3 completion:v5];
 }
 
@@ -2261,9 +2261,9 @@ LABEL_36:
   }
 }
 
-- (void)_updateClientsWithCurrentStateAndError:(id)a3
+- (void)_updateClientsWithCurrentStateAndError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2280,8 +2280,8 @@ LABEL_36:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMutableDictionary *)self->_clientRemoteObjects allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [(NSMutableDictionary *)self->_clientRemoteObjects allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2293,44 +2293,44 @@ LABEL_36:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = [(NSMutableDictionary *)self->_clientRemoteObjects objectForKeyedSubscript:*(*(&v14 + 1) + 8 * v12)];
-        [v13 offGridModeUpdated:self->_offGridMode publishStatus:self->_publishStatus error:v4];
+        [v13 offGridModeUpdated:self->_offGridMode publishStatus:self->_publishStatus error:errorCopy];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)statusClient:(id)a3 publishRequestCompletedForStatusPayload:(id)a4 successfully:(BOOL)a5 error:(id)a6
+- (void)statusClient:(id)client publishRequestCompletedForStatusPayload:(id)payload successfully:(BOOL)successfully error:(id)error
 {
-  v6 = a5;
-  v10 = a6;
-  v9 = [(IDSDXPCOffGridStateManager *)self _offGridStatusFromStatusPayload:a4];
-  if (v10 || !v6 || !v9)
+  successfullyCopy = successfully;
+  errorCopy = error;
+  v9 = [(IDSDXPCOffGridStateManager *)self _offGridStatusFromStatusPayload:payload];
+  if (errorCopy || !successfullyCopy || !v9)
   {
     [(IDSDXPCOffGridStateManager *)self _setAndPersistOffGridMode:self->_offGridMode publishStatus:2];
   }
 
-  [(IDSDXPCOffGridStateManager *)self _updateClientsWithCurrentStateAndError:v10];
+  [(IDSDXPCOffGridStateManager *)self _updateClientsWithCurrentStateAndError:errorCopy];
 }
 
-- (void)availabilityChangedForIML:(BOOL)a3
+- (void)availabilityChangedForIML:(BOOL)l
 {
-  v3 = a3;
+  lCopy = l;
   v5 = +[IDSFoundationLog IDSOffGridStateManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (lCopy)
     {
       v7 = @"YES";
     }
@@ -2353,7 +2353,7 @@ LABEL_36:
   }
 
   isStewieConnectedForIML = self->_isStewieConnectedForIML;
-  self->_isStewieConnectedForIML = v3;
+  self->_isStewieConnectedForIML = lCopy;
   clearSendKeyOnConnectTimer = self->_clearSendKeyOnConnectTimer;
   if (clearSendKeyOnConnectTimer)
   {
@@ -2367,7 +2367,7 @@ LABEL_36:
     [(IDSDXPCOffGridStateManager *)self _sendOffGridStatusDecryptionKey];
   }
 
-  if (isStewieConnectedForIML != v3)
+  if (isStewieConnectedForIML != lCopy)
   {
     v11 = +[NSDate now];
     v12 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"latest-metric-state-changed-date"];
@@ -2385,9 +2385,9 @@ LABEL_36:
     offGridMode = self->_offGridMode;
     publishStatus = self->_publishStatus;
     v17 = self->_isStewieConnectedForIML;
-    v18 = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
+    _isDeviceOnline = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
     BYTE1(v19) = [(IDSDXPCOffGridStateManager *)self _isDeviceOnline];
-    LOBYTE(v19) = v18;
+    LOBYTE(v19) = _isDeviceOnline;
     [(IDSDXPCOffGridStateManager *)self _reportOffGridModeMetricWithPreviousMode:offGridMode currentMode:offGridMode previousPublishStatus:publishStatus currentPublishStatus:publishStatus previousStewieConnectionStatus:isStewieConnectedForIML currentStewieConnectionStatus:v17 previousNetworkConnectionStatus:v14 currentNetworkConnectionStatus:v19 duration:?];
     [(IDSPersistentMap *)self->_persistentMap setObject:v11 forKey:@"latest-metric-state-changed-date"];
   }
@@ -2405,15 +2405,15 @@ LABEL_36:
   [(IDSStewieCTMessagingClient *)ctMessagingClient sendOffGridStatusDecryptionKey:payloadKeyToSendOnIMLConnect completion:v4];
 }
 
-- (int64_t)_offGridStatusFromStatusPayload:(id)a3
+- (int64_t)_offGridStatusFromStatusPayload:(id)payload
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 payloadDictionary], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "payloadDictionary"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "allKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = IDSOffGridStatusPayloadStatusKey, v10 = objc_msgSend(v8, "containsObject:", IDSOffGridStatusPayloadStatusKey), v8, v7, v6, (v10 & 1) != 0))
+  payloadCopy = payload;
+  v4 = payloadCopy;
+  if (payloadCopy && ([payloadCopy payloadDictionary], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "payloadDictionary"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "allKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = IDSOffGridStatusPayloadStatusKey, v10 = objc_msgSend(v8, "containsObject:", IDSOffGridStatusPayloadStatusKey), v8, v7, v6, (v10 & 1) != 0))
   {
-    v11 = [v4 payloadDictionary];
-    v12 = [v11 objectForKey:v9];
-    v13 = [v12 integerValue];
+    payloadDictionary = [v4 payloadDictionary];
+    v12 = [payloadDictionary objectForKey:v9];
+    integerValue = [v12 integerValue];
   }
 
   else
@@ -2424,10 +2424,10 @@ LABEL_36:
       sub_10091C500();
     }
 
-    v13 = 0;
+    integerValue = 0;
   }
 
-  return v13;
+  return integerValue;
 }
 
 - (double)_payloadValidityDuration
@@ -2472,17 +2472,17 @@ LABEL_36:
 
 - (unint64_t)_payloadCount
 {
-  v2 = 1;
+  integerValue = 1;
   v3 = [IDSServerBag sharedInstanceForBagType:1];
   v4 = [v3 objectForKey:@"shared-channels-cp-status-payload-intervals"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (unint64_t)_payloadCountPerDuration
@@ -2493,15 +2493,15 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)_successfulProvisionInterval
@@ -2608,27 +2608,27 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 900;
+    integerValue = 900;
   }
 
   if (+[IMUserDefaults offGridModeDisableWhenOnlineForTimeInterval]>= 1)
   {
-    v4 = +[IMUserDefaults offGridModeDisableWhenOnlineForTimeInterval];
+    integerValue = +[IMUserDefaults offGridModeDisableWhenOnlineForTimeInterval];
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)connectionMonitorDidUpdate:(id)a3
+- (void)connectionMonitorDidUpdate:(id)update
 {
-  v4 = [a3 isImmediatelyReachable];
+  isImmediatelyReachable = [update isImmediatelyReachable];
   onlineSince = self->_onlineSince;
-  if (v4)
+  if (isImmediatelyReachable)
   {
     if (onlineSince)
     {
@@ -2647,9 +2647,9 @@ LABEL_36:
   self->_onlineSince = v6;
 
 LABEL_6:
-  if (self->_isConnected == v4)
+  if (self->_isConnected == isImmediatelyReachable)
   {
-    v7 = v4 ^ 1;
+    v7 = isImmediatelyReachable ^ 1;
   }
 
   else
@@ -2658,7 +2658,7 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"NO";
-      if (v4)
+      if (isImmediatelyReachable)
       {
         v9 = @"YES";
       }
@@ -2668,7 +2668,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "connectionMonitorDidUpdate : %@", buf, 0xCu);
     }
 
-    self->_isConnected = v4;
+    self->_isConnected = isImmediatelyReachable;
     v10 = +[NSDate now];
     v11 = [(IDSPersistentMap *)self->_persistentMap objectForKey:@"latest-metric-state-changed-date"];
     if (v11)
@@ -2681,17 +2681,17 @@ LABEL_6:
       v12 = 0.0;
     }
 
-    v7 = v4 ^ 1;
-    BYTE1(v16) = v4;
-    LOBYTE(v16) = v4 ^ 1;
+    v7 = isImmediatelyReachable ^ 1;
+    BYTE1(v16) = isImmediatelyReachable;
+    LOBYTE(v16) = isImmediatelyReachable ^ 1;
     [(IDSDXPCOffGridStateManager *)self _reportOffGridModeMetricWithPreviousMode:self->_offGridMode currentMode:self->_offGridMode previousPublishStatus:self->_publishStatus currentPublishStatus:self->_publishStatus previousStewieConnectionStatus:self->_isStewieConnectedForIML currentStewieConnectionStatus:self->_isStewieConnectedForIML previousNetworkConnectionStatus:v12 currentNetworkConnectionStatus:v16 duration:?];
     [(IDSPersistentMap *)self->_persistentMap setObject:v10 forKey:@"latest-metric-state-changed-date"];
   }
 
   v13 = +[IMSystemMonitor sharedInstance];
-  v14 = [v13 isSystemLocked];
+  isSystemLocked = [v13 isSystemLocked];
 
-  if ((v14 & 1) == 0 && (v7 & 1) == 0 && self->_offGridMode == 2)
+  if ((isSystemLocked & 1) == 0 && (v7 & 1) == 0 && self->_offGridMode == 2)
   {
     v15 = +[IDSFoundationLog IDSOffGridStateManager];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2703,7 +2703,7 @@ LABEL_6:
     [(IDSDXPCOffGridStateManager *)self _disableOffGridModeViaStatusClient];
   }
 
-  if (v4)
+  if (isImmediatelyReachable)
   {
     [(IDSDXPCOffGridStateManager *)self _provisionOffGridPayloadsShouldForce:0];
   }

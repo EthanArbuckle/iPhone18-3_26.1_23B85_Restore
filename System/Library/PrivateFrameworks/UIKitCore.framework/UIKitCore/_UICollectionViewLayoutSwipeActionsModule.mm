@@ -1,64 +1,64 @@
 @interface _UICollectionViewLayoutSwipeActionsModule
-- (BOOL)_canIgnoreInvalidationContext:(id)a3;
-- (BOOL)_canSwipeItemAtIndexPath:(id)a3;
+- (BOOL)_canIgnoreInvalidationContext:(id)context;
+- (BOOL)_canSwipeItemAtIndexPath:(id)path;
 - (BOOL)hasActiveSwipe;
-- (BOOL)swipeActionController:(id)a3 insertActionsView:(id)a4 forItemAtIndexPath:(id)a5;
-- (BOOL)swipeActionController:(id)a3 mayBeginSwipeForItemAtIndexPath:(id)a4;
+- (BOOL)swipeActionController:(id)controller insertActionsView:(id)view forItemAtIndexPath:(id)path;
+- (BOOL)swipeActionController:(id)controller mayBeginSwipeForItemAtIndexPath:(id)path;
 - (UICollectionViewLayout)host;
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4;
-- (_UICollectionViewLayoutSwipeActionsModule)initWithHost:(id)a3;
-- (id)_cellWithCustomGroupingAtIndexPath:(id)a3;
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3;
-- (id)itemContainerViewForSwipeActionController:(id)a3;
-- (id)propertyAnimatorForCollectionViewUpdates:(id)a3 withCustomAnimator:(id)a4;
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4;
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipeActionController:(id)a3 trailingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipeActionController:(id)a3 viewForItemAtIndexPath:(id)a4;
-- (id)swipeViewManipulatorForSwipeActionController:(id)a3;
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3;
-- (int64_t)swipeActionsStyleForSwipedItemAtIndexPath:(id)a3;
-- (void)_invalidateSwipeActionsLayoutRefreshingActiveConfigurations:(BOOL)a3;
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path;
+- (_UICollectionViewLayoutSwipeActionsModule)initWithHost:(id)host;
+- (id)_cellWithCustomGroupingAtIndexPath:(id)path;
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller;
+- (id)itemContainerViewForSwipeActionController:(id)controller;
+- (id)propertyAnimatorForCollectionViewUpdates:(id)updates withCustomAnimator:(id)animator;
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location;
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (id)swipeActionController:(id)controller trailingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (id)swipeActionController:(id)controller viewForItemAtIndexPath:(id)path;
+- (id)swipeViewManipulatorForSwipeActionController:(id)controller;
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller;
+- (int64_t)swipeActionsStyleForSwipedItemAtIndexPath:(id)path;
+- (void)_invalidateSwipeActionsLayoutRefreshingActiveConfigurations:(BOOL)configurations;
 - (void)_performForcedCollectionViewLayoutPreservingExistingLayoutAttributes;
-- (void)_transformLayoutAttributes:(id)a3 ofSeparatorAtBottom:(BOOL)a4 forSwipeOccurrence:(id)a5 isDisappearing:(BOOL)a6;
-- (void)_updateSwipeActionsConfiguration:(id)a3 forIndexPath:(id)a4;
+- (void)_transformLayoutAttributes:(id)attributes ofSeparatorAtBottom:(BOOL)bottom forSwipeOccurrence:(id)occurrence isDisappearing:(BOOL)disappearing;
+- (void)_updateSwipeActionsConfiguration:(id)configuration forIndexPath:(id)path;
 - (void)editingStateDidChange;
-- (void)finalizeCollectionViewUpdate:(id)a3;
-- (void)processLayoutInvalidationWithContext:(id)a3 updateConfigurations:(BOOL)a4;
-- (void)revealTrailingSwipeActionsForIndexPath:(id)a3;
-- (void)swipeActionController:(id)a3 didBeginSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeActionController:(id)a3 didEndSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeActionController:(id)a3 swipeOccurrence:(id)a4 didChangeStateFrom:(int64_t)a5 to:(int64_t)a6;
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeItemAtIndexPath:(id)a3 direction:(unint64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)transformCellLayoutAttributes:(id)a3 isDisappearing:(BOOL)a4;
-- (void)transformDecorationLayoutAttributes:(id)a3 isDisappearing:(BOOL)a4;
-- (void)updateWithDataSourceTranslator:(id)a3;
+- (void)finalizeCollectionViewUpdate:(id)update;
+- (void)processLayoutInvalidationWithContext:(id)context updateConfigurations:(BOOL)configurations;
+- (void)revealTrailingSwipeActionsForIndexPath:(id)path;
+- (void)swipeActionController:(id)controller didBeginSwipeForItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller didEndSwipeForItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from to:(int64_t)to;
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path;
+- (void)swipeItemAtIndexPath:(id)path direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion;
+- (void)transformCellLayoutAttributes:(id)attributes isDisappearing:(BOOL)disappearing;
+- (void)transformDecorationLayoutAttributes:(id)attributes isDisappearing:(BOOL)disappearing;
+- (void)updateWithDataSourceTranslator:(id)translator;
 @end
 
 @implementation _UICollectionViewLayoutSwipeActionsModule
 
 - (BOOL)hasActiveSwipe
 {
-  v2 = [(UISwipeActionController *)self->_swipeActionController swipedIndexPaths];
-  v3 = [v2 count] != 0;
+  swipedIndexPaths = [(UISwipeActionController *)self->_swipeActionController swipedIndexPaths];
+  v3 = [swipedIndexPaths count] != 0;
 
   return v3;
 }
 
-- (_UICollectionViewLayoutSwipeActionsModule)initWithHost:(id)a3
+- (_UICollectionViewLayoutSwipeActionsModule)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v13.receiver = self;
   v13.super_class = _UICollectionViewLayoutSwipeActionsModule;
   v5 = [(_UICollectionViewLayoutSwipeActionsModule *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_host, v4);
-    v7 = [v4 collectionView];
-    v8 = [v7 traitCollection];
-    v9 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [v8 userInterfaceIdiom]);
+    objc_storeWeak(&v5->_host, hostCopy);
+    collectionView = [hostCopy collectionView];
+    traitCollection = [collectionView traitCollection];
+    v9 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [traitCollection userInterfaceIdiom]);
 
     v10 = -[UISwipeActionController initWithSwipeActionHost:style:]([UISwipeActionController alloc], "initWithSwipeActionHost:style:", v6, [v9 defaultCollectionViewCompositionalLayoutSwipeStyle]);
     swipeActionController = v6->_swipeActionController;
@@ -73,20 +73,20 @@
   flags = self->_flags;
   *&self->_flags = flags | 4;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v5 = [WeakRetained collectionView];
-  [v5 layoutIfNeeded];
+  collectionView = [WeakRetained collectionView];
+  [collectionView layoutIfNeeded];
 
   *&self->_flags = *&self->_flags & 0xFB | flags & 4;
 }
 
-- (BOOL)_canSwipeItemAtIndexPath:(id)a3
+- (BOOL)_canSwipeItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v6 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  v7 = [v6 _reorderedItems];
-  v8 = [v7 count];
+  _reorderedItems = [collectionView _reorderedItems];
+  v8 = [_reorderedItems count];
 
   if (v8)
   {
@@ -95,182 +95,182 @@
 
   else
   {
-    v9 = [v6 _isCellInvolvedInDragOrDropAnimationAtIndexPath:v4] ^ 1;
+    v9 = [collectionView _isCellInvolvedInDragOrDropAnimationAtIndexPath:pathCopy] ^ 1;
   }
 
   return v9;
 }
 
-- (void)swipeItemAtIndexPath:(id)a3 direction:(unint64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)swipeItemAtIndexPath:(id)path direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v10 = a6;
-  if ([(_UICollectionViewLayoutSwipeActionsModule *)self _canSwipeItemAtIndexPath:v11])
+  animatedCopy = animated;
+  pathCopy = path;
+  completionCopy = completion;
+  if ([(_UICollectionViewLayoutSwipeActionsModule *)self _canSwipeItemAtIndexPath:pathCopy])
   {
-    [(UISwipeActionController *)self->_swipeActionController swipeItemAtIndexPath:v11 configuration:0 direction:a4 animated:v7 completion:v10];
+    [(UISwipeActionController *)self->_swipeActionController swipeItemAtIndexPath:pathCopy configuration:0 direction:direction animated:animatedCopy completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)revealTrailingSwipeActionsForIndexPath:(id)a3
+- (void)revealTrailingSwipeActionsForIndexPath:(id)path
 {
   swipeActionController = self->_swipeActionController;
-  v5 = a3;
-  [(_UICollectionViewLayoutSwipeActionsModule *)self swipeItemAtIndexPath:v5 direction:[(UISwipeActionController *)swipeActionController _swipeDirectionForLeadingEdge:0] animated:1 completion:0];
+  pathCopy = path;
+  [(_UICollectionViewLayoutSwipeActionsModule *)self swipeItemAtIndexPath:pathCopy direction:[(UISwipeActionController *)swipeActionController _swipeDirectionForLeadingEdge:0] animated:1 completion:0];
 }
 
-- (int64_t)swipeActionsStyleForSwipedItemAtIndexPath:(id)a3
+- (int64_t)swipeActionsStyleForSwipedItemAtIndexPath:(id)path
 {
-  v3 = [(UISwipeActionController *)self->_swipeActionController _existingSwipeOccurrenceForIndexPath:a3];
+  v3 = [(UISwipeActionController *)self->_swipeActionController _existingSwipeOccurrenceForIndexPath:path];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _styleFromConfiguration];
+    _styleFromConfiguration = [v3 _styleFromConfiguration];
   }
 
   else
   {
-    v5 = 0;
+    _styleFromConfiguration = 0;
   }
 
-  return v5;
+  return _styleFromConfiguration;
 }
 
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v4 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  return v4;
+  return collectionView;
 }
 
-- (id)itemContainerViewForSwipeActionController:(id)a3
+- (id)itemContainerViewForSwipeActionController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v4 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  return v4;
+  return collectionView;
 }
 
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  if (![WeakRetained _supportsSwipeActionsForIndexPath:v5])
+  if (![WeakRetained _supportsSwipeActionsForIndexPath:pathCopy])
   {
     goto LABEL_10;
   }
 
-  v7 = [WeakRetained _leadingSwipeActionsConfigurationForIndexPath:v5];
+  v7 = [WeakRetained _leadingSwipeActionsConfigurationForIndexPath:pathCopy];
   if (v7)
   {
-    v8 = v7;
+    _leadingSwipeActionsConfiguration = v7;
 LABEL_4:
-    [(_UICollectionViewLayoutSwipeActionsModule *)self _updateSwipeActionsConfiguration:v8 forIndexPath:v5];
+    [(_UICollectionViewLayoutSwipeActionsModule *)self _updateSwipeActionsConfiguration:_leadingSwipeActionsConfiguration forIndexPath:pathCopy];
     goto LABEL_11;
   }
 
-  v9 = [WeakRetained collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v5];
+  collectionView = [WeakRetained collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (!v10 || ([v10 contentView], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) == 0))
   {
 
 LABEL_10:
-    v8 = 0;
+    _leadingSwipeActionsConfiguration = 0;
     goto LABEL_11;
   }
 
-  v13 = [v10 contentView];
-  v8 = [v13 _leadingSwipeActionsConfiguration];
+  contentView = [v10 contentView];
+  _leadingSwipeActionsConfiguration = [contentView _leadingSwipeActionsConfiguration];
 
-  if (v8)
+  if (_leadingSwipeActionsConfiguration)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
 
-  return v8;
+  return _leadingSwipeActionsConfiguration;
 }
 
-- (id)swipeActionController:(id)a3 trailingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller trailingSwipeConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  if (![WeakRetained _supportsSwipeActionsForIndexPath:v5])
+  if (![WeakRetained _supportsSwipeActionsForIndexPath:pathCopy])
   {
     goto LABEL_10;
   }
 
-  v7 = [WeakRetained _trailingSwipeActionsConfigurationForIndexPath:v5];
+  v7 = [WeakRetained _trailingSwipeActionsConfigurationForIndexPath:pathCopy];
   if (v7)
   {
-    v8 = v7;
+    _trailingSwipeActionsConfiguration = v7;
 LABEL_4:
-    [(_UICollectionViewLayoutSwipeActionsModule *)self _updateSwipeActionsConfiguration:v8 forIndexPath:v5];
+    [(_UICollectionViewLayoutSwipeActionsModule *)self _updateSwipeActionsConfiguration:_trailingSwipeActionsConfiguration forIndexPath:pathCopy];
     goto LABEL_11;
   }
 
-  v9 = [WeakRetained collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v5];
+  collectionView = [WeakRetained collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (!v10 || ([v10 contentView], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) == 0))
   {
 
 LABEL_10:
-    v8 = 0;
+    _trailingSwipeActionsConfiguration = 0;
     goto LABEL_11;
   }
 
-  v13 = [v10 contentView];
-  v8 = [v13 _trailingSwipeActionsConfiguration];
+  contentView = [v10 contentView];
+  _trailingSwipeActionsConfiguration = [contentView _trailingSwipeActionsConfiguration];
 
-  if (v8)
+  if (_trailingSwipeActionsConfiguration)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
 
-  return v8;
+  return _trailingSwipeActionsConfiguration;
 }
 
-- (void)_updateSwipeActionsConfiguration:(id)a3 forIndexPath:(id)a4
+- (void)_updateSwipeActionsConfiguration:(id)configuration forIndexPath:(id)path
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  configurationCopy = configuration;
+  pathCopy = path;
+  if (!configurationCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  [WeakRetained _updateStyleForSwipeActionsConfiguration:v11 indexPath:v7];
+  [WeakRetained _updateStyleForSwipeActionsConfiguration:configurationCopy indexPath:pathCopy];
 
-  if ([v11 _swipeActionsStyle] != 1)
+  if ([configurationCopy _swipeActionsStyle] != 1)
   {
-    v9 = [(_UICollectionViewLayoutSwipeActionsModule *)self _cellWithCustomGroupingAtIndexPath:v7];
+    v9 = [(_UICollectionViewLayoutSwipeActionsModule *)self _cellWithCustomGroupingAtIndexPath:pathCopy];
 
     if (v9)
     {
-      [v11 _setSwipeActionsStyle:1];
+      [configurationCopy _setSwipeActionsStyle:1];
     }
   }
 }
 
-- (id)_cellWithCustomGroupingAtIndexPath:(id)a3
+- (id)_cellWithCustomGroupingAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v6 = [WeakRetained collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v4];
+  collectionView = [WeakRetained collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (!v7)
   {
@@ -278,10 +278,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v7 _layoutAttributes];
-  v9 = [(UICollectionViewLayoutAttributes *)v8 _existingListAttributes];
+  _layoutAttributes = [v7 _layoutAttributes];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)_layoutAttributes _existingListAttributes];
 
-  if (v9 && (*(v9 + 8) & 2) != 0 && *(v9 + 24) != 15)
+  if (_existingListAttributes && (*(_existingListAttributes + 8) & 2) != 0 && *(_existingListAttributes + 24) != 15)
   {
     v10 = v7;
     goto LABEL_11;
@@ -308,28 +308,28 @@ LABEL_12:
   return v10;
 }
 
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v4 = [WeakRetained collectionView];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  collectionView = [WeakRetained collectionView];
+  effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
 
-  return v5;
+  return effectiveUserInterfaceLayoutDirection;
 }
 
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v26 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v8 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  v9 = [v8 indexPathForItemAtPoint:{x, y}];
+  v9 = [collectionView indexPathForItemAtPoint:{x, y}];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    indexPath2 = v9;
   }
 
   else
@@ -338,8 +338,8 @@ LABEL_12:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(UISwipeActionController *)self->_swipeActionController swipeOccurrences];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    swipeOccurrences = [(UISwipeActionController *)self->_swipeActionController swipeOccurrences];
+    v13 = [swipeOccurrences countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -350,23 +350,23 @@ LABEL_12:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(swipeOccurrences);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
           if (([v17 _hasAmbiguousIndexPath] & 1) == 0)
           {
-            v18 = [v17 indexPath];
-            v19 = [v8 _visibleDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:v18];
+            indexPath = [v17 indexPath];
+            v19 = [collectionView _visibleDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:indexPath];
 
             if (v19)
             {
               if (([v19 isHidden] & 1) == 0)
               {
-                [v19 convertPoint:v8 fromView:{x, y}];
+                [v19 convertPoint:collectionView fromView:{x, y}];
                 if ([v19 pointInside:0 withEvent:?])
                 {
-                  v11 = [v17 indexPath];
+                  indexPath2 = [v17 indexPath];
 
                   goto LABEL_17;
                 }
@@ -375,7 +375,7 @@ LABEL_12:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [swipeOccurrences countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v14)
         {
           continue;
@@ -385,31 +385,31 @@ LABEL_12:
       }
     }
 
-    v11 = 0;
+    indexPath2 = 0;
   }
 
 LABEL_17:
 
-  return v11;
+  return indexPath2;
 }
 
-- (id)swipeActionController:(id)a3 viewForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller viewForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v7 = [WeakRetained collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v5];
+  collectionView = [WeakRetained collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v7 = [WeakRetained collectionView];
-  [v7 bounds];
+  collectionView = [WeakRetained collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -418,12 +418,12 @@ LABEL_17:
   v53 = v10;
   v54 = v12;
   v56 = v14;
-  [v7 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v51 = v18;
   v52 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v7 accessoryViewAtEdge:3];
+  v23 = [collectionView accessoryViewAtEdge:3];
   v24 = v23;
   if (v23)
   {
@@ -440,7 +440,7 @@ LABEL_17:
     }
   }
 
-  v27 = [v7 accessoryViewAtEdge:5];
+  v27 = [collectionView accessoryViewAtEdge:5];
   if (v27)
   {
     v63.origin.x = v16;
@@ -456,7 +456,7 @@ LABEL_17:
     }
   }
 
-  v30 = [WeakRetained layoutAttributesForDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:{v5, *&v22}];
+  v30 = [WeakRetained layoutAttributesForDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:{pathCopy, *&v22}];
   [v30 frame];
   if (v30)
   {
@@ -477,7 +477,7 @@ LABEL_17:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v59 = v5;
+        v59 = pathCopy;
         _os_log_fault_impl(&dword_188A29000, v49, OS_LOG_TYPE_FAULT, "Missing layout attributes for swipe actions view at index path: %@", buf, 0xCu);
       }
     }
@@ -488,7 +488,7 @@ LABEL_17:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v59 = v5;
+        v59 = pathCopy;
         _os_log_impl(&dword_188A29000, v39, OS_LOG_TYPE_ERROR, "Missing layout attributes for swipe actions view at index path: %@", buf, 0xCu);
       }
     }
@@ -531,33 +531,33 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)swipeActionController:(id)a3 mayBeginSwipeForItemAtIndexPath:(id)a4
+- (BOOL)swipeActionController:(id)controller mayBeginSwipeForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v7 = ([WeakRetained isEditing] & 1) == 0 && -[_UICollectionViewLayoutSwipeActionsModule _canSwipeItemAtIndexPath:](self, "_canSwipeItemAtIndexPath:", v5);
+  v7 = ([WeakRetained isEditing] & 1) == 0 && -[_UICollectionViewLayoutSwipeActionsModule _canSwipeItemAtIndexPath:](self, "_canSwipeItemAtIndexPath:", pathCopy);
 
   return v7;
 }
 
-- (BOOL)swipeActionController:(id)a3 insertActionsView:(id)a4 forItemAtIndexPath:(id)a5
+- (BOOL)swipeActionController:(id)controller insertActionsView:(id)view forItemAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v10 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
   v11 = objc_loadWeakRetained(&self->_host);
-  _UIInvalidateSwipeActionsLayoutForDecorationViewAtIndexPath(v11, v8);
+  _UIInvalidateSwipeActionsLayoutForDecorationViewAtIndexPath(v11, pathCopy);
 
-  _UIPerformImmediateCollectionViewLayoutAndVisibleCellsUpdate(v10);
-  v12 = [v10 _visibleDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:v8];
+  _UIPerformImmediateCollectionViewLayoutAndVisibleCellsUpdate(collectionView);
+  v12 = [collectionView _visibleDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:pathCopy];
   v13 = v12;
   if (v12)
   {
     [v12 setClipsToBounds:1];
-    [v13 addSubview:v7];
+    [v13 addSubview:viewCopy];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -566,7 +566,7 @@ LABEL_17:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = pathCopy;
       _os_log_fault_impl(&dword_188A29000, v16, OS_LOG_TYPE_FAULT, "Swipe actions view was not created for index path: %@", &v17, 0xCu);
     }
   }
@@ -577,7 +577,7 @@ LABEL_17:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = pathCopy;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Swipe actions view was not created for index path: %@", &v17, 0xCu);
     }
   }
@@ -585,20 +585,20 @@ LABEL_17:
   return v13 != 0;
 }
 
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path
 {
-  if ([a3 _isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:a4])
+  if ([controller _isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:path])
   {
     WeakRetained = objc_loadWeakRetained(&self->_host);
     [WeakRetained _willBeginSwiping];
   }
 }
 
-- (void)swipeActionController:(id)a3 didBeginSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller didBeginSwipeForItemAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 _existingSwipeOccurrenceForIndexPath:v5];
+  pathCopy = path;
+  v6 = [controller _existingSwipeOccurrenceForIndexPath:pathCopy];
   if (os_variant_has_internal_diagnostics())
   {
     if (!v6)
@@ -607,7 +607,7 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
         v18 = 138412290;
-        v19 = v5;
+        v19 = pathCopy;
         _os_log_fault_impl(&dword_188A29000, v16, OS_LOG_TYPE_FAULT, "Unable to get swipe occurrence for swipe at index path: %@", &v18, 0xCu);
       }
     }
@@ -619,35 +619,35 @@ LABEL_17:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v5;
+      v19 = pathCopy;
       _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_ERROR, "Unable to get swipe occurrence for swipe at index path: %@", &v18, 0xCu);
     }
   }
 
-  v7 = [v6 swipedView];
-  v8 = [(UIView *)v7 _safeMaskView];
-  if (!_UISolariumSwipeActionsEnabled() || ([(UIView *)v7 _safeMaskView], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (v10 = v9, [(UIView *)v7 _safeMaskView], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) == 0))
+  swipedView = [v6 swipedView];
+  _safeMaskView = [(UIView *)swipedView _safeMaskView];
+  if (!_UISolariumSwipeActionsEnabled() || ([(UIView *)swipedView _safeMaskView], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (v10 = v9, [(UIView *)swipedView _safeMaskView], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) == 0))
   {
     v13 = [_UICollectionViewLayoutSwipeMaskView alloc];
-    [v7 bounds];
+    [swipedView bounds];
     v14 = [(UIView *)v13 initWithFrame:?];
 
     v15 = +[UIColor blackColor];
     [(UIView *)v14 setBackgroundColor:v15];
 
-    [(UIView *)v7 _setSafeMaskView:v14];
-    v8 = v14;
+    [(UIView *)swipedView _setSafeMaskView:v14];
+    _safeMaskView = v14;
   }
 
-  _UIUpdateMaskViewClippingFromView(v8, v7);
+  _UIUpdateMaskViewClippingFromView(_safeMaskView, swipedView);
 }
 
-- (void)swipeActionController:(id)a3 didEndSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller didEndSwipeForItemAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _existingSwipeOccurrenceForIndexPath:v7];
+  controllerCopy = controller;
+  pathCopy = path;
+  v8 = [controllerCopy _existingSwipeOccurrenceForIndexPath:pathCopy];
   if (os_variant_has_internal_diagnostics())
   {
     if (!v8)
@@ -656,7 +656,7 @@ LABEL_17:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
         v18 = 138412290;
-        v19 = v7;
+        v19 = pathCopy;
         _os_log_fault_impl(&dword_188A29000, v15, OS_LOG_TYPE_FAULT, "Unable to get swipe occurrence for ended swipe at index path: %@", &v18, 0xCu);
       }
     }
@@ -668,16 +668,16 @@ LABEL_17:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v7;
+      v19 = pathCopy;
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "Unable to get swipe occurrence for ended swipe at index path: %@", &v18, 0xCu);
     }
   }
 
   [v8 setSwipedViewMaskWasRemoved:1];
-  v9 = [v8 _hasAmbiguousIndexPath];
-  v10 = [v8 swipedView];
-  WeakRetained = v10;
-  if (v9)
+  _hasAmbiguousIndexPath = [v8 _hasAmbiguousIndexPath];
+  swipedView = [v8 swipedView];
+  WeakRetained = swipedView;
+  if (_hasAmbiguousIndexPath)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -710,7 +710,7 @@ LABEL_17:
 
   else
   {
-    [(UIView *)v10 _setSafeMaskView:?];
+    [(UIView *)swipedView _setSafeMaskView:?];
 
     if ([v8 _didReloadData])
     {
@@ -718,33 +718,33 @@ LABEL_17:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_host);
-    v13 = [v8 indexPath];
-    _UIInvalidateSwipeActionsLayoutForItemAtIndexPath(WeakRetained, v13);
+    indexPath = [v8 indexPath];
+    _UIInvalidateSwipeActionsLayoutForItemAtIndexPath(WeakRetained, indexPath);
   }
 
 LABEL_12:
-  if ([v6 _isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:v7])
+  if ([controllerCopy _isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:pathCopy])
   {
     v14 = objc_loadWeakRetained(&self->_host);
     [v14 _didEndSwiping];
   }
 }
 
-- (void)swipeActionController:(id)a3 swipeOccurrence:(id)a4 didChangeStateFrom:(int64_t)a5 to:(int64_t)a6
+- (void)swipeActionController:(id)controller swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from to:(int64_t)to
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  switch(a6)
+  controllerCopy = controller;
+  occurrenceCopy = occurrence;
+  v12 = occurrenceCopy;
+  switch(to)
   {
     case 5:
       goto LABEL_12;
     case 4:
-      v40 = [v11 currentAction];
-      v41 = [v40 style];
+      currentAction = [occurrenceCopy currentAction];
+      style = [currentAction style];
 
-      if (v41 == 1)
+      if (style == 1)
       {
         break;
       }
@@ -761,72 +761,72 @@ LABEL_12:
 
       break;
     case 3:
-      v13 = [v11 currentAction];
-      v14 = [v13 style];
+      currentAction2 = [occurrenceCopy currentAction];
+      style2 = [currentAction2 style];
 
-      if (v14 == 1)
+      if (style2 == 1)
       {
-        v15 = [v12 swipedView];
-        v16 = [(UIView *)v15 _safeMaskView];
-        v17 = [v16 layer];
-        v18 = [v17 presentationLayer];
-        if (v18)
+        swipedView = [v12 swipedView];
+        _safeMaskView = [(UIView *)swipedView _safeMaskView];
+        layer = [_safeMaskView layer];
+        presentationLayer = [layer presentationLayer];
+        if (presentationLayer)
         {
-          v19 = [v17 animationKeys];
-          v20 = [v19 count];
+          animationKeys = [layer animationKeys];
+          v20 = [animationKeys count];
 
           if (v20)
           {
-            [v18 position];
-            [v17 setPosition:?];
-            [v17 removeAllAnimations];
+            [presentationLayer position];
+            [layer setPosition:?];
+            [layer removeAllAnimations];
           }
         }
 
-        if (!v15 || !v16)
+        if (!swipedView || !_safeMaskView)
         {
-          v42 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           WeakRetained = objc_loadWeakRetained(&self->_host);
-          v44 = [WeakRetained collectionView];
-          [v42 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:524 description:{@"UICollectionView internal inconsistency: did not receive a swiped view or mask as expected for swipe occurrence %@.\nCollection View: %@, swiped view: %@, mask: %@", v12, v44, v15, v16}];
+          collectionView = [WeakRetained collectionView];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:524 description:{@"UICollectionView internal inconsistency: did not receive a swiped view or mask as expected for swipe occurrence %@.\nCollection View: %@, swiped view: %@, mask: %@", v12, collectionView, swipedView, _safeMaskView}];
         }
 
-        v58[0] = v16;
-        v58[1] = v15;
+        v58[0] = _safeMaskView;
+        v58[1] = swipedView;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
         v22 = [_UISwipeAnimationFactory animatorForTentativeWithOccurrence:v12 additivelyAnimatedViews:v21];
 
         v23 = objc_loadWeakRetained(&self->_host);
-        v24 = [v23 collectionView];
+        collectionView2 = [v23 collectionView];
 
         [(_UICollectionViewLayoutSwipeActionsModule *)self _performForcedCollectionViewLayoutPreservingExistingLayoutAttributes];
-        v25 = [v12 lockActionViewForAnimation];
-        [v25 bounds];
+        lockActionViewForAnimation = [v12 lockActionViewForAnimation];
+        [lockActionViewForAnimation bounds];
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        v32 = [v25 superview];
-        [v32 bounds];
+        superview = [lockActionViewForAnimation superview];
+        [superview bounds];
         Width = CGRectGetWidth(v59);
 
         v34 = objc_loadWeakRetained(&self->_host);
-        v35 = [v12 indexPath];
-        _UIInvalidateSwipeActionsLayoutForItemAtIndexPath(v34, v35);
+        indexPath = [v12 indexPath];
+        _UIInvalidateSwipeActionsLayoutForItemAtIndexPath(v34, indexPath);
 
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __105___UICollectionViewLayoutSwipeActionsModule_swipeActionController_swipeOccurrence_didChangeStateFrom_to___block_invoke;
         v50[3] = &unk_1E70FFF08;
-        v36 = v25;
+        v36 = lockActionViewForAnimation;
         v54 = v27;
         v55 = v29;
         v56 = Width;
         v57 = v31;
         v51 = v36;
-        v52 = v24;
+        v52 = collectionView2;
         v37 = v12;
         v53 = v37;
-        v38 = v24;
+        v38 = collectionView2;
         [v22 addAnimations:v50];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
@@ -851,27 +851,27 @@ LABEL_12:
   [(UISwipeActionController *)swipeActionController resetSwipedItemAnimated:v3 completion:0];
 }
 
-- (void)processLayoutInvalidationWithContext:(id)a3 updateConfigurations:(BOOL)a4
+- (void)processLayoutInvalidationWithContext:(id)context updateConfigurations:(BOOL)configurations
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(_UICollectionViewLayoutSwipeActionsModule *)self _canIgnoreInvalidationContext:v8];
-  v7 = v8;
+  configurationsCopy = configurations;
+  contextCopy = context;
+  v6 = [(_UICollectionViewLayoutSwipeActionsModule *)self _canIgnoreInvalidationContext:contextCopy];
+  v7 = contextCopy;
   if (!v6)
   {
-    if ([v8 _intent] == 3)
+    if ([contextCopy _intent] == 3)
     {
       [(UISwipeActionController *)self->_swipeActionController reloadData];
       *&self->_flags &= 0xFCu;
 LABEL_7:
-      v7 = v8;
+      v7 = contextCopy;
       goto LABEL_9;
     }
 
-    v7 = v8;
-    if (!v8 || (v8[112] & 8) == 0)
+    v7 = contextCopy;
+    if (!contextCopy || (contextCopy[112] & 8) == 0)
     {
-      [(_UICollectionViewLayoutSwipeActionsModule *)self _invalidateSwipeActionsLayoutRefreshingActiveConfigurations:v4];
+      [(_UICollectionViewLayoutSwipeActionsModule *)self _invalidateSwipeActionsLayoutRefreshingActiveConfigurations:configurationsCopy];
       goto LABEL_7;
     }
 
@@ -881,24 +881,24 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)_canIgnoreInvalidationContext:(id)a3
+- (BOOL)_canIgnoreInvalidationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 _intent];
-  if (v5 > 0xF)
+  contextCopy = context;
+  _intent = [contextCopy _intent];
+  if (_intent > 0xF)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v5) & 0xE42) != 0)
+  if (((1 << _intent) & 0xE42) != 0)
   {
     v6 = 1;
     goto LABEL_13;
   }
 
-  if (v5 != 5)
+  if (_intent != 5)
   {
-    if (v5 == 15)
+    if (_intent == 15)
     {
       v6 = (*&self->_flags & 2) == 0;
       goto LABEL_13;
@@ -909,28 +909,28 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if ([v4 invalidateEverything])
+  if ([contextCopy invalidateEverything])
   {
     goto LABEL_8;
   }
 
-  v7 = [v4 invalidatedItemIndexPaths];
-  if ([v7 count])
+  invalidatedItemIndexPaths = [contextCopy invalidatedItemIndexPaths];
+  if ([invalidatedItemIndexPaths count])
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [v4 invalidatedSupplementaryIndexPaths];
-    v6 = [v8 count] == 0;
+    invalidatedSupplementaryIndexPaths = [contextCopy invalidatedSupplementaryIndexPaths];
+    v6 = [invalidatedSupplementaryIndexPaths count] == 0;
   }
 
 LABEL_13:
   return v6;
 }
 
-- (void)_invalidateSwipeActionsLayoutRefreshingActiveConfigurations:(BOOL)a3
+- (void)_invalidateSwipeActionsLayoutRefreshingActiveConfigurations:(BOOL)configurations
 {
   if ((*&self->_flags & 1) == 0)
   {
@@ -942,19 +942,19 @@ LABEL_13:
       v5[2] = __105___UICollectionViewLayoutSwipeActionsModule__invalidateSwipeActionsLayoutRefreshingActiveConfigurations___block_invoke;
       v5[3] = &unk_1E70F35E0;
       v5[4] = self;
-      v6 = a3;
+      configurationsCopy = configurations;
       dispatch_async(MEMORY[0x1E69E96A0], v5);
     }
   }
 }
 
-- (void)updateWithDataSourceTranslator:(id)a3
+- (void)updateWithDataSourceTranslator:(id)translator
 {
-  v5 = a3;
-  if (!v5)
+  translatorCopy = translator;
+  if (!translatorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"dataSourceTranslator != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"dataSourceTranslator != nil"}];
   }
 
   swipeActionController = self->_swipeActionController;
@@ -962,19 +962,19 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = __76___UICollectionViewLayoutSwipeActionsModule_updateWithDataSourceTranslator___block_invoke;
   v9[3] = &unk_1E70FFBD8;
-  v10 = v5;
-  v7 = v5;
+  v10 = translatorCopy;
+  v7 = translatorCopy;
   [(UISwipeActionController *)swipeActionController rebaseUnambiguousSwipeOccurrencesWithBlock:v9];
 }
 
-- (void)finalizeCollectionViewUpdate:(id)a3
+- (void)finalizeCollectionViewUpdate:(id)update
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  updateCopy = update;
+  v6 = updateCopy;
+  if (updateCopy)
   {
-    if ((*(v5 + 216) & 2) != 0)
+    if ((*(updateCopy + 216) & 2) != 0)
     {
       goto LABEL_22;
     }
@@ -982,12 +982,12 @@ LABEL_13:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"update != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"update != nil"}];
   }
 
-  v7 = [(UISwipeActionController *)self->_swipeActionController swipeOccurrences];
-  v8 = [v7 copy];
+  swipeOccurrences = [(UISwipeActionController *)self->_swipeActionController swipeOccurrences];
+  v8 = [swipeOccurrences copy];
 
   v25 = 0u;
   v26 = 0u;
@@ -1010,15 +1010,15 @@ LABEL_13:
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
-        v15 = [v14 indexPath];
-        v16 = [v6 finalIndexPathForInitialIndexPath:v15];
+        indexPath = [v14 indexPath];
+        v16 = [v6 finalIndexPathForInitialIndexPath:indexPath];
         if (!v16)
         {
           has_internal_diagnostics = os_variant_has_internal_diagnostics();
-          v18 = [v14 _hasAmbiguousIndexPath];
+          _hasAmbiguousIndexPath = [v14 _hasAmbiguousIndexPath];
           if (has_internal_diagnostics)
           {
-            if ((v18 & 1) == 0)
+            if ((_hasAmbiguousIndexPath & 1) == 0)
             {
               v19 = __UIFaultDebugAssertLog();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -1030,7 +1030,7 @@ LABEL_13:
             }
           }
 
-          else if ((v18 & 1) == 0)
+          else if ((_hasAmbiguousIndexPath & 1) == 0)
           {
             v20 = *(__UILogGetCategoryCachedImpl("Assert", &finalizeCollectionViewUpdate____s_category) + 8);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1058,37 +1058,37 @@ LABEL_13:
 LABEL_22:
 }
 
-- (void)transformCellLayoutAttributes:(id)a3 isDisappearing:(BOOL)a4
+- (void)transformCellLayoutAttributes:(id)attributes isDisappearing:(BOOL)disappearing
 {
-  v4 = a4;
+  disappearingCopy = disappearing;
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || (v7[72] & 1) == 0)
+  attributesCopy = attributes;
+  v8 = attributesCopy;
+  if (!attributesCopy || (attributesCopy[72] & 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v43 = NSStringFromSelector(a2);
-    [v42 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:732 description:{@"-%@ should only be called with layout attributes for cells", v43}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:732 description:{@"-%@ should only be called with layout attributes for cells", v43}];
   }
 
   swipeActionController = self->_swipeActionController;
-  v10 = [v8 indexPath];
-  v11 = [(UISwipeActionController *)swipeActionController _existingSwipeOccurrenceForIndexPath:v10];
+  indexPath = [v8 indexPath];
+  v11 = [(UISwipeActionController *)swipeActionController _existingSwipeOccurrenceForIndexPath:indexPath];
 
   if (v11)
   {
     if ((*&self->_flags & 4) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_host);
-      v13 = [WeakRetained collectionView];
-      v14 = [v8 indexPath];
-      v15 = [v13 cellForItemAtIndexPath:v14];
+      collectionView = [WeakRetained collectionView];
+      indexPath2 = [v8 indexPath];
+      v15 = [collectionView cellForItemAtIndexPath:indexPath2];
 
-      v16 = [v15 _layoutAttributes];
-      if (v16)
+      _layoutAttributes = [v15 _layoutAttributes];
+      if (_layoutAttributes)
       {
-        v17 = v16;
-        [v16 alpha];
+        v17 = _layoutAttributes;
+        [_layoutAttributes alpha];
         [v8 setAlpha:?];
         if (v8)
         {
@@ -1102,12 +1102,12 @@ LABEL_22:
       }
     }
 
-    v18 = [v11 _hasAmbiguousIndexPath];
-    if (v4 && v18)
+    _hasAmbiguousIndexPath = [v11 _hasAmbiguousIndexPath];
+    if (disappearingCopy && _hasAmbiguousIndexPath)
     {
       [v8 setAlpha:1.0];
-      v19 = [v11 swipedViewMaskWasRemoved];
-      if (v8 && (v19 & 1) == 0)
+      swipedViewMaskWasRemoved = [v11 swipedViewMaskWasRemoved];
+      if (v8 && (swipedViewMaskWasRemoved & 1) == 0)
       {
         v8[72] &= ~0x10u;
       }
@@ -1115,21 +1115,21 @@ LABEL_22:
       goto LABEL_33;
     }
 
-    if ((v4 | v18))
+    if ((disappearingCopy | _hasAmbiguousIndexPath))
     {
       goto LABEL_33;
     }
 
-    v20 = [v11 swipedViewMaskWasRemoved];
-    if (v8 && (v20 & 1) == 0)
+    swipedViewMaskWasRemoved2 = [v11 swipedViewMaskWasRemoved];
+    if (v8 && (swipedViewMaskWasRemoved2 & 1) == 0)
     {
       v8[72] &= ~0x10u;
     }
 
     v21 = [v11 state] == 3 || objc_msgSend(v11, "state") == 4;
     v22 = objc_loadWeakRetained(&self->_host);
-    v23 = [v22 collectionView];
-    if ([v23 _flipsHorizontalAxis])
+    collectionView2 = [v22 collectionView];
+    if ([collectionView2 _flipsHorizontalAxis])
     {
       v24 = -1.0;
     }
@@ -1150,8 +1150,8 @@ LABEL_22:
     }
 
     v27 = objc_loadWeakRetained(&self->_host);
-    v28 = [v8 indexPath];
-    v29 = [v27 layoutAttributesForDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:v28];
+    indexPath3 = [v8 indexPath];
+    v29 = [v27 layoutAttributesForDecorationViewOfKind:@"UICollectionViewListLayoutElementKindSwipeActions" atIndexPath:indexPath3];
 
     if (os_variant_has_internal_diagnostics())
     {
@@ -1160,9 +1160,9 @@ LABEL_22:
 LABEL_29:
         [v29 bounds];
         Width = CGRectGetWidth(v50);
-        v31 = [v11 direction];
+        direction = [v11 direction];
         v32 = -Width;
-        if (v31)
+        if (direction)
         {
           v32 = Width;
         }
@@ -1184,9 +1184,9 @@ LABEL_41:
         goto LABEL_29;
       }
 
-      v45 = [v8 indexPath];
+      indexPath4 = [v8 indexPath];
       *buf = 138412290;
-      v48 = v45;
+      v48 = indexPath4;
       _os_log_fault_impl(&dword_188A29000, v44, OS_LOG_TYPE_FAULT, "Missing layout attributes for swipe actions view at index path: %@", buf, 0xCu);
     }
 
@@ -1204,9 +1204,9 @@ LABEL_41:
       }
 
       v44 = v46;
-      v45 = [v8 indexPath];
+      indexPath4 = [v8 indexPath];
       *buf = 138412290;
-      v48 = v45;
+      v48 = indexPath4;
       _os_log_impl(&dword_188A29000, v44, OS_LOG_TYPE_ERROR, "Missing layout attributes for swipe actions view at index path: %@", buf, 0xCu);
     }
 
@@ -1216,29 +1216,29 @@ LABEL_41:
 LABEL_33:
 }
 
-- (void)transformDecorationLayoutAttributes:(id)a3 isDisappearing:(BOOL)a4
+- (void)transformDecorationLayoutAttributes:(id)attributes isDisappearing:(BOOL)disappearing
 {
-  v4 = a4;
-  v7 = a3;
-  v35 = v7;
-  if (!v7 || (v7[288] & 2) == 0)
+  disappearingCopy = disappearing;
+  attributesCopy = attributes;
+  v35 = attributesCopy;
+  if (!attributesCopy || (attributesCopy[288] & 2) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = NSStringFromSelector(a2);
-    [v33 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:787 description:{@"-%@ should only be called with layout attributes for decoration views", v34}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:787 description:{@"-%@ should only be called with layout attributes for decoration views", v34}];
 
-    v7 = v35;
+    attributesCopy = v35;
   }
 
   swipeActionController = self->_swipeActionController;
-  v9 = [v7 indexPath];
-  v10 = [(UISwipeActionController *)swipeActionController _existingSwipeOccurrenceForIndexPath:v9];
+  indexPath = [attributesCopy indexPath];
+  v10 = [(UISwipeActionController *)swipeActionController _existingSwipeOccurrenceForIndexPath:indexPath];
 
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v12 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  v13 = [v35 indexPath];
-  v14 = [v12 _globalIndexPathForItemAtIndexPath:v13];
+  indexPath2 = [v35 indexPath];
+  v14 = [collectionView _globalIndexPathForItemAtIndexPath:indexPath2];
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1247,7 +1247,7 @@ LABEL_33:
 
   else
   {
-    v16 = [v12 _indexPathForGlobalIndex:v14 + 1];
+    v16 = [collectionView _indexPathForGlobalIndex:v14 + 1];
     if (v16)
     {
       v15 = [(UISwipeActionController *)self->_swipeActionController _existingSwipeOccurrenceForIndexPath:v16];
@@ -1259,11 +1259,11 @@ LABEL_33:
     }
   }
 
-  v17 = [(_UILabelConfiguration *)v35 _content];
-  v18 = v17;
-  if (v17 == @"UICollectionViewListLayoutElementKindSwipeActions" || v17 && (v19 = [(__CFString *)v17 isEqual:@"UICollectionViewListLayoutElementKindSwipeActions"], v18, v19))
+  _content = [(_UILabelConfiguration *)v35 _content];
+  v18 = _content;
+  if (_content == @"UICollectionViewListLayoutElementKindSwipeActions" || _content && (v19 = [(__CFString *)_content isEqual:@"UICollectionViewListLayoutElementKindSwipeActions"], v18, v19))
   {
-    if (v4)
+    if (disappearingCopy)
     {
       if (v10)
       {
@@ -1282,12 +1282,12 @@ LABEL_33:
 
     else if (v10)
     {
-      v26 = [v10 _hasAmbiguousIndexPath];
-      [v35 setHidden:v26];
-      if ((v26 & 1) == 0)
+      _hasAmbiguousIndexPath = [v10 _hasAmbiguousIndexPath];
+      [v35 setHidden:_hasAmbiguousIndexPath];
+      if ((_hasAmbiguousIndexPath & 1) == 0)
       {
-        v27 = [v35 indexPath];
-        v28 = [(_UICollectionViewLayoutSwipeActionsModule *)self _cellWithCustomGroupingAtIndexPath:v27];
+        indexPath3 = [v35 indexPath];
+        v28 = [(_UICollectionViewLayoutSwipeActionsModule *)self _cellWithCustomGroupingAtIndexPath:indexPath3];
 
         if (v28)
         {
@@ -1326,13 +1326,13 @@ LABEL_33:
       if (v10)
       {
 LABEL_22:
-        v23 = self;
+        selfCopy3 = self;
         v24 = v35;
         v25 = 1;
 LABEL_41:
         v29 = v10;
 LABEL_42:
-        [(_UICollectionViewLayoutSwipeActionsModule *)v23 _transformLayoutAttributes:v24 ofSeparatorAtBottom:v25 forSwipeOccurrence:v29 isDisappearing:v4];
+        [(_UICollectionViewLayoutSwipeActionsModule *)selfCopy3 _transformLayoutAttributes:v24 ofSeparatorAtBottom:v25 forSwipeOccurrence:v29 isDisappearing:disappearingCopy];
         goto LABEL_43;
       }
 
@@ -1342,7 +1342,7 @@ LABEL_29:
         goto LABEL_43;
       }
 
-      v23 = self;
+      selfCopy3 = self;
       v24 = v35;
       v25 = 1;
       v29 = v15;
@@ -1374,7 +1374,7 @@ LABEL_29:
 
   if (v32 && v10)
   {
-    v23 = self;
+    selfCopy3 = self;
     v24 = v35;
     v25 = 0;
     goto LABEL_41;
@@ -1383,34 +1383,34 @@ LABEL_29:
 LABEL_43:
 }
 
-- (void)_transformLayoutAttributes:(id)a3 ofSeparatorAtBottom:(BOOL)a4 forSwipeOccurrence:(id)a5 isDisappearing:(BOOL)a6
+- (void)_transformLayoutAttributes:(id)attributes ofSeparatorAtBottom:(BOOL)bottom forSwipeOccurrence:(id)occurrence isDisappearing:(BOOL)disappearing
 {
-  v6 = a6;
-  v8 = a4;
-  v25 = a3;
-  v11 = a5;
-  if (!v11)
+  disappearingCopy = disappearing;
+  bottomCopy = bottom;
+  attributesCopy = attributes;
+  occurrenceCopy = occurrence;
+  if (!occurrenceCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:857 description:{@"Invalid parameter not satisfying: %@", @"swipeOccurrence != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewLayoutSwipeActionsModule.m" lineNumber:857 description:{@"Invalid parameter not satisfying: %@", @"swipeOccurrence != nil"}];
   }
 
-  v12 = [v11 _hasAmbiguousIndexPath];
-  v13 = v12 & v6;
+  _hasAmbiguousIndexPath = [occurrenceCopy _hasAmbiguousIndexPath];
+  v13 = _hasAmbiguousIndexPath & disappearingCopy;
   if (_UISolariumSwipeActionsEnabled())
   {
     v14 = 1;
     if (!v13)
     {
 LABEL_5:
-      if ((v12 | v6) & 1 | !v14)
+      if ((_hasAmbiguousIndexPath | disappearingCopy) & 1 | !v14)
       {
         goto LABEL_17;
       }
 
-      [v11 offset];
+      [occurrenceCopy offset];
       v16 = v15;
-      [v25 alpha];
+      [attributesCopy alpha];
       v18 = -v16;
       if (v16 >= 0.0)
       {
@@ -1428,14 +1428,14 @@ LABEL_5:
 
   else
   {
-    v14 = [v11 _style] == 2;
+    v14 = [occurrenceCopy _style] == 2;
     if (!v13)
     {
       goto LABEL_5;
     }
   }
 
-  if (!v8)
+  if (!bottomCopy)
   {
     goto LABEL_17;
   }
@@ -1444,34 +1444,34 @@ LABEL_5:
   {
     v17 = 0.0;
 LABEL_15:
-    [v25 setAlpha:v17];
+    [attributesCopy setAlpha:v17];
     goto LABEL_17;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v20 = [v25 indexPath];
-  v21 = [WeakRetained finalLayoutAttributesForDisappearingItemAtIndexPath:v20];
+  indexPath = [attributesCopy indexPath];
+  v21 = [WeakRetained finalLayoutAttributesForDisappearingItemAtIndexPath:indexPath];
 
-  [v25 frame];
+  [attributesCopy frame];
   v23 = v22;
   [v21 frame];
-  [v25 setFrame:v23];
-  [v25 setAlpha:1.0];
+  [attributesCopy setFrame:v23];
+  [attributesCopy setAlpha:1.0];
 
 LABEL_17:
 }
 
-- (id)propertyAnimatorForCollectionViewUpdates:(id)a3 withCustomAnimator:(id)a4
+- (id)propertyAnimatorForCollectionViewUpdates:(id)updates withCustomAnimator:(id)animator
 {
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UISwipeActionController *)self->_swipeActionController currentSwipeOccurrence];
-  v9 = v8;
-  if (!v8 || ([v8 currentAction], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "style"), v10, v11 != 1))
+  updatesCopy = updates;
+  animatorCopy = animator;
+  currentSwipeOccurrence = [(UISwipeActionController *)self->_swipeActionController currentSwipeOccurrence];
+  v9 = currentSwipeOccurrence;
+  if (!currentSwipeOccurrence || ([currentSwipeOccurrence currentAction], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "style"), v10, v11 != 1))
   {
     v38 = 0;
-    v26 = v7;
+    v26 = animatorCopy;
     goto LABEL_34;
   }
 
@@ -1479,21 +1479,21 @@ LABEL_17:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v12 = v6;
+  v12 = updatesCopy;
   v13 = [v12 countByEnumeratingWithState:&v69 objects:v80 count:16];
   if (!v13)
   {
-    v26 = v7;
+    v26 = animatorCopy;
 LABEL_33:
 
     v38 = v13;
     goto LABEL_34;
   }
 
-  v53 = self;
-  v54 = v6;
+  selfCopy = self;
+  v54 = updatesCopy;
   v14 = v9;
-  v55 = v7;
+  v55 = animatorCopy;
   v15 = 0;
   v56 = 0;
   v16 = *v70;
@@ -1512,17 +1512,17 @@ LABEL_33:
         if (v18 && v18[6] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v19 = v18[1];
-          v20 = [v14 indexPath];
-          LOBYTE(v19) = v19 == [v20 section];
+          indexPath = [v14 indexPath];
+          LOBYTE(v19) = v19 == [indexPath section];
 
           v15 |= v19;
         }
 
         else
         {
-          v21 = [v18 indexPathBeforeUpdate];
-          v22 = [v14 indexPath];
-          v23 = [v21 isEqual:v22];
+          indexPathBeforeUpdate = [v18 indexPathBeforeUpdate];
+          indexPath2 = [v14 indexPath];
+          v23 = [indexPathBeforeUpdate isEqual:indexPath2];
 
           if (v23)
           {
@@ -1544,26 +1544,26 @@ LABEL_33:
   }
 
   v9 = v14;
-  v24 = [v14 swipedView];
-  v25 = [(UIView *)v24 _safeMaskView];
+  swipedView = [v14 swipedView];
+  _safeMaskView = [(UIView *)swipedView _safeMaskView];
 
-  v7 = v55;
-  if (!v25)
+  animatorCopy = v55;
+  if (!_safeMaskView)
   {
     if (os_variant_has_internal_diagnostics())
     {
       v49 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
       {
-        WeakRetained = objc_loadWeakRetained(&v53->_host);
-        v51 = [WeakRetained collectionView];
-        v52 = [v14 swipedView];
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_host);
+        collectionView = [WeakRetained collectionView];
+        swipedView2 = [v14 swipedView];
         *buf = 138412802;
-        v75 = v51;
+        v75 = collectionView;
         v76 = 2112;
         v77 = v14;
         v78 = 2112;
-        v79 = v52;
+        v79 = swipedView2;
         _os_log_fault_impl(&dword_188A29000, v49, OS_LOG_TYPE_FAULT, "UICollectionView internal inconsistency: missing maskView for swipe occurrence. Collection view: %@; Swipe occurrence: %@; Swiped view: %@", buf, 0x20u);
       }
     }
@@ -1574,15 +1574,15 @@ LABEL_33:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         v40 = v39;
-        v41 = objc_loadWeakRetained(&v53->_host);
-        v42 = [v41 collectionView];
-        v43 = [v14 swipedView];
+        v41 = objc_loadWeakRetained(&selfCopy->_host);
+        collectionView2 = [v41 collectionView];
+        swipedView3 = [v14 swipedView];
         *buf = 138412802;
-        v75 = v42;
+        v75 = collectionView2;
         v76 = 2112;
         v77 = v14;
         v78 = 2112;
-        v79 = v43;
+        v79 = swipedView3;
         _os_log_impl(&dword_188A29000, v40, OS_LOG_TYPE_ERROR, "UICollectionView internal inconsistency: missing maskView for swipe occurrence. Collection view: %@; Swipe occurrence: %@; Swiped view: %@", buf, 0x20u);
       }
     }
@@ -1590,8 +1590,8 @@ LABEL_33:
 LABEL_27:
     v13 = 0;
     v38 = 0;
-    v6 = v54;
-    v7 = v55;
+    updatesCopy = v54;
+    animatorCopy = v55;
     v26 = v55;
     v9 = v14;
     if ((v15 & 1) == 0)
@@ -1603,26 +1603,26 @@ LABEL_27:
   }
 
   v26 = v55;
-  v6 = v54;
+  updatesCopy = v54;
   if (!v55)
   {
-    v73 = v25;
+    v73 = _safeMaskView;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
     v26 = [_UISwipeAnimationFactory animatorForCollapseWithAdditivelyAnimatedViews:v27];
   }
 
-  [v25 frame];
+  [_safeMaskView frame];
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  [v25 bounds];
+  [_safeMaskView bounds];
   v35 = v34;
   v37 = v36;
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __105___UICollectionViewLayoutSwipeActionsModule_propertyAnimatorForCollectionViewUpdates_withCustomAnimator___block_invoke;
   v59[3] = &unk_1E70F6C80;
-  v13 = v25;
+  v13 = _safeMaskView;
   v60 = v13;
   v61 = v29;
   v62 = v31;
@@ -1639,10 +1639,10 @@ LABEL_27:
   {
 LABEL_28:
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v45 = [v9 _hasAmbiguousIndexPath];
+    _hasAmbiguousIndexPath = [v9 _hasAmbiguousIndexPath];
     if (has_internal_diagnostics)
     {
-      if ((v45 & 1) == 0)
+      if ((_hasAmbiguousIndexPath & 1) == 0)
       {
         v47 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
@@ -1652,13 +1652,13 @@ LABEL_28:
           _os_log_fault_impl(&dword_188A29000, v47, OS_LOG_TYPE_FAULT, "The swipe occurrence should already be marked as having an ambiguous index path: %@", buf, 0xCu);
         }
 
-        v6 = v54;
-        v7 = v55;
+        updatesCopy = v54;
+        animatorCopy = v55;
         v9 = v14;
       }
     }
 
-    else if ((v45 & 1) == 0)
+    else if ((_hasAmbiguousIndexPath & 1) == 0)
     {
       v48 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49F4A8) + 8);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1689,12 +1689,12 @@ LABEL_34:
   return v26;
 }
 
-- (id)swipeViewManipulatorForSwipeActionController:(id)a3
+- (id)swipeViewManipulatorForSwipeActionController:(id)controller
 {
   v4 = [_UICollectionViewLayoutSwipeViewManipulator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v6 = [WeakRetained collectionView];
-  v7 = [(_UICollectionViewLayoutSwipeViewManipulator *)v4 initWithCollectionView:v6 swipeActionsModule:self];
+  collectionView = [WeakRetained collectionView];
+  v7 = [(_UICollectionViewLayoutSwipeViewManipulator *)v4 initWithCollectionView:collectionView swipeActionsModule:self];
 
   return v7;
 }

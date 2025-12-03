@@ -1,55 +1,55 @@
 @interface PLAssetsdServicePermissions
-- (BOOL)_isAuthorizedForWriteOnlyWithContext:(id)a3;
-- (BOOL)_isAuthorizedViaPhotoKitEntitlementWithContext:(id)a3;
-- (BOOL)_isAuthorizedViaTCCWithContext:(id)a3;
-- (PLAssetsdServicePermissions)initWithPermissions:(id)a3;
-- (id)_errorForMissingEntitlements:(id)a3 withContext:(id)a4;
-- (id)_verifyAuthorizationWithContext:(id)a3;
-- (id)_verifyEntitlementsWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)verifyPermissionsWithContext:(id)a3;
-- (void)refreshCachedAuthorizationsWithContext:(id)a3;
+- (BOOL)_isAuthorizedForWriteOnlyWithContext:(id)context;
+- (BOOL)_isAuthorizedViaPhotoKitEntitlementWithContext:(id)context;
+- (BOOL)_isAuthorizedViaTCCWithContext:(id)context;
+- (PLAssetsdServicePermissions)initWithPermissions:(id)permissions;
+- (id)_errorForMissingEntitlements:(id)entitlements withContext:(id)context;
+- (id)_verifyAuthorizationWithContext:(id)context;
+- (id)_verifyEntitlementsWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)verifyPermissionsWithContext:(id)context;
+- (void)refreshCachedAuthorizationsWithContext:(id)context;
 @end
 
 @implementation PLAssetsdServicePermissions
 
-- (id)_errorForMissingEntitlements:(id)a3 withContext:(id)a4
+- (id)_errorForMissingEntitlements:(id)entitlements withContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  entitlementsCopy = entitlements;
+  contextCopy = context;
   v7 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 clientDebugDescription];
+    clientDebugDescription = [contextCopy clientDebugDescription];
     *buf = 138543618;
-    v15 = v8;
+    v15 = clientDebugDescription;
     v16 = 2114;
-    v17 = v5;
+    v17 = entitlementsCopy;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "assetsd client %{public}@ is missing required entitlements: %{public}@", buf, 0x16u);
   }
 
   v12 = @"MissingEntitlements";
-  v13 = v5;
+  v13 = entitlementsCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46104 userInfo:v9];
 
   return v10;
 }
 
-- (id)_verifyEntitlementsWithContext:(id)a3
+- (id)_verifyEntitlementsWithContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     requiredEntitlements = self->_requiredEntitlements;
-    v7 = [v4 clientDebugDescription];
+    clientDebugDescription = [contextCopy clientDebugDescription];
     *buf = 138412546;
     v18 = requiredEntitlements;
     v19 = 2112;
-    v20 = v7;
+    v20 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "Checking entitlements: %@ for client: %@", buf, 0x16u);
   }
 
@@ -58,17 +58,17 @@
   v15[1] = 3221225472;
   v15[2] = __62__PLAssetsdServicePermissions__verifyEntitlementsWithContext___block_invoke;
   v15[3] = &unk_1E75672D8;
-  v9 = v4;
+  v9 = contextCopy;
   v16 = v9;
   v10 = [(NSArray *)v8 _pl_filter:v15];
   v11 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v9 clientDebugDescription];
+    clientDebugDescription2 = [v9 clientDebugDescription];
     *buf = 138412546;
     v18 = v10;
     v19 = 2112;
-    v20 = v12;
+    v20 = clientDebugDescription2;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "Missing entitlements: %@ for client: %@", buf, 0x16u);
   }
 
@@ -85,11 +85,11 @@
   return v13;
 }
 
-- (BOOL)_isAuthorizedViaPhotoKitEntitlementWithContext:(id)a3
+- (BOOL)_isAuthorizedViaPhotoKitEntitlementWithContext:(id)context
 {
   if (self->_allowsAuthorizationWithPhotoKitEntitlement)
   {
-    return [a3 hasEntitlement:*MEMORY[0x1E69C0050]];
+    return [context hasEntitlement:*MEMORY[0x1E69C0050]];
   }
 
   else
@@ -98,31 +98,31 @@
   }
 }
 
-- (BOOL)_isAuthorizedForWriteOnlyWithContext:(id)a3
+- (BOOL)_isAuthorizedForWriteOnlyWithContext:(id)context
 {
-  v3 = a3;
-  if ([v3 isClientAuthorizedForTCCServicePhotosAdd])
+  contextCopy = context;
+  if ([contextCopy isClientAuthorizedForTCCServicePhotosAdd])
   {
-    v4 = 1;
+    isClientAuthorizedForTCCServicePhotos = 1;
   }
 
   else
   {
-    v4 = [v3 isClientAuthorizedForTCCServicePhotos];
+    isClientAuthorizedForTCCServicePhotos = [contextCopy isClientAuthorizedForTCCServicePhotos];
   }
 
-  return v4;
+  return isClientAuthorizedForTCCServicePhotos;
 }
 
-- (BOOL)_isAuthorizedViaTCCWithContext:(id)a3
+- (BOOL)_isAuthorizedViaTCCWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requiredAuthorization = self->_requiredAuthorization;
   if (requiredAuthorization)
   {
     if (requiredAuthorization == 2)
     {
-      v6 = [(PLAssetsdServicePermissions *)self _isAuthorizedForWriteOnlyWithContext:v4];
+      v6 = [(PLAssetsdServicePermissions *)self _isAuthorizedForWriteOnlyWithContext:contextCopy];
     }
 
     else
@@ -133,7 +133,7 @@
         goto LABEL_9;
       }
 
-      v6 = [(PLAssetsdServicePermissions *)self _isAuthorizedForReadWriteWithContext:v4];
+      v6 = [(PLAssetsdServicePermissions *)self _isAuthorizedForReadWriteWithContext:contextCopy];
     }
 
     v7 = v6;
@@ -149,10 +149,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)_verifyAuthorizationWithContext:(id)a3
+- (id)_verifyAuthorizationWithContext:(id)context
 {
-  v4 = a3;
-  if ([(PLAssetsdServicePermissions *)self _isAuthorizedViaTCCWithContext:v4]|| [(PLAssetsdServicePermissions *)self _isAuthorizedViaPhotoKitEntitlementWithContext:v4])
+  contextCopy = context;
+  if ([(PLAssetsdServicePermissions *)self _isAuthorizedViaTCCWithContext:contextCopy]|| [(PLAssetsdServicePermissions *)self _isAuthorizedViaPhotoKitEntitlementWithContext:contextCopy])
   {
     v5 = 0;
   }
@@ -165,9 +165,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)refreshCachedAuthorizationsWithContext:(id)a3
+- (void)refreshCachedAuthorizationsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,24 +175,24 @@ LABEL_9:
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating cached client authorizations", v5, 2u);
   }
 
-  [v3 invalidateClientAuthorizationCache];
+  [contextCopy invalidateClientAuthorizationCache];
 }
 
-- (id)verifyPermissionsWithContext:(id)a3
+- (id)verifyPermissionsWithContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLAssetsdServicePermissions *)self _verifyAuthorizationWithContext:v4];
+  contextCopy = context;
+  v5 = [(PLAssetsdServicePermissions *)self _verifyAuthorizationWithContext:contextCopy];
   if (v5)
   {
     v6 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 clientDebugDescription];
+      clientDebugDescription = [contextCopy clientDebugDescription];
       v13 = 138412546;
       v14 = v5;
       v15 = 2114;
-      v16 = v7;
+      v16 = clientDebugDescription;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "Authorization error: %@ for client: %{public}@", &v13, 0x16u);
     }
 
@@ -201,17 +201,17 @@ LABEL_9:
 
   else
   {
-    v8 = [(PLAssetsdServicePermissions *)self _verifyEntitlementsWithContext:v4];
+    v8 = [(PLAssetsdServicePermissions *)self _verifyEntitlementsWithContext:contextCopy];
     if (v8)
     {
       v9 = PLGatekeeperXPCGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v4 clientDebugDescription];
+        clientDebugDescription2 = [contextCopy clientDebugDescription];
         v13 = 138412546;
         v14 = v8;
         v15 = 2114;
-        v16 = v10;
+        v16 = clientDebugDescription2;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Entitlements error: %@ for client: %{public}@", &v13, 0x16u);
       }
 
@@ -222,20 +222,20 @@ LABEL_9:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PLAssetsdServicePermissions alloc];
 
   return [(PLAssetsdServicePermissions *)v4 initWithPermissions:self];
 }
 
-- (PLAssetsdServicePermissions)initWithPermissions:(id)a3
+- (PLAssetsdServicePermissions)initWithPermissions:(id)permissions
 {
-  v5 = a3;
-  if (!v5)
+  permissionsCopy = permissions;
+  if (!permissionsCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLAssetsdServicePermissions.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"permissions != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdServicePermissions.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"permissions != nil"}];
   }
 
   v13.receiver = self;
@@ -244,9 +244,9 @@ LABEL_9:
   v7 = v6;
   if (v6)
   {
-    v6->_requiredAuthorization = *(v5 + 2);
-    v6->_allowsAuthorizationWithPhotoKitEntitlement = *(v5 + 8);
-    v8 = [*(v5 + 3) copy];
+    v6->_requiredAuthorization = *(permissionsCopy + 2);
+    v6->_allowsAuthorizationWithPhotoKitEntitlement = *(permissionsCopy + 8);
+    v8 = [*(permissionsCopy + 3) copy];
     requiredEntitlements = v7->_requiredEntitlements;
     v7->_requiredEntitlements = v8;
 

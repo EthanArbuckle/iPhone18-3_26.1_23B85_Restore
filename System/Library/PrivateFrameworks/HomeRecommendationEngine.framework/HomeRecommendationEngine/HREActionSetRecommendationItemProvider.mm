@@ -1,27 +1,27 @@
 @interface HREActionSetRecommendationItemProvider
-- (HREActionSetRecommendationItemProvider)initWithHome:(id)a3 andServiceLikeItems:(id)a4;
+- (HREActionSetRecommendationItemProvider)initWithHome:(id)home andServiceLikeItems:(id)items;
 - (id)items;
 - (id)reloadItems;
-- (id)suggestionItemTransformingRecommendationItem:(id)a3;
+- (id)suggestionItemTransformingRecommendationItem:(id)item;
 - (unint64_t)engineOptions;
-- (void)setEngineOptions:(unint64_t)a3;
+- (void)setEngineOptions:(unint64_t)options;
 @end
 
 @implementation HREActionSetRecommendationItemProvider
 
-- (HREActionSetRecommendationItemProvider)initWithHome:(id)a3 andServiceLikeItems:(id)a4
+- (HREActionSetRecommendationItemProvider)initWithHome:(id)home andServiceLikeItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  itemsCopy = items;
   v23.receiver = self;
   v23.super_class = HREActionSetRecommendationItemProvider;
   v9 = [(HFItemProvider *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_serviceLikeItems, a4);
-    v11 = [[HRERecommendationItemProvider alloc] initWithHome:v7 andServiceLikeItems:v8];
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_serviceLikeItems, items);
+    v11 = [[HRERecommendationItemProvider alloc] initWithHome:homeCopy andServiceLikeItems:itemsCopy];
     recommendationProvider = v10->_recommendationProvider;
     v10->_recommendationProvider = v11;
 
@@ -34,13 +34,13 @@
     objc_copyWeak(&v21, &location);
     [(HRERecommendationItemProvider *)v10->_recommendationProvider setFilter:v20];
     v13 = objc_alloc(MEMORY[0x277D14C38]);
-    v14 = [(HREActionSetRecommendationItemProvider *)v10 recommendationProvider];
+    recommendationProvider = [(HREActionSetRecommendationItemProvider *)v10 recommendationProvider];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __75__HREActionSetRecommendationItemProvider_initWithHome_andServiceLikeItems___block_invoke_2;
     v18[3] = &unk_2797771F8;
     objc_copyWeak(&v19, &location);
-    v15 = [v13 initWithSourceProvider:v14 transformationBlock:v18];
+    v15 = [v13 initWithSourceProvider:recommendationProvider transformationBlock:v18];
     transformItemProvider = v10->_transformItemProvider;
     v10->_transformItemProvider = v15;
 
@@ -91,42 +91,42 @@ id __75__HREActionSetRecommendationItemProvider_initWithHome_andServiceLikeItems
 
 - (unint64_t)engineOptions
 {
-  v2 = [(HREActionSetRecommendationItemProvider *)self recommendationProvider];
-  v3 = [v2 engineOptions];
+  recommendationProvider = [(HREActionSetRecommendationItemProvider *)self recommendationProvider];
+  engineOptions = [recommendationProvider engineOptions];
 
-  return v3;
+  return engineOptions;
 }
 
-- (void)setEngineOptions:(unint64_t)a3
+- (void)setEngineOptions:(unint64_t)options
 {
-  v4 = [(HREActionSetRecommendationItemProvider *)self recommendationProvider];
-  [v4 setEngineOptions:a3];
+  recommendationProvider = [(HREActionSetRecommendationItemProvider *)self recommendationProvider];
+  [recommendationProvider setEngineOptions:options];
 }
 
 - (id)items
 {
-  v2 = [(HREActionSetRecommendationItemProvider *)self transformItemProvider];
-  v3 = [v2 items];
+  transformItemProvider = [(HREActionSetRecommendationItemProvider *)self transformItemProvider];
+  items = [transformItemProvider items];
 
-  return v3;
+  return items;
 }
 
 - (id)reloadItems
 {
-  v2 = [(HREActionSetRecommendationItemProvider *)self transformItemProvider];
-  v3 = [v2 reloadItems];
+  transformItemProvider = [(HREActionSetRecommendationItemProvider *)self transformItemProvider];
+  reloadItems = [transformItemProvider reloadItems];
 
-  return v3;
+  return reloadItems;
 }
 
-- (id)suggestionItemTransformingRecommendationItem:(id)a3
+- (id)suggestionItemTransformingRecommendationItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HREActionSetRecommendationItem alloc] initWithRecommendationItem:v4];
+  itemCopy = item;
+  v5 = [[HREActionSetRecommendationItem alloc] initWithRecommendationItem:itemCopy];
 
-  v6 = [(HREActionSetRecommendationItemProvider *)self serviceLikeItems];
-  v7 = [v6 firstObject];
-  [(HREActionSetRecommendationItem *)v5 setServiceLikeItem:v7];
+  serviceLikeItems = [(HREActionSetRecommendationItemProvider *)self serviceLikeItems];
+  firstObject = [serviceLikeItems firstObject];
+  [(HREActionSetRecommendationItem *)v5 setServiceLikeItem:firstObject];
 
   return v5;
 }

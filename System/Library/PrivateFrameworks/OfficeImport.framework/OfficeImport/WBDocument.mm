@@ -1,11 +1,11 @@
 @interface WBDocument
-+ (id)readFrom:(id)a3;
-+ (void)readNoteSeparatorFrom:(id)a3 type:(int)a4 separator:(id)a5;
-+ (void)readProperties:(id)a3 document:(id)a4;
-+ (void)readSectionsFrom:(id)a3 document:(id)a4;
-+ (void)readTextBoxesFrom:(id)a3;
-+ (void)setTimeStamp:(WrdDocumentProperties *)a3;
-+ (void)setupZIndices:(id)a3 document:(id)a4 escherType:(int)a5;
++ (id)readFrom:(id)from;
++ (void)readNoteSeparatorFrom:(id)from type:(int)type separator:(id)separator;
++ (void)readProperties:(id)properties document:(id)document;
++ (void)readSectionsFrom:(id)from document:(id)document;
++ (void)readTextBoxesFrom:(id)from;
++ (void)setTimeStamp:(WrdDocumentProperties *)stamp;
++ (void)setupZIndices:(id)indices document:(id)document escherType:(int)type;
 - (WBDocument)init;
 @end
 
@@ -18,33 +18,33 @@
   return [(WBDocument *)&v3 init];
 }
 
-+ (id)readFrom:(id)a3
++ (id)readFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(WDDocument);
   if (v4)
   {
     v7 = v4;
-    [v3 setTargetDocument:v4];
-    [(OCDDocument *)v4 setReader:v3];
-    v5 = [(WDDocument *)v4 fontTable];
-    [WBFontTable readFrom:v3 fontTable:v5];
+    [fromCopy setTargetDocument:v4];
+    [(OCDDocument *)v4 setReader:fromCopy];
+    fontTable = [(WDDocument *)v4 fontTable];
+    [WBFontTable readFrom:fromCopy fontTable:fontTable];
 
-    [WBDocument readProperties:v3 document:v7];
+    [WBDocument readProperties:fromCopy document:v7];
     operator new();
   }
 
   return 0;
 }
 
-+ (void)setTimeStamp:(WrdDocumentProperties *)a3
++ (void)setTimeStamp:(WrdDocumentProperties *)stamp
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v4 components:638 fromDate:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [currentCalendar components:638 fromDate:date];
 
-  var5 = a3->var5;
-  var6 = a3->var6;
+  var5 = stamp->var5;
+  var6 = stamp->var6;
   v8 = [v9 era];
   var5->var6 = v8 - 1900;
   var6->var6 = v8 - 1900;
@@ -60,10 +60,10 @@
   var6->var2 = [v9 minute];
 }
 
-+ (void)readSectionsFrom:(id)a3 document:(id)a4
++ (void)readSectionsFrom:(id)from document:(id)document
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  documentCopy = document;
   v21 = &v21;
   __p = &v21;
   v23 = 0;
@@ -79,8 +79,8 @@
 
   v8[2] = 0;
   v8[3] = 0;
-  v9 = [v5 wrdReader];
-  (*(*v9 + 200))(v9, v8);
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 200))(wrdReader, v8);
   if (v8[4])
   {
     operator new();
@@ -102,14 +102,14 @@
 
       else
       {
-        v14 = [v5 cancelDelegate];
-        v15 = [v14 isCancelled];
+        cancelDelegate = [fromCopy cancelDelegate];
+        isCancelled = [cancelDelegate isCancelled];
 
         v13 = v10[2];
-        if ((v15 & 1) == 0)
+        if ((isCancelled & 1) == 0)
         {
-          v18 = [v6 addSection];
-          [WBSection readFrom:v5 textRun:v13 document:v6 index:v12 section:v18];
+          addSection = [documentCopy addSection];
+          [WBSection readFrom:fromCopy textRun:v13 document:documentCopy index:v12 section:addSection];
 
           v11 = 0;
           if (!v13)
@@ -165,38 +165,38 @@ LABEL_18:
   std::__list_imp<WrdSectionTextRun *>::clear(&v21);
 }
 
-+ (void)readNoteSeparatorFrom:(id)a3 type:(int)a4 separator:(id)a5
++ (void)readNoteSeparatorFrom:(id)from type:(int)type separator:(id)separator
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 tableHeaders];
-  if (((*(v9 + 16) - *(v9 + 8)) & 0x3FFFC) != 0)
+  fromCopy = from;
+  separatorCopy = separator;
+  tableHeaders = [fromCopy tableHeaders];
+  if (((*(tableHeaders + 16) - *(tableHeaders + 8)) & 0x3FFFC) != 0)
   {
     v10[0] = &unk_286ED3718;
-    WrdCPTableHeaders::getTextRun(v9, v10, a4, 0);
-    [WBText readFrom:v7 text:v8 textRun:v10];
-    [v8 removeLastCharacter:13];
+    WrdCPTableHeaders::getTextRun(tableHeaders, v10, type, 0);
+    [WBText readFrom:fromCopy text:separatorCopy textRun:v10];
+    [separatorCopy removeLastCharacter:13];
   }
 }
 
-+ (void)readTextBoxesFrom:(id)a3
++ (void)readTextBoxesFrom:(id)from
 {
-  v7 = a3;
-  v3 = [v7 textBoxCount];
-  if (v3)
+  fromCopy = from;
+  textBoxCount = [fromCopy textBoxCount];
+  if (textBoxCount)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != textBoxCount; ++i)
     {
-      v5 = [v7 textBoxInfoAtIndex:i];
-      [WBTextBox readTextFrom:v7 to:v5 chain:v6];
+      v5 = [fromCopy textBoxInfoAtIndex:i];
+      [WBTextBox readTextFrom:fromCopy to:v5 chain:v6];
     }
   }
 }
 
-+ (void)readProperties:(id)a3 document:(id)a4
++ (void)readProperties:(id)properties document:(id)document
 {
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  documentCopy = document;
   v7 = [WBObjectFactory create:15];
   if (v7)
   {
@@ -207,54 +207,54 @@ LABEL_18:
     v8 = 0;
   }
 
-  v9 = [v5 wrdReader];
-  (*(*v9 + 240))(v9, v8);
-  [v6 setTrackChanges:(*(v8 + 148) >> 8) & 1];
-  [v6 setShowRevisionMarksOnScreen:(*(v8 + 148) >> 19) & 1];
-  [v6 setShowInsertionsAndDeletions:(*(v8 + 156) >> 39) & 1];
-  [v6 setShowFormatting:(*(v8 + 156) >> 40) & 1];
-  [v6 setShowMarkup:(*(v8 + 156) >> 37) & 1];
-  [v6 setShowComments:(*(v8 + 156) >> 38) & 1];
-  [v6 setMirrorMargins:(*(v8 + 148) >> 14) & 1];
-  [v6 setBorderSurroundHeader:(*(v8 + 156) >> 23) & 1];
-  [v6 setBorderSurroundFooter:(*(v8 + 156) >> 24) & 1];
-  [v6 setDefaultTabWidth:*(v8 + 70)];
-  [v6 setAutoHyphenate:(*(v8 + 148) >> 5) & 1];
-  [v6 setEvenAndOddHeaders:*(v8 + 37) & 1];
-  [v6 setFootnotePosition:*(v8 + 16)];
-  [v6 setEndnotePosition:*(v8 + 19)];
-  [v6 setFootnoteNumberFormat:*(v8 + 20)];
-  [v6 setEndnoteNumberFormat:*(v8 + 21)];
-  [v6 setFootnoteRestart:*(v8 + 17)];
-  [v6 setEndnoteRestart:*(v8 + 18)];
-  [v6 setFootnoteNumberingStart:*(v8 + 73)];
-  [v6 setGutterPosition:*(v8 + 25)];
-  [v6 setBookFold:(*(v8 + 156) >> 52) & 1];
-  [v6 setNoTabForHangingIndents:(*(v8 + 148) >> 41) & 1];
-  [v6 setZoomPercentage:*(v8 + 66)];
-  [v6 setShowOutline:*(v8 + 22) == 2];
+  wrdReader = [propertiesCopy wrdReader];
+  (*(*wrdReader + 240))(wrdReader, v8);
+  [documentCopy setTrackChanges:(*(v8 + 148) >> 8) & 1];
+  [documentCopy setShowRevisionMarksOnScreen:(*(v8 + 148) >> 19) & 1];
+  [documentCopy setShowInsertionsAndDeletions:(*(v8 + 156) >> 39) & 1];
+  [documentCopy setShowFormatting:(*(v8 + 156) >> 40) & 1];
+  [documentCopy setShowMarkup:(*(v8 + 156) >> 37) & 1];
+  [documentCopy setShowComments:(*(v8 + 156) >> 38) & 1];
+  [documentCopy setMirrorMargins:(*(v8 + 148) >> 14) & 1];
+  [documentCopy setBorderSurroundHeader:(*(v8 + 156) >> 23) & 1];
+  [documentCopy setBorderSurroundFooter:(*(v8 + 156) >> 24) & 1];
+  [documentCopy setDefaultTabWidth:*(v8 + 70)];
+  [documentCopy setAutoHyphenate:(*(v8 + 148) >> 5) & 1];
+  [documentCopy setEvenAndOddHeaders:*(v8 + 37) & 1];
+  [documentCopy setFootnotePosition:*(v8 + 16)];
+  [documentCopy setEndnotePosition:*(v8 + 19)];
+  [documentCopy setFootnoteNumberFormat:*(v8 + 20)];
+  [documentCopy setEndnoteNumberFormat:*(v8 + 21)];
+  [documentCopy setFootnoteRestart:*(v8 + 17)];
+  [documentCopy setEndnoteRestart:*(v8 + 18)];
+  [documentCopy setFootnoteNumberingStart:*(v8 + 73)];
+  [documentCopy setGutterPosition:*(v8 + 25)];
+  [documentCopy setBookFold:(*(v8 + 156) >> 52) & 1];
+  [documentCopy setNoTabForHangingIndents:(*(v8 + 148) >> 41) & 1];
+  [documentCopy setZoomPercentage:*(v8 + 66)];
+  [documentCopy setShowOutline:*(v8 + 22) == 2];
   WrdDOPTypography::WrdDOPTypography(&v22, *(v8 + 2));
-  [v6 setKinsokuStrict:(v26 >> 3) & 1];
+  [documentCopy setKinsokuStrict:(v26 >> 3) & 1];
   if (v23 == 2)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithCharacters:v25.var1 length:v25.var2];
-    [v6 setKinsokuAltBreakAfter:v10];
+    [documentCopy setKinsokuAltBreakAfter:v10];
 
     v11 = [MEMORY[0x277CCACA8] stringWithCharacters:v24.var1 length:v24.var2];
-    [v6 setKinsokuAltBreakBefore:v11];
+    [documentCopy setKinsokuAltBreakBefore:v11];
   }
 
-  v12 = [v5 officeArtState];
-  v13 = [v12 useXmlBlobs];
+  officeArtState = [propertiesCopy officeArtState];
+  useXmlBlobs = [officeArtState useXmlBlobs];
 
-  if (v13)
+  if (useXmlBlobs)
   {
     v14 = *(v8 + 29);
     v15 = *(v8 + 60);
-    v16 = [v6 theme];
-    v17 = [v5 officeArtState];
-    v18 = [v17 xmlDrawingState];
-    [OAXTheme readFromThemeData:v14 themeDataSize:v15 toTheme:v16 xmlDrawingState:v18];
+    theme = [documentCopy theme];
+    officeArtState2 = [propertiesCopy officeArtState];
+    xmlDrawingState = [officeArtState2 xmlDrawingState];
+    [OAXTheme readFromThemeData:v14 themeDataSize:v15 toTheme:theme xmlDrawingState:xmlDrawingState];
 
     v19 = CXGetRootElement(*(v8 + 31), *(v8 + 64));
     v20 = v19;
@@ -264,7 +264,7 @@ LABEL_18:
       {
         v21 = objc_alloc_init(OADColorMap);
         [OAXColorMap readFromXmlNode:v20 toColorMap:v21];
-        [v6 setColorMap:v21];
+        [documentCopy setColorMap:v21];
       }
 
       xmlFreeDoc(v20->doc);
@@ -277,21 +277,21 @@ LABEL_18:
   CsString::~CsString(&v24);
 }
 
-+ (void)setupZIndices:(id)a3 document:(id)a4 escherType:(int)a5
++ (void)setupZIndices:(id)indices document:(id)document escherType:(int)type
 {
-  v10 = a3;
-  v5 = [v10 count];
+  indicesCopy = indices;
+  v5 = [indicesCopy count];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v7 = [v10 objectAtIndex:i];
-      v8 = [v7 clientData];
-      v9 = [v8 anchor];
+      v7 = [indicesCopy objectAtIndex:i];
+      clientData = [v7 clientData];
+      anchor = [clientData anchor];
 
-      if (v9)
+      if (anchor)
       {
-        [v9 setZIndex:{i + objc_msgSend(v9, "zIndex")}];
+        [anchor setZIndex:{i + objc_msgSend(anchor, "zIndex")}];
       }
     }
   }

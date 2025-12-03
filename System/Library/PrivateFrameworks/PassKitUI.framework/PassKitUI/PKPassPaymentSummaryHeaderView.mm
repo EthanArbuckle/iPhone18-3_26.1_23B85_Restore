@@ -1,12 +1,12 @@
 @interface PKPassPaymentSummaryHeaderView
-+ (CGSize)_sizeForLabelWithText:(id)a3 font:(id)a4 maximumNumberOfLines:(int64_t)a5 width:(double)a6;
++ (CGSize)_sizeForLabelWithText:(id)text font:(id)font maximumNumberOfLines:(int64_t)lines width:(double)width;
 + (double)preferredHeight;
 + (id)_titleFont;
 - (PKPassPaymentSummaryHeaderView)init;
-- (PKPassPaymentSummaryHeaderView)initWithFrame:(CGRect)a3;
+- (PKPassPaymentSummaryHeaderView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation PKPassPaymentSummaryHeaderView
@@ -18,14 +18,14 @@
   return [(PKPassPaymentSummaryHeaderView *)self initWithFrame:0.0, 0.0, 0.0, v3];
 }
 
-- (PKPassPaymentSummaryHeaderView)initWithFrame:(CGRect)a3
+- (PKPassPaymentSummaryHeaderView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PKPassPaymentSummaryHeaderView;
-  v3 = [(PKPassPaymentSummaryHeaderView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPassPaymentSummaryHeaderView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v5;
@@ -34,7 +34,7 @@
     v8 = +[PKPassPaymentSummaryHeaderView _titleFont];
     [(UILabel *)v7 setFont:v8];
 
-    [(UILabel *)v3->_titleLabel setTextColor:v4];
+    [(UILabel *)v3->_titleLabel setTextColor:secondaryLabelColor];
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secondaryTitleLabel = v3->_secondaryTitleLabel;
     v3->_secondaryTitleLabel = v9;
@@ -43,7 +43,7 @@
     v12 = +[PKPassPaymentSummaryHeaderView _titleFont];
     [(UILabel *)v11 setFont:v12];
 
-    [(UILabel *)v3->_secondaryTitleLabel setTextColor:v4];
+    [(UILabel *)v3->_secondaryTitleLabel setTextColor:secondaryLabelColor];
     [(PKPassPaymentSummaryHeaderView *)v3 addSubview:v3->_titleLabel];
     [(PKPassPaymentSummaryHeaderView *)v3 addSubview:v3->_secondaryTitleLabel];
   }
@@ -69,7 +69,7 @@
   v8 = v7;
   v10 = v9;
   memset(&slice, 0, sizeof(slice));
-  v11 = [(PKPassPaymentSummaryHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPassPaymentSummaryHeaderView *)self _shouldReverseLayoutDirection];
   if (PKUIGetMinScreenWidthType())
   {
     v12 = 4.0;
@@ -85,12 +85,12 @@
   v38.size.width = v8;
   v38.size.height = v10;
   remainder = CGRectInset(v38, v12, 12.0);
-  v13 = [(UILabel *)self->_secondaryTitleLabel text];
-  v14 = [v13 length];
+  text = [(UILabel *)self->_secondaryTitleLabel text];
+  v14 = [text length];
 
   if (v14)
   {
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v15 = CGRectMinXEdge;
     }
@@ -100,16 +100,16 @@
       v15 = CGRectMaxXEdge;
     }
 
-    v16 = [(UILabel *)self->_secondaryTitleLabel font];
-    [v16 lineHeight];
+    font = [(UILabel *)self->_secondaryTitleLabel font];
+    [font lineHeight];
     v18 = v17;
 
     v19 = *(MEMORY[0x1E695F058] + 16);
     v34.origin = *MEMORY[0x1E695F058];
     v34.size = v19;
-    v20 = [(UILabel *)self->_secondaryTitleLabel text];
+    text2 = [(UILabel *)self->_secondaryTitleLabel text];
     v21 = +[PKPassPaymentSummaryHeaderView _titleFont];
-    [PKPassPaymentSummaryHeaderView _sizeForLabelWithText:v20 font:v21 maximumNumberOfLines:1 width:remainder.size.width * 0.5];
+    [PKPassPaymentSummaryHeaderView _sizeForLabelWithText:text2 font:v21 maximumNumberOfLines:1 width:remainder.size.width * 0.5];
     v23 = v22;
 
     v24.n128_u64[0] = v23;
@@ -138,8 +138,8 @@
   }
 
   v29 = Width + v28 * -2.0;
-  v30 = [(UILabel *)self->_titleLabel font];
-  [v30 lineHeight];
+  font2 = [(UILabel *)self->_titleLabel font];
+  [font2 lineHeight];
   v32 = v31;
 
   if (PKUIGetMinScreenWidthType())
@@ -161,18 +161,18 @@
   [(UILabel *)self->_titleLabel setFrame:*&v34.origin, v34.size.width, v32];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   titleLabel = self->_titleLabel;
-  v5 = a3;
-  [(UILabel *)titleLabel setTextColor:v5];
-  [(UILabel *)self->_secondaryTitleLabel setTextColor:v5];
+  colorCopy = color;
+  [(UILabel *)titleLabel setTextColor:colorCopy];
+  [(UILabel *)self->_secondaryTitleLabel setTextColor:colorCopy];
 }
 
 + (double)preferredHeight
 {
-  v2 = [a1 _titleFont];
-  [v2 lineHeight];
+  _titleFont = [self _titleFont];
+  [_titleFont lineHeight];
   v4 = v3 + 7.0 + 12.0;
 
   return v4;
@@ -186,23 +186,23 @@
   return [v2 systemFontOfSize:v3];
 }
 
-+ (CGSize)_sizeForLabelWithText:(id)a3 font:(id)a4 maximumNumberOfLines:(int64_t)a5 width:(double)a6
++ (CGSize)_sizeForLabelWithText:(id)text font:(id)font maximumNumberOfLines:(int64_t)lines width:(double)width
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v6 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  if (a3 && a4 && a5 >= 1)
+  if (text && font && lines >= 1)
   {
     v11 = MEMORY[0x1E69DB7E0];
-    v12 = a4;
-    v13 = a3;
+    fontCopy = font;
+    textCopy = text;
     v14 = objc_alloc_init(v11);
-    [v14 setMaximumNumberOfLines:a5];
+    [v14 setMaximumNumberOfLines:lines];
     v20 = *MEMORY[0x1E69DB648];
-    v21[0] = v12;
+    v21[0] = fontCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
-    [v13 boundingRectWithSize:33 options:v15 attributes:v14 context:{a6, 1.79769313e308}];
+    [textCopy boundingRectWithSize:33 options:v15 attributes:v14 context:{width, 1.79769313e308}];
     v6 = v16;
     v7 = v17;
   }

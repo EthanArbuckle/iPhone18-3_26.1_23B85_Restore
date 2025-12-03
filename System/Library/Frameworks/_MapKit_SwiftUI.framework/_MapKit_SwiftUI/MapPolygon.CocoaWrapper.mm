@@ -4,13 +4,13 @@
 - (CLLocationCoordinate2D)coordinate;
 - (NSArray)interiorPolygons;
 - (_TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper)init;
-- (_TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper)initWithCoder:(id)a3;
-- (id)locationsAtPointIndexes:(id)a3;
+- (_TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper)initWithCoder:(id)coder;
+- (id)locationsAtPointIndexes:(id)indexes;
 @end
 
 @implementation MapPolygon.CocoaWrapper
 
-- (_TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper)initWithCoder:(id)a3
+- (_TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper)initWithCoder:(id)coder
 {
   result = sub_213D91E9C();
   __break(1u);
@@ -42,7 +42,7 @@
   return [v2 points];
 }
 
-- (id)locationsAtPointIndexes:(id)a3
+- (id)locationsAtPointIndexes:(id)indexes
 {
   v4 = sub_213D9036C();
   v5 = *(v4 - 8);
@@ -51,30 +51,30 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_213D9035C();
   v9 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper_wrapped);
-  v10 = self;
+  selfCopy = self;
   v11 = sub_213D9034C();
-  v12 = [v9 locationsAtPointIndexes_];
+  locationsAtPointIndexes_ = [v9 locationsAtPointIndexes_];
 
-  if (!v12)
+  if (!locationsAtPointIndexes_)
   {
     sub_213CE2B34(0, &unk_27C8EB188, 0x277CCABB0);
     sub_213D919FC();
-    v12 = sub_213D919EC();
+    locationsAtPointIndexes_ = sub_213D919EC();
   }
 
   (*(v5 + 8))(v8, v4);
 
-  return v12;
+  return locationsAtPointIndexes_;
 }
 
 - (NSArray)interiorPolygons
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtCV15_MapKit_SwiftUI10MapPolygon12CocoaWrapper_wrapped);
-  v3 = self;
-  v4 = [v2 interiorPolygons];
-  if (v4)
+  selfCopy = self;
+  interiorPolygons = [v2 interiorPolygons];
+  if (interiorPolygons)
   {
-    v5 = v4;
+    v5 = interiorPolygons;
     sub_213CE2B34(0, &qword_27C8EB1C0, 0x277CD4F18);
     sub_213D919FC();
 

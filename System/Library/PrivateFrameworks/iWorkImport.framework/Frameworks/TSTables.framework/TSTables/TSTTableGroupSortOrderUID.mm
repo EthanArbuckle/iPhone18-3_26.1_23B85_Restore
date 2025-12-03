@@ -1,41 +1,41 @@
 @interface TSTTableGroupSortOrderUID
-+ (id)groupSortOrderWithRules:(id)a3 withTableInfo:(id)a4;
-- (BOOL)containsAnyRulesInColumnUIDList:(const void *)a3;
-- (TSTTableGroupSortOrderUID)initWithGroupRules:(id)a3 withTableInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)groupSortOrderByRemovingColumnUIDs:(const void *)a3 tableInfo:(id)a4;
-- (id)groupSortOrderByReplacingRuleAtIndex:(unint64_t)a3 withRule:(id)a4 withTableInfo:(id)a5;
-- (id)groupSortOrderWithTableInfo:(id)a3;
-- (id)groupSortRulesForLevel:(unsigned __int8)a3 tableInfo:(id)a4;
-- (id)initFromArchive:(const void *)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)sortRulesWithTableInfo:(id)a3;
++ (id)groupSortOrderWithRules:(id)rules withTableInfo:(id)info;
+- (BOOL)containsAnyRulesInColumnUIDList:(const void *)list;
+- (TSTTableGroupSortOrderUID)initWithGroupRules:(id)rules withTableInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)groupSortOrderByRemovingColumnUIDs:(const void *)ds tableInfo:(id)info;
+- (id)groupSortOrderByReplacingRuleAtIndex:(unint64_t)index withRule:(id)rule withTableInfo:(id)info;
+- (id)groupSortOrderWithTableInfo:(id)info;
+- (id)groupSortRulesForLevel:(unsigned __int8)level tableInfo:(id)info;
+- (id)initFromArchive:(const void *)archive;
+- (void)encodeToArchive:(void *)archive;
+- (void)sortRulesWithTableInfo:(id)info;
 @end
 
 @implementation TSTTableGroupSortOrderUID
 
-+ (id)groupSortOrderWithRules:(id)a3 withTableInfo:(id)a4
++ (id)groupSortOrderWithRules:(id)rules withTableInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  rulesCopy = rules;
+  infoCopy = info;
   v7 = objc_alloc(objc_opt_class());
-  v10 = objc_msgSend_initWithGroupRules_withTableInfo_(v7, v8, v5, v6, v9);
+  v10 = objc_msgSend_initWithGroupRules_withTableInfo_(v7, v8, rulesCopy, infoCopy, v9);
 
   return v10;
 }
 
-- (TSTTableGroupSortOrderUID)initWithGroupRules:(id)a3 withTableInfo:(id)a4
+- (TSTTableGroupSortOrderUID)initWithGroupRules:(id)rules withTableInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  rulesCopy = rules;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = TSTTableGroupSortOrderUID;
   v12 = [(TSTTableGroupSortOrderUID *)&v19 init];
   if (v12)
   {
-    if (v6)
+    if (rulesCopy)
     {
-      v13 = objc_msgSend_copy(v6, v8, v9, v10, v11);
+      v13 = objc_msgSend_copy(rulesCopy, v8, v9, v10, v11);
     }
 
     else
@@ -46,19 +46,19 @@
     v14 = v13;
     objc_storeStrong(&v12->_groupSortRules, v13);
 
-    if (v7)
+    if (infoCopy)
     {
-      objc_msgSend_sortRulesWithTableInfo_(v12, v15, v7, v16, v17);
+      objc_msgSend_sortRulesWithTableInfo_(v12, v15, infoCopy, v16, v17);
     }
   }
 
   return v12;
 }
 
-- (id)groupSortOrderWithTableInfo:(id)a3
+- (id)groupSortOrderWithTableInfo:(id)info
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v43 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
   v46 = 0u;
   v47 = 0u;
@@ -79,7 +79,7 @@
         }
 
         v22 = *(*(&v44 + 1) + 8 * i);
-        v23 = objc_msgSend_translator(v4, v15, v16, v17, v18);
+        v23 = objc_msgSend_translator(infoCopy, v15, v16, v17, v18);
         v28 = objc_msgSend_columnUID(v22, v24, v25, v26, v27);
         v31 = objc_msgSend_baseColumnIndexForColumnUID_(v23, v29, v28, v29, v30);
 
@@ -98,29 +98,29 @@
   }
 
   v38 = objc_alloc(objc_opt_class());
-  v41 = objc_msgSend_initWithGroupRules_withTableInfo_(v38, v39, v43, v4, v40);
+  v41 = objc_msgSend_initWithGroupRules_withTableInfo_(v38, v39, v43, infoCopy, v40);
 
   return v41;
 }
 
-- (id)groupSortOrderByRemovingColumnUIDs:(const void *)a3 tableInfo:(id)a4
+- (id)groupSortOrderByRemovingColumnUIDs:(const void *)ds tableInfo:(id)info
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = MEMORY[0x277CBEB18];
-  v11 = objc_msgSend_groupSortOrder(v5, v7, v8, v9, v10);
+  v11 = objc_msgSend_groupSortOrder(infoCopy, v7, v8, v9, v10);
   v16 = objc_msgSend_groupSortRules(v11, v12, v13, v14, v15);
   v20 = objc_msgSend_arrayWithArray_(v6, v17, v16, v18, v19);
 
-  v25 = *a3;
-  v26 = *(a3 + 1);
+  v25 = *ds;
+  v26 = *(ds + 1);
   while (v25 != v26)
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v27 = objc_msgSend_groupSortOrder(v5, v21, v22, v23, v24, 0);
+    v27 = objc_msgSend_groupSortOrder(infoCopy, v21, v22, v23, v24, 0);
     v32 = objc_msgSend_groupSortRules(v27, v28, v29, v30, v31);
 
     v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v47, v51, 16);
@@ -153,17 +153,17 @@
   }
 
   v42 = objc_alloc(objc_opt_class());
-  v45 = objc_msgSend_initWithGroupRules_withTableInfo_(v42, v43, v20, v5, v44);
+  v45 = objc_msgSend_initWithGroupRules_withTableInfo_(v42, v43, v20, infoCopy, v44);
 
   return v45;
 }
 
-- (id)groupSortOrderByReplacingRuleAtIndex:(unint64_t)a3 withRule:(id)a4 withTableInfo:(id)a5
+- (id)groupSortOrderByReplacingRuleAtIndex:(unint64_t)index withRule:(id)rule withTableInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  ruleCopy = rule;
+  infoCopy = info;
   v13 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v10, self->_groupSortRules, v11, v12);
-  if (objc_msgSend_count(v13, v14, v15, v16, v17) <= a3)
+  if (objc_msgSend_count(v13, v14, v15, v16, v17) <= index)
   {
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSTTableGroupSortOrderUID groupSortOrderByReplacingRuleAtIndex:withRule:withTableInfo:]", v19, v20);
@@ -175,25 +175,25 @@
 
   else
   {
-    objc_msgSend_replaceObjectAtIndex_withObject_(v13, v18, a3, v8, v20);
+    objc_msgSend_replaceObjectAtIndex_withObject_(v13, v18, index, ruleCopy, v20);
   }
 
   v32 = objc_opt_class();
-  v35 = objc_msgSend_groupSortOrderWithRules_withTableInfo_(v32, v33, v13, v9, v34);
+  v35 = objc_msgSend_groupSortOrderWithRules_withTableInfo_(v32, v33, v13, infoCopy, v34);
 
   return v35;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
-  v10 = *(a3 + 6);
+  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, archive, v3, v4);
+  v10 = *(archive + 6);
   if (v10 >= 1)
   {
     v11 = 8;
     do
     {
-      v12 = *(*(a3 + 4) + v11);
+      v12 = *(*(archive + 4) + v11);
       v13 = [TSTTableGroupSortRuleUID alloc];
       v17 = objc_msgSend_initFromArchive_(v13, v14, v12, v15, v16);
       objc_msgSend_addObject_(v9, v18, v17, v19, v20);
@@ -210,7 +210,7 @@
   return v21;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0u;
@@ -233,34 +233,34 @@
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
-        v13 = *(a3 + 4);
+        v13 = *(archive + 4);
         if (!v13)
         {
           goto LABEL_11;
         }
 
-        v14 = *(a3 + 6);
+        v14 = *(archive + 6);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a3 + 6) = v14 + 1;
+          *(archive + 6) = v14 + 1;
           objc_msgSend_encodeToArchive_(v12, v6, *&v13[2 * v14 + 2], v7, v8, v22);
           goto LABEL_13;
         }
 
-        if (v15 == *(a3 + 7))
+        if (v15 == *(archive + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v13 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+          v13 = *(archive + 4);
           v15 = *v13;
         }
 
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TST::TableGroupSortOrderUIDArchive_GroupSortRuleUIDArchive>(*(a3 + 2));
-        v17 = *(a3 + 6);
-        v18 = *(a3 + 4) + 8 * v17;
-        *(a3 + 6) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TST::TableGroupSortOrderUIDArchive_GroupSortRuleUIDArchive>(*(archive + 2));
+        v17 = *(archive + 6);
+        v18 = *(archive + 4) + 8 * v17;
+        *(archive + 6) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_encodeToArchive_(v12, v19, v16, v20, v21, v22);
 LABEL_13:
@@ -275,13 +275,13 @@ LABEL_13:
   }
 }
 
-- (void)sortRulesWithTableInfo:(id)a3
+- (void)sortRulesWithTableInfo:(id)info
 {
-  v13 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   for (i = 0; i != 11; ++i)
   {
-    v8 = objc_msgSend_groupSortRulesForLevel_tableInfo_(self, v4, i, v13, v5);
+    v8 = objc_msgSend_groupSortRulesForLevel_tableInfo_(self, v4, i, infoCopy, v5);
     objc_msgSend_addObjectsFromArray_(v6, v9, v8, v10, v11);
   }
 
@@ -289,12 +289,12 @@ LABEL_13:
   self->_groupSortRules = v6;
 }
 
-- (BOOL)containsAnyRulesInColumnUIDList:(const void *)a3
+- (BOOL)containsAnyRulesInColumnUIDList:(const void *)list
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = *a3;
-  v4 = *(a3 + 1);
-  if (*a3 != v4)
+  v3 = *list;
+  v4 = *(list + 1);
+  if (*list != v4)
   {
     v6 = 0uLL;
     do
@@ -348,9 +348,9 @@ LABEL_13:
   return 0;
 }
 
-- (id)groupSortRulesForLevel:(unsigned __int8)a3 tableInfo:(id)a4
+- (id)groupSortRulesForLevel:(unsigned __int8)level tableInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -362,8 +362,8 @@ LABEL_13:
   v18[1] = 3221225472;
   v18[2] = sub_22169D10C;
   v18[3] = &unk_278468468;
-  v12 = v6;
-  v21 = a3;
+  v12 = infoCopy;
+  levelCopy = level;
   v19 = v12;
   v20 = &v22;
   objc_msgSend_enumerateObjectsUsingBlock_(v11, v13, v18, v14, v15);
@@ -374,10 +374,10 @@ LABEL_13:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   groupSortRules = self->_groupSortRules;
 
   return objc_msgSend_initWithGroupRules_withTableInfo_(v9, v10, groupSortRules, 0, v11);

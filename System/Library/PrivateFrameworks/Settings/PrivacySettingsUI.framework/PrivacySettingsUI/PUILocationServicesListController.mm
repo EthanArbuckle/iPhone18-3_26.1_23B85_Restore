@@ -1,50 +1,50 @@
 @interface PUILocationServicesListController
 + (BOOL)isCoreRoutineAuthorized;
-- (BOOL)_isBundleBlacklisted:(id)a3;
-- (BOOL)_isFindMyDeviceSpecifier:(id)a3;
+- (BOOL)_isBundleBlacklisted:(id)blacklisted;
+- (BOOL)_isFindMyDeviceSpecifier:(id)specifier;
 - (BOOL)_shouldEnableLocationSharingSpecifier;
 - (PUILocationServicesListController)init;
-- (id)_iconForLocationUsage:(int)a3;
+- (id)_iconForLocationUsage:(int)usage;
 - (id)accountStore;
 - (id)hiddenBundleIdentifiers;
-- (id)isEntityAuthorized:(id)a3;
-- (id)isLocationServicesEnabled:(id)a3;
+- (id)isEntityAuthorized:(id)authorized;
+- (id)isLocationServicesEnabled:(id)enabled;
 - (id)loadSensorKitSpecifiersProvider;
-- (id)localizedDisplayNameForBundleID:(id)a3;
+- (id)localizedDisplayNameForBundleID:(id)d;
 - (id)locationDetailSpecifiersForAppsAndBundles;
-- (id)locationDetailSpecifiersWithDetailsMatching:(id)a3;
+- (id)locationDetailSpecifiersWithDetailsMatching:(id)matching;
 - (id)locationSharingSpecifiers;
 - (id)primaryAccount;
 - (id)specifiers;
-- (int)locationUsageBasedOnDetails:(id)a3;
-- (int)locationUsageForEntity:(id)a3;
-- (void)_cancelConfirmDisableForSpecifier:(id)a3;
-- (void)_handleAuthenticationForSender:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_locationSharingSpecifierWasTapped:(id)a3;
+- (int)locationUsageBasedOnDetails:(id)details;
+- (int)locationUsageForEntity:(id)entity;
+- (void)_cancelConfirmDisableForSpecifier:(id)specifier;
+- (void)_handleAuthenticationForSender:(id)sender success:(BOOL)success error:(id)error;
+- (void)_locationSharingSpecifierWasTapped:(id)tapped;
 - (void)_pushCoreRoutineViewController;
 - (void)dealloc;
-- (void)didChangeActiveLocationSharingDevice:(id)a3;
-- (void)didUpdateHidingStatus:(BOOL)a3;
-- (void)disableAfterLoginConfirmation:(id)a3;
-- (void)mainThreadConnectionError:(id)a3;
-- (void)mainThreadDidChangeActiveLocationSharingDevice:(id)a3;
-- (void)mainThreadDidUpdateHidingStatus:(BOOL)a3;
-- (void)profileNotification:(id)a3;
+- (void)didChangeActiveLocationSharingDevice:(id)device;
+- (void)didUpdateHidingStatus:(BOOL)status;
+- (void)disableAfterLoginConfirmation:(id)confirmation;
+- (void)mainThreadConnectionError:(id)error;
+- (void)mainThreadDidChangeActiveLocationSharingDevice:(id)device;
+- (void)mainThreadDidUpdateHidingStatus:(BOOL)status;
+- (void)profileNotification:(id)notification;
 - (void)provideNavigationDonations;
-- (void)setEntityAuthorized:(id)a3 specifier:(id)a4;
-- (void)setLocationServicesEnabled:(id)a3 specifier:(id)a4;
-- (void)setSOSEntityAuthorized:(id)a3 specifier:(id)a4;
-- (void)showCoreRoutineSettings:(id)a3;
+- (void)setEntityAuthorized:(id)authorized specifier:(id)specifier;
+- (void)setLocationServicesEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSOSEntityAuthorized:(id)authorized specifier:(id)specifier;
+- (void)showCoreRoutineSettings:(id)settings;
 - (void)showLocationPrivacyPage;
 - (void)startLocationStatusUpdates;
 - (void)startUpdatingFindMyPreferences;
 - (void)stopLocationStatusUpdates;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateAuthLevelStringForSpecifier:(id)a3 andCell:(id)a4;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateAuthLevelStringForSpecifier:(id)specifier andCell:(id)cell;
 - (void)updateFindMyFriendsStateBasedOnRestriction;
-- (void)updateForApplicationDidBecomeActive:(id)a3;
+- (void)updateForApplicationDidBecomeActive:(id)active;
 - (void)updateLocationSharing;
-- (void)updateLocationSharingSpecifiersWithReload:(BOOL)a3;
+- (void)updateLocationSharingSpecifiersWithReload:(BOOL)reload;
 - (void)updateLocationUsage;
 - (void)updateMutableStateBasedOnRestriction;
 - (void)updateMutableStateForLocationSharing;
@@ -76,11 +76,11 @@
     locationServicesAccessQueue = v2->locationServicesAccessQueue;
     v2->locationServicesAccessQueue = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_updateForApplicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
-    [v9 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
-    [v9 addObserver:v2 selector:sel_updateAppClipsSpecifierCount_ name:@"com.apple.PrivacySettingsUI.LocationAppClipsStateChanged" object:0];
-    [v9 addObserver:v2 selector:sel_updateCoreRoutineSettings_ name:@"PreferencesRoutineStateChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateForApplicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_updateAppClipsSpecifierCount_ name:@"com.apple.PrivacySettingsUI.LocationAppClipsStateChanged" object:0];
+    [defaultCenter addObserver:v2 selector:sel_updateCoreRoutineSettings_ name:@"PreferencesRoutineStateChanged" object:0];
   }
 
   return v2;
@@ -88,10 +88,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(PUILocationServicesListController *)self presentedViewController];
+  presentedViewController = [(PUILocationServicesListController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -121,15 +121,15 @@ void __44__PUILocationServicesListController_dealloc__block_invoke()
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = PUI_BundleForPrivacySettingsFramework();
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"LOCATION_SERVICES" table:@"Location Services" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"LOCATION_SERVICES" table:@"Location Services" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -139,16 +139,16 @@ void __44__PUILocationServicesListController_dealloc__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileNotification:(id)a3
+- (void)profileNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__PUILocationServicesListController_profileNotification___block_invoke;
   v6[3] = &unk_279BA10B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -174,10 +174,10 @@ void __57__PUILocationServicesListController_profileNotification___block_invoke(
   }
 
   v4 = PSUICLCopyAppsUsingLocation();
-  v5 = [(NSDictionary *)self->_locationEntitiesDetails allKeys];
-  v6 = [v4 allKeys];
-  v7 = [v5 count];
-  if (v7 == [v6 count] && (objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", v5), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", v6), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToSet:", v9), v9, v8, (v10 & 1) != 0))
+  allKeys = [(NSDictionary *)self->_locationEntitiesDetails allKeys];
+  allKeys2 = [v4 allKeys];
+  v7 = [allKeys count];
+  if (v7 == [allKeys2 count] && (objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", allKeys), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", allKeys2), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToSet:", v9), v9, v8, (v10 & 1) != 0))
   {
     objc_storeStrong(&self->_locationEntitiesDetails, v4);
     locationEntitiesDetails = self->_locationEntitiesDetails;
@@ -264,10 +264,10 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
   }
 }
 
-- (int)locationUsageBasedOnDetails:(id)a3
+- (int)locationUsageBasedOnDetails:(id)details
 {
-  v4 = a3;
-  v5 = [getCLLocationManagerClass() activeLocationServiceTypesForLocationDictionary:v4];
+  detailsCopy = details;
+  v5 = [getCLLocationManagerClass() activeLocationServiceTypesForLocationDictionary:detailsCopy];
   if ((v5 & 2) != 0)
   {
     v8 = 3;
@@ -280,7 +280,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
 
   else
   {
-    v6 = [getCLLocationManagerClass() dateLocationLastUsedForLocationDictionary:v4];
+    v6 = [getCLLocationManagerClass() dateLocationLastUsedForLocationDictionary:detailsCopy];
     if (v6)
     {
       v7 = [(NSDate *)self->_twentyFourHoursAgo laterDate:v6];
@@ -304,26 +304,26 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
   return v8;
 }
 
-- (int)locationUsageForEntity:(id)a3
+- (int)locationUsageForEntity:(id)entity
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 isEqualToString:@"SYSTEM_SERVICES"])
+  entityCopy = entity;
+  if (![entityCopy isEqualToString:@"SYSTEM_SERVICES"])
   {
-    if ([v4 isEqualToString:@"APP_CLIPS"])
+    if ([entityCopy isEqualToString:@"APP_CLIPS"])
     {
       v5 = +[PUILocationServicesClipsListController clipsLocationUsage];
       goto LABEL_5;
     }
 
-    if ([v4 isEqualToString:@"LOCATION_BASED_ALERTS"])
+    if ([entityCopy isEqualToString:@"LOCATION_BASED_ALERTS"])
     {
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v7 = self->_coalescedLocationBasedAlertsSystemServices;
-      v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v66 objects:v75 count:16];
+      coalescedImproveMapsServices = self->_coalescedLocationBasedAlertsSystemServices;
+      v8 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v66 objects:v75 count:16];
       if (v8)
       {
         v9 = v8;
@@ -335,7 +335,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v67 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v12 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v66 + 1) + 8 * i)];
@@ -347,7 +347,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v66 objects:v75 count:16];
+          v9 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v66 objects:v75 count:16];
         }
 
         while (v9);
@@ -355,14 +355,14 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
       }
     }
 
-    else if ([v4 isEqualToString:@"HOMEKIT"])
+    else if ([entityCopy isEqualToString:@"HOMEKIT"])
     {
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v7 = self->_coalescedHomeKitSystemServices;
-      v14 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v62 objects:v74 count:16];
+      coalescedImproveMapsServices = self->_coalescedHomeKitSystemServices;
+      v14 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v62 objects:v74 count:16];
       if (v14)
       {
         v15 = v14;
@@ -374,7 +374,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v63 != v16)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v18 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v62 + 1) + 8 * j)];
@@ -386,7 +386,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v15 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v62 objects:v74 count:16];
+          v15 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v62 objects:v74 count:16];
         }
 
         while (v15);
@@ -394,14 +394,14 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
       }
     }
 
-    else if ([v4 isEqualToString:@"NETWORKING_WIRELESS"])
+    else if ([entityCopy isEqualToString:@"NETWORKING_WIRELESS"])
     {
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v7 = self->_coalescedWirelessSystemServices;
-      v20 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v58 objects:v73 count:16];
+      coalescedImproveMapsServices = self->_coalescedWirelessSystemServices;
+      v20 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v58 objects:v73 count:16];
       if (v20)
       {
         v21 = v20;
@@ -413,7 +413,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v59 != v22)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v24 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v58 + 1) + 8 * k)];
@@ -425,7 +425,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v21 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v58 objects:v73 count:16];
+          v21 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v58 objects:v73 count:16];
         }
 
         while (v21);
@@ -433,14 +433,14 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
       }
     }
 
-    else if ([v4 isEqualToString:@"ROUTING_AND_TRAFFIC"])
+    else if ([entityCopy isEqualToString:@"ROUTING_AND_TRAFFIC"])
     {
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v7 = self->_coalescedRoutingAndTrafficSystemServices;
-      v26 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v54 objects:v72 count:16];
+      coalescedImproveMapsServices = self->_coalescedRoutingAndTrafficSystemServices;
+      v26 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v54 objects:v72 count:16];
       if (v26)
       {
         v27 = v26;
@@ -452,7 +452,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v55 != v28)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v30 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v54 + 1) + 8 * m)];
@@ -464,7 +464,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v27 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v54 objects:v72 count:16];
+          v27 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v54 objects:v72 count:16];
         }
 
         while (v27);
@@ -472,14 +472,14 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
       }
     }
 
-    else if ([v4 isEqualToString:@"IMPROVE_LOCATION_ACCURACY"])
+    else if ([entityCopy isEqualToString:@"IMPROVE_LOCATION_ACCURACY"])
     {
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v7 = self->_coalescedImproveLocationAccuracySystemServices;
-      v32 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v50 objects:v71 count:16];
+      coalescedImproveMapsServices = self->_coalescedImproveLocationAccuracySystemServices;
+      v32 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v50 objects:v71 count:16];
       if (v32)
       {
         v33 = v32;
@@ -491,7 +491,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v51 != v34)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v36 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v50 + 1) + 8 * n)];
@@ -503,7 +503,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v33 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v50 objects:v71 count:16];
+          v33 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v50 objects:v71 count:16];
         }
 
         while (v33);
@@ -513,10 +513,10 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
 
     else
     {
-      if (![v4 isEqualToString:@"POLARIS"])
+      if (![entityCopy isEqualToString:@"POLARIS"])
       {
-        v7 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:v4];
-        v6 = [(PUILocationServicesListController *)self locationUsageBasedOnDetails:v7];
+        coalescedImproveMapsServices = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:entityCopy];
+        v6 = [(PUILocationServicesListController *)self locationUsageBasedOnDetails:coalescedImproveMapsServices];
         goto LABEL_73;
       }
 
@@ -524,8 +524,8 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v7 = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
-      v38 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v46 objects:v70 count:16];
+      coalescedImproveMapsServices = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
+      v38 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v46 objects:v70 count:16];
       if (v38)
       {
         v39 = v38;
@@ -537,7 +537,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
           {
             if (*v47 != v40)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(coalescedImproveMapsServices);
             }
 
             v42 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:*(*(&v46 + 1) + 8 * ii)];
@@ -549,7 +549,7 @@ void __56__PUILocationServicesListController_updateLocationUsage__block_invoke(u
             }
           }
 
-          v39 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v46 objects:v70 count:16];
+          v39 = [(NSMutableArray *)coalescedImproveMapsServices countByEnumeratingWithState:&v46 objects:v70 count:16];
         }
 
         while (v39);
@@ -618,7 +618,7 @@ LABEL_11:
   return v3;
 }
 
-- (id)isLocationServicesEnabled:(id)a3
+- (id)isLocationServicesEnabled:(id)enabled
 {
   isLocationServicesEnabled = self->_isLocationServicesEnabled;
   if (!isLocationServicesEnabled)
@@ -633,26 +633,26 @@ LABEL_11:
   return isLocationServicesEnabled;
 }
 
-- (void)setLocationServicesEnabled:(id)a3 specifier:(id)a4
+- (void)setLocationServicesEnabled:(id)enabled specifier:(id)specifier
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_isLocationServicesEnabled, a3);
-  v9 = [v7 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  objc_storeStrong(&self->_isLocationServicesEnabled, enabled);
+  bOOLValue = [enabledCopy BOOLValue];
   v10 = _PUILoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v37 = "[PUILocationServicesListController setLocationServicesEnabled:specifier:]";
     v38 = 1024;
-    v39 = v9;
+    v39 = bOOLValue;
     _os_log_impl(&dword_2657FE000, v10, OS_LOG_TYPE_DEFAULT, "%s - enable: %d", buf, 0x12u);
   }
 
-  if (v9 != [getCLLocationManagerClass() locationServicesEnabled])
+  if (bOOLValue != [getCLLocationManagerClass() locationServicesEnabled])
   {
-    if (v9)
+    if (bOOLValue)
     {
       [(PUILocationServicesListController *)self _setLocationServicesEnabled:1];
       if (isModificationAllowedForID(@"com.apple.findmy"))
@@ -663,8 +663,8 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      [v8 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-      v11 = [v8 propertyForKey:*MEMORY[0x277D40148]];
+      [specifierCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+      v11 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
       [v11 setCellEnabled:0];
     }
 
@@ -682,20 +682,20 @@ LABEL_22:
 
       v11 = PUI_LocalizedStringForLocationServices(v13);
       v14 = MEMORY[0x277D75110];
-      v15 = [MEMORY[0x277D75418] currentDevice];
-      v16 = [v15 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v17 = v16 & 0xFFFFFFFFFFFFFFFBLL;
-      v18 = v11;
-      if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      v17 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
+      name = v11;
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v18 = [v8 name];
+        name = [specifierCopy name];
       }
 
-      v19 = [MEMORY[0x277D75418] currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v21 = v11;
       }
@@ -705,10 +705,10 @@ LABEL_22:
         v21 = 0;
       }
 
-      v22 = [MEMORY[0x277D75418] currentDevice];
-      v23 = [v22 userInterfaceIdiom];
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-      v24 = [v14 alertControllerWithTitle:v18 message:v21 preferredStyle:(v23 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+      v24 = [v14 alertControllerWithTitle:name message:v21 preferredStyle:(userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
       if (v17 == 1)
       {
       }
@@ -720,7 +720,7 @@ LABEL_22:
       v34[2] = __74__PUILocationServicesListController_setLocationServicesEnabled_specifier___block_invoke;
       v34[3] = &unk_279BA1178;
       v34[4] = self;
-      v35 = v8;
+      v35 = specifierCopy;
       v27 = [v25 actionWithTitle:v26 style:1 handler:v34];
       [v24 addAction:v27];
 
@@ -764,16 +764,16 @@ uint64_t __74__PUILocationServicesListController_setLocationServicesEnabled_spec
   return [v4 _cancelConfirmDisableForSpecifier:v5];
 }
 
-- (void)_cancelConfirmDisableForSpecifier:(id)a3
+- (void)_cancelConfirmDisableForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__PUILocationServicesListController__cancelConfirmDisableForSpecifier___block_invoke;
   v6[3] = &unk_279BA10B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -796,18 +796,18 @@ uint64_t __71__PUILocationServicesListController__cancelConfirmDisableForSpecifi
   return result;
 }
 
-- (BOOL)_isFindMyDeviceSpecifier:(id)a3
+- (BOOL)_isFindMyDeviceSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  v4 = [v3 hasSuffix:@"FindMyDevice.framework"];
+  identifier = [specifier identifier];
+  v4 = [identifier hasSuffix:@"FindMyDevice.framework"];
 
   return v4;
 }
 
-- (id)isEntityAuthorized:(id)a3
+- (id)isEntityAuthorized:(id)authorized
 {
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:v4];
+  identifier = [authorized identifier];
+  v5 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:identifier];
   v6 = [getCLLocationManagerClass() isEntityAuthorizedForLocationDictionary:v5];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
@@ -815,28 +815,28 @@ uint64_t __71__PUILocationServicesListController__cancelConfirmDisableForSpecifi
   return v7;
 }
 
-- (void)setEntityAuthorized:(id)a3 specifier:(id)a4
+- (void)setEntityAuthorized:(id)authorized specifier:(id)specifier
 {
-  v9 = a4;
-  v6 = [a3 BOOLValue];
-  if ((v6 & 1) == 0 && -[PUILocationServicesListController _isFindMyDeviceSpecifier:](self, "_isFindMyDeviceSpecifier:", v9) && ([getPSGFindMyiPhoneControllerClass() shared], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isFindMyiPhoneEnabled"), v7, v8))
+  specifierCopy = specifier;
+  bOOLValue = [authorized BOOLValue];
+  if ((bOOLValue & 1) == 0 && -[PUILocationServicesListController _isFindMyDeviceSpecifier:](self, "_isFindMyDeviceSpecifier:", specifierCopy) && ([getPSGFindMyiPhoneControllerClass() shared], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isFindMyiPhoneEnabled"), v7, v8))
   {
-    [(PUILocationServicesListController *)self disableAfterLoginConfirmation:v9];
+    [(PUILocationServicesListController *)self disableAfterLoginConfirmation:specifierCopy];
   }
 
   else
   {
-    [(PUILocationServicesListController *)self _setEntityAuthorized:v6 specifier:v9];
+    [(PUILocationServicesListController *)self _setEntityAuthorized:bOOLValue specifier:specifierCopy];
   }
 }
 
-- (void)setSOSEntityAuthorized:(id)a3 specifier:(id)a4
+- (void)setSOSEntityAuthorized:(id)authorized specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 BOOLValue])
+  authorizedCopy = authorized;
+  specifierCopy = specifier;
+  if ([authorizedCopy BOOLValue])
   {
-    [(PUILocationServicesListController *)self setEntityAuthorized:v6 specifier:v7];
+    [(PUILocationServicesListController *)self setEntityAuthorized:authorizedCopy specifier:specifierCopy];
   }
 
   else
@@ -854,8 +854,8 @@ uint64_t __71__PUILocationServicesListController__cancelConfirmDisableForSpecifi
     v21[2] = __70__PUILocationServicesListController_setSOSEntityAuthorized_specifier___block_invoke;
     v21[3] = &unk_279BA1B60;
     objc_copyWeak(&v24, &location);
-    v22 = v6;
-    v14 = v7;
+    v22 = authorizedCopy;
+    v14 = specifierCopy;
     v23 = v14;
     v15 = [v12 actionWithTitle:v13 style:0 handler:v21];
     [v11 addAction:v15];
@@ -894,25 +894,25 @@ void __70__PUILocationServicesListController_setSOSEntityAuthorized_specifier___
   [v1 setOn:1 animated:1];
 }
 
-- (void)disableAfterLoginConfirmation:(id)a3
+- (void)disableAfterLoginConfirmation:(id)confirmation
 {
-  v4 = a3;
-  v5 = [getPSGFindMyiPhoneControllerClass() shared];
-  v6 = [v5 preferredFindMyiPhoneAccount];
-  v7 = [v6 username];
+  confirmationCopy = confirmation;
+  shared = [getPSGFindMyiPhoneControllerClass() shared];
+  preferredFindMyiPhoneAccount = [shared preferredFindMyiPhoneAccount];
+  username = [preferredFindMyiPhoneAccount username];
 
   v8 = PUI_LocalizedStringForLocationServices(@"CONFIRM_FMIP_LOCATION_TITLE");
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:v8, v7];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:v8, username];
   v10 = PUI_LocalizedStringForLocationServices(@"CONFIRM_LOCATION_TURN_OFF");
-  v11 = [getPSGFindMyiPhoneControllerClass() shared];
+  shared2 = [getPSGFindMyiPhoneControllerClass() shared];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__PUILocationServicesListController_disableAfterLoginConfirmation___block_invoke;
   v13[3] = &unk_279BA1B88;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  [v11 disablePhoneLocatorWithMessageString:v9 buttonTitle:v10 presentingViewController:self completion:v13];
+  v14 = confirmationCopy;
+  v12 = confirmationCopy;
+  [shared2 disablePhoneLocatorWithMessageString:v9 buttonTitle:v10 presentingViewController:self completion:v13];
 }
 
 void __67__PUILocationServicesListController_disableAfterLoginConfirmation___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1086,15 +1086,15 @@ LABEL_19:
           v14 = v5;
           v15 = v6;
           v17 = v16 = v8;
-          v18 = [v17 BOOLValue];
-          v19 = [v3 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
+          bOOLValue2 = [v3 BOOLValue];
 
           v8 = v16;
           v6 = v15;
           v5 = v14;
           v7 = v22;
 
-          if (v18 != v19)
+          if (bOOLValue != bOOLValue2)
           {
 LABEL_10:
             [v10 setProperty:v3 forKey:v7];
@@ -1134,9 +1134,9 @@ LABEL_10:
   if ((isModificationAllowedForID(@"com.apple.findmy") & 1) == 0)
   {
     v3 = [(PUILocationServicesListController *)self isLocationServicesEnabled:0];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    if (v4)
+    if (bOOLValue)
     {
       v6 = [(PUILocationServicesListController *)self specifierForID:@"LOCATION_SERVICES_MASTER"];
       [v6 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
@@ -1152,17 +1152,17 @@ LABEL_10:
   v8 = [v3 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v4 setHour:-24];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v8 dateByAddingComponents:v4 toDate:v5 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [v8 dateByAddingComponents:v4 toDate:date options:0];
   twentyFourHoursAgo = self->_twentyFourHoursAgo;
   self->_twentyFourHoursAgo = v6;
 }
 
-- (void)updateForApplicationDidBecomeActive:(id)a3
+- (void)updateForApplicationDidBecomeActive:(id)active
 {
   [(PUILocationServicesListController *)self updateRecentlyUsedDate];
-  v4 = [(PUILocationServicesListController *)self table];
-  [v4 reloadData];
+  table = [(PUILocationServicesListController *)self table];
+  [table reloadData];
 }
 
 - (void)willBecomeActive
@@ -1170,9 +1170,9 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = PUILocationServicesListController;
   [(PUILocationServicesListController *)&v4 willBecomeActive];
-  v3 = [(PUILocationServicesListController *)self presentedViewController];
+  presentedViewController = [(PUILocationServicesListController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     [(PUILocationServicesListController *)self reloadSpecifiers];
   }
@@ -1207,41 +1207,41 @@ LABEL_10:
   return v4;
 }
 
-- (id)localizedDisplayNameForBundleID:(id)a3
+- (id)localizedDisplayNameForBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.mobilesafari"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.mobilesafari"])
   {
-    v4 = PUI_LocalizedStringForLocationServices(@"SAFARI_WEBSITES");
+    localizedName = PUI_LocalizedStringForLocationServices(@"SAFARI_WEBSITES");
   }
 
   else
   {
-    v5 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v3];
-    v4 = [v5 localizedName];
+    v5 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
+    localizedName = [v5 localizedName];
   }
 
-  return v4;
+  return localizedName;
 }
 
-- (BOOL)_isBundleBlacklisted:(id)a3
+- (BOOL)_isBundleBlacklisted:(id)blacklisted
 {
-  v3 = a3;
+  blacklistedCopy = blacklisted;
   if (_isBundleBlacklisted__onceToken != -1)
   {
     [PUILocationServicesListController _isBundleBlacklisted:];
   }
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveBlacklistedAppBundleIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  effectiveBlacklistedAppBundleIDs = [mEMORY[0x277D262A0] effectiveBlacklistedAppBundleIDs];
 
-  v6 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-  v7 = [v6 lastPathComponent];
+  v6 = [MEMORY[0x277CBEBC0] URLWithString:blacklistedCopy];
+  lastPathComponent = [v6 lastPathComponent];
 
-  v8 = [_isBundleBlacklisted__appForBundle objectForKeyedSubscript:v7];
+  v8 = [_isBundleBlacklisted__appForBundle objectForKeyedSubscript:lastPathComponent];
   if ([v8 length])
   {
-    v9 = [v5 containsObject:v8];
+    v9 = [effectiveBlacklistedAppBundleIDs containsObject:v8];
   }
 
   else
@@ -1279,10 +1279,10 @@ void __58__PUILocationServicesListController__isBundleBlacklisted___block_invoke
   v8 = MEMORY[0x277D3FFD8];
   if (v5)
   {
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
-    v10 = [v9 isAppClipsAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isAppClipsAllowed = [mEMORY[0x277D262A0] isAppClipsAllowed];
 
-    if (v10)
+    if (isAppClipsAllowed)
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(v27 + 6)];
       v12 = PUI_LocalizedStringForPrivacy(v11);
@@ -1309,14 +1309,14 @@ void __58__PUILocationServicesListController__isBundleBlacklisted___block_invoke
   [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*v7];
   [v18 setObject:@"com.apple.graphic-icon.gear" forKeyedSubscript:*v8];
   [v3 addObject:v18];
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
-  if (v20)
+  if (sf_isiPhone)
   {
-    v21 = [(PUILocationServicesListController *)self loadSensorKitSpecifiersProvider];
+    loadSensorKitSpecifiersProvider = [(PUILocationServicesListController *)self loadSensorKitSpecifiersProvider];
     sensorKitSpecifiersProvider = self->_sensorKitSpecifiersProvider;
-    self->_sensorKitSpecifiersProvider = v21;
+    self->_sensorKitSpecifiersProvider = loadSensorKitSpecifiersProvider;
 
     v23 = [(SRRelatedSettingsProvider *)self->_sensorKitSpecifiersProvider specifiersForRelatedSettings:@"Location"];
     if (v23)
@@ -1344,10 +1344,10 @@ BOOL __78__PUILocationServicesListController_locationDetailSpecifiersForAppsAndB
   return !v5;
 }
 
-- (id)locationDetailSpecifiersWithDetailsMatching:(id)a3
+- (id)locationDetailSpecifiersWithDetailsMatching:(id)matching
 {
   v80 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  matchingCopy = matching;
   obj = PSUICLCopyAppsUsingLocation();
   v4 = _PUILoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1360,7 +1360,7 @@ BOOL __78__PUILocationServicesListController_locationDetailSpecifiersForAppsAndB
   v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSObject count](obj, "count")}];
   objc_storeStrong(&self->_locationEntitiesDetails, obj);
   v44 = PUIGetActivePairedDevice();
-  v53 = [MEMORY[0x277D2BD58] sharedInstance];
+  mEMORY[0x277D2BD58] = [MEMORY[0x277D2BD58] sharedInstance];
   ScreenScale();
   if (v5 == 2)
   {
@@ -1377,12 +1377,12 @@ BOOL __78__PUILocationServicesListController_locationDetailSpecifiersForAppsAndB
   v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([obj count])
   {
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v65 = [v7 effectiveBlacklistedAppBundleIDs];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    effectiveBlacklistedAppBundleIDs = [mEMORY[0x277D262A0] effectiveBlacklistedAppBundleIDs];
 
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(PUILocationServicesListController *)self hiddenBundleIdentifiers];
-    v63 = [v8 setWithSet:v9];
+    hiddenBundleIdentifiers = [(PUILocationServicesListController *)self hiddenBundleIdentifiers];
+    v63 = [v8 setWithSet:hiddenBundleIdentifiers];
 
     v73 = 0u;
     v74 = 0u;
@@ -1414,13 +1414,13 @@ BOOL __78__PUILocationServicesListController_locationDetailSpecifiersForAppsAndB
 
         v13 = *(*(&v71 + 1) + 8 * v12);
         v14 = [v10 objectForKey:v13];
-        if (v3 && (v3[2](v3, v14) & 1) == 0)
+        if (matchingCopy && (matchingCopy[2](matchingCopy, v14) & 1) == 0)
         {
           goto LABEL_20;
         }
 
         v15 = [v14 objectForKeyedSubscript:@"BundleId"];
-        if ([v65 containsObject:v15])
+        if ([effectiveBlacklistedAppBundleIDs containsObject:v15])
         {
 
 LABEL_20:
@@ -1453,7 +1453,7 @@ LABEL_20:
           }
 
           v58 = 0;
-          v57 = 0;
+          bundleURL = 0;
           v60 = 0;
           oslog = 0;
           v59 = 0;
@@ -1483,7 +1483,7 @@ LABEL_20:
         if (v18 != 1)
         {
           v58 = 0;
-          v57 = 0;
+          bundleURL = 0;
           v60 = 0;
           oslog = 0;
           v59 = 0;
@@ -1494,7 +1494,7 @@ LABEL_20:
             v22 = [osloga objectForInfoDictionaryKey:v49];
             if ([v22 length])
             {
-              v57 = [osloga bundleURL];
+              bundleURL = [osloga bundleURL];
               v21 = 0;
               v20 = 0;
               v58 = 0;
@@ -1503,7 +1503,7 @@ LABEL_20:
 
             else
             {
-              v45 = [v59 lastPathComponent];
+              lastPathComponent = [v59 lastPathComponent];
 
               v27 = _PUILoggingFacility();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1516,9 +1516,9 @@ LABEL_20:
               v21 = 0;
               v20 = 0;
               v58 = 0;
-              v57 = 0;
+              bundleURL = 0;
               v60 = 0;
-              v22 = v45;
+              v22 = lastPathComponent;
             }
 
 LABEL_54:
@@ -1544,10 +1544,10 @@ LABEL_54:
         else
         {
           v24 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v60];
-          v25 = [v24 appState];
-          v26 = [v25 isInstalled];
+          appState = [v24 appState];
+          isInstalled = [appState isInstalled];
 
-          if (!v26)
+          if (!isInstalled)
           {
             if (!v44)
             {
@@ -1604,12 +1604,12 @@ LABEL_41:
             _os_log_impl(&dword_2657FE000, osloga, OS_LOG_TYPE_DEFAULT, "No display name found for application: %@", buf, 0xCu);
           }
 
-          v57 = 0;
+          bundleURL = 0;
           v59 = 0;
           goto LABEL_54;
         }
 
-        v57 = 0;
+        bundleURL = 0;
         v59 = 0;
 LABEL_55:
         v29 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:oslog target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
@@ -1625,7 +1625,7 @@ LABEL_55:
           v68[3] = &unk_279BA1900;
           v69 = v29;
           objc_copyWeak(&v70, buf);
-          [v53 getIconForBundleID:v21 iconVariant:v52 block:v68 timeout:-1.0];
+          [mEMORY[0x277D2BD58] getIconForBundleID:v21 iconVariant:v52 block:v68 timeout:-1.0];
           objc_destroyWeak(&v70);
 
           objc_destroyWeak(buf);
@@ -1639,22 +1639,22 @@ LABEL_55:
           [v29 setProperty:v60 forKey:v47];
         }
 
-        else if (v19 == 2 && v57)
+        else if (v19 == 2 && bundleURL)
         {
           v32 = [MEMORY[0x277CCABB0] numberWithBool:1];
           [v29 setProperty:v32 forKey:v48];
 
-          v33 = [MEMORY[0x277CCA8D8] bundleWithURL:v57];
-          v34 = [v33 bundleIdentifier];
+          v33 = [MEMORY[0x277CCA8D8] bundleWithURL:bundleURL];
+          bundleIdentifier = [v33 bundleIdentifier];
 
-          if ([v34 isEqualToString:@"com.apple.AssistantServices"])
+          if ([bundleIdentifier isEqualToString:@"com.apple.AssistantServices"])
           {
             [v29 setProperty:@"com.apple.siri" forKey:v47];
           }
 
           else
           {
-            [v29 setProperty:v57 forKey:@"_BundleUrl_"];
+            [v29 setProperty:bundleURL forKey:@"_BundleUrl_"];
           }
         }
 
@@ -1682,10 +1682,10 @@ LABEL_74:
     }
   }
 
-  v37 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  v38 = [(PUILocationServicesListController *)self specifier];
-  v39 = [v38 identifier];
-  if ([v39 isEqualToString:@"APP_CLIPS"])
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  specifier = [(PUILocationServicesListController *)self specifier];
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"APP_CLIPS"])
   {
     v40 = @"PUIClipLocationIndicatorExplanationView";
   }
@@ -1695,10 +1695,10 @@ LABEL_74:
     v40 = @"PUILocationIndicatorExplanationView";
   }
 
-  [v37 setProperty:v40 forKey:*MEMORY[0x277D3FF48]];
+  [emptyGroupSpecifier setProperty:v40 forKey:*MEMORY[0x277D3FF48]];
 
-  [v37 setProperty:@"APP" forKey:@"_ExplanationIdSuffix_"];
-  [v46 addObject:v37];
+  [emptyGroupSpecifier setProperty:@"APP" forKey:@"_ExplanationIdSuffix_"];
+  [v46 addObject:emptyGroupSpecifier];
   [v46 addObjectsFromArray:v56];
   ignoredLocationEntities = self->_ignoredLocationEntities;
   self->_ignoredLocationEntities = v66;
@@ -1758,16 +1758,16 @@ void __81__PUILocationServicesListController_locationDetailSpecifiersWithDetails
   return v7;
 }
 
-- (void)_locationSharingSpecifierWasTapped:(id)a3
+- (void)_locationSharingSpecifierWasTapped:(id)tapped
 {
   v4 = MEMORY[0x277D07C40];
-  v5 = a3;
+  tappedCopy = tapped;
   v7 = objc_alloc_init(v4);
-  [v7 setSpecifier:v5];
+  [v7 setSpecifier:tappedCopy];
 
   [v7 setParentController:self];
-  v6 = [(PUILocationServicesListController *)self rootController];
-  [v7 setRootController:v6];
+  rootController = [(PUILocationServicesListController *)self rootController];
+  [v7 setRootController:rootController];
 
   [(PUILocationServicesListController *)self showController:v7 animate:1];
 }
@@ -1792,10 +1792,10 @@ void __81__PUILocationServicesListController_locationDetailSpecifiersWithDetails
   primaryAccount = self->_primaryAccount;
   if (!primaryAccount)
   {
-    v4 = [(PUILocationServicesListController *)self accountStore];
-    v5 = [v4 aa_primaryAppleAccount];
+    accountStore = [(PUILocationServicesListController *)self accountStore];
+    aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
     v6 = self->_primaryAccount;
-    self->_primaryAccount = v5;
+    self->_primaryAccount = aa_primaryAppleAccount;
 
     primaryAccount = self->_primaryAccount;
   }
@@ -1812,11 +1812,11 @@ void __81__PUILocationServicesListController_locationDetailSpecifiersWithDetails
 
   else
   {
-    v4 = [(PUILocationServicesListController *)self primaryAccount];
-    if ([v4 aa_isPrimaryEmailVerified])
+    primaryAccount = [(PUILocationServicesListController *)self primaryAccount];
+    if ([primaryAccount aa_isPrimaryEmailVerified])
     {
-      v5 = [(PUILocationServicesListController *)self primaryAccount];
-      v3 = [v5 aa_needsToVerifyTerms] ^ 1;
+      primaryAccount2 = [(PUILocationServicesListController *)self primaryAccount];
+      v3 = [primaryAccount2 aa_needsToVerifyTerms] ^ 1;
     }
 
     else
@@ -1832,28 +1832,28 @@ void __81__PUILocationServicesListController_locationDetailSpecifiersWithDetails
 {
   if (!PSIsInEDUMode())
   {
-    v5 = [(PUILocationServicesListController *)self _shouldEnableLocationSharingSpecifier];
-    v4 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v6 setProperty:@"LOCATION_SHARING_GROUP" forKey:*MEMORY[0x277D3FFB8]];
-    [v4 addObject:v6];
+    _shouldEnableLocationSharingSpecifier = [(PUILocationServicesListController *)self _shouldEnableLocationSharingSpecifier];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:@"LOCATION_SHARING_GROUP" forKey:*MEMORY[0x277D3FFB8]];
+    [array addObject:emptyGroupSpecifier];
     v7 = MEMORY[0x277D3FAD8];
     v8 = PUI_LocalizedStringForLocationServices(@"LOCATION_SHARING");
     v9 = [v7 preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:2 edit:0];
 
     [v9 setControllerLoadAction:sel__locationSharingSpecifierWasTapped_];
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:_shouldEnableLocationSharingSpecifier];
     [v9 setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
 
     [v9 setIdentifier:@"LOCATION_SHARING"];
-    [v4 addObject:v9];
-    if (!v5 || ![(PUILocationServicesListController *)self isLocationSharingEnabled])
+    [array addObject:v9];
+    if (!_shouldEnableLocationSharingSpecifier || ![(PUILocationServicesListController *)self isLocationSharingEnabled])
     {
       goto LABEL_16;
     }
 
-    v11 = [(PUILocationServicesListController *)self locationSharingDevice];
-    if ([v11 isThisDevice])
+    locationSharingDevice = [(PUILocationServicesListController *)self locationSharingDevice];
+    if ([locationSharingDevice isThisDevice])
     {
       if ([getCLLocationManagerClass() locationServicesEnabled])
       {
@@ -1870,9 +1870,9 @@ void __81__PUILocationServicesListController_locationDetailSpecifiersWithDetails
 
     else
     {
-      v14 = [v11 deviceName];
+      deviceName = [locationSharingDevice deviceName];
 
-      if (!v14)
+      if (!deviceName)
       {
 LABEL_15:
 
@@ -1882,11 +1882,11 @@ LABEL_16:
 
       v15 = MEMORY[0x277CCACA8];
       v16 = PUI_LocalizedStringForLocationServices(@"LOCATION_SHARING_FOOTER_OTHER_DEVICE");
-      v17 = [v11 deviceName];
-      v13 = [v15 stringWithFormat:v16, v17];
+      deviceName2 = [locationSharingDevice deviceName];
+      v13 = [v15 stringWithFormat:v16, deviceName2];
     }
 
-    [v6 setProperty:v13 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v13 forKey:*MEMORY[0x277D3FF88]];
 
     goto LABEL_15;
   }
@@ -1898,27 +1898,27 @@ LABEL_16:
     _os_log_impl(&dword_2657FE000, v3, OS_LOG_TYPE_DEFAULT, "Configuration does not want location sharing specifiers.", buf, 2u);
   }
 
-  v4 = 0;
+  array = 0;
 LABEL_17:
 
-  return v4;
+  return array;
 }
 
-- (void)updateLocationSharingSpecifiersWithReload:(BOOL)a3
+- (void)updateLocationSharingSpecifiersWithReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   self->receivedAppListFromCoreLocation = 0;
   locationSharingAppList = self->locationSharingAppList;
   self->locationSharingAppList = 0;
 
-  if (v3)
+  if (reloadCopy)
   {
     v6 = [(PUILocationServicesListController *)self indexOfSpecifierID:@"LOCATION_SHARING_GROUP"];
-    v7 = [(PUILocationServicesListController *)self locationSharingSpecifiers];
-    v8 = v7;
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL && v7)
+    locationSharingSpecifiers = [(PUILocationServicesListController *)self locationSharingSpecifiers];
+    v8 = locationSharingSpecifiers;
+    if (v6 != 0x7FFFFFFFFFFFFFFFLL && locationSharingSpecifiers)
     {
-      v9 = [v7 count];
+      v9 = [locationSharingSpecifiers count];
       if (v9 >= 1)
       {
         v10 = 0;
@@ -1953,7 +1953,7 @@ LABEL_17:
     [v18 setProperty:v17 forKey:*MEMORY[0x277D3FF38]];
 
     v15 = v18;
-    if (v3)
+    if (reloadCopy)
     {
       [(PUILocationServicesListController *)self reloadSpecifier:v18 animated:1];
       v15 = v18;
@@ -1968,7 +1968,7 @@ LABEL_17:
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = MGGetBoolAnswer();
     v8 = PUI_LocalizedStringForLocationServices(@"ABOUT_LOCATION_AND_PRIVACY");
     v9 = MEMORY[0x277CCACA8];
@@ -1987,10 +1987,10 @@ LABEL_17:
       v12 = v16;
     }
 
-    v17 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v18 = [v17 isPaired];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    isPaired = [mEMORY[0x277D2BCF8] isPaired];
 
-    if (v18)
+    if (isPaired)
     {
       v19 = MEMORY[0x277CCACA8];
       v20 = PUI_LocalizedStringForLocationServices(@"DESCRIPTION_WATCH");
@@ -2001,18 +2001,18 @@ LABEL_17:
 
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v6 setProperty:v23 forKey:*MEMORY[0x277D3FF48]];
+    [emptyGroupSpecifier setProperty:v23 forKey:*MEMORY[0x277D3FF48]];
 
-    [v6 setProperty:v12 forKey:*MEMORY[0x277D3FF70]];
+    [emptyGroupSpecifier setProperty:v12 forKey:*MEMORY[0x277D3FF70]];
     v43.location = [v12 rangeOfString:v8];
     v24 = NSStringFromRange(v43);
-    [v6 setProperty:v24 forKey:*MEMORY[0x277D3FF58]];
+    [emptyGroupSpecifier setProperty:v24 forKey:*MEMORY[0x277D3FF58]];
 
     v25 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-    [v6 setProperty:v25 forKey:*MEMORY[0x277D3FF68]];
+    [emptyGroupSpecifier setProperty:v25 forKey:*MEMORY[0x277D3FF68]];
 
-    [v6 setProperty:@"showLocationPrivacyPage" forKey:*MEMORY[0x277D3FF50]];
-    [v5 addObject:v6];
+    [emptyGroupSpecifier setProperty:@"showLocationPrivacyPage" forKey:*MEMORY[0x277D3FF50]];
+    [v5 addObject:emptyGroupSpecifier];
     v26 = MEMORY[0x277D3FAD8];
     v27 = PUI_LocalizedStringForLocationServices(@"LOCATION_SERVICES");
     v28 = [v26 preferenceSpecifierNamed:v27 target:self set:sel_setLocationServicesEnabled_specifier_ get:sel_isLocationServicesEnabled_ detail:0 cell:6 edit:0];
@@ -2024,8 +2024,8 @@ LABEL_17:
 
     [v31 setIdentifier:@"LOCATION_ALERTS"];
     [v5 addObject:v31];
-    v32 = [v5 lastObject];
-    [v32 setProperty:@"LOCATION_SERVICES_MASTER" forKey:*MEMORY[0x277D3FFB8]];
+    lastObject = [v5 lastObject];
+    [lastObject setProperty:@"LOCATION_SERVICES_MASTER" forKey:*MEMORY[0x277D3FFB8]];
     objc_initWeak(&location, self);
     if (self->receivedAppListFromCoreLocation)
     {
@@ -2034,15 +2034,15 @@ LABEL_17:
 
     else
     {
-      v33 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       locationServicesAccessQueue = self->locationServicesAccessQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __47__PUILocationServicesListController_specifiers__block_invoke;
       block[3] = &unk_279BA18D8;
       block[4] = self;
-      v39 = v33;
-      v35 = v33;
+      v39 = array;
+      v35 = array;
       objc_copyWeak(&v40, &location);
       dispatch_async(locationServicesAccessQueue, block);
       objc_destroyWeak(&v40);
@@ -2115,20 +2115,20 @@ void __47__PUILocationServicesListController_specifiers__block_invoke_2(uint64_t
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)_iconForLocationUsage:(int)a3
+- (id)_iconForLocationUsage:(int)usage
 {
-  switch(a3)
+  switch(usage)
   {
     case 2:
       v3 = MEMORY[0x277D755B8];
       v4 = MEMORY[0x277D755D0];
-      v5 = [MEMORY[0x277D75348] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
       goto LABEL_7;
     case 4:
       v3 = MEMORY[0x277D755B8];
       v6 = MEMORY[0x277D755D0];
-      v7 = [MEMORY[0x277D75348] systemPurpleColor];
-      v8 = [v6 configurationWithHierarchicalColor:v7];
+      systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
+      v8 = [v6 configurationWithHierarchicalColor:systemPurpleColor];
       v9 = @"location";
 LABEL_8:
       v10 = [v3 systemImageNamed:v9 withConfiguration:v8];
@@ -2137,10 +2137,10 @@ LABEL_8:
     case 3:
       v3 = MEMORY[0x277D755B8];
       v4 = MEMORY[0x277D755D0];
-      v5 = [MEMORY[0x277D75348] systemPurpleColor];
+      secondaryLabelColor = [MEMORY[0x277D75348] systemPurpleColor];
 LABEL_7:
-      v7 = v5;
-      v8 = [v4 configurationWithHierarchicalColor:v5];
+      systemPurpleColor = secondaryLabelColor;
+      v8 = [v4 configurationWithHierarchicalColor:secondaryLabelColor];
       v9 = @"location.fill";
       goto LABEL_8;
   }
@@ -2151,16 +2151,16 @@ LABEL_10:
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(PUILocationServicesListController *)self indexForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(PUILocationServicesListController *)self indexForIndexPath:path];
   v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [(PUILocationServicesListController *)self locationUsageForEntity:v10];
+  identifier = [v9 identifier];
+  v11 = [(PUILocationServicesListController *)self locationUsageForEntity:identifier];
 
   objc_opt_class();
-  v18 = v7;
+  v18 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v18;
@@ -2194,15 +2194,15 @@ LABEL_10:
     [(PUILocationServicesListController *)self setUsage:v11 forCell:v13];
     if ([v18 isMemberOfClass:objc_opt_class()])
     {
-      v15 = [v9 identifier];
-      if ([v15 isEqualToString:@"SYSTEM_SERVICES"])
+      identifier2 = [v9 identifier];
+      if ([identifier2 isEqualToString:@"SYSTEM_SERVICES"])
       {
       }
 
       else
       {
-        v16 = [v9 identifier];
-        v17 = [v16 isEqualToString:@"APP_CLIPS"];
+        identifier3 = [v9 identifier];
+        v17 = [identifier3 isEqualToString:@"APP_CLIPS"];
 
         if ((v17 & 1) == 0)
         {
@@ -2213,12 +2213,12 @@ LABEL_10:
   }
 }
 
-- (void)updateAuthLevelStringForSpecifier:(id)a3 andCell:(id)a4
+- (void)updateAuthLevelStringForSpecifier:(id)specifier andCell:(id)cell
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:v7];
+  cellCopy = cell;
+  identifier = [specifier identifier];
+  v8 = [(NSDictionary *)self->_locationEntitiesDetails objectForKey:identifier];
   if (v8)
   {
     v9 = [getCLLocationManagerClass() entityAuthorizationForLocationDictionary:v8];
@@ -2236,8 +2236,8 @@ LABEL_10:
   }
 
   v23 = 0;
-  v11 = [getCLLocationManagerClass() getVisitHistoryAccess:&v23 + 4 forBundleIdentifier:v7];
-  v12 = [getCLLocationManagerClass() getLearnedRoutesAccess:&v23 forBundleIdentifier:v7];
+  v11 = [getCLLocationManagerClass() getVisitHistoryAccess:&v23 + 4 forBundleIdentifier:identifier];
+  v12 = [getCLLocationManagerClass() getLearnedRoutesAccess:&v23 forBundleIdentifier:identifier];
   if ((v11 & 1) == 0)
   {
     v13 = _PUILoggingFacility();
@@ -2260,7 +2260,7 @@ LABEL_10:
     LODWORD(v23) = 0;
   }
 
-  if ([v7 isEqualToString:@"com.apple.Maps"])
+  if ([identifier isEqualToString:@"com.apple.Maps"])
   {
     v15 = _PUILoggingFacility();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2275,16 +2275,16 @@ LABEL_10:
     }
   }
 
-  [(PUILocationServicesListController *)self setAuthLevel:v9 learnedRoutesAccess:v23 visitHistoryAccess:HIDWORD(v23) forCell:v6];
-  if ([v7 isEqualToString:@"com.apple.Maps"])
+  [(PUILocationServicesListController *)self setAuthLevel:v9 learnedRoutesAccess:v23 visitHistoryAccess:HIDWORD(v23) forCell:cellCopy];
+  if ([identifier isEqualToString:@"com.apple.Maps"])
   {
-    v16 = [v6 location];
-    v17 = [v16 authLevelString];
-    v18 = v17;
+    location = [cellCopy location];
+    authLevelString = [location authLevelString];
+    v18 = authLevelString;
     v19 = @"(nil)";
-    if (v17)
+    if (authLevelString)
     {
-      v19 = v17;
+      v19 = authLevelString;
     }
 
     v20 = v19;
@@ -2444,7 +2444,7 @@ void __58__PUILocationServicesListController_updateLocationSharing__block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mainThreadConnectionError:(id)a3
+- (void)mainThreadConnectionError:(id)error
 {
   locationSharingSession = self->_locationSharingSession;
   self->_locationSharingSession = 0;
@@ -2452,25 +2452,25 @@ void __58__PUILocationServicesListController_updateLocationSharing__block_invoke
   [(PUILocationServicesListController *)self mainThreadDidChangeActiveLocationSharingDevice:0];
 }
 
-- (void)mainThreadDidChangeActiveLocationSharingDevice:(id)a3
+- (void)mainThreadDidChangeActiveLocationSharingDevice:(id)device
 {
-  v5 = a3;
-  if (self->_locationSharingDevice != v5)
+  deviceCopy = device;
+  if (self->_locationSharingDevice != deviceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_locationSharingDevice, a3);
+    v6 = deviceCopy;
+    objc_storeStrong(&self->_locationSharingDevice, device);
     [(PUILocationServicesListController *)self updateLocationSharingSpecifiersWithReload:1];
-    v5 = v6;
+    deviceCopy = v6;
   }
 }
 
-- (void)mainThreadDidUpdateHidingStatus:(BOOL)a3
+- (void)mainThreadDidUpdateHidingStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   locationSharingEnabled = self->_locationSharingEnabled;
-  if (!locationSharingEnabled || [(NSNumber *)locationSharingEnabled BOOLValue]== a3)
+  if (!locationSharingEnabled || [(NSNumber *)locationSharingEnabled BOOLValue]== status)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:!v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:!statusCopy];
     v7 = self->_locationSharingEnabled;
     self->_locationSharingEnabled = v6;
 
@@ -2478,44 +2478,44 @@ void __58__PUILocationServicesListController_updateLocationSharing__block_invoke
   }
 }
 
-- (void)didChangeActiveLocationSharingDevice:(id)a3
+- (void)didChangeActiveLocationSharingDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__PUILocationServicesListController_didChangeActiveLocationSharingDevice___block_invoke;
   v6[3] = &unk_279BA10B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)didUpdateHidingStatus:(BOOL)a3
+- (void)didUpdateHidingStatus:(BOOL)status
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__PUILocationServicesListController_didUpdateHidingStatus___block_invoke;
   v3[3] = &unk_279BA1850;
   v3[4] = self;
-  v4 = a3;
+  statusCopy = status;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
 - (void)updateTribecaText
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v4)
+  if (sf_isInternalInstall)
   {
-    v5 = [MEMORY[0x277D08F78] sharedInstance];
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__PUILocationServicesListController_updateTribecaText__block_invoke;
     v6[3] = &unk_279BA1C78;
     v6[4] = self;
-    [v5 fmipStateWithCompletion:v6];
+    [mEMORY[0x277D08F78] fmipStateWithCompletion:v6];
   }
 }
 
@@ -2598,14 +2598,14 @@ void __54__PUILocationServicesListController_updateTribecaText__block_invoke_523
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showCoreRoutineSettings:(id)a3
+- (void)showCoreRoutineSettings:(id)settings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"FrequentLocationsDisableAuthentication", @"com.apple.routined", &keyExistsAndHasValidFormat);
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  if ([v6 sf_isInternalInstall])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
     v7 = keyExistsAndHasValidFormat == 0;
   }
@@ -2644,19 +2644,19 @@ LABEL_8:
       v19[2] = __61__PUILocationServicesListController_showCoreRoutineSettings___block_invoke_543;
       v19[3] = &unk_279BA1CC8;
       v19[4] = self;
-      v20 = v4;
+      v20 = settingsCopy;
       [v8 evaluatePolicy:2 localizedReason:v12 reply:v19];
 
 LABEL_21:
       goto LABEL_22;
     }
 
-    v14 = [v10 domain];
-    if ([v14 isEqualToString:*MEMORY[0x277CD4770]])
+    domain = [v10 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CD4770]])
     {
-      v15 = [v11 code];
+      code = [v11 code];
 
-      if (v15 == -5)
+      if (code == -5)
       {
         v16 = _PUILoggingFacility();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2711,19 +2711,19 @@ void __61__PUILocationServicesListController_showCoreRoutineSettings___block_inv
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)_handleAuthenticationForSender:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_handleAuthenticationForSender:(id)sender success:(BOOL)success error:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v7 || !a4)
+  if (errorCopy || !success)
   {
     v8 = _PUILoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7)
+      if (errorCopy)
       {
-        v9 = [v7 description];
+        v9 = [errorCopy description];
       }
 
       else
@@ -2734,7 +2734,7 @@ void __61__PUILocationServicesListController_showCoreRoutineSettings___block_inv
       v11 = 138412290;
       v12 = v9;
       _os_log_impl(&dword_2657FE000, v8, OS_LOG_TYPE_DEFAULT, "Autentication policy did not evaluate successfully, returning, %@", &v11, 0xCu);
-      if (v7)
+      if (errorCopy)
       {
       }
     }
@@ -2756,10 +2756,10 @@ void __61__PUILocationServicesListController_showCoreRoutineSettings___block_inv
 
   v4 = [v10 stringByAppendingPathComponent:@"PreferenceBundles/CoreRoutineSettings.bundle"];
   v5 = [MEMORY[0x277CCA8D8] bundleWithPath:v4];
-  v6 = [v5 load];
+  load = [v5 load];
   if (v5)
   {
-    v7 = v6 == 0;
+    v7 = load == 0;
   }
 
   else
@@ -2770,10 +2770,10 @@ void __61__PUILocationServicesListController_showCoreRoutineSettings___block_inv
   if (!v7)
   {
     v8 = [MEMORY[0x277D75AC8] storyboardWithName:@"Main" bundle:v5];
-    v9 = [v8 instantiateInitialViewController];
-    if (v9)
+    instantiateInitialViewController = [v8 instantiateInitialViewController];
+    if (instantiateInitialViewController)
     {
-      [(PUILocationServicesListController *)self showController:v9 animate:1];
+      [(PUILocationServicesListController *)self showController:instantiateInitialViewController animate:1];
     }
   }
 }

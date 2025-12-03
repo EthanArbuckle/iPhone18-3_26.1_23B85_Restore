@@ -1,36 +1,36 @@
 @interface _HMAccessoryCollectionSettingItemClassManager
 + (NSSet)defaultItemValueClasses;
 + (_HMAccessoryCollectionSettingItemClassManager)sharedManager;
-- (BOOL)hasCustomItemValueClassesForKeyPath:(id)a3;
+- (BOOL)hasCustomItemValueClassesForKeyPath:(id)path;
 - (_HMAccessoryCollectionSettingItemClassManager)init;
-- (id)itemValueClassesForKeyPath:(id)a3;
-- (void)removeItemValueClassesForKeyPath:(id)a3;
-- (void)setItemValueClasses:(id)a3 forKeyPath:(id)a4;
+- (id)itemValueClassesForKeyPath:(id)path;
+- (void)removeItemValueClassesForKeyPath:(id)path;
+- (void)setItemValueClasses:(id)classes forKeyPath:(id)path;
 @end
 
 @implementation _HMAccessoryCollectionSettingItemClassManager
 
-- (void)removeItemValueClassesForKeyPath:(id)a3
+- (void)removeItemValueClassesForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_classes removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_classes removeObjectForKey:pathCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setItemValueClasses:(id)a3 forKeyPath:(id)a4
+- (void)setItemValueClasses:(id)classes forKeyPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  if (!v6)
+  classesCopy = classes;
+  pathCopy = path;
+  if (!pathCopy)
   {
     v9 = _HMFPreconditionFailure();
     os_unfair_lock_unlock(&self->_lock);
     _Unwind_Resume(v9);
   }
 
-  v7 = v6;
-  v8 = [v10 copy];
+  v7 = pathCopy;
+  v8 = [classesCopy copy];
   os_unfair_lock_lock_with_options();
   if ([v8 count])
   {
@@ -40,17 +40,17 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)itemValueClassesForKeyPath:(id)a3
+- (id)itemValueClassesForKeyPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v10 = _HMFPreconditionFailure();
     os_unfair_lock_unlock(&self->_lock);
     _Unwind_Resume(v10);
   }
 
-  v5 = v4;
+  v5 = pathCopy;
   os_unfair_lock_lock_with_options();
   v6 = [(NSMutableDictionary *)self->_classes objectForKey:v5];
   os_unfair_lock_unlock(&self->_lock);
@@ -69,11 +69,11 @@
   return v8;
 }
 
-- (BOOL)hasCustomItemValueClassesForKeyPath:(id)a3
+- (BOOL)hasCustomItemValueClassesForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_classes objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_classes objectForKey:pathCopy];
   v6 = v5 != 0;
 
   os_unfair_lock_unlock(&self->_lock);
@@ -87,9 +87,9 @@
   v2 = [(_HMAccessoryCollectionSettingItemClassManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     classes = v2->_classes;
-    v2->_classes = v3;
+    v2->_classes = dictionary;
   }
 
   return v2;

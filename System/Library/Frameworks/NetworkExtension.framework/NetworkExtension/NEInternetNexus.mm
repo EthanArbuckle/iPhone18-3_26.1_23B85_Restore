@@ -1,20 +1,20 @@
 @interface NEInternetNexus
-- (BOOL)setDefaultInputHandler:(nw_protocol *)a3;
-- (NEInternetNexus)initWithName:(id)a3 delegate:(id)a4 shouldCreateKernelChannel:(BOOL)a5;
+- (BOOL)setDefaultInputHandler:(nw_protocol *)handler;
+- (NEInternetNexus)initWithName:(id)name delegate:(id)delegate shouldCreateKernelChannel:(BOOL)channel;
 - (void)dealloc;
-- (void)setRemotePacketProxy:(id)a3;
+- (void)setRemotePacketProxy:(id)proxy;
 @end
 
 @implementation NEInternetNexus
 
-- (void)setRemotePacketProxy:(id)a3
+- (void)setRemotePacketProxy:(id)proxy
 {
-  v6 = a3;
-  [(NEInternetNexus *)self setPacketProxy:v6];
-  v4 = v6;
-  if (v6)
+  proxyCopy = proxy;
+  [(NEInternetNexus *)self setPacketProxy:proxyCopy];
+  v4 = proxyCopy;
+  if (proxyCopy)
   {
-    -[NEInternetNexus setDefaultInputHandler:](self, "setDefaultInputHandler:", [v6 protocol]);
+    -[NEInternetNexus setDefaultInputHandler:](self, "setDefaultInputHandler:", [proxyCopy protocol]);
     if (self)
     {
       utunProtocol = self->_utunProtocol;
@@ -25,15 +25,15 @@
       utunProtocol = 0;
     }
 
-    [v6 setDefaultOutputProtocolHandler:utunProtocol];
-    v4 = v6;
+    [proxyCopy setDefaultOutputProtocolHandler:utunProtocol];
+    v4 = proxyCopy;
   }
 }
 
-- (BOOL)setDefaultInputHandler:(nw_protocol *)a3
+- (BOOL)setDefaultInputHandler:(nw_protocol *)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v4 = ne_log_obj();
     if (!os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -138,12 +138,12 @@ LABEL_6:
   [(NENexus *)&v4 dealloc];
 }
 
-- (NEInternetNexus)initWithName:(id)a3 delegate:(id)a4 shouldCreateKernelChannel:(BOOL)a5
+- (NEInternetNexus)initWithName:(id)name delegate:(id)delegate shouldCreateKernelChannel:(BOOL)channel
 {
-  v5 = a5;
+  channelCopy = channel;
   v19.receiver = self;
   v19.super_class = NEInternetNexus;
-  v6 = [(NENexus *)&v19 initWithLevel:2 name:a3 virtualInterfaceType:1 delegate:a4 channelCount:0];
+  v6 = [(NENexus *)&v19 initWithLevel:2 name:name virtualInterfaceType:1 delegate:delegate channelCount:0];
   v7 = v6;
   if (!v6)
   {
@@ -158,7 +158,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (v5)
+  if (channelCopy)
   {
     Channel = NEVirtualInterfaceCreateChannel([(NENexus *)v6 virtualInterface]);
     if (Channel)

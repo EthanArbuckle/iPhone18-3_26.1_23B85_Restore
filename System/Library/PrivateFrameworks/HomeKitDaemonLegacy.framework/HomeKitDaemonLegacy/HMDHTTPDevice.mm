@@ -1,10 +1,10 @@
 @interface HMDHTTPDevice
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDHTTPDevice)init;
-- (HMDHTTPDevice)initWithIdentifier:(id)a3;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (HMDHTTPDevice)initWithIdentifier:(id)identifier;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)logIdentifier;
 - (id)shortDescription;
 - (unint64_t)hash;
@@ -14,16 +14,16 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHTTPDevice *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDHTTPDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -33,9 +33,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDHTTPDevice *)v4 identifier];
-      v6 = [(HMDHTTPDevice *)self identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(HMDHTTPDevice *)equalCopy identifier];
+      identifier2 = [(HMDHTTPDevice *)self identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -49,18 +49,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDHTTPDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDHTTPDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -70,11 +70,11 @@
     v7 = &stru_286509E58;
   }
 
-  v8 = [(HMDHTTPDevice *)self identifier];
-  v9 = [v8 UUIDString];
-  v10 = [v5 stringWithFormat:@"<%@%@, Identifier = %@>", v6, v7, v9];
+  identifier = [(HMDHTTPDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v10 = [v5 stringWithFormat:@"<%@%@, Identifier = %@>", shortDescription, v7, uUIDString];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -84,32 +84,32 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDHTTPDevice *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDHTTPDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (HMDHTTPDevice)initWithIdentifier:(id)a3
+- (HMDHTTPDevice)initWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15.receiver = self;
     v15.super_class = HMDHTTPDevice;
     v5 = [(HMDHTTPDevice *)&v15 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       identifier = v5->_identifier;
       v5->_identifier = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -128,17 +128,17 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 - (HMDHTTPDevice)init
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [(HMDHTTPDevice *)self initWithIdentifier:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v4 = [(HMDHTTPDevice *)self initWithIdentifier:uUID];
 
   return v4;
 }

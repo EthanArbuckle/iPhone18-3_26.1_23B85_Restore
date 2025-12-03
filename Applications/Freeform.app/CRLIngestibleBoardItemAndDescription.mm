@@ -1,27 +1,27 @@
 @interface CRLIngestibleBoardItemAndDescription
-+ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItem:(id)a3 description:(id)a4;
-+ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItems:(id)a3 descriptions:(id)a4;
++ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItem:(id)item description:(id)description;
++ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItems:(id)items descriptions:(id)descriptions;
 - (CRLIngestibleBoardItemAndDescription)init;
-- (CRLIngestibleBoardItemAndDescription)initWithBoardItem:(id)a3 description:(id)a4;
+- (CRLIngestibleBoardItemAndDescription)initWithBoardItem:(id)item description:(id)description;
 @end
 
 @implementation CRLIngestibleBoardItemAndDescription
 
-+ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItem:(id)a3 description:(id)a4
++ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItem:(id)item description:(id)description
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBoardItem:v7 description:v6];
+  descriptionCopy = description;
+  itemCopy = item;
+  v8 = [[self alloc] initWithBoardItem:itemCopy description:descriptionCopy];
 
   return v8;
 }
 
-+ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItems:(id)a3 descriptions:(id)a4
++ (CRLIngestibleBoardItemAndDescription)ingestibleBoardItemAndDescriptionWithBoardItems:(id)items descriptions:(id)descriptions
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 != [v6 count])
+  itemsCopy = items;
+  descriptionsCopy = descriptions;
+  v7 = [itemsCopy count];
+  if (v7 != [descriptionsCopy count])
   {
     v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -42,9 +42,9 @@
       v26 = 1024;
       v27 = 27;
       v28 = 2048;
-      v29 = [v5 count];
+      v29 = [itemsCopy count];
       v30 = 2048;
-      v31 = [v6 count];
+      v31 = [descriptionsCopy count];
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Must provide the same number of drawables (%lu) and descriptions (%lu).", buf, 0x36u);
     }
 
@@ -61,41 +61,41 @@
 
     v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLIngestibleBoardItemAndDescription ingestibleBoardItemAndDescriptionWithBoardItems:descriptions:]");
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLIngestibleBoardItemAndDescription.m"];
-    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 27, 0, "Must provide the same number of drawables (%lu) and descriptions (%lu).", [v5 count], objc_msgSend(v6, "count"));
+    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 27, 0, "Must provide the same number of drawables (%lu) and descriptions (%lu).", [itemsCopy count], objc_msgSend(descriptionsCopy, "count"));
   }
 
   v13 = +[NSMutableArray array];
-  if ([v5 count])
+  if ([itemsCopy count])
   {
     v14 = 0;
     do
     {
-      v15 = [v5 objectAtIndexedSubscript:v14];
-      v16 = [v6 objectAtIndexedSubscript:v14];
+      v15 = [itemsCopy objectAtIndexedSubscript:v14];
+      v16 = [descriptionsCopy objectAtIndexedSubscript:v14];
       v17 = [CRLIngestibleBoardItemAndDescription ingestibleBoardItemAndDescriptionWithBoardItem:v15 description:v16];
 
       [v13 addObject:v17];
       ++v14;
     }
 
-    while (v14 < [v5 count]);
+    while (v14 < [itemsCopy count]);
   }
 
   return v13;
 }
 
-- (CRLIngestibleBoardItemAndDescription)initWithBoardItem:(id)a3 description:(id)a4
+- (CRLIngestibleBoardItemAndDescription)initWithBoardItem:(id)item description:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = CRLIngestibleBoardItemAndDescription;
   v9 = [(CRLIngestibleBoardItemAndDescription *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_boardItem, a3);
-    objc_storeStrong(&v10->_ingestibleDescription, a4);
+    objc_storeStrong(&v9->_boardItem, item);
+    objc_storeStrong(&v10->_ingestibleDescription, description);
   }
 
   return v10;

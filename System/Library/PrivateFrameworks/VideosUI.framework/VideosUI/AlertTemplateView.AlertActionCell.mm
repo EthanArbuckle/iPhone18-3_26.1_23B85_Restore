@@ -8,7 +8,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A9B908();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECF31D30);
@@ -19,13 +19,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A9B998();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A9BA48();
 }
 

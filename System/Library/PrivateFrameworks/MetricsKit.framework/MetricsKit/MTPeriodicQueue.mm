@@ -4,18 +4,18 @@
 - (void)__beginFlushTimer;
 - (void)__endFlushTimer;
 - (void)__flushObjects;
-- (void)__flushObjects:(id)a3;
-- (void)__flushObjects:(id)a3 maximumBatchSize:(int64_t)a4 flushHandler:(id)a5;
+- (void)__flushObjects:(id)objects;
+- (void)__flushObjects:(id)objects maximumBatchSize:(int64_t)size flushHandler:(id)handler;
 - (void)_beginFlushTimer;
 - (void)_endFlushTimer;
-- (void)appendObject:(id)a3;
+- (void)appendObject:(id)object;
 - (void)dealloc;
 - (void)flushObjects;
-- (void)insertObject:(id)a3;
-- (void)insertObjects:(id)a3;
-- (void)setFlushTimeInterval:(double)a3;
-- (void)setFlushTimerEnabled:(BOOL)a3;
-- (void)setMaximumBatchSize:(int64_t)a3;
+- (void)insertObject:(id)object;
+- (void)insertObjects:(id)objects;
+- (void)setFlushTimeInterval:(double)interval;
+- (void)setFlushTimerEnabled:(BOOL)enabled;
+- (void)setMaximumBatchSize:(int64_t)size;
 @end
 
 @implementation MTPeriodicQueue
@@ -65,7 +65,7 @@
   [(MTPeriodicQueue *)&v5 dealloc];
 }
 
-- (void)setFlushTimeInterval:(double)a3
+- (void)setFlushTimeInterval:(double)interval
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -73,7 +73,7 @@
   v4[2] = __40__MTPeriodicQueue_setFlushTimeInterval___block_invoke;
   v4[3] = &unk_2798CEB60;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_sync(syncQueue, v4);
 }
 
@@ -94,7 +94,7 @@ uint64_t __40__MTPeriodicQueue_setFlushTimeInterval___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)setFlushTimerEnabled:(BOOL)a3
+- (void)setFlushTimerEnabled:(BOOL)enabled
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -102,7 +102,7 @@ uint64_t __40__MTPeriodicQueue_setFlushTimeInterval___block_invoke(uint64_t resu
   v4[2] = __40__MTPeriodicQueue_setFlushTimerEnabled___block_invoke;
   v4[3] = &unk_2798CEB88;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(syncQueue, v4);
 }
 
@@ -129,7 +129,7 @@ uint64_t __40__MTPeriodicQueue_setFlushTimerEnabled___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)setMaximumBatchSize:(int64_t)a3
+- (void)setMaximumBatchSize:(int64_t)size
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -137,7 +137,7 @@ uint64_t __40__MTPeriodicQueue_setFlushTimerEnabled___block_invoke(uint64_t resu
   v4[2] = __39__MTPeriodicQueue_setMaximumBatchSize___block_invoke;
   v4[3] = &unk_2798CEB60;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_sync(syncQueue, v4);
 }
 
@@ -162,17 +162,17 @@ unint64_t __39__MTPeriodicQueue_setMaximumBatchSize___block_invoke(unint64_t res
   return result;
 }
 
-- (void)appendObject:(id)a3
+- (void)appendObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__MTPeriodicQueue_appendObject___block_invoke;
   v7[3] = &unk_2798CE050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_sync(syncQueue, v7);
 }
 
@@ -190,17 +190,17 @@ void *__32__MTPeriodicQueue_appendObject___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)insertObject:(id)a3
+- (void)insertObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__MTPeriodicQueue_insertObject___block_invoke;
   v7[3] = &unk_2798CE050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_sync(syncQueue, v7);
 }
 
@@ -218,17 +218,17 @@ void *__32__MTPeriodicQueue_insertObject___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)insertObjects:(id)a3
+- (void)insertObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__MTPeriodicQueue_insertObjects___block_invoke;
   v7[3] = &unk_2798CE050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = objectsCopy;
+  selfCopy = self;
+  v6 = objectsCopy;
   dispatch_sync(syncQueue, v7);
 }
 
@@ -259,8 +259,8 @@ void __33__MTPeriodicQueue_insertObjects___block_invoke(uint64_t a1)
 - (void)__flushObjects
 {
   dispatch_assert_queue_V2(self->_syncQueue);
-  v3 = [(MTPeriodicQueue *)self __clearObjects];
-  [(MTPeriodicQueue *)self __flushObjects:v3];
+  __clearObjects = [(MTPeriodicQueue *)self __clearObjects];
+  [(MTPeriodicQueue *)self __flushObjects:__clearObjects];
 }
 
 - (id)__clearObjects
@@ -272,9 +272,9 @@ void __33__MTPeriodicQueue_insertObjects___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)__flushObjects:(id)a3
+- (void)__flushObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   dispatch_assert_queue_V2(self->_syncQueue);
   maximumBatchSize = self->_maximumBatchSize;
   v6 = MEMORY[0x259C9F5D0](self->_flushHandler);
@@ -284,41 +284,41 @@ void __33__MTPeriodicQueue_insertObjects___block_invoke(uint64_t a1)
   v10[2] = __34__MTPeriodicQueue___flushObjects___block_invoke;
   v10[3] = &unk_2798CEBB0;
   v10[4] = self;
-  v11 = v4;
+  v11 = objectsCopy;
   v12 = v6;
   v13 = maximumBatchSize;
   v8 = v6;
-  v9 = v4;
+  v9 = objectsCopy;
   dispatch_async(flushQueue, v10);
 }
 
-- (void)__flushObjects:(id)a3 maximumBatchSize:(int64_t)a4 flushHandler:(id)a5
+- (void)__flushObjects:(id)objects maximumBatchSize:(int64_t)size flushHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  objectsCopy = objects;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_flushQueue);
-  v10 = [v8 count];
-  if (v9 && v10)
+  v10 = [objectsCopy count];
+  if (handlerCopy && v10)
   {
     do
     {
-      v11 = [v8 count];
-      if (v11 >= a4)
+      v11 = [objectsCopy count];
+      if (v11 >= size)
       {
-        v12 = a4;
+        sizeCopy = size;
       }
 
       else
       {
-        v12 = v11;
+        sizeCopy = v11;
       }
 
-      v13 = [v8 count] - v12;
-      v14 = [v8 subarrayWithRange:{0, v12}];
-      v15 = [v8 subarrayWithRange:{v12, v13}];
+      v13 = [objectsCopy count] - sizeCopy;
+      v14 = [objectsCopy subarrayWithRange:{0, sizeCopy}];
+      v15 = [objectsCopy subarrayWithRange:{sizeCopy, v13}];
 
-      v9[2](v9, v14);
-      v8 = v15;
+      handlerCopy[2](handlerCopy, v14);
+      objectsCopy = v15;
     }
 
     while ([v15 count]);
@@ -326,7 +326,7 @@ void __33__MTPeriodicQueue_insertObjects___block_invoke(uint64_t a1)
 
   else
   {
-    v15 = v8;
+    v15 = objectsCopy;
   }
 }
 

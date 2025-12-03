@@ -1,8 +1,8 @@
 @interface KGRangePredicate
-- (KGRangePredicate)initWithComparator:(unint64_t)a3 value1:(id)a4 value2:(id)a5;
+- (KGRangePredicate)initWithComparator:(unint64_t)comparator value1:(id)value1 value2:(id)value2;
 - (id)description;
-- (id)leftParen:(unint64_t)a3;
-- (id)rightParen:(unint64_t)a3;
+- (id)leftParen:(unint64_t)paren;
+- (id)rightParen:(unint64_t)paren;
 @end
 
 @implementation KGRangePredicate
@@ -19,45 +19,45 @@
   return v8;
 }
 
-- (id)rightParen:(unint64_t)a3
+- (id)rightParen:(unint64_t)paren
 {
-  if (a3 - 1 > 7)
+  if (paren - 1 > 7)
   {
     return @"_";
   }
 
   else
   {
-    return off_2797FE580[a3 - 1];
+    return off_2797FE580[paren - 1];
   }
 }
 
-- (id)leftParen:(unint64_t)a3
+- (id)leftParen:(unint64_t)paren
 {
-  if (a3 - 1 > 7)
+  if (paren - 1 > 7)
   {
     return @"_";
   }
 
   else
   {
-    return off_2797FE540[a3 - 1];
+    return off_2797FE540[paren - 1];
   }
 }
 
-- (KGRangePredicate)initWithComparator:(unint64_t)a3 value1:(id)a4 value2:(id)a5
+- (KGRangePredicate)initWithComparator:(unint64_t)comparator value1:(id)value1 value2:(id)value2
 {
-  v9 = a4;
-  v10 = a5;
+  value1Copy = value1;
+  value2Copy = value2;
   v14.receiver = self;
   v14.super_class = KGRangePredicate;
   v11 = [(KGRangePredicate *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_comparator = a3;
-    objc_storeStrong(&v11->_value1, a4);
-    objc_storeStrong(&v12->_value2, a5);
+    v11->_comparator = comparator;
+    objc_storeStrong(&v11->_value1, value1);
+    objc_storeStrong(&v12->_value2, value2);
   }
 
   return v12;

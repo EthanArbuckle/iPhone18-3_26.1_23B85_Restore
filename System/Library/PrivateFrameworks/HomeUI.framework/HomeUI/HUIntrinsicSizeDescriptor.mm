@@ -1,11 +1,11 @@
 @interface HUIntrinsicSizeDescriptor
-+ (HUIntrinsicSizeDescriptor)descriptorWithAspectRatio:(double)a3;
-+ (HUIntrinsicSizeDescriptor)descriptorWithIntrinsicSize:(CGSize)a3 flexType:(unint64_t)a4;
++ (HUIntrinsicSizeDescriptor)descriptorWithAspectRatio:(double)ratio;
++ (HUIntrinsicSizeDescriptor)descriptorWithIntrinsicSize:(CGSize)size flexType:(unint64_t)type;
 + (NAIdentity)na_identity;
 + (id)noIntrinsicSizeDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)intrinsicSize;
-- (HUIntrinsicSizeDescriptor)initWithIntrinsicSize:(CGSize)a3 flexType:(unint64_t)a4 aspectRatio:(id)a5;
+- (HUIntrinsicSizeDescriptor)initWithIntrinsicSize:(CGSize)size flexType:(unint64_t)type aspectRatio:(id)ratio;
 - (unint64_t)hash;
 @end
 
@@ -13,27 +13,27 @@
 
 + (id)noIntrinsicSizeDescriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithIntrinsicSize:0 flexType:0 aspectRatio:{*MEMORY[0x277D77260], *MEMORY[0x277D77260]}];
 
   return v3;
 }
 
-+ (HUIntrinsicSizeDescriptor)descriptorWithAspectRatio:(double)a3
++ (HUIntrinsicSizeDescriptor)descriptorWithAspectRatio:(double)ratio
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = *MEMORY[0x277D77260];
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:ratio];
   v7 = [v4 initWithIntrinsicSize:4 flexType:v6 aspectRatio:{v5, v5}];
 
   return v7;
 }
 
-+ (HUIntrinsicSizeDescriptor)descriptorWithIntrinsicSize:(CGSize)a3 flexType:(unint64_t)a4
++ (HUIntrinsicSizeDescriptor)descriptorWithIntrinsicSize:(CGSize)size flexType:(unint64_t)type
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [a1 alloc];
+  height = size.height;
+  width = size.width;
+  v7 = [self alloc];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__HUIntrinsicSizeDescriptor_descriptorWithIntrinsicSize_flexType___block_invoke;
@@ -41,7 +41,7 @@
   *&v11[4] = width;
   *&v11[5] = height;
   v8 = __66__HUIntrinsicSizeDescriptor_descriptorWithIntrinsicSize_flexType___block_invoke(v11);
-  v9 = [v7 initWithIntrinsicSize:a4 flexType:v8 aspectRatio:{width, height}];
+  v9 = [v7 initWithIntrinsicSize:type flexType:v8 aspectRatio:{width, height}];
 
   return v9;
 }
@@ -67,11 +67,11 @@ id __66__HUIntrinsicSizeDescriptor_descriptorWithIntrinsicSize_flexType___block_
   return v5;
 }
 
-- (HUIntrinsicSizeDescriptor)initWithIntrinsicSize:(CGSize)a3 flexType:(unint64_t)a4 aspectRatio:(id)a5
+- (HUIntrinsicSizeDescriptor)initWithIntrinsicSize:(CGSize)size flexType:(unint64_t)type aspectRatio:(id)ratio
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  ratioCopy = ratio;
   v14.receiver = self;
   v14.super_class = HUIntrinsicSizeDescriptor;
   v11 = [(HUIntrinsicSizeDescriptor *)&v14 init];
@@ -80,8 +80,8 @@ id __66__HUIntrinsicSizeDescriptor_descriptorWithIntrinsicSize_flexType___block_
   {
     v11->_intrinsicSize.width = width;
     v11->_intrinsicSize.height = height;
-    v11->_flexType = a4;
-    objc_storeStrong(&v11->_aspectRatio, a5);
+    v11->_flexType = type;
+    objc_storeStrong(&v11->_aspectRatio, ratio);
   }
 
   return v12;
@@ -126,19 +126,19 @@ uint64_t __40__HUIntrinsicSizeDescriptor_na_identity__block_invoke_5(uint64_t a1
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

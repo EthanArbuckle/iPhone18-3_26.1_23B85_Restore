@@ -1,14 +1,14 @@
 @interface _DKAnyStringIdentifier
-+ (id)withValue:(id)a3;
++ (id)withValue:(id)value;
 @end
 
 @implementation _DKAnyStringIdentifier
 
-+ (id)withValue:(id)a3
++ (id)withValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  valueCopy = value;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:valueCopy type:type];
 
   return v6;
 }

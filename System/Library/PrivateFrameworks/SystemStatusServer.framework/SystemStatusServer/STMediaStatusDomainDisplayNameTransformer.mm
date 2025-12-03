@@ -1,54 +1,54 @@
 @interface STMediaStatusDomainDisplayNameTransformer
-- (STMediaStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3;
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4;
+- (STMediaStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver;
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain;
 @end
 
 @implementation STMediaStatusDomainDisplayNameTransformer
 
-- (STMediaStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3
+- (STMediaStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = STMediaStatusDomainDisplayNameTransformer;
   v6 = [(STMediaStatusDomainDisplayNameTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityResolver, a3);
+    objc_storeStrong(&v6->_entityResolver, resolver);
   }
 
   return v7;
 }
 
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain
 {
-  v5 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v5;
+  v7 = dataCopy;
   v8 = v7;
   if (isKindOfClass)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [v7 microphoneAttributions];
-    v11 = [v10 bs_map:&__block_literal_global];
-    [v9 addObjectsFromArray:v11];
+    array = [MEMORY[0x277CBEB18] array];
+    microphoneAttributions = [v7 microphoneAttributions];
+    v11 = [microphoneAttributions bs_map:&__block_literal_global];
+    [array addObjectsFromArray:v11];
 
-    v12 = [v7 mutedMicrophoneRecordingAttributions];
-    v13 = [v12 bs_map:&__block_literal_global_4];
-    [v9 addObjectsFromArray:v13];
+    mutedMicrophoneRecordingAttributions = [v7 mutedMicrophoneRecordingAttributions];
+    v13 = [mutedMicrophoneRecordingAttributions bs_map:&__block_literal_global_4];
+    [array addObjectsFromArray:v13];
 
-    v14 = [v7 systemAudioRecordingAttributions];
-    v15 = [v14 bs_map:&__block_literal_global_6];
-    [v9 addObjectsFromArray:v15];
+    systemAudioRecordingAttributions = [v7 systemAudioRecordingAttributions];
+    v15 = [systemAudioRecordingAttributions bs_map:&__block_literal_global_6];
+    [array addObjectsFromArray:v15];
 
-    v16 = [v7 cameraAttributions];
-    v17 = [v16 bs_map:&__block_literal_global_9];
-    [v9 addObjectsFromArray:v17];
+    cameraAttributions = [v7 cameraAttributions];
+    v17 = [cameraAttributions bs_map:&__block_literal_global_9];
+    [array addObjectsFromArray:v17];
 
-    v18 = [v7 screenCaptureAttributions];
-    v19 = [v18 bs_map:&__block_literal_global_12];
-    [v9 addObjectsFromArray:v19];
+    screenCaptureAttributions = [v7 screenCaptureAttributions];
+    v19 = [screenCaptureAttributions bs_map:&__block_literal_global_12];
+    [array addObjectsFromArray:v19];
 
     if (self)
     {
@@ -61,46 +61,46 @@
     }
 
     v21 = entityResolver;
-    [(STAttributedEntityBatchResolving *)v21 resolveEntities:v9];
+    [(STAttributedEntityBatchResolving *)v21 resolveEntities:array];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __75__STMediaStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_6;
     v45[3] = &unk_279D34BE8;
     v22 = v21;
     v46 = v22;
-    v34 = [v10 bs_map:v45];
+    v34 = [microphoneAttributions bs_map:v45];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
-    v36 = v10;
+    v36 = microphoneAttributions;
     v43[2] = __75__STMediaStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_7;
     v43[3] = &unk_279D34C10;
     v23 = v22;
     v44 = v23;
-    v24 = [v12 bs_map:v43];
+    v24 = [mutedMicrophoneRecordingAttributions bs_map:v43];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __75__STMediaStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_8;
     v41[3] = &unk_279D34C10;
     v25 = v23;
     v42 = v25;
-    v26 = [v14 bs_map:v41];
+    v26 = [systemAudioRecordingAttributions bs_map:v41];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __75__STMediaStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_9;
     v39[3] = &unk_279D34C38;
     v27 = v25;
     v40 = v27;
-    [v16 bs_map:v39];
-    v28 = v35 = v12;
+    [cameraAttributions bs_map:v39];
+    v28 = v35 = mutedMicrophoneRecordingAttributions;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __75__STMediaStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_10;
     v37[3] = &unk_279D34C60;
     v38 = v27;
     v32 = v27;
-    [v18 bs_map:v37];
-    v29 = v33 = v14;
-    v30 = v18;
+    [screenCaptureAttributions bs_map:v37];
+    v29 = v33 = systemAudioRecordingAttributions;
+    v30 = screenCaptureAttributions;
     v8 = objc_alloc_init(MEMORY[0x277D6BA18]);
     [v8 setMicrophoneAttributions:v34];
     [v8 setMutedMicrophoneRecordingAttributions:v24];

@@ -1,35 +1,35 @@
 @interface DKAssetUploadItem
-+ (id)assetWithData:(id)a3 andExtra:(id)a4;
-- (DKAssetUploadItem)initWithCoder:(id)a3;
-- (DKAssetUploadItem)initWithData:(id)a3 andExtra:(id)a4;
++ (id)assetWithData:(id)data andExtra:(id)extra;
+- (DKAssetUploadItem)initWithCoder:(id)coder;
+- (DKAssetUploadItem)initWithData:(id)data andExtra:(id)extra;
 - (id)_decoderClasses;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DKAssetUploadItem
 
-+ (id)assetWithData:(id)a3 andExtra:(id)a4
++ (id)assetWithData:(id)data andExtra:(id)extra
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithData:v7 andExtra:v6];
+  extraCopy = extra;
+  dataCopy = data;
+  v8 = [[self alloc] initWithData:dataCopy andExtra:extraCopy];
 
   return v8;
 }
 
-- (DKAssetUploadItem)initWithData:(id)a3 andExtra:(id)a4
+- (DKAssetUploadItem)initWithData:(id)data andExtra:(id)extra
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  extraCopy = extra;
   v12.receiver = self;
   v12.super_class = DKAssetUploadItem;
   v9 = [(DKAssetUploadItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_extra, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_extra, extra);
   }
 
   return v10;
@@ -60,22 +60,22 @@ uint64_t __36__DKAssetUploadItem__decoderClasses__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (DKAssetUploadItem)initWithCoder:(id)a3
+- (DKAssetUploadItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = DKAssetUploadItem;
   v5 = [(DKAssetUploadItem *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(DKAssetUploadItem *)v5 _decoderClasses];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"data"];
+    _decoderClasses = [(DKAssetUploadItem *)v5 _decoderClasses];
+    v8 = [coderCopy decodeObjectOfClasses:_decoderClasses forKey:@"data"];
     data = v6->_data;
     v6->_data = v8;
 
-    v10 = [(DKAssetUploadItem *)v6 _decoderClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"extra"];
+    _decoderClasses2 = [(DKAssetUploadItem *)v6 _decoderClasses];
+    v11 = [coderCopy decodeObjectOfClasses:_decoderClasses2 forKey:@"extra"];
     extra = v6->_extra;
     v6->_extra = v11;
   }
@@ -83,24 +83,24 @@ uint64_t __36__DKAssetUploadItem__decoderClasses__block_invoke()
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DKAssetUploadItem *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(DKAssetUploadItem *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(DKAssetUploadItem *)self extra];
-  [v4 encodeObject:v6 forKey:@"extra"];
+  extra = [(DKAssetUploadItem *)self extra];
+  [coderCopy encodeObject:extra forKey:@"extra"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_data copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_data copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSDictionary *)self->_extra copyWithZone:a3];
+  v8 = [(NSDictionary *)self->_extra copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 

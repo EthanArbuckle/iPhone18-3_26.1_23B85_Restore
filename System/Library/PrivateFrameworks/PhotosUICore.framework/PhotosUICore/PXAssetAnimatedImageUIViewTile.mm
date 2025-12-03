@@ -2,24 +2,24 @@
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestPlaybackTimeRange;
 - (PXAssetAnimatedImageUIViewTile)init;
 - (UIView)view;
-- (void)_handleAnimatedImageResult:(id)a3 info:(id)a4 expectedRequestCount:(unint64_t)a5;
+- (void)_handleAnimatedImageResult:(id)result info:(id)info expectedRequestCount:(unint64_t)count;
 - (void)_requestAnimatedImageIfNeeded;
-- (void)_setAnimatedImage:(id)a3;
+- (void)_setAnimatedImage:(id)image;
 - (void)_updateAnimatedImageView;
 - (void)becomeReusable;
-- (void)setBestPlaybackTimeRange:(id *)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setImageRequester:(id)a3;
+- (void)setBestPlaybackTimeRange:(id *)range;
+- (void)setCornerRadius:(double)radius;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setImageRequester:(id)requester;
 @end
 
 @implementation PXAssetAnimatedImageUIViewTile
 
-- (void)setBestPlaybackTimeRange:(id *)a3
+- (void)setBestPlaybackTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_bestPlaybackTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_bestPlaybackTimeRange.start.epoch = *&range->var0.var3;
   *&self->_bestPlaybackTimeRange.duration.timescale = v4;
   *&self->_bestPlaybackTimeRange.start.value = v3;
 }
@@ -33,31 +33,31 @@
   return self;
 }
 
-- (void)_setAnimatedImage:(id)a3
+- (void)_setAnimatedImage:(id)image
 {
-  v5 = a3;
-  if (self->__animatedImage != v5)
+  imageCopy = image;
+  if (self->__animatedImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__animatedImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->__animatedImage, image);
     [(PXAssetAnimatedImageUIViewTile *)self _updateAnimatedImageView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)_handleAnimatedImageResult:(id)a3 info:(id)a4 expectedRequestCount:(unint64_t)a5
+- (void)_handleAnimatedImageResult:(id)result info:(id)info expectedRequestCount:(unint64_t)count
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (self->_requestCount == a5 && self->_animatedImageRequestID)
+  resultCopy = result;
+  infoCopy = info;
+  if (self->_requestCount == count && self->_animatedImageRequestID)
   {
-    if (!v8)
+    if (!resultCopy)
     {
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+        v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
         v12 = 138412290;
         v13 = v11;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Failed to fetch animated image with error: %@", &v12, 0xCu);
@@ -65,18 +65,18 @@
     }
 
     self->_animatedImageRequestID = 0;
-    [(PXAssetAnimatedImageUIViewTile *)self _setAnimatedImage:v8];
+    [(PXAssetAnimatedImageUIViewTile *)self _setAnimatedImage:resultCopy];
   }
 }
 
 - (void)_requestAnimatedImageIfNeeded
 {
-  v4 = [(PXAssetAnimatedImageUIViewTile *)self imageRequester];
-  v5 = [v4 mediaProvider];
+  imageRequester = [(PXAssetAnimatedImageUIViewTile *)self imageRequester];
+  mediaProvider = [imageRequester mediaProvider];
 
-  if (v5)
+  if (mediaProvider)
   {
-    [v5 cancelImageRequest:self->_animatedImageRequestID];
+    [mediaProvider cancelImageRequest:self->_animatedImageRequestID];
     v6 = objc_alloc_init(PXAnimatedImageRequestOptions);
     [(PXAnimatedImageRequestOptions *)v6 setVersion:2];
     [(PXAnimatedImageRequestOptions *)v6 setDeliveryMode:1];
@@ -86,8 +86,8 @@
     objc_initWeak(&location, self);
     v7 = (self->_requestCount + 1);
     self->_requestCount = v7;
-    v8 = [(PXAssetAnimatedImageUIViewTile *)self imageRequester];
-    v9 = [v8 asset];
+    imageRequester2 = [(PXAssetAnimatedImageUIViewTile *)self imageRequester];
+    asset = [imageRequester2 asset];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __63__PXAssetAnimatedImageUIViewTile__requestAnimatedImageIfNeeded__block_invoke;
@@ -96,7 +96,7 @@
     v10[4] = self;
     objc_copyWeak(v11, &location);
     v11[2] = v7;
-    self->_animatedImageRequestID = [v5 requestAnimatedImageForAsset:v9 options:v6 resultHandler:v10];
+    self->_animatedImageRequestID = [mediaProvider requestAnimatedImageForAsset:asset options:v6 resultHandler:v10];
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
@@ -144,19 +144,19 @@ void __63__PXAssetAnimatedImageUIViewTile__requestAnimatedImageIfNeeded__block_i
 
 - (void)_updateAnimatedImageView
 {
-  v3 = [(PXAssetAnimatedImageUIViewTile *)self _animatedImage];
+  _animatedImage = [(PXAssetAnimatedImageUIViewTile *)self _animatedImage];
 
   animatedImageView = self->_animatedImageView;
-  if (v3)
+  if (_animatedImage)
   {
-    v5 = [(ISAnimatedImageView *)animatedImageView player];
+    player = [(ISAnimatedImageView *)animatedImageView player];
 
-    if (!v5)
+    if (!player)
     {
       v6 = objc_alloc(MEMORY[0x1E69C1AD8]);
-      v7 = [(PXAssetAnimatedImageUIViewTile *)self _animatedImage];
-      v8 = [v7 pf_animatedImage];
-      v9 = [v6 initWithAnimatedImage:v8];
+      _animatedImage2 = [(PXAssetAnimatedImageUIViewTile *)self _animatedImage];
+      pf_animatedImage = [_animatedImage2 pf_animatedImage];
+      v9 = [v6 initWithAnimatedImage:pf_animatedImage];
 
       [v9 setAllowFrameDrops:0];
       [(ISAnimatedImageView *)self->_animatedImageView setPlayer:v9];
@@ -175,59 +175,59 @@ void __63__PXAssetAnimatedImageUIViewTile__requestAnimatedImageIfNeeded__block_i
   [(PXAssetAnimatedImageUIViewTile *)self cornerRadius];
   if (v11 <= 0.0)
   {
-    v17 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-    [v17 setCornerRadius:0.0];
+    layer = [(ISAnimatedImageView *)self->_animatedImageView layer];
+    [layer setCornerRadius:0.0];
   }
 
   else
   {
     [(PXAssetAnimatedImageUIViewTile *)self cornerRadius];
     v13 = v12;
-    v14 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-    [v14 setCornerRadius:v13];
+    layer2 = [(ISAnimatedImageView *)self->_animatedImageView layer];
+    [layer2 setCornerRadius:v13];
 
     v15 = *MEMORY[0x1E69796E8];
-    v16 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-    [v16 setCornerCurve:v15];
+    layer3 = [(ISAnimatedImageView *)self->_animatedImageView layer];
+    [layer3 setCornerCurve:v15];
 
-    v17 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-    [v17 setAllowsGroupOpacity:0];
+    layer = [(ISAnimatedImageView *)self->_animatedImageView layer];
+    [layer setAllowsGroupOpacity:0];
   }
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  if (self->_desiredPlayState != a3)
+  if (self->_desiredPlayState != state)
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     [(PXAssetAnimatedImageUIViewTile *)self _updateAnimatedImageView];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXAssetAnimatedImageUIViewTile *)self _updateAnimatedImageView];
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_imageRequester != v5)
+  requesterCopy = requester;
+  v6 = requesterCopy;
+  if (self->_imageRequester != requesterCopy)
   {
-    v9 = v5;
-    v7 = [(PXImageRequester *)v5 isEqual:?];
+    v9 = requesterCopy;
+    v7 = [(PXImageRequester *)requesterCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      v8 = [(PXImageRequester *)self->_imageRequester mediaProvider];
-      [v8 cancelImageRequest:self->_animatedImageRequestID];
+      mediaProvider = [(PXImageRequester *)self->_imageRequester mediaProvider];
+      [mediaProvider cancelImageRequest:self->_animatedImageRequestID];
 
-      objc_storeStrong(&self->_imageRequester, a3);
+      objc_storeStrong(&self->_imageRequester, requester);
       self->_animatedImageRequestID = 0;
       [(PXAssetAnimatedImageUIViewTile *)self _requestAnimatedImageIfNeeded];
       v6 = v9;
@@ -248,17 +248,17 @@ void __63__PXAssetAnimatedImageUIViewTile__requestAnimatedImageIfNeeded__block_i
     [(ISAnimatedImageView *)self->_animatedImageView setClipsToBounds:1];
     [(ISAnimatedImageView *)self->_animatedImageView setUserInteractionEnabled:0];
     v6 = +[PXAssetsSceneSettings sharedInstance];
-    v7 = [v6 showBordersOnAnimatedContent];
+    showBordersOnAnimatedContent = [v6 showBordersOnAnimatedContent];
 
-    if (v7)
+    if (showBordersOnAnimatedContent)
     {
-      v8 = [MEMORY[0x1E69DC888] greenColor];
-      v9 = [v8 CGColor];
-      v10 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-      [v10 setBorderColor:v9];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      cGColor = [greenColor CGColor];
+      layer = [(ISAnimatedImageView *)self->_animatedImageView layer];
+      [layer setBorderColor:cGColor];
 
-      v11 = [(ISAnimatedImageView *)self->_animatedImageView layer];
-      [v11 setBorderWidth:4.0];
+      layer2 = [(ISAnimatedImageView *)self->_animatedImageView layer];
+      [layer2 setBorderWidth:4.0];
     }
 
     [(PXAssetAnimatedImageUIViewTile *)self _updateAnimatedImageView];

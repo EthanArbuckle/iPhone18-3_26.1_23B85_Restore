@@ -1,12 +1,12 @@
 @interface CCUIPerformanceTraceModuleViewController
-+ (id)displayNameForState:(unint64_t)a3;
++ (id)displayNameForState:(unint64_t)state;
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
 - (CCUIPerformanceTraceModuleViewController)init;
 - (id)_getFGSceneIdentifiers;
-- (id)_localizedString:(id)a3;
-- (id)_makeTracePlanNameMenuItem:(id)a3;
+- (id)_localizedString:(id)string;
+- (id)_makeTracePlanNameMenuItem:(id)item;
 - (id)_passiveTraceConfig;
-- (void)_cleanupSessionAndUpdateState:(unint64_t)a3;
+- (void)_cleanupSessionAndUpdateState:(unint64_t)state;
 - (void)_collectPassiveTrace;
 - (void)_performanceTraceGlobalStateDidChange;
 - (void)_recreateMenu;
@@ -17,38 +17,38 @@
 - (void)_stopRecordingPowerMetricsPassiveTrace;
 - (void)_stopRecordingRegularTrace;
 - (void)_updateGlyph;
-- (void)_updateState:(unint64_t)a3;
-- (void)_updateSubtitle:(id)a3;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)_updateState:(unint64_t)state;
+- (void)_updateSubtitle:(id)subtitle;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)dealloc;
-- (void)performanceTraceDidComplete:(id)a3 withToken:(id)a4 withError:(id)a5;
-- (void)performanceTraceDidStart:(id)a3;
-- (void)performanceTraceDidStop:(id)a3;
-- (void)setSelectedTracePlanName:(id)a3;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)performanceTraceDidComplete:(id)complete withToken:(id)token withError:(id)error;
+- (void)performanceTraceDidStart:(id)start;
+- (void)performanceTraceDidStop:(id)stop;
+- (void)setSelectedTracePlanName:(id)name;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation CCUIPerformanceTraceModuleViewController
 
-+ (id)displayNameForState:(unint64_t)a3
++ (id)displayNameForState:(unint64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_29F33DE08[a3];
+    return off_29F33DE08[state];
   }
 }
 
-- (void)setSelectedTracePlanName:(id)a3
+- (void)setSelectedTracePlanName:(id)name
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_selectedTracePlanName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_selectedTracePlanName] & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedTracePlanName, a3);
+    objc_storeStrong(&self->_selectedTracePlanName, name);
     [(CCUIPerformanceTraceModuleViewController *)self _updatePlanNameConvenienceProperties];
   }
 }
@@ -62,13 +62,13 @@
   if (v2)
   {
     v2->_state = 0;
-    v4 = [MEMORY[0x29EDC6100] availableTracePlanNames];
+    availableTracePlanNames = [MEMORY[0x29EDC6100] availableTracePlanNames];
     supportedTracePlanNames = v3->_supportedTracePlanNames;
-    v3->_supportedTracePlanNames = v4;
+    v3->_supportedTracePlanNames = availableTracePlanNames;
 
-    v6 = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
+    userSelectedTracePlanName = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
     selectedTracePlanName = v3->_selectedTracePlanName;
-    v3->_selectedTracePlanName = v6;
+    v3->_selectedTracePlanName = userSelectedTracePlanName;
 
     v8 = dispatch_queue_create("com.apple.MobileControlCenter.PerformanceTraceModule", 0);
     stateChangeQueue = v3->_stateChangeQueue;
@@ -76,13 +76,13 @@
 
     objc_initWeak(&location, v3);
     v10 = objc_alloc(MEMORY[0x29EDC60F0]);
-    v11 = [(CCUIPerformanceTraceModuleViewController *)v3 stateChangeQueue];
+    stateChangeQueue = [(CCUIPerformanceTraceModuleViewController *)v3 stateChangeQueue];
     v15 = MEMORY[0x29EDCA5F8];
     v16 = 3221225472;
     v17 = sub_29C9DE3AC;
     v18 = &unk_29F33DD00;
     objc_copyWeak(&v19, &location);
-    v12 = [v10 initWithQueue:v11 stateChangeBlock:&v15];
+    v12 = [v10 initWithQueue:stateChangeQueue stateChangeBlock:&v15];
     stateChangeMonitor = v3->_stateChangeMonitor;
     v3->_stateChangeMonitor = v12;
 
@@ -102,7 +102,7 @@
     v5 = 3221225472;
     v6 = sub_29C9DE48C;
     v7 = &unk_29F33DD28;
-    v8 = self;
+    selfCopy = self;
     BSDispatchMain();
   }
 
@@ -118,19 +118,19 @@
     return 0;
   }
 
-  v4 = [(CCUIPerformanceTraceModuleViewController *)self supportedTracePlanNames];
-  v3 = [v4 count] > 1;
+  supportedTracePlanNames = [(CCUIPerformanceTraceModuleViewController *)self supportedTracePlanNames];
+  v3 = [supportedTracePlanNames count] > 1;
 
   return v3;
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v6.receiver = self;
   v6.super_class = CCUIPerformanceTraceModuleViewController;
   [(CCUIMenuModuleViewController *)&v6 willTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     v5[0] = MEMORY[0x29EDCA5F8];
     v5[1] = 3221225472;
@@ -141,20 +141,20 @@
   }
 }
 
-- (id)_makeTracePlanNameMenuItem:(id)a3
+- (id)_makeTracePlanNameMenuItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x29EDC0CE0]);
-  v6 = [MEMORY[0x29EDC6100] displayNameForTracePlanName:v4];
+  v6 = [MEMORY[0x29EDC6100] displayNameForTracePlanName:itemCopy];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = sub_29C9DE764;
   v10[3] = &unk_29F33DD50;
   objc_copyWeak(&v13, &location);
-  v7 = v4;
+  v7 = itemCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v8 = [v5 initWithTitle:v6 identifier:v7 handler:v10];
 
   objc_destroyWeak(&v13);
@@ -166,16 +166,16 @@
 - (void)_recreateMenu
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
-  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:v3];
+  userSelectedTracePlanName = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
+  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:userSelectedTracePlanName];
 
   v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CCUIPerformanceTraceModuleViewController *)self supportedTracePlanNames];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  supportedTracePlanNames = [(CCUIPerformanceTraceModuleViewController *)self supportedTracePlanNames];
+  v6 = [supportedTracePlanNames countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -186,18 +186,18 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedTracePlanNames);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(CCUIPerformanceTraceModuleViewController *)self _makeTracePlanNameMenuItem:v10];
-        v12 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
-        [v11 setSelected:{objc_msgSend(v10, "isEqualToString:", v12)}];
+        selectedTracePlanName = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+        [v11 setSelected:{objc_msgSend(v10, "isEqualToString:", selectedTracePlanName)}];
 
         [v4 addObject:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [supportedTracePlanNames countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -209,8 +209,8 @@
 
 - (void)_updateGlyph
 {
-  v3 = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
-  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:v3];
+  userSelectedTracePlanName = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
+  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:userSelectedTracePlanName];
 
   v4 = sub_29C9DE854();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -219,10 +219,10 @@
     _os_log_impl(&dword_29C9DD000, v4, OS_LOG_TYPE_DEFAULT, "Updating button glyph", v11, 2u);
   }
 
-  v5 = [MEMORY[0x29EDC7A00] systemBlueColor];
+  systemBlueColor = [MEMORY[0x29EDC7A00] systemBlueColor];
   v6 = MEMORY[0x29EDC6100];
-  v7 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
-  v8 = [v6 displayNameForTracePlanName:v7];
+  selectedTracePlanName = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+  v8 = [v6 displayNameForTracePlanName:selectedTracePlanName];
 
   if ([(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanIsPassive])
   {
@@ -243,18 +243,18 @@
   v10 = [MEMORY[0x29EDC7AC8] systemImageNamed:v9];
   [(CCUIMenuModuleViewController *)self setGlyphImage:v10];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v5];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemBlueColor];
   [(CCUIMenuModuleViewController *)self setIndentation:2];
 }
 
-- (void)_updateSubtitle:(id)a3
+- (void)_updateSubtitle:(id)subtitle
 {
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)self setValueText:v4];
-  [(CCUIButtonModuleViewController *)self setSelectedValueText:v4];
+  subtitleCopy = subtitle;
+  [(CCUIButtonModuleViewController *)self setValueText:subtitleCopy];
+  [(CCUIButtonModuleViewController *)self setSelectedValueText:subtitleCopy];
 }
 
-- (void)_cleanupSessionAndUpdateState:(unint64_t)a3
+- (void)_cleanupSessionAndUpdateState:(unint64_t)state
 {
   v3 = sub_29C9DE854();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -266,19 +266,19 @@
   BSDispatchMain();
 }
 
-- (id)_localizedString:(id)a3
+- (id)_localizedString:(id)string
 {
   v3 = MEMORY[0x29EDB9F48];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_2A23F0780 table:0];
+  v6 = [v5 localizedStringForKey:stringCopy value:&stru_2A23F0780 table:0];
 
   return v6;
 }
 
-- (void)performanceTraceDidStart:(id)a3
+- (void)performanceTraceDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = sub_29C9DE854();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,7 +286,7 @@
     _os_log_impl(&dword_29C9DD000, v5, OS_LOG_TYPE_DEFAULT, "Performance Trace didStart", v10, 2u);
   }
 
-  if (v4)
+  if (startCopy)
   {
     v6 = sub_29C9DE854();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -295,9 +295,9 @@
     }
 
     v7 = [(CCUIPerformanceTraceModuleViewController *)self _localizedString:@"CONTROL_CENTER_STATUS_PERFORMANCE_TRACE_START_ERROR"];
-    v8 = [(CCUIMenuModuleViewController *)self contentModuleContext];
+    contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
     v9 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v7 type:0];
-    [v8 enqueueStatusUpdate:v9];
+    [contentModuleContext enqueueStatusUpdate:v9];
 
     [(CCUIPerformanceTraceModuleViewController *)self _cleanupSessionAndUpdateState:0];
   }
@@ -308,9 +308,9 @@
   }
 }
 
-- (void)performanceTraceDidStop:(id)a3
+- (void)performanceTraceDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = sub_29C9DE854();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -318,7 +318,7 @@
     _os_log_impl(&dword_29C9DD000, v5, OS_LOG_TYPE_DEFAULT, "Performance Trace didStop", v10, 2u);
   }
 
-  if (v4)
+  if (stopCopy)
   {
     v6 = sub_29C9DE854();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -327,9 +327,9 @@
     }
 
     v7 = [(CCUIPerformanceTraceModuleViewController *)self _localizedString:@"CONTROL_CENTER_STATUS_PERFORMANCE_TRACE_STOP_ERROR"];
-    v8 = [(CCUIMenuModuleViewController *)self contentModuleContext];
+    contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
     v9 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v7 type:0];
-    [v8 enqueueStatusUpdate:v9];
+    [contentModuleContext enqueueStatusUpdate:v9];
   }
 
   else
@@ -338,10 +338,10 @@
   }
 }
 
-- (void)performanceTraceDidComplete:(id)a3 withToken:(id)a4 withError:(id)a5
+- (void)performanceTraceDidComplete:(id)complete withToken:(id)token withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  completeCopy = complete;
+  errorCopy = error;
   v9 = sub_29C9DE854();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -349,7 +349,7 @@
     _os_log_impl(&dword_29C9DD000, v9, OS_LOG_TYPE_DEFAULT, "Performance Trace didComplete", buf, 2u);
   }
 
-  if (v8)
+  if (errorCopy)
   {
     v10 = sub_29C9DE854();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -358,26 +358,26 @@
     }
 
     v11 = [(CCUIPerformanceTraceModuleViewController *)self _localizedString:@"CONTROL_CENTER_STATUS_PERFORMANCE_TRACE_PROCESSING_ERROR"];
-    v12 = [(CCUIMenuModuleViewController *)self contentModuleContext];
+    contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
     v13 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v11 type:0];
-    [v12 enqueueStatusUpdate:v13];
+    [contentModuleContext enqueueStatusUpdate:v13];
   }
 
   if (CCSIsInternalInstall())
   {
-    v14 = [MEMORY[0x29EDB8E00] dictionary];
-    v15 = [(CCUIPerformanceTraceModuleViewController *)self fgSceneIdentifiersAtTraceStart];
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    fgSceneIdentifiersAtTraceStart = [(CCUIPerformanceTraceModuleViewController *)self fgSceneIdentifiersAtTraceStart];
 
-    if (v15)
+    if (fgSceneIdentifiersAtTraceStart)
     {
-      v16 = [(CCUIPerformanceTraceModuleViewController *)self fgSceneIdentifiersAtTraceStart];
-      [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x29EDC6118]];
+      fgSceneIdentifiersAtTraceStart2 = [(CCUIPerformanceTraceModuleViewController *)self fgSceneIdentifiersAtTraceStart];
+      [dictionary setObject:fgSceneIdentifiersAtTraceStart2 forKeyedSubscript:*MEMORY[0x29EDC6118]];
     }
 
-    v17 = [(CCUIPerformanceTraceModuleViewController *)self _getFGSceneIdentifiers];
-    if (v17)
+    _getFGSceneIdentifiers = [(CCUIPerformanceTraceModuleViewController *)self _getFGSceneIdentifiers];
+    if (_getFGSceneIdentifiers)
     {
-      [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x29EDC6110]];
+      [dictionary setObject:_getFGSceneIdentifiers forKeyedSubscript:*MEMORY[0x29EDC6110]];
     }
 
     v18 = sub_29C9DE854();
@@ -393,7 +393,7 @@
     v21[2] = sub_29C9DF2D4;
     v21[3] = &unk_29F33DDA0;
     v21[4] = self;
-    [(PTTraceSession *)performanceTraceSession displayTraceCompletedAlertWithTraceFileURL:v7 additionalInfo:v14 notificationTimeoutSecs:&unk_2A23F0EA8 completionHandler:v21];
+    [(PTTraceSession *)performanceTraceSession displayTraceCompletedAlertWithTraceFileURL:completeCopy additionalInfo:dictionary notificationTimeoutSecs:&unk_2A23F0EA8 completionHandler:v21];
   }
 
   else
@@ -407,7 +407,7 @@
   }
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
   v13 = *MEMORY[0x29EDCA608];
   v5 = sub_29C9DE854();
@@ -417,7 +417,7 @@
     v9 = 138412546;
     v10 = v6;
     v11 = 2048;
-    v12 = [(CCUIPerformanceTraceModuleViewController *)self state];
+    state = [(CCUIPerformanceTraceModuleViewController *)self state];
     _os_log_impl(&dword_29C9DD000, v5, OS_LOG_TYPE_DEFAULT, "Button tapped (current state is %@ (%lu))", &v9, 0x16u);
   }
 
@@ -455,25 +455,25 @@
     _os_log_impl(&dword_29C9DD000, v3, OS_LOG_TYPE_INFO, "Getting FG scene identifiers", v8, 2u);
   }
 
-  v4 = [(CCUIMenuModuleViewController *)self contentModuleContext];
-  v5 = [v4 displayLayoutContextProvider];
-  v6 = [v5 foregroundApplicationSceneBundleIdentifiers];
+  contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
+  displayLayoutContextProvider = [contentModuleContext displayLayoutContextProvider];
+  foregroundApplicationSceneBundleIdentifiers = [displayLayoutContextProvider foregroundApplicationSceneBundleIdentifiers];
 
-  return v6;
+  return foregroundApplicationSceneBundleIdentifiers;
 }
 
 - (void)_startRecording
 {
   v9 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
-  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:v3];
+  userSelectedTracePlanName = [MEMORY[0x29EDC6100] userSelectedTracePlanName];
+  [(CCUIPerformanceTraceModuleViewController *)self setSelectedTracePlanName:userSelectedTracePlanName];
 
   v4 = sub_29C9DE854();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+    selectedTracePlanName = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
     v7 = 138543362;
-    v8 = v5;
+    v8 = selectedTracePlanName;
     _os_log_impl(&dword_29C9DD000, v4, OS_LOG_TYPE_DEFAULT, "Starting recording with plan %{public}@", &v7, 0xCu);
   }
 
@@ -501,9 +501,9 @@
   v3 = sub_29C9DE854();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+    selectedTracePlanName = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
     v8 = 138543362;
-    v9 = v4;
+    v9 = selectedTracePlanName;
     _os_log_impl(&dword_29C9DD000, v3, OS_LOG_TYPE_DEFAULT, "Stopping recording with plan %{public}@", &v8, 0xCu);
   }
 
@@ -512,9 +512,9 @@
     v5 = sub_29C9DE854();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+      selectedTracePlanName2 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
       v8 = 138543362;
-      v9 = v6;
+      v9 = selectedTracePlanName2;
       _os_log_impl(&dword_29C9DD000, v5, OS_LOG_TYPE_DEFAULT, "Selected trace plan (%{public}@) does not support stopping recording", &v8, 0xCu);
     }
   }
@@ -535,23 +535,23 @@
 - (void)_startRecordingRegularTrace
 {
   [(CCUIPerformanceTraceModuleViewController *)self _updateState:1];
-  v3 = [(CCUIPerformanceTraceModuleViewController *)self _getFGSceneIdentifiers];
-  [(CCUIPerformanceTraceModuleViewController *)self setFgSceneIdentifiersAtTraceStart:v3];
+  _getFGSceneIdentifiers = [(CCUIPerformanceTraceModuleViewController *)self _getFGSceneIdentifiers];
+  [(CCUIPerformanceTraceModuleViewController *)self setFgSceneIdentifiersAtTraceStart:_getFGSceneIdentifiers];
 
   v4 = MEMORY[0x29EDC6100];
-  v5 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
-  v11 = [v4 configWithTracePlanName:v5];
+  selectedTracePlanName = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+  v11 = [v4 configWithTracePlanName:selectedTracePlanName];
 
   [v11 setTraceDurationSecs:30];
   [v11 setSymbolicate:0];
   v6 = *MEMORY[0x29EDC6130];
-  v7 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
-  LODWORD(v6) = [v6 isEqualToString:v7];
+  selectedTracePlanName2 = [(CCUIPerformanceTraceModuleViewController *)self selectedTracePlanName];
+  LODWORD(v6) = [v6 isEqualToString:selectedTracePlanName2];
 
   if (v6)
   {
-    v8 = [MEMORY[0x29EDC6100] userSpecifiedCustomTracePlanArguments];
-    [v11 setTraceRecordArgs:v8];
+    userSpecifiedCustomTracePlanArguments = [MEMORY[0x29EDC6100] userSpecifiedCustomTracePlanArguments];
+    [v11 setTraceRecordArgs:userSpecifiedCustomTracePlanArguments];
   }
 
   v9 = [MEMORY[0x29EDC6108] initWithConfig:v11];
@@ -600,26 +600,26 @@
     _os_log_impl(&dword_29C9DD000, v4, OS_LOG_TYPE_DEFAULT, "Starting power metrics passive trace", v16, 2u);
   }
 
-  v5 = [(CCUIPerformanceTraceModuleViewController *)self _passiveTraceConfig];
-  v6 = v5;
-  if (!v5)
+  _passiveTraceConfig = [(CCUIPerformanceTraceModuleViewController *)self _passiveTraceConfig];
+  v6 = _passiveTraceConfig;
+  if (!_passiveTraceConfig)
   {
     v7 = [(CCUIPerformanceTraceModuleViewController *)self _localizedString:@"CONTROL_CENTER_STATUS_PERFORMANCE_TRACE_START_ERROR"];
-    v12 = [(CCUIMenuModuleViewController *)self contentModuleContext];
+    contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
     v13 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v7 type:0];
-    [v12 enqueueStatusUpdate:v13];
+    [contentModuleContext enqueueStatusUpdate:v13];
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = 0;
 LABEL_10:
-    [(CCUIPerformanceTraceModuleViewController *)v14 _updateState:v15];
+    [(CCUIPerformanceTraceModuleViewController *)selfCopy2 _updateState:v15];
     goto LABEL_11;
   }
 
-  v7 = [v5 applySetting:1];
+  v7 = [_passiveTraceConfig applySetting:1];
   if (!v7)
   {
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2;
     goto LABEL_10;
   }
@@ -631,9 +631,9 @@ LABEL_10:
   }
 
   v9 = [(CCUIPerformanceTraceModuleViewController *)self _localizedString:@"CONTROL_CENTER_STATUS_PERFORMANCE_TRACE_START_ERROR"];
-  v10 = [(CCUIMenuModuleViewController *)self contentModuleContext];
+  contentModuleContext2 = [(CCUIMenuModuleViewController *)self contentModuleContext];
   v11 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v9 type:0];
-  [v10 enqueueStatusUpdate:v11];
+  [contentModuleContext2 enqueueStatusUpdate:v11];
 
   [(CCUIPerformanceTraceModuleViewController *)self _updateState:0];
 LABEL_11:
@@ -692,7 +692,7 @@ LABEL_11:
   }
 }
 
-- (void)_updateState:(unint64_t)a3
+- (void)_updateState:(unint64_t)state
 {
   v3 = *MEMORY[0x29EDC0C88];
   if (os_log_type_enabled(*MEMORY[0x29EDC0C88], OS_LOG_TYPE_INFO))

@@ -1,7 +1,7 @@
 @interface MomentumCurve
 - (BOOL)atEndOfCurve;
 - (MomentumCurve)init;
-- (float)getTimeAtIndex:(unint64_t)a3 curve:(int)a4;
+- (float)getTimeAtIndex:(unint64_t)index curve:(int)curve;
 - (float)momentumDecayRateAlphaWithMickeys:()pair<float;
 - (id).cxx_construct;
 - (pair<float,)initialDelta;
@@ -10,15 +10,15 @@
 - (vector<std::vector<int>,)deltas;
 - (vector<std::vector<int>,)interpolatedDeltas;
 - (void)clearCurves;
-- (void)generateCurvesWithInitialDelta:(const void *)a3;
-- (void)generateCurvesWithMomentumState:(id)a3 scrollMomentumDispatchRate:(float)a4;
+- (void)generateCurvesWithInitialDelta:(const void *)delta;
+- (void)generateCurvesWithMomentumState:(id)state scrollMomentumDispatchRate:(float)rate;
 - (void)generateFrameIntervalMomentumDeltas;
 - (void)interpolateFrameIntervalMomentumDeltas;
-- (void)regenerateCurvesWithInitialDelta:(const void *)a3;
-- (void)setDeltas:()vector<std:(std::allocator<std::vector<int>>> *)a3 :vector<int>;
-- (void)setInterpolatedDeltas:()vector<std:(std::allocator<std::vector<int>>> *)a3 :vector<int>;
-- (void)smoothCurveBody:(int)a3;
-- (void)smoothCurveTail:(int)a3 minFrameSkipsAtEndOfTail:(unsigned int)a4;
+- (void)regenerateCurvesWithInitialDelta:(const void *)delta;
+- (void)setDeltas:()vector<std:(std::allocator<std::vector<int>>> *)std :vector<int>;
+- (void)setInterpolatedDeltas:()vector<std:(std::allocator<std::vector<int>>> *)std :vector<int>;
+- (void)smoothCurveBody:(int)body;
+- (void)smoothCurveTail:(int)tail minFrameSkipsAtEndOfTail:(unsigned int)ofTail;
 @end
 
 @implementation MomentumCurve
@@ -75,13 +75,13 @@
   [(MomentumCurve *)self setCurveIndex:0];
 }
 
-- (void)generateCurvesWithMomentumState:(id)a3 scrollMomentumDispatchRate:(float)a4
+- (void)generateCurvesWithMomentumState:(id)state scrollMomentumDispatchRate:(float)rate
 {
-  v6 = a3;
-  [(MomentumCurve *)self setSubtype:*(v6 + 3)];
+  stateCopy = state;
+  [(MomentumCurve *)self setSubtype:*(stateCopy + 3)];
   LODWORD(v7) = 1074580685;
   [(MomentumCurve *)self setMaxDecayTime:v7];
-  *&v8 = a4;
+  *&v8 = rate;
   [(MomentumCurve *)self setScrollMomentumDispatchRate:v8];
   if ([(MomentumCurve *)self subtype]== 1)
   {
@@ -103,7 +103,7 @@
   [(MomentumCurve *)self setFirstSwitchFromInterpolatedCurve:0];
   [(MomentumCurve *)self setStopInterpolatingInfoSet:0];
   [(MomentumCurve *)self setMinFrameSkipsAtEndOfTail:0];
-  v15 = v6[4];
+  v15 = stateCopy[4];
   *&v15 = v15;
   [(MomentumCurve *)self setPhysicalFrameInterval:v15];
   [(MomentumCurve *)self physicalFrameInterval];
@@ -155,7 +155,7 @@
     [(MomentumCurve *)self setDeltaMultiplier:v31];
     LODWORD(v32) = 1.0;
     [(MomentumCurve *)self setDecayStopDelta:v32];
-    [(MomentumCurve *)self setDragButtons:*(v6 + 6)];
+    [(MomentumCurve *)self setDragButtons:*(stateCopy + 6)];
     v29 = MTLoggingPlugin();
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -174,20 +174,20 @@
   _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, v30, &v45, 0x20u);
 LABEL_13:
 
-  [(MomentumCurve *)self generateCurvesWithInitialDelta:v6 + 2];
+  [(MomentumCurve *)self generateCurvesWithInitialDelta:stateCopy + 2];
   [(MomentumCurve *)self initialDelta];
   v34 = v33;
   v36 = v35;
   v37 = MTLoggingPlugin();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [(MomentumCurve *)self subtype];
+    subtype = [(MomentumCurve *)self subtype];
     [(MomentumCurve *)self frameInterval];
     v40 = v39;
     [(MomentumCurve *)self interpolationFrameInterval];
     v42 = v41;
-    v43 = [(MomentumCurve *)self useInterpolatedCurve];
-    v44 = [(MomentumCurve *)self dragButtons];
+    useInterpolatedCurve = [(MomentumCurve *)self useInterpolatedCurve];
+    dragButtons = [(MomentumCurve *)self dragButtons];
     v45 = 136317442;
     v46 = "";
     v47 = 2080;
@@ -195,7 +195,7 @@ LABEL_13:
     v49 = 2080;
     v50 = "[MomentumCurve generateCurvesWithMomentumState:scrollMomentumDispatchRate:]";
     v51 = 1024;
-    v52 = v38;
+    v52 = subtype;
     v53 = 2048;
     v54 = v34;
     v55 = 2048;
@@ -205,20 +205,20 @@ LABEL_13:
     v59 = 2048;
     v60 = v42;
     v61 = 1024;
-    v62 = v43;
+    v62 = useInterpolatedCurve;
     v63 = 1024;
-    v64 = v44;
+    v64 = dragButtons;
     _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "[HID] [MT] %s%s%s Subtype 0x%02X, initial delta (%4.1f, %4.1f), frame interval %f, interpolated frame interval %f, use interpolation %u, drag buttons %d", &v45, 0x5Au);
   }
 }
 
-- (void)regenerateCurvesWithInitialDelta:(const void *)a3
+- (void)regenerateCurvesWithInitialDelta:(const void *)delta
 {
   v5 = MTLoggingPlugin();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = *a3;
-    v7 = *(a3 + 1);
+    v6 = *delta;
+    v7 = *(delta + 1);
     v8 = 136316162;
     v9 = "";
     v10 = 2080;
@@ -232,14 +232,14 @@ LABEL_13:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[HID] [MT] %s%s%s Regenerating curves with initial delta (%4.1f, %4.1f)", &v8, 0x34u);
   }
 
-  [(MomentumCurve *)self generateCurvesWithInitialDelta:a3];
+  [(MomentumCurve *)self generateCurvesWithInitialDelta:delta];
 }
 
-- (void)generateCurvesWithInitialDelta:(const void *)a3
+- (void)generateCurvesWithInitialDelta:(const void *)delta
 {
   [(MomentumCurve *)self clearCurves];
-  LODWORD(v5) = *a3;
-  LODWORD(v6) = *(a3 + 1);
+  LODWORD(v5) = *delta;
+  LODWORD(v6) = *(delta + 1);
   [(MomentumCurve *)self setInitialDelta:v5, v6];
   [(MomentumCurve *)self generateFrameIntervalMomentumDeltas];
   if ([(MomentumCurve *)self useInterpolatedCurve])
@@ -426,9 +426,9 @@ LABEL_11:
   first = a3.first;
   if ([(MomentumCurve *)self subtype]!= 4)
   {
-    v15 = [(MomentumCurve *)self subtype];
+    subtype = [(MomentumCurve *)self subtype];
     [(MomentumCurve *)self frameInterval];
-    if (v15 == 2)
+    if (subtype == 2)
     {
       if (v16 <= 0.0)
       {
@@ -537,11 +537,11 @@ LABEL_25:
   return pow(v22, v21);
 }
 
-- (void)smoothCurveBody:(int)a3
+- (void)smoothCurveBody:(int)body
 {
   v3 = 0;
   v4 = 128;
-  if (!a3)
+  if (!body)
   {
     v4 = 104;
   }
@@ -601,20 +601,20 @@ LABEL_25:
   while ((v7 & 1) != 0);
 }
 
-- (void)smoothCurveTail:(int)a3 minFrameSkipsAtEndOfTail:(unsigned int)a4
+- (void)smoothCurveTail:(int)tail minFrameSkipsAtEndOfTail:(unsigned int)ofTail
 {
   v4 = 0;
   v5 = 0;
   v6 = 128;
-  if (!a3)
+  if (!tail)
   {
     v6 = 104;
   }
 
   v7 = (&self->super.isa + v6);
   v8 = 1;
-  v32 = 4 * a4 + 4;
-  __n = a4;
+  v32 = 4 * ofTail + 4;
+  __n = ofTail;
   do
   {
     v9 = v8;
@@ -678,7 +678,7 @@ LABEL_31:
       v10->__end_ = (begin + v20);
     }
 
-    if (v16 != -1 && v14 < a4)
+    if (v16 != -1 && v14 < ofTail)
     {
       __x = 0;
       v21.__i_ = (begin + v20);
@@ -739,9 +739,9 @@ LABEL_31:
   while ((v28 & 1) != 0);
 }
 
-- (float)getTimeAtIndex:(unint64_t)a3 curve:(int)a4
+- (float)getTimeAtIndex:(unint64_t)index curve:(int)curve
 {
-  if (a4)
+  if (curve)
   {
     [(MomentumCurve *)self interpolationFrameInterval];
   }
@@ -751,14 +751,14 @@ LABEL_31:
     [(MomentumCurve *)self frameInterval];
   }
 
-  return v5 * (a3 + 1);
+  return v5 * (index + 1);
 }
 
 - (BOOL)atEndOfCurve
 {
-  v3 = [(MomentumCurve *)self useInterpolatedCurve];
+  useInterpolatedCurve = [(MomentumCurve *)self useInterpolatedCurve];
   v4 = 104;
-  if (v3)
+  if (useInterpolatedCurve)
   {
     v4 = 128;
   }
@@ -773,26 +773,26 @@ LABEL_31:
   {
     begin = self->_deltas.__begin_;
     v7 = self->_interpolatedDeltas.__begin_;
-    v8 = [(MomentumCurve *)self useInterpolatedCurve];
-    v9 = [(MomentumCurve *)self curveIndex];
-    v10 = v9;
-    if (v8)
+    useInterpolatedCurve = [(MomentumCurve *)self useInterpolatedCurve];
+    curveIndex = [(MomentumCurve *)self curveIndex];
+    v10 = curveIndex;
+    if (useInterpolatedCurve)
     {
-      [(MomentumCurve *)self getTimeAtIndex:v9 curve:1];
+      [(MomentumCurve *)self getTimeAtIndex:curveIndex curve:1];
       v12 = v11;
       [(MomentumCurve *)self getTimeAtIndex:[(MomentumCurve *)self curveIndex]+ 1 curve:1];
       v14 = v13;
-      v15 = [(MomentumCurve *)self curveIndex];
+      curveIndex2 = [(MomentumCurve *)self curveIndex];
       v16 = *v7;
-      if (v15 < (v7[1] - *v7) >> 2)
+      if (curveIndex2 < (v7[1] - *v7) >> 2)
       {
-        v17 = v15;
-        v18 = [(MomentumCurve *)self curveIndex];
+        v17 = curveIndex2;
+        curveIndex3 = [(MomentumCurve *)self curveIndex];
         v19 = v7[3];
-        if (v18 < (v7[4] - v19) >> 2)
+        if (curveIndex3 < (v7[4] - v19) >> 2)
         {
           v4 = *(v16 + 4 * v17);
-          v5 = *(v19 + 4 * v18);
+          v5 = *(v19 + 4 * curveIndex3);
           [(MomentumCurve *)self setCurveIndex:[(MomentumCurve *)self curveIndex]+ 1];
           [(MomentumCurve *)self interpolationFrameInterval];
           [(MomentumCurve *)self setCurrentInterval:?];
@@ -825,10 +825,10 @@ LABEL_31:
           [(MomentumCurve *)self setFirstSwitchFromInterpolatedCurveInterval:v25];
           [(MomentumCurve *)self firstSwitchFromInterpolatedCurveInterval];
           [(MomentumCurve *)self setNextInterval:?];
-          v26 = self;
+          selfCopy2 = self;
           v27 = 1;
 LABEL_16:
-          [(MomentumCurve *)v26 setFirstSwitchFromInterpolatedCurve:v27];
+          [(MomentumCurve *)selfCopy2 setFirstSwitchFromInterpolatedCurve:v27];
           return (v4 | (v5 << 32));
         }
       }
@@ -837,14 +837,14 @@ LABEL_16:
     else
     {
       v28 = *begin;
-      if (v9 < (begin[1] - *begin) >> 2)
+      if (curveIndex < (begin[1] - *begin) >> 2)
       {
-        v29 = [(MomentumCurve *)self curveIndex];
+        curveIndex4 = [(MomentumCurve *)self curveIndex];
         v30 = begin[3];
-        if (v29 < (begin[4] - v30) >> 2)
+        if (curveIndex4 < (begin[4] - v30) >> 2)
         {
           v4 = *(v28 + 4 * v10);
-          v5 = *(v30 + 4 * v29);
+          v5 = *(v30 + 4 * curveIndex4);
           [(MomentumCurve *)self setCurveIndex:[(MomentumCurve *)self curveIndex]+ 1];
           [(MomentumCurve *)self frameInterval];
           [(MomentumCurve *)self setCurrentInterval:?];
@@ -861,7 +861,7 @@ LABEL_16:
           LODWORD(v5) = llroundf(v32 * v5);
           [(MomentumCurve *)self firstSwitchFromInterpolatedCurveInterval];
           [(MomentumCurve *)self setCurrentInterval:?];
-          v26 = self;
+          selfCopy2 = self;
           v27 = 0;
           goto LABEL_16;
         }
@@ -908,10 +908,10 @@ LABEL_16:
     }
 
     v5 = *(&self->super.isa + v4);
-    v6 = [(MomentumCurve *)self curveIndex];
+    curveIndex = [(MomentumCurve *)self curveIndex];
     v7 = *v5;
     v8 = *(&self->super.isa + v4);
-    return (*(v7 + 4 * v6) | (*(*(v8 + 24) + 4 * [(MomentumCurve *)self curveIndex]) << 32));
+    return (*(v7 + 4 * curveIndex) | (*(*(v8 + 24) + 4 * [(MomentumCurve *)self curveIndex]) << 32));
   }
 }
 
@@ -932,12 +932,12 @@ LABEL_16:
   return std::vector<std::vector<int>>::__init_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(retstr, self->_deltas.__begin_, self->_deltas.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_deltas.__end_ - self->_deltas.__begin_) >> 3));
 }
 
-- (void)setDeltas:()vector<std:(std::allocator<std::vector<int>>> *)a3 :vector<int>
+- (void)setDeltas:()vector<std:(std::allocator<std::vector<int>>> *)std :vector<int>
 {
   p_deltas = &self->_deltas;
-  if (p_deltas != a3)
+  if (p_deltas != std)
   {
-    std::vector<std::vector<int>>::__assign_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(p_deltas, a3->__begin_, a3->__end_, 0xAAAAAAAAAAAAAAABLL * ((a3->__end_ - a3->__begin_) >> 3));
+    std::vector<std::vector<int>>::__assign_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(p_deltas, std->__begin_, std->__end_, 0xAAAAAAAAAAAAAAABLL * ((std->__end_ - std->__begin_) >> 3));
   }
 }
 
@@ -949,12 +949,12 @@ LABEL_16:
   return std::vector<std::vector<int>>::__init_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(retstr, self->_interpolatedDeltas.__begin_, self->_interpolatedDeltas.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_interpolatedDeltas.__end_ - self->_interpolatedDeltas.__begin_) >> 3));
 }
 
-- (void)setInterpolatedDeltas:()vector<std:(std::allocator<std::vector<int>>> *)a3 :vector<int>
+- (void)setInterpolatedDeltas:()vector<std:(std::allocator<std::vector<int>>> *)std :vector<int>
 {
   p_interpolatedDeltas = &self->_interpolatedDeltas;
-  if (p_interpolatedDeltas != a3)
+  if (p_interpolatedDeltas != std)
   {
-    std::vector<std::vector<int>>::__assign_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(p_interpolatedDeltas, a3->__begin_, a3->__end_, 0xAAAAAAAAAAAAAAABLL * ((a3->__end_ - a3->__begin_) >> 3));
+    std::vector<std::vector<int>>::__assign_with_size[abi:ne200100]<std::vector<int>*,std::vector<int>*>(p_interpolatedDeltas, std->__begin_, std->__end_, 0xAAAAAAAAAAAAAAABLL * ((std->__end_ - std->__begin_) >> 3));
   }
 }
 

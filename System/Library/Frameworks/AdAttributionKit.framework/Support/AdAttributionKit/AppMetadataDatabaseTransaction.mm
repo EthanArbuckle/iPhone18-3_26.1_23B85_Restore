@@ -1,6 +1,6 @@
 @interface AppMetadataDatabaseTransaction
 - (_TtC20AttributionKitDaemon30AppMetadataDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon30AppMetadataDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon30AppMetadataDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation AppMetadataDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(AppMetadataDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon30AppMetadataDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon30AppMetadataDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(AppMetadataDatabaseSession *)&v5 initWithConnection:a3];
+  return [(AppMetadataDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

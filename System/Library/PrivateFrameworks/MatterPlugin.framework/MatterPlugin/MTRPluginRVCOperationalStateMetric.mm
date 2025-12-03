@@ -1,6 +1,6 @@
 @interface MTRPluginRVCOperationalStateMetric
 + (id)commandPaths;
-+ (id)transformInvokeCommandExpectationMetric:(id)a3;
++ (id)transformInvokeCommandExpectationMetric:(id)metric;
 - (id)additionalCoreAnalyticsEventDictionary;
 @end
 
@@ -21,19 +21,19 @@
   return v5;
 }
 
-+ (id)transformInvokeCommandExpectationMetric:(id)a3
++ (id)transformInvokeCommandExpectationMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = [MTRPluginRVCOperationalStateMetric alloc];
-  v5 = [v3 invokeCommandMetric];
-  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcOperationalStateEvent" sourceMetric:v5];
+  invokeCommandMetric = [metricCopy invokeCommandMetric];
+  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcOperationalStateEvent" sourceMetric:invokeCommandMetric];
 
-  v7 = [v3 invokeCommandMetric];
-  [v6 setInvokeCommandMetric:v7];
+  invokeCommandMetric2 = [metricCopy invokeCommandMetric];
+  [v6 setInvokeCommandMetric:invokeCommandMetric2];
 
-  v8 = [v3 error];
+  error = [metricCopy error];
 
-  [v6 setError:v8];
+  [v6 setError:error];
 
   return v6;
 }
@@ -45,10 +45,10 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(MTRPluginRVCOperationalStateMetric *)self invokeCommandMetric];
-  v4 = [v3 expectedValues];
+  invokeCommandMetric = [(MTRPluginRVCOperationalStateMetric *)self invokeCommandMetric];
+  expectedValues = [invokeCommandMetric expectedValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v5 = [expectedValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,7 +60,7 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(expectedValues);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -89,7 +89,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [expectedValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -101,9 +101,9 @@
   }
 
   v16 = MEMORY[0x277CBEB38];
-  v17 = [(MTRPluginRVCOperationalStateMetric *)self invokeCommandMetric];
-  v18 = [v17 additionalCoreAnalyticsEventDictionary];
-  v19 = [v16 dictionaryWithDictionary:v18];
+  invokeCommandMetric2 = [(MTRPluginRVCOperationalStateMetric *)self invokeCommandMetric];
+  additionalCoreAnalyticsEventDictionary = [invokeCommandMetric2 additionalCoreAnalyticsEventDictionary];
+  v19 = [v16 dictionaryWithDictionary:additionalCoreAnalyticsEventDictionary];
 
   [v19 setObject:v7 forKeyedSubscript:@"rvcOperationalState"];
   v20 = *MEMORY[0x277D85DE8];

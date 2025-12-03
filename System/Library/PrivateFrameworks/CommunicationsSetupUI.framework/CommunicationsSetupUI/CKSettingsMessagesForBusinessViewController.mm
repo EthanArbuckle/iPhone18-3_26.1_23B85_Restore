@@ -1,10 +1,10 @@
 @interface CKSettingsMessagesForBusinessViewController
-- (id)personalizedAlertsEnabled:(id)a3;
+- (id)personalizedAlertsEnabled:(id)enabled;
 - (id)specifiers;
 - (void)_fetchFeatureState;
 - (void)_showOnboarding;
 - (void)_showPrivacySheetForBusinessChat;
-- (void)setPersonalizedAlertsEnabled:(id)a3 specifier:(id)a4;
+- (void)setPersonalizedAlertsEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -30,13 +30,13 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"messagesForBusinessGroup"];
-    [v5 addObject:v6];
-    v7 = [(CKSettingsMessagesForBusinessViewController *)self erroredOut];
+    [array addObject:v6];
+    erroredOut = [(CKSettingsMessagesForBusinessViewController *)self erroredOut];
     v8 = MEMORY[0x277D3FAD8];
     v9 = MessagesSettingsLocalizedString(@"PERSONALIZED_ALERTS_TOGGLE");
-    if (v7)
+    if (erroredOut)
     {
       v10 = [v8 preferenceSpecifierNamed:v9 target:self set:0 get:sel_unavailableString detail:0 cell:4 edit:0];
     }
@@ -45,9 +45,9 @@
     {
       v10 = [v8 preferenceSpecifierNamed:v9 target:self set:sel_setPersonalizedAlertsEnabled_specifier_ get:sel_personalizedAlertsEnabled_ detail:0 cell:6 edit:0];
 
-      v11 = [(CKSettingsMessagesForBusinessViewController *)self requestInFlight];
+      requestInFlight = [(CKSettingsMessagesForBusinessViewController *)self requestInFlight];
       v12 = MEMORY[0x277D3FF38];
-      if (v11)
+      if (requestInFlight)
       {
         [v10 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
       }
@@ -67,18 +67,18 @@
     }
 
     v34 = v10;
-    [v5 addObject:v10];
+    [array addObject:v10];
     v15 = MessagesSettingsLocalizedString(@"PERSONALIZED_ALERTS_GROUP_DESCRIPTION");
     v16 = MEMORY[0x277D37668];
     v17 = [MEMORY[0x277D37630] bundleWithIdentifier:@"com.apple.onboarding.businesschat"];
     v18 = [v16 flowWithBundle:v17];
 
-    v19 = [v18 localizedButtonTitle];
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"\r\r%@", v19];
+    localizedButtonTitle = [v18 localizedButtonTitle];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"\r\r%@", localizedButtonTitle];
     [v15 stringByAppendingString:v20];
-    v22 = v21 = v5;
+    v22 = v21 = array;
 
-    v23 = [v22 rangeOfString:v19];
+    v23 = [v22 rangeOfString:localizedButtonTitle];
     v25 = v24;
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
@@ -106,13 +106,13 @@
   return v4;
 }
 
-- (void)setPersonalizedAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)setPersonalizedAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
   [(CKSettingsMessagesForBusinessViewController *)self setRequestInFlight:1];
-  v7 = [(CKSettingsMessagesForBusinessViewController *)self featureState];
-  if (v6)
+  featureState = [(CKSettingsMessagesForBusinessViewController *)self featureState];
+  if (bOOLValue)
   {
     v8 = 1;
   }
@@ -125,16 +125,16 @@
   [(CKSettingsMessagesForBusinessViewController *)self setFeatureState:v8];
   [(CKSettingsMessagesForBusinessViewController *)self reloadSpecifiers];
   v9 = [MEMORY[0x277D18700] optionsWithFeatureID:@"bia-opt-out" state:v8];
-  v10 = [(CKSettingsMessagesForBusinessViewController *)self featureToggler];
+  featureToggler = [(CKSettingsMessagesForBusinessViewController *)self featureToggler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__CKSettingsMessagesForBusinessViewController_setPersonalizedAlertsEnabled_specifier___block_invoke;
   v12[3] = &unk_278DE8A40;
-  v13 = v5;
-  v14 = v7;
+  v13 = enabledCopy;
+  v14 = featureState;
   v12[4] = self;
-  v11 = v5;
-  [v10 updateFeatureToggleStateWithOptions:v9 completion:v12];
+  v11 = enabledCopy;
+  [featureToggler updateFeatureToggleStateWithOptions:v9 completion:v12];
 }
 
 void __86__CKSettingsMessagesForBusinessViewController_setPersonalizedAlertsEnabled_specifier___block_invoke(uint64_t a1, void *a2)
@@ -165,7 +165,7 @@ void __86__CKSettingsMessagesForBusinessViewController_setPersonalizedAlertsEnab
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)personalizedAlertsEnabled:(id)a3
+- (id)personalizedAlertsEnabled:(id)enabled
 {
   if ([MEMORY[0x277D1A9A0] deviceIsLockedDown])
   {
@@ -225,13 +225,13 @@ void __62__CKSettingsMessagesForBusinessViewController__showOnboarding__block_in
   {
     v3 = [MEMORY[0x277D186F8] optionsWithFeatureID:@"bia-opt-out"];
     objc_initWeak(&location, self);
-    v4 = [(CKSettingsMessagesForBusinessViewController *)self featureToggler];
+    featureToggler = [(CKSettingsMessagesForBusinessViewController *)self featureToggler];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __65__CKSettingsMessagesForBusinessViewController__fetchFeatureState__block_invoke;
     v5[3] = &unk_278DE8A68;
     objc_copyWeak(&v6, &location);
-    [v4 retrieveFeatureToggleStateForOptions:v3 completion:v5];
+    [featureToggler retrieveFeatureToggleStateForOptions:v3 completion:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);

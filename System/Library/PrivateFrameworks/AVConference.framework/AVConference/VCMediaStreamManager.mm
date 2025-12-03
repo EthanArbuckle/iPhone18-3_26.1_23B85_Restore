@@ -1,35 +1,35 @@
 @interface VCMediaStreamManager
 + (id)allowablePublicAPINames;
 + (id)defaultManager;
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4;
-- (BOOL)addSyncSourceToVideoStreamConfig:(id)a3 sourceStreamToken:(int64_t)a4 error:(id *)a5;
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary;
+- (BOOL)addSyncSourceToVideoStreamConfig:(id)config sourceStreamToken:(int64_t)token error:(id *)error;
 - (VCMediaStreamManager)init;
-- (id)capabilitiesForStream:(id)a3 mediaProtocolArgs:(id)a4 xpcArguments:(id)a5 clientAuditToken:(id)a6 error:(id *)a7;
-- (id)newLocalNWEndpointFromXPCArguments:(id)a3 mediaProtocolArgs:(id)a4;
-- (id)newMediaProtocolArgsWithMediaProtocolArgs:(id)a3 nwEndpoint:(id)a4 clientAuditToken:(id)a5;
-- (id)newRemoteNWEndpointFromXPCArguments:(id)a3;
-- (id)textStreamWithStreamToken:(int64_t)a3;
-- (id)videoStreamWithSyncToken:(int64_t)a3;
-- (unsigned)remoteSSRCFromXPCArguments:(id)a3;
-- (void)cleanupStreamSyncSourceForVideoStream:(id)a3 andAudioStream:(id)a4;
+- (id)capabilitiesForStream:(id)stream mediaProtocolArgs:(id)args xpcArguments:(id)arguments clientAuditToken:(id)token error:(id *)error;
+- (id)newLocalNWEndpointFromXPCArguments:(id)arguments mediaProtocolArgs:(id)args;
+- (id)newMediaProtocolArgsWithMediaProtocolArgs:(id)args nwEndpoint:(id)endpoint clientAuditToken:(id)token;
+- (id)newRemoteNWEndpointFromXPCArguments:(id)arguments;
+- (id)textStreamWithStreamToken:(int64_t)token;
+- (id)videoStreamWithSyncToken:(int64_t)token;
+- (unsigned)remoteSSRCFromXPCArguments:(id)arguments;
+- (void)cleanupStreamSyncSourceForVideoStream:(id)stream andAudioStream:(id)audioStream;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)pauseStreams:(BOOL)a3;
+- (void)pauseStreams:(BOOL)streams;
 - (void)registerBlocksForService;
-- (void)stopStream:(id)a3;
-- (void)vcMediaStream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4;
-- (void)vcMediaStream:(id)a3 didReceiveRTCPPackets:(id)a4;
-- (void)vcMediaStream:(id)a3 didReceiveTTYCharacter:(unsigned __int16)a4;
-- (void)vcMediaStream:(id)a3 didReceiveText:(id)a4;
-- (void)vcMediaStream:(id)a3 didUpdateVideoConfiguration:(BOOL)a4 error:(id)a5 dictionary:(id)a6;
-- (void)vcMediaStream:(id)a3 downlinkQualityDidChange:(id)a4;
-- (void)vcMediaStream:(id)a3 uplinkQualityDidChange:(id)a4;
-- (void)vcMediaStreamDidInterruptionBegin:(id)a3;
-- (void)vcMediaStreamDidInterruptionEnd:(id)a3;
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3;
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3;
-- (void)vcMediaStreamDidRecoverFromRTCPTimeOut:(id)a3;
-- (void)vcMediaStreamServerDidDie:(id)a3;
+- (void)stopStream:(id)stream;
+- (void)vcMediaStream:(id)stream didReceiveDTMFEventWithDigit:(char)digit;
+- (void)vcMediaStream:(id)stream didReceiveRTCPPackets:(id)packets;
+- (void)vcMediaStream:(id)stream didReceiveTTYCharacter:(unsigned __int16)character;
+- (void)vcMediaStream:(id)stream didReceiveText:(id)text;
+- (void)vcMediaStream:(id)stream didUpdateVideoConfiguration:(BOOL)configuration error:(id)error dictionary:(id)dictionary;
+- (void)vcMediaStream:(id)stream downlinkQualityDidChange:(id)change;
+- (void)vcMediaStream:(id)stream uplinkQualityDidChange:(id)change;
+- (void)vcMediaStreamDidInterruptionBegin:(id)begin;
+- (void)vcMediaStreamDidInterruptionEnd:(id)end;
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out;
+- (void)vcMediaStreamDidRTPTimeOut:(id)out;
+- (void)vcMediaStreamDidRecoverFromRTCPTimeOut:(id)out;
+- (void)vcMediaStreamServerDidDie:(id)die;
 @end
 
 @implementation VCMediaStreamManager
@@ -52,23 +52,23 @@ void __38__VCMediaStreamManager_defaultManager__block_invoke()
   }
 }
 
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary
 {
-  if (a3)
+  if (error)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-    if ([a3 domain])
+    if ([error domain])
     {
-      [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
+      [v6 setObject:objc_msgSend(error forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
     }
 
-    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "code")), @"ERROR_CODE"}];
-    if ([a3 userInfo])
+    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(error, "code")), @"ERROR_CODE"}];
+    if ([error userInfo])
     {
-      [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
+      [v6 setObject:objc_msgSend(error forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
     }
 
-    [a4 setObject:v6 forKeyedSubscript:@"vcMediaStreamError"];
+    [dictionary setObject:v6 forKeyedSubscript:@"vcMediaStreamError"];
   }
 }
 
@@ -120,9 +120,9 @@ void __47__VCMediaStreamManager_allowablePublicAPINames__block_invoke()
   [(VCMediaStreamManager *)&v3 dealloc];
 }
 
-- (void)pauseStreams:(BOOL)a3
+- (void)pauseStreams:(BOOL)streams
 {
-  v3 = a3;
+  streamsCopy = streams;
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -138,7 +138,7 @@ void __47__VCMediaStreamManager_allowablePublicAPINames__block_invoke()
       v15 = 1024;
       v16 = 138;
       v17 = 1024;
-      v18 = v3;
+      v18 = streamsCopy;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d isPause[%d] begin", buf, 0x22u);
     }
   }
@@ -149,7 +149,7 @@ void __47__VCMediaStreamManager_allowablePublicAPINames__block_invoke()
   v9[2] = __37__VCMediaStreamManager_pauseStreams___block_invoke;
   v9[3] = &unk_1E85F37A0;
   v9[4] = self;
-  v10 = v3;
+  v10 = streamsCopy;
   dispatch_async(global_queue, v9);
   objc_autoreleasePoolPop(v5);
 }
@@ -179,7 +179,7 @@ uint64_t __37__VCMediaStreamManager_pauseStreams___block_invoke_2(uint64_t a1, u
   return [v3 setPause:v4];
 }
 
-- (void)vcMediaStreamServerDidDie:(id)a3
+- (void)vcMediaStreamServerDidDie:(id)die
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -195,7 +195,7 @@ uint64_t __37__VCMediaStreamManager_pauseStreams___block_invoke_2(uint64_t a1, u
       v13 = 1024;
       v14 = 163;
       v15 = 2048;
-      v16 = a3;
+      dieCopy = die;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Server process died reported by stream=%p", buf, 0x26u);
     }
   }
@@ -246,92 +246,92 @@ uint64_t __50__VCMediaStreamManager_vcMediaStreamServerDidDie___block_invoke(uin
   return result;
 }
 
-- (void)vcMediaStreamDidInterruptionBegin:(id)a3
+- (void)vcMediaStreamDidInterruptionBegin:(id)begin
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamDidInterruptionBegin" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamDidInterruptionBegin" arguments:0 context:begin];
 }
 
-- (void)vcMediaStreamDidInterruptionEnd:(id)a3
+- (void)vcMediaStreamDidInterruptionEnd:(id)end
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamDidInterruptionEnd" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamDidInterruptionEnd" arguments:0 context:end];
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4
+- (void)vcMediaStream:(id)stream didReceiveDTMFEventWithDigit:(char)digit
 {
-  v4 = a4;
+  digitCopy = digit;
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
-  v7 = [v6 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithChar:", v4), @"vcMediaStreamDTMFDigitReceived", 0}];
+  v7 = [v6 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithChar:", digitCopy), @"vcMediaStreamDTMFDigitReceived", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveTTYCharacter:(unsigned __int16)a4
+- (void)vcMediaStream:(id)stream didReceiveTTYCharacter:(unsigned __int16)character
 {
-  v4 = a4;
+  characterCopy = character;
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
-  v7 = [v6 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v4), @"vcMediaStreamTTYCharacterReceived", 0}];
+  v7 = [v6 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", characterCopy), @"vcMediaStreamTTYCharacterReceived", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveText:(id)a4
+- (void)vcMediaStream:(id)stream didReceiveText:(id)text
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{a4, @"vcMediaStreamTextReceived", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{text, @"vcMediaStreamTextReceived", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTPTimeOut:(id)out
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamRTPPacketTimeout" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamRTPPacketTimeout" arguments:0 context:out];
 }
 
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamRTCPPacketTimeout" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamRTCPPacketTimeout" arguments:0 context:out];
 }
 
-- (void)vcMediaStreamDidRecoverFromRTCPTimeOut:(id)a3
+- (void)vcMediaStreamDidRecoverFromRTCPTimeOut:(id)out
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamDidRecoverFromRTCPTimeout" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamDidRecoverFromRTCPTimeout" arguments:0 context:out];
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveRTCPPackets:(id)a4
+- (void)vcMediaStream:(id)stream didReceiveRTCPPackets:(id)packets
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"vcMediaStreamRTCPPackets", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{packets, @"vcMediaStreamRTCPPackets", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStream:(id)a3 downlinkQualityDidChange:(id)a4
+- (void)vcMediaStream:(id)stream downlinkQualityDidChange:(id)change
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"vcMediaStreamDownlinkQualityInfo", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{change, @"vcMediaStreamDownlinkQualityInfo", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStream:(id)a3 uplinkQualityDidChange:(id)a4
+- (void)vcMediaStream:(id)stream uplinkQualityDidChange:(id)change
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"vcMediaStreamUplinkQualityInfo", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{change, @"vcMediaStreamUplinkQualityInfo", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcMediaStream:(id)a3 didUpdateVideoConfiguration:(BOOL)a4 error:(id)a5 dictionary:(id)a6
+- (void)vcMediaStream:(id)stream didUpdateVideoConfiguration:(BOOL)configuration error:(id)error dictionary:(id)dictionary
 {
-  v8 = a4;
+  configurationCopy = configuration;
   v10 = objc_alloc(MEMORY[0x1E695DF90]);
-  v11 = [v10 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcMediaStreamDidUpdateVideoConfiguration", 0}];
-  [VCMediaStreamManager addNSError:a5 toXPCArgumentDictionary:v11];
-  if (v8)
+  v11 = [v10 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", configurationCopy), @"vcMediaStreamDidUpdateVideoConfiguration", 0}];
+  [VCMediaStreamManager addNSError:error toXPCArgumentDictionary:v11];
+  if (configurationCopy)
   {
-    if (a6)
+    if (dictionary)
     {
-      [v11 setObject:a6 forKeyedSubscript:@"vcMediaStreamUpdatedVideoConfiguration"];
+      [v11 setObject:dictionary forKeyedSubscript:@"vcMediaStreamUpdatedVideoConfiguration"];
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -347,7 +347,7 @@ uint64_t __50__VCMediaStreamManager_vcMediaStreamServerDidDie___block_invoke(uin
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (id)videoStreamWithSyncToken:(int64_t)a3
+- (id)videoStreamWithSyncToken:(int64_t)token
 {
   v18 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -383,7 +383,7 @@ LABEL_3:
         {
           v11 = v10;
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 streamToken] == a3)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 streamToken] == token)
           {
             return v9;
           }
@@ -404,23 +404,23 @@ LABEL_3:
   }
 }
 
-- (void)cleanupStreamSyncSourceForVideoStream:(id)a3 andAudioStream:(id)a4
+- (void)cleanupStreamSyncSourceForVideoStream:(id)stream andAudioStream:(id)audioStream
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stream)
   {
-    [a3 stopSynchronization];
-    [objc_msgSend(a3 "defaultStreamConfig")];
-    [a4 setMomentsCollectorDelegate:0];
+    [stream stopSynchronization];
+    [objc_msgSend(stream "defaultStreamConfig")];
+    [audioStream setMomentsCollectorDelegate:0];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
       v7 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (audioStream)
         {
-          v8 = [objc_msgSend(a4 "description")];
+          v8 = [objc_msgSend(audioStream "description")];
         }
 
         else
@@ -437,7 +437,7 @@ LABEL_3:
         v15 = 2080;
         v16 = v8;
         v17 = 2080;
-        v18 = [objc_msgSend(a3 "description")];
+        v18 = [objc_msgSend(stream "description")];
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Removed stream=%s as sync source for stream=%s delegates", &v9, 0x30u);
       }
     }
@@ -453,7 +453,7 @@ LABEL_3:
   }
 }
 
-- (id)textStreamWithStreamToken:(int64_t)a3
+- (id)textStreamWithStreamToken:(int64_t)token
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -480,7 +480,7 @@ LABEL_3:
 
     v9 = *(*(&v12 + 1) + 8 * v8);
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 streamToken] == a3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 streamToken] == token)
     {
       return v9;
     }
@@ -498,9 +498,9 @@ LABEL_3:
   }
 }
 
-- (BOOL)addSyncSourceToVideoStreamConfig:(id)a3 sourceStreamToken:(int64_t)a4 error:(id *)a5
+- (BOOL)addSyncSourceToVideoStreamConfig:(id)config sourceStreamToken:(int64_t)token error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
@@ -511,7 +511,7 @@ LABEL_3:
   if (v10)
   {
     v11 = v10;
-    v21 = v8;
+    v21 = selfCopy;
     v12 = 0;
     v13 = *v34;
     do
@@ -525,9 +525,9 @@ LABEL_3:
 
         v15 = *(*(&v33 + 1) + 8 * i);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 conformsToProtocol:&unk_1F57B9BC8] && objc_msgSend(v15, "streamToken") == a4)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 conformsToProtocol:&unk_1F57B9BC8] && objc_msgSend(v15, "streamToken") == token)
         {
-          [a3 setSyncSource:v15];
+          [config setSyncSource:v15];
           v12 = 1;
         }
       }
@@ -536,14 +536,14 @@ LABEL_3:
     }
 
     while (v11);
-    v8 = v21;
+    selfCopy = v21;
     if (v12)
     {
       return 1;
     }
   }
 
-  if (objc_opt_class() == v8)
+  if (objc_opt_class() == selfCopy)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 2)
     {
@@ -567,7 +567,7 @@ LABEL_3:
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(VCMediaStreamManager *)v8 performSelector:sel_logPrefix];
+      v17 = [(VCMediaStreamManager *)selfCopy performSelector:sel_logPrefix];
     }
 
     else
@@ -593,7 +593,7 @@ LABEL_3:
           v28 = 2112;
           v29 = v17;
           v30 = 2048;
-          v31 = v8;
+          v31 = selfCopy;
           _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed configure stream synchronization", buf, 0x30u);
         }
       }
@@ -609,40 +609,40 @@ LABEL_3:
         v28 = 2112;
         v29 = v17;
         v30 = 2048;
-        v31 = v8;
+        v31 = selfCopy;
         _os_log_fault_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_FAULT, " [%s] %s:%d %@(%p) Failed configure stream synchronization", buf, 0x30u);
       }
     }
   }
 
-  +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a5, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamManager.m", 324], @"Invalid synchronization source token", @"Failed to set synchronization source");
+  +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamManager.m", 324], @"Invalid synchronization source token", @"Failed to set synchronization source");
   return 0;
 }
 
-- (void)stopStream:(id)a3
+- (void)stopStream:(id)stream
 {
   dispatch_assert_queue_V2(self->xpcQueue);
-  [a3 stop];
+  [stream stop];
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcMediaStreamDidStopConnection" arguments:0 context:a3];
+  [v4 sendMessageAsync:"vcMediaStreamDidStopConnection" arguments:0 context:stream];
 }
 
-- (id)capabilitiesForStream:(id)a3 mediaProtocolArgs:(id)a4 xpcArguments:(id)a5 clientAuditToken:(id)a6 error:(id *)a7
+- (id)capabilitiesForStream:(id)stream mediaProtocolArgs:(id)args xpcArguments:(id)arguments clientAuditToken:(id)token error:(id *)error
 {
-  v13 = [(VCMediaStreamManager *)self newLocalNWEndpointFromXPCArguments:a5 mediaProtocolArgs:?];
-  v14 = [(VCMediaStreamManager *)self newMediaProtocolArgsWithMediaProtocolArgs:a4 nwEndpoint:v13 clientAuditToken:a6];
+  v13 = [(VCMediaStreamManager *)self newLocalNWEndpointFromXPCArguments:arguments mediaProtocolArgs:?];
+  v14 = [(VCMediaStreamManager *)self newMediaProtocolArgsWithMediaProtocolArgs:args nwEndpoint:v13 clientAuditToken:token];
   if (v13)
   {
-    v15 = 0;
+    argumentsCopy = 0;
   }
 
   else
   {
-    v15 = a5;
+    argumentsCopy = arguments;
   }
 
-  v16 = [a3 setLocalParticipantInfo:v14 networkSockets:v15 withError:a7];
+  v16 = [stream setLocalParticipantInfo:v14 networkSockets:argumentsCopy withError:error];
   nw_release(v13);
 
   return v16;
@@ -2453,9 +2453,9 @@ LABEL_16:
   [v2 deregisterFromService:"vcMediaStreamSetSpatialAudioExperience"];
 }
 
-- (id)newLocalNWEndpointFromXPCArguments:(id)a3 mediaProtocolArgs:(id)a4
+- (id)newLocalNWEndpointFromXPCArguments:(id)arguments mediaProtocolArgs:(id)args
 {
-  if (!a3 || !a4 || ![a4 objectForKeyedSubscript:@"vcMediaStreamLocalNWEndpointInXpcArgs"])
+  if (!arguments || !args || ![args objectForKeyedSubscript:@"vcMediaStreamLocalNWEndpointInXpcArgs"])
   {
     return 0;
   }
@@ -2463,16 +2463,16 @@ LABEL_16:
   return nw_endpoint_create_from_dictionary();
 }
 
-- (id)newMediaProtocolArgsWithMediaProtocolArgs:(id)a3 nwEndpoint:(id)a4 clientAuditToken:(id)a5
+- (id)newMediaProtocolArgsWithMediaProtocolArgs:(id)args nwEndpoint:(id)endpoint clientAuditToken:(id)token
 {
-  v7 = [a3 mutableCopy];
+  v7 = [args mutableCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 setObject:a5 forKeyedSubscript:@"vcMediaStreamClientAuditToken"];
-    if (a4)
+    [v7 setObject:token forKeyedSubscript:@"vcMediaStreamClientAuditToken"];
+    if (endpoint)
     {
-      [v8 setObject:a4 forKeyedSubscript:@"vcMediaStreamLocalNWEndpoint"];
+      [v8 setObject:endpoint forKeyedSubscript:@"vcMediaStreamLocalNWEndpoint"];
       [v8 setObject:0 forKeyedSubscript:@"vcMediaStreamLocalNWEndpointInXpcArgs"];
     }
   }
@@ -2491,15 +2491,15 @@ LABEL_16:
   return v8;
 }
 
-- (id)newRemoteNWEndpointFromXPCArguments:(id)a3
+- (id)newRemoteNWEndpointFromXPCArguments:(id)arguments
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!arguments)
   {
     goto LABEL_18;
   }
 
-  if (!xpc_dictionary_get_value(a3, "vcMediaStreamAVCEndpointNWEndpoint"))
+  if (!xpc_dictionary_get_value(arguments, "vcMediaStreamAVCEndpointNWEndpoint"))
   {
     if (objc_opt_class() == self)
     {
@@ -2555,7 +2555,7 @@ LABEL_16:
       v31 = 2112;
       v32 = v9;
       v33 = 2048;
-      v34 = self;
+      selfCopy = self;
       v35 = v26;
       v36 = "vcMediaStreamAVCEndpointNWEndpoint";
       v18 = &dword_1DB56E000;
@@ -2594,22 +2594,22 @@ LABEL_19:
   }
 
   v7 = v6;
-  [(AVCEndpoint *)v6 setRtpSSRC:[(VCMediaStreamManager *)self remoteSSRCFromXPCArguments:a3]];
+  [(AVCEndpoint *)v6 setRtpSSRC:[(VCMediaStreamManager *)self remoteSSRCFromXPCArguments:arguments]];
 LABEL_5:
   nw_release(v5);
   return v7;
 }
 
-- (unsigned)remoteSSRCFromXPCArguments:(id)a3
+- (unsigned)remoteSSRCFromXPCArguments:(id)arguments
 {
   v20 = *MEMORY[0x1E69E9840];
   valuePtr = 0;
-  if (!a3)
+  if (!arguments)
   {
     return 0;
   }
 
-  if (xpc_dictionary_get_value(a3, "vcMediaStreamAVCEndpointSSRC"))
+  if (xpc_dictionary_get_value(arguments, "vcMediaStreamAVCEndpointSSRC"))
   {
     v3 = _CFXPCCreateCFObjectFromXPCObject();
     if (v3)

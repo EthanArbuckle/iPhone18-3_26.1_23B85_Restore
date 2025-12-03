@@ -1,7 +1,7 @@
 @interface HAPSuspendedAccessory
-- (HAPSuspendedAccessory)initWithName:(id)a3 identifier:(id)a4 type:(unint64_t)a5 queue:(id)a6;
+- (HAPSuspendedAccessory)initWithName:(id)name identifier:(id)identifier type:(unint64_t)type queue:(id)queue;
 - (id)description;
-- (void)wakeWithCompletion:(id)a3;
+- (void)wakeWithCompletion:(id)completion;
 @end
 
 @implementation HAPSuspendedAccessory
@@ -9,20 +9,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPSuspendedAccessory *)self identifier];
+  identifier = [(HAPSuspendedAccessory *)self identifier];
   v5 = HAPIsInternalBuild();
   if (v5)
   {
-    v6 = [(HAPSuspendedAccessory *)self name];
+    name = [(HAPSuspendedAccessory *)self name];
   }
 
   else
   {
-    v6 = @"<private>";
+    name = @"<private>";
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAPSuspendedAccessory type](self, "type")}];
-  v8 = [v3 stringWithFormat:@"%@/%@/%@", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@/%@/%@", identifier, name, v7];
 
   if (v5)
   {
@@ -31,9 +31,9 @@
   return v8;
 }
 
-- (void)wakeWithCompletion:(id)a3
+- (void)wakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -45,21 +45,21 @@
   objc_exception_throw(v10);
 }
 
-- (HAPSuspendedAccessory)initWithName:(id)a3 identifier:(id)a4 type:(unint64_t)a5 queue:(id)a6
+- (HAPSuspendedAccessory)initWithName:(id)name identifier:(id)identifier type:(unint64_t)type queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = HAPSuspendedAccessory;
   v14 = [(HAPSuspendedAccessory *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_identifier, a4);
-    v15->_type = a5;
-    objc_storeStrong(&v15->_queue, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_identifier, identifier);
+    v15->_type = type;
+    objc_storeStrong(&v15->_queue, queue);
   }
 
   return v15;

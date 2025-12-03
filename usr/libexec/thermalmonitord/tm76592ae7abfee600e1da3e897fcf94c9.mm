@@ -1,17 +1,17 @@
 @interface tm76592ae7abfee600e1da3e897fcf94c9
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)computeMaxCGTemp;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm76592ae7abfee600e1da3e897fcf94c9
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm76592ae7abfee600e1da3e897fcf94c9;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -21,9 +21,9 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
+  loadCopy = load;
   v6 = qword_1000AB82C;
   v5 = HIDWORD(qword_1000AB82C);
   v7 = HIDWORD(qword_1000AB834);
@@ -43,7 +43,7 @@
     v10 = 4294967196;
   }
 
-  if (v3)
+  if (loadCopy)
   {
     [(tm76592ae7abfee600e1da3e897fcf94c9 *)self resetVTFilterState];
   }

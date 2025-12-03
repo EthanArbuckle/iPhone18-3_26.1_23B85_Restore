@@ -1,34 +1,34 @@
 @interface PHASEVolumeCommandForSession
 - (id)description;
-- (id)initInternalWithSessionToken:(unsigned int)a3 volume:(id)a4;
+- (id)initInternalWithSessionToken:(unsigned int)token volume:(id)volume;
 @end
 
 @implementation PHASEVolumeCommandForSession
 
-- (id)initInternalWithSessionToken:(unsigned int)a3 volume:(id)a4
+- (id)initInternalWithSessionToken:(unsigned int)token volume:(id)volume
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  volumeCopy = volume;
+  v8 = volumeCopy;
+  if (token)
   {
     v14.receiver = self;
     v14.super_class = PHASEVolumeCommandForSession;
-    v9 = [(PHASEVolumeCommand *)&v14 initInternal];
-    v10 = v9;
-    if (v9)
+    initInternal = [(PHASEVolumeCommand *)&v14 initInternal];
+    v10 = initInternal;
+    if (initInternal)
     {
-      *(v9 + 2) = a3;
-      objc_storeStrong(v9 + 2, a4);
+      *(initInternal + 2) = token;
+      objc_storeStrong(initInternal + 2, volume);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = **(Phase::Logger::GetInstance(v7) + 448);
+    v12 = **(Phase::Logger::GetInstance(volumeCopy) + 448);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
@@ -40,10 +40,10 @@
       _os_log_impl(&dword_23A302000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: invalid audio session token 0x%x", buf, 0x18u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -54,15 +54,15 @@
   if (volume)
   {
     v2 = [(PHASESessionVolume *)self->_volume description];
-    v6 = [v2 UTF8String];
+    uTF8String = [v2 UTF8String];
   }
 
   else
   {
-    v6 = "-";
+    uTF8String = "-";
   }
 
-  v7 = [v3 stringWithFormat:@"VolumeCommandForSession: session 0x%x, volume %s", audioSessionToken, v6];
+  v7 = [v3 stringWithFormat:@"VolumeCommandForSession: session 0x%x, volume %s", audioSessionToken, uTF8String];
   if (volume)
   {
   }

@@ -14,16 +14,16 @@
   {
     *(v2 + 8) = xmmword_238BB1BD0;
     *(v2 + 3) = 0x4014000000000000;
-    v4 = [MEMORY[0x277CD47C8] sharedInstance];
-    v5 = [v4 serverQueue];
+    mEMORY[0x277CD47C8] = [MEMORY[0x277CD47C8] sharedInstance];
+    serverQueue = [mEMORY[0x277CD47C8] serverQueue];
     queue = v3->_queue;
-    v3->_queue = v5;
+    v3->_queue = serverQueue;
 
-    v7 = [MEMORY[0x277D24068] sharedInstance];
-    v8 = [v7 featureFlagLaunchAngelEnabled];
+    mEMORY[0x277D24068] = [MEMORY[0x277D24068] sharedInstance];
+    featureFlagLaunchAngelEnabled = [mEMORY[0x277D24068] featureFlagLaunchAngelEnabled];
 
     v9 = off_278A62468;
-    if (!v8)
+    if (!featureFlagLaunchAngelEnabled)
     {
       v9 = off_278A62470;
     }

@@ -1,24 +1,24 @@
 @interface DBSNativeDisplayIconView
-- (DBSNativeDisplayIconView)initWithFrame:(CGRect)a3 displayName:(id)a4;
-- (void)setIsCurrentDisplayLocation:(BOOL)a3;
+- (DBSNativeDisplayIconView)initWithFrame:(CGRect)frame displayName:(id)name;
+- (void)setIsCurrentDisplayLocation:(BOOL)location;
 @end
 
 @implementation DBSNativeDisplayIconView
 
-- (DBSNativeDisplayIconView)initWithFrame:(CGRect)a3 displayName:(id)a4
+- (DBSNativeDisplayIconView)initWithFrame:(CGRect)frame displayName:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = DBSNativeDisplayIconView;
-  v10 = [(DBSNativeDisplayIconView *)&v31 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(DBSNativeDisplayIconView *)&v31 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(DBSNativeDisplayIconView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(DBSNativeDisplayIconView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = objc_alloc_init(MEMORY[0x277D755E8]);
     [(DBSNativeDisplayIconView *)v11 addSubview:v12];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -33,42 +33,42 @@
     [v16 activateConstraints:v18];
 
     [v12 setContentMode:2];
-    v19 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v12 setTintColor:v19];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v12 setTintColor:systemBackgroundColor];
 
     [(DBSNativeDisplayIconView *)v11 setImageView:v12];
-    v20 = [(DBSNativeDisplayIconView *)v11 imageView];
-    [v20 setHidden:1];
+    imageView = [(DBSNativeDisplayIconView *)v11 imageView];
+    [imageView setHidden:1];
 
     v21 = [DBSDisplayNameLabel alloc];
     v22 = [(DBSDisplayNameLabel *)v21 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    [(DBSDisplayNameLabel *)v22 setText:v9];
+    [(DBSDisplayNameLabel *)v22 setText:nameCopy];
     [(DBSNativeDisplayIconView *)v11 addSubview:v22];
     [(DBSDisplayNameLabel *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(DBSDisplayNameLabel *)v22 centerXAnchor];
-    v24 = [(DBSNativeDisplayIconView *)v11 centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(DBSDisplayNameLabel *)v22 centerXAnchor];
+    centerXAnchor2 = [(DBSNativeDisplayIconView *)v11 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v25 setActive:1];
 
-    v26 = [(DBSDisplayNameLabel *)v22 centerYAnchor];
-    v27 = [(DBSNativeDisplayIconView *)v11 centerYAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    centerYAnchor = [(DBSDisplayNameLabel *)v22 centerYAnchor];
+    centerYAnchor2 = [(DBSNativeDisplayIconView *)v11 centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v28 setActive:1];
 
     [(DBSNativeDisplayIconView *)v11 setNameField:v22];
-    v29 = [(DBSNativeDisplayIconView *)v11 nameField];
-    [v29 setHidden:1];
+    nameField = [(DBSNativeDisplayIconView *)v11 nameField];
+    [nameField setHidden:1];
   }
 
   return v11;
 }
 
-- (void)setIsCurrentDisplayLocation:(BOOL)a3
+- (void)setIsCurrentDisplayLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v5 = MEMORY[0x277D75348];
   v6 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-  if (v3)
+  if (locationCopy)
   {
     v7 = @"CurrentNativeDisplayIconBackground";
   }
@@ -81,26 +81,26 @@
   v8 = [v5 colorNamed:v7 inBundle:v6 compatibleWithTraitCollection:0];
   [(DBSNativeDisplayIconView *)self setBackgroundColor:v8];
 
-  v9 = [(DBSNativeDisplayIconView *)self nameField];
-  [v9 setHidden:!v3];
+  nameField = [(DBSNativeDisplayIconView *)self nameField];
+  [nameField setHidden:!locationCopy];
 
-  v10 = [(DBSNativeDisplayIconView *)self imageView];
-  [v10 setHidden:!v3];
+  imageView = [(DBSNativeDisplayIconView *)self imageView];
+  [imageView setHidden:!locationCopy];
 
-  v11 = [(DBSNativeDisplayIconView *)self layer];
-  [v11 setMasksToBounds:1];
+  layer = [(DBSNativeDisplayIconView *)self layer];
+  [layer setMasksToBounds:1];
 
-  v12 = [(DBSNativeDisplayIconView *)self layer];
-  [v12 setCornerRadius:5.0];
+  layer2 = [(DBSNativeDisplayIconView *)self layer];
+  [layer2 setCornerRadius:5.0];
 
-  v13 = [(DBSNativeDisplayIconView *)self layer];
-  [v13 setBorderWidth:1.0];
+  layer3 = [(DBSNativeDisplayIconView *)self layer];
+  [layer3 setBorderWidth:1.0];
 
   v17 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.1];
   v14 = v17;
-  v15 = [v17 CGColor];
-  v16 = [(DBSNativeDisplayIconView *)self layer];
-  [v16 setBorderColor:v15];
+  cGColor = [v17 CGColor];
+  layer4 = [(DBSNativeDisplayIconView *)self layer];
+  [layer4 setBorderColor:cGColor];
 }
 
 @end

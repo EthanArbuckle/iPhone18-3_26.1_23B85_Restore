@@ -1,10 +1,10 @@
 @interface CLKUIMetalAtlas
-+ (id)_allocateMTLTextureWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4 device:(id)a5;
-+ (id)_uploadMTLTexture:(id)a3 withBacking:(id)a4 numMipmapLevelsToDrop:(unint64_t)a5 device:(id)a6 encoder:(id)a7;
-+ (id)createMTLTextureWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4 device:(id)a5 encoder:(id)a6;
-+ (unint64_t)_computeMTLTextureMemoryUsageWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4;
-- (CLKUIMetalAtlas)initWithUuid:(id)a3 nilTexture:(id)a4 streaming:(BOOL)a5;
-- (void)bind:(id)a3 slot:(unint64_t)a4;
++ (id)_allocateMTLTextureWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device;
++ (id)_uploadMTLTexture:(id)texture withBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device encoder:(id)encoder;
++ (id)createMTLTextureWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device encoder:(id)encoder;
++ (unint64_t)_computeMTLTextureMemoryUsageWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop;
+- (CLKUIMetalAtlas)initWithUuid:(id)uuid nilTexture:(id)texture streaming:(BOOL)streaming;
+- (void)bind:(id)bind slot:(unint64_t)slot;
 - (void)dealloc;
 - (void)finishPrewarm;
 - (void)prewarm;
@@ -14,19 +14,19 @@
 
 @implementation CLKUIMetalAtlas
 
-- (CLKUIMetalAtlas)initWithUuid:(id)a3 nilTexture:(id)a4 streaming:(BOOL)a5
+- (CLKUIMetalAtlas)initWithUuid:(id)uuid nilTexture:(id)texture streaming:(BOOL)streaming
 {
-  v9 = a4;
+  textureCopy = texture;
   v13.receiver = self;
   v13.super_class = CLKUIMetalAtlas;
-  v10 = [(CLKUIAtlas *)&v13 initWithUuid:a3];
+  v10 = [(CLKUIAtlas *)&v13 initWithUuid:uuid];
   v11 = v10;
   if (v10)
   {
     v10->_mainQueue_prewarmState = 0;
-    objc_storeStrong(&v10->_nilTexture, a4);
-    v11->_streaming = a5;
-    v11->_needsStreaming = a5;
+    objc_storeStrong(&v10->_nilTexture, texture);
+    v11->_streaming = streaming;
+    v11->_needsStreaming = streaming;
   }
 
   return v11;
@@ -54,55 +54,55 @@
   [(CLKUIMetalAtlas *)&v5 dealloc];
 }
 
-+ (unint64_t)_computeMTLTextureMemoryUsageWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4
++ (unint64_t)_computeMTLTextureMemoryUsageWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop
 {
-  v4 = a3;
-  if (v4)
+  backingCopy = backing;
+  if (backingCopy)
   {
-    [v4 structure];
+    [backingCopy structure];
     +[CLKUIMetalAtlas _computeMTLTextureMemoryUsageWithBacking:numMipmapLevelsToDrop:];
   }
 
   return 0;
 }
 
-+ (id)_allocateMTLTextureWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4 device:(id)a5
++ (id)_allocateMTLTextureWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device
 {
-  v6 = a3;
-  v7 = a5;
-  if (v6)
+  backingCopy = backing;
+  deviceCopy = device;
+  if (backingCopy)
   {
     kdebug_trace();
-    [v6 structure];
+    [backingCopy structure];
     +[CLKUIMetalAtlas _allocateMTLTextureWithBacking:numMipmapLevelsToDrop:device:];
   }
 
   return 0;
 }
 
-+ (id)_uploadMTLTexture:(id)a3 withBacking:(id)a4 numMipmapLevelsToDrop:(unint64_t)a5 device:(id)a6 encoder:(id)a7
++ (id)_uploadMTLTexture:(id)texture withBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device encoder:(id)encoder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (v11)
+  textureCopy = texture;
+  backingCopy = backing;
+  deviceCopy = device;
+  encoderCopy = encoder;
+  if (backingCopy)
   {
     kdebug_trace();
-    [v11 structure];
+    [backingCopy structure];
     +[CLKUIMetalAtlas _uploadMTLTexture:withBacking:numMipmapLevelsToDrop:device:encoder:];
   }
 
   return 0;
 }
 
-+ (id)createMTLTextureWithBacking:(id)a3 numMipmapLevelsToDrop:(unint64_t)a4 device:(id)a5 encoder:(id)a6
++ (id)createMTLTextureWithBacking:(id)backing numMipmapLevelsToDrop:(unint64_t)drop device:(id)device encoder:(id)encoder
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [CLKUIMetalAtlas _allocateMTLTextureWithBacking:v9 numMipmapLevelsToDrop:a4 device:v10];
-  v13 = [CLKUIMetalAtlas _uploadMTLTexture:v12 withBacking:v9 numMipmapLevelsToDrop:a4 device:v10 encoder:v11];
+  backingCopy = backing;
+  deviceCopy = device;
+  encoderCopy = encoder;
+  v12 = [CLKUIMetalAtlas _allocateMTLTextureWithBacking:backingCopy numMipmapLevelsToDrop:drop device:deviceCopy];
+  v13 = [CLKUIMetalAtlas _uploadMTLTexture:v12 withBacking:backingCopy numMipmapLevelsToDrop:drop device:deviceCopy encoder:encoderCopy];
 
   return v12;
 }
@@ -110,7 +110,7 @@
 - (void)prewarm
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [a1 uuid];
+  uuid = [self uuid];
   v6 = @"none";
   if (*a2 == 1)
   {
@@ -129,7 +129,7 @@
 
   v8 = v7;
   v9 = 138412546;
-  v10 = v5;
+  v10 = uuid;
   v11 = 2112;
   v12 = v8;
   _os_log_error_impl(&dword_1E49C8000, a3, OS_LOG_TYPE_ERROR, "Not prewarming %@ because prewarmState = %@, but the texture is already loaded", &v9, 0x16u);
@@ -213,13 +213,13 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
   *(*(a1 + 32) + 136) = 2;
 }
 
-- (void)bind:(id)a3 slot:(unint64_t)a4
+- (void)bind:(id)bind slot:(unint64_t)slot
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CLKUIAtlas *)self uuid];
+  bindCopy = bind;
+  uuid = [(CLKUIAtlas *)self uuid];
 
-  if (!v7)
+  if (!uuid)
   {
     goto LABEL_48;
   }
@@ -234,11 +234,11 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
     if (self->_needsStreaming)
     {
       self->_needsStreaming = 0;
-      v8 = [(CLKUIAtlas *)self backing];
-      if (v8)
+      backing = [(CLKUIAtlas *)self backing];
+      if (backing)
       {
         numMipmapLevelsDropped = self->_numMipmapLevelsDropped;
-        v10 = [CLKUIMetalAtlas _computeMTLTextureMemoryUsageWithBacking:v8 numMipmapLevelsToDrop:numMipmapLevelsDropped];
+        v10 = [CLKUIMetalAtlas _computeMTLTextureMemoryUsageWithBacking:backing numMipmapLevelsToDrop:numMipmapLevelsDropped];
         v59 = +[CLKUIResourceManager sharedInstance];
         v11 = v10;
         if (([v59 ensureMemoryAvailable:v10] & 1) == 0)
@@ -246,18 +246,18 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
           v12 = CLKLoggingObjectForDomain();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(CLKUIAtlas *)self uuid];
+            uuid2 = [(CLKUIAtlas *)self uuid];
             *buf = 138412290;
-            v71 = v13;
+            v71 = uuid2;
             _os_log_impl(&dword_1E49C8000, v12, OS_LOG_TYPE_DEFAULT, "failed to ensure enough memory for %@", buf, 0xCu);
           }
         }
 
-        v14 = [v6 device];
-        v15 = v14;
-        if (v14)
+        device = [bindCopy device];
+        v15 = device;
+        if (device)
         {
-          v16 = v14;
+          v16 = device;
         }
 
         else
@@ -267,7 +267,7 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
 
         v29 = v16;
 
-        v30 = [CLKUIMetalAtlas _allocateMTLTextureWithBacking:v8 numMipmapLevelsToDrop:numMipmapLevelsDropped device:v29];
+        v30 = [CLKUIMetalAtlas _allocateMTLTextureWithBacking:backing numMipmapLevelsToDrop:numMipmapLevelsDropped device:v29];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __29__CLKUIMetalAtlas_bind_slot___block_invoke;
@@ -286,13 +286,13 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
         block[2] = __29__CLKUIMetalAtlas_bind_slot___block_invoke_2;
         block[3] = &unk_1E8763100;
         v61 = v31;
-        v8 = v8;
+        backing = backing;
         v67 = numMipmapLevelsDropped;
-        v62 = v8;
+        v62 = backing;
         v63 = v29;
-        v58 = v6;
+        v58 = bindCopy;
         v64 = v58;
-        v65 = self;
+        selfCopy = self;
         v66 = v32;
         v36 = v32;
         v37 = v29;
@@ -307,14 +307,14 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
         if (!self->_texture)
         {
           v39 = v58;
-          v40 = [v8 width];
-          v41 = [v8 height];
+          width = [backing width];
+          height = [backing height];
           v42 = 0;
-          while (v40 > [(CLKUIAtlas *)self maxPlaceholderSize]|| v41 > [(CLKUIAtlas *)self maxPlaceholderSize])
+          while (width > [(CLKUIAtlas *)self maxPlaceholderSize]|| height > [(CLKUIAtlas *)self maxPlaceholderSize])
           {
             ++v42;
-            v40 >>= 1;
-            v41 >>= 1;
+            width >>= 1;
+            height >>= 1;
           }
 
           if (self->_numMipmapLevelsDropped <= v42)
@@ -327,11 +327,11 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
             v43 = self->_numMipmapLevelsDropped;
           }
 
-          v44 = [v39 device];
-          v45 = v44;
-          if (v44)
+          device2 = [v39 device];
+          v45 = device2;
+          if (device2)
           {
-            v46 = v44;
+            v46 = device2;
           }
 
           else
@@ -341,7 +341,7 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
 
           v50 = v46;
 
-          v51 = [CLKUIMetalAtlas createMTLTextureWithBacking:v8 numMipmapLevelsToDrop:v43 device:v50 encoder:v39];
+          v51 = [CLKUIMetalAtlas createMTLTextureWithBacking:backing numMipmapLevelsToDrop:v43 device:v50 encoder:v39];
           texture = self->_texture;
           self->_texture = v51;
 
@@ -360,7 +360,7 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
 
     else
     {
-      v8 = 0;
+      backing = 0;
     }
 
     if (+[CLKUIMetalResourceManager synchronousTextureStreamingEnabled])
@@ -385,36 +385,36 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
     v17 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CLKUIAtlas *)self uuid];
+      uuid3 = [(CLKUIAtlas *)self uuid];
       *buf = 138412290;
-      v71 = v18;
+      v71 = uuid3;
       _os_log_impl(&dword_1E49C8000, v17, OS_LOG_TYPE_DEFAULT, "Texure not prewarmed. %@", buf, 0xCu);
     }
 
-    v19 = [(CLKUIAtlas *)self backing];
-    if (v19)
+    backing2 = [(CLKUIAtlas *)self backing];
+    if (backing2)
     {
       v20 = self->_numMipmapLevelsDropped;
-      v21 = [CLKUIMetalAtlas _computeMTLTextureMemoryUsageWithBacking:v19 numMipmapLevelsToDrop:v20];
+      v21 = [CLKUIMetalAtlas _computeMTLTextureMemoryUsageWithBacking:backing2 numMipmapLevelsToDrop:v20];
       v22 = +[CLKUIResourceManager sharedInstance];
       if (([v22 ensureMemoryAvailable:v21] & 1) == 0)
       {
         v23 = CLKLoggingObjectForDomain();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(CLKUIAtlas *)self uuid];
+          uuid4 = [(CLKUIAtlas *)self uuid];
           *buf = 138412290;
-          v71 = v24;
-          v25 = v24;
+          v71 = uuid4;
+          v25 = uuid4;
           _os_log_impl(&dword_1E49C8000, v23, OS_LOG_TYPE_DEFAULT, "failed to ensure enough memory for %@", buf, 0xCu);
         }
       }
 
-      v26 = [v6 device];
-      v27 = v26;
-      if (v26)
+      device3 = [bindCopy device];
+      v27 = device3;
+      if (device3)
       {
-        v28 = v26;
+        v28 = device3;
       }
 
       else
@@ -424,7 +424,7 @@ void __32__CLKUIMetalAtlas_finishPrewarm__block_invoke(uint64_t a1)
 
       v47 = v28;
 
-      v48 = [CLKUIMetalAtlas createMTLTextureWithBacking:v19 numMipmapLevelsToDrop:v20 device:v47 encoder:v6];
+      v48 = [CLKUIMetalAtlas createMTLTextureWithBacking:backing2 numMipmapLevelsToDrop:v20 device:v47 encoder:bindCopy];
       v49 = self->_texture;
       self->_texture = v48;
 
@@ -447,7 +447,7 @@ LABEL_48:
     nilTexture = self->_nilTexture;
   }
 
-  [v6 setFragmentTexture:nilTexture atIndex:a4];
+  [bindCopy setFragmentTexture:nilTexture atIndex:slot];
 }
 
 void __29__CLKUIMetalAtlas_bind_slot___block_invoke_2(void *a1)
@@ -478,9 +478,9 @@ void __29__CLKUIMetalAtlas_bind_slot___block_invoke_3(uint64_t a1)
 
 - (void)purge
 {
-  v3 = [(CLKUIAtlas *)self uuid];
+  uuid = [(CLKUIAtlas *)self uuid];
 
-  if (v3)
+  if (uuid)
   {
     if (self->_loaderQueue)
     {
@@ -568,15 +568,15 @@ void __24__CLKUIMetalAtlas_purge__block_invoke_3(uint64_t a1)
 
 - (void)updateTextureStreaming
 {
-  v3 = [(CLKUIAtlas *)self maxMipmapLevelsToDrop];
+  maxMipmapLevelsToDrop = [(CLKUIAtlas *)self maxMipmapLevelsToDrop];
   numMipmapLevelsDropped = self->_numMipmapLevelsDropped;
-  if (v3 != numMipmapLevelsDropped)
+  if (maxMipmapLevelsToDrop != numMipmapLevelsDropped)
   {
-    v5 = numMipmapLevelsDropped - (v3 != 0);
+    v5 = numMipmapLevelsDropped - (maxMipmapLevelsToDrop != 0);
     v6 = numMipmapLevelsDropped + 1;
-    if (v3 <= v5 || v3 > v6)
+    if (maxMipmapLevelsToDrop <= v5 || maxMipmapLevelsToDrop > v6)
     {
-      self->_numMipmapLevelsDropped = v3;
+      self->_numMipmapLevelsDropped = maxMipmapLevelsToDrop;
       self->_needsStreaming = 1;
     }
   }

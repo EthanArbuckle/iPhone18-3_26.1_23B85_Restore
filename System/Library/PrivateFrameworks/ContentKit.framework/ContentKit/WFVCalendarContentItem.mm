@@ -1,25 +1,25 @@
 @interface WFVCalendarContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)stringConversionBehavior;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFVCalendarContentItem
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = typeCopy;
     }
 
     else
@@ -34,15 +34,15 @@
   }
 
   v6 = v5;
-  v7 = [v6 string];
-  if ([v7 isEqualToString:@"EKEvent"])
+  string = [v6 string];
+  if ([string isEqualToString:@"EKEvent"])
   {
   }
 
   else
   {
-    v8 = v4;
-    if (v4)
+    v8 = typeCopy;
+    if (typeCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -63,9 +63,9 @@
 
     v10 = v9;
 
-    v11 = [v10 string];
+    string2 = [v10 string];
 
-    LODWORD(v10) = [v11 isEqualToString:@"REMReminder"];
+    LODWORD(v10) = [string2 isEqualToString:@"REMReminder"];
     if (!v10)
     {
       v21.receiver = self;
@@ -79,11 +79,11 @@
   v13 = [(WFContentItem *)self fileRepresentationForType:v12];
 
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v15 = [v13 data];
-  v16 = [v14 initWithData:v15 encoding:4];
+  data = [v13 data];
+  v16 = [v14 initWithData:data encoding:4];
 
   v17 = [WFVCalendarFormatter calendarItemsFromICS:v16];
-  v18 = [v17 objectsMatchingClass:{objc_msgSend(v4, "objectClass")}];
+  v18 = [v17 objectsMatchingClass:{objc_msgSend(typeCopy, "objectClass")}];
 
   v19 = [v18 count] != 0;
 LABEL_16:
@@ -91,17 +91,17 @@ LABEL_16:
   return v19;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = NSStringFromClass(a3);
+  v7 = NSStringFromClass(class);
   if ([@"EKEvent" isEqualToString:v7])
   {
   }
 
   else
   {
-    v8 = NSStringFromClass(a3);
+    v8 = NSStringFromClass(class);
     v9 = [@"REMReminder" isEqualToString:v8];
 
     if (!v9)
@@ -115,8 +115,8 @@ LABEL_16:
   v11 = [(WFContentItem *)self fileRepresentationForType:v10];
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v13 = [v11 data];
-  v14 = [v12 initWithData:v13 encoding:4];
+  data = [v11 data];
+  v14 = [v12 initWithData:data encoding:4];
 
   v15 = [WFVCalendarFormatter calendarItemsFromICS:v14];
   v16 = objc_opt_new();
@@ -158,20 +158,20 @@ LABEL_15:
   return v16;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iCalendar items", @"iCalendar items");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iCalendar item", @"iCalendar item");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -197,21 +197,21 @@ LABEL_15:
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if (v4)
+  instanceCopy = instance;
+  if (instanceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = instanceCopy;
     }
 
     else
@@ -226,15 +226,15 @@ LABEL_15:
   }
 
   v6 = v5;
-  v7 = [v6 string];
-  if ([v7 isEqualToString:@"EKEvent"])
+  string = [v6 string];
+  if ([string isEqualToString:@"EKEvent"])
   {
   }
 
   else
   {
-    v8 = v4;
-    if (v4)
+    v8 = instanceCopy;
+    if (instanceCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -255,12 +255,12 @@ LABEL_15:
 
     v10 = v9;
 
-    v11 = [v10 string];
+    string2 = [v10 string];
 
-    LOBYTE(v10) = [v11 isEqualToString:@"REMReminder"];
+    LOBYTE(v10) = [string2 isEqualToString:@"REMReminder"];
     if ((v10 & 1) == 0)
     {
-      v14.receiver = a1;
+      v14.receiver = self;
       v14.super_class = &OBJC_METACLASS___WFVCalendarContentItem;
       v12 = objc_msgSendSuper2(&v14, sel_supportedTypeMustBeDeterminedByInstance_, v8);
       goto LABEL_16;

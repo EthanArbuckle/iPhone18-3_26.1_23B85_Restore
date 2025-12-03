@@ -1,36 +1,36 @@
 @interface UISUserInterfaceStyleMode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)override;
 - ($4C6D1E162277694FB76656457146213A)customSchedule;
-- (UISUserInterfaceStyleMode)initWithDelegate:(id)a3;
+- (UISUserInterfaceStyleMode)initWithDelegate:(id)delegate;
 - (id)_commonAnalyticsEventDictionary;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)modeValue;
 - (int64_t)suggestedAutomaticModeValue;
-- (void)_setOverride:(id)a3 force:(BOOL)a4;
+- (void)_setOverride:(id)override force:(BOOL)force;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCustomSchedule:(id *)a3;
-- (void)setModeValue:(int64_t)a3;
-- (void)setOverride:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCustomSchedule:(id *)schedule;
+- (void)setModeValue:(int64_t)value;
+- (void)setOverride:(id)override;
 @end
 
 @implementation UISUserInterfaceStyleMode
 
-- (UISUserInterfaceStyleMode)initWithDelegate:(id)a3
+- (UISUserInterfaceStyleMode)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = UISUserInterfaceStyleMode;
   v5 = [(UISUserInterfaceStyleMode *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_delegate, v4);
+    v7 = objc_storeWeak(&v5->_delegate, delegateCopy);
 
-    if (v4)
+    if (delegateCopy)
     {
       v8 = _UISUserInterfaceStyleModeUserDefaults();
       [v8 addObserver:v6 forKeyPath:@"UserInterfaceStyleMode" options:1 context:0];
@@ -80,31 +80,31 @@
   return v3;
 }
 
-- (void)setModeValue:(int64_t)a3
+- (void)setModeValue:(int64_t)value
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = _UISUserInterfaceStyleModeServiceLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x1E698E740] processHandle];
+    processHandle = [MEMORY[0x1E698E740] processHandle];
     *buf = 138543618;
-    v12 = v6;
+    v12 = processHandle;
     v13 = 2050;
-    v14 = a3;
+    valueCopy2 = value;
     _os_log_impl(&dword_195FF3000, v5, OS_LOG_TYPE_DEFAULT, "Client %{public}@ is requesting to change the mode to %{public}ld", buf, 0x16u);
   }
 
-  if ((a3 - 1) < 2 || a3 == 100 || a3 == 102)
+  if ((value - 1) < 2 || value == 100 || value == 102)
   {
-    if ([(UISUserInterfaceStyleMode *)self modeValue]!= a3)
+    if ([(UISUserInterfaceStyleMode *)self modeValue]!= value)
     {
       v7 = _UISUserInterfaceStyleModeUserDefaults();
-      [v7 setInteger:a3 forKey:@"UserInterfaceStyleMode"];
+      [v7 setInteger:value forKey:@"UserInterfaceStyleMode"];
 
-      if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0x64)
+      if ((value & 0xFFFFFFFFFFFFFFFDLL) == 0x64)
       {
         v8 = _UISUserInterfaceStyleModeUserDefaults();
-        [v8 setInteger:a3 forKey:@"MostRecentAutomaticMode"];
+        [v8 setInteger:value forKey:@"MostRecentAutomaticMode"];
       }
 
       [(UISUserInterfaceStyleMode *)self _setOverride:0 force:0, 1];
@@ -117,11 +117,11 @@
     v9 = _UISUserInterfaceStyleModeServiceLogger();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E698E740] processHandle];
+      processHandle2 = [MEMORY[0x1E698E740] processHandle];
       *buf = 138543618;
-      v12 = v10;
+      v12 = processHandle2;
       v13 = 2050;
-      v14 = a3;
+      valueCopy2 = value;
       _os_log_error_impl(&dword_195FF3000, v9, OS_LOG_TYPE_ERROR, "Client %{public}@ provided an invalid mode %{public}ld, ignoring", buf, 0x16u);
     }
   }
@@ -163,12 +163,12 @@ id __42__UISUserInterfaceStyleMode_setModeValue___block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v6 = -1;
+      integerValue = -1;
     }
 
     v8 = [v4 objectForKey:@"Timing"];
@@ -176,45 +176,45 @@ id __42__UISUserInterfaceStyleMode_setModeValue___block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v8 integerValue];
+      integerValue2 = [v8 integerValue];
     }
 
     else
     {
-      v7 = -1;
+      integerValue2 = -1;
     }
   }
 
   else
   {
-    v7 = -1;
-    v6 = -1;
+    integerValue2 = -1;
+    integerValue = -1;
   }
 
-  if (([(UISUserInterfaceStyleMode *)self modeValue]& 0xFFFFFFFFFFFFFFFDLL) != 0x64 || v6 > 2 || v7 > 2 || (v7 != 0) == (v6 == 0))
+  if (([(UISUserInterfaceStyleMode *)self modeValue]& 0xFFFFFFFFFFFFFFFDLL) != 0x64 || integerValue > 2 || integerValue2 > 2 || (integerValue2 != 0) == (integerValue == 0))
   {
-    v6 = 0;
-    v7 = 0;
+    integerValue = 0;
+    integerValue2 = 0;
   }
 
-  v9 = v6;
-  v10 = v7;
+  v9 = integerValue;
+  v10 = integerValue2;
   result.var1 = v10;
   result.var0 = v9;
   return result;
 }
 
-- (void)setOverride:(id)a3
+- (void)setOverride:(id)override
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = override.var1;
+  var0 = override.var0;
   v14 = *MEMORY[0x1E69E9840];
   v6 = _UISUserInterfaceStyleModeServiceLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x1E698E740] processHandle];
+    processHandle = [MEMORY[0x1E698E740] processHandle];
     v8 = 138543874;
-    v9 = v7;
+    v9 = processHandle;
     v10 = 2050;
     v11 = var0;
     v12 = 2050;
@@ -225,14 +225,14 @@ id __42__UISUserInterfaceStyleMode_setModeValue___block_invoke(uint64_t a1)
   [(UISUserInterfaceStyleMode *)self _setOverride:var0 force:var1, 0];
 }
 
-- (void)_setOverride:(id)a3 force:(BOOL)a4
+- (void)_setOverride:(id)override force:(BOOL)force
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = override.var1;
+  var0 = override.var0;
   v16[2] = *MEMORY[0x1E69E9840];
-  if (a3.var0 <= 2uLL && a3.var1 <= 2uLL && (a3.var0 == 0) != (a3.var1 != 0))
+  if (override.var0 <= 2uLL && override.var1 <= 2uLL && (override.var0 == 0) != (override.var1 != 0))
   {
-    if (a4)
+    if (force)
     {
       goto LABEL_6;
     }
@@ -240,10 +240,10 @@ id __42__UISUserInterfaceStyleMode_setModeValue___block_invoke(uint64_t a1)
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UISUserInterfaceStyleMode.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"overrideIsValid(newOverride)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISUserInterfaceStyleMode.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"overrideIsValid(newOverride)"}];
 
-    if (a4)
+    if (force)
     {
       goto LABEL_6;
     }
@@ -268,7 +268,7 @@ LABEL_6:
     v13 = _UISUserInterfaceStyleModeUserDefaults();
     [v13 setObject:v12 forKey:@"Override"];
 
-    if (a4)
+    if (force)
     {
       return;
     }
@@ -279,7 +279,7 @@ LABEL_6:
     v9 = _UISUserInterfaceStyleModeUserDefaults();
     [v9 removeObjectForKey:@"Override"];
 
-    if (a4)
+    if (force)
     {
       return;
     }
@@ -369,25 +369,25 @@ LABEL_25:
   return result;
 }
 
-- (void)setCustomSchedule:(id *)a3
+- (void)setCustomSchedule:(id *)schedule
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3->var0.var0 > 0x17uLL || a3->var0.var1 > 0x3BuLL || a3->var1.var0 > 0x17uLL || a3->var1.var1 >= 0x3CuLL)
+  if (schedule->var0.var0 > 0x17uLL || schedule->var0.var1 > 0x3BuLL || schedule->var1.var0 > 0x17uLL || schedule->var1.var1 >= 0x3CuLL)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"UISUserInterfaceStyleMode.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"scheduleIsValid(newSchedule)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISUserInterfaceStyleMode.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"scheduleIsValid(newSchedule)"}];
   }
 
   v6 = _UISUserInterfaceStyleModeServiceLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x1E698E740] processHandle];
-    var0 = a3->var0.var0;
-    var1 = a3->var0.var1;
-    v10 = a3->var1.var0;
-    v11 = a3->var1.var1;
+    processHandle = [MEMORY[0x1E698E740] processHandle];
+    var0 = schedule->var0.var0;
+    var1 = schedule->var0.var1;
+    v10 = schedule->var1.var0;
+    v11 = schedule->var1.var1;
     *buf = 138544386;
-    v28 = v7;
+    v28 = processHandle;
     v29 = 2050;
     v30 = var0;
     v31 = 2050;
@@ -401,19 +401,19 @@ LABEL_25:
 
   v25[0] = @"Begin";
   v23[0] = @"Hour";
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3->var0.var0];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:schedule->var0.var0];
   v23[1] = @"Minute";
   v24[0] = v12;
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3->var0.var1];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:schedule->var0.var1];
   v24[1] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v25[1] = @"End";
   v26[0] = v14;
   v21[0] = @"Hour";
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3->var1.var0];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:schedule->var1.var0];
   v21[1] = @"Minute";
   v22[0] = v15;
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a3->var1.var1];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:schedule->var1.var1];
   v22[1] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v26[1] = v17;
@@ -443,7 +443,7 @@ id __47__UISUserInterfaceStyleMode_setCustomSchedule___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained userInterfaceStyleModeDidChange:self];
@@ -452,17 +452,17 @@ id __47__UISUserInterfaceStyleMode_setCustomSchedule___block_invoke(uint64_t a1)
 - (id)_commonAnalyticsEventDictionary
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    [v2 setObject:v4 forKeyedSubscript:@"bundleID"];
+    [v2 setObject:bundleIdentifier forKeyedSubscript:@"bundleID"];
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 component:32 fromDate:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar component:32 fromDate:date];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
   [v2 setObject:v8 forKeyedSubscript:@"currentHour"];
@@ -472,10 +472,10 @@ id __47__UISUserInterfaceStyleMode_setCustomSchedule___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(UISUserInterfaceStyleMode *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISUserInterfaceStyleMode *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -486,31 +486,31 @@ id __47__UISUserInterfaceStyleMode_setCustomSchedule___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISUserInterfaceStyleMode *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISUserInterfaceStyleMode *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v5];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   v7 = [v6 appendInteger:-[UISUserInterfaceStyleMode modeValue](self withName:{"modeValue"), @"modeValue"}];
-  v8 = [v6 activeMultilinePrefix];
+  activeMultilinePrefix = [v6 activeMultilinePrefix];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__UISUserInterfaceStyleMode_descriptionBuilderWithMultilinePrefix___block_invoke;
   v12[3] = &unk_1E7458FE0;
   v9 = v6;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v8 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v12];
 
   v10 = v9;
   return v9;

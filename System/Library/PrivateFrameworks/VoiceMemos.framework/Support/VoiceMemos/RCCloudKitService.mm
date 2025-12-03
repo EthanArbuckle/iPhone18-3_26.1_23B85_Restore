@@ -1,7 +1,7 @@
 @interface RCCloudKitService
 - (RCCloudKitService)init;
 - (id)_metaDataDeviceQueryOperation;
-- (void)_fetchDeviceRecordsWithCursor:(id)a3 results:(id)a4 completion:(id)a5;
+- (void)_fetchDeviceRecordsWithCursor:(id)cursor results:(id)results completion:(id)completion;
 @end
 
 @implementation RCCloudKitService
@@ -27,8 +27,8 @@
   v3 = [[CKQuery alloc] initWithRecordType:@"metadata_device_type" predicate:v2];
   v4 = [[CKQueryOperation alloc] initWithQuery:v3];
   v5 = [[CKRecordZone alloc] initWithZoneName:@"metadata_zone"];
-  v6 = [v5 zoneID];
-  [v4 setZoneID:v6];
+  zoneID = [v5 zoneID];
+  [v4 setZoneID:zoneID];
 
   v9[0] = @"DeviceOSType";
   v9[1] = @"DeviceOSVersionNumber";
@@ -38,47 +38,47 @@
   return v4;
 }
 
-- (void)_fetchDeviceRecordsWithCursor:(id)a3 results:(id)a4 completion:(id)a5
+- (void)_fetchDeviceRecordsWithCursor:(id)cursor results:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  cursorCopy = cursor;
+  resultsCopy = results;
+  completionCopy = completion;
+  if (cursorCopy)
   {
-    v11 = [[CKQueryOperation alloc] initWithCursor:v8];
+    _metaDataDeviceQueryOperation = [[CKQueryOperation alloc] initWithCursor:cursorCopy];
   }
 
   else
   {
-    v11 = [(RCCloudKitService *)self _metaDataDeviceQueryOperation];
+    _metaDataDeviceQueryOperation = [(RCCloudKitService *)self _metaDataDeviceQueryOperation];
   }
 
-  v12 = v11;
-  if (!v9)
+  v12 = _metaDataDeviceQueryOperation;
+  if (!resultsCopy)
   {
-    v9 = objc_opt_new();
+    resultsCopy = objc_opt_new();
   }
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000228FC;
   v25[3] = &unk_100056500;
-  v13 = v9;
+  v13 = resultsCopy;
   v26 = v13;
   [v12 setRecordMatchedBlock:v25];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_10002290C;
   v21 = &unk_100056528;
-  v22 = self;
+  selfCopy = self;
   v23 = v13;
-  v24 = v10;
-  v14 = v10;
+  v24 = completionCopy;
+  v14 = completionCopy;
   v15 = v13;
   [v12 setQueryCompletionBlock:&v18];
   v16 = [(RCCloudKitService *)self ckContainer:v18];
-  v17 = [v16 privateCloudDatabase];
-  [v17 addOperation:v12];
+  privateCloudDatabase = [v16 privateCloudDatabase];
+  [privateCloudDatabase addOperation:v12];
 }
 
 @end

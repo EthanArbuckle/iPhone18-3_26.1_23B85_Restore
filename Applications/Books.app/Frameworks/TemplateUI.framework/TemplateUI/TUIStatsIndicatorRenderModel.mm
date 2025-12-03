@@ -1,22 +1,22 @@
 @interface TUIStatsIndicatorRenderModel
 - (CGSize)size;
-- (TUIStatsIndicatorRenderModel)initWithStats:(id)a3 uid:(id)a4;
+- (TUIStatsIndicatorRenderModel)initWithStats:(id)stats uid:(id)uid;
 @end
 
 @implementation TUIStatsIndicatorRenderModel
 
-- (TUIStatsIndicatorRenderModel)initWithStats:(id)a3 uid:(id)a4
+- (TUIStatsIndicatorRenderModel)initWithStats:(id)stats uid:(id)uid
 {
-  v7 = a3;
-  v8 = a4;
+  statsCopy = stats;
+  uidCopy = uid;
   v14.receiver = self;
   v14.super_class = TUIStatsIndicatorRenderModel;
   v9 = [(TUIStatsIndicatorRenderModel *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stats, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_stats, stats);
+    v11 = [uidCopy copy];
     uid = v10->_uid;
     v10->_uid = v11;
   }

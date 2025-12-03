@@ -1,7 +1,7 @@
 @interface AccessibilityDataMigrator
 - (BOOL)_isFreshInstall;
 - (BOOL)performMigration;
-- (id)_convertHADomainTypesToSD:(id)a3;
+- (id)_convertHADomainTypesToSD:(id)d;
 - (void)_crystalMigrateAudioDuckingSettings;
 - (void)_crystalMigrateBrailleScreenInputActivationGestureUsage;
 - (void)_crystalMigrateBrailleScreenInputCommands;
@@ -12,7 +12,7 @@
 - (void)_dawnMigrateJapaneseSystemBrailleTable;
 - (void)_dawnSUMigratePerAppSettingsIDs;
 - (void)_ensureDefaultBrailleRotorItemExists;
-- (void)_ensureGesture:(id)a3 isMappedToCommand:(id)a4 withCommandManager:(id)a5 withResolver:(id)a6;
+- (void)_ensureGesture:(id)gesture isMappedToCommand:(id)command withCommandManager:(id)manager withResolver:(id)resolver;
 - (void)_luckBMigrateAvoidShowingHelpBannerIfVoiceOverOrSwitchControlAlreadyEnabled;
 - (void)_luckBMigrateVOQuickNavAnnouncementFeedback;
 - (void)_luckMigrateMotionCuesStyle;
@@ -39,9 +39,9 @@
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration_UpdateSiriVoiceList_15.0"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 setSiriAutoUpdateListInitialized:0];
@@ -77,9 +77,9 @@
 {
   v5 = +[NSUserDefaults standardUserDefaults];
   v2 = [v5 objectForKey:@"_AccessibilityMigration__DefaultVOQuickNavAnnouncementFeedback_26.1"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if ((v3 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v4 = +[AXSettings sharedInstance];
     [v4 setVoiceOverQuickNavAnnouncementFeedback:{objc_msgSend(v4, "voiceOverQuickNavAnnouncementFeedback") | 0x10}];
@@ -92,9 +92,9 @@
 {
   v8 = +[NSUserDefaults standardUserDefaults];
   v2 = [v8 objectForKey:@"_AccessibilityMigration__AvoidShowingHelpBannerIfVoiceOverOrSwitchControlAlreadyEnabled_26.1"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if ((v3 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (!_AXSVoiceOverTouchEnabled() && !_AXSAssistiveTouchScannerEnabled())
     {
@@ -105,9 +105,9 @@
       }
 
       v6 = +[AXSettings sharedInstance];
-      v7 = [v6 touchAccommodationsAreConfigured];
+      touchAccommodationsAreConfigured = [v6 touchAccommodationsAreConfigured];
 
-      if (!v7)
+      if (!touchAccommodationsAreConfigured)
       {
         goto LABEL_6;
       }
@@ -127,9 +127,9 @@ LABEL_6:
 {
   v8 = +[NSUserDefaults standardUserDefaults];
   v2 = [v8 objectForKey:@"_AccessibilityMigration__DefaultMotionCuesStyle_26.0"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if ((v3 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v4 = [NSUserDefaults alloc];
     v5 = [v4 initWithSuiteName:kAXSAccessibilityPreferenceDomain];
@@ -145,22 +145,22 @@ LABEL_6:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__TurnOffSoundRecognitionNoSounds_18.3"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSDSettings sharedInstance];
     if ([v5 soundDetectionState])
     {
-      v6 = [v5 enabledSoundDetectionTypes];
-      if ([v6 count])
+      enabledSoundDetectionTypes = [v5 enabledSoundDetectionTypes];
+      if ([enabledSoundDetectionTypes count])
       {
       }
 
       else
       {
-        v7 = [v5 enabledKShotDetectorIdentifiers];
-        v8 = [v7 count];
+        enabledKShotDetectorIdentifiers = [v5 enabledKShotDetectorIdentifiers];
+        v8 = [enabledKShotDetectorIdentifiers count];
 
         if (!v8)
         {
@@ -177,8 +177,8 @@ LABEL_6:
     }
 
     v10 = [AXSDSettingsEvent alloc];
-    v11 = [v5 soundDetectionState];
-    v12 = [v10 initWithState:v11 source:AXSDSettingsEventSourceDataMigrator];
+    soundDetectionState = [v5 soundDetectionState];
+    v12 = [v10 initWithState:soundDetectionState source:AXSDSettingsEventSourceDataMigrator];
     [v5 registerSettingsEvent:v12];
 
     [v2 setObject:&__kCFBooleanTrue forKey:@"_AccessibilityMigration__TurnOffSoundRecognitionNoSounds_18.3"];
@@ -189,14 +189,14 @@ LABEL_6:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__IgnoreTrackpad_18.2"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 ignoreTrackpad];
+    ignoreTrackpad = [v5 ignoreTrackpad];
 
-    if (v6)
+    if (ignoreTrackpad)
     {
       v7 = AXLogDataMigrator();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -233,9 +233,9 @@ LABEL_6:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__GrayscaleEnabled_18"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (MADisplayFilterPrefGetCategoryEnabled())
     {
@@ -267,9 +267,9 @@ LABEL_6:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration_VoiceOverBrailleScreenInputOutOfRotor_18.0"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
     v6 = [v5 valueForPreferenceKey:@"VoiceOverTouchRotorItemsPreference"];
@@ -287,9 +287,9 @@ LABEL_6:
         if (v10)
         {
           v11 = [v8 objectForKeyedSubscript:@"Enabled"];
-          v12 = [v11 BOOLValue];
+          bOOLValue2 = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue2)
           {
             break;
           }
@@ -315,9 +315,9 @@ LABEL_9:
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 objectForKey:@"_AccessibilityMigration_VoiceOverBrailleScreenInputCommands_18.0"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v6 = +[VOSCommandResolver resolverForCurrentHost];
     v7 = +[VOSScreenreaderMode Default];
@@ -327,78 +327,78 @@ LABEL_9:
     v9 = +[VOSScreenreaderMode BrailleScreenInput];
     v10 = [v8 resolverWithScreenreaderModeVariant:v9];
 
-    v11 = [[VOSCommandManager alloc] initPreferringUserProfile];
+    initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
     v12 = +[VOSGesture TwoFingerPinch];
     v13 = +[VOSCommand BSIExit];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v12 isMappedToCommand:v13 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v12 isMappedToCommand:v13 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v14 = +[VOSGesture TwoFingerScrub];
     v15 = +[VOSCommand BSIEscape];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v14 isMappedToCommand:v15 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v14 isMappedToCommand:v15 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v16 = +[VOSGesture TwoFingerRotateClockwise];
     v17 = +[VOSCommand BSINextRotor];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v16 isMappedToCommand:v17 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v16 isMappedToCommand:v17 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v18 = +[VOSGesture TwoFingerRotateCounterclockwise];
     v19 = +[VOSCommand BSIPreviousRotor];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v18 isMappedToCommand:v19 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v18 isMappedToCommand:v19 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v20 = +[VOSGesture OneFingerSplitFlickLeft];
     v21 = +[VOSCommand BSIPreviousTextSegment];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v20 isMappedToCommand:v21 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v20 isMappedToCommand:v21 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v22 = +[VOSGesture OneFingerSplitFlickRight];
     v23 = +[VOSCommand BSINextTextSegment];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v22 isMappedToCommand:v23 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v22 isMappedToCommand:v23 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v24 = +[VOSGesture TwoFingerSplitFlickLeft];
     v25 = +[VOSCommand BSISelectPreviousTextSegment];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v24 isMappedToCommand:v25 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v24 isMappedToCommand:v25 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v26 = +[VOSGesture TwoFingerSplitFlickRight];
     v27 = +[VOSCommand BSISelectNextTextSegment];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v26 isMappedToCommand:v27 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v26 isMappedToCommand:v27 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v28 = +[VOSGesture OneFingerSplitFlickDown];
     v29 = +[VOSCommand BSIPreviousTextSegmentType];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v28 isMappedToCommand:v29 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v28 isMappedToCommand:v29 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v30 = +[VOSGesture OneFingerSplitFlickUp];
     v31 = +[VOSCommand BSINextTextSegmentType];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v30 isMappedToCommand:v31 withCommandManager:v11 withResolver:v10];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v30 isMappedToCommand:v31 withCommandManager:initPreferringUserProfile withResolver:v10];
 
     v32 = +[VOSGesture TwoDistantFingerSingleTap];
     v33 = +[VOSCommand ActivateBrailleScreenInput];
-    v34 = [v11 removeGesture:v32 fromCommand:v33 withResolver:v40];
+    v34 = [initPreferringUserProfile removeGesture:v32 fromCommand:v33 withResolver:v40];
 
     v35 = +[VOSGesture TwoDistantFingerDoubleTap];
     v36 = +[VOSCommand ActivateBrailleScreenInput];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v35 isMappedToCommand:v36 withCommandManager:v11 withResolver:v40];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v35 isMappedToCommand:v36 withCommandManager:initPreferringUserProfile withResolver:v40];
 
     v37 = +[VOSGesture TwoDistantFingerTripleTap];
     v38 = +[VOSCommand ActivateBrailleScreenInputCommand];
-    [(AccessibilityDataMigrator *)self _ensureGesture:v37 isMappedToCommand:v38 withCommandManager:v11 withResolver:v40];
+    [(AccessibilityDataMigrator *)self _ensureGesture:v37 isMappedToCommand:v38 withCommandManager:initPreferringUserProfile withResolver:v40];
 
-    [v11 saveAsUserProfile];
+    [initPreferringUserProfile saveAsUserProfile];
     v39 = +[NSUserDefaults standardUserDefaults];
     [v39 setObject:&__kCFBooleanTrue forKey:@"_AccessibilityMigration_VoiceOverBrailleScreenInputCommands_18.0"];
   }
 }
 
-- (void)_ensureGesture:(id)a3 isMappedToCommand:(id)a4 withCommandManager:(id)a5 withResolver:(id)a6
+- (void)_ensureGesture:(id)gesture isMappedToCommand:(id)command withCommandManager:(id)manager withResolver:(id)resolver
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 commandForTouchGesture:v15 withResolver:v11];
+  gestureCopy = gesture;
+  commandCopy = command;
+  managerCopy = manager;
+  resolverCopy = resolver;
+  v12 = [managerCopy commandForTouchGesture:gestureCopy withResolver:resolverCopy];
   if (v12)
   {
-    v13 = [v10 removeGesture:v15 fromCommand:v12 withResolver:v11];
+    v13 = [managerCopy removeGesture:gestureCopy fromCommand:v12 withResolver:resolverCopy];
   }
 
-  v14 = [v10 addGesture:v15 toCommand:v9 withResolver:v11];
+  v14 = [managerCopy addGesture:gestureCopy toCommand:commandCopy withResolver:resolverCopy];
 }
 
 - (void)_crystalMigrateHearingControlCenterOrder
@@ -445,8 +445,8 @@ LABEL_9:
   v8 = [v15 objectValueForKey:v7 withClass:objc_opt_class() andDefaultValue:0];
   if (v8)
   {
-    v9 = [v15 personalMediaConfigurationByRouteUID];
-    v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
+    personalMediaConfigurationByRouteUID = [v15 personalMediaConfigurationByRouteUID];
+    v10 = [NSMutableDictionary dictionaryWithDictionary:personalMediaConfigurationByRouteUID];
 
     [v10 setValue:v8 forKey:PAConfigurationWildcard];
     [v15 setPersonalMediaConfigurationByRouteUID:v10];
@@ -459,8 +459,8 @@ LABEL_9:
 
   if (v12)
   {
-    v13 = [v15 audiogramConfigurationByRouteUID];
-    v14 = [NSMutableDictionary dictionaryWithDictionary:v13];
+    audiogramConfigurationByRouteUID = [v15 audiogramConfigurationByRouteUID];
+    v14 = [NSMutableDictionary dictionaryWithDictionary:audiogramConfigurationByRouteUID];
 
     [v14 setValue:v12 forKey:PAConfigurationWildcard];
     [v15 setAudiogramConfigurationByRouteUID:v14];
@@ -472,14 +472,14 @@ LABEL_9:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration_AudioDuckingSettings_18.0"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 voiceOverAudioDuckingEnabled];
+    voiceOverAudioDuckingEnabled = [v5 voiceOverAudioDuckingEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((voiceOverAudioDuckingEnabled & 1) == 0)
     {
       v7 = +[AXSettings sharedInstance];
       [v7 setVoiceOverMediaDuckingMode:0];
@@ -494,21 +494,21 @@ LABEL_9:
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 objectForKey:@"_AccessibilityMigration__PerAppSettingsIDs_17"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (!v5 || [(AccessibilityDataMigrator *)self inUnitTest])
+  if (!bOOLValue || [(AccessibilityDataMigrator *)self inUnitTest])
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 perAppSettingsCustomizedAppIDs];
-    v8 = [v7 count];
+    perAppSettingsCustomizedAppIDs = [v6 perAppSettingsCustomizedAppIDs];
+    v8 = [perAppSettingsCustomizedAppIDs count];
 
     if (v8)
     {
       v9 = +[AXSettings sharedInstance];
-      v10 = [v9 perAppSettingsCustomizedAppIDs];
-      v11 = [v10 ax_arrayByRemovingDuplicates];
+      perAppSettingsCustomizedAppIDs2 = [v9 perAppSettingsCustomizedAppIDs];
+      ax_arrayByRemovingDuplicates = [perAppSettingsCustomizedAppIDs2 ax_arrayByRemovingDuplicates];
 
-      CFPreferencesSetValue(@"AXSettingsPerAppIDsArray", v11, AX_PreferencesBundleName, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+      CFPreferencesSetValue(@"AXSettingsPerAppIDsArray", ax_arrayByRemovingDuplicates, AX_PreferencesBundleName, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
       v12 = +[AXSettings sharedInstance];
       [v12 setPerAppSettingsCustomizedAppIDs:0];
     }
@@ -522,13 +522,13 @@ LABEL_9:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__JapaneseSystemBrailleTable_17"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 voiceOverBrailleTableIdentifier];
-    v7 = [v6 isEqual:@"com.apple.scrod.braille.table.duxbury.jpn"];
+    voiceOverBrailleTableIdentifier = [v5 voiceOverBrailleTableIdentifier];
+    v7 = [voiceOverBrailleTableIdentifier isEqual:@"com.apple.scrod.braille.table.duxbury.jpn"];
 
     if (v7)
     {
@@ -537,14 +537,14 @@ LABEL_9:
     }
 
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverBrailleLanguageRotorItems];
+    voiceOverBrailleLanguageRotorItems = [v9 voiceOverBrailleLanguageRotorItems];
 
     v31 = objc_opt_new();
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v10;
+    obj = voiceOverBrailleLanguageRotorItems;
     v32 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v32)
     {
@@ -572,8 +572,8 @@ LABEL_9:
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
-            v17 = [v15 allKeys];
-            v18 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
+            allKeys = [v15 allKeys];
+            v18 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
             if (v18)
             {
               v19 = v18;
@@ -584,7 +584,7 @@ LABEL_9:
                 {
                   if (*v37 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v22 = *(*(&v36 + 1) + 8 * j);
@@ -597,7 +597,7 @@ LABEL_9:
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
+                v19 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
               }
 
               while (v19);
@@ -639,9 +639,9 @@ LABEL_9:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__GrayscaleEnabled_17"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     keyExistsAndHasValidFormat = 0;
     CFPreferencesGetAppBooleanValue(@"GrayscaleDisplay", kAXSAccessibilityPreferenceDomain, &keyExistsAndHasValidFormat);
@@ -679,9 +679,9 @@ LABEL_9:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"_AccessibilityMigration__TapToWake_16"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (AXDeviceIsD7x())
     {
@@ -706,15 +706,15 @@ LABEL_9:
   }
 }
 
-- (id)_convertHADomainTypesToSD:(id)a3
+- (id)_convertHADomainTypesToSD:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSMutableArray array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = dCopy;
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -879,19 +879,19 @@ LABEL_22:
   v20 = 0x2020000000;
   v21 = 0;
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverBrailleLanguageRotorItems];
+  voiceOverBrailleLanguageRotorItems = [v2 voiceOverBrailleLanguageRotorItems];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_349C;
   v17[3] = &unk_8290;
   v17[4] = &v18;
-  [v3 enumerateObjectsUsingBlock:v17];
+  [voiceOverBrailleLanguageRotorItems enumerateObjectsUsingBlock:v17];
 
   if ((v19[3] & 1) == 0)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 voiceOverBrailleLanguageRotorItems];
-    v6 = [v5 mutableCopy];
+    voiceOverBrailleLanguageRotorItems2 = [v4 voiceOverBrailleLanguageRotorItems];
+    v6 = [voiceOverBrailleLanguageRotorItems2 mutableCopy];
 
     if (!v6)
     {
@@ -899,16 +899,16 @@ LABEL_22:
     }
 
     v7 = +[AXLanguageManager sharedInstance];
-    v8 = [v7 userLocale];
+    userLocale = [v7 userLocale];
 
     v9 = +[AXLanguageManager sharedInstance];
-    v10 = [v9 userLocale];
-    v11 = [BRLTTableEnumerator defaultTableForLocale:v10];
+    userLocale2 = [v9 userLocale];
+    v11 = [BRLTTableEnumerator defaultTableForLocale:userLocale2];
 
-    v12 = [v8 localeIdentifier];
-    v24 = v12;
-    v13 = [v11 identifier];
-    v25 = v13;
+    localeIdentifier = [userLocale localeIdentifier];
+    v24 = localeIdentifier;
+    identifier = [v11 identifier];
+    v25 = identifier;
     v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
     v22[0] = @"Enabled";

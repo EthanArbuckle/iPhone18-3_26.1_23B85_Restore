@@ -1,20 +1,20 @@
 @interface NSSQLToOne
 - (id)columnName;
 - (id)description;
-- (id)initForReadOnlyFetchWithEntity:(id)a3 propertyDescription:(id)a4;
-- (void)_setForeignOrderKey:(id)a3;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (id)initForReadOnlyFetchWithEntity:(id)entity propertyDescription:(id)description;
+- (void)_setForeignOrderKey:(id)key;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
-- (void)initWithEntity:(uint64_t)a3 propertyDescription:(void *)a4 virtualForToMany:;
+- (void)initWithEntity:(uint64_t)entity propertyDescription:(void *)description virtualForToMany:;
 @end
 
 @implementation NSSQLToOne
 
 - (id)columnName
 {
-  v2 = [(NSSQLToOne *)self foreignKey];
+  foreignKey = [(NSSQLToOne *)self foreignKey];
 
-  return [v2 columnName];
+  return [foreignKey columnName];
 }
 
 - (void)dealloc
@@ -28,25 +28,25 @@
   [(NSSQLRelationship *)&v3 dealloc];
 }
 
-- (void)initWithEntity:(uint64_t)a3 propertyDescription:(void *)a4 virtualForToMany:
+- (void)initWithEntity:(uint64_t)entity propertyDescription:(void *)description virtualForToMany:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = NSSQLToOne;
-  v6 = objc_msgSendSuper2(&v21, sel_initWithEntity_propertyDescription_, a2, a3);
+  v6 = objc_msgSendSuper2(&v21, sel_initWithEntity_propertyDescription_, a2, entity);
   if (v6)
   {
-    if (a4)
+    if (description)
     {
       v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v8 = [a4 sourceEntity];
-      if (v8)
+      sourceEntity = [description sourceEntity];
+      if (sourceEntity)
       {
-        v9 = *(v8 + 184);
+        v9 = *(sourceEntity + 184);
       }
 
       else
@@ -54,7 +54,7 @@
         v9 = 0;
       }
 
-      v10 = [v7 initWithFormat:@"%d%@", v9, objc_msgSend(a4, "name")];
+      v10 = [v7 initWithFormat:@"%d%@", v9, objc_msgSend(description, "name")];
       v11 = v6[5];
       if (v11 != v10)
       {
@@ -100,10 +100,10 @@
     *(v6 + 24) = 7;
     v17 = [[NSSQLForeignKey alloc] initWithEntity:a2 toOneRelationship:v6];
     v6[8] = v17;
-    v18 = [v6 destinationEntity];
-    if (v18)
+    destinationEntity = [v6 destinationEntity];
+    if (destinationEntity)
     {
-      v19 = *(v18 + 152);
+      v19 = *(destinationEntity + 152);
       if (v19)
       {
         if ([v19 count])
@@ -117,7 +117,7 @@
   return v6;
 }
 
-- (id)initForReadOnlyFetchWithEntity:(id)a3 propertyDescription:(id)a4
+- (id)initForReadOnlyFetchWithEntity:(id)entity propertyDescription:(id)description
 {
   v10.receiver = self;
   v10.super_class = NSSQLToOne;
@@ -126,27 +126,27 @@
   if (v6)
   {
     v6[24] = 7;
-    v8 = [[NSSQLForeignKey alloc] initForReadOnlyFetchingOfEntity:a3 toOneRelationship:v6];
-    if ([a4 _propertyType] == 4 && v8)
+    v8 = [[NSSQLForeignKey alloc] initForReadOnlyFetchingOfEntity:entity toOneRelationship:v6];
+    if ([description _propertyType] == 4 && v8)
     {
-      v8[1] = a4;
+      v8[1] = description;
     }
 
     v7[8] = v8;
-    v7[9] = [[NSSQLForeignEntityKey alloc] initForReadOnlyFetchingOfEntity:a3 toOneRelationship:v7];
-    v7[10] = [[NSSQLForeignOrderKey alloc] initForReadOnlyFetchingOfEntity:a3 toOneRelationship:v7];
+    v7[9] = [[NSSQLForeignEntityKey alloc] initForReadOnlyFetchingOfEntity:entity toOneRelationship:v7];
+    v7[10] = [[NSSQLForeignOrderKey alloc] initForReadOnlyFetchingOfEntity:entity toOneRelationship:v7];
   }
 
   return v7;
 }
 
-- (void)_setForeignOrderKey:(id)a3
+- (void)_setForeignOrderKey:(id)key
 {
   foreignOrderKey = self->_foreignOrderKey;
-  if (foreignOrderKey != a3)
+  if (foreignOrderKey != key)
   {
 
-    self->_foreignOrderKey = a3;
+    self->_foreignOrderKey = key;
   }
 }
 
@@ -161,35 +161,35 @@
   return v6;
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
   v10.receiver = self;
   v10.super_class = NSSQLToOne;
   [(NSSQLRelationship *)&v10 copyValuesForReadOnlyFetch:?];
   v5 = objc_alloc_init(NSSQLForeignKey);
   self->_foreignKey = v5;
-  -[NSSQLForeignKey copyValuesForReadOnlyFetch:](v5, "copyValuesForReadOnlyFetch:", [a3 foreignKey]);
+  -[NSSQLForeignKey copyValuesForReadOnlyFetch:](v5, "copyValuesForReadOnlyFetch:", [fetch foreignKey]);
   foreignKey = self->_foreignKey;
-  v7 = [(NSSQLProperty *)self propertyDescription];
+  propertyDescription = [(NSSQLProperty *)self propertyDescription];
   if (foreignKey)
   {
-    foreignKey->super.super._propertyDescription = v7;
+    foreignKey->super.super._propertyDescription = propertyDescription;
   }
 
-  if (a3)
+  if (fetch)
   {
-    if (*(a3 + 9))
+    if (*(fetch + 9))
     {
       v8 = objc_alloc_init(NSSQLForeignEntityKey);
       self->_foreignEntityKey = v8;
-      [(NSSQLForeignEntityKey *)v8 copyValuesForReadOnlyFetch:*(a3 + 9)];
+      [(NSSQLForeignEntityKey *)v8 copyValuesForReadOnlyFetch:*(fetch + 9)];
     }
 
-    if (*(a3 + 10))
+    if (*(fetch + 10))
     {
       v9 = objc_alloc_init(NSSQLForeignOrderKey);
       self->_foreignOrderKey = v9;
-      [(NSSQLForeignOrderKey *)v9 copyValuesForReadOnlyFetch:*(a3 + 10)];
+      [(NSSQLForeignOrderKey *)v9 copyValuesForReadOnlyFetch:*(fetch + 10)];
     }
   }
 }

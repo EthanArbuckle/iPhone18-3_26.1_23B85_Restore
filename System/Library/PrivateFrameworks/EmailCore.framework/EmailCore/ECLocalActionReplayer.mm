@@ -1,8 +1,8 @@
 @interface ECLocalActionReplayer
 + (OS_os_log)log;
-- (ECLocalActionReplayer)initWithAction:(id)a3;
+- (ECLocalActionReplayer)initWithAction:(id)action;
 - (ECLocalActionReplayerDelegate)delegate;
-- (id)failActionWithError:(id)a3;
+- (id)failActionWithError:(id)error;
 @end
 
 @implementation ECLocalActionReplayer
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __28__ECLocalActionReplayer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -32,25 +32,25 @@ void __28__ECLocalActionReplayer_log__block_invoke(uint64_t a1)
   log_log_2 = v1;
 }
 
-- (ECLocalActionReplayer)initWithAction:(id)a3
+- (ECLocalActionReplayer)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = ECLocalActionReplayer;
   v6 = [(ECLocalActionReplayer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
   }
 
   return v7;
 }
 
-- (id)failActionWithError:(id)a3
+- (id)failActionWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[ECLocalMessageActionResults alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[ECLocalMessageActionResults alloc] initWithError:errorCopy];
 
   return v4;
 }

@@ -1,38 +1,38 @@
 @interface HDAssociationEntity
-+ (BOOL)_bulkInsertEntriesWithParentUUID:(id)a3 childIDs:(id)a4 provenance:(int64_t)a5 syncIdentity:(int64_t)a6 type:(unint64_t)a7 behavior:(unint64_t)a8 creationDate:(id)a9 destinationSubObjectReference:(id)a10 profile:(id)a11 error:(id *)a12;
-+ (BOOL)_enumerateAssociationsWithPredicate:(id)a3 syncEntityClass:(Class)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 lastSyncAnchor:(int64_t *)a7 healthDatabase:(id)a8 error:(id *)a9 block:(id)a10;
-+ (BOOL)_enumerateTypedAssociationsWithPredicate:(id)a3 syncEntityClass:(Class)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 lastSyncAnchor:(int64_t *)a7 healthDatabase:(id)a8 transaction:(id)a9 error:(id *)a10 block:(id)a11;
-+ (BOOL)_insertCodableObjectAssociations:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_insertEntriesWithParentUUID:(id)a3 childUUIDsData:(id)a4 provenance:(int64_t)a5 syncIdentity:(int64_t)a6 type:(unint64_t)a7 behavior:(unint64_t)a8 deleted:(BOOL)a9 creationDate:(id)a10 destinationSubObjectReference:(id)a11 enforceSameSource:(BOOL)a12 permitPendingAssociations:(BOOL)a13 profile:(id)a14 lastInsertedEntityID:(id *)a15 error:(id *)a16;
-+ (BOOL)associateSampleUUIDData:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)associateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)associateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 provenance:(int64_t)a10 syncIdentity:(int64_t)a11 creationDate:(id)a12 error:(id *)a13;
-+ (BOOL)bulkInsertAssociationsWithParentUUID:(id)a3 childIDs:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 syncIdentity:(int64_t)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)copyAssociationsFromChildID:(id)a3 toObjectID:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)copyAssociationsFromObject:(id)a3 toObject:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)copyAssociationsFromObject:(id)a3 toObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)disassociateSampleUUIDData:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)disassociateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)insertEntriesWithAssociation:(id)a3 objects:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 enforceSameSource:(BOOL)a8 profile:(id)a9 transaction:(id)a10 error:(id *)a11;
-+ (BOOL)insertEntriesWithAssociationUUID:(id)a3 objectUUIDsData:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)realizePendingAssociationsWithTransaction:(id)a3 startingAnchor:(int64_t)a4 error:(id *)a5;
-+ (id)_findAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 type:(uint64_t)a5 behavior:(void *)a6 destinationSubObjectID:(char)a7 deleted:(void *)a8 database:(uint64_t)a9 error:;
-+ (id)countOfObjectsAssociatedWithObjectPID:(int64_t)a3 excludeDeleted:(BOOL)a4 associationType:(unint64_t)a5 behavior:(unint64_t)a6 anchor:(int64_t)a7 transaction:(id)a8 error:(id *)a9;
-+ (id)countOfObjectsAssociatedWithObjectUUID:(id)a3 subObjectReference:(id)a4 excludeDeleted:(BOOL)a5 profile:(id)a6 error:(id *)a7;
-+ (id)deleteStatementForChildIDsWithTransaction:(id)a3;
-+ (id)deleteStatementForParentIDWithTransaction:(id)a3;
++ (BOOL)_bulkInsertEntriesWithParentUUID:(id)d childIDs:(id)ds provenance:(int64_t)provenance syncIdentity:(int64_t)identity type:(unint64_t)type behavior:(unint64_t)behavior creationDate:(id)date destinationSubObjectReference:(id)self0 profile:(id)self1 error:(id *)self2;
++ (BOOL)_enumerateAssociationsWithPredicate:(id)predicate syncEntityClass:(Class)class session:(id)session syncAnchorRange:(HDSyncAnchorRange)range lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database error:(id *)error block:(id)self0;
++ (BOOL)_enumerateTypedAssociationsWithPredicate:(id)predicate syncEntityClass:(Class)class session:(id)session syncAnchorRange:(HDSyncAnchorRange)range lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database transaction:(id)transaction error:(id *)self0 block:(id)self1;
++ (BOOL)_insertCodableObjectAssociations:(id)associations syncStore:(id)store profile:(id)profile error:(id *)error;
++ (BOOL)_insertEntriesWithParentUUID:(id)d childUUIDsData:(id)data provenance:(int64_t)provenance syncIdentity:(int64_t)identity type:(unint64_t)type behavior:(unint64_t)behavior deleted:(BOOL)deleted creationDate:(id)self0 destinationSubObjectReference:(id)self1 enforceSameSource:(BOOL)self2 permitPendingAssociations:(BOOL)self3 profile:(id)self4 lastInsertedEntityID:(id *)self5 error:(id *)self6;
++ (BOOL)associateSampleUUIDData:(id)data withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0;
++ (BOOL)associateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0;
++ (BOOL)associateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile provenance:(int64_t)self0 syncIdentity:(int64_t)self1 creationDate:(id)self2 error:(id *)self3;
++ (BOOL)bulkInsertAssociationsWithParentUUID:(id)d childIDs:(id)ds type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference syncIdentity:(int64_t)identity profile:(id)profile error:(id *)self0;
++ (BOOL)copyAssociationsFromChildID:(id)d toObjectID:(id)iD profile:(id)profile error:(id *)error;
++ (BOOL)copyAssociationsFromObject:(id)object toObject:(id)toObject profile:(id)profile error:(id *)error;
++ (BOOL)copyAssociationsFromObject:(id)object toObject:(id)toObject type:(unint64_t)type behavior:(unint64_t)behavior profile:(id)profile error:(id *)error;
++ (BOOL)disassociateSampleUUIDData:(id)data withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference profile:(id)profile error:(id *)error;
++ (BOOL)disassociateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0;
++ (BOOL)insertEntriesWithAssociation:(id)association objects:(id)objects type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)object enforceSameSource:(BOOL)source profile:(id)profile transaction:(id)self0 error:(id *)self1;
++ (BOOL)insertEntriesWithAssociationUUID:(id)d objectUUIDsData:(id)data type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference profile:(id)profile error:(id *)error;
++ (BOOL)realizePendingAssociationsWithTransaction:(id)transaction startingAnchor:(int64_t)anchor error:(id *)error;
++ (id)_findAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)objectID deleted:(void *)deleted database:(uint64_t)database error:;
++ (id)countOfObjectsAssociatedWithObjectPID:(int64_t)d excludeDeleted:(BOOL)deleted associationType:(unint64_t)type behavior:(unint64_t)behavior anchor:(int64_t)anchor transaction:(id)transaction error:(id *)error;
++ (id)countOfObjectsAssociatedWithObjectUUID:(id)d subObjectReference:(id)reference excludeDeleted:(BOOL)deleted profile:(id)profile error:(id *)error;
++ (id)deleteStatementForChildIDsWithTransaction:(id)transaction;
++ (id)deleteStatementForParentIDWithTransaction:(id)transaction;
 + (id)indices;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)journalEntryForAssociation:(id)a3 objects:(id)a4 profile:(id)a5;
-+ (id)objectIDsForAssociationEntityWithPersistentID:(int64_t)a3 profile:(id)a4 error:(id *)a5;
-+ (id)objectsAssociatedWithObjectPID:(int64_t)a3 subObjectReference:(id)a4 dataTypes:(id)a5 associationType:(unint64_t)a6 behavior:(unint64_t)a7 limit:(unint64_t)a8 sortDescending:(BOOL)a9 profile:(id)a10 error:(id *)a11;
++ (id)joinClausesForProperty:(id)property;
++ (id)journalEntryForAssociation:(id)association objects:(id)objects profile:(id)profile;
++ (id)objectIDsForAssociationEntityWithPersistentID:(int64_t)d profile:(id)profile error:(id *)error;
++ (id)objectsAssociatedWithObjectPID:(int64_t)d subObjectReference:(id)reference dataTypes:(id)types associationType:(unint64_t)type behavior:(unint64_t)behavior limit:(unint64_t)limit sortDescending:(BOOL)descending profile:(id)self0 error:(id *)self1;
 + (id)privateSubEntities;
 + (id)uniquedColumns;
-+ (uint64_t)_insertAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(void *)a8 destinationSubObjectID:(char)a9 deleted:(void *)a10 creationDate:(void *)a11 lastInsertedEntityID:(void *)a12 database:(uint64_t)a13 error:;
-+ (uint64_t)_insertEntriesWithParentUUID:(void *)a3 childUUIDsData:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(char)a8 deleted:(void *)a9 creationDate:(void *)a10 destinationSubObjectReference:(void *)a11 lastInsertedEntityID:(void *)a12 context:(void *)a13 error:;
-+ (uint64_t)_insertPendingAssociationForParentUUID:(uint64_t)a3 childUUIDBytes:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(void *)a8 destinationSubObjectID:(char)a9 deleted:(void *)a10 creationDate:(void *)a11 database:(void *)a12 error:;
-+ (uint64_t)_removeAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(void *)a6 type:(void *)a7 behavior:(uint64_t)a8 destinationSubObjectID:deleted:database:error:;
-+ (void)_UUIDsAssociatedWithUUID:(void *)a3 subObjectReference:(void *)a4 predicateProperty:(void *)a5 enumerateProperty:(char)a6 excludeDeleted:(void *)a7 profile:(uint64_t)a8 error:;
++ (uint64_t)_insertAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)objectID deleted:(void *)self0 creationDate:(void *)self1 lastInsertedEntityID:(void *)self2 database:(uint64_t)self3 error:;
++ (uint64_t)_insertEntriesWithParentUUID:(void *)d childUUIDsData:(uint64_t)data provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(char)behavior deleted:(void *)deleted creationDate:(void *)self0 destinationSubObjectReference:(void *)self1 lastInsertedEntityID:(void *)self2 context:(void *)self3 error:;
++ (uint64_t)_insertPendingAssociationForParentUUID:(uint64_t)d childUUIDBytes:(uint64_t)bytes provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)iD deleted:(void *)self0 creationDate:(void *)self1 database:(void *)self2 error:;
++ (uint64_t)_removeAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD provenance:(uint64_t)provenance syncIdentity:(void *)identity type:(void *)type behavior:(uint64_t)behavior destinationSubObjectID:deleted:database:error:;
++ (void)_UUIDsAssociatedWithUUID:(void *)d subObjectReference:(void *)reference predicateProperty:(void *)property enumerateProperty:(char)enumerateProperty excludeDeleted:(void *)deleted profile:(uint64_t)profile error:;
 @end
 
 @implementation HDAssociationEntity
@@ -64,10 +64,10 @@
   return v6;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"parent_id_objects.uuid"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"parent_id_objects.uuid"])
   {
     v6 = @"destination_object_id";
 LABEL_5:
@@ -75,21 +75,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:@"child_id_objects.uuid"])
+  if ([propertyCopy isEqualToString:@"child_id_objects.uuid"])
   {
 LABEL_4:
     v6 = @"source_object_id";
     goto LABEL_5;
   }
 
-  if (([v5 isEqualToString:@"child_id_samples.end_date"] & 1) == 0)
+  if (([propertyCopy isEqualToString:@"child_id_samples.end_date"] & 1) == 0)
   {
-    if ([v5 isEqualToString:@"child_id_objects.creation_date"])
+    if ([propertyCopy isEqualToString:@"child_id_objects.creation_date"])
     {
       goto LABEL_4;
     }
 
-    if (([v5 isEqualToString:@"child_id_samples.data_type"] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"child_id_samples.data_id"))
+    if (([propertyCopy isEqualToString:@"child_id_samples.data_type"] & 1) == 0 && !objc_msgSend(propertyCopy, "isEqualToString:", @"child_id_samples.data_id"))
     {
       goto LABEL_15;
     }
@@ -103,24 +103,24 @@ LABEL_6:
   if (!v9)
   {
 LABEL_15:
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = &OBJC_METACLASS___HDAssociationEntity;
-    v16 = objc_msgSendSuper2(&v19, sel_joinClausesForProperty_, v5);
+    v16 = objc_msgSendSuper2(&v19, sel_joinClausesForProperty_, propertyCopy);
     goto LABEL_16;
   }
 
   v10 = v9;
-  v11 = [v5 componentsSeparatedByString:@"."];
+  v11 = [propertyCopy componentsSeparatedByString:@"."];
   if ([v11 count] != 2)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"HDAssociationEntity.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAssociationEntity.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
   }
 
   v12 = MEMORY[0x277D10B50];
-  v13 = [a1 disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
   v14 = [v11 objectAtIndexedSubscript:0];
-  v15 = [v12 innerJoinClauseFromTable:v13 toTargetEntity:v10 as:v14 localReference:v6 targetKey:@"data_id"];
+  v15 = [v12 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v10 as:v14 localReference:v6 targetKey:@"data_id"];
 
   v16 = [MEMORY[0x277CBEB98] setWithObject:v15];
 
@@ -139,14 +139,14 @@ LABEL_16:
   return v2;
 }
 
-+ (BOOL)associateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)associateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0
 {
   v16 = MEMORY[0x277CBEAA8];
-  v17 = a9;
-  v18 = a7;
-  v19 = a4;
-  v20 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dCopy = d;
+  dsCopy = ds;
+  if (type)
   {
     [v16 now];
   }
@@ -156,23 +156,23 @@ LABEL_16:
     [v16 distantPast];
   }
   v21 = ;
-  v22 = [v20 hk_dataForAllUUIDs];
+  hk_dataForAllUUIDs = [dsCopy hk_dataForAllUUIDs];
 
   LOWORD(v26) = 256;
   LOBYTE(v25) = 0;
-  v23 = [a1 _insertEntriesWithParentUUID:v19 childUUIDsData:v22 provenance:0 syncIdentity:objc_msgSend(v17 type:"currentSyncIdentityPersistentID") behavior:a5 deleted:a6 creationDate:v25 destinationSubObjectReference:v21 enforceSameSource:v18 permitPendingAssociations:v26 profile:v17 lastInsertedEntityID:a8 error:a10];
+  v23 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:hk_dataForAllUUIDs provenance:0 syncIdentity:objc_msgSend(profileCopy type:"currentSyncIdentityPersistentID") behavior:type deleted:behavior creationDate:v25 destinationSubObjectReference:v21 enforceSameSource:referenceCopy permitPendingAssociations:v26 profile:profileCopy lastInsertedEntityID:iD error:error];
 
   return v23;
 }
 
-+ (BOOL)associateSampleUUIDData:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)associateSampleUUIDData:(id)data withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0
 {
   v17 = MEMORY[0x277CBEAA8];
-  v18 = a9;
-  v19 = a7;
-  v20 = a4;
-  v21 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dCopy = d;
+  dataCopy = data;
+  if (type)
   {
     [v17 now];
   }
@@ -184,21 +184,21 @@ LABEL_16:
   v22 = ;
   LOWORD(v26) = 0;
   LOBYTE(v25) = 0;
-  v23 = [a1 _insertEntriesWithParentUUID:v20 childUUIDsData:v21 provenance:0 syncIdentity:objc_msgSend(v18 type:"currentSyncIdentityPersistentID") behavior:a5 deleted:a6 creationDate:v25 destinationSubObjectReference:v22 enforceSameSource:v19 permitPendingAssociations:v26 profile:v18 lastInsertedEntityID:a8 error:a10];
+  v23 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:dataCopy provenance:0 syncIdentity:objc_msgSend(profileCopy type:"currentSyncIdentityPersistentID") behavior:type deleted:behavior creationDate:v25 destinationSubObjectReference:v22 enforceSameSource:referenceCopy permitPendingAssociations:v26 profile:profileCopy lastInsertedEntityID:iD error:error];
 
   return v23;
 }
 
-+ (BOOL)associateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 provenance:(int64_t)a10 syncIdentity:(int64_t)a11 creationDate:(id)a12 error:(id *)a13
++ (BOOL)associateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile provenance:(int64_t)self0 syncIdentity:(int64_t)self1 creationDate:(id)self2 error:(id *)self3
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a9;
-  v21 = a12;
-  if (!v21)
+  dsCopy = ds;
+  dCopy = d;
+  referenceCopy = reference;
+  profileCopy = profile;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    if (a5)
+    if (type)
     {
       [MEMORY[0x277CBEAA8] now];
     }
@@ -207,25 +207,25 @@ LABEL_16:
     {
       [MEMORY[0x277CBEAA8] distantPast];
     }
-    v21 = ;
+    dateCopy = ;
   }
 
-  v22 = [v17 hk_dataForAllUUIDs];
+  hk_dataForAllUUIDs = [dsCopy hk_dataForAllUUIDs];
   LOWORD(v26) = 256;
   LOBYTE(v25) = 0;
-  v23 = [a1 _insertEntriesWithParentUUID:v18 childUUIDsData:v22 provenance:a10 syncIdentity:a11 type:a5 behavior:a6 deleted:v25 creationDate:v21 destinationSubObjectReference:v19 enforceSameSource:v26 permitPendingAssociations:v20 profile:a8 lastInsertedEntityID:a13 error:?];
+  v23 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:hk_dataForAllUUIDs provenance:provenance syncIdentity:identity type:type behavior:behavior deleted:v25 creationDate:dateCopy destinationSubObjectReference:referenceCopy enforceSameSource:v26 permitPendingAssociations:profileCopy profile:iD lastInsertedEntityID:error error:?];
 
   return v23;
 }
 
-+ (BOOL)bulkInsertAssociationsWithParentUUID:(id)a3 childIDs:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 syncIdentity:(int64_t)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)bulkInsertAssociationsWithParentUUID:(id)d childIDs:(id)ds type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference syncIdentity:(int64_t)identity profile:(id)profile error:(id *)self0
 {
   v17 = MEMORY[0x277CBEAA8];
-  v18 = a9;
-  v19 = a7;
-  v20 = a4;
-  v21 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dsCopy = ds;
+  dCopy = d;
+  if (type)
   {
     [v17 now];
   }
@@ -235,19 +235,19 @@ LABEL_16:
     [v17 distantPast];
   }
   v22 = ;
-  v23 = [a1 _bulkInsertEntriesWithParentUUID:v21 childIDs:v20 provenance:0 syncIdentity:a8 type:a5 behavior:a6 creationDate:v22 destinationSubObjectReference:v19 profile:v18 error:a10];
+  v23 = [self _bulkInsertEntriesWithParentUUID:dCopy childIDs:dsCopy provenance:0 syncIdentity:identity type:type behavior:behavior creationDate:v22 destinationSubObjectReference:referenceCopy profile:profileCopy error:error];
 
   return v23;
 }
 
-+ (BOOL)disassociateSampleUUIDs:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 lastInsertedEntityID:(id *)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)disassociateSampleUUIDs:(id)ds withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference lastInsertedEntityID:(id *)iD profile:(id)profile error:(id *)self0
 {
   v16 = MEMORY[0x277CBEAA8];
-  v17 = a9;
-  v18 = a7;
-  v19 = a4;
-  v20 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dCopy = d;
+  dsCopy = ds;
+  if (type)
   {
     [v16 now];
   }
@@ -257,23 +257,23 @@ LABEL_16:
     [v16 distantPast];
   }
   v21 = ;
-  v22 = [v20 hk_dataForAllUUIDs];
+  hk_dataForAllUUIDs = [dsCopy hk_dataForAllUUIDs];
 
   LOWORD(v26) = 256;
   LOBYTE(v25) = 1;
-  v23 = [a1 _insertEntriesWithParentUUID:v19 childUUIDsData:v22 provenance:0 syncIdentity:objc_msgSend(v17 type:"currentSyncIdentityPersistentID") behavior:a5 deleted:a6 creationDate:v25 destinationSubObjectReference:v21 enforceSameSource:v18 permitPendingAssociations:v26 profile:v17 lastInsertedEntityID:a8 error:a10];
+  v23 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:hk_dataForAllUUIDs provenance:0 syncIdentity:objc_msgSend(profileCopy type:"currentSyncIdentityPersistentID") behavior:type deleted:behavior creationDate:v25 destinationSubObjectReference:v21 enforceSameSource:referenceCopy permitPendingAssociations:v26 profile:profileCopy lastInsertedEntityID:iD error:error];
 
   return v23;
 }
 
-+ (BOOL)disassociateSampleUUIDData:(id)a3 withSampleUUID:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)disassociateSampleUUIDData:(id)data withSampleUUID:(id)d type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference profile:(id)profile error:(id *)error
 {
   v15 = MEMORY[0x277CBEAA8];
-  v16 = a8;
-  v17 = a7;
-  v18 = a4;
-  v19 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dCopy = d;
+  dataCopy = data;
+  if (type)
   {
     [v15 now];
   }
@@ -285,26 +285,26 @@ LABEL_16:
   v20 = ;
   LOWORD(v24) = 0;
   LOBYTE(v23) = 1;
-  v21 = [a1 _insertEntriesWithParentUUID:v18 childUUIDsData:v19 provenance:0 syncIdentity:objc_msgSend(v16 type:"currentSyncIdentityPersistentID") behavior:a5 deleted:a6 creationDate:v23 destinationSubObjectReference:v20 enforceSameSource:v17 permitPendingAssociations:v24 profile:v16 lastInsertedEntityID:0 error:a9];
+  v21 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:dataCopy provenance:0 syncIdentity:objc_msgSend(profileCopy type:"currentSyncIdentityPersistentID") behavior:type deleted:behavior creationDate:v23 destinationSubObjectReference:v20 enforceSameSource:referenceCopy permitPendingAssociations:v24 profile:profileCopy lastInsertedEntityID:0 error:error];
 
   return v21;
 }
 
-+ (BOOL)insertEntriesWithAssociation:(id)a3 objects:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 enforceSameSource:(BOOL)a8 profile:(id)a9 transaction:(id)a10 error:(id *)a11
++ (BOOL)insertEntriesWithAssociation:(id)association objects:(id)objects type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)object enforceSameSource:(BOOL)source profile:(id)profile transaction:(id)self0 error:(id *)self1
 {
-  v34 = a8;
+  sourceCopy = source;
   v44 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v14 = a4;
-  v37 = a7;
-  v15 = a9;
-  v16 = a10;
+  associationCopy = association;
+  objectsCopy = objects;
+  objectCopy = object;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v17 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = v14;
+  v18 = objectsCopy;
   v19 = [v18 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v19)
   {
@@ -319,8 +319,8 @@ LABEL_16:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v39 + 1) + 8 * i) UUID];
-        [v17 hk_appendBytesWithUUID:v23];
+        uUID = [*(*(&v39 + 1) + 8 * i) UUID];
+        [v17 hk_appendBytesWithUUID:uUID];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -329,8 +329,8 @@ LABEL_16:
     while (v20);
   }
 
-  v24 = a5;
-  if (a5)
+  typeCopy = type;
+  if (type)
   {
     [MEMORY[0x277CBEAA8] now];
   }
@@ -340,30 +340,30 @@ LABEL_16:
     [MEMORY[0x277CBEAA8] distantPast];
   }
   v25 = ;
-  v26 = [v38 UUID];
-  v27 = v16;
-  v28 = [[_HDAssociationInsertionContext alloc] initWithParentUUID:v26 enforceSameSource:v34 permitPendingAssociations:0 profile:v15 transaction:v16];
-  v29 = [v15 currentSyncIdentityPersistentID];
-  v30 = HDReferenceForAssociatableObject(v37);
-  v31 = [(HDAssociationEntity *)a1 _insertEntriesWithParentUUID:v26 childUUIDsData:v17 provenance:0 syncIdentity:v29 type:v24 behavior:a6 deleted:0 creationDate:v25 destinationSubObjectReference:v30 lastInsertedEntityID:0 context:v28 error:a11];
+  uUID2 = [associationCopy UUID];
+  v27 = transactionCopy;
+  v28 = [[_HDAssociationInsertionContext alloc] initWithParentUUID:uUID2 enforceSameSource:sourceCopy permitPendingAssociations:0 profile:profileCopy transaction:transactionCopy];
+  currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
+  v30 = HDReferenceForAssociatableObject(objectCopy);
+  v31 = [(HDAssociationEntity *)self _insertEntriesWithParentUUID:uUID2 childUUIDsData:v17 provenance:0 syncIdentity:currentSyncIdentityPersistentID type:typeCopy behavior:behavior deleted:0 creationDate:v25 destinationSubObjectReference:v30 lastInsertedEntityID:0 context:v28 error:error];
 
   v32 = *MEMORY[0x277D85DE8];
   return v31;
 }
 
-+ (uint64_t)_insertEntriesWithParentUUID:(void *)a3 childUUIDsData:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(char)a8 deleted:(void *)a9 creationDate:(void *)a10 destinationSubObjectReference:(void *)a11 lastInsertedEntityID:(void *)a12 context:(void *)a13 error:
++ (uint64_t)_insertEntriesWithParentUUID:(void *)d childUUIDsData:(uint64_t)data provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(char)behavior deleted:(void *)deleted creationDate:(void *)self0 destinationSubObjectReference:(void *)self1 lastInsertedEntityID:(void *)self2 context:(void *)self3 error:
 {
   v131 = *MEMORY[0x277D85DE8];
   v77 = a2;
-  v73 = a3;
-  v74 = a9;
-  v75 = a10;
-  v14 = a12;
+  dCopy = d;
+  deletedCopy = deleted;
+  dateCopy = date;
+  iDCopy = iD;
   v15 = objc_opt_self();
-  v71 = [v14 enforceSameSource];
-  v65 = [v14 permitPendingAssociations];
-  v16 = [v14 transaction];
-  v78 = [v16 databaseForEntityClass:v15];
+  enforceSameSource = [iDCopy enforceSameSource];
+  permitPendingAssociations = [iDCopy permitPendingAssociations];
+  transaction = [iDCopy transaction];
+  v78 = [transaction databaseForEntityClass:v15];
 
   v101 = 0;
   v102 = &v101;
@@ -378,20 +378,20 @@ LABEL_16:
 
   if (v76)
   {
-    v63 = [v76 persistentID];
-    if (!v71)
+    persistentID = [v76 persistentID];
+    if (!enforceSameSource)
     {
       v36 = MEMORY[0x277CCACA8];
       v37 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
       v32 = [v36 stringWithFormat:@"SELECT %@, %@ FROM %@ WHERE %@ = ?", @"data_id", @"type", v37, @"uuid", 0];
 
-      v26 = 0;
+      uUIDString = 0;
 LABEL_11:
-      if (v75)
+      if (dateCopy)
       {
-        v38 = [v14 transaction];
+        transaction2 = [iDCopy transaction];
         v98 = 0;
-        v39 = [v75 persistentIDInTransaction:v38 error:&v98];
+        v39 = [dateCopy persistentIDInTransaction:transaction2 error:&v98];
         v21 = v98;
       }
 
@@ -417,37 +417,37 @@ LABEL_11:
       v79[3] = &unk_278619CE0;
       v79[4] = v78;
       v32 = v32;
-      v95 = v71;
+      v95 = enforceSameSource;
       v80 = v32;
       v86 = &v111;
       v87 = buf;
-      v26 = v26;
-      v81 = v26;
-      v96 = a8;
+      uUIDString = uUIDString;
+      v81 = uUIDString;
+      behaviorCopy = behavior;
       v82 = v77;
       v89 = v15;
-      v90 = v63;
-      v91 = a4;
-      v92 = a5;
-      v93 = a6;
-      v94 = a7;
+      v90 = persistentID;
+      dataCopy = data;
+      provenanceCopy = provenance;
+      identityCopy = identity;
+      typeCopy = type;
       v18 = v39;
       v83 = v18;
-      v84 = v74;
+      v84 = deletedCopy;
       v88 = &v101;
-      v97 = v65;
-      v85 = v75;
-      [v73 hk_enumerateUUIDBytesUsingBlock:v79];
+      v97 = permitPendingAssociations;
+      v85 = dateCopy;
+      [dCopy hk_enumerateUUIDBytesUsingBlock:v79];
       if ((v112[3] & 1) == 0)
       {
         v53 = *(*&buf[8] + 40);
         v54 = v53;
         if (v53)
         {
-          if (a13)
+          if (context)
           {
             v55 = v53;
-            *a13 = v54;
+            *context = v54;
           }
 
           else
@@ -457,12 +457,12 @@ LABEL_11:
         }
       }
 
-      if (a11)
+      if (reference)
       {
         v59 = v102[5];
         if (v59)
         {
-          *a11 = v59;
+          *reference = v59;
         }
       }
 
@@ -475,21 +475,21 @@ LABEL_11:
     }
 
     v18 = [v76 valueForProperty:? database:?];
-    v19 = [v14 profile];
-    v20 = [v19 sourceManager];
+    profile = [iDCopy profile];
+    sourceManager = [profile sourceManager];
     v99 = 0;
-    v64 = [v20 clientSourceForPersistentID:v18 error:&v99];
+    v64 = [sourceManager clientSourceForPersistentID:v18 error:&v99];
     v21 = v99;
 
     if (v64)
     {
-      v22 = [v14 profile];
-      v23 = [v22 sourceManager];
-      v24 = [v64 bundleIdentifier];
-      v25 = [v23 allSourcesForBundleIdentifier:v24 error:a13];
-      v26 = [v25 hk_map:&__block_literal_global_418];
+      profile2 = [iDCopy profile];
+      sourceManager2 = [profile2 sourceManager];
+      bundleIdentifier = [v64 bundleIdentifier];
+      v25 = [sourceManager2 allSourcesForBundleIdentifier:bundleIdentifier error:context];
+      uUIDString = [v25 hk_map:&__block_literal_global_418];
 
-      if (v26)
+      if (uUIDString)
       {
         v27 = [HDDataEntity joinClausesForProperty:@"data_provenances.source_id"];
         v62 = [v27 count];
@@ -497,9 +497,9 @@ LABEL_11:
         {
           v28 = MEMORY[0x277CCACA8];
           v29 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
-          v30 = [v27 anyObject];
-          v31 = [v30 SQLJoinClause];
-          v32 = [v28 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ %@ WHERE %@ = ?", @"data_id", @"type", @"data_provenances.source_id", v29, v31, @"uuid", 0];
+          anyObject = [v27 anyObject];
+          sQLJoinClause = [anyObject SQLJoinClause];
+          v32 = [v28 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ %@ WHERE %@ = ?", @"data_id", @"type", @"data_provenances.source_id", v29, sQLJoinClause, @"uuid", 0];
         }
 
         else
@@ -515,7 +515,7 @@ LABEL_11:
             _os_log_fault_impl(&dword_228986000, v57, OS_LOG_TYPE_FAULT, "Unexpected join clauses for %{public}@: %{public}@", buf, 0x16u);
           }
 
-          [MEMORY[0x277CCA9B8] hk_assignError:a13 code:100 format:{@"Unexpected join clauses for %@", @"data_provenances.source_id"}];
+          [MEMORY[0x277CCA9B8] hk_assignError:context code:100 format:{@"Unexpected join clauses for %@", @"data_provenances.source_id"}];
           v32 = 0;
         }
 
@@ -532,7 +532,7 @@ LABEL_46:
 
 LABEL_38:
 
-      v26 = 0;
+      uUIDString = 0;
       v32 = 0;
       v35 = 0;
 LABEL_45:
@@ -556,10 +556,10 @@ LABEL_37:
       }
     }
 
-    if (a13)
+    if (context)
     {
       v58 = v21;
-      *a13 = v21;
+      *context = v21;
     }
 
     else
@@ -573,12 +573,12 @@ LABEL_37:
   if (v72)
   {
     v33 = v72;
-    v26 = v33;
-    if (a13)
+    uUIDString = v33;
+    if (context)
     {
       v34 = v33;
       v35 = 0;
-      *a13 = v26;
+      *context = uUIDString;
       goto LABEL_47;
     }
 
@@ -588,19 +588,19 @@ LABEL_27:
     goto LABEL_47;
   }
 
-  if (![v14 permitPendingAssociations])
+  if (![iDCopy permitPendingAssociations])
   {
     v56 = MEMORY[0x277CCA9B8];
-    v26 = [v77 UUIDString];
-    [v56 hk_assignError:a13 code:3 format:{@"Unable to find parent object for UUID %@ when inserting associations.", v26}];
+    uUIDString = [v77 UUIDString];
+    [v56 hk_assignError:context code:3 format:{@"Unable to find parent object for UUID %@ when inserting associations.", uUIDString}];
     goto LABEL_27;
   }
 
-  v40 = [v75 UUID];
+  uUID = [dateCopy UUID];
   v41 = v77;
-  v42 = v73;
-  v43 = v74;
-  v44 = v40;
+  v42 = dCopy;
+  v43 = deletedCopy;
+  v44 = uUID;
   v45 = v78;
   v46 = objc_opt_self();
   v111 = 0;
@@ -620,13 +620,13 @@ LABEL_27:
   v125 = v46;
   v47 = v41;
   v119 = v47;
-  v126 = a4;
-  v127 = a5;
-  v128 = a6;
-  v129 = a7;
-  v26 = v44;
-  v120 = v26;
-  v130 = a8;
+  dataCopy2 = data;
+  provenanceCopy2 = provenance;
+  identityCopy2 = identity;
+  typeCopy2 = type;
+  uUIDString = v44;
+  v120 = uUIDString;
+  behaviorCopy2 = behavior;
   v48 = v43;
   v121 = v48;
   v49 = v45;
@@ -641,10 +641,10 @@ LABEL_27:
     v51 = v50;
     if (v50)
     {
-      if (a13)
+      if (context)
       {
         v52 = v50;
-        *a13 = v51;
+        *context = v51;
       }
 
       else
@@ -666,14 +666,14 @@ LABEL_47:
   return v35 & 1;
 }
 
-+ (BOOL)insertEntriesWithAssociationUUID:(id)a3 objectUUIDsData:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObjectReference:(id)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)insertEntriesWithAssociationUUID:(id)d objectUUIDsData:(id)data type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObjectReference:(id)reference profile:(id)profile error:(id *)error
 {
   v15 = MEMORY[0x277CBEAA8];
-  v16 = a8;
-  v17 = a7;
-  v18 = a4;
-  v19 = a3;
-  if (a5)
+  profileCopy = profile;
+  referenceCopy = reference;
+  dataCopy = data;
+  dCopy = d;
+  if (type)
   {
     [v15 now];
   }
@@ -685,19 +685,19 @@ LABEL_47:
   v20 = ;
   LOWORD(v24) = 256;
   LOBYTE(v23) = 0;
-  v21 = [a1 _insertEntriesWithParentUUID:v19 childUUIDsData:v18 provenance:0 syncIdentity:objc_msgSend(v16 type:"currentSyncIdentityPersistentID") behavior:a5 deleted:a6 creationDate:v23 destinationSubObjectReference:v20 enforceSameSource:v17 permitPendingAssociations:v24 profile:v16 lastInsertedEntityID:0 error:a9];
+  v21 = [self _insertEntriesWithParentUUID:dCopy childUUIDsData:dataCopy provenance:0 syncIdentity:objc_msgSend(profileCopy type:"currentSyncIdentityPersistentID") behavior:type deleted:behavior creationDate:v23 destinationSubObjectReference:v20 enforceSameSource:referenceCopy permitPendingAssociations:v24 profile:profileCopy lastInsertedEntityID:0 error:error];
 
   return v21;
 }
 
-+ (BOOL)copyAssociationsFromObject:(id)a3 toObject:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)copyAssociationsFromObject:(id)object toObject:(id)toObject profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([a1 copyAssociationsFromObject:v10 toObject:v11 type:0 behavior:0 profile:v12 error:a6])
+  objectCopy = object;
+  toObjectCopy = toObject;
+  profileCopy = profile;
+  if ([self copyAssociationsFromObject:objectCopy toObject:toObjectCopy type:0 behavior:0 profile:profileCopy error:error])
   {
-    v13 = [a1 copyAssociationsFromObject:v10 toObject:v11 type:1 behavior:0 profile:v12 error:a6];
+    v13 = [self copyAssociationsFromObject:objectCopy toObject:toObjectCopy type:1 behavior:0 profile:profileCopy error:error];
   }
 
   else
@@ -708,25 +708,25 @@ LABEL_47:
   return v13;
 }
 
-+ (BOOL)copyAssociationsFromObject:(id)a3 toObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)copyAssociationsFromObject:(id)object toObject:(id)toObject type:(unint64_t)type behavior:(unint64_t)behavior profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = [a7 database];
+  objectCopy = object;
+  toObjectCopy = toObject;
+  database = [profile database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __87__HDAssociationEntity_copyAssociationsFromObject_toObject_type_behavior_profile_error___block_invoke;
   v20[3] = &unk_278619C68;
-  v21 = v14;
-  v22 = v15;
-  v23 = a1;
-  v24 = a5;
-  v25 = a6;
-  v17 = v15;
-  v18 = v14;
-  LOBYTE(a8) = [a1 performWriteTransactionWithHealthDatabase:v16 error:a8 block:v20];
+  v21 = objectCopy;
+  v22 = toObjectCopy;
+  selfCopy = self;
+  typeCopy = type;
+  behaviorCopy = behavior;
+  v17 = toObjectCopy;
+  v18 = objectCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v20];
 
-  return a8;
+  return error;
 }
 
 uint64_t __87__HDAssociationEntity_copyAssociationsFromObject_toObject_type_behavior_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -846,26 +846,26 @@ uint64_t __87__HDAssociationEntity_copyAssociationsFromObject_toObject_type_beha
   return sqlite3_bind_int64(a2, 6, 0);
 }
 
-+ (BOOL)copyAssociationsFromChildID:(id)a3 toObjectID:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)copyAssociationsFromChildID:(id)d toObjectID:(id)iD profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 database];
+  dCopy = d;
+  iDCopy = iD;
+  profileCopy = profile;
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __76__HDAssociationEntity_copyAssociationsFromChildID_toObjectID_profile_error___block_invoke;
   v18[3] = &unk_278613550;
-  v19 = v10;
-  v20 = v12;
-  v21 = v11;
-  v22 = a1;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v13 error:a6 block:v18];
+  v19 = dCopy;
+  v20 = profileCopy;
+  v21 = iDCopy;
+  selfCopy = self;
+  v14 = iDCopy;
+  v15 = profileCopy;
+  v16 = dCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a6;
+  return error;
 }
 
 uint64_t __76__HDAssociationEntity_copyAssociationsFromChildID_toObjectID_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -914,42 +914,42 @@ uint64_t __76__HDAssociationEntity_copyAssociationsFromChildID_toObjectID_profil
   return v14;
 }
 
-+ (uint64_t)_insertAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(void *)a8 destinationSubObjectID:(char)a9 deleted:(void *)a10 creationDate:(void *)a11 lastInsertedEntityID:(void *)a12 database:(uint64_t)a13 error:
++ (uint64_t)_insertAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)objectID deleted:(void *)self0 creationDate:(void *)self1 lastInsertedEntityID:(void *)self2 database:(uint64_t)self3 error:
 {
-  v17 = a8;
-  v18 = a10;
-  v19 = a12;
+  behaviorCopy = behavior;
+  deletedCopy = deleted;
+  entityIDCopy = entityID;
   v27 = objc_opt_self();
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __185__HDAssociationEntity__insertAssociationEntryWithParentID_childID_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_creationDate_lastInsertedEntityID_database_error___block_invoke_2;
   v29[3] = &unk_278619DF8;
   v32 = a2;
-  v33 = a3;
-  v34 = a4;
-  v35 = a5;
-  v36 = a6;
-  v37 = a7;
-  v38 = a9;
-  v30 = v17;
-  v31 = v18;
-  v28 = v18;
-  v20 = v17;
-  v21 = [v19 executeCachedStatementForKey:&_insertAssociationEntryWithParentID_childID_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_creationDate_lastInsertedEntityID_database_error__insertKey error:a13 SQLGenerator:&__block_literal_global_451 bindingHandler:v29 enumerationHandler:0];
-  v22 = [(HDAssociationEntity *)v27 _findAssociationEntryWithParentID:a2 childID:a3 type:a6 behavior:a7 destinationSubObjectID:v20 deleted:a9 database:v19 error:a13];
+  dCopy = d;
+  iDCopy = iD;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  typeCopy = type;
+  objectIDCopy = objectID;
+  v30 = behaviorCopy;
+  v31 = deletedCopy;
+  v28 = deletedCopy;
+  v20 = behaviorCopy;
+  v21 = [entityIDCopy executeCachedStatementForKey:&_insertAssociationEntryWithParentID_childID_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_creationDate_lastInsertedEntityID_database_error__insertKey error:database SQLGenerator:&__block_literal_global_451 bindingHandler:v29 enumerationHandler:0];
+  v22 = [(HDAssociationEntity *)v27 _findAssociationEntryWithParentID:a2 childID:d type:identity behavior:type destinationSubObjectID:v20 deleted:objectID database:entityIDCopy error:database];
 
   v23 = v22;
-  *a11 = v22;
+  *date = v22;
 
   return v21;
 }
 
-+ (uint64_t)_insertPendingAssociationForParentUUID:(uint64_t)a3 childUUIDBytes:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 type:(uint64_t)a7 behavior:(void *)a8 destinationSubObjectID:(char)a9 deleted:(void *)a10 creationDate:(void *)a11 database:(void *)a12 error:
++ (uint64_t)_insertPendingAssociationForParentUUID:(uint64_t)d childUUIDBytes:(uint64_t)bytes provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)iD deleted:(void *)self0 creationDate:(void *)self1 database:(void *)self2 error:
 {
   v16 = a2;
-  v17 = a8;
-  v18 = a10;
-  v19 = a11;
+  behaviorCopy = behavior;
+  deletedCopy = deleted;
+  dateCopy = date;
   objc_opt_self();
   v41 = 0;
   v31[0] = MEMORY[0x277D85DD0];
@@ -958,21 +958,21 @@ uint64_t __76__HDAssociationEntity_copyAssociationsFromChildID_toObjectID_profil
   v31[3] = &unk_278619C90;
   v20 = v16;
   v32 = v20;
-  v35 = a3;
-  v36 = a4;
-  v37 = a5;
-  v38 = a6;
-  v39 = a7;
-  v40 = a9;
-  v21 = v18;
+  dCopy = d;
+  bytesCopy = bytes;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  typeCopy = type;
+  iDCopy = iD;
+  v21 = deletedCopy;
   v33 = v21;
-  v22 = v17;
+  v22 = behaviorCopy;
   v34 = v22;
-  LOBYTE(v18) = [v19 executeCachedStatementForKey:&_insertPendingAssociationForParentUUID_childUUIDBytes_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_creationDate_database_error__insertKey error:&v41 SQLGenerator:&__block_literal_global_48 bindingHandler:v31 enumerationHandler:0];
+  LOBYTE(deletedCopy) = [dateCopy executeCachedStatementForKey:&_insertPendingAssociationForParentUUID_childUUIDBytes_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_creationDate_database_error__insertKey error:&v41 SQLGenerator:&__block_literal_global_48 bindingHandler:v31 enumerationHandler:0];
 
   v23 = v41;
   v24 = v23;
-  if (v18 & 1) != 0 || ([v23 hd_isConstraintViolation])
+  if (deletedCopy & 1) != 0 || ([v23 hd_isConstraintViolation])
   {
     v25 = 1;
   }
@@ -982,10 +982,10 @@ uint64_t __76__HDAssociationEntity_copyAssociationsFromChildID_toObjectID_profil
     v26 = v24;
     if (v26)
     {
-      if (a12)
+      if (database)
       {
         v27 = v26;
-        *a12 = v26;
+        *database = v26;
       }
 
       else
@@ -1034,18 +1034,18 @@ uint64_t __174__HDAssociationEntity__insertPendingAssociationForParentUUID_child
   }
 }
 
-+ (id)journalEntryForAssociation:(id)a3 objects:(id)a4 profile:(id)a5
++ (id)journalEntryForAssociation:(id)association objects:(id)objects profile:(id)profile
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  associationCopy = association;
+  objectsCopy = objects;
+  profileCopy = profile;
   v10 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = v8;
+  v11 = objectsCopy;
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v12)
   {
@@ -1060,8 +1060,8 @@ uint64_t __174__HDAssociationEntity__insertPendingAssociationForParentUUID_child
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v26 + 1) + 8 * i) UUID];
-        [v10 hk_appendBytesWithUUID:v16];
+        uUID = [*(*(&v26 + 1) + 8 * i) UUID];
+        [v10 hk_appendBytesWithUUID:uUID];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1071,12 +1071,12 @@ uint64_t __174__HDAssociationEntity__insertPendingAssociationForParentUUID_child
   }
 
   v17 = [_HDAssociationInsertionJournalEntry alloc];
-  v18 = [v7 UUID];
-  v19 = [v9 currentSyncIdentityPersistentID];
+  uUID2 = [associationCopy UUID];
+  currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
   v20 = [MEMORY[0x277CBEAA8] now];
   LOBYTE(v25) = 0;
   LOBYTE(v24) = 0;
-  v21 = [(_HDAssociationInsertionJournalEntry *)v17 initWithParentUUID:v18 childUUIDsData:v10 provenance:0 syncIdentity:v19 type:0 behavior:0 deleted:v24 creationDate:v20 destinationSubObjectReference:0 enforceSameSource:v25, v26];
+  v21 = [(_HDAssociationInsertionJournalEntry *)v17 initWithParentUUID:uUID2 childUUIDsData:v10 provenance:0 syncIdentity:currentSyncIdentityPersistentID type:0 behavior:0 deleted:v24 creationDate:v20 destinationSubObjectReference:0 enforceSameSource:v25, v26];
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -1314,12 +1314,12 @@ uint64_t __191__HDAssociationEntity__insertEntriesWithParentUUID_childUUIDsData_
   return 1;
 }
 
-+ (uint64_t)_removeAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 provenance:(uint64_t)a5 syncIdentity:(void *)a6 type:(void *)a7 behavior:(uint64_t)a8 destinationSubObjectID:deleted:database:error:
++ (uint64_t)_removeAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD provenance:(uint64_t)provenance syncIdentity:(void *)identity type:(void *)type behavior:(uint64_t)behavior destinationSubObjectID:deleted:database:error:
 {
-  v14 = a7;
-  v15 = a6;
+  typeCopy = type;
+  identityCopy = identity;
   v16 = objc_opt_self();
-  v17 = [(HDAssociationEntity *)v16 _findAssociationEntryWithParentID:a2 childID:a3 type:a4 behavior:a5 destinationSubObjectID:v15 deleted:0 database:v14 error:a8];
+  v17 = [(HDAssociationEntity *)v16 _findAssociationEntryWithParentID:a2 childID:d type:iD behavior:provenance destinationSubObjectID:identityCopy deleted:0 database:typeCopy error:behavior];
 
   if (v17)
   {
@@ -1332,7 +1332,7 @@ uint64_t __191__HDAssociationEntity__insertEntriesWithParentUUID_childUUIDsData_
     v23[2] = __151__HDAssociationEntity__removeAssociationEntryWithParentID_childID_provenance_syncIdentity_type_behavior_destinationSubObjectID_deleted_database_error___block_invoke;
     v23[3] = &unk_278614860;
     v24 = v17;
-    v21 = [v14 executeSQL:v20 error:a8 bindingHandler:v23 enumerationHandler:0];
+    v21 = [typeCopy executeSQL:v20 error:behavior bindingHandler:v23 enumerationHandler:0];
   }
 
   else
@@ -1343,30 +1343,30 @@ uint64_t __191__HDAssociationEntity__insertEntriesWithParentUUID_childUUIDsData_
   return v21;
 }
 
-+ (BOOL)_insertEntriesWithParentUUID:(id)a3 childUUIDsData:(id)a4 provenance:(int64_t)a5 syncIdentity:(int64_t)a6 type:(unint64_t)a7 behavior:(unint64_t)a8 deleted:(BOOL)a9 creationDate:(id)a10 destinationSubObjectReference:(id)a11 enforceSameSource:(BOOL)a12 permitPendingAssociations:(BOOL)a13 profile:(id)a14 lastInsertedEntityID:(id *)a15 error:(id *)a16
++ (BOOL)_insertEntriesWithParentUUID:(id)d childUUIDsData:(id)data provenance:(int64_t)provenance syncIdentity:(int64_t)identity type:(unint64_t)type behavior:(unint64_t)behavior deleted:(BOOL)deleted creationDate:(id)self0 destinationSubObjectReference:(id)self1 enforceSameSource:(BOOL)self2 permitPendingAssociations:(BOOL)self3 profile:(id)self4 lastInsertedEntityID:(id *)self5 error:(id *)self6
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a10;
-  v20 = a11;
+  dCopy = d;
+  dataCopy = data;
+  dateCopy = date;
+  referenceCopy = reference;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__43;
   v33 = __Block_byref_object_dispose__43;
   v34 = 0;
-  v21 = a14;
-  v22 = v17;
-  v23 = v18;
-  v24 = v19;
-  v25 = v20;
+  profileCopy = profile;
+  v22 = dCopy;
+  v23 = dataCopy;
+  v24 = dateCopy;
+  v25 = referenceCopy;
   v26 = HKWithAutoreleasePool();
-  if (a15)
+  if (iD)
   {
     v27 = v30[5];
     if (v27)
     {
-      *a15 = v27;
+      *iD = v27;
     }
   }
 
@@ -1460,50 +1460,50 @@ uint64_t __235__HDAssociationEntity__insertEntriesWithParentUUID_childUUIDsData_
   return v8;
 }
 
-+ (BOOL)_bulkInsertEntriesWithParentUUID:(id)a3 childIDs:(id)a4 provenance:(int64_t)a5 syncIdentity:(int64_t)a6 type:(unint64_t)a7 behavior:(unint64_t)a8 creationDate:(id)a9 destinationSubObjectReference:(id)a10 profile:(id)a11 error:(id *)a12
++ (BOOL)_bulkInsertEntriesWithParentUUID:(id)d childIDs:(id)ds provenance:(int64_t)provenance syncIdentity:(int64_t)identity type:(unint64_t)type behavior:(unint64_t)behavior creationDate:(id)date destinationSubObjectReference:(id)self0 profile:(id)self1 error:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v30 = [v21 database];
+  dCopy = d;
+  dsCopy = ds;
+  dateCopy = date;
+  referenceCopy = reference;
+  profileCopy = profile;
+  database = [profileCopy database];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_provenance_syncIdentity_type_behavior_creationDate_destinationSubObjectReference_profile_error___block_invoke;
   v41[3] = &unk_278619D80;
-  v42 = v17;
-  v43 = v21;
-  v22 = a1;
-  v47 = a1;
-  v44 = v18;
-  v48 = a5;
-  v49 = a6;
-  v50 = a7;
-  v51 = a8;
-  v45 = v19;
-  v46 = v20;
+  v42 = dCopy;
+  v43 = profileCopy;
+  selfCopy = self;
+  selfCopy2 = self;
+  v44 = dsCopy;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  typeCopy = type;
+  behaviorCopy = behavior;
+  v45 = dateCopy;
+  v46 = referenceCopy;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_provenance_syncIdentity_type_behavior_creationDate_destinationSubObjectReference_profile_error___block_invoke_2;
   v31[3] = &unk_278619DA8;
   v32 = v42;
   v33 = v44;
-  v38 = a6;
-  v39 = a7;
-  v40 = a8;
+  identityCopy2 = identity;
+  typeCopy2 = type;
+  behaviorCopy2 = behavior;
   v34 = v45;
   v35 = v46;
   v36 = v43;
-  v37 = a5;
+  provenanceCopy2 = provenance;
   v23 = v43;
   v24 = v46;
   v25 = v45;
   v26 = v44;
   v27 = v42;
-  LOBYTE(v19) = [v22 performWriteTransactionWithHealthDatabase:v30 error:a12 block:v41 inaccessibilityHandler:v31];
+  LOBYTE(dateCopy) = [selfCopy performWriteTransactionWithHealthDatabase:database error:error block:v41 inaccessibilityHandler:v31];
 
-  return v19;
+  return dateCopy;
 }
 
 BOOL __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_provenance_syncIdentity_type_behavior_creationDate_destinationSubObjectReference_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1689,10 +1689,10 @@ uint64_t __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_pr
   return v7;
 }
 
-+ (id)_findAssociationEntryWithParentID:(uint64_t)a3 childID:(uint64_t)a4 type:(uint64_t)a5 behavior:(void *)a6 destinationSubObjectID:(char)a7 deleted:(void *)a8 database:(uint64_t)a9 error:
++ (id)_findAssociationEntryWithParentID:(uint64_t)d childID:(uint64_t)iD type:(uint64_t)type behavior:(void *)behavior destinationSubObjectID:(char)objectID deleted:(void *)deleted database:(uint64_t)database error:
 {
-  v27 = a6;
-  v26 = a8;
+  behaviorCopy = behavior;
+  deletedCopy = deleted;
   objc_opt_self();
   v36 = 0;
   v37 = &v36;
@@ -1705,7 +1705,7 @@ uint64_t __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_pr
   v12 = *MEMORY[0x277D10A40];
   v13 = [v10 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ = ? AND %@ = ? AND %@ = ? AND %@ IS NULL", *MEMORY[0x277D10A40], v11, @"destination_object_id", @"source_object_id", @"type", @"behavior", @"deleted", @"destination_sub_object_id"];
 
-  if (v27)
+  if (behaviorCopy)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = +[(HDSQLiteSchemaEntity *)HDAssociationEntity];
@@ -1719,23 +1719,23 @@ uint64_t __160__HDAssociationEntity__bulkInsertEntriesWithParentUUID_childIDs_pr
   v29[2] = __125__HDAssociationEntity__findAssociationEntryWithParentID_childID_type_behavior_destinationSubObjectID_deleted_database_error___block_invoke;
   v29[3] = &unk_278619DD0;
   v31 = a2;
-  v32 = a3;
-  v33 = a4;
-  v34 = a5;
-  v35 = a7;
-  v17 = v27;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  objectIDCopy = objectID;
+  v17 = behaviorCopy;
   v30 = v17;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __125__HDAssociationEntity__findAssociationEntryWithParentID_childID_type_behavior_destinationSubObjectID_deleted_database_error___block_invoke_2;
   v28[3] = &unk_278614620;
   v28[4] = &v36;
-  if ([v26 executeSQL:v13 error:a9 bindingHandler:v29 enumerationHandler:v28])
+  if ([deletedCopy executeSQL:v13 error:database bindingHandler:v29 enumerationHandler:v28])
   {
     v18 = v37[5];
     if (!v18)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a9 code:3 format:{@"Unable to find all associations for parent object for %lld when dis-associating.", a2}];
+      [MEMORY[0x277CCA9B8] hk_assignError:database code:3 format:{@"Unable to find all associations for parent object for %lld when dis-associating.", a2}];
       v18 = v37[5];
     }
 
@@ -1886,24 +1886,24 @@ void __176__HDAssociationEntity__insertPendingAssociationsForParentUUID_childUUI
   }
 }
 
-+ (BOOL)realizePendingAssociationsWithTransaction:(id)a3 startingAnchor:(int64_t)a4 error:(id *)a5
++ (BOOL)realizePendingAssociationsWithTransaction:(id)transaction startingAnchor:(int64_t)anchor error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  transactionCopy = transaction;
   if (qword_27D86C110 != -1)
   {
     dispatch_once(&qword_27D86C110, &__block_literal_global_464);
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v8 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v11 = _MergedGlobals_3;
-  v32 = a1;
+  selfCopy = self;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __86__HDAssociationEntity_realizePendingAssociationsWithTransaction_startingAnchor_error___block_invoke_2;
   v33[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v33[4] = a4;
+  v33[4] = anchor;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __86__HDAssociationEntity_realizePendingAssociationsWithTransaction_startingAnchor_error___block_invoke_3;
@@ -1912,7 +1912,7 @@ void __176__HDAssociationEntity__insertPendingAssociationsForParentUUID_childUUI
   v30 = v12;
   v13 = v9;
   v31 = v13;
-  if ([v12 executeSQL:v11 error:a5 bindingHandler:v33 enumerationHandler:v29])
+  if ([v12 executeSQL:v11 error:error bindingHandler:v33 enumerationHandler:v29])
   {
     v27 = 0u;
     v28 = 0u;
@@ -1940,7 +1940,7 @@ void __176__HDAssociationEntity__insertPendingAssociationsForParentUUID_childUUI
           v24[2] = __86__HDAssociationEntity_realizePendingAssociationsWithTransaction_startingAnchor_error___block_invoke_4;
           v24[3] = &unk_278614860;
           v24[4] = v19;
-          if (![v12 executeSQL:qword_27D86C108 error:a5 bindingHandler:v24 enumerationHandler:0])
+          if (![v12 executeSQL:qword_27D86C108 error:error bindingHandler:v24 enumerationHandler:0])
           {
             v20 = 0;
             goto LABEL_15;
@@ -2044,26 +2044,26 @@ uint64_t __86__HDAssociationEntity_realizePendingAssociationsWithTransaction_sta
   return sqlite3_bind_int64(a2, 1, v3);
 }
 
-+ (id)objectIDsForAssociationEntityWithPersistentID:(int64_t)a3 profile:(id)a4 error:(id *)a5
++ (id)objectIDsForAssociationEntityWithPersistentID:(int64_t)d profile:(id)profile error:(id *)error
 {
-  v8 = a4;
+  profileCopy = profile;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__43;
   v17 = __Block_byref_object_dispose__43;
-  v18 = [MEMORY[0x277CBEB18] array];
-  v9 = [v8 database];
+  array = [MEMORY[0x277CBEB18] array];
+  database = [profileCopy database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__HDAssociationEntity_objectIDsForAssociationEntityWithPersistentID_profile_error___block_invoke;
   v12[3] = &unk_278619EC0;
-  v12[5] = a1;
-  v12[6] = a3;
+  v12[5] = self;
+  v12[6] = d;
   v12[4] = &v13;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v12];
 
-  if (a5)
+  if (error)
   {
     v10 = v14[5];
   }
@@ -2114,27 +2114,27 @@ uint64_t __83__HDAssociationEntity_objectIDsForAssociationEntityWithPersistentID
   return 1;
 }
 
-+ (id)deleteStatementForParentIDWithTransaction:(id)a3
++ (id)deleteStatementForParentIDWithTransaction:(id)transaction
 {
-  v4 = [a3 databaseForEntityClass:a1];
-  v5 = [a1 deleteStatementWithProperty:@"destination_object_id" database:v4];
+  v4 = [transaction databaseForEntityClass:self];
+  v5 = [self deleteStatementWithProperty:@"destination_object_id" database:v4];
 
   return v5;
 }
 
-+ (id)deleteStatementForChildIDsWithTransaction:(id)a3
++ (id)deleteStatementForChildIDsWithTransaction:(id)transaction
 {
-  v4 = [a3 databaseForEntityClass:a1];
-  v5 = [a1 deleteStatementWithProperty:@"source_object_id" database:v4];
+  v4 = [transaction databaseForEntityClass:self];
+  v5 = [self deleteStatementWithProperty:@"source_object_id" database:v4];
 
   return v5;
 }
 
-+ (id)objectsAssociatedWithObjectPID:(int64_t)a3 subObjectReference:(id)a4 dataTypes:(id)a5 associationType:(unint64_t)a6 behavior:(unint64_t)a7 limit:(unint64_t)a8 sortDescending:(BOOL)a9 profile:(id)a10 error:(id *)a11
++ (id)objectsAssociatedWithObjectPID:(int64_t)d subObjectReference:(id)reference dataTypes:(id)types associationType:(unint64_t)type behavior:(unint64_t)behavior limit:(unint64_t)limit sortDescending:(BOOL)descending profile:(id)self0 error:(id *)self1
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a10;
+  referenceCopy = reference;
+  typesCopy = types;
+  profileCopy = profile;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -2153,29 +2153,29 @@ uint64_t __83__HDAssociationEntity_objectIDsForAssociationEntityWithPersistentID
   v39[3] = __Block_byref_object_copy__43;
   v39[4] = __Block_byref_object_dispose__43;
   v40 = 0;
-  v18 = [v17 database];
+  database = [profileCopy database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __143__HDAssociationEntity_objectsAssociatedWithObjectPID_subObjectReference_dataTypes_associationType_behavior_limit_sortDescending_profile_error___block_invoke;
   v26[3] = &unk_278619F10;
-  v19 = v16;
+  v19 = typesCopy;
   v27 = v19;
-  v33 = a3;
-  v20 = v15;
+  dCopy = d;
+  v20 = referenceCopy;
   v28 = v20;
-  v38 = a9;
-  v34 = a6;
-  v35 = a7;
-  v36 = a1;
-  v37 = a8;
-  v21 = v17;
+  descendingCopy = descending;
+  typeCopy = type;
+  behaviorCopy = behavior;
+  selfCopy = self;
+  limitCopy = limit;
+  v21 = profileCopy;
   v29 = v21;
   v30 = v39;
   v31 = v41;
   v32 = &v43;
-  LOBYTE(a5) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v18 error:a11 block:v26];
+  LOBYTE(types) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:error block:v26];
 
-  if (a5)
+  if (types)
   {
     v22 = v44[5];
   }
@@ -2365,32 +2365,32 @@ uint64_t __143__HDAssociationEntity_objectsAssociatedWithObjectPID_subObjectRefe
   return 1;
 }
 
-+ (id)countOfObjectsAssociatedWithObjectUUID:(id)a3 subObjectReference:(id)a4 excludeDeleted:(BOOL)a5 profile:(id)a6 error:(id *)a7
++ (id)countOfObjectsAssociatedWithObjectUUID:(id)d subObjectReference:(id)reference excludeDeleted:(BOOL)deleted profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dCopy = d;
+  referenceCopy = reference;
+  profileCopy = profile;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__43;
   v31 = __Block_byref_object_dispose__43;
   v32 = 0;
-  v15 = [v14 database];
+  database = [profileCopy database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __110__HDAssociationEntity_countOfObjectsAssociatedWithObjectUUID_subObjectReference_excludeDeleted_profile_error___block_invoke;
   v21[3] = &unk_278619F38;
-  v16 = v12;
+  v16 = dCopy;
   v22 = v16;
-  v17 = v13;
-  v26 = a5;
+  v17 = referenceCopy;
+  deletedCopy = deleted;
   v23 = v17;
   v24 = &v27;
-  v25 = a1;
-  LODWORD(a7) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v15 error:a7 block:v21];
+  selfCopy = self;
+  LODWORD(error) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:error block:v21];
 
-  if (a7)
+  if (error)
   {
     v18 = v28[5];
   }
@@ -2467,17 +2467,17 @@ BOOL __110__HDAssociationEntity_countOfObjectsAssociatedWithObjectUUID_subObject
   return v19;
 }
 
-+ (id)countOfObjectsAssociatedWithObjectPID:(int64_t)a3 excludeDeleted:(BOOL)a4 associationType:(unint64_t)a5 behavior:(unint64_t)a6 anchor:(int64_t)a7 transaction:(id)a8 error:(id *)a9
++ (id)countOfObjectsAssociatedWithObjectPID:(int64_t)d excludeDeleted:(BOOL)deleted associationType:(unint64_t)type behavior:(unint64_t)behavior anchor:(int64_t)anchor transaction:(id)transaction error:(id *)error
 {
-  v11 = a4;
-  v14 = a8;
+  deletedCopy = deleted;
+  transactionCopy = transaction;
   v15 = objc_opt_new();
   v16 = MEMORY[0x277D10B18];
-  v17 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v17 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v18 = [v16 predicateWithProperty:@"destination_object_id" equalToValue:v17];
   [v15 addObject:v18];
 
-  if (v11)
+  if (deletedCopy)
   {
     v19 = MEMORY[0x277D10B18];
     v20 = [MEMORY[0x277CCABB0] numberWithInt:0];
@@ -2486,53 +2486,53 @@ BOOL __110__HDAssociationEntity_countOfObjectsAssociatedWithObjectUUID_subObject
   }
 
   v22 = MEMORY[0x277D10B18];
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v24 = [v22 predicateWithProperty:@"type" equalToValue:v23];
   [v15 addObject:v24];
 
   v25 = MEMORY[0x277D10B18];
-  v26 = [MEMORY[0x277CCABB0] numberWithLongLong:a7];
+  v26 = [MEMORY[0x277CCABB0] numberWithLongLong:anchor];
   v27 = [v25 predicateWithProperty:@"ROWID" greaterThanValue:v26];
   [v15 addObject:v27];
 
   v28 = *MEMORY[0x277D10A48];
   v29 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v15];
-  v30 = [v14 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v31 = [a1 countValueForProperty:v28 predicate:v29 database:v30 error:a9];
+  v31 = [self countValueForProperty:v28 predicate:v29 database:protectedDatabase error:error];
 
   return v31;
 }
 
-+ (void)_UUIDsAssociatedWithUUID:(void *)a3 subObjectReference:(void *)a4 predicateProperty:(void *)a5 enumerateProperty:(char)a6 excludeDeleted:(void *)a7 profile:(uint64_t)a8 error:
++ (void)_UUIDsAssociatedWithUUID:(void *)d subObjectReference:(void *)reference predicateProperty:(void *)property enumerateProperty:(char)enumerateProperty excludeDeleted:(void *)deleted profile:(uint64_t)profile error:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  dCopy = d;
+  referenceCopy = reference;
+  propertyCopy = property;
+  deletedCopy = deleted;
   v18 = objc_opt_self();
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v20 = [v17 database];
+  database = [deletedCopy database];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __132__HDAssociationEntity__UUIDsAssociatedWithUUID_subObjectReference_predicateProperty_enumerateProperty_excludeDeleted_profile_error___block_invoke;
   v31[3] = &unk_278619F60;
   v32 = v13;
-  v33 = v14;
-  v39 = a6;
+  v33 = dCopy;
+  enumeratePropertyCopy = enumerateProperty;
   v37 = v19;
   v38 = v18;
-  v34 = v15;
-  v35 = v16;
-  v36 = v17;
+  v34 = referenceCopy;
+  v35 = propertyCopy;
+  v36 = deletedCopy;
   v21 = v19;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  v22 = deletedCopy;
+  v23 = propertyCopy;
+  v24 = referenceCopy;
+  v25 = dCopy;
   v26 = v13;
-  LODWORD(v19) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v20 error:a8 block:v31];
+  LODWORD(v19) = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:profile block:v31];
 
   if (v19)
   {
@@ -2689,16 +2689,16 @@ uint64_t __132__HDAssociationEntity__UUIDsAssociatedWithUUID_subObjectReference_
   return 1;
 }
 
-+ (BOOL)_enumerateAssociationsWithPredicate:(id)a3 syncEntityClass:(Class)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 lastSyncAnchor:(int64_t *)a7 healthDatabase:(id)a8 error:(id *)a9 block:(id)a10
++ (BOOL)_enumerateAssociationsWithPredicate:(id)predicate syncEntityClass:(Class)class session:(id)session syncAnchorRange:(HDSyncAnchorRange)range lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database error:(id *)error block:(id)self0
 {
-  end = a6.end;
-  start = a6.start;
+  end = range.end;
+  start = range.start;
   v34[3] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = a10;
-  v20 = [a1 predicateForSyncWithPredicate:v16 syncEntityClass:a4 session:v17 syncAnchorRange:{start, end}];
+  predicateCopy = predicate;
+  sessionCopy = session;
+  databaseCopy = database;
+  blockCopy = block;
+  v20 = [self predicateForSyncWithPredicate:predicateCopy syncEntityClass:class session:sessionCopy syncAnchorRange:{start, end}];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -2711,20 +2711,20 @@ uint64_t __132__HDAssociationEntity__UUIDsAssociatedWithUUID_subObjectReference_
   v27[1] = 3221225472;
   v27[2] = __141__HDAssociationEntity__enumerateAssociationsWithPredicate_syncEntityClass_session_syncAnchorRange_lastSyncAnchor_healthDatabase_error_block___block_invoke;
   v27[3] = &unk_278619FB0;
-  v22 = v19;
+  v22 = blockCopy;
   v28 = v22;
   v29 = &v30;
-  v23 = [a1 enumerateProperties:v21 withPredicate:v20 healthDatabase:v18 error:a9 enumerationHandler:v27];
+  v23 = [self enumerateProperties:v21 withPredicate:v20 healthDatabase:databaseCopy error:error enumerationHandler:v27];
 
   v24 = v23 ^ 1;
-  if (!a7)
+  if (!anchor)
   {
     v24 = 1;
   }
 
   if ((v24 & 1) == 0)
   {
-    *a7 = v31[3];
+    *anchor = v31[3];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -2753,17 +2753,17 @@ uint64_t __141__HDAssociationEntity__enumerateAssociationsWithPredicate_syncEnti
   return 1;
 }
 
-+ (BOOL)_enumerateTypedAssociationsWithPredicate:(id)a3 syncEntityClass:(Class)a4 session:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 lastSyncAnchor:(int64_t *)a7 healthDatabase:(id)a8 transaction:(id)a9 error:(id *)a10 block:(id)a11
++ (BOOL)_enumerateTypedAssociationsWithPredicate:(id)predicate syncEntityClass:(Class)class session:(id)session syncAnchorRange:(HDSyncAnchorRange)range lastSyncAnchor:(int64_t *)anchor healthDatabase:(id)database transaction:(id)transaction error:(id *)self0 block:(id)self1
 {
-  end = a6.end;
-  start = a6.start;
+  end = range.end;
+  start = range.start;
   v38[8] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a11;
-  v21 = [a1 predicateForSyncWithPredicate:v16 syncEntityClass:a4 session:v17 syncAnchorRange:{start, end}];
+  predicateCopy = predicate;
+  sessionCopy = session;
+  databaseCopy = database;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v21 = [self predicateForSyncWithPredicate:predicateCopy syncEntityClass:class session:sessionCopy syncAnchorRange:{start, end}];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -2781,22 +2781,22 @@ uint64_t __141__HDAssociationEntity__enumerateAssociationsWithPredicate_syncEnti
   v30[1] = 3221225472;
   v30[2] = __158__HDAssociationEntity__enumerateTypedAssociationsWithPredicate_syncEntityClass_session_syncAnchorRange_lastSyncAnchor_healthDatabase_transaction_error_block___block_invoke;
   v30[3] = &unk_27861A000;
-  v23 = v19;
+  v23 = transactionCopy;
   v31 = v23;
-  v24 = v20;
+  v24 = blockCopy;
   v32 = v24;
   v33 = &v34;
-  v25 = [a1 enumerateProperties:v22 withPredicate:v21 healthDatabase:v18 error:a10 enumerationHandler:v30];
+  v25 = [self enumerateProperties:v22 withPredicate:v21 healthDatabase:databaseCopy error:error enumerationHandler:v30];
 
   v26 = v25 ^ 1;
-  if (!a7)
+  if (!anchor)
   {
     v26 = 1;
   }
 
   if ((v26 & 1) == 0)
   {
-    *a7 = v35[3];
+    *anchor = v35[3];
   }
 
   _Block_object_dispose(&v34, 8);
@@ -2836,17 +2836,17 @@ uint64_t __158__HDAssociationEntity__enumerateTypedAssociationsWithPredicate_syn
   return 1;
 }
 
-+ (BOOL)_insertCodableObjectAssociations:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_insertCodableObjectAssociations:(id)associations syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  associationsCopy = associations;
+  storeCopy = store;
+  profileCopy = profile;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v8;
+  obj = associationsCopy;
   v11 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -2862,8 +2862,8 @@ uint64_t __158__HDAssociationEntity__enumerateTypedAssociationsWithPredicate_syn
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v20 = v10;
-        v21 = v9;
+        v20 = profileCopy;
+        v21 = storeCopy;
         LODWORD(v15) = HKWithAutoreleasePool();
 
         if (!v15)

@@ -1,17 +1,17 @@
 @interface FileBrowsingTableViewController
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithCoder:(id)a3;
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithCoder:(id)coder;
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FileBrowsingTableViewController
 
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithCoder:(id)a3
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11Diagnostics31FileBrowsingTableViewController_reviewBrowsingCellIdentifier);
   *v3 = 0xD00000000000001CLL;
@@ -25,33 +25,33 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005AA00(a3);
+  selfCopy = self;
+  sub_10005AA00(appear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005AB54();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10005BB34(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11Diagnostics31FileBrowsingTableViewController_files);
   if (v4 >> 62)
@@ -65,30 +65,30 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10005B63C(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10005B63C(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithStyle:(int64_t)a3
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics31FileBrowsingTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

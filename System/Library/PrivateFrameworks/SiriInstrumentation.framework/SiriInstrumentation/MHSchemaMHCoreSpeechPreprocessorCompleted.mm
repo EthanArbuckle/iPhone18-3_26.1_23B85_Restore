@@ -1,52 +1,52 @@
 @interface MHSchemaMHCoreSpeechPreprocessorCompleted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithDictionary:(id)a3;
-- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addMidSegmentContinousZeros:(id)a3;
-- (void)setHasAboveNinetyFivepcOfMax:(BOOL)a3;
-- (void)setHasAbsMaxVal:(BOOL)a3;
-- (void)setHasBeepPower:(BOOL)a3;
-- (void)setHasInitialContinousZeros:(BOOL)a3;
-- (void)setHasMaxContinousZeros:(BOOL)a3;
-- (void)setHasNumTotalInputSamples:(BOOL)a3;
-- (void)setHasNumTotalOutputSamples:(BOOL)a3;
-- (void)setHasOriginalPower:(BOOL)a3;
-- (void)setHasSignalPower:(BOOL)a3;
-- (void)setHasStatsComputed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMidSegmentContinousZeros:(id)zeros;
+- (void)setHasAboveNinetyFivepcOfMax:(BOOL)max;
+- (void)setHasAbsMaxVal:(BOOL)val;
+- (void)setHasBeepPower:(BOOL)power;
+- (void)setHasInitialContinousZeros:(BOOL)zeros;
+- (void)setHasMaxContinousZeros:(BOOL)zeros;
+- (void)setHasNumTotalInputSamples:(BOOL)samples;
+- (void)setHasNumTotalOutputSamples:(BOOL)samples;
+- (void)setHasOriginalPower:(BOOL)power;
+- (void)setHasSignalPower:(BOOL)power;
+- (void)setHasStatsComputed:(BOOL)computed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHCoreSpeechPreprocessorCompleted
 
-- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithDictionary:(id)a3
+- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = MHSchemaMHCoreSpeechPreprocessorCompleted;
   v5 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"beepLocation"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"beepLocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHCoreSpeechPreprocessorCompleted setBeepLocation:](v5, "setBeepLocation:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"statsComputed"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"statsComputed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHCoreSpeechPreprocessorCompleted setStatsComputed:](v5, "setStatsComputed:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"beepPower"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"beepPower"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(MHSchemaMHCoreSpeechPreprocessorCompleted *)v5 setBeepPower:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"signalPower"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"signalPower"];
     objc_opt_class();
     v41 = v9;
     if (objc_opt_isKindOfClass())
@@ -63,7 +63,7 @@
       [(MHSchemaMHCoreSpeechPreprocessorCompleted *)v5 setSignalPower:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"originalPower"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"originalPower"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
     }
 
     v40 = v7;
-    v11 = [v4 objectForKeyedSubscript:@"absMaxVal"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"absMaxVal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v12 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"aboveNinetyFivepcOfMax"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"aboveNinetyFivepcOfMax"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(MHSchemaMHCoreSpeechPreprocessorCompleted *)v5 setAboveNinetyFivepcOfMax:?];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"numTotalInputSamples"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numTotalInputSamples"];
     objc_opt_class();
     v39 = v14;
     if (objc_opt_isKindOfClass())
@@ -97,7 +97,7 @@
       -[MHSchemaMHCoreSpeechPreprocessorCompleted setNumTotalInputSamples:](v5, "setNumTotalInputSamples:", [v14 unsignedLongLongValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"numTotalOutputSamples"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numTotalOutputSamples"];
     objc_opt_class();
     v38 = v15;
     v16 = v12;
@@ -107,7 +107,7 @@
     }
 
     v17 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"initialContinousZeros"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"initialContinousZeros"];
     objc_opt_class();
     v37 = v18;
     v19 = v40;
@@ -116,7 +116,7 @@
       -[MHSchemaMHCoreSpeechPreprocessorCompleted setInitialContinousZeros:](v5, "setInitialContinousZeros:", [v37 unsignedLongLongValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"maxContinousZeros"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"maxContinousZeros"];
     objc_opt_class();
     v36 = v20;
     if (objc_opt_isKindOfClass())
@@ -124,7 +124,7 @@
       -[MHSchemaMHCoreSpeechPreprocessorCompleted setMaxContinousZeros:](v5, "setMaxContinousZeros:", [v20 unsignedLongLongValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"midSegmentContinousZeros"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"midSegmentContinousZeros"];
     objc_opt_class();
     v22 = v41;
     if (objc_opt_isKindOfClass())
@@ -181,30 +181,30 @@
   return v5;
 }
 
-- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithJSON:(id)a3
+- (MHSchemaMHCoreSpeechPreprocessorCompleted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -218,14 +218,14 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
     v17 = MEMORY[0x1E696AD98];
     [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self aboveNinetyFivepcOfMax];
     v18 = [v17 numberWithFloat:?];
-    [v3 setObject:v18 forKeyedSubscript:@"aboveNinetyFivepcOfMax"];
+    [dictionary setObject:v18 forKeyedSubscript:@"aboveNinetyFivepcOfMax"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -248,7 +248,7 @@ LABEL_3:
   v19 = MEMORY[0x1E696AD98];
   [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self absMaxVal];
   v20 = [v19 numberWithFloat:?];
-  [v3 setObject:v20 forKeyedSubscript:@"absMaxVal"];
+  [dictionary setObject:v20 forKeyedSubscript:@"absMaxVal"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -264,7 +264,7 @@ LABEL_4:
 
 LABEL_31:
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHCoreSpeechPreprocessorCompleted beepLocation](self, "beepLocation")}];
-  [v3 setObject:v21 forKeyedSubscript:@"beepLocation"];
+  [dictionary setObject:v21 forKeyedSubscript:@"beepLocation"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -282,7 +282,7 @@ LABEL_32:
   v22 = MEMORY[0x1E696AD98];
   [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self beepPower];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"beepPower"];
+  [dictionary setObject:v23 forKeyedSubscript:@"beepPower"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -298,19 +298,19 @@ LABEL_6:
 
 LABEL_33:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHCoreSpeechPreprocessorCompleted initialContinousZeros](self, "initialContinousZeros")}];
-  [v3 setObject:v24 forKeyedSubscript:@"initialContinousZeros"];
+  [dictionary setObject:v24 forKeyedSubscript:@"initialContinousZeros"];
 
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHCoreSpeechPreprocessorCompleted maxContinousZeros](self, "maxContinousZeros")}];
-    [v3 setObject:v5 forKeyedSubscript:@"maxContinousZeros"];
+    [dictionary setObject:v5 forKeyedSubscript:@"maxContinousZeros"];
   }
 
 LABEL_8:
   if ([(NSArray *)self->_midSegmentContinousZeros count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -330,16 +330,16 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -349,14 +349,14 @@ LABEL_8:
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"midSegmentContinousZeros"];
+    [dictionary setObject:array forKeyedSubscript:@"midSegmentContinousZeros"];
   }
 
   v14 = self->_has;
   if ((v14 & 0x80) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHCoreSpeechPreprocessorCompleted numTotalInputSamples](self, "numTotalInputSamples")}];
-    [v3 setObject:v25 forKeyedSubscript:@"numTotalInputSamples"];
+    [dictionary setObject:v25 forKeyedSubscript:@"numTotalInputSamples"];
 
     v14 = self->_has;
     if ((v14 & 0x100) == 0)
@@ -377,7 +377,7 @@ LABEL_22:
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHCoreSpeechPreprocessorCompleted numTotalOutputSamples](self, "numTotalOutputSamples")}];
-  [v3 setObject:v26 forKeyedSubscript:@"numTotalOutputSamples"];
+  [dictionary setObject:v26 forKeyedSubscript:@"numTotalOutputSamples"];
 
   v14 = self->_has;
   if ((v14 & 0x10) == 0)
@@ -395,7 +395,7 @@ LABEL_37:
   v27 = MEMORY[0x1E696AD98];
   [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self originalPower];
   v28 = [v27 numberWithFloat:?];
-  [v3 setObject:v28 forKeyedSubscript:@"originalPower"];
+  [dictionary setObject:v28 forKeyedSubscript:@"originalPower"];
 
   v14 = self->_has;
   if ((v14 & 8) == 0)
@@ -413,19 +413,19 @@ LABEL_38:
   v29 = MEMORY[0x1E696AD98];
   [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self signalPower];
   v30 = [v29 numberWithFloat:?];
-  [v3 setObject:v30 forKeyedSubscript:@"signalPower"];
+  [dictionary setObject:v30 forKeyedSubscript:@"signalPower"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_25:
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHCoreSpeechPreprocessorCompleted statsComputed](self, "statsComputed")}];
-    [v3 setObject:v15 forKeyedSubscript:@"statsComputed"];
+    [dictionary setObject:v15 forKeyedSubscript:@"statsComputed"];
   }
 
 LABEL_26:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -704,16 +704,16 @@ LABEL_54:
   return v10 ^ v9 ^ v15 ^ v16 ^ v21 ^ v26 ^ v31 ^ v36 ^ v37 ^ v38 ^ v39 ^ [(NSArray *)self->_midSegmentContinousZeros hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_50;
@@ -722,13 +722,13 @@ LABEL_54:
   if (*&has)
   {
     beepLocation = self->_beepLocation;
-    if (beepLocation != [v4 beepLocation])
+    if (beepLocation != [equalCopy beepLocation])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -737,13 +737,13 @@ LABEL_54:
     if (v8)
     {
       statsComputed = self->_statsComputed;
-      if (statsComputed != [v4 statsComputed])
+      if (statsComputed != [equalCopy statsComputed])
       {
         goto LABEL_50;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -752,14 +752,14 @@ LABEL_54:
       if (v10)
       {
         beepPower = self->_beepPower;
-        [v4 beepPower];
+        [equalCopy beepPower];
         if (beepPower != v12)
         {
           goto LABEL_50;
         }
 
         has = self->_has;
-        v6 = v4[40];
+        v6 = equalCopy[40];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -768,14 +768,14 @@ LABEL_54:
         if (v13)
         {
           signalPower = self->_signalPower;
-          [v4 signalPower];
+          [equalCopy signalPower];
           if (signalPower != v15)
           {
             goto LABEL_50;
           }
 
           has = self->_has;
-          v6 = v4[40];
+          v6 = equalCopy[40];
         }
 
         v16 = (*&has >> 4) & 1;
@@ -784,14 +784,14 @@ LABEL_54:
           if (v16)
           {
             originalPower = self->_originalPower;
-            [v4 originalPower];
+            [equalCopy originalPower];
             if (originalPower != v18)
             {
               goto LABEL_50;
             }
 
             has = self->_has;
-            v6 = v4[40];
+            v6 = equalCopy[40];
           }
 
           v19 = (*&has >> 5) & 1;
@@ -800,14 +800,14 @@ LABEL_54:
             if (v19)
             {
               absMaxVal = self->_absMaxVal;
-              [v4 absMaxVal];
+              [equalCopy absMaxVal];
               if (absMaxVal != v21)
               {
                 goto LABEL_50;
               }
 
               has = self->_has;
-              v6 = v4[40];
+              v6 = equalCopy[40];
             }
 
             v22 = (*&has >> 6) & 1;
@@ -816,14 +816,14 @@ LABEL_54:
               if (v22)
               {
                 aboveNinetyFivepcOfMax = self->_aboveNinetyFivepcOfMax;
-                [v4 aboveNinetyFivepcOfMax];
+                [equalCopy aboveNinetyFivepcOfMax];
                 if (aboveNinetyFivepcOfMax != v24)
                 {
                   goto LABEL_50;
                 }
 
                 has = self->_has;
-                v6 = v4[40];
+                v6 = equalCopy[40];
               }
 
               v25 = (*&has >> 7) & 1;
@@ -832,13 +832,13 @@ LABEL_54:
                 if (v25)
                 {
                   numTotalInputSamples = self->_numTotalInputSamples;
-                  if (numTotalInputSamples != [v4 numTotalInputSamples])
+                  if (numTotalInputSamples != [equalCopy numTotalInputSamples])
                   {
                     goto LABEL_50;
                   }
 
                   has = self->_has;
-                  v6 = v4[40];
+                  v6 = equalCopy[40];
                 }
 
                 v27 = (*&has >> 8) & 1;
@@ -847,13 +847,13 @@ LABEL_54:
                   if (v27)
                   {
                     numTotalOutputSamples = self->_numTotalOutputSamples;
-                    if (numTotalOutputSamples != [v4 numTotalOutputSamples])
+                    if (numTotalOutputSamples != [equalCopy numTotalOutputSamples])
                     {
                       goto LABEL_50;
                     }
 
                     has = self->_has;
-                    v6 = v4[40];
+                    v6 = equalCopy[40];
                   }
 
                   v29 = (*&has >> 9) & 1;
@@ -862,27 +862,27 @@ LABEL_54:
                     if (v29)
                     {
                       initialContinousZeros = self->_initialContinousZeros;
-                      if (initialContinousZeros != [v4 initialContinousZeros])
+                      if (initialContinousZeros != [equalCopy initialContinousZeros])
                       {
                         goto LABEL_50;
                       }
 
                       has = self->_has;
-                      v6 = v4[40];
+                      v6 = equalCopy[40];
                     }
 
                     v31 = (*&has >> 10) & 1;
                     if (v31 == ((v6 >> 10) & 1))
                     {
-                      if (!v31 || (maxContinousZeros = self->_maxContinousZeros, maxContinousZeros == [v4 maxContinousZeros]))
+                      if (!v31 || (maxContinousZeros = self->_maxContinousZeros, maxContinousZeros == [equalCopy maxContinousZeros]))
                       {
-                        v33 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
-                        v34 = [v4 midSegmentContinousZeros];
-                        v35 = v34;
-                        if ((v33 != 0) != (v34 == 0))
+                        midSegmentContinousZeros = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
+                        midSegmentContinousZeros2 = [equalCopy midSegmentContinousZeros];
+                        v35 = midSegmentContinousZeros2;
+                        if ((midSegmentContinousZeros != 0) != (midSegmentContinousZeros2 == 0))
                         {
-                          v36 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
-                          if (!v36)
+                          midSegmentContinousZeros3 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
+                          if (!midSegmentContinousZeros3)
                           {
 
 LABEL_53:
@@ -890,10 +890,10 @@ LABEL_53:
                             goto LABEL_51;
                           }
 
-                          v37 = v36;
-                          v38 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
-                          v39 = [v4 midSegmentContinousZeros];
-                          v40 = [v38 isEqual:v39];
+                          v37 = midSegmentContinousZeros3;
+                          midSegmentContinousZeros4 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros];
+                          midSegmentContinousZeros5 = [equalCopy midSegmentContinousZeros];
+                          v40 = [midSegmentContinousZeros4 isEqual:midSegmentContinousZeros5];
 
                           if (v40)
                           {
@@ -923,10 +923,10 @@ LABEL_51:
   return v41;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1098,27 +1098,27 @@ LABEL_13:
   }
 }
 
-- (void)addMidSegmentContinousZeros:(id)a3
+- (void)addMidSegmentContinousZeros:(id)zeros
 {
-  v4 = a3;
+  zerosCopy = zeros;
   midSegmentContinousZeros = self->_midSegmentContinousZeros;
-  v8 = v4;
+  v8 = zerosCopy;
   if (!midSegmentContinousZeros)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_midSegmentContinousZeros;
-    self->_midSegmentContinousZeros = v6;
+    self->_midSegmentContinousZeros = array;
 
-    v4 = v8;
+    zerosCopy = v8;
     midSegmentContinousZeros = self->_midSegmentContinousZeros;
   }
 
-  [(NSArray *)midSegmentContinousZeros addObject:v4];
+  [(NSArray *)midSegmentContinousZeros addObject:zerosCopy];
 }
 
-- (void)setHasMaxContinousZeros:(BOOL)a3
+- (void)setHasMaxContinousZeros:(BOOL)zeros
 {
-  if (a3)
+  if (zeros)
   {
     v3 = 1024;
   }
@@ -1131,9 +1131,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasInitialContinousZeros:(BOOL)a3
+- (void)setHasInitialContinousZeros:(BOOL)zeros
 {
-  if (a3)
+  if (zeros)
   {
     v3 = 512;
   }
@@ -1146,9 +1146,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumTotalOutputSamples:(BOOL)a3
+- (void)setHasNumTotalOutputSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 256;
   }
@@ -1161,9 +1161,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumTotalInputSamples:(BOOL)a3
+- (void)setHasNumTotalInputSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 128;
   }
@@ -1176,9 +1176,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAboveNinetyFivepcOfMax:(BOOL)a3
+- (void)setHasAboveNinetyFivepcOfMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 64;
   }
@@ -1191,9 +1191,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAbsMaxVal:(BOOL)a3
+- (void)setHasAbsMaxVal:(BOOL)val
 {
-  if (a3)
+  if (val)
   {
     v3 = 32;
   }
@@ -1206,9 +1206,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasOriginalPower:(BOOL)a3
+- (void)setHasOriginalPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 16;
   }
@@ -1221,9 +1221,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSignalPower:(BOOL)a3
+- (void)setHasSignalPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 8;
   }
@@ -1236,9 +1236,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBeepPower:(BOOL)a3
+- (void)setHasBeepPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 4;
   }
@@ -1251,9 +1251,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasStatsComputed:(BOOL)a3
+- (void)setHasStatsComputed:(BOOL)computed
 {
-  if (a3)
+  if (computed)
   {
     v3 = 2;
   }
@@ -1266,14 +1266,14 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHCoreSpeechPreprocessorCompleted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self midSegmentContinousZeros:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(MHSchemaMHCoreSpeechPreprocessorCompleted *)self setMidSegmentContinousZeros:v7];
 

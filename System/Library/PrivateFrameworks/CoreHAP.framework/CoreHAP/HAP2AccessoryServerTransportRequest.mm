@@ -3,7 +3,7 @@
 - (HAP2AccessoryServerTransportRequest)init;
 - (id)debugDescription;
 - (id)description;
-- (id)initWithEndpoint:(void *)a3 data:(char)a4 encrypted:(void *)a5 mimeType:(char)a6 forReading:(void *)a7 dscpPriority:;
+- (id)initWithEndpoint:(void *)endpoint data:(char)data encrypted:(void *)encrypted mimeType:(char)type forReading:(void *)reading dscpPriority:;
 @end
 
 @implementation HAP2AccessoryServerTransportRequest
@@ -24,9 +24,9 @@
     identifier = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@ %p id=%llu>", v5, self, identifier];
+  identifier = [v3 stringWithFormat:@"<%@ %p id=%llu>", v5, self, identifier];
 
-  return v8;
+  return identifier;
 }
 
 - (id)description
@@ -45,35 +45,35 @@
     identifier = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@ id=%llu>", v5, identifier];
+  identifier = [v3 stringWithFormat:@"<%@ id=%llu>", v5, identifier];
 
-  return v8;
+  return identifier;
 }
 
-- (id)initWithEndpoint:(void *)a3 data:(char)a4 encrypted:(void *)a5 mimeType:(char)a6 forReading:(void *)a7 dscpPriority:
+- (id)initWithEndpoint:(void *)endpoint data:(char)data encrypted:(void *)encrypted mimeType:(char)type forReading:(void *)reading dscpPriority:
 {
   v14 = a2;
-  v15 = a3;
-  v16 = a5;
-  if (a1)
+  endpointCopy = endpoint;
+  encryptedCopy = encrypted;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = HAP2AccessoryServerTransportRequest;
     v17 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v17;
+    self = v17;
     if (v17)
     {
       objc_storeStrong(v17 + 2, a2);
-      *(a1 + 8) = a6;
-      *(a1 + 9) = a4;
-      objc_storeStrong(a1 + 3, a5);
-      objc_storeStrong(a1 + 4, a3);
-      a1[6] = atomic_fetch_add(&initWithEndpoint_data_encrypted_mimeType_forReading_dscpPriority__nextIdentifier, 1uLL);
-      a1[5] = a7;
+      *(self + 8) = type;
+      *(self + 9) = data;
+      objc_storeStrong(self + 3, encrypted);
+      objc_storeStrong(self + 4, endpoint);
+      self[6] = atomic_fetch_add(&initWithEndpoint_data_encrypted_mimeType_forReading_dscpPriority__nextIdentifier, 1uLL);
+      self[5] = reading;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (HAP2AccessoryServerTransportRequest)init

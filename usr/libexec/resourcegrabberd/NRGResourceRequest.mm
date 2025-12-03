@@ -1,23 +1,23 @@
 @interface NRGResourceRequest
-- (id)sendWithTransport:(id)a3 toDevice:(id)a4 withTimeout:(double)a5;
+- (id)sendWithTransport:(id)transport toDevice:(id)device withTimeout:(double)timeout;
 - (void)abort;
-- (void)handleResponse:(id)a3;
+- (void)handleResponse:(id)response;
 - (void)invalidateTimer;
-- (void)timerAbort:(id)a3;
+- (void)timerAbort:(id)abort;
 @end
 
 @implementation NRGResourceRequest
 
-- (id)sendWithTransport:(id)a3 toDevice:(id)a4 withTimeout:(double)a5
+- (id)sendWithTransport:(id)transport toDevice:(id)device withTimeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  transportCopy = transport;
+  deviceCopy = device;
   if (!self->_completionBlock)
   {
     sub_100011324();
   }
 
-  if (!v8)
+  if (!transportCopy)
   {
     sub_1000112F8();
   }
@@ -27,13 +27,13 @@
     sub_1000112CC();
   }
 
-  v10 = v9;
+  v10 = deviceCopy;
   v11 = objc_alloc_init(NRGPBResourceRequest);
   [(NRGPBResourceRequest *)v11 setType:self->_type];
   [(NRGPBResourceRequest *)v11 setIconVariant:self->_variant];
   [(NRGPBResourceRequest *)v11 setBundleID:self->_bundleID];
   v12 = IDSCopyIDForDevice();
-  v13 = [v8 sendProtobufRequest:v11 type:0 priority:200 expectsResponse:1 requestHandler:0 errorHandler:&stru_100020738 toDevice:a5 withTimeout:v12];
+  v13 = [transportCopy sendProtobufRequest:v11 type:0 priority:200 expectsResponse:1 requestHandler:0 errorHandler:&stru_100020738 toDevice:timeout withTimeout:v12];
   idsIdentifier = self->_idsIdentifier;
   self->_idsIdentifier = v13;
 
@@ -43,9 +43,9 @@
     v16 = NSStringFromClass(v15);
     v17 = [NSString stringWithFormat:@"%@_resource", v16];
 
-    v18 = [[PCPersistentTimer alloc] initWithTimeInterval:v17 serviceIdentifier:self target:"timerAbort:" selector:v17 userInfo:a5 + a5];
+    timeout = [[PCPersistentTimer alloc] initWithTimeInterval:v17 serviceIdentifier:self target:"timerAbort:" selector:v17 userInfo:timeout + timeout];
     persistentTimer = self->_persistentTimer;
-    self->_persistentTimer = v18;
+    self->_persistentTimer = timeout;
 
     [(PCPersistentTimer *)self->_persistentTimer setMinimumEarlyFireProportion:1.0];
     [(PCPersistentTimer *)self->_persistentTimer scheduleInQueue:&_dispatch_main_q];
@@ -62,11 +62,11 @@
   return v20;
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(NRGResourceRequest *)self invalidateTimer];
-  if (!v4)
+  if (!responseCopy)
   {
 LABEL_12:
     (*(self->_completionBlock + 2))();
@@ -79,18 +79,18 @@ LABEL_12:
 
   if (v7)
   {
-    v8 = [v4 resource];
-    v9 = [v4 checksumData];
-    v10 = [v8 matchesChecksumData:v9];
+    resource = [responseCopy resource];
+    checksumData = [responseCopy checksumData];
+    v10 = [resource matchesChecksumData:checksumData];
 
     if (!v10)
     {
-      if ([v4 hasResource] && (objc_msgSend(v4, "resource"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v14))
+      if ([responseCopy hasResource] && (objc_msgSend(responseCopy, "resource"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v14))
       {
         v15 = nrg_daemon_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          sub_1000113C8(self, v4, v15);
+          sub_1000113C8(self, responseCopy, v15);
         }
       }
 
@@ -101,16 +101,16 @@ LABEL_12:
         {
           bundleID = self->_bundleID;
           variant = self->_variant;
-          v18 = [v4 hasResource];
-          v19 = [v4 resource];
+          hasResource = [responseCopy hasResource];
+          resource2 = [responseCopy resource];
           v20 = 138413058;
           v21 = bundleID;
           v22 = 1024;
           v23 = variant;
           v24 = 1024;
-          v25 = v18;
+          v25 = hasResource;
           v26 = 2048;
-          v27 = [v19 length];
+          v27 = [resource2 length];
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "no resource received for %@ (%d) hasResource %{BOOL}u response.resource.length %lu", &v20, 0x22u);
         }
       }
@@ -120,25 +120,25 @@ LABEL_12:
   }
 
   completionBlock = self->_completionBlock;
-  v12 = [v4 resource];
-  completionBlock[2](completionBlock, v12);
+  resource3 = [responseCopy resource];
+  completionBlock[2](completionBlock, resource3);
 
 LABEL_13:
 }
 
-- (void)timerAbort:(id)a3
+- (void)timerAbort:(id)abort
 {
-  v4 = a3;
+  abortCopy = abort;
   v5 = nrg_daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 userInfo];
+    userInfo = [abortCopy userInfo];
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v8;
+    v12 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ %@ timeout fired", &v9, 0x16u);
   }
 

@@ -1,18 +1,18 @@
 @interface PreviewScalingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PreviewScalingView
 
-- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_contentView) = 0;
   v7 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_targetSize;
   *v7 = 0;
@@ -23,14 +23,14 @@
   v8[8] = 1;
   v12.receiver = self;
   v12.super_class = type metadata accessor for PreviewScalingView();
-  v9 = [(PreviewScalingView *)&v12 initWithFrame:x, y, width, height];
-  v10 = [(PreviewScalingView *)v9 layer];
-  [v10 setMasksToBounds_];
+  height = [(PreviewScalingView *)&v12 initWithFrame:x, y, width, height];
+  layer = [(PreviewScalingView *)height layer];
+  [layer setMasksToBounds_];
 
-  return v9;
+  return height;
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_contentView) = 0;
   v3 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_targetSize;
@@ -45,13 +45,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = (self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_targetSize);
   if (*(&self->super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_DC3BA41EEB072E14570EF1C5DEF2692418PreviewScalingView_targetSize))
   {
-    height = a3.height;
-    width = a3.width;
+    height = fits.height;
+    width = fits.width;
     v8.receiver = self;
     v8.super_class = type metadata accessor for PreviewScalingView();
     [(PreviewScalingView *)&v8 sizeThatFits:width, height];
@@ -70,7 +70,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFEC49C();
 }
 

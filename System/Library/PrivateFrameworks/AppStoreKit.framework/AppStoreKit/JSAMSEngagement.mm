@@ -1,28 +1,28 @@
 @interface JSAMSEngagement
 - (_TtC11AppStoreKit15JSAMSEngagement)init;
-- (id)enqueueData:(id)a3;
-- (id)performRequest:(id)a3;
+- (id)enqueueData:(id)data;
+- (id)performRequest:(id)request;
 @end
 
 @implementation JSAMSEngagement
 
-- (id)enqueueData:(id)a3
+- (id)enqueueData:(id)data
 {
   swift_getObjectType();
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = sub_1E1AF6D4C();
   v8 = sub_1E1AF6D5C();
 
   return v8;
 }
 
-- (id)performRequest:(id)a3
+- (id)performRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1E1AE5154(v4);
+  requestCopy = request;
+  selfCopy = self;
+  v6 = sub_1E1AE5154(requestCopy);
 
   return v6;
 }

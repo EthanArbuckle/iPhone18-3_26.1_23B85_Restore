@@ -1,21 +1,21 @@
 @interface CTLineHeightToNSParagraphStyleBaselineIntervalConverter
-+ (double)intervalFor:(void *)a3;
++ (double)intervalFor:(void *)for;
 - (CTLineHeightToNSParagraphStyleBaselineIntervalConverter)init;
 @end
 
 @implementation CTLineHeightToNSParagraphStyleBaselineIntervalConverter
 
-+ (double)intervalFor:(void *)a3
++ (double)intervalFor:(void *)for
 {
   result = 0.0;
-  if (*(a3 + 8) == 2)
+  if (*(for + 8) == 2)
   {
-    result = *a3;
+    result = *for;
   }
 
-  if (*(a3 + 8) <= 1u)
+  if (*(for + 8) <= 1u)
   {
-    return *a3;
+    return *for;
   }
 
   return result;

@@ -1,65 +1,65 @@
 @interface GKMultiplayerMatchService
-+ (id)makeBaseServerRequestForMatchRequest:(id)a3 playerCount:(int64_t)a4 rematchID:(id)a5 connInfo:(int64_t)a6;
-+ (id)makePlayersDictionaryForMatchRequest:(id)a3 transportContext:(id)a4;
-- (BOOL)zoneNotFoundFromOperation:(id)a3 operationError:(id)a4;
++ (id)makeBaseServerRequestForMatchRequest:(id)request playerCount:(int64_t)count rematchID:(id)d connInfo:(int64_t)info;
++ (id)makePlayersDictionaryForMatchRequest:(id)request transportContext:(id)context;
+- (BOOL)zoneNotFoundFromOperation:(id)operation operationError:(id)error;
 - (GKPseudonymManager)pseudonymManager;
 - (_TtC14GameDaemonCore13GameDaemonTTR)ttrHelper;
-- (id)ensureGroup:(id)a3 participants:(id)a4 playedAt:(int64_t)a5 numberOfAutomatched:(int64_t)a6 moc:(id)a7 list:(id)a8;
+- (id)ensureGroup:(id)group participants:(id)participants playedAt:(int64_t)at numberOfAutomatched:(int64_t)automatched moc:(id)moc list:(id)list;
 - (id)privateDatabase;
-- (void)_performRelayAction:(id)a3 request:(id)a4 handler:(id)a5;
-- (void)acceptGameInvite:(id)a3 transportContext:(id)a4 handler:(id)a5;
-- (void)cancelGameInviteWithHandler:(id)a3;
-- (void)cancelOutstandingMatchRequestWithHandler:(id)a3;
-- (void)cancelRelayRequest:(id)a3 handler:(id)a4;
-- (void)convertToInternalObjects:(id)a3 results:(id)a4;
-- (void)declineGameInvite:(id)a3 reason:(int64_t)a4 handler:(id)a5;
-- (void)fetchDevicePushToken:(id)a3;
-- (void)fetchOnDeviceMultiplayerBundleIDsForNewBundleID:(id)a3 handler:(id)a4;
-- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)a3;
-- (void)fetchPseudonymIfNeededWithTransportContext:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchTransportOverrideWithHandler:(id)a3;
-- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)a3 descriptionAddition:(id)a4 handler:(id)a5;
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4 handler:(id)a5;
-- (void)getAcceptedGameInviteWithHandler:(id)a3;
-- (void)getCompatibilityMatrix:(id)a3 handler:(id)a4;
-- (void)getFlowRateForPlayerGroup:(int64_t)a3 handler:(id)a4;
-- (void)getFlowRateWithPlayerGroup:(id)a3 queueName:(id)a4 handler:(id)a5;
-- (void)getInviteSessionTokenWithHandler:(id)a3;
-- (void)getMultiPlayerGroups:(id)a3;
-- (void)getPlayersForMatchRequest:(id)a3 playerCount:(int64_t)a4 rematchID:(id)a5 transportContext:(id)a6 handler:(id)a7;
-- (void)getPlayersToInviteWithHandlerV2:(id)a3;
-- (void)hasCanceledMultiplayerInitiateBulletinForSessionToken:(id)a3 handler:(id)a4;
-- (void)hasExistingInviteSessionWithHandler:(id)a3;
-- (void)initiateInvitationForMatchRequest:(id)a3 recipients:(id)a4 devicePushTokenMap:(id)a5 isNearbyInvite:(BOOL)a6 availableForMessageV2:(BOOL)a7 transportContext:(id)a8 handler:(id)a9;
-- (void)initiateRelayRequest:(id)a3 handler:(id)a4;
-- (void)invitePlayersForMatchRequest:(id)a3 devicePushTokenMap:(id)a4 isNearbyInvite:(BOOL)a5 transportContext:(id)a6 handler:(id)a7;
-- (void)isGameCenterMultiplayerGameForBundleID:(id)a3 handler:(id)a4;
-- (void)loadCloudKitShareURLWithPlayer:(id)a3 matchRequest:(id)a4 transportContext:(id)a5 availableForMessageV2:(BOOL)a6 handler:(id)a7;
-- (void)loadCloudKitShareURLWithPlayer:(id)a3 matchRequest:(id)a4 transportContext:(id)a5 handler:(id)a6;
-- (void)nearbyInviteWasCancelled:(id)a3;
-- (void)presentNearbyInvite:(id)a3;
-- (void)putMultiPlayerGroup:(id)a3 participants:(id)a4 playedAt:(int64_t)a5 bundleID:(id)a6 numberOfAutomatched:(int64_t)a7 isSharedLink:(BOOL)a8 completionHandler:(id)a9;
+- (void)_performRelayAction:(id)action request:(id)request handler:(id)handler;
+- (void)acceptGameInvite:(id)invite transportContext:(id)context handler:(id)handler;
+- (void)cancelGameInviteWithHandler:(id)handler;
+- (void)cancelOutstandingMatchRequestWithHandler:(id)handler;
+- (void)cancelRelayRequest:(id)request handler:(id)handler;
+- (void)convertToInternalObjects:(id)objects results:(id)results;
+- (void)declineGameInvite:(id)invite reason:(int64_t)reason handler:(id)handler;
+- (void)fetchDevicePushToken:(id)token;
+- (void)fetchOnDeviceMultiplayerBundleIDsForNewBundleID:(id)d handler:(id)handler;
+- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)handler;
+- (void)fetchPseudonymIfNeededWithTransportContext:(id)context withCompletionHandler:(id)handler;
+- (void)fetchTransportOverrideWithHandler:(id)handler;
+- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)identifier descriptionAddition:(id)addition handler:(id)handler;
+- (void)forgetParticipant:(id)participant deviceID:(id)d handler:(id)handler;
+- (void)getAcceptedGameInviteWithHandler:(id)handler;
+- (void)getCompatibilityMatrix:(id)matrix handler:(id)handler;
+- (void)getFlowRateForPlayerGroup:(int64_t)group handler:(id)handler;
+- (void)getFlowRateWithPlayerGroup:(id)group queueName:(id)name handler:(id)handler;
+- (void)getInviteSessionTokenWithHandler:(id)handler;
+- (void)getMultiPlayerGroups:(id)groups;
+- (void)getPlayersForMatchRequest:(id)request playerCount:(int64_t)count rematchID:(id)d transportContext:(id)context handler:(id)handler;
+- (void)getPlayersToInviteWithHandlerV2:(id)v2;
+- (void)hasCanceledMultiplayerInitiateBulletinForSessionToken:(id)token handler:(id)handler;
+- (void)hasExistingInviteSessionWithHandler:(id)handler;
+- (void)initiateInvitationForMatchRequest:(id)request recipients:(id)recipients devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite availableForMessageV2:(BOOL)v2 transportContext:(id)context handler:(id)handler;
+- (void)initiateRelayRequest:(id)request handler:(id)handler;
+- (void)invitePlayersForMatchRequest:(id)request devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite transportContext:(id)context handler:(id)handler;
+- (void)isGameCenterMultiplayerGameForBundleID:(id)d handler:(id)handler;
+- (void)loadCloudKitShareURLWithPlayer:(id)player matchRequest:(id)request transportContext:(id)context availableForMessageV2:(BOOL)v2 handler:(id)handler;
+- (void)loadCloudKitShareURLWithPlayer:(id)player matchRequest:(id)request transportContext:(id)context handler:(id)handler;
+- (void)nearbyInviteWasCancelled:(id)cancelled;
+- (void)presentNearbyInvite:(id)invite;
+- (void)putMultiPlayerGroup:(id)group participants:(id)participants playedAt:(int64_t)at bundleID:(id)d numberOfAutomatched:(int64_t)automatched isSharedLink:(BOOL)link completionHandler:(id)handler;
 - (void)removeInviteSession;
 - (void)removeInviteSessionIfNeeded;
-- (void)removePlayersFromGameInviteV2:(id)a3 handler:(id)a4;
-- (void)requestTTRLogsWith:(id)a3 handler:(id)a4;
-- (void)revokePseudonym:(id)a3 withCompletionHandler:(id)a4;
-- (void)saveRecord:(id)a3 shouldRetry:(BOOL)a4 withHandler:(id)a5;
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 usePeerDiscovery:(BOOL)a6 handler:(id)a7;
-- (void)sendInvitationUpdate:(id)a3 handler:(id)a4;
-- (void)sendReconnectInvitation:(id)a3 toPlayer:(id)a4 connectionData:(id)a5 sessionToken:(id)a6 pushToken:(id)a7 handler:(id)a8;
-- (void)setShareInvitees:(id)a3;
-- (void)setShareRecordID:(id)a3;
-- (void)setupInviteShareWithRecordID:(id)a3 rootRecord:(id)a4 shouldRetry:(BOOL)a5 handler:(id)a6;
+- (void)removePlayersFromGameInviteV2:(id)v2 handler:(id)handler;
+- (void)requestTTRLogsWith:(id)with handler:(id)handler;
+- (void)revokePseudonym:(id)pseudonym withCompletionHandler:(id)handler;
+- (void)saveRecord:(id)record shouldRetry:(BOOL)retry withHandler:(id)handler;
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data usePeerDiscovery:(BOOL)discovery handler:(id)handler;
+- (void)sendInvitationUpdate:(id)update handler:(id)handler;
+- (void)sendReconnectInvitation:(id)invitation toPlayer:(id)player connectionData:(id)data sessionToken:(id)token pushToken:(id)pushToken handler:(id)handler;
+- (void)setShareInvitees:(id)invitees;
+- (void)setShareRecordID:(id)d;
+- (void)setupInviteShareWithRecordID:(id)d rootRecord:(id)record shouldRetry:(BOOL)retry handler:(id)handler;
 - (void)setupNearbyDiscovery;
-- (void)startNearbyAdvertisingWithDiscoveryInfo:(id)a3 handler:(id)a4;
-- (void)startNearbyBrowsingWithPlayerID:(id)a3 handler:(id)a4;
-- (void)stopNearbyAdvertisingWithHandler:(id)a3;
-- (void)stopNearbyBrowsingWithHandler:(id)a3;
-- (void)updateCacheWithNearbyProfileDictionary:(id)a3 handler:(id)a4;
-- (void)updateRelayRequest:(id)a3 handler:(id)a4;
-- (void)uploadLogsForRadar:(id)a3 from:(id)a4 handler:(id)a5;
-- (void)validateRequests:(id)a3 andFileMultiplayerTTRIfNeededWithContext:(id)a4;
+- (void)startNearbyAdvertisingWithDiscoveryInfo:(id)info handler:(id)handler;
+- (void)startNearbyBrowsingWithPlayerID:(id)d handler:(id)handler;
+- (void)stopNearbyAdvertisingWithHandler:(id)handler;
+- (void)stopNearbyBrowsingWithHandler:(id)handler;
+- (void)updateCacheWithNearbyProfileDictionary:(id)dictionary handler:(id)handler;
+- (void)updateRelayRequest:(id)request handler:(id)handler;
+- (void)uploadLogsForRadar:(id)radar from:(id)from handler:(id)handler;
+- (void)validateRequests:(id)requests andFileMultiplayerTTRIfNeededWithContext:(id)context;
 @end
 
 @implementation GKMultiplayerMatchService
@@ -70,10 +70,10 @@
   if (!ttrHelper)
   {
     v4 = [_TtC14GameDaemonCore13GameDaemonTTR alloc];
-    v5 = [(GKService *)self clientProxy];
-    v6 = [v5 bundleIdentifier];
-    v7 = [(GKService *)self localPlayer];
-    v8 = [(GameDaemonTTR *)v4 initWithClientProxyBundleIdentifier:v6 localPlayer:v7];
+    clientProxy = [(GKService *)self clientProxy];
+    bundleIdentifier = [clientProxy bundleIdentifier];
+    localPlayer = [(GKService *)self localPlayer];
+    v8 = [(GameDaemonTTR *)v4 initWithClientProxyBundleIdentifier:bundleIdentifier localPlayer:localPlayer];
     v9 = self->_ttrHelper;
     self->_ttrHelper = v8;
 
@@ -98,21 +98,21 @@
   return pseudonymManager;
 }
 
-- (void)fetchPseudonymIfNeededWithTransportContext:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchPseudonymIfNeededWithTransportContext:(id)context withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 pseudonym];
+  contextCopy = context;
+  handlerCopy = handler;
+  pseudonym = [contextCopy pseudonym];
 
-  if (v8)
+  if (pseudonym)
   {
-    v9 = [v6 pseudonym];
-    v7[2](v7, v9, 0);
+    pseudonym2 = [contextCopy pseudonym];
+    handlerCopy[2](handlerCopy, pseudonym2, 0);
   }
 
   else
   {
-    v9 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
+    pseudonym2 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x3032000000;
@@ -132,20 +132,20 @@
     v12 = v16;
     v13 = v14;
     v10[4] = self;
-    v11 = v7;
-    [v9 isICloudAvailableWithHandler:v10];
+    v11 = handlerCopy;
+    [pseudonym2 isICloudAvailableWithHandler:v10];
 
     _Block_object_dispose(v14, 8);
     _Block_object_dispose(v16, 8);
   }
 }
 
-- (void)getPlayersForMatchRequest:(id)a3 playerCount:(int64_t)a4 rematchID:(id)a5 transportContext:(id)a6 handler:(id)a7
+- (void)getPlayersForMatchRequest:(id)request playerCount:(int64_t)count rematchID:(id)d transportContext:(id)context handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  requestCopy = request;
+  dCopy = d;
+  contextCopy = context;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v16 = GKOSLoggers();
@@ -155,9 +155,9 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v12;
+    v29 = requestCopy;
     v30 = 2112;
-    v31 = v14;
+    v31 = contextCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Get players for match request: %@, transportContext: %@", buf, 0x16u);
   }
 
@@ -166,107 +166,107 @@
   v22[2] = sub_1000CD1B0;
   v22[3] = &unk_100365890;
   v22[4] = self;
-  v23 = v12;
-  v24 = v14;
-  v25 = v13;
-  v26 = v15;
-  v27 = a4;
-  v18 = v15;
-  v19 = v13;
-  v20 = v14;
-  v21 = v12;
+  v23 = requestCopy;
+  v24 = contextCopy;
+  v25 = dCopy;
+  v26 = handlerCopy;
+  countCopy = count;
+  v18 = handlerCopy;
+  v19 = dCopy;
+  v20 = contextCopy;
+  v21 = requestCopy;
   [(GKMultiplayerMatchService *)self cancelOutstandingMatchRequestWithHandler:v22];
 }
 
-+ (id)makeBaseServerRequestForMatchRequest:(id)a3 playerCount:(int64_t)a4 rematchID:(id)a5 connInfo:(int64_t)a6
++ (id)makeBaseServerRequestForMatchRequest:(id)request playerCount:(int64_t)count rematchID:(id)d connInfo:(int64_t)info
 {
-  v9 = a3;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
   v28[0] = @"min-peers";
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 minPlayers]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy minPlayers]);
   v29[0] = v11;
   v28[1] = @"max-peers";
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 maxPlayers]);
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy maxPlayers]);
   v29[1] = v12;
   v28[2] = @"requires-guest-player-capability";
-  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 hasGuestPlayers]);
+  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [requestCopy hasGuestPlayers]);
   v29[2] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
   v15 = [NSMutableDictionary dictionaryWithDictionary:v14];
 
-  if (a4)
+  if (count)
   {
-    v16 = [NSNumber numberWithInteger:a4];
+    v16 = [NSNumber numberWithInteger:count];
     [v15 setObject:v16 forKey:@"num-players"];
   }
 
-  v17 = [v9 queueName];
+  queueName = [requestCopy queueName];
 
-  if (v17)
+  if (queueName)
   {
-    v18 = [v9 queueName];
-    [v15 setObject:v18 forKey:@"queue-name"];
+    queueName2 = [requestCopy queueName];
+    [v15 setObject:queueName2 forKey:@"queue-name"];
 
-    v19 = [v9 properties];
+    properties = [requestCopy properties];
 
-    if (v19)
+    if (properties)
     {
-      v20 = [v9 properties];
-      [v15 setObject:v20 forKey:@"properties"];
+      properties2 = [requestCopy properties];
+      [v15 setObject:properties2 forKey:@"properties"];
     }
   }
 
   else
   {
     v26[0] = @"bucket-id";
-    v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 playerGroup]);
+    v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy playerGroup]);
     v27[0] = v21;
     v26[1] = @"conn-info";
-    v22 = [NSNumber numberWithInteger:a6];
+    v22 = [NSNumber numberWithInteger:info];
     v27[1] = v22;
     v26[2] = @"flags";
-    v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%#.8x", [v9 playerAttributes]);
+    v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%#.8x", [requestCopy playerAttributes]);
     v27[2] = v23;
     v24 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:3];
     [v15 addEntriesFromDictionary:v24];
 
-    if (v10)
+    if (dCopy)
     {
-      [v15 setObject:v10 forKey:@"match-id"];
+      [v15 setObject:dCopy forKey:@"match-id"];
     }
   }
 
   return v15;
 }
 
-+ (id)makePlayersDictionaryForMatchRequest:(id)a3 transportContext:(id)a4
++ (id)makePlayersDictionaryForMatchRequest:(id)request transportContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v42 = +[NSMutableArray array];
-  v7 = [v6 localPlayerID];
-  v8 = v7;
-  if (v7)
+  localPlayerID = [contextCopy localPlayerID];
+  v8 = localPlayerID;
+  if (localPlayerID)
   {
-    v9 = v7;
+    localPlayerID2 = localPlayerID;
   }
 
   else
   {
-    v9 = [v5 localPlayerID];
+    localPlayerID2 = [requestCopy localPlayerID];
   }
 
-  v10 = v9;
+  v10 = localPlayerID2;
 
-  v11 = [v5 properties];
+  properties = [requestCopy properties];
   v12 = @"player-id";
-  if (v11)
+  if (properties)
   {
     v61[1] = @"properties";
     v62[0] = v10;
     v61[0] = @"player-id";
-    v13 = [v5 properties];
-    v62[1] = v13;
+    properties2 = [requestCopy properties];
+    v62[1] = properties2;
     v14 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:2];
   }
 
@@ -279,18 +279,18 @@
 
   v37 = v14;
   [v42 addObject:v14];
-  v15 = [v5 recipientPlayerIDs];
-  v16 = [NSMutableSet setWithArray:v15];
+  recipientPlayerIDs = [requestCopy recipientPlayerIDs];
+  v16 = [NSMutableSet setWithArray:recipientPlayerIDs];
 
-  v17 = [v6 representedPlayerIDs];
+  representedPlayerIDs = [contextCopy representedPlayerIDs];
 
-  if (v17)
+  if (representedPlayerIDs)
   {
-    v18 = [v6 representedPlayerIDs];
-    [v16 addObjectsFromArray:v18];
+    representedPlayerIDs2 = [contextCopy representedPlayerIDs];
+    [v16 addObjectsFromArray:representedPlayerIDs2];
   }
 
-  v38 = v6;
+  v38 = contextCopy;
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
@@ -301,7 +301,7 @@
   {
     v20 = v19;
     v21 = *v50;
-    v40 = v5;
+    v40 = requestCopy;
     v41 = v10;
     v39 = *v50;
     do
@@ -323,8 +323,8 @@
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v25 = [v5 recipientProperties];
-          v26 = [v25 countByEnumeratingWithState:&v45 objects:v57 count:16];
+          recipientProperties = [requestCopy recipientProperties];
+          v26 = [recipientProperties countByEnumeratingWithState:&v45 objects:v57 count:16];
           if (v26)
           {
             v27 = v26;
@@ -335,12 +335,12 @@
               {
                 if (*v46 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(recipientProperties);
                 }
 
                 v30 = *(*(&v45 + 1) + 8 * i);
-                v31 = [v30 playerID];
-                v32 = [v31 isEqualToString:v23];
+                playerID = [v30 playerID];
+                v32 = [playerID isEqualToString:v23];
 
                 if (v32)
                 {
@@ -348,9 +348,9 @@
                   v55[0] = v24;
                   v55[1] = @"properties";
                   v56[0] = v23;
-                  v5 = v40;
-                  v33 = [v40 recipientProperties];
-                  v34 = [v33 objectForKeyedSubscript:v30];
+                  requestCopy = v40;
+                  recipientProperties2 = [v40 recipientProperties];
+                  v34 = [recipientProperties2 objectForKeyedSubscript:v30];
                   v56[1] = v34;
                   v35 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:2];
                   [v42 addObject:v35];
@@ -359,7 +359,7 @@
                 }
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v45 objects:v57 count:16];
+              v27 = [recipientProperties countByEnumeratingWithState:&v45 objects:v57 count:16];
               if (v27)
               {
                 continue;
@@ -372,9 +372,9 @@
           v12 = v24;
           v53 = v24;
           v54 = v23;
-          v25 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-          [v42 addObject:v25];
-          v5 = v40;
+          recipientProperties = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
+          [v42 addObject:recipientProperties];
+          requestCopy = v40;
 LABEL_25:
 
           v10 = v41;
@@ -395,10 +395,10 @@ LABEL_25:
   return v42;
 }
 
-- (void)cancelOutstandingMatchRequestWithHandler:(id)a3
+- (void)cancelOutstandingMatchRequestWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKService *)self clientProxy];
+  handlerCopy = handler;
+  clientProxy = [(GKService *)self clientProxy];
   if (!os_log_GKGeneral)
   {
     v6 = GKOSLoggers();
@@ -411,34 +411,34 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "GKMultiplayerMatchService: cancelOutstandingMatchRequest", buf, 2u);
   }
 
-  [v5 cancelOutstandingCheckMatchStatus];
-  v8 = [v5 currentMatchResponse];
-  v9 = v8;
-  if (v8 && ([v8 transitionToState:5] & 1) != 0)
+  [clientProxy cancelOutstandingCheckMatchStatus];
+  currentMatchResponse = [clientProxy currentMatchResponse];
+  v9 = currentMatchResponse;
+  if (currentMatchResponse && ([currentMatchResponse transitionToState:5] & 1) != 0)
   {
     v10 = [v9 rid];
-    v11 = [v9 matchRequest];
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 playerGroup]);
+    matchRequest = [v9 matchRequest];
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [matchRequest playerGroup]);
 
-    v13 = [v9 matchingGroup];
-    v14 = v13;
-    if (v10 && v12 && v13)
+    matchingGroup = [v9 matchingGroup];
+    v14 = matchingGroup;
+    if (v10 && v12 && matchingGroup)
     {
       v26[0] = @"rid";
       v26[1] = @"bucket-id";
       v27[0] = v10;
       v27[1] = v12;
       v15 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
-      v16 = [v9 matchingGroup];
+      matchingGroup2 = [v9 matchingGroup];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1000CE888;
       v22[3] = &unk_1003658E0;
       v23 = v15;
-      v24 = v5;
-      v25 = v4;
+      v24 = clientProxy;
+      v25 = handlerCopy;
       v17 = v15;
-      [v16 perform:v22];
+      [matchingGroup2 perform:v22];
 
 LABEL_22:
       goto LABEL_23;
@@ -459,18 +459,18 @@ LABEL_22:
       v32 = 2112;
       v33 = v14;
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "cancelOutstandingMatchRequestWithHandler early return with rid: %@, group: %@, matchingGroup: %@", buf, 0x20u);
-      if (!v4)
+      if (!handlerCopy)
       {
         goto LABEL_22;
       }
     }
 
-    else if (!v4)
+    else if (!handlerCopy)
     {
       goto LABEL_22;
     }
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
     goto LABEL_22;
   }
 
@@ -487,42 +487,42 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "cancelOutstandingMatchRequestWithHandler early return due to: cannot transit to canceled state, or response is nil. Response: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_23:
 }
 
-- (void)getFlowRateForPlayerGroup:(int64_t)a3 handler:(id)a4
+- (void)getFlowRateForPlayerGroup:(int64_t)group handler:(id)handler
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
-  [(GKMultiplayerMatchService *)self getFlowRateWithPlayerGroup:v7 queueName:0 handler:v6];
+  handlerCopy = handler;
+  v7 = [NSNumber numberWithInteger:group];
+  [(GKMultiplayerMatchService *)self getFlowRateWithPlayerGroup:v7 queueName:0 handler:handlerCopy];
 }
 
-- (void)getFlowRateWithPlayerGroup:(id)a3 queueName:(id)a4 handler:(id)a5
+- (void)getFlowRateWithPlayerGroup:(id)group queueName:(id)name handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  groupCopy = group;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = [NSString stringWithFormat:@"handler can't be nil"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKMultiplayerMatchService.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v11, "-[GKMultiplayerMatchService getFlowRateWithPlayerGroup:queueName:handler:]", [v13 UTF8String], 402);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v11, "-[GKMultiplayerMatchService getFlowRateWithPlayerGroup:queueName:handler:]", [lastPathComponent UTF8String], 402);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
-  if (v8 && v9)
+  if (groupCopy && nameCopy)
   {
     v15 = [NSString stringWithFormat:@"playerGroup and queueName can't be both non-nil"];
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKMultiplayerMatchService.m"];
-    v17 = [v16 lastPathComponent];
-    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (!(playerGroup && queueName))\n[%s (%s:%d)]", v15, "-[GKMultiplayerMatchService getFlowRateWithPlayerGroup:queueName:handler:]", [v17 UTF8String], 403);
+    lastPathComponent2 = [v16 lastPathComponent];
+    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (!(playerGroup && queueName))\n[%s (%s:%d)]", v15, "-[GKMultiplayerMatchService getFlowRateWithPlayerGroup:queueName:handler:]", [lastPathComponent2 UTF8String], 403);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v18];
   }
@@ -549,34 +549,34 @@ LABEL_23:
   v33[2] = sub_1000CEE24;
   v33[3] = &unk_100365980;
   v33[4] = self;
-  v22 = v8;
+  v22 = groupCopy;
   v34 = v22;
-  v23 = v9;
+  v23 = nameCopy;
   v35 = v23;
   v37 = v38;
   v24 = v21;
   v36 = v24;
   [v24 performOnManagedObjectContext:v33];
-  v25 = [(GKService *)self clientProxy];
-  v26 = [v25 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000CF760;
   v29[3] = &unk_1003618D8;
-  v27 = v10;
+  v27 = handlerCopy;
   v31 = v27;
   v32 = v38;
   v28 = v24;
   v30 = v28;
-  [v28 notifyOnQueue:v26 block:v29];
+  [v28 notifyOnQueue:replyQueue block:v29];
 
   _Block_object_dispose(v38, 8);
 }
 
-- (void)getCompatibilityMatrix:(id)a3 handler:(id)a4
+- (void)getCompatibilityMatrix:(id)matrix handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  matrixCopy = matrix;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -587,21 +587,21 @@ LABEL_23:
     sub_10028C600();
   }
 
-  v9 = [(GKService *)self credential];
-  if (!v9)
+  credential = [(GKService *)self credential];
+  if (!credential)
   {
     v10 = +[GKPlayerCredentialController sharedController];
-    v11 = [(GKService *)self clientProxy];
-    v9 = [v10 primaryCredentialForEnvironment:{objc_msgSend(v11, "environment")}];
+    clientProxy = [(GKService *)self clientProxy];
+    credential = [v10 primaryCredentialForEnvironment:{objc_msgSend(clientProxy, "environment")}];
   }
 
   v12 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 486, "[GKMultiplayerMatchService getCompatibilityMatrix:handler:]"];
   v13 = [GKDispatchGroup dispatchGroupWithName:v12];
 
-  v14 = [(GKService *)self clientProxy];
-  v15 = [v9 playerInternal];
-  v16 = [v15 playerID];
-  v17 = [v14 managedObjectContextForPlayerID:v16];
+  clientProxy2 = [(GKService *)self clientProxy];
+  playerInternal = [credential playerInternal];
+  playerID = [playerInternal playerID];
+  v17 = [clientProxy2 managedObjectContextForPlayerID:playerID];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -609,45 +609,45 @@ LABEL_23:
   v26[3] = &unk_100361F90;
   v18 = v17;
   v27 = v18;
-  v19 = v6;
+  v19 = matrixCopy;
   v28 = v19;
   v20 = v13;
   v29 = v20;
-  v30 = self;
+  selfCopy = self;
   [v20 perform:v26];
-  if (v7)
+  if (handlerCopy)
   {
-    v21 = [(GKService *)self clientProxy];
-    v22 = [v21 replyQueue];
+    clientProxy3 = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy3 replyQueue];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000D0190;
     v23[3] = &unk_100360EB0;
-    v25 = v7;
+    v25 = handlerCopy;
     v24 = v20;
-    [v24 notifyOnQueue:v22 block:v23];
+    [v24 notifyOnQueue:replyQueue block:v23];
   }
 }
 
-- (void)setShareInvitees:(id)a3
+- (void)setShareInvitees:(id)invitees
 {
-  v4 = a3;
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 fetchOrCreateInviteSession];
+  inviteesCopy = invitees;
+  clientProxy = [(GKService *)self clientProxy];
+  fetchOrCreateInviteSession = [clientProxy fetchOrCreateInviteSession];
 
-  v7 = [NSMutableArray arrayWithArray:v4];
-  [v6 setShareInvitees:v7];
+  v7 = [NSMutableArray arrayWithArray:inviteesCopy];
+  [fetchOrCreateInviteSession setShareInvitees:v7];
 
-  v8 = [v6 shareRecordID];
+  shareRecordID = [fetchOrCreateInviteSession shareRecordID];
 
-  if (v8)
+  if (shareRecordID)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v4;
+    v10 = inviteesCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -680,42 +680,42 @@ LABEL_23:
     v18[1] = 3221225472;
     v18[2] = sub_1000D0458;
     v18[3] = &unk_100360F00;
-    v19 = v6;
+    v19 = fetchOrCreateInviteSession;
     v20 = v15;
-    v21 = self;
+    selfCopy = self;
     v17 = v15;
     [v16 perform:v18];
   }
 }
 
-- (void)hasExistingInviteSessionWithHandler:(id)a3
+- (void)hasExistingInviteSessionWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(GKService *)self clientProxy];
-  v5 = [v4 inviteSession];
+  handlerCopy = handler;
+  clientProxy = [(GKService *)self clientProxy];
+  inviteSession = [clientProxy inviteSession];
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v5 != 0);
+    handlerCopy[2](handlerCopy, inviteSession != 0);
   }
 }
 
-- (void)setShareRecordID:(id)a3
+- (void)setShareRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 fetchOrCreateInviteSession];
+  dCopy = d;
+  clientProxy = [(GKService *)self clientProxy];
+  fetchOrCreateInviteSession = [clientProxy fetchOrCreateInviteSession];
 
-  [v6 setShareRecordID:v4];
+  [fetchOrCreateInviteSession setShareRecordID:dCopy];
 }
 
-- (void)initiateInvitationForMatchRequest:(id)a3 recipients:(id)a4 devicePushTokenMap:(id)a5 isNearbyInvite:(BOOL)a6 availableForMessageV2:(BOOL)a7 transportContext:(id)a8 handler:(id)a9
+- (void)initiateInvitationForMatchRequest:(id)request recipients:(id)recipients devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite availableForMessageV2:(BOOL)v2 transportContext:(id)context handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = a9;
+  requestCopy = request;
+  recipientsCopy = recipients;
+  mapCopy = map;
+  contextCopy = context;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v18 = GKOSLoggers();
@@ -725,49 +725,49 @@ LABEL_23:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v43 = v13;
+    v43 = requestCopy;
     v44 = 2112;
-    v45 = v16;
+    v45 = contextCopy;
     v46 = 2112;
-    v47 = v14;
+    v47 = recipientsCopy;
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Initiate invitation for match request: %@\ntransportContext: %@\nrecipients: %@", buf, 0x20u);
   }
 
   v20 = objc_alloc_init(GKInviteInitiateResponse);
   v21 = +[GKDataRequestManager sharedManager];
   v22 = +[GKPreferences shared];
-  v23 = [v22 forceRelay];
+  forceRelay = [v22 forceRelay];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000D0B78;
   v32[3] = &unk_100365A70;
-  v33 = v13;
-  v34 = v14;
-  v40 = a6;
+  v33 = requestCopy;
+  v34 = recipientsCopy;
+  inviteCopy = invite;
   v35 = v20;
-  v36 = v15;
-  v37 = self;
-  v38 = v16;
-  v39 = v17;
-  v41 = a7;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
+  v36 = mapCopy;
+  selfCopy = self;
+  v38 = contextCopy;
+  v39 = handlerCopy;
+  v2Copy = v2;
+  v24 = handlerCopy;
+  v25 = contextCopy;
+  v26 = mapCopy;
   v27 = v20;
-  v28 = v14;
-  v29 = v13;
-  [v21 getValidNATTypeWithForceRelay:v23 withHandler:v32];
+  v28 = recipientsCopy;
+  v29 = requestCopy;
+  [v21 getValidNATTypeWithForceRelay:forceRelay withHandler:v32];
 }
 
-- (void)loadCloudKitShareURLWithPlayer:(id)a3 matchRequest:(id)a4 transportContext:(id)a5 handler:(id)a6
+- (void)loadCloudKitShareURLWithPlayer:(id)player matchRequest:(id)request transportContext:(id)context handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([v12 validTransportSelected] & 1) != 0 || (objc_msgSend(v12, "supportsTransportVersion:", &off_100382430) & 1) == 0)
+  playerCopy = player;
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (([contextCopy validTransportSelected] & 1) != 0 || (objc_msgSend(contextCopy, "supportsTransportVersion:", &off_100382430) & 1) == 0)
   {
-    [(GKMultiplayerMatchService *)self loadCloudKitShareURLWithPlayer:v10 matchRequest:v11 transportContext:v12 availableForMessageV2:0 handler:v13];
+    [(GKMultiplayerMatchService *)self loadCloudKitShareURLWithPlayer:playerCopy matchRequest:requestCopy transportContext:contextCopy availableForMessageV2:0 handler:handlerCopy];
   }
 
   else
@@ -777,7 +777,7 @@ LABEL_23:
     v36 = &v35;
     v37 = 0x2020000000;
     v38 = 0;
-    v15 = [v11 messagesBasedRecipients];
+    messagesBasedRecipients = [requestCopy messagesBasedRecipients];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000D1F90;
@@ -785,7 +785,7 @@ LABEL_23:
     v34 = &v35;
     v16 = v14;
     v33 = v16;
-    [v15 enumerateObjectsUsingBlock:v32];
+    [messagesBasedRecipients enumerateObjectsUsingBlock:v32];
 
     if ((v36[3] & 1) != 0 || ![v16 count])
     {
@@ -806,7 +806,7 @@ LABEL_23:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Skip overriding transport for msg invites. missing: %@, unprefixedHandles count: %@", buf, 0x16u);
       }
 
-      [(GKMultiplayerMatchService *)self loadCloudKitShareURLWithPlayer:v10 matchRequest:v11 transportContext:v12 availableForMessageV2:0 handler:v13];
+      [(GKMultiplayerMatchService *)self loadCloudKitShareURLWithPlayer:playerCopy matchRequest:requestCopy transportContext:contextCopy availableForMessageV2:0 handler:handlerCopy];
     }
 
     else
@@ -826,18 +826,18 @@ LABEL_23:
       }
 
       objc_initWeak(buf, self);
-      v20 = [(GKMultiplayerMatchService *)self contactsIntegrationController];
+      contactsIntegrationController = [(GKMultiplayerMatchService *)self contactsIntegrationController];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_1000D2030;
       v25[3] = &unk_100365AC0;
       objc_copyWeak(&v31, buf);
-      v26 = v10;
-      v27 = v11;
-      v28 = v12;
+      v26 = playerCopy;
+      v27 = requestCopy;
+      v28 = contextCopy;
       v29 = v16;
-      v30 = v13;
-      [v20 fetchMessageTransportV2AvailabilityForUnprefixedHandles:v29 completion:v25];
+      v30 = handlerCopy;
+      [contactsIntegrationController fetchMessageTransportV2AvailabilityForUnprefixedHandles:v29 completion:v25];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(buf);
@@ -847,12 +847,12 @@ LABEL_23:
   }
 }
 
-- (void)loadCloudKitShareURLWithPlayer:(id)a3 matchRequest:(id)a4 transportContext:(id)a5 availableForMessageV2:(BOOL)a6 handler:(id)a7
+- (void)loadCloudKitShareURLWithPlayer:(id)player matchRequest:(id)request transportContext:(id)context availableForMessageV2:(BOOL)v2 handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  playerCopy = player;
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
   v16 = [GKDispatchGroup dispatchGroupWithName:@"loadRecordURL"];
   if (!os_log_GKGeneral)
   {
@@ -863,9 +863,9 @@ LABEL_23:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v35 = v13;
+    v35 = requestCopy;
     v36 = 2112;
-    v37 = v14;
+    v37 = contextCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Loading a CloudKit share URL for matchRequest: %@, transportContext: %@", buf, 0x16u);
   }
 
@@ -874,47 +874,47 @@ LABEL_23:
   v28[2] = sub_1000D2474;
   v28[3] = &unk_1003617E8;
   v28[4] = self;
-  v29 = v13;
-  v33 = a6;
-  v30 = v14;
+  v29 = requestCopy;
+  v2Copy = v2;
+  v30 = contextCopy;
   v19 = v16;
   v31 = v19;
-  v32 = v12;
-  v20 = v12;
-  v21 = v14;
-  v22 = v13;
+  v32 = playerCopy;
+  v20 = playerCopy;
+  v21 = contextCopy;
+  v22 = requestCopy;
   [v19 perform:v28];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000D32D8;
   v25[3] = &unk_100360EB0;
   v26 = v19;
-  v27 = v15;
+  v27 = handlerCopy;
   v23 = v19;
-  v24 = v15;
+  v24 = handlerCopy;
   [v23 notifyOnQueue:&_dispatch_main_q block:v25];
 }
 
-- (void)setupInviteShareWithRecordID:(id)a3 rootRecord:(id)a4 shouldRetry:(BOOL)a5 handler:(id)a6
+- (void)setupInviteShareWithRecordID:(id)d rootRecord:(id)record shouldRetry:(BOOL)retry handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v12)
+  dCopy = d;
+  recordCopy = record;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = [NSString stringWithFormat:@"Handler not set by callers of setupInviteShareWithRecordID:rootRecord:shouldRetry:handler:."];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKMultiplayerMatchService.m"];
-    v15 = [v14 lastPathComponent];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v13, "-[GKMultiplayerMatchService setupInviteShareWithRecordID:rootRecord:shouldRetry:handler:]", [v15 UTF8String], 997);
+    lastPathComponent = [v14 lastPathComponent];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v13, "-[GKMultiplayerMatchService setupInviteShareWithRecordID:rootRecord:shouldRetry:handler:]", [lastPathComponent UTF8String], 997);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v16];
   }
 
-  v17 = [[CKShare alloc] initWithRootRecord:v11 shareID:v10];
+  v17 = [[CKShare alloc] initWithRootRecord:recordCopy shareID:dCopy];
   [v17 setPublicPermission:3];
   v18 = [CKModifyRecordsOperation alloc];
   v34[0] = v17;
-  v34[1] = v11;
+  v34[1] = recordCopy;
   v19 = [NSArray arrayWithObjects:v34 count:2];
   v20 = [v18 initWithRecordsToSave:v19 recordIDsToDelete:0];
 
@@ -926,44 +926,44 @@ LABEL_23:
   v27[1] = 3221225472;
   v27[2] = sub_1000D3620;
   v27[3] = &unk_100365B88;
-  v31 = v11;
-  v32 = v12;
-  v33 = a5;
+  v31 = recordCopy;
+  v32 = handlerCopy;
+  retryCopy = retry;
   v28 = v17;
-  v29 = self;
-  v30 = v10;
-  v22 = v11;
-  v23 = v10;
-  v24 = v12;
+  selfCopy = self;
+  v30 = dCopy;
+  v22 = recordCopy;
+  v23 = dCopy;
+  v24 = handlerCopy;
   v25 = v17;
   [v20 setModifyRecordsCompletionBlock:v27];
-  v26 = [(GKMultiplayerMatchService *)self privateDatabase];
-  [v26 addOperation:v20];
+  privateDatabase = [(GKMultiplayerMatchService *)self privateDatabase];
+  [privateDatabase addOperation:v20];
 }
 
 - (id)privateDatabase
 {
   v2 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions"];
-  v3 = [v2 privateCloudDatabase];
+  privateCloudDatabase = [v2 privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
-- (BOOL)zoneNotFoundFromOperation:(id)a3 operationError:(id)a4
+- (BOOL)zoneNotFoundFromOperation:(id)operation operationError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 code] == 2)
+  operationCopy = operation;
+  errorCopy = error;
+  if ([errorCopy code] == 2)
   {
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v8 allValues];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    allValues = [v8 allValues];
+    v10 = [allValues countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v10)
     {
       v11 = *v17;
@@ -973,7 +973,7 @@ LABEL_23:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v16 + 1) + 8 * i) code] == 26)
@@ -988,7 +988,7 @@ LABEL_23:
             if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v21 = v5;
+              v21 = operationCopy;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Zone Not Found. Should retry %@ after creating zone.", buf, 0xCu);
             }
 
@@ -996,7 +996,7 @@ LABEL_23:
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v16 objects:v22 count:16];
         if (v10)
         {
           continue;
@@ -1017,22 +1017,22 @@ LABEL_16:
   return v10;
 }
 
-- (void)saveRecord:(id)a3 shouldRetry:(BOOL)a4 withHandler:(id)a5
+- (void)saveRecord:(id)record shouldRetry:(BOOL)retry withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  recordCopy = record;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = [NSString stringWithFormat:@"Handler not set by callers of saveRecord:shouldRetry:withHandler:."];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKMultiplayerMatchService.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v10, "-[GKMultiplayerMatchService saveRecord:shouldRetry:withHandler:]", [v12 UTF8String], 1078);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (handler)\n[%s (%s:%d)]", v10, "-[GKMultiplayerMatchService saveRecord:shouldRetry:withHandler:]", [lastPathComponent UTF8String], 1078);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
   v14 = [CKModifyRecordsOperation alloc];
-  v25 = v8;
+  v25 = recordCopy;
   v15 = [NSArray arrayWithObjects:&v25 count:1];
   v16 = [v14 initWithRecordsToSave:v15 recordIDsToDelete:0];
 
@@ -1044,23 +1044,23 @@ LABEL_16:
   v21[1] = 3221225472;
   v21[2] = sub_1000D3E30;
   v21[3] = &unk_100365BB0;
-  v24 = a4;
+  retryCopy = retry;
   v21[4] = self;
-  v22 = v8;
-  v23 = v9;
-  v18 = v9;
-  v19 = v8;
+  v22 = recordCopy;
+  v23 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = recordCopy;
   [v16 setModifyRecordsCompletionBlock:v21];
-  v20 = [(GKMultiplayerMatchService *)self privateDatabase];
-  [v20 addOperation:v16];
+  privateDatabase = [(GKMultiplayerMatchService *)self privateDatabase];
+  [privateDatabase addOperation:v16];
 }
 
-- (void)invitePlayersForMatchRequest:(id)a3 devicePushTokenMap:(id)a4 isNearbyInvite:(BOOL)a5 transportContext:(id)a6 handler:(id)a7
+- (void)invitePlayersForMatchRequest:(id)request devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite transportContext:(id)context handler:(id)handler
 {
-  v11 = a3;
-  v47 = a4;
-  v12 = a6;
-  v48 = a7;
+  requestCopy = request;
+  mapCopy = map;
+  contextCopy = context;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v13 = GKOSLoggers();
@@ -1070,39 +1070,39 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v67 = v11;
+    v67 = requestCopy;
     v68 = 2112;
-    v69 = v12;
+    v69 = contextCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Invite players for matchRequest: %@, transportContext: %@", buf, 0x16u);
   }
 
-  v43 = v12;
+  v43 = contextCopy;
   v15 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1116, "[GKMultiplayerMatchService invitePlayersForMatchRequest:devicePushTokenMap:isNearbyInvite:transportContext:handler:]"];
   v16 = [(GKService *)self transactionGroupWithName:v15];
 
   v17 = +[NSMutableArray array];
-  v18 = [v11 recipients];
+  recipients = [requestCopy recipients];
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
   v64[2] = sub_1000D4478;
   v64[3] = &unk_100362458;
   v19 = v17;
   v65 = v19;
-  [v18 enumerateObjectsUsingBlock:v64];
+  [recipients enumerateObjectsUsingBlock:v64];
 
   if (![v19 count])
   {
-    v20 = [v11 recipientPlayerIDs];
-    [v19 addObjectsFromArray:v20];
+    recipientPlayerIDs = [requestCopy recipientPlayerIDs];
+    [v19 addObjectsFromArray:recipientPlayerIDs];
   }
 
   v21 = [v19 count];
   v22 = [[NSMutableArray alloc] initWithCapacity:v21];
   v23 = [[NSMutableDictionary alloc] initWithCapacity:v21];
   v24 = objc_opt_class();
-  v25 = [v11 archivedSharePlayInviteeTokensFromProgrammaticInvite];
+  archivedSharePlayInviteeTokensFromProgrammaticInvite = [requestCopy archivedSharePlayInviteeTokensFromProgrammaticInvite];
   v63 = 0;
-  v26 = [NSKeyedUnarchiver unarchivedObjectOfClass:v24 fromData:v25 error:&v63];
+  v26 = [NSKeyedUnarchiver unarchivedObjectOfClass:v24 fromData:archivedSharePlayInviteeTokensFromProgrammaticInvite error:&v63];
   v27 = v63;
 
   if (v27)
@@ -1120,57 +1120,57 @@ LABEL_16:
     }
   }
 
-  v30 = [(GKService *)self clientProxy];
-  v31 = [v30 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_1000D44E8;
   v52[3] = &unk_100365C28;
   v42 = v27;
   v53 = v19;
-  v54 = v47;
+  v54 = mapCopy;
   v55 = v22;
   v56 = v26;
   v57 = v23;
   v32 = v16;
   v58 = v32;
-  v59 = self;
-  v62 = a5;
-  v60 = v11;
+  selfCopy = self;
+  inviteCopy = invite;
+  v60 = requestCopy;
   v61 = v43;
   v46 = v43;
-  v44 = v11;
+  v44 = requestCopy;
   v33 = v23;
   v34 = v26;
   v35 = v22;
-  v36 = v47;
+  v36 = mapCopy;
   v37 = v19;
-  [v32 performOnQueue:v31 block:v52];
+  [v32 performOnQueue:replyQueue block:v52];
 
-  v38 = [(GKService *)self clientProxy];
-  v39 = [v38 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_1000D5570;
   v49[3] = &unk_100360EB0;
   v50 = v32;
-  v51 = v48;
+  v51 = handlerCopy;
   v40 = v32;
-  v41 = v48;
-  [v40 notifyOnQueue:v39 block:v49];
+  v41 = handlerCopy;
+  [v40 notifyOnQueue:replyQueue2 block:v49];
 }
 
-- (void)removePlayersFromGameInviteV2:(id)a3 handler:(id)a4
+- (void)removePlayersFromGameInviteV2:(id)v2 handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKService *)self clientProxy];
-  removePlayersFromGameInviteV2(v8, v7, v6);
+  handlerCopy = handler;
+  v2Copy = v2;
+  clientProxy = [(GKService *)self clientProxy];
+  removePlayersFromGameInviteV2(clientProxy, v2Copy, handlerCopy);
 }
 
-- (void)cancelGameInviteWithHandler:(id)a3
+- (void)cancelGameInviteWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1183,8 +1183,8 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Cancel game invite", buf, 2u);
   }
 
-  v7 = [(GKService *)self clientProxy];
-  v8 = [v7 inviteSession];
+  clientProxy = [(GKService *)self clientProxy];
+  inviteSession = [clientProxy inviteSession];
   v9 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1383, "[GKMultiplayerMatchService cancelGameInviteWithHandler:]"];
   v10 = [GKDispatchGroup dispatchGroupWithName:v9];
 
@@ -1192,60 +1192,60 @@ LABEL_16:
   v19[1] = 3221225472;
   v19[2] = sub_1000D5E94;
   v19[3] = &unk_100360FF0;
-  v20 = v8;
-  v11 = v7;
+  v20 = inviteSession;
+  v11 = clientProxy;
   v21 = v11;
-  v12 = v8;
+  v12 = inviteSession;
   [v10 perform:v19];
-  v13 = [v11 replyQueue];
+  replyQueue = [v11 replyQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000D605C;
   v16[3] = &unk_100361270;
   v17 = v11;
-  v18 = v4;
-  v14 = v4;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v11;
-  [v10 notifyOnQueue:v13 block:v16];
+  [v10 notifyOnQueue:replyQueue block:v16];
 }
 
-- (id)ensureGroup:(id)a3 participants:(id)a4 playedAt:(int64_t)a5 numberOfAutomatched:(int64_t)a6 moc:(id)a7 list:(id)a8
+- (id)ensureGroup:(id)group participants:(id)participants playedAt:(int64_t)at numberOfAutomatched:(int64_t)automatched moc:(id)moc list:(id)list
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a8;
-  if (!v14)
+  groupCopy = group;
+  participantsCopy = participants;
+  mocCopy = moc;
+  listCopy = list;
+  if (!listCopy)
   {
     v15 = [MultiplayerGroupList alloc];
     v16 = +[MultiplayerGroupList entity];
-    v14 = [(MultiplayerGroupList *)v15 initWithEntity:v16 insertIntoManagedObjectContext:v13];
+    listCopy = [(MultiplayerGroupList *)v15 initWithEntity:v16 insertIntoManagedObjectContext:mocCopy];
   }
 
   v17 = +[MultiplayerGroup _gkFetchRequest];
-  v41 = v11;
-  v18 = [NSPredicate predicateWithFormat:@"id == %@", v11];
-  [v17 setPredicate:v18];
+  v41 = groupCopy;
+  groupCopy = [NSPredicate predicateWithFormat:@"id == %@", groupCopy];
+  [v17 setPredicate:groupCopy];
 
   v37 = v17;
-  v19 = [NSManagedObject _gkRetrieveCleanEntry:v13 request:v17];
+  v19 = [NSManagedObject _gkRetrieveCleanEntry:mocCopy request:v17];
   if (!v19)
   {
     v20 = [MultiplayerGroup alloc];
     v21 = +[MultiplayerGroup entity];
-    v19 = [(MultiplayerGroup *)v20 initWithEntity:v21 insertIntoManagedObjectContext:v13];
+    v19 = [(MultiplayerGroup *)v20 initWithEntity:v21 insertIntoManagedObjectContext:mocCopy];
 
-    [(MultiplayerGroupList *)v14 addEntriesObject:v19];
+    [(MultiplayerGroupList *)listCopy addEntriesObject:v19];
   }
 
   v36 = v19;
-  v38 = v14;
+  v38 = listCopy;
   v22 = objc_opt_new();
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v23 = v12;
+  v23 = participantsCopy;
   v24 = [v23 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v24)
   {
@@ -1263,7 +1263,7 @@ LABEL_16:
         v28 = *(*(&v42 + 1) + 8 * i);
         v29 = [MultiplayerGroupParticipant alloc];
         v30 = +[MultiplayerGroupParticipant entity];
-        v31 = [(MultiplayerGroupParticipant *)v29 initWithEntity:v30 insertIntoManagedObjectContext:v13];
+        v31 = [(MultiplayerGroupParticipant *)v29 initWithEntity:v30 insertIntoManagedObjectContext:mocCopy];
 
         [(MultiplayerGroupParticipant *)v31 setPlayerID:v28];
         [v22 addObject:v31];
@@ -1275,28 +1275,28 @@ LABEL_16:
     while (v25);
   }
 
-  v32 = [(MultiplayerGroup *)v36 entries];
-  [(MultiplayerGroup *)v36 removeEntries:v32];
+  entries = [(MultiplayerGroup *)v36 entries];
+  [(MultiplayerGroup *)v36 removeEntries:entries];
 
   [(MultiplayerGroup *)v36 addEntries:v22];
   [(MultiplayerGroup *)v36 setId:v41];
-  v33 = [NSNumber numberWithInteger:a6];
+  v33 = [NSNumber numberWithInteger:automatched];
   [(MultiplayerGroup *)v36 setNumberOfAutomatched:v33];
 
-  v34 = [NSNumber numberWithInteger:a5];
+  v34 = [NSNumber numberWithInteger:at];
   [(MultiplayerGroup *)v36 setPlayedAt:v34];
 
   return v36;
 }
 
-- (void)convertToInternalObjects:(id)a3 results:(id)a4
+- (void)convertToInternalObjects:(id)objects results:(id)results
 {
-  v24 = a4;
+  resultsCopy = results;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [a3 entries];
+  obj = [objects entries];
   v5 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
@@ -1314,8 +1314,8 @@ LABEL_16:
 
         v9 = *(*(&v29 + 1) + 8 * v8);
         v10 = objc_opt_new();
-        v11 = [v9 numberOfAutomatched];
-        [v10 setNumberOfAutomached:{objc_msgSend(v11, "longValue")}];
+        numberOfAutomatched = [v9 numberOfAutomatched];
+        [v10 setNumberOfAutomached:{objc_msgSend(numberOfAutomatched, "longValue")}];
 
         v12 = [v9 id];
         [v10 setGroupID:v12];
@@ -1323,15 +1323,15 @@ LABEL_16:
         v13 = objc_opt_new();
         [v10 setParticipants:v13];
 
-        v14 = [v9 playedAt];
-        [v10 setPlayedAt:{objc_msgSend(v14, "longValue")}];
+        playedAt = [v9 playedAt];
+        [v10 setPlayedAt:{objc_msgSend(playedAt, "longValue")}];
 
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v15 = [v9 entries];
-        v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        entries = [v9 entries];
+        v16 = [entries countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1343,25 +1343,25 @@ LABEL_16:
             {
               if (*v26 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(entries);
               }
 
               v20 = *(*(&v25 + 1) + 8 * v19);
-              v21 = [v10 participants];
-              v22 = [v20 playerID];
-              [v21 addObject:v22];
+              participants = [v10 participants];
+              playerID = [v20 playerID];
+              [participants addObject:playerID];
 
               v19 = v19 + 1;
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v17 = [entries countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v17);
         }
 
-        [v24 addObject:v10];
+        [resultsCopy addObject:v10];
         v8 = v8 + 1;
       }
 
@@ -1373,9 +1373,9 @@ LABEL_16:
   }
 }
 
-- (void)getMultiPlayerGroups:(id)a3
+- (void)getMultiPlayerGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1462, "[GKMultiplayerMatchService getMultiPlayerGroups:]"];
   v6 = [(GKService *)self transactionGroupBypassingMultiUserWithName:v5];
 
@@ -1388,34 +1388,34 @@ LABEL_16:
   v11[4] = self;
   v12 = v7;
   v13 = v6;
-  v14 = v4;
-  v8 = v4;
+  v14 = groupsCopy;
+  v8 = groupsCopy;
   v9 = v6;
   v10 = v7;
   [v9 performOnManagedObjectContext:v11];
 }
 
-- (void)putMultiPlayerGroup:(id)a3 participants:(id)a4 playedAt:(int64_t)a5 bundleID:(id)a6 numberOfAutomatched:(int64_t)a7 isSharedLink:(BOOL)a8 completionHandler:(id)a9
+- (void)putMultiPlayerGroup:(id)group participants:(id)participants playedAt:(int64_t)at bundleID:(id)d numberOfAutomatched:(int64_t)automatched isSharedLink:(BOOL)link completionHandler:(id)handler
 {
-  v36 = a8;
-  v13 = a3;
-  v37 = a9;
-  v14 = a6;
-  v15 = a4;
-  v16 = [(GKService *)self credential];
-  if (!v16)
+  linkCopy = link;
+  groupCopy = group;
+  handlerCopy = handler;
+  dCopy = d;
+  participantsCopy = participants;
+  credential = [(GKService *)self credential];
+  if (!credential)
   {
     v17 = +[GKPlayerCredentialController sharedController];
-    v18 = [(GKService *)self clientProxy];
-    v16 = [v17 primaryCredentialForEnvironment:{objc_msgSend(v18, "environment")}];
+    clientProxy = [(GKService *)self clientProxy];
+    credential = [v17 primaryCredentialForEnvironment:{objc_msgSend(clientProxy, "environment")}];
   }
 
-  v19 = [(GKService *)self clientProxy];
-  v20 = [v16 playerInternal];
-  v21 = [v20 playerID];
-  v22 = [v19 managedObjectContextForPlayerID:v21];
+  clientProxy2 = [(GKService *)self clientProxy];
+  playerInternal = [credential playerInternal];
+  playerID = [playerInternal playerID];
+  v22 = [clientProxy2 managedObjectContextForPlayerID:playerID];
 
-  v23 = [NSSet setWithArray:v15];
+  v23 = [NSSet setWithArray:participantsCopy];
 
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
@@ -1423,31 +1423,31 @@ LABEL_16:
   v40[3] = &unk_100365CB8;
   v24 = v22;
   v41 = v24;
-  v42 = self;
-  v25 = v13;
+  selfCopy = self;
+  v25 = groupCopy;
   v43 = v25;
   v26 = v23;
   v44 = v26;
-  v45 = a5;
-  v46 = a7;
+  atCopy = at;
+  automatchedCopy = automatched;
   [v24 performBlockAndWait:v40];
   v27 = [[GKMultiplayerGroupRequest alloc] initWithGroupID:v25];
-  [(GKMultiplayerGroupRequest *)v27 setBundleID:v14];
+  [(GKMultiplayerGroupRequest *)v27 setBundleID:dCopy];
 
   [(GKMultiplayerGroupRequest *)v27 setParticipants:v26];
-  if (a5)
+  if (at)
   {
-    [(GKMultiplayerGroupRequest *)v27 setPlayedAt:a5];
+    [(GKMultiplayerGroupRequest *)v27 setPlayedAt:at];
   }
 
-  if (v36)
+  if (linkCopy)
   {
     [(GKMultiplayerGroupRequest *)v27 setGroupRelationshipType:@"SHAREDLINK"];
   }
 
   [(GKMultiplayerGroupRequest *)v27 setPlayerGroupID:v25];
   v47 = @"numberOfAutomatched";
-  v28 = [NSNumber numberWithInteger:a7];
+  v28 = [NSNumber numberWithInteger:automatched];
   v29 = [NSString stringWithFormat:@"%@", v28];
   v48 = v29;
   v30 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
@@ -1455,21 +1455,21 @@ LABEL_16:
   [(GKMultiplayerGroupRequest *)v27 setRequestData:v31];
 
   v32 = +[GKNetworkRequestManager commonNetworkRequestManager];
-  v33 = [(GKService *)self clientProxy];
+  clientProxy3 = [(GKService *)self clientProxy];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1000D760C;
   v38[3] = &unk_100361CB8;
-  v39 = v37;
-  v34 = v37;
-  [v32 writeToNetwork:v27 clientProxy:v33 handler:v38];
+  v39 = handlerCopy;
+  v34 = handlerCopy;
+  [v32 writeToNetwork:v27 clientProxy:clientProxy3 handler:v38];
 }
 
-- (void)acceptGameInvite:(id)a3 transportContext:(id)a4 handler:(id)a5
+- (void)acceptGameInvite:(id)invite transportContext:(id)context handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inviteCopy = invite;
+  contextCopy = context;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -1479,9 +1479,9 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v35 = v8;
+    v35 = inviteCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = contextCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Accept game invite: %@, transportContext: %@", buf, 0x16u);
   }
 
@@ -1489,107 +1489,107 @@ LABEL_16:
   v14 = [(GKService *)self transactionGroupWithName:v13];
 
   v15 = objc_alloc_init(GKInviteAcceptResponse);
-  v16 = [(GKService *)self clientProxy];
-  v17 = [v16 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000D799C;
   v29[3] = &unk_100361BF8;
   v29[4] = self;
-  v30 = v8;
-  v31 = v9;
+  v30 = inviteCopy;
+  v31 = contextCopy;
   v18 = v14;
   v32 = v18;
   v33 = v15;
   v19 = v15;
-  v20 = v9;
-  v21 = v8;
-  [v18 performOnQueue:v17 block:v29];
+  v20 = contextCopy;
+  v21 = inviteCopy;
+  [v18 performOnQueue:replyQueue block:v29];
 
-  v22 = [(GKService *)self clientProxy];
-  v23 = [v22 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000D8298;
   v26[3] = &unk_100360EB0;
   v27 = v18;
-  v28 = v10;
+  v28 = handlerCopy;
   v24 = v18;
-  v25 = v10;
-  [v24 notifyOnQueue:v23 block:v26];
+  v25 = handlerCopy;
+  [v24 notifyOnQueue:replyQueue2 block:v26];
 }
 
-- (void)declineGameInvite:(id)a3 reason:(int64_t)a4 handler:(id)a5
+- (void)declineGameInvite:(id)invite reason:(int64_t)reason handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  inviteCopy = invite;
   v10 = +[GKDataRequestManager sharedManager];
-  v11 = [(GKService *)self clientProxy];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 dataUsingEncoding:4];
+  clientProxy = [(GKService *)self clientProxy];
+  bundleIdentifier = [clientProxy bundleIdentifier];
+  v13 = [bundleIdentifier dataUsingEncoding:4];
 
   v25 = v13;
   v14 = [NSDictionary dictionaryWithObjectsAndKeys:v13, @"s", 0];
   v26 = v10;
-  v15 = [v10 pushToken];
+  pushToken = [v10 pushToken];
   v29[0] = @"session-token";
-  v16 = [v9 sessionToken];
-  v30[0] = v16;
+  sessionToken = [inviteCopy sessionToken];
+  v30[0] = sessionToken;
   v29[1] = @"peer-id";
-  v17 = [v9 peerID];
-  v30[1] = v17;
+  peerID = [inviteCopy peerID];
+  v30[1] = peerID;
   v29[2] = @"peer-push-token";
-  v18 = [v9 peerPushToken];
+  peerPushToken = [inviteCopy peerPushToken];
 
-  v30[2] = v18;
+  v30[2] = peerPushToken;
   v29[3] = @"self-push-token";
-  v19 = v15;
-  if (!v15)
+  v19 = pushToken;
+  if (!pushToken)
   {
     v19 = +[NSData data];
   }
 
   v30[3] = v19;
   v29[4] = @"reason";
-  v20 = [NSNumber numberWithInteger:a4];
+  v20 = [NSNumber numberWithInteger:reason];
   v29[5] = @"client-data";
   v30[4] = v20;
   v30[5] = v14;
   v21 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:6];
 
-  if (!v15)
+  if (!pushToken)
   {
   }
 
   v22 = +[GKNetworkRequestManager commonNetworkRequestManager];
-  v23 = [(GKService *)self clientProxy];
+  clientProxy2 = [(GKService *)self clientProxy];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000D862C;
   v27[3] = &unk_1003615D8;
-  v28 = v8;
-  v24 = v8;
-  [v22 issueRequest:v21 bagKey:@"gk-invitation-reject" clientProxy:v23 handler:v27];
+  v28 = handlerCopy;
+  v24 = handlerCopy;
+  [v22 issueRequest:v21 bagKey:@"gk-invitation-reject" clientProxy:clientProxy2 handler:v27];
 }
 
-- (void)getAcceptedGameInviteWithHandler:(id)a3
+- (void)getAcceptedGameInviteWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1678, "[GKMultiplayerMatchService getAcceptedGameInviteWithHandler:]"];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D872C;
   v7[3] = &unk_100361270;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [GKActivity named:v5 execute:v7];
 }
 
-- (void)hasCanceledMultiplayerInitiateBulletinForSessionToken:(id)a3 handler:(id)a4
+- (void)hasCanceledMultiplayerInitiateBulletinForSessionToken:(id)token handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -1603,21 +1603,21 @@ LABEL_16:
   }
 
   v9 = +[GKBulletinController sharedController];
-  v10 = [v9 acceptedInviteManager];
-  v11 = [v10 removeAndReturnQueuedCancelledInviteWithSessionToken:v5];
-  if (v6)
+  acceptedInviteManager = [v9 acceptedInviteManager];
+  v11 = [acceptedInviteManager removeAndReturnQueuedCancelledInviteWithSessionToken:tokenCopy];
+  if (handlerCopy)
   {
-    v6[2](v6, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)getPlayersToInviteWithHandlerV2:(id)a3
+- (void)getPlayersToInviteWithHandlerV2:(id)v2
 {
-  v4 = a3;
+  v2Copy = v2;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1744, "[GKMultiplayerMatchService getPlayersToInviteWithHandlerV2:]"];
   v6 = [(GKService *)self transactionGroupWithName:v5];
 
-  v7 = [v6 context];
+  context = [v6 context];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000D8EE8;
@@ -1625,42 +1625,42 @@ LABEL_16:
   v14[4] = self;
   v8 = v6;
   v15 = v8;
-  [v7 performBlockAndWait:v14];
+  [context performBlockAndWait:v14];
 
-  if (v4)
+  if (v2Copy)
   {
-    v9 = [(GKService *)self clientProxy];
-    v10 = [v9 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000D9048;
     v11[3] = &unk_100360EB0;
-    v13 = v4;
+    v13 = v2Copy;
     v12 = v8;
-    [v12 notifyOnQueue:v10 block:v11];
+    [v12 notifyOnQueue:replyQueue block:v11];
   }
 }
 
-- (void)getInviteSessionTokenWithHandler:(id)a3
+- (void)getInviteSessionTokenWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = sub_1000CCBD8;
   v13[4] = sub_1000CCBE8;
   v14 = 0;
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 inviteSession];
+  clientProxy = [(GKService *)self clientProxy];
+  inviteSession = [clientProxy inviteSession];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D91F8;
   v9[3] = &unk_100365D98;
   v12 = v13;
-  v7 = v6;
+  v7 = inviteSession;
   v10 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [v7 performAsync:v9];
 
@@ -1669,17 +1669,17 @@ LABEL_16:
 
 - (void)removeInviteSession
 {
-  v2 = [(GKService *)self clientProxy];
-  [v2 deleteInviteSession];
+  clientProxy = [(GKService *)self clientProxy];
+  [clientProxy deleteInviteSession];
 }
 
 - (void)removeInviteSessionIfNeeded
 {
-  v3 = [(GKService *)self clientProxy];
-  v4 = [v3 fetchOrCreateInviteSession];
-  v5 = [v4 shouldBeCleared];
+  clientProxy = [(GKService *)self clientProxy];
+  fetchOrCreateInviteSession = [clientProxy fetchOrCreateInviteSession];
+  shouldBeCleared = [fetchOrCreateInviteSession shouldBeCleared];
 
-  if (v5)
+  if (shouldBeCleared)
   {
     if (!os_log_GKGeneral)
     {
@@ -1690,63 +1690,63 @@ LABEL_16:
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [(GKService *)self clientProxy];
-      v10 = [v9 inviteSession];
-      v11 = [(GKService *)self clientProxy];
-      v12 = [v11 inviteSession];
-      v13 = [v12 sessionToken];
+      clientProxy2 = [(GKService *)self clientProxy];
+      inviteSession = [clientProxy2 inviteSession];
+      clientProxy3 = [(GKService *)self clientProxy];
+      inviteSession2 = [clientProxy3 inviteSession];
+      sessionToken = [inviteSession2 sessionToken];
       v15 = 138412546;
-      v16 = v10;
+      v16 = inviteSession;
       v17 = 2112;
-      v18 = v13;
+      v18 = sessionToken;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "ClientProxy should clear inviteSession: %@, token: %@", &v15, 0x16u);
     }
 
-    v14 = [(GKService *)self clientProxy];
-    [v14 deleteInviteSession];
+    clientProxy4 = [(GKService *)self clientProxy];
+    [clientProxy4 deleteInviteSession];
   }
 }
 
-- (void)sendReconnectInvitation:(id)a3 toPlayer:(id)a4 connectionData:(id)a5 sessionToken:(id)a6 pushToken:(id)a7 handler:(id)a8
+- (void)sendReconnectInvitation:(id)invitation toPlayer:(id)player connectionData:(id)data sessionToken:(id)token pushToken:(id)pushToken handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  invitationCopy = invitation;
+  playerCopy = player;
+  dataCopy = data;
+  tokenCopy = token;
+  pushTokenCopy = pushToken;
+  handlerCopy = handler;
   v20 = +[GKDataRequestManager sharedManager];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000D95B8;
   v27[3] = &unk_100365DC0;
-  v28 = v14;
-  v29 = v16;
-  v30 = self;
-  v31 = v17;
-  v32 = v15;
-  v33 = v18;
-  v34 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v15;
-  v24 = v17;
-  v25 = v16;
-  v26 = v14;
+  v28 = invitationCopy;
+  v29 = dataCopy;
+  selfCopy = self;
+  v31 = tokenCopy;
+  v32 = playerCopy;
+  v33 = pushTokenCopy;
+  v34 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = pushTokenCopy;
+  v23 = playerCopy;
+  v24 = tokenCopy;
+  v25 = dataCopy;
+  v26 = invitationCopy;
   [v20 getValidNATTypeWithForceRelay:0 withHandler:v27];
 }
 
-- (void)sendInvitationUpdate:(id)a3 handler:(id)a4
+- (void)sendInvitationUpdate:(id)update handler:(id)handler
 {
-  v5 = a3;
-  v45 = a4;
+  updateCopy = update;
+  handlerCopy = handler;
   v6 = +[NSMutableArray array];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = [v5 playerTokenMap];
-  v49 = v5;
+  obj = [updateCopy playerTokenMap];
+  v49 = updateCopy;
   v50 = [obj countByEnumeratingWithState:&v63 objects:v76 count:16];
   if (v50)
   {
@@ -1767,8 +1767,8 @@ LABEL_16:
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v9 = [v5 playerTokenMap];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        playerTokenMap = [updateCopy playerTokenMap];
+        v10 = [playerTokenMap objectForKeyedSubscript:v8];
 
         v11 = [v10 countByEnumeratingWithState:&v59 objects:v75 count:16];
         if (v11)
@@ -1800,7 +1800,7 @@ LABEL_16:
         }
 
         v7 = v51 + 1;
-        v5 = v49;
+        updateCopy = v49;
       }
 
       while ((v51 + 1) != v50);
@@ -1811,27 +1811,27 @@ LABEL_16:
   }
 
   v71[0] = @"bundle-id";
-  v17 = [(GKService *)self clientProxy];
-  v18 = [v17 bundleIdentifier];
-  v72[0] = v18;
+  clientProxy = [(GKService *)self clientProxy];
+  bundleIdentifier = [clientProxy bundleIdentifier];
+  v72[0] = bundleIdentifier;
   v71[1] = GKSuggestedTransportVersionPushShortKey;
-  v19 = [v5 transportVersionToUse];
-  v72[1] = v19;
+  transportVersionToUse = [updateCopy transportVersionToUse];
+  v72[1] = transportVersionToUse;
   v71[2] = GKInviteSessionIDKey;
-  v20 = [v5 sessionID];
-  v72[2] = v20;
+  sessionID = [updateCopy sessionID];
+  v72[2] = sessionID;
   [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:3];
-  v22 = v21 = v5;
+  v22 = v21 = updateCopy;
   v52 = [NSMutableDictionary dictionaryWithDictionary:v22];
 
   v69[0] = @"session-token";
-  v23 = [v21 sessionToken];
-  v70[0] = v23;
+  sessionToken = [v21 sessionToken];
+  v70[0] = sessionToken;
   v69[1] = @"self-push-token";
   v24 = +[GKDataRequestManager sharedManager];
-  v25 = [v24 pushToken];
-  v26 = v25;
-  if (!v25)
+  pushToken = [v24 pushToken];
+  v26 = pushToken;
+  if (!pushToken)
   {
     v26 = +[NSData data];
   }
@@ -1845,35 +1845,35 @@ LABEL_16:
   v28 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:4];
   v29 = [NSMutableDictionary dictionaryWithDictionary:v28];
 
-  if (!v25)
+  if (!pushToken)
   {
   }
 
-  v30 = [v49 matchID];
+  matchID = [v49 matchID];
 
-  if (v30)
+  if (matchID)
   {
-    v31 = [v49 matchID];
-    [v52 setObject:v31 forKeyedSubscript:GKMatchmakerMatchID];
+    matchID2 = [v49 matchID];
+    [v52 setObject:matchID2 forKeyedSubscript:GKMatchmakerMatchID];
   }
 
-  v32 = [v49 playerTokenMap];
+  playerTokenMap2 = [v49 playerTokenMap];
 
-  if (v32)
+  if (playerTokenMap2)
   {
-    v33 = [v49 playerTokenMap];
-    [v52 setObject:v33 forKeyedSubscript:GKTransportPlayerTokenMapKey];
+    playerTokenMap3 = [v49 playerTokenMap];
+    [v52 setObject:playerTokenMap3 forKeyedSubscript:GKTransportPlayerTokenMapKey];
   }
 
   v34 = +[NSMutableArray array];
-  v35 = [v49 gameParticipants];
+  gameParticipants = [v49 gameParticipants];
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = sub_1000DA304;
   v57[3] = &unk_100365DE8;
   v36 = v34;
   v58 = v36;
-  [v35 enumerateObjectsUsingBlock:v57];
+  [gameParticipants enumerateObjectsUsingBlock:v57];
 
   if ([v36 count])
   {
@@ -1881,14 +1881,14 @@ LABEL_16:
   }
 
   v37 = +[NSMutableArray array];
-  v38 = [v49 lobbyParticipants];
+  lobbyParticipants = [v49 lobbyParticipants];
   v55[0] = _NSConcreteStackBlock;
   v55[1] = 3221225472;
   v55[2] = sub_1000DA35C;
   v55[3] = &unk_100365DE8;
   v39 = v37;
   v56 = v39;
-  [v38 enumerateObjectsUsingBlock:v55];
+  [lobbyParticipants enumerateObjectsUsingBlock:v55];
 
   if ([v39 count])
   {
@@ -1910,20 +1910,20 @@ LABEL_16:
   }
 
   v42 = +[GKNetworkRequestManager commonNetworkRequestManager];
-  v43 = [(GKService *)self clientProxy];
+  clientProxy2 = [(GKService *)self clientProxy];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_1000DA3B4;
   v53[3] = &unk_1003615D8;
-  v54 = v45;
-  v44 = v45;
-  [v42 issueRequest:v29 bagKey:@"gk-invitation-send" clientProxy:v43 handler:v53];
+  v54 = handlerCopy;
+  v44 = handlerCopy;
+  [v42 issueRequest:v29 bagKey:@"gk-invitation-send" clientProxy:clientProxy2 handler:v53];
 }
 
-- (void)requestTTRLogsWith:(id)a3 handler:(id)a4
+- (void)requestTTRLogsWith:(id)with handler:(id)handler
 {
-  v6 = a3;
-  v40 = a4;
+  withCopy = with;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -1933,23 +1933,23 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [(GKService *)self clientProxy];
-    v11 = [v10 bundleIdentifier];
+    clientProxy = [(GKService *)self clientProxy];
+    bundleIdentifier = [clientProxy bundleIdentifier];
     *buf = 138412546;
-    v61 = v6;
+    v61 = withCopy;
     v62 = 2112;
-    v63 = v11;
+    v63 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Request TTRLogsWith: %@, for client proxy: %@", buf, 0x16u);
   }
 
-  v41 = self;
+  selfCopy = self;
   v12 = +[NSMutableArray array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v13 = [v6 playersAndPushTokens];
-  v14 = [v13 countByEnumeratingWithState:&v53 objects:v59 count:16];
+  playersAndPushTokens = [withCopy playersAndPushTokens];
+  v14 = [playersAndPushTokens countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1960,14 +1960,14 @@ LABEL_16:
       {
         if (*v54 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(playersAndPushTokens);
         }
 
-        v18 = [*(*(&v53 + 1) + 8 * i) serverRepresentation];
-        [v12 addObject:v18];
+        serverRepresentation = [*(*(&v53 + 1) + 8 * i) serverRepresentation];
+        [v12 addObject:serverRepresentation];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v53 objects:v59 count:16];
+      v15 = [playersAndPushTokens countByEnumeratingWithState:&v53 objects:v59 count:16];
     }
 
     while (v15);
@@ -1978,9 +1978,9 @@ LABEL_16:
   v58[0] = v19;
   v57[1] = @"self-push-token";
   v20 = +[GKDataRequestManager sharedManager];
-  v21 = [v20 pushToken];
-  v22 = v21;
-  if (!v21)
+  pushToken = [v20 pushToken];
+  v22 = pushToken;
+  if (!pushToken)
   {
     v22 = +[NSData data];
   }
@@ -1992,12 +1992,12 @@ LABEL_16:
   v58[3] = v12;
   v57[3] = @"peers";
   v57[4] = GKTTRBulletinKeyRadarID;
-  v24 = [v6 radarID];
-  v58[4] = v24;
+  radarID = [withCopy radarID];
+  v58[4] = radarID;
   v25 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:5];
   v26 = [NSMutableDictionary dictionaryWithDictionary:v25];
 
-  if (!v21)
+  if (!pushToken)
   {
   }
 
@@ -2005,45 +2005,45 @@ LABEL_16:
   v51[1] = 3221225472;
   v51[2] = sub_1000DA9E4;
   v51[3] = &unk_100361CB8;
-  v52 = v40;
-  v27 = v40;
+  v52 = handlerCopy;
+  v27 = handlerCopy;
   v28 = objc_retainBlock(v51);
   v29 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1932, "[GKMultiplayerMatchService requestTTRLogsWith:handler:]"];
-  v30 = [v6 requesterPlayerID];
-  v31 = [(GKService *)v41 transactionGroupWithName:v29 forPlayerID:v30];
+  requesterPlayerID = [withCopy requesterPlayerID];
+  v31 = [(GKService *)selfCopy transactionGroupWithName:v29 forPlayerID:requesterPlayerID];
 
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_1000DAA74;
   v48[3] = &unk_100361708;
-  v32 = v6;
+  v32 = withCopy;
   v49 = v32;
   v33 = v31;
   v50 = v33;
   [v33 performOnManagedObjectContext:v48];
-  v34 = [(GKService *)v41 clientProxy];
-  v35 = [v34 taskQueue];
+  clientProxy2 = [(GKService *)selfCopy clientProxy];
+  taskQueue = [clientProxy2 taskQueue];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1000DAB44;
   v42[3] = &unk_100363768;
   v43 = v33;
   v44 = v32;
-  v46 = v41;
+  v46 = selfCopy;
   v47 = v28;
   v45 = v26;
   v36 = v26;
   v37 = v28;
   v38 = v32;
   v39 = v33;
-  [v39 notifyOnQueue:v35 block:v42];
+  [v39 notifyOnQueue:taskQueue block:v42];
 }
 
-- (void)_performRelayAction:(id)a3 request:(id)a4 handler:(id)a5
+- (void)_performRelayAction:(id)action request:(id)request handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 1973, "[GKMultiplayerMatchService _performRelayAction:request:handler:]"];
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
@@ -2051,65 +2051,65 @@ LABEL_16:
   v23[1] = 3221225472;
   v23[2] = sub_1000DB150;
   v23[3] = &unk_100361F90;
-  v24 = v9;
-  v25 = v8;
-  v26 = self;
+  v24 = requestCopy;
+  v25 = actionCopy;
+  selfCopy = self;
   v13 = v12;
   v27 = v13;
-  v14 = v8;
-  v15 = v9;
+  v14 = actionCopy;
+  v15 = requestCopy;
   [v13 perform:v23];
-  v16 = [(GKService *)self clientProxy];
-  v17 = [v16 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000DB2BC;
   v20[3] = &unk_100360EB0;
   v21 = v13;
-  v22 = v10;
+  v22 = handlerCopy;
   v18 = v13;
-  v19 = v10;
-  [v18 notifyOnQueue:v17 block:v20];
+  v19 = handlerCopy;
+  [v18 notifyOnQueue:replyQueue block:v20];
 }
 
-- (void)initiateRelayRequest:(id)a3 handler:(id)a4
+- (void)initiateRelayRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = +[GKDataRequestManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000DB434;
   v11[3] = &unk_100365E10;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   [v8 getValidNATTypeWithForceRelay:0 withHandler:v11];
 }
 
-- (void)updateRelayRequest:(id)a3 handler:(id)a4
+- (void)updateRelayRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = +[GKDataRequestManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000DB6B0;
   v11[3] = &unk_100365E10;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   [v8 getValidNATTypeWithForceRelay:0 withHandler:v11];
 }
 
-- (void)cancelRelayRequest:(id)a3 handler:(id)a4
+- (void)cancelRelayRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -2119,28 +2119,28 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = requestCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "relayCancel serverRequest:%@", &v11, 0xCu);
   }
 
-  [(GKMultiplayerMatchService *)self _performRelayAction:@"gk-invitation-relay-cancel" request:v6 handler:v7];
+  [(GKMultiplayerMatchService *)self _performRelayAction:@"gk-invitation-relay-cancel" request:requestCopy handler:handlerCopy];
   v10 = +[GKReporter reporter];
   [v10 reportEvent:GKReporterDomainRelay type:GKReporterRelayCancel];
 }
 
-- (void)updateCacheWithNearbyProfileDictionary:(id)a3 handler:(id)a4
+- (void)updateCacheWithNearbyProfileDictionary:(id)dictionary handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dictionaryCopy = dictionary;
   v8 = [NSString stringWithFormat:@"%s:%d %s", "GKMultiplayerMatchService.m", 2038, "[GKMultiplayerMatchService updateCacheWithNearbyProfileDictionary:handler:]"];
   v9 = [(GKService *)self transactionGroupWithName:v8];
 
-  v10 = [v7 objectForKey:@"profile"];
+  v10 = [dictionaryCopy objectForKey:@"profile"];
 
   v11 = [v10 objectForKey:@"playerID"];
   if (v11)
   {
-    v12 = [v9 context];
+    context = [v9 context];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000DBB94;
@@ -2148,27 +2148,27 @@ LABEL_16:
     v19 = v11;
     v20 = v9;
     v21 = v10;
-    [v12 performBlockAndWait:v18];
+    [context performBlockAndWait:v18];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v13 = [(GKService *)self clientProxy];
-    v14 = [v13 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000DBF64;
     v15[3] = &unk_100360EB0;
-    v17 = v6;
+    v17 = handlerCopy;
     v16 = v9;
-    [v16 notifyOnQueue:v14 block:v15];
+    [v16 notifyOnQueue:replyQueue block:v15];
   }
 }
 
-- (void)startNearbyBrowsingWithPlayerID:(id)a3 handler:(id)a4
+- (void)startNearbyBrowsingWithPlayerID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -2178,10 +2178,10 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKFastSync, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [(GKService *)self clientProxy];
-    v12 = [v11 peerDiscovery];
+    clientProxy = [(GKService *)self clientProxy];
+    peerDiscovery = [clientProxy peerDiscovery];
     *buf = 138412290;
-    v28 = v12;
+    v28 = peerDiscovery;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "peerDiscovery (%@) startBrowsing", buf, 0xCu);
   }
 
@@ -2189,32 +2189,32 @@ LABEL_16:
   v25[1] = 3221225472;
   v25[2] = sub_1000DC24C;
   v25[3] = &unk_100360FA0;
-  v13 = v7;
+  v13 = handlerCopy;
   v26 = v13;
   v14 = objc_retainBlock(v25);
   v15 = +[GKPreferences shared];
-  v16 = [v15 disableViceroyNearby];
+  disableViceroyNearby = [v15 disableViceroyNearby];
 
-  if ((v16 & 1) == 0)
+  if ((disableViceroyNearby & 1) == 0)
   {
-    v17 = [(GKService *)self clientProxy];
-    v18 = [v17 nearbyDiscovery];
-    [v18 startBrowsingWithPlayerID:v6];
+    clientProxy2 = [(GKService *)self clientProxy];
+    nearbyDiscovery = [clientProxy2 nearbyDiscovery];
+    [nearbyDiscovery startBrowsingWithPlayerID:dCopy];
   }
 
   v19 = +[GKPreferences shared];
-  v20 = [v19 fastSyncTransportEnabled];
+  fastSyncTransportEnabled = [v19 fastSyncTransportEnabled];
 
-  if (v20)
+  if (fastSyncTransportEnabled)
   {
-    v21 = [(GKService *)self clientProxy];
-    v22 = [v21 peerDiscovery];
+    clientProxy3 = [(GKService *)self clientProxy];
+    peerDiscovery2 = [clientProxy3 peerDiscovery];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000DC2CC;
     v23[3] = &unk_100360FA0;
     v24 = v14;
-    [v22 startBrowsingWithCompletionHandler:v23];
+    [peerDiscovery2 startBrowsingWithCompletionHandler:v23];
   }
 
   else
@@ -2223,9 +2223,9 @@ LABEL_16:
   }
 }
 
-- (void)stopNearbyBrowsingWithHandler:(id)a3
+- (void)stopNearbyBrowsingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2235,10 +2235,10 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKFastSync, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(GKService *)self clientProxy];
-    v9 = [v8 peerDiscovery];
+    clientProxy = [(GKService *)self clientProxy];
+    peerDiscovery = [clientProxy peerDiscovery];
     *buf = 138412290;
-    v25 = v9;
+    v25 = peerDiscovery;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "peerDiscovery (%@) stopBrowsing", buf, 0xCu);
   }
 
@@ -2246,32 +2246,32 @@ LABEL_16:
   v22[1] = 3221225472;
   v22[2] = sub_1000DC554;
   v22[3] = &unk_100360FA0;
-  v10 = v4;
+  v10 = handlerCopy;
   v23 = v10;
   v11 = objc_retainBlock(v22);
   v12 = +[GKPreferences shared];
-  v13 = [v12 disableViceroyNearby];
+  disableViceroyNearby = [v12 disableViceroyNearby];
 
-  if ((v13 & 1) == 0)
+  if ((disableViceroyNearby & 1) == 0)
   {
-    v14 = [(GKService *)self clientProxy];
-    v15 = [v14 nearbyDiscovery];
-    [v15 stopBrowsing];
+    clientProxy2 = [(GKService *)self clientProxy];
+    nearbyDiscovery = [clientProxy2 nearbyDiscovery];
+    [nearbyDiscovery stopBrowsing];
   }
 
   v16 = +[GKPreferences shared];
-  v17 = [v16 fastSyncTransportEnabled];
+  fastSyncTransportEnabled = [v16 fastSyncTransportEnabled];
 
-  if (v17)
+  if (fastSyncTransportEnabled)
   {
-    v18 = [(GKService *)self clientProxy];
-    v19 = [v18 peerDiscovery];
+    clientProxy3 = [(GKService *)self clientProxy];
+    peerDiscovery2 = [clientProxy3 peerDiscovery];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000DC5D4;
     v20[3] = &unk_100360FA0;
     v21 = v11;
-    [v19 stopBrowsingWithCompletionHandler:v20];
+    [peerDiscovery2 stopBrowsingWithCompletionHandler:v20];
   }
 
   else
@@ -2280,10 +2280,10 @@ LABEL_16:
   }
 }
 
-- (void)startNearbyAdvertisingWithDiscoveryInfo:(id)a3 handler:(id)a4
+- (void)startNearbyAdvertisingWithDiscoveryInfo:(id)info handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -2293,10 +2293,10 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKFastSync, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [(GKService *)self clientProxy];
-    v12 = [v11 peerDiscovery];
+    clientProxy = [(GKService *)self clientProxy];
+    peerDiscovery = [clientProxy peerDiscovery];
     *buf = 138412290;
-    v30 = v12;
+    v30 = peerDiscovery;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "peerDiscovery (%@) startListening", buf, 0xCu);
   }
 
@@ -2304,38 +2304,38 @@ LABEL_16:
   v27[1] = 3221225472;
   v27[2] = sub_1000DC8A4;
   v27[3] = &unk_100361CB8;
-  v13 = v7;
+  v13 = handlerCopy;
   v28 = v13;
   v14 = objc_retainBlock(v27);
   v15 = +[GKPreferences shared];
-  v16 = [v15 disableViceroyNearby];
+  disableViceroyNearby = [v15 disableViceroyNearby];
 
-  if (v16)
+  if (disableViceroyNearby)
   {
     v17 = 0;
   }
 
   else
   {
-    v18 = [(GKService *)self clientProxy];
-    v19 = [v18 nearbyDiscovery];
-    v17 = [v19 startAdvertisingWithDiscoveryInfo:v6];
+    clientProxy2 = [(GKService *)self clientProxy];
+    nearbyDiscovery = [clientProxy2 nearbyDiscovery];
+    v17 = [nearbyDiscovery startAdvertisingWithDiscoveryInfo:infoCopy];
   }
 
   v20 = +[GKPreferences shared];
-  v21 = [v20 fastSyncTransportEnabled];
+  fastSyncTransportEnabled = [v20 fastSyncTransportEnabled];
 
-  if (v21)
+  if (fastSyncTransportEnabled)
   {
-    v22 = [(GKService *)self clientProxy];
-    v23 = [v22 peerDiscovery];
+    clientProxy3 = [(GKService *)self clientProxy];
+    peerDiscovery2 = [clientProxy3 peerDiscovery];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000DC930;
     v24[3] = &unk_100360EB0;
     v26 = v14;
     v25 = v17;
-    [v23 startListening:v6 completionHandler:v24];
+    [peerDiscovery2 startListening:infoCopy completionHandler:v24];
   }
 
   else
@@ -2344,9 +2344,9 @@ LABEL_16:
   }
 }
 
-- (void)stopNearbyAdvertisingWithHandler:(id)a3
+- (void)stopNearbyAdvertisingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2356,10 +2356,10 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKFastSync, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(GKService *)self clientProxy];
-    v9 = [v8 peerDiscovery];
+    clientProxy = [(GKService *)self clientProxy];
+    peerDiscovery = [clientProxy peerDiscovery];
     *buf = 138412290;
-    v25 = v9;
+    v25 = peerDiscovery;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "peerDiscovery (%@) stopListening", buf, 0xCu);
   }
 
@@ -2367,32 +2367,32 @@ LABEL_16:
   v22[1] = 3221225472;
   v22[2] = sub_1000DCBBC;
   v22[3] = &unk_100360FA0;
-  v10 = v4;
+  v10 = handlerCopy;
   v23 = v10;
   v11 = objc_retainBlock(v22);
   v12 = +[GKPreferences shared];
-  v13 = [v12 disableViceroyNearby];
+  disableViceroyNearby = [v12 disableViceroyNearby];
 
-  if ((v13 & 1) == 0)
+  if ((disableViceroyNearby & 1) == 0)
   {
-    v14 = [(GKService *)self clientProxy];
-    v15 = [v14 nearbyDiscovery];
-    [v15 stopAdvertising];
+    clientProxy2 = [(GKService *)self clientProxy];
+    nearbyDiscovery = [clientProxy2 nearbyDiscovery];
+    [nearbyDiscovery stopAdvertising];
   }
 
   v16 = +[GKPreferences shared];
-  v17 = [v16 fastSyncTransportEnabled];
+  fastSyncTransportEnabled = [v16 fastSyncTransportEnabled];
 
-  if (v17)
+  if (fastSyncTransportEnabled)
   {
-    v18 = [(GKService *)self clientProxy];
-    v19 = [v18 peerDiscovery];
+    clientProxy3 = [(GKService *)self clientProxy];
+    peerDiscovery2 = [clientProxy3 peerDiscovery];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000DCC3C;
     v20[3] = &unk_100360FA0;
     v21 = v11;
-    [v19 stopListeningWithCompletionHandler:v20];
+    [peerDiscovery2 stopListeningWithCompletionHandler:v20];
   }
 
   else
@@ -2401,23 +2401,23 @@ LABEL_16:
   }
 }
 
-- (void)presentNearbyInvite:(id)a3
+- (void)presentNearbyInvite:(id)invite
 {
-  v3 = a3;
+  inviteCopy = invite;
   v4 = +[GKDataRequestManager sharedManager];
-  [v4 presentNearbyInvite:v3];
+  [v4 presentNearbyInvite:inviteCopy];
 }
 
-- (void)nearbyInviteWasCancelled:(id)a3
+- (void)nearbyInviteWasCancelled:(id)cancelled
 {
-  v3 = a3;
+  cancelledCopy = cancelled;
   v4 = +[GKDataRequestManager sharedManager];
-  [v4 nearbyInviteWasCancelled:v3];
+  [v4 nearbyInviteWasCancelled:cancelledCopy];
 }
 
-- (void)fetchDevicePushToken:(id)a3
+- (void)fetchDevicePushToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -2431,15 +2431,15 @@ LABEL_16:
   }
 
   v6 = +[GKDataRequestManager sharedManager];
-  v7 = [v6 pushToken];
+  pushToken = [v6 pushToken];
 
-  v3[2](v3, v7);
+  tokenCopy[2](tokenCopy, pushToken);
 }
 
-- (void)fetchOnDeviceMultiplayerBundleIDsForNewBundleID:(id)a3 handler:(id)a4
+- (void)fetchOnDeviceMultiplayerBundleIDsForNewBundleID:(id)d handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -2449,7 +2449,7 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "fetchOnDeviceMultiplayerBundleIDsForNewBundleID: %@", buf, 0xCu);
   }
 
@@ -2459,14 +2459,14 @@ LABEL_16:
   v12[1] = 3221225472;
   v12[2] = sub_1000DCF6C;
   v12[3] = &unk_1003626B0;
-  v13 = v6;
-  v11 = v6;
-  [v10 getOnDeviceMultiplayerGamesForBundleIDs:v5 handler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v10 getOnDeviceMultiplayerGamesForBundleIDs:dCopy handler:v12];
 }
 
-- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)a3
+- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2488,13 +2488,13 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ Scanning installed apps", &v16, 0xCu);
   }
 
   v9 = +[GKApplicationWorkspace defaultWorkspace];
-  v10 = [v9 availableGameIdentifiers];
-  v11 = [v10 count];
+  availableGameIdentifiers = [v9 availableGameIdentifiers];
+  v11 = [availableGameIdentifiers count];
   if (!os_log_GKGeneral)
   {
     v12 = GKOSLoggers();
@@ -2506,17 +2506,17 @@ LABEL_16:
     v14 = v13;
     v15 = [NSNumber numberWithUnsignedInteger:v11];
     v16 = 138412290;
-    v17 = v15;
+    selfCopy = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "found %@ installed Game Center games.", &v16, 0xCu);
   }
 
-  [(GKMultiplayerMatchService *)self fetchOnDeviceMultiplayerBundleIDsForNewBundleID:v10 handler:v4];
+  [(GKMultiplayerMatchService *)self fetchOnDeviceMultiplayerBundleIDsForNewBundleID:availableGameIdentifiers handler:handlerCopy];
 }
 
-- (void)isGameCenterMultiplayerGameForBundleID:(id)a3 handler:(id)a4
+- (void)isGameCenterMultiplayerGameForBundleID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -2526,26 +2526,26 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "isGameCenterMultiplayerGameForBundleID, bundleID: %@", buf, 0xCu);
   }
 
-  v16 = v6;
+  v16 = dCopy;
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000DD40C;
   v13[3] = &unk_100362408;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
   [(GKMultiplayerMatchService *)self fetchOnDeviceMultiplayerBundleIDsForNewBundleID:v10 handler:v13];
 }
 
-- (void)fetchTransportOverrideWithHandler:(id)a3
+- (void)fetchTransportOverrideWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -2559,19 +2559,19 @@ LABEL_16:
   }
 
   v6 = +[GKPreferences shared];
-  v7 = [v6 forceEnabledTransportVersions];
+  forceEnabledTransportVersions = [v6 forceEnabledTransportVersions];
   v8 = +[GKPreferences shared];
-  v9 = [v8 forceDisabledTransportVersions];
+  forceDisabledTransportVersions = [v8 forceDisabledTransportVersions];
   v10 = +[GKPreferences shared];
-  v3[2](v3, v7, v9, [v10 multiplayerHealthCheckEnabled]);
+  handlerCopy[2](handlerCopy, forceEnabledTransportVersions, forceDisabledTransportVersions, [v10 multiplayerHealthCheckEnabled]);
 }
 
 - (void)setupNearbyDiscovery
 {
   v3 = +[GKPreferences shared];
-  v4 = [v3 disableViceroyNearby];
+  disableViceroyNearby = [v3 disableViceroyNearby];
 
-  if (v4)
+  if (disableViceroyNearby)
   {
     if (!os_log_GKGeneral)
     {
@@ -2588,14 +2588,14 @@ LABEL_16:
 
   else
   {
-    v7 = [(GKService *)self clientProxy];
-    v8 = [v7 bundleIdentifier];
+    clientProxy = [(GKService *)self clientProxy];
+    bundleIdentifier = [clientProxy bundleIdentifier];
 
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000DD7E4;
     v21[3] = &unk_100365E60;
-    v9 = v8;
+    v9 = bundleIdentifier;
     v22 = v9;
     v10 = objc_retainBlock(v21);
     v19[0] = _NSConcreteStackBlock;
@@ -2612,24 +2612,24 @@ LABEL_16:
     v18 = v11;
     v13 = v11;
     v14 = objc_retainBlock(v17);
-    v15 = [(GKService *)self clientProxy];
-    v16 = [v15 nearbyDiscovery];
-    [v16 setupWithPlayerFoundHandler:v10 playerLostHandler:v12 receiveDataHandler:v14];
+    clientProxy2 = [(GKService *)self clientProxy];
+    nearbyDiscovery = [clientProxy2 nearbyDiscovery];
+    [nearbyDiscovery setupWithPlayerFoundHandler:v10 playerLostHandler:v12 receiveDataHandler:v14];
   }
 }
 
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4 handler:(id)a5
+- (void)forgetParticipant:(id)participant deviceID:(id)d handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKService *)self clientProxy];
-  v12 = [v11 nearbyDiscovery];
-  [v12 forgetParticipant:v10 deviceID:v9];
+  handlerCopy = handler;
+  dCopy = d;
+  participantCopy = participant;
+  clientProxy = [(GKService *)self clientProxy];
+  nearbyDiscovery = [clientProxy nearbyDiscovery];
+  [nearbyDiscovery forgetParticipant:participantCopy deviceID:dCopy];
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -2646,13 +2646,13 @@ LABEL_16:
   }
 }
 
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 usePeerDiscovery:(BOOL)a6 handler:(id)a7
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data usePeerDiscovery:(BOOL)discovery handler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  discoveryCopy = discovery;
+  participantCopy = participant;
+  dCopy = d;
+  dataCopy = data;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v16 = GKOSLoggers();
@@ -2662,7 +2662,7 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v18 = @"bonjour in Viceoroy";
-    if (v8)
+    if (discoveryCopy)
     {
       v18 = @"bonjour in gamed";
     }
@@ -2672,64 +2672,64 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Sending data to nearby participant with %@", buf, 0xCu);
   }
 
-  v19 = [(GKService *)self clientProxy];
-  v20 = v19;
-  if (v8)
+  clientProxy = [(GKService *)self clientProxy];
+  v20 = clientProxy;
+  if (discoveryCopy)
   {
-    v21 = [v19 peerDiscovery];
+    peerDiscovery = [clientProxy peerDiscovery];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000DE250;
     v27[3] = &unk_100361CB8;
     v22 = &v28;
-    v28 = v15;
-    v23 = v15;
-    [v21 sendDataToParticipant:v12 deviceID:v13 data:v14 completionHandler:v27];
+    v28 = handlerCopy;
+    v23 = handlerCopy;
+    [peerDiscovery sendDataToParticipant:participantCopy deviceID:dCopy data:dataCopy completionHandler:v27];
   }
 
   else
   {
-    v21 = [v19 nearbyDiscovery];
+    peerDiscovery = [clientProxy nearbyDiscovery];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000DE26C;
     v25[3] = &unk_100361CB8;
     v22 = &v26;
-    v26 = v15;
-    v24 = v15;
-    [v21 sendDataToParticipant:v12 deviceID:v13 data:v14 handler:v25];
+    v26 = handlerCopy;
+    v24 = handlerCopy;
+    [peerDiscovery sendDataToParticipant:participantCopy deviceID:dCopy data:dataCopy handler:v25];
   }
 }
 
-- (void)revokePseudonym:(id)a3 withCompletionHandler:(id)a4
+- (void)revokePseudonym:(id)pseudonym withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerMatchService *)self pseudonymManager];
-  [v8 revokePseudonym:v7 completionHandler:v6];
+  handlerCopy = handler;
+  pseudonymCopy = pseudonym;
+  pseudonymManager = [(GKMultiplayerMatchService *)self pseudonymManager];
+  [pseudonymManager revokePseudonym:pseudonymCopy completionHandler:handlerCopy];
 }
 
-- (void)validateRequests:(id)a3 andFileMultiplayerTTRIfNeededWithContext:(id)a4
+- (void)validateRequests:(id)requests andFileMultiplayerTTRIfNeededWithContext:(id)context
 {
-  v8 = a4;
-  v6 = [a3 objectForKey:GKSupportedTransportVersionsKey];
+  contextCopy = context;
+  v6 = [requests objectForKey:GKSupportedTransportVersionsKey];
   v7 = [v6 containsObject:&off_100382478];
 
   if (v7)
   {
-    [(GKMultiplayerMatchService *)self fileMultiplayerTTRWithCallBackIdentifier:&stru_100374F10 descriptionAddition:v8 handler:&stru_100365EF8];
+    [(GKMultiplayerMatchService *)self fileMultiplayerTTRWithCallBackIdentifier:&stru_100374F10 descriptionAddition:contextCopy handler:&stru_100365EF8];
   }
 }
 
-- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)a3 descriptionAddition:(id)a4 handler:(id)a5
+- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)identifier descriptionAddition:(id)addition handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  additionCopy = addition;
+  handlerCopy = handler;
   v11 = +[GKPreferences shared];
-  v12 = [v11 isInternalBuild];
+  isInternalBuild = [v11 isInternalBuild];
 
-  if (v12)
+  if (isInternalBuild)
   {
     if (!os_log_GKGeneral)
     {
@@ -2740,7 +2740,7 @@ LABEL_16:
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v8;
+      v24 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "GKMultiplayerService fileMultiplayerTTR with callbackIdentifier: %@", buf, 0xCu);
     }
 
@@ -2749,36 +2749,36 @@ LABEL_16:
     v15 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v16 = [NSMutableDictionary dictionaryWithDictionary:v15];
 
-    v17 = [(GKMultiplayerMatchService *)self ttrHelper];
-    v18 = [v17 getURLForNewMultiplayerRadarWithCallbackIdentifier:v8 descriptionAddition:v9];
+    ttrHelper = [(GKMultiplayerMatchService *)self ttrHelper];
+    v18 = [ttrHelper getURLForNewMultiplayerRadarWithCallbackIdentifier:identifierCopy descriptionAddition:additionCopy];
 
     if (v18)
     {
       [v16 setObject:v18 forKeyedSubscript:GKTTRBulletinKeyURL];
     }
 
-    if (v9)
+    if (additionCopy)
     {
-      [v16 setObject:v9 forKeyedSubscript:GKTTRBulletinKeySubtitle];
+      [v16 setObject:additionCopy forKeyedSubscript:GKTTRBulletinKeySubtitle];
     }
 
     v19 = [GKTTRInitiationBulletin packFakeTTRBulletinWithInfo:v16];
     v20 = +[GKDataRequestManager sharedManager];
     [v20 processIncomingTTR:v19];
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)uploadLogsForRadar:(id)a3 from:(id)a4 handler:(id)a5
+- (void)uploadLogsForRadar:(id)radar from:(id)from handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  radarCopy = radar;
+  fromCopy = from;
+  handlerCopy = handler;
   v11 = +[GKPreferences shared];
-  v12 = [v11 isInternalBuild];
+  isInternalBuild = [v11 isInternalBuild];
 
-  if (v12)
+  if (isInternalBuild)
   {
     if (!os_log_GKGeneral)
     {
@@ -2795,14 +2795,14 @@ LABEL_16:
     v22[0] = GKTTRBulletinKeyType;
     v22[1] = GKTTRBulletinKeyRadarID;
     v23[0] = &off_100382490;
-    v23[1] = v8;
+    v23[1] = radarCopy;
     v22[2] = GKTTRBulletinKeyRequesterPlayerAlias;
-    v23[2] = v9;
+    v23[2] = fromCopy;
     v15 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
     v16 = [NSMutableDictionary dictionaryWithDictionary:v15];
 
-    v17 = [(GKMultiplayerMatchService *)self ttrHelper];
-    v18 = [v17 getURLForExistingMultiplayerRadarWithRadarID:v8];
+    ttrHelper = [(GKMultiplayerMatchService *)self ttrHelper];
+    v18 = [ttrHelper getURLForExistingMultiplayerRadarWithRadarID:radarCopy];
 
     if (v18)
     {
@@ -2813,7 +2813,7 @@ LABEL_16:
     v20 = +[GKDataRequestManager sharedManager];
     [v20 processIncomingTTR:v19];
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 

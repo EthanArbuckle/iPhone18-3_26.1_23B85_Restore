@@ -1,17 +1,17 @@
 @interface _UIPrototypingMenuCell
-- (_UIPrototypingMenuCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_UIPrototypingMenuCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_prototypingSettingDidChange;
-- (void)setPrototypingSetting:(id)a3;
+- (void)setPrototypingSetting:(id)setting;
 @end
 
 @implementation _UIPrototypingMenuCell
 
-- (_UIPrototypingMenuCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_UIPrototypingMenuCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v37[4] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = _UIPrototypingMenuCell;
-  v4 = [(UITableViewCell *)&v36 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UITableViewCell *)&v36 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIStackView alloc];
@@ -25,9 +25,9 @@
 
     [(UIStackView *)v4->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     -[UIStackView setAxis:](v4->_stackView, "setAxis:", [objc_opt_class() _layoutAxis]);
-    v12 = [(UIStackView *)v4->_stackView axis];
+    axis = [(UIStackView *)v4->_stackView axis];
     v13 = v4->_stackView;
-    if (v12 == 1)
+    if (axis == 1)
     {
       [(UIStackView *)v13 setAlignment:0];
     }
@@ -39,8 +39,8 @@
       [(UIStackView *)v4->_stackView setLayoutMarginsRelativeArrangement:1];
     }
 
-    v14 = [(UITableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_stackView];
+    contentView = [(UITableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_stackView];
 
     v15 = [[UILabel alloc] initWithFrame:v6, v7, v8, v9];
     titleLabel = v4->_titleLabel;
@@ -51,25 +51,25 @@
     [(UILabel *)v4->_titleLabel setFont:v17];
 
     [(UIStackView *)v4->_stackView addArrangedSubview:v4->_titleLabel];
-    v18 = [(UITableViewCell *)v4 contentView];
-    v19 = [v18 layoutMarginsGuide];
+    contentView2 = [(UITableViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
     v30 = MEMORY[0x1E695DF70];
-    v35 = [(UIView *)v4->_stackView topAnchor];
-    v34 = [v19 topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor = [(UIView *)v4->_stackView topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[0] = v33;
-    v32 = [(UIView *)v4->_stackView leadingAnchor];
-    v31 = [v19 leadingAnchor];
-    v29 = [v32 constraintEqualToAnchor:v31];
+    leadingAnchor = [(UIView *)v4->_stackView leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[1] = v29;
-    v20 = [(UIView *)v4->_stackView trailingAnchor];
-    v21 = [v19 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    trailingAnchor = [(UIView *)v4->_stackView trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[2] = v22;
-    v23 = [(UIView *)v4->_stackView bottomAnchor];
-    v24 = [v19 bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    bottomAnchor = [(UIView *)v4->_stackView bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     v27 = [v30 arrayWithArray:v26];
@@ -80,23 +80,23 @@
   return v4;
 }
 
-- (void)setPrototypingSetting:(id)a3
+- (void)setPrototypingSetting:(id)setting
 {
-  v5 = a3;
-  if (self->_prototypingSetting != v5)
+  settingCopy = setting;
+  if (self->_prototypingSetting != settingCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_prototypingSetting, a3);
+    v6 = settingCopy;
+    objc_storeStrong(&self->_prototypingSetting, setting);
     [(_UIPrototypingMenuCell *)self _prototypingSettingDidChange];
-    v5 = v6;
+    settingCopy = v6;
   }
 }
 
 - (void)_prototypingSettingDidChange
 {
-  v4 = [(_UIPrototypingValue *)self->_prototypingSetting name];
-  v3 = [(_UIPrototypingMenuCell *)self titleLabel];
-  [v3 setText:v4];
+  name = [(_UIPrototypingValue *)self->_prototypingSetting name];
+  titleLabel = [(_UIPrototypingMenuCell *)self titleLabel];
+  [titleLabel setText:name];
 }
 
 @end

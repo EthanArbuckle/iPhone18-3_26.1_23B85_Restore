@@ -1,21 +1,21 @@
 @interface PKPaymentTransactionDetailAmountLineItemReceipt
 - (NSString)value;
-- (PKPaymentTransactionDetailAmountLineItemReceipt)initWithReceiptLineItem:(id)a3;
+- (PKPaymentTransactionDetailAmountLineItemReceipt)initWithReceiptLineItem:(id)item;
 - (UIImage)image;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemReceipt
 
-- (PKPaymentTransactionDetailAmountLineItemReceipt)initWithReceiptLineItem:(id)a3
+- (PKPaymentTransactionDetailAmountLineItemReceipt)initWithReceiptLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PKPaymentTransactionDetailAmountLineItemReceipt;
   v6 = [(PKPaymentTransactionDetailAmountLineItemReceipt *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
   }
 
   return v7;
@@ -23,18 +23,18 @@
 
 - (NSString)value
 {
-  v2 = [(PKTransactionReceiptLineItem *)self->_lineItem currencyAmount];
-  v3 = [v2 formattedStringValue];
+  currencyAmount = [(PKTransactionReceiptLineItem *)self->_lineItem currencyAmount];
+  formattedStringValue = [currencyAmount formattedStringValue];
 
-  return v3;
+  return formattedStringValue;
 }
 
 - (UIImage)image
 {
-  v2 = [(PKTransactionReceiptLineItem *)self->_lineItem image];
-  if (v2)
+  image = [(PKTransactionReceiptLineItem *)self->_lineItem image];
+  if (image)
   {
-    v3 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v2];
+    v3 = [MEMORY[0x1E69DCAB8] imageWithPKImage:image];
   }
 
   else

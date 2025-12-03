@@ -1,15 +1,15 @@
 @interface ConversationCanHandleResult
 - (_TtC14SiriKitRuntime27ConversationCanHandleResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConversationCanHandleResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConversationCanHandleResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConversationCanHandleResult.encode(with:)(coderCopy);
 }
 
 - (_TtC14SiriKitRuntime27ConversationCanHandleResult)init

@@ -1,48 +1,48 @@
 @interface ISHintedValue
-- (BOOL)sizeOutsideHintedRange:(CGSize)a3;
-- (ISHintedValue)initWithOptions:(unint64_t)a3;
-- (double)interpolationFactorForSize:(CGSize)a3;
-- (double)scaleFactorForSize:(CGSize)a3;
-- (id)hintedValueForIndex:(int64_t)a3;
-- (id)hintedValueForSize:(CGSize)a3;
-- (int64_t)indexForSize:(CGSize)a3;
-- (void)addHintedValue:(id)a3 forSize:(CGSize)a4;
+- (BOOL)sizeOutsideHintedRange:(CGSize)range;
+- (ISHintedValue)initWithOptions:(unint64_t)options;
+- (double)interpolationFactorForSize:(CGSize)size;
+- (double)scaleFactorForSize:(CGSize)size;
+- (id)hintedValueForIndex:(int64_t)index;
+- (id)hintedValueForSize:(CGSize)size;
+- (int64_t)indexForSize:(CGSize)size;
+- (void)addHintedValue:(id)value forSize:(CGSize)size;
 @end
 
 @implementation ISHintedValue
 
-- (ISHintedValue)initWithOptions:(unint64_t)a3
+- (ISHintedValue)initWithOptions:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = ISHintedValue;
   v4 = [(ISHintedValue *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     dimensions = v4->_dimensions;
-    v4->_dimensions = v5;
+    v4->_dimensions = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     values = v4->_values;
-    v4->_values = v7;
+    v4->_values = array2;
 
-    v4->_options = a3;
+    v4->_options = options;
   }
 
   return v4;
 }
 
-- (int64_t)indexForSize:(CGSize)a3
+- (int64_t)indexForSize:(CGSize)size
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
   v14 = 0u;
@@ -101,16 +101,16 @@ LABEL_15:
   return v7;
 }
 
-- (void)addHintedValue:(id)a3 forSize:(CGSize)a4
+- (void)addHintedValue:(id)value forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v17 = a3;
-  v7 = [(ISHintedValue *)self indexForSize:width, height];
+  height = size.height;
+  width = size.width;
+  valueCopy = value;
+  height = [(ISHintedValue *)self indexForSize:width, height];
   v8 = 0.0;
-  if (v7 < [(NSMutableArray *)self->_dimensions count])
+  if (height < [(NSMutableArray *)self->_dimensions count])
   {
-    v9 = [(NSMutableArray *)self->_dimensions objectAtIndexedSubscript:v7];
+    v9 = [(NSMutableArray *)self->_dimensions objectAtIndexedSubscript:height];
     [v9 doubleValue];
     v8 = v10;
   }
@@ -131,59 +131,59 @@ LABEL_15:
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [(NSMutableArray *)dimensions addObject:v16];
 
-    [(NSMutableArray *)self->_values addObject:v17];
+    [(NSMutableArray *)self->_values addObject:valueCopy];
   }
 
   else
   {
-    v12 = v7 + (~v7 >> 63);
+    v12 = height + (~height >> 63);
     v13 = self->_dimensions;
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [(NSMutableArray *)v13 insertObject:v14 atIndex:v12];
 
-    [(NSMutableArray *)self->_values insertObject:v17 atIndex:v12];
+    [(NSMutableArray *)self->_values insertObject:valueCopy atIndex:v12];
   }
 }
 
-- (id)hintedValueForSize:(CGSize)a3
+- (id)hintedValueForSize:(CGSize)size
 {
-  v4 = [(ISHintedValue *)self indexForSize:a3.width, a3.height];
+  v4 = [(ISHintedValue *)self indexForSize:size.width, size.height];
 
   return [(ISHintedValue *)self hintedValueForIndex:v4];
 }
 
-- (id)hintedValueForIndex:(int64_t)a3
+- (id)hintedValueForIndex:(int64_t)index
 {
   v5 = [(NSMutableArray *)self->_values count];
   values = self->_values;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     [(NSMutableArray *)values lastObject];
   }
 
   else
   {
-    [(NSMutableArray *)values objectAtIndexedSubscript:a3];
+    [(NSMutableArray *)values objectAtIndexedSubscript:index];
   }
   v7 = ;
 
   return v7;
 }
 
-- (BOOL)sizeOutsideHintedRange:(CGSize)a3
+- (BOOL)sizeOutsideHintedRange:(CGSize)range
 {
-  if (a3.width >= a3.height)
+  if (range.width >= range.height)
   {
-    width = a3.width;
+    width = range.width;
   }
 
   else
   {
-    width = a3.height;
+    width = range.height;
   }
 
-  v5 = [(NSMutableArray *)self->_dimensions lastObject];
-  [v5 doubleValue];
+  lastObject = [(NSMutableArray *)self->_dimensions lastObject];
+  [lastObject doubleValue];
   v7 = v6;
 
   if (width > v7)
@@ -191,17 +191,17 @@ LABEL_15:
     return 1;
   }
 
-  v9 = [(NSMutableArray *)self->_dimensions firstObject];
-  [v9 doubleValue];
+  firstObject = [(NSMutableArray *)self->_dimensions firstObject];
+  [firstObject doubleValue];
   v8 = width < v10;
 
   return v8;
 }
 
-- (double)scaleFactorForSize:(CGSize)a3
+- (double)scaleFactorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = 1.0;
   if ([(NSMutableArray *)self->_dimensions count])
   {
@@ -210,29 +210,29 @@ LABEL_15:
       width = height;
     }
 
-    v7 = [(NSMutableArray *)self->_dimensions lastObject];
-    [v7 doubleValue];
+    lastObject = [(NSMutableArray *)self->_dimensions lastObject];
+    [lastObject doubleValue];
     v9 = v8;
 
     dimensions = self->_dimensions;
     if (width > v9)
     {
-      v11 = [(NSMutableArray *)dimensions lastObject];
+      lastObject2 = [(NSMutableArray *)dimensions lastObject];
 LABEL_8:
-      v15 = v11;
-      [v11 doubleValue];
+      v15 = lastObject2;
+      [lastObject2 doubleValue];
       v6 = width / v16;
 
       return v6;
     }
 
-    v12 = [(NSMutableArray *)dimensions firstObject];
-    [v12 doubleValue];
+    firstObject = [(NSMutableArray *)dimensions firstObject];
+    [firstObject doubleValue];
     v14 = v13;
 
     if (width < v14)
     {
-      v11 = [(NSMutableArray *)self->_dimensions firstObject];
+      lastObject2 = [(NSMutableArray *)self->_dimensions firstObject];
       goto LABEL_8;
     }
   }
@@ -240,10 +240,10 @@ LABEL_8:
   return v6;
 }
 
-- (double)interpolationFactorForSize:(CGSize)a3
+- (double)interpolationFactorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [(ISHintedValue *)self indexForSize:?];
   if (v6 >= [(NSMutableArray *)self->_dimensions count])
   {

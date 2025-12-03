@@ -1,5 +1,5 @@
 @interface MURouteSnapshotKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)padding;
 - (unint64_t)hash;
 @end
@@ -76,13 +76,13 @@
   return v10 ^ v3 ^ v17 ^ v24 ^ PBHashBytes() ^ (2654435761 * self->_darkMode);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
     v7 = *(v5 + 3);
     v8 = identifier;

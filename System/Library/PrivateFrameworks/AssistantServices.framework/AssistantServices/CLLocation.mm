@@ -1,32 +1,32 @@
 @interface CLLocation
-- (BOOL)_af_isOlderThanAge:(id)a3;
-- (BOOL)_af_isWithinAccuracy:(double)a3;
-- (BOOL)ad_isNewerThan:(id)a3;
+- (BOOL)_af_isOlderThanAge:(id)age;
+- (BOOL)_af_isWithinAccuracy:(double)accuracy;
+- (BOOL)ad_isNewerThan:(id)than;
 - (id)_af_age;
 @end
 
 @implementation CLLocation
 
-- (BOOL)ad_isNewerThan:(id)a3
+- (BOOL)ad_isNewerThan:(id)than
 {
-  v4 = a3;
-  v5 = [(CLLocation *)self timestamp];
-  v6 = [v4 timestamp];
+  thanCopy = than;
+  timestamp = [(CLLocation *)self timestamp];
+  timestamp2 = [thanCopy timestamp];
 
-  v7 = [v5 compare:v6];
+  v7 = [timestamp compare:timestamp2];
   return v7 == 1;
 }
 
-- (BOOL)_af_isOlderThanAge:(id)a3
+- (BOOL)_af_isOlderThanAge:(id)age
 {
-  v4 = a3;
-  v5 = [(CLLocation *)self timestamp];
-  v6 = v5;
+  ageCopy = age;
+  timestamp = [(CLLocation *)self timestamp];
+  v6 = timestamp;
   v7 = 0;
-  if (v4 && v5)
+  if (ageCopy && timestamp)
   {
-    [v5 timeIntervalSinceNow];
-    v7 = v8 < -[v4 intValue];
+    [timestamp timeIntervalSinceNow];
+    v7 = v8 < -[ageCopy intValue];
   }
 
   return v7;
@@ -34,11 +34,11 @@
 
 - (id)_af_age
 {
-  v2 = [(CLLocation *)self timestamp];
-  v3 = v2;
-  if (v2)
+  timestamp = [(CLLocation *)self timestamp];
+  v3 = timestamp;
+  if (timestamp)
   {
-    [v2 timeIntervalSinceNow];
+    [timestamp timeIntervalSinceNow];
     v5 = [NSNumber numberWithInt:-v4];
   }
 
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (BOOL)_af_isWithinAccuracy:(double)a3
+- (BOOL)_af_isWithinAccuracy:(double)accuracy
 {
-  if (a3 <= 0.0)
+  if (accuracy <= 0.0)
   {
     return 0;
   }
 
   [(CLLocation *)self horizontalAccuracy];
-  return v4 - a3 <= 2.22044605e-16;
+  return v4 - accuracy <= 2.22044605e-16;
 }
 
 @end

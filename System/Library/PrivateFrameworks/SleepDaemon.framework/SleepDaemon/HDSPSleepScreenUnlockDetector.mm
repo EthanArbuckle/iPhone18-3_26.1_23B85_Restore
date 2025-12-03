@@ -1,31 +1,31 @@
 @interface HDSPSleepScreenUnlockDetector
 - (HDSPEnvironment)environment;
-- (HDSPSleepScreenUnlockDetector)initWithEnvironment:(id)a3;
+- (HDSPSleepScreenUnlockDetector)initWithEnvironment:(id)environment;
 - (HDSPWakeDetectorDelegate)wakeDetectorDelegate;
 - (unint64_t)numberOfTimesDismissed;
 - (void)_resetCounter;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)setNumberOfTimesDismissed:(unint64_t)a3;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)setNumberOfTimesDismissed:(unint64_t)dismissed;
 - (void)sleepLockWasDismissed;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
 - (void)startDetecting;
 - (void)stopDetecting;
 @end
 
 @implementation HDSPSleepScreenUnlockDetector
 
-- (HDSPSleepScreenUnlockDetector)initWithEnvironment:(id)a3
+- (HDSPSleepScreenUnlockDetector)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = HDSPSleepScreenUnlockDetector;
   v5 = [(HDSPSleepScreenUnlockDetector *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
-    v7 = [v4 mutexGenerator];
-    v8 = v7[2]();
+    objc_storeWeak(&v5->_environment, environmentCopy);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v8 = mutexGenerator[2]();
     mutexProvider = v6->_mutexProvider;
     v6->_mutexProvider = v8;
 
@@ -35,11 +35,11 @@
   return v6;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v5 = [(HDSPSleepScreenUnlockDetector *)self environment];
-  v4 = [v5 sleepModeManager];
-  [v4 addObserver:self];
+  environment = [(HDSPSleepScreenUnlockDetector *)self environment];
+  sleepModeManager = [environment sleepModeManager];
+  [sleepModeManager addObserver:self];
 }
 
 - (void)startDetecting
@@ -58,8 +58,8 @@
 
     self->_isDetecting = 1;
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v6 = [WeakRetained actionManager];
-    [v6 addObserver:self];
+    actionManager = [WeakRetained actionManager];
+    [actionManager addObserver:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -80,8 +80,8 @@
   self->_isDetecting = 0;
   [(HDSPSleepScreenUnlockDetector *)self _resetCounter];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained actionManager];
-  [v6 removeObserver:self];
+  actionManager = [WeakRetained actionManager];
+  [actionManager removeObserver:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -96,7 +96,7 @@
   [(HDSPSleepScreenUnlockDetector *)self _withLock:v2];
 }
 
-- (void)setNumberOfTimesDismissed:(unint64_t)a3
+- (void)setNumberOfTimesDismissed:(unint64_t)dismissed
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -105,14 +105,14 @@
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = a3;
+    dismissedCopy = dismissed;
     v6 = v11;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] setNumberOfTimesDismissed: %ld", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v8 = [WeakRetained userDefaults];
-  [v8 hksp_setInteger:a3 forKey:@"HDSPSleepScreenUnlockCount"];
+  userDefaults = [WeakRetained userDefaults];
+  [userDefaults hksp_setInteger:dismissed forKey:@"HDSPSleepScreenUnlockCount"];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -120,8 +120,8 @@
 - (unint64_t)numberOfTimesDismissed
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained userDefaults];
-  v4 = [v3 hksp_integerForKey:@"HDSPSleepScreenUnlockCount"];
+  userDefaults = [WeakRetained userDefaults];
+  v4 = [userDefaults hksp_integerForKey:@"HDSPSleepScreenUnlockCount"];
 
   return v4;
 }
@@ -154,11 +154,11 @@
         _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] counts as early wake up", buf, 0xCu);
       }
 
-      v6 = [(HDSPSleepScreenUnlockDetector *)self wakeDetectorDelegate];
-      v7 = [(HDSPSleepScreenUnlockDetector *)self environment];
-      v8 = [v7 currentDateProvider];
-      v9 = v8[2]();
-      [v6 wakeDetector:self didDetectWakeUpEventOnDate:v9];
+      wakeDetectorDelegate = [(HDSPSleepScreenUnlockDetector *)self wakeDetectorDelegate];
+      environment = [(HDSPSleepScreenUnlockDetector *)self environment];
+      currentDateProvider = [environment currentDateProvider];
+      v9 = currentDateProvider[2]();
+      [wakeDetectorDelegate wakeDetector:self didDetectWakeUpEventOnDate:v9];
     }
 
     _Block_object_dispose(&v12, 8);
@@ -188,9 +188,9 @@ void __54__HDSPSleepScreenUnlockDetector_sleepLockWasDismissed__block_invoke(uin
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
-  if (a3 != a4)
+  if (change != mode)
   {
     [(HDSPSleepScreenUnlockDetector *)self _resetCounter];
   }

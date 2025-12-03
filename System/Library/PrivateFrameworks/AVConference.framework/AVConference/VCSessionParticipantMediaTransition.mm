@@ -1,13 +1,13 @@
 @interface VCSessionParticipantMediaTransition
-- (BOOL)isEqual:(id)a3;
-- (VCSessionParticipantMediaTransition)initWithCoder:(id)a3;
-- (VCSessionParticipantMediaTransition)initWithMediaType:(unsigned int)a3 fromState:(unsigned int)a4 toState:(unsigned int)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCSessionParticipantMediaTransition)initWithCoder:(id)coder;
+- (VCSessionParticipantMediaTransition)initWithMediaType:(unsigned int)type fromState:(unsigned int)state toState:(unsigned int)toState;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCSessionParticipantMediaTransition
 
-- (VCSessionParticipantMediaTransition)initWithMediaType:(unsigned int)a3 fromState:(unsigned int)a4 toState:(unsigned int)a5
+- (VCSessionParticipantMediaTransition)initWithMediaType:(unsigned int)type fromState:(unsigned int)state toState:(unsigned int)toState
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -16,9 +16,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_mediaType = a3;
-    v8->_fromState = a4;
-    v8->_toState = a5;
+    v8->_mediaType = type;
+    v8->_fromState = state;
+    v8->_toState = toState;
   }
 
   else
@@ -29,28 +29,28 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && self->_mediaType == *(a3 + 2) && self->_fromState == *(a3 + 3) && self->_toState == *(a3 + 4);
+  return (objc_opt_isKindOfClass() & 1) != 0 && self->_mediaType == *(equal + 2) && self->_fromState == *(equal + 3) && self->_toState == *(equal + 4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_mediaType forKey:kVCSessionParticipantMediaTransitionMediaType];
-  [a3 encodeInt32:self->_fromState forKey:kVCSessionParticipantMediaTransitionFromState];
+  [coder encodeInt32:self->_mediaType forKey:kVCSessionParticipantMediaTransitionMediaType];
+  [coder encodeInt32:self->_fromState forKey:kVCSessionParticipantMediaTransitionFromState];
   toState = self->_toState;
   v6 = kVCSessionParticipantMediaTransitionToState;
 
-  [a3 encodeInt32:toState forKey:v6];
+  [coder encodeInt32:toState forKey:v6];
 }
 
-- (VCSessionParticipantMediaTransition)initWithCoder:(id)a3
+- (VCSessionParticipantMediaTransition)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -58,19 +58,19 @@
   v4 = [(VCSessionParticipantMediaTransition *)&v6 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:kVCSessionParticipantMediaTransitionMediaType])
+    if ([coder containsValueForKey:kVCSessionParticipantMediaTransitionMediaType])
     {
-      v4->_mediaType = [a3 decodeInt32ForKey:kVCSessionParticipantMediaTransitionMediaType];
+      v4->_mediaType = [coder decodeInt32ForKey:kVCSessionParticipantMediaTransitionMediaType];
     }
 
-    if ([a3 containsValueForKey:kVCSessionParticipantMediaTransitionFromState])
+    if ([coder containsValueForKey:kVCSessionParticipantMediaTransitionFromState])
     {
-      v4->_fromState = [a3 decodeInt32ForKey:kVCSessionParticipantMediaTransitionFromState];
+      v4->_fromState = [coder decodeInt32ForKey:kVCSessionParticipantMediaTransitionFromState];
     }
 
-    if ([a3 containsValueForKey:kVCSessionParticipantMediaTransitionToState])
+    if ([coder containsValueForKey:kVCSessionParticipantMediaTransitionToState])
     {
-      v4->_toState = [a3 decodeInt32ForKey:kVCSessionParticipantMediaTransitionToState];
+      v4->_toState = [coder decodeInt32ForKey:kVCSessionParticipantMediaTransitionToState];
     }
   }
 

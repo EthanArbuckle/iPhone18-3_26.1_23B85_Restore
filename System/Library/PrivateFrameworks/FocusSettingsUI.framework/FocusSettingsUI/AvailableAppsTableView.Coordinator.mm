@@ -1,44 +1,44 @@
 @interface AvailableAppsTableView.Coordinator
 - (_TtCV15FocusSettingsUI22AvailableAppsTableView11Coordinator)init;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AvailableAppsTableView.Coordinator
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = OBJC_IVAR____TtCV15FocusSettingsUI22AvailableAppsTableView11Coordinator_sections;
   swift_beginAccess();
   return (*(&self->super.isa + v4))[2];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v6 = OBJC_IVAR____TtCV15FocusSettingsUI22AvailableAppsTableView11Coordinator_sections;
   swift_beginAccess();
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
   v7 = *(&self->super.isa + v6);
-  if (*(v7 + 16) <= a4)
+  if (*(v7 + 16) <= section)
   {
 LABEL_7:
     __break(1u);
     return sub_24BAAA52C();
   }
 
-  v8 = *(v7 + 8 * a4 + 32);
+  v8 = *(v7 + 8 * section + 32);
   if (v8 >> 62)
   {
     return sub_24BAAA52C();
@@ -47,40 +47,40 @@ LABEL_7:
   return *((v8 & 0xFFFFFFFFFFFFFF8) + 0x10);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_24BAA7F8C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24BAA7F5C();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_24BA3B8FC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_24BA3B8FC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_24BAA7F8C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24BAA7F5C();
-  v10 = a3;
-  v11 = self;
-  sub_24BA3BDD4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24BA3BDD4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = sub_24BA3E7C4();
 
   if (v6)
@@ -96,20 +96,20 @@ LABEL_7:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtCV15FocusSettingsUI22AvailableAppsTableView11Coordinator_collation);
-  v6 = self;
-  v7 = [v5 sectionTitles];
+  selfCopy = self;
+  sectionTitles = [v5 sectionTitles];
   v8 = sub_24BAAA12C();
 
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  if (*(v8 + 16) <= a4)
+  if (*(v8 + 16) <= section)
   {
 LABEL_7:
     __break(1u);
@@ -121,28 +121,28 @@ LABEL_7:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_24BA3E884(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24BA3E884(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v6 = OBJC_IVAR____TtCV15FocusSettingsUI22AvailableAppsTableView11Coordinator_sections;
   swift_beginAccess();
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
   v7 = *(&self->super.isa + v6);
-  if (*(v7 + 16) <= a4)
+  if (*(v7 + 16) <= section)
   {
 LABEL_7:
     __break(1u);
@@ -155,7 +155,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = *(v7 + 8 * a4 + 32);
+  v8 = *(v7 + 8 * section + 32);
   if (v8 >> 62)
   {
     goto LABEL_8;
@@ -164,22 +164,22 @@ LABEL_8:
   if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) > 0)
   {
 LABEL_5:
-    v9 = 0;
+    initWithFrame_ = 0;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v9 = [objc_allocWithZone(MEMORY[0x277D75D18]) initWithFrame_];
+  initWithFrame_ = [objc_allocWithZone(MEMORY[0x277D75D18]) initWithFrame_];
 LABEL_10:
 
-  return v9;
+  return initWithFrame_;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_24BA3EDE0(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24BA3EDE0(section);
   v9 = v8;
 
   return v9;

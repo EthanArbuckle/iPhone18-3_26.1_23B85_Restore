@@ -1,15 +1,15 @@
 @interface CALNEventInvitationNotificationDataSourceUtils
-+ (id)eventForEventInvitation:(id)a3 inEventStore:(id)a4;
-+ (id)expirationDateForEventInvitation:(id)a3;
++ (id)eventForEventInvitation:(id)invitation inEventStore:(id)store;
++ (id)expirationDateForEventInvitation:(id)invitation;
 @end
 
 @implementation CALNEventInvitationNotificationDataSourceUtils
 
-+ (id)eventForEventInvitation:(id)a3 inEventStore:(id)a4
++ (id)eventForEventInvitation:(id)invitation inEventStore:(id)store
 {
-  v5 = a4;
-  v6 = [a3 URL];
-  v7 = [v5 _eventWithURI:v6 checkValid:1];
+  storeCopy = store;
+  v6 = [invitation URL];
+  v7 = [storeCopy _eventWithURI:v6 checkValid:1];
 
   if (!v7)
   {
@@ -23,25 +23,25 @@
   return v7;
 }
 
-+ (id)expirationDateForEventInvitation:(id)a3
++ (id)expirationDateForEventInvitation:(id)invitation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 hasRecurrenceRules])
+  invitationCopy = invitation;
+  if ([invitationCopy hasRecurrenceRules])
   {
-    v4 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
-    v6 = [v3 endDate];
+    calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+    endDate = [invitationCopy endDate];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v3 attendees];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    attendees = [invitationCopy attendees];
+    v8 = [attendees countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -52,33 +52,33 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(attendees);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) proposedStartDate];
-          if ([v12 isAfterDate:v6])
+          proposedStartDate = [*(*(&v19 + 1) + 8 * i) proposedStartDate];
+          if ([proposedStartDate isAfterDate:endDate])
           {
-            v13 = v12;
+            v13 = proposedStartDate;
 
-            v6 = v13;
+            endDate = v13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [attendees countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
     }
 
-    [v6 timeIntervalSinceDate:v5];
+    [endDate timeIntervalSinceDate:calSimulatedDateForNow];
     v15 = v14;
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v16 dateByAddingTimeInterval:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    distantFuture = [date dateByAddingTimeInterval:v15];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return distantFuture;
 }
 
 + (void)eventForNotificationOfType:withSourceClientIdentifier:inEventStore:withNotificationReferenceProvider:.cold.1()

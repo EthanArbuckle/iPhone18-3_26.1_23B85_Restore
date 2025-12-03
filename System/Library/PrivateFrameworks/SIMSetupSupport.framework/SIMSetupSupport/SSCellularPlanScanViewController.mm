@@ -1,14 +1,14 @@
 @interface SSCellularPlanScanViewController
-- (SSCellularPlanScanViewController)initWithBackButton:(BOOL)a3;
-- (void)_addNewPlanWithCardData:(id)a3 confirmationCode:(id)a4;
+- (SSCellularPlanScanViewController)initWithBackButton:(BOOL)button;
+- (void)_addNewPlanWithCardData:(id)data confirmationCode:(id)code;
 - (void)_learnMoreTapped;
-- (void)onCodeDetected:(id)a3 completion:(id)a4;
+- (void)onCodeDetected:(id)detected completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation SSCellularPlanScanViewController
 
-- (SSCellularPlanScanViewController)initWithBackButton:(BOOL)a3
+- (SSCellularPlanScanViewController)initWithBackButton:(BOOL)button
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"GSMA_SCAN_TITLE" value:&stru_28753DF48 table:@"Localizable"];
@@ -20,7 +20,7 @@
 
   if (v9)
   {
-    v9->_withBackButton = a3;
+    v9->_withBackButton = button;
     [(SSScanViewController *)v9 setQrcodeDelegate:v9];
   }
 
@@ -32,49 +32,49 @@
   v8.receiver = self;
   v8.super_class = SSCellularPlanScanViewController;
   [(SSScanViewController *)&v8 viewDidLoad];
-  v3 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"LEARN_MORE" value:&stru_28753DF48 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [accessoryButton setTitle:v5 forState:0];
 
-  [v3 addTarget:self action:sel__learnMoreTapped forControlEvents:64];
+  [accessoryButton addTarget:self action:sel__learnMoreTapped forControlEvents:64];
   if (+[TSUtilities inBuddy])
   {
-    [v3 setHidden:1];
+    [accessoryButton setHidden:1];
   }
 
   else
   {
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
-    [v3 setHidden:{objc_msgSend(v6, "usingBootstrapDataService")}];
+    [accessoryButton setHidden:{objc_msgSend(v6, "usingBootstrapDataService")}];
   }
 
-  v7 = [(SSCellularPlanScanViewController *)self headerView];
-  [v7 addAccessoryButton:v3];
+  headerView = [(SSCellularPlanScanViewController *)self headerView];
+  [headerView addAccessoryButton:accessoryButton];
 }
 
-- (void)onCodeDetected:(id)a3 completion:(id)a4
+- (void)onCodeDetected:(id)detected completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  detectedCopy = detected;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(SSScanViewController *)self delegate];
-    [v8 waitForResponse:self];
+    delegate = [(SSScanViewController *)self delegate];
+    [delegate waitForResponse:self];
 
-    if ([v6 hasPrefix:@"LPA:1$TR$"])
+    if ([detectedCopy hasPrefix:@"LPA:1$TR$"])
     {
       self->_transferViaQRCode = 1;
-      v9 = [(SSScanViewController *)self delegate];
-      [v9 receivedResponse];
+      delegate2 = [(SSScanViewController *)self delegate];
+      [delegate2 receivedResponse];
 
-      v10 = [(SSScanViewController *)self delegate];
-      [v10 viewControllerDidComplete:self];
+      delegate3 = [(SSScanViewController *)self delegate];
+      [delegate3 viewControllerDidComplete:self];
     }
 
     else
     {
-      [(SSCellularPlanScanViewController *)self _addNewPlanWithCardData:v6 confirmationCode:0];
+      [(SSCellularPlanScanViewController *)self _addNewPlanWithCardData:detectedCopy confirmationCode:0];
     }
   }
 
@@ -103,25 +103,25 @@
   [TSUtilities launchURL:v2];
 }
 
-- (void)_addNewPlanWithCardData:(id)a3 confirmationCode:(id)a4
+- (void)_addNewPlanWithCardData:(id)data confirmationCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_fauxCardData, a3);
-  v9 = [(SSScanViewController *)self delegate];
-  [v9 waitForResponse:self];
+  dataCopy = data;
+  codeCopy = code;
+  objc_storeStrong(&self->_fauxCardData, data);
+  delegate = [(SSScanViewController *)self delegate];
+  [delegate waitForResponse:self];
 
   objc_initWeak(&location, self);
   v10 = +[TSCellularPlanManagerCache sharedInstance];
-  v11 = [(SSScanViewController *)self delegate];
-  v12 = [v11 signupUserConsentResponse];
+  delegate2 = [(SSScanViewController *)self delegate];
+  signupUserConsentResponse = [delegate2 signupUserConsentResponse];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__SSCellularPlanScanViewController__addNewPlanWithCardData_confirmationCode___block_invoke;
   v13[3] = &unk_279B44278;
   objc_copyWeak(&v14, &location);
   v13[4] = self;
-  [v10 addNewPlanWithCardData:v7 confirmationCode:v8 userConsentResponse:v12 completion:v13];
+  [v10 addNewPlanWithCardData:dataCopy confirmationCode:codeCopy userConsentResponse:signupUserConsentResponse completion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

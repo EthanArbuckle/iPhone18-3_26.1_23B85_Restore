@@ -1,5 +1,5 @@
 @interface PGMoodSourceGraphNode
-- (id)_plistMoodIdentifiersWithGraph:(id)a3;
+- (id)_plistMoodIdentifiersWithGraph:(id)graph;
 - (unint64_t)_sourceInputCount;
 @end
 
@@ -7,9 +7,9 @@
 
 - (unint64_t)_sourceInputCount
 {
-  v3 = [(PGMoodSource *)self options];
-  v4 = [v3 momentIDs];
-  v5 = [v4 count];
+  options = [(PGMoodSource *)self options];
+  momentIDs = [options momentIDs];
+  v5 = [momentIDs count];
 
   if (!v5)
   {
@@ -21,23 +21,23 @@
   return v5;
 }
 
-- (id)_plistMoodIdentifiersWithGraph:(id)a3
+- (id)_plistMoodIdentifiersWithGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(PGMoodSource *)self enrichedMemory];
+  graphCopy = graph;
+  enrichedMemory = [(PGMoodSource *)self enrichedMemory];
 
-  if (v5)
+  if (enrichedMemory)
   {
-    v6 = [(PGMoodSource *)self enrichedMemory];
-    v7 = [v6 memoryMomentNodes];
-    [PGMoodUtilities moodGraphNodeIdentifiersForMomentNodes:v7];
+    enrichedMemory2 = [(PGMoodSource *)self enrichedMemory];
+    memoryMomentNodes = [enrichedMemory2 memoryMomentNodes];
+    [PGMoodUtilities moodGraphNodeIdentifiersForMomentNodes:memoryMomentNodes];
   }
 
   else
   {
-    v6 = [(PGMoodSource *)self assetCollection];
-    v7 = [(PGMoodSource *)self options];
-    [PGMoodUtilities moodGraphNodeIdentifiersForAssetCollection:v6 withGraph:v4 moodOptions:v7];
+    enrichedMemory2 = [(PGMoodSource *)self assetCollection];
+    memoryMomentNodes = [(PGMoodSource *)self options];
+    [PGMoodUtilities moodGraphNodeIdentifiersForAssetCollection:enrichedMemory2 withGraph:graphCopy moodOptions:memoryMomentNodes];
   }
   v8 = ;
 

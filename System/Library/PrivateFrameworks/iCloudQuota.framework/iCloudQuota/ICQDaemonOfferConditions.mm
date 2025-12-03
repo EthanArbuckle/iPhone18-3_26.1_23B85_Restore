@@ -10,19 +10,19 @@
 + (NSNumber)photosVideosCount;
 + (id)currentConditions;
 + (uint64_t)isPhotosCloudEnabled;
-+ (void)getPhotosLibrarySizeWithCompletion:(id)a3;
-+ (void)getPhotosLibraryUploadSizeWithCompletion:(id)a3;
++ (void)getPhotosLibrarySizeWithCompletion:(id)completion;
++ (void)getPhotosLibraryUploadSizeWithCompletion:(id)completion;
 - (ICQDaemonOfferConditions)initWithCurrentConditions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICQDaemonOfferConditions
 
 + (id)currentConditions
 {
-  v2 = [[a1 alloc] initWithCurrentConditions];
+  initWithCurrentConditions = [[self alloc] initWithCurrentConditions];
 
-  return v2;
+  return initWithCurrentConditions;
 }
 
 - (ICQDaemonOfferConditions)initWithCurrentConditions
@@ -36,15 +36,15 @@
     -[ICQDaemonOfferConditions setPhotosCloudEnabled:](v2, "setPhotosCloudEnabled:", [objc_opt_class() isPhotosCloudEnabled]);
     if ([(ICQDaemonOfferConditions *)v2 isPhotosCloudEnabled])
     {
-      v3 = [objc_opt_class() isPhotosOptimizeEnabled];
+      isPhotosOptimizeEnabled = [objc_opt_class() isPhotosOptimizeEnabled];
     }
 
     else
     {
-      v3 = 0;
+      isPhotosOptimizeEnabled = 0;
     }
 
-    [(ICQDaemonOfferConditions *)v2 setPhotosOptimizeEnabled:v3];
+    [(ICQDaemonOfferConditions *)v2 setPhotosOptimizeEnabled:isPhotosOptimizeEnabled];
     if ([(ICQDaemonOfferConditions *)v2 isPhotosCloudEnabled])
     {
       [(ICQDaemonOfferConditions *)v2 setPhotosLibrarySize:0];
@@ -52,8 +52,8 @@
 
     else
     {
-      v4 = [objc_opt_class() photosLibrarySize];
-      [(ICQDaemonOfferConditions *)v2 setPhotosLibrarySize:v4];
+      photosLibrarySize = [objc_opt_class() photosLibrarySize];
+      [(ICQDaemonOfferConditions *)v2 setPhotosLibrarySize:photosLibrarySize];
     }
 
     -[ICQDaemonOfferConditions setBackupRestoreComplete:](v2, "setBackupRestoreComplete:", [objc_opt_class() backupRestoreComplete]);
@@ -62,14 +62,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setDeviceStorageAlmostFull:{-[ICQDaemonOfferConditions isDeviceStorageAlmostFull](self, "isDeviceStorageAlmostFull")}];
   [v4 setPhotosCloudEnabled:{-[ICQDaemonOfferConditions isPhotosCloudEnabled](self, "isPhotosCloudEnabled")}];
   [v4 setPhotosOptimizeEnabled:{-[ICQDaemonOfferConditions isPhotosOptimizeEnabled](self, "isPhotosOptimizeEnabled")}];
-  v5 = [(ICQDaemonOfferConditions *)self photosLibrarySize];
-  [v4 setPhotosLibrarySize:v5];
+  photosLibrarySize = [(ICQDaemonOfferConditions *)self photosLibrarySize];
+  [v4 setPhotosLibrarySize:photosLibrarySize];
 
   [v4 setBackupRestoreComplete:{-[ICQDaemonOfferConditions isBackupRestoreComplete](self, "isBackupRestoreComplete")}];
   return v4;
@@ -78,18 +78,18 @@
 + (BOOL)isDeviceStorageAlmostFull
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (([a1 isSimulatedDeviceStorageAlmostFull] & 1) == 0)
+  if (([self isSimulatedDeviceStorageAlmostFull] & 1) == 0)
   {
     v3 = [objc_alloc(MEMORY[0x277D3B250]) initWithPath:@"/private/var"];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 availableSpace];
+      availableSpace = [v3 availableSpace];
       v6 = _ICQGetLogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134349056;
-        v18 = v5;
+        v18 = availableSpace;
         _os_log_impl(&dword_275572000, v6, OS_LOG_TYPE_DEFAULT, "Found %{public}llu bytes of free space", &v17, 0xCu);
       }
 
@@ -111,22 +111,22 @@
       else
       {
         v11 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
-        v12 = [v11 unsignedLongLongValue];
+        unsignedLongLongValue = [v11 unsignedLongLongValue];
 
         v13 = _ICQGetLogSystem();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 134349056;
-          v18 = v12;
+          v18 = unsignedLongLongValue;
           _os_log_impl(&dword_275572000, v13, OS_LOG_TYPE_DEFAULT, "Found %{public}llu bytes of purgeable space", &v17, 0xCu);
         }
 
-        v5 += v12;
+        availableSpace += unsignedLongLongValue;
       }
 
-      if (v5 >= [v4 lowDiskThreshold])
+      if (availableSpace >= [v4 lowDiskThreshold])
       {
-        v2 = v5 < 2 * [v4 nearLowDiskThreshold];
+        v2 = availableSpace < 2 * [v4 nearLowDiskThreshold];
         goto LABEL_21;
       }
 
@@ -214,8 +214,8 @@ LABEL_22:
 
 + (BOOL)isPhotosOptimizeEnabled
 {
-  v2 = [a1 isPhotosCloudEnabled];
-  if (v2)
+  isPhotosCloudEnabled = [self isPhotosCloudEnabled];
+  if (isPhotosCloudEnabled)
   {
     v7 = 0;
     v8 = &v7;
@@ -238,10 +238,10 @@ LABEL_22:
       _Unwind_Resume(v5);
     }
 
-    LOBYTE(v2) = v3() ^ 1;
+    LOBYTE(isPhotosCloudEnabled) = v3() ^ 1;
   }
 
-  return v2;
+  return isPhotosCloudEnabled;
 }
 
 + (NSNumber)photosLibrarySize
@@ -252,7 +252,7 @@ LABEL_22:
   v18 = __Block_byref_object_copy__8;
   v19 = __Block_byref_object_dispose__8;
   v3 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v20 = [v3 simulatedPhotosLibrarySize];
+  simulatedPhotosLibrarySize = [v3 simulatedPhotosLibrarySize];
 
   v4 = v16[5];
   if (v4)
@@ -263,17 +263,17 @@ LABEL_22:
   else
   {
     v6 = dispatch_semaphore_create(0);
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __45__ICQDaemonOfferConditions_photosLibrarySize__block_invoke;
     v11[3] = &unk_27A652B98;
-    v8 = v7;
+    v8 = date;
     v12 = v8;
     v14 = &v15;
     v9 = v6;
     v13 = v9;
-    [a1 getPhotosLibrarySizeWithCompletion:v11];
+    [self getPhotosLibrarySizeWithCompletion:v11];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     v5 = v16[5];
   }
@@ -307,9 +307,9 @@ void __45__ICQDaemonOfferConditions_photosLibrarySize__block_invoke(uint64_t a1,
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getPhotosLibrarySizeWithCompletion:(id)a3
++ (void)getPhotosLibrarySizeWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = os_transaction_create();
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -318,14 +318,14 @@ void __45__ICQDaemonOfferConditions_photosLibrarySize__block_invoke(uint64_t a1,
     _os_log_impl(&dword_275572000, v5, OS_LOG_TYPE_DEFAULT, "Requesting library size from PHPhotoLibrary", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
   v11 = 0;
-  v7 = [v6 getLibrarySizesFromDB:0 error:&v11];
+  v7 = [mEMORY[0x277CD9948] getLibrarySizesFromDB:0 error:&v11];
   v8 = v11;
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 1];
   v10 = [v7 objectForKeyedSubscript:v9];
-  v3[2](v3, v10, v8);
+  completionCopy[2](completionCopy, v10, v8);
 }
 
 + (NSNumber)photosLibraryUploadSize
@@ -336,7 +336,7 @@ void __45__ICQDaemonOfferConditions_photosLibrarySize__block_invoke(uint64_t a1,
   v18 = __Block_byref_object_copy__8;
   v19 = __Block_byref_object_dispose__8;
   v3 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v20 = [v3 simulatedPhotosLibrarySize];
+  simulatedPhotosLibrarySize = [v3 simulatedPhotosLibrarySize];
 
   v4 = v16[5];
   if (v4)
@@ -347,17 +347,17 @@ void __45__ICQDaemonOfferConditions_photosLibrarySize__block_invoke(uint64_t a1,
   else
   {
     v6 = dispatch_semaphore_create(0);
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke;
     v11[3] = &unk_27A652B98;
-    v8 = v7;
+    v8 = date;
     v12 = v8;
     v14 = &v15;
     v9 = v6;
     v13 = v9;
-    [a1 getPhotosLibraryUploadSizeWithCompletion:v11];
+    [self getPhotosLibraryUploadSizeWithCompletion:v11];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     v5 = v16[5];
   }
@@ -391,9 +391,9 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getPhotosLibraryUploadSizeWithCompletion:(id)a3
++ (void)getPhotosLibraryUploadSizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_transaction_create();
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -401,20 +401,20 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
     [ICQDaemonOfferConditions getPhotosLibraryUploadSizeWithCompletion:v6];
   }
 
-  v7 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
   v13 = 0;
-  v8 = [v7 getLibrarySizesFromDB:1 error:&v13];
+  v8 = [mEMORY[0x277CD9948] getLibrarySizesFromDB:1 error:&v13];
 
-  v9 = [a1 isPhotosCloudEnabled];
+  isPhotosCloudEnabled = [self isPhotosCloudEnabled];
   v10 = 32;
-  if (v9)
+  if (isPhotosCloudEnabled)
   {
     v10 = 16;
   }
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v10];
   v12 = [v8 objectForKeyedSubscript:v11];
-  v4[2](v4, v12, 0);
+  completionCopy[2](completionCopy, v12, 0);
 }
 
 + (NSNumber)photosVideosCount
@@ -422,7 +422,7 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
   v23 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v14 = 0;
-  v2 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -441,10 +441,10 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
 
   v4 = v3;
   _Block_object_dispose(&v15, 8);
-  v5 = [v3 sharedPhotoLibrary];
-  [v5 getPhotoCount:&v14 videoCount:&v13];
+  sharedPhotoLibrary = [v3 sharedPhotoLibrary];
+  [sharedPhotoLibrary getPhotoCount:&v14 videoCount:&v13];
 
-  [v2 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v7 = v6;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -465,30 +465,30 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
 + (BOOL)isSimulatedDeviceStorageAlmostFull
 {
   v2 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v3 = [v2 isSimulatedDeviceStorageAlmostFull];
+  isSimulatedDeviceStorageAlmostFull = [v2 isSimulatedDeviceStorageAlmostFull];
 
-  return v3;
+  return isSimulatedDeviceStorageAlmostFull;
 }
 
 + (BOOL)isCachedCloudQuotaAlmostFullOrFull
 {
   v2 = +[(ICQDaemonPersisted *)ICQDaemonOfferStubs];
   v3 = +[(ICQDaemonPersisted *)ICQDaemonOffer];
-  v4 = [v2 _cachedQuotaAvailable];
-  v5 = [v3 _cachedQuotaAvailable];
-  v6 = v5;
-  if (v4)
+  _cachedQuotaAvailable = [v2 _cachedQuotaAvailable];
+  _cachedQuotaAvailable2 = [v3 _cachedQuotaAvailable];
+  v6 = _cachedQuotaAvailable2;
+  if (_cachedQuotaAvailable)
   {
-    v7 = v4;
+    v7 = _cachedQuotaAvailable;
   }
 
   else
   {
-    v7 = v5;
+    v7 = _cachedQuotaAvailable2;
   }
 
   v8 = v7;
-  if (v4)
+  if (_cachedQuotaAvailable)
   {
     v9 = v6 == 0;
   }
@@ -500,9 +500,9 @@ void __51__ICQDaemonOfferConditions_photosLibraryUploadSize__block_invoke(uint64
 
   if (!v9)
   {
-    v10 = [v2 retrievalDate];
-    v11 = [v3 retrievalDate];
-    v12 = [v10 compare:v11];
+    retrievalDate = [v2 retrievalDate];
+    retrievalDate2 = [v3 retrievalDate];
+    v12 = [retrievalDate compare:retrievalDate2];
 
     if (v12 == -1)
     {

@@ -1,20 +1,20 @@
 @interface PXTouchingUIGestureRecognizer
 - (CGPoint)_initialPointInView;
-- (CGPoint)initialLocationInView:(id)a3;
-- (PXTouchingUIGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)initialLocationInView:(id)view;
+- (PXTouchingUIGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (PXTouchingUIGestureRecognizerDelegate)touchDelegate;
-- (void)_beginWithRequestID:(unint64_t)a3;
-- (void)_decrementTouchesBy:(unint64_t)a3;
-- (void)_incrementTouchesBy:(unint64_t)a3;
-- (void)_setDidBegin:(BOOL)a3;
-- (void)_setTouchCount:(unint64_t)a3;
-- (void)_setWillBegin:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_beginWithRequestID:(unint64_t)d;
+- (void)_decrementTouchesBy:(unint64_t)by;
+- (void)_incrementTouchesBy:(unint64_t)by;
+- (void)_setDidBegin:(BOOL)begin;
+- (void)_setTouchCount:(unint64_t)count;
+- (void)_setWillBegin:(BOOL)begin;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PXTouchingUIGestureRecognizer
@@ -35,15 +35,15 @@
   return WeakRetained;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 <= 5 && ((0x3Bu >> a3) & 1) != 0)
+  if (state <= 5 && ((0x3Bu >> state) & 1) != 0)
   {
-    v5 = 6u >> a3;
-    [(PXTouchingUIGestureRecognizer *)self _setWillBegin:(6u >> a3) & 1];
+    v5 = 6u >> state;
+    [(PXTouchingUIGestureRecognizer *)self _setWillBegin:(6u >> state) & 1];
     v6.receiver = self;
     v6.super_class = PXTouchingUIGestureRecognizer;
-    [(PXTouchingUIGestureRecognizer *)&v6 setState:a3];
+    [(PXTouchingUIGestureRecognizer *)&v6 setState:state];
     [(PXTouchingUIGestureRecognizer *)self _setDidBegin:v5 & 1];
   }
 
@@ -51,18 +51,18 @@
   {
     v6.receiver = self;
     v6.super_class = PXTouchingUIGestureRecognizer;
-    [(PXTouchingUIGestureRecognizer *)&v6 setState:a3];
+    [(PXTouchingUIGestureRecognizer *)&v6 setState:state];
   }
 }
 
-- (void)_setDidBegin:(BOOL)a3
+- (void)_setDidBegin:(BOOL)begin
 {
-  if (self->__didBegin != a3)
+  if (self->__didBegin != begin)
   {
-    v3 = a3;
-    self->__didBegin = a3;
-    v5 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-    if (v3)
+    beginCopy = begin;
+    self->__didBegin = begin;
+    touchDelegate = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+    if (beginCopy)
     {
       v6 = objc_opt_respondsToSelector();
 
@@ -71,8 +71,8 @@
         return;
       }
 
-      v8 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-      [v8 touchingUIGestureRecognizerDidBeginTouching:self];
+      touchDelegate2 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+      [touchDelegate2 touchingUIGestureRecognizerDidBeginTouching:self];
     }
 
     else
@@ -84,20 +84,20 @@
         return;
       }
 
-      v8 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-      [v8 touchingUIGestureRecognizerDidEndTouching:self];
+      touchDelegate2 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+      [touchDelegate2 touchingUIGestureRecognizerDidEndTouching:self];
     }
   }
 }
 
-- (void)_setWillBegin:(BOOL)a3
+- (void)_setWillBegin:(BOOL)begin
 {
-  if (self->__willBegin != a3)
+  if (self->__willBegin != begin)
   {
-    v3 = a3;
-    self->__willBegin = a3;
-    v5 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-    if (v3)
+    beginCopy = begin;
+    self->__willBegin = begin;
+    touchDelegate = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+    if (beginCopy)
     {
       v6 = objc_opt_respondsToSelector();
 
@@ -106,8 +106,8 @@
         return;
       }
 
-      v8 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-      [v8 touchingUIGestureRecognizerWillBeginTouching:self];
+      touchDelegate2 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+      [touchDelegate2 touchingUIGestureRecognizerWillBeginTouching:self];
     }
 
     else
@@ -119,30 +119,30 @@
         return;
       }
 
-      v8 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
-      [v8 touchingUIGestureRecognizerWillEndTouching:self];
+      touchDelegate2 = [(PXTouchingUIGestureRecognizer *)self touchDelegate];
+      [touchDelegate2 touchingUIGestureRecognizerWillEndTouching:self];
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = PXTouchingUIGestureRecognizer;
   [(PXTouchingUIGestureRecognizer *)&v5 setEnabled:?];
-  if (!a3)
+  if (!enabled)
   {
     [(PXTouchingUIGestureRecognizer *)self _setTouchCount:0];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = PXTouchingUIGestureRecognizer;
-  [(PXTouchingUIGestureRecognizer *)&v14 touchesMoved:a3 withEvent:a4];
-  v5 = [(PXTouchingUIGestureRecognizer *)self view];
-  [(PXTouchingUIGestureRecognizer *)self locationInView:v5];
+  [(PXTouchingUIGestureRecognizer *)&v14 touchesMoved:moved withEvent:event];
+  view = [(PXTouchingUIGestureRecognizer *)self view];
+  [(PXTouchingUIGestureRecognizer *)self locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -155,53 +155,53 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   [(PXTouchingUIGestureRecognizer *)self setState:4];
-  v6 = [v5 count];
+  v6 = [cancelledCopy count];
 
   [(PXTouchingUIGestureRecognizer *)self _decrementTouchesBy:v6];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a3 count];
+  v5 = [ended count];
 
   [(PXTouchingUIGestureRecognizer *)self _decrementTouchesBy:v5];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 count];
+  v5 = [began count];
 
   [(PXTouchingUIGestureRecognizer *)self _incrementTouchesBy:v5];
 }
 
-- (void)_beginWithRequestID:(unint64_t)a3
+- (void)_beginWithRequestID:(unint64_t)d
 {
-  if ([(PXTouchingUIGestureRecognizer *)self _beginRequestID]== a3)
+  if ([(PXTouchingUIGestureRecognizer *)self _beginRequestID]== d)
   {
 
     [(PXTouchingUIGestureRecognizer *)self setState:1];
   }
 }
 
-- (void)_setTouchCount:(unint64_t)a3
+- (void)_setTouchCount:(unint64_t)count
 {
   touchCount = self->__touchCount;
-  if (touchCount != a3)
+  if (touchCount != count)
   {
-    self->__touchCount = a3;
-    if (a3)
+    self->__touchCount = count;
+    if (count)
     {
       if (touchCount)
       {
         return;
       }
 
-      v5 = [(PXTouchingUIGestureRecognizer *)self view];
-      [(PXTouchingUIGestureRecognizer *)self locationInView:v5];
+      view = [(PXTouchingUIGestureRecognizer *)self view];
+      [(PXTouchingUIGestureRecognizer *)self locationInView:view];
       v7 = v6;
       v9 = v8;
 
@@ -223,26 +223,26 @@
         return;
       }
 
-      v14 = self;
+      selfCopy2 = self;
       v15 = 1;
     }
 
     else
     {
       [(PXTouchingUIGestureRecognizer *)self _setBeginRequestID:[(PXTouchingUIGestureRecognizer *)self _beginRequestID]+ 1];
-      v14 = self;
+      selfCopy2 = self;
       v15 = 3;
     }
 
-    [(PXTouchingUIGestureRecognizer *)v14 setState:v15];
+    [(PXTouchingUIGestureRecognizer *)selfCopy2 setState:v15];
   }
 }
 
-- (void)_decrementTouchesBy:(unint64_t)a3
+- (void)_decrementTouchesBy:(unint64_t)by
 {
-  if ([(PXTouchingUIGestureRecognizer *)self _touchCount]>= a3)
+  if ([(PXTouchingUIGestureRecognizer *)self _touchCount]>= by)
   {
-    v5 = [(PXTouchingUIGestureRecognizer *)self _touchCount]- a3;
+    v5 = [(PXTouchingUIGestureRecognizer *)self _touchCount]- by;
   }
 
   else
@@ -253,21 +253,21 @@
   [(PXTouchingUIGestureRecognizer *)self _setTouchCount:v5];
 }
 
-- (void)_incrementTouchesBy:(unint64_t)a3
+- (void)_incrementTouchesBy:(unint64_t)by
 {
-  v4 = [(PXTouchingUIGestureRecognizer *)self _touchCount]+ a3;
+  v4 = [(PXTouchingUIGestureRecognizer *)self _touchCount]+ by;
 
   [(PXTouchingUIGestureRecognizer *)self _setTouchCount:v4];
 }
 
-- (CGPoint)initialLocationInView:(id)a3
+- (CGPoint)initialLocationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PXTouchingUIGestureRecognizer *)self _initialPointInView];
   v6 = v5;
   v8 = v7;
-  v9 = [(PXTouchingUIGestureRecognizer *)self view];
-  [v4 convertPoint:v9 fromView:{v6, v8}];
+  view = [(PXTouchingUIGestureRecognizer *)self view];
+  [viewCopy convertPoint:view fromView:{v6, v8}];
   v11 = v10;
   v13 = v12;
 
@@ -278,11 +278,11 @@
   return result;
 }
 
-- (PXTouchingUIGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PXTouchingUIGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = PXTouchingUIGestureRecognizer;
-  result = [(PXTouchingUIGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(PXTouchingUIGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_maximumTouchMovement = 1.79769313e308;

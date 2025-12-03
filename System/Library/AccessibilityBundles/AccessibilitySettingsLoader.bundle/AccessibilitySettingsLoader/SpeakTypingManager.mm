@@ -125,8 +125,8 @@ void __42__SpeakTypingManager_initializeMonitoring__block_invoke()
 {
   if (_AXSPhoneticFeedbackEnabled() || _AXSLetterFeedbackEnabled() || _AXSWordFeedbackEnabled() || _AXSQuickTypePredictionFeedbackEnabled() || ([MEMORY[0x29EDBDFA0] sharedInstance], v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "speakCorrectionsEnabled"), v2, v3))
   {
-    v4 = [getSpeakTypingServicesClass_0() sharedInstance];
-    [v4 notifySpeakServicesToInitializeServerConnection];
+    sharedInstance = [getSpeakTypingServicesClass_0() sharedInstance];
+    [sharedInstance notifySpeakServicesToInitializeServerConnection];
   }
 }
 
@@ -215,9 +215,9 @@ uint64_t __72__SpeakTypingManager_speakTypingLoadAccessibilityForExistingPredict
 
 - (void)_installSpeakTypingSafeCategoriesIfNeeded
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"BOOL soft_AXProcessIsSafari(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:63 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:63 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

@@ -1,44 +1,44 @@
 @interface StandardActivityItemsDataSource
 - (_TtC11WorkoutCore31StandardActivityItemsDataSource)init;
 - (void)dealloc;
-- (void)smartGoalStoreDidHideActivityTypeWithNotification:(id)a3;
-- (void)smartGoalStoreDidShowActivityTypeWithNotification:(id)a3;
-- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)a3;
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)smartGoalStoreDidHideActivityTypeWithNotification:(id)notification;
+- (void)smartGoalStoreDidShowActivityTypeWithNotification:(id)notification;
+- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)notification;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation StandardActivityItemsDataSource
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for StandardActivityItemsDataSource();
   [(StandardActivityItemsDataSource *)&v4 dealloc];
 }
 
-- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)a3
+- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  StandardActivityItemsDataSource.smartGoalStoreUpdatedOccurrenceData(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  StandardActivityItemsDataSource.smartGoalStoreUpdatedOccurrenceData(notification:)(notificationCopy);
 }
 
-- (void)smartGoalStoreDidShowActivityTypeWithNotification:(id)a3
+- (void)smartGoalStoreDidShowActivityTypeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  StandardActivityItemsDataSource.smartGoalStoreDidShowActivityType(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  StandardActivityItemsDataSource.smartGoalStoreDidShowActivityType(notification:)(notificationCopy);
 }
 
-- (void)smartGoalStoreDidHideActivityTypeWithNotification:(id)a3
+- (void)smartGoalStoreDidHideActivityTypeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  StandardActivityItemsDataSource.smartGoalStoreDidHideActivityType(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  StandardActivityItemsDataSource.smartGoalStoreDidHideActivityType(notification:)(notificationCopy);
 }
 
 - (_TtC11WorkoutCore31StandardActivityItemsDataSource)init
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  specialized StandardActivityItemsDataSource.wheelchairUseCharacteristicCache(_:wheelchairUsageDidChange:)(a4);
+  cacheCopy = cache;
+  selfCopy = self;
+  specialized StandardActivityItemsDataSource.wheelchairUseCharacteristicCache(_:wheelchairUsageDidChange:)(change);
 }
 
 @end

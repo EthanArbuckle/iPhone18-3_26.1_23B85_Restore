@@ -1,13 +1,13 @@
 @interface NLSessionActivityCyclingCadenceAccumulator
 - (BOOL)currentCadenceStale;
-- (NLSessionActivityCyclingCadenceAccumulator)initWithBuilder:(id)a3;
+- (NLSessionActivityCyclingCadenceAccumulator)initWithBuilder:(id)builder;
 - (double)averageCadence;
 - (double)currentCadence;
 - (void)accumulatorDidStop;
-- (void)setAverageCadence:(double)a3;
-- (void)setCurrentCadence:(double)a3;
-- (void)setCurrentCadenceStale:(BOOL)a3;
-- (void)updateWithStatistics:(id)a3 duration:(double)a4;
+- (void)setAverageCadence:(double)cadence;
+- (void)setCurrentCadence:(double)cadence;
+- (void)setCurrentCadenceStale:(BOOL)stale;
+- (void)updateWithStatistics:(id)statistics duration:(double)duration;
 @end
 
 @implementation NLSessionActivityCyclingCadenceAccumulator
@@ -19,10 +19,10 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCurrentCadence:(double)a3
+- (void)setCurrentCadence:(double)cadence
 {
-  v4 = self;
-  CyclingCadenceAccumulator.currentCadence.setter(a3);
+  selfCopy = self;
+  CyclingCadenceAccumulator.currentCadence.setter(cadence);
 }
 
 - (BOOL)currentCadenceStale
@@ -32,11 +32,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCurrentCadenceStale:(BOOL)a3
+- (void)setCurrentCadenceStale:(BOOL)stale
 {
   v5 = OBJC_IVAR___NLSessionActivityCyclingCadenceAccumulator_currentCadenceStale;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = stale;
 }
 
 - (double)averageCadence
@@ -46,18 +46,18 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setAverageCadence:(double)a3
+- (void)setAverageCadence:(double)cadence
 {
   v5 = OBJC_IVAR___NLSessionActivityCyclingCadenceAccumulator_averageCadence;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = cadence;
 }
 
-- (void)updateWithStatistics:(id)a3 duration:(double)a4
+- (void)updateWithStatistics:(id)statistics duration:(double)duration
 {
-  v6 = a3;
-  v7 = self;
-  CyclingCadenceAccumulator.update(with:duration:)(v6, a4);
+  statisticsCopy = statistics;
+  selfCopy = self;
+  CyclingCadenceAccumulator.update(with:duration:)(statisticsCopy, duration);
 }
 
 - (void)accumulatorDidStop
@@ -70,17 +70,17 @@
   (*(v4 + 104))(v7, *MEMORY[0x277CE4078], v3);
   v8 = OBJC_IVAR___NLSessionActivityCyclingCadenceAccumulator_latencyAnalytics;
   v9 = *(&self->super.super.super.isa + OBJC_IVAR___NLSessionActivityCyclingCadenceAccumulator_latencyAnalytics);
-  v10 = self;
+  selfCopy = self;
   static WKAnalyticsEvent.latency(metric:analytics:)();
   (*(v4 + 8))(v7, v3);
   v11 = *(&self->super.super.super.isa + v8);
   dispatch thunk of WKPercentileAnalytics.reset()();
 }
 
-- (NLSessionActivityCyclingCadenceAccumulator)initWithBuilder:(id)a3
+- (NLSessionActivityCyclingCadenceAccumulator)initWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = specialized CyclingCadenceAccumulator.init(builder:)(v3);
+  builderCopy = builder;
+  v4 = specialized CyclingCadenceAccumulator.init(builder:)(builderCopy);
 
   return v4;
 }

@@ -1,99 +1,99 @@
 @interface HKAudioAccessoryDevice
-- (BOOL)isEqual:(id)a3;
-- (HKAudioAccessoryDevice)initWithAudioAccessoryDevice:(id)a3;
-- (HKAudioAccessoryDevice)initWithCoder:(id)a3;
-- (id)_descriptionForHKAADState:(int64_t)a3;
-- (id)_initWithIdentifer:(id)a3 name:(id)a4 productName:(id)a5 productID:(unsigned int)a6 model:(id)a7 writeStatus:(int64_t)a8 heartRateCapability:(int64_t)a9 heartRateState:(int64_t)a10;
+- (BOOL)isEqual:(id)equal;
+- (HKAudioAccessoryDevice)initWithAudioAccessoryDevice:(id)device;
+- (HKAudioAccessoryDevice)initWithCoder:(id)coder;
+- (id)_descriptionForHKAADState:(int64_t)state;
+- (id)_initWithIdentifer:(id)identifer name:(id)name productName:(id)productName productID:(unsigned int)d model:(id)model writeStatus:(int64_t)status heartRateCapability:(int64_t)capability heartRateState:(int64_t)self0;
 - (id)description;
-- (int64_t)_forAAFeatureCapability:(unsigned __int8)a3;
-- (int64_t)_forAAMultiState:(char)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_forAAFeatureCapability:(unsigned __int8)capability;
+- (int64_t)_forAAMultiState:(char)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAudioAccessoryDevice
 
-- (id)_initWithIdentifer:(id)a3 name:(id)a4 productName:(id)a5 productID:(unsigned int)a6 model:(id)a7 writeStatus:(int64_t)a8 heartRateCapability:(int64_t)a9 heartRateState:(int64_t)a10
+- (id)_initWithIdentifer:(id)identifer name:(id)name productName:(id)productName productID:(unsigned int)d model:(id)model writeStatus:(int64_t)status heartRateCapability:(int64_t)capability heartRateState:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  identiferCopy = identifer;
+  nameCopy = name;
+  productNameCopy = productName;
+  modelCopy = model;
   v30.receiver = self;
   v30.super_class = HKAudioAccessoryDevice;
   v20 = [(HKAudioAccessoryDevice *)&v30 init];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [identiferCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v21;
 
-    v23 = [v17 copy];
+    v23 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v23;
 
-    v25 = [v18 copy];
+    v25 = [productNameCopy copy];
     productName = v20->_productName;
     v20->_productName = v25;
 
-    v20->_productID = a6;
-    v27 = [v19 copy];
+    v20->_productID = d;
+    v27 = [modelCopy copy];
     model = v20->_model;
     v20->_model = v27;
 
-    v20->_healthKitDataWriteAllowed = a8;
-    v20->_heartRateMonitorCapability = a9;
-    v20->_heartRateMonitorEnabled = a10;
+    v20->_healthKitDataWriteAllowed = status;
+    v20->_heartRateMonitorCapability = capability;
+    v20->_heartRateMonitorEnabled = state;
   }
 
   return v20;
 }
 
-- (HKAudioAccessoryDevice)initWithAudioAccessoryDevice:(id)a3
+- (HKAudioAccessoryDevice)initWithAudioAccessoryDevice:(id)device
 {
-  v4 = a3;
-  v5 = -[HKAudioAccessoryDevice _forAAFeatureCapability:](self, "_forAAFeatureCapability:", [v4 heartRateMonitorCapability]);
-  v6 = [v4 identifier];
-  v7 = [v4 name];
-  v8 = [v4 productName];
-  v9 = [v4 productID];
-  v10 = [v4 model];
-  v11 = -[HKAudioAccessoryDevice _forAAMultiState:](self, "_forAAMultiState:", [v4 healthKitDataWriteAllowed]);
-  v12 = [v4 heartRateMonitorEnabled];
+  deviceCopy = device;
+  v5 = -[HKAudioAccessoryDevice _forAAFeatureCapability:](self, "_forAAFeatureCapability:", [deviceCopy heartRateMonitorCapability]);
+  identifier = [deviceCopy identifier];
+  name = [deviceCopy name];
+  productName = [deviceCopy productName];
+  productID = [deviceCopy productID];
+  model = [deviceCopy model];
+  v11 = -[HKAudioAccessoryDevice _forAAMultiState:](self, "_forAAMultiState:", [deviceCopy healthKitDataWriteAllowed]);
+  heartRateMonitorEnabled = [deviceCopy heartRateMonitorEnabled];
 
-  v13 = [(HKAudioAccessoryDevice *)self _initWithIdentifer:v6 name:v7 productName:v8 productID:v9 model:v10 writeStatus:v11 heartRateCapability:v5 heartRateState:[(HKAudioAccessoryDevice *)self _forAAMultiState:v12]];
+  v13 = [(HKAudioAccessoryDevice *)self _initWithIdentifer:identifier name:name productName:productName productID:productID model:model writeStatus:v11 heartRateCapability:v5 heartRateState:[(HKAudioAccessoryDevice *)self _forAAMultiState:heartRateMonitorEnabled]];
   return v13;
 }
 
-- (int64_t)_forAAFeatureCapability:(unsigned __int8)a3
+- (int64_t)_forAAFeatureCapability:(unsigned __int8)capability
 {
-  if (a3 == 2)
+  if (capability == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (capability == 1);
   }
 }
 
-- (int64_t)_forAAMultiState:(char)a3
+- (int64_t)_forAAMultiState:(char)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -104,8 +104,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = v4->_identifier;
-      v7 = v4;
+      v6 = equalCopy->_identifier;
+      v7 = equalCopy;
       LODWORD(identifier) = [(NSString *)identifier isEqual:v6];
       name = self->_name;
       v9 = v7->_name;
@@ -122,51 +122,51 @@
   return v10;
 }
 
-- (HKAudioAccessoryDevice)initWithCoder:(id)a3
+- (HKAudioAccessoryDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKAudioAccessoryDevice;
   v5 = [(HKAudioAccessoryDevice *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceProductName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceProductName"];
     productName = v5->_productName;
     v5->_productName = v10;
 
-    v5->_productID = [v4 decodeInt32ForKey:@"HealthAADeviceProductID"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceModel"];
+    v5->_productID = [coderCopy decodeInt32ForKey:@"HealthAADeviceProductID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthAADeviceModel"];
     model = v5->_model;
     v5->_model = v12;
 
-    v5->_healthKitDataWriteAllowed = [v4 decodeInt64ForKey:@"HealthAADeviceWriteStatus"];
-    v5->_heartRateMonitorCapability = [v4 decodeInt64ForKey:@"HealthAADeviceHeartRateCapability"];
-    v5->_heartRateMonitorEnabled = [v4 decodeInt64ForKey:@"HealthAADeviceHeartRateState"];
+    v5->_healthKitDataWriteAllowed = [coderCopy decodeInt64ForKey:@"HealthAADeviceWriteStatus"];
+    v5->_heartRateMonitorCapability = [coderCopy decodeInt64ForKey:@"HealthAADeviceHeartRateCapability"];
+    v5->_heartRateMonitorEnabled = [coderCopy decodeInt64ForKey:@"HealthAADeviceHeartRateState"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"HealthAADeviceName"];
-  [v5 encodeObject:self->_identifier forKey:@"HealthAADeviceIdentifier"];
-  [v5 encodeObject:self->_productName forKey:@"HealthAADeviceProductName"];
-  [v5 encodeInt:self->_productID forKey:@"HealthAADeviceProductID"];
-  [v5 encodeObject:self->_model forKey:@"HealthAADeviceModel"];
-  [v5 encodeInt64:self->_healthKitDataWriteAllowed forKey:@"HealthAADeviceWriteStatus"];
-  [v5 encodeInt64:self->_heartRateMonitorCapability forKey:@"HealthAADeviceHeartRateCapability"];
-  [v5 encodeInt64:self->_heartRateMonitorEnabled forKey:@"HealthAADeviceHeartRateState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"HealthAADeviceName"];
+  [coderCopy encodeObject:self->_identifier forKey:@"HealthAADeviceIdentifier"];
+  [coderCopy encodeObject:self->_productName forKey:@"HealthAADeviceProductName"];
+  [coderCopy encodeInt:self->_productID forKey:@"HealthAADeviceProductID"];
+  [coderCopy encodeObject:self->_model forKey:@"HealthAADeviceModel"];
+  [coderCopy encodeInt64:self->_healthKitDataWriteAllowed forKey:@"HealthAADeviceWriteStatus"];
+  [coderCopy encodeInt64:self->_heartRateMonitorCapability forKey:@"HealthAADeviceHeartRateCapability"];
+  [coderCopy encodeInt64:self->_heartRateMonitorEnabled forKey:@"HealthAADeviceHeartRateState"];
 }
 
 - (id)description
@@ -186,15 +186,15 @@
   return v12;
 }
 
-- (id)_descriptionForHKAADState:(int64_t)a3
+- (id)_descriptionForHKAADState:(int64_t)state
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"Yes";
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return @"No";
   }

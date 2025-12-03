@@ -1,26 +1,26 @@
 @interface POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived
 
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived;
   v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pommesSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pommesSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)v5 setPommesSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"confirmationOutcome"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"confirmationOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,17 +77,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self confirmationOutcome];
+    confirmationOutcome = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self confirmationOutcome];
     v5 = @"POMMESKNOWLEDGEFALLBACKTURNOFFALWAYSPROMPTCONFIRMATIONOUTCOME_UNKNOWN";
-    if (v4 == 1)
+    if (confirmationOutcome == 1)
     {
       v5 = @"POMMESKNOWLEDGEFALLBACKTURNOFFALWAYSPROMPTCONFIRMATIONOUTCOME_TURN_OFF";
     }
 
-    if (v4 == 2)
+    if (confirmationOutcome == 2)
     {
       v6 = @"POMMESKNOWLEDGEFALLBACKTURNOFFALWAYSPROMPTCONFIRMATIONOUTCOME_LEAVE_ON";
     }
@@ -97,28 +97,28 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"confirmationOutcome"];
+    [dictionary setObject:v6 forKeyedSubscript:@"confirmationOutcome"];
   }
 
   if (self->_pommesSessionId)
   {
-    v7 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+    dictionaryRepresentation = [pommesSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pommesSessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"pommesSessionId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pommesSessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"pommesSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -137,18 +137,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
-  v6 = [v4 pommesSessionId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+  pommesSessionId2 = [equalCopy pommesSessionId];
+  v7 = pommesSessionId2;
+  if ((pommesSessionId != 0) == (pommesSessionId2 == 0))
   {
 
 LABEL_12:
@@ -156,13 +156,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
-  if (v8)
+  pommesSessionId3 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+  if (pommesSessionId3)
   {
-    v9 = v8;
-    v10 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
-    v11 = [v4 pommesSessionId];
-    v12 = [v10 isEqual:v11];
+    v9 = pommesSessionId3;
+    pommesSessionId4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+    pommesSessionId5 = [equalCopy pommesSessionId];
+    v12 = [pommesSessionId4 isEqual:pommesSessionId5];
 
     if (!v12)
     {
@@ -174,7 +174,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -182,7 +182,7 @@ LABEL_12:
   if (*&self->_has)
   {
     confirmationOutcome = self->_confirmationOutcome;
-    if (confirmationOutcome != [v4 confirmationOutcome])
+    if (confirmationOutcome != [equalCopy confirmationOutcome])
     {
       goto LABEL_12;
     }
@@ -194,14 +194,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+  toCopy = to;
+  pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
 
-  if (v4)
+  if (pommesSessionId)
   {
-    v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
+    pommesSessionId2 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,17 +211,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self pommesSessionId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self deletePommesSessionId];
   }

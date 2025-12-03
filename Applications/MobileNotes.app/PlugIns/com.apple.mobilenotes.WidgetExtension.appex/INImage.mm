@@ -1,12 +1,12 @@
 @interface INImage
-+ (id)ic_imageNamed:(id)a3;
++ (id)ic_imageNamed:(id)named;
 @end
 
 @implementation INImage
 
-+ (id)ic_imageNamed:(id)a3
++ (id)ic_imageNamed:(id)named
 {
-  v3 = [UIImage imageNamed:a3];
+  v3 = [UIImage imageNamed:named];
   v4 = v3;
   if (v3)
   {

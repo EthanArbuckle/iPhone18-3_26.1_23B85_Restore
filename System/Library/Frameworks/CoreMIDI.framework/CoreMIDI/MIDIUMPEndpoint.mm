@@ -1,15 +1,15 @@
 @interface MIDIUMPEndpoint
-- (BOOL)containsFunctionBlock:(id)a3;
-- (BOOL)deserialize:(id)a3;
+- (BOOL)containsFunctionBlock:(id)block;
+- (BOOL)deserialize:(id)deserialize;
 - (BOOL)hasJRTSReceiveCapability;
 - (BOOL)hasJRTSTransmitCapability;
 - (BOOL)hasStaticFunctionBlocks;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMine;
-- (BOOL)sendEventList:(const MIDIEventList *)a3 error:(id *)a4;
-- (BOOL)setStreamProtocol:(int)a3 error:(id *)a4;
+- (BOOL)sendEventList:(const MIDIEventList *)list error:(id *)error;
+- (BOOL)setStreamProtocol:(int)protocol error:(id *)error;
 - (MIDI2DeviceInfo)deviceInfo;
-- (MIDIUMPEndpoint)initWithDescription:(id)a3;
+- (MIDIUMPEndpoint)initWithDescription:(id)description;
 - (NSArray)functionBlocks;
 - (NSString)name;
 - (NSString)productInstanceID;
@@ -136,28 +136,28 @@
   return ownerClientRef == UMPCIClients::instance(void)::all;
 }
 
-- (BOOL)sendEventList:(const MIDIEventList *)a3 error:(id *)a4
+- (BOOL)sendEventList:(const MIDIEventList *)list error:(id *)error
 {
   os_unfair_recursive_lock_lock_with_options();
-  sendUMPMessage(self->_MIDIDestination, a3);
+  sendUMPMessage(self->_MIDIDestination, list);
   os_unfair_recursive_lock_unlock();
   return 1;
 }
 
-- (BOOL)setStreamProtocol:(int)a3 error:(id *)a4
+- (BOOL)setStreamProtocol:(int)protocol error:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v7 = (a3 << 8) | 0xF0050000;
+  v7 = (protocol << 8) | 0xF0050000;
   v8 = 0;
   v9 = 0;
   MIDI::SingleUMPEventList::SingleUMPEventList(v10, &v7);
-  return [(MIDIUMPEndpoint *)self sendEventList:v10 error:a4];
+  return [(MIDIUMPEndpoint *)self sendEventList:v10 error:error];
 }
 
-- (BOOL)containsFunctionBlock:(id)a3
+- (BOOL)containsFunctionBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
   v12 = 0u;
   v13 = 0u;
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v10 + 1) + 8 * i) == v4)
+        if (*(*(&v10 + 1) + 8 * i) == blockCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -200,53 +200,53 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deserializeCopy = deserialize;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"name"];
-  obj = [v4 objectForKey:v5];
+  obj = [deserializeCopy objectForKey:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"device_info"];
-  v7 = [v4 objectForKey:v6];
+  v7 = [deserializeCopy objectForKey:v6];
   v43 = [MIDI2DeviceInfo infoWithDescription:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"product_instance"];
-  v39 = [v4 objectForKey:v8];
+  v39 = [deserializeCopy objectForKey:v8];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"protocol"];
-  v38 = [v4 objectForKey:v9];
+  v38 = [deserializeCopy objectForKey:v9];
 
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"has_static_function_blocks"];
-  v36 = [v4 objectForKey:v10];
+  v36 = [deserializeCopy objectForKey:v10];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"jrts_receive_capability"];
-  v35 = [v4 objectForKey:v11];
+  v35 = [deserializeCopy objectForKey:v11];
 
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"jrts_transmit_capability"];
-  v33 = [v4 objectForKey:v12];
+  v33 = [deserializeCopy objectForKey:v12];
 
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"source"];
-  v34 = [v4 objectForKey:v13];
+  v34 = [deserializeCopy objectForKey:v13];
 
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"destination"];
-  v37 = [v4 objectForKey:v14];
+  v37 = [deserializeCopy objectForKey:v14];
 
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"endpoint_type"];
-  v31 = [v4 objectForKey:v15];
+  v31 = [deserializeCopy objectForKey:v15];
 
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"function_blocks"];
-  v30 = [v4 objectForKey:v16];
+  v30 = [deserializeCopy objectForKey:v16];
 
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"object"];
-  v41 = [v4 objectForKey:v17];
+  v41 = [deserializeCopy objectForKey:v17];
 
   v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supported_protocols"];
-  v42 = [v4 objectForKey:v18];
+  v42 = [deserializeCopy objectForKey:v18];
 
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"owner_client_ref"];
-  v32 = [v4 objectForKey:v19];
+  v32 = [deserializeCopy objectForKey:v19];
 
   objc_storeStrong(&self->_name, obj);
   objc_storeStrong(&self->_deviceInfo, v43);
@@ -306,16 +306,16 @@ LABEL_11:
   return 1;
 }
 
-- (MIDIUMPEndpoint)initWithDescription:(id)a3
+- (MIDIUMPEndpoint)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = MIDIUMPEndpoint;
   v5 = [(MIDIUMPEndpoint *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(MIDIUMPEndpoint *)v5 deserialize:v4];
+    [(MIDIUMPEndpoint *)v5 deserialize:descriptionCopy];
     v7 = v6;
   }
 
@@ -355,8 +355,8 @@ LABEL_11:
   v52[6] = v31;
   v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"device_info"];
   v51[7] = v30;
-  v29 = [(MIDI2DeviceInfo *)self->_deviceInfo serializeDescription];
-  v52[7] = v29;
+  serializeDescription = [(MIDI2DeviceInfo *)self->_deviceInfo serializeDescription];
+  v52[7] = serializeDescription;
   v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"product_instance"];
   v51[8] = v28;
   v52[8] = self->_productInstanceID;
@@ -389,7 +389,7 @@ LABEL_11:
 
   if (self->_functionBlocks)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -409,20 +409,20 @@ LABEL_11:
           }
 
           v17 = *(*(&v46 + 1) + 8 * i);
-          v18 = [v17 UMPEndpoint];
-          v19 = v18 == 0;
+          uMPEndpoint = [v17 UMPEndpoint];
+          v19 = uMPEndpoint == 0;
 
           if (v19)
           {
             [v17 setEndpoint:self];
           }
 
-          v20 = [v17 serializeDescription];
+          serializeDescription2 = [v17 serializeDescription];
           v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v45];
           v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"timestamp"];
-          [v20 setValue:v21 forKey:v22];
+          [serializeDescription2 setValue:v21 forKey:v22];
 
-          [v12 addObject:v20];
+          [array addObject:serializeDescription2];
         }
 
         v14 = [(NSArray *)v13 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -432,7 +432,7 @@ LABEL_11:
     }
 
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"function_blocks"];
-    [v43 setValue:v12 forKey:v23];
+    [v43 setValue:array forKey:v23];
   }
 
   os_unfair_recursive_lock_unlock();
@@ -440,11 +440,11 @@ LABEL_11:
   return v43;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5 && [(NSString *)self->_name isEqualToString:v5[1]]&& self->_MIDIProtocol == *(v5 + 4) && self->_MIDIDestination == *(v5 + 7) && self->_MIDISource == *(v5 + 6) && [(MIDI2DeviceInfo *)self->_deviceInfo isEqual:v5[4]]&& self->_hasStaticFunctionBlocks == *(v5 + 48) && self->_hasJRTSReceiveCapability == *(v5 + 49) && self->_hasJRTSTransmitCapability == *(v5 + 50) && [(NSArray *)self->_functionBlocks isEqualToArray:v5[7]];
 
   os_unfair_recursive_lock_unlock();

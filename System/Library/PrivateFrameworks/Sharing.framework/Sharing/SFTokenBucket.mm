@@ -1,13 +1,13 @@
 @interface SFTokenBucket
 - (BOOL)acquireToken;
-- (SFTokenBucket)initWithBucketSize:(unint64_t)a3 tokenDurationSec:(double)a4;
-- (SFTokenBucket)initWithBucketSize:(unint64_t)a3 tokenDurationTicks:(unint64_t)a4;
+- (SFTokenBucket)initWithBucketSize:(unint64_t)size tokenDurationSec:(double)sec;
+- (SFTokenBucket)initWithBucketSize:(unint64_t)size tokenDurationTicks:(unint64_t)ticks;
 - (void)acquireToken;
 @end
 
 @implementation SFTokenBucket
 
-- (SFTokenBucket)initWithBucketSize:(unint64_t)a3 tokenDurationTicks:(unint64_t)a4
+- (SFTokenBucket)initWithBucketSize:(unint64_t)size tokenDurationTicks:(unint64_t)ticks
 {
   v9.receiver = self;
   v9.super_class = SFTokenBucket;
@@ -15,20 +15,20 @@
   v7 = v6;
   if (v6)
   {
-    v6->_bucketSize = a3;
-    v6->_tokensAvailable = a3;
-    v6->_tokenDurationTicks = a4;
+    v6->_bucketSize = size;
+    v6->_tokensAvailable = size;
+    v6->_tokenDurationTicks = ticks;
     v6->_lastRefreshTicks = mach_absolute_time();
   }
 
   return v7;
 }
 
-- (SFTokenBucket)initWithBucketSize:(unint64_t)a3 tokenDurationSec:(double)a4
+- (SFTokenBucket)initWithBucketSize:(unint64_t)size tokenDurationSec:(double)sec
 {
   v6 = SecondsToUpTicksF();
 
-  return [(SFTokenBucket *)self initWithBucketSize:a3 tokenDurationTicks:v6];
+  return [(SFTokenBucket *)self initWithBucketSize:size tokenDurationTicks:v6];
 }
 
 - (BOOL)acquireToken
@@ -98,7 +98,7 @@ LABEL_10:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1A9662000, a2, OS_LOG_TYPE_DEBUG, "Adding %llu new tokens.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

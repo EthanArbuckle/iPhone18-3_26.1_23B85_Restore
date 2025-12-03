@@ -5,8 +5,8 @@
 - (NSString)language;
 - (NSString)request_locale;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::RequestStatsResponse>)addObjectToBuffer:(void *)a3;
-- (QSSRequestStatsResponse)initWithFlatbuffData:(id)a3 root:(const RequestStatsResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RequestStatsResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSRequestStatsResponse)initWithFlatbuffData:(id)data root:(const RequestStatsResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -41,11 +41,11 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RequestStatsResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RequestStatsResponse>)addObjectToBuffer:(void *)buffer
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = [(QSSRequestStatsResponse *)self BOOL_stats];
-  v5 = [v4 count];
+  bOOL_stats = [(QSSRequestStatsResponse *)self BOOL_stats];
+  v5 = [bOOL_stats count];
   if (v5)
   {
     if (!(v5 >> 62))
@@ -60,19 +60,19 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [(QSSRequestStatsResponse *)self BOOL_stats];
-  if ([v6 countByEnumeratingWithState:&v50 objects:v56 count:16])
+  bOOL_stats2 = [(QSSRequestStatsResponse *)self BOOL_stats];
+  if ([bOOL_stats2 countByEnumeratingWithState:&v50 objects:v56 count:16])
   {
     *v51;
     *v51;
-    [**(&v50 + 1) addObjectToBuffer:a3];
+    [**(&v50 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v7 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v8 = [(QSSRequestStatsResponse *)self int32_stats];
-  v9 = [v8 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v7 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  int32_stats = [(QSSRequestStatsResponse *)self int32_stats];
+  v9 = [int32_stats count];
   v38 = v7;
   if (v9)
   {
@@ -88,19 +88,19 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = [(QSSRequestStatsResponse *)self int32_stats];
-  if ([v10 countByEnumeratingWithState:&v46 objects:v55 count:16])
+  int32_stats2 = [(QSSRequestStatsResponse *)self int32_stats];
+  if ([int32_stats2 countByEnumeratingWithState:&v46 objects:v55 count:16])
   {
     *v47;
     *v47;
-    [**(&v46 + 1) addObjectToBuffer:a3];
+    [**(&v46 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v39 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v11 = [(QSSRequestStatsResponse *)self double_stats];
-  v12 = [v11 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v39 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  double_stats = [(QSSRequestStatsResponse *)self double_stats];
+  v12 = [double_stats count];
   if (v12)
   {
     if (!(v12 >> 62))
@@ -120,72 +120,72 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
   {
     *v43;
     *v43;
-    [**(&v42 + 1) addObjectToBuffer:a3];
+    [**(&v42 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v13 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v14 = [(QSSRequestStatsResponse *)self language];
-  v15 = v14;
-  if (!v14)
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v13 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  language = [(QSSRequestStatsResponse *)self language];
+  v15 = language;
+  if (!language)
   {
-    v14 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v16 = [(__CFString *)v14 UTF8String];
-  v17 = strlen(v16);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v16, v17);
+  uTF8String = [(__CFString *)language UTF8String];
+  v17 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v17);
 
-  v19 = [(QSSRequestStatsResponse *)self speech_id];
-  v20 = v19;
-  if (!v19)
+  speech_id = [(QSSRequestStatsResponse *)self speech_id];
+  v20 = speech_id;
+  if (!speech_id)
   {
-    v19 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v21 = [(__CFString *)v19 UTF8String];
-  v22 = strlen(v21);
-  v23 = flatbuffers::FlatBufferBuilder::CreateString(a3, v21, v22);
+  uTF8String2 = [(__CFString *)speech_id UTF8String];
+  v22 = strlen(uTF8String2);
+  v23 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v22);
 
-  v24 = [(QSSRequestStatsResponse *)self request_locale];
-  v25 = v24;
-  if (!v24)
+  request_locale = [(QSSRequestStatsResponse *)self request_locale];
+  v25 = request_locale;
+  if (!request_locale)
   {
-    v24 = &stru_2879AE8E0;
+    request_locale = &stru_2879AE8E0;
   }
 
-  v26 = [(__CFString *)v24 UTF8String];
-  v27 = strlen(v26);
-  v28 = flatbuffers::FlatBufferBuilder::CreateString(a3, v26, v27);
+  uTF8String3 = [(__CFString *)request_locale UTF8String];
+  v27 = strlen(uTF8String3);
+  v28 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v27);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v29 = *(a3 + 8);
-  v30 = *(a3 + 12);
-  v31 = *(a3 + 10);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v29 = *(buffer + 8);
+  v30 = *(buffer + 12);
+  v31 = *(buffer + 10);
   if (v38)
   {
-    v32 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v38);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v32);
+    v32 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v38);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v32);
   }
 
   if (v39)
   {
-    v33 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v39);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v33);
+    v33 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v39);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v33);
   }
 
   if (v13)
   {
-    v34 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v13);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v34);
+    v34 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v13);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, v34);
   }
 
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v23);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 14, v28);
-  v35.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v29 - v30 + v31);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v23);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 14, v28);
+  v35.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v29 - v30 + v31);
   v36 = *MEMORY[0x277D85DE8];
   return v35;
 }
@@ -261,10 +261,10 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
 
 - (NSArray)double_stats
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"double_stats"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"double_stats"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 9u)
@@ -281,7 +281,7 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
           do
           {
             v11 = [[QSSRequestStatsResponse_DoubleStat alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -292,10 +292,10 @@ flatbuffers::DetachedBuffer *__39__QSSRequestStatsResponse_flatbuffData__block_i
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"double_stats"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"double_stats"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__50__QSSRequestStatsResponse_DoubleStat_flatbuffData__block_invoke(uint64_t a1)
@@ -313,10 +313,10 @@ flatbuffers::DetachedBuffer *__50__QSSRequestStatsResponse_DoubleStat_flatbuffDa
 
 - (NSArray)int32_stats
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"int32_stats"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"int32_stats"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -333,7 +333,7 @@ flatbuffers::DetachedBuffer *__50__QSSRequestStatsResponse_DoubleStat_flatbuffDa
           do
           {
             v11 = [[QSSRequestStatsResponse_Int32Stat alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -344,10 +344,10 @@ flatbuffers::DetachedBuffer *__50__QSSRequestStatsResponse_DoubleStat_flatbuffDa
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"int32_stats"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"int32_stats"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__49__QSSRequestStatsResponse_Int32Stat_flatbuffData__block_invoke(uint64_t a1)
@@ -365,10 +365,10 @@ flatbuffers::DetachedBuffer *__49__QSSRequestStatsResponse_Int32Stat_flatbuffDat
 
 - (NSArray)BOOL_stats
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"BOOL_stats"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"BOOL_stats"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -385,7 +385,7 @@ flatbuffers::DetachedBuffer *__49__QSSRequestStatsResponse_Int32Stat_flatbuffDat
           do
           {
             v11 = [[QSSRequestStatsResponse_BoolStat alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -396,10 +396,10 @@ flatbuffers::DetachedBuffer *__49__QSSRequestStatsResponse_Int32Stat_flatbuffDat
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"BOOL_stats"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"BOOL_stats"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__48__QSSRequestStatsResponse_BoolStat_flatbuffData__block_invoke(uint64_t a1)
@@ -415,42 +415,42 @@ flatbuffers::DetachedBuffer *__48__QSSRequestStatsResponse_BoolStat_flatbuffData
   return result;
 }
 
-- (QSSRequestStatsResponse)initWithFlatbuffData:(id)a3 root:(const RequestStatsResponse *)a4 verify:(BOOL)a5
+- (QSSRequestStatsResponse)initWithFlatbuffData:(id)data root:(const RequestStatsResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSRequestStatsResponse;
   v10 = [(QSSRequestStatsResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -472,9 +472,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

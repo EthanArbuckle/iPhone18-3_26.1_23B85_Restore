@@ -1,16 +1,16 @@
 @interface BWVideoFormatRequirements
 + (id)formatRequirements;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BWVideoFormatRequirements)init;
-- (BWVideoFormatRequirements)initWithCoder:(id)a3;
-- (BWVideoFormatRequirements)initWithPixelBufferAttributes:(id)a3;
+- (BWVideoFormatRequirements)initWithCoder:(id)coder;
+- (BWVideoFormatRequirements)initWithPixelBufferAttributes:(id)attributes;
 - (NSDictionary)pixelBufferAttributes;
 - (id)_resolvePixelFormat;
 - (id)debugDescription;
 - (id)description;
-- (uint64_t)_resolveWith:(uint64_t)result printErrors:(void *)a2;
+- (uint64_t)_resolveWith:(uint64_t)result printErrors:(void *)errors;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWVideoFormatRequirements
@@ -99,11 +99,11 @@
     [(NSDictionary *)v3 setObject:supportedCacheModes forKeyedSubscript:*MEMORY[0x1E6966038]];
   }
 
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v21 = v20;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v21 = dictionary;
   if (!self->_prewireBuffers)
   {
-    [v20 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E696D0D8]];
+    [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E696D0D8]];
   }
 
   [(NSDictionary *)v3 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69660D8]];
@@ -135,7 +135,7 @@
         if (v11)
         {
           v12 = v11;
-          v13 = 0;
+          array = 0;
           v14 = *v46;
           do
           {
@@ -150,12 +150,12 @@
               v17 = [v9 containsObject:v16];
               if (v17)
               {
-                if (!v13)
+                if (!array)
                 {
-                  v13 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                 }
 
-                v17 = [v13 addObject:v16];
+                v17 = [array addObject:v16];
               }
             }
 
@@ -167,12 +167,12 @@
 
         else
         {
-          v13 = 0;
+          array = 0;
         }
 
-        if ([v13 count])
+        if ([array count])
         {
-          v9 = v13;
+          v9 = array;
         }
       }
 
@@ -189,7 +189,7 @@
 
 + (id)formatRequirements
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -201,9 +201,9 @@
   [(BWVideoFormatRequirements *)&v3 dealloc];
 }
 
-- (BWVideoFormatRequirements)initWithPixelBufferAttributes:(id)a3
+- (BWVideoFormatRequirements)initWithPixelBufferAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
     v35.receiver = self;
     v35.super_class = BWVideoFormatRequirements;
@@ -211,12 +211,12 @@
     if (v4)
     {
       v33 = *MEMORY[0x1E6966208];
-      v4->_width = [objc_msgSend(a3 "objectForKeyedSubscript:"unsignedIntegerValue"")];
+      v4->_width = [objc_msgSend(attributes "objectForKeyedSubscript:"unsignedIntegerValue"")];
       v32 = *MEMORY[0x1E69660B8];
-      v4->_height = [objc_msgSend(a3 "objectForKeyedSubscript:"unsignedIntegerValue"")];
-      v4->_sliceCount = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6966108]), "unsignedIntegerValue"}];
+      v4->_height = [objc_msgSend(attributes "objectForKeyedSubscript:"unsignedIntegerValue"")];
+      v4->_sliceCount = [objc_msgSend(attributes objectForKeyedSubscript:{*MEMORY[0x1E6966108]), "unsignedIntegerValue"}];
       v31 = *MEMORY[0x1E6966130];
-      v5 = [a3 objectForKeyedSubscript:?];
+      v5 = [attributes objectForKeyedSubscript:?];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -231,11 +231,11 @@
 
       v4->_supportedPixelFormats = v6;
       v7 = *MEMORY[0x1E6966020];
-      v4->_bytesPerRowAlignment = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6966020]), "unsignedIntegerValue"}];
+      v4->_bytesPerRowAlignment = [objc_msgSend(attributes objectForKeyedSubscript:{*MEMORY[0x1E6966020]), "unsignedIntegerValue"}];
       v8 = *MEMORY[0x1E6966140];
-      v4->_planeAlignment = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6966140]), "unsignedIntegerValue"}];
+      v4->_planeAlignment = [objc_msgSend(attributes objectForKeyedSubscript:{*MEMORY[0x1E6966140]), "unsignedIntegerValue"}];
       v9 = *MEMORY[0x1E6966038];
-      v10 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6966038]];
+      v10 = [attributes objectForKeyedSubscript:*MEMORY[0x1E6966038]];
       if ([v10 count])
       {
         v4->_supportedCacheModes = [v10 copy];
@@ -244,7 +244,7 @@
       v4->_prewireBuffers = 1;
       v4->_memoryPoolUseAllowed = 1;
       v11 = *MEMORY[0x1E69660D8];
-      v12 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69660D8]];
+      v12 = [attributes objectForKeyedSubscript:*MEMORY[0x1E69660D8]];
       if (v12)
       {
         v13 = v12;
@@ -267,15 +267,15 @@
       }
 
       v18 = *MEMORY[0x1E6966090];
-      v19 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6966090]];
+      v19 = [attributes objectForKeyedSubscript:*MEMORY[0x1E6966090]];
       if (v19)
       {
         width = v4->_width;
         if (width)
         {
-          v21 = [v19 unsignedIntegerValue];
-          v22 = v21 + 1;
-          while ((v21 + width) % v22 || !(width % v22))
+          unsignedIntegerValue = [v19 unsignedIntegerValue];
+          v22 = unsignedIntegerValue + 1;
+          while ((unsignedIntegerValue + width) % v22 || !(width % v22))
           {
             if (++v22 > 0x1000)
             {
@@ -289,15 +289,15 @@
       }
 
       v23 = *MEMORY[0x1E6966078];
-      v24 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6966078]];
+      v24 = [attributes objectForKeyedSubscript:*MEMORY[0x1E6966078]];
       if (v24)
       {
         height = v4->_height;
         if (height)
         {
-          v26 = [v24 unsignedIntegerValue];
-          v27 = v26 + 1;
-          while ((v26 + height) % v27 || !(height % v27))
+          unsignedIntegerValue2 = [v24 unsignedIntegerValue];
+          v27 = unsignedIntegerValue2 + 1;
+          while ((unsignedIntegerValue2 + height) % v27 || !(height % v27))
           {
             if (++v27 > 0x1000)
             {
@@ -311,7 +311,7 @@
       }
 
       v28 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v33, v32, v31, v7, v8, v9, v18, v23, v11, 0}];
-      v29 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(a3, "allKeys")}];
+      v29 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(attributes, "allKeys")}];
       [v29 minusSet:v28];
       [v29 count];
     }
@@ -326,51 +326,51 @@
   return v4;
 }
 
-- (BWVideoFormatRequirements)initWithCoder:(id)a3
+- (BWVideoFormatRequirements)initWithCoder:(id)coder
 {
   v4 = [(BWVideoFormatRequirements *)self init];
   if (v4)
   {
-    v4->_width = [a3 decodeInt64ForKey:@"width"];
-    v4->_height = [a3 decodeInt64ForKey:@"height"];
-    v4->_sliceCount = [a3 decodeInt64ForKey:@"numberOfSlices"];
+    v4->_width = [coder decodeInt64ForKey:@"width"];
+    v4->_height = [coder decodeInt64ForKey:@"height"];
+    v4->_sliceCount = [coder decodeInt64ForKey:@"numberOfSlices"];
     v5 = MEMORY[0x1E695DFD8];
     v9[0] = objc_opt_class();
     v9[1] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
     v7 = [v5 setWithArray:{v6, v9[0]}];
-    v4->_supportedPixelFormats = [a3 decodeObjectOfClasses:v7 forKey:@"supportedPixelFormats"];
-    v4->_preferredPixelFormats = [a3 decodeObjectOfClasses:v7 forKey:@"preferredPixelFormats"];
-    v4->_supportedColorSpaceProperties = [a3 decodeObjectOfClasses:v7 forKey:@"supportedColorSpaceProperties"];
-    v4->_bytesPerRowAlignment = [a3 decodeInt64ForKey:@"bytesPerRowAlignment"];
-    v4->_planeAlignment = [a3 decodeInt64ForKey:@"planeAlignment"];
-    v4->_widthAlignment = [a3 decodeInt64ForKey:@"widthAlignment"];
-    v4->_heightAlignment = [a3 decodeInt64ForKey:@"heightAlignment"];
-    v4->_supportedCacheModes = [a3 decodeObjectOfClasses:v7 forKey:@"supportedCacheModes"];
-    v4->_prewireBuffers = [a3 decodeBoolForKey:@"prewireBuffers"];
-    v4->_memoryPoolUseAllowed = [a3 decodeBoolForKey:@"memoryPoolUseAllowed"];
+    v4->_supportedPixelFormats = [coder decodeObjectOfClasses:v7 forKey:@"supportedPixelFormats"];
+    v4->_preferredPixelFormats = [coder decodeObjectOfClasses:v7 forKey:@"preferredPixelFormats"];
+    v4->_supportedColorSpaceProperties = [coder decodeObjectOfClasses:v7 forKey:@"supportedColorSpaceProperties"];
+    v4->_bytesPerRowAlignment = [coder decodeInt64ForKey:@"bytesPerRowAlignment"];
+    v4->_planeAlignment = [coder decodeInt64ForKey:@"planeAlignment"];
+    v4->_widthAlignment = [coder decodeInt64ForKey:@"widthAlignment"];
+    v4->_heightAlignment = [coder decodeInt64ForKey:@"heightAlignment"];
+    v4->_supportedCacheModes = [coder decodeObjectOfClasses:v7 forKey:@"supportedCacheModes"];
+    v4->_prewireBuffers = [coder decodeBoolForKey:@"prewireBuffers"];
+    v4->_memoryPoolUseAllowed = [coder decodeBoolForKey:@"memoryPoolUseAllowed"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_width forKey:@"width"];
-  [a3 encodeInt64:self->_height forKey:@"height"];
-  [a3 encodeInt64:self->_sliceCount forKey:@"numberOfSlices"];
-  [a3 encodeObject:self->_supportedPixelFormats forKey:@"supportedPixelFormats"];
-  [a3 encodeObject:self->_preferredPixelFormats forKey:@"preferredPixelFormats"];
-  [a3 encodeObject:self->_supportedColorSpaceProperties forKey:@"supportedColorSpaceProperties"];
-  [a3 encodeInt64:self->_bytesPerRowAlignment forKey:@"bytesPerRowAlignment"];
-  [a3 encodeInt64:self->_planeAlignment forKey:@"planeAlignment"];
-  [a3 encodeInt64:self->_widthAlignment forKey:@"widthAlignment"];
-  [a3 encodeInt64:self->_heightAlignment forKey:@"heightAlignment"];
-  [a3 encodeObject:self->_supportedCacheModes forKey:@"supportedCacheModes"];
-  [a3 encodeBool:self->_prewireBuffers forKey:@"prewireBuffers"];
+  [coder encodeInt64:self->_width forKey:@"width"];
+  [coder encodeInt64:self->_height forKey:@"height"];
+  [coder encodeInt64:self->_sliceCount forKey:@"numberOfSlices"];
+  [coder encodeObject:self->_supportedPixelFormats forKey:@"supportedPixelFormats"];
+  [coder encodeObject:self->_preferredPixelFormats forKey:@"preferredPixelFormats"];
+  [coder encodeObject:self->_supportedColorSpaceProperties forKey:@"supportedColorSpaceProperties"];
+  [coder encodeInt64:self->_bytesPerRowAlignment forKey:@"bytesPerRowAlignment"];
+  [coder encodeInt64:self->_planeAlignment forKey:@"planeAlignment"];
+  [coder encodeInt64:self->_widthAlignment forKey:@"widthAlignment"];
+  [coder encodeInt64:self->_heightAlignment forKey:@"heightAlignment"];
+  [coder encodeObject:self->_supportedCacheModes forKey:@"supportedCacheModes"];
+  [coder encodeBool:self->_prewireBuffers forKey:@"prewireBuffers"];
   memoryPoolUseAllowed = self->_memoryPoolUseAllowed;
 
-  [a3 encodeBool:memoryPoolUseAllowed forKey:@"memoryPoolUseAllowed"];
+  [coder encodeBool:memoryPoolUseAllowed forKey:@"memoryPoolUseAllowed"];
 }
 
 - (id)description
@@ -537,7 +537,7 @@
     if (v23)
     {
       v24 = v23;
-      v39 = self;
+      selfCopy = self;
       v25 = 0;
       v26 = *v47;
       do
@@ -563,7 +563,7 @@
       }
 
       while (v24);
-      self = v39;
+      self = selfCopy;
     }
 
     v29 = @"]";
@@ -637,9 +637,9 @@
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWVideoFormatRequirements description](self, "description")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
     return v12;
@@ -653,70 +653,70 @@
     goto LABEL_29;
   }
 
-  [a3 width];
+  [equal width];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 height];
+  [equal height];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 sliceCount];
+  [equal sliceCount];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 bytesPerRowAlignment];
+  [equal bytesPerRowAlignment];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 planeAlignment];
+  [equal planeAlignment];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 widthAlignment];
+  [equal widthAlignment];
   OUTLINED_FUNCTION_0_97();
   if (!v11)
   {
     goto LABEL_29;
   }
 
-  [a3 heightAlignment];
+  [equal heightAlignment];
   OUTLINED_FUNCTION_0_97();
-  if (!v11 || self->_prewireBuffers != [a3 prewireBuffers] || self->_memoryPoolUseAllowed != objc_msgSend(a3, "memoryPoolUseAllowed"))
+  if (!v11 || self->_prewireBuffers != [equal prewireBuffers] || self->_memoryPoolUseAllowed != objc_msgSend(equal, "memoryPoolUseAllowed"))
   {
     goto LABEL_29;
   }
 
-  [a3 supportedPixelFormats];
+  [equal supportedPixelFormats];
   OUTLINED_FUNCTION_6_68();
-  if (v11 || (v12 = [objc_msgSend(a3 "supportedPixelFormats")]) != 0)
+  if (v11 || (v12 = [objc_msgSend(equal "supportedPixelFormats")]) != 0)
   {
-    [a3 preferredPixelFormats];
+    [equal preferredPixelFormats];
     OUTLINED_FUNCTION_6_68();
-    if (v11 || (v12 = [objc_msgSend(a3 "preferredPixelFormats")]) != 0)
+    if (v11 || (v12 = [objc_msgSend(equal "preferredPixelFormats")]) != 0)
     {
-      [a3 supportedColorSpaceProperties];
+      [equal supportedColorSpaceProperties];
       OUTLINED_FUNCTION_6_68();
-      if (v11 || (v12 = [objc_msgSend(a3 "supportedColorSpaceProperties")]) != 0)
+      if (v11 || (v12 = [objc_msgSend(equal "supportedColorSpaceProperties")]) != 0)
       {
-        [a3 supportedCacheModes];
+        [equal supportedCacheModes];
         OUTLINED_FUNCTION_6_68();
-        if (v11 || ([objc_msgSend(a3 "supportedCacheModes")] & 1) != 0)
+        if (v11 || ([objc_msgSend(equal "supportedCacheModes")] & 1) != 0)
         {
           LOBYTE(v12) = 1;
           return v12;
@@ -731,7 +731,7 @@ LABEL_29:
   return v12;
 }
 
-- (uint64_t)_resolveWith:(uint64_t)result printErrors:(void *)a2
+- (uint64_t)_resolveWith:(uint64_t)result printErrors:(void *)errors
 {
   if (!result)
   {
@@ -739,7 +739,7 @@ LABEL_29:
   }
 
   v3 = result;
-  [a2 width];
+  [errors width];
   OUTLINED_FUNCTION_2_96();
   if (v5)
   {
@@ -770,7 +770,7 @@ LABEL_29:
     }
   }
 
-  [a2 height];
+  [errors height];
   OUTLINED_FUNCTION_2_96();
   if (v5)
   {
@@ -801,7 +801,7 @@ LABEL_29:
     }
   }
 
-  [a2 sliceCount];
+  [errors sliceCount];
   OUTLINED_FUNCTION_2_96();
   if (v5)
   {
@@ -831,57 +831,57 @@ LABEL_29:
 
   *(v3 + 24) = v11;
 LABEL_29:
-  result = vfr_resolveNumericalArrays((v3 + 32), [a2 supportedPixelFormats]);
+  result = vfr_resolveNumericalArrays((v3 + 32), [errors supportedPixelFormats]);
   if (result)
   {
-    vfr_resolveNumericalArrays((v3 + 40), [a2 preferredPixelFormats]);
+    vfr_resolveNumericalArrays((v3 + 40), [errors preferredPixelFormats]);
     v14 = [*(v3 + 40) bw_intersectWithArray:*(v3 + 32)];
 
     *(v3 + 40) = v14;
-    [a2 supportedColorSpaceProperties];
+    [errors supportedColorSpaceProperties];
     v15 = OUTLINED_FUNCTION_1_108();
     result = vfr_resolveNumericalArrays(v15, v16);
     if (result)
     {
-      [a2 supportedCacheModes];
+      [errors supportedCacheModes];
       v17 = OUTLINED_FUNCTION_1_108();
       result = vfr_resolveNumericalArrays(v17, v18);
       if (result)
       {
-        [a2 bytesPerRowAlignment];
+        [errors bytesPerRowAlignment];
         v19 = OUTLINED_FUNCTION_1_108();
         vfr_resolveOptionalAlignmentFactors(v19, v20);
-        [a2 planeAlignment];
+        [errors planeAlignment];
         v21 = OUTLINED_FUNCTION_1_108();
         vfr_resolveOptionalAlignmentFactors(v21, v22);
-        [a2 widthAlignment];
+        [errors widthAlignment];
         v23 = OUTLINED_FUNCTION_1_108();
         vfr_resolveOptionalAlignmentFactors(v23, v24);
-        [a2 heightAlignment];
+        [errors heightAlignment];
         v25 = OUTLINED_FUNCTION_1_108();
         vfr_resolveOptionalAlignmentFactors(v25, v26);
         if (*(v3 + 96) == 1)
         {
-          v27 = [a2 prewireBuffers];
+          prewireBuffers = [errors prewireBuffers];
         }
 
         else
         {
-          v27 = 0;
+          prewireBuffers = 0;
         }
 
-        *(v3 + 96) = v27;
-        if (*(v3 + 97) == 1 && ([a2 memoryPoolUseAllowed], (*(v3 + 97) & 1) != 0))
+        *(v3 + 96) = prewireBuffers;
+        if (*(v3 + 97) == 1 && ([errors memoryPoolUseAllowed], (*(v3 + 97) & 1) != 0))
         {
-          v28 = [a2 memoryPoolUseAllowed];
+          memoryPoolUseAllowed = [errors memoryPoolUseAllowed];
         }
 
         else
         {
-          v28 = 0;
+          memoryPoolUseAllowed = 0;
         }
 
-        *(v3 + 97) = v28;
+        *(v3 + 97) = memoryPoolUseAllowed;
         return 1;
       }
     }

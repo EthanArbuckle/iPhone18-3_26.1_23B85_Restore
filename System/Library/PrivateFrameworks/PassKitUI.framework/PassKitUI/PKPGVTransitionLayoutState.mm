@@ -1,10 +1,10 @@
 @interface PKPGVTransitionLayoutState
-+ (__n128)_createWithViewFrame:(__int128 *)a3 viewControllerFrame:;
++ (__n128)_createWithViewFrame:(__int128 *)frame viewControllerFrame:;
 @end
 
 @implementation PKPGVTransitionLayoutState
 
-+ (__n128)_createWithViewFrame:(__int128 *)a3 viewControllerFrame:
++ (__n128)_createWithViewFrame:(__int128 *)frame viewControllerFrame:
 {
   objc_opt_self();
   v5 = [PKPGVTransitionLayoutState alloc];
@@ -17,15 +17,15 @@
   v22 = a2[5];
   v17 = *a2;
   v18 = a2[1];
-  v14 = a3[6];
-  v15 = a3[7];
-  v16 = *(a3 + 16);
-  v10 = a3[2];
-  v11 = a3[3];
-  v12 = a3[4];
-  v13 = a3[5];
-  result = a3[1];
-  v8 = *a3;
+  v14 = frame[6];
+  v15 = frame[7];
+  v16 = *(frame + 16);
+  v10 = frame[2];
+  v11 = frame[3];
+  v12 = frame[4];
+  v13 = frame[5];
+  result = frame[1];
+  v8 = *frame;
   v9 = result;
   if (v5)
   {

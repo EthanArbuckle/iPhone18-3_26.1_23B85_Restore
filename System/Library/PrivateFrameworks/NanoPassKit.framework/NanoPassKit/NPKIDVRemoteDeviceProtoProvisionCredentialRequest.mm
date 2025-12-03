@@ -1,28 +1,28 @@
 @interface NPKIDVRemoteDeviceProtoProvisionCredentialRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCredentialType:(id)a3;
+- (int)StringAsCredentialType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoProvisionCredentialRequest
 
-- (int)StringAsCredentialType:(id)a3
+- (int)StringAsCredentialType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Identity"];
+    v4 = [typeCopy isEqualToString:@"Identity"];
   }
 
   return v4;
@@ -34,15 +34,15 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoProvisionCredentialRequest;
   v4 = [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   credentialType = self->_credentialType;
   if (credentialType)
   {
@@ -62,40 +62,40 @@
     v5 = @"Unknown";
   }
 
-  [v3 setObject:v5 forKey:@"credentialType"];
+  [dictionary setObject:v5 forKey:@"credentialType"];
 
   metadataData = self->_metadataData;
   if (metadataData)
   {
-    [v3 setObject:metadataData forKey:@"metadataData"];
+    [dictionary setObject:metadataData forKey:@"metadataData"];
   }
 
   credentialIdentifier = self->_credentialIdentifier;
   if (credentialIdentifier)
   {
-    [v3 setObject:credentialIdentifier forKey:@"credentialIdentifier"];
+    [dictionary setObject:credentialIdentifier forKey:@"credentialIdentifier"];
   }
 
   attestationsData = self->_attestationsData;
   if (attestationsData)
   {
-    [v3 setObject:attestationsData forKey:@"attestationsData"];
+    [dictionary setObject:attestationsData forKey:@"attestationsData"];
   }
 
   supplementalData = self->_supplementalData;
   if (supplementalData)
   {
-    [v3 setObject:supplementalData forKey:@"supplementalData"];
+    [dictionary setObject:supplementalData forKey:@"supplementalData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   credentialType = self->_credentialType;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteInt32Field();
   if (self->_metadataData)
   {
@@ -121,66 +121,66 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[6] = self->_credentialType;
-  v5 = v4;
+  toCopy = to;
+  toCopy[6] = self->_credentialType;
+  v5 = toCopy;
   if (self->_metadataData)
   {
-    [v4 setMetadataData:?];
-    v4 = v5;
+    [toCopy setMetadataData:?];
+    toCopy = v5;
   }
 
   if (self->_credentialIdentifier)
   {
     [v5 setCredentialIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_attestationsData)
   {
     [v5 setAttestationsData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_supplementalData)
   {
     [v5 setSupplementalData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_credentialType;
-  v6 = [(NSData *)self->_metadataData copyWithZone:a3];
+  v6 = [(NSData *)self->_metadataData copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_credentialIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_credentialIdentifier copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSData *)self->_attestationsData copyWithZone:a3];
+  v10 = [(NSData *)self->_attestationsData copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSData *)self->_supplementalData copyWithZone:a3];
+  v12 = [(NSData *)self->_supplementalData copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_credentialType == *(v4 + 6) && ((metadataData = self->_metadataData, !(metadataData | v4[4])) || -[NSData isEqual:](metadataData, "isEqual:")) && ((credentialIdentifier = self->_credentialIdentifier, !(credentialIdentifier | v4[2])) || -[NSString isEqual:](credentialIdentifier, "isEqual:")) && ((attestationsData = self->_attestationsData, !(attestationsData | v4[1])) || -[NSData isEqual:](attestationsData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_credentialType == *(equalCopy + 6) && ((metadataData = self->_metadataData, !(metadataData | equalCopy[4])) || -[NSData isEqual:](metadataData, "isEqual:")) && ((credentialIdentifier = self->_credentialIdentifier, !(credentialIdentifier | equalCopy[2])) || -[NSString isEqual:](credentialIdentifier, "isEqual:")) && ((attestationsData = self->_attestationsData, !(attestationsData | equalCopy[1])) || -[NSData isEqual:](attestationsData, "isEqual:")))
   {
     supplementalData = self->_supplementalData;
-    if (supplementalData | v4[5])
+    if (supplementalData | equalCopy[5])
     {
       v9 = [(NSData *)supplementalData isEqual:?];
     }
@@ -208,12 +208,12 @@
   return v6 ^ [(NSData *)self->_supplementalData hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_credentialType = v4[6];
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  self->_credentialType = fromCopy[6];
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)self setMetadataData:?];
   }

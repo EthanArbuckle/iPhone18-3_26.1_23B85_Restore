@@ -1,17 +1,17 @@
 @interface FBSServiceFacility
-- (BOOL)queue_clientDidConnect:(id)a3 withMessage:(id)a4;
+- (BOOL)queue_clientDidConnect:(id)connect withMessage:(id)message;
 - (FBSServiceFacility)init;
-- (FBSServiceFacility)initWithIdentifier:(id)a3 queue:(id)a4;
+- (FBSServiceFacility)initWithIdentifier:(id)identifier queue:(id)queue;
 - (NSSet)clients;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)dealloc;
 - (void)invalidate;
-- (void)queue_clientDidDisconnect:(id)a3;
-- (void)queue_handleMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
-- (void)sendMessage:(id)a3 withType:(int64_t)a4 toClients:(id)a5;
+- (void)queue_clientDidDisconnect:(id)disconnect;
+- (void)queue_handleMessage:(id)message withType:(int64_t)type fromClient:(id)client;
+- (void)sendMessage:(id)message withType:(int64_t)type toClients:(id)clients;
 @end
 
 @implementation FBSServiceFacility
@@ -29,7 +29,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSServiceFacility.m";
     v16 = 1024;
@@ -43,17 +43,17 @@
   _bs_set_crash_log_message();
 }
 
-- (FBSServiceFacility)initWithIdentifier:(id)a3 queue:(id)a4
+- (FBSServiceFacility)initWithIdentifier:(id)identifier queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  if (!identifierCopy)
   {
     [FBSServiceFacility initWithIdentifier:a2 queue:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = queueCopy;
+  if (!queueCopy)
   {
     [FBSServiceFacility initWithIdentifier:a2 queue:?];
   }
@@ -63,11 +63,11 @@
   v10 = [(FBSServiceFacility *)&v20 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v10->_queue, queue);
     v13 = [MEMORY[0x1E695DFA8] set];
     clients = v10->_clients;
     v10->_clients = v13;
@@ -95,7 +95,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -124,22 +124,22 @@
   return v3;
 }
 
-- (BOOL)queue_clientDidConnect:(id)a3 withMessage:(id)a4
+- (BOOL)queue_clientDidConnect:(id)connect withMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  messageCopy = message;
   [(BSServiceQueue *)self->_queue assertBarrierOnQueue];
-  v8 = [(FBSServiceFacility *)self shouldAllowClientConnection:v6 withMessage:v7];
+  v8 = [(FBSServiceFacility *)self shouldAllowClientConnection:connectCopy withMessage:messageCopy];
   if (v8)
   {
-    [(NSMutableSet *)self->_clients addObject:v6];
+    [(NSMutableSet *)self->_clients addObject:connectCopy];
     os_unfair_lock_lock(&self->_clients_immutable_lock);
     v9 = [(NSMutableSet *)self->_clients copy];
     clients_immutable = self->_clients_immutable;
     self->_clients_immutable = v9;
 
     os_unfair_lock_unlock(&self->_clients_immutable_lock);
-    [(FBSServiceFacility *)self noteClientDidConnect:v6 withMessage:v7];
+    [(FBSServiceFacility *)self noteClientDidConnect:connectCopy withMessage:messageCopy];
   }
 
   else
@@ -147,33 +147,33 @@
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [FBSServiceFacility queue_clientDidConnect:v6 withMessage:?];
+      [FBSServiceFacility queue_clientDidConnect:connectCopy withMessage:?];
     }
   }
 
   return v8;
 }
 
-- (void)queue_clientDidDisconnect:(id)a3
+- (void)queue_clientDidDisconnect:(id)disconnect
 {
-  v9 = a3;
+  disconnectCopy = disconnect;
   [(BSServiceQueue *)self->_queue assertBarrierOnQueue];
   identifier = self->_identifier;
-  v5 = [v9 facilityID];
-  if ([(NSString *)identifier isEqualToString:v5])
+  facilityID = [disconnectCopy facilityID];
+  if ([(NSString *)identifier isEqualToString:facilityID])
   {
-    v6 = [(NSMutableSet *)self->_clients containsObject:v9];
+    v6 = [(NSMutableSet *)self->_clients containsObject:disconnectCopy];
 
     if (v6)
     {
-      [(NSMutableSet *)self->_clients removeObject:v9];
+      [(NSMutableSet *)self->_clients removeObject:disconnectCopy];
       os_unfair_lock_lock(&self->_clients_immutable_lock);
       v7 = [(NSMutableSet *)self->_clients copy];
       clients_immutable = self->_clients_immutable;
       self->_clients_immutable = v7;
 
       os_unfair_lock_unlock(&self->_clients_immutable_lock);
-      [(FBSServiceFacility *)self noteClientDidDisconnect:v9];
+      [(FBSServiceFacility *)self noteClientDidDisconnect:disconnectCopy];
     }
   }
 
@@ -182,14 +182,14 @@
   }
 }
 
-- (void)queue_handleMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)queue_handleMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  clientCopy = client;
   [(BSServiceQueue *)self->_queue assertBarrierOnQueue];
-  if ([(NSMutableSet *)self->_clients containsObject:v9])
+  if ([(NSMutableSet *)self->_clients containsObject:clientCopy])
   {
-    [(FBSServiceFacility *)self noteDidReceiveMessage:v8 withType:a4 fromClient:v9];
+    [(FBSServiceFacility *)self noteDidReceiveMessage:messageCopy withType:type fromClient:clientCopy];
   }
 
   else
@@ -197,26 +197,26 @@
     v10 = FBLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [FBSServiceFacility queue_handleMessage:v9 withType:? fromClient:?];
+      [FBSServiceFacility queue_handleMessage:clientCopy withType:? fromClient:?];
     }
   }
 }
 
-- (void)sendMessage:(id)a3 withType:(int64_t)a4 toClients:(id)a5
+- (void)sendMessage:(id)message withType:(int64_t)type toClients:(id)clients
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 payload];
-  if (v10)
+  messageCopy = message;
+  clientsCopy = clients;
+  payload = [messageCopy payload];
+  if (payload)
   {
-    v20 = v10;
+    v20 = payload;
     v19 = a2;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v9;
+    obj = clientsCopy;
     v11 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -237,14 +237,14 @@
             [FBSServiceFacility sendMessage:v19 withType:? toClients:?];
           }
 
-          v16 = [v15 clientHandle_messageBuilder];
-          v17 = [v16 createMessage];
+          clientHandle_messageBuilder = [v15 clientHandle_messageBuilder];
+          createMessage = [clientHandle_messageBuilder createMessage];
 
-          [v17 encodeInt64:a4 forKey:@"message"];
-          v18 = [v8 payload];
-          [v17 encodeXPCObject:v18 forKey:@"fbs_message"];
+          [createMessage encodeInt64:type forKey:@"message"];
+          payload2 = [messageCopy payload];
+          [createMessage encodeXPCObject:payload2 forKey:@"fbs_message"];
 
-          [v17 send];
+          [createMessage send];
         }
 
         v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -253,47 +253,47 @@
       while (v12);
     }
 
-    v10 = v20;
+    payload = v20;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSServiceFacility *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSServiceFacility *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
-  v4 = [(FBSServiceFacility *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"ID"];
+  identifier = [(FBSServiceFacility *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"ID"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSServiceFacility *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSServiceFacility *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSServiceFacility *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSServiceFacility *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__FBSServiceFacility_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

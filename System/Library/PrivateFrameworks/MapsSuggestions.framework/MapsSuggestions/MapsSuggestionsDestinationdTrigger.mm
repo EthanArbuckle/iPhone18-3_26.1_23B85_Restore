@@ -1,7 +1,7 @@
 @interface MapsSuggestionsDestinationdTrigger
-- (MapsSuggestionsDestinationdTrigger)initWithName:(id)a3;
-- (uint64_t)_isFromIgnoredPeer:(void *)a1;
-- (void)addIgnoredClientProcess:(id)a3;
+- (MapsSuggestionsDestinationdTrigger)initWithName:(id)name;
+- (uint64_t)_isFromIgnoredPeer:(void *)peer;
+- (void)addIgnoredClientProcess:(id)process;
 - (void)didAddFirstObserver;
 - (void)didRemoveLastObserver;
 @end
@@ -47,12 +47,12 @@ void __57__MapsSuggestionsDestinationdTrigger_didAddFirstObserver__block_invoke(
 LABEL_10:
 }
 
-- (MapsSuggestionsDestinationdTrigger)initWithName:(id)a3
+- (MapsSuggestionsDestinationdTrigger)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = MapsSuggestionsDestinationdTrigger;
-  v5 = [(MapsSuggestionsBaseTrigger *)&v10 initWithName:v4];
+  v5 = [(MapsSuggestionsBaseTrigger *)&v10 initWithName:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -65,20 +65,20 @@ LABEL_10:
   return v6;
 }
 
-- (void)addIgnoredClientProcess:(id)a3
+- (void)addIgnoredClientProcess:(id)process
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  processCopy = process;
+  if (processCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(NSSet *)v6->_ignoredPeerIdentifiers setByAddingObject:v4];
-    ignoredPeerIdentifiers = v6->_ignoredPeerIdentifiers;
-    v6->_ignoredPeerIdentifiers = v7;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = [(NSSet *)selfCopy->_ignoredPeerIdentifiers setByAddingObject:processCopy];
+    ignoredPeerIdentifiers = selfCopy->_ignoredPeerIdentifiers;
+    selfCopy->_ignoredPeerIdentifiers = v7;
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     objc_autoreleasePoolPop(v5);
   }
 
@@ -100,21 +100,21 @@ LABEL_10:
   }
 }
 
-- (uint64_t)_isFromIgnoredPeer:(void *)a1
+- (uint64_t)_isFromIgnoredPeer:(void *)peer
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!peer)
   {
     return 0;
   }
 
-  v3 = a1;
-  objc_sync_enter(v3);
+  peerCopy = peer;
+  objc_sync_enter(peerCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3[5];
+  v4 = peerCopy[5];
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -152,14 +152,14 @@ LABEL_10:
   v10 = 0;
 LABEL_12:
 
-  objc_sync_exit(v3);
+  objc_sync_exit(peerCopy);
   return v10;
 }
 
 - (void)didAddFirstObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   objc_initWeak(&location, self);
   [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
@@ -175,8 +175,8 @@ LABEL_12:
 
 - (void)didRemoveLastObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   std::unique_ptr<MSg::NotificationReceiver>::reset[abi:ne200100](&self->_notificationReceiver, 0);
 }

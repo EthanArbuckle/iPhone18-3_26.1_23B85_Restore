@@ -1,45 +1,45 @@
 @interface QRCodeOverlayViewController
-- (_TtC11MusicCoreUI27QRCodeOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11MusicCoreUI27QRCodeOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissAnimated;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation QRCodeOverlayViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   QRCodeOverlayViewController.viewDidLoad()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  QRCodeOverlayViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  QRCodeOverlayViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  QRCodeOverlayViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  QRCodeOverlayViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   QRCodeOverlayViewController.viewDidLayoutSubviews()();
 }
 
 - (void)dismissAnimated
 {
-  v2 = self;
+  selfCopy = self;
   QRCodeOverlayViewController.dismissAnimated()();
 }
 
-- (_TtC11MusicCoreUI27QRCodeOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MusicCoreUI27QRCodeOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

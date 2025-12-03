@@ -1,18 +1,18 @@
 @interface NTKRoundedCornerMaskView
-+ (id)_maskForDevice:(id)a3;
-+ (id)_maskWithSize:(CGSize)a3 screenScale:(double)a4 cornerRadius:(double)a5;
-- (NTKRoundedCornerMaskView)initWithDevice:(id)a3;
-- (NTKRoundedCornerMaskView)initWithFrame:(CGRect)a3 screenScale:(double)a4 cornerRadius:(double)a5;
-- (id)_initWithFrame:(CGRect)a3 mask:(id)a4;
++ (id)_maskForDevice:(id)device;
++ (id)_maskWithSize:(CGSize)size screenScale:(double)scale cornerRadius:(double)radius;
+- (NTKRoundedCornerMaskView)initWithDevice:(id)device;
+- (NTKRoundedCornerMaskView)initWithFrame:(CGRect)frame screenScale:(double)scale cornerRadius:(double)radius;
+- (id)_initWithFrame:(CGRect)frame mask:(id)mask;
 @end
 
 @implementation NTKRoundedCornerMaskView
 
-- (NTKRoundedCornerMaskView)initWithDevice:(id)a3
+- (NTKRoundedCornerMaskView)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [NTKRoundedCornerMaskView _maskForDevice:v4];
-  [v4 screenBounds];
+  deviceCopy = device;
+  v5 = [NTKRoundedCornerMaskView _maskForDevice:deviceCopy];
+  [deviceCopy screenBounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -22,53 +22,53 @@
   return v14;
 }
 
-- (NTKRoundedCornerMaskView)initWithFrame:(CGRect)a3 screenScale:(double)a4 cornerRadius:(double)a5
+- (NTKRoundedCornerMaskView)initWithFrame:(CGRect)frame screenScale:(double)scale cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [NTKRoundedCornerMaskView _maskWithSize:a3.size.width screenScale:a3.size.height cornerRadius:a4, a5];
-  v11 = [(NTKRoundedCornerMaskView *)self _initWithFrame:v10 mask:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  radius = [NTKRoundedCornerMaskView _maskWithSize:frame.size.width screenScale:frame.size.height cornerRadius:scale, radius];
+  height = [(NTKRoundedCornerMaskView *)self _initWithFrame:radius mask:x, y, width, height];
 
-  return v11;
+  return height;
 }
 
-- (id)_initWithFrame:(CGRect)a3 mask:(id)a4
+- (id)_initWithFrame:(CGRect)frame mask:(id)mask
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  maskCopy = mask;
   v16.receiver = self;
   v16.super_class = NTKRoundedCornerMaskView;
-  v10 = [(NTKRoundedCornerMaskView *)&v16 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(NTKRoundedCornerMaskView *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [MEMORY[0x277CD9ED0] layer];
-    maskLayer = v10->_maskLayer;
-    v10->_maskLayer = v11;
+    layer = [MEMORY[0x277CD9ED0] layer];
+    maskLayer = height->_maskLayer;
+    height->_maskLayer = layer;
 
-    [(NTKRoundedCornerMaskView *)v10 bounds];
-    [(CALayer *)v10->_maskLayer setFrame:?];
-    -[CALayer setContents:](v10->_maskLayer, "setContents:", [v9 CGImage]);
-    v13 = v10->_maskLayer;
-    v14 = [(NTKRoundedCornerMaskView *)v10 layer];
-    [v14 setMask:v13];
+    [(NTKRoundedCornerMaskView *)height bounds];
+    [(CALayer *)height->_maskLayer setFrame:?];
+    -[CALayer setContents:](height->_maskLayer, "setContents:", [maskCopy CGImage]);
+    v13 = height->_maskLayer;
+    layer2 = [(NTKRoundedCornerMaskView *)height layer];
+    [layer2 setMask:v13];
   }
 
-  return v10;
+  return height;
 }
 
-+ (id)_maskForDevice:(id)a3
++ (id)_maskForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__NTKRoundedCornerMaskView__maskForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___UIImage_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __43__NTKRoundedCornerMaskView__maskForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __43__NTKRoundedCornerMaskView__maskForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -122,19 +122,19 @@ uint64_t __43__NTKRoundedCornerMaskView__maskForDevice___block_invoke_2(uint64_t
   return [v2 _maskWithSize:v5 screenScale:v7 cornerRadius:{v9, v11}];
 }
 
-+ (id)_maskWithSize:(CGSize)a3 screenScale:(double)a4 cornerRadius:(double)a5
++ (id)_maskWithSize:(CGSize)size screenScale:(double)scale cornerRadius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
-  v10 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:*MEMORY[0x277CBF348] screenScale:v9 cornerRadius:a3.width, a3.height, a4, a5];
+  radius = [[NTKRoundedCornerOverlayView alloc] initWithFrame:*MEMORY[0x277CBF348] screenScale:v9 cornerRadius:size.width, size.height, scale, radius];
   v17.width = width;
   v17.height = height;
-  UIGraphicsBeginImageContextWithOptions(v17, 0, a4);
+  UIGraphicsBeginImageContextWithOptions(v17, 0, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v12 = [MEMORY[0x277D75348] whiteColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v12 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  CGContextSetFillColorWithColor(CurrentContext, [whiteColor CGColor]);
 
   v18.origin.x = v8;
   v18.origin.y = v9;
@@ -142,8 +142,8 @@ uint64_t __43__NTKRoundedCornerMaskView__maskForDevice___block_invoke_2(uint64_t
   v18.size.height = height;
   CGContextFillRect(CurrentContext, v18);
   CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationOut);
-  v13 = [(NTKRoundedCornerOverlayView *)v10 layer];
-  [v13 renderInContext:CurrentContext];
+  layer = [(NTKRoundedCornerOverlayView *)radius layer];
+  [layer renderInContext:CurrentContext];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

@@ -1,24 +1,24 @@
 @interface PLModelMigrationAction_DeleteFullSizeRenderVideosForLegacyAdjustedSlomos
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteFullSizeRenderVideosForLegacyAdjustedSlomos
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v86[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLInternalResource entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AB28];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 0xFFFFFFFFLL];
-  v86[0] = v11;
+  0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 0xFFFFFFFFLL];
+  v86[0] = 0xFFFFFFFFLL;
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailabilityTarget", 0];
   v86[1] = v12;
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 0x20000];
-  v86[2] = v13;
+  0x20000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 0x20000];
+  v86[2] = 0x20000;
   v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"cloudLocalState", 0];
   v86[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:4];
@@ -27,7 +27,7 @@
 
   [v9 setFetchBatchSize:100];
   v51 = 0;
-  v17 = [v6 executeFetchRequest:v9 error:&v51];
+  v17 = [contextCopy executeFetchRequest:v9 error:&v51];
   v18 = v51;
   v47 = 0;
   v48 = &v47;
@@ -39,7 +39,7 @@
     v44[1] = 3221225472;
     v44[2] = __120__PLModelMigrationAction_DeleteFullSizeRenderVideosForLegacyAdjustedSlomos_performActionWithManagedObjectContext_error___block_invoke;
     v44[3] = &unk_1E7569708;
-    v45 = v6;
+    v45 = contextCopy;
     v46 = &v47;
     v19 = [v45 enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v44];
     v20 = PLMigrationGetLog();
@@ -47,8 +47,8 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
-      v23 = v22 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v23 = logger == 0;
 
       if (v23)
       {
@@ -122,8 +122,8 @@
 
     if (v29)
     {
-      v30 = [(PLModelMigrationActionCore *)self logger];
-      v31 = v30 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v31 = logger2 == 0;
 
       if (v31)
       {
@@ -198,10 +198,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v40 = v37;
-      *a4 = v38;
+      *error = v38;
     }
 
     v39 = 3;

@@ -1,11 +1,11 @@
 @interface LSSSubscriber
 + (id)sharedInstance;
 - (LSSSubscriber)init;
-- (id)lightSourceForTime:(double)a3;
-- (void)_changeActivityLevel:(unsigned __int8)a3;
-- (void)client:(id)a3 recievedUpdate:(id)a4;
-- (void)clientInvalidated:(id)a3;
-- (void)unsubscribe:(id)a3;
+- (id)lightSourceForTime:(double)time;
+- (void)_changeActivityLevel:(unsigned __int8)level;
+- (void)client:(id)client recievedUpdate:(id)update;
+- (void)clientInvalidated:(id)invalidated;
+- (void)unsubscribe:(id)unsubscribe;
 @end
 
 @implementation LSSSubscriber
@@ -60,10 +60,10 @@ void __69__LSSSubscriber_subscribeOnQueue_options_activityLevelChangeHandler___b
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)unsubscribe:(id)a3
+- (void)unsubscribe:(id)unsubscribe
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unsubscribeCopy = unsubscribe;
   if (qword_280D2F550 != -1)
   {
     [LSSSubscriber subscribeOnQueue:options:activityLevelChangeHandler:];
@@ -84,7 +84,7 @@ void __69__LSSSubscriber_subscribeOnQueue_options_activityLevelChangeHandler___b
     goto LABEL_24;
   }
 
-  [(NSMutableSet *)self->_subscriptions removeObject:v4];
+  [(NSMutableSet *)self->_subscriptions removeObject:unsubscribeCopy];
   if ([(NSMutableSet *)self->_subscriptions count])
   {
     if (self->_client)
@@ -149,10 +149,10 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientInvalidated:(id)a3
+- (void)clientInvalidated:(id)invalidated
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   if (qword_280D2F550 != -1)
   {
     [LSSSubscriber subscribeOnQueue:options:activityLevelChangeHandler:];
@@ -167,7 +167,7 @@ LABEL_21:
 
   os_unfair_lock_lock(&self->_lock);
   client = self->_client;
-  if (client != v4 && client)
+  if (client != invalidatedCopy && client)
   {
     __assert_rtn("[LSSSubscriber clientInvalidated:]", "LSSSubscriber.m", 145, "client == _client || _client == nil");
   }
@@ -205,11 +205,11 @@ LABEL_21:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 recievedUpdate:(id)a4
+- (void)client:(id)client recievedUpdate:(id)update
 {
-  var0 = a4.var0;
+  var0 = update.var0;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   events = self->_events;
   v8 = *(*&var0 + 48);
@@ -285,7 +285,7 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_changeActivityLevel:(unsigned __int8)a3
+- (void)_changeActivityLevel:(unsigned __int8)level
 {
   v22 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -293,7 +293,7 @@ LABEL_21:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v14 = self;
+  selfCopy = self;
   v5 = self->_subscriptions;
   v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
@@ -309,19 +309,19 @@ LABEL_21:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 activityHandler];
-        v11 = v10 == 0;
+        activityHandler = [v9 activityHandler];
+        v11 = activityHandler == 0;
 
         if (!v11)
         {
-          v12 = [v9 queue];
+          queue = [v9 queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __38__LSSSubscriber__changeActivityLevel___block_invoke;
           block[3] = &unk_279812848;
           block[4] = v9;
-          v16 = a3;
-          dispatch_async(v12, block);
+          levelCopy = level;
+          dispatch_async(queue, block);
         }
       }
 
@@ -331,7 +331,7 @@ LABEL_21:
     while (v6);
   }
 
-  os_unfair_lock_unlock(&v14->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -341,10 +341,10 @@ void __38__LSSSubscriber__changeActivityLevel___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 40));
 }
 
-- (id)lightSourceForTime:(double)a3
+- (id)lightSourceForTime:(double)time
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(LSSEventQueue *)self->_events lightSourceForTime:a3];
+  v5 = [(LSSEventQueue *)self->_events lightSourceForTime:time];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;

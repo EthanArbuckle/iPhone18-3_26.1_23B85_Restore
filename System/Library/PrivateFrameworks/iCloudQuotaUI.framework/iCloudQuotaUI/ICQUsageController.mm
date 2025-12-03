@@ -2,8 +2,8 @@
 - (id)specifiers;
 - (id)usageStorageSpecifiers;
 - (void)dealloc;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQUsageController
@@ -13,9 +13,9 @@
   storageSpecifiers = self->_storageSpecifiers;
   if (!storageSpecifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_storageSpecifiers;
-    self->_storageSpecifiers = v4;
+    self->_storageSpecifiers = array;
 
     v6 = MEMORY[0x277D3FAD8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -54,9 +54,9 @@
   return storageSpecifiers;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(ICQUsageController *)self isMovingFromParentViewController])
   {
     [(ICQCloudStorageGroupController *)self->_cloudGroup groupRemovedFromListController];
@@ -64,14 +64,14 @@
 
   v5.receiver = self;
   v5.super_class = ICQUsageController;
-  [(ICQUsageController *)&v5 viewWillDisappear:v3];
+  [(ICQUsageController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ICQUsageController;
-  [(ICQUsageController *)&v6 viewWillAppear:a3];
+  [(ICQUsageController *)&v6 viewWillAppear:appear];
   if (([(ICQUsageController *)self isMovingToParentViewController]& 1) == 0)
   {
     v4 = +[ICQQuotaRequestManager sharedManager];
@@ -101,13 +101,13 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (!self->_cloudGroup)
     {
-      v6 = [MEMORY[0x277CEC748] sharedManager];
-      v7 = [v6 primaryAccount];
+      mEMORY[0x277CEC748] = [MEMORY[0x277CEC748] sharedManager];
+      primaryAccount = [mEMORY[0x277CEC748] primaryAccount];
 
-      if (v7)
+      if (primaryAccount)
       {
         v8 = objc_alloc_init(ICQCloudStorageGroupController);
         cloudGroup = self->_cloudGroup;
@@ -115,14 +115,14 @@
       }
     }
 
-    v10 = [(ICQUsageController *)self usageStorageSpecifiers];
-    [v5 addObjectsFromArray:v10];
+    usageStorageSpecifiers = [(ICQUsageController *)self usageStorageSpecifiers];
+    [array addObjectsFromArray:usageStorageSpecifiers];
 
     v11 = [(ICQCloudStorageGroupController *)self->_cloudGroup specifiersWithBuyMore:0];
-    [v5 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
 
     v12 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }

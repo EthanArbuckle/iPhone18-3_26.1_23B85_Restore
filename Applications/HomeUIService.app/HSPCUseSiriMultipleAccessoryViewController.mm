@@ -2,15 +2,15 @@
 - (BOOL)_deviceIsOnAMultiUserLanguage;
 - (BOOL)_isVoiceRecognitionEnabled;
 - (BOOL)_shouldEnableShareSiriAnalytics;
-- (HSPCUseSiriMultipleAccessoryViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCUseSiriMultipleAccessoryViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UITableView)tableView;
-- (id)_applyOnboardingSelections:(BOOL)a3;
+- (id)_applyOnboardingSelections:(BOOL)selections;
 - (id)dismissButtonBlock;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_handleFooterLabelTouchForOpenURL:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_handleFooterLabelTouchForOpenURL:(id)l;
 - (void)_launchSiriPrivacySheet;
 - (void)_updateUseSiriButtonEnabledState;
 - (void)viewDidLoad;
@@ -18,10 +18,10 @@
 
 @implementation HSPCUseSiriMultipleAccessoryViewController
 
-- (HSPCUseSiriMultipleAccessoryViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCUseSiriMultipleAccessoryViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v10 = [[PRXScrollableContentView alloc] initWithCardStyle:0 scrollView:v9];
   v59.receiver = self;
@@ -30,8 +30,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_config, a4);
-    objc_storeStrong(&v12->_coordinator, a3);
+    objc_storeStrong(&v11->_config, config);
+    objc_storeStrong(&v12->_coordinator, coordinator);
     v13 = objc_storeWeak(&v12->_tableView, v9);
     [v9 setDelegate:v12];
 
@@ -76,11 +76,11 @@
     v30 = HULocalizedString();
     v31 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 addOptionalButtonWithLocalizedTitle:v30 target:v12 futureSelector:"_disableSiri"];
 
-    v32 = [v7 topAccessoryTuple];
-    v33 = [NSMutableArray arrayWithObject:v32];
+    topAccessoryTuple = [coordinatorCopy topAccessoryTuple];
+    v33 = [NSMutableArray arrayWithObject:topAccessoryTuple];
 
-    v34 = [v7 bridgedAccessories];
-    [v33 addObjectsFromArray:v34];
+    bridgedAccessories = [coordinatorCopy bridgedAccessories];
+    [v33 addObjectsFromArray:bridgedAccessories];
 
     v35 = [v33 copy];
     siriEndpointAccessories = v12->_siriEndpointAccessories;
@@ -90,45 +90,45 @@
     selectedAccessories = v12->_selectedAccessories;
     v12->_selectedAccessories = v37;
 
-    v39 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
-    [v39 setIsPlaybackInfluencesForYouEnabled:1];
+    config = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+    [config setIsPlaybackInfluencesForYouEnabled:1];
 
     v40 = +[AFPreferences sharedPreferences];
-    v41 = [v40 siriDataSharingOptInStatus];
+    siriDataSharingOptInStatus = [v40 siriDataSharingOptInStatus];
 
-    v42 = v41 == 1;
-    v43 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
-    [v43 setIsShareSiriAnalyticsEnabled:v42];
+    v42 = siriDataSharingOptInStatus == 1;
+    config2 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+    [config2 setIsShareSiriAnalyticsEnabled:v42];
 
     v44 = +[HFManagedConfigurationUtilities isExplicitContentAllowed];
-    v45 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
-    [v45 setIsExplicitContentAllowed:v44];
+    config3 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+    [config3 setIsExplicitContentAllowed:v44];
 
     v46 = HFLogForCategory();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+      config4 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
       v58 = v33;
       v47 = v10;
-      v48 = [v57 isPlaybackInfluencesForYouEnabled];
-      v49 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+      isPlaybackInfluencesForYouEnabled = [config4 isPlaybackInfluencesForYouEnabled];
+      config5 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
       v50 = v9;
-      v51 = v8;
-      v52 = v7;
-      v53 = [v49 isShareSiriAnalyticsEnabled];
-      v54 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
-      v55 = [v54 isExplicitContentAllowed];
+      v51 = configCopy;
+      v52 = coordinatorCopy;
+      isShareSiriAnalyticsEnabled = [config5 isShareSiriAnalyticsEnabled];
+      config6 = [(HSPCUseSiriMultipleAccessoryViewController *)v12 config];
+      isExplicitContentAllowed = [config6 isExplicitContentAllowed];
       *buf = 67109632;
-      v61 = v48;
+      v61 = isPlaybackInfluencesForYouEnabled;
       v10 = v47;
       v33 = v58;
       v62 = 1024;
-      v63 = v53;
-      v7 = v52;
-      v8 = v51;
+      v63 = isShareSiriAnalyticsEnabled;
+      coordinatorCopy = v52;
+      configCopy = v51;
       v9 = v50;
       v64 = 1024;
-      v65 = v55;
+      v65 = isExplicitContentAllowed;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "isPlaybackInfluencesForYouEnabled = %{BOOL}d | isShareSiriAnalyticsEnabled = %{BOOL}d | isExplicitContentAllowed = %{BOOL}d", buf, 0x14u);
     }
   }
@@ -172,19 +172,19 @@
 
   v44 = v16;
   [v3 addGestureRecognizer:v16];
-  v17 = [(HSPCUseSiriMultipleAccessoryViewController *)self view];
+  view = [(HSPCUseSiriMultipleAccessoryViewController *)self view];
   v49 = v3;
-  [v17 addSubview:v3];
+  [view addSubview:v3];
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v45 = self;
-  v18 = [(HSPCUseSiriMultipleAccessoryViewController *)self contentView];
-  v19 = [v18 actionButtons];
+  selfCopy = self;
+  contentView = [(HSPCUseSiriMultipleAccessoryViewController *)self contentView];
+  actionButtons = [contentView actionButtons];
 
-  v20 = [v19 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  v20 = [actionButtons countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v20)
   {
     v21 = v20;
@@ -196,13 +196,13 @@
       {
         if (*v51 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(actionButtons);
         }
 
         v25 = *(*(&v50 + 1) + 8 * i);
-        v26 = [v25 currentTitle];
+        currentTitle = [v25 currentTitle];
         v27 = HULocalizedString();
-        v28 = [v26 isEqualToString:v27];
+        v28 = [currentTitle isEqualToString:v27];
 
         if (v28)
         {
@@ -212,7 +212,7 @@
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v50 objects:v56 count:16];
+      v21 = [actionButtons countByEnumeratingWithState:&v50 objects:v56 count:16];
     }
 
     while (v21);
@@ -223,72 +223,72 @@
     v22 = 0;
   }
 
-  v42 = [v49 centerXAnchor];
-  v43 = [(HSPCUseSiriMultipleAccessoryViewController *)v45 contentView];
-  v41 = [v43 mainContentGuide];
-  v40 = [v41 centerXAnchor];
-  v39 = [v42 constraintEqualToAnchor:v40];
+  centerXAnchor = [v49 centerXAnchor];
+  contentView2 = [(HSPCUseSiriMultipleAccessoryViewController *)selfCopy contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v55[0] = v39;
-  v38 = [v49 bottomAnchor];
-  v30 = [v22 topAnchor];
-  v31 = [v38 constraintEqualToAnchor:v30 constant:-10.0];
+  bottomAnchor = [v49 bottomAnchor];
+  topAnchor = [v22 topAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-10.0];
   v55[1] = v31;
-  v32 = [v49 widthAnchor];
-  v33 = [(HSPCUseSiriMultipleAccessoryViewController *)v45 contentView];
-  v34 = [v33 mainContentGuide];
-  v35 = [v34 widthAnchor];
-  v36 = [v32 constraintLessThanOrEqualToAnchor:v35];
+  widthAnchor = [v49 widthAnchor];
+  contentView3 = [(HSPCUseSiriMultipleAccessoryViewController *)selfCopy contentView];
+  mainContentGuide2 = [contentView3 mainContentGuide];
+  widthAnchor2 = [mainContentGuide2 widthAnchor];
+  v36 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v55[2] = v36;
   v37 = [NSArray arrayWithObjects:v55 count:3];
   [NSLayoutConstraint activateConstraints:v37];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
   [v7 setAccessoryType:3];
-  v8 = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
-  v9 = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v8 addObject:v10];
+  selectedAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
+  siriEndpointAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
+  v10 = [siriEndpointAccessories objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedAccessories addObject:v10];
 
   [(HSPCUseSiriMultipleAccessoryViewController *)self _updateUseSiriButtonEnabledState];
 
-  return v6;
+  return pathCopy;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
   [v7 setAccessoryType:0];
-  v8 = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
-  v9 = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v8 removeObject:v10];
+  selectedAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
+  siriEndpointAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
+  v10 = [siriEndpointAccessories objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedAccessories removeObject:v10];
 
   [(HSPCUseSiriMultipleAccessoryViewController *)self _updateUseSiriButtonEnabledState];
 
-  return v6;
+  return pathCopy;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories:a3];
+  v4 = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
-  v8 = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  siriEndpointAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self siriEndpointAccessories];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [siriEndpointAccessories objectAtIndexedSubscript:v9];
   [v7 updateUIWithTuple:v10];
 
   [v7 setAccessoryType:3];
@@ -308,9 +308,9 @@
   return v2;
 }
 
-- (id)_applyOnboardingSelections:(BOOL)a3
+- (id)_applyOnboardingSelections:(BOOL)selections
 {
-  v35 = a3;
+  selectionsCopy = selections;
   v37 = objc_opt_new();
   v44 = 0u;
   v45 = 0u;
@@ -333,52 +333,52 @@
         }
 
         v6 = *(*(&v44 + 1) + 8 * i);
-        v7 = [v6 accessory];
-        v39 = [v7 hf_siriEndpointProfile];
-        v8 = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
-        v9 = [v8 containsObject:v6];
+        accessory = [v6 accessory];
+        hf_siriEndpointProfile = [accessory hf_siriEndpointProfile];
+        selectedAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
+        v9 = [selectedAccessories containsObject:v6];
 
         v10 = [HMSiriEndpointOnboardingSelections alloc];
-        v40 = v7;
-        v11 = [v7 hf_isDumbSpeaker];
-        v12 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-        v13 = [v12 isPlaybackInfluencesForYouEnabled];
-        v14 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-        v15 = v14;
-        if (!v9 || v35)
+        v40 = accessory;
+        hf_isDumbSpeaker = [accessory hf_isDumbSpeaker];
+        config = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+        isPlaybackInfluencesForYouEnabled = [config isPlaybackInfluencesForYouEnabled];
+        config2 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+        v15 = config2;
+        if (!v9 || selectionsCopy)
         {
-          v18 = [v10 initWithSiriEnabled:1 allowHeySiri:0 airPlayEnabled:v11 playbackInfluencesForYouEnabled:v13 shareSiriAnalyticsEnabled:0 explicitContentAllowed:{objc_msgSend(v14, "isExplicitContentAllowed")}];
+          v18 = [v10 initWithSiriEnabled:1 allowHeySiri:0 airPlayEnabled:hf_isDumbSpeaker playbackInfluencesForYouEnabled:isPlaybackInfluencesForYouEnabled shareSiriAnalyticsEnabled:0 explicitContentAllowed:{objc_msgSend(config2, "isExplicitContentAllowed")}];
         }
 
         else
         {
-          v16 = [v14 isShareSiriAnalyticsEnabled];
-          v17 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-          v18 = [v10 initWithSiriEnabled:1 allowHeySiri:1 airPlayEnabled:v11 playbackInfluencesForYouEnabled:v13 shareSiriAnalyticsEnabled:v16 explicitContentAllowed:{objc_msgSend(v17, "isExplicitContentAllowed")}];
+          isShareSiriAnalyticsEnabled = [config2 isShareSiriAnalyticsEnabled];
+          config3 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+          v18 = [v10 initWithSiriEnabled:1 allowHeySiri:1 airPlayEnabled:hf_isDumbSpeaker playbackInfluencesForYouEnabled:isPlaybackInfluencesForYouEnabled shareSiriAnalyticsEnabled:isShareSiriAnalyticsEnabled explicitContentAllowed:{objc_msgSend(config3, "isExplicitContentAllowed")}];
         }
 
         v19 = HFLogForCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v6 accessory];
+          accessory2 = [v6 accessory];
           *buf = v33;
           v49 = v18;
           v50 = 2112;
-          v51 = v20;
+          v51 = accessory2;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Applying onboarding selections %@ for accessory %@", buf, 0x16u);
         }
 
-        v21 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-        [v21 setOnboardingSelections:v18];
+        config4 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+        [config4 setOnboardingSelections:v18];
 
         v41[0] = _NSConcreteStackBlock;
         v41[1] = 3221225472;
         v41[2] = sub_100018110;
         v41[3] = &unk_1000C5F38;
-        v42 = v39;
+        v42 = hf_siriEndpointProfile;
         v43 = v18;
         v22 = v18;
-        v23 = v39;
+        v23 = hf_siriEndpointProfile;
         v24 = +[NAScheduler globalAsyncScheduler];
         v25 = [NAFuture futureWithBlock:v41 scheduler:v24];
         v26 = +[NAScheduler mainThreadScheduler];
@@ -405,7 +405,7 @@
   v28 = ;
   [v37 addObject:v28];
   v29 = &off_1000CD420;
-  if (![(HSPCUseSiriMultipleAccessoryViewController *)self _isVoiceRecognitionEnabled]&& [(HSPCUseSiriMultipleAccessoryViewController *)self _deviceIsOnAMultiUserLanguage]&& !v35)
+  if (![(HSPCUseSiriMultipleAccessoryViewController *)self _isVoiceRecognitionEnabled]&& [(HSPCUseSiriMultipleAccessoryViewController *)self _deviceIsOnAMultiUserLanguage]&& !selectionsCopy)
   {
     v29 = &off_1000CD438;
   }
@@ -418,10 +418,10 @@
   return v31;
 }
 
-- (void)_handleFooterLabelTouchForOpenURL:(id)a3
+- (void)_handleFooterLabelTouchForOpenURL:(id)l
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"URL_KEY"];
+  userInfo = [l userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"URL_KEY"];
 
   if (v5)
   {
@@ -455,19 +455,19 @@
 
 - (void)_launchSiriPrivacySheet
 {
-  v3 = [(HSPCUseSiriMultipleAccessoryViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(HSPCUseSiriMultipleAccessoryViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    selfCopy = navigationController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   v7 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifer:OBPrivacySiriIdentifier];
   [v7 setPresentingViewController:v6];
@@ -478,28 +478,28 @@
 - (BOOL)_isVoiceRecognitionEnabled
 {
   v4 = [HFUserItem alloc];
-  v5 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-  v6 = [v5 home];
-  v7 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-  v8 = [v7 home];
-  v9 = [v8 currentUser];
-  v10 = [v4 initWithHome:v6 user:v9 nameStyle:0];
+  config = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+  home = [config home];
+  config2 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+  home2 = [config2 home];
+  currentUser = [home2 currentUser];
+  v10 = [v4 initWithHome:home user:currentUser nameStyle:0];
 
-  v11 = [v10 isIdentifyVoiceEnabled];
+  isIdentifyVoiceEnabled = [v10 isIdentifyVoiceEnabled];
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
     v15 = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v13;
     v19 = 1024;
-    v20 = v11;
+    v20 = isIdentifyVoiceEnabled;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@:%@ Is voice recognition enabled? %{BOOL}d", &v15, 0x1Cu);
   }
 
-  return v11;
+  return isIdentifyVoiceEnabled;
 }
 
 - (BOOL)_deviceIsOnAMultiUserLanguage
@@ -526,28 +526,28 @@
 
 - (void)_updateUseSiriButtonEnabledState
 {
-  v5 = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
-  v3 = [v5 count] != 0;
-  v4 = [(HSPCUseSiriMultipleAccessoryViewController *)self useSiriAction];
-  [v4 setEnabled:v3];
+  selectedAccessories = [(HSPCUseSiriMultipleAccessoryViewController *)self selectedAccessories];
+  v3 = [selectedAccessories count] != 0;
+  useSiriAction = [(HSPCUseSiriMultipleAccessoryViewController *)self useSiriAction];
+  [useSiriAction setEnabled:v3];
 }
 
 - (BOOL)_shouldEnableShareSiriAnalytics
 {
-  v3 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-  if ([v3 isShareSiriAnalyticsEnabled])
+  config = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+  if ([config isShareSiriAnalyticsEnabled])
   {
-    v4 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
-    v5 = [v4 onboardingSelections];
-    v6 = [v5 allowHeySiri];
+    config2 = [(HSPCUseSiriMultipleAccessoryViewController *)self config];
+    onboardingSelections = [config2 onboardingSelections];
+    allowHeySiri = [onboardingSelections allowHeySiri];
   }
 
   else
   {
-    v6 = 0;
+    allowHeySiri = 0;
   }
 
-  return v6;
+  return allowHeySiri;
 }
 
 - (UITableView)tableView

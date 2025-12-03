@@ -1,38 +1,38 @@
 @interface NPUIMediaControlsStandaloneViewController
 - (NPUIMediaControlsStandaloneViewControllerDelegate)standaloneControlsDelegate;
-- (void)mediaControlsViewController:(id)a3 didSelectRoute:(id)a4;
-- (void)setStandaloneControlsDelegate:(id)a3;
+- (void)mediaControlsViewController:(id)controller didSelectRoute:(id)route;
+- (void)setStandaloneControlsDelegate:(id)delegate;
 @end
 
 @implementation NPUIMediaControlsStandaloneViewController
 
-- (void)setStandaloneControlsDelegate:(id)a3
+- (void)setStandaloneControlsDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = [(NPUIMediaControlsStandaloneViewController *)self standaloneControlsDelegate];
+  obj = delegate;
+  standaloneControlsDelegate = [(NPUIMediaControlsStandaloneViewController *)self standaloneControlsDelegate];
 
-  if (v4 != obj)
+  if (standaloneControlsDelegate != obj)
   {
     v5 = objc_storeWeak(&self->_standaloneControlsDelegate, obj);
     if (obj)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    [(NPUIMediaControlsStandaloneViewController *)self setDelegate:v6];
+    [(NPUIMediaControlsStandaloneViewController *)self setDelegate:selfCopy];
   }
 }
 
-- (void)mediaControlsViewController:(id)a3 didSelectRoute:(id)a4
+- (void)mediaControlsViewController:(id)controller didSelectRoute:(id)route
 {
-  v5 = a4;
-  v6 = [(NPUIMediaControlsStandaloneViewController *)self standaloneControlsDelegate];
-  [v6 standaloneMediaControlsViewController:self didSelectRoute:v5];
+  routeCopy = route;
+  standaloneControlsDelegate = [(NPUIMediaControlsStandaloneViewController *)self standaloneControlsDelegate];
+  [standaloneControlsDelegate standaloneMediaControlsViewController:self didSelectRoute:routeCopy];
 }
 
 - (NPUIMediaControlsStandaloneViewControllerDelegate)standaloneControlsDelegate

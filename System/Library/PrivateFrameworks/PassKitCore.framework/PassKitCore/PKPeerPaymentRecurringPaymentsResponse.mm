@@ -1,25 +1,25 @@
 @interface PKPeerPaymentRecurringPaymentsResponse
-- (PKPeerPaymentRecurringPaymentsResponse)initWithData:(id)a3 productTimeZone:(id)a4;
+- (PKPeerPaymentRecurringPaymentsResponse)initWithData:(id)data productTimeZone:(id)zone;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentsResponse
 
-- (PKPeerPaymentRecurringPaymentsResponse)initWithData:(id)a3 productTimeZone:(id)a4
+- (PKPeerPaymentRecurringPaymentsResponse)initWithData:(id)data productTimeZone:(id)zone
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  zoneCopy = zone;
   v31.receiver = self;
   v31.super_class = PKPeerPaymentRecurringPaymentsResponse;
-  v7 = [(PKWebServiceResponse *)&v31 initWithData:a3];
+  v7 = [(PKWebServiceResponse *)&v31 initWithData:data];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PKWebServiceResponse *)v7 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v7 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = v9;
-      v10 = v9;
+      v26 = jSONObject;
+      v10 = jSONObject;
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v27 = 0u;
@@ -41,7 +41,7 @@
               objc_enumerationMutation(v13);
             }
 
-            v18 = [[PKPeerPaymentRecurringPayment alloc] initWithDictionary:*(*(&v27 + 1) + 8 * i) productTimeZone:v6];
+            v18 = [[PKPeerPaymentRecurringPayment alloc] initWithDictionary:*(*(&v27 + 1) + 8 * i) productTimeZone:zoneCopy];
             if ([(PKPeerPaymentRecurringPayment *)v18 status])
             {
               v19 = v11;
@@ -65,7 +65,7 @@
       recurringPayments = v8->_recurringPayments;
       v8->_recurringPayments = v20;
 
-      v9 = v26;
+      jSONObject = v26;
       if ([v12 count])
       {
         v22 = PKLogFacilityTypeGetObject(7uLL);

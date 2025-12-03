@@ -1,6 +1,6 @@
 @interface ApplyBlurMapArgs
 - (ApplyBlurMapArgs)init;
-- (ApplyBlurMapArgs)initWithDictionary:(id)a3;
+- (ApplyBlurMapArgs)initWithDictionary:(id)dictionary;
 - (BOOL)validateForCoreImage;
 - (BOOL)validateForMetal;
 - (id)description;
@@ -85,9 +85,9 @@
   return v6;
 }
 
-- (ApplyBlurMapArgs)initWithDictionary:(id)a3
+- (ApplyBlurMapArgs)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v75.receiver = self;
   v75.super_class = ApplyBlurMapArgs;
   v5 = [(ApplyBlurMapArgs *)&v75 init];
@@ -99,7 +99,7 @@
     intermediates = v6->_intermediates;
     v6->_intermediates = v7;
 
-    if (v4)
+    if (dictionaryCopy)
     {
       v60 = v6;
       v9 = objc_opt_class();
@@ -108,7 +108,7 @@
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
-      obj = objc_msgSend_allKeys(v4, v13, v14);
+      obj = objc_msgSend_allKeys(dictionaryCopy, v13, v14);
       v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v71, v70, 16);
       if (!v16)
       {
@@ -139,8 +139,8 @@
 
             v31 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v30, @"set%@:", v29);
             v32 = NSSelectorFromString(v31);
-            v33 = v4;
-            v35 = objc_msgSend_objectForKeyedSubscript_(v4, v34, v21);
+            v33 = dictionaryCopy;
+            v35 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v34, v21);
             if (v35)
             {
               v36 = v32 == 0;
@@ -202,7 +202,7 @@ LABEL_33:
 LABEL_35:
 
 LABEL_36:
-                  v4 = v33;
+                  dictionaryCopy = v33;
                   v12 = v23;
                   v19 = v61;
                   v18 = v62;

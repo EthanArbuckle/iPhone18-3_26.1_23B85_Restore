@@ -1,18 +1,18 @@
 @interface DEDBugSession
 + (id)archivedClasses;
 + (id)testingInstance;
-- (BOOL)hasCapability:(id)a3;
+- (BOOL)hasCapability:(id)capability;
 - (BOOL)hasDirectory;
 - (BOOL)hasStaleDirectory;
 - (BOOL)isCancelling;
-- (BOOL)isRunningDE:(id)a3;
+- (BOOL)isRunningDE:(id)e;
 - (BOOL)isTarget;
 - (BOOL)readyToCancel;
 - (BOOL)readyToFinish;
 - (BOOL)readyToNotify;
-- (BOOL)shouldCollectDiagnosticWithId:(id)a3;
-- (DEDBugSession)initWithCoder:(id)a3;
-- (DEDBugSession)initWithConfiguration:(id)a3;
+- (BOOL)shouldCollectDiagnosticWithId:(id)id;
+- (DEDBugSession)initWithCoder:(id)coder;
+- (DEDBugSession)initWithConfiguration:(id)configuration;
 - (DEDUploadStatusDelegate)__uploadDelegate;
 - (DEDUploadStatusDelegate)uploadDelegate;
 - (NSArray)allExtensionIdentifiers;
@@ -23,88 +23,88 @@
 - (id)configuration;
 - (id)finisher;
 - (id)finisherWithState;
-- (id)hashExtensions:(id)a3;
+- (id)hashExtensions:(id)extensions;
 - (id)knownExtensions;
-- (id)nextCompletionBlockForIdentifier:(id)a3;
+- (id)nextCompletionBlockForIdentifier:(id)identifier;
 - (id)notifier;
-- (id)ongoingCollectOperationsWithOperations:(id)a3;
+- (id)ongoingCollectOperationsWithOperations:(id)operations;
 - (id)ongoingExtensionCollectionOperations;
 - (id)prettyDescription;
 - (id)scheduledDeferredExtensionCollectionOperations;
 - (id)shortDescription;
-- (id)startDiagnosticExtensionWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (id)startDiagnosticExtensionWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 completion:(id)a6;
+- (id)startDiagnosticExtensionWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion;
+- (id)startDiagnosticExtensionWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until completion:(id)completion;
 - (id)stateInfo;
 - (int64_t)instanceType;
 - (int64_t)state;
-- (void)_addSessionData:(id)a3 filename:(id)a4;
+- (void)_addSessionData:(id)data filename:(id)filename;
 - (void)_cancel;
 - (void)_logOperationQueue;
-- (void)_prepareForStartDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 newCollectRemovedPendingKill:(BOOL *)a5 completion:(id)a6;
+- (void)_prepareForStartDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters newCollectRemovedPendingKill:(BOOL *)kill completion:(id)completion;
 - (void)_streamOperationQueue;
-- (void)_terminateExtensionWithIdentifier:(id)a3 info:(id)a4;
-- (void)addData:(id)a3 withFilename:(id)a4;
-- (void)adoptFiles:(id)a3 withCompletion:(id)a4;
-- (void)attachCompletionHandlerForDEDExtensionIdentifier:(id)a3 handler:(id)a4;
-- (void)attachCompletionHandlerForOngoingOperation:(id)a3 handler:(id)a4;
+- (void)_terminateExtensionWithIdentifier:(id)identifier info:(id)info;
+- (void)addData:(id)data withFilename:(id)filename;
+- (void)adoptFiles:(id)files withCompletion:(id)completion;
+- (void)attachCompletionHandlerForDEDExtensionIdentifier:(id)identifier handler:(id)handler;
+- (void)attachCompletionHandlerForOngoingOperation:(id)operation handler:(id)handler;
 - (void)cancel;
-- (void)cancelDiagnosticExtension:(id)a3;
-- (void)cancelDiagnosticExtensionWithDEDExtensionIdentifier:(id)a3;
-- (void)cancelDiagnosticExtensionWithIdentifier:(id)a3;
-- (void)cancelDiagnosticExtensionWithIdentifier:(id)a3 invocationNumber:(int64_t)a4;
-- (void)cleanupFinishedUploads:(BOOL)a3;
+- (void)cancelDiagnosticExtension:(id)extension;
+- (void)cancelDiagnosticExtensionWithDEDExtensionIdentifier:(id)identifier;
+- (void)cancelDiagnosticExtensionWithIdentifier:(id)identifier;
+- (void)cancelDiagnosticExtensionWithIdentifier:(id)identifier invocationNumber:(int64_t)number;
+- (void)cleanupFinishedUploads:(BOOL)uploads;
 - (void)clearNotification;
 - (void)clearNotificationOnFilingDevice;
 - (void)commit;
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4;
-- (void)didAdoptFilesWithError:(id)a3;
-- (void)didAdoptGroup:(id)a3;
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total;
+- (void)didAdoptFilesWithError:(id)error;
+- (void)didAdoptGroup:(id)group;
 - (void)didCancel;
 - (void)didCommit;
 - (void)didFinishAllUploads;
-- (void)didFinishOperation:(int64_t)a3 withIdentifier:(id)a4;
-- (void)didFinishUploadingWithError:(id)a3;
-- (void)didGetState:(int64_t)a3 info:(id)a4;
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4;
+- (void)didFinishOperation:(int64_t)operation withIdentifier:(id)identifier;
+- (void)didFinishUploadingWithError:(id)error;
+- (void)didGetState:(int64_t)state info:(id)info;
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization;
 - (void)didStart;
-- (void)didTerminateDiagnosticExtension:(id)a3 info:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)finallyStartDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4;
-- (void)getSessionStatusWithCompletion:(id)a3;
-- (void)getStateWithCompletion:(id)a3;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 identifiers:(id)a5;
+- (void)didTerminateDiagnosticExtension:(id)extension info:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)finallyStartDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion;
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result;
+- (void)getSessionStatusWithCompletion:(id)completion;
+- (void)getStateWithCompletion:(id)completion;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting identifiers:(id)identifiers;
 - (void)idsInbound_clearNotificationOnFilingDevice;
 - (void)idsInbound_didClearNotificationOnFilingDevice;
 - (void)idsInbound_didPresentNotificationOnFilingDevice;
 - (void)idsInbound_presentNotificationOnFilingDevice;
 - (void)instanceType;
-- (void)listDiagnosticExtensionsWithCompletion:(id)a3;
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 completion:(id)a5;
+- (void)listDiagnosticExtensionsWithCompletion:(id)completion;
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization completion:(id)completion;
 - (void)notifier;
-- (void)notifyPromiseCancellationIfNeeded:(id)a3 info:(id)a4;
-- (void)pingWithCallback:(id)a3;
+- (void)notifyPromiseCancellationIfNeeded:(id)needed info:(id)info;
+- (void)pingWithCallback:(id)callback;
 - (void)pong;
-- (void)populateLocalizedTextDataForExtensions:(id)a3;
+- (void)populateLocalizedTextDataForExtensions:(id)extensions;
 - (void)presentNotificationOnFilingDevice;
-- (void)removeAttachment:(id)a3;
+- (void)removeAttachment:(id)attachment;
 - (void)removeFromStore;
 - (void)resumePendingOperations;
 - (void)save;
-- (void)scheduleDiagnosticCollectionForClassBAccessWithIdentifier:(id)a3 parameters:(id)a4;
+- (void)scheduleDiagnosticCollectionForClassBAccessWithIdentifier:(id)identifier parameters:(id)parameters;
 - (void)scheduleNotification;
-- (void)setConfig:(id)a3;
-- (void)setUploadDelegate:(id)a3;
-- (void)startDiagnosticExtension:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)startDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)startDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 completion:(id)a6;
-- (void)storeCollectionCompletion:(id)a3 forIdentifier:(id)a4;
-- (void)supportsDiagnostics:(id)a3;
-- (void)synchronizeSessionStatusWithCompletion:(id)a3;
-- (void)terminateExtension:(id)a3 withInfo:(id)a4;
-- (void)updateCachedExtensionsWithLocalizedTextData:(id)a3;
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4;
-- (void)willPerformOperationWithID:(id)a3 type:(int64_t)a4 options:(id)a5;
+- (void)setConfig:(id)config;
+- (void)setUploadDelegate:(id)delegate;
+- (void)startDiagnosticExtension:(id)extension parameters:(id)parameters completion:(id)completion;
+- (void)startDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion;
+- (void)startDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until completion:(id)completion;
+- (void)storeCollectionCompletion:(id)completion forIdentifier:(id)identifier;
+- (void)supportsDiagnostics:(id)diagnostics;
+- (void)synchronizeSessionStatusWithCompletion:(id)completion;
+- (void)terminateExtension:(id)extension withInfo:(id)info;
+- (void)updateCachedExtensionsWithLocalizedTextData:(id)data;
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total;
+- (void)willPerformOperationWithID:(id)d type:(int64_t)type options:(id)options;
 @end
 
 @implementation DEDBugSession
@@ -142,9 +142,9 @@ void __20__DEDBugSession_log__block_invoke()
   return callbackQueue;
 }
 
-- (DEDBugSession)initWithConfiguration:(id)a3
+- (DEDBugSession)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = DEDBugSession;
   v6 = [(DEDBugSession *)&v16 init];
@@ -172,7 +172,7 @@ void __20__DEDBugSession_log__block_invoke()
     v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:2];
     [(DEDBugSession *)v7 setFilePromises:v13];
 
-    objc_storeStrong(&v7->_config, a3);
+    objc_storeStrong(&v7->_config, configuration);
     [(DEDBugSession *)v7 set_finisher:0];
     v14 = objc_opt_new();
     [(DEDBugSession *)v7 setIdentifierManager:v14];
@@ -188,51 +188,51 @@ void __20__DEDBugSession_log__block_invoke()
 {
   if (![(DEDBugSession *)self isTarget])
   {
-    v7 = 0;
+    _finisher2 = 0;
     goto LABEL_14;
   }
 
-  v3 = [(DEDBugSession *)self _finisher];
+  _finisher = [(DEDBugSession *)self _finisher];
 
-  if (!v3)
+  if (!_finisher)
   {
-    v4 = [(DEDBugSession *)self config];
-    v5 = [v4 finishingMove];
+    config = [(DEDBugSession *)self config];
+    finishingMove = [config finishingMove];
 
-    if (v5 == 1)
+    if (finishingMove == 1)
     {
       v6 = off_278F64CA0;
 LABEL_12:
       v14 = objc_alloc(*v6);
-      v15 = [(DEDBugSession *)self config];
-      v16 = [v14 initWithConfiguration:v15 session:self];
+      config2 = [(DEDBugSession *)self config];
+      v16 = [v14 initWithConfiguration:config2 session:self];
       [(DEDBugSession *)self set_finisher:v16];
 
       goto LABEL_13;
     }
 
-    v8 = [(DEDBugSession *)self config];
-    v9 = [v8 finishingMove];
+    config3 = [(DEDBugSession *)self config];
+    finishingMove2 = [config3 finishingMove];
 
-    if (v9 == 2)
+    if (finishingMove2 == 2)
     {
       v6 = off_278F64C68;
       goto LABEL_12;
     }
 
-    v10 = [(DEDBugSession *)self config];
-    v11 = [v10 finishingMove];
+    config4 = [(DEDBugSession *)self config];
+    finishingMove3 = [config4 finishingMove];
 
-    if (v11 == 3)
+    if (finishingMove3 == 3)
     {
       v6 = off_278F64B70;
       goto LABEL_12;
     }
 
-    v12 = [(DEDBugSession *)self config];
-    v13 = [v12 finishingMove];
+    config5 = [(DEDBugSession *)self config];
+    finishingMove4 = [config5 finishingMove];
 
-    if (v13 == 4)
+    if (finishingMove4 == 4)
     {
       v6 = off_278F64CC8;
       goto LABEL_12;
@@ -240,112 +240,112 @@ LABEL_12:
   }
 
 LABEL_13:
-  v7 = [(DEDBugSession *)self _finisher];
+  _finisher2 = [(DEDBugSession *)self _finisher];
 LABEL_14:
 
-  return v7;
+  return _finisher2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v23 = a3;
-  v4 = [(DEDBugSession *)self identifier];
-  [v23 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(DEDBugSession *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(DEDBugSession *)self deviceIdentifier];
-  [v23 encodeObject:v5 forKey:@"deviceIdentifier"];
+  deviceIdentifier = [(DEDBugSession *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
 
-  v6 = [(DEDBugSession *)self config];
-  [v23 encodeObject:v6 forKey:@"config"];
+  config = [(DEDBugSession *)self config];
+  [coderCopy encodeObject:config forKey:@"config"];
 
-  v7 = [(DEDBugSession *)self client];
-  [v23 encodeInteger:objc_msgSend(v7 forKey:{"transportType"), @"clientTransportType"}];
+  client = [(DEDBugSession *)self client];
+  [coderCopy encodeInteger:objc_msgSend(client forKey:{"transportType"), @"clientTransportType"}];
 
-  v8 = [(DEDBugSession *)self client];
+  client2 = [(DEDBugSession *)self client];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DEDBugSession *)self client];
-    v11 = [v10 clientAddress];
-    [v23 encodeObject:v11 forKey:@"clientAddress"];
+    client3 = [(DEDBugSession *)self client];
+    clientAddress = [client3 clientAddress];
+    [coderCopy encodeObject:clientAddress forKey:@"clientAddress"];
   }
 
-  v12 = [(DEDBugSession *)self worker];
-  [v23 encodeInteger:objc_msgSend(v12 forKey:{"transportType"), @"workerTransportType"}];
+  worker = [(DEDBugSession *)self worker];
+  [coderCopy encodeInteger:objc_msgSend(worker forKey:{"transportType"), @"workerTransportType"}];
 
-  v13 = [(DEDBugSession *)self identifierManager];
-  [v23 encodeObject:v13 forKey:@"identifierManager"];
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  [coderCopy encodeObject:identifierManager forKey:@"identifierManager"];
 
-  [v23 encodeBool:-[DEDBugSession finisherDidCommit](self forKey:{"finisherDidCommit"), @"didCommit"}];
-  v14 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v14);
-  v15 = [(DEDBugSession *)self pendingOperations];
-  [v23 encodeObject:v15 forKey:@"operations"];
+  [coderCopy encodeBool:-[DEDBugSession finisherDidCommit](self forKey:{"finisherDidCommit"), @"didCommit"}];
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  [coderCopy encodeObject:pendingOperations2 forKey:@"operations"];
 
-  objc_sync_exit(v14);
-  v16 = [(DEDBugSession *)self _finisher];
+  objc_sync_exit(pendingOperations);
+  _finisher = [(DEDBugSession *)self _finisher];
 
-  if (v16)
+  if (_finisher)
   {
-    v17 = [(DEDBugSession *)self _finisher];
-    [v23 encodeObject:v17 forKey:@"finisher"];
+    _finisher2 = [(DEDBugSession *)self _finisher];
+    [coderCopy encodeObject:_finisher2 forKey:@"finisher"];
   }
 
-  v18 = [(DEDBugSession *)self _notifier];
-  if (v18)
+  _notifier = [(DEDBugSession *)self _notifier];
+  if (_notifier)
   {
-    v19 = v18;
-    v20 = [(DEDBugSession *)self _notifier];
-    v21 = [v20 conformsToProtocol:&unk_285B8AAE0];
+    v19 = _notifier;
+    _notifier2 = [(DEDBugSession *)self _notifier];
+    v21 = [_notifier2 conformsToProtocol:&unk_285B8AAE0];
 
     if (v21)
     {
-      v22 = [(DEDBugSession *)self _notifier];
-      [v23 encodeObject:v22 forKey:@"notifier"];
+      _notifier3 = [(DEDBugSession *)self _notifier];
+      [coderCopy encodeObject:_notifier3 forKey:@"notifier"];
     }
   }
 }
 
-- (DEDBugSession)initWithCoder:(id)a3
+- (DEDBugSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = DEDBugSession;
   v5 = [(DEDBugSession *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v8;
 
     v10 = +[DEDBugSessionConfiguration archivedClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"config"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"config"];
     config = v5->_config;
     v5->_config = v11;
 
-    v5->_priorClientTransportType = [v4 decodeIntegerForKey:@"clientTransportType"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientAddress"];
+    v5->_priorClientTransportType = [coderCopy decodeIntegerForKey:@"clientTransportType"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientAddress"];
     priorClientAddress = v5->_priorClientAddress;
     v5->_priorClientAddress = v13;
 
-    v5->_priorWorkerTransportType = [v4 decodeIntegerForKey:@"workerTransportType"];
-    v15 = [objc_opt_class() archivedClasses];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"operations"];
+    v5->_priorWorkerTransportType = [coderCopy decodeIntegerForKey:@"workerTransportType"];
+    archivedClasses = [objc_opt_class() archivedClasses];
+    v16 = [coderCopy decodeObjectOfClasses:archivedClasses forKey:@"operations"];
     pendingOperations = v5->_pendingOperations;
     v5->_pendingOperations = v16;
 
-    v18 = [objc_opt_class() archivedClasses];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"finisher"];
+    archivedClasses2 = [objc_opt_class() archivedClasses];
+    v19 = [coderCopy decodeObjectOfClasses:archivedClasses2 forKey:@"finisher"];
     finisher = v5->__finisher;
     v5->__finisher = v19;
 
     v21 = +[DEDExtensionIdentifierManager archivedClasses];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"identifierManager"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"identifierManager"];
     identifierManager = v5->_identifierManager;
     v5->_identifierManager = v22;
 
@@ -356,15 +356,15 @@ LABEL_14:
       v5->_identifierManager = v24;
     }
 
-    v26 = [objc_opt_class() archivedClasses];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"notifier"];
+    archivedClasses3 = [objc_opt_class() archivedClasses];
+    v27 = [coderCopy decodeObjectOfClasses:archivedClasses3 forKey:@"notifier"];
     notifier = v5->__notifier;
     v5->__notifier = v27;
 
-    v29 = [v4 containsValueForKey:@"didCommit"];
+    v29 = [coderCopy containsValueForKey:@"didCommit"];
     if (v29)
     {
-      LOBYTE(v29) = [v4 decodeBoolForKey:@"didCommit"];
+      LOBYTE(v29) = [coderCopy decodeBoolForKey:@"didCommit"];
     }
 
     v5->_finisherDidCommit = v29;
@@ -390,19 +390,19 @@ LABEL_14:
 - (id)prettyDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DEDBugSession *)self identifier];
-  v5 = [(DEDBugSession *)self state];
-  if ((v5 + 1) > 9)
+  identifier = [(DEDBugSession *)self identifier];
+  state = [(DEDBugSession *)self state];
+  if ((state + 1) > 9)
   {
     v6 = "Unknown";
   }
 
   else
   {
-    v6 = off_278F65598[v5 + 1];
+    v6 = off_278F65598[state + 1];
   }
 
-  v7 = [v3 stringWithFormat:@"BugSession identifier: %@ state: %s", v4, v6];
+  v7 = [v3 stringWithFormat:@"BugSession identifier: %@ state: %s", identifier, v6];
 
   return v7;
 }
@@ -413,8 +413,8 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = DEDBugSession;
   v4 = [(DEDBugSession *)&v8 description];
-  v5 = [(DEDBugSession *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@: ID: %@", v4, v5];
+  identifier = [(DEDBugSession *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@: ID: %@", v4, identifier];
 
   return v6;
 }
@@ -425,7 +425,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __32__DEDBugSession_archivedClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (archivedClasses_onceToken_0 != -1)
   {
     dispatch_once(&archivedClasses_onceToken_0, block);
@@ -483,12 +483,12 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
 
 - (id)configuration
 {
-  v3 = [(DEDBugSession *)self config];
+  config = [(DEDBugSession *)self config];
 
-  if (v3)
+  if (config)
   {
-    v4 = [(DEDBugSession *)self config];
-    v5 = [v4 copy];
+    config2 = [(DEDBugSession *)self config];
+    v5 = [config2 copy];
   }
 
   else
@@ -505,10 +505,10 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)attachCompletionHandlerForOngoingOperation:(id)a3 handler:(id)a4
+- (void)attachCompletionHandlerForOngoingOperation:(id)operation handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  operationCopy = operation;
   v8 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -516,45 +516,45 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "attaching completion handler to ongoing operation", v13, 2u);
   }
 
-  v9 = [v6 copy];
+  v9 = [handlerCopy copy];
   v10 = MEMORY[0x24C1E5320](v9);
-  v11 = [(DEDBugSession *)self ongoingCompletionHandlers];
-  v12 = [v7 identifier];
+  ongoingCompletionHandlers = [(DEDBugSession *)self ongoingCompletionHandlers];
+  identifier = [operationCopy identifier];
 
-  [v11 setObject:v10 forKeyedSubscript:v12];
+  [ongoingCompletionHandlers setObject:v10 forKeyedSubscript:identifier];
 }
 
-- (void)attachCompletionHandlerForDEDExtensionIdentifier:(id)a3 handler:(id)a4
+- (void)attachCompletionHandlerForDEDExtensionIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDBugSession *)self identifierManager];
-  v9 = [v8 isKnownIdentifier:v6];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  v9 = [identifierManager isKnownIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
     v10 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [DEDBugSession attachCompletionHandlerForDEDExtensionIdentifier:v6 handler:self];
+      [DEDBugSession attachCompletionHandlerForDEDExtensionIdentifier:identifierCopy handler:self];
     }
   }
 
-  v11 = [v7 copy];
+  v11 = [handlerCopy copy];
   v12 = MEMORY[0x24C1E5320]();
-  v13 = [(DEDBugSession *)self ongoingCompletionHandlers];
-  v14 = [v6 stringValue];
-  [v13 setObject:v12 forKeyedSubscript:v14];
+  ongoingCompletionHandlers = [(DEDBugSession *)self ongoingCompletionHandlers];
+  stringValue = [identifierCopy stringValue];
+  [ongoingCompletionHandlers setObject:v12 forKeyedSubscript:stringValue];
 }
 
 - (id)knownExtensions
 {
-  v3 = [(DEDBugSession *)self cachedExtensions];
+  cachedExtensions = [(DEDBugSession *)self cachedExtensions];
 
-  if (v3)
+  if (cachedExtensions)
   {
-    v4 = [(DEDBugSession *)self cachedExtensions];
-    v5 = [v4 copy];
+    cachedExtensions2 = [(DEDBugSession *)self cachedExtensions];
+    v5 = [cachedExtensions2 copy];
   }
 
   else
@@ -568,7 +568,7 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
 - (void)resumePendingOperations
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_248AD7000, log, OS_LOG_TYPE_DEBUG, "BS [%@] will resume %@", buf, 0x16u);
@@ -576,74 +576,74 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
 
 - (NSArray)allExtensionIdentifiers
 {
-  v2 = [(DEDBugSession *)self identifierManager];
-  v3 = [v2 allIdentifiers];
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  allIdentifiers = [identifierManager allIdentifiers];
 
-  return v3;
+  return allIdentifiers;
 }
 
-- (void)pingWithCallback:(id)a3
+- (void)pingWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DEDBugSession *)v4 pingWithCallback:?];
+    [(DEDBugSession *)callbackCopy pingWithCallback:?];
   }
 
-  [(DEDBugSession *)self setPingHandler:v4];
+  [(DEDBugSession *)self setPingHandler:callbackCopy];
   worker = self->_worker;
-  v7 = [(DEDBugSession *)self identifier];
-  [(DEDWorkerProtocol *)worker pingSession:v7];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDWorkerProtocol *)worker pingSession:identifier];
 }
 
-- (void)listDiagnosticExtensionsWithCompletion:(id)a3
+- (void)listDiagnosticExtensionsWithCompletion:(id)completion
 {
-  v11 = a3;
-  v4 = [(DEDBugSession *)self cachedExtensions];
+  completionCopy = completion;
+  cachedExtensions = [(DEDBugSession *)self cachedExtensions];
 
-  if (v4)
+  if (cachedExtensions)
   {
-    v5 = [(DEDBugSession *)self cachedExtensions];
-    v6 = [v5 allValues];
-    v11[2](v11, v6);
+    cachedExtensions2 = [(DEDBugSession *)self cachedExtensions];
+    allValues = [cachedExtensions2 allValues];
+    completionCopy[2](completionCopy, allValues);
   }
 
   else
   {
-    if (v11)
+    if (completionCopy)
     {
-      v7 = [(DEDBugSession *)self deListCompletions];
-      v8 = [v11 copy];
+      deListCompletions = [(DEDBugSession *)self deListCompletions];
+      v8 = [completionCopy copy];
       v9 = MEMORY[0x24C1E5320]();
-      [v7 addObject:v9];
+      [deListCompletions addObject:v9];
     }
 
     worker = self->_worker;
-    v5 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker listAvailableExtensionsForSession:v5];
+    cachedExtensions2 = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker listAvailableExtensionsForSession:cachedExtensions2];
   }
 }
 
-- (void)getStateWithCompletion:(id)a3
+- (void)getStateWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = DEDSessionStateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     *buf = 138543362;
-    v16 = v6;
+    v16 = identifier;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_INFO, "Getting session state on [%{public}@]", buf, 0xCu);
   }
 
   if ([(DEDBugSession *)self hasCapability:@"session-state"])
   {
-    [(DEDBugSession *)self setSessionStateCompletionBlock:v4];
+    [(DEDBugSession *)self setSessionStateCompletionBlock:completionCopy];
     worker = self->_worker;
-    v8 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker getSessionStateWithSession:v8];
+    identifier2 = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker getSessionStateWithSession:identifier2];
   }
 
   else
@@ -654,16 +654,16 @@ void __32__DEDBugSession_archivedClasses__block_invoke(uint64_t a1)
       [DEDBugSession getStateWithCompletion:?];
     }
 
-    v10 = MEMORY[0x24C1E5320](v4);
+    v10 = MEMORY[0x24C1E5320](completionCopy);
     [(DEDBugSession *)self setSessionStateCompletionBlock:0];
-    v11 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__DEDBugSession_getStateWithCompletion___block_invoke;
     block[3] = &unk_278F653A8;
     v14 = v10;
-    v8 = v10;
-    dispatch_async(v11, block);
+    identifier2 = v10;
+    dispatch_async(callbackQueue, block);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -685,15 +685,15 @@ void __40__DEDBugSession_getStateWithCompletion___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addData:(id)a3 withFilename:(id)a4
+- (void)addData:(id)data withFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  filenameCopy = filename;
   if ([(DEDBugSession *)self hasCapability:@"enhanced-execution-v2"])
   {
     worker = self->_worker;
-    v9 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker addSessionData:v6 withFilename:v7 forSession:v9];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker addSessionData:dataCopy withFilename:filenameCopy forSession:identifier];
   }
 
   else
@@ -706,66 +706,66 @@ void __40__DEDBugSession_getStateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addSessionData:(id)a3 filename:(id)a4
+- (void)_addSessionData:(id)data filename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDBugSession *)self finisher];
+  dataCopy = data;
+  filenameCopy = filename;
+  finisher = [(DEDBugSession *)self finisher];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DEDBugSession *)self finisher];
-    [v10 writeData:v6 filename:v7];
+    finisher2 = [(DEDBugSession *)self finisher];
+    [finisher2 writeData:dataCopy filename:filenameCopy];
   }
 
   else
   {
-    v10 = [(DEDBugSession *)self log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    finisher2 = [(DEDBugSession *)self log];
+    if (os_log_type_enabled(finisher2, OS_LOG_TYPE_ERROR))
     {
       [DEDBugSession _addSessionData:filename:];
     }
   }
 }
 
-- (void)getSessionStatusWithCompletion:(id)a3
+- (void)getSessionStatusWithCompletion:(id)completion
 {
-  [(DEDBugSession *)self setStatusCompletionBlock:a3];
+  [(DEDBugSession *)self setStatusCompletionBlock:completion];
   worker = self->_worker;
-  v5 = [(DEDBugSession *)self identifier];
-  [(DEDWorkerProtocol *)worker getSessionStatusWithSession:v5];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDWorkerProtocol *)worker getSessionStatusWithSession:identifier];
 }
 
-- (void)synchronizeSessionStatusWithCompletion:(id)a3
+- (void)synchronizeSessionStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(DEDBugSession *)self hasCapability:@"enhanced-execution"])
   {
-    [(DEDBugSession *)self setSyncCompletionBlock:v4];
+    [(DEDBugSession *)self setSyncCompletionBlock:completionCopy];
     worker = self->_worker;
-    v6 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker syncSessionStatusWithSession:v6];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker syncSessionStatusWithSession:identifier];
   }
 
   else
   {
-    v6 = [(DEDBugSession *)self log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    identifier = [(DEDBugSession *)self log];
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
       [DEDBugSession synchronizeSessionStatusWithCompletion:];
     }
   }
 }
 
-- (void)startDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 completion:(id)a6
+- (void)startDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  untilCopy = until;
+  completionCopy = completion;
+  if (!untilCopy)
   {
     v24 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -789,14 +789,14 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  v14 = [(DEDBugSession *)self filePromises];
-  v15 = [v10 stringValue];
-  [v14 addObject:v15];
+  filePromises = [(DEDBugSession *)self filePromises];
+  stringValue = [identifierCopy stringValue];
+  [filePromises addObject:stringValue];
 
-  if (v13)
+  if (completionCopy)
   {
-    v16 = [v10 stringValue];
-    [(DEDBugSession *)self storeCollectionCompletion:v13 forIdentifier:v16];
+    stringValue2 = [identifierCopy stringValue];
+    [(DEDBugSession *)self storeCollectionCompletion:completionCopy forIdentifier:stringValue2];
   }
 
   if (![(DEDBugSession *)self isTarget])
@@ -804,20 +804,20 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v18 = [v12 earlierDate:v17];
+  date = [MEMORY[0x277CBEAA8] date];
+  v18 = [untilCopy earlierDate:date];
 
-  if (v18 != v12)
+  if (v18 != untilCopy)
   {
-    v19 = [(DEDBugSession *)self identifier];
-    v20 = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:v19 dedIdentifier:v10];
+    identifier = [(DEDBugSession *)self identifier];
+    worker = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:identifier dedIdentifier:identifierCopy];
 
     v21 = +[DEDDeferredExtensionInfo allInfo];
-    v22 = [v21 objectForKey:v20];
+    stringValue3 = [v21 objectForKey:worker];
 
-    [(DEDBugSession *)self willPerformOperationWithID:v20 type:2 options:v11];
+    [(DEDBugSession *)self willPerformOperationWithID:worker type:2 options:parametersCopy];
     [(DEDBugSession *)self save];
-    if (v22)
+    if (stringValue3)
     {
       v23 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -826,15 +826,15 @@ LABEL_15:
         _os_log_impl(&dword_248AD7000, v23, OS_LOG_TYPE_DEFAULT, "Rescheduling an existing collect operation.", &v28, 2u);
       }
 
-      [v22 schedule];
+      [stringValue3 schedule];
       goto LABEL_21;
     }
 
 LABEL_20:
-    v20 = [(DEDBugSession *)self worker];
-    v22 = [v10 stringValue];
-    v26 = [(DEDBugSession *)self identifier];
-    [v20 startDiagnosticWithIdentifier:v22 parameters:v11 deferRunUntil:v12 session:v26];
+    worker = [(DEDBugSession *)self worker];
+    stringValue3 = [identifierCopy stringValue];
+    identifier2 = [(DEDBugSession *)self identifier];
+    [worker startDiagnosticWithIdentifier:stringValue3 parameters:parametersCopy deferRunUntil:untilCopy session:identifier2];
 
 LABEL_21:
     goto LABEL_22;
@@ -844,36 +844,36 @@ LABEL_21:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138543362;
-    v29 = v12;
+    v29 = untilCopy;
     _os_log_impl(&dword_248AD7000, v25, OS_LOG_TYPE_DEFAULT, "Deferred execution was scheduled in past (%{public}@), running immediately.", &v28, 0xCu);
   }
 
-  [(DEDBugSession *)self finallyStartDiagnosticWithIdentifier:v10 parameters:v11 completion:v13];
+  [(DEDBugSession *)self finallyStartDiagnosticWithIdentifier:identifierCopy parameters:parametersCopy completion:completionCopy];
 LABEL_22:
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiagnosticExtension:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)startDiagnosticExtension:(id)extension parameters:(id)parameters completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [a3 identifier];
-  v10 = [(DEDBugSession *)self startDiagnosticExtensionWithIdentifier:v9 parameters:v11 completion:v8];
+  parametersCopy = parameters;
+  completionCopy = completion;
+  identifier = [extension identifier];
+  v10 = [(DEDBugSession *)self startDiagnosticExtensionWithIdentifier:identifier parameters:parametersCopy completion:completionCopy];
 }
 
-- (id)startDiagnosticExtensionWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 completion:(id)a6
+- (id)startDiagnosticExtensionWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  untilCopy = until;
+  completionCopy = completion;
   if ([(DEDBugSession *)self hasCapability:@"enhanced-execution"])
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [v12 earlierDate:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    v15 = [untilCopy earlierDate:date];
 
-    if (v15 == v12)
+    if (v15 == untilCopy)
     {
       v19 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -882,15 +882,15 @@ LABEL_22:
         _os_log_impl(&dword_248AD7000, v19, OS_LOG_TYPE_DEFAULT, "Deferred execution was scheduled in past, running immediately.", v21, 2u);
       }
 
-      v17 = [(DEDBugSession *)self startDiagnosticExtensionWithIdentifier:v10 parameters:v11 completion:v13];
+      v17 = [(DEDBugSession *)self startDiagnosticExtensionWithIdentifier:identifierCopy parameters:parametersCopy completion:completionCopy];
     }
 
     else
     {
-      v16 = [(DEDBugSession *)self identifierManager];
-      v17 = [v16 identifierForExtensionIdentifier:v10];
+      identifierManager = [(DEDBugSession *)self identifierManager];
+      v17 = [identifierManager identifierForExtensionIdentifier:identifierCopy];
 
-      [(DEDBugSession *)self startDiagnosticExtensionWithDEDIdentifier:v17 parameters:v11 deferRunUntil:v12 completion:v13];
+      [(DEDBugSession *)self startDiagnosticExtensionWithDEDIdentifier:v17 parameters:parametersCopy deferRunUntil:untilCopy completion:completionCopy];
     }
   }
 
@@ -908,145 +908,145 @@ LABEL_22:
   return v17;
 }
 
-- (id)startDiagnosticExtensionWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5
+- (id)startDiagnosticExtensionWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DEDBugSession *)self identifierManager];
-  v12 = [v11 identifierForExtensionIdentifier:v10];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  v12 = [identifierManager identifierForExtensionIdentifier:identifierCopy];
 
-  [(DEDBugSession *)self startDiagnosticExtensionWithDEDIdentifier:v12 parameters:v9 completion:v8];
+  [(DEDBugSession *)self startDiagnosticExtensionWithDEDIdentifier:v12 parameters:parametersCopy completion:completionCopy];
 
   return v12;
 }
 
-- (void)startDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)startDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v13 = 0;
-  [(DEDBugSession *)self _prepareForStartDiagnosticExtensionWithDEDIdentifier:v8 parameters:v9 newCollectRemovedPendingKill:&v13 completion:a5];
+  [(DEDBugSession *)self _prepareForStartDiagnosticExtensionWithDEDIdentifier:identifierCopy parameters:parametersCopy newCollectRemovedPendingKill:&v13 completion:completion];
   if ((v13 & 1) == 0)
   {
     worker = self->_worker;
-    v11 = [v8 stringValue];
-    v12 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker startDiagnosticWithIdentifier:v11 parameters:v9 session:v12];
+    stringValue = [identifierCopy stringValue];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker startDiagnosticWithIdentifier:stringValue parameters:parametersCopy session:identifier];
   }
 }
 
-- (void)_prepareForStartDiagnosticExtensionWithDEDIdentifier:(id)a3 parameters:(id)a4 newCollectRemovedPendingKill:(BOOL *)a5 completion:(id)a6
+- (void)_prepareForStartDiagnosticExtensionWithDEDIdentifier:(id)identifier parameters:(id)parameters newCollectRemovedPendingKill:(BOOL *)kill completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 invocationNumber] < 1 || -[DEDBugSession hasCapability:](self, "hasCapability:", @"enhanced-execution"))
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if ([identifierCopy invocationNumber] < 1 || -[DEDBugSession hasCapability:](self, "hasCapability:", @"enhanced-execution"))
   {
-    v13 = [(DEDBugSession *)self filePromises];
-    v14 = [v10 stringValue];
-    [v13 addObject:v14];
+    filePromises = [(DEDBugSession *)self filePromises];
+    stringValue = [identifierCopy stringValue];
+    [filePromises addObject:stringValue];
 
-    if (v12)
+    if (completionCopy)
     {
-      v15 = [v10 stringValue];
-      [(DEDBugSession *)self storeCollectionCompletion:v12 forIdentifier:v15];
+      stringValue2 = [identifierCopy stringValue];
+      [(DEDBugSession *)self storeCollectionCompletion:completionCopy forIdentifier:stringValue2];
     }
 
     if ([(DEDBugSession *)self isTarget])
     {
       if ([(DEDBugSession *)self hasCapability:@"enhanced-execution"])
       {
-        LODWORD(v16) = 0;
+        LODWORD(pendingOperations5) = 0;
       }
 
       else
       {
-        v18 = [v10 extensionIdentifier];
-        v42 = [DEDBugSessionOperation hashingKeyWithId:v18 type:0];
+        extensionIdentifier = [identifierCopy extensionIdentifier];
+        v42 = [DEDBugSessionOperation hashingKeyWithId:extensionIdentifier type:0];
 
-        v19 = [v10 extensionIdentifier];
-        v41 = [DEDBugSessionOperation hashingKeyWithId:v19 type:1];
+        extensionIdentifier2 = [identifierCopy extensionIdentifier];
+        v41 = [DEDBugSessionOperation hashingKeyWithId:extensionIdentifier2 type:1];
 
-        v20 = [(DEDBugSession *)self pendingOperations];
-        objc_sync_enter(v20);
-        v21 = [(DEDBugSession *)self pendingOperations];
-        v22 = [v21 objectForKeyedSubscript:v42];
+        pendingOperations = [(DEDBugSession *)self pendingOperations];
+        objc_sync_enter(pendingOperations);
+        pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+        v22 = [pendingOperations2 objectForKeyedSubscript:v42];
         if (v22)
         {
-          v23 = [(DEDBugSession *)self pendingOperations];
-          v16 = [v23 objectForKeyedSubscript:v41];
+          pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+          pendingOperations5 = [pendingOperations3 objectForKeyedSubscript:v41];
 
-          if (v16)
+          if (pendingOperations5)
           {
             v24 = [(DEDBugSession *)self log];
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
-              v25 = [v10 stringValue];
+              stringValue3 = [identifierCopy stringValue];
               *buf = 138543362;
-              v45 = v25;
+              v45 = stringValue3;
               _os_log_impl(&dword_248AD7000, v24, OS_LOG_TYPE_DEFAULT, "Found matching kill operation for new requested DE [%{public}@], will let it finish", buf, 0xCu);
             }
 
             v26 = [(DEDBugSession *)self log];
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
-              v27 = [(DEDBugSession *)self pendingOperations];
-              v28 = [v27 objectForKeyedSubscript:v42];
+              pendingOperations4 = [(DEDBugSession *)self pendingOperations];
+              v28 = [pendingOperations4 objectForKeyedSubscript:v42];
               *buf = 138412290;
               v45 = v28;
               _os_log_impl(&dword_248AD7000, v26, OS_LOG_TYPE_INFO, "Removing matching kill operation: %@", buf, 0xCu);
             }
 
-            v16 = [(DEDBugSession *)self pendingOperations];
-            [v16 removeObjectForKey:v42];
+            pendingOperations5 = [(DEDBugSession *)self pendingOperations];
+            [pendingOperations5 removeObjectForKey:v42];
 
-            LODWORD(v16) = 1;
+            LODWORD(pendingOperations5) = 1;
           }
         }
 
         else
         {
 
-          LODWORD(v16) = 0;
+          LODWORD(pendingOperations5) = 0;
         }
 
-        objc_sync_exit(v20);
+        objc_sync_exit(pendingOperations);
       }
 
-      if (a5)
+      if (kill)
       {
-        *a5 = v16;
+        *kill = pendingOperations5;
       }
 
-      if (v16)
+      if (pendingOperations5)
       {
         v29 = [(DEDBugSession *)self log];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(DEDBugSession *)self identifier];
+          identifier = [(DEDBugSession *)self identifier];
           *buf = 138543362;
-          v45 = v30;
+          v45 = identifier;
           _os_log_impl(&dword_248AD7000, v29, OS_LOG_TYPE_DEFAULT, "Start collection command found matching cancel on DE: [%{public}@]", buf, 0xCu);
         }
       }
 
       else
       {
-        v31 = [(DEDBugSession *)self client];
+        client = [(DEDBugSession *)self client];
         if (objc_opt_respondsToSelector())
         {
-          v32 = [(DEDBugSession *)self client];
-          v33 = [v32 transportType];
+          client2 = [(DEDBugSession *)self client];
+          transportType = [client2 transportType];
         }
 
         else
         {
-          v33 = 0;
+          transportType = 0;
         }
 
-        if ([DEDCollectionNotification shouldFireNotificationForTransport:v33])
+        if ([DEDCollectionNotification shouldFireNotificationForTransport:transportType])
         {
           v34 = _os_activity_create(&dword_248AD7000, "Collect Notify", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
           block[0] = MEMORY[0x277D85DD0];
@@ -1057,18 +1057,18 @@ LABEL_22:
           os_activity_apply(v34, block);
         }
 
-        v35 = [(DEDBugSession *)self finisher];
+        finisher = [(DEDBugSession *)self finisher];
         v36 = objc_opt_respondsToSelector();
 
         if (v36)
         {
-          v37 = [(DEDBugSession *)self finisher];
-          v38 = [v10 stringValue];
-          [v37 didStartCollectingDiagnosticExtensionWithIdentifier:v38];
+          finisher2 = [(DEDBugSession *)self finisher];
+          stringValue4 = [identifierCopy stringValue];
+          [finisher2 didStartCollectingDiagnosticExtensionWithIdentifier:stringValue4];
         }
 
-        v39 = [v10 stringValue];
-        [(DEDBugSession *)self willPerformOperationWithID:v39 type:1 options:v11];
+        stringValue5 = [identifierCopy stringValue];
+        [(DEDBugSession *)self willPerformOperationWithID:stringValue5 type:1 options:parametersCopy];
 
         [(DEDBugSession *)self save];
       }
@@ -1106,16 +1106,16 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finallyStartDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)finallyStartDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  completionCopy = completion;
   if ([(DEDBugSession *)self isTarget])
   {
-    v11 = [(DEDBugSession *)self identifier];
-    v12 = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:v11 dedIdentifier:v8];
+    identifier = [(DEDBugSession *)self identifier];
+    v12 = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:identifier dedIdentifier:identifierCopy];
 
     v13 = +[DEDDeferredExtensionInfo allInfo];
     v14 = [v13 objectForKey:v12];
@@ -1123,11 +1123,11 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
     [v14 unschedule];
     [(DEDBugSession *)self didFinishOperation:2 withIdentifier:v12];
     [(DEDBugSession *)self save];
-    [(DEDBugSession *)self _prepareForStartDiagnosticExtensionWithDEDIdentifier:v8 parameters:v9 newCollectRemovedPendingKill:0 completion:v10];
+    [(DEDBugSession *)self _prepareForStartDiagnosticExtensionWithDEDIdentifier:identifierCopy parameters:parametersCopy newCollectRemovedPendingKill:0 completion:completionCopy];
     v15 = +[DEDDaemon sharedInstance];
-    v16 = [v8 stringValue];
-    v17 = [(DEDBugSession *)self identifier];
-    [v15 finallyStartDiagnosticWithIdentifier:v16 parameters:v9 session:v17];
+    stringValue = [identifierCopy stringValue];
+    identifier2 = [(DEDBugSession *)self identifier];
+    [v15 finallyStartDiagnosticWithIdentifier:stringValue parameters:parametersCopy session:identifier2];
   }
 
   else
@@ -1135,11 +1135,11 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
     v12 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(DEDBugSession *)self identifier];
+      identifier3 = [(DEDBugSession *)self identifier];
       v20 = 136446466;
       v21 = "[DEDBugSession finallyStartDiagnosticWithIdentifier:parameters:completion:]";
       v22 = 2114;
-      v23 = v18;
+      v23 = identifier3;
       _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}s] called on non target instance of [%{public}@]", &v20, 0x16u);
     }
   }
@@ -1147,46 +1147,46 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleDiagnosticCollectionForClassBAccessWithIdentifier:(id)a3 parameters:(id)a4
+- (void)scheduleDiagnosticCollectionForClassBAccessWithIdentifier:(id)identifier parameters:(id)parameters
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v8 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v17 = 138543362;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_INFO, "Will reschedule attachment collection for Class B availability for extension [%{public}@]", &v17, 0xCu);
   }
 
-  v9 = [[DEDExtensionIdentifier alloc] initWithString:v6];
-  v10 = [(DEDBugSession *)self identifier];
-  v11 = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:v10 dedIdentifier:v9];
+  v9 = [[DEDExtensionIdentifier alloc] initWithString:identifierCopy];
+  identifier = [(DEDBugSession *)self identifier];
+  v11 = [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:identifier dedIdentifier:v9];
 
-  [(DEDBugSession *)self willPerformOperationWithID:v11 type:2 options:v7];
+  [(DEDBugSession *)self willPerformOperationWithID:v11 type:2 options:parametersCopy];
   v12 = [DEDDeferredExtensionInfo alloc];
-  v13 = [(DEDBugSession *)self identifier];
-  v14 = [MEMORY[0x277CBEAA8] distantFuture];
-  v15 = [(DEDDeferredExtensionInfo *)v12 initWithBugSessionIdentifier:v13 dedIdentifier:v9 runOnDate:v14 withGracePeriod:0.0];
+  identifier2 = [(DEDBugSession *)self identifier];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v15 = [(DEDDeferredExtensionInfo *)v12 initWithBugSessionIdentifier:identifier2 dedIdentifier:v9 runOnDate:distantFuture withGracePeriod:0.0];
 
   [(DEDDeferredExtensionInfo *)v15 setRequiresClassBDataAccess:1];
-  [(DEDDeferredExtensionInfo *)v15 setParameters:v7];
+  [(DEDDeferredExtensionInfo *)v15 setParameters:parametersCopy];
 
   [(DEDDeferredExtensionInfo *)v15 schedule];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAttachment:(id)a3
+- (void)removeAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 extensionID];
+  attachmentCopy = attachment;
+  extensionID = [attachmentCopy extensionID];
 
-  if (v5)
+  if (extensionID)
   {
-    v6 = [v4 rootURL];
-    v7 = [v6 lastPathComponent];
-    [(DEDBugSession *)self terminateExtension:v7 withInfo:0];
+    rootURL = [attachmentCopy rootURL];
+    lastPathComponent = [rootURL lastPathComponent];
+    [(DEDBugSession *)self terminateExtension:lastPathComponent withInfo:0];
   }
 
   else
@@ -1199,15 +1199,15 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 }
 
-- (void)cancelDiagnosticExtension:(id)a3
+- (void)cancelDiagnosticExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  extensionCopy = extension;
+  identifier = [extensionCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [v4 identifier];
-    [(DEDBugSession *)self cancelDiagnosticExtensionWithIdentifier:v6];
+    identifier2 = [extensionCopy identifier];
+    [(DEDBugSession *)self cancelDiagnosticExtensionWithIdentifier:identifier2];
   }
 
   else
@@ -1220,12 +1220,12 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 }
 
-- (void)cancelDiagnosticExtensionWithIdentifier:(id)a3
+- (void)cancelDiagnosticExtensionWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDBugSession *)self identifierManager];
-  v6 = [v5 knownIdentifiersForExtensionIdentifier:v4];
+  identifierCopy = identifier;
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  v6 = [identifierManager knownIdentifiersForExtensionIdentifier:identifierCopy];
 
   v18 = 0u;
   v19 = 0u;
@@ -1247,11 +1247,11 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 stringValue];
-        [(DEDBugSession *)self terminateExtension:v13 withInfo:0];
+        stringValue = [v12 stringValue];
+        [(DEDBugSession *)self terminateExtension:stringValue withInfo:0];
 
-        v14 = [(DEDBugSession *)self identifierManager];
-        [v14 revokeIdentifier:v12];
+        identifierManager2 = [(DEDBugSession *)self identifierManager];
+        [identifierManager2 revokeIdentifier:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1264,11 +1264,11 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelDiagnosticExtensionWithIdentifier:(id)a3 invocationNumber:(int64_t)a4
+- (void)cancelDiagnosticExtensionWithIdentifier:(id)identifier invocationNumber:(int64_t)number
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 && ![(DEDBugSession *)self hasCapability:@"enhanced-execution"])
+  identifierCopy = identifier;
+  if (number && ![(DEDBugSession *)self hasCapability:@"enhanced-execution"])
   {
     v9 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1280,8 +1280,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
 
   else
   {
-    v7 = [(DEDBugSession *)self identifierManager];
-    v8 = [v7 knownIdentifiersForExtensionIdentifier:v6];
+    identifierManager = [(DEDBugSession *)self identifierManager];
+    v8 = [identifierManager knownIdentifiersForExtensionIdentifier:identifierCopy];
 
     v18 = 0u;
     v19 = 0u;
@@ -1303,7 +1303,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          if ([v14 invocationNumber] == a4)
+          if ([v14 invocationNumber] == number)
           {
             [(DEDBugSession *)self cancelDiagnosticExtensionWithDEDExtensionIdentifier:v14];
           }
@@ -1321,21 +1321,21 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelDiagnosticExtensionWithDEDExtensionIdentifier:(id)a3
+- (void)cancelDiagnosticExtensionWithDEDExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(DEDBugSession *)self hasCapability:@"enhanced-execution"])
   {
-    v5 = [(DEDBugSession *)self identifierManager];
-    v6 = [v5 isKnownIdentifier:v4];
+    identifierManager = [(DEDBugSession *)self identifierManager];
+    v6 = [identifierManager isKnownIdentifier:identifierCopy];
 
     if (v6)
     {
-      v7 = [v4 stringValue];
-      [(DEDBugSession *)self terminateExtension:v7 withInfo:0];
+      stringValue = [identifierCopy stringValue];
+      [(DEDBugSession *)self terminateExtension:stringValue withInfo:0];
 
-      v8 = [(DEDBugSession *)self identifierManager];
-      [v8 revokeIdentifier:v4];
+      identifierManager2 = [(DEDBugSession *)self identifierManager];
+      [identifierManager2 revokeIdentifier:identifierCopy];
 
       [(DEDBugSession *)self save];
     }
@@ -1345,7 +1345,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
       v10 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(DEDBugSession *)v4 cancelDiagnosticExtensionWithDEDExtensionIdentifier:?];
+        [(DEDBugSession *)identifierCopy cancelDiagnosticExtensionWithDEDExtensionIdentifier:?];
       }
     }
   }
@@ -1360,11 +1360,11 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 }
 
-- (void)_terminateExtensionWithIdentifier:(id)a3 info:(id)a4
+- (void)_terminateExtensionWithIdentifier:(id)identifier info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  infoCopy = info;
+  if (!identifierCopy)
   {
     v8 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1374,8 +1374,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 
   worker = self->_worker;
-  v10 = [(DEDBugSession *)self identifier];
-  [(DEDWorkerProtocol *)worker terminateExtension:v6 info:v7 session:v10];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDWorkerProtocol *)worker terminateExtension:identifierCopy info:infoCopy session:identifier];
 }
 
 - (void)commit
@@ -1383,13 +1383,13 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   if ([(DEDBugSession *)self isTarget])
   {
     [(DEDBugSession *)self clearNotification];
-    v3 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v3);
-    v4 = [(DEDBugSession *)self pendingOperations];
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
     v5 = [DEDBugSessionOperation hashingKeyWithId:@"finishOperation" type:1000];
-    v6 = [v4 objectForKey:v5];
+    v6 = [pendingOperations2 objectForKey:v5];
 
-    objc_sync_exit(v3);
+    objc_sync_exit(pendingOperations);
     if (v6)
     {
       v7 = [(DEDBugSession *)self log];
@@ -1407,8 +1407,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 
   worker = self->_worker;
-  v9 = [(DEDBugSession *)self identifier];
-  [(DEDWorkerProtocol *)worker commitSession:v9];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDWorkerProtocol *)worker commitSession:identifier];
 }
 
 - (void)cancel
@@ -1419,15 +1419,15 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
     [(DEDBugSession *)self clearNotification];
     [(DEDBugSession *)self willPerformOperationWithID:@"cancelOperation" type:2000 options:MEMORY[0x277CBEC10]];
     [(DEDBugSession *)self save];
-    v3 = [(DEDBugSession *)self ongoingExtensionCollectionOperations];
-    v4 = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
-    if ([v3 count] || objc_msgSend(v4, "count"))
+    ongoingExtensionCollectionOperations = [(DEDBugSession *)self ongoingExtensionCollectionOperations];
+    scheduledDeferredExtensionCollectionOperations = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
+    if ([ongoingExtensionCollectionOperations count] || objc_msgSend(scheduledDeferredExtensionCollectionOperations, "count"))
     {
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v5 = v3;
+      v5 = ongoingExtensionCollectionOperations;
       v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v6)
       {
@@ -1458,7 +1458,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = v4;
+      v11 = scheduledDeferredExtensionCollectionOperations;
       v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v12)
       {
@@ -1478,8 +1478,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
             v17 = v16;
             if (v16)
             {
-              v18 = [v16 dedIdentifier];
-              [(DEDBugSession *)self cancelDiagnosticExtensionWithDEDExtensionIdentifier:v18];
+              dedIdentifier = [v16 dedIdentifier];
+              [(DEDBugSession *)self cancelDiagnosticExtensionWithDEDExtensionIdentifier:dedIdentifier];
 
               [v17 unschedule];
             }
@@ -1503,29 +1503,29 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
 
   else
   {
-    v19 = [(DEDBugSession *)self worker];
-    v20 = [(DEDBugSession *)self identifier];
-    [v19 cancelSession:v20];
+    worker = [(DEDBugSession *)self worker];
+    identifier = [(DEDBugSession *)self identifier];
+    [worker cancelSession:identifier];
 
     [(DEDBugSession *)self cleanup];
   }
 
-  v21 = [(DEDBugSession *)self identifierManager];
-  [v21 reset];
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  [identifierManager reset];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adoptFiles:(id)a3 withCompletion:(id)a4
+- (void)adoptFiles:(id)files withCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  filesCopy = files;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(DEDBugSession *)self adoptFilesCompletions];
-    v9 = MEMORY[0x24C1E5320](v7);
-    [v8 insertObject:v9 atIndex:0];
+    adoptFilesCompletions = [(DEDBugSession *)self adoptFilesCompletions];
+    v9 = MEMORY[0x24C1E5320](completionCopy);
+    [adoptFilesCompletions insertObject:v9 atIndex:0];
   }
 
   v10 = objc_alloc_init(DEDAttachmentHandler);
@@ -1533,7 +1533,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v6;
+  v11 = filesCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -1552,8 +1552,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
         v16 = [(DEDAttachmentHandler *)v10 identifierForAdoptingFile:*(*(&v21 + 1) + 8 * v15), v21];
         if (v16)
         {
-          v17 = [(DEDBugSession *)self filePromises];
-          [v17 addObject:v16];
+          filePromises = [(DEDBugSession *)self filePromises];
+          [filePromises addObject:v16];
         }
 
         ++v15;
@@ -1567,8 +1567,8 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   }
 
   worker = self->_worker;
-  v19 = [(DEDBugSession *)self identifier];
-  [(DEDWorkerProtocol *)worker adoptFiles:v11 forSession:v19];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDWorkerProtocol *)worker adoptFiles:v11 forSession:identifier];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1576,7 +1576,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
 - (void)scheduleNotification
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 deviceIdentifier];
+  deviceIdentifier = [self deviceIdentifier];
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -1587,7 +1587,7 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
 - (void)clearNotification
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 deviceIdentifier];
+  deviceIdentifier = [self deviceIdentifier];
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -1595,22 +1595,22 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 completion:(id)a5
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionsCopy = extensions;
+  localizationCopy = localization;
+  completionCopy = completion;
   if ([(DEDBugSession *)self hasCapability:@"enhanced-execution-v2"])
   {
-    if (v10)
+    if (completionCopy)
     {
-      [(DEDBugSession *)self setDeTextDataLoadCompletion:v10];
+      [(DEDBugSession *)self setDeTextDataLoadCompletion:completionCopy];
     }
 
     worker = self->_worker;
-    v12 = [(DEDBugSession *)self identifier];
-    [(DEDWorkerProtocol *)worker loadTextDataForExtensions:v8 localization:v9 sessionID:v12];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDWorkerProtocol *)worker loadTextDataForExtensions:extensionsCopy localization:localizationCopy sessionID:identifier];
   }
 
   else
@@ -1623,58 +1623,58 @@ void __121__DEDBugSession__prepareForStartDiagnosticExtensionWithDEDIdentifier_p
 
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Session does not have capability %@", @"enhanced-execution-v2", *MEMORY[0x277CCA450]];
     v22[0] = v14;
-    v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
+    identifier = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 
     v15 = MEMORY[0x277CCA9B8];
     v16 = +[DEDConfiguration sharedInstance];
-    v17 = [v16 errorDomain];
-    v18 = [v15 errorWithDomain:v17 code:103 userInfo:v12];
+    errorDomain = [v16 errorDomain];
+    v18 = [v15 errorWithDomain:errorDomain code:103 userInfo:identifier];
 
     v19 = [MEMORY[0x277CBEB98] set];
-    v10[2](v10, v19, v18);
+    completionCopy[2](completionCopy, v19, v18);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allObjects];
-  [(DEDBugSession *)self updateCachedExtensionsWithLocalizedTextData:v8];
+  extensionsCopy = extensions;
+  localizationCopy = localization;
+  allObjects = [extensionsCopy allObjects];
+  [(DEDBugSession *)self updateCachedExtensionsWithLocalizedTextData:allObjects];
 
-  v9 = [(DEDBugSession *)self deTextDataLoadCompletion];
+  deTextDataLoadCompletion = [(DEDBugSession *)self deTextDataLoadCompletion];
 
-  if (v9)
+  if (deTextDataLoadCompletion)
   {
-    v10 = [(DEDBugSession *)self deTextDataLoadCompletion];
-    v11 = [v10 copy];
+    deTextDataLoadCompletion2 = [(DEDBugSession *)self deTextDataLoadCompletion];
+    v11 = [deTextDataLoadCompletion2 copy];
 
     [(DEDBugSession *)self setDeTextDataLoadCompletion:0];
-    v12 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __59__DEDBugSession_didLoadTextDataForExtensions_localization___block_invoke;
     v16[3] = &unk_278F653F8;
     v18 = v11;
-    v17 = v6;
+    v17 = extensionsCopy;
     v13 = v11;
-    dispatch_async(v12, v16);
+    dispatch_async(callbackQueue, v16);
   }
 
   else
   {
     client = self->_client;
-    v15 = [(DEDBugSession *)self identifier];
-    [(DEDClientProtocol *)client didLoadTextDataForExtensions:v6 localization:v7 session:v15];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDClientProtocol *)client didLoadTextDataForExtensions:extensionsCopy localization:localizationCopy session:identifier];
   }
 }
 
 - (void)pong
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 shortDescription];
+  shortDescription = [self shortDescription];
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_2_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -1689,104 +1689,104 @@ void __21__DEDBugSession_pong__block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)supportsDiagnostics:(id)a3
+- (void)supportsDiagnostics:(id)diagnostics
 {
-  v4 = a3;
+  diagnosticsCopy = diagnostics;
   v5 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DEDBugSession supportsDiagnostics:?];
   }
 
-  [(DEDBugSession *)self populateLocalizedTextDataForExtensions:v4];
-  v6 = [(DEDBugSession *)self deListCompletions];
-  v7 = [v6 lastObject];
+  [(DEDBugSession *)self populateLocalizedTextDataForExtensions:diagnosticsCopy];
+  deListCompletions = [(DEDBugSession *)self deListCompletions];
+  lastObject = [deListCompletions lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    v8 = [(DEDBugSession *)self deListCompletions];
-    [v8 removeLastObject];
+    deListCompletions2 = [(DEDBugSession *)self deListCompletions];
+    [deListCompletions2 removeLastObject];
 
-    v9 = [(DEDBugSession *)self hashExtensions:v4];
+    v9 = [(DEDBugSession *)self hashExtensions:diagnosticsCopy];
     [(DEDBugSession *)self setCachedExtensions:v9];
 
-    v10 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __37__DEDBugSession_supportsDiagnostics___block_invoke;
     v13[3] = &unk_278F653F8;
-    v15 = v7;
-    v14 = v4;
-    dispatch_async(v10, v13);
+    v15 = lastObject;
+    v14 = diagnosticsCopy;
+    dispatch_async(callbackQueue, v13);
 
-    v11 = v15;
+    identifier = v15;
   }
 
   else
   {
     client = self->_client;
-    v11 = [(DEDBugSession *)self identifier];
-    [(DEDClientProtocol *)client deviceSupportsDiagnosticExtensions:v4 session:v11];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDClientProtocol *)client deviceSupportsDiagnosticExtensions:diagnosticsCopy session:identifier];
   }
 }
 
-- (void)didAdoptFilesWithError:(id)a3
+- (void)didAdoptFilesWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(DEDBugSession *)self adoptFilesCompletions];
-  v6 = [v5 count];
+  errorCopy = error;
+  adoptFilesCompletions = [(DEDBugSession *)self adoptFilesCompletions];
+  v6 = [adoptFilesCompletions count];
 
   if (v6)
   {
-    v7 = [(DEDBugSession *)self adoptFilesCompletions];
-    v8 = [v7 lastObject];
+    adoptFilesCompletions2 = [(DEDBugSession *)self adoptFilesCompletions];
+    lastObject = [adoptFilesCompletions2 lastObject];
 
-    v9 = [(DEDBugSession *)self adoptFilesCompletions];
-    [v9 removeLastObject];
+    adoptFilesCompletions3 = [(DEDBugSession *)self adoptFilesCompletions];
+    [adoptFilesCompletions3 removeLastObject];
 
-    v10 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __40__DEDBugSession_didAdoptFilesWithError___block_invoke;
     v14[3] = &unk_278F653F8;
-    v16 = v8;
-    v15 = v4;
-    v11 = v8;
-    dispatch_async(v10, v14);
+    v16 = lastObject;
+    v15 = errorCopy;
+    v11 = lastObject;
+    dispatch_async(callbackQueue, v14);
   }
 
   else
   {
     client = self->_client;
-    v13 = [(DEDBugSession *)self identifier];
-    [(DEDClientProtocol *)client didAdoptFilesWithError:v4 forSession:v13];
+    identifier = [(DEDBugSession *)self identifier];
+    [(DEDClientProtocol *)client didAdoptFilesWithError:errorCopy forSession:identifier];
   }
 }
 
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total
 {
   client = self->_client;
-  v8 = [(DEDBugSession *)self identifier];
-  [(DEDClientProtocol *)client compressionProgress:a3 total:a4 sessionID:v8];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDClientProtocol *)client compressionProgress:progress total:total sessionID:identifier];
 
-  v9 = [(DEDBugSession *)self uploadDelegate];
-  if (v9)
+  uploadDelegate = [(DEDBugSession *)self uploadDelegate];
+  if (uploadDelegate)
   {
-    v10 = v9;
-    v11 = [(DEDBugSession *)self uploadDelegate];
+    v10 = uploadDelegate;
+    uploadDelegate2 = [(DEDBugSession *)self uploadDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(DEDBugSession *)self callbackQueue];
+      callbackQueue = [(DEDBugSession *)self callbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __43__DEDBugSession_compressionProgress_total___block_invoke;
       block[3] = &unk_278F65420;
       block[4] = self;
-      block[5] = a3;
-      block[6] = a4;
-      dispatch_async(v13, block);
+      block[5] = progress;
+      block[6] = total;
+      dispatch_async(callbackQueue, block);
     }
   }
 }
@@ -1797,25 +1797,25 @@ void __43__DEDBugSession_compressionProgress_total___block_invoke(uint64_t a1)
   [v2 compressionProgress:*(a1 + 40) total:*(a1 + 48) session:*(a1 + 32)];
 }
 
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total
 {
   client = self->_client;
-  v8 = [(DEDBugSession *)self identifier];
-  [(DEDClientProtocol *)client uploadProgress:a3 total:a4 sessionID:v8];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDClientProtocol *)client uploadProgress:progress total:total sessionID:identifier];
 
-  v9 = [(DEDBugSession *)self uploadDelegate];
+  uploadDelegate = [(DEDBugSession *)self uploadDelegate];
 
-  if (v9)
+  if (uploadDelegate)
   {
-    v10 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__DEDBugSession_uploadProgress_total___block_invoke;
     block[3] = &unk_278F65420;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    dispatch_async(v10, block);
+    block[5] = progress;
+    block[6] = total;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1825,30 +1825,30 @@ void __38__DEDBugSession_uploadProgress_total___block_invoke(uint64_t a1)
   [v2 uploadProgress:*(a1 + 40) total:*(a1 + 48) session:*(a1 + 32)];
 }
 
-- (void)didFinishUploadingWithError:(id)a3
+- (void)didFinishUploadingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   client = self->_client;
-  v6 = [(DEDBugSession *)self identifier];
-  [(DEDClientProtocol *)client didFinishUploadingWithError:v4 sessionID:v6];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDClientProtocol *)client didFinishUploadingWithError:errorCopy sessionID:identifier];
 
-  v7 = [(DEDBugSession *)self uploadDelegate];
-  if (v7)
+  uploadDelegate = [(DEDBugSession *)self uploadDelegate];
+  if (uploadDelegate)
   {
-    v8 = v7;
-    v9 = [(DEDBugSession *)self uploadDelegate];
+    v8 = uploadDelegate;
+    uploadDelegate2 = [(DEDBugSession *)self uploadDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(DEDBugSession *)self callbackQueue];
+      callbackQueue = [(DEDBugSession *)self callbackQueue];
       v12 = MEMORY[0x277D85DD0];
       v13 = 3221225472;
       v14 = __45__DEDBugSession_didFinishUploadingWithError___block_invoke;
       v15 = &unk_278F65448;
-      v16 = self;
-      v17 = v4;
-      dispatch_async(v11, &v12);
+      selfCopy = self;
+      v17 = errorCopy;
+      dispatch_async(callbackQueue, &v12);
     }
   }
 
@@ -1864,16 +1864,16 @@ void __45__DEDBugSession_didFinishUploadingWithError___block_invoke(uint64_t a1)
 - (void)didCommit
 {
   client = self->_client;
-  v4 = [(DEDBugSession *)self identifier];
-  [(DEDClientProtocol *)client didCommitSession:v4];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDClientProtocol *)client didCommitSession:identifier];
 
   [(DEDBugSession *)self setFinisherDidCommit:1];
 }
 
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  resultCopy = result;
   if (!self->_client)
   {
     v8 = [(DEDBugSession *)self log];
@@ -1884,46 +1884,46 @@ void __45__DEDBugSession_didFinishUploadingWithError___block_invoke(uint64_t a1)
     }
   }
 
-  [v7 setFromBugSession:self];
-  [(DEDBugSession *)self didFinishOperation:1 withIdentifier:v6];
-  if ([(DEDBugSession *)self shouldCollectDiagnosticWithId:v6])
+  [resultCopy setFromBugSession:self];
+  [(DEDBugSession *)self didFinishOperation:1 withIdentifier:identifierCopy];
+  if ([(DEDBugSession *)self shouldCollectDiagnosticWithId:identifierCopy])
   {
-    v9 = [(DEDBugSession *)self ongoingCompletionHandlers];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    ongoingCompletionHandlers = [(DEDBugSession *)self ongoingCompletionHandlers];
+    v10 = [ongoingCompletionHandlers objectForKeyedSubscript:identifierCopy];
 
-    v11 = [(DEDBugSession *)self ongoingCompletionHandlers];
-    [v11 removeObjectForKey:v6];
+    ongoingCompletionHandlers2 = [(DEDBugSession *)self ongoingCompletionHandlers];
+    [ongoingCompletionHandlers2 removeObjectForKey:identifierCopy];
 
-    v12 = [(DEDBugSession *)self nextCompletionBlockForIdentifier:v6];
-    v13 = [(DEDBugSession *)self finisher];
+    v12 = [(DEDBugSession *)self nextCompletionBlockForIdentifier:identifierCopy];
+    finisher = [(DEDBugSession *)self finisher];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(DEDBugSession *)self finisher];
-      [v15 didCollectAttachmentGroup:v7];
+      finisher2 = [(DEDBugSession *)self finisher];
+      [finisher2 didCollectAttachmentGroup:resultCopy];
     }
 
     if (v12 | v10)
     {
-      v16 = [(DEDBugSession *)self callbackQueue];
+      callbackQueue = [(DEDBugSession *)self callbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_invoke;
       block[3] = &unk_278F65470;
       v28 = v12;
-      v27 = v7;
+      v27 = resultCopy;
       v29 = v10;
-      dispatch_async(v16, block);
+      dispatch_async(callbackQueue, block);
 
-      v17 = v28;
+      identifier = v28;
     }
 
     else
     {
       client = self->_client;
-      v17 = [(DEDBugSession *)self identifier];
-      [(DEDClientProtocol *)client finishedDiagnosticWithIdentifier:v6 result:v7 session:v17];
+      identifier = [(DEDBugSession *)self identifier];
+      [(DEDClientProtocol *)client finishedDiagnosticWithIdentifier:identifierCopy result:resultCopy session:identifier];
     }
   }
 
@@ -1936,7 +1936,7 @@ void __45__DEDBugSession_didFinishUploadingWithError___block_invoke(uint64_t a1)
       _os_log_impl(&dword_248AD7000, v18, OS_LOG_TYPE_DEFAULT, "DE has finished but should be aborted, will delete all files", buf, 2u);
     }
 
-    [(DEDBugSession *)self _terminateExtensionWithIdentifier:v6 info:0];
+    [(DEDBugSession *)self _terminateExtensionWithIdentifier:identifierCopy info:0];
   }
 
   if ([(DEDBugSession *)self isTarget])
@@ -1951,8 +1951,8 @@ void __45__DEDBugSession_didFinishUploadingWithError___block_invoke(uint64_t a1)
       if ([(DEDBugSession *)self readyToNotify])
       {
         worker = self->_worker;
-        v21 = [(DEDBugSession *)self identifier];
-        [(DEDWorkerProtocol *)worker scheduleNotificationForSession:v21];
+        identifier2 = [(DEDBugSession *)self identifier];
+        [(DEDWorkerProtocol *)worker scheduleNotificationForSession:identifier2];
       }
 
       else
@@ -1963,17 +1963,17 @@ void __45__DEDBugSession_didFinishUploadingWithError___block_invoke(uint64_t a1)
         }
 
         v22 = self->_worker;
-        v21 = [(DEDBugSession *)self identifier];
-        [(DEDWorkerProtocol *)v22 commitSession:v21];
+        identifier2 = [(DEDBugSession *)self identifier];
+        [(DEDWorkerProtocol *)v22 commitSession:identifier2];
       }
 
-      v23 = [(DEDBugSession *)self finisher];
+      finisher3 = [(DEDBugSession *)self finisher];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v25 = [(DEDBugSession *)self finisher];
-        [v25 didFinishAllCollections];
+        finisher4 = [(DEDBugSession *)self finisher];
+        [finisher4 didFinishAllCollections];
       }
     }
   }
@@ -2001,63 +2001,63 @@ uint64_t __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_inv
   return result;
 }
 
-- (void)didGetState:(int64_t)a3 info:(id)a4
+- (void)didGetState:(int64_t)state info:(id)info
 {
-  v6 = a4;
-  v7 = [(DEDBugSession *)self sessionStateCompletionBlock];
+  infoCopy = info;
+  sessionStateCompletionBlock = [(DEDBugSession *)self sessionStateCompletionBlock];
 
-  if (v7)
+  if (sessionStateCompletionBlock)
   {
-    v8 = [(DEDBugSession *)self sessionStateCompletionBlock];
-    v9 = [v8 copy];
+    sessionStateCompletionBlock2 = [(DEDBugSession *)self sessionStateCompletionBlock];
+    v9 = [sessionStateCompletionBlock2 copy];
 
     [(DEDBugSession *)self setSessionStateCompletionBlock:0];
-    v10 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__DEDBugSession_didGetState_info___block_invoke;
     block[3] = &unk_278F65498;
     v16 = v9;
-    v17 = a3;
-    v15 = v6;
+    stateCopy = state;
+    v15 = infoCopy;
     v11 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(callbackQueue, block);
   }
 
   else
   {
-    v12 = [(DEDBugSession *)self client];
-    v13 = [(DEDBugSession *)self identifier];
-    [v12 didGetState:a3 info:v6 sessionID:v13];
+    client = [(DEDBugSession *)self client];
+    identifier = [(DEDBugSession *)self identifier];
+    [client didGetState:state info:infoCopy sessionID:identifier];
   }
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 identifiers:(id)a5
+- (void)hasCollected:(id)collected isCollecting:(id)collecting identifiers:(id)identifiers
 {
   v67 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectedCopy = collected;
+  collectingCopy = collecting;
+  identifiersCopy = identifiers;
   v11 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [DEDBugSession hasCollected:v8 isCollecting:? identifiers:?];
+    [DEDBugSession hasCollected:collectedCopy isCollecting:? identifiers:?];
   }
 
-  v44 = v10;
+  v44 = identifiersCopy;
 
   v12 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [DEDBugSession hasCollected:v9 isCollecting:? identifiers:?];
+    [DEDBugSession hasCollected:collectingCopy isCollecting:? identifiers:?];
   }
 
-  [(DEDBugSession *)self populateLocalizedTextDataForExtensions:v9];
+  [(DEDBugSession *)self populateLocalizedTextDataForExtensions:collectingCopy];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v13 = v8;
+  v13 = collectedCopy;
   v14 = [v13 countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v14)
   {
@@ -2073,22 +2073,22 @@ uint64_t __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_inv
         }
 
         v18 = *(*(&v61 + 1) + 8 * i);
-        v19 = [v18 extensionID];
+        extensionID = [v18 extensionID];
 
-        if (v19)
+        if (extensionID)
         {
-          v20 = [(DEDBugSession *)self filePromises];
-          v21 = [v18 rootURL];
-          v22 = [v21 lastPathComponent];
-          [v20 addObject:v22];
+          filePromises = [(DEDBugSession *)self filePromises];
+          rootURL = [v18 rootURL];
+          lastPathComponent = [rootURL lastPathComponent];
+          [filePromises addObject:lastPathComponent];
         }
 
         else
         {
-          v20 = [(DEDBugSession *)self log];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+          filePromises = [(DEDBugSession *)self log];
+          if (os_log_type_enabled(filePromises, OS_LOG_TYPE_ERROR))
           {
-            [DEDBugSession hasCollected:v60 isCollecting:v20 identifiers:?];
+            [DEDBugSession hasCollected:v60 isCollecting:filePromises identifiers:?];
           }
         }
       }
@@ -2103,7 +2103,7 @@ uint64_t __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_inv
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v23 = v9;
+  v23 = collectingCopy;
   v24 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v24)
   {
@@ -2119,9 +2119,9 @@ uint64_t __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_inv
         }
 
         v28 = *(*(&v55 + 1) + 8 * j);
-        v29 = [(DEDBugSession *)self filePromises];
-        v30 = [v28 identifier];
-        [v29 addObject:v30];
+        filePromises2 = [(DEDBugSession *)self filePromises];
+        identifier = [v28 identifier];
+        [filePromises2 addObject:identifier];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
@@ -2142,68 +2142,68 @@ uint64_t __57__DEDBugSession_finishedDiagnosticWithIdentifier_result___block_inv
     [(DEDBugSession *)self setIdentifierManager:v31];
   }
 
-  v32 = [(DEDBugSession *)self statusCompletionBlock];
-  if (v32)
+  statusCompletionBlock = [(DEDBugSession *)self statusCompletionBlock];
+  if (statusCompletionBlock)
   {
   }
 
   else
   {
-    v33 = [(DEDBugSession *)self syncCompletionBlock];
+    syncCompletionBlock = [(DEDBugSession *)self syncCompletionBlock];
 
-    if (!v33)
+    if (!syncCompletionBlock)
     {
       client = self->_client;
-      v41 = [(DEDBugSession *)self identifier];
+      identifier2 = [(DEDBugSession *)self identifier];
       if (v44)
       {
-        [(DEDClientProtocol *)client hasCollected:v13 isCollecting:v23 withIdentifiers:v44 inSession:v41];
+        [(DEDClientProtocol *)client hasCollected:v13 isCollecting:v23 withIdentifiers:v44 inSession:identifier2];
       }
 
       else
       {
-        [(DEDClientProtocol *)client hasCollected:v13 isCollecting:v23 inSession:v41];
+        [(DEDClientProtocol *)client hasCollected:v13 isCollecting:v23 inSession:identifier2];
       }
 
       goto LABEL_32;
     }
   }
 
-  v34 = [(DEDBugSession *)self statusCompletionBlock];
+  statusCompletionBlock2 = [(DEDBugSession *)self statusCompletionBlock];
 
-  if (v34)
+  if (statusCompletionBlock2)
   {
-    v35 = [(DEDBugSession *)self statusCompletionBlock];
+    statusCompletionBlock3 = [(DEDBugSession *)self statusCompletionBlock];
     [(DEDBugSession *)self setStatusCompletionBlock:0];
-    v36 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue = [(DEDBugSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__DEDBugSession_hasCollected_isCollecting_identifiers___block_invoke_2;
     block[3] = &unk_278F654E8;
-    v53 = v35;
+    v53 = statusCompletionBlock3;
     v51 = v13;
     v52 = v23;
-    v37 = v35;
-    dispatch_async(v36, block);
+    v37 = statusCompletionBlock3;
+    dispatch_async(callbackQueue, block);
   }
 
-  v38 = [(DEDBugSession *)self syncCompletionBlock];
+  syncCompletionBlock2 = [(DEDBugSession *)self syncCompletionBlock];
 
-  if (v38)
+  if (syncCompletionBlock2)
   {
-    v39 = [(DEDBugSession *)self syncCompletionBlock];
+    syncCompletionBlock3 = [(DEDBugSession *)self syncCompletionBlock];
     [(DEDBugSession *)self setSyncCompletionBlock:0];
-    v40 = [(DEDBugSession *)self callbackQueue];
+    callbackQueue2 = [(DEDBugSession *)self callbackQueue];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __55__DEDBugSession_hasCollected_isCollecting_identifiers___block_invoke_3;
     v45[3] = &unk_278F65510;
-    v49 = v39;
+    v49 = syncCompletionBlock3;
     v46 = v13;
     v47 = v23;
     v48 = v44;
-    v41 = v39;
-    dispatch_async(v40, v45);
+    identifier2 = syncCompletionBlock3;
+    dispatch_async(callbackQueue2, v45);
 
 LABEL_32:
   }
@@ -2211,30 +2211,30 @@ LABEL_32:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)terminateExtension:(id)a3 withInfo:(id)a4
+- (void)terminateExtension:(id)extension withInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v26 = a4;
+  extensionCopy = extension;
+  infoCopy = info;
   v7 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v6;
+    v36 = extensionCopy;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Will terminate extension [%{public}@]", buf, 0xCu);
   }
 
-  v8 = [[DEDExtensionIdentifier alloc] initWithString:v6];
+  v8 = [[DEDExtensionIdentifier alloc] initWithString:extensionCopy];
   v9 = +[DEDDeferredExtensionInfo allInfo];
-  v10 = [v9 allValues];
+  allValues = [v9 allValues];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __45__DEDBugSession_terminateExtension_withInfo___block_invoke;
   v31[3] = &unk_278F65538;
   v25 = v8;
   v32 = v25;
-  v33 = self;
-  v11 = [v10 ded_selectItemsPassingTest:v31];
+  selfCopy = self;
+  v11 = [allValues ded_selectItemsPassingTest:v31];
 
   v29 = 0u;
   v30 = 0u;
@@ -2257,14 +2257,14 @@ LABEL_32:
 
         v17 = *(*(&v27 + 1) + 8 * i);
         [v17 unschedule];
-        v18 = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
-        v19 = [v17 activityString];
-        v20 = [v18 containsObject:v19];
+        scheduledDeferredExtensionCollectionOperations = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
+        activityString = [v17 activityString];
+        v20 = [scheduledDeferredExtensionCollectionOperations containsObject:activityString];
 
         if (v20)
         {
-          v21 = [v17 activityString];
-          [(DEDBugSession *)self didFinishOperation:2 withIdentifier:v21];
+          activityString2 = [v17 activityString];
+          [(DEDBugSession *)self didFinishOperation:2 withIdentifier:activityString2];
         }
       }
 
@@ -2274,15 +2274,15 @@ LABEL_32:
     while (v14);
   }
 
-  v22 = [(DEDBugSession *)self identifierManager];
-  [v22 revokeIdentifier:v25];
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  [identifierManager revokeIdentifier:v25];
 
-  v23 = [(DEDBugSession *)self filePromises];
-  [v23 removeObject:v6];
+  filePromises = [(DEDBugSession *)self filePromises];
+  [filePromises removeObject:extensionCopy];
 
-  [(DEDBugSession *)self willPerformOperationWithID:v6 type:0 options:v26];
+  [(DEDBugSession *)self willPerformOperationWithID:extensionCopy type:0 options:infoCopy];
   [(DEDBugSession *)self save];
-  [(DEDBugSession *)self _terminateExtensionWithIdentifier:v6 info:v26];
+  [(DEDBugSession *)self _terminateExtensionWithIdentifier:extensionCopy info:infoCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -2309,8 +2309,8 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
 - (void)didCancel
 {
   client = self->_client;
-  v4 = [(DEDBugSession *)self identifier];
-  [(DEDClientProtocol *)client didCancelSession:v4];
+  identifier = [(DEDBugSession *)self identifier];
+  [(DEDClientProtocol *)client didCancelSession:identifier];
 
   if ([(DEDBugSession *)self isTarget])
   {
@@ -2322,39 +2322,39 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
 - (OS_dispatch_queue)diskAccessQueue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DEDBugSession *)v2 _diskAccessQueue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _diskAccessQueue = [(DEDBugSession *)selfCopy _diskAccessQueue];
 
-  if (!v3)
+  if (!_diskAccessQueue)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringWithFormat:@"com.apple.ded.disk-access-queue-%@", v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringWithFormat:@"com.apple.ded.disk-access-queue-%@", uUIDString];
 
-    v8 = [(DEDBugSession *)v2 log];
+    v8 = [(DEDBugSession *)selfCopy log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DEDBugSession *)v2 identifier];
+      identifier = [(DEDBugSession *)selfCopy identifier];
       *buf = 138543618;
       v16 = v7;
       v17 = 2114;
-      v18 = v9;
+      v18 = identifier;
       _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "Creating diskAccessQueue [%{public}@] for session [%{public}@]", buf, 0x16u);
     }
 
     v10 = v7;
     v11 = dispatch_queue_create([v7 UTF8String], 0);
-    [(DEDBugSession *)v2 set_diskAccessQueue:v11];
+    [(DEDBugSession *)selfCopy set_diskAccessQueue:v11];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v12 = [(DEDBugSession *)v2 _diskAccessQueue];
+  _diskAccessQueue2 = [(DEDBugSession *)selfCopy _diskAccessQueue];
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return _diskAccessQueue2;
 }
 
 - (void)_cancel
@@ -2363,9 +2363,9 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
   v3 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     v6 = 138543362;
-    v7 = v4;
+    v7 = identifier;
     _os_log_impl(&dword_248AD7000, v3, OS_LOG_TYPE_DEFAULT, "will cancel session [%{public}@]", &v6, 0xCu);
   }
 
@@ -2374,26 +2374,26 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   v5 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     v10 = 138543362;
-    v11 = v6;
+    v11 = identifier;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] setConfig", &v10, 0xCu);
   }
 
   if ([(DEDBugSession *)self hasCapability:@"mutable-bug-session"])
   {
-    if ([v4 finishingMove])
+    if ([configCopy finishingMove])
     {
       [(DEDBugSession *)self set_finisher:0];
       [(DEDBugSession *)self set_notifier:0];
-      v7 = v4;
+      v7 = configCopy;
       p_super = &self->_config->super;
       self->_config = v7;
     }
@@ -2427,67 +2427,67 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
   v3 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     v13 = 138543362;
-    v14 = v4;
+    v14 = identifier;
     _os_log_impl(&dword_248AD7000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] did start", &v13, 0xCu);
   }
 
   if ([(DEDBugSession *)self isTarget])
   {
-    v5 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v5);
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
     v6 = [DEDBugSessionOperation hashingKeyWithId:@"cancelOperation" type:2000];
-    v7 = [(DEDBugSession *)self pendingOperations];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+    v8 = [pendingOperations2 objectForKeyedSubscript:v6];
 
     if (v8)
     {
       v9 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(DEDBugSession *)self identifier];
+        identifier2 = [(DEDBugSession *)self identifier];
         v13 = 138543362;
-        v14 = v10;
+        v14 = identifier2;
         _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "found cancel operation for restarted session [%{public}@], will remove", &v13, 0xCu);
       }
 
-      v11 = [(DEDBugSession *)self pendingOperations];
-      [v11 removeObjectForKey:v6];
+      pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+      [pendingOperations3 removeObjectForKey:v6];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(pendingOperations);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupFinishedUploads:(BOOL)a3
+- (void)cleanupFinishedUploads:(BOOL)uploads
 {
-  v3 = a3;
+  uploadsCopy = uploads;
   v55 = *MEMORY[0x277D85DE8];
   v5 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     *buf = 138543362;
-    v49 = v6;
+    v49 = identifier;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "will cleanup session [%{public}@]", buf, 0xCu);
   }
 
   if ([(DEDBugSession *)self isTarget])
   {
-    v42 = v3;
+    v42 = uploadsCopy;
     [(DEDBugSession *)self removeFromStore];
     v7 = objc_alloc_init(DEDAttachmentHandler);
-    v8 = [(DEDBugSession *)self identifier];
-    [(DEDAttachmentHandler *)v7 removeDirectoryForBugSessionIdentifier:v8];
+    identifier2 = [(DEDBugSession *)self identifier];
+    [(DEDAttachmentHandler *)v7 removeDirectoryForBugSessionIdentifier:identifier2];
 
-    v9 = [(DEDBugSession *)self finisher];
-    if (v9)
+    finisher = [(DEDBugSession *)self finisher];
+    if (finisher)
     {
-      v10 = v9;
-      v11 = [(DEDBugSession *)self finisher];
+      v10 = finisher;
+      finisher2 = [(DEDBugSession *)self finisher];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
@@ -2507,9 +2507,9 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
     v43 = 0u;
     v44 = 0u;
     v14 = +[DEDDeferredExtensionInfo allInfo];
-    v15 = [v14 allValues];
+    allValues = [v14 allValues];
 
-    v16 = [v15 countByEnumeratingWithState:&v43 objects:v54 count:16];
+    v16 = [allValues countByEnumeratingWithState:&v43 objects:v54 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2520,13 +2520,13 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
         {
           if (*v44 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues);
           }
 
           v20 = *(*(&v43 + 1) + 8 * i);
-          v21 = [v20 bugSessionIdentifier];
-          v22 = [(DEDBugSession *)self identifier];
-          v23 = [v21 isEqualToString:v22];
+          bugSessionIdentifier = [v20 bugSessionIdentifier];
+          identifier3 = [(DEDBugSession *)self identifier];
+          v23 = [bugSessionIdentifier isEqualToString:identifier3];
 
           if (v23)
           {
@@ -2534,13 +2534,13 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v43 objects:v54 count:16];
+        v17 = [allValues countByEnumeratingWithState:&v43 objects:v54 count:16];
       }
 
       while (v17);
     }
 
-    v3 = v42;
+    uploadsCopy = v42;
   }
 
   if ([(DEDBugSession *)self isTarget])
@@ -2548,8 +2548,8 @@ uint64_t __45__DEDBugSession_terminateExtension_withInfo___block_invoke(uint64_t
     goto LABEL_21;
   }
 
-  v24 = [(DEDBugSession *)self worker];
-  if ([v24 transportType] == 3)
+  worker = [(DEDBugSession *)self worker];
+  if ([worker transportType] == 3)
   {
 
 LABEL_21:
@@ -2560,23 +2560,23 @@ LABEL_21:
     }
 
     v28 = +[DEDDaemon sharedInstance];
-    v29 = [v28 controller];
+    controller = [v28 controller];
 
     goto LABEL_24;
   }
 
-  v25 = [(DEDBugSession *)self worker];
-  v26 = [v25 transportType];
+  worker2 = [(DEDBugSession *)self worker];
+  transportType = [worker2 transportType];
 
-  if (v26 == 4)
+  if (transportType == 4)
   {
     goto LABEL_21;
   }
 
-  v39 = [(DEDBugSession *)self worker];
-  v40 = [v39 transportType];
+  worker3 = [(DEDBugSession *)self worker];
+  transportType2 = [worker3 transportType];
 
-  if (v40 == 2)
+  if (transportType2 == 2)
   {
     v41 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
@@ -2585,38 +2585,38 @@ LABEL_21:
       _os_log_impl(&dword_248AD7000, v41, OS_LOG_TYPE_INFO, "Cleaning up app side", buf, 2u);
     }
 
-    v29 = +[DEDManager sharedInstance];
+    controller = +[DEDManager sharedInstance];
   }
 
   else
   {
-    v29 = 0;
+    controller = 0;
   }
 
 LABEL_24:
-  if (v3)
+  if (uploadsCopy)
   {
-    v30 = [(DEDBugSession *)self identifier];
-    [v29 didFinishSessionWithIdentifier:v30];
+    identifier4 = [(DEDBugSession *)self identifier];
+    [controller didFinishSessionWithIdentifier:identifier4];
   }
 
-  v31 = [(DEDBugSession *)self identifier];
-  [v29 removeSessionWithIdentifier:v31];
+  identifier5 = [(DEDBugSession *)self identifier];
+  [controller removeSessionWithIdentifier:identifier5];
 
   v32 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(DEDBugSession *)self identifier];
-    v34 = [v29 sessions];
-    v35 = [v34 count];
-    v36 = [v29 sessions];
-    v37 = [v36 allKeys];
+    identifier6 = [(DEDBugSession *)self identifier];
+    sessions = [controller sessions];
+    v35 = [sessions count];
+    sessions2 = [controller sessions];
+    allKeys = [sessions2 allKeys];
     *buf = 138543874;
-    v49 = v33;
+    v49 = identifier6;
     v50 = 2048;
     v51 = v35;
     v52 = 2114;
-    v53 = v37;
+    v53 = allKeys;
     _os_log_impl(&dword_248AD7000, v32, OS_LOG_TYPE_DEFAULT, "Removed bug session from memory (%{public}@), [%lu] remaining sessions: %{public}@", buf, 0x20u);
   }
 
@@ -2634,19 +2634,19 @@ void __40__DEDBugSession_cleanupFinishedUploads___block_invoke(uint64_t a1)
   if ([(DEDBugSession *)self isTarget])
   {
     [(DEDBugSession *)self didFinishOperation:1000 withIdentifier:@"finishOperation"];
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [(DEDBugSession *)self uploadStartTime];
-    [v3 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    uploadStartTime = [(DEDBugSession *)self uploadStartTime];
+    [date timeIntervalSinceDate:uploadStartTime];
     v6 = v5;
 
     [(DEDBugSession *)self setUploadStartTime:0];
     v7 = objc_opt_new();
-    v8 = [(DEDBugSession *)self identifier];
-    v9 = [v7 directoryForBugSessionIdentifier:v8];
+    identifier = [(DEDBugSession *)self identifier];
+    v9 = [v7 directoryForBugSessionIdentifier:identifier];
 
     v10 = [MEMORY[0x277D051E0] getDirectorySize:v9];
-    v11 = [(DEDBugSession *)self config];
-    +[DEDAnalytics finisherDidCompleteWithDuration:uploadedByteCount:usingFinishingMove:withState:](DEDAnalytics, "finisherDidCompleteWithDuration:uploadedByteCount:usingFinishingMove:withState:", v6, v10, [v11 finishingMove], 1);
+    config = [(DEDBugSession *)self config];
+    +[DEDAnalytics finisherDidCompleteWithDuration:uploadedByteCount:usingFinishingMove:withState:](DEDAnalytics, "finisherDidCompleteWithDuration:uploadedByteCount:usingFinishingMove:withState:", v6, v10, [config finishingMove], 1);
 
     [DEDAnalytics didCompleteBugSessionWithState:1];
   }
@@ -2656,16 +2656,16 @@ void __40__DEDBugSession_cleanupFinishedUploads___block_invoke(uint64_t a1)
 
 - (BOOL)readyToCancel
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
-  v4 = [(DEDBugSession *)self pendingOperations];
-  v5 = [v4 allValues];
-  if ([v5 count] == 1)
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  allValues = [pendingOperations2 allValues];
+  if ([allValues count] == 1)
   {
-    v6 = [(DEDBugSession *)self pendingOperations];
-    v7 = [v6 allValues];
-    v8 = [v7 firstObject];
-    v9 = [v8 type] == 2000;
+    pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+    allValues2 = [pendingOperations3 allValues];
+    firstObject = [allValues2 firstObject];
+    v9 = [firstObject type] == 2000;
   }
 
   else
@@ -2673,22 +2673,22 @@ void __40__DEDBugSession_cleanupFinishedUploads___block_invoke(uint64_t a1)
     v9 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
   return v9;
 }
 
 - (BOOL)readyToFinish
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
-  v4 = [(DEDBugSession *)self pendingOperations];
-  v5 = [v4 allValues];
-  if ([v5 count] == 1)
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  allValues = [pendingOperations2 allValues];
+  if ([allValues count] == 1)
   {
-    v6 = [(DEDBugSession *)self pendingOperations];
-    v7 = [v6 allValues];
-    v8 = [v7 firstObject];
-    v9 = [v8 type] == 1000;
+    pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+    allValues2 = [pendingOperations3 allValues];
+    firstObject = [allValues2 firstObject];
+    v9 = [firstObject type] == 1000;
   }
 
   else
@@ -2696,23 +2696,23 @@ void __40__DEDBugSession_cleanupFinishedUploads___block_invoke(uint64_t a1)
     v9 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
   return v9;
 }
 
-- (BOOL)isRunningDE:(id)a3
+- (BOOL)isRunningDE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   if ([(DEDBugSession *)self isTarget])
   {
-    v5 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v5);
-    v6 = [(DEDBugSession *)self pendingOperations];
-    v7 = [DEDBugSessionOperation hashingKeyWithId:v4 type:1];
-    v8 = [v6 objectForKey:v7];
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+    v7 = [DEDBugSessionOperation hashingKeyWithId:eCopy type:1];
+    v8 = [pendingOperations2 objectForKey:v7];
 
     v9 = v8 != 0;
-    objc_sync_exit(v5);
+    objc_sync_exit(pendingOperations);
   }
 
   else
@@ -2723,30 +2723,30 @@ void __40__DEDBugSession_cleanupFinishedUploads___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)shouldCollectDiagnosticWithId:(id)a3
+- (BOOL)shouldCollectDiagnosticWithId:(id)id
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   if (![(DEDBugSession *)self isTarget])
   {
     goto LABEL_6;
   }
 
-  v5 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v5);
-  v6 = [(DEDBugSession *)self pendingOperations];
-  v7 = [DEDBugSessionOperation hashingKeyWithId:v4 type:0];
-  v8 = [v6 objectForKey:v7];
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  v7 = [DEDBugSessionOperation hashingKeyWithId:idCopy type:0];
+  v8 = [pendingOperations2 objectForKey:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(pendingOperations);
   if (v8)
   {
     v9 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 hashingKey];
+      hashingKey = [v8 hashingKey];
       v14 = 138543362;
-      v15 = v10;
+      v15 = hashingKey;
       _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "found kill DE operation [%{public}@]", &v14, 0xCu);
     }
 
@@ -2763,17 +2763,17 @@ LABEL_6:
   return v11;
 }
 
-- (void)didTerminateDiagnosticExtension:(id)a3 info:(id)a4
+- (void)didTerminateDiagnosticExtension:(id)extension info:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  [(DEDBugSession *)self didFinishOperation:0 withIdentifier:v7];
-  v12 = [[DEDExtensionIdentifier alloc] initWithString:v7];
-  v8 = [(DEDBugSession *)self identifierManager];
-  [v8 revokeIdentifier:v12];
+  infoCopy = info;
+  extensionCopy = extension;
+  [(DEDBugSession *)self didFinishOperation:0 withIdentifier:extensionCopy];
+  v12 = [[DEDExtensionIdentifier alloc] initWithString:extensionCopy];
+  identifierManager = [(DEDBugSession *)self identifierManager];
+  [identifierManager revokeIdentifier:v12];
 
   [(DEDBugSession *)self save];
-  [(DEDBugSession *)self notifyPromiseCancellationIfNeeded:v7 info:v6];
+  [(DEDBugSession *)self notifyPromiseCancellationIfNeeded:extensionCopy info:infoCopy];
 
   if ([(DEDBugSession *)self isTarget])
   {
@@ -2786,8 +2786,8 @@ LABEL_6:
     if ([(DEDBugSession *)self readyToNotify])
     {
       worker = self->_worker;
-      v10 = [(DEDBugSession *)self identifier];
-      [(DEDWorkerProtocol *)worker scheduleNotificationForSession:v10];
+      identifier = [(DEDBugSession *)self identifier];
+      [(DEDWorkerProtocol *)worker scheduleNotificationForSession:identifier];
     }
 
     else
@@ -2798,56 +2798,56 @@ LABEL_6:
       }
 
       v11 = self->_worker;
-      v10 = [(DEDBugSession *)self identifier];
-      [(DEDWorkerProtocol *)v11 commitSession:v10];
+      identifier = [(DEDBugSession *)self identifier];
+      [(DEDWorkerProtocol *)v11 commitSession:identifier];
     }
   }
 
 LABEL_9:
 }
 
-- (void)notifyPromiseCancellationIfNeeded:(id)a3 info:(id)a4
+- (void)notifyPromiseCancellationIfNeeded:(id)needed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   if ([(DEDBugSession *)self isTarget])
   {
-    v8 = [(DEDBugSession *)self finisher];
+    finisher = [(DEDBugSession *)self finisher];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(DEDBugSession *)self finisher];
-      [v10 didCancelCollectionOnExtension:v6];
+      finisher2 = [(DEDBugSession *)self finisher];
+      [finisher2 didCancelCollectionOnExtension:neededCopy];
     }
 
     v11 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [DEDBugSession notifyPromiseCancellationIfNeeded:v6 info:self];
+      [DEDBugSession notifyPromiseCancellationIfNeeded:neededCopy info:self];
     }
 
     v12 = +[DEDDaemon sharedInstance];
-    v13 = [(DEDBugSession *)self identifier];
-    [v12 teardownDeferredDiagnosticsWithIdentifier:v6 parameters:v7 session:v13];
+    identifier = [(DEDBugSession *)self identifier];
+    [v12 teardownDeferredDiagnosticsWithIdentifier:neededCopy parameters:infoCopy session:identifier];
   }
 }
 
-- (id)ongoingCollectOperationsWithOperations:(id)a3
+- (id)ongoingCollectOperationsWithOperations:(id)operations
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 ded_selectItemsPassingTest:&__block_literal_global_138];
+  operationsCopy = operations;
+  v5 = [operationsCopy ded_selectItemsPassingTest:&__block_literal_global_138];
   v6 = [v5 ded_mapWithBlock:&__block_literal_global_141];
   v7 = [(DEDBugSession *)self log];
   v8 = [(DEDBugSession *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(DEDBugSession *)self identifier];
+    identifier = [(DEDBugSession *)self identifier];
     *buf = 138412802;
-    v19 = v14;
+    v19 = identifier;
     v20 = 2112;
-    v21 = v4;
+    v21 = operationsCopy;
     v22 = 2112;
     v23 = v6;
     _os_log_debug_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEBUG, "BS [%@] Pending operations %@, to kill %@", buf, 0x20u);
@@ -2861,7 +2861,7 @@ LABEL_9:
   v17 = v7;
   v9 = v7;
   v10 = v6;
-  v11 = [v4 ded_rejectItemsPassingTest:v15];
+  v11 = [operationsCopy ded_rejectItemsPassingTest:v15];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -2897,59 +2897,59 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
 
 - (id)ongoingExtensionCollectionOperations
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
-  v4 = [(DEDBugSession *)self pendingOperations];
-  v5 = [v4 allValues];
-  v6 = [(DEDBugSession *)self ongoingCollectOperationsWithOperations:v5];
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  allValues = [pendingOperations2 allValues];
+  v6 = [(DEDBugSession *)self ongoingCollectOperationsWithOperations:allValues];
   v7 = [v6 ded_selectItemsPassingTest:&__block_literal_global_144];
   v8 = [v7 valueForKeyPath:@"identifier"];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
 
   return v8;
 }
 
 - (id)scheduledDeferredExtensionCollectionOperations
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
-  v4 = [(DEDBugSession *)self pendingOperations];
-  v5 = [v4 allValues];
-  v6 = [(DEDBugSession *)self ongoingCollectOperationsWithOperations:v5];
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  allValues = [pendingOperations2 allValues];
+  v6 = [(DEDBugSession *)self ongoingCollectOperationsWithOperations:allValues];
   v7 = [v6 ded_selectItemsPassingTest:&__block_literal_global_146];
   v8 = [v7 valueForKeyPath:@"identifier"];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
 
   return v8;
 }
 
-- (void)didAdoptGroup:(id)a3
+- (void)didAdoptGroup:(id)group
 {
-  v7 = a3;
-  v4 = [(DEDBugSession *)self finisher];
+  groupCopy = group;
+  finisher = [(DEDBugSession *)self finisher];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DEDBugSession *)self finisher];
-    [v6 didAdoptAttachmentGroup:v7];
+    finisher2 = [(DEDBugSession *)self finisher];
+    [finisher2 didAdoptAttachmentGroup:groupCopy];
   }
 }
 
 - (int64_t)instanceType
 {
-  v3 = [(DEDBugSession *)self client];
-  if (v3)
+  client = [(DEDBugSession *)self client];
+  if (client)
   {
   }
 
   else
   {
-    v4 = [(DEDBugSession *)self worker];
+    worker = [(DEDBugSession *)self worker];
 
-    if (!v4)
+    if (!worker)
     {
       v11 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2961,48 +2961,48 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
     }
   }
 
-  v5 = [(DEDBugSession *)self client];
-  if ([v5 transportType] == 4)
+  client2 = [(DEDBugSession *)self client];
+  if ([client2 transportType] == 4)
   {
 
     return 4;
   }
 
-  v6 = [(DEDBugSession *)self client];
-  v7 = [v6 transportType];
+  client3 = [(DEDBugSession *)self client];
+  transportType = [client3 transportType];
 
-  if (v7 == 3)
+  if (transportType == 3)
   {
     return 4;
   }
 
-  v9 = [(DEDBugSession *)self worker];
-  v10 = [v9 transportType];
+  worker2 = [(DEDBugSession *)self worker];
+  transportType2 = [worker2 transportType];
 
-  if (v10 == 1)
+  if (transportType2 == 1)
   {
     return 3;
   }
 
-  v12 = [(DEDBugSession *)self worker];
-  if ([v12 transportType] == 3)
+  worker3 = [(DEDBugSession *)self worker];
+  if ([worker3 transportType] == 3)
   {
 
     return 2;
   }
 
-  v13 = [(DEDBugSession *)self worker];
-  v14 = [v13 transportType];
+  worker4 = [(DEDBugSession *)self worker];
+  transportType3 = [worker4 transportType];
 
-  if (v14 == 4)
+  if (transportType3 == 4)
   {
     return 2;
   }
 
-  v15 = [(DEDBugSession *)self worker];
-  v16 = [v15 transportType];
+  worker5 = [(DEDBugSession *)self worker];
+  transportType4 = [worker5 transportType];
 
-  if (v16 != 2)
+  if (transportType4 != 2)
   {
     v17 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -3018,16 +3018,16 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
 
 - (BOOL)isTarget
 {
-  v2 = [(DEDBugSession *)self worker];
-  v3 = [v2 transportType] == 1;
+  worker = [(DEDBugSession *)self worker];
+  v3 = [worker transportType] == 1;
 
   return v3;
 }
 
-- (void)populateLocalizedTextDataForExtensions:(id)a3
+- (void)populateLocalizedTextDataForExtensions:(id)extensions
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionsCopy = extensions;
   if (![(DEDBugSession *)self hasLocalizedTextDataInCache])
   {
     v6 = [(DEDBugSession *)self log];
@@ -3039,20 +3039,20 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
     goto LABEL_17;
   }
 
-  v5 = [(DEDBugSession *)self cachedExtensions];
+  cachedExtensions = [(DEDBugSession *)self cachedExtensions];
 
-  if (v5)
+  if (cachedExtensions)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = v4;
+    v6 = extensionsCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
-      v21 = v4;
+      v21 = extensionsCopy;
       v9 = *v23;
       do
       {
@@ -3064,9 +3064,9 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          v12 = [(DEDBugSession *)self cachedExtensions];
-          v13 = [v11 identifier];
-          v14 = [v12 objectForKeyedSubscript:v13];
+          cachedExtensions2 = [(DEDBugSession *)self cachedExtensions];
+          identifier = [v11 identifier];
+          v14 = [cachedExtensions2 objectForKeyedSubscript:identifier];
 
           if (v14)
           {
@@ -3076,17 +3076,17 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
               [(DEDBugSession *)v26 populateLocalizedTextDataForExtensions:v11];
             }
 
-            v16 = [v14 localizedConsentText];
-            [v11 setLocalizedConsentText:v16];
+            localizedConsentText = [v14 localizedConsentText];
+            [v11 setLocalizedConsentText:localizedConsentText];
 
-            v17 = [v14 localizedCustomerConsentText];
-            [v11 setLocalizedCustomerConsentText:v17];
+            localizedCustomerConsentText = [v14 localizedCustomerConsentText];
+            [v11 setLocalizedCustomerConsentText:localizedCustomerConsentText];
 
-            v18 = [v14 localizedDataCollectedExplanation];
-            [v11 setLocalizedDataCollectedExplanation:v18];
+            localizedDataCollectedExplanation = [v14 localizedDataCollectedExplanation];
+            [v11 setLocalizedDataCollectedExplanation:localizedDataCollectedExplanation];
 
-            v19 = [v14 localizedDataCollectedSummary];
-            [v11 setLocalizedDataCollectedSummary:v19];
+            localizedDataCollectedSummary = [v14 localizedDataCollectedSummary];
+            [v11 setLocalizedDataCollectedSummary:localizedDataCollectedSummary];
           }
         }
 
@@ -3094,7 +3094,7 @@ uint64_t __56__DEDBugSession_ongoingCollectOperationsWithOperations___block_invo
       }
 
       while (v8);
-      v4 = v21;
+      extensionsCopy = v21;
     }
 
 LABEL_17:
@@ -3103,24 +3103,24 @@ LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCachedExtensionsWithLocalizedTextData:(id)a3
+- (void)updateCachedExtensionsWithLocalizedTextData:(id)data
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDBugSession *)self cachedExtensions];
+  dataCopy = data;
+  cachedExtensions = [(DEDBugSession *)self cachedExtensions];
 
-  if (v5)
+  if (cachedExtensions)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
+    v6 = dataCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v7)
     {
       v8 = v7;
-      v22 = v4;
+      v22 = dataCopy;
       v9 = 0;
       v10 = *v24;
       do
@@ -3133,9 +3133,9 @@ LABEL_17:
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [(DEDBugSession *)self cachedExtensions];
-          v14 = [v12 identifier];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          cachedExtensions2 = [(DEDBugSession *)self cachedExtensions];
+          identifier = [v12 identifier];
+          v15 = [cachedExtensions2 objectForKeyedSubscript:identifier];
 
           if (v15)
           {
@@ -3145,17 +3145,17 @@ LABEL_17:
               [(DEDBugSession *)v27 updateCachedExtensionsWithLocalizedTextData:v15];
             }
 
-            v17 = [v12 localizedConsentText];
-            [v15 setLocalizedConsentText:v17];
+            localizedConsentText = [v12 localizedConsentText];
+            [v15 setLocalizedConsentText:localizedConsentText];
 
-            v18 = [v12 localizedCustomerConsentText];
-            [v15 setLocalizedCustomerConsentText:v18];
+            localizedCustomerConsentText = [v12 localizedCustomerConsentText];
+            [v15 setLocalizedCustomerConsentText:localizedCustomerConsentText];
 
-            v19 = [v12 localizedDataCollectedExplanation];
-            [v15 setLocalizedDataCollectedExplanation:v19];
+            localizedDataCollectedExplanation = [v12 localizedDataCollectedExplanation];
+            [v15 setLocalizedDataCollectedExplanation:localizedDataCollectedExplanation];
 
-            v20 = [v12 localizedDataCollectedSummary];
-            [v15 setLocalizedDataCollectedSummary:v20];
+            localizedDataCollectedSummary = [v12 localizedDataCollectedSummary];
+            [v15 setLocalizedDataCollectedSummary:localizedDataCollectedSummary];
 
             v9 = 1;
           }
@@ -3166,7 +3166,7 @@ LABEL_17:
 
       while (v8);
 
-      v4 = v22;
+      dataCopy = v22;
       if (v9)
       {
         [(DEDBugSession *)self setHasLocalizedTextDataInCache:1];
@@ -3181,16 +3181,16 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hashExtensions:(id)a3
+- (id)hashExtensions:(id)extensions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  extensionsCopy = extensions;
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -3206,8 +3206,8 @@ LABEL_17:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v4 setObject:v10 forKey:v11];
+        identifier = [v10 identifier];
+        [v4 setObject:v10 forKey:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -3223,19 +3223,19 @@ LABEL_17:
   return v12;
 }
 
-- (id)nextCompletionBlockForIdentifier:(id)a3
+- (id)nextCompletionBlockForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDBugSession *)self deCompletions];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  deCompletions = [(DEDBugSession *)self deCompletions];
+  v6 = [deCompletions objectForKey:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 lastObject];
-    if (v7)
+    lastObject = [v6 lastObject];
+    if (lastObject)
     {
       [v6 removeLastObject];
-      v8 = MEMORY[0x24C1E5320](v7);
+      v8 = MEMORY[0x24C1E5320](lastObject);
     }
 
     else
@@ -3252,32 +3252,32 @@ LABEL_17:
   return v8;
 }
 
-- (void)storeCollectionCompletion:(id)a3 forIdentifier:(id)a4
+- (void)storeCollectionCompletion:(id)completion forIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(DEDBugSession *)self deCompletions];
-  v8 = [v7 objectForKey:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  deCompletions = [(DEDBugSession *)self deCompletions];
+  v8 = [deCompletions objectForKey:identifierCopy];
 
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
   }
 
-  v9 = [v12 copy];
+  v9 = [completionCopy copy];
   v10 = MEMORY[0x24C1E5320]();
   [v8 addObject:v10];
 
-  v11 = [(DEDBugSession *)self deCompletions];
-  [v11 setObject:v8 forKey:v6];
+  deCompletions2 = [(DEDBugSession *)self deCompletions];
+  [deCompletions2 setObject:v8 forKey:identifierCopy];
 }
 
-- (BOOL)hasCapability:(id)a3
+- (BOOL)hasCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(DEDBugSession *)self config];
-  v6 = [v5 requestedCapabilities];
-  v7 = [v6 containsObject:v4];
+  capabilityCopy = capability;
+  config = [(DEDBugSession *)self config];
+  requestedCapabilities = [config requestedCapabilities];
+  v7 = [requestedCapabilities containsObject:capabilityCopy];
 
   return v7;
 }
@@ -3285,15 +3285,15 @@ LABEL_17:
 - (id)notifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDBugSession *)self _notifier];
+  _notifier = [(DEDBugSession *)self _notifier];
 
-  if (v3)
+  if (_notifier)
   {
     goto LABEL_25;
   }
 
-  v4 = [(DEDBugSession *)self instanceType];
-  if (v4 < 2)
+  instanceType = [(DEDBugSession *)self instanceType];
+  if (instanceType < 2)
   {
     p_super = [(DEDBugSession *)self log];
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -3304,9 +3304,9 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if (v4 - 2 >= 2)
+  if (instanceType - 2 >= 2)
   {
-    if (v4 != 4)
+    if (instanceType != 4)
     {
       goto LABEL_21;
     }
@@ -3317,38 +3317,38 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    v9 = [(DEDBugSession *)self client];
-    v10 = [v9 conformsToProtocol:&unk_285B8A958];
+    client = [(DEDBugSession *)self client];
+    v10 = [client conformsToProtocol:&unk_285B8A958];
 
     if (!v10)
     {
       goto LABEL_21;
     }
 
-    v11 = [(DEDBugSession *)self client];
+    client2 = [(DEDBugSession *)self client];
     goto LABEL_15;
   }
 
-  v5 = [(DEDBugSession *)self config];
-  v6 = [v5 notifyingMove];
+  config = [(DEDBugSession *)self config];
+  notifyingMove = [config notifyingMove];
 
-  switch(v6)
+  switch(notifyingMove)
   {
     case 1:
       v7 = DEDUserNotificationNotifier;
       goto LABEL_17;
     case 3:
-      v11 = objc_alloc_init(DEDEnhancedLoggingNotifier);
+      client2 = objc_alloc_init(DEDEnhancedLoggingNotifier);
 LABEL_15:
-      p_super = &v11->super;
-      [(DEDBugSession *)self set_notifier:v11];
+      p_super = &client2->super;
+      [(DEDBugSession *)self set_notifier:client2];
       goto LABEL_20;
     case 2:
       v7 = DEDFollowUpNotifier;
 LABEL_17:
       v12 = [v7 alloc];
-      v13 = [(DEDBugSession *)self config];
-      v14 = [v12 initWithConfiguration:v13 session:self];
+      config2 = [(DEDBugSession *)self config];
+      v14 = [v12 initWithConfiguration:config2 session:self];
       [(DEDBugSession *)self set_notifier:v14];
 
       goto LABEL_21;
@@ -3364,14 +3364,14 @@ LABEL_17:
 LABEL_20:
 
 LABEL_21:
-  v15 = [(DEDBugSession *)self _notifier];
+  _notifier2 = [(DEDBugSession *)self _notifier];
 
-  if (v15)
+  if (_notifier2)
   {
     v16 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(DEDBugSession *)self _notifier];
+      _notifier3 = [(DEDBugSession *)self _notifier];
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       v23 = 138543362;
@@ -3381,24 +3381,24 @@ LABEL_21:
   }
 
 LABEL_25:
-  v20 = [(DEDBugSession *)self _notifier];
+  _notifier4 = [(DEDBugSession *)self _notifier];
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return _notifier4;
 }
 
 - (BOOL)readyToNotify
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
-  v4 = [(DEDBugSession *)self pendingOperations];
-  v5 = [v4 allValues];
-  if ([v5 count] == 1)
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+  allValues = [pendingOperations2 allValues];
+  if ([allValues count] == 1)
   {
-    v6 = [(DEDBugSession *)self pendingOperations];
-    v7 = [v6 allValues];
-    v8 = [v7 firstObject];
-    v9 = [v8 type] == 100;
+    pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+    allValues2 = [pendingOperations3 allValues];
+    firstObject = [allValues2 firstObject];
+    v9 = [firstObject type] == 100;
   }
 
   else
@@ -3406,15 +3406,15 @@ LABEL_25:
     v9 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
   return v9;
 }
 
 - (void)presentNotificationOnFilingDevice
 {
-  v3 = [(DEDBugSession *)self notifier];
-  v4 = [(DEDBugSession *)self identifier];
-  [v3 presentNotificationForSession:v4];
+  notifier = [(DEDBugSession *)self notifier];
+  identifier = [(DEDBugSession *)self identifier];
+  [notifier presentNotificationForSession:identifier];
 
   if ([(DEDBugSession *)self instanceType]== 3)
   {
@@ -3426,7 +3426,7 @@ LABEL_25:
 - (void)idsInbound_presentNotificationOnFilingDevice
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 instanceType];
+  [self instanceType];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3436,7 +3436,7 @@ LABEL_25:
 - (void)idsInbound_didPresentNotificationOnFilingDevice
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 instanceType];
+  [self instanceType];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3445,9 +3445,9 @@ LABEL_25:
 
 - (void)clearNotificationOnFilingDevice
 {
-  v3 = [(DEDBugSession *)self notifier];
-  v4 = [(DEDBugSession *)self identifier];
-  [v3 removeNotificationForSession:v4];
+  notifier = [(DEDBugSession *)self notifier];
+  identifier = [(DEDBugSession *)self identifier];
+  [notifier removeNotificationForSession:identifier];
 
   if ([(DEDBugSession *)self instanceType]== 3)
   {
@@ -3459,7 +3459,7 @@ LABEL_25:
 - (void)idsInbound_clearNotificationOnFilingDevice
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 instanceType];
+  [self instanceType];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3469,7 +3469,7 @@ LABEL_25:
 - (void)idsInbound_didClearNotificationOnFilingDevice
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 instanceType];
+  [self instanceType];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3494,33 +3494,33 @@ LABEL_25:
   }
 }
 
-- (void)willPerformOperationWithID:(id)a3 type:(int64_t)a4 options:(id)a5
+- (void)willPerformOperationWithID:(id)d type:(int64_t)type options:(id)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  optionsCopy = options;
   if ([(DEDBugSession *)self isTarget])
   {
-    v10 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v10);
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
     v11 = objc_opt_new();
-    [v11 setIdentifier:v8];
-    [v11 setType:a4];
-    [v11 setOptions:v9];
-    v12 = [(DEDBugSession *)self pendingOperations];
-    v13 = [v11 hashingKey];
-    [v12 setObject:v11 forKey:v13];
+    [v11 setIdentifier:dCopy];
+    [v11 setType:type];
+    [v11 setOptions:optionsCopy];
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+    hashingKey = [v11 hashingKey];
+    [pendingOperations2 setObject:v11 forKey:hashingKey];
 
     v14 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v11 hashingKey];
+      hashingKey2 = [v11 hashingKey];
       v17 = 138543362;
-      v18 = v15;
+      v18 = hashingKey2;
       _os_log_impl(&dword_248AD7000, v14, OS_LOG_TYPE_INFO, "will persist operation [%{public}@]", &v17, 0xCu);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(pendingOperations);
   }
 
   [(DEDBugSession *)self _logOperationQueue];
@@ -3528,27 +3528,27 @@ LABEL_25:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFinishOperation:(int64_t)a3 withIdentifier:(id)a4
+- (void)didFinishOperation:(int64_t)operation withIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   if ([(DEDBugSession *)self isTarget])
   {
-    v7 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v7);
-    v8 = [(DEDBugSession *)self pendingOperations];
-    v9 = [DEDBugSessionOperation hashingKeyWithId:v6 type:a3];
-    [v8 removeObjectForKey:v9];
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+    v9 = [DEDBugSessionOperation hashingKeyWithId:identifierCopy type:operation];
+    [pendingOperations2 removeObjectForKey:v9];
 
-    objc_sync_exit(v7);
-    if (a3 == 2000)
+    objc_sync_exit(pendingOperations);
+    if (operation == 2000)
     {
       v10 = [(DEDBugSession *)self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(DEDBugSession *)self identifier];
+        identifier = [(DEDBugSession *)self identifier];
         v13 = 138543362;
-        v14 = v11;
+        v14 = identifier;
         _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_DEFAULT, "Did finish cancel operation on [%{public}@]", &v13, 0xCu);
       }
     }
@@ -3564,40 +3564,40 @@ LABEL_25:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUploadDelegate:(id)a3
+- (void)setUploadDelegate:(id)delegate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   if ([(DEDBugSession *)self instanceType]== 1)
   {
     v5 = [(DEDBugSession *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(DEDBugSession *)self identifier];
+      identifier = [(DEDBugSession *)self identifier];
       v9 = 138543618;
-      v10 = v4;
+      v10 = delegateCopy;
       v11 = 2114;
-      v12 = v6;
+      v12 = identifier;
       _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "Setting uploadDelegate: [%{public}@] session [%{public}@]", &v9, 0x16u);
     }
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(DEDBugSession *)v7 set__uploadDelegate:v4];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DEDBugSession *)selfCopy set__uploadDelegate:delegateCopy];
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (DEDUploadStatusDelegate)uploadDelegate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DEDBugSession *)v2 __uploadDelegate];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  __uploadDelegate = [(DEDBugSession *)selfCopy __uploadDelegate];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return __uploadDelegate;
 }
 
 - (void)_streamOperationQueue
@@ -3629,22 +3629,22 @@ uint64_t __38__DEDBugSession__streamOperationQueue__block_invoke(uint64_t a1)
 
   if ([(DEDBugSession *)self isTarget])
   {
-    v3 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v3);
+    pendingOperations = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations);
     v4 = _logOperationQueue_opDebugLog;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(DEDBugSession *)self identifier];
-      v7 = [(DEDBugSession *)self pendingOperations];
-      v8 = [v7 allKeys];
+      identifier = [(DEDBugSession *)self identifier];
+      pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+      allKeys = [pendingOperations2 allKeys];
       v9 = 138412546;
-      v10 = v6;
+      v10 = identifier;
       v11 = 2112;
-      v12 = v8;
+      v12 = allKeys;
       _os_log_debug_impl(&dword_248AD7000, v4, OS_LOG_TYPE_DEBUG, "BS [%@] Operations %@", &v9, 0x16u);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(pendingOperations);
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -3674,12 +3674,12 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
 
 - (id)stateInfo
 {
-  v2 = [(DEDBugSession *)self finisherWithState];
-  v3 = [v2 additionalStateInfo];
-  v4 = v3;
-  if (v3)
+  finisherWithState = [(DEDBugSession *)self finisherWithState];
+  additionalStateInfo = [finisherWithState additionalStateInfo];
+  v4 = additionalStateInfo;
+  if (additionalStateInfo)
   {
-    v5 = v3;
+    v5 = additionalStateInfo;
   }
 
   else
@@ -3695,24 +3695,24 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
 - (int64_t)state
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDBugSession *)self pendingOperations];
-  objc_sync_enter(v3);
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  objc_sync_enter(pendingOperations);
   if ([(DEDBugSession *)self readyToFinish])
   {
-    v4 = [(DEDBugSession *)self finisherWithState];
-    v5 = [v4 isUploading];
+    finisherWithState = [(DEDBugSession *)self finisherWithState];
+    isUploading = [finisherWithState isUploading];
 
-    if ((v5 & 1) == 0)
+    if ((isUploading & 1) == 0)
     {
-      v25 = [(DEDBugSession *)self finisherWithState];
-      v26 = [v25 isCompressing];
+      finisherWithState2 = [(DEDBugSession *)self finisherWithState];
+      isCompressing = [finisherWithState2 isCompressing];
 
-      if ((v26 & 1) == 0)
+      if ((isCompressing & 1) == 0)
       {
-        v27 = [(DEDBugSession *)self finisherWithState];
-        v28 = [v27 isUploading];
+        finisherWithState3 = [(DEDBugSession *)self finisherWithState];
+        isUploading2 = [finisherWithState3 isUploading];
 
-        if (v28)
+        if (isUploading2)
         {
           v6 = 7;
           goto LABEL_29;
@@ -3735,25 +3735,25 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
 
   else
   {
-    v7 = [(DEDBugSession *)self pendingOperations];
-    objc_sync_enter(v7);
-    v8 = [(DEDBugSession *)self ongoingExtensionCollectionOperations];
-    v9 = [v8 count];
+    pendingOperations2 = [(DEDBugSession *)self pendingOperations];
+    objc_sync_enter(pendingOperations2);
+    ongoingExtensionCollectionOperations = [(DEDBugSession *)self ongoingExtensionCollectionOperations];
+    v9 = [ongoingExtensionCollectionOperations count];
 
-    v10 = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
-    v11 = [v10 count];
+    scheduledDeferredExtensionCollectionOperations = [(DEDBugSession *)self scheduledDeferredExtensionCollectionOperations];
+    v11 = [scheduledDeferredExtensionCollectionOperations count];
 
-    v12 = [(DEDBugSession *)self pendingOperations];
-    v13 = [v12 count];
+    pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+    v13 = [pendingOperations3 count];
 
-    v14 = [(DEDBugSession *)self isCancelling];
-    v15 = [(DEDBugSession *)self pendingOperations];
+    isCancelling = [(DEDBugSession *)self isCancelling];
+    pendingOperations4 = [(DEDBugSession *)self pendingOperations];
     v16 = [DEDBugSessionOperation hashingKeyWithId:@"notifyOperation" type:100];
-    v17 = [v15 objectForKey:v16];
+    v17 = [pendingOperations4 objectForKey:v16];
 
-    objc_sync_exit(v7);
-    v18 = [(DEDBugSession *)self hasDirectory];
-    v19 = [(DEDBugSession *)self hasStaleDirectory];
+    objc_sync_exit(pendingOperations2);
+    hasDirectory = [(DEDBugSession *)self hasDirectory];
+    hasStaleDirectory = [(DEDBugSession *)self hasStaleDirectory];
     v20 = DEDSessionStateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -3764,11 +3764,11 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
       v36 = 1024;
       v37 = v13 != 0;
       v38 = 1024;
-      v39 = v18;
+      v39 = hasDirectory;
       v40 = 1024;
-      v41 = v19;
+      v41 = hasStaleDirectory;
       v42 = 1024;
-      v43 = v14;
+      v43 = isCancelling;
       v44 = 1024;
       v45 = v17 != 0;
       _os_log_debug_impl(&dword_248AD7000, v20, OS_LOG_TYPE_DEBUG, "IC: [%i] HDCO: [%i] HPO: [%i] HDIR: [%i] HSDIR [%i] IC [%i] HNO [%i]", v33, 0x2Cu);
@@ -3776,14 +3776,14 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
 
     v21 = v9 != 0;
 
-    v22 = v14 || v21 || v11 != 0;
+    v22 = isCancelling || v21 || v11 != 0;
     v23 = 3;
     if (v21)
     {
       v23 = 4;
     }
 
-    if (v14)
+    if (isCancelling)
     {
       v6 = 8;
     }
@@ -3798,12 +3798,12 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
       if (!v13 || v17)
       {
         v29 = 2;
-        if (v19)
+        if (hasStaleDirectory)
         {
           v29 = -1;
         }
 
-        if (v18)
+        if (hasDirectory)
         {
           v6 = v29;
         }
@@ -3828,7 +3828,7 @@ void __35__DEDBugSession__logOperationQueue__block_invoke()
   }
 
 LABEL_29:
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingOperations);
 
   v31 = *MEMORY[0x277D85DE8];
   return v6;
@@ -3836,35 +3836,35 @@ LABEL_29:
 
 - (BOOL)isCancelling
 {
-  v3 = [(DEDBugSession *)self pendingOperations];
-  v4 = [v3 count];
+  pendingOperations = [(DEDBugSession *)self pendingOperations];
+  v4 = [pendingOperations count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(DEDBugSession *)self pendingOperations];
+  pendingOperations2 = [(DEDBugSession *)self pendingOperations];
   v6 = [DEDBugSessionOperation hashingKeyWithId:@"cancelOperation" type:2000];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [pendingOperations2 objectForKeyedSubscript:v6];
 
   if (!v7)
   {
-    v9 = [(DEDBugSession *)self pendingOperations];
-    v10 = [v9 allValues];
-    v11 = [v10 ded_selectItemsPassingTest:&__block_literal_global_26];
+    pendingOperations3 = [(DEDBugSession *)self pendingOperations];
+    allValues = [pendingOperations3 allValues];
+    v11 = [allValues ded_selectItemsPassingTest:&__block_literal_global_26];
     v12 = [v11 count];
 
-    v13 = [(DEDBugSession *)self pendingOperations];
-    v14 = [v13 allValues];
-    v15 = [v14 ded_selectItemsPassingTest:&__block_literal_global_12_0];
+    pendingOperations4 = [(DEDBugSession *)self pendingOperations];
+    allValues2 = [pendingOperations4 allValues];
+    v15 = [allValues2 ded_selectItemsPassingTest:&__block_literal_global_12_0];
     v16 = [v15 count];
 
     if (v12 == v16)
     {
-      v17 = [(DEDBugSession *)self pendingOperations];
-      v18 = [v17 allValues];
-      v8 = [v18 count] == 2 * v12;
+      pendingOperations5 = [(DEDBugSession *)self pendingOperations];
+      allValues3 = [pendingOperations5 allValues];
+      v8 = [allValues3 count] == 2 * v12;
 
       return v8;
     }
@@ -3885,10 +3885,10 @@ BOOL __42__DEDBugSession_DaemonTasks__isCancelling__block_invoke(uint64_t a1, vo
 
 - (id)finisherWithState
 {
-  v2 = [(DEDBugSession *)self finisher];
-  if ([v2 conformsToProtocol:&unk_285B8E298])
+  finisher = [(DEDBugSession *)self finisher];
+  if ([finisher conformsToProtocol:&unk_285B8E298])
   {
-    v3 = v2;
+    v3 = finisher;
   }
 
   else
@@ -3902,19 +3902,19 @@ BOOL __42__DEDBugSession_DaemonTasks__isCancelling__block_invoke(uint64_t a1, vo
 - (BOOL)hasDirectory
 {
   v3 = objc_alloc_init(DEDAttachmentHandler);
-  v4 = [(DEDBugSession *)self identifier];
-  v5 = [(DEDAttachmentHandler *)v3 directoryForBugSessionIdentifier:v4];
+  identifier = [(DEDBugSession *)self identifier];
+  v5 = [(DEDAttachmentHandler *)v3 directoryForBugSessionIdentifier:identifier];
 
-  LOBYTE(v4) = [v5 checkResourceIsReachableAndReturnError:0];
-  return v4;
+  LOBYTE(identifier) = [v5 checkResourceIsReachableAndReturnError:0];
+  return identifier;
 }
 
 - (BOOL)hasStaleDirectory
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(DEDAttachmentHandler);
-  v4 = [(DEDBugSession *)self identifier];
-  v5 = [(DEDAttachmentHandler *)v3 directoryForBugSessionIdentifier:v4];
+  identifier = [(DEDBugSession *)self identifier];
+  v5 = [(DEDAttachmentHandler *)v3 directoryForBugSessionIdentifier:identifier];
 
   if ([(DEDBugSession *)self hasDirectory])
   {
@@ -3944,9 +3944,9 @@ BOOL __42__DEDBugSession_DaemonTasks__isCancelling__block_invoke(uint64_t a1, vo
       v13 = [v9 objectForKeyedSubscript:v7];
       v14 = objc_alloc_init(MEMORY[0x277CBEAB8]);
       [v14 setDay:-7];
-      v15 = [MEMORY[0x277CBEA80] currentCalendar];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       v16 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-      v17 = [v15 dateByAddingComponents:v14 toDate:v16 options:0];
+      v17 = [currentCalendar dateByAddingComponents:v14 toDate:v16 options:0];
 
       if (v11 && [v11 compare:v17]== -1)
       {
@@ -4114,7 +4114,7 @@ BOOL __42__DEDBugSession_DaemonTasks__isCancelling__block_invoke(uint64_t a1, vo
 - (void)instanceType
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 identifier];
+  identifier = [self identifier];
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -4141,7 +4141,7 @@ BOOL __42__DEDBugSession_DaemonTasks__isCancelling__block_invoke(uint64_t a1, vo
 - (void)notifier
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 instanceType];
+  [self instanceType];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);

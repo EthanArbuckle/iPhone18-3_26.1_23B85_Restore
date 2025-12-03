@@ -1,26 +1,26 @@
 @interface InstalledApp
-- (InstalledApp)initWithBundleIdentifier:(id)a3 supportedMediaCategories:(id)a4 supportedIntents:(id)a5 appName:(id)a6;
+- (InstalledApp)initWithBundleIdentifier:(id)identifier supportedMediaCategories:(id)categories supportedIntents:(id)intents appName:(id)name;
 - (id)description;
 @end
 
 @implementation InstalledApp
 
-- (InstalledApp)initWithBundleIdentifier:(id)a3 supportedMediaCategories:(id)a4 supportedIntents:(id)a5 appName:(id)a6
+- (InstalledApp)initWithBundleIdentifier:(id)identifier supportedMediaCategories:(id)categories supportedIntents:(id)intents appName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  categoriesCopy = categories;
+  intentsCopy = intents;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = InstalledApp;
   v15 = [(InstalledApp *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bundleIdentifier, a3);
-    objc_storeStrong(&v16->_supportedMediaCategories, a4);
-    objc_storeStrong(&v16->_supportedIntents, a5);
-    objc_storeStrong(&v16->_appName, a6);
+    objc_storeStrong(&v15->_bundleIdentifier, identifier);
+    objc_storeStrong(&v16->_supportedMediaCategories, categories);
+    objc_storeStrong(&v16->_supportedIntents, intents);
+    objc_storeStrong(&v16->_appName, name);
   }
 
   return v16;
@@ -28,8 +28,8 @@
 
 - (id)description
 {
-  v2 = [(InstalledApp *)self bundleIdentifier];
-  v3 = [NSString stringWithFormat:@"InstalledApp { bundleIdentifier: %@ }", v2];
+  bundleIdentifier = [(InstalledApp *)self bundleIdentifier];
+  v3 = [NSString stringWithFormat:@"InstalledApp { bundleIdentifier: %@ }", bundleIdentifier];
 
   return v3;
 }

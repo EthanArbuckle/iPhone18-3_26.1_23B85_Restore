@@ -1,7 +1,7 @@
 @interface MMTConnection
-- (BOOL)sendMessage:(id)a3;
-- (MMTConnection)initWithLockdownConnection:(_lockdown_connection *)a3;
-- (id)parseErrorFromResponse:(id)a3;
+- (BOOL)sendMessage:(id)message;
+- (MMTConnection)initWithLockdownConnection:(_lockdown_connection *)connection;
+- (id)parseErrorFromResponse:(id)response;
 - (id)receiveMessage;
 - (void)executeNextCommand;
 - (void)start;
@@ -9,7 +9,7 @@
 
 @implementation MMTConnection
 
-- (MMTConnection)initWithLockdownConnection:(_lockdown_connection *)a3
+- (MMTConnection)initWithLockdownConnection:(_lockdown_connection *)connection
 {
   v20.receiver = self;
   v20.super_class = MMTConnection;
@@ -20,7 +20,7 @@
     powerAssertion = v4->_powerAssertion;
     v4->_powerAssertion = v5;
 
-    v4->_lockdownConnection = a3;
+    v4->_lockdownConnection = connection;
     v7 = dispatch_queue_create("Work Queue", 0);
     workQueue = v4->_workQueue;
     v4->_workQueue = v7;
@@ -58,13 +58,13 @@
 
 - (void)start
 {
-  v3 = [(MMTConnection *)self workQueue];
+  workQueue = [(MMTConnection *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001928;
   block[3] = &unk_100010798;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (id)receiveMessage
@@ -74,7 +74,7 @@
   {
     v4 = v3;
     *buf = 134217984;
-    v14 = [(MMTConnection *)self lockdownConnection];
+    lockdownConnection = [(MMTConnection *)self lockdownConnection];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Receiving on lockdown connection: %p", buf, 0xCu);
   }
 
@@ -102,7 +102,7 @@
         v9 = __error();
         v10 = strerror(*v9);
         *buf = 134218242;
-        v14 = v6;
+        lockdownConnection = v6;
         v15 = 2082;
         v16 = v10;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Could not receive size of message: %ld %{public}s", buf, 0x16u);
@@ -113,15 +113,15 @@
   return 0;
 }
 
-- (BOOL)sendMessage:(id)a3
+- (BOOL)sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     *buf = 134217984;
-    v27 = [(MMTConnection *)self lockdownConnection];
+    lockdownConnection = [(MMTConnection *)self lockdownConnection];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Sending response on lockdown connection: %p", buf, 0xCu);
   }
 
@@ -129,9 +129,9 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(_lockdown_connection *)v4 objectForKeyedSubscript:@"Status"];
+    v9 = [(_lockdown_connection *)messageCopy objectForKeyedSubscript:@"Status"];
     *buf = 138543362;
-    v27 = v9;
+    lockdownConnection = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending reply status: %{public}@", buf, 0xCu);
   }
 
@@ -139,14 +139,14 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138477827;
-    v27 = v4;
+    lockdownConnection = messageCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Sending message: %{private}@", buf, 0xCu);
   }
 
-  if (v4)
+  if (messageCopy)
   {
     v25 = 0;
-    v11 = [NSPropertyListSerialization dataWithPropertyList:v4 format:100 options:0 error:&v25];
+    v11 = [NSPropertyListSerialization dataWithPropertyList:messageCopy format:100 options:0 error:&v25];
     v12 = v25;
     if (!v11)
     {
@@ -154,7 +154,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v27 = v12;
+        lockdownConnection = v12;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Cannot convert reply dictionary into PList: %{public}@", buf, 0xCu);
       }
 
@@ -182,7 +182,7 @@ LABEL_21:
         v22 = __error();
         v23 = strerror(*v22);
         *buf = 136446210;
-        v27 = v23;
+        lockdownConnection = v23;
         v20 = "Could not send message: %{public}s";
         goto LABEL_19;
       }
@@ -197,7 +197,7 @@ LABEL_21:
         v18 = __error();
         v19 = strerror(*v18);
         *buf = 136446210;
-        v27 = v19;
+        lockdownConnection = v19;
         v20 = "Could not send message size: %{public}s";
 LABEL_19:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, v20, buf, 0xCu);
@@ -215,9 +215,9 @@ LABEL_22:
   return v14;
 }
 
-- (id)parseErrorFromResponse:(id)a3
+- (id)parseErrorFromResponse:(id)response
 {
-  v3 = [a3 mutableCopy];
+  v3 = [response mutableCopy];
   v4 = kMCTPErrorObjectKey;
   v5 = [v3 objectForKeyedSubscript:kMCTPErrorObjectKey];
   if (v5)
@@ -239,21 +239,21 @@ LABEL_22:
     do
     {
       v13 = [NSMutableDictionary dictionaryWithCapacity:4];
-      v14 = [v8 userInfo];
-      v15 = [v8 localizedDescription];
-      [v13 setObject:v15 forKeyedSubscript:v9];
+      userInfo = [v8 userInfo];
+      localizedDescription = [v8 localizedDescription];
+      [v13 setObject:localizedDescription forKeyedSubscript:v9];
 
-      v16 = [v8 domain];
-      [v13 setObject:v16 forKeyedSubscript:v10];
+      domain = [v8 domain];
+      [v13 setObject:domain forKeyedSubscript:v10];
 
-      v17 = [v8 DMCUSEnglishDescription];
-      [v13 setObject:v17 forKeyedSubscript:v11];
+      dMCUSEnglishDescription = [v8 DMCUSEnglishDescription];
+      [v13 setObject:dMCUSEnglishDescription forKeyedSubscript:v11];
 
       v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
       [v13 setObject:v18 forKeyedSubscript:v12];
 
       [v7 addObject:v13];
-      v19 = [v14 objectForKey:NSUnderlyingErrorKey];
+      v19 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       v8 = v19;
     }
@@ -275,11 +275,11 @@ LABEL_22:
   {
     v4 = v3;
     *buf = 134217984;
-    v15 = [(MMTConnection *)self lockdownConnection];
+    lockdownConnection = [(MMTConnection *)self lockdownConnection];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Executing command from lockdown connection: %p", buf, 0xCu);
   }
 
-  v5 = [(MMTConnection *)self receiveMessage];
+  receiveMessage = [(MMTConnection *)self receiveMessage];
   if (byte_100014BC8)
   {
     goto LABEL_9;
@@ -290,32 +290,32 @@ LABEL_22:
 LABEL_8:
     byte_100014BC8 = 1;
 LABEL_9:
-    if (v5)
+    if (receiveMessage)
     {
       v6 = *DMCLogObjects();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v7 = v6;
-        v8 = [v5 objectForKeyedSubscript:@"RequestType"];
+        v8 = [receiveMessage objectForKeyedSubscript:@"RequestType"];
         *buf = 138543362;
-        v15 = v8;
+        lockdownConnection = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Received request: %{public}@", buf, 0xCu);
       }
 
-      v9 = [(MMTConnection *)self parser];
-      v10 = [(MMTConnection *)self powerAssertion];
+      parser = [(MMTConnection *)self parser];
+      powerAssertion = [(MMTConnection *)self powerAssertion];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100002670;
       v12[3] = &unk_1000107C0;
       v12[4] = self;
-      [v9 processRequest:v5 assertion:v10 completionBlock:v12];
+      [parser processRequest:receiveMessage assertion:powerAssertion completionBlock:v12];
     }
 
     else
     {
-      v9 = +[MMTConnectionManager sharedInstance];
-      [v9 removeConnection:self];
+      parser = +[MMTConnectionManager sharedInstance];
+      [parser removeConnection:self];
     }
 
     goto LABEL_14;
@@ -335,13 +335,13 @@ LABEL_9:
   }
 
   [(MMTConnection *)self sendMessage:&off_100011408];
-  v9 = [(MMTConnection *)self workQueue];
+  parser = [(MMTConnection *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002668;
   block[3] = &unk_100010798;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(parser, block);
 LABEL_14:
 }
 

@@ -2,9 +2,9 @@
 - (SBAppContainerViewController)appVCBackReference;
 - (double)_statusBarAlpha;
 - (int64_t)_fallbackInterfaceOrientation;
-- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)a3;
+- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)orientation;
 - (int64_t)_statusBarStyle;
-- (int64_t)_statusBarStyleForPartWithIdentifier:(id)a3 suppressingInherited:(BOOL)a4;
+- (int64_t)_statusBarStyleForPartWithIdentifier:(id)identifier suppressingInherited:(BOOL)inherited;
 - (int64_t)overrideStatusBarStyle;
 @end
 
@@ -12,8 +12,8 @@
 
 - (int64_t)_statusBarStyle
 {
-  v3 = [(_SBAppContainerStatusBarStateProxy *)self overrideStatusBarStyle];
-  if (v3 == -1)
+  overrideStatusBarStyle = [(_SBAppContainerStatusBarStateProxy *)self overrideStatusBarStyle];
+  if (overrideStatusBarStyle == -1)
   {
     v5.receiver = self;
     v5.super_class = _SBAppContainerStatusBarStateProxy;
@@ -23,25 +23,25 @@
   else
   {
 
-    return _SBStatusBarStyleFromLegacyStyle(v3);
+    return _SBStatusBarStyleFromLegacyStyle(overrideStatusBarStyle);
   }
 }
 
-- (int64_t)_statusBarStyleForPartWithIdentifier:(id)a3 suppressingInherited:(BOOL)a4
+- (int64_t)_statusBarStyleForPartWithIdentifier:(id)identifier suppressingInherited:(BOOL)inherited
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_SBAppContainerStatusBarStateProxy *)self overrideStatusBarStyle];
-  if (v7 == -1)
+  inheritedCopy = inherited;
+  identifierCopy = identifier;
+  overrideStatusBarStyle = [(_SBAppContainerStatusBarStateProxy *)self overrideStatusBarStyle];
+  if (overrideStatusBarStyle == -1)
   {
     v11.receiver = self;
     v11.super_class = _SBAppContainerStatusBarStateProxy;
-    v8 = [(SBDeviceApplicationSceneStatusBarStateProxy *)&v11 _statusBarStyleForPartWithIdentifier:v6 suppressingInherited:v4];
+    v8 = [(SBDeviceApplicationSceneStatusBarStateProxy *)&v11 _statusBarStyleForPartWithIdentifier:identifierCopy suppressingInherited:inheritedCopy];
   }
 
   else
   {
-    v8 = _SBStatusBarStyleFromLegacyStyle(v7);
+    v8 = _SBStatusBarStyleFromLegacyStyle(overrideStatusBarStyle);
   }
 
   v9 = v8;
@@ -52,11 +52,11 @@
 - (double)_statusBarAlpha
 {
   WeakRetained = objc_loadWeakRetained(&self->_appVCBackReference);
-  v4 = [WeakRetained _applicationSceneViewController];
+  _applicationSceneViewController = [WeakRetained _applicationSceneViewController];
 
-  if (v4)
+  if (_applicationSceneViewController)
   {
-    [v4 statusBarAlpha];
+    [_applicationSceneViewController statusBarAlpha];
   }
 
   else
@@ -74,31 +74,31 @@
 - (int64_t)overrideStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_appVCBackReference);
-  v3 = [WeakRetained _applicationSceneViewController];
+  _applicationSceneViewController = [WeakRetained _applicationSceneViewController];
 
-  if (v3)
+  if (_applicationSceneViewController)
   {
-    v4 = [v3 overrideStatusBarStyle];
+    overrideStatusBarStyle = [_applicationSceneViewController overrideStatusBarStyle];
   }
 
   else
   {
-    v4 = -1;
+    overrideStatusBarStyle = -1;
   }
 
-  return v4;
+  return overrideStatusBarStyle;
 }
 
-- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)a3
+- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_appVCBackReference);
-  v6 = [WeakRetained _overrideStatusBarOrientationGivenFallbackOrientation:a3];
+  v6 = [WeakRetained _overrideStatusBarOrientationGivenFallbackOrientation:orientation];
 
   if (!v6)
   {
     v8.receiver = self;
     v8.super_class = _SBAppContainerStatusBarStateProxy;
-    return [(SBDeviceApplicationSceneStatusBarStateProxy *)&v8 _statusBarOrientationGivenFallbackOrientation:a3];
+    return [(SBDeviceApplicationSceneStatusBarStateProxy *)&v8 _statusBarOrientationGivenFallbackOrientation:orientation];
   }
 
   return v6;
@@ -107,9 +107,9 @@
 - (int64_t)_fallbackInterfaceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_appVCBackReference);
-  v3 = [WeakRetained contentOrientation];
+  contentOrientation = [WeakRetained contentOrientation];
 
-  return v3;
+  return contentOrientation;
 }
 
 - (SBAppContainerViewController)appVCBackReference

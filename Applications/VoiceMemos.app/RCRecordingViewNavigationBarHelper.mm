@@ -5,61 +5,61 @@
 - (void)applyButtonAction;
 - (void)cancelButtonAction;
 - (void)displayPlaybackSettings;
-- (void)doneButtonAction:(id)a3;
+- (void)doneButtonAction:(id)action;
 - (void)handleTrim;
-- (void)setActivityMode:(int64_t)a3;
-- (void)setCanSave:(BOOL)a3;
-- (void)setCanUndo:(BOOL)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setDoneButtonItemShowsMenu:(BOOL)a3;
-- (void)setHasCustomizedPlaybackSettings:(BOOL)a3;
-- (void)setHasNoTranscribableContent:(BOOL)a3;
-- (void)setIsTranscriptViewDisplayed:(BOOL)a3;
-- (void)setMoreActionsMenu:(id)a3;
-- (void)setNavigationItem:(id)a3;
+- (void)setActivityMode:(int64_t)mode;
+- (void)setCanSave:(BOOL)save;
+- (void)setCanUndo:(BOOL)undo;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setDoneButtonItemShowsMenu:(BOOL)menu;
+- (void)setHasCustomizedPlaybackSettings:(BOOL)settings;
+- (void)setHasNoTranscribableContent:(BOOL)content;
+- (void)setIsTranscriptViewDisplayed:(BOOL)displayed;
+- (void)setMoreActionsMenu:(id)menu;
+- (void)setNavigationItem:(id)item;
 - (void)toggleTranscriptView;
 - (void)undoButtonAction;
-- (void)updateHasPlaybackSettings:(BOOL)a3;
-- (void)updateTranscriptViewDisplayed:(BOOL)a3;
+- (void)updateHasPlaybackSettings:(BOOL)settings;
+- (void)updateTranscriptViewDisplayed:(BOOL)displayed;
 @end
 
 @implementation RCRecordingViewNavigationBarHelper
 
-- (void)setDoneButtonItemShowsMenu:(BOOL)a3
+- (void)setDoneButtonItemShowsMenu:(BOOL)menu
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__doneButtonItemShowsMenu) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__doneButtonItemShowsMenu) = menu;
+  selfCopy = self;
   sub_1000076C8();
 }
 
-- (void)setActivityMode:(int64_t)a3
+- (void)setActivityMode:(int64_t)mode
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__activityMode) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__activityMode) = mode;
+  selfCopy = self;
   sub_1000076C8();
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__displayMode) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__displayMode) = mode;
+  selfCopy = self;
   sub_1000076C8();
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 
-- (void)setCanUndo:(BOOL)a3
+- (void)setCanUndo:(BOOL)undo
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__canUndo) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__canUndo) = undo;
+  selfCopy = self;
   sub_10001BFBC();
 }
 
-- (void)setMoreActionsMenu:(id)a3
+- (void)setMoreActionsMenu:(id)menu
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__moreMenu);
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__moreMenu) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__moreMenu) = menu;
+  menuCopy = menu;
+  selfCopy = self;
 
   sub_1000076C8();
 }
@@ -71,39 +71,39 @@
   return Strong;
 }
 
-- (void)setNavigationItem:(id)a3
+- (void)setNavigationItem:(id)item
 {
   swift_unknownObjectWeakAssign();
-  v5 = a3;
-  v6 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_1000076C8();
 }
 
-- (void)setCanSave:(BOOL)a3
+- (void)setCanSave:(BOOL)save
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__canSave) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__canSave) = save;
+  selfCopy = self;
   sub_1001B2B14();
 }
 
-- (void)setHasCustomizedPlaybackSettings:(BOOL)a3
+- (void)setHasCustomizedPlaybackSettings:(BOOL)settings
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__hasPlaybackSettings) = a3;
-  v4 = self;
-  sub_1001B4354(a3);
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__hasPlaybackSettings) = settings;
+  selfCopy = self;
+  sub_1001B4354(settings);
 }
 
-- (void)setIsTranscriptViewDisplayed:(BOOL)a3
+- (void)setIsTranscriptViewDisplayed:(BOOL)displayed
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__isTranscriptViewDisplayed) = a3;
-  v4 = self;
-  sub_1001B42E4(a3);
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__isTranscriptViewDisplayed) = displayed;
+  selfCopy = self;
+  sub_1001B42E4(displayed);
 }
 
-- (void)setHasNoTranscribableContent:(BOOL)a3
+- (void)setHasNoTranscribableContent:(BOOL)content
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__hasNoTranscribableContent) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC10VoiceMemos34RCRecordingViewNavigationBarHelper__hasNoTranscribableContent) = content;
+  selfCopy = self;
   sub_1001B2BFC();
 }
 
@@ -116,45 +116,45 @@
 
 - (void)displayPlaybackSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B3DEC();
 }
 
 - (void)toggleTranscriptView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B3E44();
 }
 
 - (void)handleTrim
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B3F14();
 }
 
 - (void)cancelButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B3F6C();
 }
 
 - (void)applyButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B3FC4();
 }
 
 - (void)undoButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B401C();
 }
 
-- (void)doneButtonAction:(id)a3
+- (void)doneButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -163,7 +163,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1001B410C(v6);
@@ -171,16 +171,16 @@
   sub_10010D150(v6);
 }
 
-- (void)updateTranscriptViewDisplayed:(BOOL)a3
+- (void)updateTranscriptViewDisplayed:(BOOL)displayed
 {
-  v4 = self;
-  sub_1001B42E4(a3);
+  selfCopy = self;
+  sub_1001B42E4(displayed);
 }
 
-- (void)updateHasPlaybackSettings:(BOOL)a3
+- (void)updateHasPlaybackSettings:(BOOL)settings
 {
-  v4 = self;
-  sub_1001B4354(a3);
+  selfCopy = self;
+  sub_1001B4354(settings);
 }
 
 - (_TtC10VoiceMemos34RCRecordingViewNavigationBarHelper)init

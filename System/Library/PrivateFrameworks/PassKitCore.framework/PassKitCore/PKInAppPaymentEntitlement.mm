@@ -1,11 +1,11 @@
 @interface PKInAppPaymentEntitlement
-- (PKInAppPaymentEntitlement)initWithToken:(id *)a3;
-- (void)_probeEntitlementsWithToken:(id *)a3;
+- (PKInAppPaymentEntitlement)initWithToken:(id *)token;
+- (void)_probeEntitlementsWithToken:(id *)token;
 @end
 
 @implementation PKInAppPaymentEntitlement
 
-- (PKInAppPaymentEntitlement)initWithToken:(id *)a3
+- (PKInAppPaymentEntitlement)initWithToken:(id *)token
 {
   v9.receiver = self;
   v9.super_class = PKInAppPaymentEntitlement;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0[4];
-    v8[0] = *a3->var0;
+    v6 = *&token->var0[4];
+    v8[0] = *token->var0;
     v8[1] = v6;
     [(PKInAppPaymentEntitlement *)v4 _probeEntitlementsWithToken:v8];
   }
@@ -22,12 +22,12 @@
   return v5;
 }
 
-- (void)_probeEntitlementsWithToken:(id *)a3
+- (void)_probeEntitlementsWithToken:(id *)token
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E695E480];
-  v5 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(v4, &token);
   if (v6)
@@ -101,7 +101,7 @@
         _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Client has merchant identifiers: %@", &token, 0xCu);
       }
 
-      v21 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
@@ -126,7 +126,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v21 addObject:{v27, v30}];
+              [array addObject:{v27, v30}];
             }
 
             ++v26;
@@ -140,7 +140,7 @@
       }
 
       CFRelease(v14);
-      v28 = [v21 copy];
+      v28 = [array copy];
       merchantIdentifiers = self->_merchantIdentifiers;
       self->_merchantIdentifiers = v28;
     }

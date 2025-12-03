@@ -1,5 +1,5 @@
 @interface AVMobileChromelessPlaybackControlButton
-+ (AVMobileChromelessPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)a3 withStyleSheet:(id)a4 withPlaybackControlButtonType:(unint64_t)a5;
++ (AVMobileChromelessPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)identifier withStyleSheet:(id)sheet withPlaybackControlButtonType:(unint64_t)type;
 - (CGSize)intrinsicContentSize;
 - (id)pointerTargetView;
 - (uint64_t)_glyphForCurrentSkipInterval;
@@ -11,30 +11,30 @@
 - (void)_updateTintColor;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setButtonMicaPackage:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageName:(id)a3;
-- (void)setPlaybackControlButtonIconState:(id)a3;
-- (void)setSkipInterval:(id *)a3;
-- (void)setStyleSheet:(id)a3;
+- (void)setButtonMicaPackage:(id)package;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageName:(id)name;
+- (void)setPlaybackControlButtonIconState:(id)state;
+- (void)setSkipInterval:(id *)interval;
+- (void)setStyleSheet:(id)sheet;
 - (void)tintColorDidChange;
 @end
 
 @implementation AVMobileChromelessPlaybackControlButton
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = AVMobileChromelessPlaybackControlButton;
-  [(AVButton *)&v8 setImageName:v4];
+  [(AVButton *)&v8 setImageName:nameCopy];
   if (self->_playbackControlButtonType - 1 <= 1)
   {
     v5 = +[AVKitGlobalSettings shared];
     if ([v5 animatedSkipButtonsEnabled])
     {
-      if ([v4 isEqualToString:@"gobackward.10"])
+      if ([nameCopy isEqualToString:@"gobackward.10"])
       {
 
 LABEL_8:
@@ -44,7 +44,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v7 = [v4 isEqualToString:@"goforward.10"];
+      v7 = [nameCopy isEqualToString:@"goforward.10"];
 
       if (v7)
       {
@@ -68,9 +68,9 @@ LABEL_9:
 
 - (void)_setupMicaPackageIfNeeded
 {
-  if (a1 && !*(a1 + 1288) && (*(a1 + 1072) & 1) == 0)
+  if (self && !*(self + 1288) && (*(self + 1072) & 1) == 0)
   {
-    if (*(a1 + 1048))
+    if (*(self + 1048))
     {
       v2 = @"IntervalSkipGlyph";
     }
@@ -81,15 +81,15 @@ LABEL_9:
     }
 
     v3 = v2;
-    *(a1 + 1072) = 1;
-    objc_initWeak(&location, a1);
-    v4 = [a1 effectiveUserInterfaceLayoutDirection];
+    *(self + 1072) = 1;
+    objc_initWeak(&location, self);
+    effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__block_invoke;
     v5[3] = &unk_1E7209E08;
     objc_copyWeak(&v6, &location);
-    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:v3 layoutDirection:v4 completion:v5];
+    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:v3 layoutDirection:effectiveUserInterfaceLayoutDirection completion:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -97,29 +97,29 @@ LABEL_9:
 
 - (void)_updateImageViewHiddenState
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 1048) == 2)
+    if (*(self + 1048) == 2)
     {
-      v2 = [a1 imageName];
-      if ([v2 isEqualToString:@"forward.end.alt.fill"])
+      imageName = [self imageName];
+      if ([imageName isEqualToString:@"forward.end.alt.fill"])
       {
         v3 = 1;
       }
 
       else
       {
-        v3 = *(a1 + 1073);
+        v3 = *(self + 1073);
       }
     }
 
     else
     {
-      v3 = *(a1 + 1073);
+      v3 = *(self + 1073);
     }
 
-    v4 = [a1 imageView];
-    [v4 setHidden:v3];
+    imageView = [self imageView];
+    [imageView setHidden:v3];
   }
 }
 
@@ -135,27 +135,27 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = AVMobileChromelessPlaybackControlButton;
-  [(AVButton *)&v4 setEnabled:a3];
+  [(AVButton *)&v4 setEnabled:enabled];
   [(AVMobileChromelessPlaybackControlButton *)self _updateEnabledState];
 }
 
 - (void)_updateEnabledState
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 isEnabled];
-    v7 = [a1 buttonMicaPackage];
-    v3 = [v7 sublayerWithName:@"origin"];
+    isEnabled = [self isEnabled];
+    buttonMicaPackage = [self buttonMicaPackage];
+    v3 = [buttonMicaPackage sublayerWithName:@"origin"];
     v8 = 0.0;
-    v4 = [a1 tintColor];
-    [v4 getWhite:0 alpha:&v8];
+    tintColor = [self tintColor];
+    [tintColor getWhite:0 alpha:&v8];
 
     v5 = 0.5;
-    if (v2)
+    if (isEnabled)
     {
       v5 = 1.0;
     }
@@ -177,14 +177,14 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
 
 - (void)_updateTintColor
 {
-  if (a1)
+  if (self)
   {
     v2 = +[AVKitGlobalSettings shared];
-    v3 = [v2 prefersTintColorForPlaybackControlsView];
+    prefersTintColorForPlaybackControlsView = [v2 prefersTintColorForPlaybackControlsView];
 
-    if (v3)
+    if (prefersTintColorForPlaybackControlsView)
     {
-      v4 = a1[131];
+      v4 = self[131];
       if ((v4 - 1) >= 2)
       {
         if (v4)
@@ -192,18 +192,18 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
           return;
         }
 
-        v11 = [a1 tintColor];
-        CopyWithAlpha = CGColorCreateCopyWithAlpha([v11 CGColor], 1.0);
+        tintColor = [self tintColor];
+        CopyWithAlpha = CGColorCreateCopyWithAlpha([tintColor CGColor], 1.0);
 
-        v13 = [a1 buttonMicaPackage];
-        v7 = [v13 sublayerWithName:@"path-play-tint-shape"];
+        buttonMicaPackage = [self buttonMicaPackage];
+        v7 = [buttonMicaPackage sublayerWithName:@"path-play-tint-shape"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v7 setFillColor:CopyWithAlpha];
         }
 
-        v8 = [v13 sublayerWithName:@"path-pause-tint-shape"];
+        v8 = [buttonMicaPackage sublayerWithName:@"path-pause-tint-shape"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -213,26 +213,26 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
 
       else
       {
-        v5 = [a1 tintColor];
-        v6 = CGColorCreateCopyWithAlpha([v5 CGColor], 1.0);
+        tintColor2 = [self tintColor];
+        v6 = CGColorCreateCopyWithAlpha([tintColor2 CGColor], 1.0);
 
-        v13 = [a1 buttonMicaPackage];
-        v7 = [v13 sublayerWithName:@"trianglefill"];
+        buttonMicaPackage = [self buttonMicaPackage];
+        v7 = [buttonMicaPackage sublayerWithName:@"trianglefill"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v7 setFillColor:v6];
         }
 
-        v8 = [v13 sublayerWithName:@"ringstroke"];
+        v8 = [buttonMicaPackage sublayerWithName:@"ringstroke"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v8 setStrokeColor:v6];
         }
 
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%dfill", -[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
-        v10 = [v13 sublayerWithName:v9];
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%dfill", -[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](self)];
+        v10 = [buttonMicaPackage sublayerWithName:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -245,39 +245,39 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
 
 - (uint64_t)_glyphForCurrentSkipInterval
 {
-  time1 = *(a1 + 1304);
-  v7 = *(a1 + 1076);
+  time1 = *(self + 1304);
+  v7 = *(self + 1076);
   if (CMTimeCompare(&time1, &v7))
   {
-    time1 = *(a1 + 1304);
-    v7 = *(a1 + 1100);
+    time1 = *(self + 1304);
+    v7 = *(self + 1100);
     if (CMTimeCompare(&time1, &v7))
     {
-      time1 = *(a1 + 1304);
-      v7 = *(a1 + 1124);
+      time1 = *(self + 1304);
+      v7 = *(self + 1124);
       if (CMTimeCompare(&time1, &v7))
       {
-        time1 = *(a1 + 1304);
-        v7 = *(a1 + 1148);
+        time1 = *(self + 1304);
+        v7 = *(self + 1148);
         if (CMTimeCompare(&time1, &v7))
         {
-          time1 = *(a1 + 1304);
-          v7 = *(a1 + 1172);
+          time1 = *(self + 1304);
+          v7 = *(self + 1172);
           if (CMTimeCompare(&time1, &v7))
           {
-            time1 = *(a1 + 1304);
-            v7 = *(a1 + 1196);
+            time1 = *(self + 1304);
+            v7 = *(self + 1196);
             if (CMTimeCompare(&time1, &v7))
             {
-              time1 = *(a1 + 1304);
-              v7 = *(a1 + 1220);
+              time1 = *(self + 1304);
+              v7 = *(self + 1220);
               if (CMTimeCompare(&time1, &v7))
               {
-                time1 = *(a1 + 1304);
-                v7 = *(a1 + 1244);
+                time1 = *(self + 1304);
+                v7 = *(self + 1244);
                 if (CMTimeCompare(&time1, &v7))
                 {
-                  if (*(a1 + 1048) == 1)
+                  if (*(self + 1048) == 1)
                   {
                     return 24;
                   }
@@ -332,15 +332,15 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
     v3 = 0;
   }
 
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 numberingSystem];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  numberingSystem = [currentLocale numberingSystem];
 
-  if ([v5 isEqualToString:@"arab"])
+  if ([numberingSystem isEqualToString:@"arab"])
   {
     v2 = v3 | 8;
   }
 
-  else if ([v5 isEqualToString:@"deva"])
+  else if ([numberingSystem isEqualToString:@"deva"])
   {
     v2 = v3 | 0x10;
   }
@@ -374,11 +374,11 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
       [(AVMobileChromelessPlaybackControlButton *)self _updateMicaPackage];
     }
 
-    v3 = [(AVMobileChromelessPlaybackControlButton *)self buttonMicaPackageContainerView];
-    v4 = v3;
-    if (v3)
+    buttonMicaPackageContainerView = [(AVMobileChromelessPlaybackControlButton *)self buttonMicaPackageContainerView];
+    v4 = buttonMicaPackageContainerView;
+    if (buttonMicaPackageContainerView)
     {
-      [v3 transform];
+      [buttonMicaPackageContainerView transform];
     }
 
     else
@@ -395,26 +395,26 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [(AVMobileChromelessPlaybackControlButton *)self buttonMicaPackageContainerView];
-      [v14 setFrame:{v7, v9, v11, v13}];
+      buttonMicaPackageContainerView2 = [(AVMobileChromelessPlaybackControlButton *)self buttonMicaPackageContainerView];
+      [buttonMicaPackageContainerView2 setFrame:{v7, v9, v11, v13}];
 
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v15 = [(AVButton *)self micaPackage];
-      v16 = [v15 rootLayer];
+      micaPackage = [(AVButton *)self micaPackage];
+      rootLayer = [micaPackage rootLayer];
       UIRectGetCenter();
-      [v16 setPosition:?];
+      [rootLayer setPosition:?];
 
       [MEMORY[0x1E6979518] commit];
     }
 
     else
     {
-      v17 = [(AVButton *)self micaPackage];
-      v18 = [v17 rootLayer];
+      micaPackage2 = [(AVButton *)self micaPackage];
+      rootLayer2 = [micaPackage2 rootLayer];
       [(AVMobileChromelessPlaybackControlButton *)self bounds];
       UIRectGetCenter();
-      [v18 setPosition:?];
+      [rootLayer2 setPosition:?];
     }
   }
 
@@ -430,36 +430,36 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
   v29.size.width = width;
   v29.size.height = height;
   [(UIView *)highlightView setCenter:MidX, CGRectGetMidY(v29)];
-  v25 = [(UIView *)self->_highlightView layer];
-  [v25 setCornerRadius:height * 0.5];
+  layer = [(UIView *)self->_highlightView layer];
+  [layer setCornerRadius:height * 0.5];
 }
 
 - (void)_updateMicaPackage
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 buttonMicaPackage];
-    if (v2)
+    buttonMicaPackage = [self buttonMicaPackage];
+    if (buttonMicaPackage)
     {
-      v3 = [a1 avkit_isBeingScrolled];
+      avkit_isBeingScrolled = [self avkit_isBeingScrolled];
     }
 
     else
     {
-      v3 = 0;
+      avkit_isBeingScrolled = 0;
     }
 
-    v4 = [v2 rootLayer];
-    v5 = [v4 superlayer];
-    v6 = [*(a1 + 1296) layer];
+    rootLayer = [buttonMicaPackage rootLayer];
+    superlayer = [rootLayer superlayer];
+    layer = [*(self + 1296) layer];
 
-    v7 = [a1 playbackControlButtonIconState];
-    [v2 setState:v7 color:0];
+    playbackControlButtonIconState = [self playbackControlButtonIconState];
+    [buttonMicaPackage setState:playbackControlButtonIconState color:0];
 
-    v8 = [v2 rootLayer];
+    rootLayer2 = [buttonMicaPackage rootLayer];
     LODWORD(v9) = 1.0;
-    [v8 setOpacity:v9];
+    [rootLayer2 setOpacity:v9];
 
     v10 = _AVLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -467,19 +467,19 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
       LODWORD(buf.m11) = 136315650;
       *(&buf.m11 + 4) = "[AVMobileChromelessPlaybackControlButton _updateMicaPackage]";
       WORD2(buf.m12) = 1024;
-      *(&buf.m12 + 6) = v3;
+      *(&buf.m12 + 6) = avkit_isBeingScrolled;
       WORD1(buf.m13) = 1024;
-      HIDWORD(buf.m13) = [a1 avkit_isBeingScrolled];
+      HIDWORD(buf.m13) = [self avkit_isBeingScrolled];
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s : prefers images: %d, isBeingScrolled: %d", &buf, 0x18u);
     }
 
-    if ((v3 & (v5 != v6)) != 1)
+    if ((avkit_isBeingScrolled & (superlayer != layer)) != 1)
     {
-      [(AVMobileChromelessPlaybackControlButton *)a1 _updateImageViewHiddenState];
-      v18 = [v2 rootLayer];
-      v19 = [v18 superlayer];
-      v20 = [*(a1 + 1296) layer];
-      v21 = v19 == v20;
+      [(AVMobileChromelessPlaybackControlButton *)self _updateImageViewHiddenState];
+      rootLayer3 = [buttonMicaPackage rootLayer];
+      superlayer2 = [rootLayer3 superlayer];
+      layer2 = [*(self + 1296) layer];
+      v21 = superlayer2 == layer2;
 
       if (!v21)
       {
@@ -493,40 +493,40 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
 
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v23 = [a1 layer];
-        [v23 setCompositingFilter:0];
+        layer3 = [self layer];
+        [layer3 setCompositingFilter:0];
 
-        v24 = [*(a1 + 1296) layer];
-        [v24 setCompositingFilter:0];
+        layer4 = [*(self + 1296) layer];
+        [layer4 setCompositingFilter:0];
 
-        v25 = [*(a1 + 1296) layer];
-        v26 = [v2 rootLayer];
-        [v25 addSublayer:v26];
+        layer5 = [*(self + 1296) layer];
+        rootLayer4 = [buttonMicaPackage rootLayer];
+        [layer5 addSublayer:rootLayer4];
 
-        v27 = *(a1 + 1048);
+        v27 = *(self + 1048);
         if (v27 == 1)
         {
-          v28 = [v2 sublayerWithName:@"flip"];
+          v28 = [buttonMicaPackage sublayerWithName:@"flip"];
           memset(&buf, 0, sizeof(buf));
           CATransform3DMakeRotation(&buf, 3.14159265, 0.0, 1.0, 0.0);
           time2 = buf;
           [v28 setTransform:&time2];
 
-          v27 = *(a1 + 1048);
+          v27 = *(self + 1048);
         }
 
         if ((v27 - 1) <= 1)
         {
-          [(AVMobileChromelessPlaybackControlButton *)a1 _updateGlyphSkipInterval];
+          [(AVMobileChromelessPlaybackControlButton *)self _updateGlyphSkipInterval];
         }
 
-        [(AVMobileChromelessPlaybackControlButton *)a1 _updateTintColor];
-        [(AVMobileChromelessPlaybackControlButton *)a1 _updateEnabledState];
-        [a1 addSubview:*(a1 + 1296)];
+        [(AVMobileChromelessPlaybackControlButton *)self _updateTintColor];
+        [(AVMobileChromelessPlaybackControlButton *)self _updateEnabledState];
+        [self addSubview:*(self + 1296)];
         [MEMORY[0x1E6979518] commit];
       }
 
-      v29 = *(a1 + 1048);
+      v29 = *(self + 1048);
       if (v29)
       {
         v30 = 3.1;
@@ -537,7 +537,7 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
         v30 = 1.0;
       }
 
-      v31 = *(a1 + 1272);
+      v31 = *(self + 1272);
       if (v29)
       {
         [v31 secondaryPlaybackControlsFont];
@@ -549,23 +549,23 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
       }
       v32 = ;
       [v32 pointSize];
-      [v2 setTargetSize:{v30 * v33, v30 * v33}];
-      [a1 bounds];
+      [buttonMicaPackage setTargetSize:{v30 * v33, v30 * v33}];
+      [self bounds];
       UIRectGetCenter();
       v35 = v34;
       v37 = v36;
-      v38 = [v2 rootLayer];
-      [v38 position];
+      rootLayer5 = [buttonMicaPackage rootLayer];
+      [rootLayer5 position];
       v41 = v37 == v40 && v35 == v39;
 
       if (!v41)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v42 = [v2 rootLayer];
-        [a1 bounds];
+        rootLayer6 = [buttonMicaPackage rootLayer];
+        [self bounds];
         UIRectGetCenter();
-        [v42 setPosition:?];
+        [rootLayer6 setPosition:?];
 
         [MEMORY[0x1E6979518] commit];
       }
@@ -573,24 +573,24 @@ void __68__AVMobileChromelessPlaybackControlButton__setupMicaPackageIfNeeded__bl
       goto LABEL_66;
     }
 
-    if (*(a1 + 1074))
+    if (*(self + 1074))
     {
 LABEL_66:
 
       return;
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v11 = MEMORY[0x1E69DCAB8];
-    v12 = *(a1 + 1048);
+    v12 = *(self + 1048);
     if (v12 == 2)
     {
-      v43 = [a1 imageName];
-      v44 = [v43 isEqualToString:@"forward.end.alt.fill"];
+      imageName = [self imageName];
+      v44 = [imageName isEqualToString:@"forward.end.alt.fill"];
 
       if (v44)
       {
-        v17 = @"AVMobileImageNameNoImage";
+        imageName4 = @"AVMobileImageNameNoImage";
         v45 = @"AVMobileImageNameNoImage";
 LABEL_65:
         v55[0] = MEMORY[0x1E69E9820];
@@ -598,7 +598,7 @@ LABEL_65:
         v55[2] = __61__AVMobileChromelessPlaybackControlButton__updateMicaPackage__block_invoke;
         v55[3] = &unk_1E7209E30;
         objc_copyWeak(&v56, &location);
-        [v11 avkit_imageNamed:v17 completion:v55];
+        [v11 avkit_imageNamed:imageName4 completion:v55];
 
         objc_destroyWeak(&v56);
         objc_destroyWeak(&location);
@@ -614,11 +614,11 @@ LABEL_65:
       }
 
       v13 = _imageNameForMicaPackageState_imageNamesForStates_14376;
-      v14 = [a1 playbackControlButtonIconState];
-      v15 = v14;
-      if (v14)
+      playbackControlButtonIconState2 = [self playbackControlButtonIconState];
+      v15 = playbackControlButtonIconState2;
+      if (playbackControlButtonIconState2)
       {
-        v16 = v14;
+        v16 = playbackControlButtonIconState2;
       }
 
       else
@@ -626,19 +626,19 @@ LABEL_65:
         v16 = @"pause";
       }
 
-      v17 = [v13 objectForKeyedSubscript:v16];
+      imageName4 = [v13 objectForKeyedSubscript:v16];
 
       goto LABEL_65;
     }
 
-    v46 = [a1 imageName];
-    v47 = [v46 hasPrefix:@"gobackward"];
-    v48 = [a1 imageName];
-    v49 = [v48 hasPrefix:@"goforward"];
+    imageName2 = [self imageName];
+    v47 = [imageName2 hasPrefix:@"gobackward"];
+    imageName3 = [self imageName];
+    v49 = [imageName3 hasPrefix:@"goforward"];
 
     if (v47 | v49)
     {
-      if (*(a1 + 1048) == 2)
+      if (*(self + 1048) == 2)
       {
         v50 = @"gobackward";
       }
@@ -649,55 +649,55 @@ LABEL_65:
       }
 
       v51 = v50;
-      *&buf.m11 = *(a1 + 1304);
-      buf.m13 = *(a1 + 1320);
-      *&time2.m11 = *(a1 + 1076);
-      time2.m13 = *(a1 + 1092);
+      *&buf.m11 = *(self + 1304);
+      buf.m13 = *(self + 1320);
+      *&time2.m11 = *(self + 1076);
+      time2.m13 = *(self + 1092);
       if (CMTimeCompare(&buf, &time2))
       {
-        *&buf.m11 = *(a1 + 1304);
-        buf.m13 = *(a1 + 1320);
-        *&time2.m11 = *(a1 + 1100);
-        time2.m13 = *(a1 + 1116);
+        *&buf.m11 = *(self + 1304);
+        buf.m13 = *(self + 1320);
+        *&time2.m11 = *(self + 1100);
+        time2.m13 = *(self + 1116);
         if (CMTimeCompare(&buf, &time2))
         {
-          *&buf.m11 = *(a1 + 1304);
-          buf.m13 = *(a1 + 1320);
-          *&time2.m11 = *(a1 + 1124);
-          time2.m13 = *(a1 + 1140);
+          *&buf.m11 = *(self + 1304);
+          buf.m13 = *(self + 1320);
+          *&time2.m11 = *(self + 1124);
+          time2.m13 = *(self + 1140);
           if (CMTimeCompare(&buf, &time2))
           {
-            *&buf.m11 = *(a1 + 1304);
-            buf.m13 = *(a1 + 1320);
-            *&time2.m11 = *(a1 + 1148);
-            time2.m13 = *(a1 + 1164);
+            *&buf.m11 = *(self + 1304);
+            buf.m13 = *(self + 1320);
+            *&time2.m11 = *(self + 1148);
+            time2.m13 = *(self + 1164);
             if (CMTimeCompare(&buf, &time2))
             {
-              *&buf.m11 = *(a1 + 1304);
-              buf.m13 = *(a1 + 1320);
-              *&time2.m11 = *(a1 + 1172);
-              time2.m13 = *(a1 + 1188);
+              *&buf.m11 = *(self + 1304);
+              buf.m13 = *(self + 1320);
+              *&time2.m11 = *(self + 1172);
+              time2.m13 = *(self + 1188);
               if (CMTimeCompare(&buf, &time2))
               {
-                *&buf.m11 = *(a1 + 1304);
-                buf.m13 = *(a1 + 1320);
-                *&time2.m11 = *(a1 + 1196);
-                time2.m13 = *(a1 + 1212);
+                *&buf.m11 = *(self + 1304);
+                buf.m13 = *(self + 1320);
+                *&time2.m11 = *(self + 1196);
+                time2.m13 = *(self + 1212);
                 if (CMTimeCompare(&buf, &time2))
                 {
-                  *&buf.m11 = *(a1 + 1304);
-                  buf.m13 = *(a1 + 1320);
-                  *&time2.m11 = *(a1 + 1220);
-                  time2.m13 = *(a1 + 1236);
+                  *&buf.m11 = *(self + 1304);
+                  buf.m13 = *(self + 1320);
+                  *&time2.m11 = *(self + 1220);
+                  time2.m13 = *(self + 1236);
                   if (CMTimeCompare(&buf, &time2))
                   {
-                    *&buf.m11 = *(a1 + 1304);
-                    buf.m13 = *(a1 + 1320);
-                    *&time2.m11 = *(a1 + 1244);
-                    time2.m13 = *(a1 + 1260);
+                    *&buf.m11 = *(self + 1304);
+                    buf.m13 = *(self + 1320);
+                    *&time2.m11 = *(self + 1244);
+                    time2.m13 = *(self + 1260);
                     if (CMTimeCompare(&buf, &time2))
                     {
-                      if (*(a1 + 1048) == 2)
+                      if (*(self + 1048) == 2)
                       {
                         v52 = @"minus";
                       }
@@ -757,12 +757,12 @@ LABEL_65:
         v53 = @"5";
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v51, v53];
+      imageName4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v51, v53];
     }
 
     else
     {
-      v17 = [a1 imageName];
+      imageName4 = [self imageName];
     }
 
     goto LABEL_65;
@@ -822,57 +822,57 @@ void __61__AVMobileChromelessPlaybackControlButton__updateMicaPackage__block_inv
 
 - (void)_updateGlyphSkipInterval
 {
-  if (a1)
+  if (self)
   {
-    v22 = [a1 buttonMicaPackage];
-    v2 = [v22 sublayerWithName:@"glyphs"];
-    v3 = [v2 sublayers];
-    v4 = [v3 count];
+    buttonMicaPackage = [self buttonMicaPackage];
+    v2 = [buttonMicaPackage sublayerWithName:@"glyphs"];
+    sublayers = [v2 sublayers];
+    v4 = [sublayers count];
 
     if (v4)
     {
       v5 = 0;
       do
       {
-        v6 = [v2 sublayers];
-        v7 = [v6 objectAtIndexedSubscript:v5];
+        sublayers2 = [v2 sublayers];
+        v7 = [sublayers2 objectAtIndexedSubscript:v5];
         [v7 setHidden:1];
 
         ++v5;
-        v8 = [v2 sublayers];
-        v9 = [v8 count];
+        sublayers3 = [v2 sublayers];
+        v9 = [sublayers3 count];
       }
 
       while (v9 > v5);
     }
 
-    v10 = [v2 sublayers];
-    v11 = [v10 objectAtIndexedSubscript:-[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
+    sublayers4 = [v2 sublayers];
+    v11 = [sublayers4 objectAtIndexedSubscript:-[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](self)];
     [v11 setHidden:0];
 
-    v12 = [v22 sublayerWithName:@"glyphs-mask"];
-    v13 = [v12 sublayers];
-    v14 = [v13 count];
+    v12 = [buttonMicaPackage sublayerWithName:@"glyphs-mask"];
+    sublayers5 = [v12 sublayers];
+    v14 = [sublayers5 count];
 
     if (v14)
     {
       v15 = 0;
       do
       {
-        v16 = [v12 sublayers];
-        v17 = [v16 objectAtIndexedSubscript:v15];
+        sublayers6 = [v12 sublayers];
+        v17 = [sublayers6 objectAtIndexedSubscript:v15];
         [v17 setHidden:1];
 
         ++v15;
-        v18 = [v12 sublayers];
-        v19 = [v18 count];
+        sublayers7 = [v12 sublayers];
+        v19 = [sublayers7 count];
       }
 
       while (v19 > v15);
     }
 
-    v20 = [v12 sublayers];
-    v21 = [v20 objectAtIndexedSubscript:-[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
+    sublayers8 = [v12 sublayers];
+    v21 = [sublayers8 objectAtIndexedSubscript:-[AVMobileChromelessPlaybackControlButton _glyphForCurrentSkipInterval](self)];
     [v21 setHidden:0];
   }
 }
@@ -894,8 +894,8 @@ void __72__AVMobileChromelessPlaybackControlButton__imageNameForMicaPackageState
   v5.receiver = self;
   v5.super_class = AVMobileChromelessPlaybackControlButton;
   [(AVMobileChromelessPlaybackControlButton *)&v5 didMoveToWindow];
-  v3 = [(AVMobileChromelessPlaybackControlButton *)self window];
-  if (v3)
+  window = [(AVMobileChromelessPlaybackControlButton *)self window];
+  if (window)
   {
     prefersMicaPackage = self->_prefersMicaPackage;
 
@@ -906,16 +906,16 @@ void __72__AVMobileChromelessPlaybackControlButton__imageNameForMicaPackageState
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v19.receiver = self;
   v19.super_class = AVMobileChromelessPlaybackControlButton;
-  if ([(AVMobileChromelessPlaybackControlButton *)&v19 isHighlighted]!= a3)
+  if ([(AVMobileChromelessPlaybackControlButton *)&v19 isHighlighted]!= highlighted)
   {
     v18.receiver = self;
     v18.super_class = AVMobileChromelessPlaybackControlButton;
-    [(AVButton *)&v18 setHighlighted:v3];
+    [(AVButton *)&v18 setHighlighted:highlightedCopy];
     if ([(UIViewPropertyAnimator *)self->_highlightAnimator isRunning]&& [(UIViewPropertyAnimator *)self->_highlightAnimator isInterruptible])
     {
       [(UIViewPropertyAnimator *)self->_highlightAnimator stopAnimation:1];
@@ -927,7 +927,7 @@ void __72__AVMobileChromelessPlaybackControlButton__imageNameForMicaPackageState
     [(UIViewPropertyAnimator *)self->_highlightAnimator fractionComplete];
     v7 = v6;
     objc_initWeak(&location, self);
-    if (v3)
+    if (highlightedCopy)
     {
       v8 = objc_alloc(MEMORY[0x1E69DD278]);
       v15[0] = MEMORY[0x1E69E9820];
@@ -1044,15 +1044,15 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
   }
 }
 
-- (void)setSkipInterval:(id *)a3
+- (void)setSkipInterval:(id *)interval
 {
   p_skipInterval = &self->_skipInterval;
   time1 = self->_skipInterval;
-  v7 = *a3;
+  v7 = *interval;
   if (CMTimeCompare(&time1, &v7))
   {
-    v6 = *&a3->var0;
-    p_skipInterval->epoch = a3->var3;
+    v6 = *&interval->var0;
+    p_skipInterval->epoch = interval->var3;
     *&p_skipInterval->value = v6;
     [(AVMobileChromelessPlaybackControlButton *)self _updateGlyphSkipInterval];
     [(AVMobileChromelessPlaybackControlButton *)self _updateTintColor];
@@ -1061,12 +1061,12 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
   }
 }
 
-- (void)setPlaybackControlButtonIconState:(id)a3
+- (void)setPlaybackControlButtonIconState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (![(NSString *)self->_playbackControlButtonIconState isEqualToString:?])
   {
-    objc_storeStrong(&self->_playbackControlButtonIconState, a3);
+    objc_storeStrong(&self->_playbackControlButtonIconState, state);
     [(AVMobileChromelessPlaybackControlButton *)self _updateMicaPackage];
   }
 }
@@ -1075,40 +1075,40 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
 {
   if (self->_prefersMicaPackage)
   {
-    v2 = self->_buttonMicaPackageContainerView;
+    imageView = self->_buttonMicaPackageContainerView;
   }
 
   else
   {
-    v2 = [(AVMobileChromelessPlaybackControlButton *)self imageView];
+    imageView = [(AVMobileChromelessPlaybackControlButton *)self imageView];
   }
 
-  return v2;
+  return imageView;
 }
 
-- (void)setButtonMicaPackage:(id)a3
+- (void)setButtonMicaPackage:(id)package
 {
-  v5 = a3;
-  if (self->_buttonMicaPackage != v5)
+  packageCopy = package;
+  if (self->_buttonMicaPackage != packageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonMicaPackage, a3);
-    v5 = v6;
+    v6 = packageCopy;
+    objc_storeStrong(&self->_buttonMicaPackage, package);
+    packageCopy = v6;
     if (v6)
     {
       [(AVMobileChromelessPlaybackControlButton *)self _updateMicaPackage];
-      v5 = v6;
+      packageCopy = v6;
     }
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v8 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     styleSheet = self->_styleSheet;
     if (self->_playbackControlButtonType)
     {
@@ -1124,19 +1124,19 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
     [(AVMobileChromelessPlaybackControlButton *)self setNeedsLayout];
 
     [(AVMobileChromelessPlaybackControlButton *)self setNeedsLayout];
-    v5 = v8;
+    sheetCopy = v8;
   }
 }
 
-+ (AVMobileChromelessPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)a3 withStyleSheet:(id)a4 withPlaybackControlButtonType:(unint64_t)a5
++ (AVMobileChromelessPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)identifier withStyleSheet:(id)sheet withPlaybackControlButtonType:(unint64_t)type
 {
-  v9 = a4;
-  v38.receiver = a1;
+  sheetCopy = sheet;
+  v38.receiver = self;
   v38.super_class = &OBJC_METACLASS___AVMobileChromelessPlaybackControlButton;
-  v10 = objc_msgSendSuper2(&v38, sel_customHighlightedAnimationButtonWithAccessibilityIdentifier_, a3);
+  v10 = objc_msgSendSuper2(&v38, sel_customHighlightedAnimationButtonWithAccessibilityIdentifier_, identifier);
   *(v10 + 1072) = 0;
-  objc_storeStrong((v10 + 1272), a4);
-  *(v10 + 1048) = a5;
+  objc_storeStrong((v10 + 1272), sheet);
+  *(v10 + 1048) = type;
   CMTimeMakeWithSeconds(&v37, 5.0, 600);
   v11 = *&v37.a;
   *(v10 + 1092) = v37.c;
@@ -1175,14 +1175,14 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
   *(v10 + 1296) = v19;
 
   [*(v10 + 1296) setUserInteractionEnabled:0];
-  v21 = [*(v10 + 1296) layer];
-  [v21 setAllowsGroupBlending:1];
+  layer = [*(v10 + 1296) layer];
+  [layer setAllowsGroupBlending:1];
 
   [v10 addSubview:*(v10 + 1296)];
-  if (a5)
+  if (type)
   {
-    v22 = [v9 secondaryPlaybackControlsFont];
-    [v10 setInlineFont:v22];
+    secondaryPlaybackControlsFont = [sheetCopy secondaryPlaybackControlsFont];
+    [v10 setInlineFont:secondaryPlaybackControlsFont];
 
     v23 = +[AVKitGlobalSettings shared];
     *(v10 + 1073) = [v23 animatedSkipButtonsEnabled];
@@ -1190,8 +1190,8 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
 
   else
   {
-    v24 = [v9 playPauseButtonFont];
-    [v10 setInlineFont:v24];
+    playPauseButtonFont = [sheetCopy playPauseButtonFont];
+    [v10 setInlineFont:playPauseButtonFont];
 
     *(v10 + 1073) = 1;
     [v10 setPlaybackControlButtonIconState:@"pause"];
@@ -1203,27 +1203,27 @@ void __58__AVMobileChromelessPlaybackControlButton_setHighlighted___block_invoke
 
   [*(v10 + 1056) setUserInteractionEnabled:0];
   v27 = *(v10 + 1056);
-  v28 = [MEMORY[0x1E69DC888] whiteColor];
-  [v27 setBackgroundColor:v28];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v27 setBackgroundColor:whiteColor];
 
   [*(v10 + 1056) setAlpha:0.0];
   [*(v10 + 1056) setFrame:{0.0, 0.0, 46.0, 46.0}];
-  v29 = [*(v10 + 1056) layer];
+  layer2 = [*(v10 + 1056) layer];
   [*(v10 + 1056) frame];
-  [v29 setCornerRadius:v30 * 0.5];
+  [layer2 setCornerRadius:v30 * 0.5];
 
   v31 = +[AVKitGlobalSettings shared];
-  LOBYTE(v28) = [v31 prefersTintColorForPlaybackControlsView];
+  LOBYTE(whiteColor) = [v31 prefersTintColorForPlaybackControlsView];
 
-  if ((v28 & 1) == 0)
+  if ((whiteColor & 1) == 0)
   {
-    v32 = [MEMORY[0x1E69DC888] whiteColor];
-    [v10 setTintColor:v32];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [v10 setTintColor:whiteColor2];
   }
 
   [v10 setAutoresizingMask:0];
-  v33 = [v10 imageView];
-  [v33 setContentMode:1];
+  imageView = [v10 imageView];
+  [imageView setContentMode:1];
 
   memset(&v37, 0, sizeof(v37));
   CGAffineTransformMakeScale(&v37, 1.4, 1.4);

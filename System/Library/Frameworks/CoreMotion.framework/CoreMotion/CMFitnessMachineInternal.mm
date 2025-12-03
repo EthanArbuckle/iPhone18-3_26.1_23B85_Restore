@@ -1,6 +1,6 @@
 @interface CMFitnessMachineInternal
 - (CMFitnessMachineInternal)init;
-- (void)_feedFitnessMachineData:(id)a3;
+- (void)_feedFitnessMachineData:(id)data;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -41,9 +41,9 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_feedFitnessMachineData:(id)a3
+- (void)_feedFitnessMachineData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, self, @"CMFitnessMachine.mm", 75, @"Invalid parameter not satisfying: %@", @"fitnessMachineData");
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = sub_19B6F716C;
   block[3] = &unk_1E7532A00;
-  block[4] = a3;
+  block[4] = data;
   block[5] = self;
   dispatch_async(fInternalQueue, block);
 }

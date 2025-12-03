@@ -1,24 +1,24 @@
 @interface KMMapper_SASyncSiriKitAppVocabulary
 - (KMMapper_SASyncSiriKitAppVocabulary)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_SASyncSiriKitAppVocabulary
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [v6 propertyForKey:*MEMORY[0x277D48AA0]];
+  v8 = [objectCopy propertyForKey:*MEMORY[0x277D48AA0]];
   v9 = [v8 _sa_mappedDictionaryWithBlock:&__block_literal_global];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v10 = [v9 allKeys];
-  v44 = [v10 countByEnumeratingWithState:&v60 objects:v65 count:16];
+  allKeys = [v9 allKeys];
+  v44 = [allKeys countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (!v44)
   {
     goto LABEL_24;
@@ -27,9 +27,9 @@
   v11 = 0;
   v12 = *v61;
   v41 = v9;
-  v42 = v6;
+  v42 = objectCopy;
   v39 = *v61;
-  v40 = v10;
+  v40 = allKeys;
   do
   {
     v13 = 0;
@@ -37,19 +37,19 @@
     {
       if (*v61 != v12)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allKeys);
       }
 
       v45 = v13;
       v14 = *(*(&v60 + 1) + 8 * v13);
-      v15 = self;
+      selfCopy = self;
       v16 = [(NSDictionary *)self->_ontologyNodeToFieldTypeMap objectForKey:v14];
       v17 = KVFieldTypeFromNumber();
 
       v49 = v17;
       if (!v17)
       {
-        self = v15;
+        self = selfCopy;
         goto LABEL_22;
       }
 
@@ -61,13 +61,13 @@
       v47 = [obj countByEnumeratingWithState:&v56 objects:v64 count:16];
       if (!v47)
       {
-        self = v15;
+        self = selfCopy;
         goto LABEL_21;
       }
 
       v18 = 0;
       v48 = *v57;
-      self = v15;
+      self = selfCopy;
       while (2)
       {
         for (i = 0; i != v47; ++i)
@@ -87,9 +87,9 @@
           if (!v23)
           {
             v18 = v24;
-            v6 = v42;
+            objectCopy = v42;
 LABEL_30:
-            KMMapperSetBuilderError(a5, v18);
+            KMMapperSetBuilderError(error, v18);
 
             v36 = 0;
             v9 = v41;
@@ -97,40 +97,40 @@ LABEL_30:
           }
 
           v51 = v21;
-          v25 = self;
+          selfCopy2 = self;
           v26 = self->_builder;
-          v27 = [v20 intentSlotValue];
+          intentSlotValue = [v20 intentSlotValue];
           v54 = v24;
-          v28 = [(KVItemBuilder *)v26 addFieldWithType:v49 value:v27 error:&v54];
+          v28 = [(KVItemBuilder *)v26 addFieldWithType:v49 value:intentSlotValue error:&v54];
           v18 = v54;
 
           if (!v28)
           {
 
 LABEL_27:
-            v6 = v42;
+            objectCopy = v42;
             goto LABEL_29;
           }
 
           v50 = v11;
           v29 = v7;
-          v30 = v25->_builder;
-          v31 = [v20 vocabularyIdentifier];
+          v30 = selfCopy2->_builder;
+          vocabularyIdentifier = [v20 vocabularyIdentifier];
           v53 = v18;
-          v32 = [(KVItemBuilder *)v30 addFieldWithType:20 value:v31 error:&v53];
+          v32 = [(KVItemBuilder *)v30 addFieldWithType:20 value:vocabularyIdentifier error:&v53];
           v33 = v53;
 
           if (!v32)
           {
             v18 = v33;
-            v6 = v42;
+            objectCopy = v42;
             v7 = v29;
 LABEL_29:
             v21 = v51;
             goto LABEL_30;
           }
 
-          v34 = v25->_builder;
+          v34 = selfCopy2->_builder;
           v52 = v33;
           v35 = [(KVItemBuilder *)v34 buildItemWithError:&v52];
           v18 = v52;
@@ -141,7 +141,7 @@ LABEL_29:
             goto LABEL_27;
           }
 
-          self = v25;
+          self = selfCopy2;
           [v29 addObject:v35];
 
           v11 = (v50 + 1);
@@ -157,9 +157,9 @@ LABEL_29:
       }
 
       v9 = v41;
-      v6 = v42;
+      objectCopy = v42;
       v12 = v39;
-      v10 = v40;
+      allKeys = v40;
 LABEL_21:
 
 LABEL_22:
@@ -167,7 +167,7 @@ LABEL_22:
     }
 
     while (v45 + 1 != v44);
-    v44 = [v10 countByEnumeratingWithState:&v60 objects:v65 count:16];
+    v44 = [allKeys countByEnumeratingWithState:&v60 objects:v65 count:16];
   }
 
   while (v44);

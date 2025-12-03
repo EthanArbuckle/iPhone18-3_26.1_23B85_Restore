@@ -10,7 +10,7 @@
 - (id)asyncValuePromise
 {
   v2 = dispatch_get_global_queue(0, 0);
-  v3 = [a1 asyncValuePromiseOnQueue:v2];
+  v3 = [self asyncValuePromiseOnQueue:v2];
 
   return v3;
 }
@@ -18,7 +18,7 @@
 - (void)asyncValueWithCompletion:()MTAdditions
 {
   v5 = dispatch_get_global_queue(0, 0);
-  [a1 asyncValueOnQueue:v5 withCompletion:a3];
+  [self asyncValueOnQueue:v5 withCompletion:a3];
 }
 
 - (void)asyncValueOnQueue:()MTAdditions withCompletion:
@@ -28,7 +28,7 @@
   v8[1] = 3221225472;
   v8[2] = __61__AMSBagValue_MTAdditions__asyncValueOnQueue_withCompletion___block_invoke;
   v8[3] = &unk_1E85692C8;
-  v8[4] = a1;
+  v8[4] = self;
   v9 = v6;
   v7 = v6;
   dispatch_async(a3, v8);
@@ -43,7 +43,7 @@
   v11[1] = 3221225472;
   v11[2] = __53__AMSBagValue_MTAdditions__asyncValuePromiseOnQueue___block_invoke;
   v11[3] = &unk_1E8569318;
-  v11[4] = a1;
+  v11[4] = self;
   v7 = v6;
   v12 = v7;
   dispatch_async(v5, v11);

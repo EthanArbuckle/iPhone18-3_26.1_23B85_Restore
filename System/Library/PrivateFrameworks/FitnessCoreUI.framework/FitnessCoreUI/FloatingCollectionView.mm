@@ -1,6 +1,6 @@
 @interface FloatingCollectionView
-- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)layoutSubviews;
 @end
 
@@ -18,15 +18,15 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for FloatingCollectionView();
-  v3 = self;
+  selfCopy = self;
   [(FloatingCollectionView *)&v6 layoutSubviews];
-  v4 = (v3 + OBJC_IVAR____TtC13FitnessCoreUI22FloatingCollectionView_onLayoutUpdate);
+  v4 = (selfCopy + OBJC_IVAR____TtC13FitnessCoreUI22FloatingCollectionView_onLayoutUpdate);
   swift_beginAccess();
   v5 = *v4;
   if (*v4)
   {
 
-    v5(v3);
+    v5(selfCopy);
 
     sub_20C38F958(v5);
   }
@@ -36,12 +36,12 @@
   }
 }
 
-- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -56,12 +56,12 @@
   v10[1] = 0;
   v14.receiver = self;
   v14.super_class = v11;
-  v12 = [(FloatingCollectionView *)&v14 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  height = [(FloatingCollectionView *)&v14 initWithFrame:layout collectionViewLayout:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
-- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI22FloatingCollectionView)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -76,8 +76,8 @@
   v5[1] = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for FloatingCollectionView();
-  v6 = a3;
-  v7 = [(FloatingCollectionView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(FloatingCollectionView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

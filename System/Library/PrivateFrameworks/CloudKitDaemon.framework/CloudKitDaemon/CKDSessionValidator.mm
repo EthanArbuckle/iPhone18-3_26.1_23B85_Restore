@@ -1,12 +1,12 @@
 @interface CKDSessionValidator
-- (BOOL)validateAndReturnError:(id *)a3;
+- (BOOL)validateAndReturnError:(id *)error;
 @end
 
 @implementation CKDSessionValidator
 
-- (BOOL)validateAndReturnError:(id *)a3
+- (BOOL)validateAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_2250ECA2C();
 
   return 1;

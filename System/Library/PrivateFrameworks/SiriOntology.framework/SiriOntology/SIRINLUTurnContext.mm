@@ -2,12 +2,12 @@
 + (id)createEmptyPlaceholderLegacyNLContext;
 + (id)createEmptyPlaceholderNLContext;
 - (SIRINLUTurnContext)init;
-- (SIRINLUTurnContext)initWithCoder:(id)a3;
-- (SIRINLUTurnContext)initWithLegacyNLContext:(id)a3;
-- (SIRINLUTurnContext)initWithNLContext:(id)a3;
-- (SIRINLUTurnContext)initWithNLContext:(id)a3 legacyNLContext:(id)a4;
+- (SIRINLUTurnContext)initWithCoder:(id)coder;
+- (SIRINLUTurnContext)initWithLegacyNLContext:(id)context;
+- (SIRINLUTurnContext)initWithNLContext:(id)context;
+- (SIRINLUTurnContext)initWithNLContext:(id)context legacyNLContext:(id)lContext;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUTurnContext
@@ -15,52 +15,52 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SIRINLUTurnContext *)self nlContext];
-  v5 = [(SIRINLUTurnContext *)self nlContextNullable];
-  v6 = [(SIRINLUTurnContext *)self legacyNLContext];
-  v7 = [(SIRINLUTurnContext *)self legacyNLContextNullable];
-  v8 = [v3 stringWithFormat:@"{TurnContext\n  nlContext: %@\n  nlContextNullable: %@\n  legacyNLContext: %@\n  legacyNLContextNullable: %@\n}", v4, v5, v6, v7];
+  nlContext = [(SIRINLUTurnContext *)self nlContext];
+  nlContextNullable = [(SIRINLUTurnContext *)self nlContextNullable];
+  legacyNLContext = [(SIRINLUTurnContext *)self legacyNLContext];
+  legacyNLContextNullable = [(SIRINLUTurnContext *)self legacyNLContextNullable];
+  v8 = [v3 stringWithFormat:@"{TurnContext\n  nlContext: %@\n  nlContextNullable: %@\n  legacyNLContext: %@\n  legacyNLContextNullable: %@\n}", nlContext, nlContextNullable, legacyNLContext, legacyNLContextNullable];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUTurnContext *)self nlContext];
-  [v4 encodeObject:v5 forKey:@"nlContext"];
+  coderCopy = coder;
+  nlContext = [(SIRINLUTurnContext *)self nlContext];
+  [coderCopy encodeObject:nlContext forKey:@"nlContext"];
 
-  v6 = [(SIRINLUTurnContext *)self nlContextNullable];
-  [v4 encodeObject:v6 forKey:@"nlContextNullable"];
+  nlContextNullable = [(SIRINLUTurnContext *)self nlContextNullable];
+  [coderCopy encodeObject:nlContextNullable forKey:@"nlContextNullable"];
 
-  v7 = [(SIRINLUTurnContext *)self legacyNLContext];
-  [v4 encodeObject:v7 forKey:@"legacyNLContext"];
+  legacyNLContext = [(SIRINLUTurnContext *)self legacyNLContext];
+  [coderCopy encodeObject:legacyNLContext forKey:@"legacyNLContext"];
 
-  v8 = [(SIRINLUTurnContext *)self legacyNLContextNullable];
-  [v4 encodeObject:v8 forKey:@"legacyNLContextNullable"];
+  legacyNLContextNullable = [(SIRINLUTurnContext *)self legacyNLContextNullable];
+  [coderCopy encodeObject:legacyNLContextNullable forKey:@"legacyNLContextNullable"];
 }
 
-- (SIRINLUTurnContext)initWithCoder:(id)a3
+- (SIRINLUTurnContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SIRINLUTurnContext;
   v5 = [(SIRINLUTurnContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nlContext"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nlContext"];
     nlContext = v5->_nlContext;
     v5->_nlContext = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nlContextNullable"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nlContextNullable"];
     nlContextNullable = v5->_nlContextNullable;
     v5->_nlContextNullable = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legacyNLContext"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legacyNLContext"];
     legacyNLContext = v5->_legacyNLContext;
     v5->_legacyNLContext = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legacyNLContextNullable"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legacyNLContextNullable"];
     legacyNLContextNullable = v5->_legacyNLContextNullable;
     v5->_legacyNLContextNullable = v12;
   }
@@ -68,42 +68,42 @@
   return v5;
 }
 
-- (SIRINLUTurnContext)initWithLegacyNLContext:(id)a3
+- (SIRINLUTurnContext)initWithLegacyNLContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SIRINLUTurnContext;
   v6 = [(SIRINLUTurnContext *)&v11 init];
   if (v6)
   {
-    v7 = [objc_opt_class() createEmptyPlaceholderNLContext];
+    createEmptyPlaceholderNLContext = [objc_opt_class() createEmptyPlaceholderNLContext];
     nlContext = v6->_nlContext;
-    v6->_nlContext = v7;
+    v6->_nlContext = createEmptyPlaceholderNLContext;
 
     nlContextNullable = v6->_nlContextNullable;
     v6->_nlContextNullable = 0;
 
-    objc_storeStrong(&v6->_legacyNLContext, a3);
-    objc_storeStrong(&v6->_legacyNLContextNullable, a3);
+    objc_storeStrong(&v6->_legacyNLContext, context);
+    objc_storeStrong(&v6->_legacyNLContextNullable, context);
   }
 
   return v6;
 }
 
-- (SIRINLUTurnContext)initWithNLContext:(id)a3
+- (SIRINLUTurnContext)initWithNLContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SIRINLUTurnContext;
   v6 = [(SIRINLUTurnContext *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nlContext, a3);
-    objc_storeStrong(&v7->_nlContextNullable, a3);
-    v8 = [objc_opt_class() createEmptyPlaceholderLegacyNLContext];
+    objc_storeStrong(&v6->_nlContext, context);
+    objc_storeStrong(&v7->_nlContextNullable, context);
+    createEmptyPlaceholderLegacyNLContext = [objc_opt_class() createEmptyPlaceholderLegacyNLContext];
     legacyNLContext = v7->_legacyNLContext;
-    v7->_legacyNLContext = v8;
+    v7->_legacyNLContext = createEmptyPlaceholderLegacyNLContext;
 
     legacyNLContextNullable = v7->_legacyNLContextNullable;
     v7->_legacyNLContextNullable = 0;
@@ -112,20 +112,20 @@
   return v7;
 }
 
-- (SIRINLUTurnContext)initWithNLContext:(id)a3 legacyNLContext:(id)a4
+- (SIRINLUTurnContext)initWithNLContext:(id)context legacyNLContext:(id)lContext
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  lContextCopy = lContext;
   v12.receiver = self;
   v12.super_class = SIRINLUTurnContext;
   v9 = [(SIRINLUTurnContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nlContext, a3);
-    objc_storeStrong(&v10->_nlContextNullable, a3);
-    objc_storeStrong(&v10->_legacyNLContext, a4);
-    objc_storeStrong(&v10->_legacyNLContextNullable, a4);
+    objc_storeStrong(&v9->_nlContext, context);
+    objc_storeStrong(&v10->_nlContextNullable, context);
+    objc_storeStrong(&v10->_legacyNLContext, lContext);
+    objc_storeStrong(&v10->_legacyNLContextNullable, lContext);
   }
 
   return v10;
@@ -148,10 +148,10 @@
 + (id)createEmptyPlaceholderNLContext
 {
   v2 = [SIRINLUNLContext alloc];
-  v3 = [MEMORY[0x1E695DEC8] array];
-  v4 = [MEMORY[0x1E695DEC8] array];
-  v5 = [MEMORY[0x1E695DEC8] array];
-  v6 = [(SIRINLUNLContext *)v2 initWithSystemDialogActs:v3 activeTasks:v4 executedTasks:v5];
+  array = [MEMORY[0x1E695DEC8] array];
+  array2 = [MEMORY[0x1E695DEC8] array];
+  array3 = [MEMORY[0x1E695DEC8] array];
+  v6 = [(SIRINLUNLContext *)v2 initWithSystemDialogActs:array activeTasks:array2 executedTasks:array3];
 
   return v6;
 }

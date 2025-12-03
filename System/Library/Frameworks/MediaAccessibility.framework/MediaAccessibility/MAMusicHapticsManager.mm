@@ -2,13 +2,13 @@
 + (MAMusicHapticsManager)sharedManager;
 - (MAMusicHapticsManager)init;
 - (id)_hapticMusicServerClient;
-- (id)addStatusObserver:(id)a3;
-- (id)addStatusObserverBlock:(id)a3;
+- (id)addStatusObserver:(id)observer;
+- (id)addStatusObserverBlock:(id)block;
 - (void)_clearAHAPCache;
-- (void)appSupportsMusicHaptics:(id)a3 completionHandler:(id)a4;
-- (void)checkHapticTrackAvailabilityForMediaMatchingCode:(id)a3 completionHandler:(id)a4;
-- (void)removeStatusObserver:(id)a3;
-- (void)userInterfaceClient:(id)a3 processMessageFromServerAsynchronously:(id)a4 withIdentifier:(unint64_t)a5 completion:(id)a6;
+- (void)appSupportsMusicHaptics:(id)haptics completionHandler:(id)handler;
+- (void)checkHapticTrackAvailabilityForMediaMatchingCode:(id)code completionHandler:(id)handler;
+- (void)removeStatusObserver:(id)observer;
+- (void)userInterfaceClient:(id)client processMessageFromServerAsynchronously:(id)asynchronously withIdentifier:(unint64_t)identifier completion:(id)completion;
 @end
 
 @implementation MAMusicHapticsManager
@@ -37,18 +37,18 @@ uint64_t __38__MAMusicHapticsManager_sharedManager__block_invoke()
   v13.receiver = self;
   v13.super_class = MAMusicHapticsManager;
   v2 = [(MAMusicHapticsManager *)&v13 init];
-  v3 = [getAXSettingsClass() sharedInstance];
-  v4 = [v3 valueForKey:@"hapticMusicActive"];
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  v4 = [sharedInstance valueForKey:@"hapticMusicActive"];
   -[MAMusicHapticsManager setMusicHapticsActive:](v2, "setMusicHapticsActive:", [v4 BOOLValue]);
 
-  v5 = [getAXSettingsClass() sharedInstance];
+  sharedInstance2 = [getAXSettingsClass() sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __29__MAMusicHapticsManager_init__block_invoke;
   v11[3] = &unk_1E7A94108;
   v6 = v2;
   v12 = v6;
-  [v5 registerUpdateBlock:v11 forRetrieveSelector:sel_hapticMusicActive withListener:v6];
+  [sharedInstance2 registerUpdateBlock:v11 forRetrieveSelector:sel_hapticMusicActive withListener:v6];
 
   v7 = objc_opt_new();
   [(MAMusicHapticsManager *)v6 setAhapAvailableCache:v7];
@@ -93,9 +93,9 @@ uint64_t __40__MAMusicHapticsManager__clearAHAPCache__block_invoke(uint64_t a1)
 
 - (id)_hapticMusicServerClient
 {
-  v3 = [(MAMusicHapticsManager *)self client];
+  client = [(MAMusicHapticsManager *)self client];
 
-  if (!v3)
+  if (!client)
   {
     v17 = 0;
     v18 = &v17;
@@ -117,39 +117,39 @@ uint64_t __40__MAMusicHapticsManager__clearAHAPCache__block_invoke(uint64_t a1)
     _Block_object_dispose(&v17, 8);
     v6 = [v4 alloc];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
-    v10 = [v7 stringWithFormat:@"HapticMusicClientAPI-%@", v9];
-    v11 = [(MAMusicHapticsManager *)self _serviceName];
-    v12 = [v6 initWithIdentifier:v10 serviceBundleName:v11];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v10 = [v7 stringWithFormat:@"HapticMusicClientAPI-%@", bundleIdentifier];
+    _serviceName = [(MAMusicHapticsManager *)self _serviceName];
+    v12 = [v6 initWithIdentifier:v10 serviceBundleName:_serviceName];
     [(MAMusicHapticsManager *)self setClient:v12];
 
-    v13 = [(MAMusicHapticsManager *)self client];
-    [v13 setDelegate:self];
+    client2 = [(MAMusicHapticsManager *)self client];
+    [client2 setDelegate:self];
   }
 
-  v14 = [(MAMusicHapticsManager *)self client];
+  client3 = [(MAMusicHapticsManager *)self client];
 
-  return v14;
+  return client3;
 }
 
-- (void)appSupportsMusicHaptics:(id)a3 completionHandler:(id)a4
+- (void)appSupportsMusicHaptics:(id)haptics completionHandler:(id)handler
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  hapticsCopy = haptics;
+  handlerCopy = handler;
   v8 = HMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(MAMusicHapticsManager *)v6 appSupportsMusicHaptics:v8 completionHandler:v9, v10, v11, v12, v13, v14];
+    [(MAMusicHapticsManager *)hapticsCopy appSupportsMusicHaptics:v8 completionHandler:v9, v10, v11, v12, v13, v14];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (hapticsCopy)
     {
-      v15 = [(MAMusicHapticsManager *)self appSupportsCache];
-      v16 = [v15 objectForKeyedSubscript:v6];
+      appSupportsCache = [(MAMusicHapticsManager *)self appSupportsCache];
+      v16 = [appSupportsCache objectForKeyedSubscript:hapticsCopy];
 
       if (v16)
       {
@@ -159,59 +159,59 @@ uint64_t __40__MAMusicHapticsManager__clearAHAPCache__block_invoke(uint64_t a1)
           [(MAMusicHapticsManager *)v16 appSupportsMusicHaptics:v17 completionHandler:v18, v19, v20, v21, v22, v23];
         }
 
-        v7[2](v7, [v16 BOOLValue]);
+        handlerCopy[2](handlerCopy, [v16 BOOLValue]);
       }
 
       else
       {
-        v24 = [(MAMusicHapticsManager *)self appSupportedObservers];
+        appSupportedObservers = [(MAMusicHapticsManager *)self appSupportedObservers];
 
-        if (!v24)
+        if (!appSupportedObservers)
         {
           v25 = objc_opt_new();
           [(MAMusicHapticsManager *)self setAppSupportedObservers:v25];
         }
 
-        v26 = [MEMORY[0x1E696AFB0] UUID];
-        v27 = [v26 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
 
         v28 = objc_opt_new();
-        [v28 setObserver:v7];
-        v29 = [(MAMusicHapticsManager *)self appSupportedObservers];
-        [v29 setObject:v28 forKeyedSubscript:v27];
+        [v28 setObserver:handlerCopy];
+        appSupportedObservers2 = [(MAMusicHapticsManager *)self appSupportedObservers];
+        [appSupportedObservers2 setObject:v28 forKeyedSubscript:uUIDString];
 
         v34[0] = @"bundleIdentifier";
         v34[1] = @"uuid";
-        v35[0] = v6;
-        v35[1] = v27;
+        v35[0] = hapticsCopy;
+        v35[1] = uUIDString;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
-        v31 = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
-        v32 = [getAXAccessQueueClass() mainAccessQueue];
-        [v31 sendAsynchronousMessage:v30 withIdentifier:5 targetAccessQueue:v32 completion:0];
+        _hapticMusicServerClient = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
+        mainAccessQueue = [getAXAccessQueueClass() mainAccessQueue];
+        [_hapticMusicServerClient sendAsynchronousMessage:v30 withIdentifier:5 targetAccessQueue:mainAccessQueue completion:0];
       }
     }
 
     else
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkHapticTrackAvailabilityForMediaMatchingCode:(id)a3 completionHandler:(id)a4
+- (void)checkHapticTrackAvailabilityForMediaMatchingCode:(id)code completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([(MAMusicHapticsManager *)self musicHapticsEnabled]&& v6)
+    if ([(MAMusicHapticsManager *)self musicHapticsEnabled]&& codeCopy)
     {
-      v8 = [(MAMusicHapticsManager *)self ahapAvailableObservers];
+      ahapAvailableObservers = [(MAMusicHapticsManager *)self ahapAvailableObservers];
 
-      if (!v8)
+      if (!ahapAvailableObservers)
       {
         v9 = objc_opt_new();
         [(MAMusicHapticsManager *)self setAhapAvailableObservers:v9];
@@ -221,12 +221,12 @@ uint64_t __40__MAMusicHapticsManager__clearAHAPCache__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v31 = v6;
+        v31 = codeCopy;
         _os_log_impl(&dword_1B021E000, v10, OS_LOG_TYPE_DEFAULT, "Asking haptic track available: %@", buf, 0xCu);
       }
 
-      v11 = [(MAMusicHapticsManager *)self ahapAvailableCache];
-      v12 = [v11 objectForKeyedSubscript:v6];
+      ahapAvailableCache = [(MAMusicHapticsManager *)self ahapAvailableCache];
+      v12 = [ahapAvailableCache objectForKeyedSubscript:codeCopy];
 
       if (v12)
       {
@@ -238,26 +238,26 @@ uint64_t __40__MAMusicHapticsManager__clearAHAPCache__block_invoke(uint64_t a1)
           _os_log_impl(&dword_1B021E000, v13, OS_LOG_TYPE_INFO, "Has cached value: %@", buf, 0xCu);
         }
 
-        v7[2](v7, [v12 BOOLValue]);
+        handlerCopy[2](handlerCopy, [v12 BOOLValue]);
         goto LABEL_19;
       }
 
-      v14 = [MEMORY[0x1E696AFB0] UUID];
-      v15 = [v14 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
       v16 = objc_opt_new();
-      [v16 setObserver:v7];
-      v17 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
-      v18 = [v17 objectForKeyedSubscript:v6];
+      [v16 setObserver:handlerCopy];
+      pendingAvailableObservers = [(MAMusicHapticsManager *)self pendingAvailableObservers];
+      v18 = [pendingAvailableObservers objectForKeyedSubscript:codeCopy];
 
       if (v18)
       {
-        v19 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
-        v20 = [v19 objectForKeyedSubscript:v6];
+        pendingAvailableObservers2 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
+        v20 = [pendingAvailableObservers2 objectForKeyedSubscript:codeCopy];
 
         [v20 addObject:v16];
-        v21 = HMLog();
-        if (!os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+        _hapticMusicServerClient = HMLog();
+        if (!os_log_type_enabled(_hapticMusicServerClient, OS_LOG_TYPE_INFO))
         {
 LABEL_18:
 
@@ -265,39 +265,39 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
+        mainAccessQueue = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
         *buf = 138412546;
-        v31 = v6;
+        v31 = codeCopy;
         v32 = 2112;
-        v33 = v22;
-        _os_log_impl(&dword_1B021E000, v21, OS_LOG_TYPE_INFO, "Someone already asking for this code, will wait: %@ [%@]", buf, 0x16u);
+        v33 = mainAccessQueue;
+        _os_log_impl(&dword_1B021E000, _hapticMusicServerClient, OS_LOG_TYPE_INFO, "Someone already asking for this code, will wait: %@ [%@]", buf, 0x16u);
       }
 
       else
       {
-        v23 = [(MAMusicHapticsManager *)self ahapAvailableObservers];
-        [v23 setObject:v16 forKeyedSubscript:v15];
+        ahapAvailableObservers2 = [(MAMusicHapticsManager *)self ahapAvailableObservers];
+        [ahapAvailableObservers2 setObject:v16 forKeyedSubscript:uUIDString];
 
-        v29[0] = v6;
+        v29[0] = codeCopy;
         v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[MAMusicHapticsManager treatCodesAsAdamIDs](self, "treatCodesAsAdamIDs", @"code", @"treatAsAdamID"}];
         v28[2] = @"uuid";
         v29[1] = v24;
-        v29[2] = v15;
+        v29[2] = uUIDString;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3];
 
         v25 = objc_opt_new();
-        v26 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
-        [v26 setObject:v25 forKeyedSubscript:v6];
+        pendingAvailableObservers3 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
+        [pendingAvailableObservers3 setObject:v25 forKeyedSubscript:codeCopy];
 
-        v21 = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
-        v22 = [getAXAccessQueueClass() mainAccessQueue];
-        [v21 sendAsynchronousMessage:v20 withIdentifier:2 targetAccessQueue:v22 completion:0];
+        _hapticMusicServerClient = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
+        mainAccessQueue = [getAXAccessQueueClass() mainAccessQueue];
+        [_hapticMusicServerClient sendAsynchronousMessage:v20 withIdentifier:2 targetAccessQueue:mainAccessQueue completion:0];
       }
 
       goto LABEL_18;
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_20:
@@ -305,43 +305,43 @@ LABEL_20:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addStatusObserverBlock:(id)a3
+- (id)addStatusObserverBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__MAMusicHapticsManager_addStatusObserverBlock___block_invoke;
   v8[3] = &unk_1E7A94130;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(MAMusicHapticsManager *)self addStatusObserver:v8];
 
   return v6;
 }
 
-- (id)addStatusObserver:(id)a3
+- (id)addStatusObserver:(id)observer
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && [(MAMusicHapticsManager *)self musicHapticsEnabled])
+  observerCopy = observer;
+  if (observerCopy && [(MAMusicHapticsManager *)self musicHapticsEnabled])
   {
-    v5 = [(MAMusicHapticsManager *)self statusObservers];
+    statusObservers = [(MAMusicHapticsManager *)self statusObservers];
 
-    if (!v5)
+    if (!statusObservers)
     {
       v6 = objc_opt_new();
       [(MAMusicHapticsManager *)self setStatusObservers:v6];
     }
 
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v9 = objc_opt_new();
-    [v9 setObserver:v4];
-    v10 = [(MAMusicHapticsManager *)self statusObservers];
-    [v10 setObject:v9 forKeyedSubscript:v8];
+    [v9 setObserver:observerCopy];
+    statusObservers2 = [(MAMusicHapticsManager *)self statusObservers];
+    [statusObservers2 setObject:v9 forKeyedSubscript:uUIDString];
 
-    v18[0] = v8;
+    v18[0] = uUIDString;
     v17[0] = @"uuid";
     v17[1] = @"treatAsAdamID";
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[MAMusicHapticsManager treatCodesAsAdamIDs](self, "treatCodesAsAdamIDs")}];
@@ -350,54 +350,54 @@ LABEL_20:
     v18[2] = MEMORY[0x1E695E118];
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
-    v13 = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
-    v14 = [getAXAccessQueueClass() mainAccessQueue];
-    [v13 sendAsynchronousMessage:v12 withIdentifier:3 targetAccessQueue:v14 completion:0];
+    _hapticMusicServerClient = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
+    mainAccessQueue = [getAXAccessQueueClass() mainAccessQueue];
+    [_hapticMusicServerClient sendAsynchronousMessage:v12 withIdentifier:3 targetAccessQueue:mainAccessQueue completion:0];
   }
 
   else
   {
-    v8 = 0;
+    uUIDString = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return uUIDString;
 }
 
-- (void)userInterfaceClient:(id)a3 processMessageFromServerAsynchronously:(id)a4 withIdentifier:(unint64_t)a5 completion:(id)a6
+- (void)userInterfaceClient:(id)client processMessageFromServerAsynchronously:(id)asynchronously withIdentifier:(unint64_t)identifier completion:(id)completion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
+  asynchronouslyCopy = asynchronously;
+  completionCopy = completion;
   v11 = HMLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [(MAMusicHapticsManager *)v9 userInterfaceClient:v11 processMessageFromServerAsynchronously:v12 withIdentifier:v13 completion:v14, v15, v16, v17];
+    [(MAMusicHapticsManager *)asynchronouslyCopy userInterfaceClient:v11 processMessageFromServerAsynchronously:v12 withIdentifier:v13 completion:v14, v15, v16, v17];
   }
 
-  switch(a5)
+  switch(identifier)
   {
     case 2uLL:
-      v18 = [v9 objectForKeyedSubscript:@"uuid"];
+      v18 = [asynchronouslyCopy objectForKeyedSubscript:@"uuid"];
       if (v18)
       {
-        v32 = [(MAMusicHapticsManager *)self ahapAvailableObservers];
-        v20 = [v32 objectForKeyedSubscript:v18];
+        ahapAvailableObservers = [(MAMusicHapticsManager *)self ahapAvailableObservers];
+        v20 = [ahapAvailableObservers objectForKeyedSubscript:v18];
 
-        v33 = [v20 observer];
+        observer = [v20 observer];
 
-        if (v33)
+        if (observer)
         {
-          v34 = [v9 objectForKeyedSubscript:@"available"];
-          v35 = [v9 objectForKeyedSubscript:@"code"];
+          v34 = [asynchronouslyCopy objectForKeyedSubscript:@"available"];
+          v35 = [asynchronouslyCopy objectForKeyedSubscript:@"code"];
           objc_opt_class();
-          v36 = 0;
+          bOOLValue = 0;
           if ((objc_opt_isKindOfClass() & 1) != 0 && v35)
           {
-            v36 = [v34 BOOLValue];
-            v37 = [(MAMusicHapticsManager *)self ahapAvailableCache];
-            [v37 setObject:v34 forKeyedSubscript:v35];
+            bOOLValue = [v34 BOOLValue];
+            ahapAvailableCache = [(MAMusicHapticsManager *)self ahapAvailableCache];
+            [ahapAvailableCache setObject:v34 forKeyedSubscript:v35];
           }
 
           v47 = v34;
@@ -405,13 +405,13 @@ LABEL_20:
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v59 = v9;
+            v59 = asynchronouslyCopy;
             _os_log_impl(&dword_1B021E000, v38, OS_LOG_TYPE_DEFAULT, "Haptic track available: %@", buf, 0xCu);
           }
 
-          __110__MAMusicHapticsManager_userInterfaceClient_processMessageFromServerAsynchronously_withIdentifier_completion___block_invoke_2(v39, v20, v36);
-          v40 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
-          v41 = [v40 objectForKeyedSubscript:v35];
+          __110__MAMusicHapticsManager_userInterfaceClient_processMessageFromServerAsynchronously_withIdentifier_completion___block_invoke_2(v39, v20, bOOLValue);
+          pendingAvailableObservers = [(MAMusicHapticsManager *)self pendingAvailableObservers];
+          v41 = [pendingAvailableObservers objectForKeyedSubscript:v35];
           v51[0] = MEMORY[0x1E69E9820];
           v51[1] = 3221225472;
           v51[2] = __110__MAMusicHapticsManager_userInterfaceClient_processMessageFromServerAsynchronously_withIdentifier_completion___block_invoke_353;
@@ -419,16 +419,16 @@ LABEL_20:
           v42 = v35;
           v52 = v42;
           v53 = &__block_literal_global_349;
-          v54 = v36;
+          v54 = bOOLValue;
           [v41 enumerateObjectsUsingBlock:v51];
 
           if (v35)
           {
-            v43 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
-            [v43 setObject:0 forKeyedSubscript:v42];
+            pendingAvailableObservers2 = [(MAMusicHapticsManager *)self pendingAvailableObservers];
+            [pendingAvailableObservers2 setObject:0 forKeyedSubscript:v42];
           }
 
-          v23 = v47;
+          observer5 = v47;
           goto LABEL_35;
         }
 
@@ -437,46 +437,46 @@ LABEL_20:
 
       goto LABEL_37;
     case 5uLL:
-      v18 = [v9 objectForKeyedSubscript:@"uuid"];
+      v18 = [asynchronouslyCopy objectForKeyedSubscript:@"uuid"];
       if (v18)
       {
-        v26 = [(MAMusicHapticsManager *)self appSupportedObservers];
-        v20 = [v26 objectForKeyedSubscript:v18];
+        appSupportedObservers = [(MAMusicHapticsManager *)self appSupportedObservers];
+        v20 = [appSupportedObservers objectForKeyedSubscript:v18];
 
-        v27 = [v20 observer];
+        observer2 = [v20 observer];
 
-        if (v27)
+        if (observer2)
         {
-          v23 = [v9 objectForKeyedSubscript:@"supported"];
-          v28 = [v9 objectForKeyedSubscript:@"bundleIdentifier"];
+          observer5 = [asynchronouslyCopy objectForKeyedSubscript:@"supported"];
+          v28 = [asynchronouslyCopy objectForKeyedSubscript:@"bundleIdentifier"];
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v29 = [v23 BOOLValue];
+            bOOLValue2 = [observer5 BOOLValue];
             [(MAMusicHapticsManager *)self appSupportsCache];
-            v31 = v30 = v23;
+            v31 = v30 = observer5;
             [v31 setObject:v30 forKeyedSubscript:v28];
 
-            v23 = v30;
+            observer5 = v30;
           }
 
           else
           {
-            v29 = 0;
+            bOOLValue2 = 0;
           }
 
           v44 = HMLog();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v59 = v9;
+            v59 = asynchronouslyCopy;
             _os_log_impl(&dword_1B021E000, v44, OS_LOG_TYPE_DEFAULT, "App supports: %@", buf, 0xCu);
           }
 
           if ([MEMORY[0x1E696AF00] isMainThread])
           {
-            v45 = [v20 observer];
-            v45[2](v45, v29);
+            observer3 = [v20 observer];
+            observer3[2](observer3, bOOLValue2);
           }
 
           else
@@ -486,9 +486,9 @@ LABEL_20:
             block[2] = __110__MAMusicHapticsManager_userInterfaceClient_processMessageFromServerAsynchronously_withIdentifier_completion___block_invoke_358;
             block[3] = &unk_1E7A941A0;
             v49 = v20;
-            v50 = v29;
+            v50 = bOOLValue2;
             dispatch_async(MEMORY[0x1E69E96A0], block);
-            v45 = v49;
+            observer3 = v49;
           }
 
           goto LABEL_35;
@@ -501,30 +501,30 @@ LABEL_37:
 
       break;
     case 3uLL:
-      v18 = [v9 objectForKeyedSubscript:@"uuid"];
+      v18 = [asynchronouslyCopy objectForKeyedSubscript:@"uuid"];
       if (v18)
       {
-        v19 = [(MAMusicHapticsManager *)self statusObservers];
-        v20 = [v19 objectForKeyedSubscript:v18];
+        statusObservers = [(MAMusicHapticsManager *)self statusObservers];
+        v20 = [statusObservers objectForKeyedSubscript:v18];
 
-        v21 = [v20 observer];
+        observer4 = [v20 observer];
 
-        if (v21)
+        if (observer4)
         {
           v22 = HMLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v59 = v9;
+            v59 = asynchronouslyCopy;
             _os_log_impl(&dword_1B021E000, v22, OS_LOG_TYPE_DEFAULT, "Status update: %@", buf, 0xCu);
           }
 
           if ([MEMORY[0x1E696AF00] isMainThread])
           {
-            v23 = [v20 observer];
-            v24 = [v9 objectForKeyedSubscript:@"code"];
-            v25 = [v9 objectForKeyedSubscript:@"active"];
-            (v23)[2](v23, v24, [v25 BOOLValue]);
+            observer5 = [v20 observer];
+            v24 = [asynchronouslyCopy objectForKeyedSubscript:@"code"];
+            v25 = [asynchronouslyCopy objectForKeyedSubscript:@"active"];
+            (observer5)[2](observer5, v24, [v25 BOOLValue]);
           }
 
           else
@@ -535,10 +535,10 @@ LABEL_37:
             v55[3] = &unk_1E7A94158;
             v20 = v20;
             v56 = v20;
-            v57 = v9;
+            v57 = asynchronouslyCopy;
             dispatch_async(MEMORY[0x1E69E96A0], v55);
 
-            v23 = v56;
+            observer5 = v56;
           }
 
 LABEL_35:
@@ -552,7 +552,7 @@ LABEL_35:
       goto LABEL_37;
   }
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 
   v46 = *MEMORY[0x1E69E9840];
 }
@@ -627,28 +627,28 @@ void __110__MAMusicHapticsManager_userInterfaceClient_processMessageFromServerAs
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)removeStatusObserver:(id)a3
+- (void)removeStatusObserver:(id)observer
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(MAMusicHapticsManager *)self statusObservers];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    statusObservers = [(MAMusicHapticsManager *)self statusObservers];
+    v6 = [statusObservers objectForKeyedSubscript:observerCopy];
 
     if (v6)
     {
-      v7 = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
+      _hapticMusicServerClient = [(MAMusicHapticsManager *)self _hapticMusicServerClient];
       v12[0] = @"uuid";
       v12[1] = @"register";
-      v13[0] = v4;
+      v13[0] = observerCopy;
       v13[1] = MEMORY[0x1E695E110];
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-      v9 = [getAXAccessQueueClass() mainAccessQueue];
-      [v7 sendAsynchronousMessage:v8 withIdentifier:3 targetAccessQueue:v9 completion:0];
+      mainAccessQueue = [getAXAccessQueueClass() mainAccessQueue];
+      [_hapticMusicServerClient sendAsynchronousMessage:v8 withIdentifier:3 targetAccessQueue:mainAccessQueue completion:0];
 
-      v10 = [(MAMusicHapticsManager *)self statusObservers];
-      [v10 setObject:0 forKeyedSubscript:v4];
+      statusObservers2 = [(MAMusicHapticsManager *)self statusObservers];
+      [statusObservers2 setObject:0 forKeyedSubscript:observerCopy];
     }
   }
 

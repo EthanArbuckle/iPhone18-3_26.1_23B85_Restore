@@ -1,30 +1,30 @@
 @interface _WGWidgetListScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
-- (CGRect)_axAdjustedFrameForFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
+- (CGRect)_axAdjustedFrameForFrame:(CGRect)frame;
 - (id)focusGroupIdentifier;
 @end
 
 @implementation _WGWidgetListScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetWrapperView"];
-  [v3 validateClass:@"WGMajorListViewController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WGMajorListViewController" hasInstanceMethod:@"footerView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetWrapperView"];
+  [validationsCopy validateClass:@"WGMajorListViewController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WGMajorListViewController" hasInstanceMethod:@"footerView" withFullSignature:{"@", 0}];
 }
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
-  v4 = a3;
-  v5 = [v4 _accessibilityAncestorIsKindOf:MEMORY[0x29ED42A50](@"WGWidgetWrapperView")];
+  childCopy = child;
+  v5 = [childCopy _accessibilityAncestorIsKindOf:MEMORY[0x29ED42A50](@"WGWidgetWrapperView")];
   v6 = v5;
   if (!v5)
   {
-    v5 = v4;
+    v5 = childCopy;
   }
 
   [v5 accessibilityFrameForScrolling];
@@ -41,31 +41,31 @@
   return v7;
 }
 
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view
 {
-  v4 = self;
-  [(_WGWidgetListScrollViewAccessibility *)self _axAdjustedFrameForFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v6.receiver = v4;
+  selfCopy = self;
+  [(_WGWidgetListScrollViewAccessibility *)self _axAdjustedFrameForFrame:view, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  v6.receiver = selfCopy;
   v6.super_class = _WGWidgetListScrollViewAccessibility;
-  LOBYTE(v4) = [(_WGWidgetListScrollViewAccessibility *)&v6 _accessibilityScrollToFrame:0 forView:?];
+  LOBYTE(selfCopy) = [(_WGWidgetListScrollViewAccessibility *)&v6 _accessibilityScrollToFrame:0 forView:?];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], *MEMORY[0x29EDBDB28]);
-  return v4;
+  return selfCopy;
 }
 
-- (CGRect)_axAdjustedFrameForFrame:(CGRect)a3
+- (CGRect)_axAdjustedFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(_WGWidgetListScrollViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_0 startWithSelf:1];
-  v8 = [v7 _accessibilityViewController];
+  _accessibilityViewController = [v7 _accessibilityViewController];
 
-  v9 = [v8 safeValueForKey:@"headerView"];
+  v9 = [_accessibilityViewController safeValueForKey:@"headerView"];
   [v9 accessibilityFrame];
   v10 = CGRectGetHeight(v17) + 50.0;
 
-  v11 = [v8 safeValueForKey:@"footerView"];
+  v11 = [_accessibilityViewController safeValueForKey:@"footerView"];
   [v11 accessibilityFrame];
   v12 = CGRectGetHeight(v18);
 
@@ -80,9 +80,9 @@
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 3)
+  if (scroll == 3)
   {
 
     return [(_WGWidgetListScrollViewAccessibility *)self accessibilityScrollUpPage];
@@ -102,17 +102,17 @@
 {
   if ([(_WGWidgetListScrollViewAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
-    v3 = [(_WGWidgetListScrollViewAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(_WGWidgetListScrollViewAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _WGWidgetListScrollViewAccessibility;
-    v3 = [(_WGWidgetListScrollViewAccessibility *)&v5 focusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(_WGWidgetListScrollViewAccessibility *)&v5 focusGroupIdentifier];
   }
 
-  return v3;
+  return _accessibilityDefaultFocusGroupIdentifier;
 }
 
 @end

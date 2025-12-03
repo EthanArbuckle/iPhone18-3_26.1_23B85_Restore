@@ -1,45 +1,45 @@
 @interface ACM2SVTransportController
 - (void)cancelImageFetching;
-- (void)generateAndSendSecCodeWithContext:(id)a3 completion:(id)a4;
-- (void)getImageWithURL:(id)a3 completion:(id)a4;
-- (void)loadTrustedDevicesWithContext:(id)a3 completion:(id)a4;
-- (void)verifySecureCodeWithContext:(id)a3 completion:(id)a4;
+- (void)generateAndSendSecCodeWithContext:(id)context completion:(id)completion;
+- (void)getImageWithURL:(id)l completion:(id)completion;
+- (void)loadTrustedDevicesWithContext:(id)context completion:(id)completion;
+- (void)verifySecureCodeWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ACM2SVTransportController
 
-- (void)loadTrustedDevicesWithContext:(id)a3 completion:(id)a4
+- (void)loadTrustedDevicesWithContext:(id)context completion:(id)completion
 {
-  v6 = [(ACCHTTPHandler *)ACM2SVHTTPGetTrustedDevicesHandler handlerWithContext:a3];
-  v7 = [(ACM2SVTransportController *)self delegate];
+  v6 = [(ACCHTTPHandler *)ACM2SVHTTPGetTrustedDevicesHandler handlerWithContext:context];
+  delegate = [(ACM2SVTransportController *)self delegate];
 
-  [(ACM2SVTransportControllerDelegate *)v7 twoSVTransportController:self scheduleHandler:v6 withCompletion:a4];
+  [(ACM2SVTransportControllerDelegate *)delegate twoSVTransportController:self scheduleHandler:v6 withCompletion:completion];
 }
 
-- (void)generateAndSendSecCodeWithContext:(id)a3 completion:(id)a4
+- (void)generateAndSendSecCodeWithContext:(id)context completion:(id)completion
 {
-  v6 = [(ACCHTTPHandler *)ACM2SVHTTPSendSecurityCodeHandler handlerWithContext:a3];
-  v7 = [(ACM2SVTransportController *)self delegate];
+  v6 = [(ACCHTTPHandler *)ACM2SVHTTPSendSecurityCodeHandler handlerWithContext:context];
+  delegate = [(ACM2SVTransportController *)self delegate];
 
-  [(ACM2SVTransportControllerDelegate *)v7 twoSVTransportController:self scheduleHandler:v6 withCompletion:a4];
+  [(ACM2SVTransportControllerDelegate *)delegate twoSVTransportController:self scheduleHandler:v6 withCompletion:completion];
 }
 
-- (void)verifySecureCodeWithContext:(id)a3 completion:(id)a4
+- (void)verifySecureCodeWithContext:(id)context completion:(id)completion
 {
-  v6 = [(ACCHTTPHandler *)ACM2SVHTTPVerifySecurityCodeHandler handlerWithContext:a3];
-  v7 = [(ACM2SVTransportController *)self delegate];
+  v6 = [(ACCHTTPHandler *)ACM2SVHTTPVerifySecurityCodeHandler handlerWithContext:context];
+  delegate = [(ACM2SVTransportController *)self delegate];
 
-  [(ACM2SVTransportControllerDelegate *)v7 twoSVTransportController:self scheduleHandler:v6 withCompletion:a4];
+  [(ACM2SVTransportControllerDelegate *)delegate twoSVTransportController:self scheduleHandler:v6 withCompletion:completion];
 }
 
-- (void)getImageWithURL:(id)a3 completion:(id)a4
+- (void)getImageWithURL:(id)l completion:(id)completion
 {
-  if (a3)
+  if (l)
   {
     v6 = [ACM2SVHTTPImageDownloadHandler handlerWithURLString:?];
-    v7 = [(ACM2SVTransportController *)self delegate];
+    delegate = [(ACM2SVTransportController *)self delegate];
 
-    [(ACM2SVTransportControllerDelegate *)v7 twoSVTransportController:self fetchImageWithHandler:v6 completion:a4];
+    [(ACM2SVTransportControllerDelegate *)delegate twoSVTransportController:self fetchImageWithHandler:v6 completion:completion];
   }
 
   else if (qword_2A1EB9000 && (ACFLogSettingsGetLevelMask() & 8) != 0)
@@ -50,9 +50,9 @@
 
 - (void)cancelImageFetching
 {
-  v3 = [(ACM2SVTransportController *)self delegate];
+  delegate = [(ACM2SVTransportController *)self delegate];
 
-  [(ACM2SVTransportControllerDelegate *)v3 twoSVTransportControllerCancelFetchingImages:self];
+  [(ACM2SVTransportControllerDelegate *)delegate twoSVTransportControllerCancelFetchingImages:self];
 }
 
 @end

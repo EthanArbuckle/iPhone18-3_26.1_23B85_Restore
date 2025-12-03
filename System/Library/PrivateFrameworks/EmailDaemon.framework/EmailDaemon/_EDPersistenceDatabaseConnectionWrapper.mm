@@ -1,20 +1,20 @@
 @interface _EDPersistenceDatabaseConnectionWrapper
-- (_EDPersistenceDatabaseConnectionWrapper)initWithConnection:(id)a3 generation:(unint64_t)a4;
+- (_EDPersistenceDatabaseConnectionWrapper)initWithConnection:(id)connection generation:(unint64_t)generation;
 @end
 
 @implementation _EDPersistenceDatabaseConnectionWrapper
 
-- (_EDPersistenceDatabaseConnectionWrapper)initWithConnection:(id)a3 generation:(unint64_t)a4
+- (_EDPersistenceDatabaseConnectionWrapper)initWithConnection:(id)connection generation:(unint64_t)generation
 {
-  v7 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = _EDPersistenceDatabaseConnectionWrapper;
   v8 = [(_EDPersistenceDatabaseConnectionWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    v9->_generation = a4;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_generation = generation;
   }
 
   return v9;

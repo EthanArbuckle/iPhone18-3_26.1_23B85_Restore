@@ -1,26 +1,26 @@
 @interface SUUICollectionDOMFeature
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (SUUICollectionDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SUUICollectionDOMFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (SUUICollectionDOMFeatureTargetting)collectionTarget;
-- (void)setEditing:(BOOL)a3 options:(id)a4;
+- (void)setEditing:(BOOL)editing options:(id)options;
 @end
 
 @implementation SUUICollectionDOMFeature
 
-- (SUUICollectionDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SUUICollectionDOMFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SUUICollectionDOMFeature;
   v8 = [(SUUICollectionDOMFeature *)&v13 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
   }
@@ -28,30 +28,30 @@
   return v8;
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [SUUIJSDOMFeatureCollection alloc];
-  v5 = [v3 appContext];
-  v6 = [(IKJSObject *)v4 initWithAppContext:v5];
+  appContext = [featureCopy appContext];
+  v6 = [(IKJSObject *)v4 initWithAppContext:appContext];
 
-  [(SUUIJSDOMFeatureCollection *)v6 setAppBridge:v3];
+  [(SUUIJSDOMFeatureCollection *)v6 setAppBridge:featureCopy];
 
   return v6;
 }
 
-- (void)setEditing:(BOOL)a3 options:(id)a4
+- (void)setEditing:(BOOL)editing options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_appContext);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SUUICollectionDOMFeature_setEditing_options___block_invoke;
   v9[3] = &unk_2798F7AE8;
-  v11 = a3;
+  editingCopy = editing;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = optionsCopy;
+  v8 = optionsCopy;
   [WeakRetained evaluateDelegateBlockSync:v9];
 }
 

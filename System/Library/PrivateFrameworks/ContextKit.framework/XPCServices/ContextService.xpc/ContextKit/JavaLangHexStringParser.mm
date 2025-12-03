@@ -1,21 +1,21 @@
 @interface JavaLangHexStringParser
 + (void)initialize;
 - (void)dealloc;
-- (void)discardTrailingBitsWithLong:(int64_t)a3;
-- (void)parseHexSignWithNSString:(id)a3;
+- (void)discardTrailingBitsWithLong:(int64_t)long;
+- (void)parseHexSignWithNSString:(id)string;
 - (void)processNormalNumber;
 @end
 
 @implementation JavaLangHexStringParser
 
-- (void)parseHexSignWithNSString:(id)a3
+- (void)parseHexSignWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  self->sign_ = [a3 isEqual:@"-"];
+  self->sign_ = [string isEqual:@"-"];
 }
 
 - (void)processNormalNumber
@@ -25,11 +25,11 @@
   self->mantissa_ &= self->MANTISSA_MASK_;
 }
 
-- (void)discardTrailingBitsWithLong:(int64_t)a3
+- (void)discardTrailingBitsWithLong:(int64_t)long
 {
-  v8 = a3;
-  JreStrAppendStrong(&self->abandonedNumber_, "J", a3, v3, v4, v5, v6, v7, self->mantissa_ & ~(-1 << a3));
-  self->mantissa_ >>= v8;
+  longCopy = long;
+  JreStrAppendStrong(&self->abandonedNumber_, "J", long, v3, v4, v5, v6, v7, self->mantissa_ & ~(-1 << long));
+  self->mantissa_ >>= longCopy;
 }
 
 - (void)dealloc
@@ -41,7 +41,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = JavaUtilRegexPattern_compileWithNSString_(off_100552058);
     JreStrongAssign(&qword_100555230, v2);

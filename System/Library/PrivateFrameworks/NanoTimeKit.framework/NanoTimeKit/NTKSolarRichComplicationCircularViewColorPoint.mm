@@ -1,31 +1,31 @@
 @interface NTKSolarRichComplicationCircularViewColorPoint
 + (id)allPoints;
-+ (id)pointWithColor1:(id)a3 color2:(id)a4 color3:(id)a5 position1:(double)a6 position2:(double)a7 position3:(double)a8 progress:(double)a9;
++ (id)pointWithColor1:(id)color1 color2:(id)color2 color3:(id)color3 position1:(double)position1 position2:(double)position2 position3:(double)position3 progress:(double)progress;
 @end
 
 @implementation NTKSolarRichComplicationCircularViewColorPoint
 
-+ (id)pointWithColor1:(id)a3 color2:(id)a4 color3:(id)a5 position1:(double)a6 position2:(double)a7 position3:(double)a8 progress:(double)a9
++ (id)pointWithColor1:(id)color1 color2:(id)color2 color3:(id)color3 position1:(double)position1 position2:(double)position2 position3:(double)position3 progress:(double)progress
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  color1Copy = color1;
+  color2Copy = color2;
+  color3Copy = color3;
   v18 = objc_alloc_init(NTKSolarRichComplicationCircularViewColorPoint);
   color1 = v18->_color1;
-  v18->_color1 = v15;
-  v20 = v15;
+  v18->_color1 = color1Copy;
+  v20 = color1Copy;
 
   color2 = v18->_color2;
-  v18->_color2 = v16;
-  v22 = v16;
+  v18->_color2 = color2Copy;
+  v22 = color2Copy;
 
   color3 = v18->_color3;
-  v18->_color3 = v17;
+  v18->_color3 = color3Copy;
 
-  v18->_position1 = a6;
-  v18->_position2 = a7;
-  v18->_position3 = a8;
-  v18->_progress = a9;
+  v18->_position1 = position1;
+  v18->_position2 = position2;
+  v18->_position3 = position3;
+  v18->_progress = progress;
 
   return v18;
 }

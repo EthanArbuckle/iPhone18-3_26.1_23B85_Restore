@@ -1,52 +1,52 @@
 @interface AEAssessmentUIConfiguration
-- (AEAssessmentUIConfiguration)initWithCoder:(id)a3;
-- (AEAssessmentUIConfiguration)initWithPresentDisplayShields:(BOOL)a3 captureDisplays:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (AEAssessmentUIConfiguration)initWithCoder:(id)coder;
+- (AEAssessmentUIConfiguration)initWithPresentDisplayShields:(BOOL)shields captureDisplays:(BOOL)displays;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)isEqualToConfiguration:(void *)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)isEqualToConfiguration:(void *)configuration;
 @end
 
 @implementation AEAssessmentUIConfiguration
 
-- (AEAssessmentUIConfiguration)initWithPresentDisplayShields:(BOOL)a3 captureDisplays:(BOOL)a4
+- (AEAssessmentUIConfiguration)initWithPresentDisplayShields:(BOOL)shields captureDisplays:(BOOL)displays
 {
   v7.receiver = self;
   v7.super_class = AEAssessmentUIConfiguration;
   result = [(AEAssessmentUIConfiguration *)&v7 init];
   if (result)
   {
-    result->_presentDisplayShields = a3;
-    result->_captureDisplays = a4;
+    result->_presentDisplayShields = shields;
+    result->_captureDisplays = displays;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[AEAssessmentUIConfiguration shouldPresentDisplayShields](self, "shouldPresentDisplayShields")}];
-  [v5 encodeObject:v6 forKey:@"presentDisplayShields"];
+  [coderCopy encodeObject:v6 forKey:@"presentDisplayShields"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentUIConfiguration shouldCaptureDisplays](self, "shouldCaptureDisplays")}];
-  [v5 encodeObject:v7 forKey:@"captureDisplays"];
+  [coderCopy encodeObject:v7 forKey:@"captureDisplays"];
 }
 
-- (AEAssessmentUIConfiguration)initWithCoder:(id)a3
+- (AEAssessmentUIConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AEAssessmentUIConfiguration;
   v5 = [(AEAssessmentUIConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentDisplayShields"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentDisplayShields"];
     v5->_presentDisplayShields = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captureDisplays"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captureDisplays"];
     v5->_captureDisplays = [v7 BOOLValue];
   }
 
@@ -63,19 +63,19 @@
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    if ([(AEAssessmentUIConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(AEAssessmentUIConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = [(AEAssessmentUIConfiguration *)self isEqualToConfiguration:v5];
       goto LABEL_6;
@@ -115,25 +115,25 @@ LABEL_6:
   return [v3 stringWithFormat:@"<%@: %p { shouldPresentDisplayShields = %@, shouldCaptureDisplays = %@ }>", v4, self, v5, v6];
 }
 
-- (void)isEqualToConfiguration:(void *)a1
+- (void)isEqualToConfiguration:(void *)configuration
 {
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    v4 = [a1 shouldPresentDisplayShields];
-    if (v4 == [v3 shouldPresentDisplayShields])
+    shouldPresentDisplayShields = [configuration shouldPresentDisplayShields];
+    if (shouldPresentDisplayShields == [v3 shouldPresentDisplayShields])
     {
-      v5 = [a1 shouldCaptureDisplays];
-      a1 = (v5 ^ [v3 shouldCaptureDisplays] ^ 1);
+      shouldCaptureDisplays = [configuration shouldCaptureDisplays];
+      configuration = (shouldCaptureDisplays ^ [v3 shouldCaptureDisplays] ^ 1);
     }
 
     else
     {
-      a1 = 0;
+      configuration = 0;
     }
   }
 
-  return a1;
+  return configuration;
 }
 
 @end

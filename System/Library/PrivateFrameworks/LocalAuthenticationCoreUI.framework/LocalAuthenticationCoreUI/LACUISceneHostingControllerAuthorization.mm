@@ -1,12 +1,12 @@
 @interface LACUISceneHostingControllerAuthorization
 - (LACUIAuthenticatorUIDelegate)delegate;
 - (LACUISceneHostingControllerAuthorization)init;
-- (void)authenticatorServiceDidFinishWithError:(id)a3;
-- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)a3;
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)sceneHostingControllerDidReconnect:(id)a3;
-- (void)startWithConfiguration:(id)a3 reply:(id)a4;
-- (void)stopWithReply:(id)a3;
+- (void)authenticatorServiceDidFinishWithError:(id)error;
+- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)reply;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)sceneHostingControllerDidReconnect:(id)reconnect;
+- (void)startWithConfiguration:(id)configuration reply:(id)reply;
+- (void)stopWithReply:(id)reply;
 @end
 
 @implementation LACUISceneHostingControllerAuthorization
@@ -27,22 +27,22 @@
   return v6;
 }
 
-- (void)sceneHostingControllerDidReconnect:(id)a3
+- (void)sceneHostingControllerDidReconnect:(id)reconnect
 {
   v4 = [MEMORY[0x277D24060] errorWithCode:*MEMORY[0x277D23E90] debugDescription:@"Hosted scene was invalidated"];
   [(LACUISceneHostingControllerAuthorization *)self authenticatorServiceDidFinishWithError:v4];
 }
 
-- (void)authenticatorServiceDidFinishWithError:(id)a3
+- (void)authenticatorServiceDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__LACUISceneHostingControllerAuthorization_authenticatorServiceDidFinishWithError___block_invoke;
   v6[3] = &unk_27981E870;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -52,16 +52,16 @@ void __83__LACUISceneHostingControllerAuthorization_authenticatorServiceDidFinis
   [v2 sheetDidFinishWithError:*(a1 + 40)];
 }
 
-- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)a3
+- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __97__LACUISceneHostingControllerAuthorization_authenticatorServiceDidObtainAuthenticationWithReply___block_invoke;
   v6[3] = &unk_27981EB00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = replyCopy;
+  v5 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -71,39 +71,39 @@ void __97__LACUISceneHostingControllerAuthorization_authenticatorServiceDidObtai
   [v2 didProvideAuthorizationRequirementWithReply:*(a1 + 40)];
 }
 
-- (void)startWithConfiguration:(id)a3 reply:(id)a4
+- (void)startWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LACUIAuthorizationAction alloc] initWithIdentifier:1 value:v7];
+  replyCopy = reply;
+  configurationCopy = configuration;
+  v8 = [[LACUIAuthorizationAction alloc] initWithIdentifier:1 value:configurationCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__LACUISceneHostingControllerAuthorization_startWithConfiguration_reply___block_invoke;
   v10[3] = &unk_27981E770;
-  v11 = v6;
-  v9 = v6;
+  v11 = replyCopy;
+  v9 = replyCopy;
   [(LACUISceneHostingController *)self sendAction:v8 completion:v10];
 }
 
-- (void)stopWithReply:(id)a3
+- (void)stopWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [[LACUIAuthorizationAction alloc] initWithIdentifier:2 value:0];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__LACUISceneHostingControllerAuthorization_stopWithReply___block_invoke;
   v7[3] = &unk_27981E770;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   [(LACUISceneHostingController *)self sendAction:v5 completion:v7];
 }
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LACUIAuthorizationAction alloc] initWithAction:v7];
+  completionCopy = completion;
+  actionCopy = action;
+  v8 = [[LACUIAuthorizationAction alloc] initWithAction:actionCopy];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -112,11 +112,11 @@ void __97__LACUISceneHostingControllerAuthorization_authenticatorServiceDidObtai
   aBlock[4] = self;
   v9 = v8;
   v18 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v19 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(LACUIAuthorizationAction *)v9 identifier];
-  if (v12 == 4)
+  identifier = [(LACUIAuthorizationAction *)v9 identifier];
+  if (identifier == 4)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -129,7 +129,7 @@ void __97__LACUISceneHostingControllerAuthorization_authenticatorServiceDidObtai
 
   else
   {
-    if (v12 == 3)
+    if (identifier == 3)
     {
       v13 = [(LACUIHostedSceneAction *)v9 valueDecodedForClass:objc_opt_class()];
       [(LACUISceneHostingControllerAuthorization *)self authenticatorServiceDidFinishWithError:v13];

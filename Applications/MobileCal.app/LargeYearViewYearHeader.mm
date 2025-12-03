@@ -1,5 +1,5 @@
 @interface LargeYearViewYearHeader
-+ (double)middleHeightForWindowSize:(CGSize)a3;
++ (double)middleHeightForWindowSize:(CGSize)size;
 - (double)_yearNumberFontSize;
 - (double)overlayLegendLineLength;
 - (double)overlayLegendMonthLineThickness;
@@ -12,9 +12,9 @@
 
 @implementation LargeYearViewYearHeader
 
-+ (double)middleHeightForWindowSize:(CGSize)a3
++ (double)middleHeightForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (EKUIWindowInterfaceParadigmForWindowSize() == 8)
   {
     return 57.0;
@@ -74,8 +74,8 @@
 
   else
   {
-    v4 = [(LargeYearViewYearHeader *)self traitCollection];
-    v3 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:UIFontTextStyleCaption1 maximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium traitCollection:v4];
+    traitCollection = [(LargeYearViewYearHeader *)self traitCollection];
+    v3 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:UIFontTextStyleCaption1 maximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium traitCollection:traitCollection];
   }
 
   return v3;
@@ -96,7 +96,7 @@
 
 - (double)overlayLegendSpacing
 {
-  v2 = [(LargeYearViewYearHeader *)self traitCollection];
+  traitCollection = [(LargeYearViewYearHeader *)self traitCollection];
   v3 = EKUIUsesLargeTextYearView();
 
   result = 6.0;
@@ -110,7 +110,7 @@
 
 - (double)overlayLegendLineLength
 {
-  v2 = [(LargeYearViewYearHeader *)self traitCollection];
+  traitCollection = [(LargeYearViewYearHeader *)self traitCollection];
   v3 = EKUIUsesLargeTextYearView();
 
   result = 12.0;
@@ -124,7 +124,7 @@
 
 - (double)overlayLegendYearLineThickness
 {
-  v2 = [(LargeYearViewYearHeader *)self traitCollection];
+  traitCollection = [(LargeYearViewYearHeader *)self traitCollection];
   v3 = EKUIUsesLargeTextYearView();
 
   result = 2.0;
@@ -138,7 +138,7 @@
 
 - (double)overlayLegendMonthLineThickness
 {
-  v2 = [(LargeYearViewYearHeader *)self traitCollection];
+  traitCollection = [(LargeYearViewYearHeader *)self traitCollection];
   v3 = EKUIUsesLargeTextYearView();
 
   result = 1.0;

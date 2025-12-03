@@ -1,15 +1,15 @@
 @interface MCMContainerSchema
-+ (BOOL)schemaIsUpToDateForIdentifier:(id)a3 containerClass:(unint64_t)a4 currentSchemaVersion:(id)a5 latestSchemaVersion:(id *)a6;
-- (BOOL)_executeActions:(id)a3 error:(id *)a4;
-- (BOOL)writeSchemaFromVersion:(id)a3 toTargetVersion:(id)a4 error:(id *)a5;
-- (BOOL)writeSchemaToTargetVersion:(id)a3 error:(id *)a4;
-- (MCMContainerSchema)initWithMetadata:(id)a3 finalContainerPath:(id)a4 dataProtectionClass:(int)a5 libraryRepair:(id)a6;
++ (BOOL)schemaIsUpToDateForIdentifier:(id)identifier containerClass:(unint64_t)class currentSchemaVersion:(id)version latestSchemaVersion:(id *)schemaVersion;
+- (BOOL)_executeActions:(id)actions error:(id *)error;
+- (BOOL)writeSchemaFromVersion:(id)version toTargetVersion:(id)targetVersion error:(id *)error;
+- (BOOL)writeSchemaToTargetVersion:(id)version error:(id *)error;
+- (MCMContainerSchema)initWithMetadata:(id)metadata finalContainerPath:(id)path dataProtectionClass:(int)class libraryRepair:(id)repair;
 - (MCMContainerSchemaContext)context;
 - (MCMMetadataMinimal)metadata;
 - (NSNumber)latestSchemaVersion;
-- (id)_actionArgsAfterInterpolationOnActionArgs:(id)a3 replacements:(id)a4;
-- (id)_actionsFromVersion:(id)a3 toTargetVersion:(id)a4 context:(id)a5 error:(id *)a6;
-- (id)_interpolationReplacementsWithError:(id *)a3;
+- (id)_actionArgsAfterInterpolationOnActionArgs:(id)args replacements:(id)replacements;
+- (id)_actionsFromVersion:(id)version toTargetVersion:(id)targetVersion context:(id)context error:(id *)error;
+- (id)_interpolationReplacementsWithError:(id *)error;
 @end
 
 @implementation MCMContainerSchema
@@ -38,22 +38,22 @@
   return result;
 }
 
-- (BOOL)_executeActions:(id)a3 error:(id *)a4
+- (BOOL)_executeActions:(id)actions error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  actionsCopy = actions;
   v7 = objc_autoreleasePoolPush();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v8 = v6;
+  v8 = actionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v54 objects:v53 count:16];
   if (v9)
   {
     v10 = v9;
-    v37 = a4;
-    v11 = self;
+    errorCopy = error;
+    selfCopy = self;
     v12 = 0;
     v13 = *v55;
     while (2)
@@ -77,40 +77,40 @@
           v18 = container_log_handle_for_category();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v23 = v11;
-            v24 = [(MCMContainerSchema *)v11 metadata];
-            v36 = [v24 uuid];
-            v33 = [v23 metadata];
-            v32 = [v33 containerPath];
-            v35 = [v32 containerPathIdentifier];
-            v31 = [v23 metadata];
-            v34 = [v31 identifier];
-            v25 = [v23 metadata];
-            v30 = [v25 containerClass];
-            v26 = [v23 metadata];
-            v27 = [v26 conformsToProtocol:&unk_1F5A81C70];
+            fsNode = selfCopy;
+            metadata = [(MCMContainerSchema *)selfCopy metadata];
+            uuid = [metadata uuid];
+            metadata2 = [fsNode metadata];
+            containerPath = [metadata2 containerPath];
+            containerPathIdentifier = [containerPath containerPathIdentifier];
+            metadata3 = [fsNode metadata];
+            identifier = [metadata3 identifier];
+            metadata4 = [fsNode metadata];
+            containerClass = [metadata4 containerClass];
+            metadata5 = [fsNode metadata];
+            v27 = [metadata5 conformsToProtocol:&unk_1F5A81C70];
             if (v27)
             {
-              v29 = [v23 metadata];
-              v23 = [v29 fsNode];
-              v28 = [v23 inode];
+              metadata6 = [fsNode metadata];
+              fsNode = [metadata6 fsNode];
+              inode = [fsNode inode];
             }
 
             else
             {
-              v28 = 0;
+              inode = 0;
             }
 
             *buf = 138544898;
-            v40 = v36;
+            v40 = uuid;
             v41 = 2114;
-            v42 = v35;
+            v42 = containerPathIdentifier;
             v43 = 2112;
-            v44 = v34;
+            v44 = identifier;
             v45 = 2050;
-            v46 = v30;
+            v46 = containerClass;
             v47 = 2048;
-            v48 = v28;
+            v48 = inode;
             v49 = 2112;
             v50 = v16;
             v51 = 2112;
@@ -122,11 +122,11 @@
           }
 
           objc_autoreleasePoolPop(v7);
-          if (v37)
+          if (errorCopy)
           {
             v19 = v12;
             v20 = 0;
-            *v37 = v12;
+            *errorCopy = v12;
           }
 
           else
@@ -165,59 +165,59 @@ LABEL_16:
   return v20;
 }
 
-- (id)_actionsFromVersion:(id)a3 toTargetVersion:(id)a4 context:(id)a5 error:(id *)a6
+- (id)_actionsFromVersion:(id)version toTargetVersion:(id)targetVersion context:(id)context error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v82 = [MEMORY[0x1E695DF70] array];
+  versionCopy = version;
+  targetVersionCopy = targetVersion;
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
   context = objc_autoreleasePoolPush();
-  v81 = v11;
-  v12 = MCMContainerSchemaDefinitionForClass([v11 containerClass]);
-  v13 = [v10 unsignedIntegerValue];
-  v78 = self;
+  v81 = contextCopy;
+  v12 = MCMContainerSchemaDefinitionForClass([contextCopy containerClass]);
+  unsignedIntegerValue = [targetVersionCopy unsignedIntegerValue];
+  selfCopy = self;
   v67 = v12;
-  if (v13 > [v12 count])
+  if (unsignedIntegerValue > [v12 count])
   {
     v14 = container_log_handle_for_category();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v55 = v10;
+      v55 = targetVersionCopy;
       obja = [(MCMContainerSchema *)self metadata];
-      v80 = [obja uuid];
-      v75 = [(MCMContainerSchema *)self metadata];
-      v73 = [v75 containerPath];
-      v42 = [v73 containerPathIdentifier];
-      v43 = [(MCMContainerSchema *)self metadata];
-      [v43 identifier];
+      uuid = [obja uuid];
+      metadata = [(MCMContainerSchema *)self metadata];
+      containerPath = [metadata containerPath];
+      containerPathIdentifier = [containerPath containerPathIdentifier];
+      metadata2 = [(MCMContainerSchema *)self metadata];
+      [metadata2 identifier];
       v45 = v44 = self;
-      v46 = [(MCMContainerSchema *)v44 metadata];
-      v47 = [v46 containerClass];
-      v48 = [(MCMContainerSchema *)v44 metadata];
-      v49 = [v48 conformsToProtocol:&unk_1F5A81C70];
+      metadata3 = [(MCMContainerSchema *)v44 metadata];
+      containerClass = [metadata3 containerClass];
+      metadata4 = [(MCMContainerSchema *)v44 metadata];
+      v49 = [metadata4 conformsToProtocol:&unk_1F5A81C70];
       if (v49)
       {
-        v70 = [(MCMContainerSchema *)v44 metadata];
-        v68 = [v70 fsNode];
-        v50 = [v68 inode];
+        metadata5 = [(MCMContainerSchema *)v44 metadata];
+        fsNode = [metadata5 fsNode];
+        inode = [fsNode inode];
       }
 
       else
       {
-        v50 = 0;
+        inode = 0;
       }
 
       *buf = 138544898;
-      v86 = v80;
+      v86 = uuid;
       v87 = 2114;
-      v88 = v42;
+      v88 = containerPathIdentifier;
       v89 = 2112;
       v90 = v45;
       v91 = 2050;
-      v92 = v47;
+      v92 = containerClass;
       v93 = 2048;
-      v94 = v50;
+      v94 = inode;
       v95 = 2112;
       v96 = v55;
       v97 = 2048;
@@ -227,14 +227,14 @@ LABEL_16:
       {
       }
 
-      v10 = v55;
-      self = v78;
+      targetVersionCopy = v55;
+      self = selfCopy;
       v12 = v67;
     }
 
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
 
-    v10 = v15;
+    targetVersionCopy = v15;
   }
 
   v84 = 0;
@@ -243,17 +243,17 @@ LABEL_16:
   v79 = v16;
   if (v16)
   {
-    v18 = [v9 unsignedIntegerValue];
-    if (v18 < [v10 unsignedIntegerValue])
+    unsignedIntegerValue2 = [versionCopy unsignedIntegerValue];
+    if (unsignedIntegerValue2 < [targetVersionCopy unsignedIntegerValue])
     {
-      v19 = [v9 unsignedIntegerValue];
-      if (v19 < [v10 unsignedIntegerValue])
+      unsignedIntegerValue3 = [versionCopy unsignedIntegerValue];
+      if (unsignedIntegerValue3 < [targetVersionCopy unsignedIntegerValue])
       {
-        v53 = v9;
-        v54 = v10;
+        v53 = versionCopy;
+        v54 = targetVersionCopy;
         do
         {
-          v20 = [v12 objectAtIndexedSubscript:v19];
+          v20 = [v12 objectAtIndexedSubscript:unsignedIntegerValue3];
           v21 = [v20 objectForKeyedSubscript:@"script"];
           v102 = 0u;
           v103 = 0u;
@@ -265,7 +265,7 @@ LABEL_16:
           {
             v23 = v22;
             v69 = v20;
-            v71 = v19;
+            v71 = unsignedIntegerValue3;
             v24 = *v103;
 LABEL_10:
             v25 = 0;
@@ -279,17 +279,17 @@ LABEL_10:
 
               v27 = *(*(&v102 + 1) + 8 * v25);
               v28 = [v27 objectAtIndexedSubscript:0];
-              v29 = [v28 string];
+              string = [v28 string];
 
               v30 = [v27 subarrayWithRange:{1, objc_msgSend(v27, "count") - 1}];
               v31 = [(MCMContainerSchema *)self _actionArgsAfterInterpolationOnActionArgs:v30 replacements:v79];
 
               v83 = 0;
-              v32 = [MCMContainerSchemaActionBase actionWithName:v29 arguments:v31 context:v81 error:&v83];
+              v32 = [MCMContainerSchemaActionBase actionWithName:string arguments:v31 context:v81 error:&v83];
               v33 = v83;
               if (v32)
               {
-                [v82 addObject:v32];
+                [array addObject:v32];
                 v34 = 0;
                 v17 = v26;
               }
@@ -301,41 +301,41 @@ LABEL_10:
                 v35 = container_log_handle_for_category();
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
                 {
-                  v66 = [(MCMContainerSchema *)self metadata];
-                  v65 = [v66 uuid];
-                  v64 = [(MCMContainerSchema *)self metadata];
-                  v63 = [v64 containerPath];
-                  v74 = [v63 containerPathIdentifier];
-                  v62 = [(MCMContainerSchema *)self metadata];
-                  v72 = [v62 identifier];
-                  v61 = [(MCMContainerSchema *)self metadata];
-                  v58 = [v61 containerClass];
-                  v60 = [(MCMContainerSchema *)self metadata];
-                  v59 = [v60 conformsToProtocol:&unk_1F5A81C70];
+                  metadata6 = [(MCMContainerSchema *)self metadata];
+                  uuid2 = [metadata6 uuid];
+                  metadata7 = [(MCMContainerSchema *)self metadata];
+                  containerPath2 = [metadata7 containerPath];
+                  containerPathIdentifier2 = [containerPath2 containerPathIdentifier];
+                  metadata8 = [(MCMContainerSchema *)self metadata];
+                  identifier = [metadata8 identifier];
+                  metadata9 = [(MCMContainerSchema *)self metadata];
+                  containerClass2 = [metadata9 containerClass];
+                  metadata10 = [(MCMContainerSchema *)self metadata];
+                  v59 = [metadata10 conformsToProtocol:&unk_1F5A81C70];
                   if (v59)
                   {
-                    v52 = [(MCMContainerSchema *)self metadata];
-                    v51 = [v52 fsNode];
-                    v36 = [v51 inode];
+                    metadata11 = [(MCMContainerSchema *)self metadata];
+                    fsNode2 = [metadata11 fsNode];
+                    inode2 = [fsNode2 inode];
                   }
 
                   else
                   {
-                    v36 = 0;
+                    inode2 = 0;
                   }
 
                   *buf = 138545154;
-                  v86 = v65;
+                  v86 = uuid2;
                   v87 = 2114;
-                  v88 = v74;
+                  v88 = containerPathIdentifier2;
                   v89 = 2112;
-                  v90 = v72;
+                  v90 = identifier;
                   v91 = 2050;
-                  v92 = v58;
+                  v92 = containerClass2;
                   v93 = 2048;
-                  v94 = v36;
+                  v94 = inode2;
                   v95 = 2112;
-                  v96 = v29;
+                  v96 = string;
                   v97 = 2112;
                   v98 = v31;
                   v99 = 2112;
@@ -346,7 +346,7 @@ LABEL_10:
                   }
                 }
 
-                v82 = 0;
+                array = 0;
                 v34 = 2;
               }
 
@@ -357,7 +357,7 @@ LABEL_10:
 
               ++v25;
               v26 = v17;
-              self = v78;
+              self = selfCopy;
               if (v23 == v25)
               {
                 v37 = [obj countByEnumeratingWithState:&v102 objects:v101 count:16];
@@ -372,11 +372,11 @@ LABEL_10:
               }
             }
 
-            v9 = v53;
-            v10 = v54;
+            versionCopy = v53;
+            targetVersionCopy = v54;
             v12 = v67;
             v20 = v69;
-            v19 = v71;
+            unsignedIntegerValue3 = v71;
           }
 
           else
@@ -389,11 +389,11 @@ LABEL_10:
             break;
           }
 
-          ++v19;
-          self = v78;
+          ++unsignedIntegerValue3;
+          self = selfCopy;
         }
 
-        while (v19 < [v10 unsignedIntegerValue]);
+        while (unsignedIntegerValue3 < [targetVersionCopy unsignedIntegerValue]);
       }
     }
   }
@@ -401,57 +401,57 @@ LABEL_10:
   else
   {
 
-    v82 = 0;
+    array = 0;
   }
 
   objc_autoreleasePoolPop(context);
-  if (a6 && !v82)
+  if (error && !array)
   {
     v38 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
-  v39 = [v82 copy];
+  v39 = [array copy];
 
   v40 = *MEMORY[0x1E69E9840];
 
   return v39;
 }
 
-- (id)_interpolationReplacementsWithError:(id *)a3
+- (id)_interpolationReplacementsWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [(MCMContainerSchema *)self metadata];
-  v5 = [v4 containerPath];
+  metadata = [(MCMContainerSchema *)self metadata];
+  containerPath = [metadata containerPath];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 destinationContainerPath];
+    destinationContainerPath = [containerPath destinationContainerPath];
 
-    v5 = v6;
+    containerPath = destinationContainerPath;
   }
 
-  v7 = [v5 containerPathIdentifier];
+  containerPathIdentifier = [containerPath containerPathIdentifier];
   v8 = +[MCMFileManager defaultManager];
-  v9 = [v4 identifier];
-  v10 = [v8 fsMinimallySanitizedStringFromString:v9];
+  identifier = [metadata identifier];
+  v10 = [v8 fsMinimallySanitizedStringFromString:identifier];
 
   if (v10)
   {
     v11 = +[MCMPOSIXUser currentPOSIXUser];
-    v12 = [v11 homeDirectoryURL];
-    v13 = [v12 path];
-    v22[0] = v13;
+    homeDirectoryURL = [v11 homeDirectoryURL];
+    path = [homeDirectoryURL path];
+    v22[0] = path;
     v22[1] = v10;
     v21[1] = @"${BundleId}";
     v21[2] = @"${SigningId}";
     v21[3] = @"${ContainerId}";
     v22[2] = v10;
-    v22[3] = v7;
+    v22[3] = containerPathIdentifier;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:4];
 
     v15 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -462,21 +462,21 @@ LABEL_10:
   v16 = container_log_handle_for_category();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v4 identifier];
+    identifier2 = [metadata identifier];
     *buf = 138412290;
-    v24 = v20;
+    v24 = identifier2;
     _os_log_error_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_ERROR, "Codesign identifier [%@] has invalid characters", buf, 0xCu);
   }
 
   v15 = [[MCMError alloc] initWithErrorType:97 category:3];
   v14 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_9:
     if (!v14)
     {
       v17 = v15;
-      *a3 = v15;
+      *error = v15;
     }
   }
 
@@ -487,17 +487,17 @@ LABEL_11:
   return v14;
 }
 
-- (id)_actionArgsAfterInterpolationOnActionArgs:(id)a3 replacements:(id)a4
+- (id)_actionArgsAfterInterpolationOnActionArgs:(id)args replacements:(id)replacements
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v30 = a4;
-  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  argsCopy = args;
+  replacementsCopy = replacements;
+  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(argsCopy, "count")}];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = v5;
+  v6 = argsCopy;
   v7 = [v6 countByEnumeratingWithState:&v38 objects:v37 count:16];
   if (v7)
   {
@@ -517,20 +517,20 @@ LABEL_11:
         }
 
         v11 = *(*(&v38 + 1) + 8 * v10);
-        v12 = [v11 string];
-        v13 = [v12 pathComponents];
+        string = [v11 string];
+        pathComponents = [string pathComponents];
 
-        if ([v13 count] && (objc_msgSend(v13, "containsObject:", @"..") & 1) == 0)
+        if ([pathComponents count] && (objc_msgSend(pathComponents, "containsObject:", @"..") & 1) == 0)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v14 = [v11 string];
+            string2 = [v11 string];
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v15 = v30;
+            v15 = replacementsCopy;
             v16 = [v15 countByEnumeratingWithState:&v33 objects:v32 count:16];
             if (v16)
             {
@@ -539,7 +539,7 @@ LABEL_11:
               do
               {
                 v19 = 0;
-                v20 = v14;
+                v20 = string2;
                 do
                 {
                   if (*v34 != v18)
@@ -549,10 +549,10 @@ LABEL_11:
 
                   v21 = *(*(&v33 + 1) + 8 * v19);
                   v22 = [v15 objectForKeyedSubscript:v21];
-                  v14 = [v20 stringByReplacingOccurrencesOfString:v21 withString:v22 options:1 range:{0, objc_msgSend(v20, "length")}];
+                  string2 = [v20 stringByReplacingOccurrencesOfString:v21 withString:v22 options:1 range:{0, objc_msgSend(v20, "length")}];
 
                   ++v19;
-                  v20 = v14;
+                  v20 = string2;
                 }
 
                 while (v17 != v19);
@@ -562,7 +562,7 @@ LABEL_11:
               while (v17);
             }
 
-            v23 = [objc_alloc(objc_opt_class()) initWithString:v14];
+            v23 = [objc_alloc(objc_opt_class()) initWithString:string2];
             if (v23)
             {
               [v27 addObject:v23];
@@ -595,27 +595,27 @@ LABEL_11:
   return v24;
 }
 
-- (BOOL)writeSchemaToTargetVersion:(id)a3 error:(id *)a4
+- (BOOL)writeSchemaToTargetVersion:(id)version error:(id *)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MCMContainerSchema *)self metadata];
-  v8 = [v7 schemaVersion];
-  LOBYTE(a4) = [(MCMContainerSchema *)self writeSchemaFromVersion:v8 toTargetVersion:v6 error:a4];
+  versionCopy = version;
+  metadata = [(MCMContainerSchema *)self metadata];
+  schemaVersion = [metadata schemaVersion];
+  LOBYTE(error) = [(MCMContainerSchema *)self writeSchemaFromVersion:schemaVersion toTargetVersion:versionCopy error:error];
 
   v9 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)writeSchemaFromVersion:(id)a3 toTargetVersion:(id)a4 error:(id *)a5
+- (BOOL)writeSchemaFromVersion:(id)version toTargetVersion:(id)targetVersion error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MCMContainerSchema *)self metadata];
-  v11 = [(MCMContainerSchema *)self context];
+  versionCopy = version;
+  targetVersionCopy = targetVersion;
+  metadata = [(MCMContainerSchema *)self metadata];
+  context = [(MCMContainerSchema *)self context];
   v62 = 0;
-  v12 = [(MCMContainerSchema *)self _actionsFromVersion:v8 toTargetVersion:v9 context:v11 error:&v62];
+  v12 = [(MCMContainerSchema *)self _actionsFromVersion:versionCopy toTargetVersion:targetVersionCopy context:context error:&v62];
   v13 = v62;
 
   v14 = container_log_handle_for_category();
@@ -629,40 +629,40 @@ LABEL_11:
       goto LABEL_29;
     }
 
-    v60 = a5;
-    v31 = v8;
-    spida = [v10 uuid];
-    v56 = [v10 containerPath];
-    v32 = [v56 containerPathIdentifier];
-    v33 = [v10 identifier];
-    v34 = [v10 containerClass];
-    v35 = [v10 conformsToProtocol:&unk_1F5A81C70];
+    errorCopy2 = error;
+    v31 = versionCopy;
+    spida = [metadata uuid];
+    containerPath = [metadata containerPath];
+    containerPathIdentifier = [containerPath containerPathIdentifier];
+    identifier = [metadata identifier];
+    containerClass = [metadata containerClass];
+    v35 = [metadata conformsToProtocol:&unk_1F5A81C70];
     if (v35)
     {
-      v52 = [v10 fsNode];
-      v36 = [v52 inode];
+      fsNode = [metadata fsNode];
+      inode = [fsNode inode];
     }
 
     else
     {
-      v36 = 0;
+      inode = 0;
     }
 
     *buf = 138544898;
     v64 = spida;
     v65 = 2114;
-    v66 = v32;
+    v66 = containerPathIdentifier;
     v67 = 2112;
-    v68 = v33;
+    v68 = identifier;
     v69 = 2050;
-    v70 = v34;
+    v70 = containerClass;
     v71 = 2048;
-    v72 = v36;
+    v72 = inode;
     v73 = 2114;
-    v8 = v31;
+    versionCopy = v31;
     v74 = v31;
     v75 = 2114;
-    v76 = v9;
+    v76 = targetVersionCopy;
     _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "[u %{public}@:p %{public}@:c %@(%{public}llu):i%llu] Could not update schema from (%{public}@) → (%{public}@), no actions available", buf, 0x48u);
     if (v35)
     {
@@ -671,11 +671,11 @@ LABEL_11:
     v23 = 0;
     LOBYTE(v22) = 0;
 LABEL_28:
-    a5 = v60;
+    error = errorCopy2;
     goto LABEL_29;
   }
 
-  v60 = a5;
+  errorCopy2 = error;
   v16 = os_signpost_id_make_with_pointer(v14, self);
 
   v17 = container_log_handle_for_category();
@@ -684,13 +684,13 @@ LABEL_28:
   v19 = v16 - 1;
   if (v19 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    [v10 identifier];
-    v21 = v20 = v8;
+    [metadata identifier];
+    v21 = v20 = versionCopy;
     *buf = 138477827;
     v64 = v21;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v18, OS_SIGNPOST_INTERVAL_BEGIN, spid, "SchemaUpdate", " identifier=%{private, signpost.description:attribute}@ ", buf, 0xCu);
 
-    v8 = v20;
+    versionCopy = v20;
   }
 
   v61 = 0;
@@ -702,39 +702,39 @@ LABEL_28:
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = v8;
-      v53 = [v10 uuid];
-      v46 = [v10 containerPath];
-      v50 = [v46 containerPathIdentifier];
-      v48 = [v10 identifier];
-      v44 = [v10 containerClass];
-      v26 = [v10 conformsToProtocol:&unk_1F5A81C70];
+      v55 = versionCopy;
+      uuid = [metadata uuid];
+      containerPath2 = [metadata containerPath];
+      containerPathIdentifier2 = [containerPath2 containerPathIdentifier];
+      identifier2 = [metadata identifier];
+      containerClass2 = [metadata containerClass];
+      v26 = [metadata conformsToProtocol:&unk_1F5A81C70];
       if (v26)
       {
-        v43 = [v10 fsNode];
-        v27 = [v43 inode];
+        fsNode2 = [metadata fsNode];
+        inode2 = [fsNode2 inode];
       }
 
       else
       {
-        v27 = 0;
+        inode2 = 0;
       }
 
       v28 = [v12 count];
       *buf = 138545154;
-      v64 = v53;
+      v64 = uuid;
       v65 = 2114;
-      v66 = v50;
+      v66 = containerPathIdentifier2;
       v67 = 2112;
-      v68 = v48;
+      v68 = identifier2;
       v69 = 2050;
-      v70 = v44;
+      v70 = containerClass2;
       v71 = 2048;
-      v72 = v27;
+      v72 = inode2;
       v73 = 2114;
       v74 = v55;
       v75 = 2114;
-      v76 = v9;
+      v76 = targetVersionCopy;
       v77 = 2050;
       v78 = v28;
       _os_log_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_DEFAULT, "[u %{public}@:p %{public}@:c %@(%{public}llu):i%llu] Successfully updated schema from (%{public}@) → (%{public}@), actions count = %{public}lu", buf, 0x52u);
@@ -742,7 +742,7 @@ LABEL_28:
       {
       }
 
-      v8 = v55;
+      versionCopy = v55;
     }
   }
 
@@ -750,40 +750,40 @@ LABEL_28:
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v57 = v8;
-      v54 = [v10 uuid];
-      v47 = [v10 containerPath];
-      v51 = [v47 containerPathIdentifier];
-      v49 = [v10 identifier];
-      v45 = [v10 containerClass];
-      v37 = [v10 conformsToProtocol:&unk_1F5A81C70];
+      v57 = versionCopy;
+      uuid2 = [metadata uuid];
+      containerPath3 = [metadata containerPath];
+      containerPathIdentifier3 = [containerPath3 containerPathIdentifier];
+      identifier3 = [metadata identifier];
+      containerClass3 = [metadata containerClass];
+      v37 = [metadata conformsToProtocol:&unk_1F5A81C70];
       if (v37)
       {
-        v43 = [v10 fsNode];
-        v38 = [v43 inode];
+        fsNode2 = [metadata fsNode];
+        inode3 = [fsNode2 inode];
       }
 
       else
       {
-        v38 = 0;
+        inode3 = 0;
       }
 
       v42 = [v12 count];
       *buf = 138545410;
-      v64 = v54;
+      v64 = uuid2;
       v65 = 2114;
-      v66 = v51;
+      v66 = containerPathIdentifier3;
       v67 = 2112;
-      v68 = v49;
+      v68 = identifier3;
       v69 = 2050;
-      v70 = v45;
+      v70 = containerClass3;
       v71 = 2048;
-      v72 = v38;
+      v72 = inode3;
       v73 = 2114;
-      v8 = v57;
+      versionCopy = v57;
       v74 = v57;
       v75 = 2114;
-      v76 = v9;
+      v76 = targetVersionCopy;
       v77 = 2050;
       v78 = v42;
       v79 = 2114;
@@ -805,54 +805,54 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  a5 = v60;
+  error = errorCopy2;
   if (os_signpost_enabled(v29))
   {
-    v30 = [v10 identifier];
+    identifier4 = [metadata identifier];
     *buf = 138477827;
-    v64 = v30;
+    v64 = identifier4;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v15, OS_SIGNPOST_INTERVAL_END, spid, "SchemaUpdate", " identifier=%{private, signpost.description:attribute}@ ", buf, 0xCu);
   }
 
 LABEL_29:
 
-  if (a5 && !v22)
+  if (error && !v22)
   {
     v39 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v40 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (MCMContainerSchema)initWithMetadata:(id)a3 finalContainerPath:(id)a4 dataProtectionClass:(int)a5 libraryRepair:(id)a6
+- (MCMContainerSchema)initWithMetadata:(id)metadata finalContainerPath:(id)path dataProtectionClass:(int)class libraryRepair:(id)repair
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  metadataCopy = metadata;
+  pathCopy = path;
+  repairCopy = repair;
   v31.receiver = self;
   v31.super_class = MCMContainerSchema;
   v14 = [(MCMContainerSchema *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_metadata, a3);
-    v30 = [v11 containerPath];
-    v29 = [v11 containerClass];
-    v16 = [v11 containerPath];
-    v28 = [v16 schemaPOSIXMode];
+    objc_storeStrong(&v14->_metadata, metadata);
+    containerPath = [metadataCopy containerPath];
+    containerClass = [metadataCopy containerClass];
+    containerPath2 = [metadataCopy containerPath];
+    schemaPOSIXMode = [containerPath2 schemaPOSIXMode];
 
-    v17 = [v11 containerPath];
-    v27 = [v17 schemaPOSIXOwner];
+    containerPath3 = [metadataCopy containerPath];
+    schemaPOSIXOwner = [containerPath3 schemaPOSIXOwner];
 
-    v18 = [v11 identifier];
+    identifier = [metadataCopy identifier];
     v19 = containermanager_copy_global_configuration();
-    v20 = [v19 defaultUser];
-    v21 = [v20 homeDirectoryURL];
-    LODWORD(v26) = a5;
-    v22 = [MCMContainerSchemaContext contextWithHomeDirectoryURL:v21 containerPath:v30 finalContainerPath:v12 POSIXMode:v28 POSIXOwner:v27 containerClass:v29 dataProtectionClass:v26 libraryRepair:v13 identifier:v18];
+    defaultUser = [v19 defaultUser];
+    homeDirectoryURL = [defaultUser homeDirectoryURL];
+    LODWORD(v26) = class;
+    v22 = [MCMContainerSchemaContext contextWithHomeDirectoryURL:homeDirectoryURL containerPath:containerPath finalContainerPath:pathCopy POSIXMode:schemaPOSIXMode POSIXOwner:schemaPOSIXOwner containerClass:containerClass dataProtectionClass:v26 libraryRepair:repairCopy identifier:identifier];
     context = v15->_context;
     v15->_context = v22;
   }
@@ -861,20 +861,20 @@ LABEL_29:
   return v15;
 }
 
-+ (BOOL)schemaIsUpToDateForIdentifier:(id)a3 containerClass:(unint64_t)a4 currentSchemaVersion:(id)a5 latestSchemaVersion:(id *)a6
++ (BOOL)schemaIsUpToDateForIdentifier:(id)identifier containerClass:(unint64_t)class currentSchemaVersion:(id)version latestSchemaVersion:(id *)schemaVersion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = MCMContainerSchemaDefinitionForClass(a4);
+  identifierCopy = identifier;
+  versionCopy = version;
+  v11 = MCMContainerSchemaDefinitionForClass(class);
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
 
-  if ([v10 compare:v12])
+  if ([versionCopy compare:v12])
   {
-    if ([v10 compare:v12] != 1)
+    if ([versionCopy compare:v12] != 1)
     {
       v14 = 0;
-      if (!a6)
+      if (!schemaVersion)
       {
         goto LABEL_8;
       }
@@ -886,11 +886,11 @@ LABEL_29:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v18 = 138413058;
-      v19 = v9;
+      v19 = identifierCopy;
       v20 = 2048;
-      v21 = a4;
+      classCopy = class;
       v22 = 2112;
-      v23 = v10;
+      v23 = versionCopy;
       v24 = 2112;
       v25 = v12;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "[%@(%llu)] Current schema version (%@) is newer than the latest (%@), ignoring.", &v18, 0x2Au);
@@ -898,11 +898,11 @@ LABEL_29:
   }
 
   v14 = 1;
-  if (a6)
+  if (schemaVersion)
   {
 LABEL_7:
     v15 = v12;
-    *a6 = v12;
+    *schemaVersion = v12;
   }
 
 LABEL_8:

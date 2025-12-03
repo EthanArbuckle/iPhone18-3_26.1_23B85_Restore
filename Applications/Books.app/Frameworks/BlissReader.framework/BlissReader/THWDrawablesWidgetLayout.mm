@@ -3,19 +3,19 @@
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
 - (CGRect)stageFrame;
-- (CGSize)p_idealForMaxSize:(CGSize)a3;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4 scale:(double)a5;
+- (CGSize)p_idealForMaxSize:(CGSize)size;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize scale:(double)scale;
 - (id)actualStageDrawable;
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5;
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4;
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout;
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout;
 - (id)childrenForLayout;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (id)p_layoutGeometryForStageDrawable;
-- (unsigned)widgetStack:(id)a3 maxLinesForWPLayout:(id)a4 withDefault:(unsigned int)a5;
+- (unsigned)widgetStack:(id)stack maxLinesForWPLayout:(id)layout withDefault:(unsigned int)default;
 - (void)p_invalidateExternal;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWDrawablesWidgetLayout
@@ -33,19 +33,19 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWDrawablesWidgetLayout *)self delegate];
+  delegate = [(THWDrawablesWidgetLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWDrawablesWidgetLayout *)self delegate];
+  delegate = [(THWDrawablesWidgetLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
-- (CGSize)p_idealForMaxSize:(CGSize)a3
+- (CGSize)p_idealForMaxSize:(CGSize)size
 {
   [objc_msgSend(-[THWDrawablesWidgetLayout actualStageDrawable](self "actualStageDrawable")];
   TSDScaleSizeWithinSize();
@@ -57,7 +57,7 @@
   return result;
 }
 
-- (unsigned)widgetStack:(id)a3 maxLinesForWPLayout:(id)a4 withDefault:(unsigned int)a5
+- (unsigned)widgetStack:(id)stack maxLinesForWPLayout:(id)layout withDefault:(unsigned int)default
 {
   objc_opt_class();
   [-[THWDrawablesWidgetLayout info](self "info")];
@@ -68,7 +68,7 @@
 
   else
   {
-    return a5;
+    return default;
   }
 }
 
@@ -76,16 +76,16 @@
 {
   if (-[THWDrawablesWidgetLayout isExpanded](self, "isExpanded") && [-[THWDrawablesWidgetLayout info](self "info")])
   {
-    v3 = [(THWDrawablesWidgetLayout *)self info];
+    info = [(THWDrawablesWidgetLayout *)self info];
 
-    return [v3 expandedStageDrawable];
+    return [info expandedStageDrawable];
   }
 
   else
   {
-    v5 = [(THWDrawablesWidgetLayout *)self info];
+    info2 = [(THWDrawablesWidgetLayout *)self info];
 
-    return [v5 stageDrawable];
+    return [info2 stageDrawable];
   }
 }
 
@@ -109,10 +109,10 @@
 
 - (id)childrenForLayout
 {
-  v3 = [(THWDrawablesWidgetLayout *)self actualStageDrawable];
-  if (v3)
+  actualStageDrawable = [(THWDrawablesWidgetLayout *)self actualStageDrawable];
+  if (actualStageDrawable)
   {
-    v6 = v3;
+    v6 = actualStageDrawable;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -180,8 +180,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(THWDrawablesWidgetLayout *)self children];
-  result = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(THWDrawablesWidgetLayout *)self children];
+  result = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v5 = result;
@@ -193,12 +193,12 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [v8 info];
-        if (v9 == [(THWDrawablesWidgetLayout *)self actualStageDrawable])
+        info = [v8 info];
+        if (info == [(THWDrawablesWidgetLayout *)self actualStageDrawable])
         {
           return [objc_msgSend(v8 "geometry")];
         }
@@ -207,7 +207,7 @@
       }
 
       while (v5 != v7);
-      result = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      result = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
       v5 = result;
       if (result)
       {
@@ -221,11 +221,11 @@
   return result;
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4 scale:(double)a5
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize scale:(double)scale
 {
-  v6 = a4.width + -128.0;
-  v7 = a4.height + -128.0;
-  v8 = [TSDLayout layoutGeometryFittingLayoutGeometry:[(THWDrawablesWidgetLayout *)self p_layoutGeometryForStageDrawable] inFrame:0.0, 0.0, a3.width + -128.0, a3.height + -128.0];
+  v6 = toSize.width + -128.0;
+  v7 = toSize.height + -128.0;
+  v8 = [TSDLayout layoutGeometryFittingLayoutGeometry:[(THWDrawablesWidgetLayout *)self p_layoutGeometryForStageDrawable] inFrame:0.0, 0.0, size.width + -128.0, size.height + -128.0];
   v9 = [TSDLayout layoutGeometryFittingLayoutGeometry:[(THWDrawablesWidgetLayout *)self p_layoutGeometryForStageDrawable] inFrame:0.0, 0.0, v6, v7];
   [v8 frame];
   v11 = v10;
@@ -249,18 +249,18 @@
   [(THWDrawablesWidgetLayout *)self invalidateChildren];
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWDrawablesWidgetLayout;
-  [(THWDrawablesWidgetLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWDrawablesWidgetLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWDrawablesWidgetLayout *)self p_invalidateExternal];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
-  v4 = [a3 info];
-  if (v4 != [(THWDrawablesWidgetLayout *)self actualStageDrawable]|| [(THWWidgetLayoutDelegate *)self->_delegate widgetLayoutMode:self]!= 3)
+  info = [layout info];
+  if (info != [(THWDrawablesWidgetLayout *)self actualStageDrawable]|| [(THWWidgetLayoutDelegate *)self->_delegate widgetLayoutMode:self]!= 3)
   {
     return 0;
   }
@@ -276,36 +276,36 @@
   return v9;
 }
 
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout
 {
   if (![(THWDrawablesWidgetLayout *)self isExpanded])
   {
-    return a3;
+    return geometry;
   }
 
-  v7 = [a4 info];
-  if (v7 != [(THWDrawablesWidgetLayout *)self actualStageDrawable])
+  info = [layout info];
+  if (info != [(THWDrawablesWidgetLayout *)self actualStageDrawable])
   {
-    return a3;
+    return geometry;
   }
 
   [(THWWidgetLayoutDelegate *)[(THWDrawablesWidgetLayout *)self delegate] widgetLayoutBounds];
   v11 = CGRectInset(v10, 64.0, 64.0);
 
-  return [TSDLayout layoutGeometryFittingLayoutGeometry:a3 inFrame:v11.origin.x, v11.origin.y, v11.size.width, v11.size.height];
+  return [TSDLayout layoutGeometryFittingLayoutGeometry:geometry inFrame:v11.origin.x, v11.origin.y, v11.size.width, v11.size.height];
 }
 
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout
 {
   if (![(THWDrawablesWidgetLayout *)self isExpanded])
   {
-    return a3;
+    return geometry;
   }
 
-  v9 = [a5 info];
-  if (v9 != [(THWDrawablesWidgetLayout *)self actualStageDrawable])
+  info = [layout info];
+  if (info != [(THWDrawablesWidgetLayout *)self actualStageDrawable])
   {
-    return a3;
+    return geometry;
   }
 
   [(THWWidgetLayoutDelegate *)[(THWDrawablesWidgetLayout *)self delegate] widgetLayoutBounds];
@@ -314,10 +314,10 @@
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  [a4 frame];
+  [layoutGeometry frame];
   v17 = THScaleNeededToFitSizeInSize(v15, v16, width, height);
 
-  return [TSDLayout layoutGeometryFittingLayoutGeometry:a3 inFrame:x scale:y, width, height, v17];
+  return [TSDLayout layoutGeometryFittingLayoutGeometry:geometry inFrame:x scale:y, width, height, v17];
 }
 
 @end

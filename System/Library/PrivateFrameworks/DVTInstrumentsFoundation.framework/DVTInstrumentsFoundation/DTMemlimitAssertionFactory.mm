@@ -1,10 +1,10 @@
 @interface DTMemlimitAssertionFactory
-- (id)_removeMemoryLimitsForPid:(int)a3;
+- (id)_removeMemoryLimitsForPid:(int)pid;
 @end
 
 @implementation DTMemlimitAssertionFactory
 
-- (id)_removeMemoryLimitsForPid:(int)a3
+- (id)_removeMemoryLimitsForPid:(int)pid
 {
   v18 = *MEMORY[0x277D85DE8];
   *(&v13 + 4) = 0xFFFFFFFF00000000;
@@ -17,7 +17,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
-      v15 = a3;
+      pidCopy2 = pid;
       v16 = 1024;
       v17 = v5;
       v6 = MEMORY[0x277D86220];
@@ -30,13 +30,13 @@ LABEL_7:
 
   else
   {
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 BOOLForKey:@"DTMemlimitAssertionFactoryLog"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v10 = [standardUserDefaults BOOLForKey:@"DTMemlimitAssertionFactoryLog"];
 
     if (v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v15 = a3;
+      pidCopy2 = pid;
       v16 = 1024;
       v17 = 0;
       v6 = MEMORY[0x277D86220];

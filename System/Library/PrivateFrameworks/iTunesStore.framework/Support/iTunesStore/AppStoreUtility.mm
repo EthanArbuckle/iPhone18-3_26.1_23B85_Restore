@@ -1,22 +1,22 @@
 @interface AppStoreUtility
-+ (id)_newManifestWithManifestType:(int64_t)a3;
-+ (id)_newRequestWithManifest:(id)a3;
-+ (void)_addDownloads:(id)a3 toManifest:(id)a4 forClientID:(id)a5;
-+ (void)_checkClaimsForAccountID:(id)a3 claimStyle:(int64_t)a4 clientAuditTokenData:(id)a5 establishActiveAccounts:(BOOL)a6 ignoresPreviousClaimAttempts:(BOOL)a7 completionBlock:(id)a8;
-+ (void)_sendSoftwareManifest:(id)a3 withReason:(id)a4;
++ (id)_newManifestWithManifestType:(int64_t)type;
++ (id)_newRequestWithManifest:(id)manifest;
++ (void)_addDownloads:(id)downloads toManifest:(id)manifest forClientID:(id)d;
++ (void)_checkClaimsForAccountID:(id)d claimStyle:(int64_t)style clientAuditTokenData:(id)data establishActiveAccounts:(BOOL)accounts ignoresPreviousClaimAttempts:(BOOL)attempts completionBlock:(id)block;
++ (void)_sendSoftwareManifest:(id)manifest withReason:(id)reason;
 + (void)checkDownloadQueue;
-+ (void)claimAppsWithPurchase:(id)a3;
++ (void)claimAppsWithPurchase:(id)purchase;
 + (void)hidePendingUpdatesBadge;
-+ (void)installManagedAppWithRequest:(id)a3 completionBlock:(id)a4;
-+ (void)postBulletinWithTitle:(id)a3 message:(id)a4 destinations:(unint64_t)a5 actionButtonTitle:(id)a6 actionButtonURL:(id)a7 launchURL:(id)a8 completionBlock:(id)a9;
-+ (void)reloadUpdatesWithCompletionBlock:(id)a3;
-+ (void)repairAppWithRequest:(id)a3 completionBlock:(id)a4;
-+ (void)restoreDemotedAppsWithBundleIDs:(id)a3;
-+ (void)sendActivitySubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4;
-+ (void)sendAppStoreSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4;
-+ (void)sendClusterMappings:(id)a3;
-+ (void)sendNewsSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4;
-+ (void)sendSoftwareDownloads:(id)a3 withReason:(id)a4 forClientID:(id)a5 manifestType:(int64_t)a6;
++ (void)installManagedAppWithRequest:(id)request completionBlock:(id)block;
++ (void)postBulletinWithTitle:(id)title message:(id)message destinations:(unint64_t)destinations actionButtonTitle:(id)buttonTitle actionButtonURL:(id)l launchURL:(id)rL completionBlock:(id)block;
++ (void)reloadUpdatesWithCompletionBlock:(id)block;
++ (void)repairAppWithRequest:(id)request completionBlock:(id)block;
++ (void)restoreDemotedAppsWithBundleIDs:(id)ds;
++ (void)sendActivitySubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d;
++ (void)sendAppStoreSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d;
++ (void)sendClusterMappings:(id)mappings;
++ (void)sendNewsSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d;
++ (void)sendSoftwareDownloads:(id)downloads withReason:(id)reason forClientID:(id)d manifestType:(int64_t)type;
 @end
 
 @implementation AppStoreUtility
@@ -29,19 +29,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -59,7 +59,7 @@
 
   if (v8)
   {
-    v6 = [NSString stringWithCString:v8 encoding:4, &v13, v11];
+    oSLogObject = [NSString stringWithCString:v8 encoding:4, &v13, v11];
     free(v8);
     SSFileLog();
 LABEL_11:
@@ -71,33 +71,33 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = sub_10022A5D4;
   v12[3] = &unk_10032CC88;
-  v12[4] = a1;
+  v12[4] = self;
   [v10 sendRequestCompletionBlock:v12];
 }
 
-+ (void)claimAppsWithPurchase:(id)a3
++ (void)claimAppsWithPurchase:(id)purchase
 {
-  v4 = a3;
-  v5 = [v4 gratisIdentifiers];
+  purchaseCopy = purchase;
+  gratisIdentifiers = [purchaseCopy gratisIdentifiers];
   v6 = +[SSLogConfig sharedDaemonConfig];
   if (!v6)
   {
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 &= 2u;
   }
@@ -109,7 +109,7 @@ LABEL_11:
 
   v10 = objc_opt_class();
   v11 = v10;
-  [v5 componentsJoinedByString:{@", "}];
+  [gratisIdentifiers componentsJoinedByString:{@", "}];
   v22 = 138543618;
   v23 = v10;
   v25 = v24 = 2114;
@@ -118,33 +118,33 @@ LABEL_11:
 
   if (v12)
   {
-    v9 = [NSString stringWithCString:v12 encoding:4, &v22, v20];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v22, v20];
     free(v12);
     SSFileLog();
 LABEL_11:
   }
 
-  v13 = [objc_alloc(ISWeakLinkedClassForString()) initWithBundleIdentifiers:v5];
-  v14 = [v4 accountIdentifier];
-  [v13 setAccountID:v14];
+  v13 = [objc_alloc(ISWeakLinkedClassForString()) initWithBundleIdentifiers:gratisIdentifiers];
+  accountIdentifier = [purchaseCopy accountIdentifier];
+  [v13 setAccountID:accountIdentifier];
 
-  v15 = [v4 valueForDownloadProperty:SSDownloadPropertyShouldSuppressErrorDialogs];
+  v15 = [purchaseCopy valueForDownloadProperty:SSDownloadPropertyShouldSuppressErrorDialogs];
   [v13 setSuppressErrorDialogs:{objc_msgSend(v15, "BOOLValue")}];
 
-  v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 uniqueIdentifier]);
+  v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [purchaseCopy uniqueIdentifier]);
   [v13 setPurchaseID:v16];
 
-  v17 = [v4 requestProperties];
+  requestProperties = [purchaseCopy requestProperties];
 
-  v18 = [v17 HTTPHeaders];
-  [v13 setHttpHeaders:v18];
+  hTTPHeaders = [requestProperties HTTPHeaders];
+  [v13 setHttpHeaders:hTTPHeaders];
 
   v19 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v13];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10022AADC;
   v21[3] = &unk_10032CCA8;
-  v21[4] = a1;
+  v21[4] = self;
   [v19 sendRequestWithCompletionBlock:v21];
 }
 
@@ -156,19 +156,19 @@ LABEL_11:
     v2 = +[SSLogConfig sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v4 &= 2u;
   }
@@ -186,7 +186,7 @@ LABEL_11:
 
   if (v7)
   {
-    v5 = [NSString stringWithCString:v7 encoding:4, &v10, v9, v10];
+    oSLogObject = [NSString stringWithCString:v7 encoding:4, &v10, v9, v10];
     free(v7);
     SSFileLog();
 LABEL_11:
@@ -196,12 +196,12 @@ LABEL_11:
   [v8 hideApplicationBadgeForPendingUpdates];
 }
 
-+ (void)installManagedAppWithRequest:(id)a3 completionBlock:(id)a4
++ (void)installManagedAppWithRequest:(id)request completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 itemIdentifier];
-  v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v7 longLongValue]);
+  requestCopy = request;
+  blockCopy = block;
+  itemIdentifier = [requestCopy itemIdentifier];
+  v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [itemIdentifier longLongValue]);
 
   v9 = +[SSLogConfig sharedDaemonConfig];
   if (!v9)
@@ -209,19 +209,19 @@ LABEL_11:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v11 &= 2u;
   }
@@ -233,7 +233,7 @@ LABEL_11:
 
   v13 = objc_opt_class();
   v14 = v13;
-  [v5 externalVersionIdentifier];
+  [requestCopy externalVersionIdentifier];
   v23 = 138543874;
   v24 = v13;
   v25 = 2112;
@@ -244,54 +244,54 @@ LABEL_11:
 
   if (v15)
   {
-    v12 = [NSString stringWithCString:v15 encoding:4, &v23, v22];
+    oSLogObject = [NSString stringWithCString:v15 encoding:4, &v23, v22];
     free(v15);
     SSFileLog();
 LABEL_11:
   }
 
   v16 = objc_alloc(ISWeakLinkedClassForString());
-  v17 = [v5 externalVersionIdentifier];
-  v18 = [v5 bundleIdentifier];
-  v19 = [v5 bundleVersion];
-  v20 = [v16 initWithItemIdentifer:v8 externalVersionIdentifier:v17 bundleIdentifier:v18 bundleVersion:v19 skipDownloads:{objc_msgSend(v5, "skipDownloads")}];
+  externalVersionIdentifier = [requestCopy externalVersionIdentifier];
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  bundleVersion = [requestCopy bundleVersion];
+  v20 = [v16 initWithItemIdentifer:v8 externalVersionIdentifier:externalVersionIdentifier bundleIdentifier:bundleIdentifier bundleVersion:bundleVersion skipDownloads:{objc_msgSend(requestCopy, "skipDownloads")}];
 
   v21 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v20];
-  [v21 sendRequestWithCompletionBlock:v6];
+  [v21 sendRequestWithCompletionBlock:blockCopy];
 }
 
-+ (void)postBulletinWithTitle:(id)a3 message:(id)a4 destinations:(unint64_t)a5 actionButtonTitle:(id)a6 actionButtonURL:(id)a7 launchURL:(id)a8 completionBlock:(id)a9
++ (void)postBulletinWithTitle:(id)title message:(id)message destinations:(unint64_t)destinations actionButtonTitle:(id)buttonTitle actionButtonURL:(id)l launchURL:(id)rL completionBlock:(id)block
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a4;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
+  messageCopy = message;
   v19 = +[SSLogConfig sharedDaemonConfig];
   if (!v19)
   {
     v19 = +[SSLogConfig sharedConfig];
   }
 
-  v20 = [v19 shouldLog];
+  shouldLog = [v19 shouldLog];
   if ([v19 shouldLogToDisk])
   {
-    v20 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v21 = [v19 OSLogObject];
-  if (!os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+  oSLogObject = [v19 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v20 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (v20)
+  if (shouldLog)
   {
     v29 = 138543618;
     v30 = objc_opt_class();
     v31 = 2112;
-    v32 = v13;
+    v32 = titleCopy;
     v22 = v30;
     LODWORD(v27) = 22;
     v23 = _os_log_send_and_compose_impl();
@@ -309,51 +309,51 @@ LABEL_11:
   }
 
   v25 = objc_alloc_init(ISWeakLinkedClassForString());
-  [v25 setTitle:v13];
-  [v25 setMessage:v18];
+  [v25 setTitle:titleCopy];
+  [v25 setMessage:messageCopy];
 
-  [v25 setDestinations:a5];
-  if (v14)
+  [v25 setDestinations:destinations];
+  if (buttonTitleCopy)
   {
-    [v25 setActionButtonTitle:v14];
+    [v25 setActionButtonTitle:buttonTitleCopy];
   }
 
-  if (v15)
+  if (lCopy)
   {
-    [v25 setActionButtonURL:v15];
+    [v25 setActionButtonURL:lCopy];
   }
 
-  if (v16)
+  if (rLCopy)
   {
-    [v25 setLaunchURL:v16];
+    [v25 setLaunchURL:rLCopy];
   }
 
   v26 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v25];
-  [v26 startWithCompletionBlock:v17];
+  [v26 startWithCompletionBlock:blockCopy];
 }
 
-+ (void)reloadUpdatesWithCompletionBlock:(id)a3
++ (void)reloadUpdatesWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -371,7 +371,7 @@ LABEL_11:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v15, v12];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v15, v12];
     free(v9);
     SSFileLog();
 LABEL_11:
@@ -382,34 +382,34 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = sub_10022B5D8;
   v13[3] = &unk_10032CCD0;
-  v14 = v3;
-  v11 = v3;
+  v14 = blockCopy;
+  v11 = blockCopy;
   [v10 reloadForSettingsFromServerWithCompletionBlock:v13];
 }
 
-+ (void)repairAppWithRequest:(id)a3 completionBlock:(id)a4
++ (void)repairAppWithRequest:(id)request completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 &= 2u;
   }
@@ -421,58 +421,58 @@ LABEL_11:
 
   v11 = objc_opt_class();
   v12 = v11;
-  v13 = [v5 bundleID];
-  [v5 accountDSID];
+  bundleID = [requestCopy bundleID];
+  [requestCopy accountDSID];
   v22 = 138544130;
   v23 = v11;
   v24 = 2112;
-  v25 = v13;
+  v25 = bundleID;
   v27 = v26 = 2112;
   v28 = 2048;
-  v29 = [v5 claimStyle];
+  claimStyle = [requestCopy claimStyle];
   LODWORD(v21) = 42;
   v14 = _os_log_send_and_compose_impl();
 
   if (v14)
   {
-    v10 = [NSString stringWithCString:v14 encoding:4, &v22, v21];
+    oSLogObject = [NSString stringWithCString:v14 encoding:4, &v22, v21];
     free(v14);
     SSFileLog();
 LABEL_11:
   }
 
-  v15 = [v5 claimStyle] != 0;
+  v15 = [requestCopy claimStyle] != 0;
   v16 = objc_alloc(ISWeakLinkedClassForString());
-  v17 = [v5 bundleID];
-  v18 = [v5 accountDSID];
-  v19 = [v16 initWithBundleID:v17 accountIdentifier:v18 claimStyle:v15];
+  bundleID2 = [requestCopy bundleID];
+  accountDSID = [requestCopy accountDSID];
+  v19 = [v16 initWithBundleID:bundleID2 accountIdentifier:accountDSID claimStyle:v15];
 
   v20 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v19];
-  [v20 sendRequestWithCompletionBlock:v6];
+  [v20 sendRequestWithCompletionBlock:blockCopy];
 }
 
-+ (void)restoreDemotedAppsWithBundleIDs:(id)a3
++ (void)restoreDemotedAppsWithBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -484,8 +484,8 @@ LABEL_11:
 
   v9 = objc_opt_class();
   v10 = v9;
-  v11 = [v4 count];
-  [v4 componentsJoinedByString:{@", "}];
+  v11 = [dsCopy count];
+  [dsCopy componentsJoinedByString:{@", "}];
   v17 = 138543874;
   v18 = v9;
   v19 = 2048;
@@ -496,44 +496,44 @@ LABEL_11:
 
   if (v12)
   {
-    v8 = [NSString stringWithCString:v12 encoding:4, &v17, v15];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v17, v15];
     free(v12);
     SSFileLog();
 LABEL_11:
   }
 
-  v13 = [objc_alloc(ISWeakLinkedClassForString()) initWithBundleIDs:v4];
+  v13 = [objc_alloc(ISWeakLinkedClassForString()) initWithBundleIDs:dsCopy];
   v14 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v13];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10022BB0C;
   v16[3] = &unk_10032CCF0;
-  v16[4] = a1;
+  v16[4] = self;
   [v14 startWithCompletionBlock:v16];
 }
 
-+ (void)sendClusterMappings:(id)a3
++ (void)sendClusterMappings:(id)mappings
 {
-  v4 = a3;
+  mappingsCopy = mappings;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v7;
   }
@@ -543,7 +543,7 @@ LABEL_11:
     v9 = v7 & 2;
   }
 
-  v30 = a1;
+  selfCopy = self;
   if (v9)
   {
     v10 = objc_opt_class();
@@ -551,7 +551,7 @@ LABEL_11:
     v39 = 138543618;
     v40 = v10;
     v41 = 2048;
-    v42 = [v4 count];
+    v42 = [mappingsCopy count];
     LODWORD(v29) = 22;
     v12 = _os_log_send_and_compose_impl();
 
@@ -560,7 +560,7 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    v8 = [NSString stringWithCString:v12 encoding:4, &v39, v29];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v39, v29];
     free(v12);
     SSFileLog();
   }
@@ -574,7 +574,7 @@ LABEL_13:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = v4;
+  v15 = mappingsCopy;
   v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v16)
   {
@@ -591,23 +591,23 @@ LABEL_13:
 
         v20 = *(*(&v34 + 1) + 8 * i);
         v21 = objc_opt_new();
-        v22 = [v20 bundleID];
-        [v21 setBundleID:v22];
+        bundleID = [v20 bundleID];
+        [v21 setBundleID:bundleID];
 
-        v23 = [v20 clusterID];
-        [v21 setClusterID:v23];
+        clusterID = [v20 clusterID];
+        [v21 setClusterID:clusterID];
 
-        v24 = [v20 clusterVersionID];
-        [v21 setClusterVersion:v24];
+        clusterVersionID = [v20 clusterVersionID];
+        [v21 setClusterVersion:clusterVersionID];
 
-        v25 = [v20 itemID];
-        [v21 setItemID:v25];
+        itemID = [v20 itemID];
+        [v21 setItemID:itemID];
 
-        v26 = [v20 launchWeight];
-        [v21 setLaunchesWeight:v26];
+        launchWeight = [v20 launchWeight];
+        [v21 setLaunchesWeight:launchWeight];
 
-        v27 = [v20 foregroundUsageWeight];
-        [v21 setUsageWeight:v27];
+        foregroundUsageWeight = [v20 foregroundUsageWeight];
+        [v21 setUsageWeight:foregroundUsageWeight];
 
         [v14 addObject:v21];
       }
@@ -623,35 +623,35 @@ LABEL_13:
   v31[2] = sub_10022C070;
   v31[3] = &unk_10032CD18;
   v32 = v15;
-  v33 = v30;
+  v33 = selfCopy;
   v28 = v15;
   [v13 setClusterMappings:v14 completionBlock:v31];
 }
 
-+ (void)sendSoftwareDownloads:(id)a3 withReason:(id)a4 forClientID:(id)a5 manifestType:(int64_t)a6
++ (void)sendSoftwareDownloads:(id)downloads withReason:(id)reason forClientID:(id)d manifestType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  downloadsCopy = downloads;
+  reasonCopy = reason;
+  dCopy = d;
   v13 = +[SSLogConfig sharedDaemonConfig];
   if (!v13)
   {
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
-  v16 = [v13 OSLogObject];
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v13 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v15 &= 2u;
   }
@@ -666,49 +666,49 @@ LABEL_13:
   v22 = 138543874;
   v23 = v17;
   v24 = 2048;
-  v25 = [v10 count];
+  v25 = [downloadsCopy count];
   v26 = 2114;
-  v27 = v11;
+  v27 = reasonCopy;
   LODWORD(v21) = 32;
   v19 = _os_log_send_and_compose_impl();
 
   if (v19)
   {
-    v16 = [NSString stringWithCString:v19 encoding:4, &v22, v21];
+    oSLogObject = [NSString stringWithCString:v19 encoding:4, &v22, v21];
     free(v19);
     SSFileLog();
 LABEL_11:
   }
 
-  v20 = [a1 _newManifestWithManifestType:a6];
-  [a1 _addDownloads:v10 toManifest:v20 forClientID:v12];
+  v20 = [self _newManifestWithManifestType:type];
+  [self _addDownloads:downloadsCopy toManifest:v20 forClientID:dCopy];
 
-  [a1 _sendSoftwareManifest:v20 withReason:v11];
+  [self _sendSoftwareManifest:v20 withReason:reasonCopy];
 }
 
-+ (void)sendNewsSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4
++ (void)sendNewsSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -726,7 +726,7 @@ LABEL_11:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
     free(v12);
     SSFileLog();
 LABEL_11:
@@ -734,32 +734,32 @@ LABEL_11:
 
   ISWeakLinkedClassForString();
   v13 = objc_opt_new();
-  [v13 setSubscriptionEntitlementsWithDictionary:v6 forAccountID:v5 segment:0];
+  [v13 setSubscriptionEntitlementsWithDictionary:dictionaryCopy forAccountID:dCopy segment:0];
 }
 
-+ (void)sendActivitySubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4
++ (void)sendActivitySubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -777,7 +777,7 @@ LABEL_11:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
     free(v12);
     SSFileLog();
 LABEL_11:
@@ -785,32 +785,32 @@ LABEL_11:
 
   ISWeakLinkedClassForString();
   v13 = objc_opt_new();
-  [v13 setSubscriptionEntitlementsWithDictionary:v6 forAccountID:v5 segment:2];
+  [v13 setSubscriptionEntitlementsWithDictionary:dictionaryCopy forAccountID:dCopy segment:2];
 }
 
-+ (void)sendAppStoreSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4
++ (void)sendAppStoreSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -828,7 +828,7 @@ LABEL_11:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v15, v14, v15];
     free(v12);
     SSFileLog();
 LABEL_11:
@@ -836,55 +836,55 @@ LABEL_11:
 
   ISWeakLinkedClassForString();
   v13 = objc_opt_new();
-  [v13 setSubscriptionEntitlementsWithDictionary:v6 forAccountID:v5 segment:1];
+  [v13 setSubscriptionEntitlementsWithDictionary:dictionaryCopy forAccountID:dCopy segment:1];
 }
 
-+ (void)_addDownloads:(id)a3 toManifest:(id)a4 forClientID:(id)a5
++ (void)_addDownloads:(id)downloads toManifest:(id)manifest forClientID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  manifestCopy = manifest;
+  dCopy = d;
+  downloadsCopy = downloads;
   v10 = +[SSAccountStore defaultStore];
-  v11 = [v10 activeAccount];
+  activeAccount = [v10 activeAccount];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10022CBEC;
   v15[3] = &unk_10032CD40;
-  v16 = v8;
-  v17 = v11;
-  v18 = v7;
-  v12 = v7;
-  v13 = v11;
-  v14 = v8;
-  [v9 enumerateObjectsUsingBlock:v15];
+  v16 = dCopy;
+  v17 = activeAccount;
+  v18 = manifestCopy;
+  v12 = manifestCopy;
+  v13 = activeAccount;
+  v14 = dCopy;
+  [downloadsCopy enumerateObjectsUsingBlock:v15];
 }
 
-+ (void)_checkClaimsForAccountID:(id)a3 claimStyle:(int64_t)a4 clientAuditTokenData:(id)a5 establishActiveAccounts:(BOOL)a6 ignoresPreviousClaimAttempts:(BOOL)a7 completionBlock:(id)a8
++ (void)_checkClaimsForAccountID:(id)d claimStyle:(int64_t)style clientAuditTokenData:(id)data establishActiveAccounts:(BOOL)accounts ignoresPreviousClaimAttempts:(BOOL)attempts completionBlock:(id)block
 {
-  v9 = a7;
-  v10 = a6;
-  v13 = a3;
-  v14 = a8;
+  attemptsCopy = attempts;
+  accountsCopy = accounts;
+  dCopy = d;
+  blockCopy = block;
   v15 = +[SSLogConfig sharedDaemonConfig];
   if (!v15)
   {
     v15 = +[SSLogConfig sharedConfig];
   }
 
-  v16 = [v15 shouldLog];
+  shouldLog = [v15 shouldLog];
   if ([v15 shouldLogToDisk])
   {
-    v17 = v16 | 2;
+    v17 = shouldLog | 2;
   }
 
   else
   {
-    v17 = v16;
+    v17 = shouldLog;
   }
 
-  v18 = [v15 OSLogObject];
-  if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+  oSLogObject = [v15 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v17 &= 2u;
   }
@@ -894,9 +894,9 @@ LABEL_11:
     v30 = 138543874;
     v31 = objc_opt_class();
     v32 = 2112;
-    v33 = v13;
+    v33 = dCopy;
     v34 = 2048;
-    v35 = a4;
+    styleCopy = style;
     v19 = v31;
     LODWORD(v26) = 32;
     v25 = &v30;
@@ -907,60 +907,60 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v18 = [NSString stringWithCString:v20 encoding:4, &v30, v26];
+    oSLogObject = [NSString stringWithCString:v20 encoding:4, &v30, v26];
     free(v20);
-    v25 = v18;
+    v25 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  v21 = [objc_alloc(ISWeakLinkedClassForString()) initWithClaimStyle:a4];
+  v21 = [objc_alloc(ISWeakLinkedClassForString()) initWithClaimStyle:style];
   v22 = v21;
-  if (v13)
+  if (dCopy)
   {
-    [v21 setAccountID:v13];
+    [v21 setAccountID:dCopy];
   }
 
-  [v22 setEstablishesActiveAccount:{v10, v25}];
-  [v22 setIgnoresPreviousClaimAttempts:v9];
+  [v22 setEstablishesActiveAccount:{accountsCopy, v25}];
+  [v22 setIgnoresPreviousClaimAttempts:attemptsCopy];
   v23 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v22];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10022CFD8;
   v27[3] = &unk_10032CD68;
-  v28 = v14;
-  v29 = a1;
-  v24 = v14;
+  v28 = blockCopy;
+  selfCopy = self;
+  v24 = blockCopy;
   [v23 sendRequestWithCompletionBlock:v27];
 }
 
-+ (id)_newManifestWithManifestType:(int64_t)a3
++ (id)_newManifestWithManifestType:(int64_t)type
 {
   v4 = objc_alloc(ISWeakLinkedClassForString());
 
-  return [v4 initWithManifestType:a3];
+  return [v4 initWithManifestType:type];
 }
 
-+ (id)_newRequestWithManifest:(id)a3
++ (id)_newRequestWithManifest:(id)manifest
 {
-  v3 = a3;
-  v4 = [objc_alloc(ISWeakLinkedClassForString()) initWithManifest:v3];
+  manifestCopy = manifest;
+  v4 = [objc_alloc(ISWeakLinkedClassForString()) initWithManifest:manifestCopy];
 
   v5 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v4];
   return v5;
 }
 
-+ (void)_sendSoftwareManifest:(id)a3 withReason:(id)a4
++ (void)_sendSoftwareManifest:(id)manifest withReason:(id)reason
 {
-  v6 = a4;
-  v7 = [a1 _newRequestWithManifest:a3];
+  reasonCopy = reason;
+  v7 = [self _newRequestWithManifest:manifest];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10022D35C;
   v9[3] = &unk_10032CD90;
-  v10 = v6;
-  v11 = a1;
-  v8 = v6;
+  v10 = reasonCopy;
+  selfCopy = self;
+  v8 = reasonCopy;
   [v7 startWithCompletionBlock:v9];
 }
 

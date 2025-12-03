@@ -1,64 +1,64 @@
 @interface SBSystemShellExternalDisplaySceneManager
-- (BOOL)_isExternalForegroundScene:(id)a3;
-- (BOOL)_shouldAutoHostScene:(id)a3;
-- (BOOL)_shouldFenceTransitionForScene:(id)a3 updatedClientSettingsDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
+- (BOOL)_isExternalForegroundScene:(id)scene;
+- (BOOL)_shouldAutoHostScene:(id)scene;
+- (BOOL)_shouldFenceTransitionForScene:(id)scene updatedClientSettingsDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
 - (BOOL)hasIdleTimerBehaviors;
 - (BOOL)isSuspendedUnderLock;
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventUnderLockForScene:(id)a4;
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventUnderLockForScene:(id)scene;
 - (BOOL)wantsDisableIdleTimer;
-- (SBSystemShellExternalDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6;
+- (SBSystemShellExternalDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior;
 - (SBWindowScene)_windowScene;
 - (id)_appSceneClientSettingsDiffInspector;
-- (id)_proposeIdleTimerBehaviorForReason:(id)a3;
+- (id)_proposeIdleTimerBehaviorForReason:(id)reason;
 - (id)_sceneHandlesDisablingIdleTimer;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
-- (id)existingSceneHandleForPersistenceIdentifier:(id)a3;
-- (id)existingSceneHandleForScene:(id)a3;
-- (id)existingSceneHandleForSceneIdentity:(id)a3;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
+- (id)existingSceneHandleForPersistenceIdentifier:(id)identifier;
+- (id)existingSceneHandleForScene:(id)scene;
+- (id)existingSceneHandleForSceneIdentity:(id)identity;
 - (id)externalApplicationSceneHandles;
 - (id)externalForegroundApplicationSceneHandles;
 - (id)layoutStateManager;
-- (id)newSceneIdentifierForBundleIdentifier:(id)a3 supportsMultiwindow:(BOOL)a4;
-- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)a3;
-- (id)suspendedUnderLockManager:(id)a3 sceneHandleForScene:(id)a4;
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3;
-- (id)suspendedUnderLockManagerVisibleScenes:(id)a3;
+- (id)newSceneIdentifierForBundleIdentifier:(id)identifier supportsMultiwindow:(BOOL)multiwindow;
+- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)requestor;
+- (id)suspendedUnderLockManager:(id)manager sceneHandleForScene:(id)scene;
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration;
+- (id)suspendedUnderLockManagerVisibleScenes:(id)scenes;
 - (id)switcherController;
-- (id)transientApplicationSceneHandlesForApplication:(id)a3;
-- (void)_doObserverCalloutWithBlock:(id)a3;
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5;
-- (void)_noteDidCommitUpdateForScene:(id)a3;
-- (void)_reconnectSceneRemnant:(id)a3 forProcess:(id)a4 sceneManager:(id)a5;
+- (id)transientApplicationSceneHandlesForApplication:(id)application;
+- (void)_doObserverCalloutWithBlock:(id)block;
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene;
+- (void)_noteDidCommitUpdateForScene:(id)scene;
+- (void)_reconnectSceneRemnant:(id)remnant forProcess:(id)process sceneManager:(id)manager;
 - (void)_resetIdleTimerIfNeeded;
-- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)a3 withHandle:(id)a4;
-- (void)_scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)_scene:(id)a3 willUpdateSettings:(id)a4;
-- (void)_scene:(id)a3 willUpdateWithSettings:(id)a4 transitionContext:(id)a5;
+- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)scene withHandle:(id)handle;
+- (void)_scene:(id)_scene didUpdateClientSettings:(id)settings;
+- (void)_scene:(id)_scene willUpdateSettings:(id)settings;
+- (void)_scene:(id)_scene willUpdateWithSettings:(id)settings transitionContext:(id)context;
 - (void)dealloc;
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4;
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene;
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBSystemShellExternalDisplaySceneManager
 
-- (SBSystemShellExternalDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6
+- (SBSystemShellExternalDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  referenceCopy = reference;
+  providerCopy = provider;
+  binderCopy = binder;
   v27.receiver = self;
   v27.super_class = SBSystemShellExternalDisplaySceneManager;
-  v13 = [(SBSceneManager *)&v27 initWithReference:v10 sceneIdentityProvider:v11 presentationBinder:v12 snapshotBehavior:a6];
+  v13 = [(SBSceneManager *)&v27 initWithReference:referenceCopy sceneIdentityProvider:providerCopy presentationBinder:binderCopy snapshotBehavior:behavior];
   if (v13)
   {
-    [v11 setDataSource:v13];
+    [providerCopy setDataSource:v13];
     v14 = [SBSystemShellExternalDisplayPolicyAggregator alloc];
     v15 = +[SBDefaults localDefaults];
-    v16 = [(SBSceneManager *)v13 displayIdentity];
+    displayIdentity = [(SBSceneManager *)v13 displayIdentity];
     v17 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v18 = [v17 policyAggregator];
-    v19 = [(SBSystemShellExternalDisplayPolicyAggregator *)v14 initWithDefaults:v15 displayIdentity:v16 policyDataSource:v18];
+    policyAggregator = [v17 policyAggregator];
+    v19 = [(SBSystemShellExternalDisplayPolicyAggregator *)v14 initWithDefaults:v15 displayIdentity:displayIdentity policyDataSource:policyAggregator];
     policyAggregator = v13->_policyAggregator;
     v13->_policyAggregator = v19;
 
@@ -171,21 +171,21 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
   [(SBSceneManager *)&v3 dealloc];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v4.receiver = self;
   v4.super_class = SBSystemShellExternalDisplaySceneManager;
-  [(SBSceneManager *)&v4 windowSceneDidDisconnect:a3];
+  [(SBSceneManager *)&v4 windowSceneDidDisconnect:disconnect];
   [(SBSystemShellExternalDisplaySceneManager *)self _resetIdleTimerIfNeeded];
 }
 
-- (BOOL)_shouldAutoHostScene:(id)a3
+- (BOOL)_shouldAutoHostScene:(id)scene
 {
-  v3 = a3;
-  if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) != 0 || (v4 = *MEMORY[0x277D22AC8], objc_msgSend(v3, "identifier"), v5 = objc_claimAutoreleasedReturnValue(), LOBYTE(v4) = objc_msgSend(v4, "isEqualToString:", v5), v5, (v4 & 1) == 0))
+  sceneCopy = scene;
+  if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) != 0 || (v4 = *MEMORY[0x277D22AC8], objc_msgSend(sceneCopy, "identifier"), v5 = objc_claimAutoreleasedReturnValue(), LOBYTE(v4) = objc_msgSend(v4, "isEqualToString:", v5), v5, (v4 & 1) == 0))
   {
-    v7 = [v3 clientProcess];
-    v6 = ![v7 isApplicationProcess] || objc_msgSend(v7, "isCurrentProcess");
+    clientProcess = [sceneCopy clientProcess];
+    v6 = ![clientProcess isApplicationProcess] || objc_msgSend(clientProcess, "isCurrentProcess");
   }
 
   else
@@ -196,108 +196,108 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
   return v6;
 }
 
-- (void)_doObserverCalloutWithBlock:(id)a3
+- (void)_doObserverCalloutWithBlock:(id)block
 {
   v3.receiver = self;
   v3.super_class = SBSystemShellExternalDisplaySceneManager;
-  [(SBSceneManager *)&v3 _doObserverCalloutWithBlock:a3];
+  [(SBSceneManager *)&v3 _doObserverCalloutWithBlock:block];
 }
 
-- (void)_reconnectSceneRemnant:(id)a3 forProcess:(id)a4 sceneManager:(id)a5
+- (void)_reconnectSceneRemnant:(id)remnant forProcess:(id)process sceneManager:(id)manager
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  [(SBSceneManager *)&v5 _reconnectSceneRemnant:a3 forProcess:a4 sceneManager:a5];
+  [(SBSceneManager *)&v5 _reconnectSceneRemnant:remnant forProcess:process sceneManager:manager];
 }
 
-- (void)_scene:(id)a3 willUpdateSettings:(id)a4
+- (void)_scene:(id)_scene willUpdateSettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = SBSystemShellExternalDisplaySceneManager;
-  [(SBSceneManager *)&v4 _scene:a3 willUpdateSettings:a4];
+  [(SBSceneManager *)&v4 _scene:_scene willUpdateSettings:settings];
 }
 
-- (void)_scene:(id)a3 willUpdateWithSettings:(id)a4 transitionContext:(id)a5
+- (void)_scene:(id)_scene willUpdateWithSettings:(id)settings transitionContext:(id)context
 {
-  v25 = a3;
-  v7 = a4;
+  _sceneCopy = _scene;
+  settingsCopy = settings;
   v8 = SBApp;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v25 identifier];
-  v11 = [v9 stringWithFormat:@"Workspace will update scene with identifier %@", v10];
+  identifier = [_sceneCopy identifier];
+  v11 = [v9 stringWithFormat:@"Workspace will update scene with identifier %@", identifier];
   [v8 updateMirroredDisplayOrientationWithLogMessage:v11];
 
-  v12 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:v25];
-  v13 = [v25 settings];
-  v14 = [(SBSystemShellExternalDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
-  v15 = [v14 containsObject:v12];
+  v12 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:_sceneCopy];
+  settings = [_sceneCopy settings];
+  externalForegroundApplicationSceneHandles = [(SBSystemShellExternalDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
+  v15 = [externalForegroundApplicationSceneHandles containsObject:v12];
 
   if (v12 && v15)
   {
-    v16 = [v13 isOccluded] ? objc_msgSend(v13, "isIgnoringOcclusions") : 1;
-    v17 = [v7 isOccluded] ? objc_msgSend(v7, "isIgnoringOcclusions") ^ 1 : 0;
+    v16 = [settings isOccluded] ? objc_msgSend(settings, "isIgnoringOcclusions") : 1;
+    v17 = [settingsCopy isOccluded] ? objc_msgSend(settingsCopy, "isIgnoringOcclusions") ^ 1 : 0;
     if (((v16 | v17) & 1) == 0)
     {
       v18 = [(SBSystemShellExternalDisplaySceneManager *)self _proposeIdleTimerBehaviorForReason:@"SBApplicationSceneHandle"];
     }
   }
 
-  v19 = [v13 isForeground];
-  v20 = [v7 isForeground];
+  isForeground = [settings isForeground];
+  isForeground2 = [settingsCopy isForeground];
   if (v12)
   {
-    v21 = v20;
-    v22 = [(SBSystemShellExternalDisplaySceneManager *)self externalApplicationSceneHandles];
-    v23 = [v22 containsObject:v12];
+    v21 = isForeground2;
+    externalApplicationSceneHandles = [(SBSystemShellExternalDisplaySceneManager *)self externalApplicationSceneHandles];
+    v23 = [externalApplicationSceneHandles containsObject:v12];
 
-    if (!(v21 & 1 | ((v19 & 1) == 0)) && v23 && ([v12 shouldAlwaysDisplayLiveContent] & 1) == 0)
+    if (!(v21 & 1 | ((isForeground & 1) == 0)) && v23 && ([v12 shouldAlwaysDisplayLiveContent] & 1) == 0)
     {
-      v24 = [v25 prepareSnapshot];
-      [v12 saveSuspendSnapshot:v24];
+      prepareSnapshot = [_sceneCopy prepareSnapshot];
+      [v12 saveSuspendSnapshot:prepareSnapshot];
     }
   }
 }
 
-- (void)_scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)_scene:(id)_scene didUpdateClientSettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = SBSystemShellExternalDisplaySceneManager;
-  [(SBSceneManager *)&v4 _scene:a3 didUpdateClientSettings:a4];
+  [(SBSceneManager *)&v4 _scene:_scene didUpdateClientSettings:settings];
 }
 
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene
 {
-  v9 = a4;
+  sceneCopy = scene;
   v5 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:?];
   if (v5)
   {
-    v6 = [v9 settings];
-    v7 = [v6 isForeground];
+    settings = [sceneCopy settings];
+    isForeground = [settings isForeground];
 
-    if (v7)
+    if (isForeground)
     {
       v8 = [(SBSystemShellExternalDisplaySceneManager *)self _proposeIdleTimerBehaviorForReason:@"SBApplicationSceneDestroyed"];
     }
   }
 }
 
-- (BOOL)_shouldFenceTransitionForScene:(id)a3 updatedClientSettingsDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (BOOL)_shouldFenceTransitionForScene:(id)scene updatedClientSettingsDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SBSystemShellExternalDisplaySceneManager;
-  return [(SBSceneManager *)&v7 _shouldFenceTransitionForScene:a3 updatedClientSettingsDiff:a4 oldClientSettings:a5 transitionContext:a6];
+  return [(SBSceneManager *)&v7 _shouldFenceTransitionForScene:scene updatedClientSettingsDiff:diff oldClientSettings:settings transitionContext:context];
 }
 
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene
 {
-  v5 = a4;
-  v21 = a5;
-  v8 = [v21 clientProcess];
-  if ([v8 isApplicationProcess])
+  existedCopy = existed;
+  sceneCopy = scene;
+  clientProcess = [sceneCopy clientProcess];
+  if ([clientProcess isApplicationProcess])
   {
     v9 = +[SBApplicationController sharedInstance];
-    v10 = [v8 bundleIdentifier];
-    v11 = [v9 applicationWithBundleIdentifier:v10];
+    bundleIdentifier = [clientProcess bundleIdentifier];
+    v11 = [v9 applicationWithBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -305,7 +305,7 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
     v11 = 0;
   }
 
-  v12 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:v21];
+  v12 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:sceneCopy];
   v13 = SBWorkspaceApplicationSceneHandlesInLockedOrUnlockedEnvironmentLayoutState();
   v14 = v13;
   if (v13)
@@ -328,7 +328,7 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
     [v11 setHasProminentlyIndicatedLocationUseWhileForeground:0];
   }
 
-  if (a3 == 1)
+  if (visibility == 1)
   {
     if (v11)
     {
@@ -342,30 +342,30 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
     }
   }
 
-  else if (!a3 && v11)
+  else if (!visibility && v11)
   {
     [v12 _setIdleTimerCoordinator:0];
-    if (v5)
+    if (existedCopy)
     {
       v18 = [(SBSystemShellExternalDisplaySceneManager *)self _proposeIdleTimerBehaviorForReason:@"SBAppDidEnterBackground"];
     }
 
-    v19 = [SBApp audioRecordingManager];
-    [v19 verifyBackgroundAudioActivityForApplication:v11];
+    audioRecordingManager = [SBApp audioRecordingManager];
+    [audioRecordingManager verifyBackgroundAudioActivityForApplication:v11];
   }
 }
 
-- (void)_noteDidCommitUpdateForScene:(id)a3
+- (void)_noteDidCommitUpdateForScene:(id)scene
 {
-  v13 = a3;
+  sceneCopy = scene;
   if ([(SBSystemShellExternalDisplaySceneManager *)self _isExternalForegroundScene:?])
   {
-    v4 = [v13 clientProcess];
-    if ([v4 isApplicationProcess])
+    clientProcess = [sceneCopy clientProcess];
+    if ([clientProcess isApplicationProcess])
     {
       v5 = +[SBApplicationController sharedInstance];
-      v6 = [v4 bundleIdentifier];
-      v7 = [v5 applicationWithBundleIdentifier:v6];
+      bundleIdentifier = [clientProcess bundleIdentifier];
+      v7 = [v5 applicationWithBundleIdentifier:bundleIdentifier];
     }
 
     else
@@ -373,23 +373,23 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
       v7 = 0;
     }
 
-    v9 = [SBApp appsRegisteredForVolumeEvents];
-    v10 = [v9 containsObject:v7];
+    appsRegisteredForVolumeEvents = [SBApp appsRegisteredForVolumeEvents];
+    v10 = [appsRegisteredForVolumeEvents containsObject:v7];
 
     if (v10)
     {
       [SBApp setAppRegisteredForVolumeEvents:v7 isActive:1];
     }
 
-    v11 = [SBApp appsRegisteredForLockButtonEvents];
-    v12 = [v11 containsObject:v7];
+    appsRegisteredForLockButtonEvents = [SBApp appsRegisteredForLockButtonEvents];
+    v12 = [appsRegisteredForLockButtonEvents containsObject:v7];
 
     if (v12)
     {
       [SBApp setAppRegisteredForLockButtonEvents:v7 isActive:1];
     }
 
-    v8 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:v13];
+    v8 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:sceneCopy];
     [v8 setHasMainSceneBeenForegroundAtLeastOnce:1];
   }
 
@@ -398,7 +398,7 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
     v8 = 0;
   }
 
-  [(SBSystemShellExternalDisplaySceneManager *)self _resetIdleTimerIfNeededForUpdateToScene:v13 withHandle:v8];
+  [(SBSystemShellExternalDisplaySceneManager *)self _resetIdleTimerIfNeededForUpdateToScene:sceneCopy withHandle:v8];
 }
 
 - (id)_appSceneClientSettingsDiffInspector
@@ -420,10 +420,10 @@ id __120__SBSystemShellExternalDisplaySceneManager_initWithReference_sceneIdenti
     v8 = __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffInspector__block_invoke(v7, &v15);
     [(UIApplicationSceneClientSettingsDiffInspector *)v6 observeIdleTimerDisabledWithBlock:v8, v15, v16, v17, v18];
 
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v12 = self->_appClientSettingsDiffInspector;
       v13 = __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffInspector__block_invoke(v11, &__block_literal_global_68_0);
@@ -484,52 +484,52 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
 {
   v4.receiver = self;
   v4.super_class = SBSystemShellExternalDisplaySceneManager;
-  v2 = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
+  externalApplicationSceneHandles = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
 
-  return v2;
+  return externalApplicationSceneHandles;
 }
 
 - (id)externalForegroundApplicationSceneHandles
 {
   v4.receiver = self;
   v4.super_class = SBSystemShellExternalDisplaySceneManager;
-  v2 = [(SBSceneManager *)&v4 externalForegroundApplicationSceneHandles];
+  externalForegroundApplicationSceneHandles = [(SBSceneManager *)&v4 externalForegroundApplicationSceneHandles];
 
-  return v2;
+  return externalForegroundApplicationSceneHandles;
 }
 
-- (id)existingSceneHandleForScene:(id)a3
+- (id)existingSceneHandleForScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForScene:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForScene:scene];
 
   return v3;
 }
 
-- (id)existingSceneHandleForSceneIdentity:(id)a3
+- (id)existingSceneHandleForSceneIdentity:(id)identity
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForSceneIdentity:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForSceneIdentity:identity];
 
   return v3;
 }
 
-- (id)existingSceneHandleForPersistenceIdentifier:(id)a3
+- (id)existingSceneHandleForPersistenceIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForPersistenceIdentifier:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForPersistenceIdentifier:identifier];
 
   return v3;
 }
 
 - (SBWindowScene)_windowScene
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBSceneManager *)self displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v5;
 }
@@ -542,115 +542,115 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
   return [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager isSuspendedUnderLock];
 }
 
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = a5;
+  lockCopy = lock;
+  blockCopy = block;
+  changeBlockCopy = changeBlock;
   BSDispatchQueueAssertMain();
   lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   if (!lazy_suspendedUnderLockManager)
   {
     v10 = [SBSuspendedUnderLockManager alloc];
     v11 = +[SBWorkspace mainWorkspace];
-    v12 = [v11 eventQueue];
-    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:v12];
+    eventQueue = [v11 eventQueue];
+    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:eventQueue];
     v14 = self->_lazy_suspendedUnderLockManager;
     self->_lazy_suspendedUnderLockManager = v13;
 
     lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   }
 
-  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:v6 alongsideWillChangeBlock:v15 alongsideDidChangeBlock:v8];
+  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:lockCopy alongsideWillChangeBlock:blockCopy alongsideDidChangeBlock:changeBlockCopy];
 }
 
 - (id)layoutStateManager
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBSceneManager *)self displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v6 = [v5 layoutStateManager];
+  layoutStateManager = [v5 layoutStateManager];
 
-  return v6;
+  return layoutStateManager;
 }
 
-- (id)transientApplicationSceneHandlesForApplication:(id)a3
+- (id)transientApplicationSceneHandlesForApplication:(id)application
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 transientApplicationSceneHandlesForApplication:a3];
+  v3 = [(SBSceneManager *)&v5 transientApplicationSceneHandlesForApplication:application];
 
   return v3;
 }
 
-- (id)newSceneIdentifierForBundleIdentifier:(id)a3 supportsMultiwindow:(BOOL)a4
+- (id)newSceneIdentifierForBundleIdentifier:(id)identifier supportsMultiwindow:(BOOL)multiwindow
 {
   v5.receiver = self;
   v5.super_class = SBSystemShellExternalDisplaySceneManager;
-  return [(SBSceneManager *)&v5 newSceneIdentifierForBundleIdentifier:a3 supportsMultiwindow:a4];
+  return [(SBSceneManager *)&v5 newSceneIdentifierForBundleIdentifier:identifier supportsMultiwindow:multiwindow];
 }
 
 - (id)switcherController
 {
-  v2 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-  v3 = [v2 switcherController];
+  _windowScene = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  return v3;
+  return switcherController;
 }
 
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration
 {
-  v3 = [(SBSceneManager *)self displayIdentity];
-  v4 = [v3 currentConfiguration];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  currentConfiguration = [displayIdentity currentConfiguration];
 
-  return v4;
+  return currentConfiguration;
 }
 
-- (id)suspendedUnderLockManager:(id)a3 sceneHandleForScene:(id)a4
+- (id)suspendedUnderLockManager:(id)manager sceneHandleForScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = SBSystemShellExternalDisplaySceneManager;
-  v4 = [(SBSceneManager *)&v6 existingSceneHandleForScene:a4];
+  v4 = [(SBSceneManager *)&v6 existingSceneHandleForScene:scene];
 
   return v4;
 }
 
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventUnderLockForScene:(id)a4
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventUnderLockForScene:(id)scene
 {
-  v4 = [a4 clientHandle];
-  v5 = [v4 bundleIdentifier];
+  clientHandle = [scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:@"com.apple.PosterBoard"];
-  return v4;
+  LOBYTE(clientHandle) = [bundleIdentifier isEqualToString:@"com.apple.PosterBoard"];
+  return clientHandle;
 }
 
-- (id)suspendedUnderLockManagerVisibleScenes:(id)a3
+- (id)suspendedUnderLockManagerVisibleScenes:(id)scenes
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-  v6 = [v5 switcherController];
-  v7 = [v6 layoutStateApplicationSceneHandles];
-  [v4 unionSet:v7];
+  _windowScene = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutStateApplicationSceneHandles = [switcherController layoutStateApplicationSceneHandles];
+  [v4 unionSet:layoutStateApplicationSceneHandles];
 
   return v4;
 }
 
-- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)a3
+- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)requestor
 {
   v3 = objc_alloc_init(SBExternalDisplaySceneSnapshotRequestStrategy);
 
   return v3;
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-  v4 = [v3 bs_mapNoNulls:&__block_literal_global_89_2];
+  _sceneHandlesDisablingIdleTimer = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+  v4 = [_sceneHandlesDisablingIdleTimer bs_mapNoNulls:&__block_literal_global_89_2];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
-  v6 = [v3 count];
+  v6 = [_sceneHandlesDisablingIdleTimer count];
   v7 = SBLogIdleTimer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -685,28 +685,28 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
 
 - (BOOL)hasIdleTimerBehaviors
 {
-  v3 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 layoutState];
-  v6 = [v5 unlockedEnvironmentMode];
+  _windowScene = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutState = [switcherController layoutState];
+  unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0;
   }
 
-  v7 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-  if ([v7 activationState])
+  _windowScene2 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+  if ([_windowScene2 activationState])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-    v10 = [v9 switcherController];
-    v11 = [v10 layoutStateApplicationSceneHandles];
-    v8 = [v11 count] != 0;
+    _windowScene3 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+    switcherController2 = [_windowScene3 switcherController];
+    layoutStateApplicationSceneHandles = [switcherController2 layoutStateApplicationSceneHandles];
+    v8 = [layoutStateApplicationSceneHandles count] != 0;
   }
 
   return v8;
@@ -714,19 +714,19 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
 
 - (BOOL)wantsDisableIdleTimer
 {
-  v2 = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-  v3 = [v2 count] != 0;
+  _sceneHandlesDisablingIdleTimer = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+  v3 = [_sceneHandlesDisablingIdleTimer count] != 0;
 
   return v3;
 }
 
-- (BOOL)_isExternalForegroundScene:(id)a3
+- (BOOL)_isExternalForegroundScene:(id)scene
 {
-  v4 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:a3];
+  v4 = [(SBSystemShellExternalDisplaySceneManager *)self existingSceneHandleForScene:scene];
   if (v4)
   {
-    v5 = [(SBSystemShellExternalDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
-    v6 = [v5 containsObject:v4];
+    externalForegroundApplicationSceneHandles = [(SBSystemShellExternalDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
+    v6 = [externalForegroundApplicationSceneHandles containsObject:v4];
   }
 
   else
@@ -737,35 +737,35 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
   return v6;
 }
 
-- (id)_proposeIdleTimerBehaviorForReason:(id)a3
+- (id)_proposeIdleTimerBehaviorForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[SBWorkspace mainWorkspace];
   v6 = [(SBSystemShellExternalDisplaySceneManager *)self coordinatorRequestedIdleTimerBehavior:self];
-  v7 = [v5 idleTimerProvider:self didProposeBehavior:v6 forReason:v4];
+  v7 = [v5 idleTimerProvider:self didProposeBehavior:v6 forReason:reasonCopy];
 
   return v7;
 }
 
-- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)a3 withHandle:(id)a4
+- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)scene withHandle:(id)handle
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 clientProcess];
-  v8 = [v15 uiClientSettings];
-  v9 = [v8 idleTimerDisabled];
-  if (v9)
+  sceneCopy = scene;
+  handleCopy = handle;
+  clientProcess = [sceneCopy clientProcess];
+  uiClientSettings = [sceneCopy uiClientSettings];
+  idleTimerDisabled = [uiClientSettings idleTimerDisabled];
+  if (idleTimerDisabled)
   {
-    v10 = v9;
-    v11 = [v15 settings];
-    if ([v11 isForeground] && !objc_msgSend(v6, "sceneFullyOccluded"))
+    v10 = idleTimerDisabled;
+    settings = [sceneCopy settings];
+    if ([settings isForeground] && !objc_msgSend(handleCopy, "sceneFullyOccluded"))
     {
-      v12 = 1;
+      isBeingDebugged = 1;
     }
 
-    else if ([v7 isApplicationProcess])
+    else if ([clientProcess isApplicationProcess])
     {
-      v12 = [v7 isBeingDebugged];
+      isBeingDebugged = [clientProcess isBeingDebugged];
       if ((v10 & 1) == 0)
       {
         goto LABEL_13;
@@ -774,28 +774,28 @@ void __80__SBSystemShellExternalDisplaySceneManager__appSceneClientSettingsDiffI
 
     else
     {
-      v12 = 0;
+      isBeingDebugged = 0;
     }
 
     goto LABEL_13;
   }
 
-  if ([v7 isApplicationProcess])
+  if ([clientProcess isApplicationProcess])
   {
-    v12 = [v7 isBeingDebugged];
+    isBeingDebugged = [clientProcess isBeingDebugged];
   }
 
   else
   {
-    v12 = 0;
+    isBeingDebugged = 0;
   }
 
 LABEL_13:
 
   v13 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-  v14 = [v13 isIdleTimerDisabled];
+  isIdleTimerDisabled = [v13 isIdleTimerDisabled];
 
-  if (v12 != v14)
+  if (isBeingDebugged != isIdleTimerDisabled)
   {
     [(SBSystemShellExternalDisplaySceneManager *)self _resetIdleTimerIfNeeded];
   }
@@ -805,14 +805,14 @@ LABEL_13:
 {
   if ([(SBSystemShellExternalDisplaySceneManager *)self hasIdleTimerBehaviors])
   {
-    v9 = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-    v3 = [v9 count];
+    _sceneHandlesDisablingIdleTimer = [(SBSystemShellExternalDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+    v3 = [_sceneHandlesDisablingIdleTimer count];
     v4 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     LOBYTE(v3) = (v3 == 0) ^ [v4 isIdleTimerDisabled];
 
     if ((v3 & 1) == 0)
     {
-      v5 = [v9 bs_mapNoNulls:&__block_literal_global_98];
+      v5 = [_sceneHandlesDisablingIdleTimer bs_mapNoNulls:&__block_literal_global_98];
       v6 = [v5 componentsJoinedByString:{@", "}];
 
       v7 = +[SBIdleTimerGlobalCoordinator sharedInstance];
@@ -838,15 +838,15 @@ id __67__SBSystemShellExternalDisplaySceneManager__resetIdleTimerIfNeeded__block
   v11 = __Block_byref_object_copy__109;
   v12 = __Block_byref_object_dispose__109;
   v13 = 0;
-  v2 = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
-  v3 = [v2 switcherController];
-  v4 = [v3 layoutStateApplicationSceneHandles];
+  _windowScene = [(SBSystemShellExternalDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutStateApplicationSceneHandles = [switcherController layoutStateApplicationSceneHandles];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__SBSystemShellExternalDisplaySceneManager__sceneHandlesDisablingIdleTimer__block_invoke;
   v7[3] = &unk_2783BFC98;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [layoutStateApplicationSceneHandles enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);

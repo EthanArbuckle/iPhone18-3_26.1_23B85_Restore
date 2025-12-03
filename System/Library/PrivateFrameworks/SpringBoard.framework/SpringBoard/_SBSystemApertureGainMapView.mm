@@ -1,18 +1,18 @@
 @interface _SBSystemApertureGainMapView
-- (_SBSystemApertureGainMapView)initWithFrame:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)setIDCornerRadius:(double)a3;
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
+- (_SBSystemApertureGainMapView)initWithFrame:(CGRect)frame;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)setIDCornerRadius:(double)radius;
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
 @end
 
 @implementation _SBSystemApertureGainMapView
 
-- (_SBSystemApertureGainMapView)initWithFrame:(CGRect)a3
+- (_SBSystemApertureGainMapView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = _SBSystemApertureGainMapView;
-  v3 = [(_SBSystemApertureGainMapView *)&v20 initWithFrame:a3.origin.x, a3.origin.y];
+  v3 = [(_SBSystemApertureGainMapView *)&v20 initWithFrame:frame.origin.x, frame.origin.y];
   if (v3)
   {
     SBSystemApertureContainerRenderingConfigurationMake(0, 2, 0, &v18);
@@ -25,8 +25,8 @@
     gainMapView = v3->_gainMapView;
     v3->_gainMapView = v6;
 
-    v8 = [(_SBGainMapView *)v3->_gainMapView gainMapLayer];
-    [v8 setRenderMode:*MEMORY[0x277CDA678]];
+    gainMapLayer = [(_SBGainMapView *)v3->_gainMapView gainMapLayer];
+    [gainMapLayer setRenderMode:*MEMORY[0x277CDA678]];
 
     [(_SBGainMapView *)v3->_gainMapView setAutoresizingMask:18];
     [(_SBSystemApertureGainMapView *)v3 addSubview:v3->_gainMapView];
@@ -37,11 +37,11 @@
     v3->_clonedGainMapSubstituteView = v10;
 
     v12 = v3->_clonedGainMapSubstituteView;
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v12 setBackgroundColor:blackColor];
 
-    v14 = [(UIView *)v3->_clonedGainMapSubstituteView layer];
-    [v14 setDisableUpdateMask:3];
+    layer = [(UIView *)v3->_clonedGainMapSubstituteView layer];
+    [layer setDisableUpdateMask:3];
 
     [(UIView *)v3->_clonedGainMapSubstituteView setAutoresizingMask:18];
     [(UIView *)v3->_clonedGainMapSubstituteView setUserInteractionEnabled:0];
@@ -56,56 +56,56 @@
   return v3;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:809 description:@"use -[UIView setIDCornerRadius:] instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:809 description:@"use -[UIView setIDCornerRadius:] instead"];
 
   v7.receiver = self;
   v7.super_class = _SBSystemApertureGainMapView;
-  [(_SBSystemApertureGainMapView *)&v7 _setCornerRadius:a3];
+  [(_SBSystemApertureGainMapView *)&v7 _setCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:814 description:@"use -[UIView setIDCornerRadius:] instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:814 description:@"use -[UIView setIDCornerRadius:] instead"];
 
   v7.receiver = self;
   v7.super_class = _SBSystemApertureGainMapView;
-  [(_SBSystemApertureGainMapView *)&v7 _setContinuousCornerRadius:a3];
+  [(_SBSystemApertureGainMapView *)&v7 _setContinuousCornerRadius:radius];
 }
 
-- (void)setIDCornerRadius:(double)a3
+- (void)setIDCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = _SBSystemApertureGainMapView;
   [(UIView *)&v5 setIDCornerRadius:?];
-  [(UIView *)self->_gainMapView setIDCornerRadius:a3];
-  [(UIView *)self->_clonedGainMapSubstituteView setIDCornerRadius:a3];
+  [(UIView *)self->_gainMapView setIDCornerRadius:radius];
+  [(UIView *)self->_clonedGainMapSubstituteView setIDCornerRadius:radius];
 }
 
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
   p_renderingConfiguration = &self->_renderingConfiguration;
   renderingConfiguration = self->_renderingConfiguration;
-  v32 = *a3;
+  v32 = *configuration;
   if (SBSystemApertureContainerRenderingConfigurationEqualToConfiguration(&renderingConfiguration, &v32))
   {
     return;
   }
 
-  v7 = *&a3->renderingStyle;
-  *&p_renderingConfiguration->alwaysRenderInSnapshots = *&a3->alwaysRenderInSnapshots;
+  v7 = *&configuration->renderingStyle;
+  *&p_renderingConfiguration->alwaysRenderInSnapshots = *&configuration->alwaysRenderInSnapshots;
   *&p_renderingConfiguration->renderingStyle = v7;
-  renderingStyle = a3->renderingStyle;
-  cloningStyle = a3->cloningStyle;
-  if (a3->renderingStyle <= 0)
+  renderingStyle = configuration->renderingStyle;
+  cloningStyle = configuration->cloningStyle;
+  if (configuration->renderingStyle <= 0)
   {
     if (renderingStyle == -1)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:836 description:@"Invalid rendering style"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:836 description:@"Invalid rendering style"];
 LABEL_34:
 
       return;
@@ -116,22 +116,22 @@ LABEL_34:
       return;
     }
 
-    v14 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
-    [v14 setRenderMode:*MEMORY[0x277CDA678]];
+    gainMapLayer = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
+    [gainMapLayer setRenderMode:*MEMORY[0x277CDA678]];
 
     if (cloningStyle)
     {
       if (cloningStyle == 1)
       {
-        v29 = [(_SBGainMapView *)self->_gainMapView layer];
-        [v29 setDisableUpdateMask:1040];
+        layer = [(_SBGainMapView *)self->_gainMapView layer];
+        [layer setDisableUpdateMask:1040];
 
         clonedGainMapSubstituteView = self->_clonedGainMapSubstituteView;
         v31 = 0;
 LABEL_32:
         [(UIView *)clonedGainMapSubstituteView setHidden:v31];
-        v23 = [(UIView *)self->_clonedGainMapSubstituteView layer];
-        v24 = v23;
+        layer2 = [(UIView *)self->_clonedGainMapSubstituteView layer];
+        currentHandler = layer2;
         v25 = 3;
         goto LABEL_33;
       }
@@ -141,19 +141,19 @@ LABEL_32:
         return;
       }
 
-      v15 = [(_SBGainMapView *)self->_gainMapView layer];
-      v16 = v15;
+      layer3 = [(_SBGainMapView *)self->_gainMapView layer];
+      v16 = layer3;
       v17 = 0;
     }
 
     else
     {
-      v15 = [(_SBGainMapView *)self->_gainMapView layer];
-      v16 = v15;
+      layer3 = [(_SBGainMapView *)self->_gainMapView layer];
+      v16 = layer3;
       v17 = 1040;
     }
 
-    [v15 setDisableUpdateMask:v17];
+    [layer3 setDisableUpdateMask:v17];
 
     clonedGainMapSubstituteView = self->_clonedGainMapSubstituteView;
     v31 = 1;
@@ -162,25 +162,25 @@ LABEL_32:
 
   if ((renderingStyle - 1) < 2)
   {
-    alwaysRenderInSnapshots = a3->alwaysRenderInSnapshots;
-    v19 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
-    v20 = v19;
+    alwaysRenderInSnapshots = configuration->alwaysRenderInSnapshots;
+    gainMapLayer2 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
+    v20 = gainMapLayer2;
     v21 = MEMORY[0x277CDA680];
     if (renderingStyle != 2)
     {
       v21 = MEMORY[0x277CDA688];
     }
 
-    [v19 setRenderMode:*v21];
+    [gainMapLayer2 setRenderMode:*v21];
 
     if (!cloningStyle)
     {
-      v28 = [(_SBGainMapView *)self->_gainMapView layer];
-      [v28 setDisableUpdateMask:1040];
+      layer4 = [(_SBGainMapView *)self->_gainMapView layer];
+      [layer4 setDisableUpdateMask:1040];
 
       [(UIView *)self->_clonedGainMapSubstituteView setHidden:!alwaysRenderInSnapshots];
-      v23 = [(UIView *)self->_clonedGainMapSubstituteView layer];
-      v24 = v23;
+      layer2 = [(UIView *)self->_clonedGainMapSubstituteView layer];
+      currentHandler = layer2;
       if (alwaysRenderInSnapshots)
       {
         v25 = 1041;
@@ -196,12 +196,12 @@ LABEL_32:
 
     if (cloningStyle == 1 || cloningStyle == 2)
     {
-      v22 = [(_SBGainMapView *)self->_gainMapView layer];
-      [v22 setDisableUpdateMask:1040];
+      layer5 = [(_SBGainMapView *)self->_gainMapView layer];
+      [layer5 setDisableUpdateMask:1040];
 
       [(UIView *)self->_clonedGainMapSubstituteView setHidden:0];
-      v23 = [(UIView *)self->_clonedGainMapSubstituteView layer];
-      v24 = v23;
+      layer2 = [(UIView *)self->_clonedGainMapSubstituteView layer];
+      currentHandler = layer2;
       if (alwaysRenderInSnapshots)
       {
         v25 = 1;
@@ -220,16 +220,16 @@ LABEL_32:
   {
     if (renderingStyle == 3)
     {
-      v26 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
-      [v26 setRenderMode:*MEMORY[0x277CDA688]];
+      gainMapLayer3 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
+      [gainMapLayer3 setRenderMode:*MEMORY[0x277CDA688]];
 
       if (cloningStyle > 2)
       {
         return;
       }
 
-      v27 = [(_SBGainMapView *)self->_gainMapView layer];
-      [v27 setDisableUpdateMask:0];
+      layer6 = [(_SBGainMapView *)self->_gainMapView layer];
+      [layer6 setDisableUpdateMask:0];
 
       v12 = self->_clonedGainMapSubstituteView;
       v13 = 0;
@@ -238,23 +238,23 @@ LABEL_32:
 
     if (renderingStyle == 4)
     {
-      v10 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
-      [v10 setRenderMode:*MEMORY[0x277CDA688]];
+      gainMapLayer4 = [(_SBGainMapView *)self->_gainMapView gainMapLayer];
+      [gainMapLayer4 setRenderMode:*MEMORY[0x277CDA688]];
 
       if (cloningStyle <= 2)
       {
-        v11 = [(_SBGainMapView *)self->_gainMapView layer];
-        [v11 setDisableUpdateMask:0];
+        layer7 = [(_SBGainMapView *)self->_gainMapView layer];
+        [layer7 setDisableUpdateMask:0];
 
         v12 = self->_clonedGainMapSubstituteView;
         v13 = 1;
 LABEL_25:
         [(UIView *)v12 setHidden:v13];
-        v23 = [(UIView *)self->_clonedGainMapSubstituteView layer];
-        v24 = v23;
+        layer2 = [(UIView *)self->_clonedGainMapSubstituteView layer];
+        currentHandler = layer2;
         v25 = 0;
 LABEL_33:
-        [v23 setDisableUpdateMask:v25];
+        [layer2 setDisableUpdateMask:v25];
         goto LABEL_34;
       }
     }

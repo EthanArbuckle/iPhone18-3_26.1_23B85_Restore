@@ -1,41 +1,41 @@
 @interface CNContainerDataSource
 + (id)os_log;
-- (CNContainerDataSource)initWithContactStore:(id)a3;
+- (CNContainerDataSource)initWithContactStore:(id)store;
 - (NSArray)containerPickerItems;
 - (NSArray)containers;
 - (id)allAccounts;
-- (id)writableContainersForAccount:(id)a3;
+- (id)writableContainersForAccount:(id)account;
 - (void)discoverContainers;
 @end
 
 @implementation CNContainerDataSource
 
-- (id)writableContainersForAccount:(id)a3
+- (id)writableContainersForAccount:(id)account
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = MEMORY[0x1E695CE48];
-  v6 = [v4 identifier];
-  v7 = [v5 predicateForContainersInAccountWithIdentifier:v6];
+  identifier = [accountCopy identifier];
+  v7 = [v5 predicateForContainersInAccountWithIdentifier:identifier];
 
-  v8 = [(CNContainerDataSource *)self contactViewCache];
-  v9 = [v8 contactStore];
+  contactViewCache = [(CNContainerDataSource *)self contactViewCache];
+  contactStore = [contactViewCache contactStore];
   v18 = 0;
-  v10 = [v9 containersMatchingPredicate:v7 error:&v18];
+  v10 = [contactStore containersMatchingPredicate:v7 error:&v18];
   v11 = v18;
 
   if (v11)
   {
-    v12 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v4 identifier];
-      v16 = [v11 localizedDescription];
+      identifier2 = [accountCopy identifier];
+      localizedDescription = [v11 localizedDescription];
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = identifier2;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
-      _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, "Error fetching containers in account %@: %@", buf, 0x16u);
+      *&buf[14] = localizedDescription;
+      _os_log_error_impl(&dword_199A75000, os_log, OS_LOG_TYPE_ERROR, "Error fetching containers in account %@: %@", buf, 0x16u);
     }
 
     v13 = 0;
@@ -89,21 +89,21 @@ LABEL_9:
 - (id)allAccounts
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(CNContainerDataSource *)self contactViewCache];
-  v3 = [v2 contactStore];
+  contactViewCache = [(CNContainerDataSource *)self contactViewCache];
+  contactStore = [contactViewCache contactStore];
   v9 = 0;
-  v4 = [v3 accountsMatchingPredicate:0 error:&v9];
+  v4 = [contactStore accountsMatchingPredicate:0 error:&v9];
   v5 = v9;
 
   if (v5)
   {
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v5 localizedDescription];
+      localizedDescription = [v5 localizedDescription];
       *buf = 138412290;
-      v11 = v8;
-      _os_log_error_impl(&dword_199A75000, v6, OS_LOG_TYPE_ERROR, "Error fetching accounts: %@", buf, 0xCu);
+      v11 = localizedDescription;
+      _os_log_error_impl(&dword_199A75000, os_log, OS_LOG_TYPE_ERROR, "Error fetching accounts: %@", buf, 0xCu);
     }
   }
 
@@ -113,24 +113,24 @@ LABEL_9:
 - (void)discoverContainers
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "Fetching containers", buf, 2u);
+    _os_log_debug_impl(&dword_199A75000, os_log, OS_LOG_TYPE_DEBUG, "Fetching containers", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(CNContainerDataSource *)self allAccounts];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  allAccounts = [(CNContainerDataSource *)self allAccounts];
   v7 = *MEMORY[0x1E6996530];
-  if ((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v6))
+  if ((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], allAccounts))
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_199A75000, v8, OS_LOG_TYPE_ERROR, "Accounts fetch returned 0 items", buf, 2u);
+      _os_log_error_impl(&dword_199A75000, os_log2, OS_LOG_TYPE_ERROR, "Accounts fetch returned 0 items", buf, 2u);
     }
 
     goto LABEL_37;
@@ -140,8 +140,8 @@ LABEL_9:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v41 = v6;
-  obj = v6;
+  v41 = allAccounts;
+  obj = allAccounts;
   v9 = [obj countByEnumeratingWithState:&v53 objects:v62 count:16];
   if (!v9)
   {
@@ -150,7 +150,7 @@ LABEL_9:
 
   v10 = v9;
   v11 = *v54;
-  v48 = v4;
+  v48 = array;
   v42 = v7;
   v43 = *v54;
   do
@@ -171,39 +171,39 @@ LABEL_9:
         v46 = v12;
         v47 = v14;
         v15 = [v14 count];
-        v16 = [objc_opt_class() os_log];
-        v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
+        os_log3 = [objc_opt_class() os_log];
+        v17 = os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG);
         if (v15 < 2)
         {
           if (v17)
           {
-            v35 = [v13 identifier];
+            identifier = [v13 identifier];
             *buf = 138412290;
-            v58 = v35;
-            _os_log_debug_impl(&dword_199A75000, v16, OS_LOG_TYPE_DEBUG, "Account %@ has only 1 container", buf, 0xCu);
+            v58 = identifier;
+            _os_log_debug_impl(&dword_199A75000, os_log3, OS_LOG_TYPE_DEBUG, "Account %@ has only 1 container", buf, 0xCu);
           }
 
-          v18 = [v14 firstObject];
-          v30 = [v13 _cnui_displayName];
+          firstObject = [v14 firstObject];
+          _cnui_displayName = [v13 _cnui_displayName];
           v31 = objc_alloc_init(CNContainerPickerItem);
-          [(CNContainerPickerItem *)v31 setName:v30];
-          v32 = [v18 identifier];
-          [(CNContainerPickerItem *)v31 setIdentifier:v32];
+          [(CNContainerPickerItem *)v31 setName:_cnui_displayName];
+          identifier2 = [firstObject identifier];
+          [(CNContainerPickerItem *)v31 setIdentifier:identifier2];
 
-          -[CNContainerPickerItem setType:](v31, "setType:", [v18 type]);
-          [v5 addObject:v31];
-          [v4 addObject:v18];
-          v33 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+          -[CNContainerPickerItem setType:](v31, "setType:", [firstObject type]);
+          [array2 addObject:v31];
+          [array addObject:firstObject];
+          os_log4 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEBUG))
           {
-            v36 = [v18 identifier];
+            identifier3 = [firstObject identifier];
             *buf = 138412546;
-            v58 = v36;
+            v58 = identifier3;
             v59 = 2112;
-            v60 = v30;
-            _os_log_debug_impl(&dword_199A75000, v33, OS_LOG_TYPE_DEBUG, "Added container %@ wih display name %@", buf, 0x16u);
+            v60 = _cnui_displayName;
+            _os_log_debug_impl(&dword_199A75000, os_log4, OS_LOG_TYPE_DEBUG, "Added container %@ wih display name %@", buf, 0x16u);
 
-            v4 = v48;
+            array = v48;
           }
 
 LABEL_30:
@@ -214,18 +214,18 @@ LABEL_30:
         {
           if (v17)
           {
-            v34 = [v13 identifier];
+            identifier4 = [v13 identifier];
             *buf = 138412290;
-            v58 = v34;
-            _os_log_debug_impl(&dword_199A75000, v16, OS_LOG_TYPE_DEBUG, "Account %@ has more than 1 container", buf, 0xCu);
+            v58 = identifier4;
+            _os_log_debug_impl(&dword_199A75000, os_log3, OS_LOG_TYPE_DEBUG, "Account %@ has more than 1 container", buf, 0xCu);
           }
 
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v18 = v14;
-          v19 = [v18 countByEnumeratingWithState:&v49 objects:v61 count:16];
+          firstObject = v14;
+          v19 = [firstObject countByEnumeratingWithState:&v49 objects:v61 count:16];
           if (v19)
           {
             v20 = v19;
@@ -236,36 +236,36 @@ LABEL_30:
               {
                 if (*v50 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(firstObject);
                 }
 
                 v23 = *(*(&v49 + 1) + 8 * i);
                 v24 = objc_alloc_init(CNContainerPickerItem);
-                v25 = [v23 name];
-                [(CNContainerPickerItem *)v24 setName:v25];
+                name = [v23 name];
+                [(CNContainerPickerItem *)v24 setName:name];
 
-                v26 = [v23 identifier];
-                [(CNContainerPickerItem *)v24 setIdentifier:v26];
+                identifier5 = [v23 identifier];
+                [(CNContainerPickerItem *)v24 setIdentifier:identifier5];
 
                 -[CNContainerPickerItem setType:](v24, "setType:", [v23 type]);
-                [v5 addObject:v24];
-                [v4 addObject:v23];
-                v27 = [objc_opt_class() os_log];
-                if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+                [array2 addObject:v24];
+                [array addObject:v23];
+                os_log5 = [objc_opt_class() os_log];
+                if (os_log_type_enabled(os_log5, OS_LOG_TYPE_DEBUG))
                 {
-                  v28 = [v23 identifier];
-                  v29 = [v23 name];
+                  identifier6 = [v23 identifier];
+                  name2 = [v23 name];
                   *buf = 138412546;
-                  v58 = v28;
+                  v58 = identifier6;
                   v59 = 2112;
-                  v60 = v29;
-                  _os_log_debug_impl(&dword_199A75000, v27, OS_LOG_TYPE_DEBUG, "Added container %@ wih display name %@", buf, 0x16u);
+                  v60 = name2;
+                  _os_log_debug_impl(&dword_199A75000, os_log5, OS_LOG_TYPE_DEBUG, "Added container %@ wih display name %@", buf, 0x16u);
 
-                  v4 = v48;
+                  array = v48;
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v49 objects:v61 count:16];
+              v20 = [firstObject countByEnumeratingWithState:&v49 objects:v61 count:16];
             }
 
             while (v20);
@@ -289,23 +289,23 @@ LABEL_30:
   while (v10);
 LABEL_34:
 
-  v37 = [v4 copy];
+  v37 = [array copy];
   [(CNContainerDataSource *)self setContainers:v37];
 
-  v38 = [v5 copy];
+  v38 = [array2 copy];
   [(CNContainerDataSource *)self setContainerPickerItems:v38];
 
-  v8 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  os_log2 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
   {
-    v39 = [(CNContainerDataSource *)self containers];
-    v40 = [v39 count];
+    containers = [(CNContainerDataSource *)self containers];
+    v40 = [containers count];
     *buf = 134217984;
     v58 = v40;
-    _os_log_debug_impl(&dword_199A75000, v8, OS_LOG_TYPE_DEBUG, "Finished fetching %lu containers", buf, 0xCu);
+    _os_log_debug_impl(&dword_199A75000, os_log2, OS_LOG_TYPE_DEBUG, "Finished fetching %lu containers", buf, 0xCu);
   }
 
-  v6 = v41;
+  allAccounts = v41;
 LABEL_37:
 }
 
@@ -333,15 +333,15 @@ LABEL_37:
   return containerPickerItems;
 }
 
-- (CNContainerDataSource)initWithContactStore:(id)a3
+- (CNContainerDataSource)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = CNContainerDataSource;
   v5 = [(CNContainerDataSource *)&v12 init];
   store = v5->_store;
-  v5->_store = v4;
-  v7 = v4;
+  v5->_store = storeCopy;
+  v7 = storeCopy;
 
   containerPickerItems = v5->_containerPickerItems;
   v5->_containerPickerItems = MEMORY[0x1E695E0F0];

@@ -1,21 +1,21 @@
 @interface GenericInfo
-- (id)init:(id)a3 parameters:(id)a4 returnType:(id)a5 typeParameters:(id)a6;
+- (id)init:(id)init parameters:(id)parameters returnType:(id)type typeParameters:(id)typeParameters;
 - (void)dealloc;
 @end
 
 @implementation GenericInfo
 
-- (id)init:(id)a3 parameters:(id)a4 returnType:(id)a5 typeParameters:(id)a6
+- (id)init:(id)init parameters:(id)parameters returnType:(id)type typeParameters:(id)typeParameters
 {
   v11.receiver = self;
   v11.super_class = GenericInfo;
   result = [(GenericInfo *)&v11 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
+    *(result + 1) = init;
+    *(result + 2) = parameters;
+    *(result + 3) = type;
+    *(result + 4) = typeParameters;
   }
 
   return result;

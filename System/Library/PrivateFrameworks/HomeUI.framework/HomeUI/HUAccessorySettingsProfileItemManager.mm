@@ -1,20 +1,20 @@
 @interface HUAccessorySettingsProfileItemManager
-- (HUAccessorySettingsProfileItemManager)initWithDelegate:(id)a3 accessoryGroupItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUAccessorySettingsProfileItemManager)initWithDelegate:(id)delegate accessoryGroupItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUAccessorySettingsProfileItemManager
 
-- (HUAccessorySettingsProfileItemManager)initWithDelegate:(id)a3 accessoryGroupItem:(id)a4
+- (HUAccessorySettingsProfileItemManager)initWithDelegate:(id)delegate accessoryGroupItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = HUAccessorySettingsProfileItemManager;
-  v7 = [(HFItemManager *)&v11 initWithDelegate:a3 sourceItem:v6];
+  v7 = [(HFItemManager *)&v11 initWithDelegate:delegate sourceItem:itemCopy];
   if (v7)
   {
-    v8 = [[HUAccessorySettingsProfileModule alloc] initWithItemUpdater:v7 settingGroupItem:v6];
+    v8 = [[HUAccessorySettingsProfileModule alloc] initWithItemUpdater:v7 settingGroupItem:itemCopy];
     profileModule = v7->_profileModule;
     v7->_profileModule = v8;
   }
@@ -22,22 +22,22 @@
   return v7;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v3 = [(HUAccessorySettingsProfileItemManager *)self profileModule];
-  v4 = [v3 itemProviders];
-  v5 = [v4 allObjects];
+  profileModule = [(HUAccessorySettingsProfileItemManager *)self profileModule];
+  itemProviders = [profileModule itemProviders];
+  allObjects = [itemProviders allObjects];
 
-  return v5;
+  return allObjects;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [(HUAccessorySettingsProfileItemManager *)self profileModule];
-    v6 = [v5 buildSectionsWithDisplayedItems:v4];
+    profileModule = [(HUAccessorySettingsProfileItemManager *)self profileModule];
+    v6 = [profileModule buildSectionsWithDisplayedItems:itemsCopy];
   }
 
   else

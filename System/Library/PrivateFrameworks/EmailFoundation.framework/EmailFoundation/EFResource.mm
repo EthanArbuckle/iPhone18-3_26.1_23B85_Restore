@@ -24,8 +24,8 @@
   add = atomic_fetch_add(&self->_lockCount, 0xFFFFFFFFFFFFFFFFLL);
   if (add <= 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EFResource.m" lineNumber:130 description:@"returnResource called too many times"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFResource.m" lineNumber:130 description:@"returnResource called too many times"];
   }
 
   return add == 1;

@@ -1,18 +1,18 @@
 @interface IdentityDaemonService
-- (void)fetchIdentityFor:(ACAccount *)a3 completionHandler:(id)a4;
+- (void)fetchIdentityFor:(ACAccount *)for completionHandler:(id)handler;
 @end
 
 @implementation IdentityDaemonService
 
-- (void)fetchIdentityFor:(ACAccount *)a3 completionHandler:(id)a4
+- (void)fetchIdentityFor:(ACAccount *)for completionHandler:(id)handler
 {
   v7 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -27,7 +27,7 @@
   v15[3] = 0;
   v15[4] = &unk_10033E760;
   v15[5] = v14;
-  v16 = a3;
+  forCopy = for;
 
   sub_10016483C(0, 0, v10, &unk_10033F2F0, v15);
 }

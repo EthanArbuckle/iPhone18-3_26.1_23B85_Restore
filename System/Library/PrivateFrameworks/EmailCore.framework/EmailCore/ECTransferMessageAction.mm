@@ -1,27 +1,27 @@
 @interface ECTransferMessageAction
-- (ECTransferMessageAction)initWithBuilder:(id)a3;
+- (ECTransferMessageAction)initWithBuilder:(id)builder;
 - (NSArray)itemsToCopy;
 - (NSArray)itemsToDelete;
 - (NSArray)itemsToDownload;
 - (NSString)description;
-- (void)setItemsToCopy:(id)a3;
-- (void)setItemsToDelete:(id)a3;
-- (void)setItemsToDownload:(id)a3;
-- (void)updateWithCompletedItems:(id)a3 forPhase:(int64_t)a4;
-- (void)updateWithFailedItems:(id)a3 forPhase:(int64_t)a4;
+- (void)setItemsToCopy:(id)copy;
+- (void)setItemsToDelete:(id)delete;
+- (void)setItemsToDownload:(id)download;
+- (void)updateWithCompletedItems:(id)items forPhase:(int64_t)phase;
+- (void)updateWithFailedItems:(id)items forPhase:(int64_t)phase;
 @end
 
 @implementation ECTransferMessageAction
 
-- (ECTransferMessageAction)initWithBuilder:(id)a3
+- (ECTransferMessageAction)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECTransferMessageAction;
   v5 = [(ECTransferMessageAction *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
@@ -40,72 +40,72 @@
 
 - (NSArray)itemsToDownload
 {
-  v2 = [(NSMutableOrderedSet *)self->_itemsToDownload array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_itemsToDownload array];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (void)setItemsToDownload:(id)a3
+- (void)setItemsToDownload:(id)download
 {
-  v6 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v6];
+  downloadCopy = download;
+  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:downloadCopy];
   itemsToDownload = self->_itemsToDownload;
   self->_itemsToDownload = v4;
 }
 
 - (NSArray)itemsToCopy
 {
-  v2 = [(NSMutableOrderedSet *)self->_itemsToCopy array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_itemsToCopy array];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (void)setItemsToCopy:(id)a3
+- (void)setItemsToCopy:(id)copy
 {
-  v6 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v6];
+  copyCopy = copy;
+  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:copyCopy];
   itemsToCopy = self->_itemsToCopy;
   self->_itemsToCopy = v4;
 }
 
 - (NSArray)itemsToDelete
 {
-  v2 = [(NSMutableOrderedSet *)self->_itemsToDelete array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_itemsToDelete array];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (void)setItemsToDelete:(id)a3
+- (void)setItemsToDelete:(id)delete
 {
-  v6 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v6];
+  deleteCopy = delete;
+  v4 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:deleteCopy];
   itemsToDelete = self->_itemsToDelete;
   self->_itemsToDelete = v4;
 }
 
-- (void)updateWithCompletedItems:(id)a3 forPhase:(int64_t)a4
+- (void)updateWithCompletedItems:(id)items forPhase:(int64_t)phase
 {
-  v9 = a3;
-  if (a4 == 4)
+  itemsCopy = items;
+  if (phase == 4)
   {
-    [(NSMutableOrderedSet *)self->_itemsToDelete removeObjectsInArray:v9];
+    [(NSMutableOrderedSet *)self->_itemsToDelete removeObjectsInArray:itemsCopy];
     goto LABEL_17;
   }
 
-  if (a4 != 3)
+  if (phase != 3)
   {
-    if (a4 != 1)
+    if (phase != 1)
     {
       goto LABEL_17;
     }
 
-    [(NSMutableOrderedSet *)self->_itemsToDownload removeObjectsInArray:v9];
-    v6 = [(ECTransferMessageAction *)self destinationMailboxURL];
+    [(NSMutableOrderedSet *)self->_itemsToDownload removeObjectsInArray:itemsCopy];
+    destinationMailboxURL = [(ECTransferMessageAction *)self destinationMailboxURL];
 
-    if (v6)
+    if (destinationMailboxURL)
     {
       v7 = &OBJC_IVAR___ECTransferMessageAction__itemsToCopy;
     }
@@ -117,8 +117,8 @@
 LABEL_13:
         if (![(NSMutableOrderedSet *)self->_itemsToDownload count]&& [(NSMutableOrderedSet *)self->_itemsToCopy count])
         {
-          v8 = [(ECTransferMessageAction *)self destinationMailboxURL];
-          [(ECLocalMessageAction *)self setMailboxURL:v8];
+          destinationMailboxURL2 = [(ECTransferMessageAction *)self destinationMailboxURL];
+          [(ECLocalMessageAction *)self setMailboxURL:destinationMailboxURL2];
           goto LABEL_16;
         }
 
@@ -128,18 +128,18 @@ LABEL_13:
       v7 = &OBJC_IVAR___ECTransferMessageAction__itemsToDelete;
     }
 
-    [*(&self->super.super.isa + *v7) addObjectsFromArray:v9];
+    [*(&self->super.super.isa + *v7) addObjectsFromArray:itemsCopy];
     goto LABEL_13;
   }
 
-  [(NSMutableOrderedSet *)self->_itemsToCopy removeObjectsInArray:v9];
+  [(NSMutableOrderedSet *)self->_itemsToCopy removeObjectsInArray:itemsCopy];
   if ([(ECTransferMessageAction *)self transferType]== 1)
   {
-    [(NSMutableOrderedSet *)self->_itemsToDelete addObjectsFromArray:v9];
+    [(NSMutableOrderedSet *)self->_itemsToDelete addObjectsFromArray:itemsCopy];
     if (![(NSMutableOrderedSet *)self->_itemsToCopy count])
     {
-      v8 = [(ECTransferMessageAction *)self sourceMailboxURL];
-      [(ECLocalMessageAction *)self setMailboxURL:v8];
+      destinationMailboxURL2 = [(ECTransferMessageAction *)self sourceMailboxURL];
+      [(ECLocalMessageAction *)self setMailboxURL:destinationMailboxURL2];
 LABEL_16:
     }
   }
@@ -147,11 +147,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)updateWithFailedItems:(id)a3 forPhase:(int64_t)a4
+- (void)updateWithFailedItems:(id)items forPhase:(int64_t)phase
 {
-  v6 = a3;
-  v8 = v6;
-  switch(a4)
+  itemsCopy = items;
+  v8 = itemsCopy;
+  switch(phase)
   {
     case 1:
       v7 = &OBJC_IVAR___ECTransferMessageAction__itemsToDownload;
@@ -166,7 +166,7 @@ LABEL_17:
       goto LABEL_8;
   }
 
-  [*(&self->super.super.isa + *v7) removeObjectsInArray:v6];
+  [*(&self->super.super.isa + *v7) removeObjectsInArray:itemsCopy];
 LABEL_8:
 }
 

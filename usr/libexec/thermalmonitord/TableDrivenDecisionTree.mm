@@ -1,9 +1,9 @@
 @interface TableDrivenDecisionTree
-- (TableDrivenDecisionTree)initWithComponentControllers:(id)a3 hotspotControllers:(id)a4 decisionTreeTable:(id)a5;
-- (int)getMTypeFromComponent:(int)a3;
+- (TableDrivenDecisionTree)initWithComponentControllers:(id)controllers hotspotControllers:(id)hotspotControllers decisionTreeTable:(id)table;
+- (int)getMTypeFromComponent:(int)component;
 - (void)actionComponentControl;
 - (void)evaluateDecisionTree;
-- (void)initDecisionTable:(__CFDictionary *)a3;
+- (void)initDecisionTable:(__CFDictionary *)table;
 - (void)readReleaseRateForAllComponents;
 @end
 
@@ -30,9 +30,9 @@
       v7 = 101;
       do
       {
-        v8 = [(NSArray *)self->_hotspotControllers objectAtIndex:v5, releaseMaxLoadIndexForComponent, maxLoadIndexForComponent];
-        v9 = [v8 maxLIForComponent:v3];
-        v10 = [v8 releaseMaxLIForComponent:v3 releaseRate:self->releaseRateForComponent[v3]];
+        maxLoadIndexForComponent = [(NSArray *)self->_hotspotControllers objectAtIndex:v5, releaseMaxLoadIndexForComponent, maxLoadIndexForComponent];
+        v9 = [maxLoadIndexForComponent maxLIForComponent:v3];
+        v10 = [maxLoadIndexForComponent releaseMaxLIForComponent:v3 releaseRate:self->releaseRateForComponent[v3]];
         if (v6 >= v9)
         {
           v6 = v9;
@@ -145,7 +145,7 @@
   }
 }
 
-- (TableDrivenDecisionTree)initWithComponentControllers:(id)a3 hotspotControllers:(id)a4 decisionTreeTable:(id)a5
+- (TableDrivenDecisionTree)initWithComponentControllers:(id)controllers hotspotControllers:(id)hotspotControllers decisionTreeTable:(id)table
 {
   v11.receiver = self;
   v11.super_class = TableDrivenDecisionTree;
@@ -153,30 +153,30 @@
   v9 = v8;
   if (v8)
   {
-    *(v8 + 1) = a3;
-    *(v8 + 2) = a4;
+    *(v8 + 1) = controllers;
+    *(v8 + 2) = hotspotControllers;
     *(v8 + 3) = 0;
     *(v8 + 4) = 0;
     v8[40] = 0;
     *(v8 + 49) = 0;
     *(v8 + 41) = 0;
     v8[57] = 0;
-    [v8 initDecisionTable:a5];
+    [v8 initDecisionTable:table];
   }
 
   return v9;
 }
 
-- (int)getMTypeFromComponent:(int)a3
+- (int)getMTypeFromComponent:(int)component
 {
-  if (a3 > 0x10)
+  if (component > 0x10)
   {
     return -1;
   }
 
   else
   {
-    return dword_100067140[a3];
+    return dword_100067140[component];
   }
 }
 
@@ -193,9 +193,9 @@
   }
 }
 
-- (void)initDecisionTable:(__CFDictionary *)a3
+- (void)initDecisionTable:(__CFDictionary *)table
 {
-  if (a3 && CFDictionaryGetCount(a3) >= 1)
+  if (table && CFDictionaryGetCount(table) >= 1)
   {
     v5 = 0;
     do
@@ -205,7 +205,7 @@
       if (v7)
       {
         v8 = v7;
-        Value = CFDictionaryGetValue(a3, v7);
+        Value = CFDictionaryGetValue(table, v7);
         if (Value)
         {
           [-[NSArray objectAtIndex:](self->_hotspotControllers objectAtIndex:{v5), "setDecisionTableSection:", Value}];
@@ -218,7 +218,7 @@
       ++v5;
     }
 
-    while (CFDictionaryGetCount(a3) > v6);
+    while (CFDictionaryGetCount(table) > v6);
   }
 }
 

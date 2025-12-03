@@ -1,19 +1,19 @@
 @interface SMTUserData
-+ (id)checkDataAmountQuickly:(unint64_t)a3;
-+ (id)getDictationEventsWithMaxAge:(double)a3 minAge:(double)a4;
-+ (int64_t)getDataTypeFromDictationEvent:(id)a3 sentMessageTime:(double)a4;
-+ (void)enumerateCoreDuetSentMessagesWithLimit:(unint64_t)a3 block:(id)a4;
-+ (void)enumerateDocumentSources:(id)a3 limit:(unint64_t)a4 maxAge:(double)a5 minAge:(double)a6 block:(id)a7;
-+ (void)enumerateSentMessagesWithLimit:(unint64_t)a3 maxAge:(double)a4 minAge:(double)a5 block:(id)a6;
++ (id)checkDataAmountQuickly:(unint64_t)quickly;
++ (id)getDictationEventsWithMaxAge:(double)age minAge:(double)minAge;
++ (int64_t)getDataTypeFromDictationEvent:(id)event sentMessageTime:(double)time;
++ (void)enumerateCoreDuetSentMessagesWithLimit:(unint64_t)limit block:(id)block;
++ (void)enumerateDocumentSources:(id)sources limit:(unint64_t)limit maxAge:(double)age minAge:(double)minAge block:(id)block;
++ (void)enumerateSentMessagesWithLimit:(unint64_t)limit maxAge:(double)age minAge:(double)minAge block:(id)block;
 + (void)initialize;
 @end
 
 @implementation SMTUserData
 
-+ (id)checkDataAmountQuickly:(unint64_t)a3
++ (id)checkDataAmountQuickly:(unint64_t)quickly
 {
-  v3 = a3;
-  if (a3)
+  quicklyCopy = quickly;
+  if (quickly)
   {
     v10 = 0;
     v11 = &v10;
@@ -24,16 +24,16 @@
     v9[2] = sub_10001BB10;
     v9[3] = &unk_100039100;
     v9[4] = &v10;
-    v9[5] = a3;
+    v9[5] = quickly;
     v4 = objc_retainBlock(v9);
     v5 = objc_autoreleasePoolPush();
-    [SMTUserData enumerateSentMessagesWithLimit:10 * v3 maxAge:v4 minAge:0.0 block:0.0];
+    [SMTUserData enumerateSentMessagesWithLimit:10 * quicklyCopy maxAge:v4 minAge:0.0 block:0.0];
     objc_autoreleasePoolPop(v5);
-    if (v11[3] >= v3)
+    if (v11[3] >= quicklyCopy)
     {
 
       _Block_object_dispose(&v10, 8);
-      v3 = 0;
+      quicklyCopy = 0;
     }
 
     else
@@ -42,30 +42,30 @@
       v14 = NSLocalizedDescriptionKey;
       v15 = v6;
       v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      v3 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:2 userInfo:v7];
+      quicklyCopy = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:2 userInfo:v7];
 
       _Block_object_dispose(&v10, 8);
     }
   }
 
-  return v3;
+  return quicklyCopy;
 }
 
-+ (void)enumerateSentMessagesWithLimit:(unint64_t)a3 maxAge:(double)a4 minAge:(double)a5 block:(id)a6
++ (void)enumerateSentMessagesWithLimit:(unint64_t)limit maxAge:(double)age minAge:(double)minAge block:(id)block
 {
-  v9 = a6;
-  v60 = a3;
-  if (a3)
+  blockCopy = block;
+  limitCopy = limit;
+  if (limit)
   {
-    v10 = [objc_opt_class() getDictationEventsWithMaxAge:a4 minAge:a5];
-    if (a4 <= 0.0)
+    v10 = [objc_opt_class() getDictationEventsWithMaxAge:age minAge:minAge];
+    if (age <= 0.0)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = [NSDate dateWithTimeIntervalSinceNow:-a4];
+      v11 = [NSDate dateWithTimeIntervalSinceNow:-age];
       v12 = qword_10003FF50;
       if (os_log_type_enabled(qword_10003FF50, OS_LOG_TYPE_INFO))
       {
@@ -75,14 +75,14 @@
       }
     }
 
-    if (a5 <= 0.0)
+    if (minAge <= 0.0)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [NSDate dateWithTimeIntervalSinceNow:-a5];
+      v13 = [NSDate dateWithTimeIntervalSinceNow:-minAge];
       v14 = qword_10003FF50;
       if (os_log_type_enabled(qword_10003FF50, OS_LOG_TYPE_INFO))
       {
@@ -114,13 +114,13 @@
       }
 
       v66 = 0;
-      v17 = [v15 lastDatabaseRowID];
-      if (v17 < 1)
+      lastDatabaseRowID = [v15 lastDatabaseRowID];
+      if (lastDatabaseRowID < 1)
       {
         goto LABEL_62;
       }
 
-      v18 = v17;
+      v18 = lastDatabaseRowID;
       v19 = 0;
       v20 = 0;
       v49 = EARDocumentDataTypeKey;
@@ -140,14 +140,14 @@
 
         v51 = v21;
         [v16 setNextRowID:v21 - 1000];
-        v22 = [v16 nextOutgoingMessageBatch];
+        nextOutgoingMessageBatch = [v16 nextOutgoingMessageBatch];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v55 = v22;
-        v23 = [v22 reverseObjectEnumerator];
-        v24 = [v23 countByEnumeratingWithState:&v62 objects:v67 count:16];
+        v55 = nextOutgoingMessageBatch;
+        reverseObjectEnumerator = [nextOutgoingMessageBatch reverseObjectEnumerator];
+        v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v67 count:16];
         if (!v24)
         {
           goto LABEL_52;
@@ -157,14 +157,14 @@
         v61 = *v63;
         v58 = v13;
         v59 = v11;
-        v57 = v23;
+        v57 = reverseObjectEnumerator;
         while (2)
         {
           for (i = 0; i != v25; i = i + 1)
           {
             if (*v63 != v61)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v27 = *(*(&v62 + 1) + 8 * i);
@@ -201,27 +201,27 @@ LABEL_61:
 
             if ([v27 rowID] <= v18)
             {
-              v30 = [v27 dateSent];
-              if (!v30)
+              dateSent = [v27 dateSent];
+              if (!dateSent)
               {
                 goto LABEL_48;
               }
 
-              v31 = v30;
-              v32 = [v27 body];
-              if (!v32 || ![v27 fromMe])
+              v31 = dateSent;
+              body = [v27 body];
+              if (!body || ![v27 fromMe])
               {
                 goto LABEL_47;
               }
 
               if (v59)
               {
-                v50 = [v27 dateSent];
-                v33 = [v50 earlierDate:v59];
+                dateSent2 = [v27 dateSent];
+                v33 = [dateSent2 earlierDate:v59];
                 v54 = v33 == v59;
                 if (v33 == v59)
                 {
-                  v23 = v57;
+                  reverseObjectEnumerator = v57;
                   if (!v58)
                   {
 LABEL_40:
@@ -233,8 +233,8 @@ LABEL_40:
                     }
 
 LABEL_46:
-                    v38 = [v27 dateSent];
-                    [v38 timeIntervalSinceReferenceDate];
+                    dateSent3 = [v27 dateSent];
+                    [dateSent3 timeIntervalSinceReferenceDate];
                     v40 = v39;
 
                     v41 = [objc_opt_class() getDataTypeFromDictationEvent:v10 sentMessageTime:v40];
@@ -242,15 +242,15 @@ LABEL_46:
                     v42 = [NSNumber numberWithInteger:v41];
                     [v31 setObject:v42 forKey:v49];
 
-                    v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Message_%lu", [v27 rowID]);
-                    v43 = [v27 body];
-                    v9[2](v9, v32, v43, v31, &v66);
+                    body = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Message_%lu", [v27 rowID]);
+                    body2 = [v27 body];
+                    blockCopy[2](blockCopy, body, body2, v31, &v66);
 
-                    v23 = v57;
+                    reverseObjectEnumerator = v57;
 LABEL_47:
 
 LABEL_48:
-                    if (++v20 >= v60 || (v66 & 1) != 0)
+                    if (++v20 >= limitCopy || (v66 & 1) != 0)
                     {
                       goto LABEL_61;
                     }
@@ -261,19 +261,19 @@ LABEL_48:
 LABEL_37:
                   v53 = v33;
                   v47 = v10;
-                  v48 = v9;
-                  v34 = [v27 dateSent];
-                  v35 = [v34 earlierDate:v58];
-                  v36 = [v27 dateSent];
-                  v54 = v35 == v36;
+                  v48 = blockCopy;
+                  dateSent4 = [v27 dateSent];
+                  v35 = [dateSent4 earlierDate:v58];
+                  dateSent5 = [v27 dateSent];
+                  v54 = v35 == dateSent5;
 
                   if (!v59)
                   {
 
-                    v37 = v35 == v36;
+                    v37 = v35 == dateSent5;
                     v10 = v47;
-                    v9 = v48;
-                    v23 = v57;
+                    blockCopy = v48;
+                    reverseObjectEnumerator = v57;
                     if (!v37)
                     {
                       goto LABEL_48;
@@ -283,11 +283,11 @@ LABEL_37:
                   }
 
                   v10 = v47;
-                  v9 = v48;
+                  blockCopy = v48;
                   v33 = v53;
                 }
 
-                v23 = v57;
+                reverseObjectEnumerator = v57;
                 goto LABEL_40;
               }
 
@@ -305,7 +305,7 @@ LABEL_50:
             v19 = 1;
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v62 objects:v67 count:16];
+          v25 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v67 count:16];
           v13 = v58;
           v11 = v59;
           if (v25)
@@ -341,10 +341,10 @@ LABEL_63:
   }
 }
 
-+ (void)enumerateCoreDuetSentMessagesWithLimit:(unint64_t)a3 block:(id)a4
++ (void)enumerateCoreDuetSentMessagesWithLimit:(unint64_t)limit block:(id)block
 {
-  v5 = a4;
-  if (a3)
+  blockCopy = block;
+  if (limit)
   {
     v47 = [objc_opt_class() getDictationEventsWithMaxAge:0.0 minAge:0.0];
     v6 = +[_DKKnowledgeStore knowledgeStore];
@@ -354,20 +354,20 @@ LABEL_63:
     v45 = [_DKEventQuery startDateSortDescriptorAscending:0];
     v8 = 0;
     v44 = EARDocumentDataTypeKey;
-    v48 = v5;
-    v40 = a3;
+    v48 = blockCopy;
+    limitCopy = limit;
     v42 = v6;
     do
     {
       context = objc_autoreleasePoolPush();
-      if (a3 - v8 >= 0x3E8)
+      if (limit - v8 >= 0x3E8)
       {
         v9 = 1000;
       }
 
       else
       {
-        v9 = a3 - v8;
+        v9 = limit - v8;
       }
 
       v10 = +[_DKSystemEventStreams appIntentsStream];
@@ -417,22 +417,22 @@ LABEL_63:
               }
 
               v22 = *(*(&v51 + 1) + 8 * i);
-              v23 = [v22 interaction];
+              interaction = [v22 interaction];
               v24 = INTypedInteractionWithInteraction();
-              v25 = [v24 intent];
+              intent = [v24 intent];
 
               v26 = v18[237];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v27 = v25;
-                v28 = [v27 sender];
-                v29 = [v28 isMe];
+                v27 = intent;
+                sender = [v27 sender];
+                isMe = [sender isMe];
 
-                if (v29)
+                if (isMe)
                 {
-                  v30 = [v22 startDate];
-                  [v30 timeIntervalSinceReferenceDate];
+                  startDate = [v22 startDate];
+                  [startDate timeIntervalSinceReferenceDate];
                   v32 = v31;
 
                   v33 = [objc_opt_class() getDataTypeFromDictationEvent:v47 sentMessageTime:v32];
@@ -440,10 +440,10 @@ LABEL_63:
                   v35 = [NSNumber numberWithInteger:v33];
                   [v34 setObject:v35 forKey:v44];
 
-                  v36 = [v22 source];
-                  v37 = [v36 itemID];
-                  v38 = [v27 content];
-                  v48[2](v48, v37, v38, v34, buf);
+                  source = [v22 source];
+                  itemID = [source itemID];
+                  content = [v27 content];
+                  v48[2](v48, itemID, content, v34, buf);
 
                   v18 = &_s10Foundation22_convertErrorToNSErrorySo0E0Cs0C0_pF_ptr;
                 }
@@ -455,7 +455,7 @@ LABEL_63:
               {
 
                 objc_autoreleasePoolPop(context);
-                v5 = v48;
+                blockCopy = v48;
                 v6 = v42;
                 goto LABEL_26;
               }
@@ -471,8 +471,8 @@ LABEL_63:
           }
         }
 
-        v5 = v48;
-        a3 = v40;
+        blockCopy = v48;
+        limit = limitCopy;
         v15 = 0;
         v6 = v42;
         v13 = v43;
@@ -483,20 +483,20 @@ LABEL_63:
       v8 += 1000;
     }
 
-    while (v8 < a3);
+    while (v8 < limit);
 LABEL_26:
   }
 }
 
-+ (void)enumerateDocumentSources:(id)a3 limit:(unint64_t)a4 maxAge:(double)a5 minAge:(double)a6 block:(id)a7
++ (void)enumerateDocumentSources:(id)sources limit:(unint64_t)limit maxAge:(double)age minAge:(double)minAge block:(id)block
 {
-  v11 = a3;
-  v12 = a7;
+  sourcesCopy = sources;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v11 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  v13 = [sourcesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v13)
   {
     v15 = v13;
@@ -509,18 +509,18 @@ LABEL_26:
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(sourcesCopy);
         }
 
         v18 = *(*(&v21 + 1) + 8 * i);
         if ([v18 isEqualToString:{@"coreduet-sent-messages", v20}])
         {
-          [objc_opt_class() enumerateCoreDuetSentMessagesWithLimit:a4 block:v12];
+          [objc_opt_class() enumerateCoreDuetSentMessagesWithLimit:limit block:blockCopy];
         }
 
         else if ([v18 isEqualToString:@"sent-messages"])
         {
-          [objc_opt_class() enumerateSentMessagesWithLimit:a4 maxAge:v12 minAge:a5 block:a6];
+          [objc_opt_class() enumerateSentMessagesWithLimit:limit maxAge:blockCopy minAge:age block:minAge];
         }
 
         else
@@ -535,19 +535,19 @@ LABEL_26:
         }
       }
 
-      v15 = [v11 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v15 = [sourcesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v15);
   }
 }
 
-+ (int64_t)getDataTypeFromDictationEvent:(id)a3 sentMessageTime:(double)a4
++ (int64_t)getDataTypeFromDictationEvent:(id)event sentMessageTime:(double)time
 {
-  v5 = a3;
-  if (CFAbsoluteTimeGetCurrent() + -15552000.0 <= a4)
+  eventCopy = event;
+  if (CFAbsoluteTimeGetCurrent() + -15552000.0 <= time)
   {
-    v7 = [v5 count] - 1;
+    v7 = [eventCopy count] - 1;
     if (v7 < 0)
     {
 LABEL_14:
@@ -561,16 +561,16 @@ LABEL_14:
       while (1)
       {
         v9 = v8 + &v7[-v8] / 2;
-        v10 = [v5 objectAtIndexedSubscript:v9];
+        v10 = [eventCopy objectAtIndexedSubscript:v9];
         [v10 absoluteTimestamp];
         v12 = v11;
 
-        if (v12 <= a4 && a4 - v12 <= 30.0)
+        if (v12 <= time && time - v12 <= 30.0)
         {
           break;
         }
 
-        if (v12 > a4)
+        if (v12 > time)
         {
           v7 = (v9 - 1);
         }
@@ -596,17 +596,17 @@ LABEL_14:
   return v6;
 }
 
-+ (id)getDictationEventsWithMaxAge:(double)a3 minAge:(double)a4
++ (id)getDictationEventsWithMaxAge:(double)age minAge:(double)minAge
 {
   v6 = objc_alloc_init(NSMutableArray);
   Current = CFAbsoluteTimeGetCurrent();
   v8 = 0.0;
-  if (a3 > 0.0)
+  if (age > 0.0)
   {
     v9 = CFAbsoluteTimeGetCurrent();
-    if (a3 <= 15552000.0)
+    if (age <= 15552000.0)
     {
-      v8 = v9 - a3;
+      v8 = v9 - age;
     }
 
     else
@@ -615,14 +615,14 @@ LABEL_14:
     }
   }
 
-  v10 = 15552000.0;
-  if (a4 <= 15552000.0)
+  minAgeCopy = 15552000.0;
+  if (minAge <= 15552000.0)
   {
-    v10 = a4;
+    minAgeCopy = minAge;
   }
 
-  v11 = Current - v10;
-  if (a4 <= a3)
+  v11 = Current - minAgeCopy;
+  if (minAge <= age)
   {
     v12 = v11;
   }
@@ -667,7 +667,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF50 = os_log_create("com.apple.speech.speechmodeltraining", "SMTUserData");
 

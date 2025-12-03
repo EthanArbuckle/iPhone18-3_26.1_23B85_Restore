@@ -1,19 +1,19 @@
 @interface ConversationControlsJoinCallCountdownView.RingLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (id)actionForKey:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setPercentage:(double)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (id)actionForKey:(id)key;
+- (void)drawInContext:(CGContext *)context;
+- (void)setPercentage:(double)percentage;
 @end
 
 @implementation ConversationControlsJoinCallCountdownView.RingLayer
 
-- (void)setPercentage:(double)a3
+- (void)setPercentage:(double)percentage
 {
-  v4 = self;
-  ConversationControlsJoinCallCountdownView.RingLayer.percentage.setter(a3);
+  selfCopy = self;
+  ConversationControlsJoinCallCountdownView.RingLayer.percentage.setter(percentage);
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -22,21 +22,21 @@
   return v3 & 1;
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = ConversationControlsJoinCallCountdownView.RingLayer.action(forKey:)(v4, v6);
 
   return v8;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  ConversationControlsJoinCallCountdownView.RingLayer.draw(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  ConversationControlsJoinCallCountdownView.RingLayer.draw(in:)(contextCopy);
 }
 
 @end

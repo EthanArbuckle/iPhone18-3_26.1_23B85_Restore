@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDDeviceCohort
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDeviceCohort)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDeviceCohort)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDeviceCohort)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDeviceCohort)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCohortDataAvailabilityState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCohortDataAvailabilityState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDeviceCohort
 
-- (ODDSiriSchemaODDDeviceCohort)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDeviceCohort)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDDeviceCohort;
   v5 = [(ODDSiriSchemaODDDeviceCohort *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cohortInterval"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cohortInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(ODDSiriSchemaODDDeviceCohort *)v5 setCohortInterval:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cohortType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cohortType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDeviceCohort setCohortType:](v5, "setCohortType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"cohortDataAvailabilityState"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"cohortDataAvailabilityState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDeviceCohort)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDeviceCohort)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDeviceCohort *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDeviceCohort *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDeviceCohort *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,17 +85,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    v4 = [(ODDSiriSchemaODDDeviceCohort *)self cohortDataAvailabilityState];
+    cohortDataAvailabilityState = [(ODDSiriSchemaODDDeviceCohort *)self cohortDataAvailabilityState];
     v5 = @"ODDDATAAVAILABILITYSTATE_UNKNOWN";
-    if (v4 == 1)
+    if (cohortDataAvailabilityState == 1)
     {
       v5 = @"ODDDATAAVAILABILITYSTATE_COMPLETE";
     }
 
-    if (v4 == 2)
+    if (cohortDataAvailabilityState == 2)
     {
       v6 = @"ODDDATAAVAILABILITYSTATE_INSUFFICIENT_DATA";
     }
@@ -105,35 +105,35 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"cohortDataAvailabilityState"];
+    [dictionary setObject:v6 forKeyedSubscript:@"cohortDataAvailabilityState"];
   }
 
   if (self->_cohortInterval)
   {
-    v7 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cohortInterval = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+    dictionaryRepresentation = [cohortInterval dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cohortInterval"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cohortInterval"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cohortInterval"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cohortInterval"];
     }
   }
 
   if (*&self->_has)
   {
-    v10 = [(ODDSiriSchemaODDDeviceCohort *)self cohortType];
+    cohortType = [(ODDSiriSchemaODDDeviceCohort *)self cohortType];
     v11 = @"ODDDEVICECOHORTTYPE_UNKNOWN";
-    if (v10 == 1)
+    if (cohortType == 1)
     {
       v11 = @"ODDDEVICECOHORTTYPE_NONE";
     }
 
-    if (v10 == 2)
+    if (cohortType == 2)
     {
       v12 = @"ODDDEVICECOHORTTYPE_SIRI_HELP";
     }
@@ -143,12 +143,12 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"cohortType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"cohortType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -178,30 +178,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
-  v6 = [v4 cohortInterval];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  cohortInterval = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+  cohortInterval2 = [equalCopy cohortInterval];
+  v7 = cohortInterval2;
+  if ((cohortInterval != 0) == (cohortInterval2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
-  if (v8)
+  cohortInterval3 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+  if (cohortInterval3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
-    v11 = [v4 cohortInterval];
-    v12 = [v10 isEqual:v11];
+    v9 = cohortInterval3;
+    cohortInterval4 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+    cohortInterval5 = [equalCopy cohortInterval];
+    v12 = [cohortInterval4 isEqual:cohortInterval5];
 
     if (!v12)
     {
@@ -214,7 +214,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -225,10 +225,10 @@ LABEL_16:
   if (*&has)
   {
     cohortType = self->_cohortType;
-    if (cohortType == [v4 cohortType])
+    if (cohortType == [equalCopy cohortType])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -245,7 +245,7 @@ LABEL_12:
   if (v16)
   {
     cohortDataAvailabilityState = self->_cohortDataAvailabilityState;
-    if (cohortDataAvailabilityState != [v4 cohortDataAvailabilityState])
+    if (cohortDataAvailabilityState != [equalCopy cohortDataAvailabilityState])
     {
       goto LABEL_16;
     }
@@ -257,14 +257,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+  toCopy = to;
+  cohortInterval = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
 
-  if (v4)
+  if (cohortInterval)
   {
-    v5 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
+    cohortInterval2 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval];
     PBDataWriterWriteSubmessage();
   }
 
@@ -275,17 +275,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasCohortDataAvailabilityState:(BOOL)a3
+- (void)setHasCohortDataAvailabilityState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -298,17 +298,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDDeviceCohort;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDDeviceCohort *)self cohortInterval:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDDeviceCohort *)self deleteCohortInterval];
   }

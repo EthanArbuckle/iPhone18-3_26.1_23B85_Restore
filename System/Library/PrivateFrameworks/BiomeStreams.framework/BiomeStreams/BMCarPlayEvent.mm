@@ -1,9 +1,9 @@
 @interface BMCarPlayEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMCarPlayEvent)initWithProto:(id)a3;
-- (BMCarPlayEvent)initWithProtoData:(id)a3;
-- (BMCarPlayEvent)initWithReason:(unint64_t)a3 isStart:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMCarPlayEvent)initWithProto:(id)proto;
+- (BMCarPlayEvent)initWithProtoData:(id)data;
+- (BMCarPlayEvent)initWithReason:(unint64_t)reason isStart:(BOOL)start;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -13,15 +13,15 @@
 
 @implementation BMCarPlayEvent
 
-- (BMCarPlayEvent)initWithReason:(unint64_t)a3 isStart:(BOOL)a4
+- (BMCarPlayEvent)initWithReason:(unint64_t)reason isStart:(BOOL)start
 {
   v7.receiver = self;
   v7.super_class = BMCarPlayEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_reason = a3;
-    result->_isStart = a4;
+    result->_reason = reason;
+    result->_isStart = start;
   }
 
   return result;
@@ -46,10 +46,10 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -73,9 +73,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMCarPlayEvent *)self jsonDict];
+  jsonDict = [(BMCarPlayEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -92,19 +92,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMCarPlayEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMCarPlayEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMCarPlayEvent)initWithProto:(id)a3
+- (BMCarPlayEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -120,34 +120,34 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 reason];
-  v7 = [v5 isStart];
+  v5 = protoCopy;
+  reason = [v5 reason];
+  isStart = [v5 isStart];
 
-  self = [(BMCarPlayEvent *)self initWithReason:v6 isStart:v7];
-  v8 = self;
+  self = [(BMCarPlayEvent *)self initWithReason:reason isStart:isStart];
+  selfCopy = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMCarPlayEvent)initWithProtoData:(id)a3
+- (BMCarPlayEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBCarPlayEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBCarPlayEvent alloc] initWithData:dataCopy];
 
     self = [(BMCarPlayEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -175,13 +175,13 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     reason = self->_reason;
     if (reason == [v5 reason])
     {

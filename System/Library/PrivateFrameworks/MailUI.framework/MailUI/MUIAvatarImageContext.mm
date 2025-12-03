@@ -1,7 +1,7 @@
 @interface MUIAvatarImageContext
-- (BOOL)isEqual:(id)a3;
-- (MUIAvatarImageContext)initWithCategory:(id)a3 emailAddress:(id)a4 businessLogoID:(id)a5 isAuthenticated:(BOOL)a6 reducePlaceholderImage:(BOOL)a7 brandIndicatorLocation:(id)a8 scale:(double)a9 isRTL:(BOOL)a10;
-- (MUIAvatarImageContext)initWithMessageListItem:(id)a3 showRecipient:(BOOL)a4 reducePlaceholderImage:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (MUIAvatarImageContext)initWithCategory:(id)category emailAddress:(id)address businessLogoID:(id)d isAuthenticated:(BOOL)authenticated reducePlaceholderImage:(BOOL)image brandIndicatorLocation:(id)location scale:(double)scale isRTL:(BOOL)self0;
+- (MUIAvatarImageContext)initWithMessageListItem:(id)item showRecipient:(BOOL)recipient reducePlaceholderImage:(BOOL)image;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (unint64_t)hash;
@@ -13,114 +13,114 @@
 {
   v20 = MEMORY[0x277CCACA8];
   v19 = objc_opt_class();
-  v3 = [(MUIAvatarImageContext *)self emailAddress];
-  v4 = [v3 emailAddressValue];
-  v5 = v4;
-  if (v4)
+  emailAddress = [(MUIAvatarImageContext *)self emailAddress];
+  emailAddressValue = [emailAddress emailAddressValue];
+  v5 = emailAddressValue;
+  if (emailAddressValue)
   {
-    v6 = [v4 ef_publicDescription];
+    ef_publicDescription = [emailAddressValue ef_publicDescription];
   }
 
   else
   {
     v7 = MEMORY[0x277D07198];
-    v8 = [v3 stringValue];
-    v6 = [v7 fullyOrPartiallyRedactedStringForString:v8];
+    stringValue = [emailAddress stringValue];
+    ef_publicDescription = [v7 fullyOrPartiallyRedactedStringForString:stringValue];
   }
 
-  v9 = [(MUIAvatarImageContext *)self category];
-  v10 = [v9 ef_publicDescription];
-  v11 = [(MUIAvatarImageContext *)self businessLogoID];
-  v12 = [(MUIAvatarImageContext *)self isAuthenticated];
+  category = [(MUIAvatarImageContext *)self category];
+  ef_publicDescription2 = [category ef_publicDescription];
+  businessLogoID = [(MUIAvatarImageContext *)self businessLogoID];
+  isAuthenticated = [(MUIAvatarImageContext *)self isAuthenticated];
   v13 = MEMORY[0x277D07198];
-  v14 = [(MUIAvatarImageContext *)self brandIndicatorLocation];
-  v15 = [v14 absoluteString];
-  v16 = [v13 fullyOrPartiallyRedactedStringForString:v15];
-  v17 = [v20 stringWithFormat:@"<%@: %p>\nemailAddress: %@\ncategory: %@\nbusinessLogoID: %@\nisAuthenticated: %d\nbrandIndicatorLocation: %@", v19, self, v6, v10, v11, v12, v16];
+  brandIndicatorLocation = [(MUIAvatarImageContext *)self brandIndicatorLocation];
+  absoluteString = [brandIndicatorLocation absoluteString];
+  v16 = [v13 fullyOrPartiallyRedactedStringForString:absoluteString];
+  v17 = [v20 stringWithFormat:@"<%@: %p>\nemailAddress: %@\ncategory: %@\nbusinessLogoID: %@\nisAuthenticated: %d\nbrandIndicatorLocation: %@", v19, self, ef_publicDescription, ef_publicDescription2, businessLogoID, isAuthenticated, v16];
 
   return v17;
 }
 
-- (MUIAvatarImageContext)initWithMessageListItem:(id)a3 showRecipient:(BOOL)a4 reducePlaceholderImage:(BOOL)a5
+- (MUIAvatarImageContext)initWithMessageListItem:(id)item showRecipient:(BOOL)recipient reducePlaceholderImage:(BOOL)image
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  imageCopy = image;
+  recipientCopy = recipient;
+  itemCopy = item;
   if (pthread_main_np() != 1)
   {
     [MUIAvatarImageContext initWithMessageListItem:a2 showRecipient:self reducePlaceholderImage:?];
   }
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
 
-  v13 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-  if (v6)
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  if (recipientCopy)
   {
-    v14 = [v9 toList];
-    v15 = [v14 firstObject];
-    v16 = v15;
-    if (v15)
+    toList = [itemCopy toList];
+    firstObject = [toList firstObject];
+    v16 = firstObject;
+    if (firstObject)
     {
-      v17 = v15;
+      firstObject3 = firstObject;
     }
 
     else
     {
-      v18 = [v9 ccList];
-      v19 = [v18 firstObject];
-      v20 = v19;
-      if (v19)
+      ccList = [itemCopy ccList];
+      firstObject2 = [ccList firstObject];
+      v20 = firstObject2;
+      if (firstObject2)
       {
-        v17 = v19;
+        firstObject3 = firstObject2;
       }
 
       else
       {
-        v21 = [v9 senderList];
-        v17 = [v21 firstObject];
+        senderList = [itemCopy senderList];
+        firstObject3 = [senderList firstObject];
       }
     }
   }
 
   else
   {
-    v14 = [v9 senderList];
-    v17 = [v14 firstObject];
+    toList = [itemCopy senderList];
+    firstObject3 = [toList firstObject];
   }
 
-  v22 = v13 == 1;
-  v23 = [v9 category];
-  v24 = [v9 businessLogoID];
-  v25 = [v9 isAuthenticated];
-  v26 = [v9 brandIndicatorLocation];
+  v22 = userInterfaceLayoutDirection == 1;
+  category = [itemCopy category];
+  businessLogoID = [itemCopy businessLogoID];
+  isAuthenticated = [itemCopy isAuthenticated];
+  brandIndicatorLocation = [itemCopy brandIndicatorLocation];
   LOBYTE(v29) = v22;
-  v27 = [(MUIAvatarImageContext *)self initWithCategory:v23 emailAddress:v17 businessLogoID:v24 isAuthenticated:v25 reducePlaceholderImage:v5 brandIndicatorLocation:v26 scale:v12 isRTL:v29];
+  v27 = [(MUIAvatarImageContext *)self initWithCategory:category emailAddress:firstObject3 businessLogoID:businessLogoID isAuthenticated:isAuthenticated reducePlaceholderImage:imageCopy brandIndicatorLocation:brandIndicatorLocation scale:v12 isRTL:v29];
 
   return v27;
 }
 
-- (MUIAvatarImageContext)initWithCategory:(id)a3 emailAddress:(id)a4 businessLogoID:(id)a5 isAuthenticated:(BOOL)a6 reducePlaceholderImage:(BOOL)a7 brandIndicatorLocation:(id)a8 scale:(double)a9 isRTL:(BOOL)a10
+- (MUIAvatarImageContext)initWithCategory:(id)category emailAddress:(id)address businessLogoID:(id)d isAuthenticated:(BOOL)authenticated reducePlaceholderImage:(BOOL)image brandIndicatorLocation:(id)location scale:(double)scale isRTL:(BOOL)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v24 = a5;
-  v20 = a8;
+  categoryCopy = category;
+  addressCopy = address;
+  dCopy = d;
+  locationCopy = location;
   v25.receiver = self;
   v25.super_class = MUIAvatarImageContext;
   v21 = [(MUIAvatarImageContext *)&v25 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_category, a3);
-    objc_storeStrong(&v22->_emailAddress, a4);
-    objc_storeStrong(&v22->_businessLogoID, a5);
-    v22->_isAuthenticated = a6;
-    v22->_reducePlaceholderImage = a7;
-    objc_storeStrong(&v22->_brandIndicatorLocation, a8);
-    v22->_scale = a9;
-    v22->_isRTL = a10;
+    objc_storeStrong(&v21->_category, category);
+    objc_storeStrong(&v22->_emailAddress, address);
+    objc_storeStrong(&v22->_businessLogoID, d);
+    v22->_isAuthenticated = authenticated;
+    v22->_reducePlaceholderImage = image;
+    objc_storeStrong(&v22->_brandIndicatorLocation, location);
+    v22->_scale = scale;
+    v22->_isRTL = l;
   }
 
   return v22;
@@ -130,43 +130,43 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(MUIAvatarImageContext *)self emailAddress];
-  v6 = [(MUIAvatarImageContext *)self category];
-  v7 = [v6 ef_publicDescription];
-  v8 = [(MUIAvatarImageContext *)self businessLogoID];
-  v9 = [(MUIAvatarImageContext *)self isAuthenticated];
-  v10 = [(MUIAvatarImageContext *)self brandIndicatorLocation];
-  v11 = [v10 absoluteString];
-  v12 = [v3 stringWithFormat:@"<%@: %p>\nemailAddress: %@\ncategory: %@\nbusinessLogoID: %@\nisAuthenticated: %d\nbrandIndicatorLocation: %@", v4, self, v5, v7, v8, v9, v11];
+  emailAddress = [(MUIAvatarImageContext *)self emailAddress];
+  category = [(MUIAvatarImageContext *)self category];
+  ef_publicDescription = [category ef_publicDescription];
+  businessLogoID = [(MUIAvatarImageContext *)self businessLogoID];
+  isAuthenticated = [(MUIAvatarImageContext *)self isAuthenticated];
+  brandIndicatorLocation = [(MUIAvatarImageContext *)self brandIndicatorLocation];
+  absoluteString = [brandIndicatorLocation absoluteString];
+  v12 = [v3 stringWithFormat:@"<%@: %p>\nemailAddress: %@\ncategory: %@\nbusinessLogoID: %@\nisAuthenticated: %d\nbrandIndicatorLocation: %@", v4, self, emailAddress, ef_publicDescription, businessLogoID, isAuthenticated, absoluteString];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if ([(MUIAvatarImageContext *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MUIAvatarImageContext *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(MUIAvatarImageContext *)v5 category];
-    v7 = [(MUIAvatarImageContext *)self category];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    category = [(MUIAvatarImageContext *)v5 category];
+    category2 = [(MUIAvatarImageContext *)self category];
+    if ([category isEqual:category2])
     {
-      v8 = [(MUIAvatarImageContext *)v5 emailAddress];
-      v9 = [(MUIAvatarImageContext *)self emailAddress];
-      if ([v8 isEqual:v9] && (v10 = -[MUIAvatarImageContext isAuthenticated](v5, "isAuthenticated"), v10 == -[MUIAvatarImageContext isAuthenticated](self, "isAuthenticated")) && (v11 = -[MUIAvatarImageContext reducePlaceholderImage](v5, "reducePlaceholderImage"), v11 == -[MUIAvatarImageContext reducePlaceholderImage](self, "reducePlaceholderImage")))
+      emailAddress = [(MUIAvatarImageContext *)v5 emailAddress];
+      emailAddress2 = [(MUIAvatarImageContext *)self emailAddress];
+      if ([emailAddress isEqual:emailAddress2] && (v10 = -[MUIAvatarImageContext isAuthenticated](v5, "isAuthenticated"), v10 == -[MUIAvatarImageContext isAuthenticated](self, "isAuthenticated")) && (v11 = -[MUIAvatarImageContext reducePlaceholderImage](v5, "reducePlaceholderImage"), v11 == -[MUIAvatarImageContext reducePlaceholderImage](self, "reducePlaceholderImage")))
       {
-        v14 = [(MUIAvatarImageContext *)self brandIndicatorLocation];
-        v15 = [(MUIAvatarImageContext *)v5 brandIndicatorLocation];
+        brandIndicatorLocation = [(MUIAvatarImageContext *)self brandIndicatorLocation];
+        brandIndicatorLocation2 = [(MUIAvatarImageContext *)v5 brandIndicatorLocation];
         if (EFObjectsAreEqual())
         {
-          v17 = [(MUIAvatarImageContext *)self businessLogoID];
-          v16 = [(MUIAvatarImageContext *)v5 businessLogoID];
+          businessLogoID = [(MUIAvatarImageContext *)self businessLogoID];
+          businessLogoID2 = [(MUIAvatarImageContext *)v5 businessLogoID];
           v12 = EFObjectsAreEqual();
         }
 
@@ -198,23 +198,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MUIAvatarImageContext *)self category];
-  v4 = [v3 hash];
+  category = [(MUIAvatarImageContext *)self category];
+  v4 = [category hash];
 
-  v5 = [(MUIAvatarImageContext *)self emailAddress];
-  v6 = 33 * (33 * v4 + [v5 hash]);
+  emailAddress = [(MUIAvatarImageContext *)self emailAddress];
+  v6 = 33 * (33 * v4 + [emailAddress hash]);
 
-  v7 = [(MUIAvatarImageContext *)self brandIndicatorLocation];
-  v8 = 33 * (v6 + [v7 hash]);
+  brandIndicatorLocation = [(MUIAvatarImageContext *)self brandIndicatorLocation];
+  v8 = 33 * (v6 + [brandIndicatorLocation hash]);
 
   v9 = 33 * (v8 + [(MUIAvatarImageContext *)self isAuthenticated]);
   v10 = v9 + [(MUIAvatarImageContext *)self reducePlaceholderImage]+ 0x3107FF0025;
-  v11 = [(MUIAvatarImageContext *)self businessLogoID];
+  businessLogoID = [(MUIAvatarImageContext *)self businessLogoID];
 
-  if (v11)
+  if (businessLogoID)
   {
-    v12 = [(MUIAvatarImageContext *)self businessLogoID];
-    v10 = [v12 hash] + 33 * v10;
+    businessLogoID2 = [(MUIAvatarImageContext *)self businessLogoID];
+    v10 = [businessLogoID2 hash] + 33 * v10;
   }
 
   return v10;

@@ -1,29 +1,29 @@
 @interface CHNavigationTracker
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
-- (CHNavigationTracker)initWithTabBarController:(id)a3 fitnessAppContext:(id)a4 workoutController:(id)a5;
-- (id)_viewControllerAtIndex:(int64_t)a3;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
+- (CHNavigationTracker)initWithTabBarController:(id)controller fitnessAppContext:(id)context workoutController:(id)workoutController;
+- (id)_viewControllerAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
 @end
 
 @implementation CHNavigationTracker
 
-- (CHNavigationTracker)initWithTabBarController:(id)a3 fitnessAppContext:(id)a4 workoutController:(id)a5
+- (CHNavigationTracker)initWithTabBarController:(id)controller fitnessAppContext:(id)context workoutController:(id)workoutController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  contextCopy = context;
+  workoutControllerCopy = workoutController;
   v17.receiver = self;
   v17.super_class = CHNavigationTracker;
   v12 = [(CHNavigationTracker *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tabBarController, a3);
+    objc_storeStrong(&v12->_tabBarController, controller);
     [(UITabBarController *)v13->_tabBarController setDelegate:v13];
     v13->_tabIndexBeingDeselected = -1;
-    objc_storeStrong(&v13->_fitnessAppContext, a4);
-    v14 = [[CHWorkoutTabTracker alloc] initWithTabBarController:v13->_tabBarController workoutController:v11];
+    objc_storeStrong(&v13->_fitnessAppContext, context);
+    v14 = [[CHWorkoutTabTracker alloc] initWithTabBarController:v13->_tabBarController workoutController:workoutControllerCopy];
     workoutTabTracker = v13->_workoutTabTracker;
     v13->_workoutTabTracker = v14;
   }
@@ -41,46 +41,46 @@
   [(CHNavigationTracker *)&v4 dealloc];
 }
 
-- (id)_viewControllerAtIndex:(int64_t)a3
+- (id)_viewControllerAtIndex:(int64_t)index
 {
-  if (a3 < 0 || (-[UITabBarController viewControllers](self->_tabBarController, "viewControllers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (index < 0 || (-[UITabBarController viewControllers](self->_tabBarController, "viewControllers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= index))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(UITabBarController *)self->_tabBarController viewControllers];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    viewControllers = [(UITabBarController *)self->_tabBarController viewControllers];
+    v8 = [viewControllers objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 selectedIndex];
-  v9 = [v7 viewControllers];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  selectedIndex = [controllerCopy selectedIndex];
+  viewControllers = [controllerCopy viewControllers];
 
-  v10 = [v9 indexOfObject:v6];
-  if (v8 == v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  v10 = [viewControllers indexOfObject:viewControllerCopy];
+  if (selectedIndex == v10 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 performSelector:"scrollToTop"];
+    [viewControllerCopy performSelector:"scrollToTop"];
   }
 
-  self->_tabIndexBeingDeselected = v8;
+  self->_tabIndexBeingDeselected = selectedIndex;
 
   return 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   tabIndexBeingDeselected = self->_tabIndexBeingDeselected;
-  v8 = [a3 viewControllers];
-  v9 = [v8 indexOfObject:v6];
+  viewControllers = [controller viewControllers];
+  v9 = [viewControllers indexOfObject:viewControllerCopy];
 
   _HKInitializeLogging();
   v10 = HKLogActivity;
@@ -94,17 +94,17 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v6 userActivity];
-    [v11 becomeCurrent];
+    userActivity = [viewControllerCopy userActivity];
+    [userActivity becomeCurrent];
 
     if (tabIndexBeingDeselected != v9)
     {
       [(CHWorkoutTabTracker *)self->_workoutTabTracker workoutTabDidBecomeActive];
 LABEL_11:
-      v14 = [(CHNavigationTracker *)self _viewControllerAtIndex:tabIndexBeingDeselected];
-      v15 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourNavigationController];
-      v16 = v15;
-      if (v15 == v6)
+      seymourNavigationController2 = [(CHNavigationTracker *)self _viewControllerAtIndex:tabIndexBeingDeselected];
+      seymourNavigationController = [(CHFitnessAppContext *)self->_fitnessAppContext seymourNavigationController];
+      v16 = seymourNavigationController;
+      if (seymourNavigationController == viewControllerCopy)
       {
         [(CHFitnessAppContext *)self->_fitnessAppContext seymourTabSelectedWithSelection:1];
         v17 = +[NSUserDefaults standardUserDefaults];
@@ -112,7 +112,7 @@ LABEL_11:
         [v17 setBool:1 forKey:v18];
       }
 
-      else if (v15 == v14)
+      else if (seymourNavigationController == seymourNavigationController2)
       {
         [(CHFitnessAppContext *)self->_fitnessAppContext seymourTabDeselected];
       }
@@ -124,8 +124,8 @@ LABEL_11:
   else
   {
     v12 = [(CHNavigationTracker *)self _viewControllerAtIndex:tabIndexBeingDeselected];
-    v13 = [v12 userActivity];
-    [v13 resignCurrent];
+    userActivity2 = [v12 userActivity];
+    [userActivity2 resignCurrent];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -139,8 +139,8 @@ LABEL_11:
     }
   }
 
-  v14 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourNavigationController];
-  if (v14 == v6)
+  seymourNavigationController2 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourNavigationController];
+  if (seymourNavigationController2 == viewControllerCopy)
   {
     [(CHFitnessAppContext *)self->_fitnessAppContext seymourTabSelectedWithSelection:2];
   }

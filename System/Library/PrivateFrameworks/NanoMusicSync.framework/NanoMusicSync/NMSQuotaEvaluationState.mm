@@ -1,28 +1,28 @@
 @interface NMSQuotaEvaluationState
-- (NMSQuotaEvaluationState)initWithCurrentItem:(id)a3 downloadInfo:(id)a4;
+- (NMSQuotaEvaluationState)initWithCurrentItem:(id)item downloadInfo:(id)info;
 @end
 
 @implementation NMSQuotaEvaluationState
 
-- (NMSQuotaEvaluationState)initWithCurrentItem:(id)a3 downloadInfo:(id)a4
+- (NMSQuotaEvaluationState)initWithCurrentItem:(id)item downloadInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = NMSQuotaEvaluationState;
   v8 = [(NMSQuotaEvaluationState *)&v14 init];
   if (v8)
   {
-    v9 = [v6 mediaLibraryIdentifier];
+    mediaLibraryIdentifier = [itemCopy mediaLibraryIdentifier];
     mediaLibraryIdentifier = v8->_mediaLibraryIdentifier;
-    v8->_mediaLibraryIdentifier = v9;
+    v8->_mediaLibraryIdentifier = mediaLibraryIdentifier;
 
-    v11 = [v6 externalLibraryIdentifier];
+    externalLibraryIdentifier = [itemCopy externalLibraryIdentifier];
     externalLibraryIdentifier = v8->_externalLibraryIdentifier;
-    v8->_externalLibraryIdentifier = v11;
+    v8->_externalLibraryIdentifier = externalLibraryIdentifier;
 
-    v8->_itemSize = [v6 size];
-    v8->_listTotalSize = [v7 totalItemSize];
+    v8->_itemSize = [itemCopy size];
+    v8->_listTotalSize = [infoCopy totalItemSize];
   }
 
   return v8;

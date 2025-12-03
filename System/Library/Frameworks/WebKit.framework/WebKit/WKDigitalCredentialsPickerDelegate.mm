@@ -1,10 +1,10 @@
 @interface WKDigitalCredentialsPickerDelegate
-- (WKDigitalCredentialsPickerDelegate)initWithDigitalCredentialsPickerDelegate:(id)a3;
+- (WKDigitalCredentialsPickerDelegate)initWithDigitalCredentialsPickerDelegate:(id)delegate;
 @end
 
 @implementation WKDigitalCredentialsPickerDelegate
 
-- (WKDigitalCredentialsPickerDelegate)initWithDigitalCredentialsPickerDelegate:(id)a3
+- (WKDigitalCredentialsPickerDelegate)initWithDigitalCredentialsPickerDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = WKDigitalCredentialsPickerDelegate;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_digitalCredentialsPickerDelegate.m_weakReference, a3);
+    objc_storeWeak(&v4->_digitalCredentialsPickerDelegate.m_weakReference, delegate);
   }
 
   return v5;

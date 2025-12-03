@@ -1,11 +1,11 @@
 @interface CarQuickRouteRefreshOperation
 + (id)throttleStateDescription;
 + (unint64_t)throttlePreventionLevel;
-+ (unint64_t)throttlePreventionLevelForAvailableRequestCount:(unsigned int)a3;
-+ (void)engageFullThrottleForInterval:(double)a3;
++ (unint64_t)throttlePreventionLevelForAvailableRequestCount:(unsigned int)count;
++ (void)engageFullThrottleForInterval:(double)interval;
 + (void)initialize;
-+ (void)suspendQueues:(BOOL)a3;
-- (CarQuickRouteRefreshOperation)initWithQuickRoute:(id)a3;
++ (void)suspendQueues:(BOOL)queues;
+- (CarQuickRouteRefreshOperation)initWithQuickRoute:(id)route;
 - (NSOperationQueue)operationQueue;
 - (id)description;
 - (void)main;
@@ -26,10 +26,10 @@
   v4 = v3;
   if (v3 == qword_10195CD20)
   {
-    v5 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-    v6 = [v5 _Car_isVisible];
+    quickRouteManager = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+    _Car_isVisible = [quickRouteManager _Car_isVisible];
 
-    if ((v6 & 1) == 0)
+    if ((_Car_isVisible & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -52,30 +52,30 @@
 
     [qword_10195CD28 setSuspended:1];
 LABEL_8:
-    v11 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-    [v11 _Car_queueUpdateETA];
+    quickRouteManager2 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+    [quickRouteManager2 _Car_queueUpdateETA];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-  [v10 updateETA];
+  quickRouteManager3 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+  [quickRouteManager3 updateETA];
 
-  v11 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-  [v11 set_Car_refreshOperation:0];
+  quickRouteManager2 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+  [quickRouteManager2 set_Car_refreshOperation:0];
 LABEL_10:
 }
 
-- (CarQuickRouteRefreshOperation)initWithQuickRoute:(id)a3
+- (CarQuickRouteRefreshOperation)initWithQuickRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v9.receiver = self;
   v9.super_class = CarQuickRouteRefreshOperation;
   v6 = [(CarQuickRouteRefreshOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_quickRouteManager, a3);
+    objc_storeStrong(&v6->_quickRouteManager, route);
     [(CarQuickRouteRefreshOperation *)v7 setCompletionBlock:&stru_101624210];
   }
 
@@ -85,8 +85,8 @@ LABEL_10:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-  if ([v4 _Car_isVisible])
+  quickRouteManager = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+  if ([quickRouteManager _Car_isVisible])
   {
     v5 = @"YES";
   }
@@ -96,39 +96,39 @@ LABEL_10:
     v5 = @"NO";
   }
 
-  v6 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
-  v7 = [v6 mapItem];
-  v8 = [v7 name];
-  v9 = [NSString stringWithFormat:@"<%@: %p quickRouteManager isVisible=%@ name=%@>", v3, self, v5, v8];
+  quickRouteManager2 = [(CarQuickRouteRefreshOperation *)self quickRouteManager];
+  mapItem = [quickRouteManager2 mapItem];
+  name = [mapItem name];
+  v9 = [NSString stringWithFormat:@"<%@: %p quickRouteManager isVisible=%@ name=%@>", v3, self, v5, name];
 
   return v9;
 }
 
-+ (void)engageFullThrottleForInterval:(double)a3
++ (void)engageFullThrottleForInterval:(double)interval
 {
   if ((byte_10195CD38 & 1) == 0)
   {
     byte_10195CD38 = 1;
     [CarQuickRouteRefreshOperation suspendQueues:1];
-    v5 = dispatch_time(0, (a3 * 1000000000.0 + 1000000000.0));
+    v5 = dispatch_time(0, (interval * 1000000000.0 + 1000000000.0));
 
     dispatch_after(v5, &_dispatch_main_q, &stru_1016241F0);
   }
 }
 
-+ (void)suspendQueues:(BOOL)a3
++ (void)suspendQueues:(BOOL)queues
 {
-  if (byte_10195CD38 != 1 || a3)
+  if (byte_10195CD38 != 1 || queues)
   {
-    v4 = a3;
-    if ([qword_10195CD20 isSuspended] != a3 || objc_msgSend(qword_10195CD28, "isSuspended") != v4)
+    queuesCopy = queues;
+    if ([qword_10195CD20 isSuspended] != queues || objc_msgSend(qword_10195CD28, "isSuspended") != queuesCopy)
     {
-      [qword_10195CD20 setSuspended:v4];
-      if (v4 || ![qword_10195CD20 operationCount] && +[CarQuickRouteRefreshOperation throttlePreventionLevel](CarQuickRouteRefreshOperation, "throttlePreventionLevel") <= 4)
+      [qword_10195CD20 setSuspended:queuesCopy];
+      if (queuesCopy || ![qword_10195CD20 operationCount] && +[CarQuickRouteRefreshOperation throttlePreventionLevel](CarQuickRouteRefreshOperation, "throttlePreventionLevel") <= 4)
       {
         v5 = qword_10195CD28;
 
-        [v5 setSuspended:v4];
+        [v5 setSuspended:queuesCopy];
       }
     }
   }
@@ -141,7 +141,7 @@ LABEL_10:
   v3 = +[GEOThrottlerRequester sharedRequester];
   [v3 getThrottleStateFor:672 nextSafeRequestTime:&v15 availableRequestCount:&v14 error:0];
 
-  v4 = [a1 throttlePreventionLevelForAvailableRequestCount:v14];
+  v4 = [self throttlePreventionLevelForAvailableRequestCount:v14];
   v5 = fmax(v15 - CFAbsoluteTimeGetCurrent(), 0.0);
   v6 = +[CarQuickRouteRefreshOperation throttlePreventionLevel];
   if (byte_10195CD38)
@@ -154,7 +154,7 @@ LABEL_10:
     v7 = @"NO";
   }
 
-  v8 = [qword_10195CD20 operationCount];
+  operationCount = [qword_10195CD20 operationCount];
   if ([qword_10195CD20 isSuspended])
   {
     v9 = @"YES";
@@ -165,7 +165,7 @@ LABEL_10:
     v9 = @"NO";
   }
 
-  v10 = [qword_10195CD28 operationCount];
+  operationCount2 = [qword_10195CD28 operationCount];
   if ([qword_10195CD28 isSuspended])
   {
     v11 = @"YES";
@@ -176,7 +176,7 @@ LABEL_10:
     v11 = @"NO";
   }
 
-  v12 = [NSString stringWithFormat:@"<ThrottlePreventionLevel=%lu FullThrottleEngaged=%@ throttleState: (Level=%lu ResetTimeRemaining=%f)  PrimaryQueue: (count=%lu suspended=%@) DelayedQueue: (count=%lu suspended=%@)>", v6, v7, v4, *&v5, v8, v9, v10, v11];
+  v12 = [NSString stringWithFormat:@"<ThrottlePreventionLevel=%lu FullThrottleEngaged=%@ throttleState: (Level=%lu ResetTimeRemaining=%f)  PrimaryQueue: (count=%lu suspended=%@) DelayedQueue: (count=%lu suspended=%@)>", v6, v7, v4, *&v5, operationCount, v9, operationCount2, v11];
 
   return v12;
 }
@@ -189,12 +189,12 @@ LABEL_10:
   [v3 getThrottleStateFor:672 nextSafeRequestTime:&v7 availableRequestCount:&v6 error:0];
 
   v4 = fmax(v7 - CFAbsoluteTimeGetCurrent(), 0.0);
-  return fmin(v4, [a1 throttlePreventionLevelForAvailableRequestCount:v6]);
+  return fmin(v4, [self throttlePreventionLevelForAvailableRequestCount:v6]);
 }
 
-+ (unint64_t)throttlePreventionLevelForAvailableRequestCount:(unsigned int)a3
++ (unint64_t)throttlePreventionLevelForAvailableRequestCount:(unsigned int)count
 {
-  v4 = 30;
+  unsignedIntegerValue = 30;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -204,7 +204,7 @@ LABEL_10:
   if (v6)
   {
     v7 = v6;
-    v8 = (30 - a3) & ~((30 - a3) >> 63);
+    v8 = (30 - count) & ~((30 - count) >> 63);
     v9 = *v14;
 LABEL_3:
     v10 = 0;
@@ -216,7 +216,7 @@ LABEL_3:
       }
 
       v11 = *(*(&v13 + 1) + 8 * v10);
-      v4 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
       if ([v11 unsignedIntegerValue] >= v8)
       {
         break;
@@ -235,12 +235,12 @@ LABEL_3:
     }
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v3 = qword_10195CD20;

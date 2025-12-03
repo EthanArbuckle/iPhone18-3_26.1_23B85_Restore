@@ -1,12 +1,12 @@
 @interface SBDeviceApplicationSceneStatusBarStateProvider
 - (BOOL)_statusBarAppearsOutsideOfAJailedApp;
 - (BOOL)_statusBarAppearsOutsideOfAJailedAppCanChange;
-- (BOOL)_statusBarAppearsOutsideOfAJailedAppInOrientation:(int64_t)a3;
-- (BOOL)_statusBarHiddenGivenFallbackOrientation:(int64_t)a3;
+- (BOOL)_statusBarAppearsOutsideOfAJailedAppInOrientation:(int64_t)orientation;
+- (BOOL)_statusBarHiddenGivenFallbackOrientation:(int64_t)orientation;
 - (BOOL)sceneWantsDeviceOrientationEventsEnabled;
 - (CGRect)statusBarAvoidanceFrame;
 - (double)_statusBarAlpha;
-- (id)_initWithSceneHandle:(id)a3;
+- (id)_initWithSceneHandle:(id)handle;
 - (id)_statusBarPartStyles;
 - (id)backgroundActivitiesToSuppress;
 - (id)breadcrumbProvider;
@@ -16,35 +16,35 @@
 - (id)statusBarSceneIdentifier;
 - (int64_t)_defaultStatusBarStyle;
 - (int64_t)_fallbackInterfaceOrientation;
-- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)a3;
+- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)orientation;
 - (int64_t)_statusBarStyle;
-- (int64_t)_statusBarStyleForPartWithIdentifier:(id)a3 suppressingInherited:(BOOL)a4;
+- (int64_t)_statusBarStyleForPartWithIdentifier:(id)identifier suppressingInherited:(BOOL)inherited;
 - (uint64_t)_statusBarCanAppearOutsideApp;
 - (void)_handleStatusBarBackgroundActivitiesToSuppressUpdate;
-- (void)_performUpdateWith:(id)a3 actions:(id)a4;
+- (void)_performUpdateWith:(id)with actions:(id)actions;
 - (void)dealloc;
 - (void)invalidate;
 - (void)invalidateStatusBarSettings;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
 @end
 
 @implementation SBDeviceApplicationSceneStatusBarStateProvider
 
 - (uint64_t)_statusBarCanAppearOutsideApp
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
-  v2 = [WeakRetained application];
-  if ([v2 isClassic])
+  WeakRetained = objc_loadWeakRetained((self + 48));
+  application = [WeakRetained application];
+  if ([application isClassic])
   {
-    v3 = [WeakRetained _windowScene];
-    v4 = [v3 switcherController];
-    v5 = [v4 isChamoisWindowingUIEnabled] ^ 1;
+    _windowScene = [WeakRetained _windowScene];
+    switcherController = [_windowScene switcherController];
+    v5 = [switcherController isChamoisWindowingUIEnabled] ^ 1;
   }
 
   else
@@ -58,34 +58,34 @@
 - (int64_t)_statusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v4 = [WeakRetained sceneIfExists];
-  v5 = v4;
-  if (v4)
+  sceneIfExists = [WeakRetained sceneIfExists];
+  v5 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v6 = [v4 uiClientSettings];
-    v7 = [v6 statusBarModernStyle];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    statusBarModernStyle = [uiClientSettings statusBarModernStyle];
   }
 
   else
   {
-    v7 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self defaultStatusBarStyle];
+    statusBarModernStyle = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self defaultStatusBarStyle];
   }
 
-  return v7;
+  return statusBarModernStyle;
 }
 
 - (int64_t)_defaultStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained _defaultStatusBarStyleFromSceneDataStore];
-  if (v3 == -1)
+  _defaultStatusBarStyleFromSceneDataStore = [WeakRetained _defaultStatusBarStyleFromSceneDataStore];
+  if (_defaultStatusBarStyleFromSceneDataStore == -1)
   {
-    v4 = [WeakRetained application];
-    v5 = [v4 info];
-    v3 = [v5 defaultStatusBarStyle];
+    application = [WeakRetained application];
+    info = [application info];
+    _defaultStatusBarStyleFromSceneDataStore = [info defaultStatusBarStyle];
   }
 
-  v6 = _SBStatusBarStyleFromLegacyStyle(v3);
+  v6 = _SBStatusBarStyleFromLegacyStyle(_defaultStatusBarStyleFromSceneDataStore);
 
   return v6;
 }
@@ -93,43 +93,43 @@
 - (int64_t)_fallbackInterfaceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained defaultInterfaceOrientation];
+  defaultInterfaceOrientation = [WeakRetained defaultInterfaceOrientation];
 
-  return v3;
+  return defaultInterfaceOrientation;
 }
 
 - (id)backgroundActivitiesToSuppress
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
-  v4 = 0;
-  if (([WeakRetained sceneFullyOccluded] & 1) == 0 && v3)
+  sceneIfExists = [WeakRetained sceneIfExists];
+  backgroundActivitiesToSuppress = 0;
+  if (([WeakRetained sceneFullyOccluded] & 1) == 0 && sceneIfExists)
   {
-    v4 = [WeakRetained backgroundActivitiesToSuppress];
-    v5 = [v3 uiClientSettings];
+    backgroundActivitiesToSuppress = [WeakRetained backgroundActivitiesToSuppress];
+    uiClientSettings = [sceneIfExists uiClientSettings];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 mutableCopy];
-      v7 = [v5 preferredBackgroundActivitiesToSuppress];
-      [v6 unionSet:v7];
+      v6 = [backgroundActivitiesToSuppress mutableCopy];
+      preferredBackgroundActivitiesToSuppress = [uiClientSettings preferredBackgroundActivitiesToSuppress];
+      [v6 unionSet:preferredBackgroundActivitiesToSuppress];
 
-      v4 = v6;
+      backgroundActivitiesToSuppress = v6;
     }
   }
 
-  return v4;
+  return backgroundActivitiesToSuppress;
 }
 
 - (double)_statusBarAlpha
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
-    v4 = [v3 uiClientSettings];
-    [v4 statusBarAlpha];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    [uiClientSettings statusBarAlpha];
     v6 = v5;
   }
 
@@ -150,22 +150,22 @@
 
 - (void)invalidateStatusBarSettings
 {
-  v3 = [(SBDeviceApplicationSceneStatusBarStateProvider *)self statusBarSceneIdentifier];
+  statusBarSceneIdentifier = [(SBDeviceApplicationSceneStatusBarStateProvider *)self statusBarSceneIdentifier];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __77__SBDeviceApplicationSceneStatusBarStateProvider_invalidateStatusBarSettings__block_invoke;
   v5[3] = &unk_2783AC850;
-  v6 = v3;
-  v4 = v3;
+  v6 = statusBarSceneIdentifier;
+  v4 = statusBarSceneIdentifier;
   [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self enumerateObserversWithBlock:v5];
 }
 
 - (id)statusBarSceneIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIdentifier];
+  sceneIdentifier = [WeakRetained sceneIdentifier];
 
-  return v3;
+  return sceneIdentifier;
 }
 
 uint64_t __77__SBDeviceApplicationSceneStatusBarStateProvider_invalidateStatusBarSettings__block_invoke(uint64_t result, void *a2, char a3)
@@ -181,12 +181,12 @@ uint64_t __77__SBDeviceApplicationSceneStatusBarStateProvider_invalidateStatusBa
 - (CGRect)statusBarAvoidanceFrame
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
-    v4 = [v3 uiSettings];
-    [v4 statusBarAvoidanceFrame];
+    uiSettings = [sceneIfExists uiSettings];
+    [uiSettings statusBarAvoidanceFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -215,28 +215,28 @@ uint64_t __77__SBDeviceApplicationSceneStatusBarStateProvider_invalidateStatusBa
 - (id)_statusBarPartStyles
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
-    v4 = [v3 uiClientSettings];
-    v5 = [v4 statusBarPartStyles];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    statusBarPartStyles = [uiClientSettings statusBarPartStyles];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEC10];
+    statusBarPartStyles = MEMORY[0x277CBEC10];
   }
 
-  return v5;
+  return statusBarPartStyles;
 }
 
 - (BOOL)sceneWantsDeviceOrientationEventsEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained wantsDeviceOrientationEventsEnabled];
+  wantsDeviceOrientationEventsEnabled = [WeakRetained wantsDeviceOrientationEventsEnabled];
 
-  return v3;
+  return wantsDeviceOrientationEventsEnabled;
 }
 
 - (BOOL)_statusBarAppearsOutsideOfAJailedAppCanChange
@@ -267,115 +267,115 @@ uint64_t __77__SBDeviceApplicationSceneStatusBarStateProvider_invalidateStatusBa
   [(SBDeviceApplicationSceneStatusBarStateProvider *)&v3 dealloc];
 }
 
-- (id)_initWithSceneHandle:(id)a3
+- (id)_initWithSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = SBDeviceApplicationSceneStatusBarStateProvider;
   v5 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sceneHandle, v4);
-    [v4 addObserver:v6];
+    objc_storeWeak(&v5->_sceneHandle, handleCopy);
+    [handleCopy addObserver:v6];
   }
 
   return v6;
 }
 
-- (int64_t)_statusBarStyleForPartWithIdentifier:(id)a3 suppressingInherited:(BOOL)a4
+- (int64_t)_statusBarStyleForPartWithIdentifier:(id)identifier suppressingInherited:(BOOL)inherited
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self statusBarPartStyles];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  inheritedCopy = inherited;
+  identifierCopy = identifier;
+  statusBarPartStyles = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self statusBarPartStyles];
+  v8 = [statusBarPartStyles objectForKeyedSubscript:identifierCopy];
 
   if (!v8)
   {
-    if (!v4)
+    if (!inheritedCopy)
     {
-      v9 = 4;
+      integerValue = 4;
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  v9 = [v8 integerValue];
-  if (v9 == 4 && v4)
+  integerValue = [v8 integerValue];
+  if (integerValue == 4 && inheritedCopy)
   {
 LABEL_6:
-    v9 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self statusBarStyle];
+    integerValue = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self statusBarStyle];
   }
 
 LABEL_8:
 
-  return v9;
+  return integerValue;
 }
 
-- (BOOL)_statusBarHiddenGivenFallbackOrientation:(int64_t)a3
+- (BOOL)_statusBarHiddenGivenFallbackOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v5 = [WeakRetained sceneIfExists];
-  v6 = v5;
-  if (v5)
+  sceneIfExists = [WeakRetained sceneIfExists];
+  v6 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v7 = [v5 uiClientSettings];
-    v8 = [v7 statusBarHidden];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    statusBarHidden = [uiClientSettings statusBarHidden];
   }
 
   else
   {
-    v8 = [WeakRetained defaultStatusBarHiddenForOrientation:a3];
+    statusBarHidden = [WeakRetained defaultStatusBarHiddenForOrientation:orientation];
   }
 
-  return v8;
+  return statusBarHidden;
 }
 
-- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)a3
+- (int64_t)_statusBarOrientationGivenFallbackOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v5 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  if (v5)
+  if (sceneIfExists)
   {
-    v6 = [v5 uiSettings];
-    if ([v6 deviceOrientationEventsEnabled])
+    uiSettings = [sceneIfExists uiSettings];
+    if ([uiSettings deviceOrientationEventsEnabled])
     {
-      v7 = [v5 uiClientSettings];
-      a3 = [v7 interfaceOrientation];
+      uiClientSettings = [sceneIfExists uiClientSettings];
+      orientation = [uiClientSettings interfaceOrientation];
     }
 
     else
     {
-      a3 = [v6 interfaceOrientation];
+      orientation = [uiSettings interfaceOrientation];
     }
   }
 
-  return a3;
+  return orientation;
 }
 
 - (id)overlayStatusBarData
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained overlayStatusBarData];
+  overlayStatusBarData = [WeakRetained overlayStatusBarData];
 
-  return v3;
+  return overlayStatusBarData;
 }
 
 - (id)breadcrumbProvider
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained breadcrumbProvider];
+  breadcrumbProvider = [WeakRetained breadcrumbProvider];
 
-  return v3;
+  return breadcrumbProvider;
 }
 
 - (id)classicApplicationSceneHandleIfExists
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained application];
-  if ([v3 isClassic])
+  application = [WeakRetained application];
+  if ([application isClassic])
   {
     v4 = WeakRetained;
   }
@@ -393,18 +393,18 @@ LABEL_8:
 - (id)sceneToHandleStatusBarTapIfExists
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  return v3;
+  return sceneIfExists;
 }
 
-- (BOOL)_statusBarAppearsOutsideOfAJailedAppInOrientation:(int64_t)a3
+- (BOOL)_statusBarAppearsOutsideOfAJailedAppInOrientation:(int64_t)orientation
 {
   if ([(SBDeviceApplicationSceneStatusBarStateProvider *)self _statusBarCanAppearOutsideApp])
   {
     WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-    v6 = [WeakRetained application];
-    v7 = [v6 includesStatusBarInClassicJailForInterfaceOrientation:a3] ^ 1;
+    application = [WeakRetained application];
+    v7 = [application includesStatusBarInClassicJailForInterfaceOrientation:orientation] ^ 1;
   }
 
   else
@@ -415,13 +415,13 @@ LABEL_8:
   return v7;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 transitionContext];
-  if (v8)
+  handleCopy = handle;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
+  if (settingsDiff)
   {
     appClientSettingsDiffInspector = self->_appClientSettingsDiffInspector;
     if (!appClientSettingsDiffInspector)
@@ -475,12 +475,12 @@ LABEL_8:
       appClientSettingsDiffInspector = self->_appClientSettingsDiffInspector;
     }
 
-    [v8 evaluateWithInspector:appClientSettingsDiffInspector context:v9];
+    [settingsDiff evaluateWithInspector:appClientSettingsDiffInspector context:transitionContext];
     if (!self->_hasAttemptedInCallSceneClientSettingsDiffInspectorCreation)
     {
       self->_hasAttemptedInCallSceneClientSettingsDiffInspectorCreation = 1;
-      v18 = [v6 sceneIfExists];
-      v19 = [v18 clientSettings];
+      sceneIfExists = [handleCopy sceneIfExists];
+      clientSettings = [sceneIfExists clientSettings];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -506,7 +506,7 @@ LABEL_8:
     v24 = self->_inCallSceneClientSettingsDiffInspector;
     if (v24)
     {
-      [v8 evaluateWithInspector:v24 context:v9];
+      [settingsDiff evaluateWithInspector:v24 context:transitionContext];
     }
   }
 }
@@ -858,12 +858,12 @@ void __86__SBDeviceApplicationSceneStatusBarStateProvider_sceneHandle_didUpdateC
   [WeakRetained _handleStatusBarBackgroundActivitiesToSuppressUpdate];
 }
 
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  handleCopy = handle;
+  diffCopy = diff;
+  settingsCopy = settings;
+  if (diffCopy)
   {
     appSceneSettingsDiffInspector = self->_appSceneSettingsDiffInspector;
     if (!appSceneSettingsDiffInspector)
@@ -893,7 +893,7 @@ void __86__SBDeviceApplicationSceneStatusBarStateProvider_sceneHandle_didUpdateC
       appSceneSettingsDiffInspector = self->_appSceneSettingsDiffInspector;
     }
 
-    [v9 evaluateWithInspector:appSceneSettingsDiffInspector context:0];
+    [diffCopy evaluateWithInspector:appSceneSettingsDiffInspector context:0];
   }
 }
 
@@ -1037,37 +1037,37 @@ uint64_t __105__SBDeviceApplicationSceneStatusBarStateProvider_sceneHandle_didUp
   return result;
 }
 
-- (void)_performUpdateWith:(id)a3 actions:(id)a4
+- (void)_performUpdateWith:(id)with actions:(id)actions
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v10 animationSettings];
-  if (v6)
+  withCopy = with;
+  actionsCopy = actions;
+  animationSettings = [withCopy animationSettings];
+  if (animationSettings)
   {
     v7 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-    v8 = [MEMORY[0x277CF0D38] factoryWithSettings:v6 timingFunction:v7];
+    v8 = [MEMORY[0x277CF0D38] factoryWithSettings:animationSettings timingFunction:v7];
     [v8 setAllowsAdditiveAnimations:1];
-    [MEMORY[0x277CF0D38] animateWithFactory:v8 actions:v5];
+    [MEMORY[0x277CF0D38] animateWithFactory:v8 actions:actionsCopy];
   }
 
-  else if (v5)
+  else if (actionsCopy)
   {
-    v5[2](v5);
+    actionsCopy[2](actionsCopy);
   }
 
-  v9 = [v10 animationFence];
-  if (v9)
+  animationFence = [withCopy animationFence];
+  if (animationFence)
   {
-    [MEMORY[0x277D75940] _synchronizeDrawingWithFence:v9];
+    [MEMORY[0x277D75940] _synchronizeDrawingWithFence:animationFence];
   }
 }
 
 - (void)_handleStatusBarBackgroundActivitiesToSuppressUpdate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(SBDeviceApplicationSceneStatusBarStateProvider *)v2 statusBarSceneIdentifier];
-  v4 = [(SBDeviceApplicationSceneStatusBarStateProvider *)v2 backgroundActivitiesToSuppress];
+  selfCopy = self;
+  statusBarSceneIdentifier = [(SBDeviceApplicationSceneStatusBarStateProvider *)selfCopy statusBarSceneIdentifier];
+  backgroundActivitiesToSuppress = [(SBDeviceApplicationSceneStatusBarStateProvider *)selfCopy backgroundActivitiesToSuppress];
   v5 = SBLogAppStatusBars();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1075,7 +1075,7 @@ uint64_t __105__SBDeviceApplicationSceneStatusBarStateProvider_sceneHandle_didUp
     v7 = v6;
     v8 = STBackgroundActivityIdentifiersDescription();
     *buf = 138412802;
-    v13 = v3;
+    v13 = statusBarSceneIdentifier;
     v14 = 2112;
     v15 = v6;
     v16 = 2112;
@@ -1083,15 +1083,15 @@ uint64_t __105__SBDeviceApplicationSceneStatusBarStateProvider_sceneHandle_didUp
     _os_log_debug_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEBUG, "(%@) %@ backgroundActivitiesToSuppress scene setting changed to %@ ", buf, 0x20u);
   }
 
-  if ([(SBDeviceApplicationSceneStatusBarStateProvider *)v2 _anyObserverWants:sel_sceneWithIdentifier_didChangeBackgroundActivitiesToSuppressTo_])
+  if ([(SBDeviceApplicationSceneStatusBarStateProvider *)selfCopy _anyObserverWants:sel_sceneWithIdentifier_didChangeBackgroundActivitiesToSuppressTo_])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __102__SBDeviceApplicationSceneStatusBarStateProvider__handleStatusBarBackgroundActivitiesToSuppressUpdate__block_invoke;
     v9[3] = &unk_2783AC968;
-    v10 = v3;
-    v11 = v4;
-    [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)v2 enumerateObserversWithBlock:v9];
+    v10 = statusBarSceneIdentifier;
+    v11 = backgroundActivitiesToSuppress;
+    [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)selfCopy enumerateObserversWithBlock:v9];
   }
 }
 

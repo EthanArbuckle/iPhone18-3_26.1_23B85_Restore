@@ -1,7 +1,7 @@
 @interface AURemoteMessageChannel
-- (AURemoteMessageChannel)initWithMessageChannel:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)onCallRemoteAU:(id)a3 reply:(id)a4;
+- (AURemoteMessageChannel)initWithMessageChannel:(id)channel;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)onCallRemoteAU:(id)u reply:(id)reply;
 - (void)releaseChannel;
 - (void)retainSelfIfRequired;
 @end
@@ -28,27 +28,27 @@
   }
 }
 
-- (void)onCallRemoteAU:(id)a3 reply:(id)a4
+- (void)onCallRemoteAU:(id)u reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
+  uCopy = u;
+  replyCopy = reply;
   messageChannel = self->_messageChannel;
   if (messageChannel)
   {
-    v8 = [(AUMessageChannel *)messageChannel callAudioUnit:v9];
-    v6[2](v6, 0, v8);
+    v8 = [(AUMessageChannel *)messageChannel callAudioUnit:uCopy];
+    replyCopy[2](replyCopy, 0, v8);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    replyCopy[2](replyCopy, 0, 0);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  objc_storeStrong(&self->_xpcConnection, a4);
+  connectionCopy = connection;
+  objc_storeStrong(&self->_xpcConnection, connection);
   v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F034F390];
   [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v7];
 
@@ -168,19 +168,19 @@ id __61__AURemoteMessageChannel_listener_shouldAcceptNewConnection___block_invok
   return v8;
 }
 
-- (AURemoteMessageChannel)initWithMessageChannel:(id)a3
+- (AURemoteMessageChannel)initWithMessageChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v12.receiver = self;
   v12.super_class = AURemoteMessageChannel;
   v6 = [(AURemoteMessageChannel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageChannel, a3);
-    v8 = [MEMORY[0x1E696B0D8] anonymousListener];
+    objc_storeStrong(&v6->_messageChannel, channel);
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v7->_listener;
-    v7->_listener = v8;
+    v7->_listener = anonymousListener;
 
     [(NSXPCListener *)v7->_listener setDelegate:v7];
     [(NSXPCListener *)v7->_listener resume];

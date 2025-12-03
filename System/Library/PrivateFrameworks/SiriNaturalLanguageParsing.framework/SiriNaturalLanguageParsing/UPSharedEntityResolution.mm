@@ -1,17 +1,17 @@
 @interface UPSharedEntityResolution
-+ (id)buildDataDetectorDateTimeSpansByTokenRange:(id)a3;
-- (UPSharedEntityResolution)initWithMatchingSpans:(id)a3;
-- (id)resolveSharedEntityForTokenRange:(_NSRange)a3 valueType:(id)a4;
++ (id)buildDataDetectorDateTimeSpansByTokenRange:(id)range;
+- (UPSharedEntityResolution)initWithMatchingSpans:(id)spans;
+- (id)resolveSharedEntityForTokenRange:(_NSRange)range valueType:(id)type;
 @end
 
 @implementation UPSharedEntityResolution
 
-- (id)resolveSharedEntityForTokenRange:(_NSRange)a3 valueType:(id)a4
+- (id)resolveSharedEntityForTokenRange:(_NSRange)range valueType:(id)type
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  typeCopy = type;
   v8 = SNLPOSLoggerForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -20,11 +20,11 @@
     v18 = 2048;
     v19 = length;
     v20 = 2112;
-    v21 = v7;
+    v21 = typeCopy;
     _os_log_impl(&dword_22284A000, v8, OS_LOG_TYPE_DEBUG, "Resolving shared entities for token range (%lu, %lu) with value type: %@", &v16, 0x20u);
   }
 
-  if ([v7 isEqualToString:@"date"])
+  if ([typeCopy isEqualToString:@"date"])
   {
     v9 = [MEMORY[0x277CCAE60] valueWithRange:{location, length}];
     v10 = [(NSDictionary *)self->__dataDetectorDateTimeSpansByTokenRange objectForKey:v9];
@@ -38,7 +38,7 @@
         _os_log_impl(&dword_22284A000, v11, OS_LOG_TYPE_DEBUG, "Found a corresponding matching span: returning the shared entity graph", &v16, 2u);
       }
 
-      v13 = [v10 sharedEntityGraph];
+      sharedEntityGraph = [v10 sharedEntityGraph];
     }
 
     else
@@ -49,7 +49,7 @@
         _os_log_impl(&dword_22284A000, v11, OS_LOG_TYPE_DEBUG, "Returning nil since there is no corresponding matching span", &v16, 2u);
       }
 
-      v13 = 0;
+      sharedEntityGraph = 0;
     }
   }
 
@@ -62,23 +62,23 @@
       _os_log_impl(&dword_22284A000, v9, OS_LOG_TYPE_DEBUG, "Returning nil since we cannot handle non-date value types", &v16, 2u);
     }
 
-    v13 = 0;
+    sharedEntityGraph = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return sharedEntityGraph;
 }
 
-- (UPSharedEntityResolution)initWithMatchingSpans:(id)a3
+- (UPSharedEntityResolution)initWithMatchingSpans:(id)spans
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  spansCopy = spans;
   v5 = SNLPOSLoggerForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v13 = [v4 count];
+    v13 = [spansCopy count];
     _os_log_impl(&dword_22284A000, v5, OS_LOG_TYPE_DEBUG, "Initializing UPSharedEntityResolution with %lu matching spans", buf, 0xCu);
   }
 
@@ -87,7 +87,7 @@
   v6 = [(UPSharedEntityResolution *)&v11 init];
   if (v6)
   {
-    v7 = [objc_opt_class() buildDataDetectorDateTimeSpansByTokenRange:v4];
+    v7 = [objc_opt_class() buildDataDetectorDateTimeSpansByTokenRange:spansCopy];
     dataDetectorDateTimeSpansByTokenRange = v6->__dataDetectorDateTimeSpansByTokenRange;
     v6->__dataDetectorDateTimeSpansByTokenRange = v7;
   }
@@ -96,16 +96,16 @@
   return v6;
 }
 
-+ (id)buildDataDetectorDateTimeSpansByTokenRange:(id)a3
++ (id)buildDataDetectorDateTimeSpansByTokenRange:(id)range
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  rangeCopy = range;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = v3;
+  v4 = rangeCopy;
   v5 = [v4 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v5)
   {
@@ -128,9 +128,9 @@
         v12 = SNLPOSLoggerForCategory(3);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v11 category];
+          category = [v11 category];
           *buf = 138412290;
-          v43 = v13;
+          v43 = category;
           _os_log_impl(&dword_22284A000, v12, OS_LOG_TYPE_DEBUG, v8, buf, 0xCu);
         }
 
@@ -150,8 +150,8 @@ LABEL_18:
           goto LABEL_23;
         }
 
-        v14 = [v11 category];
-        v15 = [(__CFString *)v9 isEqualToString:v14];
+        category2 = [v11 category];
+        v15 = [(__CFString *)v9 isEqualToString:category2];
 
         if ((v15 & 1) == 0)
         {
@@ -172,9 +172,9 @@ LABEL_18:
         v18 = v9;
         v19 = v8;
         v20 = MEMORY[0x277CCAE60];
-        v21 = [v11 range];
-        v23 = [v20 valueWithRange:{v21, v22}];
-        v24 = [v37 objectForKeyedSubscript:v23];
+        range = [v11 range];
+        v23 = [v20 valueWithRange:{range, v22}];
+        v24 = [dictionary objectForKeyedSubscript:v23];
 
         v25 = SNLPOSLoggerForCategory(3);
         v26 = v25;
@@ -182,10 +182,10 @@ LABEL_18:
         {
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v11 range];
+            range2 = [v11 range];
             [v11 range];
             *buf = 134218240;
-            v43 = v27;
+            v43 = range2;
             v44 = 2048;
             v45 = v28;
             _os_log_impl(&dword_22284A000, v26, OS_LOG_TYPE_DEFAULT, "Discarding duplicate matching date time span for range (%lu, %lu)", buf, 0x16u);
@@ -196,16 +196,16 @@ LABEL_18:
         {
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
-            v31 = [v11 range];
+            range3 = [v11 range];
             [v11 range];
             *buf = 134218240;
-            v43 = v31;
+            v43 = range3;
             v44 = 2048;
             v45 = v32;
             _os_log_impl(&dword_22284A000, v26, OS_LOG_TYPE_DEBUG, "Adding DD datetime span with token range (%lu, %lu)", buf, 0x16u);
           }
 
-          [v37 setObject:v11 forKeyedSubscript:v23];
+          [dictionary setObject:v11 forKeyedSubscript:v23];
         }
 
         v8 = v19;
@@ -225,7 +225,7 @@ LABEL_23:
     while (v6);
   }
 
-  v33 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v37];
+  v33 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   v34 = *MEMORY[0x277D85DE8];
 

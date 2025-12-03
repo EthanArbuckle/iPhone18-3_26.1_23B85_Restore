@@ -1,106 +1,106 @@
 @interface GroupFaceTimeNotificationProvider
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 conversation:(id)a4 requestedScreenShareForParticipant:(id)a5;
-- (void)conversationManager:(id)a3 handoffEligibilityChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 handoffEligibilityChangedToConversation:(id)a4 fromPreviousConversation:(id)a5;
-- (void)conversationManager:(id)a3 letMeInRequestStateChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 pendingMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 trackedPendingMember:(id)a4 forConversationLink:(id)a5;
-- (void)conversationsChangedForConversationManager:(id)a3;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager conversation:(id)conversation requestedScreenShareForParticipant:(id)participant;
+- (void)conversationManager:(id)manager handoffEligibilityChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager handoffEligibilityChangedToConversation:(id)conversation fromPreviousConversation:(id)previousConversation;
+- (void)conversationManager:(id)manager letMeInRequestStateChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager pendingMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager trackedPendingMember:(id)member forConversationLink:(id)link;
+- (void)conversationsChangedForConversationManager:(id)manager;
 @end
 
 @implementation GroupFaceTimeNotificationProvider
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002D53F4();
 }
 
-- (void)conversationManager:(id)a3 letMeInRequestStateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager letMeInRequestStateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002D5F24(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1002D5F24(selfCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002D617C();
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002D67B8(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1002D67B8(selfCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 pendingMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager pendingMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002D6920(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1002D6920(selfCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 trackedPendingMember:(id)a4 forConversationLink:(id)a5
+- (void)conversationManager:(id)manager trackedPendingMember:(id)member forConversationLink:(id)link
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  memberCopy = member;
+  linkCopy = link;
+  selfCopy = self;
   sub_1002D6C88();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002D766C();
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 requestedScreenShareForParticipant:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation requestedScreenShareForParticipant:(id)participant
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1002D7FC4(v11, v9, v10);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  selfCopy = self;
+  sub_1002D7FC4(selfCopy, conversationCopy, participantCopy);
 }
 
-- (void)conversationsChangedForConversationManager:(id)a3
+- (void)conversationsChangedForConversationManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1002D8304();
 }
 
-- (void)conversationManager:(id)a3 handoffEligibilityChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager handoffEligibilityChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002D9DF8();
 }
 
-- (void)conversationManager:(id)a3 handoffEligibilityChangedToConversation:(id)a4 fromPreviousConversation:(id)a5
+- (void)conversationManager:(id)manager handoffEligibilityChangedToConversation:(id)conversation fromPreviousConversation:(id)previousConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  previousConversationCopy = previousConversation;
+  selfCopy = self;
   sub_1002DA198();
 }
 

@@ -1,13 +1,13 @@
 @interface CMPedestrianFenceManager
 + (unint64_t)availableFenceTypes;
 - (CMPedestrianFenceManager)init;
-- (void)clearFence:(id)a3;
+- (void)clearFence:(id)fence;
 - (void)dealloc;
 - (void)endSession;
 - (void)forceClearAllFences;
-- (void)forceClearFence:(id)a3;
-- (void)setFence:(id)a3 withRadius:(float)a4 withCompletion:(id)a5;
-- (void)startSessionWithStatusHandler:(id)a3;
+- (void)forceClearFence:(id)fence;
+- (void)setFence:(id)fence withRadius:(float)radius withCompletion:(id)completion;
+- (void)startSessionWithStatusHandler:(id)handler;
 @end
 
 @implementation CMPedestrianFenceManager
@@ -29,7 +29,7 @@
   return v2 | sub_19B5F93B8();
 }
 
-- (void)startSessionWithStatusHandler:(id)a3
+- (void)startSessionWithStatusHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2798 != -1)
@@ -62,7 +62,7 @@
   }
 
   v10 = objc_msgSend__internal(self, v7, v8);
-  objc_msgSend__setInSession_withStatusHandler_(v10, v11, 1, a3);
+  objc_msgSend__setInSession_withStatusHandler_(v10, v11, 1, handler);
   v12 = *MEMORY[0x1E69E9840];
 }
 
@@ -103,14 +103,14 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFence:(id)a3 withRadius:(float)a4 withCompletion:(id)a5
+- (void)setFence:(id)fence withRadius:(float)radius withCompletion:(id)completion
 {
-  v7 = a3;
+  fenceCopy = fence;
   v8 = a2;
   v35 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, a3))
+  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, fence))
   {
-    if (a5)
+    if (completion)
     {
       goto LABEL_3;
     }
@@ -126,7 +126,7 @@
     v24 = qword_1EAFE27D0;
     v8 = "";
     self = "assert";
-    v7 = "[CMPedestrianFenceManager isAvailable]";
+    fenceCopy = "[CMPedestrianFenceManager isAvailable]";
     if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_FAULT))
     {
       *buf = 68289539;
@@ -162,7 +162,7 @@
       }
     }
 
-    a5 = qword_1EAFE27D0;
+    completion = qword_1EAFE27D0;
     if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -173,7 +173,7 @@
       *&v32[16] = "assert";
       v33 = 2081;
       v34 = "[CMPedestrianFenceManager isAvailable]";
-      _os_log_impl(&dword_19B41C000, a5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, completion, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     v29 = 236;
@@ -194,9 +194,9 @@ LABEL_3:
   if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *v32 = v7;
+    *v32 = fenceCopy;
     *&v32[8] = 2050;
-    *&v32[10] = a4;
+    *&v32[10] = radius;
     _os_log_impl(&dword_19B41C000, v12, OS_LOG_TYPE_DEFAULT, "Setting pedestrian fence: fenceID,%{public}@,radiusMeters,%{public}f", buf, 0x16u);
   }
 
@@ -217,18 +217,18 @@ LABEL_3:
     }
   }
 
-  *&v16 = a4;
+  *&v16 = radius;
   v18 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v14, v15, v16);
   v21 = objc_msgSend__internal(self, v19, v20);
-  objc_msgSend__setFence_withRadius_wake_delay_withCompletion_(v21, v22, v7, v18, 1, 0, a5);
+  objc_msgSend__setFence_withRadius_wake_delay_withCompletion_(v21, v22, fenceCopy, v18, 1, 0, completion);
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearFence:(id)a3
+- (void)clearFence:(id)fence
 {
-  v3 = a3;
+  fenceCopy = fence;
   v24 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, a3))
+  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, fence))
   {
     if (qword_1EAFE2798 == -1)
     {
@@ -280,7 +280,7 @@ LABEL_3:
       }
     }
 
-    v3 = qword_1EAFE27D0;
+    fenceCopy = qword_1EAFE27D0;
     if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -291,7 +291,7 @@ LABEL_3:
       v21 = "assert";
       v22 = 2081;
       v23 = "[CMPedestrianFenceManager isAvailable]";
-      _os_log_impl(&dword_19B41C000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, fenceCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     v16 = 246;
@@ -306,7 +306,7 @@ LABEL_3:
   if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v19 = v3;
+    *v19 = fenceCopy;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "Clearing pedestrian fence: fenceID,%{public}@", buf, 0xCu);
   }
 
@@ -329,15 +329,15 @@ LABEL_3:
   }
 
   v10 = objc_msgSend__internal(self, v7, v8, v15, v16, v17);
-  objc_msgSend__clearFence_force_(v10, v11, v3, 0);
+  objc_msgSend__clearFence_force_(v10, v11, fenceCopy, 0);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forceClearFence:(id)a3
+- (void)forceClearFence:(id)fence
 {
-  v3 = a3;
+  fenceCopy = fence;
   v24 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, a3))
+  if (objc_msgSend_isAvailable(CMPedestrianFenceManager, a2, fence))
   {
     if (qword_1EAFE2798 == -1)
     {
@@ -389,7 +389,7 @@ LABEL_3:
       }
     }
 
-    v3 = qword_1EAFE27D0;
+    fenceCopy = qword_1EAFE27D0;
     if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -400,7 +400,7 @@ LABEL_3:
       v21 = "assert";
       v22 = 2081;
       v23 = "[CMPedestrianFenceManager isAvailable]";
-      _os_log_impl(&dword_19B41C000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, fenceCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:PedestrianFence is not available on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     v16 = 263;
@@ -415,7 +415,7 @@ LABEL_3:
   if (os_log_type_enabled(qword_1EAFE27D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v19 = v3;
+    *v19 = fenceCopy;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "Force clearing pedestrian fence: fenceID,%{public}@", buf, 0xCu);
   }
 
@@ -438,7 +438,7 @@ LABEL_3:
   }
 
   v10 = objc_msgSend__internal(self, v7, v8, v15, v16, v17);
-  objc_msgSend__clearFence_force_(v10, v11, v3, 1);
+  objc_msgSend__clearFence_force_(v10, v11, fenceCopy, 1);
   v12 = *MEMORY[0x1E69E9840];
 }
 

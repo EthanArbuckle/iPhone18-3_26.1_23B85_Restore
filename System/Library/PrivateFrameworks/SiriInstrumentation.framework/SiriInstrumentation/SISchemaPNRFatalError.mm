@@ -1,26 +1,26 @@
 @interface SISchemaPNRFatalError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaPNRFatalError)initWithDictionary:(id)a3;
-- (SISchemaPNRFatalError)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaPNRFatalError)initWithDictionary:(id)dictionary;
+- (SISchemaPNRFatalError)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaPNRFatalError
 
-- (SISchemaPNRFatalError)initWithDictionary:(id)a3
+- (SISchemaPNRFatalError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaPNRFatalError;
   v5 = [(SISchemaPNRFatalError *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"error"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaPNRFatalError *)v5 setError:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"underlyingError"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"underlyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaPNRFatalError *)v5 setUnderlyingError:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"underUnderlyingError"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"underUnderlyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (SISchemaPNRFatalError)initWithJSON:(id)a3
+- (SISchemaPNRFatalError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaPNRFatalError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaPNRFatalError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaPNRFatalError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(SISchemaPNRFatalError *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(SISchemaPNRFatalError *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
   if (self->_underUnderlyingError)
   {
-    v7 = [(SISchemaPNRFatalError *)self underUnderlyingError];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    underUnderlyingError = [(SISchemaPNRFatalError *)self underUnderlyingError];
+    dictionaryRepresentation2 = [underUnderlyingError dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"underUnderlyingError"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"underUnderlyingError"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"underUnderlyingError"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"underUnderlyingError"];
     }
   }
 
   if (self->_underlyingError)
   {
-    v10 = [(SISchemaPNRFatalError *)self underlyingError];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    underlyingError = [(SISchemaPNRFatalError *)self underlyingError];
+    dictionaryRepresentation3 = [underlyingError dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"underlyingError"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"underlyingError"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"underlyingError"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"underlyingError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(SISchemaPNRFatalErrorInfo *)self->_underUnderlyingError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SISchemaPNRFatalError *)self error];
-  v6 = [v4 error];
-  if ((v5 != 0) == (v6 == 0))
+  error = [(SISchemaPNRFatalError *)self error];
+  error2 = [equalCopy error];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SISchemaPNRFatalError *)self error];
-  if (v7)
+  error3 = [(SISchemaPNRFatalError *)self error];
+  if (error3)
   {
-    v8 = v7;
-    v9 = [(SISchemaPNRFatalError *)self error];
-    v10 = [v4 error];
-    v11 = [v9 isEqual:v10];
+    v8 = error3;
+    error4 = [(SISchemaPNRFatalError *)self error];
+    error5 = [equalCopy error];
+    v11 = [error4 isEqual:error5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(SISchemaPNRFatalError *)self underlyingError];
-  v6 = [v4 underlyingError];
-  if ((v5 != 0) == (v6 == 0))
+  error = [(SISchemaPNRFatalError *)self underlyingError];
+  error2 = [equalCopy underlyingError];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SISchemaPNRFatalError *)self underlyingError];
-  if (v12)
+  underlyingError = [(SISchemaPNRFatalError *)self underlyingError];
+  if (underlyingError)
   {
-    v13 = v12;
-    v14 = [(SISchemaPNRFatalError *)self underlyingError];
-    v15 = [v4 underlyingError];
-    v16 = [v14 isEqual:v15];
+    v13 = underlyingError;
+    underlyingError2 = [(SISchemaPNRFatalError *)self underlyingError];
+    underlyingError3 = [equalCopy underlyingError];
+    v16 = [underlyingError2 isEqual:underlyingError3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(SISchemaPNRFatalError *)self underUnderlyingError];
-  v6 = [v4 underUnderlyingError];
-  if ((v5 != 0) != (v6 == 0))
+  error = [(SISchemaPNRFatalError *)self underUnderlyingError];
+  error2 = [equalCopy underUnderlyingError];
+  if ((error != 0) != (error2 == 0))
   {
-    v17 = [(SISchemaPNRFatalError *)self underUnderlyingError];
-    if (!v17)
+    underUnderlyingError = [(SISchemaPNRFatalError *)self underUnderlyingError];
+    if (!underUnderlyingError)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(SISchemaPNRFatalError *)self underUnderlyingError];
-    v20 = [v4 underUnderlyingError];
-    v21 = [v19 isEqual:v20];
+    v18 = underUnderlyingError;
+    underUnderlyingError2 = [(SISchemaPNRFatalError *)self underUnderlyingError];
+    underUnderlyingError3 = [equalCopy underUnderlyingError];
+    v21 = [underUnderlyingError2 isEqual:underUnderlyingError3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(SISchemaPNRFatalError *)self error];
+  toCopy = to;
+  error = [(SISchemaPNRFatalError *)self error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [(SISchemaPNRFatalError *)self error];
+    error2 = [(SISchemaPNRFatalError *)self error];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaPNRFatalError *)self underlyingError];
+  underlyingError = [(SISchemaPNRFatalError *)self underlyingError];
 
-  if (v6)
+  if (underlyingError)
   {
-    v7 = [(SISchemaPNRFatalError *)self underlyingError];
+    underlyingError2 = [(SISchemaPNRFatalError *)self underlyingError];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaPNRFatalError *)self underUnderlyingError];
+  underUnderlyingError = [(SISchemaPNRFatalError *)self underUnderlyingError];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (underUnderlyingError)
   {
-    v10 = [(SISchemaPNRFatalError *)self underUnderlyingError];
+    underUnderlyingError2 = [(SISchemaPNRFatalError *)self underUnderlyingError];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = SISchemaPNRFatalError;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaPNRFatalError *)self error];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  error = [(SISchemaPNRFatalError *)self error];
+  v7 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaPNRFatalError *)self deleteError];
   }
 
-  v9 = [(SISchemaPNRFatalError *)self underlyingError];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  underlyingError = [(SISchemaPNRFatalError *)self underlyingError];
+  v10 = [underlyingError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaPNRFatalError *)self deleteUnderlyingError];
   }
 
-  v12 = [(SISchemaPNRFatalError *)self underUnderlyingError];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  underUnderlyingError = [(SISchemaPNRFatalError *)self underUnderlyingError];
+  v13 = [underUnderlyingError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaPNRFatalError *)self deleteUnderUnderlyingError];
   }

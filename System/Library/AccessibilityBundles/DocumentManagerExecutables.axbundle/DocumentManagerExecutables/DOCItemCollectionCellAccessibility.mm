@@ -1,9 +1,9 @@
 @interface DOCItemCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityScrollToVisible;
 - (id)_accessibilityItemCollectionViewController;
 - (id)_axAttrTitle;
-- (id)_axCustomActionsFromUIMenu:(id)a3;
+- (id)_axCustomActionsFromUIMenu:(id)menu;
 - (id)accessibilityCustomActions;
 - (id)accessibilityIdentifier;
 - (unint64_t)accessibilityTraits;
@@ -11,22 +11,22 @@
 
 @implementation DOCItemCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
-  [v3 validateClass:@"UICollectionReusableView" hasInstanceMethod:@"_collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityIsRenaming" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityShouldDim" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"accessibilityIsRenamingInline" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" conformsToProtocol:@"UIContextMenuInteractionDelegate"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"contextMenuForItemsAt:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"contextMenuForFolder" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
+  [validationsCopy validateClass:@"UICollectionReusableView" hasInstanceMethod:@"_collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityIsRenaming" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityShouldDim" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"accessibilityIsRenamingInline" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" conformsToProtocol:@"UIContextMenuInteractionDelegate"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"contextMenuForItemsAt:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"contextMenuForFolder" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityIdentifier
@@ -35,14 +35,14 @@
   v4 = [v3 safeValueForKey:@"accessibilityItem"];
   v5 = __UIAccessibilitySafeClass();
 
-  v6 = [(DOCItemCollectionCellAccessibility *)self _axAttrTitle];
-  v7 = [v6 string];
+  _axAttrTitle = [(DOCItemCollectionCellAccessibility *)self _axAttrTitle];
+  string = [_axAttrTitle string];
 
-  v8 = [v5 filename];
-  v9 = [v8 pathExtension];
+  filename = [v5 filename];
+  pathExtension = [filename pathExtension];
   if ([v5 folderType] == 1)
   {
-    v10 = [v5 fp_appContainerBundleIdentifier];
+    fp_appContainerBundleIdentifier = [v5 fp_appContainerBundleIdentifier];
     v11 = __UIAXStringForVariables();
   }
 
@@ -60,23 +60,23 @@
   v3 = [(DOCItemCollectionCellAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 attributedText];
+  attributedText = [v4 attributedText];
 
-  return v5;
+  return attributedText;
 }
 
-- (id)_axCustomActionsFromUIMenu:(id)a3
+- (id)_axCustomActionsFromUIMenu:(id)menu
 {
   v44 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v30 = [MEMORY[0x29EDB8DE8] array];
+  menuCopy = menu;
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v22 = v3;
-  obj = [v3 safeArrayForKey:@"children"];
+  v22 = menuCopy;
+  obj = [menuCopy safeArrayForKey:@"children"];
   v25 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v25)
   {
@@ -128,8 +128,8 @@
               v15 = v14;
               if (v14)
               {
-                v16 = [v14 title];
-                if ([v16 length] && (objc_msgSend(v4, "containsObject:", v16) & 1) == 0)
+                title = [v14 title];
+                if ([title length] && (objc_msgSend(v4, "containsObject:", title) & 1) == 0)
                 {
                   v17 = [AXDocumentCustomAction alloc];
                   v31[0] = MEMORY[0x29EDCA5F8];
@@ -138,10 +138,10 @@
                   v31[3] = &unk_29F2BB930;
                   v18 = v15;
                   v32 = v18;
-                  v19 = [(AXDocumentCustomAction *)v17 initWithName:v16 actionHandler:v31];
+                  v19 = [(AXDocumentCustomAction *)v17 initWithName:title actionHandler:v31];
                   [(AXDocumentCustomAction *)v19 setAction:v18];
-                  [v30 addObject:v19];
-                  [v4 addObject:v16];
+                  [array addObject:v19];
+                  [v4 addObject:title];
                 }
               }
             }
@@ -164,7 +164,7 @@
 
   v20 = *MEMORY[0x29EDCA608];
 
-  return v30;
+  return array;
 }
 
 uint64_t __65__DOCItemCollectionCellAccessibility__axCustomActionsFromUIMenu___block_invoke(uint64_t a1)
@@ -203,12 +203,12 @@ uint64_t __65__DOCItemCollectionCellAccessibility__axCustomActionsFromUIMenu___b
 
   if (v5)
   {
-    v6 = [*v4 objectForKeyedSubscript:v3];
+    array = [*v4 objectForKeyedSubscript:v3];
   }
 
   else if (-[DOCItemCollectionCellAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"accessibilityIsRenaming") & 1) != 0 || (-[DOCItemCollectionCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"_collectionView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 _accessibilityViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "safeBoolForKey:", @"accessibilityIsRenamingInline"), v8, v7, (v9))
   {
-    v6 = MEMORY[0x29EDB8E90];
+    array = MEMORY[0x29EDB8E90];
   }
 
   else
@@ -222,22 +222,22 @@ uint64_t __65__DOCItemCollectionCellAccessibility__axCustomActionsFromUIMenu___b
     AXPerformSafeBlock();
     if (v13[5])
     {
-      v6 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v10 = [(DOCItemCollectionCellAccessibility *)self _axCustomActionsFromUIMenu:v13[5]];
-      [v6 addObjectsFromArray:v10];
+      [array addObjectsFromArray:v10];
 
-      [*v4 setObject:v6 forKeyedSubscript:v3];
+      [*v4 setObject:array forKeyedSubscript:v3];
     }
 
     else
     {
-      v6 = MEMORY[0x29EDB8E90];
+      array = MEMORY[0x29EDB8E90];
     }
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return v6;
+  return array;
 }
 
 void __64__DOCItemCollectionCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -293,9 +293,9 @@ uint64_t __64__DOCItemCollectionCellAccessibility_accessibilityCustomActions__bl
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = [v2 _accessibilityFindViewAncestor:&__block_literal_global startWithSelf:1];
-  v4 = [v3 _accessibilityViewController];
+  _accessibilityViewController = [v3 _accessibilityViewController];
 
-  return v4;
+  return _accessibilityViewController;
 }
 
 uint64_t __80__DOCItemCollectionCellAccessibility__accessibilityItemCollectionViewController__block_invoke(uint64_t a1, void *a2)
@@ -314,17 +314,17 @@ uint64_t __80__DOCItemCollectionCellAccessibility__accessibilityItemCollectionVi
   v3 = [(DOCItemCollectionCellAccessibility *)self safeValueForKey:@"_collectionView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 scrollViewWillBeginDragging:v4];
+    [delegate scrollViewWillBeginDragging:v4];
   }
 
   v8.receiver = self;
   v8.super_class = DOCItemCollectionCellAccessibility;
-  v6 = [(DOCItemCollectionCellAccessibility *)&v8 accessibilityScrollToVisible];
+  accessibilityScrollToVisible = [(DOCItemCollectionCellAccessibility *)&v8 accessibilityScrollToVisible];
 
-  return v6;
+  return accessibilityScrollToVisible;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface SearchUISettingToggleLeadingViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (CGSize)thumbnailSize;
 - (double)symbolFontSize;
-- (id)imageForRowModel:(id)a3 appearance:(id)a4;
+- (id)imageForRowModel:(id)model appearance:(id)appearance;
 - (id)setupView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUISettingToggleLeadingViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:v3];
-  v5 = [v3 cardSection];
+  modelCopy = model;
+  v4 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:modelCopy];
+  cardSection = [modelCopy cardSection];
 
-  if (v4 && ([v5 thumbnail], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+  if (v4 && ([cardSection thumbnail], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
-    v8 = [v5 thumbnail];
-    v9 = [v4 biomeStreamIdentifier];
-    if ([v9 length])
+    thumbnail = [cardSection thumbnail];
+    biomeStreamIdentifier = [v4 biomeStreamIdentifier];
+    if ([biomeStreamIdentifier length])
     {
-      v10 = [v8 symbolName];
-      v11 = v10 != 0;
+      symbolName = [thumbnail symbolName];
+      v11 = symbolName != 0;
     }
 
     else
@@ -43,23 +43,23 @@
 {
   v8.receiver = self;
   v8.super_class = SearchUISettingToggleLeadingViewController;
-  v3 = [(SearchUIThumbnailViewController *)&v8 setupView];
+  setupView = [(SearchUIThumbnailViewController *)&v8 setupView];
   v4 = [MEMORY[0x1E69AE158] staticMaterialViewWithRecipe:8];
   [(SearchUISettingToggleLeadingViewController *)self setBackgroundView:v4];
 
-  v5 = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
-  [v3 insertSubview:v5 atIndex:0];
+  backgroundView = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
+  [setupView insertSubview:backgroundView atIndex:0];
 
-  v6 = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
-  [v6 setAutoresizingMask:18];
+  backgroundView2 = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
+  [backgroundView2 setAutoresizingMask:18];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setProminence:0];
+    [setupView setProminence:0];
   }
 
-  return v3;
+  return setupView;
 }
 
 - (double)symbolFontSize
@@ -77,8 +77,8 @@
 {
   [MEMORY[0x1E69D91A8] maxThumbnailSizeIsCompactWidth:{-[SearchUILeadingViewController usesCompactWidth](self, "usesCompactWidth")}];
   v4 = v3;
-  v5 = [(SearchUILeadingViewController *)self rowModel];
-  if ([v5 useCompactVersionOfUI])
+  rowModel = [(SearchUILeadingViewController *)self rowModel];
+  if ([rowModel useCompactVersionOfUI])
   {
     +[SearchUISuggestionImageUtilities maximumSize];
     v4 = v6;
@@ -97,17 +97,17 @@
   return result;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v19.receiver = self;
   v19.super_class = SearchUISettingToggleLeadingViewController;
-  [(SearchUIThumbnailViewController *)&v19 updateWithRowModel:a3];
-  v4 = [(SearchUILeadingViewController *)self view];
-  [v4 maximumLayoutSize];
+  [(SearchUIThumbnailViewController *)&v19 updateWithRowModel:model];
+  view = [(SearchUILeadingViewController *)self view];
+  [view maximumLayoutSize];
   v6 = v5;
 
-  v7 = [(SearchUILeadingViewController *)self view];
-  [v7 maximumLayoutSize];
+  view2 = [(SearchUILeadingViewController *)self view];
+  [view2 maximumLayoutSize];
   v9 = v8;
 
   if (v6 >= v9)
@@ -121,32 +121,32 @@
   }
 
   v11 = v10 * 0.5;
-  v12 = [(SearchUILeadingViewController *)self view];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:v11];
+  view3 = [(SearchUILeadingViewController *)self view];
+  layer = [view3 layer];
+  [layer setCornerRadius:v11];
 
-  v14 = [(SearchUILeadingViewController *)self view];
-  [v14 setClipsToBounds:1];
+  view4 = [(SearchUILeadingViewController *)self view];
+  [view4 setClipsToBounds:1];
 
-  v15 = [(SearchUILeadingViewController *)self view];
-  [v15 _cornerRadius];
+  view5 = [(SearchUILeadingViewController *)self view];
+  [view5 _cornerRadius];
   v17 = v16;
-  v18 = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
-  [v18 _setCornerRadius:v17];
+  backgroundView = [(SearchUISettingToggleLeadingViewController *)self backgroundView];
+  [backgroundView _setCornerRadius:v17];
 }
 
-- (id)imageForRowModel:(id)a3 appearance:(id)a4
+- (id)imageForRowModel:(id)model appearance:(id)appearance
 {
-  v5 = [a3 cardSection];
-  v6 = [v5 thumbnail];
-  v7 = [[SearchUISymbolImage alloc] initWithSFImage:v6];
+  cardSection = [model cardSection];
+  thumbnail = [cardSection thumbnail];
+  v7 = [[SearchUISymbolImage alloc] initWithSFImage:thumbnail];
   [(SearchUISettingToggleLeadingViewController *)self symbolFontSize];
   [(SearchUISymbolImage *)v7 setPreferredSymbolFontSize:?];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(SearchUISymbolImage *)v7 setCustomBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(SearchUISymbolImage *)v7 setCustomBackgroundColor:clearColor];
 
-  v9 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [(SearchUISymbolImage *)v7 setCustomForegroundColor:v9];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [(SearchUISymbolImage *)v7 setCustomForegroundColor:systemWhiteColor];
 
   [(SearchUISettingToggleLeadingViewController *)self thumbnailSize];
   [(SearchUISymbolImage *)v7 setSize:?];

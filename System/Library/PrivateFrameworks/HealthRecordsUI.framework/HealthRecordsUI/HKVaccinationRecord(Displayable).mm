@@ -6,14 +6,14 @@
 
 - (id)meaningfulDateTitle
 {
-  if ([a1 notGiven])
+  if ([self notGiven])
   {
     HRLocalizedString(@"VACCINATION_RECORD_SORT_DATE_TITLE_NOT_ADMINISTERED");
   }
 
   else
   {
-    [a1 sortDateTitle];
+    [self sortDateTitle];
   }
   v2 = ;
 

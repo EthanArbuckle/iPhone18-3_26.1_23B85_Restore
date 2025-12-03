@@ -17,12 +17,6 @@ uint64_t __77__NSCharacterSet_VietnameseAdditions__TI_vietnameseTelexSpecialsCha
   return MEMORY[0x2A1C71028]();
 }
 
-uint64_t __76__NSCharacterSet_VietnameseAdditions__TI_vietnameseVIQRSpecialsCharacterSet__block_invoke()
-  TI_vietnameseVIQRSpecialsCharacterSet___vietnameseVIQRSpecialsCharacterSet = {;
-
-  return MEMORY[0x2A1C71028]();
-}
-
 uint64_t __75__NSCharacterSet_VietnameseAdditions__TI_vietnameseVNISpecialsCharacterSet__block_invoke()
 {
   TI_vietnameseVNISpecialsCharacterSet___vietnameseVNISpecialsCharacterSet = [MEMORY[0x29EDB9F50] characterSetWithCharactersInString:@"1234567890"];

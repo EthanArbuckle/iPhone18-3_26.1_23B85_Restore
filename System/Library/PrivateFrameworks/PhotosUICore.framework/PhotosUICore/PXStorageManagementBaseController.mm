@@ -1,105 +1,105 @@
 @interface PXStorageManagementBaseController
-- (PXStorageManagementBaseController)initWithCustomAssetSelectionHandler:(id)a3;
-- (id)photosViewConfigurationWithShouldExpunge:(BOOL)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)viewController:(id)a3 didUpdateBarsAnimated:(BOOL)a4 isSelecting:(BOOL)a5;
+- (PXStorageManagementBaseController)initWithCustomAssetSelectionHandler:(id)handler;
+- (id)photosViewConfigurationWithShouldExpunge:(BOOL)expunge;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)viewController:(id)controller didUpdateBarsAnimated:(BOOL)animated isSelecting:(BOOL)selecting;
 - (void)viewDidLoad;
 @end
 
 @implementation PXStorageManagementBaseController
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v5 = [a4 copy];
+  v5 = [specifier copy];
   preferenceValue = self->_preferenceValue;
   self->_preferenceValue = v5;
 }
 
-- (void)viewController:(id)a3 didUpdateBarsAnimated:(BOOL)a4 isSelecting:(BOOL)a5
+- (void)viewController:(id)controller didUpdateBarsAnimated:(BOOL)animated isSelecting:(BOOL)selecting
 {
-  v5 = a5;
-  v6 = a4;
-  v27 = a3;
-  v8 = [(PXStorageManagementBaseController *)self navigationItem];
-  v9 = [v27 navigationItem];
-  v10 = [(PXStorageManagementBaseController *)self isGridControllerEditing];
-  [(PXStorageManagementBaseController *)self setIsGridControllerEditing:v5];
-  if (v5)
+  selectingCopy = selecting;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  navigationItem = [(PXStorageManagementBaseController *)self navigationItem];
+  navigationItem2 = [controllerCopy navigationItem];
+  isGridControllerEditing = [(PXStorageManagementBaseController *)self isGridControllerEditing];
+  [(PXStorageManagementBaseController *)self setIsGridControllerEditing:selectingCopy];
+  if (selectingCopy)
   {
-    v11 = [v9 leftBarButtonItems];
-    [v8 setLeftBarButtonItems:v11 animated:v6];
+    leftBarButtonItems = [navigationItem2 leftBarButtonItems];
+    [navigationItem setLeftBarButtonItems:leftBarButtonItems animated:animatedCopy];
   }
 
-  else if (v10)
+  else if (isGridControllerEditing)
   {
-    [v8 setLeftBarButtonItems:MEMORY[0x1E695E0F0] animated:v6];
+    [navigationItem setLeftBarButtonItems:MEMORY[0x1E695E0F0] animated:animatedCopy];
   }
 
-  v12 = [v9 rightBarButtonItems];
-  [v8 setRightBarButtonItems:v12 animated:v6];
+  rightBarButtonItems = [navigationItem2 rightBarButtonItems];
+  [navigationItem setRightBarButtonItems:rightBarButtonItems animated:animatedCopy];
 
-  v13 = [v27 toolbarItems];
-  [(PXStorageManagementBaseController *)self setToolbarItems:v13 animated:v6];
+  toolbarItems = [controllerCopy toolbarItems];
+  [(PXStorageManagementBaseController *)self setToolbarItems:toolbarItems animated:animatedCopy];
 
-  v14 = [(PXStorageManagementBaseController *)self title];
-  [v8 setTitle:v14];
+  title = [(PXStorageManagementBaseController *)self title];
+  [navigationItem setTitle:title];
 
-  v15 = [(PXStorageManagementBaseController *)self parentViewController];
+  parentViewController = [(PXStorageManagementBaseController *)self parentViewController];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   if ([v17 containsString:@"SwiftUI"])
   {
-    v18 = [v15 navigationItem];
-    v19 = [v8 rightBarButtonItems];
-    [v18 setRightBarButtonItems:v19 animated:v6];
+    navigationItem3 = [parentViewController navigationItem];
+    rightBarButtonItems2 = [navigationItem rightBarButtonItems];
+    [navigationItem3 setRightBarButtonItems:rightBarButtonItems2 animated:animatedCopy];
 
-    v20 = [v15 navigationItem];
-    v21 = [v8 leftBarButtonItems];
-    [v20 setLeftBarButtonItems:v21 animated:v6];
+    navigationItem4 = [parentViewController navigationItem];
+    leftBarButtonItems2 = [navigationItem leftBarButtonItems];
+    [navigationItem4 setLeftBarButtonItems:leftBarButtonItems2 animated:animatedCopy];
 
-    v22 = [v27 toolbarItems];
-    [v15 setToolbarItems:v22 animated:v6];
+    toolbarItems2 = [controllerCopy toolbarItems];
+    [parentViewController setToolbarItems:toolbarItems2 animated:animatedCopy];
 
-    v23 = [v8 title];
-    v24 = [v15 navigationItem];
-    [v24 setTitle:v23];
+    title2 = [navigationItem title];
+    navigationItem5 = [parentViewController navigationItem];
+    [navigationItem5 setTitle:title2];
   }
 
-  v25 = [(PXStorageManagementBaseController *)self parentViewController];
-  v26 = [v25 navigationItem];
-  [v26 setLeftItemsSupplementBackButton:0];
+  parentViewController2 = [(PXStorageManagementBaseController *)self parentViewController];
+  navigationItem6 = [parentViewController2 navigationItem];
+  [navigationItem6 setLeftItemsSupplementBackButton:0];
 }
 
-- (id)photosViewConfigurationWithShouldExpunge:(BOOL)a3
+- (id)photosViewConfigurationWithShouldExpunge:(BOOL)expunge
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStorageManagementBaseController.m" lineNumber:103 description:{@"Method %s is a responsibility of subclass %@", "-[PXStorageManagementBaseController photosViewConfigurationWithShouldExpunge:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorageManagementBaseController.m" lineNumber:103 description:{@"Method %s is a responsibility of subclass %@", "-[PXStorageManagementBaseController photosViewConfigurationWithShouldExpunge:]", v7}];
 
   abort();
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(PXStorageManagementBaseController *)self contentScrollViewForEdge:1];
   v6 = [(PXStorageManagementBaseController *)self contentScrollViewForEdge:4];
-  [v4 setContentScrollView:v5 forEdge:1];
-  [v4 setContentScrollView:v6 forEdge:4];
+  [controllerCopy setContentScrollView:v5 forEdge:1];
+  [controllerCopy setContentScrollView:v6 forEdge:4];
   v7.receiver = self;
   v7.super_class = PXStorageManagementBaseController;
-  [(PXStorageManagementBaseController *)&v7 didMoveToParentViewController:v4];
+  [(PXStorageManagementBaseController *)&v7 didMoveToParentViewController:controllerCopy];
 }
 
 - (void)viewDidLoad
@@ -108,12 +108,12 @@
   v24.super_class = PXStorageManagementBaseController;
   [(PXStorageManagementBaseController *)&v24 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69789A8]);
-  v4 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-  v5 = [v3 initWithPhotoLibraryURL:v4];
+  systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+  v5 = [v3 initWithPhotoLibraryURL:systemPhotoLibraryURL];
   photoLibrary = self->_photoLibrary;
   self->_photoLibrary = v5;
 
-  v7 = [(PXStorageManagementBaseController *)self navigationController];
+  navigationController = [(PXStorageManagementBaseController *)self navigationController];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
 
@@ -124,8 +124,8 @@
   v12 = [[PXPhotosUIViewController alloc] initWithConfiguration:v10];
   [(PXPhotosUIViewController *)v12 setContainerViewController:self];
   [(PXPhotosUIViewController *)v12 setGridPresentationBarsUpdateDelegate:self];
-  v13 = [v10 title];
-  [(PXPhotosUIViewController *)v12 setTitle:v13];
+  title = [v10 title];
+  [(PXPhotosUIViewController *)v12 setTitle:title];
 
   [(UIViewController *)self px_setOneUpPresentationStyle:1];
   if (v8 == v9)
@@ -138,14 +138,14 @@
     Helper_x8__OBJC_CLASS___APApplication = gotLoadHelper_x8__OBJC_CLASS___APApplication(v14);
     v17 = [*(v16 + 208) applicationWithBundleIdentifier:{*MEMORY[0x1E69BFF18], Helper_x8__OBJC_CLASS___APApplication}];
     Helper_x8__OBJC_CLASS___APGuard = gotLoadHelper_x8__OBJC_CLASS___APGuard(v18);
-    v21 = [*(v20 + 216) sharedGuard];
+    sharedGuard = [*(v20 + 216) sharedGuard];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __48__PXStorageManagementBaseController_viewDidLoad__block_invoke;
     v22[3] = &unk_1E774B730;
     v22[4] = self;
     v23 = v12;
-    [v21 authenticateForSubject:v17 completion:v22];
+    [sharedGuard authenticateForSubject:v17 completion:v22];
   }
 }
 
@@ -190,15 +190,15 @@ void __48__PXStorageManagementBaseController_viewDidLoad__block_invoke_194(uint6
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (PXStorageManagementBaseController)initWithCustomAssetSelectionHandler:(id)a3
+- (PXStorageManagementBaseController)initWithCustomAssetSelectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = PXStorageManagementBaseController;
   v5 = [(PXStorageManagementBaseController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     customAssetSelectionHandler = v5->_customAssetSelectionHandler;
     v5->_customAssetSelectionHandler = v6;
   }

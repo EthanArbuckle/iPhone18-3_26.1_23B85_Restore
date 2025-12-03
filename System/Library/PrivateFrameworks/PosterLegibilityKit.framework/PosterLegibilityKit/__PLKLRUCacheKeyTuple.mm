@@ -1,33 +1,33 @@
 @interface __PLKLRUCacheKeyTuple
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidCacheKeyForObject:(id)a3 context:(id)a4;
-- (__PLKLRUCacheKeyTuple)initWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidCacheKeyForObject:(id)object context:(id)context;
+- (__PLKLRUCacheKeyTuple)initWithObject:(id)object context:(id)context;
 @end
 
 @implementation __PLKLRUCacheKeyTuple
 
-- (__PLKLRUCacheKeyTuple)initWithObject:(id)a3 context:(id)a4
+- (__PLKLRUCacheKeyTuple)initWithObject:(id)object context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = __PLKLRUCacheKeyTuple;
   v9 = [(__PLKLRUCacheKeyTuple *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_object, a3);
-    objc_storeStrong(&v10->_context, a4);
-    v11 = [v7 hash];
-    v10->_cacheHash = [v8 hash] ^ v11;
+    objc_storeStrong(&v9->_object, object);
+    objc_storeStrong(&v10->_context, context);
+    v11 = [objectCopy hash];
+    v10->_cacheHash = [contextCopy hash] ^ v11;
   }
 
   return v10;
 }
 
-- (BOOL)isValidCacheKeyForObject:(id)a3 context:(id)a4
+- (BOOL)isValidCacheKeyForObject:(id)object context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   object = self->_object;
   if (BSEqualObjects())
   {
@@ -43,13 +43,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 context];
+  equalCopy = equal;
+  object = [equalCopy object];
+  context = [equalCopy context];
 
-  LOBYTE(self) = [(__PLKLRUCacheKeyTuple *)self isValidCacheKeyForObject:v5 context:v6];
+  LOBYTE(self) = [(__PLKLRUCacheKeyTuple *)self isValidCacheKeyForObject:object context:context];
   return self;
 }
 

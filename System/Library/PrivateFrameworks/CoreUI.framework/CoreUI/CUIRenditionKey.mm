@@ -1,15 +1,15 @@
 @interface CUIRenditionKey
-+ (CUIRenditionKey)renditionKeyWithKeyList:(const _renditionkeytoken *)a3;
++ (CUIRenditionKey)renditionKeyWithKeyList:(const _renditionkeytoken *)list;
 + (id)renditionKey;
 + (void)initialize;
-- (CUIRenditionKey)initWithCoder:(id)a3;
-- (CUIRenditionKey)initWithKeyList:(const _renditionkeytoken *)a3;
-- (CUIRenditionKey)initWithThemeElement:(int64_t)a3 themePart:(int64_t)a4 themeSize:(int64_t)a5 themeDirection:(int64_t)a6 themeValue:(int64_t)a7 themeDimension1:(int64_t)a8 themeDimension2:(int64_t)a9 themeState:(int64_t)a10 themePresentationState:(int64_t)a11 themeLayer:(int64_t)a12 themeScale:(int64_t)a13 themeIdentifier:(int64_t)a14;
+- (CUIRenditionKey)initWithCoder:(id)coder;
+- (CUIRenditionKey)initWithKeyList:(const _renditionkeytoken *)list;
+- (CUIRenditionKey)initWithThemeElement:(int64_t)element themePart:(int64_t)part themeSize:(int64_t)size themeDirection:(int64_t)direction themeValue:(int64_t)value themeDimension1:(int64_t)dimension1 themeDimension2:(int64_t)dimension2 themeState:(int64_t)self0 themePresentationState:(int64_t)self1 themeLayer:(int64_t)self2 themeScale:(int64_t)self3 themeIdentifier:(int64_t)self4;
 - (const)keyList;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionBasedOnKeyFormat:(const _renditionkeyfmt *)a3;
-- (id)nameOfAttributeName:(int)a3;
+- (id)descriptionBasedOnKeyFormat:(const _renditionkeyfmt *)format;
+- (id)nameOfAttributeName:(int)name;
 - (int64_t)themeAppearance;
 - (int64_t)themeDeploymentTarget;
 - (int64_t)themeDimension1;
@@ -36,38 +36,38 @@
 - (int64_t)themeState;
 - (int64_t)themeSubtype;
 - (int64_t)themeValue;
-- (void)_expandKeyIfNecessaryForCount:(uint64_t)a1;
-- (void)copyValuesFromKeyList:(const _renditionkeytoken *)a3;
+- (void)_expandKeyIfNecessaryForCount:(uint64_t)count;
+- (void)copyValuesFromKeyList:(const _renditionkeytoken *)list;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeValueForKeyTokenIdentifier:(int64_t)a3;
-- (void)setThemeAppearance:(int64_t)a3;
-- (void)setThemeDeploymentTarget:(int64_t)a3;
-- (void)setThemeDimension1:(int64_t)a3;
-- (void)setThemeDimension2:(int64_t)a3;
-- (void)setThemeDirection:(int64_t)a3;
-- (void)setThemeDisplayGamut:(int64_t)a3;
-- (void)setThemeElement:(int64_t)a3;
-- (void)setThemeGlyphSize:(int64_t)a3;
-- (void)setThemeGlyphWeight:(int64_t)a3;
-- (void)setThemeGraphicsClass:(int64_t)a3;
-- (void)setThemeIdentifier:(int64_t)a3;
-- (void)setThemeIdiom:(int64_t)a3;
-- (void)setThemeLayer:(int64_t)a3;
-- (void)setThemeLocalization:(int64_t)a3;
-- (void)setThemeMemoryClass:(int64_t)a3;
-- (void)setThemePart:(int64_t)a3;
-- (void)setThemePresentationState:(int64_t)a3;
-- (void)setThemePreviousState:(int64_t)a3;
-- (void)setThemePreviousValue:(int64_t)a3;
-- (void)setThemeScale:(int64_t)a3;
-- (void)setThemeSize:(int64_t)a3;
-- (void)setThemeSizeClassHorizontal:(int64_t)a3;
-- (void)setThemeSizeClassVertical:(int64_t)a3;
-- (void)setThemeState:(int64_t)a3;
-- (void)setThemeSubtype:(int64_t)a3;
-- (void)setThemeValue:(int64_t)a3;
-- (void)setValuesFromKeyList:(const _renditionkeytoken *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeValueForKeyTokenIdentifier:(int64_t)identifier;
+- (void)setThemeAppearance:(int64_t)appearance;
+- (void)setThemeDeploymentTarget:(int64_t)target;
+- (void)setThemeDimension1:(int64_t)dimension1;
+- (void)setThemeDimension2:(int64_t)dimension2;
+- (void)setThemeDirection:(int64_t)direction;
+- (void)setThemeDisplayGamut:(int64_t)gamut;
+- (void)setThemeElement:(int64_t)element;
+- (void)setThemeGlyphSize:(int64_t)size;
+- (void)setThemeGlyphWeight:(int64_t)weight;
+- (void)setThemeGraphicsClass:(int64_t)class;
+- (void)setThemeIdentifier:(int64_t)identifier;
+- (void)setThemeIdiom:(int64_t)idiom;
+- (void)setThemeLayer:(int64_t)layer;
+- (void)setThemeLocalization:(int64_t)localization;
+- (void)setThemeMemoryClass:(int64_t)class;
+- (void)setThemePart:(int64_t)part;
+- (void)setThemePresentationState:(int64_t)state;
+- (void)setThemePreviousState:(int64_t)state;
+- (void)setThemePreviousValue:(int64_t)value;
+- (void)setThemeScale:(int64_t)scale;
+- (void)setThemeSize:(int64_t)size;
+- (void)setThemeSizeClassHorizontal:(int64_t)horizontal;
+- (void)setThemeSizeClassVertical:(int64_t)vertical;
+- (void)setThemeState:(int64_t)state;
+- (void)setThemeSubtype:(int64_t)subtype;
+- (void)setThemeValue:(int64_t)value;
+- (void)setValuesFromKeyList:(const _renditionkeytoken *)list;
 @end
 
 @implementation CUIRenditionKey
@@ -175,10 +175,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
@@ -324,14 +324,14 @@
   return v2;
 }
 
-+ (CUIRenditionKey)renditionKeyWithKeyList:(const _renditionkeytoken *)a3
++ (CUIRenditionKey)renditionKeyWithKeyList:(const _renditionkeytoken *)list
 {
-  v3 = [[CUIRenditionKey alloc] initWithKeyList:a3];
+  v3 = [[CUIRenditionKey alloc] initWithKeyList:list];
 
   return v3;
 }
 
-- (CUIRenditionKey)initWithKeyList:(const _renditionkeytoken *)a3
+- (CUIRenditionKey)initWithKeyList:(const _renditionkeytoken *)list
 {
   v10.receiver = self;
   v10.super_class = CUIRenditionKey;
@@ -340,7 +340,7 @@
   if (v4)
   {
     v4->_highwaterKeyCount = 21;
-    v6 = CUIRenditionKeyTokenCount(a3);
+    v6 = CUIRenditionKeyTokenCount(list);
     v7 = v6;
     if (v6 <= v5->_highwaterKeyCount)
     {
@@ -360,25 +360,25 @@
       v5->_highwaterKeyCount = v7;
     }
 
-    CUIRenditionKeyCopy(stackKey, a3, (v7 + 1));
+    CUIRenditionKeyCopy(stackKey, list, (v7 + 1));
   }
 
   return v5;
 }
 
-- (CUIRenditionKey)initWithCoder:(id)a3
+- (CUIRenditionKey)initWithCoder:(id)coder
 {
   v20 = 0;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [a3 decodeBytesForKey:@"CUIRenditionKeyBytes" returnedLength:&v20];
-    v6 = [a3 decodeIntegerForKey:@"CUIRenditionKeyVersion"];
+    v5 = [coder decodeBytesForKey:@"CUIRenditionKeyBytes" returnedLength:&v20];
+    v6 = [coder decodeIntegerForKey:@"CUIRenditionKeyVersion"];
   }
 
   else
   {
-    v5 = [a3 decodeBytesWithReturnedLength:&v20];
-    v6 = [a3 versionForClassName:@"CUIRenditionKey"];
+    v5 = [coder decodeBytesWithReturnedLength:&v20];
+    v6 = [coder versionForClassName:@"CUIRenditionKey"];
   }
 
   v7 = v6;
@@ -439,7 +439,7 @@ LABEL_9:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_key)
   {
@@ -481,15 +481,15 @@ LABEL_9:
   }
 
   while (v11);
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:+[CUIRenditionKey version](CUIRenditionKey forKey:{"version"), @"CUIRenditionKeyVersion"}];
-    [a3 encodeBytes:v7 length:4 * v8 forKey:@"CUIRenditionKeyBytes"];
+    [coder encodeInteger:+[CUIRenditionKey version](CUIRenditionKey forKey:{"version"), @"CUIRenditionKeyVersion"}];
+    [coder encodeBytes:v7 length:4 * v8 forKey:@"CUIRenditionKeyBytes"];
   }
 
   else
   {
-    [a3 encodeBytes:v7 length:4 * v8];
+    [coder encodeBytes:v7 length:4 * v8];
   }
 
   if (v7 != &v12)
@@ -498,7 +498,7 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_key)
   {
@@ -510,18 +510,18 @@ LABEL_9:
     key = self->_stackKey;
   }
 
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithKeyList:key];
 }
 
-- (void)setValuesFromKeyList:(const _renditionkeytoken *)a3
+- (void)setValuesFromKeyList:(const _renditionkeytoken *)list
 {
-  identifier = a3->identifier;
-  if (*a3)
+  identifier = list->identifier;
+  if (*list)
   {
     v6 = 0;
-    p_value = &a3[1].value;
+    p_value = &list[1].value;
     do
     {
       if (CUIRenditionKeyIndexForAttribute(&self->_key->identifier, identifier) != -1)
@@ -553,7 +553,7 @@ LABEL_9:
   }
 
   v10 = CUIRenditionKeyTokenCount(key);
-  v11 = v10 - v6 + CUIRenditionKeyTokenCount(a3);
+  v11 = v10 - v6 + CUIRenditionKeyTokenCount(list);
   if (v11 <= self->_highwaterKeyCount)
   {
     goto LABEL_11;
@@ -564,7 +564,7 @@ LABEL_9:
   {
     key = self->_key;
 LABEL_11:
-    v12 = &a3->value;
+    v12 = &list->value;
     do
     {
       while (1)
@@ -588,7 +588,7 @@ LABEL_11:
   _CUILog(4, "couldn't allocate memory!", v15, v16, v17, v18, v19, v20, v22);
 }
 
-- (void)copyValuesFromKeyList:(const _renditionkeytoken *)a3
+- (void)copyValuesFromKeyList:(const _renditionkeytoken *)list
 {
   if (self->_key)
   {
@@ -600,13 +600,13 @@ LABEL_11:
     key = self->_stackKey;
   }
 
-  v6 = CUIRenditionKeyTokenCount(a3);
+  v6 = CUIRenditionKeyTokenCount(list);
   v7 = v6;
   if (v6 <= self->_highwaterKeyCount)
   {
 LABEL_5:
 
-    CUIRenditionKeyCopy(key, a3, (v7 + 1));
+    CUIRenditionKeyCopy(key, list, (v7 + 1));
     return;
   }
 
@@ -620,7 +620,7 @@ LABEL_5:
   _CUILog(4, "couldn't allocate memory!", v8, v9, v10, v11, v12, v13, v15);
 }
 
-- (void)removeValueForKeyTokenIdentifier:(int64_t)a3
+- (void)removeValueForKeyTokenIdentifier:(int64_t)identifier
 {
   key = self->_key;
   if (!key)
@@ -628,28 +628,28 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  CUIRenditionKeySetValueForAttribute(&key->identifier, a3, 0, (self->_highwaterKeyCount + 1));
+  CUIRenditionKeySetValueForAttribute(&key->identifier, identifier, 0, (self->_highwaterKeyCount + 1));
 }
 
-- (CUIRenditionKey)initWithThemeElement:(int64_t)a3 themePart:(int64_t)a4 themeSize:(int64_t)a5 themeDirection:(int64_t)a6 themeValue:(int64_t)a7 themeDimension1:(int64_t)a8 themeDimension2:(int64_t)a9 themeState:(int64_t)a10 themePresentationState:(int64_t)a11 themeLayer:(int64_t)a12 themeScale:(int64_t)a13 themeIdentifier:(int64_t)a14
+- (CUIRenditionKey)initWithThemeElement:(int64_t)element themePart:(int64_t)part themeSize:(int64_t)size themeDirection:(int64_t)direction themeValue:(int64_t)value themeDimension1:(int64_t)dimension1 themeDimension2:(int64_t)dimension2 themeState:(int64_t)self0 themePresentationState:(int64_t)self1 themeLayer:(int64_t)self2 themeScale:(int64_t)self3 themeIdentifier:(int64_t)self4
 {
   memset(v21, 0, 92);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 1, a3);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 2, a4);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 3, a5);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 4, a6);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 6, a7);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 8, a8);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 9, a9);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 10, a10);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 14, a11);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 11, a12);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 12, a13);
-  _CUIRenditionKeySetIntegerValueForAttribute(v21, 17, a14);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 1, element);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 2, part);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 3, size);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 4, direction);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 6, value);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 8, dimension1);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 9, dimension2);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 10, state);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 14, presentationState);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 11, layer);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 12, scale);
+  _CUIRenditionKeySetIntegerValueForAttribute(v21, 17, identifier);
   return [(CUIRenditionKey *)self initWithKeyList:v21];
 }
 
-- (void)setThemeElement:(int64_t)a3
+- (void)setThemeElement:(int64_t)element
 {
   if (self->_key)
   {
@@ -661,7 +661,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 1, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 1, element);
 }
 
 - (int64_t)themeElement
@@ -679,7 +679,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 1);
 }
 
-- (void)setThemePart:(int64_t)a3
+- (void)setThemePart:(int64_t)part
 {
   if (self->_key)
   {
@@ -691,10 +691,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 2, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 2, part);
 }
 
-- (void)setThemeSize:(int64_t)a3
+- (void)setThemeSize:(int64_t)size
 {
   if (self->_key)
   {
@@ -706,7 +706,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 3, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 3, size);
 }
 
 - (int64_t)themeSize
@@ -724,7 +724,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 3);
 }
 
-- (void)setThemeDirection:(int64_t)a3
+- (void)setThemeDirection:(int64_t)direction
 {
   if (self->_key)
   {
@@ -736,10 +736,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 4, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 4, direction);
 }
 
-- (void)setThemeValue:(int64_t)a3
+- (void)setThemeValue:(int64_t)value
 {
   if (self->_key)
   {
@@ -751,7 +751,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 6, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 6, value);
 }
 
 - (int64_t)themeValue
@@ -769,7 +769,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 6);
 }
 
-- (void)setThemePreviousValue:(int64_t)a3
+- (void)setThemePreviousValue:(int64_t)value
 {
   if (self->_key)
   {
@@ -781,7 +781,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 18, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 18, value);
 }
 
 - (int64_t)themePreviousValue
@@ -799,7 +799,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 18);
 }
 
-- (void)setThemeDimension1:(int64_t)a3
+- (void)setThemeDimension1:(int64_t)dimension1
 {
   if (self->_key)
   {
@@ -811,7 +811,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 8, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 8, dimension1);
 }
 
 - (int64_t)themeDimension1
@@ -829,7 +829,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 8);
 }
 
-- (void)setThemeDimension2:(int64_t)a3
+- (void)setThemeDimension2:(int64_t)dimension2
 {
   if (self->_key)
   {
@@ -841,10 +841,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 9, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 9, dimension2);
 }
 
-- (void)setThemeState:(int64_t)a3
+- (void)setThemeState:(int64_t)state
 {
   if (self->_key)
   {
@@ -856,7 +856,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 10, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 10, state);
 }
 
 - (int64_t)themeState
@@ -874,7 +874,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 10);
 }
 
-- (void)setThemePreviousState:(int64_t)a3
+- (void)setThemePreviousState:(int64_t)state
 {
   if (self->_key)
   {
@@ -886,7 +886,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 19, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 19, state);
 }
 
 - (int64_t)themePreviousState
@@ -904,7 +904,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 19);
 }
 
-- (void)setThemePresentationState:(int64_t)a3
+- (void)setThemePresentationState:(int64_t)state
 {
   if (self->_key)
   {
@@ -916,7 +916,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 14, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 14, state);
 }
 
 - (int64_t)themePresentationState
@@ -934,7 +934,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 14);
 }
 
-- (void)setThemeLayer:(int64_t)a3
+- (void)setThemeLayer:(int64_t)layer
 {
   if (self->_key)
   {
@@ -946,7 +946,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 11, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 11, layer);
 }
 
 - (int64_t)themeLayer
@@ -964,7 +964,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 11);
 }
 
-- (void)setThemeScale:(int64_t)a3
+- (void)setThemeScale:(int64_t)scale
 {
   if (self->_key)
   {
@@ -976,10 +976,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 12, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 12, scale);
 }
 
-- (void)setThemeIdiom:(int64_t)a3
+- (void)setThemeIdiom:(int64_t)idiom
 {
   if (self->_key)
   {
@@ -991,10 +991,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 15, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 15, idiom);
 }
 
-- (void)setThemeSubtype:(int64_t)a3
+- (void)setThemeSubtype:(int64_t)subtype
 {
   if (self->_key)
   {
@@ -1006,10 +1006,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 16, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 16, subtype);
 }
 
-- (void)setThemeSizeClassHorizontal:(int64_t)a3
+- (void)setThemeSizeClassHorizontal:(int64_t)horizontal
 {
   if (self->_key)
   {
@@ -1021,10 +1021,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 20, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 20, horizontal);
 }
 
-- (void)setThemeSizeClassVertical:(int64_t)a3
+- (void)setThemeSizeClassVertical:(int64_t)vertical
 {
   if (self->_key)
   {
@@ -1036,10 +1036,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 21, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 21, vertical);
 }
 
-- (void)setThemeMemoryClass:(int64_t)a3
+- (void)setThemeMemoryClass:(int64_t)class
 {
   if (self->_key)
   {
@@ -1051,7 +1051,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 22, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 22, class);
 }
 
 - (int64_t)themeMemoryClass
@@ -1069,7 +1069,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 22);
 }
 
-- (void)setThemeGraphicsClass:(int64_t)a3
+- (void)setThemeGraphicsClass:(int64_t)class
 {
   if (self->_key)
   {
@@ -1081,7 +1081,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 23, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 23, class);
 }
 
 - (int64_t)themeGraphicsClass
@@ -1099,7 +1099,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 23);
 }
 
-- (void)setThemeIdentifier:(int64_t)a3
+- (void)setThemeIdentifier:(int64_t)identifier
 {
   if (self->_key)
   {
@@ -1111,10 +1111,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 17, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 17, identifier);
 }
 
-- (void)setThemeAppearance:(int64_t)a3
+- (void)setThemeAppearance:(int64_t)appearance
 {
   if (self->_key)
   {
@@ -1126,10 +1126,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 7, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 7, appearance);
 }
 
-- (void)setThemeLocalization:(int64_t)a3
+- (void)setThemeLocalization:(int64_t)localization
 {
   if (self->_key)
   {
@@ -1141,7 +1141,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 13, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 13, localization);
 }
 
 - (int64_t)themeLocalization
@@ -1159,7 +1159,7 @@ LABEL_5:
   return CUIRenditionKeyValueForAttribute(&key->identifier, 13);
 }
 
-- (void)setThemeDisplayGamut:(int64_t)a3
+- (void)setThemeDisplayGamut:(int64_t)gamut
 {
   if (self->_key)
   {
@@ -1171,10 +1171,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 24, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 24, gamut);
 }
 
-- (void)setThemeDeploymentTarget:(int64_t)a3
+- (void)setThemeDeploymentTarget:(int64_t)target
 {
   if (self->_key)
   {
@@ -1186,10 +1186,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 25, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 25, target);
 }
 
-- (void)setThemeGlyphSize:(int64_t)a3
+- (void)setThemeGlyphSize:(int64_t)size
 {
   if (self->_key)
   {
@@ -1201,10 +1201,10 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 27, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 27, size);
 }
 
-- (void)setThemeGlyphWeight:(int64_t)a3
+- (void)setThemeGlyphWeight:(int64_t)weight
 {
   if (self->_key)
   {
@@ -1216,7 +1216,7 @@ LABEL_5:
     key = self->_stackKey;
   }
 
-  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 26, a3);
+  _CUIRenditionKeySetIntegerValueForAttribute(&key->identifier, 26, weight);
 }
 
 - (id)description
@@ -1226,22 +1226,22 @@ LABEL_5:
   return [-[CUIRenditionKey description](&v3 description)];
 }
 
-- (id)nameOfAttributeName:(int)a3
+- (id)nameOfAttributeName:(int)name
 {
-  if ((a3 - 1) > 0x1A)
+  if ((name - 1) > 0x1A)
   {
     return &stru_1F00D74D0;
   }
 
   else
   {
-    return off_1E7250E58[a3 - 1];
+    return off_1E7250E58[name - 1];
   }
 }
 
-- (id)descriptionBasedOnKeyFormat:(const _renditionkeyfmt *)a3
+- (id)descriptionBasedOnKeyFormat:(const _renditionkeyfmt *)format
 {
-  var2 = a3->var2;
+  var2 = format->var2;
   if (self->_key)
   {
     key = self->_key;
@@ -1257,7 +1257,7 @@ LABEL_5:
     return &stru_1F00D74D0;
   }
 
-  var3 = a3->var3;
+  var3 = format->var3;
   v7 = &stru_1F00D74D0;
   do
   {
@@ -1276,24 +1276,24 @@ LABEL_5:
   return v7;
 }
 
-- (void)_expandKeyIfNecessaryForCount:(uint64_t)a1
+- (void)_expandKeyIfNecessaryForCount:(uint64_t)count
 {
-  if (a1)
+  if (count)
   {
     v2 = a2;
-    v4 = *(a1 + 104);
+    v4 = *(count + 104);
     if (v4 < a2)
     {
       v5 = malloc_type_calloc(v4 + 1, 4uLL, 0x100004052888210uLL);
-      CUIRenditionKeyCopy(v5, *(a1 + 96), (*(a1 + 104) + 1));
-      v6 = *(a1 + 96);
+      CUIRenditionKeyCopy(v5, *(count + 96), (*(count + 104) + 1));
+      v6 = *(count + 96);
       if (v6)
       {
         free(v6);
       }
 
-      *(a1 + 96) = v5;
-      *(a1 + 104) = v2;
+      *(count + 96) = v5;
+      *(count + 104) = v2;
     }
   }
 }

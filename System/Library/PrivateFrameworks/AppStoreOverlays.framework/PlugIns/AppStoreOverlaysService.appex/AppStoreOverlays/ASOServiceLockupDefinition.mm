@@ -1,35 +1,35 @@
 @interface ASOServiceLockupDefinition
-- (ASOServiceLockupDefinition)initWithLockup:(id)a3;
-- (ASOServiceLockupDefinition)initWithRequest:(id)a3;
+- (ASOServiceLockupDefinition)initWithLockup:(id)lockup;
+- (ASOServiceLockupDefinition)initWithRequest:(id)request;
 @end
 
 @implementation ASOServiceLockupDefinition
 
-- (ASOServiceLockupDefinition)initWithRequest:(id)a3
+- (ASOServiceLockupDefinition)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = ASOServiceLockupDefinition;
   v6 = [(ASOServiceLockupDefinition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
 }
 
-- (ASOServiceLockupDefinition)initWithLockup:(id)a3
+- (ASOServiceLockupDefinition)initWithLockup:(id)lockup
 {
-  v5 = a3;
+  lockupCopy = lockup;
   v9.receiver = self;
   v9.super_class = ASOServiceLockupDefinition;
   v6 = [(ASOServiceLockupDefinition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lockup, a3);
+    objc_storeStrong(&v6->_lockup, lockup);
   }
 
   return v7;

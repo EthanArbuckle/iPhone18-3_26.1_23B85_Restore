@@ -1,17 +1,17 @@
 @interface VSMetricsManagerObjC
-+ (void)recordAccountUpdateWithAccount:(id)a3 source:(id)a4 updateType:(id)a5 completion:(id)a6;
-+ (void)recordClickEventWithPage:(id)a3 pageType:(id)a4 target:(id)a5;
-+ (void)recordFederatedPunchoutEventWithError:(id)a3 metadata:(id)a4;
-+ (void)recordMetadataRequestWithProviderIdentifier:(id)a3 channelAdamID:(id)a4 fulfilledByProvider:(BOOL)a5 error:(id)a6;
-+ (void)recordNowPlayingBrokenEventWithBundleID:(id)a3;
-+ (void)recordSTBOptOutEventWithError:(id)a3;
-+ (void)recordSignInEventWithProviderIdentifier:(id)a3 supportedProvider:(BOOL)a4 channelAdamID:(id)a5 signInType:(id)a6 error:(id)a7;
++ (void)recordAccountUpdateWithAccount:(id)account source:(id)source updateType:(id)type completion:(id)completion;
++ (void)recordClickEventWithPage:(id)page pageType:(id)type target:(id)target;
++ (void)recordFederatedPunchoutEventWithError:(id)error metadata:(id)metadata;
++ (void)recordMetadataRequestWithProviderIdentifier:(id)identifier channelAdamID:(id)d fulfilledByProvider:(BOOL)provider error:(id)error;
++ (void)recordNowPlayingBrokenEventWithBundleID:(id)d;
++ (void)recordSTBOptOutEventWithError:(id)error;
++ (void)recordSignInEventWithProviderIdentifier:(id)identifier supportedProvider:(BOOL)provider channelAdamID:(id)d signInType:(id)type error:(id)error;
 - (VSMetricsManagerObjC)init;
 @end
 
 @implementation VSMetricsManagerObjC
 
-+ (void)recordClickEventWithPage:(id)a3 pageType:(id)a4 target:(id)a5
++ (void)recordClickEventWithPage:(id)page pageType:(id)type target:(id)target
 {
   v5 = sub_23AC66364();
   v7 = v6;
@@ -21,14 +21,14 @@
   sub_23AC540F0(v5, v7, v8, v10, v11, v12);
 }
 
-+ (void)recordSignInEventWithProviderIdentifier:(id)a3 supportedProvider:(BOOL)a4 channelAdamID:(id)a5 signInType:(id)a6 error:(id)a7
++ (void)recordSignInEventWithProviderIdentifier:(id)identifier supportedProvider:(BOOL)provider channelAdamID:(id)d signInType:(id)type error:(id)error
 {
   v9 = sub_23AC66364();
   v11 = v10;
-  if (a5)
+  if (d)
   {
     v12 = sub_23AC66364();
-    a5 = v13;
+    d = v13;
   }
 
   else
@@ -38,27 +38,27 @@
 
   v14 = sub_23AC66364();
   v16 = v15;
-  v17 = a7;
-  sub_23AC54654(v9, v11, v12, a5, v14, v16, a7);
+  errorCopy = error;
+  sub_23AC54654(v9, v11, v12, d, v14, v16, error);
 }
 
-+ (void)recordSTBOptOutEventWithError:(id)a3
++ (void)recordSTBOptOutEventWithError:(id)error
 {
-  v4 = a3;
-  sub_23AC54C38(a3);
+  errorCopy = error;
+  sub_23AC54C38(error);
 }
 
-+ (void)recordMetadataRequestWithProviderIdentifier:(id)a3 channelAdamID:(id)a4 fulfilledByProvider:(BOOL)a5 error:(id)a6
++ (void)recordMetadataRequestWithProviderIdentifier:(id)identifier channelAdamID:(id)d fulfilledByProvider:(BOOL)provider error:(id)error
 {
   v8 = sub_23AC66364();
   v10 = v9;
   v11 = sub_23AC66364();
   v13 = v12;
-  v14 = a6;
-  sub_23AC54F24(v8, v10, v11, v13, a5, a6);
+  errorCopy = error;
+  sub_23AC54F24(v8, v10, v11, v13, provider, error);
 }
 
-+ (void)recordNowPlayingBrokenEventWithBundleID:(id)a3
++ (void)recordNowPlayingBrokenEventWithBundleID:(id)d
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFC8758);
   MEMORY[0x28223BE20](v3 - 8);
@@ -86,14 +86,14 @@
   sub_23AC50B20(0, 0, v5, &unk_23AC70F68, v11);
 }
 
-+ (void)recordFederatedPunchoutEventWithError:(id)a3 metadata:(id)a4
++ (void)recordFederatedPunchoutEventWithError:(id)error metadata:(id)metadata
 {
   v5 = sub_23AC66304();
-  v6 = a3;
-  sub_23AC55598(a3, v5);
+  errorCopy = error;
+  sub_23AC55598(error, v5);
 }
 
-+ (void)recordAccountUpdateWithAccount:(id)a3 source:(id)a4 updateType:(id)a5 completion:(id)a6
++ (void)recordAccountUpdateWithAccount:(id)account source:(id)source updateType:(id)type completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFC8758);
   MEMORY[0x28223BE20](v7 - 8);
@@ -102,8 +102,8 @@
   v12 = v11;
   v13 = sub_23AC66364();
   v15 = v14;
-  v16 = a3;
-  VSUserAccount.init(_:)(&v22, v16);
+  accountCopy = account;
+  VSUserAccount.init(_:)(&v22, accountCopy);
   v17 = v22;
   v18 = sub_23AC66444();
   (*(*(v18 - 8) + 56))(v9, 1, 1, v18);

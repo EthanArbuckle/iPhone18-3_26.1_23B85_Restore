@@ -1,33 +1,33 @@
 @interface FCUIFocusListWelcomeController
-+ (id)welcomeControllerWithPlaceholderModes:(id)a3 allReservedModes:(id)a4;
-- (FCUIFocusListWelcomeController)initWithPlaceholderModes:(id)a3 allReservedModes:(id)a4;
++ (id)welcomeControllerWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes;
+- (FCUIFocusListWelcomeController)initWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes;
 - (id)_activityControlForCustomMode;
-- (id)_activityControlForPlaceholderMode:(id)a3;
+- (id)_activityControlForPlaceholderMode:(id)mode;
 - (void)_configureActivityListView;
 - (void)viewDidLoad;
 @end
 
 @implementation FCUIFocusListWelcomeController
 
-+ (id)welcomeControllerWithPlaceholderModes:(id)a3 allReservedModes:(id)a4
++ (id)welcomeControllerWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FCUIFocusListWelcomeController alloc] initWithPlaceholderModes:v6 allReservedModes:v5];
+  reservedModesCopy = reservedModes;
+  modesCopy = modes;
+  v7 = [[FCUIFocusListWelcomeController alloc] initWithPlaceholderModes:modesCopy allReservedModes:reservedModesCopy];
 
   return v7;
 }
 
-- (FCUIFocusListWelcomeController)initWithPlaceholderModes:(id)a3 allReservedModes:(id)a4
+- (FCUIFocusListWelcomeController)initWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes
 {
-  v7 = a3;
-  v8 = a4;
+  modesCopy = modes;
+  reservedModesCopy = reservedModes;
   v9 = [(FCUIFocusListWelcomeController *)self initWithTitle:&stru_21648 detailText:&stru_21648 icon:0 contentLayout:3];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((&v9->super + 1), a3);
-    objc_storeStrong((&v10->_placeholderModes + 1), a4);
+    objc_storeStrong((&v9->super + 1), modes);
+    objc_storeStrong((&v10->_placeholderModes + 1), reservedModes);
   }
 
   return v10;
@@ -38,44 +38,44 @@
   v25.receiver = self;
   v25.super_class = FCUIFocusListWelcomeController;
   [(FCUIBaseWelcomeController *)&v25 viewDidLoad];
-  v3 = [(FCUIFocusListWelcomeController *)self headerView];
+  headerView = [(FCUIFocusListWelcomeController *)self headerView];
   LODWORD(v4) = 1036831949;
-  [v3 setTitleHyphenationFactor:v4];
+  [headerView setTitleHyphenationFactor:v4];
   v5 = +[NSBundle fcui_focusSettingsLocalizationBundle];
   v6 = [v5 localizedStringForKey:@"ONBOARDING_FOCUS_LIST_TITLE" value:&stru_21648 table:0];
 
-  [v3 setTitle:v6];
+  [headerView setTitle:v6];
   v7 = +[NSBundle fcui_focusSettingsLocalizationBundle];
   v8 = [v7 localizedStringForKey:@"ONBOARDING_FOCUS_LIST_DETAIL_TEXT" value:&stru_21648 table:0];
 
-  [v3 setDetailText:v8];
-  v9 = [(FCUIFocusListWelcomeController *)self contentView];
+  [headerView setDetailText:v8];
+  contentView = [(FCUIFocusListWelcomeController *)self contentView];
   v10 = objc_alloc_init(FCUIActivityListView);
   v11 = *(&self->_allReservedModes + 1);
   *(&self->_allReservedModes + 1) = v10;
 
   [*(&self->_allReservedModes + 1) setScrollEnabled:0];
   [*(&self->_allReservedModes + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v9 addSubview:*(&self->_allReservedModes + 1)];
+  [contentView addSubview:*(&self->_allReservedModes + 1)];
   v12 = objc_alloc_init(NSMutableArray);
-  v13 = [*(&self->_allReservedModes + 1) leadingAnchor];
-  v14 = [v9 leadingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:30.0];
+  leadingAnchor = [*(&self->_allReservedModes + 1) leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
   [v12 addObject:v15];
 
-  v16 = [v9 trailingAnchor];
-  v17 = [*(&self->_allReservedModes + 1) trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:30.0];
+  trailingAnchor = [contentView trailingAnchor];
+  trailingAnchor2 = [*(&self->_allReservedModes + 1) trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:30.0];
   [v12 addObject:v18];
 
-  v19 = [*(&self->_allReservedModes + 1) topAnchor];
-  v20 = [v9 topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:40.0];
+  topAnchor = [*(&self->_allReservedModes + 1) topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:40.0];
   [v12 addObject:v21];
 
-  v22 = [v9 bottomAnchor];
-  v23 = [*(&self->_allReservedModes + 1) bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:40.0];
+  bottomAnchor = [contentView bottomAnchor];
+  bottomAnchor2 = [*(&self->_allReservedModes + 1) bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:40.0];
   [v12 addObject:v24];
 
   [NSLayoutConstraint activateConstraints:v12];
@@ -85,11 +85,11 @@
 - (void)_configureActivityListView
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(FCUIFocusListWelcomeController *)self _activityControlForCustomMode];
-  [v3 addObject:v4];
+  _activityControlForCustomMode = [(FCUIFocusListWelcomeController *)self _activityControlForCustomMode];
+  [v3 addObject:_activityControlForCustomMode];
 
-  v5 = [*(&self->super + 1) allObjects];
-  v6 = [v5 sortedArrayUsingComparator:&stru_20FA0];
+  allObjects = [*(&self->super + 1) allObjects];
+  v6 = [allObjects sortedArrayUsingComparator:&stru_20FA0];
 
   v15 = 0u;
   v16 = 0u;
@@ -153,10 +153,10 @@
   return v7;
 }
 
-- (id)_activityControlForPlaceholderMode:(id)a3
+- (id)_activityControlForPlaceholderMode:(id)mode
 {
-  v4 = a3;
-  v5 = [[FCUIFocus alloc] initWithMode:v4];
+  modeCopy = mode;
+  v5 = [[FCUIFocus alloc] initWithMode:modeCopy];
   v6 = [[FCUIActivityControl alloc] initWithActivityDescription:v5];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -164,7 +164,7 @@
   v10[2] = sub_6FE0;
   v10[3] = &unk_20FC8;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = modeCopy;
   v11 = v7;
   v8 = [UIAction actionWithHandler:v10];
   [v6 addAction:v8 forControlEvents:64];

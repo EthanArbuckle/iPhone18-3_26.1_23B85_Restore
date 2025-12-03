@@ -3,48 +3,48 @@
 - (_TtC14dockaccessoryd18DKPairSetupSession)init;
 - (id)getCertificate;
 - (void)generateSessionKeys;
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4;
+- (void)receivedSetupExchangeData:(id)data error:(id)error;
 - (void)start;
 - (void)stop;
-- (void)stopWithError:(id)a3;
+- (void)stopWithError:(id)error;
 @end
 
 @implementation DKPairSetupSession
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A584C();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A5D58(0);
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_1000A5D58(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000A5D58(error);
 }
 
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4
+- (void)receivedSetupExchangeData:(id)data error:(id)error
 {
-  if (a3)
+  if (data)
   {
-    v6 = a4;
-    v7 = self;
-    v8 = a3;
+    errorCopy = error;
+    selfCopy = self;
+    dataCopy = data;
     v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
   }
 
   else
   {
-    v12 = a4;
-    v13 = self;
+    errorCopy2 = error;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
@@ -56,14 +56,14 @@
 
 - (void)generateSessionKeys
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000AD028();
 }
 
 - (BOOL)isSecureSession
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14dockaccessoryd18DKPairSetupSession_clientQueue);
-  v3 = self;
+  selfCopy = self;
   OS_dispatch_queue.sync<A>(execute:)();
 
   return v5;

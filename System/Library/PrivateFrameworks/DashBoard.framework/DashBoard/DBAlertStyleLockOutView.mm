@@ -1,21 +1,21 @@
 @interface DBAlertStyleLockOutView
-- (DBAlertStyleLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4;
+- (DBAlertStyleLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration;
 - (id)_buttonFont;
-- (id)_buttonOfType:(unint64_t)a3;
-- (id)_buttonTitleForType:(unint64_t)a3;
+- (id)_buttonOfType:(unint64_t)type;
+- (id)_buttonTitleForType:(unint64_t)type;
 - (id)_titleFont;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 @end
 
 @implementation DBAlertStyleLockOutView
 
-- (DBAlertStyleLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4
+- (DBAlertStyleLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration
 {
   v150[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  configurationCopy = configuration;
   v138.receiver = self;
   v138.super_class = DBAlertStyleLockOutView;
-  v7 = [(DBLockOutView *)&v138 initWithMode:a3 environmentConfiguration:v6];
+  v7 = [(DBLockOutView *)&v138 initWithMode:mode environmentConfiguration:configurationCopy];
   if (!v7)
   {
     goto LABEL_27;
@@ -23,16 +23,16 @@
 
   v132 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x277D75348] tableBackgroundColor];
-  [(DBAlertStyleLockOutView *)v7 setBackgroundColor:v9];
+  tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+  [(DBAlertStyleLockOutView *)v7 setBackgroundColor:tableBackgroundColor];
 
   v10 = 0;
   p_isa = &v7->super.super.super.super.isa;
-  if (a3 > 3)
+  if (mode > 3)
   {
-    if ((a3 - 5) >= 2)
+    if ((mode - 5) >= 2)
     {
-      if (a3 == 4)
+      if (mode == 4)
       {
         v130 = v8;
         v86 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
@@ -40,8 +40,8 @@
 
         v87 = MEMORY[0x277D755B8];
         v88 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-        v89 = [v6 traitCollection];
-        v11 = [v87 imageNamed:@"CarDisplayThermometer" inBundle:v88 compatibleWithTraitCollection:v89];
+        traitCollection = [configurationCopy traitCollection];
+        v11 = [v87 imageNamed:@"CarDisplayThermometer" inBundle:v88 compatibleWithTraitCollection:traitCollection];
 
         v7 = p_isa;
         v90 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
@@ -58,7 +58,7 @@
 
       v11 = 0;
       v12 = 0;
-      if (a3 == 7)
+      if (mode == 7)
       {
         v17 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
         v18 = v8;
@@ -104,14 +104,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 < 3)
+  if (mode < 3)
   {
     goto LABEL_11;
   }
 
   v11 = 0;
   v12 = 0;
-  if (a3 == 3)
+  if (mode == 3)
   {
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
     v12 = [v13 localizedStringForKey:@"LOCKOUT_SIRI_TITLE" value:&stru_285A57218 table:@"CarPlayApp"];
@@ -130,7 +130,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v131 = v6;
+  v131 = configurationCopy;
   v25 = objc_alloc(MEMORY[0x277D756B8]);
   v26 = *MEMORY[0x277CBF3A0];
   v27 = *(MEMORY[0x277CBF3A0] + 8);
@@ -141,8 +141,8 @@ LABEL_14:
   v7->_titleLabel = v30;
 
   [(UILabel *)v7->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(DBAlertStyleLockOutView *)v7 _titleFont];
-  [(UILabel *)v7->_titleLabel setFont:v32];
+  _titleFont = [(DBAlertStyleLockOutView *)v7 _titleFont];
+  [(UILabel *)v7->_titleLabel setFont:_titleFont];
 
   [(UILabel *)v7->_titleLabel setTextAlignment:1];
   [(UILabel *)v7->_titleLabel setNumberOfLines:0];
@@ -216,11 +216,11 @@ LABEL_14:
 
         v50 = *(*(&v134 + 1) + 8 * i);
         [(UIStackView *)v7->_buttonStackView addArrangedSubview:v50];
-        v51 = [v50 widthAnchor];
-        v52 = [v51 constraintLessThanOrEqualToConstant:241.0];
+        widthAnchor = [v50 widthAnchor];
+        v52 = [widthAnchor constraintLessThanOrEqualToConstant:241.0];
         v141[0] = v52;
-        v53 = [v50 heightAnchor];
-        v54 = [v53 constraintGreaterThanOrEqualToConstant:40.0];
+        heightAnchor = [v50 heightAnchor];
+        v54 = [heightAnchor constraintGreaterThanOrEqualToConstant:40.0];
         v141[1] = v54;
         v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v141 count:2];
         [v132 addObjectsFromArray:v55];
@@ -237,95 +237,95 @@ LABEL_14:
   v56 = v7->_imageView;
   if (v56)
   {
-    v110 = [(UIImageView *)v56 firstBaselineAnchor];
-    v122 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-    v114 = [v122 topAnchor];
+    firstBaselineAnchor = [(UIImageView *)v56 firstBaselineAnchor];
+    safeAreaLayoutGuide = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
     [v131 currentSafeViewAreaFrame];
     v58 = v57 * 0.25;
-    v120 = [v131 screen];
-    [v120 scale];
+    screen = [v131 screen];
+    [screen scale];
     v60 = v59 / 1.5;
-    v61 = [v131 screen];
-    [v61 scale];
-    v118 = [v110 constraintEqualToAnchor:v114 constant:v62 * 0.5 * -60.0 + v58 * v60];
+    screen2 = [v131 screen];
+    [screen2 scale];
+    v118 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v62 * 0.5 * -60.0 + v58 * v60];
     v140[0] = v118;
-    v112 = [(UIImageView *)v7->_imageView leadingAnchor];
-    v116 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-    v108 = [v116 leadingAnchor];
-    v106 = [v112 constraintEqualToAnchor:v108 constant:12.0];
+    leadingAnchor = [(UIImageView *)v7->_imageView leadingAnchor];
+    safeAreaLayoutGuide2 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v106 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v140[1] = v106;
-    v102 = [(UIImageView *)v7->_imageView trailingAnchor];
-    v104 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-    v63 = [v104 trailingAnchor];
-    v64 = [v102 constraintEqualToAnchor:v63 constant:-12.0];
+    trailingAnchor = [(UIImageView *)v7->_imageView trailingAnchor];
+    safeAreaLayoutGuide3 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+    v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     v140[2] = v64;
-    v65 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
-    v66 = [(UIImageView *)v7->_imageView lastBaselineAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66 constant:30.0];
+    firstBaselineAnchor2 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UIImageView *)v7->_imageView lastBaselineAnchor];
+    v67 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:30.0];
     v140[3] = v67;
     v68 = [MEMORY[0x277CBEA60] arrayWithObjects:v140 count:4];
     [v132 addObjectsFromArray:v68];
 
     v7 = p_isa;
-    v69 = v122;
+    safeAreaLayoutGuide4 = safeAreaLayoutGuide;
 
-    v70 = v110;
-    v71 = v61;
-    v72 = v120;
+    firstBaselineAnchor3 = firstBaselineAnchor;
+    v71 = screen2;
+    screen3 = screen;
 
-    v73 = v114;
+    topAnchor2 = topAnchor;
   }
 
   else
   {
-    v70 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
-    v69 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-    v73 = [v69 topAnchor];
+    firstBaselineAnchor3 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
+    safeAreaLayoutGuide4 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide4 topAnchor];
     [v131 currentSafeViewAreaFrame];
     v75 = v74 * 0.25;
-    v72 = [v131 screen];
-    [v72 scale];
-    v71 = [v70 constraintEqualToAnchor:v73 constant:v75 * (v76 / 1.5) + -24.0];
+    screen3 = [v131 screen];
+    [screen3 scale];
+    v71 = [firstBaselineAnchor3 constraintEqualToAnchor:topAnchor2 constant:v75 * (v76 / 1.5) + -24.0];
     [v132 addObject:v71];
   }
 
-  v123 = [(UILabel *)v7->_titleLabel leadingAnchor];
-  v125 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-  v121 = [v125 leadingAnchor];
-  v119 = [v123 constraintEqualToAnchor:v121 constant:12.0];
+  leadingAnchor3 = [(UILabel *)v7->_titleLabel leadingAnchor];
+  safeAreaLayoutGuide5 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide5 leadingAnchor];
+  v119 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
   v139[0] = v119;
-  v115 = [(UILabel *)v7->_titleLabel trailingAnchor];
-  v117 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-  v113 = [v117 trailingAnchor];
-  v111 = [v115 constraintEqualToAnchor:v113 constant:-12.0];
+  trailingAnchor3 = [(UILabel *)v7->_titleLabel trailingAnchor];
+  safeAreaLayoutGuide6 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide6 trailingAnchor];
+  v111 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-12.0];
   v139[1] = v111;
-  v109 = [(UILabel *)v7->_messageLabel firstBaselineAnchor];
-  v107 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
-  v105 = [v109 constraintEqualToAnchor:v107 constant:30.0];
+  firstBaselineAnchor4 = [(UILabel *)v7->_messageLabel firstBaselineAnchor];
+  lastBaselineAnchor2 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
+  v105 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:30.0];
   v139[2] = v105;
-  v101 = [(UILabel *)v7->_messageLabel leadingAnchor];
-  v103 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-  v100 = [v103 leadingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100 constant:12.0];
+  leadingAnchor5 = [(UILabel *)v7->_messageLabel leadingAnchor];
+  safeAreaLayoutGuide7 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide7 leadingAnchor];
+  v99 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:12.0];
   v139[3] = v99;
-  v98 = [(UILabel *)v7->_messageLabel trailingAnchor];
-  v124 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-  v97 = [v124 trailingAnchor];
-  v95 = [v98 constraintEqualToAnchor:v97 constant:-12.0];
+  trailingAnchor5 = [(UILabel *)v7->_messageLabel trailingAnchor];
+  safeAreaLayoutGuide8 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide8 trailingAnchor];
+  v95 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-12.0];
   v139[4] = v95;
-  v94 = [(UIStackView *)v7->_buttonStackView widthAnchor];
+  widthAnchor2 = [(UIStackView *)v7->_buttonStackView widthAnchor];
   v96 = v45;
-  v93 = [v94 constraintEqualToConstant:{dbl_24839BC10[objc_msgSend(v45, "count") == 1]}];
+  v93 = [widthAnchor2 constraintEqualToConstant:{dbl_24839BC10[objc_msgSend(v45, "count") == 1]}];
   v139[5] = v93;
-  v77 = [(UIStackView *)v7->_buttonStackView centerXAnchor];
-  v92 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
-  v78 = [v92 centerXAnchor];
-  v79 = [v77 constraintEqualToAnchor:v78];
+  centerXAnchor = [(UIStackView *)v7->_buttonStackView centerXAnchor];
+  safeAreaLayoutGuide9 = [(DBAlertStyleLockOutView *)v7 safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide9 centerXAnchor];
+  v79 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v139[6] = v79;
-  v80 = [p_isa[57] bottomAnchor];
-  v81 = [p_isa safeAreaLayoutGuide];
-  v82 = [v81 bottomAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82 constant:-24.0];
+  bottomAnchor = [p_isa[57] bottomAnchor];
+  safeAreaLayoutGuide10 = [p_isa safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide10 bottomAnchor];
+  v83 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-24.0];
   v139[7] = v83;
   v84 = [MEMORY[0x277CBEA60] arrayWithObjects:v139 count:8];
   [v132 addObjectsFromArray:v84];
@@ -333,7 +333,7 @@ LABEL_14:
   v7 = p_isa;
   [MEMORY[0x277CCAAD0] activateConstraints:v132];
 
-  v6 = v131;
+  configurationCopy = v131;
 LABEL_27:
 
   return v7;
@@ -344,8 +344,8 @@ LABEL_27:
   v15[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D74310];
   v3 = *MEMORY[0x277D76A20];
-  v4 = [(DBAlertStyleLockOutView *)self traitCollection];
-  v5 = [v2 preferredFontDescriptorWithTextStyle:v3 compatibleWithTraitCollection:v4];
+  traitCollection = [(DBAlertStyleLockOutView *)self traitCollection];
+  v5 = [v2 preferredFontDescriptorWithTextStyle:v3 compatibleWithTraitCollection:traitCollection];
 
   v14 = *MEMORY[0x277D74430];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
@@ -381,63 +381,63 @@ LABEL_27:
   return v7;
 }
 
-- (id)_buttonOfType:(unint64_t)a3
+- (id)_buttonOfType:(unint64_t)type
 {
   v5 = [DBColorButton buttonWithType:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(DBAlertStyleLockOutView *)self _buttonTitleForType:a3];
+  v6 = [(DBAlertStyleLockOutView *)self _buttonTitleForType:type];
   [v5 setTitle:v6 forState:0];
 
   [v5 addTarget:self action:sel__buttonTapped_ forControlEvents:64];
-  switch(a3)
+  switch(type)
   {
     case 0x3ECuLL:
-      v7 = [MEMORY[0x277D75348] systemYellowColor];
+      systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
       goto LABEL_7;
     case 0x3EBuLL:
-      v7 = [MEMORY[0x277D75348] systemGreenColor];
+      systemYellowColor = [MEMORY[0x277D75348] systemGreenColor];
       goto LABEL_7;
     case 0x3EAuLL:
-      v7 = [MEMORY[0x277D75348] systemRedColor];
+      systemYellowColor = [MEMORY[0x277D75348] systemRedColor];
 LABEL_7:
-      v8 = v7;
-      [v5 setCarButtonColor:v7];
+      v8 = systemYellowColor;
+      [v5 setCarButtonColor:systemYellowColor];
 
-      v9 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
-      [v5 setTitleColor:v9 forState:0];
+      _carSystemFocusLabelColor = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
+      [v5 setTitleColor:_carSystemFocusLabelColor forState:0];
       goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-  [v5 setCarButtonColor:v9];
+  _carSystemFocusLabelColor = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+  [v5 setCarButtonColor:_carSystemFocusLabelColor];
 LABEL_9:
 
-  v10 = [v5 layer];
-  [v10 setCornerRadius:20.0];
+  layer = [v5 layer];
+  [layer setCornerRadius:20.0];
 
-  v11 = [v5 titleLabel];
-  v12 = [(DBAlertStyleLockOutView *)self _buttonFont];
-  [v11 setFont:v12];
+  titleLabel = [v5 titleLabel];
+  _buttonFont = [(DBAlertStyleLockOutView *)self _buttonFont];
+  [titleLabel setFont:_buttonFont];
 
-  v13 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
-  [v5 setTitleColor:v13 forState:8];
+  _carSystemFocusLabelColor2 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
+  [v5 setTitleColor:_carSystemFocusLabelColor2 forState:8];
 
-  v14 = [v5 titleLabel];
-  [v14 setNumberOfLines:2];
+  titleLabel2 = [v5 titleLabel];
+  [titleLabel2 setNumberOfLines:2];
 
-  v15 = [v5 titleLabel];
-  [v15 setTextAlignment:1];
+  titleLabel3 = [v5 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
-  [v5 setTag:a3];
+  [v5 setTag:type];
 
   return v5;
 }
 
-- (id)_buttonTitleForType:(unint64_t)a3
+- (id)_buttonTitleForType:(unint64_t)type
 {
-  if (a3 - 1000 <= 4)
+  if (type - 1000 <= 4)
   {
-    v4 = off_278F02B70[a3 - 1000];
+    v4 = off_278F02B70[type - 1000];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
     v3 = [v5 localizedStringForKey:v4 value:&stru_285A57218 table:@"CarPlayApp"];
   }
@@ -445,13 +445,13 @@ LABEL_9:
   return v3;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [(DBLockOutView *)self delegate];
-  v5 = [v4 tag];
+  tappedCopy = tapped;
+  delegate = [(DBLockOutView *)self delegate];
+  v5 = [tappedCopy tag];
 
-  [v6 lockOutView:self didTapButtonOfType:v5];
+  [delegate lockOutView:self didTapButtonOfType:v5];
 }
 
 @end

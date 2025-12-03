@@ -1,11 +1,11 @@
 @interface StateOfMindView
-- (_TtC9MomentsUI15StateOfMindView)initWithCoder:(id)a3;
+- (_TtC9MomentsUI15StateOfMindView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation StateOfMindView
 
-- (_TtC9MomentsUI15StateOfMindView)initWithCoder:(id)a3
+- (_TtC9MomentsUI15StateOfMindView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI15StateOfMindView_gradientView;
   type metadata accessor for GradientView();

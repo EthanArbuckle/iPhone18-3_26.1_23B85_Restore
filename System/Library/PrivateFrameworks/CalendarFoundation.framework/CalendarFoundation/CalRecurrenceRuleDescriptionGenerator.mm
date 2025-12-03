@@ -1,60 +1,60 @@
 @interface CalRecurrenceRuleDescriptionGenerator
-+ (id)_andDaysOfWeekString:(id)a3;
-+ (id)_customDayCombinationDescription:(id)a3;
-+ (id)_dayOfMonthAsString:(int64_t)a3;
++ (id)_andDaysOfWeekString:(id)string;
++ (id)_customDayCombinationDescription:(id)description;
++ (id)_dayOfMonthAsString:(int64_t)string;
 + (id)_daysOfWeek;
-+ (id)_numberedWeekDayString:(id)a3;
-+ (id)_orDaysOfWeekString:(id)a3;
-+ (id)_weekDayPositionAsString:(int64_t)a3;
-+ (id)humanReadableDescriptionWithStartDate:(id)a3 ofRecurrenceRuleICSString:(id)a4 isConcise:(BOOL)a5;
-+ (id)localizedOfMonthStringForMonth:(id)a3;
-+ (int64_t)daysTypeForDayArray:(id)a3;
++ (id)_numberedWeekDayString:(id)string;
++ (id)_orDaysOfWeekString:(id)string;
++ (id)_weekDayPositionAsString:(int64_t)string;
++ (id)humanReadableDescriptionWithStartDate:(id)date ofRecurrenceRuleICSString:(id)string isConcise:(BOOL)concise;
++ (id)localizedOfMonthStringForMonth:(id)month;
++ (int64_t)daysTypeForDayArray:(id)array;
 @end
 
 @implementation CalRecurrenceRuleDescriptionGenerator
 
-+ (id)localizedOfMonthStringForMonth:(id)a3
++ (id)localizedOfMonthStringForMonth:(id)month
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  monthCopy = month;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v4 intValue];
+  intValue = [monthCopy intValue];
 
-  if ((v6 - 1) > 0xB)
+  if ((intValue - 1) > 0xB)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 localizedStringForKey:off_1E7EC7170[v6 - 1] value:&stru_1F379FFA8 table:0];
+    v7 = [v5 localizedStringForKey:off_1E7EC7170[intValue - 1] value:&stru_1F379FFA8 table:0];
   }
 
   return v7;
 }
 
-+ (id)humanReadableDescriptionWithStartDate:(id)a3 ofRecurrenceRuleICSString:(id)a4 isConcise:(BOOL)a5
++ (id)humanReadableDescriptionWithStartDate:(id)date ofRecurrenceRuleICSString:(id)string isConcise:(BOOL)concise
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  conciseCopy = concise;
+  dateCopy = date;
+  stringCopy = string;
   v175 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v174 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v9 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:v8];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v171 = [v10 components:536 fromDate:v7];
+  v9 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:stringCopy];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v171 = [currentCalendar components:536 fromDate:dateCopy];
 
-  v11 = [v9 interval];
-  v170 = [v11 integerValue];
+  interval = [v9 interval];
+  integerValue = [interval integerValue];
 
-  v12 = [v9 freq];
-  v180 = [v9 byday];
+  freq = [v9 freq];
+  byday = [v9 byday];
   v172 = v9;
-  v173 = [v9 bymonth];
+  bymonth = [v9 bymonth];
   if (!humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableWeekDayArray)
   {
-    v13 = [v175 standaloneWeekdaySymbols];
-    v14 = [v13 copy];
+    standaloneWeekdaySymbols = [v175 standaloneWeekdaySymbols];
+    v14 = [standaloneWeekdaySymbols copy];
     v15 = humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableWeekDayArray;
     humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableWeekDayArray = v14;
 
@@ -69,8 +69,8 @@
 
   if (!humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray)
   {
-    v18 = [v175 standaloneMonthSymbols];
-    v19 = [v18 copy];
+    standaloneMonthSymbols = [v175 standaloneMonthSymbols];
+    v19 = [standaloneMonthSymbols copy];
     v20 = humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray;
     humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray = v19;
 
@@ -83,15 +83,15 @@
     }
   }
 
-  v23 = 0;
-  if (v12 <= 5)
+  v151 = 0;
+  if (freq <= 5)
   {
-    if (v12 == 4)
+    if (freq == 4)
     {
       v29 = MEMORY[0x1E696AEC0];
-      if (v170 == 1)
+      if (integerValue == 1)
       {
-        if (v5)
+        if (conciseCopy)
         {
           v30 = @"daily";
         }
@@ -104,7 +104,7 @@
         goto LABEL_120;
       }
 
-      if (v5)
+      if (conciseCopy)
       {
         v71 = @"every %ld days";
       }
@@ -116,23 +116,23 @@
 
 LABEL_122:
       v104 = [v174 localizedStringForKey:v71 value:&stru_1F379FFA8 table:0];
-      v151 = v170;
+      v151 = integerValue;
       goto LABEL_123;
     }
 
-    v24 = v12 == 5;
-    v25 = v180;
+    v24 = freq == 5;
+    v25 = byday;
     if (!v24)
     {
       goto LABEL_256;
     }
 
-    if (!v180 || [v180 count] == 1 && (objc_msgSend(v180, "objectAtIndexedSubscript:", 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "weekday"), v28 = objc_msgSend(v171, "weekday"), v26, v25 = v180, v27 == v28))
+    if (!byday || [byday count] == 1 && (objc_msgSend(byday, "objectAtIndexedSubscript:", 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "weekday"), v28 = objc_msgSend(v171, "weekday"), v26, v25 = byday, v27 == v28))
     {
       v29 = MEMORY[0x1E696AEC0];
-      if (v170 == 1)
+      if (integerValue == 1)
       {
-        if (v5)
+        if (conciseCopy)
         {
           v30 = @"weekly";
         }
@@ -145,14 +145,14 @@ LABEL_122:
 LABEL_120:
         v104 = [v174 localizedStringForKey:v30 value:&stru_1F379FFA8 table:0];
 LABEL_123:
-        v23 = [v29 localizedStringWithFormat:v104, v151];
+        v151 = [v29 localizedStringWithFormat:v104, v151];
 
 LABEL_255:
-        v25 = v180;
+        v25 = byday;
         goto LABEL_256;
       }
 
-      if (v5)
+      if (conciseCopy)
       {
         v71 = @"every %ld weeks";
       }
@@ -165,15 +165,15 @@ LABEL_255:
       goto LABEL_122;
     }
 
-    if (v170 == 1)
+    if (integerValue == 1)
     {
       v72 = [objc_opt_class() daysTypeForDayArray:v25];
-      v23 = 0;
+      v151 = 0;
       if (v72 > 1)
       {
         if (v72 == 2)
         {
-          if (v5)
+          if (conciseCopy)
           {
             v73 = @"every weekday";
           }
@@ -184,7 +184,7 @@ LABEL_255:
           }
 
 LABEL_219:
-          v23 = [v174 localizedStringForKey:v73 value:&stru_1F379FFA8 table:0];
+          v151 = [v174 localizedStringForKey:v73 value:&stru_1F379FFA8 table:0];
           goto LABEL_256;
         }
 
@@ -201,7 +201,7 @@ LABEL_219:
           goto LABEL_256;
         }
 
-        if (v5)
+        if (conciseCopy)
         {
           v73 = @"every day";
         }
@@ -215,7 +215,7 @@ LABEL_219:
       }
 
       v90 = MEMORY[0x1E696AEC0];
-      if (v5)
+      if (conciseCopy)
       {
         v107 = @"every week on %@";
       }
@@ -229,7 +229,7 @@ LABEL_219:
     }
 
     v90 = MEMORY[0x1E696AEC0];
-    if (v5)
+    if (conciseCopy)
     {
       v91 = @"every %ld weeks on %@";
     }
@@ -242,27 +242,27 @@ LABEL_219:
     goto LABEL_133;
   }
 
-  if (v12 == 6)
+  if (freq == 6)
   {
-    if ([v173 count])
+    if ([bymonth count])
     {
-      v25 = v180;
-      if (![v173 count])
+      v25 = byday;
+      if (![bymonth count])
       {
-        v23 = 0;
+        v151 = 0;
         goto LABEL_256;
       }
 
 LABEL_25:
-      v160 = v5;
-      v31 = v173;
+      v160 = conciseCopy;
+      v31 = bymonth;
       if ([v31 count] == 1)
       {
         v32 = [v31 objectAtIndex:0];
-        v33 = [v32 integerValue];
-        v34 = v33 == [v171 month];
+        integerValue2 = [v32 integerValue];
+        v34 = integerValue2 == [v171 month];
 
-        v25 = v180;
+        v25 = byday;
       }
 
       else
@@ -273,7 +273,7 @@ LABEL_25:
       if (![v25 count] && (objc_msgSend(v31, "count") == 0 || v34))
       {
         v35 = MEMORY[0x1E696AEC0];
-        if (v170 < 2)
+        if (integerValue < 2)
         {
           if (v160)
           {
@@ -301,18 +301,18 @@ LABEL_25:
           }
 
           v137 = [v174 localizedStringForKey:v36 value:&stru_1F379FFA8 table:0];
-          v151 = v170;
+          v151 = integerValue;
         }
 
-        v183 = v137;
-        v23 = [v35 localizedStringWithFormat:v151];
+        string = v137;
+        v151 = [v35 localizedStringWithFormat:v151];
         goto LABEL_254;
       }
 
-      v156 = v8;
-      v158 = v7;
-      v183 = [MEMORY[0x1E696AD60] string];
-      v181 = [MEMORY[0x1E696AD60] string];
+      v156 = stringCopy;
+      v158 = dateCopy;
+      string = [MEMORY[0x1E696AD60] string];
+      string2 = [MEMORY[0x1E696AD60] string];
       v37 = [v31 count];
       if (v37)
       {
@@ -329,13 +329,13 @@ LABEL_25:
 
           if ([v40 integerValue] < 1 || objc_msgSend(v41, "integerValue") >= 13)
           {
-            [v183 appendString:@"???"];
+            [string appendString:@"???"];
           }
 
           else
           {
             v49 = [humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray objectAtIndex:{objc_msgSend(v41, "integerValue") - 1}];
-            [v183 appendString:v49];
+            [string appendString:v49];
           }
 
 LABEL_69:
@@ -382,7 +382,7 @@ LABEL_69:
 
         if ([v41 integerValue] < 1 || objc_msgSend(v41, "integerValue") >= 13)
         {
-          [v183 appendFormat:v46, @"???"];
+          [string appendFormat:v46, @"???"];
           if (!v48)
           {
             goto LABEL_51;
@@ -392,7 +392,7 @@ LABEL_69:
         else
         {
           v50 = [humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray objectAtIndex:{objc_msgSend(v41, "integerValue") - 1}];
-          [v183 appendFormat:v46, v50];
+          [string appendFormat:v46, v50];
 
           if (!v48)
           {
@@ -427,8 +427,8 @@ LABEL_51:
             else
             {
 
-              v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-              v51 = [v8 localizedStringForKey:@" value:%@" table:{&stru_1F379FFA8, 0}];
+              stringCopy = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+              v51 = [stringCopy localizedStringForKey:@" value:%@" table:{&stru_1F379FFA8, 0}];
               v52 = 0;
               v53 = 0;
               v176 = v51;
@@ -436,7 +436,7 @@ LABEL_51:
 
             if ([v41 integerValue] < 1 || objc_msgSend(v41, "integerValue") >= 13)
             {
-              [v181 appendFormat:v51, @"???"];
+              [string2 appendFormat:v51, @"???"];
               if (!v53)
               {
 LABEL_64:
@@ -456,7 +456,7 @@ LABEL_64:
             else
             {
               v56 = [humanReadableDescriptionWithStartDate_ofRecurrenceRuleICSString_isConcise__readableMonthArray objectAtIndex:{objc_msgSend(v41, "integerValue") - 1}];
-              [v181 appendFormat:v51, v56];
+              [string2 appendFormat:v51, v56];
 
               if (!v53)
               {
@@ -472,35 +472,35 @@ LABEL_64:
       }
 
 LABEL_70:
-      v57 = [MEMORY[0x1E696AEC0] string];
+      string3 = [MEMORY[0x1E696AEC0] string];
       if ([v31 count])
       {
         v58 = objc_opt_class();
         v59 = [v31 objectAtIndexedSubscript:0];
         v60 = [v58 localizedOfMonthStringForMonth:v59];
 
-        v61 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v60 validFormatSpecifiers:@"%@" error:0, v181];
+        v181 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v60 validFormatSpecifiers:@"%@" error:0, string2];
 
-        v57 = v61;
+        string3 = v181;
       }
 
-      v62 = [v172 bysetpos];
-      v63 = [v62 count];
+      bysetpos = [v172 bysetpos];
+      v63 = [bysetpos count];
 
       if (v63)
       {
         v64 = objc_opt_class();
-        v65 = [v172 bysetpos];
-        v66 = [v65 objectAtIndex:0];
+        bysetpos2 = [v172 bysetpos];
+        v66 = [bysetpos2 objectAtIndex:0];
         v67 = [v64 _weekDayPositionAsString:{objc_msgSend(v66, "integerValue")}];
 
         v68 = [v31 count];
         v69 = MEMORY[0x1E696AEC0];
-        v8 = v156;
-        v7 = v158;
+        stringCopy = v156;
+        dateCopy = v158;
         if (v68)
         {
-          if (v170 != 1)
+          if (integerValue != 1)
           {
             if (v160)
             {
@@ -513,8 +513,8 @@ LABEL_70:
             }
 
             v111 = [v174 localizedStringForKey:v92 value:&stru_1F379FFA8 table:0];
-            v113 = [objc_opt_class() _orDaysOfWeekString:v180];
-            [v69 localizedStringWithFormat:v111, v170, v67, v113, v57];
+            v113 = [objc_opt_class() _orDaysOfWeekString:byday];
+            [v69 localizedStringWithFormat:v111, integerValue, v67, v113, string3];
             goto LABEL_154;
           }
 
@@ -529,14 +529,14 @@ LABEL_70:
           }
 
           v111 = [v174 localizedStringForKey:v70 value:&stru_1F379FFA8 table:0];
-          v112 = [objc_opt_class() _orDaysOfWeekString:v180];
+          v112 = [objc_opt_class() _orDaysOfWeekString:byday];
           v113 = v112;
-          v154 = v57;
+          v154 = string3;
         }
 
         else
         {
-          if (v170 != 1)
+          if (integerValue != 1)
           {
             if (v160)
             {
@@ -549,8 +549,8 @@ LABEL_70:
             }
 
             v111 = [v174 localizedStringForKey:v105 value:&stru_1F379FFA8 table:0];
-            v113 = [objc_opt_class() _orDaysOfWeekString:v180];
-            [v69 localizedStringWithFormat:v111, v170, v67, v113, v155];
+            v113 = [objc_opt_class() _orDaysOfWeekString:byday];
+            [v69 localizedStringWithFormat:v111, integerValue, v67, v113, v155];
             goto LABEL_154;
           }
 
@@ -567,30 +567,30 @@ LABEL_70:
           }
 
           v111 = [v174 localizedStringForKey:v88 value:v89 table:0];
-          v112 = [objc_opt_class() _orDaysOfWeekString:v180];
+          v112 = [objc_opt_class() _orDaysOfWeekString:byday];
           v113 = v112;
         }
 
         [v69 localizedStringWithFormat:v111, v67, v112, v154, v155];
-        v23 = LABEL_154:;
+        v151 = LABEL_154:;
 
 LABEL_252:
         goto LABEL_253;
       }
 
-      v74 = [v180 objectAtIndex:0];
-      v75 = [v74 number];
-      v76 = [v75 integerValue];
+      v74 = [byday objectAtIndex:0];
+      number = [v74 number];
+      integerValue3 = [number integerValue];
 
-      v8 = v156;
-      v7 = v158;
-      if (v76)
+      stringCopy = v156;
+      dateCopy = v158;
+      if (integerValue3)
       {
         v77 = [v31 count];
         v78 = MEMORY[0x1E696AEC0];
         if (v77)
         {
-          if (v170 != 1)
+          if (integerValue != 1)
           {
             if (v160)
             {
@@ -603,8 +603,8 @@ LABEL_252:
             }
 
             v67 = [v174 localizedStringForKey:v119 value:&stru_1F379FFA8 table:0];
-            v111 = [objc_opt_class() _andDaysOfWeekString:v180];
-            [v78 localizedStringWithFormat:v67, v170, v111, v57];
+            v111 = [objc_opt_class() _andDaysOfWeekString:byday];
+            [v78 localizedStringWithFormat:v67, integerValue, v111, string3];
             goto LABEL_251;
           }
 
@@ -619,13 +619,13 @@ LABEL_252:
           }
 
           v67 = [v174 localizedStringForKey:v79 value:&stru_1F379FFA8 table:0];
-          v140 = [objc_opt_class() _andDaysOfWeekString:v180];
+          v140 = [objc_opt_class() _andDaysOfWeekString:byday];
           v111 = v140;
-          v153 = v57;
+          v153 = string3;
           goto LABEL_248;
         }
 
-        if (v170 == 1)
+        if (integerValue == 1)
         {
           if (v160)
           {
@@ -639,11 +639,11 @@ LABEL_252:
 
 LABEL_247:
           v67 = [v174 localizedStringForKey:v114 value:&stru_1F379FFA8 table:0];
-          v140 = [objc_opt_class() _andDaysOfWeekString:v180];
+          v140 = [objc_opt_class() _andDaysOfWeekString:byday];
           v111 = v140;
 LABEL_248:
           [v78 localizedStringWithFormat:v67, v140, v153, v154];
-          v23 = LABEL_251:;
+          v151 = LABEL_251:;
           goto LABEL_252;
         }
 
@@ -660,13 +660,13 @@ LABEL_248:
         goto LABEL_250;
       }
 
-      if ([v180 count])
+      if ([byday count])
       {
         v93 = [v31 count];
         v78 = MEMORY[0x1E696AEC0];
         if (v93)
         {
-          if (v170 != 1)
+          if (integerValue != 1)
           {
             if (v160)
             {
@@ -679,8 +679,8 @@ LABEL_248:
             }
 
             v67 = [v174 localizedStringForKey:v145 value:&stru_1F379FFA8 table:0];
-            v111 = [objc_opt_class() _andDaysOfWeekString:v180];
-            [v78 localizedStringWithFormat:v67, v170, v111, v183];
+            v111 = [objc_opt_class() _andDaysOfWeekString:byday];
+            [v78 localizedStringWithFormat:v67, integerValue, v111, string];
             goto LABEL_251;
           }
 
@@ -695,13 +695,13 @@ LABEL_248:
           }
 
           v67 = [v174 localizedStringForKey:v94 value:&stru_1F379FFA8 table:0];
-          v140 = [objc_opt_class() _andDaysOfWeekString:v180];
+          v140 = [objc_opt_class() _andDaysOfWeekString:byday];
           v111 = v140;
-          v153 = v183;
+          v153 = string;
           goto LABEL_248;
         }
 
-        if (v170 == 1)
+        if (integerValue == 1)
         {
           if (v160)
           {
@@ -728,18 +728,18 @@ LABEL_248:
 
 LABEL_250:
         v67 = [v174 localizedStringForKey:v138 value:&stru_1F379FFA8 table:0];
-        v111 = [objc_opt_class() _andDaysOfWeekString:v180];
-        [v78 localizedStringWithFormat:v67, v170, v111, v154];
+        v111 = [objc_opt_class() _andDaysOfWeekString:byday];
+        [v78 localizedStringWithFormat:v67, integerValue, v111, v154];
         goto LABEL_251;
       }
 
-      if (v170 == 1)
+      if (integerValue == 1)
       {
         if (v160)
         {
           v67 = [v174 localizedStringForKey:@"every year in %@" value:&stru_1F379FFA8 table:0];
-          [MEMORY[0x1E696AEC0] localizedStringWithFormat:v67, v183, v153];
-          v23 = LABEL_243:;
+          [MEMORY[0x1E696AEC0] localizedStringWithFormat:v67, string, v153];
+          v151 = LABEL_243:;
 LABEL_253:
 
 LABEL_254:
@@ -748,7 +748,7 @@ LABEL_254:
 
         v146 = MEMORY[0x1E696AEC0];
         v67 = [v174 localizedStringForKey:@"Event will occur every year in %@." value:&stru_1F379FFA8 table:0];
-        v149 = v183;
+        v149 = string;
       }
 
       else
@@ -765,31 +765,31 @@ LABEL_254:
         }
 
         v67 = [v174 localizedStringForKey:v147 value:&stru_1F379FFA8 table:0];
-        v153 = v183;
-        v149 = v170;
+        v153 = string;
+        v149 = integerValue;
       }
 
       [v146 localizedStringWithFormat:v67, v149, v153];
       goto LABEL_243;
     }
 
-    v25 = v180;
-    if ([v180 count])
+    v25 = byday;
+    if ([byday count])
     {
-      v80 = [v172 bysetpos];
-      v81 = [v80 count];
+      bysetpos3 = [v172 bysetpos];
+      v81 = [bysetpos3 count];
 
       if (v81)
       {
         v82 = objc_opt_class();
-        v83 = [v172 bysetpos];
-        v84 = [v83 objectAtIndex:0];
+        bysetpos4 = [v172 bysetpos];
+        v84 = [bysetpos4 objectAtIndex:0];
         v85 = [v82 _weekDayPositionAsString:{objc_msgSend(v84, "integerValue")}];
 
         v86 = MEMORY[0x1E696AEC0];
-        if (v170 == 1)
+        if (integerValue == 1)
         {
-          if (v5)
+          if (conciseCopy)
           {
             v87 = @"every month on the %@ %@";
           }
@@ -800,13 +800,13 @@ LABEL_254:
           }
 
           v142 = [v174 localizedStringForKey:v87 value:&stru_1F379FFA8 table:0];
-          v143 = [objc_opt_class() _orDaysOfWeekString:v180];
+          v143 = [objc_opt_class() _orDaysOfWeekString:byday];
           [v86 localizedStringWithFormat:v142, v85, v143, v154];
         }
 
         else
         {
-          if (v5)
+          if (conciseCopy)
           {
             v120 = @"every %ld months on the %@ %@";
           }
@@ -817,24 +817,24 @@ LABEL_254:
           }
 
           v142 = [v174 localizedStringForKey:v120 value:&stru_1F379FFA8 table:0];
-          v143 = [objc_opt_class() _orDaysOfWeekString:v180];
-          [v86 localizedStringWithFormat:v142, v170, v85, v143];
+          v143 = [objc_opt_class() _orDaysOfWeekString:byday];
+          [v86 localizedStringWithFormat:v142, integerValue, v85, v143];
         }
-        v23 = ;
+        v151 = ;
 
         goto LABEL_255;
       }
 
-      v115 = [v180 objectAtIndex:0];
-      v116 = [v115 number];
-      v117 = [v116 integerValue];
+      v115 = [byday objectAtIndex:0];
+      number2 = [v115 number];
+      integerValue4 = [number2 integerValue];
 
       v90 = MEMORY[0x1E696AEC0];
-      if (v117)
+      if (integerValue4)
       {
-        if (v170 == 1)
+        if (integerValue == 1)
         {
-          if (v5)
+          if (conciseCopy)
           {
             v107 = @"every month on the %@-XX01";
             v118 = @"every month on the %@";
@@ -849,7 +849,7 @@ LABEL_254:
           goto LABEL_186;
         }
 
-        if (v5)
+        if (conciseCopy)
         {
           v91 = @"every %ld months on the %@-XX01";
         }
@@ -862,9 +862,9 @@ LABEL_254:
 
       else
       {
-        if (v170 == 1)
+        if (integerValue == 1)
         {
-          if (v5)
+          if (conciseCopy)
           {
             v107 = @"every month on %@";
           }
@@ -878,13 +878,13 @@ LABEL_185:
           v118 = &stru_1F379FFA8;
 LABEL_186:
           v108 = [v174 localizedStringForKey:v107 value:v118 table:0];
-          v109 = v180;
-          v110 = [objc_opt_class() _andDaysOfWeekString:v180];
+          v109 = byday;
+          v110 = [objc_opt_class() _andDaysOfWeekString:byday];
           v152 = v110;
           goto LABEL_187;
         }
 
-        if (v5)
+        if (conciseCopy)
         {
           v91 = @"every %ld months on %@";
         }
@@ -897,22 +897,22 @@ LABEL_186:
 
 LABEL_133:
       v108 = [v174 localizedStringForKey:v91 value:&stru_1F379FFA8 table:0];
-      v109 = v180;
-      v110 = [objc_opt_class() _andDaysOfWeekString:v180];
-      v152 = v170;
+      v109 = byday;
+      v110 = [objc_opt_class() _andDaysOfWeekString:byday];
+      v152 = integerValue;
       v153 = v110;
 LABEL_187:
       v139 = v90;
       v25 = v109;
-      v23 = [v139 localizedStringWithFormat:v108, v152, v153];
+      v151 = [v139 localizedStringWithFormat:v108, v152, v153];
 
       goto LABEL_256;
     }
 
-    v95 = [v172 bymonthday];
-    v96 = [v95 count];
-    v184 = v95;
-    if (!v95)
+    bymonthday = [v172 bymonthday];
+    v96 = [bymonthday count];
+    v184 = bymonthday;
+    if (!bymonthday)
     {
       goto LABEL_116;
     }
@@ -923,21 +923,21 @@ LABEL_187:
       goto LABEL_155;
     }
 
-    v98 = [v95 objectAtIndex:0];
-    v99 = [v98 integerValue];
-    v100 = v8;
+    v98 = [bymonthday objectAtIndex:0];
+    integerValue5 = [v98 integerValue];
+    v100 = stringCopy;
     v101 = [v171 day];
 
-    v24 = v99 == v101;
-    v8 = v100;
-    v25 = v180;
+    v24 = integerValue5 == v101;
+    stringCopy = v100;
+    v25 = byday;
     if (v24)
     {
 LABEL_116:
       v102 = MEMORY[0x1E696AEC0];
-      if (v170 == 1)
+      if (integerValue == 1)
       {
-        if (v5)
+        if (conciseCopy)
         {
           v103 = @"monthly";
         }
@@ -952,7 +952,7 @@ LABEL_116:
 
       else
       {
-        if (v5)
+        if (conciseCopy)
         {
           v141 = @"every %ld months";
         }
@@ -963,19 +963,19 @@ LABEL_116:
         }
 
         v135 = [v174 localizedStringForKey:v141 value:&stru_1F379FFA8 table:0];
-        v151 = v170;
+        v151 = integerValue;
       }
 
-      v23 = [v102 localizedStringWithFormat:v135, v151];
+      v151 = [v102 localizedStringWithFormat:v135, v151];
     }
 
     else
     {
 LABEL_155:
-      v161 = v5;
-      v157 = v8;
-      v159 = v7;
-      v182 = [MEMORY[0x1E696AD60] string];
+      v161 = conciseCopy;
+      v157 = stringCopy;
+      v159 = dateCopy;
+      string4 = [MEMORY[0x1E696AD60] string];
       if (v97)
       {
         v121 = 0;
@@ -995,7 +995,7 @@ LABEL_155:
                 v127 = 0;
                 v126 = 1;
                 v128 = v25;
-                v129 = v7;
+                v129 = dateCopy;
                 v176 = v125;
                 v177 = v124;
               }
@@ -1006,7 +1006,7 @@ LABEL_155:
                 v126 = 0;
                 v127 = 1;
                 v128 = v25;
-                v129 = v7;
+                v129 = dateCopy;
                 v168 = v125;
                 v169 = v124;
               }
@@ -1024,7 +1024,7 @@ LABEL_155:
             v131 = objc_opt_class();
             v132 = [v184 objectAtIndex:v121];
             v133 = [v131 _dayOfMonthAsString:{objc_msgSend(v132, "integerValue")}];
-            [v182 appendFormat:v125, v133];
+            [string4 appendFormat:v125, v133];
 
             if (v127)
             {
@@ -1036,7 +1036,7 @@ LABEL_155:
             }
 
             v25 = v128;
-            v7 = v129;
+            dateCopy = v129;
             if (v122 >= v179)
             {
               goto LABEL_170;
@@ -1048,15 +1048,15 @@ LABEL_155:
             v130 = objc_opt_class();
             v128 = [v184 objectAtIndex:0];
             v129 = [v130 _dayOfMonthAsString:{objc_msgSend(v128, "integerValue")}];
-            [v182 appendString:v129];
+            [string4 appendString:v129];
             v122 = 1;
           }
 
           v128 = v25;
-          v129 = v7;
+          v129 = dateCopy;
 LABEL_170:
           v121 = v122;
-          v7 = v129;
+          dateCopy = v129;
           v25 = v128;
         }
 
@@ -1064,11 +1064,11 @@ LABEL_170:
       }
 
       v134 = MEMORY[0x1E696AEC0];
-      if (v170 == 1)
+      if (integerValue == 1)
       {
-        v8 = v157;
-        v7 = v159;
-        v135 = v182;
+        stringCopy = v157;
+        dateCopy = v159;
+        v135 = string4;
         if (v161)
         {
           v136 = @"every month on the %@";
@@ -1080,14 +1080,14 @@ LABEL_170:
         }
 
         v148 = [v174 localizedStringForKey:v136 value:&stru_1F379FFA8 table:0];
-        [v134 localizedStringWithFormat:v148, v182, v153];
+        [v134 localizedStringWithFormat:v148, string4, v153];
       }
 
       else
       {
-        v8 = v157;
-        v7 = v159;
-        v135 = v182;
+        stringCopy = v157;
+        dateCopy = v159;
+        v135 = string4;
         if (v161)
         {
           v144 = @"every %ld months on the %@";
@@ -1099,17 +1099,17 @@ LABEL_170:
         }
 
         v148 = [v174 localizedStringForKey:v144 value:&stru_1F379FFA8 table:0];
-        [v134 localizedStringWithFormat:v148, v170, v182];
+        [v134 localizedStringWithFormat:v148, integerValue, string4];
       }
-      v23 = ;
-      v25 = v180;
+      v151 = ;
+      v25 = byday;
     }
 
     goto LABEL_256;
   }
 
-  v24 = v12 == 7;
-  v25 = v180;
+  v24 = freq == 7;
+  v25 = byday;
   if (v24)
   {
     goto LABEL_25;
@@ -1117,21 +1117,21 @@ LABEL_170:
 
 LABEL_256:
 
-  return v23;
+  return v151;
 }
 
-+ (id)_andDaysOfWeekString:(id)a3
++ (id)_andDaysOfWeekString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 count];
+  stringCopy = string;
+  string = [MEMORY[0x1E696AD60] string];
+  v5 = [stringCopy count];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     do
     {
-      v8 = [v3 objectAtIndex:v7];
+      v8 = [stringCopy objectAtIndex:v7];
       if (v7)
       {
         ++v7;
@@ -1168,7 +1168,7 @@ LABEL_256:
         }
 
         v15 = [objc_opt_class() _numberedWeekDayString:v8];
-        [v4 appendFormat:v11, v15];
+        [string appendFormat:v11, v15];
 
         if (v13)
         {
@@ -1189,7 +1189,7 @@ LABEL_256:
       else
       {
         v14 = [objc_opt_class() _numberedWeekDayString:v8];
-        [v4 appendString:v14];
+        [string appendString:v14];
         v7 = 1;
       }
 
@@ -1199,23 +1199,23 @@ LABEL_17:
     while (v7 != v6);
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)_numberedWeekDayString:(id)a3
++ (id)_numberedWeekDayString:(id)string
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v4 weekday];
-  v7 = [v4 number];
+  weekday = [stringCopy weekday];
+  number = [stringCopy number];
 
-  v8 = [objc_opt_class() _daysOfWeek];
-  v9 = [v8 objectAtIndex:v6];
+  _daysOfWeek = [objc_opt_class() _daysOfWeek];
+  v9 = [_daysOfWeek objectAtIndex:weekday];
 
-  if (v7)
+  if (number)
   {
-    v10 = [objc_opt_class() _weekDayPositionAsString:{objc_msgSend(v7, "integerValue")}];
+    v10 = [objc_opt_class() _weekDayPositionAsString:{objc_msgSend(number, "integerValue")}];
     v11 = MEMORY[0x1E696AEC0];
     v12 = [v5 localizedStringForKey:@"%@ %@" value:&stru_1F379FFA8 table:0];
     v13 = [v11 localizedStringWithFormat:v12, v10, v9];
@@ -1263,12 +1263,12 @@ void __52__CalRecurrenceRuleDescriptionGenerator__daysOfWeek__block_invoke()
   _daysOfWeek_sDaysOfWeek = v2;
 }
 
-+ (id)_dayOfMonthAsString:(int64_t)a3
++ (id)_dayOfMonthAsString:(int64_t)string
 {
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = &stru_1F379FFA8;
-  switch(a3)
+  switch(string)
   {
     case -1:
       v7 = @"last day";
@@ -1407,12 +1407,12 @@ LABEL_34:
   return v6;
 }
 
-+ (id)_weekDayPositionAsString:(int64_t)a3
++ (id)_weekDayPositionAsString:(int64_t)string
 {
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = &stru_1F379FFA8;
-  switch(a3)
+  switch(string)
   {
     case -2:
       v7 = @"next to last";
@@ -1643,21 +1643,21 @@ LABEL_58:
   return v6;
 }
 
-+ (id)_orDaysOfWeekString:(id)a3
++ (id)_orDaysOfWeekString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [objc_opt_class() _customDayCombinationDescription:v3];
+  v5 = [objc_opt_class() _customDayCombinationDescription:stringCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    string = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AD60] string];
-    v8 = [v3 count];
+    string = [MEMORY[0x1E696AD60] string];
+    v8 = [stringCopy count];
     if (v8)
     {
       v9 = v8;
@@ -1665,7 +1665,7 @@ LABEL_58:
       v11 = v8;
       do
       {
-        v12 = [v3 objectAtIndex:v10];
+        v12 = [stringCopy objectAtIndex:v10];
         if (v10)
         {
           if (v11 == 1)
@@ -1691,13 +1691,13 @@ LABEL_58:
 
           v14 = [v4 localizedStringForKey:v13 value:v15 table:@"RecurrenceRule"];
           v16 = [objc_opt_class() _numberedWeekDayString:v12];
-          [v7 appendFormat:v14, v16];
+          [string appendFormat:v14, v16];
         }
 
         else
         {
           v14 = [objc_opt_class() _numberedWeekDayString:v12];
-          [v7 appendString:v14];
+          [string appendString:v14];
         }
 
         ++v10;
@@ -1709,15 +1709,15 @@ LABEL_58:
     }
   }
 
-  return v7;
+  return string;
 }
 
-+ (id)_customDayCombinationDescription:(id)a3
++ (id)_customDayCombinationDescription:(id)description
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [objc_opt_class() daysTypeForDayArray:v4];
+  v6 = [objc_opt_class() daysTypeForDayArray:descriptionCopy];
 
   switch(v6)
   {
@@ -1747,21 +1747,21 @@ LABEL_10:
   return v11;
 }
 
-+ (int64_t)daysTypeForDayArray:(id)a3
++ (int64_t)daysTypeForDayArray:(id)array
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   switch(v4)
   {
     case 2:
-      v19 = [v3 objectAtIndexedSubscript:0];
-      v20 = [v19 weekday];
+      v19 = [arrayCopy objectAtIndexedSubscript:0];
+      weekday = [v19 weekday];
 
-      v21 = [v3 objectAtIndexedSubscript:1];
-      v22 = [v21 weekday];
+      v21 = [arrayCopy objectAtIndexedSubscript:1];
+      weekday2 = [v21 weekday];
 
-      if (v20 == 7 && v22 == 1 || v20 == 1 && v22 == 7)
+      if (weekday == 7 && weekday2 == 1 || weekday == 1 && weekday2 == 7)
       {
         v5 = 3;
         goto LABEL_37;
@@ -1777,7 +1777,7 @@ LABEL_10:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v14 = v3;
+        v14 = arrayCopy;
         v15 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (!v15)
         {
@@ -1828,7 +1828,7 @@ LABEL_20:
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v7 = v3;
+        v7 = arrayCopy;
         v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (!v8)
         {

@@ -1,16 +1,16 @@
 @interface ViewSandboxCollectionViewCell
-- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ViewSandboxCollectionViewCell
 
-- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC5Heart29ViewSandboxCollectionViewCell_item;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -18,13 +18,13 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Heart29ViewSandboxCollectionViewCell_sandboxView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ViewSandboxCollectionViewCell();
-  v8 = [(ViewSandboxCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
+  height = [(ViewSandboxCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
   sub_29D9325C0();
 
-  return v8;
+  return height;
 }
 
-- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithCoder:(id)a3
+- (_TtC5Heart29ViewSandboxCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5Heart29ViewSandboxCollectionViewCell_item;
   *v3 = 0u;

@@ -1,14 +1,14 @@
 @interface PFAIPresentationHintCollector
 - (PFAIPresentationHintCollector)init;
-- (id)handleExtraIndexForTrailingParagraph:(id)a3 textStorage:(id)a4;
-- (id)lineBreaksForIdref:(id)a3 fromIndexSet:(id)a4;
-- (id)repairedIndexesForHintCollection:(id)a3 textStorage:(id)a4;
-- (void)addHintCollection:(id)a3 idref:(id)a4;
-- (void)addLineBreakHint:(unint64_t)a3 textStorage:(id)a4;
-- (void)addStartHint:(unint64_t)a3 withIdref:(id)a4 textStorage:(id)a5;
+- (id)handleExtraIndexForTrailingParagraph:(id)paragraph textStorage:(id)storage;
+- (id)lineBreaksForIdref:(id)idref fromIndexSet:(id)set;
+- (id)repairedIndexesForHintCollection:(id)collection textStorage:(id)storage;
+- (void)addHintCollection:(id)collection idref:(id)idref;
+- (void)addLineBreakHint:(unint64_t)hint textStorage:(id)storage;
+- (void)addStartHint:(unint64_t)hint withIdref:(id)idref textStorage:(id)storage;
 - (void)dealloc;
-- (void)processHintCollectionsWithStorage:(id)a3;
-- (void)updateLastLineBreakHintWithIndex:(unint64_t)a3 textStorage:(id)a4;
+- (void)processHintCollectionsWithStorage:(id)storage;
+- (void)updateLastLineBreakHintWithIndex:(unint64_t)index textStorage:(id)storage;
 @end
 
 @implementation PFAIPresentationHintCollector
@@ -38,54 +38,54 @@
   [(PFAIPresentationHintCollector *)&v3 dealloc];
 }
 
-- (void)addStartHint:(unint64_t)a3 withIdref:(id)a4 textStorage:(id)a5
+- (void)addStartHint:(unint64_t)hint withIdref:(id)idref textStorage:(id)storage
 {
   self->mLastStartIdref = 0;
-  if (a4)
+  if (idref)
   {
-    self->mLastStartHintAdded = [(NSMutableIndexSet *)self->mStartIndexes containsIndex:a3]^ 1;
-    if ((-[NSMutableIndexSet containsIndex:](self->mLineBreakIndexes, "containsIndex:", a3) & 1) != 0 || (v11 = -[NSMutableIndexSet containsIndex:](self->mStartIndexes, "containsIndex:", a3), !a3) || (v11 & 1) != 0 || ([a5 characterAtIndex:a3 - 1], (IsParagraphBreakingCharacter() & 1) == 0))
+    self->mLastStartHintAdded = [(NSMutableIndexSet *)self->mStartIndexes containsIndex:hint]^ 1;
+    if ((-[NSMutableIndexSet containsIndex:](self->mLineBreakIndexes, "containsIndex:", hint) & 1) != 0 || (v11 = -[NSMutableIndexSet containsIndex:](self->mStartIndexes, "containsIndex:", hint), !hint) || (v11 & 1) != 0 || ([storage characterAtIndex:hint - 1], (IsParagraphBreakingCharacter() & 1) == 0))
     {
-      self->mLastStartHint = a3;
-      self->mLastStartIdref = a4;
+      self->mLastStartHint = hint;
+      self->mLastStartIdref = idref;
     }
 
-    [(NSMutableIndexSet *)self->mStartIndexes addIndex:a3];
+    [(NSMutableIndexSet *)self->mStartIndexes addIndex:hint];
     mIdrefStart = self->mIdrefStart;
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:hint];
 
-    [(NSMutableDictionary *)mIdrefStart setObject:v10 forKey:a4];
+    [(NSMutableDictionary *)mIdrefStart setObject:v10 forKey:idref];
   }
 }
 
-- (void)addLineBreakHint:(unint64_t)a3 textStorage:(id)a4
+- (void)addLineBreakHint:(unint64_t)hint textStorage:(id)storage
 {
   self->mLastLineBreakHintAdded = [(NSMutableIndexSet *)self->mLineBreakIndexes containsIndex:?]^ 1;
-  v7 = [(NSMutableIndexSet *)self->mLineBreakIndexes containsIndex:a3];
-  if (!a3 || (v7 & 1) != 0 || ([a4 characterAtIndex:a3 - 1], (IsParagraphBreakingCharacter() & 1) == 0))
+  v7 = [(NSMutableIndexSet *)self->mLineBreakIndexes containsIndex:hint];
+  if (!hint || (v7 & 1) != 0 || ([storage characterAtIndex:hint - 1], (IsParagraphBreakingCharacter() & 1) == 0))
   {
-    self->mLastLineBreakHint = a3;
+    self->mLastLineBreakHint = hint;
   }
 
-  [(NSMutableIndexSet *)self->mLineBreakIndexes addIndex:a3];
+  [(NSMutableIndexSet *)self->mLineBreakIndexes addIndex:hint];
 
   self->mLastStartIdref = 0;
   self->mLastStartHint = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)lineBreaksForIdref:(id)a3 fromIndexSet:(id)a4
+- (id)lineBreaksForIdref:(id)idref fromIndexSet:(id)set
 {
-  v6 = [(NSMutableDictionary *)self->mIdrefStart objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->mIdrefStart objectForKey:idref];
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
   v8 = objc_alloc_init(NSMutableIndexSet);
-  for (i = -[NSMutableIndexSet indexGreaterThanIndex:](self->mStartIndexes, "indexGreaterThanIndex:", v7); v7 < i; v7 = [a4 indexGreaterThanIndex:v7])
+  for (i = -[NSMutableIndexSet indexGreaterThanIndex:](self->mStartIndexes, "indexGreaterThanIndex:", unsignedIntegerValue); unsignedIntegerValue < i; unsignedIntegerValue = [set indexGreaterThanIndex:unsignedIntegerValue])
   {
-    [v8 addIndex:v7];
+    [v8 addIndex:unsignedIntegerValue];
   }
 
   if (i != 0x7FFFFFFFFFFFFFFFLL)
@@ -96,24 +96,24 @@
   return v8;
 }
 
-- (void)updateLastLineBreakHintWithIndex:(unint64_t)a3 textStorage:(id)a4
+- (void)updateLastLineBreakHintWithIndex:(unint64_t)index textStorage:(id)storage
 {
-  if (a3)
+  if (index)
   {
-    [a4 characterAtIndex:a3 - 1];
+    [storage characterAtIndex:index - 1];
     if (IsParagraphBreakingCharacter())
     {
       mLastLineBreakHint = self->mLastLineBreakHint;
       if (mLastLineBreakHint != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (mLastLineBreakHint + 1 == a3)
+        if (mLastLineBreakHint + 1 == index)
         {
           if (self->mLastLineBreakHintAdded)
           {
             [(NSMutableIndexSet *)self->mLineBreakIndexes removeIndex:?];
           }
 
-          [(NSMutableIndexSet *)self->mLineBreakIndexes addIndex:a3];
+          [(NSMutableIndexSet *)self->mLineBreakIndexes addIndex:index];
         }
 
         self->mLastLineBreakHint = 0x7FFFFFFFFFFFFFFFLL;
@@ -122,15 +122,15 @@
       mLastStartHint = self->mLastStartHint;
       if (mLastStartHint != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (mLastStartHint + 1 == a3)
+        if (mLastStartHint + 1 == index)
         {
           if (self->mLastStartHintAdded)
           {
             [(NSMutableIndexSet *)self->mStartIndexes removeIndex:?];
           }
 
-          [(NSMutableIndexSet *)self->mStartIndexes addIndex:a3];
-          [(NSMutableDictionary *)self->mIdrefStart setObject:[NSNumber forKey:"numberWithUnsignedInteger:" numberWithUnsignedInteger:a3], self->mLastStartIdref];
+          [(NSMutableIndexSet *)self->mStartIndexes addIndex:index];
+          [(NSMutableDictionary *)self->mIdrefStart setObject:[NSNumber forKey:"numberWithUnsignedInteger:" numberWithUnsignedInteger:index], self->mLastStartIdref];
         }
 
         self->mLastStartHint = 0x7FFFFFFFFFFFFFFFLL;
@@ -141,59 +141,59 @@
   }
 }
 
-- (void)addHintCollection:(id)a3 idref:(id)a4
+- (void)addHintCollection:(id)collection idref:(id)idref
 {
-  if (a3 && a4)
+  if (collection && idref)
   {
     [(NSMutableArray *)self->mHintCollections addObject:?];
     mHintCollectionIdrefs = self->mHintCollectionIdrefs;
 
-    [(TSUPointerKeyDictionary *)mHintCollectionIdrefs setObject:a4 forUncopiedKey:a3];
+    [(TSUPointerKeyDictionary *)mHintCollectionIdrefs setObject:idref forUncopiedKey:collection];
   }
 }
 
-- (id)handleExtraIndexForTrailingParagraph:(id)a3 textStorage:(id)a4
+- (id)handleExtraIndexForTrailingParagraph:(id)paragraph textStorage:(id)storage
 {
-  v6 = [a4 length];
+  v6 = [storage length];
   v7 = v6 - 2;
   if (v6 >= 2)
   {
     v8 = v6;
-    if ([a3 containsIndex:v6])
+    if ([paragraph containsIndex:v6])
     {
       v9 = v8 - 1;
-      v10 = [a4 characterAtIndex:v9];
-      v11 = [a4 characterAtIndex:v7];
+      v10 = [storage characterAtIndex:v9];
+      v11 = [storage characterAtIndex:v7];
       if (v11 <= 0xC && ((1 << v11) & 0x1420) != 0 && v10 == 160)
       {
-        [a4 deleteRange:v9 undoTransaction:{1, 0}];
-        v12 = [[NSMutableIndexSet alloc] initWithIndexSet:a3];
-        [v12 removeIndex:{objc_msgSend(a3, "lastIndex")}];
+        [storage deleteRange:v9 undoTransaction:{1, 0}];
+        v12 = [[NSMutableIndexSet alloc] initWithIndexSet:paragraph];
+        [v12 removeIndex:{objc_msgSend(paragraph, "lastIndex")}];
         return v12;
       }
     }
   }
 
-  return a3;
+  return paragraph;
 }
 
-- (id)repairedIndexesForHintCollection:(id)a3 textStorage:(id)a4
+- (id)repairedIndexesForHintCollection:(id)collection textStorage:(id)storage
 {
   v7 = [(PFAIPresentationHintCollector *)self lineBreaksForIdref:[(TSUPointerKeyDictionary *)self->mHintCollectionIdrefs objectForKey:?] fromIndexSet:self->mLineBreakIndexes];
-  v8 = [a3 hintsCount] + 1;
+  v8 = [collection hintsCount] + 1;
   if ([v7 count] == v8)
   {
     return v7;
   }
 
-  return [(PFAIPresentationHintCollector *)self handleExtraIndexForTrailingParagraph:v7 textStorage:a4];
+  return [(PFAIPresentationHintCollector *)self handleExtraIndexForTrailingParagraph:v7 textStorage:storage];
 }
 
-- (void)processHintCollectionsWithStorage:(id)a3
+- (void)processHintCollectionsWithStorage:(id)storage
 {
-  if (a3)
+  if (storage)
   {
-    -[NSMutableIndexSet addIndex:](self->mLineBreakIndexes, "addIndex:", [a3 length]);
+    -[NSMutableIndexSet addIndex:](self->mLineBreakIndexes, "addIndex:", [storage length]);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -214,10 +214,10 @@
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [(PFAIPresentationHintCollector *)self repairedIndexesForHintCollection:v10 textStorage:a3];
+          v11 = [(PFAIPresentationHintCollector *)self repairedIndexesForHintCollection:v10 textStorage:storage];
           if (v11)
           {
-            [v10 applePubUpdateRangesWithLineBreakIndexes:v11 textStorage:a3];
+            [v10 applePubUpdateRangesWithLineBreakIndexes:v11 textStorage:storage];
           }
         }
 

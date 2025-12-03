@@ -24,16 +24,16 @@
   v6 = a3;
   if ([v6 length] > 0x2000)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"NSItemProvider+UIKitAdditions.m" lineNumber:44 description:{@"teamData may not exceed %lu bytes in length.", 0x2000}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSItemProvider+UIKitAdditions.m" lineNumber:44 description:{@"teamData may not exceed %lu bytes in length.", 0x2000}];
   }
 
-  [a1 _setMetadataValue:v6 forKey:*MEMORY[0x1E69BC868]];
+  [self _setMetadataValue:v6 forKey:*MEMORY[0x1E69BC868]];
 }
 
 - (id)teamData
 {
-  v1 = [a1 _metadataValueForKey:*MEMORY[0x1E69BC868]];
+  v1 = [self _metadataValueForKey:*MEMORY[0x1E69BC868]];
   if (v1)
   {
     objc_opt_class();
@@ -49,7 +49,7 @@
 
 - (double)preferredPresentationSize
 {
-  v1 = [a1 _metadataValueForKey:*MEMORY[0x1E69BC850]];
+  v1 = [self _metadataValueForKey:*MEMORY[0x1E69BC850]];
   [v1 CGSizeValue];
   v3 = v2;
 
@@ -62,13 +62,13 @@
   {
     v5 = *MEMORY[0x1E69BC850];
 
-    [a1 _setMetadataValue:0 forKey:v5];
+    [self _setMetadataValue:0 forKey:v5];
   }
 
   else
   {
     v6 = [MEMORY[0x1E696B098] valueWithCGSize:?];
-    [a1 _setMetadataValue:v6 forKey:*MEMORY[0x1E69BC850]];
+    [self _setMetadataValue:v6 forKey:*MEMORY[0x1E69BC850]];
   }
 }
 
@@ -78,22 +78,22 @@
   if (objc_opt_respondsToSelector())
   {
     [v4 preferredPresentationSizeForItemProvider];
-    [a1 setPreferredPresentationSize:?];
+    [self setPreferredPresentationSize:?];
   }
 }
 
 - (uint64_t)preferredPresentationStyle
 {
-  v1 = [a1 _metadataValueForKey:*MEMORY[0x1E69BC858]];
-  v2 = [v1 integerValue];
+  v1 = [self _metadataValueForKey:*MEMORY[0x1E69BC858]];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (void)setPreferredPresentationStyle:()UIKitAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 _setMetadataValue:v2 forKey:*MEMORY[0x1E69BC858]];
+  [self _setMetadataValue:v2 forKey:*MEMORY[0x1E69BC858]];
 }
 
 - (void)registerFileProviderItemForTypeIdentifier:()UIKitAdditions visibility:loadHandler:
@@ -107,28 +107,28 @@
     v9[2] = __99__NSItemProvider_UIKitAdditions__registerFileProviderItemForTypeIdentifier_visibility_loadHandler___block_invoke;
     v9[3] = &unk_1E7119DC8;
     v10 = v8;
-    [a1 _addRepresentationType_v2:v7 preferredRepresentation:1 loader:v9];
+    [self _addRepresentationType_v2:v7 preferredRepresentation:1 loader:v9];
   }
 }
 
 - (void)registerFileRepresentationForTypeIdentifier:()UIKitAdditions dataAvailableImmediately:visibility:loadHandler:
 {
   v6 = a3;
-  [a1 registerFileRepresentationForTypeIdentifier:? fileOptions:? visibility:? loadHandler:?];
+  [self registerFileRepresentationForTypeIdentifier:? fileOptions:? visibility:? loadHandler:?];
   if (a4)
   {
-    [a1 setDataAvailability:1 forTypeIdentifier:v6];
+    [self setDataAvailability:1 forTypeIdentifier:v6];
   }
 }
 
 - (uint64_t)isDataAvailableImmediatelyForTypeIdentifier:()UIKitAdditions
 {
   v4 = a3;
-  v5 = [a1 dataAvailabilityByTypeIdentifier];
-  v6 = [v5 objectForKey:v4];
+  dataAvailabilityByTypeIdentifier = [self dataAvailabilityByTypeIdentifier];
+  v6 = [dataAvailabilityByTypeIdentifier objectForKey:v4];
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)setDataAvailability:()UIKitAdditions forTypeIdentifier:
@@ -136,35 +136,35 @@
   v10 = a4;
   if (!v10)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSItemProvider+UIKitAdditions.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSItemProvider+UIKitAdditions.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
-  v7 = [a1 dataAvailabilityByTypeIdentifier];
-  if (!v7)
+  dataAvailabilityByTypeIdentifier = [self dataAvailabilityByTypeIdentifier];
+  if (!dataAvailabilityByTypeIdentifier)
   {
-    v7 = objc_opt_new();
-    objc_setAssociatedObject(a1, &kDataAvailableImmediately, v7, 0x301);
+    dataAvailabilityByTypeIdentifier = objc_opt_new();
+    objc_setAssociatedObject(self, &kDataAvailableImmediately, dataAvailabilityByTypeIdentifier, 0x301);
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [v7 setObject:v8 forKeyedSubscript:v10];
+  [dataAvailabilityByTypeIdentifier setObject:v8 forKeyedSubscript:v10];
 }
 
 - (uint64_t)isDerivedRepresentationForTypeIdentifier:()UIKitAdditions
 {
   v4 = a3;
-  v5 = [a1 derivedRepresentationByTypeIdentfier];
-  v6 = [v5 objectForKey:v4];
+  derivedRepresentationByTypeIdentfier = [self derivedRepresentationByTypeIdentfier];
+  v6 = [derivedRepresentationByTypeIdentfier objectForKey:v4];
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)hasDerivedRepresentations
 {
-  v1 = [a1 derivedRepresentationByTypeIdentfier];
-  v2 = [v1 count] != 0;
+  derivedRepresentationByTypeIdentfier = [self derivedRepresentationByTypeIdentfier];
+  v2 = [derivedRepresentationByTypeIdentfier count] != 0;
 
   return v2;
 }
@@ -174,26 +174,26 @@
   v10 = a4;
   if (!v10)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSItemProvider+UIKitAdditions.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSItemProvider+UIKitAdditions.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
-  v7 = [a1 derivedRepresentationByTypeIdentfier];
-  if (!v7)
+  derivedRepresentationByTypeIdentfier = [self derivedRepresentationByTypeIdentfier];
+  if (!derivedRepresentationByTypeIdentfier)
   {
-    v7 = objc_opt_new();
-    objc_setAssociatedObject(a1, &kDataDerivedRepresentation, v7, 0x301);
+    derivedRepresentationByTypeIdentfier = objc_opt_new();
+    objc_setAssociatedObject(self, &kDataDerivedRepresentation, derivedRepresentationByTypeIdentfier, 0x301);
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [v7 setObject:v8 forKeyedSubscript:v10];
+  [derivedRepresentationByTypeIdentfier setObject:v8 forKeyedSubscript:v10];
 }
 
 - (id)_highestFidelityClassForLoading:()UIKitAdditions
 {
   v69 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E69BC7F8] defaultRegistry];
+  defaultRegistry = [MEMORY[0x1E69BC7F8] defaultRegistry];
   v6 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
@@ -204,8 +204,8 @@
   if (v40)
   {
     v39 = *v56;
-    v36 = a1;
-    v37 = v5;
+    selfCopy = self;
+    v37 = defaultRegistry;
     v42 = v6;
     do
     {
@@ -221,14 +221,14 @@
 
         v41 = v7;
         v9 = *(*(&v55 + 1) + 8 * v7);
-        if ([a1 canLoadObjectOfClass:{v9, v36, v37}])
+        if ([self canLoadObjectOfClass:{v9, selfCopy, v37}])
         {
           v53 = 0uLL;
           v54 = 0uLL;
           v51 = 0uLL;
           v52 = 0uLL;
-          v46 = [a1 registeredTypeIdentifiers];
-          v10 = [v46 countByEnumeratingWithState:&v51 objects:v66 count:16];
+          registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+          v10 = [registeredTypeIdentifiers countByEnumeratingWithState:&v51 objects:v66 count:16];
           if (v10)
           {
             v11 = v10;
@@ -244,7 +244,7 @@
               {
                 if (*v52 != v13)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(registeredTypeIdentifiers);
                 }
 
                 v15 = *(*(&v51 + 1) + 8 * v14);
@@ -255,8 +255,8 @@
                   v60 = 0u;
                   v61 = 0u;
                   v62 = 0u;
-                  v17 = [v9 readableTypeIdentifiersForItemProvider];
-                  v18 = [v17 countByEnumeratingWithState:&v59 objects:v68 count:16];
+                  readableTypeIdentifiersForItemProvider = [v9 readableTypeIdentifiersForItemProvider];
+                  v18 = [readableTypeIdentifiersForItemProvider countByEnumeratingWithState:&v59 objects:v68 count:16];
                   if (v18)
                   {
                     v19 = v18;
@@ -267,7 +267,7 @@
                       {
                         if (*v60 != v20)
                         {
-                          objc_enumerationMutation(v17);
+                          objc_enumerationMutation(readableTypeIdentifiersForItemProvider);
                         }
 
                         v22 = [MEMORY[0x1E6982C40] _typeWithIdentifier:*(*(&v59 + 1) + 8 * i) allowUndeclared:1];
@@ -287,7 +287,7 @@
                         }
                       }
 
-                      v19 = [v17 countByEnumeratingWithState:&v59 objects:v68 count:16];
+                      v19 = [readableTypeIdentifiersForItemProvider countByEnumeratingWithState:&v59 objects:v68 count:16];
                       if (v19)
                       {
                         continue;
@@ -312,12 +312,12 @@ LABEL_24:
               }
 
               while (v14 != v11);
-              v11 = [v46 countByEnumeratingWithState:&v51 objects:v66 count:16];
+              v11 = [registeredTypeIdentifiers countByEnumeratingWithState:&v51 objects:v66 count:16];
             }
 
             while (v11);
-            a1 = v36;
-            v5 = v37;
+            self = selfCopy;
+            defaultRegistry = v37;
             v6 = v42;
           }
         }
@@ -328,8 +328,8 @@ LABEL_24:
           v50 = 0uLL;
           v47 = 0uLL;
           v48 = 0uLL;
-          v46 = [a1 registeredTypeIdentifiers];
-          v26 = [v46 countByEnumeratingWithState:&v47 objects:v64 count:16];
+          registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+          v26 = [registeredTypeIdentifiers countByEnumeratingWithState:&v47 objects:v64 count:16];
           if (v26)
           {
             v27 = v26;
@@ -341,10 +341,10 @@ LABEL_24:
               {
                 if (*v48 != v28)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(registeredTypeIdentifiers);
                 }
 
-                if ([v5 canCoerceFromRepresentationConformingToType:*(*(&v47 + 1) + 8 * j) toObjectOfClass:v9])
+                if ([defaultRegistry canCoerceFromRepresentationConformingToType:*(*(&v47 + 1) + 8 * j) toObjectOfClass:v9])
                 {
                   v63[0] = v9;
                   v31 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
@@ -356,7 +356,7 @@ LABEL_24:
                 ++v29;
               }
 
-              v27 = [v46 countByEnumeratingWithState:&v47 objects:v64 count:16];
+              v27 = [registeredTypeIdentifiers countByEnumeratingWithState:&v47 objects:v64 count:16];
             }
 
             while (v27);
@@ -376,37 +376,37 @@ LABEL_24:
   if ([v6 count])
   {
     [v6 sortUsingComparator:&__block_literal_global_437];
-    v33 = [v6 firstObject];
-    v34 = [v33 firstObject];
+    firstObject = [v6 firstObject];
+    v33FirstObject = [firstObject firstObject];
   }
 
   else
   {
-    v34 = 0;
+    v33FirstObject = 0;
   }
 
-  return v34;
+  return v33FirstObject;
 }
 
 - (id)_loadObjectOfClass:()UIKitAdditions userInfo:completionHandler:
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 registeredTypeIdentifiers];
-  v11 = [v10 mutableCopy];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v11 = [registeredTypeIdentifiers mutableCopy];
 
-  v12 = [a3 readableTypeIdentifiersForItemProvider];
-  v13 = _bestMatchConformingToTypes(v12, v11);
+  readableTypeIdentifiersForItemProvider = [a3 readableTypeIdentifiersForItemProvider];
+  v13 = _bestMatchConformingToTypes(readableTypeIdentifiersForItemProvider, v11);
   if (v13)
   {
     v14 = v13;
-    v15 = 0;
+    defaultRegistry = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69BC7F8] defaultRegistry];
-    v16 = [v15 acceptableRepresentationTypesForCreatingObjectOfClass:a3];
+    defaultRegistry = [MEMORY[0x1E69BC7F8] defaultRegistry];
+    v16 = [defaultRegistry acceptableRepresentationTypesForCreatingObjectOfClass:a3];
     v14 = _bestMatchConformingToTypes(v16, v11);
 
     if (!v14)
@@ -418,7 +418,7 @@ LABEL_24:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v18 = objc_opt_respondsToSelector();
-    if (v15)
+    if (defaultRegistry)
     {
       goto LABEL_12;
     }
@@ -431,11 +431,11 @@ LABEL_24:
   if (v17)
   {
 LABEL_11:
-    v19 = [a1 loadObjectOfClass:a3 completionHandler:v9];
+    v19 = [self loadObjectOfClass:a3 completionHandler:v9];
     goto LABEL_13;
   }
 
-  if (v15)
+  if (defaultRegistry)
   {
     goto LABEL_12;
   }
@@ -443,7 +443,7 @@ LABEL_11:
 LABEL_9:
   if ((v18 & 1) == 0)
   {
-    v15 = 0;
+    defaultRegistry = 0;
     goto LABEL_11;
   }
 
@@ -453,15 +453,15 @@ LABEL_12:
   v22[1] = 3221225472;
   v22[2] = __80__NSItemProvider_UIKitAdditions___loadObjectOfClass_userInfo_completionHandler___block_invoke;
   v22[3] = &unk_1E7119E10;
-  v15 = v15;
-  v23 = v15;
+  defaultRegistry = defaultRegistry;
+  v23 = defaultRegistry;
   v27 = a3;
   v14 = v14;
   v24 = v14;
   v28 = v20;
   v25 = v8;
   v26 = v9;
-  v19 = [a1 loadDataRepresentationForTypeIdentifier:v14 completionHandler:v22];
+  v19 = [self loadDataRepresentationForTypeIdentifier:v14 completionHandler:v22];
 
 LABEL_13:
 

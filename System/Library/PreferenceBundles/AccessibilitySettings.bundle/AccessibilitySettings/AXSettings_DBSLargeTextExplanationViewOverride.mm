@@ -1,24 +1,24 @@
 @interface AXSettings_DBSLargeTextExplanationViewOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AXSettings_DBSLargeTextExplanationViewOverride)initWithSpecifier:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AXSettings_DBSLargeTextExplanationViewOverride)initWithSpecifier:(id)specifier;
 @end
 
 @implementation AXSettings_DBSLargeTextExplanationViewOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DBSLargeTextExplanationView" hasInstanceVariable:@"_bodyExampleLabel" withType:"UILabel"];
-  [v3 validateClass:@"DBSLargeTextExplanationView" hasInstanceVariable:@"_bodyExampleTextView" withType:"UITextView"];
-  [v3 validateClass:@"DBSLargeTextExplanationView" hasInstanceMethod:@"initWithSpecifier:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DBSLargeTextExplanationView" hasInstanceVariable:@"_bodyExampleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DBSLargeTextExplanationView" hasInstanceVariable:@"_bodyExampleTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"DBSLargeTextExplanationView" hasInstanceMethod:@"initWithSpecifier:" withFullSignature:{"@", 0}];
 }
 
-- (AXSettings_DBSLargeTextExplanationViewOverride)initWithSpecifier:(id)a3
+- (AXSettings_DBSLargeTextExplanationViewOverride)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = AXSettings_DBSLargeTextExplanationViewOverride;
-  v5 = [(AXSettings_DBSLargeTextExplanationViewOverride *)&v13 initWithSpecifier:v4];
+  v5 = [(AXSettings_DBSLargeTextExplanationViewOverride *)&v13 initWithSpecifier:specifierCopy];
   if (v5)
   {
     objc_opt_class();

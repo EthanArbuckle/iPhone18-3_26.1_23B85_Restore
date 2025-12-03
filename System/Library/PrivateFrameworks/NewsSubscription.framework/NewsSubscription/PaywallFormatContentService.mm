@@ -1,14 +1,14 @@
 @interface PaywallFormatContentService
 - (_TtC16NewsSubscription27PaywallFormatContentService)init;
-- (void)bundleSubscriptionDidExpire:(void *)a1;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidExpire:(void *)expire;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation PaywallFormatContentService
 
-- (void)bundleSubscriptionDidExpire:(void *)a1
+- (void)bundleSubscriptionDidExpire:(void *)expire
 {
-  v1 = a1;
+  expireCopy = expire;
   sub_1D77E9110();
 }
 
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_1D77EF048();
 }
 

@@ -3,28 +3,28 @@
 - (BOOL)checkForLegacyEscrowData;
 - (BOOL)ltkFileExists;
 - (BOOL)ltksExist;
-- (BOOL)setupWithAuthSession:(int64_t)a3 passcode:(id)a4;
-- (BOOL)storeEscrowData:(id)a3;
+- (BOOL)setupWithAuthSession:(int64_t)session passcode:(id)passcode;
+- (BOOL)storeEscrowData:(id)data;
 - (NSData)localLongTermKey;
 - (NSData)remoteLongTermKey;
-- (SDUnlockSecurityManager)initWithPairingID:(id)a3 pairingStorePath:(id)a4 deviceName:(id)a5;
+- (SDUnlockSecurityManager)initWithPairingID:(id)d pairingStorePath:(id)path deviceName:(id)name;
 - (id)allKeychainItems;
 - (id)baseDictionary;
 - (id)escrowData;
-- (id)escrowSecretWithAuthSession:(int64_t)a3;
-- (id)generateLocalLongTermKey:(int64_t)a3;
+- (id)escrowSecretWithAuthSession:(int64_t)session;
+- (id)generateLocalLongTermKey:(int64_t)key;
 - (id)legacyEscrowData;
 - (id)legacyLocalLongTermKey;
 - (id)legacyRemoteLongTermKey;
 - (id)longTermKeyStorageFilePath;
-- (id)signRemoteKey:(id)a3 withLocalKey:(id)a4 localKeyClass:(int64_t)a5 remoteKeyClass:(int64_t)a6;
-- (id)stepWithAuthSession:(int64_t)a3 data:(id)a4 authStep:(BOOL)a5 errorCode:(int64_t *)a6;
-- (int64_t)authSessionWithFlags:(unsigned int)a3 secret:(id)a4 errorCode:(int *)a5;
-- (int64_t)escrowCreationSessionAsOriginator:(BOOL)a3 errorCode:(int *)a4;
-- (int64_t)stashBagSessionAsOriginator:(BOOL)a3 escrowSecret:(id)a4 manifest:(id)a5;
-- (int64_t)unlockSessionAsOriginator:(BOOL)a3 usingEscrow:(BOOL)a4 escrowSecret:(id)a5 errorCode:(int *)a6;
-- (void)checkForBackupExclusion:(id)a3;
-- (void)clearStateForSession:(int64_t)a3;
+- (id)signRemoteKey:(id)key withLocalKey:(id)localKey localKeyClass:(int64_t)class remoteKeyClass:(int64_t)keyClass;
+- (id)stepWithAuthSession:(int64_t)session data:(id)data authStep:(BOOL)step errorCode:(int64_t *)code;
+- (int64_t)authSessionWithFlags:(unsigned int)flags secret:(id)secret errorCode:(int *)code;
+- (int64_t)escrowCreationSessionAsOriginator:(BOOL)originator errorCode:(int *)code;
+- (int64_t)stashBagSessionAsOriginator:(BOOL)originator escrowSecret:(id)secret manifest:(id)manifest;
+- (int64_t)unlockSessionAsOriginator:(BOOL)originator usingEscrow:(BOOL)escrow escrowSecret:(id)secret errorCode:(int *)code;
+- (void)checkForBackupExclusion:(id)exclusion;
+- (void)clearStateForSession:(int64_t)session;
 - (void)deleteEscrowData;
 - (void)deleteLegacyEscrowData;
 - (void)deleteLongTermKeys;
@@ -34,39 +34,39 @@
 - (void)migrateOldKeysIfNeeded;
 - (void)resetEscrowRecord;
 - (void)saveLongTermKeys;
-- (void)updateLocalLongTermKey:(id)a3 remoteLongTermKey:(id)a4;
+- (void)updateLocalLongTermKey:(id)key remoteLongTermKey:(id)termKey;
 - (void)validateKeybagUUID;
 @end
 
 @implementation SDUnlockSecurityManager
 
-- (SDUnlockSecurityManager)initWithPairingID:(id)a3 pairingStorePath:(id)a4 deviceName:(id)a5
+- (SDUnlockSecurityManager)initWithPairingID:(id)d pairingStorePath:(id)path deviceName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  pathCopy = path;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = SDUnlockSecurityManager;
   v11 = [(SDUnlockSecurityManager *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     pairingID = v11->_pairingID;
     v11->_pairingID = v12;
 
-    v14 = [v9 copy];
+    v14 = [pathCopy copy];
     pairingStorePath = v11->_pairingStorePath;
     v11->_pairingStorePath = v14;
 
-    v16 = [v10 copy];
+    v16 = [nameCopy copy];
     deviceName = v11->_deviceName;
     v11->_deviceName = v16;
 
     [(SDUnlockSecurityManager *)v11 migrateOldKeysIfNeeded];
     v18 = +[SDStatusMonitor sharedMonitor];
-    v19 = [v18 deviceKeyBagUnlocked];
+    deviceKeyBagUnlocked = [v18 deviceKeyBagUnlocked];
 
-    if (v19)
+    if (deviceKeyBagUnlocked)
     {
       [(SDUnlockSecurityManager *)v11 migrateEscrowDataIfNeeded];
     }
@@ -77,13 +77,13 @@
 
 - (BOOL)ltksExist
 {
-  v3 = [(SDUnlockSecurityManager *)self localLongTermKey];
-  if (v3)
+  localLongTermKey = [(SDUnlockSecurityManager *)self localLongTermKey];
+  if (localLongTermKey)
   {
-    v4 = v3;
-    v5 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+    v4 = localLongTermKey;
+    remoteLongTermKey = [(SDUnlockSecurityManager *)self remoteLongTermKey];
 
-    if (v5)
+    if (remoteLongTermKey)
     {
       v6 = paired_unlock_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -92,19 +92,19 @@
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "LTKs exists", v8, 2u);
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(localLongTermKey) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(localLongTermKey) = 0;
     }
   }
 
-  return v3;
+  return localLongTermKey;
 }
 
-- (id)generateLocalLongTermKey:(int64_t)a3
+- (id)generateLocalLongTermKey:(int64_t)key
 {
   v9 = 0;
   v10 = 0;
@@ -138,19 +138,19 @@
   return v4;
 }
 
-- (id)signRemoteKey:(id)a3 withLocalKey:(id)a4 localKeyClass:(int64_t)a5 remoteKeyClass:(int64_t)a6
+- (id)signRemoteKey:(id)key withLocalKey:(id)localKey localKeyClass:(int64_t)class remoteKeyClass:(int64_t)keyClass
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  keyCopy = key;
+  localKeyCopy = localKey;
+  v9 = localKeyCopy;
   v12 = 0;
   v13 = 0;
-  if (v8)
+  if (localKeyCopy)
   {
-    [v8 bytes];
+    [localKeyCopy bytes];
     [v9 length];
-    [v7 bytes];
-    [v7 length];
+    [keyCopy bytes];
+    [keyCopy length];
     aks_sign_signing_key();
     v10 = paired_unlock_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -176,10 +176,10 @@
   return 0;
 }
 
-- (void)updateLocalLongTermKey:(id)a3 remoteLongTermKey:(id)a4
+- (void)updateLocalLongTermKey:(id)key remoteLongTermKey:(id)termKey
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  termKeyCopy = termKey;
   p_localLongTermKey = &self->_localLongTermKey;
   if (*&self->_localLongTermKey != 0)
   {
@@ -196,67 +196,67 @@
     }
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  objc_storeStrong(p_localLongTermKey, a3);
-  objc_storeStrong(&v13->_remoteLongTermKey, a4);
-  [(SDUnlockSecurityManager *)v13 saveLongTermKeys];
-  objc_sync_exit(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(p_localLongTermKey, key);
+  objc_storeStrong(&selfCopy->_remoteLongTermKey, termKey);
+  [(SDUnlockSecurityManager *)selfCopy saveLongTermKeys];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)deleteLongTermKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  localLongTermKey = v2->_localLongTermKey;
-  v2->_localLongTermKey = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localLongTermKey = selfCopy->_localLongTermKey;
+  selfCopy->_localLongTermKey = 0;
 
-  remoteLongTermKey = v2->_remoteLongTermKey;
-  v2->_remoteLongTermKey = 0;
+  remoteLongTermKey = selfCopy->_remoteLongTermKey;
+  selfCopy->_remoteLongTermKey = 0;
 
-  [(SDUnlockSecurityManager *)v2 deletePersistedLongTermKeys];
+  [(SDUnlockSecurityManager *)selfCopy deletePersistedLongTermKeys];
   v5 = paired_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SDUnlockSecurityManager *)v2 pairingID];
+    pairingID = [(SDUnlockSecurityManager *)selfCopy pairingID];
     v7 = 138412290;
-    v8 = v6;
+    v8 = pairingID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleted LTKs for %@", &v7, 0xCu);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSData)localLongTermKey
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  localLongTermKey = v2->_localLongTermKey;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localLongTermKey = selfCopy->_localLongTermKey;
   if (!localLongTermKey)
   {
-    [(SDUnlockSecurityManager *)v2 loadLongTermKeys];
-    localLongTermKey = v2->_localLongTermKey;
+    [(SDUnlockSecurityManager *)selfCopy loadLongTermKeys];
+    localLongTermKey = selfCopy->_localLongTermKey;
   }
 
   v4 = localLongTermKey;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (NSData)remoteLongTermKey
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  remoteLongTermKey = v2->_remoteLongTermKey;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  remoteLongTermKey = selfCopy->_remoteLongTermKey;
   if (!remoteLongTermKey)
   {
-    [(SDUnlockSecurityManager *)v2 loadLongTermKeys];
-    remoteLongTermKey = v2->_remoteLongTermKey;
+    [(SDUnlockSecurityManager *)selfCopy loadLongTermKeys];
+    remoteLongTermKey = selfCopy->_remoteLongTermKey;
   }
 
   v4 = remoteLongTermKey;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -266,8 +266,8 @@
   if (self->_keybagUUID)
   {
     v3 = sub_10005C828();
-    v4 = [v3 UUIDString];
-    v5 = [v4 isEqualToString:self->_keybagUUID];
+    uUIDString = [v3 UUIDString];
+    v5 = [uUIDString isEqualToString:self->_keybagUUID];
 
     v6 = paired_unlock_log();
     v7 = v6;
@@ -293,9 +293,9 @@
   }
 }
 
-- (void)checkForBackupExclusion:(id)a3
+- (void)checkForBackupExclusion:(id)exclusion
 {
-  v4 = [a3 objectForKeyedSubscript:@"SDUnlockBackupExclusion"];
+  v4 = [exclusion objectForKeyedSubscript:@"SDUnlockBackupExclusion"];
   v5 = v4;
   if (self->_localLongTermKey && self->_remoteLongTermKey && ([v4 BOOLValue] & 1) == 0)
   {
@@ -312,9 +312,9 @@
 
 - (void)saveLongTermKeys
 {
-  v3 = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
-  v4 = v3;
-  if (!self->_localLongTermKey || (self->_remoteLongTermKey ? (v5 = v3 == 0) : (v5 = 1), v5))
+  longTermKeyStorageFilePath = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
+  v4 = longTermKeyStorageFilePath;
+  if (!self->_localLongTermKey || (self->_remoteLongTermKey ? (v5 = longTermKeyStorageFilePath == 0) : (v5 = 1), v5))
   {
     v6 = paired_unlock_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -351,16 +351,16 @@
     v10 = objc_opt_new();
     [(__CFString *)v10 setObject:self->_localLongTermKey forKeyedSubscript:@"SDUnlockLocalLTK"];
     [(__CFString *)v10 setObject:self->_remoteLongTermKey forKeyedSubscript:@"SDUnlockRemoteLTK"];
-    v11 = [(SDUnlockSecurityManager *)self pairingID];
-    [(__CFString *)v10 setObject:v11 forKeyedSubscript:@"SDUnlockPairingID"];
+    pairingID = [(SDUnlockSecurityManager *)self pairingID];
+    [(__CFString *)v10 setObject:pairingID forKeyedSubscript:@"SDUnlockPairingID"];
 
     [(__CFString *)v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SDUnlockBackupExclusion"];
     v12 = sub_10005C828();
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 UUIDString];
-      [(__CFString *)v10 setObject:v14 forKeyedSubscript:@"SDUnlockKeybagUUID"];
+      uUIDString = [v12 UUIDString];
+      [(__CFString *)v10 setObject:uUIDString forKeyedSubscript:@"SDUnlockKeybagUUID"];
     }
 
     v26 = 0;
@@ -429,11 +429,11 @@
 
 - (void)loadLongTermKeys
 {
-  v3 = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
-  if (v3)
+  longTermKeyStorageFilePath = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
+  if (longTermKeyStorageFilePath)
   {
     v20 = 0;
-    v4 = [[NSData alloc] initWithContentsOfFile:v3 options:0 error:&v20];
+    v4 = [[NSData alloc] initWithContentsOfFile:longTermKeyStorageFilePath options:0 error:&v20];
     v5 = v20;
     if (v4)
     {
@@ -499,12 +499,12 @@
 
 - (void)deletePersistedLongTermKeys
 {
-  v3 = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
-  if (v3)
+  longTermKeyStorageFilePath = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
+  if (longTermKeyStorageFilePath)
   {
     v4 = +[NSFileManager defaultManager];
     v12 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v12];
+    v5 = [v4 removeItemAtPath:longTermKeyStorageFilePath error:&v12];
     v6 = v12;
 
     if (v5)
@@ -559,8 +559,8 @@ LABEL_14:
 
 - (id)longTermKeyStorageFilePath
 {
-  v3 = [(SDUnlockSecurityManager *)self pairingStorePath];
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.sharing"];
+  pairingStorePath = [(SDUnlockSecurityManager *)self pairingStorePath];
+  v4 = [pairingStorePath stringByAppendingPathComponent:@"com.apple.sharing"];
 
   v5 = +[NSFileManager defaultManager];
   v11 = 0;
@@ -588,18 +588,18 @@ LABEL_14:
 
 - (BOOL)ltkFileExists
 {
-  v3 = [(SDUnlockSecurityManager *)self pairingID];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-  if (v3)
+  if (pairingID)
   {
-    v4 = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
-    if (v4)
+    longTermKeyStorageFilePath = [(SDUnlockSecurityManager *)self longTermKeyStorageFilePath];
+    if (longTermKeyStorageFilePath)
     {
-      v5 = [NSURL fileURLWithPath:v4];
+      v5 = [NSURL fileURLWithPath:longTermKeyStorageFilePath];
       v9 = 0;
-      LOBYTE(v3) = [v5 checkResourceIsReachableAndReturnError:&v9];
+      LOBYTE(pairingID) = [v5 checkResourceIsReachableAndReturnError:&v9];
       v6 = v9;
-      if ((v3 & 1) == 0)
+      if ((pairingID & 1) == 0)
       {
         v7 = auto_unlock_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -611,11 +611,11 @@ LABEL_14:
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(pairingID) = 0;
     }
   }
 
-  return v3;
+  return pairingID;
 }
 
 - (id)legacyRemoteLongTermKey
@@ -636,21 +636,21 @@ LABEL_14:
 
 - (void)migrateOldKeysIfNeeded
 {
-  v3 = [(SDUnlockSecurityManager *)self legacyLocalLongTermKey];
-  v4 = [(SDUnlockSecurityManager *)self legacyRemoteLongTermKey];
-  v5 = v4;
-  if (v3 && v4)
+  legacyLocalLongTermKey = [(SDUnlockSecurityManager *)self legacyLocalLongTermKey];
+  legacyRemoteLongTermKey = [(SDUnlockSecurityManager *)self legacyRemoteLongTermKey];
+  v5 = legacyRemoteLongTermKey;
+  if (legacyLocalLongTermKey && legacyRemoteLongTermKey)
   {
     v6 = paired_unlock_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SDUnlockSecurityManager *)self pairingID];
+      pairingID = [(SDUnlockSecurityManager *)self pairingID];
       v11 = 138412290;
-      v12 = v7;
+      v12 = pairingID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Migrating old keys to %@", &v11, 0xCu);
     }
 
-    [(SDUnlockSecurityManager *)self updateLocalLongTermKey:v3 remoteLongTermKey:v5];
+    [(SDUnlockSecurityManager *)self updateLocalLongTermKey:legacyLocalLongTermKey remoteLongTermKey:v5];
     v8 = +[NSUserDefaults standardUserDefaults];
     [v8 removeObjectForKey:@"UnlockSecurityLocalLongTermKey"];
 
@@ -662,9 +662,9 @@ LABEL_14:
   }
 }
 
-- (int64_t)escrowCreationSessionAsOriginator:(BOOL)a3 errorCode:(int *)a4
+- (int64_t)escrowCreationSessionAsOriginator:(BOOL)originator errorCode:(int *)code
 {
-  if (a3)
+  if (originator)
   {
     v4 = 132;
   }
@@ -674,12 +674,12 @@ LABEL_14:
     v4 = 4;
   }
 
-  return [(SDUnlockSecurityManager *)self authSessionWithFlags:v4 secret:0 errorCode:a4];
+  return [(SDUnlockSecurityManager *)self authSessionWithFlags:v4 secret:0 errorCode:code];
 }
 
-- (int64_t)unlockSessionAsOriginator:(BOOL)a3 usingEscrow:(BOOL)a4 escrowSecret:(id)a5 errorCode:(int *)a6
+- (int64_t)unlockSessionAsOriginator:(BOOL)originator usingEscrow:(BOOL)escrow escrowSecret:(id)secret errorCode:(int *)code
 {
-  if (a3)
+  if (originator)
   {
     v6 = 128;
   }
@@ -689,7 +689,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  if (a4)
+  if (escrow)
   {
     v7 = 5;
   }
@@ -699,15 +699,15 @@ LABEL_14:
     v7 = 2;
   }
 
-  return [(SDUnlockSecurityManager *)self authSessionWithFlags:v7 | v6 secret:a5 errorCode:a6];
+  return [(SDUnlockSecurityManager *)self authSessionWithFlags:v7 | v6 secret:secret errorCode:code];
 }
 
-- (int64_t)stashBagSessionAsOriginator:(BOOL)a3 escrowSecret:(id)a4 manifest:(id)a5
+- (int64_t)stashBagSessionAsOriginator:(BOOL)originator escrowSecret:(id)secret manifest:(id)manifest
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8 == 0 && v6)
+  originatorCopy = originator;
+  manifestCopy = manifest;
+  v9 = manifestCopy;
+  if (manifestCopy == 0 && originatorCopy)
   {
     v10 = 134;
   }
@@ -717,7 +717,7 @@ LABEL_14:
     v10 = 137;
   }
 
-  if (v6)
+  if (originatorCopy)
   {
     v11 = v10;
   }
@@ -727,18 +727,18 @@ LABEL_14:
     v11 = 9;
   }
 
-  if (v8)
+  if (manifestCopy)
   {
-    v12 = a4;
-    v13 = a4;
-    [v13 bytes];
-    [v13 length];
+    secretCopy = secret;
+    secretCopy2 = secret;
+    [secretCopy2 bytes];
+    [secretCopy2 length];
 
     [v9 bytes];
     [v9 length];
     aks_create_escrow_blob();
-    v14 = paired_unlock_log();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    secretCopy3 = paired_unlock_log();
+    if (os_log_type_enabled(secretCopy3, OS_LOG_TYPE_ERROR))
     {
       sub_1001CF2C0();
     }
@@ -748,57 +748,57 @@ LABEL_14:
 
   else
   {
-    v14 = a4;
-    v15 = [(SDUnlockSecurityManager *)self authSessionWithFlags:v11 secret:v14];
+    secretCopy3 = secret;
+    v15 = [(SDUnlockSecurityManager *)self authSessionWithFlags:v11 secret:secretCopy3];
   }
 
   return v15;
 }
 
-- (int64_t)authSessionWithFlags:(unsigned int)a3 secret:(id)a4 errorCode:(int *)a5
+- (int64_t)authSessionWithFlags:(unsigned int)flags secret:(id)secret errorCode:(int *)code
 {
-  v8 = a4;
+  secretCopy = secret;
   v36 = 0;
-  v9 = [(SDUnlockSecurityManager *)self localLongTermKey];
-  if (v9)
+  localLongTermKey = [(SDUnlockSecurityManager *)self localLongTermKey];
+  if (localLongTermKey)
   {
-    v10 = v9;
-    v11 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+    v10 = localLongTermKey;
+    remoteLongTermKey = [(SDUnlockSecurityManager *)self remoteLongTermKey];
 
-    if (v11)
+    if (remoteLongTermKey)
     {
-      v34 = a5;
+      codeCopy = code;
       v12 = paired_unlock_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v38 = a3;
+        flagsCopy = flags;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Creating auth session with flags = %d", buf, 8u);
       }
 
-      v13 = [(SDUnlockSecurityManager *)self localLongTermKey];
-      [v13 bytes];
-      v14 = [(SDUnlockSecurityManager *)self localLongTermKey];
-      [v14 length];
-      v15 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-      [v15 bytes];
-      v16 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-      [v16 length];
-      [v8 bytes];
-      v35 = v8;
-      [v8 length];
-      v33 = a3;
+      localLongTermKey2 = [(SDUnlockSecurityManager *)self localLongTermKey];
+      [localLongTermKey2 bytes];
+      localLongTermKey3 = [(SDUnlockSecurityManager *)self localLongTermKey];
+      [localLongTermKey3 length];
+      remoteLongTermKey2 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+      [remoteLongTermKey2 bytes];
+      remoteLongTermKey3 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+      [remoteLongTermKey3 length];
+      [secretCopy bytes];
+      v35 = secretCopy;
+      [secretCopy length];
+      flagsCopy2 = flags;
       v17 = aks_remote_session();
 
       v18 = paired_unlock_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v38 = v36;
+        flagsCopy = v36;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Auth session -- create (session id: %d)", buf, 8u);
       }
 
-      v19 = v34;
+      v19 = codeCopy;
       if (v17 == -536870211)
       {
         v20 = paired_unlock_log();
@@ -810,19 +810,19 @@ LABEL_14:
 
         sub_10005C8E8();
         v36 = 0;
-        v21 = [(SDUnlockSecurityManager *)self localLongTermKey];
-        [v21 bytes];
-        v22 = [(SDUnlockSecurityManager *)self localLongTermKey];
-        [v22 length];
-        v23 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-        [v23 bytes];
-        v24 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-        [v24 length];
-        [v8 bytes];
-        [v8 length];
+        localLongTermKey4 = [(SDUnlockSecurityManager *)self localLongTermKey];
+        [localLongTermKey4 bytes];
+        localLongTermKey5 = [(SDUnlockSecurityManager *)self localLongTermKey];
+        [localLongTermKey5 length];
+        remoteLongTermKey4 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+        [remoteLongTermKey4 bytes];
+        remoteLongTermKey5 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+        [remoteLongTermKey5 length];
+        [secretCopy bytes];
+        [secretCopy length];
         v17 = aks_remote_session();
 
-        v19 = v34;
+        v19 = codeCopy;
       }
 
       if (v17 <= -536870161)
@@ -835,19 +835,19 @@ LABEL_29:
             v29 = paired_unlock_log();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v31 = [(SDUnlockSecurityManager *)self localLongTermKey];
-              v32 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+              localLongTermKey6 = [(SDUnlockSecurityManager *)self localLongTermKey];
+              remoteLongTermKey6 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
               *buf = 67109890;
-              v38 = v17;
+              flagsCopy = v17;
               v39 = 1024;
-              v40 = v33;
+              v40 = flagsCopy2;
               v41 = 2112;
-              v42 = v31;
+              v42 = localLongTermKey6;
               v43 = 2112;
-              v44 = v32;
+              v44 = remoteLongTermKey6;
               _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to setup session: (status = %x, flags = %d,\n localKey = %@,\n remoteKey = %@)", buf, 0x22u);
 
-              v8 = v35;
+              secretCopy = v35;
             }
 
             goto LABEL_32;
@@ -858,7 +858,7 @@ LABEL_21:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            v38 = v17;
+            flagsCopy = v17;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Escrow record exists, but not available (status = %d)", buf, 8u);
           }
 
@@ -895,7 +895,7 @@ LABEL_21:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          v38 = -536870160;
+          flagsCopy = -536870160;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Escrow record not found status = %d", buf, 8u);
         }
       }
@@ -924,11 +924,11 @@ LABEL_35:
   return v25;
 }
 
-- (BOOL)setupWithAuthSession:(int64_t)a3 passcode:(id)a4
+- (BOOL)setupWithAuthSession:(int64_t)session passcode:(id)passcode
 {
-  v4 = a4;
-  [v4 UTF8String];
-  [v4 length];
+  passcodeCopy = passcode;
+  [passcodeCopy UTF8String];
+  [passcodeCopy length];
 
   v5 = aks_remote_peer_setup();
   v6 = paired_unlock_log();
@@ -951,13 +951,13 @@ LABEL_35:
   return v5 != -536870212;
 }
 
-- (id)stepWithAuthSession:(int64_t)a3 data:(id)a4 authStep:(BOOL)a5 errorCode:(int64_t *)a6
+- (id)stepWithAuthSession:(int64_t)session data:(id)data authStep:(BOOL)step errorCode:(int64_t *)code
 {
-  v9 = a4;
-  v10 = v9;
+  dataCopy = data;
+  v10 = dataCopy;
   v16 = 0;
   v17 = 0;
-  if (!a3)
+  if (!session)
   {
     v13 = paired_unlock_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -968,15 +968,15 @@ LABEL_35:
     goto LABEL_10;
   }
 
-  [v9 bytes];
+  [dataCopy bytes];
   [v10 length];
   v11 = aks_remote_session_step();
   v12 = v11;
-  if (v11 || !a5)
+  if (v11 || !step)
   {
-    if (a6)
+    if (code)
     {
-      *a6 = v11;
+      *code = v11;
     }
 
     v13 = paired_unlock_log();
@@ -1001,7 +1001,7 @@ LABEL_11:
   return v14;
 }
 
-- (id)escrowSecretWithAuthSession:(int64_t)a3
+- (id)escrowSecretWithAuthSession:(int64_t)session
 {
   v7 = 0;
   v8 = 0;
@@ -1029,23 +1029,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)clearStateForSession:(int64_t)a3
+- (void)clearStateForSession:(int64_t)session
 {
   v4 = paired_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 67109120;
-    v8 = a3;
+    sessionCopy2 = session;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Reseting session id %d", &v7, 8u);
   }
 
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((session & 0x8000000000000000) == 0)
   {
     v5 = paired_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 67109120;
-      v8 = a3;
+      sessionCopy2 = session;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Auth session -- reset (session id: %d)", &v7, 8u);
     }
 
@@ -1062,8 +1062,8 @@ LABEL_11:
 
 - (void)resetEscrowRecord
 {
-  v3 = [(SDUnlockSecurityManager *)self localLongTermKey];
-  if (!v3 || (v4 = v3, [(SDUnlockSecurityManager *)self remoteLongTermKey], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  localLongTermKey = [(SDUnlockSecurityManager *)self localLongTermKey];
+  if (!localLongTermKey || (v4 = localLongTermKey, [(SDUnlockSecurityManager *)self remoteLongTermKey], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v12 = paired_unlock_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1081,14 +1081,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Resetting Escrow Record", buf, 2u);
   }
 
-  v7 = [(SDUnlockSecurityManager *)self localLongTermKey];
-  [v7 bytes];
-  v8 = [(SDUnlockSecurityManager *)self localLongTermKey];
-  [v8 length];
-  v9 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-  [v9 bytes];
-  v10 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
-  [v10 length];
+  localLongTermKey2 = [(SDUnlockSecurityManager *)self localLongTermKey];
+  [localLongTermKey2 bytes];
+  localLongTermKey3 = [(SDUnlockSecurityManager *)self localLongTermKey];
+  [localLongTermKey3 length];
+  remoteLongTermKey = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+  [remoteLongTermKey bytes];
+  remoteLongTermKey2 = [(SDUnlockSecurityManager *)self remoteLongTermKey];
+  [remoteLongTermKey2 length];
   v11 = aks_remote_session();
 
   if (v11 == -536870212)
@@ -1103,25 +1103,25 @@ LABEL_10:
   }
 }
 
-- (BOOL)storeEscrowData:(id)a3
+- (BOOL)storeEscrowData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[SDStatusMonitor sharedMonitor];
   if ([v5 deviceKeyBagUnlocked])
   {
-    v6 = [(SDUnlockSecurityManager *)self pairingID];
+    pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-    if (v6)
+    if (pairingID)
     {
-      v7 = [(SDUnlockSecurityManager *)self baseDictionary];
-      v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
+      baseDictionary = [(SDUnlockSecurityManager *)self baseDictionary];
+      v8 = [NSMutableDictionary dictionaryWithDictionary:baseDictionary];
 
-      v9 = [(SDUnlockSecurityManager *)self deviceName];
-      [v8 setObject:v9 forKeyedSubscript:kSecAttrLabel];
+      deviceName = [(SDUnlockSecurityManager *)self deviceName];
+      [v8 setObject:deviceName forKeyedSubscript:kSecAttrLabel];
 
       v10 = objc_opt_new();
       [v10 setObject:kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKeyedSubscript:kSecAttrAccessible];
-      [v10 setObject:v4 forKeyedSubscript:kSecValueData];
+      [v10 setObject:dataCopy forKeyedSubscript:kSecValueData];
       v11 = [[NSMutableDictionary alloc] initWithDictionary:v8];
       [v11 addEntriesFromDictionary:v10];
       if (SecItemAdd(v11, 0))
@@ -1190,14 +1190,14 @@ LABEL_19:
 
 - (id)escrowData
 {
-  v3 = [(SDUnlockSecurityManager *)self pairingID];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-  if (v3)
+  if (pairingID)
   {
     result = 0;
     v4 = [NSMutableDictionary alloc];
-    v5 = [(SDUnlockSecurityManager *)self baseDictionary];
-    v6 = [v4 initWithDictionary:v5];
+    baseDictionary = [(SDUnlockSecurityManager *)self baseDictionary];
+    v6 = [v4 initWithDictionary:baseDictionary];
 
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
     if (SecItemCopyMatching(v6, &result))
@@ -1221,13 +1221,13 @@ LABEL_19:
 
 - (BOOL)checkForEscrowData
 {
-  v3 = [(SDUnlockSecurityManager *)self pairingID];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-  if (v3)
+  if (pairingID)
   {
     v4 = [NSMutableDictionary alloc];
-    v5 = [(SDUnlockSecurityManager *)self baseDictionary];
-    v6 = [v4 initWithDictionary:v5];
+    baseDictionary = [(SDUnlockSecurityManager *)self baseDictionary];
+    v6 = [v4 initWithDictionary:baseDictionary];
 
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnPersistentRef];
     v7 = SecItemCopyMatching(v6, 0);
@@ -1276,11 +1276,11 @@ LABEL_11:
       v12 = @"NO";
     }
 
-    v13 = [(SDUnlockSecurityManager *)self pairingID];
+    pairingID2 = [(SDUnlockSecurityManager *)self pairingID];
     v17 = 138412546;
     v18 = v12;
     v19 = 2112;
-    v20 = v13;
+    v20 = pairingID2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Escrow data exist:%@, pairing id:%@", &v17, 0x16u);
   }
 
@@ -1289,8 +1289,8 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v14 = [(SDUnlockSecurityManager *)self checkForLegacyEscrowData];
-  if (v14)
+  checkForLegacyEscrowData = [(SDUnlockSecurityManager *)self checkForLegacyEscrowData];
+  if (checkForLegacyEscrowData)
   {
     v15 = paired_unlock_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1300,17 +1300,17 @@ LABEL_11:
     }
 
 LABEL_21:
-    LOBYTE(v14) = 1;
+    LOBYTE(checkForLegacyEscrowData) = 1;
   }
 
-  return v14;
+  return checkForLegacyEscrowData;
 }
 
 - (void)deleteEscrowData
 {
-  v3 = [(SDUnlockSecurityManager *)self pairingID];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-  if (v3)
+  if (pairingID)
   {
     v4 = SecItemDelete([(SDUnlockSecurityManager *)self baseDictionary]);
     if (v4 != -25300)
@@ -1330,35 +1330,35 @@ LABEL_21:
 - (id)allKeychainItems
 {
   result = 0;
-  v3 = [(SDUnlockSecurityManager *)self pairingID];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
 
-  if (v3)
+  if (pairingID)
   {
     v4 = [NSMutableDictionary alloc];
-    v5 = [(SDUnlockSecurityManager *)self baseDictionary];
-    v6 = [v4 initWithDictionary:v5];
+    baseDictionary = [(SDUnlockSecurityManager *)self baseDictionary];
+    v6 = [v4 initWithDictionary:baseDictionary];
 
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnAttributes];
     [v6 setObject:kSecMatchLimitAll forKeyedSubscript:kSecMatchLimit];
     v7 = SecItemCopyMatching(v6, &result);
     if (v7 == -25308)
     {
-      v3 = @"Items Exist | Device Locked";
+      pairingID = @"Items Exist | Device Locked";
     }
 
     else if (v7)
     {
-      v3 = 0;
+      pairingID = 0;
     }
 
     else
     {
       v8 = result;
-      v3 = [result description];
+      pairingID = [result description];
     }
   }
 
-  return v3;
+  return pairingID;
 }
 
 - (id)baseDictionary
@@ -1367,8 +1367,8 @@ LABEL_21:
   [v3 setObject:kSecClassGenericPassword forKeyedSubscript:kSecClass];
   [v3 setObject:@"com.apple.sharingd.unlock" forKeyedSubscript:kSecAttrAccount];
   [v3 setObject:@"com.apple.sharingd" forKeyedSubscript:kSecAttrAccessGroup];
-  v4 = [(SDUnlockSecurityManager *)self pairingID];
-  [v3 setObject:v4 forKeyedSubscript:kSecAttrService];
+  pairingID = [(SDUnlockSecurityManager *)self pairingID];
+  [v3 setObject:pairingID forKeyedSubscript:kSecAttrService];
 
   v5 = [v3 copy];
 
@@ -1452,8 +1452,8 @@ LABEL_21:
 
 - (void)migrateEscrowDataIfNeeded
 {
-  v3 = [(SDUnlockSecurityManager *)self legacyEscrowData];
-  if (v3)
+  legacyEscrowData = [(SDUnlockSecurityManager *)self legacyEscrowData];
+  if (legacyEscrowData)
   {
     v4 = paired_unlock_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1462,7 +1462,7 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Migrating escrow data", v6, 2u);
     }
 
-    if ([(SDUnlockSecurityManager *)self storeEscrowData:v3])
+    if ([(SDUnlockSecurityManager *)self storeEscrowData:legacyEscrowData])
     {
       [(SDUnlockSecurityManager *)self deleteLegacyEscrowData];
     }

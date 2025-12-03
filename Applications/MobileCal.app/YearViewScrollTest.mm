@@ -6,11 +6,11 @@
 
 - (void)navigateToScrollView
 {
-  v6 = [(ApplicationTest *)self application];
-  v3 = [v6 rootNavigationController];
-  v4 = [v3 resetToYearView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToYearView = [rootNavigationController resetToYearView];
   controller = self->_controller;
-  self->_controller = v4;
+  self->_controller = resetToYearView;
 }
 
 @end

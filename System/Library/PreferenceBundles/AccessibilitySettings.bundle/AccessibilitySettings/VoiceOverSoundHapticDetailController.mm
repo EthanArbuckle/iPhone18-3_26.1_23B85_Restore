@@ -1,11 +1,11 @@
 @interface VoiceOverSoundHapticDetailController
-- (id)_hapticEnabled:(id)a3;
-- (id)_soundEnabled:(id)a3;
+- (id)_hapticEnabled:(id)enabled;
+- (id)_soundEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_previewSpecifierTapped:(id)a3;
-- (void)_setHapticEnabled:(id)a3 specifier:(id)a4;
-- (void)_setSoundEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_previewSpecifierTapped:(id)tapped;
+- (void)_setHapticEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setSoundEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverSoundHapticDetailController
@@ -19,10 +19,10 @@
     v5 = objc_opt_new();
     v6 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v6];
-    v7 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
-    v8 = [v7 supportsSoundEffect];
+    outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+    supportsSoundEffect = [outputEvent supportsSoundEffect];
 
-    if (v8)
+    if (supportsSoundEffect)
     {
       v9 = settingsLocString(@"vo.play.sound", @"VoiceOverSettings");
       v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:"_setSoundEnabled:specifier:" get:"_soundEnabled:" detail:0 cell:6 edit:0];
@@ -41,10 +41,10 @@
 
     if (+[AXMHapticComponent isSupported])
     {
-      v13 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
-      v14 = [v13 supportsHaptic];
+      outputEvent2 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+      supportsHaptic = [outputEvent2 supportsHaptic];
 
-      if (v14)
+      if (supportsHaptic)
       {
         v15 = settingsLocString(@"vo.play.haptic", @"VoiceOverSettings");
         v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:"_setHapticEnabled:specifier:" get:"_hapticEnabled:" detail:0 cell:6 edit:0];
@@ -76,34 +76,34 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v11 = [(VoiceOverSoundHapticDetailController *)self specifierAtIndexPath:a5];
-  v8 = [v11 identifier];
-  LODWORD(self) = [v8 isEqualToString:@"PreviewSoundAndHapticButton"];
+  cellCopy = cell;
+  v11 = [(VoiceOverSoundHapticDetailController *)self specifierAtIndexPath:path];
+  identifier = [v11 identifier];
+  LODWORD(self) = [identifier isEqualToString:@"PreviewSoundAndHapticButton"];
 
   if (self)
   {
     v9 = &__block_literal_global_23;
-    v10 = v7;
+    v10 = cellCopy;
   }
 
   else
   {
-    v10 = v7;
+    v10 = cellCopy;
     v9 = 0;
   }
 
   [v10 _setAccessibilityTraitsBlock:v9];
 }
 
-- (id)_soundEnabled:(id)a3
+- (id)_soundEnabled:(id)enabled
 {
-  v3 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+  outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v3 rawValue];
-  v6 = [v4 voiceOverSoundEnabledForEvent:v5];
+  rawValue = [outputEvent rawValue];
+  v6 = [v4 voiceOverSoundEnabledForEvent:rawValue];
 
   if (v6)
   {
@@ -118,23 +118,23 @@
   return v7;
 }
 
-- (void)_setSoundEnabled:(id)a3 specifier:(id)a4
+- (void)_setSoundEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v9 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+  enabledCopy = enabled;
+  outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [v9 rawValue];
-  [v6 voiceOverSetSoundEnabled:v7 forEvent:v8];
+  rawValue = [outputEvent rawValue];
+  [v6 voiceOverSetSoundEnabled:bOOLValue forEvent:rawValue];
 }
 
-- (id)_hapticEnabled:(id)a3
+- (id)_hapticEnabled:(id)enabled
 {
-  v3 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+  outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v3 rawValue];
-  v6 = [v4 voiceOverHapticEnabledForEvent:v5];
+  rawValue = [outputEvent rawValue];
+  v6 = [v4 voiceOverHapticEnabledForEvent:rawValue];
 
   if (v6)
   {
@@ -149,27 +149,27 @@
   return v7;
 }
 
-- (void)_setHapticEnabled:(id)a3 specifier:(id)a4
+- (void)_setHapticEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v9 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+  enabledCopy = enabled;
+  outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [v9 rawValue];
-  [v6 voiceOverSetHapticEnabled:v7 forEvent:v8];
+  rawValue = [outputEvent rawValue];
+  [v6 voiceOverSetHapticEnabled:bOOLValue forEvent:rawValue];
 }
 
-- (void)_previewSpecifierTapped:(id)a3
+- (void)_previewSpecifierTapped:(id)tapped
 {
-  v3 = [(VoiceOverSoundHapticDetailController *)self outputEvent];
-  if (v3)
+  outputEvent = [(VoiceOverSoundHapticDetailController *)self outputEvent];
+  if (outputEvent)
   {
-    v5 = v3;
+    v5 = outputEvent;
     v4 = +[VOSOutputEventDispatcher sharedInstance];
     [v4 sendEvent:v5];
 
-    v3 = v5;
+    outputEvent = v5;
   }
 }
 

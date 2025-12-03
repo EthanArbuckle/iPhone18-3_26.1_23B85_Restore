@@ -1,24 +1,24 @@
 @interface SOSProcessObserver
-- (SOSProcessObserver)initWithBundleIdentifier:(id)a3;
+- (SOSProcessObserver)initWithBundleIdentifier:(id)identifier;
 - (SOSProcessObserverDelegate)delegate;
-- (void)applicationMonitorStateDidChangeForBundleIdentifier:(id)a3;
+- (void)applicationMonitorStateDidChangeForBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SOSProcessObserver
 
-- (SOSProcessObserver)initWithBundleIdentifier:(id)a3
+- (SOSProcessObserver)initWithBundleIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SOSProcessObserver;
   v5 = [(SOSProcessObserver *)&v15 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CEEE90]);
-    v16[0] = v4;
+    v16[0] = identifierCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     v8 = [v6 initWithBundleIDs:v7 states:0];
     applicationMonitor = v5->_applicationMonitor;
@@ -52,37 +52,37 @@ void __47__SOSProcessObserver_initWithBundleIdentifier___block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [(SOSProcessObserver *)self applicationMonitor];
-  [v3 invalidate];
+  applicationMonitor = [(SOSProcessObserver *)self applicationMonitor];
+  [applicationMonitor invalidate];
 
   v4.receiver = self;
   v4.super_class = SOSProcessObserver;
   [(SOSProcessObserver *)&v4 dealloc];
 }
 
-- (void)applicationMonitorStateDidChangeForBundleIdentifier:(id)a3
+- (void)applicationMonitorStateDidChangeForBundleIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
-  v5 = [(SOSProcessObserver *)self applicationMonitor];
-  v6 = [v4 isApplicationStateRunning:{objc_msgSend(v5, "applicationStateForApplication:", v9)}];
+  applicationMonitor = [(SOSProcessObserver *)self applicationMonitor];
+  v6 = [v4 isApplicationStateRunning:{objc_msgSend(applicationMonitor, "applicationStateForApplication:", identifierCopy)}];
 
   if (v6 != [(SOSProcessObserver *)self cachedApplicationRunning])
   {
     [(SOSProcessObserver *)self setCachedApplicationRunning:v6];
-    v7 = [(SOSProcessObserver *)self delegate];
+    delegate = [(SOSProcessObserver *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(SOSProcessObserver *)self delegate];
-      [v8 processObserver:self bundleIdentifier:v9 didUpdateApplicationRunning:v6];
+      delegate2 = [(SOSProcessObserver *)self delegate];
+      [delegate2 processObserver:self bundleIdentifier:identifierCopy didUpdateApplicationRunning:v6];
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -91,25 +91,25 @@ void __47__SOSProcessObserver_initWithBundleIdentifier___block_invoke(uint64_t a
     if (obj)
     {
       v5 = objc_opt_class();
-      v6 = [(SOSProcessObserver *)self applicationMonitor];
-      v7 = [(SOSProcessObserver *)self applicationMonitor];
-      v8 = [v7 interestedBundleIDs];
-      v9 = [v8 firstObject];
-      -[SOSProcessObserver setCachedApplicationRunning:](self, "setCachedApplicationRunning:", [v5 isApplicationStateRunning:{objc_msgSend(v6, "applicationStateForApplication:", v9)}]);
+      applicationMonitor = [(SOSProcessObserver *)self applicationMonitor];
+      applicationMonitor2 = [(SOSProcessObserver *)self applicationMonitor];
+      interestedBundleIDs = [applicationMonitor2 interestedBundleIDs];
+      firstObject = [interestedBundleIDs firstObject];
+      -[SOSProcessObserver setCachedApplicationRunning:](self, "setCachedApplicationRunning:", [v5 isApplicationStateRunning:{objc_msgSend(applicationMonitor, "applicationStateForApplication:", firstObject)}]);
 
-      v10 = [(SOSProcessObserver *)self applicationMonitor];
-      v11 = v10;
+      applicationMonitor3 = [(SOSProcessObserver *)self applicationMonitor];
+      v11 = applicationMonitor3;
       v12 = *MEMORY[0x277CEEE58];
     }
 
     else
     {
-      v10 = [(SOSProcessObserver *)self applicationMonitor];
-      v11 = v10;
+      applicationMonitor3 = [(SOSProcessObserver *)self applicationMonitor];
+      v11 = applicationMonitor3;
       v12 = 0;
     }
 
-    [v10 updateInterestedStates:v12];
+    [applicationMonitor3 updateInterestedStates:v12];
   }
 
   MEMORY[0x2821F96F8]();

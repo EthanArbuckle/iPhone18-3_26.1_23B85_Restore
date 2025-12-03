@@ -1,13 +1,13 @@
 @interface APAppStoreEventHandler
-- (int64_t)didReceiveInstallationEvent:(id)a3;
-- (void)sendMetricForEvent:(id)a3;
+- (int64_t)didReceiveInstallationEvent:(id)event;
+- (void)sendMetricForEvent:(id)event;
 @end
 
 @implementation APAppStoreEventHandler
 
-- (int64_t)didReceiveInstallationEvent:(id)a3
+- (int64_t)didReceiveInstallationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,82 +28,82 @@
   v9 = APLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 phase];
+    phase = [eventCopy phase];
     v30 = 134217984;
-    v31 = v10;
+    v31 = phase;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "App Installation Phase - %ld", &v30, 0xCu);
   }
 
   v11 = APLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v4 terminalPhase];
+    terminalPhase = [eventCopy terminalPhase];
     v30 = 134217984;
-    v31 = v12;
+    v31 = terminalPhase;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "App Installation Terminal Phase - %ld", &v30, 0xCu);
   }
 
   v13 = APLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v4 bundleID];
+    bundleID = [eventCopy bundleID];
     v30 = 138412290;
-    v31 = v14;
+    v31 = bundleID;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Bundle ID - %@", &v30, 0xCu);
   }
 
   v15 = APLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v4 itemID];
-    v17 = [v16 integerValue];
+    itemID = [eventCopy itemID];
+    integerValue = [itemID integerValue];
     v30 = 134217984;
-    v31 = v17;
+    v31 = integerValue;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Adam ID - %ld", &v30, 0xCu);
   }
 
   v18 = APLogForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v4 appType];
+    appType = [eventCopy appType];
     v30 = 134217984;
-    v31 = v19;
+    v31 = appType;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "App Type - %ld", &v30, 0xCu);
   }
 
   v20 = APLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v4 source];
+    source = [eventCopy source];
     v30 = 134217984;
-    v31 = v21;
+    v31 = source;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Source - %ld", &v30, 0xCu);
   }
 
   v22 = APLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v4 installType];
+    installType = [eventCopy installType];
     v30 = 134217984;
-    v31 = v23;
+    v31 = installType;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Install Type - %ld", &v30, 0xCu);
   }
 
   v24 = APLogForCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v4 purchase];
+    purchase = [eventCopy purchase];
     v30 = 138412290;
-    v31 = v25;
+    v31 = purchase;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Proof of Purchase - %@", &v30, 0xCu);
   }
 
   v26 = APLogForCategory();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v4 commerceTimestamp];
+    commerceTimestamp = [eventCopy commerceTimestamp];
     v30 = 138412290;
-    v31 = v27;
+    v31 = commerceTimestamp;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Commerce timestamp - %@", &v30, 0xCu);
   }
 
@@ -114,23 +114,23 @@
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "=================================", &v30, 2u);
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    [(APAppStoreEventHandler *)self sendMetricForEvent:v4];
+    [(APAppStoreEventHandler *)self sendMetricForEvent:eventCopy];
   }
 
   return 1;
 }
 
-- (void)sendMetricForEvent:(id)a3
+- (void)sendMetricForEvent:(id)event
 {
-  v3 = a3;
-  v4 = sub_100000B78(APReportingConversionTypeProvider, [v3 phase], objc_msgSend(v3, "installType"), objc_msgSend(v3, "terminalPhase"));
+  eventCopy = event;
+  v4 = sub_100000B78(APReportingConversionTypeProvider, [eventCopy phase], objc_msgSend(eventCopy, "installType"), objc_msgSend(eventCopy, "terminalPhase"));
   if ([v4 intValue] != -1)
   {
     v57[0] = @"ProofOfPurchase";
-    v5 = [v3 purchase];
-    v6 = [NSNumber numberWithInt:v5 != 0];
+    purchase = [eventCopy purchase];
+    v6 = [NSNumber numberWithInt:purchase != 0];
     v57[1] = @"SignalType";
     v58[0] = v6;
     v58[1] = v4;
@@ -140,9 +140,9 @@
 
   if ([v4 intValue] == 1 || objc_msgSend(v4, "intValue") == 2)
   {
-    v8 = [v3 purchase];
+    purchase2 = [eventCopy purchase];
 
-    if (!v8)
+    if (!purchase2)
     {
       v9 = [NSString stringWithFormat:@"Proof of Purchase is nil for reportingConversionType: %@", v4];
       CreateDiagnosticReport();
@@ -150,113 +150,113 @@
   }
 
   v55[0] = @"phase";
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 phase]);
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy phase]);
   v56[0] = v10;
   v55[1] = @"terminalPhase";
-  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 terminalPhase]);
+  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy terminalPhase]);
   v56[1] = v11;
   v55[2] = @"appType";
-  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 appType]);
+  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy appType]);
   v56[2] = v12;
   v55[3] = @"source";
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 source]);
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy source]);
   v56[3] = v13;
   v55[4] = @"installType";
-  v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 installType]);
+  v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy installType]);
   v55[5] = @"reportingConversionType";
   v56[4] = v14;
   v56[5] = v4;
   v15 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:6];
   v16 = [v15 mutableCopy];
 
-  v17 = [v3 bundleID];
+  bundleID = [eventCopy bundleID];
 
-  if (v17)
+  if (bundleID)
   {
-    v18 = [v3 bundleID];
-    [v16 setObject:v18 forKey:@"bundleID"];
+    bundleID2 = [eventCopy bundleID];
+    [v16 setObject:bundleID2 forKey:@"bundleID"];
   }
 
-  v19 = [v3 itemID];
+  itemID = [eventCopy itemID];
 
-  if (v19)
+  if (itemID)
   {
-    v20 = [v3 itemID];
-    [v16 setObject:v20 forKey:@"itemID"];
+    itemID2 = [eventCopy itemID];
+    [v16 setObject:itemID2 forKey:@"itemID"];
   }
 
-  v21 = [v3 purchase];
+  purchase3 = [eventCopy purchase];
 
-  if (v21)
+  if (purchase3)
   {
-    v22 = [v3 purchase];
-    v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v22 itemID]);
+    purchase4 = [eventCopy purchase];
+    v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [purchase4 itemID]);
     [v16 setObject:v23 forKey:@"utAdamId"];
 
-    v24 = [v3 purchase];
-    v25 = [v24 timestampString];
+    purchase5 = [eventCopy purchase];
+    timestampString = [purchase5 timestampString];
 
-    if (v25)
+    if (timestampString)
     {
-      v26 = [v3 purchase];
-      v27 = [v26 timestampString];
-      [v16 setObject:v27 forKey:@"utTimestamp"];
+      purchase6 = [eventCopy purchase];
+      timestampString2 = [purchase6 timestampString];
+      [v16 setObject:timestampString2 forKey:@"utTimestamp"];
     }
 
-    v28 = [v3 purchase];
-    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v28 isRedownload]);
+    purchase7 = [eventCopy purchase];
+    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [purchase7 isRedownload]);
     [v16 setObject:v29 forKey:@"utIsredownload"];
 
-    v30 = [v3 purchase];
-    v31 = [v30 privateInput];
+    purchase8 = [eventCopy purchase];
+    privateInput = [purchase8 privateInput];
 
-    if (v31)
+    if (privateInput)
     {
-      v32 = [v3 purchase];
-      v33 = [v32 privateInput];
-      v34 = [v33 base64EncodedStringWithOptions:0];
+      purchase9 = [eventCopy purchase];
+      privateInput2 = [purchase9 privateInput];
+      v34 = [privateInput2 base64EncodedStringWithOptions:0];
 
       [v16 setObject:v34 forKey:@"utPrivateInput"];
     }
 
-    v35 = [v3 purchase];
-    v36 = [v35 publicKey];
+    purchase10 = [eventCopy purchase];
+    publicKey = [purchase10 publicKey];
 
-    if (v36)
+    if (publicKey)
     {
-      v37 = [v3 purchase];
-      v38 = [v37 publicKey];
-      v39 = [v38 base64EncodedStringWithOptions:0];
+      purchase11 = [eventCopy purchase];
+      publicKey2 = [purchase11 publicKey];
+      v39 = [publicKey2 base64EncodedStringWithOptions:0];
 
       [v16 setObject:v39 forKey:@"utPublicKey"];
     }
 
-    v40 = [v3 purchase];
-    v41 = [v40 finalizedToken];
+    purchase12 = [eventCopy purchase];
+    finalizedToken = [purchase12 finalizedToken];
 
-    if (v41)
+    if (finalizedToken)
     {
-      v42 = [v3 purchase];
-      v43 = [v42 finalizedToken];
-      v44 = [v43 base64EncodedStringWithOptions:0];
+      purchase13 = [eventCopy purchase];
+      finalizedToken2 = [purchase13 finalizedToken];
+      v44 = [finalizedToken2 base64EncodedStringWithOptions:0];
 
       [v16 setObject:v44 forKey:@"utFinalizedToken"];
     }
   }
 
-  v45 = [v3 commerceTimestamp];
+  commerceTimestamp = [eventCopy commerceTimestamp];
 
-  if (v45)
+  if (commerceTimestamp)
   {
-    v46 = [v3 commerceTimestamp];
-    [v16 setObject:v46 forKey:@"commerceTimestamp"];
+    commerceTimestamp2 = [eventCopy commerceTimestamp];
+    [v16 setObject:commerceTimestamp2 forKey:@"commerceTimestamp"];
   }
 
   v47 = objc_alloc(+[MetricsModuleCommon metricClass]);
   v48 = +[NSUUID UUID];
-  v49 = [v48 UUIDString];
+  uUIDString = [v48 UUIDString];
   v50 = [v16 copy];
-  v51 = [v47 initWithPurpose:-9000 metric:9100 contentIdentifier:0 contextIdentifier:0 handle:v49 secondaryHandle:0 branch:0 properties:v50 internalProperties:0 relayData:0 environment:0 order:0 options:0];
+  v51 = [v47 initWithPurpose:-9000 metric:9100 contentIdentifier:0 contextIdentifier:0 handle:uUIDString secondaryHandle:0 branch:0 properties:v50 internalProperties:0 relayData:0 environment:0 order:0 options:0];
 
   v52 = [+[MetricsModuleCommon daemonDeliveryClass](MetricsModuleCommon "daemonDeliveryClass")];
   [v52 receivedMetric:v51];

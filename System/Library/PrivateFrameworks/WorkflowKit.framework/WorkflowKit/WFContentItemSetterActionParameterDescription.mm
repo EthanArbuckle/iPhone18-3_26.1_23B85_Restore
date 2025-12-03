@@ -1,25 +1,25 @@
 @interface WFContentItemSetterActionParameterDescription
-- (WFContentItemSetterActionParameterDescription)initWithContentItemClass:(Class)a3 field:(unint64_t)a4;
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4;
+- (WFContentItemSetterActionParameterDescription)initWithContentItemClass:(Class)class field:(unint64_t)field;
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number;
 @end
 
 @implementation WFContentItemSetterActionParameterDescription
 
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number
 {
-  v6 = a3;
-  v7 = [(objc_class *)[(WFContentItemSetterActionParameterDescription *)self contentItemClass] localizedTypeDescriptionWithContext:v6];
+  contextCopy = context;
+  v7 = [(objc_class *)[(WFContentItemSetterActionParameterDescription *)self contentItemClass] localizedTypeDescriptionWithContext:contextCopy];
   if ([(objc_class *)[(WFContentItemSetterActionParameterDescription *)self contentItemClass] canLowercaseTypeDescription])
   {
-    v4 = [v7 lowercaseString];
+    lowercaseString = [v7 lowercaseString];
 
-    v7 = v4;
+    v7 = lowercaseString;
   }
 
-  v8 = [(WFContentItemSetterActionParameterDescription *)self field];
-  if (v8 > 1)
+  field = [(WFContentItemSetterActionParameterDescription *)self field];
+  if (field > 1)
   {
-    if (v8 == 2)
+    if (field == 2)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = @"The operation to perform on the selected property of the %@.";
@@ -27,7 +27,7 @@
 
     else
     {
-      if (v8 != 3)
+      if (field != 3)
       {
         goto LABEL_16;
       }
@@ -39,9 +39,9 @@
 
   else
   {
-    if (!v8)
+    if (!field)
     {
-      v11 = [(objc_class *)[(WFContentItemSetterActionParameterDescription *)self contentItemClass] localizedFilterDescriptionWithContext:v6];
+      v11 = [(objc_class *)[(WFContentItemSetterActionParameterDescription *)self contentItemClass] localizedFilterDescriptionWithContext:contextCopy];
       v12 = v11;
       v13 = &stru_1F4A1C408;
       if (v11)
@@ -49,11 +49,11 @@
         v13 = v11;
       }
 
-      v4 = v13;
+      lowercaseString = v13;
       goto LABEL_15;
     }
 
-    if (v8 != 1)
+    if (field != 1)
     {
       goto LABEL_16;
     }
@@ -63,16 +63,16 @@
   }
 
   v12 = WFLocalizedStringResourceWithKey(v10, v10);
-  v14 = [v6 localize:v12];
-  v4 = [v9 localizedStringWithFormat:v14, v7];
+  v14 = [contextCopy localize:v12];
+  lowercaseString = [v9 localizedStringWithFormat:v14, v7];
 
 LABEL_15:
 LABEL_16:
 
-  return v4;
+  return lowercaseString;
 }
 
-- (WFContentItemSetterActionParameterDescription)initWithContentItemClass:(Class)a3 field:(unint64_t)a4
+- (WFContentItemSetterActionParameterDescription)initWithContentItemClass:(Class)class field:(unint64_t)field
 {
   v10.receiver = self;
   v10.super_class = WFContentItemSetterActionParameterDescription;
@@ -80,8 +80,8 @@ LABEL_16:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentItemClass, a3);
-    v7->_field = a4;
+    objc_storeStrong(&v6->_contentItemClass, class);
+    v7->_field = field;
     v8 = v7;
   }
 

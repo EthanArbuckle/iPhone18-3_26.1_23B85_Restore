@@ -1,40 +1,40 @@
 @interface DARefreshManager
 + (DARefreshManager)sharedManager;
-- (BOOL)_wrapperIsSuspended:(id)a3;
+- (BOOL)_wrapperIsSuspended:(id)suspended;
 - (DARefreshManager)init;
-- (id)_apsEnvStringForDAEnvString:(id)a3;
-- (id)_connectionForEnv:(id)a3;
-- (id)_enabledTopicsForWrapper:(id)a3;
-- (id)_portNameForEnvironmentName:(id)a3;
-- (id)_refreshWrapperForDelegate:(id)a3;
-- (id)_suspendedTopicsForWrapper:(id)a3;
-- (id)pushTokenForEnvironment:(id)a3;
+- (id)_apsEnvStringForDAEnvString:(id)string;
+- (id)_connectionForEnv:(id)env;
+- (id)_enabledTopicsForWrapper:(id)wrapper;
+- (id)_portNameForEnvironmentName:(id)name;
+- (id)_refreshWrapperForDelegate:(id)delegate;
+- (id)_suspendedTopicsForWrapper:(id)wrapper;
+- (id)pushTokenForEnvironment:(id)environment;
 - (id)stateString;
-- (int)_currentTruePCStyleForDelegate:(id)a3;
+- (int)_currentTruePCStyleForDelegate:(id)delegate;
 - (void)_dailyRefreshActivityFired;
-- (void)_pushRegistrationForDelegateFailed:(id)a3;
+- (void)_pushRegistrationForDelegateFailed:(id)failed;
 - (void)_registerAPSTopics;
-- (void)_registerAPSTopicsForDelegates:(id)a3 withConnection:(id)a4;
-- (void)_resumeTopicsForSuspendedDelegate:(id)a3;
-- (void)_suspendTopicsForDelegate:(id)a3;
+- (void)_registerAPSTopicsForDelegates:(id)delegates withConnection:(id)connection;
+- (void)_resumeTopicsForSuspendedDelegate:(id)delegate;
+- (void)_suspendTopicsForDelegate:(id)delegate;
 - (void)_tearDownAPS;
 - (void)_tearDownAllApsConnections;
-- (void)_unregisterTopicLocked:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5;
-- (void)_unregisterWrapper:(id)a3 forTopic:(id)a4 inTopicDictionary:(id)a5;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_unregisterTopicLocked:(id)locked forDelegate:(id)delegate inEnvironment:(id)environment;
+- (void)_unregisterWrapper:(id)wrapper forTopic:(id)topic inTopicDictionary:(id)dictionary;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)delegateDidCompleteRefresh:(id)a3;
-- (void)delegateDidSuccessfullyRecoverFromBeingUnauthenticated:(id)a3;
-- (void)endDailyRefreshActivityForWrapper:(id)a3;
+- (void)delegateDidCompleteRefresh:(id)refresh;
+- (void)delegateDidSuccessfullyRecoverFromBeingUnauthenticated:(id)unauthenticated;
+- (void)endDailyRefreshActivityForWrapper:(id)wrapper;
 - (void)establishAllApsConnections;
 - (void)pushPreferenceDidChange;
-- (void)registerDelegate:(id)a3;
-- (void)registerTopic:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5;
-- (void)retryRefreshForDelegate:(id)a3 withCollections:(id)a4 after:(double)a5 originalRefreshReason:(int)a6;
-- (void)startDailyRefreshActivityForWrapper:(id)a3;
-- (void)unregisterDelegate:(id)a3;
-- (void)unregisterTopic:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5;
+- (void)registerDelegate:(id)delegate;
+- (void)registerTopic:(id)topic forDelegate:(id)delegate inEnvironment:(id)environment;
+- (void)retryRefreshForDelegate:(id)delegate withCollections:(id)collections after:(double)after originalRefreshReason:(int)reason;
+- (void)startDailyRefreshActivityForWrapper:(id)wrapper;
+- (void)unregisterDelegate:(id)delegate;
+- (void)unregisterTopic:(id)topic forDelegate:(id)delegate inEnvironment:(id)environment;
 @end
 
 @implementation DARefreshManager
@@ -145,14 +145,14 @@ void __27__DARefreshManager_dealloc__block_invoke(uint64_t a1)
 {
   if ([(NSMutableSet *)self->_wrappers count])
   {
-    v3 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     pcQueue = self->_pcQueue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __31__DARefreshManager_stateString__block_invoke;
     v9[3] = &unk_278F1CD98;
     v9[4] = self;
-    v5 = v3;
+    v5 = string;
     v10 = v5;
     dispatch_sync(pcQueue, v9);
     v6 = v10;
@@ -415,8 +415,8 @@ void __31__DARefreshManager_stateString__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_apsConnections allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_apsConnections allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -428,14 +428,14 @@ void __31__DARefreshManager_stateString__block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) setDelegate:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -450,24 +450,24 @@ void __31__DARefreshManager_stateString__block_invoke(uint64_t a1)
 
 - (void)establishAllApsConnections
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"DARefreshManager.m" lineNumber:173 description:{@"Couldn't come up with an env string for DAEnvString %@", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DARefreshManager.m" lineNumber:173 description:{@"Couldn't come up with an env string for DAEnvString %@", a3}];
 }
 
-- (id)_apsEnvStringForDAEnvString:(id)a3
+- (id)_apsEnvStringForDAEnvString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = *MEMORY[0x277CEE9F0];
-  if (([v3 isEqualToString:@"production"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"production"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"development"])
+    if ([stringCopy isEqualToString:@"development"])
     {
       v5 = MEMORY[0x277CEE9E8];
     }
 
     else
     {
-      if (![v3 isEqualToString:@"demo"])
+      if (![stringCopy isEqualToString:@"demo"])
       {
         goto LABEL_7;
       }
@@ -485,20 +485,20 @@ LABEL_7:
   return v4;
 }
 
-- (id)_portNameForEnvironmentName:(id)a3
+- (id)_portNameForEnvironmentName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"production"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"production"])
   {
     v4 = @"com.apple.dataaccess.dataaccessd.aps";
   }
 
-  else if ([v3 isEqualToString:@"development"])
+  else if ([nameCopy isEqualToString:@"development"])
   {
     v4 = @"com.apple.dataaccess.dataaccessd.aps.dev";
   }
 
-  else if ([v3 isEqualToString:@"demo"])
+  else if ([nameCopy isEqualToString:@"demo"])
   {
     v4 = @"com.apple.dataaccess.dataaccessd.aps.demo";
   }
@@ -511,10 +511,10 @@ LABEL_7:
   return v4;
 }
 
-- (id)_connectionForEnv:(id)a3
+- (id)_connectionForEnv:(id)env
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  envCopy = env;
   v6 = *MEMORY[0x277CEE9F0];
   if (!self->_apsConnections)
   {
@@ -523,28 +523,28 @@ LABEL_7:
     self->_apsConnections = v7;
   }
 
-  v9 = [MEMORY[0x277D03910] APSEnv];
+  aPSEnv = [MEMORY[0x277D03910] APSEnv];
 
-  if (v9)
+  if (aPSEnv)
   {
-    v10 = [MEMORY[0x277D03910] APSEnv];
+    aPSEnv2 = [MEMORY[0x277D03910] APSEnv];
 
     v11 = DALoggingwithCategory();
     v12 = *(MEMORY[0x277D03988] + 5);
     if (os_log_type_enabled(v11, v12))
     {
       v21 = 138412290;
-      v22 = v10;
+      v22 = aPSEnv2;
       _os_log_impl(&dword_248524000, v11, v12, "Forcing APS environment to %@", &v21, 0xCu);
     }
   }
 
   else
   {
-    v10 = v5;
+    aPSEnv2 = envCopy;
   }
 
-  v13 = [(NSMutableDictionary *)self->_apsConnections objectForKeyedSubscript:v10];
+  v13 = [(NSMutableDictionary *)self->_apsConnections objectForKeyedSubscript:aPSEnv2];
   if (v13)
   {
     v14 = v13;
@@ -552,16 +552,16 @@ LABEL_7:
 
   else
   {
-    if (v10)
+    if (aPSEnv2)
     {
-      v15 = [(DARefreshManager *)self _apsEnvStringForDAEnvString:v10];
+      v15 = [(DARefreshManager *)self _apsEnvStringForDAEnvString:aPSEnv2];
 
       v6 = v15;
     }
 
     if (!v6)
     {
-      [(DARefreshManager *)a2 _connectionForEnv:v10];
+      [(DARefreshManager *)a2 _connectionForEnv:aPSEnv2];
     }
 
     v16 = objc_alloc(MEMORY[0x277CEEA10]);
@@ -578,39 +578,39 @@ LABEL_7:
   return v14;
 }
 
-- (void)_registerAPSTopicsForDelegates:(id)a3 withConnection:(id)a4
+- (void)_registerAPSTopicsForDelegates:(id)delegates withConnection:(id)connection
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  delegatesCopy = delegates;
+  connectionCopy = connection;
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v5 allKeys];
+    allKeys = [delegatesCopy allKeys];
     *buf = 138412290;
-    v55 = v9;
+    v55 = allKeys;
     _os_log_impl(&dword_248524000, v7, v8, "Setting our enabled APS topics to %@", buf, 0xCu);
   }
 
-  v10 = [v5 allKeys];
-  [v6 setEnabledTopics:v10];
+  allKeys2 = [delegatesCopy allKeys];
+  [connectionCopy setEnabledTopics:allKeys2];
 
-  v45 = [v6 publicToken];
-  if (v45)
+  publicToken = [connectionCopy publicToken];
+  if (publicToken)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v11 = [v5 allValues];
-    v42 = [v11 countByEnumeratingWithState:&v50 objects:v63 count:16];
+    allValues = [delegatesCopy allValues];
+    v42 = [allValues countByEnumeratingWithState:&v50 objects:v63 count:16];
     if (v42)
     {
-      v38 = v6;
-      v39 = v5;
+      v38 = connectionCopy;
+      v39 = delegatesCopy;
       v40 = *v51;
-      v41 = v11;
+      v41 = allValues;
       do
       {
         v12 = 0;
@@ -618,7 +618,7 @@ LABEL_7:
         {
           if (*v51 != v40)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allValues);
           }
 
           v43 = v12;
@@ -644,23 +644,23 @@ LABEL_7:
                 }
 
                 v18 = *(*(&v46 + 1) + 8 * v17);
-                v19 = [v18 delegate];
-                v20 = [v19 onBehalfOfBundleIdentifier];
+                delegate = [v18 delegate];
+                onBehalfOfBundleIdentifier = [delegate onBehalfOfBundleIdentifier];
 
                 if ([v18 pushState] != 2)
                 {
                   goto LABEL_17;
                 }
 
-                v21 = [v18 pushRegistrationTime];
-                if (!v21)
+                pushRegistrationTime = [v18 pushRegistrationTime];
+                if (!pushRegistrationTime)
                 {
                   goto LABEL_17;
                 }
 
-                v22 = v21;
-                v23 = [v18 pushRegistrationTime];
-                [v23 timeIntervalSinceNow];
+                v22 = pushRegistrationTime;
+                pushRegistrationTime2 = [v18 pushRegistrationTime];
+                [pushRegistrationTime2 timeIntervalSinceNow];
                 v25 = v24;
 
                 if (v25 >= -86400.0)
@@ -668,16 +668,16 @@ LABEL_7:
                   v31 = DALoggingwithCategory();
                   if (os_log_type_enabled(v31, v8))
                   {
-                    v32 = [v18 pushState];
-                    v33 = [v18 pushRegistrationTime];
-                    v34 = [v18 pushRegistrationTime];
-                    [v34 timeIntervalSinceNow];
+                    pushState = [v18 pushState];
+                    pushRegistrationTime3 = [v18 pushRegistrationTime];
+                    pushRegistrationTime4 = [v18 pushRegistrationTime];
+                    [pushRegistrationTime4 timeIntervalSinceNow];
                     *buf = 138413058;
                     v55 = v18;
                     v56 = 1024;
-                    v57 = v32;
+                    v57 = pushState;
                     v58 = 2112;
-                    v59 = v33;
+                    v59 = pushRegistrationTime3;
                     v60 = 2048;
                     v61 = v35;
                     _os_log_impl(&dword_248524000, v31, v8, "Skipping token re-registration; wrapper %@ is in state %d and its last push registration time was %@ (%f)", buf, 0x26u);
@@ -690,22 +690,22 @@ LABEL_17:
                   v26 = DALoggingwithCategory();
                   if (os_log_type_enabled(v26, v8))
                   {
-                    v27 = [v18 pushState];
-                    v28 = [v18 pushRegistrationTime];
-                    v29 = [v18 pushRegistrationTime];
-                    [v29 timeIntervalSinceNow];
+                    pushState2 = [v18 pushState];
+                    pushRegistrationTime5 = [v18 pushRegistrationTime];
+                    pushRegistrationTime6 = [v18 pushRegistrationTime];
+                    [pushRegistrationTime6 timeIntervalSinceNow];
                     *buf = 138413058;
                     v55 = v18;
                     v56 = 1024;
-                    v57 = v27;
+                    v57 = pushState2;
                     v58 = 2112;
-                    v59 = v28;
+                    v59 = pushRegistrationTime5;
                     v60 = 2048;
                     v61 = v30;
                     _os_log_impl(&dword_248524000, v26, v8, "Performing token registration; Wrapper %@ is in state %d and its last push registration time was %@ (%f)", buf, 0x26u);
                   }
 
-                  [v18 performTokenRegistrationRequestsWithToken:v45 onBehalfOf:v20];
+                  [v18 performTokenRegistrationRequestsWithToken:publicToken onBehalfOf:onBehalfOfBundleIdentifier];
                 }
 
                 ++v17;
@@ -720,7 +720,7 @@ LABEL_17:
           }
 
           v12 = v43 + 1;
-          v11 = v41;
+          allValues = v41;
         }
 
         while (v43 + 1 != v42);
@@ -728,18 +728,18 @@ LABEL_17:
       }
 
       while (v42);
-      v6 = v38;
-      v5 = v39;
+      connectionCopy = v38;
+      delegatesCopy = v39;
     }
   }
 
   else
   {
-    v11 = DALoggingwithCategory();
-    if (os_log_type_enabled(v11, v8))
+    allValues = DALoggingwithCategory();
+    if (os_log_type_enabled(allValues, v8))
     {
       *buf = 0;
-      _os_log_impl(&dword_248524000, v11, v8, "No public token. We won't be re-registering our tokens with the server", buf, 2u);
+      _os_log_impl(&dword_248524000, allValues, v8, "No public token. We won't be re-registering our tokens with the server", buf, 2u);
     }
   }
 
@@ -762,8 +762,8 @@ LABEL_17:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -774,7 +774,7 @@ LABEL_17:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -783,7 +783,7 @@ LABEL_17:
         [(DARefreshManager *)self _registerAPSTopicsForDelegates:v12 withConnection:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v8);
@@ -810,16 +810,16 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_currentTruePCStyleForDelegate:(id)a3
+- (int)_currentTruePCStyleForDelegate:(id)delegate
 {
-  v3 = a3;
-  [v3 scheduleIdentifier];
+  delegateCopy = delegate;
+  [delegateCopy scheduleIdentifier];
   Style = PCSettingsGetStyle();
   if (!Style)
   {
     if (objc_opt_respondsToSelector())
     {
-      Style = [v3 pushDisabled];
+      Style = [delegateCopy pushDisabled];
     }
 
     else
@@ -831,22 +831,22 @@ LABEL_17:
   return Style;
 }
 
-- (void)_pushRegistrationForDelegateFailed:(id)a3
+- (void)_pushRegistrationForDelegateFailed:(id)failed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  failedCopy = failed;
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 delegate];
-    v7 = [v6 scheduleIdentifier];
+    delegate = [failedCopy delegate];
+    scheduleIdentifier = [delegate scheduleIdentifier];
     v10 = 138412290;
-    v11 = v7;
+    v11 = scheduleIdentifier;
     _os_log_impl(&dword_248524000, v4, v5, "Push registration failed for delegate %@. Falling back to poll.", &v10, 0xCu);
   }
 
-  [v3 setPushState:3];
+  [failedCopy setPushState:3];
   v8 = DALoggingwithCategory();
   if (os_log_type_enabled(v8, v5))
   {
@@ -854,20 +854,20 @@ LABEL_17:
     _os_log_impl(&dword_248524000, v8, v5, "Resuming XPC Activities for polling", &v10, 2u);
   }
 
-  [v3 startFetchActivityForPush];
+  [failedCopy startFetchActivityForPush];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_wrapperIsSuspended:(id)a3
+- (BOOL)_wrapperIsSuspended:(id)suspended
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suspendedCopy = suspended;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allValues];
-  v6 = [v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  allValues = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allValues];
+  v6 = [allValues countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -879,7 +879,7 @@ LABEL_17:
       {
         if (*v37 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v36 + 1) + 8 * i);
@@ -887,8 +887,8 @@ LABEL_17:
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v11 = [v10 allValues];
-        v12 = [v11 countByEnumeratingWithState:&v32 objects:v41 count:16];
+        allValues2 = [v10 allValues];
+        v12 = [allValues2 countByEnumeratingWithState:&v32 objects:v41 count:16];
         if (v12)
         {
           v13 = v12;
@@ -901,7 +901,7 @@ LABEL_17:
             {
               if (*v33 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(allValues2);
               }
 
               v16 = *(*(&v32 + 1) + 8 * j);
@@ -924,7 +924,7 @@ LABEL_17:
                       objc_enumerationMutation(v17);
                     }
 
-                    if (*(*(&v28 + 1) + 8 * k) == v4)
+                    if (*(*(&v28 + 1) + 8 * k) == suspendedCopy)
                     {
 
                       v22 = 1;
@@ -945,7 +945,7 @@ LABEL_17:
               v14 = v27;
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v32 objects:v41 count:16];
+            v13 = [allValues2 countByEnumeratingWithState:&v32 objects:v41 count:16];
             v8 = v25;
             v7 = v26;
           }
@@ -954,7 +954,7 @@ LABEL_17:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v36 objects:v42 count:16];
       v22 = 0;
     }
 
@@ -972,11 +972,11 @@ LABEL_26:
   return v22;
 }
 
-- (void)_suspendTopicsForDelegate:(id)a3
+- (void)_suspendTopicsForDelegate:(id)delegate
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(DARefreshManager *)self _enabledTopicsForWrapper:v4];
+  delegateCopy = delegate;
+  [(DARefreshManager *)self _enabledTopicsForWrapper:delegateCopy];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1004,12 +1004,12 @@ LABEL_26:
         v9 = DALoggingwithCategory();
         if (os_log_type_enabled(v9, v6))
         {
-          v10 = [v4 delegate];
-          v11 = [v10 scheduleIdentifier];
+          delegate = [delegateCopy delegate];
+          scheduleIdentifier = [delegate scheduleIdentifier];
           *buf = v23;
           v40 = v8;
           v41 = 2112;
-          v42 = v11;
+          v42 = scheduleIdentifier;
           _os_log_impl(&dword_248524000, v9, v6, "Suspending topic %@ for delegate %@", buf, 0x16u);
         }
 
@@ -1017,8 +1017,8 @@ LABEL_26:
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v29 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
-        v12 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        allKeys = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
+        v12 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1029,7 +1029,7 @@ LABEL_26:
             {
               if (*v31 != v14)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(allKeys);
               }
 
               v16 = *(*(&v30 + 1) + 8 * i);
@@ -1049,22 +1049,22 @@ LABEL_26:
                 [v18 setObject:v20 forKeyedSubscript:v8];
               }
 
-              [v4 setPushRegistrationTime:0];
-              [v20 addObject:v4];
-              [v19 removeObject:v4];
+              [delegateCopy setPushRegistrationTime:0];
+              [v20 addObject:delegateCopy];
+              [v19 removeObject:delegateCopy];
               if (![v19 count])
               {
                 [v17 removeObjectForKey:v8];
               }
             }
 
-            v13 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v13 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
           }
 
           while (v13);
         }
 
-        [v4 setPushState:0];
+        [delegateCopy setPushState:0];
         v21 = DALoggingwithCategory();
         v6 = type;
         if (os_log_type_enabled(v21, type))
@@ -1073,7 +1073,7 @@ LABEL_26:
           _os_log_impl(&dword_248524000, v21, type, "Resuming XPC Fetch Activities for polling", buf, 2u);
         }
 
-        [v4 startFetchActivityForFetch];
+        [delegateCopy startFetchActivityForFetch];
         v7 = v28 + 1;
       }
 
@@ -1089,11 +1089,11 @@ LABEL_26:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resumeTopicsForSuspendedDelegate:(id)a3
+- (void)_resumeTopicsForSuspendedDelegate:(id)delegate
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(DARefreshManager *)self _suspendedTopicsForWrapper:v4];
+  delegateCopy = delegate;
+  [(DARefreshManager *)self _suspendedTopicsForWrapper:delegateCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -1120,12 +1120,12 @@ LABEL_26:
         v8 = DALoggingwithCategory();
         if (os_log_type_enabled(v8, type))
         {
-          v9 = [v4 delegate];
-          v10 = [v9 scheduleIdentifier];
+          delegate = [delegateCopy delegate];
+          scheduleIdentifier = [delegate scheduleIdentifier];
           *buf = v21;
           v38 = v7;
           v39 = 2112;
-          v40 = v10;
+          v40 = scheduleIdentifier;
           _os_log_impl(&dword_248524000, v8, type, "Resuming topic %@ for delegate %@", buf, 0x16u);
         }
 
@@ -1133,8 +1133,8 @@ LABEL_26:
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v27 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allKeys];
-        v11 = [v27 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        allKeys = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allKeys];
+        v11 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1145,7 +1145,7 @@ LABEL_26:
             {
               if (*v29 != v13)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v28 + 1) + 8 * i);
@@ -1165,16 +1165,16 @@ LABEL_26:
                 [v17 setObject:v19 forKeyedSubscript:v7];
               }
 
-              [v4 setPushRegistrationTime:0];
-              [v19 addObject:v4];
-              [v18 removeObject:v4];
+              [delegateCopy setPushRegistrationTime:0];
+              [v19 addObject:delegateCopy];
+              [v18 removeObject:delegateCopy];
               if (![v18 count])
               {
                 [v16 removeObjectForKey:v7];
               }
             }
 
-            v12 = [v27 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v12);
@@ -1197,7 +1197,7 @@ LABEL_26:
 
 - (void)pushPreferenceDidChange
 {
-  v2 = self;
+  selfCopy = self;
   v51 = *MEMORY[0x277D85DE8];
   v38 = 0u;
   v39 = 0u;
@@ -1218,7 +1218,7 @@ LABEL_26:
   *&v4 = 138412546;
   v30 = v4;
   v31 = *v39;
-  v32 = v2;
+  v32 = selfCopy;
   type = *(MEMORY[0x277D03988] + 6);
   do
   {
@@ -1232,27 +1232,27 @@ LABEL_26:
       }
 
       v9 = *(*(&v38 + 1) + 8 * v8);
-      v10 = [v9 curStyle];
-      v11 = [v9 delegate];
-      v12 = [(DARefreshManager *)v2 _currentTruePCStyleForDelegate:v11];
+      curStyle = [v9 curStyle];
+      delegate = [v9 delegate];
+      v12 = [(DARefreshManager *)selfCopy _currentTruePCStyleForDelegate:delegate];
 
-      if (v12 != v10 && v12 == 0)
+      if (v12 != curStyle && v12 == 0)
       {
         v14 = DALoggingwithCategory();
         if (os_log_type_enabled(v14, v5))
         {
-          v34 = [v9 delegate];
-          v15 = [v34 getDAAccount];
-          v16 = [v15 accountDescription];
-          v17 = [v9 delegate];
-          v18 = [v17 getDAAccount];
-          v19 = [v18 publicDescription];
+          delegate2 = [v9 delegate];
+          getDAAccount = [delegate2 getDAAccount];
+          accountDescription = [getDAAccount accountDescription];
+          delegate3 = [v9 delegate];
+          getDAAccount2 = [delegate3 getDAAccount];
+          publicDescription = [getDAAccount2 publicDescription];
           *buf = 138413058;
-          v43 = v16;
+          v43 = accountDescription;
           v44 = 2114;
-          v45 = v19;
+          v45 = publicDescription;
           v46 = 1024;
-          v47 = v10;
+          v47 = curStyle;
           v48 = 1024;
           v49 = 0;
           _os_log_impl(&dword_248524000, v14, type, "Account %@ (%{public}@): Resuming Push Delegate's PC style changed from %d to %d", buf, 0x22u);
@@ -1261,18 +1261,18 @@ LABEL_26:
           v5 = type;
 
           v7 = v31;
-          v2 = v32;
+          selfCopy = v32;
         }
 
         [v9 startFetchActivityForPush];
-        [(DARefreshManager *)v2 _resumeTopicsForSuspendedDelegate:v9];
+        [(DARefreshManager *)selfCopy _resumeTopicsForSuspendedDelegate:v9];
       }
 
       else
       {
-        if (v12 == v10)
+        if (v12 == curStyle)
         {
-          if (([v9 isSetToExpectedFetchInterval] & 1) != 0 || (v10 - 3) < 0xFFFFFFFE)
+          if (([v9 isSetToExpectedFetchInterval] & 1) != 0 || (curStyle - 3) < 0xFFFFFFFE)
           {
 LABEL_21:
             ++v35;
@@ -1288,26 +1288,26 @@ LABEL_21:
         v20 = DALoggingwithCategory();
         if (os_log_type_enabled(v20, v5))
         {
-          v21 = [v9 delegate];
-          v22 = [v21 getDAAccount];
-          v23 = [v22 accountDescription];
-          v24 = [v9 delegate];
-          v25 = [v24 getDAAccount];
-          v26 = [v25 publicDescription];
+          delegate4 = [v9 delegate];
+          getDAAccount3 = [delegate4 getDAAccount];
+          accountDescription2 = [getDAAccount3 accountDescription];
+          delegate5 = [v9 delegate];
+          getDAAccount4 = [delegate5 getDAAccount];
+          publicDescription2 = [getDAAccount4 publicDescription];
           *buf = v30;
-          v43 = v23;
+          v43 = accountDescription2;
           v44 = 2114;
-          v45 = v26;
+          v45 = publicDescription2;
           _os_log_impl(&dword_248524000, v20, type, "Account %@ (%{public}@): Suspending push and resuming XPC Activity for polling", buf, 0x16u);
 
           v7 = v31;
           v5 = type;
 
-          v2 = v32;
+          selfCopy = v32;
           v6 = v33;
         }
 
-        [(DARefreshManager *)v2 _suspendTopicsForDelegate:v9];
+        [(DARefreshManager *)selfCopy _suspendTopicsForDelegate:v9];
         [v9 startFetchActivityForFetch];
       }
 
@@ -1326,7 +1326,7 @@ LABEL_26:
   v27 = DALoggingwithCategory();
   if (os_log_type_enabled(v27, v5))
   {
-    v28 = [(NSMutableSet *)v2->_wrappers count];
+    v28 = [(NSMutableSet *)selfCopy->_wrappers count];
     *buf = 134218240;
     v43 = v28 - v35;
     v44 = 1024;
@@ -1337,16 +1337,16 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tokenCopy = token;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v6, v7))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = tokenCopy;
     _os_log_impl(&dword_248524000, v6, v7, "Received token %@ from APS. Registering all delegates with their servers", buf, 0xCu);
   }
 
@@ -1361,19 +1361,19 @@ LABEL_26:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  topicCopy = topic;
+  infoCopy = info;
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v10))
   {
     *buf = 138412546;
-    v20 = v7;
+    v20 = topicCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = infoCopy;
     _os_log_impl(&dword_248524000, v9, v10, "Received a message from APS for topic %@ with user info %@.", buf, 0x16u);
   }
 
@@ -1382,11 +1382,11 @@ LABEL_26:
   block[1] = 3221225472;
   block[2] = __66__DARefreshManager_connection_didReceiveMessageForTopic_userInfo___block_invoke;
   block[3] = &unk_278F1D0B0;
-  v16 = v8;
-  v17 = self;
-  v18 = v7;
-  v12 = v7;
-  v13 = v8;
+  v16 = infoCopy;
+  selfCopy = self;
+  v18 = topicCopy;
+  v12 = topicCopy;
+  v13 = infoCopy;
   dispatch_sync(pcQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1674,10 +1674,10 @@ LABEL_61:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_refreshWrapperForDelegate:(id)a3
+- (id)_refreshWrapperForDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1697,9 +1697,9 @@ LABEL_61:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 delegate];
+        delegate = [v9 delegate];
 
-        if (v10 == v4)
+        if (delegate == delegateCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -1723,10 +1723,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_enabledTopicsForWrapper:(id)a3
+- (id)_enabledTopicsForWrapper:(id)wrapper
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrapperCopy = wrapper;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1754,8 +1754,8 @@ LABEL_11:
         v32 = 0u;
         v33 = 0u;
         v25 = v7;
-        v23 = [v7 allKeys];
-        v8 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        allKeys = [v7 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1766,7 +1766,7 @@ LABEL_11:
             {
               if (*v31 != v24)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(allKeys);
               }
 
               v11 = *(*(&v30 + 1) + 8 * i);
@@ -1789,7 +1789,7 @@ LABEL_11:
                       objc_enumerationMutation(v12);
                     }
 
-                    if (*(*(&v26 + 1) + 8 * j) == v4)
+                    if (*(*(&v26 + 1) + 8 * j) == wrapperCopy)
                     {
                       if (!v5)
                       {
@@ -1807,7 +1807,7 @@ LABEL_11:
               }
             }
 
-            v9 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v9);
@@ -1828,10 +1828,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_suspendedTopicsForWrapper:(id)a3
+- (id)_suspendedTopicsForWrapper:(id)wrapper
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrapperCopy = wrapper;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1859,8 +1859,8 @@ LABEL_11:
         v32 = 0u;
         v33 = 0u;
         v25 = v7;
-        v23 = [v7 allKeys];
-        v8 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        allKeys = [v7 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1871,7 +1871,7 @@ LABEL_11:
             {
               if (*v31 != v24)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(allKeys);
               }
 
               v11 = *(*(&v30 + 1) + 8 * i);
@@ -1894,7 +1894,7 @@ LABEL_11:
                       objc_enumerationMutation(v12);
                     }
 
-                    if (*(*(&v26 + 1) + 8 * j) == v4)
+                    if (*(*(&v26 + 1) + 8 * j) == wrapperCopy)
                     {
                       if (!v5)
                       {
@@ -1912,7 +1912,7 @@ LABEL_11:
               }
             }
 
-            v9 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v9);
@@ -1933,17 +1933,17 @@ LABEL_11:
   return v5;
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   pcQueue = self->_pcQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__DARefreshManager_registerDelegate___block_invoke;
   v7[3] = &unk_278F1CD98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_sync(pcQueue, v7);
 }
 
@@ -1969,17 +1969,17 @@ void __37__DARefreshManager_registerDelegate___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   pcQueue = self->_pcQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__DARefreshManager_unregisterDelegate___block_invoke;
   v7[3] = &unk_278F1CD98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(pcQueue, v7);
 }
 
@@ -2110,10 +2110,10 @@ void __39__DARefreshManager_unregisterDelegate___block_invoke(uint64_t a1)
 - (void)_dailyRefreshActivityFired
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_wrappersForDailyRefresh mutableCopy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_wrappersForDailyRefresh mutableCopy];
+  objc_sync_exit(selfCopy);
 
   v11 = 0u;
   v12 = 0u;
@@ -2147,15 +2147,15 @@ void __39__DARefreshManager_unregisterDelegate___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDailyRefreshActivityForWrapper:(id)a3
+- (void)startDailyRefreshActivityForWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_wrappersForDailyRefresh addObject:v4];
-  if (!v5->_dailyRefreshInitialized)
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_wrappersForDailyRefresh addObject:wrapperCopy];
+  if (!selfCopy->_dailyRefreshInitialized)
   {
-    v5->_dailyRefreshInitialized = 1;
+    selfCopy->_dailyRefreshInitialized = 1;
     v6 = DALoggingwithCategory();
     v7 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v6, v7))
@@ -2169,11 +2169,11 @@ void __39__DARefreshManager_unregisterDelegate___block_invoke(uint64_t a1)
     handler[1] = 3221225472;
     handler[2] = __56__DARefreshManager_startDailyRefreshActivityForWrapper___block_invoke;
     handler[3] = &unk_278F1CEA8;
-    handler[4] = v5;
+    handler[4] = selfCopy;
     xpc_activity_register("com.apple.dataaccess.dataaccessd.dailyrefresh", v8, handler);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __56__DARefreshManager_startDailyRefreshActivityForWrapper___block_invoke(uint64_t a1, void *a2)
@@ -2213,15 +2213,15 @@ void __56__DARefreshManager_startDailyRefreshActivityForWrapper___block_invoke(u
   }
 }
 
-- (void)endDailyRefreshActivityForWrapper:(id)a3
+- (void)endDailyRefreshActivityForWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_wrappersForDailyRefresh removeObject:v4];
-  if (![(NSMutableSet *)v5->_wrappersForDailyRefresh count])
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_wrappersForDailyRefresh removeObject:wrapperCopy];
+  if (![(NSMutableSet *)selfCopy->_wrappersForDailyRefresh count])
   {
-    v5->_dailyRefreshInitialized = 0;
+    selfCopy->_dailyRefreshInitialized = 0;
     v6 = DALoggingwithCategory();
     v7 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v6, v7))
@@ -2233,27 +2233,27 @@ void __56__DARefreshManager_startDailyRefreshActivityForWrapper___block_invoke(u
     xpc_activity_unregister("com.apple.dataaccess.dataaccessd.dailyrefresh");
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerTopic:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5
+- (void)registerTopic:(id)topic forDelegate:(id)delegate inEnvironment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  environmentCopy = environment;
   pcQueue = self->_pcQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__DARefreshManager_registerTopic_forDelegate_inEnvironment___block_invoke;
   block[3] = &unk_278F1D368;
-  v17 = v11;
-  v18 = v9;
-  v20 = v10;
+  v17 = environmentCopy;
+  v18 = topicCopy;
+  v20 = delegateCopy;
   v21 = a2;
-  v19 = self;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
+  selfCopy = self;
+  v13 = delegateCopy;
+  v14 = topicCopy;
+  v15 = environmentCopy;
   dispatch_sync(pcQueue, block);
 }
 
@@ -2340,32 +2340,32 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterWrapper:(id)a3 forTopic:(id)a4 inTopicDictionary:(id)a5
+- (void)_unregisterWrapper:(id)wrapper forTopic:(id)topic inTopicDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  wrapperCopy = wrapper;
+  topicCopy = topic;
+  dictionaryCopy = dictionary;
+  v10 = dictionaryCopy;
+  if (topicCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:v8];
-    [v11 removeObject:v7];
+    v11 = [dictionaryCopy objectForKeyedSubscript:topicCopy];
+    [v11 removeObject:wrapperCopy];
     if (![v11 count])
     {
-      [v10 removeObjectForKey:v8];
+      [v10 removeObjectForKey:topicCopy];
     }
   }
 
   else
   {
-    v11 = [v9 copy];
+    v11 = [dictionaryCopy copy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 allKeys];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allKeys = [v11 allKeys];
+    v13 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
       v14 = v13;
@@ -2376,19 +2376,19 @@ LABEL_18:
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allKeys);
           }
 
           v17 = *(*(&v20 + 1) + 8 * i);
           v18 = [v11 objectForKeyedSubscript:v17];
-          [v18 removeObject:v7];
+          [v18 removeObject:wrapperCopy];
           if (![v18 count])
           {
             [v10 removeObjectForKey:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v14);
@@ -2398,37 +2398,37 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterTopicLocked:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5
+- (void)_unregisterTopicLocked:(id)locked forDelegate:(id)delegate inEnvironment:(id)environment
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lockedCopy = locked;
+  delegateCopy = delegate;
+  environmentCopy = environment;
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   type = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, type))
   {
-    v13 = [v9 scheduleIdentifier];
+    scheduleIdentifier = [delegateCopy scheduleIdentifier];
     *buf = 138412546;
-    v62 = v13;
+    v62 = scheduleIdentifier;
     v63 = 2112;
-    v64 = v8;
+    v64 = lockedCopy;
     _os_log_impl(&dword_248524000, v11, type, "Removing refresh manager delegate for account %@ from topic %@", buf, 0x16u);
   }
 
-  v14 = [(DARefreshManager *)self _refreshWrapperForDelegate:v9];
-  v43 = v10;
-  v44 = v9;
+  v14 = [(DARefreshManager *)self _refreshWrapperForDelegate:delegateCopy];
+  v43 = environmentCopy;
+  v44 = delegateCopy;
   if (v14)
   {
-    if (v10)
+    if (environmentCopy)
     {
-      v15 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv objectForKeyedSubscript:v10];
-      [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:v8 inTopicDictionary:v15];
-      v16 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv objectForKeyedSubscript:v10];
+      v15 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv objectForKeyedSubscript:environmentCopy];
+      [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:lockedCopy inTopicDictionary:v15];
+      allValues2 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv objectForKeyedSubscript:environmentCopy];
 
-      [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:v8 inTopicDictionary:v16];
+      [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:lockedCopy inTopicDictionary:allValues2];
     }
 
     else
@@ -2437,8 +2437,8 @@ LABEL_18:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v19 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allValues];
-      v20 = [v19 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      allValues = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allValues];
+      v20 = [allValues countByEnumeratingWithState:&v54 objects:v60 count:16];
       if (v20)
       {
         v21 = v20;
@@ -2449,13 +2449,13 @@ LABEL_18:
           {
             if (*v55 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allValues);
             }
 
-            [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:v8 inTopicDictionary:*(*(&v54 + 1) + 8 * i)];
+            [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:lockedCopy inTopicDictionary:*(*(&v54 + 1) + 8 * i)];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v54 objects:v60 count:16];
+          v21 = [allValues countByEnumeratingWithState:&v54 objects:v60 count:16];
         }
 
         while (v21);
@@ -2465,8 +2465,8 @@ LABEL_18:
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v16 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allValues];
-      v24 = [v16 countByEnumeratingWithState:&v50 objects:v59 count:16];
+      allValues2 = [(NSMutableDictionary *)self->_suspendedTopicWrappersByEnv allValues];
+      v24 = [allValues2 countByEnumeratingWithState:&v50 objects:v59 count:16];
       if (v24)
       {
         v25 = v24;
@@ -2477,13 +2477,13 @@ LABEL_18:
           {
             if (*v51 != v26)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allValues2);
             }
 
-            [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:v8 inTopicDictionary:*(*(&v50 + 1) + 8 * j)];
+            [(DARefreshManager *)self _unregisterWrapper:v14 forTopic:lockedCopy inTopicDictionary:*(*(&v50 + 1) + 8 * j)];
           }
 
-          v25 = [v16 countByEnumeratingWithState:&v50 objects:v59 count:16];
+          v25 = [allValues2 countByEnumeratingWithState:&v50 objects:v59 count:16];
         }
 
         while (v25);
@@ -2493,16 +2493,16 @@ LABEL_18:
 
   else
   {
-    v16 = DALoggingwithCategory();
+    allValues2 = DALoggingwithCategory();
     v17 = *(v12 + 4);
-    if (os_log_type_enabled(v16, v17))
+    if (os_log_type_enabled(allValues2, v17))
     {
-      v18 = [v9 scheduleIdentifier];
+      scheduleIdentifier2 = [delegateCopy scheduleIdentifier];
       *buf = 138412546;
-      v62 = v18;
+      v62 = scheduleIdentifier2;
       v63 = 2112;
-      v64 = v8;
-      _os_log_impl(&dword_248524000, v16, v17, "Delegate %@ tried to unregister for the topic %@, but that delegate is not registered with the refresh manager", buf, 0x16u);
+      v64 = lockedCopy;
+      _os_log_impl(&dword_248524000, allValues2, v17, "Delegate %@ tried to unregister for the topic %@, but that delegate is not registered with the refresh manager", buf, 0x16u);
     }
   }
 
@@ -2511,8 +2511,8 @@ LABEL_18:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v29 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
-  v30 = [v29 countByEnumeratingWithState:&v46 objects:v58 count:16];
+  allKeys = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv allKeys];
+  v30 = [allKeys countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v30)
   {
     v31 = v30;
@@ -2523,15 +2523,15 @@ LABEL_18:
       {
         if (*v47 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(allKeys);
         }
 
         v34 = *(*(&v46 + 1) + 8 * k);
         v35 = [(NSMutableDictionary *)self->_enabledTopicWrappersByEnv objectForKeyedSubscript:v34];
         if ([v35 count])
         {
-          v36 = [v35 allKeys];
-          [v28 addObjectsFromArray:v36];
+          allKeys2 = [v35 allKeys];
+          [v28 addObjectsFromArray:allKeys2];
         }
 
         else
@@ -2540,7 +2540,7 @@ LABEL_18:
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v46 objects:v58 count:16];
+      v31 = [allKeys countByEnumeratingWithState:&v46 objects:v58 count:16];
     }
 
     while (v31);
@@ -2579,37 +2579,37 @@ LABEL_18:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterTopic:(id)a3 forDelegate:(id)a4 inEnvironment:(id)a5
+- (void)unregisterTopic:(id)topic forDelegate:(id)delegate inEnvironment:(id)environment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  environmentCopy = environment;
   pcQueue = self->_pcQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__DARefreshManager_unregisterTopic_forDelegate_inEnvironment___block_invoke;
   v15[3] = &unk_278F1CFE8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = topicCopy;
+  v17 = delegateCopy;
+  v18 = environmentCopy;
+  v12 = environmentCopy;
+  v13 = delegateCopy;
+  v14 = topicCopy;
   dispatch_sync(pcQueue, v15);
 }
 
-- (void)delegateDidCompleteRefresh:(id)a3
+- (void)delegateDidCompleteRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   pcQueue = self->_pcQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DARefreshManager_delegateDidCompleteRefresh___block_invoke;
   v7[3] = &unk_278F1CD98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = refreshCopy;
+  v6 = refreshCopy;
   dispatch_sync(pcQueue, v7);
 }
 
@@ -2651,17 +2651,17 @@ void __47__DARefreshManager_delegateDidCompleteRefresh___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)delegateDidSuccessfullyRecoverFromBeingUnauthenticated:(id)a3
+- (void)delegateDidSuccessfullyRecoverFromBeingUnauthenticated:(id)unauthenticated
 {
-  v4 = a3;
+  unauthenticatedCopy = unauthenticated;
   pcQueue = self->_pcQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__DARefreshManager_delegateDidSuccessfullyRecoverFromBeingUnauthenticated___block_invoke;
   v7[3] = &unk_278F1CD98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unauthenticatedCopy;
+  selfCopy = self;
+  v6 = unauthenticatedCopy;
   dispatch_sync(pcQueue, v7);
 }
 
@@ -2764,22 +2764,22 @@ void __75__DARefreshManager_delegateDidSuccessfullyRecoverFromBeingUnauthenticat
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retryRefreshForDelegate:(id)a3 withCollections:(id)a4 after:(double)a5 originalRefreshReason:(int)a6
+- (void)retryRefreshForDelegate:(id)delegate withCollections:(id)collections after:(double)after originalRefreshReason:(int)reason
 {
-  v10 = a3;
-  v11 = a4;
+  delegateCopy = delegate;
+  collectionsCopy = collections;
   pcQueue = self->_pcQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__DARefreshManager_retryRefreshForDelegate_withCollections_after_originalRefreshReason___block_invoke;
   block[3] = &unk_278F1D390;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = delegateCopy;
+  v17 = collectionsCopy;
+  afterCopy = after;
+  reasonCopy = reason;
+  v13 = collectionsCopy;
+  v14 = delegateCopy;
   dispatch_sync(pcQueue, block);
 }
 
@@ -2809,13 +2809,13 @@ void __88__DARefreshManager_retryRefreshForDelegate_withCollections_after_origin
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pushTokenForEnvironment:(id)a3
+- (id)pushTokenForEnvironment:(id)environment
 {
-  v4 = [(DARefreshManager *)self _apsEnvStringForDAEnvString:a3];
+  v4 = [(DARefreshManager *)self _apsEnvStringForDAEnvString:environment];
   v5 = [(DARefreshManager *)self _connectionForEnv:v4];
-  v6 = [v5 publicToken];
+  publicToken = [v5 publicToken];
 
-  return v6;
+  return publicToken;
 }
 
 - (void)_connectionForEnv:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

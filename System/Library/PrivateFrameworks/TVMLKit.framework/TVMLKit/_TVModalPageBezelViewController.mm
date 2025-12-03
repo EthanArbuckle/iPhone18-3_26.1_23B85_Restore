@@ -1,21 +1,21 @@
 @interface _TVModalPageBezelViewController
 - (CGSize)contentSize;
-- (_TVModalPageBezelViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setBezelBackgroundColor:(id)a3;
-- (void)setBezelCornerRadius:(double)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContentViewController:(id)a3;
+- (_TVModalPageBezelViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setBezelBackgroundColor:(id)color;
+- (void)setBezelCornerRadius:(double)radius;
+- (void)setContentSize:(CGSize)size;
+- (void)setContentViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation _TVModalPageBezelViewController
 
-- (_TVModalPageBezelViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TVModalPageBezelViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = _TVModalPageBezelViewController;
-  result = [(_TVModalPageBezelViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(_TVModalPageBezelViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_contentSize = xmmword_26CE87E10;
@@ -29,21 +29,21 @@
   v8.receiver = self;
   v8.super_class = _TVModalPageBezelViewController;
   [(_TVModalPageBezelViewController *)&v8 viewDidLoad];
-  v3 = [(UIViewController *)self->_contentViewController view];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:self->_bezelCornerRadius];
+  view = [(UIViewController *)self->_contentViewController view];
+  layer = [view layer];
+  [layer setCornerRadius:self->_bezelCornerRadius];
 
-  v5 = [(UIViewController *)self->_contentViewController view];
-  v6 = v5;
+  view2 = [(UIViewController *)self->_contentViewController view];
+  v6 = view2;
   if (self->_bezelBackgroundColor)
   {
-    [v5 setBackgroundColor:?];
+    [view2 setBackgroundColor:?];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v6 setBackgroundColor:systemBackgroundColor];
   }
 }
 
@@ -52,14 +52,14 @@
   v15.receiver = self;
   v15.super_class = _TVModalPageBezelViewController;
   [(_TVModalPageBezelViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(_TVModalPageBezelViewController *)self view];
-  [v3 bounds];
+  view = [(_TVModalPageBezelViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIViewController *)self->_contentViewController view];
+  view2 = [(UIViewController *)self->_contentViewController view];
   v16.origin.x = v5;
   v16.origin.y = v7;
   v16.size.width = v9;
@@ -70,94 +70,94 @@
   v17.size.width = v9;
   v17.size.height = v11;
   CGRectGetHeight(v17);
-  v13 = [(_TVModalPageBezelViewController *)self view];
-  [v13 bounds];
+  view3 = [(_TVModalPageBezelViewController *)self view];
+  [view3 bounds];
   UIRectCenteredIntegralRect();
-  [v12 setFrame:?];
+  [view2 setFrame:?];
 
-  v14 = [(UIViewController *)self->_contentViewController view];
-  [v14 setAutoresizingMask:45];
+  view4 = [(UIViewController *)self->_contentViewController view];
+  [view4 setAutoresizingMask:45];
 }
 
-- (void)setBezelCornerRadius:(double)a3
+- (void)setBezelCornerRadius:(double)radius
 {
-  if (vabdd_f64(self->_bezelCornerRadius, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_bezelCornerRadius, radius) > 0.00000011920929)
   {
-    self->_bezelCornerRadius = a3;
-    v5 = [(UIViewController *)self->_contentViewController view];
-    v4 = [v5 layer];
-    [v4 setCornerRadius:self->_bezelCornerRadius];
+    self->_bezelCornerRadius = radius;
+    view = [(UIViewController *)self->_contentViewController view];
+    layer = [view layer];
+    [layer setCornerRadius:self->_bezelCornerRadius];
   }
 }
 
-- (void)setBezelBackgroundColor:(id)a3
+- (void)setBezelBackgroundColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_bezelBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_bezelBackgroundColor, a3);
-    v5 = [(UIViewController *)self->_contentViewController view];
-    v6 = v5;
+    objc_storeStrong(&self->_bezelBackgroundColor, color);
+    view = [(UIViewController *)self->_contentViewController view];
+    v6 = view;
     if (self->_bezelBackgroundColor)
     {
-      [v5 setBackgroundColor:?];
+      [view setBackgroundColor:?];
     }
 
     else
     {
-      v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [v6 setBackgroundColor:v7];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [v6 setBackgroundColor:systemBackgroundColor];
     }
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 524.0;
+    size.width = 524.0;
   }
 
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 547.0;
+    size.height = 547.0;
   }
 
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
-    v5 = [(_TVModalPageBezelViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_contentSize = size;
+    view = [(_TVModalPageBezelViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentViewController = self->_contentViewController;
-  v11 = v5;
-  if (contentViewController != v5)
+  v11 = controllerCopy;
+  if (contentViewController != controllerCopy)
   {
     if (contentViewController)
     {
       [(UIViewController *)contentViewController willMoveToParentViewController:0];
-      v7 = [(UIViewController *)self->_contentViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_contentViewController view];
+      [view removeFromSuperview];
 
       [(UIViewController *)self->_contentViewController removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (self->_contentViewController)
     {
       [(_TVModalPageBezelViewController *)self addChildViewController:?];
-      v8 = [(_TVModalPageBezelViewController *)self view];
-      v9 = [(UIViewController *)self->_contentViewController view];
-      [v8 addSubview:v9];
+      view2 = [(_TVModalPageBezelViewController *)self view];
+      view3 = [(UIViewController *)self->_contentViewController view];
+      [view2 addSubview:view3];
 
       [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
-      v10 = [(_TVModalPageBezelViewController *)self view];
-      [v10 setNeedsLayout];
+      view4 = [(_TVModalPageBezelViewController *)self view];
+      [view4 setNeedsLayout];
     }
   }
 }

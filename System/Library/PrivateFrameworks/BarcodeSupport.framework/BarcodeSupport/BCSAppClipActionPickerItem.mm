@@ -7,9 +7,9 @@
 
 - (id)icon
 {
-  v2 = [(BCSActionPickerItem *)self action];
-  v3 = [v2 clipMetadataRequest];
-  v4 = [v3 getDownloadedIconURLSynchronously];
+  action = [(BCSActionPickerItem *)self action];
+  clipMetadataRequest = [action clipMetadataRequest];
+  getDownloadedIconURLSynchronously = [clipMetadataRequest getDownloadedIconURLSynchronously];
 
   v5 = appclipIconCache;
   if (!appclipIconCache)
@@ -22,13 +22,13 @@
     v5 = appclipIconCache;
   }
 
-  v8 = [v5 objectForKey:v4];
+  v8 = [v5 objectForKey:getDownloadedIconURLSynchronously];
   if (!v8)
   {
-    if (v4 && (MGGetFloat32Answer(), (v10 = _bcs_iconWithAppclipTreatment(v4, v9)) != 0))
+    if (getDownloadedIconURLSynchronously && (MGGetFloat32Answer(), (v10 = _bcs_iconWithAppclipTreatment(getDownloadedIconURLSynchronously, v9)) != 0))
     {
       v8 = [objc_alloc(getUIImageClass()) initWithCGImage:v10];
-      [appclipIconCache setObject:v8 forKey:v4];
+      [appclipIconCache setObject:v8 forKey:getDownloadedIconURLSynchronously];
     }
 
     else
@@ -42,17 +42,17 @@
 
 - (id)label
 {
-  v2 = [(BCSActionPickerItem *)self action];
-  v3 = [v2 clipMetadataRequest];
-  v4 = [v3 getClipMetadataSynchronously];
+  action = [(BCSActionPickerItem *)self action];
+  clipMetadataRequest = [action clipMetadataRequest];
+  getClipMetadataSynchronously = [clipMetadataRequest getClipMetadataSynchronously];
 
-  if (v4)
+  if (getClipMetadataSynchronously)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = _BCSLocalizedString(@"%@ %@", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-    v7 = [v4 clipOpenButtonTitle];
-    v8 = [v4 clipName];
-    v9 = [v5 stringWithFormat:v6, v7, v8];
+    clipOpenButtonTitle = [getClipMetadataSynchronously clipOpenButtonTitle];
+    clipName = [getClipMetadataSynchronously clipName];
+    v9 = [v5 stringWithFormat:v6, clipOpenButtonTitle, clipName];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface THWGutterInfo
 - (CGRect)stageFrame;
 - (TSWPopUpInfo)popUpInfo;
-- (int64_t)gutterOrderCompare:(id)a3;
+- (int64_t)gutterOrderCompare:(id)compare;
 - (void)dealloc;
 @end
 
@@ -21,11 +21,11 @@
 
 - (CGRect)stageFrame
 {
-  v2 = [(TSDDrawableInfo *)[(THWGutterInfo *)self stageInfo] geometry];
-  if (v2)
+  geometry = [(TSDDrawableInfo *)[(THWGutterInfo *)self stageInfo] geometry];
+  if (geometry)
   {
-    v3 = v2;
-    [v2 position];
+    v3 = geometry;
+    [geometry position];
     [v3 size];
     TSDRectWithOriginAndSize();
     TSDRoundedRectForMainScreen();
@@ -46,17 +46,17 @@
   return result;
 }
 
-- (int64_t)gutterOrderCompare:(id)a3
+- (int64_t)gutterOrderCompare:(id)compare
 {
-  v4 = [(THWGutterInfo *)self gutterOrder];
-  v5 = [a3 gutterOrder];
+  gutterOrder = [(THWGutterInfo *)self gutterOrder];
+  gutterOrder2 = [compare gutterOrder];
   v6 = -1;
-  if (v4 >= v5)
+  if (gutterOrder >= gutterOrder2)
   {
     v6 = 1;
   }
 
-  if (v4 == v5)
+  if (gutterOrder == gutterOrder2)
   {
     return 0;
   }

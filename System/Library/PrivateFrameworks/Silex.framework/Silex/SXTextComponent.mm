@@ -1,27 +1,27 @@
 @interface SXTextComponent
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
++ (id)valueClassBlockForPropertyWithName:(id)name;
 @end
 
 @implementation SXTextComponent
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"inlineTextStyles"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"inlineTextStyles"])
   {
     v5 = &__block_literal_global_46;
   }
 
-  else if ([v4 isEqualToString:@"conditional"])
+  else if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_9_0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXTextComponent;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;

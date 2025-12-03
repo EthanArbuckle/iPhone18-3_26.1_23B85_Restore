@@ -1,11 +1,11 @@
 @interface _WKLinkIconParameters
 - (id).cxx_construct;
-- (id)_initWithLinkIcon:(const void *)a3;
+- (id)_initWithLinkIcon:(const void *)icon;
 @end
 
 @implementation _WKLinkIconParameters
 
-- (id)_initWithLinkIcon:(const void *)a3
+- (id)_initWithLinkIcon:(const void *)icon
 {
   v37.receiver = self;
   v37.super_class = _WKLinkIconParameters;
@@ -15,7 +15,7 @@
     return v4;
   }
 
-  WTF::URL::createCFURL(&v36, a3);
+  WTF::URL::createCFURL(&v36, icon);
   v5 = v36;
   v36 = 0;
   m_ptr = v4->_url.m_ptr;
@@ -30,7 +30,7 @@
     }
   }
 
-  v8 = *(a3 + 6);
+  v8 = *(icon + 6);
   if (v8)
   {
     atomic_fetch_add_explicit(v8, 2u, memory_order_relaxed);
@@ -61,12 +61,12 @@
     }
   }
 
-  if (*(a3 + 60) == 1)
+  if (*(icon + 60) == 1)
   {
     v14 = objc_alloc(MEMORY[0x1E696AD98]);
-    if (*(a3 + 60))
+    if (*(icon + 60))
     {
-      v15 = [v14 initWithUnsignedInt:*(a3 + 14)];
+      v15 = [v14 initWithUnsignedInt:*(icon + 14)];
       v16 = v4->_size.m_ptr;
       v4->_size.m_ptr = v15;
       if (!v16)
@@ -82,7 +82,7 @@
   }
 
 LABEL_15:
-  v17 = *(a3 + 40);
+  v17 = *(icon + 40);
   switch(v17)
   {
     case 1:
@@ -98,18 +98,18 @@ LABEL_21:
       break;
   }
 
-  v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:*(a3 + 19)];
+  v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:*(icon + 19)];
   v20 = v4->_attributes.m_ptr;
   v4->_attributes.m_ptr = v19;
   if (v20)
   {
   }
 
-  v21 = *(a3 + 19);
+  v21 = *(icon + 19);
   if (v21)
   {
     v22 = 16 * v21;
-    v23 = (*(a3 + 8) + 8);
+    v23 = (*(icon + 8) + 8);
     do
     {
       v24 = *v23;

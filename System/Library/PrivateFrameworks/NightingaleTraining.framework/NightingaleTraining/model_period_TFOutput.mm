@@ -1,29 +1,29 @@
 @interface model_period_TFOutput
-- (id)featureValueForName:(id)a3;
-- (model_period_TFOutput)initWithOut:(id)a3;
+- (id)featureValueForName:(id)name;
+- (model_period_TFOutput)initWithOut:(id)out;
 @end
 
 @implementation model_period_TFOutput
 
-- (model_period_TFOutput)initWithOut:(id)a3
+- (model_period_TFOutput)initWithOut:(id)out
 {
-  v5 = a3;
+  outCopy = out;
   v9.receiver = self;
   v9.super_class = model_period_TFOutput;
   v6 = [(model_period_TFOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_out_, a3);
+    objc_storeStrong(&v6->_out_, out);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"out"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"out"])
   {
     v5 = MEMORY[0x277CBFEF8];
     v6 = [(model_period_TFOutput *)self out];

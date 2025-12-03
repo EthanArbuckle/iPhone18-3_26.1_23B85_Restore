@@ -1,26 +1,26 @@
 @interface SearchHomeBrowseCategoryCollectionViewCell
 + (id)identifier;
-- (SearchHomeBrowseCategoryCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SearchHomeBrowseCategoryCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3;
-- (void)setSizeController:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setSizeController:(id)controller;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SearchHomeBrowseCategoryCollectionViewCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SearchHomeBrowseCategoryCollectionViewCell *)self browseImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  browseImageView = [(SearchHomeBrowseCategoryCollectionViewCell *)self browseImageView];
+  [browseImageView setImage:imageCopy];
 }
 
 - (void)prepareForReuse
@@ -28,73 +28,73 @@
   v5.receiver = self;
   v5.super_class = SearchHomeBrowseCategoryCollectionViewCell;
   [(SearchHomeBrowseCategoryCollectionViewCell *)&v5 prepareForReuse];
-  v3 = [(SearchHomeBrowseCategoryCollectionViewCell *)self browseImageView];
-  [v3 setImage:0];
+  browseImageView = [(SearchHomeBrowseCategoryCollectionViewCell *)self browseImageView];
+  [browseImageView setImage:0];
 
-  v4 = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
-  [v4 setText:0];
+  titleLabel = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
+  [titleLabel setText:0];
 }
 
-- (void)setSizeController:(id)a3
+- (void)setSizeController:(id)controller
 {
-  v31 = a3;
-  v5 = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
-  v6 = [v31 isEqual:v5];
+  controllerCopy = controller;
+  sizeController = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
+  v6 = [controllerCopy isEqual:sizeController];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_sizeController, a3);
-    [v31 labelTopAndBottomPadding];
+    objc_storeStrong(&self->_sizeController, controller);
+    [controllerCopy labelTopAndBottomPadding];
     v8 = v7;
-    v9 = [(SearchHomeBrowseCategoryCollectionViewCell *)self topLabelToTopConstraint];
-    [v9 setConstant:v8];
+    topLabelToTopConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self topLabelToTopConstraint];
+    [topLabelToTopConstraint setConstant:v8];
 
-    [v31 labelTopAndBottomPadding];
+    [controllerCopy labelTopAndBottomPadding];
     v11 = -v10;
-    v12 = [(SearchHomeBrowseCategoryCollectionViewCell *)self bottomLabelToBottomConstraint];
-    [v12 setConstant:v11];
+    bottomLabelToBottomConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self bottomLabelToBottomConstraint];
+    [bottomLabelToBottomConstraint setConstant:v11];
 
-    v13 = [v31 titleLabelFont];
-    v14 = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
-    [v14 setFont:v13];
+    titleLabelFont = [controllerCopy titleLabelFont];
+    titleLabel = [(SearchHomeBrowseCategoryCollectionViewCell *)self titleLabel];
+    [titleLabel setFont:titleLabelFont];
 
-    [v31 imageLeadingPadding];
+    [controllerCopy imageLeadingPadding];
     v16 = v15;
-    v17 = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageLeadingConstraint];
-    [v17 setConstant:v16];
+    imageLeadingConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageLeadingConstraint];
+    [imageLeadingConstraint setConstant:v16];
 
-    v18 = [(SearchHomeBrowseCategoryCollectionViewCell *)self traitCollection];
-    v19 = [v18 userInterfaceIdiom];
+    traitCollection = [(SearchHomeBrowseCategoryCollectionViewCell *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v20 = 10.0;
-    if (v19 != 5)
+    if (userInterfaceIdiom != 5)
     {
-      [v31 imageToLabelPadding];
+      [controllerCopy imageToLabelPadding];
       v20 = v21;
     }
 
-    v22 = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageToLabelConstraint];
-    [v22 setConstant:v20];
+    imageToLabelConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageToLabelConstraint];
+    [imageToLabelConstraint setConstant:v20];
 
-    v23 = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
-    [v23 imageSize];
+    sizeController2 = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
+    [sizeController2 imageSize];
     v25 = v24;
-    v26 = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageWidthConstraint];
-    [v26 setConstant:v25];
+    imageWidthConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageWidthConstraint];
+    [imageWidthConstraint setConstant:v25];
 
-    v27 = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
-    [v27 imageSize];
+    sizeController3 = [(SearchHomeBrowseCategoryCollectionViewCell *)self sizeController];
+    [sizeController3 imageSize];
     v29 = v28;
-    v30 = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageHeightConstraint];
-    [v30 setConstant:v29];
+    imageHeightConstraint = [(SearchHomeBrowseCategoryCollectionViewCell *)self imageHeightConstraint];
+    [imageHeightConstraint setConstant:v29];
   }
 }
 
-- (SearchHomeBrowseCategoryCollectionViewCell)initWithFrame:(CGRect)a3
+- (SearchHomeBrowseCategoryCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v53.receiver = self;
   v53.super_class = SearchHomeBrowseCategoryCollectionViewCell;
-  v3 = [(SearchHomeBrowseCategoryCollectionViewCell *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchHomeBrowseCategoryCollectionViewCell *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -116,8 +116,8 @@
     LODWORD(v10) = 1148846080;
     [(UIImageView *)v3->_browseImageView setContentCompressionResistancePriority:0 forAxis:v10];
     [(UIImageView *)v3->_browseImageView setAccessibilityIdentifier:@"SearchHomeBrowseCategoryIcon"];
-    v11 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    [v11 addSubview:v3->_browseImageView];
+    contentView = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_browseImageView];
 
     v12 = objc_alloc_init(UILabel);
     titleLabel = v3->_titleLabel;
@@ -131,59 +131,59 @@
     [(UILabel *)v3->_titleLabel setFont:v15];
 
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:@"SearchHomeBrowseCategoryTitle"];
-    v16 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    [v16 addSubview:v3->_titleLabel];
+    contentView2 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_titleLabel];
 
-    v17 = [(UILabel *)v3->_titleLabel topAnchor];
-    v18 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    v19 = [v18 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    topAnchor = [(UILabel *)v3->_titleLabel topAnchor];
+    contentView3 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     topLabelToTopConstraint = v3->_topLabelToTopConstraint;
     v3->_topLabelToTopConstraint = v20;
 
-    v22 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v23 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    bottomAnchor = [(UILabel *)v3->_titleLabel bottomAnchor];
+    contentView4 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     bottomLabelToBottomConstraint = v3->_bottomLabelToBottomConstraint;
     v3->_bottomLabelToBottomConstraint = v25;
 
-    v27 = [(UIImageView *)v3->_browseImageView leadingAnchor];
-    v28 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    v29 = [v28 leadingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    leadingAnchor = [(UIImageView *)v3->_browseImageView leadingAnchor];
+    contentView5 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     imageLeadingConstraint = v3->_imageLeadingConstraint;
     v3->_imageLeadingConstraint = v30;
 
-    v32 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v33 = [(UIImageView *)v3->_browseImageView trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leadingAnchor3 = [(UILabel *)v3->_titleLabel leadingAnchor];
+    trailingAnchor = [(UIImageView *)v3->_browseImageView trailingAnchor];
+    v34 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
     imageToLabelConstraint = v3->_imageToLabelConstraint;
     v3->_imageToLabelConstraint = v34;
 
-    v36 = [(UIImageView *)v3->_browseImageView widthAnchor];
-    v37 = [v36 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIImageView *)v3->_browseImageView widthAnchor];
+    v37 = [widthAnchor constraintEqualToConstant:0.0];
     imageWidthConstraint = v3->_imageWidthConstraint;
     v3->_imageWidthConstraint = v37;
 
-    v39 = [(UIImageView *)v3->_browseImageView heightAnchor];
-    v40 = [v39 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIImageView *)v3->_browseImageView heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:0.0];
     imageHeightConstraint = v3->_imageHeightConstraint;
     v3->_imageHeightConstraint = v40;
 
     v54[0] = v3->_imageLeadingConstraint;
-    v42 = [(UIImageView *)v3->_browseImageView centerYAnchor];
-    v43 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    v44 = [v43 centerYAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    centerYAnchor = [(UIImageView *)v3->_browseImageView centerYAnchor];
+    contentView6 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    centerYAnchor2 = [contentView6 centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v54[1] = v45;
     v54[2] = v3->_imageWidthConstraint;
     v54[3] = v3->_imageHeightConstraint;
     v54[4] = v3->_imageToLabelConstraint;
-    v46 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v47 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
-    v48 = [v47 trailingAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48];
+    trailingAnchor2 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    contentView7 = [(SearchHomeBrowseCategoryCollectionViewCell *)v3 contentView];
+    trailingAnchor3 = [contentView7 trailingAnchor];
+    v49 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v54[5] = v49;
     v54[6] = v3->_topLabelToTopConstraint;
     v54[7] = v3->_bottomLabelToBottomConstraint;

@@ -1,8 +1,8 @@
 @interface MADTextEmbeddingRequest
 - (MADTextEmbeddingRequest)init;
-- (MADTextEmbeddingRequest)initWithCoder:(id)a3;
+- (MADTextEmbeddingRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADTextEmbeddingRequest
@@ -27,72 +27,72 @@
   return v2;
 }
 
-- (MADTextEmbeddingRequest)initWithCoder:(id)a3
+- (MADTextEmbeddingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADTextEmbeddingRequest;
-  v5 = [(MADTextRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADTextRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"Version"];
-    v5->_calibrate = [v4 decodeBoolForKey:@"Calibrate"];
-    v5->_computeThreshold = [v4 decodeBoolForKey:@"ComputeThreshold"];
-    v5->_extendedContextLength = [v4 decodeBoolForKey:@"ExtendedContextLength"];
-    v5->_computeSafety = [v4 decodeBoolForKey:@"ComputeSafety"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"Version"];
+    v5->_calibrate = [coderCopy decodeBoolForKey:@"Calibrate"];
+    v5->_computeThreshold = [coderCopy decodeBoolForKey:@"ComputeThreshold"];
+    v5->_extendedContextLength = [coderCopy decodeBoolForKey:@"ExtendedContextLength"];
+    v5->_computeSafety = [coderCopy decodeBoolForKey:@"ComputeSafety"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADTextEmbeddingRequest;
-  v4 = a3;
-  [(MADTextRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_version forKey:{@"Version", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_calibrate forKey:@"Calibrate"];
-  [v4 encodeBool:self->_computeThreshold forKey:@"ComputeThreshold"];
-  [v4 encodeBool:self->_extendedContextLength forKey:@"ExtendedContextLength"];
-  [v4 encodeBool:self->_computeSafety forKey:@"ComputeSafety"];
+  coderCopy = coder;
+  [(MADTextRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_version forKey:{@"Version", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_calibrate forKey:@"Calibrate"];
+  [coderCopy encodeBool:self->_computeThreshold forKey:@"ComputeThreshold"];
+  [coderCopy encodeBool:self->_extendedContextLength forKey:@"ExtendedContextLength"];
+  [coderCopy encodeBool:self->_computeSafety forKey:@"ComputeSafety"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"version: %d, ", self->_version];
+  [string appendFormat:@"version: %d, ", self->_version];
   if (self->_calibrate)
   {
-    [v3 appendFormat:@"calibrate: %d, ", 1];
+    [string appendFormat:@"calibrate: %d, ", 1];
   }
 
   if (self->_computeThreshold)
   {
-    [v3 appendFormat:@"computeThreshold: %d, ", 1];
+    [string appendFormat:@"computeThreshold: %d, ", 1];
   }
 
   if (self->_extendedContextLength)
   {
-    [v3 appendFormat:@"extendedContextLength: %d, ", 1];
+    [string appendFormat:@"extendedContextLength: %d, ", 1];
   }
 
   if (self->_computeSafety)
   {
-    [v3 appendFormat:@"computeSafety: %d, ", 1];
+    [string appendFormat:@"computeSafety: %d, ", 1];
   }
 
-  v6 = [(MADTextRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADTextRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADTextRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADTextRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

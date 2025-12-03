@@ -1,43 +1,43 @@
 @interface SPUIPlatterContainerViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
-- (SPUIPlatterContainerViewController)initWithNavigationController:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (SPUIPlatterContainerViewController)initWithNavigationController:(id)controller;
 - (UIEdgeInsets)layoutMarginsForContainer;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)dealloc;
-- (void)navigationViewDidInvalidateSizeAnimated:(BOOL)a3;
+- (void)navigationViewDidInvalidateSizeAnimated:(BOOL)animated;
 @end
 
 @implementation SPUIPlatterContainerViewController
 
-- (SPUIPlatterContainerViewController)initWithNavigationController:(id)a3
+- (SPUIPlatterContainerViewController)initWithNavigationController:(id)controller
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v37.receiver = self;
   v37.super_class = SPUIPlatterContainerViewController;
   v5 = [(SPUIPlatterContainerViewController *)&v37 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SPUIPlatterContainerViewController *)v5 setNavController:v4];
-    v7 = [(SPUIPlatterContainerViewController *)v6 navController];
-    [v7 setSizingDelegate:v6];
+    [(SPUIPlatterContainerViewController *)v5 setNavController:controllerCopy];
+    navController = [(SPUIPlatterContainerViewController *)v6 navController];
+    [navController setSizingDelegate:v6];
 
-    [(SPUIPlatterContainerViewController *)v6 addChildViewController:v4];
+    [(SPUIPlatterContainerViewController *)v6 addChildViewController:controllerCopy];
     if (_UISolariumEnabled())
     {
       v8 = [SPUIGlassView alloc];
       v9 = [(SPUIGlassView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-      v10 = [v4 view];
-      [(SPUIGlassView *)v9 addSubview:v10];
+      view = [controllerCopy view];
+      [(SPUIGlassView *)v9 addSubview:view];
 
-      v11 = [(SPUIGlassView *)v9 layer];
-      [v11 setMasksToBounds:1];
+      layer = [(SPUIGlassView *)v9 layer];
+      [layer setMasksToBounds:1];
 
-      v12 = [(SPUIPlatterContainerViewController *)v6 navController];
-      v13 = [v12 view];
-      [v13 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+      navController2 = [(SPUIPlatterContainerViewController *)v6 navController];
+      view2 = [navController2 view];
+      [view2 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
       [(SPUIGlassView *)v9 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     }
@@ -48,24 +48,24 @@
       v15 = [MEMORY[0x277D75210] effectWithStyle:8];
       v9 = [(SPUIBorderedVisualEffectView *)v14 initWithEffect:v15];
 
-      v16 = [(SPUIGlassView *)v9 contentView];
-      v17 = [v4 view];
-      [v16 addSubview:v17];
+      contentView = [(SPUIGlassView *)v9 contentView];
+      view3 = [controllerCopy view];
+      [contentView addSubview:view3];
 
       [(SPUIGlassView *)v9 _setContinuousCornerRadius:20.0];
-      v18 = [(SPUIGlassView *)v9 contentView];
-      [v18 _setContinuousCornerRadius:20.0];
+      contentView2 = [(SPUIGlassView *)v9 contentView];
+      [contentView2 _setContinuousCornerRadius:20.0];
 
-      v19 = [(SPUIGlassView *)v9 contentView];
-      v20 = [v19 layer];
-      [v20 setMasksToBounds:1];
+      contentView3 = [(SPUIGlassView *)v9 contentView];
+      layer2 = [contentView3 layer];
+      [layer2 setMasksToBounds:1];
 
-      v21 = [(SPUIPlatterContainerViewController *)v6 navController];
-      v22 = [v21 view];
-      [v22 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+      navController3 = [(SPUIPlatterContainerViewController *)v6 navController];
+      view4 = [navController3 view];
+      [view4 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
-      v23 = [(SPUIGlassView *)v9 contentView];
-      [v23 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+      contentView4 = [(SPUIGlassView *)v9 contentView];
+      [contentView4 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     }
 
     [(SPUIPlatterContainerViewController *)v6 setMaterialPlatterView:v9];
@@ -80,20 +80,20 @@
     v27 = [(NUIContainerBoxView *)v25 initWithArrangedSubviews:v26];
     [(SPUIPlatterContainerViewController *)v6 setView:v27];
 
-    v28 = [(SPUIPlatterContainerViewController *)v6 view];
-    [v28 setInsetsLayoutMarginsFromSafeArea:0];
+    view5 = [(SPUIPlatterContainerViewController *)v6 view];
+    [view5 setInsetsLayoutMarginsFromSafeArea:0];
 
-    v29 = [(SPUIPlatterContainerViewController *)v6 view];
-    [v29 setLayoutMarginsRelativeArrangement:1];
+    view6 = [(SPUIPlatterContainerViewController *)v6 view];
+    [view6 setLayoutMarginsRelativeArrangement:1];
 
-    v30 = [(SPUIPlatterContainerViewController *)v6 view];
-    [v30 setVerticalAlignment:1];
+    view7 = [(SPUIPlatterContainerViewController *)v6 view];
+    [view7 setVerticalAlignment:1];
 
-    v31 = [(SPUIPlatterContainerViewController *)v6 view];
-    [v31 setHorizontalAlignment:3];
+    view8 = [(SPUIPlatterContainerViewController *)v6 view];
+    [view8 setHorizontalAlignment:3];
 
-    v32 = [(SPUIPlatterContainerViewController *)v6 view];
-    [v32 setDelegate:v6];
+    view9 = [(SPUIPlatterContainerViewController *)v6 view];
+    [view9 setDelegate:v6];
 
     [(SPUIPlatterContainerViewController *)v6 hardwareKeyboardAvailabilityChangedAnimated:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -118,9 +118,9 @@ void __82__SPUIPlatterContainerViewController_hardwareKeyboardAvailabilityChange
   [v7 layoutIfNeeded];
 }
 
-- (void)navigationViewDidInvalidateSizeAnimated:(BOOL)a3
+- (void)navigationViewDidInvalidateSizeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__SPUIPlatterContainerViewController_navigationViewDidInvalidateSizeAnimated___block_invoke;
@@ -128,7 +128,7 @@ void __82__SPUIPlatterContainerViewController_hardwareKeyboardAvailabilityChange
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -165,26 +165,26 @@ void __78__SPUIPlatterContainerViewController_navigationViewDidInvalidateSizeAni
   [v1 performAnimatableChanges:v2];
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  v6 = a5;
-  v7 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-  v8 = v7;
-  if (v7 == v6)
+  subviewCopy = subview;
+  materialPlatterView = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+  v8 = materialPlatterView;
+  if (materialPlatterView == subviewCopy)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(SPUIPlatterContainerViewController *)self platterBackgroundView];
+  platterBackgroundView = [(SPUIPlatterContainerViewController *)self platterBackgroundView];
 
-  if (v9 == v6)
+  if (platterBackgroundView == subviewCopy)
   {
 LABEL_5:
     [MEMORY[0x277D4C818] idealPlatterWidth];
     v10 = v12;
-    v13 = [(SPUIPlatterContainerViewController *)self navController];
-    [v13 contentHeight];
+    navController = [(SPUIPlatterContainerViewController *)self navController];
+    [navController contentHeight];
     v11 = v14;
 
     goto LABEL_6;
@@ -201,28 +201,28 @@ LABEL_6:
   return result;
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v31 = a3;
-  v4 = [(SPUIPlatterContainerViewController *)self view];
+  subviewsCopy = subviews;
+  view = [(SPUIPlatterContainerViewController *)self view];
 
-  if (v4 == v31)
+  if (view == subviewsCopy)
   {
-    v5 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-    [v5 bounds];
+    materialPlatterView = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+    [materialPlatterView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    [v31 bounds];
+    [subviewsCopy bounds];
     v13 = v12;
-    [v31 layoutMargins];
+    [subviewsCopy layoutMargins];
     v15 = v13 - v14;
-    [v31 layoutMargins];
+    [subviewsCopy layoutMargins];
     v17 = v15 - v16;
-    v18 = [(SPUIPlatterContainerViewController *)self navController];
-    v19 = [v18 view];
-    [v19 frame];
+    navController = [(SPUIPlatterContainerViewController *)self navController];
+    view2 = [navController view];
+    [view2 frame];
     v34.origin.x = v7;
     v34.origin.y = v9;
     v34.size.width = v11;
@@ -231,51 +231,51 @@ LABEL_6:
 
     if (!v20)
     {
-      v21 = [(SPUIPlatterContainerViewController *)self navController];
-      v22 = [v21 view];
-      [v22 setFrame:{v7, v9, v11, v17}];
+      navController2 = [(SPUIPlatterContainerViewController *)self navController];
+      view3 = [navController2 view];
+      [view3 setFrame:{v7, v9, v11, v17}];
     }
 
     if (_UISolariumEnabled())
     {
-      v23 = [(SPUIPlatterContainerViewController *)self navController];
-      [v23 heightOfNavigationBar];
+      navController3 = [(SPUIPlatterContainerViewController *)self navController];
+      [navController3 heightOfNavigationBar];
       v25 = v24 * 0.5;
-      v26 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-      [v26 _setContinuousCornerRadius:v25];
+      materialPlatterView2 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+      [materialPlatterView2 _setContinuousCornerRadius:v25];
 
-      v27 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-      [v27 _continuousCornerRadius];
+      materialPlatterView3 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+      [materialPlatterView3 _continuousCornerRadius];
       v29 = v28;
-      v30 = [(SPUIPlatterContainerViewController *)self platterBackgroundView];
-      [v30 _setContinuousCornerRadius:v29];
+      platterBackgroundView = [(SPUIPlatterContainerViewController *)self platterBackgroundView];
+      [platterBackgroundView _setContinuousCornerRadius:v29];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  materialPlatterView = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+  [beginCopy locationInView:materialPlatterView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
-  [v10 bounds];
+  materialPlatterView2 = [(SPUIPlatterContainerViewController *)self materialPlatterView];
+  [materialPlatterView2 bounds];
   v12.x = v7;
   v12.y = v9;
-  LOBYTE(v4) = CGRectContainsPoint(v13, v12);
+  LOBYTE(beginCopy) = CGRectContainsPoint(v13, v12);
 
-  return v4 ^ 1;
+  return beginCopy ^ 1;
 }
 
 - (UIEdgeInsets)layoutMarginsForContainer
 {
-  v2 = [(SPUIPlatterContainerViewController *)self view];
-  [v2 layoutMargins];
+  view = [(SPUIPlatterContainerViewController *)self view];
+  [view layoutMargins];
   v4 = v3;
   v6 = v5;
   v8 = v7;

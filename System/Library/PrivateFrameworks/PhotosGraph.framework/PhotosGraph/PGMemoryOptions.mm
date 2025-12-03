@@ -1,8 +1,8 @@
 @interface PGMemoryOptions
-+ (id)stringForReason:(unint64_t)a3;
-- (PGMemoryOptions)initWithReason:(unint64_t)a3 universalDate:(id)a4 location:(id)a5 peopleNames:(id)a6;
++ (id)stringForReason:(unint64_t)reason;
+- (PGMemoryOptions)initWithReason:(unint64_t)reason universalDate:(id)date location:(id)location peopleNames:(id)names;
 - (id)description;
-- (void)setUniversalDate:(id)a3;
+- (void)setUniversalDate:(id)date;
 @end
 
 @implementation PGMemoryOptions
@@ -24,66 +24,66 @@
   return v12;
 }
 
-- (void)setUniversalDate:(id)a3
+- (void)setUniversalDate:(id)date
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  dateCopy = date;
+  v7 = dateCopy;
+  if (dateCopy)
   {
-    v5 = v4;
+    date = dateCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   universalDate = self->_universalDate;
-  self->_universalDate = v5;
+  self->_universalDate = date;
 }
 
-- (PGMemoryOptions)initWithReason:(unint64_t)a3 universalDate:(id)a4 location:(id)a5 peopleNames:(id)a6
+- (PGMemoryOptions)initWithReason:(unint64_t)reason universalDate:(id)date location:(id)location peopleNames:(id)names
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  locationCopy = location;
+  namesCopy = names;
   v18.receiver = self;
   v18.super_class = PGMemoryOptions;
   v13 = [(PGMemoryOptions *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_reason = a3;
-    if (v10)
+    v13->_reason = reason;
+    if (dateCopy)
     {
-      v15 = v10;
+      date = dateCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     universalDate = v14->_universalDate;
-    v14->_universalDate = v15;
+    v14->_universalDate = date;
 
-    objc_storeStrong(&v14->_location, a5);
-    objc_storeStrong(&v14->_peopleNames, a6);
+    objc_storeStrong(&v14->_location, location);
+    objc_storeStrong(&v14->_peopleNames, names);
   }
 
   return v14;
 }
 
-+ (id)stringForReason:(unint64_t)a3
++ (id)stringForReason:(unint64_t)reason
 {
-  if (a3 > 7)
+  if (reason > 7)
   {
     return @"Illegal";
   }
 
   else
   {
-    return off_27887F1A8[a3];
+    return off_27887F1A8[reason];
   }
 }
 

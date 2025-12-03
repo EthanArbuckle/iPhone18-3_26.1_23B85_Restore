@@ -1,6 +1,6 @@
 @interface KNPlaybackSessionConfiguration
-+ (KNPlaybackSessionConfiguration)configurationWithLayerHost:(id)a3 renderingMode:(int64_t)a4 shouldEnableHDR:(BOOL)a5;
-+ (KNPlaybackSessionConfiguration)configurationWithOffscreenCGContextBoundsSize:(CGSize)a3 shouldEnableHDR:(BOOL)a4;
++ (KNPlaybackSessionConfiguration)configurationWithLayerHost:(id)host renderingMode:(int64_t)mode shouldEnableHDR:(BOOL)r;
++ (KNPlaybackSessionConfiguration)configurationWithOffscreenCGContextBoundsSize:(CGSize)size shouldEnableHDR:(BOOL)r;
 - (BOOL)isMetalEnabled;
 - (BOOL)isRealtime;
 - (BOOL)isSceneRenderingEnabled;
@@ -9,29 +9,29 @@
 - (CGSize)boundsSize;
 - (KNPlaybackLayerHost)layerHost;
 - (KNPlaybackSessionConfiguration)configurationWithUpdatedLayerScreenEnvironment;
-- (double)canvasViewScaleForUnscaledSize:(CGSize)a3;
+- (double)canvasViewScaleForUnscaledSize:(CGSize)size;
 - (double)pixelAspectRatio;
 - (id)initSuperclass;
 @end
 
 @implementation KNPlaybackSessionConfiguration
 
-+ (KNPlaybackSessionConfiguration)configurationWithLayerHost:(id)a3 renderingMode:(int64_t)a4 shouldEnableHDR:(BOOL)a5
++ (KNPlaybackSessionConfiguration)configurationWithLayerHost:(id)host renderingMode:(int64_t)mode shouldEnableHDR:(BOOL)r
 {
-  v5 = a5;
-  v10 = a3;
-  if (!a4)
+  rCopy = r;
+  hostCopy = host;
+  if (!mode)
   {
     canEnableMetal = 0;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (mode == 1)
   {
-    canEnableMetal = objc_msgSend_canEnableMetal(a1, v8, v9);
+    canEnableMetal = objc_msgSend_canEnableMetal(self, v8, v9);
 LABEL_5:
     v12 = [KNLayerPlaybackSessionConfiguration alloc];
-    isHDREnabled = objc_msgSend_initWithLayerHost_isMetalEnabled_isSceneRenderingEnabled_isHDREnabled_(v12, v13, v10, canEnableMetal, 0, v5);
+    isHDREnabled = objc_msgSend_initWithLayerHost_isMetalEnabled_isSceneRenderingEnabled_isHDREnabled_(v12, v13, hostCopy, canEnableMetal, 0, rCopy);
     goto LABEL_7;
   }
 
@@ -41,13 +41,13 @@ LABEL_7:
   return isHDREnabled;
 }
 
-+ (KNPlaybackSessionConfiguration)configurationWithOffscreenCGContextBoundsSize:(CGSize)a3 shouldEnableHDR:(BOOL)a4
++ (KNPlaybackSessionConfiguration)configurationWithOffscreenCGContextBoundsSize:(CGSize)size shouldEnableHDR:(BOOL)r
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  rCopy = r;
+  height = size.height;
+  width = size.width;
   v7 = [KNOffscreenCGContextPlaybackSessionConfiguration alloc];
-  isHDREnabled = objc_msgSend_initWithOffscreenCGContextBoundsSize_isHDREnabled_(v7, v8, v4, width, height);
+  isHDREnabled = objc_msgSend_initWithOffscreenCGContextBoundsSize_isHDREnabled_(v7, v8, rCopy, width, height);
 
   return isHDREnabled;
 }
@@ -81,10 +81,10 @@ LABEL_7:
   objc_exception_throw(v19);
 }
 
-- (double)canvasViewScaleForUnscaledSize:(CGSize)a3
+- (double)canvasViewScaleForUnscaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_boundsSize(self, a2, v3);
   return fmin(v6 / width, v7 / height);
 }

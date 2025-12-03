@@ -1,85 +1,85 @@
 @interface SearchResultsDataSourceContent
 - (NSArray)objects;
-- (SearchResultsDataSourceContent)initWithOrderedDataSource:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (id)titleForHeaderInSection:(int64_t)a3;
-- (id)viewForHeaderInSection:(int64_t)a3 isFirstNonEmptySection:(BOOL)a4;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (SearchResultsDataSourceContent)initWithOrderedDataSource:(id)source;
+- (id)objectAtIndexPath:(id)path;
+- (id)titleForHeaderInSection:(int64_t)section;
+- (id)viewForHeaderInSection:(int64_t)section isFirstNonEmptySection:(BOOL)emptySection;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (unint64_t)count;
 @end
 
 @implementation SearchResultsDataSourceContent
 
-- (id)viewForHeaderInSection:(int64_t)a3 isFirstNonEmptySection:(BOOL)a4
+- (id)viewForHeaderInSection:(int64_t)section isFirstNonEmptySection:(BOOL)emptySection
 {
-  v4 = a4;
-  v6 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v7 = [v6 viewForHeaderInSection:a3 isFirstNonEmptySection:v4];
+  emptySectionCopy = emptySection;
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  v7 = [orderedDataSource viewForHeaderInSection:section isFirstNonEmptySection:emptySectionCopy];
 
   return v7;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v5 = [v4 titleForHeaderInSection:a3];
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  v5 = [orderedDataSource titleForHeaderInSection:section];
 
   return v5;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v6 = [v5 objectAtIndexPath:v4];
+  pathCopy = path;
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  v6 = [orderedDataSource objectAtIndexPath:pathCopy];
 
   return v6;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v5 = [v4 numberOfRowsInSection:a3];
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  v5 = [orderedDataSource numberOfRowsInSection:section];
 
   return v5;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v3 = [v2 numberOfSections];
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  numberOfSections = [orderedDataSource numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 - (unint64_t)count
 {
-  v2 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v3 = [v2 orderedObjects];
-  v4 = [v3 count];
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  orderedObjects = [orderedDataSource orderedObjects];
+  v4 = [orderedObjects count];
 
   return v4;
 }
 
 - (NSArray)objects
 {
-  v2 = [(SearchResultsDataSourceContent *)self orderedDataSource];
-  v3 = [v2 orderedObjects];
+  orderedDataSource = [(SearchResultsDataSourceContent *)self orderedDataSource];
+  orderedObjects = [orderedDataSource orderedObjects];
 
-  return v3;
+  return orderedObjects;
 }
 
-- (SearchResultsDataSourceContent)initWithOrderedDataSource:(id)a3
+- (SearchResultsDataSourceContent)initWithOrderedDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = SearchResultsDataSourceContent;
   v6 = [(SearchResultsDataSourceContent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_orderedDataSource, a3);
+    objc_storeStrong(&v6->_orderedDataSource, source);
   }
 
   return v7;

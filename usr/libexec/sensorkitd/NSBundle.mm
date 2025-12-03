@@ -1,7 +1,7 @@
 @interface NSBundle
-+ (BOOL)_sr_validateRequiredFieldsForBundleIdentifier:(id)a3 sensors:(id)a4 error:(id *)a5;
-+ (id)sk_bundleWithIdentifier:(id)a3;
-- (BOOL)_sr_validateRequiredFieldsForSensors:(id)a3 error:(id *)a4;
++ (BOOL)_sr_validateRequiredFieldsForBundleIdentifier:(id)identifier sensors:(id)sensors error:(id *)error;
++ (id)sk_bundleWithIdentifier:(id)identifier;
+- (BOOL)_sr_validateRequiredFieldsForSensors:(id)sensors error:(id *)error;
 - (id)sk_appName;
 - (id)sk_perCategoryDetailDescription;
 - (id)sk_privacyURL;
@@ -14,42 +14,42 @@
 
 @implementation NSBundle
 
-+ (BOOL)_sr_validateRequiredFieldsForBundleIdentifier:(id)a3 sensors:(id)a4 error:(id *)a5
++ (BOOL)_sr_validateRequiredFieldsForBundleIdentifier:(id)identifier sensors:(id)sensors error:(id *)error
 {
   v8 = [NSURL fileURLWithPath:@"/var/mobile/Library/Research/Studies/" isDirectory:1 relativeToURL:0];
   objc_opt_self();
-  v9 = sub_10000659C(NSBundle, a3, v8);
+  v9 = sub_10000659C(NSBundle, identifier, v8);
   if (v9)
   {
 
-    return [(NSBundle *)v9 _sr_validateRequiredFieldsForSensors:a4 error:a5];
+    return [(NSBundle *)v9 _sr_validateRequiredFieldsForSensors:sensors error:error];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v11 = NSLocalizedDescriptionKey;
       v12 = @"Bundle couldn't be found";
-      *a5 = [NSError errorWithDomain:SRErrorDomain code:20480 userInfo:[NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1]];
+      *error = [NSError errorWithDomain:SRErrorDomain code:20480 userInfo:[NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1]];
     }
 
     return 0;
   }
 }
 
-- (BOOL)_sr_validateRequiredFieldsForSensors:(id)a3 error:(id *)a4
+- (BOOL)_sr_validateRequiredFieldsForSensors:(id)sensors error:(id *)error
 {
   if (![(NSBundle *)self sk_usageDescription])
   {
-    if (a4)
+    if (error)
     {
       v16 = @"NSSensorKitUsageDescription";
       v17 = 20481;
 LABEL_21:
       v18 = [SRError invalidInfoPlistErrorWithMissingKey:v16 code:v17];
       result = 0;
-      *a4 = v18;
+      *error = v18;
       return result;
     }
 
@@ -58,7 +58,7 @@ LABEL_21:
 
   if (![(NSBundle *)self sk_privacyURL])
   {
-    if (a4)
+    if (error)
     {
       v16 = @"NSSensorKitPrivacyPolicyURL";
       v17 = 20482;
@@ -70,7 +70,7 @@ LABEL_21:
 
   if (![(NSBundle *)self objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
       v16 = @"NSSensorKitUsageDetail";
       v17 = 20483;
@@ -84,7 +84,7 @@ LABEL_21:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  v7 = [sensors countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (!v7)
   {
     return 1;
@@ -98,7 +98,7 @@ LABEL_21:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(sensors);
       }
 
       v11 = *(*(&v21 + 1) + 8 * i);
@@ -122,7 +122,7 @@ LABEL_21:
           if (!os_log_type_enabled(qword_1000719B0, OS_LOG_TYPE_ERROR))
           {
 LABEL_25:
-            if (!a4)
+            if (!error)
             {
               goto LABEL_30;
             }
@@ -130,7 +130,7 @@ LABEL_25:
 LABEL_26:
             v20 = [SRError errorWithCode:8194];
 LABEL_29:
-            *a4 = v20;
+            *error = v20;
             goto LABEL_30;
           }
         }
@@ -138,7 +138,7 @@ LABEL_29:
         *buf = 138543362;
         v26 = v11;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to find Info.plist authorization category key for %{public}@", buf, 0xCu);
-        if (!a4)
+        if (!error)
         {
           goto LABEL_30;
         }
@@ -149,7 +149,7 @@ LABEL_29:
       v14 = v13;
       if (![-[NSBundle sk_perCategoryDetailDescription](self "sk_perCategoryDetailDescription")])
       {
-        if (a4)
+        if (error)
         {
           v20 = [SRError invalidInfoPlistErrorWithMissingKey:v14 code:20484];
           goto LABEL_29;
@@ -163,7 +163,7 @@ LABEL_30:
       objc_autoreleasePoolPop(v12);
     }
 
-    v8 = [a3 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v8 = [sensors countByEnumeratingWithState:&v21 objects:v27 count:16];
     result = 1;
     if (v8)
     {
@@ -174,11 +174,11 @@ LABEL_30:
   }
 }
 
-+ (id)sk_bundleWithIdentifier:(id)a3
++ (id)sk_bundleWithIdentifier:(id)identifier
 {
   v4 = [NSURL fileURLWithPath:@"/var/mobile/Library/Research/Studies/" isDirectory:1 relativeToURL:0];
 
-  return sub_10000659C(NSBundle, a3, v4);
+  return sub_10000659C(NSBundle, identifier, v4);
 }
 
 - (id)sk_appName
@@ -360,7 +360,7 @@ LABEL_30:
     v8 = 138543618;
     v9 = v6;
     v10 = 2114;
-    v11 = [(NSBundle *)self bundleIdentifier];
+    bundleIdentifier = [(NSBundle *)self bundleIdentifier];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Found parent app %{public}@ for study %{public}@", &v8, 0x16u);
     return v6;
   }

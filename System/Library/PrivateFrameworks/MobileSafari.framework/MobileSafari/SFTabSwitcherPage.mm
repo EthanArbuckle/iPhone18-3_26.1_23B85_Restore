@@ -12,22 +12,22 @@
 - (UIImage)image;
 - (int64_t)hash;
 - (int64_t)itemCount;
-- (void)setAllowsLargeTitle:(BOOL)a3;
-- (void)setAllowsRetitling:(BOOL)a3;
-- (void)setAllowsSharing:(BOOL)a3;
-- (void)setCollapsesCapsuleViewWhenSelected:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setIsLocked:(BOOL)a3;
-- (void)setItemsCanMoveBetweenPages:(BOOL)a3;
-- (void)setOverlay:(id)a3;
-- (void)setPeekingOverlay:(id)a3;
-- (void)setProfile:(id)a3;
-- (void)setShareConfiguration:(id)a3;
+- (void)setAllowsLargeTitle:(BOOL)title;
+- (void)setAllowsRetitling:(BOOL)retitling;
+- (void)setAllowsSharing:(BOOL)sharing;
+- (void)setCollapsesCapsuleViewWhenSelected:(BOOL)selected;
+- (void)setImage:(id)image;
+- (void)setIsLocked:(BOOL)locked;
+- (void)setItemsCanMoveBetweenPages:(BOOL)pages;
+- (void)setOverlay:(id)overlay;
+- (void)setPeekingOverlay:(id)overlay;
+- (void)setProfile:(id)profile;
+- (void)setShareConfiguration:(id)configuration;
 @end
 
 @implementation SFTabSwitcherPage
 
-- (void)setAllowsLargeTitle:(BOOL)a3
+- (void)setAllowsLargeTitle:(BOOL)title
 {
   v5 = _s4PageVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -36,15 +36,15 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4PageVMa);
-  *v7 = a3;
+  *v7 = title;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4PageVMa);
   swift_endAccess();
 }
 
-- (void)setAllowsRetitling:(BOOL)a3
+- (void)setAllowsRetitling:(BOOL)retitling
 {
   v5 = _s4PageVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -53,15 +53,15 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4PageVMa);
-  v7[1] = a3;
+  v7[1] = retitling;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4PageVMa);
   swift_endAccess();
 }
 
-- (void)setAllowsSharing:(BOOL)a3
+- (void)setAllowsSharing:(BOOL)sharing
 {
   v5 = _s4PageVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -70,22 +70,22 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4PageVMa);
-  v7[2] = a3;
+  v7[2] = sharing;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4PageVMa);
   swift_endAccess();
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B820FC8(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_18B820FC8(image);
 }
 
-- (void)setItemsCanMoveBetweenPages:(BOOL)a3
+- (void)setItemsCanMoveBetweenPages:(BOOL)pages
 {
   v5 = _s4PageVMa();
   v6 = v5 - 8;
@@ -95,41 +95,41 @@
   v10 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s4PageVMa);
-  v8[*(v6 + 60)] = a3;
+  v8[*(v6 + 60)] = pages;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s4PageVMa);
   swift_endAccess();
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B8227E8(a3);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_18B8227E8(profile);
 }
 
 - (BOOL)hasAnyItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B8289DC();
 
   return v3 & 1;
 }
 
-- (void)setOverlay:(id)a3
+- (void)setOverlay:(id)overlay
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B8294BC(a3);
+  overlayCopy = overlay;
+  selfCopy = self;
+  sub_18B8294BC(overlay);
 }
 
-- (void)setPeekingOverlay:(id)a3
+- (void)setPeekingOverlay:(id)overlay
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B82A6CC(a3);
+  overlayCopy = overlay;
+  selfCopy = self;
+  sub_18B82A6CC(overlay);
 }
 
 - (NSUUID)identifier
@@ -150,7 +150,7 @@
 
 - (int64_t)itemCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B83A338();
 
   return v3;
@@ -171,7 +171,7 @@
   return v2[3];
 }
 
-- (void)setCollapsesCapsuleViewWhenSelected:(BOOL)a3
+- (void)setCollapsesCapsuleViewWhenSelected:(BOOL)selected
 {
   v5 = _s4PageVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -180,9 +180,9 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4PageVMa);
-  v7[3] = a3;
+  v7[3] = selected;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4PageVMa);
   swift_endAccess();
@@ -200,7 +200,7 @@
   sub_18BC22158();
   sub_18BC1EC08();
   sub_18BA93A40(&qword_1EA9D3970, 255, MEMORY[0x1E69695A8]);
-  v8 = self;
+  selfCopy = self;
   sub_18BC20A78();
   v9 = sub_18BC221A8();
 
@@ -215,7 +215,7 @@
   return *&v2[*(_s4PageVMa() + 36)];
 }
 
-- (void)setIsLocked:(BOOL)a3
+- (void)setIsLocked:(BOOL)locked
 {
   v5 = _s4PageVMa();
   v6 = v5 - 8;
@@ -225,9 +225,9 @@
   v10 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherPageInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s4PageVMa);
-  v8[*(v6 + 52)] = a3;
+  v8[*(v6 + 52)] = locked;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s4PageVMa);
   swift_endAccess();
@@ -242,7 +242,7 @@
 
 - (SFTabSwitcherPageOverlay)overlay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA8C7E4();
 
   return v3;
@@ -269,7 +269,7 @@
 
 - (SFTabSwitcherProfile)profile
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA8C99C();
 
   return v3;
@@ -305,11 +305,11 @@
   return v14;
 }
 
-- (void)setShareConfiguration:(id)a3
+- (void)setShareConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BA8CE7C(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_18BA8CE7C(configurationCopy);
 }
 
 - (NSString)title

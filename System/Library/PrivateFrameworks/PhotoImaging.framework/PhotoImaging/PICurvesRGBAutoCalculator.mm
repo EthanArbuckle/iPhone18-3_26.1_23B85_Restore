@@ -1,18 +1,18 @@
 @interface PICurvesRGBAutoCalculator
-- (id)computeCurvesForImageHistogram:(id)a3;
+- (id)computeCurvesForImageHistogram:(id)histogram;
 @end
 
 @implementation PICurvesRGBAutoCalculator
 
-- (id)computeCurvesForImageHistogram:(id)a3
+- (id)computeCurvesForImageHistogram:(id)histogram
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 red];
+  histogramCopy = histogram;
+  v4 = [histogramCopy red];
   [v4 percentile:0.001];
   v6 = v5;
 
-  v7 = [v3 red];
+  v7 = [histogramCopy red];
   [v7 percentile:0.999];
   v9 = v8;
 
@@ -34,12 +34,12 @@
     _os_log_debug_impl(&dword_1C7694000, v13, OS_LOG_TYPE_DEBUG, "red curve: blackPoint = %f, whitePoint = %f", buf, 0x16u);
   }
 
-  v14 = [v3 green];
-  [v14 percentile:0.001];
+  green = [histogramCopy green];
+  [green percentile:0.001];
   v16 = v15;
 
-  v17 = [v3 green];
-  [v17 percentile:0.999];
+  green2 = [histogramCopy green];
+  [green2 percentile:0.999];
   v19 = v18;
 
   v20 = [PICurvesAutoCalculator autoValuesForBlackPoint:v16 whitePoint:v19];
@@ -58,12 +58,12 @@
     _os_log_debug_impl(&dword_1C7694000, v21, OS_LOG_TYPE_DEBUG, "green curve: blackPoint = %f, whitePoint = %f", buf, 0x16u);
   }
 
-  v22 = [v3 blue];
-  [v22 percentile:0.001];
+  blue = [histogramCopy blue];
+  [blue percentile:0.001];
   v24 = v23;
 
-  v25 = [v3 blue];
-  [v25 percentile:0.999];
+  blue2 = [histogramCopy blue];
+  [blue2 percentile:0.999];
   v27 = v26;
 
   v28 = [PICurvesAutoCalculator autoValuesForBlackPoint:v24 whitePoint:v27];

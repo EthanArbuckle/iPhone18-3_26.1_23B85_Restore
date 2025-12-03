@@ -1,31 +1,31 @@
 @interface LanguageAssetLoader
 + (id)sharedInstance;
-- (BOOL)alreadyHandledLanguageOrID:(__CFString *)a3;
-- (BOOL)checkFontAssetsSanityWithLanguageAssetInfo:(id)a3;
-- (BOOL)dictionaryAssetMatched:(id)a3 primaryLanguages:(id)a4 assetInfo:(id)a5;
-- (BOOL)fontAssetMatched:(id)a3 primaryLanguage:(id)a4 assetInfo:(id)a5;
+- (BOOL)alreadyHandledLanguageOrID:(__CFString *)d;
+- (BOOL)checkFontAssetsSanityWithLanguageAssetInfo:(id)info;
+- (BOOL)dictionaryAssetMatched:(id)matched primaryLanguages:(id)languages assetInfo:(id)info;
+- (BOOL)fontAssetMatched:(id)matched primaryLanguage:(id)language assetInfo:(id)info;
 - (BOOL)isPowerRequestSatisfied;
-- (BOOL)shouldExcludeProductWithLanguageAssetInfo:(id)a3;
+- (BOOL)shouldExcludeProductWithLanguageAssetInfo:(id)info;
 - (LanguageAssetLoader)init;
-- (id)alreadyInstalledAssetsWithPrimaryLanguages:(id)a3 results:(id)a4 assetInfo:(id)a5;
-- (id)assetIdentifier:(id)a3 assetInfo:(id)a4;
-- (id)downloadOptions:(id)a3;
-- (id)effectiveAssetFlagArrayForAssetInfo:(id)a3;
-- (id)filterIncompatibleFontAssets:(id)a3;
-- (id)localAssetsWithType:(id)a3 assetInfo:(id)a4;
-- (id)normalizedLanguage:(id)a3;
-- (id)notificationStringWithPrimaryLanguage:(id)a3 assetInfo:(id)a4;
-- (id)oldDictionaryAssetsWithLanguageAssetInfo:(id)a3;
+- (id)alreadyInstalledAssetsWithPrimaryLanguages:(id)languages results:(id)results assetInfo:(id)info;
+- (id)assetIdentifier:(id)identifier assetInfo:(id)info;
+- (id)downloadOptions:(id)options;
+- (id)effectiveAssetFlagArrayForAssetInfo:(id)info;
+- (id)filterIncompatibleFontAssets:(id)assets;
+- (id)localAssetsWithType:(id)type assetInfo:(id)info;
+- (id)normalizedLanguage:(id)language;
+- (id)notificationStringWithPrimaryLanguage:(id)language assetInfo:(id)info;
+- (id)oldDictionaryAssetsWithLanguageAssetInfo:(id)info;
 - (void)actualDownloadLanguageAssets;
 - (void)dealloc;
 - (void)downloadLanguageAssets;
-- (void)logAssetsWithAssetType:(id)a3;
-- (void)purgeLocalAssetsWithType:(id)a3 mobileAssetVersionV2:(BOOL)a4;
+- (void)logAssetsWithAssetType:(id)type;
+- (void)purgeLocalAssetsWithType:(id)type mobileAssetVersionV2:(BOOL)v2;
 - (void)reachabilityChanged;
 - (void)reset;
-- (void)setDownloadFlagToAssetFlagArray:(id)a3 primaryLanguages:(id)a4 assetInfo:(id)a5;
-- (void)updatePreferenceWithAssetIdentifier:(__CFString *)a3;
-- (void)updatePreferenceWithLanguageOrID:(__CFString *)a3;
+- (void)setDownloadFlagToAssetFlagArray:(id)array primaryLanguages:(id)languages assetInfo:(id)info;
+- (void)updatePreferenceWithAssetIdentifier:(__CFString *)identifier;
+- (void)updatePreferenceWithLanguageOrID:(__CFString *)d;
 @end
 
 @implementation LanguageAssetLoader
@@ -95,7 +95,7 @@
   [(LanguageAssetLoader *)&v6 dealloc];
 }
 
-- (void)logAssetsWithAssetType:(id)a3
+- (void)logAssetsWithAssetType:(id)type
 {
   v5 = 0;
   v6 = &v5;
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)updatePreferenceWithAssetIdentifier:(__CFString *)a3
+- (void)updatePreferenceWithAssetIdentifier:(__CFString *)identifier
 {
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
   v5 = CFPreferencesCopyAppValue(@"AssetDownloadStarted", @"com.apple.languageassetd");
@@ -138,14 +138,14 @@
     CFRelease(v6);
   }
 
-  CFArrayAppendValue(Mutable, a3);
+  CFArrayAppendValue(Mutable, identifier);
   CFPreferencesSetAppValue(@"AssetDownloadStarted", Mutable, @"com.apple.languageassetd");
   CFPreferencesAppSynchronize(@"com.apple.languageassetd");
 
   CFRelease(Mutable);
 }
 
-- (void)updatePreferenceWithLanguageOrID:(__CFString *)a3
+- (void)updatePreferenceWithLanguageOrID:(__CFString *)d
 {
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
   v5 = CFPreferencesCopyAppValue(@"HandledLanguages", @"com.apple.languageassetd");
@@ -158,14 +158,14 @@
     CFRelease(v6);
   }
 
-  CFArrayAppendValue(Mutable, a3);
+  CFArrayAppendValue(Mutable, d);
   CFPreferencesSetAppValue(@"HandledLanguages", Mutable, @"com.apple.languageassetd");
   CFPreferencesAppSynchronize(@"com.apple.languageassetd");
 
   CFRelease(Mutable);
 }
 
-- (BOOL)alreadyHandledLanguageOrID:(__CFString *)a3
+- (BOOL)alreadyHandledLanguageOrID:(__CFString *)d
 {
   v4 = CFPreferencesCopyAppValue(@"HandledLanguages", @"com.apple.languageassetd");
   if (!v4)
@@ -176,27 +176,27 @@
   v5 = v4;
   v8.length = CFArrayGetCount(v4);
   v8.location = 0;
-  v6 = CFArrayContainsValue(v5, v8, a3) != 0;
+  v6 = CFArrayContainsValue(v5, v8, d) != 0;
   CFRelease(v5);
   return v6;
 }
 
-- (id)assetIdentifier:(id)a3 assetInfo:(id)a4
+- (id)assetIdentifier:(id)identifier assetInfo:(id)info
 {
-  if ([objc_msgSend(a3 "assetType")])
+  if ([objc_msgSend(identifier "assetType")])
   {
-    v6 = [a3 attributes];
+    attributes = [identifier attributes];
   }
 
   else
   {
-    v10 = [a3 assetType];
-    if (![v10 isEqualToString:kFSFontAssetType])
+    assetType = [identifier assetType];
+    if (![assetType isEqualToString:kFSFontAssetType])
     {
       return 0;
     }
 
-    v11 = [objc_msgSend(a3 "attributes")];
+    v11 = [objc_msgSend(identifier "attributes")];
     if (!v11)
     {
       return 0;
@@ -208,29 +208,29 @@
       return 0;
     }
 
-    v6 = [v12 objectAtIndex:0];
+    attributes = [v12 objectAtIndex:0];
   }
 
-  v7 = v6;
-  v8 = [a4 objectForKey:@"IdentifierAttributeKey"];
+  v7 = attributes;
+  v8 = [info objectForKey:@"IdentifierAttributeKey"];
 
   return [v7 objectForKey:v8];
 }
 
-- (BOOL)dictionaryAssetMatched:(id)a3 primaryLanguages:(id)a4 assetInfo:(id)a5
+- (BOOL)dictionaryAssetMatched:(id)matched primaryLanguages:(id)languages assetInfo:(id)info
 {
-  if ([objc_msgSend(objc_msgSend(a3 "attributes")] != self->_compatibilityVersion)
+  if ([objc_msgSend(objc_msgSend(matched "attributes")] != self->_compatibilityVersion)
   {
     return 0;
   }
 
-  [a3 attributes];
+  [matched attributes];
   return DCSPreferredOrderOfDictionaryAssetAttributesForLanguages() != -1;
 }
 
-- (BOOL)fontAssetMatched:(id)a3 primaryLanguage:(id)a4 assetInfo:(id)a5
+- (BOOL)fontAssetMatched:(id)matched primaryLanguage:(id)language assetInfo:(id)info
 {
-  v8 = [objc_msgSend(a3 "attributes")];
+  v8 = [objc_msgSend(matched "attributes")];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -250,13 +250,13 @@
           objc_enumerationMutation(v8);
         }
 
-        if ([*(*(&v23 + 1) + 8 * v12) isEqualToString:a4])
+        if ([*(*(&v23 + 1) + 8 * v12) isEqualToString:language])
         {
-          v9 = [objc_msgSend(a5 objectForKey:{@"LanguageAndFontFamilyNamesMapping", "objectForKey:", a4}];
+          v9 = [objc_msgSend(info objectForKey:{@"LanguageAndFontFamilyNamesMapping", "objectForKey:", language}];
           if (v9)
           {
             v13 = v9;
-            v9 = [objc_msgSend(a3 "attributes")];
+            v9 = [objc_msgSend(matched "attributes")];
             if (v9)
             {
               v14 = v9;
@@ -281,7 +281,7 @@
                         objc_enumerationMutation(v14);
                       }
 
-                      if ([v13 containsObject:{objc_msgSend(*(*(&v19 + 1) + 8 * i), "objectForKey:", objc_msgSend(a5, "objectForKey:", @"FontFamilyNameKey"}])
+                      if ([v13 containsObject:{objc_msgSend(*(*(&v19 + 1) + 8 * i), "objectForKey:", objc_msgSend(info, "objectForKey:", @"FontFamilyNameKey"}])
                       {
                         LOBYTE(v9) = 1;
                         return v9;
@@ -323,7 +323,7 @@
   return v9;
 }
 
-- (id)downloadOptions:(id)a3
+- (id)downloadOptions:(id)options
 {
   v3 = objc_opt_new();
   [v3 setAllowsCellularAccess:0];
@@ -331,15 +331,15 @@
   return v3;
 }
 
-- (id)alreadyInstalledAssetsWithPrimaryLanguages:(id)a3 results:(id)a4 assetInfo:(id)a5
+- (id)alreadyInstalledAssetsWithPrimaryLanguages:(id)languages results:(id)results assetInfo:(id)info
 {
   v9 = [[NSMutableArray alloc] initWithCapacity:0];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a4;
-  v10 = [a4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  obj = results;
+  v10 = [results countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -360,9 +360,9 @@
         {
           if ([objc_msgSend(v13 "assetType")])
           {
-            if ([(LanguageAssetLoader *)self dictionaryAssetMatched:v13 primaryLanguages:a3 assetInfo:a5])
+            if ([(LanguageAssetLoader *)self dictionaryAssetMatched:v13 primaryLanguages:languages assetInfo:info])
             {
-              v14 = [(LanguageAssetLoader *)self assetIdentifier:v13 assetInfo:a5];
+              v14 = [(LanguageAssetLoader *)self assetIdentifier:v13 assetInfo:info];
               if (v14)
               {
                 [v9 addObject:v14];
@@ -376,7 +376,7 @@
             v28 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v15 = [a3 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v15 = [languages countByEnumeratingWithState:&v25 objects:v33 count:16];
             if (v15)
             {
               v16 = v15;
@@ -387,12 +387,12 @@
                 {
                   if (*v26 != v17)
                   {
-                    objc_enumerationMutation(a3);
+                    objc_enumerationMutation(languages);
                   }
 
-                  if ([(LanguageAssetLoader *)self fontAssetMatched:v13 primaryLanguage:*(*(&v25 + 1) + 8 * i) assetInfo:a5])
+                  if ([(LanguageAssetLoader *)self fontAssetMatched:v13 primaryLanguage:*(*(&v25 + 1) + 8 * i) assetInfo:info])
                   {
-                    v19 = [(LanguageAssetLoader *)self assetIdentifier:v13 assetInfo:a5];
+                    v19 = [(LanguageAssetLoader *)self assetIdentifier:v13 assetInfo:info];
                     if (v19)
                     {
                       [v9 addObject:v19];
@@ -400,7 +400,7 @@
                   }
                 }
 
-                v16 = [a3 countByEnumeratingWithState:&v25 objects:v33 count:16];
+                v16 = [languages countByEnumeratingWithState:&v25 objects:v33 count:16];
               }
 
               while (v16);
@@ -422,21 +422,21 @@
   return v9;
 }
 
-- (id)notificationStringWithPrimaryLanguage:(id)a3 assetInfo:(id)a4
+- (id)notificationStringWithPrimaryLanguage:(id)language assetInfo:(id)info
 {
-  v5 = [a4 objectForKey:@"NotificationBaseKey"];
+  v5 = [info objectForKey:@"NotificationBaseKey"];
 
-  return [v5 stringByAppendingString:a3];
+  return [v5 stringByAppendingString:language];
 }
 
-- (id)localAssetsWithType:(id)a3 assetInfo:(id)a4
+- (id)localAssetsWithType:(id)type assetInfo:(id)info
 {
   v7 = [[NSMutableArray alloc] initWithCapacity:0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [type countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -447,13 +447,13 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(type);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 state] != 1)
         {
-          v13 = [(LanguageAssetLoader *)self assetIdentifier:v12 assetInfo:a4];
+          v13 = [(LanguageAssetLoader *)self assetIdentifier:v12 assetInfo:info];
           if (v13)
           {
             v14 = v13;
@@ -465,7 +465,7 @@
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [type countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -474,7 +474,7 @@
   return v7;
 }
 
-- (id)filterIncompatibleFontAssets:(id)a3
+- (id)filterIncompatibleFontAssets:(id)assets
 {
   v27 = FSGetMaxSupportedFontAssetCompatibilityVersion();
   v4 = objc_opt_new();
@@ -483,8 +483,8 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = a3;
-  v28 = [a3 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  obj = assets;
+  v28 = [assets countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v28)
   {
     v26 = *v40;
@@ -498,14 +498,14 @@
         }
 
         v6 = *(*(&v39 + 1) + 8 * i);
-        v7 = [v6 attributes];
-        v8 = [v7 objectForKey:@"_CompatibilityVersion"];
-        v9 = [v8 unsignedIntValue];
-        if (v9 <= v27)
+        attributes = [v6 attributes];
+        v8 = [attributes objectForKey:@"_CompatibilityVersion"];
+        unsignedIntValue = [v8 unsignedIntValue];
+        if (unsignedIntValue <= v27)
         {
-          v10 = v9;
+          v10 = unsignedIntValue;
           [v30 addObject:v6];
-          v11 = [v7 objectForKey:@"FontInfo4"];
+          v11 = [attributes objectForKey:@"FontInfo4"];
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
@@ -566,8 +566,8 @@
         }
 
         v22 = *(*(&v31 + 1) + 8 * k);
-        v23 = [v22 attributes];
-        if ([objc_msgSend(v4 objectForKey:{objc_msgSend(objc_msgSend(objc_msgSend(v23, "objectForKey:", @"FontInfo4", "objectAtIndexedSubscript:", 0), "objectForKey:", @"PostScriptFontName", "isEqualToNumber:", objc_msgSend(v23, "objectForKey:", @"_CompatibilityVersion"}])
+        attributes2 = [v22 attributes];
+        if ([objc_msgSend(v4 objectForKey:{objc_msgSend(objc_msgSend(objc_msgSend(attributes2, "objectForKey:", @"FontInfo4", "objectAtIndexedSubscript:", 0), "objectForKey:", @"PostScriptFontName", "isEqualToNumber:", objc_msgSend(attributes2, "objectForKey:", @"_CompatibilityVersion"}])
         {
           [v29 addObject:v22];
         }
@@ -582,13 +582,13 @@
   return v29;
 }
 
-- (id)effectiveAssetFlagArrayForAssetInfo:(id)a3
+- (id)effectiveAssetFlagArrayForAssetInfo:(id)info
 {
-  v4 = [a3 objectForKey:@"AssetType"];
+  v4 = [info objectForKey:@"AssetType"];
   v43 = [NSMutableArray arrayWithCapacity:0];
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_msgSend(a3 objectForKey:{@"MinCompatibilityVersion", "integerValue"}];
-  v7 = [objc_msgSend(a3 objectForKey:{@"MaxCompatibilityVersion", "integerValue"}];
+  v6 = [objc_msgSend(info objectForKey:{@"MinCompatibilityVersion", "integerValue"}];
+  v7 = [objc_msgSend(info objectForKey:{@"MaxCompatibilityVersion", "integerValue"}];
   if (v6)
   {
     v8 = v7 == 0;
@@ -645,8 +645,8 @@ LABEL_50:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v33 = [(NSMutableDictionary *)v15 allKeys];
-      v34 = [v33 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      allKeys = [(NSMutableDictionary *)v15 allKeys];
+      v34 = [allKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
       v5 = v42;
       if (v34)
       {
@@ -658,7 +658,7 @@ LABEL_50:
           {
             if (*v47 != v36)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(allKeys);
             }
 
             v38 = *(*(&v46 + 1) + 8 * i);
@@ -671,7 +671,7 @@ LABEL_50:
             }
           }
 
-          v35 = [v33 countByEnumeratingWithState:&v46 objects:v54 count:16];
+          v35 = [allKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
         }
 
         while (v35);
@@ -733,13 +733,13 @@ LABEL_44:
 LABEL_42:
               [v29 purgeSync];
               [v29 refreshState];
-              v30 = [v25 state];
-              v27 = v30 == 1;
+              state = [v25 state];
+              v27 = state == 1;
               if (!v28)
               {
                 v17 = v43;
                 v14 = v44;
-                if (v30 == 1)
+                if (state == 1)
                 {
                   [-[NSMutableDictionary objectForKeyedSubscript:](v15 objectForKeyedSubscript:{v23), "setObject:forKeyedSubscript:", &__kCFBooleanTrue, @"downloadNeeded"}];
                 }
@@ -812,26 +812,26 @@ LABEL_63:
   return v40;
 }
 
-- (void)setDownloadFlagToAssetFlagArray:(id)a3 primaryLanguages:(id)a4 assetInfo:(id)a5
+- (void)setDownloadFlagToAssetFlagArray:(id)array primaryLanguages:(id)languages assetInfo:(id)info
 {
   v9 = objc_autoreleasePoolPush();
-  v10 = [a5 objectForKey:@"AssetType"];
-  obj = a4;
-  if (a4)
+  v10 = [info objectForKey:@"AssetType"];
+  obj = languages;
+  if (languages)
   {
     v43 = kFSFontAssetType;
     v11 = &FSGetMaxSupportedFontAssetCompatibilityVersion_ptr;
     v40 = v9;
-    v45 = a3;
+    arrayCopy = array;
     v48 = v10;
     if ([v10 isEqualToString:?])
     {
-      v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a4 count]);
+      v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [languages count]);
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v13 = [a4 countByEnumeratingWithState:&v61 objects:v68 count:16];
+      v13 = [languages countByEnumeratingWithState:&v61 objects:v68 count:16];
       if (v13)
       {
         v14 = v13;
@@ -842,7 +842,7 @@ LABEL_63:
           {
             if (*v62 != v15)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(languages);
             }
 
             v17 = *(*(&v61 + 1) + 8 * i);
@@ -854,12 +854,12 @@ LABEL_63:
             }
           }
 
-          v14 = [a4 countByEnumeratingWithState:&v61 objects:v68 count:16];
+          v14 = [languages countByEnumeratingWithState:&v61 objects:v68 count:16];
         }
 
         while (v14);
         obj = v12;
-        a3 = v45;
+        array = arrayCopy;
         v11 = &FSGetMaxSupportedFontAssetCompatibilityVersion_ptr;
       }
 
@@ -869,12 +869,12 @@ LABEL_63:
       }
     }
 
-    v19 = [v11[84] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v19 = [v11[84] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v20 = [a3 countByEnumeratingWithState:&v57 objects:v67 count:16];
+    v20 = [array countByEnumeratingWithState:&v57 objects:v67 count:16];
     if (v20)
     {
       v21 = v20;
@@ -885,26 +885,26 @@ LABEL_63:
         {
           if (*v58 != v22)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
           [v19 addObject:{objc_msgSend(*(*(&v57 + 1) + 8 * j), "objectForKeyedSubscript:", @"asset"}];
         }
 
-        v21 = [a3 countByEnumeratingWithState:&v57 objects:v67 count:16];
+        v21 = [array countByEnumeratingWithState:&v57 objects:v67 count:16];
       }
 
       while (v21);
     }
 
-    v24 = [(LanguageAssetLoader *)self alreadyInstalledAssetsWithPrimaryLanguages:obj results:v19 assetInfo:a5];
-    v25 = [(LanguageAssetLoader *)self localAssetsWithType:v19 assetInfo:a5];
+    v24 = [(LanguageAssetLoader *)self alreadyInstalledAssetsWithPrimaryLanguages:obj results:v19 assetInfo:info];
+    v25 = [(LanguageAssetLoader *)self localAssetsWithType:v19 assetInfo:info];
     v44 = DCSDictionaryAssetCopyRemovedDictionaryIdentifiers();
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v26 = [a3 countByEnumeratingWithState:&v53 objects:v66 count:16];
+    v26 = [array countByEnumeratingWithState:&v53 objects:v66 count:16];
     if (v26)
     {
       v27 = v26;
@@ -918,12 +918,12 @@ LABEL_63:
         {
           if (*v54 != v47)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(arrayCopy);
           }
 
           v29 = *(*(&v53 + 1) + 8 * v28);
           v30 = [v29 objectForKeyedSubscript:@"asset"];
-          v31 = [(LanguageAssetLoader *)self assetIdentifier:v30 assetInfo:a5];
+          v31 = [(LanguageAssetLoader *)self assetIdentifier:v30 assetInfo:info];
           if (v31)
           {
             v32 = v31;
@@ -936,7 +936,7 @@ LABEL_63:
                   v33 = [NSString stringWithFormat:@"%@-%@", v48, v32];
                   if (![(LanguageAssetLoader *)self alreadyHandledLanguageOrID:v33])
                   {
-                    if ([(LanguageAssetLoader *)self dictionaryAssetMatched:v30 primaryLanguages:obj assetInfo:a5])
+                    if ([(LanguageAssetLoader *)self dictionaryAssetMatched:v30 primaryLanguages:obj assetInfo:info])
                     {
                       [(LanguageAssetLoader *)self updatePreferenceWithLanguageOrID:v33];
 LABEL_39:
@@ -974,7 +974,7 @@ LABEL_43:
                       v38 = @"zh-Hant";
                     }
 
-                    if ([(LanguageAssetLoader *)self primaryLanguageIsInBlackList:v38 assetType:v48 assetInfo:a5]&& [(LanguageAssetLoader *)self fontAssetMatched:v30 primaryLanguage:v38 assetInfo:a5])
+                    if ([(LanguageAssetLoader *)self primaryLanguageIsInBlackList:v38 assetType:v48 assetInfo:info]&& [(LanguageAssetLoader *)self fontAssetMatched:v30 primaryLanguage:v38 assetInfo:info])
                     {
                       goto LABEL_39;
                     }
@@ -1001,7 +1001,7 @@ LABEL_43:
         }
 
         while (v28 != v27);
-        v39 = [v45 countByEnumeratingWithState:&v53 objects:v66 count:16];
+        v39 = [arrayCopy countByEnumeratingWithState:&v53 objects:v66 count:16];
         v27 = v39;
       }
 
@@ -1030,11 +1030,11 @@ LABEL_43:
   return 0;
 }
 
-- (void)purgeLocalAssetsWithType:(id)a3 mobileAssetVersionV2:(BOOL)a4
+- (void)purgeLocalAssetsWithType:(id)type mobileAssetVersionV2:(BOOL)v2
 {
-  if (a4)
+  if (v2)
   {
-    v4 = [[MAAssetQuery alloc] initWithType:a3];
+    v4 = [[MAAssetQuery alloc] initWithType:type];
     [v4 returnTypes:1];
     [v4 setDoNotBlockBeforeFirstUnlock:1];
     if (![v4 queryMetaDataSync])
@@ -1043,8 +1043,8 @@ LABEL_43:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v5 = [v4 results];
-      v6 = [v5 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      results = [v4 results];
+      v6 = [results countByEnumeratingWithState:&v19 objects:v28 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1055,7 +1055,7 @@ LABEL_43:
           {
             if (*v20 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(results);
             }
 
             v10 = *(*(&v19 + 1) + 8 * i);
@@ -1065,7 +1065,7 @@ LABEL_43:
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v19 objects:v28 count:16];
+          v7 = [results countByEnumeratingWithState:&v19 objects:v28 count:16];
         }
 
         while (v7);
@@ -1075,7 +1075,7 @@ LABEL_43:
 
   else
   {
-    v4 = [[ASAssetQuery alloc] initWithAssetType:a3];
+    v4 = [[ASAssetQuery alloc] initWithAssetType:type];
     [v4 setQueriesLocalAssetInformationOnly:1];
     v27 = 0;
     v11 = [v4 runQueryAndReturnError:&v27];
@@ -1125,7 +1125,7 @@ LABEL_43:
   }
 }
 
-- (BOOL)checkFontAssetsSanityWithLanguageAssetInfo:(id)a3
+- (BOOL)checkFontAssetsSanityWithLanguageAssetInfo:(id)info
 {
   [(LanguageAssetLoader *)self purgeLocalAssetsWithType:@"com.apple.MobileAsset.Font" mobileAssetVersionV2:0];
   [(LanguageAssetLoader *)self purgeLocalAssetsWithType:@"com.apple.MobileAsset.Font2" mobileAssetVersionV2:0];
@@ -1135,11 +1135,11 @@ LABEL_43:
   return 1;
 }
 
-- (BOOL)shouldExcludeProductWithLanguageAssetInfo:(id)a3
+- (BOOL)shouldExcludeProductWithLanguageAssetInfo:(id)info
 {
   if (self->_productType)
   {
-    v4 = [a3 objectForKey:@"ExclusionProductTypesKey"];
+    v4 = [info objectForKey:@"ExclusionProductTypesKey"];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -1185,9 +1185,9 @@ LABEL_43:
   return v5;
 }
 
-- (id)normalizedLanguage:(id)a3
+- (id)normalizedLanguage:(id)language
 {
-  v3 = [NSLocale componentsFromLocaleIdentifier:a3];
+  v3 = [NSLocale componentsFromLocaleIdentifier:language];
   v4 = [(NSDictionary *)v3 objectForKey:NSLocaleLanguageCode];
   if (v4)
   {
@@ -1336,7 +1336,7 @@ LABEL_43:
   }
 }
 
-- (id)oldDictionaryAssetsWithLanguageAssetInfo:(id)a3
+- (id)oldDictionaryAssetsWithLanguageAssetInfo:(id)info
 {
   v4 = [[ASAssetQuery alloc] initWithAssetType:@"com.apple.MobileAsset.DictionaryServices.dictionary3iOS"];
   [v4 setQueriesLocalAssetInformationOnly:1];

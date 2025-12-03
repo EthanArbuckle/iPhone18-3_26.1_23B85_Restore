@@ -1,25 +1,25 @@
 @interface PHACurareShadowEvaluationEvaluator
 + (id)evaluatorLog;
-- (PHACurareShadowEvaluationEvaluator)initWithModelInputName:(id)a3 modelOutputName:(id)a4 lossName:(id)a5;
-- (id)evaluateModelAtPath:(id)a3 labelIndex:(int)a4 labelOperatingPoint:(float)a5 isPositiveData:(BOOL)a6 evaluationData:(id)a7 error:(id *)a8;
-- (id)evaluateModelAtPath:(id)a3 labelIndex:(int)a4 labelOperatingPoint:(float)a5 positiveEvaluationData:(id)a6 negativeEvaluationData:(id)a7 error:(id *)a8;
-- (id)getDefaultEvaluationResultForModelPath:(id)a3 isPositiveData:(BOOL)a4;
-- (int)accuracyForProbability:(id *)a3 isPositiveData:(BOOL)a4 atIndex:(int)a5 andOperatingPoint:(float)a6;
+- (PHACurareShadowEvaluationEvaluator)initWithModelInputName:(id)name modelOutputName:(id)outputName lossName:(id)lossName;
+- (id)evaluateModelAtPath:(id)path labelIndex:(int)index labelOperatingPoint:(float)point isPositiveData:(BOOL)data evaluationData:(id)evaluationData error:(id *)error;
+- (id)evaluateModelAtPath:(id)path labelIndex:(int)index labelOperatingPoint:(float)point positiveEvaluationData:(id)data negativeEvaluationData:(id)evaluationData error:(id *)error;
+- (id)getDefaultEvaluationResultForModelPath:(id)path isPositiveData:(BOOL)data;
+- (int)accuracyForProbability:(id *)probability isPositiveData:(BOOL)data atIndex:(int)index andOperatingPoint:(float)point;
 - (vector<unsigned)getEspressoBufferShapeWithBuffer:(PHACurareShadowEvaluationEvaluator *)self;
 @end
 
 @implementation PHACurareShadowEvaluationEvaluator
 
-- (id)getDefaultEvaluationResultForModelPath:(id)a3 isPositiveData:(BOOL)a4
+- (id)getDefaultEvaluationResultForModelPath:(id)path isPositiveData:(BOOL)data
 {
-  v4 = a4;
-  v5 = a3;
+  dataCopy = data;
+  pathCopy = path;
   v6 = [PHACurareShadowEvaluationEvaluationResult alloc];
   v7 = [MEMORY[0x277CCABB0] numberWithInt:0];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:0];
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
-  v11 = [(PHACurareShadowEvaluationEvaluationResult *)v6 initWithModelPath:v5 isPositiveData:v4 numberOfTotalSamples:v7 numberOfCorrectSamples:v8 meanPredictionValue:v9 stddevPredictionValue:v10];
+  v11 = [(PHACurareShadowEvaluationEvaluationResult *)v6 initWithModelPath:pathCopy isPositiveData:dataCopy numberOfTotalSamples:v7 numberOfCorrectSamples:v8 meanPredictionValue:v9 stddevPredictionValue:v10];
 
   return v11;
 }
@@ -38,26 +38,26 @@
   return result;
 }
 
-- (int)accuracyForProbability:(id *)a3 isPositiveData:(BOOL)a4 atIndex:(int)a5 andOperatingPoint:(float)a6
+- (int)accuracyForProbability:(id *)probability isPositiveData:(BOOL)data atIndex:(int)index andOperatingPoint:(float)point
 {
-  v8 = a4;
+  dataCopy = data;
   [(PHACurareShadowEvaluationEvaluator *)self getEspressoBufferShapeWithBuffer:?];
   v10 = *__p;
   if (*__p)
   {
     v11 = 0;
-    v12 = (a3->var0 + 4 * a5);
+    v12 = (probability->var0 + 4 * index);
     do
     {
-      if (v8)
+      if (dataCopy)
       {
-        if (*v12 >= a6)
+        if (*v12 >= point)
         {
           ++v11;
         }
       }
 
-      else if (*v12 < a6)
+      else if (*v12 < point)
       {
         ++v11;
       }
@@ -78,15 +78,15 @@
   return v11;
 }
 
-- (id)evaluateModelAtPath:(id)a3 labelIndex:(int)a4 labelOperatingPoint:(float)a5 isPositiveData:(BOOL)a6 evaluationData:(id)a7 error:(id *)a8
+- (id)evaluateModelAtPath:(id)path labelIndex:(int)index labelOperatingPoint:(float)point isPositiveData:(BOOL)data evaluationData:(id)evaluationData error:(id *)error
 {
-  v10 = a6;
-  v12 = *&a4;
+  dataCopy = data;
+  v12 = *&index;
   v59 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v52 = a7;
-  v15 = v14;
-  v16 = [v14 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+  pathCopy = path;
+  evaluationDataCopy = evaluationData;
+  v15 = pathCopy;
+  v16 = [pathCopy cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
   v17 = strlen(v16);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
@@ -196,13 +196,13 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v24 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    floatVector = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
+    if (os_log_type_enabled(floatVector, OS_LOG_TYPE_ERROR))
     {
       *v57 = 0;
       v25 = "Failed to destroy Espresso context";
 LABEL_68:
-      _os_log_error_impl(&dword_22FA28000, v24, OS_LOG_TYPE_ERROR, v25, v57, 2u);
+      _os_log_error_impl(&dword_22FA28000, floatVector, OS_LOG_TYPE_ERROR, v25, v57, 2u);
     }
   }
 
@@ -210,22 +210,22 @@ LABEL_68:
   {
     if (!espresso_network_bind_buffer())
     {
-      v49 = [v52 numberOfDataPoints];
+      numberOfDataPoints = [evaluationDataCopy numberOfDataPoints];
       v51 = 0;
       v50 = 0;
       v28 = 0.0;
       v29 = 0.0;
-      while (v51 < [v52 numberOfDataPoints])
+      while (v51 < [evaluationDataCopy numberOfDataPoints])
       {
-        v30 = [v52 labeledDataSamples];
-        v31 = [v30 objectAtIndexedSubscript:v51];
-        v24 = [v31 floatVector];
+        labeledDataSamples = [evaluationDataCopy labeledDataSamples];
+        v31 = [labeledDataSamples objectAtIndexedSubscript:v51];
+        floatVector = [v31 floatVector];
 
-        v32 = [v24 data];
-        v33 = v32;
-        v34 = [v32 bytes];
+        data = [floatVector data];
+        v33 = data;
+        bytes = [data bytes];
 
-        memcpy(*buf, v34, 4 * [v24 count]);
+        memcpy(*buf, bytes, 4 * [floatVector count]);
         if (espresso_plan_execute_sync())
         {
           v39 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
@@ -238,8 +238,8 @@ LABEL_68:
           goto LABEL_69;
         }
 
-        *&v35 = a5;
-        v36 = [(PHACurareShadowEvaluationEvaluator *)self accuracyForProbability:v53 isPositiveData:v10 atIndex:v12 andOperatingPoint:v35];
+        *&v35 = point;
+        v36 = [(PHACurareShadowEvaluationEvaluator *)self accuracyForProbability:v53 isPositiveData:dataCopy atIndex:v12 andOperatingPoint:v35];
         v37 = *(v53[0] + 4 * v12);
 
         v50 += v36;
@@ -249,16 +249,16 @@ LABEL_68:
       }
 
       v38 = 0.0;
-      if (v49 >= 2)
+      if (numberOfDataPoints >= 2)
       {
-        v38 = sqrtf(((v49 * v28) - (v29 * v29)) / ((v49 + -1.0) * v49));
-        v29 = v29 / v49;
+        v38 = sqrtf(((numberOfDataPoints * v28) - (v29 * v29)) / ((numberOfDataPoints + -1.0) * numberOfDataPoints));
+        v29 = v29 / numberOfDataPoints;
       }
 
       if (espresso_plan_destroy())
       {
-        v24 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
-        if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        floatVector = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
+        if (!os_log_type_enabled(floatVector, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_69;
         }
@@ -272,25 +272,25 @@ LABEL_68:
         if (!espresso_context_destroy())
         {
           v40 = [PHACurareShadowEvaluationEvaluationResult alloc];
-          v41 = [MEMORY[0x277CCABB0] numberWithInt:v49];
+          v41 = [MEMORY[0x277CCABB0] numberWithInt:numberOfDataPoints];
           v42 = [MEMORY[0x277CCABB0] numberWithInt:v50];
           *&v43 = v29;
           v44 = [MEMORY[0x277CCABB0] numberWithFloat:v43];
           *&v45 = v38;
           v46 = [MEMORY[0x277CCABB0] numberWithFloat:v45];
-          v24 = [(PHACurareShadowEvaluationEvaluationResult *)v40 initWithModelPath:v14 isPositiveData:v10 numberOfTotalSamples:v41 numberOfCorrectSamples:v42 meanPredictionValue:v44 stddevPredictionValue:v46];
+          floatVector = [(PHACurareShadowEvaluationEvaluationResult *)v40 initWithModelPath:pathCopy isPositiveData:dataCopy numberOfTotalSamples:v41 numberOfCorrectSamples:v42 meanPredictionValue:v44 stddevPredictionValue:v46];
 
-          if (!*a8 && v24)
+          if (!*error && floatVector)
           {
-            v24 = v24;
-            v20 = v24;
+            floatVector = floatVector;
+            v20 = floatVector;
             goto LABEL_70;
           }
 
           v47 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
           {
-            v48 = *a8;
+            v48 = *error;
             *v57 = 138412290;
             v58 = v48;
             _os_log_error_impl(&dword_22FA28000, v47, OS_LOG_TYPE_ERROR, "Failed to run evaluateModelAtPath with error: %@", v57, 0xCu);
@@ -299,8 +299,8 @@ LABEL_68:
           goto LABEL_69;
         }
 
-        v24 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
-        if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        floatVector = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
+        if (!os_log_type_enabled(floatVector, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_69;
         }
@@ -334,8 +334,8 @@ LABEL_68:
       goto LABEL_27;
     }
 
-    v24 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    floatVector = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
+    if (os_log_type_enabled(floatVector, OS_LOG_TYPE_ERROR))
     {
       *v57 = 0;
       v25 = "Failed to destroy Espresso context";
@@ -356,25 +356,25 @@ LABEL_28:
   return v20;
 }
 
-- (id)evaluateModelAtPath:(id)a3 labelIndex:(int)a4 labelOperatingPoint:(float)a5 positiveEvaluationData:(id)a6 negativeEvaluationData:(id)a7 error:(id *)a8
+- (id)evaluateModelAtPath:(id)path labelIndex:(int)index labelOperatingPoint:(float)point positiveEvaluationData:(id)data negativeEvaluationData:(id)evaluationData error:(id *)error
 {
-  v12 = *&a4;
+  v12 = *&index;
   v31 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  dataCopy = data;
+  evaluationDataCopy = evaluationData;
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v15)
+  if (dataCopy)
   {
-    *&v18 = a5;
-    v19 = [(PHACurareShadowEvaluationEvaluator *)self evaluateModelAtPath:v14 labelIndex:v12 labelOperatingPoint:1 isPositiveData:v15 evaluationData:a8 error:v18];
+    *&v18 = point;
+    v19 = [(PHACurareShadowEvaluationEvaluator *)self evaluateModelAtPath:pathCopy labelIndex:v12 labelOperatingPoint:1 isPositiveData:dataCopy evaluationData:error error:v18];
     v20 = v19;
-    if (*a8 || !v19)
+    if (*error || !v19)
     {
       v23 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v27 = *a8;
+        v27 = *error;
         v29 = 138412290;
         v30 = v27;
         _os_log_error_impl(&dword_22FA28000, v23, OS_LOG_TYPE_ERROR, "Failed to run evaluateModelWithEspressoPlan on positive data with error: %@", &v29, 0xCu);
@@ -388,26 +388,26 @@ LABEL_28:
 
   else
   {
-    v20 = [(PHACurareShadowEvaluationEvaluator *)self getDefaultEvaluationResultForModelPath:v14 isPositiveData:1];
+    v20 = [(PHACurareShadowEvaluationEvaluator *)self getDefaultEvaluationResultForModelPath:pathCopy isPositiveData:1];
     [v17 addObject:v20];
   }
 
-  if (!v16)
+  if (!evaluationDataCopy)
   {
-    v20 = [(PHACurareShadowEvaluationEvaluator *)self getDefaultEvaluationResultForModelPath:v14 isPositiveData:0];
+    v20 = [(PHACurareShadowEvaluationEvaluator *)self getDefaultEvaluationResultForModelPath:pathCopy isPositiveData:0];
     [v17 addObject:v20];
     goto LABEL_14;
   }
 
-  *&v21 = a5;
-  v22 = [(PHACurareShadowEvaluationEvaluator *)self evaluateModelAtPath:v14 labelIndex:v12 labelOperatingPoint:0 isPositiveData:v16 evaluationData:a8 error:v21];
+  *&v21 = point;
+  v22 = [(PHACurareShadowEvaluationEvaluator *)self evaluateModelAtPath:pathCopy labelIndex:v12 labelOperatingPoint:0 isPositiveData:evaluationDataCopy evaluationData:error error:v21];
   v20 = v22;
-  if (*a8 || !v22)
+  if (*error || !v22)
   {
     v23 = +[PHACurareShadowEvaluationEvaluator evaluatorLog];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v28 = *a8;
+      v28 = *error;
       v29 = 138412290;
       v30 = v28;
       _os_log_error_impl(&dword_22FA28000, v23, OS_LOG_TYPE_ERROR, "Failed to run evaluateModelWithEspressoPlan on negative data with error: %@", &v29, 0xCu);
@@ -431,7 +431,7 @@ LABEL_14:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     v29 = 138412290;
-    v30 = v14;
+    v30 = pathCopy;
     _os_log_error_impl(&dword_22FA28000, v25, OS_LOG_TYPE_ERROR, "Failed to generate any evaluation results on model at path: %@. Returning nil.", &v29, 0xCu);
   }
 
@@ -442,20 +442,20 @@ LABEL_23:
   return v24;
 }
 
-- (PHACurareShadowEvaluationEvaluator)initWithModelInputName:(id)a3 modelOutputName:(id)a4 lossName:(id)a5
+- (PHACurareShadowEvaluationEvaluator)initWithModelInputName:(id)name modelOutputName:(id)outputName lossName:(id)lossName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  outputNameCopy = outputName;
+  lossNameCopy = lossName;
   v18.receiver = self;
   v18.super_class = PHACurareShadowEvaluationEvaluator;
   v12 = [(PHACurareShadowEvaluationEvaluator *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_modelInputName, a3);
-    objc_storeStrong(&v13->_modelOutputName, a4);
-    objc_storeStrong(&v13->_lossName, a5);
+    objc_storeStrong(&v12->_modelInputName, name);
+    objc_storeStrong(&v13->_modelOutputName, outputName);
+    objc_storeStrong(&v13->_lossName, lossName);
     labelName = v13->_labelName;
     v13->_labelName = @"label";
 

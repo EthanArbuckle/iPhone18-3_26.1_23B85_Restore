@@ -4,23 +4,23 @@
 - (CGRect)thumbnailFocalFrame;
 - (COMAPPLEFELDSPARPROTOCOLLIVERPOOLCohortList)globalCohorts;
 - (COMAPPLEFELDSPARPROTOCOLLIVERPOOLCohortList)publisherCohorts;
-- (FCNotificationArticleHeadline)initWithArticlePayload:(id)a3 sourceChannel:(id)a4 assetManager:(id)a5;
+- (FCNotificationArticleHeadline)initWithArticlePayload:(id)payload sourceChannel:(id)channel assetManager:(id)manager;
 - (NSString)publisherID;
-- (id)contentWithContext:(id)a3;
-- (id)generateFlintDocumentAssetHandleForUrlString:(id)a3 prefetchedData:(id)a4 withAssetManager:(id)a5;
-- (id)generateThumbnailAssetHandleForUrlString:(id)a3 withAssetManager:(id)a4;
-- (void)enumerateTopicCohortsWithBlock:(id)a3;
+- (id)contentWithContext:(id)context;
+- (id)generateFlintDocumentAssetHandleForUrlString:(id)string prefetchedData:(id)data withAssetManager:(id)manager;
+- (id)generateThumbnailAssetHandleForUrlString:(id)string withAssetManager:(id)manager;
+- (void)enumerateTopicCohortsWithBlock:(id)block;
 @end
 
 @implementation FCNotificationArticleHeadline
 
-- (FCNotificationArticleHeadline)initWithArticlePayload:(id)a3 sourceChannel:(id)a4 assetManager:(id)a5
+- (FCNotificationArticleHeadline)initWithArticlePayload:(id)payload sourceChannel:(id)channel assetManager:(id)manager
 {
   v144 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  payloadCopy = payload;
+  channelCopy = channel;
+  managerCopy = manager;
+  if (!payloadCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v129 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articlePayload"];
     *buf = 136315906;
@@ -43,35 +43,35 @@
     goto LABEL_49;
   }
 
-  objc_storeStrong(&v12->_articlePayload, a3);
-  objc_storeStrong(&v13->_assetManager, a5);
-  v14 = [v9 objectForKeyedSubscript:@"aid"];
+  objc_storeStrong(&v12->_articlePayload, payload);
+  objc_storeStrong(&v13->_assetManager, manager);
+  v14 = [payloadCopy objectForKeyedSubscript:@"aid"];
   if (v14 || [0 length])
   {
-    v133 = v10;
-    v134 = v11;
-    if (v10)
+    v133 = channelCopy;
+    v134 = managerCopy;
+    if (channelCopy)
     {
-      v15 = [v10 copy];
+      v15 = [channelCopy copy];
       sourceChannel = v13->_sourceChannel;
       v13->_sourceChannel = v15;
 
-      v17 = [v10 name];
+      name = [channelCopy name];
       sourceName = v13->_sourceName;
-      v13->_sourceName = v17;
+      v13->_sourceName = name;
     }
 
     else
     {
       v131 = v14;
-      sourceName = [v9 objectForKeyedSubscript:@"cid"];
-      v19 = [v9 objectForKeyedSubscript:@"pn"];
-      v20 = [v9 objectForKeyedSubscript:@"pl2"];
-      v21 = [v9 objectForKeyedSubscript:@"pm2"];
+      sourceName = [payloadCopy objectForKeyedSubscript:@"cid"];
+      v19 = [payloadCopy objectForKeyedSubscript:@"pn"];
+      v20 = [payloadCopy objectForKeyedSubscript:@"pl2"];
+      v21 = [payloadCopy objectForKeyedSubscript:@"pm2"];
       if ([v20 length])
       {
         v22 = [MEMORY[0x1E695DFF8] URLWithString:v20];
-        v23 = [v11 assetHandleForURL:v22 lifetimeHint:0];
+        v23 = [managerCopy assetHandleForURL:v22 lifetimeHint:0];
       }
 
       else
@@ -109,28 +109,28 @@
       v30 = v13->_sourceName;
       v13->_sourceName = v19;
 
-      v11 = v134;
+      managerCopy = v134;
       v14 = v131;
     }
 
     objc_storeStrong(&v13->_identifier, v14);
     objc_storeStrong(&v13->_articleID, v14);
-    v31 = [v9 objectForKeyedSubscript:@"isf"];
+    v31 = [payloadCopy objectForKeyedSubscript:@"isf"];
     v13->_featureCandidate = [v31 BOOLValue];
 
-    v32 = [v9 objectForKeyedSubscript:@"ra"];
+    v32 = [payloadCopy objectForKeyedSubscript:@"ra"];
     referencedArticleID = v13->_referencedArticleID;
     v13->_referencedArticleID = v32;
 
-    v34 = [v9 objectForKeyedSubscript:@"cli"];
+    v34 = [payloadCopy objectForKeyedSubscript:@"cli"];
     clusterID = v13->_clusterID;
     v13->_clusterID = v34;
 
-    v36 = [v9 objectForKeyedSubscript:@"ti"];
+    v36 = [payloadCopy objectForKeyedSubscript:@"ti"];
     title = v13->_title;
     v13->_title = v36;
 
-    v38 = [v9 objectForKeyedSubscript:@"pd"];
+    v38 = [payloadCopy objectForKeyedSubscript:@"pd"];
     [v38 doubleValue];
     v40 = v39;
 
@@ -138,7 +138,7 @@
     publishDate = v13->_publishDate;
     v13->_publishDate = v41;
 
-    v43 = [v9 objectForKeyedSubscript:@"ts"];
+    v43 = [payloadCopy objectForKeyedSubscript:@"ts"];
     [v43 doubleValue];
     v45 = v44;
 
@@ -147,27 +147,27 @@
     v13->_lastModifiedDate = v46;
 
     objc_storeStrong(&v13->_lastFetchedDate, v13->_lastModifiedDate);
-    v48 = [v9 objectForKeyedSubscript:@"prev"];
+    v48 = [payloadCopy objectForKeyedSubscript:@"prev"];
     v13->_publisherArticleVersion = [v48 unsignedLongLongValue];
 
-    v49 = [v9 objectForKeyedSubscript:@"rev"];
+    v49 = [payloadCopy objectForKeyedSubscript:@"rev"];
     v13->_backendArticleVersion = [v49 unsignedLongLongValue];
 
-    v50 = [v9 objectForKeyedSubscript:@"etag"];
+    v50 = [payloadCopy objectForKeyedSubscript:@"etag"];
     changeEtag = v13->_changeEtag;
     v13->_changeEtag = v50;
 
-    v52 = [v9 objectForKeyedSubscript:@"tnff"];
+    v52 = [payloadCopy objectForKeyedSubscript:@"tnff"];
     v13->_thumbnailFocalFrame.origin.x = FCCGRectFromBuffer([v52 unsignedLongLongValue]);
     v13->_thumbnailFocalFrame.origin.y = v53;
     v13->_thumbnailFocalFrame.size.width = v54;
     v13->_thumbnailFocalFrame.size.height = v55;
 
-    v56 = [v9 objectForKeyedSubscript:@"tnm"];
-    v57 = [v56 unsignedLongLongValue];
-    if (v57)
+    v56 = [payloadCopy objectForKeyedSubscript:@"tnm"];
+    unsignedLongLongValue = [v56 unsignedLongLongValue];
+    if (unsignedLongLongValue)
     {
-      v58 = ((v57 >> 8) & 0xFFFFFFF);
+      v58 = ((unsignedLongLongValue >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -175,9 +175,9 @@
       v58 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    if (v57)
+    if (unsignedLongLongValue)
     {
-      v59 = (v57 >> 36);
+      v59 = (unsignedLongLongValue >> 36);
     }
 
     else
@@ -185,8 +185,8 @@
       v59 = *MEMORY[0x1E695F060];
     }
 
-    v60 = [v9 objectForKeyedSubscript:@"tn2"];
-    v61 = [(FCNotificationArticleHeadline *)v13 generateThumbnailAssetHandleForUrlString:v60 withAssetManager:v11];
+    v60 = [payloadCopy objectForKeyedSubscript:@"tn2"];
+    v61 = [(FCNotificationArticleHeadline *)v13 generateThumbnailAssetHandleForUrlString:v60 withAssetManager:managerCopy];
 
     v132 = v61;
     v62 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:v61 thumbnailSize:v59, v58];
@@ -194,81 +194,81 @@
     v13->_thumbnail = v62;
 
     v13->_hasThumbnail = v13->_thumbnail != 0;
-    v64 = [v9 objectForKeyedSubscript:@"fau"];
+    v64 = [payloadCopy objectForKeyedSubscript:@"fau"];
     flintDocumentUrlString = v13->_flintDocumentUrlString;
     v13->_flintDocumentUrlString = v64;
 
-    v66 = [v9 objectForKeyedSubscript:@"fdad"];
+    v66 = [payloadCopy objectForKeyedSubscript:@"fdad"];
     flintDocumentPrefetchedData = v13->_flintDocumentPrefetchedData;
     v13->_flintDocumentPrefetchedData = v66;
 
-    v68 = [v9 objectForKeyedSubscript:@"ffr"];
+    v68 = [payloadCopy objectForKeyedSubscript:@"ffr"];
     flintFontResourceIDs = v13->_flintFontResourceIDs;
     v13->_flintFontResourceIDs = v68;
 
-    v70 = [v9 objectForKeyedSubscript:@"ex"];
+    v70 = [payloadCopy objectForKeyedSubscript:@"ex"];
     shortExcerpt = v13->_shortExcerpt;
     v13->_shortExcerpt = v70;
 
-    v72 = [v9 objectForKeyedSubscript:@"at"];
+    v72 = [payloadCopy objectForKeyedSubscript:@"at"];
     accessoryText = v13->_accessoryText;
     v13->_accessoryText = v72;
 
-    v74 = [v9 objectForKeyedSubscript:@"tt"];
+    v74 = [payloadCopy objectForKeyedSubscript:@"tt"];
     topicIDs = v13->_topicIDs;
     v13->_topicIDs = v74;
 
-    v76 = [v9 objectForKeyedSubscript:@"gcs"];
+    v76 = [payloadCopy objectForKeyedSubscript:@"gcs"];
     globalCohortScoresCTR = v13->_globalCohortScoresCTR;
     v13->_globalCohortScoresCTR = v76;
 
-    v78 = [v9 objectForKeyedSubscript:@"ccs"];
+    v78 = [payloadCopy objectForKeyedSubscript:@"ccs"];
     channelCohortScoresCTR = v13->_channelCohortScoresCTR;
     v13->_channelCohortScoresCTR = v78;
 
-    v80 = [v9 objectForKeyedSubscript:@"tcs"];
+    v80 = [payloadCopy objectForKeyedSubscript:@"tcs"];
     topicCohortScoresCTRs = v13->_topicCohortScoresCTRs;
     v13->_topicCohortScoresCTRs = v80;
 
-    v82 = [v9 objectForKeyedSubscript:@"iss"];
+    v82 = [payloadCopy objectForKeyedSubscript:@"iss"];
     v13->_sponsored = [v82 BOOLValue];
 
-    v83 = [v9 objectForKeyedSubscript:@"iac"];
+    v83 = [payloadCopy objectForKeyedSubscript:@"iac"];
     iAdCategories = v13->_iAdCategories;
     v13->_iAdCategories = v83;
 
-    v85 = [v9 objectForKeyedSubscript:@"iak"];
+    v85 = [payloadCopy objectForKeyedSubscript:@"iak"];
     iAdKeywords = v13->_iAdKeywords;
     v13->_iAdKeywords = v85;
 
-    v87 = [v9 objectForKeyedSubscript:@"iast"];
+    v87 = [payloadCopy objectForKeyedSubscript:@"iast"];
     iAdSectionIDs = v13->_iAdSectionIDs;
     v13->_iAdSectionIDs = v87;
 
-    v89 = [v9 objectForKeyedSubscript:@"ra2"];
+    v89 = [payloadCopy objectForKeyedSubscript:@"ra2"];
     relatedArticleIDs = v13->_relatedArticleIDs;
     v13->_relatedArticleIDs = v89;
 
-    v91 = [v9 objectForKeyedSubscript:@"mfp"];
+    v91 = [payloadCopy objectForKeyedSubscript:@"mfp"];
     moreFromPublisherArticleIDs = v13->_moreFromPublisherArticleIDs;
     v13->_moreFromPublisherArticleIDs = v91;
 
-    v93 = [v9 objectForKeyedSubscript:@"psa"];
+    v93 = [payloadCopy objectForKeyedSubscript:@"psa"];
     publisherSpecifiedArticleIDs = v13->_publisherSpecifiedArticleIDs;
     v13->_publisherSpecifiedArticleIDs = v93;
 
-    v95 = [v9 objectForKeyedSubscript:@"ct"];
+    v95 = [payloadCopy objectForKeyedSubscript:@"ct"];
     v13->_contentType = ArticleContentTypeFromString(v95);
 
     v96 = FCCKLocalizedArticleArticleRecirculationConfigurationKey();
     v97 = v14;
     v98 = [FCRecordFieldURLProtocol URLForRecordID:v14 fieldName:v96];
 
-    v99 = [v11 assetHandleForURL:v98 lifetimeHint:2];
+    v99 = [managerCopy assetHandleForURL:v98 lifetimeHint:2];
     articleRecirculationConfigAssetHandle = v13->_articleRecirculationConfigAssetHandle;
     v13->_articleRecirculationConfigAssetHandle = v99;
 
-    v101 = [v9 objectForKeyedSubscript:@"cu"];
+    v101 = [payloadCopy objectForKeyedSubscript:@"cu"];
     v102 = [v101 length];
     if (v102)
     {
@@ -285,7 +285,7 @@
     {
     }
 
-    v104 = [v9 objectForKeyedSubscript:@"vu"];
+    v104 = [payloadCopy objectForKeyedSubscript:@"vu"];
     v105 = [v104 length];
     if (v105)
     {
@@ -302,31 +302,31 @@
     {
     }
 
-    v107 = [v9 objectForKeyedSubscript:@"vd"];
+    v107 = [payloadCopy objectForKeyedSubscript:@"vd"];
     [v107 floatValue];
     v13->_videoDuration = v108;
 
     v13->_webEmbedsEnabled = 1;
-    v109 = [v9 objectForKeyedSubscript:@"bf"];
-    v110 = [v109 unsignedLongLongValue];
+    v109 = [payloadCopy objectForKeyedSubscript:@"bf"];
+    unsignedLongLongValue2 = [v109 unsignedLongLongValue];
 
-    v13->_needsRapidUpdates = v110 & 1;
-    v13->_disableTapToChannel = (v110 & 2) != 0;
-    v13->_pressRelease = (v110 & 0x10) != 0;
-    v13->_hiddenFromAutoFavorites = (v110 & 0x20) != 0;
-    v13->_showBundleSoftPaywall = (v110 & 0x80) != 0;
-    v13->_disableBookmarking = (v110 & 0x200) != 0;
-    v13->_hideModalCloseButton = (v110 & 0x400) != 0;
-    v13->_reduceVisibility = (v110 & 0x800) != 0;
-    v13->_reduceVisibilityForNonFollowers = (v110 & 0x2000) != 0;
-    v13->_webConverted = (v110 & 0x1000) != 0;
-    v111 = [v9 objectForKeyedSubscript:@"mnv"];
+    v13->_needsRapidUpdates = unsignedLongLongValue2 & 1;
+    v13->_disableTapToChannel = (unsignedLongLongValue2 & 2) != 0;
+    v13->_pressRelease = (unsignedLongLongValue2 & 0x10) != 0;
+    v13->_hiddenFromAutoFavorites = (unsignedLongLongValue2 & 0x20) != 0;
+    v13->_showBundleSoftPaywall = (unsignedLongLongValue2 & 0x80) != 0;
+    v13->_disableBookmarking = (unsignedLongLongValue2 & 0x200) != 0;
+    v13->_hideModalCloseButton = (unsignedLongLongValue2 & 0x400) != 0;
+    v13->_reduceVisibility = (unsignedLongLongValue2 & 0x800) != 0;
+    v13->_reduceVisibilityForNonFollowers = (unsignedLongLongValue2 & 0x2000) != 0;
+    v13->_webConverted = (unsignedLongLongValue2 & 0x1000) != 0;
+    v111 = [payloadCopy objectForKeyedSubscript:@"mnv"];
     v13->_minimumNewsVersion = [FCRestrictions integerRepresentationOfShortVersionString:v111];
 
-    v112 = [v9 objectForKeyedSubscript:@"ip"];
+    v112 = [payloadCopy objectForKeyedSubscript:@"ip"];
     v13->_paid = [v112 BOOLValue];
 
-    v113 = [v9 objectForKeyedSubscript:@"ibp"];
+    v113 = [payloadCopy objectForKeyedSubscript:@"ibp"];
     v13->_bundlePaid = [v113 BOOLValue];
 
     primaryAudience = v13->_primaryAudience;
@@ -345,31 +345,31 @@
     v13->_allowedStorefrontIDs = v117;
 
     v13->_deleted = 0;
-    v119 = [v9 objectForKeyedSubscript:@"st"];
+    v119 = [payloadCopy objectForKeyedSubscript:@"st"];
     v13->_storyType = FCArticleStoryTypeForStoryTypeString(v119);
 
     storyStyle = v13->_storyStyle;
     v13->_storyStyle = 0;
 
-    v121 = [v9 objectForKeyedSubscript:@"btl"];
-    v122 = [v121 unsignedLongLongValue];
+    v121 = [payloadCopy objectForKeyedSubscript:@"btl"];
+    unsignedLongLongValue3 = [v121 unsignedLongLongValue];
 
-    if (v122 <= 0)
+    if (unsignedLongLongValue3 <= 0)
     {
       v123 = -1;
     }
 
     else
     {
-      v123 = v122;
+      v123 = unsignedLongLongValue3;
     }
 
     v13->_bodyTextLength = v123;
-    v124 = [v9 objectForKeyedSubscript:@"rl"];
+    v124 = [payloadCopy objectForKeyedSubscript:@"rl"];
     v125 = PBArticleRoleFromString(v124);
     v13->_role = FCArticleRoleFromPBRole(v125);
 
-    v126 = [v9 objectForKeyedSubscript:@"isi"];
+    v126 = [payloadCopy objectForKeyedSubscript:@"isi"];
     v13->_issueOnly = [v126 BOOLValue];
 
     if (v13->_videoURL && [(FCNotificationArticleHeadline *)v13 contentType]!= 2 && v13->_videoURL && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -386,8 +386,8 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v10 = v133;
-    v11 = v134;
+    channelCopy = v133;
+    managerCopy = v134;
 LABEL_49:
     v25 = v13;
     goto LABEL_50;
@@ -407,7 +407,7 @@ LABEL_50:
   return v25;
 }
 
-- (id)contentWithContext:(id)a3
+- (id)contentWithContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
   if ([(FCNotificationArticleHeadline *)self contentType]!= 2)
@@ -416,20 +416,20 @@ LABEL_50:
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_ERROR))
     {
       v25 = v22;
-      v26 = [(FCNotificationArticleHeadline *)self contentType];
-      v27 = [(FCNotificationArticleHeadline *)self articleID];
+      contentType = [(FCNotificationArticleHeadline *)self contentType];
+      articleID = [(FCNotificationArticleHeadline *)self articleID];
       v28 = 134218242;
-      v29 = v26;
+      v29 = contentType;
       v30 = 2114;
-      v31 = v27;
+      v31 = articleID;
       _os_log_error_impl(&dword_1B63EF000, v25, OS_LOG_TYPE_ERROR, "Invalid content type: %lu for article ID: %{public}@", &v28, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v4 = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
-  v5 = [v4 length];
+  flintDocumentUrlString = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
+  v5 = [flintDocumentUrlString length];
 
   if (!v5)
   {
@@ -442,34 +442,34 @@ LABEL_10:
   if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(FCNotificationArticleHeadline *)self articleID];
-    v9 = [(FCNotificationArticleHeadline *)self flintDocumentPrefetchedData];
+    articleID2 = [(FCNotificationArticleHeadline *)self articleID];
+    flintDocumentPrefetchedData = [(FCNotificationArticleHeadline *)self flintDocumentPrefetchedData];
     v10 = @"with";
-    if (!v9)
+    if (!flintDocumentPrefetchedData)
     {
       v10 = @"without";
     }
 
     v28 = 138543618;
-    v29 = v8;
+    v29 = articleID2;
     v30 = 2114;
     v31 = v10;
     _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "Creating content for article %{public}@ %{public}@ prefetched ANF JSON", &v28, 0x16u);
   }
 
-  v11 = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
-  v12 = [(FCNotificationArticleHeadline *)self flintDocumentPrefetchedData];
-  v13 = [(FCNotificationArticleHeadline *)self assetManager];
-  v14 = [(FCNotificationArticleHeadline *)self generateFlintDocumentAssetHandleForUrlString:v11 prefetchedData:v12 withAssetManager:v13];
+  flintDocumentUrlString2 = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
+  flintDocumentPrefetchedData2 = [(FCNotificationArticleHeadline *)self flintDocumentPrefetchedData];
+  assetManager = [(FCNotificationArticleHeadline *)self assetManager];
+  v14 = [(FCNotificationArticleHeadline *)self generateFlintDocumentAssetHandleForUrlString:flintDocumentUrlString2 prefetchedData:flintDocumentPrefetchedData2 withAssetManager:assetManager];
 
   v15 = [FCANFContent alloc];
-  v16 = [(FCNotificationArticleHeadline *)self articleID];
-  v17 = [(FCNotificationArticleHeadline *)self flintFontResourceIDs];
-  v18 = [(FCANFContent *)v15 initWithIdentifier:v16 mainDocumentAssetHandle:v14 fontResourceIDs:v17];
+  articleID3 = [(FCNotificationArticleHeadline *)self articleID];
+  flintFontResourceIDs = [(FCNotificationArticleHeadline *)self flintFontResourceIDs];
+  v18 = [(FCANFContent *)v15 initWithIdentifier:articleID3 mainDocumentAssetHandle:v14 fontResourceIDs:flintFontResourceIDs];
 
   v19 = [FCArticleContent alloc];
-  v20 = [(FCNotificationArticleHeadline *)self articleID];
-  v21 = [(FCArticleContent *)v19 initWithArticleID:v20 anfContent:v18];
+  articleID4 = [(FCNotificationArticleHeadline *)self articleID];
+  v21 = [(FCArticleContent *)v19 initWithArticleID:articleID4 anfContent:v18];
 
 LABEL_11:
   v23 = *MEMORY[0x1E69E9840];
@@ -481,8 +481,8 @@ LABEL_11:
 {
   if ([(FCNotificationArticleHeadline *)self contentType]== 2)
   {
-    v3 = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
-    v4 = [v3 length] != 0;
+    flintDocumentUrlString = [(FCNotificationArticleHeadline *)self flintDocumentUrlString];
+    v4 = [flintDocumentUrlString length] != 0;
   }
 
   else
@@ -490,18 +490,18 @@ LABEL_11:
     v4 = 0;
   }
 
-  v5 = [(FCNotificationArticleHeadline *)self sourceChannel];
+  sourceChannel = [(FCNotificationArticleHeadline *)self sourceChannel];
 
-  return v5 && v4;
+  return sourceChannel && v4;
 }
 
-- (id)generateThumbnailAssetHandleForUrlString:(id)a3 withAssetManager:(id)a4
+- (id)generateThumbnailAssetHandleForUrlString:(id)string withAssetManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  managerCopy = manager;
+  if ([stringCopy length])
   {
-    v7 = [v6 assetHandleForCKAssetURLString:v5 lifetimeHint:0];
+    v7 = [managerCopy assetHandleForCKAssetURLString:stringCopy lifetimeHint:0];
   }
 
   else
@@ -512,14 +512,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)generateFlintDocumentAssetHandleForUrlString:(id)a3 prefetchedData:(id)a4 withAssetManager:(id)a5
+- (id)generateFlintDocumentAssetHandleForUrlString:(id)string prefetchedData:(id)data withAssetManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length])
+  stringCopy = string;
+  dataCopy = data;
+  managerCopy = manager;
+  if ([stringCopy length])
   {
-    v10 = [v9 assetHandleForCKAssetURLString:v7 prefetchedData:v8 unzipIfNeeded:1 lifetimeHint:0];
+    v10 = [managerCopy assetHandleForCKAssetURLString:stringCopy prefetchedData:dataCopy unzipIfNeeded:1 lifetimeHint:0];
   }
 
   else
@@ -532,16 +532,16 @@ LABEL_11:
 
 - (NSString)publisherID
 {
-  v2 = [(FCNotificationArticleHeadline *)self sourceChannel];
-  v3 = [v2 identifier];
+  sourceChannel = [(FCNotificationArticleHeadline *)self sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)hasVideo
 {
-  v2 = [(FCNotificationArticleHeadline *)self videoURL];
-  v3 = v2 != 0;
+  videoURL = [(FCNotificationArticleHeadline *)self videoURL];
+  v3 = videoURL != 0;
 
   return v3;
 }
@@ -549,8 +549,8 @@ LABEL_11:
 - (COMAPPLEFELDSPARPROTOCOLLIVERPOOLCohortList)globalCohorts
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B6C98]);
-  v4 = [(FCNotificationArticleHeadline *)self globalCohortScoresCTR];
-  [v4 doubleValue];
+  globalCohortScoresCTR = [(FCNotificationArticleHeadline *)self globalCohortScoresCTR];
+  [globalCohortScoresCTR doubleValue];
   [v3 setClicks:?];
 
   [v3 setImpressions:1.0];
@@ -564,8 +564,8 @@ LABEL_11:
 - (COMAPPLEFELDSPARPROTOCOLLIVERPOOLCohortList)publisherCohorts
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B6C98]);
-  v4 = [(FCNotificationArticleHeadline *)self channelCohortScoresCTR];
-  [v4 doubleValue];
+  channelCohortScoresCTR = [(FCNotificationArticleHeadline *)self channelCohortScoresCTR];
+  [channelCohortScoresCTR doubleValue];
   [v3 setClicks:?];
 
   [v3 setImpressions:1.0];
@@ -576,10 +576,10 @@ LABEL_11:
   return v5;
 }
 
-- (void)enumerateTopicCohortsWithBlock:(id)a3
+- (void)enumerateTopicCohortsWithBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -617,19 +617,19 @@ LABEL_11:
     while (v6);
   }
 
-  v12 = [(FCNotificationArticleHeadline *)self topicIDs];
-  v13 = [v12 count];
+  topicIDs = [(FCNotificationArticleHeadline *)self topicIDs];
+  v13 = [topicIDs count];
   v14 = [v4 count];
 
   if (v13 == v14)
   {
-    v15 = [(FCNotificationArticleHeadline *)self topicIDs];
+    topicIDs2 = [(FCNotificationArticleHeadline *)self topicIDs];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64__FCNotificationArticleHeadline_enumerateTopicCohortsWithBlock___block_invoke;
     v19[3] = &unk_1E7C38900;
-    v20 = v17;
-    [v15 fc_enumerateSideBySideWithArray:v4 reverse:0 block:v19];
+    v20 = blockCopy;
+    [topicIDs2 fc_enumerateSideBySideWithArray:v4 reverse:0 block:v19];
   }
 
   v16 = *MEMORY[0x1E69E9840];

@@ -1,26 +1,26 @@
 @interface NEProviderAppConfigurationClient
-- (BOOL)createConfigurationWithParameters:(id)a3 errorStr:(id *)a4;
+- (BOOL)createConfigurationWithParameters:(id)parameters errorStr:(id *)str;
 - (BOOL)enabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)onDemandEnabled;
-- (BOOL)setPasswordWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProtocolWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProviderTypeWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setSharedSecretWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetPasswordWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetSharedSecretWithParameters:(id)a3 errorStr:(id *)a4;
-- (NEProviderAppConfigurationClient)initWithClientName:(id)a3;
+- (BOOL)setPasswordWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProtocolWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProviderTypeWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setSharedSecretWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetPasswordWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetSharedSecretWithParameters:(id)parameters errorStr:(id *)str;
+- (NEProviderAppConfigurationClient)initWithClientName:(id)name;
 - (id)dnsProxyConfiguration;
 - (id)dnsSettingsBundle;
 - (id)filterConfiguration;
 - (id)listenerEndpoint;
 - (id)onDemandRules;
-- (id)protocolForParameters:(id)a3;
-- (uint64_t)deleteKeychainItemWithPersistentReference:(uint64_t)a1;
-- (uint64_t)setKeychainItemData:(void *)a3 withName:(uint64_t *)a4 persistentReference:;
-- (void)handleConfigChanged:(id)a3;
-- (void)loadAllWithCompletionHandler:(void *)a1;
-- (void)setOnDemandRules:(id)a3;
+- (id)protocolForParameters:(id)parameters;
+- (uint64_t)deleteKeychainItemWithPersistentReference:(uint64_t)reference;
+- (uint64_t)setKeychainItemData:(void *)data withName:(uint64_t *)name persistentReference:;
+- (void)handleConfigChanged:(id)changed;
+- (void)loadAllWithCompletionHandler:(void *)handler;
+- (void)setOnDemandRules:(id)rules;
 @end
 
 @implementation NEProviderAppConfigurationClient
@@ -177,10 +177,10 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadAllWithCompletionHandler:(void *)a1
+- (void)loadAllWithCompletionHandler:(void *)handler
 {
   v3 = a2;
-  if (objc_getProperty(a1, v4, 120, 1))
+  if (objc_getProperty(handler, v4, 120, 1))
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -198,7 +198,7 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
     v9[1] = 3221225472;
     v9[2] = __65__NEProviderAppConfigurationClient_loadAllWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E7F0B628;
-    v9[4] = a1;
+    v9[4] = handler;
     v10 = v3;
     [v6 loadFromPreferencesWithCompletionHandler:v9];
 
@@ -1745,29 +1745,29 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProviderTypeWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setProviderTypeWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = [a3 objectForKeyedSubscript:@"provider-type"];
+  v5 = [parameters objectForKeyedSubscript:@"provider-type"];
 
   if (v5)
   {
-    *a4 = @"The provider type cannot be specified for this configuration type";
+    *str = @"The provider type cannot be specified for this configuration type";
   }
 
   return v5 == 0;
 }
 
-- (BOOL)unsetSharedSecretWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetSharedSecretWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:v6];
-  v8 = [v6 objectForKeyedSubscript:@"shared-secret"];
+  parametersCopy = parameters;
+  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:parametersCopy];
+  v8 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
 
-  LODWORD(v6) = isa_nsstring(v8);
-  if (v6 && ([v7 sharedSecretReference], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(v7, "sharedSecretReference"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NEProviderAppConfigurationClient deleteKeychainItemWithPersistentReference:](self, v10), v10, v11))
+  LODWORD(parametersCopy) = isa_nsstring(v8);
+  if (parametersCopy && ([v7 sharedSecretReference], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(v7, "sharedSecretReference"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NEProviderAppConfigurationClient deleteKeychainItemWithPersistentReference:](self, v10), v10, v11))
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to delete the shared secret keychain item: %d", v11];
-    *a4 = v12 = 0;
+    *str = v12 = 0;
   }
 
   else
@@ -1778,10 +1778,10 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
   return v12;
 }
 
-- (uint64_t)deleteKeychainItemWithPersistentReference:(uint64_t)a1
+- (uint64_t)deleteKeychainItemWithPersistentReference:(uint64_t)reference
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (reference)
   {
     v2 = *MEMORY[0x1E697B008];
     v3 = *MEMORY[0x1E697B3C8];
@@ -1805,17 +1805,17 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
   return v7;
 }
 
-- (BOOL)setSharedSecretWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setSharedSecretWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:v6];
-  v8 = [v6 objectForKeyedSubscript:@"shared-secret"];
+  parametersCopy = parameters;
+  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:parametersCopy];
+  v8 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
   v9 = isa_nsstring(v8);
 
   if (v9)
   {
-    v10 = [v7 sharedSecretReference];
-    v11 = [v6 objectForKeyedSubscript:@"shared-secret"];
+    sharedSecretReference = [v7 sharedSecretReference];
+    v11 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
     v12 = [v11 dataUsingEncoding:4];
 
     v14 = MEMORY[0x1E696AEC0];
@@ -1829,16 +1829,16 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
       Property = 0;
     }
 
-    v16 = [Property localizedDescription];
-    v17 = [v14 stringWithFormat:@"%@.SHAREDSECRET", v16];
-    v22 = v10;
+    localizedDescription = [Property localizedDescription];
+    v17 = [v14 stringWithFormat:@"%@.SHAREDSECRET", localizedDescription];
+    v22 = sharedSecretReference;
     v18 = [(NEProviderAppConfigurationClient *)self setKeychainItemData:v12 withName:v17 persistentReference:&v22];
     v19 = v22;
 
     v20 = v18 == 0;
     if (v18)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set the shared secret in the keychain: %d", v18];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set the shared secret in the keychain: %d", v18];
     }
 
     else
@@ -1855,18 +1855,18 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
   return v20;
 }
 
-- (uint64_t)setKeychainItemData:(void *)a3 withName:(uint64_t *)a4 persistentReference:
+- (uint64_t)setKeychainItemData:(void *)data withName:(uint64_t *)name persistentReference:
 {
   v41[3] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v9 = a3;
-  if (a1)
+  dataCopy = data;
+  if (self)
   {
-    v10 = *a4;
+    v10 = *name;
     v11 = *MEMORY[0x1E695E4D0];
     v12 = *MEMORY[0x1E697B3A8];
     v13 = 0x1E695D000uLL;
-    if (!*a4)
+    if (!*name)
     {
       goto LABEL_5;
     }
@@ -1890,7 +1890,7 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
     v28 = isa_nsdictionary(v27);
     if (v28)
     {
-      v36 = v9;
+      v36 = dataCopy;
       v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v29 setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
       v30 = *MEMORY[0x1E697AE88];
@@ -1904,7 +1904,7 @@ void __101__NEProviderAppConfigurationClient_handleCommand_forConfigWithName_wit
       v24 = SecItemUpdate(v29, v32);
 
       v28 = v35;
-      v9 = v36;
+      dataCopy = v36;
       if (v24 != -25300)
       {
 
@@ -1914,12 +1914,12 @@ LABEL_14:
     }
 
     v13 = 0x1E695D000;
-    if (((*a4 != 0) & ~v28) == 0)
+    if (((*name != 0) & ~v28) == 0)
     {
 LABEL_5:
       v38[0] = *MEMORY[0x1E697AE88];
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [objc_getProperty(a1 v8];
+      v17 = [objc_getProperty(self v8];
       v18 = [v16 stringWithFormat:@"%@.PASSWORD", v17];
       v19 = *MEMORY[0x1E697B3C0];
       v39[0] = v18;
@@ -1947,7 +1947,7 @@ LABEL_5:
         if (isa_nsdata(v25))
         {
           v26 = v25;
-          *a4 = v25;
+          *name = v25;
         }
 
         else
@@ -1968,17 +1968,17 @@ LABEL_15:
   return v24;
 }
 
-- (BOOL)unsetPasswordWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetPasswordWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:v6];
-  v8 = [v6 objectForKeyedSubscript:@"password"];
+  parametersCopy = parameters;
+  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:parametersCopy];
+  v8 = [parametersCopy objectForKeyedSubscript:@"password"];
 
-  LODWORD(v6) = isa_nsstring(v8);
-  if (v6 && ([v7 passwordReference], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(v7, "passwordReference"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NEProviderAppConfigurationClient deleteKeychainItemWithPersistentReference:](self, v10), v10, v11))
+  LODWORD(parametersCopy) = isa_nsstring(v8);
+  if (parametersCopy && ([v7 passwordReference], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(v7, "passwordReference"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NEProviderAppConfigurationClient deleteKeychainItemWithPersistentReference:](self, v10), v10, v11))
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to delete the password keychain item: %d", v11];
-    *a4 = v12 = 0;
+    *str = v12 = 0;
   }
 
   else
@@ -1989,17 +1989,17 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)setPasswordWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setPasswordWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:v6];
-  v8 = [v6 objectForKeyedSubscript:@"password"];
+  parametersCopy = parameters;
+  v7 = [(NEProviderAppConfigurationClient *)self protocolForParameters:parametersCopy];
+  v8 = [parametersCopy objectForKeyedSubscript:@"password"];
   v9 = isa_nsstring(v8);
 
   if (v9)
   {
-    v10 = [v7 passwordReference];
-    v11 = [v6 objectForKeyedSubscript:@"password"];
+    passwordReference = [v7 passwordReference];
+    v11 = [parametersCopy objectForKeyedSubscript:@"password"];
     v12 = [v11 dataUsingEncoding:4];
 
     v14 = MEMORY[0x1E696AEC0];
@@ -2013,16 +2013,16 @@ LABEL_15:
       Property = 0;
     }
 
-    v16 = [Property localizedDescription];
-    v17 = [v14 stringWithFormat:@"%@.PASSWORD", v16];
-    v22 = v10;
+    localizedDescription = [Property localizedDescription];
+    v17 = [v14 stringWithFormat:@"%@.PASSWORD", localizedDescription];
+    v22 = passwordReference;
     v18 = [(NEProviderAppConfigurationClient *)self setKeychainItemData:v12 withName:v17 persistentReference:&v22];
     v19 = v22;
 
     v20 = v18 == 0;
     if (v18)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set the password in the keychain: %d", v18];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set the password in the keychain: %d", v18];
     }
 
     else
@@ -2039,9 +2039,9 @@ LABEL_15:
   return v20;
 }
 
-- (BOOL)setProtocolWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setProtocolWithParameters:(id)parameters errorStr:(id *)str
 {
-  v7 = [a3 objectForKeyedSubscript:@"type"];
+  v7 = [parameters objectForKeyedSubscript:@"type"];
   if (self)
   {
     Property = objc_getProperty(self, v6, 80, 1);
@@ -2081,7 +2081,7 @@ LABEL_9:
     v20 = 0;
     v21 = @"Invalid protocol type, valid type is provider";
 LABEL_14:
-    *a4 = v21;
+    *str = v21;
     goto LABEL_15;
   }
 
@@ -2167,11 +2167,11 @@ LABEL_15:
   return v20;
 }
 
-- (BOOL)createConfigurationWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)createConfigurationWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v8 = [v6 objectForKeyedSubscript:@"type"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKeyedSubscript:@"name"];
+  v8 = [parametersCopy objectForKeyedSubscript:@"type"];
 
   if ([v8 isEqualToString:@"lite"])
   {
@@ -2283,7 +2283,7 @@ LABEL_36:
     if (![v8 isEqualToString:@"dns-settings"])
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid configuration type, valid types are lite, packet-tunnel, filter, dns-proxy, and dns-settings"];
-      *a4 = v46 = 0;
+      *str = v46 = 0;
       goto LABEL_32;
     }
 
@@ -2311,8 +2311,8 @@ LABEL_36:
   }
 
   v44 = v32;
-  v45 = [(__objc2_class *)v33 sharedManager];
-  [v44 addObject:v45];
+  sharedManager = [(__objc2_class *)v33 sharedManager];
+  [v44 addObject:sharedManager];
 
 LABEL_31:
   v46 = 1;
@@ -2332,10 +2332,10 @@ LABEL_32:
     }
   }
 
-  v3 = self;
-  v4 = [(NEProviderAppConfigurationClient *)v3 dnsSettings];
+  selfCopy = self;
+  dnsSettings = [(NEProviderAppConfigurationClient *)selfCopy dnsSettings];
 
-  return v4;
+  return dnsSettings;
 }
 
 - (id)dnsProxyConfiguration
@@ -2360,7 +2360,7 @@ LABEL_32:
   return [(NEProviderAppConfigurationClient *)self providerConfiguration];
 }
 
-- (id)protocolForParameters:(id)a3
+- (id)protocolForParameters:(id)parameters
 {
   if (self)
   {
@@ -2371,9 +2371,9 @@ LABEL_32:
   return [(NEProviderAppConfigurationClient *)self protocolConfiguration];
 }
 
-- (void)setOnDemandRules:(id)a3
+- (void)setOnDemandRules:(id)rules
 {
-  v6 = [a3 copy];
+  v6 = [rules copy];
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -2413,29 +2413,29 @@ LABEL_32:
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = &OBJC_IVAR___NEProviderAppConfigurationClient__filterManager;
     if (!objc_getProperty(self, a2, 88, 1))
     {
       v4 = &OBJC_IVAR___NEProviderAppConfigurationClient__dnsProxyManager;
-      if (!objc_getProperty(v3, v5, 96, 1))
+      if (!objc_getProperty(selfCopy, v5, 96, 1))
       {
         v4 = &OBJC_IVAR___NEProviderAppConfigurationClient__dnsSettingsManager;
-        if (!objc_getProperty(v3, v5, 104, 1))
+        if (!objc_getProperty(selfCopy, v5, 104, 1))
         {
           v4 = &OBJC_IVAR___NEProviderAppConfigurationClient__currentManager;
         }
       }
     }
 
-    self = objc_getProperty(v3, v5, *v4, 1);
+    self = objc_getProperty(selfCopy, v5, *v4, 1);
     v2 = vars8;
   }
 
   return [(NEProviderAppConfigurationClient *)self isEnabled];
 }
 
-- (void)handleConfigChanged:(id)a3
+- (void)handleConfigChanged:(id)changed
 {
   if (self)
   {
@@ -2443,31 +2443,31 @@ LABEL_32:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F38CE490];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__NEProviderAppConfigurationClient_listener_shouldAcceptNewConnection___block_invoke;
   v13[3] = &unk_1E7F0AA58;
   objc_copyWeak(&v14, &location);
-  [v7 setInvalidationHandler:v13];
+  [connectionCopy setInvalidationHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__NEProviderAppConfigurationClient_listener_shouldAcceptNewConnection___block_invoke_2;
   v11[3] = &unk_1E7F0AA58;
   objc_copyWeak(&v12, &location);
-  [v7 setInterruptionHandler:v11];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:v11];
+  [connectionCopy resume];
   if (self)
   {
-    objc_setProperty_atomic(self, v9, v7, 136);
+    objc_setProperty_atomic(self, v9, connectionCopy, 136);
   }
 
   objc_destroyWeak(&v12);
@@ -2503,18 +2503,18 @@ void __71__NEProviderAppConfigurationClient_listener_shouldAcceptNewConnection__
   }
 }
 
-- (NEProviderAppConfigurationClient)initWithClientName:(id)a3
+- (NEProviderAppConfigurationClient)initWithClientName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = NEProviderAppConfigurationClient;
-  v5 = [(NEUtilConfigurationClient *)&v10 initInternalWithClientName:v4];
+  v5 = [(NEUtilConfigurationClient *)&v10 initInternalWithClientName:nameCopy];
   if (v5)
   {
-    v6 = [v4 componentsSeparatedByString:@":"];
+    v6 = [nameCopy componentsSeparatedByString:@":"];
     if ([v6 count] < 2)
     {
-      v7 = v4;
+      v7 = nameCopy;
     }
 
     else
@@ -2531,13 +2531,13 @@ void __71__NEProviderAppConfigurationClient_listener_shouldAcceptNewConnection__
 
 - (id)listenerEndpoint
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_getProperty(a1 a2];
+    self = [objc_getProperty(self a2];
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

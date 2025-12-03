@@ -1,13 +1,13 @@
 @interface PHRingHighlightView
 + (CGSize)ringSize;
-+ (id)createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5;
++ (id)createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color;
 + (id)ringImageForDodge;
 + (id)ringImageForLuminance;
 - (CGSize)intrinsicContentSize;
-- (PHRingHighlightView)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (PHRingHighlightView)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PHRingHighlightView
@@ -18,10 +18,10 @@
   [v2 bounds];
   v4 = v3;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   v7 = 480.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 1024.0;
   }
@@ -30,9 +30,9 @@
   if (v4 <= v7)
   {
     v9 = +[UIDevice currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v9 userInterfaceIdiom];
 
-    v8 = *(&unk_31280 + ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1));
+    v8 = *(&unk_31280 + ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1));
   }
 
   v11 = *&v8;
@@ -47,13 +47,13 @@
   v3 = ringImageForLuminance;
   if (!ringImageForLuminance)
   {
-    [a1 ringSize];
+    [self ringSize];
     v5 = v4;
     v7 = v6;
-    [a1 ringStroke];
+    [self ringStroke];
     v9 = v8;
-    v10 = [a1 colorForLuminance];
-    v11 = [a1 createRingImageWithSize:v10 strokeWidth:v5 color:{v7, v9}];
+    colorForLuminance = [self colorForLuminance];
+    v11 = [self createRingImageWithSize:colorForLuminance strokeWidth:v5 color:{v7, v9}];
     v12 = ringImageForLuminance;
     ringImageForLuminance = v11;
 
@@ -68,13 +68,13 @@
   v3 = ringImageForDodge;
   if (!ringImageForDodge)
   {
-    [a1 ringSize];
+    [self ringSize];
     v5 = v4;
     v7 = v6;
-    [a1 ringStroke];
+    [self ringStroke];
     v9 = v8;
-    v10 = [a1 colorForDodge];
-    v11 = [a1 createRingImageWithSize:v10 strokeWidth:v5 color:{v7, v9}];
+    colorForDodge = [self colorForDodge];
+    v11 = [self createRingImageWithSize:colorForDodge strokeWidth:v5 color:{v7, v9}];
     v12 = ringImageForDodge;
     ringImageForDodge = v11;
 
@@ -84,16 +84,16 @@
   return v3;
 }
 
-+ (id)createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5
++ (id)createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v21.origin.x = 0.0;
   v21.origin.y = 0.0;
   v21.size.width = width;
   v21.size.height = height;
-  v22 = CGRectInset(v21, a4, a4);
+  v22 = CGRectInset(v21, width, width);
   x = v22.origin.x;
   y = v22.origin.y;
   v12 = v22.size.width;
@@ -101,14 +101,14 @@
   v22.origin.x = width;
   v22.origin.y = height;
   UIGraphicsBeginImageContextWithOptions(v22.origin, 0, 0.0);
-  [a1 ringCornerRadius];
+  [self ringCornerRadius];
   v15 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, width, height, v14];
-  [a1 ringCornerRadius];
-  v17 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, v12, v13, v16 - a4];
-  [v15 appendPath:v17];
+  [self ringCornerRadius];
+  width = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, v12, v13, v16 - width];
+  [v15 appendPath:width];
 
   [v15 setUsesEvenOddFillRule:1];
-  [v9 setFill];
+  [colorCopy setFill];
 
   [v15 fill];
   v18 = UIGraphicsGetImageFromCurrentImageContext();
@@ -117,16 +117,16 @@
   return v18;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   +[CATransaction begin];
   LODWORD(v5) = 1043207291;
   v6 = [NSNumber numberWithFloat:v5];
   [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
   v7 = 0.0;
-  if (v3)
+  if (selectedCopy)
   {
     [(CALayer *)self->_highlightDodgeLayer setOpacity:0.0];
     LODWORD(v7) = 1.0;
@@ -137,15 +137,15 @@
   +[CATransaction commit];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   +[CATransaction begin];
   LODWORD(v5) = 1043207291;
   v6 = [NSNumber numberWithFloat:v5];
   [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
-  if (v3)
+  if (highlightedCopy)
   {
     v7 = 1.0;
   }
@@ -162,7 +162,7 @@
   +[CATransaction commit];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
   v11.receiver = self;
   v11.super_class = PHRingHighlightView;
@@ -173,7 +173,7 @@
   [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
   v8 = 1.0;
-  if (!a3)
+  if (!enabled)
   {
     v9 = +[UIDevice currentDevice];
     v8 = flt_31270[[v9 _graphicsQuality] == &dword_8 + 2];
@@ -186,11 +186,11 @@
   +[CATransaction commit];
 }
 
-- (PHRingHighlightView)initWithFrame:(CGRect)a3
+- (PHRingHighlightView)initWithFrame:(CGRect)frame
 {
   v60.receiver = self;
   v60.super_class = PHRingHighlightView;
-  v3 = [(PHRingHighlightView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHRingHighlightView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -199,18 +199,18 @@
     v5 = +[UIColor clearColor];
     [(PHRingHighlightView *)v4 setBackgroundColor:v5];
 
-    v6 = [(PHRingHighlightView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(PHRingHighlightView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v7 = [(PHRingHighlightView *)v4 layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer2 = [(PHRingHighlightView *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v8 = +[CALayer layer];
     luminanceRingLayer = v4->_luminanceRingLayer;
     v4->_luminanceRingLayer = v8;
 
-    v10 = [objc_opt_class() ringImageForLuminance];
-    -[CALayer setContents:](v4->_luminanceRingLayer, "setContents:", [v10 CGImage]);
+    ringImageForLuminance = [objc_opt_class() ringImageForLuminance];
+    -[CALayer setContents:](v4->_luminanceRingLayer, "setContents:", [ringImageForLuminance CGImage]);
 
     v11 = kCAFilterPlusL;
     v12 = [CAFilter filterWithType:kCAFilterPlusL];
@@ -220,15 +220,15 @@
     v14 = v13;
     [objc_opt_class() ringSize];
     [(CALayer *)v4->_luminanceRingLayer setFrame:0.0, 0.0, v14, v15];
-    v16 = [(PHRingHighlightView *)v4 layer];
-    [v16 addSublayer:v4->_luminanceRingLayer];
+    layer3 = [(PHRingHighlightView *)v4 layer];
+    [layer3 addSublayer:v4->_luminanceRingLayer];
 
     v17 = +[CALayer layer];
     dodgeRingLayer = v4->_dodgeRingLayer;
     v4->_dodgeRingLayer = v17;
 
-    v19 = [objc_opt_class() ringImageForDodge];
-    -[CALayer setContents:](v4->_dodgeRingLayer, "setContents:", [v19 CGImage]);
+    ringImageForDodge = [objc_opt_class() ringImageForDodge];
+    -[CALayer setContents:](v4->_dodgeRingLayer, "setContents:", [ringImageForDodge CGImage]);
 
     v20 = kCAFilterColorDodgeBlendMode;
     v21 = [CAFilter filterWithType:kCAFilterColorDodgeBlendMode];
@@ -238,15 +238,15 @@
     v23 = v22;
     [objc_opt_class() ringSize];
     [(CALayer *)v4->_dodgeRingLayer setFrame:0.0, 0.0, v23, v24];
-    v25 = [(PHRingHighlightView *)v4 layer];
-    [v25 addSublayer:v4->_dodgeRingLayer];
+    layer4 = [(PHRingHighlightView *)v4 layer];
+    [layer4 addSublayer:v4->_dodgeRingLayer];
 
     v26 = +[CALayer layer];
     highlightDodgeLayer = v4->_highlightDodgeLayer;
     v4->_highlightDodgeLayer = v26;
 
-    v28 = [objc_opt_class() colorForDodge];
-    -[CALayer setBackgroundColor:](v4->_highlightDodgeLayer, "setBackgroundColor:", [v28 CGColor]);
+    colorForDodge = [objc_opt_class() colorForDodge];
+    -[CALayer setBackgroundColor:](v4->_highlightDodgeLayer, "setBackgroundColor:", [colorForDodge CGColor]);
 
     v29 = [CAFilter filterWithType:v20];
     [(CALayer *)v4->_highlightDodgeLayer setCompositingFilter:v29];
@@ -275,15 +275,15 @@
     [objc_opt_class() ringStroke];
     [(CALayer *)v4->_highlightDodgeLayer setCornerRadius:v44 - v45];
     [(CALayer *)v4->_highlightDodgeLayer setOpacity:0.0];
-    v46 = [(PHRingHighlightView *)v4 layer];
-    [v46 addSublayer:v4->_highlightDodgeLayer];
+    layer5 = [(PHRingHighlightView *)v4 layer];
+    [layer5 addSublayer:v4->_highlightDodgeLayer];
 
     v47 = +[CALayer layer];
     highlightLuminanceLayer = v4->_highlightLuminanceLayer;
     v4->_highlightLuminanceLayer = v47;
 
-    v49 = [objc_opt_class() colorForLuminance];
-    -[CALayer setBackgroundColor:](v4->_highlightLuminanceLayer, "setBackgroundColor:", [v49 CGColor]);
+    colorForLuminance = [objc_opt_class() colorForLuminance];
+    -[CALayer setBackgroundColor:](v4->_highlightLuminanceLayer, "setBackgroundColor:", [colorForLuminance CGColor]);
 
     v50 = [CAFilter filterWithType:v11];
     [(CALayer *)v4->_highlightLuminanceLayer setCompositingFilter:v50];
@@ -293,8 +293,8 @@
     [(CALayer *)v4->_highlightDodgeLayer cornerRadius];
     [(CALayer *)v4->_highlightLuminanceLayer setCornerRadius:?];
     [(CALayer *)v4->_highlightLuminanceLayer setOpacity:0.0];
-    v51 = [(PHRingHighlightView *)v4 layer];
-    [v51 insertSublayer:v4->_highlightLuminanceLayer below:v4->_highlightDodgeLayer];
+    layer6 = [(PHRingHighlightView *)v4 layer];
+    [layer6 insertSublayer:v4->_highlightLuminanceLayer below:v4->_highlightDodgeLayer];
 
     v52 = +[CALayer layer];
     selectionLayer = v4->_selectionLayer;
@@ -310,8 +310,8 @@
     [objc_opt_class() ringCornerRadius];
     [(CALayer *)v4->_selectionLayer setCornerRadius:?];
     [(CALayer *)v4->_selectionLayer setOpacity:0.0];
-    v58 = [(PHRingHighlightView *)v4 layer];
-    [v58 addSublayer:v4->_selectionLayer];
+    layer7 = [(PHRingHighlightView *)v4 layer];
+    [layer7 addSublayer:v4->_selectionLayer];
   }
 
   return v4;

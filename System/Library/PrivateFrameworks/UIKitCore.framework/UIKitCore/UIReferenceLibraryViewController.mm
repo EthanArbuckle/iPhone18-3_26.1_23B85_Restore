@@ -1,5 +1,5 @@
 @interface UIReferenceLibraryViewController
-+ (BOOL)_shouldShowDefineForTerm:(id)a3;
++ (BOOL)_shouldShowDefineForTerm:(id)term;
 + (BOOL)dictionaryHasDefinitionForTerm:(NSString *)term;
 + (id)_colorAttributes;
 + (id)_defaultButtonImage;
@@ -7,7 +7,7 @@
 + (id)_localizedDictionaryTitleAttributes;
 + (id)_pressedButtonImage;
 - (BOOL)shouldAutorotate;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (UIReferenceLibraryViewController)init;
 - (UIReferenceLibraryViewController)initWithCoder:(NSCoder *)coder;
 - (UIReferenceLibraryViewController)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
@@ -20,24 +20,24 @@
 - (id)_foregroundColor;
 - (id)_localizedDictionaryTitleAttributes;
 - (id)_pressedButtonImage;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_preferredInterfaceOrientationGivenCurrentOrientation:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_preferredInterfaceOrientationGivenCurrentOrientation:(int64_t)orientation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_didResignContentViewControllerOfPopover:(id)a3;
-- (void)_dismissModalReferenceView:(id)a3;
-- (void)_installDoneButtonOnViewControllerIfNeeded:(id)a3;
-- (void)_installRequiredElementsOnViewController:(id)a3;
-- (void)_searchWeb:(id)a3;
-- (void)_setPopoverController:(id)a3;
-- (void)_willBecomeContentViewControllerOfPopover:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)pushDownloadManager:(id)a3;
-- (void)setEnableRotation:(BOOL)a3;
+- (void)_didResignContentViewControllerOfPopover:(id)popover;
+- (void)_dismissModalReferenceView:(id)view;
+- (void)_installDoneButtonOnViewControllerIfNeeded:(id)needed;
+- (void)_installRequiredElementsOnViewController:(id)controller;
+- (void)_searchWeb:(id)web;
+- (void)_setPopoverController:(id)controller;
+- (void)_willBecomeContentViewControllerOfPopover:(id)popover;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)pushDownloadManager:(id)manager;
+- (void)setEnableRotation:(BOOL)rotation;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)window:(id)a3 setupWithInterfaceOrientation:(int64_t)a4;
+- (void)window:(id)window setupWithInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation UIReferenceLibraryViewController
@@ -98,11 +98,11 @@
   return [(UIViewController *)&v4 initWithCoder:coder];
 }
 
-+ (BOOL)_shouldShowDefineForTerm:(id)a3
++ (BOOL)_shouldShowDefineForTerm:(id)term
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 length] && objc_msgSend(v4, "length") < 0xC9;
+  termCopy = term;
+  v4 = termCopy;
+  v5 = termCopy && [termCopy length] && objc_msgSend(v4, "length") < 0xC9;
 
   return v5;
 }
@@ -115,13 +115,13 @@
   if (v3 && [(NSString *)v3 length]&& [(NSString *)v4 length]<= 0xC8)
   {
     v7 = +[_UIDictionaryManager assetManager];
-    v8 = [v7 _allAvailableDefinitionDictionaries];
+    _allAvailableDefinitionDictionaries = [v7 _allAvailableDefinitionDictionaries];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v9 = v8;
+    v9 = _allAvailableDefinitionDictionaries;
     v5 = [v9 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -163,30 +163,30 @@ LABEL_16:
   return v5;
 }
 
-- (void)_searchWeb:(id)a3
+- (void)_searchWeb:(id)web
 {
   term = self->_term;
   v5 = MEMORY[0x1E696AB08];
-  v6 = a3;
-  v7 = [v5 URLQueryAllowedCharacterSet];
-  v11 = [(NSString *)term stringByAddingPercentEncodingWithAllowedCharacters:v7];
+  webCopy = web;
+  uRLQueryAllowedCharacterSet = [v5 URLQueryAllowedCharacterSet];
+  v11 = [(NSString *)term stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v8 = MEMORY[0x1E695DFF8];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-web-search://?%@", v11];
   v10 = [v8 URLWithString:v9];
 
   [UIApp openURL:v10 options:MEMORY[0x1E695E0F8] completionHandler:&__block_literal_global_146];
-  [(UIReferenceLibraryViewController *)self _dismissModalReferenceView:v6];
+  [(UIReferenceLibraryViewController *)self _dismissModalReferenceView:webCopy];
 }
 
-- (void)_dismissModalReferenceView:(id)a3
+- (void)_dismissModalReferenceView:(id)view
 {
-  v4 = [(UIReferenceLibraryViewController *)self dismissCompletionHandler];
+  dismissCompletionHandler = [(UIReferenceLibraryViewController *)self dismissCompletionHandler];
 
-  if (v4)
+  if (dismissCompletionHandler)
   {
-    v5 = [(UIReferenceLibraryViewController *)self dismissCompletionHandler];
-    [(UIViewController *)self dismissViewControllerAnimated:1 completion:v5];
+    dismissCompletionHandler2 = [(UIReferenceLibraryViewController *)self dismissCompletionHandler];
+    [(UIViewController *)self dismissViewControllerAnimated:1 completion:dismissCompletionHandler2];
 
     [(UIReferenceLibraryViewController *)self setDismissCompletionHandler:0];
 
@@ -200,10 +200,10 @@ LABEL_16:
   }
 }
 
-- (void)_installRequiredElementsOnViewController:(id)a3
+- (void)_installRequiredElementsOnViewController:(id)controller
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [UIBarButtonItem alloc];
   v6 = _UINSLocalizedStringWithDefaultValue(@"Manage", @"Manage");
   v7 = [(UIBarButtonItem *)v5 initWithTitle:v6 style:0 target:self action:sel_pushDownloadManager_];
@@ -217,15 +217,15 @@ LABEL_16:
   v13[1] = v8;
   v13[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
-  [v4 setToolbarItems:v12];
-  [(UIReferenceLibraryViewController *)self _installDoneButtonOnViewControllerIfNeeded:v4];
+  [controllerCopy setToolbarItems:v12];
+  [(UIReferenceLibraryViewController *)self _installDoneButtonOnViewControllerIfNeeded:controllerCopy];
 }
 
-- (void)_installDoneButtonOnViewControllerIfNeeded:(id)a3
+- (void)_installDoneButtonOnViewControllerIfNeeded:(id)needed
 {
-  v14 = a3;
-  v4 = self;
-  v5 = [(UIViewController *)v4 _existingPresentationControllerImmediate:0 effective:1];
+  neededCopy = needed;
+  selfCopy = self;
+  v5 = [(UIViewController *)selfCopy _existingPresentationControllerImmediate:0 effective:1];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -233,31 +233,31 @@ LABEL_16:
   {
 
 LABEL_4:
-    v8 = [v14 navigationItem];
-    [(UIBarButtonItem *)v8 setRightBarButtonItem:0];
+    navigationItem = [neededCopy navigationItem];
+    [(UIBarButtonItem *)navigationItem setRightBarButtonItem:0];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(UIViewController *)v4 _popoverController];
+  _popoverController = [(UIViewController *)selfCopy _popoverController];
 
-  if (v7)
+  if (_popoverController)
   {
     goto LABEL_4;
   }
 
-  v9 = [v14 navigationItem];
-  v10 = [v9 rightBarButtonItem];
+  navigationItem2 = [neededCopy navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
 
-  if (!v10)
+  if (!rightBarButtonItem)
   {
     v11 = [UIBarButtonItem alloc];
     v12 = _UINSLocalizedStringWithDefaultValue(@"Done", @"Done");
-    v8 = [(UIBarButtonItem *)v11 initWithTitle:v12 style:0 target:v4 action:sel__dismissModalReferenceView_];
+    navigationItem = [(UIBarButtonItem *)v11 initWithTitle:v12 style:0 target:selfCopy action:sel__dismissModalReferenceView_];
 
-    v13 = [v14 navigationItem];
-    [v13 setRightBarButtonItem:v8];
+    navigationItem3 = [neededCopy navigationItem];
+    [navigationItem3 setRightBarButtonItem:navigationItem];
 
     goto LABEL_5;
   }
@@ -265,17 +265,17 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)pushDownloadManager:(id)a3
+- (void)pushDownloadManager:(id)manager
 {
   v4 = [[_UIRemoteDictionaryViewController alloc] initWithStyle:0];
   [(UINavigationController *)self->_baseNavController pushViewController:v4 animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"definition_cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"definition_cell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"definition_cell"];
@@ -286,10 +286,10 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(UITableViewCell *)v7 contentView];
-  v9 = [v8 subviews];
+  contentView = [(UITableViewCell *)v7 contentView];
+  subviews = [contentView subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -300,62 +300,62 @@ LABEL_6:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v20 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
   }
 
   v14 = [_UIShortDefinitionView alloc];
-  v15 = [(UITableViewCell *)v7 contentView];
-  [v15 bounds];
+  contentView2 = [(UITableViewCell *)v7 contentView];
+  [contentView2 bounds];
   v16 = [(_UIShortDefinitionView *)v14 initWithFrame:?];
 
-  v17 = -[NSArray objectAtIndex:](self->_definitionValues, "objectAtIndex:", [v6 section]);
+  v17 = -[NSArray objectAtIndex:](self->_definitionValues, "objectAtIndex:", [pathCopy section]);
   [(_UIShortDefinitionView *)v16 setDefinitionValue:v17];
 
-  v18 = [(UITableViewCell *)v7 contentView];
-  [v18 addSubview:v16];
+  contentView3 = [(UITableViewCell *)v7 contentView];
+  [contentView3 addSubview:v16];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_definitionValues objectAtIndex:a4];
-  v5 = [v4 localizedDictionaryName];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v5 uppercaseStringWithLocale:v6];
+  v4 = [(NSArray *)self->_definitionValues objectAtIndex:section];
+  localizedDictionaryName = [v4 localizedDictionaryName];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v7 = [localizedDictionaryName uppercaseStringWithLocale:currentLocale];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [_UILongDefinitionViewController alloc];
-  v7 = -[NSArray objectAtIndex:](self->_definitionValues, "objectAtIndex:", [v5 section]);
+  v7 = -[NSArray objectAtIndex:](self->_definitionValues, "objectAtIndex:", [pathCopy section]);
   v8 = [(_UILongDefinitionViewController *)v6 initWithDefinitionValue:v7];
 
   [(UIReferenceLibraryViewController *)self _installRequiredElementsOnViewController:v8];
   [(UINavigationController *)self->_baseNavController pushViewController:v8 animated:1];
 
-  return v5;
+  return pathCopy;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a3;
-  v6 = [a4 toolbarItems];
-  v7 = [v6 count] == 0;
+  controllerCopy = controller;
+  toolbarItems = [viewController toolbarItems];
+  v7 = [toolbarItems count] == 0;
 
-  [v8 setToolbarHidden:v7];
+  [controllerCopy setToolbarHidden:v7];
 }
 
 - (id)_backgroundColor
@@ -416,11 +416,11 @@ LABEL_6:
   v3 = [off_1E70ECC18 fontWithName:@"Helvetica-Bold" size:14.0];
   v9[0] = v3;
   v8[1] = *off_1E70EC920;
-  v4 = [a1 _foregroundColor];
-  v9[1] = v4;
+  _foregroundColor = [self _foregroundColor];
+  v9[1] = _foregroundColor;
   v8[2] = *off_1E70EC8D0;
-  v5 = [a1 _backgroundColor];
-  v9[2] = v5;
+  _backgroundColor = [self _backgroundColor];
+  v9[2] = _backgroundColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
@@ -440,11 +440,11 @@ LABEL_6:
   v3 = [off_1E70ECC18 fontWithName:@"Baskerville" size:16.0];
   v9[0] = v3;
   v8[1] = *off_1E70EC920;
-  v4 = [a1 _foregroundColor];
-  v9[1] = v4;
+  _foregroundColor = [self _foregroundColor];
+  v9[1] = _foregroundColor;
   v8[2] = *off_1E70EC8D0;
-  v5 = [a1 _backgroundColor];
-  v9[2] = v5;
+  _backgroundColor = [self _backgroundColor];
+  v9[2] = _backgroundColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
@@ -461,11 +461,11 @@ LABEL_6:
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = *off_1E70EC920;
-  v3 = [a1 _foregroundColor];
-  v8[0] = v3;
+  _foregroundColor = [self _foregroundColor];
+  v8[0] = _foregroundColor;
   v7[1] = *off_1E70EC8D0;
-  v4 = [a1 _backgroundColor];
-  v8[1] = v4;
+  _backgroundColor = [self _backgroundColor];
+  v8[1] = _backgroundColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -489,20 +489,20 @@ LABEL_6:
   self->_baseNavController = v3;
 
   [(UIViewController *)self addChildViewController:self->_baseNavController];
-  v5 = [(UIViewController *)self view];
-  v6 = [(UIViewController *)self->_baseNavController view];
-  [v5 addSubview:v6];
+  view = [(UIViewController *)self view];
+  view2 = [(UIViewController *)self->_baseNavController view];
+  [view addSubview:view2];
 
-  v7 = [(UIViewController *)self->_baseNavController view];
-  v8 = [(UIViewController *)self view];
-  [v8 bounds];
-  [v7 setFrame:?];
+  view3 = [(UIViewController *)self->_baseNavController view];
+  view4 = [(UIViewController *)self view];
+  [view4 bounds];
+  [view3 setFrame:?];
 
   [(UINavigationController *)self->_baseNavController setToolbarHidden:0];
   [(UINavigationController *)self->_baseNavController setDelegate:self];
   v9 = self->_baseNavController;
-  v10 = [(UIViewController *)self presentationController];
-  [v10 setDelegate:v9];
+  presentationController = [(UIViewController *)self presentationController];
+  [presentationController setDelegate:v9];
 
   v14[0] = 0x1EFE32560;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
@@ -514,44 +514,44 @@ LABEL_6:
   v5.receiver = self;
   v5.super_class = UIReferenceLibraryViewController;
   [(UIViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
-- (void)_setPopoverController:(id)a3
+- (void)_setPopoverController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = UIReferenceLibraryViewController;
-  [(UIViewController *)&v3 _setPopoverController:a3];
+  [(UIViewController *)&v3 _setPopoverController:controller];
 }
 
-- (void)_willBecomeContentViewControllerOfPopover:(id)a3
+- (void)_willBecomeContentViewControllerOfPopover:(id)popover
 {
-  v4 = a3;
-  [(UIReferenceLibraryViewController *)self _setPopoverController:v4];
-  self->_oldPopoverStyle = [v4 _popoverBackgroundStyle];
-  [v4 _setPopoverBackgroundStyle:2];
+  popoverCopy = popover;
+  [(UIReferenceLibraryViewController *)self _setPopoverController:popoverCopy];
+  self->_oldPopoverStyle = [popoverCopy _popoverBackgroundStyle];
+  [popoverCopy _setPopoverBackgroundStyle:2];
   v5.receiver = self;
   v5.super_class = UIReferenceLibraryViewController;
-  [(UIViewController *)&v5 _willBecomeContentViewControllerOfPopover:v4];
+  [(UIViewController *)&v5 _willBecomeContentViewControllerOfPopover:popoverCopy];
 }
 
-- (void)_didResignContentViewControllerOfPopover:(id)a3
+- (void)_didResignContentViewControllerOfPopover:(id)popover
 {
-  v4 = a3;
+  popoverCopy = popover;
   [(UIReferenceLibraryViewController *)self _setPopoverController:0];
-  [v4 _setPopoverBackgroundStyle:self->_oldPopoverStyle];
+  [popoverCopy _setPopoverBackgroundStyle:self->_oldPopoverStyle];
   v5.receiver = self;
   v5.super_class = UIReferenceLibraryViewController;
-  [(UIViewController *)&v5 _didResignContentViewControllerOfPopover:v4];
+  [(UIViewController *)&v5 _didResignContentViewControllerOfPopover:popoverCopy];
 }
 
-- (void)setEnableRotation:(BOOL)a3
+- (void)setEnableRotation:(BOOL)rotation
 {
-  if (self->_enableRotation != a3)
+  if (self->_enableRotation != rotation)
   {
-    if (a3)
+    if (rotation)
     {
       self->_previousIgnoreOrientation = [(UIViewController *)self _ignoreAppSupportedOrientations];
       previousIgnoreOrientation = 1;
@@ -563,7 +563,7 @@ LABEL_6:
     }
 
     [(UIViewController *)self _setIgnoreAppSupportedOrientations:previousIgnoreOrientation];
-    self->_enableRotation = a3;
+    self->_enableRotation = rotation;
   }
 }
 
@@ -603,57 +603,57 @@ LABEL_6:
   }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if (self->_enableRotation)
   {
     v6 = objc_opt_class();
     MethodImplementation = class_getMethodImplementation(v6, a2);
 
-    return (MethodImplementation)(self, a2, a3);
+    return (MethodImplementation)(self, a2, orientation);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UIReferenceLibraryViewController;
-    return [(UIViewController *)&v9 shouldAutorotateToInterfaceOrientation:a3];
+    return [(UIViewController *)&v9 shouldAutorotateToInterfaceOrientation:orientation];
   }
 }
 
-- (int64_t)_preferredInterfaceOrientationGivenCurrentOrientation:(int64_t)a3
+- (int64_t)_preferredInterfaceOrientationGivenCurrentOrientation:(int64_t)orientation
 {
   if (self->_enableRotation)
   {
     v6 = objc_opt_class();
     MethodImplementation = class_getMethodImplementation(v6, a2);
 
-    return (MethodImplementation)(self, a2, a3);
+    return (MethodImplementation)(self, a2, orientation);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UIReferenceLibraryViewController;
-    return [(UIViewController *)&v9 _preferredInterfaceOrientationGivenCurrentOrientation:a3];
+    return [(UIViewController *)&v9 _preferredInterfaceOrientationGivenCurrentOrientation:orientation];
   }
 }
 
-- (void)window:(id)a3 setupWithInterfaceOrientation:(int64_t)a4
+- (void)window:(id)window setupWithInterfaceOrientation:(int64_t)orientation
 {
   if (self->_enableRotation)
   {
-    v8 = a3;
+    windowCopy = window;
     v9 = objc_opt_class();
     MethodImplementation = class_getMethodImplementation(v9, a2);
-    (MethodImplementation)(self, a2, v8, a4);
+    (MethodImplementation)(self, a2, windowCopy, orientation);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UIReferenceLibraryViewController;
-    [(UIViewController *)&v11 window:a3 setupWithInterfaceOrientation:a4];
+    [(UIViewController *)&v11 window:window setupWithInterfaceOrientation:orientation];
   }
 }
 

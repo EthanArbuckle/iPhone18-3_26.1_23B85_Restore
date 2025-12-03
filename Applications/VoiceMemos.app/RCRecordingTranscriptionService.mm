@@ -1,8 +1,8 @@
 @interface RCRecordingTranscriptionService
 + (RCRecordingTranscriptionService)sharedInstance;
 - (RCRecordingTranscriptionService)init;
-- (void)cancelFileTranscriptionWithCompletionHandler:(id)a3;
-- (void)startTranscriptionFor:(id)a3;
+- (void)cancelFileTranscriptionWithCompletionHandler:(id)handler;
+- (void)startTranscriptionFor:(id)for;
 @end
 
 @implementation RCRecordingTranscriptionService
@@ -31,7 +31,7 @@
   return [(RCRecordingTranscriptionService *)&v4 init];
 }
 
-- (void)startTranscriptionFor:(id)a3
+- (void)startTranscriptionFor:(id)for
 {
   v4 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v4 - 8, v5);
@@ -46,16 +46,16 @@
   v12[4] = self;
   v12[5] = v8;
   v12[6] = v10;
-  v13 = self;
+  selfCopy = self;
   sub_100179578(0, 0, v7, &unk_100243900, v12);
 }
 
-- (void)cancelFileTranscriptionWithCompletionHandler:(id)a3
+- (void)cancelFileTranscriptionWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -71,7 +71,7 @@
   v13[3] = 0;
   v13[4] = &unk_100243D40;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001A8E50(0, 0, v8, &unk_100243540, v13);
 }
 

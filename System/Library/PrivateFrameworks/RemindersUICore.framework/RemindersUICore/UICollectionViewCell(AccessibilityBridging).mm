@@ -12,20 +12,20 @@
   if (objc_opt_isKindOfClass())
   {
 
-    return [a1 ttriAccessibilityAdjustScrollOffsetForFocus];
+    return [self ttriAccessibilityAdjustScrollOffsetForFocus];
   }
 
   else
   {
 
-    return [a1 _accessibilityBaseScrollToVisible];
+    return [self _accessibilityBaseScrollToVisible];
   }
 }
 
 - (uint64_t)ttriAccessibilityAdjustScrollOffsetForFocus
 {
-  v2 = [a1 ttriAccessibilityAXOutermostContainingViewOfType:objc_opt_class()];
-  v3 = [a1 ttriAccessibilityAXOutermostContainingViewOfType:objc_opt_class()];
+  v2 = [self ttriAccessibilityAXOutermostContainingViewOfType:objc_opt_class()];
+  v3 = [self ttriAccessibilityAXOutermostContainingViewOfType:objc_opt_class()];
   if (v3)
   {
     v4 = v2 == 0;
@@ -38,8 +38,8 @@
 
   if (!v4)
   {
-    [a1 bounds];
-    [a1 convertPoint:v3 toView:?];
+    [self bounds];
+    [self convertPoint:v3 toView:?];
     v6 = v5;
     [v2 contentOffset];
     v8 = v7;
@@ -54,10 +54,10 @@
 
 - (id)ttriAccessibilityAXOutermostContainingViewOfType:()AccessibilityBridging
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     v3 = 0;
     do
     {
@@ -68,12 +68,12 @@
         v3 = v4;
       }
 
-      v5 = [v2 superview];
+      superview = [v2 superview];
 
-      v2 = v5;
+      v2 = superview;
     }
 
-    while (v5);
+    while (superview);
   }
 
   else

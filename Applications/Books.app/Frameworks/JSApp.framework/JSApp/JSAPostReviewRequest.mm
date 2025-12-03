@@ -14,8 +14,8 @@
     v4 = [(NSDictionary *)self->metadata objectForKeyedSubscript:@"submitURL"];
     [(JSAStoreHTTPRequest *)self setUrl:v4];
 
-    v5 = [(JSAPostReviewRequest *)self _httpBody];
-    [(JSAStoreHTTPRequest *)self setBody:v5];
+    _httpBody = [(JSAPostReviewRequest *)self _httpBody];
+    [(JSAStoreHTTPRequest *)self setBody:_httpBody];
 
     [(JSAStoreHTTPRequest *)self setMethod:@"POST"];
     v9.receiver = self;
@@ -25,13 +25,13 @@
 
   else
   {
-    v6 = [(JSAStoreHTTPRequest *)self onResponse];
+    onResponse = [(JSAStoreHTTPRequest *)self onResponse];
 
-    if (v6)
+    if (onResponse)
     {
       v8 = +[JSABridge sharedInstance];
-      v7 = [(JSAStoreHTTPRequest *)self onResponse];
-      [v8 enqueueValueCall:v7 arguments:&off_BA8D8 file:@"JSAPostReviewRequest.m" line:49];
+      onResponse2 = [(JSAStoreHTTPRequest *)self onResponse];
+      [v8 enqueueValueCall:onResponse2 arguments:&off_BA8D8 file:@"JSAPostReviewRequest.m" line:49];
     }
   }
 }

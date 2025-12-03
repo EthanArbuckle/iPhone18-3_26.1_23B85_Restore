@@ -1,10 +1,10 @@
 @interface CRLFidgetResolver
 - (CRLFidgetResolver)init;
 - (id)nonFidgetValue;
-- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)a3;
+- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)index;
 - (void)p_advanceHead;
-- (void)pushValue:(id)a3;
-- (void)pushValue:(id)a3 withTime:(double)a4;
+- (void)pushValue:(id)value;
+- (void)pushValue:(id)value withTime:(double)time;
 @end
 
 @implementation CRLFidgetResolver
@@ -84,21 +84,21 @@ LABEL_15:
   return v9;
 }
 
-- (void)pushValue:(id)a3
+- (void)pushValue:(id)value
 {
-  v4 = a3;
-  [(CRLFidgetResolver *)self pushValue:v4 withTime:CFAbsoluteTimeGetCurrent()];
+  valueCopy = value;
+  [(CRLFidgetResolver *)self pushValue:valueCopy withTime:CFAbsoluteTimeGetCurrent()];
 }
 
-- (void)pushValue:(id)a3 withTime:(double)a4
+- (void)pushValue:(id)value withTime:(double)time
 {
-  v6 = a3;
+  valueCopy = value;
   [(CRLFidgetResolver *)self p_advanceHead];
   v7 = &self->super.isa + self->_head;
   v8 = v7[2];
-  v7[2] = v6;
+  v7[2] = valueCopy;
 
-  self->_times[self->_head] = a4;
+  self->_times[self->_head] = time;
 }
 
 - (void)p_advanceHead
@@ -117,11 +117,11 @@ LABEL_15:
   self->_head = v3;
 }
 
-- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)a3
+- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
   else

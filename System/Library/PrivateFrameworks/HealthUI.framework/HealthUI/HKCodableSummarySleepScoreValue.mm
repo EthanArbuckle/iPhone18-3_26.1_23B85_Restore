@@ -1,24 +1,24 @@
 @interface HKCodableSummarySleepScoreValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationFillFraction:(BOOL)a3;
-- (void)setHasInterruptionsFillFraction:(BOOL)a3;
-- (void)setHasLevel:(BOOL)a3;
-- (void)setHasMorningIndex:(BOOL)a3;
-- (void)setHasTotalPoints:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationFillFraction:(BOOL)fraction;
+- (void)setHasInterruptionsFillFraction:(BOOL)fraction;
+- (void)setHasLevel:(BOOL)level;
+- (void)setHasMorningIndex:(BOOL)index;
+- (void)setHasTotalPoints:(BOOL)points;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummarySleepScoreValue
 
-- (void)setHasMorningIndex:(BOOL)a3
+- (void)setHasMorningIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 16;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTotalPoints:(BOOL)a3
+- (void)setHasTotalPoints:(BOOL)points
 {
-  if (a3)
+  if (points)
   {
     v3 = 32;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLevel:(BOOL)a3
+- (void)setHasLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 8;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDurationFillFraction:(BOOL)a3
+- (void)setHasDurationFillFraction:(BOOL)fraction
 {
-  if (a3)
+  if (fraction)
   {
     v3 = 2;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasInterruptionsFillFraction:(BOOL)a3
+- (void)setHasInterruptionsFillFraction:(BOOL)fraction
 {
-  if (a3)
+  if (fraction)
   {
     v3 = 4;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummarySleepScoreValue;
   v4 = [(HKCodableSummarySleepScoreValue *)&v8 description];
-  v5 = [(HKCodableSummarySleepScoreValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummarySleepScoreValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_morningIndex];
-    [v3 setObject:v7 forKey:@"morningIndex"];
+    [dictionary setObject:v7 forKey:@"morningIndex"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -131,7 +131,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_totalPoints];
-  [v3 setObject:v8 forKey:@"totalPoints"];
+  [dictionary setObject:v8 forKey:@"totalPoints"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -147,7 +147,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_level];
-  [v3 setObject:v9 forKey:@"level"];
+  [dictionary setObject:v9 forKey:@"level"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_durationFillFraction];
-  [v3 setObject:v10 forKey:@"durationFillFraction"];
+  [dictionary setObject:v10 forKey:@"durationFillFraction"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -179,23 +179,23 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bedtimeFillFraction];
-  [v3 setObject:v11 forKey:@"bedtimeFillFraction"];
+  [dictionary setObject:v11 forKey:@"bedtimeFillFraction"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_interruptionsFillFraction];
-    [v3 setObject:v5 forKey:@"interruptionsFillFraction"];
+    [dictionary setObject:v5 forKey:@"interruptionsFillFraction"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -270,14 +270,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[5] = self->_morningIndex;
-    *(v4 + 56) |= 0x10u;
+    toCopy[5] = self->_morningIndex;
+    *(toCopy + 56) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -296,8 +296,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_totalPoints;
-  *(v4 + 56) |= 0x20u;
+  toCopy[6] = self->_totalPoints;
+  *(toCopy + 56) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -311,8 +311,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[4] = self->_level;
-  *(v4 + 56) |= 8u;
+  toCopy[4] = self->_level;
+  *(toCopy + 56) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -326,8 +326,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[2] = *&self->_durationFillFraction;
-  *(v4 + 56) |= 2u;
+  toCopy[2] = *&self->_durationFillFraction;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -341,21 +341,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[1] = *&self->_bedtimeFillFraction;
-  *(v4 + 56) |= 1u;
+  toCopy[1] = *&self->_bedtimeFillFraction;
+  *(toCopy + 56) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    v4[3] = *&self->_interruptionsFillFraction;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = *&self->_interruptionsFillFraction;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -437,23 +437,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_morningIndex != *(v4 + 5))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_morningIndex != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
 LABEL_31:
     v5 = 0;
@@ -462,60 +462,60 @@ LABEL_31:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 56) & 0x20) == 0 || self->_totalPoints != *(v4 + 6))
+    if ((*(equalCopy + 56) & 0x20) == 0 || self->_totalPoints != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 0x20) != 0)
+  else if ((*(equalCopy + 56) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_level != *(v4 + 4))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_level != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_durationFillFraction != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_durationFillFraction != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_bedtimeFillFraction != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_bedtimeFillFraction != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 56) & 4) == 0;
+  v5 = (*(equalCopy + 56) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_interruptionsFillFraction != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_interruptionsFillFraction != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
@@ -675,15 +675,15 @@ LABEL_13:
   return v5 ^ v4 ^ v6 ^ v10 ^ v11 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) != 0)
   {
-    self->_morningIndex = *(v4 + 5);
+    self->_morningIndex = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -696,14 +696,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 56) & 0x20) == 0)
+  else if ((*(fromCopy + 56) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalPoints = *(v4 + 6);
+  self->_totalPoints = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -716,9 +716,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_level = *(v4 + 4);
+  self->_level = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -731,9 +731,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_durationFillFraction = *(v4 + 2);
+  self->_durationFillFraction = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -746,12 +746,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_bedtimeFillFraction = *(v4 + 1);
+  self->_bedtimeFillFraction = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
 LABEL_7:
-    self->_interruptionsFillFraction = *(v4 + 3);
+    self->_interruptionsFillFraction = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

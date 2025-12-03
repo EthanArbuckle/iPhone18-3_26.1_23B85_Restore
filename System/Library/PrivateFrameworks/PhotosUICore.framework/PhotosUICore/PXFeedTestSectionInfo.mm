@@ -1,18 +1,18 @@
 @interface PXFeedTestSectionInfo
-- (PXFeedTestSectionInfo)initWithPhotoLibrary:(id)a3;
+- (PXFeedTestSectionInfo)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PXFeedTestSectionInfo
 
-- (PXFeedTestSectionInfo)initWithPhotoLibrary:(id)a3
+- (PXFeedTestSectionInfo)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PXFeedTestSectionInfo;
   v5 = [(PXFeedTestSectionInfo *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69789A8]) initWithPLPhotoLibrary:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69789A8]) initWithPLPhotoLibrary:libraryCopy];
     photoLibrary = v5->_photoLibrary;
     v5->_photoLibrary = v6;
 

@@ -1,25 +1,25 @@
 @interface ARLineCloud
-- (ARLineCloud)initWithLineCloudData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ARLineCloud)initWithLineCloudData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARLineCloud
 
-- (ARLineCloud)initWithLineCloudData:(id)a3
+- (ARLineCloud)initWithLineCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = ARLineCloud;
   v5 = [(ARLineCloud *)&v23 init];
   if (v5)
   {
-    v6 = [v4 bytes];
-    v7 = [v4 length];
+    bytes = [dataCopy bytes];
+    v7 = [dataCopy length];
     v8 = v7 / 0x48;
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7 / 0x48];
+    0x48 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7 / 0x48];
     if (v7 >= 0x48)
     {
-      v10 = v6 + 32;
+      v10 = bytes + 32;
       do
       {
         v11 = *(v10 - 32);
@@ -37,7 +37,7 @@
         v20 = v14;
         *(&v19 + 1) = v20;
         [v16 setEndPoint:v19];
-        [(NSArray *)v9 addObject:v16];
+        [(NSArray *)0x48 addObject:v16];
 
         v10 += 72;
         --v8;
@@ -47,16 +47,16 @@
     }
 
     lines = v5->_lines;
-    v5->_lines = v9;
+    v5->_lines = 0x48;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSArray *)self->_lines copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSArray *)self->_lines copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

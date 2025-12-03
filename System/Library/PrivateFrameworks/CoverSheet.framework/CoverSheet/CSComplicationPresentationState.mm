@@ -1,10 +1,10 @@
 @interface CSComplicationPresentationState
-- (BOOL)isEqual:(id)a3;
-- (_BYTE)initWithVisibility:(char)a3 isScreenOff:(uint64_t)a4 backlightLuminance:(uint64_t)a5 interfaceOrientation:;
+- (BOOL)isEqual:(id)equal;
+- (_BYTE)initWithVisibility:(char)visibility isScreenOff:(uint64_t)off backlightLuminance:(uint64_t)luminance interfaceOrientation:;
 - (id)description;
 - (uint64_t)backlightLuminance;
 - (uint64_t)interfaceOrientation;
-- (uint64_t)isEqualToComplicationPresentationState:(uint64_t)a1;
+- (uint64_t)isEqualToComplicationPresentationState:(uint64_t)state;
 - (uint64_t)isPresenterVisible;
 - (uint64_t)isScreenOff;
 - (uint64_t)shouldPresentLandscapeComplications;
@@ -42,13 +42,13 @@
     v5 = 1;
   }
 
-  v6 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v7 = [v6 deviceClass];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
   self->_suggestedComplicationPresentationMode = v5;
   if (BSInterfaceOrientationIsLandscape())
   {
-    v8 = v7 == 2;
+    v8 = deviceClass == 2;
   }
 
   else
@@ -102,21 +102,21 @@
 
   [v3 appendString:v10 withName:@"suggestedPortraitPresentationMode"];
   v11 = [v3 appendBool:self->_shouldPresentLandscapeComplications withName:@"shouldPresentLandscapeComplications"];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(CSComplicationPresentationState *)self isEqualToComplicationPresentationState:v5];
   }
@@ -129,64 +129,64 @@
   return v6;
 }
 
-- (_BYTE)initWithVisibility:(char)a3 isScreenOff:(uint64_t)a4 backlightLuminance:(uint64_t)a5 interfaceOrientation:
+- (_BYTE)initWithVisibility:(char)visibility isScreenOff:(uint64_t)off backlightLuminance:(uint64_t)luminance interfaceOrientation:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = CSComplicationPresentationState;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   v10 = v9;
   if (v9)
   {
     v9[8] = a2;
-    v9[9] = a3;
-    *(v9 + 2) = a4;
-    *(v9 + 3) = a5;
+    v9[9] = visibility;
+    *(v9 + 2) = off;
+    *(v9 + 3) = luminance;
     [v9 _hydrateSuggestedPresentationMode];
   }
 
   return v10;
 }
 
-- (uint64_t)isEqualToComplicationPresentationState:(uint64_t)a1
+- (uint64_t)isEqualToComplicationPresentationState:(uint64_t)state
 {
   v3 = a2;
-  if (a1)
+  if (state)
   {
     if (v3)
     {
-      if (*(v3 + 8) == *(a1 + 8) && v3[2] == *(a1 + 16) && *(v3 + 9) == *(a1 + 9))
+      if (*(v3 + 8) == *(state + 8) && v3[2] == *(state + 16) && *(v3 + 9) == *(state + 9))
       {
         v4 = v3[3];
 LABEL_7:
-        a1 = v4 == *(a1 + 24);
+        state = v4 == *(state + 24);
         goto LABEL_12;
       }
     }
 
-    else if ((*(a1 + 8) & 1) == 0 && !*(a1 + 16) && (*(a1 + 9) & 1) == 0)
+    else if ((*(state + 8) & 1) == 0 && !*(state + 16) && (*(state + 9) & 1) == 0)
     {
       v4 = 0;
       goto LABEL_7;
     }
 
-    a1 = 0;
+    state = 0;
   }
 
 LABEL_12:
 
-  return a1;
+  return state;
 }
 
 - (uint64_t)isPresenterVisible
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_7(*(a1 + 8));
+    return OUTLINED_FUNCTION_0_7(*(self + 8));
   }
 
   else
@@ -207,9 +207,9 @@ LABEL_12:
 
 - (uint64_t)isScreenOff
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_7(*(a1 + 9));
+    return OUTLINED_FUNCTION_0_7(*(self + 9));
   }
 
   else
@@ -230,9 +230,9 @@ LABEL_12:
 
 - (uint64_t)shouldPresentLandscapeComplications
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_7(*(a1 + 10));
+    return OUTLINED_FUNCTION_0_7(*(self + 10));
   }
 
   else

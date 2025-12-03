@@ -1,25 +1,25 @@
 @interface FLOWLINKSchemaFLOWLinkActionFailed
-- (BOOL)isEqual:(id)a3;
-- (FLOWLINKSchemaFLOWLinkActionFailed)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLinkActionFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWLINKSchemaFLOWLinkActionFailed)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLinkActionFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLinkActionFailed
 
-- (FLOWLINKSchemaFLOWLinkActionFailed)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLinkActionFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FLOWLINKSchemaFLOWLinkActionFailed;
   v5 = [(FLOWLINKSchemaFLOWLinkActionFailed *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLinkActionFailed)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLinkActionFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLinkActionFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLinkActionFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLinkActionFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,107 +68,107 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(FLOWLINKSchemaFLOWLinkActionFailed *)self reason];
+    reason = [(FLOWLINKSchemaFLOWLinkActionFailed *)self reason];
     v5 = @"FLOWLINKEXECUTIONERROR_UNKNOWN";
-    if (v4 > 2003)
+    if (reason > 2003)
     {
       v6 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_CUSTOM_DIALOG";
       v11 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_CLIENT_CANCELLED";
-      if (v4 != 2010)
+      if (reason != 2010)
       {
         v11 = @"FLOWLINKEXECUTIONERROR_UNKNOWN";
       }
 
-      if (v4 != 2009)
+      if (reason != 2009)
       {
         v6 = v11;
       }
 
       v12 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_USER_CANCELLED";
       v13 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_UNRESOLVED_PARAMETER";
-      if (v4 != 2008)
+      if (reason != 2008)
       {
         v13 = @"FLOWLINKEXECUTIONERROR_UNKNOWN";
       }
 
-      if (v4 != 2007)
+      if (reason != 2007)
       {
         v12 = v13;
       }
 
-      if (v4 <= 2008)
+      if (reason <= 2008)
       {
         v6 = v12;
       }
 
-      if (v4 == 2006)
+      if (reason == 2006)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_NO_CONTEXT";
       }
 
-      if (v4 == 2005)
+      if (reason == 2005)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_NON_OPTIONAL_PARAMETER_IS_NIL";
       }
 
-      if (v4 == 2004)
+      if (reason == 2004)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_UNSUPPORTED_VALUE_TYPE";
       }
 
-      v10 = v4 <= 2006;
+      v10 = reason <= 2006;
     }
 
     else
     {
       v6 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_ACTION_NOT_FOUND";
       v7 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_UNDEFINED_PARAMETER";
-      if (v4 != 2003)
+      if (reason != 2003)
       {
         v7 = @"FLOWLINKEXECUTIONERROR_UNKNOWN";
       }
 
-      if (v4 != 2002)
+      if (reason != 2002)
       {
         v6 = v7;
       }
 
       v8 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_UNKNOWN";
       v9 = @"FLOWLINKEXECUTIONERROR_LNPERFORMACTIONERRORCODE_MALFORMED_ACTION";
-      if (v4 != 2001)
+      if (reason != 2001)
       {
         v9 = @"FLOWLINKEXECUTIONERROR_UNKNOWN";
       }
 
-      if (v4 != 2000)
+      if (reason != 2000)
       {
         v8 = v9;
       }
 
-      if (v4 <= 2001)
+      if (reason <= 2001)
       {
         v6 = v8;
       }
 
-      if (v4 == 3)
+      if (reason == 3)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_TARGET_BUNDLE_ERROR";
       }
 
-      if (v4 == 2)
+      if (reason == 2)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_DIALOG_GENERATION_ERROR";
       }
 
-      if (v4 == 1)
+      if (reason == 1)
       {
         v5 = @"FLOWLINKEXECUTIONERROR_LINK_PLUGIN_ERROR";
       }
 
-      v10 = v4 <= 1999;
+      v10 = reason <= 1999;
     }
 
     if (v10)
@@ -181,12 +181,12 @@
       v14 = v6;
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v14 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -202,15 +202,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [v4 reason]))
+      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [equalCopy reason]))
       {
         v6 = 1;
       }
@@ -220,7 +220,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

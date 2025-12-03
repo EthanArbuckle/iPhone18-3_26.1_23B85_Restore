@@ -1,17 +1,17 @@
 @interface VideosExtrasTableViewHeaderView
 - (CGSize)intrinsicContentSize;
-- (VideosExtrasTableViewHeaderView)initWithReuseIdentifier:(id)a3;
-- (void)configureForHeaderElement:(id)a3;
+- (VideosExtrasTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
+- (void)configureForHeaderElement:(id)element;
 - (void)dealloc;
 @end
 
 @implementation VideosExtrasTableViewHeaderView
 
-- (VideosExtrasTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (VideosExtrasTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v35.receiver = self;
   v35.super_class = VideosExtrasTableViewHeaderView;
-  v3 = [(VideosExtrasTableViewHeaderView *)&v35 initWithReuseIdentifier:a3];
+  v3 = [(VideosExtrasTableViewHeaderView *)&v35 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -19,55 +19,55 @@
     v5 = [v4 initWithFrame:?];
     [(VideosExtrasTableViewHeaderView *)v3 setBackgroundView:v5];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
-    v7 = [(VideosExtrasTableViewHeaderView *)v3 textLabel];
-    [v7 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+    textLabel = [(VideosExtrasTableViewHeaderView *)v3 textLabel];
+    [textLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
 
-    v8 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     v9 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
-    [v8 setBackgroundColor:v9];
+    [initForAutolayout setBackgroundColor:v9];
 
-    v10 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
-    [v10 addSubview:v8];
+    contentView = [(VideosExtrasTableViewHeaderView *)v3 contentView];
+    [contentView addSubview:initForAutolayout];
 
-    v11 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     v12 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
-    [v11 setBackgroundColor:v12];
+    [initForAutolayout2 setBackgroundColor:v12];
 
-    v13 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
-    [v13 addSubview:v11];
+    contentView2 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
+    [contentView2 addSubview:initForAutolayout2];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = MEMORY[0x1E696ACD8];
-    v16 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
+    contentView3 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
     v17 = *MEMORY[0x1E69DDCE0];
     v18 = *(MEMORY[0x1E69DDCE0] + 8);
     v19 = *(MEMORY[0x1E69DDCE0] + 16);
     v20 = *(MEMORY[0x1E69DDCE0] + 24);
-    v21 = [v15 constraintsByAttachingView:v8 toView:v16 alongEdges:11 insets:{*MEMORY[0x1E69DDCE0], v18, v19, v20}];
+    v21 = [v15 constraintsByAttachingView:initForAutolayout toView:contentView3 alongEdges:11 insets:{*MEMORY[0x1E69DDCE0], v18, v19, v20}];
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 scale];
-    v25 = [v22 constraintWithItem:v8 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0 / v24];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v25 = [v22 constraintWithItem:initForAutolayout attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0 / v24];
 
     v26 = MEMORY[0x1E696ACD8];
-    v27 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
-    v28 = [v26 constraintsByAttachingView:v11 toView:v27 alongEdges:14 insets:{v17, v18, v19, v20}];
+    contentView4 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
+    v28 = [v26 constraintsByAttachingView:initForAutolayout2 toView:contentView4 alongEdges:14 insets:{v17, v18, v19, v20}];
 
     v29 = MEMORY[0x1E696ACD8];
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 scale];
-    v32 = [v29 constraintWithItem:v11 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0 / v31];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
+    v32 = [v29 constraintWithItem:initForAutolayout2 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:1.0 / v31];
 
     [v14 addObjectsFromArray:v21];
     [v14 addObject:v25];
     [v14 addObjectsFromArray:v28];
     [v14 addObject:v32];
-    v33 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
-    [v33 addConstraints:v14];
+    contentView5 = [(VideosExtrasTableViewHeaderView *)v3 contentView];
+    [contentView5 addConstraints:v14];
   }
 
   return v3;
@@ -75,40 +75,40 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasTableViewHeaderView;
   [(VideosExtrasTableViewHeaderView *)&v4 dealloc];
 }
 
-- (void)configureForHeaderElement:(id)a3
+- (void)configureForHeaderElement:(id)element
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
+  elementCopy = element;
   v6 = [v4 colorWithWhite:0.0 alpha:0.4];
-  v7 = [(VideosExtrasTableViewHeaderView *)self backgroundView];
-  [v7 setBackgroundColor:v6];
+  backgroundView = [(VideosExtrasTableViewHeaderView *)self backgroundView];
+  [backgroundView setBackgroundColor:v6];
 
-  v13 = [(VideosExtrasTableViewHeaderView *)self textLabel];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v13 setBackgroundColor:v8];
+  textLabel = [(VideosExtrasTableViewHeaderView *)self textLabel];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [textLabel setBackgroundColor:clearColor];
 
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.4 alpha:1.0];
-  [v13 setTextColor:v9];
+  [textLabel setTextColor:v9];
 
-  v10 = [v5 title];
+  title = [elementCopy title];
 
   v11 = *MEMORY[0x1E69DDD28];
   v12 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD28]];
-  [v13 configureForIKTextElement:v10 fontDescriptor:v12 textStyle:v11 capitalize:1];
+  [textLabel configureForIKTextElement:title fontDescriptor:v12 textStyle:v11 capitalize:1];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(VideosExtrasTableViewHeaderView *)self textLabel];
-  [v2 intrinsicContentSize];
+  textLabel = [(VideosExtrasTableViewHeaderView *)self textLabel];
+  [textLabel intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 

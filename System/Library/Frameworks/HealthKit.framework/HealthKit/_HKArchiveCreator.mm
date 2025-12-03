@@ -1,21 +1,21 @@
 @interface _HKArchiveCreator
-+ (BOOL)archiveContentsOfDirectoryAtURL:(id)a3 archiveURL:(id)a4 error:(id *)a5;
-- (_HKArchiveCreator)initWithURL:(id)a3 fileHandle:(id)a4 archiveType:(int64_t)a5;
-- (int64_t)writeData:(const void *)a3 ofLength:(unint64_t)a4;
-- (void)_addDataOfSize:(int64_t)a3 toPathInArchive:(id)a4 fromByteProvider:(id)a5;
-- (void)_closeArchiveWithError:(id)a3;
-- (void)addDataToArchive:(id)a3 pathInArchive:(id)a4;
-- (void)addFileToArchive:(id)a3 pathInArchive:(id)a4;
++ (BOOL)archiveContentsOfDirectoryAtURL:(id)l archiveURL:(id)rL error:(id *)error;
+- (_HKArchiveCreator)initWithURL:(id)l fileHandle:(id)handle archiveType:(int64_t)type;
+- (int64_t)writeData:(const void *)data ofLength:(unint64_t)length;
+- (void)_addDataOfSize:(int64_t)size toPathInArchive:(id)archive fromByteProvider:(id)provider;
+- (void)_closeArchiveWithError:(id)error;
+- (void)addDataToArchive:(id)archive pathInArchive:(id)inArchive;
+- (void)addFileToArchive:(id)archive pathInArchive:(id)inArchive;
 - (void)dealloc;
 @end
 
 @implementation _HKArchiveCreator
 
-- (_HKArchiveCreator)initWithURL:(id)a3 fileHandle:(id)a4 archiveType:(int64_t)a5
+- (_HKArchiveCreator)initWithURL:(id)l fileHandle:(id)handle archiveType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 | v9)
+  lCopy = l;
+  handleCopy = handle;
+  if (lCopy | handleCopy)
   {
     v23.receiver = self;
     v23.super_class = _HKArchiveCreator;
@@ -26,15 +26,15 @@
     }
 
     v11->_archive = archive_write_new();
-    if (a5)
+    if (type)
     {
       goto LABEL_13;
     }
 
     archive_write_set_format_zip();
-    if (v8)
+    if (lCopy)
     {
-      v12 = [v8 copy];
+      v12 = [lCopy copy];
       archiveURL = v11->_archiveURL;
       v11->_archiveURL = v12;
 
@@ -45,7 +45,7 @@
 
     else
     {
-      if (!v9)
+      if (!handleCopy)
       {
         v19 = 4294967266;
 LABEL_12:
@@ -55,11 +55,11 @@ LABEL_12:
 
 LABEL_13:
         self = v11;
-        v10 = self;
+        selfCopy = self;
         goto LABEL_14;
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:dup(objc_msgSend(v9 closeOnDealloc:{"fileDescriptor")), 1}];
+      v16 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:dup(objc_msgSend(handleCopy closeOnDealloc:{"fileDescriptor")), 1}];
       fileHandle = v11->_fileHandle;
       v11->_fileHandle = v16;
 
@@ -77,37 +77,37 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
-+ (BOOL)archiveContentsOfDirectoryAtURL:(id)a3 archiveURL:(id)a4 error:(id *)a5
++ (BOOL)archiveContentsOfDirectoryAtURL:(id)l archiveURL:(id)rL error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v43 = 0;
-  v10 = [v7 path];
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:&v43];
+  path = [lCopy path];
+  v11 = [defaultManager fileExistsAtPath:path isDirectory:&v43];
 
   if (v11)
   {
     if (v43)
     {
-      v34 = a5;
-      v36 = v8;
-      v12 = [[_HKArchiveCreator alloc] initWithURL:v8 archiveType:0];
+      errorCopy = error;
+      v36 = rLCopy;
+      v12 = [[_HKArchiveCreator alloc] initWithURL:rLCopy archiveType:0];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __70___HKArchiveCreator_archiveContentsOfDirectoryAtURL_archiveURL_error___block_invoke;
       v41[3] = &unk_1E737A220;
       v13 = v12;
       v42 = v13;
-      v35 = v9;
-      [v9 enumeratorAtURL:v7 includingPropertiesForKeys:0 options:16 errorHandler:v41];
+      v35 = defaultManager;
+      [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:16 errorHandler:v41];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -135,8 +135,8 @@ LABEL_5:
           if (([v19 hasDirectoryPath] & 1) == 0)
           {
             v20 = MEMORY[0x1E695DFF8];
-            v21 = [v19 relativePath];
-            v22 = [v20 fileURLWithPath:v21];
+            relativePath = [v19 relativePath];
+            v22 = [v20 fileURLWithPath:relativePath];
 
             [(_HKArchiveCreator *)v13 addFileToArchive:v19 pathInArchive:v22];
           }
@@ -154,32 +154,32 @@ LABEL_5:
         }
       }
 
-      v23 = [(_HKArchiveCreator *)v13 archiveIsValid];
-      if (v23)
+      archiveIsValid = [(_HKArchiveCreator *)v13 archiveIsValid];
+      if (archiveIsValid)
       {
         [(_HKArchiveCreator *)v13 closeArchive];
-        v9 = v35;
+        defaultManager = v35;
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      v27 = [(_HKArchiveCreator *)v13 error];
-      v28 = v27;
-      if (v27)
+      error = [(_HKArchiveCreator *)v13 error];
+      v28 = error;
+      if (error)
       {
-        v29 = v27;
-        v30 = v34;
+        v29 = error;
+        v30 = errorCopy;
       }
 
       else
       {
         v29 = [MEMORY[0x1E696ABC0] hk_error:2000 description:@"Unknown error"];
-        v30 = v34;
+        v30 = errorCopy;
         if (!v29)
         {
-          v9 = v35;
-          v8 = v36;
+          defaultManager = v35;
+          rLCopy = v36;
 LABEL_31:
 
 LABEL_32:
@@ -198,8 +198,8 @@ LABEL_32:
         _HKLogDroppedError(v29);
       }
 
-      v9 = v35;
-      v8 = v36;
+      defaultManager = v35;
+      rLCopy = v36;
 
       if (v28)
       {
@@ -209,7 +209,7 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"%@ is not a directory", v7}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"%@ is not a directory", lCopy}];
   }
 
   else
@@ -218,10 +218,10 @@ LABEL_32:
     v25 = v24;
     if (v24)
     {
-      if (a5)
+      if (error)
       {
         v26 = v24;
-        *a5 = v25;
+        *error = v25;
       }
 
       else
@@ -231,11 +231,11 @@ LABEL_32:
     }
   }
 
-  v23 = 0;
+  archiveIsValid = 0;
 LABEL_34:
 
   v32 = *MEMORY[0x1E69E9840];
-  return v23;
+  return archiveIsValid;
 }
 
 - (void)dealloc
@@ -246,7 +246,7 @@ LABEL_34:
   [(_HKArchiveCreator *)&v3 dealloc];
 }
 
-- (int64_t)writeData:(const void *)a3 ofLength:(unint64_t)a4
+- (int64_t)writeData:(const void *)data ofLength:(unint64_t)length
 {
   result = self->_archive;
   if (result)
@@ -257,36 +257,36 @@ LABEL_34:
   return result;
 }
 
-- (void)addFileToArchive:(id)a3 pathInArchive:(id)a4
+- (void)addFileToArchive:(id)archive pathInArchive:(id)inArchive
 {
-  v7 = a3;
-  v8 = a4;
+  archiveCopy = archive;
+  inArchiveCopy = inArchive;
   if ([(_HKArchiveCreator *)self archiveIsValid])
   {
-    if ([v7 isFileURL])
+    if ([archiveCopy isFileURL])
     {
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
-      v10 = [v7 path];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [archiveCopy path];
       v22 = 0;
-      v11 = [v9 attributesOfItemAtPath:v10 error:&v22];
+      v11 = [defaultManager attributesOfItemAtPath:path error:&v22];
       v12 = v22;
 
       if (v11)
       {
         v21 = 0;
-        v13 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v7 error:&v21];
+        v13 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:archiveCopy error:&v21];
         v14 = v21;
         if (v13)
         {
           v15 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
-          v16 = [v15 longLongValue];
+          longLongValue = [v15 longLongValue];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __52___HKArchiveCreator_addFileToArchive_pathInArchive___block_invoke;
           v18[3] = &unk_1E737A248;
           v19 = v13;
-          v20 = self;
-          [(_HKArchiveCreator *)self _addDataOfSize:v16 toPathInArchive:v8 fromByteProvider:v18];
+          selfCopy = self;
+          [(_HKArchiveCreator *)self _addDataOfSize:longLongValue toPathInArchive:inArchiveCopy fromByteProvider:v18];
         }
 
         else
@@ -303,34 +303,34 @@ LABEL_34:
 
     else
     {
-      v17 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"%@ is not a file URL", v7}];
+      v17 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"%@ is not a file URL", archiveCopy}];
       [(_HKArchiveCreator *)self _closeArchiveWithError:v17];
     }
   }
 }
 
-- (void)addDataToArchive:(id)a3 pathInArchive:(id)a4
+- (void)addDataToArchive:(id)archive pathInArchive:(id)inArchive
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  archiveCopy = archive;
+  inArchiveCopy = inArchive;
+  v8 = [archiveCopy length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52___HKArchiveCreator_addDataToArchive_pathInArchive___block_invoke;
   v10[3] = &unk_1E737A270;
-  v11 = v6;
-  v9 = v6;
-  [(_HKArchiveCreator *)self _addDataOfSize:v8 toPathInArchive:v7 fromByteProvider:v10];
+  v11 = archiveCopy;
+  v9 = archiveCopy;
+  [(_HKArchiveCreator *)self _addDataOfSize:v8 toPathInArchive:inArchiveCopy fromByteProvider:v10];
 }
 
-- (void)_addDataOfSize:(int64_t)a3 toPathInArchive:(id)a4 fromByteProvider:(id)a5
+- (void)_addDataOfSize:(int64_t)size toPathInArchive:(id)archive fromByteProvider:(id)provider
 {
-  v13 = a4;
-  v8 = a5;
+  archiveCopy = archive;
+  providerCopy = provider;
   if ([(_HKArchiveCreator *)self archiveIsValid])
   {
     archive_entry_new();
-    *[v13 fileSystemRepresentation];
+    *[archiveCopy fileSystemRepresentation];
     archive_entry_set_pathname();
     archive_entry_set_size();
     archive_entry_set_filetype();
@@ -348,15 +348,15 @@ LABEL_34:
 
     else
     {
-      v11 = v8[2](v8, self);
-      if (v11 >= a3)
+      v11 = providerCopy[2](providerCopy, self);
+      if (v11 >= size)
       {
 LABEL_7:
         archive_entry_free();
         goto LABEL_8;
       }
 
-      v10 = [MEMORY[0x1E696ABC0] hk_error:102 format:{@"Wrote %ld bytes, expected %ld", v11, a3}];
+      v10 = [MEMORY[0x1E696ABC0] hk_error:102 format:{@"Wrote %ld bytes, expected %ld", v11, size}];
     }
 
     v12 = v10;
@@ -368,26 +368,26 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_closeArchiveWithError:(id)a3
+- (void)_closeArchiveWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (self->_archive)
   {
     archive_write_close();
     archive = self->_archive;
     archive_write_free();
     self->_archive = 0;
-    if (v5)
+    if (errorCopy)
     {
       _HKInitializeLogging();
       v7 = HKLogInfrastructure();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(_HKArchiveCreator *)self _closeArchiveWithError:v5, v7];
+        [(_HKArchiveCreator *)self _closeArchiveWithError:errorCopy, v7];
       }
     }
 
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
   }
 }
 

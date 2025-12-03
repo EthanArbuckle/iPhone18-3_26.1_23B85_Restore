@@ -1,72 +1,72 @@
 @interface IDSQRProtoMaterialInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)materialTypeAsString:(int)a3;
-- (int)StringAsMaterialType:(id)a3;
+- (id)materialTypeAsString:(int)string;
+- (int)StringAsMaterialType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoMaterialInfo
 
-- (id)materialTypeAsString:(int)a3
+- (id)materialTypeAsString:(int)string
 {
-  if (a3 < 0xF && ((0x78E1u >> a3) & 1) != 0)
+  if (string < 0xF && ((0x78E1u >> string) & 1) != 0)
   {
-    v4 = off_1E77E0048[a3];
+    v4 = off_1E77E0048[string];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsMaterialType:(id)a3
+- (int)StringAsMaterialType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNDEFINED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNDEFINED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PREKEY"])
+  else if ([typeCopy isEqualToString:@"PREKEY"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"AVCBLOB"])
+  else if ([typeCopy isEqualToString:@"AVCBLOB"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MKM"])
+  else if ([typeCopy isEqualToString:@"MKM"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SKM"])
+  else if ([typeCopy isEqualToString:@"SKM"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"MIRAGEKEY"])
+  else if ([typeCopy isEqualToString:@"MIRAGEKEY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MIRAGEBLOB"])
+  else if ([typeCopy isEqualToString:@"MIRAGEBLOB"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IDS_CONTEXT_BLOB"])
+  else if ([typeCopy isEqualToString:@"IDS_CONTEXT_BLOB"])
   {
     v4 = 7;
   }
@@ -85,20 +85,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoMaterialInfo;
   v4 = [(IDSQRProtoMaterialInfo *)&v8 description];
-  v5 = [(IDSQRProtoMaterialInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoMaterialInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   materialId = self->_materialId;
   if (materialId)
   {
-    [v3 setObject:materialId forKey:@"material_id"];
+    [dictionary setObject:materialId forKey:@"material_id"];
   }
 
   materialType = self->_materialType;
@@ -129,9 +129,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_materialId)
   {
     sub_1A7E121A0();
@@ -151,28 +151,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setMaterialId:self->_materialId];
-  *(v4 + 6) = self->_materialType;
-  [v4 setMaterialContent:self->_materialContent];
+  toCopy = to;
+  [toCopy setMaterialId:self->_materialId];
+  *(toCopy + 6) = self->_materialType;
+  [toCopy setMaterialContent:self->_materialContent];
   if (*&self->_has)
   {
-    *(v4 + 7) = self->_shortMaterialIdLength;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 7) = self->_shortMaterialIdLength;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_materialId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_materialId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_materialType;
-  v8 = [(NSData *)self->_materialContent copyWithZone:a3];
+  v8 = [(NSData *)self->_materialContent copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -185,16 +185,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   materialId = self->_materialId;
-  if (materialId | *(v4 + 2))
+  if (materialId | *(equalCopy + 2))
   {
     if (![(NSData *)materialId isEqual:?])
     {
@@ -202,13 +202,13 @@
     }
   }
 
-  if (self->_materialType != *(v4 + 6))
+  if (self->_materialType != *(equalCopy + 6))
   {
     goto LABEL_11;
   }
 
   materialContent = self->_materialContent;
-  if (materialContent | *(v4 + 1))
+  if (materialContent | *(equalCopy + 1))
   {
     if (![(NSData *)materialContent isEqual:?])
     {
@@ -216,10 +216,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_shortMaterialIdLength == *(v4 + 7))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_shortMaterialIdLength == *(equalCopy + 7))
     {
       v7 = 1;
       goto LABEL_12;
@@ -252,26 +252,26 @@ LABEL_12:
   return (2654435761 * materialType) ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(IDSQRProtoMaterialInfo *)self setMaterialId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_materialType = *(v4 + 6);
-  if (*(v4 + 1))
+  self->_materialType = *(fromCopy + 6);
+  if (*(fromCopy + 1))
   {
     [(IDSQRProtoMaterialInfo *)self setMaterialContent:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_shortMaterialIdLength = *(v4 + 7);
+    self->_shortMaterialIdLength = *(fromCopy + 7);
     *&self->_has |= 1u;
   }
 }

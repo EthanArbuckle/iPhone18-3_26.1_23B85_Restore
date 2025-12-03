@@ -1,7 +1,7 @@
 @interface MDLVertexBufferLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MDLVertexBufferLayout)initWithStride:(NSUInteger)stride;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,18 +22,18 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(MDLVertexBufferLayout, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(MDLVertexBufferLayout, a2, zone);
   stride = self->_stride;
 
   return MEMORY[0x2821F9670](v4, sel_initWithStride_, stride);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -41,7 +41,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_stride == v4->_stride;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_stride == equalCopy->_stride;
   }
 
   return v5;

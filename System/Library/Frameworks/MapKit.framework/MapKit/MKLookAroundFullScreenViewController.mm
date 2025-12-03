@@ -3,12 +3,12 @@
 - (UIView)contentView;
 - (void)attachContentView;
 - (void)detachContentView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MKLookAroundFullScreenViewController
@@ -29,39 +29,39 @@
 
 - (void)detachContentView
 {
-  v5 = [(MKLookAroundFullScreenViewController *)self contentView];
-  v3 = [(MKLookAroundFullScreenViewController *)self view];
-  v4 = [v5 isDescendantOfView:v3];
+  contentView = [(MKLookAroundFullScreenViewController *)self contentView];
+  view = [(MKLookAroundFullScreenViewController *)self view];
+  v4 = [contentView isDescendantOfView:view];
 
   if (v4)
   {
-    [v5 removeFromSuperview];
-    [v5 setAutoresizingMask:{-[MKLookAroundFullScreenViewController originalAutoresizingMask](self, "originalAutoresizingMask")}];
+    [contentView removeFromSuperview];
+    [contentView setAutoresizingMask:{-[MKLookAroundFullScreenViewController originalAutoresizingMask](self, "originalAutoresizingMask")}];
   }
 }
 
 - (void)attachContentView
 {
-  v3 = [(MKLookAroundFullScreenViewController *)self delegate];
+  delegate = [(MKLookAroundFullScreenViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(MKLookAroundFullScreenViewController *)self delegate];
-    v9 = [v4 viewForFullScreenViewController:self];
+    delegate2 = [(MKLookAroundFullScreenViewController *)self delegate];
+    v9 = [delegate2 viewForFullScreenViewController:self];
 
-    v5 = [(MKLookAroundFullScreenViewController *)self view];
-    v6 = [v9 isDescendantOfView:v5];
+    view = [(MKLookAroundFullScreenViewController *)self view];
+    v6 = [v9 isDescendantOfView:view];
 
     if ((v6 & 1) == 0)
     {
       -[MKLookAroundFullScreenViewController setOriginalAutoresizingMask:](self, "setOriginalAutoresizingMask:", [v9 autoresizingMask]);
       [v9 setAutoresizingMask:18];
-      v7 = [(MKLookAroundFullScreenViewController *)self view];
-      [v7 bounds];
+      view2 = [(MKLookAroundFullScreenViewController *)self view];
+      [view2 bounds];
       [v9 setFrame:?];
 
-      v8 = [(MKLookAroundFullScreenViewController *)self view];
-      [v8 addSubview:v9];
+      view3 = [(MKLookAroundFullScreenViewController *)self view];
+      [view3 addSubview:v9];
 
       [(MKLookAroundFullScreenViewController *)self setContentView:v9];
     }
@@ -73,84 +73,84 @@
   v16.receiver = self;
   v16.super_class = MKLookAroundFullScreenViewController;
   [(MKLookAroundFullScreenViewController *)&v16 viewDidLayoutSubviews];
-  v3 = [(MKLookAroundFullScreenViewController *)self contentView];
-  v4 = [v3 superview];
-  v5 = [(MKLookAroundFullScreenViewController *)self view];
+  contentView = [(MKLookAroundFullScreenViewController *)self contentView];
+  superview = [contentView superview];
+  view = [(MKLookAroundFullScreenViewController *)self view];
 
-  if (v4 == v5)
+  if (superview == view)
   {
-    v6 = [(MKLookAroundFullScreenViewController *)self view];
-    [v6 bounds];
+    view2 = [(MKLookAroundFullScreenViewController *)self view];
+    [view2 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(MKLookAroundFullScreenViewController *)self contentView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    contentView2 = [(MKLookAroundFullScreenViewController *)self contentView];
+    [contentView2 setFrame:{v8, v10, v12, v14}];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(MKLookAroundFullScreenViewController *)self delegate];
-  [v8 fullScreenViewController:self viewWillTransitionToSize:v7 coordinator:{width, height}];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  delegate = [(MKLookAroundFullScreenViewController *)self delegate];
+  [delegate fullScreenViewController:self viewWillTransitionToSize:coordinatorCopy coordinator:{width, height}];
 
   v9.receiver = self;
   v9.super_class = MKLookAroundFullScreenViewController;
-  [(MKLookAroundFullScreenViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MKLookAroundFullScreenViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MKLookAroundFullScreenViewController;
-  [(MKLookAroundFullScreenViewController *)&v5 viewDidDisappear:a3];
+  [(MKLookAroundFullScreenViewController *)&v5 viewDidDisappear:disappear];
   if ([(MKLookAroundFullScreenViewController *)self isBeingDismissed])
   {
-    v4 = [(MKLookAroundFullScreenViewController *)self delegate];
-    [v4 fullScreenViewControllerDidDismiss:self];
+    delegate = [(MKLookAroundFullScreenViewController *)self delegate];
+    [delegate fullScreenViewControllerDidDismiss:self];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MKLookAroundFullScreenViewController;
-  [(MKLookAroundFullScreenViewController *)&v5 viewWillDisappear:a3];
+  [(MKLookAroundFullScreenViewController *)&v5 viewWillDisappear:disappear];
   if ([(MKLookAroundFullScreenViewController *)self isBeingDismissed])
   {
     [(MKLookAroundFullScreenViewController *)self detachContentView];
-    v4 = [(MKLookAroundFullScreenViewController *)self delegate];
-    [v4 fullScreenViewControllerWillDismiss:self];
+    delegate = [(MKLookAroundFullScreenViewController *)self delegate];
+    [delegate fullScreenViewControllerWillDismiss:self];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MKLookAroundFullScreenViewController;
-  [(MKLookAroundFullScreenViewController *)&v5 viewDidAppear:a3];
+  [(MKLookAroundFullScreenViewController *)&v5 viewDidAppear:appear];
   if ([(MKLookAroundFullScreenViewController *)self isBeingPresented])
   {
     [(MKLookAroundFullScreenViewController *)self attachContentView];
-    v4 = [(MKLookAroundFullScreenViewController *)self delegate];
-    [v4 fullScreenViewControllerDidPresent:self];
+    delegate = [(MKLookAroundFullScreenViewController *)self delegate];
+    [delegate fullScreenViewControllerDidPresent:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MKLookAroundFullScreenViewController;
-  [(MKLookAroundFullScreenViewController *)&v5 viewWillAppear:a3];
+  [(MKLookAroundFullScreenViewController *)&v5 viewWillAppear:appear];
   if ([(MKLookAroundFullScreenViewController *)self isBeingPresented])
   {
-    v4 = [(MKLookAroundFullScreenViewController *)self delegate];
-    [v4 fullScreenViewControllerWillPresent:self];
+    delegate = [(MKLookAroundFullScreenViewController *)self delegate];
+    [delegate fullScreenViewControllerWillPresent:self];
   }
 }
 

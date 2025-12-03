@@ -1,30 +1,30 @@
 @interface PFPosterExtensionInstancePool
-- (PFPosterExtensionInstancePool)initWithExtensionProvider:(id)a3 poolEntryToRelinquishTime:(double)a4;
-- (id)acquireInstanceForExtensionWithIdentifier:(id)a3 error:(id *)a4;
+- (PFPosterExtensionInstancePool)initWithExtensionProvider:(id)provider poolEntryToRelinquishTime:(double)time;
+- (id)acquireInstanceForExtensionWithIdentifier:(id)identifier error:(id *)error;
 - (void)dealloc;
-- (void)relinquishExtensionInstance:(id)a3;
+- (void)relinquishExtensionInstance:(id)instance;
 @end
 
 @implementation PFPosterExtensionInstancePool
 
-- (PFPosterExtensionInstancePool)initWithExtensionProvider:(id)a3 poolEntryToRelinquishTime:(double)a4
+- (PFPosterExtensionInstancePool)initWithExtensionProvider:(id)provider poolEntryToRelinquishTime:(double)time
 {
-  v7 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PFPosterExtensionInstancePool;
   v8 = [(PFPosterExtensionInstancePool *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_extensionProvider, a3);
-    v9->_poolEntryToRelinquishTime = a4;
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v8->_extensionProvider, provider);
+    v9->_poolEntryToRelinquishTime = time;
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     extensionBundleIdentifierToReasonMap = v9->_extensionBundleIdentifierToReasonMap;
-    v9->_extensionBundleIdentifierToReasonMap = v10;
+    v9->_extensionBundleIdentifierToReasonMap = strongToStrongObjectsMapTable;
 
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     relinquishTimerMap = v9->_relinquishTimerMap;
-    v9->_relinquishTimerMap = v12;
+    v9->_relinquishTimerMap = strongToStrongObjectsMapTable2;
   }
 
   return v9;
@@ -57,20 +57,20 @@ void __40__PFPosterExtensionInstancePool_dealloc__block_invoke(uint64_t a1, void
   [a3 bs_each:v7];
 }
 
-- (id)acquireInstanceForExtensionWithIdentifier:(id)a3 error:(id *)a4
+- (id)acquireInstanceForExtensionWithIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PFPosterExtensionInstancePool acquireInstanceForExtensionWithIdentifier:a2 error:?];
   }
 
-  v8 = v7;
-  v9 = [(NSMapTable *)self->_extensionBundleIdentifierToReasonMap objectForKey:v7];
-  v10 = [v9 lastObject];
+  v8 = identifierCopy;
+  v9 = [(NSMapTable *)self->_extensionBundleIdentifierToReasonMap objectForKey:identifierCopy];
+  lastObject = [v9 lastObject];
 
-  if (v10)
+  if (lastObject)
   {
     v11 = [(NSMapTable *)self->_extensionBundleIdentifierToReasonMap objectForKey:v8];
     [v11 removeLastObject];
@@ -83,13 +83,13 @@ void __40__PFPosterExtensionInstancePool_dealloc__block_invoke(uint64_t a1, void
       *buf = 138412802;
       v31 = v14;
       v32 = 2048;
-      v33 = self;
+      selfCopy3 = self;
       v34 = 2114;
-      v35 = v10;
+      v35 = lastObject;
       _os_log_impl(&dword_1C269D000, v12, OS_LOG_TYPE_DEFAULT, "(%@:%p) reclaiming reason: %{public}@", buf, 0x20u);
     }
 
-    v15 = [(PFPosterExtensionInstancePool *)self _buildKeyForExtensionIdentifier:v8 reason:v10];
+    v15 = [(PFPosterExtensionInstancePool *)self _buildKeyForExtensionIdentifier:v8 reason:lastObject];
     v16 = [(NSMapTable *)self->_relinquishTimerMap objectForKey:v15];
     if (v16)
     {
@@ -101,9 +101,9 @@ void __40__PFPosterExtensionInstancePool_dealloc__block_invoke(uint64_t a1, void
         *buf = 138412802;
         v31 = v19;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2114;
-        v35 = v10;
+        v35 = lastObject;
         _os_log_impl(&dword_1C269D000, v17, OS_LOG_TYPE_DEFAULT, "(%@:%p) canceling relinquish timer: %{public}@", buf, 0x20u);
       }
 
@@ -117,9 +117,9 @@ void __40__PFPosterExtensionInstancePool_dealloc__block_invoke(uint64_t a1, void
     v20 = MEMORY[0x1E696AEC0];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v23 UUIDString];
-    v10 = [v20 stringWithFormat:@"[%@][%p][%@][%@]", v22, self, v8, v24];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    lastObject = [v20 stringWithFormat:@"[%@][%p][%@][%@]", v22, self, v8, uUIDString];
 
     v15 = PFLogExtensionInstancePool();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -132,18 +132,18 @@ void __40__PFPosterExtensionInstancePool_dealloc__block_invoke(uint64_t a1, void
     *buf = 138412802;
     v31 = v16;
     v32 = 2048;
-    v33 = self;
+    selfCopy3 = self;
     v34 = 2114;
-    v35 = v10;
+    v35 = lastObject;
     _os_log_impl(&dword_1C269D000, v15, OS_LOG_TYPE_DEFAULT, "(%@:%p) new claim with reason: %{public}@", buf, 0x20u);
   }
 
 LABEL_12:
-  v26 = [(PFPosterExtensionProvider *)self->_extensionProvider acquireInstanceForExtensionWithIdentifier:v8 reason:v10 error:a4];
+  v26 = [(PFPosterExtensionProvider *)self->_extensionProvider acquireInstanceForExtensionWithIdentifier:v8 reason:lastObject error:error];
   v27 = v26;
   if (v26)
   {
-    objc_setAssociatedObject(v26, &__PFPosterExtensionInstancePoolReasonToken, v10, 1);
+    objc_setAssociatedObject(v26, &__PFPosterExtensionInstancePoolReasonToken, lastObject, 1);
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -151,20 +151,20 @@ LABEL_12:
   return v27;
 }
 
-- (void)relinquishExtensionInstance:(id)a3
+- (void)relinquishExtensionInstance:(id)instance
 {
-  v5 = a3;
-  if (!v5)
+  instanceCopy = instance;
+  if (!instanceCopy)
   {
     [PFPosterExtensionInstancePool relinquishExtensionInstance:a2];
   }
 
-  v6 = v5;
-  v7 = objc_getAssociatedObject(v5, &__PFPosterExtensionInstancePoolReasonToken);
-  v8 = [v6 extension];
-  v9 = [v8 posterExtensionBundleIdentifier];
+  v6 = instanceCopy;
+  v7 = objc_getAssociatedObject(instanceCopy, &__PFPosterExtensionInstancePoolReasonToken);
+  extension = [v6 extension];
+  posterExtensionBundleIdentifier = [extension posterExtensionBundleIdentifier];
 
-  v10 = [(PFPosterExtensionInstancePool *)self _buildKeyForExtensionIdentifier:v9 reason:v7];
+  v10 = [(PFPosterExtensionInstancePool *)self _buildKeyForExtensionIdentifier:posterExtensionBundleIdentifier reason:v7];
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E695DFF0];
   poolEntryToRelinquishTime = self->_poolEntryToRelinquishTime;
@@ -173,11 +173,11 @@ LABEL_12:
   v21 = __61__PFPosterExtensionInstancePool_relinquishExtensionInstance___block_invoke;
   v22 = &unk_1E81899B0;
   objc_copyWeak(&v27, &location);
-  v13 = v9;
+  v13 = posterExtensionBundleIdentifier;
   v23 = v13;
   v14 = v7;
   v24 = v14;
-  v25 = self;
+  selfCopy = self;
   v15 = v10;
   v26 = v15;
   v16 = [v11 scheduledTimerWithTimeInterval:0 repeats:&v19 block:poolEntryToRelinquishTime];

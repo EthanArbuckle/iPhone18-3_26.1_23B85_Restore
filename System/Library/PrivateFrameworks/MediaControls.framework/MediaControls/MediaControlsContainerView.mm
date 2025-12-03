@@ -1,24 +1,24 @@
 @interface MediaControlsContainerView
 - (BOOL)isTimeControlOnScreen;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MPCPlayerResponse)response;
-- (MediaControlsContainerView)initWithFrame:(CGRect)a3;
+- (MediaControlsContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateStyle;
 - (void)layoutSubviews;
-- (void)setEmpty:(BOOL)a3;
-- (void)setRatingActionSheetDelegate:(id)a3;
-- (void)setResponse:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTimeControlOnScreen:(BOOL)a3;
+- (void)setEmpty:(BOOL)empty;
+- (void)setRatingActionSheetDelegate:(id)delegate;
+- (void)setResponse:(id)response;
+- (void)setStyle:(int64_t)style;
+- (void)setTimeControlOnScreen:(BOOL)screen;
 @end
 
 @implementation MediaControlsContainerView
 
-- (MediaControlsContainerView)initWithFrame:(CGRect)a3
+- (MediaControlsContainerView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = MediaControlsContainerView;
-  v3 = [(MediaControlsContainerView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsContainerView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MediaControlsTimeControl alloc];
@@ -38,16 +38,16 @@
     primaryVisualEffectView = v3->_primaryVisualEffectView;
     v3->_primaryVisualEffectView = v13;
 
-    v15 = [(MediaControlsContainerView *)v3 primaryVisualEffectView];
-    [(MediaControlsContainerView *)v3 addSubview:v15];
+    primaryVisualEffectView = [(MediaControlsContainerView *)v3 primaryVisualEffectView];
+    [(MediaControlsContainerView *)v3 addSubview:primaryVisualEffectView];
 
-    v16 = [(MediaControlsContainerView *)v3 primaryVisualEffectView];
-    v17 = [v16 contentView];
-    v18 = [(MediaControlsContainerView *)v3 timeControl];
-    [v17 addSubview:v18];
+    primaryVisualEffectView2 = [(MediaControlsContainerView *)v3 primaryVisualEffectView];
+    contentView = [primaryVisualEffectView2 contentView];
+    timeControl = [(MediaControlsContainerView *)v3 timeControl];
+    [contentView addSubview:timeControl];
 
-    v19 = [(MediaControlsContainerView *)v3 transportStackView];
-    [(MediaControlsContainerView *)v3 addSubview:v19];
+    transportStackView = [(MediaControlsContainerView *)v3 transportStackView];
+    [(MediaControlsContainerView *)v3 addSubview:transportStackView];
 
     [(MediaControlsContainerView *)v3 _updateStyle];
   }
@@ -60,8 +60,8 @@
   v35.receiver = self;
   v35.super_class = MediaControlsContainerView;
   [(MediaControlsContainerView *)&v35 layoutSubviews];
-  v3 = [(MediaControlsContainerView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MediaControlsContainerView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(MediaControlsContainerView *)self bounds];
   v5 = v4;
@@ -69,8 +69,8 @@
   v9 = v8;
   v11 = v10;
   UIRoundToScale();
-  v12 = [(MediaControlsContainerView *)self primaryVisualEffectView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  primaryVisualEffectView = [(MediaControlsContainerView *)self primaryVisualEffectView];
+  [primaryVisualEffectView setFrame:{v5, v7, v9, v11}];
 
   if (self->_style == 1)
   {
@@ -95,77 +95,77 @@
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(MediaControlsContainerView *)self transportStackView];
-  [v32 setFrame:{v25, v27, v29, v31}];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setFrame:{v25, v27, v29, v31}];
 
-  v33 = [(MediaControlsContainerView *)self timeControl];
-  [v33 setFrame:{v14, v34, v17, v19}];
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  [timeControl setFrame:{v14, v34, v17, v19}];
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
   empty = self->_empty;
-  if (empty != a3)
+  if (empty != empty)
   {
-    self->_empty = a3;
-    empty = a3;
+    self->_empty = empty;
+    empty = empty;
   }
 
-  v5 = [(MediaControlsContainerView *)self timeControl];
-  [v5 setEmpty:empty];
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  [timeControl setEmpty:empty];
 
   v6 = self->_empty;
-  v7 = [(MediaControlsContainerView *)self transportStackView];
-  [v7 setEmpty:v6];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setEmpty:v6];
 
   [(MediaControlsContainerView *)self setNeedsLayout];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  v5 = [(MediaControlsContainerView *)self timeControl];
-  [v5 setStyle:a3];
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  [timeControl setStyle:style];
 
-  v6 = [(MediaControlsContainerView *)self transportStackView];
-  [v6 setStyle:a3];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setStyle:style];
 
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MediaControlsContainerView *)self _updateStyle];
 
     [(MediaControlsContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)setRatingActionSheetDelegate:(id)a3
+- (void)setRatingActionSheetDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(MediaControlsContainerView *)self transportStackView];
-  [v5 setActionsDelegate:v4];
+  delegateCopy = delegate;
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setActionsDelegate:delegateCopy];
 }
 
-- (void)setTimeControlOnScreen:(BOOL)a3
+- (void)setTimeControlOnScreen:(BOOL)screen
 {
-  v3 = a3;
-  v4 = [(MediaControlsContainerView *)self timeControl];
-  [v4 setTimeControlOnScreen:v3];
+  screenCopy = screen;
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  [timeControl setTimeControlOnScreen:screenCopy];
 }
 
 - (BOOL)isTimeControlOnScreen
 {
-  v2 = [(MediaControlsContainerView *)self timeControl];
-  v3 = [v2 isTimeControlOnScreen];
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  isTimeControlOnScreen = [timeControl isTimeControlOnScreen];
 
-  return v3;
+  return isTimeControlOnScreen;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MediaControlsContainerView *)self transportStackView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -176,29 +176,29 @@
   return result;
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(MediaControlsContainerView *)self timeControl];
-  [v5 setResponse:v4];
+  responseCopy = response;
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  [timeControl setResponse:responseCopy];
 
-  v6 = [(MediaControlsContainerView *)self transportStackView];
-  [v6 setResponse:v4];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setResponse:responseCopy];
 }
 
 - (MPCPlayerResponse)response
 {
-  v2 = [(MediaControlsContainerView *)self transportStackView];
-  v3 = [v2 response];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  response = [transportStackView response];
 
-  return v3;
+  return response;
 }
 
 - (void)_updateStyle
 {
   style = self->_style;
-  v4 = [(MediaControlsContainerView *)self timeControl];
-  v5 = v4;
+  timeControl = [(MediaControlsContainerView *)self timeControl];
+  v5 = timeControl;
   if (style == 1)
   {
     v7 = 1.0;
@@ -217,10 +217,10 @@
     v7 = 1.0;
   }
 
-  [v4 setAlpha:v6];
+  [timeControl setAlpha:v6];
 
-  v8 = [(MediaControlsContainerView *)self transportStackView];
-  [v8 setAlpha:v7];
+  transportStackView = [(MediaControlsContainerView *)self transportStackView];
+  [transportStackView setAlpha:v7];
 }
 
 @end

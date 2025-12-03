@@ -1,14 +1,14 @@
 @interface XRPassFailIssueResponder
 - (BOOL)failureOccurred;
-- (XRPassFailIssueResponder)initWithNextResponder:(id)a3;
+- (XRPassFailIssueResponder)initWithNextResponder:(id)responder;
 - (id)failures;
 @end
 
 @implementation XRPassFailIssueResponder
 
-- (XRPassFailIssueResponder)initWithNextResponder:(id)a3
+- (XRPassFailIssueResponder)initWithNextResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v11.receiver = self;
   v11.super_class = XRPassFailIssueResponder;
   v5 = [(XRPassFailIssueResponder *)&v11 init];
@@ -22,7 +22,7 @@
     uniqueErrorsQueue = v5->_uniqueErrorsQueue;
     v5->_uniqueErrorsQueue = v8;
 
-    objc_storeWeak(&v5->_nextResponder, v4);
+    objc_storeWeak(&v5->_nextResponder, responderCopy);
   }
 
   return v5;

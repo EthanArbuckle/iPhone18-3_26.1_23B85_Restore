@@ -27,8 +27,8 @@
 + (id)memoriesTitleSubtitleSpecForTileKind:()Memories viewMode:boundedByRect:
 {
   v14 = a8;
-  v15 = [v14 specSet];
-  v16 = [v14 variant];
+  specSet = [v14 specSet];
+  variant = [v14 variant];
   [v14 layoutMargins];
   v18 = v17;
   v20 = v19;
@@ -36,8 +36,8 @@
   v24 = v23;
 
   v27[0] = a7;
-  v27[1] = v15;
-  v27[2] = v16;
+  v27[1] = specSet;
+  v27[2] = variant;
   *&v27[3] = a2;
   *&v27[4] = a3;
   *&v27[5] = a4;
@@ -47,7 +47,7 @@
   v27[9] = v22;
   v27[10] = v24;
   v27[11] = 1;
-  v25 = [a1 memoriesTitleSubtitleSpecForContext:v27];
+  v25 = [self memoriesTitleSubtitleSpecForContext:v27];
 
   return v25;
 }
@@ -67,7 +67,7 @@
   v11[5] = v17;
   v11[0] = v12;
   v11[1] = v13;
-  v9 = [a1 memoriesTitleSubtitleSpecForContext:v11];
+  v9 = [self memoriesTitleSubtitleSpecForContext:v11];
 
   return v9;
 }
@@ -87,7 +87,7 @@
   v11[5] = v17;
   v11[0] = v12;
   v11[1] = v13;
-  v9 = [a1 memoriesTitleSubtitleSpecForContext:v11];
+  v9 = [self memoriesTitleSubtitleSpecForContext:v11];
 
   return v9;
 }

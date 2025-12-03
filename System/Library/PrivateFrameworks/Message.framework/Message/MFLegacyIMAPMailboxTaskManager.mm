@@ -1,55 +1,55 @@
 @interface MFLegacyIMAPMailboxTaskManager
 + (OS_os_log)log;
-- (BOOL)_selectMailbox:(id)a3 withConnection:(id)a4;
-- (BOOL)_shouldContinueToPreservedUID:(unint64_t)a3;
+- (BOOL)_selectMailbox:(id)mailbox withConnection:(id)connection;
+- (BOOL)_shouldContinueToPreservedUID:(unint64_t)d;
 - (BOOL)canFetchMessageIDs;
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id)a5;
-- (BOOL)fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6;
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4;
-- (BOOL)performOperationRequiringConnection:(BOOL)a3 withOptions:(unint64_t)a4 failedToSelectMailbox:(BOOL *)a5 operation:(id)a6;
-- (MFLegacyIMAPMailboxTaskManager)initWithMailbox:(id)a3;
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id)command;
+- (BOOL)fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer;
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL;
+- (BOOL)performOperationRequiringConnection:(BOOL)connection withOptions:(unint64_t)options failedToSelectMailbox:(BOOL *)mailbox operation:(id)operation;
+- (MFLegacyIMAPMailboxTaskManager)initWithMailbox:(id)mailbox;
 - (NSString)mailboxName;
-- (id)_downloadForMessageBodyData:(id)a3 usingDownloadCache:(id)a4;
-- (id)_fetchFullMessageDataForMessage:(id)a3 download:(id *)a4;
+- (id)_downloadForMessageBodyData:(id)data usingDownloadCache:(id)cache;
+- (id)_fetchFullMessageDataForMessage:(id)message download:(id *)download;
 - (id)_idleConditionsObservable;
-- (id)_newSearchResponseQueueForConnection:(id)a3 limit:(unsigned int)a4;
+- (id)_newSearchResponseQueueForConnection:(id)connection limit:(unsigned int)limit;
 - (id)_observeChangesInIdleConditions;
-- (id)_performBodyDataDownload:(id)a3 usingConnection:(id)a4 downloadCache:(id)a5 isPartial:(BOOL *)a6;
-- (id)_searchFlagsForUIDs:(id)a3 usingConnection:(id)a4;
+- (id)_performBodyDataDownload:(id)download usingConnection:(id)connection downloadCache:(id)cache isPartial:(BOOL *)partial;
+- (id)_searchFlagsForUIDs:(id)ds usingConnection:(id)connection;
 - (id)deletedMessages;
-- (id)downloadSearchResults:(id)a3;
-- (id)fetchDataForMessage:(id)a3 didDownload:(BOOL *)a4;
-- (id)fetchDataForMessage:(id)a3 partial:(BOOL *)a4;
-- (id)fetchHeadersForMessage:(id)a3;
-- (id)flagsForIMAPUIDs:(id)a3 mailboxURL:(id)a4;
-- (id)imapMailboxNameForMailboxURL:(id)a3;
-- (id)messageDataForMessage:(id)a3;
-- (id)messageDataForRemoteID:(id)a3 mailboxURL:(id)a4;
-- (id)messageIdRollCall:(id)a3;
-- (id)replayAction:(id)a3;
-- (id)sequenceIdentifierForUIDs:(id)a3;
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4;
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5;
-- (unint64_t)_fetchMessagesWithArguments:(id)a3 idRange:(id)a4 onConnection:(id)a5 synchronize:(BOOL)a6 limit:(unint64_t)a7 topUIDToCompact:(unint64_t)a8 topKnownUID:(unint64_t)a9 success:(BOOL *)a10 examinedRange:(_NSRange *)a11 fetchableUIDsFound:(unint64_t *)a12 preserveUID:(unint64_t *)a13 numFetchedUIDs:(unint64_t *)a14;
-- (unint64_t)_fetchMessagesWithUIDs:(id)a3 connection:(id)a4 newCount:(unint64_t)a5 flagsToSet:(unint64_t)a6 queueClass:(Class)a7;
+- (id)downloadSearchResults:(id)results;
+- (id)fetchDataForMessage:(id)message didDownload:(BOOL *)download;
+- (id)fetchDataForMessage:(id)message partial:(BOOL *)partial;
+- (id)fetchHeadersForMessage:(id)message;
+- (id)flagsForIMAPUIDs:(id)ds mailboxURL:(id)l;
+- (id)imapMailboxNameForMailboxURL:(id)l;
+- (id)messageDataForMessage:(id)message;
+- (id)messageDataForRemoteID:(id)d mailboxURL:(id)l;
+- (id)messageIdRollCall:(id)call;
+- (id)replayAction:(id)action;
+- (id)sequenceIdentifierForUIDs:(id)ds;
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags;
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options;
+- (unint64_t)_fetchMessagesWithArguments:(id)arguments idRange:(id)range onConnection:(id)connection synchronize:(BOOL)synchronize limit:(unint64_t)limit topUIDToCompact:(unint64_t)compact topKnownUID:(unint64_t)d success:(BOOL *)self0 examinedRange:(_NSRange *)self1 fetchableUIDsFound:(unint64_t *)self2 preserveUID:(unint64_t *)self3 numFetchedUIDs:(unint64_t *)self4;
+- (unint64_t)_fetchMessagesWithUIDs:(id)ds connection:(id)connection newCount:(unint64_t)count flagsToSet:(unint64_t)set queueClass:(Class)class;
 - (unint64_t)serverMessageCount;
-- (unint64_t)syncMessagesWithUIDs:(id)a3 connection:(id)a4 serverMessages:(id)a5 flagSearchResults:(id)a6;
-- (void)_fetchMessagesMatchingCriterion:(id)a3 limit:(unsigned int)a4 withOptions:(unint64_t)a5 handler:(id)a6;
-- (void)_fetchServerUnreadCountWithConnection:(id)a3;
-- (void)_performActionsOnConnection:(id)a3 uidsToFetch:(id *)a4 uidsToSync:(id *)a5 messagesToCompact:(id *)a6 serverMessages:(id)a7 flagSearchResults:(id)a8 shouldForce:(BOOL)a9 newUIDsToFetch:(unsigned int *)a10;
-- (void)_updateServerUnreadCount:(unint64_t)a3;
+- (unint64_t)syncMessagesWithUIDs:(id)ds connection:(id)connection serverMessages:(id)messages flagSearchResults:(id)results;
+- (void)_fetchMessagesMatchingCriterion:(id)criterion limit:(unsigned int)limit withOptions:(unint64_t)options handler:(id)handler;
+- (void)_fetchServerUnreadCountWithConnection:(id)connection;
+- (void)_performActionsOnConnection:(id)connection uidsToFetch:(id *)fetch uidsToSync:(id *)sync messagesToCompact:(id *)compact serverMessages:(id)messages flagSearchResults:(id)results shouldForce:(BOOL)force newUIDsToFetch:(unsigned int *)self0;
+- (void)_updateServerUnreadCount:(unint64_t)count;
 - (void)close;
 - (void)compact;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id)a5;
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id)command;
 - (void)dealloc;
-- (void)fetchDataForMessage:(id)a3 completionHandler:(id)a4;
-- (void)handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
+- (void)fetchDataForMessage:(id)message completionHandler:(id)handler;
+- (void)handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
 - (void)reselectMailbox;
-- (void)setSequenceIdentifier:(id)a3 forUIDs:(id)a4;
-- (void)setServerMessageCount:(unint64_t)a3;
-- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)a3;
-- (void)updateServerUnreadCountClosingConnection:(BOOL)a3;
-- (void)willRemoveDelegation:(id)a3;
+- (void)setSequenceIdentifier:(id)identifier forUIDs:(id)ds;
+- (void)setServerMessageCount:(unint64_t)count;
+- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)count;
+- (void)updateServerUnreadCountClosingConnection:(BOOL)connection;
+- (void)willRemoveDelegation:(id)delegation;
 @end
 
 @implementation MFLegacyIMAPMailboxTaskManager
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -80,22 +80,22 @@ void __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke(uint64_t a1)
   log_log_12 = v3;
 }
 
-- (MFLegacyIMAPMailboxTaskManager)initWithMailbox:(id)a3
+- (MFLegacyIMAPMailboxTaskManager)initWithMailbox:(id)mailbox
 {
-  v5 = a3;
+  mailboxCopy = mailbox;
   v39.receiver = self;
   v39.super_class = MFLegacyIMAPMailboxTaskManager;
   v6 = [(MFLegacyIMAPMailboxTaskManager *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailbox, a3);
-    v8 = [v5 account];
+    objc_storeStrong(&v6->_mailbox, mailbox);
+    account = [mailboxCopy account];
     account = v7->_account;
-    v7->_account = v8;
+    v7->_account = account;
 
-    v10 = [(MFLegacyIMAPMailboxTaskManager *)v7 account];
-    v11 = [v10 _nameForMailboxUid:v5];
+    account2 = [(MFLegacyIMAPMailboxTaskManager *)v7 account];
+    v11 = [account2 _nameForMailboxUid:mailboxCopy];
     mailboxName = v7->_mailboxName;
     v7->_mailboxName = v11;
 
@@ -109,32 +109,32 @@ void __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke(uint64_t a1)
     v7->_cancelationToken = v15;
 
     v17 = v7->_cancelationToken;
-    v18 = [(MFLegacyIMAPMailboxTaskManager *)v7 _observeChangesInIdleConditions];
-    [(EFManualCancelationToken *)v17 addCancelable:v18];
+    _observeChangesInIdleConditions = [(MFLegacyIMAPMailboxTaskManager *)v7 _observeChangesInIdleConditions];
+    [(EFManualCancelationToken *)v17 addCancelable:_observeChangesInIdleConditions];
 
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "mailboxRowID")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(mailboxCopy, "mailboxRowID")}];
     v21 = [v19 stringWithFormat:@"com.apple.mail.imap.search.%@", v20];
 
-    v22 = [v21 UTF8String];
+    uTF8String = [v21 UTF8String];
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v24 = dispatch_queue_create(v22, v23);
+    v24 = dispatch_queue_create(uTF8String, v23);
     searchQueue = v7->_searchQueue;
     v7->_searchQueue = v24;
 
-    v26 = [(MFLegacyIMAPMailboxTaskManager *)v7 mailboxName];
-    v27 = [v5 redactedName:v26];
+    mailboxName = [(MFLegacyIMAPMailboxTaskManager *)v7 mailboxName];
+    v27 = [mailboxCopy redactedName:mailboxName];
 
-    v28 = [MEMORY[0x1E699B7B0] currentDevice];
-    v29 = [v28 isInternal];
+    currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+    isInternal = [currentDevice isInternal];
 
     v30 = MEMORY[0x1E696AEC0];
-    if (v29)
+    if (isInternal)
     {
       v31 = MEMORY[0x1E699B858];
-      v32 = [v5 account];
-      v33 = [v32 displayName];
-      v34 = [v31 partiallyRedactedStringForString:v33];
+      account3 = [mailboxCopy account];
+      displayName = [account3 displayName];
+      v34 = [v31 partiallyRedactedStringForString:displayName];
       v35 = [v30 stringWithFormat:@"%@ - '%@'", v34, v27];
       loggingPrefix = v7->_loggingPrefix;
       v7->_loggingPrefix = v35;
@@ -142,9 +142,9 @@ void __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke(uint64_t a1)
 
     else
     {
-      v32 = [v5 account];
-      v33 = [v32 uniqueID];
-      v37 = [v30 stringWithFormat:@"%@ - '%@'", v33, v27];
+      account3 = [mailboxCopy account];
+      displayName = [account3 uniqueID];
+      v37 = [v30 stringWithFormat:@"%@ - '%@'", displayName, v27];
       v34 = v7->_loggingPrefix;
       v7->_loggingPrefix = v37;
     }
@@ -171,11 +171,11 @@ void __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke(uint64_t a1)
   [(MFLegacyIMAPMailboxTaskManager *)&v6 dealloc];
 }
 
-- (unint64_t)_fetchMessagesWithUIDs:(id)a3 connection:(id)a4 newCount:(unint64_t)a5 flagsToSet:(unint64_t)a6 queueClass:(Class)a7
+- (unint64_t)_fetchMessagesWithUIDs:(id)ds connection:(id)connection newCount:(unint64_t)count flagsToSet:(unint64_t)set queueClass:(Class)class
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v14 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -183,32 +183,32 @@ void __37__MFLegacyIMAPMailboxTaskManager_log__block_invoke(uint64_t a1)
     *buf = 138543874;
     v30 = loggingPrefix;
     v31 = 2048;
-    v32 = [v12 count];
+    v32 = [dsCopy count];
     v33 = 2048;
-    v34 = a5;
+    countCopy = count;
     _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching skeletons for %lu uids (%lu new)", buf, 0x20u);
   }
 
-  v16 = objc_alloc_init(a7);
-  v17 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v18 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v19 = [v17 storeForMailboxUid:v18];
+  v16 = objc_alloc_init(class);
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v19 = [account storeForMailboxUid:mailbox];
   v20 = *(v16 + 6);
   *(v16 + 6) = v19;
 
-  objc_storeStrong(v16 + 7, a4);
-  *(v16 + 8) = a5;
+  objc_storeStrong(v16 + 7, connection);
+  *(v16 + 8) = count;
   *(v16 + 10) = self->_highestModSequence;
-  *(v16 + 11) = a6;
+  *(v16 + 11) = set;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newCount_flagsToSet_queueClass___block_invoke;
   v26[3] = &unk_1E7AA5E48;
-  v21 = v13;
+  v21 = connectionCopy;
   v27 = v21;
   v22 = v16;
   v28 = v22;
-  [v12 ef_enumerateObjectsInBatchesOfSize:100 block:v26];
+  [dsCopy ef_enumerateObjectsInBatchesOfSize:100 block:v26];
   v23 = v22[9];
 
   v24 = *MEMORY[0x1E69E9840];
@@ -224,13 +224,13 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
   [*(a1 + 40) flush];
 }
 
-- (unint64_t)syncMessagesWithUIDs:(id)a3 connection:(id)a4 serverMessages:(id)a5 flagSearchResults:(id)a6
+- (unint64_t)syncMessagesWithUIDs:(id)ds connection:(id)connection serverMessages:(id)messages flagSearchResults:(id)results
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v23 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  connectionCopy = connection;
+  messagesCopy = messages;
+  resultsCopy = results;
   v13 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -238,50 +238,50 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
     *buf = 138543618;
     v25 = loggingPrefix;
     v26 = 2048;
-    v27 = [v10 count];
+    v27 = [dsCopy count];
     _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching flags for %lu uids", buf, 0x16u);
   }
 
   v15 = objc_alloc_init(MFSyncResponseQueue);
-  v16 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v17 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v18 = [v16 storeForMailboxUid:v17];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v18 = [account storeForMailboxUid:mailbox];
 
-  v19 = [v18 URLString];
+  uRLString = [v18 URLString];
   url = v15->super._url;
-  v15->super._url = v19;
+  v15->super._url = uRLString;
 
   objc_storeStrong(&v15->super._store, v18);
-  objc_storeStrong(&v15->super._connection, a4);
-  objc_storeStrong(&v15->super._serverMessages, a5);
+  objc_storeStrong(&v15->super._connection, connection);
+  objc_storeStrong(&v15->super._serverMessages, messages);
   v15->super._shouldCompact = 0;
   v15->super._shouldFetch = 0;
   *(&v15->super._isSearching + 1) = 1;
-  [v11 sendUidAndFlagResponsesForUIDs:v10 sequenceIdentifierProvider:self flagSearchResults:v12 toQueue:v15];
+  [connectionCopy sendUidAndFlagResponsesForUIDs:dsCopy sequenceIdentifierProvider:self flagSearchResults:resultsCopy toQueue:v15];
   [(MFBufferedQueue *)v15 flush];
 
   v21 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)_performActionsOnConnection:(id)a3 uidsToFetch:(id *)a4 uidsToSync:(id *)a5 messagesToCompact:(id *)a6 serverMessages:(id)a7 flagSearchResults:(id)a8 shouldForce:(BOOL)a9 newUIDsToFetch:(unsigned int *)a10
+- (void)_performActionsOnConnection:(id)connection uidsToFetch:(id *)fetch uidsToSync:(id *)sync messagesToCompact:(id *)compact serverMessages:(id)messages flagSearchResults:(id)results shouldForce:(BOOL)force newUIDsToFetch:(unsigned int *)self0
 {
   v37 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v32 = a7;
-  v17 = a8;
-  v18 = [*a4 count];
-  if (a9)
+  connectionCopy = connection;
+  messagesCopy = messages;
+  resultsCopy = results;
+  v18 = [*fetch count];
+  if (force)
   {
     if (v18)
     {
-      if (*a10)
+      if (*toFetch)
       {
         v19 = +[MFActivityMonitor currentMonitor];
         v20 = MFLookupLocalizedString(@"DOWNLOADING_STATUS_FORMAT", @"Downloading %@ of %@", @"Delayed");
-        [v19 setDisplayName:v20 maxCount:*a10];
+        [v19 setDisplayName:v20 maxCount:*toFetch];
 
-        v21 = *a10;
+        v21 = *toFetch;
       }
 
       else
@@ -289,28 +289,28 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         v21 = 0;
       }
 
-      [(MFLegacyIMAPMailboxTaskManager *)self _fetchMessagesWithUIDs:*a4 connection:v16 newCount:v21 flagsToSet:0 queueClass:objc_opt_class()];
+      [(MFLegacyIMAPMailboxTaskManager *)self _fetchMessagesWithUIDs:*fetch connection:connectionCopy newCount:v21 flagsToSet:0 queueClass:objc_opt_class()];
     }
 
-    *a4 = 0;
-    *a10 = 0;
+    *fetch = 0;
+    *toFetch = 0;
   }
 
-  if ([*a5 count])
+  if ([*sync count])
   {
-    if (a9)
+    if (force)
     {
       v22 = +[MFActivityMonitor currentMonitor];
       [v22 reset];
     }
 
-    [(MFLegacyIMAPMailboxTaskManager *)self syncMessagesWithUIDs:*a5 connection:v16 serverMessages:v32 flagSearchResults:v17];
+    [(MFLegacyIMAPMailboxTaskManager *)self syncMessagesWithUIDs:*sync connection:connectionCopy serverMessages:messagesCopy flagSearchResults:resultsCopy];
   }
 
-  *a5 = 0;
-  if (*a6 || a9)
+  *sync = 0;
+  if (*compact || force)
   {
-    v23 = [*a6 count];
+    v23 = [*compact count];
     if (v23)
     {
       v24 = +[MFLegacyIMAPMailboxTaskManager log];
@@ -324,32 +324,32 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         _os_log_impl(&dword_1B0389000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: Compacting %lu messages during IMAP sync", buf, 0x16u);
       }
 
-      v26 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-      v27 = [v26 messageChangeManager];
-      v28 = *a6;
-      v29 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-      v30 = [v29 URL];
-      [v27 reflectDeletedMessagesWithRemoteIDs:v28 mailboxURL:v30];
+      library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+      messageChangeManager = [library messageChangeManager];
+      v28 = *compact;
+      mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+      v30 = [mailbox URL];
+      [messageChangeManager reflectDeletedMessagesWithRemoteIDs:v28 mailboxURL:v30];
     }
 
-    *a6 = 0;
+    *compact = 0;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_searchFlagsForUIDs:(id)a3 usingConnection:(id)a4
+- (id)_searchFlagsForUIDs:(id)ds usingConnection:(id)connection
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v10 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v11 = [v9 storeForMailboxUid:v10];
+  dsCopy = ds;
+  connectionCopy = connection;
+  array = [MEMORY[0x1E695DF70] array];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v11 = [account storeForMailboxUid:mailbox];
 
-  v12 = [v11 unreadCount];
-  if ([v6 count] >= (2 * v12))
+  unreadCount = [v11 unreadCount];
+  if ([dsCopy count] >= (2 * unreadCount))
   {
     [MFIMAPConnectionFlagSearchRequest requestWithMask:1 searchTerms:&unk_1F2774CF8 positiveMatch:0];
   }
@@ -359,27 +359,27 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
     [MFIMAPConnectionFlagSearchRequest requestWithMask:1 searchTerms:&unk_1F2774D10 positiveMatch:1];
   }
   v13 = ;
-  [v8 addObject:v13];
+  [array addObject:v13];
 
   v14 = [MFIMAPConnectionFlagSearchRequest requestWithMask:2 searchTerms:&unk_1F2774D28 positiveMatch:1];
-  [v8 addObject:v14];
+  [array addObject:v14];
 
   v15 = [MFIMAPConnectionFlagSearchRequest requestWithMask:16 searchTerms:&unk_1F2774D40 positiveMatch:1];
-  [v8 addObject:v15];
+  [array addObject:v15];
 
   v16 = [MFIMAPConnectionFlagSearchRequest requestWithMask:4 searchTerms:&unk_1F2774D58 positiveMatch:1];
-  [v8 addObject:v16];
+  [array addObject:v16];
 
   if (self->_supportsDollarForwardedFlag)
   {
     v17 = [MFIMAPConnectionFlagSearchRequest requestWithMask:256 searchTerms:&unk_1F2774D70 positiveMatch:1];
-    [v8 addObject:v17];
+    [array addObject:v17];
   }
 
   if (self->_supportsForwardedFlag)
   {
     v18 = [MFIMAPConnectionFlagSearchRequest requestWithMask:256 searchTerms:&unk_1F2774D88 positiveMatch:1];
-    [v8 addObject:v18];
+    [array addObject:v18];
   }
 
   if (self->_supportsFlagColorBitFlags)
@@ -388,24 +388,24 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
     v33[1] = @"$MailFlagBit0";
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v20 = [MFIMAPConnectionFlagSearchRequest requestWithMask:0x20000000000 searchTerms:v19 positiveMatch:1];
-    [v8 addObject:v20];
+    [array addObject:v20];
 
     v32[0] = @"KEYWORD";
     v32[1] = @"$MailFlagBit1";
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
     v22 = [MFIMAPConnectionFlagSearchRequest requestWithMask:0x40000000000 searchTerms:v21 positiveMatch:1];
-    [v8 addObject:v22];
+    [array addObject:v22];
 
     v31[0] = @"KEYWORD";
     v31[1] = @"$MailFlagBit2";
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
     v24 = [MFIMAPConnectionFlagSearchRequest requestWithMask:0x80000000000 searchTerms:v23 positiveMatch:1];
-    [v8 addObject:v24];
+    [array addObject:v24];
   }
 
-  if ([v7 supportsCapability:16])
+  if ([connectionCopy supportsCapability:16])
   {
-    v25 = [v8 count];
+    v25 = [array count];
     if (v25 << 8)
     {
       v26 = v25 << 8;
@@ -419,7 +419,7 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
 
   else
   {
-    v27 = [v8 count];
+    v27 = [array count];
     if ((75 * v27) <= 2)
     {
       v26 = 2;
@@ -431,14 +431,14 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
     }
   }
 
-  if (v26 >= [v6 count])
+  if (v26 >= [dsCopy count])
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = [v7 searchUIDs:v6 withFlagRequests:v8];
+    v28 = [connectionCopy searchUIDs:dsCopy withFlagRequests:array];
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -446,17 +446,17 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
   return v28;
 }
 
-- (unint64_t)_fetchMessagesWithArguments:(id)a3 idRange:(id)a4 onConnection:(id)a5 synchronize:(BOOL)a6 limit:(unint64_t)a7 topUIDToCompact:(unint64_t)a8 topKnownUID:(unint64_t)a9 success:(BOOL *)a10 examinedRange:(_NSRange *)a11 fetchableUIDsFound:(unint64_t *)a12 preserveUID:(unint64_t *)a13 numFetchedUIDs:(unint64_t *)a14
+- (unint64_t)_fetchMessagesWithArguments:(id)arguments idRange:(id)range onConnection:(id)connection synchronize:(BOOL)synchronize limit:(unint64_t)limit topUIDToCompact:(unint64_t)compact topKnownUID:(unint64_t)d success:(BOOL *)self0 examinedRange:(_NSRange *)self1 fetchableUIDsFound:(unint64_t *)self2 preserveUID:(unint64_t *)self3 numFetchedUIDs:(unint64_t *)self4
 {
-  v108 = a6;
+  synchronizeCopy = synchronize;
   v156 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
+  argumentsCopy = arguments;
+  rangeCopy = range;
   v131 = 0;
-  v112 = a5;
-  v105 = v17;
-  v106 = v18;
-  v116 = [v112 searchIDSet:v18 forTerms:v17 success:&v131];
+  connectionCopy = connection;
+  v105 = argumentsCopy;
+  v106 = rangeCopy;
+  v116 = [connectionCopy searchIDSet:rangeCopy forTerms:argumentsCopy success:&v131];
   v19 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -477,23 +477,23 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
     v136 = 2048;
     v137 = v21;
     v138 = 2112;
-    v139 = v22;
+    limitCopy2 = v22;
     _os_log_impl(&dword_1B0389000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Search for recent UIDs returned %lu items (success=%@)", buf, 0x20u);
   }
 
-  *a13 = 0x7FFFFFFFFFFFFFFFLL;
-  v23 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v24 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v113 = [v23 storeForMailboxUid:v24];
+  *iD = 0x7FFFFFFFFFFFFFFFLL;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v113 = [account storeForMailboxUid:mailbox];
 
   if (v131)
   {
     v25 = [v116 count];
     if (v25)
     {
-      if (v108)
+      if (synchronizeCopy)
       {
-        v111 = [(MFLegacyIMAPMailboxTaskManager *)self _searchFlagsForUIDs:v116 usingConnection:v112];
+        v111 = [(MFLegacyIMAPMailboxTaskManager *)self _searchFlagsForUIDs:v116 usingConnection:connectionCopy];
       }
 
       else
@@ -501,57 +501,57 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         v111 = 0;
       }
 
-      if (a12)
+      if (found)
       {
-        *a12 += v25;
+        *found += v25;
       }
 
       v26 = [v116 objectAtIndex:0];
-      v115 = [v26 unsignedIntegerValue];
+      unsignedIntegerValue = [v26 unsignedIntegerValue];
 
-      v27 = [v116 lastObject];
-      v28 = [v27 unsignedIntegerValue];
+      lastObject = [v116 lastObject];
+      unsignedIntegerValue2 = [lastObject unsignedIntegerValue];
 
-      if (v28 <= a8)
+      if (unsignedIntegerValue2 <= compact)
       {
-        v29 = a8;
+        compactCopy = compact;
       }
 
       else
       {
-        v29 = v28;
+        compactCopy = unsignedIntegerValue2;
       }
 
-      v30 = v29 - v115;
-      if (a11)
+      v30 = compactCopy - unsignedIntegerValue;
+      if (examinedRange)
       {
-        a11->location = v115;
-        a11->length = v30;
+        examinedRange->location = unsignedIntegerValue;
+        examinedRange->length = v30;
       }
 
       v31 = v30 + 1;
-      if (v30 + 1 > a7)
+      if (v30 + 1 > limit)
       {
-        v32 = v30 + 1;
+        limitCopy = v30 + 1;
       }
 
       else
       {
-        v32 = a7;
+        limitCopy = limit;
       }
 
-      if (v32 >= 0x100)
+      if (limitCopy >= 0x100)
       {
-        v32 = 256;
+        limitCopy = 256;
       }
 
-      v110 = v32;
-      v33 = [v113 serverMessagePersistence];
-      v34 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v115, v31}];
-      v123 = [v33 serverMessagesForIMAPUIDs:v34 limit:v110 returnLastEntries:1];
+      v110 = limitCopy;
+      serverMessagePersistence = [v113 serverMessagePersistence];
+      v34 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{unsignedIntegerValue, v31}];
+      v123 = [serverMessagePersistence serverMessagesForIMAPUIDs:v34 limit:v110 returnLastEntries:1];
 
-      v35 = [v123 firstObject];
-      v119 = [v35 imapUID];
+      firstObject = [v123 firstObject];
+      imapUID = [firstObject imapUID];
 
       v36 = [v116 count];
       v37 = [v123 count];
@@ -561,30 +561,30 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         v40 = self->_loggingPrefix;
-        v41 = [v123 lastObject];
-        v42 = [v41 imapUID];
+        lastObject2 = [v123 lastObject];
+        imapUID2 = [lastObject2 imapUID];
         *buf = 138545922;
         v135 = v40;
         v136 = 2112;
         v137 = v106;
         v138 = 2048;
-        v139 = a7;
+        limitCopy2 = limit;
         v140 = 2048;
-        v141 = a8;
+        compactCopy2 = compact;
         v142 = 2048;
-        v143 = a9;
+        dCopy = d;
         v144 = 2048;
         v145 = v25;
         v146 = 2048;
-        v147 = v115;
+        v147 = unsignedIntegerValue;
         v148 = 2048;
-        v149 = v29;
+        v149 = compactCopy;
         v150 = 2048;
         v151 = v39;
         v152 = 1024;
-        v153 = v119;
+        v153 = imapUID;
         v154 = 1024;
-        v155 = v42;
+        v155 = imapUID2;
         _os_log_impl(&dword_1B0389000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: starting UID sync idRange=%@ limit=%lu topUIDToCompact=%lu topKnownUID=%lu UIDCount=%lu lowUID=%lu highUID=%lu serverMessagesIndex=%lu serverMessagesUIDs found=%u to %u", buf, 0x68u);
       }
 
@@ -598,7 +598,7 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
       v120 = v36 - 1;
       while (1)
       {
-        if (v43 || v29 < v115)
+        if (v43 || compactCopy < unsignedIntegerValue)
         {
           if (v107)
           {
@@ -610,16 +610,16 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
             v96 = [v113 setFlagsLocallyFromDictionary:v95 forMessages:v107];
           }
 
-          if (a14)
+          if (ds)
           {
-            *a14 = v109;
+            *ds = v109;
           }
 
           v125 = v44;
           v126 = v45;
           v124 = v46;
           LOBYTE(v104) = 1;
-          [(MFLegacyIMAPMailboxTaskManager *)self _performActionsOnConnection:v112 uidsToFetch:&v126 uidsToSync:&v125 messagesToCompact:&v124 serverMessages:v123 flagSearchResults:v111 shouldForce:v104 newUIDsToFetch:&v130];
+          [(MFLegacyIMAPMailboxTaskManager *)self _performActionsOnConnection:connectionCopy uidsToFetch:&v126 uidsToSync:&v125 messagesToCompact:&v124 serverMessages:v123 flagSearchResults:v111 shouldForce:v104 newUIDsToFetch:&v130];
           v97 = v126;
 
           v98 = v125;
@@ -629,7 +629,7 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         }
 
         context = objc_autoreleasePoolPush();
-        if (v29 >= v119)
+        if (compactCopy >= imapUID)
         {
           v122 = v44;
           v48 = v46;
@@ -641,20 +641,20 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
           v127 = v46;
           v128 = v44;
           LOBYTE(v104) = 0;
-          [(MFLegacyIMAPMailboxTaskManager *)self _performActionsOnConnection:v112 uidsToFetch:&v129 uidsToSync:&v128 messagesToCompact:&v127 serverMessages:v123 flagSearchResults:v111 shouldForce:v104 newUIDsToFetch:&v130];
+          [(MFLegacyIMAPMailboxTaskManager *)self _performActionsOnConnection:connectionCopy uidsToFetch:&v129 uidsToSync:&v128 messagesToCompact:&v127 serverMessages:v123 flagSearchResults:v111 shouldForce:v104 newUIDsToFetch:&v130];
           v47 = v129;
 
           v122 = v128;
           v48 = v127;
 
           v49 = v47;
-          v50 = [v113 serverMessagePersistence];
-          v51 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v115, v119 - v115}];
-          v52 = [v50 serverMessagesForIMAPUIDs:v51 limit:v110 returnLastEntries:1];
+          serverMessagePersistence2 = [v113 serverMessagePersistence];
+          v51 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{unsignedIntegerValue, imapUID - unsignedIntegerValue}];
+          v52 = [serverMessagePersistence2 serverMessagesForIMAPUIDs:v51 limit:v110 returnLastEntries:1];
 
           v53 = [v52 count];
-          v54 = [v52 firstObject];
-          v119 = [v54 imapUID];
+          firstObject2 = [v52 firstObject];
+          imapUID = [firstObject2 imapUID];
 
           v45 = v49;
           v39 = v53 - 1;
@@ -662,16 +662,16 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         }
 
         v55 = [v116 objectAtIndexedSubscript:v120];
-        v56 = [v55 intValue];
+        intValue = [v55 intValue];
 
-        v59 = *a13 != 0x7FFFFFFFFFFFFFFFLL && v29 >= *a13 || a7 != 0;
-        if (!a7 && v59)
+        v59 = *iD != 0x7FFFFFFFFFFFFFFFLL && compactCopy >= *iD || limit != 0;
+        if (!limit && v59)
         {
           v60 = +[MFLegacyIMAPMailboxTaskManager log];
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             v61 = self->_loggingPrefix;
-            v62 = *a13;
+            v62 = *iD;
             *buf = 138543618;
             v135 = v61;
             v136 = 2048;
@@ -681,7 +681,7 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         }
 
         v63 = !v59;
-        if (v29 != v56)
+        if (compactCopy != intValue)
         {
           v63 = 1;
         }
@@ -699,12 +699,12 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
         else
         {
           v74 = [v123 objectAtIndexedSubscript:v39];
-          v75 = [v74 imapUID];
+          imapUID3 = [v74 imapUID];
 
-          v76 = v75;
+          v76 = imapUID3;
         }
 
-        if (v76 == v29)
+        if (v76 == compactCopy)
         {
           if (!v48)
           {
@@ -718,27 +718,27 @@ void __99__MFLegacyIMAPMailboxTaskManager__fetchMessagesWithUIDs_connection_newC
             *buf = 138543618;
             v135 = v84;
             v136 = 2048;
-            v137 = v29;
+            v137 = compactCopy;
             _os_log_impl(&dword_1B0389000, v83, OS_LOG_TYPE_DEFAULT, "%{public}@: Compacting %lu (2)", buf, 0x16u);
           }
 
           v85 = [v123 objectAtIndexedSubscript:v39];
-          v86 = [v85 remoteID];
-          [v48 addObject:v86];
+          remoteID = [v85 remoteID];
+          [v48 addObject:remoteID];
 
           --v39;
         }
 
 LABEL_99:
-        v43 = v29 == 0;
-        if (v29)
+        v43 = compactCopy == 0;
+        if (compactCopy)
         {
-          --v29;
+          --compactCopy;
         }
 
         else
         {
-          v29 = 0;
+          compactCopy = 0;
         }
 
         v44 = v122;
@@ -757,10 +757,10 @@ LABEL_61:
         while (1)
         {
           v64 = [v123 objectAtIndexedSubscript:v39];
-          v65 = [v64 imapUID];
+          imapUID4 = [v64 imapUID];
 
-          v66 = v65;
-          if (v29 >= v65)
+          v66 = imapUID4;
+          if (compactCopy >= imapUID4)
           {
             break;
           }
@@ -775,17 +775,17 @@ LABEL_61:
           {
             v68 = self->_loggingPrefix;
             v69 = [v123 objectAtIndexedSubscript:v39];
-            v70 = [v69 imapUID];
+            imapUID5 = [v69 imapUID];
             *buf = 138543618;
             v135 = v68;
             v136 = 1024;
-            LODWORD(v137) = v70;
+            LODWORD(v137) = imapUID5;
             _os_log_impl(&dword_1B0389000, v67, OS_LOG_TYPE_DEFAULT, "%{public}@: Compacting %u (1)", buf, 0x12u);
           }
 
           v71 = [v123 objectAtIndexedSubscript:v39];
-          v72 = [v71 remoteID];
-          [v48 addObject:v72];
+          remoteID2 = [v71 remoteID];
+          [v48 addObject:remoteID2];
 
           if (v39-- < 1)
           {
@@ -794,7 +794,7 @@ LABEL_61:
         }
       }
 
-      if (v66 != v29)
+      if (v66 != compactCopy)
       {
         if (!v45)
         {
@@ -808,32 +808,32 @@ LABEL_61:
           *buf = 138543618;
           v135 = v94;
           v136 = 2048;
-          v137 = v29;
+          v137 = compactCopy;
           _os_log_debug_impl(&dword_1B0389000, v81, OS_LOG_TYPE_DEBUG, "%{public}@: Fetching %lu", buf, 0x16u);
         }
 
         v77 = [v116 objectAtIndexedSubscript:v120];
         [v45 addObject:v77];
-        if ([v77 intValue] > a9)
+        if ([v77 intValue] > d)
         {
           ++v130;
           ++v109;
         }
 
-        v82 = a7 - 1;
-        if (!a7)
+        v82 = limit - 1;
+        if (!limit)
         {
           v82 = 0;
         }
 
-        a7 = v82;
+        limit = v82;
         ++v114;
         goto LABEL_98;
       }
 
       v77 = [v123 objectAtIndexedSubscript:v39];
-      v78 = [v77 serverFlags];
-      v79 = MFMessageFlagsForECMessageFlags(v78);
+      serverFlags = [v77 serverFlags];
+      v79 = MFMessageFlagsForECMessageFlags(serverFlags);
 
       if ((v79 & 0x80) != 0)
       {
@@ -843,7 +843,7 @@ LABEL_61:
       else
       {
         v80 = (v79 >> 20) & 1;
-        if (!v108 && (v79 & 0x100000) == 0)
+        if (!synchronizeCopy && (v79 & 0x100000) == 0)
         {
 LABEL_97:
           --v39;
@@ -863,7 +863,7 @@ LABEL_98:
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v135 = v29;
+        v135 = compactCopy;
         _os_log_debug_impl(&dword_1B0389000, v87, OS_LOG_TYPE_DEBUG, "Syncing %lu", buf, 0xCu);
       }
 
@@ -871,9 +871,9 @@ LABEL_98:
       [v122 ef_insertObject:v88 usingComparator:&__block_literal_global_37 allowDuplicates:0];
       if (v80)
       {
-        v89 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-        v90 = [v77 messagePersistentID];
-        v91 = [v89 messageWithLibraryID:objc_msgSend(v90 options:"longLongValue") inMailbox:{0, 0}];
+        library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+        messagePersistentID = [v77 messagePersistentID];
+        v91 = [library messageWithLibraryID:objc_msgSend(messagePersistentID options:"longLongValue") inMailbox:{0, 0}];
 
         if (v91)
         {
@@ -888,13 +888,13 @@ LABEL_98:
         }
       }
 
-      v93 = a7 - 1;
-      if (!a7)
+      v93 = limit - 1;
+      if (!limit)
       {
         v93 = 0;
       }
 
-      a7 = v93;
+      limit = v93;
 
       ++v114;
       goto LABEL_97;
@@ -902,15 +902,15 @@ LABEL_98:
   }
 
   v114 = 0;
-  if (a11)
+  if (examinedRange)
   {
-    *a11 = xmmword_1B0E97710;
+    *examinedRange = xmmword_1B0E97710;
   }
 
 LABEL_108:
-  if (a10)
+  if (success)
   {
-    *a10 = v131;
+    *success = v131;
   }
 
   v100 = +[MFLegacyIMAPMailboxTaskManager log];
@@ -928,14 +928,14 @@ LABEL_108:
   return v114;
 }
 
-- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)a3
+- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)count
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __72__MFLegacyIMAPMailboxTaskManager_updateDeletedCountWithNotDeletedCount___block_invoke;
   v4[3] = &unk_1E7AA5E90;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = count;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:65 failedToSelectMailbox:0 operation:v4];
   os_unfair_lock_lock(&self->_serverCountLock);
   self->_settingServerCount = 0;
@@ -963,11 +963,11 @@ void __72__MFLegacyIMAPMailboxTaskManager_updateDeletedCountWithNotDeletedCount_
   os_unfair_lock_unlock(v8 + 6);
 }
 
-- (BOOL)_shouldContinueToPreservedUID:(unint64_t)a3
+- (BOOL)_shouldContinueToPreservedUID:(unint64_t)d
 {
-  v4 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v6 = [v4 storeForMailboxUid:v5];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v6 = [account storeForMailboxUid:mailbox];
 
   v7 = EFStringWithUnsignedInteger();
   v8 = [v6 messageForRemoteID:v7];
@@ -985,13 +985,13 @@ void __72__MFLegacyIMAPMailboxTaskManager_updateDeletedCountWithNotDeletedCount_
   return v9;
 }
 
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options
 {
   v53 = *MEMORY[0x1E69E9840];
-  v32 = a4;
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  dCopy = d;
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
   v9 = +[MFActivityMonitor currentMonitor];
-  [v9 setMailbox:v8];
+  [v9 setMailbox:mailbox];
 
   v10 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1000,43 +1000,43 @@ void __72__MFLegacyIMAPMailboxTaskManager_updateDeletedCountWithNotDeletedCount_
     *buf = 138543874;
     *&buf[4] = loggingPrefix;
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = options;
     *&buf[22] = 2048;
-    v52 = a3;
+    messagesCopy = messages;
     _os_log_impl(&dword_1B0389000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: fetchNumMessages started with options 0x%lX, numMessages = %lu", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v52 = -1;
+  messagesCopy = -1;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
   v43 = 0;
-  v12 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v13 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v14 = [v12 storeForMailboxUid:v13];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox2 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v14 = [account storeForMailboxUid:mailbox2];
 
   os_unfair_lock_lock(&self->_activeFetchVsReplayLock);
   v15 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v17 = [v16 hostname];
-    [(MFLegacyIMAPMailboxTaskManager *)v17 fetchNumMessages:v50 preservingUID:v15 options:v16];
+    account2 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    hostname = [account2 hostname];
+    [(MFLegacyIMAPMailboxTaskManager *)hostname fetchNumMessages:v50 preservingUID:v15 options:account2];
   }
 
   [v14 willFetchMessages];
   v48 = *MEMORY[0x1E699B3B8];
-  v18 = [v8 objectID];
-  v49 = v18;
+  objectID = [mailbox objectID];
+  v49 = objectID;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
 
-  v20 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v20 postNotificationName:*MEMORY[0x1E699B3C0] object:self userInfo:v19];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E699B3C0] object:self userInfo:v19];
 
-  if ((a5 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
     v21 = 49;
   }
@@ -1053,18 +1053,18 @@ void __72__MFLegacyIMAPMailboxTaskManager_updateDeletedCountWithNotDeletedCount_
   v33[2] = __73__MFLegacyIMAPMailboxTaskManager_fetchNumMessages_preservingUID_options___block_invoke;
   v33[3] = &unk_1E7AA5EB8;
   v33[4] = self;
-  v38 = a3;
-  v23 = v32;
+  messagesCopy2 = messages;
+  v23 = dCopy;
   v34 = v23;
-  v39 = a5;
+  optionsCopy = options;
   v24 = v14;
   v35 = v24;
   v36 = buf;
   v37 = &v40;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:v21 failedToSelectMailbox:0 operation:v33];
   [v22 stopActivityWithSuccess:*(*&buf[8] + 24) >= 0];
-  v25 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v25 postNotificationName:*MEMORY[0x1E699B3B0] object:self userInfo:v19];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:*MEMORY[0x1E699B3B0] object:self userInfo:v19];
 
   v26 = +[MFActivityMonitor currentMonitor];
   [v26 reset];
@@ -1501,9 +1501,9 @@ LABEL_107:
   v61 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateServerUnreadCountClosingConnection:(BOOL)a3
+- (void)updateServerUnreadCountClosingConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 33;
   }
@@ -1521,28 +1521,28 @@ LABEL_107:
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:v3 failedToSelectMailbox:0 operation:v4];
 }
 
-- (void)_fetchServerUnreadCountWithConnection:(id)a3
+- (void)_fetchServerUnreadCountWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v28 = 0;
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v7 = [v5 storeForMailboxUid:v6];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v7 = [account storeForMailboxUid:mailbox];
 
   os_unfair_lock_lock(&self->_serverCountLock);
-  v8 = [v7 totalCount];
+  totalCount = [v7 totalCount];
   serverMessageCount = self->_serverMessageCount;
   os_unfair_lock_unlock(&self->_serverCountLock);
-  if (v8 >= serverMessageCount || ([v7 serverMessagePersistence], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "minimumIMAPUID"), v10, v11 < 2))
+  if (totalCount >= serverMessageCount || ([v7 serverMessagePersistence], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "minimumIMAPUID"), v10, v11 < 2))
   {
     [(MFLegacyIMAPMailboxTaskManager *)self _updateServerUnreadCount:0];
   }
 
   else
   {
-    v12 = [v4 messageSetForRange:((v11 - 1) << 32) | 1];
-    v13 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-    if ([v13 shouldUseNonDeletedForUnreadCount])
+    v12 = [connectionCopy messageSetForRange:((v11 - 1) << 32) | 1];
+    mailbox2 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+    if ([mailbox2 shouldUseNonDeletedForUnreadCount])
     {
       v14 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"UNDELETED", 0}];
     }
@@ -1554,47 +1554,47 @@ LABEL_107:
 
     v15 = v14;
 
-    v16 = [v4 countForSearchOfUidSet:v12 forTerms:v15 success:&v28];
+    v16 = [connectionCopy countForSearchOfUidSet:v12 forTerms:v15 success:&v28];
     if (v28 == 1)
     {
       [(MFLegacyIMAPMailboxTaskManager *)self _updateServerUnreadCount:v16];
     }
   }
 
-  v17 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v18 = [v17 shouldUseNonDeletedForUnreadCount];
+  mailbox3 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  shouldUseNonDeletedForUnreadCount = [mailbox3 shouldUseNonDeletedForUnreadCount];
 
-  if ((v18 & 1) == 0)
+  if ((shouldUseNonDeletedForUnreadCount & 1) == 0)
   {
-    v19 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v20 = [v19 baseAccount];
-    v21 = [v20 isGmailAccount];
+    account2 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    baseAccount = [account2 baseAccount];
+    isGmailAccount = [baseAccount isGmailAccount];
 
-    if (v21)
+    if (isGmailAccount)
     {
-      v22 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{0x1F2748140, 0}];
+      uRLString = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{0x1F2748140, 0}];
       v23 = objc_alloc(MEMORY[0x1E695DEC8]);
-      v24 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
-      v25 = [v23 initWithObjects:{v24, 0}];
+      mailboxName = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
+      library = [v23 initWithObjects:{mailboxName, 0}];
 
-      [v4 fetchStatusForMailboxes:v25 args:v22];
+      [connectionCopy fetchStatusForMailboxes:library args:uRLString];
       goto LABEL_16;
     }
 
-    v26 = [v4 countForSearchOfIDSet:0x1F273E1E0 forTerms:&unk_1F2774DE8 success:&v28];
+    v26 = [connectionCopy countForSearchOfIDSet:0x1F273E1E0 forTerms:&unk_1F2774DE8 success:&v28];
     if (v28 == 1)
     {
       v27 = v26;
-      v22 = [v7 URLString];
-      if (!v22)
+      uRLString = [v7 URLString];
+      if (!uRLString)
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v25 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-      [v25 setLastSyncAndMostRecentStatusCount:v27 forMailbox:v22];
+      library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+      [library setLastSyncAndMostRecentStatusCount:v27 forMailbox:uRLString];
 LABEL_16:
 
       goto LABEL_17;
@@ -1604,36 +1604,36 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)_updateServerUnreadCount:(unint64_t)a3
+- (void)_updateServerUnreadCount:(unint64_t)count
 {
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v9 = [v5 storeForMailboxUid:v6];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v9 = [account storeForMailboxUid:mailbox];
 
-  v7 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-  v8 = [v9 URLString];
-  [v7 setServerUnreadOnlyOnServerCount:a3 forMailbox:v8];
+  library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+  uRLString = [v9 URLString];
+  [library setServerUnreadOnlyOnServerCount:count forMailbox:uRLString];
 }
 
-- (id)_newSearchResponseQueueForConnection:(id)a3 limit:(unsigned int)a4
+- (id)_newSearchResponseQueueForConnection:(id)connection limit:(unsigned int)limit
 {
-  v6 = a3;
+  connectionCopy = connection;
   v7 = objc_alloc_init(MFSearchResponseQueue);
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v9 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v10 = [v8 storeForMailboxUid:v9];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v10 = [account storeForMailboxUid:mailbox];
 
-  v7->limit = a4;
-  v11 = [(MFLibraryStore *)v10 URLString];
+  v7->limit = limit;
+  uRLString = [(MFLibraryStore *)v10 URLString];
   url = v7->super._url;
-  v7->super._url = v11;
+  v7->super._url = uRLString;
 
   store = v7->super._store;
   v7->super._store = v10;
   v14 = v10;
 
   connection = v7->super._connection;
-  v7->super._connection = v6;
+  v7->super._connection = connectionCopy;
 
   v7->super._shouldCompact = 0;
   v7->super._shouldFetch = 1;
@@ -1641,18 +1641,18 @@ LABEL_18:
   return v7;
 }
 
-- (void)_fetchMessagesMatchingCriterion:(id)a3 limit:(unsigned int)a4 withOptions:(unint64_t)a5 handler:(id)a6
+- (void)_fetchMessagesMatchingCriterion:(id)criterion limit:(unsigned int)limit withOptions:(unint64_t)options handler:(id)handler
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v33[0] = v10;
+  criterionCopy = criterion;
+  handlerCopy = handler;
+  v33[0] = criterionCopy;
   v12 = [MFMessageCriterion messageIsDeletedCriterion:0];
   v33[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v14 = [MFMessageCriterion andCompoundCriterionWithCriteria:v13];
 
-  v15 = [v14 criterionForSQL];
+  criterionForSQL = [v14 criterionForSQL];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1661,14 +1661,14 @@ LABEL_18:
   v21 = 3221225472;
   v22 = __92__MFLegacyIMAPMailboxTaskManager__fetchMessagesMatchingCriterion_limit_withOptions_handler___block_invoke;
   v23 = &unk_1E7AA5F08;
-  v16 = v15;
+  v16 = criterionForSQL;
   v24 = v16;
-  v17 = v11;
+  v17 = handlerCopy;
   v26 = v17;
   v27 = &v29;
-  v25 = self;
-  v28 = a4;
-  [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:a5 | 0x41 failedToSelectMailbox:0 operation:&v20];
+  selfCopy = self;
+  limitCopy = limit;
+  [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:options | 0x41 failedToSelectMailbox:0 operation:&v20];
   if ((v30[3] & 1) == 0)
   {
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LibraryIMAPStoreErrorDomain" code:2 userInfo:{0, v20, v21, v22, v23, v24}];
@@ -1711,9 +1711,9 @@ void __92__MFLegacyIMAPMailboxTaskManager__fetchMessagesMatchingCriterion_limit_
   *(*(*(a1 + 56) + 8) + 24) = 1;
 }
 
-- (id)messageIdRollCall:(id)a3
+- (id)messageIdRollCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1724,9 +1724,9 @@ void __92__MFLegacyIMAPMailboxTaskManager__fetchMessagesMatchingCriterion_limit_
   v8[1] = 3221225472;
   v8[2] = __52__MFLegacyIMAPMailboxTaskManager_messageIdRollCall___block_invoke;
   v8[3] = &unk_1E7AA5F30;
-  v9 = v4;
+  v9 = callCopy;
   v10 = &v11;
-  v5 = v4;
+  v5 = callCopy;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:17 failedToSelectMailbox:0 operation:v8];
   v6 = v12[5];
 
@@ -1798,16 +1798,16 @@ void __60__MFLegacyIMAPMailboxTaskManager_searchWithCriterion_limit___block_invo
   *(v14 + 40) = v13;
 }
 
-- (id)downloadSearchResults:(id)a3
+- (id)downloadSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [v4 uids];
-  v6 = [v5 ef_map:&__block_literal_global_140];
-  v7 = [(MFLegacyIMAPMailboxTaskManager *)self library];
+  resultsCopy = results;
+  uids = [resultsCopy uids];
+  v6 = [uids ef_map:&__block_literal_global_140];
+  library = [(MFLegacyIMAPMailboxTaskManager *)self library];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
-  v9 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v10 = [v9 URLString];
-  v11 = [v7 copyMessagesWithRemoteIDs:v8 options:7346239 inRemoteMailbox:v10];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  uRLString = [mailbox URLString];
+  v11 = [library copyMessagesWithRemoteIDs:v8 options:7346239 inRemoteMailbox:uRLString];
   v12 = [v11 ef_map:&__block_literal_global_143];
 
   v24[0] = MEMORY[0x1E69E9820];
@@ -1816,8 +1816,8 @@ void __60__MFLegacyIMAPMailboxTaskManager_searchWithCriterion_limit___block_invo
   v24[3] = &unk_1E7AA5FA0;
   v13 = v12;
   v25 = v13;
-  v14 = [v5 ef_filter:v24];
-  v15 = [[MFUIDSet alloc] initWithUIDs:v5];
+  v14 = [uids ef_filter:v24];
+  v15 = [[MFUIDSet alloc] initWithUIDs:uids];
   if ([v14 count])
   {
     v16 = objc_opt_new();
@@ -1831,15 +1831,15 @@ void __60__MFLegacyIMAPMailboxTaskManager_searchWithCriterion_limit___block_invo
     v22 = v17;
     v23 = v15;
     [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:0 failedToSelectMailbox:0 operation:v20];
-    v18 = [v17 future];
+    future = [v17 future];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E699B7C8] futureWithResult:v15];
+    future = [MEMORY[0x1E699B7C8] futureWithResult:v15];
   }
 
-  return v18;
+  return future;
 }
 
 id __56__MFLegacyIMAPMailboxTaskManager_downloadSearchResults___block_invoke(uint64_t a1, void *a2)
@@ -1866,33 +1866,33 @@ void __56__MFLegacyIMAPMailboxTaskManager_downloadSearchResults___block_invoke_4
 
 - (BOOL)canFetchMessageIDs
 {
-  v3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v4 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v5 = [v3 storeForMailboxUid:v4];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v5 = [account storeForMailboxUid:mailbox];
 
-  v6 = [v5 serverMessageCount];
-  LOBYTE(v6) = v6 > [v5 allNonDeletedCountIncludingServerSearch:1 andThreadSearch:1];
+  serverMessageCount = [v5 serverMessageCount];
+  LOBYTE(serverMessageCount) = serverMessageCount > [v5 allNonDeletedCountIncludingServerSearch:1 andThreadSearch:1];
 
-  return v6;
+  return serverMessageCount;
 }
 
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags
 {
-  v6 = a3;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
-  if ([v6 count])
+  if ([dsCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__MFLegacyIMAPMailboxTaskManager_fetchMessagesWithMessageIDs_andSetFlags___block_invoke;
     v9[3] = &unk_1E7AA5FF0;
-    v10 = v6;
-    v11 = self;
+    v10 = dsCopy;
+    selfCopy = self;
     v12 = &v14;
-    v13 = a4;
+    flagsCopy = flags;
     [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:1 failedToSelectMailbox:0 operation:v9];
   }
 
@@ -1922,10 +1922,10 @@ void __74__MFLegacyIMAPMailboxTaskManager_fetchMessagesWithMessageIDs_andSetFlag
 
 - (void)compact
 {
-  v3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v4 = [v3 isOffline];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  isOffline = [account isOffline];
 
-  if ((v4 & 1) == 0)
+  if ((isOffline & 1) == 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -2005,9 +2005,9 @@ void __78__MFLegacyIMAPMailboxTaskManager_deleteMessagesOlderThanNumberOfDays_co
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)replayAction:(id)a3
+- (id)replayAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2044,8 +2044,8 @@ void __78__MFLegacyIMAPMailboxTaskManager_deleteMessagesOlderThanNumberOfDays_co
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
 LABEL_16:
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"MFLegacyIMAPMailboxTaskManager.m" lineNumber:1354 description:{@"Couldn't make replayer for action %@", v5}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MFLegacyIMAPMailboxTaskManager.m" lineNumber:1354 description:{@"Couldn't make replayer for action %@", actionCopy}];
 
           v7 = 0;
           goto LABEL_10;
@@ -2056,7 +2056,7 @@ LABEL_16:
     }
   }
 
-  v7 = [objc_alloc(*v6) initWithAction:v5];
+  v7 = [objc_alloc(*v6) initWithAction:actionCopy];
   if (!v7)
   {
     goto LABEL_16;
@@ -2069,7 +2069,7 @@ LABEL_10:
   v15[3] = &unk_1E7AA6040;
   v8 = v7;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v18 = &v20;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:17 failedToSelectMailbox:&v19 operation:v15];
   if (!v21[5] && v19 == 1)
@@ -2098,49 +2098,49 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-- (id)messageDataForMessage:(id)a3
+- (id)messageDataForMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MFLegacyIMAPMailboxTaskManager.m" lineNumber:1371 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFMailMessage class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFLegacyIMAPMailboxTaskManager.m" lineNumber:1371 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFMailMessage class]]"}];
   }
 
-  v6 = [v5 messageDataIsComplete:0 downloadIfNecessary:0];
+  v6 = [messageCopy messageDataIsComplete:0 downloadIfNecessary:0];
 
   return v6;
 }
 
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL
 {
-  v5 = a4;
-  v6 = [MailAccount accountWithURL:a3];
-  v7 = [MailAccount accountWithURL:v5];
+  rLCopy = rL;
+  v6 = [MailAccount accountWithURL:l];
+  v7 = [MailAccount accountWithURL:rLCopy];
   if (v6 == v7)
   {
-    v8 = [v6 moveSupported];
+    moveSupported = [v6 moveSupported];
   }
 
   else
   {
-    v8 = 0;
+    moveSupported = 0;
   }
 
-  return v8;
+  return moveSupported;
 }
 
-- (id)flagsForIMAPUIDs:(id)a3 mailboxURL:(id)a4
+- (id)flagsForIMAPUIDs:(id)ds mailboxURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v7 = [v5 storeForMailboxUid:v6];
+  dsCopy = ds;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v7 = [account storeForMailboxUid:mailbox];
 
-  v8 = [v7 serverMessagePersistence];
-  v9 = [v8 serverMessagesForIMAPUIDs:v20 limit:*MEMORY[0x1E699B3A8] returnLastEntries:0];
+  serverMessagePersistence = [v7 serverMessagePersistence];
+  v9 = [serverMessagePersistence serverMessagesForIMAPUIDs:dsCopy limit:*MEMORY[0x1E699B3A8] returnLastEntries:0];
 
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
   v23 = 0u;
@@ -2162,9 +2162,9 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 serverFlags];
+        serverFlags = [v15 serverFlags];
         v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v15, "imapUID")}];
-        [v10 setObject:v16 forKeyedSubscript:v17];
+        [v10 setObject:serverFlags forKeyedSubscript:v17];
       }
 
       v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -2178,37 +2178,37 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
   return v10;
 }
 
-- (id)imapMailboxNameForMailboxURL:(id)a3
+- (id)imapMailboxNameForMailboxURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v6 = [v5 URL];
-  v7 = [v4 isEqual:v6];
+  lCopy = l;
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v6 = [mailbox URL];
+  v7 = [lCopy isEqual:v6];
 
   if (v7)
   {
-    v8 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
+    mailboxName = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
   }
 
   else
   {
-    v9 = [v4 absoluteString];
-    v10 = [MailAccount mailboxUidFromActiveAccountsForURL:v9];
+    absoluteString = [lCopy absoluteString];
+    v10 = [MailAccount mailboxUidFromActiveAccountsForURL:absoluteString];
 
-    v11 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v8 = [v11 _nameForMailboxUid:v10];
+    account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    mailboxName = [account _nameForMailboxUid:v10];
   }
 
-  return v8;
+  return mailboxName;
 }
 
-- (id)messageDataForRemoteID:(id)a3 mailboxURL:(id)a4
+- (id)messageDataForRemoteID:(id)d mailboxURL:(id)l
 {
-  v5 = a3;
-  v6 = -[MFIMAPMessage initWithFlags:size:uid:]([MFIMAPMessage alloc], "initWithFlags:size:uid:", 0, 0xFFFFFFFFLL, [v5 intValue]);
-  v7 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v9 = [v7 storeForMailboxUid:v8];
+  dCopy = d;
+  v6 = -[MFIMAPMessage initWithFlags:size:uid:]([MFIMAPMessage alloc], "initWithFlags:size:uid:", 0, 0xFFFFFFFFLL, [dCopy intValue]);
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v9 = [account storeForMailboxUid:mailbox];
   [(MFIMAPMessage *)v6 setMessageStore:v9];
 
   v10 = [(MFLegacyIMAPMailboxTaskManager *)self _fetchFullMessageDataForMessage:v6 download:0];
@@ -2216,33 +2216,33 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
   return v10;
 }
 
-- (BOOL)fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6
+- (BOOL)fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  partCopy = part;
+  consumerCopy = consumer;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
   v45 = 0;
-  v13 = [v11 type];
-  if (([@"multipart" isEqualToString:v13] & 1) == 0)
+  type = [partCopy type];
+  if (([@"multipart" isEqualToString:type] & 1) == 0)
   {
-    [v11 range];
+    [partCopy range];
     v15 = v14;
-    v16 = [v11 mimeBody];
-    v17 = [v16 message];
+    mimeBody = [partCopy mimeBody];
+    message = [mimeBody message];
 
-    v18 = [v11 partNumber];
-    if (v15 && v17 && (objc_opt_respondsToSelector() & 1) != 0 && [v17 uid] && (objc_msgSend(&stru_1F273A5E0, "isEqualToString:", v18) & 1) == 0)
+    partNumber = [partCopy partNumber];
+    if (v15 && message && (objc_opt_respondsToSelector() & 1) != 0 && [message uid] && (objc_msgSend(&stru_1F273A5E0, "isEqualToString:", partNumber) & 1) == 0)
     {
-      v30 = [(IMAPAccount *)self->_account fetchLimits];
-      [v11 range];
+      fetchLimits = [(IMAPAccount *)self->_account fetchLimits];
+      [partCopy range];
       v28 = v19;
-      v20 = [v30 fetchMinBytes];
+      fetchMinBytes = [fetchLimits fetchMinBytes];
       v21 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+      if (fetchMinBytes != 0x7FFFFFFFFFFFFFFFLL)
       {
         if (location || length != v28)
         {
@@ -2253,11 +2253,11 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
               location = v28;
             }
 
-            v27 = [v30 fetchMinBytes];
-            v22 = [v30 minBytesLeft];
-            v23 = v27;
+            fetchMinBytes2 = [fetchLimits fetchMinBytes];
+            minBytesLeft = [fetchLimits minBytesLeft];
+            v23 = fetchMinBytes2;
             v21 = v28 - location;
-            if (length > v27)
+            if (length > fetchMinBytes2)
             {
               v23 = length;
             }
@@ -2267,7 +2267,7 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
               v23 = v28 - location;
             }
 
-            if (v28 - location - v23 >= v22)
+            if (v28 - location - v23 >= minBytesLeft)
             {
               v21 = v23;
             }
@@ -2287,16 +2287,16 @@ void __47__MFLegacyIMAPMailboxTaskManager_replayAction___block_invoke(uint64_t a
       v31[1] = 3221225472;
       v31[2] = __81__MFLegacyIMAPMailboxTaskManager_fetchDataForMimePart_range_isComplete_consumer___block_invoke;
       v31[3] = &unk_1E7AA6068;
-      v32 = v17;
+      v32 = message;
       v38 = location;
       v39 = v24;
-      v33 = v18;
+      v33 = partNumber;
       v40 = v15;
       v37 = &v42;
-      v34 = v12;
-      v35 = self;
-      v36 = v11;
-      v41 = a5;
+      v34 = consumerCopy;
+      selfCopy = self;
+      v36 = partCopy;
+      completeCopy = complete;
       [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:5 failedToSelectMailbox:0 operation:v31];
       [v29 stopActivityWithSuccess:*(v43 + 24)];
     }
@@ -2368,30 +2368,30 @@ void __81__MFLegacyIMAPMailboxTaskManager_fetchDataForMimePart_range_isComplete_
   }
 }
 
-- (void)fetchDataForMessage:(id)a3 completionHandler:(id)a4
+- (void)fetchDataForMessage:(id)message completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v4 = [[MFError alloc] initWithDomain:@"MFMessageErrorDomain" code:1029 userInfo:0];
-  v5[2](v5, 0, v4);
+  handlerCopy[2](handlerCopy, 0, v4);
 }
 
-- (id)fetchDataForMessage:(id)a3 didDownload:(BOOL *)a4
+- (id)fetchDataForMessage:(id)message didDownload:(BOOL *)download
 {
-  v5 = a3;
+  messageCopy = message;
   v9 = 0;
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self _fetchFullMessageDataForMessage:v5 download:&v9];
+  v6 = [(MFLegacyIMAPMailboxTaskManager *)self _fetchFullMessageDataForMessage:messageCopy download:&v9];
   v7 = v9;
   if (!v6)
   {
-    _compactMessageIfNoData(self, v7, v5);
+    _compactMessageIfNoData(self, v7, messageCopy);
   }
 
   return v6;
 }
 
-- (id)_fetchFullMessageDataForMessage:(id)a3 download:(id *)a4
+- (id)_fetchFullMessageDataForMessage:(id)message download:(id *)download
 {
-  v6 = a3;
+  messageCopy = message;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -2410,16 +2410,16 @@ void __81__MFLegacyIMAPMailboxTaskManager_fetchDataForMimePart_range_isComplete_
   v12 = 3221225472;
   v13 = __75__MFLegacyIMAPMailboxTaskManager__fetchFullMessageDataForMessage_download___block_invoke;
   v14 = &unk_1E7AA6090;
-  v8 = v6;
+  v8 = messageCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v19;
   v18 = &v25;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:5 failedToSelectMailbox:0 operation:&v11];
   [v7 stopActivityWithSuccess:{v26[5] != 0, v11, v12, v13, v14}];
-  if (a4)
+  if (download)
   {
-    *a4 = v20[5];
+    *download = v20[5];
   }
 
   v9 = v26[5];
@@ -2481,27 +2481,27 @@ LABEL_5:
   }
 }
 
-- (id)_downloadForMessageBodyData:(id)a3 usingDownloadCache:(id)a4
+- (id)_downloadForMessageBodyData:(id)data usingDownloadCache:(id)cache
 {
-  v5 = [a4 downloadForMessage:a3];
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  [v5 setAllowsPartialDownloads:{objc_msgSend(v6, "allowsPartialDownloads")}];
+  v5 = [cache downloadForMessage:data];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  [v5 setAllowsPartialDownloads:{objc_msgSend(account, "allowsPartialDownloads")}];
 
   [v5 setFetchBodyData:1];
 
   return v5;
 }
 
-- (id)_performBodyDataDownload:(id)a3 usingConnection:(id)a4 downloadCache:(id)a5 isPartial:(BOOL *)a6
+- (id)_performBodyDataDownload:(id)download usingConnection:(id)connection downloadCache:(id)cache isPartial:(BOOL *)partial
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 partial];
-  if (!-[MFLegacyIMAPMailboxTaskManager _waitForDataFromDownload:uid:downloadCache:connection:](self, "_waitForDataFromDownload:uid:downloadCache:connection:", v10, [v10 uid], v12, v11))
+  downloadCopy = download;
+  connectionCopy = connection;
+  cacheCopy = cache;
+  partial = [downloadCopy partial];
+  if (!-[MFLegacyIMAPMailboxTaskManager _waitForDataFromDownload:uid:downloadCache:connection:](self, "_waitForDataFromDownload:uid:downloadCache:connection:", downloadCopy, [downloadCopy uid], cacheCopy, connectionCopy))
   {
-    v14 = 0;
-    if (!a6)
+    data = 0;
+    if (!partial)
     {
       goto LABEL_6;
     }
@@ -2509,22 +2509,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v14 = [v10 data];
-  v13 = [v10 partial];
-  if (a6)
+  data = [downloadCopy data];
+  partial = [downloadCopy partial];
+  if (partial)
   {
 LABEL_5:
-    *a6 = v13;
+    *partial = partial;
   }
 
 LABEL_6:
 
-  return v14;
+  return data;
 }
 
-- (id)fetchDataForMessage:(id)a3 partial:(BOOL *)a4
+- (id)fetchDataForMessage:(id)message partial:(BOOL *)partial
 {
-  v6 = a3;
+  messageCopy = message;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2545,10 +2545,10 @@ LABEL_6:
   v12[3] = &unk_1E7AA60B8;
   v14 = &v17;
   v12[4] = self;
-  v8 = v6;
+  v8 = messageCopy;
   v13 = v8;
   v15 = &v23;
-  v16 = a4;
+  partialCopy = partial;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:21 failedToSelectMailbox:0 operation:v12];
   [v7 stopActivityWithSuccess:v24[5] != 0];
   v9 = v24[5];
@@ -2585,9 +2585,9 @@ void __62__MFLegacyIMAPMailboxTaskManager_fetchDataForMessage_partial___block_in
   [v10 recordTransportType:{objc_msgSend(v11, "transportType")}];
 }
 
-- (id)fetchHeadersForMessage:(id)a3
+- (id)fetchHeadersForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2605,9 +2605,9 @@ void __62__MFLegacyIMAPMailboxTaskManager_fetchDataForMessage_partial___block_in
   v9[2] = __57__MFLegacyIMAPMailboxTaskManager_fetchHeadersForMessage___block_invoke;
   v9[3] = &unk_1E7AA60E0;
   v12 = &v14;
-  v5 = v4;
+  v5 = messageCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v13 = &v20;
   [(MFLegacyIMAPMailboxTaskManager *)self performOperationRequiringConnection:1 withOptions:5 failedToSelectMailbox:0 operation:v9];
   v6 = v21[5];
@@ -2650,30 +2650,30 @@ void __57__MFLegacyIMAPMailboxTaskManager_fetchHeadersForMessage___block_invoke(
   }
 }
 
-- (BOOL)performOperationRequiringConnection:(BOOL)a3 withOptions:(unint64_t)a4 failedToSelectMailbox:(BOOL *)a5 operation:(id)a6
+- (BOOL)performOperationRequiringConnection:(BOOL)connection withOptions:(unint64_t)options failedToSelectMailbox:(BOOL *)mailbox operation:(id)operation
 {
-  v8 = a3;
+  connectionCopy = connection;
   v43 = *MEMORY[0x1E69E9840];
-  v34 = a6;
-  v10 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v11 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v12 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v13 = [v11 storeForMailboxUid:v12];
+  operationCopy = operation;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  account2 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v13 = [account2 storeForMailboxUid:mailbox];
 
   if ([v13 allowsAppend])
   {
-    v14 = a4;
+    optionsCopy = options;
   }
 
   else
   {
-    v14 = a4 | 2;
+    optionsCopy = options | 2;
   }
 
   [(NSLock *)self->_cachedConnectionLock lock];
   p_cachedConnection = &self->_cachedConnection;
   cachedConnection = self->_cachedConnection;
-  if ((v14 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     if (![(MFIMAPConnection *)cachedConnection mf_tryLock])
     {
@@ -2687,7 +2687,7 @@ void __57__MFLegacyIMAPMailboxTaskManager_fetchHeadersForMessage___block_invoke(
   v17 = cachedConnection;
 LABEL_9:
   [(NSLock *)self->_cachedConnectionLock unlock];
-  if (v17 && (v14 & 0x10) != 0)
+  if (v17 && (optionsCopy & 0x10) != 0)
   {
     [(MFIMAPConnection *)v17 noop];
   }
@@ -2703,7 +2703,7 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  if ((v14 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     [(MFIMAPConnection *)v17 mf_unlock];
   }
@@ -2718,11 +2718,11 @@ LABEL_9:
   [(NSLock *)self->_cachedConnectionLock unlock];
 
 LABEL_20:
-  v20 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v17 = [v10 connectionForMailbox:v20 delegate:self options:v14 failedToSelectMailbox:a5];
+  mailbox2 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v17 = [account connectionForMailbox:mailbox2 delegate:self options:optionsCopy failedToSelectMailbox:mailbox];
 
   [(NSLock *)self->_cachedConnectionLock lock];
-  if (!*p_cachedConnection && (v14 & 0x40) == 0)
+  if (!*p_cachedConnection && (optionsCopy & 0x40) == 0)
   {
     objc_storeStrong(&self->_cachedConnection, v17);
   }
@@ -2739,7 +2739,7 @@ LABEL_24:
     }
 
 LABEL_30:
-    if (v8)
+    if (connectionCopy)
     {
       goto LABEL_53;
     }
@@ -2747,7 +2747,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v22 = [v10 _nameForMailboxUid:self->_mailbox];
+  v22 = [account _nameForMailboxUid:self->_mailbox];
   _MFLockGlobalLock();
   if (!*p_mailboxName)
   {
@@ -2772,18 +2772,18 @@ LABEL_31:
   {
     if (*p_mailboxName)
     {
-      v24 = [(MFIMAPConnection *)v17 selectedMailbox];
+      selectedMailbox = [(MFIMAPConnection *)v17 selectedMailbox];
 
-      if (!v24)
+      if (!selectedMailbox)
       {
         [(MFLegacyIMAPMailboxTaskManager *)self _selectMailbox:self->_mailboxName withConnection:v17];
       }
     }
   }
 
-  v25 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v26 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
-  v27 = [v25 redactedName:v26];
+  mailbox3 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  mailboxName = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
+  v27 = [mailbox3 redactedName:mailboxName];
 
   v28 = +[MFLegacyIMAPMailboxTaskManager log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -2801,33 +2801,33 @@ LABEL_31:
     v39 = 2112;
     v40 = v29;
     v41 = 1024;
-    v42 = v14;
+    v42 = optionsCopy;
     _os_log_impl(&dword_1B0389000, v28, OS_LOG_TYPE_INFO, "performOperationRequiringConnection: mailbox='%{public}@' connection=%p cached=%@ options=%d", buf, 0x26u);
   }
 
   [(MFConnection *)v17 startActivity];
-  v34[2](v34, v17);
+  operationCopy[2](operationCopy, v17);
   [(MFConnection *)v17 stopActivity];
 
   if (v17)
   {
-    if ((v14 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       [(MFIMAPConnection *)v17 mf_unlock];
     }
 
-    if ((v14 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       if ([(MFMailboxUid *)self->_mailbox mailboxType]!= 7)
       {
         v30 = 1;
 LABEL_52:
-        [v10 checkInConnection:v17 destroy:v30];
+        [account checkInConnection:v17 destroy:v30];
         goto LABEL_53;
       }
 
-      v31 = [MEMORY[0x1E699B7B0] currentDevice];
-      v30 = [v31 isPlatform:2];
+      currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+      v30 = [currentDevice isPlatform:2];
     }
 
     else
@@ -2847,12 +2847,12 @@ LABEL_53:
   return v17 != 0;
 }
 
-- (BOOL)_selectMailbox:(id)a3 withConnection:(id)a4
+- (BOOL)_selectMailbox:(id)mailbox withConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v9 = [v7 selectMailbox:v6 withAccount:v8];
+  mailboxCopy = mailbox;
+  connectionCopy = connection;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  v9 = [connectionCopy selectMailbox:mailboxCopy withAccount:account];
 
   return v9;
 }
@@ -2861,8 +2861,8 @@ LABEL_53:
 {
   if (self->_cachedConnection)
   {
-    v3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v6 = [v3 _nameForMailboxUid:self->_mailbox];
+    account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    v6 = [account _nameForMailboxUid:self->_mailbox];
 
     _MFLockGlobalLock();
     v4 = [v6 copy];
@@ -2874,14 +2874,14 @@ LABEL_53:
   }
 }
 
-- (void)willRemoveDelegation:(id)a3
+- (void)willRemoveDelegation:(id)delegation
 {
-  v7 = a3;
+  delegationCopy = delegation;
   [(NSLock *)self->_cachedConnectionLock lock];
   cachedConnection = self->_cachedConnection;
   if (cachedConnection)
   {
-    v5 = cachedConnection == v7;
+    v5 = cachedConnection == delegationCopy;
   }
 
   else
@@ -2898,26 +2898,26 @@ LABEL_53:
   [(NSLock *)self->_cachedConnectionLock unlock];
   if (v6)
   {
-    [(MFIMAPConnection *)v7 finishIdle];
+    [(MFIMAPConnection *)delegationCopy finishIdle];
   }
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id)a5
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id)command
 {
   v65 = *MEMORY[0x1E69E9840];
-  v47 = a4;
-  v46 = a5;
-  v7 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v48 = [v7 storeForMailboxUid:v8];
+  responseCopy = response;
+  commandCopy = command;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v48 = [account storeForMailboxUid:mailbox];
 
-  if (!v46 || [v47 responseType] != 2 || objc_msgSend(v46, "command") != 13 && objc_msgSend(v46, "command") != 9)
+  if (!commandCopy || [responseCopy responseType] != 2 || objc_msgSend(commandCopy, "command") != 13 && objc_msgSend(commandCopy, "command") != 9)
   {
     goto LABEL_45;
   }
 
-  v45 = [v46 untaggedResponses];
-  if (!v45)
+  untaggedResponses = [commandCopy untaggedResponses];
+  if (!untaggedResponses)
   {
     goto LABEL_44;
   }
@@ -2928,7 +2928,7 @@ LABEL_53:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v9 = v45;
+  v9 = untaggedResponses;
   v10 = [v9 countByEnumeratingWithState:&v49 objects:v64 count:16];
   if (!v10)
   {
@@ -2936,7 +2936,7 @@ LABEL_53:
     goto LABEL_43;
   }
 
-  v11 = 0;
+  unsignedIntValue = 0;
   v12 = *v50;
   do
   {
@@ -2950,22 +2950,22 @@ LABEL_53:
       v14 = *(*(&v49 + 1) + 8 * i);
       if ([v14 responseType] == 2)
       {
-        v15 = [v14 responseInfo];
-        v16 = [v14 responseCode];
-        if (v16 > 8)
+        responseInfo = [v14 responseInfo];
+        responseCode = [v14 responseCode];
+        if (responseCode > 8)
         {
-          if (v16 != 9)
+          if (responseCode != 9)
           {
-            if (v16 == 10)
+            if (responseCode == 10)
             {
-              v11 = [v15 unsignedIntValue];
+              unsignedIntValue = [responseInfo unsignedIntValue];
             }
 
             goto LABEL_29;
           }
 
-          v19 = [v15 unsignedIntValue];
-          [v48 setUidNext:v19];
+          unsignedIntValue2 = [responseInfo unsignedIntValue];
+          [v48 setUidNext:unsignedIntValue2];
           v17 = +[MFLegacyIMAPMailboxTaskManager log];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
@@ -2973,7 +2973,7 @@ LABEL_53:
             *buf = 138543618;
             v57 = loggingPrefix;
             v58 = 1024;
-            LODWORD(v59) = v19;
+            LODWORD(v59) = unsignedIntValue2;
             _os_log_impl(&dword_1B0389000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Received UIDNEXT = %u", buf, 0x12u);
           }
 
@@ -2982,9 +2982,9 @@ LABEL_28:
 
         else
         {
-          if (v16 != 5)
+          if (responseCode != 5)
           {
-            if (v16 == 6)
+            if (responseCode == 6)
             {
               [v48 setAllowsAppend:0];
             }
@@ -2992,12 +2992,12 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          if (v15)
+          if (responseInfo)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = v15;
+              v17 = responseInfo;
               self->_supportsForwardedFlag = [v17 indexOfObject:@"Forwarded"]!= 0x7FFFFFFFFFFFFFFFLL;
               self->_supportsDollarForwardedFlag = [v17 indexOfObject:@"$Forwarded"]!= 0x7FFFFFFFFFFFFFFFLL;
               v18 = [v17 indexOfObject:@"$MailFlagBit0"]!= 0x7FFFFFFFFFFFFFFFLL || [v17 indexOfObject:@"$MailFlagBit1"]!= 0x7FFFFFFFFFFFFFFFLL || [v17 indexOfObject:@"$MailFlagBit2"]!= 0x7FFFFFFFFFFFFFFFLL;
@@ -3018,20 +3018,20 @@ LABEL_29:
 
   while (v10);
 
-  if (v11)
+  if (unsignedIntValue)
   {
     v21 = [(MFMailboxUid *)self->_mailbox userInfoObjectForKey:@"UIDVALIDITY"];
-    v22 = [v21 intValue];
+    intValue = [v21 intValue];
 
-    if (v22 != v11)
+    if (intValue != unsignedIntValue)
     {
-      [v48 setUidValidity:v11];
-      if (v22)
+      [v48 setUidValidity:unsignedIntValue];
+      if (intValue)
       {
         [v48 _flushAllMessageData];
-        v23 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-        v24 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
-        v25 = [v23 redactedName:v24];
+        mailbox2 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+        mailboxName = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
+        v25 = [mailbox2 redactedName:mailboxName];
 
         v26 = +[MFLegacyIMAPMailboxTaskManager log];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -3042,32 +3042,32 @@ LABEL_29:
           v58 = 2114;
           v59 = v25;
           v60 = 2048;
-          v61 = v22;
+          v61 = intValue;
           v62 = 2048;
-          v63 = v11;
+          v63 = unsignedIntValue;
           _os_log_impl(&dword_1B0389000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: Forcing reload of '%{public}@' because of UIDVALIDITY change (old:%lu new:%lu)", buf, 0x2Au);
         }
 
-        v28 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-        v29 = [v48 URLString];
+        library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+        uRLString = [v48 URLString];
         v30 = 0;
         do
         {
           v31 = objc_autoreleasePoolPush();
-          v32 = [v28 messagesForMailbox:v29 limit:1000];
+          v32 = [library messagesForMailbox:uRLString limit:1000];
 
           v30 = v32;
           if ([v32 count])
           {
-            [v28 compactMessages:v32];
+            [library compactMessages:v32];
           }
 
           objc_autoreleasePoolPop(v31);
         }
 
         while ([v32 count] > 0x3E7);
-        v33 = [v48 serverMessagePersistence];
-        [v33 deleteAllServerMessagesInMailbox];
+        serverMessagePersistence = [v48 serverMessagePersistence];
+        [serverMessagePersistence deleteAllServerMessagesInMailbox];
 
 LABEL_43:
       }
@@ -3077,35 +3077,35 @@ LABEL_43:
 LABEL_44:
 
 LABEL_45:
-  if ([v47 isAlertResponse])
+  if ([responseCopy isAlertResponse])
   {
-    v34 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v35 = [v47 userString];
-    [v34 handleAlertResponse:v35];
+    account2 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    userString = [responseCopy userString];
+    [account2 handleAlertResponse:userString];
   }
 
-  if ([v47 isResponseWithCode:31])
+  if ([responseCopy isResponseWithCode:31])
   {
-    v36 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v37 = [v47 userString];
-    [v36 handleOverQuotaResponse:v37];
+    account3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    userString2 = [responseCopy userString];
+    [account3 handleOverQuotaResponse:userString2];
   }
 
-  if ((!v46 || [v46 command] == 28) && -[MFLegacyIMAPMailboxTaskManager shouldUseIDLE](self, "shouldUseIDLE") && objc_msgSend(v47, "responseType") == 9)
+  if ((!commandCopy || [commandCopy command] == 28) && -[MFLegacyIMAPMailboxTaskManager shouldUseIDLE](self, "shouldUseIDLE") && objc_msgSend(responseCopy, "responseType") == 9)
   {
     v38 = +[MFLegacyIMAPMailboxTaskManager log];
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v39 = self->_loggingPrefix;
-      v40 = [v47 number];
+      number = [responseCopy number];
       *buf = 138543618;
       v57 = v39;
       v58 = 2048;
-      v59 = v40;
+      v59 = number;
       _os_log_impl(&dword_1B0389000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: Got EXISTS = %llu", buf, 0x16u);
     }
 
-    -[MFLegacyIMAPMailboxTaskManager setServerMessageCount:](self, "setServerMessageCount:", [v47 number]);
+    -[MFLegacyIMAPMailboxTaskManager setServerMessageCount:](self, "setServerMessageCount:", [responseCopy number]);
     if (self->_mailbox)
     {
       mailbox = self->_mailbox;
@@ -3114,8 +3114,8 @@ LABEL_45:
       v55 = v41;
       v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
-      v43 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v43 postNotificationName:@"MailAccountContentsDidChange" object:self->_account userInfo:v42];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MailAccountContentsDidChange" object:self->_account userInfo:v42];
     }
   }
 
@@ -3126,24 +3126,24 @@ LABEL_45:
 {
   v25[5] = *MEMORY[0x1E69E9840];
   v3 = +[MFPowerController sharedInstance];
-  v20 = [v3 lowPowerModeObservable];
-  v21 = [v3 pluggedInObservable];
+  lowPowerModeObservable = [v3 lowPowerModeObservable];
+  pluggedInObservable = [v3 pluggedInObservable];
   v4 = +[MFNetworkController sharedInstance];
-  v5 = [v4 wifiObservable];
+  wifiObservable = [v4 wifiObservable];
 
   v6 = +[MFLockStateMonitor sharedInstance];
-  v7 = [v6 lockStateObservable];
+  lockStateObservable = [v6 lockStateObservable];
 
   v8 = +[MFAppStateMonitor sharedInstance];
-  v9 = [v8 appIsVisibleObservable];
+  appIsVisibleObservable = [v8 appIsVisibleObservable];
 
   objc_initWeak(&location, self);
   v10 = MEMORY[0x1E699B830];
-  v25[0] = v20;
-  v25[1] = v9;
-  v25[2] = v7;
-  v25[3] = v5;
-  v25[4] = v21;
+  v25[0] = lowPowerModeObservable;
+  v25[1] = appIsVisibleObservable;
+  v25[2] = lockStateObservable;
+  v25[3] = wifiObservable;
+  v25[4] = pluggedInObservable;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
   v12 = [v10 combineLatest:v11];
   v22[0] = MEMORY[0x1E69E9820];
@@ -3154,8 +3154,8 @@ LABEL_45:
   v13 = [v12 map:v22];
 
   v14 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.message.imap (IDLE)" qualityOfService:17];
-  v15 = [v13 distinctUntilChanged];
-  v16 = [v15 doOnError:&__block_literal_global_201];
+  distinctUntilChanged = [v13 distinctUntilChanged];
+  v16 = [distinctUntilChanged doOnError:&__block_literal_global_201];
   v17 = [v16 observeOn:v14];
 
   objc_destroyWeak(&v23);
@@ -3234,7 +3234,7 @@ void __59__MFLegacyIMAPMailboxTaskManager__idleConditionsObservable__block_invok
 - (id)_observeChangesInIdleConditions
 {
   objc_initWeak(&location, self);
-  v3 = [(MFLegacyIMAPMailboxTaskManager *)self _idleConditionsObservable];
+  _idleConditionsObservable = [(MFLegacyIMAPMailboxTaskManager *)self _idleConditionsObservable];
   v4 = MEMORY[0x1E699B838];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -3242,7 +3242,7 @@ void __59__MFLegacyIMAPMailboxTaskManager__idleConditionsObservable__block_invok
   v11 = &unk_1E7AA4AF0;
   objc_copyWeak(&v12, &location);
   v5 = [v4 observerWithResultBlock:&v8];
-  v6 = [v3 subscribe:{v5, v8, v9, v10, v11}];
+  v6 = [_idleConditionsObservable subscribe:{v5, v8, v9, v10, v11}];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -3257,38 +3257,38 @@ void __65__MFLegacyIMAPMailboxTaskManager__observeChangesInIdleConditions__block
   [WeakRetained _scheduleIdleTransition:{objc_msgSend(v4, "BOOLValue")}];
 }
 
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id)a5
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id)command
 {
   *&v45[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 command] == 13 || objc_msgSend(v10, "command") == 9;
-  v12 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v13 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v14 = [v12 storeForMailboxUid:v13];
+  connectionCopy = connection;
+  responseCopy = response;
+  commandCopy = command;
+  v11 = [commandCopy command] == 13 || objc_msgSend(commandCopy, "command") == 9;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v14 = [account storeForMailboxUid:mailbox];
 
-  v15 = [v9 responseType];
+  responseType = [responseCopy responseType];
   v16 = 1;
-  if (v15 > 12)
+  if (responseType > 12)
   {
-    switch(v15)
+    switch(responseType)
     {
       case 13:
-        v41 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-        v40 = [v9 mailboxName];
-        v39 = [v41 mailboxUidForName:?];
-        v17 = [v9 statusEntries];
-        v18 = [v17 objectForKey:0x1F2748100];
+        account2 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+        mailboxName = [responseCopy mailboxName];
+        v39 = [account2 mailboxUidForName:?];
+        statusEntries = [responseCopy statusEntries];
+        v18 = [statusEntries objectForKey:0x1F2748100];
         if (v18)
         {
-          v19 = [v39 URLString];
+          uRLString = [v39 URLString];
 
-          if (v19)
+          if (uRLString)
           {
-            v20 = [v14 uidNext];
-            v21 = [v18 unsignedIntValue];
-            if (v20 != v21)
+            uidNext = [v14 uidNext];
+            unsignedIntValue = [v18 unsignedIntValue];
+            if (uidNext != unsignedIntValue)
             {
               v22 = +[MFLegacyIMAPMailboxTaskManager log];
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -3297,38 +3297,38 @@ void __65__MFLegacyIMAPMailboxTaskManager__observeChangesInIdleConditions__block
                 *buf = 138543874;
                 v43 = loggingPrefix;
                 v44 = 1024;
-                *v45 = v20;
+                *v45 = uidNext;
                 v45[2] = 1024;
-                *&v45[3] = v21;
+                *&v45[3] = unsignedIntValue;
                 _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Got new UIDNEXT (old = %u, new = %u)", buf, 0x18u);
               }
 
-              [v14 setUidNext:v21];
+              [v14 setUidNext:unsignedIntValue];
             }
           }
         }
 
-        v24 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
-        v25 = [v40 isEqualToString:v24];
+        mailboxName2 = [(MFLegacyIMAPMailboxTaskManager *)self mailboxName];
+        v25 = [mailboxName isEqualToString:mailboxName2];
 
         if (v25)
         {
-          v26 = [v17 objectForKey:0x1F2748160];
+          v26 = [statusEntries objectForKey:0x1F2748160];
 
           if (v26)
           {
             -[MFLegacyIMAPMailboxTaskManager setHighestModSequence:](self, "setHighestModSequence:", [v26 unsignedLongLongValue]);
           }
 
-          v27 = [v17 objectForKey:0x1F2748140];
+          v27 = [statusEntries objectForKey:0x1F2748140];
 
           if (v27)
           {
-            v28 = [v14 URLString];
-            if (v28)
+            uRLString2 = [v14 URLString];
+            if (uRLString2)
             {
-              v29 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-              [v29 setLastSyncAndMostRecentStatusCount:objc_msgSend(v27 forMailbox:{"unsignedIntegerValue"), v28}];
+              library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+              [library setLastSyncAndMostRecentStatusCount:objc_msgSend(v27 forMailbox:{"unsignedIntegerValue"), uRLString2}];
             }
           }
         }
@@ -3340,12 +3340,12 @@ void __65__MFLegacyIMAPMailboxTaskManager__observeChangesInIdleConditions__block
 
         break;
       case 17:
-        v30 = [v9 fetchResultWithType:8];
-        v31 = [v8 fetchPipeline];
-        v32 = [v8 downloadCache];
-        if (v30 && [v10 command] == 21 && v31 && objc_msgSend(v31, "isSending"))
+        v30 = [responseCopy fetchResultWithType:8];
+        fetchPipeline = [connectionCopy fetchPipeline];
+        downloadCache = [connectionCopy downloadCache];
+        if (v30 && [commandCopy command] == 21 && fetchPipeline && objc_msgSend(fetchPipeline, "isSending"))
         {
-          [v32 handleFetchResponse:v9 forUid:{objc_msgSend(v30, "uid")}];
+          [downloadCache handleFetchResponse:responseCopy forUid:{objc_msgSend(v30, "uid")}];
         }
 
         break;
@@ -3361,9 +3361,9 @@ LABEL_11:
     goto LABEL_37;
   }
 
-  if (v15 != 9)
+  if (responseType != 9)
   {
-    if (v15 != 10)
+    if (responseType != 10)
     {
       goto LABEL_37;
     }
@@ -3378,18 +3378,18 @@ LABEL_11:
     *buf = 138543618;
     v43 = v34;
     v44 = 2048;
-    *v45 = [v9 number];
+    *v45 = [responseCopy number];
     _os_log_impl(&dword_1B0389000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Got EXISTS = %llu", buf, 0x16u);
   }
 
-  -[MFLegacyIMAPMailboxTaskManager setServerMessageCount:](self, "setServerMessageCount:", [v9 number]);
+  -[MFLegacyIMAPMailboxTaskManager setServerMessageCount:](self, "setServerMessageCount:", [responseCopy number]);
   v16 = v11;
 LABEL_37:
-  if ([v9 isAlertResponse])
+  if ([responseCopy isAlertResponse])
   {
-    v35 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    v36 = [v9 userString];
-    [v35 handleAlertResponse:v36];
+    account3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    userString = [responseCopy userString];
+    [account3 handleAlertResponse:userString];
 
     v16 = 0;
   }
@@ -3401,12 +3401,12 @@ LABEL_37:
 - (id)deletedMessages
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v4 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v5 = [v3 storeForMailboxUid:v4];
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v5 = [account storeForMailboxUid:mailbox];
 
-  v6 = [v5 URLString];
-  v7 = [MFMessageCriterion criterionForMailboxURL:v6];
+  uRLString = [v5 URLString];
+  v7 = [MFMessageCriterion criterionForMailboxURL:uRLString];
 
   v8 = [MFMessageCriterion messageIsDeletedCriterion:1];
   v15[0] = v7;
@@ -3414,26 +3414,26 @@ LABEL_37:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v10 = [MFMessageCriterion andCompoundCriterionWithCriteria:v9];
 
-  v11 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-  v12 = [v11 messagesMatchingCriterion:v10 options:0];
+  library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+  v12 = [library messagesMatchingCriterion:v10 options:0];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (void)handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  flagsCopy = flags;
+  messageCopy = message;
   [(MFLegacyIMAPMailboxTaskManager *)self mf_lock];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v8;
+  obj = messagesCopy;
   v11 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -3448,22 +3448,22 @@ LABEL_37:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v10 objectForKey:v14];
-        v16 = [v15 intValue];
+        v15 = [messageCopy objectForKey:v14];
+        intValue = [v15 intValue];
 
-        if (v9)
+        if (flagsCopy)
         {
-          v17 = MFMessageFlagsByApplyingDictionary(v16, v9);
+          messageFlags = MFMessageFlagsByApplyingDictionary(intValue, flagsCopy);
         }
 
         else
         {
-          v17 = [v14 messageFlags];
+          messageFlags = [v14 messageFlags];
         }
 
-        if ((v16 & 2) != 0)
+        if ((intValue & 2) != 0)
         {
-          if ((v17 & 2) != 0)
+          if ((messageFlags & 2) != 0)
           {
             continue;
           }
@@ -3473,7 +3473,7 @@ LABEL_37:
 
         else
         {
-          if ((v17 & 2) == 0)
+          if ((messageFlags & 2) == 0)
           {
             continue;
           }
@@ -3506,24 +3506,24 @@ LABEL_37:
   if (v6)
   {
     [(MFIMAPConnection *)v6 finishIdle];
-    v5 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-    [v5 checkInConnection:v6];
+    account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+    [account checkInConnection:v6];
 
     v4 = v6;
   }
 }
 
-- (void)setServerMessageCount:(unint64_t)a3
+- (void)setServerMessageCount:(unint64_t)count
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v5 objectForKey:@"DeletedSearchLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults objectForKey:@"DeletedSearchLimit"];
 
   if (v13)
   {
-    v6 = [v13 unsignedIntValue];
-    if (v6)
+    unsignedIntValue = [v13 unsignedIntValue];
+    if (unsignedIntValue)
     {
-      v7 = v6;
+      v7 = unsignedIntValue;
     }
 
     else
@@ -3538,9 +3538,9 @@ LABEL_37:
   }
 
   os_unfair_lock_lock(&self->_serverCountLock);
-  if (v7 <= a3)
+  if (v7 <= count)
   {
-    self->_serverMessageCount = a3;
+    self->_serverMessageCount = count;
     os_unfair_lock_unlock(&self->_serverCountLock);
     self->_serverDeletedCount = 0;
   }
@@ -3556,13 +3556,13 @@ LABEL_37:
 
     else
     {
-      self->_serverMessageCount = a3;
+      self->_serverMessageCount = count;
       self->_serverDeletedCount = 0;
       os_unfair_lock_unlock(&self->_serverCountLock);
       v9 = +[MFActivityMonitor currentMonitor];
-      v10 = [v9 isRemoteSearch];
+      isRemoteSearch = [v9 isRemoteSearch];
 
-      if ((v10 & 1) == 0)
+      if ((isRemoteSearch & 1) == 0)
       {
         v11 = +[MFInvocationQueue sharedInvocationQueue];
         v12 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:sel_updateDeletedCount target:self];
@@ -3593,31 +3593,31 @@ LABEL_37:
   return v7;
 }
 
-- (id)sequenceIdentifierForUIDs:(id)a3
+- (id)sequenceIdentifierForUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v6 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v7 = [v5 storeForMailboxUid:v6];
+  dsCopy = ds;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v7 = [account storeForMailboxUid:mailbox];
 
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-  v9 = [v7 URLString];
-  v10 = [v8 sequenceIdentifierForMessagesWithRemoteIDs:v4 inMailbox:v9];
+  library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+  uRLString = [v7 URLString];
+  v10 = [library sequenceIdentifierForMessagesWithRemoteIDs:dsCopy inMailbox:uRLString];
 
   return v10;
 }
 
-- (void)setSequenceIdentifier:(id)a3 forUIDs:(id)a4
+- (void)setSequenceIdentifier:(id)identifier forUIDs:(id)ds
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(MFLegacyIMAPMailboxTaskManager *)self account];
-  v8 = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
-  v9 = [v7 storeForMailboxUid:v8];
+  identifierCopy = identifier;
+  dsCopy = ds;
+  account = [(MFLegacyIMAPMailboxTaskManager *)self account];
+  mailbox = [(MFLegacyIMAPMailboxTaskManager *)self mailbox];
+  v9 = [account storeForMailboxUid:mailbox];
 
-  v10 = [(MFLegacyIMAPMailboxTaskManager *)self library];
-  v11 = [v9 URLString];
-  [v10 setSequenceIdentifier:v12 forMessagesWithRemoteIDs:v6 inMailbox:v11];
+  library = [(MFLegacyIMAPMailboxTaskManager *)self library];
+  uRLString = [v9 URLString];
+  [library setSequenceIdentifier:identifierCopy forMessagesWithRemoteIDs:dsCopy inMailbox:uRLString];
 }
 
 - (void)fetchNumMessages:(os_log_t)log preservingUID:(void *)a4 options:.cold.1(void *a1, uint8_t *buf, os_log_t log, void *a4)

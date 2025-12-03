@@ -1,45 +1,45 @@
 @interface ATXCandidateRelevanceModelDataStoreDatasetMetadata
-+ (id)datasetMetadataForDataPoints:(id)a3;
-- (ATXCandidateRelevanceModelDataStoreDatasetMetadata)initWithNumberOfPositiveSamples:(unint64_t)a3 numberOfSamples:(unint64_t)a4 numberOfDaysWithPositiveSamples:(unint64_t)a5 numberOfDaysWithSamples:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:(id)a3;
++ (id)datasetMetadataForDataPoints:(id)points;
+- (ATXCandidateRelevanceModelDataStoreDatasetMetadata)initWithNumberOfPositiveSamples:(unint64_t)samples numberOfSamples:(unint64_t)ofSamples numberOfDaysWithPositiveSamples:(unint64_t)positiveSamples numberOfDaysWithSamples:(unint64_t)withSamples startDate:(id)date endDate:(id)endDate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:(id)metadata;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation ATXCandidateRelevanceModelDataStoreDatasetMetadata
 
-- (ATXCandidateRelevanceModelDataStoreDatasetMetadata)initWithNumberOfPositiveSamples:(unint64_t)a3 numberOfSamples:(unint64_t)a4 numberOfDaysWithPositiveSamples:(unint64_t)a5 numberOfDaysWithSamples:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8
+- (ATXCandidateRelevanceModelDataStoreDatasetMetadata)initWithNumberOfPositiveSamples:(unint64_t)samples numberOfSamples:(unint64_t)ofSamples numberOfDaysWithPositiveSamples:(unint64_t)positiveSamples numberOfDaysWithSamples:(unint64_t)withSamples startDate:(id)date endDate:(id)endDate
 {
-  v15 = a7;
-  v16 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
   v20.receiver = self;
   v20.super_class = ATXCandidateRelevanceModelDataStoreDatasetMetadata;
   v17 = [(ATXCandidateRelevanceModelDataStoreDatasetMetadata *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_numberOfPositiveSamples = a3;
-    v17->_numberOfSamples = a4;
-    v17->_numberOfDaysWithPositiveSamples = a5;
-    v17->_numberOfDaysWithSamples = a6;
-    objc_storeStrong(&v17->_startDate, a7);
-    objc_storeStrong(&v18->_endDate, a8);
+    v17->_numberOfPositiveSamples = samples;
+    v17->_numberOfSamples = ofSamples;
+    v17->_numberOfDaysWithPositiveSamples = positiveSamples;
+    v17->_numberOfDaysWithSamples = withSamples;
+    objc_storeStrong(&v17->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
   }
 
   return v18;
 }
 
-+ (id)datasetMetadataForDataPoints:(id)a3
++ (id)datasetMetadataForDataPoints:(id)points
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pointsCopy = points;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = pointsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -63,11 +63,11 @@
     while (v7);
   }
 
-  v10 = [v4 currentMetadata];
+  currentMetadata = [v4 currentMetadata];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return currentMetadata;
 }
 
 - (id)description
@@ -93,28 +93,28 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelDataStoreDatasetMetadata *)self isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelDataStoreDatasetMetadata *)self isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:(id)a3
+- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreDatasetMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (*&self->_numberOfPositiveSamples != *(v4 + 8) || self->_numberOfDaysWithPositiveSamples != *(v4 + 3) || self->_numberOfDaysWithSamples != *(v4 + 4))
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (*&self->_numberOfPositiveSamples != *(metadataCopy + 8) || self->_numberOfDaysWithPositiveSamples != *(metadataCopy + 3) || self->_numberOfDaysWithSamples != *(metadataCopy + 4))
   {
     goto LABEL_6;
   }
@@ -153,17 +153,17 @@ LABEL_7:
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXCandidateRelevanceModelDataStoreDatasetMetadata numberOfPositiveSamples](self, "numberOfPositiveSamples")}];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfPositiveSamples")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(compareCopy, "numberOfPositiveSamples")}];
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXCandidateRelevanceModelDataStoreDatasetMetadata numberOfDaysWithPositiveSamples](self, "numberOfDaysWithPositiveSamples")}];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfDaysWithPositiveSamples")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(compareCopy, "numberOfDaysWithPositiveSamples")}];
     v7 = [v8 compare:v9];
   }
 

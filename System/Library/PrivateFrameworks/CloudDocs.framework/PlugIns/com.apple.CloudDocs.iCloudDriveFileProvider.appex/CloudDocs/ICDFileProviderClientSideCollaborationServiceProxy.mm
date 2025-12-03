@@ -1,40 +1,40 @@
 @interface ICDFileProviderClientSideCollaborationServiceProxy
-- (ICDFileProviderClientSideCollaborationServiceProxy)initWithItemIdentifier:(id)a3 domainIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6;
-- (id)uploadContents:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 reply:(id)a6;
-- (void)calculateCollaborationVersionForContents:(id)a3 reply:(id)a4;
-- (void)extractEtagsFromBaseVersion:(id)a3 withReply:(id)a4;
-- (void)fetchLatestRevisionIntoURL:(id)a3 reply:(id)a4;
-- (void)fetchLatestRevisionWithReply:(id)a3;
+- (ICDFileProviderClientSideCollaborationServiceProxy)initWithItemIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor;
+- (id)uploadContents:(id)contents baseVersion:(id)version options:(unint64_t)options reply:(id)reply;
+- (void)calculateCollaborationVersionForContents:(id)contents reply:(id)reply;
+- (void)extractEtagsFromBaseVersion:(id)version withReply:(id)reply;
+- (void)fetchLatestRevisionIntoURL:(id)l reply:(id)reply;
+- (void)fetchLatestRevisionWithReply:(id)reply;
 @end
 
 @implementation ICDFileProviderClientSideCollaborationServiceProxy
 
-- (ICDFileProviderClientSideCollaborationServiceProxy)initWithItemIdentifier:(id)a3 domainIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6
+- (ICDFileProviderClientSideCollaborationServiceProxy)initWithItemIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  queueCopy = queue;
+  descriptorCopy = descriptor;
   v18.receiver = self;
   v18.super_class = ICDFileProviderClientSideCollaborationServiceProxy;
   v15 = [(ICDFileProviderClientSideCollaborationServiceProxy *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_itemIdentifier, a3);
-    objc_storeStrong(&v16->_domainIdentifier, a4);
-    objc_storeStrong(&v16->_operationQueue, a5);
-    objc_storeStrong(&v16->_clientPrivilegesDescriptor, a6);
+    objc_storeStrong(&v15->_itemIdentifier, identifier);
+    objc_storeStrong(&v16->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v16->_operationQueue, queue);
+    objc_storeStrong(&v16->_clientPrivilegesDescriptor, descriptor);
   }
 
   return v16;
 }
 
-- (void)extractEtagsFromBaseVersion:(id)a3 withReply:(id)a4
+- (void)extractEtagsFromBaseVersion:(id)version withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  versionCopy = version;
+  replyCopy = reply;
+  if (replyCopy)
   {
     memset(v18, 0, sizeof(v18));
     sub_100001C50(1, "[ICDFileProviderClientSideCollaborationServiceProxy extractEtagsFromBaseVersion:withReply:]", 54, 0, v18);
@@ -47,26 +47,26 @@
       v21 = 2080;
       v22 = "[ICDFileProviderClientSideCollaborationServiceProxy extractEtagsFromBaseVersion:withReply:]";
       v23 = 2112;
-      v24 = v5;
+      v24 = versionCopy;
       v25 = 2112;
       v26 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s extractEtagsFromBaseVersion %@%@", buf, 0x2Au);
     }
 
-    if (v5)
+    if (versionCopy)
     {
       v9 = brc_bread_crumbs();
       v10 = brc_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v5 br_structureEtag];
-        v12 = [v5 br_contentEtag];
+        br_structureEtag = [versionCopy br_structureEtag];
+        br_contentEtag = [versionCopy br_contentEtag];
         *buf = 136316162;
         v20 = "[ICDFileProviderClientSideCollaborationServiceProxy extractEtagsFromBaseVersion:withReply:]";
         v21 = 2112;
-        v22 = v11;
+        v22 = br_structureEtag;
         v23 = 2112;
-        v24 = v12;
+        v24 = br_contentEtag;
         v25 = 2112;
         v26 = 0;
         v27 = 2112;
@@ -74,9 +74,9 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
       }
 
-      v13 = [v5 br_structureEtag];
-      v14 = [v5 br_contentEtag];
-      v6[2](v6, v13, v14, 0);
+      br_structureEtag2 = [versionCopy br_structureEtag];
+      br_contentEtag2 = [versionCopy br_contentEtag];
+      replyCopy[2](replyCopy, br_structureEtag2, br_contentEtag2, 0);
     }
 
     else
@@ -99,19 +99,19 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
       }
 
-      v13 = [NSError br_errorWithPOSIXCode:22];
-      (v6)[2](v6, 0, 0, v13);
+      br_structureEtag2 = [NSError br_errorWithPOSIXCode:22];
+      (replyCopy)[2](replyCopy, 0, 0, br_structureEtag2);
     }
 
     sub_100001DE4(v18);
   }
 }
 
-- (void)calculateCollaborationVersionForContents:(id)a3 reply:(id)a4
+- (void)calculateCollaborationVersionForContents:(id)contents reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contentsCopy = contents;
+  replyCopy = reply;
+  if (replyCopy)
   {
     memset(v24, 0, sizeof(v24));
     sub_100001C50(1, "[ICDFileProviderClientSideCollaborationServiceProxy calculateCollaborationVersionForContents:reply:]", 70, 0, v24);
@@ -124,14 +124,14 @@
       v27 = 2080;
       v28 = "[ICDFileProviderClientSideCollaborationServiceProxy calculateCollaborationVersionForContents:reply:]";
       v29 = 2112;
-      v30 = v6;
+      v30 = contentsCopy;
       v31 = 2112;
       v32 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s calculating collaboration version for %@%@", buf, 0x2Au);
     }
 
-    v10 = [v6 _scope];
-    v11 = v10 == 0;
+    _scope = [contentsCopy _scope];
+    v11 = _scope == 0;
 
     if (v11)
     {
@@ -152,7 +152,7 @@
       }
 
       v16 = [NSError br_errorWithPOSIXCode:22];
-      v7[2](v7, 0, v16);
+      replyCopy[2](replyCopy, 0, v16);
     }
 
     else
@@ -162,7 +162,7 @@
       v22[1] = 3221225472;
       v22[2] = sub_1000027D8;
       v22[3] = &unk_100044598;
-      v13 = v7;
+      v13 = replyCopy;
       v23 = v13;
       v14 = [v12 remoteObjectProxyWithErrorHandler:v22];
 
@@ -172,7 +172,7 @@
       v20[2] = sub_1000028F4;
       v20[3] = &unk_1000445C0;
       v21 = v13;
-      [v14 calculateSignatureForItemIdentifier:itemIdentifier forURL:v6 reply:v20];
+      [v14 calculateSignatureForItemIdentifier:itemIdentifier forURL:contentsCopy reply:v20];
 
       v16 = v23;
     }
@@ -181,10 +181,10 @@
   }
 }
 
-- (void)fetchLatestRevisionWithReply:(id)a3
+- (void)fetchLatestRevisionWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     memset(v16, 0, sizeof(v16));
     sub_100001C50(1, "[ICDFileProviderClientSideCollaborationServiceProxy fetchLatestRevisionWithReply:]", 95, 0, v16);
@@ -209,7 +209,7 @@
     v14[1] = 3221225472;
     v14[2] = sub_100002CAC;
     v14[3] = &unk_100044598;
-    v9 = v4;
+    v9 = replyCopy;
     v15 = v9;
     v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
 
@@ -225,11 +225,11 @@
   }
 }
 
-- (void)fetchLatestRevisionIntoURL:(id)a3 reply:(id)a4
+- (void)fetchLatestRevisionIntoURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  replyCopy = reply;
+  if (replyCopy)
   {
     memset(v39, 0, sizeof(v39));
     sub_100001C50(1, "[ICDFileProviderClientSideCollaborationServiceProxy fetchLatestRevisionIntoURL:reply:]", 113, 0, v39);
@@ -243,7 +243,7 @@
       v42 = 2080;
       v43 = "[ICDFileProviderClientSideCollaborationServiceProxy fetchLatestRevisionIntoURL:reply:]";
       v44 = 2112;
-      v45 = v6;
+      v45 = lCopy;
       v46 = 2112;
       v47 = itemIdentifier;
       v48 = 2112;
@@ -260,10 +260,10 @@
     v32[2] = sub_1000034B0;
     v32[3] = &unk_100044610;
     v34 = &v35;
-    v33 = v7;
+    v33 = replyCopy;
     v11 = objc_retainBlock(v32);
-    v12 = [v6 _scope];
-    v13 = v12 == 0;
+    _scope = [lCopy _scope];
+    v13 = _scope == 0;
 
     if (v13)
     {
@@ -291,9 +291,9 @@
 
     else
     {
-      v14 = [v6 _scope];
+      _scope2 = [lCopy _scope];
       v31 = 0;
-      v15 = [BRPosixOperationsWrapper consumeSandboxExtension:v14 error:&v31];
+      v15 = [BRPosixOperationsWrapper consumeSandboxExtension:_scope2 error:&v31];
       v16 = v31;
       v36[3] = v15;
 
@@ -336,7 +336,7 @@
         v26[2] = sub_10000367C;
         v26[3] = &unk_100044638;
         v28 = v18;
-        v27 = v6;
+        v27 = lCopy;
         [v19 cloneLatestContentRevisionForItemIdentifier:v20 reply:v26];
       }
     }
@@ -346,12 +346,12 @@
   }
 }
 
-- (id)uploadContents:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (id)uploadContents:(id)contents baseVersion:(id)version options:(unint64_t)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  contentsCopy = contents;
+  versionCopy = version;
+  replyCopy = reply;
+  if (replyCopy)
   {
     memset(v39, 0, sizeof(v39));
     sub_100001C50(1, "[ICDFileProviderClientSideCollaborationServiceProxy uploadContents:baseVersion:options:reply:]", 169, 0, v39);
@@ -364,16 +364,16 @@
       v42 = 2080;
       v43 = "[ICDFileProviderClientSideCollaborationServiceProxy uploadContents:baseVersion:options:reply:]";
       v44 = 2112;
-      v45 = v10;
+      v45 = contentsCopy;
       v46 = 2112;
-      v47 = v11;
+      v47 = versionCopy;
       v48 = 2112;
       v49 = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s uploadContents URL: %@ base version: %@%@", buf, 0x34u);
     }
 
-    v15 = [v10 _scope];
-    v16 = v15 == 0;
+    _scope = [contentsCopy _scope];
+    v16 = _scope == 0;
 
     if (v16)
     {
@@ -394,7 +394,7 @@
       }
 
       v25 = [NSError br_errorWithPOSIXCode:22];
-      v12[2](v12, 0, v25);
+      replyCopy[2](replyCopy, 0, v25);
       v26 = 0;
     }
 
@@ -405,19 +405,19 @@
       [v17 setFileOperationKind:NSProgressFileOperationKindUploading];
       v18 = self->_itemIdentifier;
       v19 = self->_domainIdentifier;
-      v20 = [v10 url];
+      v20 = [contentsCopy url];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_100003DEC;
       v31[3] = &unk_100044688;
-      v37 = v12;
+      v37 = replyCopy;
       v21 = v18;
       v32 = v21;
       v22 = v19;
       v33 = v22;
-      v34 = v10;
-      v35 = v11;
-      v38 = a5;
+      v34 = contentsCopy;
+      v35 = versionCopy;
+      optionsCopy = options;
       v23 = v17;
       v36 = v23;
       [NSFileProviderManager getIdentifierForUserVisibleFileAtURL:v20 completionHandler:v31];

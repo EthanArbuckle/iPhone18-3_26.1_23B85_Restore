@@ -8,9 +8,9 @@
 {
   v3 = objc_opt_new();
   [v3 setScheme:@"mailto"];
-  v4 = [(SearchUICommandHandler *)self command];
-  v5 = [v4 email];
-  [v3 setPath:v5];
+  command = [(SearchUICommandHandler *)self command];
+  email = [command email];
+  [v3 setPath:email];
 
   v6 = MEMORY[0x1E69CA320];
   v7 = [v3 URL];

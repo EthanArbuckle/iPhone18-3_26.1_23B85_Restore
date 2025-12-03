@@ -1,39 +1,39 @@
 @interface TUIFeedEntry
 + (id)defaultStackNames;
-+ (id)feedEntryFromDictionary:(id)a3;
-+ (id)feedEntryFromTemplateURL:(id)a3 data:(id)a4 behaviors:(id)a5;
-- (BOOL)canHandleDropSession:(id)a3 behavior:(id)a4;
-- (BOOL)handleBehaviorWithName:(id)a3 arguments:(id)a4;
++ (id)feedEntryFromDictionary:(id)dictionary;
++ (id)feedEntryFromTemplateURL:(id)l data:(id)data behaviors:(id)behaviors;
+- (BOOL)canHandleDropSession:(id)session behavior:(id)behavior;
+- (BOOL)handleBehaviorWithName:(id)name arguments:(id)arguments;
 - (NSString)uid;
-- (TUIFeedEntry)initWithDictionary:(id)a3;
+- (TUIFeedEntry)initWithDictionary:(id)dictionary;
 - (TUIFeedEntryDelegate)delegate;
 - (id)description;
-- (id)dragItemForFeedEntry:(id)a3 name:(id)a4 arguments:(id)a5 imageResourceBlock:(id)a6;
-- (id)requestDataWithPriority:(float)a3 block:(id)a4;
-- (void)performDropWithSession:(id)a3 behavior:(id)a4;
-- (void)setDictionary:(id)a3;
+- (id)dragItemForFeedEntry:(id)entry name:(id)name arguments:(id)arguments imageResourceBlock:(id)block;
+- (id)requestDataWithPriority:(float)priority block:(id)block;
+- (void)performDropWithSession:(id)session behavior:(id)behavior;
+- (void)setDictionary:(id)dictionary;
 @end
 
 @implementation TUIFeedEntry
 
-+ (id)feedEntryFromDictionary:(id)a3
++ (id)feedEntryFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[TUIFeedEntry alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[TUIFeedEntry alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)feedEntryFromTemplateURL:(id)a3 data:(id)a4 behaviors:(id)a5
++ (id)feedEntryFromTemplateURL:(id)l data:(id)data behaviors:(id)behaviors
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  behaviorsCopy = behaviors;
+  dataCopy = data;
+  lCopy = l;
   v10 = objc_alloc_init(TUIFeedEntry);
-  [(TUIFeedEntry *)v10 setTemplateURL:v9];
+  [(TUIFeedEntry *)v10 setTemplateURL:lCopy];
 
-  [(TUIFeedEntry *)v10 setData:v8];
-  [(TUIFeedEntry *)v10 setBehaviors:v7];
+  [(TUIFeedEntry *)v10 setData:dataCopy];
+  [(TUIFeedEntry *)v10 setBehaviors:behaviorsCopy];
 
   return v10;
 }
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (TUIFeedEntry)initWithDictionary:(id)a3
+- (TUIFeedEntry)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = TUIFeedEntry;
   v5 = [(TUIFeedEntry *)&v13 init];
@@ -61,25 +61,25 @@
     identifierMap = v5->_identifierMap;
     v5->_identifierMap = v8;
 
-    v10 = [objc_opt_class() defaultStackNames];
+    defaultStackNames = [objc_opt_class() defaultStackNames];
     stackNames = v5->_stackNames;
-    v5->_stackNames = v10;
+    v5->_stackNames = defaultStackNames;
 
     v5->_stackNamesLock._os_unfair_lock_opaque = 0;
-    [(TUIFeedEntry *)v5 setDictionary:v4];
+    [(TUIFeedEntry *)v5 setDictionary:dictionaryCopy];
   }
 
   return v5;
 }
 
-- (void)setDictionary:(id)a3
+- (void)setDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   dictionary = self->_dictionary;
-  if (dictionary != v5 && ([(NSDictionary *)dictionary isEqual:v5]& 1) == 0)
+  if (dictionary != dictionaryCopy && ([(NSDictionary *)dictionary isEqual:dictionaryCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_dictionary, a3);
-    v7 = [(NSDictionary *)v5 objectForKeyedSubscript:@"template"];
+    objc_storeStrong(&self->_dictionary, dictionary);
+    v7 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"template"];
     if (v7)
     {
       objc_opt_class();
@@ -111,12 +111,12 @@
     }
 
     v15 = objc_opt_class();
-    v16 = [(NSDictionary *)v5 objectForKeyedSubscript:@"load-delay"];
+    v16 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"load-delay"];
     v17 = TUIDynamicCast(v15, v16);
     [v17 floatValue];
     self->_loadDelay = v18;
 
-    v19 = [(NSDictionary *)v5 objectForKeyedSubscript:@"data"];
+    v19 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,7 +125,7 @@
       self->_data = v20;
     }
 
-    v22 = [(NSDictionary *)v5 objectForKeyedSubscript:@"behaviors"];
+    v22 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"behaviors"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -136,7 +136,7 @@
     }
 
     v25 = objc_opt_class();
-    v26 = [(NSDictionary *)v5 objectForKeyedSubscript:@"stackNames"];
+    v26 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"stackNames"];
     v27 = TUIDynamicCast(v25, v26);
 
     if ([v27 count])
@@ -197,7 +197,7 @@
     else
     {
       v37 = objc_opt_class();
-      v38 = [(NSDictionary *)v5 objectForKeyedSubscript:@"stackName"];
+      v38 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"stackName"];
       v28 = TUIDynamicCast(v37, v38);
 
       if ([v28 length])
@@ -211,50 +211,50 @@
 
 - (NSString)uid
 {
-  v3 = [(TUIFeedEntry *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"entryID"];
+  dictionary = [(TUIFeedEntry *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"entryID"];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    uUIDString = v4;
   }
 
   else
   {
-    v6 = [(NSUUID *)self->_uuid UUIDString];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
   }
 
-  v7 = v6;
+  v7 = uUIDString;
 
   return v7;
 }
 
-- (id)requestDataWithPriority:(float)a3 block:(id)a4
+- (id)requestDataWithPriority:(float)priority block:(id)block
 {
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = [(TUIFeedEntry *)self delegate];
+    delegate = [(TUIFeedEntry *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
       objc_initWeak(&location, self);
-      v8 = [(TUIFeedEntry *)self delegate];
+      delegate2 = [(TUIFeedEntry *)self delegate];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_59FF0;
       v12[3] = &unk_25F500;
       objc_copyWeak(&v14, &location);
-      v13 = v6;
-      *&v9 = a3;
-      v10 = [v8 feedEntry:self requestDataWithPriority:v12 block:v9];
+      v13 = blockCopy;
+      *&v9 = priority;
+      v10 = [delegate2 feedEntry:self requestDataWithPriority:v12 block:v9];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
       goto LABEL_6;
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 
   v10 = 0;
@@ -263,25 +263,25 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)handleBehaviorWithName:(id)a3 arguments:(id)a4
+- (BOOL)handleBehaviorWithName:(id)name arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIFeedBehaviors *)self->_behaviors behaviorWithName:v6];
+  nameCopy = name;
+  argumentsCopy = arguments;
+  v8 = [(TUIFeedBehaviors *)self->_behaviors behaviorWithName:nameCopy];
   if (v8 && ([(TUIFeedEntry *)self delegate], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, [(TUIFeedEntry *)self delegate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, v10, (v12 & 1) != 0))
   {
     v13 = TUIDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v17 = 138412546;
-      v18 = v6;
+      v18 = nameCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = argumentsCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "Feed handling behavior '%@' : %@", &v17, 0x16u);
     }
 
-    v14 = [(TUIFeedEntry *)self delegate];
-    v15 = [v14 feedEntry:self handleBehavior:v8 name:v6 arguments:v7];
+    delegate = [(TUIFeedEntry *)self delegate];
+    v15 = [delegate feedEntry:self handleBehavior:v8 name:nameCopy arguments:argumentsCopy];
   }
 
   else
@@ -292,27 +292,27 @@ LABEL_6:
   return v15;
 }
 
-- (id)dragItemForFeedEntry:(id)a3 name:(id)a4 arguments:(id)a5 imageResourceBlock:(id)a6
+- (id)dragItemForFeedEntry:(id)entry name:(id)name arguments:(id)arguments imageResourceBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TUIFeedEntry *)self delegate];
-  if (v14 && (v15 = v14, [(TUIFeedEntry *)self delegate], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, v15, (v17 & 1) != 0))
+  entryCopy = entry;
+  nameCopy = name;
+  argumentsCopy = arguments;
+  blockCopy = block;
+  delegate = [(TUIFeedEntry *)self delegate];
+  if (delegate && (v15 = delegate, [(TUIFeedEntry *)self delegate], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, v15, (v17 & 1) != 0))
   {
     v18 = TUIDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v22 = 138412546;
-      v23 = v11;
+      v23 = nameCopy;
       v24 = 2112;
-      v25 = v12;
+      v25 = argumentsCopy;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "Feed handling drag behavior '%@' : %@", &v22, 0x16u);
     }
 
-    v19 = [(TUIFeedEntry *)self delegate];
-    v20 = [v19 dragItemForFeedEntry:v10 name:v11 arguments:v12 imageResourceBlock:v13];
+    delegate2 = [(TUIFeedEntry *)self delegate];
+    v20 = [delegate2 dragItemForFeedEntry:entryCopy name:nameCopy arguments:argumentsCopy imageResourceBlock:blockCopy];
   }
 
   else
@@ -323,15 +323,15 @@ LABEL_6:
   return v20;
 }
 
-- (void)performDropWithSession:(id)a3 behavior:(id)a4
+- (void)performDropWithSession:(id)session behavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIFeedEntry *)self delegate];
-  if (v8)
+  sessionCopy = session;
+  behaviorCopy = behavior;
+  delegate = [(TUIFeedEntry *)self delegate];
+  if (delegate)
   {
-    v9 = v8;
-    v10 = [(TUIFeedEntry *)self delegate];
+    v9 = delegate;
+    delegate2 = [(TUIFeedEntry *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
@@ -340,25 +340,25 @@ LABEL_6:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v14 = 138412290;
-        v15 = v7;
+        v15 = behaviorCopy;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Feed handling drop behavior '%@", &v14, 0xCu);
       }
 
-      v13 = [(TUIFeedEntry *)self delegate];
-      [v13 performDropWithSession:v6 behavior:v7];
+      delegate3 = [(TUIFeedEntry *)self delegate];
+      [delegate3 performDropWithSession:sessionCopy behavior:behaviorCopy];
     }
   }
 }
 
-- (BOOL)canHandleDropSession:(id)a3 behavior:(id)a4
+- (BOOL)canHandleDropSession:(id)session behavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIFeedEntry *)self delegate];
-  if (v8 && (v9 = v8, [(TUIFeedEntry *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
+  sessionCopy = session;
+  behaviorCopy = behavior;
+  delegate = [(TUIFeedEntry *)self delegate];
+  if (delegate && (v9 = delegate, [(TUIFeedEntry *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = [(TUIFeedEntry *)self delegate];
-    v13 = [v12 canHandleDropSession:v6 behavior:v7];
+    delegate2 = [(TUIFeedEntry *)self delegate];
+    v13 = [delegate2 canHandleDropSession:sessionCopy behavior:behaviorCopy];
   }
 
   else
@@ -371,9 +371,9 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(TUIFeedEntry *)self stackNames];
-  v4 = [objc_opt_class() defaultStackNames];
-  v5 = [v3 isEqualToSet:v4];
+  stackNames = [(TUIFeedEntry *)self stackNames];
+  defaultStackNames = [objc_opt_class() defaultStackNames];
+  v5 = [stackNames isEqualToSet:defaultStackNames];
 
   if (v5)
   {
@@ -382,16 +382,16 @@ LABEL_6:
 
   else
   {
-    v7 = [v3 allObjects];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    allObjects = [stackNames allObjects];
+    v8 = [allObjects componentsJoinedByString:{@", "}];
     v6 = [NSString stringWithFormat:@" stackNames=%@", v8];
   }
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = [(TUIFeedEntry *)self uid];
-  v12 = [(NSURL *)self->_templateURL lastPathComponent];
-  v13 = [NSString stringWithFormat:@"<%@ %p uid=%@ template=%@%@>", v10, self, v11, v12, v6];
+  lastPathComponent = [(NSURL *)self->_templateURL lastPathComponent];
+  v13 = [NSString stringWithFormat:@"<%@ %p uid=%@ template=%@%@>", v10, self, v11, lastPathComponent, v6];
 
   return v13;
 }

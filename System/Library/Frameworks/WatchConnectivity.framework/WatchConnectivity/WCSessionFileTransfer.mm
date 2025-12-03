@@ -1,13 +1,13 @@
 @interface WCSessionFileTransfer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WCSessionFileTransfer)init;
-- (WCSessionFileTransfer)initWithCoder:(id)a3;
-- (WCSessionFileTransfer)initWithFile:(id)a3;
+- (WCSessionFileTransfer)initWithCoder:(id)coder;
+- (WCSessionFileTransfer)initWithFile:(id)file;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initializeProgress;
 @end
 
@@ -25,9 +25,9 @@
     v2->_transferError = 0;
 
     v5 = objc_opt_new();
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
     transferIdentifier = v3->_transferIdentifier;
-    v3->_transferIdentifier = v6;
+    v3->_transferIdentifier = uUIDString;
 
     [(WCSessionFileTransfer *)v3 initializeProgress];
   }
@@ -35,14 +35,14 @@
   return v3;
 }
 
-- (WCSessionFileTransfer)initWithFile:(id)a3
+- (WCSessionFileTransfer)initWithFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v6 = [(WCSessionFileTransfer *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_file, a3);
+    objc_storeStrong(&v6->_file, file);
   }
 
   return v7;
@@ -56,13 +56,13 @@
   self->_transferring = 0;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WCSessionFileTransfer *)self file];
-  v6 = [v4 file];
+  compareCopy = compare;
+  file = [(WCSessionFileTransfer *)self file];
+  file2 = [compareCopy file];
 
-  v7 = [v5 compare:v6];
+  v7 = [file compare:file2];
   return v7;
 }
 
@@ -105,23 +105,23 @@ void __43__WCSessionFileTransfer_initializeProgress__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCSessionFileTransfer *)self file];
-  v7 = [(WCSessionFileTransfer *)self isTransferring];
+  file = [(WCSessionFileTransfer *)self file];
+  isTransferring = [(WCSessionFileTransfer *)self isTransferring];
   v8 = "NO";
-  if (v7)
+  if (isTransferring)
   {
     v8 = "YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p, session file: %@, transferring: %s>", v5, self, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, session file: %@, transferring: %s>", v5, self, file, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -131,11 +131,11 @@ void __43__WCSessionFileTransfer_initializeProgress__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCSessionFileTransfer *)self transferIdentifier];
-      v7 = [(WCSessionFileTransfer *)v5 transferIdentifier];
+      v5 = equalCopy;
+      transferIdentifier = [(WCSessionFileTransfer *)self transferIdentifier];
+      transferIdentifier2 = [(WCSessionFileTransfer *)v5 transferIdentifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [transferIdentifier isEqual:transferIdentifier2];
     }
 
     else
@@ -149,44 +149,44 @@ void __43__WCSessionFileTransfer_initializeProgress__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(WCSessionFileTransfer *)self transferIdentifier];
-  v3 = [v2 hash];
+  transferIdentifier = [(WCSessionFileTransfer *)self transferIdentifier];
+  v3 = [transferIdentifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transferDate = self->_transferDate;
-  v5 = a3;
-  [v5 encodeObject:transferDate forKey:@"transferDate"];
-  [v5 encodeObject:self->_transferIdentifier forKey:@"transferIdentifier"];
-  [v5 encodeObject:self->_file forKey:@"file"];
-  [v5 encodeBool:self->_transferring forKey:@"transferring"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transferDate forKey:@"transferDate"];
+  [coderCopy encodeObject:self->_transferIdentifier forKey:@"transferIdentifier"];
+  [coderCopy encodeObject:self->_file forKey:@"file"];
+  [coderCopy encodeBool:self->_transferring forKey:@"transferring"];
 }
 
-- (WCSessionFileTransfer)initWithCoder:(id)a3
+- (WCSessionFileTransfer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WCSessionFileTransfer;
   v5 = [(WCSessionFileTransfer *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
     transferDate = v5->_transferDate;
     v5->_transferDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
     v9 = [v8 copy];
     transferIdentifier = v5->_transferIdentifier;
     v5->_transferIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
     file = v5->_file;
     v5->_file = v11;
 
-    v5->_transferring = [v4 decodeBoolForKey:@"transferring"];
+    v5->_transferring = [coderCopy decodeBoolForKey:@"transferring"];
     [(WCSessionFileTransfer *)v5 initializeProgress];
   }
 

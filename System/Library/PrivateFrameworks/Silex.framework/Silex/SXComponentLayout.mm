@@ -1,45 +1,45 @@
 @interface SXComponentLayout
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (id)paddingWithValue:(id)a3 withType:(int)a4;
-- (uint64_t)sideForValue:(int)a3 withType:;
-- (unint64_t)horizontalContentAlignmentWithValue:(id)a3 withType:(int)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (id)paddingWithValue:(id)value withType:(int)type;
+- (uint64_t)sideForValue:(int)value withType:;
+- (unint64_t)horizontalContentAlignmentWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXComponentLayout
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_40;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXComponentLayout;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"margin"] || objc_msgSend(v6, "isEqualToString:", @"padding"))
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"margin"] || objc_msgSend(propertyCopy, "isEqualToString:", @"padding"))
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SXComponentLayout;
-    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v9 = v8;
@@ -47,13 +47,13 @@
   return v9;
 }
 
-- (unint64_t)horizontalContentAlignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)horizontalContentAlignmentWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    if ([v5 isEqualToString:@"left"])
+    if ([valueCopy isEqualToString:@"left"])
     {
       v7 = 1;
     }
@@ -82,17 +82,17 @@
   return v7;
 }
 
-- (id)paddingWithValue:(id)a3 withType:(int)a4
+- (id)paddingWithValue:(id)value withType:(int)type
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6 && a4 == 5)
+  valueCopy = value;
+  if (valueCopy && type == 5)
   {
     v7 = [SXPadding alloc];
-    v8 = [(SXJSONObject *)self specificationVersion];
-    v9 = [(SXJSONObject *)v7 initWithJSONObject:v6 andVersion:v8];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
+    v9 = [(SXJSONObject *)v7 initWithJSONObject:valueCopy andVersion:specificationVersion];
 
-    v10 = v6;
+    v10 = valueCopy;
   }
 
   else
@@ -111,8 +111,8 @@
       v16[2] = v10;
       v16[3] = v10;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
-      v13 = [(SXJSONObject *)self specificationVersion];
-      v9 = [(SXJSONObject *)v11 initWithJSONObject:v12 andVersion:v13];
+      specificationVersion2 = [(SXJSONObject *)self specificationVersion];
+      v9 = [(SXJSONObject *)v11 initWithJSONObject:v12 andVersion:specificationVersion2];
     }
 
     else
@@ -124,16 +124,16 @@
   return v9;
 }
 
-- (uint64_t)sideForValue:(int)a3 withType:
+- (uint64_t)sideForValue:(int)value withType:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (value == 3)
   {
     if ([v5 isEqualToString:@"left"])
     {
@@ -147,20 +147,20 @@
       goto LABEL_13;
     }
 
-    v7 = [v6 isEqualToString:@"both"];
+    bOOLValue = [v6 isEqualToString:@"both"];
     goto LABEL_5;
   }
 
-  if (a3 != 2)
+  if (value != 2)
   {
 LABEL_8:
     v8 = 0;
     goto LABEL_13;
   }
 
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_5:
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 3;
   }

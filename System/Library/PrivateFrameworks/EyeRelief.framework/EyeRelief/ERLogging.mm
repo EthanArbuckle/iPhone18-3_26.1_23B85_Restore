@@ -1,36 +1,36 @@
 @interface ERLogging
-+ (void)log:(id)a3 withType:(unint64_t)a4;
++ (void)log:(id)log withType:(unint64_t)type;
 @end
 
 @implementation ERLogging
 
-+ (void)log:(id)a3 withType:(unint64_t)a4
++ (void)log:(id)log withType:(unint64_t)type
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  logCopy = log;
   if (log_withType__onceToken != -1)
   {
     +[ERLogging log:withType:];
   }
 
   v6 = osLogHandle;
-  if (a4 > 2)
+  if (type > 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       if (os_log_type_enabled(osLogHandle, OS_LOG_TYPE_DEBUG))
       {
-        [ERLogging log:v5 withType:v6];
+        [ERLogging log:logCopy withType:v6];
       }
 
       goto LABEL_19;
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
       if (os_log_type_enabled(osLogHandle, OS_LOG_TYPE_FAULT))
       {
-        [ERLogging log:v5 withType:v6];
+        [ERLogging log:logCopy withType:v6];
       }
 
       goto LABEL_19;
@@ -39,22 +39,22 @@
 
   else
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       if (os_log_type_enabled(osLogHandle, OS_LOG_TYPE_ERROR))
       {
-        [ERLogging log:v5 withType:v6];
+        [ERLogging log:logCopy withType:v6];
       }
 
       goto LABEL_19;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       if (os_log_type_enabled(osLogHandle, OS_LOG_TYPE_INFO))
       {
         v10 = 138543362;
-        v11 = v5;
+        v11 = logCopy;
         v7 = v6;
         v8 = OS_LOG_TYPE_INFO;
 LABEL_14:
@@ -69,7 +69,7 @@ LABEL_14:
   if (os_log_type_enabled(osLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = logCopy;
     v7 = v6;
     v8 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_14;

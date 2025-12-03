@@ -1,41 +1,41 @@
 @interface CSDRelayConferenceConnection
 - (CSDRelayConferenceConnection)init;
-- (CSDRelayConferenceConnection)initWithCall:(id)a3;
-- (CSDRelayConferenceConnection)initWithIdentifier:(id)a3;
+- (CSDRelayConferenceConnection)initWithCall:(id)call;
+- (CSDRelayConferenceConnection)initWithIdentifier:(id)identifier;
 - (VCCapabilities)capabilities;
 - (id)description;
 - (int)deviceRole;
-- (void)invokeDidPrepareIfNecessary:(id)a3;
+- (void)invokeDidPrepareIfNecessary:(id)necessary;
 @end
 
 @implementation CSDRelayConferenceConnection
 
-- (CSDRelayConferenceConnection)initWithIdentifier:(id)a3
+- (CSDRelayConferenceConnection)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CSDRelayConferenceConnection;
   v6 = [(CSDRelayConferenceConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (CSDRelayConferenceConnection)initWithCall:(id)a3
+- (CSDRelayConferenceConnection)initWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = [(CSDRelayConferenceConnection *)self initWithIdentifier:v5];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v6 = [(CSDRelayConferenceConnection *)self initWithIdentifier:uniqueProxyIdentifier];
 
   if (v6)
   {
-    -[CSDRelayConferenceConnection setHost:](v6, "setHost:", [v4 isHostedOnCurrentDevice]);
-    -[CSDRelayConferenceConnection setUsingBaseband:](v6, "setUsingBaseband:", [v4 isUsingBaseband]);
-    [(CSDRelayConferenceConnection *)v6 setCall:v4];
+    -[CSDRelayConferenceConnection setHost:](v6, "setHost:", [callCopy isHostedOnCurrentDevice]);
+    -[CSDRelayConferenceConnection setUsingBaseband:](v6, "setUsingBaseband:", [callCopy isUsingBaseband]);
+    [(CSDRelayConferenceConnection *)v6 setCall:callCopy];
   }
 
   return v6;
@@ -55,31 +55,31 @@
   return 0;
 }
 
-- (void)invokeDidPrepareIfNecessary:(id)a3
+- (void)invokeDidPrepareIfNecessary:(id)necessary
 {
-  v6 = a3;
-  v4 = [(CSDRelayConferenceConnection *)self didPrepareHandler];
+  necessaryCopy = necessary;
+  didPrepareHandler = [(CSDRelayConferenceConnection *)self didPrepareHandler];
 
-  if (v4)
+  if (didPrepareHandler)
   {
-    v5 = [(CSDRelayConferenceConnection *)self didPrepareHandler];
+    didPrepareHandler2 = [(CSDRelayConferenceConnection *)self didPrepareHandler];
     [(CSDRelayConferenceConnection *)self setDidPrepareHandler:0];
-    (v5)[2](v5, v6);
+    (didPrepareHandler2)[2](didPrepareHandler2, necessaryCopy);
   }
 }
 
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CSDRelayConferenceConnection *)self identifier];
-  [v3 appendFormat:@" identifier=%@", v4];
+  identifier = [(CSDRelayConferenceConnection *)self identifier];
+  [v3 appendFormat:@" identifier=%@", identifier];
 
-  v5 = [(CSDRelayConferenceConnection *)self transport];
+  transport = [(CSDRelayConferenceConnection *)self transport];
 
-  if (v5)
+  if (transport)
   {
-    v6 = [(CSDRelayConferenceConnection *)self transport];
-    [v3 appendFormat:@" transport=%@", v6];
+    transport2 = [(CSDRelayConferenceConnection *)self transport];
+    [v3 appendFormat:@" transport=%@", transport2];
   }
 
   if ([(CSDRelayConferenceConnection *)self isHost])
@@ -134,28 +134,28 @@
 
   else
   {
-    v4 = [(CSDRelayConferenceConnection *)self call];
-    if (!v4)
+    call = [(CSDRelayConferenceConnection *)self call];
+    if (!call)
     {
       return 1;
     }
 
-    v5 = v4;
-    v6 = [(CSDRelayConferenceConnection *)self call];
-    v7 = [v6 smartHoldingSession];
+    v5 = call;
+    call2 = [(CSDRelayConferenceConnection *)self call];
+    smartHoldingSession = [call2 smartHoldingSession];
 
-    if (!v7)
+    if (!smartHoldingSession)
     {
       return 1;
     }
 
-    v8 = [(CSDRelayConferenceConnection *)self call];
-    v9 = [v8 smartHoldingSession];
-    v10 = [v9 state];
+    call3 = [(CSDRelayConferenceConnection *)self call];
+    smartHoldingSession2 = [call3 smartHoldingSession];
+    state = [smartHoldingSession2 state];
 
-    if (v10 <= 3)
+    if (state <= 3)
     {
-      return dword_10057A290[v10];
+      return dword_10057A290[state];
     }
 
     else

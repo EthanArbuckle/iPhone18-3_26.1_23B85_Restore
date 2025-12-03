@@ -1,24 +1,24 @@
 @interface CRKIfaddrsEnumerator
-+ (id)enumeratorWithError:(id *)a3;
-+ (id)internetInterfaceEnumeratorWithError:(id *)a3;
-- (CRKIfaddrsEnumerator)initWithError:(id *)a3;
-- (CRKIfaddrsEnumerator)initWithInterfaces:(ifaddrs *)a3;
++ (id)enumeratorWithError:(id *)error;
++ (id)internetInterfaceEnumeratorWithError:(id *)error;
+- (CRKIfaddrsEnumerator)initWithError:(id *)error;
+- (CRKIfaddrsEnumerator)initWithInterfaces:(ifaddrs *)interfaces;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation CRKIfaddrsEnumerator
 
-+ (id)enumeratorWithError:(id *)a3
++ (id)enumeratorWithError:(id *)error
 {
-  v3 = [[a1 alloc] initWithError:a3];
+  v3 = [[self alloc] initWithError:error];
 
   return v3;
 }
 
-+ (id)internetInterfaceEnumeratorWithError:(id *)a3
++ (id)internetInterfaceEnumeratorWithError:(id *)error
 {
-  v3 = [a1 enumeratorWithError:a3];
+  v3 = [self enumeratorWithError:error];
   if (v3)
   {
     v4 = [[CRKFilteredEnumerator alloc] initWithEnumerator:v3 filterBlock:&__block_literal_global_88];
@@ -45,34 +45,34 @@
   [(CRKIfaddrsEnumerator *)&v4 dealloc];
 }
 
-- (CRKIfaddrsEnumerator)initWithError:(id *)a3
+- (CRKIfaddrsEnumerator)initWithError:(id *)error
 {
   v8 = 0;
   v5 = getifaddrs(&v8);
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v5 userInfo:0];
-      *a3 = v6 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
     self = [(CRKIfaddrsEnumerator *)self initWithInterfaces:v8];
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (CRKIfaddrsEnumerator)initWithInterfaces:(ifaddrs *)a3
+- (CRKIfaddrsEnumerator)initWithInterfaces:(ifaddrs *)interfaces
 {
   v9.receiver = self;
   v9.super_class = CRKIfaddrsEnumerator;
@@ -80,8 +80,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->mInterfaces = a3;
-    if (a3)
+    v4->mInterfaces = interfaces;
+    if (interfaces)
     {
       v6 = [[CRKIfaddrs alloc] initWithIfaddrs:v4->mInterfaces];
       mCurrentInterface = v5->mCurrentInterface;
@@ -98,9 +98,9 @@
   if (mCurrentInterface)
   {
     v4 = mCurrentInterface;
-    v5 = [(CRKIfaddrs *)self->mCurrentInterface next];
+    next = [(CRKIfaddrs *)self->mCurrentInterface next];
     v6 = self->mCurrentInterface;
-    self->mCurrentInterface = v5;
+    self->mCurrentInterface = next;
   }
 
   return mCurrentInterface;

@@ -1,75 +1,75 @@
 @interface OBTableHeaderFooterView
 - (CGSize)intrinsicContentSize;
-- (OBTableHeaderFooterView)initWithLayout:(unint64_t)a3;
+- (OBTableHeaderFooterView)initWithLayout:(unint64_t)layout;
 - (UIEdgeInsets)hostedViewPadding;
 - (UIEdgeInsets)internalContentPadding;
 - (void)_applyLayout;
 - (void)_layoutContainerForTableFooter;
 - (void)_layoutContainerForTableHeader;
-- (void)setHostedView:(id)a3;
-- (void)setHostedViewPadding:(UIEdgeInsets)a3;
-- (void)setInternalContentPadding:(UIEdgeInsets)a3;
-- (void)setInternalContentView:(id)a3;
+- (void)setHostedView:(id)view;
+- (void)setHostedViewPadding:(UIEdgeInsets)padding;
+- (void)setInternalContentPadding:(UIEdgeInsets)padding;
+- (void)setInternalContentView:(id)view;
 @end
 
 @implementation OBTableHeaderFooterView
 
-- (OBTableHeaderFooterView)initWithLayout:(unint64_t)a3
+- (OBTableHeaderFooterView)initWithLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = OBTableHeaderFooterView;
   result = [(OBTableHeaderFooterView *)&v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (result)
   {
-    result->_layout = a3;
+    result->_layout = layout;
   }
 
   return result;
 }
 
-- (void)setInternalContentPadding:(UIEdgeInsets)a3
+- (void)setInternalContentPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_internalContentPadding.top), vceqq_f64(v4, *&self->_internalContentPadding.bottom)))) & 1) == 0)
   {
-    self->_internalContentPadding = a3;
+    self->_internalContentPadding = padding;
     [(OBTableHeaderFooterView *)self _applyLayout];
   }
 }
 
-- (void)setHostedViewPadding:(UIEdgeInsets)a3
+- (void)setHostedViewPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_internalContentPadding.top), vceqq_f64(v4, *&self->_internalContentPadding.bottom)))) & 1) == 0)
   {
-    self->_hostedViewPadding = a3;
+    self->_hostedViewPadding = padding;
     [(OBTableHeaderFooterView *)self _applyLayout];
   }
 }
 
-- (void)setInternalContentView:(id)a3
+- (void)setInternalContentView:(id)view
 {
-  v7 = a3;
-  if (self->_internalContentView != v7 || (-[OBTableHeaderFooterView subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v7], v5, (v6 & 1) == 0))
+  viewCopy = view;
+  if (self->_internalContentView != viewCopy || (-[OBTableHeaderFooterView subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:viewCopy], v5, (v6 & 1) == 0))
   {
-    objc_storeStrong(&self->_internalContentView, a3);
+    objc_storeStrong(&self->_internalContentView, view);
     [(OBTableHeaderFooterView *)self addSubview:self->_internalContentView];
     [(OBTableHeaderFooterView *)self _applyLayout];
   }
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  v7 = a3;
-  if (self->_hostedView != v7 || (-[OBTableHeaderFooterView subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v7], v5, (v6 & 1) == 0))
+  viewCopy = view;
+  if (self->_hostedView != viewCopy || (-[OBTableHeaderFooterView subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:viewCopy], v5, (v6 & 1) == 0))
   {
-    objc_storeStrong(&self->_hostedView, a3);
+    objc_storeStrong(&self->_hostedView, view);
     [(OBTableHeaderFooterView *)self addSubview:self->_hostedView];
     [(OBTableHeaderFooterView *)self _applyLayout];
   }
@@ -77,51 +77,51 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(OBTableHeaderFooterView *)self internalContentView];
-  [v3 intrinsicContentSize];
+  internalContentView = [(OBTableHeaderFooterView *)self internalContentView];
+  [internalContentView intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
   if (v5 == -1.0 && v7 == -1.0)
   {
-    v9 = [(OBTableHeaderFooterView *)self internalContentView];
-    [v9 bounds];
+    internalContentView2 = [(OBTableHeaderFooterView *)self internalContentView];
+    [internalContentView2 bounds];
     v7 = v10;
   }
 
-  v11 = [(OBTableHeaderFooterView *)self hostedView];
-  [v11 intrinsicContentSize];
+  hostedView = [(OBTableHeaderFooterView *)self hostedView];
+  [hostedView intrinsicContentSize];
   v13 = v12;
   v15 = v14;
 
   if (v13 == -1.0 && v15 == -1.0)
   {
-    v17 = [(OBTableHeaderFooterView *)self hostedView];
-    [v17 bounds];
+    hostedView2 = [(OBTableHeaderFooterView *)self hostedView];
+    [hostedView2 bounds];
     v15 = v18;
   }
 
-  v19 = [(OBTableHeaderFooterView *)self layout];
+  layout = [(OBTableHeaderFooterView *)self layout];
   [(OBTableHeaderFooterView *)self hostedViewPadding];
-  if (v19)
+  if (layout)
   {
     v22 = v20;
     [(OBTableHeaderFooterView *)self internalContentPadding];
     v24 = v23;
     [(OBTableHeaderFooterView *)self internalContentPadding];
     v26 = v25;
-    v27 = [(OBTableHeaderFooterView *)self hostedView];
+    hostedView3 = [(OBTableHeaderFooterView *)self hostedView];
 
     v28 = *(MEMORY[0x1E695F060] + 8);
-    if (!v27)
+    if (!hostedView3)
     {
       v22 = 0.0;
       v15 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    v29 = [(OBTableHeaderFooterView *)self internalContentView];
+    internalContentView3 = [(OBTableHeaderFooterView *)self internalContentView];
 
-    if (v29)
+    if (internalContentView3)
     {
       v30 = v26;
     }
@@ -131,7 +131,7 @@
       v30 = 0.0;
     }
 
-    if (v29)
+    if (internalContentView3)
     {
       v31 = v24;
     }
@@ -141,7 +141,7 @@
       v31 = 0.0;
     }
 
-    if (v29)
+    if (internalContentView3)
     {
       v32 = v7;
     }
@@ -157,9 +157,9 @@
   else
   {
     v34 = v21;
-    v35 = [(OBTableHeaderFooterView *)self hostedView];
+    hostedView4 = [(OBTableHeaderFooterView *)self hostedView];
 
-    if (v35)
+    if (hostedView4)
     {
       v36 = v34;
     }
@@ -169,7 +169,7 @@
       v36 = 0.0;
     }
 
-    if (!v35)
+    if (!hostedView4)
     {
       v15 = *(MEMORY[0x1E695F060] + 8);
     }
@@ -208,34 +208,34 @@
 {
   v46[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(OBTableHeaderFooterView *)self internalContentConstraints];
-  [v3 deactivateConstraints:v4];
+  internalContentConstraints = [(OBTableHeaderFooterView *)self internalContentConstraints];
+  [v3 deactivateConstraints:internalContentConstraints];
 
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [(OBTableHeaderFooterView *)self hostedConstraints];
-  [v5 deactivateConstraints:v6];
+  hostedConstraints = [(OBTableHeaderFooterView *)self hostedConstraints];
+  [v5 deactivateConstraints:hostedConstraints];
 
-  v7 = [(OBTableHeaderFooterView *)self internalContentView];
+  internalContentView = [(OBTableHeaderFooterView *)self internalContentView];
 
-  if (v7)
+  if (internalContentView)
   {
-    v42 = [(OBTableHeaderFooterView *)self internalContentView];
-    v40 = [v42 topAnchor];
-    v38 = [(OBTableHeaderFooterView *)self topAnchor];
+    internalContentView2 = [(OBTableHeaderFooterView *)self internalContentView];
+    topAnchor = [internalContentView2 topAnchor];
+    topAnchor2 = [(OBTableHeaderFooterView *)self topAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v8 = [v40 constraintEqualToAnchor:v38 constant:?];
+    v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v46[0] = v8;
-    v9 = [(OBTableHeaderFooterView *)self internalContentView];
-    v10 = [v9 leadingAnchor];
-    v11 = [(OBTableHeaderFooterView *)self leadingAnchor];
+    internalContentView3 = [(OBTableHeaderFooterView *)self internalContentView];
+    leadingAnchor = [internalContentView3 leadingAnchor];
+    leadingAnchor2 = [(OBTableHeaderFooterView *)self leadingAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v13 = [v10 constraintEqualToAnchor:v11 constant:v12];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v12];
     v46[1] = v13;
-    v14 = [(OBTableHeaderFooterView *)self internalContentView];
-    v15 = [v14 trailingAnchor];
-    v16 = [(OBTableHeaderFooterView *)self trailingAnchor];
+    internalContentView4 = [(OBTableHeaderFooterView *)self internalContentView];
+    trailingAnchor = [internalContentView4 trailingAnchor];
+    trailingAnchor2 = [(OBTableHeaderFooterView *)self trailingAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v18 = [v15 constraintEqualToAnchor:v16 constant:-v17];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
     v46[2] = v18;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:3];
   }
@@ -248,28 +248,28 @@
     v44 = MEMORY[0x1E695E0F0];
   }
 
-  v20 = [(OBTableHeaderFooterView *)self hostedView];
+  hostedView = [(OBTableHeaderFooterView *)self hostedView];
 
-  if (v20)
+  if (hostedView)
   {
-    v43 = [(OBTableHeaderFooterView *)self hostedView];
-    v39 = [v43 topAnchor];
-    v41 = [(OBTableHeaderFooterView *)self internalContentView];
-    v37 = [v41 bottomAnchor];
+    hostedView2 = [(OBTableHeaderFooterView *)self hostedView];
+    topAnchor3 = [hostedView2 topAnchor];
+    internalContentView5 = [(OBTableHeaderFooterView *)self internalContentView];
+    bottomAnchor = [internalContentView5 bottomAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v36 = [v39 constraintEqualToAnchor:v37 constant:v21];
+    v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v21];
     v45[0] = v36;
-    v22 = [(OBTableHeaderFooterView *)self hostedView];
-    v23 = [v22 leadingAnchor];
-    v24 = [(OBTableHeaderFooterView *)self leadingAnchor];
+    hostedView3 = [(OBTableHeaderFooterView *)self hostedView];
+    leadingAnchor3 = [hostedView3 leadingAnchor];
+    leadingAnchor4 = [(OBTableHeaderFooterView *)self leadingAnchor];
     [(OBTableHeaderFooterView *)self hostedViewPadding];
-    v26 = [v23 constraintEqualToAnchor:v24 constant:v25];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v25];
     v45[1] = v26;
-    v27 = [(OBTableHeaderFooterView *)self hostedView];
-    v28 = [v27 trailingAnchor];
-    v29 = [(OBTableHeaderFooterView *)self trailingAnchor];
+    hostedView4 = [(OBTableHeaderFooterView *)self hostedView];
+    trailingAnchor3 = [hostedView4 trailingAnchor];
+    trailingAnchor4 = [(OBTableHeaderFooterView *)self trailingAnchor];
     [(OBTableHeaderFooterView *)self hostedViewPadding];
-    v31 = [v28 constraintEqualToAnchor:v29 constant:-v30];
+    v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v30];
     v45[2] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:3];
 
@@ -296,34 +296,34 @@
 {
   v50[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(OBTableHeaderFooterView *)self internalContentConstraints];
-  [v3 deactivateConstraints:v4];
+  internalContentConstraints = [(OBTableHeaderFooterView *)self internalContentConstraints];
+  [v3 deactivateConstraints:internalContentConstraints];
 
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [(OBTableHeaderFooterView *)self hostedConstraints];
-  [v5 deactivateConstraints:v6];
+  hostedConstraints = [(OBTableHeaderFooterView *)self hostedConstraints];
+  [v5 deactivateConstraints:hostedConstraints];
 
-  v7 = [(OBTableHeaderFooterView *)self hostedView];
+  hostedView = [(OBTableHeaderFooterView *)self hostedView];
 
-  if (v7)
+  if (hostedView)
   {
-    v46 = [(OBTableHeaderFooterView *)self hostedView];
-    v44 = [v46 topAnchor];
-    v42 = [(OBTableHeaderFooterView *)self topAnchor];
+    hostedView2 = [(OBTableHeaderFooterView *)self hostedView];
+    topAnchor = [hostedView2 topAnchor];
+    topAnchor2 = [(OBTableHeaderFooterView *)self topAnchor];
     [(OBTableHeaderFooterView *)self hostedViewPadding];
-    v8 = [v44 constraintEqualToAnchor:v42 constant:?];
+    v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v50[0] = v8;
-    v9 = [(OBTableHeaderFooterView *)self hostedView];
-    v10 = [v9 leadingAnchor];
-    v11 = [(OBTableHeaderFooterView *)self leadingAnchor];
+    hostedView3 = [(OBTableHeaderFooterView *)self hostedView];
+    leadingAnchor = [hostedView3 leadingAnchor];
+    leadingAnchor2 = [(OBTableHeaderFooterView *)self leadingAnchor];
     [(OBTableHeaderFooterView *)self hostedViewPadding];
-    v13 = [v10 constraintEqualToAnchor:v11 constant:v12];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v12];
     v50[1] = v13;
-    v14 = [(OBTableHeaderFooterView *)self hostedView];
-    v15 = [v14 trailingAnchor];
-    v16 = [(OBTableHeaderFooterView *)self trailingAnchor];
+    hostedView4 = [(OBTableHeaderFooterView *)self hostedView];
+    trailingAnchor = [hostedView4 trailingAnchor];
+    trailingAnchor2 = [(OBTableHeaderFooterView *)self trailingAnchor];
     [(OBTableHeaderFooterView *)self hostedViewPadding];
-    v18 = [v15 constraintEqualToAnchor:v16 constant:-v17];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
     v50[2] = v18;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3];
   }
@@ -333,41 +333,41 @@
     v48 = MEMORY[0x1E695E0F0];
   }
 
-  v19 = [(OBTableHeaderFooterView *)self internalContentView];
+  internalContentView = [(OBTableHeaderFooterView *)self internalContentView];
 
-  if (v19)
+  if (internalContentView)
   {
-    v20 = [(OBTableHeaderFooterView *)self hostedView];
-    v21 = [v20 bottomAnchor];
+    hostedView5 = [(OBTableHeaderFooterView *)self hostedView];
+    bottomAnchor = [hostedView5 bottomAnchor];
 
-    if (!v21)
+    if (!bottomAnchor)
     {
-      v21 = [(OBTableHeaderFooterView *)self topAnchor];
+      bottomAnchor = [(OBTableHeaderFooterView *)self topAnchor];
     }
 
-    v38 = v21;
-    v47 = [(OBTableHeaderFooterView *)self internalContentView];
-    v45 = [v47 topAnchor];
+    v38 = bottomAnchor;
+    internalContentView2 = [(OBTableHeaderFooterView *)self internalContentView];
+    topAnchor3 = [internalContentView2 topAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v43 = [v45 constraintEqualToAnchor:v21 constant:?];
+    v43 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
     v49[0] = v43;
-    v41 = [(OBTableHeaderFooterView *)self internalContentView];
-    v40 = [v41 leadingAnchor];
-    v39 = [(OBTableHeaderFooterView *)self leadingAnchor];
+    internalContentView3 = [(OBTableHeaderFooterView *)self internalContentView];
+    leadingAnchor3 = [internalContentView3 leadingAnchor];
+    leadingAnchor4 = [(OBTableHeaderFooterView *)self leadingAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v37 = [v40 constraintEqualToAnchor:v39 constant:v22];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v22];
     v49[1] = v37;
-    v23 = [(OBTableHeaderFooterView *)self internalContentView];
-    v24 = [v23 trailingAnchor];
-    v25 = [(OBTableHeaderFooterView *)self trailingAnchor];
+    internalContentView4 = [(OBTableHeaderFooterView *)self internalContentView];
+    trailingAnchor3 = [internalContentView4 trailingAnchor];
+    trailingAnchor4 = [(OBTableHeaderFooterView *)self trailingAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v27 = [v24 constraintEqualToAnchor:v25 constant:-v26];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v26];
     v49[2] = v27;
-    v28 = [(OBTableHeaderFooterView *)self internalContentView];
-    v29 = [v28 bottomAnchor];
-    v30 = [(OBTableHeaderFooterView *)self bottomAnchor];
+    internalContentView5 = [(OBTableHeaderFooterView *)self internalContentView];
+    bottomAnchor2 = [internalContentView5 bottomAnchor];
+    bottomAnchor3 = [(OBTableHeaderFooterView *)self bottomAnchor];
     [(OBTableHeaderFooterView *)self internalContentPadding];
-    v32 = [v29 constraintEqualToAnchor:v30 constant:-v31];
+    v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v31];
     v49[3] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
 

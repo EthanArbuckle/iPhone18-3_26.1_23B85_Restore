@@ -1,11 +1,11 @@
 @interface QLThumbnailServiceProxy
 + (id)interface;
-+ (id)sharedInstanceWithError:(id *)a3;
-- (QLThumbnailServiceProxy)initWithError:(id *)a3;
++ (id)sharedInstanceWithError:(id *)error;
+- (QLThumbnailServiceProxy)initWithError:(id *)error;
 - (id)indexProxy;
 - (void)dealloc;
-- (void)touchOrAddThumbnailAddition:(id)a3 forURL:(id)a4;
-- (void)updateLastHitDateOfAddition:(id)a3 onPhysicalURL:(id)a4;
+- (void)touchOrAddThumbnailAddition:(id)addition forURL:(id)l;
+- (void)updateLastHitDateOfAddition:(id)addition onPhysicalURL:(id)l;
 @end
 
 @implementation QLThumbnailServiceProxy
@@ -57,7 +57,7 @@
   return v2;
 }
 
-+ (id)sharedInstanceWithError:(id *)a3
++ (id)sharedInstanceWithError:(id *)error
 {
   v3 = sSharedProxy;
   if (!sSharedProxy)
@@ -73,10 +73,10 @@
     v6[2] = __51__QLThumbnailServiceProxy_sharedInstanceWithError___block_invoke;
     v6[3] = &unk_1E836A0A8;
     v6[4] = &v7;
-    v6[5] = a1;
+    v6[5] = self;
     if (sharedInstanceWithError__once == -1)
     {
-      if (!a3)
+      if (!error)
       {
 LABEL_5:
         _Block_object_dispose(&v7, 8);
@@ -89,13 +89,13 @@ LABEL_5:
     else
     {
       dispatch_once(&sharedInstanceWithError__once, v6);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_5;
       }
     }
 
-    *a3 = v8[5];
+    *error = v8[5];
     goto LABEL_5;
   }
 
@@ -115,7 +115,7 @@ void __51__QLThumbnailServiceProxy_sharedInstanceWithError___block_invoke(uint64
   sSharedProxy = v4;
 }
 
-- (QLThumbnailServiceProxy)initWithError:(id *)a3
+- (QLThumbnailServiceProxy)initWithError:(id *)error
 {
   v19.receiver = self;
   v19.super_class = QLThumbnailServiceProxy;
@@ -126,8 +126,8 @@ void __51__QLThumbnailServiceProxy_sharedInstanceWithError___block_invoke(uint64
     connection = v4->_connection;
     v4->_connection = v5;
 
-    v7 = [objc_opt_class() interface];
-    [(NSXPCConnection *)v4->_connection setRemoteObjectInterface:v7];
+    interface = [objc_opt_class() interface];
+    [(NSXPCConnection *)v4->_connection setRemoteObjectInterface:interface];
 
     [(NSXPCConnection *)v4->_connection resume];
     v13 = 0;
@@ -150,9 +150,9 @@ void __51__QLThumbnailServiceProxy_sharedInstanceWithError___block_invoke(uint64
     {
 
       v4 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = v14[5];
+        *error = v14[5];
       }
     }
 
@@ -189,8 +189,8 @@ void __41__QLThumbnailServiceProxy_initWithError___block_invoke(uint64_t a1, voi
   indexProxy = self->_indexProxy;
   if (!indexProxy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_indexProxy)
     {
       v5 = +[QLThumbnailServiceProxy sharedInstance];
@@ -199,11 +199,11 @@ void __41__QLThumbnailServiceProxy_initWithError___block_invoke(uint64_t a1, voi
       v8[1] = 3221225472;
       v8[2] = __37__QLThumbnailServiceProxy_indexProxy__block_invoke_91;
       v8[3] = &unk_1E836A0F8;
-      v8[4] = v4;
+      v8[4] = selfCopy;
       [v6 askThumbnailAdditionIndex:v8];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     indexProxy = self->_indexProxy;
   }
@@ -221,12 +221,12 @@ void __37__QLThumbnailServiceProxy_indexProxy__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)touchOrAddThumbnailAddition:(id)a3 forURL:(id)a4
+- (void)touchOrAddThumbnailAddition:(id)addition forURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  additionCopy = addition;
+  lCopy = l;
   v17 = 0;
-  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:v7 extensionClass:"com.apple.quicklook.readonly" error:&v17];
+  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:lCopy extensionClass:"com.apple.quicklook.readonly" error:&v17];
   v9 = v17;
   if (v9)
   {
@@ -237,17 +237,17 @@ void __37__QLThumbnailServiceProxy_indexProxy__block_invoke(uint64_t a1, void *a
     }
   }
 
-  v11 = [(QLThumbnailServiceProxy *)self indexProxy];
+  indexProxy = [(QLThumbnailServiceProxy *)self indexProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__QLThumbnailServiceProxy_touchOrAddThumbnailAddition_forURL___block_invoke;
   v14[3] = &unk_1E836A140;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
-  v12 = v6;
+  v16 = additionCopy;
+  v12 = additionCopy;
   v13 = v8;
-  [v11 hasThumbnailForURLWrapper:v13 updateLastHitDate:1 andSize:0 completion:v14];
+  [indexProxy hasThumbnailForURLWrapper:v13 updateLastHitDate:1 andSize:0 completion:v14];
 }
 
 void __62__QLThumbnailServiceProxy_touchOrAddThumbnailAddition_forURL___block_invoke(uint64_t a1, char a2)
@@ -259,12 +259,12 @@ void __62__QLThumbnailServiceProxy_touchOrAddThumbnailAddition_forURL___block_in
   }
 }
 
-- (void)updateLastHitDateOfAddition:(id)a3 onPhysicalURL:(id)a4
+- (void)updateLastHitDateOfAddition:(id)addition onPhysicalURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  additionCopy = addition;
+  lCopy = l;
   v20 = 0;
-  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:v7 extensionClass:"com.apple.quicklook.readonly" error:&v20];
+  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:lCopy extensionClass:"com.apple.quicklook.readonly" error:&v20];
   v9 = v20;
   if (v9)
   {
@@ -275,19 +275,19 @@ void __62__QLThumbnailServiceProxy_touchOrAddThumbnailAddition_forURL___block_in
     }
   }
 
-  v11 = [(QLThumbnailServiceProxy *)self indexProxy];
+  indexProxy = [(QLThumbnailServiceProxy *)self indexProxy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__QLThumbnailServiceProxy_updateLastHitDateOfAddition_onPhysicalURL___block_invoke;
   v15[3] = &unk_1E836A168;
-  v16 = v7;
-  v17 = self;
+  v16 = lCopy;
+  selfCopy = self;
   v18 = v8;
-  v19 = v6;
-  v12 = v6;
+  v19 = additionCopy;
+  v12 = additionCopy;
   v13 = v8;
-  v14 = v7;
-  [v11 hasThumbnailForURLWrapper:v13 updateLastHitDate:1 andSize:0 completion:v15];
+  v14 = lCopy;
+  [indexProxy hasThumbnailForURLWrapper:v13 updateLastHitDate:1 andSize:0 completion:v15];
 }
 
 void __69__QLThumbnailServiceProxy_updateLastHitDateOfAddition_onPhysicalURL___block_invoke(uint64_t a1, char a2)

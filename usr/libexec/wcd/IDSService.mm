@@ -11,8 +11,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(IDSService *)self devices];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  devices = [(IDSService *)self devices];
+  v3 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -24,7 +24,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -34,7 +34,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -54,8 +54,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(IDSService *)self devices];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [(IDSService *)self devices];
+  v3 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -67,7 +67,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

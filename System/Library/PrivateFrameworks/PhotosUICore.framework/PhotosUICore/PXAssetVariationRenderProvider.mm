@@ -2,21 +2,21 @@
 + (NSIndexSet)supportedVariationTypes;
 + (id)_renderingLog;
 + (id)sharedOperationQueue;
-+ (void)_performSimulatedWorkWithProgress:(id)a3;
++ (void)_performSimulatedWorkWithProgress:(id)progress;
 - (BOOL)_hasAllResults;
 - (CGSize)targetSize;
 - (PXAssetVariationRenderProvider)init;
-- (PXAssetVariationRenderProvider)initWithEditSourceLoader:(id)a3 targetSize:(CGSize)a4 desiredVariationTypes:(id)a5;
+- (PXAssetVariationRenderProvider)initWithEditSourceLoader:(id)loader targetSize:(CGSize)size desiredVariationTypes:(id)types;
 - (id)debugDescription;
-- (id)progressForVariationType:(int64_t)a3;
-- (id)renderResultForVariationType:(int64_t)a3;
-- (void)_handleAnalysisOperationCompleted:(id)a3;
-- (void)_handleCachedAnalysisResult:(id)a3;
-- (void)_handleRenderingOperationCompleted:(id)a3;
-- (void)_setError:(id)a3;
-- (void)_setProgress:(id)a3 forVariationType:(int64_t)a4;
-- (void)_setStatus:(int64_t)a3;
-- (void)_setStatusDescription:(id)a3;
+- (id)progressForVariationType:(int64_t)type;
+- (id)renderResultForVariationType:(int64_t)type;
+- (void)_handleAnalysisOperationCompleted:(id)completed;
+- (void)_handleCachedAnalysisResult:(id)result;
+- (void)_handleRenderingOperationCompleted:(id)completed;
+- (void)_setError:(id)error;
+- (void)_setProgress:(id)progress forVariationType:(int64_t)type;
+- (void)_setStatus:(int64_t)status;
+- (void)_setStatusDescription:(id)description;
 - (void)_updateAnalysisResult;
 - (void)_updateCachedAnalysisResult;
 - (void)_updateRenders;
@@ -25,9 +25,9 @@
 - (void)cancelRendering;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAnalysisResult:(id)a3;
-- (void)setTargetSize:(CGSize)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAnalysisResult:(id)result;
+- (void)setTargetSize:(CGSize)size;
 @end
 
 @implementation PXAssetVariationRenderProvider
@@ -52,8 +52,8 @@
   if ([(PXAssetVariationRenderProvider *)self status]== 5)
   {
     [v5 appendString:@"Failed:\n"];
-    v6 = [(PXAssetVariationRenderProvider *)self error];
-    v7 = [v6 description];
+    error = [(PXAssetVariationRenderProvider *)self error];
+    v7 = [error description];
     [v5 appendString:v7];
   }
 
@@ -61,56 +61,56 @@
   {
     [v5 appendString:@"Loading Durations\nImage URL: "];
     [v5 appendString:@"\nEdit Source: "];
-    v8 = [(PXAssetVariationRenderProvider *)self _editSourceDuration];
+    _editSourceDuration = [(PXAssetVariationRenderProvider *)self _editSourceDuration];
 
-    if (v8)
+    if (_editSourceDuration)
     {
-      v9 = [(PXAssetVariationRenderProvider *)self _editSourceDuration];
-      [v9 doubleValue];
+      _editSourceDuration2 = [(PXAssetVariationRenderProvider *)self _editSourceDuration];
+      [_editSourceDuration2 doubleValue];
       [v5 appendFormat:@"%.2fs", v10];
     }
 
     [v5 appendString:@"\nRecipes: "];
-    v11 = [(PXAssetVariationRenderProvider *)self _recipeGenerationDuration];
+    _recipeGenerationDuration = [(PXAssetVariationRenderProvider *)self _recipeGenerationDuration];
 
-    if (v11)
+    if (_recipeGenerationDuration)
     {
-      v12 = [(PXAssetVariationRenderProvider *)self _recipeGenerationDuration];
-      [v12 doubleValue];
+      _recipeGenerationDuration2 = [(PXAssetVariationRenderProvider *)self _recipeGenerationDuration];
+      [_recipeGenerationDuration2 doubleValue];
       [v5 appendFormat:@"%.2fs", v13];
     }
 
     else
     {
-      v14 = [(PXAssetVariationRenderProvider *)self analysisResult];
+      analysisResult = [(PXAssetVariationRenderProvider *)self analysisResult];
 
-      if (v14)
+      if (analysisResult)
       {
         [v5 appendString:@"cached"];
       }
     }
 
-    v15 = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
+    desiredVariationTypes = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __50__PXAssetVariationRenderProvider_debugDescription__block_invoke;
     v22[3] = &unk_1E774A7B8;
     v16 = v5;
     v23 = v16;
-    v24 = self;
-    [v15 enumerateIndexesUsingBlock:v22];
+    selfCopy = self;
+    [desiredVariationTypes enumerateIndexesUsingBlock:v22];
 
     [v16 appendString:@"\nTotal duration: "];
-    v17 = [(PXAssetVariationRenderProvider *)self totalRenderingDuration];
+    totalRenderingDuration = [(PXAssetVariationRenderProvider *)self totalRenderingDuration];
 
-    if (v17)
+    if (totalRenderingDuration)
     {
-      v18 = [(PXAssetVariationRenderProvider *)self totalRenderingDuration];
-      [v18 doubleValue];
+      totalRenderingDuration2 = [(PXAssetVariationRenderProvider *)self totalRenderingDuration];
+      [totalRenderingDuration2 doubleValue];
       [v16 appendFormat:@"%.2fs", v19];
     }
 
-    v6 = v23;
+    error = v23;
   }
 
   v20 = [v5 copy];
@@ -148,12 +148,12 @@ void __50__PXAssetVariationRenderProvider_debugDescription__block_invoke(uint64_
   }
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_error != v5 && ([(NSError *)v5 isEqual:?]& 1) == 0)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_error != errorCopy && ([(NSError *)errorCopy isEqual:?]& 1) == 0)
   {
     if (v6)
     {
@@ -161,52 +161,52 @@ void __50__PXAssetVariationRenderProvider_debugDescription__block_invoke(uint64_
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412546;
-        v9 = self;
+        selfCopy = self;
         v10 = 2112;
         v11 = v6;
         _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "%@ encountered error: %@", &v8, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     [(PXAssetVariationRenderProvider *)self _invalidateStatus];
   }
 }
 
-- (void)setAnalysisResult:(id)a3
+- (void)setAnalysisResult:(id)result
 {
-  if (self->_analysisResult != a3)
+  if (self->_analysisResult != result)
   {
-    v5 = [a3 copy];
+    v5 = [result copy];
     analysisResult = self->_analysisResult;
     self->_analysisResult = v5;
 
     [(PXAssetVariationRenderProvider *)self _invalidateRenders];
     [(PXAssetVariationRenderProvider *)self _invalidateStatus];
-    if (a3)
+    if (result)
     {
-      v7 = [(NSProgress *)self->_recipeGenerationProgress totalUnitCount];
+      totalUnitCount = [(NSProgress *)self->_recipeGenerationProgress totalUnitCount];
     }
 
     else
     {
-      v7 = 0;
+      totalUnitCount = 0;
     }
 
-    [(NSProgress *)self->_recipeGenerationProgress setCompletedUnitCount:v7];
+    [(NSProgress *)self->_recipeGenerationProgress setCompletedUnitCount:totalUnitCount];
 
     [(PXAssetVariationRenderProvider *)self signalChange:2];
   }
 }
 
-- (void)_setStatusDescription:(id)a3
+- (void)_setStatusDescription:(id)description
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_statusDescription != v4)
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (self->_statusDescription != descriptionCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = descriptionCopy;
+    v6 = [(NSString *)descriptionCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -220,13 +220,13 @@ void __50__PXAssetVariationRenderProvider_debugDescription__block_invoke(uint64_
   }
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
-    if (a3 == 5)
+    self->_status = status;
+    if (status == 5)
     {
       v9 = MEMORY[0x1E6991F28];
       v13 = *MEMORY[0x1E6991E20];
@@ -237,11 +237,11 @@ void __50__PXAssetVariationRenderProvider_debugDescription__block_invoke(uint64_
       [v9 sendEvent:@"com.apple.photos.CPAnalytics.rendering.livePhotoEffectFailed" withPayload:v12];
     }
 
-    else if (a3 == 4)
+    else if (status == 4)
     {
-      v4 = [MEMORY[0x1E695DF00] date];
-      v5 = [(PXAssetVariationRenderProvider *)self _beginRenderingDate];
-      [v4 timeIntervalSinceDate:v5];
+      date = [MEMORY[0x1E695DF00] date];
+      _beginRenderingDate = [(PXAssetVariationRenderProvider *)self _beginRenderingDate];
+      [date timeIntervalSinceDate:_beginRenderingDate];
       v7 = v6;
 
       v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
@@ -252,17 +252,17 @@ void __50__PXAssetVariationRenderProvider_debugDescription__block_invoke(uint64_
   }
 }
 
-- (void)_setProgress:(id)a3 forVariationType:(int64_t)a4
+- (void)_setProgress:(id)progress forVariationType:(int64_t)type
 {
-  v6 = a3;
+  progressCopy = progress;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__PXAssetVariationRenderProvider__setProgress_forVariationType___block_invoke;
   v8[3] = &unk_1E77499B0;
-  v10 = self;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
+  selfCopy = self;
+  typeCopy = type;
+  v9 = progressCopy;
+  v7 = progressCopy;
   [(PXAssetVariationRenderProvider *)self performChanges:v8];
 }
 
@@ -362,38 +362,38 @@ uint64_t __62__PXAssetVariationRenderProvider__setResult_forVariationType___bloc
   return [v5 _setProgress:0 forVariationType:v6];
 }
 
-- (void)_handleRenderingOperationCompleted:(id)a3
+- (void)_handleRenderingOperationCompleted:(id)completed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isCancelled] & 1) == 0)
+  completedCopy = completed;
+  v4 = completedCopy;
+  if (completedCopy && ([completedCopy isCancelled] & 1) == 0)
   {
-    v5 = [v4 outputImageURL];
-    v6 = [v4 outputVideoURL];
-    v7 = [v4 outputImage];
-    v8 = v7;
-    if (v7)
+    outputImageURL = [v4 outputImageURL];
+    outputVideoURL = [v4 outputVideoURL];
+    outputImage = [v4 outputImage];
+    v8 = outputImage;
+    if (outputImage)
     {
-      v9 = v7;
+      v9 = outputImage;
     }
 
     else
     {
       v10 = MEMORY[0x1E69DCAB8];
-      v11 = [v5 path];
-      v9 = [v10 imageWithContentsOfFile:v11];
+      path = [outputImageURL path];
+      v9 = [v10 imageWithContentsOfFile:path];
     }
 
-    v12 = [v4 outputAVAsset];
-    v13 = v12;
-    if (v12)
+    outputAVAsset = [v4 outputAVAsset];
+    v13 = outputAVAsset;
+    if (outputAVAsset)
     {
-      v14 = v12;
+      v14 = outputAVAsset;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E6988168] assetWithURL:v6];
+      v14 = [MEMORY[0x1E6988168] assetWithURL:outputVideoURL];
     }
 
     v15 = v14;
@@ -401,8 +401,8 @@ uint64_t __62__PXAssetVariationRenderProvider__setResult_forVariationType___bloc
     v4;
     v16 = v15;
     v17 = v9;
-    v18 = v6;
-    v19 = v5;
+    v18 = outputVideoURL;
+    v19 = outputImageURL;
     px_dispatch_on_main_queue();
   }
 }
@@ -485,19 +485,19 @@ uint64_t __67__PXAssetVariationRenderProvider__handleRenderingOperationStarted__
 - (void)_updateRenders
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
-  v4 = [(PXAssetVariationRenderProvider *)self analysisResult];
-  v5 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-  v6 = [v5 editSource];
-  if (!v6)
+  desiredVariationTypes = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
+  analysisResult = [(PXAssetVariationRenderProvider *)self analysisResult];
+  editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+  editSource = [editSourceLoader editSource];
+  if (!editSource)
   {
     goto LABEL_11;
   }
 
-  v7 = v6;
-  v8 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-  v9 = [v8 compositionController];
-  if (!v9)
+  compositionController2 = editSource;
+  editSourceLoader2 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+  compositionController = [editSourceLoader2 compositionController];
+  if (!compositionController)
   {
 
 LABEL_10:
@@ -506,15 +506,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = v9;
-  v11 = [v3 count];
+  v10 = compositionController;
+  v11 = [desiredVariationTypes count];
 
-  if (v11 && v4)
+  if (v11 && analysisResult)
   {
-    v12 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-    v5 = [v12 editSource];
+    editSourceLoader3 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+    editSourceLoader = [editSourceLoader3 editSource];
 
-    if (v5)
+    if (editSourceLoader)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -523,9 +523,9 @@ LABEL_11:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v32 = self;
+          selfCopy = self;
           v33 = 2112;
-          v34 = v5;
+          v34 = editSourceLoader;
           _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_ERROR, "%@: expected Live Photo Edit Source, but got %@", buf, 0x16u);
         }
 
@@ -540,8 +540,8 @@ LABEL_11:
       }
     }
 
-    v13 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-    v7 = [v13 compositionController];
+    editSourceLoader4 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+    compositionController2 = [editSourceLoader4 compositionController];
 
     if ([(PXEditSourceLoader *)self->_editSourceLoader baseVersion])
     {
@@ -556,10 +556,10 @@ LABEL_11:
       aBlock[1] = 3221225472;
       aBlock[2] = __48__PXAssetVariationRenderProvider__updateRenders__block_invoke;
       aBlock[3] = &unk_1E7734CB8;
-      v25 = v4;
-      v26 = v5;
-      v27 = v7;
-      v28 = self;
+      v25 = analysisResult;
+      v26 = editSourceLoader;
+      v27 = compositionController2;
+      selfCopy2 = self;
       v20 = _Block_copy(aBlock);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -567,7 +567,7 @@ LABEL_11:
       v22[3] = &unk_1E7734CE0;
       v23 = v20;
       v21 = v20;
-      [v3 enumerateIndexesUsingBlock:v22];
+      [desiredVariationTypes enumerateIndexesUsingBlock:v22];
     }
 
     goto LABEL_10;
@@ -656,31 +656,31 @@ void __48__PXAssetVariationRenderProvider__updateRenders__block_invoke_4(uint64_
   [WeakRetained _handleRenderingOperationStarted:v2];
 }
 
-- (void)_handleAnalysisOperationCompleted:(id)a3
+- (void)_handleAnalysisOperationCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completedCopy = completed;
+  v5 = completedCopy;
+  if (completedCopy)
   {
-    if (([v4 isCancelled] & 1) == 0)
+    if (([completedCopy isCancelled] & 1) == 0)
     {
-      v6 = [(PXAssetVariationRenderProvider *)self _analysisOperation];
+      _analysisOperation = [(PXAssetVariationRenderProvider *)self _analysisOperation];
 
-      if (v6 == v5)
+      if (_analysisOperation == v5)
       {
-        v7 = [v5 duration];
-        [(PXAssetVariationRenderProvider *)self _setRecipeGenerationDuration:v7];
+        duration = [v5 duration];
+        [(PXAssetVariationRenderProvider *)self _setRecipeGenerationDuration:duration];
 
         [(PXAssetVariationRenderProvider *)self _setAnalysisOperation:0];
         if (![v5 succeeded])
         {
           v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v16 = [v5 error];
+          error = [v5 error];
 
-          if (v16)
+          if (error)
           {
-            v17 = [v5 error];
-            [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+            error2 = [v5 error];
+            [v15 setObject:error2 forKeyedSubscript:*MEMORY[0x1E696AA08]];
           }
 
           [v15 setObject:@"Failed to generate asset variation recipes." forKeyedSubscript:*MEMORY[0x1E696A578]];
@@ -688,24 +688,24 @@ void __48__PXAssetVariationRenderProvider__updateRenders__block_invoke_4(uint64_
           px_dispatch_on_main_queue();
         }
 
-        v8 = [v5 analysisResult];
-        v9 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-        v10 = [v9 contentIdentifier];
+        analysisResult = [v5 analysisResult];
+        editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+        contentIdentifier = [editSourceLoader contentIdentifier];
 
-        v11 = [(PXAssetVariationRenderProvider *)self _variationSourceType];
+        _variationSourceType = [(PXAssetVariationRenderProvider *)self _variationSourceType];
         objc_initWeak(&location, self);
-        v12 = [objc_opt_class() sharedOperationQueue];
+        sharedOperationQueue = [objc_opt_class() sharedOperationQueue];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __68__PXAssetVariationRenderProvider__handleAnalysisOperationCompleted___block_invoke;
         v19[3] = &unk_1E77422A8;
         objc_copyWeak(v22, &location);
-        v13 = v8;
+        v13 = analysisResult;
         v20 = v13;
-        v14 = v10;
+        v14 = contentIdentifier;
         v21 = v14;
-        v22[1] = v11;
-        [v12 addOperationWithBlock:v19];
+        v22[1] = _variationSourceType;
+        [sharedOperationQueue addOperationWithBlock:v19];
 
         objc_destroyWeak(v22);
         objc_destroyWeak(&location);
@@ -758,40 +758,40 @@ void __68__PXAssetVariationRenderProvider__handleAnalysisOperationCompleted___bl
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v3 = +[PXAssetVariationsSettings sharedInstance];
-  v4 = [v3 simulateLoadingFailure];
+  simulateLoadingFailure = [v3 simulateLoadingFailure];
 
-  if (v4)
+  if (simulateLoadingFailure)
   {
     v5 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
     v29[0] = @"Simulated Failure";
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v7 = [v5 errorWithDomain:@"PXAssetVariationRenderProviderErrorDomain" code:2 userInfo:v6];
+    activeEditSource = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
+    v7 = [v5 errorWithDomain:@"PXAssetVariationRenderProviderErrorDomain" code:2 userInfo:activeEditSource];
     [(PXAssetVariationRenderProvider *)self _setError:v7];
   }
 
   else
   {
-    v8 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-    v6 = [v8 activeEditSource];
+    editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+    activeEditSource = [editSourceLoader activeEditSource];
 
-    if (v6)
+    if (activeEditSource)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [(PXAssetVariationRenderProvider *)self analysisResult];
-        if (v9)
+        analysisResult = [(PXAssetVariationRenderProvider *)self analysisResult];
+        if (analysisResult)
         {
         }
 
         else
         {
-          v14 = [(PXAssetVariationRenderProvider *)self _analysisOperation];
+          _analysisOperation = [(PXAssetVariationRenderProvider *)self _analysisOperation];
 
-          if (!v14)
+          if (!_analysisOperation)
           {
-            v15 = [[PXAutoloopAnalysisOperation alloc] initWithEditSource:v6];
+            v15 = [[PXAutoloopAnalysisOperation alloc] initWithEditSource:activeEditSource];
             objc_initWeak(buf, self);
             objc_initWeak(&location, v15);
             v18[0] = MEMORY[0x1E69E9820];
@@ -802,11 +802,11 @@ void __68__PXAssetVariationRenderProvider__handleAnalysisOperationCompleted___bl
             objc_copyWeak(&v20, &location);
             [(PXAutoloopAnalysisOperation *)v15 setCompletionBlock:v18];
             [(PXAssetVariationRenderProvider *)self _setAnalysisOperation:v15];
-            v16 = [(PXAutoloopAnalysisOperation *)v15 progress];
+            progress = [(PXAutoloopAnalysisOperation *)v15 progress];
             [(NSProgress *)self->_recipeGenerationProgress setCompletedUnitCount:0];
-            [(NSProgress *)self->_recipeGenerationProgress addChild:v16 withPendingUnitCount:[(NSProgress *)self->_recipeGenerationProgress totalUnitCount]];
-            v17 = [objc_opt_class() sharedOperationQueue];
-            [v17 addOperation:v15];
+            [(NSProgress *)self->_recipeGenerationProgress addChild:progress withPendingUnitCount:[(NSProgress *)self->_recipeGenerationProgress totalUnitCount]];
+            sharedOperationQueue = [objc_opt_class() sharedOperationQueue];
+            [sharedOperationQueue addOperation:v15];
 
             objc_destroyWeak(&v20);
             objc_destroyWeak(&v19);
@@ -822,9 +822,9 @@ void __68__PXAssetVariationRenderProvider__handleAnalysisOperationCompleted___bl
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v25 = self;
+          selfCopy = self;
           v26 = 2112;
-          v27 = v6;
+          v27 = activeEditSource;
           _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "%@: expected Live Photo Edit Source, but got %@", buf, 0x16u);
         }
 
@@ -853,16 +853,16 @@ void __55__PXAssetVariationRenderProvider__updateAnalysisResult__block_invoke_2(
   [WeakRetained _handleAnalysisOperationCompleted:v2];
 }
 
-- (void)_handleCachedAnalysisResult:(id)a3
+- (void)_handleCachedAnalysisResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PXAssetVariationRenderProvider__handleCachedAnalysisResult___block_invoke;
   v6[3] = &unk_1E77498F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXAssetVariationRenderProvider *)self performChanges:v6];
 }
 
@@ -897,31 +897,31 @@ void __62__PXAssetVariationRenderProvider__handleCachedAnalysisResult___block_in
 {
   if (![(PXAssetVariationRenderProvider *)self _hasAllResults])
   {
-    v3 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-    v4 = [v3 activeEditSource];
+    editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+    activeEditSource = [editSourceLoader activeEditSource];
 
-    if (v4)
+    if (activeEditSource)
     {
-      v5 = [v3 contentIdentifier];
-      v6 = [(PXAssetVariationRenderProvider *)self _variationSourceType];
-      if (v5)
+      contentIdentifier = [editSourceLoader contentIdentifier];
+      _variationSourceType = [(PXAssetVariationRenderProvider *)self _variationSourceType];
+      if (contentIdentifier)
       {
-        v7 = v6;
-        v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-        v9 = [v8 variationCache];
+        v7 = _variationSourceType;
+        px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+        variationCache = [px_deprecated_appPhotoLibrary variationCache];
 
         objc_initWeak(&location, self);
-        v10 = [objc_opt_class() sharedOperationQueue];
+        sharedOperationQueue = [objc_opt_class() sharedOperationQueue];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __61__PXAssetVariationRenderProvider__updateCachedAnalysisResult__block_invoke;
         v12[3] = &unk_1E77422A8;
-        v11 = v9;
+        v11 = variationCache;
         v13 = v11;
-        v14 = v5;
+        v14 = contentIdentifier;
         v15[1] = v7;
         objc_copyWeak(v15, &location);
-        [v10 addOperationWithBlock:v12];
+        [sharedOperationQueue addOperationWithBlock:v12];
 
         objc_destroyWeak(v15);
         objc_destroyWeak(&location);
@@ -951,9 +951,9 @@ void __61__PXAssetVariationRenderProvider__updateCachedAnalysisResult__block_inv
 
 - (void)_updateStatus
 {
-  v3 = [(PXAssetVariationRenderProvider *)self error];
+  error = [(PXAssetVariationRenderProvider *)self error];
 
-  if (v3)
+  if (error)
   {
     v4 = @"Failed";
     v5 = 5;
@@ -961,10 +961,10 @@ void __61__PXAssetVariationRenderProvider__updateCachedAnalysisResult__block_inv
 
   else if (self->_hasBegunRendering)
   {
-    v6 = [(PXAssetVariationRenderProvider *)self _hasAllResults];
-    v7 = [(PXAssetVariationRenderProvider *)self analysisResult];
+    _hasAllResults = [(PXAssetVariationRenderProvider *)self _hasAllResults];
+    analysisResult = [(PXAssetVariationRenderProvider *)self analysisResult];
 
-    if (v6)
+    if (_hasAllResults)
     {
       v4 = @"Finished";
       v5 = 4;
@@ -972,15 +972,15 @@ void __61__PXAssetVariationRenderProvider__updateCachedAnalysisResult__block_inv
 
     else
     {
-      v9 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-      v10 = [v9 editSource];
-      if (v10)
+      editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+      editSource = [editSourceLoader editSource];
+      if (editSource)
       {
-        v11 = v10;
-        v12 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-        v13 = [v12 compositionController];
+        v11 = editSource;
+        editSourceLoader2 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+        compositionController = [editSourceLoader2 compositionController];
 
-        if (v13)
+        if (compositionController)
         {
           v4 = @"Generating Recipes";
         }
@@ -991,19 +991,19 @@ void __61__PXAssetVariationRenderProvider__updateCachedAnalysisResult__block_inv
         }
 
         v5 = 2;
-        if (v13 && v7)
+        if (compositionController && analysisResult)
         {
           v24 = 0;
           v25 = &v24;
           v26 = 0x2020000000;
           v27 = -1;
-          v14 = [(PXAssetVariationRenderProvider *)self _renderingOperationsByVariationType];
+          _renderingOperationsByVariationType = [(PXAssetVariationRenderProvider *)self _renderingOperationsByVariationType];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __47__PXAssetVariationRenderProvider__updateStatus__block_invoke;
           v23[3] = &unk_1E7734C88;
           v23[4] = &v24;
-          [v14 enumerateKeysAndObjectsUsingBlock:v23];
+          [_renderingOperationsByVariationType enumerateKeysAndObjectsUsingBlock:v23];
 
           v15 = v25[3];
           if (v15 == -1)
@@ -1081,23 +1081,23 @@ uint64_t __47__PXAssetVariationRenderProvider__updateStatus__block_invoke_2(uint
 
 - (BOOL)_hasAllResults
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
+  desiredVariationTypes = [(PXAssetVariationRenderProvider *)self desiredVariationTypes];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__PXAssetVariationRenderProvider__hasAllResults__block_invoke;
   v5[3] = &unk_1E773BA28;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateIndexesUsingBlock:v5];
+  [desiredVariationTypes enumerateIndexesUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __48__PXAssetVariationRenderProvider__hasAllResults__block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -1119,14 +1119,14 @@ void __48__PXAssetVariationRenderProvider__hasAllResults__block_invoke(uint64_t 
   px_dispatch_on_main_queue();
 }
 
-- (void)setTargetSize:(CGSize)a3
+- (void)setTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"targetSize.width > 0 && targetSize.height > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"targetSize.width > 0 && targetSize.height > 0"}];
   }
 
   if (width != self->_targetSize.width || height != self->_targetSize.height)
@@ -1149,10 +1149,10 @@ __n128 __48__PXAssetVariationRenderProvider_setTargetSize___block_invoke(uint64_
   return result;
 }
 
-- (id)progressForVariationType:(int64_t)a3
+- (id)progressForVariationType:(int64_t)type
 {
   progressesByVariationType = self->_progressesByVariationType;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)progressesByVariationType objectForKeyedSubscript:v4];
 
   return v5;
@@ -1168,16 +1168,16 @@ __n128 __48__PXAssetVariationRenderProvider_setTargetSize___block_invoke(uint64_
   v5 = self->_observedEditSourceLoaderProgress;
   self->_observedEditSourceLoaderProgress = 0;
 
-  v6 = [(PXAssetVariationRenderProvider *)self editSourceLoader];
-  v7 = [v6 progress];
-  [v7 cancel];
+  editSourceLoader = [(PXAssetVariationRenderProvider *)self editSourceLoader];
+  progress = [editSourceLoader progress];
+  [progress cancel];
 
-  v8 = [(PXAssetVariationRenderProvider *)self _analysisOperation];
-  [v8 cancel];
+  _analysisOperation = [(PXAssetVariationRenderProvider *)self _analysisOperation];
+  [_analysisOperation cancel];
 
   [(PXAssetVariationRenderProvider *)self _setAnalysisOperation:0];
-  v9 = [(PXAssetVariationRenderProvider *)self _renderingOperationsByVariationType];
-  [v9 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_230];
+  _renderingOperationsByVariationType = [(PXAssetVariationRenderProvider *)self _renderingOperationsByVariationType];
+  [_renderingOperationsByVariationType enumerateKeysAndObjectsUsingBlock:&__block_literal_global_230];
 }
 
 - (void)beginRendering
@@ -1238,42 +1238,42 @@ uint64_t __48__PXAssetVariationRenderProvider_beginRendering__block_invoke(uint6
   return result;
 }
 
-- (id)renderResultForVariationType:(int64_t)a3
+- (id)renderResultForVariationType:(int64_t)type
 {
   resultsByVariationType = self->_resultsByVariationType;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)resultsByVariationType objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (PXAssetVariationRenderProvider)initWithEditSourceLoader:(id)a3 targetSize:(CGSize)a4 desiredVariationTypes:(id)a5
+- (PXAssetVariationRenderProvider)initWithEditSourceLoader:(id)loader targetSize:(CGSize)size desiredVariationTypes:(id)types
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  loaderCopy = loader;
+  typesCopy = types;
   v32.receiver = self;
   v32.super_class = PXAssetVariationRenderProvider;
   v12 = [(PXAssetVariationRenderProvider *)&v32 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_editSourceLoader, a3);
+    objc_storeStrong(&v12->_editSourceLoader, loader);
     v13->_targetSize.width = width;
     v13->_targetSize.height = height;
-    if (v11)
+    if (typesCopy)
     {
-      v14 = [v11 copy];
+      supportedVariationTypes = [typesCopy copy];
     }
 
     else
     {
-      v14 = [objc_opt_class() supportedVariationTypes];
+      supportedVariationTypes = [objc_opt_class() supportedVariationTypes];
     }
 
-    v15 = v14;
-    objc_storeStrong(&v13->_desiredVariationTypes, v14);
+    v15 = supportedVariationTypes;
+    objc_storeStrong(&v13->_desiredVariationTypes, supportedVariationTypes);
 
     v16 = [[off_1E7721940 alloc] initWithTarget:v13];
     updater = v13->_updater;
@@ -1310,8 +1310,8 @@ uint64_t __48__PXAssetVariationRenderProvider_beginRendering__block_invoke(uint6
     recipeGenerationProgress = v13->_recipeGenerationProgress;
     v13->_recipeGenerationProgress = v28;
 
-    v30 = [v10 progress];
-    [(NSProgress *)v13->_initialLoadingProgress px_appendChild:v30 withPendingUnitCount:100];
+    progress = [loaderCopy progress];
+    [(NSProgress *)v13->_initialLoadingProgress px_appendChild:progress withPendingUnitCount:100];
     [(NSProgress *)v13->_initialLoadingProgress px_appendChild:v13->_recipeGenerationProgress withPendingUnitCount:50];
     v13->_signpostID = 0;
   }
@@ -1328,8 +1328,8 @@ uint64_t __48__PXAssetVariationRenderProvider_beginRendering__block_invoke(uint6
   v5 = self->_observedEditSourceLoaderProgress;
   self->_observedEditSourceLoaderProgress = 0;
 
-  v6 = [(PXEditSourceLoader *)self->_editSourceLoader progress];
-  [v6 cancel];
+  progress = [(PXEditSourceLoader *)self->_editSourceLoader progress];
+  [progress cancel];
 
   [(NSOperation *)self->__analysisOperation cancel];
   [(NSMutableDictionary *)self->__renderingOperationsByVariationType enumerateKeysAndObjectsUsingBlock:&__block_literal_global_211];
@@ -1340,28 +1340,28 @@ uint64_t __48__PXAssetVariationRenderProvider_beginRendering__block_invoke(uint6
 
 - (PXAssetVariationRenderProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:109 description:{@"%s is not available as initializer", "-[PXAssetVariationRenderProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:109 description:{@"%s is not available as initializer", "-[PXAssetVariationRenderProvider init]"}];
 
   abort();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (PXEditSourceLoaderProgressObservationContext != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (PXEditSourceLoaderProgressObservationContext != context)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderProvider.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v14 = v13;
+  v14 = changeCopy;
   v15 = NSStringFromSelector(sel_completedUnitCount);
-  v16 = [v11 isEqualToString:v15];
+  v16 = [pathCopy isEqualToString:v15];
 
   if (v16)
   {
@@ -1390,11 +1390,11 @@ uint64_t __81__PXAssetVariationRenderProvider_observeValueForKeyPath_ofObject_ch
   return [v2 _invalidateRenders];
 }
 
-+ (void)_performSimulatedWorkWithProgress:(id)a3
++ (void)_performSimulatedWorkWithProgress:(id)progress
 {
-  v4 = a3;
-  [v4 setCompletedUnitCount:{objc_msgSend(v4, "completedUnitCount") + 1}];
-  [v4 fractionCompleted];
+  progressCopy = progress;
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
+  [progressCopy fractionCompleted];
   if (v5 < 1.0)
   {
     v6 = dispatch_time(0, 250000000);
@@ -1402,8 +1402,8 @@ uint64_t __81__PXAssetVariationRenderProvider_observeValueForKeyPath_ofObject_ch
     v7[1] = 3221225472;
     v7[2] = __68__PXAssetVariationRenderProvider__performSimulatedWorkWithProgress___block_invoke;
     v7[3] = &unk_1E77498A0;
-    v9 = a1;
-    v8 = v4;
+    selfCopy = self;
+    v8 = progressCopy;
     dispatch_after(v6, MEMORY[0x1E69E96A0], v7);
   }
 }

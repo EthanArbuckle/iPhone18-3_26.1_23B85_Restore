@@ -1,5 +1,5 @@
 @interface _AFHomeAnnouncementSnapshotMutation
-- (_AFHomeAnnouncementSnapshotMutation)initWithBase:(id)a3;
+- (_AFHomeAnnouncementSnapshotMutation)initWithBase:(id)base;
 - (id)getLastPlayedAnnouncement;
 - (unint64_t)getState;
 @end
@@ -23,27 +23,27 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_lastPlayedAnnouncement;
+    lastPlayedAnnouncement = self->_lastPlayedAnnouncement;
   }
 
   else
   {
-    v2 = [(AFHomeAnnouncementSnapshot *)self->_base lastPlayedAnnouncement];
+    lastPlayedAnnouncement = [(AFHomeAnnouncementSnapshot *)self->_base lastPlayedAnnouncement];
   }
 
-  return v2;
+  return lastPlayedAnnouncement;
 }
 
-- (_AFHomeAnnouncementSnapshotMutation)initWithBase:(id)a3
+- (_AFHomeAnnouncementSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFHomeAnnouncementSnapshotMutation;
   v6 = [(_AFHomeAnnouncementSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

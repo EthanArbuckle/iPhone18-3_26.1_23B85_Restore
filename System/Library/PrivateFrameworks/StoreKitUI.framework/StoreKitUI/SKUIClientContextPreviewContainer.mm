@@ -1,37 +1,37 @@
 @interface SKUIClientContextPreviewContainer
-- (SKUIClientContextPreviewContainer)initWithAppContext:(id)a3 clientContext:(id)a4 previewContainerViewController:(id)a5;
-- (void)previewDocument:(id)a3 :(id)a4;
+- (SKUIClientContextPreviewContainer)initWithAppContext:(id)context clientContext:(id)clientContext previewContainerViewController:(id)controller;
+- (void)previewDocument:(id)document :(id)a4;
 @end
 
 @implementation SKUIClientContextPreviewContainer
 
-- (SKUIClientContextPreviewContainer)initWithAppContext:(id)a3 clientContext:(id)a4 previewContainerViewController:(id)a5
+- (SKUIClientContextPreviewContainer)initWithAppContext:(id)context clientContext:(id)clientContext previewContainerViewController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
+  clientContextCopy = clientContext;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = SKUIClientContextPreviewContainer;
-  v10 = [(IKJSObject *)&v13 initWithAppContext:a3];
+  v10 = [(IKJSObject *)&v13 initWithAppContext:context];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_clientContext, v8);
-    objc_storeStrong(&v11->_previewContainerViewController, a5);
+    objc_storeWeak(&v10->_clientContext, clientContextCopy);
+    objc_storeStrong(&v11->_previewContainerViewController, controller);
   }
 
   return v11;
 }
 
-- (void)previewDocument:(id)a3 :(id)a4
+- (void)previewDocument:(id)document :(id)a4
 {
-  v6 = a3;
+  documentCopy = document;
   v7 = a4;
-  if (v6 && self->_previewContainerViewController)
+  if (documentCopy && self->_previewContainerViewController)
   {
-    v8 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     if ([MEMORY[0x277D1B038] instancesRespondToSelector:sel_initWithAppContext_document_owner_])
     {
-      v9 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:v8 document:v6 owner:self];
+      v9 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:appContext document:documentCopy owner:self];
     }
 
     else
@@ -39,7 +39,7 @@
       v9 = 0;
     }
 
-    v10 = [(IKJSObject *)self appContext];
+    appContext2 = [(IKJSObject *)self appContext];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __54__SKUIClientContextPreviewContainer_previewDocument::__block_invoke;
@@ -48,7 +48,7 @@
     v13 = v9;
     v14 = v7;
     v11 = v9;
-    [v10 evaluateDelegateBlockSync:v12];
+    [appContext2 evaluateDelegateBlockSync:v12];
   }
 }
 

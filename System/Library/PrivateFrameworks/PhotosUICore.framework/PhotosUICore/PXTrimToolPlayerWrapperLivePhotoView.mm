@@ -4,34 +4,34 @@
 - (BOOL)isPlaying;
 - (BOOL)isReadyToPlay;
 - (PXTrimToolPlayerObserver)playerObserver;
-- (PXTrimToolPlayerWrapperLivePhotoView)initWithLivePhotoView:(id)a3;
+- (PXTrimToolPlayerWrapperLivePhotoView)initWithLivePhotoView:(id)view;
 - (UIView)loupePlayerView;
 - (id)videoPlayerView;
 - (void)_addPeriodicTimeObserver;
 - (void)_createLoupePlayerView;
 - (void)_loadWrappedAVPlayerIfNecessary;
-- (void)_timeObserverTimeChanged:(id *)a3;
-- (void)applyTrimTimeRange:(id *)a3;
+- (void)_timeObserverTimeChanged:(id *)changed;
+- (void)applyTrimTimeRange:(id *)range;
 - (void)finishSeeking;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)requestAssetWithCompletion:(id)a3;
-- (void)seekToTime:(id *)a3 untrimmed:(BOOL)a4 exact:(BOOL)a5 forceSeek:(BOOL)a6;
-- (void)setPeriodicTimeObservationInterval:(id *)a3;
-- (void)setPlayerObserver:(id)a3;
-- (void)setWrappedAVPlayer:(id)a3;
+- (void)requestAssetWithCompletion:(id)completion;
+- (void)seekToTime:(id *)time untrimmed:(BOOL)untrimmed exact:(BOOL)exact forceSeek:(BOOL)seek;
+- (void)setPeriodicTimeObservationInterval:(id *)interval;
+- (void)setPlayerObserver:(id)observer;
+- (void)setWrappedAVPlayer:(id)player;
 - (void)startPeriodicTimeObserver;
-- (void)stepByCount:(int64_t)a3 playheadTime:(id *)a4;
+- (void)stepByCount:(int64_t)count playheadTime:(id *)time;
 - (void)stopPeriodicTimeObserver;
 @end
 
 @implementation PXTrimToolPlayerWrapperLivePhotoView
 
-- (void)setPeriodicTimeObservationInterval:(id *)a3
+- (void)setPeriodicTimeObservationInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_periodicTimeObservationInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_periodicTimeObservationInterval.epoch = interval->var3;
   *&self->_periodicTimeObservationInterval.value = v3;
 }
 
@@ -42,32 +42,32 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (livePhotoPlayerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  v9 = observableCopy;
+  if (livePhotoPlayerObservationContext == context)
   {
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v8;
+      observableCopy;
       px_dispatch_on_main_queue();
     }
   }
 
-  else if (avPlayerObservationContext_228331 == a5)
+  else if (avPlayerObservationContext_228331 == context)
   {
-    if ((v6 & 0x1000) != 0)
+    if ((changeCopy & 0x1000) != 0)
     {
-      v10 = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
-      [v10 compositionDidUpdateForPlayerWrapper:self];
+      playerObserver = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
+      [playerObserver compositionDidUpdateForPlayerWrapper:self];
     }
 
-    if ((v6 & 1) != 0 && self->_delegateFlags.respondsToPlayerStatusChangedForPlayerWrapper)
+    if ((changeCopy & 1) != 0 && self->_delegateFlags.respondsToPlayerStatusChangedForPlayerWrapper)
     {
-      v11 = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
-      [v11 playerStatusChangedForPlayerWrapper:self];
+      playerObserver2 = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
+      [playerObserver2 playerStatusChangedForPlayerWrapper:self];
     }
   }
 }
@@ -82,12 +82,12 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
 
 - (void)stopPeriodicTimeObserver
 {
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
-  if (v3)
+  periodicTimeObserver = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
+  if (periodicTimeObserver)
   {
-    v4 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-    v5 = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
-    [v4 removeTimeObserver:v5];
+    wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+    periodicTimeObserver2 = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
+    [wrappedAVPlayer removeTimeObserver:periodicTimeObserver2];
 
     [(PXTrimToolPlayerWrapperLivePhotoView *)self setPeriodicTimeObserver:0];
   }
@@ -99,9 +99,9 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
 
 - (void)startPeriodicTimeObserver
 {
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
+  periodicTimeObserver = [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObserver];
 
-  if (v3)
+  if (periodicTimeObserver)
   {
     [(PXTrimToolPlayerWrapperLivePhotoView *)self stopPeriodicTimeObserver];
   }
@@ -114,12 +114,12 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v4 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  if (v4)
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  if (wrappedAVPlayer)
   {
-    v6 = v4;
-    [v4 currentTime];
-    v4 = v6;
+    v6 = wrappedAVPlayer;
+    [wrappedAVPlayer currentTime];
+    wrappedAVPlayer = v6;
   }
 
   else
@@ -132,31 +132,31 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
   return result;
 }
 
-- (void)stepByCount:(int64_t)a3 playheadTime:(id *)a4
+- (void)stepByCount:(int64_t)count playheadTime:(id *)time
 {
   memset(&v9, 0, sizeof(v9));
-  CMTimeMakeWithSeconds(&rhs, a3 * 0.016, 600);
-  v7 = *a4;
+  CMTimeMakeWithSeconds(&rhs, count * 0.016, 600);
+  v7 = *time;
   CMTimeAdd(&v9, &v7, &rhs);
-  v6 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
+  livePhotoView = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
   rhs = v9;
-  [v6 setSeekTime:&rhs];
+  [livePhotoView setSeekTime:&rhs];
 }
 
 - (void)pause
 {
-  v2 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  [v2 pause];
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  [wrappedAVPlayer pause];
 }
 
 - (void)play
 {
   [(PXTrimToolPlayerWrapperLivePhotoView *)self _loadWrappedAVPlayerIfNecessary];
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  v5 = v3;
-  if (v3)
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  v5 = wrappedAVPlayer;
+  if (wrappedAVPlayer)
   {
-    [v3 itemForwardPlaybackEndTime];
+    [wrappedAVPlayer itemForwardPlaybackEndTime];
   }
 
   else
@@ -170,8 +170,8 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
 
 - (BOOL)isPlaying
 {
-  v2 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  [v2 rate];
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  [wrappedAVPlayer rate];
   v4 = v3;
 
   return v4 > 0.0;
@@ -179,30 +179,30 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
 
 - (BOOL)isReadyToPlay
 {
-  v2 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  v3 = [v2 status] == 1;
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  v3 = [wrappedAVPlayer status] == 1;
 
   return v3;
 }
 
-- (void)applyTrimTimeRange:(id *)a3
+- (void)applyTrimTimeRange:(id *)range
 {
-  v4 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
-  v5 = *&a3->var0.var3;
-  v6[0] = *&a3->var0.var0;
+  livePhotoView = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
+  v5 = *&range->var0.var3;
+  v6[0] = *&range->var0.var0;
   v6[1] = v5;
-  v6[2] = *&a3->var1.var1;
-  [v4 setTrimmedTimeRange:v6];
+  v6[2] = *&range->var1.var1;
+  [livePhotoView setTrimmedTimeRange:v6];
 }
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)trimRange
 {
-  v7 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
-  v4 = [v7 player];
-  v5 = v4;
-  if (v4)
+  livePhotoView = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
+  player = [livePhotoView player];
+  v5 = player;
+  if (player)
   {
-    [v4 trimTimeRange];
+    [player trimTimeRange];
   }
 
   else
@@ -222,23 +222,23 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
   [(PXTrimToolPlayerWrapperLivePhotoView *)self seekToTime:&v2];
 }
 
-- (void)seekToTime:(id *)a3 untrimmed:(BOOL)a4 exact:(BOOL)a5 forceSeek:(BOOL)a6
+- (void)seekToTime:(id *)time untrimmed:(BOOL)untrimmed exact:(BOOL)exact forceSeek:(BOOL)seek
 {
-  v7 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView:a3];
-  v8 = *a3;
+  v7 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView:time];
+  v8 = *time;
   [v7 setSeekTime:&v8];
 }
 
-- (void)requestAssetWithCompletion:(id)a3
+- (void)requestAssetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PXTrimToolPlayerWrapperLivePhotoView *)self _loadWrappedAVPlayerIfNecessary];
-  v5 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-  v8 = [v5 currentItem];
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  currentItem = [wrappedAVPlayer currentItem];
 
-  v6 = [v8 asset];
-  v7 = [v8 videoComposition];
-  v4[2](v4, v6, v7);
+  asset = [currentItem asset];
+  videoComposition = [currentItem videoComposition];
+  completionCopy[2](completionCopy, asset, videoComposition);
 }
 
 - (UIView)loupePlayerView
@@ -253,10 +253,10 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
   return loupePlayerView;
 }
 
-- (void)setPlayerObserver:(id)a3
+- (void)setPlayerObserver:(id)observer
 {
-  v4 = a3;
-  objc_storeWeak(&self->_playerObserver, v4);
+  observerCopy = observer;
+  objc_storeWeak(&self->_playerObserver, observerCopy);
   self->_delegateFlags.respondsToPlayerStatusChangedForPlayerWrapper = objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
 
@@ -265,29 +265,29 @@ void __69__PXTrimToolPlayerWrapperLivePhotoView_observable_didChange_context___b
   [(PXTrimToolPlayerWrapperLivePhotoView *)self stopPeriodicTimeObserver];
 }
 
-- (void)_timeObserverTimeChanged:(id *)a3
+- (void)_timeObserverTimeChanged:(id *)changed
 {
   if (self->_delegateFlags.respondsToTimeChanged)
   {
     v9 = v3;
     v10 = v4;
-    v7 = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
-    v8 = *a3;
-    [v7 playerWrapper:self timeChanged:&v8];
+    playerObserver = [(PXTrimToolPlayerWrapperLivePhotoView *)self playerObserver];
+    v8 = *changed;
+    [playerObserver playerWrapper:self timeChanged:&v8];
   }
 }
 
 - (void)_addPeriodicTimeObserver
 {
   objc_initWeak(&location, self);
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
   [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObservationInterval];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PXTrimToolPlayerWrapperLivePhotoView__addPeriodicTimeObserver__block_invoke;
   v5[3] = &unk_1E7748F40;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addPeriodicTimeObserverForInterval:v7 queue:0 usingBlock:v5];
+  v4 = [wrappedAVPlayer addPeriodicTimeObserverForInterval:v7 queue:0 usingBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -303,9 +303,9 @@ void __64__PXTrimToolPlayerWrapperLivePhotoView__addPeriodicTimeObserver__block_
 
 - (void)_createLoupePlayerView
 {
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self videoPlayerView];
+  videoPlayerView = [(PXTrimToolPlayerWrapperLivePhotoView *)self videoPlayerView];
   loupePlayerView = self->_loupePlayerView;
-  self->_loupePlayerView = v3;
+  self->_loupePlayerView = videoPlayerView;
 }
 
 - (id)videoPlayerView
@@ -318,8 +318,8 @@ void __64__PXTrimToolPlayerWrapperLivePhotoView__addPeriodicTimeObserver__block_
     self->_videoPlayerView = v4;
 
     [(PXTrimToolPlayerWrapperLivePhotoView *)self _loadWrappedAVPlayerIfNecessary];
-    v6 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
-    [(ISVideoPlayerUIView *)self->_videoPlayerView setVideoPlayer:v6];
+    wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+    [(ISVideoPlayerUIView *)self->_videoPlayerView setVideoPlayer:wrappedAVPlayer];
 
     videoPlayerView = self->_videoPlayerView;
   }
@@ -327,21 +327,21 @@ void __64__PXTrimToolPlayerWrapperLivePhotoView__addPeriodicTimeObserver__block_
   return videoPlayerView;
 }
 
-- (void)setWrappedAVPlayer:(id)a3
+- (void)setWrappedAVPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_wrappedAVPlayer != v5)
+  playerCopy = player;
+  if (self->_wrappedAVPlayer != playerCopy)
   {
     v9 = 0uLL;
     v10 = 0;
     [(PXTrimToolPlayerWrapperLivePhotoView *)self periodicTimeObservationInterval];
     [(PXTrimToolPlayerWrapperLivePhotoView *)self stopPeriodicTimeObserver];
     [(ISWrappedAVPlayer *)self->_wrappedAVPlayer unregisterChangeObserver:self context:avPlayerObservationContext_228331];
-    objc_storeStrong(&self->_wrappedAVPlayer, a3);
-    v6 = [(PXTrimToolPlayerWrapperLivePhotoView *)self _videoPlayerViewIfLoaded];
-    [v6 setVideoPlayer:v5];
+    objc_storeStrong(&self->_wrappedAVPlayer, player);
+    _videoPlayerViewIfLoaded = [(PXTrimToolPlayerWrapperLivePhotoView *)self _videoPlayerViewIfLoaded];
+    [_videoPlayerViewIfLoaded setVideoPlayer:playerCopy];
 
-    [(ISWrappedAVPlayer *)v5 registerChangeObserver:self context:avPlayerObservationContext_228331];
+    [(ISWrappedAVPlayer *)playerCopy registerChangeObserver:self context:avPlayerObservationContext_228331];
     if (0 >> 96)
     {
       v7 = v9;
@@ -354,29 +354,29 @@ void __64__PXTrimToolPlayerWrapperLivePhotoView__addPeriodicTimeObserver__block_
 
 - (void)_loadWrappedAVPlayerIfNecessary
 {
-  v3 = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
+  wrappedAVPlayer = [(PXTrimToolPlayerWrapperLivePhotoView *)self wrappedAVPlayer];
 
-  if (!v3)
+  if (!wrappedAVPlayer)
   {
-    v4 = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
-    v6 = [v4 player];
+    livePhotoView = [(PXTrimToolPlayerWrapperLivePhotoView *)self livePhotoView];
+    player = [livePhotoView player];
 
-    [v6 registerChangeObserver:self context:livePhotoPlayerObservationContext];
-    v5 = [v6 videoPlayer];
-    [(PXTrimToolPlayerWrapperLivePhotoView *)self setWrappedAVPlayer:v5];
+    [player registerChangeObserver:self context:livePhotoPlayerObservationContext];
+    videoPlayer = [player videoPlayer];
+    [(PXTrimToolPlayerWrapperLivePhotoView *)self setWrappedAVPlayer:videoPlayer];
   }
 }
 
-- (PXTrimToolPlayerWrapperLivePhotoView)initWithLivePhotoView:(id)a3
+- (PXTrimToolPlayerWrapperLivePhotoView)initWithLivePhotoView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PXTrimToolPlayerWrapperLivePhotoView;
   v6 = [(PXTrimToolPlayerWrapperLivePhotoView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_livePhotoView, a3);
+    objc_storeStrong(&v6->_livePhotoView, view);
   }
 
   return v7;

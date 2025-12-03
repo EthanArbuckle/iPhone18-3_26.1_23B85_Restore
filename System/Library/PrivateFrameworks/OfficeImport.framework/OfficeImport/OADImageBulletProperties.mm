@@ -1,18 +1,18 @@
 @interface OADImageBulletProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OADImageBulletProperties
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(OADBlipRef *)self->mImage blip];
-    v6 = [v4[1] blip];
-    v7 = [v5 isEqual:v6];
+    blip = [(OADBlipRef *)self->mImage blip];
+    blip2 = [equalCopy[1] blip];
+    v7 = [blip isEqual:blip2];
   }
 
   else

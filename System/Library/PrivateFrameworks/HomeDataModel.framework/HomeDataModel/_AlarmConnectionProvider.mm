@@ -6,7 +6,7 @@
 
 - (id)alarmManagerServiceConnection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D1845D94();
 
   return v3;

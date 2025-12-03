@@ -1,28 +1,28 @@
 @interface TypistKeyboardHawaiian
-- (TypistKeyboardHawaiian)initWithCoder:(id)a3;
-- (id)addAccentKeyAction:(id)a3;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (TypistKeyboardHawaiian)initWithCoder:(id)coder;
+- (id)addAccentKeyAction:(id)action;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 - (void)preprocessing;
 - (void)setupSentenceBoundryStrings;
 @end
 
 @implementation TypistKeyboardHawaiian
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardHawaiian;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"haw"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"haw"];
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardHawaiian;
-  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:a3 options:a4];
+  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:info options:options];
   if (!v5)
   {
     [(TypistKeyboardHawaiian *)self setKahakoKeys:&unk_28802A730];
@@ -44,16 +44,16 @@
   v8.receiver = self;
   v8.super_class = TypistKeyboardHawaiian;
   [(TypistKeyboard *)&v8 preprocessing];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v9) <= 1194.0)
   {
 
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 _referenceBounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 _referenceBounds];
   if (CGRectGetHeight(v10) <= 1194.0)
   {
 LABEL_7:
@@ -61,14 +61,14 @@ LABEL_7:
     return;
   }
 
-  v5 = [(TypistKeyboard *)self isFloating];
+  isFloating = [(TypistKeyboard *)self isFloating];
 
-  if (v5)
+  if (isFloating)
   {
 LABEL_6:
-    v3 = [(TypistKeyboard *)self keyPlanes];
-    v4 = [(TypistKeyboard *)self defaultPlaneName];
-    v6 = [v3 objectForKeyedSubscript:v4];
+    mainScreen = [(TypistKeyboard *)self keyPlanes];
+    mainScreen2 = [(TypistKeyboard *)self defaultPlaneName];
+    v6 = [mainScreen objectForKeyedSubscript:mainScreen2];
     v7 = [v6 objectForKeyedSubscript:@"¯"];
     [(TypistKeyboardHawaiian *)self setKahakoDiacriticKey:v7];
 
@@ -76,26 +76,26 @@ LABEL_6:
   }
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 _referenceBounds];
+  keyCopy = key;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   Height = CGRectGetHeight(v15);
   if (Height <= 1194.0 || ([MEMORY[0x277D759A0] mainScreen], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_referenceBounds"), CGRectGetHeight(v16) > 1194.0) && -[TypistKeyboard isFloating](self, "isFloating"))
   {
-    v8 = [(TypistKeyboardHawaiian *)self kahakoKeys];
-    v9 = [v8 objectForKeyedSubscript:v5];
+    kahakoKeys = [(TypistKeyboardHawaiian *)self kahakoKeys];
+    v9 = [kahakoKeys objectForKeyedSubscript:keyCopy];
     if (v9)
     {
       v10 = v9;
-      v11 = [(TypistKeyboardHawaiian *)self kahakoKeys];
-      v12 = [v11 objectForKeyedSubscript:v5];
+      kahakoKeys2 = [(TypistKeyboardHawaiian *)self kahakoKeys];
+      v12 = [kahakoKeys2 objectForKeyedSubscript:keyCopy];
     }
 
     else
     {
-      v12 = v5;
+      v12 = keyCopy;
     }
 
     if (Height <= 1194.0)
@@ -106,7 +106,7 @@ LABEL_6:
 
   else
   {
-    v12 = v5;
+    v12 = keyCopy;
   }
 
 LABEL_10:
@@ -114,26 +114,26 @@ LABEL_10:
   return v12;
 }
 
-- (id)addAccentKeyAction:(id)a3
+- (id)addAccentKeyAction:(id)action
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 _referenceBounds];
+  actionCopy = action;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   Height = CGRectGetHeight(v19);
   if (Height <= 1194.0 || ([MEMORY[0x277D759A0] mainScreen], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_referenceBounds"), CGRectGetHeight(v20) > 1194.0) && -[TypistKeyboard isFloating](self, "isFloating"))
   {
-    v8 = [(TypistKeyboardHawaiian *)self kahakoKeys];
-    v9 = [v8 objectForKeyedSubscript:v5];
+    kahakoKeys = [(TypistKeyboardHawaiian *)self kahakoKeys];
+    v9 = [kahakoKeys objectForKeyedSubscript:actionCopy];
     if (v9)
     {
       v10 = v9;
-      v11 = [(TypistKeyboardHawaiian *)self kahakoDiacriticKey];
-      if (v11)
+      kahakoDiacriticKey = [(TypistKeyboardHawaiian *)self kahakoDiacriticKey];
+      if (kahakoDiacriticKey)
       {
-        v12 = v11;
-        v13 = [(TypistKeyboardHawaiian *)self kahakoDiacriticKey];
-        v17[0] = v13;
+        v12 = kahakoDiacriticKey;
+        kahakoDiacriticKey2 = [(TypistKeyboardHawaiian *)self kahakoDiacriticKey];
+        v17[0] = kahakoDiacriticKey2;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
         goto LABEL_10;
@@ -159,19 +159,19 @@ LABEL_12:
   return v14;
 }
 
-- (TypistKeyboardHawaiian)initWithCoder:(id)a3
+- (TypistKeyboardHawaiian)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TypistKeyboardHawaiian;
-  v5 = [(TypistKeyboard *)&v11 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kahakoKeys"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kahakoKeys"];
     kahakoKeys = v5->_kahakoKeys;
     v5->_kahakoKeys = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kahakoDiacriticKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kahakoDiacriticKey"];
     kahakoDiacriticKey = v5->_kahakoDiacriticKey;
     v5->_kahakoDiacriticKey = v8;
   }
@@ -179,22 +179,22 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TypistKeyboardHawaiian;
-  [(TypistKeyboard *)&v7 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v7 encodeWithCoder:coderCopy];
   kahakoKeys = self->_kahakoKeys;
   if (kahakoKeys)
   {
-    [v4 encodeObject:kahakoKeys forKey:@"kahakoKeys"];
+    [coderCopy encodeObject:kahakoKeys forKey:@"kahakoKeys"];
   }
 
   kahakoDiacriticKey = self->_kahakoDiacriticKey;
   if (kahakoDiacriticKey)
   {
-    [v4 encodeObject:kahakoDiacriticKey forKey:@"kahakoDiacriticKey"];
+    [coderCopy encodeObject:kahakoDiacriticKey forKey:@"kahakoDiacriticKey"];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface CACCommandImportExportUtilities
-+ (BOOL)isSupportedCommandType:(id)a3;
++ (BOOL)isSupportedCommandType:(id)type;
 + (id)defaultExportURL;
-+ (id)exportToURL:(id)a3;
-+ (id)importFromURL:(id)a3;
++ (id)exportToURL:(id)l;
++ (id)importFromURL:(id)l;
 @end
 
 @implementation CACCommandImportExportUtilities
 
-+ (BOOL)isSupportedCommandType:(id)a3
++ (BOOL)isSupportedCommandType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [&unk_287BEFFF0 containsObject:v3];
+    v4 = [&unk_287BEFFF0 containsObject:typeCopy];
   }
 
   else
@@ -30,22 +30,22 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = [CACLocaleUtilities localizedUIStringForKey:@"CommandImportExport.defaultExportedFileName"];
   v5 = [v3 stringWithFormat:@"~/%@", v4];
-  v6 = [v5 stringByExpandingTildeInPath];
-  v7 = [v6 stringByAppendingPathExtension:kCACCommandsFileExtensionVCCommands];
+  stringByExpandingTildeInPath = [v5 stringByExpandingTildeInPath];
+  v7 = [stringByExpandingTildeInPath stringByAppendingPathExtension:kCACCommandsFileExtensionVCCommands];
   v8 = [v2 fileURLWithPath:v7 isDirectory:0];
 
   return v8;
 }
 
-+ (id)importFromURL:(id)a3
++ (id)importFromURL:(id)l
 {
   v84 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:kCACCommandsFileExtensionVCCommands];
   v82 = 0;
   v5 = *MEMORY[0x277CBE7B8];
   v81 = 0;
-  v6 = [v3 getResourceValue:&v82 forKey:v5 error:&v81];
+  v6 = [lCopy getResourceValue:&v82 forKey:v5 error:&v81];
   v7 = v82;
   v8 = v81;
   if (!v6 || ![v7 conformsToType:v4])
@@ -68,7 +68,7 @@ LABEL_6:
   }
 
   v80 = v8;
-  v9 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v3 error:&v80];
+  v9 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:lCopy error:&v80];
   v10 = v80;
 
   if (v9 | v10)
@@ -106,11 +106,11 @@ LABEL_9:
     v61 = v9;
     v62 = v7;
     v63 = v4;
-    v64 = v3;
-    v67 = [MEMORY[0x277CBEB38] dictionary];
-    v66 = [MEMORY[0x277CBEB38] dictionary];
+    v64 = lCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v65 = +[CACPreferences sharedPreferences];
-    v19 = [v65 allCustomCommandProperties];
+    allCustomCommandProperties = [v65 allCustomCommandProperties];
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
@@ -118,7 +118,7 @@ LABEL_9:
     obj = [(CACImportExportResult *)v17 allKeys];
     v20 = [obj countByEnumeratingWithState:&v76 objects:v83 count:16];
     v21 = 0x279CEA000uLL;
-    v68 = v19;
+    v68 = allCustomCommandProperties;
     if (v20)
     {
       v22 = v20;
@@ -141,7 +141,7 @@ LABEL_9:
 
           if (v28)
           {
-            v30 = [v19 objectForKey:v25];
+            v30 = [allCustomCommandProperties objectForKey:v25];
             v31 = v30;
             if (v30)
             {
@@ -154,17 +154,17 @@ LABEL_9:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) != 0 && [v33 compare:v34] == -1)
                 {
-                  [v66 setObject:v26 forKey:v25];
+                  [dictionary2 setObject:v26 forKey:v25];
                 }
               }
 
               v17 = v32;
-              v19 = v68;
+              allCustomCommandProperties = v68;
             }
 
             else
             {
-              [v67 setObject:v26 forKey:v25];
+              [dictionary setObject:v26 forKey:v25];
             }
           }
 
@@ -177,9 +177,9 @@ LABEL_9:
       while (v22);
     }
 
-    v35 = [v19 count];
-    v36 = v67;
-    v37 = [v67 count] + v35;
+    v35 = [allCustomCommandProperties count];
+    v36 = dictionary;
+    v37 = [dictionary count] + v35;
     if (v37 <= [*(v21 + 1104) maximumNumberOfAllowedEntries])
     {
       block[0] = MEMORY[0x277D85DD0];
@@ -188,7 +188,7 @@ LABEL_9:
       block[3] = &unk_279CEB4C0;
       v44 = v65;
       v74 = v44;
-      v45 = v67;
+      v45 = dictionary;
       v75 = v45;
       v46 = MEMORY[0x277D85CD0];
       dispatch_async(MEMORY[0x277D85CD0], block);
@@ -197,8 +197,8 @@ LABEL_9:
       v70[2] = __49__CACCommandImportExportUtilities_importFromURL___block_invoke_2;
       v70[3] = &unk_279CEB4C0;
       v71 = v44;
-      v42 = v66;
-      v47 = v66;
+      v42 = dictionary2;
+      v47 = dictionary2;
       v72 = v47;
       dispatch_async(v46, v70);
 
@@ -224,7 +224,7 @@ LABEL_9:
       }
 
       v4 = v63;
-      v3 = v64;
+      lCopy = v64;
       v9 = v61;
 
       v58 = v74;
@@ -232,7 +232,7 @@ LABEL_9:
 
     else
     {
-      v38 = [v19 count];
+      v38 = [allCustomCommandProperties count];
       v7 = v62;
       if (v38 >= [*(v21 + 1104) maximumNumberOfAllowedEntries])
       {
@@ -241,12 +241,12 @@ LABEL_9:
 
       else
       {
-        v39 = [*(v21 + 1104) maximumNumberOfAllowedEntries];
-        v40 = v39 - [v19 count];
+        maximumNumberOfAllowedEntries = [*(v21 + 1104) maximumNumberOfAllowedEntries];
+        v40 = maximumNumberOfAllowedEntries - [allCustomCommandProperties count];
       }
 
       v4 = v63;
-      v3 = v64;
+      lCopy = v64;
       v55 = [CACImportExportResult alloc];
       v56 = [CACLocaleUtilities localizedUIStringForKey:@"CommandImportExport.importOverflowFailAlertTitle"];
       v18 = [(CACImportExportResult *)v55 initWithError:0 title:v56 message:0];
@@ -266,7 +266,7 @@ LABEL_9:
       }
 
       v9 = v61;
-      v42 = v66;
+      v42 = dictionary2;
     }
   }
 
@@ -284,21 +284,21 @@ LABEL_36:
   return v18;
 }
 
-+ (id)exportToURL:(id)a3
++ (id)exportToURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = +[CACPreferences sharedPreferences];
-    v5 = [v4 allCustomCommandProperties];
+    allCustomCommandProperties = [v4 allCustomCommandProperties];
 
-    if ([v5 count])
+    if ([allCustomCommandProperties count])
     {
-      v6 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v7 = MEMORY[0x277CCABB0];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v8 = [v7 numberWithDouble:?];
-      [v6 setObject:v8 forKey:kCACCommandsFileExportDateKey];
+      [dictionary setObject:v8 forKey:kCACCommandsFileExportDateKey];
 
       v9 = objc_alloc(MEMORY[0x277CBEAC0]);
       v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/System/Library/CoreServices/SystemVersion.plist"];
@@ -306,12 +306,12 @@ LABEL_36:
 
       if (v11)
       {
-        [v6 setObject:v11 forKey:kCACCommandsFileExportSystemKey];
+        [dictionary setObject:v11 forKey:kCACCommandsFileExportSystemKey];
       }
 
-      [v6 setObject:v5 forKey:kCACCommandsFileExportCommandsKey];
+      [dictionary setObject:allCustomCommandProperties forKey:kCACCommandsFileExportCommandsKey];
       v17 = 0;
-      [v6 writeToURL:v3 error:&v17];
+      [dictionary writeToURL:lCopy error:&v17];
       v12 = v17;
       if (v12)
       {

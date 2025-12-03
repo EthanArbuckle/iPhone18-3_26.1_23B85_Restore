@@ -1,10 +1,10 @@
 @interface CRRecognizerConfiguration
-+ (id)languageSetFromInputLanguages:(id)a3 supportedLanguages:(id)a4;
-+ (id)supportedLanguagesForVersion:(int64_t)a3;
-- (CRRecognizerConfiguration)initWithImageReaderOptions:(id)a3 error:(id *)a4;
++ (id)languageSetFromInputLanguages:(id)languages supportedLanguages:(id)supportedLanguages;
++ (id)supportedLanguagesForVersion:(int64_t)version;
+- (CRRecognizerConfiguration)initWithImageReaderOptions:(id)options error:(id *)error;
 - (CRTextFeatureOrdering)textFeatureOrder;
 - (id)createTextFeatureFilter;
-- (id)initV3DefaultConfigWithOptions:(id)a3;
+- (id)initV3DefaultConfigWithOptions:(id)options;
 - (id)textFeatureFilter;
 @end
 
@@ -18,44 +18,44 @@
   return v2;
 }
 
-- (CRRecognizerConfiguration)initWithImageReaderOptions:(id)a3 error:(id *)a4
+- (CRRecognizerConfiguration)initWithImageReaderOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CRImageReaderRevisionKey"];
+  optionsCopy = options;
+  v7 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderRevisionKey"];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"CRImageReaderRevisionKey"];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderRevisionKey"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = +[CRImageReader defaultRevisionNumber];
+    unsignedIntegerValue = +[CRImageReader defaultRevisionNumber];
   }
 
-  if ((v9 - 1) > 2)
+  if ((unsignedIntegerValue - 1) > 2)
   {
-    if (a4)
+    if (error)
     {
       [CRImageReader errorWithErrorCode:-4];
-      *a4 = v27 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v27 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = [(CRRecognizerConfiguration *)self initV3DefaultConfigWithOptions:v6];
+    v10 = [(CRRecognizerConfiguration *)self initV3DefaultConfigWithOptions:optionsCopy];
     v11 = v10;
     if (v10)
     {
-      v10[4] = v9;
+      v10[4] = unsignedIntegerValue;
       v29 = 0;
-      v12 = [CRComputeDeviceUtilities computeDeviceTypeForOptions:v6 mtlDevice:&v29];
+      v12 = [CRComputeDeviceUtilities computeDeviceTypeForOptions:optionsCopy mtlDevice:&v29];
       v13 = v29;
       v14 = v29;
       v11[8] = v12;
@@ -64,63 +64,63 @@
         objc_storeStrong(v11 + 7, v13);
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"CRImageReaderNumTopStringCandidates"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderNumTopStringCandidates"];
 
       if (v15)
       {
-        v16 = [v6 objectForKeyedSubscript:@"CRImageReaderNumTopStringCandidates"];
+        v16 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderNumTopStringCandidates"];
         v11[5] = [v16 integerValue];
       }
 
-      v17 = [v6 objectForKeyedSubscript:@"CRImageReaderDisableFalsePositivePostFilter"];
+      v17 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDisableFalsePositivePostFilter"];
 
       if (v17)
       {
-        v18 = [v6 objectForKeyedSubscript:@"CRImageReaderDisableFalsePositivePostFilter"];
+        v18 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDisableFalsePositivePostFilter"];
         *(v11 + 16) = [v18 BOOLValue];
       }
 
-      v19 = [v6 objectForKeyedSubscript:@"CRImageReaderDisableScriptDetection"];
+      v19 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDisableScriptDetection"];
 
       if (v19)
       {
-        v20 = [v6 objectForKeyedSubscript:@"CRImageReaderDisableScriptDetection"];
+        v20 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDisableScriptDetection"];
         *(v11 + 17) = [v20 BOOLValue];
       }
 
-      v21 = [v6 objectForKeyedSubscript:@"CRImageReaderOptimizeGroupsForStability"];
+      v21 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderOptimizeGroupsForStability"];
 
       if (v21)
       {
-        v22 = [v6 objectForKeyedSubscript:@"CRImageReaderOptimizeGroupsForStability"];
+        v22 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderOptimizeGroupsForStability"];
         *(v11 + 20) = [v22 BOOLValue];
       }
 
-      v23 = [v6 objectForKeyedSubscript:@"CRImageReaderSkipRecognition"];
-      v24 = [v23 BOOLValue];
+      v23 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderSkipRecognition"];
+      bOOLValue = [v23 BOOLValue];
 
-      if (v24)
+      if (bOOLValue)
       {
         *(v11 + 18) = 1;
       }
 
-      v25 = [v6 objectForKeyedSubscript:@"CRImageReaderRectifyPolygons"];
-      v26 = [v25 BOOLValue];
+      v25 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderRectifyPolygons"];
+      bOOLValue2 = [v25 BOOLValue];
 
-      if (v26)
+      if (bOOLValue2)
       {
         *(v11 + 19) = 1;
       }
     }
 
     self = v11;
-    v27 = self;
+    selfCopy = self;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-- (id)initV3DefaultConfigWithOptions:(id)a3
+- (id)initV3DefaultConfigWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = CRRecognizerConfiguration;
@@ -149,11 +149,11 @@
     goto LABEL_5;
   }
 
-  v3 = [(CRRecognizerConfiguration *)self revision];
+  revision = [(CRRecognizerConfiguration *)self revision];
   [(CRRecognizerConfiguration *)self angleThresholdForRotatedCrops];
   if (self)
   {
-    v4 = [CRTextFeatureOrderingUtilities textFeatureOrderWithRevision:v3 angleThresholdForRotatedCrops:self->_optimizeGroupsForStability optimizeGroupsForStability:?];
+    v4 = [CRTextFeatureOrderingUtilities textFeatureOrderWithRevision:revision angleThresholdForRotatedCrops:self->_optimizeGroupsForStability optimizeGroupsForStability:?];
     objc_storeStrong(&self->_cachedTextFeatureOrder, v4);
 
 LABEL_5:
@@ -162,7 +162,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [CRTextFeatureOrderingUtilities textFeatureOrderWithRevision:v3 angleThresholdForRotatedCrops:0 optimizeGroupsForStability:?];
+  [CRTextFeatureOrderingUtilities textFeatureOrderWithRevision:revision angleThresholdForRotatedCrops:0 optimizeGroupsForStability:?];
 
   os_unfair_lock_unlock(8);
   cachedTextFeatureOrder = 0;
@@ -178,8 +178,8 @@ LABEL_6:
   {
     if (!self->_cachedTextFeatureFilter)
     {
-      v3 = [(CRRecognizerConfiguration *)self createTextFeatureFilter];
-      objc_storeStrong(&self->_cachedTextFeatureFilter, v3);
+      createTextFeatureFilter = [(CRRecognizerConfiguration *)self createTextFeatureFilter];
+      objc_storeStrong(&self->_cachedTextFeatureFilter, createTextFeatureFilter);
     }
 
     os_unfair_lock_unlock(&self->_cachedTextFeatureFilterLock);
@@ -197,10 +197,10 @@ LABEL_6:
   return cachedTextFeatureFilter;
 }
 
-+ (id)supportedLanguagesForVersion:(int64_t)a3
++ (id)supportedLanguagesForVersion:(int64_t)version
 {
   v47 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(version)
   {
     case 3:
       v8 = @"en-US";
@@ -266,23 +266,23 @@ LABEL_9:
   return v6;
 }
 
-+ (id)languageSetFromInputLanguages:(id)a3 supportedLanguages:(id)a4
++ (id)languageSetFromInputLanguages:(id)languages supportedLanguages:(id)supportedLanguages
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  languagesCopy = languages;
+  supportedLanguagesCopy = supportedLanguages;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v5)
+  if (languagesCopy)
   {
     objc_opt_class();
     v9 = 0x1E695D000uLL;
     if (objc_opt_isKindOfClass())
     {
-      v40[0] = v5;
+      v40[0] = languagesCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-      v11 = v5;
-      v5 = v10;
+      v11 = languagesCopy;
+      languagesCopy = v10;
     }
 
     objc_opt_class();
@@ -293,12 +293,12 @@ LABEL_9:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v5 = v5;
-      v33 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      languagesCopy = languagesCopy;
+      v33 = [languagesCopy countByEnumeratingWithState:&v34 objects:v39 count:16];
       if (v33)
       {
         v32 = *v35;
-        obj = v5;
+        obj = languagesCopy;
         v31 = *MEMORY[0x1E695D9B0];
         v12 = 0x1E695D000uLL;
         do
@@ -319,30 +319,30 @@ LABEL_9:
             v38 = v15;
             v19 = [*(v9 + 3784) arrayWithObjects:&v38 count:1];
 
-            v20 = [v18 preferredLocalizationsFromArray:v6 forPreferences:v19];
+            v20 = [v18 preferredLocalizationsFromArray:supportedLanguagesCopy forPreferences:v19];
 
             if ([v20 count])
             {
-              v21 = v6;
-              v22 = [v20 firstObject];
+              v21 = supportedLanguagesCopy;
+              firstObject = [v20 firstObject];
               v23 = v12;
-              v24 = [*(v12 + 3928) localeWithLocaleIdentifier:v22];
-              v25 = [v24 languageCode];
+              v24 = [*(v12 + 3928) localeWithLocaleIdentifier:firstObject];
+              languageCode = [v24 languageCode];
               v26 = [v17 objectForKeyedSubscript:v31];
-              v27 = [v25 isEqualToString:v26];
+              v27 = [languageCode isEqualToString:v26];
 
               if (v27)
               {
-                [v29 addObject:v22];
+                [v29 addObject:firstObject];
               }
 
-              v6 = v21;
+              supportedLanguagesCopy = v21;
               v9 = 0x1E695D000;
               v12 = v23;
             }
           }
 
-          v5 = obj;
+          languagesCopy = obj;
           v33 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
         }
 
@@ -355,12 +355,12 @@ LABEL_9:
 
   else
   {
-    [v7 addObjectsFromArray:v6];
+    [v7 addObjectsFromArray:supportedLanguagesCopy];
   }
 
   if (![v8 count])
   {
-    [v8 addObjectsFromArray:v6];
+    [v8 addObjectsFromArray:supportedLanguagesCopy];
   }
 
   return v8;

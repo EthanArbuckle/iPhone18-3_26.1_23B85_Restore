@@ -1,65 +1,65 @@
 @interface TUIFeedLayoutController
-- (BOOL)_lq_shouldInstantiateEntry:(id)a3 sectionIndex:(unint64_t)a4 transactionGroup:(id)a5;
-- (BOOL)_lq_shouldSubmitRenderModelUpdate:(BOOL)a3 transactionGroup:(id)a4;
-- (BOOL)lq_updateHostingGeometryMap:(id)a3;
+- (BOOL)_lq_shouldInstantiateEntry:(id)entry sectionIndex:(unint64_t)index transactionGroup:(id)group;
+- (BOOL)_lq_shouldSubmitRenderModelUpdate:(BOOL)update transactionGroup:(id)group;
+- (BOOL)lq_updateHostingGeometryMap:(id)map;
 - (TUIActionHandlerDelegate)actionHandlerDelegate;
-- (TUIFeedLayoutController)initWithFeedId:(id)a3 environment:(id)a4 factory:(id)a5 manager:(id)a6 renderMode:(unint64_t)a7;
+- (TUIFeedLayoutController)initWithFeedId:(id)id environment:(id)environment factory:(id)factory manager:(id)manager renderMode:(unint64_t)mode;
 - (TUIFeedLayoutControllerDelegate)delegate;
 - (TUITransactionDependencyToken)lastContentTransactionToken;
 - (TUITransactionDependencyToken)lastEnvironmentTransactionToken;
-- (id)_infoForFinal:(BOOL)a3;
-- (id)instantiateContext:(id)a3 serviceConformingToProtocol:(id)a4;
-- (id)lq_createRenderModelForFeedEntry:(id)a3 section:(int64_t)a4;
-- (id)lq_loadFeedEntry:(id)a3 data:(id)a4 section:(int64_t)a5 transactionGroup:(id)a6;
+- (id)_infoForFinal:(BOOL)final;
+- (id)instantiateContext:(id)context serviceConformingToProtocol:(id)protocol;
+- (id)lq_createRenderModelForFeedEntry:(id)entry section:(int64_t)section;
+- (id)lq_loadFeedEntry:(id)entry data:(id)data section:(int64_t)section transactionGroup:(id)group;
 - (void)_cancelDataRequests;
 - (void)_lq_scheduleLayoutRemainder;
 - (void)_updateAfterLayoutConditionSuspendingUpdatesInvalidated;
 - (void)beginLiveResize;
-- (void)captureWithController:(id)a3 completion:(id)a4;
-- (void)collectStatsWithCompletion:(id)a3;
-- (void)dumpLayoutTreeForEntry:(id)a3 completion:(id)a4;
-- (void)dumpModelTreeForEntry:(id)a3 completion:(id)a4;
+- (void)captureWithController:(id)controller completion:(id)completion;
+- (void)collectStatsWithCompletion:(id)completion;
+- (void)dumpLayoutTreeForEntry:(id)entry completion:(id)completion;
+- (void)dumpModelTreeForEntry:(id)entry completion:(id)completion;
 - (void)endLiveResize;
-- (void)layoutIfNeededWithTransaction:(id)a3;
-- (void)lq_updateAXModelTreeWithTransactionGroup:(id)a3;
-- (void)lq_updateContent:(id)a3 contentUpdateDate:(id)a4 transaction:(id)a5 transactionGroup:(id)a6;
-- (void)lq_updateRenderModelsWithTransactionGroup:(id)a3;
-- (void)resumeAndRebuildWithEnvironment:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setLayoutState:(unint64_t)a3;
-- (void)setPriority:(float)a3;
-- (void)setStatsMode:(unint64_t)a3;
+- (void)layoutIfNeededWithTransaction:(id)transaction;
+- (void)lq_updateAXModelTreeWithTransactionGroup:(id)group;
+- (void)lq_updateContent:(id)content contentUpdateDate:(id)date transaction:(id)transaction transactionGroup:(id)group;
+- (void)lq_updateRenderModelsWithTransactionGroup:(id)group;
+- (void)resumeAndRebuildWithEnvironment:(id)environment state:(id)state transaction:(id)transaction;
+- (void)setDelegate:(id)delegate;
+- (void)setLayoutState:(unint64_t)state;
+- (void)setPriority:(float)priority;
+- (void)setStatsMode:(unint64_t)mode;
 - (void)statRecordInitialResourcesRenderedDate;
 - (void)statRecordResourcesLoadedDate;
 - (void)statRecordResourcesStartLoadingDate;
 - (void)statRecordViewWillAppear;
-- (void)suspendAndTeardownWithTransaction:(id)a3;
-- (void)suspendLayoutsUntilMeetingLayoutCondition:(id)a3;
-- (void)suspendUpdatesUntilMeetingLayoutCondition:(id)a3;
-- (void)transactionCoordinator:(id)a3 applyUpdatesFromTransactionGroup:(id)a4;
-- (void)transactionCoordinator:(id)a3 timeoutForSynchronousTransactionGroup:(id)a4;
-- (void)transactionCoordinator:(id)a3 updateWithTransactionGroup:(id)a4;
-- (void)updateDatesCollectorWithBlock:(id)a3;
-- (void)updateHostingGeometryMap:(id)a3 withTransaction:(id)a4;
-- (void)updateWithContent:(id)a3 layoutUpToEntry:(id)a4 environment:(id)a5 transaction:(id)a6;
-- (void)updateWithContent:(id)a3 transaction:(id)a4;
-- (void)updateWithEnvironment:(id)a3 state:(id)a4 withTransaction:(id)a5;
+- (void)suspendAndTeardownWithTransaction:(id)transaction;
+- (void)suspendLayoutsUntilMeetingLayoutCondition:(id)condition;
+- (void)suspendUpdatesUntilMeetingLayoutCondition:(id)condition;
+- (void)transactionCoordinator:(id)coordinator applyUpdatesFromTransactionGroup:(id)group;
+- (void)transactionCoordinator:(id)coordinator timeoutForSynchronousTransactionGroup:(id)group;
+- (void)transactionCoordinator:(id)coordinator updateWithTransactionGroup:(id)group;
+- (void)updateDatesCollectorWithBlock:(id)block;
+- (void)updateHostingGeometryMap:(id)map withTransaction:(id)transaction;
+- (void)updateWithContent:(id)content layoutUpToEntry:(id)entry environment:(id)environment transaction:(id)transaction;
+- (void)updateWithContent:(id)content transaction:(id)transaction;
+- (void)updateWithEnvironment:(id)environment state:(id)state withTransaction:(id)transaction;
 @end
 
 @implementation TUIFeedLayoutController
 
-- (TUIFeedLayoutController)initWithFeedId:(id)a3 environment:(id)a4 factory:(id)a5 manager:(id)a6 renderMode:(unint64_t)a7
+- (TUIFeedLayoutController)initWithFeedId:(id)id environment:(id)environment factory:(id)factory manager:(id)manager renderMode:(unint64_t)mode
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  environmentCopy = environment;
+  factoryCopy = factory;
+  managerCopy = manager;
   v48.receiver = self;
   v48.super_class = TUIFeedLayoutController;
   v16 = [(TUIFeedLayoutController *)&v48 init];
   v17 = v16;
   if (v16)
   {
-    v16->_feedId.uniqueIdentifier = a3.var0;
+    v16->_feedId.uniqueIdentifier = id.var0;
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_attr_make_with_qos_class(v18, QOS_CLASS_USER_INITIATED, 0);
 
@@ -72,9 +72,9 @@
     dataRequestsSync = v17->_dataRequestsSync;
     v17->_dataRequestsSync = v22;
 
-    objc_storeStrong(&v17->_environment, a4);
-    objc_storeStrong(&v17->_manager, a6);
-    objc_storeStrong(&v17->_templateFactory, a5);
+    objc_storeStrong(&v17->_environment, environment);
+    objc_storeStrong(&v17->_manager, manager);
+    objc_storeStrong(&v17->_templateFactory, factory);
     v24 = objc_opt_new();
     sections = v17->_sections;
     v17->_sections = v24;
@@ -105,7 +105,7 @@
     layoutConditionsSuspendingLayout = v17->_layoutConditionsSuspendingLayout;
     v17->_layoutConditionsSuspendingLayout = v35;
 
-    v17->_renderModelMode = a7;
+    v17->_renderModelMode = mode;
     v17->_environmentLock._os_unfair_lock_opaque = 0;
     environmentPendingUpdate = v17->_environmentPendingUpdate;
     v17->_environmentPendingUpdate = 0;
@@ -128,8 +128,8 @@ LABEL_7:
       }
 
       v39 = [TUIRenderUpdateCollectionController alloc];
-      v40 = [(TUIWorkQueueContext *)v17->_queueContext workQueue];
-      v41 = [(TUIRenderUpdateCollectionController *)v39 initWithLayoutQueue:v40 renderModel:0];
+      workQueue = [(TUIWorkQueueContext *)v17->_queueContext workQueue];
+      v41 = [(TUIRenderUpdateCollectionController *)v39 initWithLayoutQueue:workQueue renderModel:0];
       updateController = v17->_updateController;
       v17->_updateController = v41;
 
@@ -149,9 +149,9 @@ LABEL_8:
   return v17;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -205,39 +205,39 @@ LABEL_8:
   }
 }
 
-- (id)lq_createRenderModelForFeedEntry:(id)a3 section:(int64_t)a4
+- (id)lq_createRenderModelForFeedEntry:(id)entry section:(int64_t)section
 {
-  v6 = a3;
-  v7 = [[_TUIFeedLayoutSection alloc] initWithFeedId:self->_feedId.uniqueIdentifier section:a4 controller:self entry:v6];
+  entryCopy = entry;
+  v7 = [[_TUIFeedLayoutSection alloc] initWithFeedId:self->_feedId.uniqueIdentifier section:section controller:self entry:entryCopy];
 
   [(_TUIFeedLayoutSection *)v7 setStatsMode:self->_lq_statsMode];
   sections = self->_sections;
-  v9 = [NSNumber numberWithInteger:a4];
+  v9 = [NSNumber numberWithInteger:section];
   [(NSMutableDictionary *)sections setObject:v7 forKey:v9];
 
-  v10 = [(_TUIFeedLayoutSection *)v7 renderModel];
+  renderModel = [(_TUIFeedLayoutSection *)v7 renderModel];
 
-  return v10;
+  return renderModel;
 }
 
-- (id)lq_loadFeedEntry:(id)a3 data:(id)a4 section:(int64_t)a5 transactionGroup:(id)a6
+- (id)lq_loadFeedEntry:(id)entry data:(id)data section:(int64_t)section transactionGroup:(id)group
 {
   sections = self->_sections;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [NSNumber numberWithInteger:a5];
+  groupCopy = group;
+  dataCopy = data;
+  entryCopy = entry;
+  v14 = [NSNumber numberWithInteger:section];
   v15 = [(NSMutableDictionary *)sections objectForKeyedSubscript:v14];
 
-  [v15 lq_loadOrUpdateEntry:v13 data:v12 controller:self transactionGroup:v11];
-  v16 = [v15 renderModel];
+  [v15 lq_loadOrUpdateEntry:entryCopy data:dataCopy controller:self transactionGroup:groupCopy];
+  renderModel = [v15 renderModel];
 
-  return v16;
+  return renderModel;
 }
 
-- (id)_infoForFinal:(BOOL)a3
+- (id)_infoForFinal:(BOOL)final
 {
-  if (a3)
+  if (final)
   {
     v5 = @"TUIRenderInfoKeyIsFinal";
     v6 = &__kCFBooleanTrue;
@@ -252,9 +252,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)lq_updateRenderModelsWithTransactionGroup:(id)a3
+- (void)lq_updateRenderModelsWithTransactionGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   kdebug_trace();
   v4 = TUILayoutLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -263,7 +263,7 @@ LABEL_8:
     *buf = 134218242;
     *&buf[4] = uniqueIdentifier;
     *&buf[12] = 2112;
-    *&buf[14] = v3;
+    *&buf[14] = groupCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "[fid:%lu] Ariadne FeedLayoutStart group=%@", buf, 0x16u);
   }
 
@@ -287,16 +287,16 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, frameSignpost, "Instantiation", "[fid:%lu] ", buf, 0xCu);
   }
 
-  v11 = self;
+  selfCopy2 = self;
   statsLiveResize = self->_statsLiveResize;
   if (statsLiveResize)
   {
     [(TUIStatsLiveResize *)statsLiveResize beginFrame];
     [(NSMutableDictionary *)self->_sections enumerateKeysAndObjectsUsingBlock:&stru_260F60];
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  [(TUIStatsTimingCollector *)v11->_timingCollector startPhase:0];
+  [(TUIStatsTimingCollector *)selfCopy2->_timingCollector startPhase:0];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -308,12 +308,12 @@ LABEL_8:
   v393 = 0x3032000000;
   v394 = sub_C13B4;
   v395 = sub_C13C4;
-  v13 = [*(*&buf[8] + 40) sections];
-  v14 = v13;
+  sections = [*(*&buf[8] + 40) sections];
+  v14 = sections;
   v15 = &__NSArray0__struct;
-  if (v13)
+  if (sections)
   {
-    v15 = v13;
+    v15 = sections;
   }
 
   v396 = v15;
@@ -328,19 +328,19 @@ LABEL_8:
 
   if (self->_layoutUntilEntryWithUUID)
   {
-    v19 = [(TUIFeedContent *)self->_content entries];
+    entries = [(TUIFeedContent *)self->_content entries];
     v390[0] = _NSConcreteStackBlock;
     v390[1] = 3221225472;
     v390[2] = sub_C13CC;
     v390[3] = &unk_260F88;
     v390[4] = self;
-    v20 = [v19 indexOfObjectPassingTest:v390];
+    v20 = [entries indexOfObjectPassingTest:v390];
 
     v21 = 0x7FFFFFFFFFFFFFFFLL;
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v22 = [(TUIFeedContent *)self->_content entries];
-      v23 = v20 + 1 == [v22 count];
+      entries2 = [(TUIFeedContent *)self->_content entries];
+      v23 = v20 + 1 == [entries2 count];
 
       if (v23)
       {
@@ -371,29 +371,29 @@ LABEL_35:
   else
   {
     v26 = 0;
-    v27 = self;
+    selfCopy4 = self;
     while (1)
     {
-      sections = v27->_sections;
+      sections = selfCopy4->_sections;
       v29 = [NSNumber numberWithUnsignedInteger:v25];
       v30 = [(NSMutableDictionary *)sections objectForKeyedSubscript:v29];
 
-      if (([v30 needsInstantiation] & 1) == 0 || (v25 > v21 ? (v31 = v21 != 0x7FFFFFFFFFFFFFFFLL) : (v31 = 0), v31 || (v21 == 0x7FFFFFFFFFFFFFFFLL || v25 > v21) && (objc_msgSend(v30, "entry"), v32 = objc_claimAutoreleasedReturnValue(), v33 = -[TUIFeedLayoutController _lq_shouldInstantiateEntry:sectionIndex:transactionGroup:](self, "_lq_shouldInstantiateEntry:sectionIndex:transactionGroup:", v32, v25, v3), v32, !v33)))
+      if (([v30 needsInstantiation] & 1) == 0 || (v25 > v21 ? (v31 = v21 != 0x7FFFFFFFFFFFFFFFLL) : (v31 = 0), v31 || (v21 == 0x7FFFFFFFFFFFFFFFLL || v25 > v21) && (objc_msgSend(v30, "entry"), v32 = objc_claimAutoreleasedReturnValue(), v33 = -[TUIFeedLayoutController _lq_shouldInstantiateEntry:sectionIndex:transactionGroup:](self, "_lq_shouldInstantiateEntry:sectionIndex:transactionGroup:", v32, v25, groupCopy), v32, !v33)))
       {
         v325 = 0;
         goto LABEL_38;
       }
 
       v34 = objc_autoreleasePoolPush();
-      [v30 lq_instantiateWithController:self transactionGroup:v3];
+      [v30 lq_instantiateWithController:self transactionGroup:groupCopy];
       objc_autoreleasePoolPop(v34);
       if (v21 == v25)
       {
         break;
       }
 
-      v35 = [v30 renderModel];
-      if (v35)
+      renderModel = [v30 renderModel];
+      if (renderModel)
       {
 
         v36 = 1;
@@ -401,8 +401,8 @@ LABEL_35:
 
       else
       {
-        v37 = [v30 layerRenderModel];
-        v36 = v37 != 0;
+        layerRenderModel = [v30 layerRenderModel];
+        v36 = layerRenderModel != 0;
 
         if (!v36)
         {
@@ -411,7 +411,7 @@ LABEL_35:
       }
 
       v25 += v36;
-      v27 = self;
+      selfCopy4 = self;
       v26 = 1;
       if (v25 >= self->_layoutNumberOfSections)
       {
@@ -448,7 +448,7 @@ LABEL_38:
     _os_signpost_emit_with_name_impl(&dword_0, v43, OS_SIGNPOST_INTERVAL_BEGIN, v44, "Layout", "[fid:%lu] ", &v401, 0xCu);
   }
 
-  v328 = [v392[5] lastObject];
+  lastObject = [v392[5] lastObject];
   *&v401 = 0;
   *(&v401 + 1) = &v401;
   v402 = 0x3010000000;
@@ -457,9 +457,9 @@ LABEL_38:
   v403 = "";
   [(TUIEnvironment *)self->_environment viewSize];
   v47 = v46;
-  if (v328)
+  if (lastObject)
   {
-    [v328 frame];
+    [lastObject frame];
     MaxY = CGRectGetMaxY(v410);
   }
 
@@ -481,11 +481,11 @@ LABEL_38:
   v382 = 0x2020000000;
   v383 = 0;
   v49 = objc_opt_class();
-  v50 = [(TUIFeedContent *)self->_content currentStackName];
-  v51 = [v50 value];
-  v327 = TUIDynamicCast(v49, v51);
+  currentStackName = [(TUIFeedContent *)self->_content currentStackName];
+  value = [currentStackName value];
+  v327 = TUIDynamicCast(v49, value);
 
-  v52 = self;
+  selfCopy10 = self;
   if (!self->_environmentChanged || (layoutViewState = self->_layoutViewState) == 0 || !self->_prevEnvironment)
   {
     v338 = 0x7FFFFFFFFFFFFFFFLL;
@@ -493,11 +493,11 @@ LABEL_38:
     goto LABEL_58;
   }
 
-  v54 = [(TUIFeedViewState *)layoutViewState feedScrollAnchor];
-  v55 = [v54 anchor];
-  v56 = [v55 identifier];
+  feedScrollAnchor = [(TUIFeedViewState *)layoutViewState feedScrollAnchor];
+  anchor = [feedScrollAnchor anchor];
+  identifier = [anchor identifier];
 
-  if (!v56)
+  if (!identifier)
   {
 LABEL_120:
     v338 = 0x7FFFFFFFFFFFFFFFLL;
@@ -505,9 +505,9 @@ LABEL_120:
     goto LABEL_251;
   }
 
-  v57 = [(TUIFeedContent *)self->_content entries];
-  v58 = [v57 valueForKey:@"uuid"];
-  v59 = [v58 indexOfObject:v56];
+  entries3 = [(TUIFeedContent *)self->_content entries];
+  v58 = [entries3 valueForKey:@"uuid"];
+  v59 = [v58 indexOfObject:identifier];
 
   obj = 0x7FFFFFFFFFFFFFFFLL;
   v338 = 0x7FFFFFFFFFFFFFFFLL;
@@ -519,32 +519,32 @@ LABEL_120:
       v61 = [NSNumber numberWithUnsignedInteger:v59];
       v62 = [(NSMutableDictionary *)v60 objectForKeyedSubscript:v61];
 
-      v63 = [v62 renderModel];
-      [v63 size];
+      renderModel2 = [v62 renderModel];
+      [renderModel2 size];
       v65 = v64;
 
       [(TUIEnvironment *)self->_prevEnvironment viewSize];
       v67 = v66;
-      v68 = [v54 anchor];
-      v69 = [v68 position];
+      anchor2 = [feedScrollAnchor anchor];
+      position = [anchor2 position];
 
-      if (v69 == &dword_0 + 1)
+      if (position == &dword_0 + 1)
       {
         v70 = v67 - v65;
-        v71 = self;
+        selfCopy9 = self;
       }
 
       else
       {
         v70 = 0.0;
-        v71 = self;
-        if (v69 == &dword_0 + 2)
+        selfCopy9 = self;
+        if (position == &dword_0 + 2)
         {
           v70 = (v67 - v65) * 0.5;
         }
       }
 
-      [v54 relativeDistance];
+      [feedScrollAnchor relativeDistance];
       v303 = v70 + v67 * 0.5 * v302;
       if (v59)
       {
@@ -555,15 +555,15 @@ LABEL_120:
           v305 = v70 + v67 * 0.5 * v302;
           do
           {
-            v306 = v71->_sections;
+            v306 = selfCopy9->_sections;
             v307 = [NSNumber numberWithUnsignedInteger:v304];
             v308 = [(NSMutableDictionary *)v306 objectForKeyedSubscript:v307];
-            v309 = [v308 renderModel];
-            [v309 size];
+            renderModel3 = [v308 renderModel];
+            [renderModel3 size];
             v311 = v310;
 
             v199 = v304-- != 0;
-            v71 = self;
+            selfCopy9 = self;
             if (!v199)
             {
               break;
@@ -583,28 +583,28 @@ LABEL_120:
       }
 
       v312 = v59 + 1;
-      if ((v59 + 1) < v71->_layoutNextSection)
+      if ((v59 + 1) < selfCopy9->_layoutNextSection)
       {
         v313 = v67 - (v65 + v303);
         if (v313 > 0.0)
         {
           do
           {
-            if (v312 >= v71->_layoutNextSection)
+            if (v312 >= selfCopy9->_layoutNextSection)
             {
               break;
             }
 
-            v314 = v71->_sections;
+            v314 = selfCopy9->_sections;
             v315 = [NSNumber numberWithUnsignedInteger:v312];
             v316 = [(NSMutableDictionary *)v314 objectForKeyedSubscript:v315];
-            v317 = [v316 renderModel];
-            [v317 size];
+            renderModel4 = [v316 renderModel];
+            [renderModel4 size];
             v319 = v318;
 
             v313 = v313 - v319;
             ++v312;
-            v71 = self;
+            selfCopy9 = self;
           }
 
           while (v313 > 0.0);
@@ -621,12 +621,12 @@ LABEL_120:
 
 LABEL_251:
 
-  v52 = self;
+  selfCopy10 = self;
 LABEL_58:
-  prevEnvironment = v52->_prevEnvironment;
-  v52->_prevEnvironment = 0;
+  prevEnvironment = selfCopy10->_prevEnvironment;
+  selfCopy10->_prevEnvironment = 0;
 
-  v73 = self;
+  selfCopy14 = self;
   if (self->_environmentChanged)
   {
     [(TUIEnvironment *)self->_environment viewSize];
@@ -644,24 +644,24 @@ LABEL_58:
     {
       v77 = objc_opt_new();
 
-      v73 = self;
+      selfCopy14 = self;
     }
 
-    if (v73->_layoutNextSection)
+    if (selfCopy14->_layoutNextSection)
     {
-      v78 = v73;
+      selfCopy13 = selfCopy14;
       v79 = 0;
       do
       {
-        v80 = v78->_sections;
+        v80 = selfCopy13->_sections;
         v81 = [NSNumber numberWithUnsignedInteger:v79];
         v82 = [(NSMutableDictionary *)v80 objectForKeyedSubscript:v81];
 
         [v82 setEnvironmentNeedsUpdate:1];
         [(TUIEnvironment *)self->_environment viewSize];
         v84 = v83;
-        v85 = [v82 renderModel];
-        [v85 size];
+        renderModel5 = [v82 renderModel];
+        [renderModel5 size];
         [v82 lq_createEmptyRenderModelWithSize:v84];
 
         v86 = v385[5];
@@ -675,11 +675,11 @@ LABEL_58:
         }
 
         [v86 addIndex:v79];
-        v89 = [v82 renderModel];
-        [v77 addObject:v89];
+        renderModel6 = [v82 renderModel];
+        [v77 addObject:renderModel6];
 
         ++v79;
-        v78 = self;
+        selfCopy13 = self;
       }
 
       while (v79 < self->_layoutNextSection);
@@ -692,22 +692,22 @@ LABEL_58:
       v392[5] = v90;
     }
 
-    v73 = self;
+    selfCopy14 = self;
   }
 
   v375[0] = _NSConcreteStackBlock;
   v375[1] = 3221225472;
   v375[2] = sub_C1414;
   v375[3] = &unk_260FB0;
-  v375[4] = v73;
-  v342 = v3;
+  v375[4] = selfCopy14;
+  v342 = groupCopy;
   v376 = v342;
   v347 = v327;
   v377 = v347;
   v378 = &v380;
   v379 = &v384;
   v333 = objc_retainBlock(v375);
-  v92 = self;
+  selfCopy28 = self;
   layoutFlags = self->_layoutFlags;
   self->_layoutFlags = 0;
   v93 = self->_layoutViewState;
@@ -716,15 +716,15 @@ LABEL_58:
     goto LABEL_82;
   }
 
-  v94 = [(TUIFeedViewState *)v93 feedScrollAnchor];
-  v95 = [v94 anchor];
-  v96 = [v95 identifier];
+  feedScrollAnchor2 = [(TUIFeedViewState *)v93 feedScrollAnchor];
+  anchor3 = [feedScrollAnchor2 anchor];
+  identifier2 = [anchor3 identifier];
 
-  if (v96)
+  if (identifier2)
   {
-    v97 = [(TUIFeedContent *)self->_content entries];
-    v98 = [v97 valueForKey:@"uuid"];
-    v99 = [v98 indexOfObject:v96];
+    entries4 = [(TUIFeedContent *)self->_content entries];
+    v98 = [entries4 valueForKey:@"uuid"];
+    v99 = [v98 indexOfObject:identifier2];
 
     if (v99 != 0x7FFFFFFFFFFFFFFFLL && v99 < self->_layoutNextSection)
     {
@@ -733,16 +733,16 @@ LABEL_58:
       v101 = [NSNumber numberWithUnsignedInteger:v99];
       v336 = [(NSMutableDictionary *)v100 objectForKeyedSubscript:v101];
 
-      v102 = [v336 renderModel];
-      [v102 size];
+      renderModel7 = [v336 renderModel];
+      [renderModel7 size];
       v104 = v103;
 
       [(TUIEnvironment *)self->_environment viewSize];
       v106 = v105;
-      v107 = [v94 anchor];
-      v108 = [v107 position];
+      anchor4 = [feedScrollAnchor2 anchor];
+      position2 = [anchor4 position];
 
-      if (v108 == &dword_0 + 1)
+      if (position2 == &dword_0 + 1)
       {
         v109 = v106 - v104;
       }
@@ -750,19 +750,19 @@ LABEL_58:
       else
       {
         v109 = 0.0;
-        if (v108 == &dword_0 + 2)
+        if (position2 == &dword_0 + 2)
         {
           v109 = (v106 - v104) * 0.5;
         }
       }
 
-      [v94 relativeDistance];
+      [feedScrollAnchor2 relativeDistance];
       v183 = v182;
-      v184 = [v342 options];
-      v185 = [v184 timingProvider];
+      options = [v342 options];
+      timingProvider = [options timingProvider];
 
       v186 = v109 + v106 * 0.5 * v183;
-      if (v185)
+      if (timingProvider)
       {
         v187 = v106 - (v104 + v186) + v106 * 0.5;
       }
@@ -774,7 +774,7 @@ LABEL_58:
 
       if (v99)
       {
-        if (v185)
+        if (timingProvider)
         {
           v188 = v186 + v106 * 0.5;
         }
@@ -797,8 +797,8 @@ LABEL_58:
           v192 = self->_sections;
           v193 = [NSNumber numberWithUnsignedInteger:v189];
           v194 = [(NSMutableDictionary *)v192 objectForKeyedSubscript:v193];
-          v195 = [v194 renderModel];
-          [v195 size];
+          renderModel8 = [v194 renderModel];
+          [renderModel8 size];
           v197 = v196;
 
           v188 = v188 - v197;
@@ -839,8 +839,8 @@ LABEL_173:
           v201 = self->_sections;
           v202 = [NSNumber numberWithUnsignedInteger:v198];
           v203 = [(NSMutableDictionary *)v201 objectForKeyedSubscript:v202];
-          v204 = [v203 renderModel];
-          [v204 size];
+          renderModel9 = [v203 renderModel];
+          [renderModel9 size];
           v206 = v205;
 
           v187 = v187 - v206;
@@ -889,9 +889,9 @@ LABEL_78:
     goto LABEL_96;
   }
 
-  v92 = self;
+  selfCopy28 = self;
 LABEL_82:
-  if (!v92->_layoutNumberOfSections)
+  if (!selfCopy28->_layoutNumberOfSections)
   {
     v334 = 0;
     v339 = 1;
@@ -899,16 +899,16 @@ LABEL_82:
   }
 
   v112 = 0;
-  v113 = v92;
+  selfCopy17 = selfCopy28;
   v114 = 0.0;
   while (1)
   {
-    v115 = v113->_sections;
+    v115 = selfCopy17->_sections;
     v116 = [NSNumber numberWithUnsignedInteger:v112];
     v117 = [(NSMutableDictionary *)v115 objectForKeyedSubscript:v116];
 
-    v118 = [v117 renderModel];
-    v334 = v118 != 0;
+    renderModel10 = [v117 renderModel];
+    v334 = renderModel10 != 0;
 
     if (!v334)
     {
@@ -925,13 +925,13 @@ LABEL_82:
     }
 
     (v333[2])(v333, v112);
-    v120 = [v117 renderModel];
-    [v120 size];
+    renderModel11 = [v117 renderModel];
+    [renderModel11 size];
     v122 = v121;
 
-    v123 = [v117 entry];
-    v124 = [v123 stackNames];
-    v125 = [v124 containsObject:v347];
+    entry = [v117 entry];
+    stackNames = [entry stackNames];
+    v125 = [stackNames containsObject:v347];
 
     if (!v125)
     {
@@ -940,26 +940,26 @@ LABEL_82:
 
     v114 = v114 + v122;
     ++v112;
-    v113 = self;
+    selfCopy17 = self;
     if (v112 >= self->_layoutNumberOfSections)
     {
       v334 = 0;
       v339 = 1;
-      v92 = self;
+      selfCopy28 = self;
       goto LABEL_97;
     }
   }
 
   v339 = 1;
 LABEL_96:
-  v92 = self;
+  selfCopy28 = self;
 LABEL_97:
   if (*(v381 + 24) == 1)
   {
-    v126 = [v342 date];
-    [(TUIStatsDatesCollector *)v92->_datesCollector setDynamicUpdateDate:v126];
+    date = [v342 date];
+    [(TUIStatsDatesCollector *)selfCopy28->_datesCollector setDynamicUpdateDate:date];
 
-    v92 = self;
+    selfCopy28 = self;
   }
 
   if (v385[5])
@@ -985,36 +985,36 @@ LABEL_97:
           }
 
           v132 = *(*(&v370 + 1) + 8 * i);
-          v133 = [v132 section];
+          section = [v132 section];
           v134 = self->_sections;
-          v135 = [NSNumber numberWithUnsignedInteger:v133];
+          v135 = [NSNumber numberWithUnsignedInteger:section];
           v136 = [(NSMutableDictionary *)v134 objectForKeyedSubscript:v135];
 
-          if ([v385[5] containsIndex:v133])
+          if ([v385[5] containsIndex:section])
           {
-            v137 = [v136 renderModel];
+            renderModel12 = [v136 renderModel];
           }
 
           else
           {
-            v137 = v132;
+            renderModel12 = v132;
           }
 
-          [v137 size];
+          [renderModel12 size];
           v139 = v138;
           v141 = v140;
-          v142 = [v136 entry];
-          v143 = [v142 stackNames];
-          v144 = [v143 containsObject:v347];
+          entry2 = [v136 entry];
+          stackNames2 = [entry2 stackNames];
+          v144 = [stackNames2 containsObject:v347];
 
           if (!v144)
           {
             v141 = 0.0;
           }
 
-          v145 = [v137 section];
-          v146 = [v132 UUID];
-          v147 = [v137 copyWithSection:v145 offset:v146 size:0.0 uuid:{v130, v139, v141}];
+          section2 = [renderModel12 section];
+          uUID = [v132 UUID];
+          v147 = [renderModel12 copyWithSection:section2 offset:uUID size:0.0 uuid:{v130, v139, v141}];
 
           [v147 frame];
           Height = CGRectGetHeight(v411);
@@ -1039,7 +1039,7 @@ LABEL_97:
     v150 = v392[5];
     v392[5] = v149;
 
-    v92 = self;
+    selfCopy28 = self;
   }
 
   if (!v339)
@@ -1047,28 +1047,28 @@ LABEL_97:
     goto LABEL_135;
   }
 
-  v151 = v92->_layoutNextSection;
-  if (!v92->_layoutUntilEntryWithUUID || !v151)
+  v151 = selfCopy28->_layoutNextSection;
+  if (!selfCopy28->_layoutUntilEntryWithUUID || !v151)
   {
 LABEL_122:
-    if (v151 < v92->_layoutNumberOfSections)
+    if (v151 < selfCopy28->_layoutNumberOfSections)
     {
       v159 = 0;
       while (1)
       {
-        v160 = v92->_sections;
+        v160 = selfCopy28->_sections;
         v161 = [NSNumber numberWithUnsignedInteger:?];
         v158 = [(NSMutableDictionary *)v160 objectForKeyedSubscript:v161];
 
-        v337 = [v158 renderModel];
+        renderModel13 = [v158 renderModel];
 
-        if (!v337)
+        if (!renderModel13)
         {
-          v337 = 0;
+          renderModel13 = 0;
           goto LABEL_175;
         }
 
-        v162 = self;
+        selfCopy23 = self;
         if (!self->_layoutUntilEntryWithUUID && (*&self->_flags & 1) != 0)
         {
           v163 = *(*(&v401 + 1) + 40);
@@ -1079,31 +1079,31 @@ LABEL_122:
           }
 
           v165 = self->_layoutNextSection;
-          v166 = [(TUIFeedContent *)self->_content initialContentReadyEntryIndex];
-          v162 = self;
-          if (v165 > v166)
+          initialContentReadyEntryIndex = [(TUIFeedContent *)self->_content initialContentReadyEntryIndex];
+          selfCopy23 = self;
+          if (v165 > initialContentReadyEntryIndex)
           {
             break;
           }
         }
 
-        ++v162->_layoutNextSection;
-        [v337 size];
+        ++selfCopy23->_layoutNextSection;
+        [renderModel13 size];
         v168 = v167;
         v170 = v169;
-        v171 = [v158 entry];
-        v172 = [v171 stackNames];
-        v173 = [v172 containsObject:v347];
+        entry3 = [v158 entry];
+        stackNames3 = [entry3 stackNames];
+        v173 = [stackNames3 containsObject:v347];
 
         if (!v173)
         {
           v170 = 0.0;
         }
 
-        v174 = [v337 section];
+        section3 = [renderModel13 section];
         v175 = *(*(&v401 + 1) + 40);
-        v176 = [v337 UUID];
-        v159 = [v337 copyWithSection:v174 offset:v176 size:0.0 uuid:{v175, v168, v170}];
+        uUID2 = [renderModel13 UUID];
+        v159 = [renderModel13 copyWithSection:section3 offset:uUID2 size:0.0 uuid:{v175, v168, v170}];
 
         [v159 frame];
         *(*(&v401 + 1) + 40) = CGRectGetHeight(v412) + *(*(&v401 + 1) + 40);
@@ -1113,8 +1113,8 @@ LABEL_122:
 
         if (self->_layoutUntilEntryWithUUID)
         {
-          v179 = [v159 UUID];
-          v180 = [v179 isEqual:self->_layoutUntilEntryWithUUID];
+          uUID3 = [v159 UUID];
+          v180 = [uUID3 isEqual:self->_layoutUntilEntryWithUUID];
 
           if (v180)
           {
@@ -1123,16 +1123,16 @@ LABEL_122:
 
             v325 = 1;
             v331 = 1;
-            v337 = v159;
+            renderModel13 = v159;
             goto LABEL_175;
           }
         }
 
-        v92 = self;
+        selfCopy28 = self;
         v331 = 1;
         if (self->_layoutNextSection >= self->_layoutNumberOfSections)
         {
-          v337 = v159;
+          renderModel13 = v159;
           goto LABEL_176;
         }
       }
@@ -1142,121 +1142,121 @@ LABEL_122:
     }
 
 LABEL_135:
-    v337 = 0;
+    renderModel13 = 0;
     goto LABEL_176;
   }
 
-  v152 = v92->_sections;
+  v152 = selfCopy28->_sections;
   v153 = [NSNumber numberWithUnsignedInteger:v151 - 1];
   v154 = [(NSMutableDictionary *)v152 objectForKeyedSubscript:v153];
-  v155 = [v154 renderModel];
-  v156 = [v155 UUID];
-  v157 = [v156 isEqual:v92->_layoutUntilEntryWithUUID];
+  renderModel14 = [v154 renderModel];
+  uUID4 = [renderModel14 UUID];
+  v157 = [uUID4 isEqual:selfCopy28->_layoutUntilEntryWithUUID];
 
   if ((v157 & 1) == 0)
   {
-    v92 = self;
+    selfCopy28 = self;
     v151 = self->_layoutNextSection;
     goto LABEL_122;
   }
 
-  v337 = 0;
+  renderModel13 = 0;
   v158 = self->_layoutUntilEntryWithUUID;
   self->_layoutUntilEntryWithUUID = 0;
   v325 = 1;
 LABEL_175:
 
-  v92 = self;
+  selfCopy28 = self;
 LABEL_176:
   v335 = objc_alloc_init(NSMutableArray);
   v332 = objc_alloc_init(NSMutableArray);
   v207 = [(TUIAnchorSet *)[TUIMutableAnchorSet alloc] initWithAxis:2];
   v340 = objc_opt_new();
   objb = objc_alloc_init(TUILayoutRenderModelCollector);
-  if (v92->_layoutNextSection)
+  if (selfCopy28->_layoutNextSection)
   {
     v208 = 0;
     do
     {
-      v209 = v92->_sections;
+      v209 = selfCopy28->_sections;
       v210 = [NSNumber numberWithUnsignedInteger:v208];
       v211 = [(NSMutableDictionary *)v209 objectForKeyedSubscript:v210];
 
-      v212 = [v211 renderModel];
-      v213 = [v212 UUID];
+      renderModel15 = [v211 renderModel];
+      uUID5 = [renderModel15 UUID];
 
       [v211 lq_appendAnchorsToSet:v207];
-      v214 = [v211 renderModel];
-      [v214 size];
+      renderModel16 = [v211 renderModel];
+      [renderModel16 size];
       v216 = v215;
 
       if (!v208)
       {
-        v217 = [[TUILogicalScrollAnchor alloc] initWithPosition:0 identifier:v213];
+        v217 = [[TUILogicalScrollAnchor alloc] initWithPosition:0 identifier:uUID5];
         [(TUIMutableAnchorSet *)v207 appendLogicalScrollAnchor:v217 withOffset:0.0];
       }
 
-      v218 = [[TUILogicalScrollAnchor alloc] initWithPosition:2 identifier:v213];
+      v218 = [[TUILogicalScrollAnchor alloc] initWithPosition:2 identifier:uUID5];
       [(TUIMutableAnchorSet *)v207 appendLogicalScrollAnchor:v218 withOffset:v216 * 0.5];
 
       if (++v208 == self->_layoutNextSection)
       {
-        v219 = [[TUILogicalScrollAnchor alloc] initWithPosition:1 identifier:v213];
+        v219 = [[TUILogicalScrollAnchor alloc] initWithPosition:1 identifier:uUID5];
         [(TUIMutableAnchorSet *)v207 appendLogicalScrollAnchor:v219 withOffset:v216];
       }
 
       [(TUIMutableAnchorSet *)v207 translationOffset];
       [(TUIMutableAnchorSet *)v207 setTranslationOffset:v216 + v220];
       [v211 lq_updateAuxiliaryLayoutWithTransactionGroup:v342];
-      v221 = [v211 auxRenderModel];
+      auxRenderModel = [v211 auxRenderModel];
 
-      if (v221)
+      if (auxRenderModel)
       {
-        v222 = [v211 auxRenderModel];
-        [v335 addObject:v222];
+        auxRenderModel2 = [v211 auxRenderModel];
+        [v335 addObject:auxRenderModel2];
       }
 
-      v223 = [v211 layoutController];
-      v224 = [v223 rootLayout];
-      v225 = [v211 renderModel];
-      [v225 offset];
-      [v224 appendVisibleBoundsObservers:v340 axis:2 offset:v226];
+      layoutController = [v211 layoutController];
+      rootLayout = [layoutController rootLayout];
+      renderModel17 = [v211 renderModel];
+      [renderModel17 offset];
+      [rootLayout appendVisibleBoundsObservers:v340 axis:2 offset:v226];
 
-      v227 = [v211 layoutController];
-      v228 = [v227 rootLayout];
-      v229 = [v211 entry];
-      v230 = [v229 uuid];
-      [(TUILayoutRenderModelCollector *)objb collectWithRoot:v228 options:1 entryUUID:v230];
+      layoutController2 = [v211 layoutController];
+      rootLayout2 = [layoutController2 rootLayout];
+      entry4 = [v211 entry];
+      uuid = [entry4 uuid];
+      [(TUILayoutRenderModelCollector *)objb collectWithRoot:rootLayout2 options:1 entryUUID:uuid];
 
-      v92 = self;
+      selfCopy28 = self;
     }
 
     while (v208 < self->_layoutNextSection);
   }
 
-  v231 = [(TUILayoutRenderModelCollector *)objb hostingCollectorFinalizeMap];
-  if ([(TUIHostingMap *)v231 isEqualToMap:v92->_currentHostingMap])
+  hostingCollectorFinalizeMap = [(TUILayoutRenderModelCollector *)objb hostingCollectorFinalizeMap];
+  if ([(TUIHostingMap *)hostingCollectorFinalizeMap isEqualToMap:selfCopy28->_currentHostingMap])
   {
-    currentHostingMap = v92->_currentHostingMap;
-    v233 = v231;
-    v231 = currentHostingMap;
+    currentHostingMap = selfCopy28->_currentHostingMap;
+    v233 = hostingCollectorFinalizeMap;
+    hostingCollectorFinalizeMap = currentHostingMap;
 
-    v92 = self;
+    selfCopy28 = self;
   }
 
-  v323 = v231;
-  objc_storeStrong(&v92->_currentHostingMap, v231);
-  v234 = self;
+  v323 = hostingCollectorFinalizeMap;
+  objc_storeStrong(&selfCopy28->_currentHostingMap, hostingCollectorFinalizeMap);
+  selfCopy33 = self;
   v326 = [[TUIRenderModelAuxiliary alloc] initWithModels:v335];
   if (!self->_currentAuxiliaryModel || [v335 count] && !-[TUIRenderModelAuxiliary isEqualToRenderModel:](v326, "isEqualToRenderModel:", self->_currentAuxiliaryModel))
   {
     objc_storeStrong(&self->_currentAuxiliaryModel, v326);
-    v234 = self;
+    selfCopy33 = self;
   }
 
-  if (v234->_renderModelMode == 1)
+  if (selfCopy33->_renderModelMode == 1)
   {
-    if (v234->_layoutNumberOfSections)
+    if (selfCopy33->_layoutNumberOfSections)
     {
       v235 = 0;
       v330 = 0;
@@ -1264,12 +1264,12 @@ LABEL_176:
       v320 = 134218240;
       while (1)
       {
-        v237 = v234->_sections;
-        v238 = [NSNumber numberWithUnsignedInteger:v235, v320];
-        v239 = [(NSMutableDictionary *)v237 objectForKeyedSubscript:v238];
+        v237 = selfCopy33->_sections;
+        v320 = [NSNumber numberWithUnsignedInteger:v235, v320];
+        v239 = [(NSMutableDictionary *)v237 objectForKeyedSubscript:v320];
 
-        v240 = [v239 layerRenderModel];
-        v241 = v240 == 0;
+        layerRenderModel2 = [v239 layerRenderModel];
+        v241 = layerRenderModel2 == 0;
 
         if (v241)
         {
@@ -1277,14 +1277,14 @@ LABEL_176:
         }
 
         [v239 lq_updateLayerLayoutWithTransactionGroup:v342];
-        v242 = [v239 layerRenderModel];
-        v243 = [v242 identifier];
-        v244 = v243 == 0;
+        layerRenderModel3 = [v239 layerRenderModel];
+        identifier3 = [layerRenderModel3 identifier];
+        v244 = identifier3 == 0;
 
         if (v244)
         {
-          v245 = [v239 layerRenderModel];
-          [v245 setIdentifier:&off_274D08];
+          layerRenderModel4 = [v239 layerRenderModel];
+          [layerRenderModel4 setIdentifier:&off_274D08];
 
           v246 = TUILayoutLog();
           if (os_log_type_enabled(v246, OS_LOG_TYPE_ERROR))
@@ -1300,11 +1300,11 @@ LABEL_176:
           v330 = 1;
         }
 
-        v247 = [v239 layerRenderModel];
-        v248 = [[TUIRenderModelTransform alloc] initWithSubmodel:v247];
-        [v247 size];
+        layerRenderModel5 = [v239 layerRenderModel];
+        v248 = [[TUIRenderModelTransform alloc] initWithSubmodel:layerRenderModel5];
+        [layerRenderModel5 size];
         v250 = v249;
-        [v247 size];
+        [layerRenderModel5 size];
         v252 = v251;
         v413.origin.x = 0.0;
         v413.origin.y = v236;
@@ -1316,20 +1316,20 @@ LABEL_176:
         v414.size.width = v250;
         v414.size.height = v252;
         [(TUIRenderModelTransform *)v248 setCenter:MidX, CGRectGetMidY(v414)];
-        [v247 size];
+        [layerRenderModel5 size];
         v255 = v254;
         [v332 addObject:v248];
 
         v236 = v236 + v255;
         ++v235;
-        v234 = self;
+        selfCopy33 = self;
         if (v235 >= self->_layoutNumberOfSections)
         {
           goto LABEL_204;
         }
       }
 
-      v234 = self;
+      selfCopy33 = self;
     }
 
     else
@@ -1338,12 +1338,12 @@ LABEL_176:
     }
 
 LABEL_204:
-    v257 = [v332 lastObject];
-    [(TUIEnvironment *)v234->_environment viewSize];
+    lastObject2 = [v332 lastObject];
+    [(TUIEnvironment *)selfCopy33->_environment viewSize];
     v259 = v258;
-    if (v257)
+    if (lastObject2)
     {
-      [v257 frame];
+      [lastObject2 frame];
       v260 = CGRectGetMaxY(v415);
     }
 
@@ -1352,15 +1352,15 @@ LABEL_204:
       v260 = 0.0;
     }
 
-    v261 = [[TUIContainerLayerConfig alloc] initWithSize:v259, v260];
-    v262 = [[TUIRenderModelLayer alloc] initWithSubmodels:v332 config:v261 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+    v260 = [[TUIContainerLayerConfig alloc] initWithSize:v259, v260];
+    v262 = [[TUIRenderModelLayer alloc] initWithSubmodels:v332 config:v260 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(TUIRenderModelLayer *)v262 setSize:v259, v260];
-    if (!v234->_currentLayerRenderModel || [v332 count] && !-[TUIRenderModelLayer isEqualToRenderModel:](v262, "isEqualToRenderModel:", v234->_currentLayerRenderModel))
+    if (!selfCopy33->_currentLayerRenderModel || [v332 count] && !-[TUIRenderModelLayer isEqualToRenderModel:](v262, "isEqualToRenderModel:", selfCopy33->_currentLayerRenderModel))
     {
-      objc_storeStrong(&v234->_currentLayerRenderModel, v262);
+      objc_storeStrong(&selfCopy33->_currentLayerRenderModel, v262);
     }
 
-    v234 = self;
+    selfCopy33 = self;
   }
 
   else
@@ -1368,14 +1368,14 @@ LABEL_204:
     v330 = 0;
   }
 
-  [(TUIEnvironment *)v234->_environment contentsScale];
+  [(TUIEnvironment *)selfCopy33->_environment contentsScale];
   [(TUIMutableAnchorSet *)v207 finalizeWithContentsScale:?];
   v263 = [(TUIMutableAnchorSet *)v207 copy];
-  anchorSet = v234->_anchorSet;
-  v234->_anchorSet = v263;
+  anchorSet = selfCopy33->_anchorSet;
+  selfCopy33->_anchorSet = v263;
 
-  v265 = [v342 categories];
-  v266 = [v265 containsObject:@"content-load"];
+  categories = [v342 categories];
+  v266 = [categories containsObject:@"content-load"];
 
   v267 = self->_restoreViewState;
   restoreViewState = self->_restoreViewState;
@@ -1452,7 +1452,7 @@ LABEL_204:
     _os_signpost_emit_with_name_impl(&dword_0, v282, OS_SIGNPOST_INTERVAL_END, v283, "UpdateRenderModels", "[fid:%lu] ", v397, 0xCu);
   }
 
-  v285 = self;
+  selfCopy38 = self;
   if (self->_statsLiveResize)
   {
     v286 = self->_sections;
@@ -1481,53 +1481,53 @@ LABEL_204:
     v352 = v289;
     [(NSMutableDictionary *)v288 enumerateKeysAndObjectsUsingBlock:v351];
     v290 = objc_opt_new();
-    v291 = self;
+    selfCopy36 = self;
     if (self->_layoutNextSection)
     {
       v292 = 0;
       do
       {
-        v293 = v291->_sections;
-        v294 = [NSNumber numberWithUnsignedInteger:v292, v321];
-        v295 = [(NSMutableDictionary *)v293 objectForKeyedSubscript:v294];
-        v296 = [v295 entry];
-        v297 = [v296 uid];
+        v293 = selfCopy36->_sections;
+        v321 = [NSNumber numberWithUnsignedInteger:v292, v321];
+        v295 = [(NSMutableDictionary *)v293 objectForKeyedSubscript:v321];
+        entry5 = [v295 entry];
+        v297 = [entry5 uid];
         [v290 addObject:v297];
 
         ++v292;
-        v291 = self;
+        selfCopy36 = self;
       }
 
       while (v292 < self->_layoutNextSection);
     }
 
-    [(TUIStatsTimingCollector *)v291->_timingCollector finalizeWithTimebase:*v397, v321];
-    v298 = v291;
-    v299 = [[TUIStatsFeedPass alloc] initWithMode:v291->_lq_statsMode timingCollector:v291->_timingCollector passes:v289];
+    [(TUIStatsTimingCollector *)selfCopy36->_timingCollector finalizeWithTimebase:*v397, v321];
+    v298 = selfCopy36;
+    v299 = [[TUIStatsFeedPass alloc] initWithMode:selfCopy36->_lq_statsMode timingCollector:selfCopy36->_timingCollector passes:v289];
     [(TUIStatsCollector *)v298->_statsCollector updateWithPass:v299 currentEntriesUID:v290];
 
-    v285 = self;
+    selfCopy38 = self;
   }
 
-  [(TUIStatsTimingCollector *)v285->_timingCollector reset];
-  [(NSMutableDictionary *)v285->_sections enumerateKeysAndObjectsUsingBlock:&stru_2610D8];
-  if (v285->_lq_statsMode & 0x10) != 0 && (*&v285->_delegateFlags)
+  [(TUIStatsTimingCollector *)selfCopy38->_timingCollector reset];
+  [(NSMutableDictionary *)selfCopy38->_sections enumerateKeysAndObjectsUsingBlock:&stru_2610D8];
+  if (selfCopy38->_lq_statsMode & 0x10) != 0 && (*&selfCopy38->_delegateFlags)
   {
-    v300 = [[TUIStatsFeed alloc] initWithDates:v285->_datesCollector collector:v285->_statsCollector];
+    v300 = [[TUIStatsFeed alloc] initWithDates:selfCopy38->_datesCollector collector:selfCopy38->_statsCollector];
     v349[0] = _NSConcreteStackBlock;
     v349[1] = 3221225472;
     v349[2] = sub_C21F0;
     v349[3] = &unk_261100;
-    v349[4] = v285;
+    v349[4] = selfCopy38;
     v301 = v300;
     v350 = v301;
     [v279 appendUpdateBlock:v349];
 
-    v285 = self;
+    selfCopy38 = self;
   }
 
-  v285->_environmentChanged = 0;
-  objc_storeStrong(&v285->_previousStackName, v327);
+  selfCopy38->_environmentChanged = 0;
+  objc_storeStrong(&selfCopy38->_previousStackName, v327);
   if (v334)
   {
     *&self->_flags &= ~1u;
@@ -1555,23 +1555,23 @@ LABEL_204:
   [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v3 block:v5];
 }
 
-- (BOOL)_lq_shouldInstantiateEntry:(id)a3 sectionIndex:(unint64_t)a4 transactionGroup:(id)a5
+- (BOOL)_lq_shouldInstantiateEntry:(id)entry sectionIndex:(unint64_t)index transactionGroup:(id)group
 {
-  v8 = a3;
-  v9 = a5;
+  entryCopy = entry;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_layoutConditionsLock);
-  v10 = [(NSHashTable *)self->_layoutConditionsSuspendingLayout allObjects];
+  allObjects = [(NSHashTable *)self->_layoutConditionsSuspendingLayout allObjects];
   os_unfair_lock_unlock(&self->_layoutConditionsLock);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v10;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v12)
   {
     v13 = v12;
-    v27 = v9;
+    v27 = groupCopy;
     v14 = 0;
     v15 = *v35;
     v16 = 1;
@@ -1585,7 +1585,7 @@ LABEL_204:
         }
 
         v18 = *(*(&v34 + 1) + 8 * i);
-        if ([v18 evaluateWithEntry:v8 index:a4])
+        if ([v18 evaluateWithEntry:entryCopy index:index])
         {
           if (!v14)
           {
@@ -1609,7 +1609,7 @@ LABEL_204:
     if (!v14)
     {
       v24 = 0;
-      v9 = v27;
+      groupCopy = v27;
       goto LABEL_25;
     }
 
@@ -1649,7 +1649,7 @@ LABEL_204:
     v28[3] = &unk_25DE30;
     v24 = v19;
     v29 = v24;
-    v9 = v27;
+    groupCopy = v27;
     [v27 addCompletion:v28];
     v25 = v29;
   }
@@ -1665,24 +1665,24 @@ LABEL_25:
   return v16 & 1;
 }
 
-- (BOOL)_lq_shouldSubmitRenderModelUpdate:(BOOL)a3 transactionGroup:(id)a4
+- (BOOL)_lq_shouldSubmitRenderModelUpdate:(BOOL)update transactionGroup:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_layoutConditionsLock);
-  v7 = [(NSHashTable *)self->_layoutConditionsSuspendingUpdates allObjects];
+  allObjects = [(NSHashTable *)self->_layoutConditionsSuspendingUpdates allObjects];
   os_unfair_lock_unlock(&self->_layoutConditionsLock);
-  if (a3)
+  if (update)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v6 flags] & 1;
+    v8 = [groupCopy flags] & 1;
   }
 
   renderModelMode = self->_renderModelMode;
-  v34 = v6;
+  v34 = groupCopy;
   if (!renderModelMode)
   {
     v10 = 256;
@@ -1703,12 +1703,12 @@ LABEL_10:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = v7;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v52 count:16];
   if (!v13)
   {
 
-    v25 = v12;
+    allObjects2 = v12;
     goto LABEL_34;
   }
 
@@ -1750,7 +1750,7 @@ LABEL_10:
 
   if (!v15)
   {
-    v25 = v12;
+    allObjects2 = v12;
     v8 = v33;
     if ((v17 & 1) == 0)
     {
@@ -1795,7 +1795,7 @@ LABEL_34:
     while (v22);
   }
 
-  v25 = [(NSHashTable *)self->_layoutConditionsSuspendingUpdates allObjects];
+  allObjects2 = [(NSHashTable *)self->_layoutConditionsSuspendingUpdates allObjects];
   os_unfair_lock_unlock(&self->_layoutConditionsLock);
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
@@ -1829,7 +1829,7 @@ LABEL_36:
     v47 = 2112;
     v48 = v31;
     v49 = 2112;
-    v50 = v25;
+    v50 = allObjects2;
     _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "[fid:%lu] layout conditions not meet; forcing=%@; remaining conditions: %@", buf, 0x20u);
   }
 
@@ -1839,9 +1839,9 @@ LABEL_41:
   return v8 | v28;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
-  v4 = TUIPriorityClamp(a3);
+  v4 = TUIPriorityClamp(priority);
   if (self->_priority != v4)
   {
     v5 = TUILayoutLog();
@@ -1852,7 +1852,7 @@ LABEL_41:
       *buf = 134218496;
       v13 = uniqueIdentifier;
       v14 = 2048;
-      v15 = priority;
+      priorityCopy = priority;
       v16 = 2048;
       v17 = v4;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[fid:%lu] changing priority %f -> %f", buf, 0x20u);
@@ -1872,9 +1872,9 @@ LABEL_41:
   }
 }
 
-- (void)setStatsMode:(unint64_t)a3
+- (void)setStatsMode:(unint64_t)mode
 {
-  if (self->_statsMode != a3)
+  if (self->_statsMode != mode)
   {
     v5 = TUILayoutLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1886,64 +1886,64 @@ LABEL_41:
       v12 = 2048;
       v13 = statsMode;
       v14 = 2048;
-      v15 = a3;
+      modeCopy = mode;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[fid:%lu] changing stats mode %04lx -> %04lx", buf, 0x20u);
     }
 
-    self->_statsMode = a3;
-    v8 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+    self->_statsMode = mode;
+    activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_C2E58;
     v9[3] = &unk_25DED0;
     v9[4] = self;
-    v9[5] = a3;
-    dispatch_async(v8, v9);
+    v9[5] = mode;
+    dispatch_async(activeQueue, v9);
   }
 }
 
-- (void)setLayoutState:(unint64_t)a3
+- (void)setLayoutState:(unint64_t)state
 {
-  if (self->_layoutState != a3)
+  if (self->_layoutState != state)
   {
     delegateFlags = self->_delegateFlags;
     if ((delegateFlags & 2) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained feedLayoutController:self willTransitionToLayoutState:a3];
+      [WeakRetained feedLayoutController:self willTransitionToLayoutState:state];
 
       delegateFlags = self->_delegateFlags;
     }
 
-    self->_layoutState = a3;
+    self->_layoutState = state;
     if ((delegateFlags & 4) != 0)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 feedLayoutController:self didTransitionToLayoutState:a3];
+      [v7 feedLayoutController:self didTransitionToLayoutState:state];
     }
   }
 }
 
-- (void)collectStatsWithCompletion:(id)a3
+- (void)collectStatsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+    activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_C30DC;
     v6[3] = &unk_25EA78;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = completionCopy;
+    dispatch_async(activeQueue, v6);
   }
 }
 
 - (void)statRecordInitialResourcesRenderedDate
 {
   v3 = +[NSDate date];
-  v4 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_C3208;
@@ -1951,13 +1951,13 @@ LABEL_41:
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(activeQueue, v6);
 }
 
 - (void)statRecordResourcesStartLoadingDate
 {
   v3 = +[NSDate date];
-  v4 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_C3328;
@@ -1965,13 +1965,13 @@ LABEL_41:
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(activeQueue, v6);
 }
 
 - (void)statRecordResourcesLoadedDate
 {
   v3 = +[NSDate date];
-  v4 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_C3448;
@@ -1979,13 +1979,13 @@ LABEL_41:
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(activeQueue, v6);
 }
 
 - (void)statRecordViewWillAppear
 {
   v3 = +[NSDate date];
-  v4 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_C3568;
@@ -1993,7 +1993,7 @@ LABEL_41:
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(activeQueue, v6);
 }
 
 - (void)_cancelDataRequests
@@ -2007,18 +2007,18 @@ LABEL_41:
   dispatch_sync(dataRequestsSync, block);
 }
 
-- (void)updateWithContent:(id)a3 layoutUpToEntry:(id)a4 environment:(id)a5 transaction:(id)a6
+- (void)updateWithContent:(id)content layoutUpToEntry:(id)entry environment:(id)environment transaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  contentCopy = content;
+  environmentCopy = environment;
+  transactionCopy = transaction;
+  entryCopy = entry;
   v14 = +[NSDate date];
-  v15 = [v13 uuid];
+  uuid = [entryCopy uuid];
 
-  if (!v12)
+  if (!transactionCopy)
   {
-    v12 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
   [(TUIFeedLayoutController *)self _cancelDataRequests];
@@ -2031,7 +2031,7 @@ LABEL_41:
     *buf = 134218754;
     v35 = uniqueIdentifier;
     v36 = 2112;
-    v37 = v12;
+    v37 = transactionCopy;
     v38 = 2112;
     v39 = WeakRetained;
     v40 = 2112;
@@ -2040,16 +2040,16 @@ LABEL_41:
   }
 
   v20 = objc_loadWeakRetained(&self->_lastEnvironmentTransactionToken);
-  [v12 dependentOn:v20];
+  [transactionCopy dependentOn:v20];
 
   v21 = objc_loadWeakRetained(&self->_lastContentTransactionToken);
-  [v12 dependentOn:v21];
+  [transactionCopy dependentOn:v21];
 
-  v22 = [v12 dependencyToken];
-  objc_storeWeak(&self->_lastEnvironmentTransactionToken, v22);
+  dependencyToken = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->_lastEnvironmentTransactionToken, dependencyToken);
 
-  v23 = [v12 dependencyToken];
-  objc_storeWeak(&self->_lastContentTransactionToken, v23);
+  dependencyToken2 = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->_lastContentTransactionToken, dependencyToken2);
 
   transactionCoordinator = self->_transactionCoordinator;
   v29[0] = _NSConcreteStackBlock;
@@ -2057,37 +2057,37 @@ LABEL_41:
   v29[2] = sub_C3944;
   v29[3] = &unk_2611D0;
   v29[4] = self;
-  v30 = v11;
-  v31 = v15;
-  v32 = v10;
+  v30 = environmentCopy;
+  v31 = uuid;
+  v32 = contentCopy;
   v33 = v14;
   v25 = v14;
-  v26 = v10;
-  v27 = v15;
-  v28 = v11;
-  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v12 block:v29];
+  v26 = contentCopy;
+  v27 = uuid;
+  v28 = environmentCopy;
+  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v29];
 }
 
-- (void)layoutIfNeededWithTransaction:(id)a3
+- (void)layoutIfNeededWithTransaction:(id)transaction
 {
-  v4 = a3;
-  if (!v4)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v4 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
-  v5 = v4;
-  [(TUITransactionCoordinating *)self->_transactionCoordinator scheduleLayoutUpdateWithTransaction:v4 block:&stru_2611F0];
+  v5 = transactionCopy;
+  [(TUITransactionCoordinating *)self->_transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:&stru_2611F0];
 }
 
-- (void)updateWithContent:(id)a3 transaction:(id)a4
+- (void)updateWithContent:(id)content transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  transactionCopy = transaction;
   v8 = +[NSDate date];
-  if (!v7)
+  if (!transactionCopy)
   {
-    v7 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
   [(TUIFeedLayoutController *)self _cancelDataRequests];
@@ -2100,7 +2100,7 @@ LABEL_41:
     *buf = 134218754;
     v22 = uniqueIdentifier;
     v23 = 2112;
-    v24 = v7;
+    v24 = transactionCopy;
     v25 = 2112;
     v26 = WeakRetained;
     v27 = 2112;
@@ -2109,10 +2109,10 @@ LABEL_41:
   }
 
   v13 = objc_loadWeakRetained(&self->_lastContentTransactionToken);
-  [v7 dependentOn:v13];
+  [transactionCopy dependentOn:v13];
 
-  v14 = [v7 dependencyToken];
-  objc_storeWeak(&self->_lastContentTransactionToken, v14);
+  dependencyToken = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->_lastContentTransactionToken, dependencyToken);
 
   transactionCoordinator = self->_transactionCoordinator;
   v18[0] = _NSConcreteStackBlock;
@@ -2120,21 +2120,21 @@ LABEL_41:
   v18[2] = sub_C3C48;
   v18[3] = &unk_261218;
   v18[4] = self;
-  v19 = v6;
+  v19 = contentCopy;
   v20 = v8;
   v16 = v8;
-  v17 = v6;
-  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v7 block:v18];
+  v17 = contentCopy;
+  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v18];
 }
 
-- (void)lq_updateContent:(id)a3 contentUpdateDate:(id)a4 transaction:(id)a5 transactionGroup:(id)a6
+- (void)lq_updateContent:(id)content contentUpdateDate:(id)date transaction:(id)transaction transactionGroup:(id)group
 {
-  v36 = a3;
-  v38 = a4;
-  v37 = a5;
-  v35 = a6;
-  v11 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-  dispatch_assert_queue_V2(v11);
+  contentCopy = content;
+  dateCopy = date;
+  transactionCopy = transaction;
+  groupCopy = group;
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = TUILayoutLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -2145,17 +2145,17 @@ LABEL_41:
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "[fid:%lu] lq_updateContent", &buf, 0xCu);
   }
 
-  [(TUIStatsDatesCollector *)self->_datesCollector setContentUpdateDate:v38];
+  [(TUIStatsDatesCollector *)self->_datesCollector setContentUpdateDate:dateCopy];
   [(TUIStatsDatesCollector *)self->_datesCollector setInitialContentReadyDate:0];
   [(TUIStatsDatesCollector *)self->_datesCollector setDynamicUpdateDate:0];
   [(TUIStatsDatesCollector *)self->_datesCollector setResourcesLoadedDate:0];
-  objc_storeStrong(&self->_content, a3);
+  objc_storeStrong(&self->_content, content);
   v42 = (self->_layoutGenerationId + 1);
   self->_layoutGenerationId = v42;
   p_layoutNextSection = &self->_layoutNextSection;
   *&self->_layoutNextSection = xmmword_24CD50;
   v40 = objc_opt_new();
-  v43 = [v37 tx];
+  v43 = [transactionCopy tx];
   layoutUntilEntryWithUUID = self->_layoutUntilEntryWithUUID;
   v53 = 0u;
   v54 = 0u;
@@ -2185,8 +2185,8 @@ LABEL_41:
         v60 = sub_C13C4;
         if (v17)
         {
-          v20 = [v43 options];
-          v61 = [TUITransaction transactionWithOptions:v20];
+          options = [v43 options];
+          v61 = [TUITransaction transactionWithOptions:options];
         }
 
         else
@@ -2200,11 +2200,11 @@ LABEL_41:
         [v21 addSubTransactionCompletionDeferral];
         if (v17)
         {
-          v22 = [(TUIWorkQueueContext *)self->_queueContext activeCallbackQueue];
-          [v43 addSubTransaction:v21 completionQueue:v22];
+          activeCallbackQueue = [(TUIWorkQueueContext *)self->_queueContext activeCallbackQueue];
+          [v43 addSubTransaction:v21 completionQueue:activeCallbackQueue];
 
-          v23 = [v19 uuid];
-          v24 = [v23 isEqual:self->_layoutUntilEntryWithUUID];
+          uuid = [v19 uuid];
+          v24 = [uuid isEqual:self->_layoutUntilEntryWithUUID];
 
           v17 = v24 ^ 1;
         }
@@ -2261,8 +2261,8 @@ LABEL_41:
   dataRequests = self->_dataRequests;
   self->_dataRequests = v30;
 
-  v32 = [v36 entries];
-  self->_layoutNumberOfSections = [v32 count];
+  entries = [contentCopy entries];
+  self->_layoutNumberOfSections = [entries count];
 
   if (!self->_layoutUntilEntryWithUUID)
   {
@@ -2274,25 +2274,25 @@ LABEL_41:
   }
 }
 
-- (void)updateDatesCollectorWithBlock:(id)a3
+- (void)updateDatesCollectorWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  blockCopy = block;
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_C47AC;
   v7[3] = &unk_25EAA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)updateWithEnvironment:(id)a3 state:(id)a4 withTransaction:(id)a5
+- (void)updateWithEnvironment:(id)environment state:(id)state withTransaction:(id)transaction
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  environmentCopy = environment;
+  transactionCopy = transaction;
+  stateCopy = state;
   v12 = TUIInstantiationLog();
   if (os_signpost_enabled(v12))
   {
@@ -2301,11 +2301,11 @@ LABEL_41:
   }
 
   os_unfair_lock_lock(&self->_environmentLock);
-  objc_storeStrong(&self->_environmentPendingUpdate, a3);
+  objc_storeStrong(&self->_environmentPendingUpdate, environment);
   os_unfair_lock_unlock(&self->_environmentLock);
-  if (!v10)
+  if (!transactionCopy)
   {
-    v10 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
   v13 = TUITransactionLog();
@@ -2316,36 +2316,36 @@ LABEL_41:
     *buf = 134218498;
     v26 = uniqueIdentifier;
     v27 = 2112;
-    v28 = v10;
+    v28 = transactionCopy;
     v29 = 2112;
     v30 = WeakRetained;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[fid:%lu] FeedLayoutController: updateWithEnvironment:state:withTransaction: - tx=%@, lastEnvironmentToken=%@", buf, 0x20u);
   }
 
   v16 = objc_loadWeakRetained(&self->_lastEnvironmentTransactionToken);
-  [v10 dependentOn:v16];
+  [transactionCopy dependentOn:v16];
 
-  v17 = [v10 dependencyToken];
-  objc_storeWeak(&self->_lastEnvironmentTransactionToken, v17);
+  dependencyToken = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->_lastEnvironmentTransactionToken, dependencyToken);
 
-  v18 = [v11 copy];
+  v18 = [stateCopy copy];
   transactionCoordinator = self->_transactionCoordinator;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_C4A2C;
   v22[3] = &unk_261218;
   v22[4] = self;
-  v23 = v9;
+  v23 = environmentCopy;
   v24 = v18;
   v20 = v18;
-  v21 = v9;
-  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v10 block:v22];
+  v21 = environmentCopy;
+  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v22];
 }
 
-- (void)updateHostingGeometryMap:(id)a3 withTransaction:(id)a4
+- (void)updateHostingGeometryMap:(id)map withTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  transactionCopy = transaction;
   v8 = TUITransactionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2354,22 +2354,22 @@ LABEL_41:
     *buf = 134218498;
     v18 = uniqueIdentifier;
     v19 = 2112;
-    v20 = v7;
+    v20 = transactionCopy;
     v21 = 2112;
     v22 = WeakRetained;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[fid:%lu] FeedLayoutController: updateHostingGeometryMap:withTransaction - tx=%@, lastEnvironmentTx=%@", buf, 0x20u);
   }
 
-  if (!v7)
+  if (!transactionCopy)
   {
-    v7 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
   v11 = objc_loadWeakRetained(&self->_lastEnvironmentTransactionToken);
-  [v7 dependentOn:v11];
+  [transactionCopy dependentOn:v11];
 
-  v12 = [v7 dependencyToken];
-  objc_storeWeak(&self->_lastEnvironmentTransactionToken, v12);
+  dependencyToken = [transactionCopy dependencyToken];
+  objc_storeWeak(&self->_lastEnvironmentTransactionToken, dependencyToken);
 
   transactionCoordinator = self->_transactionCoordinator;
   v15[0] = _NSConcreteStackBlock;
@@ -2377,15 +2377,15 @@ LABEL_41:
   v15[2] = sub_C4D24;
   v15[3] = &unk_261290;
   v15[4] = self;
-  v16 = v6;
-  v14 = v6;
-  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v7 block:v15];
+  v16 = mapCopy;
+  v14 = mapCopy;
+  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v15];
 }
 
-- (BOOL)lq_updateHostingGeometryMap:(id)a3
+- (BOOL)lq_updateHostingGeometryMap:(id)map
 {
-  v5 = a3;
-  if (self->_hostingGeometryMap == v5)
+  mapCopy = map;
+  if (self->_hostingGeometryMap == mapCopy)
   {
     LOBYTE(v11) = 0;
   }
@@ -2394,11 +2394,11 @@ LABEL_41:
   {
     v6 = [_TUIHostingGeometryMapUpdate alloc];
     hostingGeometryMap = self->_hostingGeometryMap;
-    v8 = [(TUIManager *)self->_manager viewRegistry];
-    v9 = [v8 hostedViewFactoryTypesWithGeometryReuse];
-    v10 = [(_TUIHostingGeometryMapUpdate *)v6 initWithFrom:hostingGeometryMap to:v5 reuseTypes:v9];
+    viewRegistry = [(TUIManager *)self->_manager viewRegistry];
+    hostedViewFactoryTypesWithGeometryReuse = [viewRegistry hostedViewFactoryTypesWithGeometryReuse];
+    v10 = [(_TUIHostingGeometryMapUpdate *)v6 initWithFrom:hostingGeometryMap to:mapCopy reuseTypes:hostedViewFactoryTypesWithGeometryReuse];
 
-    objc_storeStrong(&self->_hostingGeometryMap, a3);
+    objc_storeStrong(&self->_hostingGeometryMap, map);
     if (self->_layoutNumberOfSections)
     {
       v11 = 0;
@@ -2425,27 +2425,27 @@ LABEL_41:
   return v11 & 1;
 }
 
-- (void)transactionCoordinator:(id)a3 applyUpdatesFromTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator applyUpdatesFromTransactionGroup:(id)group
 {
-  v5 = a4;
+  groupCopy = group;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained feedLayoutController:self applyUpdatesFromTransactionGroup:v5];
+    [WeakRetained feedLayoutController:self applyUpdatesFromTransactionGroup:groupCopy];
   }
 
   else
   {
-    [v5 applyUpdates];
+    [groupCopy applyUpdates];
   }
 }
 
-- (void)transactionCoordinator:(id)a3 updateWithTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator updateWithTransactionGroup:(id)group
 {
-  v5 = a4;
-  v6 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-  dispatch_assert_queue_V2(v6);
+  groupCopy = group;
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self->_suspended)
   {
@@ -2460,17 +2460,17 @@ LABEL_41:
     v13[2] = sub_C5018;
     v13[3] = &unk_25DCA0;
     v13[4] = self;
-    v14 = v5;
+    v14 = groupCopy;
     [v14 computeFinalUpdatesWithBlock:v13];
   }
 
   else
   {
     v9 = +[UITraitCollection _currentTraitCollection];
-    v10 = [(TUIEnvironment *)self->_environment traitCollection];
-    [UITraitCollection _setCurrentTraitCollection:v10];
+    traitCollection = [(TUIEnvironment *)self->_environment traitCollection];
+    [UITraitCollection _setCurrentTraitCollection:traitCollection];
 
-    [(TUIFeedLayoutController *)self lq_updateRenderModelsWithTransactionGroup:v5];
+    [(TUIFeedLayoutController *)self lq_updateRenderModelsWithTransactionGroup:groupCopy];
     [UITraitCollection _setCurrentTraitCollection:v9];
     captureController = self->_captureController;
     if (captureController)
@@ -2482,20 +2482,20 @@ LABEL_41:
   }
 }
 
-- (void)transactionCoordinator:(id)a3 timeoutForSynchronousTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator timeoutForSynchronousTransactionGroup:(id)group
 {
   if (!self->_renderModelMode)
   {
-    v6 = a4;
+    groupCopy = group;
     v7 = [[TUIRenderModelCollection alloc] initWithContent:self->_content sections:0 size:0 insets:0 visibleBoundsObservers:0 info:[(TUIEnvironment *)self->_environment layoutDirection] anchorSet:CGSizeZero.width layoutDirection:CGSizeZero.height matchingUUID:UIEdgeInsetsZero.top matchingUID:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 0, 0];
-    [(TUIRenderUpdateCollectionController *)self->_updateController updateWithHostingMap:0 transactionGroup:v6];
-    [(TUIRenderUpdateCollectionController *)self->_updateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:v6];
+    [(TUIRenderUpdateCollectionController *)self->_updateController updateWithHostingMap:0 transactionGroup:groupCopy];
+    [(TUIRenderUpdateCollectionController *)self->_updateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:groupCopy];
   }
 }
 
-- (id)instantiateContext:(id)a3 serviceConformingToProtocol:(id)a4
+- (id)instantiateContext:(id)context serviceConformingToProtocol:(id)protocol
 {
-  if (protocol_isEqual(a4, &OBJC_PROTOCOL___TUIWPService))
+  if (protocol_isEqual(protocol, &OBJC_PROTOCOL___TUIWPService))
   {
     v5 = self->_wpService;
   }
@@ -2508,19 +2508,19 @@ LABEL_41:
   return v5;
 }
 
-- (void)lq_updateAXModelTreeWithTransactionGroup:(id)a3
+- (void)lq_updateAXModelTreeWithTransactionGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-  dispatch_assert_queue_V2(v5);
+  groupCopy = group;
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(TUIEnvironment *)self->_environment accessibilityElementsNeeded])
   {
-    v24 = v4;
+    v24 = groupCopy;
     v6 = objc_opt_class();
-    v7 = [(TUIFeedContent *)self->_content currentStackName];
-    v8 = [v7 value];
-    v9 = TUIDynamicCast(v6, v8);
+    currentStackName = [(TUIFeedContent *)self->_content currentStackName];
+    value = [currentStackName value];
+    v9 = TUIDynamicCast(v6, value);
 
     v10 = objc_opt_new();
     v25 = objc_opt_new();
@@ -2533,10 +2533,10 @@ LABEL_41:
         v13 = [NSNumber numberWithUnsignedInteger:v11];
         v14 = [(NSMutableDictionary *)sections objectForKey:v13];
 
-        v15 = [v14 axModelTree];
-        if (v15)
+        axModelTree = [v14 axModelTree];
+        if (axModelTree)
         {
-          [v10 addObject:v15];
+          [v10 addObject:axModelTree];
         }
 
         else
@@ -2545,20 +2545,20 @@ LABEL_41:
           [v10 addObject:v16];
         }
 
-        v17 = [v14 entry];
-        v18 = [v17 stackNames];
-        v19 = [v18 containsObject:v9];
+        entry = [v14 entry];
+        stackNames = [entry stackNames];
+        v19 = [stackNames containsObject:v9];
 
         if ((v19 & 1) == 0)
         {
-          [v15 setHidden:1];
+          [axModelTree setHidden:1];
         }
 
-        v20 = [v14 renderModel];
-        if (v20)
+        renderModel = [v14 renderModel];
+        if (renderModel)
         {
           v21 = [NSNumber numberWithUnsignedInteger:v11];
-          [v25 setObject:v20 forKeyedSubscript:v21];
+          [v25 setObject:renderModel forKeyedSubscript:v21];
         }
 
         ++v11;
@@ -2575,10 +2575,10 @@ LABEL_41:
     objc_copyWeak(&v30, &location);
     v22 = v10;
     v27 = v22;
-    v28 = self;
+    selfCopy = self;
     v23 = v25;
     v29 = v23;
-    v4 = v24;
+    groupCopy = v24;
     [v24 appendUpdateBlock:v26];
 
     objc_destroyWeak(&v30);
@@ -2586,12 +2586,12 @@ LABEL_41:
   }
 }
 
-- (void)suspendAndTeardownWithTransaction:(id)a3
+- (void)suspendAndTeardownWithTransaction:(id)transaction
 {
-  v4 = a3;
-  if (!v4)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v4 = +[TUITransaction currentOrImplicitTransaction];
+    transactionCopy = +[TUITransaction currentOrImplicitTransaction];
   }
 
   transactionCoordinator = self->_transactionCoordinator;
@@ -2600,26 +2600,26 @@ LABEL_41:
   v6[2] = sub_C55B4;
   v6[3] = &unk_25EB80;
   v6[4] = self;
-  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v4 block:v6];
+  [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v6];
 }
 
-- (void)resumeAndRebuildWithEnvironment:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)resumeAndRebuildWithEnvironment:(id)environment state:(id)state transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  environmentCopy = environment;
+  transactionCopy = transaction;
+  if (transactionCopy)
   {
-    v10 = v9;
-    v11 = a4;
+    v10 = transactionCopy;
+    stateCopy = state;
   }
 
   else
   {
-    v12 = a4;
+    stateCopy2 = state;
     v10 = +[TUITransaction currentOrImplicitTransaction];
   }
 
-  v13 = [a4 copy];
+  v13 = [state copy];
 
   v14 = TUITransactionLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2638,8 +2638,8 @@ LABEL_41:
   v17 = objc_loadWeakRetained(&self->_lastEnvironmentTransactionToken);
   [v10 dependentOn:v17];
 
-  v18 = [v10 dependencyToken];
-  objc_storeWeak(&self->_lastEnvironmentTransactionToken, v18);
+  dependencyToken = [v10 dependencyToken];
+  objc_storeWeak(&self->_lastEnvironmentTransactionToken, dependencyToken);
 
   transactionCoordinator = self->_transactionCoordinator;
   v22[0] = _NSConcreteStackBlock;
@@ -2647,17 +2647,17 @@ LABEL_41:
   v22[2] = sub_C586C;
   v22[3] = &unk_261218;
   v22[4] = self;
-  v23 = v8;
+  v23 = environmentCopy;
   v24 = v13;
   v20 = v13;
-  v21 = v8;
+  v21 = environmentCopy;
   [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v10 block:v22];
 }
 
-- (void)suspendUpdatesUntilMeetingLayoutCondition:(id)a3
+- (void)suspendUpdatesUntilMeetingLayoutCondition:(id)condition
 {
-  v4 = a3;
-  if (v4)
+  conditionCopy = condition;
+  if (conditionCopy)
   {
     objc_initWeak(&location, self);
     v5 = _NSConcreteStackBlock;
@@ -2665,19 +2665,19 @@ LABEL_41:
     v7 = sub_C5A64;
     v8 = &unk_25E240;
     objc_copyWeak(&v9, &location);
-    [v4 onInvalidate:&v5];
+    [conditionCopy onInvalidate:&v5];
     os_unfair_lock_lock(&self->_layoutConditionsLock);
-    [(NSHashTable *)self->_layoutConditionsSuspendingUpdates addObject:v4, v5, v6, v7, v8];
+    [(NSHashTable *)self->_layoutConditionsSuspendingUpdates addObject:conditionCopy, v5, v6, v7, v8];
     os_unfair_lock_unlock(&self->_layoutConditionsLock);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)suspendLayoutsUntilMeetingLayoutCondition:(id)a3
+- (void)suspendLayoutsUntilMeetingLayoutCondition:(id)condition
 {
-  v4 = a3;
-  if (v4)
+  conditionCopy = condition;
+  if (conditionCopy)
   {
     objc_initWeak(&location, self);
     v5 = _NSConcreteStackBlock;
@@ -2685,9 +2685,9 @@ LABEL_41:
     v7 = sub_C5B98;
     v8 = &unk_25E240;
     objc_copyWeak(&v9, &location);
-    [v4 onInvalidate:&v5];
+    [conditionCopy onInvalidate:&v5];
     os_unfair_lock_lock(&self->_layoutConditionsLock);
-    [(NSHashTable *)self->_layoutConditionsSuspendingLayout addObject:v4, v5, v6, v7, v8];
+    [(NSHashTable *)self->_layoutConditionsSuspendingLayout addObject:conditionCopy, v5, v6, v7, v8];
     os_unfair_lock_unlock(&self->_layoutConditionsLock);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -2702,30 +2702,30 @@ LABEL_41:
 
 - (void)beginLiveResize
 {
-  v3 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C5CCC;
   block[3] = &unk_25DE30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(activeQueue, block);
 }
 
 - (void)endLiveResize
 {
-  v3 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C5EB0;
   block[3] = &unk_25DE30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(activeQueue, block);
 }
 
-- (void)captureWithController:(id)a3 completion:(id)a4
+- (void)captureWithController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = +[TUITransaction implicitTransaction];
   transactionCoordinator = self->_transactionCoordinator;
   v12[0] = _NSConcreteStackBlock;
@@ -2733,45 +2733,45 @@ LABEL_41:
   v12[2] = sub_C60D0;
   v12[3] = &unk_261320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = controllerCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = controllerCopy;
   [(TUITransactionCoordinating *)transactionCoordinator scheduleLayoutUpdateWithTransaction:v8 block:v12];
 }
 
-- (void)dumpModelTreeForEntry:(id)a3 completion:(id)a4
+- (void)dumpModelTreeForEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  entryCopy = entry;
+  completionCopy = completion;
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C6300;
   block[3] = &unk_261370;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = entryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = entryCopy;
+  dispatch_async(activeQueue, block);
 }
 
-- (void)dumpLayoutTreeForEntry:(id)a3 completion:(id)a4
+- (void)dumpLayoutTreeForEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  entryCopy = entry;
+  completionCopy = completion;
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C65FC;
   block[3] = &unk_261370;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = entryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = entryCopy;
+  dispatch_async(activeQueue, block);
 }
 
 - (TUIFeedLayoutControllerDelegate)delegate

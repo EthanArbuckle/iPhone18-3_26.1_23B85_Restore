@@ -1,11 +1,11 @@
 @interface NRPBDeviceDiffType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setDiff:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setDiff:(uint64_t)diff;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBDeviceDiffType
@@ -16,15 +16,15 @@
   v8.receiver = self;
   v8.super_class = NRPBDeviceDiffType;
   v4 = [(NRPBDeviceDiffType *)&v8 description];
-  v5 = [(NRPBDeviceDiffType *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBDeviceDiffType *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     changeType = self->_changeType;
@@ -38,48 +38,48 @@
       v5 = off_1E86DC8E8[changeType];
     }
 
-    [v3 setObject:v5 forKey:@"changeType"];
+    [dictionary setObject:v5 forKey:@"changeType"];
   }
 
   diff = self->_diff;
   if (diff)
   {
-    v7 = [(NRPBDeviceDiff *)diff dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"diff"];
+    dictionaryRepresentation = [(NRPBDeviceDiff *)diff dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"diff"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     changeType = self->_changeType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_diff)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setDiff:(uint64_t)a1
+- (void)setDiff:(uint64_t)diff
 {
-  if (a1)
+  if (diff)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((diff + 16), a2);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -87,31 +87,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NRPBDeviceDiff *)self->_diff copyWithZone:a3];
+  v7 = [(NRPBDeviceDiff *)self->_diff copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_changeType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_changeType != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   diff = self->_diff;
-  if (diff | *(v4 + 2))
+  if (diff | *(equalCopy + 2))
   {
     v7 = [(NRPBDeviceDiff *)diff isEqual:?];
   }

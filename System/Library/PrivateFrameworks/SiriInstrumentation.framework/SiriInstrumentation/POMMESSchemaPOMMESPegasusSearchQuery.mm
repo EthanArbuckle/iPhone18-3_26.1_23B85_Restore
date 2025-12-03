@@ -1,36 +1,36 @@
 @interface POMMESSchemaPOMMESPegasusSearchQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusSearchQuery)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusSearchQuery)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESPegasusSearchQuery)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusSearchQuery)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addUserSpan:(id)a3;
-- (void)setHasHasAudioQueueStateInfo:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserSpan:(id)span;
+- (void)setHasHasAudioQueueStateInfo:(BOOL)info;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusSearchQuery
 
-- (POMMESSchemaPOMMESPegasusSearchQuery)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQuery)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = POMMESSchemaPOMMESPegasusSearchQuery;
   v5 = [(POMMESSchemaPOMMESPegasusSearchQuery *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasRewrittenUtterances"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasRewrittenUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusSearchQuery setHasRewrittenUtterances:](v5, "setHasRewrittenUtterances:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"userSpan"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"userSpan"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,14 +76,14 @@
       v6 = v20;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"hasAudioQueueStateInfo"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"hasAudioQueueStateInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusSearchQuery setHasAudioQueueStateInfo:](v5, "setHasAudioQueueStateInfo:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"ampUserState"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"ampUserState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,30 +97,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusSearchQuery)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQuery)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusSearchQuery *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusSearchQuery *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,20 +134,20 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ampUserState)
   {
-    v4 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ampUserState = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+    dictionaryRepresentation = [ampUserState dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ampUserState"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ampUserState"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ampUserState"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ampUserState"];
     }
   }
 
@@ -155,7 +155,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQuery hasAudioQueueStateInfo](self, "hasAudioQueueStateInfo")}];
-    [v3 setObject:v8 forKeyedSubscript:@"hasAudioQueueStateInfo"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hasAudioQueueStateInfo"];
 
     has = self->_has;
   }
@@ -163,12 +163,12 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusSearchQuery hasRewrittenUtterances](self, "hasRewrittenUtterances")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasRewrittenUtterances"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasRewrittenUtterances"];
   }
 
   if ([(NSArray *)self->_userSpans count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -188,16 +188,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -207,12 +207,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"userSpan"];
+    [dictionary setObject:array forKeyedSubscript:@"userSpan"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -241,15 +241,15 @@
   return v4 ^ v3 ^ v5 ^ [(POMMESSchemaPOMMESPegasusSearchQueryAmpUserState *)self->_ampUserState hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_18;
   }
@@ -257,26 +257,26 @@
   if (*&self->_has)
   {
     hasRewrittenUtterances = self->_hasRewrittenUtterances;
-    if (hasRewrittenUtterances != [v4 hasRewrittenUtterances])
+    if (hasRewrittenUtterances != [equalCopy hasRewrittenUtterances])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
-  v7 = [v4 userSpans];
-  if ((v6 != 0) == (v7 == 0))
+  userSpans = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
+  userSpans2 = [equalCopy userSpans];
+  if ((userSpans != 0) == (userSpans2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
-  if (v8)
+  userSpans3 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
+  if (userSpans3)
   {
-    v9 = v8;
-    v10 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
-    v11 = [v4 userSpans];
-    v12 = [v10 isEqual:v11];
+    v9 = userSpans3;
+    userSpans4 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans];
+    userSpans5 = [equalCopy userSpans];
+    v12 = [userSpans4 isEqual:userSpans5];
 
     if (!v12)
     {
@@ -289,7 +289,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[40] >> 1) & 1))
+  if (v13 != ((equalCopy[40] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -297,18 +297,18 @@
   if (v13)
   {
     hasAudioQueueStateInfo = self->_hasAudioQueueStateInfo;
-    if (hasAudioQueueStateInfo != [v4 hasAudioQueueStateInfo])
+    if (hasAudioQueueStateInfo != [equalCopy hasAudioQueueStateInfo])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
-  v7 = [v4 ampUserState];
-  if ((v6 != 0) != (v7 == 0))
+  userSpans = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+  userSpans2 = [equalCopy ampUserState];
+  if ((userSpans != 0) != (userSpans2 == 0))
   {
-    v15 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
-    if (!v15)
+    ampUserState = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+    if (!ampUserState)
     {
 
 LABEL_21:
@@ -316,10 +316,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v16 = v15;
-    v17 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
-    v18 = [v4 ampUserState];
-    v19 = [v17 isEqual:v18];
+    v16 = ampUserState;
+    ampUserState2 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+    ampUserState3 = [equalCopy ampUserState];
+    v19 = [ampUserState2 isEqual:ampUserState3];
 
     if (v19)
     {
@@ -339,10 +339,10 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -384,18 +384,18 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+  ampUserState = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
 
-  if (v10)
+  if (ampUserState)
   {
-    v11 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+    ampUserState2 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasHasAudioQueueStateInfo:(BOOL)a3
+- (void)setHasHasAudioQueueStateInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -408,39 +408,39 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addUserSpan:(id)a3
+- (void)addUserSpan:(id)span
 {
-  v4 = a3;
+  spanCopy = span;
   userSpans = self->_userSpans;
-  v8 = v4;
+  v8 = spanCopy;
   if (!userSpans)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userSpans;
-    self->_userSpans = v6;
+    self->_userSpans = array;
 
-    v4 = v8;
+    spanCopy = v8;
     userSpans = self->_userSpans;
   }
 
-  [(NSArray *)userSpans addObject:v4];
+  [(NSArray *)userSpans addObject:spanCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = POMMESSchemaPOMMESPegasusSearchQuery;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self userSpans:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(POMMESSchemaPOMMESPegasusSearchQuery *)self setUserSpans:v7];
 
-  v8 = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  ampUserState = [(POMMESSchemaPOMMESPegasusSearchQuery *)self ampUserState];
+  v9 = [ampUserState applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(POMMESSchemaPOMMESPegasusSearchQuery *)self deleteAmpUserState];
   }

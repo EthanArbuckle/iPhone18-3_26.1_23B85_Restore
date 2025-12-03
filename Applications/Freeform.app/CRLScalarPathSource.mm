@@ -1,100 +1,100 @@
 @interface CRLScalarPathSource
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)pathSourceWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5;
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4 continuousCurve:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)pathSourceWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size;
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3;
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob;
 - (CGPath)p_newChevronPath;
 - (CGPath)p_newRegularPolygonPath;
 - (CGPath)p_newRoundedRectPath;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)p_getControlKnobPointForChevron;
 - (CGPoint)p_getControlKnobPointForRegularPolygon;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGSize)naturalSize;
-- (CRLScalarPathSource)initWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5 continuousCurve:(BOOL)a6;
+- (CRLScalarPathSource)initWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve;
 - (double)cornerRadius;
 - (double)maxCornerRadius;
 - (double)maxScalar;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3;
-- (id)crlaxValueForKnobTag:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag;
+- (id)crlaxValueForKnobTag:(unint64_t)tag;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
 - (id)inferredAccessibilityDescription;
 - (id)inferredAccessibilityDescriptionNoShapeNames;
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder;
 - (id)name;
 - (unint64_t)hash;
 - (unint64_t)numberOfSides;
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3;
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3;
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setIsCurveContinuous:(BOOL)a3;
-- (void)setScalarValue:(id)a3;
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron;
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon;
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setIsCurveContinuous:(BOOL)continuous;
+- (void)setScalarValue:(id)value;
 @end
 
 @implementation CRLScalarPathSource
 
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4 continuousCurve:(BOOL)a5
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve
 {
-  v5 = [[CRLScalarPathSource alloc] initWithType:0 scalar:a5 naturalSize:a3 continuousCurve:a4.width, a4.height];
+  v5 = [[CRLScalarPathSource alloc] initWithType:0 scalar:curve naturalSize:scalar continuousCurve:size.width, size.height];
 
   return v5;
 }
 
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  v4 = [[CRLScalarPathSource alloc] initWithType:1 scalar:0 naturalSize:a3 continuousCurve:a4.width, a4.height];
+  v4 = [[CRLScalarPathSource alloc] initWithType:1 scalar:0 naturalSize:scalar continuousCurve:size.width, size.height];
 
   return v4;
 }
 
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  v4 = [[CRLScalarPathSource alloc] initWithType:2 scalar:0 naturalSize:a3 continuousCurve:a4.width, a4.height];
+  v4 = [[CRLScalarPathSource alloc] initWithType:2 scalar:0 naturalSize:scalar continuousCurve:size.width, size.height];
 
   return v4;
 }
 
-+ (id)pathSourceWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5
++ (id)pathSourceWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size
 {
-  v5 = [[CRLScalarPathSource alloc] initWithType:a3 scalar:0 naturalSize:a4 continuousCurve:a5.width, a5.height];
+  v5 = [[CRLScalarPathSource alloc] initWithType:type scalar:0 naturalSize:scalar continuousCurve:size.width, size.height];
 
   return v5;
 }
 
-- (CRLScalarPathSource)initWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5 continuousCurve:(BOOL)a6
+- (CRLScalarPathSource)initWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
+  curveCopy = curve;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = CRLScalarPathSource;
   v11 = [(CRLScalarPathSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(CRLScalarPathSource *)v11 setType:a3];
-    [(CRLScalarPathSource *)v12 setScalar:a4];
+    [(CRLScalarPathSource *)v11 setType:type];
+    [(CRLScalarPathSource *)v12 setScalar:scalar];
     [(CRLScalarPathSource *)v12 setNaturalSize:width, height];
-    [(CRLScalarPathSource *)v12 setIsCurveContinuous:v6];
+    [(CRLScalarPathSource *)v12 setIsCurveContinuous:curveCopy];
     [(CRLScalarPathSource *)v12 setShouldShowKnob:1];
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CRLScalarPathSource;
-  v4 = [(CRLPathSource *)&v6 copyWithZone:a3];
+  v4 = [(CRLPathSource *)&v6 copyWithZone:zone];
   [v4 setType:{-[CRLScalarPathSource type](self, "type")}];
   [(CRLScalarPathSource *)self scalar];
   [v4 setScalar:?];
@@ -105,10 +105,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v18) = 1;
   }
@@ -117,15 +117,15 @@
   {
     v21.receiver = self;
     v21.super_class = CRLScalarPathSource;
-    if ([(CRLPathSource *)&v21 isEqual:v4])
+    if ([(CRLPathSource *)&v21 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = sub_100013F00(v5, v4);
-      v7 = [(CRLScalarPathSource *)self type];
-      if (v7 == [v6 type] && ((-[CRLScalarPathSource scalar](self, "scalar"), v9 = v8, objc_msgSend(v6, "scalar"), v9 == v10) || vabdd_f64(v9, v10) < 0.00999999978) && (-[CRLScalarPathSource naturalSize](self, "naturalSize"), v12 = v11, v14 = v13, objc_msgSend(v6, "naturalSize"), sub_10011ECC8(v12, v14, v15, v16)) && (v17 = -[CRLScalarPathSource isCurveContinuous](self, "isCurveContinuous"), v17 == objc_msgSend(v6, "isCurveContinuous")))
+      v6 = sub_100013F00(v5, equalCopy);
+      type = [(CRLScalarPathSource *)self type];
+      if (type == [v6 type] && ((-[CRLScalarPathSource scalar](self, "scalar"), v9 = v8, objc_msgSend(v6, "scalar"), v9 == v10) || vabdd_f64(v9, v10) < 0.00999999978) && (-[CRLScalarPathSource naturalSize](self, "naturalSize"), v12 = v11, v14 = v13, objc_msgSend(v6, "naturalSize"), sub_10011ECC8(v12, v14, v15, v16)) && (v17 = -[CRLScalarPathSource isCurveContinuous](self, "isCurveContinuous"), v17 == objc_msgSend(v6, "isCurveContinuous")))
       {
-        v20 = [(CRLScalarPathSource *)self shouldShowKnob];
-        v18 = v20 ^ [v6 shouldShowKnob] ^ 1;
+        shouldShowKnob = [(CRLScalarPathSource *)self shouldShowKnob];
+        v18 = shouldShowKnob ^ [v6 shouldShowKnob] ^ 1;
       }
 
       else
@@ -159,12 +159,12 @@
   v3 = [(CRLScalarPathSource *)&v12 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(CRLScalarPathSource *)self type];
+  type = [(CRLScalarPathSource *)self type];
   [(CRLScalarPathSource *)self scalar];
   v7 = v6;
   [(CRLScalarPathSource *)self naturalSize];
   v8 = NSStringFromCGSize(v14);
-  v9 = [NSString stringWithFormat:@" type=%lu; scalar=%f; natural size=%@; continuous curve=%d", v5, v7, v8, [(CRLScalarPathSource *)self isCurveContinuous]];;
+  v9 = [NSString stringWithFormat:@" type=%lu; scalar=%f; natural size=%@; continuous curve=%d", type, v7, v8, [(CRLScalarPathSource *)self isCurveContinuous]];;
   [v4 appendString:v9];
 
   if (![(CRLScalarPathSource *)self shouldShowKnob])
@@ -176,9 +176,9 @@
   return v4;
 }
 
-- (void)setIsCurveContinuous:(BOOL)a3
+- (void)setIsCurveContinuous:(BOOL)continuous
 {
-  if (a3)
+  if (continuous)
   {
     if (![(CRLScalarPathSource *)self type])
     {
@@ -218,10 +218,10 @@ LABEL_13:
   self->mIsCurveContinuous = v7;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(CRLScalarPathSource *)self type])
   {
     [(CRLPathSource *)self uniformScaleForScalingToNaturalSize:width, height];
@@ -232,9 +232,9 @@ LABEL_13:
   self->mNaturalSize.height = height;
 }
 
-- (void)setScalarValue:(id)a3
+- (void)setScalarValue:(id)value
 {
-  [a3 floatValue];
+  [value floatValue];
   v5 = v4;
 
   [(CRLScalarPathSource *)self setScalar:v5];
@@ -242,14 +242,14 @@ LABEL_13:
 
 - (double)maxScalar
 {
-  v3 = [(CRLScalarPathSource *)self type];
-  if (v3 == 2)
+  type = [(CRLScalarPathSource *)self type];
+  if (type == 2)
   {
     [(CRLScalarPathSource *)self naturalSize];
     return v10 / v11;
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     return 100.0;
   }
@@ -257,7 +257,7 @@ LABEL_13:
   else
   {
     result = 0.0;
-    if (!v3)
+    if (!type)
     {
       [(CRLScalarPathSource *)self naturalSize];
       v6 = v5;
@@ -381,15 +381,15 @@ LABEL_13:
   return v6;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = [(CRLScalarPathSource *)self type];
-  if (v4 == 2)
+  type = [(CRLScalarPathSource *)self type];
+  if (type == 2)
   {
     [(CRLScalarPathSource *)self p_getControlKnobPointForChevron];
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     [(CRLScalarPathSource *)self p_getControlKnobPointForRegularPolygon];
   }
@@ -398,7 +398,7 @@ LABEL_13:
   {
     v5 = 0.0;
     v6 = 0.0;
-    if (!v4)
+    if (!type)
     {
       [(CRLScalarPathSource *)self p_getControlKnobPointForRoundedRect:0.0];
     }
@@ -409,12 +409,12 @@ LABEL_13:
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(CRLScalarPathSource *)self type];
-  switch(v7)
+  y = point.y;
+  x = point.x;
+  type = [(CRLScalarPathSource *)self type];
+  switch(type)
   {
     case 2uLL:
 
@@ -431,10 +431,10 @@ LABEL_13:
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
-  v4 = [(CRLScalarPathSource *)self type];
-  switch(v4)
+  type = [(CRLScalarPathSource *)self type];
+  switch(type)
   {
     case 2uLL:
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -488,15 +488,15 @@ LABEL_6:
   return v10;
 }
 
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob
 {
   if ([(CRLScalarPathSource *)self type]!= 1)
   {
     return 0;
   }
 
-  v4 = [(CRLPathSource *)self bezierPath];
-  [v4 bounds];
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  [bezierPath bounds];
   v6 = v5;
   v8 = v7;
 
@@ -518,19 +518,19 @@ LABEL_6:
 
 - (id)bezierPathWithoutFlips
 {
-  v3 = [(CRLScalarPathSource *)self type];
-  switch(v3)
+  type = [(CRLScalarPathSource *)self type];
+  switch(type)
   {
     case 2uLL:
-      v4 = [(CRLScalarPathSource *)self p_newChevronPath];
+      p_newChevronPath = [(CRLScalarPathSource *)self p_newChevronPath];
       goto LABEL_7;
     case 1uLL:
-      v4 = [(CRLScalarPathSource *)self p_newRegularPolygonPath];
+      p_newChevronPath = [(CRLScalarPathSource *)self p_newRegularPolygonPath];
       goto LABEL_7;
     case 0uLL:
-      v4 = [(CRLScalarPathSource *)self p_newRoundedRectPath];
+      p_newChevronPath = [(CRLScalarPathSource *)self p_newRoundedRectPath];
 LABEL_7:
-      v5 = v4;
+      v5 = p_newChevronPath;
       goto LABEL_9;
   }
 
@@ -555,15 +555,15 @@ LABEL_9:
 
 - (id)name
 {
-  v2 = [(CRLScalarPathSource *)self type];
-  if (v2 > 2)
+  type = [(CRLScalarPathSource *)self type];
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *(&off_101862EC0 + v2);
+    v3 = *(&off_101862EC0 + type);
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:0 table:0];
   }
@@ -675,10 +675,10 @@ LABEL_9:
   return Mutable;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
-  x = a3.x;
-  [(CRLScalarPathSource *)self naturalSize:a3.x];
+  x = rect.x;
+  [(CRLScalarPathSource *)self naturalSize:rect.x];
   v6 = v5;
   y = CGPointZero.y;
   v9 = sub_100120090(CGPointZero.x, y, 0.0, v8) * 0.5;
@@ -725,10 +725,10 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon
 {
-  y = a3.y;
-  x = a3.x;
+  y = polygon.y;
+  x = polygon.x;
   [(CRLScalarPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -800,10 +800,10 @@ LABEL_9:
   sub_100120F28(&v13, v5 * 0.5 * 0.7, (((v4 - 3) / 9.0) + -0.25) * 6.28318531);
   v13 = v9 + v13;
   v14 = v8 * 0.5 + v8 / v6 * v14;
-  v10 = [(CRLPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
   v11 = v13;
   v12 = v14;
-  if (v10)
+  if (hasVerticalFlip)
   {
     v12 = v8 - v14;
   }
@@ -813,10 +813,10 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron
 {
-  x = a3.x;
-  [(CRLScalarPathSource *)self naturalSize:a3.x];
+  x = chevron.x;
+  [(CRLScalarPathSource *)self naturalSize:chevron.x];
   v7 = sub_1004C3240(x, 0.0, v5) / v6;
 
   [(CRLScalarPathSource *)self setScalar:v7];
@@ -837,25 +837,25 @@ LABEL_9:
 
 - (id)inferredAccessibilityDescriptionNoShapeNames
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
-    v4 = [(CRLScalarPathSource *)self inferredAccessibilityDescription];
+    inferredAccessibilityDescription = [(CRLScalarPathSource *)self inferredAccessibilityDescription];
 
-    v3 = v4;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (id)inferredAccessibilityDescription
 {
-  v3 = [(CRLScalarPathSource *)self type];
+  type = [(CRLScalarPathSource *)self type];
   [(CRLScalarPathSource *)self scalar];
   v5 = llround(v4);
-  if (v3 != 1)
+  if (type != 1)
   {
-    if (v3)
+    if (type)
     {
       v9 = &stru_1018BCA28;
       goto LABEL_19;
@@ -982,12 +982,12 @@ LABEL_19:
 
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder
 {
-  v3 = [(CRLScalarPathSource *)self type];
+  type = [(CRLScalarPathSource *)self type];
   [(CRLScalarPathSource *)self scalar];
   v5 = llround(v4);
-  if (v3 != 1)
+  if (type != 1)
   {
-    if (v3)
+    if (type)
     {
       v9 = &stru_1018BCA28;
       goto LABEL_19;
@@ -1112,10 +1112,10 @@ LABEL_19:
   return v9;
 }
 
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag
 {
-  v3 = [(CRLScalarPathSource *)self type];
-  switch(v3)
+  type = [(CRLScalarPathSource *)self type];
+  switch(type)
   {
     case 2uLL:
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1168,10 +1168,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)crlaxValueForKnobTag:(unint64_t)a3
+- (id)crlaxValueForKnobTag:(unint64_t)tag
 {
-  v4 = [(CRLScalarPathSource *)self type];
-  if (v4 == 2)
+  type = [(CRLScalarPathSource *)self type];
+  if (type == 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1202,13 +1202,13 @@ LABEL_6:
     v8 = &stru_1018BCA28;
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     [(CRLScalarPathSource *)self scalar];
     v8 = [NSString stringWithFormat:@"%d", v9];
   }
 
-  else if (v4)
+  else if (type)
   {
     v8 = 0;
   }

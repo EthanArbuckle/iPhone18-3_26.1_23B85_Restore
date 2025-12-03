@@ -1,25 +1,25 @@
 @interface ASFolderItemsSyncTask
-- (BOOL)checkForErrorInContext:(id)a3;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (BOOL)checkForErrorInContext:(id)context;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (NSString)previousSyncKeyForAgent;
 - (double)percentComplete;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)replacementObjectForEmailItem:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)replacementObjectForEmailItem:(id)item;
 - (id)requestBody;
 - (int)_bodyTruncationCode;
 - (int)_mimeSupportCode;
 - (int)_mimeTruncationCode;
 - (int)bodyType;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)_addRejectedServerId:(id)a3;
-- (void)_handleChangedLeaf:(id)a3 addedChanges:(id)a4 modifiedChanges:(id)a5 removedChanges:(id)a6;
-- (void)_handleResponseToLeaf:(id)a3 addedResponses:(id)a4 modifiedResponses:(id)a5 removedResponses:(id)a6 fetchedResponses:(id)a7;
-- (void)appendActionData:(id)a3;
-- (void)appendSupportedFieldsData:(id)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)_addRejectedServerId:(id)id;
+- (void)_handleChangedLeaf:(id)leaf addedChanges:(id)changes modifiedChanges:(id)modifiedChanges removedChanges:(id)removedChanges;
+- (void)_handleResponseToLeaf:(id)leaf addedResponses:(id)responses modifiedResponses:(id)modifiedResponses removedResponses:(id)removedResponses fetchedResponses:(id)fetchedResponses;
+- (void)appendActionData:(id)data;
+- (void)appendSupportedFieldsData:(id)data;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
-- (void)reportStatusWithError:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)reportStatusWithError:(id)error;
 @end
 
 @implementation ASFolderItemsSyncTask
@@ -36,18 +36,18 @@
   [(ASTask *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ASFolderItemsSyncTask alloc];
-  v5 = [(ASFolderItemsSyncTask *)self folderID];
-  v6 = [(ASFolderItemsSyncTask *)v4 initWithFolderID:v5];
+  folderID = [(ASFolderItemsSyncTask *)self folderID];
+  v6 = [(ASFolderItemsSyncTask *)v4 initWithFolderID:folderID];
 
-  v7 = [(ASFolderItemsSyncTask *)self previousSyncKey];
-  [(ASFolderItemsSyncTask *)v6 setPreviousSyncKey:v7];
+  previousSyncKey = [(ASFolderItemsSyncTask *)self previousSyncKey];
+  [(ASFolderItemsSyncTask *)v6 setPreviousSyncKey:previousSyncKey];
 
   [(ASFolderItemsSyncTask *)v6 setDataclass:[(ASFolderItemsSyncTask *)self dataclass]];
-  v8 = [(ASFolderItemsSyncTask *)self actions];
-  [(ASFolderItemsSyncTask *)v6 setActions:v8];
+  actions = [(ASFolderItemsSyncTask *)self actions];
+  [(ASFolderItemsSyncTask *)v6 setActions:actions];
 
   [(ASFolderItemsSyncTask *)v6 setIsInitialSync:[(ASFolderItemsSyncTask *)self isInitialSync]];
   [(ASFolderItemsSyncTask *)v6 setWillUpdate:[(ASFolderItemsSyncTask *)self willUpdate]];
@@ -56,11 +56,11 @@
   [(ASFolderItemsSyncTask *)v6 setBodyTruncationBytes:[(ASFolderItemsSyncTask *)self bodyTruncationBytes]];
   [(ASFolderItemsSyncTask *)v6 setMIMESupport:[(ASFolderItemsSyncTask *)self mimeSupport]];
   [(ASFolderItemsSyncTask *)v6 setFilterDays:[(ASFolderItemsSyncTask *)self filterDays]];
-  v9 = [(ASFolderItemsSyncTask *)self preservedActions];
-  [(ASFolderItemsSyncTask *)v6 setPreservedActions:v9];
+  preservedActions = [(ASFolderItemsSyncTask *)self preservedActions];
+  [(ASFolderItemsSyncTask *)v6 setPreservedActions:preservedActions];
 
-  v10 = [(ASFolderItemsSyncTask *)self pushedActions];
-  [(ASFolderItemsSyncTask *)v6 setPushedActions:v10];
+  pushedActions = [(ASFolderItemsSyncTask *)self pushedActions];
+  [(ASFolderItemsSyncTask *)v6 setPushedActions:pushedActions];
 
   return v6;
 }
@@ -72,8 +72,8 @@
     return 1;
   }
 
-  v3 = [(ASFolderItemsSyncTask *)self mimeSupport];
-  if (v3 == 3)
+  mimeSupport = [(ASFolderItemsSyncTask *)self mimeSupport];
+  if (mimeSupport == 3)
   {
     v4 = 2;
   }
@@ -83,7 +83,7 @@
     v4 = 4;
   }
 
-  if (v3)
+  if (mimeSupport)
   {
     return v4;
   }
@@ -94,27 +94,27 @@
   }
 }
 
-- (void)appendActionData:(id)a3
+- (void)appendActionData:(id)data
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASFolderItemsSyncTask *)self actions];
-  v6 = [v5 count];
+  dataCopy = data;
+  actions = [(ASFolderItemsSyncTask *)self actions];
+  v6 = [actions count];
 
-  v7 = [(ASFolderItemsSyncTask *)self actions];
-  v8 = [v7 count];
+  actions2 = [(ASFolderItemsSyncTask *)self actions];
+  v8 = [actions2 count];
 
   if (!v8)
   {
     goto LABEL_44;
   }
 
-  [v4 switchToCodePage:0];
-  [v4 openTag:22];
+  [dataCopy switchToCodePage:0];
+  [dataCopy openTag:22];
   if (!v6)
   {
 LABEL_43:
-    [v4 closeTag:22];
+    [dataCopy closeTag:22];
     goto LABEL_44;
   }
 
@@ -127,13 +127,13 @@ LABEL_43:
   v37 = v6;
   while (1)
   {
-    [v4 switchToCodePage:{0, v36}];
-    v12 = [(ASFolderItemsSyncTask *)self actions];
-    v13 = [v12 objectAtIndexedSubscript:v10];
+    [dataCopy switchToCodePage:{0, v36}];
+    actions3 = [(ASFolderItemsSyncTask *)self actions];
+    v13 = [actions3 objectAtIndexedSubscript:v10];
 
-    v14 = [v13 asServerID];
-    v15 = [v13 asClientID];
-    if (!(v14 | v15))
+    asServerID = [v13 asServerID];
+    asClientID = [v13 asClientID];
+    if (!(asServerID | asClientID))
     {
       v19 = DALoggingwithCategory();
       if (os_log_type_enabled(v19, v11))
@@ -146,20 +146,20 @@ LABEL_43:
       goto LABEL_42;
     }
 
-    v16 = [v13 itemChangeType];
-    if (v16 <= 1)
+    itemChangeType = [v13 itemChangeType];
+    if (itemChangeType <= 1)
     {
       break;
     }
 
-    if (v16 == 2)
+    if (itemChangeType == 2)
     {
       goto LABEL_9;
     }
 
-    if (v16 != 3)
+    if (itemChangeType != 3)
     {
-      if (v16 != 8)
+      if (itemChangeType != 8)
       {
         goto LABEL_45;
       }
@@ -173,35 +173,35 @@ LABEL_9:
     v17 = 0;
     v18 = 10;
 LABEL_18:
-    [v4 openTag:v18];
-    v20 = [(ASTask *)self taskManager];
-    v21 = [v20 protocol];
-    v40 = [v21 useInstanceIdForException];
+    [dataCopy openTag:v18];
+    taskManager = [(ASTask *)self taskManager];
+    protocol = [taskManager protocol];
+    useInstanceIdForException = [protocol useInstanceIdForException];
 
     v22 = DALoggingwithCategory();
     if (os_log_type_enabled(v22, type))
     {
-      v23 = [v13 asServerID];
+      asServerID2 = [v13 asServerID];
       *buf = 138412546;
       v44 = v13;
       v45 = 2112;
-      v46 = v23;
+      selfCopy = asServerID2;
       _os_log_impl(&dword_24A0AC000, v22, type, "checking out action %@.  Got a server ID of %@", buf, 0x16u);
     }
 
     v11 = v38;
-    if (v14)
+    if (asServerID)
     {
       if (v17)
       {
         v24 = DALoggingwithCategory();
         if (os_log_type_enabled(v24, v38))
         {
-          v25 = [v13 asServerID];
+          asServerID3 = [v13 asServerID];
           *buf = 138412546;
           v44 = v13;
           v45 = 2112;
-          v46 = v25;
+          selfCopy = asServerID3;
           _os_log_impl(&dword_24A0AC000, v24, v38, "An add action %@, has a server ID %@", buf, 0x16u);
 
           v11 = v38;
@@ -211,16 +211,16 @@ LABEL_18:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
         {
           *buf = v36;
-          v44 = v14;
+          v44 = asServerID;
           _os_log_fault_impl(&dword_24A0AC000, v26, OS_LOG_TYPE_FAULT, "An add action contains server ID %@", buf, 0xCu);
         }
 
 LABEL_28:
-        if (v15)
+        if (asClientID)
         {
-          v27 = v4;
+          v27 = dataCopy;
           v28 = 12;
-          v29 = v15;
+          v29 = asClientID;
           goto LABEL_31;
         }
 
@@ -241,20 +241,20 @@ LABEL_28:
 
       else
       {
-        v27 = v4;
+        v27 = dataCopy;
         v28 = 13;
-        v29 = v14;
+        v29 = asServerID;
 LABEL_31:
         [v27 appendTag:v28 withStringContent:v29];
       }
 
-      if (((v14 != 0) & v40) == 1)
+      if (((asServerID != 0) & useInstanceIdForException) == 1)
       {
-        v32 = [v13 asInstanceID];
-        if (v32)
+        asInstanceID = [v13 asInstanceID];
+        if (asInstanceID)
         {
-          [v4 switchToCodePage:17];
-          [v4 appendTag:45 withStringContent:v32];
+          [dataCopy switchToCodePage:17];
+          [dataCopy appendTag:45 withStringContent:asInstanceID];
         }
       }
 
@@ -267,12 +267,12 @@ LABEL_31:
     }
 
 LABEL_41:
-    [v4 switchToCodePage:0];
-    [v4 openProspectiveTag:29];
-    [v13 appendApplicationDataForTask:self toWBXMLData:v4];
-    [v4 switchToCodePage:0];
-    [v4 closeProspectiveTag:29];
-    [v4 closeTag:v18];
+    [dataCopy switchToCodePage:0];
+    [dataCopy openProspectiveTag:29];
+    [v13 appendApplicationDataForTask:self toWBXMLData:dataCopy];
+    [dataCopy switchToCodePage:0];
+    [dataCopy closeProspectiveTag:29];
+    [dataCopy closeTag:v18];
     v6 = v37;
 LABEL_42:
 
@@ -282,14 +282,14 @@ LABEL_42:
     }
   }
 
-  if (!v16)
+  if (!itemChangeType)
   {
     v18 = 7;
     v17 = 1;
     goto LABEL_18;
   }
 
-  if (v16 == 1)
+  if (itemChangeType == 1)
   {
     v17 = 0;
     v18 = 8;
@@ -300,11 +300,11 @@ LABEL_45:
   v34 = DALoggingwithCategory();
   if (os_log_type_enabled(v34, v11))
   {
-    v35 = [v13 itemChangeType];
+    itemChangeType2 = [v13 itemChangeType];
     *buf = 134218242;
-    v44 = v35;
+    v44 = itemChangeType2;
     v45 = 2112;
-    v46 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24A0AC000, v34, v11, "UNKNOWN CHANGE TYPE %lu %@", buf, 0x16u);
   }
 
@@ -312,84 +312,84 @@ LABEL_44:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendSupportedFieldsData:(id)a3
+- (void)appendSupportedFieldsData:(id)data
 {
-  v11 = a3;
-  v4 = [(ASTask *)self taskManager];
-  v5 = [v4 protocol];
-  v6 = [v5 usesAirSyncBaseNamespace];
+  dataCopy = data;
+  taskManager = [(ASTask *)self taskManager];
+  protocol = [taskManager protocol];
+  usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
 
   if ([(ASFolderItemsSyncTask *)self dataclass]== 2)
   {
-    v7 = [(ASTask *)self taskManager];
-    v8 = [v7 protocol];
-    v9 = [v8 shouldSendFullContactInfo];
+    taskManager2 = [(ASTask *)self taskManager];
+    protocol2 = [taskManager2 protocol];
+    shouldSendFullContactInfo = [protocol2 shouldSendFullContactInfo];
 
-    if ((v9 & 1) == 0)
+    if ((shouldSendFullContactInfo & 1) == 0)
     {
-      [v11 openTag:32];
-      v10 = [v11 currentCodePage];
-      [v11 switchToCodePage:1];
-      [v11 appendEmptyTag:5];
-      [v11 appendEmptyTag:8];
-      if ((v6 & 1) == 0)
+      [dataCopy openTag:32];
+      currentCodePage = [dataCopy currentCodePage];
+      [dataCopy switchToCodePage:1];
+      [dataCopy appendEmptyTag:5];
+      [dataCopy appendEmptyTag:8];
+      if ((usesAirSyncBaseNamespace & 1) == 0)
       {
-        [v11 appendEmptyTag:9];
+        [dataCopy appendEmptyTag:9];
       }
 
-      [v11 appendEmptyTag:55];
-      [v11 appendEmptyTag:14];
-      [v11 appendEmptyTag:26];
-      [v11 appendEmptyTag:27];
-      [v11 appendEmptyTag:28];
-      [v11 appendEmptyTag:29];
-      [v11 appendEmptyTag:18];
-      [v11 appendEmptyTag:30];
-      [v11 appendEmptyTag:31];
-      [v11 appendEmptyTag:33];
-      [v11 appendEmptyTag:34];
-      [v11 appendEmptyTag:38];
-      [v11 appendEmptyTag:39];
-      [v11 appendEmptyTag:32];
-      [v11 appendEmptyTag:35];
-      [v11 appendEmptyTag:36];
-      [v11 appendEmptyTag:37];
-      [v11 appendEmptyTag:13];
-      [v11 appendEmptyTag:42];
-      [v11 appendEmptyTag:43];
-      [v11 appendEmptyTag:53];
-      [v11 appendEmptyTag:25];
-      [v11 appendEmptyTag:45];
-      [v11 appendEmptyTag:46];
-      [v11 appendEmptyTag:20];
-      [v11 appendEmptyTag:47];
-      [v11 appendEmptyTag:48];
-      [v11 appendEmptyTag:49];
-      [v11 appendEmptyTag:50];
-      [v11 appendEmptyTag:60];
-      [v11 appendEmptyTag:54];
-      [v11 appendEmptyTag:15];
-      [v11 appendEmptyTag:6];
-      [v11 appendEmptyTag:7];
-      [v11 appendEmptyTag:41];
-      [v11 appendEmptyTag:52];
-      [v11 appendEmptyTag:16];
-      [v11 appendEmptyTag:17];
-      [v11 appendEmptyTag:19];
-      [v11 appendEmptyTag:12];
-      [v11 appendEmptyTag:40];
-      [v11 appendEmptyTag:57];
-      [v11 appendEmptyTag:58];
-      [v11 appendEmptyTag:51];
-      [v11 switchToCodePage:12];
-      [v11 appendEmptyTag:7];
-      [v11 appendEmptyTag:8];
-      [v11 appendEmptyTag:9];
-      [v11 appendEmptyTag:10];
-      [v11 appendEmptyTag:11];
-      [v11 appendEmptyTag:13];
-      [v11 switchToCodePage:v10];
-      [v11 closeTag:32];
+      [dataCopy appendEmptyTag:55];
+      [dataCopy appendEmptyTag:14];
+      [dataCopy appendEmptyTag:26];
+      [dataCopy appendEmptyTag:27];
+      [dataCopy appendEmptyTag:28];
+      [dataCopy appendEmptyTag:29];
+      [dataCopy appendEmptyTag:18];
+      [dataCopy appendEmptyTag:30];
+      [dataCopy appendEmptyTag:31];
+      [dataCopy appendEmptyTag:33];
+      [dataCopy appendEmptyTag:34];
+      [dataCopy appendEmptyTag:38];
+      [dataCopy appendEmptyTag:39];
+      [dataCopy appendEmptyTag:32];
+      [dataCopy appendEmptyTag:35];
+      [dataCopy appendEmptyTag:36];
+      [dataCopy appendEmptyTag:37];
+      [dataCopy appendEmptyTag:13];
+      [dataCopy appendEmptyTag:42];
+      [dataCopy appendEmptyTag:43];
+      [dataCopy appendEmptyTag:53];
+      [dataCopy appendEmptyTag:25];
+      [dataCopy appendEmptyTag:45];
+      [dataCopy appendEmptyTag:46];
+      [dataCopy appendEmptyTag:20];
+      [dataCopy appendEmptyTag:47];
+      [dataCopy appendEmptyTag:48];
+      [dataCopy appendEmptyTag:49];
+      [dataCopy appendEmptyTag:50];
+      [dataCopy appendEmptyTag:60];
+      [dataCopy appendEmptyTag:54];
+      [dataCopy appendEmptyTag:15];
+      [dataCopy appendEmptyTag:6];
+      [dataCopy appendEmptyTag:7];
+      [dataCopy appendEmptyTag:41];
+      [dataCopy appendEmptyTag:52];
+      [dataCopy appendEmptyTag:16];
+      [dataCopy appendEmptyTag:17];
+      [dataCopy appendEmptyTag:19];
+      [dataCopy appendEmptyTag:12];
+      [dataCopy appendEmptyTag:40];
+      [dataCopy appendEmptyTag:57];
+      [dataCopy appendEmptyTag:58];
+      [dataCopy appendEmptyTag:51];
+      [dataCopy switchToCodePage:12];
+      [dataCopy appendEmptyTag:7];
+      [dataCopy appendEmptyTag:8];
+      [dataCopy appendEmptyTag:9];
+      [dataCopy appendEmptyTag:10];
+      [dataCopy appendEmptyTag:11];
+      [dataCopy appendEmptyTag:13];
+      [dataCopy switchToCodePage:currentCodePage];
+      [dataCopy closeTag:32];
     }
   }
 }
@@ -468,34 +468,34 @@ LABEL_44:
 {
   v34 = *MEMORY[0x277D85DE8];
   [(ASFolderItemsSyncTask *)self _setSpinning:1];
-  v3 = [(ASTask *)self taskManager];
-  v4 = [v3 protocol];
+  taskManager = [(ASTask *)self taskManager];
+  protocol = [taskManager protocol];
 
   v5 = objc_opt_new();
-  v6 = [(ASFolderItemsSyncTask *)self previousSyncKey];
-  v7 = v6;
-  if (!v6 || [(__CFString *)v6 isEqualToString:@"0"])
+  previousSyncKey = [(ASFolderItemsSyncTask *)self previousSyncKey];
+  v7 = previousSyncKey;
+  if (!previousSyncKey || [(__CFString *)previousSyncKey isEqualToString:@"0"])
   {
     v8 = DALoggingwithCategory();
     v9 = *(MEMORY[0x277D03988] + 4);
     if (os_log_type_enabled(v8, v9))
     {
-      v10 = [(ASFolderItemsSyncTask *)self folderID];
+      folderID = [(ASFolderItemsSyncTask *)self folderID];
       v28 = 134218498;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
       v31 = v7;
       v32 = 2114;
-      v33 = v10;
+      v33 = folderID;
       _os_log_impl(&dword_24A0AC000, v8, v9, "Folder item sync task %p is using sync key %{public}@ for folder %{public}@", &v28, 0x20u);
     }
   }
 
-  v11 = [v4 usesAirSyncBaseNamespace];
+  usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
   [v5 openTag:5];
   [v5 openTag:28];
   [v5 openTag:15];
-  if ([v4 shouldSendClassForFolderItemsSync])
+  if ([protocol shouldSendClassForFolderItemsSync])
   {
     v12 = NSStringForDASingleDataclass([(ASFolderItemsSyncTask *)self dataclass]);
     [v5 appendTag:16 withStringContent:v12];
@@ -512,8 +512,8 @@ LABEL_44:
   }
 
   [v5 appendTag:11 withStringContent:v13];
-  v14 = [(ASFolderItemsSyncTask *)self folderID];
-  [v5 appendTag:18 withStringContent:v14];
+  folderID2 = [(ASFolderItemsSyncTask *)self folderID];
+  [v5 appendTag:18 withStringContent:folderID2];
 
   if (!v7)
   {
@@ -528,17 +528,17 @@ LABEL_44:
 
   if (([(__CFString *)v7 isEqualToString:@"0"]& 1) == 0)
   {
-    v15 = [v4 useBooleanFolderItemsSyncDeletesAsMoves];
-    v16 = [(ASFolderItemsSyncTask *)self deletesAsMoves];
-    if (v15)
+    useBooleanFolderItemsSyncDeletesAsMoves = [protocol useBooleanFolderItemsSyncDeletesAsMoves];
+    deletesAsMoves = [(ASFolderItemsSyncTask *)self deletesAsMoves];
+    if (useBooleanFolderItemsSyncDeletesAsMoves)
     {
-      if (!v16)
+      if (!deletesAsMoves)
       {
         [v5 appendTag:30 withIntContent:0];
       }
     }
 
-    else if (v16)
+    else if (deletesAsMoves)
     {
       [v5 appendEmptyTag:30];
     }
@@ -553,7 +553,7 @@ LABEL_44:
 
     else
     {
-      if (![v4 requiresExplicitlyFalseGetChanges])
+      if (![protocol requiresExplicitlyFalseGetChanges])
       {
         goto LABEL_26;
       }
@@ -577,7 +577,7 @@ LABEL_26:
 
     if ([(ASFolderItemsSyncTask *)self bodyTruncationBytes]!= -1)
     {
-      if ((v11 & 1) == 0)
+      if ((usesAirSyncBaseNamespace & 1) == 0)
       {
         [v5 appendTag:25 withIntContent:{-[ASFolderItemsSyncTask _bodyTruncationCode](self, "_bodyTruncationCode")}];
       }
@@ -592,11 +592,11 @@ LABEL_26:
 
     if ([(ASFolderItemsSyncTask *)self mimeSupport]!= -1)
     {
-      v20 = [(ASFolderItemsSyncTask *)self _mimeSupportCode];
+      _mimeSupportCode = [(ASFolderItemsSyncTask *)self _mimeSupportCode];
       v21 = v5;
       v22 = 34;
 LABEL_42:
-      [v21 appendTag:v22 withIntContent:v20];
+      [v21 appendTag:v22 withIntContent:_mimeSupportCode];
     }
   }
 
@@ -609,7 +609,7 @@ LABEL_42:
 
     if ([(ASFolderItemsSyncTask *)self filterDays])
     {
-      v20 = ASFilterCodeForNumPastDays([(ASFolderItemsSyncTask *)self filterDays], [(ASFolderItemsSyncTask *)self dataclass]);
+      _mimeSupportCode = ASFilterCodeForNumPastDays([(ASFolderItemsSyncTask *)self filterDays], [(ASFolderItemsSyncTask *)self dataclass]);
       v21 = v5;
       v22 = 24;
       goto LABEL_42;
@@ -618,13 +618,13 @@ LABEL_42:
 
   if ([(ASFolderItemsSyncTask *)self dataclass]!= 2 && [(ASFolderItemsSyncTask *)self dataclass]!= 4 && [(ASFolderItemsSyncTask *)self dataclass]!= 1 && [(ASFolderItemsSyncTask *)self dataclass]!= 16)
   {
-    if ((([(ASFolderItemsSyncTask *)self dataclass]== 32) & v11) == 0)
+    if ((([(ASFolderItemsSyncTask *)self dataclass]== 32) & usesAirSyncBaseNamespace) == 0)
     {
       goto LABEL_61;
     }
 
 LABEL_48:
-    v23 = [v5 currentCodePage];
+    currentCodePage = [v5 currentCodePage];
     [v5 switchToCodePage:17];
     [v5 openTag:5];
     [v5 appendTag:6 withIntContent:{-[ASFolderItemsSyncTask bodyType](self, "bodyType")}];
@@ -640,27 +640,27 @@ LABEL_48:
     {
       if ([(ASFolderItemsSyncTask *)self bodyTruncationBytes]== -1)
       {
-        v24 = 0x200000;
+        bodyTruncationBytes = 0x200000;
 LABEL_59:
-        [v5 appendTag:7 withIntContent:v24];
+        [v5 appendTag:7 withIntContent:bodyTruncationBytes];
 LABEL_60:
         [v5 closeTag:5];
-        [v5 switchToCodePage:v23];
+        [v5 switchToCodePage:currentCodePage];
         goto LABEL_61;
       }
     }
 
     else if ([(ASFolderItemsSyncTask *)self bodyTruncationBytes]== -1)
     {
-      v24 = 0x8000;
+      bodyTruncationBytes = 0x8000;
       goto LABEL_59;
     }
 
-    v24 = [(ASFolderItemsSyncTask *)self bodyTruncationBytes];
+    bodyTruncationBytes = [(ASFolderItemsSyncTask *)self bodyTruncationBytes];
     goto LABEL_59;
   }
 
-  if (v11)
+  if (usesAirSyncBaseNamespace)
   {
     goto LABEL_48;
   }
@@ -675,27 +675,27 @@ LABEL_61:
   [v5 closeTag:15];
   [v5 closeTag:28];
   [v5 closeTag:5];
-  v25 = [v5 data];
+  data = [v5 data];
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return data;
 }
 
-- (void)_handleChangedLeaf:(id)a3 addedChanges:(id)a4 modifiedChanges:(id)a5 removedChanges:(id)a6
+- (void)_handleChangedLeaf:(id)leaf addedChanges:(id)changes modifiedChanges:(id)modifiedChanges removedChanges:(id)removedChanges
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 changeType];
-  if (v14 <= 1)
+  leafCopy = leaf;
+  changesCopy = changes;
+  modifiedChangesCopy = modifiedChanges;
+  removedChangesCopy = removedChanges;
+  changeType = [leafCopy changeType];
+  if (changeType <= 1)
   {
-    v15 = v11;
-    if (v14)
+    v15 = changesCopy;
+    if (changeType)
     {
-      v15 = v12;
-      if (v14 != 1)
+      v15 = modifiedChangesCopy;
+      if (changeType != 1)
       {
         goto LABEL_10;
       }
@@ -703,14 +703,14 @@ LABEL_61:
 
 LABEL_8:
     v16 = v15;
-    [v16 addObject:v10];
+    [v16 addObject:leafCopy];
     goto LABEL_9;
   }
 
-  if (v14 == 2 || v14 == 7)
+  if (changeType == 2 || changeType == 7)
   {
     [(ASFolderItemsSyncTask *)self setNumDownloadedElements:[(ASFolderItemsSyncTask *)self numDownloadedElements]+ 1];
-    v15 = v13;
+    v15 = removedChangesCopy;
     goto LABEL_8;
   }
 
@@ -726,61 +726,61 @@ LABEL_10:
 LABEL_9:
 }
 
-- (void)_handleResponseToLeaf:(id)a3 addedResponses:(id)a4 modifiedResponses:(id)a5 removedResponses:(id)a6 fetchedResponses:(id)a7
+- (void)_handleResponseToLeaf:(id)leaf addedResponses:(id)responses modifiedResponses:(id)modifiedResponses removedResponses:(id)removedResponses fetchedResponses:(id)fetchedResponses
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v22 changeType];
-  v18 = v17;
-  if (v17 <= 1)
+  leafCopy = leaf;
+  responsesCopy = responses;
+  modifiedResponsesCopy = modifiedResponses;
+  removedResponsesCopy = removedResponses;
+  fetchedResponsesCopy = fetchedResponses;
+  changeType = [leafCopy changeType];
+  v18 = changeType;
+  if (changeType <= 1)
   {
-    if (!v17)
+    if (!changeType)
     {
-      v19 = v13;
+      v19 = responsesCopy;
       goto LABEL_11;
     }
 
-    if (v17 == 1)
+    if (changeType == 1)
     {
-      v19 = v14;
+      v19 = modifiedResponsesCopy;
       goto LABEL_11;
     }
   }
 
   else
   {
-    switch(v17)
+    switch(changeType)
     {
       case 2:
         goto LABEL_5;
       case 3:
-        v19 = v16;
+        v19 = fetchedResponsesCopy;
         goto LABEL_11;
       case 7:
 LABEL_5:
         [(ASFolderItemsSyncTask *)self setNumDownloadedElements:[(ASFolderItemsSyncTask *)self numDownloadedElements]+ 1];
-        v19 = v15;
+        v19 = removedResponsesCopy;
 LABEL_11:
         v20 = v19;
         goto LABEL_12;
     }
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"ASFolderItemsSyncTask.m" lineNumber:539 description:{@"Asked to handle a response to a leaf with change type %ld, which isn't known to me.  Item is %@", v18, v22}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASFolderItemsSyncTask.m" lineNumber:539 description:{@"Asked to handle a response to a leaf with change type %ld, which isn't known to me.  Item is %@", v18, leafCopy}];
 
   v20 = 0;
 LABEL_12:
-  [v20 addObject:v22];
+  [v20 addObject:leafCopy];
 }
 
-- (id)replacementObjectForEmailItem:(id)a3
+- (id)replacementObjectForEmailItem:(id)item
 {
   *&v45[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v43 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -788,33 +788,33 @@ LABEL_12:
   v41 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v4 parent];
-  v10 = [v9 parent];
+  parent = [itemCopy parent];
+  v9Parent = [parent parent];
 
-  v11 = [v10 dataclass];
-  if ([v4 isResponse])
+  dataclass = [v9Parent dataclass];
+  if ([itemCopy isResponse])
   {
-    if (v11 <= 0x20 && ((1 << v11) & 0x100010016) != 0)
+    if (dataclass <= 0x20 && ((1 << dataclass) & 0x100010016) != 0)
     {
-      v12 = [v4 status];
-      if ([v12 intValue] == 8)
+      status = [itemCopy status];
+      if ([status intValue] == 8)
       {
-        v13 = [(ASFolderItemsSyncTask *)self willUpdate];
+        willUpdate = [(ASFolderItemsSyncTask *)self willUpdate];
 
-        if (v13)
+        if (willUpdate)
         {
           v14 = DALoggingwithCategory();
           v15 = *(MEMORY[0x277D03988] + 3);
           if (os_log_type_enabled(v14, v15))
           {
             *buf = 138412290;
-            *v45 = v4;
+            *v45 = itemCopy;
             _os_log_impl(&dword_24A0AC000, v14, v15, "The following collection item isn't known by the server.  We'll delete it locally.  Item %@", buf, 0xCu);
           }
 
-          [v4 setChangeType:2];
+          [itemCopy setChangeType:2];
 LABEL_16:
-          [(ASFolderItemsSyncTask *)self _handleChangedLeaf:v4 addedChanges:v43 modifiedChanges:v5 removedChanges:v6];
+          [(ASFolderItemsSyncTask *)self _handleChangedLeaf:itemCopy addedChanges:v43 modifiedChanges:v5 removedChanges:v6];
           goto LABEL_25;
         }
       }
@@ -823,7 +823,7 @@ LABEL_16:
       {
       }
 
-      [(ASFolderItemsSyncTask *)self _handleResponseToLeaf:v4 addedResponses:v42 modifiedResponses:v41 removedResponses:v7 fetchedResponses:v8];
+      [(ASFolderItemsSyncTask *)self _handleResponseToLeaf:itemCopy addedResponses:v42 modifiedResponses:v41 removedResponses:v7 fetchedResponses:v8];
     }
 
     else
@@ -834,7 +834,7 @@ LABEL_16:
       if (os_log_type_enabled(v22, v23))
       {
         *buf = 134217984;
-        *v45 = v11;
+        *v45 = dataclass;
         _os_log_impl(&dword_24A0AC000, v22, v23, "No support yet for responses of dataclass %lu", buf, 0xCu);
       }
 
@@ -845,26 +845,26 @@ LABEL_16:
   else
   {
     v40 = v5;
-    v16 = [v4 status];
-    v17 = [v16 intValue];
+    status2 = [itemCopy status];
+    intValue = [status2 intValue];
 
-    if (v17 == 31 || v17 == 9)
+    if (intValue == 31 || intValue == 9)
     {
       v18 = DALoggingwithCategory();
       v19 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v18, v19))
       {
-        v20 = [v4 status];
+        status3 = [itemCopy status];
         *buf = 67109378;
-        v45[0] = [v20 intValue];
+        v45[0] = [status3 intValue];
         LOWORD(v45[1]) = 2112;
-        *(&v45[1] + 2) = v4;
+        *(&v45[1] + 2) = itemCopy;
         _os_log_impl(&dword_24A0AC000, v18, v19, "The following collection item had an unsuccessful status (%d) %@", buf, 0x12u);
       }
     }
 
     v5 = v40;
-    if (v11 <= 0x20 && ((1 << v11) & 0x100010016) != 0)
+    if (dataclass <= 0x20 && ((1 << dataclass) & 0x100010016) != 0)
     {
       goto LABEL_16;
     }
@@ -874,7 +874,7 @@ LABEL_16:
     if (os_log_type_enabled(v24, v25))
     {
       *buf = 134217984;
-      *v45 = v11;
+      *v45 = dataclass;
       _os_log_impl(&dword_24A0AC000, v24, v25, "No support yet for collections of dataclass %lu", buf, 0xCu);
     }
 
@@ -883,8 +883,8 @@ LABEL_16:
 
 LABEL_25:
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v27 = [v10 moreAvailable];
-  LOBYTE(v39) = [v27 BOOLValue];
+  moreAvailable = [v9Parent moreAvailable];
+  LOBYTE(v39) = [moreAvailable BOOLValue];
   v28 = v8;
   v37 = v7;
   v38 = v8;
@@ -894,7 +894,7 @@ LABEL_25:
   v32 = v5;
   v33 = [WeakRetained folderItemsSyncTask:self hasPartialAdded:v43 removed:v31 modified:v5 addedResponse:v42 modifiedResponse:v41 removedResponse:v37 fetchedResponse:v38 moreAvailable:v39];
 
-  v34 = v4;
+  v34 = itemCopy;
   if (v33)
   {
 
@@ -907,23 +907,23 @@ LABEL_25:
   return v34;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 0;
-  *a3 = 5;
-  *a5 = 14;
+  *page = 0;
+  *token = 5;
+  *statusToken = 14;
   return 1;
 }
 
-- (BOOL)checkForErrorInContext:(id)a3
+- (BOOL)checkForErrorInContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (!v5)
+  if (!currentlyParsingItem)
   {
-    if ([v4 dataGeneration] == 1 && !objc_msgSend(v4, "currentBytesReceivedCount"))
+    if ([contextCopy dataGeneration] == 1 && !objc_msgSend(contextCopy, "currentBytesReceivedCount"))
     {
       goto LABEL_31;
     }
@@ -932,24 +932,24 @@ LABEL_25:
     v28 = 0;
     if ([(ASFolderItemsSyncTask *)self getTopLevelToken:&v29 + 1 outStatusCodePage:&v29 outStatusToken:&v28])
     {
-      if (![v4 currentByte] && !self->super._haveSwitchedCodePage)
+      if (![contextCopy currentByte] && !self->super._haveSwitchedCodePage)
       {
-        if (![v4 hasNumberOfTokensRemaining:2])
+        if (![contextCopy hasNumberOfTokensRemaining:2])
         {
           goto LABEL_22;
         }
 
-        if ([v4 currentByte])
+        if ([contextCopy currentByte])
         {
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to code page 0x%x", v29];
-          v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 683, objc_msgSend(v4, "curOffset")];
+          currentlyParsingItem3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to code page 0x%x", v29];
+          foundStatus = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 683, objc_msgSend(contextCopy, "curOffset")];
           v16 = DALoggingwithCategory();
           v17 = *(MEMORY[0x277D03988] + 3);
           if (os_log_type_enabled(v16, v17))
           {
-            v18 = [v4 curOffset];
+            curOffset = [contextCopy curOffset];
             *buf = 134217984;
-            v31 = v18;
+            v31 = curOffset;
             _os_log_impl(&dword_24A0AC000, v16, v17, "Failure at index %lld:", buf, 0xCu);
           }
 
@@ -960,23 +960,23 @@ LABEL_25:
           }
 
           *buf = 138412290;
-          v31 = v11;
+          v31 = currentlyParsingItem3;
           goto LABEL_27;
         }
 
-        [v4 advanceOffsetByAmount:1];
+        [contextCopy advanceOffsetByAmount:1];
         v25 = v29;
-        if (v25 != [v4 currentByte])
+        if (v25 != [contextCopy currentByte])
         {
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to code page 0x%x", v29];
-          v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 683, objc_msgSend(v4, "curOffset")];
+          currentlyParsingItem3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to code page 0x%x", v29];
+          foundStatus = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 683, objc_msgSend(contextCopy, "curOffset")];
           v26 = DALoggingwithCategory();
           v17 = *(MEMORY[0x277D03988] + 3);
           if (os_log_type_enabled(v26, v17))
           {
-            v27 = [v4 curOffset];
+            curOffset2 = [contextCopy curOffset];
             *buf = 134217984;
-            v31 = v27;
+            v31 = curOffset2;
             _os_log_impl(&dword_24A0AC000, v26, v17, "Failure at index %lld:", buf, 0xCu);
           }
 
@@ -987,12 +987,12 @@ LABEL_25:
           }
 
           *buf = 138412290;
-          v31 = v11;
+          v31 = currentlyParsingItem3;
           goto LABEL_27;
         }
 
-        [v4 advanceOffsetByAmount:1];
-        [v4 setCodePage:v29];
+        [contextCopy advanceOffsetByAmount:1];
+        [contextCopy setCodePage:v29];
         self->super._haveSwitchedCodePage = 1;
       }
 
@@ -1006,27 +1006,27 @@ LABEL_12:
         goto LABEL_2;
       }
 
-      if (![v4 hasNumberOfTokensRemaining:1])
+      if (![contextCopy hasNumberOfTokensRemaining:1])
       {
         goto LABEL_22;
       }
 
-      v15 = [v4 currentByte];
-      if ((v15 & 0x3F) == HIBYTE(v29))
+      currentByte = [contextCopy currentByte];
+      if ((currentByte & 0x3F) == HIBYTE(v29))
       {
         self->super._haveParsedCommand = 1;
         goto LABEL_12;
       }
 
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected top level token 0x%x", HIBYTE(v29)];
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 685, objc_msgSend(v4, "curOffset")];
+      currentlyParsingItem3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected top level token 0x%x", HIBYTE(v29)];
+      foundStatus = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 685, objc_msgSend(contextCopy, "curOffset")];
       v21 = DALoggingwithCategory();
       v17 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v21, v17))
       {
-        v22 = [v4 curOffset];
+        curOffset3 = [contextCopy curOffset];
         *buf = 134217984;
-        v31 = v22;
+        v31 = curOffset3;
         _os_log_impl(&dword_24A0AC000, v21, v17, "Failure at index %lld:", buf, 0xCu);
       }
 
@@ -1035,12 +1035,12 @@ LABEL_12:
       {
 LABEL_28:
 
-        [v4 setParseErrorReason:v12];
+        [contextCopy setParseErrorReason:foundStatus];
         goto LABEL_29;
       }
 
       *buf = 138412290;
-      v31 = v11;
+      v31 = currentlyParsingItem3;
 LABEL_27:
       _os_log_impl(&dword_24A0AC000, v19, v17, "failure reason was %@", buf, 0xCu);
       goto LABEL_28;
@@ -1048,18 +1048,18 @@ LABEL_27:
   }
 
 LABEL_2:
-  v6 = [(ASTask *)self currentlyParsingItem];
-  v7 = [(ASTask *)self taskManager];
-  v8 = [v7 account];
-  [v6 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v8];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
   currentlyParsingItem = self->super._currentlyParsingItem;
   if (currentlyParsingItem)
   {
-    v10 = [(ASItem *)currentlyParsingItem parsingState];
-    if (v10 >= 2)
+    parsingState = [(ASItem *)currentlyParsingItem parsingState];
+    if (parsingState >= 2)
     {
-      if (v10 - 3 < 2)
+      if (parsingState - 3 < 2)
       {
 LABEL_30:
         [(ASTask *)self setCurrentlyParsingItem:0];
@@ -1068,9 +1068,9 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v11 = [(ASTask *)self currentlyParsingItem];
-      v12 = [v11 foundStatus];
-      [(ASTask *)self handleTopLevelErrorStatus:v12];
+      currentlyParsingItem3 = [(ASTask *)self currentlyParsingItem];
+      foundStatus = [currentlyParsingItem3 foundStatus];
+      [(ASTask *)self handleTopLevelErrorStatus:foundStatus];
 LABEL_29:
 
       goto LABEL_30;
@@ -1085,24 +1085,24 @@ LABEL_32:
   return v20;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (v5)
+  if (currentlyParsingItem)
   {
     goto LABEL_8;
   }
 
-  if ([v4 dataGeneration] == 1 && !objc_msgSend(v4, "currentBytesReceivedCount"))
+  if ([contextCopy dataGeneration] == 1 && !objc_msgSend(contextCopy, "currentBytesReceivedCount"))
   {
     [(ASFolderItemsSyncTask *)self setHaveShortcut121Response:1];
     goto LABEL_8;
   }
 
-  if ([v4 currentByte] || self->super._haveSwitchedCodePage)
+  if ([contextCopy currentByte] || self->super._haveSwitchedCodePage)
   {
 LABEL_6:
     v6 = [[ASFolderItemsSyncResponse alloc] initWithDataclass:[(ASFolderItemsSyncTask *)self dataclass]];
@@ -1110,14 +1110,14 @@ LABEL_6:
     [(ASFolderItemsSyncTask *)self setNumReplacedItems:0];
 
 LABEL_8:
-    v7 = [(ASTask *)self currentlyParsingItem];
+    currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
 
-    if (!v7)
+    if (!currentlyParsingItem2)
     {
       goto LABEL_18;
     }
 
-    v43 = v4;
+    v43 = contextCopy;
     [(ASFolderItemsSyncTask *)self setHaveShortcut121Response:0];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
@@ -1140,18 +1140,18 @@ LABEL_8:
     v44[3] = &unk_278FC7D98;
     v44[4] = self;
     v11 = MEMORY[0x24C2119B0](v44);
-    v12 = [(ASTask *)self taskManager];
-    v13 = [v12 protocol];
-    v14 = [v13 usesAirSyncBaseNamespace];
+    taskManager = [(ASTask *)self taskManager];
+    protocol = [taskManager protocol];
+    usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
 
-    if (v14)
+    if (usesAirSyncBaseNamespace)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.ASDictionary.%d", 69899];
-      v48[0] = v15;
+      69899 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.ASDictionary.%d", 69899];
+      v48[0] = 69899;
       v16 = MEMORY[0x24C2119B0](v11);
       v49[0] = v16;
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.ASDictionary.%d", 69899];
-      v48[1] = v17;
+      698992 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.ASDictionary.%d", 69899];
+      v48[1] = 698992;
       v18 = MEMORY[0x24C2119B0](v11);
       v49[1] = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
@@ -1159,38 +1159,38 @@ LABEL_8:
 
     else
     {
-      v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.%d", 66102];
-      v46[0] = v40;
+      66102 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.%d", 66102];
+      v46[0] = 66102;
       v16 = MEMORY[0x24C2119B0](v11);
       v47[0] = v16;
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.%d", 66102];
-      v46[1] = v17;
+      698992 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.%d", 66102];
+      v46[1] = 698992;
       v18 = MEMORY[0x24C2119B0](v11);
       v47[1] = v18;
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.%d", 66060];
-      v46[2] = v20;
+      66060 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItem.ASDictionary.%d", 66060];
+      v46[2] = 66060;
       v21 = MEMORY[0x24C2119B0](v11);
       v47[2] = v21;
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.%d", 66060];
-      v46[3] = v22;
+      660602 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASFolderItemsSyncResponse.ASArray.ASCollection.ASArray.ASEmailItemResponse.ASDictionary.%d", 66060];
+      v46[3] = 660602;
       v23 = MEMORY[0x24C2119B0](v11);
       v47[3] = v23;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:4];
 
-      v15 = v40;
+      69899 = 66102;
     }
 
-    v24 = [(ASTask *)self currentlyParsingItem];
-    v25 = [(ASTask *)self taskManager];
-    v26 = [v25 account];
-    v4 = v43;
-    [v24 parseASParseContext:v43 root:0 parent:0 callbackDict:v41 streamCallbackDict:v19 account:v26];
+    currentlyParsingItem3 = [(ASTask *)self currentlyParsingItem];
+    taskManager2 = [(ASTask *)self taskManager];
+    account = [taskManager2 account];
+    contextCopy = v43;
+    [currentlyParsingItem3 parseASParseContext:v43 root:0 parent:0 callbackDict:v41 streamCallbackDict:v19 account:account];
 
     currentlyParsingItem = self->super._currentlyParsingItem;
     if (currentlyParsingItem)
     {
-      v28 = [(ASItem *)currentlyParsingItem parsingState];
-      v29 = v28 > 4 ? 0 : dword_24A14DF74[v28];
+      parsingState = [(ASItem *)currentlyParsingItem parsingState];
+      v29 = parsingState > 4 ? 0 : dword_24A14DF74[parsingState];
     }
 
     else
@@ -1208,21 +1208,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (![v4 hasNumberOfTokensRemaining:2])
+  if (![contextCopy hasNumberOfTokensRemaining:2])
   {
     goto LABEL_25;
   }
 
-  if ([v4 currentByte])
+  if ([contextCopy currentByte])
   {
     v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to sync code page"];
-    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 712, objc_msgSend(v4, "curOffset")];
+    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 712, objc_msgSend(contextCopy, "curOffset")];
     v34 = DALoggingwithCategory();
     v35 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v34, v35))
     {
       *buf = 134217984;
-      v53 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v34, v35, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -1233,27 +1233,27 @@ LABEL_25:
     }
 
     *buf = 138412290;
-    v53 = v32;
+    curOffset = v32;
     goto LABEL_32;
   }
 
-  [v4 advanceOffsetByAmount:1];
-  if (![v4 currentByte])
+  [contextCopy advanceOffsetByAmount:1];
+  if (![contextCopy currentByte])
   {
-    [v4 advanceOffsetByAmount:1];
-    [v4 setCodePage:0];
+    [contextCopy advanceOffsetByAmount:1];
+    [contextCopy setCodePage:0];
     self->super._haveSwitchedCodePage = 1;
     goto LABEL_6;
   }
 
   v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to sync code page"];
-  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 712, objc_msgSend(v4, "curOffset")];
+  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASFolderItemsSyncTask.m", 712, objc_msgSend(contextCopy, "curOffset")];
   v39 = DALoggingwithCategory();
   v35 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v39, v35))
   {
     *buf = 134217984;
-    v53 = [v4 curOffset];
+    curOffset = [contextCopy curOffset];
     _os_log_impl(&dword_24A0AC000, v39, v35, "Failure at index %lld:", buf, 0xCu);
   }
 
@@ -1261,45 +1261,45 @@ LABEL_25:
   if (os_log_type_enabled(v36, v35))
   {
     *buf = 138412290;
-    v53 = v32;
+    curOffset = v32;
 LABEL_32:
     _os_log_impl(&dword_24A0AC000, v36, v35, "failure reason was %@", buf, 0xCu);
   }
 
 LABEL_33:
 
-  [v4 setParseErrorReason:v33];
+  [contextCopy setParseErrorReason:v33];
 LABEL_18:
-  v30 = [v4 parseErrorReason];
-  v31 = v30 == 0;
+  parseErrorReason = [contextCopy parseErrorReason];
+  v31 = parseErrorReason == 0;
 
 LABEL_26:
   v37 = *MEMORY[0x277D85DE8];
   return v31;
 }
 
-- (void)_addRejectedServerId:(id)a3
+- (void)_addRejectedServerId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v4 = a3;
-    v5 = [(ASFolderItemsSyncTask *)self mRejectedServerIds];
+    idCopy = id;
+    mRejectedServerIds = [(ASFolderItemsSyncTask *)self mRejectedServerIds];
 
-    if (!v5)
+    if (!mRejectedServerIds)
     {
       v6 = objc_opt_new();
       [(ASFolderItemsSyncTask *)self setMRejectedServerIds:v6];
     }
 
-    v7 = [(ASFolderItemsSyncTask *)self mRejectedServerIds];
-    [v7 addObject:v4];
+    mRejectedServerIds2 = [(ASFolderItemsSyncTask *)self mRejectedServerIds];
+    [mRejectedServerIds2 addObject:idCopy];
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (self->_isSpinning)
   {
     [(ASFolderItemsSyncTask *)self _setSpinning:0];
@@ -1312,23 +1312,23 @@ LABEL_26:
   v73 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [(ASTask *)self taskStatusForError:v4];
+  v9 = [(ASTask *)self taskStatusForError:errorCopy];
   [(ASFolderItemsSyncTask *)self setNumDownloadedElements:[(ASFolderItemsSyncTask *)self numReplacedItems]];
-  if (!v4)
+  if (!errorCopy)
   {
-    v11 = [(ASTask *)self currentlyParsingItem];
-    if ([(ASFolderItemsSyncTask *)self haveShortcut121Response]&& !v11)
+    currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+    if ([(ASFolderItemsSyncTask *)self haveShortcut121Response]&& !currentlyParsingItem)
     {
       [(ASFolderItemsSyncTask *)self previousSyncKey];
       v17 = v16 = v6;
-      v15 = [v17 copy];
+      syncKey2 = [v17 copy];
 
       v6 = v16;
       goto LABEL_39;
     }
 
     v70 = v6;
-    if (v11 && [v11 parsingState]== 2)
+    if (currentlyParsingItem && [currentlyParsingItem parsingState]== 2)
     {
       v20 = DALoggingwithCategory();
       v21 = *(MEMORY[0x277D03988] + 6);
@@ -1340,112 +1340,112 @@ LABEL_26:
         *buf = 138412802;
         *v86 = v22;
         *&v86[8] = 2112;
-        *&v86[10] = v11;
+        *&v86[10] = currentlyParsingItem;
         v87 = 1024;
-        v88 = [(ASFolderItemsSyncTask *)self numReplacedItems];
+        numReplacedItems = [(ASFolderItemsSyncTask *)self numReplacedItems];
         _os_log_impl(&dword_24A0AC000, v20, v21, "%@ Parsed response of %@ (%d items downloaded and replaced while parsing)", buf, 0x1Cu);
 
         v5 = v67;
       }
 
-      v24 = [v11 status];
-      v9 = -[ASFolderItemsSyncTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v24 intValue]);
+      status = [currentlyParsingItem status];
+      v9 = -[ASFolderItemsSyncTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
 
       if (v9 == 2)
       {
-        v25 = [v11 collection];
-        v26 = [v25 dataclass];
-        v66 = v25;
-        v27 = [v25 changedItems];
-        v28 = [v27 objectEnumerator];
+        collection = [currentlyParsingItem collection];
+        dataclass = [collection dataclass];
+        v66 = collection;
+        changedItems = [collection changedItems];
+        objectEnumerator = [changedItems objectEnumerator];
 
-        v69 = v28;
-        v29 = [v28 nextObject];
-        if (v29)
+        v69 = objectEnumerator;
+        nextObject = [objectEnumerator nextObject];
+        if (nextObject)
         {
-          v30 = v29;
+          v30 = nextObject;
           v31 = *(MEMORY[0x277D03988] + 3);
           do
           {
-            v32 = [v30 status];
-            v33 = [v32 intValue];
+            status2 = [v30 status];
+            intValue = [status2 intValue];
 
-            if (v33 == 31 || v33 == 9)
+            if (intValue == 31 || intValue == 9)
             {
               v34 = DALoggingwithCategory();
               if (os_log_type_enabled(v34, v31))
               {
-                v35 = [v30 status];
-                v36 = [v35 intValue];
+                status3 = [v30 status];
+                intValue2 = [status3 intValue];
                 *buf = 67109378;
-                *v86 = v36;
+                *v86 = intValue2;
                 *&v86[4] = 2112;
                 *&v86[6] = v30;
                 _os_log_impl(&dword_24A0AC000, v34, v31, "The following collection item had an unsuccessful status (%d) %@", buf, 0x12u);
               }
 
-              v37 = [v30 serverID];
-              [(ASFolderItemsSyncTask *)self _addRejectedServerId:v37];
+              serverID = [v30 serverID];
+              [(ASFolderItemsSyncTask *)self _addRejectedServerId:serverID];
             }
 
             else
             {
-              if (v26 <= 0x20 && ((1 << v26) & 0x100010016) != 0)
+              if (dataclass <= 0x20 && ((1 << dataclass) & 0x100010016) != 0)
               {
                 [(ASFolderItemsSyncTask *)self _handleChangedLeaf:v30 addedChanges:v67 modifiedChanges:v70 removedChanges:v71];
                 goto LABEL_30;
               }
 
-              v37 = DALoggingwithCategory();
-              if (os_log_type_enabled(v37, v31))
+              serverID = DALoggingwithCategory();
+              if (os_log_type_enabled(serverID, v31))
               {
                 *buf = 134217984;
-                *v86 = v26;
-                _os_log_impl(&dword_24A0AC000, v37, v31, "No support yet for collections of dataclass %lu", buf, 0xCu);
+                *v86 = dataclass;
+                _os_log_impl(&dword_24A0AC000, serverID, v31, "No support yet for collections of dataclass %lu", buf, 0xCu);
               }
             }
 
 LABEL_30:
-            v38 = [v69 nextObject];
+            nextObject2 = [v69 nextObject];
 
-            v30 = v38;
+            v30 = nextObject2;
           }
 
-          while (v38);
+          while (nextObject2);
         }
 
-        v42 = [v66 responseItems];
-        v43 = [v42 objectEnumerator];
+        responseItems = [v66 responseItems];
+        objectEnumerator2 = [responseItems objectEnumerator];
 
-        v68 = v43;
-        v44 = [v43 nextObject];
-        if (v44)
+        v68 = objectEnumerator2;
+        nextObject3 = [objectEnumerator2 nextObject];
+        if (nextObject3)
         {
-          v46 = v44;
+          v46 = nextObject3;
           v47 = *(MEMORY[0x277D03988] + 3);
           *&v45 = 134217984;
           v65 = v45;
           do
           {
-            if (v26 > 0x20 || ((1 << v26) & 0x100010016) == 0)
+            if (dataclass > 0x20 || ((1 << dataclass) & 0x100010016) == 0)
             {
               v51 = DALoggingwithCategory();
               if (os_log_type_enabled(v51, v47))
               {
                 *buf = v65;
-                *v86 = v26;
+                *v86 = dataclass;
                 _os_log_impl(&dword_24A0AC000, v51, v47, "No support yet for responses of dataclass %lu", buf, 0xCu);
               }
 
               goto LABEL_56;
             }
 
-            v48 = [v46 status];
-            if ([v48 intValue] == 8)
+            status4 = [v46 status];
+            if ([status4 intValue] == 8)
             {
-              v49 = [(ASFolderItemsSyncTask *)self willUpdate];
+              willUpdate = [(ASFolderItemsSyncTask *)self willUpdate];
 
-              if (v49)
+              if (willUpdate)
               {
                 v50 = DALoggingwithCategory();
                 if (os_log_type_enabled(v50, v47))
@@ -1467,23 +1467,23 @@ LABEL_30:
 
             [(ASFolderItemsSyncTask *)self _handleResponseToLeaf:v46 addedResponses:v72 modifiedResponses:v73 removedResponses:v7 fetchedResponses:v8, v65];
 LABEL_56:
-            v52 = [v68 nextObject];
+            nextObject4 = [v68 nextObject];
 
-            v46 = v52;
+            v46 = nextObject4;
           }
 
-          while (v52);
+          while (nextObject4);
         }
 
         v53 = v66;
-        v54 = [v66 status];
-        v9 = -[ASFolderItemsSyncTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v54 intValue]);
+        status5 = [v66 status];
+        v9 = -[ASFolderItemsSyncTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status5 intValue]);
 
-        v55 = [v66 syncKey];
+        syncKey = [v66 syncKey];
 
-        if (v55 && v9 == 2)
+        if (syncKey && v9 == 2)
         {
-          v15 = [v66 syncKey];
+          syncKey2 = [v66 syncKey];
           v5 = v67;
         }
 
@@ -1492,7 +1492,7 @@ LABEL_56:
           v5 = v67;
           if (v9 == 2)
           {
-            v15 = 0;
+            syncKey2 = 0;
           }
 
           else
@@ -1508,7 +1508,7 @@ LABEL_56:
               _os_log_impl(&dword_24A0AC000, v56, v57, "%@ collection error code was %ld", buf, 0x16u);
             }
 
-            v15 = 0;
+            syncKey2 = 0;
             v53 = v66;
           }
         }
@@ -1524,8 +1524,8 @@ LABEL_56:
 
           else
           {
-            v61 = [v59 responseItems];
-            v58 = [v61 count] != 0;
+            responseItems2 = [v59 responseItems];
+            v58 = [responseItems2 count] != 0;
 
             v5 = v67;
           }
@@ -1538,8 +1538,8 @@ LABEL_56:
           v58 = 1;
         }
 
-        v62 = [v53 moreAvailable];
-        -[ASFolderItemsSyncTask setMoreAvailable:](self, "setMoreAvailable:", [v62 BOOLValue]);
+        moreAvailable = [v53 moreAvailable];
+        -[ASFolderItemsSyncTask setMoreAvailable:](self, "setMoreAvailable:", [moreAvailable BOOLValue]);
 
         if ([(ASFolderItemsSyncTask *)self moreAvailable]&& !v58)
         {
@@ -1579,12 +1579,12 @@ LABEL_38:
       _os_log_impl(&dword_24A0AC000, v39, v40, "ASFolderItemsSyncTask %p failed with status: %ld", buf, 0x16u);
     }
 
-    v15 = 0;
+    syncKey2 = 0;
     goto LABEL_38;
   }
 
   v10 = DALoggingwithCategory();
-  v11 = v10;
+  currentlyParsingItem = v10;
   if (v9 == -1)
   {
     v18 = *(MEMORY[0x277D03988] + 6);
@@ -1593,10 +1593,10 @@ LABEL_38:
       *buf = 138412290;
       *v86 = objc_opt_class();
       v19 = *v86;
-      _os_log_impl(&dword_24A0AC000, v11, v18, "%@ cancelled", buf, 0xCu);
+      _os_log_impl(&dword_24A0AC000, currentlyParsingItem, v18, "%@ cancelled", buf, 0xCu);
     }
 
-    v15 = 0;
+    syncKey2 = 0;
     v9 = -1;
   }
 
@@ -1608,20 +1608,20 @@ LABEL_38:
       *buf = 138412546;
       *v86 = objc_opt_class();
       *&v86[8] = 2112;
-      *&v86[10] = v4;
+      *&v86[10] = errorCopy;
       v13 = v6;
       v14 = *v86;
-      _os_log_impl(&dword_24A0AC000, v11, v12, "%@ failed: %@", buf, 0x16u);
+      _os_log_impl(&dword_24A0AC000, currentlyParsingItem, v12, "%@ failed: %@", buf, 0x16u);
 
       v6 = v13;
     }
 
-    v15 = 0;
+    syncKey2 = 0;
   }
 
 LABEL_39:
 
-  if (![(ASTask *)self attemptRetryWithStatus:v9 error:v4])
+  if (![(ASTask *)self attemptRetryWithStatus:v9 error:errorCopy])
   {
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
@@ -1629,8 +1629,8 @@ LABEL_39:
     v74[3] = &unk_278FC8000;
     v74[4] = self;
     v84 = v9;
-    v75 = v4;
-    v76 = v15;
+    v75 = errorCopy;
+    v76 = syncKey2;
     v77 = v5;
     v78 = v71;
     v79 = v6;
@@ -1655,27 +1655,27 @@ void __41__ASFolderItemsSyncTask_finishWithError___block_invoke(uint64_t a1)
 
 - (double)percentComplete
 {
-  v3 = [(ASTask *)self parseContext];
-  v4 = [v3 expectedTotalBytesCount];
+  parseContext = [(ASTask *)self parseContext];
+  expectedTotalBytesCount = [parseContext expectedTotalBytesCount];
 
-  if (v4 < 1)
+  if (expectedTotalBytesCount < 1)
   {
     return -1.0;
   }
 
-  v5 = [(ASTask *)self parseContext];
-  v6 = [v5 currentBytesReceivedCount];
-  v7 = [(ASTask *)self parseContext];
-  v8 = v6 / [v7 expectedTotalBytesCount];
+  parseContext2 = [(ASTask *)self parseContext];
+  currentBytesReceivedCount = [parseContext2 currentBytesReceivedCount];
+  parseContext3 = [(ASTask *)self parseContext];
+  v8 = currentBytesReceivedCount / [parseContext3 expectedTotalBytesCount];
 
   return v8;
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
   result = 2;
-  switch(a3)
+  switch(status)
   {
     case 0:
     case 1:
@@ -1718,7 +1718,7 @@ void __41__ASFolderItemsSyncTask_finishWithError___block_invoke(uint64_t a1)
       result = 67;
       break;
     default:
-      if (a3 == 111)
+      if (status == 111)
       {
         result = 80;
       }
@@ -1734,7 +1734,7 @@ void __41__ASFolderItemsSyncTask_finishWithError___block_invoke(uint64_t a1)
           v10 = 138412546;
           v11 = v8;
           v12 = 1024;
-          v13 = a3;
+          statusCopy = status;
           _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
         }
 
@@ -1752,32 +1752,32 @@ void __41__ASFolderItemsSyncTask_finishWithError___block_invoke(uint64_t a1)
 {
   if ([(ASFolderItemsSyncTask *)self isInitialBootstrapSync])
   {
-    v3 = @"0";
+    previousSyncKey = @"0";
   }
 
   else
   {
-    v3 = [(ASFolderItemsSyncTask *)self previousSyncKey];
+    previousSyncKey = [(ASFolderItemsSyncTask *)self previousSyncKey];
   }
 
-  return v3;
+  return previousSyncKey;
 }
 
-- (void)reportStatusWithError:(id)a3
+- (void)reportStatusWithError:(id)error
 {
-  v4 = a3;
-  if (!overSimplifiedStatusForError(v4) && [(ASFolderItemsSyncTask *)self hadFalseMoreAvailable])
+  errorCopy = error;
+  if (!overSimplifiedStatusForError(errorCopy) && [(ASFolderItemsSyncTask *)self hadFalseMoreAvailable])
   {
-    v5 = [(ASTask *)self taskManager];
-    v6 = [v5 account];
-    v7 = [v6 statusReport];
+    taskManager = [(ASTask *)self taskManager];
+    account = [taskManager account];
+    statusReport = [account statusReport];
 
-    [v7 noteFalseMoreAvailableResponse];
+    [statusReport noteFalseMoreAvailableResponse];
   }
 
   v8.receiver = self;
   v8.super_class = ASFolderItemsSyncTask;
-  [(ASTask *)&v8 reportStatusWithError:v4];
+  [(ASTask *)&v8 reportStatusWithError:errorCopy];
 }
 
 - (void)appendActionData:(os_log_t)log .cold.1(uint8_t *buf, _BYTE *a2, os_log_t log)

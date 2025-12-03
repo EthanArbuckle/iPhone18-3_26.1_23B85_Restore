@@ -1,18 +1,18 @@
 @interface BSDispatchQueueAttributes
 + (id)concurrent;
 + (id)serial;
-- (id)autoreleaseFrequency:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)autoreleaseFrequency:(unint64_t)frequency;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)inactive;
-- (id)serviceClass:(unsigned int)a3 relativePriority:(int)a4;
-- (id)targetQueue:(id)a3;
+- (id)serviceClass:(unsigned int)class relativePriority:(int)priority;
+- (id)targetQueue:(id)queue;
 @end
 
 @implementation BSDispatchQueueAttributes
 
 + (id)serial
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   if (v2)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -25,7 +25,7 @@
 
 + (id)concurrent
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   if (v2)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -36,38 +36,38 @@
   return v2;
 }
 
-- (id)serviceClass:(unsigned int)a3 relativePriority:(int)a4
+- (id)serviceClass:(unsigned int)class relativePriority:(int)priority
 {
   attrs = self->_attrs;
-  if (a4 <= -15)
+  if (priority <= -15)
   {
-    v6 = -15;
+    priorityCopy = -15;
   }
 
   else
   {
-    v6 = a4;
+    priorityCopy = priority;
   }
 
-  self->_attrs = dispatch_queue_attr_make_with_qos_class(self->_attrs, a3, v6 & (v6 >> 31));
+  self->_attrs = dispatch_queue_attr_make_with_qos_class(self->_attrs, class, priorityCopy & (priorityCopy >> 31));
 
   return self;
 }
 
-- (id)autoreleaseFrequency:(unint64_t)a3
+- (id)autoreleaseFrequency:(unint64_t)frequency
 {
   attrs = self->_attrs;
-  self->_attrs = dispatch_queue_attr_make_with_autorelease_frequency(attrs, a3);
+  self->_attrs = dispatch_queue_attr_make_with_autorelease_frequency(attrs, frequency);
 
   return self;
 }
 
-- (id)targetQueue:(id)a3
+- (id)targetQueue:(id)queue
 {
-  v5 = a3;
-  if (self->_targetQueue != v5)
+  queueCopy = queue;
+  if (self->_targetQueue != queueCopy)
   {
-    objc_storeStrong(&self->_targetQueue, a3);
+    objc_storeStrong(&self->_targetQueue, queue);
   }
 
   return self;
@@ -81,9 +81,9 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_attrs);
   objc_storeStrong(v4 + 2, self->_targetQueue);
   return v4;

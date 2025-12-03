@@ -1,12 +1,12 @@
 @interface SILAssetDesc
-- (BOOL)decompress:(unsigned __int16)a3 into:(void *)a4 withSize:(int64_t)a5;
-- (BOOL)frameDelayedWithFrameNumber:(unsigned __int16)a3;
-- (BOOL)frameInsecureWithFrameNumber:(unsigned __int16)a3;
-- (CGPoint)framePosOffsetWithFrameNumber:(unsigned __int16)a3;
+- (BOOL)decompress:(unsigned __int16)decompress into:(void *)into withSize:(int64_t)size;
+- (BOOL)frameDelayedWithFrameNumber:(unsigned __int16)number;
+- (BOOL)frameInsecureWithFrameNumber:(unsigned __int16)number;
+- (CGPoint)framePosOffsetWithFrameNumber:(unsigned __int16)number;
 - (NSDictionary)userInfo;
 - (_TtC10SILManager12SILAssetDesc)init;
 - (int64_t)type;
-- (void)setType:(int64_t)a3;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation SILAssetDesc
@@ -18,11 +18,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC10SILManager12SILAssetDesc_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSDictionary)userInfo
@@ -41,26 +41,26 @@
   return v2.super.isa;
 }
 
-- (BOOL)frameInsecureWithFrameNumber:(unsigned __int16)a3
+- (BOOL)frameInsecureWithFrameNumber:(unsigned __int16)number
 {
-  v4 = self;
-  LOBYTE(a3) = SILAssetDesc.frameInsecure(frameNumber:)(a3);
+  selfCopy = self;
+  LOBYTE(number) = SILAssetDesc.frameInsecure(frameNumber:)(number);
 
-  return a3 & 1;
+  return number & 1;
 }
 
-- (BOOL)frameDelayedWithFrameNumber:(unsigned __int16)a3
+- (BOOL)frameDelayedWithFrameNumber:(unsigned __int16)number
 {
-  v4 = self;
-  LOBYTE(a3) = SILAssetDesc.frameDelayed(frameNumber:)(a3);
+  selfCopy = self;
+  LOBYTE(number) = SILAssetDesc.frameDelayed(frameNumber:)(number);
 
-  return a3 & 1;
+  return number & 1;
 }
 
-- (CGPoint)framePosOffsetWithFrameNumber:(unsigned __int16)a3
+- (CGPoint)framePosOffsetWithFrameNumber:(unsigned __int16)number
 {
-  v4 = self;
-  v5 = SILAssetDesc.framePosOffset(frameNumber:)(a3);
+  selfCopy = self;
+  v5 = SILAssetDesc.framePosOffset(frameNumber:)(number);
 
   x = v5.x;
   y = v5.y;
@@ -69,13 +69,13 @@
   return result;
 }
 
-- (BOOL)decompress:(unsigned __int16)a3 into:(void *)a4 withSize:(int64_t)a5
+- (BOOL)decompress:(unsigned __int16)decompress into:(void *)into withSize:(int64_t)size
 {
-  v7 = a3;
-  v8 = self;
-  LOBYTE(a5) = SILAssetDesc.decompress(_:into:withSize:)(v7, a4, a5);
+  decompressCopy = decompress;
+  selfCopy = self;
+  LOBYTE(size) = SILAssetDesc.decompress(_:into:withSize:)(decompressCopy, into, size);
 
-  return a5 & 1;
+  return size & 1;
 }
 
 - (_TtC10SILManager12SILAssetDesc)init

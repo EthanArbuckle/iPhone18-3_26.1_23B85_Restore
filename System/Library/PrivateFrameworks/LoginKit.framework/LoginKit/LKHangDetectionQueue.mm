@@ -1,18 +1,18 @@
 @interface LKHangDetectionQueue
-- (LKHangDetectionQueue)initWithQoS:(unsigned int)a3 hangThreshold:(double)a4;
-- (void)queueBlock:(id)a3;
+- (LKHangDetectionQueue)initWithQoS:(unsigned int)s hangThreshold:(double)threshold;
+- (void)queueBlock:(id)block;
 @end
 
 @implementation LKHangDetectionQueue
 
-- (LKHangDetectionQueue)initWithQoS:(unsigned int)a3 hangThreshold:(double)a4
+- (LKHangDetectionQueue)initWithQoS:(unsigned int)s hangThreshold:(double)threshold
 {
   v15.receiver = self;
   v15.super_class = LKHangDetectionQueue;
   v6 = [(LKHangDetectionQueue *)&v15 init];
   if (v6)
   {
-    v7 = dispatch_queue_attr_make_with_qos_class(0, a3, -1);
+    v7 = dispatch_queue_attr_make_with_qos_class(0, s, -1);
     v8 = dispatch_queue_create("lk_hang_detection_worker_queue", v7);
     workerQueue = v6->_workerQueue;
     v6->_workerQueue = v8;
@@ -21,7 +21,7 @@
     logQueue = v6->_logQueue;
     v6->_logQueue = v10;
 
-    v6->_threshold = a4;
+    v6->_threshold = threshold;
     v12 = objc_opt_new();
     backtraceLogger = v6->_backtraceLogger;
     v6->_backtraceLogger = v12;
@@ -30,9 +30,9 @@
   return v6;
 }
 
-- (void)queueBlock:(id)a3
+- (void)queueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[LKPlatformSupport isInternalBuild];
   v6 = v5;
   v17[0] = 0;
@@ -43,27 +43,27 @@
   {
     [(LKHangDetectionQueue *)self threshold];
     v8 = dispatch_time(0, (v7 * 1000000000.0));
-    v9 = [(LKHangDetectionQueue *)self logQueue];
+    logQueue = [(LKHangDetectionQueue *)self logQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__LKHangDetectionQueue_queueBlock___block_invoke;
     block[3] = &unk_279826478;
     block[4] = self;
     block[5] = v17;
-    dispatch_after(v8, v9, block);
+    dispatch_after(v8, logQueue, block);
   }
 
-  v10 = [(LKHangDetectionQueue *)self workerQueue];
+  workerQueue = [(LKHangDetectionQueue *)self workerQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __35__LKHangDetectionQueue_queueBlock___block_invoke_4;
   v12[3] = &unk_2798264C8;
   v15 = v6;
   v12[4] = self;
-  v13 = v4;
+  v13 = blockCopy;
   v14 = v17;
-  v11 = v4;
-  dispatch_async(v10, v12);
+  v11 = blockCopy;
+  dispatch_async(workerQueue, v12);
 
   _Block_object_dispose(v17, 8);
 }

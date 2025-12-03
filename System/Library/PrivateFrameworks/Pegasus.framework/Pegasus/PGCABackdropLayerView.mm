@@ -8,19 +8,19 @@
 - (BOOL)_isTransparentOrHasTransparentAncestor;
 - (BOOL)_wantsCapturedBlur;
 - (PGCABackdropLayerView)groupLeader;
-- (PGCABackdropLayerView)initWithFrame:(CGRect)a3 captureOnly:(BOOL)a4;
-- (PGCABackdropLayerView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4;
+- (PGCABackdropLayerView)initWithFrame:(CGRect)frame captureOnly:(BOOL)only;
+- (PGCABackdropLayerView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background;
 - (id)_preferredBackgroundColor;
 - (int64_t)_preferredEffect;
-- (void)_addDependent:(id)a3;
+- (void)_addDependent:(id)dependent;
 - (void)_ensureDependents;
-- (void)_enumerateDependents:(id)a3;
-- (void)_removeDependent:(id)a3;
+- (void)_enumerateDependents:(id)dependents;
+- (void)_removeDependent:(id)dependent;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setCustomBackgroundColor:(id)a3;
-- (void)setGroupLeader:(id)a3;
-- (void)setWantsBlur:(BOOL)a3;
+- (void)setCustomBackgroundColor:(id)color;
+- (void)setGroupLeader:(id)leader;
+- (void)setWantsBlur:(BOOL)blur;
 - (void)updateEffects;
 @end
 
@@ -130,37 +130,37 @@ uint64_t __49__PGCABackdropLayerView_reducedTransparencyColor__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (PGCABackdropLayerView)initWithFrame:(CGRect)a3 captureOnly:(BOOL)a4
+- (PGCABackdropLayerView)initWithFrame:(CGRect)frame captureOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = [(PGCABackdropLayerView *)self initWithFrame:0 wantsGlassBackground:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  onlyCopy = only;
+  v5 = [(PGCABackdropLayerView *)self initWithFrame:0 wantsGlassBackground:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
-  if (v5 && v4)
+  if (v5 && onlyCopy)
   {
-    v7 = [(PGCABackdropLayerView *)v5 layer];
-    [v7 setCaptureOnly:1];
+    layer = [(PGCABackdropLayerView *)v5 layer];
+    [layer setCaptureOnly:1];
 
-    v8 = [(PGCABackdropLayerView *)v6 layer];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
-    [v8 setGroupName:v10];
+    layer2 = [(PGCABackdropLayerView *)v6 layer];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [layer2 setGroupName:uUIDString];
   }
 
   return v6;
 }
 
-- (PGCABackdropLayerView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4
+- (PGCABackdropLayerView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background
 {
   v9.receiver = self;
   v9.super_class = PGCABackdropLayerView;
-  v5 = [(PGCABackdropLayerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PGCABackdropLayerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_wantsGlassBackground = a4;
+    v5->_wantsGlassBackground = background;
     [(PGCABackdropLayerView *)v5 setUserInteractionEnabled:0];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel_updateEffects name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_updateEffects name:*MEMORY[0x1E69DD920] object:0];
   }
 
   return v6;
@@ -168,8 +168,8 @@ uint64_t __49__PGCABackdropLayerView_reducedTransparencyColor__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v4.receiver = self;
   v4.super_class = PGCABackdropLayerView;
@@ -184,12 +184,12 @@ uint64_t __49__PGCABackdropLayerView_reducedTransparencyColor__block_invoke()
   [(PGCABackdropLayerView *)self updateEffects];
 }
 
-- (void)setCustomBackgroundColor:(id)a3
+- (void)setCustomBackgroundColor:(id)color
 {
-  v6 = a3;
-  if (([(UIColor *)self->_customBackgroundColor isEqual:v6]& 1) == 0 && self->_customBackgroundColor != v6)
+  colorCopy = color;
+  if (([(UIColor *)self->_customBackgroundColor isEqual:colorCopy]& 1) == 0 && self->_customBackgroundColor != colorCopy)
   {
-    v4 = [(UIColor *)v6 copy];
+    v4 = [(UIColor *)colorCopy copy];
     customBackgroundColor = self->_customBackgroundColor;
     self->_customBackgroundColor = v4;
 
@@ -199,20 +199,20 @@ uint64_t __49__PGCABackdropLayerView_reducedTransparencyColor__block_invoke()
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setWantsBlur:(BOOL)a3
+- (void)setWantsBlur:(BOOL)blur
 {
-  if (self->_wantsBlur != a3)
+  if (self->_wantsBlur != blur)
   {
-    self->_wantsBlur = a3;
+    self->_wantsBlur = blur;
     [(PGCABackdropLayerView *)self updateEffects];
   }
 }
 
 - (void)updateEffects
 {
-  v3 = [(PGCABackdropLayerView *)self _preferredEffect];
-  v31 = [(PGCABackdropLayerView *)self _preferredBackgroundColor];
-  if (v3 == 1)
+  _preferredEffect = [(PGCABackdropLayerView *)self _preferredEffect];
+  _preferredBackgroundColor = [(PGCABackdropLayerView *)self _preferredBackgroundColor];
+  if (_preferredEffect == 1)
   {
     v4 = 0.25;
   }
@@ -222,112 +222,112 @@ uint64_t __49__PGCABackdropLayerView_reducedTransparencyColor__block_invoke()
     v4 = 0.0;
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_wantsGlassBackground)
   {
     v6 = +[PGCABackdropLayerView baseFilters];
-    [v5 addObjectsFromArray:v6];
+    [array addObjectsFromArray:v6];
 
-    if (v3 == 1)
+    if (_preferredEffect == 1)
     {
       v7 = +[PGCABackdropLayerView blurFilters];
 LABEL_9:
       v8 = v7;
-      [v5 addObjectsFromArray:v7];
+      [array addObjectsFromArray:v7];
 
       goto LABEL_11;
     }
   }
 
-  else if (v3 == 1)
+  else if (_preferredEffect == 1)
   {
     v7 = +[PGCABackdropLayerView materialFilters];
     goto LABEL_9;
   }
 
-  [v5 addObjectsFromArray:MEMORY[0x1E695E0F0]];
+  [array addObjectsFromArray:MEMORY[0x1E695E0F0]];
 LABEL_11:
   if ([(PGCABackdropLayerView *)self _isCaptureOnly])
   {
-    v9 = [(PGCABackdropLayerView *)self layer];
-    -[PGCABackdropLayerView setHidden:](self, "setHidden:", [v9 isEnabled] ^ 1);
+    layer = [(PGCABackdropLayerView *)self layer];
+    -[PGCABackdropLayerView setHidden:](self, "setHidden:", [layer isEnabled] ^ 1);
   }
 
   else
   {
-    v10 = [(UIView *)self PG_backdropGroupLeader];
-    [(PGCABackdropLayerView *)self setGroupLeader:v10];
+    pG_backdropGroupLeader = [(UIView *)self PG_backdropGroupLeader];
+    [(PGCABackdropLayerView *)self setGroupLeader:pG_backdropGroupLeader];
 
-    if (v3 == 1)
+    if (_preferredEffect == 1)
     {
-      v11 = [(PGCABackdropLayerView *)self groupLeader];
-      v12 = [v11 layer];
-      v9 = [v12 groupName];
+      groupLeader = [(PGCABackdropLayerView *)self groupLeader];
+      layer2 = [groupLeader layer];
+      layer = [layer2 groupName];
     }
 
     else
     {
-      v9 = 0;
+      layer = 0;
     }
 
-    v13 = [(PGCABackdropLayerView *)self layer];
-    v14 = [v13 groupName];
+    layer3 = [(PGCABackdropLayerView *)self layer];
+    groupName = [layer3 groupName];
 
-    if (v9 != v14 && ([v9 isEqualToString:v14] & 1) == 0)
+    if (layer != groupName && ([layer isEqualToString:groupName] & 1) == 0)
     {
-      v15 = [(PGCABackdropLayerView *)self layer];
-      [v15 setGroupName:v9];
+      layer4 = [(PGCABackdropLayerView *)self layer];
+      [layer4 setGroupName:layer];
     }
   }
 
-  v16 = [(PGCABackdropLayerView *)self layer];
-  [v16 scale];
+  layer5 = [(PGCABackdropLayerView *)self layer];
+  [layer5 scale];
   v18 = v17;
 
   if (v18 != v4)
   {
-    v19 = [(PGCABackdropLayerView *)self layer];
-    [v19 setScale:v4];
+    layer6 = [(PGCABackdropLayerView *)self layer];
+    [layer6 setScale:v4];
   }
 
-  v20 = [(PGCABackdropLayerView *)self layer];
-  v21 = [v20 filters];
-  v22 = [v21 isEqualToArray:v5];
+  layer7 = [(PGCABackdropLayerView *)self layer];
+  filters = [layer7 filters];
+  v22 = [filters isEqualToArray:array];
 
   if ((v22 & 1) == 0)
   {
-    v23 = [(PGCABackdropLayerView *)self layer];
-    [v23 setFilters:v5];
+    layer8 = [(PGCABackdropLayerView *)self layer];
+    [layer8 setFilters:array];
   }
 
-  v24 = [(PGCABackdropLayerView *)self layer];
-  v25 = [v24 isEnabled];
+  layer9 = [(PGCABackdropLayerView *)self layer];
+  isEnabled = [layer9 isEnabled];
 
-  if ((v3 == 1) != v25)
+  if ((_preferredEffect == 1) != isEnabled)
   {
-    v26 = [(PGCABackdropLayerView *)self layer];
-    [v26 setEnabled:v3 == 1];
+    layer10 = [(PGCABackdropLayerView *)self layer];
+    [layer10 setEnabled:_preferredEffect == 1];
   }
 
   if (self->_wantsGlassBackground)
   {
-    v27 = [(PGCABackdropLayerView *)self layer];
+    layer11 = [(PGCABackdropLayerView *)self layer];
     LODWORD(v28) = 1061997773;
-    [v27 setOpacity:v28];
+    [layer11 setOpacity:v28];
   }
 
-  v29 = [(PGCABackdropLayerView *)self backgroundColor];
-  if ([v31 isEqual:v29])
+  backgroundColor = [(PGCABackdropLayerView *)self backgroundColor];
+  if ([_preferredBackgroundColor isEqual:backgroundColor])
   {
   }
 
   else
   {
-    v30 = [(PGCABackdropLayerView *)self backgroundColor];
+    backgroundColor2 = [(PGCABackdropLayerView *)self backgroundColor];
 
-    if (v31 != v30)
+    if (_preferredBackgroundColor != backgroundColor2)
     {
-      [(PGCABackdropLayerView *)self setBackgroundColor:v31];
+      [(PGCABackdropLayerView *)self setBackgroundColor:_preferredBackgroundColor];
     }
   }
 }
@@ -346,9 +346,9 @@ LABEL_11:
     return result;
   }
 
-  v4 = [(PGCABackdropLayerView *)self customBackgroundColor];
+  customBackgroundColor = [(PGCABackdropLayerView *)self customBackgroundColor];
 
-  if (v4)
+  if (customBackgroundColor)
   {
     return 0;
   }
@@ -366,26 +366,26 @@ LABEL_11:
   if ([(PGCABackdropLayerView *)self _isCaptureOnly])
   {
 LABEL_5:
-    v4 = 0;
+    customBackgroundColor = 0;
     goto LABEL_6;
   }
 
-  v3 = [(PGCABackdropLayerView *)self _preferredEffect];
-  if (v3 != 2)
+  _preferredEffect = [(PGCABackdropLayerView *)self _preferredEffect];
+  if (_preferredEffect != 2)
   {
-    if (!v3)
+    if (!_preferredEffect)
     {
-      v4 = [(PGCABackdropLayerView *)self customBackgroundColor];
+      customBackgroundColor = [(PGCABackdropLayerView *)self customBackgroundColor];
       goto LABEL_6;
     }
 
     goto LABEL_5;
   }
 
-  v4 = [objc_opt_class() reducedTransparencyColor];
+  customBackgroundColor = [objc_opt_class() reducedTransparencyColor];
 LABEL_6:
 
-  return v4;
+  return customBackgroundColor;
 }
 
 - (BOOL)_wantsCapturedBlur
@@ -400,18 +400,18 @@ LABEL_6:
 
 - (BOOL)_isCaptureOnly
 {
-  v2 = [(PGCABackdropLayerView *)self layer];
-  v3 = [v2 captureOnly];
+  layer = [(PGCABackdropLayerView *)self layer];
+  captureOnly = [layer captureOnly];
 
-  return v3;
+  return captureOnly;
 }
 
-- (void)setGroupLeader:(id)a3
+- (void)setGroupLeader:(id)leader
 {
-  obj = a3;
-  v5 = [(PGCABackdropLayerView *)obj _isCaptureOnly];
+  obj = leader;
+  _isCaptureOnly = [(PGCABackdropLayerView *)obj _isCaptureOnly];
   v6 = obj;
-  if (obj && !v5)
+  if (obj && !_isCaptureOnly)
   {
     [(PGCABackdropLayerView *)a2 setGroupLeader:?];
     v6 = obj;
@@ -465,16 +465,16 @@ uint64_t __63__PGCABackdropLayerView__hasAnyDependentsThatWantsCapturedBlur__blo
   return result;
 }
 
-- (void)_addDependent:(id)a3
+- (void)_addDependent:(id)dependent
 {
-  v4 = a3;
+  dependentCopy = dependent;
   [(PGCABackdropLayerView *)self _ensureDependents];
-  [(NSHashTable *)self->_dependents addObject:v4];
+  [(NSHashTable *)self->_dependents addObject:dependentCopy];
 }
 
-- (void)_removeDependent:(id)a3
+- (void)_removeDependent:(id)dependent
 {
-  [(NSHashTable *)self->_dependents removeObject:a3];
+  [(NSHashTable *)self->_dependents removeObject:dependent];
 
   [(PGCABackdropLayerView *)self updateEffects];
 }
@@ -489,10 +489,10 @@ uint64_t __63__PGCABackdropLayerView__hasAnyDependentsThatWantsCapturedBlur__blo
   }
 }
 
-- (void)_enumerateDependents:(id)a3
+- (void)_enumerateDependents:(id)dependents
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dependentsCopy = dependents;
   v5 = [(NSHashTable *)self->_dependents copy];
   v11 = 0u;
   v12 = 0u;
@@ -514,7 +514,7 @@ uint64_t __63__PGCABackdropLayerView__hasAnyDependentsThatWantsCapturedBlur__blo
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        dependentsCopy[2](dependentsCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -529,22 +529,22 @@ uint64_t __63__PGCABackdropLayerView__hasAnyDependentsThatWantsCapturedBlur__blo
 {
   [(PGCABackdropLayerView *)self alpha];
   v4 = v3;
-  v5 = [(PGCABackdropLayerView *)self superview];
-  while (v5)
+  superview = [(PGCABackdropLayerView *)self superview];
+  while (superview)
   {
     if (v4 <= 0.0)
     {
       break;
     }
 
-    v6 = v5;
-    [v5 alpha];
+    v6 = superview;
+    [superview alpha];
     if (v4 >= v7)
     {
       v4 = v7;
     }
 
-    v5 = [v5 superview];
+    superview = [superview superview];
   }
 
   return v4 == 0.0;

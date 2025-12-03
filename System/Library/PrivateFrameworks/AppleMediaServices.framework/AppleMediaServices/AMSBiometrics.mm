@@ -1,40 +1,40 @@
 @interface AMSBiometrics
-+ (BOOL)_deleteKeysWithOptions:(id)a3 error:(id *)a4;
++ (BOOL)_deleteKeysWithOptions:(id)options error:(id *)error;
 + (BOOL)_shouldAddBiometricHeader;
-+ (BOOL)deleteAllKeysWithError:(id *)a3;
-+ (BOOL)deleteKeysWithError:(id *)a3;
-+ (BOOL)hasKeysForAccount:(id)a3 forSignaturePurpose:(unint64_t)a4 withError:(id *)a5;
-+ (BOOL)isActionSupportedForType:(int64_t)a3 account:(id)a4 options:(id)a5 error:(id *)a6;
-+ (BOOL)isAvailableForAccount:(id)a3;
++ (BOOL)deleteAllKeysWithError:(id *)error;
++ (BOOL)deleteKeysWithError:(id *)error;
++ (BOOL)hasKeysForAccount:(id)account forSignaturePurpose:(unint64_t)purpose withError:(id *)error;
++ (BOOL)isActionSupportedForType:(int64_t)type account:(id)account options:(id)options error:(id *)error;
++ (BOOL)isAvailableForAccount:(id)account;
 + (BOOL)isDeviceInBiometricLockout;
 + (BOOL)isIdentityMapValid;
-+ (BOOL)proxyDeleteAllKeysWithError:(id *)a3;
++ (BOOL)proxyDeleteAllKeysWithError:(id *)error;
 + (NSArray)identityMap;
-+ (id)ACLVersionForAccessControl:(__SecAccessControl *)a3;
-+ (id)ACLVersionForAccount:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)ACLVersionForConstraints:(id)a3;
-+ (id)_stateHeaderValueForAccount:(id)a3;
-+ (id)disableForAccount:(id)a3;
-+ (id)handleResponse:(id)a3 financeResponse:(id)a4 session:(id)a5 taskInfo:(id)a6;
-+ (id)headersWithAccount:(id)a3 options:(id)a4 signatureResult:(id)a5;
-+ (id)isActionSupportedForType:(int64_t)a3 account:(id)a4 options:(id)a5;
-+ (id)minimumACLVersionForAction:(int64_t)a3;
-+ (id)resumptionHeadersFromRequest:(id)a3;
-+ (id)setState:(int64_t)a3 forAccount:(id)a4;
-+ (id)signAndReturnChallenge:(id)a3 withAccount:(id)a4 clientInfo:(id)a5 options:(id)a6;
-+ (id)signChallenge:(id)a3 withAccount:(id)a4 clientInfo:(id)a5 options:(id)a6;
++ (id)ACLVersionForAccessControl:(__SecAccessControl *)control;
++ (id)ACLVersionForAccount:(id)account options:(id)options error:(id *)error;
++ (id)ACLVersionForConstraints:(id)constraints;
++ (id)_stateHeaderValueForAccount:(id)account;
++ (id)disableForAccount:(id)account;
++ (id)handleResponse:(id)response financeResponse:(id)financeResponse session:(id)session taskInfo:(id)info;
++ (id)headersWithAccount:(id)account options:(id)options signatureResult:(id)result;
++ (id)isActionSupportedForType:(int64_t)type account:(id)account options:(id)options;
++ (id)minimumACLVersionForAction:(int64_t)action;
++ (id)resumptionHeadersFromRequest:(id)request;
++ (id)setState:(int64_t)state forAccount:(id)account;
++ (id)signAndReturnChallenge:(id)challenge withAccount:(id)account clientInfo:(id)info options:(id)options;
++ (id)signChallenge:(id)challenge withAccount:(id)account clientInfo:(id)info options:(id)options;
 + (int64_t)deviceState;
 + (int64_t)type;
 + (void)saveIdentityMap;
-+ (void)setDeviceState:(int64_t)a3;
++ (void)setDeviceState:(int64_t)state;
 @end
 
 @implementation AMSBiometrics
 
 + (int64_t)deviceState
 {
-  v2 = [a1 type];
-  if (v2 <= 7 && ((1 << v2) & 0x8C) != 0 && +[AMSDefaults deviceBiometricsState]!= 2)
+  type = [self type];
+  if (type <= 7 && ((1 << type) & 0x8C) != 0 && +[AMSDefaults deviceBiometricsState]!= 2)
   {
     return 1;
   }
@@ -72,8 +72,8 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [v3 manager];
-    v2 = [v5 identities:0];
+    manager = [v3 manager];
+    v2 = [manager identities:0];
   }
 
   v6 = [v2 copy];
@@ -88,24 +88,24 @@
   if (!+[AMSDevice deviceIsAudioAccessory])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = +[AMSDefaults deviceBiometricIdentities];
+    oSLogObject2 = +[AMSDefaults deviceBiometricIdentities];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __35__AMSBiometrics_isIdentityMapValid__block_invoke;
     v31[3] = &unk_1E73B5088;
-    v34 = a1;
+    selfCopy = self;
     v9 = v3;
     v32 = v9;
     v4 = v8;
     v33 = v4;
-    [v5 enumerateObjectsUsingBlock:v31];
+    [oSLogObject2 enumerateObjectsUsingBlock:v31];
     if ([v4 count])
     {
       v10 = +[AMSBiometrics identityMap];
       v11 = [v4 count];
       if (v11 == [v10 count])
       {
-        v23 = v5;
+        v23 = oSLogObject2;
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
@@ -126,13 +126,13 @@
                 objc_enumerationMutation(obj);
               }
 
-              v17 = [*(*(&v27 + 1) + 8 * i) uuid];
+              uuid = [*(*(&v27 + 1) + 8 * i) uuid];
               v25[0] = MEMORY[0x1E69E9820];
               v25[1] = 3221225472;
               v25[2] = __35__AMSBiometrics_isIdentityMapValid__block_invoke_77;
               v25[3] = &unk_1E73B50B0;
-              v26 = v17;
-              v18 = v17;
+              v26 = uuid;
+              v18 = uuid;
               if ([v10 indexOfObjectPassingTest:v25] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 ++v14;
@@ -151,7 +151,7 @@
         }
 
         v7 = v14 == [v10 count];
-        v5 = v23;
+        oSLogObject2 = v23;
         goto LABEL_27;
       }
     }
@@ -164,8 +164,8 @@
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v10 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v20 = objc_opt_class();
         *buf = 138543618;
@@ -173,7 +173,7 @@
         v37 = 2114;
         v38 = v9;
         v21 = v20;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping identity map check for no cached identities", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping identity map check for no cached identities", buf, 0x16u);
       }
     }
 
@@ -189,15 +189,15 @@ LABEL_27:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v36 = objc_opt_class();
     v37 = 2114;
     v38 = v3;
     v6 = v36;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping identity map check for audio accessory", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping identity map check for audio accessory", buf, 0x16u);
   }
 
   v7 = 0;
@@ -298,8 +298,8 @@ uint64_t __35__AMSBiometrics_isIdentityMapValid__block_invoke_77(uint64_t a1, vo
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v9 = objc_opt_class();
         v10 = AMSSetLogKeyIfNeeded();
@@ -309,7 +309,7 @@ uint64_t __35__AMSBiometrics_isIdentityMapValid__block_invoke_77(uint64_t a1, vo
         v19 = v10;
         v20 = 1026;
         v21 = 0;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain touch identifier capability: %{public}d", buf, 0x1Cu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain touch identifier capability: %{public}d", buf, 0x1Cu);
       }
 
       if (!v3)
@@ -336,8 +336,8 @@ LABEL_15:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v13 = objc_opt_class();
     v14 = AMSSetLogKeyIfNeeded();
@@ -347,21 +347,21 @@ LABEL_15:
     v19 = v14;
     v20 = 1026;
     v21 = 0;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain pearl identifier capability: %{public}d", buf, 0x1Cu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain pearl identifier capability: %{public}d", buf, 0x1Cu);
   }
 
   return v6;
 }
 
-+ (void)setDeviceState:(int64_t)a3
++ (void)setDeviceState:(int64_t)state
 {
   v39 = *MEMORY[0x1E69E9840];
   v23 = AMSSetLogKey(0);
-  [AMSDefaults setDeviceBiometricsState:a3];
-  if (a3 == 2)
+  [AMSDefaults setDeviceBiometricsState:state];
+  if (state == 2)
   {
     v30 = 0;
-    [a1 deleteKeysWithError:&v30];
+    [self deleteKeysWithError:&v30];
     v4 = v30;
     if (v4)
     {
@@ -371,8 +371,8 @@ LABEL_15:
         v5 = +[AMSLogConfig sharedConfig];
       }
 
-      v6 = [v5 OSLogObject];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v5 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         *buf = 138543874;
@@ -381,7 +381,7 @@ LABEL_15:
         v36 = v23;
         v37 = 2114;
         v38 = v4;
-        _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting biometrics keys: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting biometrics keys: %{public}@", buf, 0x20u);
       }
     }
   }
@@ -414,12 +414,12 @@ LABEL_15:
         }
 
         v15 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:{*(*(&v26 + 1) + 8 * v14), v22}];
-        v16 = [v15 ams_activeiTunesAccount];
+        ams_activeiTunesAccount = [v15 ams_activeiTunesAccount];
 
-        if (v16 && ([v8 containsObject:v16] & 1) == 0)
+        if (ams_activeiTunesAccount && ([v8 containsObject:ams_activeiTunesAccount] & 1) == 0)
         {
-          [v8 addObject:v16];
-          v17 = [a1 setState:0 forAccount:v16];
+          [v8 addObject:ams_activeiTunesAccount];
+          v17 = [self setState:0 forAccount:ams_activeiTunesAccount];
           v25 = 0;
           [v17 resultWithError:&v25];
           v18 = v25;
@@ -432,8 +432,8 @@ LABEL_15:
               v19 = +[AMSLogConfig sharedConfig];
             }
 
-            v20 = [v19 OSLogObject];
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [v19 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v21 = objc_opt_class();
               *buf = v22;
@@ -442,7 +442,7 @@ LABEL_15:
               v36 = v23;
               v37 = 2114;
               v38 = v18;
-              _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error unsetting biometrics state: %{public}@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error unsetting biometrics state: %{public}@", buf, 0x20u);
             }
           }
         }
@@ -458,15 +458,15 @@ LABEL_15:
   }
 }
 
-+ (id)ACLVersionForAccessControl:(__SecAccessControl *)a3
++ (id)ACLVersionForAccessControl:(__SecAccessControl *)control
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (control)
   {
-    CFRetain(a3);
+    CFRetain(control);
     v5 = SecAccessControlGetConstraints();
-    v6 = [a1 ACLVersionForConstraints:v5];
-    CFRelease(a3);
+    v6 = [self ACLVersionForConstraints:v5];
+    CFRelease(control);
   }
 
   else
@@ -477,8 +477,8 @@ LABEL_15:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -487,7 +487,7 @@ LABEL_15:
       v14 = v9;
       v15 = 2114;
       v16 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] ACL version evaluation failed for no ACL", &v13, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] ACL version evaluation failed for no ACL", &v13, 0x16u);
     }
 
     v6 = 0;
@@ -496,57 +496,57 @@ LABEL_15:
   return v6;
 }
 
-+ (id)ACLVersionForAccount:(id)a3 options:(id)a4 error:(id *)a5
++ (id)ACLVersionForAccount:(id)account options:(id)options error:(id *)error
 {
-  v6 = [AMSKeychain copyAccessControlRefWithAccount:a3 options:a4 error:a5];
+  v6 = [AMSKeychain copyAccessControlRefWithAccount:account options:options error:error];
 
-  return [a1 ACLVersionForAccessControl:v6];
+  return [self ACLVersionForAccessControl:v6];
 }
 
-+ (id)ACLVersionForConstraints:(id)a3
++ (id)ACLVersionForConstraints:(id)constraints
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 isActionSupported:7 withConstraints:v4])
+  constraintsCopy = constraints;
+  if ([self isActionSupported:7 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 7;
 LABEL_13:
-    v7 = [v5 minimumACLVersionForAction:v6];
+    v7 = [selfCopy6 minimumACLVersionForAction:v6];
     goto LABEL_14;
   }
 
-  if ([a1 isActionSupported:6 withConstraints:v4])
+  if ([self isActionSupported:6 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 6;
     goto LABEL_13;
   }
 
-  if ([a1 isActionSupported:5 withConstraints:v4])
+  if ([self isActionSupported:5 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 5;
     goto LABEL_13;
   }
 
-  if ([a1 isActionSupported:3 withConstraints:v4])
+  if ([self isActionSupported:3 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 3;
     goto LABEL_13;
   }
 
-  if ([a1 isActionSupported:1 withConstraints:v4])
+  if ([self isActionSupported:1 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 1;
     goto LABEL_13;
   }
 
-  if ([a1 isActionSupported:0 withConstraints:v4])
+  if ([self isActionSupported:0 withConstraints:constraintsCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 0;
     goto LABEL_13;
   }
@@ -557,8 +557,8 @@ LABEL_13:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 = objc_opt_class();
     v12 = v11;
@@ -567,7 +567,7 @@ LABEL_13:
     v15 = v11;
     v16 = 2114;
     v17 = v13;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine version for ACL", &v14, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine version for ACL", &v14, 0x16u);
   }
 
   v7 = 0;
@@ -576,10 +576,10 @@ LABEL_14:
   return v7;
 }
 
-+ (id)disableForAccount:(id)a3
++ (id)disableForAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v12 = 0;
   [AMSBiometrics deleteKeysWithError:&v12];
   v5 = v12;
@@ -591,8 +591,8 @@ LABEL_14:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = AMSSetLogKeyIfNeeded();
@@ -602,40 +602,40 @@ LABEL_14:
       v16 = v9;
       v17 = 2114;
       v18 = v5;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting biometrics keys: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting biometrics keys: %{public}@", buf, 0x20u);
     }
   }
 
-  v10 = [a1 setState:2 forAccount:v4];
+  v10 = [self setState:2 forAccount:accountCopy];
 
   return v10;
 }
 
-+ (BOOL)hasKeysForAccount:(id)a3 forSignaturePurpose:(unint64_t)a4 withError:(id *)a5
++ (BOOL)hasKeysForAccount:(id)account forSignaturePurpose:(unint64_t)purpose withError:(id *)error
 {
-  v7 = a3;
+  accountCopy = account;
   v8 = objc_alloc_init(AMSKeychainOptions);
-  [(AMSKeychainOptions *)v8 setPurpose:a4];
+  [(AMSKeychainOptions *)v8 setPurpose:purpose];
   [(AMSKeychainOptions *)v8 setStyle:+[AMSKeychainOptions preferredAttestationStyle]];
-  v9 = [(AMSKeychainOptions *)v8 style];
-  if (v9 > 5)
+  style = [(AMSKeychainOptions *)v8 style];
+  if (style > 5)
   {
     v13 = 0;
     goto LABEL_11;
   }
 
-  if (((1 << v9) & 0x39) != 0)
+  if (((1 << style) & 0x39) != 0)
   {
     v19 = 0;
     v10 = &v19;
-    v11 = [AMSKeychain copyCertificatePrivateKeyWithContext:0 account:v7 options:v8 error:&v19];
+    v11 = [AMSKeychain copyCertificatePrivateKeyWithContext:0 account:accountCopy options:v8 error:&v19];
   }
 
   else
   {
     v18 = 0;
     v10 = &v18;
-    v11 = [AMSKeychain copyPrivateKeyWithContext:0 account:v7 options:v8 error:&v18];
+    v11 = [AMSKeychain copyPrivateKeyWithContext:0 account:accountCopy options:v8 error:&v18];
   }
 
   v12 = v11;
@@ -643,7 +643,7 @@ LABEL_14:
   if (!v12)
   {
 LABEL_11:
-    if (a5)
+    if (error)
     {
       v16 = @"There was no private key for account";
       goto LABEL_13;
@@ -658,12 +658,12 @@ LABEL_14:
   CFRelease(v12);
   if (!v14)
   {
-    if (a5)
+    if (error)
     {
       v16 = @"There was no public key for account";
 LABEL_13:
       AMSError(7, v16, 0, v13);
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_15;
     }
 
@@ -679,30 +679,30 @@ LABEL_15:
 
 + (BOOL)isDeviceInBiometricLockout
 {
-  v2 = [MEMORY[0x1E696EE60] currentUser];
-  v3 = [v2 state];
-  v4 = [v3 biometry];
-  v5 = [v4 isLockedOut];
+  currentUser = [MEMORY[0x1E696EE60] currentUser];
+  state = [currentUser state];
+  biometry = [state biometry];
+  isLockedOut = [biometry isLockedOut];
 
-  return v5;
+  return isLockedOut;
 }
 
-+ (BOOL)deleteKeysWithError:(id *)a3
++ (BOOL)deleteKeysWithError:(id *)error
 {
   if (AMSIsEntitledForDirectKeychainAccess())
   {
 
-    return [AMSBiometrics deleteAllKeysWithError:a3];
+    return [AMSBiometrics deleteAllKeysWithError:error];
   }
 
   else
   {
 
-    return [AMSBiometrics proxyDeleteAllKeysWithError:a3];
+    return [AMSBiometrics proxyDeleteAllKeysWithError:error];
   }
 }
 
-+ (BOOL)deleteAllKeysWithError:(id *)a3
++ (BOOL)deleteAllKeysWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = AMSSetLogKey(0);
@@ -710,7 +710,7 @@ LABEL_15:
   [(AMSKeychainOptions *)v6 setPurpose:0];
   [(AMSKeychainOptions *)v6 setStyle:+[AMSKeychainOptions preferredAttestationStyle]];
   v20 = 0;
-  [a1 _deleteKeysWithOptions:v6 error:&v20];
+  [self _deleteKeysWithOptions:v6 error:&v20];
   v7 = v20;
   v8 = v7 == 0;
   if (v7)
@@ -721,8 +721,8 @@ LABEL_15:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       *buf = 138543874;
@@ -731,7 +731,7 @@ LABEL_15:
       v24 = v5;
       v25 = 2114;
       v26 = v7;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting primary keys: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting primary keys: %{public}@", buf, 0x20u);
     }
   }
 
@@ -739,7 +739,7 @@ LABEL_15:
   [(AMSKeychainOptions *)v12 setPurpose:1];
   [(AMSKeychainOptions *)v12 setStyle:+[AMSKeychainOptions preferredAttestationStyle]];
   v19 = v7;
-  [a1 _deleteKeysWithOptions:v12 error:&v19];
+  [self _deleteKeysWithOptions:v12 error:&v19];
   v13 = v19;
 
   if (v13)
@@ -750,8 +750,8 @@ LABEL_15:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       *buf = 138543874;
@@ -760,64 +760,64 @@ LABEL_15:
       v24 = v5;
       v25 = 2114;
       v26 = v13;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting extended keys: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting extended keys: %{public}@", buf, 0x20u);
     }
 
     v8 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v17 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
   return v8;
 }
 
-+ (id)handleResponse:(id)a3 financeResponse:(id)a4 session:(id)a5 taskInfo:(id)a6
++ (id)handleResponse:(id)response financeResponse:(id)financeResponse session:(id)session taskInfo:(id)info
 {
   v62 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v11 properties];
-  v13 = [v12 disableBiometricsResponseHandling];
+  responseCopy = response;
+  sessionCopy = session;
+  infoCopy = info;
+  properties = [infoCopy properties];
+  disableBiometricsResponseHandling = [properties disableBiometricsResponseHandling];
 
-  if (v13)
+  if (disableBiometricsResponseHandling)
   {
     v14 = +[AMSURLAction proceedAction];
     v15 = [AMSPromise promiseWithResult:v14];
     goto LABEL_25;
   }
 
-  v16 = [v11 properties];
-  v17 = [v16 logUUID];
-  v18 = AMSSetLogKey(v17);
+  properties2 = [infoCopy properties];
+  logUUID = [properties2 logUUID];
+  v18 = AMSSetLogKey(logUUID);
 
   v14 = +[AMSBinaryPromise promiseWithSuccess];
-  v19 = [v9 ams_valueForHTTPHeaderField:@"X-Apple-TID-Action"];
+  v19 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-TID-Action"];
   if (v19)
   {
-    v52 = a1;
+    selfCopy = self;
     v20 = +[AMSLogConfig sharedConfig];
     if (!v20)
     {
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = v10;
+      v50 = sessionCopy;
       v22 = AMSLogKey();
       v23 = MEMORY[0x1E696AEC0];
       v24 = objc_opt_class();
       v25 = v24;
       if (v22)
       {
-        v17 = AMSLogKey();
-        [v23 stringWithFormat:@"%@: [%@] ", v25, v17];
+        logUUID = AMSLogKey();
+        [v23 stringWithFormat:@"%@: [%@] ", v25, logUUID];
       }
 
       else
@@ -829,59 +829,59 @@ LABEL_15:
       v59 = v26;
       v60 = 2114;
       v61 = v19;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@Received touch ID action: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Received touch ID action: %{public}@", buf, 0x16u);
       if (v22)
       {
 
-        v26 = v17;
+        v26 = logUUID;
       }
 
-      v10 = v50;
+      sessionCopy = v50;
     }
 
     if ([v19 isEqualToString:@"RP"])
     {
       v27 = [AMSBiometricsTokenUpdateTask alloc];
-      v28 = [v11 properties];
-      v29 = [v28 account];
-      v30 = [(AMSBiometricsTokenUpdateTask *)v27 initWithAccount:v29];
+      properties3 = [infoCopy properties];
+      account = [properties3 account];
+      v30 = [(AMSBiometricsTokenUpdateTask *)v27 initWithAccount:account];
 
-      v31 = [(AMSBiometricsTokenUpdateTask *)v30 performUpdate];
+      performUpdate = [(AMSBiometricsTokenUpdateTask *)v30 performUpdate];
       v32 = v14;
 LABEL_22:
 
-      v14 = v31;
+      v14 = performUpdate;
       goto LABEL_23;
     }
 
     if (![v19 isEqualToString:@"EP"])
     {
 LABEL_23:
-      a1 = v52;
+      self = selfCopy;
       goto LABEL_24;
     }
 
     v33 = [AMSBiometricsPresentationProxy alloc];
-    v34 = [v11 task];
-    v51 = v10;
-    v30 = [(AMSBiometricsPresentationProxy *)v33 initWithSession:v10 task:v34];
+    task = [infoCopy task];
+    v51 = sessionCopy;
+    v30 = [(AMSBiometricsPresentationProxy *)v33 initWithSession:sessionCopy task:task];
 
     v35 = [AMSBiometricsTokenUpdateTask alloc];
-    v36 = [v11 properties];
-    v37 = [v36 account];
-    v32 = [(AMSBiometricsTokenUpdateTask *)v35 initWithAccount:v37];
+    properties4 = [infoCopy properties];
+    account2 = [properties4 account];
+    v32 = [(AMSBiometricsTokenUpdateTask *)v35 initWithAccount:account2];
 
     [(AMSBiometricsTokenUpdateTask *)v32 setPresentationDelegate:v30];
     [(AMSBiometricsTokenUpdateTask *)v32 setShouldRequestConfirmation:1];
-    v38 = [v11 properties];
-    v39 = [v38 clientInfo];
-    [(AMSBiometricsTokenUpdateTask *)v32 setClientInfo:v39];
+    properties5 = [infoCopy properties];
+    clientInfo = [properties5 clientInfo];
+    [(AMSBiometricsTokenUpdateTask *)v32 setClientInfo:clientInfo];
 
     v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v40 = [v11 properties];
-    v41 = [v40 purchaseInfo];
-    v42 = [v41 buyParams];
-    v43 = [v42 parameterForKey:@"mtTopic"];
+    properties6 = [infoCopy properties];
+    purchaseInfo = [properties6 purchaseInfo];
+    buyParams = [purchaseInfo buyParams];
+    v43 = [buyParams parameterForKey:@"mtTopic"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -892,10 +892,10 @@ LABEL_23:
       {
         v45 = v49;
         [v49 setObject:v44 forKeyedSubscript:@"topic"];
-        v10 = v51;
+        sessionCopy = v51;
 LABEL_21:
         [(AMSBiometricsTokenUpdateTask *)v32 setAdditionalDialogMetrics:v45];
-        v31 = [(AMSBiometricsTokenUpdateTask *)v32 performUpdate];
+        performUpdate = [(AMSBiometricsTokenUpdateTask *)v32 performUpdate];
 
         goto LABEL_22;
       }
@@ -908,22 +908,22 @@ LABEL_21:
     }
 
     v45 = v49;
-    v10 = v51;
+    sessionCopy = v51;
     goto LABEL_21;
   }
 
 LABEL_24:
-  v46 = [(AMSBiometricsTokenUpdateTask *)v14 promiseAdapter];
+  promiseAdapter = [(AMSBiometricsTokenUpdateTask *)v14 promiseAdapter];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __65__AMSBiometrics_handleResponse_financeResponse_session_taskInfo___block_invoke;
   v53[3] = &unk_1E73B5100;
-  v54 = v9;
+  v54 = responseCopy;
   v55 = v19;
-  v56 = v11;
-  v57 = a1;
+  v56 = infoCopy;
+  selfCopy2 = self;
   v47 = v19;
-  v15 = [v46 continueWithBlock:v53];
+  v15 = [promiseAdapter continueWithBlock:v53];
 
 LABEL_25:
 
@@ -1163,17 +1163,17 @@ id __65__AMSBiometrics_handleResponse_financeResponse_session_taskInfo___block_i
   return v36;
 }
 
-+ (id)headersWithAccount:(id)a3 options:(id)a4 signatureResult:(id)a5
++ (id)headersWithAccount:(id)account options:(id)options signatureResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  resultCopy = result;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v10 || ![v9 purpose] || objc_msgSend(v9, "purpose") == 1)
+  if (resultCopy || ![optionsCopy purpose] || objc_msgSend(optionsCopy, "purpose") == 1)
   {
     if (!AMSIsEntitledForDirectKeychainAccess())
     {
-      v13 = [AMSKeychain publicKeyHeaderWithAccount:v8 options:v9 signatureResult:v10];
+      v13 = [AMSKeychain publicKeyHeaderWithAccount:accountCopy options:optionsCopy signatureResult:resultCopy];
       if (v13)
       {
         [v11 addEntriesFromDictionary:v13];
@@ -1182,9 +1182,9 @@ id __65__AMSBiometrics_handleResponse_financeResponse_session_taskInfo___block_i
       goto LABEL_14;
     }
 
-    if ([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:v8])
+    if ([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:accountCopy])
     {
-      v12 = +[AMSCertificateManager publicKeyForAccount:forSignaturePurpose:](AMSCertificateManager, "publicKeyForAccount:forSignaturePurpose:", v8, [v9 purpose]);
+      v12 = +[AMSCertificateManager publicKeyForAccount:forSignaturePurpose:](AMSCertificateManager, "publicKeyForAccount:forSignaturePurpose:", accountCopy, [optionsCopy purpose]);
       if (!v12)
       {
         goto LABEL_14;
@@ -1194,7 +1194,7 @@ id __65__AMSBiometrics_handleResponse_financeResponse_session_taskInfo___block_i
     else
     {
       v23 = 0;
-      v12 = [AMSKeychain copyPublicKeyForAccount:v8 options:v9 error:&v23];
+      v12 = [AMSKeychain copyPublicKeyForAccount:accountCopy options:optionsCopy error:&v23];
 
       if (!v12)
       {
@@ -1215,26 +1215,26 @@ LABEL_14:
   }
 
 LABEL_15:
-  v17 = [a1 _stateHeaderValueForAccount:v8];
+  v17 = [self _stateHeaderValueForAccount:accountCopy];
   if (v17)
   {
     [v11 setObject:v17 forKeyedSubscript:@"X-Apple-TID-State"];
   }
 
-  v18 = [v10 originalRequest];
-  v19 = [v18 challenge];
+  originalRequest = [resultCopy originalRequest];
+  challenge = [originalRequest challenge];
 
-  if (v19)
+  if (challenge)
   {
-    [v11 setObject:v19 forKeyedSubscript:@"X-Apple-TID-Challenge"];
+    [v11 setObject:challenge forKeyedSubscript:@"X-Apple-TID-Challenge"];
   }
 
-  if (v10)
+  if (resultCopy)
   {
-    v20 = [v10 signature];
-    if (v20)
+    signature = [resultCopy signature];
+    if (signature)
     {
-      [v11 setObject:v20 forKeyedSubscript:@"X-Apple-TID-Signature"];
+      [v11 setObject:signature forKeyedSubscript:@"X-Apple-TID-Signature"];
       [v11 setObject:@"1" forKeyedSubscript:@"X-Apple-TID-SignatureVersion"];
     }
   }
@@ -1242,15 +1242,15 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)isAvailableForAccount:(id)a3
++ (BOOL)isAvailableForAccount:(id)account
 {
-  if ([AMSBiometrics stateForAccount:a3]!= 1)
+  if ([AMSBiometrics stateForAccount:account]!= 1)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v3 isPasscodeSet])
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] isPasscodeSet])
   {
     v4 = +[AMSBiometrics identityMap];
     v5 = [v4 count] != 0;
@@ -1264,20 +1264,20 @@ LABEL_15:
   return v5;
 }
 
-+ (id)minimumACLVersionForAction:(int64_t)a3
++ (id)minimumACLVersionForAction:(int64_t)action
 {
   v22 = *MEMORY[0x1E69E9840];
   result = @"1";
-  if (a3 <= 4)
+  if (action <= 4)
   {
-    if ((a3 - 1) < 2)
+    if ((action - 1) < 2)
     {
       return @"1.5";
     }
 
-    if ((a3 - 3) >= 2)
+    if ((action - 3) >= 2)
     {
-      if (!a3)
+      if (!action)
       {
         return result;
       }
@@ -1288,19 +1288,19 @@ LABEL_15:
     return @"3";
   }
 
-  if (a3 > 99)
+  if (action > 99)
   {
-    if (a3 == 100)
+    if (action == 100)
     {
       return result;
     }
 
-    if (a3 == 101)
+    if (action == 101)
     {
       return @"2";
     }
 
-    if (a3 != 102)
+    if (action != 102)
     {
       goto LABEL_23;
     }
@@ -1308,7 +1308,7 @@ LABEL_15:
     return @"3";
   }
 
-  switch(a3)
+  switch(action)
   {
     case 5:
       v5 = +[AMSLogConfig sharedConfig];
@@ -1317,8 +1317,8 @@ LABEL_15:
         v5 = +[AMSLogConfig sharedConfig];
       }
 
-      v6 = [v5 OSLogObject];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v5 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = v7;
@@ -1327,7 +1327,7 @@ LABEL_15:
         v17 = v7;
         v18 = 2114;
         v19 = v9;
-        _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Passcode ACLs not supported on platform", &v16, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Passcode ACLs not supported on platform", &v16, 0x16u);
       }
 
       return 0;
@@ -1344,32 +1344,32 @@ LABEL_23:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v12 = objc_opt_class();
     v13 = v12;
     v14 = AMSSetLogKeyIfNeeded();
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:action];
     v16 = 138543874;
     v17 = v12;
     v18 = 2114;
     v19 = v14;
     v20 = 2114;
     v21 = v15;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine ACL version for LocalAuth action type: %{public}@", &v16, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine ACL version for LocalAuth action type: %{public}@", &v16, 0x20u);
   }
 
   return 0;
 }
 
-+ (id)resumptionHeadersFromRequest:(id)a3
++ (id)resumptionHeadersFromRequest:(id)request
 {
   v33[7] = *MEMORY[0x1E69E9840];
-  v3 = [a3 allHTTPHeaderFields];
+  allHTTPHeaderFields = [request allHTTPHeaderFields];
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
   v32[0] = @"X-Apple-TID-Pkey";
-  v5 = [v3 objectForKeyedSubscript:?];
+  v5 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v6 = v5;
   if (v5)
   {
@@ -1383,7 +1383,7 @@ LABEL_23:
 
   v33[0] = v7;
   v32[1] = @"X-Apple-TID-Challenge";
-  v8 = [v3 objectForKeyedSubscript:?];
+  v8 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v9 = v8;
   if (v8)
   {
@@ -1397,7 +1397,7 @@ LABEL_23:
 
   v33[1] = v10;
   v32[2] = @"X-Apple-TID-Signature";
-  v11 = [v3 objectForKeyedSubscript:?];
+  v11 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v12 = v11;
   if (v11)
   {
@@ -1411,7 +1411,7 @@ LABEL_23:
 
   v33[2] = v13;
   v32[3] = @"X-Apple-TID-State";
-  v14 = [v3 objectForKeyedSubscript:?];
+  v14 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v15 = v14;
   if (v14)
   {
@@ -1425,7 +1425,7 @@ LABEL_23:
 
   v33[3] = v16;
   v32[4] = @"X-Apple-TID-SignatureVersion";
-  v17 = [v3 objectForKeyedSubscript:?];
+  v17 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v18 = v17;
   if (v17)
   {
@@ -1439,7 +1439,7 @@ LABEL_23:
 
   v33[4] = v19;
   v32[5] = @"X-Apple-AMD";
-  v20 = [v3 objectForKeyedSubscript:?];
+  v20 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v21 = v20;
   if (v20)
   {
@@ -1453,7 +1453,7 @@ LABEL_23:
 
   v33[5] = v22;
   v32[6] = @"X-Apple-AMD-M";
-  v23 = [v3 objectForKeyedSubscript:?];
+  v23 = [allHTTPHeaderFields objectForKeyedSubscript:?];
   v24 = v23;
   if (v23)
   {
@@ -1469,11 +1469,11 @@ LABEL_23:
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:7];
   v27 = [v4 initWithDictionary:v26];
 
-  v28 = [v3 objectForKeyedSubscript:@"X-Apple-TID-Pkey"];
+  v28 = [allHTTPHeaderFields objectForKeyedSubscript:@"X-Apple-TID-Pkey"];
 
   if (v28)
   {
-    v29 = [v3 objectForKeyedSubscript:@"X-Apple-TID-Signature"];
+    v29 = [allHTTPHeaderFields objectForKeyedSubscript:@"X-Apple-TID-Signature"];
 
     if (v29)
     {
@@ -1538,14 +1538,14 @@ LABEL_23:
 
           else
           {
-            v17 = [*(v11 + 3552) sharedConfig];
-            if (!v17)
+            sharedConfig = [*(v11 + 3552) sharedConfig];
+            if (!sharedConfig)
             {
-              v17 = [*(v11 + 3552) sharedConfig];
+              sharedConfig = [*(v11 + 3552) sharedConfig];
             }
 
-            v18 = [v17 OSLogObject];
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            oSLogObject = [sharedConfig OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
             {
               v19 = v11;
               v20 = v9;
@@ -1562,7 +1562,7 @@ LABEL_23:
               v36 = v23;
               v37 = 2114;
               v38 = v16;
-              _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive identity. Error = %{public}@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive identity. Error = %{public}@", buf, 0x20u);
 
               v5 = v25;
               v10 = 0x1E696A000;
@@ -1590,19 +1590,19 @@ LABEL_23:
   [AMSDefaults setDeviceBiometricIdentities:v4];
 }
 
-+ (id)setState:(int64_t)a3 forAccount:(id)a4
++ (id)setState:(int64_t)state forAccount:(id)account
 {
-  v5 = a4;
-  [v5 ams_setBiometricsState:a3];
-  v6 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v7 = [v6 ams_saveAccount:v5];
+  accountCopy = account;
+  [accountCopy ams_setBiometricsState:state];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v7 = [ams_sharedAccountStore ams_saveAccount:accountCopy];
 
   return v7;
 }
 
-+ (id)signChallenge:(id)a3 withAccount:(id)a4 clientInfo:(id)a5 options:(id)a6
++ (id)signChallenge:(id)challenge withAccount:(id)account clientInfo:(id)info options:(id)options
 {
-  v6 = [a1 signAndReturnChallenge:a3 withAccount:a4 clientInfo:a5 options:a6];
+  v6 = [self signAndReturnChallenge:challenge withAccount:account clientInfo:info options:options];
   v7 = [v6 thenWithBlock:&__block_literal_global_21];
 
   return v7;
@@ -1616,40 +1616,40 @@ id __62__AMSBiometrics_signChallenge_withAccount_clientInfo_options___block_invo
   return v3;
 }
 
-+ (id)signAndReturnChallenge:(id)a3 withAccount:(id)a4 clientInfo:(id)a5 options:(id)a6
++ (id)signAndReturnChallenge:(id)challenge withAccount:(id)account clientInfo:(id)info options:(id)options
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  optionsCopy = options;
+  infoCopy = info;
+  accountCopy = account;
+  challengeCopy = challenge;
   v18 = 0;
-  v13 = [[AMSBiometricsSignatureRequest alloc] initWithAccount:v11 clientInfo:v10 challenge:v12 localAuthContext:0 options:v9 error:&v18];
+  v13 = [[AMSBiometricsSignatureRequest alloc] initWithAccount:accountCopy clientInfo:infoCopy challenge:challengeCopy localAuthContext:0 options:optionsCopy error:&v18];
 
   v14 = v18;
   if (v13)
   {
     v15 = [[AMSBiometricsSignatureTask alloc] initWithRequest:v13];
-    v16 = [(AMSBiometricsSignatureTask *)v15 performSignature];
+    performSignature = [(AMSBiometricsSignatureTask *)v15 performSignature];
   }
 
   else
   {
-    v16 = [AMSPromise promiseWithError:v14];
+    performSignature = [AMSPromise promiseWithError:v14];
   }
 
-  return v16;
+  return performSignature;
 }
 
-+ (BOOL)_deleteKeysWithOptions:(id)a3 error:(id *)a4
++ (BOOL)_deleteKeysWithOptions:(id)options error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 style];
-  if (v6 > 5)
+  optionsCopy = options;
+  style = [optionsCopy style];
+  if (style > 5)
   {
     v10 = 0;
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1657,18 +1657,18 @@ id __62__AMSBiometrics_signChallenge_withAccount_clientInfo_options___block_invo
     goto LABEL_12;
   }
 
-  if (((1 << v6) & 0x39) != 0)
+  if (((1 << style) & 0x39) != 0)
   {
     v18 = 0;
     v7 = &v18;
-    v8 = [AMSKeychain deleteCertificateChainWithOptions:v5 error:&v18];
+    v8 = [AMSKeychain deleteCertificateChainWithOptions:optionsCopy error:&v18];
   }
 
   else
   {
     v17 = 0;
     v7 = &v17;
-    v8 = [AMSKeychain deleteKeyPairWithOptions:v5 error:&v17];
+    v8 = [AMSKeychain deleteKeyPairWithOptions:optionsCopy error:&v17];
   }
 
   v9 = v8;
@@ -1681,8 +1681,8 @@ id __62__AMSBiometrics_signChallenge_withAccount_clientInfo_options___block_invo
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSSetLogKeyIfNeeded();
@@ -1692,15 +1692,15 @@ id __62__AMSBiometrics_signChallenge_withAccount_clientInfo_options___block_invo
       v22 = v14;
       v23 = 2114;
       v24 = v10;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting keys: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error deleting keys: %{public}@", buf, 0x20u);
     }
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_12:
     v15 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_13:
@@ -1708,11 +1708,11 @@ LABEL_13:
   return v9;
 }
 
-+ (id)_stateHeaderValueForAccount:(id)a3
++ (id)_stateHeaderValueForAccount:(id)account
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([a1 _shouldAddBiometricHeader] & 1) == 0)
+  accountCopy = account;
+  if (([self _shouldAddBiometricHeader] & 1) == 0)
   {
     v15 = +[AMSLogConfig sharedBiometricsConfig];
     if (!v15)
@@ -1720,14 +1720,14 @@ LABEL_13:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = v17;
       v19 = AMSSetLogKeyIfNeeded();
-      v20 = AMSHashIfNeeded(v4);
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "type")}];
+      v20 = AMSHashIfNeeded(accountCopy);
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "type")}];
       *buf = 138544130;
       v25 = v17;
       v26 = 2114;
@@ -1736,7 +1736,7 @@ LABEL_13:
       v29 = v20;
       v30 = 2114;
       v31 = v21;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometrics state header for account: %{public}@, biometricsType: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometrics state header for account: %{public}@, biometricsType: %{public}@", buf, 0x2Au);
     }
 
 LABEL_16:
@@ -1744,23 +1744,23 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v5 = [AMSBiometrics stateForAccount:v4];
-  v6 = [a1 type];
+  v5 = [AMSBiometrics stateForAccount:accountCopy];
+  type = [self type];
   v7 = +[AMSLogConfig sharedBiometricsConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v23 = v9;
     v10 = AMSSetLogKeyIfNeeded();
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-    v13 = AMSHashIfNeeded(v4);
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    v13 = AMSHashIfNeeded(accountCopy);
     *buf = 138544386;
     v25 = v9;
     v26 = 2114;
@@ -1771,10 +1771,10 @@ LABEL_16:
     v31 = v12;
     v32 = 2114;
     v33 = v13;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing biometrics state header, account biometricsState %{public}@, biometricsType: %{public}@, account: %{public}@", buf, 0x34u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing biometrics state header, account biometricsState %{public}@, biometricsType: %{public}@, account: %{public}@", buf, 0x34u);
   }
 
-  if ((v6 - 2) > 5)
+  if ((type - 2) > 5)
   {
     goto LABEL_16;
   }
@@ -1796,7 +1796,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v14 = off_1E73B51D0[v6 - 2];
+  v14 = off_1E73B51D0[type - 2];
 LABEL_17:
 
   return v14;
@@ -1807,22 +1807,22 @@ LABEL_17:
   v2 = +[AMSBiometrics identityMap];
   if ([v2 count])
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v4 = [v3 isPasscodeSet];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    isPasscodeSet = [mEMORY[0x1E69ADFB8] isPasscodeSet];
   }
 
   else
   {
-    v4 = 0;
+    isPasscodeSet = 0;
   }
 
-  return v4;
+  return isPasscodeSet;
 }
 
-+ (id)isActionSupportedForType:(int64_t)a3 account:(id)a4 options:(id)a5
++ (id)isActionSupportedForType:(int64_t)type account:(id)account options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  optionsCopy = options;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1834,10 +1834,10 @@ LABEL_17:
   v14[1] = 3221225472;
   v14[2] = __58__AMSBiometrics_isActionSupportedForType_account_options___block_invoke;
   v14[3] = &unk_1E73B5170;
-  v18 = a3;
-  v10 = v7;
+  typeCopy = type;
+  v10 = accountCopy;
   v15 = v10;
-  v11 = v8;
+  v11 = optionsCopy;
   v16 = v11;
   v17 = &v19;
   v12 = [v9 thenWithBlock:v14];
@@ -1886,17 +1886,17 @@ void __58__AMSBiometrics_isActionSupportedForType_account_options___block_invoke
   *(v6 + 40) = 0;
 }
 
-+ (BOOL)isActionSupportedForType:(int64_t)a3 account:(id)a4 options:(id)a5 error:(id *)a6
++ (BOOL)isActionSupportedForType:(int64_t)type account:(id)account options:(id)options error:(id *)error
 {
-  v6 = [a1 isActionSupportedForType:a3 account:a4 options:{a5, a6}];
+  v6 = [self isActionSupportedForType:type account:account options:{options, error}];
   v10 = 0;
   v7 = [v6 resultWithError:&v10];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)proxyDeleteAllKeysWithError:(id *)a3
++ (BOOL)proxyDeleteAllKeysWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -1914,10 +1914,10 @@ void __58__AMSBiometrics_isActionSupportedForType_account_options___block_invoke
   v9 = 0;
   v5 = [v4 resultWithError:&v9];
   v6 = v9;
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   _Block_object_dispose(&v11, 8);
-  return v7;
+  return bOOLValue;
 }
 
 AMSMutablePromise *__45__AMSBiometrics_proxyDeleteAllKeysWithError___block_invoke(uint64_t a1, void *a2)

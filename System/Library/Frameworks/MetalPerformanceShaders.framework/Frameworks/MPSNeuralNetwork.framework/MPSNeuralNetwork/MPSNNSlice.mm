@@ -1,7 +1,7 @@
 @interface MPSNNSlice
 - (MPSNNSlice)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNSlice)initWithDevice:(id)device;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNSlice
@@ -52,12 +52,12 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSNNSlice;
-  [(MPSCNNKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNKernel *)&v3 encodeWithCoder:coder];
 }
 
 @end

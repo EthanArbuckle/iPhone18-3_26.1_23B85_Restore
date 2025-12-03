@@ -8,7 +8,7 @@
 
 + (MPSCNNDilatedPoolingMaxNode)nodeWithSource:(MPSNNImageNode *)sourceNode filterSize:(NSUInteger)size
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithSource_filterSize_(v6, v7, sourceNode, size, v8, v9, v10, v11);
 
   return v12;
@@ -16,7 +16,7 @@
 
 + (MPSCNNDilatedPoolingMaxNode)nodeWithSource:(MPSNNImageNode *)sourceNode filterSize:(NSUInteger)size stride:(NSUInteger)stride dilationRate:(NSUInteger)dilationRate
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSource_filterSize_stride_dilationRate_(v10, v11, sourceNode, size, stride, dilationRate, v12, v13);
 
   return v14;

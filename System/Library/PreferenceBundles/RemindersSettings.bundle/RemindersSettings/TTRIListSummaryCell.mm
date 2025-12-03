@@ -1,41 +1,41 @@
 @interface TTRIListSummaryCell
-+ (id)specifierWithViewModel:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 scope:(unint64_t)a9;
-- (TTRIListSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (id)specifierWithViewModel:(id)model target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope;
+- (TTRIListSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation TTRIListSummaryCell
 
-+ (id)specifierWithViewModel:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 scope:(unint64_t)a9
++ (id)specifierWithViewModel:(id)model target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = a7;
-  v17 = a4;
-  v18 = [v14 name];
-  v19 = [REMSettingsUtilities standardPreferenceSpecifierNamed:v18 target:v17 cell:a5 detail:a6 keyName:v16 defaultValue:v15 scope:a9];
+  modelCopy = model;
+  valueCopy = value;
+  nameCopy = name;
+  targetCopy = target;
+  name = [modelCopy name];
+  v19 = [REMSettingsUtilities standardPreferenceSpecifierNamed:name target:targetCopy cell:cell detail:detail keyName:nameCopy defaultValue:valueCopy scope:scope];
 
   [v19 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
-  v20 = [v14 subtitle];
-  if ([v20 length])
+  subtitle = [modelCopy subtitle];
+  if ([subtitle length])
   {
-    v21 = [v14 subtitle];
-    [v19 setObject:v21 forKeyedSubscript:@"TTRIListSummarySubtitle"];
+    subtitle2 = [modelCopy subtitle];
+    [v19 setObject:subtitle2 forKeyedSubscript:@"TTRIListSummarySubtitle"];
   }
 
   return v19;
 }
 
-- (TTRIListSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TTRIListSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = TTRIListSummaryCell;
-  v9 = [(TTRIListSummaryCell *)&v13 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(TTRIListSummaryCell *)&v13 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"TTRIListSummarySubtitle"];
-    v11 = [(TTRIListSummaryCell *)v9 detailTextLabel];
-    [v11 setText:v10];
+    v10 = [specifierCopy objectForKeyedSubscript:@"TTRIListSummarySubtitle"];
+    detailTextLabel = [(TTRIListSummaryCell *)v9 detailTextLabel];
+    [detailTextLabel setText:v10];
   }
 
   return v9;

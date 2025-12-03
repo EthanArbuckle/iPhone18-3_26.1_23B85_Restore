@@ -1,72 +1,72 @@
 @interface HMSymptomsHandler
 + (id)logCategory;
-+ (id)symptomsHandlerUUIDFromAccessoryUUID:(id)a3;
-- (HMSymptomsHandler)initWithAccessory:(id)a3;
-- (HMSymptomsHandler)initWithUUID:(id)a3 context:(id)a4 logIdentifier:(id)a5;
++ (id)symptomsHandlerUUIDFromAccessoryUUID:(id)d;
+- (HMSymptomsHandler)initWithAccessory:(id)accessory;
+- (HMSymptomsHandler)initWithUUID:(id)d context:(id)context logIdentifier:(id)identifier;
 - (HMSymptomsHandlerDelegate)delegate;
 - (NSSet)symptoms;
 - (NSUUID)sfDeviceIdentifier;
-- (id)_findAndRemoveFixSessionsForSymptom:(id)a3;
-- (id)newFixSessionForSymptom:(id)a3;
-- (void)_addFixSession:(id)a3;
+- (id)_findAndRemoveFixSessionsForSymptom:(id)symptom;
+- (id)newFixSessionForSymptom:(id)symptom;
+- (void)_addFixSession:(id)session;
 - (void)_callFixSessionAvailabilityUpdatedDelegate;
-- (void)_callSymptomsUpdatedDelegate:(id)a3;
-- (void)_handleSymptomStateUpdatedMessage:(id)a3;
+- (void)_callSymptomsUpdatedDelegate:(id)delegate;
+- (void)_handleSymptomStateUpdatedMessage:(id)message;
 - (void)_subscribe;
 - (void)_unsubscribe;
 - (void)configure;
 - (void)dealloc;
-- (void)initiateFixWithCompletionHandler:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSFDeviceIdentifier:(id)a3;
-- (void)setSymptoms:(id)a3;
+- (void)initiateFixWithCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setSFDeviceIdentifier:(id)identifier;
+- (void)setSymptoms:(id)symptoms;
 @end
 
 @implementation HMSymptomsHandler
 
-- (void)_handleSymptomStateUpdatedMessage:(id)a3
+- (void)_handleSymptomStateUpdatedMessage:(id)message
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v58[0] = objc_opt_class();
   v58[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-  v6 = [v4 unarchivedObjectForKey:@"HMSM.symptoms" ofClasses:v5];
+  v6 = [messageCopy unarchivedObjectForKey:@"HMSM.symptoms" ofClasses:v5];
 
-  v7 = [(HMSymptomsHandler *)self symptoms];
-  v8 = [v7 isEqualToSet:v6];
+  symptoms = [(HMSymptomsHandler *)self symptoms];
+  v8 = [symptoms isEqualToSet:v6];
 
   if ((v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v38 = self;
-    v10 = self;
+    selfCopy = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 shortDescription];
-      v14 = [(HMSymptomsHandler *)v10 symptoms];
+      shortDescription = [messageCopy shortDescription];
+      symptoms2 = [(HMSymptomsHandler *)selfCopy2 symptoms];
       *buf = 138544130;
       v51 = v12;
       v52 = 2112;
-      v53 = v13;
+      v53 = shortDescription;
       v54 = 2112;
-      v55 = v14;
+      v55 = symptoms2;
       v56 = 2112;
       v57 = v6;
       _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@Received %@ message so updating symptoms from %@ to %@", buf, 0x2Au);
     }
 
-    v39 = v4;
+    v39 = messageCopy;
 
     objc_autoreleasePoolPop(v9);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v15 = [(HMSymptomsHandler *)v10 symptoms];
-    v16 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
+    symptoms3 = [(HMSymptomsHandler *)selfCopy2 symptoms];
+    v16 = [symptoms3 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v16)
     {
       v17 = v16;
@@ -77,13 +77,13 @@
         {
           if (*v45 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(symptoms3);
           }
 
           v20 = *(*(&v44 + 1) + 8 * i);
-          if (([v6 containsObject:{v20, v38}] & 1) == 0)
+          if (([v6 containsObject:{v20, selfCopy}] & 1) == 0)
           {
-            v21 = [(HMSymptomsHandler *)v10 _findAndRemoveFixSessionsForSymptom:v20];
+            v21 = [(HMSymptomsHandler *)selfCopy2 _findAndRemoveFixSessionsForSymptom:v20];
             v40 = 0u;
             v41 = 0u;
             v42 = 0u;
@@ -113,71 +113,71 @@
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
+        v17 = [symptoms3 countByEnumeratingWithState:&v44 objects:v49 count:16];
       }
 
       while (v17);
     }
 
-    v26 = [(HMSymptomsHandler *)v10 currentSymptoms];
-    v27 = [v6 allObjects];
-    [v26 setArray:v27];
+    currentSymptoms = [(HMSymptomsHandler *)selfCopy2 currentSymptoms];
+    allObjects = [v6 allObjects];
+    [currentSymptoms setArray:allObjects];
 
-    [(HMSymptomsHandler *)v10 _callSymptomsUpdatedDelegate:v6];
-    self = v38;
-    v4 = v39;
+    [(HMSymptomsHandler *)selfCopy2 _callSymptomsUpdatedDelegate:v6];
+    self = selfCopy;
+    messageCopy = v39;
   }
 
-  v28 = [v4 uuidForKey:{@"HMSM.sfDeviceIdentifier", v38}];
-  v29 = [(HMSymptomsHandler *)self sfDeviceIdentifier];
+  v28 = [messageCopy uuidForKey:{@"HMSM.sfDeviceIdentifier", selfCopy}];
+  sfDeviceIdentifier = [(HMSymptomsHandler *)self sfDeviceIdentifier];
   v30 = HMFEqualObjects();
 
   if ((v30 & 1) == 0)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy3 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       v34 = HMFGetLogIdentifier();
-      v35 = [v4 shortDescription];
-      v36 = [(HMSymptomsHandler *)v32 sfDeviceIdentifier];
+      shortDescription2 = [messageCopy shortDescription];
+      sfDeviceIdentifier2 = [(HMSymptomsHandler *)selfCopy3 sfDeviceIdentifier];
       *buf = 138544130;
       v51 = v34;
       v52 = 2112;
-      v53 = v35;
+      v53 = shortDescription2;
       v54 = 2112;
-      v55 = v36;
+      v55 = sfDeviceIdentifier2;
       v56 = 2112;
       v57 = v28;
       _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_INFO, "%{public}@Received %@ message so updating SFDevice identifier from %@ to %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v31);
-    [(HMSymptomsHandler *)v32 setSFDeviceIdentifier:v28];
-    [(HMSymptomsHandler *)v32 _callFixSessionAvailabilityUpdatedDelegate];
+    [(HMSymptomsHandler *)selfCopy3 setSFDeviceIdentifier:v28];
+    [(HMSymptomsHandler *)selfCopy3 _callFixSessionAvailabilityUpdatedDelegate];
   }
 
-  [v4 respondWithSuccess];
+  [messageCopy respondWithSuccess];
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_callFixSessionAvailabilityUpdatedDelegate
 {
-  v3 = [(HMSymptomsHandler *)self delegate];
+  delegate = [(HMSymptomsHandler *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HMSymptomsHandler *)self context];
-    v6 = [v5 delegateCaller];
+    context = [(HMSymptomsHandler *)self context];
+    delegateCaller = [context delegateCaller];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __63__HMSymptomsHandler__callFixSessionAvailabilityUpdatedDelegate__block_invoke;
     v7[3] = &unk_1E754E2A8;
     v7[4] = self;
-    [v6 invokeBlock:v7];
+    [delegateCaller invokeBlock:v7];
   }
 }
 
@@ -187,17 +187,17 @@ void __63__HMSymptomsHandler__callFixSessionAvailabilityUpdatedDelegate__block_i
   [v2 fixSessionAvailabilityDidUpdateForSymptomsHandler:*(a1 + 32)];
 }
 
-- (void)_callSymptomsUpdatedDelegate:(id)a3
+- (void)_callSymptomsUpdatedDelegate:(id)delegate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSymptomsHandler *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(HMSymptomsHandler *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -205,20 +205,20 @@ void __63__HMSymptomsHandler__callFixSessionAvailabilityUpdatedDelegate__block_i
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = delegateCopy;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Notifying client of updated symptoms %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [(HMSymptomsHandler *)v8 context];
-    v12 = [v11 delegateCaller];
+    context = [(HMSymptomsHandler *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke;
     v14[3] = &unk_1E754E5C0;
-    v14[4] = v8;
-    v15 = v4;
-    [v12 invokeBlock:v14];
+    v14[4] = selfCopy;
+    v15 = delegateCopy;
+    [delegateCaller invokeBlock:v14];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -230,18 +230,18 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
   [v2 symptomsHandler:*(a1 + 32) didUpdateSymptoms:*(a1 + 40)];
 }
 
-- (id)_findAndRemoveFixSessionsForSymptom:(id)a3
+- (id)_findAndRemoveFixSessionsForSymptom:(id)symptom
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  symptomCopy = symptom;
   os_unfair_lock_lock_with_options();
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(HMSymptomsHandler *)self fixSessions];
-  v7 = [v6 copy];
+  fixSessions = [(HMSymptomsHandler *)self fixSessions];
+  v7 = [fixSessions copy];
 
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
@@ -257,14 +257,14 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 symptom];
-        v13 = [v12 isEqual:v4];
+        symptom = [v11 symptom];
+        v13 = [symptom isEqual:symptomCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
-          v14 = [(HMSymptomsHandler *)self fixSessions];
-          [v14 removeObject:v11];
+          [array addObject:v11];
+          fixSessions2 = [(HMSymptomsHandler *)self fixSessions];
+          [fixSessions2 removeObject:v11];
         }
       }
 
@@ -274,7 +274,7 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
     while (v8);
   }
 
-  v15 = [v5 copy];
+  v15 = [array copy];
   os_unfair_lock_unlock(&self->_lock);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -282,51 +282,51 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
   return v15;
 }
 
-- (void)_addFixSession:(id)a3
+- (void)_addFixSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMSymptomsHandler *)self fixSessions];
-  [v4 addObject:v5];
+  fixSessions = [(HMSymptomsHandler *)self fixSessions];
+  [fixSessions addObject:sessionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSymptoms:(id)a3
+- (void)setSymptoms:(id)symptoms
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  symptomsCopy = symptoms;
   v5 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v6 = [(HMSymptomsHandler *)self uuid];
-  v7 = [v5 initWithTarget:v6];
+  uuid = [(HMSymptomsHandler *)self uuid];
+  v7 = [v5 initWithTarget:uuid];
 
   v8 = MEMORY[0x1E69A2A10];
   v26 = @"HMSM.symptoms";
-  v9 = encodeRootObject(v4);
+  v9 = encodeRootObject(symptomsCopy);
   v27[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   v11 = [v8 messageWithName:@"HMSM.setSymptoms" destination:v7 payload:v10];
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 shortDescription];
+    shortDescription = [v11 shortDescription];
     v20 = 138543874;
     v21 = v15;
     v22 = 2112;
-    v23 = v4;
+    v23 = symptomsCopy;
     v24 = 2112;
-    v25 = v16;
+    v25 = shortDescription;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Setting symptoms from symptomValues=%@ with message: %@", &v20, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17 = [(HMSymptomsHandler *)v13 context];
-  v18 = [v17 messageDispatcher];
-  [v18 sendMessage:v11];
+  context = [(HMSymptomsHandler *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v11];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -335,28 +335,28 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMSymptomsHandler *)self uuid];
-  v5 = [v3 initWithTarget:v4];
+  uuid = [(HMSymptomsHandler *)self uuid];
+  v5 = [v3 initWithTarget:uuid];
 
   v6 = [MEMORY[0x1E69A2A10] messageWithName:@"HMSM.unsubscribe" destination:v5 payload:0];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 shortDescription];
+    shortDescription = [v6 shortDescription];
     v15 = 138543618;
     v16 = v10;
     v17 = 2112;
-    v18 = v11;
+    v18 = shortDescription;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Unsubscribing from symptoms changes with message: %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMSymptomsHandler *)v8 context];
-  v13 = [v12 messageDispatcher];
-  [v13 sendMessage:v6];
+  context = [(HMSymptomsHandler *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v6];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -365,49 +365,49 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMSymptomsHandler *)self uuid];
-  v5 = [v3 initWithTarget:v4];
+  uuid = [(HMSymptomsHandler *)self uuid];
+  v5 = [v3 initWithTarget:uuid];
 
   v6 = [MEMORY[0x1E69A2A10] messageWithName:@"HMSM.subscribe" destination:v5 payload:0];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 shortDescription];
+    shortDescription = [v6 shortDescription];
     v15 = 138543618;
     v16 = v10;
     v17 = 2112;
-    v18 = v11;
+    v18 = shortDescription;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Subscribing to symptoms changes with message: %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMSymptomsHandler *)v8 context];
-  v13 = [v12 messageDispatcher];
-  [v13 sendMessage:v6];
+  context = [(HMSymptomsHandler *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v6];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
 - (void)configure
 {
-  v4 = [(HMSymptomsHandler *)self context];
-  v3 = [v4 messageDispatcher];
-  [v3 registerForMessage:@"HMSM.symptomStateUpdated" receiver:self selector:sel__handleSymptomStateUpdatedMessage_];
+  context = [(HMSymptomsHandler *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMSM.symptomStateUpdated" receiver:self selector:sel__handleSymptomStateUpdatedMessage_];
 }
 
-- (void)initiateFixWithCompletionHandler:(id)a3
+- (void)initiateFixWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSymptomsHandler *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(HMSymptomsHandler *)self context];
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSymptomsHandler initiateFixWithCompletionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -424,24 +424,24 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
     objc_exception_throw(v19);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__HMSymptomsHandler_initiateFixWithCompletionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v22 = v4;
+    v22 = handlerCopy;
     v21 = v6;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -455,7 +455,7 @@ void __50__HMSymptomsHandler__callSymptomsUpdatedDelegate___block_invoke(uint64_
 
     objc_autoreleasePoolPop(v8);
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -490,12 +490,12 @@ uint64_t __54__HMSymptomsHandler_initiateFixWithCompletionHandler___block_invoke
   return result;
 }
 
-- (id)newFixSessionForSymptom:(id)a3
+- (id)newFixSessionForSymptom:(id)symptom
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  symptomCopy = symptom;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -503,29 +503,29 @@ uint64_t __54__HMSymptomsHandler_initiateFixWithCompletionHandler___block_invoke
     v31 = 138543618;
     v32 = v8;
     v33 = 2112;
-    v34 = v4;
+    v34 = symptomCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Asked to create a new fix session for symptom %@", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMSymptomsHandler *)v6 symptoms];
-  v10 = [v9 containsObject:v4];
+  symptoms = [(HMSymptomsHandler *)selfCopy symptoms];
+  v10 = [symptoms containsObject:symptomCopy];
 
   if (!v10)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [(HMSymptomsHandler *)v14 symptoms];
+      symptoms2 = [(HMSymptomsHandler *)v14 symptoms];
       v31 = 138543874;
       v32 = v24;
       v33 = 2112;
-      v34 = v4;
+      v34 = symptomCopy;
       v35 = 2112;
-      v36 = v25;
+      v36 = symptoms2;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Not creating fix session for symptom %@ because it isn't one of this symptoms handler's current symptoms: %@", &v31, 0x20u);
 
 LABEL_30:
@@ -535,14 +535,14 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v11 = [v4 type];
-  if (v11 > 0x15)
+  type = [symptomCopy type];
+  if (type > 0x15)
   {
 LABEL_21:
-    if (v11 - 100 <= 0xF && ((1 << (v11 - 100)) & 0xFC0F) != 0)
+    if (type - 100 <= 0xF && ((1 << (type - 100)) & 0xFC0F) != 0)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v6;
+      v14 = selfCopy;
       v16 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -553,7 +553,7 @@ LABEL_21:
       v31 = 138543618;
       v32 = v24;
       v33 = 2112;
-      v34 = v4;
+      v34 = symptomCopy;
       v26 = "%{public}@%@ should be handled by the Home app UI";
 LABEL_28:
       v27 = v16;
@@ -561,7 +561,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v11 - 999 >= 2)
+    if (type - 999 >= 2)
     {
 LABEL_32:
       v22 = 0;
@@ -570,7 +570,7 @@ LABEL_32:
 
 LABEL_26:
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -581,14 +581,14 @@ LABEL_26:
     v31 = 138543618;
     v32 = v24;
     v33 = 2112;
-    v34 = v4;
+    v34 = symptomCopy;
     v26 = "%{public}@Not creating fix session for unfixable symptom %@";
     goto LABEL_28;
   }
 
-  if (((1 << v11) & 0x1F6FFE) == 0)
+  if (((1 << type) & 0x1F6FFE) == 0)
   {
-    if (((1 << v11) & 0x209000) != 0)
+    if (((1 << type) & 0x209000) != 0)
     {
       goto LABEL_26;
     }
@@ -596,13 +596,13 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  v12 = [(HMSymptomsHandler *)v6 sfDeviceIdentifier];
+  sfDeviceIdentifier = [(HMSymptomsHandler *)selfCopy sfDeviceIdentifier];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = v6;
+  v14 = selfCopy;
   v15 = HMFGetOSLogHandle();
   v16 = v15;
-  if (!v12)
+  if (!sfDeviceIdentifier)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -610,7 +610,7 @@ LABEL_26:
       v31 = 138543618;
       v32 = v24;
       v33 = 2112;
-      v34 = v4;
+      v34 = symptomCopy;
       v26 = "%{public}@Not creating fix session for symptom %@ because our SF device identifier is nil";
       v27 = v16;
       v28 = OS_LOG_TYPE_DEBUG;
@@ -628,30 +628,30 @@ LABEL_31:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [(HMSymptomsHandler *)v14 sfDeviceIdentifier];
+    sfDeviceIdentifier2 = [(HMSymptomsHandler *)v14 sfDeviceIdentifier];
     v31 = 138543874;
     v32 = v17;
     v33 = 2112;
-    v34 = v4;
+    v34 = symptomCopy;
     v35 = 2112;
-    v36 = v18;
+    v36 = sfDeviceIdentifier2;
     _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Creating fix session for symptom %@ with SF device identifier %@", &v31, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v19 = [(HMSymptomsHandler *)v14 fixSessionFactory];
-  v20 = [(HMSymptomsHandler *)v14 sfDeviceIdentifier];
-  v21 = [(HMSymptomsHandler *)v14 context];
-  v22 = (v19)[2](v19, v4, v20, v21);
+  fixSessionFactory = [(HMSymptomsHandler *)v14 fixSessionFactory];
+  sfDeviceIdentifier3 = [(HMSymptomsHandler *)v14 sfDeviceIdentifier];
+  context = [(HMSymptomsHandler *)v14 context];
+  v22 = (fixSessionFactory)[2](fixSessionFactory, symptomCopy, sfDeviceIdentifier3, context);
 
-  if ([v4 type] == 11)
+  if ([symptomCopy type] == 11)
   {
     v23 = 1;
   }
 
   else
   {
-    if ([v4 type] != 19)
+    if ([symptomCopy type] != 19)
     {
       goto LABEL_18;
     }
@@ -672,12 +672,12 @@ LABEL_33:
   return v22;
 }
 
-- (void)setSFDeviceIdentifier:(id)a3
+- (void)setSFDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   sfDeviceIdentifier = self->_sfDeviceIdentifier;
-  self->_sfDeviceIdentifier = v4;
+  self->_sfDeviceIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -691,17 +691,17 @@ LABEL_33:
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   os_unfair_lock_unlock(&self->_lock);
-  if (!v4 || WeakRetained)
+  if (!delegateCopy || WeakRetained)
   {
-    if (!v4 && WeakRetained)
+    if (!delegateCopy && WeakRetained)
     {
 
       [(HMSymptomsHandler *)self _unsubscribe];
@@ -727,9 +727,9 @@ LABEL_33:
 - (NSSet)symptoms
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(HMSymptomsHandler *)self currentSymptoms];
-  v4 = [v3 array];
-  v5 = [v2 setWithArray:v4];
+  currentSymptoms = [(HMSymptomsHandler *)self currentSymptoms];
+  array = [currentSymptoms array];
+  v5 = [v2 setWithArray:array];
 
   return v5;
 }
@@ -748,22 +748,22 @@ LABEL_33:
   [(HMSymptomsHandler *)&v4 dealloc];
 }
 
-- (HMSymptomsHandler)initWithUUID:(id)a3 context:(id)a4 logIdentifier:(id)a5
+- (HMSymptomsHandler)initWithUUID:(id)d context:(id)context logIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  contextCopy = context;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = HMSymptomsHandler;
   v11 = [(HMSymptomsHandler *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     uuid = v11->_uuid;
     v11->_uuid = v12;
 
-    objc_storeStrong(&v11->_context, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_context, context);
+    v14 = [identifierCopy copy];
     logIdentifier = v11->_logIdentifier;
     v11->_logIdentifier = v14;
 
@@ -771,9 +771,9 @@ LABEL_33:
     currentSymptoms = v11->_currentSymptoms;
     v11->_currentSymptoms = v16;
 
-    v18 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     fixSessions = v11->_fixSessions;
-    v11->_fixSessions = v18;
+    v11->_fixSessions = weakObjectsHashTable;
 
     fixSessionFactory = v11->_fixSessionFactory;
     v11->_fixSessionFactory = &__block_literal_global_25634;
@@ -792,20 +792,20 @@ HMSymptomFixSession *__56__HMSymptomsHandler_initWithUUID_context_logIdentifier_
   return v9;
 }
 
-- (HMSymptomsHandler)initWithAccessory:(id)a3
+- (HMSymptomsHandler)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_opt_class();
-  v6 = [v4 uuid];
-  v7 = [v5 symptomsHandlerUUIDFromAccessoryUUID:v6];
+  uuid = [accessoryCopy uuid];
+  v7 = [v5 symptomsHandlerUUIDFromAccessoryUUID:uuid];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v4 uuid];
-  v10 = [v8 stringWithFormat:@"%@/%@", v7, v9];
+  uuid2 = [accessoryCopy uuid];
+  v10 = [v8 stringWithFormat:@"%@/%@", v7, uuid2];
 
-  v11 = [v4 context];
+  context = [accessoryCopy context];
 
-  v12 = [(HMSymptomsHandler *)self initWithUUID:v7 context:v11 logIdentifier:v10];
+  v12 = [(HMSymptomsHandler *)self initWithUUID:v7 context:context logIdentifier:v10];
   return v12;
 }
 
@@ -831,15 +831,15 @@ uint64_t __32__HMSymptomsHandler_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)symptomsHandlerUUIDFromAccessoryUUID:(id)a3
++ (id)symptomsHandlerUUIDFromAccessoryUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"DA8F18EC-6C7D-4631-9B5B-615977C21A44"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;

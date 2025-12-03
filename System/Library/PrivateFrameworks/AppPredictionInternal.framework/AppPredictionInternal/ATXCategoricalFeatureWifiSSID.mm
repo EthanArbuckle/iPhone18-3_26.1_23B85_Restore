@@ -1,17 +1,17 @@
 @interface ATXCategoricalFeatureWifiSSID
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureWifiSSID
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = [a3 deviceStateContext];
-  v5 = [v4 wifiSSID];
-  v6 = v5;
-  if (v5)
+  deviceStateContext = [context deviceStateContext];
+  wifiSSID = [deviceStateContext wifiSSID];
+  v6 = wifiSSID;
+  if (wifiSSID)
   {
-    v7 = v5;
+    v7 = wifiSSID;
   }
 
   else

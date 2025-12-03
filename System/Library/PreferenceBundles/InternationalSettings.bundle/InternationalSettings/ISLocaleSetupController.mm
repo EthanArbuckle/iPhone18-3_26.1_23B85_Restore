@@ -7,15 +7,15 @@
 
 - (void)commitRegion
 {
-  v3 = [(ISLocaleSetupController *)self selectedRegion];
+  selectedRegion = [(ISLocaleSetupController *)self selectedRegion];
 
-  if (v3)
+  if (selectedRegion)
   {
     v4 = +[NSLocale _deviceLanguage];
     v5 = [NSLocale localeWithLocaleIdentifier:v4];
-    v6 = [(ISLocaleSetupController *)self selectedRegion];
-    v7 = [v6 regionCode];
-    v58 = [v5 localizedStringForRegion:v7 context:5 short:0];
+    selectedRegion2 = [(ISLocaleSetupController *)self selectedRegion];
+    regionCode = [selectedRegion2 regionCode];
+    v58 = [v5 localizedStringForRegion:regionCode context:5 short:0];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v59 = [v8 localizedStringForKey:@"CHANGE_REGION_TITLE" value:&stru_35798 table:@"InternationalSettings"];
@@ -24,29 +24,29 @@
     v56 = [v9 localizedStringForKey:@"CANCEL_CHANGE_REGION" value:&stru_35798 table:@"InternationalSettings"];
 
     v10 = +[UIDevice currentDevice];
-    v53 = [v10 sf_isiPad];
+    sf_isiPad = [v10 sf_isiPad];
 
     v11 = [IPLanguageListManager alloc];
     v12 = +[(ISInternationalViewController *)InternationalSettingsController];
     v13 = [v11 initWithPreferredLanguages:v12];
-    v14 = [v13 systemDisplayLanguage];
-    v15 = [NSLocale _distinctiveLanguageIdentifierForLanguageIdentifier:v14];
+    systemDisplayLanguage = [v13 systemDisplayLanguage];
+    v15 = [NSLocale _distinctiveLanguageIdentifierForLanguageIdentifier:systemDisplayLanguage];
 
-    v54 = self;
-    v16 = [(ISLocaleSetupController *)self selectedRegion];
-    v17 = [v16 regionCode];
-    v18 = [NSLocale languageFromLanguage:v15 byReplacingRegion:v17];
+    selfCopy = self;
+    selectedRegion3 = [(ISLocaleSetupController *)self selectedRegion];
+    regionCode2 = [selectedRegion3 regionCode];
+    v18 = [NSLocale languageFromLanguage:v15 byReplacingRegion:regionCode2];
 
     v19 = [IPLanguageListManager alloc];
     v65 = v18;
     v20 = [NSArray arrayWithObjects:&v65 count:1];
     v21 = [v19 initWithPreferredLanguages:v20];
-    v22 = [v21 systemDisplayLanguage];
-    v23 = v22;
+    systemDisplayLanguage2 = [v21 systemDisplayLanguage];
+    v23 = systemDisplayLanguage2;
     v55 = v18;
-    if (v22)
+    if (systemDisplayLanguage2)
     {
-      v24 = v22;
+      v24 = systemDisplayLanguage2;
     }
 
     else
@@ -60,7 +60,7 @@
     if (([NSLocale _language:v15 usesSameLocalizationAs:v25]& 1) != 0)
     {
       v26 = +[ISInternationalViewController localizedRestartStringForCurrentDevice];
-      if (v53)
+      if (sf_isiPad)
       {
         v27 = v59;
       }
@@ -70,7 +70,7 @@
         v27 = v26;
       }
 
-      if (v53)
+      if (sf_isiPad)
       {
         v28 = v26;
       }
@@ -80,7 +80,7 @@
         v28 = 0;
       }
 
-      v29 = [UIAlertController alertControllerWithTitle:v27 message:v28 preferredStyle:v53];
+      v29 = [UIAlertController alertControllerWithTitle:v27 message:v28 preferredStyle:sf_isiPad];
       v30 = [NSBundle bundleForClass:objc_opt_class()];
       v31 = [v30 localizedStringForKey:@"CHANGE_TO_%@_AS_REGION" value:&stru_35798 table:@"InternationalSettings"];
       v32 = [NSString stringWithFormat:v31, v58];
@@ -89,8 +89,8 @@
       v61[1] = 3221225472;
       v61[2] = sub_918C;
       v61[3] = &unk_35100;
-      v33 = v54;
-      v61[4] = v54;
+      v33 = selfCopy;
+      v61[4] = selfCopy;
       v34 = [UIAlertAction actionWithTitle:v32 style:2 handler:v61];
       [v29 addAction:v34];
 
@@ -98,7 +98,7 @@
       v60[1] = 3221225472;
       v60[2] = sub_9198;
       v60[3] = &unk_350D8;
-      v60[4] = v54;
+      v60[4] = selfCopy;
       v35 = [UIAlertAction _actionWithTitle:v56 image:0 style:1 handler:0 shouldDismissHandler:v60];
       [v29 addAction:v35];
 
@@ -121,7 +121,7 @@
       v44 = [v42 localizedStringForKey:v43 value:&stru_35798 table:@"InternationalSettings"];
       v45 = [NSLocale string:v44 withCapitalizedDisplayNamesForFirstLanguageIdentifier:v25 secondLanguageIdentifier:0 thirdLanguageIdentifier:0];
 
-      if (v53)
+      if (sf_isiPad)
       {
         v46 = v59;
       }
@@ -131,7 +131,7 @@
         v46 = v45;
       }
 
-      if (v53)
+      if (sf_isiPad)
       {
         v47 = v45;
       }
@@ -141,13 +141,13 @@
         v47 = 0;
       }
 
-      v29 = [UIAlertController alertControllerWithTitle:v46 message:v47 preferredStyle:v53];
+      v29 = [UIAlertController alertControllerWithTitle:v46 message:v47 preferredStyle:sf_isiPad];
       v64[0] = _NSConcreteStackBlock;
       v64[1] = 3221225472;
       v64[2] = sub_913C;
       v64[3] = &unk_350D8;
-      v33 = v54;
-      v64[4] = v54;
+      v33 = selfCopy;
+      v64[4] = selfCopy;
       v37 = v56;
       v48 = [UIAlertAction _actionWithTitle:v56 image:0 style:1 handler:0 shouldDismissHandler:v64];
       [v29 addAction:v48];
@@ -156,7 +156,7 @@
       v63[1] = 3221225472;
       v63[2] = sub_9174;
       v63[3] = &unk_35100;
-      v63[4] = v54;
+      v63[4] = selfCopy;
       v49 = [UIAlertAction actionWithTitle:v26 style:0 handler:v63];
       [v29 addAction:v49];
 
@@ -164,19 +164,19 @@
       v62[1] = 3221225472;
       v62[2] = sub_9180;
       v62[3] = &unk_35100;
-      v62[4] = v54;
+      v62[4] = selfCopy;
       v50 = [UIAlertAction actionWithTitle:v32 style:0 handler:v62];
       [v29 addAction:v50];
 
       v36 = v58;
     }
 
-    v51 = [(ISLocaleSetupController *)v33 presentedViewController];
+    presentedViewController = [(ISLocaleSetupController *)v33 presentedViewController];
 
-    if (v51)
+    if (presentedViewController)
     {
-      v52 = [(ISLocaleSetupController *)v33 presentedViewController];
-      [v52 presentViewController:v29 animated:1 completion:0];
+      presentedViewController2 = [(ISLocaleSetupController *)v33 presentedViewController];
+      [presentedViewController2 presentViewController:v29 animated:1 completion:0];
     }
 
     else

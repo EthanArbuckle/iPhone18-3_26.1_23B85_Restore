@@ -1,19 +1,19 @@
 @interface AEGridConfiguration
-+ (id)configurationForEnvironment:(id)a3;
++ (id)configurationForEnvironment:(id)environment;
 @end
 
 @implementation AEGridConfiguration
 
-+ (id)configurationForEnvironment:(id)a3
++ (id)configurationForEnvironment:(id)environment
 {
-  v3 = a3;
-  [v3 compactExtensionHeight];
+  environmentCopy = environment;
+  [environmentCopy compactExtensionHeight];
   v5 = v4;
-  [v3 headerHeight];
+  [environmentCopy headerHeight];
   v7 = v5 - v6;
-  [v3 targetBottomMargin];
+  [environmentCopy targetBottomMargin];
   v9 = v7 - v8;
-  [v3 minimumTileHeight];
+  [environmentCopy minimumTileHeight];
   v11 = v10;
   v12 = v10;
   v13 = v10 * 2.0 + 1.0 > v9;
@@ -30,7 +30,7 @@
   v17 = v9 - (v15 - 1);
   if (v10 * v15 < v17)
   {
-    [v3 scale];
+    [environmentCopy scale];
     v12 = floor(v17 * v18 / v15) / v18;
   }
 

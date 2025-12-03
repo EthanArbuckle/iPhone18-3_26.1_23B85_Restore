@@ -7,7 +7,7 @@
 - (id)tintColor;
 - (void)attach;
 - (void)detach;
-- (void)showVLFDebugUIButtonTapped:(id)a3;
+- (void)showVLFDebugUIButtonTapped:(id)tapped;
 - (void)startDebugInfoRefreshTimer;
 - (void)updateDebugText;
 - (void)updateViewForCurrentState;
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (void)showVLFDebugUIButtonTapped:(id)a3
+- (void)showVLFDebugUIButtonTapped:(id)tapped
 {
-  v3 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
-  [v3 showVLFUI];
+  vlfSessionTask = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
+  [vlfSessionTask showVLFUI];
 
   v4 = +[VLFSessionUsageTracker sharedInstance];
   [v4 registerUserWasShownCallout];
@@ -111,11 +111,11 @@
   }
 
   [v4 appendFormat:@"Current location: %@\nisCoordinateFused:%@\n\n", v16, v17];
-  v18 = [(VLFSessionStateFloatingDebugViewController *)self isConnectedToInternalAppleNetwork];
-  if (v18)
+  isConnectedToInternalAppleNetwork = [(VLFSessionStateFloatingDebugViewController *)self isConnectedToInternalAppleNetwork];
+  if (isConnectedToInternalAppleNetwork)
   {
-    v19 = [(VLFSessionStateFloatingDebugViewController *)self isConnectedToInternalAppleNetwork];
-    if ([v19 BOOLValue])
+    isConnectedToInternalAppleNetwork2 = [(VLFSessionStateFloatingDebugViewController *)self isConnectedToInternalAppleNetwork];
+    if ([isConnectedToInternalAppleNetwork2 BOOLValue])
     {
       v20 = @"YES";
     }
@@ -133,8 +133,8 @@
     [v4 appendFormat:@"Connected to internal apple network: %@\n\n", @"unknown"];
   }
 
-  v21 = [(VLFSessionStateFloatingDebugViewController *)self session];
-  v22 = [v21 configuration];
+  session = [(VLFSessionStateFloatingDebugViewController *)self session];
+  configuration = [session configuration];
 
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
@@ -143,35 +143,35 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [v22 templateConfiguration];
+    templateConfiguration = [configuration templateConfiguration];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     [v4 appendFormat:@"Template configuration: %@\n", v27];
   }
 
-  v73 = v22;
+  v73 = configuration;
   [v4 appendFormat:@"\nCurrent state:"];
-  v28 = [(VLFSessionStateFloatingDebugViewController *)self session];
-  v29 = [v28 state];
+  session2 = [(VLFSessionStateFloatingDebugViewController *)self session];
+  state = [session2 state];
 
-  if (v29 <= 2)
+  if (state <= 2)
   {
-    [v4 appendFormat:*(&off_1016327F0 + v29)];
+    [v4 appendFormat:*(&off_1016327F0 + state)];
   }
 
   v30 = +[MapsARSessionManager sharedManager];
-  v31 = [v30 currentSessionOwner];
+  currentSessionOwner = [v30 currentSessionOwner];
 
-  [v4 appendFormat:@"\nCurrent session owner: %@\n", v31];
+  [v4 appendFormat:@"\nCurrent session owner: %@\n", currentSessionOwner];
   [v4 appendFormat:@"\nAll session owners:\n"];
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
   v32 = +[MapsARSessionManager sharedManager];
-  v33 = [v32 allSessionOwners];
+  allSessionOwners = [v32 allSessionOwners];
 
-  v34 = [v33 countByEnumeratingWithState:&v80 objects:v86 count:16];
+  v34 = [allSessionOwners countByEnumeratingWithState:&v80 objects:v86 count:16];
   if (v34)
   {
     v35 = v34;
@@ -182,55 +182,55 @@
       {
         if (*v81 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(allSessionOwners);
         }
 
         [v4 appendFormat:@"%@\n", *(*(&v80 + 1) + 8 * i)];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v80 objects:v86 count:16];
+      v35 = [allSessionOwners countByEnumeratingWithState:&v80 objects:v86 count:16];
     }
 
     while (v35);
   }
 
-  v38 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
-  v39 = [v38 stateManager];
-  v40 = [v39 currentState];
+  vlfSessionTask = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
+  stateManager = [vlfSessionTask stateManager];
+  currentState = [stateManager currentState];
   v74 = v16;
-  v72 = v31;
-  if (v40 > 2)
+  v72 = currentSessionOwner;
+  if (currentState > 2)
   {
     v41 = @"?";
   }
 
   else
   {
-    v41 = *(&off_101632808 + v40);
+    v41 = *(&off_101632808 + currentState);
   }
 
-  v42 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
-  v43 = [v42 stateManager];
-  v44 = [v43 currentState];
+  vlfSessionTask2 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
+  stateManager2 = [vlfSessionTask2 stateManager];
+  currentState2 = [stateManager2 currentState];
   v45 = @"Off";
-  if (v44 == 1)
+  if (currentState2 == 1)
   {
     v45 = @"Puck";
   }
 
-  if (v44 == 2)
+  if (currentState2 == 2)
   {
     v45 = @"PuckAndBanner";
   }
 
   [v4 appendFormat:@"\nCurrent UI state: \n%@ %@\n", v41, v45];
 
-  v75 = self;
-  v46 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
-  v47 = [v46 stateManager];
-  v48 = [v47 allMonitors];
-  v49 = [v48 allObjects];
-  v50 = [v49 sortedArrayUsingComparator:&stru_1016327D0];
+  selfCopy = self;
+  vlfSessionTask3 = [(VLFSessionStateFloatingDebugViewController *)self vlfSessionTask];
+  stateManager3 = [vlfSessionTask3 stateManager];
+  allMonitors = [stateManager3 allMonitors];
+  allObjects = [allMonitors allObjects];
+  v50 = [allObjects sortedArrayUsingComparator:&stru_1016327D0];
 
   [v4 appendFormat:@"\nState monitors:\n"];
   v78 = 0u;
@@ -253,11 +253,11 @@
         }
 
         v56 = *(*(&v76 + 1) + 8 * j);
-        v57 = [v56 state];
+        state2 = [v56 state];
         v58 = @"?";
-        if (v57 <= 2)
+        if (state2 <= 2)
         {
-          v58 = *(&off_101632808 + v57);
+          v58 = *(&off_101632808 + state2);
         }
 
         v59 = [v56 debugDescription];
@@ -271,43 +271,43 @@
   }
 
   v60 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v61 = [v60 platformController];
-  v62 = [v61 chromeViewController];
-  v63 = [v62 userLocationView];
-  [v63 _locationAccuracyInScreenPoints];
+  platformController = [v60 platformController];
+  chromeViewController = [platformController chromeViewController];
+  userLocationView = [chromeViewController userLocationView];
+  [userLocationView _locationAccuracyInScreenPoints];
   [v4 appendFormat:@"\nlocationAccuracyInScreenPoints: %f\n", v64];
 
   v65 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v66 = [v65 platformController];
-  v67 = [v66 chromeViewController];
-  v68 = [v67 mapView];
-  v69 = v68;
-  if (v68)
+  platformController2 = [v65 platformController];
+  chromeViewController2 = [platformController2 chromeViewController];
+  mapView = [chromeViewController2 mapView];
+  v69 = mapView;
+  if (mapView)
   {
-    [v68 _userTrackingBehavior];
+    [mapView _userTrackingBehavior];
   }
 
   v70 = VKStringForAnnotationTrackingBehavior();
   [v4 appendFormat:@"\nuserTrackingBehavior: %@\n", v70];
 
-  v71 = [(VLFSessionStateFloatingDebugViewController *)v75 debugInfoLabel];
-  [v71 setText:v4];
+  debugInfoLabel = [(VLFSessionStateFloatingDebugViewController *)selfCopy debugInfoLabel];
+  [debugInfoLabel setText:v4];
 }
 
 - (ARSession)session
 {
   v2 = +[MapsARSessionManager sharedManager];
-  v3 = [v2 session];
+  session = [v2 session];
 
-  return v3;
+  return session;
 }
 
 - (VLFSessionTask)vlfSessionTask
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 platformController];
-  v4 = [v3 auxiliaryTasksManager];
-  v5 = [v4 auxilaryTaskForClass:objc_opt_class()];
+  platformController = [v2 platformController];
+  auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+  v5 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
   return v5;
 }
@@ -343,21 +343,21 @@
   v6.receiver = self;
   v6.super_class = VLFSessionStateFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v6 updateViewForCurrentState];
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3 == 1)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState == 1)
   {
-    v5 = [(VLFSessionStateFloatingDebugViewController *)self session];
-    [v5 _addObserver:self];
+    session = [(VLFSessionStateFloatingDebugViewController *)self session];
+    [session _addObserver:self];
 
     [(VLFSessionStateFloatingDebugViewController *)self updateDebugText];
     [(VLFSessionStateFloatingDebugViewController *)self startDebugInfoRefreshTimer];
   }
 
-  else if (!v3)
+  else if (!viewState)
   {
     [(VLFSessionStateFloatingDebugViewController *)self setDebugInfoRefreshTimer:0];
-    v4 = [(VLFSessionStateFloatingDebugViewController *)self session];
-    [v4 _removeObserver:self];
+    session2 = [(VLFSessionStateFloatingDebugViewController *)self session];
+    [session2 _removeObserver:self];
   }
 }
 
@@ -369,53 +369,53 @@
   v3 = [UIButton buttonWithType:1];
   [(VLFSessionStateFloatingDebugViewController *)self setShowVLFDebugUIButton:v3];
 
-  v4 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  [v4 setTitle:@"Show VLF UI" forState:0];
+  showVLFDebugUIButton = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  [showVLFDebugUIButton setTitle:@"Show VLF UI" forState:0];
 
-  v5 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  showVLFDebugUIButton2 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
   v6 = +[UIColor whiteColor];
-  [v5 setTitleColor:v6 forState:0];
+  [showVLFDebugUIButton2 setTitleColor:v6 forState:0];
 
-  v7 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:5.0];
+  showVLFDebugUIButton3 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  layer = [showVLFDebugUIButton3 layer];
+  [layer setCornerRadius:5.0];
 
   v9 = +[UIColor grayColor];
   v10 = [v9 colorWithAlphaComponent:0.600000024];
-  v11 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  [v11 setBackgroundColor:v10];
+  showVLFDebugUIButton4 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  [showVLFDebugUIButton4 setBackgroundColor:v10];
 
-  v12 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  [v12 addTarget:self action:"showVLFDebugUIButtonTapped:" forControlEvents:64];
+  showVLFDebugUIButton5 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  [showVLFDebugUIButton5 addTarget:self action:"showVLFDebugUIButtonTapped:" forControlEvents:64];
 
-  v13 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  showVLFDebugUIButton6 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  [showVLFDebugUIButton6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(MapsFloatingDebugViewController *)self contentView];
-  v15 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  [v14 addSubview:v15];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  showVLFDebugUIButton7 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  [contentView addSubview:showVLFDebugUIButton7];
 
-  v71 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v67 = [v71 leadingAnchor];
-  v69 = [(MapsFloatingDebugViewController *)self contentView];
-  v65 = [v69 leadingAnchor];
-  v63 = [v67 constraintEqualToAnchor:v65];
+  showVLFDebugUIButton8 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  leadingAnchor = [showVLFDebugUIButton8 leadingAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v63;
-  v61 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v57 = [v61 trailingAnchor];
-  v59 = [(MapsFloatingDebugViewController *)self contentView];
-  v55 = [v59 trailingAnchor];
-  v53 = [v57 constraintEqualToAnchor:v55];
+  showVLFDebugUIButton9 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  trailingAnchor = [showVLFDebugUIButton9 trailingAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v75[1] = v53;
-  v16 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v17 = [v16 topAnchor];
-  v18 = [(MapsFloatingDebugViewController *)self contentView];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  showVLFDebugUIButton10 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  topAnchor = [showVLFDebugUIButton10 topAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v75[2] = v20;
-  v21 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v22 = [v21 heightAnchor];
-  v23 = [v22 constraintEqualToConstant:44.0];
+  showVLFDebugUIButton11 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  heightAnchor = [showVLFDebugUIButton11 heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:44.0];
   v75[3] = v23;
   v24 = [NSArray arrayWithObjects:v75 count:4];
   [NSLayoutConstraint activateConstraints:v24];
@@ -424,54 +424,54 @@
   [(VLFSessionStateFloatingDebugViewController *)self setDebugInfoLabel:v25];
 
   v26 = +[UIColor clearColor];
-  v27 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v27 setBackgroundColor:v26];
+  debugInfoLabel = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel setBackgroundColor:v26];
 
   v28 = +[UIColor whiteColor];
-  v29 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v29 setTextColor:v28];
+  debugInfoLabel2 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel2 setTextColor:v28];
 
-  v30 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v30 setNumberOfLines:0];
+  debugInfoLabel3 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel3 setNumberOfLines:0];
 
-  v31 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+  debugInfoLabel4 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v32 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  debugInfoLabel5 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
   LODWORD(v33) = 1148846080;
-  [v32 setContentCompressionResistancePriority:1 forAxis:v33];
+  [debugInfoLabel5 setContentCompressionResistancePriority:1 forAxis:v33];
 
-  v34 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  debugInfoLabel6 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
   LODWORD(v35) = 1148846080;
-  [v34 setContentCompressionResistancePriority:0 forAxis:v35];
+  [debugInfoLabel6 setContentCompressionResistancePriority:0 forAxis:v35];
 
-  v36 = [(MapsFloatingDebugViewController *)self contentView];
-  v37 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v36 addSubview:v37];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  debugInfoLabel7 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [contentView5 addSubview:debugInfoLabel7];
 
-  v72 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v68 = [v72 leadingAnchor];
-  v70 = [(MapsFloatingDebugViewController *)self contentView];
-  v66 = [v70 leadingAnchor];
-  v64 = [v68 constraintEqualToAnchor:v66];
+  debugInfoLabel8 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  leadingAnchor3 = [debugInfoLabel8 leadingAnchor];
+  contentView6 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor4 = [contentView6 leadingAnchor];
+  v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v74[0] = v64;
-  v62 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v58 = [v62 trailingAnchor];
-  v60 = [(MapsFloatingDebugViewController *)self contentView];
-  v56 = [v60 trailingAnchor];
-  v54 = [v58 constraintEqualToAnchor:v56];
+  debugInfoLabel9 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  trailingAnchor3 = [debugInfoLabel9 trailingAnchor];
+  contentView7 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor4 = [contentView7 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v74[1] = v54;
-  v52 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v51 = [v52 topAnchor];
-  v38 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
-  v39 = [v38 bottomAnchor];
-  v40 = [v51 constraintEqualToAnchor:v39];
+  debugInfoLabel10 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  topAnchor3 = [debugInfoLabel10 topAnchor];
+  showVLFDebugUIButton12 = [(VLFSessionStateFloatingDebugViewController *)self showVLFDebugUIButton];
+  bottomAnchor = [showVLFDebugUIButton12 bottomAnchor];
+  v40 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v74[2] = v40;
-  v41 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v42 = [v41 bottomAnchor];
-  v43 = [(MapsFloatingDebugViewController *)self contentView];
-  v44 = [v43 bottomAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  debugInfoLabel11 = [(VLFSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  bottomAnchor2 = [debugInfoLabel11 bottomAnchor];
+  contentView8 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor3 = [contentView8 bottomAnchor];
+  v45 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v74[3] = v45;
   v46 = [NSArray arrayWithObjects:v74 count:4];
   [NSLayoutConstraint activateConstraints:v46];
@@ -479,8 +479,8 @@
   v47 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v48 = [UIImage systemImageNamed:@"arkit" withConfiguration:v47];
   v49 = [v48 imageWithRenderingMode:2];
-  v50 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v50 setImage:v49];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v49];
 }
 
 + (BOOL)shouldAttachOnLaunch

@@ -1,15 +1,15 @@
 @interface INMessageReaction
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INMessageReaction)init;
-- (INMessageReaction)initWithCoder:(id)a3;
-- (INMessageReaction)initWithReactionType:(int64_t)a3 reactionDescription:(id)a4 emoji:(id)a5;
-- (INMessageReaction)initWithReactionType:(int64_t)a3 reactionDescription:(id)a4 emoji:(id)a5 sticker:(id)a6;
+- (INMessageReaction)initWithCoder:(id)coder;
+- (INMessageReaction)initWithReactionType:(int64_t)type reactionDescription:(id)description emoji:(id)emoji;
+- (INMessageReaction)initWithReactionType:(int64_t)type reactionDescription:(id)description emoji:(id)emoji sticker:(id)sticker;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMessageReaction
@@ -22,31 +22,31 @@
   v14[0] = v3;
   v13[1] = @"reactionDescription";
   reactionDescription = self->_reactionDescription;
-  v5 = reactionDescription;
+  null = reactionDescription;
   if (!reactionDescription)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v5;
+  v14[1] = null;
   v13[2] = @"emoji";
   emoji = self->_emoji;
-  v7 = emoji;
+  null2 = emoji;
   if (!emoji)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v7;
+  v14[2] = null2;
   v13[3] = @"sticker";
   sticker = self->_sticker;
-  v9 = sticker;
+  null3 = sticker;
   if (!sticker)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[3] = v9;
+  v14[3] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
   if (sticker)
   {
@@ -84,74 +84,74 @@ LABEL_10:
   return v10;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INMessageReaction;
   v6 = [(INMessageReaction *)&v11 description];
-  v7 = [(INMessageReaction *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INMessageReaction *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   v8 = INMessageReactionTypeGetName(self->_reactionType);
-  [v7 if_setObjectIfNonNil:v8 forKey:@"reactionType"];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"reactionType"];
 
-  v9 = [v6 encodeObject:self->_reactionDescription];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"reactionDescription"];
+  v9 = [encoderCopy encodeObject:self->_reactionDescription];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"reactionDescription"];
 
-  v10 = [v6 encodeObject:self->_emoji];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"emoji"];
+  v10 = [encoderCopy encodeObject:self->_emoji];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"emoji"];
 
-  v11 = [v6 encodeObject:self->_sticker];
+  v11 = [encoderCopy encodeObject:self->_sticker];
 
-  [v7 if_setObjectIfNonNil:v11 forKey:@"sticker"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"sticker"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reactionType = self->_reactionType;
-  v5 = a3;
-  [v5 encodeInteger:reactionType forKey:@"reactionType"];
-  [v5 encodeObject:self->_reactionDescription forKey:@"reactionDescription"];
-  [v5 encodeObject:self->_emoji forKey:@"emoji"];
-  [v5 encodeObject:self->_sticker forKey:@"sticker"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:reactionType forKey:@"reactionType"];
+  [coderCopy encodeObject:self->_reactionDescription forKey:@"reactionDescription"];
+  [coderCopy encodeObject:self->_emoji forKey:@"emoji"];
+  [coderCopy encodeObject:self->_sticker forKey:@"sticker"];
 }
 
-- (INMessageReaction)initWithCoder:(id)a3
+- (INMessageReaction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"reactionType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"reactionType"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"reactionDescription"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"reactionDescription"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"emoji"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"emoji"];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sticker"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sticker"];
 
   v15 = [(INMessageReaction *)self initWithReactionType:v5 reactionDescription:v9 emoji:v13 sticker:v14];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -161,7 +161,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9 = 0;
       if (self->_reactionType == v5->_reactionType)
       {
@@ -201,27 +201,27 @@ LABEL_10:
   return v7 ^ v4;
 }
 
-- (INMessageReaction)initWithReactionType:(int64_t)a3 reactionDescription:(id)a4 emoji:(id)a5 sticker:(id)a6
+- (INMessageReaction)initWithReactionType:(int64_t)type reactionDescription:(id)description emoji:(id)emoji sticker:(id)sticker
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  descriptionCopy = description;
+  emojiCopy = emoji;
+  stickerCopy = sticker;
   v22.receiver = self;
   v22.super_class = INMessageReaction;
   v13 = [(INMessageReaction *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_reactionType = a3;
-    v15 = [v10 copy];
+    v13->_reactionType = type;
+    v15 = [descriptionCopy copy];
     reactionDescription = v14->_reactionDescription;
     v14->_reactionDescription = v15;
 
-    v17 = [v11 copy];
+    v17 = [emojiCopy copy];
     emoji = v14->_emoji;
     v14->_emoji = v17;
 
-    v19 = [v12 copy];
+    v19 = [stickerCopy copy];
     sticker = v14->_sticker;
     v14->_sticker = v19;
   }
@@ -229,22 +229,22 @@ LABEL_10:
   return v14;
 }
 
-- (INMessageReaction)initWithReactionType:(int64_t)a3 reactionDescription:(id)a4 emoji:(id)a5
+- (INMessageReaction)initWithReactionType:(int64_t)type reactionDescription:(id)description emoji:(id)emoji
 {
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  emojiCopy = emoji;
   v17.receiver = self;
   v17.super_class = INMessageReaction;
   v10 = [(INMessageReaction *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_reactionType = a3;
-    v12 = [v8 copy];
+    v10->_reactionType = type;
+    v12 = [descriptionCopy copy];
     reactionDescription = v11->_reactionDescription;
     v11->_reactionDescription = v12;
 
-    v14 = [v9 copy];
+    v14 = [emojiCopy copy];
     emoji = v11->_emoji;
     v11->_emoji = v14;
   }
@@ -259,23 +259,23 @@ LABEL_10:
   return [(INMessageReaction *)&v3 init];
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"reactionType"];
+    v9 = [fromCopy objectForKeyedSubscript:@"reactionType"];
     v10 = INMessageReactionTypeWithString(v9);
 
-    v11 = [v8 objectForKeyedSubscript:@"reactionDescription"];
-    v12 = [v8 objectForKeyedSubscript:@"emoji"];
+    v11 = [fromCopy objectForKeyedSubscript:@"reactionDescription"];
+    v12 = [fromCopy objectForKeyedSubscript:@"emoji"];
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"sticker"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"sticker"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [[a1 alloc] initWithReactionType:v10 reactionDescription:v11 emoji:v12 sticker:v15];
+    v16 = [[self alloc] initWithReactionType:v10 reactionDescription:v11 emoji:v12 sticker:v15];
   }
 
   else

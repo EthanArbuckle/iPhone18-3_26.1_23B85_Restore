@@ -1,21 +1,21 @@
 @interface SUApplication
-- (BOOL)application:(id)a3 openURL:(id)a4 sourceApplication:(id)a5 annotation:(id)a6;
-- (BOOL)applicationSuspendWithSettings:(id)a3;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)application:(id)application openURL:(id)l sourceApplication:(id)sourceApplication annotation:(id)annotation;
+- (BOOL)applicationSuspendWithSettings:(id)settings;
+- (BOOL)runTest:(id)test options:(id)options;
 - (SUApplication)init;
 - (double)defaultImageSnapshotExpiration;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (void)_applicationDidFinishLaunching:(id)a3;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (void)_applicationDidFinishLaunching:(id)launching;
 - (void)_exitForStoreNotAvailable;
 - (void)_exitIfStoreNotAvailable;
-- (void)_runScriptTestWithOptions:(id)a3;
+- (void)_runScriptTestWithOptions:(id)options;
 - (void)_setupUI;
 - (void)_teardownUI;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)dealloc;
-- (void)runTestInvocation:(id)a3;
-- (void)setInteractionTintColor:(id)a3;
+- (void)runTestInvocation:(id)invocation;
+- (void)setInteractionTintColor:(id)color;
 @end
 
 @implementation SUApplication
@@ -43,11 +43,11 @@
   [(SUApplication *)&v3 dealloc];
 }
 
-- (void)setInteractionTintColor:(id)a3
+- (void)setInteractionTintColor:(id)color
 {
-  if (self->_interactionTintColor != a3)
+  if (self->_interactionTintColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     self->_interactionTintColor = v4;
     window = self->_window;
 
@@ -55,7 +55,7 @@
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 sourceApplication:(id)a5 annotation:(id)a6
+- (BOOL)application:(id)application openURL:(id)l sourceApplication:(id)sourceApplication annotation:(id)annotation
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -63,7 +63,7 @@
     goto LABEL_5;
   }
 
-  v9 = [a6 objectForKey:*MEMORY[0x1E6963598]];
+  absoluteString = [annotation objectForKey:*MEMORY[0x1E6963598]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -73,22 +73,22 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v9 absoluteString];
+    absoluteString = [absoluteString absoluteString];
   }
 
   else
   {
 LABEL_5:
-    v9 = 0;
+    absoluteString = 0;
   }
 
 LABEL_6:
   v10 = +[SUClientApplicationController sharedController];
 
-  return [v10 openClientURL:a4 withSourceApplication:a5 sourceURLString:v9];
+  return [v10 openClientURL:l withSourceApplication:sourceApplication sourceURLString:absoluteString];
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
   if ([objc_msgSend(MEMORY[0x1E69DC938] currentDevice])
   {
@@ -101,7 +101,7 @@ LABEL_6:
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   [+[SUClientApplicationController sharedController](SUClientApplicationController sharedController];
   if (self->_terminateOnNextSuspend)
@@ -112,15 +112,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)applicationSuspendWithSettings:(id)a3
+- (BOOL)applicationSuspendWithSettings:(id)settings
 {
   v4 = [+[SUClientApplicationController sharedController](SUClientApplicationController "sharedController")];
-  [a3 addEntriesFromDictionary:v4];
+  [settings addEntriesFromDictionary:v4];
 
   return 1;
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   [(SUApplication *)self _setupUI];
   if (([objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")] & 1) == 0)
@@ -139,22 +139,22 @@ LABEL_6:
   return result;
 }
 
-- (void)_applicationDidFinishLaunching:(id)a3
+- (void)_applicationDidFinishLaunching:(id)launching
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -179,7 +179,7 @@ LABEL_6:
   }
 
   [(SUApplication *)self _setupUI];
-  if (([a3 launchedToTest] & 1) == 0)
+  if (([launching launchedToTest] & 1) == 0)
   {
     [+[SUClientApplicationController sharedController](SUClientApplicationController "sharedController")];
   }
@@ -204,8 +204,8 @@ LABEL_6:
 
 - (void)_exitIfStoreNotAvailable
 {
-  v3 = [MEMORY[0x1E69E47F8] sharedCache];
-  if ([v3 URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}] && (objc_msgSend(+[SUClientApplicationController sharedController](SUClientApplicationController, "sharedController"), "isStoreEnabled") & 1) == 0)
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
+  if ([mEMORY[0x1E69E47F8] URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}] && (objc_msgSend(+[SUClientApplicationController sharedController](SUClientApplicationController, "sharedController"), "isStoreEnabled") & 1) == 0)
   {
 
     [(SUApplication *)self _exitForStoreNotAvailable];
@@ -237,37 +237,37 @@ LABEL_6:
   self->_window = 0;
 }
 
-- (void)runTestInvocation:(id)a3
+- (void)runTestInvocation:(id)invocation
 {
   [(SUApplication *)self startedTest:__CurrentTestName];
   v5 = 0;
-  [a3 invoke];
-  [a3 getReturnValue:&v5];
+  [invocation invoke];
+  [invocation getReturnValue:&v5];
   if (v5 == 1)
   {
     [(UIApplication *)self endCurrentPPT];
   }
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v13 = a4;
-  v7 = [a4 setupSelector];
-  v8 = [a4 testSelector];
-  if (v7 | v8)
+  optionsCopy = options;
+  setupSelector = [options setupSelector];
+  testSelector = [options testSelector];
+  if (setupSelector | testSelector)
   {
-    v9 = v8;
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0 || v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    v9 = testSelector;
+    if (setupSelector && (objc_opt_respondsToSelector() & 1) != 0 || v9 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(UIApplication *)self beginPPTWithName:a3];
+      [(UIApplication *)self beginPPTWithName:test];
       v10 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:{-[SUApplication methodSignatureForSelector:](self, "methodSignatureForSelector:", v9)}];
       [v10 setSelector:v9];
       [v10 setTarget:self];
-      [v10 setArgument:&v13 atIndex:2];
+      [v10 setArgument:&optionsCopy atIndex:2];
       [v10 retainArguments];
-      if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (setupSelector && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [(SUApplication *)self performSelector:v7 withObject:v13];
+        [(SUApplication *)self performSelector:setupSelector withObject:optionsCopy];
         [(SUApplication *)self performSelector:sel_runTestInvocation_ withObject:v10 afterDelay:1.0];
       }
 
@@ -282,19 +282,19 @@ LABEL_6:
 LABEL_12:
     v12.receiver = self;
     v12.super_class = SUApplication;
-    return [(SUApplication *)&v12 runTest:a3 options:a4];
+    return [(SUApplication *)&v12 runTest:test options:options];
   }
 
-  if (![a4 scriptPath] || !objc_msgSend(a4, "scriptEntry"))
+  if (![options scriptPath] || !objc_msgSend(options, "scriptEntry"))
   {
     goto LABEL_12;
   }
 
-  [(SUApplication *)self _runScriptTestWithOptions:a4];
+  [(SUApplication *)self _runScriptTestWithOptions:options];
   return 1;
 }
 
-- (void)_runScriptTestWithOptions:(id)a3
+- (void)_runScriptTestWithOptions:(id)options
 {
   v4 = +[SUClientDispatch scriptExecutionContext];
   v5 = _runScriptTestWithOptions__scriptsLoaded;
@@ -304,11 +304,11 @@ LABEL_12:
     _runScriptTestWithOptions__scriptsLoaded = v5;
   }
 
-  if (![v5 member:{objc_msgSend(a3, "scriptPath")}])
+  if (![v5 member:{objc_msgSend(options, "scriptPath")}])
   {
     v6 = [objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
     [v4 evaluateData:objc_msgSend(MEMORY[0x1E695DEF0] MIMEType:"dataWithContentsOfFile:options:error:" textEncodingName:v6 baseURL:{1, 0), @"text/javascript", 0, 0}];
-    [_runScriptTestWithOptions__scriptsLoaded addObject:{objc_msgSend(a3, "scriptPath")}];
+    [_runScriptTestWithOptions__scriptsLoaded addObject:{objc_msgSend(options, "scriptPath")}];
   }
 
   WebThreadRun();

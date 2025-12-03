@@ -1,11 +1,11 @@
 @interface JavaNetURI
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (JavaNetURI)init;
-- (JavaNetURI)initWithNSString:(id)a3;
+- (JavaNetURI)initWithNSString:(id)string;
 - (NSString)description;
 - (NSString)getHashString;
-- (id)decodeWithNSString:(id)a3;
+- (id)decodeWithNSString:(id)string;
 - (id)getAuthority;
 - (id)getFragment;
 - (id)getPath;
@@ -14,17 +14,17 @@
 - (id)getUserInfo;
 - (id)normalize;
 - (id)parseServerAuthority;
-- (id)relativizeWithJavaNetURI:(id)a3;
-- (id)resolveWithJavaNetURI:(id)a3;
-- (id)resolveWithNSString:(id)a3;
+- (id)relativizeWithJavaNetURI:(id)i;
+- (id)resolveWithJavaNetURI:(id)i;
+- (id)resolveWithNSString:(id)string;
 - (id)setSchemeSpecificPart;
 - (id)toASCIIString;
 - (id)toURL;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaNetURI
@@ -37,19 +37,19 @@
   return self;
 }
 
-- (JavaNetURI)initWithNSString:(id)a3
+- (JavaNetURI)initWithNSString:(id)string
 {
   self->port_ = -1;
   self->serverAuthority_ = 0;
   self->hash__ = -1;
-  sub_10024DD08(self, a3, 0);
+  sub_10024DD08(self, string, 0);
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     goto LABEL_45;
   }
@@ -60,7 +60,7 @@
   }
 
   scheme = self->scheme_;
-  v6 = *(a3 + 2);
+  v6 = *(id + 2);
   if (scheme)
   {
     if (!v6)
@@ -82,12 +82,12 @@
 
   if (self->opaque_)
   {
-    if (*(a3 + 88))
+    if (*(id + 88))
     {
       schemeSpecificPart = self->schemeSpecificPart_;
       if (schemeSpecificPart)
       {
-        v9 = *(a3 + 3);
+        v9 = *(id + 3);
 LABEL_12:
         result = [(NSString *)schemeSpecificPart compareToWithId:v9];
         if (result)
@@ -105,12 +105,12 @@ LABEL_45:
     return 1;
   }
 
-  if (*(a3 + 88))
+  if (*(id + 88))
   {
     return -1;
   }
 
-  v12 = *(a3 + 4);
+  v12 = *(id + 4);
   if (self->authority_)
   {
     if (!v12)
@@ -119,9 +119,9 @@ LABEL_45:
     }
 
     host = self->host_;
-    if (host && (v14 = *(a3 + 6)) != 0)
+    if (host && (v14 = *(id + 6)) != 0)
     {
-      v15 = *(a3 + 5);
+      v15 = *(id + 5);
       if (self->userInfo_)
       {
         if (!v15)
@@ -129,14 +129,14 @@ LABEL_45:
           return 1;
         }
 
-        result = [(NSString *)self->userInfo_ compareToWithId:*(a3 + 5)];
+        result = [(NSString *)self->userInfo_ compareToWithId:*(id + 5)];
         if (result)
         {
           return result;
         }
 
         host = self->host_;
-        v14 = *(a3 + 6);
+        v14 = *(id + 6);
       }
 
       else if (v15)
@@ -151,7 +151,7 @@ LABEL_45:
       }
 
       port = self->port_;
-      v18 = *(a3 + 14);
+      v18 = *(id + 14);
       result = port - v18;
       if (port != v18)
       {
@@ -161,7 +161,7 @@ LABEL_45:
 
     else
     {
-      result = [(NSString *)self->authority_ compareToWithId:*(a3 + 4)];
+      result = [(NSString *)self->authority_ compareToWithId:*(id + 4)];
       if (result)
       {
         return result;
@@ -180,14 +180,14 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  result = [(NSString *)path compareToWithId:*(a3 + 8)];
+  result = [(NSString *)path compareToWithId:*(id + 8)];
   if (result)
   {
     return result;
   }
 
   schemeSpecificPart = self->query_;
-  v9 = *(a3 + 9);
+  v9 = *(id + 9);
   if (schemeSpecificPart)
   {
     if (!v9)
@@ -205,7 +205,7 @@ LABEL_45:
 
 LABEL_13:
   fragment = self->fragment_;
-  v11 = *(a3 + 10);
+  v11 = *(id + 10);
   if (!fragment)
   {
     if (!v11)
@@ -230,7 +230,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -239,7 +239,7 @@ LABEL_13:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -249,7 +249,7 @@ LABEL_13:
     JreThrowClassCastException();
   }
 
-  v5 = *(a3 + 10);
+  v5 = *(equal + 10);
   fragment = self->fragment_;
   if (v5)
   {
@@ -270,7 +270,7 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v8 = *(a3 + 2);
+  v8 = *(equal + 2);
   scheme = self->scheme_;
   if (v8)
   {
@@ -291,20 +291,20 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  if (*(a3 + 88) != 1)
+  if (*(equal + 88) != 1)
   {
     if (self->opaque_)
     {
       goto LABEL_21;
     }
 
-    LODWORD(host) = sub_10024EA88(self->path_, *(a3 + 8));
+    LODWORD(host) = sub_10024EA88(self->path_, *(equal + 8));
     if (!host)
     {
       return host;
     }
 
-    v12 = *(a3 + 9);
+    v12 = *(equal + 9);
     query = self->query_;
     if (v12)
     {
@@ -325,7 +325,7 @@ LABEL_13:
       goto LABEL_21;
     }
 
-    userInfo = *(a3 + 4);
+    userInfo = *(equal + 4);
     authority = self->authority_;
     LOBYTE(host) = (userInfo | authority) == 0;
     if (!userInfo || !authority)
@@ -334,7 +334,7 @@ LABEL_13:
     }
 
     host = self->host_;
-    if (!*(a3 + 6))
+    if (!*(equal + 6))
     {
       if (host)
       {
@@ -357,9 +357,9 @@ LABEL_39:
       return host;
     }
 
-    if (self->port_ == *(a3 + 14))
+    if (self->port_ == *(equal + 14))
     {
-      authority = *(a3 + 5);
+      authority = *(equal + 5);
       userInfo = self->userInfo_;
       LOBYTE(host) = (authority | userInfo) == 0;
       if (!authority || !userInfo)
@@ -380,7 +380,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v10 = *(a3 + 3);
+  v10 = *(equal + 3);
   authority = self->schemeSpecificPart_;
 LABEL_17:
 
@@ -456,18 +456,18 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   LODWORD(self) = *(self + 92);
   if (self == -1)
   {
-    v3 = [JavaNetURI getHashString]_0(v2);
+    v3 = [JavaNetURI getHashString]_0(selfCopy);
     if (!v3)
     {
       JreThrowNullPointerException();
     }
 
     LODWORD(self) = [(NSString *)v3 hash];
-    *(v2 + 92) = self;
+    *(selfCopy + 92) = self;
   }
 
   return self;
@@ -476,7 +476,7 @@ LABEL_17:
 - (NSString)getHashString
 {
   v2 = new_JavaLangStringBuilder_init();
-  v3 = *(a1 + 16);
+  v3 = *(self + 16);
   if (v3)
   {
     if ((atomic_load_explicit(JavaUtilLocale__initialized, memory_order_acquire) & 1) == 0)
@@ -488,28 +488,28 @@ LABEL_17:
     [(JavaLangStringBuilder *)v2 appendWithChar:58];
   }
 
-  if (*(a1 + 88) == 1)
+  if (*(self + 88) == 1)
   {
-    v4 = (a1 + 24);
+    v4 = (self + 24);
 LABEL_21:
     [(JavaLangStringBuilder *)v2 appendWithNSString:*v4];
     goto LABEL_22;
   }
 
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
     [(JavaLangStringBuilder *)v2 appendWithNSString:@"//"];
-    v12 = *(a1 + 48);
+    v12 = *(self + 48);
     if (!v12)
     {
-      v20 = *(a1 + 32);
+      v20 = *(self + 32);
       goto LABEL_16;
     }
 
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
-      [(JavaLangStringBuilder *)v2 appendWithNSString:JreStrcat("$C", v5, v6, v7, v8, v9, v10, v11, *(a1 + 40))];
-      v12 = *(a1 + 48);
+      [(JavaLangStringBuilder *)v2 appendWithNSString:JreStrcat("$C", v5, v6, v7, v8, v9, v10, v11, *(self + 40))];
+      v12 = *(self + 48);
     }
 
     if ((atomic_load_explicit(JavaUtilLocale__initialized, memory_order_acquire) & 1) == 0)
@@ -520,32 +520,32 @@ LABEL_21:
     }
 
     -[JavaLangStringBuilder appendWithNSString:](v2, "appendWithNSString:", [v12 lowercaseStringWithJRELocale:JavaUtilLocale_US_]);
-    if (*(a1 + 56) != -1)
+    if (*(self + 56) != -1)
     {
-      v24 = *(a1 + 56);
+      v24 = *(self + 56);
       v20 = JreStrcat("CI", v13, v14, v15, v16, v17, v18, v19, 58);
 LABEL_16:
       [(JavaLangStringBuilder *)v2 appendWithNSString:v20];
     }
   }
 
-  if (*(a1 + 64))
+  if (*(self + 64))
   {
     [(JavaLangStringBuilder *)v2 appendWithNSString:?];
   }
 
-  v4 = (a1 + 72);
-  if (*(a1 + 72))
+  v4 = (self + 72);
+  if (*(self + 72))
   {
     [(JavaLangStringBuilder *)v2 appendWithChar:63];
     goto LABEL_21;
   }
 
 LABEL_22:
-  if (*(a1 + 80))
+  if (*(self + 80))
   {
     [(JavaLangStringBuilder *)v2 appendWithChar:35];
-    [(JavaLangStringBuilder *)v2 appendWithNSString:*(a1 + 80)];
+    [(JavaLangStringBuilder *)v2 appendWithNSString:*(self + 80)];
   }
 
   v21 = [(JavaLangStringBuilder *)v2 description];
@@ -555,11 +555,11 @@ LABEL_22:
 
 - (id)normalize
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->opaque_)
   {
     v3 = sub_10024F0B8(self->path_, 0);
-    path = v2->path_;
+    path = selfCopy->path_;
     if (!path)
     {
       goto LABEL_7;
@@ -567,13 +567,13 @@ LABEL_22:
 
     if (([(NSString *)path isEqual:v3]& 1) == 0)
     {
-      v5 = sub_10024E870(v2);
+      v5 = sub_10024E870(selfCopy);
       if (v5)
       {
-        v2 = v5;
+        selfCopy = v5;
         JreStrongAssign(&v5->path_, v3);
-        [JavaNetURI setSchemeSpecificPart]_0(v2);
-        return v2;
+        [JavaNetURI setSchemeSpecificPart]_0(selfCopy);
+        return selfCopy;
       }
 
 LABEL_7:
@@ -581,33 +581,33 @@ LABEL_7:
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)setSchemeSpecificPart
 {
   v9 = new_JavaLangStringBuilder_init();
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
-    v12 = *(a1 + 32);
+    v12 = *(self + 32);
     [(JavaLangStringBuilder *)v9 appendWithNSString:JreStrcat("$$", v2, v3, v4, v5, v6, v7, v8, @"//")];
   }
 
-  v10 = *(a1 + 64);
+  v10 = *(self + 64);
   if (v10)
   {
     [(JavaLangStringBuilder *)v9 appendWithNSString:?];
   }
 
-  if (*(a1 + 72))
+  if (*(self + 72))
   {
-    v13 = *(a1 + 72);
+    v13 = *(self + 72);
     [(JavaLangStringBuilder *)v9 appendWithNSString:JreStrcat("C$", v2, v10, v4, v5, v6, v7, v8, 63)];
   }
 
-  JreStrongAssign((a1 + 24), [(JavaLangStringBuilder *)v9 description]);
+  JreStrongAssign((self + 24), [(JavaLangStringBuilder *)v9 description]);
 
-  return JreStrongAssign((a1 + 8), 0);
+  return JreStrongAssign((self + 8), 0);
 }
 
 - (id)parseServerAuthority
@@ -620,48 +620,48 @@ LABEL_7:
   return self;
 }
 
-- (id)relativizeWithJavaNetURI:(id)a3
+- (id)relativizeWithJavaNetURI:(id)i
 {
-  if (!a3)
+  if (!i)
   {
     goto LABEL_20;
   }
 
-  v3 = a3;
-  if ((*(a3 + 88) & 1) == 0 && !self->opaque_)
+  iCopy = i;
+  if ((*(i + 88) & 1) == 0 && !self->opaque_)
   {
     scheme = self->scheme_;
-    v6 = *(a3 + 2);
+    v6 = *(i + 2);
     if (scheme)
     {
       if (![(NSString *)scheme isEqual:v6])
       {
-        return v3;
+        return iCopy;
       }
     }
 
     else if (v6)
     {
-      return v3;
+      return iCopy;
     }
 
     authority = self->authority_;
-    v8 = *(v3 + 4);
+    v8 = *(iCopy + 4);
     if (authority)
     {
       if (![(NSString *)authority isEqual:v8])
       {
-        return v3;
+        return iCopy;
       }
     }
 
     else if (v8)
     {
-      return v3;
+      return iCopy;
     }
 
     v9 = sub_10024F0B8(self->path_, 0);
-    v10 = sub_10024F0B8(*(v3 + 8), 0);
+    v10 = sub_10024F0B8(*(iCopy + 8), 0);
     if (!v9)
     {
       goto LABEL_20;
@@ -688,8 +688,8 @@ LABEL_16:
       v13->serverAuthority_ = 0;
       v13->hash__ = -1;
       v14 = v13;
-      JreStrongAssign(v14 + 10, *(v3 + 10));
-      JreStrongAssign(v14 + 9, *(v3 + 9));
+      JreStrongAssign(v14 + 10, *(iCopy + 10));
+      JreStrongAssign(v14 + 9, *(iCopy + 9));
       if (v11 && v9)
       {
         JreStrongAssign(v14 + 8, [(__CFString *)v11 substring:[(__CFString *)v9 length]]);
@@ -702,24 +702,24 @@ LABEL_20:
     }
   }
 
-  return v3;
+  return iCopy;
 }
 
-- (id)resolveWithJavaNetURI:(id)a3
+- (id)resolveWithJavaNetURI:(id)i
 {
-  if (!a3)
+  if (!i)
   {
     goto LABEL_20;
   }
 
-  if ((*(a3 + 89) & 1) != 0 || self->opaque_)
+  if ((*(i + 89) & 1) != 0 || self->opaque_)
   {
-    return a3;
+    return i;
   }
 
-  if (*(a3 + 4))
+  if (*(i + 4))
   {
-    v7 = sub_10024E870(a3);
+    v7 = sub_10024E870(i);
     if (v7)
     {
       v5 = v7;
@@ -732,19 +732,19 @@ LABEL_20:
     JreThrowNullPointerException();
   }
 
-  v8 = *(a3 + 8);
+  v8 = *(i + 8);
   if (!v8)
   {
     goto LABEL_20;
   }
 
-  if ([v8 isEmpty] && !*(a3 + 2) && !*(a3 + 9))
+  if ([v8 isEmpty] && !*(i + 2) && !*(i + 9))
   {
     v24 = sub_10024E870(self);
     if (v24)
     {
       v5 = v24;
-      JreStrongAssign(&v24->fragment_, *(a3 + 10));
+      JreStrongAssign(&v24->fragment_, *(i + 10));
       return v5;
     }
 
@@ -758,18 +758,18 @@ LABEL_20:
   }
 
   v5 = v9;
-  JreStrongAssign(&v9->fragment_, *(a3 + 10));
-  JreStrongAssign((v5 + 72), *(a3 + 9));
-  v10 = [*(a3 + 8) hasPrefix:@"/"];
-  path = *(a3 + 8);
+  JreStrongAssign(&v9->fragment_, *(i + 10));
+  JreStrongAssign((v5 + 72), *(i + 9));
+  v10 = [*(i + 8) hasPrefix:@"/"];
+  path = *(i + 8);
   if ((v10 & 1) == 0)
   {
-    v12 = [(__CFString *)path isEmpty];
+    isEmpty = [(__CFString *)path isEmpty];
     path = self->path_;
-    if ((v12 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       v13 = [(NSString *)self->path_ substring:0 endIndex:[(__CFString *)path lastIndexOf:47]+ 1];
-      v25 = *(a3 + 8);
+      v25 = *(i + 8);
       path = JreStrcat("$$", v14, v15, v16, v17, v18, v19, v20, v13);
     }
   }
@@ -782,18 +782,18 @@ LABEL_20:
   return v5;
 }
 
-- (id)resolveWithNSString:(id)a3
+- (id)resolveWithNSString:(id)string
 {
-  v4 = JavaNetURI_createWithNSString_(a3);
+  v4 = JavaNetURI_createWithNSString_(string);
 
   return [(JavaNetURI *)self resolveWithJavaNetURI:v4];
 }
 
-- (id)decodeWithNSString:(id)a3
+- (id)decodeWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    return LibcoreNetUriCodec_decodeWithNSString_(a3);
+    return LibcoreNetUriCodec_decodeWithNSString_(string);
   }
 
   else
@@ -888,26 +888,26 @@ LABEL_13:
   return v11;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   sub_10024DD08(self, self->string_, 0);
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   [(JavaNetURI *)self description];
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
 - (void)dealloc
@@ -919,7 +919,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = sub_10024F9F8(&stru_100484358);
     JreStrongAssignAndConsume(&JavaNetURI_USER_INFO_ENCODER_, v2);

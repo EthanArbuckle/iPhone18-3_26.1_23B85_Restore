@@ -1,49 +1,49 @@
 @interface SearchUICommandRowModel
-- (SearchUICommandRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
+- (SearchUICommandRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier;
 - (TLKRichText)title;
-- (void)checkIfCommandIsValidWithCompletionHandler:(id)a3;
-- (void)getSubscriptionStatus:(id)a3;
-- (void)safelyUpdateView:(id)a3;
-- (void)toggleStateWithDetailedSectionView:(id)a3;
-- (void)updateStateWithCommandCardSectionView:(id)a3;
+- (void)checkIfCommandIsValidWithCompletionHandler:(id)handler;
+- (void)getSubscriptionStatus:(id)status;
+- (void)safelyUpdateView:(id)view;
+- (void)toggleStateWithDetailedSectionView:(id)view;
+- (void)updateStateWithCommandCardSectionView:(id)view;
 @end
 
 @implementation SearchUICommandRowModel
 
-- (SearchUICommandRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUICommandRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v11 = a4;
+  sectionCopy = section;
   v27.receiver = self;
   v27.super_class = SearchUICommandRowModel;
-  v12 = [(SearchUICardSectionRowModel *)&v27 initWithResult:a3 cardSection:v11 isInline:1 queryId:a6 itemIdentifier:a7];
+  v12 = [(SearchUICardSectionRowModel *)&v27 initWithResult:result cardSection:sectionCopy isInline:1 queryId:id itemIdentifier:identifier];
   if (v12)
   {
-    v13 = [v11 title];
-    v14 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v13];
+    title = [sectionCopy title];
+    v14 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:title];
     title = v12->_title;
     v12->_title = v14;
 
-    v16 = [v11 toggledTitle];
-    v17 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v16];
+    toggledTitle = [sectionCopy toggledTitle];
+    v17 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:toggledTitle];
     toggledTitle = v12->_toggledTitle;
     v12->_toggledTitle = v17;
 
-    v19 = [v11 subtitle];
-    v20 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v19];
+    subtitle = [sectionCopy subtitle];
+    v20 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:subtitle];
     subtitle = v12->_subtitle;
     v12->_subtitle = v20;
 
-    v22 = [v11 command];
+    command = [sectionCopy command];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v22 domainSubscriptionRequestItem];
+      domainSubscriptionRequestItem = [command domainSubscriptionRequestItem];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [v23 canonicalIdentifier];
+        canonicalIdentifier = [domainSubscriptionRequestItem canonicalIdentifier];
         sportsCanonicalID = v12->_sportsCanonicalID;
-        v12->_sportsCanonicalID = v24;
+        v12->_sportsCanonicalID = canonicalIdentifier;
       }
     }
   }
@@ -51,9 +51,9 @@
   return v12;
 }
 
-- (void)checkIfCommandIsValidWithCompletionHandler:(id)a3
+- (void)checkIfCommandIsValidWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SearchUICommandRowModel *)self subscriptionType]== 1)
   {
     if ([(SearchUICommandRowModel *)self commandSupported])
@@ -62,40 +62,40 @@
       v5[1] = 3221225472;
       v5[2] = __70__SearchUICommandRowModel_checkIfCommandIsValidWithCompletionHandler___block_invoke;
       v5[3] = &unk_1E85B2F88;
-      v6 = v4;
+      v6 = handlerCopy;
       [_TtC8SearchUI26SearchUISportsKitUtilities liveActivitiesEnabledWithCompletionBlock:v5];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, [(SearchUICommandRowModel *)self commandSupported]);
+    (*(handlerCopy + 2))(handlerCopy, [(SearchUICommandRowModel *)self commandSupported]);
   }
 }
 
-- (void)getSubscriptionStatus:(id)a3
+- (void)getSubscriptionStatus:(id)status
 {
   sportsCanonicalID = self->_sportsCanonicalID;
   if (sportsCanonicalID)
   {
-    [_TtC8SearchUI26SearchUISportsKitUtilities checkForSessionWithCanonicalId:sportsCanonicalID completionBlock:a3];
+    [_TtC8SearchUI26SearchUISportsKitUtilities checkForSessionWithCanonicalId:sportsCanonicalID completionBlock:status];
   }
 
   else
   {
-    v5 = a3;
+    statusCopy = status;
     v6 = SearchUIGeneralLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       [SearchUICommandRowModel getSubscriptionStatus:v6];
     }
 
-    v5[2](v5, 0);
+    statusCopy[2](statusCopy, 0);
   }
 }
 
@@ -114,17 +114,17 @@
   return *(&self->super.super.super.isa + *v2);
 }
 
-- (void)safelyUpdateView:(id)a3
+- (void)safelyUpdateView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = MEMORY[0x1E69D9240];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SearchUICommandRowModel_safelyUpdateView___block_invoke;
   v7[3] = &unk_1E85B2540;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = viewCopy;
+  selfCopy = self;
+  v6 = viewCopy;
   [v5 dispatchMainIfNecessary:v7];
 }
 
@@ -142,9 +142,9 @@ void __44__SearchUICommandRowModel_safelyUpdateView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateStateWithCommandCardSectionView:(id)a3
+- (void)updateStateWithCommandCardSectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(SearchUICommandRowModel *)self commandSupported])
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -152,14 +152,14 @@ void __44__SearchUICommandRowModel_safelyUpdateView___block_invoke(uint64_t a1)
     v5[2] = __65__SearchUICommandRowModel_updateStateWithCommandCardSectionView___block_invoke;
     v5[3] = &unk_1E85B2518;
     v5[4] = self;
-    v6 = v4;
+    v6 = viewCopy;
     [(SearchUICommandRowModel *)self getSubscriptionStatus:v5];
   }
 }
 
-- (void)toggleStateWithDetailedSectionView:(id)a3
+- (void)toggleStateWithDetailedSectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(SearchUICommandRowModel *)self commandSupported])
   {
     v5 = self->_sportsCanonicalID;
@@ -171,7 +171,7 @@ void __44__SearchUICommandRowModel_safelyUpdateView___block_invoke(uint64_t a1)
     v6 = v5;
     v8 = v6;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = viewCopy;
     [(SearchUICommandRowModel *)self getSubscriptionStatus:v7];
 
     objc_destroyWeak(&v10);

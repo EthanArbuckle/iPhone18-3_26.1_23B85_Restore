@@ -2,49 +2,49 @@
 + (id)logger;
 - (SKStatusSubscription)personalStatusSubscription;
 - (SKStatusSubscriptionDaemonConnection)daemonConnection;
-- (SKStatusSubscriptionService)initWithStatusTypeIdentifier:(id)a3;
+- (SKStatusSubscriptionService)initWithStatusTypeIdentifier:(id)identifier;
 - (id)allStatusSubscriptionsWithActiveAssertions;
 - (id)allStatusSubscriptionsWithActiveSubscriptions;
-- (id)statusSubscriptionForHandle:(id)a3;
-- (id)subscriptionValidationTokenForHandle:(id)a3 error:(id *)a4;
-- (id)subscriptionValidationTokensForHandle:(id)a3 error:(id *)a4;
-- (void)_delegatesPerformOnResponseQueueForGroup:(id)a3 block:(id)a4;
+- (id)statusSubscriptionForHandle:(id)handle;
+- (id)subscriptionValidationTokenForHandle:(id)handle error:(id *)error;
+- (id)subscriptionValidationTokensForHandle:(id)handle error:(id *)error;
+- (void)_delegatesPerformOnResponseQueueForGroup:(id)group block:(id)block;
 - (void)_registerForDelegateCallbacksIfNecessary;
-- (void)_simulateCrashIfNecessaryForError:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)a3 completion:(id)a4;
+- (void)_simulateCrashIfNecessaryForError:(id)error;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)personalStatusSubscriptionWithCompletion:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)statusSubscriptionForHandle:(id)a3 completion:(id)a4;
-- (void)subscriptionDaemonConnectionDidDisconnect:(id)a3;
-- (void)subscriptionInvitationReceived:(id)a3 completion:(id)a4;
-- (void)subscriptionReceivedStatusUpdate:(id)a3 completion:(id)a4;
-- (void)subscriptionStateChangedForSubscriptions:(id)a3 completion:(id)a4;
-- (void)subscriptionValidationTokenForHandle:(id)a3 completion:(id)a4;
-- (void)subscriptionValidationTokensForHandle:(id)a3 completion:(id)a4;
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)a3 fromSender:(id)a4 completion:(id)a5;
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)a3 fromSender:(id)a4 completion:(id)a5;
+- (void)personalStatusSubscriptionWithCompletion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)statusSubscriptionForHandle:(id)handle completion:(id)completion;
+- (void)subscriptionDaemonConnectionDidDisconnect:(id)disconnect;
+- (void)subscriptionInvitationReceived:(id)received completion:(id)completion;
+- (void)subscriptionReceivedStatusUpdate:(id)update completion:(id)completion;
+- (void)subscriptionStateChangedForSubscriptions:(id)subscriptions completion:(id)completion;
+- (void)subscriptionValidationTokenForHandle:(id)handle completion:(id)completion;
+- (void)subscriptionValidationTokensForHandle:(id)handle completion:(id)completion;
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)token fromSender:(id)sender completion:(id)completion;
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)tokens fromSender:(id)sender completion:(id)completion;
 @end
 
 @implementation SKStatusSubscriptionService
 
-- (SKStatusSubscriptionService)initWithStatusTypeIdentifier:(id)a3
+- (SKStatusSubscriptionService)initWithStatusTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SKStatusSubscriptionService;
   v5 = [(SKStatusSubscriptionService *)&v15 init];
   if (v5)
   {
-    ValidateIdentifierMeetsBlastdoorRequirements(v4);
-    v6 = [v4 copy];
+    ValidateIdentifierMeetsBlastdoorRequirements(identifierCopy);
+    v6 = [identifierCopy copy];
     statusTypeIdentifier = v5->_statusTypeIdentifier;
     v5->_statusTypeIdentifier = v6;
 
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     delegates = v5->_delegates;
-    v5->_delegates = v8;
+    v5->_delegates = weakToStrongObjectsMapTable;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_DEFAULT, 0);
@@ -57,19 +57,19 @@
   return v5;
 }
 
-- (id)statusSubscriptionForHandle:(id)a3
+- (id)statusSubscriptionForHandle:(id)handle
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handleCopy = handle;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v5 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v6 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = handleCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v5;
+    *&buf[14] = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v6, OS_LOG_TYPE_DEFAULT, "Fetching subscription (sync) for handle %@ statusType: %{public}@", buf, 0x16u);
   }
 
@@ -79,7 +79,7 @@
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
   v27 = 0;
-  v7 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -87,20 +87,20 @@
   v21[3] = &unk_279D12DF8;
   objc_copyWeak(&v22, &location);
   v21[4] = buf;
-  v8 = [v7 synchronousRemoteDaemonWithErrorHandler:v21];
+  v8 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v21];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __59__SKStatusSubscriptionService_statusSubscriptionForHandle___block_invoke_4;
   v17 = &unk_279D12E20;
-  v9 = v4;
+  v9 = handleCopy;
   v18 = v9;
   objc_copyWeak(&v20, &location);
   v19 = buf;
-  [v8 subscriptionMetadataForHandle:v9 statusTypeIdentifier:v5 completion:&v14];
+  [v8 subscriptionMetadataForHandle:v9 statusTypeIdentifier:statusTypeIdentifier completion:&v14];
   if (*(*&buf[8] + 40))
   {
     v10 = [SKStatusSubscription alloc];
-    v11 = [(SKStatusSubscription *)v10 initWithSubscriptionMetadata:*(*&buf[8] + 40) daemonConnection:v7, v14, v15, v16, v17, v18];
+    v11 = [(SKStatusSubscription *)v10 initWithSubscriptionMetadata:*(*&buf[8] + 40) daemonConnection:daemonConnection, v14, v15, v16, v17, v18];
   }
 
   else
@@ -187,43 +187,43 @@ void __59__SKStatusSubscriptionService_statusSubscriptionForHandle___block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)statusSubscriptionForHandle:(id)a3 completion:(id)a4
+- (void)statusSubscriptionForHandle:(id)handle completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v9 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = handleCopy;
     v25 = 2114;
-    v26 = v8;
+    v26 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Fetching subscription (async) for handle %@ statusType: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(buf, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __70__SKStatusSubscriptionService_statusSubscriptionForHandle_completion___block_invoke;
   v21[3] = &unk_279D12BA0;
   objc_copyWeak(&v22, buf);
-  v11 = [v10 asynchronousRemoteDaemonWithErrorHandler:v21];
+  v11 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v21];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__SKStatusSubscriptionService_statusSubscriptionForHandle_completion___block_invoke_7;
   v16[3] = &unk_279D12E48;
-  v12 = v6;
+  v12 = handleCopy;
   v17 = v12;
   objc_copyWeak(&v20, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = daemonConnection;
   v18 = v14;
-  [v11 subscriptionMetadataForHandle:v12 statusTypeIdentifier:v8 completion:v16];
+  [v11 subscriptionMetadataForHandle:v12 statusTypeIdentifier:statusTypeIdentifier completion:v16];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v22);
@@ -304,12 +304,12 @@ LABEL_10:
 {
   v27 = *MEMORY[0x277D85DE8];
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v3 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v4 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Fetching personal subscription (sync) for statusType: %{public}@", &buf, 0xCu);
   }
 
@@ -319,7 +319,7 @@ LABEL_10:
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  v5 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -327,20 +327,20 @@ LABEL_10:
   v19[3] = &unk_279D12DF8;
   objc_copyWeak(&v20, &location);
   v19[4] = &buf;
-  v6 = [v5 synchronousRemoteDaemonWithErrorHandler:v19];
+  v6 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v19];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __57__SKStatusSubscriptionService_personalStatusSubscription__block_invoke_8;
   v15 = &unk_279D12E70;
   objc_copyWeak(&v18, &location);
   p_buf = &buf;
-  v7 = v3;
+  v7 = statusTypeIdentifier;
   v16 = v7;
   [v6 subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:v7 completion:&v12];
   if (*(*(&buf + 1) + 40))
   {
     v8 = [SKStatusSubscription alloc];
-    v9 = [(SKStatusSubscription *)v8 initWithSubscriptionMetadata:*(*(&buf + 1) + 40) daemonConnection:v5, v12, v13, v14, v15];
+    v9 = [(SKStatusSubscription *)v8 initWithSubscriptionMetadata:*(*(&buf + 1) + 40) daemonConnection:daemonConnection, v12, v13, v14, v15];
   }
 
   else
@@ -423,38 +423,38 @@ void __57__SKStatusSubscriptionService_personalStatusSubscription__block_invoke_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)personalStatusSubscriptionWithCompletion:(id)a3
+- (void)personalStatusSubscriptionWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v5 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v6 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v5;
+    v21 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v6, OS_LOG_TYPE_DEFAULT, "Fetching personal subscription (async) for statusType: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(buf, self);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__SKStatusSubscriptionService_personalStatusSubscriptionWithCompletion___block_invoke;
   v18[3] = &unk_279D12BA0;
   objc_copyWeak(&v19, buf);
-  v8 = [v7 asynchronousRemoteDaemonWithErrorHandler:v18];
+  v8 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v18];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SKStatusSubscriptionService_personalStatusSubscriptionWithCompletion___block_invoke_9;
   v13[3] = &unk_279D12E98;
   objc_copyWeak(&v17, buf);
-  v9 = v4;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = v7;
+  v10 = daemonConnection;
   v14 = v10;
-  v11 = v5;
+  v11 = statusTypeIdentifier;
   v15 = v11;
   [v8 subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:v11 completion:v13];
 
@@ -534,12 +534,12 @@ LABEL_10:
 {
   v35 = *MEMORY[0x277D85DE8];
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v3 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v4 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Fetching all subscription assertions (sync) for statusType: %{public}@", &buf, 0xCu);
   }
 
@@ -549,7 +549,7 @@ LABEL_10:
   v32 = __Block_byref_object_copy__1;
   v33 = __Block_byref_object_dispose__1;
   v34 = 0;
-  v5 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(&location, self);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -557,12 +557,12 @@ LABEL_10:
   v26[3] = &unk_279D12DF8;
   objc_copyWeak(&v27, &location);
   v26[4] = &buf;
-  v6 = [v5 synchronousRemoteDaemonWithErrorHandler:v26];
+  v6 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __73__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveAssertions__block_invoke_10;
   v22[3] = &unk_279D12EC0;
-  v7 = v3;
+  v7 = statusTypeIdentifier;
   v23 = v7;
   objc_copyWeak(&v25, &location);
   p_buf = &buf;
@@ -588,7 +588,7 @@ LABEL_10:
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [SKStatusSubscription alloc];
-        v15 = [(SKStatusSubscription *)v14 initWithSubscriptionMetadata:v13 daemonConnection:v5, v18];
+        v15 = [(SKStatusSubscription *)v14 initWithSubscriptionMetadata:v13 daemonConnection:daemonConnection, v18];
         if (v15)
         {
           [v8 addObject:v15];
@@ -680,12 +680,12 @@ void __73__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveAssertion
 {
   v35 = *MEMORY[0x277D85DE8];
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v3 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v4 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Fetching all active subscription (sync) for statusType: %{public}@", &buf, 0xCu);
   }
 
@@ -695,7 +695,7 @@ void __73__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveAssertion
   v32 = __Block_byref_object_copy__1;
   v33 = __Block_byref_object_dispose__1;
   v34 = 0;
-  v5 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(&location, self);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -703,12 +703,12 @@ void __73__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveAssertion
   v26[3] = &unk_279D12DF8;
   objc_copyWeak(&v27, &location);
   v26[4] = &buf;
-  v6 = [v5 synchronousRemoteDaemonWithErrorHandler:v26];
+  v6 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveSubscriptions__block_invoke_13;
   v22[3] = &unk_279D12EC0;
-  v7 = v3;
+  v7 = statusTypeIdentifier;
   v23 = v7;
   objc_copyWeak(&v25, &location);
   p_buf = &buf;
@@ -734,7 +734,7 @@ void __73__SKStatusSubscriptionService_allStatusSubscriptionsWithActiveAssertion
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [SKStatusSubscription alloc];
-        v15 = [(SKStatusSubscription *)v14 initWithSubscriptionMetadata:v13 daemonConnection:v5, v18];
+        v15 = [(SKStatusSubscription *)v14 initWithSubscriptionMetadata:v13 daemonConnection:daemonConnection, v18];
         if (v15)
         {
           [v8 addObject:v15];
@@ -887,45 +887,45 @@ void __84__SKStatusSubscriptionService__allStatusSubscriptionsIncludingPersonalS
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)a3 completion:(id)a4
+- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)identifier completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v9 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = v8;
+    v26 = statusTypeIdentifier;
     v27 = 2112;
-    v28 = v6;
+    v28 = identifierCopy;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Fetching all subscription with persistent assertion for statusType: %{public}@ application identifer: %@", buf, 0x16u);
   }
 
-  v10 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(buf, self);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __124__SKStatusSubscriptionService_allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier_completion___block_invoke;
   v22[3] = &unk_279D12B50;
   objc_copyWeak(&v24, buf);
-  v11 = v7;
+  v11 = completionCopy;
   v23 = v11;
-  v12 = [v10 asynchronousRemoteDaemonWithErrorHandler:v22];
+  v12 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v22];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __124__SKStatusSubscriptionService_allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier_completion___block_invoke_15;
   v17[3] = &unk_279D12EE8;
-  v13 = v8;
+  v13 = statusTypeIdentifier;
   v18 = v13;
   objc_copyWeak(&v21, buf);
   v14 = v11;
   v20 = v14;
-  v15 = v10;
+  v15 = daemonConnection;
   v19 = v15;
-  [v12 allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:v6 statusTypeIdentifier:v13 completion:v17];
+  [v12 allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:identifierCopy statusTypeIdentifier:v13 completion:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v24);
@@ -1029,20 +1029,20 @@ void __124__SKStatusSubscriptionService_allStatusSubscriptionsWithPersistentSubs
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subscriptionValidationTokensForHandle:(id)a3 error:(id *)a4
+- (id)subscriptionValidationTokensForHandle:(id)handle error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v7 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v8 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 handleString];
+    handleString = [handleCopy handleString];
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = statusTypeIdentifier;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = handleString;
     _os_log_impl(&dword_26BA07000, v8, OS_LOG_TYPE_DEFAULT, "Fetching channel validation token (sync) for statusType: %{public}@ handle: %@", buf, 0x16u);
   }
 
@@ -1058,7 +1058,7 @@ void __124__SKStatusSubscriptionService_allStatusSubscriptionsWithPersistentSubs
   v26 = __Block_byref_object_copy__1;
   v27 = __Block_byref_object_dispose__1;
   v28 = 0;
-  v10 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1067,19 +1067,19 @@ void __124__SKStatusSubscriptionService_allStatusSubscriptionsWithPersistentSubs
   objc_copyWeak(&v21, &location);
   v20[4] = buf;
   v20[5] = &v23;
-  v11 = [v10 synchronousRemoteDaemonWithErrorHandler:v20];
+  v11 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v20];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_error___block_invoke_16;
   v16[3] = &unk_279D12F38;
   objc_copyWeak(&v19, &location);
-  v12 = v6;
+  v12 = handleCopy;
   v17 = v12;
   v18 = buf;
-  [v11 subscriptionValidationTokensForHandle:v12 statusTypeIdentifier:v7 completion:v16];
-  if (a4)
+  [v11 subscriptionValidationTokensForHandle:v12 statusTypeIdentifier:statusTypeIdentifier completion:v16];
+  if (error)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   v13 = *(*&buf[8] + 40);
@@ -1165,34 +1165,34 @@ void __75__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_err
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionValidationTokensForHandle:(id)a3 completion:(id)a4
+- (void)subscriptionValidationTokensForHandle:(id)handle completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v9 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 handleString];
+    handleString = [handleCopy handleString];
     *buf = 138543618;
-    v25 = v8;
+    v25 = statusTypeIdentifier;
     v26 = 2112;
-    v27 = v10;
+    v27 = handleString;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Fetching channel validation token (async) for statusType: %{public}@ handle: %@", buf, 0x16u);
   }
 
-  v11 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(buf, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_completion___block_invoke;
   v21[3] = &unk_279D12B50;
   objc_copyWeak(&v23, buf);
-  v12 = v7;
+  v12 = completionCopy;
   v22 = v12;
-  v13 = [v11 asynchronousRemoteDaemonWithErrorHandler:v21];
+  v13 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v21];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __80__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_completion___block_invoke_18;
@@ -1200,9 +1200,9 @@ void __75__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_err
   objc_copyWeak(&v20, buf);
   v14 = v12;
   v19 = v14;
-  v15 = v6;
+  v15 = handleCopy;
   v18 = v15;
-  [v13 subscriptionValidationTokensForHandle:v15 statusTypeIdentifier:v8 completion:v17];
+  [v13 subscriptionValidationTokensForHandle:v15 statusTypeIdentifier:statusTypeIdentifier completion:v17];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v23);
@@ -1280,49 +1280,49 @@ void __80__SKStatusSubscriptionService_subscriptionValidationTokensForHandle_com
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)a3 fromSender:(id)a4 completion:(id)a5
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)tokens fromSender:(id)sender completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokensCopy = tokens;
+  senderCopy = sender;
+  completionCopy = completion;
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
-  v11 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
   v12 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 handleString];
+    handleString = [senderCopy handleString];
     *buf = 138412802;
-    v30 = v8;
+    v30 = tokensCopy;
     v31 = 2114;
-    v32 = v11;
+    v32 = statusTypeIdentifier;
     v33 = 2112;
-    v34 = v13;
+    v34 = handleString;
     _os_log_impl(&dword_26BA07000, v12, OS_LOG_TYPE_DEFAULT, "Validating subscription validation token %@ for statusType: %{public}@ fromHandle: %@", buf, 0x20u);
   }
 
-  v14 = [(SKStatusSubscriptionService *)self daemonConnection];
+  daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
   objc_initWeak(buf, self);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __123__SKStatusSubscriptionService_validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens_fromSender_completion___block_invoke;
   v26[3] = &unk_279D12B50;
   objc_copyWeak(&v28, buf);
-  v15 = v10;
+  v15 = completionCopy;
   v27 = v15;
-  v16 = [v14 asynchronousRemoteDaemonWithErrorHandler:v26];
+  v16 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v26];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __123__SKStatusSubscriptionService_validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens_fromSender_completion___block_invoke_19;
   v21[3] = &unk_279D12F88;
   objc_copyWeak(&v25, buf);
-  v17 = v8;
+  v17 = tokensCopy;
   v22 = v17;
-  v18 = v9;
+  v18 = senderCopy;
   v23 = v18;
   v19 = v15;
   v24 = v19;
-  [v16 validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v17 fromSender:v18 statusTypeIdentifier:v11 completion:v21];
+  [v16 validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v17 fromSender:v18 statusTypeIdentifier:statusTypeIdentifier completion:v21];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v28);
@@ -1402,25 +1402,25 @@ void __123__SKStatusSubscriptionService_validatePersonalStatusSubscriptionMatche
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v7 = self->_delegates;
   objc_sync_enter(v7);
-  v8 = [[SKDelegateResponseQueue alloc] initWithQueue:v6];
-  [(NSMapTable *)self->_delegates setObject:v8 forKey:v9];
+  v8 = [[SKDelegateResponseQueue alloc] initWithQueue:queueCopy];
+  [(NSMapTable *)self->_delegates setObject:v8 forKey:delegateCopy];
 
   objc_sync_exit(v7);
   [(SKStatusSubscriptionService *)self _registerForDelegateCallbacksIfNecessary];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSMapTable *)self->_delegates removeObjectForKey:v5];
+  [(NSMapTable *)self->_delegates removeObjectForKey:delegateCopy];
   objc_sync_exit(v4);
 }
 
@@ -1440,29 +1440,29 @@ void __123__SKStatusSubscriptionService_validatePersonalStatusSubscriptionMatche
     self->_registeredForDelegateCallbacks = 1;
     objc_sync_exit(obj);
 
-    v3 = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
+    statusTypeIdentifier = [(SKStatusSubscriptionService *)self statusTypeIdentifier];
     v4 = +[SKStatusSubscriptionService logger];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v3;
+      v17 = statusTypeIdentifier;
       _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Registering for delegate callbacks for statusTypeIdentifier: %{public}@", buf, 0xCu);
     }
 
-    v5 = [(SKStatusSubscriptionService *)self daemonConnection];
+    daemonConnection = [(SKStatusSubscriptionService *)self daemonConnection];
     objc_initWeak(buf, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__SKStatusSubscriptionService__registerForDelegateCallbacksIfNecessary__block_invoke;
     v14[3] = &unk_279D12BA0;
     objc_copyWeak(&v15, buf);
-    v6 = [v5 asynchronousRemoteDaemonWithErrorHandler:v14];
+    v6 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v14];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __71__SKStatusSubscriptionService__registerForDelegateCallbacksIfNecessary__block_invoke_22;
     v11[3] = &unk_279D12BC8;
     objc_copyWeak(&v13, buf);
-    v7 = v3;
+    v7 = statusTypeIdentifier;
     v12 = v7;
     [v6 registerForDelegateCallbacksWithStatusTypeIdentifier:v7 completion:v11];
 
@@ -1534,7 +1534,7 @@ void __71__SKStatusSubscriptionService__registerForDelegateCallbacksIfNecessary_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionDaemonConnectionDidDisconnect:(id)a3
+- (void)subscriptionDaemonConnectionDidDisconnect:(id)disconnect
 {
   v4 = self->_delegates;
   objc_sync_enter(v4);
@@ -1577,16 +1577,16 @@ void __73__SKStatusSubscriptionService_subscriptionDaemonConnectionDidDisconnect
   }
 }
 
-- (void)subscriptionStateChangedForSubscriptions:(id)a3 completion:(id)a4
+- (void)subscriptionStateChangedForSubscriptions:(id)subscriptions completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v18 = a4;
+  subscriptionsCopy = subscriptions;
+  completionCopy = completion;
   v7 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = subscriptionsCopy;
     _os_log_impl(&dword_26BA07000, v7, OS_LOG_TYPE_DEFAULT, "Subscription state changed: %@", buf, 0xCu);
   }
 
@@ -1595,7 +1595,7 @@ void __73__SKStatusSubscriptionService_subscriptionDaemonConnectionDidDisconnect
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v6;
+  obj = subscriptionsCopy;
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -1635,8 +1635,8 @@ void __73__SKStatusSubscriptionService_subscriptionDaemonConnectionDidDisconnect
   block[1] = 3221225472;
   block[2] = __83__SKStatusSubscriptionService_subscriptionStateChangedForSubscriptions_completion___block_invoke_30;
   block[3] = &unk_279D12C40;
-  v21 = v18;
-  v16 = v18;
+  v21 = completionCopy;
+  v16 = completionCopy;
   dispatch_group_notify(v8, privateWorkQueue, block);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1672,21 +1672,21 @@ void __83__SKStatusSubscriptionService_subscriptionStateChangedForSubscriptions_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionReceivedStatusUpdate:(id)a3 completion:(id)a4
+- (void)subscriptionReceivedStatusUpdate:(id)update completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v8 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = updateCopy;
     _os_log_impl(&dword_26BA07000, v8, OS_LOG_TYPE_DEFAULT, "Subscription received a status update: %@", buf, 0xCu);
   }
 
   v9 = dispatch_group_create();
-  v10 = [[SKStatusSubscription alloc] initWithSubscriptionMetadata:v6 daemonConnection:self->_daemonConnection];
+  v10 = [[SKStatusSubscription alloc] initWithSubscriptionMetadata:updateCopy daemonConnection:self->_daemonConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__SKStatusSubscriptionService_subscriptionReceivedStatusUpdate_completion___block_invoke;
@@ -1699,8 +1699,8 @@ void __83__SKStatusSubscriptionService_subscriptionStateChangedForSubscriptions_
   v15[1] = 3221225472;
   v15[2] = __75__SKStatusSubscriptionService_subscriptionReceivedStatusUpdate_completion___block_invoke_34;
   v15[3] = &unk_279D12C40;
-  v16 = v7;
-  v13 = v7;
+  v16 = completionCopy;
+  v13 = completionCopy;
   dispatch_group_notify(v9, privateWorkQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1736,21 +1736,21 @@ void __75__SKStatusSubscriptionService_subscriptionReceivedStatusUpdate_completi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionInvitationReceived:(id)a3 completion:(id)a4
+- (void)subscriptionInvitationReceived:(id)received completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  completionCopy = completion;
   v8 = +[SKStatusSubscriptionService logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = receivedCopy;
     _os_log_impl(&dword_26BA07000, v8, OS_LOG_TYPE_DEFAULT, "Invitation received for subscription: %@", buf, 0xCu);
   }
 
   v9 = dispatch_group_create();
-  v10 = [[SKStatusSubscription alloc] initWithSubscriptionMetadata:v6 daemonConnection:self->_daemonConnection];
+  v10 = [[SKStatusSubscription alloc] initWithSubscriptionMetadata:receivedCopy daemonConnection:self->_daemonConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__SKStatusSubscriptionService_subscriptionInvitationReceived_completion___block_invoke;
@@ -1763,8 +1763,8 @@ void __75__SKStatusSubscriptionService_subscriptionReceivedStatusUpdate_completi
   v15[1] = 3221225472;
   v15[2] = __73__SKStatusSubscriptionService_subscriptionInvitationReceived_completion___block_invoke_37;
   v15[3] = &unk_279D12C40;
-  v16 = v7;
-  v13 = v7;
+  v16 = completionCopy;
+  v13 = completionCopy;
   dispatch_group_notify(v9, privateWorkQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1800,11 +1800,11 @@ void __73__SKStatusSubscriptionService_subscriptionInvitationReceived_completion
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_delegatesPerformOnResponseQueueForGroup:(id)a3 block:(id)a4
+- (void)_delegatesPerformOnResponseQueueForGroup:(id)group block:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   v8 = self->_delegates;
   objc_sync_enter(v8);
   v9 = [(NSMapTable *)self->_delegates copy];
@@ -1840,16 +1840,16 @@ void __73__SKStatusSubscriptionService_subscriptionInvitationReceived_completion
 
         v14 = *(*(&v22 + 1) + 8 * i);
         v15 = [v9 objectForKey:v14];
-        v16 = [v15 dispatchQueue];
-        dispatch_group_enter(v6);
+        dispatchQueue = [v15 dispatchQueue];
+        dispatch_group_enter(groupCopy);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __78__SKStatusSubscriptionService__delegatesPerformOnResponseQueueForGroup_block___block_invoke;
         block[3] = &unk_279D12BF0;
-        v21 = v7;
+        v21 = blockCopy;
         block[4] = v14;
-        v20 = v6;
-        dispatch_async(v16, block);
+        v20 = groupCopy;
+        dispatch_async(dispatchQueue, block);
       }
 
       v11 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -1870,25 +1870,25 @@ void __78__SKStatusSubscriptionService__delegatesPerformOnResponseQueueForGroup_
   dispatch_group_leave(v3);
 }
 
-- (void)_simulateCrashIfNecessaryForError:(id)a3
+- (void)_simulateCrashIfNecessaryForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:@"SKStatusKitErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"SKStatusKitErrorDomain"])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 == 1)
+  if (code == 1)
   {
-    v5 = +[SKStatusSubscriptionService logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    domain = +[SKStatusSubscriptionService logger];
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_FAULT))
     {
-      [(SKStatusSubscriptionService *)self _simulateCrashIfNecessaryForError:v5];
+      [(SKStatusSubscriptionService *)self _simulateCrashIfNecessaryForError:domain];
     }
 
     goto LABEL_5;
@@ -1918,42 +1918,42 @@ uint64_t __37__SKStatusSubscriptionService_logger__block_invoke()
 
 - (SKStatusSubscriptionDaemonConnection)daemonConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  daemonConnection = v2->_daemonConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  daemonConnection = selfCopy->_daemonConnection;
   if (!daemonConnection)
   {
-    v4 = [[SKStatusSubscriptionDaemonConnection alloc] initWithSubscriptionDaemonDelegate:v2 connectionDelegate:v2];
-    v5 = v2->_daemonConnection;
-    v2->_daemonConnection = v4;
+    v4 = [[SKStatusSubscriptionDaemonConnection alloc] initWithSubscriptionDaemonDelegate:selfCopy connectionDelegate:selfCopy];
+    v5 = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v4;
 
-    daemonConnection = v2->_daemonConnection;
+    daemonConnection = selfCopy->_daemonConnection;
   }
 
   v6 = daemonConnection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)subscriptionValidationTokenForHandle:(id)a3 error:(id *)a4
+- (id)subscriptionValidationTokenForHandle:(id)handle error:(id *)error
 {
-  v4 = [(SKStatusSubscriptionService *)self subscriptionValidationTokensForHandle:a3 error:a4];
-  v5 = [v4 subscriptionValidationToken];
+  v4 = [(SKStatusSubscriptionService *)self subscriptionValidationTokensForHandle:handle error:error];
+  subscriptionValidationToken = [v4 subscriptionValidationToken];
 
-  return v5;
+  return subscriptionValidationToken;
 }
 
-- (void)subscriptionValidationTokenForHandle:(id)a3 completion:(id)a4
+- (void)subscriptionValidationTokenForHandle:(id)handle completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __91__SKStatusSubscriptionService_Deprecated__subscriptionValidationTokenForHandle_completion___block_invoke;
   v8[3] = &unk_279D12FD8;
-  v9 = v6;
-  v7 = v6;
-  [(SKStatusSubscriptionService *)self subscriptionValidationTokensForHandle:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SKStatusSubscriptionService *)self subscriptionValidationTokensForHandle:handle completion:v8];
 }
 
 void __91__SKStatusSubscriptionService_Deprecated__subscriptionValidationTokenForHandle_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1963,14 +1963,14 @@ void __91__SKStatusSubscriptionService_Deprecated__subscriptionValidationTokenFo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)a3 fromSender:(id)a4 completion:(id)a5
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)token fromSender:(id)sender completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SKSubscriptionValidationTokens alloc] initWithSubscriptionValidationToken:v10 encryptionValidationToken:0];
+  completionCopy = completion;
+  senderCopy = sender;
+  tokenCopy = token;
+  v11 = [[SKSubscriptionValidationTokens alloc] initWithSubscriptionValidationToken:tokenCopy encryptionValidationToken:0];
 
-  [(SKStatusSubscriptionService *)self validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v11 fromSender:v9 completion:v8];
+  [(SKStatusSubscriptionService *)self validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v11 fromSender:senderCopy completion:completionCopy];
 }
 
 void __59__SKStatusSubscriptionService_statusSubscriptionForHandle___block_invoke_cold_1()

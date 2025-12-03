@@ -1,24 +1,24 @@
 @interface GamingMetadataModel
 - (GamingMetadataModel)init;
-- (GamingMetadataModel)initWithCoder:(id)a3;
+- (GamingMetadataModel)initWithCoder:(id)coder;
 - (NSString)debugDescription;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GamingMetadataModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5C57C0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5C57C0(coderCopy);
 }
 
-- (GamingMetadataModel)initWithCoder:(id)a3
+- (GamingMetadataModel)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_24E5C638C(v3);
+  coderCopy = coder;
+  v4 = sub_24E5C638C(coderCopy);
 
   return v4;
 }
@@ -32,7 +32,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E5C5E5C();
 
   v3 = sub_24E5D2CB0();

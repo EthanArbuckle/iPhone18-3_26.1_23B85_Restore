@@ -1,12 +1,12 @@
 @interface MSDLocalization
-+ (BOOL)getChannelWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forDeviceClass:(id)a5;
-+ (BOOL)getRetailWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forDeviceClass:(id)a5;
-+ (BOOL)getWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forOwnershipWarningFlag:(id)a5;
-+ (id)getLocalizedOwnershipWarnings:(id)a3;
++ (BOOL)getChannelWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forDeviceClass:(id)class;
++ (BOOL)getRetailWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forDeviceClass:(id)class;
++ (BOOL)getWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forOwnershipWarningFlag:(id)flag;
++ (id)getLocalizedOwnershipWarnings:(id)warnings;
 + (id)sharedInstance;
-+ (void)fillInMissingLocales:(id)a3 withOwnershipWarningMsg:(id)a4;
++ (void)fillInMissingLocales:(id)locales withOwnershipWarningMsg:(id)msg;
 - (MSDLocalization)init;
-- (id)localizedStringWithKey:(id)a3 defaultString:(id)a4;
+- (id)localizedStringWithKey:(id)key defaultString:(id)string;
 - (void)init;
 @end
 
@@ -43,9 +43,9 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
     if (v3)
     {
       v5 = MEMORY[0x277CCA8D8];
-      v6 = [v3 localizations];
-      v7 = [MEMORY[0x277CBEAF8] preferredLanguages];
-      v8 = [v5 preferredLocalizationsFromArray:v6 forPreferences:v7];
+      localizations = [v3 localizations];
+      preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+      v8 = [v5 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
       v9 = [v8 objectAtIndexedSubscript:0];
       v10 = [v4 pathForResource:@"Localizable" ofType:@"strings" inDirectory:@"." forLocalization:v9];
@@ -73,17 +73,17 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)localizedStringWithKey:(id)a3 defaultString:(id)a4
+- (id)localizedStringWithKey:(id)key defaultString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSDLocalization *)self localizationTable];
+  keyCopy = key;
+  stringCopy = string;
+  localizationTable = [(MSDLocalization *)self localizationTable];
 
-  if (v8)
+  if (localizationTable)
   {
-    v9 = [(MSDLocalization *)self localizationTable];
-    v10 = [v9 objectForKey:v6];
+    localizationTable2 = [(MSDLocalization *)self localizationTable];
+    v10 = [localizationTable2 objectForKey:keyCopy];
 
     v11 = v10;
     if (!v10)
@@ -91,15 +91,15 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
       v12 = defaultLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [MEMORY[0x277CBEAF8] preferredLanguages];
+        preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
         v17 = 138543618;
-        v18 = v6;
+        v18 = keyCopy;
         v19 = 2114;
-        v20 = v13;
+        v20 = preferredLanguages;
         _os_log_impl(&dword_259B7D000, v12, OS_LOG_TYPE_DEFAULT, "Localization lookup failed for key %{public}@, preferred languages %{public}@", &v17, 0x16u);
       }
 
-      v11 = v7;
+      v11 = stringCopy;
     }
 
     v14 = v11;
@@ -107,7 +107,7 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
 
   else
   {
-    v14 = v7;
+    v14 = stringCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -115,17 +115,17 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
   return v14;
 }
 
-+ (id)getLocalizedOwnershipWarnings:(id)a3
++ (id)getLocalizedOwnershipWarnings:(id)warnings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  warningsCopy = warnings;
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "+[MSDLocalization getLocalizedOwnershipWarnings:]";
     v15 = 2114;
-    v16 = v3;
+    v16 = warningsCopy;
     _os_log_impl(&dword_259B7D000, v4, OS_LOG_TYPE_DEFAULT, "%s - ownershipWarningFlag:  %{public}@", buf, 0x16u);
   }
 
@@ -133,9 +133,9 @@ uint64_t __33__MSDLocalization_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __49__MSDLocalization_getLocalizedOwnershipWarnings___block_invoke;
   block[3] = &unk_2798EF790;
-  v12 = v3;
+  v12 = warningsCopy;
   v5 = getLocalizedOwnershipWarnings__onceToken;
-  v6 = v3;
+  v6 = warningsCopy;
   if (v5 != -1)
   {
     dispatch_once(&getLocalizedOwnershipWarnings__onceToken, block);
@@ -292,11 +292,11 @@ void __49__MSDLocalization_getLocalizedOwnershipWarnings___block_invoke(uint64_t
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fillInMissingLocales:(id)a3 withOwnershipWarningMsg:(id)a4
++ (void)fillInMissingLocales:(id)locales withOwnershipWarningMsg:(id)msg
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  localesCopy = locales;
+  msgCopy = msg;
   if (fillInMissingLocales_withOwnershipWarningMsg__onceToken != -1)
   {
     +[MSDLocalization fillInMissingLocales:withOwnershipWarningMsg:];
@@ -322,11 +322,11 @@ void __49__MSDLocalization_getLocalizedOwnershipWarnings___block_invoke(uint64_t
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v5 objectForKey:{v12, v15}];
+        v13 = [localesCopy objectForKey:{v12, v15}];
 
         if (!v13)
         {
-          [v5 setObject:v6 forKey:v12];
+          [localesCopy setObject:msgCopy forKey:v12];
         }
       }
 
@@ -345,11 +345,11 @@ void __64__MSDLocalization_fillInMissingLocales_withOwnershipWarningMsg___block_
   fillInMissingLocales_withOwnershipWarningMsg__defaultLocales = &unk_286AE1768;
 }
 
-+ (BOOL)getWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forOwnershipWarningFlag:(id)a5
++ (BOOL)getWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forOwnershipWarningFlag:(id)flag
 {
-  v7 = a5;
-  *a3 = 0;
-  *a4 = 0;
+  flagCopy = flag;
+  *keys = 0;
+  *warnings = 0;
   v8 = MGGetStringAnswer();
   v9 = v8;
   if (!v8)
@@ -366,20 +366,20 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (([v7 isEqualToString:@"2"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"1") & 1) == 0)
+  if (([flagCopy isEqualToString:@"2"] & 1) == 0 && (objc_msgSend(flagCopy, "isEqualToString:", @"1") & 1) == 0)
   {
     +[MSDLocalization getWarningKeys:andPlaceHolderWarnings:forOwnershipWarningFlag:];
     goto LABEL_16;
   }
 
-  if ([v7 isEqualToString:@"2"])
+  if ([flagCopy isEqualToString:@"2"])
   {
-    v10 = [MSDLocalization getChannelWarningKeys:a3 andPlaceHolderWarnings:a4 forDeviceClass:v9];
+    v10 = [MSDLocalization getChannelWarningKeys:keys andPlaceHolderWarnings:warnings forDeviceClass:v9];
   }
 
   else
   {
-    v10 = [MSDLocalization getRetailWarningKeys:a3 andPlaceHolderWarnings:a4 forDeviceClass:v9];
+    v10 = [MSDLocalization getRetailWarningKeys:keys andPlaceHolderWarnings:warnings forDeviceClass:v9];
   }
 
   v11 = v10;
@@ -388,40 +388,40 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)getChannelWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forDeviceClass:(id)a5
++ (BOOL)getChannelWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forDeviceClass:(id)class
 {
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [v8 setObject:@"PropertyClaimTitle_Channel" forKey:@"Title"];
-  [v8 setObject:@"PropertyClaimLink_Channel" forKey:@"Link"];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [v9 setObject:@"Property of Apple Authorized Reseller" forKey:@"Title"];
-  [v9 setObject:&stru_286AD9A18 forKey:@"Link"];
-  if ([v7 isEqualToString:@"iPhone"])
+  classCopy = class;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"PropertyClaimTitle_Channel" forKey:@"Title"];
+  [dictionary setObject:@"PropertyClaimLink_Channel" forKey:@"Link"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary2 setObject:@"Property of Apple Authorized Reseller" forKey:@"Title"];
+  [dictionary2 setObject:&stru_286AD9A18 forKey:@"Link"];
+  if ([classCopy isEqualToString:@"iPhone"])
   {
     v10 = @"This iPhone cannot be used and is not for sale.";
     v11 = @"PropertyClaimBody_iPhone_Channel";
 LABEL_9:
-    [v8 setObject:v11 forKey:@"Body"];
-    [v9 setObject:v10 forKey:@"Body"];
+    [dictionary setObject:v11 forKey:@"Body"];
+    [dictionary2 setObject:v10 forKey:@"Body"];
     goto LABEL_10;
   }
 
-  if ([v7 isEqualToString:@"iPad"])
+  if ([classCopy isEqualToString:@"iPad"])
   {
     v10 = @"This iPad cannot be used and is not for sale.";
     v11 = @"PropertyClaimBody_iPad_Channel";
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"iPod"])
+  if ([classCopy isEqualToString:@"iPod"])
   {
     v10 = @"This iPod cannot be used and is not for sale.";
     v11 = @"PropertyClaimBody_iPod_Channel";
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"Watch"])
+  if ([classCopy isEqualToString:@"Watch"])
   {
     v10 = @"This Apple Watch cannot be used and is not for sale.";
     v11 = @"PropertyClaimBody_AppleWatch_Channel";
@@ -429,46 +429,46 @@ LABEL_9:
   }
 
 LABEL_10:
-  *a3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
-  *a4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
+  *keys = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
+  *warnings = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary2];
 
   return 1;
 }
 
-+ (BOOL)getRetailWarningKeys:(id *)a3 andPlaceHolderWarnings:(id *)a4 forDeviceClass:(id)a5
++ (BOOL)getRetailWarningKeys:(id *)keys andPlaceHolderWarnings:(id *)warnings forDeviceClass:(id)class
 {
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [v8 setObject:@"PropertyClaimTitle_Retail" forKey:@"Title"];
-  [v8 setObject:@"PropertyClaimLink_Retail" forKey:@"Link"];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [v9 setObject:@"Property of Apple" forKey:@"Title"];
-  [v9 setObject:@"apple.com/retail" forKey:@"Link"];
-  if ([v7 isEqualToString:@"iPhone"])
+  classCopy = class;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"PropertyClaimTitle_Retail" forKey:@"Title"];
+  [dictionary setObject:@"PropertyClaimLink_Retail" forKey:@"Link"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary2 setObject:@"Property of Apple" forKey:@"Title"];
+  [dictionary2 setObject:@"apple.com/retail" forKey:@"Link"];
+  if ([classCopy isEqualToString:@"iPhone"])
   {
     v10 = @"This iPhone cannot be used and is not for sale.  Return it to a nearby Apple retail location.";
     v11 = @"PropertyClaimBody_iPhone_Retail";
 LABEL_9:
-    [v8 setObject:v11 forKey:@"Body"];
-    [v9 setObject:v10 forKey:@"Body"];
+    [dictionary setObject:v11 forKey:@"Body"];
+    [dictionary2 setObject:v10 forKey:@"Body"];
     goto LABEL_10;
   }
 
-  if ([v7 isEqualToString:@"iPad"])
+  if ([classCopy isEqualToString:@"iPad"])
   {
     v10 = @"This iPad cannot be used and is not for sale.  Return it to a nearby Apple retail location.";
     v11 = @"PropertyClaimBody_iPad_Retail";
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"iPod"])
+  if ([classCopy isEqualToString:@"iPod"])
   {
     v10 = @"This iPod cannot be used and is not for sale.  Return it to a nearby Apple retail location.";
     v11 = @"PropertyClaimBody_iPod_Retail";
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"Watch"])
+  if ([classCopy isEqualToString:@"Watch"])
   {
     v10 = @"This Apple Watch cannot be used and is not for sale.  Return it to a nearby Apple retail location.";
     v11 = @"PropertyClaimBody_AppleWatch_Retail";
@@ -476,8 +476,8 @@ LABEL_9:
   }
 
 LABEL_10:
-  *a3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
-  *a4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
+  *keys = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
+  *warnings = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary2];
 
   return 1;
 }

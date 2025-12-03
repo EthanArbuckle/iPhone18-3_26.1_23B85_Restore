@@ -1,5 +1,5 @@
 @interface CNMeCardSharingOnboardingAvatarCarouselCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)_axImageType;
 - (unint64_t)accessibilityTraits;
@@ -7,18 +7,18 @@
 
 @implementation CNMeCardSharingOnboardingAvatarCarouselCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem"];
-  [v3 validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem" hasInstanceMethod:@"imageType" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem"];
+  [validationsCopy validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNMeCardSharingOnboardingAvatarCarouselItem" hasInstanceMethod:@"imageType" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axCarouselItem];
-  v3 = [v2 safeStringForKey:@"title"];
+  _axCarouselItem = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axCarouselItem];
+  v3 = [_axCarouselItem safeStringForKey:@"title"];
   v4 = v3;
   if (v3)
   {
@@ -28,7 +28,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [v2 safeIntegerForKey:@"imageType"];
+  v6 = [_axCarouselItem safeIntegerForKey:@"imageType"];
   if (v6 <= 4)
   {
     v5 = accessibilityLocalizedString(off_29F2B5D00[v6]);
@@ -44,8 +44,8 @@ LABEL_6:
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axImageType];
-  if (v3 <= 4 && ((1 << v3) & 0x1A) != 0)
+  _axImageType = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axImageType];
+  if (_axImageType <= 4 && ((1 << _axImageType) & 0x1A) != 0)
   {
     v2 |= *MEMORY[0x29EDC7F88];
   }
@@ -55,8 +55,8 @@ LABEL_6:
 
 - (unint64_t)_axImageType
 {
-  v2 = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axCarouselItem];
-  v3 = [v2 safeIntegerForKey:@"imageType"];
+  _axCarouselItem = [(CNMeCardSharingOnboardingAvatarCarouselCellAccessibility *)self _axCarouselItem];
+  v3 = [_axCarouselItem safeIntegerForKey:@"imageType"];
 
   return v3;
 }

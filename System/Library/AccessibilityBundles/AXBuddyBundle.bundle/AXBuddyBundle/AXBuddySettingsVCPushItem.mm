@@ -1,28 +1,28 @@
 @interface AXBuddySettingsVCPushItem
-- (AXBuddySettingsVCPushItem)initWithName:(id)a3 image:(id)a4 viewControllerInstantiator:(id)a5;
-- (id)representativeCellForIndexPath:(id)a3 inTableView:(id)a4;
+- (AXBuddySettingsVCPushItem)initWithName:(id)name image:(id)image viewControllerInstantiator:(id)instantiator;
+- (id)representativeCellForIndexPath:(id)path inTableView:(id)view;
 - (id)viewControllerInstantiator;
-- (void)registerCellClassWithTableView:(id)a3;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation AXBuddySettingsVCPushItem
 
-- (AXBuddySettingsVCPushItem)initWithName:(id)a3 image:(id)a4 viewControllerInstantiator:(id)a5
+- (AXBuddySettingsVCPushItem)initWithName:(id)name image:(id)image viewControllerInstantiator:(id)instantiator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  imageCopy = image;
+  instantiatorCopy = instantiator;
   v17.receiver = self;
   v17.super_class = AXBuddySettingsVCPushItem;
   v11 = [(AXBuddySettingsVCPushItem *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeStrong(&v11->_image, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_image, image);
+    v14 = [instantiatorCopy copy];
     viewControllerInstantiator = v11->_viewControllerInstantiator;
     v11->_viewControllerInstantiator = v14;
   }
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (id)representativeCellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)representativeCellForIndexPath:(id)path inTableView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXBuddySettingsVCPushItem *)self reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8 forIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  reuseIdentifier = [(AXBuddySettingsVCPushItem *)self reuseIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
-  v10 = [(AXBuddySettingsVCPushItem *)self name];
-  v11 = [v9 textLabel];
-  [v11 setText:v10];
+  name = [(AXBuddySettingsVCPushItem *)self name];
+  textLabel = [v9 textLabel];
+  [textLabel setText:name];
 
-  v12 = [(AXBuddySettingsVCPushItem *)self image];
+  image = [(AXBuddySettingsVCPushItem *)self image];
 
-  if (v12)
+  if (image)
   {
-    v13 = [(AXBuddySettingsVCPushItem *)self image];
-    v14 = [v9 imageView];
-    [v14 setImage:v13];
+    image2 = [(AXBuddySettingsVCPushItem *)self image];
+    imageView = [v9 imageView];
+    [imageView setImage:image2];
   }
 
   [v9 setAccessoryType:1];
@@ -62,12 +62,12 @@
   return v9;
 }
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(AXBuddySettingsVCPushItem *)self cellClass];
-  v6 = [(AXBuddySettingsVCPushItem *)self reuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v6];
+  viewCopy = view;
+  cellClass = [(AXBuddySettingsVCPushItem *)self cellClass];
+  reuseIdentifier = [(AXBuddySettingsVCPushItem *)self reuseIdentifier];
+  [viewCopy registerClass:cellClass forCellReuseIdentifier:reuseIdentifier];
 }
 
 @end

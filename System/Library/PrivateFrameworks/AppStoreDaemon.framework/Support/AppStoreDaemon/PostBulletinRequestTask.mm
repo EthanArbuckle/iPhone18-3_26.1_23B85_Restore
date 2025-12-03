@@ -21,7 +21,7 @@
     }
 
     v6 = options;
-    v7 = [(ASDRequestOptions *)v6 title];
+    title = [(ASDRequestOptions *)v6 title];
     if (self)
     {
       v8 = self->super._options;
@@ -33,7 +33,7 @@
     }
 
     v9 = v8;
-    v10 = [(ASDRequestOptions *)v9 message];
+    message = [(ASDRequestOptions *)v9 message];
     if (self)
     {
       client = self->super._client;
@@ -48,9 +48,9 @@
     v57 = 138413058;
     v58 = v3;
     v59 = 2112;
-    v60 = v7;
+    v60 = title;
     v61 = 2112;
-    v62 = v10;
+    v62 = message;
     v63 = 2112;
     v64 = v12;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "[%@]: Posting bulletin with title: %@ message: %@ for client %@", &v57, 0x2Au);
@@ -67,7 +67,7 @@
   }
 
   v14 = v13;
-  v15 = [(ASDRequestOptions *)v14 title];
+  title2 = [(ASDRequestOptions *)v14 title];
   if (self)
   {
     v16 = self->super._options;
@@ -79,8 +79,8 @@
   }
 
   v17 = v16;
-  v18 = [(ASDRequestOptions *)v17 message];
-  v19 = sub_10030440C(Bulletin, v15, v18);
+  message2 = [(ASDRequestOptions *)v17 message];
+  v19 = sub_10030440C(Bulletin, title2, message2);
 
   if (self)
   {
@@ -93,9 +93,9 @@
   }
 
   v21 = v20;
-  v22 = [(ASDRequestOptions *)v21 actionButtonTitle];
+  actionButtonTitle = [(ASDRequestOptions *)v21 actionButtonTitle];
 
-  if (v22)
+  if (actionButtonTitle)
   {
     if (self)
     {
@@ -108,10 +108,10 @@
     }
 
     v24 = v23;
-    v26 = [(ASDRequestOptions *)v24 actionButtonTitle];
+    actionButtonTitle2 = [(ASDRequestOptions *)v24 actionButtonTitle];
     if (v19)
     {
-      objc_setProperty_nonatomic_copy(v19, v25, v26, 8);
+      objc_setProperty_nonatomic_copy(v19, v25, actionButtonTitle2, 8);
     }
   }
 
@@ -126,9 +126,9 @@
   }
 
   v28 = v27;
-  v29 = [(ASDRequestOptions *)v28 actionButtonURL];
+  actionButtonURL = [(ASDRequestOptions *)v28 actionButtonURL];
 
-  if (v29)
+  if (actionButtonURL)
   {
     if (self)
     {
@@ -141,10 +141,10 @@
     }
 
     v31 = v30;
-    v33 = [(ASDRequestOptions *)v31 actionButtonURL];
+    actionButtonURL2 = [(ASDRequestOptions *)v31 actionButtonURL];
     if (v19)
     {
-      objc_setProperty_nonatomic_copy(v19, v32, v33, 16);
+      objc_setProperty_nonatomic_copy(v19, v32, actionButtonURL2, 16);
     }
   }
 
@@ -159,9 +159,9 @@
   }
 
   v35 = v34;
-  v36 = [(ASDRequestOptions *)v35 creationDate];
+  creationDate = [(ASDRequestOptions *)v35 creationDate];
 
-  if (v36)
+  if (creationDate)
   {
     if (self)
     {
@@ -174,10 +174,10 @@
     }
 
     v38 = v37;
-    v40 = [(ASDRequestOptions *)v38 creationDate];
+    creationDate2 = [(ASDRequestOptions *)v38 creationDate];
     if (v19)
     {
-      objc_setProperty_nonatomic_copy(v19, v39, v40, 32);
+      objc_setProperty_nonatomic_copy(v19, v39, creationDate2, 32);
     }
   }
 
@@ -192,9 +192,9 @@
   }
 
   v42 = v41;
-  v43 = [(ASDRequestOptions *)v42 launchURL];
+  launchURL = [(ASDRequestOptions *)v42 launchURL];
 
-  if (v43)
+  if (launchURL)
   {
     if (self)
     {
@@ -207,10 +207,10 @@
     }
 
     v45 = v44;
-    v47 = [(ASDRequestOptions *)v45 launchURL];
+    launchURL2 = [(ASDRequestOptions *)v45 launchURL];
     if (v19)
     {
-      objc_setProperty_nonatomic_copy(v19, v46, v47, 24);
+      objc_setProperty_nonatomic_copy(v19, v46, launchURL2, 24);
     }
   }
 
@@ -225,9 +225,9 @@
   }
 
   v49 = v48;
-  v50 = [(ASDRequestOptions *)v49 recordID];
+  recordID = [(ASDRequestOptions *)v49 recordID];
 
-  if (v50)
+  if (recordID)
   {
     if (self)
     {
@@ -240,10 +240,10 @@
     }
 
     v52 = v51;
-    v54 = [(ASDRequestOptions *)v52 recordID];
+    recordID2 = [(ASDRequestOptions *)v52 recordID];
     if (v19)
     {
-      objc_setProperty_nonatomic_copy(v19, v53, v54, 56);
+      objc_setProperty_nonatomic_copy(v19, v53, recordID2, 56);
     }
   }
 

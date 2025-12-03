@@ -1,13 +1,13 @@
 @interface MIDIUMPMutableEndpoint
-- (BOOL)deserialize:(id)a3;
+- (BOOL)deserialize:(id)deserialize;
 - (BOOL)isEnabled;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)registerFunctionBlocks:(id)a3 markAsStatic:(BOOL)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)registerFunctionBlocks:(id)blocks markAsStatic:(BOOL)static error:(id *)error;
 - (BOOL)registerWithServer;
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)setName:(id)a3 error:(id *)a4;
-- (BOOL)setStreamProtocol:(int)a3 error:(id *)a4;
-- (MIDIUMPMutableEndpoint)initWithName:(id)a3 deviceInfo:(id)a4 productInstanceID:(id)a5 MIDIProtocol:(int)a6 destinationCallback:(id)a7;
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)setName:(id)name error:(id *)error;
+- (BOOL)setStreamProtocol:(int)protocol error:(id *)error;
+- (MIDIUMPMutableEndpoint)initWithName:(id)name deviceInfo:(id)info productInstanceID:(id)d MIDIProtocol:(int)protocol destinationCallback:(id)callback;
 - (NSArray)mutableFunctionBlocks;
 - (id).cxx_construct;
 - (id)serializeDescription;
@@ -55,20 +55,20 @@
   caulk::concurrent::lf_read_synchronized_write<applesauce::dispatch::v1::block<void ()(MIDIEventList const*,void *)>>::operator=(self + 24, &v4);
 }
 
-- (BOOL)registerFunctionBlocks:(id)a3 markAsStatic:(BOOL)a4 error:(id *)a5
+- (BOOL)registerFunctionBlocks:(id)blocks markAsStatic:(BOOL)static error:(id *)error
 {
-  v6 = a4;
+  staticCopy = static;
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (v6)
+  blocksCopy = blocks;
+  v9 = blocksCopy;
+  if (staticCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = v8;
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    serializeDescription = blocksCopy;
+    v11 = [serializeDescription countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v11)
     {
       v12 = *v29;
@@ -78,23 +78,23 @@
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(serializeDescription);
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
           if (([v14 isEnabled] & 1) == 0)
           {
-            if (a5)
+            if (error)
             {
               v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-              *a5 = v22;
+              *error = v22;
             }
 
             goto LABEL_25;
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v11 = [serializeDescription countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v11)
         {
           continue;
@@ -140,90 +140,90 @@
   os_unfair_recursive_lock_lock_with_options();
   [(MIDIUMPEndpoint *)self setFunctionBlocks:v15];
   [(MIDIUMPMutableEndpoint *)self setMutableFunctionBlocks:v15];
-  *(self + 48) = v6;
+  *(self + 48) = staticCopy;
   os_unfair_recursive_lock_unlock();
   if ([(MIDIUMPMutableEndpoint *)self isEnabled])
   {
-    v10 = [(MIDIUMPMutableEndpoint *)self serializeDescription];
-    if (UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], v10))
+    serializeDescription = [(MIDIUMPMutableEndpoint *)self serializeDescription];
+    if (UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], serializeDescription))
     {
-      if (a5)
+      if (error)
       {
         v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
         v21 = v14;
-        *a5 = v14;
+        *error = v14;
 LABEL_25:
 
-        LOBYTE(a5) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
     }
   }
 
   else
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   os_unfair_recursive_lock_lock_with_options();
   if ([(MIDIUMPEndpoint *)self objectRef]|| [(MIDIUMPMutableEndpoint *)self registerWithServer])
   {
-    v7 = UMPCIObjectSetEnableState([(MIDIUMPEndpoint *)self objectRef], v5);
+    v7 = UMPCIObjectSetEnableState([(MIDIUMPEndpoint *)self objectRef], enabledCopy);
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v7 userInfo:0];
 LABEL_9:
         v9 = v8;
-        *a4 = v9;
+        *error = v9;
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      *(self + 192) = v5;
-      LOBYTE(a4) = 1;
+      *(self + 192) = enabledCopy;
+      LOBYTE(error) = 1;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
     goto LABEL_9;
   }
 
   os_unfair_recursive_lock_unlock();
-  return a4;
+  return error;
 }
 
-- (BOOL)setStreamProtocol:(int)a3 error:(id *)a4
+- (BOOL)setStreamProtocol:(int)protocol error:(id *)error
 {
-  v5 = *&a3;
-  v7 = [(MIDIUMPMutableEndpoint *)self serializeDescription];
+  v5 = *&protocol;
+  serializeDescription = [(MIDIUMPMutableEndpoint *)self serializeDescription];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:v5];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"protocol"];
-  [v7 setValue:v8 forKey:v9];
+  [serializeDescription setValue:v8 forKey:v9];
 
-  v10 = UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], v7);
+  v10 = UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], serializeDescription);
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -240,14 +240,14 @@ LABEL_9:
 - (BOOL)registerWithServer
 {
   v42 = *MEMORY[0x277D85DE8];
-  v2 = [(MIDIUMPMutableEndpoint *)self serializeDescription];
-  v3 = v2;
+  serializeDescription = [(MIDIUMPMutableEndpoint *)self serializeDescription];
+  v3 = serializeDescription;
   v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"client_owned"];
-  [v2 setValue:v4 forKey:v5];
+  [serializeDescription setValue:v4 forKey:v5];
 
   v39 = 0;
-  if (UMPCIObjectCreate(2, v2, &v39))
+  if (UMPCIObjectCreate(2, serializeDescription, &v39))
   {
     v6 = 0;
   }
@@ -313,12 +313,12 @@ LABEL_9:
                 goto LABEL_29;
               }
 
-              v15 = [(MIDIUMPEndpoint *)self functionBlocks];
+              functionBlocks = [(MIDIUMPEndpoint *)self functionBlocks];
               v32 = 0u;
               v33 = 0u;
               v30 = 0u;
               v31 = 0u;
-              v16 = v15;
+              v16 = functionBlocks;
               v17 = [v16 countByEnumeratingWithState:&v30 objects:v40 count:16];
               if (v17)
               {
@@ -333,17 +333,17 @@ LABEL_9:
                     }
 
                     v20 = *(*(&v30 + 1) + 8 * j);
-                    v21 = [v20 functionBlockID];
-                    if ([v13 unsignedIntegerValue] == v21)
+                    functionBlockID = [v20 functionBlockID];
+                    if ([v13 unsignedIntegerValue] == functionBlockID)
                     {
-                      v2 = v3;
+                      serializeDescription = v3;
                       [v20 setObjectRef:{objc_msgSend(v11, "unsignedIntValue")}];
 
                       goto LABEL_25;
                     }
                   }
 
-                  v2 = v3;
+                  serializeDescription = v3;
                   v17 = [v16 countByEnumeratingWithState:&v30 objects:v40 count:16];
                   if (v17)
                   {
@@ -383,65 +383,65 @@ LABEL_29:
   return v6;
 }
 
-- (BOOL)setName:(id)a3 error:(id *)a4
+- (BOOL)setName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [v6 copy];
+  v7 = [nameCopy copy];
   v8 = *(self + 1);
   *(self + 1) = v7;
 
   os_unfair_recursive_lock_unlock();
-  v9 = [(MIDIUMPMutableEndpoint *)self serializeDescription];
-  v10 = UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], v9);
+  serializeDescription = [(MIDIUMPMutableEndpoint *)self serializeDescription];
+  v10 = UMPCIObjectSetDescription([(MIDIUMPEndpoint *)self objectRef], serializeDescription);
   v11 = v10;
-  if (a4 && v10)
+  if (error && v10)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11 == 0;
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deserializeCopy = deserialize;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"name"];
-  obj = [v4 objectForKey:v5];
+  obj = [deserializeCopy objectForKey:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"device_info"];
-  v7 = [v4 objectForKey:v6];
+  v7 = [deserializeCopy objectForKey:v6];
   v37 = [MIDI2DeviceInfo infoWithDescription:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"product_instance"];
-  v31 = [v4 objectForKey:v8];
+  v31 = [deserializeCopy objectForKey:v8];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"protocol"];
-  v30 = [v4 objectForKey:v9];
+  v30 = [deserializeCopy objectForKey:v9];
 
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"has_static_function_blocks"];
-  v29 = [v4 objectForKey:v10];
+  v29 = [deserializeCopy objectForKey:v10];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"jrts_receive_capability"];
-  v32 = [v4 objectForKey:v11];
+  v32 = [deserializeCopy objectForKey:v11];
 
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"jrts_transmit_capability"];
-  v34 = [v4 objectForKey:v12];
+  v34 = [deserializeCopy objectForKey:v12];
 
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"source"];
-  v35 = [v4 objectForKey:v13];
+  v35 = [deserializeCopy objectForKey:v13];
 
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"destination"];
-  v36 = [v4 objectForKey:v14];
+  v36 = [deserializeCopy objectForKey:v14];
 
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"function_blocks"];
-  v27 = [v4 objectForKey:v15];
+  v27 = [deserializeCopy objectForKey:v15];
 
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supported_protocols"];
-  v28 = [v4 objectForKey:v16];
+  v28 = [deserializeCopy objectForKey:v16];
 
   objc_storeStrong(self + 1, obj);
   objc_storeStrong(self + 4, v37);
@@ -501,33 +501,33 @@ LABEL_29:
 {
   v8.receiver = self;
   v8.super_class = MIDIUMPMutableEndpoint;
-  v3 = [(MIDIUMPEndpoint *)&v8 serializeDescription];
-  if (v3)
+  serializeDescription = [(MIDIUMPEndpoint *)&v8 serializeDescription];
+  if (serializeDescription)
   {
     os_unfair_recursive_lock_lock_with_options();
     v4 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 192)];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled"];
-    [v3 setValue:v4 forKey:v5];
+    [serializeDescription setValue:v4 forKey:v5];
 
-    v6 = v3;
+    v6 = serializeDescription;
     os_unfair_recursive_lock_unlock();
   }
 
-  return v3;
+  return serializeDescription;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = MIDIUMPMutableEndpoint;
-  v5 = [(MIDIUMPEndpoint *)&v9 isEqual:v4];
+  v5 = [(MIDIUMPEndpoint *)&v9 isEqual:equalCopy];
   os_unfair_recursive_lock_lock_with_options();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass & v5)
   {
-    v7 = *(self + 192) == v4[192];
+    v7 = *(self + 192) == equalCopy[192];
   }
 
   else
@@ -555,13 +555,13 @@ LABEL_29:
   [(MIDIUMPMutableEndpoint *)&v4 dealloc];
 }
 
-- (MIDIUMPMutableEndpoint)initWithName:(id)a3 deviceInfo:(id)a4 productInstanceID:(id)a5 MIDIProtocol:(int)a6 destinationCallback:(id)a7
+- (MIDIUMPMutableEndpoint)initWithName:(id)name deviceInfo:(id)info productInstanceID:(id)d MIDIProtocol:(int)protocol destinationCallback:(id)callback
 {
-  v8 = *&a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  MainBundle = a7;
+  v8 = *&protocol;
+  nameCopy = name;
+  infoCopy = info;
+  dCopy = d;
+  MainBundle = callback;
   v17 = MainBundle;
   if (CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed < 0)
   {
@@ -575,7 +575,7 @@ LABEL_29:
     else if (!CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed)
     {
 LABEL_11:
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_22;
     }
   }
@@ -587,7 +587,7 @@ LABEL_11:
 
   outSrc = 0;
   UMPCIClients::instance(MainBundle);
-  if (MIDISourceCreateWithProtocol(UMPCIClients::instance(void)::all, v13, v8, &outSrc))
+  if (MIDISourceCreateWithProtocol(UMPCIClients::instance(void)::all, nameCopy, v8, &outSrc))
   {
     goto LABEL_11;
   }
@@ -608,9 +608,9 @@ LABEL_11:
   v34[2] = __101__MIDIUMPMutableEndpoint_initWithName_deviceInfo_productInstanceID_MIDIProtocol_destinationCallback___block_invoke;
   v34[3] = &unk_278A28B38;
   v34[4] = v35;
-  if (MIDIDestinationCreateInternal(UMPCIClients::instance(void)::all, v13, v8, &outSrc, 0, v34))
+  if (MIDIDestinationCreateInternal(UMPCIClients::instance(void)::all, nameCopy, v8, &outSrc, 0, v34))
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -628,12 +628,12 @@ LABEL_11:
     MIDIObjectSetIntegerProperty(*(self + 7), kMIDIPropertyUMPCanTransmitGroupless, 1);
     MIDIObjectSetIntegerProperty(*(self + 6), kMIDIPropertyUMPActiveGroupBitmap, 15);
     MIDIObjectSetIntegerProperty(*(self + 7), kMIDIPropertyUMPActiveGroupBitmap, 15);
-    objc_storeStrong(self + 1, a3);
-    v25 = [MIDI2DeviceInfo infoWithInfo:v14];
+    objc_storeStrong(self + 1, name);
+    v25 = [MIDI2DeviceInfo infoWithInfo:infoCopy];
     v26 = *(self + 4);
     *(self + 4) = v25;
 
-    v27 = [MEMORY[0x277CCACA8] stringWithString:v15];
+    v27 = [MEMORY[0x277CCACA8] stringWithString:dCopy];
     v28 = *(self + 5);
     *(self + 5) = v27;
 
@@ -656,13 +656,13 @@ LABEL_11:
     *(self + 51) = 1;
     UMPCIClients::instance(v31);
     *(self + 16) = UMPCIClients::instance(void)::all;
-    v20 = self;
+    selfCopy = self;
   }
 
   _Block_object_dispose(v35, 8);
 LABEL_22:
 
-  return v20;
+  return selfCopy;
 }
 
 uint64_t __101__MIDIUMPMutableEndpoint_initWithName_deviceInfo_productInstanceID_MIDIProtocol_destinationCallback___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

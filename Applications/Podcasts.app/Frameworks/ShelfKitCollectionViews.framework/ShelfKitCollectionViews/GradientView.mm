@@ -1,7 +1,7 @@
 @interface GradientView
 + (Class)layerClass;
-- (_TtC23ShelfKitCollectionViews12GradientView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ShelfKitCollectionViews12GradientView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GradientView
@@ -13,19 +13,19 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_254D4C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_254D4C(change);
 }
 
-- (_TtC23ShelfKitCollectionViews12GradientView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews12GradientView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews12GradientView_kind) = 0;
   v7 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews12GradientView_gradient);
   *v7 = 0u;

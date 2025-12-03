@@ -1,32 +1,32 @@
 @interface CAFUITableViewController
-- (_TtC5CAFUI24CAFUITableViewController)initWithCoder:(id)a3;
-- (_TtC5CAFUI24CAFUITableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5CAFUI24CAFUITableViewController)initWithCoder:(id)coder;
+- (_TtC5CAFUI24CAFUITableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CAFUITableViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CAFUITableViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CAFUITableViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CAFUITableViewController.viewWillAppear(_:)(appear);
 }
 
-- (_TtC5CAFUI24CAFUITableViewController)initWithCoder:(id)a3
+- (_TtC5CAFUI24CAFUITableViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC5CAFUI24CAFUITableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5CAFUI24CAFUITableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

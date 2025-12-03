@@ -2,18 +2,18 @@
 + (void)initialize;
 - (AXAuditCategory)init;
 - (AXAuditCategoryDelegate)delegate;
-- (BOOL)localIssueShouldRun:(id)a3;
-- (BOOL)shouldRunAuditTestType:(id)a3;
-- (BOOL)supportsAuditTestType:(id)a3;
+- (BOOL)localIssueShouldRun:(id)run;
+- (BOOL)shouldRunAuditTestType:(id)type;
+- (BOOL)supportsAuditTestType:(id)type;
 - (id)_availableCasesDescription;
-- (id)caseStartedForSelectorName:(id)a3;
+- (id)caseStartedForSelectorName:(id)name;
 - (id)description;
 - (id)result;
 - (unint64_t)categoryType;
-- (void)addIssueWithClassification:(int64_t)a3 auditElement:(id)a4 elementRect:(CGRect)a5 elementDescription:(id)a6 mlGeneratedDescription:(id)a7 longDescExtraInfo:(id)a8 elementText:(id)a9;
-- (void)caseEndedForSelectorName:(id)a3 result:(id)a4;
+- (void)addIssueWithClassification:(int64_t)classification auditElement:(id)element elementRect:(CGRect)rect elementDescription:(id)description mlGeneratedDescription:(id)generatedDescription longDescExtraInfo:(id)info elementText:(id)text;
+- (void)caseEndedForSelectorName:(id)name result:(id)result;
 - (void)run;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)start;
 - (void)stop;
 @end
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (BOOL)localIssueShouldRun:(id)a3
+- (BOOL)localIssueShouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v5 = +[AXAuditIssueDescriptionManager auditIssueTypeToAuditTestTypeMapping];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:runCopy];
 
   if (v6)
   {
-    v7 = [(AXAuditCategory *)self currentAuditTypesToTestFor];
-    v8 = [v7 containsObject:v6];
+    currentAuditTypesToTestFor = [(AXAuditCategory *)self currentAuditTypesToTestFor];
+    v8 = [currentAuditTypesToTestFor containsObject:v6];
   }
 
   else
@@ -67,20 +67,20 @@
   return v8;
 }
 
-- (BOOL)shouldRunAuditTestType:(id)a3
+- (BOOL)shouldRunAuditTestType:(id)type
 {
-  v4 = a3;
-  v5 = [(AXAuditCategory *)self currentAuditTypesToTestFor];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  currentAuditTypesToTestFor = [(AXAuditCategory *)self currentAuditTypesToTestFor];
+  v6 = [currentAuditTypesToTestFor containsObject:typeCopy];
 
   return v6;
 }
 
-- (BOOL)supportsAuditTestType:(id)a3
+- (BOOL)supportsAuditTestType:(id)type
 {
-  v4 = a3;
-  v5 = [(AXAuditCategory *)self allSupportedAuditTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  allSupportedAuditTypes = [(AXAuditCategory *)self allSupportedAuditTypes];
+  v6 = [allSupportedAuditTypes containsObject:typeCopy];
 
   return v6;
 }
@@ -89,15 +89,15 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(AXAuditCategory *)self caseSelectorsForAuditing];
-  [v3 appendFormat:@"\nContains %i test cases {\n", objc_msgSend(v4, "count")];
+  caseSelectorsForAuditing = [(AXAuditCategory *)self caseSelectorsForAuditing];
+  [v3 appendFormat:@"\nContains %i test cases {\n", objc_msgSend(caseSelectorsForAuditing, "count")];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXAuditCategory *)self caseSelectorsForAuditing];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  caseSelectorsForAuditing2 = [(AXAuditCategory *)self caseSelectorsForAuditing];
+  v6 = [caseSelectorsForAuditing2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -108,13 +108,13 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(caseSelectorsForAuditing2);
         }
 
         [v3 appendFormat:@"   %@\n", *(*(&v13 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [caseSelectorsForAuditing2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -136,14 +136,14 @@
   v4 = [(AXAuditCategory *)&v10 description];
   [v3 appendString:v4];
 
-  v5 = [(AXAuditCategory *)self title];
-  if ([v5 length])
+  title = [(AXAuditCategory *)self title];
+  if ([title length])
   {
-    [v3 appendFormat:@" %@", v5];
+    [v3 appendFormat:@" %@", title];
   }
 
-  v6 = [(AXAuditCategory *)self _availableCasesDescription];
-  v7 = [v6 mutableCopy];
+  _availableCasesDescription = [(AXAuditCategory *)self _availableCasesDescription];
+  v7 = [_availableCasesDescription mutableCopy];
 
   [v7 replaceOccurrencesOfString:@"\n" withString:@"\n   " options:1 range:{0, objc_msgSend(v7, "length")}];
   [v3 appendString:v7];
@@ -152,29 +152,29 @@
   return v8;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(AXAuditCategory *)self _result];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  _result = [(AXAuditCategory *)self _result];
+  [_result setTitle:titleCopy];
 
   title = self->_title;
-  self->_title = v4;
+  self->_title = titleCopy;
 }
 
 - (id)result
 {
-  v3 = [(AXAuditCategory *)self _result];
-  if (!v3)
+  _result = [(AXAuditCategory *)self _result];
+  if (!_result)
   {
-    v3 = objc_opt_new();
-    v4 = [(AXAuditCategory *)self title];
-    [v3 setTitle:v4];
+    _result = objc_opt_new();
+    title = [(AXAuditCategory *)self title];
+    [_result setTitle:title];
 
-    [(AXAuditCategory *)self set_result:v3];
+    [(AXAuditCategory *)self set_result:_result];
   }
 
-  return v3;
+  return _result;
 }
 
 - (unint64_t)categoryType
@@ -194,21 +194,21 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   [(AXAuditCategory *)self start];
-  v3 = [(AXAuditCategory *)self caseSelectorsForAuditing];
-  v4 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
-  [v4 removeAllObjects];
+  caseSelectorsForAuditing = [(AXAuditCategory *)self caseSelectorsForAuditing];
+  _currentTestingCaseSelectors = [(AXAuditCategory *)self _currentTestingCaseSelectors];
+  [_currentTestingCaseSelectors removeAllObjects];
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(AXAuditCategory *)self set_currentTestingCaseSelectors:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  [(AXAuditCategory *)self set_currentTestingCaseSelectors:array];
 
-  v6 = [(AXAuditCategory *)self currentAuditTypesToTestFor];
-  if (![v6 count])
+  currentAuditTypesToTestFor = [(AXAuditCategory *)self currentAuditTypesToTestFor];
+  if (![currentAuditTypesToTestFor count])
   {
 
     goto LABEL_14;
   }
 
-  v7 = [v3 count];
+  v7 = [caseSelectorsForAuditing count];
 
   if (!v7)
   {
@@ -217,14 +217,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
-  [v8 addObjectsFromArray:v3];
+  _currentTestingCaseSelectors2 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
+  [_currentTestingCaseSelectors2 addObjectsFromArray:caseSelectorsForAuditing];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v3;
+  v9 = caseSelectorsForAuditing;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -262,9 +262,9 @@ LABEL_15:
 
 - (void)start
 {
-  v6 = [(AXAuditCategory *)self result];
-  [v6 appendLog:@"\n"];
-  [v6 appendLog:@"===================================================================="];
+  result = [(AXAuditCategory *)self result];
+  [result appendLog:@"\n"];
+  [result appendLog:@"===================================================================="];
   if ([(AXAuditCategory *)self targetPid])
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@" (against pid: %i)", -[AXAuditCategory targetPid](self, "targetPid")];
@@ -275,36 +275,36 @@ LABEL_15:
     v3 = &stru_284FBB130;
   }
 
-  v4 = [(AXAuditCategory *)self title];
-  [v6 appendLog:{@"Test Starting: %@%@", v4, v3}];
+  title = [(AXAuditCategory *)self title];
+  [result appendLog:{@"Test Starting: %@%@", title, v3}];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v6 setStartTime:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [result setStartTime:date];
 }
 
 - (void)stop
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(AXAuditCategory *)self result];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v3 setEndTime:v4];
+  result = [(AXAuditCategory *)self result];
+  date = [MEMORY[0x277CBEAA8] date];
+  [result setEndTime:date];
 
-  [v3 appendLog:@"\n"];
-  v5 = [(AXAuditCategory *)self title];
-  v6 = [v3 executionTimeString];
-  [v3 appendLog:{@"Test Complete: %@ -- Execution time:%@", v5, v6}];
+  [result appendLog:@"\n"];
+  title = [(AXAuditCategory *)self title];
+  executionTimeString = [result executionTimeString];
+  [result appendLog:{@"Test Complete: %@ -- Execution time:%@", title, executionTimeString}];
 
-  v7 = [v3 issueCount];
-  if (v7)
+  issueCount = [result issueCount];
+  if (issueCount)
   {
-    if (v7 == 1)
+    if (issueCount == 1)
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"Found %i issue", 1];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Found %i issues", v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Found %i issues", issueCount];
     }
     v8 = ;
   }
@@ -314,14 +314,14 @@ LABEL_15:
     v8 = @"No issues";
   }
 
-  [v3 appendLog:v8];
-  [v3 appendLog:@"====================================================================\n"];
+  [result appendLog:v8];
+  [result appendLog:@"====================================================================\n"];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v3 issueSummaryStrings];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  issueSummaryStrings = [result issueSummaryStrings];
+  v10 = [issueSummaryStrings countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -333,52 +333,52 @@ LABEL_15:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(issueSummaryStrings);
         }
 
-        [v3 appendLog:*(*(&v16 + 1) + 8 * v13++)];
+        [result appendLog:*(*(&v16 + 1) + 8 * v13++)];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [issueSummaryStrings countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  [v3 appendLog:@"\n"];
-  [v3 appendLog:@"===================================================================="];
-  v14 = [(AXAuditCategory *)self delegate];
-  [v14 didCompleteCategory:self];
+  [result appendLog:@"\n"];
+  [result appendLog:@"===================================================================="];
+  delegate = [(AXAuditCategory *)self delegate];
+  [delegate didCompleteCategory:self];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)caseStartedForSelectorName:(id)a3
+- (id)caseStartedForSelectorName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = log_category_signpost;
   v6 = v5;
   v7 = category_spid;
   if ((category_spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = nameCopy;
     _os_signpost_emit_with_name_impl(&dword_23D6FE000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v7, "AXAuditCase", "Starting test case: %{public}@", buf, 0xCu);
   }
 
-  v8 = [(AXAuditCategory *)self currentCaseResult];
+  currentCaseResult = [(AXAuditCategory *)self currentCaseResult];
 
-  if (v8)
+  if (currentCaseResult)
   {
     v9 = 0.0;
     do
     {
       [MEMORY[0x277CCACC8] sleepForTimeInterval:1.0];
-      v10 = [(AXAuditCategory *)self currentCaseResult];
+      currentCaseResult2 = [(AXAuditCategory *)self currentCaseResult];
 
-      if (!v10)
+      if (!currentCaseResult2)
       {
         break;
       }
@@ -389,51 +389,51 @@ LABEL_15:
     while (v9 < 20.0);
   }
 
-  v11 = [(AXAuditCategory *)self result];
+  result = [(AXAuditCategory *)self result];
   v12 = objc_opt_new();
-  [v11 addCaseResult:v12];
+  [result addCaseResult:v12];
   [(AXAuditCategory *)self setCurrentCaseResult:v12];
-  [v11 appendLog:@"===================================================================="];
-  [v11 appendLog:{@"Case Starting %@", v4}];
-  [v12 setCaseTitle:v4];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  [v12 setStartTime:v13];
+  [result appendLog:@"===================================================================="];
+  [result appendLog:{@"Case Starting %@", nameCopy}];
+  [v12 setCaseTitle:nameCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v12 setStartTime:date];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (void)caseEndedForSelectorName:(id)a3 result:(id)a4
+- (void)caseEndedForSelectorName:(id)name result:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  resultCopy = result;
   v8 = log_category_signpost;
   v9 = v8;
   v10 = category_spid;
   if ((category_spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 138543362;
-    v19 = v6;
+    v19 = nameCopy;
     _os_signpost_emit_with_name_impl(&dword_23D6FE000, v9, OS_SIGNPOST_INTERVAL_END, v10, "AXAuditCase", "Completed test case: %{public}@", buf, 0xCu);
   }
 
-  v11 = [(AXAuditCategory *)self result];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [v7 setEndTime:v12];
+  result = [(AXAuditCategory *)self result];
+  date = [MEMORY[0x277CBEAA8] date];
+  [resultCopy setEndTime:date];
 
-  v13 = [v7 executionTimeString];
-  [v11 appendLog:{@"Case Complete: %@ -- Execution time:%@", v6, v13}];
+  executionTimeString = [resultCopy executionTimeString];
+  [result appendLog:{@"Case Complete: %@ -- Execution time:%@", nameCopy, executionTimeString}];
 
-  [v11 appendLog:@"====================================================================\n"];
+  [result appendLog:@"====================================================================\n"];
   [(AXAuditCategory *)self setCurrentCaseResult:0];
-  v14 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
-  [v14 removeObject:v6];
+  _currentTestingCaseSelectors = [(AXAuditCategory *)self _currentTestingCaseSelectors];
+  [_currentTestingCaseSelectors removeObject:nameCopy];
 
-  [(AXAuditCategory *)self setLastCaseSelectorFinishedName:v6];
-  v15 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
-  v16 = [v15 count];
+  [(AXAuditCategory *)self setLastCaseSelectorFinishedName:nameCopy];
+  _currentTestingCaseSelectors2 = [(AXAuditCategory *)self _currentTestingCaseSelectors];
+  v16 = [_currentTestingCaseSelectors2 count];
 
   if (!v16)
   {
@@ -443,21 +443,21 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addIssueWithClassification:(int64_t)a3 auditElement:(id)a4 elementRect:(CGRect)a5 elementDescription:(id)a6 mlGeneratedDescription:(id)a7 longDescExtraInfo:(id)a8 elementText:(id)a9
+- (void)addIssueWithClassification:(int64_t)classification auditElement:(id)element elementRect:(CGRect)rect elementDescription:(id)description mlGeneratedDescription:(id)generatedDescription longDescExtraInfo:(id)info elementText:(id)text
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = [AXAuditIssue auditIssueForClassification:a3];
-  v24 = [v18 axElement];
-  v25 = v24;
-  if (!v24)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementCopy = element;
+  descriptionCopy = description;
+  generatedDescriptionCopy = generatedDescription;
+  infoCopy = info;
+  textCopy = text;
+  v23 = [AXAuditIssue auditIssueForClassification:classification];
+  axElement = [elementCopy axElement];
+  v25 = axElement;
+  if (!axElement)
   {
     if (isAppleInternalBuild())
     {
@@ -468,32 +468,32 @@ LABEL_15:
   }
 
   pid = 0;
-  if (AXUIElementGetPid([v24 elementRef], &pid) || !AuditDoesAllowDeveloperAttributes(pid))
+  if (AXUIElementGetPid([axElement elementRef], &pid) || !AuditDoesAllowDeveloperAttributes(pid))
   {
 LABEL_6:
 
-    v22 = 0;
+    textCopy = 0;
   }
 
 LABEL_7:
   v26 = +[AXAuditIssueDescriptionManager auditIssueTypeToAuditTestTypeMapping];
-  v27 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v27 = [MEMORY[0x277CCABB0] numberWithLong:classification];
   v28 = [v26 objectForKey:v27];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v23 setAuditTestType:v28];
-    [v23 setAuditElement:v18];
-    [v23 setElementDescription:v19];
+    [v23 setAuditElement:elementCopy];
+    [v23 setElementDescription:descriptionCopy];
     [v23 setElementRect:{x, y, width, height}];
-    [v23 setLongDescExtraInfo:v21];
-    [v23 setElementText:v22];
-    [v23 setMlGeneratedDescription:v20];
-    v29 = [(AXAuditCategory *)self currentCaseResult];
-    [v29 addAuditIssue:v23];
-    v30 = [(AXAuditCategory *)self delegate];
-    [v30 auditCategory:self didEncounterIssue:v23];
+    [v23 setLongDescExtraInfo:infoCopy];
+    [v23 setElementText:textCopy];
+    [v23 setMlGeneratedDescription:generatedDescriptionCopy];
+    currentCaseResult = [(AXAuditCategory *)self currentCaseResult];
+    [currentCaseResult addAuditIssue:v23];
+    delegate = [(AXAuditCategory *)self delegate];
+    [delegate auditCategory:self didEncounterIssue:v23];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface BTTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation BTTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BTTableCell"];
-  [v3 validateClass:@"BTTableCell" hasInstanceVariable:@"_spinner" withType:"UIActivityIndicatorView"];
-  [v3 validateClass:@"BTTableCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BTTableCell"];
+  [validationsCopy validateClass:@"BTTableCell" hasInstanceVariable:@"_spinner" withType:"UIActivityIndicatorView"];
+  [validationsCopy validateClass:@"BTTableCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (id)accessibilityValue
@@ -19,17 +19,17 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 isAnimating])
   {
-    v4 = accessibilityLocalizedString(@"connecting");
+    accessibilityValue = accessibilityLocalizedString(@"connecting");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BTTableCellAccessibility;
-    v4 = [(BTTableCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(BTTableCellAccessibility *)&v7 accessibilityValue];
   }
 
-  v5 = v4;
+  v5 = accessibilityValue;
 
   return v5;
 }

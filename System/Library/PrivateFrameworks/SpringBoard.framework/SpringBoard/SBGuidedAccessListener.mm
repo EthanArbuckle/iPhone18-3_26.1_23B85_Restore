@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __52__SBGuidedAccessListener_sharedGuidedAccessListener__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGuidedAccessListener_onceToken != -1)
   {
     dispatch_once(&sharedGuidedAccessListener_onceToken, block);
@@ -39,9 +39,9 @@ void __52__SBGuidedAccessListener_sharedGuidedAccessListener__block_invoke(uint6
   v2 = [(SBGuidedAccessListener *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_guidedAccessWasActivated name:*MEMORY[0x277D81CE0] object:0];
-    [v3 addObserver:v2 selector:sel_guidedAccessWasDeactivated name:*MEMORY[0x277D81CE8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_guidedAccessWasActivated name:*MEMORY[0x277D81CE0] object:0];
+    [defaultCenter addObserver:v2 selector:sel_guidedAccessWasDeactivated name:*MEMORY[0x277D81CE8] object:0];
   }
 
   return v2;
@@ -50,15 +50,15 @@ void __52__SBGuidedAccessListener_sharedGuidedAccessListener__block_invoke(uint6
 - (void)guidedAccessWasActivated
 {
   self->_isGuidedAccessActive = 1;
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"SBGuidedAccessActivationChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBGuidedAccessActivationChangedNotification" object:0];
 }
 
 - (void)guidedAccessWasDeactivated
 {
   self->_isGuidedAccessActive = 0;
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"SBGuidedAccessActivationChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBGuidedAccessActivationChangedNotification" object:0];
 }
 
 @end

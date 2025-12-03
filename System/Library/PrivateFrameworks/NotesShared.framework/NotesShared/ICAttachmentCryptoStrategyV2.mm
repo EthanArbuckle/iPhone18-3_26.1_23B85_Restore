@@ -1,13 +1,13 @@
 @interface ICAttachmentCryptoStrategyV2
-- (BOOL)writeEncryptedFallbackAssetData:(id)a3 fallbackAssetType:(int64_t)a4;
-- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)a3;
+- (BOOL)writeEncryptedFallbackAssetData:(id)data fallbackAssetType:(int64_t)type;
+- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)type;
 @end
 
 @implementation ICAttachmentCryptoStrategyV2
 
-- (BOOL)writeEncryptedFallbackAssetData:(id)a3 fallbackAssetType:(int64_t)a4
+- (BOOL)writeEncryptedFallbackAssetData:(id)data fallbackAssetType:(int64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -17,8 +17,8 @@
   v9[2] = __82__ICAttachmentCryptoStrategyV2_writeEncryptedFallbackAssetData_fallbackAssetType___block_invoke;
   v9[3] = &unk_278194D00;
   v9[4] = self;
-  v12 = a4;
-  v7 = v6;
+  typeCopy = type;
+  v7 = dataCopy;
   v10 = v7;
   v11 = &v13;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v9];
@@ -123,7 +123,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)a3
+- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -136,7 +136,7 @@ LABEL_14:
   v5[2] = __79__ICAttachmentCryptoStrategyV2_decryptedFallbackAssetDataForFallbackAssetType___block_invoke;
   v5[3] = &unk_278194D28;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = type;
   v5[4] = self;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v5];
   v3 = v7[5];

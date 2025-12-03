@@ -1,26 +1,26 @@
 @interface AVDelegatingPlaybackCoordinatorPauseCommand
-- (AVDelegatingPlaybackCoordinatorPauseCommand)initWithCoordinator:(id)a3 originator:(id)a4 expectedCurrentItemIdentifier:(id)a5 commandOrderIndex:(int64_t)a6 shouldBufferInAnticipationOfPlayback:(BOOL)a7 anticipatedPlaybackRate:(float)a8;
+- (AVDelegatingPlaybackCoordinatorPauseCommand)initWithCoordinator:(id)coordinator originator:(id)originator expectedCurrentItemIdentifier:(id)identifier commandOrderIndex:(int64_t)index shouldBufferInAnticipationOfPlayback:(BOOL)playback anticipatedPlaybackRate:(float)rate;
 - (void)dealloc;
 @end
 
 @implementation AVDelegatingPlaybackCoordinatorPauseCommand
 
-- (AVDelegatingPlaybackCoordinatorPauseCommand)initWithCoordinator:(id)a3 originator:(id)a4 expectedCurrentItemIdentifier:(id)a5 commandOrderIndex:(int64_t)a6 shouldBufferInAnticipationOfPlayback:(BOOL)a7 anticipatedPlaybackRate:(float)a8
+- (AVDelegatingPlaybackCoordinatorPauseCommand)initWithCoordinator:(id)coordinator originator:(id)originator expectedCurrentItemIdentifier:(id)identifier commandOrderIndex:(int64_t)index shouldBufferInAnticipationOfPlayback:(BOOL)playback anticipatedPlaybackRate:(float)rate
 {
   v16.receiver = self;
   v16.super_class = AVDelegatingPlaybackCoordinatorPauseCommand;
-  v14 = [(AVDelegatingPlaybackCoordinatorPlaybackControlCommand *)&v16 initInternal];
-  if (v14)
+  initInternal = [(AVDelegatingPlaybackCoordinatorPlaybackControlCommand *)&v16 initInternal];
+  if (initInternal)
   {
-    v14->_coordinator = a3;
-    v14->_originator = a4;
-    v14->_expectedCurrentItemIdentifier = [a5 copy];
-    v14->_commandOrderIndex = a6;
-    v14->_shouldBufferInAnticipationOfPlayback = a7;
-    v14->_anticipatedPlaybackRate = a8;
+    initInternal->_coordinator = coordinator;
+    initInternal->_originator = originator;
+    initInternal->_expectedCurrentItemIdentifier = [identifier copy];
+    initInternal->_commandOrderIndex = index;
+    initInternal->_shouldBufferInAnticipationOfPlayback = playback;
+    initInternal->_anticipatedPlaybackRate = rate;
   }
 
-  return v14;
+  return initInternal;
 }
 
 - (void)dealloc

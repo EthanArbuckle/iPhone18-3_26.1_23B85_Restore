@@ -1,43 +1,43 @@
 @interface CRLImageRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_crlaxAllowedToEditMask;
 - (BOOL)accessibilityActivate;
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (BOOL)supportsAlternatePressureDrag;
 - (CRLImageItemAccessibility)_crlaxImageInfo;
 - (CRLImageLayoutAccessibility)crlaxImageLayout;
-- (CRLImageRepAccessibility)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLImageRepAccessibility)initWithLayout:(id)layout canvas:(id)canvas;
 - (NSString)crlaxLabel;
 - (id)accessibilityHint;
 - (id)crlaxDescriptionForConnections;
 - (id)crlaxKnobLabel;
-- (void)editMaskWithHUD:(BOOL)a3;
+- (void)editMaskWithHUD:(BOOL)d;
 @end
 
 @implementation CRLImageRepAccessibility
 
-- (CRLImageRepAccessibility)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLImageRepAccessibility)initWithLayout:(id)layout canvas:(id)canvas
 {
   v8.receiver = self;
   v8.super_class = CRLImageRepAccessibility;
-  v4 = [(CRLImageRepAccessibility *)&v8 initWithLayout:a3 canvas:a4];
+  v4 = [(CRLImageRepAccessibility *)&v8 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CRLCanvasRepAccessibility *)v4 accessibilityTraits];
-    [(CRLImageRepAccessibility *)v5 setAccessibilityTraits:UIAccessibilityTraitImage | v6];
+    accessibilityTraits = [(CRLCanvasRepAccessibility *)v4 accessibilityTraits];
+    [(CRLImageRepAccessibility *)v5 setAccessibilityTraits:UIAccessibilityTraitImage | accessibilityTraits];
   }
 
   return v5;
 }
 
-- (void)editMaskWithHUD:(BOOL)a3
+- (void)editMaskWithHUD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v6.receiver = self;
   v6.super_class = CRLImageRepAccessibility;
   [(CRLImageRepAccessibility *)&v6 editMaskWithHUD:?];
-  if (v3)
+  if (dCopy)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Image mask slider visible below image" value:0 table:0];
@@ -45,10 +45,10 @@
   }
 }
 
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     return 0;
@@ -56,7 +56,7 @@
 
   v9.receiver = self;
   v9.super_class = CRLImageRepAccessibility;
-  return [(CRLImageRepAccessibility *)&v9 handleDoubleTapAtPoint:a4 inputType:x, y];
+  return [(CRLImageRepAccessibility *)&v9 handleDoubleTapAtPoint:type inputType:x, y];
 }
 
 - (BOOL)supportsAlternatePressureDrag
@@ -73,23 +73,23 @@
 
 - (id)accessibilityHint
 {
-  v3 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  if (([v3 crlaxDocumentIsSharedReadOnly] & 1) != 0 || !-[CRLCanvasRepAccessibility crlaxIsSelected](self, "crlaxIsSelected"))
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  if (([crlaxInteractiveCanvasController crlaxDocumentIsSharedReadOnly] & 1) != 0 || !-[CRLCanvasRepAccessibility crlaxIsSelected](self, "crlaxIsSelected"))
   {
   }
 
   else
   {
-    v4 = [(CRLImageRepAccessibility *)self _crlaxAllowedToEditMask];
+    _crlaxAllowedToEditMask = [(CRLImageRepAccessibility *)self _crlaxAllowedToEditMask];
 
-    if (v4)
+    if (_crlaxAllowedToEditMask)
     {
-      v5 = [(CRLImageRepAccessibility *)self crlaxImageLayout];
-      v6 = [v5 crlaxIsInMaskEditMode];
+      crlaxImageLayout = [(CRLImageRepAccessibility *)self crlaxImageLayout];
+      crlaxIsInMaskEditMode = [crlaxImageLayout crlaxIsInMaskEditMode];
 
       v7 = +[NSBundle mainBundle];
       v8 = v7;
-      if (v6)
+      if (crlaxIsInMaskEditMode)
       {
         v9 = @"Image mask slider visible below image";
       }
@@ -99,7 +99,7 @@
         v9 = @"Double tap to view image";
       }
 
-      v10 = [v7 localizedStringForKey:v9 value:0 table:0];
+      accessibilityHint = [v7 localizedStringForKey:v9 value:0 table:0];
 
       goto LABEL_8;
     }
@@ -107,10 +107,10 @@
 
   v12.receiver = self;
   v12.super_class = CRLImageRepAccessibility;
-  v10 = [(CRLCanvasRepAccessibility *)&v12 accessibilityHint];
+  accessibilityHint = [(CRLCanvasRepAccessibility *)&v12 accessibilityHint];
 LABEL_8:
 
-  return v10;
+  return accessibilityHint;
 }
 
 - (BOOL)accessibilityActivate
@@ -136,17 +136,17 @@ LABEL_8:
 
 - (BOOL)_crlaxAllowedToEditMask
 {
-  v2 = [(CRLImageRepAccessibility *)self crlaxTarget];
-  v3 = [v2 i_allowedToEditMask];
+  crlaxTarget = [(CRLImageRepAccessibility *)self crlaxTarget];
+  i_allowedToEditMask = [crlaxTarget i_allowedToEditMask];
 
-  return v3;
+  return i_allowedToEditMask;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -154,11 +154,11 @@ LABEL_8:
 - (CRLImageLayoutAccessibility)crlaxImageLayout
 {
   v8 = 0;
-  v2 = [(CRLImageRepAccessibility *)self crlaxTarget];
-  v3 = [v2 imageLayout];
+  crlaxTarget = [(CRLImageRepAccessibility *)self crlaxTarget];
+  imageLayout = [crlaxTarget imageLayout];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, imageLayout, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -171,32 +171,32 @@ LABEL_8:
 
 - (NSString)crlaxLabel
 {
-  v2 = [(CRLImageRepAccessibility *)self crlaxTarget];
-  v3 = [v2 imageInfo];
+  crlaxTarget = [(CRLImageRepAccessibility *)self crlaxTarget];
+  imageInfo = [crlaxTarget imageInfo];
 
-  v4 = [v3 accessibilityDescription];
-  if (![v4 length])
+  accessibilityDescription = [imageInfo accessibilityDescription];
+  if (![accessibilityDescription length])
   {
-    v5 = [v3 imageAssetPayload];
-    v6 = [v5 filename];
+    imageAssetPayload = [imageInfo imageAssetPayload];
+    filename = [imageAssetPayload filename];
 
-    v4 = v6;
+    accessibilityDescription = filename;
   }
 
-  v7 = [v3 localizedName];
-  v14 = __CRLAccessibilityStringForVariables(1, v7, v8, v9, v10, v11, v12, v13, v4);
+  localizedName = [imageInfo localizedName];
+  v14 = __CRLAccessibilityStringForVariables(1, localizedName, v8, v9, v10, v11, v12, v13, accessibilityDescription);
 
   return v14;
 }
 
 - (id)crlaxDescriptionForConnections
 {
-  v3 = [(CRLImageRepAccessibility *)self crlaxTarget];
-  v4 = [v3 imageInfo];
-  v5 = [v4 imageAssetPayload];
-  v6 = [v5 filename];
-  v7 = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
-  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:v6 inString:v7];
+  crlaxTarget = [(CRLImageRepAccessibility *)self crlaxTarget];
+  imageInfo = [crlaxTarget imageInfo];
+  imageAssetPayload = [imageInfo imageAssetPayload];
+  filename = [imageAssetPayload filename];
+  crlaxDefaultDescriptionForConnections = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
+  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:filename inString:crlaxDefaultDescriptionForConnections];
 
   return v8;
 }
@@ -212,11 +212,11 @@ LABEL_8:
 - (CRLImageItemAccessibility)_crlaxImageInfo
 {
   v8 = 0;
-  v2 = [(CRLImageRepAccessibility *)self crlaxTarget];
-  v3 = [v2 imageInfo];
+  crlaxTarget = [(CRLImageRepAccessibility *)self crlaxTarget];
+  imageInfo = [crlaxTarget imageInfo];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, imageInfo, 1, &v8);
   if (v8 == 1)
   {
     abort();

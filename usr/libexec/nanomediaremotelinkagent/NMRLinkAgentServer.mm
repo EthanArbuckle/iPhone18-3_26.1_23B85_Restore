@@ -1,26 +1,26 @@
 @interface NMRLinkAgentServer
 + (id)server;
 - (NMRLinkAgentServer)init;
-- (id)_originInfoFromOrigin:(id)a3;
+- (id)_originInfoFromOrigin:(id)origin;
 - (id)_proxiedOrigins;
-- (void)_handleActiveOriginDidChangeNotification:(id)a3;
-- (void)_handleAvailableOriginsDidChangeNotification:(id)a3;
-- (void)_handleDiscoverAndConnectEndpointsMessage:(id)a3;
-- (void)_handleGetProxiedOriginsMessage:(id)a3;
-- (void)_handleMediaRemoteCommandRequestMessage:(id)a3;
-- (void)_handleMediaRemoteGetArtworkMessage:(id)a3;
-- (void)_handleMediaRemoteGetStateMessage:(id)a3;
-- (void)_handleOriginDeviceInfoDidChangeNotification:(id)a3;
-- (void)_handlePlaybackQueueRequest:(id)a3;
-- (void)_handlePrewarmSystemMusicAppMessage:(id)a3;
+- (void)_handleActiveOriginDidChangeNotification:(id)notification;
+- (void)_handleAvailableOriginsDidChangeNotification:(id)notification;
+- (void)_handleDiscoverAndConnectEndpointsMessage:(id)message;
+- (void)_handleGetProxiedOriginsMessage:(id)message;
+- (void)_handleMediaRemoteCommandRequestMessage:(id)message;
+- (void)_handleMediaRemoteGetArtworkMessage:(id)message;
+- (void)_handleMediaRemoteGetStateMessage:(id)message;
+- (void)_handleOriginDeviceInfoDidChangeNotification:(id)notification;
+- (void)_handlePlaybackQueueRequest:(id)request;
+- (void)_handlePrewarmSystemMusicAppMessage:(id)message;
 - (void)_prewarmSystemMusicApp;
 - (void)_registerForOriginNotification;
-- (void)_sendOriginUpdatesToClient:(id)a3;
+- (void)_sendOriginUpdatesToClient:(id)client;
 - (void)_sendProxiedOriginsToClient;
 - (void)_updateOriginsControllers;
-- (void)messageCenter:(id)a3 messageWithIdentifier:(id)a4 didSendWithSuccess:(BOOL)a5 error:(id)a6;
-- (void)originController:(id)a3 sendSetStateMessage:(id)a4 resultingMessageIdentifier:(id *)a5;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
+- (void)messageCenter:(id)center messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)originController:(id)controller sendSetStateMessage:(id)message resultingMessageIdentifier:(id *)identifier;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
 @end
 
 @implementation NMRLinkAgentServer
@@ -48,9 +48,9 @@
   }
 
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  getActivePairedDevice = [v3 getActivePairedDevice];
   v5 = [[NSUUID alloc] initWithUUIDString:@"AD00FAC5-9C37-4D0C-8F16-9B00B4C821C6"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [getActivePairedDevice supportsCapability:v5];
 
   if ((v6 & 1) == 0)
   {
@@ -116,24 +116,24 @@ LABEL_3:
   return v7;
 }
 
-- (void)originController:(id)a3 sendSetStateMessage:(id)a4 resultingMessageIdentifier:(id *)a5
+- (void)originController:(id)controller sendSetStateMessage:(id)message resultingMessageIdentifier:(id *)identifier
 {
-  v7 = a4;
-  v8 = [v7 originIdentifier];
-  v11 = [NSString stringWithFormat:@"%@-%@", @"MediaRemoteSetState", v8];
+  messageCopy = message;
+  originIdentifier = [messageCopy originIdentifier];
+  v11 = [NSString stringWithFormat:@"%@-%@", @"MediaRemoteSetState", originIdentifier];
 
   messageCenter = self->_messageCenter;
-  v10 = [v7 protobufData];
+  protobufData = [messageCopy protobufData];
 
-  [(NMRIDSMessageCenter *)messageCenter sendMessageWithProtobufData:v10 messageType:4 priority:1 timeout:0 bypassDuet:0 skipStorage:0 expectReply:IDSMaxMessageTimeout queueOneIdentifier:v11 resultingMessageIdentifier:a5 error:0];
+  [(NMRIDSMessageCenter *)messageCenter sendMessageWithProtobufData:protobufData messageType:4 priority:1 timeout:0 bypassDuet:0 skipStorage:0 expectReply:IDSMaxMessageTimeout queueOneIdentifier:v11 resultingMessageIdentifier:identifier error:0];
   kdebug_trace();
   kdebug_trace();
   kdebug_trace();
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = NSStringFromSelector(a2);
@@ -146,17 +146,17 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_10002D324;
   block[3] = &unk_100049648;
-  v15 = v5;
-  v16 = self;
+  v15 = changeCopy;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v5;
+  v13 = changeCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleMediaRemoteGetStateMessage:(id)a3
+- (void)_handleMediaRemoteGetStateMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   kdebug_trace();
   kdebug_trace();
   kdebug_trace();
@@ -172,17 +172,17 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_10002D8B0;
   block[3] = &unk_100049648;
-  v15 = v5;
-  v16 = self;
+  v15 = messageCopy;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v5;
+  v13 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleMediaRemoteGetArtworkMessage:(id)a3
+- (void)_handleMediaRemoteGetArtworkMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   kdebug_trace();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -196,17 +196,17 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_10002DC68;
   block[3] = &unk_100049648;
-  v15 = v5;
-  v16 = self;
+  v15 = messageCopy;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v5;
+  v13 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleMediaRemoteCommandRequestMessage:(id)a3
+- (void)_handleMediaRemoteCommandRequestMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   kdebug_trace();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -220,15 +220,15 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_10002DFDC;
   block[3] = &unk_100049648;
-  v15 = v5;
-  v16 = self;
+  v15 = messageCopy;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v5;
+  v13 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handlePrewarmSystemMusicAppMessage:(id)a3
+- (void)_handlePrewarmSystemMusicAppMessage:(id)message
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -243,12 +243,12 @@ LABEL_3:
   block[2] = sub_10002E2DC;
   block[3] = &unk_100048C80;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v11 = v9;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleGetProxiedOriginsMessage:(id)a3
+- (void)_handleGetProxiedOriginsMessage:(id)message
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -263,12 +263,12 @@ LABEL_3:
   block[2] = sub_10002E430;
   block[3] = &unk_100048C80;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v11 = v9;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleDiscoverAndConnectEndpointsMessage:(id)a3
+- (void)_handleDiscoverAndConnectEndpointsMessage:(id)message
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -288,9 +288,9 @@ LABEL_3:
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handlePlaybackQueueRequest:(id)a3
+- (void)_handlePlaybackQueueRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   kdebug_trace();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -304,23 +304,23 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_10002E8AC;
   block[3] = &unk_100049648;
-  v15 = v5;
-  v16 = self;
+  v15 = requestCopy;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v5;
+  v13 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
 - (void)_sendProxiedOriginsToClient
 {
-  v3 = [(NMRLinkAgentServer *)self _proxiedOrigins];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  _proxiedOrigins = [(NMRLinkAgentServer *)self _proxiedOrigins];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_proxiedOrigins count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = _proxiedOrigins;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -373,9 +373,9 @@ LABEL_3:
   }
 }
 
-- (void)_sendOriginUpdatesToClient:(id)a3
+- (void)_sendOriginUpdatesToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   [(NMRLinkAgentServer *)self _proxiedOrigins];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
@@ -383,7 +383,7 @@ LABEL_3:
   v5 = v36[3] = &unk_100049710;
   v37 = v5;
   v6 = [NSPredicate predicateWithBlock:v36];
-  v7 = [v4 filteredArrayUsingPredicate:v6];
+  v7 = [clientCopy filteredArrayUsingPredicate:v6];
 
   v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
   v32 = 0u;
@@ -462,8 +462,8 @@ LABEL_3:
             }
 
             lastOriginUpdatesIdentifiers = self->_lastOriginUpdatesIdentifiers;
-            v25 = [*(*(&v27 + 1) + 8 * v23) uniqueIdentifier];
-            [(NSMutableDictionary *)lastOriginUpdatesIdentifiers setObject:v18 forKeyedSubscript:v25];
+            uniqueIdentifier = [*(*(&v27 + 1) + 8 * v23) uniqueIdentifier];
+            [(NSMutableDictionary *)lastOriginUpdatesIdentifiers setObject:v18 forKeyedSubscript:uniqueIdentifier];
 
             v23 = v23 + 1;
           }
@@ -480,17 +480,17 @@ LABEL_3:
   }
 }
 
-- (id)_originInfoFromOrigin:(id)a3
+- (id)_originInfoFromOrigin:(id)origin
 {
-  v3 = a3;
+  originCopy = origin;
   v4 = objc_alloc_init(NMROriginInfo);
-  [v3 mediaRemoteOrigin];
+  [originCopy mediaRemoteOrigin];
   v5 = MRMediaRemoteCopyDeviceInfo();
   if (v5)
   {
     CFAutorelease(v5);
     ExternalRepresentation = MRPairedDeviceCreateExternalRepresentation();
-    if ([v3 isLocal])
+    if ([originCopy isLocal])
     {
       [(NMROriginInfo *)v4 setUniqueIdentifier:1129140302];
       [(NMROriginInfo *)v4 setDisplayName:@"iPhone"];
@@ -498,11 +498,11 @@ LABEL_3:
 
     else
     {
-      v9 = [v3 uniqueIdentifier];
-      -[NMROriginInfo setUniqueIdentifier:](v4, "setUniqueIdentifier:", [v9 intValue]);
+      uniqueIdentifier = [originCopy uniqueIdentifier];
+      -[NMROriginInfo setUniqueIdentifier:](v4, "setUniqueIdentifier:", [uniqueIdentifier intValue]);
 
-      v10 = [v3 displayName];
-      [(NMROriginInfo *)v4 setDisplayName:v10];
+      displayName = [originCopy displayName];
+      [(NMROriginInfo *)v4 setDisplayName:displayName];
     }
 
     [(NMROriginInfo *)v4 setDeviceInfoData:ExternalRepresentation];
@@ -514,7 +514,7 @@ LABEL_3:
     v7 = sub_10002C180(2);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10003153C(v3, v7);
+      sub_10003153C(originCopy, v7);
     }
 
     v8 = 0;
@@ -527,29 +527,29 @@ LABEL_3:
 {
   v2 = +[NMROriginManager sharedManager];
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  getActivePairedDevice = [v3 getActivePairedDevice];
 
   NRWatchOSVersionForRemoteDevice();
   if (NRVersionIsGreaterThanOrEqual())
   {
-    v5 = [v2 availableOrigins];
-    v6 = [NSSet setWithArray:v5];
+    availableOrigins = [v2 availableOrigins];
+    v6 = [NSSet setWithArray:availableOrigins];
   }
 
   else
   {
-    v5 = [v2 localOrigin];
-    v7 = [v2 activeOrigin];
-    v6 = [NSSet setWithObjects:v5, v7, 0];
+    availableOrigins = [v2 localOrigin];
+    activeOrigin = [v2 activeOrigin];
+    v6 = [NSSet setWithObjects:availableOrigins, activeOrigin, 0];
   }
 
   return v6;
 }
 
-- (void)messageCenter:(id)a3 messageWithIdentifier:(id)a4 didSendWithSuccess:(BOOL)a5 error:(id)a6
+- (void)messageCenter:(id)center messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = NSStringFromSelector(a2);
@@ -563,12 +563,12 @@ LABEL_3:
   block[2] = sub_10002F648;
   block[3] = &unk_100049738;
   v22 = v16;
-  v23 = v11;
-  v24 = v10;
-  v25 = self;
-  v26 = a5;
-  v18 = v10;
-  v19 = v11;
+  v23 = errorCopy;
+  v24 = identifierCopy;
+  selfCopy = self;
+  successCopy = success;
+  v18 = identifierCopy;
+  v19 = errorCopy;
   v20 = v16;
   dispatch_async(serialQueue, block);
 }
@@ -583,10 +583,10 @@ LABEL_3:
   [(NMRLinkAgentServer *)self _sendProxiedOriginsToClient];
 }
 
-- (void)_handleActiveOriginDidChangeNotification:(id)a3
+- (void)_handleActiveOriginDidChangeNotification:(id)notification
 {
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  getActivePairedDevice = [v4 getActivePairedDevice];
 
   NRWatchOSVersionForRemoteDevice();
   if ((NRVersionIsGreaterThanOrEqual() & 1) == 0)
@@ -596,10 +596,10 @@ LABEL_3:
   }
 }
 
-- (void)_handleAvailableOriginsDidChangeNotification:(id)a3
+- (void)_handleAvailableOriginsDidChangeNotification:(id)notification
 {
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  getActivePairedDevice = [v4 getActivePairedDevice];
 
   NRWatchOSVersionForRemoteDevice();
   if (NRVersionIsGreaterThanOrEqual())
@@ -611,13 +611,13 @@ LABEL_3:
 
 - (void)_updateOriginsControllers
 {
-  v3 = [(NMRLinkAgentServer *)self _proxiedOrigins];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  _proxiedOrigins = [(NMRLinkAgentServer *)self _proxiedOrigins];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [_proxiedOrigins count]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = _proxiedOrigins;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
@@ -633,22 +633,22 @@ LABEL_3:
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = &off_10004B370;
+        uniqueIdentifier = &off_10004B370;
         if (([v10 isLocal] & 1) == 0)
         {
-          v11 = [v10 uniqueIdentifier];
+          uniqueIdentifier = [v10 uniqueIdentifier];
         }
 
-        v12 = [(NSMutableDictionary *)self->_originControllers objectForKeyedSubscript:v11];
+        v12 = [(NSMutableDictionary *)self->_originControllers objectForKeyedSubscript:uniqueIdentifier];
 
         if (!v12)
         {
-          v13 = [[NMRLinkAgentOriginController alloc] initWithOrigin:v10 externalOriginIdentifier:v11];
+          v13 = [[NMRLinkAgentOriginController alloc] initWithOrigin:v10 externalOriginIdentifier:uniqueIdentifier];
           [(NMRLinkAgentOriginController *)v13 setDelegate:self];
-          [(NSMutableDictionary *)self->_originControllers setObject:v13 forKeyedSubscript:v11];
+          [(NSMutableDictionary *)self->_originControllers setObject:v13 forKeyedSubscript:uniqueIdentifier];
         }
 
-        [v4 addObject:v11];
+        [v4 addObject:uniqueIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -657,8 +657,8 @@ LABEL_3:
     while (v7);
   }
 
-  v14 = [(NSMutableDictionary *)self->_originControllers allKeys];
-  v15 = [NSMutableSet setWithArray:v14];
+  allKeys = [(NSMutableDictionary *)self->_originControllers allKeys];
+  v15 = [NSMutableSet setWithArray:allKeys];
 
   [v15 minusSet:v4];
   v23 = 0u;
@@ -690,9 +690,9 @@ LABEL_3:
   }
 }
 
-- (void)_handleOriginDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleOriginDeviceInfoDidChangeNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = NSStringFromSelector(a2);
@@ -706,9 +706,9 @@ LABEL_3:
   block[2] = sub_10002FE90;
   block[3] = &unk_100049648;
   v15 = v10;
-  v16 = v5;
-  v17 = self;
-  v12 = v5;
+  v16 = notificationCopy;
+  selfCopy = self;
+  v12 = notificationCopy;
   v13 = v10;
   dispatch_async(serialQueue, block);
 }

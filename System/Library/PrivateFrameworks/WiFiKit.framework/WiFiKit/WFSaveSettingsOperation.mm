@@ -1,9 +1,9 @@
 @interface WFSaveSettingsOperation
 - (NSOperationQueue)keychainQueue;
-- (WFSaveSettingsOperation)initWithSSID:(id)a3 interfaceName:(id)a4 settings:(id)a5;
-- (__SCNetworkSet)_createNewSetForNetworkNamed:(id)a3 interfaceName:(id)a4;
+- (WFSaveSettingsOperation)initWithSSID:(id)d interfaceName:(id)name settings:(id)settings;
+- (__SCNetworkSet)_createNewSetForNetworkNamed:(id)named interfaceName:(id)name;
 - (__SCNetworkSet)_defaultSetRetained;
-- (void)_applyProxySettings:(id)a3 service:(__SCNetworkProtocol *)a4;
+- (void)_applyProxySettings:(id)settings service:(__SCNetworkProtocol *)service;
 - (void)dealloc;
 - (void)start;
 @end
@@ -24,16 +24,16 @@
   [(WFSaveSettingsOperation *)&v4 dealloc];
 }
 
-- (void)_applyProxySettings:(id)a3 service:(__SCNetworkProtocol *)a4
+- (void)_applyProxySettings:(id)settings service:(__SCNetworkProtocol *)service
 {
-  v46 = self;
+  selfCopy = self;
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = SCNetworkProtocolGetConfiguration(a4);
+  settingsCopy = settings;
+  v6 = SCNetworkProtocolGetConfiguration(service);
   v7 = [[WFSettingsProxy alloc] initWithDictionary:v6];
-  if (-[WFSettingsProxy customProxy](v7, "customProxy") && -[WFSettingsProxy authenticated](v7, "authenticated") && ![v5 authenticated] || objc_msgSend(v5, "authenticated", v46))
+  if (-[WFSettingsProxy customProxy](v7, "customProxy") && -[WFSettingsProxy authenticated](v7, "authenticated") && ![settingsCopy authenticated] || objc_msgSend(settingsCopy, "authenticated", selfCopy))
   {
-    if (v7 && ([v5 authenticated] & 1) == 0)
+    if (v7 && ([settingsCopy authenticated] & 1) == 0)
     {
       v19 = WFLogForCategory(0);
       v20 = OSLogForWFLogLevel(4uLL);
@@ -42,28 +42,28 @@
         v21 = v19;
         if (os_log_type_enabled(v21, v20))
         {
-          v22 = [(WFSettingsProxy *)v7 server];
-          v23 = [(WFSettingsProxy *)v7 port];
-          v24 = [(WFSettingsProxy *)v7 username];
+          server = [(WFSettingsProxy *)v7 server];
+          port = [(WFSettingsProxy *)v7 port];
+          username = [(WFSettingsProxy *)v7 username];
           *buf = 138412802;
-          v52 = v22;
+          v52 = server;
           v53 = 2112;
-          v54 = v23;
+          v54 = port;
           v55 = 2112;
-          v56 = v24;
+          v56 = username;
           _os_log_impl(&dword_273ECD000, v21, v20, "Removing HTTP proxy password in KC server %@, port %@, username %@", buf, 0x20u);
         }
       }
 
-      v14 = [(WFSettingsProxy *)v7 server];
-      v15 = [(WFSettingsProxy *)v7 port];
-      v16 = [(WFSettingsProxy *)v7 username];
-      v18 = [WFProxyKeychainOperation removePasswordOperationForHost:v14 port:v15 username:v16];
+      server2 = [(WFSettingsProxy *)v7 server];
+      port2 = [(WFSettingsProxy *)v7 port];
+      username2 = [(WFSettingsProxy *)v7 username];
+      v18 = [WFProxyKeychainOperation removePasswordOperationForHost:server2 port:port2 username:username2];
     }
 
     else
     {
-      if (![v5 authenticated])
+      if (![settingsCopy authenticated])
       {
         goto LABEL_22;
       }
@@ -75,24 +75,24 @@
         v10 = v8;
         if (os_log_type_enabled(v10, v9))
         {
-          v11 = [v5 server];
-          v12 = [v5 port];
-          v13 = [v5 username];
+          server3 = [settingsCopy server];
+          port3 = [settingsCopy port];
+          username3 = [settingsCopy username];
           *buf = 138412802;
-          v52 = v11;
+          v52 = server3;
           v53 = 2112;
-          v54 = v12;
+          v54 = port3;
           v55 = 2112;
-          v56 = v13;
+          v56 = username3;
           _os_log_impl(&dword_273ECD000, v10, v9, "Saving new HTTP proxy password in KC server %@, port %@, username %@", buf, 0x20u);
         }
       }
 
-      v14 = [v5 server];
-      v15 = [v5 port];
-      v16 = [v5 username];
-      v17 = [v5 password];
-      v18 = [WFProxyKeychainOperation savePassswordOperationForHost:v14 port:v15 username:v16 password:v17];
+      server2 = [settingsCopy server];
+      port2 = [settingsCopy port];
+      username2 = [settingsCopy username];
+      password = [settingsCopy password];
+      v18 = [WFProxyKeychainOperation savePassswordOperationForHost:server2 port:port2 username:username2 password:password];
     }
 
     if (v18)
@@ -103,13 +103,13 @@
       v47[2] = __55__WFSaveSettingsOperation__applyProxySettings_service___block_invoke;
       v47[3] = &unk_279EBCDE8;
       objc_copyWeak(&v49, buf);
-      v48 = v5;
+      v48 = settingsCopy;
       [v18 setCompletionBlock:v47];
-      [(WFSaveSettingsOperation *)v46 addDependency:v18];
-      v25 = [(WFSaveSettingsOperation *)v46 keychainQueue];
+      [(WFSaveSettingsOperation *)selfCopy addDependency:v18];
+      keychainQueue = [(WFSaveSettingsOperation *)selfCopy keychainQueue];
       v50 = v18;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-      [v25 addOperations:v26 waitUntilFinished:1];
+      [keychainQueue addOperations:v26 waitUntilFinished:1];
 
       objc_destroyWeak(&v49);
       objc_destroyWeak(buf);
@@ -126,15 +126,15 @@ LABEL_22:
       v18 = v18;
       if (os_log_type_enabled(v18, v27))
       {
-        v28 = [v5 server];
-        v29 = [v5 port];
-        v30 = [v5 username];
+        server4 = [settingsCopy server];
+        port4 = [settingsCopy port];
+        username4 = [settingsCopy username];
         *buf = 138412802;
-        v52 = v28;
+        v52 = server4;
         v53 = 2112;
-        v54 = v29;
+        v54 = port4;
         v55 = 2112;
-        v56 = v30;
+        v56 = username4;
         _os_log_impl(&dword_273ECD000, v18, v27, "Failed to create WFProxyKeychainOperation for host: %@, port: %@, user: %@", buf, 0x20u);
       }
     }
@@ -150,18 +150,18 @@ LABEL_28:
     v33 = v31;
     if (os_log_type_enabled(v33, v32))
     {
-      v34 = [v5 protocol];
-      v35 = [v5 items];
+      protocol = [settingsCopy protocol];
+      items = [settingsCopy items];
       *buf = 138412546;
-      v52 = v34;
+      v52 = protocol;
       v53 = 2112;
-      v54 = v35;
+      v54 = items;
       _os_log_impl(&dword_273ECD000, v33, v32, "%@ saving to SC %@", buf, 0x16u);
     }
   }
 
-  v36 = [v5 items];
-  v37 = SCNetworkProtocolSetConfiguration(a4, v36) == 0;
+  items2 = [settingsCopy items];
+  v37 = SCNetworkProtocolSetConfiguration(service, items2) == 0;
 
   if (v37)
   {
@@ -172,14 +172,14 @@ LABEL_28:
       v40 = v38;
       if (os_log_type_enabled(v40, v39))
       {
-        v41 = [v5 protocol];
-        v42 = [(WFSaveSettingsOperation *)v46 ssid];
+        protocol2 = [settingsCopy protocol];
+        ssid = [(WFSaveSettingsOperation *)selfCopy ssid];
         v43 = SCError();
         v44 = SCErrorString(v43);
         *buf = 138412802;
-        v52 = v41;
+        v52 = protocol2;
         v53 = 2112;
-        v54 = v42;
+        v54 = ssid;
         v55 = 2080;
         v56 = v44;
         _os_log_impl(&dword_273ECD000, v40, v39, "WiFi: Couldn't set configuration for %@ for %@: %s", buf, 0x20u);
@@ -222,19 +222,19 @@ void __55__WFSaveSettingsOperation__applyProxySettings_service___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (__SCNetworkSet)_createNewSetForNetworkNamed:(id)a3 interfaceName:(id)a4
+- (__SCNetworkSet)_createNewSetForNetworkNamed:(id)named interfaceName:(id)name
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFSaveSettingsOperation *)self _defaultSetRetained];
-  if (!v8)
+  namedCopy = named;
+  nameCopy = name;
+  _defaultSetRetained = [(WFSaveSettingsOperation *)self _defaultSetRetained];
+  if (!_defaultSetRetained)
   {
     v11 = 0;
     goto LABEL_54;
   }
 
-  v9 = v8;
+  v9 = _defaultSetRetained;
   v10 = SCNetworkSetCreate(self->_prefs);
   if (!v10)
   {
@@ -258,9 +258,9 @@ LABEL_52:
   }
 
   v11 = v10;
-  if (([(__CFString *)v6 isEqualToString:@"Automatic"]& 1) == 0)
+  if (([(__CFString *)namedCopy isEqualToString:@"Automatic"]& 1) == 0)
   {
-    SCNetworkSetSetName(v11, v6);
+    SCNetworkSetSetName(v11, namedCopy);
   }
 
   ServiceOrder = SCNetworkSetGetServiceOrder(v9);
@@ -308,7 +308,7 @@ LABEL_50:
   v16 = Count;
   v64 = 0;
   v62 = v9;
-  v63 = v6;
+  v63 = namedCopy;
   service = 0;
   v17 = 0;
   v18 = 0;
@@ -325,7 +325,7 @@ LABEL_50:
         v22 = v18;
         v18 = SCNetworkInterfaceGetBSDName(v21);
 
-        if ([v18 isEqualToString:v7])
+        if ([v18 isEqualToString:nameCopy])
         {
           break;
         }
@@ -347,7 +347,7 @@ LABEL_50:
         v69 = 2112;
         v70 = v21;
         v71 = 2112;
-        v72 = v7;
+        v72 = nameCopy;
         _os_log_impl(&dword_273ECD000, v25, v26, "%s: found interface='%@' matching name='%@'", buf, 0x20u);
       }
 
@@ -408,7 +408,7 @@ LABEL_48:
           SCNetworkServiceRemove(v23);
           CFRelease(v23);
 LABEL_49:
-          v6 = v63;
+          namedCopy = v63;
           goto LABEL_50;
         }
 
@@ -457,7 +457,7 @@ LABEL_13:
   while (v17 != v16);
 
   v9 = v62;
-  v6 = v63;
+  namedCopy = v63;
   v28 = service;
   if (service)
   {
@@ -570,16 +570,16 @@ LABEL_8:
   return keychainQueue;
 }
 
-- (WFSaveSettingsOperation)initWithSSID:(id)a3 interfaceName:(id)a4 settings:(id)a5
+- (WFSaveSettingsOperation)initWithSSID:(id)d interfaceName:(id)name settings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  settingsCopy = settings;
   v21.receiver = self;
   v21.super_class = WFSaveSettingsOperation;
   v11 = [(WFSaveSettingsOperation *)&v21 init];
   v12 = v11;
-  if (!v8)
+  if (!dCopy)
   {
     goto LABEL_8;
   }
@@ -590,20 +590,20 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v13 = [v8 copy];
+  v13 = [dCopy copy];
   ssid = v12->_ssid;
   v12->_ssid = v13;
 
-  if (!v9)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
-  v15 = [v9 copy];
+  v15 = [nameCopy copy];
   interfaceName = v12->_interfaceName;
   v12->_interfaceName = v15;
 
-  if (v10 && (objc_storeStrong(&v12->_settings, a5), v17 = SCPreferencesCreateWithAuthorization(0, @"com.apple.wifikit", 0, 0), (v12->_prefs = v17) != 0))
+  if (settingsCopy && (objc_storeStrong(&v12->_settings, settings), v17 = SCPreferencesCreateWithAuthorization(0, @"com.apple.wifikit", 0, 0), (v12->_prefs = v17) != 0))
   {
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Save settings for '%@'", v12->_ssid];
     name = v12->_name;
@@ -624,7 +624,7 @@ LABEL_7:
 
 - (void)start
 {
-  v3 = self;
+  selfCopy = self;
   v193[1] = *MEMORY[0x277D85DE8];
   v184.receiver = self;
   v184.super_class = WFSaveSettingsOperation;
@@ -635,7 +635,7 @@ LABEL_7:
   {
     if (OUTLINED_FUNCTION_5(v4))
     {
-      v5 = [(WFSaveSettingsOperation *)v3 ssid];
+      ssid = [(WFSaveSettingsOperation *)selfCopy ssid];
       OUTLINED_FUNCTION_2();
       OUTLINED_FUNCTION_1_0(&dword_273ECD000, v6, v7, "Starting persisting settings for ssid: %@", v8, v9, v10, v11, v152, v154, v155, set, v159, v161, v163, v165, *v167, *&v167[8], v168, v169, v171[0], v171[1], v172, v174, obj, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
     }
@@ -643,55 +643,55 @@ LABEL_7:
 
   v12 = [objc_alloc(MEMORY[0x277D02B18]) initWithServiceType:1];
   [v12 activate];
-  v170 = v3->_interfaceName;
+  v170 = selfCopy->_interfaceName;
   v164 = v12;
-  v160 = [v12 userSettings];
-  v13 = [v160 OSSpecificAttributes];
+  userSettings = [v12 userSettings];
+  oSSpecificAttributes = [userSettings OSSpecificAttributes];
   v14 = *MEMORY[0x277D298B0];
-  v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277D298B0]];
+  v15 = [oSSpecificAttributes objectForKeyedSubscript:*MEMORY[0x277D298B0]];
 
   v162 = v15;
-  if (!v15 || (-[WFSaveSettingsOperation ssid](v3, "ssid"), v16 = objc_claimAutoreleasedReturnValue(), [v15 objectForKey:v16], v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
+  if (!v15 || (-[WFSaveSettingsOperation ssid](selfCopy, "ssid"), v16 = objc_claimAutoreleasedReturnValue(), [v15 objectForKey:v16], v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
   {
-    v19 = WFLogForCategory(0);
+    dictionary = WFLogForCategory(0);
     OSLogForWFLogLevel(3uLL);
-    if (WFCurrentLogLevel() >= 3 && v19)
+    if (WFCurrentLogLevel() >= 3 && dictionary)
     {
-      if (OUTLINED_FUNCTION_5(v19))
+      if (OUTLINED_FUNCTION_5(dictionary))
       {
-        v31 = [(WFSaveSettingsOperation *)v3 ssid];
+        ssid2 = [(WFSaveSettingsOperation *)selfCopy ssid];
         OUTLINED_FUNCTION_2();
-        OUTLINED_FUNCTION_1_0(&dword_273ECD000, v32, v33, "No existing custom network settings for ssid: %@", v34, v35, v36, v37, v152, v154, v155, set, v160, v162, v12, v165, *v167, *&v167[8], v168, v170, v171[0], v171[1], v172, v174, obj, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+        OUTLINED_FUNCTION_1_0(&dword_273ECD000, v32, v33, "No existing custom network settings for ssid: %@", v34, v35, v36, v37, v152, v154, v155, set, userSettings, v162, v12, v165, *v167, *&v167[8], v168, v170, v171[0], v171[1], v172, v174, obj, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
 
         v15 = v162;
       }
     }
 
-    v20 = 0;
+    ssid5 = 0;
     v166 = 304;
 LABEL_30:
-    if (SCPreferencesLock(v3->_prefs, 0) || (SCPreferencesSynchronize(v3->_prefs), SCPreferencesLock(v3->_prefs, 1u)))
+    if (SCPreferencesLock(selfCopy->_prefs, 0) || (SCPreferencesSynchronize(selfCopy->_prefs), SCPreferencesLock(selfCopy->_prefs, 1u)))
     {
-      v19 = [v15 mutableCopy];
-      if (!v19)
+      dictionary = [v15 mutableCopy];
+      if (!dictionary)
       {
-        v19 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v44 = [(WFSaveSettingsOperation *)v3 ssid];
-      v45 = [(WFSaveSettingsOperation *)v3 _createNewSetForNetworkNamed:v44 interfaceName:v170];
+      ssid3 = [(WFSaveSettingsOperation *)selfCopy ssid];
+      v45 = [(WFSaveSettingsOperation *)selfCopy _createNewSetForNetworkNamed:ssid3 interfaceName:v170];
 
       if (v45)
       {
         v46 = v45;
         v47 = SCNetworkSetGetSetID(v45);
 
-        v48 = [(WFSaveSettingsOperation *)v3 ssid];
-        [v19 setObject:v47 forKey:v48];
+        ssid4 = [(WFSaveSettingsOperation *)selfCopy ssid];
+        [dictionary setObject:v47 forKey:ssid4];
 
-        SCPreferencesCommitChanges(v3->_prefs);
-        SCPreferencesApplyChanges(v3->_prefs);
-        v20 = v47;
+        SCPreferencesCommitChanges(selfCopy->_prefs);
+        SCPreferencesApplyChanges(selfCopy->_prefs);
+        ssid5 = v47;
       }
 
       else
@@ -704,21 +704,21 @@ LABEL_30:
           v51 = v49;
           if (os_log_type_enabled(v51, v50))
           {
-            [(WFSaveSettingsOperation *)v3 ssid];
-            v53 = v52 = v20;
+            [(WFSaveSettingsOperation *)selfCopy ssid];
+            v53 = v52 = ssid5;
             OUTLINED_FUNCTION_2();
             _os_log_impl(&dword_273ECD000, v51, v50, "Failed to create new set for network named %{public}@", buf, 0xCu);
 
-            v20 = v52;
+            ssid5 = v52;
           }
         }
       }
 
-      SCPreferencesUnlock(v3->_prefs);
-      SCPreferencesSynchronize(v3->_prefs);
+      SCPreferencesUnlock(selfCopy->_prefs);
+      SCPreferencesSynchronize(selfCopy->_prefs);
       v54 = objc_alloc_init(MEMORY[0x277D02B60]);
       v192 = v14;
-      v193[0] = v19;
+      v193[0] = dictionary;
       v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v193 forKeys:&v192 count:1];
       [v54 setOSSpecificAttributes:v55];
 
@@ -728,19 +728,19 @@ LABEL_30:
       v58 = v183;
       if ((v57 & 1) == 0)
       {
-        v59 = v20;
+        v59 = ssid5;
         v60 = WFLogForCategory(0);
         v61 = OSLogForWFLogLevel(1uLL);
         if (WFCurrentLogLevel() && v60 && os_log_type_enabled(v60, v61))
         {
           *buf = 138412546;
-          v186 = v19;
+          v186 = dictionary;
           OUTLINED_FUNCTION_6();
           v188 = v58;
           _os_log_impl(&dword_273ECD000, v60, v61, "failed to apply custom network set %@, error='%@'", buf, 0x16u);
         }
 
-        v20 = v59;
+        ssid5 = v59;
       }
 
       if (v46)
@@ -755,7 +755,7 @@ LABEL_30:
       WFLogForCategory(0);
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_3();
-      if (WFCurrentLogLevel() && v19 && OUTLINED_FUNCTION_4())
+      if (WFCurrentLogLevel() && dictionary && OUTLINED_FUNCTION_4())
       {
         *buf = 0;
         OUTLINED_FUNCTION_0_1();
@@ -768,25 +768,25 @@ LABEL_30:
     WFLogForCategory(0);
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_3();
-    if (WFCurrentLogLevel() && v19 && OUTLINED_FUNCTION_4())
+    if (WFCurrentLogLevel() && dictionary && OUTLINED_FUNCTION_4())
     {
       *buf = 138543362;
-      v186 = v20;
+      v186 = ssid5;
       OUTLINED_FUNCTION_0_1();
       _os_log_impl(v108, v109, v110, v111, v112, 0xCu);
     }
 
     v38 = 0;
     v80 = 0;
-    LOBYTE(v71) = 1;
+    LOBYTE(items2) = 1;
     goto LABEL_114;
   }
 
   v18 = v17;
-  v19 = WFLogForCategory(0);
+  dictionary = WFLogForCategory(0);
   OSLogForWFLogLevel(3uLL);
-  v20 = v17;
-  if (WFCurrentLogLevel() >= 3 && v19 && OUTLINED_FUNCTION_4())
+  ssid5 = v17;
+  if (WFCurrentLogLevel() >= 3 && dictionary && OUTLINED_FUNCTION_4())
   {
     *buf = 138543362;
     v186 = v17;
@@ -795,14 +795,14 @@ LABEL_30:
   }
 
   v166 = 304;
-  v26 = SCNetworkSetCopyAll(v3->_prefs);
+  v26 = SCNetworkSetCopyAll(selfCopy->_prefs);
   if (!v26)
   {
 LABEL_25:
     WFLogForCategory(0);
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_3();
-    if (WFCurrentLogLevel() && v19 && OUTLINED_FUNCTION_4())
+    if (WFCurrentLogLevel() && dictionary && OUTLINED_FUNCTION_4())
     {
       *buf = 138543362;
       v186 = v18;
@@ -813,12 +813,12 @@ LABEL_25:
     goto LABEL_30;
   }
 
-  v19 = v26;
+  dictionary = v26;
   Count = CFArrayGetCount(v26);
   if (Count < 1)
   {
 LABEL_17:
-    CFRelease(v19);
+    CFRelease(dictionary);
     v15 = v162;
     goto LABEL_25;
   }
@@ -827,7 +827,7 @@ LABEL_17:
   v29 = 0;
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v19, v29);
+    ValueAtIndex = CFArrayGetValueAtIndex(dictionary, v29);
     if ([v18 isEqualToString:SCNetworkSetGetSetID(ValueAtIndex)])
     {
       break;
@@ -840,7 +840,7 @@ LABEL_17:
   }
 
   v38 = CFRetain(ValueAtIndex);
-  CFRelease(v19);
+  CFRelease(dictionary);
   v15 = v162;
   if (!v38)
   {
@@ -861,17 +861,17 @@ LABEL_50:
       _os_log_impl(v128, v129, v130, v131, v132, 0xCu);
     }
 
-    LOBYTE(v71) = 0;
+    LOBYTE(items2) = 0;
     v80 = 0;
 LABEL_114:
-    v69 = v160;
+    protocol = userSettings;
     v63 = v162;
     goto LABEL_129;
   }
 
-  v156 = v20;
+  v156 = ssid5;
   OSLogForWFLogLevel(3uLL);
-  v20 = &off_273F75000;
+  ssid5 = &off_273F75000;
   if (WFCurrentLogLevel() >= 3 && v62 && OUTLINED_FUNCTION_4())
   {
     OUTLINED_FUNCTION_8();
@@ -893,21 +893,21 @@ LABEL_114:
       _os_log_impl(v133, v134, v135, v136, v137, 0xCu);
     }
 
-    LOBYTE(v71) = 0;
+    LOBYTE(items2) = 0;
     goto LABEL_144;
   }
 
-  v69 = 304;
-  if (!SCPreferencesLock(v3->_prefs, 0))
+  protocol = 304;
+  if (!SCPreferencesLock(selfCopy->_prefs, 0))
   {
-    SCPreferencesSynchronize(v3->_prefs);
-    if (!SCPreferencesLock(v3->_prefs, 1u))
+    SCPreferencesSynchronize(selfCopy->_prefs);
+    if (!SCPreferencesLock(selfCopy->_prefs, 1u))
     {
       WFLogForCategory(0);
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_3();
       v63 = v162;
-      v20 = v156;
+      ssid5 = v156;
       if (WFCurrentLogLevel())
       {
         if (OUTLINED_FUNCTION_5(0x130))
@@ -915,26 +915,26 @@ LABEL_114:
           v138 = SCError();
           SCErrorString(v138);
           OUTLINED_FUNCTION_2();
-          OUTLINED_FUNCTION_1_0(&dword_273ECD000, v139, v140, "SCPreferencesLock failed %{public}s", v141, v142, v143, v144, v152, v154, v156, set, v160, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v172, v174, obj, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+          OUTLINED_FUNCTION_1_0(&dword_273ECD000, v139, v140, "SCPreferencesLock failed %{public}s", v141, v142, v143, v144, v152, v154, v156, set, userSettings, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v172, v174, obj, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
         }
       }
 
-      LOBYTE(v71) = 0;
+      LOBYTE(items2) = 0;
       v80 = 0;
-      v69 = v160;
+      protocol = userSettings;
       goto LABEL_129;
     }
   }
 
   v70 = SCNetworkSetCopyServices(v38);
-  v71 = v70;
+  items2 = v70;
   if (!v70)
   {
 LABEL_144:
     v80 = 0;
-    v69 = v160;
+    protocol = userSettings;
     v63 = v162;
-    v20 = v156;
+    ssid5 = v156;
     goto LABEL_129;
   }
 
@@ -944,10 +944,10 @@ LABEL_144:
     goto LABEL_63;
   }
 
-  v69 = 0;
+  protocol = 0;
   while (1)
   {
-    v72 = CFArrayGetValueAtIndex(v71, v69);
+    v72 = CFArrayGetValueAtIndex(items2, protocol);
     Interface = SCNetworkServiceGetInterface(v72);
     v74 = SCNetworkInterfaceGetBSDName(Interface);
     v38 = [v74 isEqualToString:v170];
@@ -957,7 +957,7 @@ LABEL_144:
       break;
     }
 
-    if (++v69 >= CFArrayGetCount(v71))
+    if (++protocol >= CFArrayGetCount(items2))
     {
       goto LABEL_63;
     }
@@ -965,14 +965,14 @@ LABEL_144:
 
   if (v72)
   {
-    v153 = v71;
+    v153 = items2;
     *v180 = 0u;
     v181 = 0u;
     *v178 = 0u;
     v179 = 0u;
-    obja = [(WFSaveSettingsOperation *)v3 settings];
+    obja = [(WFSaveSettingsOperation *)selfCopy settings];
     v81 = [obja countByEnumeratingWithState:v178 objects:v191 count:16];
-    v173 = v3;
+    v173 = selfCopy;
     if (v81)
     {
       v63 = v81;
@@ -992,18 +992,18 @@ LABEL_144:
             objc_enumerationMutation(obja);
           }
 
-          v20 = *(v178[1] + 8 * i);
-          v69 = [v20 protocol];
-          v84 = SCNetworkServiceCopyProtocol(v72, v69);
+          ssid5 = *(v178[1] + 8 * i);
+          protocol = [ssid5 protocol];
+          v84 = SCNetworkServiceCopyProtocol(v72, protocol);
 
           if (v84)
           {
-            v69 = [v20 protocol];
-            v85 = [v69 isEqualToString:v177];
+            protocol = [ssid5 protocol];
+            v85 = [protocol isEqualToString:v177];
 
             if (v85)
             {
-              [(WFSaveSettingsOperation *)v3 _applyProxySettings:v20 service:v84];
+              [(WFSaveSettingsOperation *)selfCopy _applyProxySettings:ssid5 service:v84];
             }
 
             else
@@ -1015,43 +1015,43 @@ LABEL_144:
                 v88 = v86;
                 if (os_log_type_enabled(v88, v87))
                 {
-                  v89 = [v20 protocol];
-                  v90 = [v20 items];
+                  protocol2 = [ssid5 protocol];
+                  items = [ssid5 items];
                   *buf = v171[0];
-                  v186 = v89;
+                  v186 = protocol2;
                   OUTLINED_FUNCTION_6();
                   v188 = v91;
                   _os_log_impl(&dword_273ECD000, v88, v87, "%@ saving to SC %@", buf, 0x16u);
 
-                  v3 = v173;
+                  selfCopy = v173;
                 }
 
                 v56 = v174;
               }
 
-              v71 = [v20 items];
-              v69 = SCNetworkProtocolSetConfiguration(v84, v71);
+              items2 = [ssid5 items];
+              protocol = SCNetworkProtocolSetConfiguration(v84, items2);
 
-              if (!v69)
+              if (!protocol)
               {
                 v92 = WFLogForCategory(0);
                 v93 = OSLogForWFLogLevel(1uLL);
                 if (WFCurrentLogLevel() && v92)
                 {
-                  v69 = v92;
-                  if (os_log_type_enabled(v69, v93))
+                  protocol = v92;
+                  if (os_log_type_enabled(protocol, v93))
                   {
-                    v71 = [v20 protocol];
-                    v20 = [(WFSaveSettingsOperation *)v3 ssid];
+                    items2 = [ssid5 protocol];
+                    ssid5 = [(WFSaveSettingsOperation *)selfCopy ssid];
                     v94 = SCError();
                     SCErrorString(v94);
                     *buf = *v167;
-                    v186 = v71;
+                    v186 = items2;
                     OUTLINED_FUNCTION_6();
-                    v188 = v20;
+                    v188 = ssid5;
                     v189 = 2080;
                     v190 = v95;
-                    _os_log_impl(&dword_273ECD000, v69, v93, "WiFi: Couldn't set configuration for %@ for %@: %s", buf, 0x20u);
+                    _os_log_impl(&dword_273ECD000, protocol, v93, "WiFi: Couldn't set configuration for %@ for %@: %s", buf, 0x20u);
                   }
                 }
 
@@ -1070,22 +1070,22 @@ LABEL_144:
     }
 
     v38 = seta;
-    if ([(WFSaveSettingsOperation *)v3 isCurrentNetwork]&& !SCNetworkSetSetCurrent(seta))
+    if ([(WFSaveSettingsOperation *)selfCopy isCurrentNetwork]&& !SCNetworkSetSetCurrent(seta))
     {
       WFLogForCategory(0);
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_3();
-      if (WFCurrentLogLevel() && v69)
+      if (WFCurrentLogLevel() && protocol)
       {
-        if (OUTLINED_FUNCTION_5(v69))
+        if (OUTLINED_FUNCTION_5(protocol))
         {
           v145 = SCError();
           SCErrorString(v145);
           OUTLINED_FUNCTION_2();
-          OUTLINED_FUNCTION_1_0(&dword_273ECD000, v146, v147, "SCNetworkSetSetCurrent failed: %{public}s", v148, v149, v150, v151, v153, 304, v156, seta, v160, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+          OUTLINED_FUNCTION_1_0(&dword_273ECD000, v146, v147, "SCNetworkSetSetCurrent failed: %{public}s", v148, v149, v150, v151, v153, 304, v156, seta, userSettings, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
         }
 
-        v3 = v173;
+        selfCopy = v173;
       }
 
       OUTLINED_FUNCTION_7();
@@ -1095,31 +1095,31 @@ LABEL_144:
     {
       v63 = v162;
       v56 = v164;
-      v20 = v156;
-      if (SCPreferencesCommitChanges(v3->_prefs))
+      ssid5 = v156;
+      if (SCPreferencesCommitChanges(selfCopy->_prefs))
       {
-        if (SCPreferencesApplyChanges(v3->_prefs))
+        if (SCPreferencesApplyChanges(selfCopy->_prefs))
         {
-          if (!SCPreferencesUnlock(v3->_prefs))
+          if (!SCPreferencesUnlock(selfCopy->_prefs))
           {
             WFLogForCategory(0);
             objc_claimAutoreleasedReturnValue();
             OUTLINED_FUNCTION_3();
-            if (WFCurrentLogLevel() && v69)
+            if (WFCurrentLogLevel() && protocol)
             {
-              if (OUTLINED_FUNCTION_5(v69))
+              if (OUTLINED_FUNCTION_5(protocol))
               {
                 v96 = SCError();
                 SCErrorString(v96);
                 OUTLINED_FUNCTION_2();
-                OUTLINED_FUNCTION_1_0(&dword_273ECD000, v97, v98, "WiFi: SCPreferencesUnlock failed: %{public}s", v99, v100, v101, v102, v153, 304, v156, seta, v160, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+                OUTLINED_FUNCTION_1_0(&dword_273ECD000, v97, v98, "WiFi: SCPreferencesUnlock failed: %{public}s", v99, v100, v101, v102, v153, 304, v156, seta, userSettings, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
               }
 
               v38 = seta;
             }
           }
 
-          SCPreferencesSynchronize(v3->_prefs);
+          SCPreferencesSynchronize(selfCopy->_prefs);
         }
 
         else
@@ -1127,20 +1127,20 @@ LABEL_144:
           WFLogForCategory(0);
           objc_claimAutoreleasedReturnValue();
           OUTLINED_FUNCTION_3();
-          if (WFCurrentLogLevel() && v69)
+          if (WFCurrentLogLevel() && protocol)
           {
-            if (OUTLINED_FUNCTION_5(v69))
+            if (OUTLINED_FUNCTION_5(protocol))
             {
               v120 = SCError();
               SCErrorString(v120);
               OUTLINED_FUNCTION_2();
-              OUTLINED_FUNCTION_1_0(&dword_273ECD000, v121, v122, "WiFi: SCPreferencesApplyChanges failed: %{public}s", v123, v124, v125, v126, v153, 304, v156, seta, v160, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+              OUTLINED_FUNCTION_1_0(&dword_273ECD000, v121, v122, "WiFi: SCPreferencesApplyChanges failed: %{public}s", v123, v124, v125, v126, v153, 304, v156, seta, userSettings, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
             }
 
             v38 = seta;
           }
 
-          SCPreferencesUnlock(v3->_prefs);
+          SCPreferencesUnlock(selfCopy->_prefs);
         }
       }
 
@@ -1149,22 +1149,22 @@ LABEL_144:
         WFLogForCategory(0);
         objc_claimAutoreleasedReturnValue();
         OUTLINED_FUNCTION_3();
-        if (WFCurrentLogLevel() && v69)
+        if (WFCurrentLogLevel() && protocol)
         {
-          if (OUTLINED_FUNCTION_5(v69))
+          if (OUTLINED_FUNCTION_5(protocol))
           {
             v113 = SCError();
             SCErrorString(v113);
             OUTLINED_FUNCTION_2();
-            OUTLINED_FUNCTION_1_0(&dword_273ECD000, v114, v115, "WiFi: SCPreferencesCommitChanges failed: %{public}s", v116, v117, v118, v119, v153, 304, v156, seta, v160, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
+            OUTLINED_FUNCTION_1_0(&dword_273ECD000, v114, v115, "WiFi: SCPreferencesCommitChanges failed: %{public}s", v116, v117, v118, v119, v153, 304, v156, seta, userSettings, v162, v164, 304, *v167, *&v167[8], v168, v170, v171[0], v171[1], v173, v174, obja, v177, v178[0], v178[1], v179, *(&v179 + 1), v180[0], v180[1], v181, *(&v181 + 1), v182, v183, v184.receiver, v184.super_class, buf[0]);
           }
 
           v38 = seta;
         }
       }
 
-      LOBYTE(v71) = 0;
-      v69 = v160;
+      LOBYTE(items2) = 0;
+      protocol = userSettings;
     }
 
     v80 = v153;
@@ -1176,32 +1176,32 @@ LABEL_63:
     WFLogForCategory(0);
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_3();
-    if (WFCurrentLogLevel() && v69 && OUTLINED_FUNCTION_4())
+    if (WFCurrentLogLevel() && protocol && OUTLINED_FUNCTION_4())
     {
       OUTLINED_FUNCTION_8();
       v187 = 2114;
-      v188 = v71;
+      v188 = items2;
       OUTLINED_FUNCTION_0_1();
       _os_log_impl(v75, v76, v77, v78, v79, 0x16u);
     }
 
     OUTLINED_FUNCTION_7();
-    v80 = v71;
+    v80 = items2;
   }
 
 LABEL_129:
-  SCPreferencesUnlock(*(&v3->super.super.super.isa + v166));
+  SCPreferencesUnlock(*(&selfCopy->super.super.super.isa + v166));
   if (v80)
   {
     CFRelease(v80);
   }
 
-  if ((v71 & 1) == 0)
+  if ((items2 & 1) == 0)
   {
     CFRelease(v38);
   }
 
-  [(WFOperation *)v3 finish];
+  [(WFOperation *)selfCopy finish];
 
   v127 = *MEMORY[0x277D85DE8];
 }

@@ -1,50 +1,50 @@
 @interface HFUniqueArrayDiff
-+ (id)_createContainerSetFromArray:(id)a3 options:(id)a4;
-+ (id)diffFromArray:(id)a3 toArray:(id)a4 options:(id)a5;
++ (id)_createContainerSetFromArray:(id)array options:(id)options;
++ (id)diffFromArray:(id)array toArray:(id)toArray options:(id)options;
 - (NSIndexSet)changedIndexes;
 - (NSIndexSet)deletedIndexes;
 - (NSIndexSet)insertedIndexes;
 - (NSSet)movedIndexes;
 - (unint64_t)numberOfOperations;
-- (void)enumerateChangesUsingBlock:(id)a3;
-- (void)enumerateDeletesUsingBlock:(id)a3;
-- (void)enumerateInsertsUsingBlock:(id)a3;
-- (void)enumerateMovesUsingBlock:(id)a3;
+- (void)enumerateChangesUsingBlock:(id)block;
+- (void)enumerateDeletesUsingBlock:(id)block;
+- (void)enumerateInsertsUsingBlock:(id)block;
+- (void)enumerateMovesUsingBlock:(id)block;
 @end
 
 @implementation HFUniqueArrayDiff
 
-+ (id)diffFromArray:(id)a3 toArray:(id)a4 options:(id)a5
++ (id)diffFromArray:(id)array toArray:(id)toArray options:(id)options
 {
   v129 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_alloc_init(a1);
-  [v11 setFromArray:v8];
-  [v11 setToArray:v9];
-  if (![v8 count])
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  optionsCopy = options;
+  v11 = objc_alloc_init(self);
+  [v11 setFromArray:arrayCopy];
+  [v11 setToArray:toArrayCopy];
+  if (![arrayCopy count])
   {
-    v74 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v9, "count")}];
+    v74 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(toArrayCopy, "count")}];
     [v11 setInsertedIndexes:v74];
 LABEL_68:
 
     goto LABEL_71;
   }
 
-  if (![v9 count])
+  if (![toArrayCopy count])
   {
-    v74 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
+    v74 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(arrayCopy, "count")}];
     [v11 setDeletedIndexes:v74];
     goto LABEL_68;
   }
 
   v81 = v11;
-  v82 = v8;
-  v12 = [a1 _createContainerSetFromArray:v8 options:v10];
-  v80 = v9;
-  v85 = v10;
-  v13 = [a1 _createContainerSetFromArray:v9 options:v10];
+  v82 = arrayCopy;
+  v12 = [self _createContainerSetFromArray:arrayCopy options:optionsCopy];
+  v80 = toArrayCopy;
+  v85 = optionsCopy;
+  v13 = [self _createContainerSetFromArray:toArrayCopy options:optionsCopy];
   v14 = [MEMORY[0x277CBEB58] set];
   v15 = [MEMORY[0x277CBEB58] set];
   v118 = 0u;
@@ -86,7 +86,7 @@ LABEL_68:
     while (v18);
   }
 
-  v23 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
@@ -106,7 +106,7 @@ LABEL_68:
           objc_enumerationMutation(obj);
         }
 
-        [v23 addIndex:{objc_msgSend(*(*(&v114 + 1) + 8 * j), "index")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v114 + 1) + 8 * j), "index")}];
       }
 
       v25 = [obj countByEnumeratingWithState:&v114 objects:v127 count:16];
@@ -115,7 +115,7 @@ LABEL_68:
     while (v25);
   }
 
-  v83 = v23;
+  v83 = indexSet;
 
   v28 = [MEMORY[0x277CBEB58] set];
   v97 = [MEMORY[0x277CBEB58] set];
@@ -158,7 +158,7 @@ LABEL_68:
     while (v30);
   }
 
-  v35 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
@@ -179,7 +179,7 @@ LABEL_68:
           objc_enumerationMutation(v88);
         }
 
-        [v35 addIndex:{objc_msgSend(*(*(&v106 + 1) + 8 * m), "index")}];
+        [indexSet2 addIndex:{objc_msgSend(*(*(&v106 + 1) + 8 * m), "index")}];
       }
 
       v38 = [v88 countByEnumeratingWithState:&v106 objects:v125 count:16];
@@ -197,17 +197,17 @@ LABEL_68:
   }
 
   v79 = v16;
-  v91 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet3 = [MEMORY[0x277CCAB58] indexSet];
   v84 = [MEMORY[0x277CBEB58] set];
   v44 = [v83 mutableCopy];
-  v96 = [v35 mutableCopy];
+  v96 = [indexSet2 mutableCopy];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   v87 = v15;
   v45 = [v87 countByEnumeratingWithState:&v102 objects:v124 count:16];
-  v95 = v35;
+  v95 = indexSet2;
   if (v45)
   {
     v46 = v45;
@@ -225,41 +225,41 @@ LABEL_68:
         v49 = [v97 member:v48];
         if (!v49)
         {
-          v59 = [v48 object];
-          NSLog(&cfstr_MissingObjectI.isa, v59);
+          object = [v48 object];
+          NSLog(&cfstr_MissingObjectI.isa, object);
           goto LABEL_51;
         }
 
         v50 = v44;
-        v51 = [v37 changeComparator];
-        if (v51)
+        changeComparator = [v37 changeComparator];
+        if (changeComparator)
         {
-          v52 = v51;
-          v53 = [v37 changeComparator];
-          v54 = [v48 object];
-          v55 = [v49 object];
-          v56 = (v53)[2](v53, v54, v55);
+          v52 = changeComparator;
+          changeComparator2 = [v37 changeComparator];
+          object2 = [v48 object];
+          object3 = [v49 object];
+          v56 = (changeComparator2)[2](changeComparator2, object2, object3);
 
-          v35 = v95;
+          indexSet2 = v95;
           v37 = v85;
 
           if (v56)
           {
-            [v91 addIndex:{objc_msgSend(v48, "index")}];
+            [indexSet3 addIndex:{objc_msgSend(v48, "index")}];
           }
         }
 
-        v57 = [v48 index];
+        index = [v48 index];
         v44 = v50;
-        if (v57 != [v49 index])
+        if (index != [v49 index])
         {
           [v50 addIndex:{objc_msgSend(v48, "index")}];
           [v96 addIndex:{objc_msgSend(v49, "index")}];
           v58 = MEMORY[0x277CCAA70];
           v123[0] = [v48 index];
           v123[1] = [v49 index];
-          v59 = [v58 indexPathWithIndexes:v123 length:2];
-          [v84 addObject:v59];
+          object = [v58 indexPathWithIndexes:v123 length:2];
+          [v84 addObject:object];
 LABEL_51:
         }
       }
@@ -270,12 +270,12 @@ LABEL_51:
     while (v46);
   }
 
-  v60 = [v84 allObjects];
-  v61 = [v60 sortedArrayUsingComparator:&__block_literal_global_215];
+  allObjects = [v84 allObjects];
+  v61 = [allObjects sortedArrayUsingComparator:&__block_literal_global_215];
 
   v62 = [MEMORY[0x277CBEB58] set];
   v63 = [v83 mutableCopy];
-  v64 = [v35 mutableCopy];
+  v64 = [indexSet2 mutableCopy];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
@@ -312,11 +312,11 @@ LABEL_51:
           [v62 addObject:v68];
           [v63 addIndex:v69];
           [v64 addIndex:v70];
-          [v91 removeIndex:v69];
+          [indexSet3 removeIndex:v69];
         }
 
         v44 = v71;
-        v35 = v95;
+        indexSet2 = v95;
       }
 
       v94 = [v86 countByEnumeratingWithState:&v98 objects:v122 count:16];
@@ -330,9 +330,9 @@ LABEL_51:
   {
     v73 = v83;
     [v81 setDeletedIndexes:v83];
-    [v81 setInsertedIndexes:v35];
+    [v81 setInsertedIndexes:indexSet2];
     [v81 setMovedIndexes:v62];
-    v8 = v82;
+    arrayCopy = v82;
   }
 
   else
@@ -342,15 +342,15 @@ LABEL_51:
     v75 = [MEMORY[0x277CBEB98] set];
     [v81 setMovedIndexes:v75];
 
-    v8 = v82;
+    arrayCopy = v82;
     v73 = v83;
   }
 
   v76 = v64;
-  v9 = v80;
-  [v81 setChangedIndexes:v91];
+  toArrayCopy = v80;
+  [v81 setChangedIndexes:indexSet3];
 
-  v10 = v85;
+  optionsCopy = v85;
 LABEL_71:
 
   v77 = *MEMORY[0x277D85DE8];
@@ -412,24 +412,24 @@ uint64_t __51__HFUniqueArrayDiff_diffFromArray_toArray_options___block_invoke(ui
   }
 }
 
-+ (id)_createContainerSetFromArray:(id)a3 options:(id)a4
++ (id)_createContainerSetFromArray:(id)array options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  arrayCopy = array;
+  optionsCopy = options;
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke;
   v14[3] = &unk_277E01010;
   v8 = v7;
   v15 = v8;
-  v16 = v6;
-  v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v14];
+  v16 = optionsCopy;
+  v9 = optionsCopy;
+  [arrayCopy enumerateObjectsUsingBlock:v14];
   v10 = [v8 count];
-  if (v10 != [v5 count])
+  if (v10 != [arrayCopy count])
   {
-    NSLog(&cfstr_DetectedAnAtte.isa, v5);
+    NSLog(&cfstr_DetectedAnAtte.isa, arrayCopy);
   }
 
   v11 = v16;
@@ -455,15 +455,15 @@ void __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke
   insertedIndexes = self->_insertedIndexes;
   if (insertedIndexes)
   {
-    v3 = insertedIndexes;
+    indexSet = insertedIndexes;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (NSIndexSet)deletedIndexes
@@ -471,15 +471,15 @@ void __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke
   deletedIndexes = self->_deletedIndexes;
   if (deletedIndexes)
   {
-    v3 = deletedIndexes;
+    indexSet = deletedIndexes;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (NSIndexSet)changedIndexes
@@ -487,15 +487,15 @@ void __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke
   changedIndexes = self->_changedIndexes;
   if (changedIndexes)
   {
-    v3 = changedIndexes;
+    indexSet = changedIndexes;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (NSSet)movedIndexes
@@ -516,64 +516,64 @@ void __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke
 
 - (unint64_t)numberOfOperations
 {
-  v3 = [(HFUniqueArrayDiff *)self deletedIndexes];
-  v4 = [v3 count];
-  v5 = [(HFUniqueArrayDiff *)self insertedIndexes];
-  v6 = [v5 count] + v4;
-  v7 = [(HFUniqueArrayDiff *)self movedIndexes];
-  v8 = [v7 count];
-  v9 = [(HFUniqueArrayDiff *)self changedIndexes];
-  v10 = v8 + [v9 count];
+  deletedIndexes = [(HFUniqueArrayDiff *)self deletedIndexes];
+  v4 = [deletedIndexes count];
+  insertedIndexes = [(HFUniqueArrayDiff *)self insertedIndexes];
+  v6 = [insertedIndexes count] + v4;
+  movedIndexes = [(HFUniqueArrayDiff *)self movedIndexes];
+  v8 = [movedIndexes count];
+  changedIndexes = [(HFUniqueArrayDiff *)self changedIndexes];
+  v10 = v8 + [changedIndexes count];
 
   return v6 + v10;
 }
 
-- (void)enumerateInsertsUsingBlock:(id)a3
+- (void)enumerateInsertsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HFUniqueArrayDiff *)self insertedIndexes];
+  blockCopy = block;
+  insertedIndexes = [(HFUniqueArrayDiff *)self insertedIndexes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HFUniqueArrayDiff_enumerateInsertsUsingBlock___block_invoke;
   v7[3] = &unk_277E01038;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateIndexesUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [insertedIndexes enumerateIndexesUsingBlock:v7];
 }
 
-- (void)enumerateDeletesUsingBlock:(id)a3
+- (void)enumerateDeletesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HFUniqueArrayDiff *)self deletedIndexes];
+  blockCopy = block;
+  deletedIndexes = [(HFUniqueArrayDiff *)self deletedIndexes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HFUniqueArrayDiff_enumerateDeletesUsingBlock___block_invoke;
   v7[3] = &unk_277E01038;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateIndexesWithOptions:2 usingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [deletedIndexes enumerateIndexesWithOptions:2 usingBlock:v7];
 }
 
-- (void)enumerateChangesUsingBlock:(id)a3
+- (void)enumerateChangesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HFUniqueArrayDiff *)self changedIndexes];
+  blockCopy = block;
+  changedIndexes = [(HFUniqueArrayDiff *)self changedIndexes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HFUniqueArrayDiff_enumerateChangesUsingBlock___block_invoke;
   v7[3] = &unk_277E01038;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateIndexesUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [changedIndexes enumerateIndexesUsingBlock:v7];
 }
 
-- (void)enumerateMovesUsingBlock:(id)a3
+- (void)enumerateMovesUsingBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFUniqueArrayDiff *)self movedIndexes];
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_76_3];
+  blockCopy = block;
+  movedIndexes = [(HFUniqueArrayDiff *)self movedIndexes];
+  allObjects = [movedIndexes allObjects];
+  v7 = [allObjects sortedArrayUsingComparator:&__block_literal_global_76_3];
 
   v16 = 0u;
   v17 = 0u;
@@ -595,7 +595,7 @@ void __58__HFUniqueArrayDiff__createContainerSetFromArray_options___block_invoke
           objc_enumerationMutation(v8);
         }
 
-        v4[2](v4, [*(*(&v14 + 1) + 8 * v12) indexAtPosition:{0, v14}], objc_msgSend(*(*(&v14 + 1) + 8 * v12), "indexAtPosition:", 1));
+        blockCopy[2](blockCopy, [*(*(&v14 + 1) + 8 * v12) indexAtPosition:{0, v14}], objc_msgSend(*(*(&v14 + 1) + 8 * v12), "indexAtPosition:", 1));
         ++v12;
       }
 

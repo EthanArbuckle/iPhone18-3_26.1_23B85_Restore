@@ -14,13 +14,13 @@
 
 - (id)safari_dataByCompressingData
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v7.avail_in = [a1 length];
-    v2 = 0;
+    v7.avail_in = [self length];
+    data = 0;
     if (!deflateInit_(&v7, 9, "1.2.12", 112))
     {
-      v3 = [MEMORY[0x1E695DF88] dataWithLength:{deflateBound(&v7, objc_msgSend(a1, "length"))}];
+      v3 = [MEMORY[0x1E695DF88] dataWithLength:{deflateBound(&v7, objc_msgSend(self, "length"))}];
       v7.next_out = [v3 mutableBytes];
       v7.avail_out = [v3 length];
       v4 = deflate(&v7, 4);
@@ -29,36 +29,36 @@
       {
         v5 = [v3 length];
         [v3 setLength:v5 - v7.avail_out];
-        v2 = v3;
+        data = v3;
       }
 
       else
       {
-        v2 = 0;
+        data = 0;
       }
     }
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  return v2;
+  return data;
 }
 
 - (id)safari_dataByDecompressingData
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a1 length])
+  if ([self length])
   {
     memset(&strm.avail_in, 0, 104);
-    strm.next_in = [a1 bytes];
-    strm.avail_in = [a1 length];
-    v2 = 0;
+    strm.next_in = [self bytes];
+    strm.avail_in = [self length];
+    data2 = 0;
     if (!inflateInit_(&strm, "1.2.12", 112))
     {
-      v3 = [MEMORY[0x1E695DF88] data];
+      data = [MEMORY[0x1E695DF88] data];
       while (1)
       {
         strm.avail_out = 0x10000;
@@ -68,34 +68,34 @@
           break;
         }
 
-        [v3 appendBytes:v7 length:0x10000 - strm.avail_out];
+        [data appendBytes:v7 length:0x10000 - strm.avail_out];
         if (strm.avail_out)
         {
           inflateEnd(&strm);
-          v2 = v3;
+          data2 = data;
           goto LABEL_9;
         }
       }
 
       inflateEnd(&strm);
-      v2 = 0;
+      data2 = 0;
 LABEL_9:
     }
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DEF0] data];
+    data2 = [MEMORY[0x1E695DEF0] data];
   }
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return data2;
 }
 
 - (BOOL)safari_dataAppearsToBeCompressed
 {
-  if ([a1 length] >= 2 && (objc_msgSend(a1, "getBytes:length:", &v3, 2), (v3 & 0x8F) == 8))
+  if ([self length] >= 2 && (objc_msgSend(self, "getBytes:length:", &v3, 2), (v3 & 0x8F) == 8))
   {
     return (31711 * (bswap32(v3) >> 16)) < 0x843u;
   }
@@ -109,7 +109,7 @@ LABEL_9:
 - (uint64_t)safari_hashMD5
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_MD5([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_MD5([self bytes], objc_msgSend(self, "length"), md);
   if (v4 >= 0)
   {
     result = v4;
@@ -127,7 +127,7 @@ LABEL_9:
 - (id)safari_SHA1Hash
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), md);
+  v1 = CC_SHA1([self bytes], objc_msgSend(self, "length"), md);
   if (v1)
   {
     v1 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
@@ -173,8 +173,8 @@ LABEL_9:
     v25[5] = v15;
     v24 = v16;
     [(WBSScopeExitHandler *)v16 setHandler:v25];
-    [a1 length];
-    [a1 bytes];
+    [self length];
+    [self bytes];
     [v12 length];
     [v12 bytes];
     v17 = ccscrypt();
@@ -203,17 +203,17 @@ LABEL_9:
 
 - (id)safari_descriptionWithoutSpaces
 {
-  v1 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:a1];
+  v1 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:self];
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@>", v1];
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 - (id)safari_dataByAppendingData:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 appendData:v4];
 
   return v5;
@@ -224,9 +224,9 @@ LABEL_9:
   v3 = MEMORY[0x1E696AB08];
   v4 = a3;
   v5 = [v3 characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
-  v6 = [v5 invertedSet];
+  invertedSet = [v5 invertedSet];
 
-  v7 = [v4 safari_stringByRemovingCharactersInSet:v6];
+  v7 = [v4 safari_stringByRemovingCharactersInSet:invertedSet];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF88]);
   [v7 UTF8String];

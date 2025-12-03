@@ -31,11 +31,11 @@
     return 0;
   }
 
-  v3 = [objc_opt_class() _kernel];
+  _kernel = [objc_opt_class() _kernel];
   inputImage = self->inputImage;
   inputBackgroundImage = self->inputBackgroundImage;
 
-  return [v3 applyWithForeground:inputImage background:inputBackgroundImage];
+  return [_kernel applyWithForeground:inputImage background:inputBackgroundImage];
 }
 
 @end

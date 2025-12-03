@@ -1,27 +1,27 @@
 @interface CorrectionsProfilesPersistedState
-- (CorrectionsProfilesPersistedState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CorrectionsProfilesPersistedState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CorrectionsProfilesPersistedState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   digest = self->_digest;
-  v5 = a3;
-  [v5 encodeObject:digest forKey:@"digest"];
-  [v5 encodeObject:self->_correctionsProfiles forKey:@"correctionsProfiles"];
+  coderCopy = coder;
+  [coderCopy encodeObject:digest forKey:@"digest"];
+  [coderCopy encodeObject:self->_correctionsProfiles forKey:@"correctionsProfiles"];
 }
 
-- (CorrectionsProfilesPersistedState)initWithCoder:(id)a3
+- (CorrectionsProfilesPersistedState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CorrectionsProfilesPersistedState;
   v5 = [(CorrectionsProfilesPersistedState *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
     digest = v5->_digest;
     v5->_digest = v6;
 
@@ -29,7 +29,7 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"correctionsProfiles"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"correctionsProfiles"];
     correctionsProfiles = v5->_correctionsProfiles;
     v5->_correctionsProfiles = v12;
   }

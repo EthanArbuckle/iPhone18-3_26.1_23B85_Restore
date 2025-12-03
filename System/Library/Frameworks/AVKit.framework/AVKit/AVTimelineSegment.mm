@@ -1,7 +1,7 @@
 @interface AVTimelineSegment
 - (AVInterstitialTimeRange)interstitialTimeRange;
-- (AVTimelineSegment)initWithSegment:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVTimelineSegment)initWithSegment:(id)segment;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supplementsPrimaryContent;
 - (double)startTime;
 @end
@@ -10,10 +10,10 @@
 
 - (BOOL)supplementsPrimaryContent
 {
-  v2 = [(AVTimelineSegment *)self playerInterstitialEvent];
-  v3 = [v2 supplementsPrimaryContent];
+  playerInterstitialEvent = [(AVTimelineSegment *)self playerInterstitialEvent];
+  supplementsPrimaryContent = [playerInterstitialEvent supplementsPrimaryContent];
 
-  return v3;
+  return supplementsPrimaryContent;
 }
 
 - (AVInterstitialTimeRange)interstitialTimeRange
@@ -25,11 +25,11 @@
     v18 = 0u;
     v16 = 0u;
     memset(v17, 0, sizeof(v17));
-    v3 = [(AVTimelineSegment *)self playerItemSegment];
-    v4 = v3;
-    if (v3)
+    playerItemSegment = [(AVTimelineSegment *)self playerItemSegment];
+    v4 = playerItemSegment;
+    if (playerItemSegment)
     {
-      [v3 timeMapping];
+      [playerItemSegment timeMapping];
     }
 
     else
@@ -82,15 +82,15 @@
   return CMTimeGetSeconds(&v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     playerItemSegment = self->_playerItemSegment;
-    v6 = [v4 playerItemSegment];
-    v7 = playerItemSegment == v6;
+    playerItemSegment = [equalCopy playerItemSegment];
+    v7 = playerItemSegment == playerItemSegment;
   }
 
   else
@@ -101,15 +101,15 @@
   return v7;
 }
 
-- (AVTimelineSegment)initWithSegment:(id)a3
+- (AVTimelineSegment)initWithSegment:(id)segment
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  segmentCopy = segment;
+  v6 = segmentCopy;
+  if (segmentCopy)
   {
     v15 = 0u;
     memset(v16, 0, sizeof(v16));
-    [v5 timeMapping];
+    [segmentCopy timeMapping];
     time = *(v16 + 8);
     Seconds = CMTimeGetSeconds(&time);
     time = *(&v16[3] + 8);
@@ -128,7 +128,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_playerItemSegment, a3);
+    objc_storeStrong(&v9->_playerItemSegment, segment);
     v10->_interstitial = [v6 segmentType] == 1;
     if (v6)
     {

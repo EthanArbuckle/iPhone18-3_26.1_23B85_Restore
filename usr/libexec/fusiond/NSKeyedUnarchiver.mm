@@ -1,18 +1,18 @@
 @interface NSKeyedUnarchiver
-+ (id)_unarchiveObjectFromVersion1XPCObject:(id)a3 allowedClasses:(id)a4;
-+ (id)unarchiveDataToObject:(id)a3 allowedClasses:(id)a4;
-+ (id)unarchiveXPCObject:(id)a3 allowedClasses:(id)a4;
++ (id)_unarchiveObjectFromVersion1XPCObject:(id)object allowedClasses:(id)classes;
++ (id)unarchiveDataToObject:(id)object allowedClasses:(id)classes;
++ (id)unarchiveXPCObject:(id)object allowedClasses:(id)classes;
 @end
 
 @implementation NSKeyedUnarchiver
 
-+ (id)unarchiveDataToObject:(id)a3 allowedClasses:(id)a4
++ (id)unarchiveDataToObject:(id)object allowedClasses:(id)classes
 {
-  v5 = a4;
-  v6 = a3;
-  NSLog(@"%s: Data length : %lu", "+[NSKeyedUnarchiver(XPC) unarchiveDataToObject:allowedClasses:]", [v6 length]);
+  classesCopy = classes;
+  objectCopy = object;
+  NSLog(@"%s: Data length : %lu", "+[NSKeyedUnarchiver(XPC) unarchiveDataToObject:allowedClasses:]", [objectCopy length]);
   v10 = 0;
-  v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v6 error:&v10];
+  v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:objectCopy error:&v10];
 
   if (!v7)
   {
@@ -20,8 +20,8 @@
   }
 
   [v7 setDecodingFailurePolicy:0];
-  NSLog(@"Allowed Classes : %@", v5);
-  v8 = [v7 decodeObjectOfClasses:v5 forKey:NSKeyedArchiveRootObjectKey];
+  NSLog(@"Allowed Classes : %@", classesCopy);
+  v8 = [v7 decodeObjectOfClasses:classesCopy forKey:NSKeyedArchiveRootObjectKey];
 
   if (v8)
   {
@@ -36,11 +36,11 @@
   return v8;
 }
 
-+ (id)_unarchiveObjectFromVersion1XPCObject:(id)a3 allowedClasses:(id)a4
++ (id)_unarchiveObjectFromVersion1XPCObject:(id)object allowedClasses:(id)classes
 {
   length = 0;
-  v5 = a4;
-  data = xpc_dictionary_get_data(a3, "SerializedObject", &length);
+  classesCopy = classes;
+  data = xpc_dictionary_get_data(object, "SerializedObject", &length);
   v7 = [NSData dataWithBytes:data length:length];
   NSLog(@"%s: Data length : %lu", "+[NSKeyedUnarchiver(XPC) _unarchiveObjectFromVersion1XPCObject:allowedClasses:]", [v7 length]);
   v12 = 0;
@@ -48,7 +48,7 @@
   v9 = v12;
   NSLog(@"archiveError :%@", v9);
   NSLog(@"%s: Successfully Unarchived Object", "+[NSKeyedUnarchiver(XPC) _unarchiveObjectFromVersion1XPCObject:allowedClasses:]");
-  v10 = [v8 decodeObjectOfClasses:v5 forKey:NSKeyedArchiveRootObjectKey];
+  v10 = [v8 decodeObjectOfClasses:classesCopy forKey:NSKeyedArchiveRootObjectKey];
 
   if (!v10)
   {
@@ -58,15 +58,15 @@
   return v10;
 }
 
-+ (id)unarchiveXPCObject:(id)a3 allowedClasses:(id)a4
++ (id)unarchiveXPCObject:(id)object allowedClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  uint64 = xpc_dictionary_get_uint64(v6, "Version");
+  objectCopy = object;
+  classesCopy = classes;
+  uint64 = xpc_dictionary_get_uint64(objectCopy, "Version");
   NSLog(@"Version : %llu", uint64);
   if (uint64 == 1)
   {
-    v9 = [a1 _unarchiveObjectFromVersion1XPCObject:v6 allowedClasses:v7];
+    v9 = [self _unarchiveObjectFromVersion1XPCObject:objectCopy allowedClasses:classesCopy];
   }
 
   else

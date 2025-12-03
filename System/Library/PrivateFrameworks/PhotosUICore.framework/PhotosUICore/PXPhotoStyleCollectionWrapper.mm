@@ -1,6 +1,6 @@
 @interface PXPhotoStyleCollectionWrapper
 + (id)macStyleCollections;
-- (PXPhotoStyleCollectionWrapper)initWithCollection:(id)a3;
+- (PXPhotoStyleCollectionWrapper)initWithCollection:(id)collection;
 - (id)styleElements;
 @end
 
@@ -21,16 +21,16 @@ PXPhotoStyleElementWrapper *__46__PXPhotoStyleCollectionWrapper_styleElements__b
   return v3;
 }
 
-- (PXPhotoStyleCollectionWrapper)initWithCollection:(id)a3
+- (PXPhotoStyleCollectionWrapper)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXPhotoStyleCollectionWrapper;
   v6 = [(PXPhotoStyleCollectionWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingCollection, a3);
+    objc_storeStrong(&v6->_underlyingCollection, collection);
   }
 
   return v7;

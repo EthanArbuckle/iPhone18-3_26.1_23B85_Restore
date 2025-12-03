@@ -1,35 +1,35 @@
 @interface NLTokenIDBasedLanguageModelSession
-- (id)conditionalProbabilitiesForTokenIDs:(const unsigned int *)a3 count:(unint64_t)a4 contextTokenIDs:(const unsigned int *)a5 length:(unint64_t)a6;
-- (id)conditionalProbabilityForTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5;
-- (id)stateWithOptions:(id)a3;
+- (id)conditionalProbabilitiesForTokenIDs:(const unsigned int *)ds count:(unint64_t)count contextTokenIDs:(const unsigned int *)iDs length:(unint64_t)length;
+- (id)conditionalProbabilityForTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
+- (id)stateWithOptions:(id)options;
 @end
 
 @implementation NLTokenIDBasedLanguageModelSession
 
-- (id)conditionalProbabilityForTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5
+- (id)conditionalProbabilityForTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
-  v5 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+  initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
 
-  return v5;
+  return initWithInvalidProbability;
 }
 
-- (id)conditionalProbabilitiesForTokenIDs:(const unsigned int *)a3 count:(unint64_t)a4 contextTokenIDs:(const unsigned int *)a5 length:(unint64_t)a6
+- (id)conditionalProbabilitiesForTokenIDs:(const unsigned int *)ds count:(unint64_t)count contextTokenIDs:(const unsigned int *)iDs length:(unint64_t)length
 {
   for (i = [MEMORY[0x1E695DF70] array];
   {
-    v12 = *a3++;
-    v13 = [(NLTokenIDBasedLanguageModelSession *)self conditionalProbabilityForTokenID:v12 contextTokenIDs:a5 length:a6];
+    v12 = *ds++;
+    v13 = [(NLTokenIDBasedLanguageModelSession *)self conditionalProbabilityForTokenID:v12 contextTokenIDs:iDs length:length];
     [i addObject:v13];
   }
 
   return i;
 }
 
-- (id)stateWithOptions:(id)a3
+- (id)stateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [NLTokenIDBasedLanguageModelState alloc];
-  v6 = [(NLTokenIDBasedLanguageModelState *)v5 initWithSession:self options:v4 context:&stru_1F10C6540 contextTokenIDArray:MEMORY[0x1E695E0F0]];
+  v6 = [(NLTokenIDBasedLanguageModelState *)v5 initWithSession:self options:optionsCopy context:&stru_1F10C6540 contextTokenIDArray:MEMORY[0x1E695E0F0]];
 
   return v6;
 }

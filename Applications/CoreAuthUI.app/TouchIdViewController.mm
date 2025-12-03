@@ -1,17 +1,17 @@
 @interface TouchIdViewController
 - (BOOL)_shouldShowUIForBiometryRequired;
-- (void)_addFrontMostSubview:(id)a3;
+- (void)_addFrontMostSubview:(id)subview;
 - (void)_configureUI;
 - (void)_handleBiometryNoMatch;
 - (void)_handleBiometryRequiredEnterPasscode;
 - (void)_handleBiometryRequiredFailure;
 - (void)_setupAlertController;
-- (void)_setupAlertControllerActions:(id)a3;
+- (void)_setupAlertControllerActions:(id)actions;
 - (void)_setupUI;
 - (void)didReceiveAuthenticationData;
-- (void)dismissChildWithCompletionHandler:(id)a3;
+- (void)dismissChildWithCompletionHandler:(id)handler;
 - (void)loadView;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
 @end
 
 @implementation TouchIdViewController
@@ -38,27 +38,27 @@
   [(TouchIdViewController *)self _configureUI];
 }
 
-- (void)_addFrontMostSubview:(id)a3
+- (void)_addFrontMostSubview:(id)subview
 {
   alertController = self->_alertController;
-  v5 = a3;
-  v6 = [(TouchIdAlertController *)alertController view];
-  v7 = [v6 superview];
-  v8 = v7;
-  if (v7)
+  subviewCopy = subview;
+  view = [(TouchIdAlertController *)alertController view];
+  superview = [view superview];
+  v8 = superview;
+  if (superview)
   {
-    v9 = v7;
+    view2 = superview;
   }
 
   else
   {
-    v9 = [(TouchIdViewController *)self view];
+    view2 = [(TouchIdViewController *)self view];
   }
 
-  v10 = v9;
+  v10 = view2;
 
-  [v10 addSubview:v5];
-  [v10 bringSubviewToFront:v5];
+  [v10 addSubview:subviewCopy];
+  [v10 bringSubviewToFront:subviewCopy];
 }
 
 - (void)_setupAlertController
@@ -68,30 +68,30 @@
   self->_alertController = v3;
 
   v5 = self->_alertController;
-  v6 = [(TransitionViewController *)self authenticationTitle];
-  [(TouchIdAlertController *)v5 setTitle:v6];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  [(TouchIdAlertController *)v5 setTitle:authenticationTitle];
 
   v7 = self->_alertController;
-  v8 = [(TransitionViewController *)self authenticationSubtitle];
-  [(TouchIdAlertController *)v7 setMessage:v8];
+  authenticationSubtitle = [(TransitionViewController *)self authenticationSubtitle];
+  [(TouchIdAlertController *)v7 setMessage:authenticationSubtitle];
 
   viewModel = self->_viewModel;
-  v12 = [(TransitionViewController *)self options];
-  v10 = [v12 copy];
+  options = [(TransitionViewController *)self options];
+  v10 = [options copy];
   v11 = [(TouchIdViewModel *)viewModel alertActionsFromOptions:v10 event:0];
   [(TouchIdViewController *)self _setupAlertControllerActions:v11];
 }
 
-- (void)_setupAlertControllerActions:(id)a3
+- (void)_setupAlertControllerActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   v6 = objc_opt_new();
   objc_initWeak(location, self);
-  v7 = [v5 objectForKeyedSubscript:&off_10009AA88];
+  v7 = [actionsCopy objectForKeyedSubscript:&off_10009AA88];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:&off_10009AA88];
+    v8 = [actionsCopy objectForKeyedSubscript:&off_10009AA88];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10000C264;
@@ -103,7 +103,7 @@
     objc_destroyWeak(&v30);
   }
 
-  v10 = [v5 objectForKeyedSubscript:&off_10009AAA0];
+  v10 = [actionsCopy objectForKeyedSubscript:&off_10009AAA0];
   v11 = v10;
   if (v10 && [v10 count] == 2)
   {
@@ -119,11 +119,11 @@
     objc_destroyWeak(&v28);
   }
 
-  v14 = [v5 objectForKeyedSubscript:&off_10009AAB8];
+  v14 = [actionsCopy objectForKeyedSubscript:&off_10009AAB8];
 
   if (v14)
   {
-    v15 = [v5 objectForKeyedSubscript:&off_10009AAB8];
+    v15 = [actionsCopy objectForKeyedSubscript:&off_10009AAB8];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10000C338;
@@ -135,11 +135,11 @@
     objc_destroyWeak(&v26);
   }
 
-  v17 = [v5 objectForKeyedSubscript:&off_10009AAD0];
+  v17 = [actionsCopy objectForKeyedSubscript:&off_10009AAD0];
 
   if (v17)
   {
-    v18 = [v5 objectForKeyedSubscript:&off_10009AAD0];
+    v18 = [actionsCopy objectForKeyedSubscript:&off_10009AAD0];
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_10000C37C;
@@ -151,7 +151,7 @@
     objc_destroyWeak(&v24);
   }
 
-  objc_storeStrong(&self->_actions, a3);
+  objc_storeStrong(&self->_actions, actions);
   [(TouchIdAlertController *)self->_alertController setActions:v6];
 
   objc_destroyWeak(location);
@@ -185,9 +185,9 @@
     +[UIColor tertiaryLabelColor];
   }
   v6 = ;
-  v4 = [(TouchIdAlertController *)self->_alertController _headerContentViewController];
-  v5 = [v4 view];
-  [v5 setTintColor:v6];
+  _headerContentViewController = [(TouchIdAlertController *)self->_alertController _headerContentViewController];
+  view = [_headerContentViewController view];
+  [view setTintColor:v6];
 }
 
 - (void)_handleBiometryNoMatch
@@ -198,9 +198,9 @@
   v13[3] = &unk_100096610;
   v13[4] = self;
   v3 = sub_10000C710(v13);
-  v4 = [(TransitionViewController *)self authenticationTitle];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
 
-  if (v4 != v3)
+  if (authenticationTitle != v3)
   {
     [(TransitionViewController *)self setAuthenticationTitle:v3];
     [(TouchIdAlertController *)self->_alertController setTitle:v3];
@@ -208,28 +208,28 @@
 
   if (self->_state == 3)
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"TOUCH_ID_UNBOUND_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
+    options = [NSBundle bundleForClass:objc_opt_class()];
+    v6 = [options localizedStringForKey:@"TOUCH_ID_UNBOUND_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
   }
 
   else
   {
-    v5 = [(TransitionViewController *)self options];
-    v7 = [v5 objectForKeyedSubscript:&off_10009AAA0];
+    options = [(TransitionViewController *)self options];
+    v7 = [options objectForKeyedSubscript:&off_10009AAA0];
     v6 = [LACStringHelper truncateString:v7 maxLength:512];
   }
 
-  v8 = [(TransitionViewController *)self authenticationSubtitle];
+  authenticationSubtitle = [(TransitionViewController *)self authenticationSubtitle];
 
-  if (v8 != v6)
+  if (authenticationSubtitle != v6)
   {
     [(TransitionViewController *)self setAuthenticationSubtitle:v6];
     [(TouchIdAlertController *)self->_alertController setMessage:v6];
   }
 
   viewModel = self->_viewModel;
-  v10 = [(TransitionViewController *)self options];
-  v11 = [v10 copy];
+  options2 = [(TransitionViewController *)self options];
+  v11 = [options2 copy];
   v12 = [(TouchIdViewModel *)viewModel alertActionsFromOptions:v11 event:1];
 
   if (![(NSDictionary *)self->_actions isEqualToDictionary:v12])
@@ -271,22 +271,22 @@
     [(TouchIdAlertController *)v13 setMessage:v15];
   }
 
-  v16 = [(TouchIdAlertController *)self->_alertController actions];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  actions = [(TouchIdAlertController *)self->_alertController actions];
+  v17 = [actions objectAtIndexedSubscript:0];
   [(TouchIdAlertController *)self->_alertController setPreferredAction:v17];
 
   [(TouchIdAlertController *)self->_alertController shake];
-  LODWORD(v16) = UIAccessibilityAnnouncementNotification;
+  LODWORD(actions) = UIAccessibilityAnnouncementNotification;
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"TOUCH_ID_REQUIRED" value:&stru_1000992A0 table:@"MobileUI-Ratchet"];
-  UIAccessibilityPostNotification(v16, v19);
+  UIAccessibilityPostNotification(actions, v19);
 }
 
 - (void)_handleBiometryRequiredEnterPasscode
 {
   viewModel = self->_viewModel;
-  v4 = [(TransitionViewController *)self options];
-  v5 = [v4 copy];
+  options = [(TransitionViewController *)self options];
+  v5 = [options copy];
   v6 = [(TouchIdViewModel *)viewModel fallbackActionFromOptions:v5];
   v7 = v6;
   if (v6)
@@ -322,25 +322,25 @@
     [(TouchIdAlertController *)v16 setMessage:v18];
   }
 
-  v19 = [(TouchIdAlertController *)self->_alertController actions];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  actions = [(TouchIdAlertController *)self->_alertController actions];
+  v20 = [actions objectAtIndexedSubscript:0];
   [(TouchIdAlertController *)self->_alertController setPreferredAction:v20];
 
   [(TouchIdAlertController *)self->_alertController shake];
-  LODWORD(v19) = UIAccessibilityAnnouncementNotification;
+  LODWORD(actions) = UIAccessibilityAnnouncementNotification;
   v21 = [NSBundle bundleForClass:objc_opt_class()];
   v22 = [v21 localizedStringForKey:@"PASSCODE_TO_RETRY_TOUCH_ID" value:&stru_1000992A0 table:@"MobileUI-Ratchet"];
-  UIAccessibilityPostNotification(v19, v22);
+  UIAccessibilityPostNotification(actions, v22);
 }
 
 - (BOOL)_shouldShowUIForBiometryRequired
 {
-  v2 = [(TransitionViewController *)self options];
+  options = [(TransitionViewController *)self options];
   v3 = [NSNumber numberWithInteger:LACPolicyOptionShowUIForBiometryRequired];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:v3];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)didReceiveAuthenticationData
@@ -348,18 +348,18 @@
   v11.receiver = self;
   v11.super_class = TouchIdViewController;
   [(TransitionViewController *)&v11 didReceiveAuthenticationData];
-  v3 = [(TransitionViewController *)self authenticationTitle];
-  v4 = [v3 length];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  v4 = [authenticationTitle length];
 
   if (!v4)
   {
-    v5 = [(TransitionViewController *)self callerBundleId];
-    if ((v5 || [(TransitionViewController *)self callerNameOverride]) && ([(TransitionViewController *)self callerName], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+    callerBundleId = [(TransitionViewController *)self callerBundleId];
+    if ((callerBundleId || [(TransitionViewController *)self callerNameOverride]) && ([(TransitionViewController *)self callerName], v6 = objc_claimAutoreleasedReturnValue(), v6, callerBundleId, v6))
     {
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"APP_ASKING_TOUCH" value:&stru_1000992A0 table:@"MobileUI"];
-      v9 = [(TransitionViewController *)self callerName];
-      v10 = [NSString stringWithFormat:v8, v9];
+      callerName = [(TransitionViewController *)self callerName];
+      v10 = [NSString stringWithFormat:v8, callerName];
       [(TransitionViewController *)self setAuthenticationTitle:v10];
     }
 
@@ -372,15 +372,15 @@
   }
 }
 
-- (void)dismissChildWithCompletionHandler:(id)a3
+- (void)dismissChildWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_state == 6)
   {
     v8.receiver = self;
     v8.super_class = TouchIdViewController;
-    [(TransitionViewController *)&v8 dismissChildWithCompletionHandler:v4];
+    [(TransitionViewController *)&v8 dismissChildWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -390,23 +390,23 @@
     v6[2] = sub_10000D138;
     v6[3] = &unk_1000964E8;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(TouchIdViewController *)self _dismissUIWithCompletionHandler:v6];
   }
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   v10 = LACLogTouchIDUI();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromMechanismEventAndValue();
     *buf = 138543874;
-    v31 = self;
+    selfCopy = self;
     v32 = 1024;
-    v33 = a3;
+    eventCopy = event;
     v34 = 2112;
     v35 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ has received mechanism event %d (%@)", buf, 0x1Cu);
@@ -415,35 +415,35 @@
   state = self->_state;
   if (state == 6 || state == 0)
   {
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9);
+      replyCopy[2](replyCopy);
     }
   }
 
   else
   {
-    v14 = v8;
+    v14 = valueCopy;
     v15 = [v14 objectForKeyedSubscript:&off_10009AAB8];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
     v17 = [v14 objectForKeyedSubscript:&off_10009AA88];
-    v18 = [v17 BOOLValue];
+    bOOLValue2 = [v17 BOOLValue];
 
-    v19 = [(TouchIdViewController *)self _shouldShowUIForBiometryRequired];
+    _shouldShowUIForBiometryRequired = [(TouchIdViewController *)self _shouldShowUIForBiometryRequired];
     underlyingError = self->_underlyingError;
     self->_underlyingError = 0;
 
-    if (a3 == 7)
+    if (event == 7)
     {
       v24 = 2;
-      if ((v19 & v18) != 0)
+      if ((_shouldShowUIForBiometryRequired & bOOLValue2) != 0)
       {
         v24 = 5;
       }
 
       self->_state = v24;
-      if ((v19 & v18) != 0)
+      if ((_shouldShowUIForBiometryRequired & bOOLValue2) != 0)
       {
         v25 = [v14 objectForKeyedSubscript:&off_10009AAA0];
         v26 = self->_underlyingError;
@@ -453,14 +453,14 @@
 
     else
     {
-      if (a3 == 1)
+      if (event == 1)
       {
-        if (v18 & 1 | ((v16 & 1) == 0) || ((v19 ^ 1) & 1) != 0)
+        if (bOOLValue2 & 1 | ((bOOLValue & 1) == 0) || ((_shouldShowUIForBiometryRequired ^ 1) & 1) != 0)
         {
           v27 = [v14 objectForKeyedSubscript:&off_10009AAD0];
-          v28 = [v27 BOOLValue];
+          bOOLValue3 = [v27 BOOLValue];
 
-          if (v28)
+          if (bOOLValue3)
           {
             v23 = 3;
           }
@@ -495,9 +495,9 @@
     block[3] = &unk_100096148;
     block[4] = self;
     dispatch_async(&_dispatch_main_q, block);
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9);
+      replyCopy[2](replyCopy);
     }
   }
 }

@@ -1,14 +1,14 @@
 @interface BWSceneClassifierFrameGateNode
-- (BWSceneClassifierFrameGateNode)initWithMaxOutputFrameRate:(int)a3;
+- (BWSceneClassifierFrameGateNode)initWithMaxOutputFrameRate:(int)rate;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSceneClassifierFrameGateNode
 
-- (BWSceneClassifierFrameGateNode)initWithMaxOutputFrameRate:(int)a3
+- (BWSceneClassifierFrameGateNode)initWithMaxOutputFrameRate:(int)rate
 {
-  if (a3 <= 0)
+  if (rate <= 0)
   {
     [BWSceneClassifierFrameGateNode initWithMaxOutputFrameRate:?];
     return 0;
@@ -29,7 +29,7 @@
       [(BWNodeOutput *)v6 setPassthroughMode:1];
       [(BWNode *)v4 addOutput:v6];
 
-      *&v4->_discardsBlurryFrames = a3;
+      *&v4->_discardsBlurryFrames = rate;
       *(&v4->super._requiresEndOfDataForConfigurationChanges + 3) = 1;
     }
   }
@@ -44,20 +44,20 @@
   [(BWNode *)&v2 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   ++HIDWORD(self->_lastEmittedPTS.epoch);
-  if (![CMGetAttachment(a3 @"UprightExifOrientation"])
+  if (![CMGetAttachment(buffer @"UprightExifOrientation"])
   {
     if (SHIDWORD(self->_lastEmittedPTS.epoch) < 31)
     {
       return;
     }
 
-    CMSetAttachment(a3, @"UprightExifOrientation", &unk_1F22452C8, 1u);
+    CMSetAttachment(buffer, @"UprightExifOrientation", &unk_1F22452C8, 1u);
   }
 
-  v6 = CMGetAttachment(a3, *off_1E798A420, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A420, 0);
   if (v6)
   {
     CMTimeMakeFromDictionary(&time, v6);
@@ -65,7 +65,7 @@
 
   else
   {
-    CMSampleBufferGetPresentationTimeStamp(&time, a3);
+    CMSampleBufferGetPresentationTimeStamp(&time, buffer);
   }
 
   value = time.value;
@@ -96,7 +96,7 @@ LABEL_18:
       HIDWORD(self->_lastEmittedPTS.value) = timescale;
       self->_lastEmittedPTS.timescale = flags;
       *&self->_lastEmittedPTS.flags = epoch;
-      [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+      [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
       return;
     }
   }
@@ -106,7 +106,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v12 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v12 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v13 = [objc_msgSend(v12 objectForKeyedSubscript:{*off_1E798B0A8), "intValue"}];
   v14 = [objc_msgSend(v12 objectForKeyedSubscript:{*off_1E798B320), "intValue"}];
   if (v13 == 4 || v14 != 1)

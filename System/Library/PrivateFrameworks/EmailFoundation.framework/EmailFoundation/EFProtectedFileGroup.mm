@@ -1,15 +1,15 @@
 @interface EFProtectedFileGroup
 - (BOOL)backgroundProcessingIsAllowed;
-- (EFProtectedFileGroup)initWithFilePaths:(id)a3 isSensitive:(BOOL)a4 protectionType:(id)a5;
-- (id)requestBackgroundProcessingForDuration:(double)a3 error:(id *)a4;
+- (EFProtectedFileGroup)initWithFilePaths:(id)paths isSensitive:(BOOL)sensitive protectionType:(id)type;
+- (id)requestBackgroundProcessingForDuration:(double)duration error:(id *)error;
 @end
 
 @implementation EFProtectedFileGroup
 
-- (EFProtectedFileGroup)initWithFilePaths:(id)a3 isSensitive:(BOOL)a4 protectionType:(id)a5
+- (EFProtectedFileGroup)initWithFilePaths:(id)paths isSensitive:(BOOL)sensitive protectionType:(id)type
 {
-  v8 = a3;
-  v9 = a5;
+  pathsCopy = paths;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = EFProtectedFileGroup;
   v10 = [(EFProtectedFileGroup *)&v19 init];
@@ -19,9 +19,9 @@
     v16[1] = 3221225472;
     v16[2] = __69__EFProtectedFileGroup_initWithFilePaths_isSensitive_protectionType___block_invoke;
     v16[3] = &unk_1E82499E0;
-    v18 = a4;
-    v17 = v9;
-    v11 = [v8 ef_map:v16];
+    sensitiveCopy = sensitive;
+    v17 = typeCopy;
+    v11 = [pathsCopy ef_map:v16];
     files = v10->_files;
     v10->_files = v11;
 
@@ -43,19 +43,19 @@ id *__69__EFProtectedFileGroup_initWithFilePaths_isSensitive_protectionType___bl
 
 - (BOOL)backgroundProcessingIsAllowed
 {
-  v2 = [(EFProtectedFileGroup *)self assertion];
-  v3 = [(_EFBackgroundProcessingAssertion *)v2 isActive];
+  assertion = [(EFProtectedFileGroup *)self assertion];
+  isActive = [(_EFBackgroundProcessingAssertion *)assertion isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (id)requestBackgroundProcessingForDuration:(double)a3 error:(id *)a4
+- (id)requestBackgroundProcessingForDuration:(double)duration error:(id *)error
 {
   v11 = 0;
-  v7 = [(EFProtectedFileGroup *)self assertion];
-  LODWORD(a4) = [(_EFBackgroundProcessingAssertion *)v7 incrementAssertionForDuration:a4 outResetCount:a3 error:?];
+  assertion = [(EFProtectedFileGroup *)self assertion];
+  LODWORD(error) = [(_EFBackgroundProcessingAssertion *)assertion incrementAssertionForDuration:error outResetCount:duration error:?];
 
-  if (a4)
+  if (error)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;

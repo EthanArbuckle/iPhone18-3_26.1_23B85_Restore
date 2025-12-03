@@ -1,45 +1,45 @@
 @interface CSReverbResponse
 + (id)requiredParameters;
-- (CSReverbResponse)initWithMessage:(id)a3;
-- (CSReverbResponse)initWithReverb:(double)a3;
-- (CSReverbResponse)initWithReverbLevel:(int64_t)a3;
+- (CSReverbResponse)initWithMessage:(id)message;
+- (CSReverbResponse)initWithReverb:(double)reverb;
+- (CSReverbResponse)initWithReverbLevel:(int64_t)level;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSReverbResponse
 
-- (CSReverbResponse)initWithReverb:(double)a3
+- (CSReverbResponse)initWithReverb:(double)reverb
 {
   v6.receiver = self;
   v6.super_class = CSReverbResponse;
   v4 = [(CSReverbResponse *)&v6 init];
   if (v4)
   {
-    v4->_reverbLevel = ReverbLevelFromReverbValue(a3);
+    v4->_reverbLevel = ReverbLevelFromReverbValue(reverb);
   }
 
   return v4;
 }
 
-- (CSReverbResponse)initWithReverbLevel:(int64_t)a3
+- (CSReverbResponse)initWithReverbLevel:(int64_t)level
 {
   v5.receiver = self;
   v5.super_class = CSReverbResponse;
   result = [(CSReverbResponse *)&v5 init];
   if (result)
   {
-    result->_reverbLevel = a3;
+    result->_reverbLevel = level;
   }
 
   return result;
 }
 
-- (CSReverbResponse)initWithMessage:(id)a3
+- (CSReverbResponse)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = CSReverbResponse;
-  v5 = [(CSMessage *)&v9 initWithMessage:v4];
+  v5 = [(CSMessage *)&v9 initWithMessage:messageCopy];
   if (v5)
   {
     v6 = NSDictionaryGetNSNumber();
@@ -55,7 +55,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSReverbResponse;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -69,8 +69,8 @@
 {
   v7.receiver = self;
   v7.super_class = CSReverbResponse;
-  v3 = [(CSMessage *)&v7 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v7 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_reverbLevel];
   [v4 setObject:v5 forKey:@"ContinuitySingReverb"];

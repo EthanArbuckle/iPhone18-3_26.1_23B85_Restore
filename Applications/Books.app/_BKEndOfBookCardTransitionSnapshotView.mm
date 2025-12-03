@@ -1,32 +1,32 @@
 @interface _BKEndOfBookCardTransitionSnapshotView
-- (_BKEndOfBookCardTransitionSnapshotView)initWithCompactViewController:(id)a3;
+- (_BKEndOfBookCardTransitionSnapshotView)initWithCompactViewController:(id)controller;
 - (void)setupConstraintsToSuperview;
 @end
 
 @implementation _BKEndOfBookCardTransitionSnapshotView
 
-- (_BKEndOfBookCardTransitionSnapshotView)initWithCompactViewController:(id)a3
+- (_BKEndOfBookCardTransitionSnapshotView)initWithCompactViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v82.receiver = self;
   v82.super_class = _BKEndOfBookCardTransitionSnapshotView;
   v5 = [(_BKEndOfBookToastBlurEffectView *)&v82 init];
   if (v5)
   {
-    v6 = [v4 feedViewController];
-    v7 = [v6 view];
-    v8 = [v7 backgroundColor];
+    feedViewController = [controllerCopy feedViewController];
+    view = [feedViewController view];
+    backgroundColor = [view backgroundColor];
 
-    v9 = [v6 view];
-    [v9 setBackgroundColor:0];
+    view2 = [feedViewController view];
+    [view2 setBackgroundColor:0];
 
-    v10 = [v6 view];
-    v11 = [v10 snapshotViewAfterScreenUpdates:0];
+    view3 = [feedViewController view];
+    v11 = [view3 snapshotViewAfterScreenUpdates:0];
     snapshot = v5->_snapshot;
     v5->_snapshot = v11;
 
-    v13 = [v6 view];
-    [v13 setBackgroundColor:v8];
+    view4 = [feedViewController view];
+    [view4 setBackgroundColor:backgroundColor];
 
     [(UIView *)v5->_snapshot setTranslatesAutoresizingMaskIntoConstraints:0];
     v14 = v5->_snapshot;
@@ -41,16 +41,16 @@
 
     else
     {
-      v23 = [v6 view];
-      [v23 bounds];
+      view5 = [feedViewController view];
+      [view5 bounds];
       v16 = v24;
       v18 = v25;
       v20 = v26;
       v22 = v27;
     }
 
-    v79 = v6;
-    v80 = v4;
+    v79 = feedViewController;
+    v80 = controllerCopy;
     v85.origin.x = v16;
     v85.origin.y = v18;
     v85.size.width = v20;
@@ -67,8 +67,8 @@
     v5->_backgroundView = v30;
 
     [(UIView *)v5->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v78 = v8;
-    [(UIView *)v5->_backgroundView setBackgroundColor:v8];
+    v78 = backgroundColor;
+    [(UIView *)v5->_backgroundView setBackgroundColor:backgroundColor];
     v32 = [BCCardGripperView cardGripperViewWithStyle:1];
     closeButtonView = v5->_closeButtonView;
     v5->_closeButtonView = v32;
@@ -81,10 +81,10 @@
     }
 
     [(_BKEndOfBookCardTransitionSnapshotView *)v5 addSubview:v5->_closeButtonView];
-    v34 = [(UIView *)v5->_snapshot topAnchor];
-    v35 = [(UIView *)v5->_snapshot superview];
-    v36 = [v35 topAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:0.0];
+    topAnchor = [(UIView *)v5->_snapshot topAnchor];
+    superview = [(UIView *)v5->_snapshot superview];
+    topAnchor2 = [superview topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     snapshotTopConstraint = v5->_snapshotTopConstraint;
     v5->_snapshotTopConstraint = v37;
 
@@ -93,59 +93,59 @@
     if (v39 && v5->_snapshotTopConstraint)
     {
       v84[0] = v5->_snapshotTopConstraint;
-      v74 = [(UIView *)v39 leftAnchor];
-      v76 = [(UIView *)v5->_snapshot superview];
-      v72 = [v76 leftAnchor];
-      v70 = [v74 constraintEqualToAnchor:v72];
+      leftAnchor = [(UIView *)v39 leftAnchor];
+      superview2 = [(UIView *)v5->_snapshot superview];
+      leftAnchor2 = [superview2 leftAnchor];
+      v70 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v84[1] = v70;
-      v66 = [(UIView *)v5->_snapshot rightAnchor];
-      v68 = [(UIView *)v5->_snapshot superview];
-      v40 = [v68 rightAnchor];
-      v41 = [v66 constraintEqualToAnchor:v40];
+      rightAnchor = [(UIView *)v5->_snapshot rightAnchor];
+      superview3 = [(UIView *)v5->_snapshot superview];
+      rightAnchor2 = [superview3 rightAnchor];
+      v41 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v84[2] = v41;
-      v42 = [(UIView *)v5->_snapshot heightAnchor];
-      v43 = [(UIView *)v5->_snapshot widthAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43 multiplier:Height / Width];
-      v84[3] = v44;
+      heightAnchor = [(UIView *)v5->_snapshot heightAnchor];
+      widthAnchor = [(UIView *)v5->_snapshot widthAnchor];
+      width = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:Height / Width];
+      v84[3] = width;
       v45 = [NSArray arrayWithObjects:v84 count:4];
       [v81 addObjectsFromArray:v45];
     }
 
-    v75 = [(UIView *)v5->_backgroundView topAnchor];
-    v77 = [(UIView *)v5->_backgroundView superview];
-    v73 = [v77 topAnchor];
-    v71 = [v75 constraintEqualToAnchor:v73];
+    topAnchor3 = [(UIView *)v5->_backgroundView topAnchor];
+    superview4 = [(UIView *)v5->_backgroundView superview];
+    topAnchor4 = [superview4 topAnchor];
+    v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v83[0] = v71;
-    v67 = [(UIView *)v5->_backgroundView leftAnchor];
-    v69 = [(UIView *)v5->_backgroundView superview];
-    v65 = [v69 leftAnchor];
-    v64 = [v67 constraintEqualToAnchor:v65];
+    leftAnchor3 = [(UIView *)v5->_backgroundView leftAnchor];
+    superview5 = [(UIView *)v5->_backgroundView superview];
+    leftAnchor4 = [superview5 leftAnchor];
+    v64 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v83[1] = v64;
-    v62 = [(UIView *)v5->_backgroundView rightAnchor];
-    v63 = [(UIView *)v5->_backgroundView superview];
-    v61 = [v63 rightAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    rightAnchor3 = [(UIView *)v5->_backgroundView rightAnchor];
+    superview6 = [(UIView *)v5->_backgroundView superview];
+    rightAnchor4 = [superview6 rightAnchor];
+    v60 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v83[2] = v60;
-    v58 = [(UIView *)v5->_backgroundView bottomAnchor];
-    v59 = [(UIView *)v5->_backgroundView superview];
-    v57 = [v59 bottomAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    bottomAnchor = [(UIView *)v5->_backgroundView bottomAnchor];
+    superview7 = [(UIView *)v5->_backgroundView superview];
+    bottomAnchor2 = [superview7 bottomAnchor];
+    v56 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v83[3] = v56;
-    v55 = [(UIView *)v5->_closeButtonView topAnchor];
-    v46 = [(UIView *)v5->_closeButtonView superview];
-    v47 = [v46 topAnchor];
-    v48 = [v55 constraintEqualToAnchor:v47 constant:15.0];
+    topAnchor5 = [(UIView *)v5->_closeButtonView topAnchor];
+    superview8 = [(UIView *)v5->_closeButtonView superview];
+    topAnchor6 = [superview8 topAnchor];
+    v48 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:15.0];
     v83[4] = v48;
-    v49 = [(UIView *)v5->_closeButtonView trailingAnchor];
-    v50 = [(UIView *)v5->_closeButtonView superview];
-    v51 = [v50 trailingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51 constant:-14.5];
+    trailingAnchor = [(UIView *)v5->_closeButtonView trailingAnchor];
+    superview9 = [(UIView *)v5->_closeButtonView superview];
+    trailingAnchor2 = [superview9 trailingAnchor];
+    v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-14.5];
     v83[5] = v52;
     v53 = [NSArray arrayWithObjects:v83 count:6];
     [v81 addObjectsFromArray:v53];
 
     [NSLayoutConstraint activateConstraints:v81];
-    v4 = v80;
+    controllerCopy = v80;
   }
 
   return v5;
@@ -154,25 +154,25 @@
 - (void)setupConstraintsToSuperview
 {
   [(_BKEndOfBookCardTransitionSnapshotView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(_BKEndOfBookCardTransitionSnapshotView *)self topAnchor];
-  v19 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
-  v17 = [v19 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  topAnchor = [(_BKEndOfBookCardTransitionSnapshotView *)self topAnchor];
+  superview = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
+  topAnchor2 = [superview topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v16;
-  v14 = [(_BKEndOfBookCardTransitionSnapshotView *)self bottomAnchor];
-  v15 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
-  v13 = [v15 bottomAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  bottomAnchor = [(_BKEndOfBookCardTransitionSnapshotView *)self bottomAnchor];
+  superview2 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
+  bottomAnchor2 = [superview2 bottomAnchor];
+  v3 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[1] = v3;
-  v4 = [(_BKEndOfBookCardTransitionSnapshotView *)self leftAnchor];
-  v5 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
-  v6 = [v5 leftAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  leftAnchor = [(_BKEndOfBookCardTransitionSnapshotView *)self leftAnchor];
+  superview3 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
+  leftAnchor2 = [superview3 leftAnchor];
+  v7 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v20[2] = v7;
-  v8 = [(_BKEndOfBookCardTransitionSnapshotView *)self rightAnchor];
-  v9 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
-  v10 = [v9 rightAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  rightAnchor = [(_BKEndOfBookCardTransitionSnapshotView *)self rightAnchor];
+  superview4 = [(_BKEndOfBookCardTransitionSnapshotView *)self superview];
+  rightAnchor2 = [superview4 rightAnchor];
+  v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v20[3] = v11;
   v12 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v12];

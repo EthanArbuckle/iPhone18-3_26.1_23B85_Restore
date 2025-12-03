@@ -1,9 +1,9 @@
 @interface PDASMSearchStringCache
 + (id)shared;
-- (BOOL)isCached:(id)a3;
+- (BOOL)isCached:(id)cached;
 - (PDASMSearchStringCache)init;
 - (id)allObjects;
-- (void)addToCache:(id)a3 expires:(id)a4;
+- (void)addToCache:(id)cache expires:(id)expires;
 @end
 
 @implementation PDASMSearchStringCache
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_100172568;
   block[3] = &unk_100202CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10024DBF0 != -1)
   {
     dispatch_once(&qword_10024DBF0, block);
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (BOOL)isCached:(id)a3
+- (BOOL)isCached:(id)cached
 {
-  v4 = a3;
+  cachedCopy = cached;
   v5 = +[NSDate date];
   if ([(NSMutableArray *)self->_buffer count])
   {
@@ -56,7 +56,7 @@
       if (v9 != 1)
       {
         v10 = [v7 objectAtIndexedSubscript:0];
-        v11 = [v4 hasPrefix:v10];
+        v11 = [cachedCopy hasPrefix:v10];
 
         if (v11)
         {
@@ -84,11 +84,11 @@ LABEL_6:
   return v12;
 }
 
-- (void)addToCache:(id)a3 expires:(id)a4
+- (void)addToCache:(id)cache expires:(id)expires
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NSArray alloc] initWithObjects:{v7, v6, 0}];
+  expiresCopy = expires;
+  cacheCopy = cache;
+  v8 = [[NSArray alloc] initWithObjects:{cacheCopy, expiresCopy, 0}];
 
   [(NSMutableArray *)self->_buffer insertObject:v8 atIndex:0];
   if ([(NSMutableArray *)self->_buffer count]>= 0x15)

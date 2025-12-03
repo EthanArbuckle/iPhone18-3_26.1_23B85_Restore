@@ -1,46 +1,46 @@
 @interface BCCloudAssetAnnotationManager
-- (BCCloudAssetAnnotationManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4;
+- (BCCloudAssetAnnotationManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller;
 - (BCCloudKitController)cloudKitController;
-- (id)fileURLForCachingCKAssetWithAssetID:(id)a3;
-- (void)assetWithID:(id)a3 updatedAnnotations:(id)a4 completion:(id)a5;
+- (id)fileURLForCachingCKAssetWithAssetID:(id)d;
+- (void)assetWithID:(id)d updatedAnnotations:(id)annotations completion:(id)completion;
 - (void)dealloc;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)getAnnotationChangesSince:(id)a3 completion:(id)a4;
-- (void)setEnableCloudSync:(BOOL)a3;
-- (void)signalSyncToCKForSyncManager:(id)a3;
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4;
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)getAnnotationChangesSince:(id)since completion:(id)completion;
+- (void)setEnableCloudSync:(BOOL)sync;
+- (void)signalSyncToCKForSyncManager:(id)manager;
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion;
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion;
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion;
 @end
 
 @implementation BCCloudAssetAnnotationManager
 
-- (BCCloudAssetAnnotationManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4
+- (BCCloudAssetAnnotationManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  controllerCopy = controller;
   v34.receiver = self;
   v34.super_class = BCCloudAssetAnnotationManager;
   v9 = [(BCCloudAssetAnnotationManager *)&v34 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_annotationsDataSource, a3);
-    objc_storeWeak(&v10->_cloudKitController, v8);
-    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:v8];
+    objc_storeStrong(&v9->_annotationsDataSource, source);
+    objc_storeWeak(&v10->_cloudKitController, controllerCopy);
+    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:controllerCopy];
     syncManager = v10->_syncManager;
     v10->_syncManager = v11;
 
     [(BCCloudDataSyncManager *)v10->_syncManager setDelegate:v10];
     v13 = [BCCloudDataManager alloc];
-    v14 = [(BCCloudAssetAnnotationManager *)v10 entityName];
+    entityName = [(BCCloudAssetAnnotationManager *)v10 entityName];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = v10->_syncManager;
     WeakRetained = objc_loadWeakRetained(&v10->_cloudKitController);
-    v19 = [(BCCloudDataManager *)v13 initWithCloudDataSource:v7 entityName:v14 notificationName:@"BCCloudAssetAnnotationManagerChanged" immutableClass:v15 mutableClass:v16 syncManager:v17 cloudKitController:WeakRetained];
+    v19 = [(BCCloudDataManager *)v13 initWithCloudDataSource:sourceCopy entityName:entityName notificationName:@"BCCloudAssetAnnotationManagerChanged" immutableClass:v15 mutableClass:v16 syncManager:v17 cloudKitController:WeakRetained];
     dataManager = v10->_dataManager;
     v10->_dataManager = v19;
 
@@ -55,10 +55,10 @@
     ckAssetStoreDirectory = v10->_ckAssetStoreDirectory;
     v10->_ckAssetStoreDirectory = v26;
 
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v29 = v10->_ckAssetStoreDirectory;
     v33 = 0;
-    [v28 createDirectoryAtURL:v29 withIntermediateDirectories:1 attributes:0 error:&v33];
+    [defaultManager createDirectoryAtURL:v29 withIntermediateDirectories:1 attributes:0 error:&v33];
     v30 = v33;
 
     if (v30)
@@ -82,20 +82,20 @@
   [(BCCloudAssetAnnotationManager *)&v3 dealloc];
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E698F550] shared];
-  v6 = [v5 verboseLoggingEnabled];
+  mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+  verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-  if (v6)
+  if (verboseLoggingEnabled)
   {
     v7 = BDSCloudKitDevelopmentLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v3)
+      if (syncCopy)
       {
         v8 = @"YES";
       }
@@ -106,65 +106,65 @@
     }
   }
 
-  if (self->_enableCloudSync != v3)
+  if (self->_enableCloudSync != syncCopy)
   {
-    self->_enableCloudSync = v3;
-    if (v3)
+    self->_enableCloudSync = syncCopy;
+    if (syncCopy)
     {
-      v9 = [(BCCloudAssetAnnotationManager *)self cloudKitController];
-      v10 = [v9 privateCloudDatabaseController];
-      v11 = [(BCCloudAssetAnnotationManager *)self syncManager];
-      [v10 addObserver:v11 recordType:@"assetAnnotations"];
+      cloudKitController = [(BCCloudAssetAnnotationManager *)self cloudKitController];
+      privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
+      syncManager = [(BCCloudAssetAnnotationManager *)self syncManager];
+      [privateCloudDatabaseController addObserver:syncManager recordType:@"assetAnnotations"];
 
-      v12 = [(BCCloudAssetAnnotationManager *)self cloudKitController];
-      v13 = [v12 transactionManager];
-      v14 = [(BCCloudAssetAnnotationManager *)self entityName];
-      v15 = [(BCCloudAssetAnnotationManager *)self syncManager];
-      [v13 signalSyncToCKTransactionForEntityName:v14 syncManager:v15];
+      cloudKitController2 = [(BCCloudAssetAnnotationManager *)self cloudKitController];
+      transactionManager = [cloudKitController2 transactionManager];
+      entityName = [(BCCloudAssetAnnotationManager *)self entityName];
+      syncManager2 = [(BCCloudAssetAnnotationManager *)self syncManager];
+      [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager2];
     }
 
     else
     {
-      v12 = +[BCCloudKitController sharedInstance];
-      v13 = [v12 privateCloudDatabaseController];
-      v14 = [(BCCloudAssetAnnotationManager *)self syncManager];
-      [v13 removeObserver:v14 recordType:@"assetAnnotations"];
+      cloudKitController2 = +[BCCloudKitController sharedInstance];
+      transactionManager = [cloudKitController2 privateCloudDatabaseController];
+      entityName = [(BCCloudAssetAnnotationManager *)self syncManager];
+      [transactionManager removeObserver:entityName recordType:@"assetAnnotations"];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudAssetAnnotationManager *)self dataManager];
-  [v5 dissociateCloudDataFromSyncWithCompletion:v4];
+  completionCopy = completion;
+  dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
+  [dataManager dissociateCloudDataFromSyncWithCompletion:completionCopy];
 }
 
-- (void)assetWithID:(id)a3 updatedAnnotations:(id)a4 completion:(id)a5
+- (void)assetWithID:(id)d updatedAnnotations:(id)annotations completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v56 = a5;
+  dCopy = d;
+  annotationsCopy = annotations;
+  completionCopy = completion;
   v9 = objc_opt_new();
-  v57 = v7;
-  [v9 setAssetID:v7];
+  v57 = dCopy;
+  [v9 setAssetID:dCopy];
   v10 = +[BDSAppVersion appVersion];
   [v9 setAppVersion:v10];
 
-  v11 = [v8 lastObject];
+  lastObject = [annotationsCopy lastObject];
   v12 = BUProtocolCast();
 
   v54 = v12;
-  v53 = [v12 assetVersion];
+  assetVersion = [v12 assetVersion];
   [v9 setAssetVersion:?];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v13 = v8;
+  v13 = annotationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v14)
   {
@@ -182,14 +182,14 @@
 
         v18 = *(*(&v58 + 1) + 8 * v17);
         v19 = objc_opt_new();
-        v20 = [v18 annotationCreatorIdentifier];
-        [v19 setCreatorIdentifier:v20];
+        annotationCreatorIdentifier = [v18 annotationCreatorIdentifier];
+        [v19 setCreatorIdentifier:annotationCreatorIdentifier];
 
-        v21 = [v18 annotationUuid];
-        [v19 setUuid:v21];
+        annotationUuid = [v18 annotationUuid];
+        [v19 setUuid:annotationUuid];
 
-        v22 = [v18 annotationModificationDate];
-        [v22 timeIntervalSinceReferenceDate];
+        annotationModificationDate = [v18 annotationModificationDate];
+        [annotationModificationDate timeIntervalSinceReferenceDate];
         [v19 setModificationDate:?];
 
         if ([v18 isAnnotationDeleted])
@@ -199,47 +199,47 @@
 
         else
         {
-          v23 = [v18 annotationCreationDate];
-          [v23 timeIntervalSinceReferenceDate];
+          annotationCreationDate = [v18 annotationCreationDate];
+          [annotationCreationDate timeIntervalSinceReferenceDate];
           [v19 setCreationDate:?];
 
           [v19 setDeleted:{objc_msgSend(v18, "isAnnotationDeleted")}];
           [v19 setIsUnderline:{objc_msgSend(v18, "annotationIsUnderline")}];
-          v24 = [v18 annotationLocation];
-          [v19 setLocationCFIString:v24];
+          annotationLocation = [v18 annotationLocation];
+          [v19 setLocationCFIString:annotationLocation];
 
-          v25 = [v18 annotationNote];
-          [v19 setNote:v25];
+          annotationNote = [v18 annotationNote];
+          [v19 setNote:annotationNote];
 
-          v26 = [v18 annotationRepresentativeText];
-          [v19 setRepresentativeText:v26];
+          annotationRepresentativeText = [v18 annotationRepresentativeText];
+          [v19 setRepresentativeText:annotationRepresentativeText];
 
-          v27 = [v18 annotationSelectedText];
-          [v19 setSelectedText:v27];
+          annotationSelectedText = [v18 annotationSelectedText];
+          [v19 setSelectedText:annotationSelectedText];
 
-          v28 = [v18 annotationStyleNumber];
-          [v19 setStyle:{objc_msgSend(v28, "intValue")}];
+          annotationStyleNumber = [v18 annotationStyleNumber];
+          [v19 setStyle:{objc_msgSend(annotationStyleNumber, "intValue")}];
 
-          v29 = [v18 annotationTypeNumber];
-          [v19 setType:{objc_msgSend(v29, "intValue")}];
+          annotationTypeNumber = [v18 annotationTypeNumber];
+          [v19 setType:{objc_msgSend(annotationTypeNumber, "intValue")}];
 
-          v30 = [v18 physicalPageNumber];
-          [v19 setPhysicalPageNumber:v30];
+          physicalPageNumber = [v18 physicalPageNumber];
+          [v19 setPhysicalPageNumber:physicalPageNumber];
 
-          v31 = [v18 annotationVersion];
-          [v19 setAnnotationVersion:v31];
+          annotationVersion = [v18 annotationVersion];
+          [v19 setAnnotationVersion:annotationVersion];
 
-          v32 = [v18 assetVersion];
-          [v19 setAssetVersion:v32];
+          assetVersion2 = [v18 assetVersion];
+          [v19 setAssetVersion:assetVersion2];
 
-          v33 = [v18 attachments];
-          [v19 setAttachments:v33];
+          attachments = [v18 attachments];
+          [v19 setAttachments:attachments];
 
-          v34 = [v18 chapterTitle];
-          [v19 setChapterTitle:v34];
+          chapterTitle = [v18 chapterTitle];
+          [v19 setChapterTitle:chapterTitle];
 
-          v35 = [v18 userModificationDate];
-          [v35 timeIntervalSinceReferenceDate];
+          userModificationDate = [v18 userModificationDate];
+          [userModificationDate timeIntervalSinceReferenceDate];
           [v19 setUserModificationDate:?];
 
           v36 = objc_opt_new();
@@ -254,30 +254,30 @@
           BUClamp();
           *&v38 = v38;
           [v19 setReadingProgress:v38];
-          v39 = [v18 futureProofing12];
-          [v19 setFutureProofing12:v39];
+          futureProofing12 = [v18 futureProofing12];
+          [v19 setFutureProofing12:futureProofing12];
 
-          v40 = [v18 plAbsolutePhysicalLocation];
-          [v19 setPlAbsolutePhysicalLocation:{objc_msgSend(v40, "intValue")}];
+          plAbsolutePhysicalLocation = [v18 plAbsolutePhysicalLocation];
+          [v19 setPlAbsolutePhysicalLocation:{objc_msgSend(plAbsolutePhysicalLocation, "intValue")}];
 
-          v41 = [v18 plLocationRangeEnd];
-          [v19 setPlLocationRangeEnd:{objc_msgSend(v41, "intValue")}];
+          plLocationRangeEnd = [v18 plLocationRangeEnd];
+          [v19 setPlLocationRangeEnd:{objc_msgSend(plLocationRangeEnd, "intValue")}];
 
-          v42 = [v18 plLocationRangeStart];
-          [v19 setPlLocationRangeStart:{objc_msgSend(v42, "intValue")}];
+          plLocationRangeStart = [v18 plLocationRangeStart];
+          [v19 setPlLocationRangeStart:{objc_msgSend(plLocationRangeStart, "intValue")}];
 
-          v43 = [v18 plStorageUUID];
-          [v19 setPlLocationStorageUUID:v43];
+          plStorageUUID = [v18 plStorageUUID];
+          [v19 setPlLocationStorageUUID:plStorageUUID];
 
-          v44 = [v18 plUserData];
-          [v19 setPlUserData:v44];
+          plUserData = [v18 plUserData];
+          [v19 setPlUserData:plUserData];
         }
 
-        v45 = [v18 locationModificationDate];
-        v46 = v45;
-        if (v45)
+        locationModificationDate = [v18 locationModificationDate];
+        v46 = locationModificationDate;
+        if (locationModificationDate)
         {
-          [v45 timeIntervalSinceReferenceDate];
+          [locationModificationDate timeIntervalSinceReferenceDate];
           [v19 setLocationModificationDate:?];
         }
 
@@ -294,31 +294,31 @@
   }
 
   v47 = [[BCMutableAssetAnnotations alloc] initWithAssetID:v57];
-  [(BCMutableAssetAnnotations *)v47 setAssetVersion:v53];
+  [(BCMutableAssetAnnotations *)v47 setAssetVersion:assetVersion];
   v48 = objc_alloc_init(MEMORY[0x1E69C65C0]);
   [v9 writeTo:v48];
-  v49 = [v48 immutableData];
-  [(BCMutableAssetAnnotations *)v47 setBookAnnotations:v49];
+  immutableData = [v48 immutableData];
+  [(BCMutableAssetAnnotations *)v47 setBookAnnotations:immutableData];
 
-  v50 = [(BCCloudAssetAnnotationManager *)self dataManager];
+  dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
   v51 = [MEMORY[0x1E696AE18] predicateWithFormat:@"assetID = %@", v57];
-  [v50 setCloudData:v47 predicate:v51 completion:v56];
+  [dataManager setCloudData:v47 predicate:v51 completion:completionCopy];
 
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fileURLForCachingCKAssetWithAssetID:(id)a3
+- (id)fileURLForCachingCKAssetWithAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 dataUsingEncoding:4];
-  v6 = [v5 bu_md5];
+  dCopy = d;
+  v5 = [dCopy dataUsingEncoding:4];
+  bu_md5 = [v5 bu_md5];
 
-  if (![v6 length] || (-[BCCloudAssetAnnotationManager ckAssetStoreDirectory](self, "ckAssetStoreDirectory"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "URLByAppendingPathComponent:", v6), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if (![bu_md5 length] || (-[BCCloudAssetAnnotationManager ckAssetStoreDirectory](self, "ckAssetStoreDirectory"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "URLByAppendingPathComponent:", bu_md5), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v9 = BDSCloudKitLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1E4704B88(self, v4, v9);
+      sub_1E4704B88(self, dCopy, v9);
     }
 
     v8 = 0;
@@ -327,20 +327,20 @@
   return v8;
 }
 
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   if ([(BCCloudAssetAnnotationManager *)self enableCloudSync])
   {
-    v7 = [(BCCloudAssetAnnotationManager *)self dataManager];
-    [v7 startSyncToCKWithSyncManager:v9 completion:v6];
+    dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
+    [dataManager startSyncToCKWithSyncManager:managerCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = _Block_copy(v6);
-    v7 = v8;
+    v8 = _Block_copy(completionCopy);
+    dataManager = v8;
     if (v8)
     {
       (*(v8 + 2))(v8);
@@ -348,21 +348,21 @@
   }
 }
 
-- (void)signalSyncToCKForSyncManager:(id)a3
+- (void)signalSyncToCKForSyncManager:(id)manager
 {
   if ([(BCCloudAssetAnnotationManager *)self enableCloudSync])
   {
-    v7 = [(BCCloudAssetAnnotationManager *)self cloudKitController];
-    v4 = [v7 transactionManager];
-    v5 = [(BCCloudAssetAnnotationManager *)self entityName];
-    v6 = [(BCCloudAssetAnnotationManager *)self syncManager];
-    [v4 signalSyncToCKTransactionForEntityName:v5 syncManager:v6];
+    cloudKitController = [(BCCloudAssetAnnotationManager *)self cloudKitController];
+    transactionManager = [cloudKitController transactionManager];
+    entityName = [(BCCloudAssetAnnotationManager *)self entityName];
+    syncManager = [(BCCloudAssetAnnotationManager *)self syncManager];
+    [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager];
   }
 }
 
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = v5;
@@ -371,17 +371,17 @@
   }
 }
 
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  dataCopy = data;
+  completionCopy = completion;
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dataCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -397,8 +397,8 @@
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 assetID];
-        [v9 setObject:v15 forKey:v16];
+        assetID = [v15 assetID];
+        [v9 setObject:v15 forKey:assetID];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -407,33 +407,33 @@
     while (v12);
   }
 
-  v17 = [(BCCloudAssetAnnotationManager *)self dataManager];
+  dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
   v18 = MEMORY[0x1E696AE18];
-  v19 = [v9 allKeys];
-  v20 = [v18 predicateWithFormat:@"assetID IN %@", v19];
-  [v17 updateSyncGenerationFromCloudData:v9 predicate:v20 propertyIDKey:@"assetID" completion:v8];
+  allKeys = [v9 allKeys];
+  v20 = [v18 predicateWithFormat:@"assetID IN %@", allKeys];
+  [dataManager updateSyncGenerationFromCloudData:v9 predicate:v20 propertyIDKey:@"assetID" completion:completionCopy];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  recordsCopy = records;
+  completionCopy = completion;
   if ([(BCCloudAssetAnnotationManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudAssetAnnotationManager *)self dataManager];
+    dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E46079E0;
     v12[3] = &unk_1E8759DD8;
-    v13 = v8;
-    [v9 resolveConflictsForRecords:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager resolveConflictsForRecords:recordsCopy completion:v12];
   }
 
   else
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -442,24 +442,24 @@
   }
 }
 
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BCCloudAssetAnnotationManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudAssetAnnotationManager *)self dataManager];
+    dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E4607B54;
     v12[3] = &unk_1E8759E00;
-    v13 = v8;
-    [v9 failedRecordIDs:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager failedRecordIDs:dsCopy completion:v12];
   }
 
   else
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -468,12 +468,12 @@
   }
 }
 
-- (void)getAnnotationChangesSince:(id)a3 completion:(id)a4
+- (void)getAnnotationChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCloudAssetAnnotationManager *)self dataManager];
-  [v8 getChangesSince:v7 forEntityClass:objc_opt_class() completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  dataManager = [(BCCloudAssetAnnotationManager *)self dataManager];
+  [dataManager getChangesSince:sinceCopy forEntityClass:objc_opt_class() completion:completionCopy];
 }
 
 - (BCCloudKitController)cloudKitController

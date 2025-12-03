@@ -1,22 +1,22 @@
 @interface WRSignpostTracker
-- ($9113E22C387CB8549570940FFDE4B24C)statsWithEventEndNs:(SEL)a3;
+- ($9113E22C387CB8549570940FFDE4B24C)statsWithEventEndNs:(SEL)ns;
 - (BOOL)exceededDiagnosticThreshold;
 - (NSArray)emits;
 - (NSArray)incompleteIntervalStarts;
 - (NSArray)intervals;
 - (NSDictionary)environment;
 - (id)debugDescription;
-- (id)diagnosticsExceedingThresholdsWithEventStartNs:(id)a1 eventEndNs:;
+- (id)diagnosticsExceedingThresholdsWithEventStartNs:(id)ns eventEndNs:;
 - (id)encodedDict;
 - (id)initWithSignpost:individuationIdentifier:;
 - (int)count;
 - (unint64_t)totalDurationNanoseconds;
-- (void)initWithEncodedDict:(void *)a3 signpost:(uint64_t *)a4 error:;
+- (void)initWithEncodedDict:(void *)dict signpost:(uint64_t *)signpost error:;
 @end
 
 @implementation WRSignpostTracker
 
-- ($9113E22C387CB8549570940FFDE4B24C)statsWithEventEndNs:(SEL)a3
+- ($9113E22C387CB8549570940FFDE4B24C)statsWithEventEndNs:(SEL)ns
 {
   v5 = retstr;
   v102 = *MEMORY[0x277D85DE8];
@@ -27,12 +27,12 @@
   *&retstr->var1.var1 = 0u;
   *&retstr->var0.var5 = 0u;
   *&retstr->var0.var3 = 0u;
-  v74 = [(WRSignpostTracker *)self intervals];
-  v6 = [v74 count];
-  v73 = [(WRSignpostTracker *)self incompleteIntervalStarts];
-  v7 = [v73 count];
-  v8 = [(WRSignpostTracker *)self emits];
-  v9 = [v8 count];
+  intervals = [(WRSignpostTracker *)self intervals];
+  v6 = [intervals count];
+  incompleteIntervalStarts = [(WRSignpostTracker *)self incompleteIntervalStarts];
+  v7 = [incompleteIntervalStarts count];
+  emits = [(WRSignpostTracker *)self emits];
+  v9 = [emits count];
   v84 = v7;
   v10 = v7 + v6;
   v5->var0.var0 = v9 + v7 + v6;
@@ -59,21 +59,21 @@
   v15 = -1;
   do
   {
-    v16 = [v8 objectAtIndexedSubscript:v13];
-    v17 = [v16 machContTimeNs];
-    if (v14 >= v17)
+    v16 = [emits objectAtIndexedSubscript:v13];
+    machContTimeNs = [v16 machContTimeNs];
+    if (v14 >= machContTimeNs)
     {
-      v14 = v17;
+      v14 = machContTimeNs;
     }
 
-    if (v15 >= v17)
+    if (v15 >= machContTimeNs)
     {
-      v15 = v17;
+      v15 = machContTimeNs;
     }
 
-    if (v12 <= v17)
+    if (v12 <= machContTimeNs)
     {
-      v12 = v17;
+      v12 = machContTimeNs;
     }
 
     ++v13;
@@ -83,13 +83,13 @@
   if (v10)
   {
 LABEL_13:
-    v66 = v8;
+    v66 = emits;
     v90 = 0;
     v91 = 0;
     v88 = 0;
     v89 = 0;
     v68 = v5;
-    v69 = self;
+    selfCopy = self;
     v18 = v71;
     if (v71)
     {
@@ -104,22 +104,22 @@ LABEL_13:
       v21 = 16;
       do
       {
-        v22 = [v74 objectAtIndexedSubscript:v20];
-        v23 = [v22 start];
-        v24 = [v23 machContTimeNs];
+        v22 = [intervals objectAtIndexedSubscript:v20];
+        start = [v22 start];
+        machContTimeNs2 = [start machContTimeNs];
 
         v25 = [v22 end];
-        v26 = [v25 machContTimeNs];
+        machContTimeNs3 = [v25 machContTimeNs];
 
-        v27 = v26 - v24;
+        v27 = machContTimeNs3 - machContTimeNs2;
         v28 = reallocf(__ptr, v21 & 0xFFFFFFFF0);
         v29 = &v28[16 * v20];
-        *v29 = v24;
-        v29[1] = v26;
+        *v29 = machContTimeNs2;
+        v29[1] = machContTimeNs3;
         v30 = v85;
-        if (v85 <= v26 - v24)
+        if (v85 <= machContTimeNs3 - machContTimeNs2)
         {
-          v30 = v26 - v24;
+          v30 = machContTimeNs3 - machContTimeNs2;
         }
 
         v85 = v30;
@@ -128,12 +128,12 @@ LABEL_13:
         {
           v78 = reallocf(v78, 16 * (v82 + 1));
           v31 = &v78[16 * v82];
-          *v31 = v24;
-          v31[1] = v26;
+          *v31 = machContTimeNs2;
+          v31[1] = machContTimeNs3;
           v32 = v79;
           if (v79 <= v27)
           {
-            v32 = v26 - v24;
+            v32 = machContTimeNs3 - machContTimeNs2;
           }
 
           v79 = v32;
@@ -143,19 +143,19 @@ LABEL_13:
 
         ++v20;
         v19 += v27;
-        if (v14 >= v24)
+        if (v14 >= machContTimeNs2)
         {
-          v14 = v24;
+          v14 = machContTimeNs2;
         }
 
-        if (v15 >= v24)
+        if (v15 >= machContTimeNs2)
         {
-          v15 = v24;
+          v15 = machContTimeNs2;
         }
 
-        if (v12 <= v26)
+        if (v12 <= machContTimeNs3)
         {
-          v12 = v26;
+          v12 = machContTimeNs3;
         }
 
         v21 += 16;
@@ -193,46 +193,46 @@ LABEL_13:
       v83 = v34;
       do
       {
-        v38 = [v73 objectAtIndexedSubscript:v35];
-        v39 = [v38 machContTimeNs];
-        v40 = v39;
+        v38 = [incompleteIntervalStarts objectAtIndexedSubscript:v35];
+        machContTimeNs4 = [v38 machContTimeNs];
+        v40 = machContTimeNs4;
         v86 = v33;
         if (v36)
         {
-          v41 = v36 > v39;
-          v36 -= v39;
+          v41 = v36 > machContTimeNs4;
+          v36 -= machContTimeNs4;
           if (!v41)
           {
-            v42 = [(WRSignpostTracker *)v69 signpost];
-            v43 = [v42 individuationFieldName];
+            signpost = [(WRSignpostTracker *)selfCopy signpost];
+            individuationFieldName = [signpost individuationFieldName];
 
-            v44 = [(WRSignpostTracker *)v69 signpost];
-            v45 = v44;
-            if (v43)
+            signpost2 = [(WRSignpostTracker *)selfCopy signpost];
+            v45 = signpost2;
+            if (individuationFieldName)
             {
-              [v44 individuationFieldName];
+              [signpost2 individuationFieldName];
 
-              [(WRSignpostTracker *)v69 individuationIdentifier];
-              v46 = [(WRSignpostTracker *)v69 signpost];
-              [v46 name];
+              [(WRSignpostTracker *)selfCopy individuationIdentifier];
+              signpost3 = [(WRSignpostTracker *)selfCopy signpost];
+              [signpost3 name];
 
               v47 = *__error();
               v48 = _wrlog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
               {
-                v75 = [(WRSignpostTracker *)v69 signpost];
-                v76 = [v75 name];
-                v72 = [(WRSignpostTracker *)v69 signpost];
-                v63 = [v72 individuationFieldName];
-                v64 = [(WRSignpostTracker *)v69 individuationIdentifier];
+                signpost4 = [(WRSignpostTracker *)selfCopy signpost];
+                name = [signpost4 name];
+                signpost5 = [(WRSignpostTracker *)selfCopy signpost];
+                individuationFieldName2 = [signpost5 individuationFieldName];
+                individuationIdentifier = [(WRSignpostTracker *)selfCopy individuationIdentifier];
                 *buf = 138544386;
                 v93 = @"<workflow>";
                 v94 = 2114;
-                v95 = v76;
+                v95 = name;
                 v96 = 2114;
-                v97 = *&v63;
+                v97 = *&individuationFieldName2;
                 v98 = 2112;
-                v99 = v64;
+                v99 = individuationIdentifier;
                 v100 = 2048;
                 v101 = (v40 - v37) / 1000000000.0;
                 _os_log_error_impl(&dword_2746E5000, v48, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@: %{public}@->%@: Interval start after event end (%.3f later)", buf, 0x34u);
@@ -241,18 +241,18 @@ LABEL_13:
 
             else
             {
-              [v44 name];
+              [signpost2 name];
 
               v47 = *__error();
               v48 = _wrlog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
               {
-                v50 = [(WRSignpostTracker *)v69 signpost];
-                v77 = [v50 name];
+                signpost6 = [(WRSignpostTracker *)selfCopy signpost];
+                name2 = [signpost6 name];
                 *buf = 138543874;
                 v93 = @"<workflow>";
                 v94 = 2114;
-                v95 = v77;
+                v95 = name2;
                 v96 = 2048;
                 v97 = (v40 - v37) / 1000000000.0;
                 _os_log_error_impl(&dword_2746E5000, v48, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@: Interval start after event end (%.3f later)", buf, 0x20u);
@@ -296,7 +296,7 @@ LABEL_13:
     WRRangesSortAndCoalesce(&v90);
     v51 = v90;
     v52 = v91;
-    v8 = v66;
+    emits = v66;
     if (v90)
     {
       v53 = *p_var1;
@@ -383,46 +383,46 @@ LABEL_57:
   return v5;
 }
 
-- (void)initWithEncodedDict:(void *)a3 signpost:(uint64_t *)a4 error:
+- (void)initWithEncodedDict:(void *)dict signpost:(uint64_t *)signpost error:
 {
   v80 = *MEMORY[0x277D85DE8];
   v55 = a2;
-  v52 = a3;
-  if (!a1)
+  dictCopy = dict;
+  if (!self)
   {
     v20 = 0;
     goto LABEL_65;
   }
 
   v76 = 0;
-  if (a4)
+  if (signpost)
   {
-    *a4 = 0;
+    *signpost = 0;
   }
 
   else
   {
-    a4 = &v76;
+    signpost = &v76;
   }
 
-  v75.receiver = a1;
+  v75.receiver = self;
   v75.super_class = WRSignpostTracker;
   v7 = objc_msgSendSuper2(&v75, sel_init);
   v15 = v7;
   if (v7)
   {
-    objc_storeStrong(v7 + 2, a3);
-    v16 = DictGetString(v55, @"st_individuation_identifier", a4);
+    objc_storeStrong(v7 + 2, dict);
+    v16 = DictGetString(v55, @"st_individuation_identifier", signpost);
     v17 = v15[3];
     v15[3] = v16;
 
-    if (!v15[3] && *a4)
+    if (!v15[3] && *signpost)
     {
       goto LABEL_13;
     }
 
-    v53 = DictGetDict(v55, @"st_environment", a4);
-    if (!v53 && *a4)
+    v53 = DictGetDict(v55, @"st_environment", signpost);
+    if (!v53 && *signpost)
     {
       goto LABEL_18;
     }
@@ -445,7 +445,7 @@ LABEL_57:
       if (v18)
       {
         v19 = v18;
-        *a4 = v18;
+        *signpost = v18;
       }
 
       else
@@ -468,8 +468,8 @@ LABEL_63:
     }
 
     v23 = objc_opt_class();
-    v51 = DictGetArrayOfClass(v55, @"st_intervals", v23, a4);
-    if (!v51 && *a4)
+    v51 = DictGetArrayOfClass(v55, @"st_intervals", v23, signpost);
+    if (!v51 && *signpost)
     {
       v20 = 0;
 LABEL_62:
@@ -498,7 +498,7 @@ LABEL_23:
             objc_enumerationMutation(v24);
           }
 
-          v28 = [[WRIntervalAndThreads alloc] initWithEncodedDict:a4 error:?];
+          v28 = [[WRIntervalAndThreads alloc] initWithEncodedDict:signpost error:?];
           v29 = v28;
           if (!v28)
           {
@@ -525,8 +525,8 @@ LABEL_23:
     }
 
     v31 = objc_opt_class();
-    v54 = DictGetArrayOfClass(v55, @"st_emits", v31, a4);
-    if (!v54 && *a4)
+    v54 = DictGetArrayOfClass(v55, @"st_emits", v31, signpost);
+    if (!v54 && *signpost)
     {
       v20 = 0;
 LABEL_61:
@@ -555,7 +555,7 @@ LABEL_61:
               objc_enumerationMutation(v32);
             }
 
-            v36 = [[WRTimestampAndThread alloc] initWithEncodedDict:a4 error:?];
+            v36 = [[WRTimestampAndThread alloc] initWithEncodedDict:signpost error:?];
             v37 = v36;
             if (!v36)
             {
@@ -583,9 +583,9 @@ LABEL_61:
     }
 
     v39 = objc_opt_class();
-    v40 = DictGetArrayOfClass(v55, @"st_incomplete_interval_starts", v39, a4);
+    v40 = DictGetArrayOfClass(v55, @"st_incomplete_interval_starts", v39, signpost);
     v24 = v40;
-    if (v40 || !*a4)
+    if (v40 || !*signpost)
     {
       if ([v40 count])
       {
@@ -608,7 +608,7 @@ LABEL_61:
                 objc_enumerationMutation(v42);
               }
 
-              v46 = [[WRTimestampAndThread alloc] initWithEncodedDict:a4 error:?];
+              v46 = [[WRTimestampAndThread alloc] initWithEncodedDict:signpost error:?];
               v47 = v46;
               if (!v46)
               {
@@ -646,7 +646,7 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  [(WRSignpostTracker *)a4 initWithEncodedDict:v8 signpost:v9 error:v10, v11, v12, v13, v14];
+  [(WRSignpostTracker *)signpost initWithEncodedDict:v8 signpost:v9 error:v10, v11, v12, v13, v14];
 LABEL_13:
   v20 = 0;
 LABEL_64:
@@ -681,8 +681,8 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(WRSignpostTracker *)self intervals];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  intervals = [(WRSignpostTracker *)self intervals];
+  v3 = [intervals countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -694,17 +694,17 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(intervals);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [v8 end];
-        v10 = [v9 machContTimeNs];
-        v11 = [v8 start];
-        v5 += v10 - [v11 machContTimeNs];
+        machContTimeNs = [v9 machContTimeNs];
+        start = [v8 start];
+        v5 += machContTimeNs - [start machContTimeNs];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [intervals countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -788,54 +788,54 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
   return v2;
 }
 
-- (id)diagnosticsExceedingThresholdsWithEventStartNs:(id)a1 eventEndNs:
+- (id)diagnosticsExceedingThresholdsWithEventStartNs:(id)ns eventEndNs:
 {
-  v1 = a1;
+  nsCopy = ns;
   v4 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (ns)
   {
-    [a1 statsWithEventEndNs:?];
-    v1 = 0;
+    [ns statsWithEventEndNs:?];
+    nsCopy = 0;
   }
 
   v2 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return nsCopy;
 }
 
 - (id)encodedDict
 {
-  v3 = a1;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB38]);
-    v5 = [v3 signpost];
-    v6 = [v5 name];
+    signpost = [selfCopy signpost];
+    name = [signpost name];
     v7 = [OUTLINED_FUNCTION_40() initWithObjectsAndKeys:{@"st_name", 0}];
 
-    v8 = [v3 individuationIdentifier];
+    individuationIdentifier = [selfCopy individuationIdentifier];
     [OUTLINED_FUNCTION_48() setObject:? forKeyedSubscript:?];
 
-    v9 = [v3 environment];
+    environment = [selfCopy environment];
     [OUTLINED_FUNCTION_48() setObject:? forKeyedSubscript:?];
 
-    v10 = [v3 intervals];
-    v11 = [v10 count];
+    intervals = [selfCopy intervals];
+    v11 = [intervals count];
 
     if (v11)
     {
       v12 = objc_alloc(MEMORY[0x277CBEB18]);
-      v13 = [OUTLINED_FUNCTION_43() intervals];
-      [v13 count];
+      intervals2 = [OUTLINED_FUNCTION_43() intervals];
+      [intervals2 count];
       v14 = [OUTLINED_FUNCTION_88() initWithCapacity:?];
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v15 = [v3 intervals];
-      v16 = [v15 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      intervals3 = [selfCopy intervals];
+      v16 = [intervals3 countByEnumeratingWithState:&v57 objects:v63 count:16];
       if (v16)
       {
         v1 = v16;
@@ -847,7 +847,7 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
             OUTLINED_FUNCTION_91(v58);
             if (!v19)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(intervals3);
             }
 
             [(WRIntervalAndThreads *)*(*(&v57 + 1) + 8 * i) encodedDict];
@@ -865,18 +865,18 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
       [OUTLINED_FUNCTION_40() setObject:? forKeyedSubscript:?];
     }
 
-    v23 = [v3 emits];
-    v24 = [v23 count];
+    emits = [selfCopy emits];
+    v24 = [emits count];
 
     if (v24)
     {
       v25 = objc_alloc(MEMORY[0x277CBEB18]);
-      v26 = [OUTLINED_FUNCTION_43() emits];
-      [v26 count];
+      emits2 = [OUTLINED_FUNCTION_43() emits];
+      [emits2 count];
       v27 = [OUTLINED_FUNCTION_88() initWithCapacity:?];
 
-      v28 = [OUTLINED_FUNCTION_77() emits];
-      v29 = [v28 countByEnumeratingWithState:v54 objects:v62 count:16];
+      emits3 = [OUTLINED_FUNCTION_77() emits];
+      v29 = [emits3 countByEnumeratingWithState:v54 objects:v62 count:16];
       if (v29)
       {
         v1 = v29;
@@ -888,7 +888,7 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
             OUTLINED_FUNCTION_91(v56);
             if (!v19)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(emits3);
             }
 
             [(WRTimestampAndThread *)*(v55 + 8 * j) encodedDict];
@@ -906,22 +906,22 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
       [OUTLINED_FUNCTION_40() setObject:? forKeyedSubscript:?];
     }
 
-    v35 = [v3 incompleteIntervalStarts];
-    v36 = [v35 count];
+    incompleteIntervalStarts = [selfCopy incompleteIntervalStarts];
+    v36 = [incompleteIntervalStarts count];
 
     if (v36)
     {
       v37 = objc_alloc(MEMORY[0x277CBEB18]);
-      v38 = [OUTLINED_FUNCTION_43() incompleteIntervalStarts];
-      [v38 count];
+      incompleteIntervalStarts2 = [OUTLINED_FUNCTION_43() incompleteIntervalStarts];
+      [incompleteIntervalStarts2 count];
       v39 = [OUTLINED_FUNCTION_88() initWithCapacity:?];
 
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v40 = [v3 incompleteIntervalStarts];
-      v41 = [v40 countByEnumeratingWithState:&v50 objects:v61 count:16];
+      incompleteIntervalStarts3 = [selfCopy incompleteIntervalStarts];
+      v41 = [incompleteIntervalStarts3 countByEnumeratingWithState:&v50 objects:v61 count:16];
       if (v41)
       {
         v42 = v41;
@@ -932,7 +932,7 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
           {
             if (*v51 != v43)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(incompleteIntervalStarts3);
             }
 
             [(WRTimestampAndThread *)*(*(&v50 + 1) + 8 * k) encodedDict];
@@ -950,12 +950,12 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
       [OUTLINED_FUNCTION_49() setObject:? forKeyedSubscript:?];
     }
 
-    v3 = [v7 copy];
+    selfCopy = [v7 copy];
   }
 
   v48 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)exceededDiagnosticThreshold
@@ -968,16 +968,16 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
 
 - (int)count
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = OUTLINED_FUNCTION_94(self, a2);
   }
 
   v4 = [(WRSignpostTracker *)self count];
-  if (v2)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 40, 1);
+    Property = objc_getProperty(selfCopy, v3, 40, 1);
   }
 
   else
@@ -986,8 +986,8 @@ void __56__WRSignpostTracker_initWithEncodedDict_signpost_error___block_invoke(u
   }
 
   v6 = [Property count] + v4;
-  v7 = [(WRSignpostTracker *)v2 incompleteIntervalStarts];
-  v8 = [v7 count];
+  incompleteIntervalStarts = [(WRSignpostTracker *)selfCopy incompleteIntervalStarts];
+  v8 = [incompleteIntervalStarts count];
 
   return v6 + v8;
 }

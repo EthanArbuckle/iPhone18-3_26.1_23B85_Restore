@@ -16,9 +16,9 @@
 - (BOOL)canPerformAction
 {
   v2 = +[PXDiagnosticsSettings sharedInstance];
-  v3 = [v2 enableInternalSettingsService];
+  enableInternalSettingsService = [v2 enableInternalSettingsService];
 
-  return v3;
+  return enableInternalSettingsService;
 }
 
 @end

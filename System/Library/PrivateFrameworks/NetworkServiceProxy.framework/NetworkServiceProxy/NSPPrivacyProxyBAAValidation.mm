@@ -1,12 +1,12 @@
 @interface NSPPrivacyProxyBAAValidation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyBAAValidation
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyBAAValidation;
   v4 = [(NSPPrivacyProxyBAAValidation *)&v8 description];
-  v5 = [(NSPPrivacyProxyBAAValidation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyBAAValidation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   baaSignature = self->_baaSignature;
   if (baaSignature)
   {
-    [v3 setObject:baaSignature forKey:@"baaSignature"];
+    [dictionary setObject:baaSignature forKey:@"baaSignature"];
   }
 
   leafCertificate = self->_leafCertificate;
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_baaSignature)
   {
     __assert_rtn("[NSPPrivacyProxyBAAValidation writeTo:]", "NSPPrivacyProxyBAAValidation.m", 111, "nil != self->_baaSignature");
@@ -71,40 +71,40 @@
   PBDataWriterWriteDataField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   baaSignature = self->_baaSignature;
-  v5 = a3;
-  [v5 setBaaSignature:baaSignature];
-  [v5 setLeafCertificate:self->_leafCertificate];
-  [v5 setIntermediateCertificate:self->_intermediateCertificate];
+  toCopy = to;
+  [toCopy setBaaSignature:baaSignature];
+  [toCopy setLeafCertificate:self->_leafCertificate];
+  [toCopy setIntermediateCertificate:self->_intermediateCertificate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_baaSignature copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_baaSignature copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_leafCertificate copyWithZone:a3];
+  v8 = [(NSData *)self->_leafCertificate copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_intermediateCertificate copyWithZone:a3];
+  v10 = [(NSData *)self->_intermediateCertificate copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((baaSignature = self->_baaSignature, !(baaSignature | v4[1])) || -[NSData isEqual:](baaSignature, "isEqual:")) && ((leafCertificate = self->_leafCertificate, !(leafCertificate | v4[3])) || -[NSData isEqual:](leafCertificate, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((baaSignature = self->_baaSignature, !(baaSignature | equalCopy[1])) || -[NSData isEqual:](baaSignature, "isEqual:")) && ((leafCertificate = self->_leafCertificate, !(leafCertificate | equalCopy[3])) || -[NSData isEqual:](leafCertificate, "isEqual:")))
   {
     intermediateCertificate = self->_intermediateCertificate;
-    if (intermediateCertificate | v4[2])
+    if (intermediateCertificate | equalCopy[2])
     {
       v8 = [(NSData *)intermediateCertificate isEqual:?];
     }
@@ -130,26 +130,26 @@
   return v4 ^ [(NSData *)self->_intermediateCertificate hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NSPPrivacyProxyBAAValidation *)self setBaaSignature:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NSPPrivacyProxyBAAValidation *)self setLeafCertificate:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NSPPrivacyProxyBAAValidation *)self setIntermediateCertificate:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

@@ -1,45 +1,45 @@
 @interface PKSharingURLMessage
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKSharingURLMessage)initWithURL:(id)a3;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (PKSharingURLMessage)initWithURL:(id)l;
 - (id)description;
 @end
 
 @implementation PKSharingURLMessage
 
-- (PKSharingURLMessage)initWithURL:(id)a3
+- (PKSharingURLMessage)initWithURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
     v9 = @"url";
-    v4 = [a3 absoluteString];
-    v10[0] = v4;
+    absoluteString = [l absoluteString];
+    v10[0] = absoluteString;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
     v8.receiver = self;
     v8.super_class = PKSharingURLMessage;
     self = [(PKSharingGenericMessage *)&v8 initWithFormat:3 type:1003 genericSharingDict:MEMORY[0x1E695E0F8] appleSharingDict:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v10.receiver = self;
   v10.super_class = PKSharingURLMessage;
-  if ([(PKSharingGenericMessage *)&v10 configureWithContent:v4])
+  if ([(PKSharingGenericMessage *)&v10 configureWithContent:contentCopy])
   {
-    v5 = [v4 PKDictionaryForKey:@"apple"];
+    v5 = [contentCopy PKDictionaryForKey:@"apple"];
     v6 = [v5 PKURLForKey:@"url"];
     url = self->_url;
     self->_url = v6;
@@ -58,8 +58,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   v5 = PKSharingMessageTypeToString([(PKSharingMessage *)self type]);
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -71,16 +71,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)

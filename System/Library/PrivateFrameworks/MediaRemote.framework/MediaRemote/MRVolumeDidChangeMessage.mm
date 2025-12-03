@@ -1,5 +1,5 @@
 @interface MRVolumeDidChangeMessage
-- (MRVolumeDidChangeMessage)initWithVolume:(float)a3 endpointUID:(id)a4 outputDeviceUID:(id)a5;
+- (MRVolumeDidChangeMessage)initWithVolume:(float)volume endpointUID:(id)d outputDeviceUID:(id)iD;
 - (NSString)endpointUID;
 - (NSString)outputDeviceUID;
 - (float)volume;
@@ -7,20 +7,20 @@
 
 @implementation MRVolumeDidChangeMessage
 
-- (MRVolumeDidChangeMessage)initWithVolume:(float)a3 endpointUID:(id)a4 outputDeviceUID:(id)a5
+- (MRVolumeDidChangeMessage)initWithVolume:(float)volume endpointUID:(id)d outputDeviceUID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = MRVolumeDidChangeMessage;
   v10 = [(MRProtocolMessage *)&v14 init];
   if (v10)
   {
     v11 = objc_alloc_init(_MRVolumeDidChangeMessageProtobuf);
-    *&v12 = a3;
+    *&v12 = volume;
     [(_MRVolumeDidChangeMessageProtobuf *)v11 setVolume:v12];
-    [(_MRVolumeDidChangeMessageProtobuf *)v11 setEndpointUID:v8];
-    [(_MRVolumeDidChangeMessageProtobuf *)v11 setOutputDeviceUID:v9];
+    [(_MRVolumeDidChangeMessageProtobuf *)v11 setEndpointUID:dCopy];
+    [(_MRVolumeDidChangeMessageProtobuf *)v11 setOutputDeviceUID:iDCopy];
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v11];
   }
 
@@ -29,8 +29,8 @@
 
 - (float)volume
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  [v2 volume];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  [underlyingCodableMessage volume];
   v4 = v3;
 
   return v4;
@@ -38,18 +38,18 @@
 
 - (NSString)endpointUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 endpointUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  endpointUID = [underlyingCodableMessage endpointUID];
 
-  return v3;
+  return endpointUID;
 }
 
 - (NSString)outputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUID = [underlyingCodableMessage outputDeviceUID];
 
-  return v3;
+  return outputDeviceUID;
 }
 
 @end

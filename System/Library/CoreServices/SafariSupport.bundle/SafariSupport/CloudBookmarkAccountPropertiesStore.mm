@@ -3,42 +3,42 @@
 - (BOOL)isDatabaseOpen;
 - (BOOL)isDataclassEnabled;
 - (BOOL)updateAccountHashIfNeeded;
-- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)a3;
-- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)a3 databaseCoordinator:(id)a4;
+- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)store;
+- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)store databaseCoordinator:(id)coordinator;
 - (id)accountHash;
 - (id)deprecatedUsernameAccountHash;
 - (void)_setNeedsAccountHashCheck;
 - (void)_setNeedsAccountPropertiesUpdate;
-- (void)setAccountHash:(id)a3;
+- (void)setAccountHash:(id)hash;
 - (void)setNeedsDataclassEnabledCheck;
 @end
 
 @implementation CloudBookmarkAccountPropertiesStore
 
-- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)a3 databaseCoordinator:(id)a4
+- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)store databaseCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = [(CloudBookmarkAccountPropertiesStore *)self initWithAccountStore:a3];
+  coordinatorCopy = coordinator;
+  v8 = [(CloudBookmarkAccountPropertiesStore *)self initWithAccountStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_databaseCoordinator, a4);
+    objc_storeStrong(&v8->_databaseCoordinator, coordinator);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)a3
+- (CloudBookmarkAccountPropertiesStore)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = CloudBookmarkAccountPropertiesStore;
   v6 = [(CloudBookmarkAccountPropertiesStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     *&v7->_needsDataclassEnabledCheck = 257;
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"_setNeedsAccountPropertiesUpdate" name:@"cloudBookmarkAccountIdentityDidChange" object:0];
@@ -51,18 +51,18 @@
 
 - (ACAccount)account
 {
-  v2 = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
-  [v2 refresh];
+  safari_primaryAppleAccount = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
+  [safari_primaryAppleAccount refresh];
 
-  return v2;
+  return safari_primaryAppleAccount;
 }
 
 - (BOOL)isDataclassEnabled
 {
   if (self->_needsDataclassEnabledCheck)
   {
-    v3 = [(CloudBookmarkAccountPropertiesStore *)self account];
-    self->_dataclassEnabled = [v3 isEnabledForDataclass:kAccountDataclassBookmarks];
+    account = [(CloudBookmarkAccountPropertiesStore *)self account];
+    self->_dataclassEnabled = [account isEnabledForDataclass:kAccountDataclassBookmarks];
 
     self->_needsDataclassEnabledCheck = 0;
   }
@@ -72,39 +72,39 @@
 
 - (BOOL)isDatabaseOpen
 {
-  v3 = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseRef];
-  if (v3)
+  databaseRef = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseRef];
+  if (databaseRef)
   {
     databaseCoordinator = self->_databaseCoordinator;
 
-    LOBYTE(v3) = [(CloudBookmarkDatabaseCoordinating *)databaseCoordinator isDatabaseOpen];
+    LOBYTE(databaseRef) = [(CloudBookmarkDatabaseCoordinating *)databaseCoordinator isDatabaseOpen];
   }
 
-  return v3;
+  return databaseRef;
 }
 
 - (id)deprecatedUsernameAccountHash
 {
-  v3 = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseAccessor];
-  v4 = [v3 copyUsernameAccountHashWithDatabase:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
+  databaseAccessor = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseAccessor];
+  v4 = [databaseAccessor copyUsernameAccountHashWithDatabase:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
 
   return v4;
 }
 
 - (id)accountHash
 {
-  v3 = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseAccessor];
-  v4 = [v3 copyAccountHashWithDatabase:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
+  databaseAccessor = [(CloudBookmarkDatabaseCoordinating *)self->_databaseCoordinator databaseAccessor];
+  v4 = [databaseAccessor copyAccountHashWithDatabase:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
 
   return v4;
 }
 
-- (void)setAccountHash:(id)a3
+- (void)setAccountHash:(id)hash
 {
   databaseCoordinator = self->_databaseCoordinator;
-  v5 = a3;
-  v6 = [(CloudBookmarkDatabaseCoordinating *)databaseCoordinator databaseAccessor];
-  [v6 setAccountHash:v5 database:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
+  hashCopy = hash;
+  databaseAccessor = [(CloudBookmarkDatabaseCoordinating *)databaseCoordinator databaseAccessor];
+  [databaseAccessor setAccountHash:hashCopy database:{-[CloudBookmarkDatabaseCoordinating databaseRef](self->_databaseCoordinator, "databaseRef")}];
 }
 
 - (BOOL)updateAccountHashIfNeeded
@@ -118,14 +118,14 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Checking account hash", buf, 2u);
     }
 
-    v4 = [(CloudBookmarkAccountPropertiesStore *)self account];
-    v5 = [v4 safari_accountHash];
+    account = [(CloudBookmarkAccountPropertiesStore *)self account];
+    safari_accountHash = [account safari_accountHash];
 
-    v6 = [(CloudBookmarkAccountPropertiesStore *)self accountHash];
-    v7 = v6;
-    if (v6)
+    accountHash = [(CloudBookmarkAccountPropertiesStore *)self accountHash];
+    v7 = accountHash;
+    if (accountHash)
     {
-      v8 = [v6 isEqualToData:v5];
+      v8 = [accountHash isEqualToData:safari_accountHash];
       v9 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       v10 = v9;
       if (v8)
@@ -144,18 +144,18 @@
           sub_10002E004(v10);
         }
 
-        [(CloudBookmarkAccountPropertiesStore *)self setAccountHash:v5];
+        [(CloudBookmarkAccountPropertiesStore *)self setAccountHash:safari_accountHash];
       }
 
       self->_needsAccountHashCheck = 0;
       goto LABEL_25;
     }
 
-    v12 = [(CloudBookmarkAccountPropertiesStore *)self deprecatedUsernameAccountHash];
-    v13 = [v12 isEqualToData:v5];
-    v14 = [(CloudBookmarkAccountPropertiesStore *)self account];
-    v15 = [v14 safari_deprecatedUsernameAccountHash];
-    v16 = [v12 isEqualToData:v15];
+    deprecatedUsernameAccountHash = [(CloudBookmarkAccountPropertiesStore *)self deprecatedUsernameAccountHash];
+    v13 = [deprecatedUsernameAccountHash isEqualToData:safari_accountHash];
+    account2 = [(CloudBookmarkAccountPropertiesStore *)self account];
+    safari_deprecatedUsernameAccountHash = [account2 safari_deprecatedUsernameAccountHash];
+    v16 = [deprecatedUsernameAccountHash isEqualToData:safari_deprecatedUsernameAccountHash];
 
     v17 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -196,7 +196,7 @@ LABEL_19:
 
     v8 = 1;
 LABEL_24:
-    [(CloudBookmarkAccountPropertiesStore *)self setAccountHash:v5];
+    [(CloudBookmarkAccountPropertiesStore *)self setAccountHash:safari_accountHash];
     self->_needsAccountHashCheck = 0;
 
 LABEL_25:

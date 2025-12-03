@@ -1,15 +1,15 @@
 @interface SCLActiveDurationAnalyticsSource
-- (SCLActiveDurationAnalyticsSource)initWithInitialState:(id)a3;
-- (unint64_t)secondsSinceContinuousTimestamp:(unint64_t)a3;
-- (void)commitAnalyticsEventForTransitionFromState:(id)a3 toState:(id)a4;
-- (void)setCurrentState:(id)a3;
+- (SCLActiveDurationAnalyticsSource)initWithInitialState:(id)state;
+- (unint64_t)secondsSinceContinuousTimestamp:(unint64_t)timestamp;
+- (void)commitAnalyticsEventForTransitionFromState:(id)state toState:(id)toState;
+- (void)setCurrentState:(id)state;
 @end
 
 @implementation SCLActiveDurationAnalyticsSource
 
-- (SCLActiveDurationAnalyticsSource)initWithInitialState:(id)a3
+- (SCLActiveDurationAnalyticsSource)initWithInitialState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = SCLActiveDurationAnalyticsSource;
   v5 = [(SCLActiveDurationAnalyticsSource *)&v8 init];
@@ -17,22 +17,22 @@
   if (v5)
   {
     mach_timebase_info(&v5->_timebase);
-    [(SCLActiveDurationAnalyticsSource *)v6 setCurrentState:v4];
+    [(SCLActiveDurationAnalyticsSource *)v6 setCurrentState:stateCopy];
   }
 
   return v6;
 }
 
-- (void)setCurrentState:(id)a3
+- (void)setCurrentState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   v4 = self->_currentState;
-  v5 = [v9 copy];
+  v5 = [stateCopy copy];
   currentState = self->_currentState;
   self->_currentState = v5;
 
   v7 = [(SCLActiveDurationAnalyticsSource *)self isActiveForState:v4];
-  v8 = [(SCLActiveDurationAnalyticsSource *)self isActiveForState:v9];
+  v8 = [(SCLActiveDurationAnalyticsSource *)self isActiveForState:stateCopy];
   if (v7 != v8)
   {
     if (v8)
@@ -42,17 +42,17 @@
 
     else
     {
-      [(SCLActiveDurationAnalyticsSource *)self commitAnalyticsEventForTransitionFromState:v4 toState:v9];
+      [(SCLActiveDurationAnalyticsSource *)self commitAnalyticsEventForTransitionFromState:v4 toState:stateCopy];
       [(SCLActiveDurationAnalyticsSource *)self setActiveStartTimestamp:0];
     }
   }
 }
 
-- (void)commitAnalyticsEventForTransitionFromState:(id)a3 toState:(id)a4
+- (void)commitAnalyticsEventForTransitionFromState:(id)state toState:(id)toState
 {
-  v5 = a3;
+  stateCopy = state;
   [(SCLActiveDurationAnalyticsSource *)self secondsSinceContinuousTimestamp:[(SCLActiveDurationAnalyticsSource *)self activeStartTimestamp]];
-  v6 = v5;
+  v6 = stateCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -75,15 +75,15 @@ id __87__SCLActiveDurationAnalyticsSource_commitAnalyticsEventForTransitionFromS
   return v5;
 }
 
-- (unint64_t)secondsSinceContinuousTimestamp:(unint64_t)a3
+- (unint64_t)secondsSinceContinuousTimestamp:(unint64_t)timestamp
 {
   v5 = mach_continuous_approximate_time();
-  if (v5 < a3)
+  if (v5 < timestamp)
   {
     return 0;
   }
 
-  return [(SCLActiveDurationAnalyticsSource *)self secondsWithMachTimeInterval:v5 - a3];
+  return [(SCLActiveDurationAnalyticsSource *)self secondsWithMachTimeInterval:v5 - timestamp];
 }
 
 @end

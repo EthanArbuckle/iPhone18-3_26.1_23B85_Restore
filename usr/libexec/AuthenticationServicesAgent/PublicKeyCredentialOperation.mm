@@ -3,32 +3,32 @@
 - (BOOL)hasSelectedAssertion;
 - (BOOL)hasTornDown;
 - (NSDictionary)identifiersToAssertionResponses;
-- (PublicKeyCredentialOperation)initWithRelyingPartyIdentifier:(id)a3 delegate:(id)a4 parentActivity:(id)a5;
-- (void)mergeIdentifiersToAssertionResponses:(id)a3;
-- (void)selectPlatformAssertion:(id)a3;
-- (void)selectSecurityKeyAssertion:(id)a3;
-- (void)setPlatformAssertionSelectionCallback:(id)a3;
-- (void)setSecurityKeyAssertionSelectionCallback:(id)a3;
+- (PublicKeyCredentialOperation)initWithRelyingPartyIdentifier:(id)identifier delegate:(id)delegate parentActivity:(id)activity;
+- (void)mergeIdentifiersToAssertionResponses:(id)responses;
+- (void)selectPlatformAssertion:(id)assertion;
+- (void)selectSecurityKeyAssertion:(id)assertion;
+- (void)setPlatformAssertionSelectionCallback:(id)callback;
+- (void)setSecurityKeyAssertionSelectionCallback:(id)callback;
 - (void)tearDownIfNecessary;
 @end
 
 @implementation PublicKeyCredentialOperation
 
-- (PublicKeyCredentialOperation)initWithRelyingPartyIdentifier:(id)a3 delegate:(id)a4 parentActivity:(id)a5
+- (PublicKeyCredentialOperation)initWithRelyingPartyIdentifier:(id)identifier delegate:(id)delegate parentActivity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  activityCopy = activity;
   v22.receiver = self;
   v22.super_class = PublicKeyCredentialOperation;
   v11 = [(PublicKeyCredentialOperation *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     relyingPartyIdentifier = v11->_relyingPartyIdentifier;
     v11->_relyingPartyIdentifier = v12;
 
-    objc_storeWeak(&v11->_delegate, v9);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v14 = +[NSUUID UUID];
     uuid = v11->_uuid;
     v11->_uuid = v14;
@@ -37,7 +37,7 @@
     internalSemaphore = v11->_internalSemaphore;
     v11->_internalSemaphore = v16;
 
-    v18 = _os_activity_create(&_mh_execute_header, "PublicKeyCredential operation", v10, OS_ACTIVITY_FLAG_DEFAULT);
+    v18 = _os_activity_create(&_mh_execute_header, "PublicKeyCredential operation", activityCopy, OS_ACTIVITY_FLAG_DEFAULT);
     activity = v11->_activity;
     v11->_activity = v18;
 
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)mergeIdentifiersToAssertionResponses:(id)a3
+- (void)mergeIdentifiersToAssertionResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   if (!dispatch_semaphore_wait(self->_internalSemaphore, 0x12A05F200uLL))
   {
     os_activity_apply(self->_activity, &stru_100031120);
@@ -75,7 +75,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    identifiersToAssertionResponses = v4;
+    identifiersToAssertionResponses = responsesCopy;
     v7 = [(NSMutableDictionary *)identifiersToAssertionResponses countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -104,16 +104,16 @@
 
   else
   {
-    v13 = [v4 mutableCopy];
+    v13 = [responsesCopy mutableCopy];
     identifiersToAssertionResponses = self->_identifiersToAssertionResponses;
     self->_identifiersToAssertionResponses = v13;
   }
 }
 
-- (void)setPlatformAssertionSelectionCallback:(id)a3
+- (void)setPlatformAssertionSelectionCallback:(id)callback
 {
   internalSemaphore = self->_internalSemaphore;
-  v5 = a3;
+  callbackCopy = callback;
   if (!dispatch_semaphore_wait(internalSemaphore, 0x12A05F200uLL))
   {
     os_activity_apply(self->_activity, &stru_100031168);
@@ -126,16 +126,16 @@
   v9[3] = &unk_100031148;
   v9[4] = self;
   [v6 setHandler:v9];
-  v7 = objc_retainBlock(v5);
+  v7 = objc_retainBlock(callbackCopy);
 
   selectPlatformAssertionCallback = self->_selectPlatformAssertionCallback;
   self->_selectPlatformAssertionCallback = v7;
 }
 
-- (void)setSecurityKeyAssertionSelectionCallback:(id)a3
+- (void)setSecurityKeyAssertionSelectionCallback:(id)callback
 {
   internalSemaphore = self->_internalSemaphore;
-  v5 = a3;
+  callbackCopy = callback;
   if (!dispatch_semaphore_wait(internalSemaphore, 0x12A05F200uLL))
   {
     os_activity_apply(self->_activity, &stru_100031188);
@@ -148,15 +148,15 @@
   v9[3] = &unk_100031148;
   v9[4] = self;
   [v6 setHandler:v9];
-  v7 = objc_retainBlock(v5);
+  v7 = objc_retainBlock(callbackCopy);
 
   selectSecurityKeyAssertionCallback = self->_selectSecurityKeyAssertionCallback;
   self->_selectSecurityKeyAssertionCallback = v7;
 }
 
-- (void)selectPlatformAssertion:(id)a3
+- (void)selectPlatformAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   if (!dispatch_semaphore_wait(self->_internalSemaphore, 0x12A05F200uLL))
   {
     os_activity_apply(self->_activity, &stru_1000311A8);
@@ -183,9 +183,9 @@
   }
 }
 
-- (void)selectSecurityKeyAssertion:(id)a3
+- (void)selectSecurityKeyAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   if (!dispatch_semaphore_wait(self->_internalSemaphore, 0x12A05F200uLL))
   {
     os_activity_apply(self->_activity, &stru_1000311E8);
@@ -271,7 +271,7 @@
     block[2] = sub_10000289C;
     block[3] = &unk_100031290;
     v5 = v3;
-    v6 = self;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 }

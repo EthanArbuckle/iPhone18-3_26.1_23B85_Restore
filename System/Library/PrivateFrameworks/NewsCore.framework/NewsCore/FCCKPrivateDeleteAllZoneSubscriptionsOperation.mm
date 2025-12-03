@@ -1,5 +1,5 @@
 @interface FCCKPrivateDeleteAllZoneSubscriptionsOperation
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)performOperation
 {
-  v3 = [MEMORY[0x1E695B968] fetchAllSubscriptionsOperation];
+  fetchAllSubscriptionsOperation = [MEMORY[0x1E695B968] fetchAllSubscriptionsOperation];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__FCCKPrivateDeleteAllZoneSubscriptionsOperation_performOperation__block_invoke;
   v4[3] = &unk_1E7C3F0D0;
   v4[4] = self;
   v4[5] = 1;
-  [v3 setFetchSubscriptionCompletionBlock:v4];
-  [(FCCKPrivateDatabaseOperation *)self runChildCKOperation:v3 destination:1];
+  [fetchAllSubscriptionsOperation setFetchSubscriptionCompletionBlock:v4];
+  [(FCCKPrivateDatabaseOperation *)self runChildCKOperation:fetchAllSubscriptionsOperation destination:1];
 }
 
 void __66__FCCKPrivateDeleteAllZoneSubscriptionsOperation_performOperation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -44,15 +44,15 @@ void __66__FCCKPrivateDeleteAllZoneSubscriptionsOperation_performOperation__bloc
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCCKPrivateDeleteAllZoneSubscriptionsOperation *)self deleteAllZoneSubscriptionsCompletionBlock];
+  errorCopy = error;
+  deleteAllZoneSubscriptionsCompletionBlock = [(FCCKPrivateDeleteAllZoneSubscriptionsOperation *)self deleteAllZoneSubscriptionsCompletionBlock];
 
-  if (v4)
+  if (deleteAllZoneSubscriptionsCompletionBlock)
   {
-    v5 = [(FCCKPrivateDeleteAllZoneSubscriptionsOperation *)self deleteAllZoneSubscriptionsCompletionBlock];
-    (v5)[2](v5, v6);
+    deleteAllZoneSubscriptionsCompletionBlock2 = [(FCCKPrivateDeleteAllZoneSubscriptionsOperation *)self deleteAllZoneSubscriptionsCompletionBlock];
+    (deleteAllZoneSubscriptionsCompletionBlock2)[2](deleteAllZoneSubscriptionsCompletionBlock2, errorCopy);
   }
 }
 

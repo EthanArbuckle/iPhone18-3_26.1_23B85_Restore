@@ -1,16 +1,16 @@
 @interface UITallPDFPrintFormatter
-- (UITallPDFPrintFormatter)initWithPDFData:(id)a3 pdfPassword:(id)a4;
-- (UITallPDFPrintFormatter)initWithPDFURL:(id)a3 pdfPassword:(id)a4;
+- (UITallPDFPrintFormatter)initWithPDFData:(id)data pdfPassword:(id)password;
+- (UITallPDFPrintFormatter)initWithPDFURL:(id)l pdfPassword:(id)password;
 - (int64_t)_recalcPageCount;
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
 @end
 
 @implementation UITallPDFPrintFormatter
 
-- (UITallPDFPrintFormatter)initWithPDFURL:(id)a3 pdfPassword:(id)a4
+- (UITallPDFPrintFormatter)initWithPDFURL:(id)l pdfPassword:(id)password
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  passwordCopy = password;
   v13.receiver = self;
   v13.super_class = UITallPDFPrintFormatter;
   v9 = [(UIPrintFormatter *)&v13 init];
@@ -19,14 +19,14 @@
   {
     v9->_rotate90 = 0;
     v9->_pdfScaleFactor = 1.0;
-    objc_storeStrong(&v9->_pdfPath, a3);
+    objc_storeStrong(&v9->_pdfPath, l);
     v11 = CGPDFDocumentCreateWithURL(v10->_pdfPath);
     v10->_pdfDocRef = v11;
-    if (v8)
+    if (passwordCopy)
     {
       if (v11 && CGPDFDocumentIsEncrypted(v11))
       {
-        CGPDFDocumentUnlockWithPassword(v10->_pdfDocRef, [v8 cStringUsingEncoding:4]);
+        CGPDFDocumentUnlockWithPassword(v10->_pdfDocRef, [passwordCopy cStringUsingEncoding:4]);
       }
     }
   }
@@ -34,10 +34,10 @@
   return v10;
 }
 
-- (UITallPDFPrintFormatter)initWithPDFData:(id)a3 pdfPassword:(id)a4
+- (UITallPDFPrintFormatter)initWithPDFData:(id)data pdfPassword:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  passwordCopy = password;
   v14.receiver = self;
   v14.super_class = UITallPDFPrintFormatter;
   v8 = [(UIPrintFormatter *)&v14 init];
@@ -46,9 +46,9 @@
   {
     v8->_rotate90 = 0;
     v8->_pdfScaleFactor = 1.0;
-    if (v6)
+    if (dataCopy)
     {
-      v10 = CGDataProviderCreateWithCFData(v6);
+      v10 = CGDataProviderCreateWithCFData(dataCopy);
       v11 = v10;
       if (v10)
       {
@@ -56,14 +56,14 @@
       }
 
       CGDataProviderRelease(v11);
-      if (v7)
+      if (passwordCopy)
       {
         pdfDocRef = v9->_pdfDocRef;
         if (pdfDocRef)
         {
           if (CGPDFDocumentIsEncrypted(pdfDocRef))
           {
-            CGPDFDocumentUnlockWithPassword(v9->_pdfDocRef, [v7 cStringUsingEncoding:4]);
+            CGPDFDocumentUnlockWithPassword(v9->_pdfDocRef, [passwordCopy cStringUsingEncoding:4]);
           }
         }
       }
@@ -140,12 +140,12 @@ LABEL_20:
   return NumberOfPages * v14;
 }
 
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v18.origin.x = x;
@@ -167,8 +167,8 @@ LABEL_20:
       v13 = 1;
     }
 
-    Page = CGPDFDocumentGetPage(self->_pdfDocRef, vcvtpd_u64_f64((a4 + 1.0) / v13));
-    v15 = a4 - [(UIPrintFormatter *)self startPage];
+    Page = CGPDFDocumentGetPage(self->_pdfDocRef, vcvtpd_u64_f64((index + 1.0) / v13));
+    v15 = index - [(UIPrintFormatter *)self startPage];
     v17.receiver = self;
     v17.super_class = UITallPDFPrintFormatter;
     [(UIPrintFormatter *)&v17 _pageContentRect:0];

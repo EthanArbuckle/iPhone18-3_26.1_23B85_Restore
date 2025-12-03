@@ -1,13 +1,13 @@
 @interface TSAStyleMapper
-- (id)stylesheetForNewRootStyleFromStyle:(id)a3;
-- (id)targetParentForStyle:(id)a3;
+- (id)stylesheetForNewRootStyleFromStyle:(id)style;
+- (id)targetParentForStyle:(id)style;
 @end
 
 @implementation TSAStyleMapper
 
-- (id)targetParentForStyle:(id)a3
+- (id)targetParentForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
@@ -22,7 +22,7 @@ LABEL_6:
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
   {
-    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v10, v4, v12);
+    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v10, styleCopy, v12);
     if (v15)
     {
       goto LABEL_34;
@@ -42,17 +42,17 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (sub_27608FBD0(v4, v10, v11, v12))
+  if (sub_27608FBD0(styleCopy, v10, v11, v12))
   {
-    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v13, v4, v14);
+    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v13, styleCopy, v14);
 LABEL_34:
     v21 = v15;
     goto LABEL_35;
   }
 
-  if (sub_27608FAF4(v4))
+  if (sub_27608FAF4(styleCopy))
   {
-    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v37, v4, v38);
+    v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v37, styleCopy, v38);
     if (v15)
     {
       goto LABEL_34;
@@ -61,46 +61,46 @@ LABEL_34:
     goto LABEL_14;
   }
 
-  if (!sub_27608F8C0(v4))
+  if (!sub_27608F8C0(styleCopy))
   {
     v76.receiver = self;
     v76.super_class = TSAStyleMapper;
-    v15 = [(TSSStyleMapper *)&v76 targetParentForStyle:v4];
+    v15 = [(TSSStyleMapper *)&v76 targetParentForStyle:styleCopy];
     goto LABEL_34;
   }
 
-  if (sub_27608FA20(v4))
+  if (sub_27608FA20(styleCopy))
   {
-    v15 = objc_msgSend_targetParentByNameMatchForStyle_(self, v42, v4, v43);
+    v15 = objc_msgSend_targetParentByNameMatchForStyle_(self, v42, styleCopy, v43);
     if (v15)
     {
       goto LABEL_34;
     }
   }
 
-  if (sub_27608FA80(v4))
+  if (sub_27608FA80(styleCopy))
   {
-    v15 = objc_msgSend_targetParentByContentTagMatchForStyle_(self, v44, v4, v45);
+    v15 = objc_msgSend_targetParentByContentTagMatchForStyle_(self, v44, styleCopy, v45);
     if (v15)
     {
       goto LABEL_34;
     }
   }
 
-  v15 = objc_msgSend_targetParentByPropertyMapMatchForUnidentifiedStyle_(self, v44, v4, v45);
+  v15 = objc_msgSend_targetParentByPropertyMapMatchForUnidentifiedStyle_(self, v44, styleCopy, v45);
   if (v15)
   {
     goto LABEL_34;
   }
 
-  v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v46, v4, v47);
+  v15 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v46, styleCopy, v47);
   if (v15)
   {
     goto LABEL_34;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_msgSend_isNamed(v4, v48, v49, v50) & 1) != 0 || (objc_msgSend_isIdentified(v4, v51, v52, v53) & 1) != 0 || (objc_msgSend_parent(v4, v54, v55, v56), v57 = objc_claimAutoreleasedReturnValue(), v57, v57))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_msgSend_isNamed(styleCopy, v48, v49, v50) & 1) != 0 || (objc_msgSend_isIdentified(styleCopy, v51, v52, v53) & 1) != 0 || (objc_msgSend_parent(styleCopy, v54, v55, v56), v57 = objc_claimAutoreleasedReturnValue(), v57, v57))
   {
     v21 = 0;
   }
@@ -112,13 +112,13 @@ LABEL_34:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_isNamed(v4, v61, v62, v63) & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_isNamed(styleCopy, v61, v62, v63) & 1) == 0)
   {
-    v67 = objc_msgSend_parent(v4, v64, v65, v66);
+    v67 = objc_msgSend_parent(styleCopy, v64, v65, v66);
 
     if (!v67)
     {
-      v70 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v68, v4, v69);
+      v70 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v68, styleCopy, v69);
 
       v21 = v70;
     }
@@ -144,10 +144,10 @@ LABEL_35:
   return v21;
 }
 
-- (id)stylesheetForNewRootStyleFromStyle:(id)a3
+- (id)stylesheetForNewRootStyleFromStyle:(id)style
 {
-  v4 = a3;
-  if (sub_27608FA20(v4))
+  styleCopy = style;
+  if (sub_27608FA20(styleCopy))
   {
     v8 = objc_msgSend_targetStylesheet(self, v5, v6, v7);
     v12 = objc_msgSend_rootAncestor(v8, v9, v10, v11);
@@ -157,7 +157,7 @@ LABEL_35:
   {
     v14.receiver = self;
     v14.super_class = TSAStyleMapper;
-    v12 = [(TSSStyleMapper *)&v14 stylesheetForNewRootStyleFromStyle:v4];
+    v12 = [(TSSStyleMapper *)&v14 stylesheetForNewRootStyleFromStyle:styleCopy];
   }
 
   return v12;

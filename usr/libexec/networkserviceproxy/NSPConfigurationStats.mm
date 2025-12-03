@@ -16,8 +16,8 @@
   v6 = [NSNumber numberWithBool:[(NSPConfigurationStats *)self tokenFetchEnabled]];
   [v3 setObject:v6 forKeyedSubscript:@"TokenFetchEnabled"];
 
-  v7 = [(NSPConfigurationStats *)self tierType];
-  [v3 setObject:v7 forKeyedSubscript:@"TierType"];
+  tierType = [(NSPConfigurationStats *)self tierType];
+  [v3 setObject:tierType forKeyedSubscript:@"TierType"];
 
   v8 = [NSNumber numberWithBool:[(NSPConfigurationStats *)self safariUnencryptedEnabled]];
   [v3 setObject:v8 forKeyedSubscript:@"SafariUnencryptedEnabled"];

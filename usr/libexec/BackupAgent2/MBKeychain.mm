@@ -1,33 +1,33 @@
 @interface MBKeychain
-+ (BOOL)addAllPasswordItems:(id)a3 error:(id *)a4;
-+ (BOOL)addPasswordItem:(id)a3 error:(id *)a4;
-+ (id)allPasswordItemsForServices:(id)a3 error:(id *)a4;
-+ (id)passwordItemsForService:(id)a3 account:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
++ (BOOL)addAllPasswordItems:(id)items error:(id *)error;
++ (BOOL)addPasswordItem:(id)item error:(id *)error;
++ (id)allPasswordItemsForServices:(id)services error:(id *)error;
++ (id)passwordItemsForService:(id)service account:(id)account limit:(unint64_t)limit error:(id *)error;
 @end
 
 @implementation MBKeychain
 
-+ (id)passwordItemsForService:(id)a3 account:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)passwordItemsForService:(id)service account:(id)account limit:(unint64_t)limit error:(id *)error
 {
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:kSecClassGenericPassword forKeyedSubscript:kSecClass];
-  if (a3)
+  if (service)
   {
-    [v10 setObject:a3 forKeyedSubscript:kSecAttrService];
+    [v10 setObject:service forKeyedSubscript:kSecAttrService];
   }
 
-  if (a4)
+  if (account)
   {
-    [v10 setObject:a4 forKeyedSubscript:kSecAttrAccount];
+    [v10 setObject:account forKeyedSubscript:kSecAttrAccount];
   }
 
-  if (a5 == 1)
+  if (limit == 1)
   {
     v11 = &kSecMatchLimitOne;
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!limit)
   {
     v11 = &kSecMatchLimitAll;
 LABEL_9:
@@ -35,7 +35,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v12 = [NSNumber numberWithUnsignedInteger:a5];
+  v12 = [NSNumber numberWithUnsignedInteger:limit];
 LABEL_11:
   [v10 setObject:v12 forKeyedSubscript:kSecMatchLimit];
   [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
@@ -50,9 +50,9 @@ LABEL_11:
   if (v13)
   {
     v14 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = [MBError errorWithCode:1 format:@"SecItemCopyMatching error: %d", v13];
+      *error = [MBError errorWithCode:1 format:@"SecItemCopyMatching error: %d", v13];
     }
   }
 
@@ -91,14 +91,14 @@ LABEL_11:
   return v14;
 }
 
-+ (id)allPasswordItemsForServices:(id)a3 error:(id *)a4
++ (id)allPasswordItemsForServices:(id)services error:(id *)error
 {
   v6 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -109,10 +109,10 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(services);
         }
 
-        v11 = [MBKeychain allPasswordItemsForService:*(*(&v13 + 1) + 8 * i) error:a4];
+        v11 = [MBKeychain allPasswordItemsForService:*(*(&v13 + 1) + 8 * i) error:error];
         if (!v11)
         {
           return 0;
@@ -121,7 +121,7 @@ LABEL_11:
         [v6 addObjectsFromArray:v11];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -134,21 +134,21 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)addPasswordItem:(id)a3 error:(id *)a4
++ (BOOL)addPasswordItem:(id)item error:(id *)error
 {
   v17[0] = kSecClassGenericPassword;
   v16[0] = kSecClass;
   v16[1] = kSecAttrService;
-  v17[1] = [a3 serviceName];
+  v17[1] = [item serviceName];
   v16[2] = kSecAttrAccount;
-  v17[2] = [a3 accountName];
+  v17[2] = [item accountName];
   v16[3] = kSecAttrAccessGroup;
-  v17[3] = [a3 accessGroupName];
+  v17[3] = [item accessGroupName];
   v16[4] = kSecAttrAccessible;
-  v17[4] = [a3 accessibilityType];
+  v17[4] = [item accessibilityType];
   v16[5] = kSecValueData;
   v16[6] = kSecReturnData;
-  v17[5] = [a3 valueData];
+  v17[5] = [item valueData];
   v17[6] = &__kCFBooleanFalse;
   v6 = SecItemAdd([NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:7], 0);
   if (!v6)
@@ -161,29 +161,29 @@ LABEL_11:
     v15[0] = kSecClassGenericPassword;
     v14[0] = kSecClass;
     v14[1] = kSecAttrService;
-    v15[1] = [a3 serviceName];
+    v15[1] = [item serviceName];
     v14[2] = kSecAttrAccount;
-    v15[2] = [a3 accountName];
+    v15[2] = [item accountName];
     v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
     v12[0] = kSecAttrAccessible;
     v12[1] = kSecValueData;
-    v13[0] = [a3 accessibilityType];
-    v13[1] = [a3 valueData];
+    v13[0] = [item accessibilityType];
+    v13[1] = [item valueData];
     v8 = SecItemUpdate(v7, [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2]);
     result = v8 == 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v10 = [MBError errorWithCode:1 format:@"SecItemUpdate error: %d", v8];
 LABEL_9:
       v11 = v10;
       result = 0;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v10 = [MBError errorWithCode:1 format:@"SecItemAdd error: %d", v6];
       goto LABEL_9;
@@ -195,13 +195,13 @@ LABEL_9:
   return result;
 }
 
-+ (BOOL)addAllPasswordItems:(id)a3 error:(id *)a4
++ (BOOL)addAllPasswordItems:(id)items error:(id *)error
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -212,10 +212,10 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
-      v10 = [MBKeychain addPasswordItem:*(*(&v12 + 1) + 8 * v9) error:a4];
+      v10 = [MBKeychain addPasswordItem:*(*(&v12 + 1) + 8 * v9) error:error];
       if (!v10)
       {
         break;
@@ -223,7 +223,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;

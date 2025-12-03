@@ -1,12 +1,12 @@
 @interface SFProxHandoffService
 - (SFProxHandoffService)init;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_activated;
 - (void)_cleanup;
-- (void)_completedWithError:(id)a3;
+- (void)_completedWithError:(id)error;
 - (void)_serviceStart;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -83,23 +83,23 @@ LABEL_6:
   self->_serviceState = 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SFProxHandoffService_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  aBlock = a3;
+  aBlock = completion;
   if (gLogCategory_SFProxHandoffService <= 30 && (gLogCategory_SFProxHandoffService != -1 || _LogCategory_Initialize()))
   {
     [SFProxHandoffService _activateWithCompletion:];
@@ -150,15 +150,15 @@ uint64_t __34__SFProxHandoffService_invalidate__block_invoke(uint64_t a1)
   return [v4 _cleanup];
 }
 
-- (void)_completedWithError:(id)a3
+- (void)_completedWithError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     if (gLogCategory_SFProxHandoffService <= 60)
     {
-      v6 = v3;
+      v6 = errorCopy;
       if (gLogCategory_SFProxHandoffService != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
       {
         [SFProxHandoffService _completedWithError:];

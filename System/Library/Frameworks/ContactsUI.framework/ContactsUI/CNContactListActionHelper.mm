@@ -1,29 +1,29 @@
 @interface CNContactListActionHelper
-+ (id)descriptorForRequiredKeysForMultiSelectAction:(BOOL)a3;
++ (id)descriptorForRequiredKeysForMultiSelectAction:(BOOL)action;
 + (id)log;
 - (BOOL)canRemoveFromGroup;
-- (BOOL)canShowContactActionsForContacts:(id)a3;
+- (BOOL)canShowContactActionsForContacts:(id)contacts;
 - (BOOL)canShowDeleteAction;
-- (BOOL)canShowSetAsMyCardActionForContacts:(id)a3;
-- (CNContactListActionHelper)initWithContactStore:(id)a3 environment:(id)a4 contactFormatter:(id)a5 undoManager:(id)a6;
+- (BOOL)canShowSetAsMyCardActionForContacts:(id)contacts;
+- (CNContactListActionHelper)initWithContactStore:(id)store environment:(id)environment contactFormatter:(id)formatter undoManager:(id)manager;
 - (CNContactListActionHelperDelegate)delegate;
-- (id)actionsForContacts:(id)a3 dataSourceFilter:(id)a4 sourceView:(id)a5;
-- (id)contactActionsMenuForContact:(id)a3;
+- (id)actionsForContacts:(id)contacts dataSourceFilter:(id)filter sourceView:(id)view;
+- (id)contactActionsMenuForContact:(id)contact;
 - (id)presentingViewControllerForActions;
-- (id)searchMenuActionProviderForContacts:(id)a3;
-- (id)trailingSwipeActionsForContact:(id)a3 dataSourceFilter:(id)a4;
-- (void)action:(id)a3 presentViewController:(id)a4;
-- (void)actionDidFinish:(id)a3;
-- (void)contactOrbActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)copyContacts:(id)a3;
-- (void)deleteContacts:(id)a3;
-- (void)deleteContacts:(id)a3 dataSourceFilter:(id)a4;
-- (void)mergeContacts:(id)a3;
-- (void)removeContactsFromGroup:(id)a3 withConfirmation:(BOOL)a4;
-- (void)shareContacts:(id)a3 sourceView:(id)a4;
-- (void)updateMeContact:(id)a3;
+- (id)searchMenuActionProviderForContacts:(id)contacts;
+- (id)trailingSwipeActionsForContact:(id)contact dataSourceFilter:(id)filter;
+- (void)action:(id)action presentViewController:(id)controller;
+- (void)actionDidFinish:(id)finish;
+- (void)contactOrbActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)copyContacts:(id)contacts;
+- (void)deleteContacts:(id)contacts;
+- (void)deleteContacts:(id)contacts dataSourceFilter:(id)filter;
+- (void)mergeContacts:(id)contacts;
+- (void)removeContactsFromGroup:(id)group withConfirmation:(BOOL)confirmation;
+- (void)shareContacts:(id)contacts sourceView:(id)view;
+- (void)updateMeContact:(id)contact;
 - (void)willDismissMenu;
-- (void)willDisplayMenuWithContextMenuInteraction:(id)a3;
+- (void)willDisplayMenuWithContextMenuInteraction:(id)interaction;
 @end
 
 @implementation CNContactListActionHelper
@@ -35,33 +35,33 @@
   return WeakRetained;
 }
 
-- (void)contactOrbActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactOrbActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CNContactListActionHelper *)self actionMenuHelper];
+  menuCopy = menu;
+  actionMenuHelper = [(CNContactListActionHelper *)self actionMenuHelper];
 
-  if (v6)
+  if (actionMenuHelper)
   {
-    v7 = [(CNContactListActionHelper *)self actionMenuHelper];
-    v8 = [(CNContactListActionHelper *)self delegate];
-    v9 = [v8 contextMenuInteraction];
-    [v7 updateWithMenuItems:v5 contextMenuInteraction:v9];
+    actionMenuHelper2 = [(CNContactListActionHelper *)self actionMenuHelper];
+    delegate = [(CNContactListActionHelper *)self delegate];
+    contextMenuInteraction = [delegate contextMenuInteraction];
+    [actionMenuHelper2 updateWithMenuItems:menuCopy contextMenuInteraction:contextMenuInteraction];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [(CNContactListActionHelper *)self delegate];
+  delegate2 = [(CNContactListActionHelper *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v7 = [(CNContactListActionHelper *)self contactActionsMenuFromItems:v5];
-    v12 = [(CNContactListActionHelper *)self delegate];
-    v14[0] = v7;
+    actionMenuHelper2 = [(CNContactListActionHelper *)self contactActionsMenuFromItems:menuCopy];
+    delegate3 = [(CNContactListActionHelper *)self delegate];
+    v14[0] = actionMenuHelper2;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    [v12 listActionHelper:self didUpdateWithMenu:v13];
+    [delegate3 listActionHelper:self didUpdateWithMenu:v13];
 
     goto LABEL_5;
   }
@@ -71,33 +71,33 @@ LABEL_6:
 
 - (id)presentingViewControllerForActions
 {
-  v2 = [(CNContactListActionHelper *)self delegate];
-  v3 = [v2 presentingViewControllerForActions];
+  delegate = [(CNContactListActionHelper *)self delegate];
+  presentingViewControllerForActions = [delegate presentingViewControllerForActions];
 
-  return v3;
+  return presentingViewControllerForActions;
 }
 
-- (void)actionDidFinish:(id)a3
+- (void)actionDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CNContactListActionHelper *)self delegate];
-  [v5 actionDidFinish:v4];
+  finishCopy = finish;
+  delegate = [(CNContactListActionHelper *)self delegate];
+  [delegate actionDidFinish:finishCopy];
 }
 
-- (void)action:(id)a3 presentViewController:(id)a4
+- (void)action:(id)action presentViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactListActionHelper *)self delegate];
-  [v8 action:v7 presentViewController:v6];
+  controllerCopy = controller;
+  actionCopy = action;
+  delegate = [(CNContactListActionHelper *)self delegate];
+  [delegate action:actionCopy presentViewController:controllerCopy];
 }
 
-- (BOOL)canShowContactActionsForContacts:(id)a3
+- (BOOL)canShowContactActionsForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if ([(CNContactListActionHelper *)self includesContactOrbActions])
   {
-    v5 = [v4 count] == 1;
+    v5 = [contactsCopy count] == 1;
   }
 
   else
@@ -108,38 +108,38 @@ LABEL_6:
   return v5;
 }
 
-- (id)contactActionsMenuForContact:(id)a3
+- (id)contactActionsMenuForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [[CNContactOrbActionsController alloc] initWithContact:v4];
+  contactCopy = contact;
+  v5 = [[CNContactOrbActionsController alloc] initWithContact:contactCopy];
 
   [(CNContactListActionHelper *)self setContactActionsController:v5];
-  v6 = [(CNContactListActionHelper *)self contactActionsController];
+  contactActionsController = [(CNContactListActionHelper *)self contactActionsController];
 
-  if (v6)
+  if (contactActionsController)
   {
-    v7 = [(CNContactListActionHelper *)self contactActionsController];
-    [v7 setDelegate:self];
+    contactActionsController2 = [(CNContactListActionHelper *)self contactActionsController];
+    [contactActionsController2 setDelegate:self];
 
-    v8 = [(CNContactListActionHelper *)self contactActionsController];
-    v6 = [v8 currentAvailableMenuItems];
+    contactActionsController3 = [(CNContactListActionHelper *)self contactActionsController];
+    contactActionsController = [contactActionsController3 currentAvailableMenuItems];
   }
 
-  v9 = [(CNContactListActionHelper *)self contactActionsMenuFromItems:v6];
+  v9 = [(CNContactListActionHelper *)self contactActionsMenuFromItems:contactActionsController];
 
   return v9;
 }
 
-- (void)copyContacts:(id)a3
+- (void)copyContacts:(id)contacts
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__CNContactListActionHelper_copyContacts___block_invoke;
   v5[3] = &unk_1E74E78A8;
   v5[4] = self;
-  v3 = [a3 _cn_map:v5];
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v4 setItemProviders:v3];
+  v3 = [contacts _cn_map:v5];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setItemProviders:v3];
 }
 
 id __42__CNContactListActionHelper_copyContacts___block_invoke(uint64_t a1, void *a2)
@@ -157,14 +157,14 @@ id __42__CNContactListActionHelper_copyContacts___block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (BOOL)canShowSetAsMyCardActionForContacts:(id)a3
+- (BOOL)canShowSetAsMyCardActionForContacts:(id)contacts
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-    v6 = [v5 isMeContact:v4] ^ 1;
+    firstObject = [contactsCopy firstObject];
+    unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+    v6 = [unifiedMeContactMonitor isMeContact:firstObject] ^ 1;
   }
 
   else
@@ -175,64 +175,64 @@ id __42__CNContactListActionHelper_copyContacts___block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (void)updateMeContact:(id)a3
+- (void)updateMeContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = [CNContactListSetMyCardAction alloc];
-  v6 = [(CNContactListActionHelper *)self actionConfiguration];
-  v8 = [(CNContactListSetMyCardAction *)v5 initWithContact:v4 configuration:v6];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  v8 = [(CNContactListSetMyCardAction *)v5 initWithContact:contactCopy configuration:actionConfiguration];
 
   [(CNContactListAction *)v8 setDelegate:self];
-  v7 = [(CNContactListActionHelper *)self actionExecutor];
-  [v7 executeUndoableAction:v8];
+  actionExecutor = [(CNContactListActionHelper *)self actionExecutor];
+  [actionExecutor executeUndoableAction:v8];
 }
 
-- (void)mergeContacts:(id)a3
+- (void)mergeContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [CNContactListMergeAction alloc];
-  v6 = [(CNContactListActionHelper *)self actionConfiguration];
-  v8 = [(CNContactListAction *)v5 initWithContacts:v4 configuration:v6];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  v8 = [(CNContactListAction *)v5 initWithContacts:contactsCopy configuration:actionConfiguration];
 
   [(CNContactListAction *)v8 setDelegate:self];
-  v7 = [(CNContactListActionHelper *)self actionExecutor];
-  [v7 executeUndoableAction:v8];
+  actionExecutor = [(CNContactListActionHelper *)self actionExecutor];
+  [actionExecutor executeUndoableAction:v8];
 }
 
-- (void)deleteContacts:(id)a3 dataSourceFilter:(id)a4
+- (void)deleteContacts:(id)contacts dataSourceFilter:(id)filter
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(CNContactListActionHelper *)self actionConfiguration];
-  [v7 setContactStoreFilter:v6];
+  filterCopy = filter;
+  contactsCopy = contacts;
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  [actionConfiguration setContactStoreFilter:filterCopy];
 
-  [(CNContactListActionHelper *)self deleteContacts:v8];
+  [(CNContactListActionHelper *)self deleteContacts:contactsCopy];
 }
 
-- (void)deleteContacts:(id)a3
+- (void)deleteContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [CNContactListDeleteContactsAction alloc];
-  v6 = [(CNContactListActionHelper *)self actionConfiguration];
-  v8 = [(CNContactListDeleteContactsAction *)v5 initWithContacts:v4 configuration:v6];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  v8 = [(CNContactListDeleteContactsAction *)v5 initWithContacts:contactsCopy configuration:actionConfiguration];
 
   [(CNContactListAction *)v8 setDelegate:self];
-  v7 = [(CNContactListActionHelper *)self actionExecutor];
-  [v7 executeUndoableAction:v8];
+  actionExecutor = [(CNContactListActionHelper *)self actionExecutor];
+  [actionExecutor executeUndoableAction:v8];
 }
 
 - (BOOL)canShowDeleteAction
 {
-  v2 = self;
-  v3 = [(CNContactListActionHelper *)self contacts];
+  selfCopy = self;
+  contacts = [(CNContactListActionHelper *)self contacts];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__CNContactListActionHelper_canShowDeleteAction__block_invoke;
   v5[3] = &unk_1E74E7880;
-  v5[4] = v2;
-  LOBYTE(v2) = [v3 _cn_any:v5];
+  v5[4] = selfCopy;
+  LOBYTE(selfCopy) = [contacts _cn_any:v5];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 uint64_t __48__CNContactListActionHelper_canShowDeleteAction__block_invoke(uint64_t a1, void *a2)
@@ -247,15 +247,15 @@ uint64_t __48__CNContactListActionHelper_canShowDeleteAction__block_invoke(uint6
   return v7;
 }
 
-- (void)shareContacts:(id)a3 sourceView:(id)a4
+- (void)shareContacts:(id)contacts sourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[CNContactListShareContactsAction alloc] initWithContacts:v7 sourceView:v6];
+  viewCopy = view;
+  contactsCopy = contacts;
+  v9 = [[CNContactListShareContactsAction alloc] initWithContacts:contactsCopy sourceView:viewCopy];
 
   [(CNContactListShareContactsAction *)v9 setDelegate:self];
-  v8 = [(CNContactListActionHelper *)self actionExecutor];
-  [v8 executeAction:v9];
+  actionExecutor = [(CNContactListActionHelper *)self actionExecutor];
+  [actionExecutor executeAction:v9];
 }
 
 - (BOOL)canRemoveFromGroup
@@ -265,14 +265,14 @@ uint64_t __48__CNContactListActionHelper_canShowDeleteAction__block_invoke(uint6
     return 0;
   }
 
-  v3 = [(CNContactListActionHelper *)self actionConfiguration];
-  v4 = [v3 contactStoreFilter];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  contactStoreFilter = [actionConfiguration contactStoreFilter];
 
-  v5 = [v4 groupIdentifiers];
-  if ([v5 count] == 1)
+  groupIdentifiers = [contactStoreFilter groupIdentifiers];
+  if ([groupIdentifiers count] == 1)
   {
-    v6 = [v4 containerIdentifiers];
-    v7 = [v6 count] == 0;
+    containerIdentifiers = [contactStoreFilter containerIdentifiers];
+    v7 = [containerIdentifiers count] == 0;
   }
 
   else
@@ -283,23 +283,23 @@ uint64_t __48__CNContactListActionHelper_canShowDeleteAction__block_invoke(uint6
   return v7;
 }
 
-- (void)removeContactsFromGroup:(id)a3 withConfirmation:(BOOL)a4
+- (void)removeContactsFromGroup:(id)group withConfirmation:(BOOL)confirmation
 {
-  v4 = a4;
-  v6 = a3;
+  confirmationCopy = confirmation;
+  groupCopy = group;
   v7 = [CNContactListRemoveContactsFromGroupAction alloc];
-  v8 = [(CNContactListActionHelper *)self actionConfiguration];
-  v10 = [(CNContactListRemoveContactsFromGroupAction *)v7 initWithContacts:v6 configuration:v8 withConfirmation:v4];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  v10 = [(CNContactListRemoveContactsFromGroupAction *)v7 initWithContacts:groupCopy configuration:actionConfiguration withConfirmation:confirmationCopy];
 
   [(CNContactListAction *)v10 setDelegate:self];
-  v9 = [(CNContactListActionHelper *)self actionExecutor];
-  [v9 executeUndoableAction:v10];
+  actionExecutor = [(CNContactListActionHelper *)self actionExecutor];
+  [actionExecutor executeUndoableAction:v10];
 }
 
-- (id)trailingSwipeActionsForContact:(id)a3 dataSourceFilter:(id)a4
+- (id)trailingSwipeActionsForContact:(id)contact dataSourceFilter:(id)filter
 {
-  v6 = a3;
-  if (v6 && (v7 = a4, -[CNContactListActionHelper actionConfiguration](self, "actionConfiguration"), v8 = objc_claimAutoreleasedReturnValue(), [v8 setContactStoreFilter:v7], v7, v8, -[CNContactListActionHelper canRemoveFromGroup](self, "canRemoveFromGroup")))
+  contactCopy = contact;
+  if (contactCopy && (v7 = filter, -[CNContactListActionHelper actionConfiguration](self, "actionConfiguration"), v8 = objc_claimAutoreleasedReturnValue(), [v8 setContactStoreFilter:v7], v7, v8, -[CNContactListActionHelper canRemoveFromGroup](self, "canRemoveFromGroup")))
   {
     v9 = CNContactsUIBundle();
     v10 = [v9 localizedStringForKey:@"LIST_SWIPE_ACTION_REMOVE_FROM_GROUP" value:&stru_1F0CE7398 table:@"Localized"];
@@ -309,10 +309,10 @@ uint64_t __48__CNContactListActionHelper_canShowDeleteAction__block_invoke(uint6
     v16 = 3221225472;
     v17 = __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFilter___block_invoke;
     v18 = &unk_1E74E7858;
-    v19 = self;
-    v20 = v6;
+    selfCopy = self;
+    v20 = contactCopy;
     v12 = [v11 contextualActionWithStyle:1 title:v10 handler:&v15];
-    v13 = [MEMORY[0x1E695E0F0] arrayByAddingObject:{v12, v15, v16, v17, v18, v19}];
+    v13 = [MEMORY[0x1E695E0F0] arrayByAddingObject:{v12, v15, v16, v17, v18, selfCopy}];
   }
 
   else
@@ -336,23 +336,23 @@ void __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFi
   v6[2](v6, 1);
 }
 
-- (id)actionsForContacts:(id)a3 dataSourceFilter:(id)a4 sourceView:(id)a5
+- (id)actionsForContacts:(id)contacts dataSourceFilter:(id)filter sourceView:(id)view
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v70 = a5;
-  v9 = a4;
-  [(CNContactListActionHelper *)self setContacts:v8];
-  v10 = [(CNContactListActionHelper *)self actionConfiguration];
-  [v10 setContactStoreFilter:v9];
+  contactsCopy = contacts;
+  viewCopy = view;
+  filterCopy = filter;
+  [(CNContactListActionHelper *)self setContacts:contactsCopy];
+  actionConfiguration = [(CNContactListActionHelper *)self actionConfiguration];
+  [actionConfiguration setContactStoreFilter:filterCopy];
 
-  if ([(CNContactListActionHelper *)self canShowContactActionsForContacts:v8])
+  if ([(CNContactListActionHelper *)self canShowContactActionsForContacts:contactsCopy])
   {
     objc_opt_class();
-    v11 = [v8 firstObject];
+    firstObject = [contactsCopy firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = firstObject;
     }
 
     else
@@ -373,9 +373,9 @@ void __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFi
       v16 = [objc_opt_class() log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v68 = [v8 firstObject];
+        firstObject2 = [contactsCopy firstObject];
         *buf = 138412290;
-        v89 = v68;
+        v89 = firstObject2;
         _os_log_error_impl(&dword_199A75000, v16, OS_LOG_TYPE_ERROR, "Attempted to orb non-contact: %@", buf, 0xCu);
       }
 
@@ -398,7 +398,7 @@ void __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFi
   v85[2] = __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceView___block_invoke;
   v85[3] = &unk_1E74E7808;
   v85[4] = self;
-  v21 = v8;
+  v21 = contactsCopy;
   v86 = v21;
   v72 = v18;
   v22 = [v19 actionWithTitle:v18 image:v20 identifier:0 handler:v85];
@@ -415,7 +415,7 @@ void __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFi
   v82[4] = self;
   v27 = v21;
   v83 = v27;
-  v28 = v70;
+  v28 = viewCopy;
   v84 = v28;
   v71 = v24;
   v29 = [v25 actionWithTitle:v24 image:v26 identifier:0 handler:v82];
@@ -470,7 +470,7 @@ void __77__CNContactListActionHelper_trailingSwipeActionsForContact_dataSourceFi
       v77[2] = __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceView___block_invoke_4;
       v77[3] = &unk_1E74E7808;
       v78 = v27;
-      v79 = self;
+      selfCopy = self;
       v48 = [v46 actionWithTitle:v45 image:v47 identifier:0 handler:v77];
 
       v49 = [v41 arrayByAddingObject:v48];
@@ -558,28 +558,28 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
   [*(a1 + 40) updateMeContact:v2];
 }
 
-- (void)willDisplayMenuWithContextMenuInteraction:(id)a3
+- (void)willDisplayMenuWithContextMenuInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(CNContactListActionHelper *)self actionMenuHelper];
-  [v5 willDisplayMenuWithContextMenuInteraction:v4];
+  interactionCopy = interaction;
+  actionMenuHelper = [(CNContactListActionHelper *)self actionMenuHelper];
+  [actionMenuHelper willDisplayMenuWithContextMenuInteraction:interactionCopy];
 }
 
 - (void)willDismissMenu
 {
-  v2 = [(CNContactListActionHelper *)self actionMenuHelper];
-  [v2 willDismissMenu];
+  actionMenuHelper = [(CNContactListActionHelper *)self actionMenuHelper];
+  [actionMenuHelper willDismissMenu];
 }
 
-- (id)searchMenuActionProviderForContacts:(id)a3
+- (id)searchMenuActionProviderForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   objc_opt_class();
-  v5 = [v4 firstObject];
+  firstObject = [contactsCopy firstObject];
 
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
@@ -601,27 +601,27 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
     v10 = [[CNContactOrbActionsController alloc] initWithContact:v7];
     [(CNContactListActionHelper *)self setContactActionsController:v10];
 
-    v11 = [(CNContactListActionHelper *)self contactActionsController];
+    contactActionsController = [(CNContactListActionHelper *)self contactActionsController];
 
-    if (v11)
+    if (contactActionsController)
     {
-      v12 = [(CNContactListActionHelper *)self contactActionsController];
-      [v12 setDelegate:self];
+      contactActionsController2 = [(CNContactListActionHelper *)self contactActionsController];
+      [contactActionsController2 setDelegate:self];
 
-      v13 = [(CNContactListActionHelper *)self contactActionsController];
-      v14 = [v13 currentAvailableMenuItems];
+      contactActionsController3 = [(CNContactListActionHelper *)self contactActionsController];
+      currentAvailableMenuItems = [contactActionsController3 currentAvailableMenuItems];
 
-      if ([v14 count])
+      if ([currentAvailableMenuItems count])
       {
-        v15 = [(CNContactListActionHelper *)self actionMenuHelper];
-        v16 = [(CNContactListActionHelper *)self delegate];
-        v17 = [v16 contextMenuInteraction];
-        [v15 updateWithMenuItems:v14 contextMenuInteraction:v17];
+        actionMenuHelper = [(CNContactListActionHelper *)self actionMenuHelper];
+        delegate = [(CNContactListActionHelper *)self delegate];
+        contextMenuInteraction = [delegate contextMenuInteraction];
+        [actionMenuHelper updateWithMenuItems:currentAvailableMenuItems contextMenuInteraction:contextMenuInteraction];
       }
     }
 
-    v18 = [(CNContactListActionHelper *)self actionMenuHelper];
-    v19 = [v18 configurationActionProviderWithActionBlock:&__block_literal_global_56_66769];
+    actionMenuHelper2 = [(CNContactListActionHelper *)self actionMenuHelper];
+    v19 = [actionMenuHelper2 configurationActionProviderWithActionBlock:&__block_literal_global_56_66769];
   }
 
   else
@@ -632,18 +632,18 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
   return v19;
 }
 
-- (CNContactListActionHelper)initWithContactStore:(id)a3 environment:(id)a4 contactFormatter:(id)a5 undoManager:(id)a6
+- (CNContactListActionHelper)initWithContactStore:(id)store environment:(id)environment contactFormatter:(id)formatter undoManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  environmentCopy = environment;
+  formatterCopy = formatter;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = CNContactListActionHelper;
   v14 = [(CNContactListActionHelper *)&v22 init];
   if (v14)
   {
-    v15 = [[CNContactListActionExecutor alloc] initWithUndoManager:v13];
+    v15 = [[CNContactListActionExecutor alloc] initWithUndoManager:managerCopy];
     actionExecutor = v14->_actionExecutor;
     v14->_actionExecutor = v15;
 
@@ -651,9 +651,9 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
     actionConfiguration = v14->_actionConfiguration;
     v14->_actionConfiguration = v17;
 
-    [(CNContactListActionConfiguration *)v14->_actionConfiguration setContactStore:v10];
-    [(CNContactListActionConfiguration *)v14->_actionConfiguration setEnvironment:v11];
-    [(CNContactListActionConfiguration *)v14->_actionConfiguration setContactFormatter:v12];
+    [(CNContactListActionConfiguration *)v14->_actionConfiguration setContactStore:storeCopy];
+    [(CNContactListActionConfiguration *)v14->_actionConfiguration setEnvironment:environmentCopy];
+    [(CNContactListActionConfiguration *)v14->_actionConfiguration setContactFormatter:formatterCopy];
     v19 = objc_alloc_init(CNContactViewCache);
     [(CNContactListActionConfiguration *)v14->_actionConfiguration setContactViewCache:v19];
 
@@ -663,9 +663,9 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
   return v14;
 }
 
-+ (id)descriptorForRequiredKeysForMultiSelectAction:(BOOL)a3
++ (id)descriptorForRequiredKeysForMultiSelectAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CD58];
   v5 = +[CNContactListDeleteContactsAction descriptorForRequiredKeys];
@@ -677,7 +677,7 @@ void __76__CNContactListActionHelper_actionsForContacts_dataSourceFilter_sourceV
   v18[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
-  if (v3)
+  if (actionCopy)
   {
     v11 = +[CNContactListMergeAction descriptorForRequiredKeys];
     v12 = [v10 arrayByAddingObject:v11];

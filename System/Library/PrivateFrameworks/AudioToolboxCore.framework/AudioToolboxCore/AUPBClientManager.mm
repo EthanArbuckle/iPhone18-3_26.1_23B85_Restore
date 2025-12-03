@@ -1,41 +1,41 @@
 @interface AUPBClientManager
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedInstance;
 - (AUPBClientManager)init;
 - (id).cxx_construct;
-- (id)serverFromRef:(OpaqueAUPBServer *)a3;
-- (int)addNewServerListener:(void *)a3 withUserData:(void *)a4;
-- (int)addPropertyListener:(void *)a3 onServer:(OpaqueAUPBServer *)a4 block:(OpaqueAUPB *)a5 property:(unsigned int)a6 withUserData:(void *)a7;
-- (int)removePropertyListener:(void *)a3 onServer:(OpaqueAUPBServer *)a4 block:(OpaqueAUPB *)a5 property:(unsigned int)a6 withUserData:(void *)a7;
-- (int)removePropertyListenersForServer:(OpaqueAUPBServer *)a3;
-- (int)removeServerListener:(void *)a3 withUserData:(void *)a4;
-- (int)setAUProperty:(unsigned int)a3 onServer:(OpaqueAUPBServer *)a4 audioUnit:(OpaqueRemoteAudioUnit *)a5 scope:(unsigned int)a6 element:(unsigned int)a7 withValue:(const void *)a8 size:(unsigned int)a9;
+- (id)serverFromRef:(OpaqueAUPBServer *)ref;
+- (int)addNewServerListener:(void *)listener withUserData:(void *)data;
+- (int)addPropertyListener:(void *)listener onServer:(OpaqueAUPBServer *)server block:(OpaqueAUPB *)block property:(unsigned int)property withUserData:(void *)data;
+- (int)removePropertyListener:(void *)listener onServer:(OpaqueAUPBServer *)server block:(OpaqueAUPB *)block property:(unsigned int)property withUserData:(void *)data;
+- (int)removePropertyListenersForServer:(OpaqueAUPBServer *)server;
+- (int)removeServerListener:(void *)listener withUserData:(void *)data;
+- (int)setAUProperty:(unsigned int)property onServer:(OpaqueAUPBServer *)server audioUnit:(OpaqueRemoteAudioUnit *)unit scope:(unsigned int)scope element:(unsigned int)element withValue:(const void *)value size:(unsigned int)size;
 - (void)dealloc;
 - (void)handleRegistrarCrash;
-- (void)newServerAdded:(id)a3;
+- (void)newServerAdded:(id)added;
 - (void)startRegistarConnection;
 @end
 
 @implementation AUPBClientManager
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 sharedInstance];
+  sharedInstance = [self sharedInstance];
 
-  return v3;
+  return sharedInstance;
 }
 
 + (id)sharedInstance
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (!sSharedInstance)
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___AUPBClientManager;
     sSharedInstance = [objc_msgSendSuper2(&v4 allocWithZone_];
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return sSharedInstance;
 }
 
@@ -91,7 +91,7 @@ intptr_t __85__AUPBClientManager_getAUParameter_onServer_audioUnit_scope_element
   return dispatch_semaphore_signal(v4);
 }
 
-- (int)setAUProperty:(unsigned int)a3 onServer:(OpaqueAUPBServer *)a4 audioUnit:(OpaqueRemoteAudioUnit *)a5 scope:(unsigned int)a6 element:(unsigned int)a7 withValue:(const void *)a8 size:(unsigned int)a9
+- (int)setAUProperty:(unsigned int)property onServer:(OpaqueAUPBServer *)server audioUnit:(OpaqueRemoteAudioUnit *)unit scope:(unsigned int)scope element:(unsigned int)element withValue:(const void *)value size:(unsigned int)size
 {
   v34 = *MEMORY[0x1E69E9840];
   if (!self->mConnectionAcknowledged)
@@ -100,7 +100,7 @@ intptr_t __85__AUPBClientManager_getAUParameter_onServer_audioUnit_scope_element
     goto LABEL_12;
   }
 
-  v14 = [(AUPBClientManager *)self serverFromRef:a4];
+  v14 = [(AUPBClientManager *)self serverFromRef:server];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -116,15 +116,15 @@ LABEL_7:
       v24 = 1024;
       v25 = 684;
       v26 = 1024;
-      v27 = a3;
+      propertyCopy = property;
       v28[0] = 2048;
-      *&v28[1] = a4;
+      *&v28[1] = server;
       v28[5] = 2048;
-      v29 = a5;
+      unitCopy = unit;
       v30 = 1024;
-      v31 = a6;
+      scopeCopy = scope;
       v32 = 1024;
-      v33 = a7;
+      elementCopy = element;
       _os_log_impl(&dword_18F5DF000, v15, OS_LOG_TYPE_DEBUG, "%25s:%-5d SetAUProp: property=%d server=%p au=%p scope=%d element=%d\n", buf, 0x38u);
     }
 
@@ -405,13 +405,13 @@ LABEL_27:
   return dispatch_semaphore_signal(v21);
 }
 
-- (int)removePropertyListenersForServer:(OpaqueAUPBServer *)a3
+- (int)removePropertyListenersForServer:(OpaqueAUPBServer *)server
 {
   begin = self->mPropertyListeners.__begin_;
   end = self->mPropertyListeners.__end_;
   while (begin != end)
   {
-    if (*begin == a3)
+    if (*begin == server)
     {
       v7 = end - (begin + 40);
       if (end != (begin + 40))
@@ -432,7 +432,7 @@ LABEL_27:
   return 0;
 }
 
-- (int)removePropertyListener:(void *)a3 onServer:(OpaqueAUPBServer *)a4 block:(OpaqueAUPB *)a5 property:(unsigned int)a6 withUserData:(void *)a7
+- (int)removePropertyListener:(void *)listener onServer:(OpaqueAUPBServer *)server block:(OpaqueAUPB *)block property:(unsigned int)property withUserData:(void *)data
 {
   v36 = *MEMORY[0x1E69E9840];
   begin = self->mPropertyListeners.__begin_;
@@ -445,7 +445,7 @@ LABEL_8:
 
   else
   {
-    while (*(begin + 3) != a3 || *begin != a4 || *(begin + 1) != a5 || *(begin + 4) != a6 || *(begin + 4) != a7)
+    while (*(begin + 3) != listener || *begin != server || *(begin + 1) != block || *(begin + 4) != property || *(begin + 4) != data)
     {
       begin = (begin + 40);
       if (begin == end)
@@ -485,15 +485,15 @@ LABEL_8:
     v22 = 1024;
     v23 = 478;
     v24 = 2048;
-    v25 = a3;
+    listenerCopy = listener;
     v26 = 2048;
-    v27 = a4;
+    serverCopy = server;
     v28 = 2048;
-    v29 = a5;
+    blockCopy = block;
     v30 = 1024;
-    v31 = a6;
+    propertyCopy = property;
     v32 = 2048;
-    v33 = a7;
+    dataCopy = data;
     v34 = 1024;
     v35 = v15;
     _os_log_impl(&dword_18F5DF000, v16, OS_LOG_TYPE_DEBUG, "%25s:%-5d RemovePBPropListener: proc=%p, server=%p block=%p property=%d userData=%p result=%d\n", &v20, 0x46u);
@@ -504,11 +504,11 @@ LABEL_15:
   return v15;
 }
 
-- (int)addPropertyListener:(void *)a3 onServer:(OpaqueAUPBServer *)a4 block:(OpaqueAUPB *)a5 property:(unsigned int)a6 withUserData:(void *)a7
+- (int)addPropertyListener:(void *)listener onServer:(OpaqueAUPBServer *)server block:(OpaqueAUPB *)block property:(unsigned int)property withUserData:(void *)data
 {
   v44 = *MEMORY[0x1E69E9840];
   v12 = -50;
-  if (a3 && a4)
+  if (listener && server)
   {
     end = self->mPropertyListeners.__end_;
     cap = self->mPropertyListeners.__cap_;
@@ -550,12 +550,12 @@ LABEL_15:
       }
 
       v23 = 40 * v19;
-      *v23 = a4;
-      *(v23 + 8) = a5;
-      *(v23 + 16) = a6;
+      *v23 = server;
+      *(v23 + 8) = block;
+      *(v23 + 16) = property;
       *(v23 + 20) = 0;
-      *(v23 + 24) = a3;
-      *(v23 + 32) = a7;
+      *(v23 + 24) = listener;
+      *(v23 + 32) = data;
       v16 = (40 * v19 + 40);
       v24 = (40 * v19 - v18);
       memcpy((v23 - v18), begin, v18);
@@ -570,12 +570,12 @@ LABEL_15:
 
     else
     {
-      *end = a4;
-      *(end + 1) = a5;
-      *(end + 2) = a6;
+      *end = server;
+      *(end + 1) = block;
+      *(end + 2) = property;
       v16 = (end + 40);
-      *(end + 3) = a3;
-      *(end + 4) = a7;
+      *(end + 3) = listener;
+      *(end + 4) = data;
     }
 
     v12 = 0;
@@ -603,15 +603,15 @@ LABEL_15:
     v30 = 1024;
     v31 = 463;
     v32 = 2048;
-    v33 = a3;
+    listenerCopy = listener;
     v34 = 2048;
-    v35 = a4;
+    serverCopy = server;
     v36 = 2048;
-    v37 = a5;
+    blockCopy = block;
     v38 = 1024;
-    v39 = a6;
+    propertyCopy = property;
     v40 = 2048;
-    v41 = a7;
+    dataCopy = data;
     v42 = 1024;
     v43 = v12;
     _os_log_impl(&dword_18F5DF000, v25, OS_LOG_TYPE_DEBUG, "%25s:%-5d AddPBPropListener: proc=%p, server=%p block=%p property=%d userData=%p result=%d\n", &v28, 0x46u);
@@ -622,16 +622,16 @@ LABEL_23:
   return v12;
 }
 
-- (int)removeServerListener:(void *)a3 withUserData:(void *)a4
+- (int)removeServerListener:(void *)listener withUserData:(void *)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (listener)
   {
     begin = self->mNewServerListeners.__begin_;
     end = self->mNewServerListeners.__end_;
     while (begin != end)
     {
-      if (*begin == a3 && *(begin + 1) == a4)
+      if (*begin == listener && *(begin + 1) == data)
       {
         v13 = end - (begin + 16);
         if (end != (begin + 16))
@@ -671,9 +671,9 @@ LABEL_8:
     v16 = 1024;
     v17 = 450;
     v18 = 2048;
-    v19 = a3;
+    listenerCopy = listener;
     v20 = 2048;
-    v21 = a4;
+    dataCopy = data;
     v22 = 1024;
     v23 = v9;
     _os_log_impl(&dword_18F5DF000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d RemoveServerListener: proc=%p, userData=%p, result=%d\n", &v14, 0x2Cu);
@@ -684,10 +684,10 @@ LABEL_14:
   return v9;
 }
 
-- (int)addNewServerListener:(void *)a3 withUserData:(void *)a4
+- (int)addNewServerListener:(void *)listener withUserData:(void *)data
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (listener)
   {
     end = self->mNewServerListeners.__end_;
     cap = self->mNewServerListeners.__cap_;
@@ -729,8 +729,8 @@ LABEL_14:
       }
 
       v17 = (16 * v13);
-      *v17 = a3;
-      v17[1] = a4;
+      *v17 = listener;
+      v17[1] = data;
       v9 = (16 * v13 + 16);
       memcpy(0, begin, v12);
       self->mNewServerListeners.__begin_ = 0;
@@ -744,8 +744,8 @@ LABEL_14:
 
     else
     {
-      *end = a3;
-      *(end + 1) = a4;
+      *end = listener;
+      *(end + 1) = data;
       v9 = (end + 16);
     }
 
@@ -757,8 +757,8 @@ LABEL_14:
     block[2] = __55__AUPBClientManager_addNewServerListener_withUserData___block_invoke;
     block[3] = &unk_1E72C1738;
     block[4] = v18;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = listener;
+    block[6] = data;
     dispatch_async(mTouchServersQueue, block);
     v10 = 0;
   }
@@ -789,9 +789,9 @@ LABEL_14:
     v26 = 1024;
     v27 = 432;
     v28 = 2048;
-    v29 = a3;
+    listenerCopy = listener;
     v30 = 2048;
-    v31 = a4;
+    dataCopy = data;
     v32 = 1024;
     v33 = v10;
     _os_log_impl(&dword_18F5DF000, v20, OS_LOG_TYPE_DEBUG, "%25s:%-5d AddServerListener: proc=%p, userData=%p, result=%d\n", buf, 0x2Cu);
@@ -836,7 +836,7 @@ void __55__AUPBClientManager_addNewServerListener_withUserData___block_invoke(ui
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)serverFromRef:(OpaqueAUPBServer *)a3
+- (id)serverFromRef:(OpaqueAUPBServer *)ref
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -859,7 +859,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([v9 ref] == a3)
+      if ([v9 ref] == ref)
       {
         break;
       }
@@ -906,11 +906,11 @@ uint64_t __73__AUPBClientManager_processingBlock_propertiesChanged_withQualifier
   return v10(v4, v5, v6, v7, v3, v8);
 }
 
-- (void)newServerAdded:(id)a3
+- (void)newServerAdded:(id)added
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(RemoteAUPBServer);
-  -[RemoteAUPBServer setXpcConnection:](v5, "setXpcConnection:", [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:a3]);
+  -[RemoteAUPBServer setXpcConnection:](v5, "setXpcConnection:", [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:added]);
   -[NSXPCConnection setRemoteObjectInterface:](-[RemoteAUPBServer xpcConnection](v5, "xpcConnection"), "setRemoteObjectInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F034FCF0]);
   [(RemoteAUPBServer *)v5 setProxyInterface:[(NSXPCConnection *)[(RemoteAUPBServer *)v5 xpcConnection] remoteObjectProxy]];
   -[NSXPCConnection setExportedInterface:](-[RemoteAUPBServer xpcConnection](v5, "xpcConnection"), "setExportedInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0353338]);
@@ -946,7 +946,7 @@ uint64_t __73__AUPBClientManager_processingBlock_propertiesChanged_withQualifier
 LABEL_7:
   objc_initWeak(buf, v5);
   objc_initWeak(&location, self);
-  v8 = [(RemoteAUPBServer *)v5 xpcConnection];
+  xpcConnection = [(RemoteAUPBServer *)v5 xpcConnection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __36__AUPBClientManager_newServerAdded___block_invoke;
@@ -954,8 +954,8 @@ LABEL_7:
   objc_copyWeak(&v17, &location);
   objc_copyWeak(v18, buf);
   v18[1] = mServerRefCounter;
-  [(NSXPCConnection *)v8 setInvalidationHandler:v16];
-  v9 = [(RemoteAUPBServer *)v5 xpcConnection];
+  [(NSXPCConnection *)xpcConnection setInvalidationHandler:v16];
+  xpcConnection2 = [(RemoteAUPBServer *)v5 xpcConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __36__AUPBClientManager_newServerAdded___block_invoke_127;
@@ -963,7 +963,7 @@ LABEL_7:
   objc_copyWeak(&v14, &location);
   objc_copyWeak(v15, buf);
   v15[1] = mServerRefCounter;
-  [(NSXPCConnection *)v9 setInterruptionHandler:v13];
+  [(NSXPCConnection *)xpcConnection2 setInterruptionHandler:v13];
   mTouchServersQueue = self->mTouchServersQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;

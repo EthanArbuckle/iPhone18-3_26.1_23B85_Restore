@@ -1,73 +1,73 @@
 @interface _INPBSearchForTimersIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForTimersIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForTimersIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsState:(id)state;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setState:(int)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasState:(BOOL)state;
+- (void)setHasType:(BOOL)type;
+- (void)setState:(int)state;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForTimersIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSearchForTimersIntent *)self hasDuration])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBSearchForTimersIntent *)self duration];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"duration"];
   }
 
-  v6 = [(_INPBSearchForTimersIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchForTimersIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBSearchForTimersIntent *)self label];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"label"];
+  label = [(_INPBSearchForTimersIntent *)self label];
+  dictionaryRepresentation2 = [label dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"label"];
 
   if ([(_INPBSearchForTimersIntent *)self hasState])
   {
-    v10 = [(_INPBSearchForTimersIntent *)self state];
-    if (v10 >= 3)
+    state = [(_INPBSearchForTimersIntent *)self state];
+    if (state >= 3)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", state];
     }
 
     else
     {
-      v11 = off_1E7285C98[v10];
+      v11 = off_1E7285C98[state];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"state"];
+    [dictionary setObject:v11 forKeyedSubscript:@"state"];
   }
 
   if ([(_INPBSearchForTimersIntent *)self hasType])
   {
-    v12 = [(_INPBSearchForTimersIntent *)self type];
-    if (v12 >= 3)
+    type = [(_INPBSearchForTimersIntent *)self type];
+    if (type >= 3)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v13 = off_1E7285CB0[v12];
+      v13 = off_1E7285CB0[type];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"type"];
+    [dictionary setObject:v13 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -130,26 +130,26 @@
   return v9 ^ v8 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBSearchForTimersIntent *)self hasDuration];
-  if (v5 != [v4 hasDuration])
+  hasDuration = [(_INPBSearchForTimersIntent *)self hasDuration];
+  if (hasDuration != [equalCopy hasDuration])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBSearchForTimersIntent *)self hasDuration])
   {
-    if ([v4 hasDuration])
+    if ([equalCopy hasDuration])
     {
       duration = self->_duration;
-      [v4 duration];
+      [equalCopy duration];
       if (duration != v7)
       {
         goto LABEL_16;
@@ -157,20 +157,20 @@
     }
   }
 
-  v8 = [(_INPBSearchForTimersIntent *)self intentMetadata];
-  v9 = [v4 intentMetadata];
-  if ((v8 != 0) == (v9 == 0))
+  intentMetadata = [(_INPBSearchForTimersIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_15;
   }
 
-  v10 = [(_INPBSearchForTimersIntent *)self intentMetadata];
-  if (v10)
+  intentMetadata3 = [(_INPBSearchForTimersIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v11 = v10;
-    v12 = [(_INPBSearchForTimersIntent *)self intentMetadata];
-    v13 = [v4 intentMetadata];
-    v14 = [v12 isEqual:v13];
+    v11 = intentMetadata3;
+    intentMetadata4 = [(_INPBSearchForTimersIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v14 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v14)
     {
@@ -182,22 +182,22 @@
   {
   }
 
-  v8 = [(_INPBSearchForTimersIntent *)self label];
-  v9 = [v4 label];
-  if ((v8 != 0) == (v9 == 0))
+  intentMetadata = [(_INPBSearchForTimersIntent *)self label];
+  intentMetadata2 = [equalCopy label];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v15 = [(_INPBSearchForTimersIntent *)self label];
-  if (v15)
+  label = [(_INPBSearchForTimersIntent *)self label];
+  if (label)
   {
-    v16 = v15;
-    v17 = [(_INPBSearchForTimersIntent *)self label];
-    v18 = [v4 label];
-    v19 = [v17 isEqual:v18];
+    v16 = label;
+    label2 = [(_INPBSearchForTimersIntent *)self label];
+    label3 = [equalCopy label];
+    v19 = [label2 isEqual:label3];
 
     if (!v19)
     {
@@ -209,15 +209,15 @@ LABEL_15:
   {
   }
 
-  v22 = [(_INPBSearchForTimersIntent *)self hasState];
-  if (v22 == [v4 hasState])
+  hasState = [(_INPBSearchForTimersIntent *)self hasState];
+  if (hasState == [equalCopy hasState])
   {
-    if (!-[_INPBSearchForTimersIntent hasState](self, "hasState") || ![v4 hasState] || (state = self->_state, state == objc_msgSend(v4, "state")))
+    if (!-[_INPBSearchForTimersIntent hasState](self, "hasState") || ![equalCopy hasState] || (state = self->_state, state == objc_msgSend(equalCopy, "state")))
     {
-      v24 = [(_INPBSearchForTimersIntent *)self hasType];
-      if (v24 == [v4 hasType])
+      hasType = [(_INPBSearchForTimersIntent *)self hasType];
+      if (hasType == [equalCopy hasType])
       {
-        if (!-[_INPBSearchForTimersIntent hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+        if (!-[_INPBSearchForTimersIntent hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
         {
           v20 = 1;
           goto LABEL_17;
@@ -233,7 +233,7 @@ LABEL_17:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForTimersIntent allocWithZone:](_INPBSearchForTimersIntent init];
   if ([(_INPBSearchForTimersIntent *)self hasDuration])
@@ -242,10 +242,10 @@ LABEL_17:
     [(_INPBSearchForTimersIntent *)v5 setDuration:?];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForTimersIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBDataString *)self->_label copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_label copyWithZone:zone];
   [(_INPBSearchForTimersIntent *)v5 setLabel:v7];
 
   if ([(_INPBSearchForTimersIntent *)self hasState])
@@ -261,52 +261,52 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForTimersIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForTimersIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForTimersIntent)initWithCoder:(id)a3
+- (_INPBSearchForTimersIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForTimersIntent *)self initWithData:v6];
+    self = [(_INPBSearchForTimersIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_INPBSearchForTimersIntent *)self hasDuration])
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(_INPBSearchForTimersIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchForTimersIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBSearchForTimersIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForTimersIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBSearchForTimersIntent *)self label];
+  label = [(_INPBSearchForTimersIntent *)self label];
 
-  if (v7)
+  if (label)
   {
-    v8 = [(_INPBSearchForTimersIntent *)self label];
+    label2 = [(_INPBSearchForTimersIntent *)self label];
     PBDataWriterWriteSubmessage();
   }
 
@@ -323,20 +323,20 @@ LABEL_17:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEFAULT_TYPE"])
+  else if ([typeCopy isEqualToString:@"DEFAULT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_TIMER"])
+  else if ([typeCopy isEqualToString:@"SLEEP_TIMER"])
   {
     v4 = 2;
   }
@@ -349,9 +349,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -364,10 +364,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -375,24 +375,24 @@ LABEL_17:
   else
   {
     *&self->_has = has | 4;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_RUNNING"])
+  else if ([stateCopy isEqualToString:@"TIMER_RUNNING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_PAUSED"])
+  else if ([stateCopy isEqualToString:@"TIMER_PAUSED"])
   {
     v4 = 2;
   }
@@ -405,9 +405,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -420,10 +420,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (state == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -431,7 +431,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 2;
-    self->_state = a3;
+    self->_state = state;
   }
 }
 

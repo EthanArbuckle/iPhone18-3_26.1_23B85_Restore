@@ -1,14 +1,14 @@
 @interface ATXAbstractVersionedDatabase
-- (ATXAbstractVersionedDatabase)initWithDbPath:(id)a3;
-- (ATXAbstractVersionedDatabase)initWithDefaultPath:(id)a3;
+- (ATXAbstractVersionedDatabase)initWithDbPath:(id)path;
+- (ATXAbstractVersionedDatabase)initWithDefaultPath:(id)path;
 - (BOOL)_configureDatabase;
 - (BOOL)_initializeTables;
 - (_PASSqliteDatabase)db;
 - (id)createSchema;
-- (int64_t)countRowsOfTable:(id)a3;
+- (int64_t)countRowsOfTable:(id)table;
 - (int64_t)currentSchemaVersion;
 - (void)_disconnectFromDb;
-- (void)_initializeSchemaVersion:(int64_t)a3;
+- (void)_initializeSchemaVersion:(int64_t)version;
 - (void)_runMigration;
 - (void)_startDatabase;
 @end
@@ -29,17 +29,17 @@
   return db;
 }
 
-- (ATXAbstractVersionedDatabase)initWithDefaultPath:(id)a3
+- (ATXAbstractVersionedDatabase)initWithDefaultPath:(id)path
 {
-  v4 = [MEMORY[0x277CEBCB0] appPredictionDirectoryFile:a3];
+  v4 = [MEMORY[0x277CEBCB0] appPredictionDirectoryFile:path];
   v5 = [(ATXAbstractVersionedDatabase *)self initWithDbPath:v4];
 
   return v5;
 }
 
-- (ATXAbstractVersionedDatabase)initWithDbPath:(id)a3
+- (ATXAbstractVersionedDatabase)initWithDbPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if ([MEMORY[0x277D42598] isClassCLocked])
   {
     v6 = __atxlog_handle_default();
@@ -74,7 +74,7 @@
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_path, a3);
+    objc_storeStrong(&v9->_path, path);
   }
 
   return v8;
@@ -100,7 +100,7 @@ void __47__ATXAbstractVersionedDatabase_initWithDbPath___block_invoke(uint64_t a
 - (void)_startDatabase
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_0_21();
   _os_log_error_impl(&dword_2263AA000, v2, OS_LOG_TYPE_ERROR, "Could not open sqlite database at %@: %@", v4, 0x16u);
   v3 = *MEMORY[0x277D85DE8];
@@ -180,8 +180,8 @@ LABEL_11:
 
 - (id)createSchema
 {
-  v2 = [(ATXAbstractVersionedDatabase *)self createCustomSchema];
-  v3 = [v2 arrayByAddingObject:{@"CREATE TABLE IF NOT EXISTS meta (id INTEGER PRIMARY KEY, version INT)"}];
+  createCustomSchema = [(ATXAbstractVersionedDatabase *)self createCustomSchema];
+  v3 = [createCustomSchema arrayByAddingObject:{@"CREATE TABLE IF NOT EXISTS meta (id INTEGER PRIMARY KEY, version INT)"}];
 
   return v3;
 }
@@ -205,14 +205,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)_initializeSchemaVersion:(int64_t)a3
+- (void)_initializeSchemaVersion:(int64_t)version
 {
   db = self->_db;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__ATXAbstractVersionedDatabase__initializeSchemaVersion___block_invoke;
   v4[3] = &__block_descriptor_40_e29_v16__0___PASSqliteStatement_8l;
-  v4[4] = a3;
+  v4[4] = version;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"INSERT OR REPLACE INTO meta (id onPrep:version) VALUES (1 onRow:?)" onError:v4, 0, &__block_literal_global_41_0];
 }
 
@@ -280,8 +280,8 @@ uint64_t __45__ATXAbstractVersionedDatabase__runMigration__block_invoke(uint64_t
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ATXAbstractVersionedDatabase *)self createSchema];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  createSchema = [(ATXAbstractVersionedDatabase *)self createSchema];
+  v4 = [createSchema countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -291,13 +291,13 @@ uint64_t __45__ATXAbstractVersionedDatabase__runMigration__block_invoke(uint64_t
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(createSchema);
         }
 
         [(_PASSqliteDatabase *)self->_db prepAndRunQuery:MEMORY[0x277D85DD0] onPrep:3221225472 onRow:__49__ATXAbstractVersionedDatabase__initializeTables__block_invoke onError:&unk_2785986F0, *(*(&v10 + 1) + 8 * i), &v14];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v4 = [createSchema countByEnumeratingWithState:&v10 objects:v18 count:16];
     }
 
     while (v4);
@@ -324,11 +324,11 @@ uint64_t __49__ATXAbstractVersionedDatabase__initializeTables__block_invoke(uint
   return *v5;
 }
 
-- (int64_t)countRowsOfTable:(id)a3
+- (int64_t)countRowsOfTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v5 = [(ATXAbstractVersionedDatabase *)self db];
-  v6 = [v5 atx_countRowsOfTable:v4];
+  v6 = [v5 atx_countRowsOfTable:tableCopy];
 
   return v6;
 }

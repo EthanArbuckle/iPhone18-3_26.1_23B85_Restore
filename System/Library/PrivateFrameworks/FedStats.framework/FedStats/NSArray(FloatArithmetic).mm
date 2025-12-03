@@ -20,10 +20,10 @@
 
     quot = v4.quot;
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4.quot];
-    v7 = [v3 bytes];
+    bytes = [v3 bytes];
     if (v4.quot)
     {
-      v9 = v7;
+      v9 = bytes;
       do
       {
         v10 = *v9++;
@@ -49,7 +49,7 @@
 - (id)arrayByElementwiseAdd:()FloatArithmetic
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 != [v4 count])
   {
     v18 = MEMORY[0x277CBEAD8];
@@ -64,7 +64,7 @@
     v8 = 0;
     while (1)
     {
-      v9 = [a1 objectAtIndex:v8];
+      v9 = [self objectAtIndex:v8];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -107,13 +107,13 @@ LABEL_7:
 - (id)arrayByScalingWith:()FloatArithmetic
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -124,7 +124,7 @@ LABEL_7:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -142,7 +142,7 @@ LABEL_7:
         [v4 addObject:v14];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);

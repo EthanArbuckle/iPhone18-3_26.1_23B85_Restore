@@ -1,7 +1,7 @@
 @interface ICMediaRedownloadResponse
 - (BOOL)authorized;
 - (BOOL)shouldCancelPurchaseBatch;
-- (ICMediaRedownloadResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4 urlBag:(id)a5;
+- (ICMediaRedownloadResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date urlBag:(id)bag;
 - (ICStoreDialogResponse)dialog;
 - (NSArray)items;
 - (NSError)serverError;
@@ -100,15 +100,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"download-queue-item-count"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (NSError)serverError
@@ -148,15 +148,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"status"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (BOOL)shouldCancelPurchaseBatch
@@ -164,15 +164,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"cancel-purchase-batch"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)authorized
@@ -180,36 +180,36 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"authorized"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (ICMediaRedownloadResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4 urlBag:(id)a5
+- (ICMediaRedownloadResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date urlBag:(id)bag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = ICMediaRedownloadResponse;
   v11 = [(ICMediaRedownloadResponse *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [dateCopy copy];
     requestDate = v11->_requestDate;
     v11->_requestDate = v12;
 
-    v14 = [v8 copy];
+    v14 = [dictionaryCopy copy];
     responseDictionary = v11->_responseDictionary;
     v11->_responseDictionary = v14;
 
-    objc_storeStrong(&v11->_urlBag, a5);
+    objc_storeStrong(&v11->_urlBag, bag);
   }
 
   return v11;

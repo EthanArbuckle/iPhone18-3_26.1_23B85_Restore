@@ -1,9 +1,9 @@
 @interface CallStateObserver
 - (BOOL)getCallIsActiveState;
-- (CallStateObserver)initWithQueue:(queue)a3;
+- (CallStateObserver)initWithQueue:(queue)queue;
 - (void)dealloc;
 - (void)dumpState;
-- (void)handleCallStatusChangedNotification:(id)a3;
+- (void)handleCallStatusChangedNotification:(id)notification;
 - (void)registerForCallIsActiveNotification;
 @end
 
@@ -28,7 +28,7 @@
   return self->fPhoneCallIsActive || self->fVideoCallIsActive;
 }
 
-- (CallStateObserver)initWithQueue:(queue)a3
+- (CallStateObserver)initWithQueue:(queue)queue
 {
   v7.receiver = self;
   v7.super_class = CallStateObserver;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->fQueue.fObj.fObj, *a3.fObj.fObj);
+    objc_storeStrong(&v4->fQueue.fObj.fObj, *queue.fObj.fObj);
     v5->fPhoneCallIsActive = 0;
     v5->fVideoCallIsActive = 0;
     v5->fHasRegisteredForCallStatusChangedNotification = 0;
@@ -74,28 +74,28 @@
   }
 }
 
-- (void)handleCallStatusChangedNotification:(id)a3
+- (void)handleCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy)
   {
-    v6 = [v4 name];
-    if ([v6 isEqualToString:TUCallCenterCallStatusChangedNotification])
+    name = [notificationCopy name];
+    if ([name isEqualToString:TUCallCenterCallStatusChangedNotification])
     {
-      v7 = [v5 object];
-      v8 = v7;
-      if (v7)
+      object = [v5 object];
+      v8 = object;
+      if (object)
       {
-        v9 = [v7 isActive];
+        isActive = [object isActive];
       }
 
       else
       {
-        v9 = 0;
+        isActive = 0;
       }
 
-      self->fPhoneCallIsActive = v9;
+      self->fPhoneCallIsActive = isActive;
       [(CallStateObserver *)self getLogContext];
       v12 = v19;
       ctu::OsLogContext::~OsLogContext(&v17);
@@ -112,7 +112,7 @@
 
     else
     {
-      if (![v6 isEqualToString:TUCallCenterVideoCallStatusChangedNotification])
+      if (![name isEqualToString:TUCallCenterVideoCallStatusChangedNotification])
       {
         [(CallStateObserver *)self getLogContext];
         v12 = v19;
@@ -127,19 +127,19 @@
         goto LABEL_21;
       }
 
-      v10 = [v5 object];
-      v8 = v10;
-      if (v10)
+      object2 = [v5 object];
+      v8 = object2;
+      if (object2)
       {
-        v11 = [v10 isActive];
+        isActive2 = [object2 isActive];
       }
 
       else
       {
-        v11 = 0;
+        isActive2 = 0;
       }
 
-      self->fVideoCallIsActive = v11;
+      self->fVideoCallIsActive = isActive2;
       [(CallStateObserver *)self getLogContext];
       v12 = v19;
       ctu::OsLogContext::~OsLogContext(&v17);
@@ -164,12 +164,12 @@ LABEL_21:
   }
 
   [(CallStateObserver *)self getLogContext];
-  v6 = v19;
+  name = v19;
   ctu::OsLogContext::~OsLogContext(&v17);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
   {
     LOWORD(v17) = 0;
-    _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "handleCallIsActiveStateNotification: has received Nil notification", &v17, 2u);
+    _os_log_error_impl(&_mh_execute_header, name, OS_LOG_TYPE_ERROR, "handleCallIsActiveStateNotification: has received Nil notification", &v17, 2u);
   }
 
 LABEL_22:

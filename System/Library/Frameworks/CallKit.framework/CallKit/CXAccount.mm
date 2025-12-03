@@ -1,15 +1,15 @@
 @interface CXAccount
 + (NSSet)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccount:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccount:(id)account;
 - (CXAccount)init;
-- (CXAccount)initWithCoder:(id)a3;
-- (CXAccount)initWithUUID:(id)a3 description:(id)a4 serviceName:(id)a5 isoCountryCode:(id)a6 handle:(id)a7 shortLabel:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CXAccount)initWithCoder:(id)coder;
+- (CXAccount)initWithUUID:(id)d description:(id)description serviceName:(id)name isoCountryCode:(id)code handle:(id)handle shortLabel:(id)label;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXAccount
@@ -21,22 +21,22 @@
   return 0;
 }
 
-- (CXAccount)initWithUUID:(id)a3 description:(id)a4 serviceName:(id)a5 isoCountryCode:(id)a6 handle:(id)a7 shortLabel:(id)a8
+- (CXAccount)initWithUUID:(id)d description:(id)description serviceName:(id)name isoCountryCode:(id)code handle:(id)handle shortLabel:(id)label
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  dCopy = d;
+  descriptionCopy = description;
+  nameCopy = name;
+  codeCopy = code;
+  handleCopy = handle;
+  labelCopy = label;
   v31.receiver = self;
   v31.super_class = CXAccount;
   v21 = [(CXAccount *)&v31 init];
   if (v21)
   {
-    if (v15)
+    if (dCopy)
     {
-      if (v16)
+      if (descriptionCopy)
       {
         goto LABEL_4;
       }
@@ -45,10 +45,10 @@
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXAccount initWithUUID:description:serviceName:isoCountryCode:handle:shortLabel:]", @"UUID"}];
-      if (v16)
+      if (descriptionCopy)
       {
 LABEL_4:
-        if (v17)
+        if (nameCopy)
         {
           goto LABEL_5;
         }
@@ -58,10 +58,10 @@ LABEL_4:
     }
 
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXAccount initWithUUID:description:serviceName:isoCountryCode:handle:shortLabel:]", @"description"}];
-    if (v17)
+    if (nameCopy)
     {
 LABEL_5:
-      if (v18)
+      if (codeCopy)
       {
         goto LABEL_6;
       }
@@ -71,27 +71,27 @@ LABEL_5:
 
 LABEL_11:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXAccount initWithUUID:description:serviceName:isoCountryCode:handle:shortLabel:]", @"serviceName"}];
-    if (v18)
+    if (codeCopy)
     {
 LABEL_6:
-      if (v20)
+      if (labelCopy)
       {
 LABEL_7:
-        objc_storeStrong(&v21->_UUID, a3);
-        v22 = [v16 copy];
+        objc_storeStrong(&v21->_UUID, d);
+        v22 = [descriptionCopy copy];
         accountDescription = v21->_accountDescription;
         v21->_accountDescription = v22;
 
-        v24 = [v17 copy];
+        v24 = [nameCopy copy];
         serviceName = v21->_serviceName;
         v21->_serviceName = v24;
 
-        v26 = [v18 copy];
+        v26 = [codeCopy copy];
         isoCountryCode = v21->_isoCountryCode;
         v21->_isoCountryCode = v26;
 
-        objc_storeStrong(&v21->_handle, a7);
-        v28 = [v20 copy];
+        objc_storeStrong(&v21->_handle, handle);
+        v28 = [labelCopy copy];
         shortLabel = v21->_shortLabel;
         v21->_shortLabel = v28;
 
@@ -105,7 +105,7 @@ LABEL_13:
 
 LABEL_12:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXAccount initWithUUID:description:serviceName:isoCountryCode:handle:shortLabel:]", @"isoCountryCode"}];
-    if (v20)
+    if (labelCopy)
     {
       goto LABEL_7;
     }
@@ -118,22 +118,22 @@ LABEL_8:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CXAccount *)self UUID];
-  v6 = [(CXAccount *)self accountDescription];
-  v7 = [(CXAccount *)self serviceName];
-  v8 = [(CXAccount *)self isoCountryCode];
-  v9 = [(CXAccount *)self handle];
-  v10 = [v4 initWithUUID:v5 description:v6 serviceName:v7 isoCountryCode:v8 handle:v9];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  uUID = [(CXAccount *)self UUID];
+  accountDescription = [(CXAccount *)self accountDescription];
+  serviceName = [(CXAccount *)self serviceName];
+  isoCountryCode = [(CXAccount *)self isoCountryCode];
+  handle = [(CXAccount *)self handle];
+  v10 = [v4 initWithUUID:uUID description:accountDescription serviceName:serviceName isoCountryCode:isoCountryCode handle:handle];
 
   return v10;
 }
 
-- (CXAccount)initWithCoder:(id)a3
+- (CXAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CXAccount;
   v5 = [(CXAccount *)&v31 init];
@@ -141,37 +141,37 @@ LABEL_8:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_accountDescription);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     accountDescription = v5->_accountDescription;
     v5->_accountDescription = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_handle);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     handle = v5->_handle;
     v5->_handle = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_isoCountryCode);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     isoCountryCode = v5->_isoCountryCode;
     v5->_isoCountryCode = v16;
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_serviceName);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     serviceName = v5->_serviceName;
     v5->_serviceName = v20;
 
     v22 = objc_opt_class();
     v23 = NSStringFromSelector(sel_UUID);
-    v24 = [v4 decodeObjectOfClass:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClass:v22 forKey:v23];
     UUID = v5->_UUID;
     v5->_UUID = v24;
 
     v26 = objc_opt_class();
     v27 = NSStringFromSelector(sel_shortLabel);
-    v28 = [v4 decodeObjectOfClass:v26 forKey:v27];
+    v28 = [coderCopy decodeObjectOfClass:v26 forKey:v27];
     shortLabel = v5->_shortLabel;
     v5->_shortLabel = v28;
   }
@@ -179,32 +179,32 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXAccount *)self accountDescription];
+  coderCopy = coder;
+  accountDescription = [(CXAccount *)self accountDescription];
   v6 = NSStringFromSelector(sel_accountDescription);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:accountDescription forKey:v6];
 
-  v7 = [(CXAccount *)self handle];
+  handle = [(CXAccount *)self handle];
   v8 = NSStringFromSelector(sel_handle);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:handle forKey:v8];
 
-  v9 = [(CXAccount *)self isoCountryCode];
+  isoCountryCode = [(CXAccount *)self isoCountryCode];
   v10 = NSStringFromSelector(sel_isoCountryCode);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:isoCountryCode forKey:v10];
 
-  v11 = [(CXAccount *)self serviceName];
+  serviceName = [(CXAccount *)self serviceName];
   v12 = NSStringFromSelector(sel_serviceName);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:serviceName forKey:v12];
 
-  v13 = [(CXAccount *)self UUID];
+  uUID = [(CXAccount *)self UUID];
   v14 = NSStringFromSelector(sel_UUID);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:uUID forKey:v14];
 
-  v16 = [(CXAccount *)self shortLabel];
+  shortLabel = [(CXAccount *)self shortLabel];
   v15 = NSStringFromSelector(sel_shortLabel);
-  [v4 encodeObject:v16 forKey:v15];
+  [coderCopy encodeObject:shortLabel forKey:v15];
 }
 
 - (id)description
@@ -212,33 +212,33 @@ LABEL_8:
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_UUID);
-  v5 = [(CXAccount *)self UUID];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  uUID = [(CXAccount *)self UUID];
+  [v3 appendFormat:@"%@=%@", v4, uUID];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_isoCountryCode);
-  v7 = [(CXAccount *)self isoCountryCode];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  isoCountryCode = [(CXAccount *)self isoCountryCode];
+  [v3 appendFormat:@"%@=%@", v6, isoCountryCode];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector(sel_accountDescription);
-  v9 = [(CXAccount *)self accountDescription];
-  [v3 appendFormat:@"%@=%@", v8, v9];
+  accountDescription = [(CXAccount *)self accountDescription];
+  [v3 appendFormat:@"%@=%@", v8, accountDescription];
 
   [v3 appendFormat:@", "];
   v10 = NSStringFromSelector(sel_shortLabel);
-  v11 = [(CXAccount *)self shortLabel];
-  [v3 appendFormat:@"%@=%@", v10, v11];
+  shortLabel = [(CXAccount *)self shortLabel];
+  [v3 appendFormat:@"%@=%@", v10, shortLabel];
 
   [v3 appendFormat:@", "];
   v12 = NSStringFromSelector(sel_serviceName);
-  v13 = [(CXAccount *)self serviceName];
-  [v3 appendFormat:@"%@=%@", v12, v13];
+  serviceName = [(CXAccount *)self serviceName];
+  [v3 appendFormat:@"%@=%@", v12, serviceName];
 
   [v3 appendFormat:@", "];
   v14 = NSStringFromSelector(sel_handle);
-  v15 = [(CXAccount *)self handle];
-  [v3 appendFormat:@"%@=%@", v14, v15];
+  handle = [(CXAccount *)self handle];
+  [v3 appendFormat:@"%@=%@", v14, handle];
 
   [v3 appendFormat:@">"];
   v16 = [v3 copy];
@@ -246,68 +246,68 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXAccount *)self isEqualToAccount:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXAccount *)self isEqualToAccount:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CXAccount *)self accountDescription];
-  v4 = [v3 hash];
-  v5 = [(CXAccount *)self isoCountryCode];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CXAccount *)self handle];
-  v8 = [v7 hash];
-  v9 = [(CXAccount *)self serviceName];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(CXAccount *)self UUID];
-  v12 = [v11 hash];
-  v13 = [(CXAccount *)self shortLabel];
-  v14 = v12 ^ [v13 hash];
+  accountDescription = [(CXAccount *)self accountDescription];
+  v4 = [accountDescription hash];
+  isoCountryCode = [(CXAccount *)self isoCountryCode];
+  v6 = [isoCountryCode hash] ^ v4;
+  handle = [(CXAccount *)self handle];
+  v8 = [handle hash];
+  serviceName = [(CXAccount *)self serviceName];
+  v10 = v6 ^ v8 ^ [serviceName hash];
+  uUID = [(CXAccount *)self UUID];
+  v12 = [uUID hash];
+  shortLabel = [(CXAccount *)self shortLabel];
+  v14 = v12 ^ [shortLabel hash];
 
   return v10 ^ v14;
 }
 
-- (BOOL)isEqualToAccount:(id)a3
+- (BOOL)isEqualToAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CXAccount *)self accountDescription];
-  v6 = [v4 accountDescription];
-  if ([v5 isEqualToString:v6])
+  accountCopy = account;
+  accountDescription = [(CXAccount *)self accountDescription];
+  accountDescription2 = [accountCopy accountDescription];
+  if ([accountDescription isEqualToString:accountDescription2])
   {
-    v7 = [(CXAccount *)self isoCountryCode];
-    v8 = [v4 isoCountryCode];
-    if ([v7 isEqualToString:v8])
+    isoCountryCode = [(CXAccount *)self isoCountryCode];
+    isoCountryCode2 = [accountCopy isoCountryCode];
+    if ([isoCountryCode isEqualToString:isoCountryCode2])
     {
-      v9 = [(CXAccount *)self handle];
-      v10 = [v4 handle];
-      if (v9 | v10 && ![v9 isEqual:v10])
+      handle = [(CXAccount *)self handle];
+      handle2 = [accountCopy handle];
+      if (handle | handle2 && ![handle isEqual:handle2])
       {
         v17 = 0;
       }
 
       else
       {
-        v11 = [(CXAccount *)self serviceName];
-        v12 = [v4 serviceName];
-        if ([v11 isEqualToString:v12])
+        serviceName = [(CXAccount *)self serviceName];
+        serviceName2 = [accountCopy serviceName];
+        if ([serviceName isEqualToString:serviceName2])
         {
-          v21 = v11;
-          v13 = [(CXAccount *)self UUID];
-          v14 = [v4 UUID];
-          v22 = v13;
-          v15 = v13;
-          v16 = v14;
-          if ([v15 isEqual:v14])
+          v21 = serviceName;
+          uUID = [(CXAccount *)self UUID];
+          uUID2 = [accountCopy UUID];
+          v22 = uUID;
+          v15 = uUID;
+          v16 = uUID2;
+          if ([v15 isEqual:uUID2])
           {
-            v20 = [(CXAccount *)self shortLabel];
-            v19 = [v4 shortLabel];
-            v17 = [v20 isEqual:v19];
+            shortLabel = [(CXAccount *)self shortLabel];
+            shortLabel2 = [accountCopy shortLabel];
+            v17 = [shortLabel isEqual:shortLabel2];
           }
 
           else
@@ -315,7 +315,7 @@ LABEL_8:
             v17 = 0;
           }
 
-          v11 = v21;
+          serviceName = v21;
         }
 
         else
@@ -348,12 +348,12 @@ LABEL_8:
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

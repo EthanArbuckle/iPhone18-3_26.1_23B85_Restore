@@ -1,43 +1,43 @@
 @interface ICSPrivateEmailUpdateCacheHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_removePrivateEmailKey:(id)a3 withCompletion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_removePrivateEmailKey:(id)key withCompletion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation ICSPrivateEmailUpdateCacheHook
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = [a4 objectForKeyedSubscript:@"privateEmailKey"];
-  [(ICSPrivateEmailUpdateCacheHook *)self _removePrivateEmailKey:v9 withCompletion:v8];
+  completionCopy = completion;
+  v9 = [attributes objectForKeyedSubscript:@"privateEmailKey"];
+  [(ICSPrivateEmailUpdateCacheHook *)self _removePrivateEmailKey:v9 withCompletion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  v8 = [v7 objectForKeyedSubscript:@"privateEmailKey"];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  v8 = [clientInfo objectForKeyedSubscript:@"privateEmailKey"];
 
-  [(ICSPrivateEmailUpdateCacheHook *)self _removePrivateEmailKey:v8 withCompletion:v6];
+  [(ICSPrivateEmailUpdateCacheHook *)self _removePrivateEmailKey:v8 withCompletion:completionCopy];
 }
 
-- (void)_removePrivateEmailKey:(id)a3 withCompletion:(id)a4
+- (void)_removePrivateEmailKey:(id)key withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CF02A0]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__ICSPrivateEmailUpdateCacheHook__removePrivateEmailKey_withCompletion___block_invoke;
   v10[3] = &unk_27A666560;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = keyCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = keyCopy;
   [v7 removePrivateEmailKey:v9 completion:v10];
 }
 
@@ -84,18 +84,18 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [@"action:hideMyEmailUpdateCache" isEqualToString:v3];
+  name = [element name];
+  v4 = [@"action:hideMyEmailUpdateCache" isEqualToString:name];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [@"action:hideMyEmailUpdateCache" isEqualToString:v4];
 
   return v5;

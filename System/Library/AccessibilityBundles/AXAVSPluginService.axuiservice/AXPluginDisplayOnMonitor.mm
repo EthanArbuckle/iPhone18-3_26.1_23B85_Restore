@@ -7,8 +7,8 @@
 - (void)_unregisterForSpringboardNotifications;
 - (void)_updateDisplayOnState;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setDisplayOn:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplayOn:(BOOL)on;
 @end
 
 @implementation AXPluginDisplayOnMonitor
@@ -35,10 +35,10 @@
   [(AXPluginDisplayOnMonitor *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
 
     [(AXPluginDisplayOnMonitor *)self _startMonitoring];
@@ -58,21 +58,21 @@
   [(AXPluginDisplayOnMonitor *)self _updateDisplayOnState];
 }
 
-- (void)setDisplayOn:(BOOL)a3
+- (void)setDisplayOn:(BOOL)on
 {
-  if (self->_displayOn != a3)
+  if (self->_displayOn != on)
   {
-    self->_displayOn = a3;
-    v5 = [(AXPluginDisplayOnMonitor *)self delegate];
-    [v5 displayOnMonitor:self didReceiveDisplayOnStateChanged:{-[AXPluginDisplayOnMonitor isDisplayOn](self, "isDisplayOn")}];
+    self->_displayOn = on;
+    delegate = [(AXPluginDisplayOnMonitor *)self delegate];
+    [delegate displayOnMonitor:self didReceiveDisplayOnStateChanged:{-[AXPluginDisplayOnMonitor isDisplayOn](self, "isDisplayOn")}];
   }
 }
 
 - (void)_updateDisplayOnState
 {
-  v3 = [(AXPluginDisplayOnMonitor *)self _queryIsDisplayOn];
+  _queryIsDisplayOn = [(AXPluginDisplayOnMonitor *)self _queryIsDisplayOn];
 
-  [(AXPluginDisplayOnMonitor *)self setDisplayOn:v3];
+  [(AXPluginDisplayOnMonitor *)self setDisplayOn:_queryIsDisplayOn];
 }
 
 - (BOOL)_queryIsDisplayOn

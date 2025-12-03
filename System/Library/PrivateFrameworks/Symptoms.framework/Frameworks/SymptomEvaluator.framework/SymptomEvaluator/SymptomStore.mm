@@ -1,24 +1,24 @@
 @interface SymptomStore
-+ (id)descriptionFromSymptomName:(id)a3;
-+ (id)idFromReporterName:(id)a3;
-+ (id)idFromSymptomName:(id)a3;
-+ (id)keyFromSymptomName:(id)a3;
-+ (id)nameFromReporterId:(unsigned int)a3;
-+ (id)nameFromSymptomId:(unsigned int)a3;
-+ (id)nameFromSymptomKey:(id)a3;
-+ (id)storeFromSymptomName:(id)a3;
-+ (id)storedSymptomsWithKey:(id)a3;
-+ (int)addFromReporter:(id)a3;
-+ (int)configure:(id)a3;
++ (id)descriptionFromSymptomName:(id)name;
++ (id)idFromReporterName:(id)name;
++ (id)idFromSymptomName:(id)name;
++ (id)keyFromSymptomName:(id)name;
++ (id)nameFromReporterId:(unsigned int)id;
++ (id)nameFromSymptomId:(unsigned int)id;
++ (id)nameFromSymptomKey:(id)key;
++ (id)storeFromSymptomName:(id)name;
++ (id)storedSymptomsWithKey:(id)key;
++ (int)addFromReporter:(id)reporter;
++ (int)configure:(id)configure;
 + (void)initialize;
-+ (void)noteReceivedSymptom:(id)a3;
-+ (void)pruneSymptomsWithKey:(id)a3;
-+ (void)resetSymptomsWithKey:(id)a3;
-- (unsigned)numSymptomsWithRetainTime:(unsigned int)a3;
-- (void)_pruneSymptomsForDate:(id)a3;
-- (void)noteReceivedSymptom:(id)a3;
-- (void)setRetainCount:(unsigned int)a3;
-- (void)setRetainTime:(unsigned int)a3;
++ (void)noteReceivedSymptom:(id)symptom;
++ (void)pruneSymptomsWithKey:(id)key;
++ (void)resetSymptomsWithKey:(id)key;
+- (unsigned)numSymptomsWithRetainTime:(unsigned int)time;
+- (void)_pruneSymptomsForDate:(id)date;
+- (void)noteReceivedSymptom:(id)symptom;
+- (void)setRetainCount:(unsigned int)count;
+- (void)setRetainTime:(unsigned int)time;
 @end
 
 @implementation SymptomStore
@@ -40,9 +40,9 @@
   MEMORY[0x2821F96F8](v6, v7);
 }
 
-+ (id)idFromSymptomName:(id)a3
++ (id)idFromSymptomName:(id)name
 {
-  v3 = [SymptomStore storeFromSymptomName:a3];
+  v3 = [SymptomStore storeFromSymptomName:name];
   v4 = v3;
   if (v3)
   {
@@ -57,13 +57,29 @@
   return v5;
 }
 
-+ (id)descriptionFromSymptomName:(id)a3
++ (id)descriptionFromSymptomName:(id)name
 {
-  v3 = [SymptomStore storeFromSymptomName:a3];
+  v3 = [SymptomStore storeFromSymptomName:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 symptomDescription];
+    symptomDescription = [v3 symptomDescription];
+  }
+
+  else
+  {
+    symptomDescription = 0;
+  }
+
+  return symptomDescription;
+}
+
++ (id)nameFromSymptomId:(unsigned int)id
+{
+  if (id)
+  {
+    v4 = [self keyFromSymptomId:?];
+    v5 = [self nameFromSymptomKey:v4];
   }
 
   else
@@ -74,58 +90,42 @@
   return v5;
 }
 
-+ (id)nameFromSymptomId:(unsigned int)a3
++ (id)keyFromSymptomName:(id)name
 {
-  if (a3)
-  {
-    v4 = [a1 keyFromSymptomId:?];
-    v5 = [a1 nameFromSymptomKey:v4];
-  }
-
-  else
-  {
-    v5 = 0;
-  }
-
-  return v5;
-}
-
-+ (id)keyFromSymptomName:(id)a3
-{
-  v4 = a3;
-  v5 = [nameToKeyDictionary objectForKey:v4];
+  nameCopy = name;
+  v5 = [nameToKeyDictionary objectForKey:nameCopy];
   if (!v5)
   {
-    [a1 _createForName:v4 key:v4 id:0 symptomDescription:0];
-    v5 = v4;
+    [self _createForName:nameCopy key:nameCopy id:0 symptomDescription:0];
+    v5 = nameCopy;
   }
 
   return v5;
 }
 
-+ (id)nameFromSymptomKey:(id)a3
++ (id)nameFromSymptomKey:(id)key
 {
-  v3 = a3;
-  v4 = [keyToInstanceDictionary objectForKey:v3];
+  keyCopy = key;
+  v4 = [keyToInstanceDictionary objectForKey:keyCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 symptomName];
+    symptomName = [v4 symptomName];
   }
 
   else
   {
-    v6 = v3;
+    symptomName = keyCopy;
   }
 
-  v7 = v6;
+  v7 = symptomName;
 
   return v7;
 }
 
-+ (id)idFromReporterName:(id)a3
++ (id)idFromReporterName:(id)name
 {
-  v3 = [reporterDictionary objectForKey:a3];
+  v3 = [reporterDictionary objectForKey:name];
   v4 = v3;
   if (v3)
   {
@@ -135,9 +135,9 @@
   return v4;
 }
 
-+ (id)nameFromReporterId:(unsigned int)a3
++ (id)nameFromReporterId:(unsigned int)id
 {
-  v3 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:a3];
+  v3 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:id];
   v4 = [reporterDictionary allKeysForObject:v3];
   if ([v4 count])
   {
@@ -152,10 +152,10 @@
   return v5;
 }
 
-+ (int)configure:(id)a3
++ (int)configure:(id)configure
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [a3 objectForKey:@"SYMPTOM_ARRAY"];
+  v4 = [configure objectForKey:@"SYMPTOM_ARRAY"];
   v5 = [v3 arrayWithArray:v4];
 
   if (!v5)
@@ -171,7 +171,7 @@ LABEL_21:
     }
 
 LABEL_22:
-    v6 = 0;
+    objectEnumerator = 0;
     goto LABEL_23;
   }
 
@@ -180,11 +180,11 @@ LABEL_22:
   {
     if ([v5 count])
     {
-      v6 = [v5 objectEnumerator];
-      v7 = [v6 nextObject];
-      if (v7)
+      objectEnumerator = [v5 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v8 = v7;
+        v8 = nextObject;
         while (1)
         {
           objc_opt_class();
@@ -194,7 +194,7 @@ LABEL_22:
             v10 = [SymptomStore addFromReporter:v9];
             if (v10)
             {
-              LODWORD(v17) = v10;
+              LODWORD(nextObject2) = v10;
 
               goto LABEL_24;
             }
@@ -212,10 +212,10 @@ LABEL_22:
             v9 = 0;
           }
 
-          v17 = [v6 nextObject];
+          nextObject2 = [objectEnumerator nextObject];
 
-          v8 = v17;
-          if (!v17)
+          v8 = nextObject2;
+          if (!nextObject2)
           {
             goto LABEL_24;
           }
@@ -223,7 +223,7 @@ LABEL_22:
       }
 
 LABEL_23:
-      LODWORD(v17) = 0;
+      LODWORD(nextObject2) = 0;
       goto LABEL_24;
     }
 
@@ -246,18 +246,18 @@ LABEL_23:
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "Malformed SYMPTOM_ARRAY\n", buf, 2u);
   }
 
-  v6 = 0;
-  LODWORD(v17) = -1;
+  objectEnumerator = 0;
+  LODWORD(nextObject2) = -1;
 LABEL_24:
 
-  return v17;
+  return nextObject2;
 }
 
-+ (int)addFromReporter:(id)a3
++ (int)addFromReporter:(id)reporter
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"SYMPTOM_DEFINITION_VERSION"];
+  reporterCopy = reporter;
+  v5 = [reporterCopy objectForKey:@"SYMPTOM_DEFINITION_VERSION"];
   if (!v5)
   {
     v13 = configurationLogHandle;
@@ -303,7 +303,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v6 = [v4 objectForKey:@"SUBSYSTEM_ID"];
+  v6 = [reporterCopy objectForKey:@"SUBSYSTEM_ID"];
   if (!v6)
   {
     v19 = configurationLogHandle;
@@ -335,8 +335,8 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v7 = [v6 unsignedLongValue];
-  v8 = [v4 objectForKey:@"SUBSYSTEM_SHORT_TEXT_ID"];
+  unsignedLongValue = [v6 unsignedLongValue];
+  v8 = [reporterCopy objectForKey:@"SUBSYSTEM_SHORT_TEXT_ID"];
   if (!v8)
   {
     v21 = configurationLogHandle;
@@ -359,7 +359,7 @@ LABEL_24:
       v11 = v8;
       v12 = v10;
       *buf = 136315138;
-      v63 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_ERROR, "Duplicate reporter name %s \n", buf, 0xCu);
     }
 
@@ -379,7 +379,7 @@ LABEL_28:
       v23 = v8;
       v24 = v22;
       *buf = 136315138;
-      v63 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_ERROR, "Duplicate key value  %s \n", buf, 0xCu);
     }
 
@@ -388,7 +388,7 @@ LABEL_28:
 
   [reporterDictionary setObject:v6 forKeyedSubscript:v8];
   v25 = MEMORY[0x277CBEB18];
-  v26 = [v4 objectForKey:@"SUBSYSTEM_SYMPTOM_ARRAY"];
+  v26 = [reporterCopy objectForKey:@"SUBSYSTEM_SYMPTOM_ARRAY"];
   v27 = [v25 arrayWithArray:v26];
 
   if (!v27)
@@ -423,17 +423,17 @@ LABEL_60:
 
   v53 = v8;
   v54 = v27;
-  v28 = [v27 objectEnumerator];
-  v29 = 0;
-  v56 = v7 << 12;
+  objectEnumerator = [v27 objectEnumerator];
+  nextObject = 0;
+  v56 = unsignedLongValue << 12;
   v30 = 0x277CBE000uLL;
-  v55 = v28;
+  v55 = objectEnumerator;
   while (1)
   {
-    v31 = v29;
-    v29 = [v28 nextObject];
+    v31 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v29)
+    if (!nextObject)
     {
       break;
     }
@@ -453,15 +453,15 @@ LABEL_60:
       goto LABEL_52;
     }
 
-    v57 = v29;
-    v33 = v29;
+    v57 = nextObject;
+    v33 = nextObject;
     v34 = [v33 objectForKey:@"NUMERIC_ID"];
     v35 = [v33 objectForKey:@"TEXT_ID"];
     v61 = v33;
     v58 = [v33 objectForKey:@"DESCRIPTION"];
     v60 = v34;
-    v36 = [v34 unsignedLongValue];
-    v37 = [a1 keyFromSymptomId:v56 | v36];
+    unsignedLongValue2 = [v34 unsignedLongValue];
+    v37 = [self keyFromSymptomId:v56 | unsignedLongValue2];
     v59 = v35;
     v38 = [nameToKeyDictionary objectForKey:v35];
 
@@ -473,9 +473,9 @@ LABEL_60:
       {
         v41 = v59;
         v42 = v40;
-        v43 = [v59 UTF8String];
+        uTF8String2 = [v59 UTF8String];
         *buf = 136315138;
-        v63 = v43;
+        uTF8String = uTF8String2;
         _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_ERROR, "Duplicate symptom %s\n", buf, 0xCu);
       }
 
@@ -489,14 +489,14 @@ LABEL_60:
       if ([v46 count])
       {
         v47 = configurationLogHandle;
-        v28 = v55;
+        objectEnumerator = v55;
         if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
         {
           v48 = v37;
           v49 = v47;
-          v50 = [v37 UTF8String];
+          uTF8String3 = [v37 UTF8String];
           *buf = 136315138;
-          v63 = v50;
+          uTF8String = uTF8String3;
           _os_log_impl(&dword_23255B000, v49, OS_LOG_TYPE_ERROR, "Duplicate key value  %s\n", buf, 0xCu);
         }
 
@@ -505,16 +505,16 @@ LABEL_60:
         goto LABEL_51;
       }
 
-      [a1 _createForName:v59 key:v37 id:v56 | v36 symptomDescription:v58];
+      [self _createForName:v59 key:v37 id:v56 | unsignedLongValue2 symptomDescription:v58];
 
       v44 = 1;
       v15 = v46;
     }
 
-    v28 = v55;
+    objectEnumerator = v55;
 LABEL_51:
     v30 = 0x277CBE000;
-    v29 = v57;
+    nextObject = v57;
 LABEL_52:
     if ((v44 & 1) == 0)
     {
@@ -538,11 +538,11 @@ LABEL_18:
   return v16;
 }
 
-+ (id)storeFromSymptomName:(id)a3
++ (id)storeFromSymptomName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [SymptomStore keyFromSymptomName:v3];
+  nameCopy = name;
+  v4 = [SymptomStore keyFromSymptomName:nameCopy];
   if (v4)
   {
     v5 = [SymptomStore storeFromSymptomKey:v4];
@@ -554,10 +554,10 @@ LABEL_18:
     v6 = configurationLogHandle;
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
-      v7 = v3;
+      v7 = nameCopy;
       v8 = v6;
       v14 = 136315138;
-      v15 = [v3 UTF8String];
+      uTF8String = [nameCopy UTF8String];
       v9 = "Configuration problem, no store for for symptom name %s\n";
 LABEL_7:
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, v9, &v14, 0xCu);
@@ -569,10 +569,10 @@ LABEL_7:
     v10 = configurationLogHandle;
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
-      v11 = v3;
+      v11 = nameCopy;
       v8 = v10;
       v14 = 136315138;
-      v15 = [v3 UTF8String];
+      uTF8String = [nameCopy UTF8String];
       v9 = "configuration problem, no key for symptom name %s";
       goto LABEL_7;
     }
@@ -586,40 +586,40 @@ LABEL_9:
   return v5;
 }
 
-+ (void)noteReceivedSymptom:(id)a3
++ (void)noteReceivedSymptom:(id)symptom
 {
-  v3 = a3;
-  v4 = [v3 eventKey];
-  v5 = [SymptomStore storeFromSymptomKey:v4];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
+  v5 = [SymptomStore storeFromSymptomKey:eventKey];
 
-  [v5 noteReceivedSymptom:v3];
+  [v5 noteReceivedSymptom:symptomCopy];
 }
 
-+ (id)storedSymptomsWithKey:(id)a3
++ (id)storedSymptomsWithKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [SymptomStore storeFromSymptomKey:v3];
+  keyCopy = key;
+  v4 = [SymptomStore storeFromSymptomKey:keyCopy];
   v5 = v4;
   if (v4 && ([v4 symptomHistory], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
     v8 = objc_alloc_init(SymptomSet);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [v5 symptomHistory];
-    [v9 addObjectsFromArray:v10];
+    symptomHistory = [v5 symptomHistory];
+    [v9 addObjectsFromArray:symptomHistory];
 
     [(SymptomSet *)v8 setSymptoms:v9];
     v11 = evaluationLogHandle;
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      v12 = v3;
+      v12 = keyCopy;
       v13 = v11;
-      v14 = [v3 UTF8String];
+      uTF8String = [keyCopy UTF8String];
       v15 = [(SymptomSet *)v8 description];
       v19 = 136315394;
-      v20 = v14;
+      v20 = uTF8String;
       v21 = 2080;
-      v22 = [v15 UTF8String];
+      uTF8String2 = [v15 UTF8String];
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "storedSymptomsWithKey: key %s return symptomSet %s", &v19, 0x16u);
     }
   }
@@ -641,13 +641,13 @@ LABEL_9:
   return v8;
 }
 
-+ (void)pruneSymptomsWithKey:(id)a3
++ (void)pruneSymptomsWithKey:(id)key
 {
-  v3 = [SymptomStore storeFromSymptomKey:a3];
+  v3 = [SymptomStore storeFromSymptomKey:key];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v3 _pruneSymptomsForDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v3 _pruneSymptomsForDate:date];
   }
 
   v5 = evaluationLogHandle;
@@ -658,26 +658,26 @@ LABEL_9:
   }
 }
 
-+ (void)resetSymptomsWithKey:(id)a3
++ (void)resetSymptomsWithKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    v5 = v3;
+    v5 = keyCopy;
     v6 = v4;
     v13 = 136315138;
-    v14 = [v3 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "resetSymptomsWithKey: entry for %s", &v13, 0xCu);
   }
 
-  v7 = [SymptomStore storeFromSymptomKey:v3];
+  v7 = [SymptomStore storeFromSymptomKey:keyCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 symptomHistory];
-    [v9 removeAllObjects];
+    symptomHistory = [v7 symptomHistory];
+    [symptomHistory removeAllObjects];
 
     v10 = v8[6];
     if (v10)
@@ -693,29 +693,29 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRetainTime:(unsigned int)a3
+- (void)setRetainTime:(unsigned int)time
 {
-  if (self->symptomMinRetainTime < a3)
+  if (self->symptomMinRetainTime < time)
   {
-    self->symptomMinRetainTime = a3;
+    self->symptomMinRetainTime = time;
   }
 }
 
-- (void)setRetainCount:(unsigned int)a3
+- (void)setRetainCount:(unsigned int)count
 {
-  if (self->symptomMinSavedCount < a3)
+  if (self->symptomMinSavedCount < count)
   {
     if (self->symptomArrivalTimes)
     {
-      if (a3 == -1)
+      if (count == -1)
       {
         [NetworkAnalyticsModel _clusterUsingKMeansOn:? into:? iterations:? saveCentroidsTo:?];
       }
 
-      v5 = malloc_type_calloc(a3 + 1, 8uLL, 0x1FC49241uLL);
+      v5 = malloc_type_calloc(count + 1, 8uLL, 0x1FC49241uLL);
       if (!v5)
       {
-        [(SymptomStore *)a3 + 1 setRetainCount:?];
+        [(SymptomStore *)count + 1 setRetainCount:?];
       }
 
       v6 = v5;
@@ -744,14 +744,14 @@ LABEL_9:
       __dmb(0xBu);
     }
 
-    self->symptomMinSavedCount = a3;
+    self->symptomMinSavedCount = count;
   }
 }
 
-- (void)_pruneSymptomsForDate:(id)a3
+- (void)_pruneSymptomsForDate:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = [(NSMutableArray *)self->symptomHistory count];
   if (v5 >= 1)
   {
@@ -764,8 +764,8 @@ LABEL_9:
       v9 = v7;
       v7 = [(NSMutableArray *)self->symptomHistory objectAtIndex:v8 - 2, v20];
 
-      v10 = [v7 creationTimeStamp];
-      [v4 timeIntervalSinceDate:v10];
+      creationTimeStamp = [v7 creationTimeStamp];
+      [dateCopy timeIntervalSinceDate:creationTimeStamp];
       v12 = v11;
 
       v13 = evaluationLogHandle;
@@ -812,7 +812,7 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)numSymptomsWithRetainTime:(unsigned int)a3
+- (unsigned)numSymptomsWithRetainTime:(unsigned int)time
 {
   v30 = *MEMORY[0x277D85DE8];
   symptomMinSavedCount = self->symptomMinSavedCount;
@@ -823,7 +823,7 @@ LABEL_12:
     v8 = v7;
     v9 = 0;
     v10 = 0;
-    v11 = a3;
+    timeCopy = time;
     do
     {
       v12 = evaluationLogHandle;
@@ -832,10 +832,10 @@ LABEL_12:
         symptomName = self->symptomName;
         v14 = v12;
         v15 = [(NSString *)symptomName description];
-        v16 = [v15 UTF8String];
+        uTF8String = [v15 UTF8String];
         v17 = symptomArrivalTimes[v9];
         *buf = 136316162;
-        v21 = v16;
+        v21 = uTF8String;
         v22 = 2048;
         v23 = v17;
         v24 = 1024;
@@ -843,11 +843,11 @@ LABEL_12:
         v26 = 2048;
         v27 = v8;
         v28 = 1024;
-        v29 = v8 - v17 < v11;
+        v29 = v8 - v17 < timeCopy;
         _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEBUG, "%s  Check stored interval %f at index %d against current %f, willcount = %d", buf, 0x2Cu);
       }
 
-      if (v8 - symptomArrivalTimes[v9] < v11)
+      if (v8 - symptomArrivalTimes[v9] < timeCopy)
       {
         ++v10;
       }
@@ -867,10 +867,10 @@ LABEL_12:
   return v10;
 }
 
-- (void)noteReceivedSymptom:(id)a3
+- (void)noteReceivedSymptom:(id)symptom
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   symptomMinRetainTime = self->symptomMinRetainTime;
   v6 = evaluationLogHandle;
   v7 = os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG);
@@ -881,7 +881,7 @@ LABEL_12:
       symptomHistory = self->symptomHistory;
       v9 = v6;
       v26 = 134218240;
-      v27 = symptomHistory;
+      uTF8String3 = symptomHistory;
       v28 = 2048;
       v29 = [(NSMutableArray *)symptomHistory count];
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "history %p count is %ld", &v26, 0x16u);
@@ -899,24 +899,24 @@ LABEL_12:
       [(NSMutableArray *)self->symptomHistory removeLastObject];
     }
 
-    v11 = [v4 creationTimeStamp];
-    [(SymptomStore *)self _pruneSymptomsForDate:v11];
+    creationTimeStamp = [symptomCopy creationTimeStamp];
+    [(SymptomStore *)self _pruneSymptomsForDate:creationTimeStamp];
     v12 = evaluationLogHandle;
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v13 = v12;
-      v14 = [v4 description];
-      v15 = [v14 UTF8String];
+      v14 = [symptomCopy description];
+      uTF8String = [v14 UTF8String];
       v16 = [(SymptomStore *)self description];
-      v17 = [v16 UTF8String];
+      uTF8String2 = [v16 UTF8String];
       v26 = 136315394;
-      v27 = v15;
+      uTF8String3 = uTF8String;
       v28 = 2080;
-      v29 = v17;
+      v29 = uTF8String2;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "noteReceivedSymptom: add event %s to history for %s", &v26, 0x16u);
     }
 
-    [(NSMutableArray *)self->symptomHistory insertObject:v4 atIndex:0];
+    [(NSMutableArray *)self->symptomHistory insertObject:symptomCopy atIndex:0];
     __dmb(0xBu);
     if (!self->symptomArrivalTimes)
     {
@@ -956,9 +956,9 @@ LABEL_12:
   if (v7)
   {
     v24 = v6;
-    v11 = [v4 description];
+    creationTimeStamp = [symptomCopy description];
     v26 = 136315138;
-    v27 = [v11 UTF8String];
+    uTF8String3 = [creationTimeStamp UTF8String];
     _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "noteReceivedSymptom: retain time 0, skip %s", &v26, 0xCu);
 
 LABEL_20:

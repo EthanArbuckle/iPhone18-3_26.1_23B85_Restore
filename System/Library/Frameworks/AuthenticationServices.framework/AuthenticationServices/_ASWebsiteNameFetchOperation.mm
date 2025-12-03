@@ -2,7 +2,7 @@
 - (BOOL)isCancelled;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (_ASWebsiteNameFetchOperation)initWithDomain:(id)a3 metadataEntry:(id)a4 provider:(id)a5;
+- (_ASWebsiteNameFetchOperation)initWithDomain:(id)domain metadataEntry:(id)entry provider:(id)provider;
 - (id)debugDescription;
 - (void)_finish;
 - (void)_run;
@@ -12,11 +12,11 @@
 
 @implementation _ASWebsiteNameFetchOperation
 
-- (_ASWebsiteNameFetchOperation)initWithDomain:(id)a3 metadataEntry:(id)a4 provider:(id)a5
+- (_ASWebsiteNameFetchOperation)initWithDomain:(id)domain metadataEntry:(id)entry provider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  entryCopy = entry;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = _ASWebsiteNameFetchOperation;
   v11 = [(_ASWebsiteNameFetchOperation *)&v22 init];
@@ -30,13 +30,13 @@
     queue = v11->_queue;
     v11->_queue = v16;
 
-    v18 = [v8 copy];
+    v18 = [domainCopy copy];
     domain = v11->_domain;
     v11->_domain = v18;
 
-    objc_storeStrong(&v11->_metadataEntry, a4);
-    objc_storeWeak(&v11->_provider, v10);
-    [(_ASWebsiteNameFetchOperation *)v11 setName:v8];
+    objc_storeStrong(&v11->_metadataEntry, entry);
+    objc_storeWeak(&v11->_provider, providerCopy);
+    [(_ASWebsiteNameFetchOperation *)v11 setName:domainCopy];
     v20 = v11;
   }
 
@@ -48,7 +48,7 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ASWebsiteNameFetchOperation *)self name];
+  name = [(_ASWebsiteNameFetchOperation *)self name];
   if ([(_ASWebsiteNameFetchOperation *)self isFinished])
   {
     v7 = @"YES";
@@ -89,37 +89,37 @@
     v10 = @"NO";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@: %p name = %@, isFinished = %@; isReady = %@; isCancelled = %@; isExecuting = %@ >", v5, self, v6, v7, v8, v9, v10];;
+  v11 = [v3 stringWithFormat:@"<%@: %p name = %@, isFinished = %@; isReady = %@; isCancelled = %@; isExecuting = %@ >", v5, self, name, v7, v8, v9, v10];;
 
   return v11;
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isFinished = v2->_state.isFinished;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isFinished = selfCopy->_state.isFinished;
+  objc_sync_exit(selfCopy);
 
   return isFinished;
 }
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isExecuting = v2->_state.isExecuting;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isExecuting = selfCopy->_state.isExecuting;
+  objc_sync_exit(selfCopy);
 
   return isExecuting;
 }
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCancelled = v2->_state.isCancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = selfCopy->_state.isCancelled;
+  objc_sync_exit(selfCopy);
 
   return isCancelled;
 }
@@ -180,16 +180,16 @@
       v7[2] = __36___ASWebsiteNameFetchOperation__run__block_invoke;
       v7[3] = &unk_1E7AF8B00;
       v8 = WeakRetained;
-      v9 = self;
+      selfCopy = self;
       [v4 fetchWebsiteNameForDomain:domain completionHandler:v7];
     }
 
     else
     {
-      v6 = self;
-      objc_sync_enter(v6);
-      [(_ASWebsiteNameFetchOperation *)v6 _finish];
-      objc_sync_exit(v6);
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      [(_ASWebsiteNameFetchOperation *)selfCopy2 _finish];
+      objc_sync_exit(selfCopy2);
     }
   }
 }

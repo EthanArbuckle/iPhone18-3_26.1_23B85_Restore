@@ -1,6 +1,6 @@
 @interface MRAVConcreteOutputDevice
 - (AVOutputContext)outputContext;
-- (BOOL)_loadLocalOverridesWithOutputContext:(void *)a3 outputDevice:;
+- (BOOL)_loadLocalOverridesWithOutputContext:(void *)context outputDevice:;
 - (BOOL)allowsHeadTrackedSpatialAudio;
 - (BOOL)canAccessAppleMusic;
 - (BOOL)canAccessRemoteAssets;
@@ -8,7 +8,7 @@
 - (BOOL)canFetchMediaDataFromSender;
 - (BOOL)canPlayEncryptedProgressiveDownloadAssets;
 - (BOOL)canRelayCommunicationChannel;
-- (BOOL)containsUID:(id)a3;
+- (BOOL)containsUID:(id)d;
 - (BOOL)discoveredDeviceIsPlaying;
 - (BOOL)discoveredOnSameInfra;
 - (BOOL)groupContainsGroupLeader;
@@ -35,8 +35,8 @@
 - (BOOL)producesLowFidelityAudio;
 - (BOOL)representsUGLSender;
 - (BOOL)requiresAuthorization;
-- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4;
-- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4;
+- (BOOL)setCurrentBluetoothListeningMode:(id)mode error:(id *)error;
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)mode error:(id *)error;
 - (BOOL)supportsBluetoothSharing;
 - (BOOL)supportsBufferedAirPlay;
 - (BOOL)supportsConversationDetection;
@@ -49,11 +49,11 @@
 - (BOOL)supportsRapportRemoteControlTransport;
 - (BOOL)supportsSharePlayHandoff;
 - (BOOL)wasDiscoveredInCache;
-- (MRAVConcreteOutputDevice)initWithAVOutputDevice:(id)a3 outputContext:(id)a4;
+- (MRAVConcreteOutputDevice)initWithAVOutputDevice:(id)device outputContext:(id)context;
 - (float)batteryLevel;
 - (float)volume;
 - (id)MACAddress;
-- (id)_playingPairedDeviceNameForAVOutputDevice:(uint64_t)a1;
+- (id)_playingPairedDeviceNameForAVOutputDevice:(uint64_t)device;
 - (id)airPlayGroupID;
 - (id)alternateTransportType;
 - (id)availableBluetoothListeningModes;
@@ -65,7 +65,7 @@
 - (id)dnsNames;
 - (id)firmwareVersion;
 - (id)headTrackedSpatialAudioMode;
-- (id)initWithAVOutputDevice:(void *)a3 sourceInfo:(void *)a4 outputContext:;
+- (id)initWithAVOutputDevice:(void *)device sourceInfo:(void *)info outputContext:;
 - (id)logicalDeviceID;
 - (id)modelID;
 - (id)modelSpecificInfo;
@@ -79,19 +79,19 @@
 - (unsigned)deviceSubtype;
 - (unsigned)deviceType;
 - (unsigned)volumeCapabilities;
-- (void)adjustVolume:(int64_t)a3 details:(id)a4;
-- (void)setVolume:(float)a3 details:(id)a4;
+- (void)adjustVolume:(int64_t)volume details:(id)details;
+- (void)setVolume:(float)volume details:(id)details;
 @end
 
 @implementation MRAVConcreteOutputDevice
 
 - (unsigned)deviceType
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 deviceType];
-  if (v3 < 5)
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  deviceType = [avOutputDevice deviceType];
+  if (deviceType < 5)
   {
-    v4 = v3 + 1;
+    v4 = deviceType + 1;
   }
 
   else
@@ -112,8 +112,8 @@
 
   else
   {
-    v4 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v5 = [v4 ID];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    v5 = [avOutputDevice ID];
     v3 = MRComputeBaseRouteUIDWithDefaultSuffixes(v5);
   }
 
@@ -122,88 +122,88 @@
 
 - (unsigned)deviceSubtype
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = MRAVOutputDeviceSubtypeFromAVSubtype([v2 deviceSubType]);
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  v3 = MRAVOutputDeviceSubtypeFromAVSubtype([avOutputDevice deviceSubType]);
 
   return v3;
 }
 
 - (BOOL)isCarPlayVideoAllowed
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isCarPlayVideoAllowed];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isCarPlayVideoAllowed = [avOutputDevice isCarPlayVideoAllowed];
 
-  return v3;
+  return isCarPlayVideoAllowed;
 }
 
 - (BOOL)canAccessRemoteAssets
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canAccessRemoteAssets];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canAccessRemoteAssets = [avOutputDevice canAccessRemoteAssets];
 
-  return v3;
+  return canAccessRemoteAssets;
 }
 
 - (BOOL)canAccessAppleMusic
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canAccessAppleMusic];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canAccessAppleMusic = [avOutputDevice canAccessAppleMusic];
 
-  return v3;
+  return canAccessAppleMusic;
 }
 
 - (BOOL)canAccessiCloudMusicLibrary
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canAccessiCloudMusicLibrary];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canAccessiCloudMusicLibrary = [avOutputDevice canAccessiCloudMusicLibrary];
 
-  return v3;
+  return canAccessiCloudMusicLibrary;
 }
 
 - (BOOL)canPlayEncryptedProgressiveDownloadAssets
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canPlayEncryptedProgressiveDownloadAssets];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canPlayEncryptedProgressiveDownloadAssets = [avOutputDevice canPlayEncryptedProgressiveDownloadAssets];
 
-  return v3;
+  return canPlayEncryptedProgressiveDownloadAssets;
 }
 
 - (BOOL)canFetchMediaDataFromSender
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canFetchMediaDataFromSender];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canFetchMediaDataFromSender = [avOutputDevice canFetchMediaDataFromSender];
 
-  return v3;
+  return canFetchMediaDataFromSender;
 }
 
 - (BOOL)presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets = [avOutputDevice presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets];
 
-  return v3;
+  return presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets;
 }
 
 - (BOOL)isLocalDevice
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  IsAVOutputDeviceLocal = MROutputDeviceIsAVOutputDeviceLocal(v2);
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  IsAVOutputDeviceLocal = MROutputDeviceIsAVOutputDeviceLocal(avOutputDevice);
 
   return IsAVOutputDeviceLocal;
 }
 
 - (id)name
 {
-  v3 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v4 = [v3 airPlayProperties];
-  v5 = [v4 objectForKeyedSubscript:@"GroupPublicName"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v5 = [airPlayProperties objectForKeyedSubscript:@"GroupPublicName"];
   v6 = [v5 copy];
 
   if (![v6 length])
   {
-    v7 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v8 = [v7 name];
-    v9 = [v8 copy];
+    avOutputDevice2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    name = [avOutputDevice2 name];
+    v9 = [name copy];
 
     v6 = v9;
   }
@@ -212,9 +212,9 @@
   {
     v10 = +[MROrigin localOrigin];
     v11 = [MRDeviceInfoRequest cachedDeviceInfoForOrigin:v10];
-    v12 = [v11 name];
+    name2 = [v11 name];
 
-    v6 = v12;
+    v6 = name2;
   }
 
   return v6;
@@ -222,9 +222,9 @@
 
 - (id)tightSyncID
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 logicalDeviceID];
-  v4 = [v3 copy];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  logicalDeviceID = [avOutputDevice logicalDeviceID];
+  v4 = [logicalDeviceID copy];
 
   return v4;
 }
@@ -240,12 +240,12 @@
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v6 = [v5 airPlayProperties];
-    v7 = [v6 objectForKeyedSubscript:@"SupportsMultiplayer"];
-    v8 = [v7 BOOLValue];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    airPlayProperties = [avOutputDevice airPlayProperties];
+    v7 = [airPlayProperties objectForKeyedSubscript:@"SupportsMultiplayer"];
+    bOOLValue = [v7 BOOLValue];
 
-    return v8;
+    return bOOLValue;
   }
 }
 
@@ -254,56 +254,56 @@
   groupUIDOverride = self->_groupUIDOverride;
   if (groupUIDOverride)
   {
-    v3 = groupUIDOverride;
+    groupID = groupUIDOverride;
   }
 
   else
   {
-    v4 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v3 = [v4 groupID];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    groupID = [avOutputDevice groupID];
   }
 
-  return v3;
+  return groupID;
 }
 
 - (id)modelID
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 modelID];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  modelID = [avOutputDevice modelID];
 
-  return v3;
+  return modelID;
 }
 
 - (id)MACAddress
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 identifyingMACAddress];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  identifyingMACAddress = [avOutputDevice identifyingMACAddress];
 
-  return v3;
+  return identifyingMACAddress;
 }
 
 - (BOOL)isRemoteControllable
 {
-  v3 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v4 = ([v3 canBeGroupLeader] & 1) != 0 || -[MRAVOutputDevice shouldBeLocallyHosted](self, "shouldBeLocallyHosted");
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  v4 = ([avOutputDevice canBeGroupLeader] & 1) != 0 || -[MRAVOutputDevice shouldBeLocallyHosted](self, "shouldBeLocallyHosted");
 
   return v4;
 }
 
 - (BOOL)canRelayCommunicationChannel
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canRelayCommunicationChannel];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canRelayCommunicationChannel = [avOutputDevice canRelayCommunicationChannel];
 
-  return v3;
+  return canRelayCommunicationChannel;
 }
 
 - (BOOL)supportsBufferedAirPlay
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 supportsBufferedAirPlay];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  supportsBufferedAirPlay = [avOutputDevice supportsBufferedAirPlay];
 
-  return v3;
+  return supportsBufferedAirPlay;
 }
 
 - (BOOL)isGroupLeader
@@ -317,10 +317,10 @@
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v6 = [v5 isGroupLeader];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    isGroupLeader = [avOutputDevice isGroupLeader];
 
-    return v6;
+    return isGroupLeader;
   }
 }
 
@@ -335,10 +335,10 @@
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v6 = [v5 groupContainsGroupLeader];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    groupContainsGroupLeader = [avOutputDevice groupContainsGroupLeader];
 
-    return v6;
+    return groupContainsGroupLeader;
   }
 }
 
@@ -353,12 +353,12 @@
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v6 = [v5 airPlayProperties];
-    v7 = [v6 objectForKeyedSubscript:@"ReceiverSessionIsActive"];
-    v8 = [v7 BOOLValue];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    airPlayProperties = [avOutputDevice airPlayProperties];
+    v7 = [airPlayProperties objectForKeyedSubscript:@"ReceiverSessionIsActive"];
+    bOOLValue = [v7 BOOLValue];
 
-    return v8;
+    return bOOLValue;
   }
 }
 
@@ -373,12 +373,12 @@
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v6 = [v5 airPlayProperties];
-    v7 = [v6 objectForKeyedSubscript:@"ParentGroupContainsDiscoverableLeader"];
-    v8 = [v7 BOOLValue];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    airPlayProperties = [avOutputDevice airPlayProperties];
+    v7 = [airPlayProperties objectForKeyedSubscript:@"ParentGroupContainsDiscoverableLeader"];
+    bOOLValue = [v7 BOOLValue];
 
-    return v8;
+    return bOOLValue;
   }
 }
 
@@ -392,9 +392,9 @@
 
   else
   {
-    v4 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v5 = [v4 airPlayProperties];
-    v6 = [v5 objectForKeyedSubscript:@"ParentGroupUUID"];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    airPlayProperties = [avOutputDevice airPlayProperties];
+    v6 = [airPlayProperties objectForKeyedSubscript:@"ParentGroupUUID"];
     v3 = [v6 copy];
   }
 
@@ -403,27 +403,27 @@
 
 - (BOOL)isGroupable
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canBeGrouped];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canBeGrouped = [avOutputDevice canBeGrouped];
 
-  return v3;
+  return canBeGrouped;
 }
 
 - (BOOL)isDeviceGroupable
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 canBeGrouped];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  canBeGrouped = [avOutputDevice canBeGrouped];
 
-  return v3;
+  return canBeGrouped;
 }
 
 - (BOOL)isProxyGroupPlayer
 {
-  v3 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  if ([v3 isGroupLeader])
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  if ([avOutputDevice isGroupLeader])
   {
-    v4 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v5 = [v4 participatesInGroupPlayback] ^ 1;
+    avOutputDevice2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    v5 = [avOutputDevice2 participatesInGroupPlayback] ^ 1;
   }
 
   else
@@ -436,27 +436,27 @@
 
 - (BOOL)isAddedToHomeKit
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"SupportsHangdogRemoteControl"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"SupportsHangdogRemoteControl"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (unsigned)volumeCapabilities
 {
-  v3 = [(MRAVConcreteOutputDevice *)self sourceInfo];
-  v4 = [v3 sourceType];
+  sourceInfo = [(MRAVConcreteOutputDevice *)self sourceInfo];
+  sourceType = [sourceInfo sourceType];
 
-  if (v4 == 2)
+  if (sourceType == 2)
   {
     return 0;
   }
 
-  v6 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v7 = [v6 volumeControlType];
-  if (v7 == 2)
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  volumeControlType = [avOutputDevice volumeControlType];
+  if (volumeControlType == 2)
   {
     v8 = 5;
   }
@@ -466,7 +466,7 @@
     v8 = 0;
   }
 
-  if (v7 == 1)
+  if (volumeControlType == 1)
   {
     v5 = 2;
   }
@@ -481,17 +481,17 @@
 
 - (BOOL)isVolumeMuted
 {
-  v2 = [(MRAVConcreteOutputDevice *)self sourceInfo];
-  [v2 sourceType];
+  sourceInfo = [(MRAVConcreteOutputDevice *)self sourceInfo];
+  [sourceInfo sourceType];
 
   return 0;
 }
 
 - (id)bluetoothID
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"BluetoothIdentifier"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"BluetoothIdentifier"];
   v5 = [v4 copy];
 
   return v5;
@@ -499,61 +499,61 @@
 
 - (BOOL)supportsHAP
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 HAPConformance] == 2;
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  v3 = [avOutputDevice HAPConformance] == 2;
 
   return v3;
 }
 
 - (id)modelSpecificInfo
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 modelSpecificInformation];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  modelSpecificInformation = [avOutputDevice modelSpecificInformation];
 
-  return v3;
+  return modelSpecificInformation;
 }
 
 - (BOOL)hasBatteryLevel
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 hasBatteryLevel];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  hasBatteryLevel = [avOutputDevice hasBatteryLevel];
 
-  return v3;
+  return hasBatteryLevel;
 }
 
 - (BOOL)supportsExternalScreen
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 deviceFeatures];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  deviceFeatures = [avOutputDevice deviceFeatures];
 
-  return (v3 >> 1) & 1;
+  return (deviceFeatures >> 1) & 1;
 }
 
 - (BOOL)requiresAuthorization
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 requiresAuthorization];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  requiresAuthorization = [avOutputDevice requiresAuthorization];
 
-  return v3;
+  return requiresAuthorization;
 }
 
 - (id)clusterComposition
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 clusteredDeviceDescriptions];
-  v4 = [v3 mr_map:&__block_literal_global_50_0];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  clusteredDeviceDescriptions = [avOutputDevice clusteredDeviceDescriptions];
+  v4 = [clusteredDeviceDescriptions mr_map:&__block_literal_global_50_0];
 
   return v4;
 }
 
 - (unsigned)clusterType
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 clusterType];
-  v4 = v3;
-  if (v3 < 3)
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  clusterType = [avOutputDevice clusterType];
+  v4 = clusterType;
+  if (clusterType < 3)
   {
-    v4 = dword_1A2B810A0[v3];
+    v4 = dword_1A2B810A0[clusterType];
   }
 
   return v4;
@@ -561,199 +561,199 @@
 
 - (unint64_t)configuredClusterSize
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 configuredClusterSize];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  configuredClusterSize = [avOutputDevice configuredClusterSize];
 
-  return v3;
+  return configuredClusterSize;
 }
 
 - (BOOL)supportsRapportRemoteControlTransport
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"SupportsRapportRemoteControlTransport"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"SupportsRapportRemoteControlTransport"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)currentBluetoothListeningMode
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 currentBluetoothListeningMode];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  currentBluetoothListeningMode = [avOutputDevice currentBluetoothListeningMode];
 
-  return v3;
+  return currentBluetoothListeningMode;
 }
 
 - (id)availableBluetoothListeningModes
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 availableBluetoothListeningModes];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  availableBluetoothListeningModes = [avOutputDevice availableBluetoothListeningModes];
 
-  return v3;
+  return availableBluetoothListeningModes;
 }
 
 - (BOOL)producesLowFidelityAudio
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 producesLowFidelityAudio];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  producesLowFidelityAudio = [avOutputDevice producesLowFidelityAudio];
 
-  return v3;
+  return producesLowFidelityAudio;
 }
 
 - (BOOL)supportsSharePlayHandoff
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"SupportsSharePlayHandoff"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"SupportsSharePlayHandoff"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)discoveredOnSameInfra
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"IsDiscoveredOverInfra"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"IsDiscoveredOverInfra"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)clusterID
 {
-  v3 = [(MRAVConcreteOutputDevice *)self clusterComposition];
-  if ([v3 count])
+  clusterComposition = [(MRAVConcreteOutputDevice *)self clusterComposition];
+  if ([clusterComposition count])
   {
-    v4 = 0;
+    clusterID = 0;
   }
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v4 = [v5 clusterID];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    clusterID = [avOutputDevice clusterID];
   }
 
-  return v4;
+  return clusterID;
 }
 
 - (BOOL)isClusterLeader
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isClusterLeader];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isClusterLeader = [avOutputDevice isClusterLeader];
 
-  return v3;
+  return isClusterLeader;
 }
 
 - (BOOL)isAppleAccessory
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isAppleAccessory];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isAppleAccessory = [avOutputDevice isAppleAccessory];
 
-  return v3;
+  return isAppleAccessory;
 }
 
 - (BOOL)supportsEngageOnClusterActivation
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"SupportsClusterEngageOnActivation"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"SupportsClusterEngageOnActivation"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)supportsBluetoothSharing
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 supportsBluetoothSharing];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  supportsBluetoothSharing = [avOutputDevice supportsBluetoothSharing];
 
-  return v3;
+  return supportsBluetoothSharing;
 }
 
 - (id)deviceEnclosureColor
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"DeviceEnclosureColor"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"DeviceEnclosureColor"];
 
   return v4;
 }
 
 - (id)playingPairedDeviceName
 {
-  v3 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v4 = [(MRAVConcreteOutputDevice *)self _playingPairedDeviceNameForAVOutputDevice:v3];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  v4 = [(MRAVConcreteOutputDevice *)self _playingPairedDeviceNameForAVOutputDevice:avOutputDevice];
 
   return v4;
 }
 
 - (BOOL)supportsRapport
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"SupportsRapportRemoteControl"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"SupportsRapportRemoteControl"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isPickedOnPairedDevice
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isInUseByPairedDevice];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isInUseByPairedDevice = [avOutputDevice isInUseByPairedDevice];
 
-  return v3;
+  return isInUseByPairedDevice;
 }
 
 - (BOOL)supportsHeadTrackedSpatialAudio
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 supportsHeadTrackedSpatialAudio];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  supportsHeadTrackedSpatialAudio = [avOutputDevice supportsHeadTrackedSpatialAudio];
 
-  return v3;
+  return supportsHeadTrackedSpatialAudio;
 }
 
 - (BOOL)isHeadTrackedSpatialAudioActive
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isHeadTrackedSpatialAudioActive];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isHeadTrackedSpatialAudioActive = [avOutputDevice isHeadTrackedSpatialAudioActive];
 
-  return v3;
+  return isHeadTrackedSpatialAudioActive;
 }
 
 - (id)headTrackedSpatialAudioMode
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 headTrackedSpatialAudioMode];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  headTrackedSpatialAudioMode = [avOutputDevice headTrackedSpatialAudioMode];
 
-  return v3;
+  return headTrackedSpatialAudioMode;
 }
 
 - (id)dnsNames
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"CUDNSNames"];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"CUDNSNames"];
   v5 = [v4 copy];
 
   return v5;
@@ -761,36 +761,36 @@
 
 - (BOOL)supportsConversationDetection
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 supportsConversationDetection];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  supportsConversationDetection = [avOutputDevice supportsConversationDetection];
 
-  return v3;
+  return supportsConversationDetection;
 }
 
 - (BOOL)isConversationDetectionEnabled
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isConversationDetectionEnabled];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isConversationDetectionEnabled = [avOutputDevice isConversationDetectionEnabled];
 
-  return v3;
+  return isConversationDetectionEnabled;
 }
 
 - (id)alternateTransportType
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 alternateTransportType];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  alternateTransportType = [avOutputDevice alternateTransportType];
 
-  return v3;
+  return alternateTransportType;
 }
 
 - (BOOL)discoveredDeviceIsPlaying
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"ReceiverDeviceIsPlaying"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"ReceiverDeviceIsPlaying"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)wasDiscoveredInCache
@@ -798,34 +798,34 @@
   v3 = +[MRUserSettings currentSettings];
   if ([v3 supportDiscoveryCaching])
   {
-    v4 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    v5 = [v4 isCached];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    isCached = [avOutputDevice isCached];
   }
 
   else
   {
-    v5 = 0;
+    isCached = 0;
   }
 
-  return v5;
+  return isCached;
 }
 
 - (id)logicalDeviceID
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 useClusterDevices];
+  useClusterDevices = [v3 useClusterDevices];
 
-  if (v4)
+  if (useClusterDevices)
   {
-    v5 = 0;
+    tightSyncID = 0;
   }
 
   else
   {
-    v5 = [(MRAVConcreteOutputDevice *)self tightSyncID];
+    tightSyncID = [(MRAVConcreteOutputDevice *)self tightSyncID];
   }
 
-  return v5;
+  return tightSyncID;
 }
 
 MRAVOutputDeviceDescription *__46__MRAVConcreteOutputDevice_clusterComposition__block_invoke(uint64_t a1, void *a2)
@@ -836,17 +836,17 @@ MRAVOutputDeviceDescription *__46__MRAVConcreteOutputDevice_clusterComposition__
   return v3;
 }
 
-- (MRAVConcreteOutputDevice)initWithAVOutputDevice:(id)a3 outputContext:(id)a4
+- (MRAVConcreteOutputDevice)initWithAVOutputDevice:(id)device outputContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  deviceCopy = device;
+  contextCopy = context;
+  if (!contextCopy)
   {
     [MRAVConcreteOutputDevice initWithAVOutputDevice:a2 outputContext:self];
   }
 
   v9 = [[MRAVOutputDeviceSourceInfo alloc] initWithMultipleBuiltInDevices:0 sourceType:1];
-  v10 = [(MRAVConcreteOutputDevice *)&self->super.super.isa initWithAVOutputDevice:v7 sourceInfo:v9 outputContext:v8];
+  v10 = [(MRAVConcreteOutputDevice *)&self->super.super.isa initWithAVOutputDevice:deviceCopy sourceInfo:v9 outputContext:contextCopy];
 
   return v10;
 }
@@ -923,18 +923,18 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
 
 - (id)firmwareVersion
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 firmwareVersion];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  firmwareVersion = [avOutputDevice firmwareVersion];
 
-  return v3;
+  return firmwareVersion;
 }
 
-- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4
+- (BOOL)setCurrentBluetoothListeningMode:(id)mode error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  modeCopy = mode;
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
   v13 = 0;
-  v8 = [v7 setCurrentBluetoothListeningMode:v6 error:&v13];
+  v8 = [avOutputDevice setCurrentBluetoothListeningMode:modeCopy error:&v13];
 
   v9 = v13;
   v10 = 0;
@@ -943,10 +943,10 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
     v10 = [v9 mr_errorByEnvelopingWithMRError:43];
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;
@@ -954,24 +954,24 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
 
 - (BOOL)allowsHeadTrackedSpatialAudio
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 allowsHeadTrackedSpatialAudio];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  allowsHeadTrackedSpatialAudio = [avOutputDevice allowsHeadTrackedSpatialAudio];
 
-  return v3;
+  return allowsHeadTrackedSpatialAudio;
 }
 
-- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)mode error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  modeCopy = mode;
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
   v12 = 0;
-  v8 = [v7 setHeadTrackedSpatialAudioMode:v6 error:&v12];
+  v8 = [avOutputDevice setHeadTrackedSpatialAudioMode:modeCopy error:&v12];
 
   v9 = v12;
-  if (a4)
+  if (error)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
@@ -979,8 +979,8 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
 
 - (float)batteryLevel
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  [v2 batteryLevel];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  [avOutputDevice batteryLevel];
   v4 = v3;
 
   return v4;
@@ -988,72 +988,72 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
 
 - (BOOL)isCarPlayVideoActive
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isCarPlayVideoActive];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isCarPlayVideoActive = [avOutputDevice isCarPlayVideoActive];
 
-  return v3;
+  return isCarPlayVideoActive;
 }
 
 - (float)volume
 {
-  v3 = [(MRAVConcreteOutputDevice *)self sourceInfo];
-  v4 = [v3 sourceType];
+  sourceInfo = [(MRAVConcreteOutputDevice *)self sourceInfo];
+  sourceType = [sourceInfo sourceType];
 
-  if (v4 == 2)
+  if (sourceType == 2)
   {
     return 0.0;
   }
 
-  v6 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  [v6 volume];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  [avOutputDevice volume];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setVolume:(float)a3 details:(id)a4
+- (void)setVolume:(float)volume details:(id)details
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MRAVConcreteOutputDevice *)self sourceInfo];
-  v8 = [v7 sourceType];
+  detailsCopy = details;
+  sourceInfo = [(MRAVConcreteOutputDevice *)self sourceInfo];
+  sourceType = [sourceInfo sourceType];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(MRAVOutputDevice *)self debugName];
-  v11 = v10;
-  if (v8 == 2)
+  debugName = [(MRAVOutputDevice *)self debugName];
+  v11 = debugName;
+  if (sourceType == 2)
   {
-    v12 = [v9 initWithFormat:@"%@ -> %lf will not work with AVOD sourced from Discovery", v10, a3];
+    volume = [v9 initWithFormat:@"%@ -> %lf will not work with AVOD sourced from Discovery", debugName, volume];
 
     v13 = objc_alloc(MEMORY[0x1E696AD60]);
-    v14 = [v6 requestID];
+    requestID = [detailsCopy requestID];
 
-    v15 = [v13 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.setVolume", v14];
-    if (v12)
+    avOutputDevice = [v13 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.setVolume", requestID];
+    if (volume)
     {
-      [v15 appendFormat:@" for %@", v12];
+      [avOutputDevice appendFormat:@" for %@", volume];
     }
 
     v16 = _MRLogForCategory(0xAuLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v15;
+      v24 = avOutputDevice;
       _os_log_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v12 = [v9 initWithFormat:@"%@ -> %lf", v10, a3];
+    volume = [v9 initWithFormat:@"%@ -> %lf", debugName, volume];
 
     v17 = objc_alloc(MEMORY[0x1E696AD60]);
-    v18 = [v6 requestID];
+    requestID2 = [detailsCopy requestID];
 
-    v19 = [v17 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.setVolume", v18];
-    if (v12)
+    v19 = [v17 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.setVolume", requestID2];
+    if (volume)
     {
-      [v19 appendFormat:@" for %@", v12];
+      [v19 appendFormat:@" for %@", volume];
     }
 
     v20 = _MRLogForCategory(0xAuLL);
@@ -1064,55 +1064,55 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
       _os_log_impl(&dword_1A2860000, v20, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
     }
 
-    v15 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    *&v21 = a3;
-    [v15 setVolume:v21];
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    *&v21 = volume;
+    [avOutputDevice setVolume:v21];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)adjustVolume:(int64_t)a3 details:(id)a4
+- (void)adjustVolume:(int64_t)volume details:(id)details
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MRAVConcreteOutputDevice *)self sourceInfo];
-  v8 = [v7 sourceType];
+  detailsCopy = details;
+  sourceInfo = [(MRAVConcreteOutputDevice *)self sourceInfo];
+  sourceType = [sourceInfo sourceType];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(MRAVOutputDevice *)self debugName];
-  v11 = MRMediaRemoteVolumeControlAdjustmentDescription(a3);
+  debugName = [(MRAVOutputDevice *)self debugName];
+  v11 = MRMediaRemoteVolumeControlAdjustmentDescription(volume);
   v12 = v11;
-  if (v8 == 2)
+  if (sourceType == 2)
   {
-    v13 = [v9 initWithFormat:@"%@ -> %@  will not work with AVOD sourced from Discovery", v10, v11];
+    v13 = [v9 initWithFormat:@"%@ -> %@  will not work with AVOD sourced from Discovery", debugName, v11];
 
     v14 = objc_alloc(MEMORY[0x1E696AD60]);
-    v15 = [v6 requestID];
+    requestID = [detailsCopy requestID];
 
-    v16 = [v14 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.adjustVolume", v15];
+    avOutputDevice = [v14 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.adjustVolume", requestID];
     if (v13)
     {
-      [v16 appendFormat:@" for %@", v13];
+      [avOutputDevice appendFormat:@" for %@", v13];
     }
 
     v17 = _MRLogForCategory(0xAuLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v16;
+      v24 = avOutputDevice;
       _os_log_impl(&dword_1A2860000, v17, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v13 = [v9 initWithFormat:@"%@ -> %@", v10, v11];
+    v13 = [v9 initWithFormat:@"%@ -> %@", debugName, v11];
 
     v18 = objc_alloc(MEMORY[0x1E696AD60]);
-    v19 = [v6 requestID];
+    requestID2 = [detailsCopy requestID];
 
-    v20 = [v18 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.adjustVolume", v19];
+    v20 = [v18 initWithFormat:@"%@<%@>", @"ConcreteOutputDevice.adjustVolume", requestID2];
     if (v13)
     {
       [v20 appendFormat:@" for %@", v13];
@@ -1126,20 +1126,20 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
       _os_log_impl(&dword_1A2860000, v21, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
     }
 
-    v16 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-    if ([v16 volumeControlType] == 2)
+    avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+    if ([avOutputDevice volumeControlType] == 2)
     {
-      if ((a3 - 1) > 2)
+      if ((volume - 1) > 2)
       {
-        if ((a3 - 4) <= 2)
+        if ((volume - 4) <= 2)
         {
-          [v16 decreaseVolumeByCount:1];
+          [avOutputDevice decreaseVolumeByCount:1];
         }
       }
 
       else
       {
-        [v16 increaseVolumeByCount:1];
+        [avOutputDevice increaseVolumeByCount:1];
       }
     }
   }
@@ -1147,12 +1147,12 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsUID:(id)a3
+- (BOOL)containsUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v6 = [v5 deviceID];
-  if ([v6 isEqualToString:v4])
+  dCopy = d;
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  deviceID = [avOutputDevice deviceID];
+  if ([deviceID isEqualToString:dCopy])
   {
     v7 = 1;
   }
@@ -1161,7 +1161,7 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
   {
     v9.receiver = self;
     v9.super_class = MRAVConcreteOutputDevice;
-    v7 = [(MRAVOutputDevice *)&v9 containsUID:v4];
+    v7 = [(MRAVOutputDevice *)&v9 containsUID:dCopy];
   }
 
   return v7;
@@ -1169,20 +1169,20 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
 
 - (BOOL)isActivatedForContinuityScreen
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 isActivatedForContinuityScreen];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  isActivatedForContinuityScreen = [avOutputDevice isActivatedForContinuityScreen];
 
-  return v3;
+  return isActivatedForContinuityScreen;
 }
 
 - (BOOL)representsUGLSender
 {
-  v2 = [(MRAVConcreteOutputDevice *)self avOutputDevice];
-  v3 = [v2 airPlayProperties];
-  v4 = [v3 objectForKeyedSubscript:@"IsRepresentingUGLSender"];
-  v5 = [v4 BOOLValue];
+  avOutputDevice = [(MRAVConcreteOutputDevice *)self avOutputDevice];
+  airPlayProperties = [avOutputDevice airPlayProperties];
+  v4 = [airPlayProperties objectForKeyedSubscript:@"IsRepresentingUGLSender"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (AVOutputContext)outputContext
@@ -1192,55 +1192,55 @@ BOOL __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputD
   return WeakRetained;
 }
 
-- (id)initWithAVOutputDevice:(void *)a3 sourceInfo:(void *)a4 outputContext:
+- (id)initWithAVOutputDevice:(void *)device sourceInfo:(void *)info outputContext:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (!a1)
+  deviceCopy = device;
+  infoCopy = info;
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = MRAVConcreteOutputDevice;
-  a1 = objc_msgSendSuper2(&v14, sel_init);
-  if (!a1)
+  self = objc_msgSendSuper2(&v14, sel_init);
+  if (!self)
   {
     goto LABEL_3;
   }
 
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:sel_initWithAVOutputDevice_sourceInfo_outputContext_ object:a1 file:@"MRAVConcreteOutputDevice.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"avOutputDevice"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithAVOutputDevice_sourceInfo_outputContext_ object:self file:@"MRAVConcreteOutputDevice.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"avOutputDevice"}];
   }
 
-  objc_storeStrong(a1 + 38, a2);
-  objc_storeStrong(a1 + 39, a3);
-  objc_storeWeak(a1 + 49, v10);
-  if ([(MRAVConcreteOutputDevice *)a1 _loadLocalOverridesWithOutputContext:v10 outputDevice:v8])
+  objc_storeStrong(self + 38, a2);
+  objc_storeStrong(self + 39, device);
+  objc_storeWeak(self + 49, infoCopy);
+  if ([(MRAVConcreteOutputDevice *)self _loadLocalOverridesWithOutputContext:infoCopy outputDevice:v8])
   {
 LABEL_3:
-    a1 = a1;
-    v11 = a1;
+    self = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_8:
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)_loadLocalOverridesWithOutputContext:(void *)a3 outputDevice:
+- (BOOL)_loadLocalOverridesWithOutputContext:(void *)context outputDevice:
 {
   v56 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
     IsMediaRemoteDaemon = MRProcessIsMediaRemoteDaemon();
     v8 = +[MROrigin localOrigin];
@@ -1255,11 +1255,11 @@ LABEL_8:
     }
     v9 = ;
 
-    if ([v6 deviceSubType] != 15 && objc_msgSend(a1, "isLocalDevice"))
+    if ([contextCopy deviceSubType] != 15 && objc_msgSend(self, "isLocalDevice"))
     {
-      v10 = [v9 deviceUID];
-      OUTLINED_FUNCTION_2_12(v10, 320);
-      [a1[40] length];
+      deviceUID = [v9 deviceUID];
+      OUTLINED_FUNCTION_2_12(deviceUID, 320);
+      [self[40] length];
     }
 
     v45[0] = MEMORY[0x1E69E9820];
@@ -1268,7 +1268,7 @@ LABEL_8:
     v45[3] = &unk_1E76A3130;
     v11 = v5;
     v46 = v11;
-    v12 = v6;
+    v12 = contextCopy;
     v47 = v12;
     v13 = (__78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputDevice___block_invoke_2)(v45);
     v42[0] = MEMORY[0x1E69E9820];
@@ -1276,15 +1276,15 @@ LABEL_8:
     v42[2] = __78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputDevice___block_invoke_4;
     v42[3] = &unk_1E76A3158;
     v44 = v13;
-    v42[4] = a1;
+    v42[4] = self;
     v14 = v12;
     v43 = v14;
     if ((__78__MRAVConcreteOutputDevice__loadLocalOverridesWithOutputContext_outputDevice___block_invoke_4)(v42) && v9)
     {
-      v15 = [v9 airPlayGroupUID];
-      OUTLINED_FUNCTION_2_12(v15, 328);
-      v16 = [v9 parentGroupID];
-      OUTLINED_FUNCTION_2_12(v16, 336);
+      airPlayGroupUID = [v9 airPlayGroupUID];
+      OUTLINED_FUNCTION_2_12(airPlayGroupUID, 328);
+      parentGroupID = [v9 parentGroupID];
+      OUTLINED_FUNCTION_2_12(parentGroupID, 336);
       [OUTLINED_FUNCTION_1_22() isGroupLeader];
       v17 = [OUTLINED_FUNCTION_0_22() numberWithBool:?];
       OUTLINED_FUNCTION_2_12(v17, 344);
@@ -1308,30 +1308,30 @@ LABEL_8:
     if (v13)
     {
       v23 = +[MRUserSettings currentSettings];
-      v24 = [v23 canHostMultiplayerStream];
+      canHostMultiplayerStream = [v23 canHostMultiplayerStream];
 
-      if (v24)
+      if (canHostMultiplayerStream)
       {
         if (v9)
         {
-          v25 = [v9 senderDefaultGroupUID];
-          v26 = [v9 clusterType];
-          v41 = [v9 preferredClusterLeaderID];
-          v27 = [v9 deviceUID];
+          senderDefaultGroupUID = [v9 senderDefaultGroupUID];
+          clusterType = [v9 clusterType];
+          preferredClusterLeaderID = [v9 preferredClusterLeaderID];
+          deviceUID2 = [v9 deviceUID];
         }
 
         else
         {
-          v25 = MRMediaRemoteCopyLocalAirPlaySenderDefaultGroupIdentity();
-          v26 = MRMediaRemoteCopyLocalAirPlayReceiverClusterType();
-          v41 = MRMediaRemoteCopyLocalClusterLeaderIdentity();
-          v27 = MRMediaRemoteAirPlayReceiverCopyPairingIdentity();
+          senderDefaultGroupUID = MRMediaRemoteCopyLocalAirPlaySenderDefaultGroupIdentity();
+          clusterType = MRMediaRemoteCopyLocalAirPlayReceiverClusterType();
+          preferredClusterLeaderID = MRMediaRemoteCopyLocalClusterLeaderIdentity();
+          deviceUID2 = MRMediaRemoteAirPlayReceiverCopyPairingIdentity();
         }
 
-        v40 = v27;
-        if (v26)
+        v40 = deviceUID2;
+        if (clusterType)
         {
-          v28 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v27, "isEqualToString:", v41) ^ 1}];
+          v28 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(deviceUID2, "isEqualToString:", preferredClusterLeaderID) ^ 1}];
         }
 
         else
@@ -1340,18 +1340,18 @@ LABEL_8:
         }
 
         v29 = [v11 ID];
-        v30 = MRComputeGroupID(v25, v28, v29);
+        v30 = MRComputeGroupID(senderDefaultGroupUID, v28, v29);
         OUTLINED_FUNCTION_2_12(v30, 328);
 
-        if (v26)
+        if (clusterType)
         {
         }
 
-        if ([a1[41] length])
+        if ([self[41] length])
         {
-          v31 = a1[41];
-          v32 = [v14 groupID];
-          LOBYTE(v31) = [v31 isEqualToString:v32];
+          v31 = self[41];
+          groupID = [v14 groupID];
+          LOBYTE(v31) = [v31 isEqualToString:groupID];
 
           if ((v31 & 1) == 0)
           {
@@ -1359,15 +1359,15 @@ LABEL_8:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
               v36 = [v14 ID];
-              v37 = [v14 name];
-              v38 = [v14 groupID];
-              v39 = a1[41];
+              name = [v14 name];
+              groupID2 = [v14 groupID];
+              v39 = self[41];
               *buf = 138413058;
               v49 = v36;
               v50 = 2112;
-              v51 = v37;
+              v51 = name;
               v52 = 2112;
-              v53 = v38;
+              v53 = groupID2;
               v54 = 2112;
               v55 = v39;
               _os_log_error_impl(&dword_1A2860000, v33, OS_LOG_TYPE_ERROR, "[MRAVConcreteOutputDevice] GroupID mismatch on %@:%@: %@ -> %@", buf, 0x2Au);
@@ -1379,27 +1379,27 @@ LABEL_8:
   }
 
   v34 = *MEMORY[0x1E69E9840];
-  return a1 != 0;
+  return self != 0;
 }
 
-- (id)_playingPairedDeviceNameForAVOutputDevice:(uint64_t)a1
+- (id)_playingPairedDeviceNameForAVOutputDevice:(uint64_t)device
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (device)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
     v4 = [MEMORY[0x1E6958818] pairedDevicesConnectedToOutputDevice:{v3, 0}];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
-    if (v5)
+    name = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    if (name)
     {
       v6 = *v12;
       while (2)
       {
-        for (i = 0; i != v5; i = i + 1)
+        for (i = 0; i != name; i = i + 1)
         {
           if (*v12 != v6)
           {
@@ -1409,13 +1409,13 @@ LABEL_8:
           v8 = *(*(&v11 + 1) + 8 * i);
           if ([v8 isPlaying])
           {
-            v5 = [v8 name];
+            name = [v8 name];
             goto LABEL_12;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
-        if (v5)
+        name = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        if (name)
         {
           continue;
         }
@@ -1429,12 +1429,12 @@ LABEL_12:
 
   else
   {
-    v5 = 0;
+    name = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return name;
 }
 
 - (void)initWithAVOutputDevice:(uint64_t)a1 outputContext:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

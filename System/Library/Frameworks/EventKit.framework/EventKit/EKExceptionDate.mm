@@ -1,21 +1,21 @@
 @interface EKExceptionDate
 + (id)knownIdentityKeysForComparison;
-- (EKExceptionDate)initWithDate:(id)a3;
+- (EKExceptionDate)initWithDate:(id)date;
 - (id)description;
 @end
 
 @implementation EKExceptionDate
 
-- (EKExceptionDate)initWithDate:(id)a3
+- (EKExceptionDate)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = EKExceptionDate;
   v5 = [(EKObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EKExceptionDate *)v5 setDate:v4];
+    [(EKExceptionDate *)v5 setDate:dateCopy];
   }
 
   return v6;
@@ -48,8 +48,8 @@ void __49__EKExceptionDate_knownIdentityKeysForComparison__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKExceptionDate *)self date];
-  v6 = [v3 stringWithFormat:@"%@ <%p> Date = %@", v4, self, v5];
+  date = [(EKExceptionDate *)self date];
+  v6 = [v3 stringWithFormat:@"%@ <%p> Date = %@", v4, self, date];
 
   return v6;
 }

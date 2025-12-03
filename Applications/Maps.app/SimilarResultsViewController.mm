@@ -2,8 +2,8 @@
 - (BOOL)_isDisplayingAssociatedTrailsOrTrailheads;
 - (_MKInfoCardAnalyticsDelegate)analyticsDelegate;
 - (void)_captureCloseAction;
-- (void)_captureTapActionWithSearchResult:(id)a3;
-- (void)setHeaderTitle:(id)a3;
+- (void)_captureTapActionWithSearchResult:(id)result;
+- (void)setHeaderTitle:(id)title;
 - (void)updateTitle;
 - (void)viewDidLoad;
 @end
@@ -19,25 +19,25 @@
 
 - (BOOL)_isDisplayingAssociatedTrailsOrTrailheads
 {
-  v2 = [(SimilarResultsViewController *)self originalMapItem];
-  v3 = [v2 _trailHead];
-  v4 = v3 != 0;
+  originalMapItem = [(SimilarResultsViewController *)self originalMapItem];
+  _trailHead = [originalMapItem _trailHead];
+  v4 = _trailHead != 0;
 
   return v4;
 }
 
 - (void)_captureCloseAction
 {
-  v3 = [(SimilarResultsViewController *)self originalMapItem];
-  v4 = [v3 _relatedPlaceLists];
-  v5 = [v4 firstObject];
-  v6 = [v5 type];
+  originalMapItem = [(SimilarResultsViewController *)self originalMapItem];
+  _relatedPlaceLists = [originalMapItem _relatedPlaceLists];
+  firstObject = [_relatedPlaceLists firstObject];
+  type = [firstObject type];
 
-  if (v6 <= 1)
+  if (type <= 1)
   {
-    if (v6)
+    if (type)
     {
-      if (v6 != 1)
+      if (type != 1)
       {
         return;
       }
@@ -49,15 +49,15 @@
 
   else
   {
-    if (v6 == 2)
+    if (type == 2)
     {
       v7 = 656;
       goto LABEL_16;
     }
 
-    if (v6 != 4)
+    if (type != 4)
     {
-      if (v6 != 3)
+      if (type != 3)
       {
         return;
       }
@@ -72,17 +72,17 @@
     return;
   }
 
-  v8 = [(SimilarResultsViewController *)self originalMapItem];
-  v9 = [v8 _mapsui_associatedHikingItemType];
+  originalMapItem2 = [(SimilarResultsViewController *)self originalMapItem];
+  _mapsui_associatedHikingItemType = [originalMapItem2 _mapsui_associatedHikingItemType];
 
-  if (v9 == 2)
+  if (_mapsui_associatedHikingItemType == 2)
   {
     v7 = 129;
   }
 
   else
   {
-    if (v9 != 1)
+    if (_mapsui_associatedHikingItemType != 1)
     {
       return;
     }
@@ -91,35 +91,35 @@
   }
 
 LABEL_16:
-  v10 = [(SimilarResultsViewController *)self analyticsDelegate];
-  [v10 infoCardAnalyticsDidSelectAction:4 target:v7 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+  analyticsDelegate = [(SimilarResultsViewController *)self analyticsDelegate];
+  [analyticsDelegate infoCardAnalyticsDidSelectAction:4 target:v7 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
 }
 
-- (void)_captureTapActionWithSearchResult:(id)a3
+- (void)_captureTapActionWithSearchResult:(id)result
 {
-  v25 = a3;
-  v4 = [(SimilarResultsViewController *)self originalMapItem];
-  v5 = [v4 _relatedPlaceLists];
-  v6 = [v5 firstObject];
-  v7 = [v6 type];
+  resultCopy = result;
+  originalMapItem = [(SimilarResultsViewController *)self originalMapItem];
+  _relatedPlaceLists = [originalMapItem _relatedPlaceLists];
+  firstObject = [_relatedPlaceLists firstObject];
+  type = [firstObject type];
 
-  if (v7 <= 1)
+  if (type <= 1)
   {
-    if (!v7)
+    if (!type)
     {
 LABEL_9:
       if ([(SimilarResultsViewController *)self _isDisplayingAssociatedTrailsOrTrailheads])
       {
-        v14 = [(SimilarResultsViewController *)self originalMapItem];
-        v15 = [v14 _mapsui_associatedHikingItemType];
+        originalMapItem2 = [(SimilarResultsViewController *)self originalMapItem];
+        _mapsui_associatedHikingItemType = [originalMapItem2 _mapsui_associatedHikingItemType];
 
-        if (v15 == 1)
+        if (_mapsui_associatedHikingItemType == 1)
         {
           v16 = 365;
           v17 = 128;
         }
 
-        else if (v15 == 2)
+        else if (_mapsui_associatedHikingItemType == 2)
         {
           v16 = 412;
           v17 = 129;
@@ -131,14 +131,14 @@ LABEL_9:
           v16 = 0;
         }
 
-        v22 = [v25 mapItem];
-        v23 = [v22 _hasMUID];
+        mapItem = [resultCopy mapItem];
+        _hasMUID = [mapItem _hasMUID];
 
-        if (v23)
+        if (_hasMUID)
         {
 LABEL_29:
-          v24 = [v25 mapItem];
-          v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v24 _muid]);
+          mapItem2 = [resultCopy mapItem];
+          analyticsDelegate2 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [mapItem2 _muid]);
 
           if (!v17)
           {
@@ -151,27 +151,27 @@ LABEL_29:
 
       else
       {
-        v18 = [v25 mapItem];
-        v19 = [v18 _hasHikeInfo];
+        mapItem3 = [resultCopy mapItem];
+        _hasHikeInfo = [mapItem3 _hasHikeInfo];
 
-        if (!v19)
+        if (!_hasHikeInfo)
         {
-          v8 = 0;
+          analyticsDelegate2 = 0;
           goto LABEL_17;
         }
 
-        v20 = [v25 mapItem];
-        v21 = [v20 _hasHikeInfo];
+        mapItem4 = [resultCopy mapItem];
+        _hasHikeInfo2 = [mapItem4 _hasHikeInfo];
 
         v16 = 467;
         v17 = 133;
-        if (v21)
+        if (_hasHikeInfo2)
         {
           goto LABEL_29;
         }
       }
 
-      v8 = 0;
+      analyticsDelegate2 = 0;
       if (!v17)
       {
         goto LABEL_17;
@@ -183,20 +183,20 @@ LABEL_30:
         goto LABEL_17;
       }
 
-      v9 = [(SimilarResultsViewController *)self analyticsDelegate];
-      [v9 infoCardAnalyticsDidSelectAction:v16 target:v17 eventValue:v8 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+      analyticsDelegate = [(SimilarResultsViewController *)self analyticsDelegate];
+      [analyticsDelegate infoCardAnalyticsDidSelectAction:v16 target:v17 eventValue:analyticsDelegate2 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
       goto LABEL_16;
     }
 
-    if (v7 != 1)
+    if (type != 1)
     {
       goto LABEL_18;
     }
 
-    v8 = [(SimilarResultsViewController *)self analyticsDelegate];
-    v9 = [v25 mapItem];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v9 _muid]);
-    v11 = v8;
+    analyticsDelegate2 = [(SimilarResultsViewController *)self analyticsDelegate];
+    analyticsDelegate = [resultCopy mapItem];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [analyticsDelegate _muid]);
+    v11 = analyticsDelegate2;
     v12 = 6079;
     v13 = 655;
 LABEL_15:
@@ -208,21 +208,21 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  switch(v7)
+  switch(type)
   {
     case 2:
-      v8 = [(SimilarResultsViewController *)self analyticsDelegate];
-      v9 = [v25 mapItem];
-      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v9 _muid]);
-      v11 = v8;
+      analyticsDelegate2 = [(SimilarResultsViewController *)self analyticsDelegate];
+      analyticsDelegate = [resultCopy mapItem];
+      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [analyticsDelegate _muid]);
+      v11 = analyticsDelegate2;
       v12 = 6081;
       v13 = 656;
       goto LABEL_15;
     case 3:
-      v8 = [(SimilarResultsViewController *)self analyticsDelegate];
-      v9 = [v25 mapItem];
-      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v9 _muid]);
-      v11 = v8;
+      analyticsDelegate2 = [(SimilarResultsViewController *)self analyticsDelegate];
+      analyticsDelegate = [resultCopy mapItem];
+      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [analyticsDelegate _muid]);
+      v11 = analyticsDelegate2;
       v12 = 6080;
       v13 = 654;
       goto LABEL_15;
@@ -245,24 +245,24 @@ LABEL_18:
   else
   {
     headerTitle = self->_headerTitle;
-    v4 = [(SimpleResultsViewController *)self titleHeaderView];
-    [v4 setTitle:headerTitle];
+    titleHeaderView = [(SimpleResultsViewController *)self titleHeaderView];
+    [titleHeaderView setTitle:headerTitle];
   }
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (sub_10000FA08(self) == 5)
   {
     v6.receiver = self;
     v6.super_class = SimilarResultsViewController;
-    [(SimpleResultsViewController *)&v6 setHeaderTitle:v5];
+    [(SimpleResultsViewController *)&v6 setHeaderTitle:titleCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_headerTitle, a3);
+    objc_storeStrong(&self->_headerTitle, title);
     if ([(SimilarResultsViewController *)self isViewLoaded])
     {
       [(SimilarResultsViewController *)self updateTitle];
@@ -276,20 +276,20 @@ LABEL_18:
   v7.super_class = SimilarResultsViewController;
   [(SimpleResultsViewController *)&v7 viewDidLoad];
   v3 = sub_10000FA08(self);
-  v4 = [(SimpleResultsViewController *)self titleHeaderView];
-  v5 = v4;
+  titleHeaderView = [(SimpleResultsViewController *)self titleHeaderView];
+  v5 = titleHeaderView;
   if (v3 == 5)
   {
-    [v4 setButtonHidden:0];
+    [titleHeaderView setButtonHidden:0];
   }
 
   else
   {
-    [v4 setTitleView:0];
+    [titleHeaderView setTitleView:0];
   }
 
-  v6 = [(SimpleResultsViewController *)self headerView];
-  [v6 setPreservesSuperviewLayoutMargins:1];
+  headerView = [(SimpleResultsViewController *)self headerView];
+  [headerView setPreservesSuperviewLayoutMargins:1];
 
   [(SimilarResultsViewController *)self updateTitle];
 }

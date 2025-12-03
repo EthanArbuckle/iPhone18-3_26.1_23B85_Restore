@@ -1,6 +1,6 @@
 @interface _UIDelayedPresentationContext
 - (UIWindowScene)windowSceneIgnoringEvents;
-- (_UIDelayedPresentationContext)initWithTimeout:(double)a3 cancellationHandler:(id)a4;
+- (_UIDelayedPresentationContext)initWithTimeout:(double)timeout cancellationHandler:(id)handler;
 - (id)delayingController;
 - (int64_t)decrementRequestCount;
 - (int64_t)incrementRequestCount;
@@ -21,8 +21,8 @@
 {
   if (self->_presentInvocation)
   {
-    v2 = [(_UIDelayedPresentationContext *)self invocationTarget];
-    v3 = objc_getAssociatedObject(v2, &unk_1ED498592);
+    invocationTarget = [(_UIDelayedPresentationContext *)self invocationTarget];
+    v3 = objc_getAssociatedObject(invocationTarget, &unk_1ED498592);
   }
 
   else
@@ -40,9 +40,9 @@
 
   if (WeakRetained)
   {
-    v4 = [(_UIDelayedPresentationContext *)self delayingController];
+    delayingController = [(_UIDelayedPresentationContext *)self delayingController];
     v5 = objc_opt_class();
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid state: deallocating delayed presentation of <%s: %p> while still ignoring events", class_getName(v5), v4];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid state: deallocating delayed presentation of <%s: %p> while still ignoring events", class_getName(v5), delayingController];
     v7 = *(__UILogGetCategoryCachedImpl("Presentation", &dealloc___s_category_4) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -69,15 +69,15 @@
   return v2;
 }
 
-- (_UIDelayedPresentationContext)initWithTimeout:(double)a3 cancellationHandler:(id)a4
+- (_UIDelayedPresentationContext)initWithTimeout:(double)timeout cancellationHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = _UIDelayedPresentationContext;
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [(_UIDelayedPresentationContext *)&v8 init];
   v6->_enableUserInteraction = 0;
-  v6->_timeout = a3;
-  [(_UIDelayedPresentationContext *)v6 setCancellationHandler:v5, v8.receiver, v8.super_class];
+  v6->_timeout = timeout;
+  [(_UIDelayedPresentationContext *)v6 setCancellationHandler:handlerCopy, v8.receiver, v8.super_class];
 
   v6->_reqcnt = 1;
   return v6;
@@ -92,33 +92,33 @@
 
 - (void)beginDelayedPresentation
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 8) & 1) == 0)
+    if ((*(self + 8) & 1) == 0)
     {
-      v2 = [a1 delayingController];
+      delayingController = [self delayingController];
       v3 = objc_opt_class();
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Beginning delayed presentation of <%s: %p>", class_getName(v3), v2];
-      v5 = [a1 windowSceneIgnoringEvents];
-      [v5 _beginIgnoringInteractionEventsForReason:v4];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Beginning delayed presentation of <%s: %p>", class_getName(v3), delayingController];
+      windowSceneIgnoringEvents = [self windowSceneIgnoringEvents];
+      [windowSceneIgnoringEvents _beginIgnoringInteractionEventsForReason:v4];
     }
 
     v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
-    v7 = *(a1 + 48);
-    *(a1 + 48) = v6;
+    v7 = *(self + 48);
+    *(self + 48) = v6;
 
-    objc_initWeak(&location, a1);
-    v8 = *(a1 + 48);
+    objc_initWeak(&location, self);
+    v8 = *(self + 48);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __57___UIDelayedPresentationContext_beginDelayedPresentation__block_invoke;
     handler[3] = &unk_1E70F5A28;
     objc_copyWeak(&v12, &location);
     dispatch_source_set_event_handler(v8, handler);
-    v9 = *(a1 + 48);
-    v10 = dispatch_time(0, (*(a1 + 40) * 1000000000.0));
-    dispatch_source_set_timer(v9, v10, (*(a1 + 40) * 10.0 * 1000000000.0), 0);
-    dispatch_resume(*(a1 + 48));
+    v9 = *(self + 48);
+    v10 = dispatch_time(0, (*(self + 40) * 1000000000.0));
+    dispatch_source_set_timer(v9, v10, (*(self + 40) * 10.0 * 1000000000.0), 0);
+    dispatch_resume(*(self + 48));
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }

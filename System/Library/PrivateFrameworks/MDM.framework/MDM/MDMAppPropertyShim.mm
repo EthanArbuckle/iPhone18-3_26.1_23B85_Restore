@@ -1,8 +1,8 @@
 @interface MDMAppPropertyShim
-+ (id)_dmdKeysToRequestToGetItems:(id)a3;
++ (id)_dmdKeysToRequestToGetItems:(id)items;
 + (id)_itemKeyToDMDKeyMappingTable;
 - (DMFConnection)deviceManagementUserConnection;
-- (id)_appDictionaryFromApp:(id)a3;
+- (id)_appDictionaryFromApp:(id)app;
 - (void)_createAppItems;
 - (void)_createKeysForRequest;
 - (void)_createRequest;
@@ -25,15 +25,15 @@
   [(MDMAppPropertyShim *)self _createKeysForRequest];
   v6 = objc_opt_new();
   [v6 setType:6];
-  v3 = [(MDMAppPropertyShim *)self appsRequested];
-  v4 = [v3 allObjects];
-  [v6 setBundleIdentifiers:v4];
+  appsRequested = [(MDMAppPropertyShim *)self appsRequested];
+  allObjects = [appsRequested allObjects];
+  [v6 setBundleIdentifiers:allObjects];
 
   [v6 setManagedAppsOnly:{-[MDMAppPropertyShim shouldReturnManagedAppsOnly](self, "shouldReturnManagedAppsOnly")}];
   [v6 setDeleteFeedback:0];
   [v6 setAdvanceTransientStates:0];
-  v5 = [(MDMAppPropertyShim *)self keysForRequest];
-  [v6 setPropertyKeys:v5];
+  keysForRequest = [(MDMAppPropertyShim *)self keysForRequest];
+  [v6 setPropertyKeys:keysForRequest];
 
   [(MDMAppPropertyShim *)self setRequest:v6];
 }
@@ -41,18 +41,18 @@
 - (void)_createKeysForRequest
 {
   v3 = objc_opt_class();
-  v5 = [(MDMAppPropertyShim *)self itemsRequested];
-  v4 = [v3 _dmdKeysToRequestToGetItems:v5];
+  itemsRequested = [(MDMAppPropertyShim *)self itemsRequested];
+  v4 = [v3 _dmdKeysToRequestToGetItems:itemsRequested];
   [(MDMAppPropertyShim *)self setKeysForRequest:v4];
 }
 
 - (void)_executeRequest
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MDMAppPropertyShim *)self deviceManagementUserConnection];
-  v4 = [(MDMAppPropertyShim *)self request];
+  deviceManagementUserConnection = [(MDMAppPropertyShim *)self deviceManagementUserConnection];
+  request = [(MDMAppPropertyShim *)self request];
   v12 = 0;
-  v5 = [v3 performRequest:v4 error:&v12];
+  v5 = [deviceManagementUserConnection performRequest:request error:&v12];
   v6 = v12;
 
   if (!v5)
@@ -75,15 +75,15 @@
 - (void)_createAppItems
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMAppPropertyShim *)self response];
-  v4 = [v3 appsByBundleIdentifier];
+  response = [(MDMAppPropertyShim *)self response];
+  appsByBundleIdentifier = [response appsByBundleIdentifier];
 
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = appsByBundleIdentifier;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -125,9 +125,9 @@
   deviceManagementUserConnection = self->_deviceManagementUserConnection;
   if (!deviceManagementUserConnection)
   {
-    v4 = [MEMORY[0x277D04BF8] currentUserConnection];
+    currentUserConnection = [MEMORY[0x277D04BF8] currentUserConnection];
     v5 = self->_deviceManagementUserConnection;
-    self->_deviceManagementUserConnection = v4;
+    self->_deviceManagementUserConnection = currentUserConnection;
 
     deviceManagementUserConnection = self->_deviceManagementUserConnection;
   }
@@ -176,17 +176,17 @@
   return v2;
 }
 
-+ (id)_dmdKeysToRequestToGetItems:(id)a3
++ (id)_dmdKeysToRequestToGetItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _itemKeyToDMDKeyMappingTable];
+  itemsCopy = items;
+  _itemKeyToDMDKeyMappingTable = [self _itemKeyToDMDKeyMappingTable];
   v6 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -201,7 +201,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v5 objectForKeyedSubscript:{*(*(&v16 + 1) + 8 * i), v16}];
+        v12 = [_itemKeyToDMDKeyMappingTable objectForKeyedSubscript:{*(*(&v16 + 1) + 8 * i), v16}];
         if (v12)
         {
           [v6 addObject:v12];
@@ -218,23 +218,23 @@
   [v6 addObject:@"installationState"];
   [v6 addObject:@"storeItemIdentifier"];
   [v6 addObject:@"sourceIdentifier"];
-  v13 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
-- (id)_appDictionaryFromApp:(id)a3
+- (id)_appDictionaryFromApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = objc_opt_new();
-  v6 = [v4 installationState] - 2;
+  v6 = [appCopy installationState] - 2;
   if (v6 <= 5 && ((0x37u >> v6) & 1) != 0)
   {
     v7 = 0xCu >> v6;
-    v8 = [(MDMAppPropertyShim *)self itemsRequested];
-    v9 = [v8 containsObject:@"Installing"];
+    itemsRequested = [(MDMAppPropertyShim *)self itemsRequested];
+    v9 = [itemsRequested containsObject:@"Installing"];
 
     v10 = MEMORY[0x277CBEC38];
     v11 = MEMORY[0x277CBEC28];
@@ -253,102 +253,102 @@
       [v5 setObject:v12 forKeyedSubscript:@"Installing"];
     }
 
-    v13 = [v4 bundleIdentifier];
-    [v5 setObject:v13 forKeyedSubscript:@"Identifier"];
+    bundleIdentifier = [appCopy bundleIdentifier];
+    [v5 setObject:bundleIdentifier forKeyedSubscript:@"Identifier"];
 
-    v14 = [(MDMAppPropertyShim *)self itemsRequested];
-    v15 = [v14 containsObject:@"ExternalVersionIdentifier"];
+    itemsRequested2 = [(MDMAppPropertyShim *)self itemsRequested];
+    v15 = [itemsRequested2 containsObject:@"ExternalVersionIdentifier"];
 
     if (v15)
     {
       v16 = MEMORY[0x277CCABB0];
-      v17 = [v4 externalVersionIdentifier];
-      v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "unsignedIntegerValue")}];
+      externalVersionIdentifier = [appCopy externalVersionIdentifier];
+      v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(externalVersionIdentifier, "unsignedIntegerValue")}];
       [v5 setObject:v18 forKeyedSubscript:@"ExternalVersionIdentifier"];
     }
 
-    v19 = [(MDMAppPropertyShim *)self itemsRequested];
-    v20 = [v19 containsObject:@"DistributorIdentifier"];
+    itemsRequested3 = [(MDMAppPropertyShim *)self itemsRequested];
+    v20 = [itemsRequested3 containsObject:@"DistributorIdentifier"];
 
     if (v20)
     {
-      v21 = [v4 distributorIdentifier];
-      [v5 setObject:v21 forKeyedSubscript:@"DistributorIdentifier"];
+      distributorIdentifier = [appCopy distributorIdentifier];
+      [v5 setObject:distributorIdentifier forKeyedSubscript:@"DistributorIdentifier"];
     }
 
-    v22 = [(MDMAppPropertyShim *)self itemsRequested];
-    v23 = [v22 containsObject:@"Version"];
+    itemsRequested4 = [(MDMAppPropertyShim *)self itemsRequested];
+    v23 = [itemsRequested4 containsObject:@"Version"];
 
     if (v23)
     {
-      v24 = [v4 version];
-      [v5 setObject:v24 forKeyedSubscript:@"Version"];
+      version = [appCopy version];
+      [v5 setObject:version forKeyedSubscript:@"Version"];
     }
 
-    v25 = [(MDMAppPropertyShim *)self itemsRequested];
-    v26 = [v25 containsObject:@"ShortVersion"];
+    itemsRequested5 = [(MDMAppPropertyShim *)self itemsRequested];
+    v26 = [itemsRequested5 containsObject:@"ShortVersion"];
 
     if (v26)
     {
-      v27 = [v4 shortVersion];
-      [v5 setObject:v27 forKeyedSubscript:@"ShortVersion"];
+      shortVersion = [appCopy shortVersion];
+      [v5 setObject:shortVersion forKeyedSubscript:@"ShortVersion"];
     }
 
-    v28 = [(MDMAppPropertyShim *)self itemsRequested];
-    v29 = [v28 containsObject:@"Name"];
+    itemsRequested6 = [(MDMAppPropertyShim *)self itemsRequested];
+    v29 = [itemsRequested6 containsObject:@"Name"];
 
     if (v29)
     {
-      v30 = [v4 displayName];
-      [v5 setObject:v30 forKeyedSubscript:@"Name"];
+      displayName = [appCopy displayName];
+      [v5 setObject:displayName forKeyedSubscript:@"Name"];
     }
 
-    v31 = [(MDMAppPropertyShim *)self itemsRequested];
-    v32 = [v31 containsObject:@"BundleSize"];
+    itemsRequested7 = [(MDMAppPropertyShim *)self itemsRequested];
+    v32 = [itemsRequested7 containsObject:@"BundleSize"];
 
     if (v32)
     {
-      v33 = [v4 staticUsage];
-      [v5 setObject:v33 forKeyedSubscript:@"BundleSize"];
+      staticUsage = [appCopy staticUsage];
+      [v5 setObject:staticUsage forKeyedSubscript:@"BundleSize"];
     }
 
-    v34 = [(MDMAppPropertyShim *)self itemsRequested];
-    v35 = [v34 containsObject:@"DynamicSize"];
+    itemsRequested8 = [(MDMAppPropertyShim *)self itemsRequested];
+    v35 = [itemsRequested8 containsObject:@"DynamicSize"];
 
     if (v35 && (v7 & 1) != 0)
     {
-      v36 = [v4 dynamicUsage];
-      v37 = [v4 onDemandResourcesUsage];
-      v38 = v37;
-      if (v37)
+      dynamicUsage = [appCopy dynamicUsage];
+      onDemandResourcesUsage = [appCopy onDemandResourcesUsage];
+      v38 = onDemandResourcesUsage;
+      if (onDemandResourcesUsage)
       {
-        if (v36)
+        if (dynamicUsage)
         {
-          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v37, "unsignedLongLongValue") + objc_msgSend(v36, "unsignedLongLongValue")}];
+          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(onDemandResourcesUsage, "unsignedLongLongValue") + objc_msgSend(dynamicUsage, "unsignedLongLongValue")}];
 
-          v36 = v39;
+          dynamicUsage = v39;
         }
 
         else
         {
-          v36 = v37;
+          dynamicUsage = onDemandResourcesUsage;
         }
       }
 
-      [v5 setObject:v36 forKeyedSubscript:@"DynamicSize"];
+      [v5 setObject:dynamicUsage forKeyedSubscript:@"DynamicSize"];
     }
 
-    v41 = [(MDMAppPropertyShim *)self itemsRequested];
-    v42 = [v41 containsObject:@"HasUpdateAvailable"];
+    itemsRequested9 = [(MDMAppPropertyShim *)self itemsRequested];
+    v42 = [itemsRequested9 containsObject:@"HasUpdateAvailable"];
 
     if (v42)
     {
-      v43 = [v4 storeItemIdentifier];
-      v44 = [v43 longLongValue];
+      storeItemIdentifier = [appCopy storeItemIdentifier];
+      longLongValue = [storeItemIdentifier longLongValue];
 
-      if (v44)
+      if (longLongValue)
       {
-        if ([v4 hasUpdateAvailable])
+        if ([appCopy hasUpdateAvailable])
         {
           v45 = v10;
         }
@@ -362,12 +362,12 @@
       }
     }
 
-    v46 = [(MDMAppPropertyShim *)self itemsRequested];
-    v47 = [v46 containsObject:@"IsValidated"];
+    itemsRequested10 = [(MDMAppPropertyShim *)self itemsRequested];
+    v47 = [itemsRequested10 containsObject:@"IsValidated"];
 
     if (v47)
     {
-      if ([v4 isValidated])
+      if ([appCopy isValidated])
       {
         v48 = v10;
       }
@@ -380,12 +380,12 @@
       [v5 setObject:v48 forKeyedSubscript:@"IsValidated"];
     }
 
-    v49 = [(MDMAppPropertyShim *)self itemsRequested];
-    v50 = [v49 containsObject:@"AppStoreVendable"];
+    itemsRequested11 = [(MDMAppPropertyShim *)self itemsRequested];
+    v50 = [itemsRequested11 containsObject:@"AppStoreVendable"];
 
     if (v50)
     {
-      if ([v4 isAppStoreVendable])
+      if ([appCopy isAppStoreVendable])
       {
         v51 = v10;
       }
@@ -398,12 +398,12 @@
       [v5 setObject:v51 forKeyedSubscript:@"AppStoreVendable"];
     }
 
-    v52 = [(MDMAppPropertyShim *)self itemsRequested];
-    v53 = [v52 containsObject:@"DeviceBasedVPP"];
+    itemsRequested12 = [(MDMAppPropertyShim *)self itemsRequested];
+    v53 = [itemsRequested12 containsObject:@"DeviceBasedVPP"];
 
     if (v53)
     {
-      if ([v4 isDeviceBasedVPP])
+      if ([appCopy isDeviceBasedVPP])
       {
         v54 = v10;
       }
@@ -416,12 +416,12 @@
       [v5 setObject:v54 forKeyedSubscript:@"DeviceBasedVPP"];
     }
 
-    v55 = [(MDMAppPropertyShim *)self itemsRequested];
-    v56 = [v55 containsObject:@"BetaApp"];
+    itemsRequested13 = [(MDMAppPropertyShim *)self itemsRequested];
+    v56 = [itemsRequested13 containsObject:@"BetaApp"];
 
     if (v56)
     {
-      if ([v4 isBetaApp])
+      if ([appCopy isBetaApp])
       {
         v57 = v10;
       }
@@ -434,12 +434,12 @@
       [v5 setObject:v57 forKeyedSubscript:@"BetaApp"];
     }
 
-    v58 = [(MDMAppPropertyShim *)self itemsRequested];
-    v59 = [v58 containsObject:@"AdHocCodeSigned"];
+    itemsRequested14 = [(MDMAppPropertyShim *)self itemsRequested];
+    v59 = [itemsRequested14 containsObject:@"AdHocCodeSigned"];
 
     if (v59)
     {
-      if ([v4 isAdHocCodeSigned])
+      if ([appCopy isAdHocCodeSigned])
       {
         v60 = v10;
       }
@@ -452,12 +452,12 @@
       [v5 setObject:v60 forKeyedSubscript:@"AdHocCodeSigned"];
     }
 
-    v61 = [(MDMAppPropertyShim *)self itemsRequested];
-    v62 = [v61 containsObject:@"IsAppClip"];
+    itemsRequested15 = [(MDMAppPropertyShim *)self itemsRequested];
+    v62 = [itemsRequested15 containsObject:@"IsAppClip"];
 
     if (v62)
     {
-      if ([v4 isAppClip])
+      if ([appCopy isAppClip])
       {
         v63 = v10;
       }
@@ -470,9 +470,9 @@
       [v5 setObject:v63 forKeyedSubscript:@"IsAppClip"];
     }
 
-    v64 = [v4 sourceIdentifier];
+    sourceIdentifier = [appCopy sourceIdentifier];
 
-    if (v64)
+    if (sourceIdentifier)
     {
       [v5 setObject:*MEMORY[0x277D035A8] forKeyedSubscript:@"Source"];
     }

@@ -1,12 +1,12 @@
 @interface ChromeScenePhaseView
-- (_TtC8CameraUI20ChromeScenePhaseView)initWithCoder:(id)a3;
-- (_TtC8CameraUI20ChromeScenePhaseView)initWithFrame:(CGRect)a3;
+- (_TtC8CameraUI20ChromeScenePhaseView)initWithCoder:(id)coder;
+- (_TtC8CameraUI20ChromeScenePhaseView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
 @implementation ChromeScenePhaseView
 
-- (_TtC8CameraUI20ChromeScenePhaseView)initWithFrame:(CGRect)a3
+- (_TtC8CameraUI20ChromeScenePhaseView)initWithFrame:(CGRect)frame
 {
   v4 = OBJC_IVAR____TtC8CameraUI20ChromeScenePhaseView_scenePhaseModel;
   type metadata accessor for ChromeScenePhaseModel(0);
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC8CameraUI20ChromeScenePhaseView)initWithCoder:(id)a3
+- (_TtC8CameraUI20ChromeScenePhaseView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8CameraUI20ChromeScenePhaseView_scenePhaseModel;
   type metadata accessor for ChromeScenePhaseModel(0);
@@ -42,7 +42,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3966A4C();
 }
 

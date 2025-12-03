@@ -1,21 +1,21 @@
 @interface PETServiceUploadAssembler
 + (id)loadPET1Config;
 + (id)loadPETConfig;
-- (BOOL)_canLog:(id)a3 messageGroup:(id)a4 isInternal:(BOOL)a5;
-- (BOOL)_checkMessageSampling:(id)a3;
-- (BOOL)_checkSampling:(id)a3;
-- (PETServiceUploadAssembler)initWithRootDir:(id)a3;
-- (id)assembleAggregatedUploadWithTracker:(id)a3;
-- (id)assembleUnaggregatedUploadWithTracker:(id)a3 messageGroup:(id)a4;
+- (BOOL)_canLog:(id)log messageGroup:(id)group isInternal:(BOOL)internal;
+- (BOOL)_checkMessageSampling:(id)sampling;
+- (BOOL)_checkSampling:(id)sampling;
+- (PETServiceUploadAssembler)initWithRootDir:(id)dir;
+- (id)assembleAggregatedUploadWithTracker:(id)tracker;
+- (id)assembleUnaggregatedUploadWithTracker:(id)tracker messageGroup:(id)group;
 @end
 
 @implementation PETServiceUploadAssembler
 
-- (BOOL)_checkMessageSampling:(id)a3
+- (BOOL)_checkMessageSampling:(id)sampling
 {
-  v4 = a3;
-  v5 = [(PETServiceUploadAssembler *)self petConfig];
-  [v5 messageSamplingForMessageName:v4 isSeed:0];
+  samplingCopy = sampling;
+  petConfig = [(PETServiceUploadAssembler *)self petConfig];
+  [petConfig messageSamplingForMessageName:samplingCopy isSeed:0];
   v7 = v6;
 
   result = 0;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (BOOL)_checkSampling:(id)a3
+- (BOOL)_checkSampling:(id)sampling
 {
-  v4 = a3;
-  v5 = [(PETServiceUploadAssembler *)self petConfig];
-  [v5 deviceSamplingForMessageName:v4 isSeed:0];
+  samplingCopy = sampling;
+  petConfig = [(PETServiceUploadAssembler *)self petConfig];
+  [petConfig deviceSamplingForMessageName:samplingCopy isSeed:0];
   v7 = v6;
 
   v8 = 0;
@@ -44,16 +44,16 @@
 
     else
     {
-      v9 = [(PETServiceUploadAssembler *)self petConfig];
-      v10 = [v9 groupForMessageName:v4];
+      petConfig2 = [(PETServiceUploadAssembler *)self petConfig];
+      v10 = [petConfig2 groupForMessageName:samplingCopy];
 
-      v11 = [(PETServiceUploadAssembler *)self deviceId];
-      v12 = [(PETServiceUploadAssembler *)self petConfig];
-      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@%lu", v11, v10, [v12 version]);
+      deviceId = [(PETServiceUploadAssembler *)self deviceId];
+      petConfig3 = [(PETServiceUploadAssembler *)self petConfig];
+      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@%lu", deviceId, v10, [petConfig3 version]);
 
-      v14 = [v13 UTF8String];
-      v15 = strlen(v14);
-      CC_MD5(v14, v15, md);
+      uTF8String = [v13 UTF8String];
+      v15 = strlen(uTF8String);
+      CC_MD5(uTF8String, v15, md);
       LODWORD(v16) = *md;
       v8 = v7 * 4294967300.0 > v16;
     }
@@ -62,21 +62,21 @@
   return v8;
 }
 
-- (BOOL)_canLog:(id)a3 messageGroup:(id)a4 isInternal:(BOOL)a5
+- (BOOL)_canLog:(id)log messageGroup:(id)group isInternal:(BOOL)internal
 {
-  v8 = a4;
-  v9 = [a3 name];
-  v10 = [(PETServiceUploadAssembler *)self petConfig];
-  v11 = [v10 whitelistForMessageName:v9];
+  groupCopy = group;
+  name = [log name];
+  petConfig = [(PETServiceUploadAssembler *)self petConfig];
+  v11 = [petConfig whitelistForMessageName:name];
 
-  if (v11 && (a5 || [(PETServiceUploadAssembler *)self _checkSampling:v9]))
+  if (v11 && (internal || [(PETServiceUploadAssembler *)self _checkSampling:name]))
   {
     v12 = +[PETMetadata getCountryCode];
     v15 = 1;
     if ([v12 isEqualToString:@"CN"])
     {
-      v13 = [(PETServiceUploadAssembler *)self petConfig];
-      v14 = [v13 isChinaEnabledForMessageName:v9 messageGroup:v8];
+      petConfig2 = [(PETServiceUploadAssembler *)self petConfig];
+      v14 = [petConfig2 isChinaEnabledForMessageName:name messageGroup:groupCopy];
 
       if (!v14)
       {
@@ -93,27 +93,27 @@
   return v15;
 }
 
-- (id)assembleUnaggregatedUploadWithTracker:(id)a3 messageGroup:(id)a4
+- (id)assembleUnaggregatedUploadWithTracker:(id)tracker messageGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  groupCopy = group;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   [v8 setMetadata:v9];
 
-  v10 = [v8 metadata];
-  v11 = [(PETServiceUploadAssembler *)self petConfig];
-  [v10 setMetadataWithConfigVersion:{objc_msgSend(v11, "version")}];
+  metadata = [v8 metadata];
+  petConfig = [(PETServiceUploadAssembler *)self petConfig];
+  [metadata setMetadataWithConfigVersion:{objc_msgSend(petConfig, "version")}];
 
-  v12 = [(PETServiceUploadAssembler *)self isConfigEnabled];
-  v13 = [v8 metadata];
-  [v13 setIsConfigEnabled:v12];
+  isConfigEnabled = [(PETServiceUploadAssembler *)self isConfigEnabled];
+  metadata2 = [v8 metadata];
+  [metadata2 setIsConfigEnabled:isConfigEnabled];
 
-  v14 = [v8 metadata];
-  [v14 setMessageGroup:v7];
+  metadata3 = [v8 metadata];
+  [metadata3 setMessageGroup:groupCopy];
 
   [v8 setIsCompressed:1];
-  if ([v6 isTesting])
+  if ([trackerCopy isTesting])
   {
     v15 = 0;
   }
@@ -133,22 +133,22 @@
   v36 = &unk_10000C598;
   v16 = objc_opt_new();
   v37 = v16;
-  v38 = self;
-  v17 = v7;
+  selfCopy = self;
+  v17 = groupCopy;
   v39 = v17;
   v42 = v15;
   v18 = v8;
   v40 = v18;
   v41 = &v43;
-  [v6 enumerateMessagesWithBlock:&v33 messageGroup:v17 clearStore:1];
+  [trackerCopy enumerateMessagesWithBlock:&v33 messageGroup:v17 clearStore:1];
   [v16 close];
   if ((v44[3] & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v19 = [v16 compressedMessages];
-  v20 = v19 == 0;
+  compressedMessages = [v16 compressedMessages];
+  v20 = compressedMessages == 0;
 
   if (v20)
   {
@@ -162,16 +162,16 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v21 = [v16 compressedMessages];
-  v22 = [v21 length] > 0x1F8000;
+  compressedMessages2 = [v16 compressedMessages];
+  v22 = [compressedMessages2 length] > 0x1F8000;
 
   if (v22)
   {
     v23 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v16 compressedMessages];
-      v25 = [v24 length];
+      compressedMessages3 = [v16 compressedMessages];
+      v25 = [compressedMessages3 length];
       *buf = 134218240;
       v50 = v25;
       v51 = 2048;
@@ -180,8 +180,8 @@ LABEL_11:
     }
 
     v47[0] = @"size";
-    v26 = [v16 compressedMessages];
-    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v26 length]);
+    compressedMessages4 = [v16 compressedMessages];
+    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [compressedMessages4 length]);
     v47[1] = @"group";
     v48[0] = v27;
     v48[1] = v17;
@@ -191,8 +191,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v32 = [v16 compressedMessages];
-  [v18 setCompressedMessages:v32];
+  compressedMessages5 = [v16 compressedMessages];
+  [v18 setCompressedMessages:compressedMessages5];
 
   v30 = v18;
 LABEL_12:
@@ -202,31 +202,31 @@ LABEL_12:
   return v30;
 }
 
-- (id)assembleAggregatedUploadWithTracker:(id)a3
+- (id)assembleAggregatedUploadWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [v4 aggregateState];
-  v6 = [v5 checkIntegrity];
+  trackerCopy = tracker;
+  aggregateState = [trackerCopy aggregateState];
+  checkIntegrity = [aggregateState checkIntegrity];
 
-  if (v6)
+  if (checkIntegrity)
   {
-    v7 = objc_opt_new();
+    aggregateState2 = objc_opt_new();
     v8 = objc_opt_new();
-    [v7 setMetadata:v8];
+    [aggregateState2 setMetadata:v8];
 
-    v9 = [v7 metadata];
-    v10 = [(PETServiceUploadAssembler *)self petConfig];
-    [v9 setMetadataWithConfigVersion:{objc_msgSend(v10, "version")}];
+    metadata = [aggregateState2 metadata];
+    petConfig = [(PETServiceUploadAssembler *)self petConfig];
+    [metadata setMetadataWithConfigVersion:{objc_msgSend(petConfig, "version")}];
 
-    v11 = [(PETServiceUploadAssembler *)self isConfigEnabled];
-    v12 = [v7 metadata];
-    [v12 setIsConfigEnabled:v11];
+    isConfigEnabled = [(PETServiceUploadAssembler *)self isConfigEnabled];
+    metadata2 = [aggregateState2 metadata];
+    [metadata2 setIsConfigEnabled:isConfigEnabled];
 
-    v13 = [v7 metadata];
-    [v13 setMessageGroup:@"_aggregated"];
+    metadata3 = [aggregateState2 metadata];
+    [metadata3 setMessageGroup:@"_aggregated"];
 
-    [v7 setIsCompressed:1];
-    if ([v4 isTesting])
+    [aggregateState2 setIsCompressed:1];
+    if ([trackerCopy isTesting])
     {
       v14 = 0;
     }
@@ -246,15 +246,15 @@ LABEL_12:
     v32 = &unk_10000C570;
     v16 = objc_opt_new();
     v33 = v16;
-    v34 = self;
+    selfCopy = self;
     v36 = v14;
     v35 = v37;
-    [v4 enumerateAggregatedMessagesWithBlock:&v29 clearStore:1];
+    [trackerCopy enumerateAggregatedMessagesWithBlock:&v29 clearStore:1];
     [v16 close];
     if (v38[24])
     {
-      v17 = [v16 compressedMessages];
-      v18 = v17 == 0;
+      compressedMessages = [v16 compressedMessages];
+      v18 = compressedMessages == 0;
 
       if (v18)
       {
@@ -263,23 +263,23 @@ LABEL_12:
 
       else
       {
-        v19 = [v16 compressedMessages];
-        v20 = [v19 length] > 0x1F8000;
+        compressedMessages2 = [v16 compressedMessages];
+        v20 = [compressedMessages2 length] > 0x1F8000;
 
         if (!v20)
         {
-          v28 = [v16 compressedMessages];
-          [v7 setCompressedMessages:v28];
+          compressedMessages3 = [v16 compressedMessages];
+          [aggregateState2 setCompressedMessages:compressedMessages3];
 
-          v15 = v7;
+          v15 = aggregateState2;
           goto LABEL_16;
         }
 
         v21 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v16 compressedMessages];
-          v23 = [v22 length];
+          compressedMessages4 = [v16 compressedMessages];
+          v23 = [compressedMessages4 length];
           *buf = 134218240;
           v44 = v23;
           v45 = 2048;
@@ -288,8 +288,8 @@ LABEL_12:
         }
 
         v41[0] = @"size";
-        v24 = [v16 compressedMessages];
-        v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v24 length]);
+        compressedMessages5 = [v16 compressedMessages];
+        v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [compressedMessages5 length]);
         v41[1] = @"group";
         v42[0] = v25;
         v42[1] = @"_aggregated";
@@ -312,17 +312,17 @@ LABEL_16:
   }
 
   AnalyticsSendEvent();
-  v7 = [v4 aggregateState];
-  [v7 reset];
+  aggregateState2 = [trackerCopy aggregateState];
+  [aggregateState2 reset];
   v15 = 0;
 LABEL_17:
 
   return v15;
 }
 
-- (PETServiceUploadAssembler)initWithRootDir:(id)a3
+- (PETServiceUploadAssembler)initWithRootDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v18.receiver = self;
   v18.super_class = PETServiceUploadAssembler;
   v5 = [(PETServiceUploadAssembler *)&v18 init];
@@ -334,9 +334,9 @@ LABEL_17:
   v6 = +[PETServiceUploadAssembler loadPETConfig];
   [(PETServiceUploadAssembler *)v5 setPetConfig:v6];
 
-  v7 = [(PETServiceUploadAssembler *)v5 petConfig];
+  petConfig = [(PETServiceUploadAssembler *)v5 petConfig];
 
-  if (!v7)
+  if (!petConfig)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -350,9 +350,9 @@ LABEL_17:
   v8 = +[PETServiceUploadAssembler loadPET1Config];
   [(PETServiceUploadAssembler *)v5 setPet1Config:v8];
 
-  v9 = [(PETServiceUploadAssembler *)v5 pet1Config];
+  pet1Config = [(PETServiceUploadAssembler *)v5 pet1Config];
 
-  if (!v9)
+  if (!pet1Config)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -376,14 +376,14 @@ LABEL_11:
   }
 
   [(PETServiceUploadAssembler *)v5 setIsConfigEnabled:v10];
-  v12 = [v4 stringByAppendingPathComponent:@"device_id"];
+  v12 = [dirCopy stringByAppendingPathComponent:@"device_id"];
   v13 = [[_PASDeviceIdentifier alloc] initWithBasePath:v12];
-  v14 = [v13 UUID];
-  [(PETServiceUploadAssembler *)v5 setDeviceId:v14];
+  uUID = [v13 UUID];
+  [(PETServiceUploadAssembler *)v5 setDeviceId:uUID];
 
-  v15 = [(PETServiceUploadAssembler *)v5 deviceId];
+  deviceId = [(PETServiceUploadAssembler *)v5 deviceId];
 
-  if (v15)
+  if (deviceId)
   {
 
 LABEL_16:
@@ -454,8 +454,8 @@ LABEL_5:
     if (v7)
     {
       v8 = [[PETConfig alloc] initWithFile:v7];
-      v9 = [v4 version];
-      if (v9 <= [v8 version])
+      version = [v4 version];
+      if (version <= [v8 version])
       {
         v10 = v8;
       }

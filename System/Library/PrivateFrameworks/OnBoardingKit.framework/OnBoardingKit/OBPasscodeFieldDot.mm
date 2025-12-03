@@ -2,8 +2,8 @@
 - (CGSize)intrinsicContentSize;
 - (OBPasscodeFieldDot)init;
 - (void)_updateView;
-- (void)setFilled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFilled:(BOOL)filled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OBPasscodeFieldDot
@@ -16,14 +16,14 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(OBPasscodeFieldDot *)v2 layer];
-    [v4 setCornerRadius:10.0];
+    layer = [(OBPasscodeFieldDot *)v2 layer];
+    [layer setCornerRadius:10.0];
 
-    v5 = [(OBPasscodeFieldDot *)v3 layer];
-    [v5 setMasksToBounds:1];
+    layer2 = [(OBPasscodeFieldDot *)v3 layer];
+    [layer2 setMasksToBounds:1];
 
-    v6 = [(OBPasscodeFieldDot *)v3 layer];
-    [v6 setBorderWidth:2.0];
+    layer3 = [(OBPasscodeFieldDot *)v3 layer];
+    [layer3 setBorderWidth:2.0];
 
     [(OBPasscodeFieldDot *)v3 _updateView];
   }
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (void)setFilled:(BOOL)a3
+- (void)setFilled:(BOOL)filled
 {
-  if (self->_filled != a3)
+  if (self->_filled != filled)
   {
-    self->_filled = a3;
+    self->_filled = filled;
     [(OBPasscodeFieldDot *)self _updateView];
   }
 }
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = OBPasscodeFieldDot;
-  [(OBPasscodeFieldDot *)&v4 traitCollectionDidChange:a3];
+  [(OBPasscodeFieldDot *)&v4 traitCollectionDidChange:change];
   [(OBPasscodeFieldDot *)self _updateView];
 }
 
@@ -61,28 +61,28 @@
 {
   if ([(OBPasscodeFieldDot *)self isFilled])
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
-    v4 = [v3 CGColor];
-    v5 = [(OBPasscodeFieldDot *)self layer];
-    [v5 setBackgroundColor:v4];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    cGColor = [labelColor CGColor];
+    layer = [(OBPasscodeFieldDot *)self layer];
+    [layer setBackgroundColor:cGColor];
 
     [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v7 = [v6 CGColor];
-    v8 = [(OBPasscodeFieldDot *)self layer];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    cGColor2 = [clearColor CGColor];
+    layer2 = [(OBPasscodeFieldDot *)self layer];
+    [layer2 setBackgroundColor:cGColor2];
 
     [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
   v12 = ;
   v9 = v12;
-  v10 = [v12 CGColor];
-  v11 = [(OBPasscodeFieldDot *)self layer];
-  [v11 setBorderColor:v10];
+  cGColor3 = [v12 CGColor];
+  layer3 = [(OBPasscodeFieldDot *)self layer];
+  [layer3 setBorderColor:cGColor3];
 }
 
 @end

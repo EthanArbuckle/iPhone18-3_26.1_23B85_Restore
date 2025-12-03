@@ -1,52 +1,52 @@
 @interface HUCameraSmartDetectionSettingsModule
-+ (BOOL)isSpecificMotionSelectedForConfiguration:(id)a3 withCurrentConfiguration:(id)a4;
-+ (id)_updatedCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 context:(unint64_t)a5;
-+ (id)_updatedNotificationCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5;
-+ (id)_updatedRecordingCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5;
-+ (id)notificationConfiguration:(id)a3 forRecordingTriggers:(unint64_t)a4;
++ (BOOL)isSpecificMotionSelectedForConfiguration:(id)configuration withCurrentConfiguration:(id)currentConfiguration;
++ (id)_updatedCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration context:(unint64_t)context;
++ (id)_updatedNotificationCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile;
++ (id)_updatedRecordingCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile;
++ (id)notificationConfiguration:(id)configuration forRecordingTriggers:(unint64_t)triggers;
 + (id)notificationConfigurationForAClipIsRecorded;
-+ (id)recordingConfiguration:(id)a3 withCurrentConfiguration:(id)a4 forProfile:(id)a5;
-+ (id)specificMotionNotificationConfigurationForCameraProfile:(id)a3;
-+ (id)updateCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5 context:(unint64_t)a6;
-- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)a3;
-- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 conditionCollection:(id)a5 settingsContext:(unint64_t)a6;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItem:(id)a3;
-- (id)enableSmartMotion:(BOOL)a3 forItem:(id)a4;
++ (id)recordingConfiguration:(id)configuration withCurrentConfiguration:(id)currentConfiguration forProfile:(id)profile;
++ (id)specificMotionNotificationConfigurationForCameraProfile:(id)profile;
++ (id)updateCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile context:(unint64_t)context;
+- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)updater;
+- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles conditionCollection:(id)collection settingsContext:(unint64_t)context;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItem:(id)item;
+- (id)enableSmartMotion:(BOOL)motion forItem:(id)item;
 - (id)itemProviders;
-- (id)updateMotionDetectionSettingForItem:(id)a3;
-- (id)updateSignificantEventConfiguration:(id)a3;
+- (id)updateMotionDetectionSettingForItem:(id)item;
+- (id)updateSignificantEventConfiguration:(id)configuration;
 @end
 
 @implementation HUCameraSmartDetectionSettingsModule
 
-- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 conditionCollection:(id)a5 settingsContext:(unint64_t)a6
+- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles conditionCollection:(id)collection settingsContext:(unint64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (![v12 count])
+  updaterCopy = updater;
+  profilesCopy = profiles;
+  collectionCopy = collection;
+  if (![profilesCopy count])
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsModule.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsModule.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
   }
 
   v23.receiver = self;
   v23.super_class = HUCameraSmartDetectionSettingsModule;
-  v14 = [(HFItemModule *)&v23 initWithItemUpdater:v11];
+  v14 = [(HFItemModule *)&v23 initWithItemUpdater:updaterCopy];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [profilesCopy copy];
     cameraProfiles = v14->_cameraProfiles;
     v14->_cameraProfiles = v15;
 
-    v14->_settingsContext = a6;
-    objc_storeStrong(&v14->_conditionCollection, a5);
-    v17 = [v13 conditions];
-    v18 = [v17 na_map:&__block_literal_global_238];
-    v19 = [v18 firstObject];
+    v14->_settingsContext = context;
+    objc_storeStrong(&v14->_conditionCollection, collection);
+    conditions = [collectionCopy conditions];
+    v18 = [conditions na_map:&__block_literal_global_238];
+    firstObject = [v18 firstObject];
     condition = v14->_condition;
-    v14->_condition = v19;
+    v14->_condition = firstObject;
   }
 
   return v14;
@@ -72,26 +72,26 @@ void *__111__HUCameraSmartDetectionSettingsModule_initWithItemUpdater_cameraProf
   return v4;
 }
 
-- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)a3
+- (HUCameraSmartDetectionSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_cameraProfiles_conditionCollection_settingsContext_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsModule.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUCameraSmartDetectionSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsModule.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUCameraSmartDetectionSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (id)enableSmartMotion:(BOOL)a3 forItem:(id)a4
+- (id)enableSmartMotion:(BOOL)motion forItem:(id)item
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  v9 = [v8 BOOLValue];
+  motionCopy = motion;
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = !v4;
+    v10 = !motionCopy;
   }
 
   else
@@ -104,8 +104,8 @@ void *__111__HUCameraSmartDetectionSettingsModule_initWithItemUpdater_cameraProf
     if ([(HUCameraSmartDetectionSettingsModule *)self settingsContext]== 1)
     {
       v11 = +[HUCameraSmartDetectionSettingsModule selectedNotificationConfigurationForSmartMotion];
-      v12 = [(HUCameraSmartDetectionSettingsModule *)self aClipIsRecordedItem];
-      v13 = [v6 isEqual:v12];
+      aClipIsRecordedItem = [(HUCameraSmartDetectionSettingsModule *)self aClipIsRecordedItem];
+      v13 = [itemCopy isEqual:aClipIsRecordedItem];
 
       if (v13)
       {
@@ -126,7 +126,7 @@ void *__111__HUCameraSmartDetectionSettingsModule_initWithItemUpdater_cameraProf
     }
 
     v16 = v14;
-    if (v4)
+    if (motionCopy)
     {
       v17 = v11;
     }
@@ -136,23 +136,23 @@ void *__111__HUCameraSmartDetectionSettingsModule_initWithItemUpdater_cameraProf
       v17 = v14;
     }
 
-    v15 = [(HUCameraSmartDetectionSettingsModule *)self updateSignificantEventConfiguration:v17];
+    futureWithNoResult = [(HUCameraSmartDetectionSettingsModule *)self updateSignificantEventConfiguration:v17];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v15;
+  return futureWithNoResult;
 }
 
-- (id)updateMotionDetectionSettingForItem:(id)a3
+- (id)updateMotionDetectionSettingForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -165,39 +165,39 @@ void *__111__HUCameraSmartDetectionSettingsModule_initWithItemUpdater_cameraProf
 
   v8 = v7;
 
-  if (v8 && (-[HUCameraSmartDetectionSettingsModule motionDetectionSettingsItemProvider](self, "motionDetectionSettingsItemProvider"), v9 = objc_claimAutoreleasedReturnValue(), [v9 items], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v4), v10, v9, v11))
+  if (v8 && (-[HUCameraSmartDetectionSettingsModule motionDetectionSettingsItemProvider](self, "motionDetectionSettingsItemProvider"), v9 = objc_claimAutoreleasedReturnValue(), [v9 items], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", itemCopy), v10, v9, v11))
   {
-    v12 = [(HUCameraSmartDetectionSettingsModule *)self updateSignificantEventConfiguration:v8];
+    futureWithNoResult = [(HUCameraSmartDetectionSettingsModule *)self updateSignificantEventConfiguration:v8];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  v13 = v12;
+  v13 = futureWithNoResult;
 
   return v13;
 }
 
-- (id)updateSignificantEventConfiguration:(id)a3
+- (id)updateSignificantEventConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
-  v6 = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
-  v7 = [v6 allObjects];
+  cameraProfiles = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
+  allObjects = [cameraProfiles allObjects];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__HUCameraSmartDetectionSettingsModule_updateSignificantEventConfiguration___block_invoke;
   v16[3] = &unk_277DC2818;
   objc_copyWeak(&v18, &location);
-  v8 = v5;
+  v8 = configurationCopy;
   v17 = v8;
-  v9 = [v7 na_map:v16];
+  v9 = [allObjects na_map:v16];
 
   v10 = MEMORY[0x277D2C900];
-  v11 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v12 = [v10 combineAllFutures:v9 ignoringErrors:1 scheduler:v11];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v12 = [v10 combineAllFutures:v9 ignoringErrors:1 scheduler:mainThreadScheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __76__HUCameraSmartDetectionSettingsModule_updateSignificantEventConfiguration___block_invoke_3_32;
@@ -355,99 +355,99 @@ void __76__HUCameraSmartDetectionSettingsModule_updateSignificantEventConfigurat
   v5 = [v6 performItemUpdateRequest:v4];
 }
 
-+ (id)updateCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5 context:(unint64_t)a6
++ (id)updateCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile context:(unint64_t)context
 {
-  if (a6)
+  if (context)
   {
-    [HUCameraSmartDetectionSettingsModule _updatedNotificationCurrentSignificantEventConfiguration:a3 withSelectedConfiguration:a4 cameraProfile:a5];
+    [HUCameraSmartDetectionSettingsModule _updatedNotificationCurrentSignificantEventConfiguration:configuration withSelectedConfiguration:selectedConfiguration cameraProfile:profile];
   }
 
   else
   {
-    [HUCameraSmartDetectionSettingsModule _updatedRecordingCurrentSignificantEventConfiguration:a3 withSelectedConfiguration:a4 cameraProfile:a5];
+    [HUCameraSmartDetectionSettingsModule _updatedRecordingCurrentSignificantEventConfiguration:configuration withSelectedConfiguration:selectedConfiguration cameraProfile:profile];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)_updatedRecordingCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5
++ (id)_updatedRecordingCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 eventTypes])
+  configurationCopy = configuration;
+  selectedConfigurationCopy = selectedConfiguration;
+  profileCopy = profile;
+  if (![selectedConfigurationCopy eventTypes])
   {
-    v10 = [v8 copy];
+    defaultAnyMotionConfiguration = [selectedConfigurationCopy copy];
     goto LABEL_5;
   }
 
-  if ([v8 eventTypes] == 1)
+  if ([selectedConfigurationCopy eventTypes] == 1)
   {
-    v10 = [MEMORY[0x277D144E0] defaultAnyMotionConfiguration];
+    defaultAnyMotionConfiguration = [MEMORY[0x277D144E0] defaultAnyMotionConfiguration];
 LABEL_5:
-    v11 = v10;
+    v11 = defaultAnyMotionConfiguration;
     goto LABEL_7;
   }
 
-  v12 = [HUCameraSmartDetectionSettingsModule _updatedCurrentSignificantEventConfiguration:v7 withSelectedConfiguration:v8 context:0];
-  v11 = [HUCameraSmartDetectionSettingsModule recordingConfiguration:v12 withCurrentConfiguration:v7 forProfile:v9];
+  v12 = [HUCameraSmartDetectionSettingsModule _updatedCurrentSignificantEventConfiguration:configurationCopy withSelectedConfiguration:selectedConfigurationCopy context:0];
+  v11 = [HUCameraSmartDetectionSettingsModule recordingConfiguration:v12 withCurrentConfiguration:configurationCopy forProfile:profileCopy];
 
 LABEL_7:
 
   return v11;
 }
 
-+ (id)_updatedNotificationCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 cameraProfile:(id)a5
++ (id)_updatedNotificationCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration cameraProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 eventTypes] == 1)
+  configurationCopy = configuration;
+  selectedConfigurationCopy = selectedConfiguration;
+  profileCopy = profile;
+  if ([selectedConfigurationCopy eventTypes] == 1)
   {
-    v10 = [objc_opt_class() notificationConfigurationForAClipIsRecorded];
+    notificationConfigurationForAClipIsRecorded = [objc_opt_class() notificationConfigurationForAClipIsRecorded];
   }
 
-  else if ([v8 eventTypes])
+  else if ([selectedConfigurationCopy eventTypes])
   {
-    if ([objc_opt_class() isSpecificMotionSelectedForConfiguration:v8 withCurrentConfiguration:v7])
+    if ([objc_opt_class() isSpecificMotionSelectedForConfiguration:selectedConfigurationCopy withCurrentConfiguration:configurationCopy])
     {
-      [objc_opt_class() specificMotionNotificationConfigurationForCameraProfile:v9];
+      [objc_opt_class() specificMotionNotificationConfigurationForCameraProfile:profileCopy];
     }
 
     else
     {
-      [HUCameraSmartDetectionSettingsModule _updatedCurrentSignificantEventConfiguration:v7 withSelectedConfiguration:v8 context:1];
+      [HUCameraSmartDetectionSettingsModule _updatedCurrentSignificantEventConfiguration:configurationCopy withSelectedConfiguration:selectedConfigurationCopy context:1];
     }
-    v10 = ;
+    notificationConfigurationForAClipIsRecorded = ;
   }
 
   else
   {
-    v10 = [v8 copy];
+    notificationConfigurationForAClipIsRecorded = [selectedConfigurationCopy copy];
   }
 
-  v11 = v10;
+  v11 = notificationConfigurationForAClipIsRecorded;
 
   return v11;
 }
 
-+ (id)_updatedCurrentSignificantEventConfiguration:(id)a3 withSelectedConfiguration:(id)a4 context:(unint64_t)a5
++ (id)_updatedCurrentSignificantEventConfiguration:(id)configuration withSelectedConfiguration:(id)selectedConfiguration context:(unint64_t)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 copy];
-  v10 = [v8 containsConfiguration:v7];
+  selectedConfigurationCopy = selectedConfiguration;
+  configurationCopy = configuration;
+  v9 = [configurationCopy copy];
+  v10 = [configurationCopy containsConfiguration:selectedConfigurationCopy];
 
   if (v10)
   {
-    [v9 removeConfiguration:v7];
+    [v9 removeConfiguration:selectedConfigurationCopy];
     if ([v9 eventTypes])
     {
       goto LABEL_9;
     }
 
-    if (a5)
+    if (context)
     {
       [MEMORY[0x277D144E0] defaultNotificationAnyMotionIsDetected];
     }
@@ -462,11 +462,11 @@ LABEL_7:
 
   else
   {
-    v11 = [MEMORY[0x277D144E0] defaultAnyMotionConfiguration];
+    defaultAnyMotionConfiguration = [MEMORY[0x277D144E0] defaultAnyMotionConfiguration];
     v12 = [MEMORY[0x277D144E0] configurationWithEventTypes:1 personFamiliarityOptions:0];
 
     [v9 removeConfiguration:v12];
-    [v9 addConfiguration:v7];
+    [v9 addConfiguration:selectedConfigurationCopy];
   }
 
 LABEL_9:
@@ -474,18 +474,18 @@ LABEL_9:
   return v9;
 }
 
-+ (BOOL)isSpecificMotionSelectedForConfiguration:(id)a3 withCurrentConfiguration:(id)a4
++ (BOOL)isSpecificMotionSelectedForConfiguration:(id)configuration withCurrentConfiguration:(id)currentConfiguration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eventTypes];
-  v8 = [MEMORY[0x277D144E0] defaultSmartMotionConfiguration];
-  v9 = [v8 eventTypes];
+  configurationCopy = configuration;
+  currentConfigurationCopy = currentConfiguration;
+  eventTypes = [configurationCopy eventTypes];
+  defaultSmartMotionConfiguration = [MEMORY[0x277D144E0] defaultSmartMotionConfiguration];
+  eventTypes2 = [defaultSmartMotionConfiguration eventTypes];
 
-  if (v7 == v9)
+  if (eventTypes == eventTypes2)
   {
-    v10 = [v6 eventTypes];
-    v11 = v10 != [v5 eventTypes];
+    eventTypes3 = [currentConfigurationCopy eventTypes];
+    v11 = eventTypes3 != [configurationCopy eventTypes];
   }
 
   else
@@ -498,20 +498,20 @@ LABEL_9:
 
 + (id)notificationConfigurationForAClipIsRecorded
 {
-  v2 = [MEMORY[0x277D144E0] defaultSmartMotionConfiguration];
-  [v2 setEventTypes:{objc_msgSend(v2, "eventTypes") | 1}];
+  defaultSmartMotionConfiguration = [MEMORY[0x277D144E0] defaultSmartMotionConfiguration];
+  [defaultSmartMotionConfiguration setEventTypes:{objc_msgSend(defaultSmartMotionConfiguration, "eventTypes") | 1}];
 
-  return v2;
+  return defaultSmartMotionConfiguration;
 }
 
-+ (id)specificMotionNotificationConfigurationForCameraProfile:(id)a3
++ (id)specificMotionNotificationConfigurationForCameraProfile:(id)profile
 {
   v3 = MEMORY[0x277D144E0];
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 userSettings];
+  userSettings = [profileCopy userSettings];
 
-  [v5 setEventTypes:{objc_msgSend(v6, "recordingEventTriggers")}];
+  [v5 setEventTypes:{objc_msgSend(userSettings, "recordingEventTriggers")}];
   if ([v5 eventTypes])
   {
     [v5 setEventTypes:{objc_msgSend(v5, "eventTypes") ^ 1}];
@@ -520,59 +520,59 @@ LABEL_9:
   return v5;
 }
 
-+ (id)recordingConfiguration:(id)a3 withCurrentConfiguration:(id)a4 forProfile:(id)a5
++ (id)recordingConfiguration:(id)configuration withCurrentConfiguration:(id)currentConfiguration forProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  if ([a5 hf_hasDoorbellService] & 1) == 0 && (objc_msgSend(v8, "eventTypes"))
+  configurationCopy = configuration;
+  currentConfigurationCopy = currentConfiguration;
+  if ([profile hf_hasDoorbellService] & 1) == 0 && (objc_msgSend(currentConfigurationCopy, "eventTypes"))
   {
-    [v7 setEventTypes:{objc_msgSend(v7, "eventTypes") ^ 0x10}];
+    [configurationCopy setEventTypes:{objc_msgSend(configurationCopy, "eventTypes") ^ 0x10}];
   }
 
-  v9 = [v7 copy];
+  v9 = [configurationCopy copy];
 
   return v9;
 }
 
-+ (id)notificationConfiguration:(id)a3 forRecordingTriggers:(unint64_t)a4
++ (id)notificationConfiguration:(id)configuration forRecordingTriggers:(unint64_t)triggers
 {
-  v5 = a3;
-  if ([v5 eventTypes] != 1 && objc_msgSend(v5, "eventTypes"))
+  configurationCopy = configuration;
+  if ([configurationCopy eventTypes] != 1 && objc_msgSend(configurationCopy, "eventTypes"))
   {
-    if (([v5 eventTypes] & 1) == 0)
+    if (([configurationCopy eventTypes] & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    a4 = [v5 eventTypes] ^ 1;
+    triggers = [configurationCopy eventTypes] ^ 1;
   }
 
-  [v5 setEventTypes:a4];
+  [configurationCopy setEventTypes:triggers];
 LABEL_6:
-  v6 = [v5 copy];
+  v6 = [configurationCopy copy];
 
   return v6;
 }
 
-- (id)didSelectItem:(id)a3
+- (id)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUCameraSmartDetectionSettingsModule *)self motionDetectionOffOnItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  motionDetectionOffOnItemProvider = [(HUCameraSmartDetectionSettingsModule *)self motionDetectionOffOnItemProvider];
+  items = [motionDetectionOffOnItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   if (v7)
   {
-    v8 = [(HUCameraSmartDetectionSettingsModule *)self specificMotionDetectedItem];
-    v9 = -[HUCameraSmartDetectionSettingsModule enableSmartMotion:forItem:](self, "enableSmartMotion:forItem:", [v4 isEqual:v8], v4);
+    specificMotionDetectedItem = [(HUCameraSmartDetectionSettingsModule *)self specificMotionDetectedItem];
+    futureWithNoResult = -[HUCameraSmartDetectionSettingsModule enableSmartMotion:forItem:](self, "enableSmartMotion:forItem:", [itemCopy isEqual:specificMotionDetectedItem], itemCopy);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v9;
+  return futureWithNoResult;
 }
 
 - (id)itemProviders
@@ -585,10 +585,10 @@ LABEL_6:
 
   else
   {
-    v5 = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
-    v6 = [v5 anyObject];
-    v7 = [v6 accessory];
-    v8 = [v7 home];
+    cameraProfiles = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
+    anyObject = [cameraProfiles anyObject];
+    accessory = [anyObject accessory];
+    home = [accessory home];
 
     v9 = objc_alloc(MEMORY[0x277D14B38]);
     v37[0] = MEMORY[0x277D85DD0];
@@ -596,7 +596,7 @@ LABEL_6:
     v37[2] = __53__HUCameraSmartDetectionSettingsModule_itemProviders__block_invoke;
     v37[3] = &unk_277DB8648;
     v37[4] = self;
-    v10 = v8;
+    v10 = home;
     v38 = v10;
     v11 = [v9 initWithResultsBlock:v37];
     [(HUCameraSmartDetectionSettingsModule *)self setAClipIsRecordedItem:v11];
@@ -625,17 +625,17 @@ LABEL_6:
 
     v17 = objc_alloc(MEMORY[0x277D14B40]);
     v18 = MEMORY[0x277CBEB98];
-    v19 = [(HUCameraSmartDetectionSettingsModule *)self anyMotionDetectedItem];
-    v20 = [(HUCameraSmartDetectionSettingsModule *)self aClipIsRecordedItem];
-    v21 = [(HUCameraSmartDetectionSettingsModule *)self specificMotionDetectedItem];
-    v22 = [v18 setWithObjects:{v19, v20, v21, 0}];
+    anyMotionDetectedItem = [(HUCameraSmartDetectionSettingsModule *)self anyMotionDetectedItem];
+    aClipIsRecordedItem = [(HUCameraSmartDetectionSettingsModule *)self aClipIsRecordedItem];
+    specificMotionDetectedItem = [(HUCameraSmartDetectionSettingsModule *)self specificMotionDetectedItem];
+    v22 = [v18 setWithObjects:{anyMotionDetectedItem, aClipIsRecordedItem, specificMotionDetectedItem, 0}];
     v23 = [v17 initWithItems:v22];
     motionDetectionOffOnItemProvider = self->_motionDetectionOffOnItemProvider;
     self->_motionDetectionOffOnItemProvider = v23;
 
     v25 = [HUCameraSmartDetectionSettingsItemProvider alloc];
-    v26 = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
-    v27 = [(HUCameraSmartDetectionSettingsItemProvider *)v25 initWithCameraProfiles:v26 settingsContext:[(HUCameraSmartDetectionSettingsModule *)self settingsContext]];
+    cameraProfiles2 = [(HUCameraSmartDetectionSettingsModule *)self cameraProfiles];
+    v27 = [(HUCameraSmartDetectionSettingsItemProvider *)v25 initWithCameraProfiles:cameraProfiles2 settingsContext:[(HUCameraSmartDetectionSettingsModule *)self settingsContext]];
     motionDetectionSettingsItemProvider = self->_motionDetectionSettingsItemProvider;
     self->_motionDetectionSettingsItemProvider = v27;
 
@@ -872,17 +872,17 @@ LABEL_7:
   return v15;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HUCameraSmartDetectionSettingsModule *)self itemProviders];
+  itemsCopy = items;
+  itemProviders = [(HUCameraSmartDetectionSettingsModule *)self itemProviders];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __72__HUCameraSmartDetectionSettingsModule_buildSectionsWithDisplayedItems___block_invoke;
   v25[3] = &unk_277DBF990;
-  v6 = v4;
+  v6 = itemsCopy;
   v26 = v6;
-  v7 = [v5 na_flatMap:v25];
+  v7 = [itemProviders na_flatMap:v25];
 
   v8 = objc_opt_new();
   v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUCameraSmartDetectionSettingsOnOffSectionIdentifier"];
@@ -892,9 +892,9 @@ LABEL_7:
   v24[3] = &unk_277DB85D8;
   v24[4] = self;
   v10 = [v7 na_filter:v24];
-  v11 = [v10 allObjects];
-  v12 = [MEMORY[0x277D14778] itemResultManualSortComparator];
-  v13 = [v11 sortedArrayUsingComparator:v12];
+  allObjects = [v10 allObjects];
+  itemResultManualSortComparator = [MEMORY[0x277D14778] itemResultManualSortComparator];
+  v13 = [allObjects sortedArrayUsingComparator:itemResultManualSortComparator];
   [v9 setItems:v13];
 
   if ([(HUCameraSmartDetectionSettingsModule *)self settingsContext])
@@ -922,12 +922,12 @@ LABEL_7:
   }
 
   [v8 addObject:v9];
-  v17 = [(HUCameraSmartDetectionSettingsModule *)self motionDetectionSettingsItemProvider];
+  motionDetectionSettingsItemProvider = [(HUCameraSmartDetectionSettingsModule *)self motionDetectionSettingsItemProvider];
   v18 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUCameraSmartDetectionSettingsMotionDetectionSectionIdentifier"];
-  v19 = [v17 items];
-  v20 = [v19 allObjects];
-  v21 = [MEMORY[0x277D14778] itemResultManualSortComparator];
-  v22 = [v20 sortedArrayUsingComparator:v21];
+  items = [motionDetectionSettingsItemProvider items];
+  allObjects2 = [items allObjects];
+  itemResultManualSortComparator2 = [MEMORY[0x277D14778] itemResultManualSortComparator];
+  v22 = [allObjects2 sortedArrayUsingComparator:itemResultManualSortComparator2];
 
   [v18 setItems:v22 filteringToDisplayedItems:v7];
   [v8 addObject:v18];

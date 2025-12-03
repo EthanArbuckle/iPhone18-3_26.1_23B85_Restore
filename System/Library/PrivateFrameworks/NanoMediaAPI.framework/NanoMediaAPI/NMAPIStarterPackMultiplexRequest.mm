@@ -1,18 +1,18 @@
 @interface NMAPIStarterPackMultiplexRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPIStarterPackMultiplexRequest
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = MusicURLPathStorefrontWithURLBag(v6);
+  bagCopy = bag;
+  v7 = MusicURLPathStorefrontWithURLBag(bagCopy);
   if (v7)
   {
-    v8 = [v6 dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
+    v8 = [bagCopy dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
     if (self->_underageUser)
     {
       v9 = MediaAPIStarterPackUnder13MultiplexBagKey;
@@ -29,7 +29,7 @@
     {
       v20.receiver = self;
       v20.super_class = NMAPIStarterPackMultiplexRequest;
-      v12 = [(NMAPIRequest *)&v20 urlComponentsWithStoreURLBag:v6 error:a4];
+      v12 = [(NMAPIRequest *)&v20 urlComponentsWithStoreURLBag:bagCopy error:error];
       v13 = MEMORY[0x277CCACA8];
       v21[0] = @"/v1/editorial";
       v21[1] = v7;
@@ -48,10 +48,10 @@
         [NMAPIStarterPackMultiplexRequest urlComponentsWithStoreURLBag:v10 error:v17];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-        *a4 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -69,10 +69,10 @@
       [NMAPIRadioRequest urlComponentsWithStoreURLBag:v16 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -86,11 +86,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NMAPIStarterPackMultiplexRequest;
-  result = [(NMAPIRequest *)&v5 copyWithZone:a3];
+  result = [(NMAPIRequest *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 128) = self->_underageUser;

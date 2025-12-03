@@ -1,10 +1,10 @@
 @interface SendMenuCollectionViewCellAccessibility
-- (CGRect)_accessibilityVisibleFrame:(BOOL)a3;
+- (CGRect)_accessibilityVisibleFrame:(BOOL)frame;
 @end
 
 @implementation SendMenuCollectionViewCellAccessibility
 
-- (CGRect)_accessibilityVisibleFrame:(BOOL)a3
+- (CGRect)_accessibilityVisibleFrame:(BOOL)frame
 {
   v7.receiver = self;
   v7.super_class = SendMenuCollectionViewCellAccessibility;

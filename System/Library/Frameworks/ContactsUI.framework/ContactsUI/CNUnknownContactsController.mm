@@ -1,12 +1,12 @@
 @interface CNUnknownContactsController
 + (id)descriptorForRequiredKeys;
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
-- (BOOL)multipleUnknownContactsViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
-- (CNUnknownContactsController)initWithContacts:(id)a3 contactStore:(id)a4;
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
+- (BOOL)multipleUnknownContactsViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
+- (CNUnknownContactsController)initWithContacts:(id)contacts contactStore:(id)store;
 - (CNUnknownContactsControllerDelegate)delegate;
 - (id)viewController;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)multipleUnknownContactsViewControllerDidComplete:(id)a3;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)multipleUnknownContactsViewControllerDidComplete:(id)complete;
 @end
 
 @implementation CNUnknownContactsController
@@ -18,28 +18,28 @@
   return WeakRetained;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v5 = [(CNUnknownContactsController *)self delegate:a3];
+  v5 = [(CNUnknownContactsController *)self delegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNUnknownContactsController *)self delegate];
-    [v7 unknownContactsControllerDidComplete:self];
+    delegate = [(CNUnknownContactsController *)self delegate];
+    [delegate unknownContactsControllerDidComplete:self];
   }
 }
 
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
-  v5 = a4;
-  v6 = [(CNUnknownContactsController *)self delegate];
+  propertyCopy = property;
+  delegate = [(CNUnknownContactsController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNUnknownContactsController *)self delegate];
-    v9 = [v8 unknownContactsController:self shouldPerformDefaultActionForContactProperty:v5];
+    delegate2 = [(CNUnknownContactsController *)self delegate];
+    v9 = [delegate2 unknownContactsController:self shouldPerformDefaultActionForContactProperty:propertyCopy];
   }
 
   else
@@ -50,16 +50,16 @@
   return v9;
 }
 
-- (BOOL)multipleUnknownContactsViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)multipleUnknownContactsViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
-  v5 = a4;
-  v6 = [(CNUnknownContactsController *)self delegate];
+  propertyCopy = property;
+  delegate = [(CNUnknownContactsController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNUnknownContactsController *)self delegate];
-    v9 = [v8 unknownContactsController:self shouldPerformDefaultActionForContactProperty:v5];
+    delegate2 = [(CNUnknownContactsController *)self delegate];
+    v9 = [delegate2 unknownContactsController:self shouldPerformDefaultActionForContactProperty:propertyCopy];
   }
 
   else
@@ -70,64 +70,64 @@
   return v9;
 }
 
-- (void)multipleUnknownContactsViewControllerDidComplete:(id)a3
+- (void)multipleUnknownContactsViewControllerDidComplete:(id)complete
 {
-  v4 = [(CNUnknownContactsController *)self delegate];
+  delegate = [(CNUnknownContactsController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNUnknownContactsController *)self delegate];
-    [v6 unknownContactsControllerDidComplete:self];
+    delegate2 = [(CNUnknownContactsController *)self delegate];
+    [delegate2 unknownContactsControllerDidComplete:self];
   }
 }
 
 - (id)viewController
 {
-  v3 = [(CNUnknownContactsController *)self displayedController];
-  if (!v3)
+  displayedController = [(CNUnknownContactsController *)self displayedController];
+  if (!displayedController)
   {
-    v4 = [(CNUnknownContactsController *)self contacts];
-    v5 = [v4 count];
+    contacts = [(CNUnknownContactsController *)self contacts];
+    v5 = [contacts count];
 
     if (v5 < 2)
     {
-      v7 = [(CNUnknownContactsController *)self contacts];
-      v8 = [v7 objectAtIndexedSubscript:0];
-      v3 = [CNContactViewController viewControllerForUnknownContact:v8];
+      contacts2 = [(CNUnknownContactsController *)self contacts];
+      v8 = [contacts2 objectAtIndexedSubscript:0];
+      displayedController = [CNContactViewController viewControllerForUnknownContact:v8];
     }
 
     else
     {
       v6 = [CNMultipleUnknownContactsViewController alloc];
-      v7 = [(CNUnknownContactsController *)self contacts];
-      v3 = [(CNMultipleUnknownContactsViewController *)v6 initWithContacts:v7];
+      contacts2 = [(CNUnknownContactsController *)self contacts];
+      displayedController = [(CNMultipleUnknownContactsViewController *)v6 initWithContacts:contacts2];
     }
 
-    v9 = [(CNUnknownContactsController *)self contactStore];
-    [(CNMultipleUnknownContactsViewController *)v3 setContactStore:v9];
+    contactStore = [(CNUnknownContactsController *)self contactStore];
+    [(CNMultipleUnknownContactsViewController *)displayedController setContactStore:contactStore];
 
-    [(CNMultipleUnknownContactsViewController *)v3 setDelegate:self];
-    [(CNUnknownContactsController *)self setDisplayedController:v3];
+    [(CNMultipleUnknownContactsViewController *)displayedController setDelegate:self];
+    [(CNUnknownContactsController *)self setDisplayedController:displayedController];
   }
 
-  return v3;
+  return displayedController;
 }
 
-- (CNUnknownContactsController)initWithContacts:(id)a3 contactStore:(id)a4
+- (CNUnknownContactsController)initWithContacts:(id)contacts contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  contactsCopy = contacts;
+  storeCopy = store;
+  if ([contactsCopy count])
   {
     v13.receiver = self;
     v13.super_class = CNUnknownContactsController;
     v9 = [(CNUnknownContactsController *)&v13 init];
     if (v9)
     {
-      if (v8)
+      if (storeCopy)
       {
-        v10 = v8;
+        v10 = storeCopy;
       }
 
       else
@@ -138,7 +138,7 @@
       contactStore = v9->_contactStore;
       v9->_contactStore = v10;
 
-      objc_storeStrong(&v9->_contacts, a3);
+      objc_storeStrong(&v9->_contacts, contacts);
     }
   }
 

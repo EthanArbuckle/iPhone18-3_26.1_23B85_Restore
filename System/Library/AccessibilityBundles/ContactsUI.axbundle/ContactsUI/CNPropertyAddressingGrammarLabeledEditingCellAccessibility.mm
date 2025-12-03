@@ -1,5 +1,5 @@
 @interface CNPropertyAddressingGrammarLabeledEditingCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,12 +8,12 @@
 
 @implementation CNPropertyAddressingGrammarLabeledEditingCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPropertyAddressingGrammarLabeledEditingCell" isKindOfClass:@"CNPropertySimpleEditingCell"];
-  [v3 validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPropertySimpleEditingCell" hasProperty:@"labelButton" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPropertyAddressingGrammarLabeledEditingCell" isKindOfClass:@"CNPropertySimpleEditingCell"];
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPropertySimpleEditingCell" hasProperty:@"labelButton" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -32,9 +32,9 @@
 - (id)accessibilityValue
 {
   v2 = [(CNPropertyAddressingGrammarLabeledEditingCellAccessibility *)self safeValueForKey:@"labelButton"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilitySupplementaryFooterViews

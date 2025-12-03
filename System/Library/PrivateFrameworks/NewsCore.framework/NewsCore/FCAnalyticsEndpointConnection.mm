@@ -1,21 +1,21 @@
 @interface FCAnalyticsEndpointConnection
-- (FCAnalyticsEndpointConnection)initWithEndpointConnection:(id)a3;
-- (void)uploadEnvelopeBatch:(id)a3 withURL:(id)a4 valuesByHTTPHeaderField:(id)a5 completion:(id)a6;
-- (void)uploadEnvelopeBatch:(id)a3 withURL:(id)a4 valuesByHTTPHeaderField:(id)a5 priority:(float)a6 callbackQueue:(id)a7 completion:(id)a8;
+- (FCAnalyticsEndpointConnection)initWithEndpointConnection:(id)connection;
+- (void)uploadEnvelopeBatch:(id)batch withURL:(id)l valuesByHTTPHeaderField:(id)field completion:(id)completion;
+- (void)uploadEnvelopeBatch:(id)batch withURL:(id)l valuesByHTTPHeaderField:(id)field priority:(float)priority callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation FCAnalyticsEndpointConnection
 
-- (FCAnalyticsEndpointConnection)initWithEndpointConnection:(id)a3
+- (FCAnalyticsEndpointConnection)initWithEndpointConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = FCAnalyticsEndpointConnection;
   v6 = [(FCAnalyticsEndpointConnection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointConnection, a3);
+    objc_storeStrong(&v6->_endpointConnection, connection);
     v8 = objc_alloc_init(FCAsyncSerialQueue);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -24,42 +24,42 @@
   return v7;
 }
 
-- (void)uploadEnvelopeBatch:(id)a3 withURL:(id)a4 valuesByHTTPHeaderField:(id)a5 completion:(id)a6
+- (void)uploadEnvelopeBatch:(id)batch withURL:(id)l valuesByHTTPHeaderField:(id)field completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  fieldCopy = field;
+  lCopy = l;
+  batchCopy = batch;
   v15 = dispatch_get_global_queue(17, 0);
   LODWORD(v14) = 1.0;
-  [(FCAnalyticsEndpointConnection *)self uploadEnvelopeBatch:v13 withURL:v12 valuesByHTTPHeaderField:v11 priority:v15 callbackQueue:v10 completion:v14];
+  [(FCAnalyticsEndpointConnection *)self uploadEnvelopeBatch:batchCopy withURL:lCopy valuesByHTTPHeaderField:fieldCopy priority:v15 callbackQueue:completionCopy completion:v14];
 }
 
-- (void)uploadEnvelopeBatch:(id)a3 withURL:(id)a4 valuesByHTTPHeaderField:(id)a5 priority:(float)a6 callbackQueue:(id)a7 completion:(id)a8
+- (void)uploadEnvelopeBatch:(id)batch withURL:(id)l valuesByHTTPHeaderField:(id)field priority:(float)priority callbackQueue:(id)queue completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(FCAnalyticsEndpointConnection *)self serialQueue];
+  batchCopy = batch;
+  lCopy = l;
+  fieldCopy = field;
+  queueCopy = queue;
+  completionCopy = completion;
+  serialQueue = [(FCAnalyticsEndpointConnection *)self serialQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __119__FCAnalyticsEndpointConnection_uploadEnvelopeBatch_withURL_valuesByHTTPHeaderField_priority_callbackQueue_completion___block_invoke;
   v25[3] = &unk_1E7C478D0;
-  v26 = v14;
-  v27 = v15;
-  v28 = self;
-  v29 = v16;
-  v32 = a6;
-  v30 = v17;
-  v31 = v18;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  [v19 enqueueBlock:v25];
+  v26 = batchCopy;
+  v27 = lCopy;
+  selfCopy = self;
+  v29 = fieldCopy;
+  priorityCopy = priority;
+  v30 = queueCopy;
+  v31 = completionCopy;
+  v20 = completionCopy;
+  v21 = queueCopy;
+  v22 = fieldCopy;
+  v23 = lCopy;
+  v24 = batchCopy;
+  [serialQueue enqueueBlock:v25];
 }
 
 void __119__FCAnalyticsEndpointConnection_uploadEnvelopeBatch_withURL_valuesByHTTPHeaderField_priority_callbackQueue_completion___block_invoke(uint64_t a1, void *a2)

@@ -2,25 +2,25 @@
 + (id)SystemResourceUsage;
 + (id)configurationForSystemResourceUsage;
 + (id)storeConfigurationForSystemResourceUsage;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMLSEShareSheetMetricsLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"SystemResourceUsage"])
+  if ([name isEqualToString:@"SystemResourceUsage"])
   {
-    v4 = [a1 SystemResourceUsage];
+    systemResourceUsage = [self SystemResourceUsage];
   }
 
   else
   {
-    v4 = 0;
+    systemResourceUsage = 0;
   }
 
-  return v4;
+  return systemResourceUsage;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForSystemResourceUsage
 {
-  v3 = [a1 storeConfigurationForSystemResourceUsage];
-  v4 = [a1 syncPolicyForSystemResourceUsage];
+  storeConfigurationForSystemResourceUsage = [self storeConfigurationForSystemResourceUsage];
+  syncPolicyForSystemResourceUsage = [self syncPolicyForSystemResourceUsage];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"CB943ABF-2954-4646-8D09-58E28C976471"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Metrics.SystemResourceUsage" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Metrics.SystemResourceUsage" eventClass:objc_opt_class() storeConfig:storeConfigurationForSystemResourceUsage syncPolicy:syncPolicyForSystemResourceUsage legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)SystemResourceUsage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSystemResourceUsage];
+  configurationForSystemResourceUsage = [self configurationForSystemResourceUsage];
   v3 = +[BMMLSEShareSheetMetricsSystemResourceUsage columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.Metrics.SystemResourceUsage" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Metrics.SystemResourceUsage" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Metrics.SystemResourceUsage" schema:v9 configuration:configurationForSystemResourceUsage];
 
   v11 = *MEMORY[0x1E69E9840];
 

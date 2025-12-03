@@ -1,91 +1,91 @@
 @interface _CRRecentsLibrary
 + (id)defaultPath;
 + (id)storeMapping;
-- (BOOL)_mergeRemoteChanges:(id)a3 fromStore:(id)a4 forRecentsDomain:(id)a5;
-- (BOOL)_setDatabasePropertyValue:(unint64_t)a3 forKey:(id)a4;
+- (BOOL)_mergeRemoteChanges:(id)changes fromStore:(id)store forRecentsDomain:(id)domain;
+- (BOOL)_setDatabasePropertyValue:(unint64_t)value forKey:(id)key;
 - (BOOL)_synchronizeAllStores;
-- (BOOL)_synchronizeStore:(id)a3;
-- (BOOL)expungeRecentsOverLimitsForDomain:(id)a3 forcibly:(BOOL)a4 expungedRecentIDs:(id *)a5;
-- (BOOL)removeRecentContactsWithRecentIDs:(id)a3 syncKeys:(id)a4 domain:(id)a5 removeInUbiquitousStore:(BOOL)a6 error:(id *)a7;
+- (BOOL)_synchronizeStore:(id)store;
+- (BOOL)expungeRecentsOverLimitsForDomain:(id)domain forcibly:(BOOL)forcibly expungedRecentIDs:(id *)ds;
+- (BOOL)removeRecentContactsWithRecentIDs:(id)ds syncKeys:(id)keys domain:(id)domain removeInUbiquitousStore:(BOOL)store error:(id *)error;
 - (_CRRecentsLibrary)init;
-- (_CRRecentsLibrary)initWithPath:(id)a3 accountAdaptor:(id)a4;
+- (_CRRecentsLibrary)initWithPath:(id)path accountAdaptor:(id)adaptor;
 - (id)_activeConnectionWrapper;
-- (id)_copyRecentContactForID:(int64_t)a3;
-- (id)_copyRecentContactForRecordHash:(id)a3 recentsDomain:(id)a4;
-- (id)_nts_expungeGroupRecentsOverLimit:(unint64_t)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6;
-- (id)_nts_expungeIndividualRecentsOverLimit:(unint64_t)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6;
-- (id)_nts_expungeRecentsOlderThanDate:(id)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6;
-- (id)_recentsDomainForStore:(id)a3;
-- (id)_whereClauseFromPredicate:(id)a3 inDomains:(id)a4 bindings:(id *)a5 error:(id *)a6;
-- (id)addressFromExternalAddress:(id)a3 kind:(id)a4;
-- (id)bindingForDomain:(id)a3;
-- (id)copyContactRecentsFromStatement:(sqlite3_stmt *)a3 selectIndexes:(id *)a4 groupThreshold:(unint64_t)a5 options:(unint64_t)a6;
-- (id)copyRecentContactFromStatement:(sqlite3_stmt *)a3 columnIndexes:(id *)a4 populateMetadata:(BOOL)a5;
-- (id)copyRecentContactsWithIDs:(id)a3;
-- (id)copyRecentsForQuery:(id)a3 error:(id *)a4;
-- (id)domainClauseWithDomains:(id)a3 bindings:(id)a4;
-- (id)externalAddressFromAddress:(id)a3 kind:(id)a4;
-- (id)hashForContact:(id)a3;
-- (id)hashForGroup:(id)a3;
-- (id)hashForGroupMemberHashes:(id)a3;
-- (id)hashForGroupMembers:(id)a3 recentsDomain:(id)a4;
-- (id)hashesForGroupMembers:(id)a3 recentsDomain:(id)a4;
-- (id)keyForContact:(id)a3;
-- (id)newConnectionForConnectionPool:(id)a3;
-- (id)recentsHashForAddress:(id)a3 kind:(id)a4;
-- (id)recentsHashForExternalAddress:(id)a3 kind:(id)a4;
-- (id)upcomingEventIdentifierForRecentID:(int64_t)a3;
-- (int)commitTransaction:(id)a3;
-- (int)handleSqliteError:(sqlite3 *)a3 format:(id)a4;
-- (int)rollbackTransaction:(id)a3;
-- (int64_t)countOfRecentsForQuery:(id)a3 error:(id *)a4;
-- (unint64_t)_databasePropertyValueByKey:(id)a3;
-- (unint64_t)_propertyValueForKey:(id)a3 defaultValue:(unint64_t)a4;
-- (unint64_t)maximumGroupRecentsForDomain:(id)a3;
-- (unint64_t)maximumRecentsAgeInDaysForDomain:(id)a3;
-- (unint64_t)maximumRecentsForDomain:(id)a3;
-- (unint64_t)recordContactEvents:(id)a3 recentsDomain:(id)a4 sendingAddress:(id)a5 source:(id)a6;
-- (void)_bindContact:(id)a3 withRecentID:(int64_t)a4 forStatement:(sqlite3_stmt *)a5;
-- (void)_bindRecent:(id)a3 forStatement:(sqlite3_stmt *)a4;
-- (void)_deleteRecentWithRecordHash:(id)a3 kind:(id)a4 recentsDomain:(id)a5;
-- (void)_deleteRecentsWithRecentIDs:(id)a3 storeKeys:(id)a4 recentsDomain:(id)a5 deleteInUbiquitousStore:(BOOL)a6;
-- (void)_handleSQLiteErrorCode:(int)a3;
+- (id)_copyRecentContactForID:(int64_t)d;
+- (id)_copyRecentContactForRecordHash:(id)hash recentsDomain:(id)domain;
+- (id)_nts_expungeGroupRecentsOverLimit:(unint64_t)limit domain:(id)domain storeKeys:(id *)keys connection:(id)connection;
+- (id)_nts_expungeIndividualRecentsOverLimit:(unint64_t)limit domain:(id)domain storeKeys:(id *)keys connection:(id)connection;
+- (id)_nts_expungeRecentsOlderThanDate:(id)date domain:(id)domain storeKeys:(id *)keys connection:(id)connection;
+- (id)_recentsDomainForStore:(id)store;
+- (id)_whereClauseFromPredicate:(id)predicate inDomains:(id)domains bindings:(id *)bindings error:(id *)error;
+- (id)addressFromExternalAddress:(id)address kind:(id)kind;
+- (id)bindingForDomain:(id)domain;
+- (id)copyContactRecentsFromStatement:(sqlite3_stmt *)statement selectIndexes:(id *)indexes groupThreshold:(unint64_t)threshold options:(unint64_t)options;
+- (id)copyRecentContactFromStatement:(sqlite3_stmt *)statement columnIndexes:(id *)indexes populateMetadata:(BOOL)metadata;
+- (id)copyRecentContactsWithIDs:(id)ds;
+- (id)copyRecentsForQuery:(id)query error:(id *)error;
+- (id)domainClauseWithDomains:(id)domains bindings:(id)bindings;
+- (id)externalAddressFromAddress:(id)address kind:(id)kind;
+- (id)hashForContact:(id)contact;
+- (id)hashForGroup:(id)group;
+- (id)hashForGroupMemberHashes:(id)hashes;
+- (id)hashForGroupMembers:(id)members recentsDomain:(id)domain;
+- (id)hashesForGroupMembers:(id)members recentsDomain:(id)domain;
+- (id)keyForContact:(id)contact;
+- (id)newConnectionForConnectionPool:(id)pool;
+- (id)recentsHashForAddress:(id)address kind:(id)kind;
+- (id)recentsHashForExternalAddress:(id)address kind:(id)kind;
+- (id)upcomingEventIdentifierForRecentID:(int64_t)d;
+- (int)commitTransaction:(id)transaction;
+- (int)handleSqliteError:(sqlite3 *)error format:(id)format;
+- (int)rollbackTransaction:(id)transaction;
+- (int64_t)countOfRecentsForQuery:(id)query error:(id *)error;
+- (unint64_t)_databasePropertyValueByKey:(id)key;
+- (unint64_t)_propertyValueForKey:(id)key defaultValue:(unint64_t)value;
+- (unint64_t)maximumGroupRecentsForDomain:(id)domain;
+- (unint64_t)maximumRecentsAgeInDaysForDomain:(id)domain;
+- (unint64_t)maximumRecentsForDomain:(id)domain;
+- (unint64_t)recordContactEvents:(id)events recentsDomain:(id)domain sendingAddress:(id)address source:(id)source;
+- (void)_bindContact:(id)contact withRecentID:(int64_t)d forStatement:(sqlite3_stmt *)statement;
+- (void)_bindRecent:(id)recent forStatement:(sqlite3_stmt *)statement;
+- (void)_deleteRecentWithRecordHash:(id)hash kind:(id)kind recentsDomain:(id)domain;
+- (void)_deleteRecentsWithRecentIDs:(id)ds storeKeys:(id)keys recentsDomain:(id)domain deleteInUbiquitousStore:(BOOL)store;
+- (void)_handleSQLiteErrorCode:(int)code;
 - (void)_initializeCloudStores;
-- (void)_insertRecentContacts:(id)a3;
+- (void)_insertRecentContacts:(id)contacts;
 - (void)_registerForRemoteKVSChanges;
 - (void)_removeDatabase;
 - (void)_removeDatabaseFromUnexpectedLocationAndAbort;
 - (void)_removeDatabaseWithEmptyHomePathAndAbort;
-- (void)_saveRecentContacts:(id)a3;
-- (void)_setPropertyValue:(unint64_t)a3 forKey:(id)a4;
+- (void)_saveRecentContacts:(id)contacts;
+- (void)_setPropertyValue:(unint64_t)value forKey:(id)key;
 - (void)_startCoordinatingChanges;
-- (void)_storeChangedExternally:(id)a3;
-- (void)_syncContact:(id)a3 withStore:(id)a4;
-- (void)_updateRecentContacts:(id)a3;
-- (void)cancelPerformExpungeRecentsOverLimitsForDomain:(id)a3;
+- (void)_storeChangedExternally:(id)externally;
+- (void)_syncContact:(id)contact withStore:(id)store;
+- (void)_updateRecentContacts:(id)contacts;
+- (void)cancelPerformExpungeRecentsOverLimitsForDomain:(id)domain;
 - (void)dealloc;
-- (void)enumerateRecentsForDomain:(id)a3 usingBlock:(id)a4;
-- (void)mergeCloudDataOneWayIntoLocalStoreWithReason:(unint64_t)a3;
-- (void)performExpungeRecentsOverLimitsForDomain:(id)a3 afterDelay:(double)a4;
-- (void)populateMetadataForRecents:(id)a3;
-- (void)removeAllRecentContactsWithCompletion:(id)a3;
-- (void)removeContact:(id)a3;
+- (void)enumerateRecentsForDomain:(id)domain usingBlock:(id)block;
+- (void)mergeCloudDataOneWayIntoLocalStoreWithReason:(unint64_t)reason;
+- (void)performExpungeRecentsOverLimitsForDomain:(id)domain afterDelay:(double)delay;
+- (void)populateMetadataForRecents:(id)recents;
+- (void)removeAllRecentContactsWithCompletion:(id)completion;
+- (void)removeContact:(id)contact;
 - (void)renameOrRemoveDatabaseAndAbort;
-- (void)restorePreviouslyDeletedRecentContacts:(id)a3 completion:(id)a4;
-- (void)scheduleSynchronizationForStore:(id)a3;
-- (void)setMaximumGroupRecents:(unint64_t)a3 forRecentsDomain:(id)a4;
-- (void)setMaximumRecents:(unint64_t)a3 forRecentsDomain:(id)a4;
-- (void)setMaximumRecentsAgeInDays:(unint64_t)a3 forRecentsDomain:(id)a4;
-- (void)unlockConnection:(id)a3;
+- (void)restorePreviouslyDeletedRecentContacts:(id)contacts completion:(id)completion;
+- (void)scheduleSynchronizationForStore:(id)store;
+- (void)setMaximumGroupRecents:(unint64_t)recents forRecentsDomain:(id)domain;
+- (void)setMaximumRecents:(unint64_t)recents forRecentsDomain:(id)domain;
+- (void)setMaximumRecentsAgeInDays:(unint64_t)days forRecentsDomain:(id)domain;
+- (void)unlockConnection:(id)connection;
 @end
 
 @implementation _CRRecentsLibrary
 
 - (id)_activeConnectionWrapper
 {
-  v2 = [+[NSThread currentThread](NSThread threadDictionary];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
 
-  return [(NSMutableDictionary *)v2 objectForKey:@"com.apple.corerecents.recentsLibrary.connection"];
+  return [(NSMutableDictionary *)threadDictionary objectForKey:@"com.apple.corerecents.recentsLibrary.connection"];
 }
 
 + (id)defaultPath
@@ -113,12 +113,12 @@
 
 - (_CRRecentsLibrary)init
 {
-  v3 = [objc_opt_class() defaultPath];
+  defaultPath = [objc_opt_class() defaultPath];
 
-  return [(_CRRecentsLibrary *)self initWithPath:v3];
+  return [(_CRRecentsLibrary *)self initWithPath:defaultPath];
 }
 
-- (_CRRecentsLibrary)initWithPath:(id)a3 accountAdaptor:(id)a4
+- (_CRRecentsLibrary)initWithPath:(id)path accountAdaptor:(id)adaptor
 {
   v12.receiver = self;
   v12.super_class = _CRRecentsLibrary;
@@ -127,14 +127,14 @@
   {
     v7 = [[CRRecentsMigrator alloc] initWithDelegate:v6];
     v6->_migrator = v7;
-    [(CRRecentsMigrator *)v7 migrateMailEmbeddedLibraryToPath:a3];
+    [(CRRecentsMigrator *)v7 migrateMailEmbeddedLibraryToPath:path];
     v6->_storeSyncDelay = 60.0;
     v6->_pluginManager = [[CRPluginManager alloc] initWithPath:+[CRPluginManager defaultPluginPath]];
     v6->_lock = objc_alloc_init(NSLock);
     v6->_cachedProperties = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFCopyStringDictionaryKeyCallBacks, 0);
     v6->_pendingDomainExpunges = objc_alloc_init(CRDelayedWorkQueue);
     v6->_pendingStoreSyncEvents = objc_alloc_init(CRDelayedWorkQueue);
-    v6->_path = [a3 copy];
+    v6->_path = [path copy];
     v8 = [[CRSQLiteConnectionPool alloc] initWithDelegate:v6 maxConcurrentReaders:3];
     v6->_connectionPool = v8;
     [(CRSQLiteConnectionPool *)v8 setCacheSize:1];
@@ -146,17 +146,17 @@
     [(_CRRecentsLibrary *)v6 _registerForRemoteKVSChanges];
     [(_CRRecentsLibrary *)v6 _startCoordinatingChanges];
     [(_CRRecentsLibrary *)v6 _synchronizeAllStores];
-    if (a4)
+    if (adaptor)
     {
-      v10 = a4;
+      adaptorCopy = adaptor;
     }
 
     else
     {
-      v10 = [[CRAccountAdaptor alloc] initWithDelegate:v6->_ubiquitousCoordinator];
+      adaptorCopy = [[CRAccountAdaptor alloc] initWithDelegate:v6->_ubiquitousCoordinator];
     }
 
-    v6->_accountAdaptor = v10;
+    v6->_accountAdaptor = adaptorCopy;
   }
 
   return v6;
@@ -180,8 +180,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSDictionary *)self->_cloudStores allValues];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSDictionary *)self->_cloudStores allValues];
+  v4 = [(NSArray *)allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,13 +192,13 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:self name:"_storeChangedExternally:" object:NSUbiquitousKeyValueStoreDidChangeExternallyNotification, *(*(&v8 + 1) + 8 * i)];
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSArray *)allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -211,8 +211,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSDictionary *)self->_cloudStores allKeys];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(NSDictionary *)self->_cloudStores allKeys];
+  v4 = [(NSArray *)allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -224,7 +224,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(CRUbiquitousCoordinator *)self->_ubiquitousCoordinator coordinateChangesInUbiquitousStoreForDomain:*(*(&v8 + 1) + 8 * v7)];
@@ -232,7 +232,7 @@
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSArray *)allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -256,12 +256,12 @@
   [(_CRRecentsLibrary *)&v4 dealloc];
 }
 
-- (id)newConnectionForConnectionPool:(id)a3
+- (id)newConnectionForConnectionPool:(id)pool
 {
   v4 = [[CRSQLiteConnection alloc] initWithPath:self->_path databaseName:@"Recents"];
-  v5 = [(CRSQLiteConnection *)v4 open];
-  [(_CRRecentsLibrary *)self _handleSQLiteErrorCode:v5];
-  if (v5 || ![(CRRecentsMigrator *)self->_migrator migrateWithSQLiteConnection:v4])
+  open = [(CRSQLiteConnection *)v4 open];
+  [(_CRRecentsLibrary *)self _handleSQLiteErrorCode:open];
+  if (open || ![(CRRecentsMigrator *)self->_migrator migrateWithSQLiteConnection:v4])
   {
     [(CRSQLiteConnection *)v4 close];
 
@@ -316,9 +316,9 @@
   v3 = +[CRLogging log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
-    v4 = [(NSString *)self->_path stringByAbbreviatingWithTildeInPath];
+    stringByAbbreviatingWithTildeInPath = [(NSString *)self->_path stringByAbbreviatingWithTildeInPath];
     v5 = 138543362;
-    v6 = v4;
+    v6 = stringByAbbreviatingWithTildeInPath;
     _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Attempting to delete a recents database for a nonsensical path, %{public}@", &v5, 0xCu);
   }
 
@@ -331,9 +331,9 @@
   v3 = +[CRLogging log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
-    v4 = [(NSString *)self->_path stringByAbbreviatingWithTildeInPath];
+    stringByAbbreviatingWithTildeInPath = [(NSString *)self->_path stringByAbbreviatingWithTildeInPath];
     v5 = 138543362;
-    v6 = v4;
+    v6 = stringByAbbreviatingWithTildeInPath;
     _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Attempting to delete a recents database for an unusual path, %{public}@", &v5, 0xCu);
   }
 
@@ -341,16 +341,16 @@
   abort();
 }
 
-- (void)_handleSQLiteErrorCode:(int)a3
+- (void)_handleSQLiteErrorCode:(int)code
 {
-  if (a3 <= 0xAu)
+  if (code <= 0xAu)
   {
-    if (a3 == 5)
+    if (code == 5)
     {
       [(_CRRecentsLibrary *)self _handleBusyError];
     }
 
-    else if (a3 == 10)
+    else if (code == 10)
     {
       [(_CRRecentsLibrary *)self _handleIOError];
     }
@@ -358,7 +358,7 @@
 
   else
   {
-    switch(a3)
+    switch(code)
     {
       case 0x1Au:
         [(_CRRecentsLibrary *)self _handleNotADB];
@@ -373,74 +373,74 @@
   }
 }
 
-- (int)handleSqliteError:(sqlite3 *)a3 format:(id)a4
+- (int)handleSqliteError:(sqlite3 *)error format:(id)format
 {
-  v7 = sqlite3_errcode(a3);
+  v7 = sqlite3_errcode(error);
   v8 = v7;
   if ((v7 - 100) >= 2 && v7 != 0)
   {
-    CRLogSQLiteError(a3, a4);
+    CRLogSQLiteError(error, format);
   }
 
   [(_CRRecentsLibrary *)self _handleSQLiteErrorCode:v8];
   return v8;
 }
 
-- (int)commitTransaction:(id)a3
+- (int)commitTransaction:(id)transaction
 {
-  v5 = [a3 commitTransaction];
-  if (v5)
+  commitTransaction = [transaction commitTransaction];
+  if (commitTransaction)
   {
-    -[_CRRecentsLibrary handleSqliteError:format:](self, "handleSqliteError:format:", [a3 db], @"recents: committing transaction");
+    -[_CRRecentsLibrary handleSqliteError:format:](self, "handleSqliteError:format:", [transaction db], @"recents: committing transaction");
   }
 
-  return v5;
+  return commitTransaction;
 }
 
-- (int)rollbackTransaction:(id)a3
+- (int)rollbackTransaction:(id)transaction
 {
-  v5 = [a3 rollbackTransaction];
-  if (v5)
+  rollbackTransaction = [transaction rollbackTransaction];
+  if (rollbackTransaction)
   {
-    -[_CRRecentsLibrary handleSqliteError:format:](self, "handleSqliteError:format:", [a3 db], @"recents: rolling back transaction");
+    -[_CRRecentsLibrary handleSqliteError:format:](self, "handleSqliteError:format:", [transaction db], @"recents: rolling back transaction");
   }
 
-  return v5;
+  return rollbackTransaction;
 }
 
-- (void)unlockConnection:(id)a3
+- (void)unlockConnection:(id)connection
 {
-  v5 = [(_CRRecentsLibrary *)self _activeConnectionWrapper];
-  if ([v5 connection] != a3)
+  _activeConnectionWrapper = [(_CRRecentsLibrary *)self _activeConnectionWrapper];
+  if ([_activeConnectionWrapper connection] != connection)
   {
     sub_100018198();
   }
 
-  if (![v5 decrementRefcount])
+  if (![_activeConnectionWrapper decrementRefcount])
   {
-    [(CRSQLiteConnectionPool *)self->_connectionPool checkInConnection:a3];
+    [(CRSQLiteConnectionPool *)self->_connectionPool checkInConnection:connection];
 
     [(_CRRecentsLibrary *)self _setActiveConnection:0 forWriting:0];
   }
 }
 
-- (id)copyRecentContactFromStatement:(sqlite3_stmt *)a3 columnIndexes:(id *)a4 populateMetadata:(BOOL)a5
+- (id)copyRecentContactFromStatement:(sqlite3_stmt *)statement columnIndexes:(id *)indexes populateMetadata:(BOOL)metadata
 {
-  v19 = a5;
+  metadataCopy = metadata;
   context = objc_autoreleasePoolPush();
-  v7 = [CRSQLRow rowWithStatement:a3];
-  v24 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{a4->var0.var0), "cr_CRRecentIDValue"}];
-  v20 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{a4->var1.var0), "cr_CRContactIDValue"}];
-  v8 = [(CRSQLRow *)v7 stringAtIndex:a4->var1.var1];
-  v9 = [(CRSQLRow *)v7 stringAtIndex:a4->var1.var4];
-  v23 = [(CRSQLRow *)v7 stringAtIndex:a4->var0.var1];
-  v22 = [(CRSQLRow *)v7 stringAtIndex:a4->var1.var3];
-  v21 = [(CRSQLRow *)v7 stringAtIndex:a4->var0.var3];
-  v10 = [(CRSQLRow *)v7 stringAtIndex:a4->var0.var2];
-  v11 = [(CRSQLRow *)v7 stringAtIndex:a4->var0.var4];
-  v12 = [(CRSQLRow *)v7 stringAtIndex:a4->var0.var5];
-  v13 = [(CRSQLRow *)v7 numberWithDoubleAtIndex:a4->var0.var6];
-  v14 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{a4->var0.var7), "cr_CRContactGroupKindValue"}];
+  v7 = [CRSQLRow rowWithStatement:statement];
+  v24 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{indexes->var0.var0), "cr_CRRecentIDValue"}];
+  v20 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{indexes->var1.var0), "cr_CRContactIDValue"}];
+  v8 = [(CRSQLRow *)v7 stringAtIndex:indexes->var1.var1];
+  v9 = [(CRSQLRow *)v7 stringAtIndex:indexes->var1.var4];
+  v23 = [(CRSQLRow *)v7 stringAtIndex:indexes->var0.var1];
+  v22 = [(CRSQLRow *)v7 stringAtIndex:indexes->var1.var3];
+  v21 = [(CRSQLRow *)v7 stringAtIndex:indexes->var0.var3];
+  v10 = [(CRSQLRow *)v7 stringAtIndex:indexes->var0.var2];
+  v11 = [(CRSQLRow *)v7 stringAtIndex:indexes->var0.var4];
+  v12 = [(CRSQLRow *)v7 stringAtIndex:indexes->var0.var5];
+  v13 = [(CRSQLRow *)v7 numberWithDoubleAtIndex:indexes->var0.var6];
+  v14 = [-[CRSQLRow numberWithIntegerAtIndex:](v7 numberWithIntegerAtIndex:{indexes->var0.var7), "cr_CRContactGroupKindValue"}];
   v15 = [NSMutableArray arrayWithCapacity:kCRRecentContactMaxDateEvents];
   v16 = [NSScanner scannerWithString:v10];
   if (![(NSScanner *)v16 isAtEnd])
@@ -472,7 +472,7 @@
   [v17 setOriginalSource:v12];
   [v17 setWeight:v13];
   [v17 setGroupKind:v14];
-  if (v17 && v19)
+  if (v17 && metadataCopy)
   {
     v28 = [NSNumber numberWithLongLong:v24];
     v29 = v17;
@@ -483,36 +483,36 @@
   return v17;
 }
 
-- (id)_whereClauseFromPredicate:(id)a3 inDomains:(id)a4 bindings:(id *)a5 error:(id *)a6
+- (id)_whereClauseFromPredicate:(id)predicate inDomains:(id)domains bindings:(id *)bindings error:(id *)error
 {
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
-  v13 = [a3 cr_predicateClauseWithBindings:v12 error:a6];
-  if (a3 && !v13)
+  v13 = [predicate cr_predicateClauseWithBindings:v12 error:error];
+  if (predicate && !v13)
   {
     return 0;
   }
 
   [v11 cr_addNonNilObject:v13];
-  [v11 cr_addNonNilObject:{-[_CRRecentsLibrary domainClauseWithDomains:bindings:](self, "domainClauseWithDomains:bindings:", a4, v12)}];
+  [v11 cr_addNonNilObject:{-[_CRRecentsLibrary domainClauseWithDomains:bindings:](self, "domainClauseWithDomains:bindings:", domains, v12)}];
   if (![v11 count])
   {
     return 0;
   }
 
   result = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"WHERE %@", [v11 componentsJoinedByString:@" AND "]);
-  *a5 = v12;
+  *bindings = v12;
   return result;
 }
 
-- (id)domainClauseWithDomains:(id)a3 bindings:(id)a4
+- (id)domainClauseWithDomains:(id)domains bindings:(id)bindings
 {
   v7 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [domains countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -524,17 +524,17 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(domains);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         [v7 addObject:@"?"];
-        [a4 addObject:{-[_CRRecentsLibrary bindingForDomain:](self, "bindingForDomain:", v12)}];
+        [bindings addObject:{-[_CRRecentsLibrary bindingForDomain:](self, "bindingForDomain:", v12)}];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [domains countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -543,34 +543,34 @@
   return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"bundle_identifier IN (%@)", [v7 componentsJoinedByString:{@", "}]);
 }
 
-- (id)bindingForDomain:(id)a3
+- (id)bindingForDomain:(id)domain
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100005B00;
   v4[3] = &unk_10002CC58;
-  v4[4] = a3;
+  v4[4] = domain;
   return [v4 copy];
 }
 
-- (id)copyRecentsForQuery:(id)a3 error:(id *)a4
+- (id)copyRecentsForQuery:(id)query error:(id *)error
 {
-  v7 = [a3 predicate];
-  v8 = [a3 domains];
-  v9 = [a3 implicitGroupThreshold];
-  v10 = [a3 options];
-  if (![v8 count])
+  predicate = [query predicate];
+  domains = [query domains];
+  implicitGroupThreshold = [query implicitGroupThreshold];
+  options = [query options];
+  if (![domains count])
   {
     v12 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:CRRecentContactsErrorDomain code:1001 userInfo:0];
+      *error = [NSError errorWithDomain:CRRecentContactsErrorDomain code:1001 userInfo:0];
     }
 
     return v12;
   }
 
-  if ((v10 & 2) == 0 || ![(CRAccountAdaptor *)self->_accountAdaptor isUsingiCloud])
+  if ((options & 2) == 0 || ![(CRAccountAdaptor *)self->_accountAdaptor isUsingiCloud])
   {
     v14 = 0;
     v15 = &v14;
@@ -583,13 +583,13 @@
     v13[2] = sub_100005CFC;
     v13[3] = &unk_10002CC80;
     v13[4] = self;
-    v13[5] = v7;
+    v13[5] = predicate;
     v13[8] = &v14;
-    v13[9] = a4;
-    v13[10] = v9;
-    v13[11] = v10;
-    v13[6] = v8;
-    v13[7] = a3;
+    v13[9] = error;
+    v13[10] = implicitGroupThreshold;
+    v13[11] = options;
+    v13[6] = domains;
+    v13[7] = query;
     [(_CRRecentsLibrary *)self performReadTransaction:v13];
     v12 = v15[5];
     _Block_object_dispose(&v14, 8);
@@ -599,24 +599,24 @@
   return objc_alloc_init(NSArray);
 }
 
-- (int64_t)countOfRecentsForQuery:(id)a3 error:(id *)a4
+- (int64_t)countOfRecentsForQuery:(id)query error:(id *)error
 {
-  v7 = [a3 predicate];
-  v8 = [a3 domains];
-  v9 = [a3 options];
-  if (![v8 count])
+  predicate = [query predicate];
+  domains = [query domains];
+  options = [query options];
+  if (![domains count])
   {
-    if (a4)
+    if (error)
     {
       v10 = 0;
-      *a4 = [NSError errorWithDomain:CRRecentContactsErrorDomain code:1001 userInfo:0];
+      *error = [NSError errorWithDomain:CRRecentContactsErrorDomain code:1001 userInfo:0];
       return v10;
     }
 
     return 0;
   }
 
-  if ((v9 & 2) != 0 && [(CRAccountAdaptor *)self->_accountAdaptor isUsingiCloud])
+  if ((options & 2) != 0 && [(CRAccountAdaptor *)self->_accountAdaptor isUsingiCloud])
   {
     return 0;
   }
@@ -630,19 +630,19 @@
   v12[2] = sub_1000060B0;
   v12[3] = &unk_10002CCA8;
   v12[4] = self;
-  v12[5] = v7;
+  v12[5] = predicate;
   v12[7] = &v13;
-  v12[8] = a4;
-  v12[6] = v8;
+  v12[8] = error;
+  v12[6] = domains;
   [(_CRRecentsLibrary *)self performReadTransaction:v12];
   v10 = v14[3];
   _Block_object_dispose(&v13, 8);
   return v10;
 }
 
-- (void)populateMetadataForRecents:(id)a3
+- (void)populateMetadataForRecents:(id)recents
 {
-  v5 = [a3 count];
+  v5 = [recents count];
   if (v5)
   {
     v6[0] = _NSConcreteStackBlock;
@@ -651,12 +651,12 @@
     v6[3] = &unk_10002CCF8;
     v6[5] = self;
     v6[6] = v5;
-    v6[4] = a3;
+    v6[4] = recents;
     [(_CRRecentsLibrary *)self performReadTransaction:v6];
   }
 }
 
-- (id)upcomingEventIdentifierForRecentID:(int64_t)a3
+- (id)upcomingEventIdentifierForRecentID:(int64_t)d
 {
   v6 = 0;
   v7 = &v6;
@@ -669,7 +669,7 @@
   v5[2] = sub_1000067B0;
   v5[3] = &unk_10002CD20;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = d;
   v5[4] = self;
   [(_CRRecentsLibrary *)self performReadTransaction:v5];
   v3 = v7[5];
@@ -677,36 +677,36 @@
   return v3;
 }
 
-- (id)copyContactRecentsFromStatement:(sqlite3_stmt *)a3 selectIndexes:(id *)a4 groupThreshold:(unint64_t)a5 options:(unint64_t)a6
+- (id)copyContactRecentsFromStatement:(sqlite3_stmt *)statement selectIndexes:(id *)indexes groupThreshold:(unint64_t)threshold options:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v11 = +[NSMutableDictionary dictionary];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
-  v12 = *&a4->var0.var4;
-  v21 = *&a4->var0.var0;
+  v12 = *&indexes->var0.var4;
+  v21 = *&indexes->var0.var0;
   v20[2] = sub_100006A70;
   v20[3] = &unk_10002CD48;
   v20[5] = v11;
-  v20[6] = a3;
+  v20[6] = statement;
   v22 = v12;
-  var1 = a4->var1;
+  var1 = indexes->var1;
   v20[4] = self;
-  v13 = [CRSQLRow enumerateRowsInStatement:a3 usingBlock:v20];
+  v13 = [CRSQLRow enumerateRowsInStatement:statement usingBlock:v20];
   v14 = +[NSMutableDictionary dictionary];
   if ([v11 count])
   {
-    v15 = [(CRAccountAdaptor *)self->_accountAdaptor senderEmailAddresses];
+    senderEmailAddresses = [(CRAccountAdaptor *)self->_accountAdaptor senderEmailAddresses];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100006B5C;
     v17[3] = &unk_10002CD70;
-    v18 = a5 != 0;
-    v19 = v6 & 1;
+    v18 = threshold != 0;
+    v19 = optionsCopy & 1;
     v17[4] = self;
-    v17[5] = v15;
+    v17[5] = senderEmailAddresses;
     v17[6] = v14;
-    v17[7] = a5;
+    v17[7] = threshold;
     [v11 enumerateKeysAndObjectsUsingBlock:v17];
   }
 
@@ -726,22 +726,22 @@
   return [v14 allValues];
 }
 
-- (id)hashForGroupMembers:(id)a3 recentsDomain:(id)a4
+- (id)hashForGroupMembers:(id)members recentsDomain:(id)domain
 {
-  v5 = [(_CRRecentsLibrary *)self hashesForGroupMembers:a3 recentsDomain:a4];
+  v5 = [(_CRRecentsLibrary *)self hashesForGroupMembers:members recentsDomain:domain];
 
   return [(_CRRecentsLibrary *)self hashForGroupMemberHashes:v5];
 }
 
-- (id)hashesForGroupMembers:(id)a3 recentsDomain:(id)a4
+- (id)hashesForGroupMembers:(id)members recentsDomain:(id)domain
 {
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [members count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a3;
-  v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  membersCopy = members;
+  v8 = [members countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -752,7 +752,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(membersCopy);
         }
 
         v12 = -[_CRRecentsLibrary recentsHashForExternalAddress:kind:](self, "recentsHashForExternalAddress:kind:", [*(*(&v14 + 1) + 8 * i) objectForKey:@"address"], objc_msgSend(*(*(&v14 + 1) + 8 * i), "objectForKey:", @"kind"));
@@ -764,7 +764,7 @@
         [(NSMutableArray *)v6 cr_insertObject:v12 usingComparator:&stru_10002D1A8];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [membersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -777,23 +777,23 @@
   return v6;
 }
 
-- (id)hashForGroupMemberHashes:(id)a3
+- (id)hashForGroupMemberHashes:(id)hashes
 {
-  if ([a3 count] == 1)
+  if ([hashes count] == 1)
   {
 
-    return [a3 firstObject];
+    return [hashes firstObject];
   }
 
   else
   {
-    v5 = [objc_msgSend(a3 componentsJoinedByString:{&stru_10002DA70), "dataUsingEncoding:", 4}];
+    v5 = [objc_msgSend(hashes componentsJoinedByString:{&stru_10002DA70), "dataUsingEncoding:", 4}];
 
     return [v5 cr_md5DigestHexString];
   }
 }
 
-- (id)_copyRecentContactForRecordHash:(id)a3 recentsDomain:(id)a4
+- (id)_copyRecentContactForRecordHash:(id)hash recentsDomain:(id)domain
 {
   v7 = 0;
   v8 = &v7;
@@ -805,8 +805,8 @@
   v6[1] = 3221225472;
   v6[2] = sub_100007184;
   v6[3] = &unk_10002CDC0;
-  v6[4] = a3;
-  v6[5] = a4;
+  v6[4] = hash;
+  v6[5] = domain;
   v6[6] = self;
   v6[7] = &v7;
   [(_CRRecentsLibrary *)self performReadTransaction:v6];
@@ -815,7 +815,7 @@
   return v4;
 }
 
-- (id)_copyRecentContactForID:(int64_t)a3
+- (id)_copyRecentContactForID:(int64_t)d
 {
   v6 = 0;
   v7 = &v6;
@@ -828,7 +828,7 @@
   v5[2] = sub_100007484;
   v5[3] = &unk_10002CDE8;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = d;
   v5[4] = self;
   [(_CRRecentsLibrary *)self performReadTransaction:v5];
   v3 = v7[5];
@@ -836,38 +836,38 @@
   return v3;
 }
 
-- (void)enumerateRecentsForDomain:(id)a3 usingBlock:(id)a4
+- (void)enumerateRecentsForDomain:(id)domain usingBlock:(id)block
 {
-  if (a3)
+  if (domain)
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100007704;
     v4[3] = &unk_10002CE10;
-    v4[4] = a3;
+    v4[4] = domain;
     v4[5] = self;
-    v4[6] = a4;
+    v4[6] = block;
     [(_CRRecentsLibrary *)self performReadTransaction:v4];
   }
 }
 
-- (BOOL)removeRecentContactsWithRecentIDs:(id)a3 syncKeys:(id)a4 domain:(id)a5 removeInUbiquitousStore:(BOOL)a6 error:(id *)a7
+- (BOOL)removeRecentContactsWithRecentIDs:(id)ds syncKeys:(id)keys domain:(id)domain removeInUbiquitousStore:(BOOL)store error:(id *)error
 {
-  v7 = a6;
-  v11 = [a3 count];
-  if (a5 && v11)
+  storeCopy = store;
+  v11 = [ds count];
+  if (domain && v11)
   {
-    v41 = v7;
-    v46 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [a3 count]);
-    v42 = a5;
-    v43 = a3;
-    if ([a4 count])
+    v41 = storeCopy;
+    v46 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [ds count]);
+    domainCopy = domain;
+    dsCopy = ds;
+    if ([keys count])
     {
       v61 = 0uLL;
       v62 = 0uLL;
       v59 = 0uLL;
       v60 = 0uLL;
-      v48 = [a4 countByEnumeratingWithState:&v59 objects:v67 count:16];
+      v48 = [keys countByEnumeratingWithState:&v59 objects:v67 count:16];
       if (!v48)
       {
         goto LABEL_45;
@@ -887,7 +887,7 @@
         {
           if (*v60 != v47)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(keys);
           }
 
           v17 = *(*(&v59 + 1) + 8 * v16);
@@ -961,7 +961,7 @@ LABEL_22:
         }
 
         while (v16 != v48);
-        v28 = [a4 countByEnumeratingWithState:&v59 objects:v67 count:16];
+        v28 = [keys countByEnumeratingWithState:&v59 objects:v67 count:16];
         v48 = v28;
         if (!v28)
         {
@@ -974,7 +974,7 @@ LABEL_22:
     v54 = 0uLL;
     v51 = 0uLL;
     v52 = 0uLL;
-    v29 = [a3 countByEnumeratingWithState:&v51 objects:v65 count:16];
+    v29 = [ds countByEnumeratingWithState:&v51 objects:v65 count:16];
     if (v29)
     {
       v30 = v29;
@@ -986,7 +986,7 @@ LABEL_22:
         {
           if (*v52 != v31)
           {
-            objc_enumerationMutation(v43);
+            objc_enumerationMutation(dsCopy);
           }
 
           v34 = -[_CRRecentsLibrary _copyRecentContactForID:](self, "_copyRecentContactForID:", [*(*(&v51 + 1) + 8 * j) integerValue]);
@@ -994,15 +994,15 @@ LABEL_22:
           {
             v35 = v34;
             v36 = [(_CRRecentsLibrary *)self hashForContact:v34];
-            v37 = v32;
+            kind = v32;
             if (([v35 isGroup] & 1) == 0)
             {
-              v37 = [v35 kind];
+              kind = [v35 kind];
             }
 
             if (v36)
             {
-              if ([v37 isEqualToString:v32])
+              if ([kind isEqualToString:v32])
               {
                 v38 = @"GP_";
               }
@@ -1028,28 +1028,28 @@ LABEL_22:
           }
         }
 
-        v30 = [v43 countByEnumeratingWithState:&v51 objects:v65 count:16];
+        v30 = [dsCopy countByEnumeratingWithState:&v51 objects:v65 count:16];
       }
 
       while (v30);
     }
 
 LABEL_45:
-    [(_CRRecentsLibrary *)self _deleteRecentsWithRecentIDs:v43 storeKeys:v46 recentsDomain:v42 deleteInUbiquitousStore:v41];
-    [(_CRRecentsLibrary *)self _synchronizeStore:[(_CRRecentsLibrary *)self _storeForRecentsDomain:v42]];
+    [(_CRRecentsLibrary *)self _deleteRecentsWithRecentIDs:dsCopy storeKeys:v46 recentsDomain:domainCopy deleteInUbiquitousStore:v41];
+    [(_CRRecentsLibrary *)self _synchronizeStore:[(_CRRecentsLibrary *)self _storeForRecentsDomain:domainCopy]];
   }
 
   return 1;
 }
 
-- (void)removeAllRecentContactsWithCompletion:(id)a3
+- (void)removeAllRecentContactsWithCompletion:(id)completion
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [objc_msgSend(objc_opt_class() storeMapping];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  storeMapping = [objc_msgSend(objc_opt_class() storeMapping];
+  v6 = [storeMapping countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1061,7 +1061,7 @@ LABEL_45:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(storeMapping);
         }
 
         [(_CRRecentsLibrary *)self removeLocalRecordsForDomain:*(*(&v10 + 1) + 8 * v9) removeInUbiquitousStore:1];
@@ -1069,19 +1069,19 @@ LABEL_45:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [storeMapping countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (unint64_t)_databasePropertyValueByKey:(id)a3
+- (unint64_t)_databasePropertyValueByKey:(id)key
 {
   v6 = 0;
   v7 = &v6;
@@ -1093,14 +1093,14 @@ LABEL_45:
   v5[3] = &unk_10002CE38;
   v5[5] = self;
   v5[6] = &v6;
-  v5[4] = a3;
+  v5[4] = key;
   [(_CRRecentsLibrary *)self performReadTransaction:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (BOOL)_setDatabasePropertyValue:(unint64_t)a3 forKey:(id)a4
+- (BOOL)_setDatabasePropertyValue:(unint64_t)value forKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -1111,8 +1111,8 @@ LABEL_45:
   v6[2] = sub_100008040;
   v6[3] = &unk_10002CE60;
   v6[6] = &v7;
-  v6[7] = a3;
-  v6[4] = a4;
+  v6[7] = value;
+  v6[4] = key;
   v6[5] = self;
   [(_CRRecentsLibrary *)self performWriteTransaction:v6];
   v4 = *(v8 + 24);
@@ -1120,44 +1120,44 @@ LABEL_45:
   return v4;
 }
 
-- (unint64_t)_propertyValueForKey:(id)a3 defaultValue:(unint64_t)a4
+- (unint64_t)_propertyValueForKey:(id)key defaultValue:(unint64_t)value
 {
   value = 0;
   [(NSLock *)self->_lock lock];
-  ValueIfPresent = CFDictionaryGetValueIfPresent(self->_cachedProperties, a3, &value);
+  ValueIfPresent = CFDictionaryGetValueIfPresent(self->_cachedProperties, key, &value);
   [(NSLock *)self->_lock unlock];
   if (!ValueIfPresent)
   {
-    value = a4;
-    v8 = [(_CRRecentsLibrary *)self _databasePropertyValueByKey:a3];
+    value = value;
+    v8 = [(_CRRecentsLibrary *)self _databasePropertyValueByKey:key];
     if (v8 != -1)
     {
       value = v8;
     }
 
     [(NSLock *)self->_lock lock];
-    CFDictionarySetValue(self->_cachedProperties, a3, value);
+    CFDictionarySetValue(self->_cachedProperties, key, value);
     [(NSLock *)self->_lock unlock];
   }
 
   return value;
 }
 
-- (void)_setPropertyValue:(unint64_t)a3 forKey:(id)a4
+- (void)_setPropertyValue:(unint64_t)value forKey:(id)key
 {
   if ([_CRRecentsLibrary _setDatabasePropertyValue:"_setDatabasePropertyValue:forKey:" forKey:?])
   {
     [(NSLock *)self->_lock lock];
-    CFDictionarySetValue(self->_cachedProperties, a4, a3);
+    CFDictionarySetValue(self->_cachedProperties, key, value);
     lock = self->_lock;
 
     [(NSLock *)lock unlock];
   }
 }
 
-- (unint64_t)maximumRecentsForDomain:(id)a3
+- (unint64_t)maximumRecentsForDomain:(id)domain
 {
-  if (!a3)
+  if (!domain)
   {
     sub_10001821C();
   }
@@ -1167,26 +1167,26 @@ LABEL_45:
   return [(_CRRecentsLibrary *)self _propertyValueForKey:v4 defaultValue:500];
 }
 
-- (void)setMaximumRecents:(unint64_t)a3 forRecentsDomain:(id)a4
+- (void)setMaximumRecents:(unint64_t)recents forRecentsDomain:(id)domain
 {
-  if (!a3)
+  if (!recents)
   {
     sub_100018248();
   }
 
-  if (!a4)
+  if (!domain)
   {
     sub_10001821C();
   }
 
-  v6 = [@"max-recent:" stringByAppendingString:a4];
+  v6 = [@"max-recent:" stringByAppendingString:domain];
 
-  [(_CRRecentsLibrary *)self _setPropertyValue:a3 forKey:v6];
+  [(_CRRecentsLibrary *)self _setPropertyValue:recents forKey:v6];
 }
 
-- (unint64_t)maximumGroupRecentsForDomain:(id)a3
+- (unint64_t)maximumGroupRecentsForDomain:(id)domain
 {
-  if (!a3)
+  if (!domain)
   {
     sub_100018274();
   }
@@ -1196,26 +1196,26 @@ LABEL_45:
   return [(_CRRecentsLibrary *)self _propertyValueForKey:v4 defaultValue:250];
 }
 
-- (void)setMaximumGroupRecents:(unint64_t)a3 forRecentsDomain:(id)a4
+- (void)setMaximumGroupRecents:(unint64_t)recents forRecentsDomain:(id)domain
 {
-  if (!a3)
+  if (!recents)
   {
     sub_1000182A0();
   }
 
-  if (!a4)
+  if (!domain)
   {
     sub_100018274();
   }
 
-  v6 = [@"max-group-recent:" stringByAppendingString:a4];
+  v6 = [@"max-group-recent:" stringByAppendingString:domain];
 
-  [(_CRRecentsLibrary *)self _setPropertyValue:a3 forKey:v6];
+  [(_CRRecentsLibrary *)self _setPropertyValue:recents forKey:v6];
 }
 
-- (unint64_t)maximumRecentsAgeInDaysForDomain:(id)a3
+- (unint64_t)maximumRecentsAgeInDaysForDomain:(id)domain
 {
-  if (!a3)
+  if (!domain)
   {
     sub_1000182CC();
   }
@@ -1225,56 +1225,56 @@ LABEL_45:
   return [(_CRRecentsLibrary *)self _propertyValueForKey:v4 defaultValue:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (void)setMaximumRecentsAgeInDays:(unint64_t)a3 forRecentsDomain:(id)a4
+- (void)setMaximumRecentsAgeInDays:(unint64_t)days forRecentsDomain:(id)domain
 {
-  if (!a4)
+  if (!domain)
   {
     sub_1000182CC();
   }
 
-  v6 = [@"max-recent-age:" stringByAppendingString:a4];
+  v6 = [@"max-recent-age:" stringByAppendingString:domain];
 
-  [(_CRRecentsLibrary *)self _setPropertyValue:a3 forKey:v6];
+  [(_CRRecentsLibrary *)self _setPropertyValue:days forKey:v6];
 }
 
-- (void)cancelPerformExpungeRecentsOverLimitsForDomain:(id)a3
+- (void)cancelPerformExpungeRecentsOverLimitsForDomain:(id)domain
 {
   v5 = +[CRLogging log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    domainCopy = domain;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "canceling any pending expunge for domain %{public}@", &v6, 0xCu);
   }
 
-  [(CRDelayedWorkQueue *)self->_pendingDomainExpunges cancelWorkForKey:a3];
+  [(CRDelayedWorkQueue *)self->_pendingDomainExpunges cancelWorkForKey:domain];
 }
 
-- (void)performExpungeRecentsOverLimitsForDomain:(id)a3 afterDelay:(double)a4
+- (void)performExpungeRecentsOverLimitsForDomain:(id)domain afterDelay:(double)delay
 {
-  if ([(CRDelayedWorkQueue *)self->_pendingDomainExpunges scheduleWorkForKey:a4 afterDelay:_NSConcreteStackBlock work:3221225472, sub_1000085D8, &unk_10002CA38, a3, self])
+  if ([(CRDelayedWorkQueue *)self->_pendingDomainExpunges scheduleWorkForKey:delay afterDelay:_NSConcreteStackBlock work:3221225472, sub_1000085D8, &unk_10002CA38, domain, self])
   {
     v6 = +[CRLogging log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v8 = a4;
+      delayCopy = delay;
       v9 = 2114;
-      v10 = a3;
+      domainCopy = domain;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "scheduled pending expunge after %.2fs for domain %{public}@", buf, 0x16u);
     }
   }
 }
 
-- (id)_nts_expungeRecentsOlderThanDate:(id)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6
+- (id)_nts_expungeRecentsOlderThanDate:(id)date domain:(id)domain storeKeys:(id *)keys connection:(id)connection
 {
   v11 = objc_alloc_init(NSMutableArray);
   v12 = +[NSMutableArray array];
-  if (a3)
+  if (date)
   {
-    v13 = [a6 preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash, recents.count \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n        AND recents.last_date < :expunge_date     "}];
-    sub_10000236C(v13, ":bundle_identifier", a4);
-    sub_100002484(v13, ":expunge_date", a3);
+    v13 = [connection preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash, recents.count \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n        AND recents.last_date < :expunge_date     "}];
+    sub_10000236C(v13, ":bundle_identifier", domain);
+    sub_100002484(v13, ":expunge_date", date);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100008878;
@@ -1291,7 +1291,7 @@ LABEL_45:
         *buf = 134218242;
         v20 = v16;
         v21 = 2114;
-        v22 = a4;
+        domainCopy = domain;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Found %lu recents over age limit for domain %{public}@", buf, 0x16u);
       }
     }
@@ -1305,21 +1305,21 @@ LABEL_45:
     }
   }
 
-  if (a5)
+  if (keys)
   {
-    *a5 = v12;
+    *keys = v12;
   }
 
   return v11;
 }
 
-- (id)_nts_expungeIndividualRecentsOverLimit:(unint64_t)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6
+- (id)_nts_expungeIndividualRecentsOverLimit:(unint64_t)limit domain:(id)domain storeKeys:(id *)keys connection:(id)connection
 {
   v11 = objc_alloc_init(NSMutableArray);
   v12 = +[NSMutableArray array];
-  v13 = [a6 preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n            AND recents.count = 1 \n        ORDER BY recents.last_date DESC \n        LIMIT -1 \n        OFFSET :offset     "}];
-  sub_10000236C(v13, ":bundle_identifier", a4);
-  sub_1000023CC(v13, ":offset", a3);
+  v13 = [connection preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n            AND recents.count = 1 \n        ORDER BY recents.last_date DESC \n        LIMIT -1 \n        OFFSET :offset     "}];
+  sub_10000236C(v13, ":bundle_identifier", domain);
+  sub_1000023CC(v13, ":offset", limit);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100008B54;
@@ -1336,7 +1336,7 @@ LABEL_45:
       *buf = 134218242;
       v20 = v16;
       v21 = 2114;
-      v22 = a4;
+      domainCopy = domain;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Found %lu individual recents over hard limit for domain %{public}@", buf, 0x16u);
     }
   }
@@ -1349,21 +1349,21 @@ LABEL_45:
     v11 = 0;
   }
 
-  if (a5)
+  if (keys)
   {
-    *a5 = v12;
+    *keys = v12;
   }
 
   return v11;
 }
 
-- (id)_nts_expungeGroupRecentsOverLimit:(unint64_t)a3 domain:(id)a4 storeKeys:(id *)a5 connection:(id)a6
+- (id)_nts_expungeGroupRecentsOverLimit:(unint64_t)limit domain:(id)domain storeKeys:(id *)keys connection:(id)connection
 {
   v11 = objc_alloc_init(NSMutableArray);
   v12 = +[NSMutableArray array];
-  v13 = [a6 preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n            AND recents.count != 1 \n        ORDER BY recents.last_date DESC \n        LIMIT -1 \n        OFFSET :offset     "}];
-  sub_10000236C(v13, ":bundle_identifier", a4);
-  sub_1000023CC(v13, ":offset", a3);
+  v13 = [connection preparedStatementForPattern:{@"        SELECT recents.ROWID, recents.record_hash \n        FROM recents \n        WHERE recents.bundle_identifier = :bundle_identifier \n            AND recents.count != 1 \n        ORDER BY recents.last_date DESC \n        LIMIT -1 \n        OFFSET :offset     "}];
+  sub_10000236C(v13, ":bundle_identifier", domain);
+  sub_1000023CC(v13, ":offset", limit);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100008E04;
@@ -1380,7 +1380,7 @@ LABEL_45:
       *buf = 134218242;
       v20 = v16;
       v21 = 2114;
-      v22 = a4;
+      domainCopy = domain;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Found %lu group recents over hard limit for domain %{public}@", buf, 0x16u);
     }
   }
@@ -1393,24 +1393,24 @@ LABEL_45:
     v11 = 0;
   }
 
-  if (a5)
+  if (keys)
   {
-    *a5 = v12;
+    *keys = v12;
   }
 
   return v11;
 }
 
-- (BOOL)expungeRecentsOverLimitsForDomain:(id)a3 forcibly:(BOOL)a4 expungedRecentIDs:(id *)a5
+- (BOOL)expungeRecentsOverLimitsForDomain:(id)domain forcibly:(BOOL)forcibly expungedRecentIDs:(id *)ds
 {
   [(_CRRecentsLibrary *)self cancelPerformExpungeRecentsOverLimitsForDomain:?];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v9 = [(_CRRecentsLibrary *)self maximumRecentsForDomain:a3];
-  v10 = [(_CRRecentsLibrary *)self maximumGroupRecentsForDomain:a3];
-  v11 = [(_CRRecentsLibrary *)self maximumRecentsAgeInDaysForDomain:a3];
+  v9 = [(_CRRecentsLibrary *)self maximumRecentsForDomain:domain];
+  v10 = [(_CRRecentsLibrary *)self maximumGroupRecentsForDomain:domain];
+  v11 = [(_CRRecentsLibrary *)self maximumRecentsAgeInDaysForDomain:domain];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
@@ -1433,17 +1433,17 @@ LABEL_45:
   v20[3] = &unk_10002CED8;
   v20[4] = v12;
   v20[5] = self;
-  v20[6] = a3;
+  v20[6] = domain;
   v20[7] = v17;
   v20[10] = v10;
   v20[11] = v9;
   v20[8] = v16;
   v20[9] = &v22;
-  v21 = a4;
+  forciblyCopy = forcibly;
   [(_CRRecentsLibrary *)self performWriteTransaction:v20];
-  if (a5 && (v23[3] & 1) != 0)
+  if (ds && (v23[3] & 1) != 0)
   {
-    *a5 = v17;
+    *ds = v17;
   }
 
   v18 = *(v23 + 24);
@@ -1451,48 +1451,48 @@ LABEL_45:
   return v18;
 }
 
-- (void)_bindRecent:(id)a3 forStatement:(sqlite3_stmt *)a4
+- (void)_bindRecent:(id)recent forStatement:(sqlite3_stmt *)statement
 {
-  if (![a3 countOfRecents])
+  if (![recent countOfRecents])
   {
     sub_10001853C();
   }
 
-  v7 = [(_CRRecentsLibrary *)self hashForContact:a3];
+  v7 = [(_CRRecentsLibrary *)self hashForContact:recent];
   if (v7)
   {
     v22 = v7;
-    sub_10000236C(a4, ":display_name", [a3 displayName]);
-    sub_10000236C(a4, ":bundle_identifier", [a3 recentsDomain]);
-    sub_10000236C(a4, ":original_source", [a3 originalSource]);
-    sub_100002484(a4, ":last_date", [a3 mostRecentDate]);
-    v8 = [a3 weight];
-    v9 = sqlite3_bind_parameter_index(a4, ":weight");
+    sub_10000236C(statement, ":display_name", [recent displayName]);
+    sub_10000236C(statement, ":bundle_identifier", [recent recentsDomain]);
+    sub_10000236C(statement, ":original_source", [recent originalSource]);
+    sub_100002484(statement, ":last_date", [recent mostRecentDate]);
+    weight = [recent weight];
+    v9 = sqlite3_bind_parameter_index(statement, ":weight");
     if (v9 >= 1)
     {
       v10 = v9;
-      if (v8)
+      if (weight)
       {
-        [v8 doubleValue];
-        sqlite3_bind_double(a4, v10, v11);
+        [weight doubleValue];
+        sqlite3_bind_double(statement, v10, v11);
       }
 
       else
       {
-        sqlite3_bind_null(a4, v9);
+        sqlite3_bind_null(statement, v9);
       }
     }
 
-    v23 = a4;
-    sub_1000023CC(a4, ":group_kind", [a3 groupKind]);
+    statementCopy = statement;
+    sub_1000023CC(statement, ":group_kind", [recent groupKind]);
     v13 = +[NSMutableString string];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = a3;
-    v14 = [a3 recentDates];
-    v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    recentCopy = recent;
+    recentDates = [recent recentDates];
+    v15 = [recentDates countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1503,7 +1503,7 @@ LABEL_45:
         {
           if (*v26 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(recentDates);
           }
 
           v19 = *(*(&v25 + 1) + 8 * i);
@@ -1521,15 +1521,15 @@ LABEL_45:
           [v13 appendFormat:@"%@%lld", v20, ((v21 + 978307200.0) * 1000.0)];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v16 = [recentDates countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v16);
     }
 
-    sub_10000236C(v23, ":dates", v13);
-    sub_10000236C(v23, ":sending_address", [v24 lastSendingAddress]);
-    sub_10000236C(v23, ":record_hash", v22);
+    sub_10000236C(statementCopy, ":dates", v13);
+    sub_10000236C(statementCopy, ":sending_address", [recentCopy lastSendingAddress]);
+    sub_10000236C(statementCopy, ":record_hash", v22);
   }
 
   else
@@ -1537,56 +1537,56 @@ LABEL_45:
     v12 = +[CRLogging log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1000184B4(a3, v12);
+      sub_1000184B4(recent, v12);
     }
   }
 }
 
-- (void)_bindContact:(id)a3 withRecentID:(int64_t)a4 forStatement:(sqlite3_stmt *)a5
+- (void)_bindContact:(id)contact withRecentID:(int64_t)d forStatement:(sqlite3_stmt *)statement
 {
-  v9 = [a3 kind];
-  v10 = -[_CRRecentsLibrary addressFromExternalAddress:kind:](self, "addressFromExternalAddress:kind:", [a3 address], v9);
-  sub_1000023CC(a5, ":recent_id", a4);
-  sub_10000236C(a5, ":display_name", [a3 displayName]);
-  sub_10000236C(a5, ":kind", v9);
+  kind = [contact kind];
+  v10 = -[_CRRecentsLibrary addressFromExternalAddress:kind:](self, "addressFromExternalAddress:kind:", [contact address], kind);
+  sub_1000023CC(statement, ":recent_id", d);
+  sub_10000236C(statement, ":display_name", [contact displayName]);
+  sub_10000236C(statement, ":kind", kind);
 
-  sub_10000236C(a5, ":address", v10);
+  sub_10000236C(statement, ":address", v10);
 }
 
-- (void)_insertRecentContacts:(id)a3
+- (void)_insertRecentContacts:(id)contacts
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10000997C;
   v3[3] = &unk_10002CF28;
-  v3[4] = a3;
+  v3[4] = contacts;
   v3[5] = self;
   [(_CRRecentsLibrary *)self performWriteTransaction:v3];
 }
 
-- (void)_updateRecentContacts:(id)a3
+- (void)_updateRecentContacts:(id)contacts
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100009E48;
   v3[3] = &unk_10002CF28;
-  v3[4] = a3;
+  v3[4] = contacts;
   v3[5] = self;
   [(_CRRecentsLibrary *)self performWriteTransaction:v3];
 }
 
-- (void)restorePreviouslyDeletedRecentContacts:(id)a3 completion:(id)a4
+- (void)restorePreviouslyDeletedRecentContacts:(id)contacts completion:(id)completion
 {
   [(_CRRecentsLibrary *)self _saveRecentContacts:?];
-  if (a4)
+  if (completion)
   {
-    v6 = *(a4 + 2);
+    v6 = *(completion + 2);
 
-    v6(a4, a3, 0);
+    v6(completion, contacts, 0);
   }
 }
 
-- (void)_saveRecentContacts:(id)a3
+- (void)_saveRecentContacts:(id)contacts
 {
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
@@ -1594,7 +1594,7 @@ LABEL_45:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [contacts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1605,7 +1605,7 @@ LABEL_45:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(contacts);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -1622,7 +1622,7 @@ LABEL_45:
         [v12 addObject:v11];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [contacts countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1638,14 +1638,14 @@ LABEL_45:
   [(_CRRecentsLibrary *)self performWriteTransaction:v13];
 }
 
-- (id)copyRecentContactsWithIDs:(id)a3
+- (id)copyRecentContactsWithIDs:(id)ds
 {
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [ds countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1657,7 +1657,7 @@ LABEL_45:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
         v10 = -[_CRRecentsLibrary _copyRecentContactForID:](self, "_copyRecentContactForID:", [*(*(&v13 + 1) + 8 * v9) integerValue]);
@@ -1671,7 +1671,7 @@ LABEL_45:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [ds countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1680,9 +1680,9 @@ LABEL_45:
   return [v5 copy];
 }
 
-- (void)_deleteRecentWithRecordHash:(id)a3 kind:(id)a4 recentsDomain:(id)a5
+- (void)_deleteRecentWithRecordHash:(id)hash kind:(id)kind recentsDomain:(id)domain
 {
-  if (!a5)
+  if (!domain)
   {
     sub_10001863C();
   }
@@ -1691,19 +1691,19 @@ LABEL_45:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = a5;
+    domainCopy2 = domain;
     v18 = 2114;
-    v19 = a3;
+    hashCopy = hash;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "deleting contact from '%{public}@' with record hash: [%{public}@]", buf, 0x16u);
   }
 
-  v10 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:a5];
+  v10 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:domain];
   if (v10)
   {
-    if (a3)
+    if (hash)
     {
       v11 = v10;
-      if ([a4 isEqualToString:CRAddressKindGroup])
+      if ([kind isEqualToString:CRAddressKindGroup])
       {
         v12 = @"GP_";
       }
@@ -1713,14 +1713,14 @@ LABEL_45:
         v12 = @"MR_";
       }
 
-      v13 = [(__CFString *)v12 stringByAppendingString:a3];
+      v13 = [(__CFString *)v12 stringByAppendingString:hash];
       v14 = +[CRLogging log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v17 = a5;
+        domainCopy2 = domain;
         v18 = 2114;
-        v19 = v13;
+        hashCopy = v13;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "deleting recent from remote store for domain '%{public}@' with key %{public}@", buf, 0x16u);
       }
 
@@ -1737,33 +1737,33 @@ LABEL_45:
   v15[1] = 3221225472;
   v15[2] = sub_10000A6D0;
   v15[3] = &unk_10002CF28;
-  v15[4] = a3;
-  v15[5] = a5;
+  v15[4] = hash;
+  v15[5] = domain;
   [(_CRRecentsLibrary *)self performWriteTransaction:v15];
 }
 
-- (void)_deleteRecentsWithRecentIDs:(id)a3 storeKeys:(id)a4 recentsDomain:(id)a5 deleteInUbiquitousStore:(BOOL)a6
+- (void)_deleteRecentsWithRecentIDs:(id)ds storeKeys:(id)keys recentsDomain:(id)domain deleteInUbiquitousStore:(BOOL)store
 {
-  if (!a5)
+  if (!domain)
   {
     sub_100018668();
   }
 
-  v6 = a6;
-  v10 = [a3 cr_map:sCRSQLite3MPrintTransform];
+  storeCopy = store;
+  v10 = [ds cr_map:sCRSQLite3MPrintTransform];
   v11 = +[CRLogging log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = a5;
+    domainCopy2 = domain;
     v27 = 2114;
-    v28 = [v10 componentsJoinedByString:{@", "}];
+    keysCopy = [v10 componentsJoinedByString:{@", "}];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "deleting contacts from '%{public}@' with recent IDs: [%{public}@]", buf, 0x16u);
   }
 
-  if (v6)
+  if (storeCopy)
   {
-    v12 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:a5];
+    v12 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:domain];
     if (v12)
     {
       v13 = v12;
@@ -1771,9 +1771,9 @@ LABEL_45:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v26 = a5;
+        domainCopy2 = domain;
         v27 = 2114;
-        v28 = a4;
+        keysCopy = keys;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "deleting recents from remote store for domain '%{public}@' with keys %{public}@", buf, 0x16u);
       }
 
@@ -1781,7 +1781,7 @@ LABEL_45:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v15 = [a4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [keys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v15)
       {
         v16 = v15;
@@ -1793,7 +1793,7 @@ LABEL_45:
           {
             if (*v21 != v17)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(keys);
             }
 
             [v13 removeObjectForKey:*(*(&v20 + 1) + 8 * v18)];
@@ -1801,7 +1801,7 @@ LABEL_45:
           }
 
           while (v16 != v18);
-          v16 = [a4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v16 = [keys countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v16);
@@ -1814,33 +1814,33 @@ LABEL_45:
   v19[2] = sub_10000A9A0;
   v19[3] = &unk_10002CF28;
   v19[4] = v10;
-  v19[5] = a5;
+  v19[5] = domain;
   [(_CRRecentsLibrary *)self performWriteTransaction:v19];
 }
 
-- (unint64_t)recordContactEvents:(id)a3 recentsDomain:(id)a4 sendingAddress:(id)a5 source:(id)a6
+- (unint64_t)recordContactEvents:(id)events recentsDomain:(id)domain sendingAddress:(id)address source:(id)source
 {
-  v8 = self;
-  v79 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:a4];
-  v93 = [(CRAccountAdaptor *)v8->_accountAdaptor senderEmailAddresses];
+  selfCopy = self;
+  v79 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:domain];
+  senderEmailAddresses = [(CRAccountAdaptor *)selfCopy->_accountAdaptor senderEmailAddresses];
   v130[0] = _NSConcreteStackBlock;
   v130[1] = 3221225472;
   v131 = sub_10000B4D0;
   v132 = &unk_10002CF78;
   v97 = objc_alloc_init(NSMutableDictionary);
   v133 = v97;
-  v134 = v8;
-  v91 = a4;
-  v135 = a4;
+  v134 = selfCopy;
+  domainCopy = domain;
+  domainCopy2 = domain;
   v88 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(NSMutableDictionary);
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  obj = a3;
-  v10 = [a3 countByEnumeratingWithState:&v126 objects:v141 count:16];
-  v92 = v8;
+  obj = events;
+  v10 = [events countByEnumeratingWithState:&v126 objects:v141 count:16];
+  v92 = selfCopy;
   if (v10)
   {
     v11 = v10;
@@ -1858,7 +1858,7 @@ LABEL_45:
         v14 = *(*(&v126 + 1) + 8 * i);
         v15 = [objc_msgSend(v14 objectForKeyedSubscript:{@"options", "unsignedIntegerValue"}];
         v16 = [v14 objectForKey:@"members"];
-        if ((v15 & 0x100000) != 0 || (v17 = v16, [v16 count] == 1) && (v18 = objc_msgSend(v17, "lastObject"), objc_msgSend(v95, "isEqualToString:", objc_msgSend(v18, "objectForKeyedSubscript:", @"kind"))) && objc_msgSend(v93, "containsObject:", objc_msgSend(v18, "objectForKeyedSubscript:", @"address")))
+        if ((v15 & 0x100000) != 0 || (v17 = v16, [v16 count] == 1) && (v18 = objc_msgSend(v17, "lastObject"), objc_msgSend(v95, "isEqualToString:", objc_msgSend(v18, "objectForKeyedSubscript:", @"kind"))) && objc_msgSend(senderEmailAddresses, "containsObject:", objc_msgSend(v18, "objectForKeyedSubscript:", @"address")))
         {
           [v88 addObject:v14];
         }
@@ -1879,7 +1879,7 @@ LABEL_45:
           }
         }
 
-        v8 = v92;
+        selfCopy = v92;
       }
 
       v11 = [obj countByEnumeratingWithState:&v126 objects:v141 count:16];
@@ -1895,7 +1895,7 @@ LABEL_45:
   v122 = 0u;
   v123 = 0u;
   v22 = [v88 countByEnumeratingWithState:&v122 objects:v140 count:16];
-  v23 = a4;
+  domainCopy3 = domain;
   if (v22)
   {
     v24 = v22;
@@ -1932,7 +1932,7 @@ LABEL_45:
 
         if (!v31)
         {
-          v32 = [(_CRRecentsLibrary *)v8 hashForGroupMembers:v28 recentsDomain:v23];
+          v32 = [(_CRRecentsLibrary *)selfCopy hashForGroupMembers:v28 recentsDomain:domainCopy3];
           if (v32)
           {
             v82 = v32;
@@ -1960,7 +1960,7 @@ LABEL_45:
               v117 = v90;
               v118 = v29;
               v121 = v94 & 1;
-              v119 = v8;
+              v119 = selfCopy;
               v120 = v97;
               if ([v28 count] < 2)
               {
@@ -1998,9 +1998,9 @@ LABEL_45:
 
                         v138 = *(*(&v108 + 1) + 8 * j);
                         v50 = v138;
-                        v51 = [(_CRRecentsLibrary *)v8 hashForGroupMembers:[NSArray recentsDomain:"arrayWithObjects:count:" arrayWithObjects:1 count:?], v23];
+                        domainCopy3 = [(_CRRecentsLibrary *)selfCopy hashForGroupMembers:[NSArray recentsDomain:"arrayWithObjects:count:" arrayWithObjects:1 count:?], domainCopy3];
                         v52 = [v50 objectForKey:@"displayName"];
-                        v53 = v131(v130, v51);
+                        v53 = v131(v130, domainCopy3);
                         if (v53)
                         {
                           v113(v112, v53, v52);
@@ -2030,10 +2030,10 @@ LABEL_45:
                 v39 = [v36 objectForKey:@"displayName"];
                 v40 = [v36 objectForKey:@"kind"];
                 v41 = v38;
-                v23 = v91;
-                v42 = [v37 initWithAddress:v41 displayName:v39 kind:v40 recentDate:v29 recentsDomain:v91];
+                domainCopy3 = domainCopy;
+                v42 = [v37 initWithAddress:v41 displayName:v39 kind:v40 recentDate:v29 recentsDomain:domainCopy];
                 v43 = v42;
-                if (a6)
+                if (source)
                 {
                   [v42 setOriginalSource:?];
                 }
@@ -2075,7 +2075,7 @@ LABEL_45:
                       }
 
                       v59 = *(*(&v104 + 1) + 8 * k);
-                      v60 = -[_CRRecentsLibrary recentsHashForExternalAddress:kind:](v8, "recentsHashForExternalAddress:kind:", [v59 objectForKeyedSubscript:@"address"], objc_msgSend(v59, "objectForKeyedSubscript:", @"kind"));
+                      v60 = -[_CRRecentsLibrary recentsHashForExternalAddress:kind:](selfCopy, "recentsHashForExternalAddress:kind:", [v59 objectForKeyedSubscript:@"address"], objc_msgSend(v59, "objectForKeyedSubscript:", @"kind"));
                       if (![(NSMutableDictionary *)v54 objectForKey:v60])
                       {
                         v61 = v131(v130, v60);
@@ -2101,8 +2101,8 @@ LABEL_45:
                           v66 = [v59 objectForKey:@"displayName"];
                           v67 = [v59 objectForKey:@"kind"];
                           v68 = v66;
-                          v8 = v92;
-                          v62 = [v64 initWithAddress:v65 displayName:v68 kind:v67 recentDate:v96 recentsDomain:v91];
+                          selfCopy = v92;
+                          v62 = [v64 initWithAddress:v65 displayName:v68 kind:v67 recentDate:v96 recentsDomain:domainCopy];
                         }
 
                         [(NSMutableDictionary *)v54 setObject:v62 forKey:v60];
@@ -2116,10 +2116,10 @@ LABEL_45:
                   while (v56);
                 }
 
-                v23 = v91;
-                v69 = [[CRRecentContact alloc] initWithMembers:-[NSMutableDictionary allValues](v54 displayName:"allValues") recentDate:v89 recentsDomain:{v96, v91}];
+                domainCopy3 = domainCopy;
+                v69 = [[CRRecentContact alloc] initWithMembers:-[NSMutableDictionary allValues](v54 displayName:"allValues") recentDate:v89 recentsDomain:{v96, domainCopy}];
                 v43 = v69;
-                if (a6)
+                if (source)
                 {
                   [v69 setOriginalSource:?];
                 }
@@ -2156,18 +2156,18 @@ LABEL_72:
     while (v24);
   }
 
-  v71 = [v97 allValues];
-  [v71 makeObjectsPerformSelector:"setLastSendingAddress:" withObject:a5];
-  [(_CRRecentsLibrary *)v8 _saveRecentContacts:v71];
+  allValues = [v97 allValues];
+  [allValues makeObjectsPerformSelector:"setLastSendingAddress:" withObject:address];
+  [(_CRRecentsLibrary *)selfCopy _saveRecentContacts:allValues];
   v103 = 0;
-  [(_CRRecentsLibrary *)v8 expungeRecentsOverLimitsForDomain:v23 forcibly:0 expungedRecentIDs:&v103];
+  [(_CRRecentsLibrary *)selfCopy expungeRecentsOverLimitsForDomain:domainCopy3 forcibly:0 expungedRecentIDs:&v103];
   if (v79)
   {
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v72 = [v71 countByEnumeratingWithState:&v99 objects:v136 count:16];
+    v72 = [allValues countByEnumeratingWithState:&v99 objects:v136 count:16];
     if (v72)
     {
       v73 = v72;
@@ -2178,38 +2178,38 @@ LABEL_72:
         {
           if (*v100 != v74)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(allValues);
           }
 
           v76 = *(*(&v99 + 1) + 8 * m);
-          v8 = v92;
+          selfCopy = v92;
           if (([v103 containsObject:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", objc_msgSend(v76, "recentID"))}] & 1) == 0)
           {
             [(_CRRecentsLibrary *)v92 _syncContact:v76 withStore:v79];
           }
         }
 
-        v73 = [v71 countByEnumeratingWithState:&v99 objects:v136 count:16];
+        v73 = [allValues countByEnumeratingWithState:&v99 objects:v136 count:16];
       }
 
       while (v73);
     }
 
-    [(_CRRecentsLibrary *)v8 scheduleSynchronizationForStore:v79];
+    [(_CRRecentsLibrary *)selfCopy scheduleSynchronizationForStore:v79];
   }
 
   return 0;
 }
 
-- (void)removeContact:(id)a3
+- (void)removeContact:(id)contact
 {
-  v5 = [a3 recentsDomain];
-  v6 = [(_CRRecentsLibrary *)self hashForContact:a3];
-  v7 = [a3 kind];
-  if (v5 && v6 && v7)
+  recentsDomain = [contact recentsDomain];
+  v6 = [(_CRRecentsLibrary *)self hashForContact:contact];
+  kind = [contact kind];
+  if (recentsDomain && v6 && kind)
   {
-    [(_CRRecentsLibrary *)self _deleteRecentWithRecordHash:v6 kind:v7 recentsDomain:v5];
-    v8 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:v5];
+    [(_CRRecentsLibrary *)self _deleteRecentWithRecordHash:v6 kind:kind recentsDomain:recentsDomain];
+    v8 = [(_CRRecentsLibrary *)self _storeForRecentsDomain:recentsDomain];
     if (v8)
     {
 
@@ -2225,80 +2225,80 @@ LABEL_72:
       v10 = 138544131;
       v11 = v6;
       v12 = 2114;
-      v13 = v5;
+      v13 = recentsDomain;
       v14 = 2114;
-      v15 = [a3 sanitizedDescription];
+      sanitizedDescription = [contact sanitizedDescription];
       v16 = 2113;
-      v17 = a3;
+      contactCopy = contact;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Attempt to remove invalid contact (h=%{public}@, b=%{public}@): %{public}@ %{private}@", &v10, 0x2Au);
     }
   }
 }
 
-- (id)recentsHashForExternalAddress:(id)a3 kind:(id)a4
+- (id)recentsHashForExternalAddress:(id)address kind:(id)kind
 {
-  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:a4];
-  v7 = [v6 addressFromExternalAddress:a3 kind:a4];
+  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:kind];
+  v7 = [v6 addressFromExternalAddress:address kind:kind];
 
-  return [v6 syncKeyForAddress:v7 kind:a4];
+  return [v6 syncKeyForAddress:v7 kind:kind];
 }
 
-- (id)recentsHashForAddress:(id)a3 kind:(id)a4
+- (id)recentsHashForAddress:(id)address kind:(id)kind
 {
-  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:a4];
+  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:kind];
 
-  return [v6 syncKeyForAddress:a3 kind:a4];
+  return [v6 syncKeyForAddress:address kind:kind];
 }
 
-- (id)addressFromExternalAddress:(id)a3 kind:(id)a4
+- (id)addressFromExternalAddress:(id)address kind:(id)kind
 {
-  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:a4];
+  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:kind];
 
-  return [v6 addressFromExternalAddress:a3 kind:a4];
+  return [v6 addressFromExternalAddress:address kind:kind];
 }
 
-- (id)externalAddressFromAddress:(id)a3 kind:(id)a4
+- (id)externalAddressFromAddress:(id)address kind:(id)kind
 {
-  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:a4];
+  v6 = [(_CRRecentsLibrary *)self addressHandlerForAddressKind:kind];
 
-  return [v6 externalAddressFromAddress:a3 kind:a4];
+  return [v6 externalAddressFromAddress:address kind:kind];
 }
 
-- (id)hashForContact:(id)a3
+- (id)hashForContact:(id)contact
 {
-  if ([a3 isGroup])
+  if ([contact isGroup])
   {
 
-    return [(_CRRecentsLibrary *)self hashForGroup:a3];
+    return [(_CRRecentsLibrary *)self hashForGroup:contact];
   }
 
   else
   {
-    v5 = [a3 address];
-    v6 = [a3 kind];
+    address = [contact address];
+    kind = [contact kind];
 
-    return [(_CRRecentsLibrary *)self recentsHashForExternalAddress:v5 kind:v6];
+    return [(_CRRecentsLibrary *)self recentsHashForExternalAddress:address kind:kind];
   }
 }
 
-- (id)hashForGroup:(id)a3
+- (id)hashForGroup:(id)group
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000B9BC;
   v4[3] = &unk_10002CFC8;
   v4[4] = self;
-  return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(a3 "members")];
+  return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(group "members")];
 }
 
-- (id)keyForContact:(id)a3
+- (id)keyForContact:(id)contact
 {
   result = [(_CRRecentsLibrary *)self hashForContact:?];
   if (result)
   {
     v5 = result;
-    v6 = [a3 kind];
-    if ([v6 isEqualToString:CRAddressKindGroup])
+    kind = [contact kind];
+    if ([kind isEqualToString:CRAddressKindGroup])
     {
       v7 = @"GP_";
     }
@@ -2314,7 +2314,7 @@ LABEL_72:
   return result;
 }
 
-- (id)_recentsDomainForStore:(id)a3
+- (id)_recentsDomainForStore:(id)store
 {
   v7 = 0;
   v8 = &v7;
@@ -2327,7 +2327,7 @@ LABEL_72:
   v6[1] = 3221225472;
   v6[2] = sub_10000BB7C;
   v6[3] = &unk_10002CFF0;
-  v6[4] = a3;
+  v6[4] = store;
   v6[5] = &v7;
   [(NSDictionary *)cloudStores enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
@@ -2335,19 +2335,19 @@ LABEL_72:
   return v4;
 }
 
-- (void)_storeChangedExternally:(id)a3
+- (void)_storeChangedExternally:(id)externally
 {
   v5 = [[CRProcessTransaction alloc] initWithDescription:@"com.apple.corerecents.externalStoreChange"];
-  v6 = [a3 object];
-  v7 = [a3 userInfo];
-  v8 = [(_CRRecentsLibrary *)self _recentsDomainForStore:v6];
+  object = [externally object];
+  userInfo = [externally userInfo];
+  v8 = [(_CRRecentsLibrary *)self _recentsDomainForStore:object];
   if (!v8)
   {
     sub_100018694();
   }
 
   v9 = v8;
-  v10 = [objc_msgSend(v7 objectForKey:{NSUbiquitousKeyValueStoreChangeReasonKey), "integerValue"}];
+  v10 = [objc_msgSend(userInfo objectForKey:{NSUbiquitousKeyValueStoreChangeReasonKey), "integerValue"}];
   v11 = +[CRLogging log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2408,7 +2408,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  v13 = [v7 objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
+  v13 = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
   v14 = +[CRLogging log];
   if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -2488,13 +2488,13 @@ LABEL_40:
       v17 = +[CRLogging log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [objc_msgSend(v6 "dictionaryRepresentation")];
+        v18 = [objc_msgSend(object "dictionaryRepresentation")];
         *buf = 134217984;
         v50 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "After expunging, store has %lu entries", buf, 0xCu);
       }
 
-      [(_CRRecentsLibrary *)self _synchronizeStore:v6];
+      [(_CRRecentsLibrary *)self _synchronizeStore:object];
     }
 
     goto LABEL_92;
@@ -2511,9 +2511,9 @@ LABEL_40:
   v40 = sub_10000C3E0;
   v41 = &unk_10002D018;
   v45 = v10 == 3;
-  v33 = self;
+  selfCopy = self;
   v42 = v19;
-  v43 = self;
+  selfCopy2 = self;
   v44 = v9;
   if ([v13 count])
   {
@@ -2536,7 +2536,7 @@ LABEL_40:
           }
 
           v24 = *(*(&v35 + 1) + 8 * i);
-          v25 = [v6 dictionaryForKey:v24];
+          v25 = [object dictionaryForKey:v24];
           if (!v25)
           {
             v25 = +[NSNull null];
@@ -2554,7 +2554,7 @@ LABEL_40:
 
   else
   {
-    [objc_msgSend(v6 "dictionaryRepresentation")];
+    [objc_msgSend(object "dictionaryRepresentation")];
   }
 
   v26 = +[CRLogging log];
@@ -2616,27 +2616,27 @@ LABEL_78:
   }
 
 LABEL_79:
-  v28 = [(_CRRecentsLibrary *)v33 _mergeRemoteChanges:v19 fromStore:v6 forRecentsDomain:v9];
-  v29 = [(_CRRecentsLibrary *)v33 expungeRecentsOverLimitsForDomain:v9 forcibly:0 expungedRecentIDs:0];
+  v28 = [(_CRRecentsLibrary *)selfCopy _mergeRemoteChanges:v19 fromStore:object forRecentsDomain:v9];
+  v29 = [(_CRRecentsLibrary *)selfCopy expungeRecentsOverLimitsForDomain:v9 forcibly:0 expungedRecentIDs:0];
   if (v10 == 1)
   {
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_10000C540;
     v34[3] = &unk_10002D040;
-    v34[4] = v33;
+    v34[4] = selfCopy;
     v34[5] = v19;
-    v34[6] = v6;
-    [(_CRRecentsLibrary *)v33 enumerateRecentsForDomain:v9 usingBlock:v34];
+    v34[6] = object;
+    [(_CRRecentsLibrary *)selfCopy enumerateRecentsForDomain:v9 usingBlock:v34];
   }
 
-  if (![v6 dictionaryForKey:@"MAX_RECENTS"])
+  if (![object dictionaryForKey:@"MAX_RECENTS"])
   {
     v46[0] = @"v";
     v46[1] = @"m";
     v47[0] = &off_10002F5E0;
     v47[1] = [NSNumber numberWithUnsignedInteger:500];
-    [v6 setDictionary:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary forKey:{"dictionaryWithObjects:forKeys:count:", v47, v46, 2), @"MAX_RECENTS"}];
+    [object setDictionary:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary forKey:{"dictionaryWithObjects:forKeys:count:", v47, v46, 2), @"MAX_RECENTS"}];
   }
 
   if (v10 == 1)
@@ -2658,7 +2658,7 @@ LABEL_79:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Syncing back local changes", buf, 2u);
     }
 
-    [(_CRRecentsLibrary *)v33 _synchronizeStore:v6];
+    [(_CRRecentsLibrary *)selfCopy _synchronizeStore:object];
   }
 
   v32 = +[CRLogging log];
@@ -2671,17 +2671,17 @@ LABEL_79:
 LABEL_92:
 }
 
-- (BOOL)_mergeRemoteChanges:(id)a3 fromStore:(id)a4 forRecentsDomain:(id)a5
+- (BOOL)_mergeRemoteChanges:(id)changes fromStore:(id)store forRecentsDomain:(id)domain
 {
   v9 = +[CRLogging log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v13 = [a3 count];
+    v13 = [changes count];
     v14 = 2114;
-    v15 = a4;
+    storeCopy = store;
     v16 = 2114;
-    v17 = a5;
+    domainCopy = domain;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "numChanges:%lu store:%{public}@ recentsDomain:%{public}@", buf, 0x20u);
   }
 
@@ -2690,16 +2690,16 @@ LABEL_92:
   v11[2] = sub_10000C6E4;
   v11[3] = &unk_10002D0A8;
   v11[4] = self;
-  v11[5] = a5;
-  v11[6] = a4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  v11[5] = domain;
+  v11[6] = store;
+  [changes enumerateKeysAndObjectsUsingBlock:v11];
   return 0;
 }
 
-- (void)_syncContact:(id)a3 withStore:(id)a4
+- (void)_syncContact:(id)contact withStore:(id)store
 {
-  v7 = [a3 lastSendingAddress];
-  if ([(CRAccountAdaptor *)self->_accountAdaptor isSyncingDisabledForAccountWithAddress:v7])
+  lastSendingAddress = [contact lastSendingAddress];
+  if ([(CRAccountAdaptor *)self->_accountAdaptor isSyncingDisabledForAccountWithAddress:lastSendingAddress])
   {
     v8 = +[CRLogging log];
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2708,11 +2708,11 @@ LABEL_92:
     }
 
     *buf = 138543875;
-    *&buf[4] = v7;
+    *&buf[4] = lastSendingAddress;
     *&buf[12] = 2114;
-    *&buf[14] = [a3 sanitizedDescription];
+    *&buf[14] = [contact sanitizedDescription];
     *&buf[22] = 2113;
-    v82 = a3;
+    contactCopy2 = contact;
     v9 = "Account with address %{public}@ is denying sync of contacts, skipping %{public}@ %{private}@";
 LABEL_4:
     v10 = v8;
@@ -2722,7 +2722,7 @@ LABEL_72:
     return;
   }
 
-  v12 = [a3 kind];
+  kind = [contact kind];
   v13 = CRAddressKindEmail;
   v80[0] = CRAddressKindEmail;
   v80[1] = CRAddressKindPhoneNumber;
@@ -2731,26 +2731,26 @@ LABEL_72:
   v80[2] = CRAddressKindInstantMessage;
   v80[3] = CRAddressKindMapLocation;
   *&buf[16] = @"i";
-  v82 = @"m";
+  contactCopy2 = @"m";
   v14 = CRAddressKindGroup;
   v80[4] = CRAddressKindURL;
   v80[5] = CRAddressKindGroup;
   *&v83 = @"u";
   *(&v83 + 1) = @"gr";
-  v15 = [[NSDictionary dictionaryWithObjects:v80 forKeys:6 count:?], "objectForKey:", v12];
+  v15 = [[NSDictionary dictionaryWithObjects:v80 forKeys:6 count:?], "objectForKey:", kind];
   if (!v15)
   {
     v28 = +[CRLogging log];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      sub_1000186C0(a3, v12, v28);
+      sub_1000186C0(contact, kind, v28);
     }
 
     return;
   }
 
   v16 = v15;
-  v66 = [(_CRRecentsLibrary *)self keyForContact:a3];
+  v66 = [(_CRRecentsLibrary *)self keyForContact:contact];
   if (!v66)
   {
     v29 = +[CRLogging log];
@@ -2759,16 +2759,16 @@ LABEL_72:
       return;
     }
 
-    v30 = [a3 sanitizedDescription];
+    sanitizedDescription = [contact sanitizedDescription];
     *buf = 138543619;
-    *&buf[4] = v30;
+    *&buf[4] = sanitizedDescription;
     *&buf[12] = 2113;
-    *&buf[14] = a3;
+    *&buf[14] = contact;
     v9 = "SYNC: Skipped syncing contact because we could not calculate sync key: %{public}@ %{private}@";
     goto LABEL_71;
   }
 
-  if (([v14 isEqualToString:v12] & 1) == 0 && !-[_CRRecentsLibrary addressHandlerForAddressKind:](self, "addressHandlerForAddressKind:", v12))
+  if (([v14 isEqualToString:kind] & 1) == 0 && !-[_CRRecentsLibrary addressHandlerForAddressKind:](self, "addressHandlerForAddressKind:", kind))
   {
     v8 = +[CRLogging log];
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2776,22 +2776,22 @@ LABEL_72:
       return;
     }
 
-    v61 = [a3 sanitizedDescription];
+    sanitizedDescription2 = [contact sanitizedDescription];
     *buf = 138543875;
-    *&buf[4] = v12;
+    *&buf[4] = kind;
     *&buf[12] = 2114;
-    *&buf[14] = v61;
+    *&buf[14] = sanitizedDescription2;
     *&buf[22] = 2113;
-    v82 = a3;
+    contactCopy2 = contact;
     v9 = "SYNC: Skipped syncing contact because there's not a sync transformer registered for address kind '%{public}@': %{public}@ %{private}@";
     goto LABEL_4;
   }
 
-  v17 = [a4 dictionaryForKey:v66];
+  v17 = [store dictionaryForKey:v66];
   v18 = [NSMutableDictionary dictionaryWithDictionary:v17];
   [(NSMutableDictionary *)v18 setObject:&off_10002F5E0 forKey:@"v"];
   v19 = &CPFileBuildDirectoriesToPath_ptr;
-  v64 = a4;
+  storeCopy = store;
   v65 = v18;
   v63 = v17;
   if ([(NSMutableDictionary *)v18 objectForKey:@"a"]&& [(NSMutableDictionary *)v18 objectForKey:@"mrs"])
@@ -2799,29 +2799,29 @@ LABEL_72:
     goto LABEL_33;
   }
 
-  if (![a3 isGroup])
+  if (![contact isGroup])
   {
-    -[NSMutableDictionary setObject:forKey:](v18, "setObject:forKey:", [a3 address], @"a");
+    -[NSMutableDictionary setObject:forKey:](v18, "setObject:forKey:", [contact address], @"a");
 LABEL_29:
-    if (([v12 isEqualToString:v13] & 1) == 0)
+    if (([kind isEqualToString:v13] & 1) == 0)
     {
       [(NSMutableDictionary *)v18 setObject:v16 forKey:@"k"];
     }
 
-    v31 = [a3 originalSource];
-    if (v31)
+    originalSource = [contact originalSource];
+    if (originalSource)
     {
-      [(NSMutableDictionary *)v18 setObject:v31 forKey:@"S"];
+      [(NSMutableDictionary *)v18 setObject:originalSource forKey:@"S"];
     }
 
 LABEL_33:
     v32 = [objc_msgSend(-[__CFString objectForKey:](v17 objectForKey:{@"t", "_cn_filter:", &stru_10002D1E8), "sortedArrayUsingComparator:", &stru_10002D228}];
-    v33 = [a3 recentDates];
+    recentDates = [contact recentDates];
     v34 = [objc_alloc(v19[307]) initWithCapacity:5];
     obja = v32;
     v35 = [v32 count];
-    v68 = v33;
-    v36 = [v33 count];
+    v68 = recentDates;
+    v36 = [recentDates count];
     if ([v34 count] > 4)
     {
 LABEL_56:
@@ -2834,53 +2834,53 @@ LABEL_56:
         v72 = sub_10000DB8C;
         v73 = &unk_10002D0D0;
         v74 = v65;
-        if ([objc_msgSend(a3 "address")])
+        if ([objc_msgSend(contact "address")])
         {
           v50 = +[CRLogging log];
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
           {
-            v51 = [a3 sanitizedDescription];
-            v52 = [a3 displayName];
+            sanitizedDescription3 = [contact sanitizedDescription];
+            displayName = [contact displayName];
             *buf = 138543619;
-            *&buf[4] = v51;
+            *&buf[4] = sanitizedDescription3;
             v49 = v65;
             *&buf[12] = 2113;
-            *&buf[14] = v52;
+            *&buf[14] = displayName;
             _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "SYNC: Skipping display name for %{public}@ %{private}@", buf, 0x16u);
           }
         }
 
         else
         {
-          v72(v71, [a3 displayName], @"n");
+          v72(v71, [contact displayName], @"n");
         }
 
-        v55 = [a3 lastSendingAddress];
-        v72(v71, v55, @"s");
-        v56 = [a3 metadata];
-        v72(v71, v56, @"m");
-        [a3 applyWeight:{-[NSMutableDictionary objectForKey:](v49, "objectForKey:", @"w"}];
-        v57 = [a3 weight];
-        v72(v71, v57, @"w");
+        lastSendingAddress2 = [contact lastSendingAddress];
+        v72(v71, lastSendingAddress2, @"s");
+        metadata = [contact metadata];
+        v72(v71, metadata, @"m");
+        [contact applyWeight:{-[NSMutableDictionary objectForKey:](v49, "objectForKey:", @"w"}];
+        weight = [contact weight];
+        v72(v71, weight, @"w");
         v58 = [(NSMutableDictionary *)v49 objectForKey:@"gK"];
-        [a3 setGroupKind:{objc_msgSend(v58, "unsignedIntegerValue")}];
+        [contact setGroupKind:{objc_msgSend(v58, "unsignedIntegerValue")}];
         v72(v71, v58, @"gK");
         v59 = +[CRLogging log];
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
         {
-          v60 = [a3 sanitizedDescription];
+          sanitizedDescription4 = [contact sanitizedDescription];
           *buf = 138544131;
-          *&buf[4] = v60;
+          *&buf[4] = sanitizedDescription4;
           *&buf[12] = 2113;
-          *&buf[14] = a3;
+          *&buf[14] = contact;
           *&buf[22] = 2113;
-          v82 = v63;
+          contactCopy2 = v63;
           LOWORD(v83) = 2113;
           *(&v83 + 2) = v65;
           _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "SYNC: Merged local changes from %{public}@ %{private}@: remote=%{private}@\nmerge=%{private}@", buf, 0x2Au);
         }
 
-        [v64 setObject:v65 forKey:v66];
+        [storeCopy setObject:v65 forKey:v66];
       }
 
       else
@@ -2888,11 +2888,11 @@ LABEL_56:
         v53 = +[CRLogging log];
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          v54 = [a3 sanitizedDescription];
+          sanitizedDescription5 = [contact sanitizedDescription];
           *buf = 138543619;
-          *&buf[4] = v54;
+          *&buf[4] = sanitizedDescription5;
           *&buf[12] = 2113;
-          *&buf[14] = a3;
+          *&buf[14] = contact;
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "SYNC: Skipped syncing contact because we had no dates: %{public}@ %{private}@", buf, 0x16u);
         }
       }
@@ -2980,12 +2980,12 @@ LABEL_55:
     }
   }
 
-  v20 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objc_msgSend(a3 "members")]);
+  v20 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objc_msgSend(contact "members")]);
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = [a3 members];
+  obj = [contact members];
   v21 = [obj countByEnumeratingWithState:&v75 objects:v79 count:16];
   if (!v21)
   {
@@ -3028,7 +3028,7 @@ LABEL_23:
         v27 = v20;
         v18 = v65;
         [(NSMutableDictionary *)v65 setObject:v27 forKey:@"mrs"];
-        -[NSMutableDictionary setObject:forKey:](v65, "setObject:forKey:", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 groupKind]), @"gK");
+        -[NSMutableDictionary setObject:forKey:](v65, "setObject:forKey:", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contact groupKind]), @"gK");
         v17 = v63;
         goto LABEL_29;
       }
@@ -3040,11 +3040,11 @@ LABEL_23:
   v29 = +[CRLogging log];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v62 = [a3 sanitizedDescription];
+    sanitizedDescription6 = [contact sanitizedDescription];
     *buf = 138543619;
-    *&buf[4] = v62;
+    *&buf[4] = sanitizedDescription6;
     *&buf[12] = 2113;
-    *&buf[14] = a3;
+    *&buf[14] = contact;
     v9 = "SYNC: skipped syncing contact because not all members have an address or kind: %{public}@ %{private}@";
 LABEL_71:
     v10 = v29;
@@ -3053,7 +3053,7 @@ LABEL_71:
   }
 }
 
-- (void)scheduleSynchronizationForStore:(id)a3
+- (void)scheduleSynchronizationForStore:(id)store
 {
   v5 = [(_CRRecentsLibrary *)self _recentsDomainForStore:?];
   pendingStoreSyncEvents = self->_pendingStoreSyncEvents;
@@ -3063,7 +3063,7 @@ LABEL_71:
   v10[2] = sub_10000DCD8;
   v10[3] = &unk_10002CA38;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = store;
   if ([(CRDelayedWorkQueue *)pendingStoreSyncEvents scheduleWorkForKey:v5 afterDelay:v10 work:storeSyncDelay])
   {
     v8 = +[CRLogging log];
@@ -3073,7 +3073,7 @@ LABEL_71:
       *buf = 138543874;
       v12 = v5;
       v13 = 2114;
-      v14 = a3;
+      storeCopy = store;
       v15 = 2048;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Scheduled synchronization with iCloud store (%{public}@) %{public}@ after %.2fs", buf, 0x20u);
@@ -3081,11 +3081,11 @@ LABEL_71:
   }
 }
 
-- (BOOL)_synchronizeStore:(id)a3
+- (BOOL)_synchronizeStore:(id)store
 {
   v5 = [(_CRRecentsLibrary *)self _recentsDomainForStore:?];
   [(CRDelayedWorkQueue *)self->_pendingStoreSyncEvents cancelWorkForKey:v5];
-  v6 = [a3 synchronize];
+  synchronize = [store synchronize];
   v7 = +[CRLogging log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3093,18 +3093,18 @@ LABEL_71:
     v10 = 138543874;
     v11 = v5;
     v12 = 2114;
-    if (v6)
+    if (synchronize)
     {
       v8 = @"succeeded";
     }
 
     v13 = v8;
     v14 = 2114;
-    v15 = a3;
+    storeCopy = store;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Synchronizing with iCloud store (%{public}@) %{public}@: %{public}@", &v10, 0x20u);
   }
 
-  return v6;
+  return synchronize;
 }
 
 - (BOOL)_synchronizeAllStores
@@ -3145,71 +3145,71 @@ LABEL_71:
   return v6;
 }
 
-- (void)mergeCloudDataOneWayIntoLocalStoreWithReason:(unint64_t)a3
+- (void)mergeCloudDataOneWayIntoLocalStoreWithReason:(unint64_t)reason
 {
-  if (a3 <= 2)
+  if (reason <= 2)
   {
-    if (!a3)
+    if (!reason)
     {
-      v5 = @"NSUbiquitousKeyValueStoreServerChange";
+      reason = @"NSUbiquitousKeyValueStoreServerChange";
       goto LABEL_18;
     }
 
-    if (a3 != 1)
+    if (reason != 1)
     {
-      if (a3 == 2)
+      if (reason == 2)
       {
-        v5 = @"NSUbiquitousKeyValueStoreQuotaViolationChange";
+        reason = @"NSUbiquitousKeyValueStoreQuotaViolationChange";
         goto LABEL_18;
       }
 
       goto LABEL_14;
     }
 
-    v5 = @"NSUbiquitousKeyValueStoreInitialSyncChange";
+    reason = @"NSUbiquitousKeyValueStoreInitialSyncChange";
   }
 
-  else if (a3 > 2147483646)
+  else if (reason > 2147483646)
   {
-    if (a3 != 0x7FFFFFFF)
+    if (reason != 0x7FFFFFFF)
     {
-      if (a3 == 0x80000000)
+      if (reason == 0x80000000)
       {
-        v5 = @"com.apple.corerecents.newDatabase";
+        reason = @"com.apple.corerecents.newDatabase";
         goto LABEL_18;
       }
 
       goto LABEL_14;
     }
 
-    v5 = @"com.apple.corerecents.iCloudSignIn";
+    reason = @"com.apple.corerecents.iCloudSignIn";
   }
 
   else
   {
-    if (a3 != 3)
+    if (reason != 3)
     {
-      if (a3 == 2147483646)
+      if (reason == 2147483646)
       {
-        v5 = @"com.apple.corerecents.iCloudSwitch";
+        reason = @"com.apple.corerecents.iCloudSwitch";
         goto LABEL_18;
       }
 
 LABEL_14:
-      v5 = [NSString stringWithFormat:@"unknown change reason (%lu)", a3];
+      reason = [NSString stringWithFormat:@"unknown change reason (%lu)", reason];
       goto LABEL_18;
     }
 
-    v5 = @"NSUbiquitousKeyValueStoreAccountChange";
+    reason = @"NSUbiquitousKeyValueStoreAccountChange";
   }
 
 LABEL_18:
-  v6 = [[CRProcessTransaction alloc] initWithDescription:v5];
+  v6 = [[CRProcessTransaction alloc] initWithDescription:reason];
   v7 = +[CRLogging log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v5;
+    v10 = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Merge cloud data one-way into local with reason: %{public}@", buf, 0xCu);
   }
 
@@ -3218,7 +3218,7 @@ LABEL_18:
   block[2] = sub_10000E390;
   block[3] = &unk_10002D188;
   block[5] = v6;
-  block[6] = a3;
+  block[6] = reason;
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
 }

@@ -1,15 +1,15 @@
 @interface _SBGainMapView
-- (_SBGainMapView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_SBGainMapView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _SBGainMapView
 
-- (_SBGainMapView)initWithFrame:(CGRect)a3
+- (_SBGainMapView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _SBGainMapView;
-  result = [(_SBGainMapView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_SBGainMapView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_supportsHitTesting = 1;
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _SBGainMapView;
-  v5 = [(_SBGainMapView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_SBGainMapView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self && !self->_supportsHitTesting)
   {

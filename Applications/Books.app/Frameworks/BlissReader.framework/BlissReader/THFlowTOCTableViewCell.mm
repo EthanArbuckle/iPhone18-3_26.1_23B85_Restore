@@ -1,24 +1,24 @@
 @interface THFlowTOCTableViewCell
-- (THFlowTOCTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (THFlowTOCTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)p_setupConstraints;
 - (void)p_setupContentView;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 - (void)startProgressIndicator;
 - (void)stopProgressIndicator;
 - (void)updateBackgroundImage;
-- (void)updateConstraintsWithConfiguration:(id)a3;
-- (void)updateOrdinalLabelFrame:(CGRect)a3;
-- (void)updatePageNumberLabelWidth:(double)a3;
+- (void)updateConstraintsWithConfiguration:(id)configuration;
+- (void)updateOrdinalLabelFrame:(CGRect)frame;
+- (void)updatePageNumberLabelWidth:(double)width;
 @end
 
 @implementation THFlowTOCTableViewCell
 
-- (THFlowTOCTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (THFlowTOCTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = THFlowTOCTableViewCell;
-  v4 = [(THFlowTOCTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(THFlowTOCTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -32,14 +32,14 @@
 - (void)prepareForReuse
 {
   [(THFlowTOCTableViewCell *)self setDelegate:0];
-  v3 = [(THFlowTOCTableViewCell *)self openCloseButton];
-  [v3 setHidden:1];
+  openCloseButton = [(THFlowTOCTableViewCell *)self openCloseButton];
+  [openCloseButton setHidden:1];
 
-  v4 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
-  [v4 setHidden:1];
+  activityIndicatorView = [(THFlowTOCTableViewCell *)self activityIndicatorView];
+  [activityIndicatorView setHidden:1];
 
-  v5 = [(THFlowTOCTableViewCell *)self pageNumberLabel];
-  [v5 setHidden:1];
+  pageNumberLabel = [(THFlowTOCTableViewCell *)self pageNumberLabel];
+  [pageNumberLabel setHidden:1];
 
   v6.receiver = self;
   v6.super_class = THFlowTOCTableViewCell;
@@ -48,9 +48,9 @@
 
 - (void)updateBackgroundImage
 {
-  v3 = [(THFlowTOCTableViewCell *)self backgroundView];
+  backgroundView = [(THFlowTOCTableViewCell *)self backgroundView];
 
-  if (!v3)
+  if (!backgroundView)
   {
     v4 = [UIView alloc];
     [(THFlowTOCTableViewCell *)self frame];
@@ -58,32 +58,32 @@
     [(THFlowTOCTableViewCell *)self setBackgroundView:v5];
   }
 
-  v6 = [(THFlowTOCTableViewCell *)self delegate];
-  v7 = [v6 tableViewCellShouldStayHighlighted:self];
+  delegate = [(THFlowTOCTableViewCell *)self delegate];
+  v7 = [delegate tableViewCellShouldStayHighlighted:self];
 
   v8 = [(THFlowTOCTableViewCell *)self isHighlighted]| v7;
-  v9 = [(THFlowTOCTableViewCell *)self delegate];
-  [v9 tableViewCell:self hideSeparators:v8 & 1];
+  delegate2 = [(THFlowTOCTableViewCell *)self delegate];
+  [delegate2 tableViewCell:self hideSeparators:v8 & 1];
 
-  v12 = [(THFlowTOCTableViewCell *)self delegate];
-  v10 = [v12 tableViewCellBackgroundColor:self];
-  v11 = [(THFlowTOCTableViewCell *)self backgroundView];
-  [v11 setBackgroundColor:v10];
+  delegate3 = [(THFlowTOCTableViewCell *)self delegate];
+  v10 = [delegate3 tableViewCellBackgroundColor:self];
+  backgroundView2 = [(THFlowTOCTableViewCell *)self backgroundView];
+  [backgroundView2 setBackgroundColor:v10];
 }
 
 - (void)startProgressIndicator
 {
-  v3 = [(THFlowTOCTableViewCell *)self openCloseButton];
-  [v3 setAlpha:1.0];
+  openCloseButton = [(THFlowTOCTableViewCell *)self openCloseButton];
+  [openCloseButton setAlpha:1.0];
 
-  v4 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
-  [v4 setAlpha:0.0];
+  activityIndicatorView = [(THFlowTOCTableViewCell *)self activityIndicatorView];
+  [activityIndicatorView setAlpha:0.0];
 
-  v5 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
-  [v5 setHidden:0];
+  activityIndicatorView2 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
+  [activityIndicatorView2 setHidden:0];
 
-  v6 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
-  [v6 startAnimating];
+  activityIndicatorView3 = [(THFlowTOCTableViewCell *)self activityIndicatorView];
+  [activityIndicatorView3 startAnimating];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -113,13 +113,13 @@
   [UIView animateWithDuration:4 delay:v3 options:v2 animations:0.0 completion:0.0];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = THFlowTOCTableViewCell;
-  [(THFlowTOCTableViewCell *)&v6 setHighlighted:a3 animated:a4];
-  v5 = [(THFlowTOCTableViewCell *)self delegate];
-  [v5 tableViewCellHighlightDidChange:self];
+  [(THFlowTOCTableViewCell *)&v6 setHighlighted:highlighted animated:animated];
+  delegate = [(THFlowTOCTableViewCell *)self delegate];
+  [delegate tableViewCellHighlightDidChange:self];
 
   [(THFlowTOCTableViewCell *)self updateBackgroundImage];
 }
@@ -142,8 +142,8 @@
   mOrdinalLabel = self->mOrdinalLabel;
   self->mOrdinalLabel = v10;
 
-  v12 = [(THFlowTOCTableViewCell *)self contentView];
-  [v12 addSubview:self->mOrdinalLabel];
+  contentView = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView addSubview:self->mOrdinalLabel];
 
   if (self->mRowLabel)
   {
@@ -157,8 +157,8 @@
   mRowLabel = self->mRowLabel;
   self->mRowLabel = v16;
 
-  v18 = [(THFlowTOCTableViewCell *)self contentView];
-  [v18 addSubview:self->mRowLabel];
+  contentView2 = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView2 addSubview:self->mRowLabel];
 
   if (self->mPageNumberLabel)
   {
@@ -173,8 +173,8 @@
   self->mPageNumberLabel = v22;
 
   [(UILabel *)self->mPageNumberLabel setHidden:1];
-  v24 = [(THFlowTOCTableViewCell *)self contentView];
-  [v24 addSubview:self->mPageNumberLabel];
+  contentView3 = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView3 addSubview:self->mPageNumberLabel];
 
   if (self->mOpenCloseButton)
   {
@@ -189,8 +189,8 @@
   self->mOpenCloseButton = v28;
 
   [(UIButton *)self->mOpenCloseButton setHidden:1];
-  v30 = [(THFlowTOCTableViewCell *)self contentView];
-  [v30 addSubview:self->mOpenCloseButton];
+  contentView4 = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView4 addSubview:self->mOpenCloseButton];
 
   if (self->mActivityIndicatorView)
   {
@@ -205,8 +205,8 @@
   self->mActivityIndicatorView = v34;
 
   [(UIActivityIndicatorView *)self->mActivityIndicatorView setHidden:1];
-  v36 = [(THFlowTOCTableViewCell *)self contentView];
-  [v36 addSubview:self->mActivityIndicatorView];
+  contentView5 = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView5 addSubview:self->mActivityIndicatorView];
 
   [(THFlowTOCTableViewCell *)self p_setupConstraints];
 }
@@ -274,126 +274,126 @@
   [(UILabel *)self->mPageNumberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->mOpenCloseButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)self->mActivityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(THFlowTOCTableViewCell *)self contentView];
-  v84 = [(UILabel *)self->mOrdinalLabel topAnchor];
-  v83 = [v24 topAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  contentView = [(THFlowTOCTableViewCell *)self contentView];
+  topAnchor = [(UILabel *)self->mOrdinalLabel topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v82 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v85[0] = v82;
-  v81 = [(UILabel *)self->mOrdinalLabel bottomAnchor];
-  v80 = [v24 bottomAnchor];
-  v78 = [v81 constraintEqualToAnchor:v80];
+  bottomAnchor = [(UILabel *)self->mOrdinalLabel bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v78 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v85[1] = v78;
-  v76 = [(UILabel *)self->mOrdinalLabel leadingAnchor];
-  v75 = [v24 leadingAnchor];
-  v25 = [v76 constraintEqualToAnchor:v75];
+  leadingAnchor = [(UILabel *)self->mOrdinalLabel leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   mOrdinalLabelLeadingConstraint = self->mOrdinalLabelLeadingConstraint;
   self->mOrdinalLabelLeadingConstraint = v25;
 
   v85[2] = v25;
-  v79 = [(UILabel *)self->mOrdinalLabel widthAnchor];
-  v27 = [v79 constraintEqualToConstant:0.0];
+  widthAnchor = [(UILabel *)self->mOrdinalLabel widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:0.0];
   mOrdinalLabelWidthConstraint = self->mOrdinalLabelWidthConstraint;
   self->mOrdinalLabelWidthConstraint = v27;
 
   v85[3] = v27;
-  v74 = [(UIButton *)self->mOpenCloseButton topAnchor];
-  v72 = [v24 topAnchor];
-  v71 = [v74 constraintEqualToAnchor:v72];
+  topAnchor3 = [(UIButton *)self->mOpenCloseButton topAnchor];
+  topAnchor4 = [contentView topAnchor];
+  v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v85[4] = v71;
-  v70 = [(UIButton *)self->mOpenCloseButton bottomAnchor];
-  v69 = [v24 bottomAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  bottomAnchor3 = [(UIButton *)self->mOpenCloseButton bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v68 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v85[5] = v68;
-  v67 = [(UIButton *)self->mOpenCloseButton trailingAnchor];
-  v66 = [v24 trailingAnchor];
-  v29 = [v67 constraintEqualToAnchor:v66];
+  trailingAnchor = [(UIButton *)self->mOpenCloseButton trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   mOpenCloseButtonTrailingConstraint = self->mOpenCloseButtonTrailingConstraint;
   self->mOpenCloseButtonTrailingConstraint = v29;
 
   v85[6] = v29;
-  v65 = [(UIButton *)self->mOpenCloseButton widthAnchor];
-  v31 = [v65 constraintEqualToConstant:0.0];
+  widthAnchor2 = [(UIButton *)self->mOpenCloseButton widthAnchor];
+  v31 = [widthAnchor2 constraintEqualToConstant:0.0];
   mOpenCloseButtonWidthConstraint = self->mOpenCloseButtonWidthConstraint;
   self->mOpenCloseButtonWidthConstraint = v31;
 
   v85[7] = v31;
-  v64 = [(UILabel *)self->mPageNumberLabel topAnchor];
-  v63 = [v24 topAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  topAnchor5 = [(UILabel *)self->mPageNumberLabel topAnchor];
+  topAnchor6 = [contentView topAnchor];
+  v62 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v85[8] = v62;
-  v61 = [(UILabel *)self->mPageNumberLabel bottomAnchor];
-  v60 = [v24 bottomAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  bottomAnchor5 = [(UILabel *)self->mPageNumberLabel bottomAnchor];
+  bottomAnchor6 = [contentView bottomAnchor];
+  v59 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v85[9] = v59;
-  v57 = [(UILabel *)self->mPageNumberLabel trailingAnchor];
-  v56 = [(UIButton *)self->mOpenCloseButton leadingAnchor];
-  v33 = [v57 constraintEqualToAnchor:v56];
+  trailingAnchor3 = [(UILabel *)self->mPageNumberLabel trailingAnchor];
+  leadingAnchor3 = [(UIButton *)self->mOpenCloseButton leadingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3];
   mPageNumberLabelTrailingConstraint = self->mPageNumberLabelTrailingConstraint;
   self->mPageNumberLabelTrailingConstraint = v33;
 
   v85[10] = v33;
-  v77 = [(UILabel *)self->mPageNumberLabel widthAnchor];
-  v35 = [v77 constraintEqualToConstant:0.0];
+  widthAnchor3 = [(UILabel *)self->mPageNumberLabel widthAnchor];
+  v35 = [widthAnchor3 constraintEqualToConstant:0.0];
   mPageNumberLabelWidthConstraint = self->mPageNumberLabelWidthConstraint;
   self->mPageNumberLabelWidthConstraint = v35;
 
   v85[11] = v35;
-  v73 = [(UIActivityIndicatorView *)self->mActivityIndicatorView centerXAnchor];
-  v55 = [(UIButton *)self->mOpenCloseButton centerXAnchor];
-  v54 = [v73 constraintEqualToAnchor:v55];
+  centerXAnchor = [(UIActivityIndicatorView *)self->mActivityIndicatorView centerXAnchor];
+  centerXAnchor2 = [(UIButton *)self->mOpenCloseButton centerXAnchor];
+  v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v85[12] = v54;
-  v53 = [(UIActivityIndicatorView *)self->mActivityIndicatorView centerYAnchor];
-  v52 = [(UIButton *)self->mOpenCloseButton centerYAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  centerYAnchor = [(UIActivityIndicatorView *)self->mActivityIndicatorView centerYAnchor];
+  centerYAnchor2 = [(UIButton *)self->mOpenCloseButton centerYAnchor];
+  v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v85[13] = v51;
-  v50 = [(UILabel *)self->mRowLabel topAnchor];
-  v58 = v24;
-  v49 = [v24 topAnchor];
-  v37 = [v50 constraintEqualToAnchor:v49];
+  topAnchor7 = [(UILabel *)self->mRowLabel topAnchor];
+  v58 = contentView;
+  topAnchor8 = [contentView topAnchor];
+  v37 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v85[14] = v37;
-  v38 = [(UILabel *)self->mRowLabel bottomAnchor];
-  v39 = [v24 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  bottomAnchor7 = [(UILabel *)self->mRowLabel bottomAnchor];
+  bottomAnchor8 = [contentView bottomAnchor];
+  v40 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v85[15] = v40;
-  v41 = [(UILabel *)self->mRowLabel leadingAnchor];
-  v42 = [(UILabel *)self->mOrdinalLabel trailingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  leadingAnchor4 = [(UILabel *)self->mRowLabel leadingAnchor];
+  trailingAnchor4 = [(UILabel *)self->mOrdinalLabel trailingAnchor];
+  v43 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4];
   mRowLabelLeadingConstraint = self->mRowLabelLeadingConstraint;
   self->mRowLabelLeadingConstraint = v43;
 
   v85[16] = v43;
-  v45 = [(UILabel *)self->mRowLabel trailingAnchor];
-  v46 = [(UILabel *)self->mPageNumberLabel leadingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  trailingAnchor5 = [(UILabel *)self->mRowLabel trailingAnchor];
+  leadingAnchor5 = [(UILabel *)self->mPageNumberLabel leadingAnchor];
+  v47 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor5];
   v85[17] = v47;
   v48 = [NSArray arrayWithObjects:v85 count:18];
   [NSLayoutConstraint activateConstraints:v48];
 }
 
-- (void)updateConstraintsWithConfiguration:(id)a3
+- (void)updateConstraintsWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 sectionLabelRightMargin];
+  configurationCopy = configuration;
+  [configurationCopy sectionLabelRightMargin];
   v6 = v5;
-  [v4 discloseButtonLeftMargin];
+  [configurationCopy discloseButtonLeftMargin];
   [(NSLayoutConstraint *)self->mPageNumberLabelTrailingConstraint setConstant:-(v6 + v7)];
-  [v4 discloseButtonRightMargin];
+  [configurationCopy discloseButtonRightMargin];
   [(NSLayoutConstraint *)self->mOpenCloseButtonTrailingConstraint setConstant:-v8];
-  [v4 discloseButtonWidth];
+  [configurationCopy discloseButtonWidth];
   v10 = v9;
 
   [(NSLayoutConstraint *)self->mOpenCloseButtonWidthConstraint setConstant:v10];
-  v11 = [(THFlowTOCTableViewCell *)self contentView];
-  [v11 setNeedsLayout];
+  contentView = [(THFlowTOCTableViewCell *)self contentView];
+  [contentView setNeedsLayout];
 }
 
-- (void)updateOrdinalLabelFrame:(CGRect)a3
+- (void)updateOrdinalLabelFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(NSLayoutConstraint *)self->mOrdinalLabelLeadingConstraint setConstant:CGRectGetMinX(a3)];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(NSLayoutConstraint *)self->mOrdinalLabelLeadingConstraint setConstant:CGRectGetMinX(frame)];
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
@@ -404,14 +404,14 @@
   [(NSLayoutConstraint *)mOrdinalLabelWidthConstraint setConstant:v8];
 }
 
-- (void)updatePageNumberLabelWidth:(double)a3
+- (void)updatePageNumberLabelWidth:(double)width
 {
   [(NSLayoutConstraint *)self->mPageNumberLabelWidthConstraint constant];
-  if (v5 != a3)
+  if (v5 != width)
   {
-    [(NSLayoutConstraint *)self->mPageNumberLabelWidthConstraint setConstant:a3];
-    v6 = [(UILabel *)self->mPageNumberLabel superview];
-    [v6 setNeedsLayout];
+    [(NSLayoutConstraint *)self->mPageNumberLabelWidthConstraint setConstant:width];
+    superview = [(UILabel *)self->mPageNumberLabel superview];
+    [superview setNeedsLayout];
 
     [(UILabel *)self->mPageNumberLabel setNeedsLayout];
     mRowLabel = self->mRowLabel;

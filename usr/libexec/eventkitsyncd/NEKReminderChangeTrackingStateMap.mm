@@ -1,30 +1,30 @@
 @interface NEKReminderChangeTrackingStateMap
-- (NEKReminderChangeTrackingStateMap)initWithCoder:(id)a3;
-- (NEKReminderChangeTrackingStateMap)initWithData:(id)a3 store:(id)a4 clientName:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filterAccountToSync:(id)a3;
-- (id)persistToData:(id *)a3;
+- (NEKReminderChangeTrackingStateMap)initWithCoder:(id)coder;
+- (NEKReminderChangeTrackingStateMap)initWithData:(id)data store:(id)store clientName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filterAccountToSync:(id)sync;
+- (id)persistToData:(id *)data;
 - (id)transactionAuthorsToExclude;
-- (void)_beginTrackingForStore:(id)a3 clientName:(id)a4 verifyAccountsBlock:(id)a5 changeTrackingStateFromAccountBlock:(id)a6;
-- (void)_beginTrackingFromLoadedStateForStore:(id)a3 clientName:(id)a4;
-- (void)beginTrackingFromEpochForStore:(id)a3 clientName:(id)a4;
-- (void)beginTrackingFromNowForStore:(id)a3 clientName:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchChangedObjectIDs:(id)a3;
-- (void)setChangeToken:(id)a3 forAccountID:(id)a4;
+- (void)_beginTrackingForStore:(id)store clientName:(id)name verifyAccountsBlock:(id)block changeTrackingStateFromAccountBlock:(id)accountBlock;
+- (void)_beginTrackingFromLoadedStateForStore:(id)store clientName:(id)name;
+- (void)beginTrackingFromEpochForStore:(id)store clientName:(id)name;
+- (void)beginTrackingFromNowForStore:(id)store clientName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchChangedObjectIDs:(id)ds;
+- (void)setChangeToken:(id)token forAccountID:(id)d;
 @end
 
 @implementation NEKReminderChangeTrackingStateMap
 
-- (NEKReminderChangeTrackingStateMap)initWithData:(id)a3 store:(id)a4 clientName:(id)a5
+- (NEKReminderChangeTrackingStateMap)initWithData:(id)data store:(id)store clientName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 length])
+  dataCopy = data;
+  storeCopy = store;
+  nameCopy = name;
+  if (dataCopy && [dataCopy length])
   {
     v22 = 0;
-    v11 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v22];
+    v11 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v22];
     v12 = v22;
 
     v13 = *(qword_1000D18A8 + 8);
@@ -39,7 +39,7 @@
 
       if ([(NEKReminderChangeTrackingStateMap *)v11 hasChangeTrackingTokens])
       {
-        [(NEKReminderChangeTrackingStateMap *)v11 _beginTrackingFromLoadedStateForStore:v9 clientName:v10];
+        [(NEKReminderChangeTrackingStateMap *)v11 _beginTrackingFromLoadedStateForStore:storeCopy clientName:nameCopy];
       }
     }
 
@@ -84,14 +84,14 @@
   return qword_1000D1868;
 }
 
-- (id)persistToData:(id *)a3
+- (id)persistToData:(id *)data
 {
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:a3];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:data];
   v5 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Encoded NEKReminderChangeTrackingStateMap: %@ (encoded=%@)", &v7, 0x16u);
@@ -100,19 +100,19 @@
   return v4;
 }
 
-- (id)filterAccountToSync:(id)a3
+- (id)filterAccountToSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = [NSPredicate predicateWithBlock:&stru_1000B5FA0];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [syncCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (void)beginTrackingFromEpochForStore:(id)a3 clientName:(id)a4
+- (void)beginTrackingFromEpochForStore:(id)store clientName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  nameCopy = name;
   loadedChangeTokenMap = self->_loadedChangeTokenMap;
   self->_loadedChangeTokenMap = 0;
 
@@ -120,18 +120,18 @@
   v11[1] = 3221225472;
   v11[2] = sub_100065F78;
   v11[3] = &unk_1000B6008;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = storeCopy;
+  v13 = nameCopy;
+  selfCopy = self;
+  v9 = nameCopy;
+  v10 = storeCopy;
   [(NEKReminderChangeTrackingStateMap *)self _beginTrackingForStore:v10 clientName:v9 verifyAccountsBlock:&stru_1000B5FE0 changeTrackingStateFromAccountBlock:v11];
 }
 
-- (void)beginTrackingFromNowForStore:(id)a3 clientName:(id)a4
+- (void)beginTrackingFromNowForStore:(id)store clientName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  nameCopy = name;
   loadedChangeTokenMap = self->_loadedChangeTokenMap;
   self->_loadedChangeTokenMap = 0;
 
@@ -139,18 +139,18 @@
   v11[1] = 3221225472;
   v11[2] = sub_100066124;
   v11[3] = &unk_1000B6008;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = storeCopy;
+  v13 = nameCopy;
+  selfCopy = self;
+  v9 = nameCopy;
+  v10 = storeCopy;
   [(NEKReminderChangeTrackingStateMap *)self _beginTrackingForStore:v10 clientName:v9 verifyAccountsBlock:&stru_1000B6028 changeTrackingStateFromAccountBlock:v11];
 }
 
-- (void)_beginTrackingFromLoadedStateForStore:(id)a3 clientName:(id)a4
+- (void)_beginTrackingFromLoadedStateForStore:(id)store clientName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  nameCopy = name;
   v8 = self->_loadedChangeTokenMap;
   loadedChangeTokenMap = self->_loadedChangeTokenMap;
   self->_loadedChangeTokenMap = 0;
@@ -160,27 +160,27 @@
   v18[2] = sub_100066350;
   v18[3] = &unk_1000B6050;
   v19 = v8;
-  v20 = self;
+  selfCopy = self;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10006656C;
   v13[3] = &unk_1000B6078;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = storeCopy;
+  v15 = nameCopy;
+  selfCopy2 = self;
   v17 = v19;
   v10 = v19;
-  v11 = v7;
-  v12 = v6;
+  v11 = nameCopy;
+  v12 = storeCopy;
   [(NEKReminderChangeTrackingStateMap *)self _beginTrackingForStore:v12 clientName:v11 verifyAccountsBlock:v18 changeTrackingStateFromAccountBlock:v13];
 }
 
-- (void)_beginTrackingForStore:(id)a3 clientName:(id)a4 verifyAccountsBlock:(id)a5 changeTrackingStateFromAccountBlock:(id)a6
+- (void)_beginTrackingForStore:(id)store clientName:(id)name verifyAccountsBlock:(id)block changeTrackingStateFromAccountBlock:(id)accountBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  nameCopy = name;
+  blockCopy = block;
+  accountBlockCopy = accountBlock;
   if (self->_changeTrackingStateMap)
   {
     v14 = *(qword_1000D18A8 + 8);
@@ -191,17 +191,17 @@
   }
 
   v43 = 0;
-  v15 = [v10 fetchAccountsIncludingInactive:1 error:&v43];
+  v15 = [storeCopy fetchAccountsIncludingInactive:1 error:&v43];
   v16 = v43;
   if (v15)
   {
     v17 = [(NEKReminderChangeTrackingStateMap *)self filterAccountToSync:v15];
-    if (v12[2](v12, v17))
+    if (blockCopy[2](blockCopy, v17))
     {
       v36 = v16;
-      v37 = v11;
-      v38 = v10;
-      objc_storeStrong(&self->_clientName, a4);
+      v37 = nameCopy;
+      v38 = storeCopy;
+      objc_storeStrong(&self->_clientName, name);
       v18 = +[NSMutableDictionary dictionary];
       changeTrackingStateMap = self->_changeTrackingStateMap;
       self->_changeTrackingStateMap = v18;
@@ -227,9 +227,9 @@
             }
 
             v25 = *(*(&v39 + 1) + 8 * i);
-            v26 = [v25 objectID];
-            v27 = v13[2](v13, v25);
-            [(NSMutableDictionary *)self->_changeTrackingStateMap setObject:v27 forKeyedSubscript:v26];
+            objectID = [v25 objectID];
+            v27 = accountBlockCopy[2](accountBlockCopy, v25);
+            [(NSMutableDictionary *)self->_changeTrackingStateMap setObject:v27 forKeyedSubscript:objectID];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -238,8 +238,8 @@
         while (v22);
       }
 
-      v11 = v37;
-      v10 = v38;
+      nameCopy = v37;
+      storeCopy = v38;
       v16 = v36;
       v17 = v35;
     }
@@ -255,30 +255,30 @@
   }
 }
 
-- (void)setChangeToken:(id)a3 forAccountID:(id)a4
+- (void)setChangeToken:(id)token forAccountID:(id)d
 {
-  v14 = a4;
+  dCopy = d;
   changeTrackingStateMap = self->_changeTrackingStateMap;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)changeTrackingStateMap objectForKeyedSubscript:v14];
-  v9 = [v8 changeTracking];
+  tokenCopy = token;
+  v8 = [(NSMutableDictionary *)changeTrackingStateMap objectForKeyedSubscript:dCopy];
+  changeTracking = [v8 changeTracking];
 
-  if (!v9)
+  if (!changeTracking)
   {
     v10 = +[REMStore eks_storeForSyncing];
     clientName = self->_clientName;
-    v12 = [(NEKReminderChangeTrackingStateMap *)self transactionAuthorsToExclude];
-    v9 = [v10 provideChangeTrackingForAccountID:v14 clientName:clientName transactionAuthorKeysToExclude:v12];
+    transactionAuthorsToExclude = [(NEKReminderChangeTrackingStateMap *)self transactionAuthorsToExclude];
+    changeTracking = [v10 provideChangeTrackingForAccountID:dCopy clientName:clientName transactionAuthorKeysToExclude:transactionAuthorsToExclude];
   }
 
-  v13 = [[NEKReminderChangeTrackingState alloc] initWithChangeTracking:v9 lastChangeToken:v7];
+  v13 = [[NEKReminderChangeTrackingState alloc] initWithChangeTracking:changeTracking lastChangeToken:tokenCopy];
 
-  [(NSMutableDictionary *)self->_changeTrackingStateMap setObject:v13 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_changeTrackingStateMap setObject:v13 forKeyedSubscript:dCopy];
 }
 
-- (void)fetchChangedObjectIDs:(id)a3
+- (void)fetchChangedObjectIDs:(id)ds
 {
-  v20 = a3;
+  dsCopy = ds;
   v4 = [(NEKReminderChangeTrackingStateMap *)self copy];
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
@@ -312,14 +312,14 @@
   v17 = [v12 copy];
   v18 = [v10 copy];
   v19 = [v21 copy];
-  v20[2](v20, v14, v13, v15, v16, v17, v18, v19);
+  dsCopy[2](dsCopy, v14, v13, v15, v16, v17, v18, v19);
 
   _Block_object_dispose(&v30, 8);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->_changeTrackingStateMap mutableCopy];
   v6 = v4[3];
   v4[3] = v5;
@@ -327,9 +327,9 @@
   return v4;
 }
 
-- (NEKReminderChangeTrackingStateMap)initWithCoder:(id)a3
+- (NEKReminderChangeTrackingStateMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEKReminderChangeTrackingStateMap *)self init];
   if (v5)
   {
@@ -339,7 +339,7 @@
     v8 = objc_opt_class();
     NSClassFromString(@"_REMChangeUniversalToken");
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"loadedChangeTokenMap"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"loadedChangeTokenMap"];
     loadedChangeTokenMap = v5->_loadedChangeTokenMap;
     v5->_loadedChangeTokenMap = v10;
   }
@@ -347,10 +347,10 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   changeTrackingStateMap = self->_changeTrackingStateMap;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [NSMutableDictionary dictionaryWithCapacity:[(NSMutableDictionary *)changeTrackingStateMap count]];
   v7 = self->_changeTrackingStateMap;
   v10[0] = _NSConcreteStackBlock;
@@ -361,7 +361,7 @@
   v8 = v6;
   [(NSMutableDictionary *)v7 enumerateKeysAndObjectsUsingBlock:v10];
   v9 = [v8 copy];
-  [v5 encodeObject:v9 forKey:@"loadedChangeTokenMap"];
+  [coderCopy encodeObject:v9 forKey:@"loadedChangeTokenMap"];
 }
 
 @end

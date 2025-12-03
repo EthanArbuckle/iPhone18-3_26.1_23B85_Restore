@@ -1,33 +1,33 @@
 @interface UVShellConnectionInterfaceTarget
-- (UVShellConnectionInterfaceTarget)initWithMessageHandler:(id)a3 xpcEndpointHandler:(id)a4 bsEndpointHandler:(id)a5;
-- (void)_handleNullArgument:(id)a3 replyHandler:(id)a4;
-- (void)sendBSEndpoint:(id)a3 context:(id)a4 replyHandler:(id)a5;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 replyHandler:(id)a4;
-- (void)sendXPCEndpoint:(id)a3 context:(id)a4 replyHandler:(id)a5;
+- (UVShellConnectionInterfaceTarget)initWithMessageHandler:(id)handler xpcEndpointHandler:(id)endpointHandler bsEndpointHandler:(id)bsEndpointHandler;
+- (void)_handleNullArgument:(id)argument replyHandler:(id)handler;
+- (void)sendBSEndpoint:(id)endpoint context:(id)context replyHandler:(id)handler;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message replyHandler:(id)handler;
+- (void)sendXPCEndpoint:(id)endpoint context:(id)context replyHandler:(id)handler;
 @end
 
 @implementation UVShellConnectionInterfaceTarget
 
-- (UVShellConnectionInterfaceTarget)initWithMessageHandler:(id)a3 xpcEndpointHandler:(id)a4 bsEndpointHandler:(id)a5
+- (UVShellConnectionInterfaceTarget)initWithMessageHandler:(id)handler xpcEndpointHandler:(id)endpointHandler bsEndpointHandler:(id)bsEndpointHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  endpointHandlerCopy = endpointHandler;
+  bsEndpointHandlerCopy = bsEndpointHandler;
   v19.receiver = self;
   v19.super_class = UVShellConnectionInterfaceTarget;
   v11 = [(UVShellConnectionInterfaceTarget *)&v19 init];
   if (v11)
   {
-    v12 = _Block_copy(v8);
+    v12 = _Block_copy(handlerCopy);
     messageHandler = v11->_messageHandler;
     v11->_messageHandler = v12;
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(endpointHandlerCopy);
     xpcEndpointHandler = v11->_xpcEndpointHandler;
     v11->_xpcEndpointHandler = v14;
 
-    v16 = _Block_copy(v10);
+    v16 = _Block_copy(bsEndpointHandlerCopy);
     bsEndpointHandler = v11->_bsEndpointHandler;
     v11->_bsEndpointHandler = v16;
   }
@@ -35,9 +35,9 @@
   return v11;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
     (*(self->_messageHandler + 2))();
   }
@@ -48,28 +48,28 @@
   }
 }
 
-- (void)sendMessage:(id)a3 replyHandler:(id)a4
+- (void)sendMessage:(id)message replyHandler:(id)handler
 {
-  if (a3)
+  if (message)
   {
     (*(self->_messageHandler + 2))();
   }
 
   else
   {
-    [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:@"message" replyHandler:a4];
+    [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:@"message" replyHandler:handler];
   }
 }
 
-- (void)sendXPCEndpoint:(id)a3 context:(id)a4 replyHandler:(id)a5
+- (void)sendXPCEndpoint:(id)endpoint context:(id)context replyHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v12)
+  endpointCopy = endpoint;
+  contextCopy = context;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (endpointCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       (*(self->_xpcEndpointHandler + 2))();
       goto LABEL_7;
@@ -83,19 +83,19 @@
     v11 = @"endpoint";
   }
 
-  [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:v11 replyHandler:v9];
+  [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:v11 replyHandler:handlerCopy];
 LABEL_7:
 }
 
-- (void)sendBSEndpoint:(id)a3 context:(id)a4 replyHandler:(id)a5
+- (void)sendBSEndpoint:(id)endpoint context:(id)context replyHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v12)
+  endpointCopy = endpoint;
+  contextCopy = context;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (endpointCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       (*(self->_bsEndpointHandler + 2))();
       goto LABEL_7;
@@ -109,23 +109,23 @@ LABEL_7:
     v11 = @"endpoint";
   }
 
-  [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:v11 replyHandler:v9];
+  [(UVShellConnectionInterfaceTarget *)self _handleNullArgument:v11 replyHandler:handlerCopy];
 LABEL_7:
 }
 
-- (void)_handleNullArgument:(id)a3 replyHandler:(id)a4
+- (void)_handleNullArgument:(id)argument replyHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CCA9B8] uv_errorWithFormat:@"shell IPC invocation had a null '%@' parameter", a3];
-  if (v5)
+  handlerCopy = handler;
+  argument = [MEMORY[0x277CCA9B8] uv_errorWithFormat:@"shell IPC invocation had a null '%@' parameter", argument];
+  if (handlerCopy)
   {
-    v5[2](v5, 0, v6);
+    handlerCopy[2](handlerCopy, 0, argument);
   }
 
   v7 = UVLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [UVShellConnectionInterfaceTarget _handleNullArgument:v6 replyHandler:v7];
+    [UVShellConnectionInterfaceTarget _handleNullArgument:argument replyHandler:v7];
   }
 }
 

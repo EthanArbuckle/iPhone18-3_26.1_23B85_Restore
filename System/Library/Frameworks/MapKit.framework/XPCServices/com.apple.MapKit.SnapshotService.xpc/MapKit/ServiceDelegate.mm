@@ -1,34 +1,34 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServiceDelegate)init;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MKSnapshotServiceProtocol];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self->_snapshotService];
-  objc_initWeak(&location, v7);
+  [connectionCopy setExportedObject:self->_snapshotService];
+  objc_initWeak(&location, connectionCopy);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100001080;
   v12[3] = &unk_1000082F8;
   objc_copyWeak(&v13, &location);
   v12[4] = self;
-  [v7 setInvalidationHandler:v12];
+  [connectionCopy setInvalidationHandler:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000010E0;
   v10[3] = &unk_1000082F8;
   objc_copyWeak(&v11, &location);
   v10[4] = self;
-  [v7 setInterruptionHandler:v10];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:v10];
+  [connectionCopy resume];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

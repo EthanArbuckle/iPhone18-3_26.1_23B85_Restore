@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 @end
 
 @implementation CollectionViewListDisclosureCell
@@ -12,7 +12,7 @@
 {
   v3 = OBJC_IVAR____TtC18HealthExperienceUI32CollectionViewListDisclosureCell_detailTextObservation;
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI32CollectionViewListDisclosureCell_detailTextObservation);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     v6 = v4;
@@ -48,21 +48,21 @@
   [*&v2[OBJC_IVAR____TtC18HealthExperienceUI32CollectionViewListDisclosureCell____lazy_storage___detailTextLabel] setHidden_];
 }
 
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  v8 = [(CollectionViewListDisclosureCell *)v7 traitCollection];
+  collectionCopy = collection;
+  selfCopy = self;
+  traitCollection = [(CollectionViewListDisclosureCell *)selfCopy traitCollection];
   sub_1B9F0ADF8(0, &qword_1EDC6B598);
-  LOBYTE(a4) = sub_1BA4A7798();
+  LOBYTE(collection) = sub_1BA4A7798();
 
-  if ((a4 & 1) == 0)
+  if ((collection & 1) == 0)
   {
-    (*((*MEMORY[0x1E69E7D40] & v7->super.super.super.super.super.super.isa) + 0x160))();
+    (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.super.super.isa) + 0x160))();
     v9 = OBJC_IVAR____TtC18HealthExperienceUI32CollectionViewListDisclosureCell_showDisclosureIndicator;
     swift_beginAccess();
-    if (*(&v7->super.super.super.super.super.super.isa + v9))
+    if (*(&selfCopy->super.super.super.super.super.super.isa + v9))
     {
       sub_1BA27B454();
     }
@@ -78,7 +78,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA27E474();
 
   v3 = sub_1BA4A6758();
@@ -88,7 +88,7 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA27E6A8();
 }
 

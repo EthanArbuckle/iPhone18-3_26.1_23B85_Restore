@@ -1,30 +1,30 @@
 @interface TSDDynamicOperationController
 - (BOOL)isInOperation;
-- (TSDDynamicOperationController)initWithInteractiveCanvasController:(id)a3;
+- (TSDDynamicOperationController)initWithInteractiveCanvasController:(id)controller;
 - (void)beginOperation;
 - (void)beginPossibleDynamicOperation;
 - (void)cancelOperation;
 - (void)dealloc;
 - (void)endOperation;
-- (void)handleGestureRecognizer:(id)a3;
-- (void)handleTrackerManipulator:(id)a3;
-- (void)p_beginDynamicOperationForReps:(id)a3;
+- (void)handleGestureRecognizer:(id)recognizer;
+- (void)handleTrackerManipulator:(id)manipulator;
+- (void)p_beginDynamicOperationForReps:(id)reps;
 - (void)p_cleanupOperation;
-- (void)p_controllingTMDidResetInOperation:(id)a3;
-- (void)startTransformingReps:(id)a3;
-- (void)stopTransformingReps:(id)a3;
+- (void)p_controllingTMDidResetInOperation:(id)operation;
+- (void)startTransformingReps:(id)reps;
+- (void)stopTransformingReps:(id)reps;
 @end
 
 @implementation TSDDynamicOperationController
 
-- (TSDDynamicOperationController)initWithInteractiveCanvasController:(id)a3
+- (TSDDynamicOperationController)initWithInteractiveCanvasController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = TSDDynamicOperationController;
   result = [(TSDDynamicOperationController *)&v5 init];
   if (result)
   {
-    result->mICC = a3;
+    result->mICC = controller;
     result->mResetGuides = 1;
   }
 
@@ -42,16 +42,16 @@
 {
   if ([(TSDInteractiveCanvasController *)self->mICC isInDynamicOperation])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController beginPossibleDynamicOperation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 75, @"begin possible op with ICC in dynamic operation"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 75, @"begin possible op with ICC in dynamic operation"}];
   }
 
   if (self->mPossibleDynamicOperation || self->mReps || self->mAllTransformedReps)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController beginPossibleDynamicOperation]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 76, @"beginning possible operation without ending previous operation"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 76, @"beginning possible operation without ending previous operation"}];
   }
 
   self->mReps = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -63,28 +63,28 @@
 {
   if ([(TSDInteractiveCanvasController *)self->mICC isInDynamicOperation])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController beginOperation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 93, @"begin op with ICC in dynamic operation"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 93, @"begin op with ICC in dynamic operation"}];
   }
 
   if (!self->mPossibleDynamicOperation && (self->mReps || self->mAllTransformedReps))
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController beginOperation]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 94, @"beginning operation without ending previous operation"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 94, @"beginning operation without ending previous operation"}];
   }
 
   if (![(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController beginOperation]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 95, @"No controlling TM when beginning operation"}];
+    [currentHandler3 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 95, @"No controlling TM when beginning operation"}];
   }
 
-  v9 = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
-  self->mSupportsAlignmentGuides = [v9 supportsAlignmentGuides];
-  self->mOperationIsDynamic = [v9 operationShouldBeDynamic];
+  tracker = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
+  self->mSupportsAlignmentGuides = [tracker supportsAlignmentGuides];
+  self->mOperationIsDynamic = [tracker operationShouldBeDynamic];
   if (self->mPossibleDynamicOperation)
   {
     self->mPossibleDynamicOperation = 0;
@@ -107,18 +107,18 @@
     [(TSDInteractiveCanvasController *)self->mICC beginDynamicOperation];
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v10 addObserver:self selector:sel_p_controllingTMDidResetInOperation_ name:@"TSDControllingGRDidResetNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_p_controllingTMDidResetInOperation_ name:@"TSDControllingGRDidResetNotification" object:0];
 }
 
-- (void)p_beginDynamicOperationForReps:(id)a3
+- (void)p_beginDynamicOperationForReps:(id)reps
 {
-  v4 = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
+  tracker = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 willBeginDynamicOperationForReps:a3];
+    [tracker willBeginDynamicOperationForReps:reps];
   }
 }
 
@@ -128,21 +128,21 @@
   if ([(TSDDynamicOperationController *)self isInOperation])
   {
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-    v3 = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
-    if (v3)
+    tracker = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
+    if (tracker)
     {
-      [v3 commitChangesForReps:self->mAllTransformedReps];
+      [tracker commitChangesForReps:self->mAllTransformedReps];
     }
   }
 
   [(TSDDynamicOperationController *)self p_cleanupOperation];
   if ([(TSDInteractiveCanvasController *)self->mICC isInDynamicOperation])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController endOperation]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"];
 
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:210 description:@"ending op with ICC still in dynamic operation"];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:210 description:@"ending op with ICC still in dynamic operation"];
   }
 }
 
@@ -165,9 +165,9 @@
 {
   if (![(TSDDynamicOperationController *)self isInOperation])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController cancelOperation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 235, @"cancelling when not in operation"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 235, @"cancelling when not in operation"}];
   }
 
   [(TSDDynamicOperationController *)self p_cleanupOperation];
@@ -189,14 +189,14 @@
   self->mOperationIsDynamic = 0;
 }
 
-- (void)startTransformingReps:(id)a3
+- (void)startTransformingReps:(id)reps
 {
   v19 = *MEMORY[0x277D85DE8];
   if (![(TSDDynamicOperationController *)self isInOperation]&& !self->mPossibleDynamicOperation)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController startTransformingReps:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 270, @"cannot begin transforming reps until we are in a transform"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 270, @"cannot begin transforming reps until we are in a transform"}];
   }
 
   v7 = [MEMORY[0x277CBEB58] set];
@@ -204,7 +204,7 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [reps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -215,7 +215,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(reps);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -235,7 +235,7 @@
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [reps countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -247,24 +247,24 @@
   }
 
   [(TSDDynamicOperationController *)self p_resetGuidesForCleanup:0];
-  v13 = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
+  tracker = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
   if (objc_opt_respondsToSelector())
   {
-    [v13 didChangeCurrentlyTransformingReps];
+    [tracker didChangeCurrentlyTransformingReps];
   }
 }
 
-- (void)stopTransformingReps:(id)a3
+- (void)stopTransformingReps:(id)reps
 {
   v15 = *MEMORY[0x277D85DE8];
-  if ([a3 count])
+  if ([reps count])
   {
-    [(NSMutableSet *)self->mReps minusSet:a3];
+    [(NSMutableSet *)self->mReps minusSet:reps];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [reps countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -276,46 +276,46 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(reps);
           }
 
           [objc_msgSend(*(*(&v10 + 1) + 8 * v8++) "layout")];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [reps countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
     }
 
     [(TSDDynamicOperationController *)self p_resetGuidesForCleanup:0];
-    v9 = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
+    tracker = [[(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM] tracker];
     if (objc_opt_respondsToSelector())
     {
-      [v9 didChangeCurrentlyTransformingReps];
+      [tracker didChangeCurrentlyTransformingReps];
     }
   }
 }
 
-- (void)handleGestureRecognizer:(id)a3
+- (void)handleGestureRecognizer:(id)recognizer
 {
-  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM]== a3)
+  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM]== recognizer)
   {
     if (![(TSDDynamicOperationController *)self isInOperation])
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController handleGestureRecognizer:]"];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"];
       v8 = objc_opt_class();
-      [v5 handleFailureInFunction:v6 file:v7 lineNumber:332 description:{@"tracker is handling GR %@ when not in a transform", NSStringFromClass(v8)}];
+      [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:332 description:{@"tracker is handling GR %@ when not in a transform", NSStringFromClass(v8)}];
     }
 
-    if (self->mOperationIsDynamic != [objc_msgSend(a3 "tracker")])
+    if (self->mOperationIsDynamic != [objc_msgSend(recognizer "tracker")])
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController handleGestureRecognizer:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 338, @"Controlling TM has different dynamic operation expectations than current operation (%@)", objc_msgSend(a3, "tracker")}];
+      [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 338, @"Controlling TM has different dynamic operation expectations than current operation (%@)", objc_msgSend(recognizer, "tracker")}];
     }
 
     if (self->mResetGuides)
@@ -323,12 +323,12 @@
       [(TSDDynamicOperationController *)self p_resetGuidesForCleanup:0];
     }
 
-    v11 = [a3 state];
-    if ((v11 - 1) >= 2)
+    state = [recognizer state];
+    if ((state - 1) >= 2)
     {
-      if (v11 == 3)
+      if (state == 3)
       {
-        [objc_msgSend(a3 "tracker")];
+        [objc_msgSend(recognizer "tracker")];
 
         [(TSDDynamicOperationController *)self endOperation];
       }
@@ -336,58 +336,58 @@
 
     else
     {
-      v12 = [a3 tracker];
+      tracker = [recognizer tracker];
       mReps = self->mReps;
 
-      [v12 changeDynamicLayoutsForReps:mReps];
+      [tracker changeDynamicLayoutsForReps:mReps];
     }
   }
 }
 
-- (void)p_controllingTMDidResetInOperation:(id)a3
+- (void)p_controllingTMDidResetInOperation:(id)operation
 {
-  v4 = [a3 object];
+  object = [operation object];
   if (![(TSDDynamicOperationController *)self isInOperation])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController p_controllingTMDidResetInOperation:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 372, @"controlling GR reset in an operation, but we aren't in an operation! %@", v4}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 372, @"controlling GR reset in an operation, but we aren't in an operation! %@", object}];
   }
 
-  if (v4 != [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM])
+  if (object != [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController p_controllingTMDidResetInOperation:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 373, @"non-controlling GR is being reset with a notification %@ (%@ in control)", v4, -[TSDTrackerManipulatorCoordinator controllingTM](-[TSDInteractiveCanvasController tmCoordinator](self->mICC, "tmCoordinator"), "controllingTM")}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"), 373, @"non-controlling GR is being reset with a notification %@ (%@ in control)", object, -[TSDTrackerManipulatorCoordinator controllingTM](-[TSDInteractiveCanvasController tmCoordinator](self->mICC, "tmCoordinator"), "controllingTM")}];
   }
 
-  if (v4 == [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM])
+  if (object == [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM])
   {
 
     [(TSDDynamicOperationController *)self endOperation];
   }
 }
 
-- (void)handleTrackerManipulator:(id)a3
+- (void)handleTrackerManipulator:(id)manipulator
 {
-  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM]== a3)
+  if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] controllingTM]== manipulator)
   {
     if (![(TSDDynamicOperationController *)self isInOperation])
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController handleTrackerManipulator:]"];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"];
       v8 = objc_opt_class();
-      [v5 handleFailureInFunction:v6 file:v7 lineNumber:383 description:{@"tracker is handling TM %@ when not in a transform", NSStringFromClass(v8)}];
+      [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:383 description:{@"tracker is handling TM %@ when not in a transform", NSStringFromClass(v8)}];
     }
 
-    if (self->mOperationIsDynamic != [objc_msgSend(a3 "tracker")])
+    if (self->mOperationIsDynamic != [objc_msgSend(manipulator "tracker")])
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDynamicOperationController handleTrackerManipulator:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDynamicOperationController.m"];
       v12 = objc_opt_class();
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:389 description:{@"Controlling TM %@ has different dynamic operation expectations than current operation", NSStringFromClass(v12)}];
+      [currentHandler2 handleFailureInFunction:v10 file:v11 lineNumber:389 description:{@"Controlling TM %@ has different dynamic operation expectations than current operation", NSStringFromClass(v12)}];
     }
 
     if (self->mResetGuides)
@@ -395,8 +395,8 @@
       [(TSDDynamicOperationController *)self p_resetGuidesForCleanup:0];
     }
 
-    [objc_msgSend(a3 "tracker")];
-    if ([a3 readyToEndOperation])
+    [objc_msgSend(manipulator "tracker")];
+    if ([manipulator readyToEndOperation])
     {
 
       [(TSDDynamicOperationController *)self endOperation];

@@ -1,46 +1,46 @@
 @interface CRLFreehandDrawingToolFillAndLegacyStroke
-+ (BOOL)p_isFillValidToRecolorInShapeInfo:(id)a3;
-+ (id)p_copyOfBezierPath:(id)a3 clippedToRect:(CGRect)a4 startsOutside:(BOOL *)a5 endsOutside:(BOOL *)a6;
-+ (void)p_appendPath:(id)a3 fromStartPercent:(double)a4 toEndPercent:(double)a5 toPath:(id)a6;
-+ (void)p_insertUnscaledFloodFillablePath:(id)a3 fromFillPoint:(CGPoint)a4 pathsUsedForFilling:(id)a5 bezierPathToDrawingLayoutMap:(id)a6 candidateLayouts:(id)a7 currentColorWithOpacity:(id)a8 withUndoString:(id)a9 onICC:(id)a10;
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3;
++ (BOOL)p_isFillValidToRecolorInShapeInfo:(id)info;
++ (id)p_copyOfBezierPath:(id)path clippedToRect:(CGRect)rect startsOutside:(BOOL *)outside endsOutside:(BOOL *)endsOutside;
++ (void)p_appendPath:(id)path fromStartPercent:(double)percent toEndPercent:(double)endPercent toPath:(id)toPath;
++ (void)p_insertUnscaledFloodFillablePath:(id)path fromFillPoint:(CGPoint)point pathsUsedForFilling:(id)filling bezierPathToDrawingLayoutMap:(id)map candidateLayouts:(id)layouts currentColorWithOpacity:(id)opacity withUndoString:(id)string onICC:(id)self0;
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success;
 - (BOOL)shouldCommandsEnqueueInRealTime;
-- (CRLFreehandDrawingToolFillAndLegacyStroke)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 insertionToolType:(unint64_t)a5 opacity:(double)a6 unscaledWidth:(double)a7;
+- (CRLFreehandDrawingToolFillAndLegacyStroke)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController insertionToolType:(unint64_t)type opacity:(double)opacity unscaledWidth:(double)width;
 - (NSArray)decoratorOverlayRenderables;
 - (NSSet)drawingReps;
 - (double)actualOpacityValueForOutlineFills;
-- (id)p_commandForSnappingShapeItem:(id)a3 toPathsInParentSpace:(id)a4;
+- (id)p_commandForSnappingShapeItem:(id)item toPathsInParentSpace:(id)space;
 - (id)p_currentColorWithOpacity;
 - (id)p_currentStroke;
 - (id)p_dashedOutlineFillRenderable;
 - (id)p_floodFillSerialQueue;
 - (id)p_snappedOutlineFillRenderable;
 - (void)doWorkBeforeCanvasLayout;
-- (void)p_floodFillIfPossibleAtPoint:(CGPoint)a3;
-- (void)p_shapeGestureDetectedWithCompletion:(id)a3;
+- (void)p_floodFillIfPossibleAtPoint:(CGPoint)point;
+- (void)p_shapeGestureDetectedWithCompletion:(id)completion;
 - (void)p_updateDottedPathOpacityForCurrentSnapState;
 - (void)p_updateDrawingOnCanvasFromPathCreatorAndSendRealTimeCommandsIfNeeded;
 - (void)p_updatePathForDashedOutlineFillRenderable;
 - (void)p_updatePathForSnappedOutlineFillRenderable;
-- (void)p_updatePathsFromPathCreatorWithCommitBehavior:(unint64_t)a3;
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5;
-- (void)setOpacity:(double)a3;
-- (void)setUnscaledWidth:(double)a3;
-- (void)shapeGestureCancelledOnShapeDrawingTimerHelper:(id)a3;
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3;
+- (void)p_updatePathsFromPathCreatorWithCommitBehavior:(unint64_t)behavior;
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint;
+- (void)setOpacity:(double)opacity;
+- (void)setUnscaledWidth:(double)width;
+- (void)shapeGestureCancelledOnShapeDrawingTimerHelper:(id)helper;
+- (void)updatePencilKitToolIfAppropriateFor:(id)for;
 @end
 
 @implementation CRLFreehandDrawingToolFillAndLegacyStroke
 
-- (CRLFreehandDrawingToolFillAndLegacyStroke)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 insertionToolType:(unint64_t)a5 opacity:(double)a6 unscaledWidth:(double)a7
+- (CRLFreehandDrawingToolFillAndLegacyStroke)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController insertionToolType:(unint64_t)type opacity:(double)opacity unscaledWidth:(double)width
 {
-  v12 = a4;
+  viewControllerCopy = viewController;
   v29.receiver = self;
   v29.super_class = CRLFreehandDrawingToolFillAndLegacyStroke;
-  v13 = [(CRLFreehandDrawingTool *)&v29 initWithInteractiveCanvasController:a3];
+  v13 = [(CRLFreehandDrawingTool *)&v29 initWithInteractiveCanvasController:controller];
   if (v13)
   {
-    if (a5 >= 9)
+    if (type >= 9)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -74,7 +74,7 @@
 
     else
     {
-      if (a5 != 8 || a7 == 0.0)
+      if (type != 8 || width == 0.0)
       {
         goto LABEL_24;
       }
@@ -112,10 +112,10 @@
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:v20 isFatal:0 description:v17];
 
 LABEL_24:
-    objc_storeWeak(&v13->_pencilKitCanvasViewController, v12);
-    v13->_toolType = a5;
-    v13->_opacity = a6;
-    v13->_unscaledWidth = a7;
+    objc_storeWeak(&v13->_pencilKitCanvasViewController, viewControllerCopy);
+    v13->_toolType = type;
+    v13->_opacity = opacity;
+    v13->_unscaledWidth = width;
     v13->_initialUnscaledPoint = xmmword_1014629F0;
     v13->_currentUnscaledPoint = xmmword_1014629F0;
     v13->_initialActionTime = 0.0;
@@ -146,25 +146,25 @@ LABEL_24:
   return self->_isEnqueueingCommandsInRealTime;
 }
 
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  finalPointCopy = finalPoint;
+  initialPointCopy = initialPoint;
+  pointCopy = point;
   v91.receiver = self;
   v91.super_class = CRLFreehandDrawingToolFillAndLegacyStroke;
-  [(CRLFreehandDrawingToolAbstractPathInsertion *)&v91 performActionWithInputPoint:v8 isInitialPoint:v6 isFinalPoint:v5];
-  [v8 unscaledPoint];
+  [(CRLFreehandDrawingToolAbstractPathInsertion *)&v91 performActionWithInputPoint:pointCopy isInitialPoint:initialPointCopy isFinalPoint:finalPointCopy];
+  [pointCopy unscaledPoint];
   self->_currentUnscaledPoint.x = v9;
   self->_currentUnscaledPoint.y = v10;
-  [v8 time];
+  [pointCopy time];
   self->_currentActionTime = v11;
-  if (v6)
+  if (initialPointCopy)
   {
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     self->_initialUnscaledPoint.x = v12;
     self->_initialUnscaledPoint.y = v13;
-    [v8 time];
+    [pointCopy time];
     self->_initialActionTime = v14;
     v15 = [(CRLFreehandDrawingTool *)self icc];
     v16 = objc_alloc_init(CRLFreehandDrawingPathCreator);
@@ -173,45 +173,45 @@ LABEL_24:
 
     v18 = self->_pathCreator;
     [v15 viewScale];
-    -[CRLFreehandDrawingPathCreator beginDrawingWithViewScale:inputType:](v18, "beginDrawingWithViewScale:inputType:", [v8 inputType], v19);
+    -[CRLFreehandDrawingPathCreator beginDrawingWithViewScale:inputType:](v18, "beginDrawingWithViewScale:inputType:", [pointCopy inputType], v19);
     v20 = self->_pathCreator;
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     v22 = v21;
     v24 = v23;
-    [v8 time];
-    -[CRLFreehandDrawingPathCreator drawToPoint:atTime:predicted:](v20, "drawToPoint:atTime:predicted:", [v8 isPredicted], v22, v24, v25);
+    [pointCopy time];
+    -[CRLFreehandDrawingPathCreator drawToPoint:atTime:predicted:](v20, "drawToPoint:atTime:predicted:", [pointCopy isPredicted], v22, v24, v25);
     [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_updatePathsFromPathCreatorWithCommitBehavior:0];
     if ([(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_isFillTool])
     {
-      v26 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
-      v27 = [CRLColorFill colorWithColor:v26];
+      p_currentColorWithOpacity = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
+      v27 = [CRLColorFill colorWithColor:p_currentColorWithOpacity];
 
       [(CRLFreehandDrawingPathCreator *)self->_pathCreator setMinimumLengthForFinalCreatedPath:0.100000001];
       v28 = [(CRLFreehandDrawingTool *)self icc];
       [v28 addDecorator:self];
 
-      if (([v8 isPredicted] & 1) == 0)
+      if (([pointCopy isPredicted] & 1) == 0)
       {
-        v29 = [v15 canvasView];
-        v30 = [v29 unscaledCoordinateSpace];
-        [v8 unscaledPoint];
+        canvasView = [v15 canvasView];
+        unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
+        [pointCopy unscaledPoint];
         v32 = v31;
         v34 = v33;
-        v35 = [v15 canvasView];
-        v36 = [v35 window];
-        v37 = [v36 coordinateSpace];
-        [v30 convertPoint:v37 toCoordinateSpace:{v32, v34}];
+        canvasView2 = [v15 canvasView];
+        window = [canvasView2 window];
+        coordinateSpace = [window coordinateSpace];
+        [unscaledCoordinateSpace convertPoint:coordinateSpace toCoordinateSpace:{v32, v34}];
         v39 = v38;
         v41 = v40;
 
         [(PKShapeDrawingTimerHelper *)self->_shapeDrawingTimerHelper beginStrokeAtPoint:v39, v41];
       }
 
-      v42 = [v15 layerHost];
-      v43 = [v42 asiOSCVC];
-      v44 = [v43 feedbackGenerator];
+      layerHost = [v15 layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      feedbackGenerator = [asiOSCVC feedbackGenerator];
 
-      if (!v44)
+      if (!feedbackGenerator)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -240,15 +240,15 @@ LABEL_24:
         [CRLAssertionHandler handleFailureInFunction:v46 file:v47 lineNumber:220 isFatal:0 description:"invalid nil value for '%{public}s'", "feedbackGenerator"];
       }
 
-      [v44 prepare];
+      [feedbackGenerator prepare];
 
       v48 = 0;
     }
 
     else
     {
-      v71 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentStroke];
-      v48 = [v71 copy];
+      p_currentStroke = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentStroke];
+      v48 = [p_currentStroke copy];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -272,36 +272,36 @@ LABEL_24:
     goto LABEL_41;
   }
 
-  if (([v8 wasAddedByTouchesEnded] & 1) == 0)
+  if (([pointCopy wasAddedByTouchesEnded] & 1) == 0)
   {
     v49 = self->_pathCreator;
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     v51 = v50;
     v53 = v52;
-    [v8 time];
-    -[CRLFreehandDrawingPathCreator drawToPoint:atTime:predicted:](v49, "drawToPoint:atTime:predicted:", [v8 isPredicted], v51, v53, v54);
+    [pointCopy time];
+    -[CRLFreehandDrawingPathCreator drawToPoint:atTime:predicted:](v49, "drawToPoint:atTime:predicted:", [pointCopy isPredicted], v51, v53, v54);
   }
 
-  if (-[CRLFreehandDrawingToolFillAndLegacyStroke p_isFillTool](self, "p_isFillTool") && ([v8 isPredicted] & 1) == 0)
+  if (-[CRLFreehandDrawingToolFillAndLegacyStroke p_isFillTool](self, "p_isFillTool") && ([pointCopy isPredicted] & 1) == 0)
   {
     v55 = [(CRLFreehandDrawingTool *)self icc];
-    v56 = [v55 canvasView];
-    v57 = [v56 unscaledCoordinateSpace];
-    [v8 unscaledPoint];
+    canvasView3 = [v55 canvasView];
+    unscaledCoordinateSpace2 = [canvasView3 unscaledCoordinateSpace];
+    [pointCopy unscaledPoint];
     v59 = v58;
     v61 = v60;
     v62 = [(CRLFreehandDrawingTool *)self icc];
-    v63 = [v62 canvasView];
-    v64 = [v63 window];
-    v65 = [v64 coordinateSpace];
-    [v57 convertPoint:v65 toCoordinateSpace:{v59, v61}];
+    canvasView4 = [v62 canvasView];
+    window2 = [canvasView4 window];
+    coordinateSpace2 = [window2 coordinateSpace];
+    [unscaledCoordinateSpace2 convertPoint:coordinateSpace2 toCoordinateSpace:{v59, v61}];
     v67 = v66;
     v69 = v68;
 
     shapeDrawingTimerHelper = self->_shapeDrawingTimerHelper;
-    if (v8)
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
     }
 
     else
@@ -318,7 +318,7 @@ LABEL_24:
     }
 
     [(PKShapeDrawingTimerHelper *)shapeDrawingTimerHelper addStrokePoint:&v82 inputPoint:v67, v69];
-    if ([v8 inputType] == 2 && (objc_msgSend(v8, "wasAddedByTouchesEnded") & 1) == 0)
+    if ([pointCopy inputType] == 2 && (objc_msgSend(pointCopy, "wasAddedByTouchesEnded") & 1) == 0)
     {
       v90 = 0;
       v88 = 0u;
@@ -330,10 +330,10 @@ LABEL_24:
       v82 = 0u;
       v83 = 0u;
       v74 = [(CRLFreehandDrawingTool *)self icc];
-      v75 = [v74 freehandDrawingToolkit];
-      if (v8)
+      freehandDrawingToolkit = [v74 freehandDrawingToolkit];
+      if (pointCopy)
       {
-        [v8 PKInputPoint];
+        [pointCopy PKInputPoint];
       }
 
       else
@@ -342,9 +342,9 @@ LABEL_24:
         memset(v80, 0, sizeof(v80));
       }
 
-      if (v75)
+      if (freehandDrawingToolkit)
       {
-        [v75 inputPointInPKCanvasViewFromUnscaledSpace:v80];
+        [freehandDrawingToolkit inputPointInPKCanvasViewFromUnscaledSpace:v80];
       }
 
       else
@@ -361,7 +361,7 @@ LABEL_24:
       }
 
       v76 = [(CRLFreehandDrawingTool *)self icc];
-      v77 = [v76 freehandDrawingToolkit];
+      freehandDrawingToolkit2 = [v76 freehandDrawingToolkit];
       v78[6] = v88;
       v78[7] = v89;
       v79 = v90;
@@ -371,11 +371,11 @@ LABEL_24:
       v78[5] = v87;
       v78[0] = v82;
       v78[1] = v83;
-      [v77 updatePencilShadowWithInputPoint:v78];
+      [freehandDrawingToolkit2 updatePencilShadowWithInputPoint:v78];
     }
   }
 
-  if (v5)
+  if (finalPointCopy)
   {
     [(CRLFreehandDrawingPathCreator *)self->_pathCreator endDrawing];
     [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_updatePathsFromPathCreatorWithCommitBehavior:2];
@@ -400,16 +400,16 @@ LABEL_41:
   [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_updateDottedPathOpacityForCurrentSnapState];
 }
 
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success
 {
   v73.receiver = self;
   v73.super_class = CRLFreehandDrawingToolFillAndLegacyStroke;
-  v4 = [(CRLFreehandDrawingTool *)&v73 finalizeAndResetWithSuccess:a3];
+  v4 = [(CRLFreehandDrawingTool *)&v73 finalizeAndResetWithSuccess:success];
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 editingCoordinator];
-  v7 = [v6 commandController];
+  editingCoordinator = [v5 editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
-  v8 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+  shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
   if ([v5 i_currentlySuppressingLayerUpdates])
   {
     [v5 i_endSuppressingLayerUpdates];
@@ -430,8 +430,8 @@ LABEL_41:
 
   v70 = v4;
   v11 = self->_fullCommittedPath;
-  v12 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_isFillTool];
-  if (!v12)
+  p_isFillTool = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_isFillTool];
+  if (!p_isFillTool)
   {
     if (v70)
     {
@@ -452,11 +452,11 @@ LABEL_16:
     if (v13 * v14 <= 10.0)
     {
       v45 = [_TtC8Freeform26CRLCommandDeleteBoardItems alloc];
-      v46 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self initialFreehandDrawingItem];
-      v47 = [NSSet setWithObject:v46];
+      initialFreehandDrawingItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self initialFreehandDrawingItem];
+      v47 = [NSSet setWithObject:initialFreehandDrawingItem];
       v48 = [(CRLCommandDeleteBoardItems *)v45 initWithBoardItemsToDelete:v47 canDeleteNewlyCreatedItems:1];
 
-      [v7 enqueueCommand:v48];
+      [commandController enqueueCommand:v48];
       [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_floodFillIfPossibleAtPoint:self->_initialUnscaledPoint.x, self->_initialUnscaledPoint.y];
 
       [(CRLFreehandDrawingToolAbstractPathInsertion *)self finalizeAndResetAbstractPathInsertionToolWithSuccess:0];
@@ -470,15 +470,15 @@ LABEL_25:
   }
 
   [(CRLBezierPath *)v11 closePath];
-  v15 = [v5 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v5 freehandDrawingToolkit];
   [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-  v17 = v16 = v8;
+  v17 = v16 = shapeItem;
   [v17 id];
-  v19 = v18 = v7;
-  [v15 enqueueAnimationForObjectUUID:v19 animation:@"CRLFreehandDrawingToolkitAnimationNameOutlineFill"];
+  v19 = v18 = commandController;
+  [freehandDrawingToolkit enqueueAnimationForObjectUUID:v19 animation:@"CRLFreehandDrawingToolkitAnimationNameOutlineFill"];
 
-  v7 = v18;
-  v8 = v16;
+  commandController = v18;
+  shapeItem = v16;
 
   v9 = &OBJC_IVAR___CRLEditorController_mEditorStack;
   v10 = &OBJC_IVAR___CRLEditorController_mEditorStack;
@@ -490,46 +490,46 @@ LABEL_12:
       [(CRLBezierPath *)v11 bounds];
       v21 = v20;
       v23 = v22;
-      [v7 openGroup];
+      [commandController openGroup];
       v24 = [CRLBezierPathSource pathSourceWithBezierPath:v11];
-      v68 = v8;
+      v68 = shapeItem;
       v25 = [_TtC8Freeform23CRLCommandSetPathSource alloc];
       [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-      v26 = v69 = v7;
+      v26 = v69 = commandController;
       v66 = v24;
       v67 = [(CRLCommandSetPathSource *)v25 initWithShapeItem:v26 pathSource:v24];
 
       [v69 enqueueCommand:v67];
-      v27 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-      v28 = [v5 layoutsForInfo:v27];
-      v65 = [v28 anyObject];
+      shapeItem2 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+      v28 = [v5 layoutsForInfo:shapeItem2];
+      anyObject = [v28 anyObject];
 
       v29 = [CRLCanvasInfoGeometry alloc];
-      v30 = [v24 bezierPath];
-      [v30 bounds];
+      bezierPath = [v24 bezierPath];
+      [bezierPath bounds];
       v31 = [(CRLCanvasInfoGeometry *)v29 initWithPosition:v21 size:v23];
 
       v32 = [CRLCanvasInfoGeometry alloc];
-      v33 = [v65 parent];
-      v34 = [v33 geometryInRoot];
-      v35 = [(CRLCanvasInfoGeometry *)v32 initWithLayoutGeometry:v34];
+      parent = [anyObject parent];
+      geometryInRoot = [parent geometryInRoot];
+      v35 = [(CRLCanvasInfoGeometry *)v32 initWithLayoutGeometry:geometryInRoot];
       v36 = [(CRLCanvasInfoGeometry *)v31 geometryRelativeToGeometry:v35];
 
-      v7 = v69;
+      commandController = v69;
       v37 = [_TtC8Freeform25CRLCommandSetInfoGeometry alloc];
-      v38 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-      v39 = [(CRLCommandSetInfoGeometry *)v37 initWithBoardItem:v38 geometry:v36];
+      shapeItem3 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+      v39 = [(CRLCommandSetInfoGeometry *)v37 initWithBoardItem:shapeItem3 geometry:v36];
 
       v9 = &OBJC_IVAR___CRLEditorController_mEditorStack;
       [v69 enqueueCommand:v39];
       [v69 closeGroup];
 
       v10 = &OBJC_IVAR___CRLEditorController_mEditorStack;
-      v8 = v68;
+      shapeItem = v68;
 
       v40 = 1;
       [(CRLFreehandDrawingToolAbstractPathInsertion *)self finalizeAndResetAbstractPathInsertionToolWithSuccess:1];
-      if ((v12 & 1) == 0)
+      if ((p_isFillTool & 1) == 0)
       {
         goto LABEL_26;
       }
@@ -539,7 +539,7 @@ LABEL_12:
     {
       v40 = 1;
       [(CRLFreehandDrawingToolAbstractPathInsertion *)self finalizeAndResetAbstractPathInsertionToolWithSuccess:1];
-      if (!v12)
+      if (!p_isFillTool)
       {
         goto LABEL_26;
       }
@@ -556,11 +556,11 @@ LABEL_18:
   {
     v42 = [v41 copy];
     memset(&v72, 0, sizeof(v72));
-    v43 = [v8 parentItem];
-    v44 = v43;
-    if (v43)
+    parentItem = [shapeItem parentItem];
+    v44 = parentItem;
+    if (parentItem)
     {
-      [v43 transformInRoot];
+      [parentItem transformInRoot];
     }
 
     else
@@ -572,12 +572,12 @@ LABEL_18:
 
     v71 = v72;
     [v42 transformUsingAffineTransform:&v71];
-    v49 = [v42 visuallyDistinctSubregions];
+    visuallyDistinctSubregions = [v42 visuallyDistinctSubregions];
     v50 = objc_opt_class();
-    v51 = sub_100013F00(v50, v8);
-    v52 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_commandForSnappingShapeItem:v51 toPathsInParentSpace:v49];
+    v51 = sub_100013F00(v50, shapeItem);
+    v52 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_commandForSnappingShapeItem:v51 toPathsInParentSpace:visuallyDistinctSubregions];
 
-    [v7 enqueueCommand:v52];
+    [commandController enqueueCommand:v52];
     v40 = v70;
     goto LABEL_25;
   }
@@ -622,18 +622,18 @@ LABEL_26:
   return v40;
 }
 
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3
+- (void)updatePencilKitToolIfAppropriateFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = [PKInkingTool alloc];
-  v6 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
-  v7 = [v6 UIColor];
-  v8 = [v5 initWithInkType:PKInkTypePen color:v7];
+  p_currentColorWithOpacity = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
+  uIColor = [p_currentColorWithOpacity UIColor];
+  v8 = [v5 initWithInkType:PKInkTypePen color:uIColor];
 
-  [v4 setTool:v8];
+  [forCopy setTool:v8];
 }
 
-- (void)setUnscaledWidth:(double)a3
+- (void)setUnscaledWidth:(double)width
 {
   if (self->_toolType == 8)
   {
@@ -664,31 +664,31 @@ LABEL_26:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:435 isFatal:0 description:"Fill tool can't have a width"];
   }
 
-  self->_unscaledWidth = a3;
+  self->_unscaledWidth = width;
   v8 = [(CRLFreehandDrawingTool *)self icc];
-  v9 = [v8 freehandDrawingToolkit];
-  v10 = [v9 toolkitUIState];
-  [v10 setCurrentToolWidth:a3];
+  freehandDrawingToolkit = [v8 freehandDrawingToolkit];
+  toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+  [toolkitUIState setCurrentToolWidth:width];
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  self->_opacity = a3;
+  self->_opacity = opacity;
   v6 = [(CRLFreehandDrawingTool *)self icc];
-  v4 = [v6 freehandDrawingToolkit];
-  v5 = [v4 toolkitUIState];
-  [v5 setCurrentToolOpacity:a3];
+  freehandDrawingToolkit = [v6 freehandDrawingToolkit];
+  toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+  [toolkitUIState setCurrentToolOpacity:opacity];
 }
 
 - (NSSet)drawingReps
 {
   v3 = +[NSSet set];
-  v4 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-  if ([(CRLFreehandDrawingTool *)self isPerformingActions]&& v4)
+  shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+  if ([(CRLFreehandDrawingTool *)self isPerformingActions]&& shapeItem)
   {
     v5 = objc_opt_class();
     v6 = [(CRLFreehandDrawingTool *)self icc];
-    v7 = [v6 repForInfo:v4];
+    v7 = [v6 repForInfo:shapeItem];
     v8 = sub_100014370(v5, v7);
 
     if (v8 && [v8 i_isCurrentlyBeingFreehandDrawn])
@@ -722,9 +722,9 @@ LABEL_26:
   {
     if (!self->_dashedOutlineFillRenderable)
     {
-      v3 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_dashedOutlineFillRenderable];
+      p_dashedOutlineFillRenderable = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_dashedOutlineFillRenderable];
       dashedOutlineFillRenderable = self->_dashedOutlineFillRenderable;
-      self->_dashedOutlineFillRenderable = v3;
+      self->_dashedOutlineFillRenderable = p_dashedOutlineFillRenderable;
 
       [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_updatePathForDashedOutlineFillRenderable];
     }
@@ -732,9 +732,9 @@ LABEL_26:
     snappedOutlineFillRenderable = self->_snappedOutlineFillRenderable;
     if (!snappedOutlineFillRenderable)
     {
-      v6 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_snappedOutlineFillRenderable];
+      p_snappedOutlineFillRenderable = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_snappedOutlineFillRenderable];
       v7 = self->_snappedOutlineFillRenderable;
-      self->_snappedOutlineFillRenderable = v6;
+      self->_snappedOutlineFillRenderable = p_snappedOutlineFillRenderable;
 
       [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_updatePathForSnappedOutlineFillRenderable];
       snappedOutlineFillRenderable = self->_snappedOutlineFillRenderable;
@@ -753,17 +753,17 @@ LABEL_26:
   return v8;
 }
 
-- (void)p_shapeGestureDetectedWithCompletion:(id)a3
+- (void)p_shapeGestureDetectedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_dynamicFillPath)
   {
-    v5 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-    v6 = [v5 id];
+    shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+    v6 = [shapeItem id];
 
     v7 = [(CRLFreehandDrawingTool *)self icc];
-    v8 = [v7 drawingIntelligenceProvider];
-    if (!v8)
+    drawingIntelligenceProvider = [v7 drawingIntelligenceProvider];
+    if (!drawingIntelligenceProvider)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -800,8 +800,8 @@ LABEL_26:
     v14[4] = self;
     v14[5] = v6;
     v14[6] = v7;
-    v15 = v4;
-    [v8 pathBySnappingFillPathToShape:dynamicFillPath completion:v14];
+    v15 = completionCopy;
+    [drawingIntelligenceProvider pathBySnappingFillPathToShape:dynamicFillPath completion:v14];
   }
 
   else
@@ -834,7 +834,7 @@ LABEL_26:
   }
 }
 
-- (void)shapeGestureCancelledOnShapeDrawingTimerHelper:(id)a3
+- (void)shapeGestureCancelledOnShapeDrawingTimerHelper:(id)helper
 {
   dynamicSnappedFillPath = self->_dynamicSnappedFillPath;
   self->_dynamicSnappedFillPath = 0;
@@ -847,10 +847,10 @@ LABEL_26:
 {
   v3 = +[CRLCanvasShapeRenderable renderable];
   v4 = [(CRLFreehandDrawingTool *)self icc];
-  v5 = [v4 freehandDrawingToolkit];
-  v6 = [v5 colorForCurrentTool];
+  freehandDrawingToolkit = [v4 freehandDrawingToolkit];
+  colorForCurrentTool = [freehandDrawingToolkit colorForCurrentTool];
 
-  [v6 alphaComponent];
+  [colorForCurrentTool alphaComponent];
   if (v7 != 1.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -885,7 +885,7 @@ LABEL_26:
   [v3 setLineJoin:kCALineJoinRound];
   [v3 setLineCap:kCALineCapRound];
   [v3 setFillColor:0];
-  [v3 setStrokeColor:{objc_msgSend(v6, "CGColor")}];
+  [v3 setStrokeColor:{objc_msgSend(colorForCurrentTool, "CGColor")}];
 
   return v3;
 }
@@ -909,10 +909,10 @@ LABEL_26:
 {
   v3 = +[CRLCanvasShapeRenderable renderable];
   v4 = [(CRLFreehandDrawingTool *)self icc];
-  v5 = [v4 freehandDrawingToolkit];
-  v6 = [v5 colorForCurrentTool];
+  freehandDrawingToolkit = [v4 freehandDrawingToolkit];
+  colorForCurrentTool = [freehandDrawingToolkit colorForCurrentTool];
 
-  [v6 alphaComponent];
+  [colorForCurrentTool alphaComponent];
   if (v7 != 1.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -946,7 +946,7 @@ LABEL_26:
   [v3 setLineJoin:kCALineJoinRound];
   [v3 setLineCap:kCALineCapRound];
   [v3 setFillColor:0];
-  [v3 setStrokeColor:{objc_msgSend(v6, "CGColor")}];
+  [v3 setStrokeColor:{objc_msgSend(colorForCurrentTool, "CGColor")}];
 
   return v3;
 }
@@ -979,10 +979,10 @@ LABEL_26:
 - (void)p_updateDottedPathOpacityForCurrentSnapState
 {
   v3 = [(CRLFreehandDrawingTool *)self icc];
-  v4 = [v3 freehandDrawingToolkit];
-  v5 = [v4 colorForCurrentTool];
+  freehandDrawingToolkit = [v3 freehandDrawingToolkit];
+  colorForCurrentTool = [freehandDrawingToolkit colorForCurrentTool];
 
-  [v5 alphaComponent];
+  [colorForCurrentTool alphaComponent];
   if (v6 != 1.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1014,32 +1014,32 @@ LABEL_26:
 
   if (self->_dynamicSnappedFillPath)
   {
-    v10 = [v5 colorWithAlphaComponent:0.25];
+    v10 = [colorForCurrentTool colorWithAlphaComponent:0.25];
     -[CRLCanvasShapeRenderable setStrokeColor:](self->_dashedOutlineFillRenderable, "setStrokeColor:", [v10 CGColor]);
   }
 
   else
   {
-    -[CRLCanvasShapeRenderable setStrokeColor:](self->_dashedOutlineFillRenderable, "setStrokeColor:", [v5 CGColor]);
+    -[CRLCanvasShapeRenderable setStrokeColor:](self->_dashedOutlineFillRenderable, "setStrokeColor:", [colorForCurrentTool CGColor]);
   }
 }
 
-- (id)p_commandForSnappingShapeItem:(id)a3 toPathsInParentSpace:(id)a4
+- (id)p_commandForSnappingShapeItem:(id)item toPathsInParentSpace:(id)space
 {
-  v44 = a3;
-  v6 = a4;
+  itemCopy = item;
+  spaceCopy = space;
   v7 = [[_TtC8Freeform15CRLCommandGroup alloc] initWithCommands:&__NSArray0__struct];
   v8 = [_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider snapToShapeActionStringWithPlural:0];
   [(CRLCommandGroup *)v7 setActionString:v8];
 
   v43 = +[NSMutableArray array];
-  v42 = v6;
-  if ([v6 count])
+  v42 = spaceCopy;
+  if ([spaceCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v9];
+      v10 = [spaceCopy objectAtIndexedSubscript:v9];
       [v10 bounds];
       v12 = v11;
       v14 = v13;
@@ -1049,47 +1049,47 @@ LABEL_26:
       if (v9)
       {
         v19 = [(CRLFreehandDrawingTool *)self icc];
-        v20 = [v19 editingCoordinator];
-        v21 = [v20 boardItemFactory];
+        editingCoordinator = [v19 editingCoordinator];
+        boardItemFactory = [editingCoordinator boardItemFactory];
 
         v22 = objc_opt_class();
-        v23 = [v44 stroke];
-        v24 = [v44 fill];
-        v45 = v21;
-        v25 = [(CRLCanvasInfoGeometry *)v21 makeShapeItemForFreehandDrawingWithPathSource:v46 position:v23 stroke:v24 fill:0 pencilKitStrokePathCompactData:0 maskPath:self->_snappedShapeType snappedShapeType:v12, v14];
+        stroke = [itemCopy stroke];
+        fill = [itemCopy fill];
+        v45 = boardItemFactory;
+        v25 = [(CRLCanvasInfoGeometry *)boardItemFactory makeShapeItemForFreehandDrawingWithPathSource:v46 position:stroke stroke:fill fill:0 pencilKitStrokePathCompactData:0 maskPath:self->_snappedShapeType snappedShapeType:v12, v14];
         v26 = sub_100013F00(v22, v25);
 
-        v6 = v42;
+        spaceCopy = v42;
         [v43 addObject:v26];
       }
 
       else
       {
         v45 = [[CRLCanvasInfoGeometry alloc] initWithPosition:v12 size:v14, v16, v18];
-        v26 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v44 geometry:v45];
+        v26 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:itemCopy geometry:v45];
         [(CRLCommandGroup *)v7 addCommand:v26];
-        v27 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v44 pathSource:v46];
+        v27 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:itemCopy pathSource:v46];
         [(CRLCommandGroup *)v7 addCommand:v27];
-        v28 = [[_TtC8Freeform53CRLCommandSetFreehandDrawingShapeItemSnappedShapeType alloc] initWithFreehandDrawingShapeItem:v44 snappedShapeType:self->_snappedShapeType];
+        v28 = [[_TtC8Freeform53CRLCommandSetFreehandDrawingShapeItemSnappedShapeType alloc] initWithFreehandDrawingShapeItem:itemCopy snappedShapeType:self->_snappedShapeType];
         [(CRLCommandGroup *)v7 addCommand:v28];
       }
 
       ++v9;
     }
 
-    while (v9 < [v6 count]);
+    while (v9 < [spaceCopy count]);
   }
 
   if ([v43 count])
   {
-    v29 = [v44 containingGroup];
-    v30 = [v29 childInfos];
-    v31 = [v30 indexOfObject:v44];
+    containingGroup = [itemCopy containingGroup];
+    childInfos = [containingGroup childInfos];
+    v31 = [childInfos indexOfObject:itemCopy];
 
     if (v31 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v32 = [v29 childInfos];
-      v33 = [v32 count];
+      childInfos2 = [containingGroup childInfos];
+      v33 = [childInfos2 count];
     }
 
     else
@@ -1097,7 +1097,7 @@ LABEL_26:
       v33 = v31 + 1;
     }
 
-    v34 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:v29 boardItems:v43 index:v33];
+    v34 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:containingGroup boardItems:v43 index:v33];
     [(CRLCommandGroup *)v7 addCommand:v34];
     v49 = 0u;
     v50 = 0u;
@@ -1128,7 +1128,7 @@ LABEL_26:
       while (v37);
     }
 
-    v6 = v42;
+    spaceCopy = v42;
   }
 
   return v7;
@@ -1143,12 +1143,12 @@ LABEL_26:
   [v3 appendBezierPath:self->_uncommittedPath skippingInitialMoveIfPossible:v5];
   if ([v4 containsElementsOtherThanMoveAndClose])
   {
-    v6 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-    if (v6)
+    shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+    if (shapeItem)
     {
       v7 = [(CRLFreehandDrawingTool *)self icc];
       v8 = objc_opt_class();
-      v9 = [v7 repForInfo:v6];
+      v9 = [v7 repForInfo:shapeItem];
       v10 = sub_100013F00(v8, v9);
 
       if (v10)
@@ -1160,19 +1160,19 @@ LABEL_26:
           if (v11)
           {
             v12 = [NSMutableSet setWithObject:v10];
-            v13 = [v10 parentRep];
-            if (v13)
+            parentRep = [v10 parentRep];
+            if (parentRep)
             {
-              v14 = v13;
+              v14 = parentRep;
               do
               {
                 [v12 addObject:v14];
-                v15 = [v14 parentRep];
+                parentRep2 = [v14 parentRep];
 
-                v14 = v15;
+                v14 = parentRep2;
               }
 
-              while (v15);
+              while (parentRep2);
             }
 
             [v7 i_beginSuppressingLayerUpdatesExceptForReps:v12];
@@ -1200,29 +1200,29 @@ LABEL_26:
         [v10 dynamicallySetBezierPathSource:v28 atUnscaledOrigin:0 withCommittedPointRange:{-[CRLBezierPath elementCount](self->_fullCommittedPath, "elementCount"), v21, v23}];
         if (self->_isEnqueueingCommandsInRealTime)
         {
-          v29 = [v7 commandController];
-          v48 = v29;
-          v49 = v6;
-          if (v29)
+          commandController = [v7 commandController];
+          v48 = commandController;
+          v49 = shapeItem;
+          if (commandController)
           {
-            v30 = v29;
-            v31 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v6 pathSource:v28];
+            v30 = commandController;
+            v31 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:shapeItem pathSource:v28];
             [(CRLCommand *)v31 setShouldSendChangeNotificationsWhenEnqueuedInProgressiveGroup:0];
             v47 = v31;
             [v30 enqueueCommand:v31];
             v32 = [[CRLCanvasInfoGeometry alloc] initWithPosition:v21 size:v23, v25, v27];
             v33 = [CRLCanvasInfoGeometry alloc];
-            v46 = [v10 layout];
-            v34 = [v46 parent];
-            v35 = [v34 geometryInRoot];
-            v36 = [(CRLCanvasInfoGeometry *)v33 initWithLayoutGeometry:v35];
+            layout = [v10 layout];
+            parent = [layout parent];
+            geometryInRoot = [parent geometryInRoot];
+            v36 = [(CRLCanvasInfoGeometry *)v33 initWithLayoutGeometry:geometryInRoot];
             v37 = [(CRLCanvasInfoGeometry *)v32 geometryRelativeToGeometry:v36];
 
-            v6 = v49;
+            shapeItem = v49;
             v38 = v48;
 
-            v39 = [v49 geometry];
-            LOBYTE(v32) = [v39 isEqual:v37];
+            geometry = [v49 geometry];
+            LOBYTE(v32) = [geometry isEqual:v37];
 
             if ((v32 & 1) == 0)
             {
@@ -1261,7 +1261,7 @@ LABEL_26:
             [CRLAssertionHandler handleFailureInFunction:v44 file:v45 lineNumber:728 isFatal:0 description:"invalid nil value for '%{public}s'", "cc"];
 
             v38 = 0;
-            v6 = v49;
+            shapeItem = v49;
           }
         }
       }
@@ -1327,27 +1327,27 @@ LABEL_26:
   }
 }
 
-+ (void)p_appendPath:(id)a3 fromStartPercent:(double)a4 toEndPercent:(double)a5 toPath:(id)a6
++ (void)p_appendPath:(id)path fromStartPercent:(double)percent toEndPercent:(double)endPercent toPath:(id)toPath
 {
   v13 = 0.0;
   v14 = 0.0;
-  v9 = a6;
-  v10 = a3;
-  v11 = [v10 elementPercentage:&v14 forOverallPercentage:a4];
-  v12 = [v10 elementPercentage:&v13 forOverallPercentage:a5];
-  [v9 appendBezierPath:v10 fromSegment:v11 t:v12 toSegment:0 t:v14 withoutMove:v13];
+  toPathCopy = toPath;
+  pathCopy = path;
+  v11 = [pathCopy elementPercentage:&v14 forOverallPercentage:percent];
+  v12 = [pathCopy elementPercentage:&v13 forOverallPercentage:endPercent];
+  [toPathCopy appendBezierPath:pathCopy fromSegment:v11 t:v12 toSegment:0 t:v14 withoutMove:v13];
 }
 
-+ (id)p_copyOfBezierPath:(id)a3 clippedToRect:(CGRect)a4 startsOutside:(BOOL *)a5 endsOutside:(BOOL *)a6
++ (id)p_copyOfBezierPath:(id)path clippedToRect:(CGRect)rect startsOutside:(BOOL *)outside endsOutside:(BOOL *)endsOutside
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  *a5 = 0;
-  *a6 = 0;
-  if ([v13 containsElementsOtherThanMoveAndClose] && (objc_msgSend(v13, "bounds"), v63.origin.x = v14, v63.origin.y = v15, v63.size.width = v16, v63.size.height = v17, v62.origin.x = x, v62.origin.y = y, v62.size.width = width, v62.size.height = height, !CGRectContainsRect(v62, v63)))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  *outside = 0;
+  *endsOutside = 0;
+  if ([pathCopy containsElementsOtherThanMoveAndClose] && (objc_msgSend(pathCopy, "bounds"), v63.origin.x = v14, v63.origin.y = v15, v63.size.width = v16, v63.size.height = v17, v62.origin.x = x, v62.origin.y = y, v62.size.width = width, v62.size.height = height, !CGRectContainsRect(v62, v63)))
   {
     v19 = +[CRLBezierPath bezierPath];
     v58[0] = 0;
@@ -1377,13 +1377,13 @@ LABEL_26:
     v39 = &v54;
     v40 = &v50;
     v41 = v49;
-    v47 = a1;
-    v20 = v13;
+    selfCopy = self;
+    v20 = pathCopy;
     v37 = v20;
     v18 = v19;
     v38 = v18;
     v42 = v58;
-    v48 = a5;
+    outsideCopy = outside;
     [v20 iterateOverPathWithPointDistancePerIteration:&v33 usingBlock:1.0];
     if (*(v55 + 24) == 1)
     {
@@ -1395,7 +1395,7 @@ LABEL_26:
 
       else
       {
-        [a1 p_appendPath:v20 fromStartPercent:v18 toEndPercent:v21 toPath:{1.0, v33, v34, v35, v36, v37}];
+        [self p_appendPath:v20 fromStartPercent:v18 toEndPercent:v21 toPath:{1.0, v33, v34, v35, v36, v37}];
         v22 = *(v55 + 24) ^ 1;
       }
     }
@@ -1405,7 +1405,7 @@ LABEL_26:
       v22 = 1;
     }
 
-    *a6 = v22 & 1;
+    *endsOutside = v22 & 1;
     if ([v18 isEmpty])
     {
       v23 = 0;
@@ -1449,8 +1449,8 @@ LABEL_26:
         [CRLAssertionHandler handleFailureInFunction:v29 file:v30 lineNumber:820 isFatal:0 description:"Clipping produced a zero-sized path"];
       }
 
-      *a5 = 1;
-      *a6 = 1;
+      *outside = 1;
+      *endsOutside = 1;
       v31 = +[CRLBezierPath bezierPath];
 
       v18 = v31;
@@ -1464,21 +1464,21 @@ LABEL_26:
 
   else
   {
-    v18 = [v13 copy];
+    v18 = [pathCopy copy];
   }
 
   return v18;
 }
 
-- (void)p_updatePathsFromPathCreatorWithCommitBehavior:(unint64_t)a3
+- (void)p_updatePathsFromPathCreatorWithCommitBehavior:(unint64_t)behavior
 {
-  if (a3)
+  if (behavior)
   {
-    if (a3 == 2 || [(CRLFreehandDrawingPathCreator *)self->_pathCreator pointCountAvailableToCommit]>= 5)
+    if (behavior == 2 || [(CRLFreehandDrawingPathCreator *)self->_pathCreator pointCountAvailableToCommit]>= 5)
     {
-      v5 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator commitAllAvailablePoints];
+      commitAllAvailablePoints = [(CRLFreehandDrawingPathCreator *)self->_pathCreator commitAllAvailablePoints];
       subpathToCommit = self->_subpathToCommit;
-      self->_subpathToCommit = v5;
+      self->_subpathToCommit = commitAllAvailablePoints;
     }
 
     else
@@ -1488,11 +1488,11 @@ LABEL_26:
     }
   }
 
-  v7 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfUncommittedPath];
+  copyOfUncommittedPath = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfUncommittedPath];
   uncommittedPath = self->_uncommittedPath;
-  self->_uncommittedPath = v7;
+  self->_uncommittedPath = copyOfUncommittedPath;
 
-  if (a3)
+  if (behavior)
   {
     if (self->_subpathToCommit)
     {
@@ -1514,20 +1514,20 @@ LABEL_26:
   return v3;
 }
 
-- (void)p_floodFillIfPossibleAtPoint:(CGPoint)a3
+- (void)p_floodFillIfPossibleAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(CRLFreehandDrawingTool *)self icc];
   [v6 visibleUnscaledRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+  shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
   v105 = v6;
   [v6 layoutIfNeeded];
-  v104 = self;
+  selfCopy = self;
   v16 = [(CRLFreehandDrawingTool *)self possibleFreehandDrawingLayoutsInParentContainerAtPoint:x, y];
   v115 = +[NSMutableArray array];
   v114 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:16];
@@ -1536,15 +1536,15 @@ LABEL_26:
   v140 = 0u;
   v141 = 0u;
   v103 = v16;
-  v17 = [v16 reverseObjectEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v138 objects:v146 count:16];
-  v107 = v15;
+  reverseObjectEnumerator = [v16 reverseObjectEnumerator];
+  v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v138 objects:v146 count:16];
+  v107 = shapeItem;
   if (v18)
   {
     v19 = v18;
     p_info = CRLiOSMultiSelectGestureRecognizer.info;
     v106 = *v139;
-    v102 = v17;
+    v102 = reverseObjectEnumerator;
     do
     {
       v21 = 0;
@@ -1553,7 +1553,7 @@ LABEL_26:
       {
         if (*v139 != v106)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v22 = *(*(&v138 + 1) + 8 * v21);
@@ -1572,12 +1572,12 @@ LABEL_26:
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v23 = [v22 freehandInfo];
-        v24 = [v23 childInfos];
-        v25 = [v24 reverseObjectEnumerator];
+        freehandInfo = [v22 freehandInfo];
+        childInfos = [freehandInfo childInfos];
+        reverseObjectEnumerator2 = [childInfos reverseObjectEnumerator];
 
-        obj = v25;
-        v112 = [v25 countByEnumeratingWithState:&v134 objects:v145 count:16];
+        obj = reverseObjectEnumerator2;
+        v112 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v134 objects:v145 count:16];
         if (!v112)
         {
           goto LABEL_84;
@@ -1597,9 +1597,9 @@ LABEL_26:
             v27 = *(*(&v134 + 1) + 8 * v26);
             v28 = objc_opt_class();
             v29 = sub_100013F00(v28, v27);
-            if (v29 == v15)
+            if (v29 == shapeItem)
             {
-              v56 = [p_info + 206 _atomicIncrementAssertCount];
+              _atomicIncrementAssertCount = [p_info + 206 _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
               {
                 sub_1013430EC();
@@ -1609,7 +1609,7 @@ LABEL_26:
               if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67109890;
-                *&buf[4] = v56;
+                *&buf[4] = _atomicIncrementAssertCount;
                 *&buf[8] = 2082;
                 *&buf[10] = "[CRLFreehandDrawingToolFillAndLegacyStroke p_floodFillIfPossibleAtPoint:]";
                 *&buf[18] = 2082;
@@ -1629,11 +1629,11 @@ LABEL_26:
               {
                 v80 = v29;
                 v81 = v58;
-                v82 = [p_info + 206 packedBacktraceString];
+                packedBacktraceString = [p_info + 206 packedBacktraceString];
                 *buf = 67109378;
-                *&buf[4] = v56;
+                *&buf[4] = _atomicIncrementAssertCount;
                 *&buf[8] = 2114;
-                *&buf[10] = v82;
+                *&buf[10] = packedBacktraceString;
                 _os_log_error_impl(&_mh_execute_header, v81, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
 
                 v29 = v80;
@@ -1646,15 +1646,15 @@ LABEL_26:
             }
 
             v30 = objc_opt_class();
-            v31 = [v22 layoutController];
-            [v31 layoutForInfo:v29];
+            layoutController = [v22 layoutController];
+            [layoutController layoutForInfo:v29];
             v33 = v32 = v29;
             v34 = sub_100014370(v30, v33);
 
             v113 = v26;
             if (!v34)
             {
-              v67 = [p_info + 206 _atomicIncrementAssertCount];
+              _atomicIncrementAssertCount2 = [p_info + 206 _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
               {
                 sub_10134309C();
@@ -1665,7 +1665,7 @@ LABEL_26:
               if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67110146;
-                *&buf[4] = v67;
+                *&buf[4] = _atomicIncrementAssertCount2;
                 *&buf[8] = 2082;
                 *&buf[10] = "[CRLFreehandDrawingToolFillAndLegacyStroke p_floodFillIfPossibleAtPoint:]";
                 *&buf[18] = 2082;
@@ -1686,11 +1686,11 @@ LABEL_26:
               if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
               {
                 v83 = v69;
-                v84 = [p_info + 206 packedBacktraceString];
+                packedBacktraceString2 = [p_info + 206 packedBacktraceString];
                 *buf = 67109378;
-                *&buf[4] = v67;
+                *&buf[4] = _atomicIncrementAssertCount2;
                 *&buf[8] = 2114;
-                *&buf[10] = v84;
+                *&buf[10] = packedBacktraceString2;
                 _os_log_error_impl(&_mh_execute_header, v83, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
 
                 v29 = v32;
@@ -1702,25 +1702,25 @@ LABEL_26:
               goto LABEL_68;
             }
 
-            v35 = [v34 path];
-            v110 = [v35 copy];
+            path = [v34 path];
+            v110 = [path copy];
 
             v36 = [CRLFreehandDrawingToolFillAndLegacyStroke p_isFillValidToRecolorInShapeInfo:v32];
             v29 = v32;
             if ((v36 & 1) == 0)
             {
-              v37 = [v34 maskPath];
+              maskPath = [v34 maskPath];
 
-              if (v37)
+              if (maskPath)
               {
                 v108 = v32;
                 v38 = objc_alloc_init(NSMutableArray);
-                v39 = [v34 pencilKitStrokes];
+                pencilKitStrokes = [v34 pencilKitStrokes];
                 v130 = 0u;
                 v131 = 0u;
                 v132 = 0u;
                 v133 = 0u;
-                v40 = [v39 countByEnumeratingWithState:&v130 objects:v144 count:16];
+                v40 = [pencilKitStrokes countByEnumeratingWithState:&v130 objects:v144 count:16];
                 if (v40)
                 {
                   v41 = v40;
@@ -1731,20 +1731,20 @@ LABEL_26:
                     {
                       if (*v131 != v42)
                       {
-                        objc_enumerationMutation(v39);
+                        objc_enumerationMutation(pencilKitStrokes);
                       }
 
                       v44 = *(*(&v130 + 1) + 8 * i);
-                      v45 = [v44 maskedPathRanges];
+                      maskedPathRanges = [v44 maskedPathRanges];
 
-                      if (v45)
+                      if (maskedPathRanges)
                       {
                         v46 = [PKStroke crl_strokePathsExcludingNonMaskedPathRangesForPKStroke:v44];
                         [v38 addObjectsFromArray:v46];
                       }
                     }
 
-                    v41 = [v39 countByEnumeratingWithState:&v130 objects:v144 count:16];
+                    v41 = [pencilKitStrokes countByEnumeratingWithState:&v130 objects:v144 count:16];
                   }
 
                   while (v41);
@@ -1772,11 +1772,11 @@ LABEL_26:
                         }
 
                         v52 = [CRLPKStrokePathConverter pathFromPKStrokePath:*(*(&v126 + 1) + 8 * j) pencilKitStrokePathData:0];
-                        v53 = [v34 pureGeometryInRoot];
-                        v54 = v53;
-                        if (v53)
+                        pureGeometryInRoot = [v34 pureGeometryInRoot];
+                        v54 = pureGeometryInRoot;
+                        if (pureGeometryInRoot)
                         {
-                          [v53 transform];
+                          [pureGeometryInRoot transform];
                         }
 
                         else
@@ -1796,7 +1796,7 @@ LABEL_26:
                     while (v49);
                   }
 
-                  v15 = v107;
+                  shapeItem = v107;
                 }
 
                 p_info = (CRLiOSMultiSelectGestureRecognizer + 32);
@@ -1812,7 +1812,7 @@ LABEL_68:
             v55 = v110;
             if (!v110)
             {
-              v59 = [p_info + 206 _atomicIncrementAssertCount];
+              _atomicIncrementAssertCount3 = [p_info + 206 _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
               {
                 sub_10134304C();
@@ -1822,7 +1822,7 @@ LABEL_68:
               if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67110146;
-                *&buf[4] = v59;
+                *&buf[4] = _atomicIncrementAssertCount3;
                 *&buf[8] = 2082;
                 *&buf[10] = "[CRLFreehandDrawingToolFillAndLegacyStroke p_floodFillIfPossibleAtPoint:]";
                 *&buf[18] = 2082;
@@ -1844,11 +1844,11 @@ LABEL_68:
               if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
               {
                 v85 = v62;
-                v86 = [p_info + 206 packedBacktraceString];
+                packedBacktraceString3 = [p_info + 206 packedBacktraceString];
                 *buf = 67109378;
-                *&buf[4] = v59;
+                *&buf[4] = _atomicIncrementAssertCount3;
                 *&buf[8] = 2114;
-                *&buf[10] = v86;
+                *&buf[10] = packedBacktraceString3;
                 _os_log_error_impl(&_mh_execute_header, v85, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
               }
 
@@ -1860,11 +1860,11 @@ LABEL_68:
               v55 = 0;
             }
 
-            v65 = [v34 pureGeometryInRoot];
-            v66 = v65;
-            if (v65)
+            pureGeometryInRoot2 = [v34 pureGeometryInRoot];
+            v66 = pureGeometryInRoot2;
+            if (pureGeometryInRoot2)
             {
-              [v65 transform];
+              [pureGeometryInRoot2 transform];
             }
 
             else
@@ -1874,12 +1874,12 @@ LABEL_68:
 
             [v55 transformUsingAffineTransform:buf];
 
-            v70 = [v34 stroke];
+            stroke = [v34 stroke];
             v71 = 0.0;
-            if (v70)
+            if (stroke)
             {
-              v72 = v70;
-              v73 = [v34 stroke];
+              stroke3 = stroke;
+              stroke2 = [v34 stroke];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
@@ -1889,18 +1889,18 @@ LABEL_68:
               {
                 [v34 stroke];
                 v75 = v74 = v29;
-                v76 = [v75 isNullStroke];
+                isNullStroke = [v75 isNullStroke];
 
                 v29 = v74;
                 v55 = v110;
 
-                if (v76)
+                if (isNullStroke)
                 {
                   goto LABEL_76;
                 }
 
-                v72 = [v34 stroke];
-                [v72 width];
+                stroke3 = [v34 stroke];
+                [stroke3 width];
                 v71 = v77;
               }
             }
@@ -1912,10 +1912,10 @@ LABEL_76:
               p_info = (CRLiOSMultiSelectGestureRecognizer + 32);
               if ([v55 containsPoint:{x, y}])
               {
-                v78 = [v55 pathByNormalizingClosedPathToRemoveSelfIntersections];
+                pathByNormalizingClosedPathToRemoveSelfIntersections = [v55 pathByNormalizingClosedPathToRemoveSelfIntersections];
 
                 v79 = 1;
-                v55 = v78;
+                v55 = pathByNormalizingClosedPathToRemoveSelfIntersections;
               }
 
               else
@@ -1936,7 +1936,7 @@ LABEL_76:
             if (v79)
             {
 
-              v17 = v102;
+              reverseObjectEnumerator = v102;
               goto LABEL_89;
             }
 
@@ -1958,14 +1958,14 @@ LABEL_82:
 LABEL_84:
 
         v21 = v101;
-        v17 = v102;
+        reverseObjectEnumerator = v102;
         v19 = v100;
 LABEL_85:
         v21 = v21 + 1;
       }
 
       while (v21 != v19);
-      v19 = [v17 countByEnumeratingWithState:&v138 objects:v146 count:16];
+      v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v138 objects:v146 count:16];
     }
 
     while (v19);
@@ -1973,7 +1973,7 @@ LABEL_85:
 
 LABEL_89:
 
-  WeakRetained = objc_loadWeakRetained(&v104->_pencilKitCanvasViewController);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_pencilKitCanvasViewController);
   v88 = [WeakRetained rulerEdgePathInUnscaledSpaceForTopOfRuler:1];
   v89 = [v88 copy];
 
@@ -1982,7 +1982,7 @@ LABEL_89:
     [v115 addObject:v89];
   }
 
-  v90 = objc_loadWeakRetained(&v104->_pencilKitCanvasViewController);
+  v90 = objc_loadWeakRetained(&selfCopy->_pencilKitCanvasViewController);
   v91 = [v90 rulerEdgePathInUnscaledSpaceForTopOfRuler:0];
   v92 = [v91 copy];
 
@@ -1991,10 +1991,10 @@ LABEL_89:
     [v115 addObject:v92];
   }
 
-  v93 = [v105 commandController];
-  v94 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)v104 p_currentColorWithOpacity];
-  v95 = [v93 currentGroupActionString];
-  v96 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)v104 p_floodFillSerialQueue];
+  commandController = [v105 commandController];
+  p_currentColorWithOpacity = [(CRLFreehandDrawingToolFillAndLegacyStroke *)selfCopy p_currentColorWithOpacity];
+  currentGroupActionString = [commandController currentGroupActionString];
+  p_floodFillSerialQueue = [(CRLFreehandDrawingToolFillAndLegacyStroke *)selfCopy p_floodFillSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100289338;
@@ -2002,30 +2002,30 @@ LABEL_89:
   v124 = x;
   v125 = y;
   v117 = v115;
-  v118 = v93;
+  v118 = commandController;
   v119 = v114;
   v120 = v103;
-  v121 = v94;
-  v122 = v95;
+  v121 = p_currentColorWithOpacity;
+  v122 = currentGroupActionString;
   v123 = v105;
   v97 = v103;
   v98 = v114;
   v99 = v115;
-  dispatch_async(v96, block);
+  dispatch_async(p_floodFillSerialQueue, block);
 }
 
-+ (void)p_insertUnscaledFloodFillablePath:(id)a3 fromFillPoint:(CGPoint)a4 pathsUsedForFilling:(id)a5 bezierPathToDrawingLayoutMap:(id)a6 candidateLayouts:(id)a7 currentColorWithOpacity:(id)a8 withUndoString:(id)a9 onICC:(id)a10
++ (void)p_insertUnscaledFloodFillablePath:(id)path fromFillPoint:(CGPoint)point pathsUsedForFilling:(id)filling bezierPathToDrawingLayoutMap:(id)map candidateLayouts:(id)layouts currentColorWithOpacity:(id)opacity withUndoString:(id)string onICC:(id)self0
 {
-  y = a4.y;
-  x = a4.x;
-  v117 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v119 = a10;
-  v115 = v20;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  fillingCopy = filling;
+  mapCopy = map;
+  layoutsCopy = layouts;
+  opacityCopy = opacity;
+  stringCopy = string;
+  cCopy = c;
+  v115 = opacityCopy;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2055,18 +2055,18 @@ LABEL_89:
     [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:1026 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v25 = [v19 crl_arrayOfObjectsPassingTest:&stru_10184F710];
+  v25 = [layoutsCopy crl_arrayOfObjectsPassingTest:&stru_10184F710];
 
   v118 = v25;
   if ([v25 count])
   {
-    v114 = v21;
+    v114 = stringCopy;
     v26 = +[NSMutableSet set];
     v126 = 0u;
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v27 = v17;
+    v27 = fillingCopy;
     v28 = [v27 countByEnumeratingWithState:&v126 objects:v131 count:16];
     if (v28)
     {
@@ -2081,7 +2081,7 @@ LABEL_89:
             objc_enumerationMutation(v27);
           }
 
-          v32 = [v18 objectForKeyedSubscript:*(*(&v126 + 1) + 8 * i)];
+          v32 = [mapCopy objectForKeyedSubscript:*(*(&v126 + 1) + 8 * i)];
           if (v32)
           {
             [v26 addObject:v32];
@@ -2146,26 +2146,26 @@ LABEL_29:
 
     v39 = [v33 objectAtIndexedSubscript:0];
 LABEL_32:
-    v40 = [v119 hitRep:&stru_10184F730 passingTest:{x, y}];
+    v40 = [cCopy hitRep:&stru_10184F730 passingTest:{x, y}];
     v112 = v40;
     if (v40)
     {
       v41 = objc_opt_class();
-      v42 = [v40 info];
-      v43 = sub_100013F00(v41, v42);
+      info = [v40 info];
+      v43 = sub_100013F00(v41, info);
 
       v44 = objc_opt_class();
-      v45 = [v40 layout];
-      v46 = sub_100013F00(v44, v45);
+      layout = [v40 layout];
+      v46 = sub_100013F00(v44, layout);
 
-      v47 = [v46 path];
-      v48 = [v47 copy];
+      path = [v46 path];
+      v48 = [path copy];
 
-      v49 = [v46 pureGeometryInRoot];
-      v50 = v49;
-      if (v49)
+      pureGeometryInRoot = [v46 pureGeometryInRoot];
+      v50 = pureGeometryInRoot;
+      if (pureGeometryInRoot)
       {
-        [v49 transform];
+        [pureGeometryInRoot transform];
       }
 
       else
@@ -2175,32 +2175,32 @@ LABEL_32:
 
       [v48 transformUsingAffineTransform:&v121];
 
-      v113 = [v48 pathByNormalizingClosedPathToRemoveSelfIntersections];
+      pathByNormalizingClosedPathToRemoveSelfIntersections = [v48 pathByNormalizingClosedPathToRemoveSelfIntersections];
 
       v40 = v43;
     }
 
     else
     {
-      v113 = 0;
+      pathByNormalizingClosedPathToRemoveSelfIntersections = 0;
     }
 
-    v116 = v117;
-    v51 = [CRLColorFill colorWithColor:v20];
-    v108 = [v39 maxFilledShapeIndex];
-    v52 = [v119 commandController];
-    [v52 openGroup];
+    v116 = pathCopy;
+    v51 = [CRLColorFill colorWithColor:opacityCopy];
+    maxFilledShapeIndex = [v39 maxFilledShapeIndex];
+    commandController = [cCopy commandController];
+    [commandController openGroup];
 
-    v53 = [v119 commandController];
-    [v53 setCurrentGroupActionString:v114];
+    commandController2 = [cCopy commandController];
+    [commandController2 setCurrentGroupActionString:v114];
 
     v109 = v39;
-    v110 = v17;
+    v110 = fillingCopy;
     if (v40)
     {
-      v54 = v113;
+      v54 = pathByNormalizingClosedPathToRemoveSelfIntersections;
       v111 = v40;
-      if (!v113)
+      if (!pathByNormalizingClosedPathToRemoveSelfIntersections)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -2241,45 +2241,45 @@ LABEL_32:
       }
 
       v59 = objc_opt_class();
-      v60 = [v40 fill];
-      v61 = sub_100013F00(v59, v60);
+      fill = [v40 fill];
+      v61 = sub_100013F00(v59, fill);
 
-      v62 = [CRLColorFill colorWithColor:v20];
+      v62 = [CRLColorFill colorWithColor:opacityCopy];
       v63 = v62;
       v116 = v58;
       if (!v58 && v61 && v62)
       {
-        v64 = [v62 color];
-        v65 = [v61 color];
-        v66 = [v64 colorByCompositingSourceOverDestinationColor:v65];
+        color = [v62 color];
+        color2 = [v61 color];
+        v66 = [color colorByCompositingSourceOverDestinationColor:color2];
         v67 = [CRLColorFill colorWithColor:v66];
 
         v68 = [[_TtC8Freeform17CRLCommandSetFill alloc] initWithShapeItem:v111 fill:v67];
-        v69 = [v111 containingGroup];
-        v70 = [v119 canvasEditor];
-        v71 = [v70 selectionPathWithInfo:v69];
+        containingGroup = [v111 containingGroup];
+        canvasEditor = [cCopy canvasEditor];
+        v71 = [canvasEditor selectionPathWithInfo:containingGroup];
 
         v72 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v71 reverseSelectionPath:v71];
-        v73 = [v119 commandController];
-        [v73 enqueueCommand:v68 withSelectionBehavior:v72];
+        commandController3 = [cCopy commandController];
+        [commandController3 enqueueCommand:v68 withSelectionBehavior:v72];
 
         if (([v61 isEqual:v63] & 1) == 0)
         {
-          v74 = [v119 freehandDrawingToolkit];
+          freehandDrawingToolkit = [cCopy freehandDrawingToolkit];
           [v111 id];
-          v104 = v69;
+          v104 = containingGroup;
           v75 = v68;
           v77 = v76 = v67;
-          [v74 enqueueAnimationForObjectUUID:v77 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
+          [freehandDrawingToolkit enqueueAnimationForObjectUUID:v77 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
 
           v67 = v76;
           v68 = v75;
-          v69 = v104;
+          containingGroup = v104;
         }
 
         v39 = v109;
-        v17 = v110;
-        v20 = v115;
+        fillingCopy = v110;
+        opacityCopy = v115;
       }
 
       v40 = v111;
@@ -2291,11 +2291,11 @@ LABEL_32:
     if (v116)
     {
       v80 = [v116 copy];
-      v81 = [v39 geometryInRoot];
-      v82 = v81;
-      if (v81)
+      geometryInRoot = [v39 geometryInRoot];
+      v82 = geometryInRoot;
+      if (geometryInRoot)
       {
-        [v81 transform];
+        [geometryInRoot transform];
       }
 
       else
@@ -2311,56 +2311,56 @@ LABEL_32:
       v86 = v85;
       v87 = [CRLBezierPathSource pathSourceWithBezierPath:v80];
       v107 = v80;
-      v88 = [v119 editingCoordinator];
-      v89 = [v88 boardItemFactory];
+      editingCoordinator = [cCopy editingCoordinator];
+      boardItemFactory = [editingCoordinator boardItemFactory];
 
-      v103 = v89;
+      v103 = boardItemFactory;
       v105 = v87;
-      v90 = [v89 makeShapeItemForFreehandDrawingWithPathSource:v87 position:0 stroke:v51 fill:0 pencilKitStrokePathCompactData:0 maskPath:{v84, v86}];
+      v90 = [boardItemFactory makeShapeItemForFreehandDrawingWithPathSource:v87 position:0 stroke:v51 fill:0 pencilKitStrokePathCompactData:0 maskPath:{v84, v86}];
       v91 = [_TtC8Freeform26CRLCommandInsertBoardItems alloc];
-      v92 = [v39 freehandInfo];
-      v93 = [(CRLCommandInsertBoardItems *)v91 initWithParentContainer:v92 boardItem:v90 index:v108];
+      freehandInfo = [v39 freehandInfo];
+      v93 = [(CRLCommandInsertBoardItems *)v91 initWithParentContainer:freehandInfo boardItem:v90 index:maxFilledShapeIndex];
 
-      v94 = [v39 freehandInfo];
-      v95 = [v119 canvasEditor];
-      v96 = [v95 selectionPathWithInfo:v94];
+      freehandInfo2 = [v39 freehandInfo];
+      canvasEditor2 = [cCopy canvasEditor];
+      v96 = [canvasEditor2 selectionPathWithInfo:freehandInfo2];
 
       v97 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v96 reverseSelectionPath:v96];
-      v98 = [v119 commandController];
-      [v98 enqueueCommand:v93 withSelectionBehavior:v97];
+      commandController4 = [cCopy commandController];
+      [commandController4 enqueueCommand:v93 withSelectionBehavior:v97];
 
       if (!v40)
       {
-        v99 = [v119 freehandDrawingToolkit];
+        freehandDrawingToolkit2 = [cCopy freehandDrawingToolkit];
         [v90 id];
         v101 = v100 = v51;
-        [v99 enqueueAnimationForObjectUUID:v101 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
+        [freehandDrawingToolkit2 enqueueAnimationForObjectUUID:v101 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
 
         v51 = v100;
         v40 = 0;
       }
 
       v39 = v109;
-      v17 = v110;
-      v20 = v115;
+      fillingCopy = v110;
+      opacityCopy = v115;
       v79 = v116;
       v78 = v112;
     }
 
-    v102 = [v119 commandController];
-    [v102 closeGroup];
+    commandController5 = [cCopy commandController];
+    [commandController5 closeGroup];
 
-    v21 = v114;
+    stringCopy = v114;
   }
 }
 
-+ (BOOL)p_isFillValidToRecolorInShapeInfo:(id)a3
++ (BOOL)p_isFillValidToRecolorInShapeInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 fill];
-  if (v4)
+  infoCopy = info;
+  fill = [infoCopy fill];
+  if (fill)
   {
-    v5 = [v3 fill];
+    fill2 = [infoCopy fill];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2369,8 +2369,8 @@ LABEL_32:
 
     else
     {
-      v7 = [v3 fill];
-      v6 = [v7 isClear] ^ 1;
+      fill3 = [infoCopy fill];
+      v6 = [fill3 isClear] ^ 1;
     }
   }
 
@@ -2397,19 +2397,19 @@ LABEL_32:
       v11 = &off_101852268;
 LABEL_7:
       v12 = *v11;
-      v13 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
+      p_currentColorWithOpacity = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
       [(CRLFreehandDrawingToolFillAndLegacyStroke *)self unscaledWidth];
       v15 = v14;
       v16 = +[CRLStrokePattern solidPattern];
-      v9 = [(CRLBrushStroke *)v10 initWithName:v12 color:v13 width:1 cap:0 join:v16 pattern:v15 miterLimit:1.0];
+      v9 = [(CRLBrushStroke *)v10 initWithName:v12 color:p_currentColorWithOpacity width:1 cap:0 join:v16 pattern:v15 miterLimit:1.0];
 
       goto LABEL_8;
     case 0uLL:
-      v5 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
+      p_currentColorWithOpacity2 = [(CRLFreehandDrawingToolFillAndLegacyStroke *)self p_currentColorWithOpacity];
       [(CRLFreehandDrawingToolFillAndLegacyStroke *)self unscaledWidth];
       v7 = v6;
       v8 = +[CRLStrokePattern solidPattern];
-      v9 = [CRLStroke strokeWithColor:v5 width:1 cap:1 join:v8 pattern:v7];
+      v9 = [CRLStroke strokeWithColor:p_currentColorWithOpacity2 width:1 cap:1 join:v8 pattern:v7];
 
 LABEL_8:
       v3 = v9;
@@ -2450,10 +2450,10 @@ LABEL_18:
 - (id)p_currentColorWithOpacity
 {
   v3 = [(CRLFreehandDrawingTool *)self icc];
-  v4 = [v3 freehandDrawingToolkit];
-  v5 = [v4 colorForCurrentTool];
+  freehandDrawingToolkit = [v3 freehandDrawingToolkit];
+  colorForCurrentTool = [freehandDrawingToolkit colorForCurrentTool];
   [(CRLFreehandDrawingToolFillAndLegacyStroke *)self opacity];
-  v6 = [v5 colorWithAlphaComponent:?];
+  v6 = [colorForCurrentTool colorWithAlphaComponent:?];
 
   return v6;
 }

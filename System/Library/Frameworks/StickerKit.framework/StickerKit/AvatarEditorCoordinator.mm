@@ -1,36 +1,36 @@
 @interface AvatarEditorCoordinator
 - (_TtC10StickerKit23AvatarEditorCoordinator)init;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AvatarEditorCoordinator
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_19A64D2A8(a4);
+  selfCopy = self;
+  sub_19A64D2A8(record);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = a3;
-    v7 = self;
-    sub_19A64CD28(v6);
+    controllerCopy = controller;
+    selfCopy = self;
+    sub_19A64CD28(controllerCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -44,7 +44,7 @@
 
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v8 = self;
+    selfCopy = self;
     sub_19A64D00C(v5, v7);
     swift_unknownObjectRelease();
   }

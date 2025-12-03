@@ -1,23 +1,23 @@
 @interface MXMDisplayProbe_iphoneOS_Internal
 + (id)_allDescriptors;
-+ (unint64_t)_displayIndexWithDescriptor:(id)a3;
++ (unint64_t)_displayIndexWithDescriptor:(id)descriptor;
 - ($175F2685EF764341F5DD80B75CC65478)_pollDisplayForSample;
 - (MXMDisplayProbePlatformDelegate)delegate;
-- (id)initPrivateWithDescriptor:(id)a3 queue:(id)a4;
+- (id)initPrivateWithDescriptor:(id)descriptor queue:(id)queue;
 - (void)_loop;
 - (void)_stop;
 @end
 
 @implementation MXMDisplayProbe_iphoneOS_Internal
 
-+ (unint64_t)_displayIndexWithDescriptor:(id)a3
++ (unint64_t)_displayIndexWithDescriptor:(id)descriptor
 {
   v3 = MEMORY[0x277CD9E40];
-  v4 = a3;
-  v5 = [v3 displays];
-  v6 = [v4 display];
+  descriptorCopy = descriptor;
+  displays = [v3 displays];
+  display = [descriptorCopy display];
 
-  v7 = [v5 indexOfObject:v6];
+  v7 = [displays indexOfObject:display];
   return v7;
 }
 
@@ -25,15 +25,15 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEB18];
-  v3 = [MEMORY[0x277CD9E40] displays];
-  v4 = [v2 arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  displays = [MEMORY[0x277CD9E40] displays];
+  v4 = [v2 arrayWithCapacity:{objc_msgSend(displays, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [MEMORY[0x277CD9E40] displays];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  displays2 = [MEMORY[0x277CD9E40] displays];
+  v6 = [displays2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -44,14 +44,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(displays2);
         }
 
         v10 = [[MXMDisplayDescriptor alloc] initWithDisplay:*(*(&v13 + 1) + 8 * i)];
         [v4 addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [displays2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -62,19 +62,19 @@
   return v4;
 }
 
-- (id)initPrivateWithDescriptor:(id)a3 queue:(id)a4
+- (id)initPrivateWithDescriptor:(id)descriptor queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = MXMDisplayProbe_iphoneOS_Internal;
   v9 = [(MXMDisplayProbe_iphoneOS_Internal *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_displayDescriptor, a3);
+    objc_storeStrong(&v9->_displayDescriptor, descriptor);
     v10->_pollRate = 0.0;
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v10->_queue, queue);
     v10->_lastSample.timestamp = NAN;
   }
 
@@ -98,16 +98,16 @@
   block[3] = &unk_2798C9590;
   block[4] = self;
   dispatch_async(queue, block);
-  v4 = self;
-  objc_sync_enter(v4);
-  pollRate = v4->_pollRate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pollRate = selfCopy->_pollRate;
   if (pollRate > 0.0)
   {
     usleep((pollRate * 1000000.0));
-    [(MXMDisplayProbe_iphoneOS_Internal *)v4 _loop];
+    [(MXMDisplayProbe_iphoneOS_Internal *)selfCopy _loop];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - ($175F2685EF764341F5DD80B75CC65478)_pollDisplayForSample

@@ -1,14 +1,14 @@
 @interface ICSystemPaperThumbnailService
 + (ICSystemPaperThumbnailService)sharedService;
-- (ICSystemPaperThumbnailService)initWithSystemPaperThumbnailService:(id)a3;
+- (ICSystemPaperThumbnailService)initWithSystemPaperThumbnailService:(id)service;
 - (UITraitCollection)traitCollection;
 - (void)cancel;
 - (void)invalidate;
-- (void)invalidateForNote:(id)a3;
+- (void)invalidateForNote:(id)note;
 - (void)observe;
-- (void)setTraitCollection:(id)a3;
-- (void)updateIfNeededForNote:(id)a3 completion:(id)a4;
-- (void)updateIfNeededWithCompletion:(id)a3;
+- (void)setTraitCollection:(id)collection;
+- (void)updateIfNeededForNote:(id)note completion:(id)completion;
+- (void)updateIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation ICSystemPaperThumbnailService
@@ -22,74 +22,74 @@
   return v4;
 }
 
-- (ICSystemPaperThumbnailService)initWithSystemPaperThumbnailService:(id)a3
+- (ICSystemPaperThumbnailService)initWithSystemPaperThumbnailService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = ICSystemPaperThumbnailService;
   v6 = [(ICSystemPaperThumbnailService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemPaperThumbnailService, a3);
+    objc_storeStrong(&v6->_systemPaperThumbnailService, service);
   }
 
   return v7;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v5 setTraitCollection:v4];
+  collectionCopy = collection;
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService setTraitCollection:collectionCopy];
 }
 
 - (UITraitCollection)traitCollection
 {
-  v2 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  v3 = [v2 traitCollection];
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  traitCollection = [systemPaperThumbnailService traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-- (void)updateIfNeededForNote:(id)a3 completion:(id)a4
+- (void)updateIfNeededForNote:(id)note completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v8 updateIfNeededForNote:v7 completion:v6];
+  completionCopy = completion;
+  noteCopy = note;
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService updateIfNeededForNote:noteCopy completion:completionCopy];
 }
 
-- (void)updateIfNeededWithCompletion:(id)a3
+- (void)updateIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v5 updateIfNeededWithCompletion:v4];
+  completionCopy = completion;
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService updateIfNeededWithCompletion:completionCopy];
 }
 
-- (void)invalidateForNote:(id)a3
+- (void)invalidateForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v5 invalidateForNote:v4];
+  noteCopy = note;
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService invalidateForNote:noteCopy];
 }
 
 - (void)invalidate
 {
-  v2 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v2 invalidate];
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService invalidate];
 }
 
 - (void)observe
 {
-  v2 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v2 observe];
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService observe];
 }
 
 - (void)cancel
 {
-  v2 = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
-  [v2 cancel];
+  systemPaperThumbnailService = [(ICSystemPaperThumbnailService *)self systemPaperThumbnailService];
+  [systemPaperThumbnailService cancel];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface DeviceContext
-- (BOOL)isEqual:(id)a3;
-- (DeviceContext)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (DeviceContext)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 - (NSString)description;
 @end
 
 @implementation DeviceContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_268B380E4();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DeviceContext.isEqual(_:)(v8);
@@ -30,7 +30,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   DeviceContext.description.getter();
 
   v3 = sub_268B37BC4();
@@ -38,15 +38,15 @@
   return v3;
 }
 
-- (DeviceContext)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (DeviceContext)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_268B37BF4();
   }
 
   sub_268B37BF4();
-  if (a5)
+  if (hint)
   {
     sub_268B37BF4();
   }

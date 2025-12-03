@@ -1,48 +1,48 @@
 @interface PKPaymentOfferInstallmentCriteriaEligibilityConfiguration
 - (NSString)description;
-- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 deviceRegion:(id)a6 supportedNetworks:(id)a7 merchantCapabilities:(unint64_t)a8 payLaterSuppressionMode:(int64_t)a9 context:(unint64_t)a10 options:(unint64_t)a11;
-- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithTransaction:(id)a3;
+- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode deviceRegion:(id)region supportedNetworks:(id)networks merchantCapabilities:(unint64_t)capabilities payLaterSuppressionMode:(int64_t)mode context:(unint64_t)self0 options:(unint64_t)self1;
+- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithTransaction:(id)transaction;
 @end
 
 @implementation PKPaymentOfferInstallmentCriteriaEligibilityConfiguration
 
-- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 deviceRegion:(id)a6 supportedNetworks:(id)a7 merchantCapabilities:(unint64_t)a8 payLaterSuppressionMode:(int64_t)a9 context:(unint64_t)a10 options:(unint64_t)a11
+- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode deviceRegion:(id)region supportedNetworks:(id)networks merchantCapabilities:(unint64_t)capabilities payLaterSuppressionMode:(int64_t)mode context:(unint64_t)self0 options:(unint64_t)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v25 = a5;
-  v20 = a6;
-  v21 = a7;
+  amountCopy = amount;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  regionCopy = region;
+  networksCopy = networks;
   v26.receiver = self;
   v26.super_class = PKPaymentOfferInstallmentCriteriaEligibilityConfiguration;
   v22 = [(PKPaymentOfferInstallmentCriteriaEligibilityConfiguration *)&v26 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_amount, a3);
-    objc_storeStrong(&v23->_currencyCode, a4);
-    objc_storeStrong(&v23->_merchantCountryCode, a5);
-    objc_storeStrong(&v23->_supportedNetworks, a7);
-    v23->_merchantCapabilities = a8;
-    v23->_payLaterSuppressionMode = a9;
-    v23->_deviceRegion = v20;
-    v23->_context = a10;
-    v23->_options = a11;
+    objc_storeStrong(&v22->_amount, amount);
+    objc_storeStrong(&v23->_currencyCode, code);
+    objc_storeStrong(&v23->_merchantCountryCode, countryCode);
+    objc_storeStrong(&v23->_supportedNetworks, networks);
+    v23->_merchantCapabilities = capabilities;
+    v23->_payLaterSuppressionMode = mode;
+    v23->_deviceRegion = regionCopy;
+    v23->_context = context;
+    v23->_options = options;
   }
 
   return v23;
 }
 
-- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithTransaction:(id)a3
+- (PKPaymentOfferInstallmentCriteriaEligibilityConfiguration)initWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 merchant];
-  v6 = [v4 amount];
-  v7 = [v4 currencyCode];
+  transactionCopy = transaction;
+  merchant = [transactionCopy merchant];
+  amount = [transactionCopy amount];
+  currencyCode = [transactionCopy currencyCode];
 
-  v8 = [v5 rawCountry];
+  rawCountry = [merchant rawCountry];
   v9 = PKCurrentRegion();
-  v10 = [(PKPaymentOfferInstallmentCriteriaEligibilityConfiguration *)self initWithAmount:v6 currencyCode:v7 merchantCountryCode:v8 deviceRegion:v9 supportedNetworks:0 merchantCapabilities:0 payLaterSuppressionMode:0 context:3 options:0];
+  v10 = [(PKPaymentOfferInstallmentCriteriaEligibilityConfiguration *)self initWithAmount:amount currencyCode:currencyCode merchantCountryCode:rawCountry deviceRegion:v9 supportedNetworks:0 merchantCapabilities:0 payLaterSuppressionMode:0 context:3 options:0];
 
   return v10;
 }

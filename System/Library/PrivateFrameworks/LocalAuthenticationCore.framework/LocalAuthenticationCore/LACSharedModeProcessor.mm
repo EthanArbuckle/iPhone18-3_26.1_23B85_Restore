@@ -1,45 +1,45 @@
 @interface LACSharedModeProcessor
-- (BOOL)canProcessRequest:(id)a3;
-- (LACSharedModeProcessor)initWithReplyQueue:(id)a3 dataSource:(id)a4 policyTraitsManager:(id)a5 policyCoordinator:(id)a6;
-- (void)_processRequest:(id)a3 completion:(id)a4;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)canProcessRequest:(id)request;
+- (LACSharedModeProcessor)initWithReplyQueue:(id)queue dataSource:(id)source policyTraitsManager:(id)manager policyCoordinator:(id)coordinator;
+- (void)_processRequest:(id)request completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACSharedModeProcessor
 
-- (LACSharedModeProcessor)initWithReplyQueue:(id)a3 dataSource:(id)a4 policyTraitsManager:(id)a5 policyCoordinator:(id)a6
+- (LACSharedModeProcessor)initWithReplyQueue:(id)queue dataSource:(id)source policyTraitsManager:(id)manager policyCoordinator:(id)coordinator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  sourceCopy = source;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = LACSharedModeProcessor;
   v15 = [(LACSharedModeProcessor *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_replyQueue, a3);
-    objc_storeStrong(&v16->_dataSource, a4);
-    objc_storeStrong(&v16->_policyTraitsManager, a5);
-    objc_storeStrong(&v16->_policyCoordinator, a6);
+    objc_storeStrong(&v15->_replyQueue, queue);
+    objc_storeStrong(&v16->_dataSource, source);
+    objc_storeStrong(&v16->_policyTraitsManager, manager);
+    objc_storeStrong(&v16->_policyCoordinator, coordinator);
   }
 
   return v16;
 }
 
-- (BOOL)canProcessRequest:(id)a3
+- (BOOL)canProcessRequest:(id)request
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 acl];
-  if (v5 && (v6 = v5, [v4 acl], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[LACAccessControl checkACLAllowsAll:](LACAccessControl, "checkACLAllowsAll:", v7), v7, v6, v8))
+  requestCopy = request;
+  v5 = [requestCopy acl];
+  if (v5 && (v6 = v5, [requestCopy acl], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[LACAccessControl checkACLAllowsAll:](LACAccessControl, "checkACLAllowsAll:", v7), v7, v6, v8))
   {
     v9 = LACLogSharedMode();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ not needed for this request type", &v13, 0xCu);
     }
 
@@ -55,19 +55,19 @@
   return v10;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(LACSharedModeProcessor *)self canProcessRequest:v8])
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if ([(LACSharedModeProcessor *)self canProcessRequest:requestCopy])
   {
     v11 = LACLogSharedMode();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ will start", buf, 0xCu);
     }
 
@@ -77,8 +77,8 @@
     v14[2] = __66__LACSharedModeProcessor_processRequest_configuration_completion___block_invoke;
     v14[3] = &unk_1E7A95568;
     objc_copyWeak(&v17, buf);
-    v16 = v10;
-    v15 = v8;
+    v16 = completionCopy;
+    v15 = requestCopy;
     [(LACSharedModeProcessor *)self _processRequest:v15 completion:v14];
 
     objc_destroyWeak(&v17);
@@ -87,8 +87,8 @@
 
   else
   {
-    v12 = [LACEvaluationResult resultWithNext:v8];
-    (*(v10 + 2))(v10, v12);
+    v12 = [LACEvaluationResult resultWithNext:requestCopy];
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -113,17 +113,17 @@ void __66__LACSharedModeProcessor_processRequest_configuration_completion___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processRequest:(id)a3 completion:(id)a4
+- (void)_processRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   dataSource = self->_dataSource;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__LACSharedModeProcessor__processRequest_completion___block_invoke;
   v15[3] = &unk_1E7A96010;
-  v9 = v6;
+  v9 = requestCopy;
   v16 = v9;
   v10 = __53__LACSharedModeProcessor__processRequest_completion___block_invoke(v15);
   v12[0] = MEMORY[0x1E69E9820];
@@ -131,7 +131,7 @@ void __66__LACSharedModeProcessor_processRequest_configuration_completion___bloc
   v12[2] = __53__LACSharedModeProcessor__processRequest_completion___block_invoke_2;
   v12[3] = &unk_1E7A95D98;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v13 = v11;
   [(LACSharedModeDataSource *)dataSource fetchSharedModeWithOptions:v10 completion:v12];
 

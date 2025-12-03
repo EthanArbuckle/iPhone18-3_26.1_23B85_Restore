@@ -1,12 +1,12 @@
 @interface WLNETRBClient
-- (BOOL)_startDHCPWithInterface:(id)a3;
+- (BOOL)_startDHCPWithInterface:(id)interface;
 - (BOOL)_stopDHCP;
-- (BOOL)isIPAddressInRange:(id)a3;
+- (BOOL)isIPAddressInRange:(id)range;
 - (NETRBClient)_netrbClient;
 - (WLNETRBClient)init;
-- (void)_didStopDHCPWithSuccess:(BOOL)a3;
-- (void)startDHCPWithCompletion:(id)a3;
-- (void)stopDHCPWithCompletion:(id)a3;
+- (void)_didStopDHCPWithSuccess:(BOOL)success;
+- (void)startDHCPWithCompletion:(id)completion;
+- (void)stopDHCPWithCompletion:(id)completion;
 @end
 
 @implementation WLNETRBClient
@@ -18,25 +18,25 @@
   return [(WLNETRBClient *)&v3 init];
 }
 
-- (void)startDHCPWithCompletion:(id)a3
+- (void)startDHCPWithCompletion:(id)completion
 {
-  v12 = a3;
+  completionCopy = completion;
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, *MEMORY[0x277D2C978], "255.255.255.0");
   xpc_dictionary_set_string(v4, *MEMORY[0x277D2C980], "10.17.1.199");
   xpc_dictionary_set_string(v4, *MEMORY[0x277D2C968], "10.17.1.254");
   xpc_dictionary_set_uint64(v4, *MEMORY[0x277D2C960], 3uLL);
   xpc_dictionary_set_string(v4, *MEMORY[0x277D2C970], "ap1");
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_dhcpStartCompletionBlock)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_dhcpStartCompletionBlock)
   {
     v10 = "_dhcpStartCompletionBlock == nil";
     v11 = 52;
     goto LABEL_10;
   }
 
-  if (v5->_dhcpStopCompletionBlock)
+  if (selfCopy->_dhcpStopCompletionBlock)
   {
     v10 = "_dhcpStopCompletionBlock == nil";
     v11 = 53;
@@ -44,46 +44,46 @@ LABEL_10:
     __assert_rtn("[WLNETRBClient startDHCPWithCompletion:]", "WLNETRBClient.m", v11, v10);
   }
 
-  v6 = MEMORY[0x2743DF630](v12);
-  dhcpStartCompletionBlock = v5->_dhcpStartCompletionBlock;
-  v5->_dhcpStartCompletionBlock = v6;
+  v6 = MEMORY[0x2743DF630](completionCopy);
+  dhcpStartCompletionBlock = selfCopy->_dhcpStartCompletionBlock;
+  selfCopy->_dhcpStartCompletionBlock = v6;
 
-  objc_sync_exit(v5);
-  if (![(WLNETRBClient *)v5 _startDHCPWithInterface:v4])
+  objc_sync_exit(selfCopy);
+  if (![(WLNETRBClient *)selfCopy _startDHCPWithInterface:v4])
   {
     _WLLog();
-    v8 = v5;
+    v8 = selfCopy;
     objc_sync_enter(v8);
-    v9 = v5->_dhcpStartCompletionBlock;
-    v5->_dhcpStartCompletionBlock = 0;
+    v9 = selfCopy->_dhcpStartCompletionBlock;
+    selfCopy->_dhcpStartCompletionBlock = 0;
 
     objc_sync_exit(v8);
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (BOOL)_startDHCPWithInterface:(id)a3
+- (BOOL)_startDHCPWithInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   [(WLNETRBClient *)self _netrbClient];
   LOBYTE(self) = _NETRBClientStartService();
 
   return self;
 }
 
-- (void)stopDHCPWithCompletion:(id)a3
+- (void)stopDHCPWithCompletion:(id)completion
 {
-  v11 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_dhcpStartCompletionBlock)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_dhcpStartCompletionBlock)
   {
     v9 = "_dhcpStartCompletionBlock == nil";
     v10 = 135;
     goto LABEL_10;
   }
 
-  if (v4->_dhcpStopCompletionBlock)
+  if (selfCopy->_dhcpStopCompletionBlock)
   {
     v9 = "_dhcpStopCompletionBlock == nil";
     v10 = 136;
@@ -91,41 +91,41 @@ LABEL_10:
     __assert_rtn("[WLNETRBClient stopDHCPWithCompletion:]", "WLNETRBClient.m", v10, v9);
   }
 
-  v5 = MEMORY[0x2743DF630](v11);
-  dhcpStopCompletionBlock = v4->_dhcpStopCompletionBlock;
-  v4->_dhcpStopCompletionBlock = v5;
+  v5 = MEMORY[0x2743DF630](completionCopy);
+  dhcpStopCompletionBlock = selfCopy->_dhcpStopCompletionBlock;
+  selfCopy->_dhcpStopCompletionBlock = v5;
 
-  objc_sync_exit(v4);
-  if (![(WLNETRBClient *)v4 _stopDHCP])
+  objc_sync_exit(selfCopy);
+  if (![(WLNETRBClient *)selfCopy _stopDHCP])
   {
     _WLLog();
-    v7 = v4;
+    v7 = selfCopy;
     objc_sync_enter(v7);
-    v8 = v4->_dhcpStopCompletionBlock;
-    v4->_dhcpStopCompletionBlock = 0;
+    v8 = selfCopy->_dhcpStopCompletionBlock;
+    selfCopy->_dhcpStopCompletionBlock = 0;
 
     objc_sync_exit(v7);
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (BOOL)_stopDHCP
 {
-  v2 = [(WLNETRBClient *)self _netrbClient];
+  _netrbClient = [(WLNETRBClient *)self _netrbClient];
 
-  return MEMORY[0x28218B508](v2);
+  return MEMORY[0x28218B508](_netrbClient);
 }
 
-- (void)_didStopDHCPWithSuccess:(BOOL)a3
+- (void)_didStopDHCPWithSuccess:(BOOL)success
 {
   _WLLog();
-  v4 = self;
-  objc_sync_enter(v4);
-  v6 = MEMORY[0x2743DF630](v4->_dhcpStopCompletionBlock);
-  dhcpStopCompletionBlock = v4->_dhcpStopCompletionBlock;
-  v4->_dhcpStopCompletionBlock = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = MEMORY[0x2743DF630](selfCopy->_dhcpStopCompletionBlock);
+  dhcpStopCompletionBlock = selfCopy->_dhcpStopCompletionBlock;
+  selfCopy->_dhcpStopCompletionBlock = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v6)
   {
     v6[2](v6);
@@ -182,12 +182,12 @@ uint64_t __29__WLNETRBClient__netrbClient__block_invoke(uint64_t a1, uint64_t a2
   return 0;
 }
 
-- (BOOL)isIPAddressInRange:(id)a3
+- (BOOL)isIPAddressInRange:(id)range
 {
-  v3 = a3;
+  rangeCopy = range;
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:"10.17.1.199" encoding:4];
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:"10.17.1.254" encoding:4];
-  v7 = [v4 length] && objc_msgSend(v5, "length") && objc_msgSend(v3, "length") && (v10 = 0, v9 = 0, inet_pton(2, objc_msgSend(v4, "UTF8String"), &v10 + 4) == 1) && inet_pton(2, objc_msgSend(v5, "UTF8String"), &v10) == 1 && inet_pton(2, objc_msgSend(v3, "UTF8String"), &v9) == 1 && (v6 = bswap32(v9), v6 >= bswap32(HIDWORD(v10))) && v6 <= bswap32(v10);
+  v7 = [v4 length] && objc_msgSend(v5, "length") && objc_msgSend(rangeCopy, "length") && (v10 = 0, v9 = 0, inet_pton(2, objc_msgSend(v4, "UTF8String"), &v10 + 4) == 1) && inet_pton(2, objc_msgSend(v5, "UTF8String"), &v10) == 1 && inet_pton(2, objc_msgSend(rangeCopy, "UTF8String"), &v9) == 1 && (v6 = bswap32(v9), v6 >= bswap32(HIDWORD(v10))) && v6 <= bswap32(v10);
 
   return v7;
 }

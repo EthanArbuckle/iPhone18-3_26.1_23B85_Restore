@@ -3,7 +3,7 @@
 - (id)exportedInterface;
 - (id)remoteViewControllerInterface;
 - (void)_connectChildView;
-- (void)connectToContextWithSessionID:(id)a3 completion:(id)a4;
+- (void)connectToContextWithSessionID:(id)d completion:(id)completion;
 - (void)loadView;
 @end
 
@@ -36,17 +36,17 @@
   return [v2 _exportedInterface];
 }
 
-- (void)connectToContextWithSessionID:(id)a3 completion:(id)a4
+- (void)connectToContextWithSessionID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E696B0F8];
-  v8 = a3;
-  v9 = [v7 _sharedExtensionContextVendor];
-  v10 = [v9 _extensionContextForUUID:v8];
+  dCopy = d;
+  _sharedExtensionContextVendor = [v7 _sharedExtensionContextVendor];
+  v10 = [_sharedExtensionContextVendor _extensionContextForUUID:dCopy];
 
   [(SOExtensionViewService *)self setExtensionContext:v10];
-  v11 = [(SOExtensionViewService *)self extensionContext];
-  [v11 setViewService:self];
+  extensionContext = [(SOExtensionViewService *)self extensionContext];
+  [extensionContext setViewService:self];
 
   v12 = SO_LOG_SOExtensionViewService();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -55,18 +55,18 @@
   }
 
   [(SOExtensionViewService *)self _connectChildView];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_connectChildView
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 extensionContext];
+  extensionContext = [self extensionContext];
   v5 = 138543362;
-  v6 = v3;
+  v6 = extensionContext;
   _os_log_error_impl(&dword_1C1317000, a2, OS_LOG_TYPE_ERROR, "Couldn't find child view controller for context (%{public}@)", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

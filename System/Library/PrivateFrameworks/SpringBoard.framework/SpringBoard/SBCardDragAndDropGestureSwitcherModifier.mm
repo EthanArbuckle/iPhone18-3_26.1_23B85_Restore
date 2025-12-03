@@ -1,59 +1,59 @@
 @interface SBCardDragAndDropGestureSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)fullyPresentedFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (SBCardDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleBlurProgressEvent:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleSwitcherDropEvent:(id)a3;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)fullyPresentedFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (SBCardDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleBlurProgressEvent:(id)event;
+- (id)handleGestureEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleScrollEvent:(id)event;
+- (id)handleSwitcherDropEvent:(id)event;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBCardDragAndDropGestureSwitcherModifier
 
-- (SBCardDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3
+- (SBCardDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v9 initWithGestureID:v5];
+  v6 = [(SBGestureSwitcherModifier *)&v9 initWithGestureID:dCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gestureID, a3);
+    objc_storeStrong(&v6->_gestureID, d);
   }
 
   return v7;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v63[2] = *MEMORY[0x277D85DE8];
-  v12 = a4;
+  layoutCopy = layout;
   v61.receiver = self;
   v61.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  [(SBCardDragAndDropGestureSwitcherModifier *)&v61 frameForLayoutRole:a3 inAppLayout:v12 withBounds:x, y, width, height];
+  [(SBCardDragAndDropGestureSwitcherModifier *)&v61 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(SBAppLayout *)v12 leafAppLayoutForRole:a3];
+  v21 = [(SBAppLayout *)layoutCopy leafAppLayoutForRole:role];
   v22 = v21;
-  if (self->_currentDropRegion == 7 && v21 == self->_draggingLeafAppLayout || self->_isScrolling && ![(SBAppLayout *)v12 isOrContainsAppLayout:self->_draggingAppLayout])
+  if (self->_currentDropRegion == 7 && v21 == self->_draggingLeafAppLayout || self->_isScrolling && ![(SBAppLayout *)layoutCopy isOrContainsAppLayout:self->_draggingAppLayout])
   {
     goto LABEL_36;
   }
@@ -71,16 +71,16 @@
     goto LABEL_36;
   }
 
-  if ([(SBAppLayout *)v12 environment]== 2)
+  if ([(SBAppLayout *)layoutCopy environment]== 2)
   {
     goto LABEL_36;
   }
 
-  v23 = [(SBAppLayout *)self->_draggingAppLayout configuration];
-  v24 = [(SBAppLayout *)self->_intersectingAppLayout configuration];
-  if (self->_draggingAppLayout != v12 || v23 < 2)
+  configuration = [(SBAppLayout *)self->_draggingAppLayout configuration];
+  configuration2 = [(SBAppLayout *)self->_intersectingAppLayout configuration];
+  if (self->_draggingAppLayout != layoutCopy || configuration < 2)
   {
-    v26 = v24;
+    v26 = configuration2;
     if ([(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:v22])
     {
       v27 = v26 <= 1;
@@ -143,16 +143,16 @@ LABEL_35:
     [SBCardDragAndDropGestureSwitcherModifier frameForLayoutRole:a2 inAppLayout:self withBounds:?];
   }
 
-  if ([(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:v12])
+  if ([(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:layoutCopy])
   {
-    v42 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext finalTargetAppLayout];
+    finalTargetAppLayout = [(SBSwitcherDropRegionContext *)self->_dropRegionContext finalTargetAppLayout];
     v43 = self->_currentDropRegion;
     if (v43 == 5)
     {
       [(SBCardDragAndDropGestureSwitcherModifier *)self containerViewBounds];
       v59.receiver = self;
       v59.super_class = SBCardDragAndDropGestureSwitcherModifier;
-      [(SBCardDragAndDropGestureSwitcherModifier *)&v59 frameForLayoutRole:1 inAppLayout:v42 withBounds:?];
+      [(SBCardDragAndDropGestureSwitcherModifier *)&v59 frameForLayoutRole:1 inAppLayout:finalTargetAppLayout withBounds:?];
     }
 
     else
@@ -167,7 +167,7 @@ LABEL_32:
       [(SBCardDragAndDropGestureSwitcherModifier *)self containerViewBounds];
       v60.receiver = self;
       v60.super_class = SBCardDragAndDropGestureSwitcherModifier;
-      [(SBCardDragAndDropGestureSwitcherModifier *)&v60 frameForLayoutRole:2 inAppLayout:v42 withBounds:?];
+      [(SBCardDragAndDropGestureSwitcherModifier *)&v60 frameForLayoutRole:2 inAppLayout:finalTargetAppLayout withBounds:?];
     }
 
     v14 = v44;
@@ -198,40 +198,40 @@ LABEL_36:
   return result;
 }
 
-- (id)handleBlurProgressEvent:(id)a3
+- (id)handleBlurProgressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v9.receiver = self;
   v9.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v9 handleBlurProgressEvent:v4];
+  v6 = [(SBSwitcherModifier *)&v9 handleBlurProgressEvent:eventCopy];
 
   v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v6];
 
   return v7;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v8 handleScrollEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v8 handleScrollEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  self->_isScrolling = v6 == 0;
+  self->_isScrolling = phase == 0;
 
   return v5;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v15 isLayoutRoleBlurred:a3 inAppLayout:v6];
-  v8 = [(SBAppLayout *)v6 leafAppLayoutForRole:a3];
-  if (self->_isScrolling && ![(SBAppLayout *)v6 isOrContainsAppLayout:self->_draggingAppLayout]|| [(SBAppLayout *)self->_draggingLeafAppLayout isOrContainsAppLayout:v8]|| [(SBAppLayout *)self->_intersectingAppLayout environment]== 2)
+  v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v15 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
+  v8 = [(SBAppLayout *)layoutCopy leafAppLayoutForRole:blurred];
+  if (self->_isScrolling && ![(SBAppLayout *)layoutCopy isOrContainsAppLayout:self->_draggingAppLayout]|| [(SBAppLayout *)self->_draggingLeafAppLayout isOrContainsAppLayout:v8]|| [(SBAppLayout *)self->_intersectingAppLayout environment]== 2)
   {
     LOBYTE(v9) = 0;
   }
@@ -243,16 +243,16 @@ LABEL_36:
 
   else
   {
-    v11 = [(SBAppLayout *)self->_draggingAppLayout isSplitConfiguration];
-    v12 = [(SBAppLayout *)self->_intersectingAppLayout isSplitConfiguration];
+    isSplitConfiguration = [(SBAppLayout *)self->_draggingAppLayout isSplitConfiguration];
+    isSplitConfiguration2 = [(SBAppLayout *)self->_intersectingAppLayout isSplitConfiguration];
     v9 = ![(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:v8];
-    if (self->_draggingAppLayout != v6 || !v11)
+    if (self->_draggingAppLayout != layoutCopy || !isSplitConfiguration)
     {
-      v13 = v9 | v12;
+      v13 = v9 | isSplitConfiguration2;
       LOBYTE(v9) = v7;
       if ((v13 & 1) == 0)
       {
-        v14 = [(SBAppLayout *)v6 itemForLayoutRole:a3];
+        v14 = [(SBAppLayout *)layoutCopy itemForLayoutRole:blurred];
         if (self->_currentDropRegion == 7)
         {
           LOBYTE(v9) = 0;
@@ -269,21 +269,21 @@ LABEL_36:
   return v9;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  [(SBCardDragAndDropGestureSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  [(SBCardDragAndDropGestureSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  v9 = [(SBAppLayout *)v6 leafAppLayoutForRole:a3];
+  v9 = [(SBAppLayout *)layoutCopy leafAppLayoutForRole:role];
   if (self->_currentDropRegion != 7)
   {
     intersectingAppLayout = self->_intersectingAppLayout;
-    if (intersectingAppLayout == v6 && [(SBAppLayout *)intersectingAppLayout isSplitConfiguration]&& ![(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:self->_draggingLeafAppLayout]&& v9 != self->_draggingLeafAppLayout && v9 == self->_intersectingLeafAppLayout)
+    if (intersectingAppLayout == layoutCopy && [(SBAppLayout *)intersectingAppLayout isSplitConfiguration]&& ![(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:self->_draggingLeafAppLayout]&& v9 != self->_draggingLeafAppLayout && v9 == self->_intersectingLeafAppLayout)
     {
-      v11 = [(SBCardDragAndDropGestureSwitcherModifier *)self medusaSettings];
-      [v11 defaultDimmingOpacity];
+      medusaSettings = [(SBCardDragAndDropGestureSwitcherModifier *)self medusaSettings];
+      [medusaSettings defaultDimmingOpacity];
       v8 = v12;
     }
   }
@@ -291,14 +291,14 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  v8 = [v6 leafAppLayoutForRole:a3];
-  if ([(SBAppLayout *)self->_draggingAppLayout isOrContainsAppLayout:v8]|| [(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:v6]|| [(SBAppLayout *)self->_previouslyIntersectingAppLayout isOrContainsAppLayout:v6])
+  v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  v8 = [layoutCopy leafAppLayoutForRole:scene];
+  if ([(SBAppLayout *)self->_draggingAppLayout isOrContainsAppLayout:v8]|| [(SBAppLayout *)self->_intersectingAppLayout isOrContainsAppLayout:layoutCopy]|| [(SBAppLayout *)self->_previouslyIntersectingAppLayout isOrContainsAppLayout:layoutCopy])
   {
     v7 = 1;
   }
@@ -306,10 +306,10 @@ LABEL_36:
   return v7;
 }
 
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index
 {
-  v5 = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (!self->_gestureEnded && self->_intersectingAppLayout && [v6 isOrContainsAppLayout:?])
   {
@@ -338,23 +338,23 @@ LABEL_36:
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v7.receiver = self;
   v7.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v4 = [(SBCardDragAndDropGestureSwitcherModifier *)&v7 visibleAppLayouts];
-  v5 = [v3 initWithSet:v4];
+  visibleAppLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)&v7 visibleAppLayouts];
+  v5 = [v3 initWithSet:visibleAppLayouts];
 
   [v5 addObject:self->_draggingAppLayout];
 
   return v5;
 }
 
-- (id)handleSwitcherDropEvent:(id)a3
+- (id)handleSwitcherDropEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v8 handleSwitcherDropEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v8 handleSwitcherDropEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 1)
+  if (phase == 1)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -362,54 +362,54 @@ LABEL_36:
   return v5;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v9.receiver = self;
   v9.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v9 handleSceneReadyEvent:v4];
+  v6 = [(SBSwitcherModifier *)&v9 handleSceneReadyEvent:eventCopy];
 
   v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v6];
 
   return v7;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v29.receiver = self;
   v29.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v29 handleGestureEvent:v5];
-  v7 = [v5 gestureID];
-  v8 = [v7 isEqual:self->_gestureID];
+  v6 = [(SBGestureSwitcherModifier *)&v29 handleGestureEvent:eventCopy];
+  gestureID = [eventCopy gestureID];
+  v8 = [gestureID isEqual:self->_gestureID];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = eventCopy;
     if (!v9)
     {
       [(SBCardDragAndDropGestureSwitcherModifier *)a2 handleGestureEvent:?];
     }
 
     self->_gestureEnded = [v9 phase] == 3;
-    v10 = [v9 switcherDropRegionContext];
+    switcherDropRegionContext = [v9 switcherDropRegionContext];
     dropRegionContext = self->_dropRegionContext;
-    self->_dropRegionContext = v10;
+    self->_dropRegionContext = switcherDropRegionContext;
 
     self->_currentDropRegion = [(SBSwitcherDropRegionContext *)self->_dropRegionContext currentDropRegion];
-    v12 = [v9 selectedAppLayout];
+    selectedAppLayout = [v9 selectedAppLayout];
     draggingAppLayout = self->_draggingAppLayout;
-    self->_draggingAppLayout = v12;
+    self->_draggingAppLayout = selectedAppLayout;
 
-    v14 = [v9 draggedSceneLayoutRole];
-    self->_draggingLayoutRole = v14;
-    v15 = [(SBAppLayout *)self->_draggingAppLayout leafAppLayoutForRole:v14];
+    draggedSceneLayoutRole = [v9 draggedSceneLayoutRole];
+    self->_draggingLayoutRole = draggedSceneLayoutRole;
+    v15 = [(SBAppLayout *)self->_draggingAppLayout leafAppLayoutForRole:draggedSceneLayoutRole];
     draggingLeafAppLayout = self->_draggingLeafAppLayout;
     self->_draggingLeafAppLayout = v15;
 
-    v17 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingAppLayout];
-    if (v17)
+    intersectingAppLayout = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingAppLayout];
+    if (intersectingAppLayout)
     {
     }
 
@@ -422,13 +422,13 @@ LABEL_36:
       }
     }
 
-    v19 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingAppLayout];
+    intersectingAppLayout2 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingAppLayout];
     v20 = self->_intersectingAppLayout;
-    self->_intersectingAppLayout = v19;
+    self->_intersectingAppLayout = intersectingAppLayout2;
 
-    v21 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingLayoutRole];
-    self->_intersectingLayoutRole = v21;
-    v22 = [(SBAppLayout *)self->_intersectingAppLayout leafAppLayoutForRole:v21];
+    intersectingLayoutRole = [(SBSwitcherDropRegionContext *)self->_dropRegionContext intersectingLayoutRole];
+    self->_intersectingLayoutRole = intersectingLayoutRole;
+    v22 = [(SBAppLayout *)self->_intersectingAppLayout leafAppLayoutForRole:intersectingLayoutRole];
     intersectingLeafAppLayout = self->_intersectingLeafAppLayout;
     self->_intersectingLeafAppLayout = v22;
 
@@ -448,11 +448,11 @@ LABEL_36:
   return v6;
 }
 
-- (CGRect)fullyPresentedFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (CGRect)fullyPresentedFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   [(SBCardDragAndDropGestureSwitcherModifier *)self containerViewBounds];
-  [(SBCardDragAndDropGestureSwitcherModifier *)self frameForLayoutRole:a3 inAppLayout:v6 withBounds:?];
+  [(SBCardDragAndDropGestureSwitcherModifier *)self frameForLayoutRole:role inAppLayout:layoutCopy withBounds:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -469,20 +469,20 @@ LABEL_36:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
-  v12 = v11;
-  if (self->_currentDropRegion != 7 && (([v11 isOrContainsAppLayout:self->_intersectingAppLayout] & 1) != 0 || objc_msgSend(v12, "isOrContainsAppLayout:", self->_draggingAppLayout)))
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
+  v12 = layoutCopy;
+  if (self->_currentDropRegion != 7 && (([layoutCopy isOrContainsAppLayout:self->_intersectingAppLayout] & 1) != 0 || objc_msgSend(v12, "isOrContainsAppLayout:", self->_draggingAppLayout)))
   {
-    v21 = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
+    appLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
     v31.receiver = self;
     v31.super_class = SBCardDragAndDropGestureSwitcherModifier;
-    -[SBCardDragAndDropGestureSwitcherModifier cornerRadiiForIndex:](&v31, sel_cornerRadiiForIndex_, [v21 indexOfObject:v12]);
+    -[SBCardDragAndDropGestureSwitcherModifier cornerRadiiForIndex:](&v31, sel_cornerRadiiForIndex_, [appLayouts indexOfObject:v12]);
     v14 = v22;
     v16 = v23;
     v18 = v24;
@@ -493,7 +493,7 @@ LABEL_36:
   {
     v30.receiver = self;
     v30.super_class = SBCardDragAndDropGestureSwitcherModifier;
-    [(SBCardDragAndDropGestureSwitcherModifier *)&v30 cornerRadiiForLayoutRole:a3 inAppLayout:v12 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+    [(SBCardDragAndDropGestureSwitcherModifier *)&v30 cornerRadiiForLayoutRole:role inAppLayout:v12 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -511,10 +511,10 @@ LABEL_36:
   return result;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.0;
   if (([v6 isOrContainsAppLayout:self->_draggingAppLayout] & 1) == 0)
@@ -523,7 +523,7 @@ LABEL_36:
     {
       v12.receiver = self;
       v12.super_class = SBCardDragAndDropGestureSwitcherModifier;
-      [(SBCardDragAndDropGestureSwitcherModifier *)&v12 titleAndIconOpacityForIndex:a3];
+      [(SBCardDragAndDropGestureSwitcherModifier *)&v12 titleAndIconOpacityForIndex:index];
       v7 = v10;
     }
   }
@@ -531,11 +531,11 @@ LABEL_36:
   return v7;
 }
 
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = v7;
@@ -554,20 +554,20 @@ LABEL_36:
     [v8 addObject:?];
   }
 
-  v9 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext remainingAppLayout];
+  remainingAppLayout = [(SBSwitcherDropRegionContext *)self->_dropRegionContext remainingAppLayout];
 
-  if (v9)
+  if (remainingAppLayout)
   {
-    v10 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext remainingAppLayout];
-    [v8 addObject:v10];
+    remainingAppLayout2 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext remainingAppLayout];
+    [v8 addObject:remainingAppLayout2];
   }
 
-  v11 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext evictedAppLayout];
+  evictedAppLayout = [(SBSwitcherDropRegionContext *)self->_dropRegionContext evictedAppLayout];
 
-  if (v11)
+  if (evictedAppLayout)
   {
-    v12 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext evictedAppLayout];
-    [v8 addObject:v12];
+    evictedAppLayout2 = [(SBSwitcherDropRegionContext *)self->_dropRegionContext evictedAppLayout];
+    [v8 addObject:evictedAppLayout2];
   }
 
   v20 = 0u;
@@ -610,33 +610,33 @@ LABEL_21:
   return v14;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = SBCardDragAndDropGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v11 animationAttributesForLayoutElement:v4];
+  v5 = [(SBGestureSwitcherModifier *)&v11 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(SBCardDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  v8 = [v7 resizeAnimationSettings];
+  medusaSettings = [(SBCardDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
 
-  [v6 setLayoutSettings:v8];
-  [v6 setPositionSettings:v8];
-  [v6 setScaleSettings:v8];
-  [v6 setCornerRadiusSettings:v8];
+  [v6 setLayoutSettings:resizeAnimationSettings];
+  [v6 setPositionSettings:resizeAnimationSettings];
+  [v6 setScaleSettings:resizeAnimationSettings];
+  [v6 setCornerRadiusSettings:resizeAnimationSettings];
   [v6 setUpdateMode:3];
-  if (self->_isScrolling && self->_intersectingAppLayout == v4 && [(SBAppLayout *)self->_draggingAppLayout isOrContainsAppLayout:?])
+  if (self->_isScrolling && self->_intersectingAppLayout == elementCopy && [(SBAppLayout *)self->_draggingAppLayout isOrContainsAppLayout:?])
   {
-    v9 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v8 response];
-    [v9 setResponse:?];
-    [v9 setDampingRatio:1.0];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [resizeAnimationSettings response];
+    [initWithDefaultValues setResponse:?];
+    [initWithDefaultValues setDampingRatio:1.0];
     v13 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v9 setFrameRateRange:1114113 highFrameRateReason:{*&v13.minimum, *&v13.maximum, *&v13.preferred}];
-    [v6 setLayoutSettings:v9];
-    [v6 setPositionSettings:v9];
-    [v6 setScaleSettings:v9];
+    [initWithDefaultValues setFrameRateRange:1114113 highFrameRateReason:{*&v13.minimum, *&v13.maximum, *&v13.preferred}];
+    [v6 setLayoutSettings:initWithDefaultValues];
+    [v6 setPositionSettings:initWithDefaultValues];
+    [v6 setScaleSettings:initWithDefaultValues];
     [v6 setPositionUpdateMode:3];
     [v6 setLayoutUpdateMode:3];
     [v6 setOpacityUpdateMode:3];
@@ -648,10 +648,10 @@ LABEL_21:
   return v6;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCardDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (v6 == self->_draggingAppLayout || v6 == self->_intersectingAppLayout)
   {
@@ -662,7 +662,7 @@ LABEL_21:
   {
     v9.receiver = self;
     v9.super_class = SBCardDragAndDropGestureSwitcherModifier;
-    v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBCardDragAndDropGestureSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;

@@ -1,20 +1,20 @@
 @interface SASExtractSpeechData
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7;
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower;
 @end
 
 @implementation SASExtractSpeechData
 
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  v8 = contextCopy;
+  if (contextCopy)
   {
-    v9 = [v7 originPeerInfo];
+    originPeerInfo = [contextCopy originPeerInfo];
 
-    if (v9)
+    if (originPeerInfo)
     {
-      v10 = [v8 originPeerInfo];
+      originPeerInfo2 = [v8 originPeerInfo];
     }
 
     else
@@ -29,10 +29,10 @@
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s #hal executionContext: %@, doesn't have originPeer", &v14, 0x16u);
       }
 
-      v10 = 0;
+      originPeerInfo2 = 0;
     }
 
-    v11 = [[ADDeviceRouterResult alloc] initWithPeerInfo:v10 contextIdentifier:0 proximity:0 commandRelayProxyIdentifier:0 error:0];
+    v11 = [[ADDeviceRouterResult alloc] initWithPeerInfo:originPeerInfo2 contextIdentifier:0 proximity:0 commandRelayProxyIdentifier:0 error:0];
   }
 
   else

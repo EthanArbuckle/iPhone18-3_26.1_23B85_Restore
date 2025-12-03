@@ -1,7 +1,7 @@
 @interface RCEventTracker
 - (RCEventTracker)init;
-- (int64_t)increment:(const char *)a3;
-- (void)decrement:(const char *)a3;
+- (int64_t)increment:(const char *)increment;
+- (void)decrement:(const char *)decrement;
 - (void)waitForAll;
 @end
 
@@ -14,14 +14,14 @@
   return [(RCEventTracker *)&v3 initWithCondition:0];
 }
 
-- (int64_t)increment:(const char *)a3
+- (int64_t)increment:(const char *)increment
 {
   [(RCEventTracker *)self lock];
-  v5 = [(RCEventTracker *)self condition];
-  v6 = v5;
-  if (v5 >= 0)
+  condition = [(RCEventTracker *)self condition];
+  v6 = condition;
+  if (condition >= 0)
   {
-    v7 = v5 + 1;
+    v7 = condition + 1;
   }
 
   else
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
-    v12 = a3;
+    incrementCopy = increment;
     v13 = 2048;
     v14 = v6;
     v15 = 2048;
@@ -52,25 +52,25 @@
   return v7;
 }
 
-- (void)decrement:(const char *)a3
+- (void)decrement:(const char *)decrement
 {
   [(RCEventTracker *)self lock];
-  v5 = [(RCEventTracker *)self condition];
-  v6 = v5;
-  if (v5 <= 0)
+  condition = [(RCEventTracker *)self condition];
+  v6 = condition;
+  if (condition <= 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5 - 1;
+    v7 = condition - 1;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v9 = 136315650;
-    v10 = a3;
+    decrementCopy = decrement;
     v11 = 2048;
     v12 = v6;
     v13 = 2048;

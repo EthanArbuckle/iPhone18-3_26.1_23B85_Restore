@@ -1,6 +1,6 @@
 @interface REMCKSharedEntitySyncActivity
 + (NSString)cdEntityName;
-- (REMCKSharedEntitySyncActivity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (REMCKSharedEntitySyncActivity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (id)remChangedObjectID;
 - (void)willSave;
 @end
@@ -19,20 +19,20 @@
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A0464();
 }
 
-- (REMCKSharedEntitySyncActivity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCKSharedEntitySyncActivity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(REMCKSharedEntitySyncActivity *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCKSharedEntitySyncActivity *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (id)remChangedObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A0758();
 
   return v3;

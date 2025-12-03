@@ -1,8 +1,8 @@
 @interface PTCinematographyRefinementOptions
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)rackFocusPullTime;
 - (PTCinematographyRefinementOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setGlobalMetadata:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setGlobalMetadata:(id)metadata;
 @end
 
 @implementation PTCinematographyRefinementOptions
@@ -22,26 +22,26 @@
   return v2;
 }
 
-- (void)setGlobalMetadata:(id)a3
+- (void)setGlobalMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[PTCinematographyFocusFramesOptions alloc] initWithGlobalMetadata:v4];
+  metadataCopy = metadata;
+  v5 = [[PTCinematographyFocusFramesOptions alloc] initWithGlobalMetadata:metadataCopy];
   focusFramesOptions = self->_focusFramesOptions;
   self->_focusFramesOptions = v5;
 
-  v7 = [v4 copy];
+  v7 = [metadataCopy copy];
   globalMetadata = self->_globalMetadata;
   self->_globalMetadata = v7;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)rackFocusPullTime
 {
-  v4 = [(PTCinematographyRefinementOptions *)self focusFramesOptions];
-  if (v4)
+  focusFramesOptions = [(PTCinematographyRefinementOptions *)self focusFramesOptions];
+  if (focusFramesOptions)
   {
-    v6 = v4;
-    [v4 maximumRackFocusPullTime];
-    v4 = v6;
+    v6 = focusFramesOptions;
+    [focusFramesOptions maximumRackFocusPullTime];
+    focusFramesOptions = v6;
   }
 
   else
@@ -54,16 +54,16 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(PTCinematographyRefinementOptions *)self focusFramesOptions];
-  v6 = [v5 copy];
+  focusFramesOptions = [(PTCinematographyRefinementOptions *)self focusFramesOptions];
+  v6 = [focusFramesOptions copy];
   [v4 setFocusFramesOptions:v6];
 
-  v7 = [(PTCinematographyRefinementOptions *)self globalMetadata];
-  v8 = [v7 copy];
+  globalMetadata = [(PTCinematographyRefinementOptions *)self globalMetadata];
+  v8 = [globalMetadata copy];
   [v4 setGlobalMetadata:v8];
 
   [v4 setDisableDetectionSmoothing:{-[PTCinematographyRefinementOptions disableDetectionSmoothing](self, "disableDetectionSmoothing")}];

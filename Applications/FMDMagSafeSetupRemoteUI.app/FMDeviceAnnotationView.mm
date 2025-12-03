@@ -1,23 +1,23 @@
 @interface FMDeviceAnnotationView
-- (FMDeviceAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (FMDeviceAnnotationView)initWithCoder:(id)a3;
-- (id)_bezierPathWithBalloonRadius:(double)a3 tailLength:(double)a4;
-- (void)_applyCircularShadowToLayer:(id)a3 bounds:(CGRect)a4;
+- (FMDeviceAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (FMDeviceAnnotationView)initWithCoder:(id)coder;
+- (id)_bezierPathWithBalloonRadius:(double)radius tailLength:(double)length;
+- (void)_applyCircularShadowToLayer:(id)layer bounds:(CGRect)bounds;
 - (void)_setupLayers;
-- (void)_updateAnnotation:(id)a3;
+- (void)_updateAnnotation:(id)annotation;
 - (void)_updateAppearance;
 - (void)_updateDynamicLayers;
 - (void)prepareForDisplay;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMDeviceAnnotationView
 
-- (FMDeviceAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (FMDeviceAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = FMDeviceAnnotationView;
-  v4 = [(FMDeviceAnnotationView *)&v8 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(FMDeviceAnnotationView *)&v8 initWithAnnotation:annotation reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(CAShapeLayer);
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (FMDeviceAnnotationView)initWithCoder:(id)a3
+- (FMDeviceAnnotationView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = FMDeviceAnnotationView;
-  return [(FMDeviceAnnotationView *)&v4 initWithCoder:a3];
+  return [(FMDeviceAnnotationView *)&v4 initWithCoder:coder];
 }
 
 - (void)prepareForDisplay
@@ -46,46 +46,46 @@
   v4.receiver = self;
   v4.super_class = FMDeviceAnnotationView;
   [(FMDeviceAnnotationView *)&v4 prepareForDisplay];
-  v3 = [(FMDeviceAnnotationView *)self annotation];
-  [(FMDeviceAnnotationView *)self _updateAnnotation:v3];
+  annotation = [(FMDeviceAnnotationView *)self annotation];
+  [(FMDeviceAnnotationView *)self _updateAnnotation:annotation];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = FMDeviceAnnotationView;
-  [(FMDeviceAnnotationView *)&v4 traitCollectionDidChange:a3];
+  [(FMDeviceAnnotationView *)&v4 traitCollectionDidChange:change];
   [(FMDeviceAnnotationView *)self _updateAppearance];
 }
 
 - (void)_setupLayers
 {
   v3 = [(FMDeviceAnnotationView *)self _bezierPathWithBalloonRadius:30.0 tailLength:7.5];
-  v4 = [v3 CGPath];
-  v5 = [(FMDeviceAnnotationView *)self balloonLayer];
-  [v5 setPath:v4];
+  cGPath = [v3 CGPath];
+  balloonLayer = [(FMDeviceAnnotationView *)self balloonLayer];
+  [balloonLayer setPath:cGPath];
 
-  v6 = [(FMDeviceAnnotationView *)self balloonLayer];
-  [v6 setFrame:{4.0, 0.0, 60.0, 67.5}];
+  balloonLayer2 = [(FMDeviceAnnotationView *)self balloonLayer];
+  [balloonLayer2 setFrame:{4.0, 0.0, 60.0, 67.5}];
 
-  v7 = [(FMDeviceAnnotationView *)self balloonLayer];
-  v8 = [(FMDeviceAnnotationView *)self balloonImage];
-  [v7 addSublayer:v8];
+  balloonLayer3 = [(FMDeviceAnnotationView *)self balloonLayer];
+  balloonImage = [(FMDeviceAnnotationView *)self balloonImage];
+  [balloonLayer3 addSublayer:balloonImage];
 
-  v9 = [(FMDeviceAnnotationView *)self balloonLayer];
-  v10 = [(FMDeviceAnnotationView *)self balloonLayer];
-  [v10 bounds];
-  [(FMDeviceAnnotationView *)self _applyCircularShadowToLayer:v9 bounds:?];
+  balloonLayer4 = [(FMDeviceAnnotationView *)self balloonLayer];
+  balloonLayer5 = [(FMDeviceAnnotationView *)self balloonLayer];
+  [balloonLayer5 bounds];
+  [(FMDeviceAnnotationView *)self _applyCircularShadowToLayer:balloonLayer4 bounds:?];
 
-  v11 = [(FMDeviceAnnotationView *)self layer];
-  v12 = [(FMDeviceAnnotationView *)self balloonLayer];
-  [v11 addSublayer:v12];
+  layer = [(FMDeviceAnnotationView *)self layer];
+  balloonLayer6 = [(FMDeviceAnnotationView *)self balloonLayer];
+  [layer addSublayer:balloonLayer6];
 
-  v13 = [(FMDeviceAnnotationView *)self layer];
-  [v13 setFrame:{0.0, 0.0, 68.0, 161.0}];
+  layer2 = [(FMDeviceAnnotationView *)self layer];
+  [layer2 setFrame:{0.0, 0.0, 68.0, 161.0}];
 
   [(FMDeviceAnnotationView *)self _updateDynamicLayers];
-  v14 = [(FMDeviceAnnotationView *)self balloonLayer];
+  balloonLayer7 = [(FMDeviceAnnotationView *)self balloonLayer];
   v15 = *&CATransform3DIdentity.m33;
   v19[4] = *&CATransform3DIdentity.m31;
   v19[5] = v15;
@@ -98,33 +98,33 @@
   v18 = *&CATransform3DIdentity.m23;
   v19[2] = *&CATransform3DIdentity.m21;
   v19[3] = v18;
-  [v14 setTransform:v19];
+  [balloonLayer7 setTransform:v19];
 }
 
 - (void)_updateDynamicLayers
 {
-  v2 = [(FMDeviceAnnotationView *)self balloonImage];
-  [v2 setFrame:{0.0, 0.0, 60.0, 60.0}];
+  balloonImage = [(FMDeviceAnnotationView *)self balloonImage];
+  [balloonImage setFrame:{0.0, 0.0, 60.0, 60.0}];
 }
 
-- (void)_updateAnnotation:(id)a3
+- (void)_updateAnnotation:(id)annotation
 {
   [(FMDeviceAnnotationView *)self _updateDynamicLayers];
-  v4 = [(FMDeviceAnnotationView *)self deviceImage];
-  v5 = [v4 CGImage];
-  v6 = [(FMDeviceAnnotationView *)self balloonImage];
-  [v6 setContents:v5];
+  deviceImage = [(FMDeviceAnnotationView *)self deviceImage];
+  cGImage = [deviceImage CGImage];
+  balloonImage = [(FMDeviceAnnotationView *)self balloonImage];
+  [balloonImage setContents:cGImage];
 
-  v7 = [(FMDeviceAnnotationView *)self layer];
-  [v7 setAnchorPoint:{0.5, 0.5}];
+  layer = [(FMDeviceAnnotationView *)self layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 }
 
 - (void)_updateAppearance
 {
   v3 = +[UITraitCollection currentTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  userInterfaceStyle = [v3 userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     +[UIColor systemGray3Color];
   }
@@ -135,56 +135,56 @@
   }
   v8 = ;
   v5 = v8;
-  v6 = [v8 CGColor];
-  v7 = [(FMDeviceAnnotationView *)self balloonLayer];
-  [v7 setFillColor:v6];
+  cGColor = [v8 CGColor];
+  balloonLayer = [(FMDeviceAnnotationView *)self balloonLayer];
+  [balloonLayer setFillColor:cGColor];
 }
 
-- (id)_bezierPathWithBalloonRadius:(double)a3 tailLength:(double)a4
+- (id)_bezierPathWithBalloonRadius:(double)radius tailLength:(double)length
 {
-  v6 = a4 / 6.0;
-  v13 = a3 * 0.448;
-  v12 = a3 * 0.385;
-  v7 = a4 / 3.0;
+  v6 = length / 6.0;
+  v13 = radius * 0.448;
+  v12 = radius * 0.385;
+  v7 = length / 3.0;
   v8 = objc_alloc_init(UIBezierPath);
-  [v8 moveToPoint:{a3 + a3, a3}];
-  v9 = a4 * 0.5;
-  [v8 addCurveToPoint:v7 + a4 * 0.5 + a3 controlPoint1:a3 + a3 controlPoint2:a3 + a3];
-  v10 = a3 + a3 + a4;
-  [v8 addCurveToPoint:a3 controlPoint1:v10 controlPoint2:{v7 + a3, a3 + a3 + v7, v6 + a3, v10}];
-  [v8 addCurveToPoint:a3 - (v9 + v7) controlPoint1:a3 + a3 controlPoint2:{a3 - v6, v10, a3 - v7, a3 + a3 + v7}];
-  [v8 addCurveToPoint:0.0 controlPoint1:a3 controlPoint2:{v12, a3 + a3 - v7, 0.0, a3 * 1.5}];
-  [v8 addCurveToPoint:a3 controlPoint1:0.0 controlPoint2:{0.0, v13, v13, 0.0}];
-  [v8 addCurveToPoint:a3 + a3 controlPoint1:a3 controlPoint2:{a3 + a3 - v13, 0.0, a3 + a3, v13}];
+  [v8 moveToPoint:{radius + radius, radius}];
+  v9 = length * 0.5;
+  [v8 addCurveToPoint:v7 + length * 0.5 + radius controlPoint1:radius + radius controlPoint2:radius + radius];
+  v10 = radius + radius + length;
+  [v8 addCurveToPoint:radius controlPoint1:v10 controlPoint2:{v7 + radius, radius + radius + v7, v6 + radius, v10}];
+  [v8 addCurveToPoint:radius - (v9 + v7) controlPoint1:radius + radius controlPoint2:{radius - v6, v10, radius - v7, radius + radius + v7}];
+  [v8 addCurveToPoint:0.0 controlPoint1:radius controlPoint2:{v12, radius + radius - v7, 0.0, radius * 1.5}];
+  [v8 addCurveToPoint:radius controlPoint1:0.0 controlPoint2:{0.0, v13, v13, 0.0}];
+  [v8 addCurveToPoint:radius + radius controlPoint1:radius controlPoint2:{radius + radius - v13, 0.0, radius + radius, v13}];
   [v8 closePath];
 
   return v8;
 }
 
-- (void)_applyCircularShadowToLayer:(id)a3 bounds:(CGRect)a4
+- (void)_applyCircularShadowToLayer:(id)layer bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = *&CGAffineTransformIdentity.c;
   *&v13.a = *&CGAffineTransformIdentity.a;
   *&v13.c = v8;
   *&v13.tx = *&CGAffineTransformIdentity.tx;
-  v9 = a3;
+  layerCopy = layer;
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
   v10 = CGPathCreateWithEllipseInRect(v14, &v13);
-  [v9 setShadowPath:{v10, *&v13.a, *&v13.c, *&v13.tx}];
+  [layerCopy setShadowPath:{v10, *&v13.a, *&v13.c, *&v13.tx}];
   v11 = +[UIColor blackColor];
-  [v9 setShadowColor:{objc_msgSend(v11, "CGColor")}];
+  [layerCopy setShadowColor:{objc_msgSend(v11, "CGColor")}];
 
-  [v9 setShadowOffset:{0.0, 0.0}];
+  [layerCopy setShadowOffset:{0.0, 0.0}];
   LODWORD(v12) = 1045220557;
-  [v9 setShadowOpacity:v12];
-  [v9 setShadowRadius:4.0];
+  [layerCopy setShadowOpacity:v12];
+  [layerCopy setShadowRadius:4.0];
 }
 
 @end

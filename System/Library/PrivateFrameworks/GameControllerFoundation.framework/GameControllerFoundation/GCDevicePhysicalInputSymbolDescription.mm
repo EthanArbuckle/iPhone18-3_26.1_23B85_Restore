@@ -1,24 +1,24 @@
 @interface GCDevicePhysicalInputSymbolDescription
-+ (id)symbolWithSFSymbolsName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (GCDevicePhysicalInputSymbolDescription)initWithCoder:(id)a3;
-- (GCDevicePhysicalInputSymbolDescription)initWithSFSymbolsName:(id)a3;
++ (id)symbolWithSFSymbolsName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (GCDevicePhysicalInputSymbolDescription)initWithCoder:(id)coder;
+- (GCDevicePhysicalInputSymbolDescription)initWithSFSymbolsName:(id)name;
 @end
 
 @implementation GCDevicePhysicalInputSymbolDescription
 
-+ (id)symbolWithSFSymbolsName:(id)a3
++ (id)symbolWithSFSymbolsName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSFSymbolsName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithSFSymbolsName:nameCopy];
 
   return v5;
 }
 
-- (GCDevicePhysicalInputSymbolDescription)initWithSFSymbolsName:(id)a3
+- (GCDevicePhysicalInputSymbolDescription)initWithSFSymbolsName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [(GCDevicePhysicalInputSymbolDescription *)a2 initWithSFSymbolsName:?];
   }
@@ -26,29 +26,29 @@
   v10.receiver = self;
   v10.super_class = GCDevicePhysicalInputSymbolDescription;
   v6 = [(GCDevicePhysicalInputSymbolDescription *)&v10 init];
-  v7 = [v5 copy];
+  v7 = [nameCopy copy];
   sfSymbolsName = v6->_sfSymbolsName;
   v6->_sfSymbolsName = v7;
 
   return v6;
 }
 
-- (GCDevicePhysicalInputSymbolDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputSymbolDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolsName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolsName"];
 
   v6 = [(GCDevicePhysicalInputSymbolDescription *)self initWithSFSymbolsName:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_sfSymbolsName isEqual:v4[1]];
+    v5 = [(NSString *)self->_sfSymbolsName isEqual:equalCopy[1]];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface RouteDetectorDataSource
-- (BOOL)relevantRouteDetector:(id)a3 isEndpointRelevant:(id)a4;
-- (BOOL)relevantRouteDetector:(id)a3 isOutputDeviceRelevant:(id)a4;
+- (BOOL)relevantRouteDetector:(id)detector isEndpointRelevant:(id)relevant;
+- (BOOL)relevantRouteDetector:(id)detector isOutputDeviceRelevant:(id)relevant;
 - (_TtC11WorkoutCore23RouteDetectorDataSource)init;
 @end
 
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (BOOL)relevantRouteDetector:(id)a3 isEndpointRelevant:(id)a4
+- (BOOL)relevantRouteDetector:(id)detector isEndpointRelevant:(id)relevant
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore23RouteDetectorDataSource_type))
   {
@@ -25,15 +25,15 @@
     v4 = &selRef_isLocalEndpoint;
   }
 
-  return [a4 *v4];
+  return [relevant *v4];
 }
 
-- (BOOL)relevantRouteDetector:(id)a3 isOutputDeviceRelevant:(id)a4
+- (BOOL)relevantRouteDetector:(id)detector isOutputDeviceRelevant:(id)relevant
 {
-  v4 = a4;
-  if ([v4 deviceType] == 2)
+  relevantCopy = relevant;
+  if ([relevantCopy deviceType] == 2)
   {
-    if ([v4 deviceSubtype] == 2)
+    if ([relevantCopy deviceSubtype] == 2)
     {
 
       return 1;
@@ -41,9 +41,9 @@
 
     else
     {
-      v6 = [v4 deviceSubtype];
+      deviceSubtype = [relevantCopy deviceSubtype];
 
-      return v6 == 3;
+      return deviceSubtype == 3;
     }
   }
 

@@ -1,5 +1,5 @@
 @interface _CRPhoneSearchCache
-- (id)copySearcherForPattern:(const char *)a3;
+- (id)copySearcherForPattern:(const char *)pattern;
 - (void)dealloc;
 @end
 
@@ -18,9 +18,9 @@
   [(_CRPhoneSearchCache *)&v4 dealloc];
 }
 
-- (id)copySearcherForPattern:(const char *)a3
+- (id)copySearcherForPattern:(const char *)pattern
 {
-  if (self->_lastSearchStringLength && !strcmp(a3, self->_lastSearchString))
+  if (self->_lastSearchStringLength && !strcmp(pattern, self->_lastSearchString))
   {
     lastPhoneSearch = self->_lastPhoneSearch;
 
@@ -29,7 +29,7 @@
 
   else
   {
-    v5 = strlen(a3);
+    v5 = strlen(pattern);
     if (!v5)
     {
       return 0;
@@ -42,7 +42,7 @@
       free(lastSearchString);
     }
 
-    self->_lastSearchString = strdup(a3);
+    self->_lastSearchString = strdup(pattern);
     self->_lastSearchStringLength = v6;
     v8 = [[NSData alloc] initWithBytesNoCopy:self->_lastSearchString length:self->_lastSearchStringLength freeWhenDone:0];
     v9 = [(NSCache *)self->_cache objectForKey:v8];
@@ -53,7 +53,7 @@
         self->_cache = objc_alloc_init(NSCache);
       }
 
-      v9 = [[CRPhoneSearch alloc] initWithSearchString:[NSString stringWithUTF8String:a3]];
+      v9 = [[CRPhoneSearch alloc] initWithSearchString:[NSString stringWithUTF8String:pattern]];
       [(NSCache *)self->_cache setObject:v9 forKey:[NSData dataWithData:v8]];
     }
 

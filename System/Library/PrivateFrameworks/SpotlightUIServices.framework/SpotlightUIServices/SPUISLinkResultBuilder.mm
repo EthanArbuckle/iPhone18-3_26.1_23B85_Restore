@@ -1,7 +1,7 @@
 @interface SPUISLinkResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISLinkResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISLinkResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildThumbnail;
@@ -11,17 +11,17 @@
 
 @implementation SPUISLinkResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
-  v6 = [v4 valueForAttribute:*MEMORY[0x277CC2500] withType:objc_opt_class()];
+  resultCopy = result;
+  v5 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
+  v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2500] withType:objc_opt_class()];
   if (v5)
   {
-    v7 = [a1 bundleId];
-    if ([v6 isEqualToString:v7])
+    bundleId = [self bundleId];
+    if ([v6 isEqualToString:bundleId])
     {
-      v8 = [v4 contentType];
+      contentType = [resultCopy contentType];
       if (isImageOrVideoContentType())
       {
         v9 = 0;
@@ -29,8 +29,8 @@
 
       else
       {
-        v10 = [v5 host];
-        v9 = [v10 length] != 0;
+        host = [v5 host];
+        v9 = [host length] != 0;
       }
     }
 
@@ -45,26 +45,26 @@
     v9 = 0;
   }
 
-  v11 = [v4 sectionBundleIdentifier];
-  v12 = [v11 isEqual:@"com.apple.spotlight.syndicatedLinks"] | v9;
+  sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+  v12 = [sectionBundleIdentifier isEqual:@"com.apple.spotlight.syndicatedLinks"] | v9;
 
   return v12 & 1;
 }
 
-- (SPUISLinkResultBuilder)initWithResult:(id)a3
+- (SPUISLinkResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v21.receiver = self;
   v21.super_class = SPUISLinkResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v21 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v21 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC24E0] withType:objc_opt_class()];
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC24C0] withType:objc_opt_class()];
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC3200] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC24E0] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC24C0] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC3200] withType:objc_opt_class()];
     [(SPUISLinkResultBuilder *)v5 setWebsiteTitle:v8];
 
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
 
     [(SPUISLinkResultBuilder *)v5 setSenders:v10];
 
-    v11 = [v7 firstObject];
+    firstObject2 = [v7 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,10 +92,10 @@
 
     [(SPUISLinkResultBuilder *)v5 setSenderContactIdentifiers:v12];
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x277CC3190] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC3190] withType:objc_opt_class()];
     -[SPUISLinkResultBuilder setSyndicationStatus:](v5, "setSyndicationStatus:", [v13 unsignedIntValue]);
 
-    v14 = [v4 url];
+    v14 = [resultCopy url];
     if (v14)
     {
       [(SPUISLinkResultBuilder *)v5 setUrl:v14];
@@ -104,7 +104,7 @@
     else
     {
       v15 = MEMORY[0x277CBEBC0];
-      v16 = [v4 valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
+      v16 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
       v17 = [v15 URLWithString:v16];
       [(SPUISLinkResultBuilder *)v5 setUrl:v17];
     }
@@ -117,7 +117,7 @@
 
     else
     {
-      v19 = [v4 valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
+      v19 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
       [(SPUISLinkResultBuilder *)v5 setUrl:v19];
     }
   }
@@ -138,37 +138,37 @@
 
 - (id)buildTitle
 {
-  v3 = [(SPUISLinkResultBuilder *)self websiteTitle];
+  websiteTitle = [(SPUISLinkResultBuilder *)self websiteTitle];
 
-  if (v3)
+  if (websiteTitle)
   {
     v4 = MEMORY[0x277D4C598];
     v5 = objc_opt_class();
-    v6 = [(SPUISLinkResultBuilder *)self websiteTitle];
-    v7 = [v5 whiteSpaceCondensedStringForString:v6];
-    v8 = [v4 textWithString:v7];
+    websiteTitle2 = [(SPUISLinkResultBuilder *)self websiteTitle];
+    v7 = [v5 whiteSpaceCondensedStringForString:websiteTitle2];
+    buildTitle = [v4 textWithString:v7];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SPUISLinkResultBuilder;
-    v8 = [(SPUISResultBuilder *)&v10 buildTitle];
+    buildTitle = [(SPUISResultBuilder *)&v10 buildTitle];
   }
 
-  return v8;
+  return buildTitle;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (-[SPUISLinkResultBuilder senderContactIdentifiers](self, "senderContactIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), [v5 firstObject], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
     v11.receiver = self;
     v11.super_class = SPUISLinkResultBuilder;
-    v7 = [(SPUISResultBuilder *)&v11 buildBadgingImageWithThumbnail:v4];
+    v7 = [(SPUISResultBuilder *)&v11 buildBadgingImageWithThumbnail:thumbnailCopy];
   }
 
   else
@@ -188,9 +188,9 @@
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = [(SPUISLinkResultBuilder *)self url];
-  v3 = [v2 host];
+  host = [v2 host];
 
-  v4 = [MEMORY[0x277D4C598] textWithString:v3];
+  v4 = [MEMORY[0x277D4C598] textWithString:host];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -207,8 +207,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SPUISLinkResultBuilder *)self senderContactIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  senderContactIdentifiers = [(SPUISLinkResultBuilder *)self senderContactIdentifiers];
+  v5 = [senderContactIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -219,7 +219,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(senderContactIdentifiers);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -228,7 +228,7 @@
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [senderContactIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -236,8 +236,8 @@
 
   v11 = objc_opt_new();
   v12 = [(SPUISLinkResultBuilder *)self url];
-  v13 = [v12 absoluteString];
-  [v11 setUrl:v13];
+  absoluteString = [v12 absoluteString];
+  [v11 setUrl:absoluteString];
 
   if ([v3 count])
   {
@@ -250,8 +250,8 @@
   }
 
   [v11 setPeopleToBadge:v14];
-  v15 = [(SPUISResultBuilder *)self coreSpotlightId];
-  [v11 setCoreSpotlightIdentifier:v15];
+  coreSpotlightId = [(SPUISResultBuilder *)self coreSpotlightId];
+  [v11 setCoreSpotlightIdentifier:coreSpotlightId];
 
   [v11 setIsHighlighted:{-[SPUISLinkResultBuilder syndicationStatus](self, "syndicationStatus") == 2}];
   v16 = *MEMORY[0x277D85DE8];

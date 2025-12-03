@@ -1,10 +1,10 @@
 @interface TTRComplicationAssembly
-+ (id)_makeModelSource:(BOOL)a3;
++ (id)_makeModelSource:(BOOL)source;
 @end
 
 @implementation TTRComplicationAssembly
 
-+ (id)_makeModelSource:(BOOL)a3
++ (id)_makeModelSource:(BOOL)source
 {
   v3 = objc_alloc_init(_TtC25NanoRemindersComplication43TTRIComplicationSwitcherTimelineModelSource);
 

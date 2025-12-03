@@ -1,75 +1,75 @@
 @interface MCSignInPageAuthenticationCell
-- (MCSignInPageAuthenticationCell)initWithAuthView:(id)a3;
-- (MCSignInPageAuthenticationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_addAuthView:(id)a3;
-- (void)setAuthView:(id)a3;
+- (MCSignInPageAuthenticationCell)initWithAuthView:(id)view;
+- (MCSignInPageAuthenticationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_addAuthView:(id)view;
+- (void)setAuthView:(id)view;
 @end
 
 @implementation MCSignInPageAuthenticationCell
 
-- (MCSignInPageAuthenticationCell)initWithAuthView:(id)a3
+- (MCSignInPageAuthenticationCell)initWithAuthView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = [(MCSignInPageAuthenticationCell *)self initWithStyle:0 reuseIdentifier:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authView, a3);
-    [(MCSignInPageAuthenticationCell *)v7 _addAuthView:v5];
+    objc_storeStrong(&v6->_authView, view);
+    [(MCSignInPageAuthenticationCell *)v7 _addAuthView:viewCopy];
   }
 
   return v7;
 }
 
-- (MCSignInPageAuthenticationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MCSignInPageAuthenticationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MCSignInPageAuthenticationCell;
-  v4 = [(MCSignInPageAuthenticationCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MCSignInPageAuthenticationCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(MCSignInPageAuthenticationCell *)v4 setSelectionStyle:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(MCSignInPageAuthenticationCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MCSignInPageAuthenticationCell *)v5 setBackgroundColor:clearColor];
   }
 
   return v5;
 }
 
-- (void)setAuthView:(id)a3
+- (void)setAuthView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   authView = self->_authView;
-  if (authView != v5)
+  if (authView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)authView removeFromSuperview];
-    objc_storeStrong(&self->_authView, a3);
+    objc_storeStrong(&self->_authView, view);
     authView = [(MCSignInPageAuthenticationCell *)self _addAuthView:v7];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](authView, v5);
+  MEMORY[0x2821F96F8](authView, viewCopy);
 }
 
-- (void)_addAuthView:(id)a3
+- (void)_addAuthView:(id)view
 {
-  v4 = a3;
-  v5 = [(MCSignInPageAuthenticationCell *)self contentView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  contentView = [(MCSignInPageAuthenticationCell *)self contentView];
+  [contentView addSubview:viewCopy];
 
-  v6 = [v4 centerXAnchor];
-  v7 = [(MCSignInPageAuthenticationCell *)self contentView];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerXAnchor = [viewCopy centerXAnchor];
+  contentView2 = [(MCSignInPageAuthenticationCell *)self contentView];
+  centerXAnchor2 = [contentView2 centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v9 setActive:1];
 
-  v13 = [v4 centerYAnchor];
+  centerYAnchor = [viewCopy centerYAnchor];
 
-  v10 = [(MCSignInPageAuthenticationCell *)self contentView];
-  v11 = [v10 centerYAnchor];
-  v12 = [v13 constraintEqualToAnchor:v11];
+  contentView3 = [(MCSignInPageAuthenticationCell *)self contentView];
+  centerYAnchor2 = [contentView3 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v12 setActive:1];
 }
 

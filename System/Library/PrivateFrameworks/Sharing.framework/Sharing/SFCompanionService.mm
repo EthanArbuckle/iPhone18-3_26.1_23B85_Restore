@@ -1,51 +1,51 @@
 @interface SFCompanionService
-+ (id)serviceFromAuthorData:(id)a3;
-+ (id)serviceFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToService:(id)a3;
-- (SFCompanionService)initWithCoder:(id)a3;
-- (SFCompanionService)initWithServiceName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)serviceFromAuthorData:(id)data;
++ (id)serviceFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToService:(id)service;
+- (SFCompanionService)initWithCoder:(id)coder;
+- (SFCompanionService)initWithServiceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messageData;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)messageData;
 @end
 
 @implementation SFCompanionService
 
-+ (id)serviceFromDictionary:(id)a3
++ (id)serviceFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SFCompanionService);
-  v5 = [v3 objectForKeyedSubscript:@"ServiceName"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"ServiceName"];
   [(SFCompanionService *)v4 setServiceType:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"DeviceID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"DeviceID"];
   [(SFCompanionService *)v4 setDeviceID:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"ServiceIdentifier"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ServiceIdentifier"];
   [(SFCompanionService *)v4 setIdentifier:v7];
 
-  v8 = [v3 objectForKeyedSubscript:@"DeviceName"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"DeviceName"];
   [(SFCompanionService *)v4 setDeviceName:v8];
 
-  v9 = [v3 objectForKeyedSubscript:@"ManagerID"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"ManagerID"];
   [(SFCompanionService *)v4 setManagerID:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"IPAddress"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"IPAddress"];
 
   [(SFCompanionService *)v4 setIpAddress:v10];
 
   return v4;
 }
 
-+ (id)serviceFromAuthorData:(id)a3
++ (id)serviceFromAuthorData:(id)data
 {
   v9 = 0;
   v10 = 0;
-  v3 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:&v10 error:&v9];
+  v3 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:&v10 error:&v9];
   if (v3)
   {
     v4 = objc_alloc_init(SFCompanionService);
@@ -67,9 +67,9 @@
   return v4;
 }
 
-- (SFCompanionService)initWithServiceName:(id)a3
+- (SFCompanionService)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SFCompanionService;
   v5 = [(SFCompanionService *)&v17 init];
@@ -85,13 +85,13 @@
     nsxpcVersion = v6->_nsxpcVersion;
     v6->_nsxpcVersion = 0;
 
-    v10 = [v4 copy];
+    v10 = [nameCopy copy];
     serviceType = v6->_serviceType;
     v6->_serviceType = v10;
 
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
-    v14 = [v13 copy];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = [uUIDString copy];
     identifier = v6->_identifier;
     v6->_identifier = v14;
   }
@@ -101,12 +101,12 @@
 
 - (id)messageData
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   managerID = self->_managerID;
   if (managerID)
   {
-    [v3 setObject:managerID forKeyedSubscript:@"manager_id"];
+    [dictionary setObject:managerID forKeyedSubscript:@"manager_id"];
   }
 
   identifier = self->_identifier;
@@ -127,8 +127,8 @@
   if (v9)
   {
     v10 = v9;
-    v11 = streams_log();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    dictionary2 = streams_log();
+    if (os_log_type_enabled(dictionary2, OS_LOG_TYPE_ERROR))
     {
       [(SFCompanionService *)v10 messageData];
     }
@@ -138,21 +138,21 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    [v11 setObject:&unk_1F1D7CD90 forKeyedSubscript:@"message_version"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:&unk_1F1D7CD90 forKeyedSubscript:@"message_version"];
     deviceID = self->_deviceID;
     if (deviceID)
     {
-      [v11 setObject:deviceID forKeyedSubscript:@"bonjour_name"];
+      [dictionary2 setObject:deviceID forKeyedSubscript:@"bonjour_name"];
     }
 
     if (v8)
     {
-      [v11 setObject:v8 forKeyedSubscript:@"author_data"];
+      [dictionary2 setObject:v8 forKeyedSubscript:@"author_data"];
     }
 
     v16 = 0;
-    v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:200 options:0 error:&v16];
+    v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary2 format:200 options:0 error:&v16];
     v10 = v16;
     if (v10)
     {
@@ -167,35 +167,35 @@
   return v12;
 }
 
-- (SFCompanionService)initWithCoder:(id)a3
+- (SFCompanionService)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SFCompanionService;
   v5 = [(SFCompanionService *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device_name"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service_name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service_name"];
     serviceType = v5->_serviceType;
     v5->_serviceType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device_identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device_identifier"];
     deviceID = v5->_deviceID;
     v5->_deviceID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unique_identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unique_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manager_identifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manager_identifier"];
     managerID = v5->_managerID;
     v5->_managerID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ip_address"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ip_address"];
     v17 = [v16 copy];
     ipAddress = v5->_ipAddress;
     v5->_ipAddress = v17;
@@ -204,75 +204,75 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceName = self->_deviceName;
-  v5 = a3;
-  [v5 encodeObject:deviceName forKey:@"device_name"];
-  [v5 encodeObject:self->_serviceType forKey:@"service_name"];
-  [v5 encodeObject:self->_deviceID forKey:@"device_identifier"];
-  [v5 encodeObject:self->_identifier forKey:@"unique_identifier"];
-  [v5 encodeObject:self->_managerID forKey:@"manager_identifier"];
-  [v5 encodeObject:self->_ipAddress forKey:@"ip_address"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceName forKey:@"device_name"];
+  [coderCopy encodeObject:self->_serviceType forKey:@"service_name"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"device_identifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"unique_identifier"];
+  [coderCopy encodeObject:self->_managerID forKey:@"manager_identifier"];
+  [coderCopy encodeObject:self->_ipAddress forKey:@"ip_address"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
-    v5 = [(SFCompanionService *)self deviceID];
-    [v4 setDeviceID:v5];
+    deviceID = [(SFCompanionService *)self deviceID];
+    [v4 setDeviceID:deviceID];
 
-    v6 = [(SFCompanionService *)self managerID];
-    [v4 setManagerID:v6];
+    managerID = [(SFCompanionService *)self managerID];
+    [v4 setManagerID:managerID];
 
-    v7 = [(SFCompanionService *)self ipAddress];
-    [v4 setIpAddress:v7];
+    ipAddress = [(SFCompanionService *)self ipAddress];
+    [v4 setIpAddress:ipAddress];
 
-    v8 = [(SFCompanionService *)self deviceName];
-    [v4 setDeviceName:v8];
+    deviceName = [(SFCompanionService *)self deviceName];
+    [v4 setDeviceName:deviceName];
 
-    v9 = [(SFCompanionService *)self identifier];
-    [v4 setIdentifier:v9];
+    identifier = [(SFCompanionService *)self identifier];
+    [v4 setIdentifier:identifier];
 
-    v10 = [(SFCompanionService *)self serviceType];
-    [v4 setServiceType:v10];
+    serviceType = [(SFCompanionService *)self serviceType];
+    [v4 setServiceType:serviceType];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFCompanionService *)self isEqualToService:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFCompanionService *)self isEqualToService:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToService:(id)a3
+- (BOOL)isEqualToService:(id)service
 {
-  v5 = a3;
-  if (self != v5)
+  serviceCopy = service;
+  if (self != serviceCopy)
   {
-    v6 = [(SFCompanionService *)self identifier];
-    if (v6 || ([(SFCompanionService *)v5 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    identifier = [(SFCompanionService *)self identifier];
+    if (identifier || ([(SFCompanionService *)serviceCopy identifier], (deviceID2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(SFCompanionService *)self identifier];
-      v8 = [(SFCompanionService *)v5 identifier];
-      v9 = [v7 isEqualToString:v8];
+      identifier2 = [(SFCompanionService *)self identifier];
+      identifier3 = [(SFCompanionService *)serviceCopy identifier];
+      v9 = [identifier2 isEqualToString:identifier3];
 
-      if (v6)
+      if (identifier)
       {
 
         if (!v9)
@@ -291,14 +291,14 @@
       }
     }
 
-    v11 = [(SFCompanionService *)self serviceType];
-    if (v11 || ([(SFCompanionService *)v5 serviceType], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    serviceType = [(SFCompanionService *)self serviceType];
+    if (serviceType || ([(SFCompanionService *)serviceCopy serviceType], (deviceID2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [(SFCompanionService *)self serviceType];
-      v13 = [(SFCompanionService *)v5 serviceType];
-      v14 = [v12 isEqualToString:v13];
+      serviceType2 = [(SFCompanionService *)self serviceType];
+      serviceType3 = [(SFCompanionService *)serviceCopy serviceType];
+      v14 = [serviceType2 isEqualToString:serviceType3];
 
-      if (v11)
+      if (serviceType)
       {
 
         if (!v14)
@@ -317,14 +317,14 @@
       }
     }
 
-    v15 = [(SFCompanionService *)self managerID];
-    if (v15 || ([(SFCompanionService *)v5 managerID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    managerID = [(SFCompanionService *)self managerID];
+    if (managerID || ([(SFCompanionService *)serviceCopy managerID], (deviceID2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v16 = [(SFCompanionService *)self managerID];
-      v17 = [(SFCompanionService *)v5 managerID];
-      v18 = [v16 isEqualToString:v17];
+      managerID2 = [(SFCompanionService *)self managerID];
+      managerID3 = [(SFCompanionService *)serviceCopy managerID];
+      v18 = [managerID2 isEqualToString:managerID3];
 
-      if (v15)
+      if (managerID)
       {
 
         if (!v18)
@@ -343,21 +343,21 @@
       }
     }
 
-    v19 = [(SFCompanionService *)self deviceID];
-    if (!v19)
+    deviceID = [(SFCompanionService *)self deviceID];
+    if (!deviceID)
     {
-      v3 = [(SFCompanionService *)v5 deviceID];
-      if (!v3)
+      deviceID2 = [(SFCompanionService *)serviceCopy deviceID];
+      if (!deviceID2)
       {
 LABEL_25:
-        v23 = [(SFCompanionService *)self deviceName];
-        if (v23 || ([(SFCompanionService *)v5 deviceName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        deviceName = [(SFCompanionService *)self deviceName];
+        if (deviceName || ([(SFCompanionService *)serviceCopy deviceName], (deviceID2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v24 = [(SFCompanionService *)self deviceName];
-          v25 = [(SFCompanionService *)v5 deviceName];
-          v10 = [v24 isEqualToString:v25];
+          deviceName2 = [(SFCompanionService *)self deviceName];
+          deviceName3 = [(SFCompanionService *)serviceCopy deviceName];
+          v10 = [deviceName2 isEqualToString:deviceName3];
 
-          if (v23)
+          if (deviceName)
           {
 LABEL_34:
 
@@ -374,11 +374,11 @@ LABEL_34:
       }
     }
 
-    v20 = [(SFCompanionService *)self deviceID];
-    v21 = [(SFCompanionService *)v5 deviceID];
-    v22 = [v20 isEqualToString:v21];
+    deviceID3 = [(SFCompanionService *)self deviceID];
+    deviceID4 = [(SFCompanionService *)serviceCopy deviceID];
+    v22 = [deviceID3 isEqualToString:deviceID4];
 
-    if (v19)
+    if (deviceID)
     {
 
       if (v22)
@@ -419,12 +419,12 @@ LABEL_31:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SFCompanionService *)self serviceType];
-  v5 = [(SFCompanionService *)self deviceName];
-  v6 = [(SFCompanionService *)self deviceID];
-  v7 = [(SFCompanionService *)self managerID];
-  v8 = [(SFCompanionService *)self identifier];
-  v9 = [v3 stringWithFormat:@"SFCompanionService (serviceType = %@, deviceName = %@, deviceID = %@, managerID = %@, identifier = %@)", v4, v5, v6, v7, v8];
+  serviceType = [(SFCompanionService *)self serviceType];
+  deviceName = [(SFCompanionService *)self deviceName];
+  deviceID = [(SFCompanionService *)self deviceID];
+  managerID = [(SFCompanionService *)self managerID];
+  identifier = [(SFCompanionService *)self identifier];
+  v9 = [v3 stringWithFormat:@"SFCompanionService (serviceType = %@, deviceName = %@, deviceID = %@, managerID = %@, identifier = %@)", serviceType, deviceName, deviceID, managerID, identifier];
 
   return v9;
 }
@@ -433,7 +433,7 @@ LABEL_31:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1A9662000, a2, OS_LOG_TYPE_ERROR, "Message serialize error = %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

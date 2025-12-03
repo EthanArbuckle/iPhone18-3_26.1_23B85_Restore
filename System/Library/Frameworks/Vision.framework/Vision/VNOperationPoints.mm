@@ -1,103 +1,103 @@
 @interface VNOperationPoints
-+ (id)errorForUnimplementedMethod:(SEL)a3;
-+ (id)errorForUnknownClassificationIdentifier:(id)a3;
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
-+ (id)operationPointsForMLModel:(id)a3 error:(id *)p_isa;
++ (id)errorForUnimplementedMethod:(SEL)method;
++ (id)errorForUnknownClassificationIdentifier:(id)identifier;
++ (id)loadFromURL:(id)l error:(id *)error;
++ (id)operationPointsForMLModel:(id)model error:(id *)p_isa;
 + (id)unspecifiedOperationPoints;
-- (BOOL)getClassificationMetrics:(id *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6;
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6;
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (VNOperationPoints)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)getClassificationMetrics:(id *)metrics forClassificationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error;
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (VNOperationPoints)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNOperationPoints
 
-- (VNOperationPoints)initWithCoder:(id)a3
+- (VNOperationPoints)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = [objc_opt_class() errorForUnimplementedMethod:a2];
-  [v5 failWithError:v6];
+  [coderCopy failWithError:v6];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [objc_opt_class() errorForUnimplementedMethod:a2];
-  [v4 failWithError:v5];
+  [coderCopy failWithError:v5];
 }
 
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_opt_class() errorForUnimplementedMethod:a2];
+    *error = [objc_opt_class() errorForUnimplementedMethod:a2];
   }
 
   return 0;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_opt_class() errorForUnimplementedMethod:a2];
+    *error = [objc_opt_class() errorForUnimplementedMethod:a2];
   }
 
   return 0;
 }
 
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_opt_class() errorForUnimplementedMethod:a2];
+    *error = [objc_opt_class() errorForUnimplementedMethod:a2];
   }
 
   return 0;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_opt_class() errorForUnimplementedMethod:a2];
+    *error = [objc_opt_class() errorForUnimplementedMethod:a2];
   }
 
   return 0;
 }
 
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [objc_opt_class() errorForUnimplementedMethod:a2];
+    *error = [objc_opt_class() errorForUnimplementedMethod:a2];
   }
 
   return 0;
 }
 
-- (BOOL)getClassificationMetrics:(id *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5
+- (BOOL)getClassificationMetrics:(id *)metrics forClassificationIdentifier:(id)identifier error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no operating points for identifier %@", a4];
-    *a5 = [VNError errorForDataUnavailableWithLocalizedDescription:v6];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"no operating points for identifier %@", identifier];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:identifier];
   }
 
   return 0;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [a1 errorForUnimplementedMethod:a2];
+    *error = [self errorForUnimplementedMethod:a2];
   }
 
   return 0;
@@ -110,19 +110,19 @@
   return v2;
 }
 
-+ (id)errorForUnknownClassificationIdentifier:(id)a3
++ (id)errorForUnknownClassificationIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown classification identifier %@", a3];
-  v4 = [VNError errorForInvalidArgumentWithLocalizedDescription:v3];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown classification identifier %@", identifier];
+  v4 = [VNError errorForInvalidArgumentWithLocalizedDescription:identifier];
 
   return v4;
 }
 
-+ (id)errorForUnimplementedMethod:(SEL)a3
++ (id)errorForUnimplementedMethod:(SEL)method
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromClass(a1);
-  v6 = NSStringFromSelector(a3);
+  v5 = NSStringFromClass(self);
+  v6 = NSStringFromSelector(method);
   v7 = [v4 stringWithFormat:@"%@ must implement %@", v5, v6];
 
   v8 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v7];
@@ -130,31 +130,31 @@
   return v8;
 }
 
-+ (id)operationPointsForMLModel:(id)a3 error:(id *)p_isa
++ (id)operationPointsForMLModel:(id)model error:(id *)p_isa
 {
-  v5 = a3;
-  v6 = [v5 modelDescription];
-  v7 = [v6 classLabels];
-  if (!v7)
+  modelCopy = model;
+  modelDescription = [modelCopy modelDescription];
+  classLabels = [modelDescription classLabels];
+  if (!classLabels)
   {
     p_isa = +[VNOperationPoints unspecifiedOperationPoints];
     goto LABEL_11;
   }
 
-  v8 = [MEMORY[0x1E695FEF8] precisionRecallCurves];
-  v9 = [v5 parameterValueForKey:v8 error:0];
+  precisionRecallCurves = [MEMORY[0x1E695FEF8] precisionRecallCurves];
+  v9 = [modelCopy parameterValueForKey:precisionRecallCurves error:0];
 
   if (v9)
   {
-    v10 = [v7 count];
+    v10 = [classLabels count];
     if (v10 != [v9 count])
     {
       if (p_isa)
       {
         v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(classLabels, "count")}];
         v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
-        v15 = [v12 initWithFormat:@"%@ has a mismatch of %@ class labels and %@ precision/recall curve entries", v5, v13, v14];
+        v15 = [v12 initWithFormat:@"%@ has a mismatch of %@ class labels and %@ precision/recall curve entries", modelCopy, v13, v14];
 
         *p_isa = [VNError errorForInvalidModelWithLocalizedDescription:v15];
 
@@ -164,7 +164,7 @@
       goto LABEL_10;
     }
 
-    v11 = [[_VNCoreMLOperationPoints alloc] initWithClassLabels:v7 precisionRecallCurves:v9];
+    v11 = [[_VNCoreMLOperationPoints alloc] initWithClassLabels:classLabels precisionRecallCurves:v9];
   }
 
   else

@@ -26,9 +26,9 @@
   v9.receiver = self;
   v9.super_class = SNSpeechPacket;
   v4 = [(SNSpeechPacket *)&v9 description];
-  v5 = [(SNSpeechPacket *)self packetNumber];
-  v6 = [(SNSpeechPacket *)self packets];
-  v7 = [v3 stringWithFormat:@"%@ packet number: %ld count: %ld", v4, v5, objc_msgSend(v6, "count")];
+  packetNumber = [(SNSpeechPacket *)self packetNumber];
+  packets = [(SNSpeechPacket *)self packets];
+  v7 = [v3 stringWithFormat:@"%@ packet number: %ld count: %ld", v4, packetNumber, objc_msgSend(packets, "count")];
 
   return v7;
 }

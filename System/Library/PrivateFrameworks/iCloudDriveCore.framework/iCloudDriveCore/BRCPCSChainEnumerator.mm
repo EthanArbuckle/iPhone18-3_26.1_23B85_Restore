@@ -1,34 +1,34 @@
 @interface BRCPCSChainEnumerator
-- (BRCPCSChainEnumerator)initWithPCSChainInfo:(id)a3 clientZone:(id)a4;
+- (BRCPCSChainEnumerator)initWithPCSChainInfo:(id)info clientZone:(id)zone;
 - (id)nextObject;
 - (void)nextObject;
 @end
 
 @implementation BRCPCSChainEnumerator
 
-- (BRCPCSChainEnumerator)initWithPCSChainInfo:(id)a3 clientZone:(id)a4
+- (BRCPCSChainEnumerator)initWithPCSChainInfo:(id)info clientZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  zoneCopy = zone;
   v18.receiver = self;
   v18.super_class = BRCPCSChainEnumerator;
   v8 = [(BRCPCSChainEnumerator *)&v18 init];
   if (v8)
   {
-    v9 = [v7 mangledID];
-    v10 = [BRCUserDefaults defaultsForMangledID:v9];
+    mangledID = [zoneCopy mangledID];
+    v10 = [BRCUserDefaults defaultsForMangledID:mangledID];
     *(v8 + 1) = [v10 pcsChainingMaxPathDepth];
 
-    objc_storeStrong(v8 + 2, a4);
+    objc_storeStrong(v8 + 2, zone);
     v11 = objc_opt_new();
     v12 = *(v8 + 3);
     *(v8 + 3) = v11;
 
-    if ([v6 itemType] == 9)
+    if ([infoCopy itemType] == 9)
     {
-      v13 = [v6 itemID];
+      itemID = [infoCopy itemID];
       v14 = *(v8 + 5);
-      *(v8 + 5) = v13;
+      *(v8 + 5) = itemID;
 
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
@@ -40,7 +40,7 @@
 
     else
     {
-      v15 = [[BRCPCSChainBreadthEnumerator alloc] initWithPCSChainInfo:v6 clientZone:v7];
+      v15 = [[BRCPCSChainBreadthEnumerator alloc] initWithPCSChainInfo:infoCopy clientZone:zoneCopy];
       [*(v8 + 3) addObject:v15];
     }
   }
@@ -57,24 +57,24 @@
     v23 = v3;
     while (1)
     {
-      v4 = [(NSMutableArray *)self->_stack lastObject];
-      v5 = [v4 nextObject];
-      v6 = v5;
-      if (!v5)
+      lastObject = [(NSMutableArray *)self->_stack lastObject];
+      nextObject = [lastObject nextObject];
+      v6 = nextObject;
+      if (!nextObject)
       {
         v12 = brc_bread_crumbs();
         v13 = brc_default_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          [(BRCPCSChainEnumerator *)v4 nextObject];
+          [(BRCPCSChainEnumerator *)lastObject nextObject];
         }
 
         [(NSMutableArray *)self->_stack removeLastObject];
-        v14 = [v4 chainInfo];
+        chainInfo = [lastObject chainInfo];
         goto LABEL_20;
       }
 
-      if ([v5 itemType] == 9)
+      if ([nextObject itemType] == 9)
       {
         v15 = brc_bread_crumbs();
         v16 = brc_default_log();
@@ -83,23 +83,23 @@
           [(BRCPCSChainEnumerator *)v6 nextObject];
         }
 
-        v17 = [v6 itemID];
+        itemID = [v6 itemID];
         v18 = 40;
         goto LABEL_22;
       }
 
       if ([v6 itemType])
       {
-        v19 = [v6 itemID];
+        itemID2 = [v6 itemID];
 
-        if (!v19)
+        if (!itemID2)
         {
           [BRCPCSChainEnumerator nextObject];
         }
 
-        v14 = v6;
+        chainInfo = v6;
 LABEL_20:
-        v11 = v14;
+        v11 = chainInfo;
         goto LABEL_23;
       }
 
@@ -112,9 +112,9 @@ LABEL_20:
       v8 = brc_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v6 itemID];
+        itemID3 = [v6 itemID];
         *buf = v23;
-        v25 = v10;
+        v25 = itemID3;
         v26 = 2112;
         v27 = v7;
         _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] Enumerating pcs under new directory %@%@", buf, 0x16u);
@@ -129,11 +129,11 @@ LABEL_20:
       }
     }
 
-    v17 = [MEMORY[0x277CCA9B8] brc_errorFolderHierarchyTooDeep];
+    itemID = [MEMORY[0x277CCA9B8] brc_errorFolderHierarchyTooDeep];
     v18 = 32;
 LABEL_22:
     v20 = *(&self->super.super.isa + v18);
-    *(&self->super.super.isa + v18) = v17;
+    *(&self->super.super.isa + v18) = itemID;
 
     v11 = 0;
 LABEL_23:
@@ -162,8 +162,8 @@ LABEL_10:
 - (void)nextObject
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a1 chainInfo];
-  v6 = [v5 itemID];
+  chainInfo = [self chainInfo];
+  itemID = [chainInfo itemID];
   OUTLINED_FUNCTION_1_0();
   v10 = a2;
   OUTLINED_FUNCTION_8(&dword_223E7A000, a3, v7, "[DEBUG] Finished enumerating pcs under directory %@%@", v9);

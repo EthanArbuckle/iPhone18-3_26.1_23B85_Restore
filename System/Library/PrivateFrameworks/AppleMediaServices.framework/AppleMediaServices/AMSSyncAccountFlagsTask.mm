@@ -1,22 +1,22 @@
 @interface AMSSyncAccountFlagsTask
-- (AMSSyncAccountFlagsTask)initWithAccount:(id)a3 bag:(id)a4;
+- (AMSSyncAccountFlagsTask)initWithAccount:(id)account bag:(id)bag;
 - (id)performSync;
 @end
 
 @implementation AMSSyncAccountFlagsTask
 
-- (AMSSyncAccountFlagsTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSSyncAccountFlagsTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSSyncAccountFlagsTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;

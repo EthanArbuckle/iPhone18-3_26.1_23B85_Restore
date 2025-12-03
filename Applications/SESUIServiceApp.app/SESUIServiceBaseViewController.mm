@@ -2,7 +2,7 @@
 - (SESUIServiceBaseViewController)init;
 - (void)dismiss;
 - (void)present;
-- (void)setDismissHandler:(id)a3;
+- (void)setDismissHandler:(id)handler;
 @end
 
 @implementation SESUIServiceBaseViewController
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   dismissHandler = self->_dismissHandler;
   self->_dismissHandler = v4;
 

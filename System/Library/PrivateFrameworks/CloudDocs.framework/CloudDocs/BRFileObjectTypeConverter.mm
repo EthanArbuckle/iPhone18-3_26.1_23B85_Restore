@@ -1,13 +1,13 @@
 @interface BRFileObjectTypeConverter
-+ (char)toChar:(unsigned __int8)a3;
-+ (unsigned)toBRFileObjectIDType:(char)a3;
++ (char)toChar:(unsigned __int8)char;
++ (unsigned)toBRFileObjectIDType:(char)type;
 @end
 
 @implementation BRFileObjectTypeConverter
 
-+ (char)toChar:(unsigned __int8)a3
++ (char)toChar:(unsigned __int8)char
 {
-  if (a3 >= 5u)
+  if (char >= 5u)
   {
     v4 = brc_bread_crumbs("+[BRFileObjectTypeConverter toChar:]", 34);
     v5 = brc_default_log(0, 0);
@@ -21,22 +21,22 @@
 
   else
   {
-    return 0x6C6E666174uLL >> (8 * (a3 & 0x1Fu));
+    return 0x6C6E666174uLL >> (8 * (char & 0x1Fu));
   }
 
   return v3;
 }
 
-+ (unsigned)toBRFileObjectIDType:(char)a3
++ (unsigned)toBRFileObjectIDType:(char)type
 {
-  if (a3 <= 107)
+  if (type <= 107)
   {
-    if (a3 == 97)
+    if (type == 97)
     {
       return 1;
     }
 
-    if (a3 == 102)
+    if (type == 102)
     {
       return 2;
     }
@@ -44,7 +44,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 'l':
         return 4;

@@ -1,14 +1,14 @@
 @interface SKUIDonationStepViewController
-- (SKUIDonationStepViewController)initWithCharity:(id)a3 configuration:(id)a4;
+- (SKUIDonationStepViewController)initWithCharity:(id)charity configuration:(id)configuration;
 - (SKUIDonationViewController)donationViewController;
 @end
 
 @implementation SKUIDonationStepViewController
 
-- (SKUIDonationStepViewController)initWithCharity:(id)a3 configuration:(id)a4
+- (SKUIDonationStepViewController)initWithCharity:(id)charity configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  charityCopy = charity;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDonationStepViewController initWithCharity:configuration:];
@@ -20,8 +20,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_charity, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_charity, charity);
+    objc_storeStrong(&v10->_configuration, configuration);
   }
 
   return v10;
@@ -29,11 +29,11 @@
 
 - (SKUIDonationViewController)donationViewController
 {
-  v2 = [(SKUIDonationStepViewController *)self navigationController];
+  navigationController = [(SKUIDonationStepViewController *)self navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 
   else

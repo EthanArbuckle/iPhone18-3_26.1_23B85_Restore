@@ -1,35 +1,35 @@
 @interface INFERENCESchemaINFERENCEPrivatizedHistoryStats
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unsigned)frequenciesAtIndex:(unint64_t)a3;
-- (void)addFrequencies:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)frequenciesAtIndex:(unint64_t)index;
+- (void)addFrequencies:(unsigned int)frequencies;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEPrivatizedHistoryStats
 
-- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = INFERENCESchemaINFERENCEPrivatizedHistoryStats;
   v5 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"recency"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"recency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPrivatizedHistoryStats setRecency:](v5, "setRecency:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"frequencies"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"frequencies"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEPrivatizedHistoryStats)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,23 +113,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_frequencies count])
   {
-    v4 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"frequencies"];
+    frequencies = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
+    v5 = [frequencies copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"frequencies"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCEPrivatizedHistoryStats recency](self, "recency")}];
-    [v3 setObject:v6 forKeyedSubscript:@"recency"];
+    [dictionary setObject:v6 forKeyedSubscript:@"recency"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,22 +147,22 @@
   return [(NSArray *)self->_frequencies hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (recency = self->_recency, recency == [v4 recency]))
+      if ((*&self->_has & 1) == 0 || (recency = self->_recency, recency == [equalCopy recency]))
       {
-        v6 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
-        v7 = [v4 frequencies];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        frequencies = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
+        frequencies2 = [equalCopy frequencies];
+        v8 = frequencies2;
+        if ((frequencies != 0) != (frequencies2 == 0))
         {
-          v9 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
-          if (!v9)
+          frequencies3 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
+          if (!frequencies3)
           {
 
 LABEL_13:
@@ -170,10 +170,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
-          v12 = [v4 frequencies];
-          v13 = [v11 isEqual:v12];
+          v10 = frequencies3;
+          frequencies4 = [(INFERENCESchemaINFERENCEPrivatizedHistoryStats *)self frequencies];
+          frequencies5 = [equalCopy frequencies];
+          v13 = [frequencies4 isEqual:frequencies5];
 
           if (v13)
           {
@@ -194,10 +194,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
@@ -236,23 +236,23 @@ LABEL_11:
   }
 }
 
-- (unsigned)frequenciesAtIndex:(unint64_t)a3
+- (unsigned)frequenciesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_frequencies objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_frequencies objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addFrequencies:(unsigned int)a3
+- (void)addFrequencies:(unsigned int)frequencies
 {
-  v3 = *&a3;
+  v3 = *&frequencies;
   frequencies = self->_frequencies;
   if (!frequencies)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_frequencies;
-    self->_frequencies = v6;
+    self->_frequencies = array;
 
     frequencies = self->_frequencies;
   }

@@ -7,10 +7,10 @@
 + (id)requestUnrestrictedFramerateForScene:()UIKitBacklightServices
 {
   v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 _FBSScene];
+  v5 = [self alloc];
+  _FBSScene = [v4 _FBSScene];
 
-  v7 = [v5 initWithFBSScene:v6];
+  v7 = [v5 initWithFBSScene:_FBSScene];
 
   return v7;
 }

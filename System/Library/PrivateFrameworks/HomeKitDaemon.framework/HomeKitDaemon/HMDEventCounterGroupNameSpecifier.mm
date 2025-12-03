@@ -1,53 +1,53 @@
 @interface HMDEventCounterGroupNameSpecifier
-+ (id)specifierWithGroupName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGroupNameSpecifier:(id)a3;
-- (HMDEventCounterGroupNameSpecifier)initWithCoder:(id)a3;
-- (HMDEventCounterGroupNameSpecifier)initWithGroupName:(id)a3;
++ (id)specifierWithGroupName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGroupNameSpecifier:(id)specifier;
+- (HMDEventCounterGroupNameSpecifier)initWithCoder:(id)coder;
+- (HMDEventCounterGroupNameSpecifier)initWithGroupName:(id)name;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDEventCounterGroupNameSpecifier
 
 - (unint64_t)hash
 {
-  v2 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  v3 = [v2 hash];
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  v3 = [groupName hash];
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  v3 = [v2 description];
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  v3 = [groupName description];
 
   return v3;
 }
 
-- (BOOL)isEqualToGroupNameSpecifier:(id)a3
+- (BOOL)isEqualToGroupNameSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  v6 = [v4 groupName];
+  specifierCopy = specifier;
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  groupName2 = [specifierCopy groupName];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(specifierCopy) = [groupName isEqualToString:groupName2];
+  return specifierCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(HMDEventCounterGroupNameSpecifier *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HMDEventCounterGroupNameSpecifier *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(HMDEventCounterGroupNameSpecifier *)self isEqualToGroupNameSpecifier:v4];
+    v5 = [(HMDEventCounterGroupNameSpecifier *)self isEqualToGroupNameSpecifier:equalCopy];
   }
 
   else
@@ -58,22 +58,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  [v4 encodeObject:v5 forKey:@"groupName"];
+  coderCopy = coder;
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
 }
 
-- (HMDEventCounterGroupNameSpecifier)initWithCoder:(id)a3
+- (HMDEventCounterGroupNameSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDEventCounterGroupNameSpecifier;
   v5 = [(HMDEventCounterGroupNameSpecifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
     groupName = v5->_groupName;
     v5->_groupName = v6;
   }
@@ -81,25 +81,25 @@
   return v5;
 }
 
-- (HMDEventCounterGroupNameSpecifier)initWithGroupName:(id)a3
+- (HMDEventCounterGroupNameSpecifier)initWithGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = HMDEventCounterGroupNameSpecifier;
   v6 = [(HMDEventCounterGroupNameSpecifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_groupName, a3);
+    objc_storeStrong(&v6->_groupName, name);
   }
 
   return v7;
 }
 
-+ (id)specifierWithGroupName:(id)a3
++ (id)specifierWithGroupName:(id)name
 {
-  v3 = a3;
-  v4 = [[HMDEventCounterGroupNameSpecifier alloc] initWithGroupName:v3];
+  nameCopy = name;
+  v4 = [[HMDEventCounterGroupNameSpecifier alloc] initWithGroupName:nameCopy];
 
   return v4;
 }

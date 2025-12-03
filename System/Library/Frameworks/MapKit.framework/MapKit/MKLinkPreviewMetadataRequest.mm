@@ -1,10 +1,10 @@
 @interface MKLinkPreviewMetadataRequest
 - (BOOL)isCancelled;
 - (BOOL)isLoading;
-- (MKLinkPreviewMetadataRequest)initWithURL:(id)a3;
-- (id)_subtitleFromMapItem:(id)a3 useMultilineAddressFormat:(BOOL)a4;
-- (void)_failWithError:(id)a3;
-- (void)_forwardGeocodeString:(id)a3 completionHandler:(id)a4;
+- (MKLinkPreviewMetadataRequest)initWithURL:(id)l;
+- (id)_subtitleFromMapItem:(id)item useMultilineAddressFormat:(BOOL)format;
+- (void)_failWithError:(id)error;
+- (void)_forwardGeocodeString:(id)string completionHandler:(id)handler;
 - (void)_handleDirectionsAction;
 - (void)_handleFrameAction;
 - (void)_handleGuidesAction;
@@ -12,41 +12,41 @@
 - (void)_handlePlaceAction;
 - (void)_handleReportAProblemAction;
 - (void)_handleSearchAction;
-- (void)_handleShortURL:(id)a3;
-- (void)_populateLocationInfo:(id)a3 withMapItem:(id)a4;
-- (void)_processURL:(id)a3;
-- (void)_refineCollectionStorage:(id)a3 completionHandler:(id)a4;
-- (void)_refineCuratedCollectionStorageWithCollectionIdentifier:(unint64_t)a3 providerIdentifier:(int)a4 completionHandler:(id)a5;
-- (void)_requestCategoryIconFromMapItem:(id)a3 completionHandler:(id)a4;
-- (void)_requestMapItemFromLocationQueryItem:(id)a3 completionHandler:(id)a4;
-- (void)_requestMapItemFromMapItemIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_requestPublisherFromPublisherIdentifier:(unint64_t)a3 providerIdentifier:(int)a4 completionHandler:(id)a5;
-- (void)_reverseGeocodeCoordinate:(CLLocationCoordinate2D)a3 completionHandler:(id)a4;
-- (void)_searchWithQuery:(id)a3 region:(id *)a4 completionHandler:(id)a5;
+- (void)_handleShortURL:(id)l;
+- (void)_populateLocationInfo:(id)info withMapItem:(id)item;
+- (void)_processURL:(id)l;
+- (void)_refineCollectionStorage:(id)storage completionHandler:(id)handler;
+- (void)_refineCuratedCollectionStorageWithCollectionIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier completionHandler:(id)handler;
+- (void)_requestCategoryIconFromMapItem:(id)item completionHandler:(id)handler;
+- (void)_requestMapItemFromLocationQueryItem:(id)item completionHandler:(id)handler;
+- (void)_requestMapItemFromMapItemIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_requestPublisherFromPublisherIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier completionHandler:(id)handler;
+- (void)_reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler;
+- (void)_searchWithQuery:(id)query region:(id *)region completionHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)getMetadataWithCompletionHandler:(id)a3;
+- (void)getMetadataWithCompletionHandler:(id)handler;
 @end
 
 @implementation MKLinkPreviewMetadataRequest
 
-- (void)_searchWithQuery:(id)a3 region:(id *)a4 completionHandler:(id)a5
+- (void)_searchWithQuery:(id)query region:(id *)region completionHandler:(id)handler
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v14 = a3;
-  v15 = a4;
+  queryCopy = query;
+  regionCopy = region;
   if (fabs(v12) > 180.0 || fabs(v13) > 90.0 || v11 < 0.0 || v11 > 180.0 || v10 < 0.0 || v10 > 360.0)
   {
-    v16 = [[MKLocalSearchRequest alloc] initWithNaturalLanguageQuery:v14];
+    v16 = [[MKLocalSearchRequest alloc] initWithNaturalLanguageQuery:queryCopy];
     v17 = 0;
   }
 
   else
   {
-    v16 = [[MKLocalSearchRequest alloc] initWithNaturalLanguageQuery:v14 region:v13, v12, v11, v10];
+    v16 = [[MKLocalSearchRequest alloc] initWithNaturalLanguageQuery:queryCopy region:v13, v12, v11, v10];
     v17 = 1;
   }
 
@@ -60,10 +60,10 @@
   v25 = v12;
   v26 = v11;
   v27 = v10;
-  v22 = v14;
-  v23 = v15;
-  v19 = v15;
-  v20 = v14;
+  v22 = queryCopy;
+  v23 = regionCopy;
+  v19 = regionCopy;
+  v20 = queryCopy;
   [(MKLocalSearch *)v18 startWithCompletionHandler:v21];
 }
 
@@ -119,11 +119,11 @@ void __74__MKLinkPreviewMetadataRequest__searchWithQuery_region_completionHandle
   (*(v17 + 16))(v17, v18, v6);
 }
 
-- (void)_reverseGeocodeCoordinate:(CLLocationCoordinate2D)a3 completionHandler:(id)a4
+- (void)_reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
   v7 = +[MKMapService sharedService];
   v8 = [v7 ticketForReverseGeocodeCoordinate:0 traits:{latitude, longitude}];
 
@@ -133,8 +133,8 @@ void __74__MKLinkPreviewMetadataRequest__searchWithQuery_region_completionHandle
   v10[3] = &unk_1E76C7770;
   v12 = latitude;
   v13 = longitude;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [v8 submitWithHandler:v10 networkActivity:0];
 }
 
@@ -162,20 +162,20 @@ void __76__MKLinkPreviewMetadataRequest__reverseGeocodeCoordinate_completionHand
   (*(v9 + 16))(v9, v10, v6);
 }
 
-- (void)_requestPublisherFromPublisherIdentifier:(unint64_t)a3 providerIdentifier:(int)a4 completionHandler:(id)a5
+- (void)_requestPublisherFromPublisherIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier completionHandler:(id)handler
 {
-  v5 = *&a4;
-  v7 = a5;
-  v8 = [[MKPlacePublisherRefiner alloc] initWithPublisherIdentifier:a3 providerIdentifier:v5];
+  v5 = *&providerIdentifier;
+  handlerCopy = handler;
+  v8 = [[MKPlacePublisherRefiner alloc] initWithPublisherIdentifier:identifier providerIdentifier:v5];
   v9 = dispatch_get_global_queue(0, 0);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __110__MKLinkPreviewMetadataRequest__requestPublisherFromPublisherIdentifier_providerIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_1E76C7748;
   v14 = v5;
-  v12 = v7;
-  v13 = a3;
-  v10 = v7;
+  v12 = handlerCopy;
+  identifierCopy = identifier;
+  v10 = handlerCopy;
   [(MKPlacePublisherRefiner *)v8 fetchWithCallbackQueue:v9 completion:v11];
 }
 
@@ -204,19 +204,19 @@ void __110__MKLinkPreviewMetadataRequest__requestPublisherFromPublisherIdentifie
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_requestMapItemFromMapItemIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_requestMapItemFromMapItemIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MKMapItemRequest alloc] initWithMapItemIdentifier:v5];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v7 = [[MKMapItemRequest alloc] initWithMapItemIdentifier:identifierCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__MKLinkPreviewMetadataRequest__requestMapItemFromMapItemIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E76C7720;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identifierCopy;
   [(MKMapItemRequest *)v7 getMapItemWithCompletionHandler:v10];
 }
 
@@ -242,25 +242,25 @@ void __87__MKLinkPreviewMetadataRequest__requestMapItemFromMapItemIdentifier_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_requestMapItemFromLocationQueryItem:(id)a3 completionHandler:(id)a4
+- (void)_requestMapItemFromLocationQueryItem:(id)item completionHandler:(id)handler
 {
-  v19 = a3;
-  v6 = a4;
-  [v19 coordinate];
+  itemCopy = item;
+  handlerCopy = handler;
+  [itemCopy coordinate];
   v8 = fabs(v7) <= 180.0;
   v10 = fabs(v9) <= 90.0 && v8;
-  v11 = [v19 mapItemIdentifier];
+  mapItemIdentifier = [itemCopy mapItemIdentifier];
 
-  v12 = [v19 address];
-  v13 = [v12 length];
+  address = [itemCopy address];
+  v13 = [address length];
 
-  if (v11)
+  if (mapItemIdentifier)
   {
     v14 = [MKMapItemIdentifier alloc];
-    v15 = [v19 mapItemIdentifier];
-    v16 = [(MKMapItemIdentifier *)v14 initWithGEOMapItemIdentifier:v15];
+    mapItemIdentifier2 = [itemCopy mapItemIdentifier];
+    address2 = [(MKMapItemIdentifier *)v14 initWithGEOMapItemIdentifier:mapItemIdentifier2];
 
-    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:v16 completionHandler:v6];
+    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:address2 completionHandler:handlerCopy];
 LABEL_8:
 
     goto LABEL_9;
@@ -268,68 +268,68 @@ LABEL_8:
 
   if (v13)
   {
-    v16 = [v19 address];
-    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:v16 completionHandler:v6];
+    address2 = [itemCopy address];
+    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:address2 completionHandler:handlerCopy];
     goto LABEL_8;
   }
 
   if (v10)
   {
-    [v19 coordinate];
-    [(MKLinkPreviewMetadataRequest *)self _reverseGeocodeCoordinate:v6 completionHandler:?];
+    [itemCopy coordinate];
+    [(MKLinkPreviewMetadataRequest *)self _reverseGeocodeCoordinate:handlerCopy completionHandler:?];
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x1E696ABC0]);
     v18 = [v17 initWithDomain:MKErrorDomain code:1 userInfo:0];
-    v6[2](v6, 0, v18);
+    handlerCopy[2](handlerCopy, 0, v18);
   }
 
 LABEL_9:
 }
 
-- (void)_requestCategoryIconFromMapItem:(id)a3 completionHandler:(id)a4
+- (void)_requestCategoryIconFromMapItem:(id)item completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _styleAttributes];
+  itemCopy = item;
+  handlerCopy = handler;
+  _styleAttributes = [itemCopy _styleAttributes];
   +[MKLinkPreviewMetadata displayScale];
   v9 = v8;
-  if (v7)
+  if (_styleAttributes)
   {
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __82__MKLinkPreviewMetadataRequest__requestCategoryIconFromMapItem_completionHandler___block_invoke;
     v27[3] = &unk_1E76C9480;
     v10 = &v28;
-    v11 = v7;
+    v11 = _styleAttributes;
     v12 = &v29;
     v28 = v11;
-    v29 = v5;
+    v29 = itemCopy;
     v13 = &v30;
-    v30 = v6;
-    v14 = v6;
-    v15 = v5;
+    v30 = handlerCopy;
+    v14 = handlerCopy;
+    v15 = itemCopy;
     v16 = v27;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
+    addressMarkerStyleAttributes = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __82__MKLinkPreviewMetadataRequest__requestCategoryIconFromMapItem_completionHandler___block_invoke_82;
     v23 = &unk_1E76C9480;
     v10 = &v24;
-    v11 = v17;
+    v11 = addressMarkerStyleAttributes;
     v12 = &v25;
     v24 = v11;
-    v25 = v5;
+    v25 = itemCopy;
     v13 = &v26;
-    v26 = v6;
-    v18 = v6;
-    v19 = v5;
+    v26 = handlerCopy;
+    v18 = handlerCopy;
+    v19 = itemCopy;
     v16 = &v20;
   }
 
@@ -380,20 +380,20 @@ void __82__MKLinkPreviewMetadataRequest__requestCategoryIconFromMapItem_completi
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_refineCuratedCollectionStorageWithCollectionIdentifier:(unint64_t)a3 providerIdentifier:(int)a4 completionHandler:(id)a5
+- (void)_refineCuratedCollectionStorageWithCollectionIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier completionHandler:(id)handler
 {
-  v5 = *&a4;
-  v7 = a5;
-  v8 = [[MKPlaceCuratedCollectionRefiner alloc] initWithCollectionIdentifier:a3 providerIdentifier:v5];
+  v5 = *&providerIdentifier;
+  handlerCopy = handler;
+  v8 = [[MKPlaceCuratedCollectionRefiner alloc] initWithCollectionIdentifier:identifier providerIdentifier:v5];
   v9 = dispatch_get_global_queue(0, 0);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __125__MKLinkPreviewMetadataRequest__refineCuratedCollectionStorageWithCollectionIdentifier_providerIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_1E76C76F8;
   v14 = v5;
-  v12 = v7;
-  v13 = a3;
-  v10 = v7;
+  v12 = handlerCopy;
+  identifierCopy = identifier;
+  v10 = handlerCopy;
   [(MKPlaceCuratedCollectionRefiner *)v8 fetchWithCallbackQueue:v9 completion:v11];
 }
 
@@ -423,19 +423,19 @@ void __125__MKLinkPreviewMetadataRequest__refineCuratedCollectionStorageWithColl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_refineCollectionStorage:(id)a3 completionHandler:(id)a4
+- (void)_refineCollectionStorage:(id)storage completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MKCollectionStorageRefiner alloc] initWithCollectionStorage:v5];
+  storageCopy = storage;
+  handlerCopy = handler;
+  v7 = [[MKCollectionStorageRefiner alloc] initWithCollectionStorage:storageCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__MKLinkPreviewMetadataRequest__refineCollectionStorage_completionHandler___block_invoke;
   v10[3] = &unk_1E76C76D0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = storageCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = storageCopy;
   [(MKCollectionStorageRefiner *)v7 fetchMapItems:v10];
 }
 
@@ -461,21 +461,21 @@ void __75__MKLinkPreviewMetadataRequest__refineCollectionStorage_completionHandl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_forwardGeocodeString:(id)a3 completionHandler:(id)a4
+- (void)_forwardGeocodeString:(id)string completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v7 = +[MKMapService sharedService];
-  v8 = [v7 ticketForForwardGeocodeString:v5 traits:0];
+  v8 = [v7 ticketForForwardGeocodeString:stringCopy traits:0];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__MKLinkPreviewMetadataRequest__forwardGeocodeString_completionHandler___block_invoke;
   v11[3] = &unk_1E76CA920;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = stringCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringCopy;
   [v8 submitWithHandler:v11 networkActivity:0];
 }
 
@@ -503,21 +503,21 @@ void __72__MKLinkPreviewMetadataRequest__forwardGeocodeString_completionHandler_
   (*(v9 + 16))(v9, v10, v6);
 }
 
-- (id)_subtitleFromMapItem:(id)a3 useMultilineAddressFormat:(BOOL)a4
+- (id)_subtitleFromMapItem:(id)item useMultilineAddressFormat:(BOOL)format
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 name];
+  itemCopy = item;
+  name = [itemCopy name];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __79__MKLinkPreviewMetadataRequest__subtitleFromMapItem_useMultilineAddressFormat___block_invoke;
   v24[3] = &unk_1E76C76A8;
-  v26 = a4;
-  v7 = v5;
+  formatCopy = format;
+  v7 = itemCopy;
   v25 = v7;
   v8 = __79__MKLinkPreviewMetadataRequest__subtitleFromMapItem_useMultilineAddressFormat___block_invoke(v24);
-  v9 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v10 = [v8 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
   v20 = 0u;
@@ -540,7 +540,7 @@ void __72__MKLinkPreviewMetadataRequest__forwardGeocodeString_completionHandler_
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        if (([v17 isEqualToString:{v6, v20}] & 1) == 0)
+        if (([v17 isEqualToString:{name, v20}] & 1) == 0)
         {
           [v11 addObject:v17];
         }
@@ -576,37 +576,37 @@ id __79__MKLinkPreviewMetadataRequest__subtitleFromMapItem_useMultilineAddressFo
   return v7;
 }
 
-- (void)_populateLocationInfo:(id)a3 withMapItem:(id)a4
+- (void)_populateLocationInfo:(id)info withMapItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 identifier];
-  [v6 setIsPointOfInterest:v7 != 0];
+  itemCopy = item;
+  infoCopy = info;
+  identifier = [itemCopy identifier];
+  [infoCopy setIsPointOfInterest:identifier != 0];
 
-  [v5 _coordinate];
-  [v6 setCoordinate:?];
-  v8 = [v5 name];
-  [v6 setName:v8];
+  [itemCopy _coordinate];
+  [infoCopy setCoordinate:?];
+  name = [itemCopy name];
+  [infoCopy setName:name];
 
-  v9 = [v5 _shortAddress];
-  [v6 setAddress:v9];
+  _shortAddress = [itemCopy _shortAddress];
+  [infoCopy setAddress:_shortAddress];
 
-  v10 = [v5 _cnPostalAddress];
-  [v6 setAddressComponents:v10];
+  _cnPostalAddress = [itemCopy _cnPostalAddress];
+  [infoCopy setAddressComponents:_cnPostalAddress];
 
-  v11 = [v5 _firstLocalizedCategoryName];
+  _firstLocalizedCategoryName = [itemCopy _firstLocalizedCategoryName];
 
-  [v6 setCategory:v11];
+  [infoCopy setCategory:_firstLocalizedCategoryName];
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MKLinkPreviewMetadataRequest *)self cancel];
   v5 = MEMORY[0x1A58E9F30](self->_completionHandler);
-  if (v4)
+  if (errorCopy)
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   else
@@ -637,9 +637,9 @@ uint64_t __47__MKLinkPreviewMetadataRequest__failWithError___block_invoke(uint64
   return result;
 }
 
-- (void)_handleShortURL:(id)a3
+- (void)_handleShortURL:(id)l
 {
-  v5 = _MKPerformShortURLTransformationIfNeeded(a3);
+  v5 = _MKPerformShortURLTransformationIfNeeded(l);
   v6 = objc_alloc_init(MKURLShortener);
   objc_initWeak(&location, self);
   GEOConfigGetDouble();
@@ -741,12 +741,12 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
   v5 = v4;
   v37 = v5;
   v6 = MEMORY[0x1A58E9F30](v36);
-  v7 = [(_MKURLParser *)v3 collectionStorage];
+  collectionStorage = [(_MKURLParser *)v3 collectionStorage];
 
-  if (v7)
+  if (collectionStorage)
   {
     v8 = [(MKLinkPreviewMetadata *)[MKLinkPreviewGuidesMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-    v9 = [(_MKURLParser *)v3 collectionStorage];
+    collectionStorage2 = [(_MKURLParser *)v3 collectionStorage];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __51__MKLinkPreviewMetadataRequest__handleGuidesAction__block_invoke_3;
@@ -756,7 +756,7 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
     v10 = v8;
     v33 = v10;
     v34 = v6;
-    [(MKLinkPreviewMetadataRequest *)self _refineCollectionStorage:v9 completionHandler:v31];
+    [(MKLinkPreviewMetadataRequest *)self _refineCollectionStorage:collectionStorage2 completionHandler:v31];
 
     objc_destroyWeak(&v35);
   }
@@ -766,8 +766,8 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
     if ([(_MKURLParser *)v3 curatedCollectionMUID])
     {
       v11 = [(MKLinkPreviewMetadata *)[MKLinkPreviewGuidesMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-      v12 = [(_MKURLParser *)v3 curatedCollectionMUID];
-      v13 = [(_MKURLParser *)v3 searchProviderID];
+      curatedCollectionMUID = [(_MKURLParser *)v3 curatedCollectionMUID];
+      searchProviderID = [(_MKURLParser *)v3 searchProviderID];
       v14 = v27;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
@@ -777,7 +777,7 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
       v10 = v11;
       v28 = v10;
       v29 = v6;
-      [(MKLinkPreviewMetadataRequest *)self _refineCuratedCollectionStorageWithCollectionIdentifier:v12 providerIdentifier:v13 completionHandler:v27];
+      [(MKLinkPreviewMetadataRequest *)self _refineCuratedCollectionStorageWithCollectionIdentifier:curatedCollectionMUID providerIdentifier:searchProviderID completionHandler:v27];
 
       v15 = v28;
     }
@@ -800,8 +800,8 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
       }
 
       v16 = [(MKLinkPreviewMetadata *)[MKLinkPreviewPublisherMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-      v17 = [(_MKURLParser *)v3 publisherMUID];
-      v18 = [(_MKURLParser *)v3 searchProviderID];
+      publisherMUID = [(_MKURLParser *)v3 publisherMUID];
+      searchProviderID2 = [(_MKURLParser *)v3 searchProviderID];
       v14 = v23;
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
@@ -811,7 +811,7 @@ void __48__MKLinkPreviewMetadataRequest__handleShortURL___block_invoke(uint64_t 
       v10 = v16;
       v24 = v10;
       v25 = v5;
-      [(MKLinkPreviewMetadataRequest *)self _requestPublisherFromPublisherIdentifier:v17 providerIdentifier:v18 completionHandler:v23];
+      [(MKLinkPreviewMetadataRequest *)self _requestPublisherFromPublisherIdentifier:publisherMUID providerIdentifier:searchProviderID2 completionHandler:v23];
 
       v15 = v24;
     }
@@ -1055,21 +1055,21 @@ void __51__MKLinkPreviewMetadataRequest__handleGuidesAction__block_invoke_5(id *
   v3 = self->_parser;
   v4 = MEMORY[0x1A58E9F30](self->_completionHandler);
   v5 = [[MKLinkPreviewLookAroundMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-  v6 = [(_MKURLParser *)v3 locationQueryItem];
+  locationQueryItem = [(_MKURLParser *)v3 locationQueryItem];
   v47 = v3;
-  v7 = [(_MKURLParser *)v3 muninViewState];
-  [v6 coordinate];
+  muninViewState = [(_MKURLParser *)v3 muninViewState];
+  [locationQueryItem coordinate];
   v9 = fabs(v8) <= 180.0;
   v11 = fabs(v10) <= 90.0 && v9;
-  v12 = [v6 mapItemIdentifier];
+  mapItemIdentifier = [locationQueryItem mapItemIdentifier];
 
-  v13 = [v6 address];
-  v44 = [v13 length];
+  address = [locationQueryItem address];
+  v44 = [address length];
 
-  v14 = [v6 name];
-  if ([v14 length])
+  name = [locationQueryItem name];
+  if ([name length])
   {
-    v15 = v12 == 0;
+    v15 = mapItemIdentifier == 0;
   }
 
   else
@@ -1080,28 +1080,28 @@ void __51__MKLinkPreviewMetadataRequest__handleGuidesAction__block_invoke_5(id *
   v16 = v15;
   v48 = v16;
 
-  if (v7)
+  if (muninViewState)
   {
     v43 = v4;
     v45 = v11;
-    v17 = [v7 locationInfo];
-    v18 = [[MKLookAroundScene alloc] initWithMuninViewState:v7];
+    locationInfo = [muninViewState locationInfo];
+    v18 = [[MKLookAroundScene alloc] initWithMuninViewState:muninViewState];
     [(MKLinkPreviewMetadata *)v5 setScene:v18];
-    v19 = [v17 locationName];
-    [(MKLinkPreviewLookAroundMetadata *)v5 setName:v19];
+    locationName = [locationInfo locationName];
+    [(MKLinkPreviewLookAroundMetadata *)v5 setName:locationName];
 
-    v20 = [v17 secondaryLocationName];
-    if ([v20 length])
+    secondaryLocationName = [locationInfo secondaryLocationName];
+    if ([secondaryLocationName length])
     {
-      v21 = [v17 localityName];
-      v22 = [v21 length];
+      localityName = [locationInfo localityName];
+      v22 = [localityName length];
 
       if (v22)
       {
         v23 = MEMORY[0x1E696AEC0];
-        v24 = [v17 secondaryLocationName];
-        v25 = [v17 localityName];
-        v26 = [v23 stringWithFormat:@"%@\n%@", v24, v25];
+        secondaryLocationName2 = [locationInfo secondaryLocationName];
+        localityName2 = [locationInfo localityName];
+        v26 = [v23 stringWithFormat:@"%@\n%@", secondaryLocationName2, localityName2];
         [(MKLinkPreviewLookAroundMetadata *)v5 setAddress:v26];
 
 LABEL_19:
@@ -1115,20 +1115,20 @@ LABEL_19:
     {
     }
 
-    v27 = [v17 secondaryLocationName];
-    v28 = [v27 length];
+    secondaryLocationName3 = [locationInfo secondaryLocationName];
+    v28 = [secondaryLocationName3 length];
 
     if (v28)
     {
-      [v17 secondaryLocationName];
+      [locationInfo secondaryLocationName];
     }
 
     else
     {
-      [v17 localityName];
+      [locationInfo localityName];
     }
-    v24 = ;
-    [(MKLinkPreviewLookAroundMetadata *)v5 setAddress:v24];
+    secondaryLocationName2 = ;
+    [(MKLinkPreviewLookAroundMetadata *)v5 setAddress:secondaryLocationName2];
     goto LABEL_19;
   }
 
@@ -1138,17 +1138,17 @@ LABEL_20:
   v57[1] = 3221225472;
   v57[2] = __55__MKLinkPreviewMetadataRequest__handleLookAroundAction__block_invoke;
   v57[3] = &unk_1E76C7590;
-  v63 = v7 != 0;
+  v63 = muninViewState != 0;
   v29 = v4;
   v61 = v29;
   v30 = v5;
   v58 = v30;
-  v46 = v7;
+  v46 = muninViewState;
   v59 = v46;
   v64 = v11;
   v65 = v44 != 0;
   v66 = v48;
-  v31 = v6;
+  v31 = locationQueryItem;
   v60 = v31;
   objc_copyWeak(&v62, location);
   v32 = v11;
@@ -1157,7 +1157,7 @@ LABEL_20:
   v52[1] = 3221225472;
   v52[2] = __55__MKLinkPreviewMetadataRequest__handleLookAroundAction__block_invoke_5;
   v52[3] = &unk_1E76C75B8;
-  v56 = v7 != 0;
+  v56 = muninViewState != 0;
   v34 = v29;
   v54 = v34;
   v35 = v30;
@@ -1165,13 +1165,13 @@ LABEL_20:
   v36 = v33;
   v55 = v36;
   v37 = MEMORY[0x1A58E9F30](v52);
-  if (v12)
+  if (mapItemIdentifier)
   {
     v38 = [MKMapItemIdentifier alloc];
-    v39 = [v31 mapItemIdentifier];
-    v40 = [(MKMapItemIdentifier *)v38 initWithGEOMapItemIdentifier:v39];
+    mapItemIdentifier2 = [v31 mapItemIdentifier];
+    address2 = [(MKMapItemIdentifier *)v38 initWithGEOMapItemIdentifier:mapItemIdentifier2];
 
-    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:v40 completionHandler:v37];
+    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:address2 completionHandler:v37];
 LABEL_27:
 
     goto LABEL_28;
@@ -1179,8 +1179,8 @@ LABEL_27:
 
   if (v44)
   {
-    v40 = [v31 address];
-    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:v40 completionHandler:v37];
+    address2 = [v31 address];
+    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:address2 completionHandler:v37];
     goto LABEL_27;
   }
 
@@ -1194,7 +1194,7 @@ LABEL_27:
     v50 = v35;
     _performBlockOnMainThreadIfNeeded(v49);
 
-    v40 = v51;
+    address2 = v51;
     goto LABEL_27;
   }
 
@@ -1318,11 +1318,11 @@ void __55__MKLinkPreviewMetadataRequest__handleLookAroundAction__block_invoke_3(
   v4 = MEMORY[0x1A58E9F30](self->_completionHandler);
   v5 = [[MKLinkPreviewPlaceMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
   v25 = v3;
-  v6 = [(_MKURLParser *)v3 locationQueryItem];
-  v7 = v6;
-  if (v6)
+  locationQueryItem = [(_MKURLParser *)v3 locationQueryItem];
+  v7 = locationQueryItem;
+  if (locationQueryItem)
   {
-    [v6 coordinate];
+    [locationQueryItem coordinate];
     v9 = fabs(v8) <= 180.0;
     v11 = fabs(v10) <= 90.0 && v9;
   }
@@ -1332,15 +1332,15 @@ void __55__MKLinkPreviewMetadataRequest__handleLookAroundAction__block_invoke_3(
     v11 = 0;
   }
 
-  v12 = [v7 mapItemIdentifier];
+  mapItemIdentifier = [v7 mapItemIdentifier];
 
-  v13 = [v7 address];
-  v14 = [v13 length];
+  address = [v7 address];
+  v14 = [address length];
 
-  v15 = [v7 name];
-  if ([v15 length])
+  name = [v7 name];
+  if ([name length])
   {
-    v16 = v12 == 0;
+    v16 = mapItemIdentifier == 0;
   }
 
   else
@@ -1366,13 +1366,13 @@ void __55__MKLinkPreviewMetadataRequest__handleLookAroundAction__block_invoke_3(
   v31 = v20;
   objc_copyWeak(&v33, location);
   v21 = MEMORY[0x1A58E9F30](v29);
-  if (v12)
+  if (mapItemIdentifier)
   {
     v22 = [MKMapItemIdentifier alloc];
-    v23 = [v20 mapItemIdentifier];
-    v24 = [(MKMapItemIdentifier *)v22 initWithGEOMapItemIdentifier:v23];
+    mapItemIdentifier2 = [v20 mapItemIdentifier];
+    address2 = [(MKMapItemIdentifier *)v22 initWithGEOMapItemIdentifier:mapItemIdentifier2];
 
-    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:v24 completionHandler:v21];
+    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromMapItemIdentifier:address2 completionHandler:v21];
 LABEL_19:
 
     goto LABEL_20;
@@ -1380,8 +1380,8 @@ LABEL_19:
 
   if (v14)
   {
-    v24 = [v20 address];
-    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:v24 completionHandler:v21];
+    address2 = [v20 address];
+    [(MKLinkPreviewMetadataRequest *)self _forwardGeocodeString:address2 completionHandler:v21];
     goto LABEL_19;
   }
 
@@ -1395,7 +1395,7 @@ LABEL_19:
     v27 = v19;
     _performBlockOnMainThreadIfNeeded(v26);
 
-    v24 = v28;
+    address2 = v28;
     goto LABEL_19;
   }
 
@@ -1478,7 +1478,7 @@ void __50__MKLinkPreviewMetadataRequest__handlePlaceAction__block_invoke_3(uint6
   v3 = self->_parser;
   v4 = MEMORY[0x1A58E9F30](self->_completionHandler);
   v5 = [[MKLinkPreviewSearchMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-  v6 = [(_MKURLParser *)v3 searchQuery];
+  searchQuery = [(_MKURLParser *)v3 searchQuery];
   [(_MKURLParser *)v3 searchRegion];
   v8 = v7;
   v10 = v9;
@@ -1510,7 +1510,7 @@ void __50__MKLinkPreviewMetadataRequest__handlePlaceAction__block_invoke_3(uint6
   v27 = v21;
   v22 = v5;
   v25 = v22;
-  v23 = v6;
+  v23 = searchQuery;
   v26 = v23;
   objc_copyWeak(&v28, &location);
   [(MKLinkPreviewMetadataRequest *)self _searchWithQuery:v23 region:v24 completionHandler:v8, v10, v12, v14];
@@ -1600,16 +1600,16 @@ void __51__MKLinkPreviewMetadataRequest__handleSearchAction__block_invoke_3(uint
     [(_MKURLParser *)v3 cameraCenterBasedAltitude];
     if (v12 <= 0.0)
     {
-      v19 = [(_MKURLParser *)v3 mapCamera];
-      [v19 altitude];
+      mapCamera = [(_MKURLParser *)v3 mapCamera];
+      [mapCamera altitude];
       if (v20 > 0.0)
       {
       }
 
       else
       {
-        v21 = [(_MKURLParser *)v3 mapCamera];
-        [v21 centerCoordinateDistance];
+        mapCamera2 = [(_MKURLParser *)v3 mapCamera];
+        [mapCamera2 centerCoordinateDistance];
         v23 = v22;
 
         if (v23 <= 0.0)
@@ -1633,7 +1633,7 @@ void __51__MKLinkPreviewMetadataRequest__handleSearchAction__block_invoke_3(uint
         }
       }
 
-      v18 = [(_MKURLParser *)v3 mapCamera];
+      mapCamera3 = [(_MKURLParser *)v3 mapCamera];
     }
 
     else
@@ -1643,11 +1643,11 @@ void __51__MKLinkPreviewMetadataRequest__handleSearchAction__block_invoke_3(uint
       [(_MKURLParser *)v3 tilt];
       v16 = v15;
       [(_MKURLParser *)v3 rotation];
-      v18 = [MKMapCamera cameraLookingAtCenterCoordinate:*&v9 fromDistance:*&v11 pitch:v14 heading:v16, v17];
+      mapCamera3 = [MKMapCamera cameraLookingAtCenterCoordinate:*&v9 fromDistance:*&v11 pitch:v14 heading:v16, v17];
     }
 
-    v30 = v18;
-    [(MKLinkPreviewMetadata *)v5 setMapCamera:v18];
+    v30 = mapCamera3;
+    [(MKLinkPreviewMetadata *)v5 setMapCamera:mapCamera3];
 
 LABEL_18:
     objc_initWeak(&location, self);
@@ -1747,13 +1747,13 @@ void __50__MKLinkPreviewMetadataRequest__handleFrameAction__block_invoke_2(uint6
   v3 = self->_parser;
   v4 = MEMORY[0x1A58E9F30](self->_completionHandler);
   v5 = [(MKLinkPreviewMetadata *)[MKLinkPreviewDirectionsMetadata alloc] initWithActionType:[(_MKURLParser *)v3 actionType] mapType:[(_MKURLParser *)v3 mapType]];
-  v6 = [(_MKURLParser *)v3 sourceLocationQueryItem];
-  v7 = [(_MKURLParser *)v3 destinationLocationQueryItem];
-  v8 = [(_MKURLParser *)v3 transportType];
-  v17 = v7;
-  if (v8 <= 3)
+  sourceLocationQueryItem = [(_MKURLParser *)v3 sourceLocationQueryItem];
+  destinationLocationQueryItem = [(_MKURLParser *)v3 destinationLocationQueryItem];
+  transportType = [(_MKURLParser *)v3 transportType];
+  v17 = destinationLocationQueryItem;
+  if (transportType <= 3)
   {
-    if (v8 == 2)
+    if (transportType == 2)
     {
       v9 = 2;
       goto LABEL_10;
@@ -1762,14 +1762,14 @@ void __50__MKLinkPreviewMetadataRequest__handleFrameAction__block_invoke_2(uint6
     goto LABEL_7;
   }
 
-  if (v8 == 4)
+  if (transportType == 4)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v8 != 8)
+    if (transportType != 8)
     {
 LABEL_7:
       v9 = 0;
@@ -1803,7 +1803,7 @@ LABEL_10:
   v37[3] = __Block_byref_object_copy__8437;
   v37[4] = __Block_byref_object_dispose__8438;
   v38 = 0;
-  if (v6)
+  if (sourceLocationQueryItem)
   {
     dispatch_group_enter(v13);
     v33[0] = MEMORY[0x1E69E9820];
@@ -1813,7 +1813,7 @@ LABEL_10:
     v35 = v37;
     v36 = v39;
     v34 = v13;
-    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromLocationQueryItem:v6 completionHandler:v33];
+    [(MKLinkPreviewMetadataRequest *)self _requestMapItemFromLocationQueryItem:sourceLocationQueryItem completionHandler:v33];
   }
 
   v31[0] = 0;
@@ -1986,13 +1986,13 @@ void __55__MKLinkPreviewMetadataRequest__handleDirectionsAction__block_invoke_3(
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_processURL:(id)a3
+- (void)_processURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (_MKURLGetSchemeType(v5) != 6)
+  lCopy = l;
+  if (_MKURLGetSchemeType(lCopy) != 6)
   {
-    v8 = [[_MKURLParser alloc] initWithURL:v5];
+    v8 = [[_MKURLParser alloc] initWithURL:lCopy];
     v9 = v8;
     if (v8)
     {
@@ -2001,10 +2001,10 @@ void __55__MKLinkPreviewMetadataRequest__handleDirectionsAction__block_invoke_3(
         if ([(_MKURLParser *)v9 actionType])
         {
           objc_storeStrong(&self->_parser, v9);
-          v10 = [(_MKURLParser *)v9 actionType];
-          if (v10 <= 3)
+          actionType = [(_MKURLParser *)v9 actionType];
+          if (actionType <= 3)
           {
-            switch(v10)
+            switch(actionType)
             {
               case 1:
                 [(MKLinkPreviewMetadataRequest *)self _handleDirectionsAction];
@@ -2020,9 +2020,9 @@ void __55__MKLinkPreviewMetadataRequest__handleDirectionsAction__block_invoke_3(
 
           else
           {
-            if (v10 <= 5)
+            if (actionType <= 5)
             {
-              if (v10 == 4)
+              if (actionType == 4)
               {
                 [(MKLinkPreviewMetadataRequest *)self _handlePlaceAction];
               }
@@ -2035,13 +2035,13 @@ void __55__MKLinkPreviewMetadataRequest__handleDirectionsAction__block_invoke_3(
               goto LABEL_21;
             }
 
-            if (v10 == 6)
+            if (actionType == 6)
             {
               [(MKLinkPreviewMetadataRequest *)self _handleGuidesAction];
               goto LABEL_21;
             }
 
-            if (v10 == 7)
+            if (actionType == 7)
             {
               [(MKLinkPreviewMetadataRequest *)self _handleReportAProblemAction];
               goto LABEL_21;
@@ -2070,7 +2070,7 @@ LABEL_21:
           *v15 = 138543618;
           *&v15[4] = v12;
           *&v15[12] = 2114;
-          *&v15[14] = v5;
+          *&v15[14] = lCopy;
           v13 = "%{public}@ parser could not identify action type for %{public}@";
           goto LABEL_18;
         }
@@ -2090,7 +2090,7 @@ LABEL_19:
       *v15 = 138543618;
       *&v15[4] = v12;
       *&v15[12] = 2114;
-      *&v15[14] = v5;
+      *&v15[14] = lCopy;
       v13 = "%{public}@ failed parsing %{public}@";
     }
 
@@ -2106,7 +2106,7 @@ LABEL_19:
       *v15 = 138543618;
       *&v15[4] = v12;
       *&v15[12] = 2114;
-      *&v15[14] = v5;
+      *&v15[14] = lCopy;
       v13 = "%{public}@ could not build a parser for %{public}@";
     }
 
@@ -2123,17 +2123,17 @@ LABEL_18:
     *v15 = 138543618;
     *&v15[4] = v7;
     *&v15[12] = 2114;
-    *&v15[14] = v5;
+    *&v15[14] = lCopy;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ start handling shortURL for %{public}@", v15, 0x16u);
   }
 
-  [(MKLinkPreviewMetadataRequest *)self _handleShortURL:v5];
+  [(MKLinkPreviewMetadataRequest *)self _handleShortURL:lCopy];
 LABEL_22:
 }
 
-- (void)getMetadataWithCompletionHandler:(id)a3
+- (void)getMetadataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   if (self->_loading)
   {
@@ -2152,7 +2152,7 @@ LABEL_22:
     v11[2] = __65__MKLinkPreviewMetadataRequest_getMetadataWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E76CDA20;
     v12 = v7;
-    v13 = v4;
+    v13 = handlerCopy;
     v8 = v7;
     _performBlockOnMainThreadIfNeeded(v11);
   }
@@ -2161,7 +2161,7 @@ LABEL_22:
   {
     self->_loading = 1;
     os_unfair_lock_unlock(&self->_stateLock);
-    v9 = MEMORY[0x1A58E9F30](v4);
+    v9 = MEMORY[0x1A58E9F30](handlerCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v9;
 
@@ -2193,16 +2193,16 @@ LABEL_22:
   [(MKLinkPreviewMetadataRequest *)&v3 dealloc];
 }
 
-- (MKLinkPreviewMetadataRequest)initWithURL:(id)a3
+- (MKLinkPreviewMetadataRequest)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MKLinkPreviewMetadataRequest;
   v6 = [(MKLinkPreviewMetadataRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;

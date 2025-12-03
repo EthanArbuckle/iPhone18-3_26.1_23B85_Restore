@@ -1,20 +1,20 @@
 @interface PKSafariCredentialsUtilities
-+ (void)_retrieveSafariCredentials:(id)a3;
-+ (void)hasSafariCredentials:(id)a3;
-+ (void)retrieveSafariCredentials:(id)a3;
++ (void)_retrieveSafariCredentials:(id)credentials;
++ (void)hasSafariCredentials:(id)credentials;
++ (void)retrieveSafariCredentials:(id)credentials;
 @end
 
 @implementation PKSafariCredentialsUtilities
 
-+ (void)hasSafariCredentials:(id)a3
++ (void)hasSafariCredentials:(id)credentials
 {
-  v3 = a3;
+  credentialsCopy = credentials;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__PKSafariCredentialsUtilities_hasSafariCredentials___block_invoke;
   v5[3] = &unk_1E79D9338;
-  v6 = v3;
-  v4 = v3;
+  v6 = credentialsCopy;
+  v4 = credentialsCopy;
   [PKSafariCredentialsUtilities _retrieveSafariCredentials:v5];
 }
 
@@ -29,15 +29,15 @@ void __53__PKSafariCredentialsUtilities_hasSafariCredentials___block_invoke(uint
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)retrieveSafariCredentials:(id)a3
++ (void)retrieveSafariCredentials:(id)credentials
 {
-  v3 = a3;
+  credentialsCopy = credentials;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__PKSafariCredentialsUtilities_retrieveSafariCredentials___block_invoke;
   v5[3] = &unk_1E79D9338;
-  v6 = v3;
-  v4 = v3;
+  v6 = credentialsCopy;
+  v4 = credentialsCopy;
   [PKSafariCredentialsUtilities _retrieveSafariCredentials:v5];
 }
 
@@ -116,10 +116,10 @@ void __58__PKSafariCredentialsUtilities_retrieveSafariCredentials___block_invoke
   }
 }
 
-+ (void)_retrieveSafariCredentials:(id)a3
++ (void)_retrieveSafariCredentials:(id)credentials
 {
-  v3 = a3;
-  if (v3)
+  credentialsCopy = credentials;
+  if (credentialsCopy)
   {
     v4 = dispatch_get_global_queue(0, 0);
     v21 = 0;
@@ -141,7 +141,7 @@ void __58__PKSafariCredentialsUtilities_retrieveSafariCredentials___block_invoke
     aBlock[3] = &unk_1E79D9360;
     v17 = &v21;
     v18 = v19;
-    v16 = v3;
+    v16 = credentialsCopy;
     v7 = _Block_copy(aBlock);
     v8 = v22[5];
     handler[0] = MEMORY[0x1E69E9820];

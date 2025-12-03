@@ -1,14 +1,14 @@
 @interface PCSupportReceiver
-- (PCSupportReceiver)initWithConnection:(id)a3;
-- (void)addClientToSegments:(id)a3 replaceExisting:(BOOL)a4 privateSegment:(BOOL)a5;
+- (PCSupportReceiver)initWithConnection:(id)connection;
+- (void)addClientToSegments:(id)segments replaceExisting:(BOOL)existing privateSegment:(BOOL)segment;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)extendCollectionClassesForExportedInterface:(id)a3;
-- (void)fetchConfigurationForClass:(id)a3 completion:(id)a4;
-- (void)fetchGenderAndAgeGroupData:(id)a3;
-- (void)invokeTestingRigHandlerForMessage:(id)a3 payload:(id)a4 completionHandler:(id)a5;
-- (void)policiesForContainerType:(id)a3 adType:(id)a4 adFormatType:(id)a5 completion:(id)a6;
-- (void)policiesToEnforce:(id)a3;
+- (void)extendCollectionClassesForExportedInterface:(id)interface;
+- (void)fetchConfigurationForClass:(id)class completion:(id)completion;
+- (void)fetchGenderAndAgeGroupData:(id)data;
+- (void)invokeTestingRigHandlerForMessage:(id)message payload:(id)payload completionHandler:(id)handler;
+- (void)policiesForContainerType:(id)type adType:(id)adType adFormatType:(id)formatType completion:(id)completion;
+- (void)policiesToEnforce:(id)enforce;
 @end
 
 @implementation PCSupportReceiver
@@ -25,44 +25,44 @@
   [(PCSupportReceiver *)self finishedWithRequests];
 }
 
-- (PCSupportReceiver)initWithConnection:(id)a3
+- (PCSupportReceiver)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = PCSupportReceiver;
   v6 = [(PCSupportReceiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)addClientToSegments:(id)a3 replaceExisting:(BOOL)a4 privateSegment:(BOOL)a5
+- (void)addClientToSegments:(id)segments replaceExisting:(BOOL)existing privateSegment:(BOOL)segment
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  segmentCopy = segment;
+  existingCopy = existing;
+  segmentsCopy = segments;
   v9 = objc_alloc_init(ADTrackingTransparency);
-  v10 = [v9 personalizedAds];
+  personalizedAds = [v9 personalizedAds];
 
-  if (v10)
+  if (personalizedAds)
   {
-    v11 = [v8 componentsJoinedByString:{@", "}];
+    v11 = [segmentsCopy componentsJoinedByString:{@", "}];
     v12 = +[NSUUID UUID];
     v13 = objc_alloc_init(APThirdPartySegmentUpdateLegacyInterface);
-    v14 = [(PCSupportReceiver *)self connection];
-    v15 = [v14 bundleID];
-    [(APThirdPartySegmentUpdateLegacyInterface *)v13 addClientToSegments:v8 token:v12 bundleID:v15 replaceExisting:v6 privateSegment:v5];
+    connection = [(PCSupportReceiver *)self connection];
+    bundleID = [connection bundleID];
+    [(APThirdPartySegmentUpdateLegacyInterface *)v13 addClientToSegments:segmentsCopy token:v12 bundleID:bundleID replaceExisting:existingCopy privateSegment:segmentCopy];
 
     v16 = APLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [v12 UUIDString];
+      uUIDString = [v12 UUIDString];
       v18 = 138543619;
-      v19 = v17;
+      v19 = uUIDString;
       v20 = 2113;
       v21 = v11;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%{public}@ Add client to segments: %{private}@.", &v18, 0x16u);
@@ -82,42 +82,42 @@
   [(PCSupportReceiver *)self finishedWithRequests];
 }
 
-- (void)policiesForContainerType:(id)a3 adType:(id)a4 adFormatType:(id)a5 completion:(id)a6
+- (void)policiesForContainerType:(id)type adType:(id)adType adFormatType:(id)formatType completion:(id)completion
 {
-  v9 = a6;
-  v10 = [APPCPolicyEngine policiesForContainerType:a3 adType:a4 adFormatType:a5];
-  v9[2](v9, v10);
+  completionCopy = completion;
+  v10 = [APPCPolicyEngine policiesForContainerType:type adType:adType adFormatType:formatType];
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)policiesToEnforce:(id)a3
+- (void)policiesToEnforce:(id)enforce
 {
-  v3 = a3;
+  enforceCopy = enforce;
   v4 = +[APPCPolicyEngine policiesToEnforce];
-  v3[2](v3, v4);
+  enforceCopy[2](enforceCopy, v4);
 }
 
-- (void)fetchGenderAndAgeGroupData:(id)a3
+- (void)fetchGenderAndAgeGroupData:(id)data
 {
-  [APIDAccountProvider fetchGenderAndAgeData:0 completionHandler:a3];
+  [APIDAccountProvider fetchGenderAndAgeData:0 completionHandler:data];
 
   [(PCSupportReceiver *)self finishedWithRequests];
 }
 
-- (void)fetchConfigurationForClass:(id)a3 completion:(id)a4
+- (void)fetchConfigurationForClass:(id)class completion:(id)completion
 {
-  v5 = a4;
-  v7 = [APConfigurationMediator configurationForClass:NSClassFromString(a3) usingCache:0];
-  v6 = [v7 configDictionary];
-  v5[2](v5, v6);
+  completionCopy = completion;
+  v7 = [APConfigurationMediator configurationForClass:NSClassFromString(class) usingCache:0];
+  configDictionary = [v7 configDictionary];
+  completionCopy[2](completionCopy, configDictionary);
 }
 
-- (void)invokeTestingRigHandlerForMessage:(id)a3 payload:(id)a4 completionHandler:(id)a5
+- (void)invokeTestingRigHandlerForMessage:(id)message payload:(id)payload completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  payloadCopy = payload;
+  messageCopy = message;
   v10 = +[APTestingRig sharedInstance];
-  [v10 invokeHandlerForMessage:v9 payload:v8 completionHandler:v7];
+  [v10 invokeHandlerForMessage:messageCopy payload:payloadCopy completionHandler:handlerCopy];
 }
 
 - (void)connectionInterrupted
@@ -132,13 +132,13 @@
   [(PCSupportReceiver *)self finishedWithRequests];
 }
 
-- (void)extendCollectionClassesForExportedInterface:(id)a3
+- (void)extendCollectionClassesForExportedInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v4, v5, objc_opt_class(), 0];
-  [v3 setClasses:v6 forSelector:"addClientToSegments:replaceExisting:privateSegment:" argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v6 forSelector:"addClientToSegments:replaceExisting:privateSegment:" argumentIndex:0 ofReply:0];
 }
 
 @end

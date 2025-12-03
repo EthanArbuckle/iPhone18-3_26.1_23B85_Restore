@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (WLKStoredConfiguration)storedConfiguration;
 - (WLKStoredConfigurationManager)init;
-- (void)_invalidateWithReason:(id)a3;
-- (void)_setStoredConfiguration:(id)a3;
-- (void)_updateConfiguration:(id)a3;
+- (void)_invalidateWithReason:(id)reason;
+- (void)_setStoredConfiguration:(id)configuration;
+- (void)_updateConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
@@ -29,10 +29,10 @@
   v3 = [(WLKStoredConfigurationManager *)&v7 init];
   if (v3 == self)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__handleLibraryChange_ name:@"WLKAppLibraryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleLibraryChange_ name:@"WLKAppLibraryDidChangeNotification" object:0];
     v5 = +[WLKAccountMonitor sharedInstance];
-    [v4 addObserver:v3 selector:sel__handleAccountChange_ name:@"WLKAccountMonitorAccountDidChange" object:v5];
+    [defaultCenter addObserver:v3 selector:sel__handleAccountChange_ name:@"WLKAccountMonitorAccountDidChange" object:v5];
   }
 
   return v3;
@@ -47,23 +47,23 @@ uint64_t __47__WLKStoredConfigurationManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WLKStoredConfigurationManager;
   [(WLKStoredConfigurationManager *)&v4 dealloc];
 }
 
-- (void)_invalidateWithReason:(id)a3
+- (void)_invalidateWithReason:(id)reason
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = reasonCopy;
     _os_log_impl(&dword_272A0F000, v5, OS_LOG_TYPE_DEFAULT, "WLKStoredConfigurationManager - Invalidating for reason: %@", buf, 0xCu);
   }
 
@@ -77,10 +77,10 @@ uint64_t __47__WLKStoredConfigurationManager_sharedInstance__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateConfiguration:(id)a3
+- (void)_updateConfiguration:(id)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,21 +89,21 @@ uint64_t __47__WLKStoredConfigurationManager_sharedInstance__block_invoke()
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isActiveUser")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configurationCopy, "isActiveUser")}];
   [v6 setObject:v7 forKeyedSubscript:@"activeUser"];
-  v8 = [v4 vppaStatusString];
-  if ([v8 length])
+  vppaStatusString = [configurationCopy vppaStatusString];
+  if ([vppaStatusString length])
   {
-    [v6 setObject:v8 forKeyedSubscript:@"vppaState"];
+    [v6 setObject:vppaStatusString forKeyedSubscript:@"vppaState"];
   }
 
-  v9 = [v4 utsc];
-  if ([v9 length])
+  utsc = [configurationCopy utsc];
+  if ([utsc length])
   {
-    [v6 setObject:v9 forKeyedSubscript:@"utsc"];
+    [v6 setObject:utsc forKeyedSubscript:@"utsc"];
   }
 
-  v10 = [v4 requiredRequestKeyValuePairsDictionary];
+  requiredRequestKeyValuePairsDictionary = [configurationCopy requiredRequestKeyValuePairsDictionary];
   *buf = 0;
   v15 = buf;
   v16 = 0x2020000000;
@@ -113,12 +113,12 @@ uint64_t __47__WLKStoredConfigurationManager_sharedInstance__block_invoke()
   v13[2] = __54__WLKStoredConfigurationManager__updateConfiguration___block_invoke;
   v13[3] = &unk_279E5E788;
   v13[4] = buf;
-  [v10 enumerateKeysAndObjectsUsingBlock:v13];
+  [requiredRequestKeyValuePairsDictionary enumerateKeysAndObjectsUsingBlock:v13];
   if (v15[24])
   {
-    if (v10)
+    if (requiredRequestKeyValuePairsDictionary)
     {
-      [v6 setObject:v10 forKeyedSubscript:@"rrkvp"];
+      [v6 setObject:requiredRequestKeyValuePairsDictionary forKeyedSubscript:@"rrkvp"];
     }
 
     if ([v6 count])
@@ -133,7 +133,7 @@ uint64_t __47__WLKStoredConfigurationManager_sharedInstance__block_invoke()
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *v18 = 138412290;
-      v19 = v10;
+      v19 = requiredRequestKeyValuePairsDictionary;
       _os_log_impl(&dword_272A0F000, v11, OS_LOG_TYPE_DEFAULT, "WLKStoredConfigurationManager - Unsupported type in rrkvp %@. Will not persist.", v18, 0xCu);
     }
   }
@@ -171,13 +171,13 @@ void __54__WLKStoredConfigurationManager__updateConfiguration___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setStoredConfiguration:(id)a3
+- (void)_setStoredConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
   v5 = [v4 objectForKey:@"storedConfig"];
-  v6 = v3;
+  v6 = configurationCopy;
   v7 = v5;
   v8 = v7;
   if (v7 == v6)
@@ -217,8 +217,8 @@ void __54__WLKStoredConfigurationManager__updateConfiguration___block_invoke(uin
     {
       [v4 setObject:v6 forKey:@"storedConfig"];
       v12 = MEMORY[0x277CCABB0];
-      v13 = [MEMORY[0x277CBEAA8] date];
-      [v13 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v15 = [v12 numberWithDouble:floor(v14)];
       [v4 setObject:v15 forKey:@"storedConfigTimestamp"];
     }

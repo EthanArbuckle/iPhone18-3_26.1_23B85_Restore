@@ -29,7 +29,7 @@
   localDeviceIdentifier = self->_localDeviceIdentifier;
   if (!localDeviceIdentifier)
   {
-    v5 = [(IDSCurrentDevice *)self _deviceIdentifierKeychainID];
+    _deviceIdentifierKeychainID = [(IDSCurrentDevice *)self _deviceIdentifierKeychainID];
     IMGetKeychainAuthToken();
     v6 = 0;
     if (v6)
@@ -83,7 +83,7 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [(IDSCurrentDevice *)v2 deviceIdentifier];
+    deviceIdentifier = [(IDSCurrentDevice *)v2 deviceIdentifier];
   }
 
   return v3;
@@ -92,37 +92,37 @@ LABEL_9:
 - (NSData)encryptionClassAKey
 {
   v2 = +[IDSRegistrationKeyManager sharedInstance];
-  v3 = [v2 publicMessageProtectionDataToRegisterForClassA];
+  publicMessageProtectionDataToRegisterForClassA = [v2 publicMessageProtectionDataToRegisterForClassA];
 
-  return v3;
+  return publicMessageProtectionDataToRegisterForClassA;
 }
 
 - (NSData)encryptionClassCKey
 {
   v2 = +[IDSRegistrationKeyManager sharedInstance];
-  v3 = [v2 publicMessageProtectionDataToRegisterForClassC];
+  publicMessageProtectionDataToRegisterForClassC = [v2 publicMessageProtectionDataToRegisterForClassC];
 
-  return v3;
+  return publicMessageProtectionDataToRegisterForClassC;
 }
 
 - (NSData)encryptionClassDKey
 {
   v2 = +[IDSRegistrationKeyManager sharedInstance];
-  v3 = [v2 publicMessageProtectionDataToRegisterForClassD];
+  publicMessageProtectionDataToRegisterForClassD = [v2 publicMessageProtectionDataToRegisterForClassD];
 
-  return v3;
+  return publicMessageProtectionDataToRegisterForClassD;
 }
 
 - (BOOL)hasAllEncryptionKeys
 {
-  v3 = [(IDSCurrentDevice *)self encryptionClassAKey];
-  if (v3)
+  encryptionClassAKey = [(IDSCurrentDevice *)self encryptionClassAKey];
+  if (encryptionClassAKey)
   {
-    v4 = [(IDSCurrentDevice *)self encryptionClassCKey];
-    if (v4)
+    encryptionClassCKey = [(IDSCurrentDevice *)self encryptionClassCKey];
+    if (encryptionClassCKey)
     {
-      v5 = [(IDSCurrentDevice *)self encryptionClassDKey];
-      v6 = v5 != 0;
+      encryptionClassDKey = [(IDSCurrentDevice *)self encryptionClassDKey];
+      v6 = encryptionClassDKey != 0;
     }
 
     else
@@ -141,18 +141,18 @@ LABEL_9:
 
 - (void)regenerateDeviceIdentifier
 {
-  v3 = [(IDSCurrentDevice *)self _deviceIdentifierKeychainID];
+  _deviceIdentifierKeychainID = [(IDSCurrentDevice *)self _deviceIdentifierKeychainID];
   IMRemoveKeychainAuthToken();
   localDeviceIdentifier = self->_localDeviceIdentifier;
   self->_localDeviceIdentifier = 0;
 
-  v5 = [(IDSCurrentDevice *)self deviceIdentifier];
+  deviceIdentifier = [(IDSCurrentDevice *)self deviceIdentifier];
   v6 = +[IMRGLog uniqueID];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(IDSCurrentDevice *)self deviceIdentifier];
+    deviceIdentifier2 = [(IDSCurrentDevice *)self deviceIdentifier];
     v8 = 138412290;
-    v9 = v7;
+    v9 = deviceIdentifier2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Re-generated my uniqueID %@", &v8, 0xCu);
   }
 }

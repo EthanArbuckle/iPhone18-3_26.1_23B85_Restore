@@ -1,20 +1,20 @@
 @interface COSScriptSelector
-- (COSScriptSelector)initWithInternationalController:(id)a3;
-- (void)setSelectedScript:(id)a3 forLocale:(id)a4;
+- (COSScriptSelector)initWithInternationalController:(id)controller;
+- (void)setSelectedScript:(id)script forLocale:(id)locale;
 @end
 
 @implementation COSScriptSelector
 
-- (COSScriptSelector)initWithInternationalController:(id)a3
+- (COSScriptSelector)initWithInternationalController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = COSScriptSelector;
   v6 = [(COSScriptSelector *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internationalController, a3);
+    objc_storeStrong(&v6->_internationalController, controller);
     v8 = [[NPSDomainAccessor alloc] initWithDomain:@".GlobalPreferences"];
     gizmoGlobalDomain = v7->_gizmoGlobalDomain;
     v7->_gizmoGlobalDomain = v8;
@@ -27,15 +27,15 @@
   return v7;
 }
 
-- (void)setSelectedScript:(id)a3 forLocale:(id)a4
+- (void)setSelectedScript:(id)script forLocale:(id)locale
 {
-  v6 = a3;
-  v7 = [a4 preferenceKeysForSelectableScripts];
+  scriptCopy = script;
+  preferenceKeysForSelectableScripts = [locale preferenceKeysForSelectableScripts];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v8 = [preferenceKeysForSelectableScripts countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -46,14 +46,14 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(preferenceKeysForSelectableScripts);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [v12 isEqualToString:v6];
-        v15 = [(COSScriptSelector *)self gizmoGlobalDomain];
-        v16 = v15;
+        v13 = [preferenceKeysForSelectableScripts objectForKeyedSubscript:v12];
+        v14 = [v12 isEqualToString:scriptCopy];
+        gizmoGlobalDomain = [(COSScriptSelector *)self gizmoGlobalDomain];
+        v16 = gizmoGlobalDomain;
         if (v14)
         {
           v17 = &__kCFBooleanTrue;
@@ -64,24 +64,24 @@
           v17 = 0;
         }
 
-        [v15 setObject:v17 forKey:v13];
+        [gizmoGlobalDomain setObject:v17 forKey:v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [preferenceKeysForSelectableScripts countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  v18 = [(COSScriptSelector *)self gizmoGlobalDomain];
-  v19 = [v18 synchronize];
+  gizmoGlobalDomain2 = [(COSScriptSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain2 synchronize];
 
-  v20 = [(COSScriptSelector *)self syncManager];
-  v21 = [(COSScriptSelector *)self gizmoGlobalDomain];
-  v22 = [v21 domain];
-  v23 = [v7 allValues];
-  v24 = [NSSet setWithArray:v23];
-  [v20 synchronizeNanoDomain:v22 keys:v24];
+  syncManager = [(COSScriptSelector *)self syncManager];
+  gizmoGlobalDomain3 = [(COSScriptSelector *)self gizmoGlobalDomain];
+  domain = [gizmoGlobalDomain3 domain];
+  allValues = [preferenceKeysForSelectableScripts allValues];
+  v24 = [NSSet setWithArray:allValues];
+  [syncManager synchronizeNanoDomain:domain keys:v24];
 }
 
 @end

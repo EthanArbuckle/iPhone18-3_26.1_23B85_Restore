@@ -1,6 +1,6 @@
 @interface DIIdentityProofingSession
 - (DIIdentityProofingSession)init;
-- (void)cancelProofingWithState:(id)a3 country:(id)a4 completion:(id)a5;
+- (void)cancelProofingWithState:(id)state country:(id)country completion:(id)completion;
 @end
 
 @implementation DIIdentityProofingSession
@@ -19,13 +19,13 @@
   return v2;
 }
 
-- (void)cancelProofingWithState:(id)a3 country:(id)a4 completion:(id)a5
+- (void)cancelProofingWithState:(id)state country:(id)country completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DIIdentityProofingSession *)self proofingSession];
-  [v11 cancelProofingWithState:v10 country:v9 completionHandler:v8];
+  completionCopy = completion;
+  countryCopy = country;
+  stateCopy = state;
+  proofingSession = [(DIIdentityProofingSession *)self proofingSession];
+  [proofingSession cancelProofingWithState:stateCopy country:countryCopy completionHandler:completionCopy];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface NUDataSet
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDataSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDataSet:(id)set;
 - (NUDataSet)init;
-- (NUDataSet)initWithDataSet:(id)a3;
-- (NUDataSet)initWithValues:(const double *)a3 count:(int64_t)a4;
+- (NUDataSet)initWithDataSet:(id)set;
+- (NUDataSet)initWithValues:(const double *)values count:(int64_t)count;
 - (double)coefficientOfVariation;
 - (double)confidenceInterval95;
 - (double)estimatedCoefficientOfVariation;
@@ -15,18 +15,18 @@
 - (double)median;
 - (double)medianAbsoluteDeviation;
 - (double)min;
-- (double)percentile:(double)a3;
+- (double)percentile:(double)percentile;
 - (double)standardDeviation;
 - (double)standardError;
 - (double)sum;
-- (double)valueAtIndex:(int64_t)a3;
+- (double)valueAtIndex:(int64_t)index;
 - (double)variance;
 - (id).cxx_construct;
-- (id)filter:(id)a3;
-- (id)map:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)filter:(id)filter;
+- (id)map:(id)map;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)enumerateValues:(id)a3;
+- (void)enumerateValues:(id)values;
 @end
 
 @implementation NUDataSet
@@ -39,11 +39,11 @@
   return self;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  mapCopy = map;
+  if (!mapCopy)
   {
     v11 = NUAssertLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -62,8 +62,8 @@
       if (v15)
       {
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -74,8 +74,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -91,7 +91,7 @@
   v25[3] = &unk_1E810AC80;
   v6 = v5;
   v26 = v6;
-  v7 = v4;
+  v7 = mapCopy;
   v27 = v7;
   [(NUDataSet *)self enumerateValues:v25];
   v8 = v27;
@@ -108,11 +108,11 @@ uint64_t __17__NUDataSet_map___block_invoke(uint64_t a1)
   return [v1 addValue:?];
 }
 
-- (id)filter:(id)a3
+- (id)filter:(id)filter
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  filterCopy = filter;
+  if (!filterCopy)
   {
     v11 = NUAssertLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -131,8 +131,8 @@ uint64_t __17__NUDataSet_map___block_invoke(uint64_t a1)
       if (v15)
       {
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -143,8 +143,8 @@ uint64_t __17__NUDataSet_map___block_invoke(uint64_t a1)
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -158,7 +158,7 @@ uint64_t __17__NUDataSet_map___block_invoke(uint64_t a1)
   v25[1] = 3221225472;
   v25[2] = __20__NUDataSet_filter___block_invoke;
   v25[3] = &unk_1E810AC80;
-  v6 = v4;
+  v6 = filterCopy;
   v27 = v6;
   v7 = v5;
   v26 = v7;
@@ -182,10 +182,10 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
   return result;
 }
 
-- (double)percentile:(double)a3
+- (double)percentile:(double)percentile
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0)
+  if (percentile < 0.0)
   {
     v5 = NUAssertLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -204,8 +204,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v9)
       {
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v19;
         v35 = 2114;
@@ -216,8 +216,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -226,7 +226,7 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
     _NUAssertFailHandler("[NUDataSet percentile:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Statistics/NUDataSet.mm", 326, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "p >= 0.0");
   }
 
-  if (a3 > 1.0)
+  if (percentile > 1.0)
   {
     v12 = NUAssertLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v16)
       {
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v26;
         v35 = 2114;
@@ -257,8 +257,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -269,7 +269,7 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
   p_data = &self->_data;
 
-  return NU::Percentile(p_data, a2, a3);
+  return NU::Percentile(p_data, a2, percentile);
 }
 
 - (double)estimatedCoefficientOfVariation
@@ -538,10 +538,10 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
   return result;
 }
 
-- (BOOL)isEqualToDataSet:(id)a3
+- (BOOL)isEqualToDataSet:(id)set
 {
-  v4 = a3;
-  if (v4 && (begin = self->_data._values.__begin_, end = self->_data._values.__end_, v7 = v4[14], end - begin == v4[15] - v7))
+  setCopy = set;
+  if (setCopy && (begin = self->_data._values.__begin_, end = self->_data._values.__end_, v7 = setCopy[14], end - begin == setCopy[15] - v7))
   {
     if (begin == end)
     {
@@ -571,11 +571,11 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUDataSet *)self isEqualToDataSet:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUDataSet *)self isEqualToDataSet:equalCopy];
 
   return v5;
 }
@@ -587,20 +587,20 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
   return [(NUDataSet *)&v3 hash];
 }
 
-- (void)enumerateValues:(id)a3
+- (void)enumerateValues:(id)values
 {
-  v6 = a3;
+  valuesCopy = values;
   begin = self->_data._values.__begin_;
   for (i = self->_data._values.__end_; begin != i; ++begin)
   {
-    v6[2](*begin);
+    valuesCopy[2](*begin);
   }
 }
 
-- (double)valueAtIndex:(int64_t)a3
+- (double)valueAtIndex:(int64_t)index
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = NUAssertLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -619,8 +619,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v10)
       {
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v20;
         v36 = 2114;
@@ -631,8 +631,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -641,7 +641,7 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
     _NUAssertFailHandler("[NUDataSet valueAtIndex:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Statistics/NUDataSet.mm", 126, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "index >= 0");
   }
 
-  if ([(NUDataSet *)self count]<= a3)
+  if ([(NUDataSet *)self count]<= index)
   {
     v13 = NUAssertLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -660,8 +660,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v17)
       {
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v27;
         v36 = 2114;
@@ -672,8 +672,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -682,21 +682,21 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
     _NUAssertFailHandler("[NUDataSet valueAtIndex:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Statistics/NUDataSet.mm", 127, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "index < self.count");
   }
 
-  return self->_data._values.__begin_[a3];
+  return self->_data._values.__begin_[index];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NUMutableDataSet allocWithZone:a3];
+  v4 = [NUMutableDataSet allocWithZone:zone];
 
   return [(NUDataSet *)v4 initWithDataSet:self];
 }
 
-- (NUDataSet)initWithDataSet:(id)a3
+- (NUDataSet)initWithDataSet:(id)set
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  setCopy = set;
+  if (!setCopy)
   {
     v25 = NUAssertLogger();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -715,8 +715,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v29)
       {
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v32;
         v42 = 2114;
@@ -727,8 +727,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -741,12 +741,12 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
   v39.super_class = NUDataSet;
   v5 = [(NUDataSet *)&v39 init];
   v6 = v5;
-  if (v5 != v4)
+  if (v5 != setCopy)
   {
     p_data = &v5->_data;
     begin = v5->_data._values.__begin_;
-    v9 = v4->_data._values.__begin_;
-    end = v4->_data._values.__end_;
+    v9 = setCopy->_data._values.__begin_;
+    end = setCopy->_data._values.__end_;
     v11 = end - v9;
     cap = v5->_data._values.__cap_;
     if (cap - begin < (end - v9))
@@ -803,7 +803,7 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       v18 = v9 + v17;
       if (v16 != begin)
       {
-        memmove(v5->_data._values.__begin_, v4->_data._values.__begin_, v17);
+        memmove(v5->_data._values.__begin_, setCopy->_data._values.__begin_, v17);
         v16 = v6->_data._values.__end_;
       }
 
@@ -818,34 +818,34 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
     v6->_data._values.__end_ = v19;
   }
 
-  v20 = *&v4->_stats.sum;
-  *&v6->_stats.max = *&v4->_stats.max;
+  v20 = *&setCopy->_stats.sum;
+  *&v6->_stats.max = *&setCopy->_stats.max;
   *&v6->_stats.sum = v20;
-  v21 = *&v4->_stats.geomean;
-  v22 = *&v4->_stats.variance;
-  v23 = *&v4->_stats.stderr;
-  *&v6->_stats.cv = *&v4->_stats.cv;
+  v21 = *&setCopy->_stats.geomean;
+  v22 = *&setCopy->_stats.variance;
+  v23 = *&setCopy->_stats.stderr;
+  *&v6->_stats.cv = *&setCopy->_stats.cv;
   *&v6->_stats.stderr = v23;
   *&v6->_stats.variance = v22;
   *&v6->_stats.geomean = v21;
-  v6->_flags = v4->_flags;
+  v6->_flags = setCopy->_flags;
 
   return v6;
 }
 
-- (NUDataSet)initWithValues:(const double *)a3 count:(int64_t)a4
+- (NUDataSet)initWithValues:(const double *)values count:(int64_t)count
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (values)
   {
-    if (a4)
+    if (count)
     {
       v31.receiver = self;
       v31.super_class = NUDataSet;
       [(NUDataSet *)&v31 init];
-      if (!(a4 >> 61))
+      if (!(count >> 61))
       {
-        std::__allocate_at_least[abi:ne200100]<std::allocator<double>>(a4);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<double>>(count);
       }
 
       std::vector<double>::__throw_length_error[abi:ne200100]();
@@ -868,8 +868,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v15)
       {
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         buf = 138543618;
         buf_4 = v23;
         buf_12 = 2114;
@@ -880,8 +880,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       buf = 138543362;
       buf_4 = v17;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -910,8 +910,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
       if (v9)
       {
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v20 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         buf = 138543618;
         buf_4 = v18;
         buf_12 = 2114;
@@ -922,8 +922,8 @@ uint64_t __20__NUDataSet_filter___block_invoke(uint64_t a1, double a2)
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       buf = 138543362;
       buf_4 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);

@@ -1,33 +1,33 @@
 @interface HKSharingAuthorization
-- (BOOL)isEqual:(id)a3;
-- (HKSharingAuthorization)initWithAuthorizationIdentifier:(id)a3 displayName:(id)a4 displaySubtitle:(id)a5;
-- (HKSharingAuthorization)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSharingAuthorization)initWithAuthorizationIdentifier:(id)identifier displayName:(id)name displaySubtitle:(id)subtitle;
+- (HKSharingAuthorization)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSharingAuthorization
 
-- (HKSharingAuthorization)initWithAuthorizationIdentifier:(id)a3 displayName:(id)a4 displaySubtitle:(id)a5
+- (HKSharingAuthorization)initWithAuthorizationIdentifier:(id)identifier displayName:(id)name displaySubtitle:(id)subtitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  subtitleCopy = subtitle;
   v19.receiver = self;
   v19.super_class = HKSharingAuthorization;
   v11 = [(HKSharingAuthorization *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     authorizationIdentifier = v11->_authorizationIdentifier;
     v11->_authorizationIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     displayName = v11->_displayName;
     v11->_displayName = v14;
 
-    v16 = [v10 copy];
+    v16 = [subtitleCopy copy];
     displaySubtitle = v11->_displaySubtitle;
     v11->_displaySubtitle = v16;
   }
@@ -52,9 +52,9 @@
   return v4 ^ [(NSString *)self->_displaySubtitle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -62,21 +62,21 @@
   }
 
   authorizationIdentifier = self->_authorizationIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (authorizationIdentifier != v6 && (!v6 || ![(NSString *)authorizationIdentifier isEqual:?]))
   {
     goto LABEL_11;
   }
 
   displayName = self->_displayName;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (displayName != v8 && (!v8 || ![(NSString *)displayName isEqual:?]))
   {
     goto LABEL_11;
   }
 
   displaySubtitle = self->_displaySubtitle;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (displaySubtitle == v10)
   {
     v11 = 1;
@@ -99,21 +99,21 @@ LABEL_12:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   authorizationIdentifier = self->_authorizationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:authorizationIdentifier forKey:@"AuthorizationIdentifier"];
-  [v5 encodeObject:self->_displayName forKey:@"DisplayName"];
-  [v5 encodeObject:self->_displaySubtitle forKey:@"DisplaySubtitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:authorizationIdentifier forKey:@"AuthorizationIdentifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"DisplayName"];
+  [coderCopy encodeObject:self->_displaySubtitle forKey:@"DisplaySubtitle"];
 }
 
-- (HKSharingAuthorization)initWithCoder:(id)a3
+- (HKSharingAuthorization)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AuthorizationIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplaySubtitle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AuthorizationIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplaySubtitle"];
 
   v8 = [(HKSharingAuthorization *)self initWithAuthorizationIdentifier:v5 displayName:v6 displaySubtitle:v7];
   return v8;

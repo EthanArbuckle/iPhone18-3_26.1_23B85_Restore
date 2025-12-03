@@ -2,10 +2,10 @@
 + (MRDMediaBundleManager)shared;
 - (MRDMediaBundleManager)init;
 - (NSDictionary)bundles;
-- (id)cachedEligibilityOf:(id)a3;
-- (void)queryEligibilityOf:(NSString *)a3 completionHandler:(id)a4;
-- (void)queryEligibilityOfAll:(NSArray *)a3 completionHandler:(id)a4;
-- (void)setBundles:(id)a3;
+- (id)cachedEligibilityOf:(id)of;
+- (void)queryEligibilityOf:(NSString *)of completionHandler:(id)handler;
+- (void)queryEligibilityOfAll:(NSArray *)all completionHandler:(id)handler;
+- (void)setBundles:(id)bundles;
 @end
 
 @implementation MRDMediaBundleManager
@@ -22,14 +22,14 @@
   return v3;
 }
 
-- (void)queryEligibilityOfAll:(NSArray *)a3 completionHandler:(id)a4
+- (void)queryEligibilityOfAll:(NSArray *)all completionHandler:(id)handler
 {
   v7 = (*(*(sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = all;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -44,16 +44,16 @@
   v14[3] = 0;
   v14[4] = &unk_100459F00;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  allCopy = all;
+  selfCopy = self;
   sub_1001D34BC(0, 0, v9, &unk_100459F08, v14);
 }
 
-- (id)cachedEligibilityOf:(id)a3
+- (id)cachedEligibilityOf:(id)of
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_10000CBD8(v4, v6);
 
   return v8;
@@ -71,11 +71,11 @@
   return v5.super.isa;
 }
 
-- (void)setBundles:(id)a3
+- (void)setBundles:(id)bundles
 {
   sub_100004E30();
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10035750C(v4);
 }
 
@@ -95,15 +95,15 @@
   return [(MRDMediaBundleManager *)&v7 init];
 }
 
-- (void)queryEligibilityOf:(NSString *)a3 completionHandler:(id)a4
+- (void)queryEligibilityOf:(NSString *)of completionHandler:(id)handler
 {
   v7 = sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = of;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -118,8 +118,8 @@
   v15[3] = 0;
   v15[4] = &unk_100459ED0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  ofCopy = of;
+  selfCopy = self;
   sub_1001D34BC(0, 0, v10, &unk_100459EE0, v15);
 }
 

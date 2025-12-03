@@ -8,10 +8,10 @@
 {
   if ([(GEOPlace *)self hasCenter])
   {
-    v3 = [(GEOPlace *)self center];
-    [v3 lat];
+    center = [(GEOPlace *)self center];
+    [center lat];
     v5 = v4;
-    [v3 lng];
+    [center lng];
 LABEL_5:
     v8 = v6;
 
@@ -20,17 +20,17 @@ LABEL_5:
 
   if ([(GEOPlace *)self hasMapRegion])
   {
-    v3 = [(GEOPlace *)self mapRegion];
-    [v3 centerLat];
+    center = [(GEOPlace *)self mapRegion];
+    [center centerLat];
     v5 = v7;
-    [v3 centerLng];
+    [center centerLng];
     goto LABEL_5;
   }
 
   if ([(GEOPlace *)self entryPointsCount])
   {
-    v11 = [(GEOPlace *)self entryPoints];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    entryPoints = [(GEOPlace *)self entryPoints];
+    v12 = [entryPoints objectAtIndexedSubscript:0];
 
     [v12 lat];
     v5 = v13;

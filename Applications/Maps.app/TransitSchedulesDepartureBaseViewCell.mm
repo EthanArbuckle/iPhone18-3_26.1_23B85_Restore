@@ -1,80 +1,80 @@
 @interface TransitSchedulesDepartureBaseViewCell
 - (NSDateComponentsFormatter)timeFormatter;
 - (NSDateFormatter)dateFormatter;
-- (id)emphasizedLowFrequencyDepartureDateForDeparture:(id)a3;
-- (id)timeStringForDeparture:(id)a3;
-- (int64_t)effectiveLiveStatusForDeparture:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (id)emphasizedLowFrequencyDepartureDateForDeparture:(id)departure;
+- (id)timeStringForDeparture:(id)departure;
+- (int64_t)effectiveLiveStatusForDeparture:(id)departure;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation TransitSchedulesDepartureBaseViewCell
 
-- (int64_t)effectiveLiveStatusForDeparture:(id)a3
+- (int64_t)effectiveLiveStatusForDeparture:(id)departure
 {
-  v4 = [a3 liveStatus];
-  if ([(TransitSchedulesDepartureBaseViewCell *)self timeDisplayStyle]== 1 && v4 == 3)
+  liveStatus = [departure liveStatus];
+  if ([(TransitSchedulesDepartureBaseViewCell *)self timeDisplayStyle]== 1 && liveStatus == 3)
   {
     return 2;
   }
 
   else
   {
-    return v4;
+    return liveStatus;
   }
 }
 
-- (id)timeStringForDeparture:(id)a3
+- (id)timeStringForDeparture:(id)departure
 {
-  v4 = a3;
-  v5 = [(TransitSchedulesDepartureBaseViewCell *)self timeDisplayStyle];
-  if (v5 == 2 || v5 == 4)
+  departureCopy = departure;
+  timeDisplayStyle = [(TransitSchedulesDepartureBaseViewCell *)self timeDisplayStyle];
+  if (timeDisplayStyle == 2 || timeDisplayStyle == 4)
   {
-    if ([v4 isPastDeparture])
+    if ([departureCopy isPastDeparture])
     {
-      v6 = [v4 departureDate];
+      departureDate = [departureCopy departureDate];
     }
 
     else
     {
-      v7 = [v4 scheduledDepartureDate];
-      v8 = v7;
-      if (v7)
+      scheduledDepartureDate = [departureCopy scheduledDepartureDate];
+      v8 = scheduledDepartureDate;
+      if (scheduledDepartureDate)
       {
-        v9 = v7;
+        liveDepartureDate = scheduledDepartureDate;
       }
 
       else
       {
-        v9 = [v4 liveDepartureDate];
+        liveDepartureDate = [departureCopy liveDepartureDate];
       }
 
-      v6 = v9;
+      departureDate = liveDepartureDate;
     }
 
 LABEL_12:
-    v15 = [(TransitSchedulesDepartureBaseViewCell *)self timeZone];
-    v16 = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:v6 inTimeZone:v15 canIncludeDate:0 showTimeZone:0 useShortFormat:0];
+    timeZone = [(TransitSchedulesDepartureBaseViewCell *)self timeZone];
+    v16 = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:departureDate inTimeZone:timeZone canIncludeDate:0 showTimeZone:0 useShortFormat:0];
     goto LABEL_13;
   }
 
-  v6 = [v4 departureDate];
-  v10 = [v4 liveStatus] == 0;
-  v11 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
-  LOBYTE(v10) = [v4 isPastDepartureRelativeToDate:v11 usingGracePeriod:v10];
+  departureDate = [departureCopy departureDate];
+  v10 = [departureCopy liveStatus] == 0;
+  referenceDate = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
+  LOBYTE(v10) = [departureCopy isPastDepartureRelativeToDate:referenceDate usingGracePeriod:v10];
 
   if (v10)
   {
     goto LABEL_12;
   }
 
-  v12 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
-  [v6 timeIntervalSinceDate:v12];
+  referenceDate2 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
+  [departureDate timeIntervalSinceDate:referenceDate2];
   v14 = v13;
 
   if (GEOTransitDepartureIsImminentDepartureTimeInterval())
   {
-    v15 = +[NSBundle mainBundle];
-    v16 = [v15 localizedStringForKey:@"Now" value:@"localized string not found" table:0];
+    timeZone = +[NSBundle mainBundle];
+    v16 = [timeZone localizedStringForKey:@"Now" value:@"localized string not found" table:0];
     goto LABEL_13;
   }
 
@@ -84,29 +84,29 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v15 = [(TransitSchedulesDepartureBaseViewCell *)self timeFormatter];
-  v16 = [v15 stringFromTimeInterval:v14];
+  timeZone = [(TransitSchedulesDepartureBaseViewCell *)self timeFormatter];
+  v16 = [timeZone stringFromTimeInterval:v14];
 LABEL_13:
   v17 = v16;
 
   return v17;
 }
 
-- (id)emphasizedLowFrequencyDepartureDateForDeparture:(id)a3
+- (id)emphasizedLowFrequencyDepartureDateForDeparture:(id)departure
 {
-  v4 = a3;
-  v5 = [v4 liveStatus];
-  if ((v5 - 1) < 4)
+  departureCopy = departure;
+  liveStatus = [departureCopy liveStatus];
+  if ((liveStatus - 1) < 4)
   {
-    v6 = [v4 liveDepartureDate];
+    liveDepartureDate = [departureCopy liveDepartureDate];
 LABEL_6:
-    v3 = v6;
+    v3 = liveDepartureDate;
     goto LABEL_7;
   }
 
-  if (!v5 || v5 == 5)
+  if (!liveStatus || liveStatus == 5)
   {
-    v6 = [v4 scheduledDepartureDate];
+    liveDepartureDate = [departureCopy scheduledDepartureDate];
     goto LABEL_6;
   }
 
@@ -142,14 +142,14 @@ LABEL_7:
   return qword_10195E128;
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if (([(NSTimeZone *)self->_timeZone isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_timeZone, a3);
-    v5 = [(TransitSchedulesDepartureBaseViewCell *)self dateFormatter];
-    [v5 setTimeZone:v6];
+    objc_storeStrong(&self->_timeZone, zone);
+    dateFormatter = [(TransitSchedulesDepartureBaseViewCell *)self dateFormatter];
+    [dateFormatter setTimeZone:zoneCopy];
   }
 }
 

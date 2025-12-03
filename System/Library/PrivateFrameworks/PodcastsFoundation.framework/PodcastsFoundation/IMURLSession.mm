@@ -1,20 +1,20 @@
 @interface IMURLSession
-- (IMURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (IMURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 - (int64_t)state;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
 - (void)_configureProtocolHandler;
 - (void)finishTasksAndInvalidate;
 - (void)invalidateAndCancel;
-- (void)setFollowsRedirects:(BOOL)a3;
+- (void)setFollowsRedirects:(BOOL)redirects;
 @end
 
 @implementation IMURLSession
 
-- (IMURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (IMURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
   v10.receiver = self;
   v10.super_class = IMURLSession;
-  v5 = [(AMSURLSession *)&v10 initWithConfiguration:a3 delegate:a4 delegateQueue:a5];
+  v5 = [(AMSURLSession *)&v10 initWithConfiguration:configuration delegate:delegate delegateQueue:queue];
   v6 = v5;
   if (v5)
   {
@@ -27,11 +27,11 @@
   return v6;
 }
 
-- (void)setFollowsRedirects:(BOOL)a3
+- (void)setFollowsRedirects:(BOOL)redirects
 {
-  if ([(IMURLSession *)self followsRedirects]!= a3)
+  if ([(IMURLSession *)self followsRedirects]!= redirects)
   {
-    self->_followsRedirects = a3;
+    self->_followsRedirects = redirects;
 
     [(IMURLSession *)self _configureProtocolHandler];
   }
@@ -84,10 +84,10 @@
   [(AMSURLSession *)&v4 invalidateAndCancel];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -99,23 +99,23 @@
   {
     v9.receiver = self;
     v9.super_class = IMURLSession;
-    [(IMURLSession *)&v9 URLSession:v6 didBecomeInvalidWithError:v7];
+    [(IMURLSession *)&v9 URLSession:sessionCopy didBecomeInvalidWithError:errorCopy];
   }
 }
 
 - (void)_configureProtocolHandler
 {
-  v4 = [(AMSURLSession *)self protocolHandler];
+  protocolHandler = [(AMSURLSession *)self protocolHandler];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v3 = objc_alloc_init(IMURLProtocolHandler);
 
     [(AMSURLSession *)self setProtocolHandler:v3];
-    v4 = v3;
+    protocolHandler = v3;
   }
 
-  [v4 setFollowsRedirects:{-[IMURLSession followsRedirects](self, "followsRedirects")}];
+  [protocolHandler setFollowsRedirects:{-[IMURLSession followsRedirects](self, "followsRedirects")}];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface MFDOpenComposeDelegateConfiguration
-- (MFDOpenComposeDelegateConfiguration)initWithIdentifier:(id)a3 delegateEndpoint:(id)a4 isEntitledDelegate:(BOOL)a5;
+- (MFDOpenComposeDelegateConfiguration)initWithIdentifier:(id)identifier delegateEndpoint:(id)endpoint isEntitledDelegate:(BOOL)delegate;
 - (id)description;
 @end
 
 @implementation MFDOpenComposeDelegateConfiguration
 
-- (MFDOpenComposeDelegateConfiguration)initWithIdentifier:(id)a3 delegateEndpoint:(id)a4 isEntitledDelegate:(BOOL)a5
+- (MFDOpenComposeDelegateConfiguration)initWithIdentifier:(id)identifier delegateEndpoint:(id)endpoint isEntitledDelegate:(BOOL)delegate
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  endpointCopy = endpoint;
   v14.receiver = self;
   v14.super_class = MFDOpenComposeDelegateConfiguration;
   v11 = [(MFDOpenComposeDelegateConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_delegateEndpoint, a4);
-    v12->_isEntitledDelegate = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_delegateEndpoint, endpoint);
+    v12->_isEntitledDelegate = delegate;
   }
 
   return v12;
@@ -25,17 +25,17 @@
 
 - (id)description
 {
-  v3 = [(MFDOpenComposeDelegateConfiguration *)self identifier];
+  identifier = [(MFDOpenComposeDelegateConfiguration *)self identifier];
   isEntitledDelegate = self->_isEntitledDelegate;
-  v5 = [(MFDOpenComposeDelegateConfiguration *)self delegateEndpoint];
-  v6 = v5;
+  delegateEndpoint = [(MFDOpenComposeDelegateConfiguration *)self delegateEndpoint];
+  v6 = delegateEndpoint;
   v7 = &stru_10015BEC8;
   if (isEntitledDelegate)
   {
     v7 = @"entitled ";
   }
 
-  v8 = [NSString stringWithFormat:@"<MFDOpenComposeDelegateConfiguration: %p> identifier:%@ %@delegateEndpoint:%@", self, v3, v7, v5];
+  v8 = [NSString stringWithFormat:@"<MFDOpenComposeDelegateConfiguration: %p> identifier:%@ %@delegateEndpoint:%@", self, identifier, v7, delegateEndpoint];
 
   return v8;
 }

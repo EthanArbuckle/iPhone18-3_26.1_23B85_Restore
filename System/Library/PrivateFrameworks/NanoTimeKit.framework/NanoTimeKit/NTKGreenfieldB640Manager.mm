@@ -2,22 +2,22 @@
 - (NTKGreenfieldB640Manager)init;
 - (NTKGreenfieldB640WatchFacesManagerDelegate)delegate;
 - (id)_analyticsExitScreenNameForCurrentState;
-- (id)_analyticsModelForAddFaceEventsForWatchFace:(id)a3;
+- (id)_analyticsModelForAddFaceEventsForWatchFace:(id)face;
 - (unint64_t)bandVariantForPairedDevice;
 - (void)_cancelLibraryTimeoutTimer;
-- (void)_decodeWatchFacesUrls:(id)a3;
-- (void)_handleB640WatchFaceManagerDidFinishWithError:(id)a3 watchFaceModels:(id)a4;
-- (void)_handleProductKitUrl:(id)a3;
+- (void)_decodeWatchFacesUrls:(id)urls;
+- (void)_handleB640WatchFaceManagerDidFinishWithError:(id)error watchFaceModels:(id)models;
+- (void)_handleProductKitUrl:(id)url;
 - (void)_libraryTimeoutTimerFired;
 - (void)_moveToDecodeStateCompletedIfPossible;
-- (void)_setLibraryState:(unint64_t)a3;
+- (void)_setLibraryState:(unint64_t)state;
 - (void)_startLibraryTimeoutTimer;
-- (void)_updateComplicationForDecodedRecipe:(id)a3 installedItemIds:(id)a4 installedBundleIds:(id)a5;
-- (void)decodeUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4;
-- (void)faceCollectionDidLoad:(id)a3;
+- (void)_updateComplicationForDecodedRecipe:(id)recipe installedItemIds:(id)ids installedBundleIds:(id)bundleIds;
+- (void)decodeUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier;
+- (void)faceCollectionDidLoad:(id)load;
 - (void)handleAddToMyFacesAction;
 - (void)handleDidExitGreenfieldB640Flow;
-- (void)handleWatchFaceSelectedActionWithSelectedIndex:(int64_t)a3;
+- (void)handleWatchFaceSelectedActionWithSelectedIndex:(int64_t)index;
 @end
 
 @implementation NTKGreenfieldB640Manager
@@ -34,8 +34,8 @@
     v2->_serialQueue = v3;
 
     v5 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-    v6 = [MEMORY[0x277CBBAE8] currentDevice];
-    v7 = [v5 sharedFaceCollectionForDevice:v6 forCollectionIdentifier:@"LibraryFaces"];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v7 = [v5 sharedFaceCollectionForDevice:currentDevice forCollectionIdentifier:@"LibraryFaces"];
     library = v2->_library;
     v2->_library = v7;
 
@@ -66,39 +66,39 @@
   return v2;
 }
 
-- (void)decodeUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4
+- (void)decodeUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_sourceApplicationBundleIdentifier, a4);
-  v7 = a4;
-  v11 = a3;
-  v8 = [v11 lastPathComponent];
+  objc_storeStrong(&self->_sourceApplicationBundleIdentifier, identifier);
+  identifierCopy = identifier;
+  urlCopy = url;
+  lastPathComponent = [urlCopy lastPathComponent];
   scannedCodeIdentifier = self->_scannedCodeIdentifier;
-  self->_scannedCodeIdentifier = v8;
+  self->_scannedCodeIdentifier = lastPathComponent;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didStartDecodingWatchFaces:self];
 
-  [(NTKGreenfieldB640Manager *)self _handleProductKitUrl:v11];
+  [(NTKGreenfieldB640Manager *)self _handleProductKitUrl:urlCopy];
 }
 
-- (void)_handleProductKitUrl:(id)a3
+- (void)_handleProductKitUrl:(id)url
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  urlCopy = url;
   self->_state = 1;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = urlCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "B640 __handleProductKitUrl: %@", buf, 0xCu);
   }
 
-  v6 = [v4 absoluteString];
-  v7 = [v6 componentsSeparatedByString:@"="];
-  v8 = [v7 lastObject];
+  absoluteString = [urlCopy absoluteString];
+  v7 = [absoluteString componentsSeparatedByString:@"="];
+  lastObject = [v7 lastObject];
 
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:lastObject];
   if (([MEMORY[0x277D426C8] isProductKitURL:v9] & 1) == 0)
   {
     v13 = MEMORY[0x277CCA9B8];
@@ -110,10 +110,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x277CBBAE8] currentDevice];
-  v11 = [v10 isPaired];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isPaired = [currentDevice isPaired];
 
-  if ((v11 & 1) == 0)
+  if ((isPaired & 1) == 0)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = 3;
@@ -369,9 +369,9 @@ void __49__NTKGreenfieldB640Manager__handleProductKitUrl___block_invoke_2_30(uin
   }
 }
 
-- (void)_decodeWatchFacesUrls:(id)a3
+- (void)_decodeWatchFacesUrls:(id)urls
 {
-  v4 = a3;
+  urlsCopy = urls;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -380,7 +380,7 @@ void __49__NTKGreenfieldB640Manager__handleProductKitUrl___block_invoke_2_30(uin
   }
 
   self->_state = 2;
-  if ([v4 count])
+  if ([urlsCopy count])
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
@@ -389,10 +389,10 @@ void __49__NTKGreenfieldB640Manager__handleProductKitUrl___block_invoke_2_30(uin
     v11[1] = 3221225472;
     v11[2] = __50__NTKGreenfieldB640Manager__decodeWatchFacesUrls___block_invoke;
     v11[3] = &unk_278780FF8;
-    v12 = v4;
+    v12 = urlsCopy;
     v13 = v7;
     v14 = v6;
-    v15 = self;
+    selfCopy = self;
     v9 = v6;
     v10 = v7;
     dispatch_async(serialQueue, v11);
@@ -734,30 +734,30 @@ uint64_t __50__NTKGreenfieldB640Manager__decodeWatchFacesUrls___block_invoke_46(
   return [v8 _moveToDecodeStateCompletedIfPossible];
 }
 
-- (void)_updateComplicationForDecodedRecipe:(id)a3 installedItemIds:(id)a4 installedBundleIds:(id)a5
+- (void)_updateComplicationForDecodedRecipe:(id)recipe installedItemIds:(id)ids installedBundleIds:(id)bundleIds
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 watchFace];
-  v11 = [v10 device];
-  v12 = NTKRestrictedComplicationsForDevice(v11);
+  recipeCopy = recipe;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  watchFace = [recipeCopy watchFace];
+  device = [watchFace device];
+  v12 = NTKRestrictedComplicationsForDevice(device);
 
   v13 = objc_opt_new();
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __100__NTKGreenfieldB640Manager__updateComplicationForDecodedRecipe_installedItemIds_installedBundleIds___block_invoke;
   v31[3] = &unk_278783318;
-  v14 = v10;
+  v14 = watchFace;
   v32 = v14;
   v25 = v12;
   v33 = v25;
-  v26 = v7;
+  v26 = recipeCopy;
   v34 = v26;
-  v15 = v9;
+  v15 = bundleIdsCopy;
   v35 = v15;
-  v16 = v8;
+  v16 = idsCopy;
   v36 = v16;
   v17 = v13;
   v37 = v17;
@@ -902,18 +902,18 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 isPaired];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isPaired = [currentDevice isPaired];
 
-  if ((v4 & 1) == 0)
+  if ((isPaired & 1) == 0)
   {
     v9 = MEMORY[0x277CCA9B8];
     v10 = 3;
     goto LABEL_12;
   }
 
-  v5 = [MEMORY[0x277CBBAE8] currentDevice];
-  v6 = [v5 supportsPDRCapability:569066848];
+  currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+  v6 = [currentDevice2 supportsPDRCapability:569066848];
 
   if ((v6 & 1) == 0)
   {
@@ -922,10 +922,10 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x277CBBAE8] currentDevice];
-  v8 = [v7 isTinker];
+  currentDevice3 = [MEMORY[0x277CBBAE8] currentDevice];
+  isTinker = [currentDevice3 isTinker];
 
-  if (!v8)
+  if (!isTinker)
   {
     libraryState = self->_libraryState;
     if (libraryState != 1)
@@ -971,8 +971,8 @@ LABEL_8:
               }
 
               v23 = *(*(&v52 + 1) + 8 * i);
-              v24 = [v23 decodedRecipe];
-              v25 = [(NTKGreenfieldAddWatchFaceManager *)v17 canAddWatchFaceFromDecodedRecipe:v24 toLibrary:self->_library];
+              decodedRecipe = [v23 decodedRecipe];
+              v25 = [(NTKGreenfieldAddWatchFaceManager *)v17 canAddWatchFaceFromDecodedRecipe:decodedRecipe toLibrary:self->_library];
               v26 = v11;
               if (v25)
               {
@@ -1015,8 +1015,8 @@ LABEL_8:
           v30 = v47;
           if ([v47 count])
           {
-            v33 = [v47 firstObject];
-            v34 = [v33 code];
+            firstObject = [v47 firstObject];
+            code = [firstObject code];
             v48 = 0u;
             v49 = 0u;
             v50 = 0u;
@@ -1037,22 +1037,22 @@ LABEL_8:
                   }
 
                   v40 = *(*(&v48 + 1) + 8 * j);
-                  if (v34 != [v40 code])
+                  if (code != [v40 code])
                   {
                     v41 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
                     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
                     {
-                      v42 = [v40 code];
+                      code2 = [v40 code];
                       *buf = 134218240;
-                      v57 = v34;
+                      v57 = code;
                       v58 = 2048;
-                      v59 = v42;
+                      v59 = code2;
                       _os_log_impl(&dword_22D9C5000, v41, OS_LOG_TYPE_DEFAULT, "B640 encountered different error codes errorCode:%ld and code:%ld:", buf, 0x16u);
                     }
 
                     v43 = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:16];
 
-                    v33 = v43;
+                    firstObject = v43;
                     goto LABEL_48;
                   }
                 }
@@ -1073,12 +1073,12 @@ LABEL_48:
 
           else
           {
-            v33 = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:16];
+            firstObject = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:16];
           }
 
-          v44 = self;
+          selfCopy = self;
           v32 = v45;
-          [(NTKGreenfieldB640Manager *)v44 _handleB640WatchFaceManagerDidFinishWithError:v33 watchFaceModels:v45, v45];
+          [(NTKGreenfieldB640Manager *)selfCopy _handleB640WatchFaceManagerDidFinishWithError:firstObject watchFaceModels:v45, v45];
         }
 
         goto LABEL_9;
@@ -1173,7 +1173,7 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
   self->_libraryTimeoutTimer = 0;
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
   v4 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1186,18 +1186,18 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
   [(NTKGreenfieldB640Manager *)self _setLibraryState:2];
 }
 
-- (void)_setLibraryState:(unint64_t)a3
+- (void)_setLibraryState:(unint64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_libraryState - 1 > 1)
   {
-    self->_libraryState = a3;
+    self->_libraryState = state;
     v7 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       libraryState = self->_libraryState;
       v9 = 134217984;
-      v10 = libraryState;
+      stateCopy = libraryState;
       _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "B640 library state updated to: %lu", &v9, 0xCu);
     }
 
@@ -1214,7 +1214,7 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
     {
       v6 = self->_libraryState;
       v9 = 134218240;
-      v10 = a3;
+      stateCopy = state;
       v11 = 2048;
       v12 = v6;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "B640 setLibraryState called with state: %lu, when current state is: %lu", &v9, 0x16u);
@@ -1222,11 +1222,11 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
   }
 }
 
-- (void)_handleB640WatchFaceManagerDidFinishWithError:(id)a3 watchFaceModels:(id)a4
+- (void)_handleB640WatchFaceManagerDidFinishWithError:(id)error watchFaceModels:(id)models
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  modelsCopy = models;
   state = self->_state;
   v10 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   v11 = os_log_type_enabled(&v10->super, OS_LOG_TYPE_DEFAULT);
@@ -1235,7 +1235,7 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
     if (v11)
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = errorCopy;
       _os_log_impl(&dword_22D9C5000, &v10->super, OS_LOG_TYPE_DEFAULT, "B640 did tried to present another error while NTKGreenfieldB640ManagerStateError: %@", &v13, 0xCu);
     }
   }
@@ -1245,13 +1245,13 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
     if (v11)
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = errorCopy;
       _os_log_impl(&dword_22D9C5000, &v10->super, OS_LOG_TYPE_DEFAULT, "B640 _handleB640WatchFaceManagerDidFinishWithError: %@", &v13, 0xCu);
     }
 
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     self->_state = 5;
-    v10 = [[NTKGreenfieldB640Model alloc] initWithWatchFaceModels:v8 error:v7 bandImagePath:self->_bandImagePath bandImageBundle:self->_bandImageBundle];
+    v10 = [[NTKGreenfieldB640Model alloc] initWithWatchFaceModels:modelsCopy error:errorCopy bandImagePath:self->_bandImagePath bandImageBundle:self->_bandImageBundle];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained greenfieldB640WatchFacesManager:self updateStateToError:v10];
   }
@@ -1265,8 +1265,8 @@ void __53__NTKGreenfieldB640Manager__startLibraryTimeoutTimer__block_invoke(uint
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v5 = [watchFaceModels countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1277,14 +1277,14 @@ LABEL_3:
     {
       if (*v30 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(watchFaceModels);
       }
 
       v9 = *(*(&v29 + 1) + 8 * v8);
       if ([v9 isSelected])
       {
-        v10 = [v9 decodedRecipe];
-        v11 = [(NTKGreenfieldAddWatchFaceManager *)v3 canAddWatchFaceFromDecodedRecipe:v10 toLibrary:self->_library];
+        decodedRecipe = [v9 decodedRecipe];
+        v11 = [(NTKGreenfieldAddWatchFaceManager *)v3 canAddWatchFaceFromDecodedRecipe:decodedRecipe toLibrary:self->_library];
 
         if (v11)
         {
@@ -1294,7 +1294,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v6 = [watchFaceModels countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1305,22 +1305,22 @@ LABEL_3:
     }
   }
 
-  v12 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v13 = [v12 count];
+  watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v13 = [watchFaceModels2 count];
 
   if (v13 - 1 >= 0)
   {
     do
     {
       --v13;
-      v14 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-      v15 = [v14 objectAtIndex:v13];
+      watchFaceModels3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+      v15 = [watchFaceModels3 objectAtIndex:v13];
 
       if ([v15 isSelected])
       {
-        v16 = [v15 decodedRecipe];
-        v17 = [v16 watchFace];
-        v18 = [v17 copy];
+        decodedRecipe2 = [v15 decodedRecipe];
+        watchFace = [decodedRecipe2 watchFace];
+        v18 = [watchFace copy];
 
         if (![v18 origin])
         {
@@ -1329,20 +1329,20 @@ LABEL_3:
 
         [(NTKFaceCollection *)self->_library appendFace:v18 suppressingCallbackToObserver:0];
         [(NTKFaceCollection *)self->_library setSelectedFace:v18 suppressingCallbackToObserver:0];
-        v19 = [(NTKFaceCollection *)self->_library selectedUUID];
+        selectedUUID = [(NTKFaceCollection *)self->_library selectedUUID];
         addedFaceID = self->_addedFaceID;
-        self->_addedFaceID = v19;
+        self->_addedFaceID = selectedUUID;
 
         if ([v18 editedState] == 2)
         {
-          v21 = [v18 lastEditedDate];
-          [v18 setCreationDate:v21];
+          lastEditedDate = [v18 lastEditedDate];
+          [v18 setCreationDate:lastEditedDate];
         }
 
         else
         {
-          v22 = [MEMORY[0x277CBEAA8] date];
-          [v18 setCreationDate:v22];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v18 setCreationDate:date];
 
           [v18 setEditedState:1];
         }
@@ -1373,24 +1373,24 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
   [v2 handleAddedFromFaceSharing];
 }
 
-- (void)handleWatchFaceSelectedActionWithSelectedIndex:(int64_t)a3
+- (void)handleWatchFaceSelectedActionWithSelectedIndex:(int64_t)index
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v6 = [v5 count];
+  watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v6 = [watchFaceModels count];
 
-  if ((a3 & 0x8000000000000000) == 0 && v6 > a3)
+  if ((index & 0x8000000000000000) == 0 && v6 > index)
   {
-    v7 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v8 = [v7 objectAtIndex:a3];
+    watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v8 = [watchFaceModels2 objectAtIndex:index];
 
     [v8 setIsSelected:{objc_msgSend(v8, "isSelected") ^ 1}];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    watchFaceModels3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v10 = [watchFaceModels3 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1402,13 +1402,13 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(watchFaceModels3);
           }
 
           v12 += [*(*(&v20 + 1) + 8 * i) isSelected];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [watchFaceModels3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -1419,14 +1419,14 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
       v12 = 0;
     }
 
-    v15 = [MEMORY[0x277CBBAE8] currentDevice];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
     if (v12)
     {
       v16 = [(NTKFaceCollection *)self->_library numberOfFaces]+ v12;
-      if (v16 <= NTKFaceLibraryMaxFaceCountForDevice(v15))
+      if (v16 <= NTKFaceLibraryMaxFaceCountForDevice(currentDevice))
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained greenfieldB640WatchFacesManager:self didSelectWatchFaceAtIndex:a3];
+        [WeakRetained greenfieldB640WatchFacesManager:self didSelectWatchFaceAtIndex:index];
       }
 
       else
@@ -1449,12 +1449,12 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
 {
   if (self->_error)
   {
-    v3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v4 = [v3 firstObject];
+    watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    firstObject = [watchFaceModels firstObject];
 
-    v5 = [v4 decodedRecipe];
-    v6 = [v5 watchFace];
-    v9 = [(NTKGreenfieldB640Manager *)self _analyticsModelForAddFaceEventsForWatchFace:v6];
+    decodedRecipe = [firstObject decodedRecipe];
+    watchFace = [decodedRecipe watchFace];
+    v9 = [(NTKGreenfieldB640Manager *)self _analyticsModelForAddFaceEventsForWatchFace:watchFace];
 
     [v9 setError:self->_error];
     NTKSubmitAnalyticsForErrorAddFaceFlow(v9);
@@ -1468,11 +1468,11 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
 
   else
   {
-    v7 = [(NTKGreenfieldDecodedRecipe *)self->_selectedRecipe watchFace];
-    v9 = [(NTKGreenfieldB640Manager *)self _analyticsModelForAddFaceEventsForWatchFace:v7];
+    watchFace2 = [(NTKGreenfieldDecodedRecipe *)self->_selectedRecipe watchFace];
+    v9 = [(NTKGreenfieldB640Manager *)self _analyticsModelForAddFaceEventsForWatchFace:watchFace2];
 
-    v8 = [(NTKGreenfieldB640Manager *)self _analyticsExitScreenNameForCurrentState];
-    [v9 setAddFaceFlowExitScreenName:v8];
+    _analyticsExitScreenNameForCurrentState = [(NTKGreenfieldB640Manager *)self _analyticsExitScreenNameForCurrentState];
+    [v9 setAddFaceFlowExitScreenName:_analyticsExitScreenNameForCurrentState];
 
     NTKSubmitAnalyticsForExitAddSharedFaceFlow(v9);
   }
@@ -1492,11 +1492,11 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
   }
 }
 
-- (id)_analyticsModelForAddFaceEventsForWatchFace:(id)a3
+- (id)_analyticsModelForAddFaceEventsForWatchFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   v5 = objc_alloc_init(NTKGreenfieldAnalyticsModel);
-  [(NTKGreenfieldAnalyticsModel *)v5 setWatchFace:v4];
+  [(NTKGreenfieldAnalyticsModel *)v5 setWatchFace:faceCopy];
 
   if (self->_sourceApplicationBundleIdentifier)
   {
@@ -1516,16 +1516,16 @@ void __52__NTKGreenfieldB640Manager_handleAddToMyFacesAction__block_invoke(uint6
 
 - (unint64_t)bandVariantForPairedDevice
 {
-  v2 = [MEMORY[0x277CBBAE8] currentDevice];
-  v3 = [v2 deviceCategory];
-  if ((v3 - 3) >= 4)
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory = [currentDevice deviceCategory];
+  if ((deviceCategory - 3) >= 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3 - 2;
+    v4 = deviceCategory - 2;
   }
 
   return v4;

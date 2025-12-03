@@ -1,22 +1,22 @@
 @interface SKUISwooshArtworkLoader
-- (BOOL)loadImageForObject:(id)a3 URL:(id)a4 reason:(int64_t)a5;
-- (BOOL)loadImageForObject:(id)a3 artworkRequest:(id)a4 reason:(int64_t)a5;
-- (SKUISwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4;
+- (BOOL)loadImageForObject:(id)object URL:(id)l reason:(int64_t)reason;
+- (BOOL)loadImageForObject:(id)object artworkRequest:(id)request reason:(int64_t)reason;
+- (SKUISwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh;
 - (UIImage)placeholderImage;
-- (id)cachedImageForObject:(id)a3;
-- (unint64_t)artworkRequestIdentifierForObject:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (id)cachedImageForObject:(id)object;
+- (unint64_t)artworkRequestIdentifierForObject:(id)object;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)deprioritizePendingImageLoads;
-- (void)setImageDataConsumer:(id)a3;
-- (void)setPlaceholderColorWithColorScheme:(id)a3;
+- (void)setImageDataConsumer:(id)consumer;
+- (void)setPlaceholderColorWithColorScheme:(id)scheme;
 @end
 
 @implementation SKUISwooshArtworkLoader
 
-- (SKUISwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4
+- (SKUISwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh
 {
-  v7 = a3;
-  v8 = a4;
+  loaderCopy = loader;
+  swooshCopy = swoosh;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISwooshArtworkLoader initWithArtworkLoader:swoosh:];
@@ -28,8 +28,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_artworkLoader, a3);
-    objc_storeStrong(&v10->_swooshViewController, a4);
+    objc_storeStrong(&v9->_artworkLoader, loader);
+    objc_storeStrong(&v10->_swooshViewController, swoosh);
     v11 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
     artworkRequestIDs = v10->_artworkRequestIDs;
     v10->_artworkRequestIDs = v11;
@@ -42,17 +42,17 @@
   return v10;
 }
 
-- (unint64_t)artworkRequestIdentifierForObject:(id)a3
+- (unint64_t)artworkRequestIdentifierForObject:(id)object
 {
-  v3 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:object];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)cachedImageForObject:(id)a3
+- (id)cachedImageForObject:(id)object
 {
-  v4 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:a3];
+  v4 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:object];
   v5 = v4;
   if (v4)
   {
@@ -113,13 +113,13 @@ uint64_t __56__SKUISwooshArtworkLoader_deprioritizePendingImageLoads__block_invo
   return result;
 }
 
-- (BOOL)loadImageForObject:(id)a3 URL:(id)a4 reason:(int64_t)a5
+- (BOOL)loadImageForObject:(id)object URL:(id)l reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:v8];
+  objectCopy = object;
+  lCopy = l;
+  v10 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:objectCopy];
   v11 = v10;
-  if (v10 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", a5, [v10 unsignedIntegerValue]))
+  if (v10 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", reason, [v10 unsignedIntegerValue]))
   {
     LOBYTE(v12) = 0;
   }
@@ -129,39 +129,39 @@ uint64_t __56__SKUISwooshArtworkLoader_deprioritizePendingImageLoads__block_invo
     v13 = objc_alloc_init(SKUIArtworkRequest);
     [(SKUIArtworkRequest *)v13 setDataConsumer:self->_imageDataConsumer];
     [(SKUIArtworkRequest *)v13 setDelegate:self];
-    [(SKUIArtworkRequest *)v13 setURL:v9];
+    [(SKUIArtworkRequest *)v13 setURL:lCopy];
     v12 = [(SKUIResourceLoader *)self->_artworkLoader loadResourceWithRequest:v13 reason:1];
     if (v12)
     {
-      v14 = [(SKUIResourceRequest *)v13 requestIdentifier];
-      [(NSMutableIndexSet *)self->_outstandingRequestIDs addIndex:v14];
+      requestIdentifier = [(SKUIResourceRequest *)v13 requestIdentifier];
+      [(NSMutableIndexSet *)self->_outstandingRequestIDs addIndex:requestIdentifier];
       artworkRequestIDs = self->_artworkRequestIDs;
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-      [(NSMapTable *)artworkRequestIDs setObject:v16 forKey:v8];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:requestIdentifier];
+      [(NSMapTable *)artworkRequestIDs setObject:v16 forKey:objectCopy];
     }
   }
 
   return v12;
 }
 
-- (BOOL)loadImageForObject:(id)a3 artworkRequest:(id)a4 reason:(int64_t)a5
+- (BOOL)loadImageForObject:(id)object artworkRequest:(id)request reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:v8];
+  objectCopy = object;
+  requestCopy = request;
+  v10 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:objectCopy];
   v11 = v10;
-  if (v10 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", a5, [v10 unsignedIntegerValue]) || (objc_msgSend(v9, "setDelegate:", self), !-[SKUIResourceLoader loadResourceWithRequest:reason:](self->_artworkLoader, "loadResourceWithRequest:reason:", v9, 1)))
+  if (v10 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", reason, [v10 unsignedIntegerValue]) || (objc_msgSend(requestCopy, "setDelegate:", self), !-[SKUIResourceLoader loadResourceWithRequest:reason:](self->_artworkLoader, "loadResourceWithRequest:reason:", requestCopy, 1)))
   {
     v15 = 0;
   }
 
   else
   {
-    v12 = [v9 requestIdentifier];
-    [(NSMutableIndexSet *)self->_outstandingRequestIDs addIndex:v12];
+    requestIdentifier = [requestCopy requestIdentifier];
+    [(NSMutableIndexSet *)self->_outstandingRequestIDs addIndex:requestIdentifier];
     artworkRequestIDs = self->_artworkRequestIDs;
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-    [(NSMapTable *)artworkRequestIDs setObject:v14 forKey:v8];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:requestIdentifier];
+    [(NSMapTable *)artworkRequestIDs setObject:v14 forKey:objectCopy];
 
     v15 = 1;
   }
@@ -174,9 +174,9 @@ uint64_t __56__SKUISwooshArtworkLoader_deprioritizePendingImageLoads__block_invo
   placeholderImage = self->_placeholderImage;
   if (!placeholderImage)
   {
-    v4 = [(SKUISwooshArtworkLoader *)self imageDataConsumer];
+    imageDataConsumer = [(SKUISwooshArtworkLoader *)self imageDataConsumer];
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
-    v6 = [v4 imageForColor:v5];
+    v6 = [imageDataConsumer imageForColor:v5];
     v7 = self->_placeholderImage;
     self->_placeholderImage = v6;
 
@@ -186,25 +186,25 @@ uint64_t __56__SKUISwooshArtworkLoader_deprioritizePendingImageLoads__block_invo
   return placeholderImage;
 }
 
-- (void)setImageDataConsumer:(id)a3
+- (void)setImageDataConsumer:(id)consumer
 {
-  v5 = a3;
-  if (self->_imageDataConsumer != v5)
+  consumerCopy = consumer;
+  if (self->_imageDataConsumer != consumerCopy)
   {
     placeholderImage = self->_placeholderImage;
     self->_placeholderImage = 0;
-    v7 = v5;
+    v7 = consumerCopy;
 
-    objc_storeStrong(&self->_imageDataConsumer, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_imageDataConsumer, consumer);
+    consumerCopy = v7;
   }
 }
 
-- (void)setPlaceholderColorWithColorScheme:(id)a3
+- (void)setPlaceholderColorWithColorScheme:(id)scheme
 {
-  v4 = a3;
-  v13 = v4;
-  if (!v4)
+  schemeCopy = scheme;
+  v13 = schemeCopy;
+  if (!schemeCopy)
   {
     v7 = MEMORY[0x277D75348];
     v8 = 0.8;
@@ -214,13 +214,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = [v4 schemeStyle];
+  schemeStyle = [schemeCopy schemeStyle];
   v6 = 0;
-  if (v5 > 1)
+  if (schemeStyle > 1)
   {
-    if (v5 != 2)
+    if (schemeStyle != 2)
     {
-      if (v5 != 3)
+      if (schemeStyle != 3)
       {
         goto LABEL_12;
       }
@@ -235,12 +235,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!schemeStyle)
   {
     goto LABEL_10;
   }
 
-  if (v5 == 1)
+  if (schemeStyle == 1)
   {
 LABEL_9:
     v7 = MEMORY[0x277D75348];
@@ -250,21 +250,21 @@ LABEL_9:
   }
 
 LABEL_12:
-  v10 = [(SKUISwooshArtworkLoader *)self imageDataConsumer];
-  v11 = [v10 imageForColor:v6];
+  imageDataConsumer = [(SKUISwooshArtworkLoader *)self imageDataConsumer];
+  v11 = [imageDataConsumer imageForColor:v6];
   placeholderImage = self->_placeholderImage;
   self->_placeholderImage = v11;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   outstandingRequestIDs = self->_outstandingRequestIDs;
-  v7 = a4;
-  v8 = a3;
-  -[NSMutableIndexSet removeIndex:](outstandingRequestIDs, "removeIndex:", [v8 requestIdentifier]);
-  [(SKUISwooshArtworkLoader *)self setImage:v7 forRequest:v8];
+  imageCopy = image;
+  requestCopy = request;
+  -[NSMutableIndexSet removeIndex:](outstandingRequestIDs, "removeIndex:", [requestCopy requestIdentifier]);
+  [(SKUISwooshArtworkLoader *)self setImage:imageCopy forRequest:requestCopy];
 
-  [v8 setDelegate:0];
+  [requestCopy setDelegate:0];
 }
 
 - (void)initWithArtworkLoader:swoosh:.cold.1()

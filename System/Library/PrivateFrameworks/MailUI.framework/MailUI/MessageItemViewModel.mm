@@ -1,13 +1,13 @@
 @interface MessageItemViewModel
-- (MessageItemViewModel)initWithItemBuilder:(id)a3;
+- (MessageItemViewModel)initWithItemBuilder:(id)builder;
 @end
 
 @implementation MessageItemViewModel
 
-- (MessageItemViewModel)initWithItemBuilder:(id)a3
+- (MessageItemViewModel)initWithItemBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
     [(MessageItemViewModel *)a2 initWithItemBuilder:?];
   }
@@ -17,7 +17,7 @@
   v6 = [(MessageItemViewModel *)&v8 init];
   if (v6)
   {
-    v5[2](v5, v6);
+    builderCopy[2](builderCopy, v6);
   }
 
   return v6;

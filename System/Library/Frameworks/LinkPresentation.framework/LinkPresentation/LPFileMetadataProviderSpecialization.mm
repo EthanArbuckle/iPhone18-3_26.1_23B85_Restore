@@ -1,48 +1,48 @@
 @interface LPFileMetadataProviderSpecialization
 + (id)_thumbnailQueue;
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3;
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
++ (id)specializedMetadataProviderForResourceWithContext:(id)context;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
 - (void)cleanUpTemporaryFile;
 - (void)complete;
-- (void)fetchIconAndThumbnailFromQuickLookForURL:(id)a3;
-- (void)fetchMetadataForReachableFile:(id)a3;
-- (void)fetchMetadataFromURL:(id)a3;
-- (void)generateFallbackMetadataForUnreachableFile:(id)a3;
-- (void)metadataProviderSpecialization:(id)a3 didCompleteWithMetadata:(id)a4;
-- (void)requestQuickLookThumbnailForURL:(id)a3 size:(CGSize)a4 badgeType:(unint64_t)a5 image:(id *)a6;
+- (void)fetchIconAndThumbnailFromQuickLookForURL:(id)l;
+- (void)fetchMetadataForReachableFile:(id)file;
+- (void)fetchMetadataFromURL:(id)l;
+- (void)generateFallbackMetadataForUnreachableFile:(id)file;
+- (void)metadataProviderSpecialization:(id)specialization didCompleteWithMetadata:(id)metadata;
+- (void)requestQuickLookThumbnailForURL:(id)l size:(CGSize)size badgeType:(unint64_t)type image:(id *)image;
 - (void)start;
 - (void)updatePreliminaryMetadata;
 @end
 
 @implementation LPFileMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  if (([v3 fetchIsNotUserInitiated] & 1) != 0 || (objc_msgSend(v3, "postRedirectURL"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isFileURL"), v4, (v5 & 1) == 0))
+  contextCopy = context;
+  if (([contextCopy fetchIsNotUserInitiated] & 1) != 0 || (objc_msgSend(contextCopy, "postRedirectURL"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isFileURL"), v4, (v5 & 1) == 0))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPFileMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPFileMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   return v6;
 }
 
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3
++ (id)specializedMetadataProviderForResourceWithContext:(id)context
 {
-  v3 = a3;
-  if (([v3 fetchIsNotUserInitiated] & 1) != 0 || !objc_msgSend(v3, "hasLoadedResource") || (objc_msgSend(v3, "MIMEType"), v4 = objc_claimAutoreleasedReturnValue(), v5 = +[LPMIMETypeRegistry isWebPageType:](LPMIMETypeRegistry, "isWebPageType:", v4), v4, v5))
+  contextCopy = context;
+  if (([contextCopy fetchIsNotUserInitiated] & 1) != 0 || !objc_msgSend(contextCopy, "hasLoadedResource") || (objc_msgSend(contextCopy, "MIMEType"), v4 = objc_claimAutoreleasedReturnValue(), v5 = +[LPMIMETypeRegistry isWebPageType:](LPMIMETypeRegistry, "isWebPageType:", v4), v4, v5))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPFileMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPFileMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   return v6;
@@ -70,10 +70,10 @@ void __55__LPFileMetadataProviderSpecialization__thumbnailQueue__block_invoke()
 
 - (void)start
 {
-  v3 = [(LPMetadataProviderSpecialization *)self context];
-  v4 = [v3 fetchIsNotUserInitiated];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  fetchIsNotUserInitiated = [context fetchIsNotUserInitiated];
 
-  if (v4)
+  if (fetchIsNotUserInitiated)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -85,26 +85,26 @@ void __55__LPFileMetadataProviderSpecialization__thumbnailQueue__block_invoke()
 
   else
   {
-    v5 = [(LPMetadataProviderSpecialization *)self context];
-    v6 = [v5 hasLoadedResource];
+    context2 = [(LPMetadataProviderSpecialization *)self context];
+    hasLoadedResource = [context2 hasLoadedResource];
 
-    v7 = [(LPMetadataProviderSpecialization *)self context];
-    v10 = v7;
-    if (v6)
+    context3 = [(LPMetadataProviderSpecialization *)self context];
+    v10 = context3;
+    if (hasLoadedResource)
     {
-      v8 = [v7 webView];
+      webView = [context3 webView];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __45__LPFileMetadataProviderSpecialization_start__block_invoke_2;
       v11[3] = &unk_1E7A375C8;
       v11[4] = self;
-      [v8 _getMainResourceDataWithCompletionHandler:v11];
+      [webView _getMainResourceDataWithCompletionHandler:v11];
     }
 
     else
     {
-      v9 = [v7 postRedirectURL];
-      [(LPFileMetadataProviderSpecialization *)self fetchMetadataFromURL:v9];
+      postRedirectURL = [context3 postRedirectURL];
+      [(LPFileMetadataProviderSpecialization *)self fetchMetadataFromURL:postRedirectURL];
     }
   }
 }
@@ -168,22 +168,22 @@ void __45__LPFileMetadataProviderSpecialization_start__block_invoke_2(uint64_t a
   [*(a1 + 32) fetchMetadataFromURL:*(*(a1 + 32) + 32)];
 }
 
-- (void)requestQuickLookThumbnailForURL:(id)a3 size:(CGSize)a4 badgeType:(unint64_t)a5 image:(id *)a6
+- (void)requestQuickLookThumbnailForURL:(id)l size:(CGSize)size badgeType:(unint64_t)type image:(id *)image
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = [objc_alloc(MEMORY[0x1E697A0E0]) initWithFileAtURL:v11 size:4 scale:width representationTypes:{height, 3.0}];
-  [v12 setBadgeType:a5];
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  v12 = [objc_alloc(MEMORY[0x1E697A0E0]) initWithFileAtURL:lCopy size:4 scale:width representationTypes:{height, 3.0}];
+  [v12 setBadgeType:type];
   dispatch_group_enter(self->_fetchGroup);
-  v13 = [MEMORY[0x1E697A0E8] sharedGenerator];
+  mEMORY[0x1E697A0E8] = [MEMORY[0x1E697A0E8] sharedGenerator];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__LPFileMetadataProviderSpecialization_requestQuickLookThumbnailForURL_size_badgeType_image___block_invoke;
   v14[3] = &unk_1E7A375F0;
   v14[4] = self;
-  v14[5] = a6;
-  [v13 generateBestRepresentationForRequest:v12 completionHandler:v14];
+  v14[5] = image;
+  [mEMORY[0x1E697A0E8] generateBestRepresentationForRequest:v12 completionHandler:v14];
 }
 
 void __93__LPFileMetadataProviderSpecialization_requestQuickLookThumbnailForURL_size_badgeType_image___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -217,9 +217,9 @@ void __93__LPFileMetadataProviderSpecialization_requestQuickLookThumbnailForURL_
   dispatch_group_leave(*(*(a1 + 32) + 96));
 }
 
-- (void)fetchIconAndThumbnailFromQuickLookForURL:(id)a3
+- (void)fetchIconAndThumbnailFromQuickLookForURL:(id)l
 {
-  v8 = a3;
+  lCopy = l;
   if (!self->_originalImage)
   {
     UTI = self->_UTI;
@@ -235,17 +235,17 @@ void __93__LPFileMetadataProviderSpecialization_requestQuickLookThumbnailForURL_
       v7 = [(NSString *)v6 _lp_isEqualIgnoringCase:@"com.apple.watchface"]? 300.0 : 600.0;
     }
 
-    [(LPFileMetadataProviderSpecialization *)self requestQuickLookThumbnailForURL:v8 size:0 badgeType:&self->_quickLookThumbnail image:300.0, v7];
+    [(LPFileMetadataProviderSpecialization *)self requestQuickLookThumbnailForURL:lCopy size:0 badgeType:&self->_quickLookThumbnail image:300.0, v7];
     if ([LPMIMETypeRegistry isARAssetType:self->_MIMEType])
     {
-      [(LPFileMetadataProviderSpecialization *)self requestQuickLookThumbnailForURL:v8 size:1 badgeType:&self->_smallQuickLookThumbnail image:75.0, 75.0];
+      [(LPFileMetadataProviderSpecialization *)self requestQuickLookThumbnailForURL:lCopy size:1 badgeType:&self->_smallQuickLookThumbnail image:75.0, 75.0];
     }
   }
 }
 
-- (void)fetchMetadataFromURL:(id)a3
+- (void)fetchMetadataFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:0];
   metadata = self->_metadata;
   self->_metadata = v5;
@@ -269,9 +269,9 @@ void __93__LPFileMetadataProviderSpecialization_requestQuickLookThumbnailForURL_
   block[1] = 3221225472;
   block[2] = __61__LPFileMetadataProviderSpecialization_fetchMetadataFromURL___block_invoke;
   block[3] = &unk_1E7A35478;
-  v17 = v4;
-  v18 = self;
-  v13 = v4;
+  v17 = lCopy;
+  selfCopy = self;
+  v13 = lCopy;
   dispatch_group_async(v11, v12, block);
 
   v14 = self->_fetchGroup;
@@ -320,16 +320,16 @@ uint64_t __61__LPFileMetadataProviderSpecialization_fetchMetadataFromURL___block
   return [v3 complete];
 }
 
-- (void)fetchMetadataForReachableFile:(id)a3
+- (void)fetchMetadataForReachableFile:(id)file
 {
   v99[3] = *MEMORY[0x1E69E9840];
-  v86 = a3;
+  fileCopy = file;
   if (!self->_UTI)
   {
     if (!self->_MIMEType || ([LPMIMETypeRegistry UTIForMIMEType:?], v11 = objc_claimAutoreleasedReturnValue(), v12 = self->_UTI, self->_UTI = v11, v12, !self->_UTI))
     {
       v96 = 0;
-      [v86 getPromisedItemResourceValue:&v96 forKey:*MEMORY[0x1E695DC68] error:0];
+      [fileCopy getPromisedItemResourceValue:&v96 forKey:*MEMORY[0x1E695DC68] error:0];
       v13 = v96;
       v14 = v96;
       objc_storeStrong(&self->_UTI, v13);
@@ -349,8 +349,8 @@ uint64_t __61__LPFileMetadataProviderSpecialization_fetchMetadataFromURL___block
 
       if (!self->_UTI)
       {
-        v47 = [v86 pathExtension];
-        v48 = [LPMIMETypeRegistry UTIForFileExtension:v47];
+        pathExtension = [fileCopy pathExtension];
+        v48 = [LPMIMETypeRegistry UTIForFileExtension:pathExtension];
         UTI = self->_UTI;
         self->_UTI = v48;
 
@@ -371,14 +371,14 @@ uint64_t __61__LPFileMetadataProviderSpecialization_fetchMetadataFromURL___block
     }
   }
 
-  v4 = [(LPMetadataProviderSpecialization *)self context];
-  if ([v4 shouldFetchSubresources])
+  context = [(LPMetadataProviderSpecialization *)self context];
+  if ([context shouldFetchSubresources])
   {
-    v5 = [(LPFileMetadataProviderSpecialization *)self shouldUseQuickLookForFileType];
+    shouldUseQuickLookForFileType = [(LPFileMetadataProviderSpecialization *)self shouldUseQuickLookForFileType];
 
-    if (v5)
+    if (shouldUseQuickLookForFileType)
     {
-      [(LPFileMetadataProviderSpecialization *)self fetchIconAndThumbnailFromQuickLookForURL:v86];
+      [(LPFileMetadataProviderSpecialization *)self fetchIconAndThumbnailFromQuickLookForURL:fileCopy];
     }
   }
 
@@ -387,31 +387,31 @@ uint64_t __61__LPFileMetadataProviderSpecialization_fetchMetadataFromURL___block
   }
 
   v6 = self->_UTI;
-  v7 = [*MEMORY[0x1E6982DC8] identifier];
-  v8 = [(NSString *)v6 isEqualToString:v7];
+  identifier = [*MEMORY[0x1E6982DC8] identifier];
+  v8 = [(NSString *)v6 isEqualToString:identifier];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x1E69CDA18] interactionControllerWithURL:v86];
-    v10 = [(LPFileMetadata *)self->_fileMetadata icon];
-    if (v10)
+    v9 = [MEMORY[0x1E69CDA18] interactionControllerWithURL:fileCopy];
+    icon = [(LPFileMetadata *)self->_fileMetadata icon];
+    if (icon)
     {
 
 LABEL_16:
       goto LABEL_17;
     }
 
-    v17 = [(LPMetadataProviderSpecialization *)self context];
-    v18 = [v17 shouldFetchSubresources];
+    context2 = [(LPMetadataProviderSpecialization *)self context];
+    shouldFetchSubresources = [context2 shouldFetchSubresources];
 
-    if (!v18)
+    if (!shouldFetchSubresources)
     {
       goto LABEL_16;
     }
 
-    v19 = [(LPImageProperties *)v9 icons];
-    v20 = [v19 lastObject];
-    v21 = CGImageRetain([v20 _lp_CGImage]);
+    icons = [(LPImageProperties *)v9 icons];
+    lastObject = [icons lastObject];
+    v21 = CGImageRetain([lastObject _lp_CGImage]);
 
     if (v21)
     {
@@ -435,7 +435,7 @@ LABEL_17:
   v99[2] = *MEMORY[0x1E695DB78];
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:3];
   v95 = 0;
-  v87 = [v86 promisedItemResourceValuesForKeys:v25 error:&v95];
+  v87 = [fileCopy promisedItemResourceValuesForKeys:v25 error:&v95];
   v84 = v95;
 
   if (!v87)
@@ -447,68 +447,68 @@ LABEL_17:
     }
   }
 
-  v27 = [(LPMetadataProviderSpecialization *)self context];
-  v28 = [v27 postRedirectURL];
-  v29 = [v28 isFileURL];
+  context3 = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context3 postRedirectURL];
+  isFileURL = [postRedirectURL isFileURL];
 
-  if (!v29)
+  if (!isFileURL)
   {
-    v35 = [(LPMetadataProviderSpecialization *)self context];
-    v38 = [v35 postRedirectURL];
-    v39 = [v38 path];
-    v40 = [v39 lastPathComponent];
-    v41 = [v40 stringByDeletingPathExtension];
-    [(LPFileMetadata *)self->_fileMetadata setName:v41];
+    context4 = [(LPMetadataProviderSpecialization *)self context];
+    postRedirectURL2 = [context4 postRedirectURL];
+    path = [postRedirectURL2 path];
+    lastPathComponent = [path lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    [(LPFileMetadata *)self->_fileMetadata setName:stringByDeletingPathExtension];
 LABEL_26:
 
     goto LABEL_37;
   }
 
-  v30 = [(LPMetadataProviderSpecialization *)self context];
-  v31 = [v30 postRedirectURL];
+  context5 = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL3 = [context5 postRedirectURL];
   v33 = *MEMORY[0x1E695DB60];
   v98[0] = *MEMORY[0x1E695DC10];
   v32 = v98[0];
   v98[1] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:2];
-  v35 = [v31 promisedItemResourceValuesForKeys:v34 error:0];
+  context4 = [postRedirectURL3 promisedItemResourceValuesForKeys:v34 error:0];
 
-  v36 = [v35 objectForKey:v32];
+  v36 = [context4 objectForKey:v32];
   v37 = v36;
   if (!v36)
   {
-    v39 = [MEMORY[0x1E696AC08] defaultManager];
-    v40 = [(LPMetadataProviderSpecialization *)self context];
-    v41 = [v40 postRedirectURL];
-    v42 = [v41 path];
-    v43 = [v39 displayNameAtPath:v42];
+    path = [MEMORY[0x1E696AC08] defaultManager];
+    lastPathComponent = [(LPMetadataProviderSpecialization *)self context];
+    stringByDeletingPathExtension = [lastPathComponent postRedirectURL];
+    path2 = [stringByDeletingPathExtension path];
+    v43 = [path displayNameAtPath:path2];
     [(LPFileMetadata *)self->_fileMetadata setName:v43];
 
-    v38 = 0;
+    postRedirectURL2 = 0;
     goto LABEL_26;
   }
 
   if (v8)
   {
-    v38 = v36;
+    postRedirectURL2 = v36;
   }
 
   else
   {
-    v44 = [v35 objectForKey:v33];
+    v44 = [context4 objectForKey:v33];
     v45 = v44;
     if (v44 && ([v44 BOOLValue] & 1) == 0)
     {
-      v38 = [v37 stringByDeletingPathExtension];
+      postRedirectURL2 = [v37 stringByDeletingPathExtension];
     }
 
     else
     {
-      v38 = v37;
+      postRedirectURL2 = v37;
     }
   }
 
-  [(LPFileMetadata *)self->_fileMetadata setName:v38];
+  [(LPFileMetadata *)self->_fileMetadata setName:postRedirectURL2];
 LABEL_37:
 
   [(LPFileMetadata *)self->_fileMetadata setType:self->_UTI];
@@ -521,13 +521,13 @@ LABEL_37:
   if (![(LPFileMetadata *)self->_fileMetadata size])
   {
     v54 = [v87 objectForKeyedSubscript:v82];
-    v55 = [v54 BOOLValue];
+    bOOLValue = [v54 BOOLValue];
 
-    if (v55)
+    if (bOOLValue)
     {
-      v56 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v57 = [MEMORY[0x1E695DEC8] arrayWithObject:v23];
-      v58 = [v56 enumeratorAtURL:v86 includingPropertiesForKeys:v57 options:0 errorHandler:0];
+      v58 = [defaultManager enumeratorAtURL:fileCopy includingPropertiesForKeys:v57 options:0 errorHandler:0];
 
       v93 = 0u;
       v94 = 0u;
@@ -574,17 +574,17 @@ LABEL_37:
   if ([LPMIMETypeRegistry isMediaType:self->_MIMEType])
   {
     v68 = [LPMetadataProviderSpecializationContext alloc];
-    v85 = [(LPLinkMetadata *)self->_metadata originalURL];
+    originalURL = [(LPLinkMetadata *)self->_metadata originalURL];
     v69 = self->_MIMEType;
-    v70 = [(LPMetadataProviderSpecialization *)self context];
-    v71 = [v70 webView];
-    v72 = [(LPMetadataProviderSpecialization *)self context];
-    v73 = [v72 shouldFetchSubresources];
-    v74 = [(LPMetadataProviderSpecialization *)self context];
-    v75 = [v74 allowedSpecializations];
-    v76 = [(LPMetadataProviderSpecialization *)self context];
-    LOBYTE(v81) = [v76 fetchIsNotUserInitiated];
-    v77 = [(LPMetadataProviderSpecializationContext *)v68 initWithOriginalURL:v85 postRedirectURL:v86 MIMEType:v69 webView:v71 hasLoadedResource:1 shouldFetchSubresources:v73 allowedSpecializations:v75 fetchIsNotUserInitiated:v81];
+    context6 = [(LPMetadataProviderSpecialization *)self context];
+    webView = [context6 webView];
+    context7 = [(LPMetadataProviderSpecialization *)self context];
+    shouldFetchSubresources2 = [context7 shouldFetchSubresources];
+    context8 = [(LPMetadataProviderSpecialization *)self context];
+    allowedSpecializations = [context8 allowedSpecializations];
+    context9 = [(LPMetadataProviderSpecialization *)self context];
+    LOBYTE(v81) = [context9 fetchIsNotUserInitiated];
+    v77 = [(LPMetadataProviderSpecializationContext *)v68 initWithOriginalURL:originalURL postRedirectURL:fileCopy MIMEType:v69 webView:webView hasLoadedResource:1 shouldFetchSubresources:shouldFetchSubresources2 allowedSpecializations:allowedSpecializations fetchIsNotUserInitiated:v81];
 
     v78 = [LPStreamingMediaMetadataProviderSpecialization specializedMetadataProviderForResourceWithContext:v77];
     [v78 setDelegate:self];
@@ -599,32 +599,32 @@ LABEL_37:
   }
 }
 
-- (void)generateFallbackMetadataForUnreachableFile:(id)a3
+- (void)generateFallbackMetadataForUnreachableFile:(id)file
 {
-  v19 = a3;
-  v4 = [v19 pathExtension];
-  v5 = [LPMIMETypeRegistry UTIForFileExtension:v4];
+  fileCopy = file;
+  pathExtension = [fileCopy pathExtension];
+  v5 = [LPMIMETypeRegistry UTIForFileExtension:pathExtension];
   UTI = self->_UTI;
   self->_UTI = v5;
 
   [(LPFileMetadata *)self->_fileMetadata setType:self->_UTI];
-  v7 = [(LPMetadataProviderSpecialization *)self context];
-  v8 = [v7 postRedirectURL];
-  v9 = [v8 path];
-  v10 = [v9 lastPathComponent];
-  v11 = [v10 stringByDeletingPathExtension];
-  [(LPFileMetadata *)self->_fileMetadata setName:v11];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context postRedirectURL];
+  path = [postRedirectURL path];
+  lastPathComponent = [path lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  [(LPFileMetadata *)self->_fileMetadata setName:stringByDeletingPathExtension];
 
-  v12 = [(LPMetadataProviderSpecialization *)self context];
-  LODWORD(v8) = [v12 shouldFetchSubresources];
+  context2 = [(LPMetadataProviderSpecialization *)self context];
+  LODWORD(postRedirectURL) = [context2 shouldFetchSubresources];
 
-  if (v8)
+  if (postRedirectURL)
   {
     v13 = objc_alloc_init(MEMORY[0x1E69CDA18]);
     [v13 setUTI:self->_UTI];
-    v14 = [v13 icons];
-    v15 = [v14 lastObject];
-    v16 = CGImageRetain([v15 _lp_CGImage]);
+    icons = [v13 icons];
+    lastObject = [icons lastObject];
+    v16 = CGImageRetain([lastObject _lp_CGImage]);
 
     if (v16)
     {
@@ -642,8 +642,8 @@ LABEL_37:
 {
   if (self->_temporaryFileURL)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    [v3 removeItemAtURL:self->_temporaryFileURL error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:self->_temporaryFileURL error:0];
   }
 }
 
@@ -683,20 +683,20 @@ void __48__LPFileMetadataProviderSpecialization_complete__block_invoke(uint64_t 
   [v2 metadataProviderSpecialization:*(a1 + 32) didCompleteWithMetadata:*(*(a1 + 32) + 80)];
 }
 
-- (void)metadataProviderSpecialization:(id)a3 didCompleteWithMetadata:(id)a4
+- (void)metadataProviderSpecialization:(id)specialization didCompleteWithMetadata:(id)metadata
 {
-  v9 = a4;
-  v5 = [v9 video];
-  [(LPLinkMetadata *)self->_metadata setVideo:v5];
+  metadataCopy = metadata;
+  video = [metadataCopy video];
+  [(LPLinkMetadata *)self->_metadata setVideo:video];
 
-  v6 = [v9 videoMetadata];
-  [(LPLinkMetadata *)self->_metadata setVideoMetadata:v6];
+  videoMetadata = [metadataCopy videoMetadata];
+  [(LPLinkMetadata *)self->_metadata setVideoMetadata:videoMetadata];
 
-  v7 = [v9 audio];
-  [(LPLinkMetadata *)self->_metadata setAudio:v7];
+  audio = [metadataCopy audio];
+  [(LPLinkMetadata *)self->_metadata setAudio:audio];
 
-  v8 = [v9 audioMetadata];
-  [(LPLinkMetadata *)self->_metadata setAudioMetadata:v8];
+  audioMetadata = [metadataCopy audioMetadata];
+  [(LPLinkMetadata *)self->_metadata setAudioMetadata:audioMetadata];
 
   dispatch_group_leave(self->_fetchGroup);
 }

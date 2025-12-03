@@ -1,5 +1,5 @@
 @interface SOSVoiceUtteranceVariants
-+ (id)utteranceVariantsWithLocalUtterances:(id)a3 remoteUtterances:(id)a4;
++ (id)utteranceVariantsWithLocalUtterances:(id)utterances remoteUtterances:(id)remoteUtterances;
 - (BOOL)hasUtterances;
 - (id)description;
 @end
@@ -8,10 +8,10 @@
 
 - (BOOL)hasUtterances
 {
-  v3 = [(SOSVoiceUtteranceVariants *)self localUtterances];
-  v4 = [v3 count];
-  v5 = [(SOSVoiceUtteranceVariants *)self remoteUtterances];
-  LOBYTE(v4) = v4 + [v5 count] != 0;
+  localUtterances = [(SOSVoiceUtteranceVariants *)self localUtterances];
+  v4 = [localUtterances count];
+  remoteUtterances = [(SOSVoiceUtteranceVariants *)self remoteUtterances];
+  LOBYTE(v4) = v4 + [remoteUtterances count] != 0;
 
   return v4;
 }
@@ -20,21 +20,21 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SOSVoiceUtteranceVariants *)self localUtterances];
-  v6 = [(SOSVoiceUtteranceVariants *)self remoteUtterances];
-  v7 = [v3 stringWithFormat:@"<%@ %p localUtterances=%@ remoteUtterances=%@", v4, self, v5, v6];
+  localUtterances = [(SOSVoiceUtteranceVariants *)self localUtterances];
+  remoteUtterances = [(SOSVoiceUtteranceVariants *)self remoteUtterances];
+  v7 = [v3 stringWithFormat:@"<%@ %p localUtterances=%@ remoteUtterances=%@", v4, self, localUtterances, remoteUtterances];
 
   return v7;
 }
 
-+ (id)utteranceVariantsWithLocalUtterances:(id)a3 remoteUtterances:(id)a4
++ (id)utteranceVariantsWithLocalUtterances:(id)utterances remoteUtterances:(id)remoteUtterances
 {
-  v5 = a4;
-  v6 = a3;
+  remoteUtterancesCopy = remoteUtterances;
+  utterancesCopy = utterances;
   v7 = objc_opt_new();
-  [v7 setLocalUtterances:v6];
+  [v7 setLocalUtterances:utterancesCopy];
 
-  [v7 setRemoteUtterances:v5];
+  [v7 setRemoteUtterances:remoteUtterancesCopy];
 
   return v7;
 }

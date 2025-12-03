@@ -1,10 +1,10 @@
 @interface MANAutoAssetSetPolicy
 - (MANAutoAssetSetPolicy)init;
-- (MANAutoAssetSetPolicy)initWithCoder:(id)a3;
+- (MANAutoAssetSetPolicy)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetPolicy
@@ -26,23 +26,23 @@
   return v3;
 }
 
-- (MANAutoAssetSetPolicy)initWithCoder:(id)a3
+- (MANAutoAssetSetPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MANAutoAssetSetPolicy;
   v5 = [(MANAutoAssetSetPolicy *)&v11 init];
   if (v5)
   {
-    v5->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-    v5->_lockInhibitsEmergencyRemoval = [v4 decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
-    v5->_supportingShortTermLocks = [v4 decodeBoolForKey:@"supportingShortTermLocks"];
-    v5->_allowCheckDownloadOnBattery = [v4 decodeBoolForKey:@"allowCheckDownloadOnBattery"];
-    v5->_allowCheckDownloadWhenBatteryLow = [v4 decodeBoolForKey:@"allowCheckDownloadWhenBatteryLow"];
-    v5->_allowCheckDownloadWhenCPUHigh = [v4 decodeBoolForKey:@"allowCheckDownloadWhenCPUHigh"];
-    v5->_allowCheckDownloadOverExpensive = [v4 decodeBoolForKey:@"allowCheckDownloadOverExpensive"];
-    v5->_allowCheckDownloadOverCellular = [v4 decodeBoolForKey:@"allowCheckDownloadOverCellular"];
-    v5->_blockCheckDownload = [v4 decodeBoolForKey:@"blockCheckDownload"];
+    v5->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+    v5->_lockInhibitsEmergencyRemoval = [coderCopy decodeBoolForKey:@"lockInhibitsEmergencyRemoval"];
+    v5->_supportingShortTermLocks = [coderCopy decodeBoolForKey:@"supportingShortTermLocks"];
+    v5->_allowCheckDownloadOnBattery = [coderCopy decodeBoolForKey:@"allowCheckDownloadOnBattery"];
+    v5->_allowCheckDownloadWhenBatteryLow = [coderCopy decodeBoolForKey:@"allowCheckDownloadWhenBatteryLow"];
+    v5->_allowCheckDownloadWhenCPUHigh = [coderCopy decodeBoolForKey:@"allowCheckDownloadWhenCPUHigh"];
+    v5->_allowCheckDownloadOverExpensive = [coderCopy decodeBoolForKey:@"allowCheckDownloadOverExpensive"];
+    v5->_allowCheckDownloadOverCellular = [coderCopy decodeBoolForKey:@"allowCheckDownloadOverCellular"];
+    v5->_blockCheckDownload = [coderCopy decodeBoolForKey:@"blockCheckDownload"];
     v12[0] = objc_opt_class();
     v12[1] = objc_opt_class();
     v12[2] = objc_opt_class();
@@ -54,7 +54,7 @@
     v6 = [NSArray arrayWithObjects:v12 count:8];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"additionalPolicyControl"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"additionalPolicyControl"];
     additionalPolicyControl = v5->_additionalPolicyControl;
     v5->_additionalPolicyControl = v8;
   }
@@ -62,20 +62,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MANAutoAssetSetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy supportingShortTermLocks](self forKey:{"supportingShortTermLocks"), @"supportingShortTermLocks"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOnBattery](self forKey:{"allowCheckDownloadOnBattery"), @"allowCheckDownloadOnBattery"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadWhenBatteryLow](self forKey:{"allowCheckDownloadWhenBatteryLow"), @"allowCheckDownloadWhenBatteryLow"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadWhenCPUHigh](self forKey:{"allowCheckDownloadWhenCPUHigh"), @"allowCheckDownloadWhenCPUHigh"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOverExpensive](self forKey:{"allowCheckDownloadOverExpensive"), @"allowCheckDownloadOverExpensive"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOverCellular](self forKey:{"allowCheckDownloadOverCellular"), @"allowCheckDownloadOverCellular"}];
-  [v4 encodeBool:-[MANAutoAssetSetPolicy blockCheckDownload](self forKey:{"blockCheckDownload"), @"blockCheckDownload"}];
-  v5 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
-  [v4 encodeObject:v5 forKey:@"additionalPolicyControl"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy lockInhibitsEmergencyRemoval](self forKey:{"lockInhibitsEmergencyRemoval"), @"lockInhibitsEmergencyRemoval"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy supportingShortTermLocks](self forKey:{"supportingShortTermLocks"), @"supportingShortTermLocks"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOnBattery](self forKey:{"allowCheckDownloadOnBattery"), @"allowCheckDownloadOnBattery"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadWhenBatteryLow](self forKey:{"allowCheckDownloadWhenBatteryLow"), @"allowCheckDownloadWhenBatteryLow"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadWhenCPUHigh](self forKey:{"allowCheckDownloadWhenCPUHigh"), @"allowCheckDownloadWhenCPUHigh"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOverExpensive](self forKey:{"allowCheckDownloadOverExpensive"), @"allowCheckDownloadOverExpensive"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy allowCheckDownloadOverCellular](self forKey:{"allowCheckDownloadOverCellular"), @"allowCheckDownloadOverCellular"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetPolicy blockCheckDownload](self forKey:{"blockCheckDownload"), @"blockCheckDownload"}];
+  additionalPolicyControl = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
+  [coderCopy encodeObject:additionalPolicyControl forKey:@"additionalPolicyControl"];
 }
 
 - (id)copy
@@ -90,8 +90,8 @@
   [(MANAutoAssetSetPolicy *)v3 setAllowCheckDownloadOverExpensive:[(MANAutoAssetSetPolicy *)self allowCheckDownloadOverExpensive]];
   [(MANAutoAssetSetPolicy *)v3 setAllowCheckDownloadOverCellular:[(MANAutoAssetSetPolicy *)self allowCheckDownloadOverCellular]];
   [(MANAutoAssetSetPolicy *)v3 setBlockCheckDownload:[(MANAutoAssetSetPolicy *)self blockCheckDownload]];
-  v4 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
-  v5 = [v4 copy];
+  additionalPolicyControl = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
+  v5 = [additionalPolicyControl copy];
   [(MANAutoAssetSetPolicy *)v3 setAdditionalPolicyControl:v5];
 
   return v3;
@@ -99,13 +99,13 @@
 
 - (id)description
 {
-  v3 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
+  additionalPolicyControl = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
 
   [(MANAutoAssetSetPolicy *)self summary];
-  if (v3)
+  if (additionalPolicyControl)
     v4 = {;
-    v5 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
-    v6 = [v5 description];
+    additionalPolicyControl2 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
+    v6 = [additionalPolicyControl2 description];
     v7 = [NSString stringWithFormat:@"%@|additional:\n%@", v4, v6];
   }
 
@@ -118,9 +118,9 @@
 
 - (id)summary
 {
-  v3 = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
+  additionalPolicyControl = [(MANAutoAssetSetPolicy *)self additionalPolicyControl];
   v4 = @"(w/additional)";
-  if (!v3)
+  if (!additionalPolicyControl)
   {
     v4 = &stru_4BD3F0;
   }

@@ -1,8 +1,8 @@
 @interface SearchHintCell
 - (BOOL)isSelected;
-- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SearchHintCell
@@ -14,18 +14,18 @@
   return [(SearchHintCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_1301A0(a3);
+  selfCopy = self;
+  sub_1301A0(selected);
 }
 
-- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14SearchHintCell_objectGraph) = 0;
   v9 = OBJC_IVAR____TtC23ShelfKitCollectionViews14SearchHintCell_model;
@@ -36,7 +36,7 @@
   return [(SearchHintCell *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews14SearchHintCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14SearchHintCell_objectGraph) = 0;
@@ -45,8 +45,8 @@
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(SearchHintCell *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(SearchHintCell *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

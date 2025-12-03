@@ -1,27 +1,27 @@
 @interface VCPRequestSuggestedMePersonIdentifierTask
-+ (id)taskWithContext:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
++ (id)taskWithContext:(id)context andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestSuggestedMePersonIdentifierTask)initWithContext:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
+- (VCPRequestSuggestedMePersonIdentifierTask)initWithContext:(id)context andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestSuggestedMePersonIdentifierTask
 
-- (VCPRequestSuggestedMePersonIdentifierTask)initWithContext:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
+- (VCPRequestSuggestedMePersonIdentifierTask)initWithContext:(id)context andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  contextCopy = context;
+  lCopy = l;
+  replyCopy = reply;
   v18.receiver = self;
   v18.super_class = VCPRequestSuggestedMePersonIdentifierTask;
   v13 = [(VCPRequestSuggestedMePersonIdentifierTask *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_context, a3);
-    objc_storeStrong(&v14->_photoLibraryURL, a4);
-    v15 = objc_retainBlock(v12);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v14->_photoLibraryURL, l);
+    v15 = objc_retainBlock(replyCopy);
     reply = v14->_reply;
     v14->_reply = v15;
   }
@@ -29,13 +29,13 @@
   return v14;
 }
 
-+ (id)taskWithContext:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
++ (id)taskWithContext:(id)context andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithContext:v9 andPhotoLibraryURL:v10 andProgressHandler:v11 andReply:v12];
+  contextCopy = context;
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v13 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy andPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v13;
 }
@@ -99,8 +99,8 @@
   else
   {
     reply = self->_reply;
-    v9 = [NSString stringWithFormat:@"Failed to find client specified Photos Library (%@)", self->_photoLibraryURL, NSLocalizedDescriptionKey];
-    v14 = v9;
+    nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Failed to find client specified Photos Library (%@)", self->_photoLibraryURL, NSLocalizedDescriptionKey];
+    v14 = nSLocalizedDescriptionKey;
     v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v11 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v10];
     reply[2](reply, 0, v11);

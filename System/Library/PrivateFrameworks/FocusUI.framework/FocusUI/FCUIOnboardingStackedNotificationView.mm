@@ -1,21 +1,21 @@
 @interface FCUIOnboardingStackedNotificationView
-- (FCUIOnboardingStackedNotificationView)initWithBackgroundColor:(id)a3 assetImageName:(id)a4;
+- (FCUIOnboardingStackedNotificationView)initWithBackgroundColor:(id)color assetImageName:(id)name;
 - (void)_configureViewIfNecessary;
 - (void)layoutSubviews;
 @end
 
 @implementation FCUIOnboardingStackedNotificationView
 
-- (FCUIOnboardingStackedNotificationView)initWithBackgroundColor:(id)a3 assetImageName:(id)a4
+- (FCUIOnboardingStackedNotificationView)initWithBackgroundColor:(id)color assetImageName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = FCUIOnboardingStackedNotificationView;
   v7 = [(FCUIOnboardingStackedNotificationView *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_assetImageName, a4);
+    objc_storeStrong(&v7->_assetImageName, name);
   }
 
   return v8;
@@ -27,8 +27,8 @@
   v20.super_class = FCUIOnboardingStackedNotificationView;
   [(FCUIOnboardingStackedNotificationView *)&v20 layoutSubviews];
   [(FCUIOnboardingStackedNotificationView *)self _configureViewIfNecessary];
-  v3 = [(FCUIOnboardingStackedNotificationView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(FCUIOnboardingStackedNotificationView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   [(FCUIOnboardingStackedNotificationView *)self bounds];
@@ -103,8 +103,8 @@
       self->_assetView = v16;
 
       v18 = self->_assetView;
-      v19 = [MEMORY[0x277D75348] systemLightGrayColor];
-      [(UIView *)v18 setTintColor:v19];
+      systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+      [(UIView *)v18 setTintColor:systemLightGrayColor];
     }
 
     else
@@ -114,8 +114,8 @@
       self->_assetView = v20;
 
       v22 = self->_assetView;
-      v23 = [MEMORY[0x277D75348] systemLightGrayColor];
-      [(UIView *)v22 setBackgroundColor:v23];
+      systemLightGrayColor2 = [MEMORY[0x277D75348] systemLightGrayColor];
+      [(UIView *)v22 setBackgroundColor:systemLightGrayColor2];
 
       [(UIView *)self->_assetView _setContinuousCornerRadius:10.0];
     }
@@ -131,8 +131,8 @@
     self->_line1TextView = v24;
 
     v26 = self->_line1TextView;
-    v27 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(UIView *)v26 setBackgroundColor:v27];
+    systemLightGrayColor3 = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(UIView *)v26 setBackgroundColor:systemLightGrayColor3];
 
     [(UIView *)self->_line1TextView _setContinuousCornerRadius:3.0];
     [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:self->_line1TextView withStyle:1];
@@ -146,8 +146,8 @@
     self->_line2TextView = v28;
 
     v30 = self->_line2TextView;
-    v31 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(UIView *)v30 setBackgroundColor:v31];
+    systemLightGrayColor4 = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(UIView *)v30 setBackgroundColor:systemLightGrayColor4];
 
     [(UIView *)self->_line2TextView _setContinuousCornerRadius:3.0];
     [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:self->_line2TextView withStyle:1];

@@ -1,6 +1,6 @@
 @interface MBDiagnosticExtension
 - (MBDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation MBDiagnosticExtension
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   if (MGGetBoolAnswer())
   {

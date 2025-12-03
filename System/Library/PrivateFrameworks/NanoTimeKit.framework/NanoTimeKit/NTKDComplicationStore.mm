@@ -1,90 +1,90 @@
 @interface NTKDComplicationStore
-+ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)a3;
-- (BOOL)_queue_hasSampleTemplateForKey:(id)a3 family:(int64_t)a4;
-- (BOOL)hasSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5;
-- (NTKDComplicationStore)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
++ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)ds;
+- (BOOL)_queue_hasSampleTemplateForKey:(id)key family:(int64_t)family;
+- (BOOL)hasSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (NTKDComplicationStore)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
 - (float)version;
-- (id)_descriptorForKey:(id)a3;
-- (id)_queue_complicationDescriptorsForClientIdentifier:(id)a3;
-- (id)_queue_sampleDataForKey:(id)a3 family:(int64_t)a4;
-- (id)_queue_sampleTemplateForKey:(id)a3 family:(int64_t)a4;
-- (id)_queue_sampleTemplateReferenceForKey:(id)a3 family:(int64_t)a4;
+- (id)_descriptorForKey:(id)key;
+- (id)_queue_complicationDescriptorsForClientIdentifier:(id)identifier;
+- (id)_queue_sampleDataForKey:(id)key family:(int64_t)family;
+- (id)_queue_sampleTemplateForKey:(id)key family:(int64_t)family;
+- (id)_queue_sampleTemplateReferenceForKey:(id)key family:(int64_t)family;
 - (id)clients;
-- (id)complicationDescriptorsForClientIdentifier:(id)a3;
-- (id)complicationSampleDataForClientID:(id)a3 descriptor:(id)a4 shouldInflate:(BOOL)a5;
-- (id)sampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5;
-- (void)_enumerateAllKeysForClientID:(id)a3 usingBlock:(id)a4;
+- (id)complicationDescriptorsForClientIdentifier:(id)identifier;
+- (id)complicationSampleDataForClientID:(id)d descriptor:(id)descriptor shouldInflate:(BOOL)inflate;
+- (id)sampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (void)_enumerateAllKeysForClientID:(id)d usingBlock:(id)block;
 - (void)_faultInAllClientData;
-- (void)_faultInComplicationDescriptorsForClientID:(id)a3;
-- (void)_faultInSampleDataForKey:(id)a3;
-- (void)_onObserverQueue_async:(id)a3;
-- (void)_onQueue_async:(id)a3;
-- (void)_queue_clearRemovalsThroughSeqId:(id)a3;
+- (void)_faultInComplicationDescriptorsForClientID:(id)d;
+- (void)_faultInSampleDataForKey:(id)key;
+- (void)_onObserverQueue_async:(id)queue_async;
+- (void)_onQueue_async:(id)queue_async;
+- (void)_queue_clearRemovalsThroughSeqId:(id)id;
 - (void)_queue_incrementSeqId;
-- (void)_queue_loadFullCollectionForObserver:(id)a3;
-- (void)_queue_notifyDidRemoveComplicationForKey:(id)a3 skipSyncObserver:(BOOL)a4;
-- (void)_queue_notifyDidUpdateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_queue_notifyDidUpdateSampleTemplateReference:(id)a3 forKey:(id)a4 family:(int64_t)a5 skipSyncObserver:(BOOL)a6;
-- (void)_queue_playbackChangesForObserver:(id)a3 fromSeqId:(id)a4;
-- (void)_removeComplicationForKey:(id)a3 skipSyncObserver:(BOOL)a4;
-- (void)_setupObserver:(id)a3 withSeqId:(id)a4 reloadSeqId:(id)a5;
-- (void)_updateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_updateLocalizableSampleData:(id)a3 forKey:(id)a4 family:(int64_t)a5 template:(id)a6 skipSyncObserver:(BOOL)a7;
-- (void)_updateLocalizableSampleData:(id)a3 forKey:(id)a4 skipSyncObserver:(BOOL)a5;
+- (void)_queue_loadFullCollectionForObserver:(id)observer;
+- (void)_queue_notifyDidRemoveComplicationForKey:(id)key skipSyncObserver:(BOOL)observer;
+- (void)_queue_notifyDidUpdateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier skipSyncObserver:(BOOL)observer;
+- (void)_queue_notifyDidUpdateSampleTemplateReference:(id)reference forKey:(id)key family:(int64_t)family skipSyncObserver:(BOOL)observer;
+- (void)_queue_playbackChangesForObserver:(id)observer fromSeqId:(id)id;
+- (void)_removeComplicationForKey:(id)key skipSyncObserver:(BOOL)observer;
+- (void)_setupObserver:(id)observer withSeqId:(id)id reloadSeqId:(id)seqId;
+- (void)_updateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier skipSyncObserver:(BOOL)observer;
+- (void)_updateLocalizableSampleData:(id)data forKey:(id)key family:(int64_t)family template:(id)template skipSyncObserver:(BOOL)observer;
+- (void)_updateLocalizableSampleData:(id)data forKey:(id)key skipSyncObserver:(BOOL)observer;
 - (void)_validateManifestEntries;
-- (void)addObserver:(id)a3 withSeqId:(id)a4;
+- (void)addObserver:(id)observer withSeqId:(id)id;
 - (void)clearSyncObserver;
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setSyncObserver:(id)a3 withSeqId:(id)a4;
-- (void)setVersion:(float)a3;
-- (void)updateLocalizableSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
-- (void)withoutNotifyingSyncObserverRemoveComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)withoutNotifyingSyncObserverSetComplicationSampleData:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5;
-- (void)withoutNotifyingUpdateLocalizableSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)removeObserver:(id)observer;
+- (void)setSyncObserver:(id)observer withSeqId:(id)id;
+- (void)setVersion:(float)version;
+- (void)updateLocalizableSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (void)withoutNotifyingSyncObserverRemoveComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)withoutNotifyingSyncObserverSetComplicationSampleData:(id)data forClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)withoutNotifyingUpdateLocalizableSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
 @end
 
 @implementation NTKDComplicationStore
 
-+ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)a3
++ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = sub_1000239C8();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023A0C;
   block[3] = &unk_10005CA70;
-  v7 = v3;
-  v5 = v3;
+  v7 = dsCopy;
+  v5 = dsCopy;
   dispatch_sync(v4, block);
 }
 
-- (NTKDComplicationStore)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (NTKDComplicationStore)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v45.receiver = self;
   v45.super_class = NTKDComplicationStore;
   v8 = [(NTKDComplicationStore *)&v45 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     collectionIdentifier = v8->_collectionIdentifier;
     v8->_collectionIdentifier = v9;
 
-    objc_storeStrong(&v8->_deviceUUID, a4);
+    objc_storeStrong(&v8->_deviceUUID, d);
     v11 = [NSString stringWithFormat:@"com.apple.ntkd.complicationstore.%p", v8];
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v8->_queue;
     v8->_queue = v14;
 
     v16 = [NSString stringWithFormat:@"com.apple.ntkd.complicationstore.observercallback.%p", v8];
 
-    v17 = [v16 UTF8String];
+    uTF8String2 = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String2, v18);
     observerCallbackQueue = v8->_observerCallbackQueue;
     v8->_observerCallbackQueue = v19;
 
@@ -148,14 +148,14 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(_NTKDComplicationCollectionManifest *)self->_manifest clientIds];
+  clientIds = [(_NTKDComplicationCollectionManifest *)self->_manifest clientIds];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000245D4;
   v5[3] = &unk_10005DC60;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [clientIds enumerateObjectsUsingBlock:v5];
 
   if (*(v7 + 24) == 1)
   {
@@ -176,8 +176,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(_NTKDComplicationCollectionManifest *)self->_manifest clientIds];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clientIds = [(_NTKDComplicationCollectionManifest *)self->_manifest clientIds];
+  v4 = [clientIds countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -188,7 +188,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clientIds);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -201,23 +201,23 @@
         [(NTKDComplicationStore *)self _enumerateAllKeysForClientID:v8 usingBlock:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [clientIds countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_faultInSampleDataForKey:(id)a3
+- (void)_faultInSampleDataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_clientToSampleDataLock);
-  v5 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:keyCopy];
   if (!v5)
   {
-    v6 = [(_NTKDComplicationCollectionManifest *)self->_manifest familiesWithSampleTemplateForKey:v4];
+    v6 = [(_NTKDComplicationCollectionManifest *)self->_manifest familiesWithSampleTemplateForKey:keyCopy];
     v5 = [[NTKComplicationSampleData alloc] initWithSupportedFamilies:v6];
-    [(NSMutableDictionary *)self->_clientToSampleData setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_clientToSampleData setObject:v5 forKey:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_clientToSampleDataLock);
@@ -225,8 +225,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v5 supportedFamilies];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  supportedFamilies = [v5 supportedFamilies];
+  v8 = [supportedFamilies countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -238,17 +238,17 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(supportedFamilies);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) integerValue];
-        v13 = [v5 templatePathForFamily:v12];
+        integerValue = [*(*(&v14 + 1) + 8 * v11) integerValue];
+        v13 = [v5 templatePathForFamily:integerValue];
         if (!v13)
         {
-          v13 = sub_100025030(self->_storeDirectory, v4);
+          v13 = sub_100025030(self->_storeDirectory, keyCopy);
           if (v13)
           {
-            [v5 setTemplatePath:v13 forFamily:v12];
+            [v5 setTemplatePath:v13 forFamily:integerValue];
           }
         }
 
@@ -256,18 +256,18 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [supportedFamilies countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_faultInComplicationDescriptorsForClientID:(id)a3
+- (void)_faultInComplicationDescriptorsForClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSMutableArray array];
-  v6 = [(_NTKDComplicationCollectionManifest *)self->_manifest complicationDescriptorIdentifiersForClientIdentifier:v4];
+  v6 = [(_NTKDComplicationCollectionManifest *)self->_manifest complicationDescriptorIdentifiersForClientIdentifier:dCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -287,7 +287,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = sub_10002482C(self->_storeDirectory, v4, *(*(&v14 + 1) + 8 * v10));
+        v11 = sub_10002482C(self->_storeDirectory, dCopy, *(*(&v14 + 1) + 8 * v10));
         if (v11)
         {
           [v5 addObject:v11];
@@ -306,21 +306,21 @@
   os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
   clientIDtoComplicationDescriptors = self->_clientIDtoComplicationDescriptors;
   v13 = [v5 copy];
-  [(NSMutableDictionary *)clientIDtoComplicationDescriptors setObject:v13 forKey:v4];
+  [(NSMutableDictionary *)clientIDtoComplicationDescriptors setObject:v13 forKey:dCopy];
 
   os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
 }
 
-- (void)_enumerateAllKeysForClientID:(id)a3 usingBlock:(id)a4
+- (void)_enumerateAllKeysForClientID:(id)d usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
-  v8 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:dCopy];
   v9 = [v8 copy];
 
   os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
@@ -328,9 +328,9 @@
   v17[1] = 3221225472;
   v17[2] = sub_100025400;
   v17[3] = &unk_10005DCB0;
-  v10 = v6;
+  v10 = dCopy;
   v18 = v10;
-  v11 = v7;
+  v11 = blockCopy;
   v19 = v11;
   v20 = &v21;
   [v9 enumerateObjectsUsingBlock:v17];
@@ -351,24 +351,24 @@
   _Block_object_dispose(&v21, 8);
 }
 
-- (id)complicationSampleDataForClientID:(id)a3 descriptor:(id)a4 shouldInflate:(BOOL)a5
+- (id)complicationSampleDataForClientID:(id)d descriptor:(id)descriptor shouldInflate:(BOOL)inflate
 {
-  if (a3)
+  if (d)
   {
-    v5 = a5;
-    v8 = a4;
-    v9 = a3;
-    v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:v9 descriptor:v8];
+    inflateCopy = inflate;
+    descriptorCopy = descriptor;
+    dCopy = d;
+    v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:dCopy descriptor:descriptorCopy];
 
     [(NTKDComplicationStore *)self _faultInSampleDataForKey:v10];
     os_unfair_lock_lock(&self->_clientToSampleDataLock);
     v11 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:v10];
     v12 = v11;
-    if (v5)
+    if (inflateCopy)
     {
-      v13 = [v11 inflatedCopy];
+      inflatedCopy = [v11 inflatedCopy];
 
-      v12 = v13;
+      v12 = inflatedCopy;
     }
 
     os_unfair_lock_unlock(&self->_clientToSampleDataLock);
@@ -382,75 +382,75 @@
   return v12;
 }
 
-- (void)addObserver:(id)a3 withSeqId:(id)a4
+- (void)addObserver:(id)observer withSeqId:(id)id
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100025660;
   v7[3] = &unk_10005CC38;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDComplicationStore *)v8 _onQueue_async:v7];
+  selfCopy = self;
+  observerCopy = observer;
+  idCopy = id;
+  v5 = idCopy;
+  v6 = observerCopy;
+  [(NTKDComplicationStore *)selfCopy _onQueue_async:v7];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000257B8;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setSyncObserver:(id)a3 withSeqId:(id)a4
+- (void)setSyncObserver:(id)observer withSeqId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100025888;
   block[3] = &unk_10005CC38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_setupObserver:(id)a3 withSeqId:(id)a4 reloadSeqId:(id)a5
+- (void)_setupObserver:(id)observer withSeqId:(id)id reloadSeqId:(id)seqId
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  observerCopy = observer;
+  idCopy = id;
+  seqIdCopy = seqId;
+  if (!idCopy)
   {
     goto LABEL_4;
   }
 
-  if ([v8 isEqual:self->_seqId])
+  if ([idCopy isEqual:self->_seqId])
   {
     goto LABEL_6;
   }
 
-  if (!sub_1000171F8(v8, v9))
+  if (!sub_1000171F8(idCopy, seqIdCopy))
   {
-    [(NTKDComplicationStore *)self _queue_playbackChangesForObserver:v10 fromSeqId:v8];
+    [(NTKDComplicationStore *)self _queue_playbackChangesForObserver:observerCopy fromSeqId:idCopy];
   }
 
   else
   {
 LABEL_4:
-    [(NTKDComplicationStore *)self _queue_loadFullCollectionForObserver:v10];
+    [(NTKDComplicationStore *)self _queue_loadFullCollectionForObserver:observerCopy];
   }
 
 LABEL_6:
@@ -486,14 +486,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)setVersion:(float)a3
+- (void)setVersion:(float)version
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100025BD8;
   v3[3] = &unk_10005D730;
   v3[4] = self;
-  v4 = a3;
+  versionCopy = version;
   [(NTKDComplicationStore *)self _onQueue_async:v3];
 }
 
@@ -519,11 +519,11 @@ LABEL_6:
   return v3;
 }
 
-- (id)sampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5
+- (id)sampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:v9 descriptor:v8];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
   v19 = 0;
   v20 = &v19;
@@ -539,7 +539,7 @@ LABEL_6:
   v15[4] = self;
   v16 = v10;
   v17 = &v19;
-  v18 = a5;
+  familyCopy = family;
   v12 = v10;
   dispatch_sync(queue, v15);
   v13 = v20[5];
@@ -549,11 +549,11 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)hasSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5
+- (BOOL)hasSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:v9 descriptor:v8];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
   v18 = 0;
   v19 = &v18;
@@ -567,7 +567,7 @@ LABEL_6:
   v14[4] = self;
   v15 = v10;
   v16 = &v18;
-  v17 = a5;
+  familyCopy = family;
   v12 = v10;
   dispatch_sync(queue, v14);
   LOBYTE(self) = *(v19 + 24);
@@ -576,9 +576,9 @@ LABEL_6:
   return self;
 }
 
-- (id)complicationDescriptorsForClientIdentifier:(id)a3
+- (id)complicationDescriptorsForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -590,10 +590,10 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_100026230;
   block[3] = &unk_10005D780;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -602,106 +602,106 @@ LABEL_6:
   return v7;
 }
 
-- (void)updateLocalizableSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)updateLocalizableSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NTKComplicationKey alloc] initWithClientIdentifier:v11 descriptor:v10];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  templateCopy = template;
+  v13 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
-  [(NTKDComplicationStore *)self _updateLocalizableSampleDataTemplate:v12 forKey:v13 family:a6 skipSyncObserver:0];
+  [(NTKDComplicationStore *)self _updateLocalizableSampleDataTemplate:templateCopy forKey:v13 family:family skipSyncObserver:0];
 }
 
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NTKComplicationKey alloc] initWithClientIdentifier:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v8 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
   [(NTKDComplicationStore *)self _removeComplicationForKey:v8 skipSyncObserver:0];
 }
 
-- (void)withoutNotifyingSyncObserverSetComplicationSampleData:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5
+- (void)withoutNotifyingSyncObserverSetComplicationSampleData:(id)data forClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:v9 descriptor:v8];
+  dataCopy = data;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v10 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
-  if (v11 && v9)
+  if (dataCopy && identifierCopy)
   {
-    [(NTKDComplicationStore *)self _updateLocalizableSampleData:v11 forKey:v10 skipSyncObserver:1];
+    [(NTKDComplicationStore *)self _updateLocalizableSampleData:dataCopy forKey:v10 skipSyncObserver:1];
   }
 }
 
-- (void)withoutNotifyingUpdateLocalizableSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)withoutNotifyingUpdateLocalizableSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NTKComplicationKey alloc] initWithClientIdentifier:v11 descriptor:v10];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  templateCopy = template;
+  v13 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
-  [(NTKDComplicationStore *)self _updateLocalizableSampleDataTemplate:v12 forKey:v13 family:a6 skipSyncObserver:1];
+  [(NTKDComplicationStore *)self _updateLocalizableSampleDataTemplate:templateCopy forKey:v13 family:family skipSyncObserver:1];
 }
 
-- (void)withoutNotifyingSyncObserverRemoveComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)withoutNotifyingSyncObserverRemoveComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NTKComplicationKey alloc] initWithClientIdentifier:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v8 = [[NTKComplicationKey alloc] initWithClientIdentifier:identifierCopy descriptor:descriptorCopy];
 
   [(NTKDComplicationStore *)self _removeComplicationForKey:v8 skipSyncObserver:1];
 }
 
-- (void)_updateLocalizableSampleData:(id)a3 forKey:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_updateLocalizableSampleData:(id)data forKey:(id)key skipSyncObserver:(BOOL)observer
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000266B0;
   v10[3] = &unk_10005D7D0;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v14 = a5;
-  v8 = v13;
-  v9 = v11;
+  dataCopy = data;
+  selfCopy = self;
+  keyCopy = key;
+  observerCopy = observer;
+  v8 = keyCopy;
+  v9 = dataCopy;
   [(NTKDComplicationStore *)self _onQueue_async:v10];
 }
 
-- (void)_updateLocalizableSampleData:(id)a3 forKey:(id)a4 family:(int64_t)a5 template:(id)a6 skipSyncObserver:(BOOL)a7
+- (void)_updateLocalizableSampleData:(id)data forKey:(id)key family:(int64_t)family template:(id)template skipSyncObserver:(BOOL)observer
 {
-  v12 = a3;
+  dataCopy = data;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000272CC;
   v16[3] = &unk_10005DD00;
   v16[4] = self;
-  v17 = a4;
-  v19 = a6;
-  v20 = a5;
-  v18 = v12;
-  v21 = a7;
-  v13 = v19;
-  v14 = v12;
-  v15 = v17;
+  keyCopy = key;
+  templateCopy = template;
+  familyCopy = family;
+  v18 = dataCopy;
+  observerCopy = observer;
+  v13 = templateCopy;
+  v14 = dataCopy;
+  v15 = keyCopy;
   [(NTKDComplicationStore *)self _onQueue_async:v16];
 }
 
-- (void)_updateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_updateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier skipSyncObserver:(BOOL)observer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 copy];
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  v10 = [descriptorsCopy copy];
   os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
   clientIDtoComplicationDescriptors = self->_clientIDtoComplicationDescriptors;
   if (v10)
   {
-    [(NSMutableDictionary *)clientIDtoComplicationDescriptors setObject:v10 forKey:v9];
+    [(NSMutableDictionary *)clientIDtoComplicationDescriptors setObject:v10 forKey:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)clientIDtoComplicationDescriptors removeObjectForKey:v9];
+    [(NSMutableDictionary *)clientIDtoComplicationDescriptors removeObjectForKey:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
@@ -710,43 +710,43 @@ LABEL_6:
   v15[2] = sub_100027800;
   v15[3] = &unk_10005DA00;
   v15[4] = self;
-  v16 = v9;
+  v16 = identifierCopy;
   v17 = v10;
-  v18 = v8;
-  v19 = a5;
-  v12 = v8;
+  v18 = descriptorsCopy;
+  observerCopy = observer;
+  v12 = descriptorsCopy;
   v13 = v10;
-  v14 = v9;
+  v14 = identifierCopy;
   [(NTKDComplicationStore *)self _onQueue_async:v15];
 }
 
-- (void)_removeComplicationForKey:(id)a3 skipSyncObserver:(BOOL)a4
+- (void)_removeComplicationForKey:(id)key skipSyncObserver:(BOOL)observer
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100027EE0;
   v6[3] = &unk_10005CFE8;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NTKDComplicationStore *)v7 _onQueue_async:v6];
+  selfCopy = self;
+  keyCopy = key;
+  observerCopy = observer;
+  v5 = keyCopy;
+  [(NTKDComplicationStore *)selfCopy _onQueue_async:v6];
 }
 
-- (id)_descriptorForKey:(id)a3
+- (id)_descriptorForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
   clientIDtoComplicationDescriptors = self->_clientIDtoComplicationDescriptors;
-  v6 = [v4 clientIdentifier];
-  v7 = [(NSMutableDictionary *)clientIDtoComplicationDescriptors objectForKeyedSubscript:v6];
+  clientIdentifier = [keyCopy clientIdentifier];
+  v7 = [(NSMutableDictionary *)clientIDtoComplicationDescriptors objectForKeyedSubscript:clientIdentifier];
   v8 = [v7 count];
 
   os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
   if (!v8)
   {
-    v9 = [v4 clientIdentifier];
-    [(NTKDComplicationStore *)self _faultInComplicationDescriptorsForClientID:v9];
+    clientIdentifier2 = [keyCopy clientIdentifier];
+    [(NTKDComplicationStore *)self _faultInComplicationDescriptorsForClientID:clientIdentifier2];
   }
 
   v28 = 0;
@@ -755,13 +755,13 @@ LABEL_6:
   v31 = sub_100025D84;
   v32 = sub_100025D94;
   v33 = 0;
-  v10 = [v4 clientIdentifier];
-  v11 = [(NTKDComplicationStore *)self complicationDescriptorsForClientIdentifier:v10];
+  clientIdentifier3 = [keyCopy clientIdentifier];
+  v11 = [(NTKDComplicationStore *)self complicationDescriptorsForClientIdentifier:clientIdentifier3];
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_100028548;
   v25 = &unk_10005DD28;
-  v12 = v4;
+  v12 = keyCopy;
   v26 = v12;
   v27 = &v28;
   [v11 enumerateObjectsUsingBlock:&v22];
@@ -772,10 +772,10 @@ LABEL_6:
     os_unfair_lock_lock(&self->_clientToSampleDataLock);
     v14 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:v12, v22, v23, v24, v25];
     os_unfair_lock_unlock(&self->_clientToSampleDataLock);
-    v15 = [v14 supportedFamilies];
+    supportedFamilies = [v14 supportedFamilies];
     v16 = [CLKComplicationDescriptor alloc];
-    v17 = [v12 complicationIdentifier];
-    v18 = [v16 initWithIdentifier:v17 displayName:&stru_10005E800 supportedFamilies:v15];
+    complicationIdentifier = [v12 complicationIdentifier];
+    v18 = [v16 initWithIdentifier:complicationIdentifier displayName:&stru_10005E800 supportedFamilies:supportedFamilies];
     v19 = v29[5];
     v29[5] = v18;
 
@@ -789,31 +789,31 @@ LABEL_6:
   return v20;
 }
 
-- (void)_onQueue_async:(id)a3
+- (void)_onQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.complicationstore.asyncwork");
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000286B4;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_onObserverQueue_async:(id)a3
+- (void)_onObserverQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.complicationstore.asyncobservercallback");
   observerCallbackQueue = self->_observerCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028798;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(observerCallbackQueue, block);
 }
 
@@ -828,14 +828,14 @@ LABEL_6:
   sub_100019988(v5, v6);
 }
 
-- (id)_queue_sampleDataForKey:(id)a3 family:(int64_t)a4
+- (id)_queue_sampleDataForKey:(id)key family:(int64_t)family
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     os_unfair_lock_lock(&self->_clientToSampleDataLock);
-    v7 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:v6];
-    v8 = [v7 templatePathForFamily:a4];
+    v7 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:keyCopy];
+    v8 = [v7 templatePathForFamily:family];
     if (v8)
     {
       v9 = v8;
@@ -843,17 +843,17 @@ LABEL_6:
 
     else
     {
-      v9 = sub_100025030(self->_storeDirectory, v6);
+      v9 = sub_100025030(self->_storeDirectory, keyCopy);
       if (v9)
       {
         if (!v7)
         {
-          v10 = [(_NTKDComplicationCollectionManifest *)self->_manifest familiesWithSampleTemplateForKey:v6];
+          v10 = [(_NTKDComplicationCollectionManifest *)self->_manifest familiesWithSampleTemplateForKey:keyCopy];
           v7 = [[NTKComplicationSampleData alloc] initWithSupportedFamilies:v10];
-          [(NSMutableDictionary *)self->_clientToSampleData setObject:v7 forKey:v6];
+          [(NSMutableDictionary *)self->_clientToSampleData setObject:v7 forKey:keyCopy];
         }
 
-        [v7 setTemplatePath:v9 forFamily:a4];
+        [v7 setTemplatePath:v9 forFamily:family];
       }
     }
 
@@ -868,52 +868,52 @@ LABEL_6:
   return v7;
 }
 
-- (id)_queue_sampleTemplateForKey:(id)a3 family:(int64_t)a4
+- (id)_queue_sampleTemplateForKey:(id)key family:(int64_t)family
 {
-  v5 = [(NTKDComplicationStore *)self _queue_sampleDataForKey:a3 family:?];
-  v6 = [v5 templateForFamily:a4];
+  v5 = [(NTKDComplicationStore *)self _queue_sampleDataForKey:key family:?];
+  v6 = [v5 templateForFamily:family];
 
   return v6;
 }
 
-- (id)_queue_sampleTemplateReferenceForKey:(id)a3 family:(int64_t)a4
+- (id)_queue_sampleTemplateReferenceForKey:(id)key family:(int64_t)family
 {
-  v5 = [(NTKDComplicationStore *)self _queue_sampleDataForKey:a3 family:?];
-  v6 = [v5 templateReferenceForFamily:a4];
+  v5 = [(NTKDComplicationStore *)self _queue_sampleDataForKey:key family:?];
+  v6 = [v5 templateReferenceForFamily:family];
 
   return v6;
 }
 
-- (BOOL)_queue_hasSampleTemplateForKey:(id)a3 family:(int64_t)a4
+- (BOOL)_queue_hasSampleTemplateForKey:(id)key family:(int64_t)family
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_clientToSampleDataLock);
-  v7 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_clientToSampleData objectForKeyedSubscript:keyCopy];
 
-  LOBYTE(a4) = [v7 hasTemplateForFamily:a4];
+  LOBYTE(family) = [v7 hasTemplateForFamily:family];
   os_unfair_lock_unlock(&self->_clientToSampleDataLock);
 
-  return a4;
+  return family;
 }
 
-- (id)_queue_complicationDescriptorsForClientIdentifier:(id)a3
+- (id)_queue_complicationDescriptorsForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
-    v5 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:identifierCopy];
     os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
     if (!v5)
     {
-      [(NTKDComplicationStore *)self _faultInComplicationDescriptorsForClientID:v4];
+      [(NTKDComplicationStore *)self _faultInComplicationDescriptorsForClientID:identifierCopy];
       os_unfair_lock_lock(&self->_clientIDtoComplicationDescriptorsLock);
-      v5 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:v4];
+      v5 = [(NSMutableDictionary *)self->_clientIDtoComplicationDescriptors objectForKeyedSubscript:identifierCopy];
       os_unfair_lock_unlock(&self->_clientIDtoComplicationDescriptorsLock);
     }
   }
@@ -926,16 +926,16 @@ LABEL_6:
   return v5;
 }
 
-- (void)_queue_clearRemovalsThroughSeqId:(id)a3
+- (void)_queue_clearRemovalsThroughSeqId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[NSMutableArray array];
   removals = self->_removals;
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100028C38;
   v12 = &unk_10005DD70;
-  v7 = v4;
+  v7 = idCopy;
   v13 = v7;
   v8 = v5;
   v14 = v8;
@@ -947,10 +947,10 @@ LABEL_6:
   }
 }
 
-- (void)_queue_playbackChangesForObserver:(id)a3 fromSeqId:(id)a4
+- (void)_queue_playbackChangesForObserver:(id)observer fromSeqId:(id)id
 {
-  v34 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  idCopy = id;
   +[NSMutableDictionary dictionary];
   v59[0] = _NSConcreteStackBlock;
   v59[1] = 3221225472;
@@ -1001,7 +1001,7 @@ LABEL_6:
               v15 = sub_100027DF0(self->_storeDirectory, v9, *(*(&v51 + 1) + 8 * i));
               v16 = sub_100016FD0(v15);
 
-              if (v16 && sub_1000171F8(v6, v16))
+              if (v16 && sub_1000171F8(idCopy, v16))
               {
                 v48[0] = _NSConcreteStackBlock;
                 v48[1] = 3221225472;
@@ -1009,7 +1009,7 @@ LABEL_6:
                 v48[3] = &unk_10005CFC0;
                 v48[4] = self;
                 v48[5] = v9;
-                v49 = v34;
+                v49 = observerCopy;
                 v50 = v16;
                 (v7[2])(v7, v50, v48);
               }
@@ -1026,9 +1026,9 @@ LABEL_6:
         v44[2] = sub_100029310;
         v44[3] = &unk_10005DDC0;
         v44[4] = self;
-        v45 = v6;
+        v45 = idCopy;
         v47 = v7;
-        v46 = v34;
+        v46 = observerCopy;
         [(NTKDComplicationStore *)self _enumerateAllKeysForClientID:v9 usingBlock:v44];
 
         v8 = v33 + 1;
@@ -1046,16 +1046,16 @@ LABEL_6:
   v39[1] = 3221225472;
   v39[2] = sub_1000296B0;
   v39[3] = &unk_10005DDE8;
-  v18 = v6;
+  v18 = idCopy;
   v40 = v18;
   v19 = v7;
   v43 = v19;
-  v41 = self;
-  v20 = v34;
+  selfCopy = self;
+  v20 = observerCopy;
   v42 = v20;
   [(NSMutableDictionary *)removals enumerateKeysAndObjectsUsingBlock:v39];
-  v21 = [v29 allKeys];
-  v22 = [v21 sortedArrayUsingComparator:&stru_10005DE08];
+  allKeys = [v29 allKeys];
+  v22 = [allKeys sortedArrayUsingComparator:&stru_10005DE08];
 
   v37 = 0u;
   v38 = 0u;
@@ -1087,43 +1087,43 @@ LABEL_6:
   }
 }
 
-- (void)_queue_loadFullCollectionForObserver:(id)a3
+- (void)_queue_loadFullCollectionForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = self->_seqId;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000299E8;
   v8[3] = &unk_10005CC38;
   v8[4] = self;
-  v9 = v4;
+  v9 = observerCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = observerCopy;
   [(NTKDComplicationStore *)self _onObserverQueue_async:v8];
 }
 
-- (void)_queue_notifyDidUpdateSampleTemplateReference:(id)a3 forKey:(id)a4 family:(int64_t)a5 skipSyncObserver:(BOOL)a6
+- (void)_queue_notifyDidUpdateSampleTemplateReference:(id)reference forKey:(id)key family:(int64_t)family skipSyncObserver:(BOOL)observer
 {
-  v10 = a3;
-  v11 = a4;
+  referenceCopy = reference;
+  keyCopy = key;
   v12 = self->_seqId;
   v13 = self->_syncObserver;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100029D08;
   v33[3] = &unk_10005DE30;
-  v40 = a6;
+  observerCopy = observer;
   v22 = v13;
   v34 = v22;
-  v35 = self;
+  selfCopy = self;
   v14 = v12;
   v36 = v14;
-  v15 = v10;
+  v15 = referenceCopy;
   v37 = v15;
-  v16 = v11;
+  v16 = keyCopy;
   v38 = v16;
-  v39 = a5;
+  familyCopy = family;
   [(NTKDComplicationStore *)self _onObserverQueue_async:v33];
   v31 = 0u;
   v32 = 0u;
@@ -1154,7 +1154,7 @@ LABEL_6:
         v24[5] = self;
         v25 = v15;
         v26 = v16;
-        v28 = a5;
+        familyCopy2 = family;
         v27 = v14;
         [(NTKDComplicationStore *)self _onObserverQueue_async:v24, v22];
 
@@ -1169,25 +1169,25 @@ LABEL_6:
   }
 }
 
-- (void)_queue_notifyDidUpdateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_queue_notifyDidUpdateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier skipSyncObserver:(BOOL)observer
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
   v10 = self->_seqId;
   v11 = self->_syncObserver;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10002A0DC;
   v30[3] = &unk_10005DA28;
-  v36 = a5;
+  observerCopy = observer;
   v20 = v11;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   v12 = v10;
   v33 = v12;
-  v13 = v8;
+  v13 = descriptorsCopy;
   v34 = v13;
-  v14 = v9;
+  v14 = identifierCopy;
   v35 = v14;
   [(NTKDComplicationStore *)self _onObserverQueue_async:v30];
   v28 = 0u;
@@ -1233,22 +1233,22 @@ LABEL_6:
   }
 }
 
-- (void)_queue_notifyDidRemoveComplicationForKey:(id)a3 skipSyncObserver:(BOOL)a4
+- (void)_queue_notifyDidRemoveComplicationForKey:(id)key skipSyncObserver:(BOOL)observer
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = self->_seqId;
   v8 = self->_syncObserver;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10002A34C;
   v25[3] = &unk_10005DA00;
-  v30 = a4;
+  observerCopy = observer;
   v17 = v8;
   v26 = v17;
-  v27 = self;
+  selfCopy = self;
   v9 = v7;
   v28 = v9;
-  v10 = v6;
+  v10 = keyCopy;
   v29 = v10;
   [(NTKDComplicationStore *)self _onObserverQueue_async:v25];
   v23 = 0u;

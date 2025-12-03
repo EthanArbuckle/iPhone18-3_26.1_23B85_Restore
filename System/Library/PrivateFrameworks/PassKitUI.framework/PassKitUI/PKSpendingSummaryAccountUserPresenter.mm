@@ -1,30 +1,30 @@
 @interface PKSpendingSummaryAccountUserPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKSpendingSummaryAccountUserPresenter)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 interimSpacing:(double)a6;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKSpendingSummaryAccountUserPresenter)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager interimSpacing:(double)spacing;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 item:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell item:(id)item;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKSpendingSummaryAccountUserPresenter
 
-- (PKSpendingSummaryAccountUserPresenter)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 interimSpacing:(double)a6
+- (PKSpendingSummaryAccountUserPresenter)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager interimSpacing:(double)spacing
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = PKSpendingSummaryAccountUserPresenter;
   v14 = [(PKSpendingSummaryAccountUserPresenter *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_transactionSourceCollection, a3);
-    objc_storeStrong(&v15->_familyCollection, a4);
-    objc_storeStrong(&v15->_avatarManager, a5);
-    v15->_interimSpacing = a6;
-    v16 = [v11 transactionSourcesForType:2];
+    objc_storeStrong(&v14->_transactionSourceCollection, collection);
+    objc_storeStrong(&v15->_familyCollection, familyCollection);
+    objc_storeStrong(&v15->_avatarManager, manager);
+    v15->_interimSpacing = spacing;
+    v16 = [collectionCopy transactionSourcesForType:2];
     v15->_numUsers = [v16 count];
 
     v17 = [PKSpendingSummaryAccountUserCell alloc];
@@ -46,20 +46,20 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"spendingAccountUserPresenter" forIndexPath:v8];
-  [(PKSpendingSummaryAccountUserPresenter *)self updateCell:v11 forItem:v10 inCollectionView:v9 atIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"spendingAccountUserPresenter" forIndexPath:pathCopy];
+  [(PKSpendingSummaryAccountUserPresenter *)self updateCell:v11 forItem:itemCopy inCollectionView:viewCopy atIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v8 = [a6 row];
+  v8 = [path row];
   numUsers = self->_numUsers;
   v10 = v8 + 2;
   if ((v8 + 2) > 4)
@@ -94,7 +94,7 @@
     v15 = 3.0;
   }
 
-  v16 = (a5 - (v13 + v13 + interimSpacing * (v11 - 1))) / v15;
+  v16 = (width - (v13 + v13 + interimSpacing * (v11 - 1))) / v15;
   sampleCell = self->_sampleCell;
 
   [(PKSpendingSummaryAccountUserCell *)sampleCell sizeThatFits:v16, 1.79769313e308];
@@ -103,17 +103,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKSpendingSummaryAccountUserCell alloc];
@@ -125,48 +125,48 @@
   }
 }
 
-- (void)_configureCell:(id)a3 item:(id)a4
+- (void)_configureCell:(id)cell item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  cellCopy = cell;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (cellCopy && itemCopy)
   {
-    v9 = [v7 accountUser];
-    v10 = [v8 familyMember];
-    v11 = [v9 altDSID];
-    v12 = [v8 spendingSummary];
-    v13 = [v12 totalSpendingPerAltDSID];
-    v14 = [v13 objectForKey:v11];
+    accountUser = [itemCopy accountUser];
+    familyMember = [v8 familyMember];
+    altDSID = [accountUser altDSID];
+    spendingSummary = [v8 spendingSummary];
+    totalSpendingPerAltDSID = [spendingSummary totalSpendingPerAltDSID];
+    v14 = [totalSpendingPerAltDSID objectForKey:altDSID];
 
-    if ([v9 isCurrentUser])
+    if ([accountUser isCurrentUser])
     {
       v15 = PKLocalizedFeatureString();
-      [v6 setName:v15];
+      [cellCopy setName:v15];
     }
 
     else
     {
       v16 = MEMORY[0x1E69B8740];
-      v17 = [v9 nameComponents];
-      v15 = [v16 contactForFamilyMember:v10 nameComponents:v17 imageData:0];
+      nameComponents = [accountUser nameComponents];
+      v15 = [v16 contactForFamilyMember:familyMember nameComponents:nameComponents imageData:0];
 
-      v18 = [v15 givenName];
-      [v6 setName:v18];
+      givenName = [v15 givenName];
+      [cellCopy setName:givenName];
     }
 
-    v19 = [v14 formattedStringValue];
-    [v6 setAmount:v19];
+    formattedStringValue = [v14 formattedStringValue];
+    [cellCopy setAmount:formattedStringValue];
 
-    [v6 setMaskType:3];
-    [v6 setWantsCustomAppearance:0];
-    [v6 setWantsDefaultHighlightBehavior:1];
+    [cellCopy setMaskType:3];
+    [cellCopy setWantsCustomAppearance:0];
+    [cellCopy setWantsDefaultHighlightBehavior:1];
     avatarManager = self->_avatarManager;
-    v21 = [v9 altDSID];
-    v22 = [(PKContactAvatarManager *)avatarManager cachedAvatarForAltDSID:v21];
+    altDSID2 = [accountUser altDSID];
+    v22 = [(PKContactAvatarManager *)avatarManager cachedAvatarForAltDSID:altDSID2];
 
-    [v6 setAvatar:v22];
-    v23 = [v6 identifier];
+    [cellCopy setAvatar:v22];
+    identifier = [cellCopy identifier];
     if (!v22)
     {
       objc_initWeak(&location, self);
@@ -176,9 +176,9 @@
       v25[2] = __61__PKSpendingSummaryAccountUserPresenter__configureCell_item___block_invoke;
       v25[3] = &unk_1E801B2D8;
       objc_copyWeak(&v28, &location);
-      v26 = v6;
-      v27 = v23;
-      [(PKContactAvatarManager *)v24 avatarForFamilyMember:v10 accountUser:v9 invitation:0 completion:v25];
+      v26 = cellCopy;
+      v27 = identifier;
+      [(PKContactAvatarManager *)v24 avatarForFamilyMember:familyMember accountUser:accountUser invitation:0 completion:v25];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);

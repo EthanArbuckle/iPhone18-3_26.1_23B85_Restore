@@ -1,20 +1,20 @@
 @interface CRInvocationChain
-- (BOOL)_isEligibleForSelector:(SEL)a3;
-- (BOOL)_respondsToSelector:(SEL)a3;
-- (BOOL)isEligibleForSelector:(SEL)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)_isEligibleForSelector:(SEL)selector;
+- (BOOL)_respondsToSelector:(SEL)selector;
+- (BOOL)isEligibleForSelector:(SEL)selector;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CRInvocationChain)init;
 - (CRInvocationChainDelegate)delegate;
 - (NSPointerArray)_chainedObjects;
-- (id)_methodSignatureForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_accessChainedObjectsSafely:(id)a3;
-- (void)_addChainedObject:(id)a3;
-- (void)_enumerateChainedObjectsUsingBlock:(id)a3;
-- (void)_forwardInvocation:(id)a3;
-- (void)addChainedObject:(id)a3;
-- (void)enumerateChainedObjectsUsingBlock:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)_methodSignatureForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_accessChainedObjectsSafely:(id)safely;
+- (void)_addChainedObject:(id)object;
+- (void)_enumerateChainedObjectsUsingBlock:(id)block;
+- (void)_forwardInvocation:(id)invocation;
+- (void)addChainedObject:(id)object;
+- (void)enumerateChainedObjectsUsingBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CRInvocationChain
@@ -37,20 +37,20 @@
   return v2;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__CRInvocationChain_forwardInvocation___block_invoke;
   v6[3] = &unk_278DA5800;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = invocationCopy;
+  v5 = invocationCopy;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v6];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -62,7 +62,7 @@
   v5[3] = &unk_278DA5828;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = selector;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -76,7 +76,7 @@ uint64_t __40__CRInvocationChain_respondsToSelector___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -90,7 +90,7 @@ uint64_t __40__CRInvocationChain_respondsToSelector___block_invoke(uint64_t a1)
   v5[3] = &unk_278DA5828;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = selector;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -108,33 +108,33 @@ uint64_t __48__CRInvocationChain_methodSignatureForSelector___block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addChainedObject:(id)a3
+- (void)addChainedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__CRInvocationChain_addChainedObject___block_invoke;
   v6[3] = &unk_278DA5800;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = objectCopy;
+  v5 = objectCopy;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v6];
 }
 
-- (void)enumerateChainedObjectsUsingBlock:(id)a3
+- (void)enumerateChainedObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CRInvocationChain_enumerateChainedObjectsUsingBlock___block_invoke;
   v6[3] = &unk_278DA5850;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v6];
 }
 
-- (BOOL)isEligibleForSelector:(SEL)a3
+- (BOOL)isEligibleForSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -146,7 +146,7 @@ uint64_t __48__CRInvocationChain_methodSignatureForSelector___block_invoke(uint6
   v5[3] = &unk_278DA5828;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = selector;
   [(CRInvocationChain *)self _accessChainedObjectsSafely:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -160,16 +160,16 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
   return result;
 }
 
-- (void)_accessChainedObjectsSafely:(id)a3
+- (void)_accessChainedObjectsSafely:(id)safely
 {
-  v4 = a3;
-  if (v4)
+  safelyCopy = safely;
+  if (safelyCopy)
   {
     specific = dispatch_get_specific(_CRInvocationChainRecursiveKey);
     chainedObjectsAccessQueue = self->_chainedObjectsAccessQueue;
     if (specific == chainedObjectsAccessQueue)
     {
-      v4[2](v4);
+      safelyCopy[2](safelyCopy);
     }
 
     else
@@ -184,7 +184,7 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
       v8[1] = 3221225472;
       v8[2] = __49__CRInvocationChain__accessChainedObjectsSafely___block_invoke;
       v8[3] = &unk_278DA5878;
-      v9 = v4;
+      v9 = safelyCopy;
       v10 = &v11;
       dispatch_sync(chainedObjectsAccessQueue, v8);
       v7 = v12[5];
@@ -203,9 +203,9 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
   chainedObjects = self->_chainedObjects;
   if (!chainedObjects)
   {
-    v4 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     v5 = self->_chainedObjects;
-    self->_chainedObjects = v4;
+    self->_chainedObjects = weakObjectsPointerArray;
 
     chainedObjects = self->_chainedObjects;
   }
@@ -217,16 +217,16 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
   return v6;
 }
 
-- (void)_forwardInvocation:(id)a3
+- (void)_forwardInvocation:(id)invocation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRInvocationChain *)self _chainedObjects];
-  v6 = NSStringFromSelector([v4 selector]);
+  invocationCopy = invocation;
+  _chainedObjects = [(CRInvocationChain *)self _chainedObjects];
+  v6 = NSStringFromSelector([invocationCopy selector]);
   v7 = CRLogContextCards;
   if (os_log_type_enabled(CRLogContextCards, OS_LOG_TYPE_DEBUG))
   {
-    [(CRInvocationChain *)v6 _forwardInvocation:v5, v7];
+    [(CRInvocationChain *)v6 _forwardInvocation:_chainedObjects, v7];
   }
 
   v20 = v6;
@@ -234,7 +234,7 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = _chainedObjects;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v9)
   {
@@ -251,8 +251,8 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        v14 = [(CRInvocationChain *)self delegate];
-        v15 = [v14 invocationChain:self shouldForwardInvocation:v4 toTarget:v13];
+        delegate = [(CRInvocationChain *)self delegate];
+        v15 = [delegate invocationChain:self shouldForwardInvocation:invocationCopy toTarget:v13];
 
         if ((objc_opt_respondsToSelector() & 1) != 0 && v15)
         {
@@ -267,7 +267,7 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
             _os_log_impl(&dword_24327C000, v18, OS_LOG_TYPE_INFO, "Invoking invocation %@ with target: %@", buf, 0x16u);
           }
 
-          [v4 invokeWithTarget:v13];
+          [invocationCopy invokeWithTarget:v13];
 
           goto LABEL_18;
         }
@@ -295,19 +295,19 @@ uint64_t __43__CRInvocationChain_isEligibleForSelector___block_invoke(uint64_t a
 
   v21.receiver = self;
   v21.super_class = CRInvocationChain;
-  [(CRInvocationChain *)&v21 forwardInvocation:v4];
+  [(CRInvocationChain *)&v21 forwardInvocation:invocationCopy];
 LABEL_18:
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_respondsToSelector:(SEL)a3
+- (BOOL)_respondsToSelector:(SEL)selector
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = CRInvocationChain;
   v5 = [(CRInvocationChain *)&v18 respondsToSelector:?];
-  if ([(CRInvocationChain *)self _isEligibleForSelector:a3])
+  if ([(CRInvocationChain *)self _isEligibleForSelector:selector])
   {
     [(CRInvocationChain *)self _chainedObjects];
     v14 = 0u;
@@ -353,7 +353,7 @@ LABEL_12:
   return v5;
 }
 
-- (id)_methodSignatureForSelector:(SEL)a3
+- (id)_methodSignatureForSelector:(SEL)selector
 {
   v20 = *MEMORY[0x277D85DE8];
   [(CRInvocationChain *)self _chainedObjects];
@@ -375,7 +375,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) methodSignatureForSelector:a3];
+        v10 = [*(*(&v15 + 1) + 8 * i) methodSignatureForSelector:selector];
         if (v10)
         {
           v11 = v10;
@@ -396,7 +396,7 @@ LABEL_12:
 
   v14.receiver = self;
   v14.super_class = CRInvocationChain;
-  v11 = [(CRInvocationChain *)&v14 methodSignatureForSelector:a3];
+  v11 = [(CRInvocationChain *)&v14 methodSignatureForSelector:selector];
 LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
@@ -404,18 +404,18 @@ LABEL_11:
   return v11;
 }
 
-- (void)_addChainedObject:(id)a3
+- (void)_addChainedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CRInvocationChain *)self _chainedObjects];
-  [v5 addPointer:v4];
+  objectCopy = object;
+  _chainedObjects = [(CRInvocationChain *)self _chainedObjects];
+  [_chainedObjects addPointer:objectCopy];
 }
 
-- (void)_enumerateChainedObjectsUsingBlock:(id)a3
+- (void)_enumerateChainedObjectsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     [(CRInvocationChain *)self _chainedObjects];
     v15 = 0;
@@ -437,7 +437,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
         if (v15)
         {
           break;
@@ -460,10 +460,10 @@ LABEL_4:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isEligibleForSelector:(SEL)a3
+- (BOOL)_isEligibleForSelector:(SEL)selector
 {
-  v3 = [(CRInvocationChain *)self _chainedObjects];
-  v4 = [v3 count] != 0;
+  _chainedObjects = [(CRInvocationChain *)self _chainedObjects];
+  v4 = [_chainedObjects count] != 0;
 
   return v4;
 }

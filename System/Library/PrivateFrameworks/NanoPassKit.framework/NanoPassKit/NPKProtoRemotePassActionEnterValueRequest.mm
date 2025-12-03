@@ -1,12 +1,12 @@
 @interface NPKProtoRemotePassActionEnterValueRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemotePassActionEnterValueRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemotePassActionEnterValueRequest;
   v4 = [(NPKProtoRemotePassActionEnterValueRequest *)&v8 description];
-  v5 = [(NPKProtoRemotePassActionEnterValueRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemotePassActionEnterValueRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestUniqueID = self->_requestUniqueID;
   if (requestUniqueID)
   {
-    [v3 setObject:requestUniqueID forKey:@"requestUniqueID"];
+    [dictionary setObject:requestUniqueID forKey:@"requestUniqueID"];
   }
 
   balanceIdentifier = self->_balanceIdentifier;
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_requestUniqueID)
   {
     [NPKProtoRemotePassActionEnterValueRequest writeTo:];
@@ -98,56 +98,56 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setRequestUniqueID:self->_requestUniqueID];
-  [v5 setBalanceIdentifier:self->_balanceIdentifier];
-  [v5 setBalanceLabel:self->_balanceLabel];
-  [v5 setCurrentBalanceCurrency:self->_currentBalanceCurrency];
-  v4 = v5;
-  v5[1] = self->_currentBalanceAmount;
+  toCopy = to;
+  [toCopy setRequestUniqueID:self->_requestUniqueID];
+  [toCopy setBalanceIdentifier:self->_balanceIdentifier];
+  [toCopy setBalanceLabel:self->_balanceLabel];
+  [toCopy setCurrentBalanceCurrency:self->_currentBalanceCurrency];
+  v4 = toCopy;
+  toCopy[1] = self->_currentBalanceAmount;
   if (self->_paymentPassActionData)
   {
-    [v5 setPaymentPassActionData:?];
-    v4 = v5;
+    [toCopy setPaymentPassActionData:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestUniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestUniqueID copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_balanceIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_balanceIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_balanceLabel copyWithZone:a3];
+  v10 = [(NSString *)self->_balanceLabel copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_currentBalanceCurrency copyWithZone:a3];
+  v12 = [(NSString *)self->_currentBalanceCurrency copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   v5[1] = self->_currentBalanceAmount;
-  v14 = [(NSData *)self->_paymentPassActionData copyWithZone:a3];
+  v14 = [(NSData *)self->_paymentPassActionData copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestUniqueID = self->_requestUniqueID, !(requestUniqueID | v4[6])) || -[NSString isEqual:](requestUniqueID, "isEqual:")) && ((balanceIdentifier = self->_balanceIdentifier, !(balanceIdentifier | v4[2])) || -[NSString isEqual:](balanceIdentifier, "isEqual:")) && ((balanceLabel = self->_balanceLabel, !(balanceLabel | v4[3])) || -[NSString isEqual:](balanceLabel, "isEqual:")) && ((currentBalanceCurrency = self->_currentBalanceCurrency, !(currentBalanceCurrency | v4[4])) || -[NSString isEqual:](currentBalanceCurrency, "isEqual:")) && self->_currentBalanceAmount == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestUniqueID = self->_requestUniqueID, !(requestUniqueID | equalCopy[6])) || -[NSString isEqual:](requestUniqueID, "isEqual:")) && ((balanceIdentifier = self->_balanceIdentifier, !(balanceIdentifier | equalCopy[2])) || -[NSString isEqual:](balanceIdentifier, "isEqual:")) && ((balanceLabel = self->_balanceLabel, !(balanceLabel | equalCopy[3])) || -[NSString isEqual:](balanceLabel, "isEqual:")) && ((currentBalanceCurrency = self->_currentBalanceCurrency, !(currentBalanceCurrency | equalCopy[4])) || -[NSString isEqual:](currentBalanceCurrency, "isEqual:")) && self->_currentBalanceAmount == equalCopy[1])
   {
     paymentPassActionData = self->_paymentPassActionData;
-    if (paymentPassActionData | v4[5])
+    if (paymentPassActionData | equalCopy[5])
     {
       v10 = [(NSData *)paymentPassActionData isEqual:?];
     }
@@ -176,31 +176,31 @@
   return v6 ^ [(NSData *)self->_paymentPassActionData hash]^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(NPKProtoRemotePassActionEnterValueRequest *)self setRequestUniqueID:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoRemotePassActionEnterValueRequest *)self setBalanceIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoRemotePassActionEnterValueRequest *)self setBalanceLabel:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoRemotePassActionEnterValueRequest *)self setCurrentBalanceCurrency:?];
   }
 
-  self->_currentBalanceAmount = v4[1];
-  if (v4[5])
+  self->_currentBalanceAmount = fromCopy[1];
+  if (fromCopy[5])
   {
     [(NPKProtoRemotePassActionEnterValueRequest *)self setPaymentPassActionData:?];
   }

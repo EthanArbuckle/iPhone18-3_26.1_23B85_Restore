@@ -1,11 +1,11 @@
 @interface CARScreenViewArea
-+ (NSEdgeInsets)insetsForOEMUIWithDisplaySize:(CGSize)a3 safeFrame:(CGRect)a4 viewAreaFrame:(CGRect)a5;
-+ (void)insetsForOEMUIWithDisplaySize:(double)a3 originInDisplay:(double)a4 safeFrame:(CGFloat)a5 viewAreaFrame:(CGFloat)a6;
++ (NSEdgeInsets)insetsForOEMUIWithDisplaySize:(CGSize)size safeFrame:(CGRect)frame viewAreaFrame:(CGRect)areaFrame;
++ (void)insetsForOEMUIWithDisplaySize:(double)size originInDisplay:(double)display safeFrame:(CGFloat)frame viewAreaFrame:(CGFloat)areaFrame;
 - (BOOL)_wantsInternalOverrideInsets;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToViewArea:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToViewArea:(id)area;
 - (CARDisplayInfoProviding)displayInfoProvider;
-- (CARScreenViewArea)initWithPropertySupplier:(id)a3 additionalInsets:(NSEdgeInsets)a4 viewAreaDictionary:(id)a5 wantsCornerMasks:(BOOL)a6 displayInfoProvider:(id)a7;
+- (CARScreenViewArea)initWithPropertySupplier:(id)supplier additionalInsets:(NSEdgeInsets)insets viewAreaDictionary:(id)dictionary wantsCornerMasks:(BOOL)masks displayInfoProvider:(id)provider;
 - (CGRect)safeFrame;
 - (CGRect)unadjustedSafeFrame;
 - (CGRect)visibleFrame;
@@ -32,8 +32,8 @@
   self->_safeFrame.size = size;
   if (self->_shouldApplyDisplayInsets)
   {
-    v4 = [(CARScreenViewArea *)self displayInfoProvider];
-    [v4 displayPixelSize];
+    displayInfoProvider = [(CARScreenViewArea *)self displayInfoProvider];
+    [displayInfoProvider displayPixelSize];
     v6 = v5;
     v8 = v7;
 
@@ -199,8 +199,8 @@
 
   if ([(CARScreenViewArea *)self _wantsInternalOverrideInsets])
   {
-    v44 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v45 = [v44 valueForKey:@"CARCapabilitesInsets"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v45 = [standardUserDefaults valueForKey:@"CARCapabilitesInsets"];
 
     if (v45)
     {
@@ -238,16 +238,16 @@
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{x: %f, y: %f, w: %f, h: %f}", v5, v6, v7, v8];
   [(CARScreenViewArea *)self safeFrame];
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{x: %f, y: %f, w: %f, h: %f}", v10, v11, v12, v13];
-  v15 = [(CARScreenViewArea *)self displaysTransitionControl];
-  v16 = [(CARScreenViewArea *)self statusBarEdge];
-  v17 = [(CARScreenViewArea *)self supportsFocusTransfer];
+  displaysTransitionControl = [(CARScreenViewArea *)self displaysTransitionControl];
+  statusBarEdge = [(CARScreenViewArea *)self statusBarEdge];
+  supportsFocusTransfer = [(CARScreenViewArea *)self supportsFocusTransfer];
   v18 = "no";
-  if (v17)
+  if (supportsFocusTransfer)
   {
     v18 = "yes";
   }
 
-  v19 = [v3 stringWithFormat:@"%@ {visibleFrame: %@ safeFrame: %@ displaysTransitionControl: %d statusBarEdge: %lu supportsFocusTransfer: %s}", v4, v9, v14, v15, v16, v18];
+  v19 = [v3 stringWithFormat:@"%@ {visibleFrame: %@ safeFrame: %@ displaysTransitionControl: %d statusBarEdge: %lu supportsFocusTransfer: %s}", v4, v9, v14, displaysTransitionControl, statusBarEdge, v18];
 
   return v19;
 }
@@ -278,23 +278,23 @@
   return result;
 }
 
-- (CARScreenViewArea)initWithPropertySupplier:(id)a3 additionalInsets:(NSEdgeInsets)a4 viewAreaDictionary:(id)a5 wantsCornerMasks:(BOOL)a6 displayInfoProvider:(id)a7
+- (CARScreenViewArea)initWithPropertySupplier:(id)supplier additionalInsets:(NSEdgeInsets)insets viewAreaDictionary:(id)dictionary wantsCornerMasks:(BOOL)masks displayInfoProvider:(id)provider
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  supplierCopy = supplier;
+  dictionaryCopy = dictionary;
+  providerCopy = provider;
   v48.receiver = self;
   v48.super_class = CARScreenViewArea;
   v18 = [(CARScreenViewArea *)&v48 init];
   v19 = v18;
-  if (v15 && v18)
+  if (supplierCopy && v18)
   {
-    objc_storeWeak(&v18->_displayInfoProvider, v17);
-    v20 = v15[2](v15, *MEMORY[0x1E6962478]);
+    objc_storeWeak(&v18->_displayInfoProvider, providerCopy);
+    v20 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962478]);
     memset(&rect, 0, sizeof(rect));
     if (CGRectMakeWithDictionaryRepresentation(v20, &rect))
     {
@@ -309,7 +309,7 @@
       v19->_visibleFrame.size = 0u;
     }
 
-    v22 = v15[2](v15, *MEMORY[0x1E6962468]);
+    v22 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962468]);
     memset(&rect, 0, sizeof(rect));
     if (CGRectMakeWithDictionaryRepresentation(v22, &rect))
     {
@@ -324,52 +324,52 @@
       v19->_safeFrame.size = 0u;
     }
 
-    v24 = v15[2](v15, *MEMORY[0x1E6962488]);
+    v24 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962488]);
     if (v24)
     {
       objc_opt_class();
       v25 = v24;
       if (objc_opt_isKindOfClass())
       {
-        v26 = [v25 BOOLValue];
+        bOOLValue = [v25 BOOLValue];
       }
 
       else
       {
-        v26 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v26 = 0;
+      bOOLValue = 0;
     }
 
-    v19->_displaysTransitionControl = v26;
-    v27 = v15[2](v15, *MEMORY[0x1E6962470]);
-    v28 = [v16 objectForKey:@"viewAreaSupportsFocusTransfer"];
+    v19->_displaysTransitionControl = bOOLValue;
+    v27 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962470]);
+    v28 = [dictionaryCopy objectForKey:@"viewAreaSupportsFocusTransfer"];
     if (v28)
     {
       objc_opt_class();
       v29 = v28;
       if (objc_opt_isKindOfClass())
       {
-        v30 = [v29 BOOLValue];
+        bOOLValue2 = [v29 BOOLValue];
       }
 
       else
       {
-        v30 = 0;
+        bOOLValue2 = 0;
       }
     }
 
     else
     {
-      v30 = 0;
+      bOOLValue2 = 0;
     }
 
-    v19->_supportsFocusTransfer = v30;
-    v31 = [v16 objectForKey:@"safeArea"];
+    v19->_supportsFocusTransfer = bOOLValue2;
+    v31 = [dictionaryCopy objectForKey:@"safeArea"];
     v32 = [v31 objectForKey:@"drawUIOutsideSafeArea"];
     if (v32)
     {
@@ -377,21 +377,21 @@
       v33 = v32;
       if (objc_opt_isKindOfClass())
       {
-        v34 = [v33 BOOLValue];
+        bOOLValue3 = [v33 BOOLValue];
       }
 
       else
       {
-        v34 = 0;
+        bOOLValue3 = 0;
       }
     }
 
     else
     {
-      v34 = 0;
+      bOOLValue3 = 0;
     }
 
-    v19->_supportsUIOutsideSafeArea = v34;
+    v19->_supportsUIOutsideSafeArea = bOOLValue3;
     v35 = v19->_safeFrame.size;
     v19->_unadjustedSafeFrame.origin = v19->_safeFrame.origin;
     v19->_unadjustedSafeFrame.size = v35;
@@ -399,24 +399,24 @@
     v19->_additionalInsets.left = left;
     v19->_additionalInsets.bottom = bottom;
     v19->_additionalInsets.right = right;
-    v36 = !a6;
-    if (!v16)
+    v36 = !masks;
+    if (!dictionaryCopy)
     {
       v36 = 0;
     }
 
     v19->_shouldApplyDisplayInsets = v36;
     [(CARScreenViewArea *)v19 _updateEffectiveSafeFrame];
-    v37 = [v27 unsignedIntegerValue];
-    if (v27 && v37 <= 2)
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
+    if (v27 && unsignedIntegerValue <= 2)
     {
-      if (v37 == 2)
+      if (unsignedIntegerValue == 2)
       {
         v38 = 2;
         goto LABEL_39;
       }
 
-      if (v37 == 1)
+      if (unsignedIntegerValue == 1)
       {
         v38 = 1;
 LABEL_39:
@@ -443,13 +443,13 @@ LABEL_40:
 
 - (NSEdgeInsets)oemUIInsets
 {
-  v3 = [(CARScreenViewArea *)self displayInfoProvider];
-  [v3 originInDisplay];
+  displayInfoProvider = [(CARScreenViewArea *)self displayInfoProvider];
+  [displayInfoProvider originInDisplay];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CARScreenViewArea *)self displayInfoProvider];
-  [v8 displayPixelSize];
+  displayInfoProvider2 = [(CARScreenViewArea *)self displayInfoProvider];
+  [displayInfoProvider2 displayPixelSize];
   v10 = v9;
   v12 = v11;
 
@@ -468,16 +468,16 @@ LABEL_40:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 valueForKey:@"CARCapabilitesInsets"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"CARCapabilitesInsets"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (NSEdgeInsets)insetsForOEMUIWithDisplaySize:(CGSize)a3 safeFrame:(CGRect)a4 viewAreaFrame:(CGRect)a5
++ (NSEdgeInsets)insetsForOEMUIWithDisplaySize:(CGSize)size safeFrame:(CGRect)frame viewAreaFrame:(CGRect)areaFrame
 {
-  [a1 insetsForOEMUIWithDisplaySize:a3.width originInDisplay:a3.height safeFrame:*MEMORY[0x1E695EFF8] viewAreaFrame:{*(MEMORY[0x1E695EFF8] + 8), a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  [self insetsForOEMUIWithDisplaySize:size.width originInDisplay:size.height safeFrame:*MEMORY[0x1E695EFF8] viewAreaFrame:{*(MEMORY[0x1E695EFF8] + 8), frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   result.right = v8;
   result.bottom = v7;
   result.left = v6;
@@ -485,13 +485,13 @@ LABEL_40:
   return result;
 }
 
-+ (void)insetsForOEMUIWithDisplaySize:(double)a3 originInDisplay:(double)a4 safeFrame:(CGFloat)a5 viewAreaFrame:(CGFloat)a6
++ (void)insetsForOEMUIWithDisplaySize:(double)size originInDisplay:(double)display safeFrame:(CGFloat)frame viewAreaFrame:(CGFloat)areaFrame
 {
   v52 = *MEMORY[0x1E69E9840];
-  v36 = a3 + a9;
-  aRect = a4 + a10;
-  v22 = a3 + a5;
-  v23 = a4 + a6;
+  v36 = size + a9;
+  aRect = display + a10;
+  v22 = size + frame;
+  v23 = display + areaFrame;
   v24 = CarGeneralLogging();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -502,8 +502,8 @@ LABEL_40:
     v53.size.width = a11;
     v53.size.height = a12;
     v27 = NSStringFromRect(v53);
-    v54.origin.x = a5;
-    v54.origin.y = a6;
+    v54.origin.x = frame;
+    v54.origin.y = areaFrame;
     v54.size.width = a7;
     v54.size.height = a8;
     v28 = NSStringFromRect(v54);
@@ -555,10 +555,10 @@ LABEL_40:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -566,21 +566,21 @@ LABEL_40:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CARScreenViewArea *)self isEqualToViewArea:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CARScreenViewArea *)self isEqualToViewArea:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToViewArea:(id)a3
+- (BOOL)isEqualToViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   [(CARScreenViewArea *)self visibleFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 visibleFrame];
+  [areaCopy visibleFrame];
   v36.origin.x = v13;
   v36.origin.y = v14;
   v36.size.width = v15;
@@ -589,10 +589,10 @@ LABEL_40:
   v34.origin.y = v8;
   v34.size.width = v10;
   v34.size.height = v12;
-  if (CGRectEqualToRect(v34, v36) && (-[CARScreenViewArea safeFrame](self, "safeFrame"), v18 = v17, v20 = v19, v22 = v21, v24 = v23, [v4 safeFrame], v37.origin.x = v25, v37.origin.y = v26, v37.size.width = v27, v37.size.height = v28, v35.origin.x = v18, v35.origin.y = v20, v35.size.width = v22, v35.size.height = v24, CGRectEqualToRect(v35, v37)) && (v29 = -[CARScreenViewArea displaysTransitionControl](self, "displaysTransitionControl"), v29 == objc_msgSend(v4, "displaysTransitionControl")) && (v30 = -[CARScreenViewArea statusBarEdge](self, "statusBarEdge"), v30 == objc_msgSend(v4, "statusBarEdge")))
+  if (CGRectEqualToRect(v34, v36) && (-[CARScreenViewArea safeFrame](self, "safeFrame"), v18 = v17, v20 = v19, v22 = v21, v24 = v23, [areaCopy safeFrame], v37.origin.x = v25, v37.origin.y = v26, v37.size.width = v27, v37.size.height = v28, v35.origin.x = v18, v35.origin.y = v20, v35.size.width = v22, v35.size.height = v24, CGRectEqualToRect(v35, v37)) && (v29 = -[CARScreenViewArea displaysTransitionControl](self, "displaysTransitionControl"), v29 == objc_msgSend(areaCopy, "displaysTransitionControl")) && (v30 = -[CARScreenViewArea statusBarEdge](self, "statusBarEdge"), v30 == objc_msgSend(areaCopy, "statusBarEdge")))
   {
-    v31 = [(CARScreenViewArea *)self supportsFocusTransfer];
-    v32 = v31 ^ [v4 supportsFocusTransfer] ^ 1;
+    supportsFocusTransfer = [(CARScreenViewArea *)self supportsFocusTransfer];
+    v32 = supportsFocusTransfer ^ [areaCopy supportsFocusTransfer] ^ 1;
   }
 
   else

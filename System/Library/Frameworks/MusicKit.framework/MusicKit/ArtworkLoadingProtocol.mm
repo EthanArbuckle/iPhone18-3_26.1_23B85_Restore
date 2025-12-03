@@ -1,13 +1,13 @@
 @interface ArtworkLoadingProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (id)canonicalRequestForRequest:(id)a3;
-- (_TtC8MusicKit22ArtworkLoadingProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5;
++ (BOOL)canInitWithRequest:(id)request;
++ (id)canonicalRequestForRequest:(id)request;
+- (_TtC8MusicKit22ArtworkLoadingProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client;
 - (void)startLoading;
 @end
 
 @implementation ArtworkLoadingProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
   v3 = sub_2177512F8();
   v4 = *(v3 - 8);
@@ -21,7 +21,7 @@
   return v9 & 1;
 }
 
-+ (id)canonicalRequestForRequest:(id)a3
++ (id)canonicalRequestForRequest:(id)request
 {
   v3 = sub_2177512F8();
   v4 = *(v3 - 8);
@@ -42,20 +42,20 @@
 
 - (void)startLoading
 {
-  v2 = self;
+  selfCopy = self;
   sub_217575F08();
 }
 
-- (_TtC8MusicKit22ArtworkLoadingProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5
+- (_TtC8MusicKit22ArtworkLoadingProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client
 {
   v7 = sub_2177512F8();
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2177512A8();
-  v12 = a4;
+  responseCopy = response;
   swift_unknownObjectRetain();
-  return sub_217576FF4(v11, a4, a5);
+  return sub_217576FF4(v11, response, client);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface PRNameLabelViewControllerTransition
-- (PRNameLabelViewControllerTransition)initWithViewController:(id)a3 fromVibrancyConfiguration:(id)a4 toVibrancyConfiguration:(id)a5;
+- (PRNameLabelViewControllerTransition)initWithViewController:(id)controller fromVibrancyConfiguration:(id)configuration toVibrancyConfiguration:(id)vibrancyConfiguration;
 @end
 
 @implementation PRNameLabelViewControllerTransition
 
-- (PRNameLabelViewControllerTransition)initWithViewController:(id)a3 fromVibrancyConfiguration:(id)a4 toVibrancyConfiguration:(id)a5
+- (PRNameLabelViewControllerTransition)initWithViewController:(id)controller fromVibrancyConfiguration:(id)configuration toVibrancyConfiguration:(id)vibrancyConfiguration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  vibrancyConfigurationCopy = vibrancyConfiguration;
   v15.receiver = self;
   v15.super_class = PRNameLabelViewControllerTransition;
   v12 = [(PRNameLabelViewControllerTransition *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_viewController, a3);
-    objc_storeStrong(&v13->_fromConfiguration, a4);
-    objc_storeStrong(&v13->_toConfiguration, a5);
+    objc_storeStrong(&v12->_viewController, controller);
+    objc_storeStrong(&v13->_fromConfiguration, configuration);
+    objc_storeStrong(&v13->_toConfiguration, vibrancyConfiguration);
   }
 
   return v13;

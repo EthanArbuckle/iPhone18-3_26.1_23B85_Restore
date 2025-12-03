@@ -1,56 +1,56 @@
 @interface CAMBottomBar
-+ (BOOL)shouldUseSafeAreaInsetForLayoutStyle:(int64_t)a3 traitCollection:(id)a4;
-+ (CGRect)shutterButtonAlignmentRectInBounds:(CGRect)a3 forLayoutStyle:(int64_t)a4 traitCollection:(id)a5 safeAreaInsets:(UIEdgeInsets)a6;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CAMBottomBar)initWithCoder:(id)a3;
-- (CAMBottomBar)initWithFrame:(CGRect)a3;
-- (CAMBottomBar)initWithLayoutStyle:(int64_t)a3;
++ (BOOL)shouldUseSafeAreaInsetForLayoutStyle:(int64_t)style traitCollection:(id)collection;
++ (CGRect)shutterButtonAlignmentRectInBounds:(CGRect)bounds forLayoutStyle:(int64_t)style traitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CAMBottomBar)initWithCoder:(id)coder;
+- (CAMBottomBar)initWithFrame:(CGRect)frame;
+- (CAMBottomBar)initWithLayoutStyle:(int64_t)style;
 - (CAMControlVisibilityUpdateDelegate)visibilityUpdateDelegate;
-- (CGRect)collapsedFrameForMenuButton:(id)a3;
-- (CGRect)expandedFrameForMenuButton:(id)a3;
-- (double)_opacityForBackgroundStyle:(int64_t)a3;
+- (CGRect)collapsedFrameForMenuButton:(id)button;
+- (CGRect)expandedFrameForMenuButton:(id)button;
+- (double)_opacityForBackgroundStyle:(int64_t)style;
 - (id)_currentMenuButtons;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)touchingRecognizersToCancel;
-- (void)_commonCAMBottomBarInitializationInitWithLayoutStyle:(int64_t)a3;
+- (void)_commonCAMBottomBarInitializationInitWithLayoutStyle:(int64_t)style;
 - (void)_ensureSubviewOrdering;
-- (void)_iterateViewsInHUDManager:(id)a3 forHUDItem:(id)a4;
-- (void)_layoutDoneButtonForLayoutStyle:(int64_t)a3;
-- (void)_layoutFlipButtonForLayoutStyle:(int64_t)a3;
-- (void)_layoutImageWellForLayoutStyle:(int64_t)a3;
-- (void)_layoutMenuButtons:(id)a3 apply:(BOOL)a4 withExpandedMenuButton:(id)a5 collapsingMenuButton:(id)a6 collapsingFrame:(CGRect *)a7;
-- (void)_layoutModeDialForLayoutStyle:(int64_t)a3;
-- (void)_layoutReviewButtonForLayoutStyle:(int64_t)a3;
-- (void)_layoutShutterButtonForLayoutStyle:(int64_t)a3;
-- (void)_layoutStillDuringVideoButtonForLayoutStyle:(int64_t)a3;
-- (void)_layoutUtilityBarForLayoutStyle:(int64_t)a3;
-- (void)_updateControlVisibilityAnimated:(BOOL)a3;
+- (void)_iterateViewsInHUDManager:(id)manager forHUDItem:(id)item;
+- (void)_layoutDoneButtonForLayoutStyle:(int64_t)style;
+- (void)_layoutFlipButtonForLayoutStyle:(int64_t)style;
+- (void)_layoutImageWellForLayoutStyle:(int64_t)style;
+- (void)_layoutMenuButtons:(id)buttons apply:(BOOL)apply withExpandedMenuButton:(id)button collapsingMenuButton:(id)menuButton collapsingFrame:(CGRect *)frame;
+- (void)_layoutModeDialForLayoutStyle:(int64_t)style;
+- (void)_layoutReviewButtonForLayoutStyle:(int64_t)style;
+- (void)_layoutShutterButtonForLayoutStyle:(int64_t)style;
+- (void)_layoutStillDuringVideoButtonForLayoutStyle:(int64_t)style;
+- (void)_layoutUtilityBarForLayoutStyle:(int64_t)style;
+- (void)_updateControlVisibilityAnimated:(BOOL)animated;
 - (void)_updateFlipButtonTappableEdgeInsets;
 - (void)_updateImageWellTappableEdgeInsets;
-- (void)collapseMenuButton:(id)a3 animated:(BOOL)a4;
-- (void)expandMenuButton:(id)a3 animated:(BOOL)a4;
+- (void)collapseMenuButton:(id)button animated:(BOOL)animated;
+- (void)expandMenuButton:(id)button animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setApertureButton:(id)a3;
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setDoneButton:(id)a3;
-- (void)setFlashButton:(id)a3;
-- (void)setFlipButton:(id)a3;
-- (void)setHDRButton:(id)a3;
-- (void)setImageAnalysisButton:(id)a3;
-- (void)setImageAnalysisButtonBackgroundOverlay:(id)a3;
-- (void)setImageWell:(id)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setLivePhotoButton:(id)a3;
-- (void)setModeDial:(id)a3;
-- (void)setReviewButton:(id)a3;
-- (void)setSharedLibraryButton:(id)a3;
-- (void)setShutterButton:(id)a3;
-- (void)setStillDuringVideoButton:(id)a3;
-- (void)setTimerButton:(id)a3;
-- (void)setUtilityBar:(id)a3;
-- (void)setUtilityBarExtensionDistance:(double)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setApertureButton:(id)button;
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setDoneButton:(id)button;
+- (void)setFlashButton:(id)button;
+- (void)setFlipButton:(id)button;
+- (void)setHDRButton:(id)button;
+- (void)setImageAnalysisButton:(id)button;
+- (void)setImageAnalysisButtonBackgroundOverlay:(id)overlay;
+- (void)setImageWell:(id)well;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setLivePhotoButton:(id)button;
+- (void)setModeDial:(id)dial;
+- (void)setReviewButton:(id)button;
+- (void)setSharedLibraryButton:(id)button;
+- (void)setShutterButton:(id)button;
+- (void)setStillDuringVideoButton:(id)button;
+- (void)setTimerButton:(id)button;
+- (void)setUtilityBar:(id)bar;
+- (void)setUtilityBarExtensionDistance:(double)distance;
 @end
 
 @implementation CAMBottomBar
@@ -64,14 +64,14 @@
     v3 = 11.0;
   }
 
-  v4 = [(CAMBottomBar *)self flipButton];
-  [v4 setTappableEdgeInsets:{v3, 11.0, v3, 11.0}];
+  flipButton = [(CAMBottomBar *)self flipButton];
+  [flipButton setTappableEdgeInsets:{v3, 11.0, v3, 11.0}];
 }
 
 - (void)_ensureSubviewOrdering
 {
-  v3 = [(CAMBottomBar *)self utilityBar];
-  [(CAMBottomBar *)self bringSubviewToFront:v3];
+  utilityBar = [(CAMBottomBar *)self utilityBar];
+  [(CAMBottomBar *)self bringSubviewToFront:utilityBar];
 }
 
 - (void)_updateImageWellTappableEdgeInsets
@@ -87,9 +87,9 @@
 
   else
   {
-    v7 = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
     v4 = 0.0;
-    if (v7)
+    if (_shouldReverseLayoutDirection)
     {
       v5 = 15.0;
     }
@@ -99,7 +99,7 @@
       v5 = 0.0;
     }
 
-    if (v7)
+    if (_shouldReverseLayoutDirection)
     {
       v6 = 0.0;
     }
@@ -110,8 +110,8 @@
     }
   }
 
-  v8 = [(CAMBottomBar *)self imageWell];
-  [v8 setTappableEdgeInsets:{v4, v6, v3, v5}];
+  imageWell = [(CAMBottomBar *)self imageWell];
+  [imageWell setTappableEdgeInsets:{v4, v6, v3, v5}];
 }
 
 - (void)layoutSubviews
@@ -125,62 +125,62 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMBottomBar *)self backgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundView = [(CAMBottomBar *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
   [(CAMBottomBar *)self _opacityForBackgroundStyle:[(CAMBottomBar *)self backgroundStyle]];
   v13 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:v12];
-  [v11 setBackgroundColor:v13];
+  [backgroundView setBackgroundColor:v13];
 
-  v14 = [(CAMBottomBar *)self layoutStyle];
-  [(CAMBottomBar *)self _layoutShutterButtonForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutStillDuringVideoButtonForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutImageWellForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutReviewButtonForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutModeDialForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutFlipButtonForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutUtilityBarForLayoutStyle:v14];
-  [(CAMBottomBar *)self _layoutDoneButtonForLayoutStyle:v14];
-  v15 = [(CAMBottomBar *)self _currentMenuButtons];
-  v16 = [(CAMBottomBar *)self _expandedMenuButton];
-  [(CAMBottomBar *)self _layoutMenuButtons:v15 apply:1 withExpandedMenuButton:v16 collapsingMenuButton:0 collapsingFrame:0];
+  layoutStyle = [(CAMBottomBar *)self layoutStyle];
+  [(CAMBottomBar *)self _layoutShutterButtonForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutStillDuringVideoButtonForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutImageWellForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutReviewButtonForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutModeDialForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutFlipButtonForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutUtilityBarForLayoutStyle:layoutStyle];
+  [(CAMBottomBar *)self _layoutDoneButtonForLayoutStyle:layoutStyle];
+  _currentMenuButtons = [(CAMBottomBar *)self _currentMenuButtons];
+  _expandedMenuButton = [(CAMBottomBar *)self _expandedMenuButton];
+  [(CAMBottomBar *)self _layoutMenuButtons:_currentMenuButtons apply:1 withExpandedMenuButton:_expandedMenuButton collapsingMenuButton:0 collapsingFrame:0];
 
   v17 = +[CAMCaptureCapabilities capabilities];
-  LODWORD(v16) = [v17 isFrontCameraOnRightEdge];
+  LODWORD(_expandedMenuButton) = [v17 isFrontCameraOnRightEdge];
 
-  v18 = [objc_opt_class() wantsVerticalBarForLayoutStyle:v14];
-  v19 = [(CAMBottomBar *)self superview];
-  [v19 bounds];
+  v18 = [objc_opt_class() wantsVerticalBarForLayoutStyle:layoutStyle];
+  superview = [(CAMBottomBar *)self superview];
+  [superview bounds];
   v21 = v20;
   v23 = v22;
 
-  if (v16)
+  if (_expandedMenuButton)
   {
     if (v18)
     {
       if (v23 > v21)
       {
-        v24 = [(CAMBottomBar *)self modeDial];
+        modeDial = [(CAMBottomBar *)self modeDial];
 
-        if (v24)
+        if (modeDial)
         {
           v46.origin.x = v4;
           v46.origin.y = v6;
           v46.size.width = v8;
           v46.size.height = v10;
           MaxY = CGRectGetMaxY(v46);
-          v26 = [(CAMBottomBar *)self modeDial];
-          [v26 frame];
+          modeDial2 = [(CAMBottomBar *)self modeDial];
+          [modeDial2 frame];
           v27 = MaxY - CGRectGetMaxY(v47);
 
           if (v27 >= 84.0)
           {
-            v38 = v11;
+            v38 = backgroundView;
             v41 = 0u;
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v28 = [(CAMBottomBar *)self subviews];
-            v29 = [v28 countByEnumeratingWithState:&v39 objects:v44 count:16];
+            subviews = [(CAMBottomBar *)self subviews];
+            v29 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
             if (!v29)
             {
               goto LABEL_19;
@@ -194,40 +194,40 @@
               {
                 if (*v40 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(subviews);
                 }
 
                 v33 = *(*(&v39 + 1) + 8 * i);
-                v34 = [(CAMBottomBar *)self backgroundView];
-                if (v33 == v34)
+                backgroundView2 = [(CAMBottomBar *)self backgroundView];
+                if (v33 == backgroundView2)
                 {
                   goto LABEL_16;
                 }
 
-                v35 = [(CAMBottomBar *)self reviewButton];
-                v36 = v35;
-                if (v33 == v35)
+                reviewButton = [(CAMBottomBar *)self reviewButton];
+                v36 = reviewButton;
+                if (v33 == reviewButton)
                 {
 
 LABEL_16:
                   continue;
                 }
 
-                v37 = [(CAMBottomBar *)self doneButton];
+                doneButton = [(CAMBottomBar *)self doneButton];
 
-                if (v33 != v37)
+                if (v33 != doneButton)
                 {
                   [v33 center];
                   [v33 setCenter:?];
                 }
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v39 objects:v44 count:16];
+              v30 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
               if (!v30)
               {
 LABEL_19:
 
-                v11 = v38;
+                backgroundView = v38;
                 break;
               }
             }
@@ -275,9 +275,9 @@ LABEL_19:
   return v4;
 }
 
-- (void)_commonCAMBottomBarInitializationInitWithLayoutStyle:(int64_t)a3
+- (void)_commonCAMBottomBarInitializationInitWithLayoutStyle:(int64_t)style
 {
-  self->_layoutStyle = a3;
+  self->_layoutStyle = style;
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   backgroundView = self->_backgroundView;
@@ -290,7 +290,7 @@ LABEL_19:
   [(CAMBottomBar *)self addSubview:v7];
 }
 
-- (CAMBottomBar)initWithLayoutStyle:(int64_t)a3
+- (CAMBottomBar)initWithLayoutStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMBottomBar;
@@ -298,34 +298,34 @@ LABEL_19:
   v5 = v4;
   if (v4)
   {
-    [(CAMBottomBar *)v4 _commonCAMBottomBarInitializationInitWithLayoutStyle:a3];
+    [(CAMBottomBar *)v4 _commonCAMBottomBarInitializationInitWithLayoutStyle:style];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (CAMBottomBar)initWithFrame:(CGRect)a3
+- (CAMBottomBar)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMBottomBar *)self initWithLayoutStyle:v5];
+  return [(CAMBottomBar *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMBottomBar)initWithCoder:(id)a3
+- (CAMBottomBar)initWithCoder:(id)coder
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMBottomBar *)self initWithLayoutStyle:v5];
+  return [(CAMBottomBar *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMBottomBar *)self _updateImageWellTappableEdgeInsets];
     [(CAMBottomBar *)self _updateFlipButtonTappableEdgeInsets];
 
@@ -333,361 +333,361 @@ LABEL_19:
   }
 }
 
-- (void)setShutterButton:(id)a3
+- (void)setShutterButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   shutterButton = self->_shutterButton;
-  if (shutterButton != v5)
+  if (shutterButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CUShutterButton *)shutterButton removeFromSuperview];
-    objc_storeStrong(&self->_shutterButton, a3);
+    objc_storeStrong(&self->_shutterButton, button);
     shutterButton = [(CAMBottomBar *)self addSubview:self->_shutterButton];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](shutterButton, v5);
+  MEMORY[0x1EEE66BB8](shutterButton, buttonCopy);
 }
 
-- (void)setStillDuringVideoButton:(id)a3
+- (void)setStillDuringVideoButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   stillDuringVideoButton = self->_stillDuringVideoButton;
-  if (stillDuringVideoButton != v5)
+  if (stillDuringVideoButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CUShutterButton *)stillDuringVideoButton removeFromSuperview];
-    objc_storeStrong(&self->_stillDuringVideoButton, a3);
+    objc_storeStrong(&self->_stillDuringVideoButton, button);
     stillDuringVideoButton = [(CAMBottomBar *)self addSubview:self->_stillDuringVideoButton];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](stillDuringVideoButton, v5);
+  MEMORY[0x1EEE66BB8](stillDuringVideoButton, buttonCopy);
 }
 
-- (void)setModeDial:(id)a3
+- (void)setModeDial:(id)dial
 {
-  v5 = a3;
+  dialCopy = dial;
   modeDial = self->_modeDial;
-  if (modeDial != v5)
+  if (modeDial != dialCopy)
   {
-    v7 = v5;
+    v7 = dialCopy;
     [(CAMModeDial *)modeDial removeFromSuperview];
-    objc_storeStrong(&self->_modeDial, a3);
+    objc_storeStrong(&self->_modeDial, dial);
     [(CAMBottomBar *)self addSubview:v7];
     modeDial = [(CAMBottomBar *)self _ensureSubviewOrdering];
-    v5 = v7;
+    dialCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](modeDial, v5);
+  MEMORY[0x1EEE66BB8](modeDial, dialCopy);
 }
 
-- (void)setImageWell:(id)a3
+- (void)setImageWell:(id)well
 {
-  v5 = a3;
+  wellCopy = well;
   imageWell = self->_imageWell;
-  if (imageWell != v5)
+  if (imageWell != wellCopy)
   {
-    v7 = v5;
+    v7 = wellCopy;
     [(CAMImageWell *)imageWell removeFromSuperview];
-    objc_storeStrong(&self->_imageWell, a3);
+    objc_storeStrong(&self->_imageWell, well);
     [(CAMBottomBar *)self _updateImageWellTappableEdgeInsets];
     imageWell = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    wellCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](imageWell, v5);
+  MEMORY[0x1EEE66BB8](imageWell, wellCopy);
 }
 
-- (void)setReviewButton:(id)a3
+- (void)setReviewButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   reviewButton = self->_reviewButton;
-  if (reviewButton != v5)
+  if (reviewButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(UIButton *)reviewButton removeFromSuperview];
-    objc_storeStrong(&self->_reviewButton, a3);
+    objc_storeStrong(&self->_reviewButton, button);
     reviewButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](reviewButton, v5);
+  MEMORY[0x1EEE66BB8](reviewButton, buttonCopy);
 }
 
-- (void)setDoneButton:(id)a3
+- (void)setDoneButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   doneButton = self->_doneButton;
-  if (doneButton != v5)
+  if (doneButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(PUReviewScreenDoneButton *)doneButton removeFromSuperview];
-    objc_storeStrong(&self->_doneButton, a3);
+    objc_storeStrong(&self->_doneButton, button);
     doneButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](doneButton, v5);
+  MEMORY[0x1EEE66BB8](doneButton, buttonCopy);
 }
 
-- (void)setFlipButton:(id)a3
+- (void)setFlipButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   flipButton = self->_flipButton;
-  if (flipButton != v5)
+  if (flipButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMFlipButton *)flipButton removeFromSuperview];
-    objc_storeStrong(&self->_flipButton, a3);
+    objc_storeStrong(&self->_flipButton, button);
     [(CAMBottomBar *)self _updateFlipButtonTappableEdgeInsets];
     flipButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](flipButton, v5);
+  MEMORY[0x1EEE66BB8](flipButton, buttonCopy);
 }
 
-- (void)setFlashButton:(id)a3
+- (void)setFlashButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   flashButton = self->_flashButton;
-  if (flashButton != v5)
+  if (flashButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMExpandableMenuButton *)flashButton setExpandableMenuDelegate:0];
     [(CAMFlashButton *)self->_flashButton removeFromSuperview];
-    objc_storeStrong(&self->_flashButton, a3);
+    objc_storeStrong(&self->_flashButton, button);
     [(CAMExpandableMenuButton *)self->_flashButton setExpandableMenuDelegate:self];
     [(CAMExpandableMenuButton *)self->_flashButton setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     flashButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](flashButton, v5);
+  MEMORY[0x1EEE66BB8](flashButton, buttonCopy);
 }
 
-- (void)setHDRButton:(id)a3
+- (void)setHDRButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   HDRButton = self->_HDRButton;
-  if (HDRButton != v5)
+  if (HDRButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMExpandableMenuButton *)HDRButton setExpandableMenuDelegate:0];
     [(CAMHDRButton *)self->_HDRButton removeFromSuperview];
-    objc_storeStrong(&self->_HDRButton, a3);
+    objc_storeStrong(&self->_HDRButton, button);
     [(CAMExpandableMenuButton *)self->_HDRButton setExpandableMenuDelegate:self];
     [(CAMExpandableMenuButton *)self->_HDRButton setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     HDRButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](HDRButton, v5);
+  MEMORY[0x1EEE66BB8](HDRButton, buttonCopy);
 }
 
-- (void)setTimerButton:(id)a3
+- (void)setTimerButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   timerButton = self->_timerButton;
-  if (timerButton != v5)
+  if (timerButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMExpandableMenuButton *)timerButton setExpandableMenuDelegate:0];
     [(CAMTimerButton *)self->_timerButton removeFromSuperview];
-    objc_storeStrong(&self->_timerButton, a3);
+    objc_storeStrong(&self->_timerButton, button);
     [(CAMExpandableMenuButton *)self->_timerButton setExpandableMenuDelegate:self];
     [(CAMExpandableMenuButton *)self->_timerButton setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     timerButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](timerButton, v5);
+  MEMORY[0x1EEE66BB8](timerButton, buttonCopy);
 }
 
-- (void)setLivePhotoButton:(id)a3
+- (void)setLivePhotoButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   livePhotoButton = self->_livePhotoButton;
-  if (livePhotoButton != v5)
+  if (livePhotoButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMLivePhotoButton *)livePhotoButton removeFromSuperview];
     [(CAMExpandableMenuButton *)self->_livePhotoButton setExpandableMenuDelegate:0];
-    objc_storeStrong(&self->_livePhotoButton, a3);
+    objc_storeStrong(&self->_livePhotoButton, button);
     [(CAMExpandableMenuButton *)v7 setExpandableMenuDelegate:self];
     [(CAMExpandableMenuButton *)v7 setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     livePhotoButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](livePhotoButton, v5);
+  MEMORY[0x1EEE66BB8](livePhotoButton, buttonCopy);
 }
 
-- (void)setSharedLibraryButton:(id)a3
+- (void)setSharedLibraryButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   sharedLibraryButton = self->_sharedLibraryButton;
-  if (sharedLibraryButton != v5)
+  if (sharedLibraryButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(CAMSharedLibraryButton *)sharedLibraryButton removeFromSuperview];
     [(CAMExpandableMenuButton *)self->_sharedLibraryButton setExpandableMenuDelegate:0];
-    objc_storeStrong(&self->_sharedLibraryButton, a3);
+    objc_storeStrong(&self->_sharedLibraryButton, button);
     [(CAMExpandableMenuButton *)v7 setExpandableMenuDelegate:self];
     [(CAMExpandableMenuButton *)v7 setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     sharedLibraryButton = [(CAMBottomBar *)self addSubview:v7];
-    v5 = v7;
+    buttonCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](sharedLibraryButton, v5);
+  MEMORY[0x1EEE66BB8](sharedLibraryButton, buttonCopy);
 }
 
-- (void)setApertureButton:(id)a3
+- (void)setApertureButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   apertureButton = self->_apertureButton;
-  if (apertureButton != v5)
+  if (apertureButton != buttonCopy)
   {
-    v9 = v5;
-    v7 = [(CEKApertureButton *)apertureButton superview];
+    v9 = buttonCopy;
+    superview = [(CEKApertureButton *)apertureButton superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CEKApertureButton *)self->_apertureButton removeFromSuperview];
     }
 
-    v8 = [(CEKApertureButton *)self->_apertureButton delegate];
+    delegate = [(CEKApertureButton *)self->_apertureButton delegate];
 
-    if (v8 == self)
+    if (delegate == self)
     {
       [(CEKApertureButton *)self->_apertureButton setDelegate:0];
     }
 
-    objc_storeStrong(&self->_apertureButton, a3);
+    objc_storeStrong(&self->_apertureButton, button);
     [(CEKApertureButton *)v9 setDelegate:self];
     [(CEKApertureButton *)v9 setTappableEdgeInsets:5.0, 11.0, 5.0, 11.0];
     apertureButton = [(CAMBottomBar *)self addSubview:v9];
-    v5 = v9;
+    buttonCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](apertureButton, v5);
+  MEMORY[0x1EEE66BB8](apertureButton, buttonCopy);
 }
 
-- (void)setImageAnalysisButton:(id)a3
+- (void)setImageAnalysisButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   imageAnalysisButton = self->_imageAnalysisButton;
-  if (imageAnalysisButton != v5)
+  if (imageAnalysisButton != buttonCopy)
   {
-    v9 = v5;
-    v7 = [(CAMImageAnalysisButton *)imageAnalysisButton superview];
+    v9 = buttonCopy;
+    superview = [(CAMImageAnalysisButton *)imageAnalysisButton superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CAMImageAnalysisButton *)self->_imageAnalysisButton removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_imageAnalysisButton, a3);
+    objc_storeStrong(&self->_imageAnalysisButton, button);
     [(VKImageAnalysisButton *)v9 setBackgroundDiameter:44.0];
     v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.3];
     [(VKImageAnalysisButton *)v9 setCameraModeBackgroundColor:v8];
 
     imageAnalysisButton = [(CAMBottomBar *)self addSubview:v9];
-    v5 = v9;
+    buttonCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](imageAnalysisButton, v5);
+  MEMORY[0x1EEE66BB8](imageAnalysisButton, buttonCopy);
 }
 
-- (void)setImageAnalysisButtonBackgroundOverlay:(id)a3
+- (void)setImageAnalysisButtonBackgroundOverlay:(id)overlay
 {
-  v5 = a3;
+  overlayCopy = overlay;
   imageAnalysisButtonBackgroundOverlay = self->_imageAnalysisButtonBackgroundOverlay;
-  if (imageAnalysisButtonBackgroundOverlay != v5)
+  if (imageAnalysisButtonBackgroundOverlay != overlayCopy)
   {
-    v9 = v5;
-    v7 = [(UIView *)imageAnalysisButtonBackgroundOverlay superview];
+    v9 = overlayCopy;
+    superview = [(UIView *)imageAnalysisButtonBackgroundOverlay superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_imageAnalysisButtonBackgroundOverlay removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_imageAnalysisButtonBackgroundOverlay, a3);
-    v8 = [(CAMBottomBar *)self imageAnalysisButton];
-    [(CAMBottomBar *)self insertSubview:v9 belowSubview:v8];
+    objc_storeStrong(&self->_imageAnalysisButtonBackgroundOverlay, overlay);
+    imageAnalysisButton = [(CAMBottomBar *)self imageAnalysisButton];
+    [(CAMBottomBar *)self insertSubview:v9 belowSubview:imageAnalysisButton];
 
-    v5 = v9;
+    overlayCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](imageAnalysisButtonBackgroundOverlay, v5);
+  MEMORY[0x1EEE66BB8](imageAnalysisButtonBackgroundOverlay, overlayCopy);
 }
 
-- (void)_updateControlVisibilityAnimated:(BOOL)a3
+- (void)_updateControlVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(CAMBottomBar *)self visibilityUpdateDelegate];
-  [v4 updateControlVisibilityAnimated:v3];
+  animatedCopy = animated;
+  visibilityUpdateDelegate = [(CAMBottomBar *)self visibilityUpdateDelegate];
+  [visibilityUpdateDelegate updateControlVisibilityAnimated:animatedCopy];
 }
 
-- (void)setUtilityBar:(id)a3
+- (void)setUtilityBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   utilityBar = self->_utilityBar;
-  if (utilityBar != v5)
+  if (utilityBar != barCopy)
   {
-    v7 = v5;
+    v7 = barCopy;
     [(CAMUtilityBar *)utilityBar removeFromSuperview];
-    objc_storeStrong(&self->_utilityBar, a3);
+    objc_storeStrong(&self->_utilityBar, bar);
     [(CAMBottomBar *)self addSubview:v7];
     utilityBar = [(CAMBottomBar *)self _ensureSubviewOrdering];
-    v5 = v7;
+    barCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](utilityBar, v5);
+  MEMORY[0x1EEE66BB8](utilityBar, barCopy);
 }
 
-- (void)setUtilityBarExtensionDistance:(double)a3
+- (void)setUtilityBarExtensionDistance:(double)distance
 {
-  if (self->_utilityBarExtensionDistance != a3)
+  if (self->_utilityBarExtensionDistance != distance)
   {
-    self->_utilityBarExtensionDistance = a3;
+    self->_utilityBarExtensionDistance = distance;
     [(CAMBottomBar *)self setNeedsLayout];
   }
 }
 
-+ (CGRect)shutterButtonAlignmentRectInBounds:(CGRect)a3 forLayoutStyle:(int64_t)a4 traitCollection:(id)a5 safeAreaInsets:(UIEdgeInsets)a6
++ (CGRect)shutterButtonAlignmentRectInBounds:(CGRect)bounds forLayoutStyle:(int64_t)style traitCollection:(id)collection safeAreaInsets:(UIEdgeInsets)insets
 {
-  bottom = a6.bottom;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
+  bottom = insets.bottom;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionCopy = collection;
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
   v36.size.height = height;
   CGRectGetHeight(v36);
-  [v13 displayScale];
+  [collectionCopy displayScale];
   v31 = v14;
   v35 = 0;
   memset(v34, 0, sizeof(v34));
-  CAMShutterButtonSpecForLayoutStyle(a4, v34);
+  CAMShutterButtonSpecForLayoutStyle(style, v34);
   v15 = 0.0;
   UIRectCenteredIntegralRectScale();
   v32 = v17;
   v33 = v16;
   v19 = v18;
   v21 = v20;
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:{a4, 0}])
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:{style, 0}])
   {
     goto LABEL_16;
   }
 
   v30 = bottom;
-  if (a4 < 3)
+  if (style < 3)
   {
     v22 = 1.0 / v31 + 23.0;
     v23 = 4.0;
@@ -697,7 +697,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 == 3)
+  if (style == 3)
   {
     v23 = 0.0;
     v22 = 1.79769313e308;
@@ -722,7 +722,7 @@ LABEL_8:
     v23 = v25;
   }
 
-  if (([a1 shouldUseSafeAreaInsetForLayoutStyle:a4 traitCollection:v13] & (v23 < v30)) != 0)
+  if (([self shouldUseSafeAreaInsetForLayoutStyle:style traitCollection:collectionCopy] & (v23 < v30)) != 0)
   {
     v23 = v30;
   }
@@ -745,13 +745,13 @@ LABEL_16:
   return result;
 }
 
-+ (BOOL)shouldUseSafeAreaInsetForLayoutStyle:(int64_t)a3 traitCollection:(id)a4
++ (BOOL)shouldUseSafeAreaInsetForLayoutStyle:(int64_t)style traitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [a1 wantsVerticalBarForLayoutStyle:a3];
-  v8 = [v6 verticalSizeClass];
+  collectionCopy = collection;
+  v7 = [self wantsVerticalBarForLayoutStyle:style];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
 
-  if (v8 == 2)
+  if (verticalSizeClass == 2)
   {
     return v7 ^ 1;
   }
@@ -762,24 +762,24 @@ LABEL_16:
   }
 }
 
-- (void)_layoutShutterButtonForLayoutStyle:(int64_t)a3
+- (void)_layoutShutterButtonForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v41 = [(CAMBottomBar *)self shutterButton];
+  shutterButton = [(CAMBottomBar *)self shutterButton];
   v13 = objc_opt_class();
-  v14 = [(CAMBottomBar *)self traitCollection];
+  traitCollection = [(CAMBottomBar *)self traitCollection];
   [(CAMBottomBar *)self safeAreaInsets];
-  [v13 shutterButtonAlignmentRectInBounds:a3 forLayoutStyle:v14 traitCollection:v6 safeAreaInsets:{v8, v10, v12, v15, v16, v17, v18}];
+  [v13 shutterButtonAlignmentRectInBounds:style forLayoutStyle:traitCollection traitCollection:v6 safeAreaInsets:{v8, v10, v12, v15, v16, v17, v18}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:a3])
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:style])
   {
     v43.origin.x = v20;
     v43.origin.y = v22;
@@ -844,20 +844,20 @@ LABEL_16:
     v37 = 24.0;
   }
 
-  [v41 setTappableEdgeInsets:{v28, v33, v38, v37}];
-  [v41 frameForAlignmentRect:{v35, v22, v24, v26}];
-  [v41 setFrame:?];
+  [shutterButton setTappableEdgeInsets:{v28, v33, v38, v37}];
+  [shutterButton frameForAlignmentRect:{v35, v22, v24, v26}];
+  [shutterButton setFrame:?];
 }
 
-- (void)_layoutStillDuringVideoButtonForLayoutStyle:(int64_t)a3
+- (void)_layoutStillDuringVideoButtonForLayoutStyle:(int64_t)style
 {
-  if (([objc_opt_class() wantsVerticalBarForLayoutStyle:a3] & 1) == 0)
+  if (([objc_opt_class() wantsVerticalBarForLayoutStyle:style] & 1) == 0)
   {
-    v30 = [(CAMBottomBar *)self stillDuringVideoButton];
-    [v30 intrinsicContentSize];
+    stillDuringVideoButton = [(CAMBottomBar *)self stillDuringVideoButton];
+    [stillDuringVideoButton intrinsicContentSize];
     v5 = v4;
-    v6 = [(CAMBottomBar *)self traitCollection];
-    [v6 displayScale];
+    traitCollection = [(CAMBottomBar *)self traitCollection];
+    [traitCollection displayScale];
     UIRectIntegralWithScale();
     v8 = v7;
     v10 = v9;
@@ -867,18 +867,18 @@ LABEL_16:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(CAMBottomBar *)self shutterButton];
-    [v19 frame];
-    [v19 alignmentRectForFrame:?];
+    shutterButton = [(CAMBottomBar *)self shutterButton];
+    [shutterButton frame];
+    [shutterButton alignmentRectForFrame:?];
     CGRectGetMidY(v32);
     UIRoundToViewScale();
     v21 = v20;
-    v22 = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
     v23 = v12;
     v24 = v14;
     v25 = v16;
     v26 = v18;
-    if (v22)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMaxX(*&v23) - v5;
       v28 = -15.0;
@@ -891,13 +891,13 @@ LABEL_16:
     }
 
     v29 = MinX + v28;
-    [v30 setTappableEdgeInsets:{20.0, 20.0, 20.0, 20.0}];
-    [v30 frameForAlignmentRect:{v29, v21, v8, v10}];
-    [v30 setFrame:?];
+    [stillDuringVideoButton setTappableEdgeInsets:{20.0, 20.0, 20.0, 20.0}];
+    [stillDuringVideoButton frameForAlignmentRect:{v29, v21, v8, v10}];
+    [stillDuringVideoButton setFrame:?];
   }
 }
 
-- (void)_layoutModeDialForLayoutStyle:(int64_t)a3
+- (void)_layoutModeDialForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
   x = v54.origin.x;
@@ -905,35 +905,35 @@ LABEL_16:
   width = v54.size.width;
   height = v54.size.height;
   v50 = CGRectGetWidth(v54);
-  v52 = [(CAMBottomBar *)self shutterButton];
-  [v52 frame];
-  [v52 alignmentRectForFrame:?];
+  shutterButton = [(CAMBottomBar *)self shutterButton];
+  [shutterButton frame];
+  [shutterButton alignmentRectForFrame:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(CAMBottomBar *)self modeDial];
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:a3])
+  modeDial = [(CAMBottomBar *)self modeDial];
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:style])
   {
     v48 = y;
     v51 = width;
-    v18 = [(CAMBottomBar *)self imageWell];
-    v19 = v18;
+    imageWell = [(CAMBottomBar *)self imageWell];
+    v19 = imageWell;
     v49 = v16;
     v47 = x;
     v20 = v14;
-    if (v18)
+    if (imageWell)
     {
-      v21 = v18;
+      shutterButton2 = imageWell;
     }
 
     else
     {
-      v21 = [(CAMBottomBar *)self shutterButton];
+      shutterButton2 = [(CAMBottomBar *)self shutterButton];
     }
 
-    v27 = v21;
-    [v21 frame];
+    v27 = shutterButton2;
+    [shutterButton2 frame];
     [v27 alignmentRectForFrame:?];
     v29 = v28;
     v31 = v30;
@@ -945,7 +945,7 @@ LABEL_16:
     v58.size.width = v20;
     v58.size.height = v49;
     v35 = CGRectGetWidth(v58);
-    [v17 sizeThatFits:{v35, 190.0}];
+    [modeDial sizeThatFits:{v35, 190.0}];
     if (v35 < v36)
     {
       v35 = v36;
@@ -981,7 +981,7 @@ LABEL_16:
       v39 = CGRectGetMaxX(v63) - v35;
     }
 
-    [v17 frameForAlignmentRect:{v39, v37, v35, 190.0, *&v45}];
+    [modeDial frameForAlignmentRect:{v39, v37, v35, 190.0, *&v45}];
     v23 = v41;
     MinY = v42;
     v26 = v43;
@@ -1009,29 +1009,29 @@ LABEL_16:
     v26 = v50;
   }
 
-  [v17 setFrame:{v23, MinY, v26, v25}];
+  [modeDial setFrame:{v23, MinY, v26, v25}];
 }
 
-- (void)_layoutImageWellForLayoutStyle:(int64_t)a3
+- (void)_layoutImageWellForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
   v30 = v5;
   v31 = v6;
   v8 = v7;
   v10 = v9;
-  v32 = [(CAMBottomBar *)self shutterButton];
-  [v32 frame];
-  [v32 alignmentRectForFrame:?];
+  shutterButton = [(CAMBottomBar *)self shutterButton];
+  [shutterButton frame];
+  [shutterButton alignmentRectForFrame:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CAMBottomBar *)self imageWell];
-  LODWORD(a3) = [objc_opt_class() wantsVerticalBarForLayoutStyle:a3];
-  [v19 intrinsicContentSize];
+  imageWell = [(CAMBottomBar *)self imageWell];
+  LODWORD(style) = [objc_opt_class() wantsVerticalBarForLayoutStyle:style];
+  [imageWell intrinsicContentSize];
   v21 = v20;
   v23 = v22;
-  if (a3)
+  if (style)
   {
     v34.origin.x = v12;
     v34.origin.y = v14;
@@ -1079,21 +1079,21 @@ LABEL_16:
     v25 = MinX + v28;
   }
 
-  [v19 frameForAlignmentRect:{v25, v24, v21, v23, *&rect}];
-  [v19 setFrame:?];
+  [imageWell frameForAlignmentRect:{v25, v24, v21, v23, *&rect}];
+  [imageWell setFrame:?];
 }
 
-- (void)_layoutReviewButtonForLayoutStyle:(int64_t)a3
+- (void)_layoutReviewButtonForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v49 = [(CAMBottomBar *)self reviewButton];
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:a3])
+  reviewButton = [(CAMBottomBar *)self reviewButton];
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:style])
   {
-    [v49 intrinsicContentSize];
+    [reviewButton intrinsicContentSize];
     UIRectCenteredIntegralRectScale();
     v14 = v13;
     v16 = v15;
@@ -1108,7 +1108,7 @@ LABEL_16:
     v52.origin.y = v16;
     v52.size.width = v18;
     v52.size.height = v20;
-    [v49 frameForAlignmentRect:{v14, MaxY - CGRectGetHeight(v52) + -31.0, v18, v20, 0}];
+    [reviewButton frameForAlignmentRect:{v14, MaxY - CGRectGetHeight(v52) + -31.0, v18, v20, 0}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -1117,13 +1117,13 @@ LABEL_16:
 
   else
   {
-    v30 = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
-    [v49 intrinsicContentSize];
+    _shouldReverseLayoutDirection = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
+    [reviewButton intrinsicContentSize];
     v48 = v12;
     v32 = v31;
-    v33 = [(CAMBottomBar *)self shutterButton];
-    [v33 frame];
-    [v33 alignmentRectForFrame:?];
+    shutterButton = [(CAMBottomBar *)self shutterButton];
+    [shutterButton frame];
+    [shutterButton alignmentRectForFrame:?];
     x = v53.origin.x;
     y = v53.origin.y;
     width = v53.size.width;
@@ -1141,7 +1141,7 @@ LABEL_16:
     UIRoundToViewScale();
     v42 = MidY - v41;
     v43 = 15.0;
-    if (v30)
+    if (_shouldReverseLayoutDirection)
     {
       v56.origin.x = v6;
       v56.origin.y = v8;
@@ -1150,47 +1150,47 @@ LABEL_16:
       v43 = CGRectGetMaxX(v56) - v32 + -15.0;
     }
 
-    [v49 frameForAlignmentRect:{v43, v42, v39, v40, 0}];
+    [reviewButton frameForAlignmentRect:{v43, v42, v39, v40, 0}];
     v23 = v44;
     v25 = v45;
     v27 = v46;
     v29 = v47;
   }
 
-  [v49 setFrame:{v23, v25, v27, v29}];
+  [reviewButton setFrame:{v23, v25, v27, v29}];
 }
 
-- (void)_layoutDoneButtonForLayoutStyle:(int64_t)a3
+- (void)_layoutDoneButtonForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
-  v5 = [(CAMBottomBar *)self doneButton];
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:a3])
+  doneButton = [(CAMBottomBar *)self doneButton];
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:style])
   {
     CAMPixelWidthForView(self);
-    [v5 intrinsicContentSize];
+    [doneButton intrinsicContentSize];
     UIRectCenteredIntegralRectScale();
-    [v5 frameForAlignmentRect:0];
-    [v5 setFrame:?];
+    [doneButton frameForAlignmentRect:0];
+    [doneButton setFrame:?];
   }
 }
 
-- (void)_layoutFlipButtonForLayoutStyle:(int64_t)a3
+- (void)_layoutFlipButtonForLayoutStyle:(int64_t)style
 {
-  v4 = [objc_opt_class() wantsVerticalBarForLayoutStyle:a3];
+  v4 = [objc_opt_class() wantsVerticalBarForLayoutStyle:style];
   [(CAMBottomBar *)self bounds];
   v6 = v5;
   v8 = v7;
   v35 = v9;
   v36 = v10;
-  v37 = [(CAMBottomBar *)self shutterButton];
-  [v37 frame];
-  [v37 alignmentRectForFrame:?];
+  shutterButton = [(CAMBottomBar *)self shutterButton];
+  [shutterButton frame];
+  [shutterButton alignmentRectForFrame:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CAMBottomBar *)self flipButton];
-  [v19 intrinsicContentSize];
+  flipButton = [(CAMBottomBar *)self flipButton];
+  [flipButton intrinsicContentSize];
   v21 = v20;
   v23 = v22;
   if (v4)
@@ -1218,12 +1218,12 @@ LABEL_16:
     CGRectGetMidY(v41);
     UIRoundToViewScale();
     v26 = v27;
-    v28 = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(CAMBottomBar *)self _shouldReverseLayoutDirection];
     v29 = v6;
     v30 = v8;
     v31 = v35;
     v32 = v36;
-    if (v28)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v29);
       v34 = 20.0;
@@ -1238,11 +1238,11 @@ LABEL_16:
     v25 = MinX + v34;
   }
 
-  [v19 frameForAlignmentRect:{v25, v26, v21, v23}];
-  [v19 setFrame:?];
+  [flipButton frameForAlignmentRect:{v25, v26, v21, v23}];
+  [flipButton setFrame:?];
 }
 
-- (void)_layoutUtilityBarForLayoutStyle:(int64_t)a3
+- (void)_layoutUtilityBarForLayoutStyle:(int64_t)style
 {
   [(CAMBottomBar *)self bounds];
   v6 = v5;
@@ -1250,10 +1250,10 @@ LABEL_16:
   v10 = v9;
   v12 = v11;
   v13 = objc_opt_class();
-  v14 = [(CAMBottomBar *)self layoutStyle];
-  v15 = [(CAMBottomBar *)self traitCollection];
+  layoutStyle = [(CAMBottomBar *)self layoutStyle];
+  traitCollection = [(CAMBottomBar *)self traitCollection];
   [(CAMBottomBar *)self safeAreaInsets];
-  [v13 shutterButtonAlignmentRectInBounds:v14 forLayoutStyle:v15 traitCollection:v6 safeAreaInsets:{v8, v10, v12, v16, v17, v18, v19}];
+  [v13 shutterButtonAlignmentRectInBounds:layoutStyle forLayoutStyle:traitCollection traitCollection:v6 safeAreaInsets:{v8, v10, v12, v16, v17, v18, v19}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -1261,7 +1261,7 @@ LABEL_16:
 
   [(CAMBottomBar *)self utilityBarExtensionDistance];
   v29 = v28;
-  v30 = [objc_opt_class() wantsVerticalBarForLayoutStyle:a3];
+  v30 = [objc_opt_class() wantsVerticalBarForLayoutStyle:style];
   v31 = -v29;
   v32 = v21;
   v33 = v23;
@@ -1280,20 +1280,20 @@ LABEL_16:
     v31 = 0.0;
   }
 
-  v37 = [(CAMBottomBar *)self utilityBar];
-  [v37 frameForAlignmentRect:{v31, v36, v10, v12}];
-  [v37 setFrame:?];
+  utilityBar = [(CAMBottomBar *)self utilityBar];
+  [utilityBar frameForAlignmentRect:{v31, v36, v10, v12}];
+  [utilityBar setFrame:?];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(CAMBottomBar *)self _expandedMenuButton];
-  v9 = v8;
-  if (v8 && ([v8 frame], v32.x = x, v32.y = y, CGRectContainsPoint(v34, v32)))
+  eventCopy = event;
+  _expandedMenuButton = [(CAMBottomBar *)self _expandedMenuButton];
+  v9 = _expandedMenuButton;
+  if (_expandedMenuButton && ([_expandedMenuButton frame], v32.x = x, v32.y = y, CGRectContainsPoint(v34, v32)))
   {
     v10 = v9;
   }
@@ -1302,7 +1302,7 @@ LABEL_16:
   {
     v28.receiver = self;
     v28.super_class = CAMBottomBar;
-    v10 = [(CAMBottomBar *)&v28 hitTest:v7 withEvent:x, y];
+    v10 = [(CAMBottomBar *)&v28 hitTest:eventCopy withEvent:x, y];
     if ([(CAMBottomBar *)self backgroundStyle]== 1 && v10 == self)
     {
       [(CAMBottomBar *)self subviews];
@@ -1377,18 +1377,18 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v20.receiver = self;
   v20.super_class = CAMBottomBar;
-  v7 = [(CAMBottomBar *)&v20 pointInside:a4 withEvent:?];
-  v8 = [(CAMBottomBar *)self _expandedMenuButton];
-  v9 = v8;
-  if (v8)
+  v7 = [(CAMBottomBar *)&v20 pointInside:event withEvent:?];
+  _expandedMenuButton = [(CAMBottomBar *)self _expandedMenuButton];
+  v9 = _expandedMenuButton;
+  if (_expandedMenuButton)
   {
-    [v8 frame];
+    [_expandedMenuButton frame];
     v21.x = x;
     v21.y = y;
     v10 = CGRectContainsPoint(v24, v21);
@@ -1399,9 +1399,9 @@ LABEL_21:
     v10 = 0;
   }
 
-  v11 = [(CAMBottomBar *)self utilityBar];
-  v12 = v11;
-  if (!v11 || ([v11 isHidden] & 1) != 0 || (objc_msgSend(v12, "alpha"), v13 <= 0.0))
+  utilityBar = [(CAMBottomBar *)self utilityBar];
+  v12 = utilityBar;
+  if (!utilityBar || ([utilityBar isHidden] & 1) != 0 || (objc_msgSend(v12, "alpha"), v13 <= 0.0))
   {
     v14 = 0;
   }
@@ -1414,13 +1414,13 @@ LABEL_21:
     v14 = CGRectContainsPoint(v25, v22);
   }
 
-  v15 = [(CAMBottomBar *)self imageAnalysisButtonBackgroundOverlay];
-  v16 = v15;
-  if (v15)
+  imageAnalysisButtonBackgroundOverlay = [(CAMBottomBar *)self imageAnalysisButtonBackgroundOverlay];
+  v16 = imageAnalysisButtonBackgroundOverlay;
+  if (imageAnalysisButtonBackgroundOverlay)
   {
-    if (([v15 isHidden] & 1) != 0 || (objc_msgSend(v16, "alpha"), v17 <= 0.0))
+    if (([imageAnalysisButtonBackgroundOverlay isHidden] & 1) != 0 || (objc_msgSend(v16, "alpha"), v17 <= 0.0))
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(imageAnalysisButtonBackgroundOverlay) = 0;
     }
 
     else
@@ -1428,7 +1428,7 @@ LABEL_21:
       [v16 frame];
       v23.x = x;
       v23.y = y;
-      LOBYTE(v15) = CGRectContainsPoint(v26, v23);
+      LOBYTE(imageAnalysisButtonBackgroundOverlay) = CGRectContainsPoint(v26, v23);
     }
   }
 
@@ -1439,18 +1439,18 @@ LABEL_21:
 
   else
   {
-    v18 = v14 | v15;
+    v18 = v14 | imageAnalysisButtonBackgroundOverlay;
   }
 
   return v18 & 1;
 }
 
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
-    if (a4)
+    self->_backgroundStyle = style;
+    if (animated)
     {
       [(CAMBottomBar *)self layoutIfNeeded];
       v5[0] = MEMORY[0x1E69E9820];
@@ -1477,15 +1477,15 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
   return [v2 layoutIfNeeded];
 }
 
-- (double)_opacityForBackgroundStyle:(int64_t)a3
+- (double)_opacityForBackgroundStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     result = 1.0;
   }
 
-  if (!a3)
+  if (!style)
   {
     return 0.3;
   }
@@ -1493,14 +1493,14 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_layoutMenuButtons:(id)a3 apply:(BOOL)a4 withExpandedMenuButton:(id)a5 collapsingMenuButton:(id)a6 collapsingFrame:(CGRect *)a7
+- (void)_layoutMenuButtons:(id)buttons apply:(BOOL)apply withExpandedMenuButton:(id)button collapsingMenuButton:(id)menuButton collapsingFrame:(CGRect *)frame
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(CAMBottomBar *)self layoutStyle];
-  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:v15])
+  applyCopy = apply;
+  buttonsCopy = buttons;
+  buttonCopy = button;
+  menuButtonCopy = menuButton;
+  layoutStyle = [(CAMBottomBar *)self layoutStyle];
+  if ([objc_opt_class() wantsVerticalBarForLayoutStyle:layoutStyle])
   {
     [(CAMBottomBar *)self bounds];
     [(CAMBottomBar *)self alignmentRectForFrame:?];
@@ -1512,18 +1512,18 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
     v89 = &v88;
     v90 = 0x2020000000;
     v91 = 0;
-    v24 = [(CAMBottomBar *)self flipButton];
-    v25 = v24;
-    if (v24)
+    flipButton = [(CAMBottomBar *)self flipButton];
+    v25 = flipButton;
+    if (flipButton)
     {
-      [v24 frame];
+      [flipButton frame];
       [v25 alignmentRectForFrame:?];
       v27 = v26;
       v29 = v28;
       v31 = v30;
       v33 = v32;
       v34 = +[CAMCaptureCapabilities capabilities];
-      v35 = [v34 overContentFlipButtonSupported];
+      overContentFlipButtonSupported = [v34 overContentFlipButtonSupported];
 
       v92.origin.x = v27;
       v92.origin.y = v29;
@@ -1531,7 +1531,7 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
       v92.size.height = v33;
       MinY = CGRectGetMinY(v92);
       v37 = 29.0;
-      if (v35)
+      if (overContentFlipButtonSupported)
       {
         v37 = 10.0;
       }
@@ -1547,9 +1547,9 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
       v43 = v42;
       v45 = v44;
       v47 = v46;
-      v48 = [(CAMBottomBar *)self traitCollection];
+      traitCollection = [(CAMBottomBar *)self traitCollection];
       [(CAMBottomBar *)self safeAreaInsets];
-      [v39 shutterButtonAlignmentRectInBounds:v15 forLayoutStyle:v48 traitCollection:v41 safeAreaInsets:{v43, v45, v47, v49, v50, v51, v52}];
+      [v39 shutterButtonAlignmentRectInBounds:layoutStyle forLayoutStyle:traitCollection traitCollection:v41 safeAreaInsets:{v43, v45, v47, v49, v50, v51, v52}];
       v54 = v53;
       v56 = v55;
       v58 = v57;
@@ -1571,27 +1571,27 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
     v83 = v19;
     v84 = v21;
     v85 = v23;
-    v78 = v14;
+    v78 = menuButtonCopy;
     v81 = &v88;
-    v79 = v13;
-    v80 = self;
-    v86 = a7;
-    v87 = v10;
-    [v12 enumerateObjectsWithOptions:2 usingBlock:&v74];
-    v61 = [(CAMBottomBar *)self apertureButton];
-    v62 = v61;
-    if (v61)
+    v79 = buttonCopy;
+    selfCopy = self;
+    frameCopy = frame;
+    v87 = applyCopy;
+    [buttonsCopy enumerateObjectsWithOptions:2 usingBlock:&v74];
+    apertureButton = [(CAMBottomBar *)self apertureButton];
+    v62 = apertureButton;
+    if (apertureButton)
     {
-      [v61 intrinsicContentSize];
+      [apertureButton intrinsicContentSize];
       UIRectCenteredIntegralRectScale();
       v64 = v63;
       v66 = v65;
       v68 = v67;
-      v69 = [v12 lastObject];
-      [v69 frame];
-      [v69 alignmentRectForFrame:?];
+      lastObject = [buttonsCopy lastObject];
+      [lastObject frame];
+      [lastObject alignmentRectForFrame:?];
       MaxY = CGRectGetMaxY(v94);
-      if (v10)
+      if (applyCopy)
       {
         v71 = MaxY;
         [v62 setExpansionDirection:2];
@@ -1600,11 +1600,11 @@ uint64_t __44__CAMBottomBar_setBackgroundStyle_animated___block_invoke(uint64_t 
       }
     }
 
-    v72 = [(CAMBottomBar *)self imageAnalysisButton];
-    v73 = v72;
-    if (v72 && v10)
+    imageAnalysisButton = [(CAMBottomBar *)self imageAnalysisButton];
+    v73 = imageAnalysisButton;
+    if (imageAnalysisButton && applyCopy)
     {
-      [v72 frame];
+      [imageAnalysisButton frame];
       UIRectInset();
       [v73 setFrame:?];
     }
@@ -1676,14 +1676,14 @@ void __101__CAMBottomBar__layoutMenuButtons_apply_withExpandedMenuButton_collaps
   *(*(*(a1 + 56) + 8) + 24) = CGRectGetMinY(v22) + -10.0;
 }
 
-- (CGRect)collapsedFrameForMenuButton:(id)a3
+- (CGRect)collapsedFrameForMenuButton:(id)button
 {
   v4 = *(MEMORY[0x1E695F058] + 16);
   v11 = *MEMORY[0x1E695F058];
   v12 = v4;
-  v5 = a3;
-  v6 = [(CAMBottomBar *)self _currentMenuButtons];
-  [(CAMBottomBar *)self _layoutMenuButtons:v6 apply:0 withExpandedMenuButton:0 collapsingMenuButton:v5 collapsingFrame:&v11];
+  buttonCopy = button;
+  _currentMenuButtons = [(CAMBottomBar *)self _currentMenuButtons];
+  [(CAMBottomBar *)self _layoutMenuButtons:_currentMenuButtons apply:0 withExpandedMenuButton:0 collapsingMenuButton:buttonCopy collapsingFrame:&v11];
 
   v8 = *(&v11 + 1);
   v7 = *&v11;
@@ -1696,13 +1696,13 @@ void __101__CAMBottomBar__layoutMenuButtons_apply_withExpandedMenuButton_collaps
   return result;
 }
 
-- (void)collapseMenuButton:(id)a3 animated:(BOOL)a4
+- (void)collapseMenuButton:(id)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isExpanded])
+  animatedCopy = animated;
+  buttonCopy = button;
+  if ([buttonCopy isExpanded])
   {
-    [(CAMBottomBar *)self collapsedFrameForMenuButton:v6];
+    [(CAMBottomBar *)self collapsedFrameForMenuButton:buttonCopy];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -1713,15 +1713,15 @@ void __101__CAMBottomBar__layoutMenuButtons_apply_withExpandedMenuButton_collaps
     v17[1] = 3221225472;
     v17[2] = __44__CAMBottomBar_collapseMenuButton_animated___block_invoke;
     v17[3] = &unk_1E76F7768;
-    v16 = v6;
+    v16 = buttonCopy;
     v18 = v16;
     v19 = v8;
     v20 = v10;
     v21 = v12;
     v22 = v14;
     [v15 performWithoutAnimation:v17];
-    [v16 finishCollapsingAnimated:v4];
-    [(CAMBottomBar *)self _updateControlVisibilityAnimated:v4];
+    [v16 finishCollapsingAnimated:animatedCopy];
+    [(CAMBottomBar *)self _updateControlVisibilityAnimated:animatedCopy];
   }
 }
 
@@ -1737,27 +1737,27 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
   return [v2 setFrame:{v3, v4, v5, v6}];
 }
 
-- (CGRect)expandedFrameForMenuButton:(id)a3
+- (CGRect)expandedFrameForMenuButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 orientation] - 3;
+  buttonCopy = button;
+  v5 = [buttonCopy orientation] - 3;
   [(CAMBottomBar *)self bounds];
   [(CAMBottomBar *)self alignmentRectForFrame:?];
   v43 = v7;
   v44 = v6;
   v45 = v8;
   rect = v9;
-  [(CAMBottomBar *)self collapsedFrameForMenuButton:v4];
+  [(CAMBottomBar *)self collapsedFrameForMenuButton:buttonCopy];
   v11 = v10;
   v13 = v12;
   v46 = v15;
   v47 = v14;
-  [v4 alignmentRectForFrame:0 expanded:?];
+  [buttonCopy alignmentRectForFrame:0 expanded:?];
   v17 = v16;
   MinY = v18;
   v21 = v20;
   v23 = v22;
-  [v4 intrinsicContentSizeForExpansion:1];
+  [buttonCopy intrinsicContentSizeForExpansion:1];
   v25 = v24;
   v27 = v26;
   v48.origin.x = v17;
@@ -1772,7 +1772,7 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
 
   else
   {
-    [v4 frame];
+    [buttonCopy frame];
     v30 = v29;
     v25 = v31;
     v49.origin.y = v43;
@@ -1783,7 +1783,7 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
     MinY = CGRectGetMinY(v49);
   }
 
-  [v4 frameForAlignmentRect:0 expanded:{v30, MinY, v25, v27}];
+  [buttonCopy frameForAlignmentRect:0 expanded:{v30, MinY, v25, v27}];
   x = v50.origin.x;
   y = v50.origin.y;
   width = v50.size.width;
@@ -1808,15 +1808,15 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
   return result;
 }
 
-- (void)expandMenuButton:(id)a3 animated:(BOOL)a4
+- (void)expandMenuButton:(id)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (([v6 isExpanded] & 1) == 0)
+  animatedCopy = animated;
+  buttonCopy = button;
+  if (([buttonCopy isExpanded] & 1) == 0)
   {
-    v7 = [(CAMBottomBar *)self _expandedMenuButton];
-    v8 = v7;
-    if (v7)
+    _expandedMenuButton = [(CAMBottomBar *)self _expandedMenuButton];
+    v8 = _expandedMenuButton;
+    if (_expandedMenuButton)
     {
       v9 = MEMORY[0x1E69DD250];
       v26[0] = MEMORY[0x1E69E9820];
@@ -1824,12 +1824,12 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
       v26[2] = __42__CAMBottomBar_expandMenuButton_animated___block_invoke;
       v26[3] = &unk_1E76F7960;
       v26[4] = self;
-      v27 = v7;
+      v27 = _expandedMenuButton;
       [v9 performWithoutAnimation:v26];
     }
 
-    [(CAMBottomBar *)self _setExpandedMenuButton:v6];
-    [(CAMBottomBar *)self expandedFrameForMenuButton:v6];
+    [(CAMBottomBar *)self _setExpandedMenuButton:buttonCopy];
+    [(CAMBottomBar *)self expandedFrameForMenuButton:buttonCopy];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -1839,15 +1839,15 @@ uint64_t __44__CAMBottomBar_collapseMenuButton_animated___block_invoke(uint64_t 
     v20[1] = 3221225472;
     v20[2] = __42__CAMBottomBar_expandMenuButton_animated___block_invoke_2;
     v20[3] = &unk_1E76F7768;
-    v19 = v6;
+    v19 = buttonCopy;
     v21 = v19;
     v22 = v11;
     v23 = v13;
     v24 = v15;
     v25 = v17;
     [v18 performWithoutAnimation:v20];
-    [v19 finishExpansionAnimated:v4];
-    [(CAMBottomBar *)self _updateControlVisibilityAnimated:v4];
+    [v19 finishExpansionAnimated:animatedCopy];
+    [(CAMBottomBar *)self _updateControlVisibilityAnimated:animatedCopy];
   }
 }
 
@@ -1880,8 +1880,8 @@ uint64_t __42__CAMBottomBar_expandMenuButton_animated___block_invoke_2(uint64_t 
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAMBottomBar *)self _currentMenuButtons];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _currentMenuButtons = [(CAMBottomBar *)self _currentMenuButtons];
+  v5 = [_currentMenuButtons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1892,19 +1892,19 @@ uint64_t __42__CAMBottomBar_expandMenuButton_animated___block_invoke_2(uint64_t 
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_currentMenuButtons);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 touchingGestureRecognizer];
-          [v3 addObject:v10];
+          touchingGestureRecognizer = [v9 touchingGestureRecognizer];
+          [v3 addObject:touchingGestureRecognizer];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_currentMenuButtons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1913,53 +1913,53 @@ uint64_t __42__CAMBottomBar_expandMenuButton_animated___block_invoke_2(uint64_t 
   return v3;
 }
 
-- (void)_iterateViewsInHUDManager:(id)a3 forHUDItem:(id)a4
+- (void)_iterateViewsInHUDManager:(id)manager forHUDItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  itemCopy = item;
   v31 = 0;
-  v8 = [(CAMBottomBar *)self _expandedMenuButton];
+  _expandedMenuButton = [(CAMBottomBar *)self _expandedMenuButton];
 
-  if (v8)
+  if (_expandedMenuButton)
   {
-    v9 = [(CAMBottomBar *)self _expandedMenuButton];
-    v7[2](v7, v9, &v31);
+    _expandedMenuButton2 = [(CAMBottomBar *)self _expandedMenuButton];
+    itemCopy[2](itemCopy, _expandedMenuButton2, &v31);
   }
 
   else
   {
-    v10 = [(CAMBottomBar *)self _currentMenuButtons];
-    v11 = [v10 mutableCopy];
+    _currentMenuButtons = [(CAMBottomBar *)self _currentMenuButtons];
+    v11 = [_currentMenuButtons mutableCopy];
 
-    v12 = [(CAMBottomBar *)self modeDial];
-    [v11 addObject:v12];
+    modeDial = [(CAMBottomBar *)self modeDial];
+    [v11 addObject:modeDial];
 
-    v13 = [(CAMBottomBar *)self apertureButton];
+    apertureButton = [(CAMBottomBar *)self apertureButton];
 
-    if (v13)
+    if (apertureButton)
     {
-      v14 = [(CAMBottomBar *)self apertureButton];
-      [v11 addObject:v14];
+      apertureButton2 = [(CAMBottomBar *)self apertureButton];
+      [v11 addObject:apertureButton2];
     }
 
-    v15 = [(CAMBottomBar *)self flipButton];
+    flipButton = [(CAMBottomBar *)self flipButton];
 
-    if (v15)
+    if (flipButton)
     {
-      v16 = [(CAMBottomBar *)self flipButton];
-      [v11 addObject:v16];
+      flipButton2 = [(CAMBottomBar *)self flipButton];
+      [v11 addObject:flipButton2];
     }
 
-    [v6 locationOfAccessibilityGestureInView:self];
+    [managerCopy locationOfAccessibilityGestureInView:self];
     v18 = v17;
     v20 = v19;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v11;
-    v21 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    _expandedMenuButton2 = v11;
+    v21 = [_expandedMenuButton2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1970,7 +1970,7 @@ LABEL_9:
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_expandedMenuButton2);
         }
 
         v25 = *(*(&v27 + 1) + 8 * v24);
@@ -1986,7 +1986,7 @@ LABEL_9:
               [v25 alpha];
               if (v26 != 0.0)
               {
-                v7[2](v7, v25, &v31);
+                itemCopy[2](itemCopy, v25, &v31);
                 if (v31)
                 {
                   break;
@@ -1998,7 +1998,7 @@ LABEL_9:
 
         if (v22 == ++v24)
         {
-          v22 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+          v22 = [_expandedMenuButton2 countByEnumeratingWithState:&v27 objects:v32 count:16];
           if (v22)
           {
             goto LABEL_9;
@@ -2011,9 +2011,9 @@ LABEL_9:
   }
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2025,7 +2025,7 @@ LABEL_9:
   v8[2] = __50__CAMBottomBar_hudItemForAccessibilityHUDManager___block_invoke;
   v8[3] = &unk_1E76F7C78;
   v10 = &v11;
-  v5 = v4;
+  v5 = managerCopy;
   v9 = v5;
   [(CAMBottomBar *)self _iterateViewsInHUDManager:v5 forHUDItem:v8];
   v6 = v12[5];
@@ -2045,15 +2045,15 @@ void __50__CAMBottomBar_hudItemForAccessibilityHUDManager___block_invoke(uint64_
   *a3 = 1;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__CAMBottomBar_selectedByAccessibilityHUDManager___block_invoke;
   v6[3] = &unk_1E76F7CA0;
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   [(CAMBottomBar *)self _iterateViewsInHUDManager:v5 forHUDItem:v6];
 }
 

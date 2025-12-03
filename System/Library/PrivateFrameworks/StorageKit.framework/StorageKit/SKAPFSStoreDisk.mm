@@ -1,62 +1,62 @@
 @interface SKAPFSStoreDisk
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOurContainerWithDisk:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOurContainerWithDisk:(id)disk;
 - (id)container;
 - (id)minimalDictionaryRepresentation;
-- (void)updateWithDictionary:(id)a3;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation SKAPFSStoreDisk
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = SKAPFSStoreDisk;
-  [(SKDisk *)&v8 updateWithDictionary:v4];
-  v6 = [v4 objectForKey:@"apfsContainerUUID"];
-  [(SKAPFSStoreDisk *)v5 setApfsContainerUUID:v6];
+  [(SKDisk *)&v8 updateWithDictionary:dictionaryCopy];
+  v6 = [dictionaryCopy objectForKey:@"apfsContainerUUID"];
+  [(SKAPFSStoreDisk *)selfCopy setApfsContainerUUID:v6];
 
-  v7 = [v4 objectForKey:@"apfsContainerIdentifier"];
-  [(SKAPFSStoreDisk *)v5 setApfsContainerIdentifier:v7];
+  v7 = [dictionaryCopy objectForKey:@"apfsContainerIdentifier"];
+  [(SKAPFSStoreDisk *)selfCopy setApfsContainerIdentifier:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)minimalDictionaryRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = SKAPFSStoreDisk;
-  v3 = [(SKDisk *)&v7 minimalDictionaryRepresentation];
-  v4 = [(SKAPFSStoreDisk *)v2 apfsContainerUUID];
-  [v3 setValue:v4 forKey:@"apfsContainerUUID"];
+  minimalDictionaryRepresentation = [(SKDisk *)&v7 minimalDictionaryRepresentation];
+  apfsContainerUUID = [(SKAPFSStoreDisk *)selfCopy apfsContainerUUID];
+  [minimalDictionaryRepresentation setValue:apfsContainerUUID forKey:@"apfsContainerUUID"];
 
-  v5 = [(SKAPFSStoreDisk *)v2 apfsContainerIdentifier];
-  [v3 setValue:v5 forKey:@"apfsContainerIdentifier"];
+  apfsContainerIdentifier = [(SKAPFSStoreDisk *)selfCopy apfsContainerIdentifier];
+  [minimalDictionaryRepresentation setValue:apfsContainerIdentifier forKey:@"apfsContainerIdentifier"];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return minimalDictionaryRepresentation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = SKAPFSStoreDisk;
-  if ([(SKDisk *)&v11 isEqual:v4])
+  if ([(SKDisk *)&v11 isEqual:equalCopy])
   {
-    v5 = [(SKAPFSStoreDisk *)self apfsContainerUUID];
-    v6 = [v4 apfsContainerUUID];
-    if ([v5 isEqualToString:v6])
+    apfsContainerUUID = [(SKAPFSStoreDisk *)self apfsContainerUUID];
+    apfsContainerUUID2 = [equalCopy apfsContainerUUID];
+    if ([apfsContainerUUID isEqualToString:apfsContainerUUID2])
     {
-      v7 = [(SKAPFSStoreDisk *)self apfsContainerIdentifier];
-      v8 = [v4 apfsContainerIdentifier];
-      v9 = [v7 isEqualToString:v8];
+      apfsContainerIdentifier = [(SKAPFSStoreDisk *)self apfsContainerIdentifier];
+      apfsContainerIdentifier2 = [equalCopy apfsContainerIdentifier];
+      v9 = [apfsContainerIdentifier isEqualToString:apfsContainerIdentifier2];
     }
 
     else
@@ -73,23 +73,23 @@
   return v9;
 }
 
-- (BOOL)isOurContainerWithDisk:(id)a3
+- (BOOL)isOurContainerWithDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKAPFSStoreDisk *)self apfsContainerUUID];
-    if (!v6)
+    v5 = diskCopy;
+    apfsContainerUUID = [(SKAPFSStoreDisk *)self apfsContainerUUID];
+    if (!apfsContainerUUID)
     {
       goto LABEL_4;
     }
 
-    v7 = v6;
-    v8 = [(SKAPFSStoreDisk *)self apfsContainerUUID];
-    v9 = [v5 apfsUUID];
-    v10 = [v8 isEqual:v9];
+    v7 = apfsContainerUUID;
+    apfsContainerUUID2 = [(SKAPFSStoreDisk *)self apfsContainerUUID];
+    apfsUUID = [v5 apfsUUID];
+    v10 = [apfsContainerUUID2 isEqual:apfsUUID];
 
     if (!v10)
     {
@@ -99,9 +99,9 @@
     else
     {
 LABEL_4:
-      v11 = [v5 diskIdentifier];
-      v12 = [(SKAPFSStoreDisk *)self apfsContainerIdentifier];
-      v13 = [v11 isEqualToString:v12];
+      diskIdentifier = [v5 diskIdentifier];
+      apfsContainerIdentifier = [(SKAPFSStoreDisk *)self apfsContainerIdentifier];
+      v13 = [diskIdentifier isEqualToString:apfsContainerIdentifier];
     }
   }
 
@@ -121,8 +121,8 @@ LABEL_4:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 allDisks];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allDisks = [v3 allDisks];
+  v5 = [allDisks countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,7 +133,7 @@ LABEL_4:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDisks);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -144,7 +144,7 @@ LABEL_4:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allDisks countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

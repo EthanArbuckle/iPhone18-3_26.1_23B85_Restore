@@ -1,8 +1,8 @@
 @interface ATXModeEntityScoringFeatures
 - (ATXModeEntityScoringFeatures)init;
-- (BOOL)entityOccurredOverLastNDays:(unint64_t)a3 withHistogram:(id)a4;
+- (BOOL)entityOccurredOverLastNDays:(unint64_t)days withHistogram:(id)histogram;
 - (id)description;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -51,16 +51,16 @@
   return v2;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v48.receiver = self;
   v48.super_class = ATXModeEntityScoringFeatures;
   v5 = [(ATXModeEntityScoringFeatures *)&v48 init];
   v6 = v5;
   if (v5)
   {
-    v7 = v4 == 0;
+    v7 = nCopy == 0;
   }
 
   else
@@ -76,81 +76,81 @@
     entityDescription = v6->_entityDescription;
     v6->_entityDescription = &stru_2839A6058;
 
-    v10 = [v4 objectForKeyedSubscript:@"correlationPosteriorProbability"];
+    v10 = [nCopy objectForKeyedSubscript:@"correlationPosteriorProbability"];
     [v10 doubleValue];
     v6->_posteriorProbability = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"correlationClassConditionalProbability"];
+    v12 = [nCopy objectForKeyedSubscript:@"correlationClassConditionalProbability"];
     [v12 doubleValue];
     v6->_classConditionalProbability = v13;
 
     entity = v6->_entity;
     v6->_entity = 0;
 
-    v15 = [v4 objectForKeyedSubscript:@"correlationUniqueOccurrencesInMode"];
+    v15 = [nCopy objectForKeyedSubscript:@"correlationUniqueOccurrencesInMode"];
     v6->_uniqueOccurrencesInMode = [v15 unsignedIntegerValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"correlationNumLocalOccurrences"];
+    v16 = [nCopy objectForKeyedSubscript:@"correlationNumLocalOccurrences"];
     v6->_localOccurrences = [v16 unsignedIntegerValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"correlationNumGlobalOccurrences"];
+    v17 = [nCopy objectForKeyedSubscript:@"correlationNumGlobalOccurrences"];
     v6->_globalOccurrences = [v17 unsignedIntegerValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"correlationModePopularity"];
+    v18 = [nCopy objectForKeyedSubscript:@"correlationModePopularity"];
     [v18 doubleValue];
     v6->_modePopularity = v19;
 
-    v20 = [v4 objectForKeyedSubscript:@"correlationRatioModeAndGlobalPopularity"];
+    v20 = [nCopy objectForKeyedSubscript:@"correlationRatioModeAndGlobalPopularity"];
     [v20 doubleValue];
     v6->_ratioModeAndGlobalPopularity = v21;
 
-    v22 = [v4 objectForKeyedSubscript:@"correlationGlobalPopularity"];
+    v22 = [nCopy objectForKeyedSubscript:@"correlationGlobalPopularity"];
     [v22 doubleValue];
     v6->_globalPopularity = v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"totalModeLaunchesHistogram"];
+    v24 = [nCopy objectForKeyedSubscript:@"totalModeLaunchesHistogram"];
     totalModeLaunchesHistogramForLast28Days = v6->_totalModeLaunchesHistogramForLast28Days;
     v6->_totalModeLaunchesHistogramForLast28Days = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"totalGlobalLaunchesHistogram"];
+    v26 = [nCopy objectForKeyedSubscript:@"totalGlobalLaunchesHistogram"];
     totalGlobalLaunchesHistogramForLast28Days = v6->_totalGlobalLaunchesHistogramForLast28Days;
     v6->_totalGlobalLaunchesHistogramForLast28Days = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"macPortableGlobalAppLaunchesHistogram"];
+    v28 = [nCopy objectForKeyedSubscript:@"macPortableGlobalAppLaunchesHistogram"];
     macPortableGlobalAppLaunchesHistogramForLast28Days = v6->_macPortableGlobalAppLaunchesHistogramForLast28Days;
     v6->_macPortableGlobalAppLaunchesHistogramForLast28Days = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"macPortableModeAppLaunchesHistogram"];
+    v30 = [nCopy objectForKeyedSubscript:@"macPortableModeAppLaunchesHistogram"];
     macPortableModeAppLaunchesHistogramForLast28Days = v6->_macPortableModeAppLaunchesHistogramForLast28Days;
     v6->_macPortableModeAppLaunchesHistogramForLast28Days = v30;
 
-    v32 = [v4 objectForKeyedSubscript:@"macDesktopGlobalAppLaunchesHistogram"];
+    v32 = [nCopy objectForKeyedSubscript:@"macDesktopGlobalAppLaunchesHistogram"];
     macDesktopGlobalAppLaunchesHistogramForLast28Days = v6->_macDesktopGlobalAppLaunchesHistogramForLast28Days;
     v6->_macDesktopGlobalAppLaunchesHistogramForLast28Days = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"macDesktopModeAppLaunchesHistogram"];
+    v34 = [nCopy objectForKeyedSubscript:@"macDesktopModeAppLaunchesHistogram"];
     macDesktopModeAppLaunchesHistogramForLast28Days = v6->_macDesktopModeAppLaunchesHistogramForLast28Days;
     v6->_macDesktopModeAppLaunchesHistogramForLast28Days = v34;
 
-    v36 = [v4 objectForKeyedSubscript:@"localDeviceGlobalAppLaunchesHistogram"];
+    v36 = [nCopy objectForKeyedSubscript:@"localDeviceGlobalAppLaunchesHistogram"];
     localDeviceGlobalAppLaunchesHistogramForLast28Days = v6->_localDeviceGlobalAppLaunchesHistogramForLast28Days;
     v6->_localDeviceGlobalAppLaunchesHistogramForLast28Days = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"localDeviceModeAppLaunchesHistogram"];
+    v38 = [nCopy objectForKeyedSubscript:@"localDeviceModeAppLaunchesHistogram"];
     localDeviceModeAppLaunchesHistogramForLast28Days = v6->_localDeviceModeAppLaunchesHistogramForLast28Days;
     v6->_localDeviceModeAppLaunchesHistogramForLast28Days = v38;
 
-    v40 = [v4 objectForKeyedSubscript:@"correlationEntityFeaturesType"];
+    v40 = [nCopy objectForKeyedSubscript:@"correlationEntityFeaturesType"];
 
     if (v40)
     {
-      v41 = [v4 objectForKeyedSubscript:@"correlationEntityFeaturesType"];
+      v41 = [nCopy objectForKeyedSubscript:@"correlationEntityFeaturesType"];
       v42 = NSClassFromString(v41);
 
       if (v42)
       {
         v43 = [v42 alloc];
-        v44 = [v4 objectForKeyedSubscript:@"correlationEntitySpecificFeatures"];
+        v44 = [nCopy objectForKeyedSubscript:@"correlationEntitySpecificFeatures"];
         v45 = [v43 initFromJSON:v44];
         entitySpecificFeatures = v6->_entitySpecificFeatures;
         v6->_entitySpecificFeatures = v45;
@@ -211,17 +211,17 @@
 
   v28[8] = v14;
   v27[9] = @"correlationEntitySpecificFeatures";
-  v15 = [self->_entitySpecificFeatures jsonRepresentation];
-  v16 = v15;
+  jsonRepresentation = [self->_entitySpecificFeatures jsonRepresentation];
+  v16 = jsonRepresentation;
   v17 = vdupq_n_s64(MEMORY[0x277CBEBF8]);
   v18 = vbslq_s8(vceqzq_s64(*&self->_totalModeLaunchesHistogramForLast28Days), v17, *&self->_totalModeLaunchesHistogramForLast28Days);
   v19 = vbslq_s8(vceqzq_s64(*&self->_macPortableGlobalAppLaunchesHistogramForLast28Days), v17, *&self->_macPortableGlobalAppLaunchesHistogramForLast28Days);
   v20 = vbslq_s8(vceqzq_s64(*&self->_macDesktopGlobalAppLaunchesHistogramForLast28Days), v17, *&self->_macDesktopGlobalAppLaunchesHistogramForLast28Days);
   v21 = vbslq_s8(vceqzq_s64(*&self->_localDeviceGlobalAppLaunchesHistogramForLast28Days), v17, *&self->_localDeviceGlobalAppLaunchesHistogramForLast28Days);
   v22 = MEMORY[0x277CBEC10];
-  if (v15)
+  if (jsonRepresentation)
   {
-    v22 = v15;
+    v22 = jsonRepresentation;
   }
 
   v28[9] = v22;
@@ -244,9 +244,9 @@
   return v23;
 }
 
-- (BOOL)entityOccurredOverLastNDays:(unint64_t)a3 withHistogram:(id)a4
+- (BOOL)entityOccurredOverLastNDays:(unint64_t)days withHistogram:(id)histogram
 {
-  v5 = a4;
+  histogramCopy = histogram;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -256,12 +256,12 @@
   v7[2] = __74__ATXModeEntityScoringFeatures_entityOccurredOverLastNDays_withHistogram___block_invoke;
   v7[3] = &unk_2785A1E40;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v7];
-  LOBYTE(a3) = v9[3] != 0;
+  v7[5] = days;
+  [histogramCopy enumerateObjectsUsingBlock:v7];
+  LOBYTE(days) = v9[3] != 0;
   _Block_object_dispose(&v8, 8);
 
-  return a3;
+  return days;
 }
 
 void __74__ATXModeEntityScoringFeatures_entityOccurredOverLastNDays_withHistogram___block_invoke(uint64_t a1, void *a2, unint64_t a3, _BYTE *a4)

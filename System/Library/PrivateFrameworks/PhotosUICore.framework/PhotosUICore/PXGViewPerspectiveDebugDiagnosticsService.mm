@@ -1,6 +1,6 @@
 @interface PXGViewPerspectiveDebugDiagnosticsService
 - (BOOL)canPerformAction;
-- (PXGViewPerspectiveDebugDiagnosticsService)initWithItemProviders:(id)a3;
+- (PXGViewPerspectiveDebugDiagnosticsService)initWithItemProviders:(id)providers;
 - (id)title;
 - (void)performAction;
 @end
@@ -9,24 +9,24 @@
 
 - (void)performAction
 {
-  v5 = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
-  v3 = [v5 showPerspectiveDebug];
-  v4 = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
-  [v4 setShowPerspectiveDebug:v3 ^ 1u];
+  gridView = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
+  showPerspectiveDebug = [gridView showPerspectiveDebug];
+  gridView2 = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
+  [gridView2 setShowPerspectiveDebug:showPerspectiveDebug ^ 1u];
 }
 
 - (BOOL)canPerformAction
 {
-  v2 = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
-  v3 = v2 != 0;
+  gridView = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
+  v3 = gridView != 0;
 
   return v3;
 }
 
 - (id)title
 {
-  v2 = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
-  if ([v2 showPerspectiveDebug])
+  gridView = [(PXGViewPerspectiveDebugDiagnosticsService *)self gridView];
+  if ([gridView showPerspectiveDebug])
   {
     v3 = @"Disable Perspective Debug";
   }
@@ -41,20 +41,20 @@
   return v3;
 }
 
-- (PXGViewPerspectiveDebugDiagnosticsService)initWithItemProviders:(id)a3
+- (PXGViewPerspectiveDebugDiagnosticsService)initWithItemProviders:(id)providers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   v18.receiver = self;
   v18.super_class = PXGViewPerspectiveDebugDiagnosticsService;
-  v5 = [(PXDiagnosticsService *)&v18 initWithItemProviders:v4];
+  v5 = [(PXDiagnosticsService *)&v18 initWithItemProviders:providersCopy];
   if (v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = providersCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {

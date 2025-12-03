@@ -1,30 +1,30 @@
 @interface UISceneSession
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
 - (NSUserActivity)stateRestorationActivity;
 - (UIScene)scene;
 - (UISceneConfiguration)configuration;
-- (UISceneSession)initWithCoder:(id)a3;
+- (UISceneSession)initWithCoder:(id)coder;
 - (id)_copyWithoutUserInfo;
 - (id)_init;
-- (id)_initWithPersistentIdentifier:(id)a3 sessionRole:(id)a4 configurationName:(id)a5;
+- (id)_initWithPersistentIdentifier:(id)identifier sessionRole:(id)role configurationName:(id)name;
 - (id)_internalUserInfo;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
 - (void)_loadInternalUserInfo;
 - (void)_loadStateRestorationActivityIfNeeded;
 - (void)_loadUserInfo;
-- (void)_setConfigurationIsDirty:(BOOL)a3;
-- (void)_setInternalUserInfo:(uint64_t)a1;
-- (void)_setScene:(id)a3;
-- (void)_setTrackingRefreshRequest:(BOOL)a3;
-- (void)_setUserInfoIsDirty:(BOOL)a3;
-- (void)_updateConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setConfigurationIsDirty:(BOOL)dirty;
+- (void)_setInternalUserInfo:(uint64_t)info;
+- (void)_setScene:(id)scene;
+- (void)_setTrackingRefreshRequest:(BOOL)request;
+- (void)_setUserInfoIsDirty:(BOOL)dirty;
+- (void)_updateConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 - (void)setStateRestorationActivity:(NSUserActivity *)stateRestorationActivity;
 - (void)setUserInfo:(NSDictionary *)userInfo;
 @end
@@ -61,18 +61,18 @@
 
 - (id)_copyWithoutUserInfo
 {
-  v3 = [[UISceneSession alloc] _init];
-  objc_storeStrong(v3 + 3, self->_persistentIdentifier);
-  objc_storeStrong(v3 + 2, self->_role);
-  objc_storeStrong(v3 + 4, self->_configuration);
-  v4 = v3[6];
+  _init = [[UISceneSession alloc] _init];
+  objc_storeStrong(_init + 3, self->_persistentIdentifier);
+  objc_storeStrong(_init + 2, self->_role);
+  objc_storeStrong(_init + 4, self->_configuration);
+  v4 = _init[6];
   v5 = MEMORY[0x1E695E0F8];
-  v3[6] = MEMORY[0x1E695E0F8];
+  _init[6] = MEMORY[0x1E695E0F8];
 
-  v6 = v3[7];
-  v3[7] = v5;
+  v6 = _init[7];
+  _init[7] = v5;
 
-  return v3;
+  return _init;
 }
 
 - (NSUserActivity)stateRestorationActivity
@@ -88,14 +88,14 @@
   v15 = *MEMORY[0x1E69E9840];
   if ((*&self->_sessionFlags & 2) == 0)
   {
-    v3 = [(UISceneSession *)self persistentIdentifier];
-    v4 = [_UISceneUserActivityManager _restorationUserActivityAvailableForSceneIdentifier:v3];
+    persistentIdentifier = [(UISceneSession *)self persistentIdentifier];
+    v4 = [_UISceneUserActivityManager _restorationUserActivityAvailableForSceneIdentifier:persistentIdentifier];
 
     if (v4)
     {
-      v5 = [(UISceneSession *)self persistentIdentifier];
+      persistentIdentifier2 = [(UISceneSession *)self persistentIdentifier];
       v10 = 0;
-      v6 = [_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:v5 error:&v10];
+      v6 = [_UISceneUserActivityManager _getRestorationUserActivityForPersistentIdentifier:persistentIdentifier2 error:&v10];
       v7 = v10;
       stateRestorationActivity = self->_stateRestorationActivity;
       self->_stateRestorationActivity = v6;
@@ -108,7 +108,7 @@
           *buf = 138543618;
           v12 = v7;
           v13 = 2114;
-          v14 = self;
+          selfCopy = self;
           _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Failed to load scene session state restoration activity: %{public}@; scene session: %{public}@", buf, 0x16u);
         }
       }
@@ -134,9 +134,9 @@
   v13 = *MEMORY[0x1E69E9840];
   if ((*&self->_sessionFlags & 0x20) == 0)
   {
-    v3 = [(UISceneSession *)self persistentIdentifier];
+    persistentIdentifier = [(UISceneSession *)self persistentIdentifier];
     v8 = 0;
-    v4 = [_UISceneUserActivityManager _getUserInfoForPersistentIdentifier:v3 error:&v8];
+    v4 = [_UISceneUserActivityManager _getUserInfoForPersistentIdentifier:persistentIdentifier error:&v8];
     v5 = v8;
     userInfo = self->_userInfo;
     self->_userInfo = v4;
@@ -149,7 +149,7 @@
         *buf = 138543618;
         v10 = v5;
         v11 = 2114;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Failed to load scene session user info: %{public}@; scene session: %{public}@", buf, 0x16u);
       }
     }
@@ -170,10 +170,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneSession *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneSession *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -256,25 +256,25 @@
 
 - (id)_internalUserInfo
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [(UISceneSession *)a1 _loadInternalUserInfo];
-    a1 = [v2[7] copy];
+    selfCopy = self;
+    [(UISceneSession *)self _loadInternalUserInfo];
+    self = [selfCopy[7] copy];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setInternalUserInfo:(uint64_t)a1
+- (void)_setInternalUserInfo:(uint64_t)info
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (info)
   {
     v12 = v3;
-    v4 = [*(a1 + 56) isEqualToDictionary:v3];
+    v4 = [*(info + 56) isEqualToDictionary:v3];
     v3 = v12;
     if ((v4 & 1) == 0)
     {
@@ -295,7 +295,7 @@
             v15 = 2114;
             v16 = v11;
             v17 = 2048;
-            v18 = a1;
+            infoCopy = info;
             v19 = 2114;
             v20 = @"UISceneSession.m";
             v21 = 1024;
@@ -313,29 +313,29 @@
       }
 
       v6 = [v3 copy];
-      v7 = *(a1 + 56);
-      *(a1 + 56) = v6;
+      v7 = *(info + 56);
+      *(info + 56) = v6;
 
-      *(a1 + 64) |= 0xC0u;
-      [_UISceneUserActivityManager _scheduleDataSaveForSceneSession:a1 saveRestorationActivity:0];
+      *(info + 64) |= 0xC0u;
+      [_UISceneUserActivityManager _scheduleDataSaveForSceneSession:info saveRestorationActivity:0];
       v3 = v12;
     }
   }
 }
 
-- (id)_initWithPersistentIdentifier:(id)a3 sessionRole:(id)a4 configurationName:(id)a5
+- (id)_initWithPersistentIdentifier:(id)identifier sessionRole:(id)role configurationName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  roleCopy = role;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = UISceneSession;
   v12 = [(UISceneSession *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_persistentIdentifier, a3);
-    objc_storeStrong(&v13->_role, a4);
+    objc_storeStrong(&v12->_persistentIdentifier, identifier);
+    objc_storeStrong(&v13->_role, role);
     userInfo = v13->_userInfo;
     v15 = MEMORY[0x1E695E0F8];
     v13->_userInfo = MEMORY[0x1E695E0F8];
@@ -343,7 +343,7 @@
     internalUserInfo = v13->_internalUserInfo;
     v13->_internalUserInfo = v15;
 
-    v17 = [UISceneConfiguration configurationWithName:v11 sessionRole:v10];
+    v17 = [UISceneConfiguration configurationWithName:nameCopy sessionRole:roleCopy];
     configuration = v13->_configuration;
     v13->_configuration = v17;
 
@@ -376,28 +376,28 @@
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneSession *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneSession *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneSession *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneSession *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v6 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v4];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   [v6 appendString:self->_role withName:@"role"];
   [v6 appendString:self->_persistentIdentifier withName:@"persistentIdentifier"];
@@ -408,7 +408,7 @@
   v7 = v6;
   v14 = has_internal_diagnostics;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v8 = [v7 modifyBody:v11];
   v9 = v7;
 
@@ -474,10 +474,10 @@ uint64_t __56__UISceneSession_descriptionBuilderWithMultilinePrefix___block_invo
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_8;
   }
@@ -489,13 +489,13 @@ uint64_t __56__UISceneSession_descriptionBuilderWithMultilinePrefix___block_invo
   }
 
   v6 = [(UISceneSession *)self hash];
-  if (v6 != [(UISceneSession *)v4 hash])
+  if (v6 != [(UISceneSession *)equalCopy hash])
   {
     goto LABEL_7;
   }
 
   persistentIdentifier = self->_persistentIdentifier;
-  if (persistentIdentifier == v4->_persistentIdentifier)
+  if (persistentIdentifier == equalCopy->_persistentIdentifier)
   {
 LABEL_8:
     v8 = 1;
@@ -515,29 +515,29 @@ LABEL_9:
   return v8;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
   sessionFlags = self->_sessionFlags;
-  v6 = objc_storeWeak(&self->_scene, a3);
-  v7 = a3;
-  if (a3)
+  v6 = objc_storeWeak(&self->_scene, scene);
+  sceneCopy4 = scene;
+  if (scene)
   {
     if ((sessionFlags & 0x100) != 0)
     {
-      v8 = [a3 _isInternal];
-      v7 = a3;
-      if ((v8 & 1) == 0)
+      _isInternal = [scene _isInternal];
+      sceneCopy4 = scene;
+      if ((_isInternal & 1) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"UISceneSession.m" lineNumber:228 description:{@"Internal session given a non-internal scene: self: %@, scene:", self, a3}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneSession.m" lineNumber:228 description:{@"Internal session given a non-internal scene: self: %@, scene:", self, scene}];
 
-        v7 = a3;
+        sceneCopy4 = scene;
       }
     }
 
-    v9 = [v7 _isInternal];
-    v7 = a3;
-    if (v9)
+    _isInternal2 = [sceneCopy4 _isInternal];
+    sceneCopy4 = scene;
+    if (_isInternal2)
     {
       v10 = 256;
     }
@@ -551,19 +551,19 @@ LABEL_9:
   }
 }
 
-- (void)_updateConfiguration:(id)a3
+- (void)_updateConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(UISceneConfiguration *)self->_configuration isEqual:v4])
+  configurationCopy = configuration;
+  if (![(UISceneConfiguration *)self->_configuration isEqual:configurationCopy])
   {
-    v5 = [v4 role];
-    v6 = [v5 isEqualToString:self->_role];
+    role = [configurationCopy role];
+    v6 = [role isEqualToString:self->_role];
 
     if (v6)
     {
 LABEL_3:
-      v7 = [[UISceneConfiguration alloc] _initWithConfiguration:v4];
+      v7 = [[UISceneConfiguration alloc] _initWithConfiguration:configurationCopy];
       configuration = self->_configuration;
       self->_configuration = v7;
 
@@ -579,12 +579,12 @@ LABEL_3:
         goto LABEL_9;
       }
 
-      v11 = [v4 role];
-      v12 = [(UISceneSession *)self role];
+      role2 = [configurationCopy role];
+      role3 = [(UISceneSession *)self role];
       v13 = 138412546;
-      v14 = v11;
+      v14 = role2;
       v15 = 2112;
-      v16 = v12;
+      v16 = role3;
       _os_log_fault_impl(&dword_188A29000, v10, OS_LOG_TYPE_FAULT, "BUG IN CLIENT OF UIKIT: Attempting to define a mismatched UISceneSessionRole! This will be an assert in future UIKit releases! Assigning a UISceneConfiguration with role %@ for a UISceneSession with role %@.", &v13, 0x16u);
     }
 
@@ -597,12 +597,12 @@ LABEL_3:
       }
 
       v10 = v9;
-      v11 = [v4 role];
-      v12 = [(UISceneSession *)self role];
+      role2 = [configurationCopy role];
+      role3 = [(UISceneSession *)self role];
       v13 = 138412546;
-      v14 = v11;
+      v14 = role2;
       v15 = 2112;
-      v16 = v12;
+      v16 = role3;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "BUG IN CLIENT OF UIKIT: Attempting to define a mismatched UISceneSessionRole! This will be an assert in future UIKit releases! Assigning a UISceneConfiguration with role %@ for a UISceneSession with role %@.", &v13, 0x16u);
     }
 
@@ -613,9 +613,9 @@ LABEL_9:
 LABEL_4:
 }
 
-- (void)_setTrackingRefreshRequest:(BOOL)a3
+- (void)_setTrackingRefreshRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -628,9 +628,9 @@ LABEL_4:
   *&self->_sessionFlags = *&self->_sessionFlags & 0xFFFB | v3;
 }
 
-- (void)_setConfigurationIsDirty:(BOOL)a3
+- (void)_setConfigurationIsDirty:(BOOL)dirty
 {
-  if (a3)
+  if (dirty)
   {
     v3 = 8;
   }
@@ -643,9 +643,9 @@ LABEL_4:
   *&self->_sessionFlags = *&self->_sessionFlags & 0xFFF7 | v3;
 }
 
-- (void)_setUserInfoIsDirty:(BOOL)a3
+- (void)_setUserInfoIsDirty:(BOOL)dirty
 {
-  if (a3)
+  if (dirty)
   {
     v3 = 48;
   }
@@ -661,14 +661,14 @@ LABEL_4:
 - (void)_loadInternalUserInfo
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 64) & 0x80) == 0)
+  if (self && (*(self + 64) & 0x80) == 0)
   {
-    v2 = [a1 persistentIdentifier];
+    persistentIdentifier = [self persistentIdentifier];
     v7 = 0;
-    v3 = [_UISceneUserActivityManager _getInternalUserInfoForPersistentIdentifier:v2 error:&v7];
+    v3 = [_UISceneUserActivityManager _getInternalUserInfoForPersistentIdentifier:persistentIdentifier error:&v7];
     v4 = v7;
-    v5 = *(a1 + 56);
-    *(a1 + 56) = v3;
+    v5 = *(self + 56);
+    *(self + 56) = v3;
 
     if (v4)
     {
@@ -678,45 +678,45 @@ LABEL_4:
         *buf = 138543618;
         v9 = v4;
         v10 = 2114;
-        v11 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Failed to load scene session internal user info: %{public}@; scene session: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      *(a1 + 64) |= 0x80u;
+      *(self + 64) |= 0x80u;
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([UIApp _appAdoptsUISceneLifecycle])
   {
-    [v4 encodeObject:self->_configuration forKey:@"_UISceneSessionSceneConfiguration"];
+    [coderCopy encodeObject:self->_configuration forKey:@"_UISceneSessionSceneConfiguration"];
   }
 
-  [v4 encodeObject:self->_role forKey:@"_UISceneSessionRole"];
-  [v4 encodeObject:self->_persistentIdentifier forKey:@"_UISceneSessionPersistentIdentifier"];
+  [coderCopy encodeObject:self->_role forKey:@"_UISceneSessionRole"];
+  [coderCopy encodeObject:self->_persistentIdentifier forKey:@"_UISceneSessionPersistentIdentifier"];
 }
 
-- (UISceneSession)initWithCoder:(id)a3
+- (UISceneSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UISceneSession *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(UISceneSession *)self _init];
+  if (_init)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_UISceneSessionRole"];
-    role = v5->_role;
-    v5->_role = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_UISceneSessionRole"];
+    role = _init->_role;
+    _init->_role = v7;
 
     if ([UIApp _appAdoptsUISceneLifecycle])
     {
       v9 = objc_opt_self();
-      v10 = [v4 decodeObjectOfClass:v9 forKey:@"_UISceneSessionSceneConfiguration"];
+      v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_UISceneSessionSceneConfiguration"];
       v11 = v10;
       if (v10)
       {
@@ -725,29 +725,29 @@ LABEL_4:
 
       else
       {
-        v12 = [[UISceneConfiguration alloc] _initWithLoadErrorForSessionRole:v5->_role];
+        v12 = [[UISceneConfiguration alloc] _initWithLoadErrorForSessionRole:_init->_role];
       }
 
-      configuration = v5->_configuration;
-      v5->_configuration = v12;
+      configuration = _init->_configuration;
+      _init->_configuration = v12;
     }
 
     else
     {
-      v13 = [UISceneConfiguration configurationWithName:0 sessionRole:v5->_role];
-      v9 = v5->_configuration;
-      v5->_configuration = v13;
+      v13 = [UISceneConfiguration configurationWithName:0 sessionRole:_init->_role];
+      v9 = _init->_configuration;
+      _init->_configuration = v13;
     }
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"_UISceneSessionPersistentIdentifier"];
-    persistentIdentifier = v5->_persistentIdentifier;
-    v5->_persistentIdentifier = v16;
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"_UISceneSessionPersistentIdentifier"];
+    persistentIdentifier = _init->_persistentIdentifier;
+    _init->_persistentIdentifier = v16;
 
-    *&v5->_sessionFlags &= 0xFF5Du;
+    *&_init->_sessionFlags &= 0xFF5Du;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

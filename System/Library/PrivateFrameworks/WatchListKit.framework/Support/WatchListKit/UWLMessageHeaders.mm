@@ -1,33 +1,33 @@
 @interface UWLMessageHeaders
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCookies:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCookies:(id)cookies;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UWLMessageHeaders
 
-- (void)addCookies:(id)a3
+- (void)addCookies:(id)cookies
 {
-  v4 = a3;
+  cookiesCopy = cookies;
   cookies = self->_cookies;
-  v8 = v4;
+  v8 = cookiesCopy;
   if (!cookies)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_cookies;
     self->_cookies = v6;
 
-    v4 = v8;
+    cookiesCopy = v8;
     cookies = self->_cookies;
   }
 
-  [(NSMutableArray *)cookies addObject:v4];
+  [(NSMutableArray *)cookies addObject:cookiesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = UWLMessageHeaders;
   v3 = [(UWLMessageHeaders *)&v7 description];
-  v4 = [(UWLMessageHeaders *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(UWLMessageHeaders *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -103,8 +103,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -131,9 +131,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   userAgent = self->_userAgent;
   PBDataWriterWriteStringField();
   xDsid = self->_xDsid;
@@ -199,78 +199,78 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setUserAgent:self->_userAgent];
-  [v8 setXDsid:self->_xDsid];
-  [v8 setXAppleStorefront:self->_xAppleStorefront];
+  toCopy = to;
+  [toCopy setUserAgent:self->_userAgent];
+  [toCopy setXDsid:self->_xDsid];
+  [toCopy setXAppleStorefront:self->_xAppleStorefront];
   if (self->_xGuid)
   {
-    [v8 setXGuid:?];
+    [toCopy setXGuid:?];
   }
 
   if (self->_xUseridKeyspace)
   {
-    [v8 setXUseridKeyspace:?];
+    [toCopy setXUseridKeyspace:?];
   }
 
   if (self->_xUseridKey)
   {
-    [v8 setXUseridKey:?];
+    [toCopy setXUseridKey:?];
   }
 
   if ([(UWLMessageHeaders *)self cookiesCount])
   {
-    [v8 clearCookies];
-    v4 = [(UWLMessageHeaders *)self cookiesCount];
-    if (v4)
+    [toCopy clearCookies];
+    cookiesCount = [(UWLMessageHeaders *)self cookiesCount];
+    if (cookiesCount)
     {
-      v5 = v4;
+      v5 = cookiesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(UWLMessageHeaders *)self cookiesAtIndex:i];
-        [v8 addCookies:v7];
+        [toCopy addCookies:v7];
       }
     }
   }
 
   if (self->_pfm)
   {
-    [v8 setPfm:?];
+    [toCopy setPfm:?];
   }
 
   if (*&self->_has)
   {
-    *(v8 + 2) = self->_clientVersion;
-    *(v8 + 80) |= 1u;
+    *(toCopy + 2) = self->_clientVersion;
+    *(toCopy + 80) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_userAgent copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_xDsid copyWithZone:a3];
+  v8 = [(NSString *)self->_xDsid copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(NSString *)self->_xAppleStorefront copyWithZone:a3];
+  v10 = [(NSString *)self->_xAppleStorefront copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSString *)self->_xGuid copyWithZone:a3];
+  v12 = [(NSString *)self->_xGuid copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
-  v14 = [(NSString *)self->_xUseridKeyspace copyWithZone:a3];
+  v14 = [(NSString *)self->_xUseridKeyspace copyWithZone:zone];
   v15 = v5[9];
   v5[9] = v14;
 
-  v16 = [(NSString *)self->_xUseridKey copyWithZone:a3];
+  v16 = [(NSString *)self->_xUseridKey copyWithZone:zone];
   v17 = v5[8];
   v5[8] = v16;
 
@@ -294,7 +294,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v27 + 1) + 8 * v22) copyWithZone:{a3, v27}];
+        v23 = [*(*(&v27 + 1) + 8 * v22) copyWithZone:{zone, v27}];
         [v5 addCookies:v23];
 
         v22 = v22 + 1;
@@ -307,7 +307,7 @@
     while (v20);
   }
 
-  v24 = [(NSString *)self->_pfm copyWithZone:a3];
+  v24 = [(NSString *)self->_pfm copyWithZone:zone];
   v25 = v5[3];
   v5[3] = v24;
 
@@ -320,16 +320,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   userAgent = self->_userAgent;
-  if (userAgent | *(v4 + 4))
+  if (userAgent | *(equalCopy + 4))
   {
     if (![(NSString *)userAgent isEqual:?])
     {
@@ -338,7 +338,7 @@
   }
 
   xDsid = self->_xDsid;
-  if (xDsid | *(v4 + 6))
+  if (xDsid | *(equalCopy + 6))
   {
     if (![(NSString *)xDsid isEqual:?])
     {
@@ -347,7 +347,7 @@
   }
 
   xAppleStorefront = self->_xAppleStorefront;
-  if (xAppleStorefront | *(v4 + 5))
+  if (xAppleStorefront | *(equalCopy + 5))
   {
     if (![(NSString *)xAppleStorefront isEqual:?])
     {
@@ -356,7 +356,7 @@
   }
 
   xGuid = self->_xGuid;
-  if (xGuid | *(v4 + 7))
+  if (xGuid | *(equalCopy + 7))
   {
     if (![(NSString *)xGuid isEqual:?])
     {
@@ -365,7 +365,7 @@
   }
 
   xUseridKeyspace = self->_xUseridKeyspace;
-  if (xUseridKeyspace | *(v4 + 9))
+  if (xUseridKeyspace | *(equalCopy + 9))
   {
     if (![(NSString *)xUseridKeyspace isEqual:?])
     {
@@ -374,7 +374,7 @@
   }
 
   xUseridKey = self->_xUseridKey;
-  if (xUseridKey | *(v4 + 8))
+  if (xUseridKey | *(equalCopy + 8))
   {
     if (![(NSString *)xUseridKey isEqual:?])
     {
@@ -383,7 +383,7 @@
   }
 
   cookies = self->_cookies;
-  if (cookies | *(v4 + 2))
+  if (cookies | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)cookies isEqual:?])
     {
@@ -392,7 +392,7 @@
   }
 
   pfm = self->_pfm;
-  if (pfm | *(v4 + 3))
+  if (pfm | *(equalCopy + 3))
   {
     if (![(NSString *)pfm isEqual:?])
     {
@@ -400,10 +400,10 @@
     }
   }
 
-  v13 = (*(v4 + 80) & 1) == 0;
+  v13 = (*(equalCopy + 80) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) != 0 && self->_clientVersion == *(v4 + 2))
+    if ((*(equalCopy + 80) & 1) != 0 && self->_clientVersion == *(equalCopy + 2))
     {
       v13 = 1;
       goto LABEL_23;
@@ -441,35 +441,35 @@ LABEL_23:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(UWLMessageHeaders *)self setUserAgent:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(UWLMessageHeaders *)self setXDsid:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(UWLMessageHeaders *)self setXAppleStorefront:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(UWLMessageHeaders *)self setXGuid:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(UWLMessageHeaders *)self setXUseridKeyspace:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(UWLMessageHeaders *)self setXUseridKey:?];
   }
@@ -478,7 +478,7 @@ LABEL_23:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -502,14 +502,14 @@ LABEL_23:
     while (v7);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(UWLMessageHeaders *)self setPfm:?];
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_clientVersion = *(v4 + 2);
+    self->_clientVersion = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

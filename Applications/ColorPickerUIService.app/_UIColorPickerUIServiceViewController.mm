@@ -3,7 +3,7 @@
 - (void)_pickerDidFinish;
 - (void)_pickerDidFloatEyedropper;
 - (void)_pickerDidShowEyedropper;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
 @end
 
@@ -17,31 +17,31 @@
   v3 = objc_alloc_init(_UIColorPickerContainerViewController);
   [(_UIColorPickerUIServiceViewController *)self addChildViewController:v3];
   v24 = v3;
-  v4 = [(_UIColorPickerContainerViewController *)v3 view];
-  v5 = [(_UIColorPickerUIServiceViewController *)self view];
-  [v5 addSubview:v4];
+  view = [(_UIColorPickerContainerViewController *)v3 view];
+  view2 = [(_UIColorPickerUIServiceViewController *)self view];
+  [view2 addSubview:view];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_UIColorPickerContainerViewController *)v3 didMoveToParentViewController:self];
-  v22 = [v4 leadingAnchor];
-  v23 = [(_UIColorPickerUIServiceViewController *)self view];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(_UIColorPickerUIServiceViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v20;
-  v18 = [v4 trailingAnchor];
-  v19 = [(_UIColorPickerUIServiceViewController *)self view];
-  v17 = [v19 trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor = [view trailingAnchor];
+  view4 = [(_UIColorPickerUIServiceViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v16;
-  v15 = [v4 topAnchor];
-  v6 = [(_UIColorPickerUIServiceViewController *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v15 constraintEqualToAnchor:v7];
+  topAnchor = [view topAnchor];
+  view5 = [(_UIColorPickerUIServiceViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v8;
-  v9 = [v4 bottomAnchor];
-  v10 = [(_UIColorPickerUIServiceViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(_UIColorPickerUIServiceViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v12;
   v13 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v13];
@@ -51,45 +51,45 @@
   self->_containerViewController = v24;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  if (self->_containerViewController == a3)
+  if (self->_containerViewController == container)
   {
-    [a3 preferredContentSize];
+    [container preferredContentSize];
     v6 = v5;
     v8 = v7;
     [(_UIColorPickerUIServiceViewController *)self setPreferredContentSize:?];
-    v9 = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
-    [v9 _setPreferredContentSize:{v6, v8}];
+    _hostedWindowScene = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
+    [_hostedWindowScene _setPreferredContentSize:{v6, v8}];
   }
 }
 
 - (void)_pickerDidFinish
 {
   v4 = +[_UIColorPickerActionClientToHost actionForColorPickerDidFinish];
-  v3 = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
-  [v3 sendAction:v4];
+  _hostedWindowScene = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
+  [_hostedWindowScene sendAction:v4];
 }
 
 - (void)_pickerDidShowEyedropper
 {
   v4 = +[_UIColorPickerActionClientToHost actionForColorPickerDidShowEyedropper];
-  v3 = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
-  [v3 sendAction:v4];
+  _hostedWindowScene = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
+  [_hostedWindowScene sendAction:v4];
 }
 
 - (void)_pickerDidFloatEyedropper
 {
   v4 = +[_UIColorPickerActionClientToHost actionForColorPickerDidFloatEyedropper];
-  v3 = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
-  [v3 sendAction:v4];
+  _hostedWindowScene = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
+  [_hostedWindowScene sendAction:v4];
 }
 
 - (void)_pickerDidDismissEyedropper
 {
   v4 = +[_UIColorPickerActionClientToHost actionForColorPickerDidDismissEyedropper];
-  v3 = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
-  [v3 sendAction:v4];
+  _hostedWindowScene = [(_UIColorPickerUIServiceViewController *)self _hostedWindowScene];
+  [_hostedWindowScene sendAction:v4];
 }
 
 @end

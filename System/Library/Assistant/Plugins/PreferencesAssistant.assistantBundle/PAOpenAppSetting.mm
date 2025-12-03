@@ -1,16 +1,16 @@
 @interface PAOpenAppSetting
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation PAOpenAppSetting
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PAOpenAppSetting *)self appWithSettingsId];
-  v9 = [(PAOpenAppSetting *)self location];
-  v10 = sub_3488(v9);
+  helperCopy = helper;
+  completionCopy = completion;
+  appWithSettingsId = [(PAOpenAppSetting *)self appWithSettingsId];
+  location = [(PAOpenAppSetting *)self location];
+  v10 = sub_3488(location);
   v11 = PALogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,10 +20,10 @@
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "########## PAOpenAppSetting (%@)", &v17, 0xCu);
   }
 
-  v13 = [PSThirdPartySettingsDetail preferencesURLForBundleID:v8 forSettingType:v10];
+  v13 = [PSThirdPartySettingsDetail preferencesURLForBundleID:appWithSettingsId forSettingType:v10];
   if (v13)
   {
-    [v6 openSensitiveURL:v13];
+    [helperCopy openSensitiveURL:v13];
     v14 = objc_alloc_init(SACommandSucceeded);
   }
 
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v8;
+      v18 = appWithSettingsId;
       v19 = 2048;
       v20 = v10;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "########## PSThirdPartySettings not available for %@ and %ld", &v17, 0x16u);
@@ -43,8 +43,8 @@
     [v14 setErrorCode:SASettingAppPrefenceBundleNotExistErrorCode];
   }
 
-  v16 = [v14 dictionary];
-  v7[2](v7, v16);
+  dictionary = [v14 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

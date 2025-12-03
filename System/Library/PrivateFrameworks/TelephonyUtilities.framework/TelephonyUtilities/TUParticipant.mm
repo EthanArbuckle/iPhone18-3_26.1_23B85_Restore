@@ -1,26 +1,26 @@
 @interface TUParticipant
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToParticipant:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToParticipant:(id)participant;
 - (NSURL)imageURL;
-- (TUParticipant)initWithCoder:(id)a3;
-- (TUParticipant)initWithName:(id)a3;
-- (TUParticipant)initWithParticipant:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUParticipant)initWithCoder:(id)coder;
+- (TUParticipant)initWithName:(id)name;
+- (TUParticipant)initWithParticipant:(id)participant;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImageURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImageURL:(id)l;
 @end
 
 @implementation TUParticipant
 
-- (TUParticipant)initWithName:(id)a3
+- (TUParticipant)initWithName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[TUParticipant initWithName:]", @"name"}];
   }
@@ -30,7 +30,7 @@
   v5 = [(TUParticipant *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -38,21 +38,21 @@
   return v5;
 }
 
-- (TUParticipant)initWithParticipant:(id)a3
+- (TUParticipant)initWithParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v11.receiver = self;
   v11.super_class = TUParticipant;
   v5 = [(TUParticipant *)&v11 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [participantCopy name];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = name;
 
-    v8 = [v4 sandboxExtendedImageURL];
+    sandboxExtendedImageURL = [participantCopy sandboxExtendedImageURL];
     sandboxExtendedImageURL = v5->_sandboxExtendedImageURL;
-    v5->_sandboxExtendedImageURL = v8;
+    v5->_sandboxExtendedImageURL = sandboxExtendedImageURL;
   }
 
   return v5;
@@ -60,18 +60,18 @@
 
 - (NSURL)imageURL
 {
-  v2 = [(TUParticipant *)self sandboxExtendedImageURL];
-  v3 = [v2 URL];
+  sandboxExtendedImageURL = [(TUParticipant *)self sandboxExtendedImageURL];
+  v3 = [sandboxExtendedImageURL URL];
 
   return v3;
 }
 
-- (void)setImageURL:(id)a3
+- (void)setImageURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
-    v5 = [[TUSandboxExtendedURL alloc] initWithURL:v4];
+    lCopy = l;
+    v5 = [[TUSandboxExtendedURL alloc] initWithURL:lCopy];
   }
 
   else
@@ -91,31 +91,31 @@
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_name);
-  [v5 encodeObject:name forKey:v6];
+  [coderCopy encodeObject:name forKey:v6];
 
   sandboxExtendedImageURL = self->_sandboxExtendedImageURL;
   v8 = NSStringFromSelector(sel_sandboxExtendedImageURL);
-  [v5 encodeObject:sandboxExtendedImageURL forKey:v8];
+  [coderCopy encodeObject:sandboxExtendedImageURL forKey:v8];
 }
 
-- (TUParticipant)initWithCoder:(id)a3
+- (TUParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = TUParticipant;
   v5 = [(TUParticipant *)&v15 init];
@@ -123,13 +123,13 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_name);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     name = v5->_name;
     v5->_name = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_sandboxExtendedImageURL);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     sandboxExtendedImageURL = v5->_sandboxExtendedImageURL;
     v5->_sandboxExtendedImageURL = v12;
   }
@@ -137,16 +137,16 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUParticipant allocWithZone:a3];
+  v4 = [TUParticipant allocWithZone:zone];
 
   return [(TUParticipant *)v4 initWithParticipant:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUMutableParticipant allocWithZone:a3];
+  v4 = [TUMutableParticipant allocWithZone:zone];
 
   return [(TUParticipant *)v4 initWithParticipant:self];
 }
@@ -155,13 +155,13 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_name);
-  v5 = [(TUParticipant *)self name];
-  [v3 appendFormat:@" %@=%@", v4, v5];
+  name = [(TUParticipant *)self name];
+  [v3 appendFormat:@" %@=%@", v4, name];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_imageURL);
-  v7 = [(TUParticipant *)self imageURL];
-  [v3 appendFormat:@" %@=%@", v6, v7];
+  imageURL = [(TUParticipant *)self imageURL];
+  [v3 appendFormat:@" %@=%@", v6, imageURL];
 
   [v3 appendString:@">"];
 
@@ -170,18 +170,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUParticipant *)self name];
-  v4 = [v3 hash];
-  v5 = [(TUParticipant *)self sandboxExtendedImageURL];
-  v6 = [v5 hash];
+  name = [(TUParticipant *)self name];
+  v4 = [name hash];
+  sandboxExtendedImageURL = [(TUParticipant *)self sandboxExtendedImageURL];
+  v6 = [sandboxExtendedImageURL hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -189,22 +189,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUParticipant *)self isEqualToParticipant:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUParticipant *)self isEqualToParticipant:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToParticipant:(id)a3
+- (BOOL)isEqualToParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   name = self->_name;
-  v6 = [v4 name];
-  if (TUObjectsAreEqualOrNil(name, v6))
+  name = [participantCopy name];
+  if (TUObjectsAreEqualOrNil(name, name))
   {
     sandboxExtendedImageURL = self->_sandboxExtendedImageURL;
-    v8 = [v4 sandboxExtendedImageURL];
-    v9 = TUObjectsAreEqualOrNil(sandboxExtendedImageURL, v8);
+    sandboxExtendedImageURL = [participantCopy sandboxExtendedImageURL];
+    v9 = TUObjectsAreEqualOrNil(sandboxExtendedImageURL, sandboxExtendedImageURL);
   }
 
   else

@@ -1,17 +1,17 @@
 @interface IDSFeatureToggler
-- (IDSFeatureToggler)initWithService:(id)a3 queue:(id)a4;
-- (void)retrieveFeatureToggleStateForOptions:(id)a3 completion:(id)a4;
-- (void)updateFeatureToggleStateWithOptions:(id)a3 completion:(id)a4;
+- (IDSFeatureToggler)initWithService:(id)service queue:(id)queue;
+- (void)retrieveFeatureToggleStateForOptions:(id)options completion:(id)completion;
+- (void)updateFeatureToggleStateWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation IDSFeatureToggler
 
-- (IDSFeatureToggler)initWithService:(id)a3 queue:(id)a4
+- (IDSFeatureToggler)initWithService:(id)service queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  serviceCopy = service;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (serviceCopy && queueCopy)
   {
     v15.receiver = self;
     v15.super_class = IDSFeatureToggler;
@@ -19,43 +19,43 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_service, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v10->_service, service);
+      objc_storeStrong(p_isa + 2, queue);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69A5270] FeatureToggler];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    featureToggler = [MEMORY[0x1E69A5270] FeatureToggler];
+    if (os_log_type_enabled(featureToggler, OS_LOG_TYPE_FAULT))
     {
       sub_195B416F8();
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)retrieveFeatureToggleStateForOptions:(id)a3 completion:(id)a4
+- (void)retrieveFeatureToggleStateForOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_195B0F438;
     v17[3] = &unk_1E7443188;
     v17[4] = self;
-    v18 = v7;
+    v18 = completionCopy;
     v9 = MEMORY[0x19A8BBEF0](v17);
-    if (v6 && ([v6 featureID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (optionsCopy && ([optionsCopy featureID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -63,14 +63,14 @@
       v14[3] = &unk_1E7440290;
       v14[4] = self;
       v16 = v9;
-      v15 = v6;
+      v15 = optionsCopy;
       [IDSXPCDaemonController performDaemonControllerTask:v14];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69A5270] FeatureToggler];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      featureToggler = [MEMORY[0x1E69A5270] FeatureToggler];
+      if (os_log_type_enabled(featureToggler, OS_LOG_TYPE_ERROR))
       {
         sub_195B41738();
       }
@@ -82,31 +82,31 @@
 
   else
   {
-    v13 = [MEMORY[0x1E69A5270] FeatureToggler];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    featureToggler2 = [MEMORY[0x1E69A5270] FeatureToggler];
+    if (os_log_type_enabled(featureToggler2, OS_LOG_TYPE_ERROR))
     {
       sub_195B41774();
     }
   }
 }
 
-- (void)updateFeatureToggleStateWithOptions:(id)a3 completion:(id)a4
+- (void)updateFeatureToggleStateWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_195B0F908;
     v17[3] = &unk_1E74431B0;
     v17[4] = self;
-    v18 = v7;
+    v18 = completionCopy;
     v9 = MEMORY[0x19A8BBEF0](v17);
-    if (v6 && ([v6 featureID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (optionsCopy && ([optionsCopy featureID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      if ([v6 state] == 1 || objc_msgSend(v6, "state") == 2)
+      if ([optionsCopy state] == 1 || objc_msgSend(optionsCopy, "state") == 2)
       {
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
@@ -114,24 +114,24 @@
         v14[3] = &unk_1E7440290;
         v14[4] = self;
         v16 = v9;
-        v15 = v6;
+        v15 = optionsCopy;
         [IDSXPCDaemonController performDaemonControllerTask:v14];
 
 LABEL_10:
         goto LABEL_14;
       }
 
-      v11 = [MEMORY[0x1E69A5270] FeatureToggler];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      featureToggler = [MEMORY[0x1E69A5270] FeatureToggler];
+      if (os_log_type_enabled(featureToggler, OS_LOG_TYPE_ERROR))
       {
-        sub_195B41824(v6, v11);
+        sub_195B41824(optionsCopy, featureToggler);
       }
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69A5270] FeatureToggler];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      featureToggler = [MEMORY[0x1E69A5270] FeatureToggler];
+      if (os_log_type_enabled(featureToggler, OS_LOG_TYPE_ERROR))
       {
         sub_195B418B0();
       }
@@ -143,8 +143,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = [MEMORY[0x1E69A5270] FeatureToggler];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  featureToggler2 = [MEMORY[0x1E69A5270] FeatureToggler];
+  if (os_log_type_enabled(featureToggler2, OS_LOG_TYPE_ERROR))
   {
     sub_195B418EC();
   }

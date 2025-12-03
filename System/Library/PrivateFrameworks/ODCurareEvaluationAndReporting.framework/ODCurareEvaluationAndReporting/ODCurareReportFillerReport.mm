@@ -1,90 +1,90 @@
 @interface ODCurareReportFillerReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMetadataList:(id)a3;
-- (void)addModelEvaluationSummaries:(id)a3;
-- (void)addModelInformationList:(id)a3;
-- (void)addPersonalizationEvaluationSummaries:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMetadataList:(id)list;
+- (void)addModelEvaluationSummaries:(id)summaries;
+- (void)addModelInformationList:(id)list;
+- (void)addPersonalizationEvaluationSummaries:(id)summaries;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODCurareReportFillerReport
 
-- (void)addModelInformationList:(id)a3
+- (void)addModelInformationList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   modelInformationLists = self->_modelInformationLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!modelInformationLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_modelInformationLists;
     self->_modelInformationLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     modelInformationLists = self->_modelInformationLists;
   }
 
-  [(NSMutableArray *)modelInformationLists addObject:v4];
+  [(NSMutableArray *)modelInformationLists addObject:listCopy];
 }
 
-- (void)addMetadataList:(id)a3
+- (void)addMetadataList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   metadataLists = self->_metadataLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!metadataLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_metadataLists;
     self->_metadataLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     metadataLists = self->_metadataLists;
   }
 
-  [(NSMutableArray *)metadataLists addObject:v4];
+  [(NSMutableArray *)metadataLists addObject:listCopy];
 }
 
-- (void)addModelEvaluationSummaries:(id)a3
+- (void)addModelEvaluationSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   modelEvaluationSummaries = self->_modelEvaluationSummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!modelEvaluationSummaries)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_modelEvaluationSummaries;
     self->_modelEvaluationSummaries = v6;
 
-    v4 = v8;
+    summariesCopy = v8;
     modelEvaluationSummaries = self->_modelEvaluationSummaries;
   }
 
-  [(NSMutableArray *)modelEvaluationSummaries addObject:v4];
+  [(NSMutableArray *)modelEvaluationSummaries addObject:summariesCopy];
 }
 
-- (void)addPersonalizationEvaluationSummaries:(id)a3
+- (void)addPersonalizationEvaluationSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   personalizationEvaluationSummaries = self->_personalizationEvaluationSummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!personalizationEvaluationSummaries)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_personalizationEvaluationSummaries;
     self->_personalizationEvaluationSummaries = v6;
 
-    v4 = v8;
+    summariesCopy = v8;
     personalizationEvaluationSummaries = self->_personalizationEvaluationSummaries;
   }
 
-  [(NSMutableArray *)personalizationEvaluationSummaries addObject:v4];
+  [(NSMutableArray *)personalizationEvaluationSummaries addObject:summariesCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = ODCurareReportFillerReport;
   v4 = [(ODCurareReportFillerReport *)&v8 description];
-  v5 = [(ODCurareReportFillerReport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ODCurareReportFillerReport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,7 +102,7 @@
 - (id)dictionaryRepresentation
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_modelInformationLists count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_modelInformationLists, "count")}];
@@ -125,8 +125,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -135,7 +135,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"modelInformationList"];
+    [dictionary setObject:v4 forKey:@"modelInformationList"];
   }
 
   if ([(NSMutableArray *)self->_metadataLists count])
@@ -160,8 +160,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v44 objects:v54 count:16];
@@ -170,7 +170,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"metadataList"];
+    [dictionary setObject:v11 forKey:@"metadataList"];
   }
 
   if ([(NSMutableArray *)self->_modelEvaluationSummaries count])
@@ -195,8 +195,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v40 objects:v53 count:16];
@@ -205,7 +205,7 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"modelEvaluationSummaries"];
+    [dictionary setObject:v18 forKey:@"modelEvaluationSummaries"];
   }
 
   if ([(NSMutableArray *)self->_personalizationEvaluationSummaries count])
@@ -230,8 +230,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation4 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation4];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v36 objects:v52 count:16];
@@ -240,27 +240,27 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"personalizationEvaluationSummaries"];
+    [dictionary setObject:v25 forKey:@"personalizationEvaluationSummaries"];
   }
 
   v32 = [MEMORY[0x277CCABB0] numberWithBool:{self->_frameworkFailure, v36}];
-  [v3 setObject:v32 forKey:@"frameworkFailure"];
+  [dictionary setObject:v32 forKey:@"frameworkFailure"];
 
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    [v3 setObject:bundleIdentifier forKey:@"bundleIdentifier"];
+    [dictionary setObject:bundleIdentifier forKey:@"bundleIdentifier"];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -401,77 +401,77 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if ([(ODCurareReportFillerReport *)self modelInformationListsCount])
   {
-    [v20 clearModelInformationLists];
-    v4 = [(ODCurareReportFillerReport *)self modelInformationListsCount];
-    if (v4)
+    [toCopy clearModelInformationLists];
+    modelInformationListsCount = [(ODCurareReportFillerReport *)self modelInformationListsCount];
+    if (modelInformationListsCount)
     {
-      v5 = v4;
+      v5 = modelInformationListsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ODCurareReportFillerReport *)self modelInformationListAtIndex:i];
-        [v20 addModelInformationList:v7];
+        [toCopy addModelInformationList:v7];
       }
     }
   }
 
   if ([(ODCurareReportFillerReport *)self metadataListsCount])
   {
-    [v20 clearMetadataLists];
-    v8 = [(ODCurareReportFillerReport *)self metadataListsCount];
-    if (v8)
+    [toCopy clearMetadataLists];
+    metadataListsCount = [(ODCurareReportFillerReport *)self metadataListsCount];
+    if (metadataListsCount)
     {
-      v9 = v8;
+      v9 = metadataListsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ODCurareReportFillerReport *)self metadataListAtIndex:j];
-        [v20 addMetadataList:v11];
+        [toCopy addMetadataList:v11];
       }
     }
   }
 
   if ([(ODCurareReportFillerReport *)self modelEvaluationSummariesCount])
   {
-    [v20 clearModelEvaluationSummaries];
-    v12 = [(ODCurareReportFillerReport *)self modelEvaluationSummariesCount];
-    if (v12)
+    [toCopy clearModelEvaluationSummaries];
+    modelEvaluationSummariesCount = [(ODCurareReportFillerReport *)self modelEvaluationSummariesCount];
+    if (modelEvaluationSummariesCount)
     {
-      v13 = v12;
+      v13 = modelEvaluationSummariesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ODCurareReportFillerReport *)self modelEvaluationSummariesAtIndex:k];
-        [v20 addModelEvaluationSummaries:v15];
+        [toCopy addModelEvaluationSummaries:v15];
       }
     }
   }
 
   if ([(ODCurareReportFillerReport *)self personalizationEvaluationSummariesCount])
   {
-    [v20 clearPersonalizationEvaluationSummaries];
-    v16 = [(ODCurareReportFillerReport *)self personalizationEvaluationSummariesCount];
-    if (v16)
+    [toCopy clearPersonalizationEvaluationSummaries];
+    personalizationEvaluationSummariesCount = [(ODCurareReportFillerReport *)self personalizationEvaluationSummariesCount];
+    if (personalizationEvaluationSummariesCount)
     {
-      v17 = v16;
+      v17 = personalizationEvaluationSummariesCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(ODCurareReportFillerReport *)self personalizationEvaluationSummariesAtIndex:m];
-        [v20 addPersonalizationEvaluationSummaries:v19];
+        [toCopy addPersonalizationEvaluationSummaries:v19];
       }
     }
   }
 
-  v20[48] = self->_frameworkFailure;
-  [v20 setBundleIdentifier:self->_bundleIdentifier];
+  toCopy[48] = self->_frameworkFailure;
+  [toCopy setBundleIdentifier:self->_bundleIdentifier];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -492,7 +492,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v46 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v46 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addModelInformationList:v11];
 
         ++v10;
@@ -525,7 +525,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v42 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v42 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addMetadataList:v17];
 
         ++v16;
@@ -558,7 +558,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v38 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v38 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addModelEvaluationSummaries:v23];
 
         ++v22;
@@ -591,7 +591,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v34 + 1) + 8 * v28) copyWithZone:{a3, v34}];
+        v29 = [*(*(&v34 + 1) + 8 * v28) copyWithZone:{zone, v34}];
         [v5 addPersonalizationEvaluationSummaries:v29];
 
         ++v28;
@@ -605,7 +605,7 @@
   }
 
   *(v5 + 48) = self->_frameworkFailure;
-  v30 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v31 = *(v5 + 8);
   *(v5 + 8) = v30;
 
@@ -613,16 +613,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   modelInformationLists = self->_modelInformationLists;
-  if (modelInformationLists | *(v4 + 4))
+  if (modelInformationLists | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)modelInformationLists isEqual:?])
     {
@@ -631,7 +631,7 @@
   }
 
   metadataLists = self->_metadataLists;
-  if (metadataLists | *(v4 + 2))
+  if (metadataLists | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)metadataLists isEqual:?])
     {
@@ -640,7 +640,7 @@
   }
 
   modelEvaluationSummaries = self->_modelEvaluationSummaries;
-  if (modelEvaluationSummaries | *(v4 + 3))
+  if (modelEvaluationSummaries | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)modelEvaluationSummaries isEqual:?])
     {
@@ -649,7 +649,7 @@
   }
 
   personalizationEvaluationSummaries = self->_personalizationEvaluationSummaries;
-  if (personalizationEvaluationSummaries | *(v4 + 5))
+  if (personalizationEvaluationSummaries | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)personalizationEvaluationSummaries isEqual:?])
     {
@@ -657,10 +657,10 @@
     }
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(equalCopy + 48);
   if (self->_frameworkFailure)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
 LABEL_12:
       v10 = 0;
@@ -668,13 +668,13 @@ LABEL_12:
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_12;
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     v10 = [(NSString *)bundleIdentifier isEqual:?];
   }
@@ -699,15 +699,15 @@ LABEL_13:
   return v6 ^ [(NSString *)self->_bundleIdentifier hash]^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v6)
   {
@@ -735,7 +735,7 @@ LABEL_13:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
   {
@@ -763,7 +763,7 @@ LABEL_13:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = *(v4 + 3);
+  v15 = *(fromCopy + 3);
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v16)
   {
@@ -791,7 +791,7 @@ LABEL_13:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = *(v4 + 5);
+  v20 = *(fromCopy + 5);
   v21 = [v20 countByEnumeratingWithState:&v26 objects:v42 count:16];
   if (v21)
   {
@@ -815,8 +815,8 @@ LABEL_13:
     while (v22);
   }
 
-  self->_frameworkFailure = *(v4 + 48);
-  if (*(v4 + 1))
+  self->_frameworkFailure = *(fromCopy + 48);
+  if (*(fromCopy + 1))
   {
     [(ODCurareReportFillerReport *)self setBundleIdentifier:?];
   }

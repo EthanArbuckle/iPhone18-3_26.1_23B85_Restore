@@ -4,54 +4,54 @@
 - (BOOL)isAccessibilityTextEnabled;
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldShowPasscodeOptionsButton;
-- (LAPSPasscodeViewControllerBase)initWithConfiguration:(id)a3;
+- (LAPSPasscodeViewControllerBase)initWithConfiguration:(id)configuration;
 - (LAPSPasscodeViewControllerDelegate)delegate;
 - (id)navigationItem;
 - (id)setup;
-- (int64_t)styleWithPasscodeType:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_setPasscodeType:(id)a3;
-- (void)_showPasscodeOptionsSourceWithView:(id)a3 sourceItem:(id)a4 presentationStyle:(int64_t)a5 shouldResignFirstResponder:(BOOL)a6;
-- (void)_submitPasscode:(id)a3;
+- (int64_t)styleWithPasscodeType:(id)type;
+- (void)_finishWithError:(id)error;
+- (void)_setPasscodeType:(id)type;
+- (void)_showPasscodeOptionsSourceWithView:(id)view sourceItem:(id)item presentationStyle:(int64_t)style shouldResignFirstResponder:(BOOL)responder;
+- (void)_submitPasscode:(id)passcode;
 - (void)cancel;
 - (void)clear;
 - (void)focus;
 - (void)layoutIfNeeded;
-- (void)passcodeField:(id)a3 didChangePasscodeLength:(unint64_t)a4;
-- (void)passcodeField:(id)a3 didSubmitPasscode:(id)a4;
-- (void)passcodeOptionsViewController:(id)a3 didSelectPasscodeType:(id)a4;
-- (void)passcodeOptionsViewControllerWillDisappear:(id)a3;
-- (void)setErrorMessage:(id)a3;
-- (void)setFooter:(id)a3;
-- (void)setHeader:(id)a3;
-- (void)setSubHeader:(id)a3;
-- (void)shakeWithCompletion:(id)a3;
+- (void)passcodeField:(id)field didChangePasscodeLength:(unint64_t)length;
+- (void)passcodeField:(id)field didSubmitPasscode:(id)passcode;
+- (void)passcodeOptionsViewController:(id)controller didSelectPasscodeType:(id)type;
+- (void)passcodeOptionsViewControllerWillDisappear:(id)disappear;
+- (void)setErrorMessage:(id)message;
+- (void)setFooter:(id)footer;
+- (void)setHeader:(id)header;
+- (void)setSubHeader:(id)header;
+- (void)shakeWithCompletion:(id)completion;
 - (void)showSpinner;
 - (void)submit;
 - (void)unfocus;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation LAPSPasscodeViewControllerBase
 
-- (LAPSPasscodeViewControllerBase)initWithConfiguration:(id)a3
+- (LAPSPasscodeViewControllerBase)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = LAPSPasscodeViewControllerBase;
   v6 = [(LAPSPasscodeViewControllerBase *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
-    v8 = [(LAPSPasscodeViewControllerConfiguration *)v7->_config passcodeType];
+    objc_storeStrong(&v6->_config, configuration);
+    passcodeType = [(LAPSPasscodeViewControllerConfiguration *)v7->_config passcodeType];
     passcodeType = v7->_passcodeType;
-    v7->_passcodeType = v8;
+    v7->_passcodeType = passcodeType;
 
-    v10 = [(LAPSPasscodeViewControllerConfiguration *)v7->_config optionsConfiguration];
-    v7->_isPasscodeRecoveryEnabled = [v10 isPasscodeRecoveryEnabled];
+    optionsConfiguration = [(LAPSPasscodeViewControllerConfiguration *)v7->_config optionsConfiguration];
+    v7->_isPasscodeRecoveryEnabled = [optionsConfiguration isPasscodeRecoveryEnabled];
   }
 
   return v7;
@@ -64,69 +64,69 @@
   return WeakRetained;
 }
 
-- (void)shakeWithCompletion:(id)a3
+- (void)shakeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v5 shakeWithCompletion:v4];
+  completionCopy = completion;
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC shakeWithCompletion:completionCopy];
 }
 
 - (void)focus
 {
-  v3 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v3 setAcceptInputs:1];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC setAcceptInputs:1];
 
-  v4 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v4 becomeFirstResponder];
+  _passcodeFieldVC2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC2 becomeFirstResponder];
 }
 
 - (void)clear
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v2 clear];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC clear];
 }
 
 - (void)unfocus
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v2 setAcceptInputs:0];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC setAcceptInputs:0];
 }
 
 - (void)showSpinner
 {
-  v5 = [(LAPSPasscodeViewControllerBase *)self navigationItem];
+  navigationItem = [(LAPSPasscodeViewControllerBase *)self navigationItem];
   v2 = objc_alloc(MEMORY[0x277D751E0]);
   v3 = objc_alloc_init(MEMORY[0x277D750E8]);
   [v3 startAnimating];
   v4 = [v2 initWithCustomView:v3];
-  [v5 setRightBarButtonItem:v4];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (void)setHeader:(id)a3
+- (void)setHeader:(id)header
 {
-  v7 = a3;
-  v4 = [(LAPSPasscodeViewControllerBase *)self _headerLabel];
-  if (v7 && [v7 length])
+  headerCopy = header;
+  _headerLabel = [(LAPSPasscodeViewControllerBase *)self _headerLabel];
+  if (headerCopy && [headerCopy length])
   {
-    [v4 setText:v7];
+    [_headerLabel setText:headerCopy];
   }
 
   else
   {
-    v5 = [(LAPSPasscodeViewControllerBase *)self config];
-    v6 = [v5 prompt];
-    [v4 setText:v6];
+    config = [(LAPSPasscodeViewControllerBase *)self config];
+    prompt = [config prompt];
+    [_headerLabel setText:prompt];
   }
 }
 
-- (void)setSubHeader:(id)a3
+- (void)setSubHeader:(id)header
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4 && [v4 length])
+  headerCopy = header;
+  v8 = headerCopy;
+  if (headerCopy && [headerCopy length])
   {
-    v5 = [(LAPSPasscodeViewControllerBase *)self _subHeaderLabel];
-    [v5 setText:v8];
+    _subHeaderLabel = [(LAPSPasscodeViewControllerBase *)self _subHeaderLabel];
+    [_subHeaderLabel setText:v8];
 
     v6 = 0;
   }
@@ -136,18 +136,18 @@
     v6 = 1;
   }
 
-  v7 = [(LAPSPasscodeViewControllerBase *)self _subHeaderLabel];
-  [v7 setHidden:v6];
+  _subHeaderLabel2 = [(LAPSPasscodeViewControllerBase *)self _subHeaderLabel];
+  [_subHeaderLabel2 setHidden:v6];
 }
 
-- (void)setFooter:(id)a3
+- (void)setFooter:(id)footer
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4 && [v4 length])
+  footerCopy = footer;
+  v8 = footerCopy;
+  if (footerCopy && [footerCopy length])
   {
-    v5 = [(LAPSPasscodeViewControllerBase *)self _footerLabel];
-    [v5 setText:v8];
+    _footerLabel = [(LAPSPasscodeViewControllerBase *)self _footerLabel];
+    [_footerLabel setText:v8];
 
     v6 = 0;
   }
@@ -157,18 +157,18 @@
     v6 = 1;
   }
 
-  v7 = [(LAPSPasscodeViewControllerBase *)self _footerLabel];
-  [v7 setHidden:v6];
+  _footerLabel2 = [(LAPSPasscodeViewControllerBase *)self _footerLabel];
+  [_footerLabel2 setHidden:v6];
 }
 
-- (void)setErrorMessage:(id)a3
+- (void)setErrorMessage:(id)message
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4 && [v4 length])
+  messageCopy = message;
+  v8 = messageCopy;
+  if (messageCopy && [messageCopy length])
   {
-    v5 = [(LAPSPasscodeViewControllerBase *)self _errorCapsule];
-    [v5 setText:v8];
+    _errorCapsule = [(LAPSPasscodeViewControllerBase *)self _errorCapsule];
+    [_errorCapsule setText:v8];
 
     v6 = 0;
   }
@@ -178,8 +178,8 @@
     v6 = 1;
   }
 
-  v7 = [(LAPSPasscodeViewControllerBase *)self _errorCapsuleContainer];
-  [v7 setHidden:v6];
+  _errorCapsuleContainer = [(LAPSPasscodeViewControllerBase *)self _errorCapsuleContainer];
+  [_errorCapsuleContainer setHidden:v6];
 
   [(LAPSPasscodeViewControllerBase *)self layoutIfNeeded];
 }
@@ -189,29 +189,29 @@
   v15.receiver = self;
   v15.super_class = LAPSPasscodeViewControllerBase;
   [(LAPSPasscodeViewControllerBase *)&v15 viewDidLoad];
-  v3 = [(LAPSPasscodeViewControllerBase *)self setup];
+  setup = [(LAPSPasscodeViewControllerBase *)self setup];
   managedViews = self->_managedViews;
-  self->_managedViews = v3;
+  self->_managedViews = setup;
 
-  v5 = [(LAPSPasscodeViewControllerBase *)self config];
-  v6 = [v5 title];
-  [(LAPSPasscodeViewControllerBase *)self setTitle:v6];
+  config = [(LAPSPasscodeViewControllerBase *)self config];
+  title = [config title];
+  [(LAPSPasscodeViewControllerBase *)self setTitle:title];
 
-  v7 = [(LAPSPasscodeViewControllerBase *)self config];
-  v8 = [v7 prompt];
-  [(LAPSPasscodeViewControllerBase *)self setHeader:v8];
+  config2 = [(LAPSPasscodeViewControllerBase *)self config];
+  prompt = [config2 prompt];
+  [(LAPSPasscodeViewControllerBase *)self setHeader:prompt];
 
-  v9 = [(LAPSPasscodeViewControllerBase *)self config];
-  v10 = [v9 subPrompt];
-  [(LAPSPasscodeViewControllerBase *)self setSubHeader:v10];
+  config3 = [(LAPSPasscodeViewControllerBase *)self config];
+  subPrompt = [config3 subPrompt];
+  [(LAPSPasscodeViewControllerBase *)self setSubHeader:subPrompt];
 
-  v11 = [(LAPSPasscodeViewControllerBase *)self config];
-  v12 = [v11 footer];
-  [(LAPSPasscodeViewControllerBase *)self setFooter:v12];
+  config4 = [(LAPSPasscodeViewControllerBase *)self config];
+  footer = [config4 footer];
+  [(LAPSPasscodeViewControllerBase *)self setFooter:footer];
 
-  v13 = [(LAPSPasscodeViewControllerBase *)self config];
-  v14 = [v13 errorMessage];
-  [(LAPSPasscodeViewControllerBase *)self setErrorMessage:v14];
+  config5 = [(LAPSPasscodeViewControllerBase *)self config];
+  errorMessage = [config5 errorMessage];
+  [(LAPSPasscodeViewControllerBase *)self setErrorMessage:errorMessage];
 
   [(LAPSPasscodeViewControllerBase *)self setupNavigationItem];
 }
@@ -221,77 +221,77 @@
   v10.receiver = self;
   v10.super_class = LAPSPasscodeViewControllerBase;
   [(LAPSPasscodeViewControllerBase *)&v10 viewDidLayoutSubviews];
-  v3 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
-  [v3 contentSize];
+  _scrollView = [(LAPSPasscodeViewControllerBase *)self _scrollView];
+  [_scrollView contentSize];
   v5 = v4;
-  v6 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
-  [v6 frame];
+  _scrollView2 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
+  [_scrollView2 frame];
   v8 = v7;
 
   if (v5 > v8)
   {
-    v9 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
-    [v9 _flashScrollIndicatorsPersistingPreviousFlashes];
+    _scrollView3 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
+    [_scrollView3 _flashScrollIndicatorsPersistingPreviousFlashes];
   }
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  v3 = [v2 canBecomeFirstResponder];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  canBecomeFirstResponder = [_passcodeFieldVC canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  v3 = [v2 becomeFirstResponder];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  becomeFirstResponder = [_passcodeFieldVC becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  v3 = [v2 resignFirstResponder];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  resignFirstResponder = [_passcodeFieldVC resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (id)navigationItem
 {
-  v3 = [(LAPSPasscodeViewControllerBase *)self parentViewController];
-  v4 = [v3 navigationItem];
-  v5 = v4;
-  if (v4)
+  parentViewController = [(LAPSPasscodeViewControllerBase *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  v5 = navigationItem;
+  if (navigationItem)
   {
-    v6 = v4;
+    navigationItem2 = navigationItem;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = LAPSPasscodeViewControllerBase;
-    v6 = [(LAPSPasscodeViewControllerBase *)&v9 navigationItem];
+    navigationItem2 = [(LAPSPasscodeViewControllerBase *)&v9 navigationItem];
   }
 
-  v7 = v6;
+  v7 = navigationItem2;
 
   return v7;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = LAPSPasscodeViewControllerBase;
-  [(LAPSPasscodeViewControllerBase *)&v6 willMoveToParentViewController:a3];
-  v4 = [(LAPSPasscodeViewControllerBase *)self presentedViewController];
+  [(LAPSPasscodeViewControllerBase *)&v6 willMoveToParentViewController:controller];
+  presentedViewController = [(LAPSPasscodeViewControllerBase *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(LAPSPasscodeViewControllerBase *)self presentedViewController];
-    [v5 dismissViewControllerAnimated:0 completion:&__block_literal_global_16];
+    presentedViewController2 = [(LAPSPasscodeViewControllerBase *)self presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:0 completion:&__block_literal_global_16];
   }
 }
 
@@ -303,41 +303,41 @@
 
 - (void)submit
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v2 submit];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC submit];
 }
 
 - (BOOL)shouldShowPasscodeOptionsButton
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self config];
-  v3 = [v2 optionsConfiguration];
-  v4 = v3 != 0;
+  config = [(LAPSPasscodeViewControllerBase *)self config];
+  optionsConfiguration = [config optionsConfiguration];
+  v4 = optionsConfiguration != 0;
 
   return v4;
 }
 
 - (void)layoutIfNeeded
 {
-  v3 = [(LAPSPasscodeViewControllerBase *)self _scrollView];
-  [v3 layoutIfNeeded];
+  _scrollView = [(LAPSPasscodeViewControllerBase *)self _scrollView];
+  [_scrollView layoutIfNeeded];
 
-  v4 = [(LAPSPasscodeViewControllerBase *)self view];
-  [v4 layoutIfNeeded];
+  view = [(LAPSPasscodeViewControllerBase *)self view];
+  [view layoutIfNeeded];
 }
 
 - (BOOL)isAccessibilityTextEnabled
 {
-  v2 = [(LAPSPasscodeViewControllerBase *)self view];
-  v3 = [v2 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  view = [(LAPSPasscodeViewControllerBase *)self view];
+  traitCollection = [view traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (int64_t)styleWithPasscodeType:(id)a3
+- (int64_t)styleWithPasscodeType:(id)type
 {
-  result = [a3 identifier];
+  result = [type identifier];
   if ((result - 1) >= 3)
   {
     return 0;
@@ -353,43 +353,43 @@
   return v2;
 }
 
-- (void)passcodeField:(id)a3 didSubmitPasscode:(id)a4
+- (void)passcodeField:(id)field didSubmitPasscode:(id)passcode
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  if (v7 != v10)
+  fieldCopy = field;
+  passcodeCopy = passcode;
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  if (_passcodeFieldVC != fieldCopy)
   {
     [LAPSPasscodeViewControllerBase passcodeField:didSubmitPasscode:];
   }
 
-  v8 = [(LAPSPasscodeViewControllerBase *)self passcodeType];
-  v9 = [v8 allowsLength:{objc_msgSend(v6, "length")}];
+  passcodeType = [(LAPSPasscodeViewControllerBase *)self passcodeType];
+  v9 = [passcodeType allowsLength:{objc_msgSend(passcodeCopy, "length")}];
 
   if (v9)
   {
-    [(LAPSPasscodeViewControllerBase *)self _submitPasscode:v6];
+    [(LAPSPasscodeViewControllerBase *)self _submitPasscode:passcodeCopy];
   }
 }
 
-- (void)passcodeField:(id)a3 didChangePasscodeLength:(unint64_t)a4
+- (void)passcodeField:(id)field didChangePasscodeLength:(unint64_t)length
 {
-  v7 = a3;
-  v6 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  if (v6 != v7)
+  fieldCopy = field;
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  if (_passcodeFieldVC != fieldCopy)
   {
     [LAPSPasscodeViewControllerBase passcodeField:didChangePasscodeLength:];
   }
 
-  [(LAPSPasscodeViewControllerBase *)self updateLayoutAfterPasscodeLengthChangeIfNeeded:a4];
+  [(LAPSPasscodeViewControllerBase *)self updateLayoutAfterPasscodeLengthChangeIfNeeded:length];
 }
 
-- (void)passcodeOptionsViewController:(id)a3 didSelectPasscodeType:(id)a4
+- (void)passcodeOptionsViewController:(id)controller didSelectPasscodeType:(id)type
 {
-  v9 = a4;
-  [(LAPSPasscodeViewControllerBase *)self _setPasscodeType:v9];
-  v5 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  [v5 setStyle:{-[LAPSPasscodeViewControllerBase styleWithPasscodeType:](self, "styleWithPasscodeType:", v9)}];
+  typeCopy = type;
+  [(LAPSPasscodeViewControllerBase *)self _setPasscodeType:typeCopy];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  [_passcodeFieldVC setStyle:{-[LAPSPasscodeViewControllerBase styleWithPasscodeType:](self, "styleWithPasscodeType:", typeCopy)}];
 
   [(LAPSPasscodeViewControllerBase *)self updateLayoutAfterPasscodeTypeChangeIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -398,11 +398,11 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 passcodeViewController:self didSelectPasscodeType:v9];
+    [v8 passcodeViewController:self didSelectPasscodeType:typeCopy];
   }
 }
 
-- (void)passcodeOptionsViewControllerWillDisappear:(id)a3
+- (void)passcodeOptionsViewControllerWillDisappear:(id)disappear
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -421,66 +421,66 @@ void __77__LAPSPasscodeViewControllerBase_passcodeOptionsViewControllerWillDisap
   [v3 becomeFirstResponder];
 }
 
-- (void)_setPasscodeType:(id)a3
+- (void)_setPasscodeType:(id)type
 {
-  objc_storeStrong(&self->_passcodeType, a3);
+  objc_storeStrong(&self->_passcodeType, type);
 
   [(LAPSPasscodeViewControllerBase *)self setupNavigationItem];
 }
 
-- (void)_submitPasscode:(id)a3
+- (void)_submitPasscode:(id)passcode
 {
-  v11 = a3;
-  v4 = [(LAPSPasscodeViewControllerBase *)self passcodeType];
-  v5 = [(LAPSPasscodeViewControllerBase *)self styleWithPasscodeType:v4];
-  v6 = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
-  if (v5 != [v6 style])
+  passcodeCopy = passcode;
+  passcodeType = [(LAPSPasscodeViewControllerBase *)self passcodeType];
+  v5 = [(LAPSPasscodeViewControllerBase *)self styleWithPasscodeType:passcodeType];
+  _passcodeFieldVC = [(LAPSPasscodeViewControllerBase *)self _passcodeFieldVC];
+  if (v5 != [_passcodeFieldVC style])
   {
     [LAPSPasscodeViewControllerBase _submitPasscode:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = [LAPSPasscode alloc];
-  v9 = [(LAPSPasscodeViewControllerBase *)self passcodeType];
-  v10 = [(LAPSPasscode *)v8 initWithLocalizedPasscode:v11 type:v9];
+  passcodeType2 = [(LAPSPasscodeViewControllerBase *)self passcodeType];
+  v10 = [(LAPSPasscode *)v8 initWithLocalizedPasscode:passcodeCopy type:passcodeType2];
   [WeakRetained passcodeViewController:self verifyPasscode:v10];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 passcodeViewController:self didCancelWithError:v7];
+    [v6 passcodeViewController:self didCancelWithError:errorCopy];
   }
 }
 
-- (void)_showPasscodeOptionsSourceWithView:(id)a3 sourceItem:(id)a4 presentationStyle:(int64_t)a5 shouldResignFirstResponder:(BOOL)a6
+- (void)_showPasscodeOptionsSourceWithView:(id)view sourceItem:(id)item presentationStyle:(int64_t)style shouldResignFirstResponder:(BOOL)responder
 {
-  v10 = a3;
-  v11 = a4;
+  viewCopy = view;
+  itemCopy = item;
   v12 = objc_alloc_init(LAPSPasscodeOptionsPresentationController);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __125__LAPSPasscodeViewControllerBase__showPasscodeOptionsSourceWithView_sourceItem_presentationStyle_shouldResignFirstResponder___block_invoke;
   v18[3] = &unk_278A65930;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = a5;
-  v13 = v11;
-  v14 = v10;
+  v19 = viewCopy;
+  v20 = itemCopy;
+  styleCopy = style;
+  v13 = itemCopy;
+  v14 = viewCopy;
   v15 = __125__LAPSPasscodeViewControllerBase__showPasscodeOptionsSourceWithView_sourceItem_presentationStyle_shouldResignFirstResponder___block_invoke(v18);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __125__LAPSPasscodeViewControllerBase__showPasscodeOptionsSourceWithView_sourceItem_presentationStyle_shouldResignFirstResponder___block_invoke_3;
   v16[3] = &unk_278A65958;
   v16[4] = self;
-  v17 = a6;
+  responderCopy = responder;
   [(LAPSPasscodeOptionsPresentationController *)v12 presentPasscodeOptions:v15 completion:v16];
 }
 

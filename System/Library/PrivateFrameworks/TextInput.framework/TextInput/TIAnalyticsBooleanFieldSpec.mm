@@ -1,25 +1,25 @@
 @interface TIAnalyticsBooleanFieldSpec
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (TIAnalyticsBooleanFieldSpec)initWithName:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (TIAnalyticsBooleanFieldSpec)initWithName:(id)name;
 @end
 
 @implementation TIAnalyticsBooleanFieldSpec
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  validateCopy = validate;
+  if (validateCopy)
   {
-    if ([TIAnalyticsUtil isBoolean:v6])
+    if ([TIAnalyticsUtil isBoolean:validateCopy])
     {
-      v7 = 0;
+      errorFromNil = 0;
       goto LABEL_9;
     }
 
-    v8 = [(TIAnalyticsFieldSpec *)self name];
-    v7 = [(TIAnalyticsFieldSpec *)self errorFromValue:v6 code:10 message:@"Field '%@' must be a BOOLean.", v8];
+    name = [(TIAnalyticsFieldSpec *)self name];
+    errorFromNil = [(TIAnalyticsFieldSpec *)self errorFromValue:validateCopy code:10 message:@"Field '%@' must be a BOOLean.", name];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -27,29 +27,29 @@
 
   else
   {
-    v7 = [(TIAnalyticsFieldSpec *)self errorFromNil];
-    if (!a4)
+    errorFromNil = [(TIAnalyticsFieldSpec *)self errorFromNil];
+    if (!error)
     {
       goto LABEL_9;
     }
   }
 
-  if (v7)
+  if (errorFromNil)
   {
-    v9 = v7;
-    *a4 = v7;
+    v9 = errorFromNil;
+    *error = errorFromNil;
   }
 
 LABEL_9:
 
-  return v7 == 0;
+  return errorFromNil == 0;
 }
 
-- (TIAnalyticsBooleanFieldSpec)initWithName:(id)a3
+- (TIAnalyticsBooleanFieldSpec)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = TIAnalyticsBooleanFieldSpec;
-  return [(TIAnalyticsFieldSpec *)&v4 initWithName:a3];
+  return [(TIAnalyticsFieldSpec *)&v4 initWithName:name];
 }
 
 @end

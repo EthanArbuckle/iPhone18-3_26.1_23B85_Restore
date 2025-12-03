@@ -1,47 +1,47 @@
 @interface RTWorkoutSchedulerMetrics
-+ (id)metricsTaskTypeToString:(unint64_t)a3;
-- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)a3;
-- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)a3 managedConfiguration:(id)a4;
++ (id)metricsTaskTypeToString:(unint64_t)string;
+- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)manager;
+- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)manager managedConfiguration:(id)configuration;
 - (void)collectDailyMetrics;
-- (void)createTaskMetricsDictionary:(id)a3;
+- (void)createTaskMetricsDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)incrementMetricDefaultForKey:(id)a3;
-- (void)onDailyMetricNotification:(id)a3;
+- (void)incrementMetricDefaultForKey:(id)key;
+- (void)onDailyMetricNotification:(id)notification;
 - (void)setup;
-- (void)startCollectMetricsTaskType:(unint64_t)a3 totalNAtStart:(int64_t)a4;
-- (void)stopCollectMetricsTaskType:(unint64_t)a3;
-- (void)submitDailyMetricsToCoreAnalytics:(id)a3;
-- (void)submitTaskMetricsToCoreAnalytics:(id)a3;
+- (void)startCollectMetricsTaskType:(unint64_t)type totalNAtStart:(int64_t)start;
+- (void)stopCollectMetricsTaskType:(unint64_t)type;
+- (void)submitDailyMetricsToCoreAnalytics:(id)analytics;
+- (void)submitTaskMetricsToCoreAnalytics:(id)analytics;
 @end
 
 @implementation RTWorkoutSchedulerMetrics
 
-+ (id)metricsTaskTypeToString:(unint64_t)a3
++ (id)metricsTaskTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 5)
+  if (string - 1 > 5)
   {
     return @"RTWorkoutSchedulerMetricsTaskTypeUnknown";
   }
 
   else
   {
-    return off_2788CDD88[a3 - 1];
+    return off_2788CDD88[string - 1];
   }
 }
 
-- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)a3
+- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
-  v6 = [(RTWorkoutSchedulerMetrics *)self initWithDefaultsManager:v4 managedConfiguration:v5];
+  v6 = [(RTWorkoutSchedulerMetrics *)self initWithDefaultsManager:managerCopy managedConfiguration:v5];
 
   return v6;
 }
 
-- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)a3 managedConfiguration:(id)a4
+- (RTWorkoutSchedulerMetrics)initWithDefaultsManager:(id)manager managedConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v14.receiver = self;
     v14.super_class = RTWorkoutSchedulerMetrics;
@@ -49,7 +49,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_defaultsManager, a3);
+      objc_storeStrong(&v7->_defaultsManager, manager);
       v9 = objc_opt_new();
       managedConfiguration = v8->_managedConfiguration;
       v8->_managedConfiguration = v9;
@@ -58,7 +58,7 @@
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -70,16 +70,16 @@
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
   v4 = objc_opt_new();
   [(RTWorkoutSchedulerMetrics *)self setMetricsDictionary:v4];
@@ -87,41 +87,41 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"RTMetricManagerDailyMetricNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = RTWorkoutSchedulerMetrics;
   [(RTWorkoutSchedulerMetrics *)&v4 dealloc];
 }
 
-- (void)incrementMetricDefaultForKey:(id)a3
+- (void)incrementMetricDefaultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 unsignedIntegerValue];
+  keyCopy = key;
+  defaultsManager = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:keyCopy];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v9 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v9 setObject:v8 forKey:v4];
+  defaultsManager2 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaultsManager2 setObject:v8 forKey:keyCopy];
 }
 
-- (void)onDailyMetricNotification:(id)a3
+- (void)onDailyMetricNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v6 & 1) == 0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v4 name];
+      name2 = [notificationCopy name];
       v15 = 138412802;
-      v16 = v13;
+      v16 = name2;
       v17 = 2080;
       v18 = "[RTWorkoutSchedulerMetrics onDailyMetricNotification:]";
       v19 = 1024;
@@ -130,17 +130,17 @@
     }
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v9 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v9 & 1) == 0)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v4 name];
+      name4 = [notificationCopy name];
       v15 = 138412290;
-      v16 = v14;
+      v16 = name4;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "unknown notification name, %@", &v15, 0xCu);
     }
 
@@ -149,10 +149,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
-  v11 = [v10 isHealthDataSubmissionAllowed];
+  managedConfiguration = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
+  isHealthDataSubmissionAllowed = [managedConfiguration isHealthDataSubmissionAllowed];
 
-  if ((v11 & 1) == 0)
+  if ((isHealthDataSubmissionAllowed & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -243,11 +243,11 @@ LABEL_11:
     v17 = objc_opt_new();
     [(RTWorkoutSchedulerMetrics *)self setMetricsDictionary:v17];
 
-    v18 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-    [v18 setObject:&unk_28459EAC0 forKey:@"RTDefaultsWorkoutSchedulerMetricsBackoffTimerDeferralDailyCount"];
+    defaultsManager = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+    [defaultsManager setObject:&unk_28459EAC0 forKey:@"RTDefaultsWorkoutSchedulerMetricsBackoffTimerDeferralDailyCount"];
 
-    v19 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-    [v19 setObject:&unk_28459EAC0 forKey:@"RTDefaultsWorkoutSchedulerMetricsMemoryFootprintDeferralDailyCount"];
+    defaultsManager2 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+    [defaultsManager2 setObject:&unk_28459EAC0 forKey:@"RTDefaultsWorkoutSchedulerMetricsMemoryFootprintDeferralDailyCount"];
   }
 
   else
@@ -256,15 +256,15 @@ LABEL_11:
   }
 }
 
-- (void)startCollectMetricsTaskType:(unint64_t)a3 totalNAtStart:(int64_t)a4
+- (void)startCollectMetricsTaskType:(unint64_t)type totalNAtStart:(int64_t)start
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
-  v9 = [v8 isHealthDataSubmissionAllowed];
+  managedConfiguration = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
+  isHealthDataSubmissionAllowed = [managedConfiguration isHealthDataSubmissionAllowed];
 
-  if (v9)
+  if (isHealthDataSubmissionAllowed)
   {
-    v10 = [RTWorkoutSchedulerMetrics metricsTaskTypeToString:a3];
+    v10 = [RTWorkoutSchedulerMetrics metricsTaskTypeToString:type];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -283,14 +283,14 @@ LABEL_11:
       }
     }
 
-    v15 = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
-    v16 = [v15 objectForKey:v10];
+    metricsDictionary = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
+    v16 = [metricsDictionary objectForKey:v10];
 
     if (!v16)
     {
       v17 = [RTWorkoutSchedulerMetricsTask alloc];
-      v18 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-      v16 = [(RTWorkoutSchedulerMetricsTask *)v17 initWithTaskType:a3 defaultsManager:v18];
+      defaultsManager = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+      v16 = [(RTWorkoutSchedulerMetricsTask *)v17 initWithTaskType:type defaultsManager:defaultsManager];
     }
 
     v19 = [MEMORY[0x277CBEAA8] now];
@@ -298,13 +298,13 @@ LABEL_11:
 
     +[RTRuntime footprint];
     [(RTWorkoutSchedulerMetricsTask *)v16 setMemoryFootprintAtStart:v20];
-    v21 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
-    v22 = [v21 objectForKey:@"RTDefaultsWorkoutSchedulerTopNWorkoutsKey"];
+    defaultsManager2 = [(RTWorkoutSchedulerMetrics *)self defaultsManager];
+    v22 = [defaultsManager2 objectForKey:@"RTDefaultsWorkoutSchedulerTopNWorkoutsKey"];
     -[RTWorkoutSchedulerMetricsTask setCurrentNAtStart:](v16, "setCurrentNAtStart:", [v22 unsignedIntegerValue]);
 
-    [(RTWorkoutSchedulerMetricsTask *)v16 setTotalNAtStart:a4];
-    v23 = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
-    [v23 setObject:v16 forKey:v10];
+    [(RTWorkoutSchedulerMetricsTask *)v16 setTotalNAtStart:start];
+    metricsDictionary2 = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
+    [metricsDictionary2 setObject:v16 forKey:v10];
 
 LABEL_9:
     return;
@@ -323,15 +323,15 @@ LABEL_9:
   }
 }
 
-- (void)stopCollectMetricsTaskType:(unint64_t)a3
+- (void)stopCollectMetricsTaskType:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
-  v7 = [v6 isHealthDataSubmissionAllowed];
+  managedConfiguration = [(RTWorkoutSchedulerMetrics *)self managedConfiguration];
+  isHealthDataSubmissionAllowed = [managedConfiguration isHealthDataSubmissionAllowed];
 
-  if (v7)
+  if (isHealthDataSubmissionAllowed)
   {
-    v8 = [RTWorkoutSchedulerMetrics metricsTaskTypeToString:a3];
+    v8 = [RTWorkoutSchedulerMetrics metricsTaskTypeToString:type];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -350,8 +350,8 @@ LABEL_9:
       }
     }
 
-    v13 = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
-    v14 = [v13 objectForKey:v8];
+    metricsDictionary = [(RTWorkoutSchedulerMetrics *)self metricsDictionary];
+    v14 = [metricsDictionary objectForKey:v8];
 
     v15 = [MEMORY[0x277CBEAA8] now];
     [v14 setTaskFinish:v15];
@@ -380,17 +380,17 @@ LABEL_7:
   }
 }
 
-- (void)createTaskMetricsDictionary:(id)a3
+- (void)createTaskMetricsDictionary:(id)dictionary
 {
-  v32 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v5 = [RTMetric binsFromStart:&unk_28459EAC0 toEnd:&unk_28459EAD8 gap:&unk_28459EAF0];
   v6 = [RTMetric binsFromStart:&unk_28459EAC0 toEnd:&unk_28459EB08 gap:&unk_28459EAF0];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "currentNAtStart")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "currentNAtStart")}];
   v8 = [RTMetric binForNumber:v7 bins:v6];
   [v4 setObject:v8 forKeyedSubscript:@"currentNAtStart"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "currentNAtFinish")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "currentNAtFinish")}];
   v10 = [RTMetric binForNumber:v9 bins:v6];
   [v4 setObject:v10 forKeyedSubscript:@"currentNAtFinish"];
 
@@ -412,58 +412,58 @@ LABEL_7:
   }
 
   [v4 setObject:v15 forKeyedSubscript:@"worldBuildIsFinished"];
-  v18 = [v32 taskFinish];
-  v19 = [v32 taskStart];
-  [v18 timeIntervalSinceDate:v19];
+  taskFinish = [dictionaryCopy taskFinish];
+  taskStart = [dictionaryCopy taskStart];
+  [taskFinish timeIntervalSinceDate:taskStart];
   v21 = v20;
 
-  v22 = +[RTWorkoutSchedulerMetrics metricsTaskTypeToString:](RTWorkoutSchedulerMetrics, "metricsTaskTypeToString:", [v32 taskType]);
+  v22 = +[RTWorkoutSchedulerMetrics metricsTaskTypeToString:](RTWorkoutSchedulerMetrics, "metricsTaskTypeToString:", [dictionaryCopy taskType]);
   [v4 setObject:v22 forKeyedSubscript:@"taskType"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
   v24 = [RTMetric binForNumber:v23 bins:v5];
   [v4 setObject:v24 forKeyedSubscript:@"taskDuration"];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "memoryFootprintAtStart")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "memoryFootprintAtStart")}];
   v26 = [RTMetric binForNumber:v25 bins:v6];
   [v4 setObject:v26 forKeyedSubscript:@"memoryFootprintAtStart"];
 
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "memoryFootprintAtFinish")}];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "memoryFootprintAtFinish")}];
   v28 = [RTMetric binForNumber:v27 bins:v6];
   [v4 setObject:v28 forKeyedSubscript:@"memoryFootprintAtFinish"];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v32, "totalNAtStart")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dictionaryCopy, "totalNAtStart")}];
   [v4 setObject:v29 forKeyedSubscript:@"totalNAtStart"];
 
   v30 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsWorkoutSchedulerMetricsIsDeviceEligibleKey"];
   [v4 setObject:v30 forKeyedSubscript:@"isDeviceEligible"];
 
-  [v32 setTaskRunDailyCount:{objc_msgSend(v32, "taskRunDailyCount") + 1}];
-  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "taskRunDailyCount")}];
+  [dictionaryCopy setTaskRunDailyCount:{objc_msgSend(dictionaryCopy, "taskRunDailyCount") + 1}];
+  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "taskRunDailyCount")}];
   [v4 setObject:v31 forKeyedSubscript:@"taskRunDailyCount"];
 
-  [v32 resetTaskState];
+  [dictionaryCopy resetTaskState];
   [(RTWorkoutSchedulerMetrics *)self submitTaskMetricsToCoreAnalytics:v4];
 }
 
-- (void)submitDailyMetricsToCoreAnalytics:(id)a3
+- (void)submitDailyMetricsToCoreAnalytics:(id)analytics
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = [v3 alloc];
   v7 = [v5 initWithCString:RTAnalyticsEventWorkoutSchedulerDaily encoding:1];
-  log_analytics_submission(v7, v4);
+  log_analytics_submission(v7, analyticsCopy);
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v7];
   AnalyticsSendEvent();
 }
 
-- (void)submitTaskMetricsToCoreAnalytics:(id)a3
+- (void)submitTaskMetricsToCoreAnalytics:(id)analytics
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = [v3 alloc];
   v7 = [v5 initWithCString:RTAnalyticsEventWorkoutScheduler encoding:1];
-  log_analytics_submission(v7, v4);
+  log_analytics_submission(v7, analyticsCopy);
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v7];
   AnalyticsSendEvent();
 }

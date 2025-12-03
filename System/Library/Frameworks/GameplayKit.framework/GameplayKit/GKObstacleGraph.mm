@@ -2,7 +2,7 @@
 + (GKObstacleGraph)graphWithObstacles:(NSArray *)obstacles bufferRadius:(float)bufferRadius;
 + (GKObstacleGraph)graphWithObstacles:(NSArray *)obstacles bufferRadius:(float)bufferRadius nodeClass:(Class)nodeClass;
 - (BOOL)isConnectionLockedFromNode:(id)startNode toNode:(id)endNode;
-- (GKObstacleGraph)initWithCoder:(id)a3;
+- (GKObstacleGraph)initWithCoder:(id)coder;
 - (GKObstacleGraph)initWithObstacles:(NSArray *)obstacles bufferRadius:(float)bufferRadius;
 - (GKObstacleGraph)initWithObstacles:(NSArray *)obstacles bufferRadius:(float)bufferRadius nodeClass:(Class)nodeClass;
 - (NSArray)nodesForObstacle:(GKPolygonObstacle *)obstacle;
@@ -10,7 +10,7 @@
 - (void)connectNodeUsingObstacles:(id)node;
 - (void)connectNodeUsingObstacles:(id)node ignoringBufferRadiusOfObstacles:(NSArray *)obstaclesBufferRadiusToIgnore;
 - (void)connectNodeUsingObstacles:(id)node ignoringObstacles:(NSArray *)obstaclesToIgnore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)lockConnectionFromNode:(id)startNode toNode:(id)endNode;
 - (void)removeObstacles:(NSArray *)obstacles;
 - (void)unlockConnectionFromNode:(id)startNode toNode:(id)endNode;
@@ -64,9 +64,9 @@
   if (v9)
   {
     v9->_nodeClass = nodeClass;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sourceObstacles = v10->_sourceObstacles;
-    v10->_sourceObstacles = v11;
+    v10->_sourceObstacles = array;
 
     *(v10->_cObstacleGraph + 28) = fmaxf(bufferRadius, 0.0);
     v19 = 0u;
@@ -224,12 +224,12 @@
   return self;
 }
 
-- (GKObstacleGraph)initWithCoder:(id)a3
+- (GKObstacleGraph)initWithCoder:(id)coder
 {
   v50[11] = *MEMORY[0x277D85DE8];
   v48.receiver = self;
   v48.super_class = GKObstacleGraph;
-  v37 = a3;
+  coderCopy = coder;
   v3 = [(GKGraph *)&v48 initWithCoder:?];
   if (v3)
   {
@@ -248,12 +248,12 @@
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:11];
     [v36 addObjectsFromArray:v4];
 
-    v5 = [v37 allowedClasses];
-    [v36 unionSet:v5];
+    allowedClasses = [coderCopy allowedClasses];
+    [v36 unionSet:allowedClasses];
 
-    obj = [v37 decodeObjectOfClasses:v36 forKey:@"_sourceObstacles"];
-    v35 = [v37 decodeObjectOfClasses:v36 forKey:@"extrudedObstacles"];
-    [v37 decodeFloatForKey:@"bufferRadius"];
+    obj = [coderCopy decodeObjectOfClasses:v36 forKey:@"_sourceObstacles"];
+    v35 = [coderCopy decodeObjectOfClasses:v36 forKey:@"extrudedObstacles"];
+    [coderCopy decodeFloatForKey:@"bufferRadius"];
     *(v3->_cObstacleGraph + 28) = v6;
     objc_storeStrong(&v3->_sourceObstacles, obj);
     std::vector<GKPolygonObstacle * {__strong}>::reserve(v3->_cObstacleGraph + 11, [v35 count]);
@@ -305,8 +305,8 @@
 
           v15[12] = v17;
           v18 = v3->_cObstacleGraph;
-          v42 = [v47 cPolygonObstacle];
-          std::vector<GKCPolygonObstacle *>::push_back[abi:ne200100](v18 + 64, &v42);
+          cPolygonObstacle = [v47 cPolygonObstacle];
+          std::vector<GKCPolygonObstacle *>::push_back[abi:ne200100](v18 + 64, &cPolygonObstacle);
         }
 
         v11 = [v10 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -324,9 +324,9 @@
       {
         v41 = [obj objectAtIndexedSubscript:v20];
         v40 = [v10 objectAtIndexedSubscript:v20];
-        v21 = [v40 cPolygonObstacle];
+        cPolygonObstacle2 = [v40 cPolygonObstacle];
         v22 = v3->_cObstacleGraph;
-        v23 = [v41 cPolygonObstacle];
+        cPolygonObstacle3 = [v41 cPolygonObstacle];
         v24 = v22[19];
         if (!v24)
         {
@@ -340,7 +340,7 @@ LABEL_23:
           {
             v25 = v24;
             v26 = v24[4];
-            if (v23 >= v26)
+            if (cPolygonObstacle3 >= v26)
             {
               break;
             }
@@ -352,7 +352,7 @@ LABEL_23:
             }
           }
 
-          if (v26 >= v23)
+          if (v26 >= cPolygonObstacle3)
           {
             break;
           }
@@ -364,10 +364,10 @@ LABEL_23:
           }
         }
 
-        v25[5] = v21;
-        v27 = [v41 cPolygonObstacle];
+        v25[5] = cPolygonObstacle2;
+        cPolygonObstacle4 = [v41 cPolygonObstacle];
         v28 = v3->_cObstacleGraph;
-        v29 = [v40 cPolygonObstacle];
+        cPolygonObstacle5 = [v40 cPolygonObstacle];
         v30 = v28[22];
         if (!v30)
         {
@@ -381,7 +381,7 @@ LABEL_30:
           {
             v31 = v30;
             v32 = v30[4];
-            if (v29 >= v32)
+            if (cPolygonObstacle5 >= v32)
             {
               break;
             }
@@ -393,7 +393,7 @@ LABEL_30:
             }
           }
 
-          if (v32 >= v29)
+          if (v32 >= cPolygonObstacle5)
           {
             break;
           }
@@ -405,7 +405,7 @@ LABEL_30:
           }
         }
 
-        v31[5] = v27;
+        v31[5] = cPolygonObstacle4;
 
         ++v20;
       }
@@ -418,18 +418,18 @@ LABEL_30:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GKObstacleGraph;
-  [(GKGraph *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sourceObstacles forKey:@"_sourceObstacles"];
+  [(GKGraph *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sourceObstacles forKey:@"_sourceObstacles"];
   v5 = *(self->_cObstacleGraph + 12) - *(self->_cObstacleGraph + 11);
   v6 = [MEMORY[0x277CBEB18] arrayWithObjects:? count:?];
-  [v4 encodeObject:v6 forKey:@"extrudedObstacles"];
+  [coderCopy encodeObject:v6 forKey:@"extrudedObstacles"];
   [(GKObstacleGraph *)self bufferRadius];
-  [v4 encodeFloat:@"bufferRadius" forKey:?];
+  [coderCopy encodeFloat:@"bufferRadius" forKey:?];
 }
 
 @end

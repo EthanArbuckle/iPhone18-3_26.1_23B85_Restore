@@ -1,19 +1,19 @@
 @interface CKFetchRecordVersionsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchRecordVersionsOperation)init;
-- (CKFetchRecordVersionsOperation)initWithRecordIDs:(id)a3;
+- (CKFetchRecordVersionsOperation)initWithRecordIDs:(id)ds;
 - (id)activityCreate;
 - (id)fetchRecordVersionsCompletionBlock;
 - (id)fetchRecordVersionsProgressBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)setFetchRecordVersionsCompletionBlock:(id)a3;
-- (void)setFetchRecordVersionsProgressBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)setFetchRecordVersionsCompletionBlock:(id)block;
+- (void)setFetchRecordVersionsProgressBlock:(id)block;
 @end
 
 @implementation CKFetchRecordVersionsOperation
@@ -35,10 +35,10 @@
   return v2;
 }
 
-- (CKFetchRecordVersionsOperation)initWithRecordIDs:(id)a3
+- (CKFetchRecordVersionsOperation)initWithRecordIDs:(id)ds
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v7 = objc_msgSend_init(self, v5, v6);
   if (v7)
   {
@@ -46,7 +46,7 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v4;
+    v8 = dsCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v25, v29, 16);
     if (v10)
     {
@@ -90,9 +90,9 @@
   return v7;
 }
 
-- (void)setFetchRecordVersionsProgressBlock:(id)a3
+- (void)setFetchRecordVersionsProgressBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -106,16 +106,16 @@
     v12[2] = sub_1885CA890;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchRecordVersionsProgressBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchRecordVersionsProgressBlock != v6)
+  if (self->_fetchRecordVersionsProgressBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchRecordVersionsProgressBlock = self->_fetchRecordVersionsProgressBlock;
     self->_fetchRecordVersionsProgressBlock = v9;
 LABEL_9:
@@ -158,9 +158,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchRecordVersionsCompletionBlock:(id)a3
+- (void)setFetchRecordVersionsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -174,16 +174,16 @@ LABEL_9:
     v12[2] = sub_1885CAC1C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchRecordVersionsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchRecordVersionsCompletionBlock != v6)
+  if (self->_fetchRecordVersionsCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchRecordVersionsCompletionBlock = self->_fetchRecordVersionsCompletionBlock;
     self->_fetchRecordVersionsCompletionBlock = v9;
 LABEL_9:
@@ -233,41 +233,41 @@ LABEL_9:
   return v2;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  objc_msgSend_setRecordIDs_(v4, v8, v7);
+  objc_msgSend_setRecordIDs_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_desiredKeys(self, v9, v10);
-  objc_msgSend_setDesiredKeys_(v4, v12, v11);
+  objc_msgSend_setDesiredKeys_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_minimumVersionETag(self, v13, v14);
-  objc_msgSend_setMinimumVersionETag_(v4, v16, v15);
+  objc_msgSend_setMinimumVersionETag_(infoCopy, v16, v15);
 
   AssetContent = objc_msgSend_shouldFetchAssetContent(self, v17, v18);
-  objc_msgSend_setShouldFetchAssetContent_(v4, v20, AssetContent);
+  objc_msgSend_setShouldFetchAssetContent_(infoCopy, v20, AssetContent);
   v21.receiver = self;
   v21.super_class = CKFetchRecordVersionsOperation;
-  [(CKDatabaseOperation *)&v21 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v21 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v21.receiver = self;
   v21.super_class = CKFetchRecordVersionsOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v21 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDs(v4, v5, v6, v21.receiver, v21.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v21 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDs(infoCopy, v5, v6, v21.receiver, v21.super_class);
   objc_msgSend_setRecordIDs_(self, v8, v7);
 
-  v11 = objc_msgSend_desiredKeys(v4, v9, v10);
+  v11 = objc_msgSend_desiredKeys(infoCopy, v9, v10);
   objc_msgSend_setDesiredKeys_(self, v12, v11);
 
-  v15 = objc_msgSend_minimumVersionETag(v4, v13, v14);
+  v15 = objc_msgSend_minimumVersionETag(infoCopy, v13, v14);
   objc_msgSend_setMinimumVersionETag_(self, v16, v15);
 
-  AssetContent = objc_msgSend_shouldFetchAssetContent(v4, v17, v18);
+  AssetContent = objc_msgSend_shouldFetchAssetContent(infoCopy, v17, v18);
   objc_msgSend_setShouldFetchAssetContent_(self, v20, AssetContent);
 }
 
@@ -295,10 +295,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_fetchRecordVersionsProgressBlock(self, a2, a3);
+  v5 = objc_msgSend_fetchRecordVersionsProgressBlock(self, a2, run);
   if (v5)
   {
     v8 = v5;
@@ -328,7 +328,7 @@ LABEL_9:
             }
 
             v23 = objc_msgSend_zoneID(*(*(&v29 + 1) + 8 * v22), v18, v19);
-            v25 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, a3);
+            v25 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, run);
 
             if (!v25)
             {
@@ -352,7 +352,7 @@ LABEL_9:
 
       v28.receiver = self;
       v28.super_class = CKFetchRecordVersionsOperation;
-      LOBYTE(v5) = [(CKDatabaseOperation *)&v28 CKOperationShouldRun:a3];
+      LOBYTE(v5) = [(CKDatabaseOperation *)&v28 CKOperationShouldRun:run];
     }
 
     else
@@ -366,9 +366,9 @@ LABEL_13:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -416,7 +416,7 @@ LABEL_13:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_recordErrors(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -427,12 +427,12 @@ LABEL_13:
       v26 = objc_msgSend_recordErrors(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch some record versions");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch some record versions");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -441,7 +441,7 @@ LABEL_13:
   if (v29)
   {
     v32 = objc_msgSend_fetchRecordVersionsCompletionBlock(self, v30, v31);
-    v35 = objc_msgSend_CKClientSuitableError(v4, v33, v34);
+    v35 = objc_msgSend_CKClientSuitableError(errorCopy, v33, v34);
     (v32)[2](v32, v35);
 
     objc_msgSend_setFetchRecordVersionsCompletionBlock_(self, v36, 0);
@@ -450,7 +450,7 @@ LABEL_13:
   objc_msgSend_setFetchRecordVersionsProgressBlock_(self, v30, 0);
   v37.receiver = self;
   v37.super_class = CKFetchRecordVersionsOperation;
-  [(CKOperation *)&v37 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v37 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -527,10 +527,10 @@ LABEL_13:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -574,7 +574,7 @@ LABEL_13:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchRecordVersionsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -582,21 +582,21 @@ LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  tweaksCopy = tweaks;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v9 = objc_msgSend_setWithObjects_(v4, v8, v6, v7, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v10, v9, sel_handleFetchForRecordID_isDeleted_versions_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v10, v9, sel_handleFetchForRecordID_isDeleted_versions_error_, 2, 0);
 
   v11 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v12, v11, sel_handleFetchForRecordID_isDeleted_versions_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v12, v11, sel_handleFetchForRecordID_isDeleted_versions_error_, 3, 0);
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___CKFetchRecordVersionsOperation;
-  objc_msgSendSuper2(&v13, sel_applyDaemonCallbackInterfaceTweaks_, v5);
+  objc_msgSendSuper2(&v13, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

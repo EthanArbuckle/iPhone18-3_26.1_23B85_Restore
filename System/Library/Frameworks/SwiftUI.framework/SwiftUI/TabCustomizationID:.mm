@@ -35,14 +35,14 @@
 
 - (uint64_t)TabCustomizationEntry
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     a2(255);
     lazy protocol witness table accessor for type TabCustomizationID and conformance TabCustomizationID();
     a3();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -50,14 +50,14 @@
 
 - (uint64_t)TabSectionCustomizationEntry
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     a2(255);
     lazy protocol witness table accessor for type TabCustomizationID and conformance TabCustomizationID();
     a3();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

@@ -167,7 +167,7 @@
   *&v58 = v59 * v58 / v44;
   v60 = [CIVector vectorWithX:v73 Y:v40 Z:*&v42];
   v61 = [CIVector vectorWithX:v50 Y:v56 Z:*&v58];
-  v62 = [(CISegmentationFusion *)self kernel];
+  kernel = [(CISegmentationFusion *)self kernel];
   [(CIImage *)self->inputImage extent];
   v64 = v63;
   v66 = v65;
@@ -183,7 +183,7 @@
   v75[1] = @"kCIImageAlphaOne";
   v76[0] = v72;
   v76[1] = MEMORY[0x1E695E118];
-  return [v62 applyWithExtent:v71 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v76, v75, 2), v64, v66, v68, v70}];
+  return [kernel applyWithExtent:v71 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v76, v75, 2), v64, v66, v68, v70}];
 }
 
 @end

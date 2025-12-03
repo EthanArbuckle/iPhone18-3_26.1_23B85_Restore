@@ -4,7 +4,7 @@
 - (CGSize)smallCoverSize;
 - (UIEdgeInsets)coverMargins;
 - (UIEdgeInsets)smallCoverMargins;
-- (void)configureWithSection:(id)a3;
+- (void)configureWithSection:(id)section;
 @end
 
 @implementation BKLibraryBookshelfCellMetrics_List
@@ -23,63 +23,63 @@
   return v3;
 }
 
-- (void)configureWithSection:(id)a3
+- (void)configureWithSection:(id)section
 {
   v13.receiver = self;
   v13.super_class = BKLibraryBookshelfCellMetrics_List;
-  v4 = a3;
-  [(BKLibraryBookshelfCellMetrics_Grid *)&v13 configureWithSection:v4];
-  [v4 floatForKey:{@"cell-height", v13.receiver, v13.super_class}];
+  sectionCopy = section;
+  [(BKLibraryBookshelfCellMetrics_Grid *)&v13 configureWithSection:sectionCopy];
+  [sectionCopy floatForKey:{@"cell-height", v13.receiver, v13.super_class}];
   [(BKLibraryBookshelfCellMetrics_List *)self setCellHeight:?];
-  [v4 floatForKey:@"small-cell-height"];
+  [sectionCopy floatForKey:@"small-cell-height"];
   [(BKLibraryBookshelfCellMetrics_List *)self setSmallCellHeight:?];
-  [v4 sizeForKey:@"cover-size"];
+  [sectionCopy sizeForKey:@"cover-size"];
   [(BKLibraryBookshelfCellMetrics_List *)self setCoverSize:?];
-  [v4 sizeForKey:@"small-cover-size"];
+  [sectionCopy sizeForKey:@"small-cover-size"];
   [(BKLibraryBookshelfCellMetrics_List *)self setSmallCoverSize:?];
-  [v4 insetsForKey:@"cover-margins"];
+  [sectionCopy insetsForKey:@"cover-margins"];
   [(BKLibraryBookshelfCellMetrics_List *)self setCoverMargins:?];
-  [v4 insetsForKey:@"small-cover-margins"];
+  [sectionCopy insetsForKey:@"small-cover-margins"];
   [(BKLibraryBookshelfCellMetrics_List *)self setSmallCoverMargins:?];
-  [v4 floatForKey:@"title-spacing"];
+  [sectionCopy floatForKey:@"title-spacing"];
   [(BKLibraryBookshelfCellMetrics_List *)self setTitleSpacing:?];
-  [v4 floatForKey:@"author-spacing"];
+  [sectionCopy floatForKey:@"author-spacing"];
   [(BKLibraryBookshelfCellMetrics_List *)self setAuthorSpacing:?];
-  [v4 floatForKey:@"edit-margin"];
+  [sectionCopy floatForKey:@"edit-margin"];
   [(BKLibraryBookshelfCellMetrics_List *)self setEditModeMargin:?];
-  v5 = [v4 colorForKey:@"sep-color"];
+  v5 = [sectionCopy colorForKey:@"sep-color"];
   [(BKLibraryBookshelfCellMetrics_List *)self setSeparatorColor:v5];
 
-  v6 = [v4 colorForKey:@"drag-bar-color"];
+  v6 = [sectionCopy colorForKey:@"drag-bar-color"];
   [(BKLibraryBookshelfCellMetrics_List *)self setDragBarTintColor:v6];
 
-  -[BKLibraryBookshelfCellMetrics_List setShrinkInEditMode:](self, "setShrinkInEditMode:", [v4 BOOLForKey:@"edit-mode-shrink"]);
-  [v4 floatForKey:@"edit-mode-shrink-amount"];
+  -[BKLibraryBookshelfCellMetrics_List setShrinkInEditMode:](self, "setShrinkInEditMode:", [sectionCopy BOOLForKey:@"edit-mode-shrink"]);
+  [sectionCopy floatForKey:@"edit-mode-shrink-amount"];
   [(BKLibraryBookshelfCellMetrics_List *)self setShrinkAmount:?];
-  [v4 floatForKey:@"edit-mode-shrink-alpha"];
+  [sectionCopy floatForKey:@"edit-mode-shrink-alpha"];
   [(BKLibraryBookshelfCellMetrics_List *)self setShrinkAlpha:?];
-  [v4 floatForKey:@"drag-corner-radius"];
+  [sectionCopy floatForKey:@"drag-corner-radius"];
   [(BKLibraryBookshelfCellMetrics_List *)self setDragCornerRadius:?];
-  [v4 floatForKey:@"drag-shadow-opacity"];
+  [sectionCopy floatForKey:@"drag-shadow-opacity"];
   [(BKLibraryBookshelfCellMetrics_List *)self setDragShadowOpacity:?];
-  [v4 floatForKey:@"drag-shadow-radius"];
+  [sectionCopy floatForKey:@"drag-shadow-radius"];
   [(BKLibraryBookshelfCellMetrics_List *)self setDragShadowRadius:?];
-  [v4 floatForKey:@"audiobook-control-diameter"];
+  [sectionCopy floatForKey:@"audiobook-control-diameter"];
   [(BKLibraryBookshelfCellMetrics_List *)self setAudiobookControlDiameter:?];
-  [v4 floatForKey:@"font-scale"];
+  [sectionCopy floatForKey:@"font-scale"];
   [(BKLibraryBookshelfCellMetrics_List *)self setFontScale:?];
-  v7 = [v4 fontSpecForKey:@"titleFont"];
+  v7 = [sectionCopy fontSpecForKey:@"titleFont"];
   [(BKLibraryBookshelfCellMetrics_List *)self fontScale];
   v8 = [v7 fontSpecWithScale:?];
-  v9 = [v8 attributesForAttributedString];
-  [(BKLibraryBookshelfCellMetrics_List *)self setTitleFontAttributes:v9];
+  attributesForAttributedString = [v8 attributesForAttributedString];
+  [(BKLibraryBookshelfCellMetrics_List *)self setTitleFontAttributes:attributesForAttributedString];
 
-  v10 = [v4 fontSpecForKey:@"authorFont"];
+  v10 = [sectionCopy fontSpecForKey:@"authorFont"];
 
   [(BKLibraryBookshelfCellMetrics_List *)self fontScale];
   v11 = [v10 fontSpecWithScale:?];
-  v12 = [v11 attributesForAttributedString];
-  [(BKLibraryBookshelfCellMetrics_List *)self setAuthorFontAttributes:v12];
+  attributesForAttributedString2 = [v11 attributesForAttributedString];
+  [(BKLibraryBookshelfCellMetrics_List *)self setAuthorFontAttributes:attributesForAttributedString2];
 }
 
 - (CGSize)coverSize

@@ -1,50 +1,50 @@
 @interface STKNotifySessionData
-- (STKNotifySessionData)initWithText:(id)a3 simLabel:(id)a4 notifyType:(int64_t)a5;
-- (STKNotifySessionData)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (STKNotifySessionData)initWithText:(id)text simLabel:(id)label notifyType:(int64_t)type;
+- (STKNotifySessionData)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation STKNotifySessionData
 
-- (STKNotifySessionData)initWithText:(id)a3 simLabel:(id)a4 notifyType:(int64_t)a5
+- (STKNotifySessionData)initWithText:(id)text simLabel:(id)label notifyType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  textCopy = text;
+  labelCopy = label;
+  if (!type)
   {
     [STKNotifySessionData initWithText:a2 simLabel:self notifyType:?];
   }
 
   v14.receiver = self;
   v14.super_class = STKNotifySessionData;
-  v11 = [(STKTextSessionData *)&v14 initWithText:v9 simLabel:v10];
+  v11 = [(STKTextSessionData *)&v14 initWithText:textCopy simLabel:labelCopy];
   v12 = v11;
   if (v11)
   {
-    v11->_notifyType = a5;
+    v11->_notifyType = type;
   }
 
   return v12;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v5.receiver = self;
   v5.super_class = STKNotifySessionData;
-  v4 = a3;
-  [(STKTextSessionData *)&v5 encodeWithXPCDictionary:v4];
-  xpc_dictionary_set_uint64(v4, "_notifyType", self->_notifyType);
+  dictionaryCopy = dictionary;
+  [(STKTextSessionData *)&v5 encodeWithXPCDictionary:dictionaryCopy];
+  xpc_dictionary_set_uint64(dictionaryCopy, "_notifyType", self->_notifyType);
 }
 
-- (STKNotifySessionData)initWithXPCDictionary:(id)a3
+- (STKNotifySessionData)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = STKNotifySessionData;
-  v5 = [(STKTextSessionData *)&v7 initWithXPCDictionary:v4];
+  v5 = [(STKTextSessionData *)&v7 initWithXPCDictionary:dictionaryCopy];
   if (v5)
   {
-    v5->_notifyType = xpc_dictionary_get_uint64(v4, "_notifyType");
+    v5->_notifyType = xpc_dictionary_get_uint64(dictionaryCopy, "_notifyType");
   }
 
   return v5;

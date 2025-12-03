@@ -1,10 +1,10 @@
 @interface NTKWidgetMetrics
 + (NTKWidgetMetrics)sharedInstance;
-- (id)_metricsForDisplayFamily:(int64_t)a3 fontStyle:(int64_t)a4 device:(id)a5;
-- (id)alternateMetricsForWidgetFamily:(int64_t)a3 device:(id)a4;
-- (id)defaultMetricsForWidgetFamily:(int64_t)a3 device:(id)a4;
-- (id)metricsForComplicationFamily:(int64_t)a3 fontStyle:(int64_t)a4 device:(id)a5;
-- (id)metricsSpecificationForDevice:(id)a3;
+- (id)_metricsForDisplayFamily:(int64_t)family fontStyle:(int64_t)style device:(id)device;
+- (id)alternateMetricsForWidgetFamily:(int64_t)family device:(id)device;
+- (id)defaultMetricsForWidgetFamily:(int64_t)family device:(id)device;
+- (id)metricsForComplicationFamily:(int64_t)family fontStyle:(int64_t)style device:(id)device;
+- (id)metricsSpecificationForDevice:(id)device;
 @end
 
 @implementation NTKWidgetMetrics
@@ -28,28 +28,28 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
   sharedInstance_metrics = v0;
 }
 
-- (id)_metricsForDisplayFamily:(int64_t)a3 fontStyle:(int64_t)a4 device:(id)a5
+- (id)_metricsForDisplayFamily:(int64_t)family fontStyle:(int64_t)style device:(id)device
 {
   v40[16] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if (a3 == -1)
+  deviceCopy = device;
+  if (family == -1)
   {
     v26 = 0;
   }
 
   else
   {
-    v31 = v7;
-    v8 = v7;
+    v31 = deviceCopy;
+    v8 = deviceCopy;
     os_unfair_lock_lock(&_MetricConstants_lock);
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = ___MetricConstants_block_invoke;
     v40[3] = &__block_descriptor_40_e19_B16__0__CLKDevice_8l;
-    v40[4] = a4;
+    v40[4] = style;
     ___MetricConstants_block_invoke(v40, v8);
 
-    v9 = &_MetricConstants_constants[13 * a3];
+    v9 = &_MetricConstants_constants[13 * family];
     v10 = *v9;
     v11 = *(v9 + 1);
     v12 = *(v9 + 2);
@@ -63,7 +63,7 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
     v15 = v14;
     if ([v15 count])
     {
-      v16 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -87,10 +87,10 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
             v23 = v22;
             if (v22)
             {
-              v24 = _WidgetMetricsWithFont(v22, a4);
+              v24 = _WidgetMetricsWithFont(v22, style);
               if (v24)
               {
-                [v16 setObject:v24 forKey:v21];
+                [dictionary setObject:v24 forKey:v21];
               }
             }
           }
@@ -101,7 +101,7 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
         while (v18);
       }
 
-      v25 = [v16 copy];
+      v25 = [dictionary copy];
     }
 
     else
@@ -112,50 +112,50 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
     v27 = objc_alloc(MEMORY[0x277CFA3F0]);
     v28 = objc_alloc(MEMORY[0x277CFA3E8]);
     v29 = [v28 initWithSafeAreaInsets:*MEMORY[0x277CFA180] layoutInsets:*(MEMORY[0x277CFA180] + 8) contentMargins:*(MEMORY[0x277CFA180] + 16) backgroundRemovedContentMargins:{*(MEMORY[0x277CFA180] + 24), *MEMORY[0x277CFA180], *(MEMORY[0x277CFA180] + 8), *(MEMORY[0x277CFA180] + 16), *(MEMORY[0x277CFA180] + 24)}];
-    v26 = [v27 initWithSize:a4 cornerRadius:v29 scaleFactor:v25 fontStyle:v10 safeAreaInsets:v11 widgetGroupMargins:v12 nestedContentMetrics:{v13, v33, v32, v35, v34}];
+    v26 = [v27 initWithSize:style cornerRadius:v29 scaleFactor:v25 fontStyle:v10 safeAreaInsets:v11 widgetGroupMargins:v12 nestedContentMetrics:{v13, v33, v32, v35, v34}];
 
-    v7 = v31;
+    deviceCopy = v31;
   }
 
   return v26;
 }
 
-- (id)defaultMetricsForWidgetFamily:(int64_t)a3 device:(id)a4
+- (id)defaultMetricsForWidgetFamily:(int64_t)family device:(id)device
 {
-  v6 = _displayFamilyForWidgetFamily(a3);
+  v6 = _displayFamilyForWidgetFamily(family);
 
-  return [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v6 fontStyle:3 device:a4];
+  return [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v6 fontStyle:3 device:device];
 }
 
-- (id)metricsForComplicationFamily:(int64_t)a3 fontStyle:(int64_t)a4 device:(id)a5
+- (id)metricsForComplicationFamily:(int64_t)family fontStyle:(int64_t)style device:(id)device
 {
-  if ((a3 - 3) > 9)
+  if ((family - 3) > 9)
   {
     v5 = -1;
   }
 
   else
   {
-    v5 = qword_22DCE78C0[a3 - 3];
+    v5 = qword_22DCE78C0[family - 3];
   }
 
-  return [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v5 fontStyle:a4 device:a5];
+  return [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v5 fontStyle:style device:device];
 }
 
-- (id)alternateMetricsForWidgetFamily:(int64_t)a3 device:(id)a4
+- (id)alternateMetricsForWidgetFamily:(int64_t)family device:(id)device
 {
-  v6 = a4;
-  v7 = [v6 isUltra];
-  v8 = v7;
+  deviceCopy = device;
+  isUltra = [deviceCopy isUltra];
+  v8 = isUltra;
   v9 = 0;
-  if (a3 > 9)
+  if (family > 9)
   {
-    if (a3 == 10)
+    if (family == 10)
     {
-      if (v7)
+      if (isUltra)
       {
-        v11 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:2 fontStyle:5 device:v6];
-        v17 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:2 fontStyle:10 device:v6];
+        v11 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:2 fontStyle:5 device:deviceCopy];
+        v17 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:2 fontStyle:10 device:deviceCopy];
         v9 = [MEMORY[0x277CBEB98] setWithObjects:{v11, v17, 0}];
 
         goto LABEL_15;
@@ -164,17 +164,17 @@ void __34__NTKWidgetMetrics_sharedInstance__block_invoke()
 
     else
     {
-      if (a3 != 11)
+      if (family != 11)
       {
         goto LABEL_19;
       }
 
-      if (v7)
+      if (isUltra)
       {
-        v15 = self;
+        selfCopy2 = self;
         v16 = 4;
 LABEL_12:
-        v11 = [(NTKWidgetMetrics *)v15 _metricsForDisplayFamily:v16 fontStyle:10 device:v6];
+        v11 = [(NTKWidgetMetrics *)selfCopy2 _metricsForDisplayFamily:v16 fontStyle:10 device:deviceCopy];
         v9 = [MEMORY[0x277CBEB98] setWithObjects:{v11, 0}];
 LABEL_15:
 
@@ -185,15 +185,15 @@ LABEL_15:
 
   else
   {
-    if ((a3 - 7) < 2)
+    if ((family - 7) < 2)
     {
-      v10 = _displayFamilyForWidgetFamily(a3);
-      v11 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:4 device:v6];
-      v12 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:12 device:v6];
+      v10 = _displayFamilyForWidgetFamily(family);
+      v11 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:4 device:deviceCopy];
+      v12 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:12 device:deviceCopy];
       if (v8)
       {
-        v13 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:5 device:v6];
-        v14 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:10 device:v6];
+        v13 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:5 device:deviceCopy];
+        v14 = [(NTKWidgetMetrics *)self _metricsForDisplayFamily:v10 fontStyle:10 device:deviceCopy];
       }
 
       else
@@ -207,14 +207,14 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (a3 != 9)
+    if (family != 9)
     {
       goto LABEL_19;
     }
 
-    if (v7)
+    if (isUltra)
     {
-      v15 = self;
+      selfCopy2 = self;
       v16 = 3;
       goto LABEL_12;
     }
@@ -226,16 +226,16 @@ LABEL_19:
   return v9;
 }
 
-- (id)metricsSpecificationForDevice:(id)a3
+- (id)metricsSpecificationForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&metricsSpecificationForDevice__lock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NTKWidgetMetrics_metricsSpecificationForDevice___block_invoke;
   v7[3] = &unk_27877DDA0;
   v7[4] = self;
-  __50__NTKWidgetMetrics_metricsSpecificationForDevice___block_invoke(v7, v4);
+  __50__NTKWidgetMetrics_metricsSpecificationForDevice___block_invoke(v7, deviceCopy);
 
   v5 = metricsSpecificationForDevice____specifications;
   os_unfair_lock_unlock(&metricsSpecificationForDevice__lock);

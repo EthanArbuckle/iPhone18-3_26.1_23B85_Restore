@@ -1,17 +1,17 @@
 @interface SSSCropOverlayGrabberView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SSSCropOverlayGrabberView)initWithEdge:(unint64_t)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SSSCropOverlayGrabberView)initWithEdge:(unint64_t)edge;
 - (void)layoutSubviews;
-- (void)setPrefersRoundedEdges:(BOOL)a3;
+- (void)setPrefersRoundedEdges:(BOOL)edges;
 @end
 
 @implementation SSSCropOverlayGrabberView
 
-- (SSSCropOverlayGrabberView)initWithEdge:(unint64_t)a3
+- (SSSCropOverlayGrabberView)initWithEdge:(unint64_t)edge
 {
   v7.receiver = self;
   v7.super_class = SSSCropOverlayGrabberView;
-  v3 = [(SSSCropOverlayLineView *)&v7 initWithEdge:a3];
+  v3 = [(SSSCropOverlayLineView *)&v7 initWithEdge:edge];
   v4 = objc_alloc_init(UIView);
   hitTestView = v3->_hitTestView;
   v3->_hitTestView = v4;
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (void)setPrefersRoundedEdges:(BOOL)a3
+- (void)setPrefersRoundedEdges:(BOOL)edges
 {
-  self->_prefersRoundedEdges = _SSScreenshotsRedesign2025Enabled() & a3;
+  self->_prefersRoundedEdges = _SSScreenshotsRedesign2025Enabled() & edges;
 
   [(SSSCropOverlayGrabberView *)self setNeedsLayout];
 }
@@ -119,19 +119,19 @@ LABEL_11:
   [(SSSCropOverlayGrabberView *)self _setContinuousCornerRadius:v16];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   v10.receiver = self;
   v10.super_class = SSSCropOverlayGrabberView;
-  v7 = a4;
-  v8 = [(SSSCropOverlayGrabberView *)&v10 pointInside:v7 withEvent:x, y];
-  [(UIView *)v6->_hitTestView convertPoint:v6 fromView:x, y, v10.receiver, v10.super_class];
-  LOBYTE(v6) = [(UIView *)v6->_hitTestView pointInside:v7 withEvent:?];
+  eventCopy = event;
+  v8 = [(SSSCropOverlayGrabberView *)&v10 pointInside:eventCopy withEvent:x, y];
+  [(UIView *)selfCopy->_hitTestView convertPoint:selfCopy fromView:x, y, v10.receiver, v10.super_class];
+  LOBYTE(selfCopy) = [(UIView *)selfCopy->_hitTestView pointInside:eventCopy withEvent:?];
 
-  return (v8 | v6) & 1;
+  return (v8 | selfCopy) & 1;
 }
 
 @end

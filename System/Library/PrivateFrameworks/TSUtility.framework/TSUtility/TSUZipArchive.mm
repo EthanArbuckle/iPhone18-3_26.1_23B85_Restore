@@ -1,16 +1,16 @@
 @interface TSUZipArchive
-- (BOOL)readCentralFileHeaderWithBuffer:(const void *)a3 dataSize:(unint64_t *)a4;
+- (BOOL)readCentralFileHeaderWithBuffer:(const void *)buffer dataSize:(unint64_t *)size;
 - (TSUReadChannel)readChannel;
 - (TSUZipArchive)init;
 - (id)debugDescription;
-- (id)readChannelForEntry:(id)a3;
+- (id)readChannelForEntry:(id)entry;
 - (unint64_t)archiveLength;
-- (void)addEntry:(id)a3;
-- (void)enumerateEntriesUsingBlock:(id)a3;
-- (void)readArchiveWithQueue:(id)a3 completion:(id)a4;
-- (void)readCentralDirectoryData:(id)a3 entryCount:(unint64_t)a4 queue:(id)a5 completion:(id)a6;
-- (void)readCentralDirectoryWithEntryCount:(unint64_t)a3 offset:(int64_t)a4 size:(int64_t)a5 channel:(id)a6 queue:(id)a7 completion:(id)a8;
-- (void)readEndOfCentralDirectoryData:(id)a3 channel:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)addEntry:(id)entry;
+- (void)enumerateEntriesUsingBlock:(id)block;
+- (void)readArchiveWithQueue:(id)queue completion:(id)completion;
+- (void)readCentralDirectoryData:(id)data entryCount:(unint64_t)count queue:(id)queue completion:(id)completion;
+- (void)readCentralDirectoryWithEntryCount:(unint64_t)count offset:(int64_t)offset size:(int64_t)size channel:(id)channel queue:(id)queue completion:(id)completion;
+- (void)readEndOfCentralDirectoryData:(id)data channel:(id)channel queue:(id)queue completion:(id)completion;
 @end
 
 @implementation TSUZipArchive
@@ -30,27 +30,27 @@
   return v2;
 }
 
-- (void)readArchiveWithQueue:(id)a3 completion:(id)a4
+- (void)readArchiveWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TSUZipArchive *)self archiveLength];
+  queueCopy = queue;
+  completionCopy = completion;
+  archiveLength = [(TSUZipArchive *)self archiveLength];
   v9 = dispatch_get_global_queue(0, 0);
-  v10 = [(TSUZipArchive *)self readChannel];
-  v11 = v10;
-  if (v10)
+  readChannel = [(TSUZipArchive *)self readChannel];
+  v11 = readChannel;
+  if (readChannel)
   {
-    [v10 setLowWater:-1];
+    [readChannel setLowWater:-1];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __49__TSUZipArchive_readArchiveWithQueue_completion___block_invoke;
     v17[3] = &unk_279D663B0;
     v17[4] = self;
     v18 = v11;
-    v19 = v6;
-    v20 = v7;
-    v12 = v7;
-    [v18 readFromOffset:v8 - 22 length:22 queue:v9 handler:v17];
+    v19 = queueCopy;
+    v20 = completionCopy;
+    v12 = completionCopy;
+    [v18 readFromOffset:archiveLength - 22 length:22 queue:v9 handler:v17];
 
     v13 = v18;
   }
@@ -61,9 +61,9 @@
     block[1] = 3221225472;
     block[2] = __49__TSUZipArchive_readArchiveWithQueue_completion___block_invoke_3;
     block[3] = &unk_279D663D8;
-    v16 = v7;
-    v14 = v7;
-    dispatch_async(v6, block);
+    v16 = completionCopy;
+    v14 = completionCopy;
+    dispatch_async(queueCopy, block);
     v13 = v16;
   }
 }
@@ -106,14 +106,14 @@ void __49__TSUZipArchive_readArchiveWithQueue_completion___block_invoke_3(uint64
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)readEndOfCentralDirectoryData:(id)a3 channel:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)readEndOfCentralDirectoryData:(id)data channel:(id)channel queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  channelCopy = channel;
+  queueCopy = queue;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v17 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v17 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   if (size_ptr == 22 || (+[TSUAssertionHandler currentHandler](TSUAssertionHandler, "currentHandler"), v18 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipArchive readEndOfCentralDirectoryData:channel:queue:completion:]"], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipArchive.m"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "handleFailureInFunction:file:lineNumber:description:", v19, v20, 91, @"Wrong data size"), v20, v19, v18, size_ptr >= 0x16))
   {
     if (*buffer_ptr == 101010256)
@@ -154,8 +154,8 @@ void __49__TSUZipArchive_readArchiveWithQueue_completion___block_invoke_3(uint64
   block[1] = 3221225472;
   block[2] = __72__TSUZipArchive_readEndOfCentralDirectoryData_channel_queue_completion___block_invoke;
   block[3] = &unk_279D663D8;
-  v25 = v12;
-  dispatch_async(v11, block);
+  v25 = completionCopy;
+  dispatch_async(queueCopy, block);
 
 LABEL_10:
 }
@@ -167,24 +167,24 @@ void __72__TSUZipArchive_readEndOfCentralDirectoryData_channel_queue_completion_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)readCentralDirectoryWithEntryCount:(unint64_t)a3 offset:(int64_t)a4 size:(int64_t)a5 channel:(id)a6 queue:(id)a7 completion:(id)a8
+- (void)readCentralDirectoryWithEntryCount:(unint64_t)count offset:(int64_t)offset size:(int64_t)size channel:(id)channel queue:(id)queue completion:(id)completion
 {
-  v14 = a7;
-  v15 = a8;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = dispatch_get_global_queue(0, 0);
-  v17 = a6;
-  [v17 setLowWater:-1];
+  channelCopy = channel;
+  [channelCopy setLowWater:-1];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __89__TSUZipArchive_readCentralDirectoryWithEntryCount_offset_size_channel_queue_completion___block_invoke;
   v20[3] = &unk_279D66400;
   v20[4] = self;
-  v21 = v14;
-  v22 = v15;
-  v23 = a3;
-  v18 = v15;
-  v19 = v14;
-  [v17 readFromOffset:a4 length:a5 queue:v16 handler:v20];
+  v21 = queueCopy;
+  v22 = completionCopy;
+  countCopy = count;
+  v18 = completionCopy;
+  v19 = queueCopy;
+  [channelCopy readFromOffset:offset length:size queue:v16 handler:v20];
 }
 
 void __89__TSUZipArchive_readCentralDirectoryWithEntryCount_offset_size_channel_queue_completion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -217,14 +217,14 @@ void __89__TSUZipArchive_readCentralDirectoryWithEntryCount_offset_size_channel_
   }
 }
 
-- (void)readCentralDirectoryData:(id)a3 entryCount:(unint64_t)a4 queue:(id)a5 completion:(id)a6
+- (void)readCentralDirectoryData:(id)data entryCount:(unint64_t)count queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  queueCopy = queue;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v12 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
-  if (!a4)
+  v12 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
+  if (!count)
   {
     goto LABEL_7;
   }
@@ -239,7 +239,7 @@ void __89__TSUZipArchive_readCentralDirectoryWithEntryCount_offset_size_channel_
     }
   }
 
-  while (v13++ < a4);
+  while (v13++ < count);
   if (!v14)
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -247,8 +247,8 @@ void __89__TSUZipArchive_readCentralDirectoryWithEntryCount_offset_size_channel_
     block[2] = __70__TSUZipArchive_readCentralDirectoryData_entryCount_queue_completion___block_invoke_2;
     block[3] = &unk_279D663D8;
     v16 = &v21;
-    v21 = v11;
-    v19 = v11;
+    v21 = completionCopy;
+    v19 = completionCopy;
     v18 = block;
   }
 
@@ -261,12 +261,12 @@ LABEL_7:
     v22[3] = &unk_279D66388;
     v16 = &v23;
     v22[4] = self;
-    v23 = v11;
-    v17 = v11;
+    v23 = completionCopy;
+    v17 = completionCopy;
     v18 = v22;
   }
 
-  dispatch_async(v10, v18);
+  dispatch_async(queueCopy, v18);
 }
 
 void __70__TSUZipArchive_readCentralDirectoryData_entryCount_queue_completion___block_invoke_2(uint64_t a1)
@@ -276,22 +276,22 @@ void __70__TSUZipArchive_readCentralDirectoryData_entryCount_queue_completion___
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)readCentralFileHeaderWithBuffer:(const void *)a3 dataSize:(unint64_t *)a4
+- (BOOL)readCentralFileHeaderWithBuffer:(const void *)buffer dataSize:(unint64_t *)size
 {
   v7 = objc_alloc_init(TSUZipEntry);
   v12 = v7;
-  if (*a4 <= 0x2D)
+  if (*size <= 0x2D)
   {
     v16 = @"Central directory too short";
     v17 = 217;
     goto LABEL_9;
   }
 
-  v13 = *a3;
-  v14 = *a3 + 46;
-  v15 = **a3;
-  *a4 -= 46;
-  *a3 = v14;
+  v13 = *buffer;
+  v14 = *buffer + 46;
+  v15 = **buffer;
+  *size -= 46;
+  *buffer = v14;
   if (v15 != 33639248)
   {
     v16 = @"Central directory file header has bad signature";
@@ -328,20 +328,20 @@ LABEL_9:
   [(TSUZipEntry *)v12 setOffset:*(v13 + 42)];
   [(TSUZipEntry *)v12 setNameLength:*(v13 + 14)];
   [(TSUZipEntry *)v12 setExtraFieldLength:*(v13 + 15)];
-  if (*a4 < *(v13 + 14))
+  if (*size < *(v13 + 14))
   {
     v16 = @"Central directory too short";
     v17 = 274;
     goto LABEL_9;
   }
 
-  v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*a3 length:*(v13 + 14) encoding:4];
+  v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*buffer length:*(v13 + 14) encoding:4];
   [(TSUZipEntry *)v12 setName:v20];
   v21 = *(v13 + 14);
-  v22 = *a4 - v21;
-  *a4 = v22;
-  v23 = *a3 + v21;
-  *a3 = v23;
+  v22 = *size - v21;
+  *size = v22;
+  v23 = *buffer + v21;
+  *buffer = v23;
   if (!v20)
   {
     v16 = @"Couldn't read name";
@@ -354,8 +354,8 @@ LABEL_9:
   v26 = v22 - v24;
   if (v25)
   {
-    *a4 = v26;
-    *a3 = &v23[v24];
+    *size = v26;
+    *buffer = &v23[v24];
     [(TSUZipArchive *)self addEntry:v12];
 
     v18 = 1;
@@ -371,34 +371,34 @@ LABEL_11:
   return v18;
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   entries = self->_entries;
-  v4 = a3;
-  v5 = [v4 name];
-  [(NSMutableDictionary *)entries setObject:v4 forKeyedSubscript:v5];
+  entryCopy = entry;
+  name = [entryCopy name];
+  [(NSMutableDictionary *)entries setObject:entryCopy forKeyedSubscript:name];
 }
 
-- (id)readChannelForEntry:(id)a3
+- (id)readChannelForEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   entries = self->_entries;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)entries objectForKeyedSubscript:v6];
+  name = [entryCopy name];
+  v7 = [(NSMutableDictionary *)entries objectForKeyedSubscript:name];
 
-  if (v7 == v4)
+  if (v7 == entryCopy)
   {
     v12 = [TSUZipReadChannel alloc];
-    v8 = [(TSUZipArchive *)self readChannel];
-    v11 = [(TSUZipReadChannel *)v12 initWithEntry:v4 archiveReadChannel:v8];
+    readChannel = [(TSUZipArchive *)self readChannel];
+    v11 = [(TSUZipReadChannel *)v12 initWithEntry:entryCopy archiveReadChannel:readChannel];
   }
 
   else
   {
-    v8 = +[TSUAssertionHandler currentHandler];
+    readChannel = +[TSUAssertionHandler currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipArchive readChannelForEntry:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipArchive.m"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:319 description:@"Entry isn't part of this archive"];
+    [readChannel handleFailureInFunction:v9 file:v10 lineNumber:319 description:@"Entry isn't part of this archive"];
 
     v11 = 0;
   }
@@ -406,16 +406,16 @@ LABEL_11:
   return v11;
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   entries = self->_entries;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__TSUZipArchive_enumerateEntriesUsingBlock___block_invoke;
   v7[3] = &unk_279D66428;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)entries enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -454,16 +454,16 @@ LABEL_11:
 - (id)debugDescription
 {
   v3 = [TSUDescription descriptionWithObject:self class:objc_opt_class()];
-  v4 = [(TSUZipArchive *)self readChannel];
-  v5 = TSUObjectReferenceDescription(v4);
+  readChannel = [(TSUZipArchive *)self readChannel];
+  v5 = TSUObjectReferenceDescription(readChannel);
   [v3 addField:@"readChannel" value:v5];
 
   v6 = TSUCFArrayDescription([(NSMutableDictionary *)self->_entries allValues]);
   [v3 addField:@"entries" value:v6];
 
-  v7 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v7;
+  return descriptionString;
 }
 
 @end

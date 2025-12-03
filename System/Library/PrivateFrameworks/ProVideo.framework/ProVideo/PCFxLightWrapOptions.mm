@@ -1,34 +1,34 @@
 @interface PCFxLightWrapOptions
-- (PCFxLightWrapOptions)initWithLRBlendOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCFxLightWrapOptions)initWithLRBlendOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PCFxLightWrapOptions
 
-- (PCFxLightWrapOptions)initWithLRBlendOptions:(id)a3
+- (PCFxLightWrapOptions)initWithLRBlendOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = PCFxLightWrapOptions;
   v4 = [(PCFxBlendOptions *)&v6 initWithBlendOptions:?];
   if (v4)
   {
-    [a3 getAmount];
+    [options getAmount];
     [(PCFxLightWrapOptions *)v4 setAmount:?];
-    [a3 getIntensity];
+    [options getIntensity];
     [(PCFxLightWrapOptions *)v4 setIntensity:?];
-    [a3 getIntensityScale];
+    [options getIntensityScale];
     [(PCFxLightWrapOptions *)v4 setIntensityScale:?];
-    [a3 getOpacity];
+    [options getOpacity];
     [(PCFxLightWrapOptions *)v4 setOpacity:?];
-    -[PCFxLightWrapOptions setLRBlendMode:](v4, "setLRBlendMode:", [a3 getLRBlendMode]);
+    -[PCFxLightWrapOptions setLRBlendMode:](v4, "setLRBlendMode:", [options getLRBlendMode]);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PCFxLightWrapOptions allocWithZone:a3];
+  v4 = [PCFxLightWrapOptions allocWithZone:zone];
 
   return [(PCFxLightWrapOptions *)v4 initWithLRBlendOptions:self];
 }

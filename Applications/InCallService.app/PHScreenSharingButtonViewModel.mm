@@ -1,8 +1,8 @@
 @interface PHScreenSharingButtonViewModel
 - (NSString)callUUID;
-- (id)listenWith:(id)a3;
+- (id)listenWith:(id)with;
 - (int64_t)currentState;
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4;
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed;
 - (void)userDidRequestScreenSharingToEnd;
 - (void)userIsPresentingShareSheet;
 @end
@@ -11,7 +11,7 @@
 
 - (NSString)callUUID
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015B538();
 
   v3 = String._bridgeToObjectiveC()();
@@ -21,7 +21,7 @@
 
 - (int64_t)currentState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015B5B8();
 
   return v3;
@@ -29,32 +29,32 @@
 
 - (void)userDidRequestScreenSharingToEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015BFD4();
 }
 
 - (void)userIsPresentingShareSheet
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015C16C();
 }
 
-- (id)listenWith:(id)a3
+- (id)listenWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_10015C644(sub_10015D840, v5);
 
   return v7;
 }
 
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed
 {
-  v6 = a3;
-  v7 = self;
-  sub_10015D220(v7, a4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_10015D220(selfCopy, changed);
 }
 
 @end

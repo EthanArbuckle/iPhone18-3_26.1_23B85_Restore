@@ -1,10 +1,10 @@
 @interface WFListeningModeDeviceAccessResource
 - (BOOL)supportedDevicesAreFetched;
-- (WFListeningModeDeviceAccessResource)initWithDefinition:(id)a3;
+- (WFListeningModeDeviceAccessResource)initWithDefinition:(id)definition;
 - (id)localizedAccessResourceErrorString;
 - (id)unavailableAccessResourceError;
 - (unint64_t)status;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 - (void)makeSettingsClientIfNecessary;
 @end
 
@@ -12,19 +12,19 @@
 
 - (BOOL)supportedDevicesAreFetched
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_supportedDevicesLock);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__WFListeningModeDeviceAccessResource_supportedDevicesAreFetched__block_invoke;
   aBlock[3] = &unk_278C224A0;
-  aBlock[4] = v2;
+  aBlock[4] = selfCopy;
   v3 = _Block_copy(aBlock);
-  v4 = [(WFListeningModeDeviceAccessResource *)v2 supportedDevices];
-  LOBYTE(v2) = v4 != 0;
+  supportedDevices = [(WFListeningModeDeviceAccessResource *)selfCopy supportedDevices];
+  LOBYTE(selfCopy) = supportedDevices != 0;
 
   v3[2](v3);
-  return v2;
+  return selfCopy;
 }
 
 - (void)makeSettingsClientIfNecessary
@@ -116,9 +116,9 @@ void __68__WFListeningModeDeviceAccessResource_makeSettingsClientIfNecessary__bl
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = WFLocalizedString(@"Your %@ has not connected to any devices that support Noise Control modes.");
-  v4 = [MEMORY[0x277D79F18] currentDevice];
-  v5 = [v4 localizedModel];
-  v6 = [v2 localizedStringWithFormat:v3, v5];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  localizedModel = [currentDevice localizedModel];
+  v6 = [v2 localizedStringWithFormat:v3, localizedModel];
 
   return v6;
 }
@@ -129,8 +129,8 @@ void __68__WFListeningModeDeviceAccessResource_makeSettingsClientIfNecessary__bl
   v2 = MEMORY[0x277CCA9B8];
   v3 = *MEMORY[0x277D7CB08];
   v9 = *MEMORY[0x277CCA450];
-  v4 = [(WFListeningModeDeviceAccessResource *)self localizedAccessResourceErrorString];
-  v10[0] = v4;
+  localizedAccessResourceErrorString = [(WFListeningModeDeviceAccessResource *)self localizedAccessResourceErrorString];
+  v10[0] = localizedAccessResourceErrorString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [v2 errorWithDomain:v3 code:0 userInfo:v5];
 
@@ -144,8 +144,8 @@ void __68__WFListeningModeDeviceAccessResource_makeSettingsClientIfNecessary__bl
   if ([(WFListeningModeDeviceAccessResource *)self supportedDevicesAreFetched])
   {
     os_unfair_lock_lock(&self->_supportedDevicesLock);
-    v3 = [(WFListeningModeDeviceAccessResource *)self supportedDevices];
-    v4 = 4 * ([v3 count] != 0);
+    supportedDevices = [(WFListeningModeDeviceAccessResource *)self supportedDevices];
+    v4 = 4 * ([supportedDevices count] != 0);
 
     os_unfair_lock_unlock(&self->_supportedDevicesLock);
   }
@@ -159,32 +159,32 @@ void __68__WFListeningModeDeviceAccessResource_makeSettingsClientIfNecessary__bl
   return v4;
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(WFListeningModeDeviceAccessResource *)self status]== 1)
   {
-    [(WFListeningModeDeviceAccessResource *)self setAvailabilityCompletion:v6];
+    [(WFListeningModeDeviceAccessResource *)self setAvailabilityCompletion:handlerCopy];
     [(WFListeningModeDeviceAccessResource *)self makeSettingsClientIfNecessary];
   }
 
   else if ([(WFListeningModeDeviceAccessResource *)self status]== 4)
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
-    v5 = [(WFListeningModeDeviceAccessResource *)self unavailableAccessResourceError];
-    (v6)[2](v6, 0, v5);
+    unavailableAccessResourceError = [(WFListeningModeDeviceAccessResource *)self unavailableAccessResourceError];
+    (handlerCopy)[2](handlerCopy, 0, unavailableAccessResourceError);
   }
 }
 
-- (WFListeningModeDeviceAccessResource)initWithDefinition:(id)a3
+- (WFListeningModeDeviceAccessResource)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFListeningModeDeviceAccessResource;
-  v3 = [(WFAccessResource *)&v7 initWithDefinition:a3];
+  v3 = [(WFAccessResource *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

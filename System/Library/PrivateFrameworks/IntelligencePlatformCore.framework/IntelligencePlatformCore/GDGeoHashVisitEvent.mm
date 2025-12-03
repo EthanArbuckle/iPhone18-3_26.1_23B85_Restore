@@ -1,20 +1,20 @@
 @interface GDGeoHashVisitEvent
-- (BOOL)isEqual:(id)a3;
-- (GDGeoHashVisitEvent)initWithDate:(id)a3 geoHash:(unint64_t)a4 isEnter:(BOOL)a5 level:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (GDGeoHashVisitEvent)initWithDate:(id)date geoHash:(unint64_t)hash isEnter:(BOOL)enter level:(int64_t)level;
 @end
 
 @implementation GDGeoHashVisitEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqualToDate = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     isEnter = self->_isEnter;
@@ -39,19 +39,19 @@
   return isEqualToDate;
 }
 
-- (GDGeoHashVisitEvent)initWithDate:(id)a3 geoHash:(unint64_t)a4 isEnter:(BOOL)a5 level:(int64_t)a6
+- (GDGeoHashVisitEvent)initWithDate:(id)date geoHash:(unint64_t)hash isEnter:(BOOL)enter level:(int64_t)level
 {
-  v11 = a3;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = GDGeoHashVisitEvent;
   v12 = [(GDGeoHashVisitEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_date, a3);
-    v13->_isEnter = a5;
-    v13->_geoHash = a4;
-    v13->_level = a6;
+    objc_storeStrong(&v12->_date, date);
+    v13->_isEnter = enter;
+    v13->_geoHash = hash;
+    v13->_level = level;
   }
 
   return v13;

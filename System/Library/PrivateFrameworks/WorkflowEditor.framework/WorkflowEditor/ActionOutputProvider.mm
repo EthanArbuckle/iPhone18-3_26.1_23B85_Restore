@@ -1,25 +1,25 @@
 @interface ActionOutputProvider
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6;
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5;
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler;
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler;
 @end
 
 @implementation ActionOutputProvider
 
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v6;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_2744874F4();
   swift_unknownObjectRelease();
 }
 
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
-  v10 = _Block_copy(a6);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(backHandler);
+  v10 = _Block_copy(awayHandler);
   *(swift_allocObject() + 16) = v8;
   *(swift_allocObject() + 16) = v9;
   if (v10)

@@ -1,12 +1,12 @@
 @interface TileHeaderCell
 - (BOOL)isHighlighted;
-- (_TtC24MenstrualCyclesAppPlugin14TileHeaderCell)initWithCoder:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC24MenstrualCyclesAppPlugin14TileHeaderCell)initWithCoder:(id)coder;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TileHeaderCell
 
-- (_TtC24MenstrualCyclesAppPlugin14TileHeaderCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin14TileHeaderCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin14TileHeaderCell_item;
   *v3 = 0u;
@@ -25,13 +25,13 @@
   return [(TileHeaderCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TileHeaderCell();
   v4 = v5.receiver;
-  [(TileHeaderCell *)&v5 setHighlighted:v3];
+  [(TileHeaderCell *)&v5 setHighlighted:highlightedCopy];
   sub_29E0EBB34();
 }
 

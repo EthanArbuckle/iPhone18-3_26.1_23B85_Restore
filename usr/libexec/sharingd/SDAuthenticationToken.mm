@@ -1,20 +1,20 @@
 @interface SDAuthenticationToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAuthenticationToken
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = SDAuthenticationToken;
   v3 = [(SDAuthenticationToken *)&v7 description];
-  v4 = [(SDAuthenticationToken *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAuthenticationToken *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
@@ -94,38 +94,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_version;
-    *(v4 + 36) |= 2u;
+    toCopy[8] = self->_version;
+    *(toCopy + 36) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_sessionID)
   {
-    [v4 setSessionID:?];
-    v4 = v5;
+    [toCopy setSessionID:?];
+    toCopy = v5;
   }
 
   if (self->_aksToken)
   {
     [v5 setAksToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[4] = self->_errorCode;
-    *(v4 + 36) |= 1u;
+    toCopy[4] = self->_errorCode;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -133,11 +133,11 @@
     *(v5 + 36) |= 2u;
   }
 
-  v7 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v7 = [(NSString *)self->_sessionID copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSData *)self->_aksToken copyWithZone:a3];
+  v9 = [(NSData *)self->_aksToken copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
@@ -150,24 +150,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_version != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_version != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_15:
     v8 = 0;
@@ -175,13 +175,13 @@ LABEL_15:
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 3) && ![(NSString *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 3) && ![(NSString *)sessionID isEqual:?])
   {
     goto LABEL_15;
   }
 
   aksToken = self->_aksToken;
-  if (aksToken | *(v4 + 1))
+  if (aksToken | *(equalCopy + 1))
   {
     if (![(NSData *)aksToken isEqual:?])
     {
@@ -189,10 +189,10 @@ LABEL_15:
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_errorCode != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_errorCode != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
@@ -232,31 +232,31 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[9] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[9] & 2) != 0)
   {
-    self->_version = v4[8];
+    self->_version = fromCopy[8];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 3))
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SDAuthenticationToken *)self setSessionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SDAuthenticationToken *)self setAksToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_errorCode = v4[4];
+    self->_errorCode = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

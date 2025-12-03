@@ -1,35 +1,35 @@
 @interface EXPSiriSchemaEXPRolloutChangeSnapshot
-- (BOOL)isEqual:(id)a3;
-- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRollouts:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRollouts:(id)rollouts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPRolloutChangeSnapshot
 
-- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = EXPSiriSchemaEXPRolloutChangeSnapshot;
   v5 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trialRolloutUpdateReceivedAtTimestampInMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trialRolloutUpdateReceivedAtTimestampInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPRolloutChangeSnapshot setTrialRolloutUpdateReceivedAtTimestampInMs:](v5, "setTrialRolloutUpdateReceivedAtTimestampInMs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rollouts"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rollouts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPRolloutChangeSnapshot)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,10 +118,10 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_rollouts count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -141,16 +141,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -160,18 +160,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"rollouts"];
+    [dictionary setObject:array forKeyedSubscript:@"rollouts"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[EXPSiriSchemaEXPRolloutChangeSnapshot trialRolloutUpdateReceivedAtTimestampInMs](self, "trialRolloutUpdateReceivedAtTimestampInMs")}];
-    [v3 setObject:v12 forKeyedSubscript:@"trialRolloutUpdateReceivedAtTimestampInMs"];
+    [dictionary setObject:v12 forKeyedSubscript:@"trialRolloutUpdateReceivedAtTimestampInMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v14];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v14];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -189,22 +189,22 @@
   return [(NSArray *)self->_rollouts hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (trialRolloutUpdateReceivedAtTimestampInMs = self->_trialRolloutUpdateReceivedAtTimestampInMs, trialRolloutUpdateReceivedAtTimestampInMs == [v4 trialRolloutUpdateReceivedAtTimestampInMs]))
+      if ((*&self->_has & 1) == 0 || (trialRolloutUpdateReceivedAtTimestampInMs = self->_trialRolloutUpdateReceivedAtTimestampInMs, trialRolloutUpdateReceivedAtTimestampInMs == [equalCopy trialRolloutUpdateReceivedAtTimestampInMs]))
       {
-        v6 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
-        v7 = [v4 rollouts];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        rollouts = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
+        rollouts2 = [equalCopy rollouts];
+        v8 = rollouts2;
+        if ((rollouts != 0) != (rollouts2 == 0))
         {
-          v9 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
-          if (!v9)
+          rollouts3 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
+          if (!rollouts3)
           {
 
 LABEL_13:
@@ -212,10 +212,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
-          v12 = [v4 rollouts];
-          v13 = [v11 isEqual:v12];
+          v10 = rollouts3;
+          rollouts4 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts];
+          rollouts5 = [equalCopy rollouts];
+          v13 = [rollouts4 isEqual:rollouts5];
 
           if (v13)
           {
@@ -236,10 +236,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
@@ -277,32 +277,32 @@ LABEL_11:
   }
 }
 
-- (void)addRollouts:(id)a3
+- (void)addRollouts:(id)rollouts
 {
-  v4 = a3;
+  rolloutsCopy = rollouts;
   rollouts = self->_rollouts;
-  v8 = v4;
+  v8 = rolloutsCopy;
   if (!rollouts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rollouts;
-    self->_rollouts = v6;
+    self->_rollouts = array;
 
-    v4 = v8;
+    rolloutsCopy = v8;
     rollouts = self->_rollouts;
   }
 
-  [(NSArray *)rollouts addObject:v4];
+  [(NSArray *)rollouts addObject:rolloutsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = EXPSiriSchemaEXPRolloutChangeSnapshot;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self rollouts:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self setRollouts:v7];
 

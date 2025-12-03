@@ -1,27 +1,27 @@
 @interface HKHRMonitorHypertensionJournalSummaryBuilder
-+ (id)summaryFromSamples:(id)a3 journal:(id)a4;
-+ (id)summaryFromSamples:(id)a3 journal:(id)a4 calendar:(id)a5;
++ (id)summaryFromSamples:(id)samples journal:(id)journal;
++ (id)summaryFromSamples:(id)samples journal:(id)journal calendar:(id)calendar;
 @end
 
 @implementation HKHRMonitorHypertensionJournalSummaryBuilder
 
-+ (id)summaryFromSamples:(id)a3 journal:(id)a4
++ (id)summaryFromSamples:(id)samples journal:(id)journal
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 hk_gregorianCalendar];
-  v9 = [HKHRMonitorHypertensionJournalSummaryBuilder summaryFromSamples:v7 journal:v6 calendar:v8];
+  journalCopy = journal;
+  samplesCopy = samples;
+  hk_gregorianCalendar = [v5 hk_gregorianCalendar];
+  v9 = [HKHRMonitorHypertensionJournalSummaryBuilder summaryFromSamples:samplesCopy journal:journalCopy calendar:hk_gregorianCalendar];
 
   return v9;
 }
 
-+ (id)summaryFromSamples:(id)a3 journal:(id)a4 calendar:(id)a5
++ (id)summaryFromSamples:(id)samples journal:(id)journal calendar:(id)calendar
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HKHRMonitorHypertensionJournalSummary alloc] initWithSamples:v9 calendar:v7 journal:v8];
+  calendarCopy = calendar;
+  journalCopy = journal;
+  samplesCopy = samples;
+  v10 = [[HKHRMonitorHypertensionJournalSummary alloc] initWithSamples:samplesCopy calendar:calendarCopy journal:journalCopy];
 
   return v10;
 }

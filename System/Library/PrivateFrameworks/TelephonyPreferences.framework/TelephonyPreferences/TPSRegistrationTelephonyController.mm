@@ -2,18 +2,18 @@
 - (CTNetworkSelectionInfo)networkSelectionInfo;
 - (NSArray)networks;
 - (TPSRegistrationTelephonyController)init;
-- (TPSRegistrationTelephonyController)initWithSubscriptionContext:(id)a3;
+- (TPSRegistrationTelephonyController)initWithSubscriptionContext:(id)context;
 - (id)copyNetworkSelectionInfo;
-- (void)automaticallySelectNetworkWithCompletion:(id)a3;
+- (void)automaticallySelectNetworkWithCompletion:(id)completion;
 - (void)copyNetworkSelectionInfo;
-- (void)fetchNetworkListWithCompletion:(id)a3;
-- (void)networkListAvailable:(id)a3 list:(id)a4;
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5;
-- (void)performDelegateSelector:(SEL)a3;
-- (void)selectNetwork:(id)a3;
-- (void)selectNetwork:(id)a3 completion:(id)a4;
-- (void)setNetworkSelectionInfo:(id)a3;
-- (void)setNetworks:(id)a3;
+- (void)fetchNetworkListWithCompletion:(id)completion;
+- (void)networkListAvailable:(id)available list:(id)list;
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode;
+- (void)performDelegateSelector:(SEL)selector;
+- (void)selectNetwork:(id)network;
+- (void)selectNetwork:(id)network completion:(id)completion;
+- (void)setNetworkSelectionInfo:(id)info;
+- (void)setNetworks:(id)networks;
 @end
 
 @implementation TPSRegistrationTelephonyController
@@ -25,16 +25,16 @@
   return 0;
 }
 
-- (TPSRegistrationTelephonyController)initWithSubscriptionContext:(id)a3
+- (TPSRegistrationTelephonyController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TPSRegistrationTelephonyController;
   v6 = [(TPSTelephonyController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
   }
 
   return v7;
@@ -61,16 +61,16 @@
   return v2;
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__TPSRegistrationTelephonyController_setNetworks___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = networksCopy;
+  v5 = networksCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -133,16 +133,16 @@ void __58__TPSRegistrationTelephonyController_networkSelectionInfo__block_invoke
   objc_storeStrong(v7, v3);
 }
 
-- (void)setNetworkSelectionInfo:(id)a3
+- (void)setNetworkSelectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__TPSRegistrationTelephonyController_setNetworkSelectionInfo___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -175,23 +175,23 @@ void __64__TPSRegistrationTelephonyController_automaticallySelectNetwork__block_
   }
 }
 
-- (void)automaticallySelectNetworkWithCompletion:(id)a3
+- (void)automaticallySelectNetworkWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
-  [v6 automaticallySelectNetwork:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  [telephonyClient automaticallySelectNetwork:subscriptionContext completion:completionCopy];
 }
 
-- (void)selectNetwork:(id)a3
+- (void)selectNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__TPSRegistrationTelephonyController_selectNetwork___block_invoke;
   v6[3] = &unk_2782E3A48;
-  v7 = v4;
-  v5 = v4;
+  v7 = networkCopy;
+  v5 = networkCopy;
   [(TPSRegistrationTelephonyController *)self selectNetwork:v5 completion:v6];
 }
 
@@ -208,21 +208,21 @@ void __52__TPSRegistrationTelephonyController_selectNetwork___block_invoke(uint6
   }
 }
 
-- (void)selectNetwork:(id)a3 completion:(id)a4
+- (void)selectNetwork:(id)network completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TPSTelephonyController *)self telephonyClient];
-  v8 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
-  [v9 selectNetwork:v8 network:v7 completion:v6];
+  completionCopy = completion;
+  networkCopy = network;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  [telephonyClient selectNetwork:subscriptionContext network:networkCopy completion:completionCopy];
 }
 
 - (id)copyNetworkSelectionInfo
 {
-  v3 = [(TPSTelephonyController *)self telephonyClient];
-  v4 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
   v15 = 0;
-  v5 = [v3 copyNetworkSelectionInfo:v4 error:&v15];
+  v5 = [telephonyClient copyNetworkSelectionInfo:subscriptionContext error:&v15];
   v6 = v15;
 
   if (v6)
@@ -256,22 +256,22 @@ void __54__TPSRegistrationTelephonyController_fetchNetworkList__block_invoke(uin
   }
 }
 
-- (void)fetchNetworkListWithCompletion:(id)a3
+- (void)fetchNetworkListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
-  [v6 fetchNetworkList:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  [telephonyClient fetchNetworkList:subscriptionContext completion:completionCopy];
 }
 
-- (void)performDelegateSelector:(SEL)a3
+- (void)performDelegateSelector:(SEL)selector
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __62__TPSRegistrationTelephonyController_performDelegateSelector___block_invoke;
   v3[3] = &unk_2782E3B10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = selector;
   [(TPSController *)self performAtomicDelegateBlock:v3];
 }
 
@@ -327,13 +327,13 @@ void __62__TPSRegistrationTelephonyController_performDelegateSelector___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkListAvailable:(id)a3 list:(id)a4
+- (void)networkListAvailable:(id)available list:(id)list
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
-  v9 = [v8 isEqual:v7];
+  listCopy = list;
+  availableCopy = available;
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  v9 = [subscriptionContext isEqual:availableCopy];
 
   if (v9)
   {
@@ -341,24 +341,24 @@ void __62__TPSRegistrationTelephonyController_performDelegateSelector___block_in
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = listCopy;
       _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "Network list is available %@", &v13, 0xCu);
     }
 
-    v11 = [v6 networks];
-    [(TPSRegistrationTelephonyController *)self setNetworks:v11];
+    networks = [listCopy networks];
+    [(TPSRegistrationTelephonyController *)self setNetworks:networks];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode
 {
-  v5 = a4;
+  successCopy = success;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(TPSRegistrationTelephonyController *)self subscriptionContext];
-  v9 = [v8 isEqual:v7];
+  selectedCopy = selected;
+  subscriptionContext = [(TPSRegistrationTelephonyController *)self subscriptionContext];
+  v9 = [subscriptionContext isEqual:selectedCopy];
 
   if (v9)
   {
@@ -366,7 +366,7 @@ void __62__TPSRegistrationTelephonyController_performDelegateSelector___block_in
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"failed";
-      if (v5)
+      if (successCopy)
       {
         v11 = @"succeeded";
       }
@@ -374,12 +374,12 @@ void __62__TPSRegistrationTelephonyController_performDelegateSelector___block_in
       v14 = 138412546;
       v15 = v11;
       v16 = 2112;
-      v17 = v7;
+      v17 = selectedCopy;
       _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "Manual network selection %@ for subscription %@.", &v14, 0x16u);
     }
 
-    v12 = [(TPSRegistrationTelephonyController *)self copyNetworkSelectionInfo];
-    [(TPSRegistrationTelephonyController *)self setNetworkSelectionInfo:v12];
+    copyNetworkSelectionInfo = [(TPSRegistrationTelephonyController *)self copyNetworkSelectionInfo];
+    [(TPSRegistrationTelephonyController *)self setNetworkSelectionInfo:copyNetworkSelectionInfo];
   }
 
   v13 = *MEMORY[0x277D85DE8];

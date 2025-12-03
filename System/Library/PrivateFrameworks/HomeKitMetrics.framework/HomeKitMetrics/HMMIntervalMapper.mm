@@ -1,22 +1,22 @@
 @interface HMMIntervalMapper
-+ (id)unsignedClosedOpenFixedIntervalMapper:(id)a3;
-+ (id)unsignedOpenClosedFixedIntervalMapper:(id)a3;
++ (id)unsignedClosedOpenFixedIntervalMapper:(id)mapper;
++ (id)unsignedOpenClosedFixedIntervalMapper:(id)mapper;
 @end
 
 @implementation HMMIntervalMapper
 
-+ (id)unsignedClosedOpenFixedIntervalMapper:(id)a3
++ (id)unsignedClosedOpenFixedIntervalMapper:(id)mapper
 {
-  v3 = a3;
-  v4 = [[UnsignedFixedIntervalMapper alloc] initWithBins:v3 intervalCreationBlock:&__block_literal_global_99 valueComparisonBlock:&__block_literal_global_101];
+  mapperCopy = mapper;
+  v4 = [[UnsignedFixedIntervalMapper alloc] initWithBins:mapperCopy intervalCreationBlock:&__block_literal_global_99 valueComparisonBlock:&__block_literal_global_101];
 
   return v4;
 }
 
-+ (id)unsignedOpenClosedFixedIntervalMapper:(id)a3
++ (id)unsignedOpenClosedFixedIntervalMapper:(id)mapper
 {
-  v3 = a3;
-  v4 = [[UnsignedFixedIntervalMapper alloc] initWithBins:v3 intervalCreationBlock:&__block_literal_global valueComparisonBlock:&__block_literal_global_96];
+  mapperCopy = mapper;
+  v4 = [[UnsignedFixedIntervalMapper alloc] initWithBins:mapperCopy intervalCreationBlock:&__block_literal_global valueComparisonBlock:&__block_literal_global_96];
 
   return v4;
 }

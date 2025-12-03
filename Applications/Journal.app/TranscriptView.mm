@@ -1,11 +1,11 @@
 @interface TranscriptView
-- (_TtC7Journal14TranscriptView)initWithCoder:(id)a3;
-- (_TtC7Journal14TranscriptView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC7Journal14TranscriptView)initWithCoder:(id)coder;
+- (_TtC7Journal14TranscriptView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation TranscriptView
 
-- (_TtC7Journal14TranscriptView)initWithCoder:(id)a3
+- (_TtC7Journal14TranscriptView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC7Journal14TranscriptView_waitingUIRange;
   *v3 = 0;
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC7Journal14TranscriptView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7Journal14TranscriptView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

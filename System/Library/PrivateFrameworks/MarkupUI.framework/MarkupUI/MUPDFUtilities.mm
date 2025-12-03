@@ -1,18 +1,18 @@
 @interface MUPDFUtilities
-+ (CGAffineTransform)flattenRotationTransformForPage:(SEL)a3 outMediaBox:(CGPDFPage *)a4 outCropBox:(CGRect *)a5;
-+ (id)createDictionaryFromPDFDictionary:(CGPDFDictionary *)a3;
-+ (id)createPDFDateString:(id)a3;
-+ (int64_t)exifOrientationOfPage:(CGPDFPage *)a3;
-+ (unint64_t)indexOfDictionary:(CGPDFDictionary *)a3 inArray:(CGPDFArray *)a4;
-+ (unint64_t)normalizedRotationAngleOfPage:(CGPDFPage *)a3;
++ (CGAffineTransform)flattenRotationTransformForPage:(SEL)page outMediaBox:(CGPDFPage *)box outCropBox:(CGRect *)cropBox;
++ (id)createDictionaryFromPDFDictionary:(CGPDFDictionary *)dictionary;
++ (id)createPDFDateString:(id)string;
++ (int64_t)exifOrientationOfPage:(CGPDFPage *)page;
++ (unint64_t)indexOfDictionary:(CGPDFDictionary *)dictionary inArray:(CGPDFArray *)array;
++ (unint64_t)normalizedRotationAngleOfPage:(CGPDFPage *)page;
 @end
 
 @implementation MUPDFUtilities
 
-+ (id)createPDFDateString:(id)a3
++ (id)createPDFDateString:(id)string
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyyMMddHHmm"];
   v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
@@ -21,27 +21,27 @@
   v7 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"GMT"];
   [v5 setTimeZone:v7];
 
-  v8 = [v5 stringFromDate:v4];
+  v8 = [v5 stringFromDate:stringCopy];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"D:%@Z00'00'", v8];
 
   return v9;
 }
 
-+ (id)createDictionaryFromPDFDictionary:(CGPDFDictionary *)a3
++ (id)createDictionaryFromPDFDictionary:(CGPDFDictionary *)dictionary
 {
   v6 = *byte_286962260;
   seenObjects = CFSetCreateMutable(0, 0, &v6);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  CGPDFDictionaryApplyFunction(a3, _dictionaryApplierFunction, v4);
+  CGPDFDictionaryApplyFunction(dictionary, _dictionaryApplierFunction, v4);
   CFRelease(seenObjects);
 
   return v4;
 }
 
-+ (unint64_t)indexOfDictionary:(CGPDFDictionary *)a3 inArray:(CGPDFArray *)a4
++ (unint64_t)indexOfDictionary:(CGPDFDictionary *)dictionary inArray:(CGPDFArray *)array
 {
-  Count = CGPDFArrayGetCount(a4);
+  Count = CGPDFArrayGetCount(array);
   if (!Count)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -52,7 +52,7 @@
   while (1)
   {
     value = 0;
-    if (CGPDFArrayGetDictionary(a4, v8, &value) && value == a3)
+    if (CGPDFArrayGetDictionary(array, v8, &value) && value == dictionary)
     {
       break;
     }
@@ -66,9 +66,9 @@
   return v8;
 }
 
-+ (unint64_t)normalizedRotationAngleOfPage:(CGPDFPage *)a3
++ (unint64_t)normalizedRotationAngleOfPage:(CGPDFPage *)page
 {
-  v3 = CGPDFPageGetRotationAngle(a3) % 360;
+  v3 = CGPDFPageGetRotationAngle(page) % 360;
   if (v3 >= 0)
   {
     return v3;
@@ -80,9 +80,9 @@
   }
 }
 
-+ (int64_t)exifOrientationOfPage:(CGPDFPage *)a3
++ (int64_t)exifOrientationOfPage:(CGPDFPage *)page
 {
-  v3 = [a1 normalizedRotationAngleOfPage:a3];
+  v3 = [self normalizedRotationAngleOfPage:page];
   v4 = 1;
   if (v3 == 90)
   {
@@ -105,15 +105,15 @@
   }
 }
 
-+ (CGAffineTransform)flattenRotationTransformForPage:(SEL)a3 outMediaBox:(CGPDFPage *)a4 outCropBox:(CGRect *)a5
++ (CGAffineTransform)flattenRotationTransformForPage:(SEL)page outMediaBox:(CGPDFPage *)box outCropBox:(CGRect *)cropBox
 {
-  RotationAngle = CGPDFPageGetRotationAngle(a4);
-  BoxRect = CGPDFPageGetBoxRect(a4, kCGPDFMediaBox);
+  RotationAngle = CGPDFPageGetRotationAngle(box);
+  BoxRect = CGPDFPageGetBoxRect(box, kCGPDFMediaBox);
   x = BoxRect.origin.x;
   y = BoxRect.origin.y;
   width = BoxRect.size.width;
   height = BoxRect.size.height;
-  v31 = CGPDFPageGetBoxRect(a4, kCGPDFCropBox);
+  v31 = CGPDFPageGetBoxRect(box, kCGPDFCropBox);
   v15 = v31.size.width;
   v16 = v31.size.height;
   v17 = v31.origin.x - x;
@@ -213,13 +213,13 @@ LABEL_15:
   v40.origin.y = v20;
   v40.size.width = v25;
   v40.size.height = v16;
-  result = CGPDFPageGetDrawingTransform(retstr, a4, kCGPDFCropBox, v40, 0, 1);
-  if (a5)
+  result = CGPDFPageGetDrawingTransform(retstr, box, kCGPDFCropBox, v40, 0, 1);
+  if (cropBox)
   {
-    a5->origin.x = 0.0;
-    a5->origin.y = 0.0;
-    a5->size.width = width;
-    a5->size.height = v22;
+    cropBox->origin.x = 0.0;
+    cropBox->origin.y = 0.0;
+    cropBox->size.width = width;
+    cropBox->size.height = v22;
   }
 
   if (a6)

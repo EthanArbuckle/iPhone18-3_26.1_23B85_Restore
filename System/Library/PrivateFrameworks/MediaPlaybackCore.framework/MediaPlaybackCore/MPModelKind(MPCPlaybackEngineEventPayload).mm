@@ -9,7 +9,7 @@
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"modelClass";
-  v1 = NSStringFromClass([a1 modelClass]);
+  v1 = NSStringFromClass([self modelClass]);
   v5[0] = v1;
   v2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
 
@@ -23,7 +23,7 @@
 
   if (v5)
   {
-    v6 = [a1 kindWithModelClass:v5];
+    v6 = [self kindWithModelClass:v5];
   }
 
   else

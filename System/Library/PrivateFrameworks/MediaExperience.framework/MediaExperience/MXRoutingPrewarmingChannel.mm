@@ -1,5 +1,5 @@
 @interface MXRoutingPrewarmingChannel
-- (MXRoutingPrewarmingChannel)initWithRoutingContextUUID:(id)a3 endpoint:(OpaqueFigEndpoint *)a4 previousRouteDescriptors:(id)a5;
+- (MXRoutingPrewarmingChannel)initWithRoutingContextUUID:(id)d endpoint:(OpaqueFigEndpoint *)endpoint previousRouteDescriptors:(id)descriptors;
 - (void)closeChannel;
 - (void)dealloc;
 - (void)persistChannel;
@@ -7,15 +7,15 @@
 
 @implementation MXRoutingPrewarmingChannel
 
-- (MXRoutingPrewarmingChannel)initWithRoutingContextUUID:(id)a3 endpoint:(OpaqueFigEndpoint *)a4 previousRouteDescriptors:(id)a5
+- (MXRoutingPrewarmingChannel)initWithRoutingContextUUID:(id)d endpoint:(OpaqueFigEndpoint *)endpoint previousRouteDescriptors:(id)descriptors
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = MXRoutingPrewarmingChannel;
   v8 = [(MXRoutingPrewarmingChannel *)&v13 init];
-  if (a4)
+  if (endpoint)
   {
-    v9 = CFRetain(a4);
+    v9 = CFRetain(endpoint);
   }
 
   else
@@ -24,8 +24,8 @@
   }
 
   v8->_endpoint = v9;
-  v8->_routingContextUUID = a3;
-  v8->_previousRouteDescriptors = a5;
+  v8->_routingContextUUID = d;
+  v8->_previousRouteDescriptors = descriptors;
   if (dword_1EB75DE40)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -64,10 +64,10 @@
 
 - (void)closeChannel
 {
-  v2 = [(MXRoutingPrewarmingChannel *)self closeChannelBlock];
-  if (v2)
+  closeChannelBlock = [(MXRoutingPrewarmingChannel *)self closeChannelBlock];
+  if (closeChannelBlock)
   {
-    v3 = v2[2];
+    v3 = closeChannelBlock[2];
 
     v3();
   }
@@ -75,10 +75,10 @@
 
 - (void)persistChannel
 {
-  v2 = [(MXRoutingPrewarmingChannel *)self persistPrewarmingBlock];
-  if (v2)
+  persistPrewarmingBlock = [(MXRoutingPrewarmingChannel *)self persistPrewarmingBlock];
+  if (persistPrewarmingBlock)
   {
-    v3 = v2[2];
+    v3 = persistPrewarmingBlock[2];
 
     v3();
   }

@@ -1,28 +1,28 @@
 @interface HUIStepSlider
-- (HUIStepSlider)initWithFrame:(CGRect)a3;
-- (id)_copyConfig:(id)a3 withNumberOfTicks:(int64_t)a4;
+- (HUIStepSlider)initWithFrame:(CGRect)frame;
+- (id)_copyConfig:(id)config withNumberOfTicks:(int64_t)ticks;
 - (unint64_t)numberOfTicks;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)layoutSubviews;
-- (void)setDrawsEndTicks:(BOOL)a3;
-- (void)setRestrictsValuesToTicks:(BOOL)a3;
-- (void)setSegmentCount:(unint64_t)a3;
+- (void)setDrawsEndTicks:(BOOL)ticks;
+- (void)setRestrictsValuesToTicks:(BOOL)ticks;
+- (void)setSegmentCount:(unint64_t)count;
 @end
 
 @implementation HUIStepSlider
 
-- (HUIStepSlider)initWithFrame:(CGRect)a3
+- (HUIStepSlider)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUIStepSlider;
-  v3 = [(HUIStepSlider *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIStepSlider *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75A38] configurationWithNumberOfTicks:0];
     [(HUIStepSlider *)v3 setTrackConfiguration:v4];
-    v5 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(HUIStepSlider *)v3 setTickColor:v5];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(HUIStepSlider *)v3 setTickColor:systemLightGrayColor];
 
     [(HUIStepSlider *)v3 setRestrictsValuesToTicks:1];
     [(HUIStepSlider *)v3 setSupportsVibrancy:0];
@@ -65,43 +65,43 @@
   }
 }
 
-- (void)setSegmentCount:(unint64_t)a3
+- (void)setSegmentCount:(unint64_t)count
 {
-  if (self->_segmentCount != a3)
+  if (self->_segmentCount != count)
   {
-    self->_segmentCount = a3;
-    v5 = [(HUIStepSlider *)self trackConfiguration];
-    v6 = [(HUIStepSlider *)self _copyConfig:v5 withNumberOfTicks:[(HUIStepSlider *)self numberOfTicks]];
+    self->_segmentCount = count;
+    trackConfiguration = [(HUIStepSlider *)self trackConfiguration];
+    v6 = [(HUIStepSlider *)self _copyConfig:trackConfiguration withNumberOfTicks:[(HUIStepSlider *)self numberOfTicks]];
 
     [v6 setAllowsTickValuesOnly:{-[HUIStepSlider _shouldOnlyAllowTickValues](self, "_shouldOnlyAllowTickValues")}];
     [(HUIStepSlider *)self setTrackConfiguration:v6];
   }
 }
 
-- (void)setRestrictsValuesToTicks:(BOOL)a3
+- (void)setRestrictsValuesToTicks:(BOOL)ticks
 {
-  if (self->_restrictsValuesToTicks != a3)
+  if (self->_restrictsValuesToTicks != ticks)
   {
-    self->_restrictsValuesToTicks = a3;
-    v5 = [(HUIStepSlider *)self trackConfiguration];
-    [v5 setAllowsTickValuesOnly:{-[HUIStepSlider _shouldOnlyAllowTickValues](self, "_shouldOnlyAllowTickValues")}];
-    [(HUIStepSlider *)self setTrackConfiguration:v5];
+    self->_restrictsValuesToTicks = ticks;
+    trackConfiguration = [(HUIStepSlider *)self trackConfiguration];
+    [trackConfiguration setAllowsTickValuesOnly:{-[HUIStepSlider _shouldOnlyAllowTickValues](self, "_shouldOnlyAllowTickValues")}];
+    [(HUIStepSlider *)self setTrackConfiguration:trackConfiguration];
     if (!self->_restrictsValuesToTicks)
     {
-      v4 = [MEMORY[0x277D75348] systemLightGrayColor];
-      [(HUIStepSlider *)self setMinimumTrackTintColor:v4];
-      [(HUIStepSlider *)self setMaximumTrackTintColor:v4];
+      systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+      [(HUIStepSlider *)self setMinimumTrackTintColor:systemLightGrayColor];
+      [(HUIStepSlider *)self setMaximumTrackTintColor:systemLightGrayColor];
     }
   }
 }
 
-- (void)setDrawsEndTicks:(BOOL)a3
+- (void)setDrawsEndTicks:(BOOL)ticks
 {
-  if (self->_drawsEndTicks != a3)
+  if (self->_drawsEndTicks != ticks)
   {
-    self->_drawsEndTicks = a3;
-    v5 = [(HUIStepSlider *)self trackConfiguration];
-    v6 = [(HUIStepSlider *)self _copyConfig:v5 withNumberOfTicks:[(HUIStepSlider *)self numberOfTicks]];
+    self->_drawsEndTicks = ticks;
+    trackConfiguration = [(HUIStepSlider *)self trackConfiguration];
+    v6 = [(HUIStepSlider *)self _copyConfig:trackConfiguration withNumberOfTicks:[(HUIStepSlider *)self numberOfTicks]];
 
     [(HUIStepSlider *)self setTrackConfiguration:v6];
   }
@@ -160,17 +160,17 @@
   }
 }
 
-- (id)_copyConfig:(id)a3 withNumberOfTicks:(int64_t)a4
+- (id)_copyConfig:(id)config withNumberOfTicks:(int64_t)ticks
 {
   v5 = MEMORY[0x277D75A38];
-  v6 = a3;
-  v7 = [v5 configurationWithNumberOfTicks:a4];
-  [v7 setAllowsTickValuesOnly:{objc_msgSend(v6, "allowsTickValuesOnly")}];
-  [v6 neutralValue];
+  configCopy = config;
+  v7 = [v5 configurationWithNumberOfTicks:ticks];
+  [v7 setAllowsTickValuesOnly:{objc_msgSend(configCopy, "allowsTickValuesOnly")}];
+  [configCopy neutralValue];
   [v7 setNeutralValue:?];
-  [v6 minimumEnabledValue];
+  [configCopy minimumEnabledValue];
   [v7 setMinimumEnabledValue:?];
-  [v6 maximumEnabledValue];
+  [configCopy maximumEnabledValue];
   v9 = v8;
 
   LODWORD(v10) = v9;

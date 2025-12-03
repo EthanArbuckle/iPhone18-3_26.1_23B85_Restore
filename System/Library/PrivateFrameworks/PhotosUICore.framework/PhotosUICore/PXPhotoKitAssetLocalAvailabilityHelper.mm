@@ -1,30 +1,30 @@
 @interface PXPhotoKitAssetLocalAvailabilityHelper
-- (PXPhotoKitAssetLocalAvailabilityHelper)initWithAssets:(id)a3 treatLivePhotoAsStill:(BOOL)a4;
+- (PXPhotoKitAssetLocalAvailabilityHelper)initWithAssets:(id)assets treatLivePhotoAsStill:(BOOL)still;
 - (id)_setUpLocalAvailabilityRequests;
-- (id)ensureLocalAvailabilityOfAssetsWithCompletionHandler:(id)a3;
-- (unint64_t)_ensureAssetsAreLocallyAvailable:(id *)a3;
+- (id)ensureLocalAvailabilityOfAssetsWithCompletionHandler:(id)handler;
+- (unint64_t)_ensureAssetsAreLocallyAvailable:(id *)available;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setLocalAvailabilityProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setLocalAvailabilityProgress:(id)progress;
 @end
 
 @implementation PXPhotoKitAssetLocalAvailabilityHelper
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &PXPhotoKitAssetLocalAvailabilityHelperFractionCompletedContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &PXPhotoKitAssetLocalAvailabilityHelperFractionCompletedContext)
   {
-    v13 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
-    v14 = [v11 isEqual:v13];
+    localAvailabilityProgress = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
+    v14 = [objectCopy isEqual:localAvailabilityProgress];
 
     if (v14)
     {
-      v15 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
-      [v15 fractionCompleted];
+      localAvailabilityProgress2 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
+      [localAvailabilityProgress2 fractionCompleted];
       v17 = v16;
 
       v18 = PLUIGetLog();
@@ -37,17 +37,17 @@
     }
   }
 
-  else if (a6 == &PXPhotoKitAssetLocalAvailabilityHelperIsCancelledContext)
+  else if (context == &PXPhotoKitAssetLocalAvailabilityHelperIsCancelledContext)
   {
-    v19 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
-    v20 = [v11 isEqual:v19];
+    localAvailabilityProgress3 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
+    v20 = [objectCopy isEqual:localAvailabilityProgress3];
 
     if (v20)
     {
-      v21 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
-      v22 = [v21 isCancelled];
+      localAvailabilityProgress4 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
+      isCancelled = [localAvailabilityProgress4 isCancelled];
 
-      if (v22)
+      if (isCancelled)
       {
         v23 = PLUIGetLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -65,11 +65,11 @@
   {
     v24.receiver = self;
     v24.super_class = PXPhotoKitAssetLocalAvailabilityHelper;
-    [(PXPhotoKitAssetLocalAvailabilityHelper *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PXPhotoKitAssetLocalAvailabilityHelper *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (unint64_t)_ensureAssetsAreLocallyAvailable:(id *)a3
+- (unint64_t)_ensureAssetsAreLocallyAvailable:(id *)available
 {
   v5 = objc_alloc_init(MEMORY[0x1E6978A28]);
   [v5 setTreatLivePhotoAsStill:{-[PXPhotoKitAssetLocalAvailabilityHelper treatLivePhotoAsStill](self, "treatLivePhotoAsStill")}];
@@ -87,15 +87,15 @@
   v17 = &unk_1E773DB50;
   v8 = v6;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   v9 = v5;
   v20 = v9;
   v21 = &v22;
   [(NSMutableArray *)resourceLocalAvailabilityRequests enumerateObjectsUsingBlock:&v14];
   if ([(PXPhotoKitAssetLocalAvailabilityHelper *)self wasInterrupted:v14])
   {
-    v10 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
-    [v10 cancel];
+    localAvailabilityProgress = [(PXPhotoKitAssetLocalAvailabilityHelper *)self localAvailabilityProgress];
+    [localAvailabilityProgress cancel];
 
     v11 = 2;
   }
@@ -105,9 +105,9 @@
     v12 = v23[5];
     if (v12)
     {
-      if (a3)
+      if (available)
       {
-        *a3 = v12;
+        *available = v12;
       }
 
       v11 = 1;
@@ -224,20 +224,20 @@ LABEL_10:
   v39 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E6978A28]);
   [v3 setTreatLivePhotoAsStill:{-[PXPhotoKitAssetLocalAvailabilityHelper treatLivePhotoAsStill](self, "treatLivePhotoAsStill")}];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   pinnedResourceLocalAvailabilityRequests = self->_pinnedResourceLocalAvailabilityRequests;
-  self->_pinnedResourceLocalAvailabilityRequests = v4;
+  self->_pinnedResourceLocalAvailabilityRequests = array;
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   resourceLocalAvailabilityRequests = self->_resourceLocalAvailabilityRequests;
-  self->_resourceLocalAvailabilityRequests = v6;
+  self->_resourceLocalAvailabilityRequests = array2;
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self assets];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  assets = [(PXPhotoKitAssetLocalAvailabilityHelper *)self assets];
+  v9 = [assets countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
@@ -248,7 +248,7 @@ LABEL_10:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(assets);
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
@@ -261,9 +261,9 @@ LABEL_10:
         {
           if (v17)
           {
-            v18 = [v13 localIdentifier];
+            localIdentifier = [v13 localIdentifier];
             *buf = 138412290;
-            v35 = v18;
+            v35 = localIdentifier;
             _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_INFO, "PXPhotoKitAssetLocalAvailabilityHelper: [Queued] Resources need retrieval for %@", buf, 0xCu);
           }
 
@@ -274,15 +274,15 @@ LABEL_10:
         {
           if (v17)
           {
-            v19 = [v13 localIdentifier];
+            localIdentifier2 = [v13 localIdentifier];
             *buf = 138412290;
-            v35 = v19;
+            v35 = localIdentifier2;
             _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_INFO, "PXPhotoKitAssetLocalAvailabilityHelper: [Skipped] Resources already available for %@", buf, 0xCu);
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v10 = [assets countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v10);
@@ -292,8 +292,8 @@ LABEL_10:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = [(NSMutableArray *)self->_resourceLocalAvailabilityRequests count];
-    v22 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self assets];
-    v23 = [v22 count];
+    assets2 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self assets];
+    v23 = [assets2 count];
     *buf = 134218240;
     v35 = v21;
     v36 = 2048;
@@ -322,12 +322,12 @@ void __73__PXPhotoKitAssetLocalAvailabilityHelper__setUpLocalAvailabilityRequest
   [v2 addChild:v3 withPendingUnitCount:1];
 }
 
-- (void)setLocalAvailabilityProgress:(id)a3
+- (void)setLocalAvailabilityProgress:(id)progress
 {
-  v8 = a3;
+  progressCopy = progress;
   v5 = self->_localAvailabilityProgress;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == progressCopy)
   {
   }
 
@@ -339,16 +339,16 @@ void __73__PXPhotoKitAssetLocalAvailabilityHelper__setUpLocalAvailabilityRequest
     {
       [(NSProgress *)self->_localAvailabilityProgress removeObserver:self forKeyPath:@"fractionCompleted"];
       [(NSProgress *)self->_localAvailabilityProgress removeObserver:self forKeyPath:@"cancelled"];
-      objc_storeStrong(&self->_localAvailabilityProgress, a3);
+      objc_storeStrong(&self->_localAvailabilityProgress, progress);
       [(NSProgress *)self->_localAvailabilityProgress addObserver:self forKeyPath:@"fractionCompleted" options:4 context:&PXPhotoKitAssetLocalAvailabilityHelperFractionCompletedContext];
       [(NSProgress *)self->_localAvailabilityProgress addObserver:self forKeyPath:@"cancelled" options:4 context:&PXPhotoKitAssetLocalAvailabilityHelperIsCancelledContext];
     }
   }
 }
 
-- (id)ensureLocalAvailabilityOfAssetsWithCompletionHandler:(id)a3
+- (id)ensureLocalAvailabilityOfAssetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_localAvailabilityProgress)
   {
     PXAssertGetLog();
@@ -360,18 +360,18 @@ void __73__PXPhotoKitAssetLocalAvailabilityHelper__setUpLocalAvailabilityRequest
   workQueue = self->_workQueue;
   self->_workQueue = v6;
 
-  v8 = [(PXPhotoKitAssetLocalAvailabilityHelper *)self _setUpLocalAvailabilityRequests];
+  _setUpLocalAvailabilityRequests = [(PXPhotoKitAssetLocalAvailabilityHelper *)self _setUpLocalAvailabilityRequests];
   v9 = self->_workQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__PXPhotoKitAssetLocalAvailabilityHelper_ensureLocalAvailabilityOfAssetsWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E774C2F0;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(v9, v12);
 
-  return v8;
+  return _setUpLocalAvailabilityRequests;
 }
 
 void __95__PXPhotoKitAssetLocalAvailabilityHelper_ensureLocalAvailabilityOfAssetsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -435,17 +435,17 @@ LABEL_8:
   [(PXPhotoKitAssetLocalAvailabilityHelper *)&v3 dealloc];
 }
 
-- (PXPhotoKitAssetLocalAvailabilityHelper)initWithAssets:(id)a3 treatLivePhotoAsStill:(BOOL)a4
+- (PXPhotoKitAssetLocalAvailabilityHelper)initWithAssets:(id)assets treatLivePhotoAsStill:(BOOL)still
 {
-  v7 = a3;
+  assetsCopy = assets;
   v11.receiver = self;
   v11.super_class = PXPhotoKitAssetLocalAvailabilityHelper;
   v8 = [(PXPhotoKitAssetLocalAvailabilityHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assets, a3);
-    v9->_treatLivePhotoAsStill = a4;
+    objc_storeStrong(&v8->_assets, assets);
+    v9->_treatLivePhotoAsStill = still;
   }
 
   return v9;

@@ -1,43 +1,43 @@
 @interface CLSRelation
-- (BOOL)isEquivalentToRelation:(id)a3;
-- (BOOL)isInverseOfRelation:(id)a3;
-- (CLSRelation)initWithFromEntity:(Class)a3 toEntity:(Class)a4 onFromKey:(id)a5 toKey:(id)a6 faultable:(BOOL)a7;
+- (BOOL)isEquivalentToRelation:(id)relation;
+- (BOOL)isInverseOfRelation:(id)relation;
+- (CLSRelation)initWithFromEntity:(Class)entity toEntity:(Class)toEntity onFromKey:(id)key toKey:(id)toKey faultable:(BOOL)faultable;
 - (id)description;
 @end
 
 @implementation CLSRelation
 
-- (CLSRelation)initWithFromEntity:(Class)a3 toEntity:(Class)a4 onFromKey:(id)a5 toKey:(id)a6 faultable:(BOOL)a7
+- (CLSRelation)initWithFromEntity:(Class)entity toEntity:(Class)toEntity onFromKey:(id)key toKey:(id)toKey faultable:(BOOL)faultable
 {
-  v13 = a5;
-  v14 = a6;
+  keyCopy = key;
+  toKeyCopy = toKey;
   v18.receiver = self;
   v18.super_class = CLSRelation;
   v15 = [(CLSRelation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fromEntity, a3);
-    objc_storeStrong(&v16->_toEntity, a4);
-    objc_storeStrong(&v16->_fromKey, a5);
-    objc_storeStrong(&v16->_toKey, a6);
-    v16->_faultable = a7;
+    objc_storeStrong(&v15->_fromEntity, entity);
+    objc_storeStrong(&v16->_toEntity, toEntity);
+    objc_storeStrong(&v16->_fromKey, key);
+    objc_storeStrong(&v16->_toKey, toKey);
+    v16->_faultable = faultable;
   }
 
   return v16;
 }
 
-- (BOOL)isInverseOfRelation:(id)a3
+- (BOOL)isInverseOfRelation:(id)relation
 {
-  v7 = a3;
+  relationCopy = relation;
   v10 = objc_msgSend_fromEntity(self, v8, v9);
-  if (v10 == objc_msgSend_toEntity(v7, v11, v12))
+  if (v10 == objc_msgSend_toEntity(relationCopy, v11, v12))
   {
     v15 = objc_msgSend_toEntity(self, v13, v14);
-    if (v15 == objc_msgSend_fromEntity(v7, v16, v17))
+    if (v15 == objc_msgSend_fromEntity(relationCopy, v16, v17))
     {
       v24 = objc_msgSend_fromKey(self, v18, v19);
-      if (v24 || (objc_msgSend_toKey(v7, v22, v23), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v24 || (objc_msgSend_toKey(relationCopy, v22, v23), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v25 = objc_msgSend_fromKey(self, v22, v23);
         if (!v25)
@@ -47,11 +47,11 @@
         }
 
         v3 = v25;
-        v4 = objc_msgSend_toKey(v7, v26, v27);
+        v4 = objc_msgSend_toKey(relationCopy, v26, v27);
         if (v4)
         {
           v30 = objc_msgSend_fromKey(self, v28, v29);
-          v33 = objc_msgSend_toKey(v7, v31, v32);
+          v33 = objc_msgSend_toKey(relationCopy, v31, v32);
           if (objc_msgSend_isEqualToString_(v30, v34, v33))
           {
             v56 = v33;
@@ -61,7 +61,7 @@ LABEL_16:
             v39 = objc_msgSend_toKey(self, v22, v23);
             if (!v39)
             {
-              v55 = objc_msgSend_fromKey(v7, v37, v38);
+              v55 = objc_msgSend_fromKey(relationCopy, v37, v38);
               if (!v55)
               {
                 v55 = 0;
@@ -74,13 +74,13 @@ LABEL_16:
             if (v40)
             {
               v43 = v40;
-              v44 = objc_msgSend_fromKey(v7, v41, v42);
+              v44 = objc_msgSend_fromKey(relationCopy, v41, v42);
               if (v44)
               {
                 v47 = v44;
                 objc_msgSend_toKey(self, v45, v46);
                 v48 = v54 = v5;
-                objc_msgSend_fromKey(v7, v49, v50);
+                objc_msgSend_fromKey(relationCopy, v49, v50);
                 v51 = v53 = v35;
                 isEqualToString = objc_msgSend_isEqualToString_(v48, v52, v51);
 
@@ -154,17 +154,17 @@ LABEL_4:
   return v20;
 }
 
-- (BOOL)isEquivalentToRelation:(id)a3
+- (BOOL)isEquivalentToRelation:(id)relation
 {
-  v7 = a3;
+  relationCopy = relation;
   v10 = objc_msgSend_fromEntity(self, v8, v9);
-  if (v10 == objc_msgSend_fromEntity(v7, v11, v12))
+  if (v10 == objc_msgSend_fromEntity(relationCopy, v11, v12))
   {
     v15 = objc_msgSend_toEntity(self, v13, v14);
-    if (v15 == objc_msgSend_toEntity(v7, v16, v17))
+    if (v15 == objc_msgSend_toEntity(relationCopy, v16, v17))
     {
       v24 = objc_msgSend_fromKey(self, v18, v19);
-      if (v24 || (objc_msgSend_fromKey(v7, v22, v23), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v24 || (objc_msgSend_fromKey(relationCopy, v22, v23), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v25 = objc_msgSend_fromKey(self, v22, v23);
         if (!v25)
@@ -174,11 +174,11 @@ LABEL_4:
         }
 
         v3 = v25;
-        v4 = objc_msgSend_fromKey(v7, v26, v27);
+        v4 = objc_msgSend_fromKey(relationCopy, v26, v27);
         if (v4)
         {
           v30 = objc_msgSend_fromKey(self, v28, v29);
-          v33 = objc_msgSend_fromKey(v7, v31, v32);
+          v33 = objc_msgSend_fromKey(relationCopy, v31, v32);
           if (objc_msgSend_isEqualToString_(v30, v34, v33))
           {
             v56 = v33;
@@ -188,7 +188,7 @@ LABEL_16:
             v39 = objc_msgSend_toKey(self, v22, v23);
             if (!v39)
             {
-              v55 = objc_msgSend_toKey(v7, v37, v38);
+              v55 = objc_msgSend_toKey(relationCopy, v37, v38);
               if (!v55)
               {
                 v55 = 0;
@@ -201,13 +201,13 @@ LABEL_16:
             if (v40)
             {
               v43 = v40;
-              v44 = objc_msgSend_toKey(v7, v41, v42);
+              v44 = objc_msgSend_toKey(relationCopy, v41, v42);
               if (v44)
               {
                 v47 = v44;
                 objc_msgSend_toKey(self, v45, v46);
                 v48 = v54 = v5;
-                objc_msgSend_toKey(v7, v49, v50);
+                objc_msgSend_toKey(relationCopy, v49, v50);
                 v51 = v53 = v35;
                 isEqualToString = objc_msgSend_isEqualToString_(v48, v52, v51);
 

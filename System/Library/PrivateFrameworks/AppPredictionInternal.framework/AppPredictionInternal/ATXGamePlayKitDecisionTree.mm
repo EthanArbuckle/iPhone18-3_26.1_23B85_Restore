@@ -1,19 +1,19 @@
 @interface ATXGamePlayKitDecisionTree
-+ (void)configureKeyedArchiver:(id)a3;
-+ (void)configureKeyedUnarchiver:(id)a3;
++ (void)configureKeyedArchiver:(id)archiver;
++ (void)configureKeyedUnarchiver:(id)unarchiver;
 - (ATXGamePlayKitDecisionTree)init;
-- (ATXGamePlayKitDecisionTree)initWithAttribute:(id)a3;
-- (ATXGamePlayKitDecisionTree)initWithCoder:(id)a3;
-- (ATXGamePlayKitDecisionTree)initWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5 maxDepth:(unint64_t)a6 minSamplesSplit:(unint64_t)a7 ratioForLeafNodeDecision:(double)a8;
-- (ATXGamePlayKitDecisionTree)initWithURL:(id)a3 error:(id)a4;
-- (BOOL)exportToURL:(id)a3 error:(id)a4;
+- (ATXGamePlayKitDecisionTree)initWithAttribute:(id)attribute;
+- (ATXGamePlayKitDecisionTree)initWithCoder:(id)coder;
+- (ATXGamePlayKitDecisionTree)initWithExamples:(id)examples actions:(id)actions attributes:(id)attributes maxDepth:(unint64_t)depth minSamplesSplit:(unint64_t)split ratioForLeafNodeDecision:(double)decision;
+- (ATXGamePlayKitDecisionTree)initWithURL:(id)l error:(id)error;
+- (BOOL)exportToURL:(id)l error:(id)error;
 - (id).cxx_construct;
 - (id)description;
-- (id)findAccuracyWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5;
-- (id)findActionForAnswers:(id)a3;
+- (id)findAccuracyWithExamples:(id)examples actions:(id)actions attributes:(id)attributes;
+- (id)findActionForAnswers:(id)answers;
 - (id)getFlattenedTree;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXGamePlayKitDecisionTree
@@ -30,14 +30,14 @@
   return 0;
 }
 
-- (ATXGamePlayKitDecisionTree)initWithAttribute:(id)a3
+- (ATXGamePlayKitDecisionTree)initWithAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v6 = [(ATXGamePlayKitDecisionTree *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((*v6->_decisionTree.__ptr_ + 56), a3);
+    objc_storeStrong((*v6->_decisionTree.__ptr_ + 56), attribute);
     v8 = [ATXGamePlayKitDecisionNode alloc];
     ptr = v7->_decisionTree.__ptr_;
     v11 = *ptr;
@@ -63,30 +63,30 @@
   return v7;
 }
 
-+ (void)configureKeyedArchiver:(id)a3
++ (void)configureKeyedArchiver:(id)archiver
 {
-  v3 = a3;
-  [v3 setClassName:@"GKDecisionTree" forClass:NSClassFromString(&cfstr_Atxgameplaykit_3.isa)];
-  [v3 setClassName:@"GKRandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_4.isa)];
-  [v3 setClassName:@"GKRandomDistribution" forClass:NSClassFromString(&cfstr_Atxgameplaykit_5.isa)];
-  [v3 setClassName:@"GKARC4RandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_6.isa)];
-  [v3 setClassName:@"GKSystemArc4RandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_7.isa)];
+  archiverCopy = archiver;
+  [archiverCopy setClassName:@"GKDecisionTree" forClass:NSClassFromString(&cfstr_Atxgameplaykit_3.isa)];
+  [archiverCopy setClassName:@"GKRandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_4.isa)];
+  [archiverCopy setClassName:@"GKRandomDistribution" forClass:NSClassFromString(&cfstr_Atxgameplaykit_5.isa)];
+  [archiverCopy setClassName:@"GKARC4RandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_6.isa)];
+  [archiverCopy setClassName:@"GKSystemArc4RandomSource" forClass:NSClassFromString(&cfstr_Atxgameplaykit_7.isa)];
 }
 
-+ (void)configureKeyedUnarchiver:(id)a3
++ (void)configureKeyedUnarchiver:(id)unarchiver
 {
-  v3 = a3;
-  [v3 setClass:NSClassFromString(&cfstr_Atxgameplaykit_3.isa) forClassName:@"GKDecisionTree"];
-  [v3 setClass:NSClassFromString(&cfstr_Atxgameplaykit_4.isa) forClassName:@"GKRandomSource"];
-  [v3 setClass:NSClassFromString(&cfstr_Atxgameplaykit_5.isa) forClassName:@"GKRandomDistribution"];
-  [v3 setClass:NSClassFromString(&cfstr_Atxgameplaykit_6.isa) forClassName:@"GKARC4RandomSource"];
-  [v3 setClass:NSClassFromString(&cfstr_Atxgameplaykit_7.isa) forClassName:@"GKSystemArc4RandomSource"];
+  unarchiverCopy = unarchiver;
+  [unarchiverCopy setClass:NSClassFromString(&cfstr_Atxgameplaykit_3.isa) forClassName:@"GKDecisionTree"];
+  [unarchiverCopy setClass:NSClassFromString(&cfstr_Atxgameplaykit_4.isa) forClassName:@"GKRandomSource"];
+  [unarchiverCopy setClass:NSClassFromString(&cfstr_Atxgameplaykit_5.isa) forClassName:@"GKRandomDistribution"];
+  [unarchiverCopy setClass:NSClassFromString(&cfstr_Atxgameplaykit_6.isa) forClassName:@"GKARC4RandomSource"];
+  [unarchiverCopy setClass:NSClassFromString(&cfstr_Atxgameplaykit_7.isa) forClassName:@"GKSystemArc4RandomSource"];
 }
 
-- (ATXGamePlayKitDecisionTree)initWithCoder:(id)a3
+- (ATXGamePlayKitDecisionTree)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   if ([(ATXGamePlayKitDecisionTree *)self init])
   {
     _ZNSt3__115allocate_sharedB8ne200100I27ATXGamePlayKitCDecisionTreeNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
@@ -96,17 +96,17 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXGamePlayKitDecisionTree *)self randomSource];
-  [v4 encodeObject:v5 forKey:@"rand"];
+  coderCopy = coder;
+  randomSource = [(ATXGamePlayKitDecisionTree *)self randomSource];
+  [coderCopy encodeObject:randomSource forKey:@"rand"];
 
   ptr = self->_decisionTree.__ptr_;
   v9 = 0;
   v10 = 0;
   v7 = ATXGamePlayKitCDecisionTree::encodeWithCoder(ptr, &v9, 0, 0, 0);
-  [v4 encodeObject:v7 forKey:@"tree"];
+  [coderCopy encodeObject:v7 forKey:@"tree"];
 
   if (v10)
   {
@@ -114,7 +114,7 @@
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInduced];
-  [v4 encodeObject:v8 forKey:@"induced"];
+  [coderCopy encodeObject:v8 forKey:@"induced"];
 }
 
 - (void)dealloc
@@ -125,12 +125,12 @@
   [(ATXGamePlayKitDecisionTree *)&v3 dealloc];
 }
 
-- (ATXGamePlayKitDecisionTree)initWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5 maxDepth:(unint64_t)a6 minSamplesSplit:(unint64_t)a7 ratioForLeafNodeDecision:(double)a8
+- (ATXGamePlayKitDecisionTree)initWithExamples:(id)examples actions:(id)actions attributes:(id)attributes maxDepth:(unint64_t)depth minSamplesSplit:(unint64_t)split ratioForLeafNodeDecision:(double)decision
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v44 = a4;
-  v43 = a5;
+  examplesCopy = examples;
+  actionsCopy = actions;
+  attributesCopy = attributes;
   v13 = [(ATXGamePlayKitDecisionTree *)self init];
   v14 = v13;
   if (v13)
@@ -140,32 +140,32 @@
     {
       if (*ptr)
       {
-        v16 = [v12 count];
-        if (v16 != [v44 count])
+        v16 = [examplesCopy count];
+        if (v16 != [actionsCopy count])
         {
-          NSLog(&cfstr_Atxgameplaykit_9.isa, [v44 count], objc_msgSend(v12, "count"));
+          NSLog(&cfstr_Atxgameplaykit_9.isa, [actionsCopy count], objc_msgSend(examplesCopy, "count"));
           _ZNSt3__115allocate_sharedB8ne200100I27ATXGamePlayKitCDecisionTreeNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
         }
 
-        v17 = [v12 firstObject];
-        v18 = [v17 count];
-        v19 = [v43 count];
+        firstObject = [examplesCopy firstObject];
+        v18 = [firstObject count];
+        v19 = [attributesCopy count];
 
         if (v18 != v19)
         {
-          v37 = [v43 count];
-          v38 = [v12 firstObject];
-          NSLog(&cfstr_Atxgameplaykit_10.isa, v37, [v38 count]);
+          v37 = [attributesCopy count];
+          firstObject2 = [examplesCopy firstObject];
+          NSLog(&cfstr_Atxgameplaykit_10.isa, v37, [firstObject2 count]);
 
           _ZNSt3__115allocate_sharedB8ne200100I27ATXGamePlayKitCDecisionTreeNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
         }
 
-        v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
+        v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(examplesCopy, "count")}];
         v51 = 0u;
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v21 = v44;
+        v21 = actionsCopy;
         v22 = [v21 countByEnumeratingWithState:&v49 objects:v53 count:16];
         if (v22)
         {
@@ -183,7 +183,7 @@
               }
 
               v26 = *(*(&v49 + 1) + 8 * v25);
-              v27 = [v12 objectAtIndexedSubscript:v23];
+              v27 = [examplesCopy objectAtIndexedSubscript:v23];
               v28 = [v27 arrayByAddingObject:v26];
               [v20 addObject:v28];
 
@@ -198,14 +198,14 @@
           while (v22);
         }
 
-        if (a6)
+        if (depth)
         {
-          v29 = a6;
+          depthCopy = depth;
         }
 
         else
         {
-          v29 = 1000000000;
+          depthCopy = 1000000000;
         }
 
         v30 = v14->_decisionTree.__ptr_;
@@ -217,13 +217,13 @@
           atomic_fetch_add_explicit(&v31->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
-        ATXGamePlayKitCDecisionTree::cartTreeGrowth(v30, v20, v43, &v47, v29, a7, a8);
+        ATXGamePlayKitCDecisionTree::cartTreeGrowth(v30, v20, attributesCopy, &v47, depthCopy, split, decision);
         if (v48)
         {
           std::__shared_weak_count::__release_shared[abi:ne200100](v48);
         }
 
-        if (!a7 && v29 == 1000000000)
+        if (!split && depthCopy == 1000000000)
         {
           v32 = objc_alloc(MEMORY[0x277CBFF08]);
           v33 = v14->_decisionTree.__ptr_;
@@ -249,13 +249,13 @@
   return v14;
 }
 
-- (ATXGamePlayKitDecisionTree)initWithURL:(id)a3 error:(id)a4
+- (ATXGamePlayKitDecisionTree)initWithURL:(id)l error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v19 = v7;
-  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v6 options:2 error:&v19];
+  v19 = errorCopy;
+  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:lCopy options:2 error:&v19];
   v10 = v19;
 
   v18 = v10;
@@ -271,7 +271,7 @@
     mlkitDecisionTree = v13->mlkitDecisionTree;
     v13->mlkitDecisionTree = v14;
 
-    [(MLGKDecisionTree *)v13->mlkitDecisionTree _loadModelAssetWithModelAtPath:v6 withError:v12];
+    [(MLGKDecisionTree *)v13->mlkitDecisionTree _loadModelAssetWithModelAtPath:lCopy withError:v12];
   }
 
   else
@@ -285,24 +285,24 @@
   return v16;
 }
 
-- (BOOL)exportToURL:(id)a3 error:(id)a4
+- (BOOL)exportToURL:(id)l error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
   if (self->_isInduced)
   {
-    v9 = [(MLGKDecisionTree *)self->mlkitDecisionTree _saveModelAssetWithModelToPath:v6 withError:v7];
+    v9 = [(MLGKDecisionTree *)self->mlkitDecisionTree _saveModelAssetWithModelToPath:lCopy withError:errorCopy];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v13 = v7;
-    v9 = [v10 writeToURL:v6 options:1 error:&v13];
+    v13 = errorCopy;
+    v9 = [v10 writeToURL:lCopy options:1 error:&v13];
     v11 = v13;
 
-    v7 = v11;
+    errorCopy = v11;
   }
 
   objc_autoreleasePoolPop(v8);
@@ -324,34 +324,34 @@
   return v3;
 }
 
-- (id)findActionForAnswers:(id)a3
+- (id)findActionForAnswers:(id)answers
 {
-  v4 = a3;
+  answersCopy = answers;
   if (self->_isInduced)
   {
     v5 = objc_opt_new();
-    v6 = [(MLGKDecisionTree *)self->mlkitDecisionTree _makeInferenceFromAnswers:v4 withError:v5];
+    v6 = [(MLGKDecisionTree *)self->mlkitDecisionTree _makeInferenceFromAnswers:answersCopy withError:v5];
   }
 
   else
   {
-    v6 = ATXGamePlayKitCDecisionTree::findActionForAnswers(self->_decisionTree.__ptr_, v4);
+    v6 = ATXGamePlayKitCDecisionTree::findActionForAnswers(self->_decisionTree.__ptr_, answersCopy);
   }
 
   return v6;
 }
 
-- (id)findAccuracyWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5
+- (id)findAccuracyWithExamples:(id)examples actions:(id)actions attributes:(id)attributes
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v30 = a4;
-  v31 = a5;
+  examplesCopy = examples;
+  actionsCopy = actions;
+  attributesCopy = attributes;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v7;
+  obj = examplesCopy;
   v8 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v8)
   {
@@ -376,7 +376,7 @@
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v13 = v31;
+        v13 = attributesCopy;
         v14 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v14)
         {
@@ -405,7 +405,7 @@
         }
 
         v20 = [(ATXGamePlayKitDecisionTree *)self findActionForAnswers:v12];
-        v21 = [v30 objectAtIndexedSubscript:v34];
+        v21 = [actionsCopy objectAtIndexedSubscript:v34];
         v22 = [v21 isEqual:v20];
 
         v9 = v33 + v22;

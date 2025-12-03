@@ -1,91 +1,91 @@
 @interface SKAStatusSubscriptionServiceClient
-+ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)a3;
-+ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)a3;
-+ (id)_subscriptionIdentifierNotFoundError:(id)a3;
++ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)identifier;
++ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)identifier;
++ (id)_subscriptionIdentifierNotFoundError:(id)error;
 + (id)logger;
-- (BOOL)_validateChannelIsKnownForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (BOOL)channelMatchesClientStatusTypeIdentifier:(id)a3;
-- (SKAStatusSubscriptionServiceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 subscriptionManager:(id)a7 encryptionManager:(id)a8 inTrafficMode:(BOOL)a9 daemonProtocolDelegate:(id)a10;
+- (BOOL)_validateChannelIsKnownForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context;
+- (BOOL)channelMatchesClientStatusTypeIdentifier:(id)identifier;
+- (SKAStatusSubscriptionServiceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager subscriptionManager:(id)subscriptionManager encryptionManager:(id)encryptionManager inTrafficMode:(BOOL)mode daemonProtocolDelegate:(id)self0;
 - (SKAStatusSubscriptionServiceClientDelegate)delegate;
-- (id)_currentStatusForChannel:(id)a3;
-- (id)_handlesAssociatedWithChannel:(id)a3;
-- (id)_subscriptionMetadataForChannel:(id)a3;
-- (int64_t)validatePersonalChannel:(id)a3 matchesEncryptionValidationToken:(id)a4 fromSender:(id)a5;
-- (int64_t)validatePersonalChannel:(id)a3 matchesSubscriptionValidationToken:(id)a4 fromSender:(id)a5;
-- (void)accountIsStatusKitCapableWithCompletion:(id)a3;
-- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)allSubscriptionMetadatasForStatusTypeIdentifier:(id)a3 includingPersonalSubscription:(BOOL)a4 completion:(id)a5;
-- (void)allSubscriptionMetadatasWithActiveAssertionsForStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)allSubscriptionMetadatasWithActiveSubscriptionsForStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteSubscriptionWithIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)handleReceivedInvitationForChannel:(id)a3;
-- (void)handleReceivedStatusUpdate:(id)a3 onChannel:(id)a4;
-- (void)handleRemoteDatabaseChangeForChannels:(id)a3;
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)releasePersistentSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5 completion:(id)a6;
-- (void)releaseTransientSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)retainPersistentSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5 completion:(id)a6;
-- (void)retainTransientSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)subscriptionMetadataForHandle:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)subscriptionServiceClientConnectionWasInterrupted:(id)a3;
-- (void)subscriptionServiceClientConnectionWasInvalidated:(id)a3;
-- (void)subscriptionValidationTokensForHandle:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)a3 fromSender:(id)a4 statusTypeIdentifier:(id)a5 completion:(id)a6;
+- (id)_currentStatusForChannel:(id)channel;
+- (id)_handlesAssociatedWithChannel:(id)channel;
+- (id)_subscriptionMetadataForChannel:(id)channel;
+- (int64_t)validatePersonalChannel:(id)channel matchesEncryptionValidationToken:(id)token fromSender:(id)sender;
+- (int64_t)validatePersonalChannel:(id)channel matchesSubscriptionValidationToken:(id)token fromSender:(id)sender;
+- (void)accountIsStatusKitCapableWithCompletion:(id)completion;
+- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion;
+- (void)allSubscriptionMetadatasForStatusTypeIdentifier:(id)identifier includingPersonalSubscription:(BOOL)subscription completion:(id)completion;
+- (void)allSubscriptionMetadatasWithActiveAssertionsForStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)allSubscriptionMetadatasWithActiveSubscriptionsForStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteSubscriptionWithIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion;
+- (void)handleReceivedInvitationForChannel:(id)channel;
+- (void)handleReceivedStatusUpdate:(id)update onChannel:(id)channel;
+- (void)handleRemoteDatabaseChangeForChannels:(id)channels;
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)releasePersistentSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier completion:(id)completion;
+- (void)releaseTransientSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion;
+- (void)retainPersistentSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier completion:(id)completion;
+- (void)retainTransientSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion;
+- (void)subscriptionMetadataForHandle:(id)handle statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)subscriptionServiceClientConnectionWasInterrupted:(id)interrupted;
+- (void)subscriptionServiceClientConnectionWasInvalidated:(id)invalidated;
+- (void)subscriptionValidationTokensForHandle:(id)handle statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)tokens fromSender:(id)sender statusTypeIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SKAStatusSubscriptionServiceClient
 
-- (SKAStatusSubscriptionServiceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 subscriptionManager:(id)a7 encryptionManager:(id)a8 inTrafficMode:(BOOL)a9 daemonProtocolDelegate:(id)a10
+- (SKAStatusSubscriptionServiceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager subscriptionManager:(id)subscriptionManager encryptionManager:(id)encryptionManager inTrafficMode:(BOOL)mode daemonProtocolDelegate:(id)self0
 {
-  v26 = a3;
-  v16 = a4;
-  v17 = a5;
-  v25 = a6;
-  v24 = a7;
-  v18 = a8;
-  v19 = a10;
-  dispatch_assert_queue_V2(v16);
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  subscriptionManagerCopy = subscriptionManager;
+  encryptionManagerCopy = encryptionManager;
+  protocolDelegateCopy = protocolDelegate;
+  dispatch_assert_queue_V2(queueCopy);
   v27.receiver = self;
   v27.super_class = SKAStatusSubscriptionServiceClient;
   v20 = [(SKAStatusSubscriptionServiceClient *)&v27 init];
   if (v20)
   {
-    v21 = [[SKAStatusSubscriptionServiceClientConnection alloc] initWithXPCConnection:v26 queue:v16 daemonProtocolDelegate:v19 connectionLifecycleDelegate:v20];
+    v21 = [[SKAStatusSubscriptionServiceClientConnection alloc] initWithXPCConnection:connectionCopy queue:queueCopy daemonProtocolDelegate:protocolDelegateCopy connectionLifecycleDelegate:v20];
     clientConnection = v20->_clientConnection;
     v20->_clientConnection = v21;
 
-    objc_storeWeak(&v20->_delegate, v17);
-    objc_storeStrong(&v20->_databaseManager, a6);
-    objc_storeStrong(&v20->_subscriptionManager, a7);
-    objc_storeStrong(&v20->_encryptionManager, a8);
-    objc_storeStrong(&v20->_queue, a4);
-    v20->_trafficModeEnabled = a9;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_databaseManager, manager);
+    objc_storeStrong(&v20->_subscriptionManager, subscriptionManager);
+    objc_storeStrong(&v20->_encryptionManager, encryptionManager);
+    objc_storeStrong(&v20->_queue, queue);
+    v20->_trafficModeEnabled = mode;
   }
 
   return v20;
 }
 
-+ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)a3
++ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client is not entitled to subscription information for status of type %@. Missing entitlement %@", a3, @"com.apple.StatusKit.subscribe.types"];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client is not entitled to subscription information for status of type %@. Missing entitlement %@", identifier, @"com.apple.StatusKit.subscribe.types"];
   v4 = [SKAError errorWithCode:201 customDescription:v3];
 
   return v4;
 }
 
-+ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)a3
++ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Status type %@ has been disabled by the server", a3];
-  v4 = [SKAError errorWithCode:101 customDescription:v3];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Status type %@ has been disabled by the server", identifier];
+  v4 = [SKAError errorWithCode:101 customDescription:identifier];
 
   return v4;
 }
 
-+ (id)_subscriptionIdentifierNotFoundError:(id)a3
++ (id)_subscriptionIdentifierNotFoundError:(id)error
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Subscription not found matching subscription identifier: %@", a3];
-  v4 = [SKAError errorWithCode:1000 customDescription:v3];
+  error = [MEMORY[0x277CCACA8] stringWithFormat:@"Subscription not found matching subscription identifier: %@", error];
+  v4 = [SKAError errorWithCode:1000 customDescription:error];
 
   return v4;
 }
@@ -109,16 +109,16 @@ uint64_t __44__SKAStatusSubscriptionServiceClient_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleRemoteDatabaseChangeForChannels:(id)a3
+- (void)handleRemoteDatabaseChangeForChannels:(id)channels
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelsCopy = channels;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = channelsCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
@@ -179,8 +179,8 @@ uint64_t __44__SKAStatusSubscriptionServiceClient_logger__block_invoke()
     }
 
     v19 = [(SKAStatusSubscriptionServiceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_22];
-    v20 = [v12 array];
-    [v19 subscriptionStateChangedForSubscriptions:v20 completion:&__block_literal_global_26];
+    array = [v12 array];
+    [v19 subscriptionStateChangedForSubscriptions:array completion:&__block_literal_global_26];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -206,13 +206,13 @@ void __76__SKAStatusSubscriptionServiceClient_handleRemoteDatabaseChangeForChann
   }
 }
 
-- (void)handleReceivedStatusUpdate:(id)a3 onChannel:(id)a4
+- (void)handleReceivedStatusUpdate:(id)update onChannel:(id)channel
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([(SKAStatusSubscriptionServiceClient *)self channelMatchesClientStatusTypeIdentifier:v5])
+  channelCopy = channel;
+  if ([(SKAStatusSubscriptionServiceClient *)self channelMatchesClientStatusTypeIdentifier:channelCopy])
   {
-    v6 = [(SKAStatusSubscriptionServiceClient *)self _subscriptionMetadataForChannel:v5];
+    v6 = [(SKAStatusSubscriptionServiceClient *)self _subscriptionMetadataForChannel:channelCopy];
     v7 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -223,8 +223,8 @@ void __76__SKAStatusSubscriptionServiceClient_handleRemoteDatabaseChangeForChann
 
     if (v6)
     {
-      v8 = [(SKAStatusSubscriptionServiceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_28];
-      [v8 subscriptionReceivedStatusUpdate:v6 completion:&__block_literal_global_31];
+      statusType = [(SKAStatusSubscriptionServiceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_28];
+      [statusType subscriptionReceivedStatusUpdate:v6 completion:&__block_literal_global_31];
 LABEL_8:
     }
   }
@@ -235,11 +235,11 @@ LABEL_8:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       statusTypeIdentifier = self->_statusTypeIdentifier;
-      v8 = [v5 statusType];
+      statusType = [channelCopy statusType];
       v11 = 138412546;
       v12 = statusTypeIdentifier;
       v13 = 2112;
-      v14 = v8;
+      v14 = statusType;
       _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Connected client does not match status type identifier of changed subscription. Client: %@ Status: %@", &v11, 0x16u);
       goto LABEL_8;
     }
@@ -268,13 +268,13 @@ void __75__SKAStatusSubscriptionServiceClient_handleReceivedStatusUpdate_onChann
   }
 }
 
-- (void)handleReceivedInvitationForChannel:(id)a3
+- (void)handleReceivedInvitationForChannel:(id)channel
 {
-  v4 = a3;
-  if ([(SKAStatusSubscriptionServiceClient *)self channelMatchesClientStatusTypeIdentifier:v4])
+  channelCopy = channel;
+  if ([(SKAStatusSubscriptionServiceClient *)self channelMatchesClientStatusTypeIdentifier:channelCopy])
   {
     v5 = [(SKAStatusSubscriptionServiceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_33];
-    v6 = [(SKAStatusSubscriptionServiceClient *)self _subscriptionMetadataForChannel:v4];
+    v6 = [(SKAStatusSubscriptionServiceClient *)self _subscriptionMetadataForChannel:channelCopy];
     v7 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -316,33 +316,33 @@ void __73__SKAStatusSubscriptionServiceClient_handleReceivedInvitationForChannel
   }
 }
 
-- (id)_subscriptionMetadataForChannel:(id)a3
+- (id)_subscriptionMetadataForChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 statusType];
-  v7 = [v4 isPersonal];
-  v8 = [(SKAStatusSubscriptionServiceClient *)self _currentStatusForChannel:v4];
-  v9 = [(SKAStatusSubscriptionServiceClient *)self _handlesAssociatedWithChannel:v4];
+  channelCopy = channel;
+  identifier = [channelCopy identifier];
+  statusType = [channelCopy statusType];
+  isPersonal = [channelCopy isPersonal];
+  v8 = [(SKAStatusSubscriptionServiceClient *)self _currentStatusForChannel:channelCopy];
+  v9 = [(SKAStatusSubscriptionServiceClient *)self _handlesAssociatedWithChannel:channelCopy];
 
-  v10 = [objc_alloc(MEMORY[0x277D68158]) initWithSubscriptionIdentifier:v5 statusTypeIdentifier:v6 isPersonalStatusSubscription:v7 currentStatus:v8 ownerHandles:v9];
+  v10 = [objc_alloc(MEMORY[0x277D68158]) initWithSubscriptionIdentifier:identifier statusTypeIdentifier:statusType isPersonalStatusSubscription:isPersonal currentStatus:v8 ownerHandles:v9];
 
   return v10;
 }
 
-- (id)_handlesAssociatedWithChannel:(id)a3
+- (id)_handlesAssociatedWithChannel:(id)channel
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isPersonal])
+  channelCopy = channel;
+  if ([channelCopy isPersonal])
   {
-    v5 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-    v7 = [(SKADatabaseManaging *)self->_databaseManager receivedInvitationsForChannel:v4 databaseContext:v6];
+    newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+    v7 = [(SKADatabaseManaging *)self->_databaseManager receivedInvitationsForChannel:channelCopy databaseContext:newBackgroundContext];
     v8 = objc_alloc_init(MEMORY[0x277CBEB40]);
     v17 = 0u;
     v18 = 0u;
@@ -363,10 +363,10 @@ void __73__SKAStatusSubscriptionServiceClient_handleReceivedInvitationForChannel
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) senderSKHandle];
-          if (v14)
+          senderSKHandle = [*(*(&v17 + 1) + 8 * i) senderSKHandle];
+          if (senderSKHandle)
           {
-            [v8 addObject:v14];
+            [v8 addObject:senderSKHandle];
           }
         }
 
@@ -376,19 +376,19 @@ void __73__SKAStatusSubscriptionServiceClient_handleReceivedInvitationForChannel
       while (v11);
     }
 
-    v5 = [v8 array];
+    array = [v8 array];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)_currentStatusForChannel:(id)a3
+- (id)_currentStatusForChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-  v6 = [(SKADatabaseManaging *)self->_databaseManager existingStatusForChannel:v4 databaseContext:v5];
+  channelCopy = channel;
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  v6 = [(SKADatabaseManaging *)self->_databaseManager existingStatusForChannel:channelCopy databaseContext:newBackgroundContext];
   v7 = v6;
   if (!v6)
   {
@@ -423,33 +423,33 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = [v7 uniqueIdentifier];
-  v12 = [v7 datePublished];
-  v20 = [v7 dateReceived];
-  v13 = [v7 dateCreated];
-  v21 = [v7 rawData];
-  v14 = [(SKAStatusEncryptionManaging *)self->_encryptionManager decryptStatusPayloadFromStatusEnvelopeData:v21 channel:v4];
-  v15 = [v14 statusPayload];
-  v16 = [v14 invitation];
-  v17 = [v16 skInvitationPayload];
-  v11 = [objc_alloc(MEMORY[0x277D68120]) initWithStatusPayload:v15 statusUniqueIdentifier:v19 datePublished:v12 dateCreated:v13 dateReceived:v20 invitationPayload:v17];
+  uniqueIdentifier = [v7 uniqueIdentifier];
+  datePublished = [v7 datePublished];
+  dateReceived = [v7 dateReceived];
+  dateCreated = [v7 dateCreated];
+  rawData = [v7 rawData];
+  v14 = [(SKAStatusEncryptionManaging *)self->_encryptionManager decryptStatusPayloadFromStatusEnvelopeData:rawData channel:channelCopy];
+  statusPayload = [v14 statusPayload];
+  invitation = [v14 invitation];
+  skInvitationPayload = [invitation skInvitationPayload];
+  v11 = [objc_alloc(MEMORY[0x277D68120]) initWithStatusPayload:statusPayload statusUniqueIdentifier:uniqueIdentifier datePublished:datePublished dateCreated:dateCreated dateReceived:dateReceived invitationPayload:skInvitationPayload];
 
 LABEL_10:
 
   return v11;
 }
 
-- (BOOL)channelMatchesClientStatusTypeIdentifier:(id)a3
+- (BOOL)channelMatchesClientStatusTypeIdentifier:(id)identifier
 {
-  v4 = [a3 statusType];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_statusTypeIdentifier;
-  objc_sync_exit(v5);
+  statusType = [identifier statusType];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_statusTypeIdentifier;
+  objc_sync_exit(selfCopy);
 
-  if (-[NSString length](v6, "length") || [v4 length])
+  if (-[NSString length](v6, "length") || [statusType length])
   {
-    v7 = [v4 isEqualToString:v6];
+    v7 = [statusType isEqualToString:v6];
   }
 
   else
@@ -460,7 +460,7 @@ LABEL_10:
   return v7;
 }
 
-- (void)subscriptionServiceClientConnectionWasInterrupted:(id)a3
+- (void)subscriptionServiceClientConnectionWasInterrupted:(id)interrupted
 {
   v4 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -494,7 +494,7 @@ void __88__SKAStatusSubscriptionServiceClient_subscriptionServiceClientConnectio
   }
 }
 
-- (void)subscriptionServiceClientConnectionWasInvalidated:(id)a3
+- (void)subscriptionServiceClientConnectionWasInvalidated:(id)invalidated
 {
   v4 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -528,14 +528,14 @@ void __88__SKAStatusSubscriptionServiceClient_subscriptionServiceClientConnectio
   }
 }
 
-- (void)subscriptionMetadataForHandle:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)subscriptionMetadataForHandle:(id)handle statusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v12 = [v11 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v12 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v12 & 1) == 0)
   {
@@ -545,11 +545,11 @@ void __88__SKAStatusSubscriptionServiceClient_subscriptionServiceClientConnectio
       [SKAStatusSubscriptionServiceClient subscriptionMetadataForHandle:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v16 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -557,10 +557,10 @@ void __88__SKAStatusSubscriptionServiceClient_subscriptionServiceClientConnectio
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v13 = v15;
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
     goto LABEL_11;
   }
 
@@ -568,10 +568,10 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __100__SKAStatusSubscriptionServiceClient_subscriptionMetadataForHandle_statusTypeIdentifier_completion___block_invoke;
   v17[3] = &unk_27843F1A0;
-  v21 = v10;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
+  v21 = completionCopy;
+  v18 = handleCopy;
+  selfCopy = self;
+  v20 = identifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v17];
 
   v13 = v21;
@@ -645,13 +645,13 @@ void __100__SKAStatusSubscriptionServiceClient_subscriptionMetadataForHandle_sta
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allSubscriptionMetadatasForStatusTypeIdentifier:(id)a3 includingPersonalSubscription:(BOOL)a4 completion:(id)a5
+- (void)allSubscriptionMetadatasForStatusTypeIdentifier:(id)identifier includingPersonalSubscription:(BOOL)subscription completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v10 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v11 = [v10 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v8];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v11 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v11 & 1) == 0)
   {
@@ -661,11 +661,11 @@ void __100__SKAStatusSubscriptionServiceClient_subscriptionMetadataForHandle_sta
       [SKAStatusSubscriptionServiceClient subscriptionMetadataForHandle:statusTypeIdentifier:completion:];
     }
 
-    v14 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v8];
+    v14 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v8])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v15 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -673,10 +673,10 @@ void __100__SKAStatusSubscriptionServiceClient_subscriptionMetadataForHandle_sta
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v14 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v8];
+    v14 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v12 = v14;
-    v9[2](v9, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
     goto LABEL_11;
   }
 
@@ -684,10 +684,10 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = __127__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasForStatusTypeIdentifier_includingPersonalSubscription_completion___block_invoke;
   v16[3] = &unk_27843F650;
-  v19 = v9;
-  v17 = v8;
-  v18 = self;
-  v20 = a4;
+  v19 = completionCopy;
+  v17 = identifierCopy;
+  selfCopy = self;
+  subscriptionCopy = subscription;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v16];
 
   v12 = v19;
@@ -778,13 +778,13 @@ void __127__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasForStatus
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allSubscriptionMetadatasWithActiveAssertionsForStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)allSubscriptionMetadatasWithActiveAssertionsForStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -794,11 +794,11 @@ void __127__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasForStatus
       [SKAStatusSubscriptionServiceClient subscriptionMetadataForHandle:statusTypeIdentifier:completion:];
     }
 
-    v12 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v13 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -806,10 +806,10 @@ void __127__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasForStatus
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v12 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v10 = v12;
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_11;
   }
 
@@ -817,9 +817,9 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __117__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiveAssertionsForStatusTypeIdentifier_completion___block_invoke;
   v14[3] = &unk_27843F128;
-  v17 = v7;
-  v15 = v6;
-  v16 = self;
+  v17 = completionCopy;
+  v15 = identifierCopy;
+  selfCopy = self;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v14];
 
   v10 = v17;
@@ -925,13 +925,13 @@ void __117__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allSubscriptionMetadatasWithActiveSubscriptionsForStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)allSubscriptionMetadatasWithActiveSubscriptionsForStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -941,11 +941,11 @@ void __117__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
       [SKAStatusSubscriptionServiceClient subscriptionMetadataForHandle:statusTypeIdentifier:completion:];
     }
 
-    v12 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v13 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -953,10 +953,10 @@ void __117__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v12 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v10 = v12;
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_11;
   }
 
@@ -964,9 +964,9 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __120__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiveSubscriptionsForStatusTypeIdentifier_completion___block_invoke;
   v14[3] = &unk_27843F128;
-  v17 = v7;
-  v15 = v6;
-  v16 = self;
+  v17 = completionCopy;
+  v15 = identifierCopy;
+  selfCopy = self;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v14];
 
   v10 = v17;
@@ -1072,14 +1072,14 @@ void __120__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v12 = [v11 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v12 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if ((v12 & 1) == 0)
   {
@@ -1089,11 +1089,11 @@ void __120__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
       [SKAStatusSubscriptionServiceClient subscriptionMetadataForHandle:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
     goto LABEL_10;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
   {
     v16 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1101,10 +1101,10 @@ void __120__SKAStatusSubscriptionServiceClient_allSubscriptionMetadatasWithActiv
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
 LABEL_10:
     v13 = v15;
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
     goto LABEL_11;
   }
 
@@ -1112,10 +1112,10 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __152__SKAStatusSubscriptionServiceClient_allStatusSubscriptionsWithPersistentSubscriptionAssertionForApplicationIdentifier_statusTypeIdentifier_completion___block_invoke;
   v17[3] = &unk_27843F1A0;
-  v21 = v10;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
+  v21 = completionCopy;
+  v18 = typeIdentifierCopy;
+  v19 = identifierCopy;
+  selfCopy = self;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v17];
 
   v13 = v21;
@@ -1210,25 +1210,25 @@ void __152__SKAStatusSubscriptionServiceClient_allStatusSubscriptionsWithPersist
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v12 = v10;
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v11 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1236,7 +1236,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v10 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -1244,9 +1244,9 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __117__SKAStatusSubscriptionServiceClient_subscriptionMetadataForPersonalSubscriptionWithStatusTypeIdentifier_completion___block_invoke;
   v13[3] = &unk_27843F128;
-  v15 = v7;
+  v15 = completionCopy;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v13];
 
 LABEL_9:
@@ -1307,25 +1307,25 @@ void __117__SKAStatusSubscriptionServiceClient_subscriptionMetadataForPersonalSu
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v12 = v10;
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v11 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1333,7 +1333,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v10 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -1341,9 +1341,9 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __102__SKAStatusSubscriptionServiceClient_registerForDelegateCallbacksWithStatusTypeIdentifier_completion___block_invoke;
   v13[3] = &unk_27843F128;
-  v15 = v7;
+  v15 = completionCopy;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v13];
 
 LABEL_9:
@@ -1392,29 +1392,29 @@ void __102__SKAStatusSubscriptionServiceClient_registerForDelegateCallbacksWithS
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retainTransientSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)retainTransientSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v8;
+    v25 = identifierCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = typeIdentifierCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Received request to retain transient subscription assertion for subscriptionIdentifier: %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
-  v12 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v13 = [v12 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v13 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if (v13)
   {
-    if ([SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+    if ([SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
     {
       if (!self->_trafficModeEnabled)
       {
@@ -1422,10 +1422,10 @@ void __102__SKAStatusSubscriptionServiceClient_registerForDelegateCallbacksWithS
         v20[1] = 3221225472;
         v20[2] = __132__SKAStatusSubscriptionServiceClient_retainTransientSubscriptionAssertionForSubscriptionIdentifier_statusTypeIdentifier_completion___block_invoke;
         v20[3] = &unk_27843F1A0;
-        v23 = v10;
+        v23 = completionCopy;
         v20[4] = self;
-        v21 = v8;
-        v22 = v9;
+        v21 = identifierCopy;
+        v22 = typeIdentifierCopy;
         [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v20];
 
         v18 = v23;
@@ -1449,7 +1449,7 @@ void __102__SKAStatusSubscriptionServiceClient_registerForDelegateCallbacksWithS
         [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
       }
 
-      v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+      v15 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
     }
   }
 
@@ -1461,11 +1461,11 @@ void __102__SKAStatusSubscriptionServiceClient_registerForDelegateCallbacksWithS
       [SKAStatusSubscriptionServiceClient retainTransientSubscriptionAssertionForSubscriptionIdentifier:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
   }
 
   v18 = v15;
-  (*(v10 + 2))(v10, v15);
+  (*(completionCopy + 2))(completionCopy, v15);
 LABEL_16:
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1551,25 +1551,25 @@ void __132__SKAStatusSubscriptionServiceClient_retainTransientSubscriptionAssert
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releaseTransientSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)releaseTransientSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v8;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = typeIdentifierCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Received request to release transient subscription assertion for subscriptionIdentifier: %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
-  v12 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v13 = [v12 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v13 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -1579,11 +1579,11 @@ void __132__SKAStatusSubscriptionServiceClient_retainTransientSubscriptionAssert
       [SKAStatusSubscriptionServiceClient releaseTransientSubscriptionAssertionForSubscriptionIdentifier:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
     goto LABEL_12;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
   {
     v17 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1591,10 +1591,10 @@ void __132__SKAStatusSubscriptionServiceClient_retainTransientSubscriptionAssert
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
 LABEL_12:
     v14 = v16;
-    v10[2](v10, v16);
+    completionCopy[2](completionCopy, v16);
     goto LABEL_13;
   }
 
@@ -1602,10 +1602,10 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = __133__SKAStatusSubscriptionServiceClient_releaseTransientSubscriptionAssertionForSubscriptionIdentifier_statusTypeIdentifier_completion___block_invoke;
   v19[3] = &unk_27843F1A0;
-  v22 = v10;
+  v22 = completionCopy;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
+  v20 = identifierCopy;
+  v21 = typeIdentifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v19];
 
   v14 = v22;
@@ -1694,30 +1694,30 @@ void __133__SKAStatusSubscriptionServiceClient_releaseTransientSubscriptionAsser
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retainPersistentSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5 completion:(id)a6
+- (void)retainPersistentSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v14 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = typeIdentifierCopy;
     _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, "Received request to retain persistent subscription assertion for subscriptionIdentifier: %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
-  v15 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v16 = [v15 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v11];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v16 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if (v16)
   {
-    if ([SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v11])
+    if ([SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
     {
       if (!self->_trafficModeEnabled)
       {
@@ -1725,11 +1725,11 @@ void __133__SKAStatusSubscriptionServiceClient_releaseTransientSubscriptionAsser
         v23[1] = 3221225472;
         v23[2] = __155__SKAStatusSubscriptionServiceClient_retainPersistentSubscriptionAssertionForSubscriptionIdentifier_statusTypeIdentifier_applicationIdentifier_completion___block_invoke;
         v23[3] = &unk_27843F100;
-        v27 = v13;
+        v27 = completionCopy;
         v23[4] = self;
-        v24 = v10;
-        v25 = v11;
-        v26 = v12;
+        v24 = identifierCopy;
+        v25 = typeIdentifierCopy;
+        v26 = applicationIdentifierCopy;
         [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v23];
 
         v21 = v27;
@@ -1753,7 +1753,7 @@ void __133__SKAStatusSubscriptionServiceClient_releaseTransientSubscriptionAsser
         [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
       }
 
-      v18 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v11];
+      v18 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
     }
   }
 
@@ -1765,11 +1765,11 @@ void __133__SKAStatusSubscriptionServiceClient_releaseTransientSubscriptionAsser
       [SKAStatusSubscriptionServiceClient retainPersistentSubscriptionAssertionForSubscriptionIdentifier:statusTypeIdentifier:applicationIdentifier:completion:];
     }
 
-    v18 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v11];
+    v18 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
   }
 
   v21 = v18;
-  (*(v13 + 2))(v13, v18);
+  (*(completionCopy + 2))(completionCopy, v18);
 LABEL_16:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1855,26 +1855,26 @@ void __155__SKAStatusSubscriptionServiceClient_retainPersistentSubscriptionAsser
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releasePersistentSubscriptionAssertionForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5 completion:(id)a6
+- (void)releasePersistentSubscriptionAssertionForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v14 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v10;
+    v28 = identifierCopy;
     v29 = 2112;
-    v30 = v11;
+    v30 = typeIdentifierCopy;
     _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, "Received request to release persistent subscription assertion for subscriptionIdentifier: %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
-  v15 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v16 = [v15 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v11];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v16 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if ((v16 & 1) == 0)
   {
@@ -1884,11 +1884,11 @@ void __155__SKAStatusSubscriptionServiceClient_retainPersistentSubscriptionAsser
       [SKAStatusSubscriptionServiceClient releasePersistentSubscriptionAssertionForSubscriptionIdentifier:statusTypeIdentifier:applicationIdentifier:completion:];
     }
 
-    v19 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v11];
+    v19 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
     goto LABEL_12;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v11])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
   {
     v20 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1896,10 +1896,10 @@ void __155__SKAStatusSubscriptionServiceClient_retainPersistentSubscriptionAsser
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v19 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v11];
+    v19 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
 LABEL_12:
     v17 = v19;
-    v13[2](v13, v19);
+    completionCopy[2](completionCopy, v19);
     goto LABEL_13;
   }
 
@@ -1907,11 +1907,11 @@ LABEL_12:
   v22[1] = 3221225472;
   v22[2] = __156__SKAStatusSubscriptionServiceClient_releasePersistentSubscriptionAssertionForSubscriptionIdentifier_statusTypeIdentifier_applicationIdentifier_completion___block_invoke;
   v22[3] = &unk_27843F100;
-  v26 = v13;
+  v26 = completionCopy;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
+  v23 = identifierCopy;
+  v24 = typeIdentifierCopy;
+  v25 = applicationIdentifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v22];
 
   v17 = v26;
@@ -2000,26 +2000,26 @@ void __156__SKAStatusSubscriptionServiceClient_releasePersistentSubscriptionAsse
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSubscriptionWithIdentifier:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)deleteSubscriptionWithIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v12 = [v11 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v12 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:typeIdentifierCopy];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v13 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:typeIdentifierCopy];
 LABEL_8:
     v15 = v13;
-    v10[2](v10, v13);
+    completionCopy[2](completionCopy, v13);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:typeIdentifierCopy])
   {
     v14 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2027,7 +2027,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v13 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v13 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:typeIdentifierCopy];
     goto LABEL_8;
   }
 
@@ -2035,10 +2035,10 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = __103__SKAStatusSubscriptionServiceClient_deleteSubscriptionWithIdentifier_statusTypeIdentifier_completion___block_invoke;
   v16[3] = &unk_27843F1A0;
-  v19 = v10;
+  v19 = completionCopy;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifierCopy;
+  v18 = typeIdentifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v16];
 
 LABEL_9:
@@ -2076,37 +2076,37 @@ void __103__SKAStatusSubscriptionServiceClient_deleteSubscriptionWithIdentifier_
   }
 }
 
-- (void)subscriptionValidationTokensForHandle:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)subscriptionValidationTokensForHandle:(id)handle statusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 handleString];
+    handleString = [handleCopy handleString];
     *buf = 138412546;
-    v24 = v12;
+    v24 = handleString;
     v25 = 2112;
-    v26 = v9;
+    v26 = identifierCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Received request for subscription and encryption validation token for handle %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
-  v13 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v14 = [v13 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v14 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v14 & 1) == 0)
   {
-    v16 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v15 = v16;
-    v10[2](v10, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v17 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2114,7 +2114,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -2122,10 +2122,10 @@ LABEL_10:
   v19[1] = 3221225472;
   v19[2] = __108__SKAStatusSubscriptionServiceClient_subscriptionValidationTokensForHandle_statusTypeIdentifier_completion___block_invoke;
   v19[3] = &unk_27843F1A0;
-  v22 = v10;
+  v22 = completionCopy;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
+  v20 = handleCopy;
+  v21 = identifierCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v19];
 
   v15 = v22;
@@ -2209,40 +2209,40 @@ void __108__SKAStatusSubscriptionServiceClient_subscriptionValidationTokensForHa
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)a3 fromSender:(id)a4 statusTypeIdentifier:(id)a5 completion:(id)a6
+- (void)validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:(id)tokens fromSender:(id)sender statusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tokensCopy = tokens;
+  senderCopy = sender;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v14 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 handleString];
+    handleString = [senderCopy handleString];
     *buf = 138412802;
-    v28 = v10;
+    v28 = tokensCopy;
     v29 = 2112;
-    v30 = v15;
+    v30 = handleString;
     v31 = 2112;
-    v32 = v12;
+    v32 = identifierCopy;
     _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, "Received request for validate token %@ from handle %@ for statusTypeIdentifier: %@", buf, 0x20u);
   }
 
-  v16 = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
-  v17 = [v16 clientIsEntitledForSubscriptionWithStatusTypeIdentifier:v12];
+  clientConnection = [(SKAStatusSubscriptionServiceClient *)self clientConnection];
+  v17 = [clientConnection clientIsEntitledForSubscriptionWithStatusTypeIdentifier:identifierCopy];
 
   if ((v17 & 1) == 0)
   {
-    v19 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v12];
+    v19 = [SKAStatusSubscriptionServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v18 = v19;
-    v13[2](v13, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v12])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v20 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -2250,7 +2250,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v19 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:v12];
+    v19 = [SKAStatusSubscriptionServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -2258,11 +2258,11 @@ LABEL_10:
   v22[1] = 3221225472;
   v22[2] = __151__SKAStatusSubscriptionServiceClient_validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens_fromSender_statusTypeIdentifier_completion___block_invoke;
   v22[3] = &unk_27843F100;
-  v26 = v13;
+  v26 = completionCopy;
   v22[4] = self;
-  v23 = v12;
-  v24 = v10;
-  v25 = v11;
+  v23 = identifierCopy;
+  v24 = tokensCopy;
+  v25 = senderCopy;
   [(SKAStatusSubscriptionServiceClient *)self accountIsStatusKitCapableWithCompletion:v22];
 
   v18 = v26;
@@ -2371,23 +2371,23 @@ void __151__SKAStatusSubscriptionServiceClient_validatePersonalStatusSubscriptio
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)validatePersonalChannel:(id)a3 matchesSubscriptionValidationToken:(id)a4 fromSender:(id)a5
+- (int64_t)validatePersonalChannel:(id)channel matchesSubscriptionValidationToken:(id)token fromSender:(id)sender
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 identifier];
+  tokenCopy = token;
+  senderCopy = sender;
+  identifier = [channel identifier];
   v10 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412546;
-    v20 = v7;
+    v20 = tokenCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = identifier;
     _os_log_impl(&dword_220099000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to validate subscription channel token %@ against personal channel with identifier %@", &v19, 0x16u);
   }
 
-  if (![v7 length])
+  if (![tokenCopy length])
   {
     v13 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2398,20 +2398,20 @@ void __151__SKAStatusSubscriptionServiceClient_validatePersonalStatusSubscriptio
     goto LABEL_12;
   }
 
-  v11 = [v9 hasPrefix:v7];
+  v11 = [identifier hasPrefix:tokenCopy];
   v12 = +[SKAStatusSubscriptionServiceClient logger];
   v13 = v12;
   if (!v11)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v8 handleString];
+      handleString = [senderCopy handleString];
       v19 = 138412802;
-      v20 = v18;
+      v20 = handleString;
       v21 = 2112;
-      v22 = v7;
+      v22 = tokenCopy;
       v23 = 2112;
-      v24 = v9;
+      v24 = identifier;
       _os_log_error_impl(&dword_220099000, v13, OS_LOG_TYPE_ERROR, "Sender %@ has supplied a subscription channel validation token %@, that does not match our current personal channel identifier %@. Informing client that validation token is invalid, allowing them to re-invite the sender, if appropriate.", &v19, 0x20u);
     }
 
@@ -2422,9 +2422,9 @@ LABEL_12:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 handleString];
+    handleString2 = [senderCopy handleString];
     v19 = 138412290;
-    v20 = v14;
+    v20 = handleString2;
     _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Sender %@ has supplied a valid subscription channel validation token", &v19, 0xCu);
   }
 
@@ -2435,24 +2435,24 @@ LABEL_13:
   return v15;
 }
 
-- (int64_t)validatePersonalChannel:(id)a3 matchesEncryptionValidationToken:(id)a4 fromSender:(id)a5
+- (int64_t)validatePersonalChannel:(id)channel matchesEncryptionValidationToken:(id)token fromSender:(id)sender
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  tokenCopy = token;
+  senderCopy = sender;
   v11 = +[SKAStatusSubscriptionServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
-    v23 = v9;
+    v23 = tokenCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = channelCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to validate encryption token %@ against personal channel %@", &v22, 0x16u);
   }
 
-  v12 = [(SKAStatusSubscriptionServiceClient *)self encryptionManager];
-  v13 = [v12 encryptionValidationTokenForChannel:v8];
+  encryptionManager = [(SKAStatusSubscriptionServiceClient *)self encryptionManager];
+  v13 = [encryptionManager encryptionValidationTokenForChannel:channelCopy];
 
   if (![v13 length])
   {
@@ -2465,7 +2465,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!tokenCopy)
   {
     v16 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2476,7 +2476,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (![v9 length])
+  if (![tokenCopy length])
   {
     v16 = +[SKAStatusSubscriptionServiceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2487,18 +2487,18 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v14 = [v13 hasPrefix:v9];
+  v14 = [v13 hasPrefix:tokenCopy];
   v15 = +[SKAStatusSubscriptionServiceClient logger];
   v16 = v15;
   if (!v14)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v10 handleString];
+      handleString = [senderCopy handleString];
       v22 = 138412802;
-      v23 = v21;
+      v23 = handleString;
       v24 = 2112;
-      v25 = v9;
+      v25 = tokenCopy;
       v26 = 2112;
       v27 = v13;
       _os_log_error_impl(&dword_220099000, v16, OS_LOG_TYPE_ERROR, "Sender %@ has supplied an encryptoin validation token %@, that does not match our expected value %@. Informing client that validation token is invalid, allowing them to re-invite the sender, if appropriate.", &v22, 0x20u);
@@ -2511,11 +2511,11 @@ LABEL_18:
 
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v10 handleString];
+    handleString2 = [senderCopy handleString];
     v22 = 138412802;
-    v23 = v17;
+    v23 = handleString2;
     v24 = 2112;
-    v25 = v9;
+    v25 = tokenCopy;
     v26 = 2112;
     v27 = v13;
     _os_log_impl(&dword_220099000, v16, OS_LOG_TYPE_DEFAULT, "Sender %@ has supplied a valid encryption validation token. Provided: %@ Expected: %@", &v22, 0x20u);
@@ -2529,25 +2529,25 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)_validateChannelIsKnownForSubscriptionIdentifier:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (BOOL)_validateChannelIsKnownForSubscriptionIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKADatabaseManaging *)self->_databaseManager existingChannelForSubscriptionIdentifier:v8 databaseContext:a5];
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  v10 = [(SKADatabaseManaging *)self->_databaseManager existingChannelForSubscriptionIdentifier:identifierCopy databaseContext:context];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 statusType];
-    if ([v12 length]&& [v12 isEqualToString:v9])
+    statusType = [v10 statusType];
+    if ([statusType length]&& [statusType isEqualToString:typeIdentifierCopy])
     {
       v13 = +[SKAStatusSubscriptionServiceClient logger];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412546;
-        v18 = v8;
+        v18 = identifierCopy;
         v19 = 2112;
-        v20 = v9;
+        v20 = typeIdentifierCopy;
         _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Validated subscriptionIdentifier: %@ statusTypeIdentifier: %@", &v17, 0x16u);
       }
 
@@ -2568,8 +2568,8 @@ LABEL_19:
 
   else
   {
-    v12 = +[SKAStatusSubscriptionServiceClient logger];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    statusType = +[SKAStatusSubscriptionServiceClient logger];
+    if (os_log_type_enabled(statusType, OS_LOG_TYPE_ERROR))
     {
       [SKAStatusSubscriptionServiceClient _validateChannelIsKnownForSubscriptionIdentifier:statusTypeIdentifier:databaseContext:];
     }
@@ -2581,22 +2581,22 @@ LABEL_19:
   return v14;
 }
 
-- (void)accountIsStatusKitCapableWithCompletion:(id)a3
+- (void)accountIsStatusKitCapableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SKAStatusSubscriptionServiceClient *)v5 databaseManager];
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  databaseManager = [(SKAStatusSubscriptionServiceClient *)selfCopy databaseManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__SKAStatusSubscriptionServiceClient_accountIsStatusKitCapableWithCompletion___block_invoke;
   v8[3] = &unk_27843DE28;
-  v8[4] = v5;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 deviceToDeviceEncryptedDatabaseCapableWithCompletion:v8];
+  [databaseManager deviceToDeviceEncryptedDatabaseCapableWithCompletion:v8];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __78__SKAStatusSubscriptionServiceClient_accountIsStatusKitCapableWithCompletion___block_invoke(uint64_t a1, char a2)

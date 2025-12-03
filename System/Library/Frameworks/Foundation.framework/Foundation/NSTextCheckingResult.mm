@@ -17,20 +17,20 @@
 + (void)initialize;
 - (NSRange)rangeAtIndex:(NSUInteger)idx;
 - (NSRange)rangeWithName:(NSString *)name;
-- (_NSRange)decodeRangeWithCoder:(id)a3;
+- (_NSRange)decodeRangeWithCoder:(id)coder;
 - (id)description;
-- (void)encodeRangeWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeRangeWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTextCheckingResult
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
@@ -44,47 +44,47 @@
   return [NSString stringWithFormat:@"%@%@", v3, NSStringFromRange(v7)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = NSClassFromString(@"NSTextCheckingResult");
 
   NSRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)encodeRangeWithCoder:(id)a3
+- (void)encodeRangeWithCoder:(id)coder
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSTextCheckingResult *)self range];
+  range = [(NSTextCheckingResult *)self range];
   v6 = v5;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:v4 forKey:@"NSRangeLocation"];
+    [coder encodeInteger:range forKey:@"NSRangeLocation"];
 
-    [a3 encodeInteger:v6 forKey:@"NSRangeLength"];
+    [coder encodeInteger:v6 forKey:@"NSRangeLength"];
   }
 
   else
   {
     v7 = v6;
-    v8[0] = v4;
-    [a3 encodeValuesOfObjCTypes:{"QQ", v8, &v7}];
+    v8[0] = range;
+    [coder encodeValuesOfObjCTypes:{"QQ", v8, &v7}];
   }
 }
 
-- (_NSRange)decodeRangeWithCoder:(id)a3
+- (_NSRange)decodeRangeWithCoder:(id)coder
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v4 = [a3 decodeIntegerForKey:@"NSRangeLocation"];
-    v5 = [a3 decodeIntegerForKey:@"NSRangeLength"];
+    v4 = [coder decodeIntegerForKey:@"NSRangeLocation"];
+    v5 = [coder decodeIntegerForKey:@"NSRangeLength"];
   }
 
   else
   {
     v7 = 0;
     v8[0] = 0;
-    [a3 decodeValuesOfObjCTypes:{"QQ", v8, &v7}];
+    [coder decodeValuesOfObjCTypes:{"QQ", v8, &v7}];
     v5 = v7;
     v4 = v8[0];
   }
@@ -97,16 +97,16 @@
 
 - (NSRange)rangeAtIndex:(NSUInteger)idx
 {
-  v6 = [(NSTextCheckingResult *)self numberOfRanges];
-  if (v6 <= idx)
+  numberOfRanges = [(NSTextCheckingResult *)self numberOfRanges];
+  if (numberOfRanges <= idx)
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: range index (%lu) >= number of ranges (%lu)", _NSFullMethodName(self, a2), idx, v6), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: range index (%lu) >= number of ranges (%lu)", _NSFullMethodName(self, a2), idx, numberOfRanges), 0}];
     objc_exception_throw(v9);
   }
 
-  v7 = [(NSTextCheckingResult *)self range];
+  range = [(NSTextCheckingResult *)self range];
   result.length = v8;
-  result.location = v7;
+  result.location = range;
   return result;
 }
 
@@ -121,9 +121,9 @@
 
 + (NSTextCheckingResult)orthographyCheckingResultWithRange:(NSRange)range orthography:(NSOrthography *)orthography
 {
-  v4 = [[NSOrthographyCheckingResult alloc] initWithRange:range.location orthography:range.length, orthography];
+  orthography = [[NSOrthographyCheckingResult alloc] initWithRange:range.location orthography:range.length, orthography];
 
-  return v4;
+  return orthography;
 }
 
 + (NSTextCheckingResult)spellCheckingResultWithRange:(NSRange)range
@@ -135,30 +135,30 @@
 
 + (NSTextCheckingResult)grammarCheckingResultWithRange:(NSRange)range details:(NSArray *)details
 {
-  v4 = [[NSGrammarCheckingResult alloc] initWithRange:range.location details:range.length, details];
+  details = [[NSGrammarCheckingResult alloc] initWithRange:range.location details:range.length, details];
 
-  return v4;
+  return details;
 }
 
 + (NSTextCheckingResult)dateCheckingResultWithRange:(NSRange)range date:(NSDate *)date
 {
-  v4 = [[NSDateCheckingResult alloc] initWithRange:range.location date:range.length, date];
+  date = [[NSDateCheckingResult alloc] initWithRange:range.location date:range.length, date];
 
-  return v4;
+  return date;
 }
 
 + (NSTextCheckingResult)dateCheckingResultWithRange:(NSRange)range date:(NSDate *)date timeZone:(NSTimeZone *)timeZone duration:(NSTimeInterval)duration
 {
-  v6 = [[NSDateCheckingResult alloc] initWithRange:range.location date:range.length timeZone:date duration:timeZone, duration];
+  duration = [[NSDateCheckingResult alloc] initWithRange:range.location date:range.length timeZone:date duration:timeZone, duration];
 
-  return v6;
+  return duration;
 }
 
 + (NSTextCheckingResult)addressCheckingResultWithRange:(NSRange)range components:(NSDictionary *)components
 {
-  v4 = [[NSAddressCheckingResult alloc] initWithRange:range.location components:range.length, components];
+  components = [[NSAddressCheckingResult alloc] initWithRange:range.location components:range.length, components];
 
-  return v4;
+  return components;
 }
 
 + (NSTextCheckingResult)linkCheckingResultWithRange:(NSRange)range URL:(NSURL *)url
@@ -170,37 +170,37 @@
 
 + (NSTextCheckingResult)quoteCheckingResultWithRange:(NSRange)range replacementString:(NSString *)replacementString
 {
-  v4 = [(NSSubstitutionCheckingResult *)[NSQuoteCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
+  replacementString = [(NSSubstitutionCheckingResult *)[NSQuoteCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
 
-  return v4;
+  return replacementString;
 }
 
 + (NSTextCheckingResult)dashCheckingResultWithRange:(NSRange)range replacementString:(NSString *)replacementString
 {
-  v4 = [(NSSubstitutionCheckingResult *)[NSDashCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
+  replacementString = [(NSSubstitutionCheckingResult *)[NSDashCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
 
-  return v4;
+  return replacementString;
 }
 
 + (NSTextCheckingResult)replacementCheckingResultWithRange:(NSRange)range replacementString:(NSString *)replacementString
 {
-  v4 = [(NSSubstitutionCheckingResult *)[NSReplacementCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
+  replacementString = [(NSSubstitutionCheckingResult *)[NSReplacementCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
 
-  return v4;
+  return replacementString;
 }
 
 + (NSTextCheckingResult)correctionCheckingResultWithRange:(NSRange)range replacementString:(NSString *)replacementString
 {
-  v4 = [(NSSubstitutionCheckingResult *)[NSCorrectionCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
+  replacementString = [(NSSubstitutionCheckingResult *)[NSCorrectionCheckingResult alloc] initWithRange:range.location replacementString:range.length, replacementString];
 
-  return v4;
+  return replacementString;
 }
 
 + (NSTextCheckingResult)correctionCheckingResultWithRange:(NSRange)range replacementString:(NSString *)replacementString alternativeStrings:(NSArray *)alternativeStrings
 {
-  v5 = [[NSCorrectionCheckingResult alloc] initWithRange:range.location replacementString:range.length alternativeStrings:replacementString, alternativeStrings];
+  alternativeStrings = [[NSCorrectionCheckingResult alloc] initWithRange:range.location replacementString:range.length alternativeStrings:replacementString, alternativeStrings];
 
-  return v5;
+  return alternativeStrings;
 }
 
 + (NSTextCheckingResult)regularExpressionCheckingResultWithRanges:(NSRangePointer)ranges count:(NSUInteger)count regularExpression:(NSRegularExpression *)regularExpression
@@ -228,16 +228,16 @@
 
 + (NSTextCheckingResult)phoneNumberCheckingResultWithRange:(NSRange)range phoneNumber:(NSString *)phoneNumber
 {
-  v4 = [[NSPhoneNumberCheckingResult alloc] initWithRange:range.location phoneNumber:range.length, phoneNumber];
+  phoneNumber = [[NSPhoneNumberCheckingResult alloc] initWithRange:range.location phoneNumber:range.length, phoneNumber];
 
-  return v4;
+  return phoneNumber;
 }
 
 + (NSTextCheckingResult)transitInformationCheckingResultWithRange:(NSRange)range components:(NSDictionary *)components
 {
-  v4 = [[NSTransitInformationCheckingResult alloc] initWithRange:range.location components:range.length, components];
+  components = [[NSTransitInformationCheckingResult alloc] initWithRange:range.location components:range.length, components];
 
-  return v4;
+  return components;
 }
 
 @end

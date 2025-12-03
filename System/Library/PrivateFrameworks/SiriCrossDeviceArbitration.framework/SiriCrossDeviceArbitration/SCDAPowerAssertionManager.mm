@@ -1,13 +1,13 @@
 @interface SCDAPowerAssertionManager
-- (SCDAPowerAssertionManager)initWithIdentifier:(id)a3;
+- (SCDAPowerAssertionManager)initWithIdentifier:(id)identifier;
 - (void)_createPowerAssertion;
 - (void)_releasePowerAssertion;
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5;
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5;
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion;
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion;
 - (void)dealloc;
 - (void)releaseAllPowerAssertions;
-- (void)releasePowerAssertionWithName:(id)a3;
-- (void)takePowerAssertionWithName:(id)a3;
+- (void)releasePowerAssertionWithName:(id)name;
+- (void)takePowerAssertionWithName:(id)name;
 @end
 
 @implementation SCDAPowerAssertionManager
@@ -22,7 +22,7 @@
     *buf = 136315650;
     v9 = "[SCDAPowerAssertionManager releaseAllPowerAssertions]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = identifier;
     _os_log_impl(&dword_1DA758000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", buf, 0x20u);
@@ -65,7 +65,7 @@ uint64_t __54__SCDAPowerAssertionManager_releaseAllPowerAssertions__block_invoke
     v9 = 136315650;
     v10 = "[SCDAPowerAssertionManager _releasePowerAssertion]";
     v11 = 2048;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
     v14 = identifier;
     _os_log_impl(&dword_1DA758000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", &v9, 0x20u);
@@ -81,7 +81,7 @@ uint64_t __54__SCDAPowerAssertionManager_releaseAllPowerAssertions__block_invoke
       v9 = 136315906;
       v10 = "[SCDAPowerAssertionManager _releasePowerAssertion]";
       v11 = 2048;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v7;
       v15 = 1024;
@@ -109,7 +109,7 @@ uint64_t __54__SCDAPowerAssertionManager_releaseAllPowerAssertions__block_invoke
       *buf = 136315650;
       v16 = "[SCDAPowerAssertionManager _createPowerAssertion]";
       v17 = 2048;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = identifier;
       v5 = "%s %p (%@) powerAssertion != kIOPMNullAssertionID";
@@ -137,7 +137,7 @@ LABEL_4:
       *buf = 136315906;
       v16 = "[SCDAPowerAssertionManager _createPowerAssertion]";
       v17 = 2048;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = v12;
       v21 = 1024;
@@ -155,7 +155,7 @@ LABEL_4:
       *buf = 136315650;
       v16 = "[SCDAPowerAssertionManager _createPowerAssertion]";
       v17 = 2048;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = v9;
       _os_log_error_impl(&dword_1DA758000, v8, OS_LOG_TYPE_ERROR, "%s %p (%@) Failed to create power assertion.", buf, 0x20u);
@@ -166,16 +166,16 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion
 {
-  v5 = a5;
+  lastAssertionCopy = lastAssertion;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(self->_queue);
   assertionCoordinator = self->_assertionCoordinator;
   v11 = SCDALogContextCore;
-  if (assertionCoordinator == v8)
+  if (assertionCoordinator == coordinatorCopy)
   {
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
     {
@@ -183,21 +183,21 @@ LABEL_10:
       v15 = 136316162;
       v16 = "[SCDAPowerAssertionManager assertionCoordinator:didDeactivateAssertion:isLastAssertion:]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = identifier;
       v21 = 2112;
-      v22 = v9;
+      v22 = assertionCopy;
       v23 = 1024;
-      LODWORD(v24) = v5;
+      LODWORD(v24) = lastAssertionCopy;
       _os_log_debug_impl(&dword_1DA758000, v11, OS_LOG_TYPE_DEBUG, "%s %p (%@) assertion = %@, isLastAssertion = %d", &v15, 0x30u);
-      if (!v5)
+      if (!lastAssertionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v5)
+    else if (!lastAssertionCopy)
     {
       goto LABEL_7;
     }
@@ -212,13 +212,13 @@ LABEL_10:
     v15 = 136316162;
     v16 = "[SCDAPowerAssertionManager assertionCoordinator:didDeactivateAssertion:isLastAssertion:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
     v22 = assertionCoordinator;
     v23 = 2112;
-    v24 = v8;
+    v24 = coordinatorCopy;
     _os_log_error_impl(&dword_1DA758000, v11, OS_LOG_TYPE_ERROR, "%s %p (%@) Expected assertion coordinator is %@, actual assertion coordinator is %@.", &v15, 0x34u);
   }
 
@@ -227,16 +227,16 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion
 {
-  v5 = a5;
+  firstAssertionCopy = firstAssertion;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(self->_queue);
   assertionCoordinator = self->_assertionCoordinator;
   v11 = SCDALogContextCore;
-  if (assertionCoordinator == v8)
+  if (assertionCoordinator == coordinatorCopy)
   {
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
     {
@@ -244,21 +244,21 @@ LABEL_7:
       v15 = 136316162;
       v16 = "[SCDAPowerAssertionManager assertionCoordinator:didActivateAssertion:isFirstAssertion:]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = identifier;
       v21 = 2112;
-      v22 = v9;
+      v22 = assertionCopy;
       v23 = 1024;
-      LODWORD(v24) = v5;
+      LODWORD(v24) = firstAssertionCopy;
       _os_log_debug_impl(&dword_1DA758000, v11, OS_LOG_TYPE_DEBUG, "%s %p (%@) assertion = %@, isFirstAssertion = %d", &v15, 0x30u);
-      if (!v5)
+      if (!firstAssertionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v5)
+    else if (!firstAssertionCopy)
     {
       goto LABEL_7;
     }
@@ -273,13 +273,13 @@ LABEL_7:
     v15 = 136316162;
     v16 = "[SCDAPowerAssertionManager assertionCoordinator:didActivateAssertion:isFirstAssertion:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
     v22 = assertionCoordinator;
     v23 = 2112;
-    v24 = v8;
+    v24 = coordinatorCopy;
     _os_log_error_impl(&dword_1DA758000, v11, OS_LOG_TYPE_ERROR, "%s %p (%@) Expected assertion coordinator is %@, actual assertion coordinator is %@.", &v15, 0x34u);
   }
 
@@ -298,7 +298,7 @@ LABEL_7:
     *buf = 136315650;
     v8 = "[SCDAPowerAssertionManager dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = identifier;
     _os_log_impl(&dword_1DA758000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", buf, 0x20u);
@@ -339,10 +339,10 @@ void __54__SCDAPowerAssertionManager_releaseAllPowerAssertions__block_invoke_2(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releasePowerAssertionWithName:(id)a3
+- (void)releasePowerAssertionWithName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -350,18 +350,18 @@ void __54__SCDAPowerAssertionManager_releaseAllPowerAssertions__block_invoke_2(u
     *buf = 136315906;
     v15 = "[SCDAPowerAssertionManager releasePowerAssertionWithName:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = identifier;
     v20 = 2112;
-    v21 = v4;
+    v21 = nameCopy;
     _os_log_impl(&dword_1DA758000, v5, OS_LOG_TYPE_INFO, "%s %p (%@) name = %@", buf, 0x2Au);
   }
 
   v7 = @"default";
-  if (v4)
+  if (nameCopy)
   {
-    v7 = v4;
+    v7 = nameCopy;
   }
 
   v8 = v7;
@@ -413,10 +413,10 @@ void __59__SCDAPowerAssertionManager_releasePowerAssertionWithName___block_invok
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)takePowerAssertionWithName:(id)a3
+- (void)takePowerAssertionWithName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -424,18 +424,18 @@ void __59__SCDAPowerAssertionManager_releasePowerAssertionWithName___block_invok
     *buf = 136315906;
     v23 = "[SCDAPowerAssertionManager takePowerAssertionWithName:]";
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = identifier;
     v28 = 2112;
-    v29 = v4;
+    v29 = nameCopy;
     _os_log_impl(&dword_1DA758000, v5, OS_LOG_TYPE_INFO, "%s %p (%@) name = %@", buf, 0x2Au);
   }
 
   v7 = @"default";
-  if (v4)
+  if (nameCopy)
   {
-    v7 = v4;
+    v7 = nameCopy;
   }
 
   v8 = v7;
@@ -514,18 +514,18 @@ uint64_t __56__SCDAPowerAssertionManager_takePowerAssertionWithName___block_invo
   return result;
 }
 
-- (SCDAPowerAssertionManager)initWithIdentifier:(id)a3
+- (SCDAPowerAssertionManager)initWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = SCDAPowerAssertionManager;
   v5 = [(SCDAPowerAssertionManager *)&v16 init];
   if (v5)
   {
-    if ([v4 length])
+    if ([identifierCopy length])
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
     }
 
     else

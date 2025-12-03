@@ -1,54 +1,54 @@
 @interface DADiagnosticsRemoteViewControllerServiceToHostAction
-+ (id)actionToString:(int64_t)a3;
-+ (id)actionWithType:(int64_t)a3 object:(id)a4;
-- (void)performActionForSceneController:(id)a3;
++ (id)actionToString:(int64_t)string;
++ (id)actionWithType:(int64_t)type object:(id)object;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation DADiagnosticsRemoteViewControllerServiceToHostAction
 
-+ (id)actionWithType:(int64_t)a3 object:(id)a4
++ (id)actionWithType:(int64_t)type object:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   v7 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v7 setObject:v8 forSetting:0];
 
-  [v7 setObject:v6 forSetting:1];
+  [v7 setObject:objectCopy forSetting:1];
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [a1 actionToString:a3];
+    v10 = [self actionToString:type];
     v14 = 136315650;
     v15 = "+[DADiagnosticsRemoteViewControllerServiceToHostAction actionWithType:object:]";
     v16 = 2112;
     v17 = v10;
     v18 = 2112;
-    v19 = v6;
+    v19 = objectCopy;
     _os_log_impl(&dword_275BB3000, v9, OS_LOG_TYPE_DEFAULT, "%s Created %@ action with object %@", &v14, 0x20u);
   }
 
-  v11 = [[a1 alloc] initWithInfo:v7 responder:0];
+  v11 = [[self alloc] initWithInfo:v7 responder:0];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADiagnosticsRemoteViewControllerServiceToHostAction *)self info];
-  v6 = [v5 objectForSetting:0];
-  v7 = [v6 integerValue];
+  controllerCopy = controller;
+  info = [(DADiagnosticsRemoteViewControllerServiceToHostAction *)self info];
+  v6 = [info objectForSetting:0];
+  integerValue = [v6 integerValue];
 
-  v8 = [(DADiagnosticsRemoteViewControllerServiceToHostAction *)self info];
-  v9 = [v8 objectForSetting:1];
+  info2 = [(DADiagnosticsRemoteViewControllerServiceToHostAction *)self info];
+  v9 = [info2 objectForSetting:1];
 
   v10 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [DADiagnosticsRemoteViewControllerServiceToHostAction actionToString:v7];
+    v11 = [DADiagnosticsRemoteViewControllerServiceToHostAction actionToString:integerValue];
     v30 = 136315394;
     v31 = "[DADiagnosticsRemoteViewControllerServiceToHostAction performActionForSceneController:]";
     v32 = 2112;
@@ -56,22 +56,22 @@
     _os_log_impl(&dword_275BB3000, v10, OS_LOG_TYPE_DEFAULT, "%s Received %@ action", &v30, 0x16u);
   }
 
-  v12 = [v4 delegate];
-  v13 = [v12 conformsToProtocol:&unk_2884BD9F8];
+  delegate = [controllerCopy delegate];
+  v13 = [delegate conformsToProtocol:&unk_2884BD9F8];
 
   if (v13)
   {
-    v14 = [v4 delegate];
-    v15 = v14;
-    if (v7 > 1)
+    delegate2 = [controllerCopy delegate];
+    v15 = delegate2;
+    if (integerValue > 1)
     {
-      if (v7 == 2)
+      if (integerValue == 2)
       {
-        [v14 viewServiceDidSuspend];
+        [delegate2 viewServiceDidSuspend];
         goto LABEL_31;
       }
 
-      if (v7 == 3)
+      if (integerValue == 3)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -93,7 +93,7 @@ LABEL_30:
 
     else
     {
-      if (!v7)
+      if (!integerValue)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -130,10 +130,10 @@ LABEL_30:
           v25 = v24;
 
           v26 = [v16 objectForKeyedSubscript:@"animate"];
-          v27 = [v26 BOOLValue];
+          bOOLValue = [v26 BOOLValue];
 
           LODWORD(v28) = v25;
-          [v15 viewServiceDidSetScreenToBrightness:v27 animate:v28];
+          [v15 viewServiceDidSetScreenToBrightness:bOOLValue animate:v28];
         }
 
         else
@@ -148,7 +148,7 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      if (v7 == 1)
+      if (integerValue == 1)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -173,16 +173,16 @@ LABEL_31:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)actionToString:(int64_t)a3
++ (id)actionToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"ServiceToHostActionTypeDidSetScreenToBrightness";
   }
 
   else
   {
-    return off_27A66EBB8[a3 - 1];
+    return off_27A66EBB8[string - 1];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface SBHLegibilitySettings
-+ (double)legibilityStrengthForLegibilityStyle:(unint64_t)a3;
-+ (id)legibilitySettingsForLegibilitySettings:(id)a3 ignoreFeatureFlags:(BOOL)a4;
-+ (id)legibilitySettingsForPLKLegibilityDescriptor:(id)a3;
-+ (id)legibilitySettingsForUILegibilitySettings:(id)a3;
-+ (id)sharedInstanceForStyle:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (double)legibilityStrengthForLegibilityStyle:(unint64_t)style;
++ (id)legibilitySettingsForLegibilitySettings:(id)settings ignoreFeatureFlags:(BOOL)flags;
++ (id)legibilitySettingsForPLKLegibilityDescriptor:(id)descriptor;
++ (id)legibilitySettingsForUILegibilitySettings:(id)settings;
++ (id)sharedInstanceForStyle:(unint64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBHLegibilitySettings)initWithPrimaryColor:(id)a3;
-- (SBHLegibilitySettings)initWithStyle:(unint64_t)a3 contentColor:(id)a4;
-- (SBHLegibilitySettings)initWithStyle:(unint64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6;
-- (SBHLegibilitySettings)settingsWithUpdatedPrimaryColor:(id)a3;
-- (SBHLegibilitySettings)settingsWithUpdatedStyle:(unint64_t)a3 primaryColor:(id)a4;
+- (SBHLegibilitySettings)initWithPrimaryColor:(id)color;
+- (SBHLegibilitySettings)initWithStyle:(unint64_t)style contentColor:(id)color;
+- (SBHLegibilitySettings)initWithStyle:(unint64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor;
+- (SBHLegibilitySettings)settingsWithUpdatedPrimaryColor:(id)color;
+- (SBHLegibilitySettings)settingsWithUpdatedStyle:(unint64_t)style primaryColor:(id)color;
 - (UIColor)primaryColor;
 - (UIColor)secondaryColor;
 - (UIColor)shadowColor;
 - (double)minFillHeight;
 - (double)shadowSettings;
-- (id)initWithLegibilitySettings:(char)a3 ignoreFeatureFlags:;
+- (id)initWithLegibilitySettings:(char)settings ignoreFeatureFlags:;
 - (unint64_t)hash;
 - (unint64_t)style;
-- (void)initWithLegibilitySettings:(void *)a1;
-- (void)initWithPLKLegibilityDescriptor:(void *)a1;
+- (void)initWithLegibilitySettings:(void *)settings;
+- (void)initWithPLKLegibilityDescriptor:(void *)descriptor;
 @end
 
 @implementation SBHLegibilitySettings
@@ -33,33 +33,33 @@
     v3 = legibilityDescriptor;
     if ([(PLKLegibilityDescriptor *)v3 sbh_isPLKLegibilityDescriptor])
     {
-      v4 = [(PLKLegibilityDescriptor *)v3 foreground];
-      v5 = [v4 contentColor];
-      v6 = [MEMORY[0x1E69DC888] whiteColor];
-      v7 = [v5 _isSimilarToColor:v6 withinPercentage:0.00000011920929];
+      foreground = [(PLKLegibilityDescriptor *)v3 foreground];
+      contentColor = [foreground contentColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v7 = [contentColor _isSimilarToColor:whiteColor withinPercentage:0.00000011920929];
 
       if (v7)
       {
-        v8 = 1;
+        style = 1;
       }
 
       else
       {
-        v8 = 2;
+        style = 2;
       }
     }
 
     else if (([(PLKLegibilityDescriptor *)v3 sbh_isUILegibilitySettings]& 1) != 0 || [(PLKLegibilityDescriptor *)v3 sbh_isSBUILegibilitySettings])
     {
-      v8 = [(PLKLegibilityDescriptor *)v3 style];
+      style = [(PLKLegibilityDescriptor *)v3 style];
     }
 
     else
     {
-      v8 = 0;
+      style = 0;
     }
 
-    return v8;
+    return style;
   }
 
   legibilitySettings = self->_legibilitySettings;
@@ -82,21 +82,21 @@
   legibilitySettings = self->_legibilitySettings;
   if (!legibilitySettings)
   {
-    v7 = [(SBHLegibilitySettings *)self primaryColor];
-    v8 = [v7 colorWithAlphaComponent:0.45];
+    primaryColor = [(SBHLegibilitySettings *)self primaryColor];
+    v8 = [primaryColor colorWithAlphaComponent:0.45];
     v9 = self->_generatedSecondaryColor;
     self->_generatedSecondaryColor = v8;
 
     generatedSecondaryColor = self->_generatedSecondaryColor;
 LABEL_2:
-    v3 = generatedSecondaryColor;
+    secondaryColor = generatedSecondaryColor;
     goto LABEL_5;
   }
 
-  v3 = [(_UILegibilitySettings *)legibilitySettings secondaryColor];
+  secondaryColor = [(_UILegibilitySettings *)legibilitySettings secondaryColor];
 LABEL_5:
 
-  return v3;
+  return secondaryColor;
 }
 
 - (UIColor)primaryColor
@@ -104,8 +104,8 @@ LABEL_5:
   legibilityDescriptor = self->_legibilityDescriptor;
   if (legibilityDescriptor)
   {
-    v4 = [(PLKLegibilityDescriptor *)legibilityDescriptor foreground];
-    v5 = [v4 contentColor];
+    foreground = [(PLKLegibilityDescriptor *)legibilityDescriptor foreground];
+    contentColor = [foreground contentColor];
   }
 
   else
@@ -113,53 +113,53 @@ LABEL_5:
     legibilitySettings = self->_legibilitySettings;
     if (legibilitySettings)
     {
-      v5 = [(_UILegibilitySettings *)legibilitySettings primaryColor];
+      contentColor = [(_UILegibilitySettings *)legibilitySettings primaryColor];
     }
 
     else
     {
-      v5 = 0;
+      contentColor = 0;
     }
   }
 
-  return v5;
+  return contentColor;
 }
 
-+ (id)legibilitySettingsForLegibilitySettings:(id)a3 ignoreFeatureFlags:(BOOL)a4
++ (id)legibilitySettingsForLegibilitySettings:(id)settings ignoreFeatureFlags:(BOOL)flags
 {
-  v6 = a3;
-  if ([v6 sbh_isSBHLegibilitySettings])
+  settingsCopy = settings;
+  if ([settingsCopy sbh_isSBHLegibilitySettings])
   {
-    v7 = v6;
+    v7 = settingsCopy;
   }
 
-  else if (v6)
+  else if (settingsCopy)
   {
-    if ([v6 sbh_isPLKLegibilityDescriptor])
+    if ([settingsCopy sbh_isPLKLegibilityDescriptor])
     {
-      v7 = [a1 legibilitySettingsForPLKLegibilityDescriptor:v6];
+      v7 = [self legibilitySettingsForPLKLegibilityDescriptor:settingsCopy];
     }
 
-    else if ([v6 sbh_isUILegibilitySettings])
+    else if ([settingsCopy sbh_isUILegibilitySettings])
     {
-      v7 = [(SBHLegibilitySettings *)[a1 alloc] initWithLegibilitySettings:v6 ignoreFeatureFlags:a4];
+      v7 = [(SBHLegibilitySettings *)[self alloc] initWithLegibilitySettings:settingsCopy ignoreFeatureFlags:flags];
     }
 
     else
     {
-      if ([v6 sbh_isSBUILegibilitySettings])
+      if ([settingsCopy sbh_isSBUILegibilitySettings])
       {
-        v8 = [v6 _UILegibilitySettings];
-        if (v8)
+        _UILegibilitySettings = [settingsCopy _UILegibilitySettings];
+        if (_UILegibilitySettings)
         {
-          v9 = v8;
-          v10 = [(SBHLegibilitySettings *)[a1 alloc] initWithLegibilitySettings:v8 ignoreFeatureFlags:a4];
+          v9 = _UILegibilitySettings;
+          v10 = [(SBHLegibilitySettings *)[self alloc] initWithLegibilitySettings:_UILegibilitySettings ignoreFeatureFlags:flags];
 
           goto LABEL_14;
         }
       }
 
-      v7 = [a1 sharedInstanceForStyle:0];
+      v7 = [self sharedInstanceForStyle:0];
     }
   }
 
@@ -174,42 +174,42 @@ LABEL_14:
   return v10;
 }
 
-- (id)initWithLegibilitySettings:(char)a3 ignoreFeatureFlags:
+- (id)initWithLegibilitySettings:(char)settings ignoreFeatureFlags:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (([v5 sbh_isUILegibilitySettings] & 1) == 0 && !objc_msgSend(v6, "sbh_isSBUILegibilitySettings") || objc_msgSend(v6, "sbh_isSBHLegibilitySettings"))
     {
       [SBHLegibilitySettings initWithLegibilitySettings:? ignoreFeatureFlags:?];
     }
 
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = SBHLegibilitySettings;
-    a1 = objc_msgSendSuper2(&v8, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v8, sel_init);
+    if (self)
     {
-      [(SBHLegibilitySettings *)a3 initWithLegibilitySettings:a1 ignoreFeatureFlags:v6];
+      [(SBHLegibilitySettings *)settings initWithLegibilitySettings:self ignoreFeatureFlags:v6];
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)sharedInstanceForStyle:(unint64_t)a3
++ (id)sharedInstanceForStyle:(unint64_t)style
 {
   if (sharedInstanceForStyle__onceToken != -1)
   {
     +[SBHLegibilitySettings sharedInstanceForStyle:];
   }
 
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    a1 = *off_1E8090C28[a3];
+    self = *off_1E8090C28[style];
   }
 
-  return a1;
+  return self;
 }
 
 void __48__SBHLegibilitySettings_sharedInstanceForStyle___block_invoke()
@@ -279,50 +279,50 @@ void __48__SBHLegibilitySettings_sharedInstanceForStyle___block_invoke()
   }
 }
 
-+ (id)legibilitySettingsForUILegibilitySettings:(id)a3
++ (id)legibilitySettingsForUILegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(SBHLegibilitySettings *)[a1 alloc] initWithLegibilitySettings:v4];
+  settingsCopy = settings;
+  v5 = [(SBHLegibilitySettings *)[self alloc] initWithLegibilitySettings:settingsCopy];
 
   return v5;
 }
 
-- (void)initWithLegibilitySettings:(void *)a1
+- (void)initWithLegibilitySettings:(void *)settings
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (settings)
   {
     if (([v3 sbh_isUILegibilitySettings] & 1) == 0 && !objc_msgSend(v4, "sbh_isSBUILegibilitySettings") || objc_msgSend(v4, "sbh_isSBHLegibilitySettings"))
     {
       [SBHLegibilitySettings initWithLegibilitySettings:?];
     }
 
-    v7.receiver = a1;
+    v7.receiver = settings;
     v7.super_class = SBHLegibilitySettings;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    settings = v5;
     if (v5)
     {
       [(SBHLegibilitySettings *)v5 initWithLegibilitySettings:v4];
     }
   }
 
-  return a1;
+  return settings;
 }
 
-+ (id)legibilitySettingsForPLKLegibilityDescriptor:(id)a3
++ (id)legibilitySettingsForPLKLegibilityDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SBHLegibilitySettings *)[a1 alloc] initWithPLKLegibilityDescriptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [(SBHLegibilitySettings *)[self alloc] initWithPLKLegibilityDescriptor:descriptorCopy];
 
   return v5;
 }
 
-+ (double)legibilityStrengthForLegibilityStyle:(unint64_t)a3
++ (double)legibilityStrengthForLegibilityStyle:(unint64_t)style
 {
   result = 0.3;
-  if (a3 != 1)
+  if (style != 1)
   {
     return 0.0;
   }
@@ -330,9 +330,9 @@ void __48__SBHLegibilitySettings_sharedInstanceForStyle___block_invoke()
   return result;
 }
 
-- (SBHLegibilitySettings)initWithStyle:(unint64_t)a3 contentColor:(id)a4
+- (SBHLegibilitySettings)initWithStyle:(unint64_t)style contentColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v12.receiver = self;
   v12.super_class = SBHLegibilitySettings;
   v7 = [(SBHLegibilitySettings *)&v12 init];
@@ -340,7 +340,7 @@ void __48__SBHLegibilitySettings_sharedInstanceForStyle___block_invoke()
   {
     if (SBHFeatureEnabled(0))
     {
-      v8 = [MEMORY[0x1E69C5428] defaultLegibilityDescriptorForStyle:soft_PLKLegibilityStyleForUILegibilityStyle(a3)];
+      v8 = [MEMORY[0x1E69C5428] defaultLegibilityDescriptorForStyle:soft_PLKLegibilityStyleForUILegibilityStyle(style)];
       legibilityDescriptor = v7->_legibilityDescriptor;
       v7->_legibilityDescriptor = v8;
 LABEL_4:
@@ -350,7 +350,7 @@ LABEL_4:
 
     if (!v7->_legibilityDescriptor && !v7->_legibilitySettings)
     {
-      v11 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithStyle:a3 contentColor:v6];
+      v11 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithStyle:style contentColor:colorCopy];
       legibilityDescriptor = v7->_legibilitySettings;
       v7->_legibilitySettings = v11;
       goto LABEL_4;
@@ -362,11 +362,11 @@ LABEL_7:
   return v7;
 }
 
-- (SBHLegibilitySettings)initWithStyle:(unint64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6
+- (SBHLegibilitySettings)initWithStyle:(unint64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
+  shadowColorCopy = shadowColor;
   v18.receiver = self;
   v18.super_class = SBHLegibilitySettings;
   v13 = [(SBHLegibilitySettings *)&v18 init];
@@ -374,7 +374,7 @@ LABEL_7:
   {
     if (SBHFeatureEnabled(0))
     {
-      v14 = [MEMORY[0x1E69C5428] defaultLegibilityDescriptorForStyle:soft_PLKLegibilityStyleForUILegibilityStyle(a3)];
+      v14 = [MEMORY[0x1E69C5428] defaultLegibilityDescriptorForStyle:soft_PLKLegibilityStyleForUILegibilityStyle(style)];
       legibilityDescriptor = v13->_legibilityDescriptor;
       v13->_legibilityDescriptor = v14;
 LABEL_4:
@@ -384,7 +384,7 @@ LABEL_4:
 
     if (!v13->_legibilityDescriptor && !v13->_legibilitySettings)
     {
-      v17 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithStyle:a3 primaryColor:v10 secondaryColor:v11 shadowColor:v12];
+      v17 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithStyle:style primaryColor:colorCopy secondaryColor:secondaryColorCopy shadowColor:shadowColorCopy];
       legibilityDescriptor = v13->_legibilitySettings;
       v13->_legibilitySettings = v17;
       goto LABEL_4;
@@ -396,20 +396,20 @@ LABEL_7:
   return v13;
 }
 
-- (SBHLegibilitySettings)initWithPrimaryColor:(id)a3
+- (SBHLegibilitySettings)initWithPrimaryColor:(id)color
 {
   v4 = MEMORY[0x1E69D4588];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContentColor:v5];
+  colorCopy = color;
+  v6 = [[v4 alloc] initWithContentColor:colorCopy];
 
   v7 = [(SBHLegibilitySettings *)self initWithLegibilitySettings:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -419,23 +419,23 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x1E698E6A0] builder];
+      builder = [MEMORY[0x1E698E6A0] builder];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __33__SBHLegibilitySettings_isEqual___block_invoke;
       v14[3] = &unk_1E8090C08;
-      v6 = v4;
+      v6 = equalCopy;
       v15 = v6;
-      v16 = self;
-      v7 = [v5 appendEqualsBlocks:{v14, 0}];
+      selfCopy = self;
+      v7 = [builder appendEqualsBlocks:{v14, 0}];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __33__SBHLegibilitySettings_isEqual___block_invoke_2;
       v11[3] = &unk_1E8090C08;
       v12 = v6;
-      v13 = self;
-      v8 = [v5 appendEqualsBlocks:{v11, 0}];
-      v9 = [v5 isEqual];
+      selfCopy2 = self;
+      v8 = [builder appendEqualsBlocks:{v11, 0}];
+      v9 = [builder isEqual];
     }
 
     else
@@ -491,36 +491,36 @@ uint64_t __33__SBHLegibilitySettings_isEqual___block_invoke_2(uint64_t a1)
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_legibilitySettings withName:@"_legibilitySettings" skipIfNil:1];
   v5 = [v3 appendObject:self->_legibilityDescriptor withName:@"_legibilityDescriptor" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (SBHLegibilitySettings)settingsWithUpdatedPrimaryColor:(id)a3
+- (SBHLegibilitySettings)settingsWithUpdatedPrimaryColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SBHLegibilitySettings *)self settingsWithUpdatedStyle:[(SBHLegibilitySettings *)self style] primaryColor:v4];
+  colorCopy = color;
+  v5 = [(SBHLegibilitySettings *)self settingsWithUpdatedStyle:[(SBHLegibilitySettings *)self style] primaryColor:colorCopy];
 
   return v5;
 }
 
-- (SBHLegibilitySettings)settingsWithUpdatedStyle:(unint64_t)a3 primaryColor:(id)a4
+- (SBHLegibilitySettings)settingsWithUpdatedStyle:(unint64_t)style primaryColor:(id)color
 {
-  v6 = a4;
-  v7 = v6;
+  colorCopy = color;
+  v7 = colorCopy;
   if (self->_legibilityDescriptor)
   {
-    [(SBHLegibilitySettings *)v6 settingsWithUpdatedStyle:v14 primaryColor:?];
+    [(SBHLegibilitySettings *)colorCopy settingsWithUpdatedStyle:v14 primaryColor:?];
     v8 = *&v14[0];
   }
 
   else if (self->_legibilitySettings)
   {
     v10 = objc_alloc(MEMORY[0x1E69D4588]);
-    v11 = [(_UILegibilitySettings *)self->_legibilitySettings secondaryColor];
-    v12 = [(_UILegibilitySettings *)self->_legibilitySettings shadowColor];
+    secondaryColor = [(_UILegibilitySettings *)self->_legibilitySettings secondaryColor];
+    shadowColor = [(_UILegibilitySettings *)self->_legibilitySettings shadowColor];
     [(SBHLegibilitySettings *)self shadowSettings];
-    v13 = [v10 initWithStyle:a3 primaryColor:v7 secondaryColor:v11 shadowColor:v12 shadowSettings:v14 minFillHeight:-[SBHLegibilitySettings minFillHeight](self)];
+    v13 = [v10 initWithStyle:style primaryColor:v7 secondaryColor:secondaryColor shadowColor:shadowColor shadowSettings:v14 minFillHeight:-[SBHLegibilitySettings minFillHeight](self)];
 
     v8 = [[SBHLegibilitySettings alloc] initWithLegibilitySettings:v13];
   }
@@ -535,9 +535,9 @@ uint64_t __33__SBHLegibilitySettings_isEqual___block_invoke_2(uint64_t a1)
 
 - (double)shadowSettings
 {
-  if (a1)
+  if (self)
   {
-    v3 = [MEMORY[0x1E69D4588] sharedInstanceForStyle:{objc_msgSend(a1, "style")}];
+    v3 = [MEMORY[0x1E69D4588] sharedInstanceForStyle:{objc_msgSend(self, "style")}];
     if (v3)
     {
       v5 = v3;
@@ -567,8 +567,8 @@ uint64_t __33__SBHLegibilitySettings_isEqual___block_invoke_2(uint64_t a1)
   legibilityDescriptor = self->_legibilityDescriptor;
   if (legibilityDescriptor)
   {
-    v4 = [(PLKLegibilityDescriptor *)legibilityDescriptor background];
-    v5 = [v4 contentColor];
+    background = [(PLKLegibilityDescriptor *)legibilityDescriptor background];
+    contentColor = [background contentColor];
   }
 
   else
@@ -576,54 +576,54 @@ uint64_t __33__SBHLegibilitySettings_isEqual___block_invoke_2(uint64_t a1)
     legibilitySettings = self->_legibilitySettings;
     if (legibilitySettings)
     {
-      v5 = [(_UILegibilitySettings *)legibilitySettings shadowColor];
+      contentColor = [(_UILegibilitySettings *)legibilitySettings shadowColor];
     }
 
     else
     {
-      v5 = 0;
+      contentColor = 0;
     }
   }
 
-  return v5;
+  return contentColor;
 }
 
-- (void)initWithPLKLegibilityDescriptor:(void *)a1
+- (void)initWithPLKLegibilityDescriptor:(void *)descriptor
 {
   v3 = a2;
-  if (a1)
+  if (descriptor)
   {
-    v7.receiver = a1;
+    v7.receiver = descriptor;
     v7.super_class = SBHLegibilitySettings;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    descriptor = objc_msgSendSuper2(&v7, sel_init);
+    if (descriptor)
     {
       v4 = [v3 copy];
-      v5 = a1[3];
-      a1[3] = v4;
+      v5 = descriptor[3];
+      descriptor[3] = v4;
     }
   }
 
-  return a1;
+  return descriptor;
 }
 
 - (double)minFillHeight
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (a1[2])
+  if (self[2])
   {
-    v2 = a1[2];
+    v2 = self[2];
 
     [v2 minFillHeight];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69D4588] sharedInstanceForStyle:{objc_msgSend(a1, "style")}];
+    v4 = [MEMORY[0x1E69D4588] sharedInstanceForStyle:{objc_msgSend(self, "style")}];
     [v4 minFillHeight];
     v6 = v5;
 

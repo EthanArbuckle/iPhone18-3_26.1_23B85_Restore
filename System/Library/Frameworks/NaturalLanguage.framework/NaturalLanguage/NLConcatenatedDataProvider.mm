@@ -1,9 +1,9 @@
 @interface NLConcatenatedDataProvider
-- (NLConcatenatedDataProvider)initWithDataProviders:(id)a3;
+- (NLConcatenatedDataProvider)initWithDataProviders:(id)providers;
 - (__CFStringTokenizer)tokenizer;
 - (id)configuration;
 - (id)documentFrequencyMap;
-- (id)instanceAtIndex:(unint64_t)a3;
+- (id)instanceAtIndex:(unint64_t)index;
 - (id)inverseLabelMap;
 - (id)labelMap;
 - (id)vocabularyMap;
@@ -14,17 +14,17 @@
 
 @implementation NLConcatenatedDataProvider
 
-- (NLConcatenatedDataProvider)initWithDataProviders:(id)a3
+- (NLConcatenatedDataProvider)initWithDataProviders:(id)providers
 {
-  v4 = a3;
-  if ([v4 count])
+  providersCopy = providers;
+  if ([providersCopy count])
   {
     v8.receiver = self;
     v8.super_class = NLConcatenatedDataProvider;
     self = [(NLConcatenatedDataProvider *)&v8 init];
     if (self)
     {
-      v5 = [v4 copy];
+      v5 = [providersCopy copy];
       dataProviders = self->_dataProviders;
       self->_dataProviders = v5;
     }
@@ -35,10 +35,10 @@
 
 - (id)configuration
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 configuration];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  configuration = [firstObject configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (unint64_t)numberOfInstances
@@ -82,7 +82,7 @@
   return v5;
 }
 
-- (id)instanceAtIndex:(unint64_t)a3
+- (id)instanceAtIndex:(unint64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -98,7 +98,7 @@
     while (2)
     {
       v8 = 0;
-      v9 = a3;
+      indexCopy = index;
       do
       {
         if (*v16 != v7)
@@ -107,16 +107,16 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * v8);
-        v11 = [v10 numberOfInstances];
-        a3 = v9 - v11;
-        if (v9 < v11)
+        numberOfInstances = [v10 numberOfInstances];
+        index = indexCopy - numberOfInstances;
+        if (indexCopy < numberOfInstances)
         {
-          v12 = [v10 instanceAtIndex:v9];
+          v12 = [v10 instanceAtIndex:indexCopy];
           goto LABEL_11;
         }
 
         ++v8;
-        v9 -= v11;
+        indexCopy -= numberOfInstances;
       }
 
       while (v6 != v8);
@@ -140,58 +140,58 @@ LABEL_11:
 
 - (__CFStringTokenizer)tokenizer
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 tokenizer];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  tokenizer = [firstObject tokenizer];
 
-  return v3;
+  return tokenizer;
 }
 
 - (id)labelMap
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 labelMap];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  labelMap = [firstObject labelMap];
 
-  return v3;
+  return labelMap;
 }
 
 - (id)inverseLabelMap
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 inverseLabelMap];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  inverseLabelMap = [firstObject inverseLabelMap];
 
-  return v3;
+  return inverseLabelMap;
 }
 
 - (id)vocabularyMap
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 vocabularyMap];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  vocabularyMap = [firstObject vocabularyMap];
 
-  return v3;
+  return vocabularyMap;
 }
 
 - (id)documentFrequencyMap
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 documentFrequencyMap];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  documentFrequencyMap = [firstObject documentFrequencyMap];
 
-  return v3;
+  return documentFrequencyMap;
 }
 
 - (unint64_t)numberOfLabels
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 numberOfLabels];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  numberOfLabels = [firstObject numberOfLabels];
 
-  return v3;
+  return numberOfLabels;
 }
 
 - (unint64_t)numberOfVocabularyEntries
 {
-  v2 = [(NSArray *)self->_dataProviders firstObject];
-  v3 = [v2 numberOfVocabularyEntries];
+  firstObject = [(NSArray *)self->_dataProviders firstObject];
+  numberOfVocabularyEntries = [firstObject numberOfVocabularyEntries];
 
-  return v3;
+  return numberOfVocabularyEntries;
 }
 
 @end

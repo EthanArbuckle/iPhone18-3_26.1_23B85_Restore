@@ -1,41 +1,41 @@
 @interface PLSUUID
 + (id)generateUUIDAsString;
-+ (id)photoBase64UUIDsFromUUIDs:(id)a3;
++ (id)photoBase64UUIDsFromUUIDs:(id)ds;
 + (id)uuid;
-+ (id)uuidWithData:(id)a3;
-+ (id)uuidWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToData:(id)a3;
++ (id)uuidWithData:(id)data;
++ (id)uuidWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToData:(id)data;
 - (NSString)photoBase64String;
 - (NSString)stringValue;
 - (PLSUUID)init;
-- (PLSUUID)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (PLSUUID)initWithCoder:(id)a3;
-- (PLSUUID)initWithData:(id)a3;
-- (PLSUUID)initWithPhotoBase64String:(id)a3;
-- (PLSUUID)initWithString:(id)a3;
-- (void)_dataFromCFUUID:(__CFUUID *)a3;
+- (PLSUUID)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (PLSUUID)initWithCoder:(id)coder;
+- (PLSUUID)initWithData:(id)data;
+- (PLSUUID)initWithPhotoBase64String:(id)string;
+- (PLSUUID)initWithString:(id)string;
+- (void)_dataFromCFUUID:(__CFUUID *)d;
 @end
 
 @implementation PLSUUID
 
-- (void)_dataFromCFUUID:(__CFUUID *)a3
+- (void)_dataFromCFUUID:(__CFUUID *)d
 {
-  v6 = CFUUIDGetUUIDBytes(a3);
+  v6 = CFUUIDGetUUIDBytes(d);
   v4 = [[NSData alloc] initWithBytes:&v6 length:16];
   data = self->_data;
   self->_data = v4;
 }
 
-- (PLSUUID)initWithCoder:(id)a3
+- (PLSUUID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PLSUUID;
   v5 = [(PLSUUID *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLSUUIDDataKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLSUUIDDataKey"];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -43,13 +43,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PLSUUID *)self isEqualToData:v4];
+    v5 = [(PLSUUID *)self isEqualToData:equalCopy];
   }
 
   else
@@ -80,18 +80,18 @@
   return v3;
 }
 
-- (BOOL)isEqualToData:(id)a3
+- (BOOL)isEqualToData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = dataCopy;
   }
 
   else
   {
-    v5 = [PLSUUID uuidWithData:v4];
+    v5 = [PLSUUID uuidWithData:dataCopy];
   }
 
   v6 = v5;
@@ -102,13 +102,13 @@
   return v7;
 }
 
-- (PLSUUID)initWithPhotoBase64String:(id)a3
+- (PLSUUID)initWithPhotoBase64String:(id)string
 {
-  v4 = a3;
-  if ([v4 length] == &dword_14 + 2)
+  stringCopy = string;
+  if ([stringCopy length] == &dword_14 + 2)
   {
     v5 = +[PLSBase64Decoder decoderForPhotoUUID];
-    v6 = [v5 decodeString:v4];
+    v6 = [v5 decodeString:stringCopy];
     if (v6)
     {
       v12.receiver = self;
@@ -122,101 +122,101 @@
       }
 
       self = v7;
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PLSUUID)initWithData:(id)a3
+- (PLSUUID)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v10.receiver = self;
     v10.super_class = PLSUUID;
     v5 = [(PLSUUID *)&v10 init];
     if (v5)
     {
-      v6 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v4 bytes], objc_msgSend(v4, "length"));
+      v6 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       data = v5->_data;
       v5->_data = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PLSUUID)initWithString:(id)a3
+- (PLSUUID)initWithString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v9.receiver = self;
     v9.super_class = PLSUUID;
     v5 = [(PLSUUID *)&v9 init];
     if (v5)
     {
-      v6 = CFUUIDCreateFromString(kCFAllocatorDefault, v4);
+      v6 = CFUUIDCreateFromString(kCFAllocatorDefault, stringCopy);
       [(PLSUUID *)v5 _dataFromCFUUID:v6];
       CFRelease(v6);
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PLSUUID)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (PLSUUID)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a3)
+  if (bytes)
   {
     v11.receiver = self;
     v11.super_class = PLSUUID;
     v6 = [(PLSUUID *)&v11 init];
     if (v6)
     {
-      v7 = [[NSData alloc] initWithBytes:a3 length:a4];
+      v7 = [[NSData alloc] initWithBytes:bytes length:length];
       data = v6->_data;
       v6->_data = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (PLSUUID)init
@@ -237,20 +237,20 @@
 + (id)generateUUIDAsString
 {
   v2 = +[PLSUUID uuid];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-+ (id)photoBase64UUIDsFromUUIDs:(id)a3
++ (id)photoBase64UUIDsFromUUIDs:(id)ds
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dsCopy = ds;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -266,8 +266,8 @@
         }
 
         v10 = [PLSUUID uuidWithString:*(*(&v13 + 1) + 8 * i), v13];
-        v11 = [v10 photoBase64String];
-        [v4 addObject:v11];
+        photoBase64String = [v10 photoBase64String];
+        [v4 addObject:photoBase64String];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -279,18 +279,18 @@
   return v4;
 }
 
-+ (id)uuidWithString:(id)a3
++ (id)uuidWithString:(id)string
 {
-  v3 = a3;
-  v4 = [[PLSUUID alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[PLSUUID alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-+ (id)uuidWithData:(id)a3
++ (id)uuidWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[PLSUUID alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[PLSUUID alloc] initWithData:dataCopy];
 
   return v4;
 }

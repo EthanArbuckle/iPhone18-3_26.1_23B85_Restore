@@ -1,38 +1,38 @@
 @interface _MLCGPUArithmetic
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
 @end
 
 @implementation _MLCGPUArithmetic
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v55 = a3;
-  v53 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 objectAtIndexedSubscript:0];
-  v12 = [v11 descriptor];
-  v13 = [v12 shape];
-  v14 = [v13 count];
+  deviceCopy = device;
+  opsCopy = ops;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v11 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v11 descriptor];
+  shape = [descriptor shape];
+  v14 = [shape count];
 
-  if ([v9 count] >= 2)
+  if ([tensorsCopy count] >= 2)
   {
-    v15 = [v9 objectAtIndexedSubscript:1];
-    v16 = [v15 descriptor];
-    v17 = [v16 shape];
-    v18 = [v17 count];
+    v15 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor2 = [v15 descriptor];
+    shape2 = [descriptor2 shape];
+    v18 = [shape2 count];
 
     if (v18 > v14)
     {
-      v19 = [v9 objectAtIndexedSubscript:1];
-      v20 = [v19 descriptor];
-      v21 = [v20 shape];
-      v14 = [v21 count];
+      v19 = [tensorsCopy objectAtIndexedSubscript:1];
+      descriptor3 = [v19 descriptor];
+      shape3 = [descriptor3 shape];
+      v14 = [shape3 count];
     }
   }
 
-  v22 = [v55 deviceList];
-  v23 = [v22 count];
+  deviceList = [deviceCopy deviceList];
+  v23 = [deviceList count];
 
   if (v23)
   {
@@ -47,16 +47,16 @@
 
       else
       {
-        v26 = [v25 neuronDescriptor];
-        [v25 setSourceOfForwardNeededForGradient:v26 != 0];
+        neuronDescriptor = [v25 neuronDescriptor];
+        [v25 setSourceOfForwardNeededForGradient:neuronDescriptor != 0];
 
         [v25 setResultOfForwardNeededForGradient:0];
       }
 
       if (![v25 arithmeticOp] || objc_msgSend(v25, "arithmeticOp") == 1)
       {
-        v27 = [v9 objectAtIndexedSubscript:0];
-        v28 = [v10 doesShapeMatchWithTensor:v27];
+        v27 = [tensorsCopy objectAtIndexedSubscript:0];
+        v28 = [tensorCopy doesShapeMatchWithTensor:v27];
 
         if (v28)
         {
@@ -66,8 +66,8 @@
 
       if (![v25 arithmeticOp])
       {
-        v29 = [v9 objectAtIndexedSubscript:1];
-        v30 = [v10 doesShapeMatchWithTensor:v29];
+        v29 = [tensorsCopy objectAtIndexedSubscript:1];
+        v30 = [tensorCopy doesShapeMatchWithTensor:v29];
 
         if (v30)
         {
@@ -75,45 +75,45 @@
         }
       }
 
-      if ([v9 count] >= 2)
+      if ([tensorsCopy count] >= 2)
       {
-        v31 = [v9 objectAtIndexedSubscript:0];
-        v32 = [v31 descriptor];
-        v33 = [v32 newShapeWithCount:v14];
+        v31 = [tensorsCopy objectAtIndexedSubscript:0];
+        descriptor4 = [v31 descriptor];
+        v33 = [descriptor4 newShapeWithCount:v14];
         [v25 setSource0Shape:v33];
 
-        v34 = [v9 objectAtIndexedSubscript:1];
-        v35 = [v34 descriptor];
-        v36 = [v35 newShapeWithCount:v14];
+        v34 = [tensorsCopy objectAtIndexedSubscript:1];
+        descriptor5 = [v34 descriptor];
+        v36 = [descriptor5 newShapeWithCount:v14];
         [v25 setSource1Shape:v36];
 
-        if ([v9 count] == 3)
+        if ([tensorsCopy count] == 3)
         {
-          v37 = [v9 objectAtIndexedSubscript:2];
-          v38 = [v37 descriptor];
-          v39 = [v10 descriptor];
-          v40 = [v39 shape];
-          v41 = [v38 newShapeWithCount:{objc_msgSend(v40, "count")}];
+          v37 = [tensorsCopy objectAtIndexedSubscript:2];
+          descriptor6 = [v37 descriptor];
+          descriptor7 = [tensorCopy descriptor];
+          shape4 = [descriptor7 shape];
+          v41 = [descriptor6 newShapeWithCount:{objc_msgSend(shape4, "count")}];
           [v25 setSource2Shape:v41];
         }
       }
 
-      v42 = [v9 objectAtIndexedSubscript:0];
+      v42 = [tensorsCopy objectAtIndexedSubscript:0];
       [v25 setConstantArithmeticSourcesFlags:{(objc_msgSend(v42, "computeFlags") >> 1) & 1}];
 
-      if ([v9 count] == 2)
+      if ([tensorsCopy count] == 2)
       {
-        v43 = [v9 objectAtIndexedSubscript:1];
+        v43 = [tensorsCopy objectAtIndexedSubscript:1];
         [v25 setConstantArithmeticSourcesFlags:{objc_msgSend(v25, "constantArithmeticSourcesFlags") | objc_msgSend(v43, "computeFlags") & 2}];
 
-        v44 = [v9 objectAtIndexedSubscript:0];
-        v45 = [v9 objectAtIndexedSubscript:1];
+        v44 = [tensorsCopy objectAtIndexedSubscript:0];
+        v45 = [tensorsCopy objectAtIndexedSubscript:1];
         v46 = v45;
         if (v44 == v45)
         {
-          v47 = [v9 objectAtIndexedSubscript:0];
-          v48 = [v47 parentLayers];
-          v49 = [v48 count];
+          v47 = [tensorsCopy objectAtIndexedSubscript:0];
+          parentLayers = [v47 parentLayers];
+          v49 = [parentLayers count];
 
           if (v49)
           {
@@ -127,8 +127,8 @@
       }
 
       ++v24;
-      v50 = [v55 deviceList];
-      v51 = [v50 count];
+      deviceList2 = [deviceCopy deviceList];
+      v51 = [deviceList2 count];
     }
 
     while (v24 < v51);

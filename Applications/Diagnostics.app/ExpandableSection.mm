@@ -7,7 +7,7 @@
 - (void)handleTap
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics17ExpandableSection_isExpanded) = (*(&self->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics17ExpandableSection_isExpanded) & 1) == 0;
-  v2 = self;
+  selfCopy = self;
   sub_1001321AC();
 }
 

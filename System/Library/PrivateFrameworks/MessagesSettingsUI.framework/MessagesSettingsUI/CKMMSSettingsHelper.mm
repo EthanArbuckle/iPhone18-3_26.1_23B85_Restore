@@ -1,5 +1,5 @@
 @interface CKMMSSettingsHelper
-+ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4;
++ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d;
 - (id)_syncManager;
 - (id)getMMSDictionary;
 - (id)isMMSEnabled;
@@ -9,20 +9,20 @@
 
 @implementation CKMMSSettingsHelper
 
-+ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v8 = [v7 isReadMMSDefaultFromCBEnabled];
+  numberCopy = number;
+  dCopy = d;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isReadMMSDefaultFromCBEnabled = [mEMORY[0x277D1A9B8] isReadMMSDefaultFromCBEnabled];
 
-  if (v8)
+  if (isReadMMSDefaultFromCBEnabled)
   {
-    v9 = [MEMORY[0x277D1A908] sharedInstance];
-    v10 = [v9 ctSubscriptionInfo];
-    v11 = [v10 __im_subscriptionContextForForSimID:v6 phoneNumber:v5];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    firstObject = [ctSubscriptionInfo __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
 
-    if (v11)
+    if (firstObject)
     {
       goto LABEL_3;
     }
@@ -32,16 +32,16 @@
       goto LABEL_9;
     }
 
-    v17 = [MEMORY[0x277D1A908] sharedInstance];
-    v18 = [v17 ctSubscriptionInfo];
-    v19 = [v18 subscriptions];
-    v11 = [v19 firstObject];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo2 = [mEMORY[0x277D1A908]2 ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo2 subscriptions];
+    firstObject = [subscriptions firstObject];
 
-    if (v11)
+    if (firstObject)
     {
 LABEL_3:
-      v12 = [MEMORY[0x277D1A908] sharedInstance];
-      v13 = [v12 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_286A18248 defaultValue:0 valueIfError:0];
+      mEMORY[0x277D1A908]3 = [MEMORY[0x277D1A908] sharedInstance];
+      v13 = [mEMORY[0x277D1A908]3 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_286A18248 defaultValue:0 valueIfError:0];
 
       if (v13)
       {
@@ -49,46 +49,46 @@ LABEL_3:
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
         }
 
         else
         {
-          v16 = 1;
+          bOOLValue = 1;
         }
       }
 
       else
       {
-        v16 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
 LABEL_9:
-      v16 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v16 = 1;
+    bOOLValue = 1;
   }
 
-  return v16;
+  return bOOLValue;
 }
 
 - (id)getMMSDictionary
 {
-  v2 = [MEMORY[0x277D1A908] sharedInstance];
-  v3 = [v2 ctSubscriptionInfo];
-  v4 = [v3 subscriptions];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+  subscriptions = [ctSubscriptionInfo subscriptions];
+  firstObject = [subscriptions firstObject];
 
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"MMS", 0}];
-  v7 = [MEMORY[0x277D1A908] sharedInstance];
-  v8 = [v7 copyCarrierBundleValueForSubscriptionContext:v5 keyHierarchy:v6 defaultValue:0 valueIfError:0];
+  mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+  v8 = [mEMORY[0x277D1A908]2 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:v6 defaultValue:0 valueIfError:0];
 
   return v8;
 }
@@ -99,15 +99,15 @@ LABEL_9:
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (IMSharedHelperDeviceHasMultipleActiveSubscriptions())
   {
-    v2 = [MEMORY[0x277D1A908] sharedInstance];
-    v3 = [v2 ctSubscriptionInfo];
-    v4 = [v3 subscriptions];
-    v5 = [v4 firstObject];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    firstObject = [subscriptions firstObject];
 
     v6 = MEMORY[0x277D1A8F8];
-    v7 = [v5 phoneNumber];
-    v8 = [v5 labelID];
-    v9 = [v6 IMUniqueIdentifierForPhoneNumber:v7 simID:v8];
+    phoneNumber = [firstObject phoneNumber];
+    labelID = [firstObject labelID];
+    v9 = [v6 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"MMSEnabled-", v9];
   }
@@ -119,21 +119,21 @@ LABEL_9:
   }
 
   keyExistsAndHasValidFormat = 0;
-  v11 = [MEMORY[0x277D07DB0] sharedInstance];
-  v12 = [v11 supportsMMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsMMS = [mEMORY[0x277D07DB0] supportsMMS];
 
   v13 = CFPreferencesGetAppBooleanValue(v10, @"com.apple.MobileSMS", &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v14 = [MEMORY[0x277D1A908] sharedInstance];
-    v15 = [v14 ctSubscriptionInfo];
-    v16 = [v15 subscriptions];
-    v17 = [v16 firstObject];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo2 = [mEMORY[0x277D1A908]2 ctSubscriptionInfo];
+    subscriptions2 = [ctSubscriptionInfo2 subscriptions];
+    firstObject2 = [subscriptions2 firstObject];
 
     v18 = objc_opt_class();
-    v19 = [v17 phoneNumber];
-    v20 = [v17 labelID];
-    v13 = [v18 mmsDefaultEnabledForPhoneNumber:v19 simID:v20];
+    phoneNumber2 = [firstObject2 phoneNumber];
+    labelID2 = [firstObject2 labelID];
+    v13 = [v18 mmsDefaultEnabledForPhoneNumber:phoneNumber2 simID:labelID2];
   }
 
   v21 = IMLogHandleForCategory();
@@ -143,7 +143,7 @@ LABEL_9:
     *buf = 138412802;
     v28 = v9;
     v29 = 2112;
-    if ((v12 & v13) != 0)
+    if ((supportsMMS & v13) != 0)
     {
       v25 = @"YES";
     }
@@ -154,7 +154,7 @@ LABEL_9:
     _os_log_debug_impl(&dword_258D24000, v21, OS_LOG_TYPE_DEBUG, "isMMSEnabled for uniqueID %@ key %@: %@", buf, 0x20u);
   }
 
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v12 & v13];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:supportsMMS & v13];
 
   v23 = *MEMORY[0x277D85DE8];
 
@@ -166,44 +166,44 @@ LABEL_9:
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v3 = [MEMORY[0x277D1A908] sharedInstance];
-    v4 = [v3 ctSubscriptionInfo];
-    v5 = [v4 subscriptions];
-    v6 = [v5 firstObject];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    firstObject = [subscriptions firstObject];
 
     v7 = MEMORY[0x277D1A8F8];
-    v8 = [v6 phoneNumber];
-    v9 = [v6 labelID];
-    v10 = [v7 IMUniqueIdentifierForPhoneNumber:v8 simID:v9];
+    phoneNumber = [firstObject phoneNumber];
+    labelID = [firstObject labelID];
+    v10 = [v7 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
-    v11 = 0;
+    getMMSDictionary = 0;
   }
 
   else
   {
-    v11 = [(CKMMSSettingsHelper *)self getMMSDictionary];
-    v6 = 0;
+    getMMSDictionary = [(CKMMSSettingsHelper *)self getMMSDictionary];
+    firstObject = 0;
     v10 = 0;
   }
 
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v12 = [MEMORY[0x277D1A908] sharedInstance];
-    v13 = [v12 copyCarrierBundleValueForSubscriptionContext:v6 keyHierarchy:&unk_286A18260 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
-    v14 = [v13 BOOLValue];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    v13 = [mEMORY[0x277D1A908]2 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_286A18260 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v14 = [v11 objectForKey:@"GroupModeEnabled"];
+    bOOLValue = [getMMSDictionary objectForKey:@"GroupModeEnabled"];
 
-    if (!v14)
+    if (!bOOLValue)
     {
       goto LABEL_9;
     }
 
-    v12 = [v11 objectForKey:@"GroupModeEnabled"];
-    v14 = [v12 BOOLValue];
+    mEMORY[0x277D1A908]2 = [getMMSDictionary objectForKey:@"GroupModeEnabled"];
+    bOOLValue = [mEMORY[0x277D1A908]2 BOOLValue];
   }
 
 LABEL_9:
@@ -213,7 +213,7 @@ LABEL_9:
     [(CKMMSSettingsHelper *)v10 willSendGroupMMS];
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v14];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
 
   return v16;
 }
@@ -239,7 +239,7 @@ LABEL_9:
   }
 
   v5 = 138412546;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2112;
   v8 = v3;
   _os_log_debug_impl(&dword_258D24000, log, OS_LOG_TYPE_DEBUG, "willSendGroupMMS for uniqueID %@ : %@", &v5, 0x16u);

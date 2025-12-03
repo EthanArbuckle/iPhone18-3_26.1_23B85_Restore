@@ -5,7 +5,7 @@
 + (id)transientProperties;
 - (PXCMMWorkflowCoordinator)workflowCoordinator;
 - (void)setDefaultValues;
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6;
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state;
 @end
 
 @implementation PXCompleteMyMomentSettings
@@ -96,16 +96,16 @@
   [(PXCompleteMyMomentSettings *)self setSimulateCloudPhotosExitState:0];
 }
 
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state
 {
-  v7 = a4;
-  v8 = [(PXCompleteMyMomentSettings *)self workflowCoordinator];
-  [v8 setDelegate:0];
+  controllerCopy = controller;
+  workflowCoordinator = [(PXCompleteMyMomentSettings *)self workflowCoordinator];
+  [workflowCoordinator setDelegate:0];
 
   [(PXCompleteMyMomentSettings *)self setWorkflowCoordinator:0];
-  v9 = [v7 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
 
-  [v9 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (PXCMMWorkflowCoordinator)workflowCoordinator
@@ -128,7 +128,7 @@
   v4[2] = __65__PXCompleteMyMomentSettings_UI___enableAllCmmImprovementsAction__block_invoke;
   v4[3] = &__block_descriptor_48_e33_B24__0_8__PTUIModuleController_16l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   v2 = [MEMORY[0x1E69C6658] actionWithHandler:v4];
 
   return v2;
@@ -183,7 +183,7 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __53__PXCompleteMyMomentSettings_UI__transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_97173 != -1)
   {
     dispatch_once(&transientProperties_onceToken_97173, block);
@@ -269,10 +269,10 @@ void __53__PXCompleteMyMomentSettings_UI__transientProperties__block_invoke(uint
   v25 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Disable Detail View" valueKeyPath:@"disableDetailView"];
   v208[12] = v25;
   v26 = MEMORY[0x1E69C65E8];
-  v27 = [a1 _enableAllCmmImprovementsAction];
-  v28 = [v26 rowWithTitle:@"Enable Azul CMM Additions" action:v27];
-  v29 = [a1 _enabledAllCmmImprovementsActionPredicate];
-  v30 = [v28 condition:v29];
+  _enableAllCmmImprovementsAction = [self _enableAllCmmImprovementsAction];
+  v28 = [v26 rowWithTitle:@"Enable Azul CMM Additions" action:_enableAllCmmImprovementsAction];
+  _enabledAllCmmImprovementsActionPredicate = [self _enabledAllCmmImprovementsActionPredicate];
+  v30 = [v28 condition:_enabledAllCmmImprovementsActionPredicate];
   v208[13] = v30;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v208 count:14];
   v195 = [v173 sectionWithRows:v31 title:@"Review Settings"];
@@ -483,7 +483,7 @@ void __53__PXCompleteMyMomentSettings_UI__transientProperties__block_invoke(uint
   v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v199 count:1];
   v123 = [v120 sectionWithRows:v122 title:@"Asset Creation Options"];
 
-  v124 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v198[0] = v197;
   v198[1] = v195;
   v198[2] = v193;
@@ -499,7 +499,7 @@ void __53__PXCompleteMyMomentSettings_UI__transientProperties__block_invoke(uint
   v126 = [v125 mutableCopy];
 
   [v126 addObject:v123];
-  [v126 addObject:v124];
+  [v126 addObject:px_restoreDefaultsSection];
   v127 = [MEMORY[0x1E69C6638] moduleWithTitle:@"Complete My Moment" contents:v126];
 
   return v127;

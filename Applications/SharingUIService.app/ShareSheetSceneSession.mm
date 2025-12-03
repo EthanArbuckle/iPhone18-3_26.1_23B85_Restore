@@ -1,8 +1,8 @@
 @interface ShareSheetSceneSession
 - (_TtC16SharingUIService22ShareSheetSceneSession)init;
-- (void)activityContentViewControllerDidUpdateDataSource:(id)a3;
-- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)a3;
-- (void)sheetInteractionController:(id)a3 didReceiveDraggingEvent:(id)a4;
+- (void)activityContentViewControllerDidUpdateDataSource:(id)source;
+- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)metadata;
+- (void)sheetInteractionController:(id)controller didReceiveDraggingEvent:(id)event;
 @end
 
 @implementation ShareSheetSceneSession
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (void)activityContentViewControllerDidUpdateDataSource:(id)a3
+- (void)activityContentViewControllerDidUpdateDataSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
+  sourceCopy = source;
+  selfCopy = self;
   sub_10001121C();
 }
 
-- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)a3
+- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000FD74(v4);
+  metadataCopy = metadata;
+  selfCopy = self;
+  sub_10000FD74(metadataCopy);
 }
 
-- (void)sheetInteractionController:(id)a3 didReceiveDraggingEvent:(id)a4
+- (void)sheetInteractionController:(id)controller didReceiveDraggingEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10001130C(v7);
+  controllerCopy = controller;
+  eventCopy = event;
+  selfCopy = self;
+  sub_10001130C(eventCopy);
 }
 
 @end

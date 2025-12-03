@@ -1,15 +1,15 @@
 @interface ICAccountCryptoStrategyProxy
-- (BOOL)authenticateWithPassphrase:(id)a3;
+- (BOOL)authenticateWithPassphrase:(id)passphrase;
 - (BOOL)canAuthenticate;
 - (BOOL)hasPassphraseSet;
-- (BOOL)hasSameKeyAsObject:(id)a3;
+- (BOOL)hasSameKeyAsObject:(id)object;
 - (BOOL)isAuthenticated;
-- (BOOL)isPassphraseCorrect:(id)a3;
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3;
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3;
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4;
+- (BOOL)isPassphraseCorrect:(id)correct;
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data;
+- (BOOL)mergeEncryptedDataFromRecord:(id)record;
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint;
 - (ICAccountCryptoStrategy)customPasswordStrategy;
-- (ICAccountCryptoStrategyProxy)initWithCloudSyncingObject:(id)a3;
+- (ICAccountCryptoStrategyProxy)initWithCloudSyncingObject:(id)object;
 - (NSString)passphraseHint;
 - (id)currentStrategy;
 - (void)removePassphrase;
@@ -108,26 +108,26 @@ void __47__ICAccountCryptoStrategyProxy_currentStrategy__block_invoke(uint64_t a
   *(v5 + 40) = v4;
 }
 
-- (ICAccountCryptoStrategyProxy)initWithCloudSyncingObject:(id)a3
+- (ICAccountCryptoStrategyProxy)initWithCloudSyncingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = ICAccountCryptoStrategyProxy;
-  v5 = [(ICCryptoStrategyBase *)&v13 initWithCloudSyncingObject:v4];
+  v5 = [(ICCryptoStrategyBase *)&v13 initWithCloudSyncingObject:objectCopy];
   if (v5)
   {
-    v6 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV1 alloc] initWithCloudSyncingObject:v4];
+    v6 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV1 alloc] initWithCloudSyncingObject:objectCopy];
     v1Strategy = v5->_v1Strategy;
     v5->_v1Strategy = v6;
 
     if (ICInternalSettingsIsLockedNotesV1NeoEnabled())
     {
-      v8 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV1Neo alloc] initWithCloudSyncingObject:v4];
+      v8 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV1Neo alloc] initWithCloudSyncingObject:objectCopy];
       v1NeoStrategy = v5->_v1NeoStrategy;
       v5->_v1NeoStrategy = v8;
     }
 
-    v10 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV2 alloc] initWithCloudSyncingObject:v4];
+    v10 = [(ICCryptoStrategyBase *)[ICAccountCryptoStrategyV2 alloc] initWithCloudSyncingObject:objectCopy];
     v2Strategy = v5->_v2Strategy;
     v5->_v2Strategy = v10;
   }
@@ -137,92 +137,92 @@ void __47__ICAccountCryptoStrategyProxy_currentStrategy__block_invoke(uint64_t a
 
 - (BOOL)canAuthenticate
 {
-  v2 = [(ICAccountCryptoStrategyProxy *)self currentStrategy];
-  v3 = [v2 canAuthenticate];
+  currentStrategy = [(ICAccountCryptoStrategyProxy *)self currentStrategy];
+  canAuthenticate = [currentStrategy canAuthenticate];
 
-  return v3;
+  return canAuthenticate;
 }
 
 - (BOOL)isAuthenticated
 {
-  v2 = [(ICAccountCryptoStrategyProxy *)self currentStrategy];
-  v3 = [v2 isAuthenticated];
+  currentStrategy = [(ICAccountCryptoStrategyProxy *)self currentStrategy];
+  isAuthenticated = [currentStrategy isAuthenticated];
 
-  return v3;
+  return isAuthenticated;
 }
 
-- (BOOL)hasSameKeyAsObject:(id)a3
+- (BOOL)hasSameKeyAsObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
-  if ([v5 hasSameKeyAsObject:v4])
+  objectCopy = object;
+  v1Strategy = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
+  if ([v1Strategy hasSameKeyAsObject:objectCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
-    if ([v7 hasSameKeyAsObject:v4])
+    v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
+    if ([v1NeoStrategy hasSameKeyAsObject:objectCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
-      v6 = [v8 hasSameKeyAsObject:v4];
+      v2Strategy = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
+      v6 = [v2Strategy hasSameKeyAsObject:objectCopy];
     }
   }
 
   return v6;
 }
 
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [v5 cipherVersion];
+  dataCopy = data;
+  metadata = [dataCopy metadata];
+  cipherVersion = [metadata cipherVersion];
 
-  if (v6 == 2)
+  if (cipherVersion == 2)
   {
-    v7 = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
+    v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
   }
 
-  else if (v6 == 1)
+  else if (cipherVersion == 1)
   {
-    v7 = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
+    v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
   }
 
   else
   {
-    if (v6)
+    if (cipherVersion)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v7 = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
+    v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
   }
 
-  v8 = v7;
-  v9 = [v7 mainKeyDecryptsPrimaryData:v4];
+  v8 = v1NeoStrategy;
+  v9 = [v1NeoStrategy mainKeyDecryptsPrimaryData:dataCopy];
 
 LABEL_9:
   return v9;
 }
 
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3
+- (BOOL)mergeEncryptedDataFromRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
-  if ([v5 mergeEncryptedDataFromRecord:v4])
+  recordCopy = record;
+  v1Strategy = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
+  if ([v1Strategy mergeEncryptedDataFromRecord:recordCopy])
   {
-    v6 = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
-    if ([v6 mergeEncryptedDataFromRecord:v4])
+    v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
+    if ([v1NeoStrategy mergeEncryptedDataFromRecord:recordCopy])
     {
-      v7 = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
-      v8 = [v7 mergeEncryptedDataFromRecord:v4];
+      v2Strategy = [(ICAccountCryptoStrategyProxy *)self v2Strategy];
+      v8 = [v2Strategy mergeEncryptedDataFromRecord:recordCopy];
     }
 
     else
@@ -241,24 +241,24 @@ LABEL_9:
 
 - (BOOL)hasPassphraseSet
 {
-  v2 = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
-  v3 = [v2 hasPassphraseSet];
+  customPasswordStrategy = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
+  hasPassphraseSet = [customPasswordStrategy hasPassphraseSet];
 
-  return v3;
+  return hasPassphraseSet;
 }
 
 - (NSString)passphraseHint
 {
-  v2 = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
-  v3 = [v2 passphraseHint];
+  customPasswordStrategy = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
+  passphraseHint = [customPasswordStrategy passphraseHint];
 
-  return v3;
+  return passphraseHint;
 }
 
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint
 {
-  v6 = a3;
-  v7 = a4;
+  passphraseCopy = passphrase;
+  hintCopy = hint;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -268,9 +268,9 @@ LABEL_9:
   v11[2] = __51__ICAccountCryptoStrategyProxy_setPassphrase_hint___block_invoke;
   v11[3] = &unk_278197028;
   v11[4] = self;
-  v8 = v6;
+  v8 = passphraseCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = hintCopy;
   v13 = v9;
   v14 = &v15;
   [(ICCryptoStrategyBase *)self performBlockIfAccountExists:v11];
@@ -316,25 +316,25 @@ void __51__ICAccountCryptoStrategyProxy_setPassphrase_hint___block_invoke(uint64
 
 - (void)removePassphrase
 {
-  v3 = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
-  [v3 removePassphrase];
+  v1Strategy = [(ICAccountCryptoStrategyProxy *)self v1Strategy];
+  [v1Strategy removePassphrase];
 
-  v4 = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
-  [v4 removePassphrase];
+  v1NeoStrategy = [(ICAccountCryptoStrategyProxy *)self v1NeoStrategy];
+  [v1NeoStrategy removePassphrase];
 }
 
-- (BOOL)isPassphraseCorrect:(id)a3
+- (BOOL)isPassphraseCorrect:(id)correct
 {
-  v4 = a3;
-  v5 = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
-  v6 = [v5 isPassphraseCorrect:v4];
+  correctCopy = correct;
+  customPasswordStrategy = [(ICAccountCryptoStrategyProxy *)self customPasswordStrategy];
+  v6 = [customPasswordStrategy isPassphraseCorrect:correctCopy];
 
   return v6;
 }
 
-- (BOOL)authenticateWithPassphrase:(id)a3
+- (BOOL)authenticateWithPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -344,7 +344,7 @@ void __51__ICAccountCryptoStrategyProxy_setPassphrase_hint___block_invoke(uint64
   v7[2] = __59__ICAccountCryptoStrategyProxy_authenticateWithPassphrase___block_invoke;
   v7[3] = &unk_278197050;
   v7[4] = self;
-  v5 = v4;
+  v5 = passphraseCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfAccountExists:v7];

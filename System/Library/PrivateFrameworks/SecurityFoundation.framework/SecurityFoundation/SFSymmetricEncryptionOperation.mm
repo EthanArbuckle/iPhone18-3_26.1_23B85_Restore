@@ -1,19 +1,19 @@
 @interface SFSymmetricEncryptionOperation
 + (id)_defaultEncryptionOperation;
 - (SFSymmetricEncryptionOperation)init;
-- (SFSymmetricEncryptionOperation)initWithCoder:(id)a3;
-- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)a3;
-- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)a3 mode:(int64_t)a4;
+- (SFSymmetricEncryptionOperation)initWithCoder:(id)coder;
+- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)specifier;
+- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)specifier mode:(int64_t)mode;
 - (_SFSymmetricKeySpecifier)encryptionKeySpecifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEncryptionKeySpecifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEncryptionKeySpecifier:(id)specifier;
 @end
 
 @implementation SFSymmetricEncryptionOperation
 
 + (id)_defaultEncryptionOperation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -26,18 +26,18 @@
   return v4;
 }
 
-- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)a3
+- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = -[SFSymmetricEncryptionOperation initWithKeySpecifier:mode:](self, "initWithKeySpecifier:mode:", v4, [objc_opt_class() _defaultEncryptionMode]);
+  specifierCopy = specifier;
+  v5 = -[SFSymmetricEncryptionOperation initWithKeySpecifier:mode:](self, "initWithKeySpecifier:mode:", specifierCopy, [objc_opt_class() _defaultEncryptionMode]);
 
   return v5;
 }
 
-- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)a3 mode:(int64_t)a4
+- (SFSymmetricEncryptionOperation)initWithKeySpecifier:(id)specifier mode:(int64_t)mode
 {
-  v7 = a3;
-  if (!v7)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     [SFSymmetricEncryptionOperation initWithKeySpecifier:mode:];
   }
@@ -48,23 +48,23 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8->_symmetricEncryptionOperationInternal + 2, a3);
-    *(v9->_symmetricEncryptionOperationInternal + 1) = a4;
+    objc_storeStrong(v8->_symmetricEncryptionOperationInternal + 2, specifier);
+    *(v9->_symmetricEncryptionOperationInternal + 1) = mode;
   }
 
   return v9;
 }
 
-- (SFSymmetricEncryptionOperation)initWithCoder:(id)a3
+- (SFSymmetricEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFSymmetricEncryptionOperation;
   return [(SFSymmetricEncryptionOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   symmetricEncryptionOperationInternal = self->_symmetricEncryptionOperationInternal;
   v7 = symmetricEncryptionOperationInternal[1];
   v6 = symmetricEncryptionOperationInternal[2];
@@ -79,9 +79,9 @@
   return v2;
 }
 
-- (void)setEncryptionKeySpecifier:(id)a3
+- (void)setEncryptionKeySpecifier:(id)specifier
 {
-  v4 = [a3 copy];
+  v4 = [specifier copy];
   symmetricEncryptionOperationInternal = self->_symmetricEncryptionOperationInternal;
   v6 = symmetricEncryptionOperationInternal[2];
   symmetricEncryptionOperationInternal[2] = v4;

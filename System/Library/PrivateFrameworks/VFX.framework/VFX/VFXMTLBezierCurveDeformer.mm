@@ -1,25 +1,25 @@
 @interface VFXMTLBezierCurveDeformer
-- (VFXMTLBezierCurveDeformer)initWithMeshlessGeometry:(__CFXGeometry *)a3 outputs:(unint64_t)a4 deformDataKind:(unsigned __int8)a5 finalDataKind:(unsigned __int8)a6 resourceManager:(id)a7 computeContext:(id)a8;
-- (id)bufferForCommonProfileArgumentNamed:(id)a3;
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
+- (VFXMTLBezierCurveDeformer)initWithMeshlessGeometry:(__CFXGeometry *)geometry outputs:(unint64_t)outputs deformDataKind:(unsigned __int8)kind finalDataKind:(unsigned __int8)dataKind resourceManager:(id)manager computeContext:(id)context;
+- (id)bufferForCommonProfileArgumentNamed:(id)named;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
 - (void)dealloc;
 @end
 
 @implementation VFXMTLBezierCurveDeformer
 
-- (VFXMTLBezierCurveDeformer)initWithMeshlessGeometry:(__CFXGeometry *)a3 outputs:(unint64_t)a4 deformDataKind:(unsigned __int8)a5 finalDataKind:(unsigned __int8)a6 resourceManager:(id)a7 computeContext:(id)a8
+- (VFXMTLBezierCurveDeformer)initWithMeshlessGeometry:(__CFXGeometry *)geometry outputs:(unint64_t)outputs deformDataKind:(unsigned __int8)kind finalDataKind:(unsigned __int8)dataKind resourceManager:(id)manager computeContext:(id)context
 {
   v116 = *MEMORY[0x1E69E9840];
   v113.receiver = self;
   v113.super_class = VFXMTLBezierCurveDeformer;
-  v10 = [(VFXMTLBezierCurveDeformer *)&v113 init:a3];
+  v10 = [(VFXMTLBezierCurveDeformer *)&v113 init:geometry];
   if (v10)
   {
-    *v10->_anon_10 = sub_1AF15B34C(a3);
+    *v10->_anon_10 = sub_1AF15B34C(geometry);
     *&v10->_anon_10[16] = v11;
     *&v10->_anon_10[32] = v12;
     *&v10->_anon_10[48] = v13;
-    v14 = sub_1AF15B364(a3);
+    v14 = sub_1AF15B364(geometry);
     v15 = sub_1AF21D644(v14);
     v16 = v15;
     v18 = v17;
@@ -72,7 +72,7 @@
     v31[4] = *&v10->_curveInfo.controlPointIndicesOffset;
     *v31 = v32;
     memcpy(v31 + v10->_curveInfo.controlPointIndicesOffset, v20, v28);
-    sub_1AFDE8444(a7, v31, v30, 0);
+    sub_1AFDE8444(manager, v31, v30, 0);
     v10->_bezierCurveInfoBuffer = v33;
     free(v31);
     v37 = objc_msgSend_vertexDescriptor(MEMORY[0x1E69741E0], v34, v35, v36);
@@ -98,9 +98,9 @@
     v89 = objc_msgSend_objectAtIndexedSubscript_(v82, v87, v86, v88);
     objc_msgSend_setStride_(v89, v90, v30, v91);
     objc_msgSend_setStepFunction_(v89, v92, 1, v93);
-    sub_1AFDE851C(a7, 4 * v30, 32);
+    sub_1AFDE851C(manager, 4 * v30, 32);
     v10->_quadTexcoordsBuffer = v94;
-    sub_1AFDE851C(a7, 4 * v28, 32);
+    sub_1AFDE851C(manager, 4 * v28, 32);
     v10->_quadPositionsBuffer = v95;
     v96 = objc_alloc_init(VFXMTLMeshElement);
     sub_1AFDEA2A8(v96, 4);
@@ -115,11 +115,11 @@
     v101 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v100, &v114, 1);
     sub_1AFDEA214(v10->_quadMesh, v101);
 
-    v10->_buildQuadGeometryPipeline = objc_msgSend_computePipelineStateForKernel_(a7, v102, @"deformer_bezier_build_quad_geometry", v103);
-    v10->_initBezierCurveInfoPipeline = objc_msgSend_computePipelineStateForKernel_(a7, v104, @"deformer_bezier_init_info", v105);
+    v10->_buildQuadGeometryPipeline = objc_msgSend_computePipelineStateForKernel_(manager, v102, @"deformer_bezier_build_quad_geometry", v103);
+    v10->_initBezierCurveInfoPipeline = objc_msgSend_computePipelineStateForKernel_(manager, v104, @"deformer_bezier_init_info", v105);
     if (v10->_curveInfo.segmentCountLinear)
     {
-      v108 = objc_msgSend_computePipelineStateForKernel_(a7, v106, @"deformer_bezier_build_info_linear", v107);
+      v108 = objc_msgSend_computePipelineStateForKernel_(manager, v106, @"deformer_bezier_build_info_linear", v107);
     }
 
     else
@@ -130,7 +130,7 @@
     v10->_buildBezierCurveInfoPipelineLinear = v108;
     if (v10->_curveInfo.segmentCountQuadratic)
     {
-      v109 = objc_msgSend_computePipelineStateForKernel_(a7, v106, @"deformer_bezier_build_info_quadratic", v107);
+      v109 = objc_msgSend_computePipelineStateForKernel_(manager, v106, @"deformer_bezier_build_info_quadratic", v107);
     }
 
     else
@@ -141,7 +141,7 @@
     v10->_buildBezierCurveInfoPipelineQuadratic = v109;
     if (v10->_curveInfo.segmentCountCubic)
     {
-      v110 = objc_msgSend_computePipelineStateForKernel_(a7, v106, @"deformer_bezier_build_info_cubic", v107);
+      v110 = objc_msgSend_computePipelineStateForKernel_(manager, v106, @"deformer_bezier_build_info_cubic", v107);
     }
 
     else
@@ -162,15 +162,15 @@
   [(VFXMTLBezierCurveDeformer *)&v3 dealloc];
 }
 
-- (id)bufferForCommonProfileArgumentNamed:(id)a3
+- (id)bufferForCommonProfileArgumentNamed:(id)named
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"vfx_bezier_curve_data", v3))
+  if (objc_msgSend_isEqualToString_(named, a2, @"vfx_bezier_curve_data", v3))
   {
     v8 = 128;
     return *(&self->super.isa + v8);
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v6, @"vfx_bezier_curve_controlPoints", v7))
+  if (objc_msgSend_isEqualToString_(named, v6, @"vfx_bezier_curve_controlPoints", v7))
   {
     v8 = 136;
     return *(&self->super.isa + v8);
@@ -179,19 +179,19 @@
   return 0;
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = objc_msgSend_currentFrameHash(a3, a2, a3, a4);
+  v7 = objc_msgSend_currentFrameHash(context, a2, context, buffers);
   if (self->_currentFrameHash == v7)
   {
     return 0;
   }
 
   self->_currentFrameHash = v7;
-  var0 = a4->var0;
-  var1 = a4->var1;
+  var0 = buffers->var0;
+  var1 = buffers->var1;
   self->_lastDeformedCurveControlPointsBuffer = var1;
-  v14 = objc_msgSend_currentComputeEncoder(a3, v8, v9, v10);
+  v14 = objc_msgSend_currentComputeEncoder(context, v8, v9, v10);
   objc_msgSend_resetCache(v14, v15, v16, v17);
   segmentCountLinear = self->_curveInfo.segmentCountLinear;
   segmentCountQuadratic = self->_curveInfo.segmentCountQuadratic;

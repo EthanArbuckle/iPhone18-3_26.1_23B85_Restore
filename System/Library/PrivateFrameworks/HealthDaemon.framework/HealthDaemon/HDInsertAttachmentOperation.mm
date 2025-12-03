@@ -1,55 +1,55 @@
 @interface HDInsertAttachmentOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertAttachmentOperation)initWithAttachmentReferences:(id)a3 attachment:(id)a4 fileOnDisk:(BOOL)a5;
-- (HDInsertAttachmentOperation)initWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertAttachmentOperation)initWithAttachmentReferences:(id)references attachment:(id)attachment fileOnDisk:(BOOL)disk;
+- (HDInsertAttachmentOperation)initWithCoder:(id)coder;
 - (id)transactionContext;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertAttachmentOperation
 
-- (HDInsertAttachmentOperation)initWithAttachmentReferences:(id)a3 attachment:(id)a4 fileOnDisk:(BOOL)a5
+- (HDInsertAttachmentOperation)initWithAttachmentReferences:(id)references attachment:(id)attachment fileOnDisk:(BOOL)disk
 {
-  v8 = a3;
-  v9 = a4;
+  referencesCopy = references;
+  attachmentCopy = attachment;
   v16.receiver = self;
   v16.super_class = HDInsertAttachmentOperation;
   v10 = [(HDInsertAttachmentOperation *)&v16 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [attachmentCopy copy];
     attachment = v10->_attachment;
     v10->_attachment = v11;
 
-    v13 = [v8 copy];
+    v13 = [referencesCopy copy];
     attachmentReferences = v10->_attachmentReferences;
     v10->_attachmentReferences = v13;
 
-    v10->_fileOnDisk = a5;
+    v10->_fileOnDisk = disk;
   }
 
   return v10;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v83 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAA00];
-  v8 = a4;
-  v9 = a3;
+  transactionCopy = transaction;
+  profileCopy = profile;
   v10 = objc_alloc_init(v7);
-  v11 = [v9 attachmentManager];
-  v12 = [v11 unconfirmedFilesDirectoryURL];
-  v13 = [(HDAttachment *)self->_attachment identifier];
-  v14 = [v13 UUIDString];
-  v15 = [v12 URLByAppendingPathComponent:v14];
+  attachmentManager = [profileCopy attachmentManager];
+  unconfirmedFilesDirectoryURL = [attachmentManager unconfirmedFilesDirectoryURL];
+  identifier = [(HDAttachment *)self->_attachment identifier];
+  uUIDString = [identifier UUIDString];
+  v15 = [unconfirmedFilesDirectoryURL URLByAppendingPathComponent:uUIDString];
 
-  v16 = [v9 attachmentManager];
+  attachmentManager2 = [profileCopy attachmentManager];
 
-  v17 = [v16 filesDirectoryURL];
-  v18 = [(HDAttachment *)self->_attachment identifier];
-  v19 = [v18 UUIDString];
-  v20 = [v17 URLByAppendingPathComponent:v19];
+  filesDirectoryURL = [attachmentManager2 filesDirectoryURL];
+  identifier2 = [(HDAttachment *)self->_attachment identifier];
+  uUIDString2 = [identifier2 UUIDString];
+  v20 = [filesDirectoryURL URLByAppendingPathComponent:uUIDString2];
 
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
@@ -62,13 +62,13 @@
   v63 = v22;
   v23 = v20;
   v64 = v23;
-  [v8 onCommit:v61 orRollback:0];
+  [transactionCopy onCommit:v61 orRollback:0];
   attachmentReferences = self->_attachmentReferences;
-  v59 = self;
+  selfCopy = self;
   attachment = self->_attachment;
   v26 = attachmentReferences;
   v27 = attachment;
-  v28 = v8;
+  v28 = transactionCopy;
   v70 = 0;
   v29 = [HDAttachmentEntity _insertIfDoesNotExistAttachment:v27 transaction:v28 error:&v70];
   v30 = v70;
@@ -112,7 +112,7 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
-              v72 = v59;
+              v72 = selfCopy;
               v73 = 2114;
               v74 = v37;
               v75 = 2114;
@@ -127,10 +127,10 @@
             v22 = v57;
             if (v40)
             {
-              if (a5)
+              if (error)
               {
                 v41 = v40;
-                *a5 = v30;
+                *error = v30;
               }
 
               else
@@ -173,7 +173,7 @@ LABEL_23:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
       *v77 = 138543874;
-      v78 = v59;
+      v78 = selfCopy;
       v79 = 2114;
       v80 = v27;
       v81 = 2114;
@@ -185,10 +185,10 @@ LABEL_23:
     v30 = v43;
     if (v43)
     {
-      if (a5)
+      if (error)
       {
         v44 = v43;
-        *a5 = v30;
+        *error = v30;
       }
 
       else
@@ -201,11 +201,11 @@ LABEL_23:
   }
 
   v45 = buf[0];
-  if ((v45 & 1) == 0 && v59->_fileOnDisk)
+  if ((v45 & 1) == 0 && selfCopy->_fileOnDisk)
   {
-    v46 = [v22 path];
+    path = [v22 path];
     v60 = 0;
-    v47 = [v21 removeItemAtPath:v46 error:&v60];
+    v47 = [v21 removeItemAtPath:path error:&v60];
     v48 = v60;
 
     if ((v47 & 1) == 0)
@@ -215,11 +215,11 @@ LABEL_23:
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
       {
         v52 = v49;
-        v53 = [v22 path];
+        path2 = [v22 path];
         *v77 = 138543874;
-        v78 = v59;
+        v78 = selfCopy;
         v79 = 2114;
-        v80 = v53;
+        v80 = path2;
         v81 = 2114;
         v82 = v48;
         _os_log_error_impl(&dword_228986000, v52, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to remove file at %{public}@, %{public}@", v77, 0x20u);
@@ -269,32 +269,32 @@ void __68__HDInsertAttachmentOperation_performWithProfile_transaction_error___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HDInsertAttachmentOperation)initWithCoder:(id)a3
+- (HDInsertAttachmentOperation)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attachment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attachment"];
   v6 = MEMORY[0x277CBEB98];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"attachment_references"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"attachment_references"];
 
-  v10 = [v4 decodeBoolForKey:@"file_on_disk"];
+  v10 = [coderCopy decodeBoolForKey:@"file_on_disk"];
   v11 = [(HDInsertAttachmentOperation *)self initWithAttachmentReferences:v9 attachment:v5 fileOnDisk:v10];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attachment = self->_attachment;
-  v5 = a3;
-  [v5 encodeObject:attachment forKey:@"attachment"];
-  [v5 encodeObject:self->_attachmentReferences forKey:@"attachment_references"];
-  [v5 encodeBool:self->_fileOnDisk forKey:@"file_on_disk"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attachment forKey:@"attachment"];
+  [coderCopy encodeObject:self->_attachmentReferences forKey:@"attachment_references"];
+  [coderCopy encodeBool:self->_fileOnDisk forKey:@"file_on_disk"];
 }
 
 - (id)transactionContext

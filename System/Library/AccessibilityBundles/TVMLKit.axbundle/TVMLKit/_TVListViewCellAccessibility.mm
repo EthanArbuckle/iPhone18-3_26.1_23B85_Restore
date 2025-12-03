@@ -1,5 +1,5 @@
 @interface _TVListViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFrameDelegate;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
@@ -8,27 +8,27 @@
 
 @implementation _TVListViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
   v3 = MEMORY[0x29EDBD618];
   v4 = *MEMORY[0x29EDBD618];
-  v5 = a3;
-  [v5 client:v4 validateClass:@"_TVListViewController"];
-  [v5 client:*v3 validateClass:@"_TVListViewController" hasInstanceVariable:@"_collectionElement" withType:"IKCollectionElement"];
-  [v5 validateClass:@"_TVListViewCell" hasInstanceMethod:@"setSelected:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v5 validateClass:@"_TVListViewCell" hasInstanceMethod:@"floatingView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy client:v4 validateClass:@"_TVListViewController"];
+  [validationsCopy client:*v3 validateClass:@"_TVListViewController" hasInstanceVariable:@"_collectionElement" withType:"IKCollectionElement"];
+  [validationsCopy validateClass:@"_TVListViewCell" hasInstanceMethod:@"setSelected:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"_TVListViewCell" hasInstanceMethod:@"floatingView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v19 = *MEMORY[0x29EDCA608];
-  v2 = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  _accessibleSubviews = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
+  array = [MEMORY[0x29EDB8DE8] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = _accessibleSubviews;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -47,7 +47,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObject:{v9, v14}];
+          [array addObject:{v9, v14}];
         }
       }
 
@@ -57,8 +57,8 @@
     while (v6);
   }
 
-  v10 = [v3 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
-  v11 = MEMORY[0x29ED3B640](v3);
+  v10 = [array sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  v11 = MEMORY[0x29ED3B640](array);
 
   v12 = *MEMORY[0x29EDCA608];
 
@@ -68,13 +68,13 @@
 - (id)_accessibilitySupplementaryFooterViews
 {
   v17 = *MEMORY[0x29EDCA608];
-  v2 = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  _accessibleSubviews = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
+  array = [MEMORY[0x29EDB8DE8] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = _accessibleSubviews;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -93,7 +93,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 isAccessibilityElement])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -105,13 +105,13 @@
 
   v10 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
-  v4 = [v3 count];
+  _accessibleSubviews = [(_TVListViewCellAccessibility *)self _accessibleSubviews];
+  v4 = [_accessibleSubviews count];
 
   if (!v4)
   {
@@ -142,17 +142,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    _accessibilityFrameDelegate = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _TVListViewCellAccessibility;
-    v5 = [(_TVListViewCellAccessibility *)&v8 _accessibilityFrameDelegate];
+    _accessibilityFrameDelegate = [(_TVListViewCellAccessibility *)&v8 _accessibilityFrameDelegate];
   }
 
-  v6 = v5;
+  v6 = _accessibilityFrameDelegate;
 
   return v6;
 }

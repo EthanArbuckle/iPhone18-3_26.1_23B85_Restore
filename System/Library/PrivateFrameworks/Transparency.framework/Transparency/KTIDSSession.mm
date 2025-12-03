@@ -1,11 +1,11 @@
 @interface KTIDSSession
-- (BOOL)markAsVerified:(id *)a3;
-- (BOOL)markContactAsVerified:(id)a3 error:(id *)a4;
+- (BOOL)markAsVerified:(id *)verified;
+- (BOOL)markContactAsVerified:(id)verified error:(id *)error;
 - (KTIDSSession)init;
-- (KTIDSSession)initWithCoder:(id)a3;
+- (KTIDSSession)initWithCoder:(id)coder;
 - (NSData)jsonObject;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTIDSSession
@@ -13,12 +13,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(KTIDSSession *)self state];
-  v5 = [(KTIDSSession *)self peerHandle];
-  v6 = [(KTIDSSession *)self peerAccountIdentity];
-  v7 = [v6 publicAccountIdentity];
-  v8 = [(KTIDSSession *)self sasCode];
-  if (v8)
+  state = [(KTIDSSession *)self state];
+  peerHandle = [(KTIDSSession *)self peerHandle];
+  peerAccountIdentity = [(KTIDSSession *)self peerAccountIdentity];
+  publicAccountIdentity = [peerAccountIdentity publicAccountIdentity];
+  sasCode = [(KTIDSSession *)self sasCode];
+  if (sasCode)
   {
     v9 = @"YES";
   }
@@ -28,14 +28,14 @@
     v9 = @"NO";
   }
 
-  v10 = [(KTIDSSession *)self peerDisconnected];
+  peerDisconnected = [(KTIDSSession *)self peerDisconnected];
   v11 = @"connected";
-  if (v10)
+  if (peerDisconnected)
   {
     v11 = @"disconnected";
   }
 
-  v12 = [v3 stringWithFormat:@"<KTIDSSession: state: %@ handle: %@ peerIdentity: %@ sasCode: %@ %@>", v4, v5, v7, v9, v11];
+  v12 = [v3 stringWithFormat:@"<KTIDSSession: state: %@ handle: %@ peerIdentity: %@ sasCode: %@ %@>", state, peerHandle, publicAccountIdentity, v9, v11];
 
   return v12;
 }
@@ -53,8 +53,8 @@
       abort();
     }
 
-    v4 = [v3 kt_hexString];
-    [(KTIDSSession *)v2 setSessionID:v4];
+    kt_hexString = [v3 kt_hexString];
+    [(KTIDSSession *)v2 setSessionID:kt_hexString];
 
     [(KTIDSSession *)v2 setState:kTransparencyStaticKeyStateInit];
     v5 = v2;
@@ -63,25 +63,25 @@
   return v2;
 }
 
-- (BOOL)markAsVerified:(id *)a3
+- (BOOL)markAsVerified:(id *)verified
 {
-  v5 = [(KTIDSSession *)self contactIdentifier];
+  contactIdentifier = [(KTIDSSession *)self contactIdentifier];
 
-  if (v5)
+  if (contactIdentifier)
   {
-    v6 = [(KTIDSSession *)self contactIdentifier];
-    v7 = [(KTIDSSession *)self markContactAsVerified:v6 error:a3];
+    contactIdentifier2 = [(KTIDSSession *)self contactIdentifier];
+    v7 = [(KTIDSSession *)self markContactAsVerified:contactIdentifier2 error:verified];
   }
 
   else
   {
     v8 = [TransparencyError errorWithDomain:@"TransparencyErrorDecode" code:-297 description:@"Static key have not contact identifier, can't mark as verified"];
-    v6 = v8;
-    if (a3)
+    contactIdentifier2 = v8;
+    if (verified)
     {
       v9 = v8;
       v7 = 0;
-      *a3 = v6;
+      *verified = contactIdentifier2;
     }
 
     else
@@ -93,17 +93,17 @@
   return v7;
 }
 
-- (BOOL)markContactAsVerified:(id)a3 error:(id *)a4
+- (BOOL)markContactAsVerified:(id)verified error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  verifiedCopy = verified;
+  if (verifiedCopy)
   {
-    v7 = [(KTIDSSession *)self state];
-    if ([v7 isEqual:kTransparencyStaticKeyStateCodeAvailable])
+    state = [(KTIDSSession *)self state];
+    if ([state isEqual:kTransparencyStaticKeyStateCodeAvailable])
     {
-      v8 = [(KTIDSSession *)self sasCode];
+      sasCode = [(KTIDSSession *)self sasCode];
 
-      if (v8)
+      if (sasCode)
       {
         v9 = 1;
         goto LABEL_11;
@@ -125,10 +125,10 @@
   }
 
   v12 = [TransparencyError errorWithDomain:@"TransparencyErrorDecode" code:v11 description:v10];
-  if (a4)
+  if (error)
   {
     v12 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   v9 = 0;
@@ -137,61 +137,61 @@ LABEL_11:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(KTIDSSession *)self state];
-  [v16 encodeObject:v4 forKey:@"state"];
+  coderCopy = coder;
+  state = [(KTIDSSession *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  v5 = [(KTIDSSession *)self sessionID];
-  [v16 encodeObject:v5 forKey:@"sessionID"];
+  sessionID = [(KTIDSSession *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"sessionID"];
 
-  v6 = [(KTIDSSession *)self sessionExpire];
+  sessionExpire = [(KTIDSSession *)self sessionExpire];
 
-  if (v6)
+  if (sessionExpire)
   {
-    v7 = [(KTIDSSession *)self sessionExpire];
-    [v16 encodeObject:v7 forKey:@"sessionExpire"];
+    sessionExpire2 = [(KTIDSSession *)self sessionExpire];
+    [coderCopy encodeObject:sessionExpire2 forKey:@"sessionExpire"];
   }
 
-  v8 = [(KTIDSSession *)self peerHandle];
+  peerHandle = [(KTIDSSession *)self peerHandle];
 
-  if (v8)
+  if (peerHandle)
   {
-    v9 = [(KTIDSSession *)self peerHandle];
-    [v16 encodeObject:v9 forKey:@"peerHandle"];
+    peerHandle2 = [(KTIDSSession *)self peerHandle];
+    [coderCopy encodeObject:peerHandle2 forKey:@"peerHandle"];
   }
 
-  v10 = [(KTIDSSession *)self contactIdentifier];
+  contactIdentifier = [(KTIDSSession *)self contactIdentifier];
 
-  if (v10)
+  if (contactIdentifier)
   {
-    v11 = [(KTIDSSession *)self contactIdentifier];
-    [v16 encodeObject:v11 forKey:@"contactIdentifier"];
+    contactIdentifier2 = [(KTIDSSession *)self contactIdentifier];
+    [coderCopy encodeObject:contactIdentifier2 forKey:@"contactIdentifier"];
   }
 
-  v12 = [(KTIDSSession *)self peerAccountIdentity];
+  peerAccountIdentity = [(KTIDSSession *)self peerAccountIdentity];
 
-  if (v12)
+  if (peerAccountIdentity)
   {
-    v13 = [(KTIDSSession *)self peerAccountIdentity];
-    [v16 encodeObject:v13 forKey:@"peerAccountIdentity"];
+    peerAccountIdentity2 = [(KTIDSSession *)self peerAccountIdentity];
+    [coderCopy encodeObject:peerAccountIdentity2 forKey:@"peerAccountIdentity"];
   }
 
-  v14 = [(KTIDSSession *)self sasCode];
+  sasCode = [(KTIDSSession *)self sasCode];
 
-  if (v14)
+  if (sasCode)
   {
-    v15 = [(KTIDSSession *)self sasCode];
-    [v16 encodeObject:v15 forKey:@"sasCode"];
+    sasCode2 = [(KTIDSSession *)self sasCode];
+    [coderCopy encodeObject:sasCode2 forKey:@"sasCode"];
   }
 
-  [v16 encodeBool:-[KTIDSSession peerDisconnected](self forKey:{"peerDisconnected"), @"disconnected"}];
+  [coderCopy encodeBool:-[KTIDSSession peerDisconnected](self forKey:{"peerDisconnected"), @"disconnected"}];
 }
 
-- (KTIDSSession)initWithCoder:(id)a3
+- (KTIDSSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = KTIDSSession;
   v5 = [(KTIDSSession *)&v15 init];
@@ -200,74 +200,74 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
   [(KTIDSSession *)v5 setState:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
   [(KTIDSSession *)v5 setSessionID:v7];
 
-  v8 = [(KTIDSSession *)v5 state];
-  if (v8)
+  state = [(KTIDSSession *)v5 state];
+  if (state)
   {
-    v9 = [(KTIDSSession *)v5 sessionID];
+    sessionID = [(KTIDSSession *)v5 sessionID];
 
-    if (v9)
+    if (sessionID)
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionExpire"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionExpire"];
       [(KTIDSSession *)v5 setSessionExpire:v10];
 
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerHandle"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerHandle"];
       [(KTIDSSession *)v5 setPeerHandle:v11];
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerAccountIdentity"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerAccountIdentity"];
       [(KTIDSSession *)v5 setPeerAccountIdentity:v12];
 
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sasCode"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sasCode"];
       [(KTIDSSession *)v5 setSasCode:v13];
 
-      -[KTIDSSession setPeerDisconnected:](v5, "setPeerDisconnected:", [v4 decodeBoolForKey:@"disconnected"]);
-      v8 = v5;
+      -[KTIDSSession setPeerDisconnected:](v5, "setPeerDisconnected:", [coderCopy decodeBoolForKey:@"disconnected"]);
+      state = v5;
       goto LABEL_6;
     }
 
 LABEL_5:
-    v8 = 0;
+    state = 0;
   }
 
 LABEL_6:
 
-  return v8;
+  return state;
 }
 
 - (NSData)jsonObject
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(KTIDSSession *)self sessionID];
-  [v3 setObject:v4 forKeyedSubscript:@"sessionID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  sessionID = [(KTIDSSession *)self sessionID];
+  [dictionary setObject:sessionID forKeyedSubscript:@"sessionID"];
 
-  v5 = [(KTIDSSession *)self state];
-  [v3 setObject:v5 forKeyedSubscript:@"state"];
+  state = [(KTIDSSession *)self state];
+  [dictionary setObject:state forKeyedSubscript:@"state"];
 
-  v6 = [(KTIDSSession *)self sessionExpire];
-  [v3 setObject:v6 forKeyedSubscript:@"expire"];
+  sessionExpire = [(KTIDSSession *)self sessionExpire];
+  [dictionary setObject:sessionExpire forKeyedSubscript:@"expire"];
 
-  v7 = [(KTIDSSession *)self peerHandle];
-  [v3 setObject:v7 forKeyedSubscript:@"peerHandle"];
+  peerHandle = [(KTIDSSession *)self peerHandle];
+  [dictionary setObject:peerHandle forKeyedSubscript:@"peerHandle"];
 
-  v8 = [(KTIDSSession *)self contactIdentifier];
-  [v3 setObject:v8 forKeyedSubscript:@"contactIdentifier"];
+  contactIdentifier = [(KTIDSSession *)self contactIdentifier];
+  [dictionary setObject:contactIdentifier forKeyedSubscript:@"contactIdentifier"];
 
-  v9 = [(KTIDSSession *)self peerAccountIdentity];
-  v10 = [v9 publicAccountIdentity];
-  [v3 setObject:v10 forKeyedSubscript:@"peerAccountIdentity"];
+  peerAccountIdentity = [(KTIDSSession *)self peerAccountIdentity];
+  publicAccountIdentity = [peerAccountIdentity publicAccountIdentity];
+  [dictionary setObject:publicAccountIdentity forKeyedSubscript:@"peerAccountIdentity"];
 
-  v11 = [(KTIDSSession *)self sasCode];
-  [v3 setObject:v11 forKeyedSubscript:@"sasCode"];
+  sasCode = [(KTIDSSession *)self sasCode];
+  [dictionary setObject:sasCode forKeyedSubscript:@"sasCode"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTIDSSession peerDisconnected](self, "peerDisconnected")}];
-  [v3 setObject:v12 forKeyedSubscript:@"disconnected"];
+  [dictionary setObject:v12 forKeyedSubscript:@"disconnected"];
 
-  v13 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:1 error:0];
+  v13 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:1 error:0];
 
   return v13;
 }

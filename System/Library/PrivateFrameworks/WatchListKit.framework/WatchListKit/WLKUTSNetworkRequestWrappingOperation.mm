@@ -1,5 +1,5 @@
 @interface WLKUTSNetworkRequestWrappingOperation
-- (WLKUTSNetworkRequestWrappingOperation)initWithRequestProperties:(id)a3 underlyingOperation:(id)a4;
+- (WLKUTSNetworkRequestWrappingOperation)initWithRequestProperties:(id)properties underlyingOperation:(id)operation;
 - (id)amsUrlResponse;
 - (id)data;
 - (id)error;
@@ -11,17 +11,17 @@
 
 @implementation WLKUTSNetworkRequestWrappingOperation
 
-- (WLKUTSNetworkRequestWrappingOperation)initWithRequestProperties:(id)a3 underlyingOperation:(id)a4
+- (WLKUTSNetworkRequestWrappingOperation)initWithRequestProperties:(id)properties underlyingOperation:(id)operation
 {
-  v7 = a4;
+  operationCopy = operation;
   v11.receiver = self;
   v11.super_class = WLKUTSNetworkRequestWrappingOperation;
-  v8 = [(WLKUTSNetworkRequestOperation *)&v11 initWithRequestProperties:a3];
+  v8 = [(WLKUTSNetworkRequestOperation *)&v11 initWithRequestProperties:properties];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_underlyingOperation, a4);
-    [(WLKUTSNetworkRequestWrappingOperation *)v9 addDependency:v7];
+    objc_storeStrong(&v8->_underlyingOperation, operation);
+    [(WLKUTSNetworkRequestWrappingOperation *)v9 addDependency:operationCopy];
   }
 
   return v9;
@@ -29,58 +29,58 @@
 
 - (id)httpResponse
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 httpResponse];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  httpResponse = [underlyingOperation httpResponse];
 
-  return v3;
+  return httpResponse;
 }
 
 - (int64_t)responseStatusCode
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 responseStatusCode];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  responseStatusCode = [underlyingOperation responseStatusCode];
 
-  return v3;
+  return responseStatusCode;
 }
 
 - (id)data
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 data];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  data = [underlyingOperation data];
 
-  return v3;
+  return data;
 }
 
 - (id)error
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 error];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  error = [underlyingOperation error];
 
-  return v3;
+  return error;
 }
 
 - (int64_t)resourceFetchType
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 resourceFetchType];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  resourceFetchType = [underlyingOperation resourceFetchType];
 
-  return v3;
+  return resourceFetchType;
 }
 
 - (id)responseDictionary
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 responseDictionary];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  responseDictionary = [underlyingOperation responseDictionary];
 
-  return v3;
+  return responseDictionary;
 }
 
 - (id)amsUrlResponse
 {
-  v2 = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
-  v3 = [v2 amsUrlResponse];
+  underlyingOperation = [(WLKUTSNetworkRequestWrappingOperation *)self underlyingOperation];
+  amsUrlResponse = [underlyingOperation amsUrlResponse];
 
-  return v3;
+  return amsUrlResponse;
 }
 
 @end

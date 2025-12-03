@@ -1,29 +1,29 @@
 @interface PLPersistentHistoryTransactionModifiers
-+ (id)transactionAuthorFromChangeSource:(int)a3 syncChangeMarker:(BOOL)a4 nonCoalescing:(BOOL)a5;
-+ (id)transactionModifiersFromTransactionAuthor:(id)a3;
-- (BOOL)updateFromTransactionAuthor:(id)a3;
-- (PLPersistentHistoryTransactionModifiers)initWithChangeSource:(int)a3 syncChangeMarker:(BOOL)a4 nonCoalescing:(BOOL)a5;
-- (id)_descriptionWithBuilder:(id)a3;
-- (id)_pl_prettyDescriptionWithIndent:(int64_t)a3;
++ (id)transactionAuthorFromChangeSource:(int)source syncChangeMarker:(BOOL)marker nonCoalescing:(BOOL)coalescing;
++ (id)transactionModifiersFromTransactionAuthor:(id)author;
+- (BOOL)updateFromTransactionAuthor:(id)author;
+- (PLPersistentHistoryTransactionModifiers)initWithChangeSource:(int)source syncChangeMarker:(BOOL)marker nonCoalescing:(BOOL)coalescing;
+- (id)_descriptionWithBuilder:(id)builder;
+- (id)_pl_prettyDescriptionWithIndent:(int64_t)indent;
 - (id)description;
 - (id)encodeAsTransactionAuthor;
 @end
 
 @implementation PLPersistentHistoryTransactionModifiers
 
-- (id)_descriptionWithBuilder:(id)a3
+- (id)_descriptionWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = PLStringFromXPCChangeSource();
-  [v4 appendName:@"changeSource" object:v5];
+  [builderCopy appendName:@"changeSource" object:v5];
 
-  [v4 appendName:@"syncChangeMarker" typeCode:"B" value:&self->_syncChangeMarker];
-  v6 = [v4 build];
+  [builderCopy appendName:@"syncChangeMarker" typeCode:"B" value:&self->_syncChangeMarker];
+  build = [builderCopy build];
 
-  return v6;
+  return build;
 }
 
-- (id)_pl_prettyDescriptionWithIndent:(int64_t)a3
+- (id)_pl_prettyDescriptionWithIndent:(int64_t)indent
 {
   v3 = pl_result_with_autoreleasepool();
 
@@ -53,17 +53,17 @@ id __54__PLPersistentHistoryTransactionModifiers_description__block_invoke(uint6
   return v3;
 }
 
-- (BOOL)updateFromTransactionAuthor:(id)a3
+- (BOOL)updateFromTransactionAuthor:(id)author
 {
-  v4 = a3;
+  authorCopy = author;
   v9 = MEMORY[0x1E69E9820];
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = authorCopy;
+  v5 = authorCopy;
   v6 = pl_result_with_autoreleasepool();
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 uint64_t __71__PLPersistentHistoryTransactionModifiers_updateFromTransactionAuthor___block_invoke(uint64_t a1)
@@ -238,7 +238,7 @@ LABEL_42:
   return [v3 transactionAuthorFromChangeSource:changeSource syncChangeMarker:syncChangeMarker];
 }
 
-- (PLPersistentHistoryTransactionModifiers)initWithChangeSource:(int)a3 syncChangeMarker:(BOOL)a4 nonCoalescing:(BOOL)a5
+- (PLPersistentHistoryTransactionModifiers)initWithChangeSource:(int)source syncChangeMarker:(BOOL)marker nonCoalescing:(BOOL)coalescing
 {
   v12.receiver = self;
   v12.super_class = PLPersistentHistoryTransactionModifiers;
@@ -246,16 +246,16 @@ LABEL_42:
   v9 = v8;
   if (v8)
   {
-    v8->_changeSource = a3;
-    v8->_syncChangeMarker = a4;
-    v8->_nonCoalescing = a5;
+    v8->_changeSource = source;
+    v8->_syncChangeMarker = marker;
+    v8->_nonCoalescing = coalescing;
     v10 = v8;
   }
 
   return v9;
 }
 
-+ (id)transactionAuthorFromChangeSource:(int)a3 syncChangeMarker:(BOOL)a4 nonCoalescing:(BOOL)a5
++ (id)transactionAuthorFromChangeSource:(int)source syncChangeMarker:(BOOL)marker nonCoalescing:(BOOL)coalescing
 {
   v5 = pl_result_with_autoreleasepool();
 
@@ -280,10 +280,10 @@ id __108__PLPersistentHistoryTransactionModifiers_transactionAuthorFromChangeSou
   return v8;
 }
 
-+ (id)transactionModifiersFromTransactionAuthor:(id)a3
++ (id)transactionModifiersFromTransactionAuthor:(id)author
 {
-  v6 = a3;
-  v3 = v6;
+  authorCopy = author;
+  v3 = authorCopy;
   v4 = pl_result_with_autoreleasepool();
 
   return v4;

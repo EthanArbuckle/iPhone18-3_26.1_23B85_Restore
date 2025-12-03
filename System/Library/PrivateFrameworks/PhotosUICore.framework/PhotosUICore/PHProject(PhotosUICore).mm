@@ -6,11 +6,11 @@
 
 - (id)px_rootCollectionList
 {
-  v1 = [a1 photoLibrary];
-  v2 = [v1 px_virtualCollections];
-  v3 = [v2 rootProjectCollectionList];
+  photoLibrary = [self photoLibrary];
+  px_virtualCollections = [photoLibrary px_virtualCollections];
+  rootProjectCollectionList = [px_virtualCollections rootProjectCollectionList];
 
-  return v3;
+  return rootProjectCollectionList;
 }
 
 @end

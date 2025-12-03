@@ -1,7 +1,7 @@
 @interface NFSecureXPCEventPublisherManager
 + (id)sharedManager;
 - (void)invalidate;
-- (void)startPublisherWithXPCQueue:(id)a3 eventSendQueue:(id)a4;
+- (void)startPublisherWithXPCQueue:(id)queue eventSendQueue:(id)sendQueue;
 @end
 
 @implementation NFSecureXPCEventPublisherManager
@@ -18,20 +18,20 @@
   return v3;
 }
 
-- (void)startPublisherWithXPCQueue:(id)a3 eventSendQueue:(id)a4
+- (void)startPublisherWithXPCQueue:(id)queue eventSendQueue:(id)sendQueue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NFSecureXPCEventPublisherManager *)self wallet];
-  sub_1002344C8(v8);
+  sendQueueCopy = sendQueue;
+  queueCopy = queue;
+  wallet = [(NFSecureXPCEventPublisherManager *)self wallet];
+  sub_1002344C8(wallet);
 
-  v9 = [(NFSecureXPCEventPublisherManager *)self homed];
-  sub_1002344C8(v9);
+  homed = [(NFSecureXPCEventPublisherManager *)self homed];
+  sub_1002344C8(homed);
 
   v10 = [NFSecureXPCEventPublisher alloc];
   if (v10)
   {
-    v11 = sub_100234C58(v10, @"com.apple.passd.nf-events", 1, 33, v7, v6);
+    v11 = sub_100234C58(v10, @"com.apple.passd.nf-events", 1, 33, queueCopy, sendQueueCopy);
   }
 
   else
@@ -44,7 +44,7 @@
   v12 = [NFSecureXPCEventPublisher alloc];
   if (v12)
   {
-    v13 = sub_100234C58(v12, @"com.apple.nfcd.xpc.homed.uaevents", 1, 33, v7, v6);
+    v13 = sub_100234C58(v12, @"com.apple.nfcd.xpc.homed.uaevents", 1, 33, queueCopy, sendQueueCopy);
   }
 
   else
@@ -57,12 +57,12 @@
 
 - (void)invalidate
 {
-  v3 = [(NFSecureXPCEventPublisherManager *)self wallet];
-  sub_1002344C8(v3);
+  wallet = [(NFSecureXPCEventPublisherManager *)self wallet];
+  sub_1002344C8(wallet);
 
   [(NFSecureXPCEventPublisherManager *)self setWallet:0];
-  v4 = [(NFSecureXPCEventPublisherManager *)self homed];
-  sub_1002344C8(v4);
+  homed = [(NFSecureXPCEventPublisherManager *)self homed];
+  sub_1002344C8(homed);
 
   [(NFSecureXPCEventPublisherManager *)self setHomed:0];
 }

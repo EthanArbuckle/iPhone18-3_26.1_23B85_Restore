@@ -1,67 +1,67 @@
 @interface TUIFeedView
 + (BOOL)areFeedUpdatesAnimated;
-+ (void)performAnimatedFeedUpdates:(id)a3;
-- (BOOL)_shouldExtendVisibleBounds:(CGRect)a3;
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
-- (CGPoint)contentOffsetFromProposedContentOffset:(CGPoint)a3 atScrollPosition:(unint64_t)a4;
++ (void)performAnimatedFeedUpdates:(id)updates;
+- (BOOL)_shouldExtendVisibleBounds:(CGRect)bounds;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
+- (CGPoint)contentOffsetFromProposedContentOffset:(CGPoint)offset atScrollPosition:(unint64_t)position;
 - (CGRect)_visibleBounds;
 - (TUIFeedControllerHosting)controllerHost;
-- (TUIFeedView)initWithCoder:(id)a3;
-- (TUIFeedView)initWithFrame:(CGRect)a3;
+- (TUIFeedView)initWithCoder:(id)coder;
+- (TUIFeedView)initWithFrame:(CGRect)frame;
 - (TUIFeedViewRectScrollingDelegate)rectScrollingDelegate;
 - (TUIFeedViewScrollDelegate)scrollingDelegate;
 - (TUIFeedViewSubviewsDelegate)subviewsDelegate;
 - (TUIViewFactory)viewFactory;
-- (UIEdgeInsets)contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)a3;
+- (UIEdgeInsets)contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)insets;
 - (double)_contentBottomForScrollObservation;
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
-- (id)liveLayoutAttributesForRenderModel:(id)a3;
-- (id)viewAtIndexPath:(id)a3;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
+- (id)liveLayoutAttributesForRenderModel:(id)model;
+- (id)viewAtIndexPath:(id)path;
 - (id)visibleViews;
-- (void)_invalidateImpressionsWithContext:(id)a3;
-- (void)_invalidateIndexPaths:(id)a3;
+- (void)_invalidateImpressionsWithContext:(id)context;
+- (void)_invalidateIndexPaths:(id)paths;
 - (void)_tui_commonInit;
 - (void)_updateHasOverlays;
 - (void)_updateInvalidatedSubviews;
-- (void)_updateLayoutAttributes:(id)a3;
+- (void)_updateLayoutAttributes:(id)attributes;
 - (void)_updateVisibleOverlays;
 - (void)_updateVisibleSubviews;
-- (void)addSectionView:(id)a3 respectingZIndex:(BOOL)a4;
-- (void)appendRenderOverrideObservers:(id)a3;
-- (void)applyUpdateCollection:(id)a3 updates:(id)a4;
-- (void)deleteSections:(id)a3;
-- (void)insertSections:(id)a3;
-- (void)invalidateRenderReferenceOverride:(id)a3;
-- (void)invalidateWithContext:(id)a3;
+- (void)addSectionView:(id)view respectingZIndex:(BOOL)index;
+- (void)appendRenderOverrideObservers:(id)observers;
+- (void)applyUpdateCollection:(id)collection updates:(id)updates;
+- (void)deleteSections:(id)sections;
+- (void)insertSections:(id)sections;
+- (void)invalidateRenderReferenceOverride:(id)override;
+- (void)invalidateWithContext:(id)context;
 - (void)layoutSubviews;
-- (void)performBatchUpdatesWithRenderModel:(id)a3 flags:(unint64_t)a4 block:(id)a5 completion:(id)a6;
-- (void)reloadWithRenderModel:(id)a3;
+- (void)performBatchUpdatesWithRenderModel:(id)model flags:(unint64_t)flags block:(id)block completion:(id)completion;
+- (void)reloadWithRenderModel:(id)model;
 - (void)renderReferenceOverridesChanged;
 - (void)restoreViewStateForVisibleViews;
-- (void)resumeReuseOfView:(id)a3;
+- (void)resumeReuseOfView:(id)view;
 - (void)saveViewStateForVisibleViews;
-- (void)scrollToItemsMatchingQuery:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5 skipVoiceOverFocus:(BOOL)a6;
-- (void)setBounds:(CGRect)a3;
-- (void)setControllerHost:(id)a3;
-- (void)setCurrentViewState:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImpressionSnapshot:(id)a3;
-- (void)setRenderModel:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setStats:(id)a3;
-- (void)suspendReuseOfView:(id)a3;
-- (void)updateLiveTransformsIfNecessaryWithViewSize:(double)a3 contentOffset:(double)a4 contentInsets:(double)a5 safeAreaInsets:(double)a6 hasTabBar:(double)a7;
+- (void)scrollToItemsMatchingQuery:(id)query atScrollPosition:(unint64_t)position animated:(BOOL)animated skipVoiceOverFocus:(BOOL)focus;
+- (void)setBounds:(CGRect)bounds;
+- (void)setControllerHost:(id)host;
+- (void)setCurrentViewState:(id)state;
+- (void)setFrame:(CGRect)frame;
+- (void)setImpressionSnapshot:(id)snapshot;
+- (void)setRenderModel:(id)model;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setStats:(id)stats;
+- (void)suspendReuseOfView:(id)view;
+- (void)updateLiveTransformsIfNecessaryWithViewSize:(double)size contentOffset:(double)offset contentInsets:(double)insets safeAreaInsets:(double)areaInsets hasTabBar:(double)bar;
 @end
 
 @implementation TUIFeedView
 
-- (TUIFeedView)initWithCoder:(id)a3
+- (TUIFeedView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TUIFeedView;
-  v5 = [(TUIFeedView *)&v8 initWithCoder:v4];
+  v5 = [(TUIFeedView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -71,11 +71,11 @@
   return v6;
 }
 
-- (TUIFeedView)initWithFrame:(CGRect)a3
+- (TUIFeedView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUIFeedView;
-  v3 = [(TUIFeedView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIFeedView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -111,15 +111,15 @@
   [v12 addObserver:self selector:"_scrollViewDidEndDeceleration:" name:_UIScrollViewDidEndDeceleratingNotification object:self];
 }
 
-- (void)addSectionView:(id)a3 respectingZIndex:(BOOL)a4
+- (void)addSectionView:(id)view respectingZIndex:(BOOL)index
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 renderModel];
-  v7 = v6;
-  if (v6)
+  indexCopy = index;
+  viewCopy = view;
+  renderModel = [viewCopy renderModel];
+  v7 = renderModel;
+  if (renderModel)
   {
-    [v6 config];
+    [renderModel config];
     v8 = v37;
   }
 
@@ -131,18 +131,18 @@
     v37 = 0;
   }
 
-  v9 = [(TUIFeedView *)self subviews];
-  v10 = v9;
-  if (v4 && [v9 count])
+  subviews = [(TUIFeedView *)self subviews];
+  v10 = subviews;
+  if (indexCopy && [subviews count])
   {
     v29 = v10;
     v11 = objc_opt_class();
-    v12 = [v10 lastObject];
-    v13 = TUIDynamicCast(v11, v12);
+    lastObject = [v10 lastObject];
+    v13 = TUIDynamicCast(v11, lastObject);
 
     if (v13 && (([v13 renderModel], v14 = objc_claimAutoreleasedReturnValue(), (v15 = v14) == 0) ? (v16 = 0, v35 = 0, v36 = 0, v37 = 0) : (objc_msgSend(v14, "config"), v16 = v37), v17 = v16 > v8, v15, !v17))
     {
-      [(TUIFeedView *)self addSubview:v5];
+      [(TUIFeedView *)self addSubview:viewCopy];
     }
 
     else
@@ -172,7 +172,7 @@
             v13 = v24;
             if (v24)
             {
-              v25 = v24 == v5;
+              v25 = v24 == viewCopy;
             }
 
             else
@@ -182,11 +182,11 @@
 
             if (!v25)
             {
-              v26 = [v24 renderModel];
-              v27 = v26;
-              if (v26)
+              renderModel2 = [v24 renderModel];
+              v27 = renderModel2;
+              if (renderModel2)
               {
-                [v26 config];
+                [renderModel2 config];
                 v28 = v37;
               }
 
@@ -200,7 +200,7 @@
 
               if (v8 < v28)
               {
-                [(TUIFeedView *)self insertSubview:v5 belowSubview:v22];
+                [(TUIFeedView *)self insertSubview:viewCopy belowSubview:v22];
 LABEL_32:
 
                 goto LABEL_33;
@@ -208,7 +208,7 @@ LABEL_32:
 
               if (v8 == v28)
               {
-                [(TUIFeedView *)self insertSubview:v5 aboveSubview:v13];
+                [(TUIFeedView *)self insertSubview:viewCopy aboveSubview:v13];
                 goto LABEL_32;
               }
             }
@@ -224,7 +224,7 @@ LABEL_32:
         }
       }
 
-      [(TUIFeedView *)self addSubview:v5];
+      [(TUIFeedView *)self addSubview:viewCopy];
     }
 
 LABEL_33:
@@ -234,17 +234,17 @@ LABEL_33:
 
   else
   {
-    [(TUIFeedView *)self addSubview:v5];
+    [(TUIFeedView *)self addSubview:viewCopy];
   }
 }
 
-- (void)setCurrentViewState:(id)a3
+- (void)setCurrentViewState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentViewState != v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_currentViewState != stateCopy)
   {
-    if (!v4)
+    if (!stateCopy)
     {
       v5 = objc_alloc_init(TUIMutableViewState);
     }
@@ -261,20 +261,20 @@ LABEL_33:
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  v5 = [(TUIFeedView *)self semanticContentAttribute];
+  semanticContentAttribute = [(TUIFeedView *)self semanticContentAttribute];
   v8.receiver = self;
   v8.super_class = TUIFeedView;
-  [(TUIFeedView *)&v8 setSemanticContentAttribute:a3];
-  if (v5 != a3)
+  [(TUIFeedView *)&v8 setSemanticContentAttribute:attribute];
+  if (semanticContentAttribute != attribute)
   {
     sectionModels = self->_sectionModels;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_12B460;
     v7[3] = &unk_2622D0;
-    v7[4] = a3;
+    v7[4] = attribute;
     [(NSArray *)sectionModels enumerateObjectsUsingBlock:v7];
     sub_129F0C(self);
     [(TUIFeedView *)self reloadWithRenderModel:self->_renderModel];
@@ -284,44 +284,44 @@ LABEL_33:
 - (void)renderReferenceOverridesChanged
 {
   WeakRetained = objc_loadWeakRetained(&self->_controllerHost);
-  v3 = [WeakRetained renderOverrideProvider];
-  v4 = [v3 renderOverrides];
+  renderOverrideProvider = [WeakRetained renderOverrideProvider];
+  renderOverrides = [renderOverrideProvider renderOverrides];
   overrides = self->_overrides;
-  self->_overrides = v4;
+  self->_overrides = renderOverrides;
 }
 
-- (void)setControllerHost:(id)a3
+- (void)setControllerHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_controllerHost);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     v6 = objc_storeWeak(&self->_controllerHost, obj);
-    v7 = [obj renderOverrideProvider];
-    v8 = [v7 renderOverrides];
+    renderOverrideProvider = [obj renderOverrideProvider];
+    renderOverrides = [renderOverrideProvider renderOverrides];
     overrides = self->_overrides;
-    self->_overrides = v8;
+    self->_overrides = renderOverrides;
 
     v5 = obj;
   }
 }
 
-- (void)invalidateRenderReferenceOverride:(id)a3
+- (void)invalidateRenderReferenceOverride:(id)override
 {
-  v6 = a3;
+  overrideCopy = override;
   renderModel = self->_renderModel;
-  v5 = [(TUIRenderModelCollection *)renderModel uids];
-  [(TUIRenderModelCollection *)renderModel invalidateRenderOverride:v6 flags:0 feedView:self uids:v5];
+  uids = [(TUIRenderModelCollection *)renderModel uids];
+  [(TUIRenderModelCollection *)renderModel invalidateRenderOverride:overrideCopy flags:0 feedView:self uids:uids];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(TUIFeedView *)self bounds];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -340,12 +340,12 @@ LABEL_33:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(TUIFeedView *)self frame];
   v27.origin.x = v8;
   v27.origin.y = v9;
@@ -424,12 +424,12 @@ LABEL_4:
   [(TUIFeedView *)self _updateVisibleOverlays];
 }
 
-- (BOOL)_shouldExtendVisibleBounds:(CGRect)a3
+- (BOOL)_shouldExtendVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9 = +[UIView _isInAnimationBlock];
   if ((v9 & 1) != 0 || (-[TUIFeedView window](self, "window"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isRotating]))
   {
@@ -519,7 +519,7 @@ LABEL_4:
   self->_previousVisibleBounds.origin.y = v5;
   self->_previousVisibleBounds.size.width = v7;
   self->_previousVisibleBounds.size.height = v9;
-  v11 = [(TUIRenderModelCollection *)self->_renderModel sections];
+  sections = [(TUIRenderModelCollection *)self->_renderModel sections];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_12BBF4;
@@ -529,63 +529,63 @@ LABEL_4:
   *&v12[6] = v6;
   *&v12[7] = v8;
   *&v12[8] = v10;
-  [v11 enumerateObjectsUsingBlock:v12];
+  [sections enumerateObjectsUsingBlock:v12];
 }
 
 - (void)_updateInvalidatedSubviews
 {
-  v3 = [(TUIRenderModelCollection *)self->_renderModel sections];
+  sections = [(TUIRenderModelCollection *)self->_renderModel sections];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_12BE30;
   v4[3] = &unk_262320;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [sections enumerateObjectsUsingBlock:v4];
 }
 
-- (void)setRenderModel:(id)a3
+- (void)setRenderModel:(id)model
 {
-  v5 = a3;
-  if (self->_renderModel != v5)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_renderModel, a3);
+    v9 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
     v6 = objc_alloc_init(TUIFeedViewInvalidationContext);
     [(TUILiveFloatingLayoutController *)self->_liveFloatingLayoutController setRenderModel:self->_renderModel withInvalidationContext:v6];
     [(TUILivePinningLayoutController *)self->_livePinningLayoutController setRenderModel:self->_renderModel withInvalidationContext:v6];
     [(TUILiveOverscrollingLayoutController *)self->_liveOverscrollingLayoutController setRenderModel:self->_renderModel withInvalidationContext:v6];
-    v7 = [(TUIFeedViewInvalidationContext *)v6 invalidatedIndexPaths];
-    v8 = [v7 count];
+    invalidatedIndexPaths = [(TUIFeedViewInvalidationContext *)v6 invalidatedIndexPaths];
+    v8 = [invalidatedIndexPaths count];
 
     if (v8)
     {
       [(TUIFeedView *)self invalidateWithContext:v6];
     }
 
-    v5 = v9;
+    modelCopy = v9;
   }
 }
 
-- (void)reloadWithRenderModel:(id)a3
+- (void)reloadWithRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   renderModel = self->_renderModel;
   self->_renderModel = 0;
 
   v18 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v4 matchingSectionUUID];
-  v8 = [v4 matchingSectionUID];
+  matchingSectionUUID = [modelCopy matchingSectionUUID];
+  matchingSectionUID = [modelCopy matchingSectionUID];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_12C270;
   v19[3] = &unk_262370;
   v19[4] = self;
-  v9 = v4;
+  v9 = modelCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = matchingSectionUUID;
   v21 = v10;
-  v11 = v8;
+  v11 = matchingSectionUID;
   v22 = v11;
   v12 = v18;
   v23 = v12;
@@ -604,28 +604,28 @@ LABEL_4:
   [(TUIFeedView *)self setNeedsLayout];
 }
 
-- (id)liveLayoutAttributesForRenderModel:(id)a3
+- (id)liveLayoutAttributesForRenderModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 liveTransform];
-  v6 = [v5 kind];
-  if (v6 == objc_opt_class())
+  modelCopy = model;
+  liveTransform = [modelCopy liveTransform];
+  kind = [liveTransform kind];
+  if (kind == objc_opt_class())
   {
     v10 = &OBJC_IVAR___TUIFeedView__liveFloatingLayoutController;
   }
 
   else
   {
-    v7 = [v5 kind];
-    if (v7 == objc_opt_class())
+    kind2 = [liveTransform kind];
+    if (kind2 == objc_opt_class())
     {
       v10 = &OBJC_IVAR___TUIFeedView__livePinningLayoutController;
     }
 
     else
     {
-      v8 = [v5 kind];
-      if (v8 != objc_opt_class())
+      kind3 = [liveTransform kind];
+      if (kind3 != objc_opt_class())
       {
         v9 = 0;
         goto LABEL_9;
@@ -635,24 +635,24 @@ LABEL_4:
     }
   }
 
-  v9 = [*(&self->super.super.super.super.isa + *v10) liveAttributesForRenderModel:v4];
+  v9 = [*(&self->super.super.super.super.isa + *v10) liveAttributesForRenderModel:modelCopy];
 LABEL_9:
 
   return v9;
 }
 
-- (void)updateLiveTransformsIfNecessaryWithViewSize:(double)a3 contentOffset:(double)a4 contentInsets:(double)a5 safeAreaInsets:(double)a6 hasTabBar:(double)a7
+- (void)updateLiveTransformsIfNecessaryWithViewSize:(double)size contentOffset:(double)offset contentInsets:(double)insets safeAreaInsets:(double)areaInsets hasTabBar:(double)bar
 {
   v32 = objc_alloc_init(TUIFeedViewInvalidationContext);
-  v26 = [a1 contentInsetAdjustmentBehavior];
-  if (v26 == &dword_0 + 2)
+  contentInsetAdjustmentBehavior = [self contentInsetAdjustmentBehavior];
+  if (contentInsetAdjustmentBehavior == &dword_0 + 2)
   {
     top = UIEdgeInsetsZero.top;
   }
 
   bottom = UIEdgeInsetsZero.bottom;
-  [a1[23] didUpdateContentOffset:v32 withInvalidationContext:{a4, a5 + top}];
-  if (v26 == &dword_0 + 2)
+  [self[23] didUpdateContentOffset:v32 withInvalidationContext:{offset, insets + top}];
+  if (contentInsetAdjustmentBehavior == &dword_0 + 2)
   {
     a14 = bottom;
   }
@@ -662,24 +662,24 @@ LABEL_9:
     a14 = a8;
   }
 
-  [a1[24] updatePinningTransformsWithViewBounds:v32 adjustedViewBounds:a10 invalidationContext:a4 hasTabBar:{a5, a2, a3, a4, a6 + a5 + top, a2, a3 - (a6 + top + a14)}];
-  [a1[25] updateOverscrollingTransformsWithContentOffset:v32 invalidationContext:{a4, a5}];
-  v29 = [(TUIFeedViewInvalidationContext *)v32 invalidatedIndexPaths];
-  v30 = [v29 count];
+  [self[24] updatePinningTransformsWithViewBounds:v32 adjustedViewBounds:a10 invalidationContext:offset hasTabBar:{insets, a2, size, offset, areaInsets + insets + top, a2, size - (areaInsets + top + a14)}];
+  [self[25] updateOverscrollingTransformsWithContentOffset:v32 invalidationContext:{offset, insets}];
+  invalidatedIndexPaths = [(TUIFeedViewInvalidationContext *)v32 invalidatedIndexPaths];
+  v30 = [invalidatedIndexPaths count];
 
   if (v30)
   {
-    [a1 invalidateWithContext:v32];
-    [a1 layoutIfNeeded];
+    [self invalidateWithContext:v32];
+    [self layoutIfNeeded];
   }
 }
 
-- (void)scrollToItemsMatchingQuery:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5 skipVoiceOverFocus:(BOOL)a6
+- (void)scrollToItemsMatchingQuery:(id)query atScrollPosition:(unint64_t)position animated:(BOOL)animated skipVoiceOverFocus:(BOOL)focus
 {
-  v7 = a5;
-  v10 = a3;
+  animatedCopy = animated;
+  queryCopy = query;
   [(TUIFeedView *)self saveViewStateForVisibleViews];
-  [(TUIRenderModelCollection *)self->_renderModel boundingRectForMatchingQuery:v10 viewState:self->_currentViewState];
+  [(TUIRenderModelCollection *)self->_renderModel boundingRectForMatchingQuery:queryCopy viewState:self->_currentViewState];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
@@ -690,11 +690,11 @@ LABEL_9:
   v23.size.height = CGRectNull.size.height;
   if (!CGRectEqualToRect(v22, v23))
   {
-    [(TUIFeedView *)self tui_scrollToRect:a4 atScrollPosition:v7 animated:self delegate:x, y, width, height];
-    v15 = [(TUIFeedView *)self scrollingDelegate];
-    [v15 didScrollToQuery:v10];
+    [(TUIFeedView *)self tui_scrollToRect:position atScrollPosition:animatedCopy animated:self delegate:x, y, width, height];
+    scrollingDelegate = [(TUIFeedView *)self scrollingDelegate];
+    [scrollingDelegate didScrollToQuery:queryCopy];
 
-    if (UIAccessibilityIsVoiceOverRunning() && !a6)
+    if (UIAccessibilityIsVoiceOverRunning() && !focus)
     {
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
@@ -707,7 +707,7 @@ LABEL_9:
       v21[4] = self;
       v16 = objc_retainBlock(v21);
       v17 = v16;
-      if (v7)
+      if (animatedCopy)
       {
         v18 = dispatch_time(0, 1000000000);
         v19[0] = _NSConcreteStackBlock;
@@ -726,17 +726,17 @@ LABEL_9:
   }
 }
 
-- (UIEdgeInsets)contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(TUIFeedView *)self rectScrollingDelegate];
-  if (v8)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  rectScrollingDelegate = [(TUIFeedView *)self rectScrollingDelegate];
+  if (rectScrollingDelegate)
   {
-    v9 = [(TUIFeedView *)self rectScrollingDelegate];
-    [v9 contentInsetsForScrollingToRectWithContentInsets:{top, left, bottom, right}];
+    rectScrollingDelegate2 = [(TUIFeedView *)self rectScrollingDelegate];
+    [rectScrollingDelegate2 contentInsetsForScrollingToRectWithContentInsets:{top, left, bottom, right}];
     top = v10;
     left = v11;
     bottom = v12;
@@ -754,15 +754,15 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)contentOffsetFromProposedContentOffset:(CGPoint)a3 atScrollPosition:(unint64_t)a4
+- (CGPoint)contentOffsetFromProposedContentOffset:(CGPoint)offset atScrollPosition:(unint64_t)position
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(TUIRenderModelCollection *)self->_renderModel anchorSet];
-  if (v7)
+  y = offset.y;
+  x = offset.x;
+  anchorSet = [(TUIRenderModelCollection *)self->_renderModel anchorSet];
+  if (anchorSet)
   {
-    v8 = [(TUIRenderModelCollection *)self->_renderModel anchorSet];
-    [v8 proposeAnchorOffsetWithScrollView:self velocity:CGPointZero.x target:{CGPointZero.y, x, y}];
+    anchorSet2 = [(TUIRenderModelCollection *)self->_renderModel anchorSet];
+    [anchorSet2 proposeAnchorOffsetWithScrollView:self velocity:CGPointZero.x target:{CGPointZero.y, x, y}];
     x = v9;
     y = v10;
   }
@@ -774,15 +774,15 @@ LABEL_9:
   return result;
 }
 
-- (void)_updateLayoutAttributes:(id)a3
+- (void)_updateLayoutAttributes:(id)attributes
 {
-  v20 = a3;
-  v22 = [(TUIRenderModelCollection *)self->_renderModel sections];
+  attributesCopy = attributes;
+  sections = [(TUIRenderModelCollection *)self->_renderModel sections];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v20;
+  obj = attributesCopy;
   v24 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v24)
   {
@@ -797,19 +797,19 @@ LABEL_9:
         }
 
         v31 = *(*(&v37 + 1) + 8 * i);
-        v25 = [v31 indexPath];
-        v3 = [v25 tui_section];
+        indexPath = [v31 indexPath];
+        tui_section = [indexPath tui_section];
         renderQueryUUID = self->_renderQueryUUID;
         if (renderQueryUUID)
         {
-          v32 = renderQueryUUID;
+          uuid = renderQueryUUID;
         }
 
         else
         {
-          v5 = [v22 objectAtIndexedSubscript:v3];
-          v6 = [v5 entry];
-          v32 = [v6 uuid];
+          v5 = [sections objectAtIndexedSubscript:tui_section];
+          entry = [v5 entry];
+          uuid = [entry uuid];
         }
 
         renderQueryUID = self->_renderQueryUID;
@@ -820,13 +820,13 @@ LABEL_9:
 
         else
         {
-          v9 = [v22 objectAtIndexedSubscript:v3];
-          v10 = [v9 entry];
-          v8 = [v10 uid];
+          v9 = [sections objectAtIndexedSubscript:tui_section];
+          entry2 = [v9 entry];
+          v8 = [entry2 uid];
         }
 
-        v29 = [v31 refId];
-        v30 = [v31 refInstance];
+        refId = [v31 refId];
+        refInstance = [v31 refInstance];
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
@@ -846,21 +846,21 @@ LABEL_9:
               }
 
               v14 = *(*(&v33 + 1) + 8 * j);
-              v15 = [v14 query];
-              if ([(TUIRenderReferenceIdentifier *)v15 matchesUUID:v32 uid:v8])
+              query = [v14 query];
+              if ([(TUIRenderReferenceIdentifier *)query matchesUUID:uuid uid:v8])
               {
-                v16 = [v14 query];
-                v17 = [v31 renderModel];
-                v18 = [v17 identifier];
-                v19 = [v16 matchesRefId:v29 refInstance:v30 identifier:v18];
+                query2 = [v14 query];
+                renderModel = [v31 renderModel];
+                identifier = [renderModel identifier];
+                v19 = [query2 matchesRefId:refId refInstance:refInstance identifier:identifier];
 
                 if (!v19)
                 {
                   continue;
                 }
 
-                v15 = [[TUIRenderReferenceIdentifier alloc] initWithUUID:v32 uid:v8 refId:v29 refInstance:v30];
-                [v14 updateLayoutAttributes:v31 forIdentifier:v15];
+                query = [[TUIRenderReferenceIdentifier alloc] initWithUUID:uuid uid:v8 refId:refId refInstance:refInstance];
+                [v14 updateLayoutAttributes:v31 forIdentifier:query];
               }
             }
 
@@ -878,20 +878,20 @@ LABEL_9:
   }
 }
 
-- (void)setImpressionSnapshot:(id)a3
+- (void)setImpressionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_impressionSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_impressionSnapshot != snapshotCopy)
   {
-    v9 = v5;
+    v9 = snapshotCopy;
     v6 = objc_alloc_init(TUIFeedViewInvalidationContext);
     [(TUIFeedView *)self _invalidateImpressionsWithContext:v6];
-    objc_storeStrong(&self->_impressionSnapshot, a3);
+    objc_storeStrong(&self->_impressionSnapshot, snapshot);
     [(TUIFeedView *)self _invalidateImpressionsWithContext:v6];
     [(TUIFeedView *)self _updateHasOverlays];
     [(TUIFeedView *)self _updateVisibleOverlays];
-    v7 = [(TUIFeedViewInvalidationContext *)v6 invalidatedIndexPaths];
-    v8 = [v7 count];
+    invalidatedIndexPaths = [(TUIFeedViewInvalidationContext *)v6 invalidatedIndexPaths];
+    v8 = [invalidatedIndexPaths count];
 
     if (v8)
     {
@@ -900,13 +900,13 @@ LABEL_9:
       [(TUIFeedView *)self invalidateWithContext:v6];
     }
 
-    v5 = v9;
+    snapshotCopy = v9;
   }
 }
 
-- (void)_invalidateImpressionsWithContext:(id)a3
+- (void)_invalidateImpressionsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_impressionSnapshot)
   {
     v5 = objc_opt_new();
@@ -930,8 +930,8 @@ LABEL_9:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v11 + 1) + 8 * v9) indexPath];
-          [v4 invalidateIndexPath:v10];
+          indexPath = [*(*(&v11 + 1) + 8 * v9) indexPath];
+          [contextCopy invalidateIndexPath:indexPath];
 
           v9 = v9 + 1;
         }
@@ -945,18 +945,18 @@ LABEL_9:
   }
 }
 
-- (void)setStats:(id)a3
+- (void)setStats:(id)stats
 {
-  v35 = a3;
-  if (self->_stats != v35)
+  statsCopy = stats;
+  if (self->_stats != statsCopy)
   {
-    objc_storeStrong(&self->_stats, a3);
+    objc_storeStrong(&self->_stats, stats);
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v5 = [(NSDictionary *)self->_statsIndicatorViews allValues];
-    v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    allValues = [(NSDictionary *)self->_statsIndicatorViews allValues];
+    v6 = [allValues countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v6)
     {
       v7 = *v42;
@@ -966,13 +966,13 @@ LABEL_9:
         {
           if (*v42 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v41 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v6);
@@ -1017,8 +1017,8 @@ LABEL_9:
           }
 
           v20 = *(*(&v37 + 1) + 8 * j);
-          v21 = [(TUIRenderModelCollection *)self->_renderModel sections];
-          v22 = [v21 objectAtIndexedSubscript:v16];
+          sections = [(TUIRenderModelCollection *)self->_renderModel sections];
+          v22 = [sections objectAtIndexedSubscript:v16];
 
           [v22 offset];
           v25 = v24;
@@ -1103,35 +1103,35 @@ LABEL_9:
   v15 = v13;
 }
 
-- (void)applyUpdateCollection:(id)a3 updates:(id)a4
+- (void)applyUpdateCollection:(id)collection updates:(id)updates
 {
-  v9 = a3;
-  v7 = a4;
-  if (v7)
+  collectionCopy = collection;
+  updatesCopy = updates;
+  if (updatesCopy)
   {
-    objc_storeStrong(&self->_currentUpdateCollection, a3);
-    v7[2](v7);
+    objc_storeStrong(&self->_currentUpdateCollection, collection);
+    updatesCopy[2](updatesCopy);
     currentUpdateCollection = self->_currentUpdateCollection;
     self->_currentUpdateCollection = 0;
   }
 }
 
-- (void)performBatchUpdatesWithRenderModel:(id)a3 flags:(unint64_t)a4 block:(id)a5 completion:(id)a6
+- (void)performBatchUpdatesWithRenderModel:(id)model flags:(unint64_t)flags block:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v28 = v11;
+  modelCopy = model;
+  blockCopy = block;
+  completionCopy = completion;
+  v28 = blockCopy;
   v13 = [TUIIndexMapper alloc];
-  v14 = [(TUIRenderModelCollection *)self->_renderModel sections];
-  v15 = -[TUIIndexMapper initWithCount:](v13, "initWithCount:", [v14 count]);
+  sections = [(TUIRenderModelCollection *)self->_renderModel sections];
+  v15 = -[TUIIndexMapper initWithCount:](v13, "initWithCount:", [sections count]);
   sectionIndexMapper = self->_sectionIndexMapper;
   self->_sectionIndexMapper = v15;
 
-  (*(v11 + 2))(v11);
+  (*(blockCopy + 2))(blockCopy);
   v17 = +[_TUIAnimationState currentState];
-  v18 = [v17 shouldCaptureCALayerAnimations];
-  if (v18)
+  shouldCaptureCALayerAnimations = [v17 shouldCaptureCALayerAnimations];
+  if (shouldCaptureCALayerAnimations)
   {
     v19 = dispatch_group_create();
   }
@@ -1146,17 +1146,17 @@ LABEL_9:
   v31[2] = sub_12E428;
   v31[3] = &unk_262480;
   v31[4] = self;
-  v20 = v10;
+  v20 = modelCopy;
   v32 = v20;
-  v35 = a4;
+  flagsCopy = flags;
   v21 = v19;
   v33 = v21;
-  v36 = v18;
+  v36 = shouldCaptureCALayerAnimations;
   v22 = v17;
   v34 = v22;
   v23 = objc_retainBlock(v31);
   v24 = v23;
-  if (v18)
+  if (shouldCaptureCALayerAnimations)
   {
     objc_storeStrong(&self->_animatedUpdateCompletionGroup, v19);
     dispatch_group_enter(v21);
@@ -1170,18 +1170,18 @@ LABEL_9:
     animatedUpdateCompletionGroup = self->_animatedUpdateCompletionGroup;
     self->_animatedUpdateCompletionGroup = 0;
 
-    if (v12)
+    if (completionCopy)
     {
-      TUIDispatchGroupNotifyViaRunloopIfMain(v25, &_dispatch_main_q, v12);
+      TUIDispatchGroupNotifyViaRunloopIfMain(v25, &_dispatch_main_q, completionCopy);
     }
   }
 
   else
   {
     (v23[2])(v23);
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1189,35 +1189,35 @@ LABEL_9:
   self->_sectionIndexMapper = 0;
 }
 
-- (void)insertSections:(id)a3
+- (void)insertSections:(id)sections
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_12F54C;
   v3[3] = &unk_2624D0;
   v3[4] = self;
-  [a3 enumerateIndexesUsingBlock:v3];
+  [sections enumerateIndexesUsingBlock:v3];
 }
 
-- (void)deleteSections:(id)a3
+- (void)deleteSections:(id)sections
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_12F5DC;
   v3[3] = &unk_2624D0;
   v3[4] = self;
-  [a3 enumerateIndexesUsingBlock:v3];
+  [sections enumerateIndexesUsingBlock:v3];
 }
 
-- (void)_invalidateIndexPaths:(id)a3
+- (void)_invalidateIndexPaths:(id)paths
 {
-  v19 = a3;
+  pathsCopy = paths;
   v4 = [(NSArray *)self->_sectionModels count];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v19;
+  obj = pathsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v5)
   {
@@ -1233,8 +1233,8 @@ LABEL_9:
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 tui_section];
-        if (v10 >= v4)
+        tui_section = [v9 tui_section];
+        if (tui_section >= v4)
         {
           if (_TUIDeviceHasInternalInstall())
           {
@@ -1243,7 +1243,7 @@ LABEL_9:
             {
               sectionModels = self->_sectionModels;
               *buf = 134218498;
-              v28 = v10;
+              v28 = tui_section;
               v29 = 2048;
               v30 = v4;
               v31 = 2112;
@@ -1269,7 +1269,7 @@ LABEL_9:
 
         else
         {
-          v11 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:v10];
+          v11 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:tui_section];
         }
 
         v13 = [v11 invalidateViewAtIndexPath:v9];
@@ -1294,27 +1294,27 @@ LABEL_9:
   }
 }
 
-- (id)viewAtIndexPath:(id)a3
+- (id)viewAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 tui_section];
-  if (v5 >= [(NSArray *)self->_sectionModels count])
+  pathCopy = path;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= [(NSArray *)self->_sectionModels count])
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:v5];
-    v7 = [v6 visibleViewAtIndexPath:v4];
+    v6 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:tui_section];
+    v7 = [v6 visibleViewAtIndexPath:pathCopy];
   }
 
   return v7;
 }
 
-- (void)invalidateWithContext:(id)a3
+- (void)invalidateWithContext:(id)context
 {
-  v4 = [a3 invalidatedIndexPaths];
+  invalidatedIndexPaths = [context invalidatedIndexPaths];
   [(TUIFeedView *)self _invalidateIndexPaths:?];
 }
 
@@ -1331,12 +1331,12 @@ LABEL_9:
   }
 }
 
-+ (void)performAnimatedFeedUpdates:(id)a3
++ (void)performAnimatedFeedUpdates:(id)updates
 {
-  v3 = a3;
-  if (v3)
+  updatesCopy = updates;
+  if (updatesCopy)
   {
-    v9 = v3;
+    v9 = updatesCopy;
     v4 = qword_2E6560;
     if (!qword_2E6560)
     {
@@ -1352,35 +1352,35 @@ LABEL_9:
     v8 = qword_2E6560;
     qword_2E6560 = v4;
 
-    v3 = v9;
+    updatesCopy = v9;
   }
 }
 
-- (void)suspendReuseOfView:(id)a3
+- (void)suspendReuseOfView:(id)view
 {
-  v8 = a3;
-  v4 = [v8 layoutAttributes];
-  v5 = [v4 indexPath];
-  v6 = [v5 tui_section];
+  viewCopy = view;
+  layoutAttributes = [viewCopy layoutAttributes];
+  indexPath = [layoutAttributes indexPath];
+  tui_section = [indexPath tui_section];
 
-  if (v6 < [(NSArray *)self->_sectionModels count])
+  if (tui_section < [(NSArray *)self->_sectionModels count])
   {
-    v7 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:v6];
-    [v7 suspendReuseOfView:v8];
+    v7 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:tui_section];
+    [v7 suspendReuseOfView:viewCopy];
   }
 }
 
-- (void)resumeReuseOfView:(id)a3
+- (void)resumeReuseOfView:(id)view
 {
-  v8 = a3;
-  v4 = [v8 layoutAttributes];
-  v5 = [v4 indexPath];
-  v6 = [v5 tui_section];
+  viewCopy = view;
+  layoutAttributes = [viewCopy layoutAttributes];
+  indexPath = [layoutAttributes indexPath];
+  tui_section = [indexPath tui_section];
 
-  if (v6 < [(NSArray *)self->_sectionModels count])
+  if (tui_section < [(NSArray *)self->_sectionModels count])
   {
-    v7 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:v6];
-    [v7 resumeReuseOfView:v8];
+    v7 = [(NSArray *)self->_sectionModels objectAtIndexedSubscript:tui_section];
+    [v7 resumeReuseOfView:viewCopy];
   }
 }
 
@@ -1400,16 +1400,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)appendRenderOverrideObservers:(id)a3
+- (void)appendRenderOverrideObservers:(id)observers
 {
-  v4 = a3;
-  [v4 addObject:self];
+  observersCopy = observers;
+  [observersCopy addObject:self];
   sectionModels = self->_sectionModels;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_12FEB4;
   v7[3] = &unk_2622B0;
-  v6 = v4;
+  v6 = observersCopy;
   v8 = v6;
   [(NSArray *)sectionModels enumerateObjectsUsingBlock:v7];
 }
@@ -1435,13 +1435,13 @@ LABEL_9:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 viewStateSave];
-        if (v7)
+        viewStateSave = [v6 viewStateSave];
+        if (viewStateSave)
         {
-          v8 = [v6 layoutAttributes];
-          v9 = [v8 indexPath];
-          v10 = [(TUIRenderModelCollection *)self->_renderModel identifierForViewAtIndexPath:v9];
-          [(TUIMutableViewState *)self->_currentViewState setViewState:v7 forIdentifier:v10];
+          layoutAttributes = [v6 layoutAttributes];
+          indexPath = [layoutAttributes indexPath];
+          v10 = [(TUIRenderModelCollection *)self->_renderModel identifierForViewAtIndexPath:indexPath];
+          [(TUIMutableViewState *)self->_currentViewState setViewState:viewStateSave forIdentifier:v10];
         }
       }
 
@@ -1473,9 +1473,9 @@ LABEL_9:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 layoutAttributes];
-        v8 = [v7 indexPath];
-        v9 = [(TUIRenderModelCollection *)self->_renderModel identifierForViewAtIndexPath:v8];
+        layoutAttributes = [v6 layoutAttributes];
+        indexPath = [layoutAttributes indexPath];
+        v9 = [(TUIRenderModelCollection *)self->_renderModel identifierForViewAtIndexPath:indexPath];
         v10 = [(TUIViewState *)self->_currentViewState viewStateForIdentifier:v9];
         [v6 viewStateRestore:v10];
       }
@@ -1487,12 +1487,12 @@ LABEL_9:
   }
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 tui_identifierUUID];
+  identifierCopy = identifier;
+  tui_identifierUUID = [identifierCopy tui_identifierUUID];
 
-  if (v5)
+  if (tui_identifierUUID)
   {
     v47 = 0uLL;
     v48 = 0uLL;
@@ -1516,10 +1516,10 @@ LABEL_9:
           }
 
           v10 = *(*(&v45 + 1) + 8 * i);
-          v11 = [v10 renderModel];
-          v12 = [v11 UUID];
-          v13 = [v4 tui_identifierUUID];
-          v14 = [v12 isEqual:v13];
+          renderModel = [v10 renderModel];
+          uUID = [renderModel UUID];
+          tui_identifierUUID2 = [identifierCopy tui_identifierUUID];
+          v14 = [uUID isEqual:tui_identifierUUID2];
 
           if (v14)
           {
@@ -1543,11 +1543,11 @@ LABEL_9:
                     objc_enumerationMutation(v16);
                   }
 
-                  v20 = [*(*(&v41 + 1) + 8 * j) descendentViewWithIdentifier:v4];
+                  v20 = [*(*(&v41 + 1) + 8 * j) descendentViewWithIdentifier:identifierCopy];
 
                   if (v20)
                   {
-                    v21 = v16;
+                    tui_identifierWithoutUUID = v16;
                     v7 = v20;
                     goto LABEL_29;
                   }
@@ -1566,7 +1566,7 @@ LABEL_9:
               }
 
 LABEL_19:
-              v21 = [v4 tui_identifierWithoutUUID];
+              tui_identifierWithoutUUID = [identifierCopy tui_identifierWithoutUUID];
               v39 = 0u;
               v40 = 0u;
               v37 = 0u;
@@ -1585,7 +1585,7 @@ LABEL_21:
                     objc_enumerationMutation(v22);
                   }
 
-                  v7 = [*(*(&v37 + 1) + 8 * v25) descendentViewWithIdentifier:v21];
+                  v7 = [*(*(&v37 + 1) + 8 * v25) descendentViewWithIdentifier:tui_identifierWithoutUUID];
                   if (v7)
                   {
                     break;
@@ -1661,7 +1661,7 @@ LABEL_36:
       objc_enumerationMutation(obj);
     }
 
-    v7 = [*(*(&v33 + 1) + 8 * v28) descendentViewWithIdentifier:v4];
+    v7 = [*(*(&v33 + 1) + 8 * v28) descendentViewWithIdentifier:identifierCopy];
     if (v7)
     {
       break;
@@ -1684,15 +1684,15 @@ LABEL_43:
   return v7;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(TUIFeedView *)self visibleViews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  visibleViews = [(TUIFeedView *)self visibleViews];
+  v6 = [visibleViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1702,10 +1702,10 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(visibleViews);
       }
 
-      v9 = [*(*(&v11 + 1) + 8 * v8) descendentViewWithRefId:v4];
+      v9 = [*(*(&v11 + 1) + 8 * v8) descendentViewWithRefId:idCopy];
       if (v9)
       {
         break;
@@ -1713,7 +1713,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [visibleViews countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1733,11 +1733,11 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, viewCopy);
 
   if (v6)
   {
@@ -1748,7 +1748,7 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = TUIFeedView;
-    v7 = [(TUIFeedView *)&v9 touchesShouldCancelInContentView:v4];
+    v7 = [(TUIFeedView *)&v9 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v7;

@@ -1,13 +1,13 @@
 @interface RectangleLabelDetailsPlatter
-- (void)copyMeasurement:(id)a3;
+- (void)copyMeasurement:(id)measurement;
 @end
 
 @implementation RectangleLabelDetailsPlatter
 
-- (void)copyMeasurement:(id)a3
+- (void)copyMeasurement:(id)measurement
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1001A6A5C();

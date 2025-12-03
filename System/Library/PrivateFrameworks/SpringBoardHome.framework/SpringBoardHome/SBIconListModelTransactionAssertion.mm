@@ -1,8 +1,8 @@
 @interface SBIconListModelTransactionAssertion
 - (SBIconListModel)listModel;
-- (SBIconListModelTransactionAssertion)initWithListModel:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconListModelTransactionAssertion)initWithListModel:(id)model reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,18 +10,18 @@
 
 @implementation SBIconListModelTransactionAssertion
 
-- (SBIconListModelTransactionAssertion)initWithListModel:(id)a3 reason:(id)a4
+- (SBIconListModelTransactionAssertion)initWithListModel:(id)model reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = SBIconListModelTransactionAssertion;
   v8 = [(SBIconListModelTransactionAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listModel, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_listModel, modelCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -47,37 +47,37 @@
   if (![(SBIconListModelTransactionAssertion *)self isInvalidated])
   {
     [(SBIconListModelTransactionAssertion *)self setInvalidated:1];
-    v3 = [(SBIconListModelTransactionAssertion *)self listModel];
-    [v3 removeTransactionAssertion:self];
+    listModel = [(SBIconListModelTransactionAssertion *)self listModel];
+    [listModel removeTransactionAssertion:self];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListModelTransactionAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListModelTransactionAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListModelTransactionAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListModelTransactionAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListModelTransactionAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBIconListModelTransactionAssertion *)self reason];
-  [v4 appendString:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(SBIconListModelTransactionAssertion *)self succinctDescriptionBuilder];
+  reason = [(SBIconListModelTransactionAssertion *)self reason];
+  [succinctDescriptionBuilder appendString:reason withName:@"reason"];
 
-  v6 = [(SBIconListModelTransactionAssertion *)self listModel];
-  v7 = [v4 appendPointer:v6 withName:@"listModel"];
+  listModel = [(SBIconListModelTransactionAssertion *)self listModel];
+  v7 = [succinctDescriptionBuilder appendPointer:listModel withName:@"listModel"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBIconListModel)listModel

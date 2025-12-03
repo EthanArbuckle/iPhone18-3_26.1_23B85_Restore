@@ -1,31 +1,31 @@
 @interface TPSNotification
-- (BOOL)isEqual:(id)a3;
-- (TPSNotification)initWithCoder:(id)a3;
-- (TPSNotification)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSNotification)initWithCoder:(id)coder;
+- (TPSNotification)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSNotification
 
-- (TPSNotification)initWithDictionary:(id)a3
+- (TPSNotification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = TPSNotification;
-  v5 = [(TPSSerializableObject *)&v12 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v12 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 TPSSafeStringForKey:@"title"];
+  v6 = [dictionaryCopy TPSSafeStringForKey:@"title"];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [v4 TPSSafeStringForKey:@"text"];
+  v8 = [dictionaryCopy TPSSafeStringForKey:@"text"];
   text = v5->_text;
   v5->_text = v8;
 
@@ -43,40 +43,40 @@ LABEL_4:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = TPSNotification;
-  v4 = [(TPSSerializableObject *)&v9 copyWithZone:a3];
-  v5 = [(TPSNotification *)self title];
-  [v4 setTitle:v5];
+  v4 = [(TPSSerializableObject *)&v9 copyWithZone:zone];
+  title = [(TPSNotification *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(TPSNotification *)self text];
-  [v4 setText:v6];
+  text = [(TPSNotification *)self text];
+  [v4 setText:text];
 
-  v7 = [(TPSNotification *)self assets];
-  [v4 setAssets:v7];
+  assets = [(TPSNotification *)self assets];
+  [v4 setAssets:assets];
 
   return v4;
 }
 
-- (TPSNotification)initWithCoder:(id)a3
+- (TPSNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TPSNotification;
-  v5 = [(TPSSerializableObject *)&v13 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assets"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assets"];
     assets = v5->_assets;
     v5->_assets = v10;
   }
@@ -84,20 +84,20 @@ LABEL_4:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = TPSNotification;
-  v4 = a3;
-  [(TPSSerializableObject *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v8 encodeWithCoder:coderCopy];
   v5 = [(TPSNotification *)self title:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"title"];
+  [coderCopy encodeObject:v5 forKey:@"title"];
 
-  v6 = [(TPSNotification *)self text];
-  [v4 encodeObject:v6 forKey:@"text"];
+  text = [(TPSNotification *)self text];
+  [coderCopy encodeObject:text forKey:@"text"];
 
-  v7 = [(TPSNotification *)self assets];
-  [v4 encodeObject:v7 forKey:@"assets"];
+  assets = [(TPSNotification *)self assets];
+  [coderCopy encodeObject:assets forKey:@"assets"];
 }
 
 - (id)debugDescription
@@ -108,28 +108,28 @@ LABEL_4:
   v4 = [(TPSSerializableObject *)&v14 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSNotification *)self title];
+  title = [(TPSNotification *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(TPSNotification *)self title];
-    [v5 appendFormat:@"\n  %@ = %@", @"title", v7];
+    title2 = [(TPSNotification *)self title];
+    [v5 appendFormat:@"\n  %@ = %@", @"title", title2];
   }
 
-  v8 = [(TPSNotification *)self text];
+  text = [(TPSNotification *)self text];
 
-  if (v8)
+  if (text)
   {
-    v9 = [(TPSNotification *)self text];
-    [v5 appendFormat:@"\n  %@ = %@", @"text", v9];
+    text2 = [(TPSNotification *)self text];
+    [v5 appendFormat:@"\n  %@ = %@", @"text", text2];
   }
 
-  v10 = [(TPSNotification *)self assets];
+  assets = [(TPSNotification *)self assets];
 
-  if (v10)
+  if (assets)
   {
-    v11 = [(TPSNotification *)self assets];
-    v12 = [v11 debugDescription];
+    assets2 = [(TPSNotification *)self assets];
+    v12 = [assets2 debugDescription];
     [v5 appendFormat:@"\n  %@ = %@", @"assets", v12];
   }
 
@@ -168,19 +168,19 @@ id __30__TPSNotification_na_identity__block_invoke_3()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

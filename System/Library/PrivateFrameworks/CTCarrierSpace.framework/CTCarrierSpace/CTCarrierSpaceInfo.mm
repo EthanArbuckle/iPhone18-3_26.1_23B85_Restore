@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceInfo)init;
-- (CTCarrierSpaceInfo)initWithCoder:(id)a3;
+- (CTCarrierSpaceInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceInfo
@@ -32,24 +32,24 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceInfo *)self usageInfo];
-  [v3 appendFormat:@" usageInfo=%@", v4];
+  usageInfo = [(CTCarrierSpaceInfo *)self usageInfo];
+  [v3 appendFormat:@" usageInfo=%@", usageInfo];
 
-  v5 = [(CTCarrierSpaceInfo *)self plansInfo];
-  [v3 appendFormat:@" plansInfo=%@", v5];
+  plansInfo = [(CTCarrierSpaceInfo *)self plansInfo];
+  [v3 appendFormat:@" plansInfo=%@", plansInfo];
 
-  v6 = [(CTCarrierSpaceInfo *)self appsInfo];
-  [v3 appendFormat:@" appsInfo=%@", v6];
+  appsInfo = [(CTCarrierSpaceInfo *)self appsInfo];
+  [v3 appendFormat:@" appsInfo=%@", appsInfo];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -59,17 +59,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTCarrierSpaceInfo *)self usageInfo];
-      v6 = [(CTCarrierSpaceInfo *)v4 usageInfo];
-      if ([v5 isEqual:v6])
+      usageInfo = [(CTCarrierSpaceInfo *)self usageInfo];
+      usageInfo2 = [(CTCarrierSpaceInfo *)equalCopy usageInfo];
+      if ([usageInfo isEqual:usageInfo2])
       {
-        v7 = [(CTCarrierSpaceInfo *)self plansInfo];
-        v8 = [(CTCarrierSpaceInfo *)v4 plansInfo];
-        if ([v7 isEqual:v8])
+        plansInfo = [(CTCarrierSpaceInfo *)self plansInfo];
+        plansInfo2 = [(CTCarrierSpaceInfo *)equalCopy plansInfo];
+        if ([plansInfo isEqual:plansInfo2])
         {
-          v9 = [(CTCarrierSpaceInfo *)self appsInfo];
-          v10 = [(CTCarrierSpaceInfo *)v4 appsInfo];
-          v11 = [v9 isEqual:v10];
+          appsInfo = [(CTCarrierSpaceInfo *)self appsInfo];
+          appsInfo2 = [(CTCarrierSpaceInfo *)equalCopy appsInfo];
+          v11 = [appsInfo isEqual:appsInfo2];
         }
 
         else
@@ -93,32 +93,32 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   usageInfo = self->_usageInfo;
-  v5 = a3;
-  [v5 encodeObject:usageInfo forKey:@"usageInfo"];
-  [v5 encodeObject:self->_plansInfo forKey:@"plansInfo"];
-  [v5 encodeObject:self->_appsInfo forKey:@"appsInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:usageInfo forKey:@"usageInfo"];
+  [coderCopy encodeObject:self->_plansInfo forKey:@"plansInfo"];
+  [coderCopy encodeObject:self->_appsInfo forKey:@"appsInfo"];
 }
 
-- (CTCarrierSpaceInfo)initWithCoder:(id)a3
+- (CTCarrierSpaceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTCarrierSpaceInfo;
   v5 = [(CTCarrierSpaceInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usageInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usageInfo"];
     usageInfo = v5->_usageInfo;
     v5->_usageInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"plansInfo"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"plansInfo"];
     plansInfo = v5->_plansInfo;
     v5->_plansInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appsInfo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appsInfo"];
     appsInfo = v5->_appsInfo;
     v5->_appsInfo = v10;
   }

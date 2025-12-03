@@ -1,25 +1,25 @@
 @interface SSRVoiceProfileModelContext
-- (SSRVoiceProfileModelContext)initWithConfigFilePath:(id)a3 withModelPath:(id)a4 withModelPathExclave:(id)a5 withCompareModelFilePaths:(id)a6;
+- (SSRVoiceProfileModelContext)initWithConfigFilePath:(id)path withModelPath:(id)modelPath withModelPathExclave:(id)exclave withCompareModelFilePaths:(id)paths;
 @end
 
 @implementation SSRVoiceProfileModelContext
 
-- (SSRVoiceProfileModelContext)initWithConfigFilePath:(id)a3 withModelPath:(id)a4 withModelPathExclave:(id)a5 withCompareModelFilePaths:(id)a6
+- (SSRVoiceProfileModelContext)initWithConfigFilePath:(id)path withModelPath:(id)modelPath withModelPathExclave:(id)exclave withCompareModelFilePaths:(id)paths
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  pathCopy = path;
+  modelPathCopy = modelPath;
+  exclaveCopy = exclave;
+  pathsCopy = paths;
   v18.receiver = self;
   v18.super_class = SSRVoiceProfileModelContext;
   v15 = [(SSRVoiceProfileModelContext *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_configFilePath, a3);
-    objc_storeStrong(&v16->_compareModelFilePaths, a6);
-    objc_storeStrong(&v16->_voiceProfileModelFilePath, a4);
-    objc_storeStrong(&v16->_secureProfileModelFilePath, a5);
+    objc_storeStrong(&v15->_configFilePath, path);
+    objc_storeStrong(&v16->_compareModelFilePaths, paths);
+    objc_storeStrong(&v16->_voiceProfileModelFilePath, modelPath);
+    objc_storeStrong(&v16->_secureProfileModelFilePath, exclave);
   }
 
   return v16;

@@ -1,7 +1,7 @@
 @interface FKATypeaheadNamesViewController
 - (NSArray)items;
 - (void)loadView;
-- (void)setItems:(id)a3;
+- (void)setItems:(id)items;
 @end
 
 @implementation FKATypeaheadNamesViewController
@@ -15,19 +15,19 @@
   [(FKATypeaheadNamesViewController *)self setView:v4];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
-  v5 = [(FKATypeaheadNamesViewController *)self elementNamesView];
-  [v5 setItems:v4];
+  itemsCopy = items;
+  elementNamesView = [(FKATypeaheadNamesViewController *)self elementNamesView];
+  [elementNamesView setItems:itemsCopy];
 }
 
 - (NSArray)items
 {
-  v2 = [(FKATypeaheadNamesViewController *)self elementNamesView];
-  v3 = [v2 items];
+  elementNamesView = [(FKATypeaheadNamesViewController *)self elementNamesView];
+  items = [elementNamesView items];
 
-  return v3;
+  return items;
 }
 
 @end

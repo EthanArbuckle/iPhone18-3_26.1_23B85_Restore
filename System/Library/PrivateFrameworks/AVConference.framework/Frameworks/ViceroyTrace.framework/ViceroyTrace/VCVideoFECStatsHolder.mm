@@ -1,7 +1,7 @@
 @interface VCVideoFECStatsHolder
 - (VCVideoFECStatsHolder)init;
 - (void)dealloc;
-- (void)merge:(id)a3;
+- (void)merge:(id)merge;
 @end
 
 @implementation VCVideoFECStatsHolder
@@ -31,18 +31,18 @@
   return v2;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
-  -[VCHistogram merge:](self->_totalFECDataByteCount, "merge:", [a3 totalFECDataByteCount]);
-  -[VCHistogram merge:](self->_totalFECParityByteCount, "merge:", [a3 totalFECParityByteCount]);
-  -[VCHistogram merge:](self->_totalFECFrameCount, "merge:", [a3 totalFECFrameCount]);
-  -[VCHistogram merge:](self->_completeFECFrameCount, "merge:", [a3 completeFECFrameCount]);
-  -[VCHistogram merge:](self->_failedFECFrameCount, "merge:", [a3 failedFECFrameCount]);
-  -[VCHistogram merge:](self->_totalFECMediaPacketCount, "merge:", [a3 totalFECMediaPacketCount]);
+  -[VCHistogram merge:](self->_totalFECDataByteCount, "merge:", [merge totalFECDataByteCount]);
+  -[VCHistogram merge:](self->_totalFECParityByteCount, "merge:", [merge totalFECParityByteCount]);
+  -[VCHistogram merge:](self->_totalFECFrameCount, "merge:", [merge totalFECFrameCount]);
+  -[VCHistogram merge:](self->_completeFECFrameCount, "merge:", [merge completeFECFrameCount]);
+  -[VCHistogram merge:](self->_failedFECFrameCount, "merge:", [merge failedFECFrameCount]);
+  -[VCHistogram merge:](self->_totalFECMediaPacketCount, "merge:", [merge totalFECMediaPacketCount]);
   totalFECParityPacketCount = self->_totalFECParityPacketCount;
-  v6 = [a3 totalFECParityPacketCount];
+  totalFECParityPacketCount = [merge totalFECParityPacketCount];
 
-  [(VCHistogram *)totalFECParityPacketCount merge:v6];
+  [(VCHistogram *)totalFECParityPacketCount merge:totalFECParityPacketCount];
 }
 
 - (void)dealloc

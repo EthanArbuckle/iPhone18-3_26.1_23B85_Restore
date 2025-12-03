@@ -2,12 +2,12 @@
 - (IAPSessionList)init;
 - (id).cxx_construct;
 - (id)copySessions;
-- (id)copySessionsForClientID:(unsigned int)a3;
-- (id)sessionWithProtocolID:(unsigned __int8)a3;
-- (id)sessionWithSessionID:(unsigned __int16)a3;
-- (void)addSession:(id)a3 withSessionID:(unsigned __int16)a4;
+- (id)copySessionsForClientID:(unsigned int)d;
+- (id)sessionWithProtocolID:(unsigned __int8)d;
+- (id)sessionWithSessionID:(unsigned __int16)d;
+- (void)addSession:(id)session withSessionID:(unsigned __int16)d;
 - (void)dealloc;
-- (void)removeSessionWithSessionID:(unsigned __int16)a3;
+- (void)removeSessionWithSessionID:(unsigned __int16)d;
 @end
 
 @implementation IAPSessionList
@@ -57,9 +57,9 @@ LABEL_8:
   }
 }
 
-- (void)addSession:(id)a3 withSessionID:(unsigned __int16)a4
+- (void)addSession:(id)session withSessionID:(unsigned __int16)d
 {
-  v7 = a4;
+  dCopy = d;
   p_iapSessionMap = &self->_iapSessionMap;
   if ((&self->_iapSessionMap & 7) != 0)
   {
@@ -68,19 +68,19 @@ LABEL_8:
 
   else
   {
-    if (&self->_iapSessionMap.__tree_.__end_node_ != sub_100013610(&self->_iapSessionMap, &v7))
+    if (&self->_iapSessionMap.__tree_.__end_node_ != sub_100013610(&self->_iapSessionMap, &dCopy))
     {
-      NSLog(@"%s::%s %d - replacing a session (sessionID=%d) in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList addSession:withSessionID:]", 43, v7);
+      NSLog(@"%s::%s %d - replacing a session (sessionID=%d) in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList addSession:withSessionID:]", 43, dCopy);
     }
 
-    v6 = a3;
-    *sub_1000130F8(p_iapSessionMap, &v7) = v6;
+    sessionCopy = session;
+    *sub_1000130F8(p_iapSessionMap, &dCopy) = sessionCopy;
   }
 }
 
-- (void)removeSessionWithSessionID:(unsigned __int16)a3
+- (void)removeSessionWithSessionID:(unsigned __int16)d
 {
-  v7 = a3;
+  dCopy = d;
   p_iapSessionMap = &self->_iapSessionMap;
   if ((&self->_iapSessionMap & 7) != 0)
   {
@@ -89,7 +89,7 @@ LABEL_8:
     return;
   }
 
-  v5 = sub_100013610(&self->_iapSessionMap, &v7);
+  v5 = sub_100013610(&self->_iapSessionMap, &dCopy);
   if (&self->_iapSessionMap.__tree_.__end_node_ != v5)
   {
     v6 = v5;
@@ -103,12 +103,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  NSLog(@"%s::%s %d - session (sessionID=%d) was not found in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList removeSessionWithSessionID:]", 58, v7);
+  NSLog(@"%s::%s %d - session (sessionID=%d) was not found in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList removeSessionWithSessionID:]", 58, dCopy);
 }
 
 - (id)copySessions
 {
-  v2 = self;
+  selfCopy = self;
   if (((self + 8) & 7) != 0)
   {
 LABEL_10:
@@ -120,10 +120,10 @@ LABEL_10:
     if (*(self + 6))
     {
       self = [NSMutableArray arrayWithCapacity:?];
-      v3 = self;
-      v4 = v2[1];
+      selfCopy2 = self;
+      v4 = selfCopy[1];
       v6 = v4;
-      v5 = (v2 + 2);
+      v5 = (selfCopy + 2);
       while (v4 != v5)
       {
         if (!v4 || (v4 & 7) != 0)
@@ -131,7 +131,7 @@ LABEL_10:
           goto LABEL_10;
         }
 
-        [v3 addObject:*(v4 + 40)];
+        [selfCopy2 addObject:*(v4 + 40)];
         self = sub_100007D44(&v6);
         v4 = v6;
       }
@@ -139,18 +139,18 @@ LABEL_10:
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
 
-    return [v3 copy];
+    return [selfCopy2 copy];
   }
 
   return self;
 }
 
-- (id)copySessionsForClientID:(unsigned int)a3
+- (id)copySessionsForClientID:(unsigned int)d
 {
-  v3 = self;
+  selfCopy = self;
   if (((self + 8) & 7) != 0)
   {
 LABEL_14:
@@ -162,10 +162,10 @@ LABEL_14:
     if (*(self + 6))
     {
       self = [NSMutableArray arrayWithCapacity:?];
-      v5 = self;
-      v6 = v3[1];
+      selfCopy2 = self;
+      v6 = selfCopy[1];
       v8 = v6;
-      v7 = (v3 + 2);
+      v7 = (selfCopy + 2);
       while (v6 != v7)
       {
         if (!v6 || (v6 & 7) != 0)
@@ -174,14 +174,14 @@ LABEL_14:
         }
 
         self = [objc_msgSend(*(v6 + 40) "client")];
-        if (self == a3)
+        if (self == d)
         {
           if (!v8 || (v8 & 7) != 0)
           {
             goto LABEL_14;
           }
 
-          [v5 addObject:*(v8 + 40)];
+          [selfCopy2 addObject:*(v8 + 40)];
         }
 
         self = sub_100007D44(&v8);
@@ -191,18 +191,18 @@ LABEL_14:
 
     else
     {
-      v5 = 0;
+      selfCopy2 = 0;
     }
 
-    return [v5 copy];
+    return [selfCopy2 copy];
   }
 
   return self;
 }
 
-- (id)sessionWithSessionID:(unsigned __int16)a3
+- (id)sessionWithSessionID:(unsigned __int16)d
 {
-  v5 = a3;
+  dCopy = d;
   result = &self->_iapSessionMap;
   if ((result & 7) != 0)
   {
@@ -211,7 +211,7 @@ LABEL_8:
     return result;
   }
 
-  result = sub_100013610(result, &v5);
+  result = sub_100013610(result, &dCopy);
   if (&self->_iapSessionMap.__tree_.__end_node_ != result)
   {
     if (result && (result & 7) == 0)
@@ -222,11 +222,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  sub_1000DDE90(3u, @"%s::%s %d - session (sessionID=%d) was not found in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList sessionWithSessionID:]", 106, v5);
+  sub_1000DDE90(3u, @"%s::%s %d - session (sessionID=%d) was not found in the session list", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPSessionList.mm", "[IAPSessionList sessionWithSessionID:]", 106, dCopy);
   return 0;
 }
 
-- (id)sessionWithProtocolID:(unsigned __int8)a3
+- (id)sessionWithProtocolID:(unsigned __int8)d
 {
   v7 = 0xAAAAAAAAAAAAAAAALL;
   if (((self + 8) & 7) != 0)
@@ -241,12 +241,12 @@ LABEL_14:
   v4 = self + 16;
   if (v3 != (self + 16))
   {
-    v5 = a3;
+    dCopy = d;
     v6 = 0;
     while (v3 && (v3 & 7) == 0)
     {
       self = [v3[5] protocolID];
-      if (self == v5)
+      if (self == dCopy)
       {
         if (!v7 || (v7 & 7) != 0)
         {

@@ -10,9 +10,9 @@
   v9 = a6;
   v10 = a5;
   v11 = [a4 validateHandlesForIMessage:a3 schedulerProvider:v10];
-  v12 = [v10 mainThreadScheduler];
+  mainThreadScheduler = [v10 mainThreadScheduler];
 
-  v13 = [v11 observeOn:v12];
+  v13 = [v11 observeOn:mainThreadScheduler];
 
   v14 = MEMORY[0x1E69967A0];
   v19[0] = MEMORY[0x1E69E9820];
@@ -32,9 +32,9 @@
   v9 = a6;
   v10 = a5;
   v11 = [a4 validateHandlesForFaceTime:a3 schedulerProvider:v10];
-  v12 = [v10 mainThreadScheduler];
+  mainThreadScheduler = [v10 mainThreadScheduler];
 
-  v13 = [v11 observeOn:v12];
+  v13 = [v11 observeOn:mainThreadScheduler];
 
   v14 = MEMORY[0x1E69967A0];
   v19[0] = MEMORY[0x1E69E9820];

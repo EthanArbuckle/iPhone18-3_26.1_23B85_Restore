@@ -1,58 +1,58 @@
 @interface HMCameraClipFetchAssetContextOperationDataSource
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4;
-- (id)createTemporaryDirectoryAppropriateForURL:(id)a3 error:(id *)a4;
-- (id)createVideoFileCombinerWithVideoFileURLs:(id)a3 queue:(id)a4;
-- (id)dataTaskWithURL:(id)a3 httpHeaderFields:(id)a4;
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)removeItemAtURL:(id)l error:(id *)error;
+- (id)createTemporaryDirectoryAppropriateForURL:(id)l error:(id *)error;
+- (id)createVideoFileCombinerWithVideoFileURLs:(id)ls queue:(id)queue;
+- (id)dataTaskWithURL:(id)l httpHeaderFields:(id)fields;
 @end
 
 @implementation HMCameraClipFetchAssetContextOperationDataSource
 
-- (id)createVideoFileCombinerWithVideoFileURLs:(id)a3 queue:(id)a4
+- (id)createVideoFileCombinerWithVideoFileURLs:(id)ls queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMCameraClipVideoFileCombiner alloc] initWithVideoFileURLs:v6 queue:v5];
+  queueCopy = queue;
+  lsCopy = ls;
+  v7 = [[HMCameraClipVideoFileCombiner alloc] initWithVideoFileURLs:lsCopy queue:queueCopy];
 
   return v7;
 }
 
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x1E696AC08];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  LOBYTE(a4) = [v7 removeItemAtURL:v6 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  LOBYTE(error) = [defaultManager removeItemAtURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = MEMORY[0x1E696AC08];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  LOBYTE(a5) = [v10 copyItemAtURL:v9 toURL:v8 error:a5];
+  rLCopy = rL;
+  lCopy = l;
+  defaultManager = [v7 defaultManager];
+  LOBYTE(error) = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)createTemporaryDirectoryAppropriateForURL:(id)a3 error:(id *)a4
+- (id)createTemporaryDirectoryAppropriateForURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x1E696AC08];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:1 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  v8 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
 
   return v8;
 }
 
-- (id)dataTaskWithURL:(id)a3 httpHeaderFields:(id)a4
+- (id)dataTaskWithURL:(id)l httpHeaderFields:(id)fields
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMCameraClipDownloadAssetDataTask alloc] initWithURL:v6 httpHeaderFields:v5];
+  fieldsCopy = fields;
+  lCopy = l;
+  v7 = [[HMCameraClipDownloadAssetDataTask alloc] initWithURL:lCopy httpHeaderFields:fieldsCopy];
 
   return v7;
 }

@@ -1,37 +1,37 @@
 @interface SHMusicalFeaturesBagConfiguration
-- (SHMusicalFeaturesBagConfiguration)initWithConfiguration:(id)a3;
-- (SHMusicalFeaturesBagConfiguration)initWithPromise:(id)a3;
-- (double)minimumDurationInSecondsForClientIdentifier:(id)a3;
-- (unint64_t)availableModelsForClientIdentifier:(id)a3;
+- (SHMusicalFeaturesBagConfiguration)initWithConfiguration:(id)configuration;
+- (SHMusicalFeaturesBagConfiguration)initWithPromise:(id)promise;
+- (double)minimumDurationInSecondsForClientIdentifier:(id)identifier;
+- (unint64_t)availableModelsForClientIdentifier:(id)identifier;
 @end
 
 @implementation SHMusicalFeaturesBagConfiguration
 
-- (SHMusicalFeaturesBagConfiguration)initWithConfiguration:(id)a3
+- (SHMusicalFeaturesBagConfiguration)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SHMusicalFeaturesBagConfiguration;
   v6 = [(SHMusicalFeaturesBagConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
 }
 
-- (SHMusicalFeaturesBagConfiguration)initWithPromise:(id)a3
+- (SHMusicalFeaturesBagConfiguration)initWithPromise:(id)promise
 {
-  v5 = a3;
+  promiseCopy = promise;
   v13.receiver = self;
   v13.super_class = SHMusicalFeaturesBagConfiguration;
   v6 = [(SHMusicalFeaturesBagConfiguration *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_amsPromise, a3);
+    objc_storeStrong(&v6->_amsPromise, promise);
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x3032000000;
@@ -70,16 +70,16 @@ void __53__SHMusicalFeaturesBagConfiguration_initWithPromise___block_invoke(uint
   }
 }
 
-- (double)minimumDurationInSecondsForClientIdentifier:(id)a3
+- (double)minimumDurationInSecondsForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"minimumDurationInSeconds", v4];
-    v6 = [(SHMusicalFeaturesBagConfiguration *)self configuration];
-    v7 = [v6 objectForKey:@"minimumDurationInSeconds"];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"minimumDurationInSeconds", identifierCopy];
+    configuration = [(SHMusicalFeaturesBagConfiguration *)self configuration];
+    v7 = [configuration objectForKey:@"minimumDurationInSeconds"];
 
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:identifierCopy];
     if (!v8)
     {
       v8 = [v7 objectForKeyedSubscript:@"minimumDurationInSeconds"];
@@ -97,16 +97,16 @@ void __53__SHMusicalFeaturesBagConfiguration_initWithPromise___block_invoke(uint
   return v10;
 }
 
-- (unint64_t)availableModelsForClientIdentifier:(id)a3
+- (unint64_t)availableModelsForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"models", v4];
-    v6 = [(SHMusicalFeaturesBagConfiguration *)self configuration];
-    v7 = [v6 objectForKey:@"models"];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"models", identifierCopy];
+    configuration = [(SHMusicalFeaturesBagConfiguration *)self configuration];
+    v7 = [configuration objectForKey:@"models"];
 
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:identifierCopy];
     v9 = v8;
     if (!v8 || ![v8 count])
     {

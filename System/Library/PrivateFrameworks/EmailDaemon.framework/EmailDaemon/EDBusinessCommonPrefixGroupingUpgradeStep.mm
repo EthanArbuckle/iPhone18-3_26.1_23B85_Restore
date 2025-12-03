@@ -1,11 +1,11 @@
 @interface EDBusinessCommonPrefixGroupingUpgradeStep
-+ (BOOL)_deleteExistingBusinessesWithConnection:(id)a3 error:(id *)a4;
-+ (BOOL)_persistBusinesses:(id)a3 connection:(id)a4 error:(id *)a5;
-+ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)a3 displayName:(id)a4;
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)_deleteExistingBusinessesWithConnection:(id)connection error:(id *)error;
++ (BOOL)_persistBusinesses:(id)businesses connection:(id)connection error:(id *)error;
++ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)domain displayName:(id)name;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 + (id)_commonDomains;
-+ (id)_getGroupableAndUngroupableAddresses:(id *)a3 connection:(id)a4 error:(id *)a5;
-+ (id)_groupAddresses:(id)a3;
++ (id)_getGroupableAndUngroupableAddresses:(id *)addresses connection:(id)connection error:(id *)error;
++ (id)_groupAddresses:(id)addresses;
 + (id)log;
 + (void)_resetGroupingDefault;
 @end
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __48__EDBusinessCommonPrefixGroupingUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_16 != -1)
   {
     dispatch_once(&log_onceToken_16, block);
@@ -37,17 +37,17 @@ void __48__EDBusinessCommonPrefixGroupingUpgradeStep_log__block_invoke(uint64_t 
   log_log_16 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  if ([a1 _deleteExistingBusinessesWithConnection:v6 error:a4])
+  connectionCopy = connection;
+  if ([self _deleteExistingBusinessesWithConnection:connectionCopy error:error])
   {
     v18 = 0;
-    v7 = [a1 _getGroupableAndUngroupableAddresses:&v18 connection:v6 error:a4];
+    v7 = [self _getGroupableAndUngroupableAddresses:&v18 connection:connectionCopy error:error];
     v8 = v18;
     if (v7)
     {
-      v9 = [a1 _groupAddresses:v7];
+      v9 = [self _groupAddresses:v7];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __69__EDBusinessCommonPrefixGroupingUpgradeStep_runWithConnection_error___block_invoke;
@@ -55,10 +55,10 @@ void __48__EDBusinessCommonPrefixGroupingUpgradeStep_log__block_invoke(uint64_t 
       v10 = v9;
       v17 = v10;
       [v8 enumerateKeysAndObjectsUsingBlock:&v13];
-      v11 = [a1 _persistBusinesses:v10 connection:v6 error:{a4, v13, v14, v15, v16}];
+      v11 = [self _persistBusinesses:v10 connection:connectionCopy error:{error, v13, v14, v15, v16}];
       if (v11)
       {
-        [a1 _resetGroupingDefault];
+        [self _resetGroupingDefault];
       }
     }
 
@@ -113,17 +113,17 @@ void __69__EDBusinessCommonPrefixGroupingUpgradeStep_runWithConnection_error___b
   }
 }
 
-+ (BOOL)_deleteExistingBusinessesWithConnection:(id)a3 error:(id *)a4
++ (BOOL)_deleteExistingBusinessesWithConnection:(id)connection error:(id *)error
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"businesses"];
-  if ([v5 executeDeleteStatement:v6 error:a4])
+  if ([connectionCopy executeDeleteStatement:v6 error:error])
   {
     v7 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"business_categories"];
-    if ([v5 executeDeleteStatement:v7 error:a4])
+    if ([connectionCopy executeDeleteStatement:v7 error:error])
     {
       v8 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"business_addresses"];
-      v9 = [v5 executeDeleteStatement:v8 error:a4];
+      v9 = [connectionCopy executeDeleteStatement:v8 error:error];
     }
 
     else
@@ -140,9 +140,9 @@ void __69__EDBusinessCommonPrefixGroupingUpgradeStep_runWithConnection_error___b
   return v9;
 }
 
-+ (id)_getGroupableAndUngroupableAddresses:(id *)a3 connection:(id)a4 error:(id *)a5
++ (id)_getGroupableAndUngroupableAddresses:(id *)addresses connection:(id)connection error:(id *)error
 {
-  v8 = a4;
+  connectionCopy = connection;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"ROWID" table:@"addresses"];
@@ -154,15 +154,15 @@ void __69__EDBusinessCommonPrefixGroupingUpgradeStep_runWithConnection_error___b
   v17[3] = &unk_1E8250D98;
   v12 = v10;
   v18 = v12;
-  v20 = a1;
+  selfCopy = self;
   v13 = v9;
   v19 = v13;
-  if ([v8 executeSelectStatement:v11 withBlock:v17 error:a5])
+  if ([connectionCopy executeSelectStatement:v11 withBlock:v17 error:error])
   {
-    if (a3)
+    if (addresses)
     {
       v14 = v12;
-      *a3 = v12;
+      *addresses = v12;
     }
 
     v15 = v13;
@@ -171,9 +171,9 @@ void __69__EDBusinessCommonPrefixGroupingUpgradeStep_runWithConnection_error___b
   else
   {
     v15 = 0;
-    if (a3)
+    if (addresses)
     {
-      *a3 = 0;
+      *addresses = 0;
     }
   }
 
@@ -236,14 +236,14 @@ void __99__EDBusinessCommonPrefixGroupingUpgradeStep__getGroupableAndUngroupable
   }
 }
 
-+ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)a3 displayName:(id)a4
++ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)domain displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && (objc_msgSend(v7, "ef_stringByTrimmingWhitespaceAndNewlineCharacters"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v9))
+  domainCopy = domain;
+  nameCopy = name;
+  if ([domainCopy length] && (objc_msgSend(nameCopy, "ef_stringByTrimmingWhitespaceAndNewlineCharacters"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v9))
   {
-    v10 = [a1 _commonDomains];
-    v11 = [v10 containsObject:v6];
+    _commonDomains = [self _commonDomains];
+    v11 = [_commonDomains containsObject:domainCopy];
   }
 
   else
@@ -273,9 +273,9 @@ void __59__EDBusinessCommonPrefixGroupingUpgradeStep__commonDomains__block_invok
   _commonDomains_sCommonDomains = v0;
 }
 
-+ (id)_groupAddresses:(id)a3
++ (id)_groupAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -283,7 +283,7 @@ void __59__EDBusinessCommonPrefixGroupingUpgradeStep__commonDomains__block_invok
   v11[3] = &unk_1E8250D70;
   v5 = v4;
   v12 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v11];
+  [addressesCopy enumerateKeysAndObjectsUsingBlock:v11];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -368,9 +368,9 @@ void __61__EDBusinessCommonPrefixGroupingUpgradeStep__groupAddresses___block_inv
   [*(a1 + 48) setObject:v12 forKeyedSubscript:v11];
 }
 
-+ (BOOL)_persistBusinesses:(id)a3 connection:(id)a4 error:(id *)a5
++ (BOOL)_persistBusinesses:(id)businesses connection:(id)connection error:(id *)error
 {
-  v7 = a4;
+  connectionCopy = connection;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -391,13 +391,13 @@ void __61__EDBusinessCommonPrefixGroupingUpgradeStep__groupAddresses___block_inv
   v11[3] = &unk_1E8250DE8;
   v13 = v16;
   v14 = &v23;
-  v8 = v7;
+  v8 = connectionCopy;
   v12 = v8;
   v15 = &v17;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
-  if (a5)
+  [businesses enumerateKeysAndObjectsUsingBlock:v11];
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v9 = *(v24 + 24);

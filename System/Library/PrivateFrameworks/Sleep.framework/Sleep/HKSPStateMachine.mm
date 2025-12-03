@@ -1,16 +1,16 @@
 @interface HKSPStateMachine
 + (id)_contextKey;
-- (HKSPStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4;
+- (HKSPStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider;
 - (HKSPStateMachineContext)currentContext;
 - (HKSPStateMachineDelegate)delegate;
 - (HKSPStateMachineInfoProvider)infoProvider;
 - (NSString)currentStateIdentifier;
 - (NSString)description;
 - (id)stateMachineName;
-- (void)enterState:(id)a3;
-- (void)notifyDelegateWithBlock:(id)a3;
-- (void)perform:(id)a3 withContext:(id)a4;
-- (void)setInitialState:(id)a3;
+- (void)enterState:(id)state;
+- (void)notifyDelegateWithBlock:(id)block;
+- (void)perform:(id)perform withContext:(id)context;
+- (void)setInitialState:(id)state;
 - (void)updateState;
 @end
 
@@ -19,49 +19,49 @@
 + (id)_contextKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 stringWithFormat:@"%@Context", v3];
 
   return v4;
 }
 
-- (HKSPStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4
+- (HKSPStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HKSPStateMachine;
   v8 = [(HKSPStateMachine *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_infoProvider, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_infoProvider, providerCopy);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)setInitialState:(id)a3
+- (void)setInitialState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   if (self->_currentState)
   {
     __assert_rtn("[HKSPStateMachine setInitialState:]", "HKSPStateMachine.m", 41, "_currentState == nil");
   }
 
-  v5 = v4;
+  v5 = stateCopy;
   v6 = HKSPLogForCategory([(HKSPStateMachine *)self loggingCategory]);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HKSPStateMachine *)self stateMachineName];
-    v8 = [(HKSPStateMachineState *)v5 stateName];
+    stateMachineName = [(HKSPStateMachine *)self stateMachineName];
+    stateName = [(HKSPStateMachineState *)v5 stateName];
     v11 = 138543618;
-    v12 = v7;
+    v12 = stateMachineName;
     v13 = 2114;
-    v14 = v8;
+    v14 = stateName;
     _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] starting in state %{public}@", &v11, 0x16u);
   }
 
@@ -73,23 +73,23 @@
 
 - (NSString)currentStateIdentifier
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  v3 = [v2 stateIdentifier];
+  currentState = [(HKSPStateMachine *)self currentState];
+  stateIdentifier = [currentState stateIdentifier];
 
-  return v3;
+  return stateIdentifier;
 }
 
-- (void)perform:(id)a3 withContext:(id)a4
+- (void)perform:(id)perform withContext:(id)context
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v6 threadDictionary];
+  performCopy = perform;
+  contextCopy = context;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  if (v5)
+  if (contextCopy)
   {
-    v8 = [objc_opt_class() _contextKey];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    _contextKey = [objc_opt_class() _contextKey];
+    v9 = [threadDictionary objectForKeyedSubscript:_contextKey];
     v10 = v9;
     if (v9)
     {
@@ -103,39 +103,39 @@
 
     v12 = v11;
 
-    [v12 addObject:v5];
-    v13 = [objc_opt_class() _contextKey];
-    [v7 setObject:v12 forKeyedSubscript:v13];
+    [v12 addObject:contextCopy];
+    _contextKey2 = [objc_opt_class() _contextKey];
+    [threadDictionary setObject:v12 forKeyedSubscript:_contextKey2];
 
-    v16[2]();
-    v14 = [objc_opt_class() _contextKey];
-    v15 = [v7 objectForKeyedSubscript:v14];
+    performCopy[2]();
+    _contextKey3 = [objc_opt_class() _contextKey];
+    v15 = [threadDictionary objectForKeyedSubscript:_contextKey3];
     [v15 removeLastObject];
   }
 
   else
   {
-    v16[2]();
+    performCopy[2]();
   }
 }
 
 - (HKSPStateMachineContext)currentContext
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [objc_opt_class() _contextKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  _contextKey = [objc_opt_class() _contextKey];
+  v5 = [threadDictionary objectForKeyedSubscript:_contextKey];
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-- (void)enterState:(id)a3
+- (void)enterState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   currentState = self->_currentState;
-  if (currentState == v4)
+  if (currentState == stateCopy)
   {
     v6 = [(HKSPStateMachineState *)self->_currentState copy];
   }
@@ -146,11 +146,11 @@
   }
 
   v7 = v6;
-  v8 = [(HKSPStateMachine *)self currentContext];
-  v9 = v8;
-  if (v8)
+  currentContext = [(HKSPStateMachine *)self currentContext];
+  v9 = currentContext;
+  if (currentContext)
   {
-    v10 = v8;
+    v10 = currentContext;
   }
 
   else
@@ -159,18 +159,18 @@
   }
 
   v11 = v10;
-  v12 = currentState != v4;
+  v12 = currentState != stateCopy;
 
-  v13 = [(HKSPStateMachineContext *)v11 contextWithNextState:v4 previousState:v7 isInitializing:!self->_initialized];
+  v13 = [(HKSPStateMachineContext *)v11 contextWithNextState:stateCopy previousState:v7 isInitializing:!self->_initialized];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __31__HKSPStateMachine_enterState___block_invoke;
   v16[3] = &unk_279C73BE8;
   v20 = v12;
   v17 = v7;
-  v18 = self;
-  v19 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v19 = stateCopy;
+  v14 = stateCopy;
   v15 = v7;
   [(HKSPStateMachine *)self perform:v16 withContext:v13];
   self->_initialized = 1;
@@ -316,73 +316,73 @@ LABEL_26:
 - (void)updateState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(HKSPStateMachine *)self currentState];
+  currentState = [(HKSPStateMachine *)self currentState];
 
-  if (!v4)
+  if (!currentState)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = [(HKSPStateMachine *)self stateMachineName];
-    [v12 handleFailureInMethod:a2 object:self file:@"HKSPStateMachine.m" lineNumber:119 description:{@"%@ currentState is nil", v13}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    stateMachineName = [(HKSPStateMachine *)self stateMachineName];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPStateMachine.m" lineNumber:119 description:{@"%@ currentState is nil", stateMachineName}];
   }
 
-  v5 = [(HKSPStateMachine *)self currentState];
-  [v5 _updateState];
+  currentState2 = [(HKSPStateMachine *)self currentState];
+  [currentState2 _updateState];
 
   if (!self->_initialized)
   {
     v6 = HKSPLogForCategory([(HKSPStateMachine *)self loggingCategory]);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HKSPStateMachine *)self stateMachineName];
-      v8 = [(HKSPStateMachine *)self currentState];
-      v9 = [v8 stateName];
+      stateMachineName2 = [(HKSPStateMachine *)self stateMachineName];
+      currentState3 = [(HKSPStateMachine *)self currentState];
+      stateName = [currentState3 stateName];
       *buf = 138543618;
-      v15 = v7;
+      v15 = stateMachineName2;
       v16 = 2114;
-      v17 = v9;
+      v17 = stateName;
       _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] State not yet initialized, re-entering state %{public}@", buf, 0x16u);
     }
 
-    v10 = [(HKSPStateMachine *)self currentState];
-    [(HKSPStateMachine *)self enterState:v10];
+    currentState4 = [(HKSPStateMachine *)self currentState];
+    [(HKSPStateMachine *)self enterState:currentState4];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateWithBlock:(id)a3
+- (void)notifyDelegateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HKSPStateMachine *)self delegate];
+  blockCopy = block;
+  delegate = [(HKSPStateMachine *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HKSPStateMachine *)self delegate];
-    v8 = [v7 callbackScheduler];
+    delegate2 = [(HKSPStateMachine *)self delegate];
+    callbackScheduler = [delegate2 callbackScheduler];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __44__HKSPStateMachine_notifyDelegateWithBlock___block_invoke;
     v14[3] = &unk_279C73B30;
     v9 = &v15;
     v14[4] = self;
-    v15 = v4;
-    v10 = v4;
-    [v8 performBlock:v14];
+    v15 = blockCopy;
+    v10 = blockCopy;
+    [callbackScheduler performBlock:v14];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D2C938] immediateScheduler];
+    delegate2 = [MEMORY[0x277D2C938] immediateScheduler];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __44__HKSPStateMachine_notifyDelegateWithBlock___block_invoke_2;
     v12[3] = &unk_279C73B30;
     v9 = &v13;
     v12[4] = self;
-    v13 = v4;
-    v11 = v4;
-    [v7 performBlock:v12];
+    v13 = blockCopy;
+    v11 = blockCopy;
+    [delegate2 performBlock:v12];
   }
 }
 
@@ -415,8 +415,8 @@ void __44__HKSPStateMachine_notifyDelegateWithBlock___block_invoke_2(uint64_t a1
   v4 = [v3 mutableCopy];
 
   [v4 deleteCharactersInRange:{objc_msgSend(v4, "length") - 1, 1}];
-  v5 = [(HKSPStateMachine *)self currentState];
-  [v4 appendFormat:@"; currentState: %@>", v5];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [v4 appendFormat:@"; currentState: %@>", currentState];
 
   return v4;
 }

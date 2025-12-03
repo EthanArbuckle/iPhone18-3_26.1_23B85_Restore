@@ -1,10 +1,10 @@
 @interface WFCollectionConfigurationViewController
 - (UIView)iconPreview;
 - (WFPreviewNavigationController)previewNavigationController;
-- (_TtC10WorkflowUI39WFCollectionConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setPreviewNavigationController:(id)a3;
+- (_TtC10WorkflowUI39WFCollectionConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setPreviewNavigationController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation WFCollectionConfigurationViewController
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setPreviewNavigationController:(id)a3
+- (void)setPreviewNavigationController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  WFCollectionConfigurationViewController.previewNavigationController.setter(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  WFCollectionConfigurationViewController.previewNavigationController.setter(controller);
 }
 
 - (UIView)iconPreview
@@ -32,24 +32,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WFCollectionConfigurationViewController.viewDidLoad()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  WFCollectionConfigurationViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  WFCollectionConfigurationViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (_TtC10WorkflowUI39WFCollectionConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI39WFCollectionConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WFCollectionConfigurationViewController.init(nibName:bundle:)();
 }
 

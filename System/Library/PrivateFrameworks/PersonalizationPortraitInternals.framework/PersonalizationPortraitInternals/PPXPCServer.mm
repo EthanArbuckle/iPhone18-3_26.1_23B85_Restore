@@ -26,7 +26,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __35__PPXPCServer_registerXPCListeners__block_invoke;
   aBlock[3] = &__block_descriptor_40_e5_B8__0l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;

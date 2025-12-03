@@ -1,5 +1,5 @@
 @interface HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent
-- (HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent)initWithNumberOfRenamedPersons:(int64_t)a3;
+- (HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent)initWithNumberOfRenamedPersons:(int64_t)persons;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -19,14 +19,14 @@
   return v5;
 }
 
-- (HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent)initWithNumberOfRenamedPersons:(int64_t)a3
+- (HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent)initWithNumberOfRenamedPersons:(int64_t)persons
 {
   v5.receiver = self;
   v5.super_class = HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_numberOfRenamedPersons = a3;
+    result->_numberOfRenamedPersons = persons;
   }
 
   return result;

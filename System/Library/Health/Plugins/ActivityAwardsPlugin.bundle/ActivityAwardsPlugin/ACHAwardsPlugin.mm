@@ -1,13 +1,13 @@
 @interface ACHAwardsPlugin
 - (ACHAwardsPlugin)init;
 - (NSString)schemaName;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)orderedSyncEntities;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation ACHAwardsPlugin
@@ -31,23 +31,23 @@
   return v2;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   v4 = MEMORY[0x29EDBE048];
-  v5 = a3;
+  daemonCopy = daemon;
   v6 = [v4 alloc];
-  v7 = [(ACHAwardsPlugin *)self mobileAssetProvider];
-  v8 = [v6 initWithDaemon:v5 mobileAssetProvider:v7];
+  mobileAssetProvider = [(ACHAwardsPlugin *)self mobileAssetProvider];
+  v8 = [v6 initWithDaemon:daemonCopy mobileAssetProvider:mobileAssetProvider];
 
   return v8;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[ACHAwardsProfileExtension alloc] initWithProfile:v3];
+    v4 = [[ACHAwardsProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else
@@ -75,33 +75,33 @@
 
 - (NSString)schemaName
 {
-  v2 = [(ACHAwardsPlugin *)self schemaProvider];
-  v3 = [v2 schemaName];
+  schemaProvider = [(ACHAwardsPlugin *)self schemaProvider];
+  schemaName = [schemaProvider schemaName];
 
-  return v3;
+  return schemaName;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  v4 = [(ACHAwardsPlugin *)self schemaProvider];
-  v5 = [v4 currentSchemaVersionForProtectionClass:a3];
+  schemaProvider = [(ACHAwardsPlugin *)self schemaProvider];
+  v5 = [schemaProvider currentSchemaVersionForProtectionClass:class];
 
   return v5;
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  v4 = [(ACHAwardsPlugin *)self schemaProvider];
-  v5 = [v4 databaseEntitiesForProtectionClass:a3];
+  schemaProvider = [(ACHAwardsPlugin *)self schemaProvider];
+  v5 = [schemaProvider databaseEntitiesForProtectionClass:class];
 
   return v5;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v7 = [(ACHAwardsPlugin *)self schemaProvider];
-  [v7 registerMigrationStepsForProtectionClass:a3 migrator:v6];
+  migratorCopy = migrator;
+  schemaProvider = [(ACHAwardsPlugin *)self schemaProvider];
+  [schemaProvider registerMigrationStepsForProtectionClass:class migrator:migratorCopy];
 }
 
 - (id)orderedSyncEntities

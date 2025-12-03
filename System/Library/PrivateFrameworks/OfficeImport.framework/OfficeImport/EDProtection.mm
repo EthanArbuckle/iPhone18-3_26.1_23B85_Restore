@@ -1,9 +1,9 @@
 @interface EDProtection
-+ (EDProtection)protectionWithHidden:(BOOL)a3 locked:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (EDProtection)protectionWithHidden:(BOOL)hidden locked:(BOOL)locked;
+- (BOOL)isEqual:(id)equal;
 - (EDProtection)init;
-- (EDProtection)initWithHidden:(BOOL)a3 locked:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EDProtection)initWithHidden:(BOOL)hidden locked:(BOOL)locked;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -23,26 +23,26 @@
   return result;
 }
 
-- (EDProtection)initWithHidden:(BOOL)a3 locked:(BOOL)a4
+- (EDProtection)initWithHidden:(BOOL)hidden locked:(BOOL)locked
 {
   result = [(EDProtection *)self init];
   if (result)
   {
-    result->mHidden = a3;
-    result->mLocked = a4;
+    result->mHidden = hidden;
+    result->mLocked = locked;
   }
 
   return result;
 }
 
-+ (EDProtection)protectionWithHidden:(BOOL)a3 locked:(BOOL)a4
++ (EDProtection)protectionWithHidden:(BOOL)hidden locked:(BOOL)locked
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithHidden:a3 locked:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithHidden:hidden locked:locked];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mHidden = self->mHidden;
@@ -51,18 +51,18 @@
   return [v4 initWithHidden:mHidden locked:mLocked];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDProtection *)self isEqualToProtection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDProtection *)self isEqualToProtection:v5];
   }
 
   return v6;

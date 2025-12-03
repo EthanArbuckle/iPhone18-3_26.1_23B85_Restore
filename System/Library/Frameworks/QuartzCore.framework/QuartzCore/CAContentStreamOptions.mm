@@ -2,18 +2,18 @@
 - (CGRect)destinationRect;
 - (CGRect)sourceRect;
 - (CGSize)frameSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDestinationRect:(CGRect)a3;
-- (void)setFrameSize:(CGSize)a3;
-- (void)setSourceRect:(CGRect)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDestinationRect:(CGRect)rect;
+- (void)setFrameSize:(CGSize)size;
+- (void)setSourceRect:(CGRect)rect;
 @end
 
 @implementation CAContentStreamOptions
 
-- (void)setDestinationRect:(CGRect)a3
+- (void)setDestinationRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  src = a3;
+  src = rect;
   objc_copyStruct(&self->_destinationRect, &src, 32, 1, 0);
 }
 
@@ -32,10 +32,10 @@
   return result;
 }
 
-- (void)setSourceRect:(CGRect)a3
+- (void)setSourceRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  src = a3;
+  src = rect;
   objc_copyStruct(&self->_sourceRect, &src, 32, 1, 0);
 }
 
@@ -54,10 +54,10 @@
   return result;
 }
 
-- (void)setFrameSize:(CGSize)a3
+- (void)setFrameSize:(CGSize)size
 {
   v4 = *MEMORY[0x1E69E9840];
-  src = a3;
+  src = size;
   objc_copyStruct(&self->_frameSize, &src, 16, 1, 0);
 }
 
@@ -72,9 +72,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setTargetDisplayId:{-[CAContentStreamOptions targetDisplayId](self, "targetDisplayId")}];

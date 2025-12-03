@@ -1,54 +1,54 @@
 @interface DADiagnosticsRemoteViewControllerHostToServiceAction
-+ (id)actionToString:(int64_t)a3;
-+ (id)actionWithType:(int64_t)a3 object:(id)a4;
-- (void)performActionForHostedWindowScene:(id)a3;
++ (id)actionToString:(int64_t)string;
++ (id)actionWithType:(int64_t)type object:(id)object;
+- (void)performActionForHostedWindowScene:(id)scene;
 @end
 
 @implementation DADiagnosticsRemoteViewControllerHostToServiceAction
 
-+ (id)actionWithType:(int64_t)a3 object:(id)a4
++ (id)actionWithType:(int64_t)type object:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   v7 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v7 setObject:v8 forSetting:0];
 
-  [v7 setObject:v6 forSetting:1];
+  [v7 setObject:objectCopy forSetting:1];
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [a1 actionToString:a3];
+    v10 = [self actionToString:type];
     v14 = 136315650;
     v15 = "+[DADiagnosticsRemoteViewControllerHostToServiceAction actionWithType:object:]";
     v16 = 2112;
     v17 = v10;
     v18 = 2112;
-    v19 = v6;
+    v19 = objectCopy;
     _os_log_impl(&dword_275BB3000, v9, OS_LOG_TYPE_DEFAULT, "%s Created %@ action with object %@", &v14, 0x20u);
   }
 
-  v11 = [[a1 alloc] initWithInfo:v7 responder:0];
+  v11 = [[self alloc] initWithInfo:v7 responder:0];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)performActionForHostedWindowScene:(id)a3
+- (void)performActionForHostedWindowScene:(id)scene
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADiagnosticsRemoteViewControllerHostToServiceAction *)self info];
-  v6 = [v5 objectForSetting:0];
-  v7 = [v6 integerValue];
+  sceneCopy = scene;
+  info = [(DADiagnosticsRemoteViewControllerHostToServiceAction *)self info];
+  v6 = [info objectForSetting:0];
+  integerValue = [v6 integerValue];
 
-  v8 = [(DADiagnosticsRemoteViewControllerHostToServiceAction *)self info];
-  v9 = [v8 objectForSetting:1];
+  info2 = [(DADiagnosticsRemoteViewControllerHostToServiceAction *)self info];
+  v9 = [info2 objectForSetting:1];
 
   v10 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [DADiagnosticsRemoteViewControllerHostToServiceAction actionToString:v7];
+    v11 = [DADiagnosticsRemoteViewControllerHostToServiceAction actionToString:integerValue];
     v18 = 136315650;
     v19 = "[DADiagnosticsRemoteViewControllerHostToServiceAction performActionForHostedWindowScene:]";
     v20 = 2112;
@@ -58,18 +58,18 @@
     _os_log_impl(&dword_275BB3000, v10, OS_LOG_TYPE_DEFAULT, "%s Received %@ action with object %@", &v18, 0x20u);
   }
 
-  v12 = [v4 delegate];
-  v13 = [v12 conformsToProtocol:&unk_2884C1558];
+  delegate = [sceneCopy delegate];
+  v13 = [delegate conformsToProtocol:&unk_2884C1558];
 
   if (v13)
   {
-    v14 = [v4 delegate];
-    v15 = v14;
-    if (v7 <= 2)
+    delegate2 = [sceneCopy delegate];
+    v15 = delegate2;
+    if (integerValue <= 2)
     {
-      if (v7)
+      if (integerValue)
       {
-        if (v7 == 1)
+        if (integerValue == 1)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -87,7 +87,7 @@
 
         else
         {
-          if (v7 != 2)
+          if (integerValue != 2)
           {
 LABEL_33:
 
@@ -131,7 +131,7 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if (v7 == 3)
+    if (integerValue == 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -149,11 +149,11 @@ LABEL_32:
 
     else
     {
-      if (v7 != 4)
+      if (integerValue != 4)
       {
-        if (v7 == 5)
+        if (integerValue == 5)
         {
-          [v14 remoteViewControllerDidDisappear];
+          [delegate2 remoteViewControllerDidDisappear];
         }
 
         goto LABEL_33;
@@ -182,16 +182,16 @@ LABEL_34:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)actionToString:(int64_t)a3
++ (id)actionToString:(int64_t)string
 {
-  if ((a3 - 1) > 4)
+  if ((string - 1) > 4)
   {
     return @"HostToServiceActionTypeSetHostBundleIdentifier";
   }
 
   else
   {
-    return off_27A66EC48[a3 - 1];
+    return off_27A66EC48[string - 1];
   }
 }
 

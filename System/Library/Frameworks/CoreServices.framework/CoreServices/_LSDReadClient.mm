@@ -1,48 +1,48 @@
 @interface _LSDReadClient
-- (void)getAllUserActivityTypesAndDomainNamesWithCompletionHandler:(id)a3;
-- (void)getApplicationCategoryIdentifiersSetWithCompletionHandler:(id)a3;
-- (void)getBoundIconInfoForDocumentProxy:(id)a3 completionHandler:(id)a4;
-- (void)getBundleProxyForCurrentProcessWithCompletionHandler:(id)a3;
-- (void)getBundleRecordForCoreTypesWithCompletionHandler:(id)a3;
-- (void)getBundleRecordForCurrentProcessWithCompletionHandler:(id)a3;
-- (void)getCurrentApplicationDefaultInfoForCategory:(unint64_t)a3 completion:(id)a4;
-- (void)getDiskUsage:(id)a3 completionHandler:(id)a4;
-- (void)getEligibilityAnswerForDomain:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)getExtensionPointRecordForCurrentProcessWithCompletionHandler:(id)a3;
-- (void)getHasEverChangedPreferredAppForCategory:(unint64_t)a3 completion:(id)a4;
-- (void)getKernelPackageExtensionsWithCompletionHandler:(id)a3;
-- (void)getKnowledgeUUIDAndSequenceNumberWithCompletionHandler:(id)a3;
-- (void)getPreferencesWithCompletionHandler:(id)a3;
-- (void)getPreferredAppMarketplacesWithCompletion:(id)a3;
-- (void)getRelatedTypesOfTypeWithIdentifier:(id)a3 maximumDegreeOfSeparation:(int64_t)a4 completionHandler:(id)a5;
-- (void)getResourceValuesForKeys:(id)a3 mimic:(id)a4 preferredLocalizations:(id)a5 completionHandler:(id)a6;
-- (void)getServerStatusWithCompletionHandler:(id)a3;
-- (void)getServerStoreNonBlockingWithCompletionHandler:(id)a3;
-- (void)getSessionLanguagesForImproperlyLocalizedProcessWithCompletionHandler:(id)a3;
-- (void)getSettingsStoreConfigurationWithCompletionHandler:(id)a3;
-- (void)getSystemContentStoreWithCompletionHandler:(id)a3;
-- (void)getSystemModeWithCompletionHandler:(id)a3;
-- (void)getTypeRecordForImportedTypeWithIdentifier:(id)a3 conformingToIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)getTypeRecordWithIdentifier:(id)a3 allowUndeclared:(BOOL)a4 completionHandler:(id)a5;
-- (void)getTypeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)getTypeRecordsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getTypeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)getWhetherTypeIdentifier:(id)a3 conformsToTypeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)invokeServiceInvocation:(id)a3 isReply:(BOOL)a4;
-- (void)mapBundleIdentifiers:(id)a3 orMachOUUIDs:(id)a4 completionHandler:(id)a5;
-- (void)mapPlugInBundleIdentifiersToContainingBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)resolveQueries:(id)a3 legacySPI:(BOOL)a4 completionHandler:(id)a5;
+- (void)getAllUserActivityTypesAndDomainNamesWithCompletionHandler:(id)handler;
+- (void)getApplicationCategoryIdentifiersSetWithCompletionHandler:(id)handler;
+- (void)getBoundIconInfoForDocumentProxy:(id)proxy completionHandler:(id)handler;
+- (void)getBundleProxyForCurrentProcessWithCompletionHandler:(id)handler;
+- (void)getBundleRecordForCoreTypesWithCompletionHandler:(id)handler;
+- (void)getBundleRecordForCurrentProcessWithCompletionHandler:(id)handler;
+- (void)getCurrentApplicationDefaultInfoForCategory:(unint64_t)category completion:(id)completion;
+- (void)getDiskUsage:(id)usage completionHandler:(id)handler;
+- (void)getEligibilityAnswerForDomain:(unint64_t)domain withCompletionHandler:(id)handler;
+- (void)getExtensionPointRecordForCurrentProcessWithCompletionHandler:(id)handler;
+- (void)getHasEverChangedPreferredAppForCategory:(unint64_t)category completion:(id)completion;
+- (void)getKernelPackageExtensionsWithCompletionHandler:(id)handler;
+- (void)getKnowledgeUUIDAndSequenceNumberWithCompletionHandler:(id)handler;
+- (void)getPreferencesWithCompletionHandler:(id)handler;
+- (void)getPreferredAppMarketplacesWithCompletion:(id)completion;
+- (void)getRelatedTypesOfTypeWithIdentifier:(id)identifier maximumDegreeOfSeparation:(int64_t)separation completionHandler:(id)handler;
+- (void)getResourceValuesForKeys:(id)keys mimic:(id)mimic preferredLocalizations:(id)localizations completionHandler:(id)handler;
+- (void)getServerStatusWithCompletionHandler:(id)handler;
+- (void)getServerStoreNonBlockingWithCompletionHandler:(id)handler;
+- (void)getSessionLanguagesForImproperlyLocalizedProcessWithCompletionHandler:(id)handler;
+- (void)getSettingsStoreConfigurationWithCompletionHandler:(id)handler;
+- (void)getSystemContentStoreWithCompletionHandler:(id)handler;
+- (void)getSystemModeWithCompletionHandler:(id)handler;
+- (void)getTypeRecordForImportedTypeWithIdentifier:(id)identifier conformingToIdentifier:(id)toIdentifier completionHandler:(id)handler;
+- (void)getTypeRecordWithIdentifier:(id)identifier allowUndeclared:(BOOL)undeclared completionHandler:(id)handler;
+- (void)getTypeRecordWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getTypeRecordsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getTypeRecordsWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getWhetherTypeIdentifier:(id)identifier conformsToTypeIdentifier:(id)typeIdentifier completionHandler:(id)handler;
+- (void)invokeServiceInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)mapBundleIdentifiers:(id)identifiers orMachOUUIDs:(id)ds completionHandler:(id)handler;
+- (void)mapPlugInBundleIdentifiersToContainingBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)resolveQueries:(id)queries legacySPI:(BOOL)i completionHandler:(id)handler;
 @end
 
 @implementation _LSDReadClient
 
-- (void)invokeServiceInvocation:(id)a3 isReply:(BOOL)a4
+- (void)invokeServiceInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  invocationCopy = invocation;
+  v6 = invocationCopy;
+  if (reply)
   {
-    [v5 invoke];
+    [invocationCopy invoke];
   }
 
   else
@@ -57,17 +57,17 @@
   }
 }
 
-- (void)getServerStatusWithCompletionHandler:(id)a3
+- (void)getServerStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getServerStatusWithCompletionHandler:]");
   SessionStatus = _LSDatabaseGetSessionStatus();
-  v4[2](v4, SessionStatus);
+  handlerCopy[2](handlerCopy, SessionStatus);
 }
 
-- (void)getServerStoreNonBlockingWithCompletionHandler:(id)a3
+- (void)getServerStoreNonBlockingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   SessionStatus = _LSDatabaseGetSessionStatus();
   if ((SessionStatus & 0x80) != 0)
   {
@@ -76,37 +76,37 @@
     [v7 setBlockingIsForManualRebuild:v8];
 
     v9 = +[LSDatabaseBlockingFetchServer sharedInstance];
-    v10 = [v9 getEndpoint];
-    (*(v4 + 2))(v4, 0, 0, v10, v8, 0);
+    getEndpoint = [v9 getEndpoint];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, getEndpoint, v8, 0);
   }
 
   else
   {
-    v6 = [(_LSDClient *)self XPCConnection];
+    xPCConnection = [(_LSDClient *)self XPCConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65___LSDReadClient_getServerStoreNonBlockingWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E6A1BA40;
-    v12 = v4;
-    _LSServer_GetServerStoreForConnectionWithCompletionHandler(v6, v11);
+    v12 = handlerCopy;
+    _LSServer_GetServerStoreForConnectionWithCompletionHandler(xPCConnection, v11);
   }
 }
 
-- (void)getKernelPackageExtensionsWithCompletionHandler:(id)a3
+- (void)getKernelPackageExtensionsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getKernelPackageExtensionsWithCompletionHandler:]");
   v3 = _LSCopyKernelPackageExtensionsAsLSD();
   v4 = v3;
   if (v3 && CFArrayGetCount(v3) >= 1)
   {
-    v6[2](v6, v4, 0);
+    handlerCopy[2](handlerCopy, v4, 0);
   }
 
   else
   {
     v5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10817, 0, "[_LSDReadClient getKernelPackageExtensionsWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 395);
-    (v6)[2](v6, 0, v5);
+    (handlerCopy)[2](handlerCopy, 0, v5);
 
     if (!v4)
     {
@@ -118,10 +118,10 @@
 LABEL_6:
 }
 
-- (void)getDiskUsage:(id)a3 completionHandler:(id)a4
+- (void)getDiskUsage:(id)usage completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  usageCopy = usage;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getDiskUsage:completionHandler:]");
   MEMORY[0x1865D7C40]();
   v8 = +[_LSDiskUsage _serverQueue];
@@ -129,17 +129,17 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __49___LSDReadClient_getDiskUsage_completionHandler___block_invoke;
   block[3] = &unk_1E6A193B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = usageCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = usageCopy;
   dispatch_async(v8, block);
 }
 
-- (void)getKnowledgeUUIDAndSequenceNumberWithCompletionHandler:(id)a3
+- (void)getKnowledgeUUIDAndSequenceNumberWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getKnowledgeUUIDAndSequenceNumberWithCompletionHandler:]");
   v5 = +[LSApplicationWorkspace defaultWorkspace];
   v12 = 0;
@@ -148,29 +148,29 @@ LABEL_6:
   v6 = v13;
   v7 = v12;
 
-  v8 = [(_LSDClient *)self XPCConnection];
-  v9 = [v8 _xpcConnection];
-  v10 = _LSXPCConnectionMayMapDatabase(v9);
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v10 = _LSXPCConnectionMayMapDatabase(_xpcConnection);
 
   if (!v10)
   {
-    v11 = [MEMORY[0x1E696AFB0] _LS_nullUUID];
+    _LS_nullUUID = [MEMORY[0x1E696AFB0] _LS_nullUUID];
 
-    v6 = v11;
+    v6 = _LS_nullUUID;
   }
 
-  v4[2](v4, v6, v7);
+  handlerCopy[2](handlerCopy, v6, v7);
 }
 
-- (void)resolveQueries:(id)a3 legacySPI:(BOOL)a4 completionHandler:(id)a5
+- (void)resolveQueries:(id)queries legacySPI:(BOOL)i completionHandler:(id)handler
 {
-  v6 = a4;
+  iCopy = i;
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  queriesCopy = queries;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient resolveQueries:legacySPI:completionHandler:]");
   v10 = objc_opt_class();
-  if (!_LSIsSetWithValuesOfClass(v8, v10))
+  if (!_LSIsSetWithValuesOfClass(queriesCopy, v10))
   {
     v29 = *MEMORY[0x1E696A278];
     v30 = @"invalid input parameters";
@@ -180,11 +180,11 @@ LABEL_6:
   }
 
   v11 = +[_LSQueryContext defaultContext];
-  if (v6)
+  if (iCopy)
   {
-    v12 = [(_LSDClient *)self XPCConnection];
-    v13 = [v12 _xpcConnection];
-    v14 = _LSIsXPCConnectionPlatformBinary(v13);
+    xPCConnection = [(_LSDClient *)self XPCConnection];
+    _xpcConnection = [xPCConnection _xpcConnection];
+    v14 = _LSIsXPCConnectionPlatformBinary(_xpcConnection);
 
     if (v14)
     {
@@ -192,7 +192,7 @@ LABEL_6:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v15 = v8;
+      v15 = queriesCopy;
       v16 = [v15 countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v16)
       {
@@ -228,29 +228,29 @@ LABEL_14:
   }
 
 LABEL_12:
-  v19 = [(_LSDClient *)self XPCConnection];
+  xPCConnection2 = [(_LSDClient *)self XPCConnection];
   v24 = 0;
-  v20 = [v11 _resolveQueries:v8 XPCConnection:v19 error:&v24];
+  v20 = [v11 _resolveQueries:queriesCopy XPCConnection:xPCConnection2 error:&v24];
   v21 = v24;
 
 LABEL_15:
-  v9[2](v9, v20, v21);
+  handlerCopy[2](handlerCopy, v20, v21);
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getBundleRecordForCurrentProcessWithCompletionHandler:(id)a3
+- (void)getBundleRecordForCurrentProcessWithCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getBundleRecordForCurrentProcessWithCompletionHandler:]");
   v27 = 0u;
   v28 = 0u;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = v5;
-  if (v5)
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v6 = xPCConnection;
+  if (xPCConnection)
   {
-    [v5 auditToken];
+    [xPCConnection auditToken];
   }
 
   else
@@ -288,8 +288,8 @@ LABEL_15:
 
           v14 = *(*(&v21 + 1) + 8 * i);
           [v14 _resolveAllProperties];
-          v15 = [v14 extensionPointRecord];
-          [v15 _resolveAllProperties];
+          extensionPointRecord = [v14 extensionPointRecord];
+          [extensionPointRecord _resolveAllProperties];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -298,33 +298,33 @@ LABEL_15:
       while (v11);
     }
 
-    v16 = [(_LSDClient *)self XPCConnection];
-    v17 = [v16 _xpcConnection];
-    v18 = _LSXPCConnectionMayMapDatabase(v17) == 0;
+    xPCConnection2 = [(_LSDClient *)self XPCConnection];
+    _xpcConnection = [xPCConnection2 _xpcConnection];
+    v18 = _LSXPCConnectionMayMapDatabase(_xpcConnection) == 0;
 
     if (v18)
     {
-      v19 = [v9 sensitiveDataProxy];
-      [v19 redact];
+      sensitiveDataProxy = [v9 sensitiveDataProxy];
+      [sensitiveDataProxy redact];
     }
   }
 
-  v4[2](v4, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getBundleProxyForCurrentProcessWithCompletionHandler:(id)a3
+- (void)getBundleProxyForCurrentProcessWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getBundleProxyForCurrentProcessWithCompletionHandler:]");
   v13 = 0u;
   v14 = 0u;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = v5;
-  if (v5)
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v6 = xPCConnection;
+  if (xPCConnection)
   {
-    [v5 auditToken];
+    [xPCConnection auditToken];
   }
 
   else
@@ -340,56 +340,56 @@ LABEL_15:
   v8 = v11;
   if (v7)
   {
-    v9 = [v7 compatibilityObject];
-    if (!v9)
+    compatibilityObject = [v7 compatibilityObject];
+    if (!compatibilityObject)
     {
       v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10810, 0, "[_LSDReadClient getBundleProxyForCurrentProcessWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 536);
 
-      v9 = 0;
+      compatibilityObject = 0;
       v8 = v10;
     }
   }
 
   else
   {
-    v9 = 0;
+    compatibilityObject = 0;
   }
 
-  v4[2](v4, v9, v8);
+  handlerCopy[2](handlerCopy, compatibilityObject, v8);
 }
 
-- (void)getBundleRecordForCoreTypesWithCompletionHandler:(id)a3
+- (void)getBundleRecordForCoreTypesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getBundleRecordForCoreTypesWithCompletionHandler:]");
   v3 = +[LSBundleRecord coreTypesBundleRecord];
-  v4 = [v3 _realRecord];
+  _realRecord = [v3 _realRecord];
 
-  v5[2](v5, v4);
+  handlerCopy[2](handlerCopy, _realRecord);
 }
 
-- (void)getExtensionPointRecordForCurrentProcessWithCompletionHandler:(id)a3
+- (void)getExtensionPointRecordForCurrentProcessWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getExtensionPointRecordForCurrentProcessWithCompletionHandler:]");
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80___LSDReadClient_getExtensionPointRecordForCurrentProcessWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E6A1C848;
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(_LSDReadClient *)self getBundleRecordForCurrentProcessWithCompletionHandler:v6];
 }
 
-- (void)getTypeRecordWithIdentifier:(id)a3 allowUndeclared:(BOOL)a4 completionHandler:(id)a5
+- (void)getTypeRecordWithIdentifier:(id)identifier allowUndeclared:(BOOL)undeclared completionHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = a5;
+  undeclaredCopy = undeclared;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getTypeRecordWithIdentifier:allowUndeclared:completionHandler:]");
-  if (v9)
+  if (identifierCopy)
   {
-    if (v6)
+    if (undeclaredCopy)
     {
       [UTTypeRecord typeRecordWithPotentiallyUndeclaredIdentifier:?];
     }
@@ -406,17 +406,17 @@ LABEL_15:
     v8 = 0;
   }
 
-  v7[2](v7, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)getTypeRecordsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getTypeRecordsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v5 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getTypeRecordsWithIdentifiers:completionHandler:]");
-  if (v8 && (v6 = objc_opt_class(), _LSIsSetWithValuesOfClass(v8, v6)))
+  if (identifiersCopy && (v6 = objc_opt_class(), _LSIsSetWithValuesOfClass(identifiersCopy, v6)))
   {
-    v7 = [UTTypeRecord typeRecordsWithIdentifiers:v8];
+    v7 = [UTTypeRecord typeRecordsWithIdentifiers:identifiersCopy];
   }
 
   else
@@ -424,50 +424,50 @@ LABEL_15:
     v7 = 0;
   }
 
-  v5[2](v5, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)getTypeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5 completionHandler:(id)a6
+- (void)getTypeRecordWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  tagCopy = tag;
+  classCopy = class;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getTypeRecordWithTag:ofClass:conformingToIdentifier:completionHandler:]");
   v12 = 0;
-  if (v13 && v9)
+  if (tagCopy && classCopy)
   {
-    v12 = [UTTypeRecord typeRecordWithTag:v13 ofClass:v9 conformingToIdentifier:v10];
+    v12 = [UTTypeRecord typeRecordWithTag:tagCopy ofClass:classCopy conformingToIdentifier:identifierCopy];
   }
 
-  v11[2](v11, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (void)getTypeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5 completionHandler:(id)a6
+- (void)getTypeRecordsWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  tagCopy = tag;
+  classCopy = class;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getTypeRecordsWithTag:ofClass:conformingToIdentifier:completionHandler:]");
   v12 = 0;
-  if (v13 && v9)
+  if (tagCopy && classCopy)
   {
-    v12 = [UTTypeRecord typeRecordsWithTag:v13 ofClass:v9 conformingToIdentifier:v10];
+    v12 = [UTTypeRecord typeRecordsWithTag:tagCopy ofClass:classCopy conformingToIdentifier:identifierCopy];
   }
 
-  v11[2](v11, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (void)getTypeRecordForImportedTypeWithIdentifier:(id)a3 conformingToIdentifier:(id)a4 completionHandler:(id)a5
+- (void)getTypeRecordForImportedTypeWithIdentifier:(id)identifier conformingToIdentifier:(id)toIdentifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getTypeRecordForImportedTypeWithIdentifier:conformingToIdentifier:completionHandler:]");
-  if (v10)
+  if (identifierCopy)
   {
-    v9 = [UTTypeRecord typeRecordForImportedTypeWithIdentifier:v10 conformingToIdentifier:v7];
+    v9 = [UTTypeRecord typeRecordForImportedTypeWithIdentifier:identifierCopy conformingToIdentifier:toIdentifierCopy];
   }
 
   else
@@ -475,15 +475,15 @@ LABEL_15:
     v9 = 0;
   }
 
-  v8[2](v8, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)getRelatedTypesOfTypeWithIdentifier:(id)a3 maximumDegreeOfSeparation:(int64_t)a4 completionHandler:(id)a5
+- (void)getRelatedTypesOfTypeWithIdentifier:(id)identifier maximumDegreeOfSeparation:(int64_t)separation completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getRelatedTypesOfTypeWithIdentifier:maximumDegreeOfSeparation:completionHandler:]");
-  v9 = [UTTypeRecord typeRecordWithIdentifier:v7];
+  v9 = [UTTypeRecord typeRecordWithIdentifier:identifierCopy];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -496,42 +496,42 @@ LABEL_15:
     v15 = v12;
     v13 = v11;
     v16 = v13;
-    [v9 _enumerateRelatedTypesWithMaximumDegreeOfSeparation:a4 block:v14];
-    v8[2](v8, v12, v13);
+    [v9 _enumerateRelatedTypesWithMaximumDegreeOfSeparation:separation block:v14];
+    handlerCopy[2](handlerCopy, v12, v13);
   }
 
   else
   {
-    v8[2](v8, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)getWhetherTypeIdentifier:(id)a3 conformsToTypeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)getWhetherTypeIdentifier:(id)identifier conformsToTypeIdentifier:(id)typeIdentifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getWhetherTypeIdentifier:conformsToTypeIdentifier:completionHandler:]");
   v9 = 0;
-  if (v10 && v7)
+  if (identifierCopy && typeIdentifierCopy)
   {
-    v9 = [UTTypeRecord _typeIdentifier:v10 conformsToTypeIdentifier:v7];
+    v9 = [UTTypeRecord _typeIdentifier:identifierCopy conformsToTypeIdentifier:typeIdentifierCopy];
   }
 
-  v8[2](v8, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)getBoundIconInfoForDocumentProxy:(id)a3 completionHandler:(id)a4
+- (void)getBoundIconInfoForDocumentProxy:(id)proxy completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   if (IconServicesLibrary(void)::frameworkLibrary || (IconServicesLibrary(void)::frameworkLibrary = dlopen("/System/Library/PrivateFrameworks/IconServices.framework/IconServices", 2)) != 0)
   {
     _LSAssertRunningInServer("[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]");
-    if (v6)
+    if (proxyCopy)
     {
-      v8 = [v6 URL];
+      v8 = [proxyCopy URL];
       if (!v8)
       {
         goto LABEL_11;
@@ -552,23 +552,23 @@ LABEL_15:
 
       if (![FSNode canReadURL:v8 fromSandboxWithAuditToken:&v17])
       {
-        v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 697);
-        v7[2](v7, 0, v14);
+        _boundIconInfo = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 697);
+        handlerCopy[2](handlerCopy, 0, _boundIconInfo);
       }
 
       else
       {
 LABEL_11:
-        v14 = [v6 _boundIconInfo];
-        if (v14)
+        _boundIconInfo = [proxyCopy _boundIconInfo];
+        if (_boundIconInfo)
         {
-          (v7)[2](v7, v14, 0);
+          (handlerCopy)[2](handlerCopy, _boundIconInfo, 0);
         }
 
         else
         {
           v15 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10814, 0, "[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 693);
-          v7[2](v7, 0, v15);
+          handlerCopy[2](handlerCopy, 0, v15);
         }
       }
     }
@@ -579,27 +579,27 @@ LABEL_11:
       v20[0] = @"documentProxy";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 701);
-      v7[2](v7, 0, v12);
+      handlerCopy[2](handlerCopy, 0, v12);
     }
   }
 
   else
   {
     v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSDReadClient getBoundIconInfoForDocumentProxy:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 704);
-    v7[2](v7, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getAllUserActivityTypesAndDomainNamesWithCompletionHandler:(id)a3
+- (void)getAllUserActivityTypesAndDomainNamesWithCompletionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getAllUserActivityTypesAndDomainNamesWithCompletionHandler:]");
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSXPCConnectionMayMapDatabase(v6);
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSXPCConnectionMayMapDatabase(_xpcConnection);
 
   if (v7)
   {
@@ -609,15 +609,15 @@ LABEL_11:
     if (v8)
     {
       v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], v8, 0, "[_LSDReadClient getAllUserActivityTypesAndDomainNamesWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 723);
-      (*(v4 + 2))(v4, 0, 0, v9);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v9);
     }
 
     else
     {
       v12 = cf;
-      v13 = *(v4 + 2);
+      v13 = *(handlerCopy + 2);
       v9 = v16;
-      v13(v4, v9, v12, 0);
+      v13(handlerCopy, v9, v12, 0);
     }
 
     if (cf)
@@ -637,42 +637,42 @@ LABEL_11:
     v18[0] = @"process may not map database";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v10, "[_LSDReadClient getAllUserActivityTypesAndDomainNamesWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 727);
-    (*(v4 + 2))(v4, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getResourceValuesForKeys:(id)a3 mimic:(id)a4 preferredLocalizations:(id)a5 completionHandler:(id)a6
+- (void)getResourceValuesForKeys:(id)keys mimic:(id)mimic preferredLocalizations:(id)localizations completionHandler:(id)handler
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keysCopy = keys;
+  mimicCopy = mimic;
+  localizationsCopy = localizations;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient getResourceValuesForKeys:mimic:preferredLocalizations:completionHandler:]");
-  if (!v9)
+  if (!keysCopy)
   {
     goto LABEL_13;
   }
 
   v13 = _LSURLPropertyProviderAllKeys();
-  v14 = [v9 isSubsetOfSet:v13] ^ 1;
-  if (!v10)
+  v14 = [keysCopy isSubsetOfSet:v13] ^ 1;
+  if (!mimicCopy)
   {
     LOBYTE(v14) = 1;
   }
 
-  if ((v14 & 1) != 0 || ([v10 URL], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((v14 & 1) != 0 || ([mimicCopy URL], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_13;
   }
 
-  v16 = [v10 URL];
-  v17 = [v16 isFileURL];
+  v16 = [mimicCopy URL];
+  isFileURL = [v16 isFileURL];
 
-  if (!v17)
+  if (!isFileURL)
   {
 LABEL_13:
     v38 = *MEMORY[0x1E696A278];
@@ -685,9 +685,9 @@ LABEL_13:
   }
 
   v18 = objc_opt_class();
-  v19 = _LSIsSetWithValuesOfClass(v9, v18);
+  v19 = _LSIsSetWithValuesOfClass(keysCopy, v18);
   v20 = v19 ^ 1;
-  if (!v11)
+  if (!localizationsCopy)
   {
     v20 = 1;
   }
@@ -695,7 +695,7 @@ LABEL_13:
   if ((v20 & 1) == 0)
   {
     v21 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v22 = _LSIsArrayWithValuesOfClasses(v11, v21);
+    v22 = _LSIsArrayWithValuesOfClasses(localizationsCopy, v21);
 
     if (v22)
     {
@@ -712,7 +712,7 @@ LABEL_13:
 
 LABEL_17:
   v37 = 0;
-  v28 = _LSResolveRemoteURLPropertiesWithMimic(v10, v11, v9, &v37);
+  v28 = _LSResolveRemoteURLPropertiesWithMimic(mimicCopy, localizationsCopy, keysCopy, &v37);
   v24 = v37;
   if (!v28)
   {
@@ -721,10 +721,10 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v29 = [v9 mutableCopy];
+  v29 = [keysCopy mutableCopy];
   v30 = MEMORY[0x1E695DFD8];
-  v31 = [v28 allKeys];
-  v32 = [v30 setWithArray:v31];
+  allKeys = [v28 allKeys];
+  v32 = [v30 setWithArray:allKeys];
   [v29 minusSet:v32];
 
   v23 = v29;
@@ -750,21 +750,21 @@ LABEL_17:
 LABEL_14:
 
 LABEL_15:
-  v12[2](v12, v25, v26, v24);
+  handlerCopy[2](handlerCopy, v25, v26, v24);
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mapBundleIdentifiers:(id)a3 orMachOUUIDs:(id)a4 completionHandler:(id)a5
+- (void)mapBundleIdentifiers:(id)identifiers orMachOUUIDs:(id)ds completionHandler:(id)handler
 {
   v75 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v42 = a4;
-  v41 = a5;
+  identifiersCopy = identifiers;
+  dsCopy = ds;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient mapBundleIdentifiers:orMachOUUIDs:completionHandler:]");
-  v8 = [(_LSDClient *)self XPCConnection];
-  v9 = [v8 _xpcConnection];
-  v10 = _LSCheckEntitlementForXPCConnection(v9, @"com.apple.private.coreservices.canmapbundleidtouuid");
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v10 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.canmapbundleidtouuid");
 
   if (!v10)
   {
@@ -779,10 +779,10 @@ LABEL_21:
     goto LABEL_32;
   }
 
-  if (v43)
+  if (identifiersCopy)
   {
     v11 = objc_opt_class();
-    v12 = _LSIsSetWithValuesOfClass(v43, v11);
+    v12 = _LSIsSetWithValuesOfClass(identifiersCopy, v11);
   }
 
   else
@@ -790,10 +790,10 @@ LABEL_21:
     v12 = 1;
   }
 
-  if (v42 && v12)
+  if (dsCopy && v12)
   {
     v15 = objc_opt_class();
-    v12 = _LSIsSetWithValuesOfClass(v42, v15);
+    v12 = _LSIsSetWithValuesOfClass(dsCopy, v15);
   }
 
   if (!v12)
@@ -815,17 +815,17 @@ LABEL_21:
 
   if (v17)
   {
-    v18 = [MEMORY[0x1E695DF70] array];
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __70___LSDReadClient_mapBundleIdentifiers_orMachOUUIDs_completionHandler___block_invoke;
     v61[3] = &unk_1E6A1C898;
     v65 = v17;
-    v62 = v42;
-    v40 = v18;
+    v62 = dsCopy;
+    v40 = array;
     v63 = v40;
-    v39 = v19;
+    v39 = array2;
     v64 = v39;
     v20 = MEMORY[0x1865D71B0](v61);
     v58[0] = MEMORY[0x1E69E9820];
@@ -844,13 +844,13 @@ LABEL_21:
     v38 = v21;
     v56 = v38;
     v46 = MEMORY[0x1865D71B0](v55);
-    if (v43)
+    if (identifiersCopy)
     {
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v22 = v43;
+      v22 = identifiersCopy;
       obj = v22;
       v23 = [v22 countByEnumeratingWithState:&v51 objects:v74 count:16];
       if (v23)
@@ -934,20 +934,20 @@ LABEL_21:
   v29 = v39;
   v30 = v40;
 LABEL_32:
-  v41[2](v41, v30, v29, v14);
+  handlerCopy[2](handlerCopy, v30, v29, v14);
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mapPlugInBundleIdentifiersToContainingBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)mapPlugInBundleIdentifiersToContainingBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v25 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSDReadClient mapPlugInBundleIdentifiersToContainingBundleIdentifiers:completionHandler:]");
-  v6 = [(_LSDClient *)self XPCConnection];
-  v7 = [v6 _xpcConnection];
-  LODWORD(self) = _LSCheckEntitlementForXPCConnection(v7, @"com.apple.private.coreservices.canmapbundleidtouuid");
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  LODWORD(self) = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.canmapbundleidtouuid");
 
   if (!self)
   {
@@ -962,7 +962,7 @@ LABEL_14:
   }
 
   v8 = objc_opt_class();
-  if (!_LSIsSetWithValuesOfClass(v24, v8))
+  if (!_LSIsSetWithValuesOfClass(identifiersCopy, v8))
   {
     v39 = *MEMORY[0x1E696A278];
     v40 = @"invalid input parameters";
@@ -981,12 +981,12 @@ LABEL_14:
 
   if (v10)
   {
-    v27 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v24;
+    obj = identifiersCopy;
     v11 = [obj countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (v11)
     {
@@ -1002,7 +1002,7 @@ LABEL_14:
 
           _LSDatabaseGetStringForCFString(*v10, *(*(&v29 + 1) + 8 * i), 0);
           v14 = *v10;
-          v28 = v27;
+          v28 = dictionary;
           _LSDatabaseEnumeratingBindingMap(v14);
         }
 
@@ -1030,7 +1030,7 @@ LABEL_14:
       v15 = v36;
     }
 
-    v27 = 0;
+    dictionary = 0;
   }
 
   if (v33 && v35 == 1)
@@ -1046,17 +1046,17 @@ LABEL_14:
   v22 = v36;
   v36 = 0;
 
-  v18 = v27;
+  v18 = dictionary;
 LABEL_23:
-  v25[2](v25, v18, v15);
+  handlerCopy[2](handlerCopy, v18, v15);
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPreferencesWithCompletionHandler:(id)a3
+- (void)getPreferencesWithCompletionHandler:(id)handler
 {
-  v8 = a3;
-  Shared = LaunchServices::PrefsStorage::GetShared(v8);
+  handlerCopy = handler;
+  Shared = LaunchServices::PrefsStorage::GetShared(handlerCopy);
   v4 = LaunchServices::PrefsStorage::getAllPreferences(Shared);
   v5 = v4;
   v6 = MEMORY[0x1E695E0F8];
@@ -1067,19 +1067,19 @@ LABEL_23:
 
   v7 = v6;
 
-  (*(v8 + 2))(v8, v7, 0);
+  (*(handlerCopy + 2))(handlerCopy, v7, 0);
 }
 
-- (void)getSettingsStoreConfigurationWithCompletionHandler:(id)a3
+- (void)getSettingsStoreConfigurationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v10 = 0u;
   v11 = 0u;
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
-  v5 = v4;
-  if (v4)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v5 = currentConnection;
+  if (currentConnection)
   {
-    [v4 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -1095,32 +1095,32 @@ LABEL_23:
 
   if (v7)
   {
-    v3[2](v3, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
   {
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[_LSDReadClient getSettingsStoreConfigurationWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 949);
-    (v3)[2](v3, 0, v8);
+    (handlerCopy)[2](handlerCopy, 0, v8);
   }
 }
 
-- (void)getSystemModeWithCompletionHandler:(id)a3
+- (void)getSystemModeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v3 = +[LSApplicationRestrictionsManager sharedInstance];
-  v4 = [(LSApplicationRestrictionsManager *)v3 systemMode];
+  systemMode = [(LSApplicationRestrictionsManager *)v3 systemMode];
 
-  v5[2](v5, v4, 0);
+  handlerCopy[2](handlerCopy, systemMode, 0);
 }
 
-- (void)getSessionLanguagesForImproperlyLocalizedProcessWithCompletionHandler:(id)a3
+- (void)getSessionLanguagesForImproperlyLocalizedProcessWithCompletionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSXPCConnectionMayMapDatabase(v6);
+  handlerCopy = handler;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSXPCConnectionMayMapDatabase(_xpcConnection);
 
   if (v7)
   {
@@ -1129,15 +1129,15 @@ LABEL_23:
       v8 = _LSDefaultLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(_LSDClient *)self XPCConnection];
+        xPCConnection2 = [(_LSDClient *)self XPCConnection];
         v14[0] = 67109120;
-        v14[1] = [v13 processIdentifier];
+        v14[1] = [xPCConnection2 processIdentifier];
         _os_log_error_impl(&dword_18162D000, v8, OS_LOG_TYPE_ERROR, "Warning: process %d asking for session langauges from the root lsd. It will only get a backstop result.", v14, 8u);
       }
     }
 
     v9 = 0;
-    v10 = [__LSDefaultsGetSharedInstance() preferredLocalizations];
+    preferredLocalizations = [__LSDefaultsGetSharedInstance() preferredLocalizations];
   }
 
   else
@@ -1147,21 +1147,21 @@ LABEL_23:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v11, "[_LSDReadClient getSessionLanguagesForImproperlyLocalizedProcessWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 975);
 
-    v10 = 0;
+    preferredLocalizations = 0;
   }
 
-  v4[2](v4, v10, v9);
+  handlerCopy[2](handlerCopy, preferredLocalizations, v9);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSystemContentStoreWithCompletionHandler:(id)a3
+- (void)getSystemContentStoreWithCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = [v5 _xpcConnection];
-  v7 = _LSXPCConnectionMayMapDatabase(v6);
+  handlerCopy = handler;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v7 = _LSXPCConnectionMayMapDatabase(_xpcConnection);
 
   if (v7)
   {
@@ -1171,9 +1171,9 @@ LABEL_23:
     if (v8)
     {
       v10 = v8;
-      v11 = [(_LSDatabase *)v8 store];
+      store = [(_LSDatabase *)v8 store];
       v12 = _LSDatabaseGetNode(v8);
-      v4[2](v4, v11, v12, 0);
+      handlerCopy[2](handlerCopy, store, v12, 0);
     }
 
     else
@@ -1181,16 +1181,16 @@ LABEL_23:
       v13 = _LSDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(_LSDClient *)self XPCConnection];
-        v16 = [v15 processIdentifier];
+        xPCConnection2 = [(_LSDClient *)self XPCConnection];
+        processIdentifier = [xPCConnection2 processIdentifier];
         *buf = 67109378;
-        v21 = v16;
+        v21 = processIdentifier;
         v22 = 2112;
         v23 = v9;
         _os_log_error_impl(&dword_18162D000, v13, OS_LOG_TYPE_ERROR, "could not fetch system content store for %d: %@", buf, 0x12u);
       }
 
-      (v4)[2](v4, 0, 0, v9);
+      (handlerCopy)[2](handlerCopy, 0, 0, v9);
     }
   }
 
@@ -1200,36 +1200,36 @@ LABEL_23:
     v19 = @"process may not map database";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v9, "[_LSDReadClient getSystemContentStoreWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 1001);
-    (v4)[2](v4, 0, 0, v8);
+    (handlerCopy)[2](handlerCopy, 0, 0, v8);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getApplicationCategoryIdentifiersSetWithCompletionHandler:(id)a3
+- (void)getApplicationCategoryIdentifiersSetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = _LSGetValidApplicationCategoryTypeSet();
-  v4[2](v4, v3, 0);
+  handlerCopy[2](handlerCopy, v3, 0);
 }
 
-- (void)getEligibilityAnswerForDomain:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)getEligibilityAnswerForDomain:(unint64_t)domain withCompletionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!_LSServer_AcquiesceToDeputizationForDomain(a3))
+  handlerCopy = handler;
+  if (!_LSServer_AcquiesceToDeputizationForDomain(domain))
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't ask to evaluate domain %llu", a3];
+    domain = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't ask to evaluate domain %llu", domain];
     v25 = *MEMORY[0x1E696A278];
-    v26[0] = v7;
+    v26[0] = domain;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v8, "[_LSDReadClient getEligibilityAnswerForDomain:withCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 1046);
-    v6[2](v6, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
-  v10 = [(_LSDClient *)self XPCConnection];
-  v11 = [v10 _xpcConnection];
-  v12 = _LSXPCConnectionMayMapDatabase(v11) == 0;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v12 = _LSXPCConnectionMayMapDatabase(_xpcConnection) == 0;
 
   if (v12)
   {
@@ -1243,42 +1243,42 @@ LABEL_23:
     v24 = v20;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v19 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v18, "[_LSDReadClient getEligibilityAnswerForDomain:withCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 1052);
-    v6[2](v6, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
   }
 
   else
   {
     v14 = LaunchServices::EligibilityCache::shared(v13);
     v22 = 0;
-    v15 = LaunchServices::EligibilityCache::cachedAnswerForDomain(v14, a3, &v22);
+    v15 = LaunchServices::EligibilityCache::cachedAnswerForDomain(v14, domain, &v22);
     v17 = v16;
     v18 = v22;
     if ((v17 & 1) == 0)
     {
-      v6[2](v6, 0, v18);
+      handlerCopy[2](handlerCopy, 0, v18);
       goto LABEL_11;
     }
 
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v15];
-    (v6)[2](v6, v19, 0);
+    (handlerCopy)[2](handlerCopy, v19, 0);
   }
 
 LABEL_11:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getHasEverChangedPreferredAppForCategory:(unint64_t)a3 completion:(id)a4
+- (void)getHasEverChangedPreferredAppForCategory:(unint64_t)category completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(_LSDClient *)self XPCConnection];
-  v8 = [v7 _xpcConnection];
-  v9 = _LSXPCConnectionMayMapDatabase(v8);
+  completionCopy = completion;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  _xpcConnection = [xPCConnection _xpcConnection];
+  v9 = _LSXPCConnectionMayMapDatabase(_xpcConnection);
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:_LSServer_HasPreferenceEverBeenSetForDefaultAppCategory(a3)];
-    v6[2](v6, v10, 0);
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:_LSServer_HasPreferenceEverBeenSetForDefaultAppCategory(category)];
+    completionCopy[2](completionCopy, v10, 0);
   }
 
   else
@@ -1293,26 +1293,26 @@ LABEL_11:
     v16[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v12, "[_LSDReadClient getHasEverChangedPreferredAppForCategory:completion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 1062);
-    (v6)[2](v6, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPreferredAppMarketplacesWithCompletion:(id)a3
+- (void)getPreferredAppMarketplacesWithCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_LSDClient *)self XPCConnection];
-  v6 = _LSCheckEntitlementForNSXPCConnection(v5, @"com.apple.private.coreservices.appmarketplace.read");
+  completionCopy = completion;
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v6 = _LSCheckEntitlementForNSXPCConnection(xPCConnection, @"com.apple.private.coreservices.appmarketplace.read");
 
   if (v6)
   {
     v12 = 0;
     v7 = [LSMarketplacesPreferences currentPreferencesWithError:&v12];
     v8 = v12;
-    v9 = [v7 preferredMarketplaces];
-    v4[2](v4, v9, v8);
+    preferredMarketplaces = [v7 preferredMarketplaces];
+    completionCopy[2](completionCopy, preferredMarketplaces, v8);
   }
 
   else
@@ -1331,23 +1331,23 @@ LABEL_11:
     v14[0] = v10;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, v8, "[_LSDReadClient getPreferredAppMarketplacesWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSDReadService.mm", 1077);
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getCurrentApplicationDefaultInfoForCategory:(unint64_t)a3 completion:(id)a4
+- (void)getCurrentApplicationDefaultInfoForCategory:(unint64_t)category completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(_LSDClient *)self XPCConnection];
-  v8 = v7;
-  if (v7)
+  xPCConnection = [(_LSDClient *)self XPCConnection];
+  v8 = xPCConnection;
+  if (xPCConnection)
   {
-    [v7 auditToken];
+    [xPCConnection auditToken];
   }
 
   else
@@ -1364,12 +1364,12 @@ LABEL_11:
   v11 = _LSDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(_LSDClient *)self XPCConnection];
-    v13 = [v12 processIdentifier];
+    xPCConnection2 = [(_LSDClient *)self XPCConnection];
+    processIdentifier = [xPCConnection2 processIdentifier];
     *buf = 134218240;
-    *&buf[4] = v13;
+    *&buf[4] = processIdentifier;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = category;
     _os_log_impl(&dword_18162D000, v11, OS_LOG_TYPE_DEFAULT, "pid %ld getting app default info for category %lu", buf, 0x16u);
   }
 
@@ -1377,15 +1377,15 @@ LABEL_11:
   if (objc_opt_isKindOfClass())
   {
     v14 = v9;
-    v15 = [v14 supportedDefaultAppCategories];
-    if ((LSDefaultAppCategoryMaskForCategory(a3) & v15) != 0)
+    supportedDefaultAppCategories = [v14 supportedDefaultAppCategories];
+    if ((LSDefaultAppCategoryMaskForCategory(category) & supportedDefaultAppCategories) != 0)
     {
       v16 = [LSDefaultApplicationQueryBackend alloc];
       v17 = objc_alloc_init(LSDefaultApplicationQueryServerDatastore);
       v18 = objc_alloc_init(LSDefaultApplicationQueryDatabaseDefaultAppEvaluator);
       v19 = [(LSDefaultApplicationQueryBackend *)v16 initWithDatastore:v17 defaultAppEvaluator:v18];
 
-      v20 = [(LSDefaultApplicationQueryBackend *)v19 refreshQueryResultForApplication:v14 category:a3];
+      v20 = [(LSDefaultApplicationQueryBackend *)v19 refreshQueryResultForApplication:v14 category:category];
     }
 
     else
@@ -1417,7 +1417,7 @@ LABEL_13:
 
   v20 = 0;
 LABEL_14:
-  v6[2](v6, v20, v10);
+  completionCopy[2](completionCopy, v20, v10);
 
   v22 = *MEMORY[0x1E69E9840];
 }

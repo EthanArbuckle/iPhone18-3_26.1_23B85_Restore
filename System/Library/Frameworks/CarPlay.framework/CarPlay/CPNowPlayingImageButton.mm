@@ -1,8 +1,8 @@
 @interface CPNowPlayingImageButton
-- (CPNowPlayingImageButton)initWithCoder:(id)a3;
+- (CPNowPlayingImageButton)initWithCoder:(id)coder;
 - (CPNowPlayingImageButton)initWithImage:(UIImage *)image handler:(void *)handler;
 - (UIImage)image;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPNowPlayingImageButton
@@ -18,40 +18,40 @@
     v8 = [CPImageSet alloc];
     v9 = objc_opt_class();
     v10 = v6;
-    v11 = [(UIImage *)v10 images];
+    images = [(UIImage *)v10 images];
 
-    if (v11)
+    if (images)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         CPSanitizeImage_cold_1(v9);
       }
 
-      v12 = [(UIImage *)v10 images];
-      v13 = [v12 firstObject];
+      images2 = [(UIImage *)v10 images];
+      firstObject = [images2 firstObject];
     }
 
     else
     {
-      v13 = v10;
+      firstObject = v10;
     }
 
-    v14 = [(CPImageSet *)v8 initWithImage:v13 treatmentBlock:&__block_literal_global_8];
+    v14 = [(CPImageSet *)v8 initWithImage:firstObject treatmentBlock:&__block_literal_global_8];
     [(CPNowPlayingImageButton *)v7 setImageSet:v14];
   }
 
   return v7;
 }
 
-- (CPNowPlayingImageButton)initWithCoder:(id)a3
+- (CPNowPlayingImageButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPNowPlayingImageButton;
-  v5 = [(CPNowPlayingButton *)&v9 initWithCoder:v4];
+  v5 = [(CPNowPlayingButton *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPNowPlayingButtonButtonImageSet"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPNowPlayingButtonButtonImageSet"];
     imageSet = v5->_imageSet;
     v5->_imageSet = v6;
   }
@@ -59,22 +59,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CPNowPlayingImageButton;
-  v4 = a3;
-  [(CPNowPlayingButton *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPNowPlayingButton *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CPNowPlayingImageButton *)self imageSet:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"CPNowPlayingButtonButtonImageSet"];
+  [coderCopy encodeObject:v5 forKey:@"CPNowPlayingButtonButtonImageSet"];
 }
 
 - (UIImage)image
 {
-  v2 = [(CPNowPlayingImageButton *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPNowPlayingImageButton *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
 @end

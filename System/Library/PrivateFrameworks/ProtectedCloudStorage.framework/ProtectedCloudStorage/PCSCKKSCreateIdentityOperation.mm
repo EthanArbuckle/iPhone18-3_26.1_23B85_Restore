@@ -1,19 +1,19 @@
 @interface PCSCKKSCreateIdentityOperation
-- (PCSCKKSCreateIdentityOperation)initWithItemModifyContext:(id)a3;
-- (int)addAndNotifyOnSync:(id)a3 identity:(_PCSIdentityData *)a4 attributes:(__CFDictionary *)a5 returnAttributes:(const __CFDictionary *)a6 complete:(id)a7;
-- (void)createPCSIdentity:(id)a3 complete:(id)a4;
-- (void)itemStored:(id)a3 complete:(id)a4;
-- (void)setIdentityToCurrent:(id)a3 complete:(id)a4;
+- (PCSCKKSCreateIdentityOperation)initWithItemModifyContext:(id)context;
+- (int)addAndNotifyOnSync:(id)sync identity:(_PCSIdentityData *)identity attributes:(__CFDictionary *)attributes returnAttributes:(const __CFDictionary *)returnAttributes complete:(id)complete;
+- (void)createPCSIdentity:(id)identity complete:(id)complete;
+- (void)itemStored:(id)stored complete:(id)complete;
+- (void)setIdentityToCurrent:(id)current complete:(id)complete;
 - (void)start;
-- (void)storePCSIdentity:(id)a3 identity:(_PCSIdentityData *)a4 complete:(id)a5;
+- (void)storePCSIdentity:(id)identity identity:(_PCSIdentityData *)a4 complete:(id)complete;
 @end
 
 @implementation PCSCKKSCreateIdentityOperation
 
-- (PCSCKKSCreateIdentityOperation)initWithItemModifyContext:(id)a3
+- (PCSCKKSCreateIdentityOperation)initWithItemModifyContext:(id)context
 {
-  v5 = a3;
-  if ((PCSCurrentPersonaMatchesDSIDFromSet([v5 set]) & 1) == 0)
+  contextCopy = context;
+  if ((PCSCurrentPersonaMatchesDSIDFromSet([contextCopy set]) & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -24,46 +24,46 @@
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     goto LABEL_9;
   }
 
-  v6 = [v5 serviceContexts];
-  v7 = [v6 count];
+  serviceContexts = [contextCopy serviceContexts];
+  v7 = [serviceContexts count];
 
   if (!v7 || (v18.receiver = self, v18.super_class = PCSCKKSCreateIdentityOperation, v8 = [(PCSCKKSCreateIdentityOperation *)&v18 init], (self = v8) == 0))
   {
 LABEL_9:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v8->_context, a3);
-  v9 = [v5 serviceContexts];
-  v10 = [v9 count];
+  objc_storeStrong(&v8->_context, context);
+  serviceContexts2 = [contextCopy serviceContexts];
+  v10 = [serviceContexts2 count];
 
   v11 = MEMORY[0x1E696AEC0];
   if (v10 == 1)
   {
-    v12 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-    v13 = [v12 allKeys];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    serviceContexts3 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+    allKeys = [serviceContexts3 allKeys];
+    v14 = [allKeys objectAtIndexedSubscript:0];
     v15 = [v11 stringWithFormat:@"CreateIdentityOperation service: %@", v14];
     [(PCSCKKSCreateIdentityOperation *)self setName:v15];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CreateIdentityOperation service: %@", @"bulk-service-identity-creation-identifier"];
-    [(PCSCKKSCreateIdentityOperation *)self setName:v12];
+    serviceContexts3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CreateIdentityOperation service: %@", @"bulk-service-identity-creation-identifier"];
+    [(PCSCKKSCreateIdentityOperation *)self setName:serviceContexts3];
   }
 
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)start
@@ -71,32 +71,32 @@ LABEL_10:
   PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Starting: %s", "[PCSCKKSCreateIdentityOperation start]");
   if ([(PCSCKKSOperation *)self startOperation])
   {
-    v3 = [(PCSCKKSCreateIdentityOperation *)self context];
-    v4 = PCSCurrentPersonaMatchesDSIDFromSet([v3 set]);
+    context = [(PCSCKKSCreateIdentityOperation *)self context];
+    v4 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v4)
     {
-      v5 = [(PCSCKKSCreateIdentityOperation *)self context];
-      v6 = [v5 serviceContexts];
-      v7 = [v6 allKeys];
+      context2 = [(PCSCKKSCreateIdentityOperation *)self context];
+      serviceContexts = [context2 serviceContexts];
+      allKeys = [serviceContexts allKeys];
 
       v8 = dispatch_group_create();
-      if ([v7 count])
+      if ([allKeys count])
       {
         v9 = 0;
         do
         {
-          v10 = [v7 objectAtIndexedSubscript:v9];
-          v11 = [(PCSCKKSCreateIdentityOperation *)self context];
-          v12 = [v11 serviceContexts];
-          v13 = [v12 objectForKeyedSubscript:v10];
+          v10 = [allKeys objectAtIndexedSubscript:v9];
+          context3 = [(PCSCKKSCreateIdentityOperation *)self context];
+          serviceContexts2 = [context3 serviceContexts];
+          v13 = [serviceContexts2 objectForKeyedSubscript:v10];
 
           if (([v13 roll] & 1) == 0 && (objc_msgSend(v13, "existingItemReference"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = v14, v16 = objc_msgSend(v13, "currentIdentity"), v15, v16))
           {
             PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Have an identity and no need to create a new");
             [v13 setReturnedExistingIdentity:1];
-            v17 = [(PCSCKKSCreateIdentityOperation *)self context];
-            v18 = [v17 mtt];
+            context4 = [(PCSCKKSCreateIdentityOperation *)self context];
+            v18 = [context4 mtt];
             [v18 setReturnedExistingIdentity:{objc_msgSend(v18, "returnedExistingIdentity")}];
           }
 
@@ -117,7 +117,7 @@ LABEL_10:
           ++v9;
         }
 
-        while ([v7 count] > v9);
+        while ([allKeys count] > v9);
       }
 
       v20 = dispatch_time(0, 300000000000);
@@ -205,13 +205,13 @@ void __39__PCSCKKSCreateIdentityOperation_start__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)createPCSIdentity:(id)a3 complete:(id)a4
+- (void)createPCSIdentity:(id)identity complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completeCopy = complete;
   v19 = 0;
-  v8 = [(PCSCKKSCreateIdentityOperation *)self context];
-  v9 = PCSCurrentPersonaMatchesDSIDFromSet([v8 set]);
+  context = [(PCSCKKSCreateIdentityOperation *)self context];
+  v9 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if ((v9 & 1) == 0)
   {
@@ -231,13 +231,13 @@ void __39__PCSCKKSCreateIdentityOperation_start__block_invoke_2(uint64_t a1, voi
   {
     v16 = v19;
 LABEL_12:
-    v7[2](v7, 0, v16);
+    completeCopy[2](completeCopy, 0, v16);
 
     goto LABEL_13;
   }
 
   v12 = v11;
-  if (PCSServiceItemTypeIsManatee(v6))
+  if (PCSServiceItemTypeIsManatee(identityCopy))
   {
     v13 = 5;
   }
@@ -247,11 +247,11 @@ LABEL_12:
     v13 = 1;
   }
 
-  Service = PCSIdentityCreateService(v12, v13, v6, &v19);
+  Service = PCSIdentityCreateService(v12, v13, identityCopy, &v19);
   if (Service)
   {
     v15 = Service;
-    (v7)[2](v7, Service, 0);
+    (completeCopy)[2](completeCopy, Service, 0);
     CFRelease(v15);
     CFRelease(v12);
   }
@@ -260,32 +260,32 @@ LABEL_12:
   {
     v17 = v19;
     CFRelease(v12);
-    v7[2](v7, 0, v17);
+    completeCopy[2](completeCopy, 0, v17);
   }
 
 LABEL_13:
 }
 
-- (void)storePCSIdentity:(id)a3 identity:(_PCSIdentityData *)a4 complete:(id)a5
+- (void)storePCSIdentity:(id)identity identity:(_PCSIdentityData *)a4 complete:(id)complete
 {
   v153[1] = *MEMORY[0x1E69E9840];
-  v124 = a3;
-  v123 = a5;
+  identityCopy = identity;
+  completeCopy = complete;
   objc_initWeak(&location, self);
   v139[0] = 0;
   v139[1] = v139;
   v139[2] = 0x2020000000;
   v140 = 0;
-  v8 = [(PCSCKKSCreateIdentityOperation *)self context];
-  v9 = PCSCurrentPersonaMatchesDSIDFromSet([v8 set]);
+  context = [(PCSCKKSCreateIdentityOperation *)self context];
+  v9 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if (v9)
   {
-    v10 = [(PCSCKKSCreateIdentityOperation *)self context];
-    v11 = [v10 mtt];
+    context2 = [(PCSCKKSCreateIdentityOperation *)self context];
+    v11 = [context2 mtt];
     v121 = [v11 measurePoint:@"PCSStoreIdentity"];
 
-    v12 = [(PCSCKKSItemModifyContext *)self->_context dsid];
+    dsid = [(PCSCKKSItemModifyContext *)self->_context dsid];
     theDict = _PCSIdentityCopyKeychainAttributes(a4);
 
     if (!theDict)
@@ -300,11 +300,11 @@ LABEL_13:
       [(PCSCKKSOperation *)self setError:v53];
 
       [v121 complete:0];
-      v54 = [(PCSCKKSOperation *)self error];
-      v123[2](v123, v54);
+      error = [(PCSCKKSOperation *)self error];
+      completeCopy[2](completeCopy, error);
 LABEL_27:
 
-      v48 = v121;
+      error12 = v121;
       goto LABEL_28;
     }
 
@@ -317,23 +317,23 @@ LABEL_27:
     v15 = dispatch_semaphore_create(0);
     v16 = dispatch_queue_create("PCSAddIdentitySyncQueue", 0);
     CFRetain(a4);
-    v17 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-    v18 = [v17 objectForKeyedSubscript:v124];
+    serviceContexts = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+    v18 = [serviceContexts objectForKeyedSubscript:identityCopy];
     v19 = v18[1];
 
     if (v19)
     {
-      v20 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-      v21 = [v20 objectForKeyedSubscript:v124];
+      serviceContexts2 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+      v21 = [serviceContexts2 objectForKeyedSubscript:identityCopy];
       CFRelease(v21[1]);
 
-      v22 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-      v23 = [v22 objectForKeyedSubscript:v124];
+      serviceContexts3 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+      v23 = [serviceContexts3 objectForKeyedSubscript:identityCopy];
       v23[1] = 0;
     }
 
-    v24 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-    v25 = [v24 objectForKeyedSubscript:v124];
+    serviceContexts4 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+    v25 = [serviceContexts4 objectForKeyedSubscript:identityCopy];
     v130[0] = MEMORY[0x1E69E9820];
     v130[1] = 3221225472;
     v130[2] = __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete___block_invoke;
@@ -342,12 +342,12 @@ LABEL_27:
     v138[1] = a4;
     dsema = v14;
     v131 = dsema;
-    v26 = v124;
+    v26 = identityCopy;
     v132 = v26;
     v133 = v121;
     v120 = v15;
     v134 = v120;
-    v117 = v123;
+    v117 = completeCopy;
     v136 = v117;
     queue = v16;
     v135 = queue;
@@ -364,8 +364,8 @@ LABEL_27:
         ServiceViewHint = PCSIdentityGetServiceViewHint(a4);
         if (!ServiceViewHint)
         {
-          v84 = [(PCSCKKSCreateIdentityOperation *)self context];
-          [v84 resetIdentities];
+          context3 = [(PCSCKKSCreateIdentityOperation *)self context];
+          [context3 resetIdentities];
 
           v85 = MEMORY[0x1E696ABC0];
           v86 = kPCSErrorDomain;
@@ -377,11 +377,11 @@ LABEL_27:
           [(PCSCKKSOperation *)self setError:v89];
 
           v90 = [(PCSCKKSItemModifyContext *)self->_context log];
-          v91 = [(PCSCKKSOperation *)self error];
-          PCSMigrationLog(v90, @"Set current: %@", v91);
+          error2 = [(PCSCKKSOperation *)self error];
+          PCSMigrationLog(v90, @"Set current: %@", error2);
 
-          v92 = [(PCSCKKSOperation *)self error];
-          v117[2](v117, v92);
+          error3 = [(PCSCKKSOperation *)self error];
+          v117[2](v117, error3);
 
           CFRelease(theDict);
           goto LABEL_26;
@@ -412,9 +412,9 @@ LABEL_27:
 
         v40 = _PCSKeychainForwardTable(MutableForCFTypesWith, &cf);
         CFRelease(MutableForCFTypesWith);
-        v41 = [(PCSCKKSCreateIdentityOperation *)self context];
-        v42 = [v41 serviceContexts];
-        v43 = [v42 objectForKeyedSubscript:v26];
+        context4 = [(PCSCKKSCreateIdentityOperation *)self context];
+        serviceContexts5 = [context4 serviceContexts];
+        v43 = [serviceContexts5 objectForKeyedSubscript:v26];
 
         if (v40 || !cf || (v44 = CFGetTypeID(cf), v44 != CFDictionaryGetTypeID()))
         {
@@ -429,11 +429,11 @@ LABEL_27:
           [(PCSCKKSOperation *)self setError:v80];
 
           v81 = [(PCSCKKSItemModifyContext *)self->_context log];
-          v82 = [(PCSCKKSOperation *)self error];
-          PCSMigrationLog(v81, @"Failed to find in local keychain: %@", v82);
+          error4 = [(PCSCKKSOperation *)self error];
+          PCSMigrationLog(v81, @"Failed to find in local keychain: %@", error4);
 
-          v83 = [(PCSCKKSOperation *)self error];
-          v117[2](v117, v83);
+          error5 = [(PCSCKKSOperation *)self error];
+          v117[2](v117, error5);
 
           CFRelease(theDict);
           goto LABEL_26;
@@ -454,11 +454,11 @@ LABEL_27:
           [(PCSCKKSOperation *)self setError:v97];
 
           v98 = [(PCSCKKSItemModifyContext *)self->_context log];
-          v99 = [(PCSCKKSOperation *)self error];
-          PCSMigrationLog(v98, @"Failed to find %@ from local keychain: %@", a4, v99);
+          error6 = [(PCSCKKSOperation *)self error];
+          PCSMigrationLog(v98, @"Failed to find %@ from local keychain: %@", a4, error6);
 
-          v100 = [(PCSCKKSOperation *)self error];
-          v117[2](v117, v100);
+          error7 = [(PCSCKKSOperation *)self error];
+          v117[2](v117, error7);
 
           CFRelease(cf);
           CFRelease(theDict);
@@ -476,9 +476,9 @@ LABEL_27:
 
       else
       {
-        v64 = [(PCSCKKSCreateIdentityOperation *)self context];
-        v65 = [v64 serviceContexts];
-        v66 = [v65 objectForKeyedSubscript:v26];
+        context5 = [(PCSCKKSCreateIdentityOperation *)self context];
+        serviceContexts6 = [context5 serviceContexts];
+        v66 = [serviceContexts6 objectForKeyedSubscript:v26];
         [v66 resetIdentity];
 
         v67 = MEMORY[0x1E696ABC0];
@@ -491,11 +491,11 @@ LABEL_27:
         [(PCSCKKSOperation *)self setError:v71];
 
         v72 = [(PCSCKKSItemModifyContext *)self->_context log];
-        v73 = [(PCSCKKSOperation *)self error];
-        PCSMigrationLog(v72, @"Failed to store service %@ to local keychain: %@", v26, v73);
+        error8 = [(PCSCKKSOperation *)self error];
+        PCSMigrationLog(v72, @"Failed to store service %@ to local keychain: %@", v26, error8);
 
-        v74 = [(PCSCKKSOperation *)self error];
-        v117[2](v117, v74);
+        error9 = [(PCSCKKSOperation *)self error];
+        v117[2](v117, error9);
 
         CFRelease(a4);
       }
@@ -530,11 +530,11 @@ LABEL_27:
           [(PCSCKKSOperation *)self setError:v60];
 
           v61 = [(PCSCKKSItemModifyContext *)self->_context log];
-          v62 = [(PCSCKKSOperation *)self error];
-          PCSMigrationLog(v61, @"Failed to store service %@ to CKKS: %@", v26, v62);
+          error10 = [(PCSCKKSOperation *)self error];
+          PCSMigrationLog(v61, @"Failed to store service %@ to CKKS: %@", v26, error10);
 
-          v63 = [(PCSCKKSOperation *)self error];
-          v117[2](v117, v63);
+          error11 = [(PCSCKKSOperation *)self error];
+          v117[2](v117, error11);
         }
 
         _Block_object_dispose(&cf, 8);
@@ -545,7 +545,7 @@ LABEL_27:
 LABEL_26:
 
     objc_destroyWeak(v138);
-    v54 = dsema;
+    error = dsema;
     goto LABEL_27;
   }
 
@@ -558,8 +558,8 @@ LABEL_26:
   v47 = [MEMORY[0x1E696ABC0] errorWithDomain:kPCSErrorDomain code:46 userInfo:&unk_1F2998340];
   [(PCSCKKSOperation *)self setError:v47];
 
-  v48 = [(PCSCKKSOperation *)self error];
-  v123[2](v123, v48);
+  error12 = [(PCSCKKSOperation *)self error];
+  completeCopy[2](completeCopy, error12);
 LABEL_28:
 
   _Block_object_dispose(v139, 8);
@@ -728,17 +728,17 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
   return result;
 }
 
-- (int)addAndNotifyOnSync:(id)a3 identity:(_PCSIdentityData *)a4 attributes:(__CFDictionary *)a5 returnAttributes:(const __CFDictionary *)a6 complete:(id)a7
+- (int)addAndNotifyOnSync:(id)sync identity:(_PCSIdentityData *)identity attributes:(__CFDictionary *)attributes returnAttributes:(const __CFDictionary *)returnAttributes complete:(id)complete
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Saving identity %@ to keychain", a4);
-  v12 = [(PCSCKKSCreateIdentityOperation *)self context];
-  LOBYTE(self) = PCSCurrentPersonaMatchesDSIDFromSet([v12 set]);
+  completeCopy = complete;
+  PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Saving identity %@ to keychain", identity);
+  context = [(PCSCKKSCreateIdentityOperation *)self context];
+  LOBYTE(self) = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if (self)
   {
-    v13 = xmmword_1ED6F2368(a5, a6, v11);
+    v13 = xmmword_1ED6F2368(attributes, returnAttributes, completeCopy);
   }
 
   else
@@ -756,7 +756,7 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v17 = [v14 errorWithDomain:v15 code:146 userInfo:v16];
 
-    v11[2](v11, 0, v17);
+    completeCopy[2](completeCopy, 0, v17);
     v13 = -25291;
   }
 
@@ -764,22 +764,22 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
   return v13;
 }
 
-- (void)setIdentityToCurrent:(id)a3 complete:(id)a4
+- (void)setIdentityToCurrent:(id)current complete:(id)complete
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSCKKSCreateIdentityOperation *)self context];
-  v9 = PCSCurrentPersonaMatchesDSIDFromSet([v8 set]);
+  currentCopy = current;
+  completeCopy = complete;
+  context = [(PCSCKKSCreateIdentityOperation *)self context];
+  v9 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if (v9)
   {
-    CKKSViewByName = PCSServiceItemGetCKKSViewByName(v6);
+    CKKSViewByName = PCSServiceItemGetCKKSViewByName(currentCopy);
     if (CKKSViewByName)
     {
       v11 = CKKSViewByName;
-      v12 = [(PCSCKKSCreateIdentityOperation *)self context];
-      v13 = [v12 mtt];
+      context2 = [(PCSCKKSCreateIdentityOperation *)self context];
+      v13 = [context2 mtt];
       v33 = [v13 measurePoint:@"CKKSSetCurrentIdentity"];
 
       *buf = 0;
@@ -787,27 +787,27 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
       v41 = 0x3032000000;
       v42 = __Block_byref_object_copy_;
       v43 = __Block_byref_object_dispose_;
-      v14 = [(PCSCKKSCreateIdentityOperation *)self context];
-      v15 = [v14 serviceContexts];
-      v44 = [v15 objectForKeyedSubscript:v6];
+      context3 = [(PCSCKKSCreateIdentityOperation *)self context];
+      serviceContexts = [context3 serviceContexts];
+      v44 = [serviceContexts objectForKeyedSubscript:currentCopy];
 
       v32 = off_1ED6F2378;
-      AccessGroupByName = PCSServiceItemGetAccessGroupByName(v6);
-      v17 = [*(v40 + 5) rollItemReference];
-      v18 = [*(v40 + 5) rollItemSHA1];
-      v19 = [*(v40 + 5) existingItemReference];
-      v20 = [*(v40 + 5) existingItemSHA1];
+      AccessGroupByName = PCSServiceItemGetAccessGroupByName(currentCopy);
+      rollItemReference = [*(v40 + 5) rollItemReference];
+      rollItemSHA1 = [*(v40 + 5) rollItemSHA1];
+      existingItemReference = [*(v40 + 5) existingItemReference];
+      existingItemSHA1 = [*(v40 + 5) existingItemSHA1];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __64__PCSCKKSCreateIdentityOperation_setIdentityToCurrent_complete___block_invoke;
       v34[3] = &unk_1E7B18D70;
       v38 = buf;
       v34[4] = self;
-      v35 = v6;
-      v21 = v33;
-      v36 = v21;
-      v37 = v7;
-      v32(AccessGroupByName, v35, v11, v17, v18, v19, v20, v34);
+      v35 = currentCopy;
+      error = v33;
+      v36 = error;
+      v37 = completeCopy;
+      v32(AccessGroupByName, v35, v11, rollItemReference, rollItemSHA1, existingItemReference, existingItemSHA1, v34);
 
       _Block_object_dispose(buf, 8);
     }
@@ -817,14 +817,14 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
       v26 = MEMORY[0x1E696ABC0];
       v27 = kPCSErrorDomain;
       v45 = *MEMORY[0x1E696A578];
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No view hint for %@", v6];
-      v46 = v28;
+      currentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No view hint for %@", currentCopy];
+      v46 = currentCopy;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v30 = [v26 errorWithDomain:v27 code:102 userInfo:v29];
       [(PCSCKKSOperation *)self setError:v30];
 
-      v21 = [(PCSCKKSOperation *)self error];
-      (*(v7 + 2))(v7, v21);
+      error = [(PCSCKKSOperation *)self error];
+      (*(completeCopy + 2))(completeCopy, error);
     }
   }
 
@@ -844,8 +844,8 @@ uint64_t __69__PCSCKKSCreateIdentityOperation_storePCSIdentity_identity_complete
     v25 = [v22 errorWithDomain:v23 code:146 userInfo:v24];
     [(PCSCKKSOperation *)self setError:v25];
 
-    v21 = [(PCSCKKSOperation *)self error];
-    (*(v7 + 2))(v7, v21);
+    error = [(PCSCKKSOperation *)self error];
+    (*(completeCopy + 2))(completeCopy, error);
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -902,25 +902,25 @@ LABEL_10:
   }
 }
 
-- (void)itemStored:(id)a3 complete:(id)a4
+- (void)itemStored:(id)stored complete:(id)complete
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSCKKSCreateIdentityOperation *)self context];
-  v9 = PCSCurrentPersonaMatchesDSIDFromSet([v8 set]);
+  storedCopy = stored;
+  completeCopy = complete;
+  context = [(PCSCKKSCreateIdentityOperation *)self context];
+  v9 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if (v9)
   {
-    v10 = [(PCSCKKSCreateIdentityOperation *)self context];
-    v11 = [v10 serviceContexts];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    context2 = [(PCSCKKSCreateIdentityOperation *)self context];
+    serviceContexts = [context2 serviceContexts];
+    v12 = [serviceContexts objectForKeyedSubscript:storedCopy];
 
-    v13 = [v12 rollIdentity];
-    v14 = [v12 rollItemReference];
-    [v12 setCurrentIdentity:v13 persistentReference:v14];
+    rollIdentity = [v12 rollIdentity];
+    rollItemReference = [v12 rollItemReference];
+    [v12 setCurrentIdentity:rollIdentity persistentReference:rollItemReference];
 
-    v7[2](v7, 0);
+    completeCopy[2](completeCopy, 0);
   }
 
   else
@@ -939,8 +939,8 @@ LABEL_10:
     v18 = [v15 errorWithDomain:v16 code:146 userInfo:v17];
     [(PCSCKKSOperation *)self setError:v18];
 
-    v19 = [(PCSCKKSOperation *)self error];
-    (v7)[2](v7, v19);
+    error = [(PCSCKKSOperation *)self error];
+    (completeCopy)[2](completeCopy, error);
   }
 
   v20 = *MEMORY[0x1E69E9840];

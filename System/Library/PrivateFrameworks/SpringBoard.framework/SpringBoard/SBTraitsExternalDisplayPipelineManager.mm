@@ -1,21 +1,21 @@
 @interface SBTraitsExternalDisplayPipelineManager
-- (SBTraitsExternalDisplayPipelineManager)initWithArbiter:(id)a3 sceneDelegate:(id)a4 userInterfaceStyleProvider:(id)a5;
+- (SBTraitsExternalDisplayPipelineManager)initWithArbiter:(id)arbiter sceneDelegate:(id)delegate userInterfaceStyleProvider:(id)provider;
 - (TRAArbitrationInputs)inputs;
-- (void)_noteInputsNeedUpdateWithAnimationSettings:(id)a3 fence:(id)a4 reason:(id)a5;
+- (void)_noteInputsNeedUpdateWithAnimationSettings:(id)settings fence:(id)fence reason:(id)reason;
 - (void)_updateInputsForCurrentUserInterfaceStyle;
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4;
-- (void)setupDefaultPipelineForArbiter:(id)a3;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
-- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)a3 fence:(id)a4;
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context;
+- (void)setupDefaultPipelineForArbiter:(id)arbiter;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
+- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)settings fence:(id)fence;
 @end
 
 @implementation SBTraitsExternalDisplayPipelineManager
 
-- (SBTraitsExternalDisplayPipelineManager)initWithArbiter:(id)a3 sceneDelegate:(id)a4 userInterfaceStyleProvider:(id)a5
+- (SBTraitsExternalDisplayPipelineManager)initWithArbiter:(id)arbiter sceneDelegate:(id)delegate userInterfaceStyleProvider:(id)provider
 {
   v9.receiver = self;
   v9.super_class = SBTraitsExternalDisplayPipelineManager;
-  v5 = [(SBTraitsPipelineManager *)&v9 initWithArbiter:a3 sceneDelegate:a4 userInterfaceStyleProvider:a5];
+  v5 = [(SBTraitsPipelineManager *)&v9 initWithArbiter:arbiter sceneDelegate:delegate userInterfaceStyleProvider:provider];
   if (v5)
   {
     v6 = objc_alloc_init(SBTraitsExternalDisplayRolesAndDefaultPoliciesProvider);
@@ -26,34 +26,34 @@
   return v5;
 }
 
-- (void)setupDefaultPipelineForArbiter:(id)a3
+- (void)setupDefaultPipelineForArbiter:(id)arbiter
 {
-  if (a3)
+  if (arbiter)
   {
-    v4 = a3;
-    v21 = [v4 inputsValidationStage];
+    arbiterCopy = arbiter;
+    inputsValidationStage = [arbiterCopy inputsValidationStage];
     v5 = [(SBTraitsInputsValidator *)[SBTraitsInputsAllUnknownOrientationValidator alloc] initWithValidatorOrder:&unk_283370DC0];
-    [v21 addInputsValidator:v5 update:0];
+    [inputsValidationStage addInputsValidator:v5 update:0];
 
-    v6 = [v4 zOrderResolutionStage];
+    zOrderResolutionStage = [arbiterCopy zOrderResolutionStage];
     v7 = [(SBTraitsZOrderStageComponent *)[SBTraitsZOrderDefaultResolver alloc] initWithComponentOrder:&unk_283370DC0];
-    [v6 addStageResolver:v7];
+    [zOrderResolutionStage addStageResolver:v7];
 
-    v8 = [v4 orientationResolutionStage];
+    orientationResolutionStage = [arbiterCopy orientationResolutionStage];
     v9 = [[SBTraitsOrientationDefaultResolutionPolicySpecifier alloc] initWithComponentOrder:&unk_283370DC0 dataSource:self->_rolesAndDefaultPoliciesProvider];
-    [v8 addResolutionPolicySpecifier:v9 update:0];
+    [orientationResolutionStage addResolutionPolicySpecifier:v9 update:0];
 
     v10 = [(SBTraitsOrientationStageComponent *)[SBTraitsOrientationDefaultTreeNodesSpecifier alloc] initWithComponentOrder:&unk_283370DC0];
-    [v8 addNodesSpecificationsSpecifier:v10];
+    [orientationResolutionStage addNodesSpecificationsSpecifier:v10];
 
     v11 = [[SBTraitsOrientationDefaultTreeResolver alloc] initWithComponentOrder:&unk_283370DC0];
-    [v8 addStageResolver:v11];
+    [orientationResolutionStage addStageResolver:v11];
 
-    v12 = [v4 userInterfaceStyleResolutionStage];
+    userInterfaceStyleResolutionStage = [arbiterCopy userInterfaceStyleResolutionStage];
     v13 = [(SBTraitsUserInterfaceStyleStageComponent *)[SBTraitsUserInterfaceStyleDefaultResolver alloc] initWithComponentOrder:&unk_283370DC0];
-    [v12 addStageResolver:v13];
+    [userInterfaceStyleResolutionStage addStageResolver:v13];
 
-    v14 = [v4 acquireParticipantWithRole:@"SBTraitsParticipantRolePipelineManager" delegate:self];
+    v14 = [arbiterCopy acquireParticipantWithRole:@"SBTraitsParticipantRolePipelineManager" delegate:self];
 
     activeOrientationParticipant = self->_activeOrientationParticipant;
     self->_activeOrientationParticipant = v14;
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)a3 fence:(id)a4
+- (void)userInterfaceStyleDidUpdateWithAnimationSettings:(id)settings fence:(id)fence
 {
-  v6 = a4;
-  v7 = a3;
+  fenceCopy = fence;
+  settingsCopy = settings;
   [(SBTraitsExternalDisplayPipelineManager *)self _updateInputsForCurrentUserInterfaceStyle];
-  [(SBTraitsExternalDisplayPipelineManager *)self _noteInputsNeedUpdateWithAnimationSettings:v7 fence:v6 reason:@"User Interface Style Update"];
+  [(SBTraitsExternalDisplayPipelineManager *)self _noteInputsNeedUpdateWithAnimationSettings:settingsCopy fence:fenceCopy reason:@"User Interface Style Update"];
 }
 
 - (TRAArbitrationInputs)inputs
@@ -82,18 +82,18 @@
   inputs = self->_inputs;
   if (!inputs)
   {
-    v4 = [(SBTraitsPipelineManager *)self sceneDelegate];
-    v5 = [v4 windowScene];
-    v6 = [v5 interfaceOrientation];
+    sceneDelegate = [(SBTraitsPipelineManager *)self sceneDelegate];
+    windowScene = [sceneDelegate windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
     v7 = objc_alloc(MEMORY[0x277D734B8]);
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v7 initWithIsPad:{objc_msgSend(v8, "userInterfaceIdiom") == 1}];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v9 = [v7 initWithIsPad:{objc_msgSend(currentDevice, "userInterfaceIdiom") == 1}];
 
-    v10 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:v6 nonFlatDeviceOrientation:v6];
+    v10 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:interfaceOrientation nonFlatDeviceOrientation:interfaceOrientation];
     v11 = objc_alloc(MEMORY[0x277D734C8]);
-    v12 = [(SBTraitsPipelineManager *)self userInterfaceStyleProvider];
-    v13 = [v11 initWithUserInterfaceStyle:{objc_msgSend(v12, "currentStyle")}];
+    userInterfaceStyleProvider = [(SBTraitsPipelineManager *)self userInterfaceStyleProvider];
+    v13 = [v11 initWithUserInterfaceStyle:{objc_msgSend(userInterfaceStyleProvider, "currentStyle")}];
 
     v14 = [objc_alloc(MEMORY[0x277D734B0]) initWithInterfaceIdiomInputs:v9 userInterfaceStyleInputs:v13 deviceOrientationInputs:v10 keyboardInputs:0 ambientPresentationInputs:0];
     v15 = self->_inputs;
@@ -105,28 +105,28 @@
   return inputs;
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v4 = a4;
-  [v4 updateZOrderLevelPreferencesWithBlock:&__block_literal_global_161];
-  [v4 updateOrientationPreferencesWithBlock:&__block_literal_global_20_0];
+  updaterCopy = updater;
+  [updaterCopy updateZOrderLevelPreferencesWithBlock:&__block_literal_global_161];
+  [updaterCopy updateOrientationPreferencesWithBlock:&__block_literal_global_20_0];
 }
 
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context
 {
-  v11 = a3;
-  v5 = [v11 role];
-  v6 = SBTraitsArbiterOrientationActuationEnabledForRole(v5);
+  participantCopy = participant;
+  role = [participantCopy role];
+  v6 = SBTraitsArbiterOrientationActuationEnabledForRole(role);
 
   if (v6)
   {
-    v7 = [v11 currentOrientation];
-    if (v7 != [v11 previousOrientation])
+    currentOrientation = [participantCopy currentOrientation];
+    if (currentOrientation != [participantCopy previousOrientation])
     {
-      v8 = [(SBTraitsPipelineManager *)self sceneDelegate];
-      v9 = [v8 windowScene];
-      v10 = [v9 displayLayoutPublisher];
-      [v10 setInterfaceOrientation:v7];
+      sceneDelegate = [(SBTraitsPipelineManager *)self sceneDelegate];
+      windowScene = [sceneDelegate windowScene];
+      displayLayoutPublisher = [windowScene displayLayoutPublisher];
+      [displayLayoutPublisher setInterfaceOrientation:currentOrientation];
     }
   }
 }
@@ -134,39 +134,39 @@
 - (void)_updateInputsForCurrentUserInterfaceStyle
 {
   v3 = objc_alloc(MEMORY[0x277D734C8]);
-  v4 = [(SBTraitsPipelineManager *)self userInterfaceStyleProvider];
-  v12 = [v3 initWithUserInterfaceStyle:{objc_msgSend(v4, "currentStyle")}];
+  userInterfaceStyleProvider = [(SBTraitsPipelineManager *)self userInterfaceStyleProvider];
+  v12 = [v3 initWithUserInterfaceStyle:{objc_msgSend(userInterfaceStyleProvider, "currentStyle")}];
 
   v5 = objc_alloc(MEMORY[0x277D734B0]);
-  v6 = [(TRAArbitrationInputs *)self->_inputs interfaceIdiomInputs];
-  v7 = [(TRAArbitrationInputs *)self->_inputs deviceOrientationInputs];
-  v8 = [(TRAArbitrationInputs *)self->_inputs keyboardInputs];
-  v9 = [(TRAArbitrationInputs *)self->_inputs ambientPresentationInputs];
-  v10 = [v5 initWithInterfaceIdiomInputs:v6 userInterfaceStyleInputs:v12 deviceOrientationInputs:v7 keyboardInputs:v8 ambientPresentationInputs:v9];
+  interfaceIdiomInputs = [(TRAArbitrationInputs *)self->_inputs interfaceIdiomInputs];
+  deviceOrientationInputs = [(TRAArbitrationInputs *)self->_inputs deviceOrientationInputs];
+  keyboardInputs = [(TRAArbitrationInputs *)self->_inputs keyboardInputs];
+  ambientPresentationInputs = [(TRAArbitrationInputs *)self->_inputs ambientPresentationInputs];
+  v10 = [v5 initWithInterfaceIdiomInputs:interfaceIdiomInputs userInterfaceStyleInputs:v12 deviceOrientationInputs:deviceOrientationInputs keyboardInputs:keyboardInputs ambientPresentationInputs:ambientPresentationInputs];
   inputs = self->_inputs;
   self->_inputs = v10;
 }
 
-- (void)_noteInputsNeedUpdateWithAnimationSettings:(id)a3 fence:(id)a4 reason:(id)a5
+- (void)_noteInputsNeedUpdateWithAnimationSettings:(id)settings fence:(id)fence reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(SBTraitsPipelineManager *)self arbiter];
+  settingsCopy = settings;
+  fenceCopy = fence;
+  reasonCopy = reason;
+  arbiter = [(SBTraitsPipelineManager *)self arbiter];
   v13 = objc_alloc(MEMORY[0x277D73498]);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __98__SBTraitsExternalDisplayPipelineManager__noteInputsNeedUpdateWithAnimationSettings_fence_reason___block_invoke;
   v21 = &unk_2783B5238;
-  v22 = v9;
-  v23 = v10;
-  v24 = v11;
+  v22 = settingsCopy;
+  v23 = fenceCopy;
+  v24 = reasonCopy;
   v25 = a2;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v14 = reasonCopy;
+  v15 = fenceCopy;
+  v16 = settingsCopy;
   v17 = [v13 initWithBuilder:&v18];
-  [v12 setNeedsUpdateArbitrationWithContext:{v17, v18, v19, v20, v21}];
+  [arbiter setNeedsUpdateArbitrationWithContext:{v17, v18, v19, v20, v21}];
 }
 
 void __98__SBTraitsExternalDisplayPipelineManager__noteInputsNeedUpdateWithAnimationSettings_fence_reason___block_invoke(uint64_t a1, void *a2)

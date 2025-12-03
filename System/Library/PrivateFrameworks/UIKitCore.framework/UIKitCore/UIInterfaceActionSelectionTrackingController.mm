@@ -1,53 +1,53 @@
 @interface UIInterfaceActionSelectionTrackingController
-- (BOOL)_allowSelectionForCurrentGestureLocationWithGestureRecognizer:(id)a3;
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_allowSelectionForCurrentGestureLocationWithGestureRecognizer:(id)recognizer;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)_isPresentedAndVisible;
-- (BOOL)_shouldDisableSelectionTrackingIfScrollingScrollView:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)_shouldDisableSelectionTrackingIfScrollingScrollView:(id)view;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (CGPoint)actionSelectionInitialLocationInContainerView;
-- (UIInterfaceActionSelectionTrackingController)initWithTrackableContainerView:(id)a3 actionsScrollView:(id)a4;
+- (UIInterfaceActionSelectionTrackingController)initWithTrackableContainerView:(id)view actionsScrollView:(id)scrollView;
 - (UIScrollView)actionsScrollView;
 - (UIView)trackableContainerView;
-- (id)_actionViewAtCurrentLocationForGestureRecognizer:(id)a3;
-- (id)_actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:(id)a3;
+- (id)_actionViewAtCurrentLocationForGestureRecognizer:(id)recognizer;
+- (id)_actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:(id)recognizer;
 - (id)_allActionViewsIncludingCooperatingActionViews;
 - (id)_allGestureRecognizers;
 - (id)_interfaceActionOfFocusedRepresentationView;
-- (void)_handleActionSelectionGestureRecognizer:(id)a3;
+- (void)_handleActionSelectionGestureRecognizer:(id)recognizer;
 - (void)_initializeSelectionGestureRecognizer;
-- (void)_noteScrollView:(id)a3 isUserScrolling:(BOOL)a4;
-- (void)_performRecursivelyWithVisitedCooperatingControllers:(id)a3 block:(id)a4;
+- (void)_noteScrollView:(id)view isUserScrolling:(BOOL)scrolling;
+- (void)_performRecursivelyWithVisitedCooperatingControllers:(id)controllers block:(id)block;
 - (void)_registerForScrollViewNotifications;
-- (void)_rolloverActionChanged:(id)a3;
-- (void)_setSystemProvidedGestureRecognizer:(id)a3;
+- (void)_rolloverActionChanged:(id)changed;
+- (void)_setSystemProvidedGestureRecognizer:(id)recognizer;
 - (void)_unregisterForScrollViewNotifications;
-- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)a3;
+- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)recognizer;
 - (void)dealloc;
 - (void)deselectAllActions;
-- (void)setCooperatingSelectionTrackingControllers:(id)a3;
-- (void)setScrubbingEnabled:(BOOL)a3;
-- (void)setSelectByIndirectPointerTouchEnabled:(BOOL)a3;
-- (void)setSelectByPressGestureEnabled:(BOOL)a3;
-- (void)setSelectByPressGestureRecognizer:(id)a3;
-- (void)setSelectionFeedbackEnabled:(BOOL)a3;
+- (void)setCooperatingSelectionTrackingControllers:(id)controllers;
+- (void)setScrubbingEnabled:(BOOL)enabled;
+- (void)setSelectByIndirectPointerTouchEnabled:(BOOL)enabled;
+- (void)setSelectByPressGestureEnabled:(BOOL)enabled;
+- (void)setSelectByPressGestureRecognizer:(id)recognizer;
+- (void)setSelectionFeedbackEnabled:(BOOL)enabled;
 @end
 
 @implementation UIInterfaceActionSelectionTrackingController
 
-- (UIInterfaceActionSelectionTrackingController)initWithTrackableContainerView:(id)a3 actionsScrollView:(id)a4
+- (UIInterfaceActionSelectionTrackingController)initWithTrackableContainerView:(id)view actionsScrollView:(id)scrollView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
   v13.receiver = self;
   v13.super_class = UIInterfaceActionSelectionTrackingController;
   v8 = [(UIInterfaceActionSelectionTrackingController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_trackableContainerView, v6);
+    objc_storeWeak(&v8->_trackableContainerView, viewCopy);
     [(UIInterfaceActionSelectionTrackingController *)v9 _initializeSelectionGestureRecognizer];
-    objc_storeWeak(&v9->_actionsScrollView, v7);
+    objc_storeWeak(&v9->_actionsScrollView, scrollViewCopy);
     v10 = [MEMORY[0x1E695DFA8] set];
     viewsRequiringSelectionGestureDisabling = v9->_viewsRequiringSelectionGestureDisabling;
     v9->_viewsRequiringSelectionGestureDisabling = v10;
@@ -67,16 +67,16 @@
   [(UIInterfaceActionSelectionTrackingController *)&v3 dealloc];
 }
 
-- (void)setCooperatingSelectionTrackingControllers:(id)a3
+- (void)setCooperatingSelectionTrackingControllers:(id)controllers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  controllersCopy = controllers;
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = controllersCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -92,7 +92,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [v5 addPointer:{*(*(&v11 + 1) + 8 * v10++), v11}];
+        [weakObjectsPointerArray addPointer:{*(*(&v11 + 1) + 8 * v10++), v11}];
       }
 
       while (v8 != v10);
@@ -102,21 +102,21 @@
     while (v8);
   }
 
-  [(UIInterfaceActionSelectionTrackingController *)self setWeakCooperatingSelectionTrackingControllers:v5];
+  [(UIInterfaceActionSelectionTrackingController *)self setWeakCooperatingSelectionTrackingControllers:weakObjectsPointerArray];
 }
 
-- (void)setScrubbingEnabled:(BOOL)a3
+- (void)setScrubbingEnabled:(BOOL)enabled
 {
-  if (self->_scrubbingEnabled != a3)
+  if (self->_scrubbingEnabled != enabled)
   {
-    self->_scrubbingEnabled = a3;
+    self->_scrubbingEnabled = enabled;
     selectionGestureRecognizer = self->_selectionGestureRecognizer;
-    if (a3)
+    if (enabled)
     {
       [(UILongPressGestureRecognizer *)selectionGestureRecognizer setAllowableMovement:1.79769313e308];
       [(UILongPressGestureRecognizer *)self->_selectionGestureRecognizer setCancelPastAllowableMovement:0];
-      v6 = [(UIGestureRecognizer *)self->_selectionDelayGestureRecognizer view];
-      [v6 removeGestureRecognizer:self->_selectionDelayGestureRecognizer];
+      view = [(UIGestureRecognizer *)self->_selectionDelayGestureRecognizer view];
+      [view removeGestureRecognizer:self->_selectionDelayGestureRecognizer];
 
       selectionDelayGestureRecognizer = self->_selectionDelayGestureRecognizer;
       self->_selectionDelayGestureRecognizer = 0;
@@ -132,19 +132,19 @@
 
       [(UIGestureRecognizer *)self->_selectionDelayGestureRecognizer setDelegate:self];
       [(UIGestureRecognizer *)self->_selectionDelayGestureRecognizer setName:@"UIInterfaceAction.selectionDelay"];
-      v10 = [(UIGestureRecognizer *)self->_selectionGestureRecognizer view];
-      [(_UIInterfaceActionSelectionDelayGestureRecognizer *)v10 addGestureRecognizer:self->_selectionDelayGestureRecognizer];
-      selectionDelayGestureRecognizer = v10;
+      view2 = [(UIGestureRecognizer *)self->_selectionGestureRecognizer view];
+      [(_UIInterfaceActionSelectionDelayGestureRecognizer *)view2 addGestureRecognizer:self->_selectionDelayGestureRecognizer];
+      selectionDelayGestureRecognizer = view2;
     }
   }
 }
 
-- (void)setSelectByPressGestureEnabled:(BOOL)a3
+- (void)setSelectByPressGestureEnabled:(BOOL)enabled
 {
-  if (self->_selectByPressGestureEnabled != a3)
+  if (self->_selectByPressGestureEnabled != enabled)
   {
-    self->_selectByPressGestureEnabled = a3;
-    if (a3)
+    self->_selectByPressGestureEnabled = enabled;
+    if (enabled)
     {
       v5 = [[_UIInterfaceActionSelectByPressGestureRecognizer alloc] initWithFocusedInterfaceActionPressDelegate:self];
     }
@@ -159,19 +159,19 @@
   }
 }
 
-- (void)setSelectionFeedbackEnabled:(BOOL)a3
+- (void)setSelectionFeedbackEnabled:(BOOL)enabled
 {
-  if (self->_selectionFeedbackEnabled != a3)
+  if (self->_selectionFeedbackEnabled != enabled)
   {
-    self->_selectionFeedbackEnabled = a3;
-    if (a3)
+    self->_selectionFeedbackEnabled = enabled;
+    if (enabled)
     {
       v5 = +[_UISelectionFeedbackGeneratorConfiguration defaultConfiguration];
       v6 = [v5 tweakedConfigurationForClass:objc_opt_class() usage:@"retarget"];
 
       v7 = [UISelectionFeedbackGenerator alloc];
-      v8 = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
-      v9 = [(UIFeedbackGenerator *)v7 initWithConfiguration:v6 view:v8];
+      trackableContainerView = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
+      v9 = [(UIFeedbackGenerator *)v7 initWithConfiguration:v6 view:trackableContainerView];
     }
 
     else
@@ -183,13 +183,13 @@
   }
 }
 
-- (void)setSelectByIndirectPointerTouchEnabled:(BOOL)a3
+- (void)setSelectByIndirectPointerTouchEnabled:(BOOL)enabled
 {
-  if (self->_selectByIndirectPointerTouchEnabled != a3)
+  if (self->_selectByIndirectPointerTouchEnabled != enabled)
   {
-    self->_selectByIndirectPointerTouchEnabled = a3;
+    self->_selectByIndirectPointerTouchEnabled = enabled;
     selectionGestureRecognizer = self->_selectionGestureRecognizer;
-    if (a3)
+    if (enabled)
     {
       v4 = &unk_1EFE2B320;
     }
@@ -203,16 +203,16 @@
   }
 }
 
-- (void)setSelectByPressGestureRecognizer:(id)a3
+- (void)setSelectByPressGestureRecognizer:(id)recognizer
 {
   p_selectByPressGestureRecognizer = &self->_selectByPressGestureRecognizer;
-  v9 = a3;
+  recognizerCopy = recognizer;
   if (([(_UIInterfaceActionSelectByPressGestureRecognizer *)*p_selectByPressGestureRecognizer isEqual:?]& 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_trackableContainerView);
     [WeakRetained removeGestureRecognizer:self->_selectByPressGestureRecognizer];
 
-    objc_storeStrong(&self->_selectByPressGestureRecognizer, a3);
+    objc_storeStrong(&self->_selectByPressGestureRecognizer, recognizer);
     selectByPressGestureRecognizer = self->_selectByPressGestureRecognizer;
     if (selectByPressGestureRecognizer)
     {
@@ -230,30 +230,30 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-  if (v3)
+  _allActionViewsIncludingCooperatingActionViews = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
+  action = [_allActionViewsIncludingCooperatingActionViews countByEnumeratingWithState:&v8 objects:v12 count:16];
+  if (action)
   {
     v4 = *v9;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != action; i = i + 1)
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_allActionViewsIncludingCooperatingActionViews);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
         if ([v6 isFocused])
         {
-          v3 = [v6 action];
+          action = [v6 action];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-      if (v3)
+      action = [_allActionViewsIncludingCooperatingActionViews countByEnumeratingWithState:&v8 objects:v12 count:16];
+      if (action)
       {
         continue;
       }
@@ -264,30 +264,30 @@
 
 LABEL_11:
 
-  return v3;
+  return action;
 }
 
-- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)a3
+- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [(UIInterfaceActionSelectionTrackingController *)self _setSystemProvidedGestureRecognizer:v4];
-  [(UIInterfaceActionSelectionTrackingController *)self _handleActionSelectionGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  [(UIInterfaceActionSelectionTrackingController *)self _setSystemProvidedGestureRecognizer:recognizerCopy];
+  [(UIInterfaceActionSelectionTrackingController *)self _handleActionSelectionGestureRecognizer:recognizerCopy];
 }
 
-- (void)_setSystemProvidedGestureRecognizer:(id)a3
+- (void)_setSystemProvidedGestureRecognizer:(id)recognizer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recognizerCopy = recognizer;
   p_systemProvidedGestureRecognizer = &self->_systemProvidedGestureRecognizer;
   systemProvidedGestureRecognizer = self->_systemProvidedGestureRecognizer;
-  if (systemProvidedGestureRecognizer != v5)
+  if (systemProvidedGestureRecognizer != recognizerCopy)
   {
     if (systemProvidedGestureRecognizer)
     {
       [(UIGestureRecognizer *)systemProvidedGestureRecognizer removeTarget:self action:0];
     }
 
-    objc_storeStrong(&self->_systemProvidedGestureRecognizer, a3);
+    objc_storeStrong(&self->_systemProvidedGestureRecognizer, recognizer);
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
@@ -304,9 +304,9 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        if (*p_systemProvidedGestureRecognizer != v5)
+        if (*p_systemProvidedGestureRecognizer != recognizerCopy)
         {
-          [v5 setEnabled:*p_systemProvidedGestureRecognizer == 0];
+          [recognizerCopy setEnabled:*p_systemProvidedGestureRecognizer == 0];
         }
 
         if (!--v10)
@@ -327,35 +327,35 @@ LABEL_11:
   }
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [a3 allowedTouchTypes];
+  touchCopy = touch;
+  allowedTouchTypes = [recognizer allowedTouchTypes];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v5 type];
+  type = [touchCopy type];
 
-  v9 = [v7 numberWithInteger:v8];
-  LOBYTE(v7) = [v6 containsObject:v9];
+  v9 = [v7 numberWithInteger:type];
+  LOBYTE(v7) = [allowedTouchTypes containsObject:v9];
 
   return v7;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   selectionGestureRecognizer = self->_selectionGestureRecognizer;
-  if (self->_selectionDelayGestureRecognizer == v6)
+  if (self->_selectionDelayGestureRecognizer == recognizerCopy)
   {
-    v10 = selectionGestureRecognizer != v7;
+    v10 = selectionGestureRecognizer != gestureRecognizerCopy;
   }
 
-  else if (selectionGestureRecognizer == v6)
+  else if (selectionGestureRecognizer == recognizerCopy)
   {
-    v11 = [(UIGestureRecognizer *)v7 view];
-    v12 = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
-    if ([v11 isDescendantOfView:v12])
+    view = [(UIGestureRecognizer *)gestureRecognizerCopy view];
+    trackableContainerView = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
+    if ([view isDescendantOfView:trackableContainerView])
     {
       v10 = 1;
     }
@@ -374,33 +374,33 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_selectionGestureRecognizer != v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
+  if (self->_selectionGestureRecognizer != recognizerCopy)
   {
     goto LABEL_2;
   }
 
-  if (self->_selectionDelayGestureRecognizer == v7)
+  if (self->_selectionDelayGestureRecognizer == gestureRecognizerCopy)
   {
 LABEL_8:
     v9 = 1;
     goto LABEL_3;
   }
 
-  if ([(UIGestureRecognizer *)v7 _isGestureType:9])
+  if ([(UIGestureRecognizer *)gestureRecognizerCopy _isGestureType:9])
   {
-    v11 = [(UIGestureRecognizer *)v8 view];
-    v12 = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
-    if ([v11 isDescendantOfView:v12])
+    view = [(UIGestureRecognizer *)v8 view];
+    trackableContainerView = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
+    if ([view isDescendantOfView:trackableContainerView])
     {
-      v13 = [(UIGestureRecognizer *)v8 view];
-      v14 = [(UIInterfaceActionSelectionTrackingController *)self actionsScrollView];
+      view2 = [(UIGestureRecognizer *)v8 view];
+      actionsScrollView = [(UIInterfaceActionSelectionTrackingController *)self actionsScrollView];
 
-      if (v13 != v14)
+      if (view2 != actionsScrollView)
       {
         goto LABEL_8;
       }
@@ -420,36 +420,36 @@ LABEL_3:
 
 - (void)deselectAllActions
 {
-  v2 = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_11];
+  _allActionViewsIncludingCooperatingActionViews = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
+  [_allActionViewsIncludingCooperatingActionViews enumerateObjectsUsingBlock:&__block_literal_global_11];
 }
 
-- (void)_rolloverActionChanged:(id)a3
+- (void)_rolloverActionChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ([(UIInterfaceActionSelectionTrackingController *)self _isPresentedAndVisible])
   {
-    if ([v4 state] == 3)
+    if ([changedCopy state] == 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = [(UIInterfaceActionSelectionTrackingController *)self _actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:v4];
+      v5 = [(UIInterfaceActionSelectionTrackingController *)self _actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:changedCopy];
     }
 
-    v6 = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
+    _allActionViewsIncludingCooperatingActionViews = [(UIInterfaceActionSelectionTrackingController *)self _allActionViewsIncludingCooperatingActionViews];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71__UIInterfaceActionSelectionTrackingController__rolloverActionChanged___block_invoke;
     v9[3] = &unk_1E70F3BE8;
     v10 = v5;
     v7 = v5;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [_allActionViewsIncludingCooperatingActionViews enumerateObjectsUsingBlock:v9];
 
-    v8 = [v7 action];
-    [v7 setHighlighted:{objc_msgSend(v8, "isEnabled")}];
+    action = [v7 action];
+    [v7 setHighlighted:{objc_msgSend(action, "isEnabled")}];
   }
 }
 
@@ -463,16 +463,16 @@ uint64_t __71__UIInterfaceActionSelectionTrackingController__rolloverActionChang
   return result;
 }
 
-- (void)_handleActionSelectionGestureRecognizer:(id)a3
+- (void)_handleActionSelectionGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   if ([(UIInterfaceActionSelectionTrackingController *)self _isPresentedAndVisible])
   {
-    if (!self->_scrubbingEnabled || self->_selectionGestureRecognizer == v4 || (v5 = objc_loadWeakRetained(&self->_actionsScrollView), [v5 bounds], v7 = v6, v8 = objc_loadWeakRetained(&self->_actionsScrollView), objc_msgSend(v8, "contentSize"), v10 = v9, v8, v5, v7 >= v10))
+    if (!self->_scrubbingEnabled || self->_selectionGestureRecognizer == recognizerCopy || (v5 = objc_loadWeakRetained(&self->_actionsScrollView), [v5 bounds], v7 = v6, v8 = objc_loadWeakRetained(&self->_actionsScrollView), objc_msgSend(v8, "contentSize"), v10 = v9, v8, v5, v7 >= v10))
     {
-      if ([(UIInterfaceActionSelectionTrackingController *)self _allowSelectionForCurrentGestureLocationWithGestureRecognizer:v4])
+      if ([(UIInterfaceActionSelectionTrackingController *)self _allowSelectionForCurrentGestureLocationWithGestureRecognizer:recognizerCopy])
       {
-        v11 = [(UIInterfaceActionSelectionTrackingController *)self _actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:v4];
+        v11 = [(UIInterfaceActionSelectionTrackingController *)self _actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:recognizerCopy];
       }
 
       else
@@ -480,15 +480,15 @@ uint64_t __71__UIInterfaceActionSelectionTrackingController__rolloverActionChang
         v11 = 0;
       }
 
-      v12 = [v11 action];
-      v13 = [v12 isEnabled];
+      action = [v11 action];
+      isEnabled = [action isEnabled];
       WeakRetained = objc_loadWeakRetained(&self->_trackableContainerView);
-      v15 = [WeakRetained traitCollection];
-      v16 = [v15 preferredContentSizeCategory];
+      traitCollection = [WeakRetained traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-      if (v16)
+      if (preferredContentSizeCategory)
       {
-        v17 = !UIContentSizeCategoryIsAccessibilityCategory(v16);
+        v17 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
       }
 
       else
@@ -497,8 +497,8 @@ uint64_t __71__UIInterfaceActionSelectionTrackingController__rolloverActionChang
       }
 
       v32 = v17;
-      v18 = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
-      [(UILongPressGestureRecognizer *)v4 locationInView:v18];
+      trackableContainerView = [(UIInterfaceActionSelectionTrackingController *)self trackableContainerView];
+      [(UILongPressGestureRecognizer *)recognizerCopy locationInView:trackableContainerView];
       v20 = v19;
       v22 = v21;
 
@@ -506,10 +506,10 @@ uint64_t __71__UIInterfaceActionSelectionTrackingController__rolloverActionChang
       aBlock[1] = 3221225472;
       aBlock[2] = __88__UIInterfaceActionSelectionTrackingController__handleActionSelectionGestureRecognizer___block_invoke;
       aBlock[3] = &unk_1E70F3C10;
-      v47 = v13;
+      v47 = isEnabled;
       v23 = v11;
       v43 = v23;
-      v44 = self;
+      selfCopy = self;
       v45 = v20;
       v46 = v22;
       v24 = _Block_copy(aBlock);
@@ -531,16 +531,16 @@ uint64_t __71__UIInterfaceActionSelectionTrackingController__rolloverActionChang
       v33[1] = 3221225472;
       v34 = __88__UIInterfaceActionSelectionTrackingController__handleActionSelectionGestureRecognizer___block_invoke_6;
       v35 = &unk_1E70F3CD8;
-      v36 = self;
+      selfCopy2 = self;
       v37 = v20;
       v38 = v22;
-      if ([(UIGestureRecognizer *)v4 state]== UIGestureRecognizerStateBegan)
+      if ([(UIGestureRecognizer *)recognizerCopy state]== UIGestureRecognizerStateBegan)
       {
         v24[2](v24, 0);
         goto LABEL_13;
       }
 
-      if ([(UIGestureRecognizer *)v4 state]== UIGestureRecognizerStateChanged)
+      if ([(UIGestureRecognizer *)recognizerCopy state]== UIGestureRecognizerStateChanged)
       {
         v29 = v27[2](v27);
         v26[2](v26, 0);
@@ -558,30 +558,30 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if ([(UIGestureRecognizer *)v4 state]== UIGestureRecognizerStateEnded)
+      if ([(UIGestureRecognizer *)recognizerCopy state]== UIGestureRecognizerStateEnded)
       {
-        if (v13)
+        if (isEnabled)
         {
-          v30 = [v25 isHighlighted];
-          if ((v30 & 1) == 0 || self->_scrubbingEnabled)
+          isHighlighted = [v25 isHighlighted];
+          if ((isHighlighted & 1) == 0 || self->_scrubbingEnabled)
           {
             v26[2](v26, 1);
           }
 
           [(UIInterfaceActionSelectionTrackingController *)self _clearSystemProvidedGestureRecognizer];
-          if (v30)
+          if (isHighlighted)
           {
             v31 = +[_UIStatistics alertButtonTapCount];
             [v31 incrementValueBy:1];
 
-            [(UIInterfaceActionSelectionTrackingController *)self _invokeHandlerForInterfaceAction:v12];
+            [(UIInterfaceActionSelectionTrackingController *)self _invokeHandlerForInterfaceAction:action];
           }
 
           goto LABEL_26;
         }
       }
 
-      else if ([(UIGestureRecognizer *)v4 state]!= UIGestureRecognizerStateCancelled)
+      else if ([(UIGestureRecognizer *)recognizerCopy state]!= UIGestureRecognizerStateCancelled)
       {
 LABEL_28:
 
@@ -700,17 +700,17 @@ uint64_t __88__UIInterfaceActionSelectionTrackingController__handleActionSelecti
 - (BOOL)_isPresentedAndVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_trackableContainerView);
-  v3 = [WeakRetained window];
-  v4 = v3 != 0;
+  window = [WeakRetained window];
+  v4 = window != 0;
 
   return v4;
 }
 
-- (BOOL)_allowSelectionForCurrentGestureLocationWithGestureRecognizer:(id)a3
+- (BOOL)_allowSelectionForCurrentGestureLocationWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_trackableContainerView);
-  [v4 locationInView:WeakRetained];
+  [recognizerCopy locationInView:WeakRetained];
   v7 = v6;
   v9 = v8;
 
@@ -731,9 +731,9 @@ uint64_t __88__UIInterfaceActionSelectionTrackingController__handleActionSelecti
   return 0;
 }
 
-- (id)_actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:(id)a3
+- (id)_actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -745,7 +745,7 @@ uint64_t __88__UIInterfaceActionSelectionTrackingController__handleActionSelecti
   v8[2] = __128__UIInterfaceActionSelectionTrackingController__actionViewIncludingCooperatingActionViewsAtCurrentLocationForGestureRecognizer___block_invoke;
   v8[3] = &unk_1E70F3D00;
   v10 = &v11;
-  v5 = v4;
+  v5 = recognizerCopy;
   v9 = v5;
   [(UIInterfaceActionSelectionTrackingController *)self _performRecursivelyWithVisitedCooperatingControllers:0 block:v8];
   v6 = v12[5];
@@ -765,12 +765,12 @@ void __128__UIInterfaceActionSelectionTrackingController__actionViewIncludingCoo
   *a3 = *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (id)_actionViewAtCurrentLocationForGestureRecognizer:(id)a3
+- (id)_actionViewAtCurrentLocationForGestureRecognizer:(id)recognizer
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_trackableContainerView);
-  [v4 locationInView:WeakRetained];
+  [recognizerCopy locationInView:WeakRetained];
   v7 = v6;
   v9 = v8;
 
@@ -794,8 +794,8 @@ void __128__UIInterfaceActionSelectionTrackingController__actionViewIncludingCoo
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v15 _containingScrollView];
-        if (!v16 || (v17 = objc_loadWeakRetained(&self->_trackableContainerView), [v16 convertPoint:v17 fromView:{v7, v9}], v19 = v18, v21 = v20, v17, objc_msgSend(v16, "pointInside:withEvent:", 0, v19, v21)))
+        _containingScrollView = [v15 _containingScrollView];
+        if (!_containingScrollView || (v17 = objc_loadWeakRetained(&self->_trackableContainerView), [_containingScrollView convertPoint:v17 fromView:{v7, v9}], v19 = v18, v21 = v20, v17, objc_msgSend(_containingScrollView, "pointInside:withEvent:", 0, v19, v21)))
         {
           v22 = objc_loadWeakRetained(&self->_trackableContainerView);
           [v15 convertPoint:v22 fromView:{v7, v9}];
@@ -846,25 +846,25 @@ LABEL_13:
   v6 = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:sel__rolloverActionChanged_];
   [(UIInterfaceActionSelectionTrackingController *)self setHoverGestureRecognizer:v6];
 
-  v7 = [(UIInterfaceActionSelectionTrackingController *)self hoverGestureRecognizer];
-  [v7 setDelegate:self];
+  hoverGestureRecognizer = [(UIInterfaceActionSelectionTrackingController *)self hoverGestureRecognizer];
+  [hoverGestureRecognizer setDelegate:self];
 
   v9 = objc_loadWeakRetained(&self->_trackableContainerView);
-  v8 = [(UIInterfaceActionSelectionTrackingController *)self hoverGestureRecognizer];
-  [v9 addGestureRecognizer:v8];
+  hoverGestureRecognizer2 = [(UIInterfaceActionSelectionTrackingController *)self hoverGestureRecognizer];
+  [v9 addGestureRecognizer:hoverGestureRecognizer2];
 }
 
 - (void)_registerForScrollViewNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__UIInterfaceActionSelectionTrackingController__registerForScrollViewNotifications__block_invoke;
   v15[3] = &unk_1E70F3D28;
   objc_copyWeak(&v16, &location);
-  v5 = [v3 addObserverForName:@"_UIScrollViewWillBeginDraggingNotification" object:0 queue:v4 usingBlock:v15];
+  v5 = [defaultCenter addObserverForName:@"_UIScrollViewWillBeginDraggingNotification" object:0 queue:mainQueue usingBlock:v15];
   scrollViewWillBeginDraggingNotificationToken = self->_scrollViewWillBeginDraggingNotificationToken;
   self->_scrollViewWillBeginDraggingNotificationToken = v5;
 
@@ -873,7 +873,7 @@ LABEL_13:
   v13[2] = __83__UIInterfaceActionSelectionTrackingController__registerForScrollViewNotifications__block_invoke_2;
   v13[3] = &unk_1E70F3D28;
   objc_copyWeak(&v14, &location);
-  v7 = [v3 addObserverForName:@"_UIScrollViewDidEndDraggingNotification" object:0 queue:v4 usingBlock:v13];
+  v7 = [defaultCenter addObserverForName:@"_UIScrollViewDidEndDraggingNotification" object:0 queue:mainQueue usingBlock:v13];
   scrollViewDidEndDraggingNotificationToken = self->_scrollViewDidEndDraggingNotificationToken;
   self->_scrollViewDidEndDraggingNotificationToken = v7;
 
@@ -882,7 +882,7 @@ LABEL_13:
   v11[2] = __83__UIInterfaceActionSelectionTrackingController__registerForScrollViewNotifications__block_invoke_3;
   v11[3] = &unk_1E70F3D28;
   objc_copyWeak(&v12, &location);
-  v9 = [v3 addObserverForName:@"_UIScrollViewDidEndDeceleratingNotification" object:0 queue:v4 usingBlock:v11];
+  v9 = [defaultCenter addObserverForName:@"_UIScrollViewDidEndDeceleratingNotification" object:0 queue:mainQueue usingBlock:v11];
   scrollViewDidEndDeceleratingNotificationToken = self->_scrollViewDidEndDeceleratingNotificationToken;
   self->_scrollViewDidEndDeceleratingNotificationToken = v9;
 
@@ -927,38 +927,38 @@ void __83__UIInterfaceActionSelectionTrackingController__registerForScrollViewNo
 
 - (void)_unregisterForScrollViewNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_scrollViewWillBeginDraggingNotificationToken];
-  [v3 removeObserver:self->_scrollViewDidEndDraggingNotificationToken];
-  [v3 removeObserver:self->_scrollViewDidEndDeceleratingNotificationToken];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_scrollViewWillBeginDraggingNotificationToken];
+  [defaultCenter removeObserver:self->_scrollViewDidEndDraggingNotificationToken];
+  [defaultCenter removeObserver:self->_scrollViewDidEndDeceleratingNotificationToken];
 }
 
-- (void)_noteScrollView:(id)a3 isUserScrolling:(BOOL)a4
+- (void)_noteScrollView:(id)view isUserScrolling:(BOOL)scrolling
 {
-  v4 = a4;
-  v7 = a3;
+  scrollingCopy = scrolling;
+  viewCopy = view;
   if ([(UIInterfaceActionSelectionTrackingController *)self _shouldDisableSelectionTrackingIfScrollingScrollView:?])
   {
     viewsRequiringSelectionGestureDisabling = self->_viewsRequiringSelectionGestureDisabling;
-    if (v4)
+    if (scrollingCopy)
     {
-      [(NSMutableSet *)viewsRequiringSelectionGestureDisabling addObject:v7];
+      [(NSMutableSet *)viewsRequiringSelectionGestureDisabling addObject:viewCopy];
     }
 
     else
     {
-      [(NSMutableSet *)viewsRequiringSelectionGestureDisabling removeObject:v7];
+      [(NSMutableSet *)viewsRequiringSelectionGestureDisabling removeObject:viewCopy];
     }
 
     [(UIGestureRecognizer *)self->_selectionGestureRecognizer setEnabled:[(NSMutableSet *)self->_viewsRequiringSelectionGestureDisabling count]== 0];
   }
 }
 
-- (BOOL)_shouldDisableSelectionTrackingIfScrollingScrollView:(id)a3
+- (BOOL)_shouldDisableSelectionTrackingIfScrollingScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_actionsScrollView);
-  if (WeakRetained == v4)
+  if (WeakRetained == viewCopy)
   {
     v7 = 1;
   }
@@ -966,30 +966,30 @@ void __83__UIInterfaceActionSelectionTrackingController__registerForScrollViewNo
   else
   {
     v6 = objc_loadWeakRetained(&self->_trackableContainerView);
-    v7 = [v6 isDescendantOfView:v4];
+    v7 = [v6 isDescendantOfView:viewCopy];
   }
 
   return v7;
 }
 
-- (void)_performRecursivelyWithVisitedCooperatingControllers:(id)a3 block:(id)a4
+- (void)_performRecursivelyWithVisitedCooperatingControllers:(id)controllers block:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 containsObject:self] & 1) == 0)
+  controllersCopy = controllers;
+  blockCopy = block;
+  if (([controllersCopy containsObject:self] & 1) == 0)
   {
-    if (!v6)
+    if (!controllersCopy)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      controllersCopy = [MEMORY[0x1E695DF70] array];
     }
 
-    [v6 addObject:self];
+    [controllersCopy addObject:self];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23[0] = 0;
-    v7[2](v7, self, v23);
+    blockCopy[2](blockCopy, self, v23);
     if ((v21[3] & 1) == 0)
     {
       [(NSPointerArray *)self->_weakCooperatingSelectionTrackingControllers compact];
@@ -1016,9 +1016,9 @@ LABEL_7:
           v13[1] = 3221225472;
           v13[2] = __107__UIInterfaceActionSelectionTrackingController__performRecursivelyWithVisitedCooperatingControllers_block___block_invoke;
           v13[3] = &unk_1E70F3D50;
-          v14 = v7;
+          v14 = blockCopy;
           v15 = &v20;
-          [v12 _performRecursivelyWithVisitedCooperatingControllers:v6 block:v13];
+          [v12 _performRecursivelyWithVisitedCooperatingControllers:controllersCopy block:v13];
           LOBYTE(v12) = *(v21 + 24);
 
           if (v12)
@@ -1053,12 +1053,12 @@ uint64_t __107__UIInterfaceActionSelectionTrackingController__performRecursively
 
 - (id)_allActionViewsIncludingCooperatingActionViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __94__UIInterfaceActionSelectionTrackingController__allActionViewsIncludingCooperatingActionViews__block_invoke;
   v6[3] = &unk_1E70F3D78;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(UIInterfaceActionSelectionTrackingController *)self _performRecursivelyWithVisitedCooperatingControllers:0 block:v6];
 
@@ -1067,11 +1067,11 @@ uint64_t __107__UIInterfaceActionSelectionTrackingController__performRecursively
 
 - (id)_allGestureRecognizers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_selectionGestureRecognizer)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_selectByPressGestureRecognizer)

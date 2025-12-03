@@ -1,20 +1,20 @@
 @interface CALNNotificationDataSourceUtils
-+ (id)calendarWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4;
-+ (id)eventWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4;
-+ (id)objectIDWithSourceClientIdentifier:(id)a3;
-+ (id)sourceClientIdentifierForNotification:(id)a3;
-+ (void)clearSharedCalendarInvitationResponseWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4;
-+ (void)hideCalendarFromNotificationCenter:(id)a3 inEventStore:(id)a4;
-+ (void)reportSharedCalendarInvitationAsJunkWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4;
-+ (void)respondToSharedCalendarInvitationWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4 withDataAccessExpressConnection:(id)a5 accept:(BOOL)a6;
++ (id)calendarWithSourceClientIdentifier:(id)identifier inEventStore:(id)store;
++ (id)eventWithSourceClientIdentifier:(id)identifier inEventStore:(id)store;
++ (id)objectIDWithSourceClientIdentifier:(id)identifier;
++ (id)sourceClientIdentifierForNotification:(id)notification;
++ (void)clearSharedCalendarInvitationResponseWithSourceClientIdentifier:(id)identifier inEventStore:(id)store;
++ (void)hideCalendarFromNotificationCenter:(id)center inEventStore:(id)store;
++ (void)reportSharedCalendarInvitationAsJunkWithSourceClientIdentifier:(id)identifier inEventStore:(id)store;
++ (void)respondToSharedCalendarInvitationWithSourceClientIdentifier:(id)identifier inEventStore:(id)store withDataAccessExpressConnection:(id)connection accept:(BOOL)accept;
 @end
 
 @implementation CALNNotificationDataSourceUtils
 
-+ (id)objectIDWithSourceClientIdentifier:(id)a3
++ (id)objectIDWithSourceClientIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+  identifierCopy = identifier;
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:identifierCopy];
   if (v4)
   {
     v5 = [MEMORY[0x277CC5A60] objectIDWithURL:v4];
@@ -46,27 +46,27 @@ LABEL_9:
   return v5;
 }
 
-+ (id)sourceClientIdentifierForNotification:(id)a3
++ (id)sourceClientIdentifierForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 type];
-  if (v4 > 0xE)
+  notificationCopy = notification;
+  type = [notificationCopy type];
+  if (type > 0xE)
   {
     v6 = 0;
   }
 
   else
   {
-    if (((1 << v4) & 0x7EF0) != 0)
+    if (((1 << type) & 0x7EF0) != 0)
     {
-      v5 = [v3 objectID];
-      [v5 stringRepresentation];
+      objectID = [notificationCopy objectID];
+      [objectID stringRepresentation];
     }
 
     else
     {
-      v5 = [v3 URL];
-      [v5 absoluteString];
+      objectID = [notificationCopy URL];
+      [objectID absoluteString];
     }
     v6 = ;
   }
@@ -74,14 +74,14 @@ LABEL_9:
   return v6;
 }
 
-+ (id)eventWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4
++ (id)eventWithSourceClientIdentifier:(id)identifier inEventStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v7 = [MEMORY[0x277CBEBC0] URLWithString:identifierCopy];
   if (v7)
   {
-    v8 = [v6 _eventWithURI:v7 checkValid:0];
+    v8 = [storeCopy _eventWithURI:v7 checkValid:0];
   }
 
   else
@@ -98,16 +98,16 @@ LABEL_9:
   return v8;
 }
 
-+ (id)calendarWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4
++ (id)calendarWithSourceClientIdentifier:(id)identifier inEventStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  storeCopy = store;
+  if (identifierCopy)
   {
-    v7 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+    v7 = [MEMORY[0x277CBEBC0] URLWithString:identifierCopy];
     if (v7)
     {
-      v8 = [v6 calendarWithExternalURI:v7];
+      v8 = [storeCopy calendarWithExternalURI:v7];
       v9 = v8;
       if (v8)
       {
@@ -153,36 +153,36 @@ LABEL_9:
   return v10;
 }
 
-+ (void)respondToSharedCalendarInvitationWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4 withDataAccessExpressConnection:(id)a5 accept:(BOOL)a6
++ (void)respondToSharedCalendarInvitationWithSourceClientIdentifier:(id)identifier inEventStore:(id)store withDataAccessExpressConnection:(id)connection accept:(BOOL)accept
 {
-  v6 = a6;
-  v21 = a4;
-  v10 = a5;
-  v11 = [a1 calendarWithSourceClientIdentifier:a3 inEventStore:v21];
+  acceptCopy = accept;
+  storeCopy = store;
+  connectionCopy = connection;
+  v11 = [self calendarWithSourceClientIdentifier:identifier inEventStore:storeCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = v6 ? 1 : 2;
-    v14 = [v11 calendarIdentifier];
-    v15 = [v12 source];
-    v16 = [v15 externalID];
-    [v10 respondToSharedCalendarInvite:v13 forCalendarWithID:v14 accountID:v16 queue:MEMORY[0x277D85CD0] completionBlock:0];
+    v13 = acceptCopy ? 1 : 2;
+    calendarIdentifier = [v11 calendarIdentifier];
+    source = [v12 source];
+    externalID = [source externalID];
+    [connectionCopy respondToSharedCalendarInvite:v13 forCalendarWithID:calendarIdentifier accountID:externalID queue:MEMORY[0x277D85CD0] completionBlock:0];
 
-    if (v6)
+    if (acceptCopy)
     {
-      [a1 hideCalendarFromNotificationCenter:v12 inEventStore:v21];
+      [self hideCalendarFromNotificationCenter:v12 inEventStore:storeCopy];
       v17 = MEMORY[0x277CC5A78];
-      v18 = [v12 sharedOwnerName];
-      v19 = [v12 sharedOwnerEmail];
-      v20 = [v12 sharedOwnerPhoneNumber];
-      [v17 recordRecentForContactWithName:v18 emailAddress:v19 phoneNumber:v20];
+      sharedOwnerName = [v12 sharedOwnerName];
+      sharedOwnerEmail = [v12 sharedOwnerEmail];
+      sharedOwnerPhoneNumber = [v12 sharedOwnerPhoneNumber];
+      [v17 recordRecentForContactWithName:sharedOwnerName emailAddress:sharedOwnerEmail phoneNumber:sharedOwnerPhoneNumber];
     }
   }
 }
 
-+ (void)reportSharedCalendarInvitationAsJunkWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4
++ (void)reportSharedCalendarInvitationAsJunkWithSourceClientIdentifier:(id)identifier inEventStore:(id)store
 {
-  v4 = [a1 calendarWithSourceClientIdentifier:a3 inEventStore:a4];
+  v4 = [self calendarWithSourceClientIdentifier:identifier inEventStore:store];
   if (v4)
   {
     v5 = v4;
@@ -191,16 +191,16 @@ LABEL_9:
   }
 }
 
-+ (void)hideCalendarFromNotificationCenter:(id)a3 inEventStore:(id)a4
++ (void)hideCalendarFromNotificationCenter:(id)center inEventStore:(id)store
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v14[0] = v5;
+  centerCopy = center;
+  v14[0] = centerCopy;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
+  storeCopy = store;
   v8 = [v6 arrayWithObjects:v14 count:1];
   v13 = 0;
-  v9 = [v7 hideCalendarsFromNotificationCenter:v8 error:&v13];
+  v9 = [storeCopy hideCalendarsFromNotificationCenter:v8 error:&v13];
 
   v10 = v13;
   if ((v9 & 1) == 0)
@@ -208,28 +208,28 @@ LABEL_9:
     v11 = +[CALNLogSubsystem defaultCategory];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [CALNNotificationDataSourceUtils hideCalendarFromNotificationCenter:v5 inEventStore:?];
+      [CALNNotificationDataSourceUtils hideCalendarFromNotificationCenter:centerCopy inEventStore:?];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)clearSharedCalendarInvitationResponseWithSourceClientIdentifier:(id)a3 inEventStore:(id)a4
++ (void)clearSharedCalendarInvitationResponseWithSourceClientIdentifier:(id)identifier inEventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 objectIDWithSourceClientIdentifier:v6];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v8 = [self objectIDWithSourceClientIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {
     if ([v8 entityType] == 16)
     {
-      v10 = [v7 publicObjectWithObjectID:v9];
+      v10 = [storeCopy publicObjectWithObjectID:v9];
       if (v10)
       {
         v14 = 0;
-        v11 = [v7 removeInviteReplyNotification:v10 error:&v14];
+        v11 = [storeCopy removeInviteReplyNotification:v10 error:&v14];
         v12 = v14;
         if ((v11 & 1) == 0)
         {

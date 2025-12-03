@@ -1,21 +1,21 @@
 @interface SUUIMessageBanner
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIMessageBanner)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIMessageBanner)initWithFrame:(CGRect)frame;
 - (SUUIMessageBannerDelegate)delegate;
-- (void)_buttonAction:(id)a3;
-- (void)_clearButtonAction:(id)a3;
+- (void)_buttonAction:(id)action;
+- (void)_clearButtonAction:(id)action;
 - (void)layoutSubviews;
-- (void)setMessage:(id)a3;
-- (void)setShowsClearButton:(BOOL)a3;
+- (void)setMessage:(id)message;
+- (void)setShowsClearButton:(BOOL)button;
 @end
 
 @implementation SUUIMessageBanner
 
-- (SUUIMessageBanner)initWithFrame:(CGRect)a3
+- (SUUIMessageBanner)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = SUUIMessageBanner;
-  v3 = [(SUUIMessageBanner *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIMessageBanner *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -39,18 +39,18 @@
     [(UIView *)v10 setBackgroundColor:v11];
 
     [(SUUIMessageBanner *)v3 addSubview:v3->_borderView];
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [(SUUIMessageBanner *)v3 setBackgroundColor:v12];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SUUIMessageBanner *)v3 setBackgroundColor:whiteColor];
   }
 
   return v3;
 }
 
-- (void)setShowsClearButton:(BOOL)a3
+- (void)setShowsClearButton:(BOOL)button
 {
-  if ([(SUUIMessageBanner *)self showsClearButton]!= a3)
+  if ([(SUUIMessageBanner *)self showsClearButton]!= button)
   {
-    if (a3)
+    if (button)
     {
       v5 = objc_alloc_init(SUUIMessageBannerCloseButton);
       clearButton = self->_clearButton;
@@ -80,11 +80,11 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D74240];
-  v5 = a3;
+  messageCopy = message;
   v6 = objc_alloc_init(v4);
   [v6 setAlignment:1];
   [v6 setLineBreakMode:4];
@@ -92,14 +92,14 @@
   v7 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
   v13[0] = v7;
   v12[1] = *MEMORY[0x277D740C0];
-  v8 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v12[2] = *MEMORY[0x277D74118];
-  v13[1] = v8;
+  v13[1] = blackColor;
   v13[2] = v6;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   label = self->_label;
-  v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5 attributes:v9];
+  v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:messageCopy attributes:v9];
 
   [(UILabel *)label setAttributedText:v11];
 }
@@ -121,11 +121,11 @@
   v34.size.width = v8;
   v34.size.height = v10;
   MaxY = CGRectGetMaxY(v34);
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v15 = MaxY - 1.0 / v14;
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(UIView *)borderView setFrame:v6, v15, v8, 1.0 / v17];
 
   clearButton = self->_clearButton;
@@ -136,11 +136,11 @@
     [(UIButton *)self->_clearButton frame];
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x277D75418] currentDevice];
-    v24 = [v23 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v25 = 10.0;
-    if ((v24 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v25 = 20.0;
     }
@@ -159,10 +159,10 @@
   }
 
   label = self->_label;
-  v30 = [MEMORY[0x277D75418] currentDevice];
-  v31 = [v30 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v31 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v32 = 20.0;
   }
@@ -180,15 +180,15 @@
   [(UILabel *)label setFrame:v38.origin.x, v38.origin.y, v38.size.width, v38.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   label = self->_label;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v7 = 40.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v7 = 20.0;
   }
@@ -201,13 +201,13 @@
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained askPermissionBannerDidSelect:self];
 }
 
-- (void)_clearButtonAction:(id)a3
+- (void)_clearButtonAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

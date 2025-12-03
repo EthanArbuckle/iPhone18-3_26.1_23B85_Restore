@@ -1,5 +1,5 @@
 @interface WFForecastDataParserUtils
-+ (id)stringFromKeyPath:(id)a3;
++ (id)stringFromKeyPath:(id)path;
 @end
 
 @implementation WFForecastDataParserUtils
@@ -16,27 +16,27 @@ BOOL __52__WFForecastDataParserUtils_ascendingTimeComparator__block_invoke(uint6
   return v8;
 }
 
-+ (id)stringFromKeyPath:(id)a3
++ (id)stringFromKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 count])
+  pathCopy = path;
+  if ([pathCopy count])
   {
     v4 = MEMORY[0x277CCAB68];
-    v5 = [v3 objectAtIndexedSubscript:0];
+    v5 = [pathCopy objectAtIndexedSubscript:0];
     v6 = [v4 stringWithFormat:@"[ %@", v5];
 
-    if ([v3 count] >= 2)
+    if ([pathCopy count] >= 2)
     {
       v7 = 1;
       do
       {
-        v8 = [v3 objectAtIndexedSubscript:v7];
+        v8 = [pathCopy objectAtIndexedSubscript:v7];
         [v6 appendFormat:@" → %@", v8];
 
         ++v7;
       }
 
-      while (v7 < [v3 count]);
+      while (v7 < [pathCopy count]);
     }
 
     [v6 appendString:@" ]"];

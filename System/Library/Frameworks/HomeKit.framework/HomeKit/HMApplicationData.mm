@@ -1,44 +1,44 @@
 @interface HMApplicationData
 + (NSSet)allowedObjectClasses;
-+ (void)validateObject:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (HMApplicationData)initWithDictionary:(id)a3;
-- (HMApplicationData)initWithDictionaryFromCoder:(id)a3 key:(id)a4;
++ (void)validateObject:(uint64_t)object;
+- (BOOL)isEqual:(id)equal;
+- (HMApplicationData)initWithDictionary:(id)dictionary;
+- (HMApplicationData)initWithDictionaryFromCoder:(id)coder key:(id)key;
 - (NSArray)allKeys;
 - (NSArray)allValues;
 - (NSDictionary)dictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(id)key;
 - (unint64_t)hash;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation HMApplicationData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMApplicationData alloc];
-  v5 = [(HMApplicationData *)self dictionary];
-  v6 = [(HMApplicationData *)v4 initWithDictionary:v5];
+  dictionary = [(HMApplicationData *)self dictionary];
+  v6 = [(HMApplicationData *)v4 initWithDictionary:dictionary];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMApplicationData *)self dictionary];
-  v3 = [v2 hash];
+  dictionary = [(HMApplicationData *)self dictionary];
+  v3 = [dictionary hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -49,9 +49,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMApplicationData *)self dictionary];
-    v8 = [v6 dictionary];
-    v9 = [v7 isEqualToDictionary:v8];
+    dictionary = [(HMApplicationData *)self dictionary];
+    dictionary2 = [v6 dictionary];
+    v9 = [dictionary isEqualToDictionary:dictionary2];
   }
 
   else
@@ -71,29 +71,29 @@
   return v3;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    [HMApplicationData validateObject:v8];
+    [HMApplicationData validateObject:objectCopy];
     p_lock = &self->_lock;
     os_unfair_lock_lock_with_options();
-    [(NSMutableDictionary *)self->_mutableDictionary setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_mutableDictionary setObject:objectCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
     p_lock = &self->_lock;
     os_unfair_lock_lock_with_options();
-    [(NSMutableDictionary *)self->_mutableDictionary setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_mutableDictionary setObject:0 forKeyedSubscript:keyCopy];
   }
 
   os_unfair_lock_unlock(p_lock);
 }
 
-+ (void)validateObject:(uint64_t)a1
++ (void)validateObject:(uint64_t)object
 {
   v35 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -238,37 +238,37 @@ void __36__HMApplicationData_validateObject___block_invoke(uint64_t a1, void *a2
   [(HMApplicationData *)*(a1 + 40) validateObject:v5];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMApplicationData *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dictionary = [(HMApplicationData *)self dictionary];
+  v6 = [dictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
 - (NSArray)allValues
 {
-  v2 = [(HMApplicationData *)self dictionary];
-  v3 = [v2 allValues];
+  dictionary = [(HMApplicationData *)self dictionary];
+  allValues = [dictionary allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)allKeys
 {
-  v2 = [(HMApplicationData *)self dictionary];
-  v3 = [v2 allKeys];
+  dictionary = [(HMApplicationData *)self dictionary];
+  allKeys = [dictionary allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (HMApplicationData)initWithDictionaryFromCoder:(id)a3 key:(id)a4
+- (HMApplicationData)initWithDictionaryFromCoder:(id)coder key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() allowedObjectClasses];
-  v9 = [v7 decodeObjectOfClasses:v8 forKey:v6];
+  keyCopy = key;
+  coderCopy = coder;
+  allowedObjectClasses = [objc_opt_class() allowedObjectClasses];
+  v9 = [coderCopy decodeObjectOfClasses:allowedObjectClasses forKey:keyCopy];
 
   v10 = MEMORY[0x1E695E0F8];
   if (v9)
@@ -282,15 +282,15 @@ void __36__HMApplicationData_validateObject___block_invoke(uint64_t a1, void *a2
   return v12;
 }
 
-- (HMApplicationData)initWithDictionary:(id)a3
+- (HMApplicationData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = HMApplicationData;
   v5 = [(HMApplicationData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     mutableDictionary = v5->_mutableDictionary;
     v5->_mutableDictionary = v6;
   }

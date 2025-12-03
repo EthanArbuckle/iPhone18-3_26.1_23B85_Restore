@@ -1,15 +1,15 @@
 @interface TPSPhonebookTelephonyController
 - (CTPhoneNumberInfo)phoneNumberInfo;
 - (TPSPhonebookTelephonyController)init;
-- (TPSPhonebookTelephonyController)initWithSubscriptionContext:(id)a3;
+- (TPSPhonebookTelephonyController)initWithSubscriptionContext:(id)context;
 - (id)getPhoneNumberInfo;
-- (id)getPhoneNumberInfoWithError:(id *)a3;
+- (id)getPhoneNumberInfoWithError:(id *)error;
 - (void)fetchPhoneNumberInfo;
-- (void)fetchPhoneNumberInfoWithCompletion:(id)a3;
-- (void)phoneBookSelected:(id)a3;
-- (void)phoneNumberChanged:(id)a3;
-- (void)setPhoneNumberInfo:(id)a3;
-- (void)updatePhoneNumberInfo:(id)a3 label:(id)a4 number:(id)a5 completion:(id)a6;
+- (void)fetchPhoneNumberInfoWithCompletion:(id)completion;
+- (void)phoneBookSelected:(id)selected;
+- (void)phoneNumberChanged:(id)changed;
+- (void)setPhoneNumberInfo:(id)info;
+- (void)updatePhoneNumberInfo:(id)info label:(id)label number:(id)number completion:(id)completion;
 @end
 
 @implementation TPSPhonebookTelephonyController
@@ -21,16 +21,16 @@
   return 0;
 }
 
-- (TPSPhonebookTelephonyController)initWithSubscriptionContext:(id)a3
+- (TPSPhonebookTelephonyController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TPSPhonebookTelephonyController;
   v6 = [(TPSTelephonyController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
     [(TPSPhonebookTelephonyController *)v7 fetchPhoneNumberInfo];
   }
 
@@ -77,16 +77,16 @@ void __50__TPSPhonebookTelephonyController_phoneNumberInfo__block_invoke(uint64_
   objc_storeStrong(v7, v3);
 }
 
-- (void)setPhoneNumberInfo:(id)a3
+- (void)setPhoneNumberInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__TPSPhonebookTelephonyController_setPhoneNumberInfo___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -167,8 +167,8 @@ void __54__TPSPhonebookTelephonyController_setPhoneNumberInfo___block_invoke_2(u
 - (id)getPhoneNumberInfo
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D07DB0] sharedInstance];
-  if ([v4 isGreenTea] && objc_msgSend(v4, "deviceType") == 4)
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  if ([mEMORY[0x277D07DB0] isGreenTea] && objc_msgSend(mEMORY[0x277D07DB0], "deviceType") == 4)
   {
     v5 = TPSLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -209,11 +209,11 @@ void __54__TPSPhonebookTelephonyController_setPhoneNumberInfo___block_invoke_2(u
   return v6;
 }
 
-- (id)getPhoneNumberInfoWithError:(id *)a3
+- (id)getPhoneNumberInfoWithError:(id *)error
 {
-  v5 = [(TPSTelephonyController *)self telephonyClient];
-  v6 = [(TPSPhonebookTelephonyController *)self subscriptionContext];
-  v7 = [v5 getPhoneNumber:v6 error:a3];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSPhonebookTelephonyController *)self subscriptionContext];
+  v7 = [telephonyClient getPhoneNumber:subscriptionContext error:error];
 
   return v7;
 }
@@ -257,12 +257,12 @@ void __55__TPSPhonebookTelephonyController_fetchPhoneNumberInfo__block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPhoneNumberInfoWithCompletion:(id)a3
+- (void)fetchPhoneNumberInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(TPSTelephonyController *)self telephonyClient];
-  v5 = [(TPSPhonebookTelephonyController *)self subscriptionContext];
-  [v6 getPhoneNumberWithCompletion:v5 completion:v4];
+  completionCopy = completion;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  subscriptionContext = [(TPSPhonebookTelephonyController *)self subscriptionContext];
+  [telephonyClient getPhoneNumberWithCompletion:subscriptionContext completion:completionCopy];
 }
 
 void __91__TPSPhonebookTelephonyController_savePhoneBookEntryAtIndex_withContactName_contactNumber___block_invoke(uint64_t a1, void *a2)
@@ -278,11 +278,11 @@ void __91__TPSPhonebookTelephonyController_savePhoneBookEntryAtIndex_withContact
   }
 }
 
-- (void)updatePhoneNumberInfo:(id)a3 label:(id)a4 number:(id)a5 completion:(id)a6
+- (void)updatePhoneNumberInfo:(id)info label:(id)label number:(id)number completion:(id)completion
 {
-  v8 = a6;
-  [(TPSPhonebookTelephonyController *)self setUpdatePhoneNumber:a5];
-  [(TPSPhonebookTelephonyController *)self setUpdatePhoneNumberInfoCompletion:v8];
+  completionCopy = completion;
+  [(TPSPhonebookTelephonyController *)self setUpdatePhoneNumber:number];
+  [(TPSPhonebookTelephonyController *)self setUpdatePhoneNumberInfoCompletion:completionCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -311,12 +311,12 @@ uint64_t __81__TPSPhonebookTelephonyController_updatePhoneNumberInfo_label_numbe
   return result;
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(TPSPhonebookTelephonyController *)self subscriptionContext];
-  v7 = [v5 isEqual:v6];
+  changedCopy = changed;
+  subscriptionContext = [(TPSPhonebookTelephonyController *)self subscriptionContext];
+  v7 = [changedCopy isEqual:subscriptionContext];
 
   if (v7)
   {
@@ -331,29 +331,29 @@ uint64_t __81__TPSPhonebookTelephonyController_updatePhoneNumberInfo_label_numbe
       v16 = 2112;
       v17 = v11;
       v18 = 2112;
-      v19 = v6;
+      v19 = subscriptionContext;
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, "[%@ %@] for subscription context %@.", &v14, 0x20u);
     }
 
-    v12 = [(TPSPhonebookTelephonyController *)self getPhoneNumberInfo];
-    [(TPSPhonebookTelephonyController *)self setPhoneNumberInfo:v12];
+    getPhoneNumberInfo = [(TPSPhonebookTelephonyController *)self getPhoneNumberInfo];
+    [(TPSPhonebookTelephonyController *)self setPhoneNumberInfo:getPhoneNumberInfo];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)phoneBookSelected:(id)a3
+- (void)phoneBookSelected:(id)selected
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(TPSPhonebookTelephonyController *)self subscriptionContext];
-  v7 = [v5 isEqual:v6];
+  selectedCopy = selected;
+  subscriptionContext = [(TPSPhonebookTelephonyController *)self subscriptionContext];
+  v7 = [selectedCopy isEqual:subscriptionContext];
 
   if (v7)
   {
-    v8 = [(TPSPhonebookTelephonyController *)self updatePhoneNumber];
+    updatePhoneNumber = [(TPSPhonebookTelephonyController *)self updatePhoneNumber];
 
-    if (v8)
+    if (updatePhoneNumber)
     {
       v9 = TPSLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -366,21 +366,21 @@ uint64_t __81__TPSPhonebookTelephonyController_updatePhoneNumberInfo_label_numbe
         v29 = 2112;
         v30 = v12;
         v31 = 2112;
-        v32 = v6;
+        v32 = subscriptionContext;
         _os_log_impl(&dword_21B8E9000, v9, OS_LOG_TYPE_DEFAULT, "[%@ %@] for subscription context %@.", buf, 0x20u);
       }
 
-      v13 = [(TPSPhonebookTelephonyController *)self updatePhoneNumber];
+      updatePhoneNumber2 = [(TPSPhonebookTelephonyController *)self updatePhoneNumber];
       v14 = [MEMORY[0x277CCACA8] tps_stringWithCTPhoneBookName:2];
       v15 = TPSLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413314;
-        v28 = v6;
+        v28 = subscriptionContext;
         v29 = 2112;
         v30 = @"My Number";
         v31 = 2112;
-        v32 = v13;
+        v32 = updatePhoneNumber2;
         v33 = 2112;
         v34 = v14;
         v35 = 1024;
@@ -388,20 +388,20 @@ uint64_t __81__TPSPhonebookTelephonyController_updatePhoneNumberInfo_label_numbe
         _os_log_impl(&dword_21B8E9000, v15, OS_LOG_TYPE_DEFAULT, "Updating phone number (subscriptionContext: %@, label: %@, number: %@, selectedPhoneBookName: %@, index: %u).", buf, 0x30u);
       }
 
-      v16 = [(TPSTelephonyController *)self telephonyClient];
+      telephonyClient = [(TPSTelephonyController *)self telephonyClient];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __53__TPSPhonebookTelephonyController_phoneBookSelected___block_invoke;
       v20[3] = &unk_2782E4188;
-      v21 = v6;
+      v21 = subscriptionContext;
       v22 = @"My Number";
-      v23 = v13;
+      v23 = updatePhoneNumber2;
       v24 = v14;
       v26 = 1;
-      v25 = self;
+      selfCopy = self;
       v17 = v14;
-      v18 = v13;
-      [v16 savePhonebookEntry:v21 atIndex:1 withContactName:@"My Number" contactNumber:v18 completion:v20];
+      v18 = updatePhoneNumber2;
+      [telephonyClient savePhonebookEntry:v21 atIndex:1 withContactName:@"My Number" contactNumber:v18 completion:v20];
     }
   }
 

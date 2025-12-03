@@ -1,11 +1,11 @@
 @interface _MRApplicationConnectionProtocolMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRApplicationConnectionProtocolMessageProtobuf
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = _MRApplicationConnectionProtocolMessageProtobuf;
   v4 = [(_MRApplicationConnectionProtocolMessageProtobuf *)&v8 description];
-  v5 = [(_MRApplicationConnectionProtocolMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRApplicationConnectionProtocolMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   applicationMessage = self->_applicationMessage;
   if (applicationMessage)
   {
-    v5 = [(_MRApplicationConnectionMessageProtobuf *)applicationMessage dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"applicationMessage"];
+    dictionaryRepresentation = [(_MRApplicationConnectionMessageProtobuf *)applicationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"applicationMessage"];
   }
 
   context = self->_context;
   if (context)
   {
-    v7 = [(_MRApplicationConnectionContextProtobuf *)context dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"context"];
+    dictionaryRepresentation2 = [(_MRApplicationConnectionContextProtobuf *)context dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"context"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_applicationMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_context)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_applicationMessage)
   {
-    [v4 setApplicationMessage:?];
-    v4 = v5;
+    [toCopy setApplicationMessage:?];
+    toCopy = v5;
   }
 
   if (self->_context)
   {
     [v5 setContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRApplicationConnectionMessageProtobuf *)self->_applicationMessage copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRApplicationConnectionMessageProtobuf *)self->_applicationMessage copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(_MRApplicationConnectionContextProtobuf *)self->_context copyWithZone:a3];
+  v8 = [(_MRApplicationConnectionContextProtobuf *)self->_context copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((applicationMessage = self->_applicationMessage, !(applicationMessage | v4[1])) || -[_MRApplicationConnectionMessageProtobuf isEqual:](applicationMessage, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((applicationMessage = self->_applicationMessage, !(applicationMessage | equalCopy[1])) || -[_MRApplicationConnectionMessageProtobuf isEqual:](applicationMessage, "isEqual:")))
   {
     context = self->_context;
-    if (context | v4[2])
+    if (context | equalCopy[2])
     {
       v7 = [(_MRApplicationConnectionContextProtobuf *)context isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   applicationMessage = self->_applicationMessage;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (applicationMessage)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(_MRApplicationConnectionProtocolMessageProtobuf *)self setApplicationMessage:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   context = self->_context;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (context)
   {
     if (!v8)
@@ -165,7 +165,7 @@ LABEL_7:
     [(_MRApplicationConnectionProtocolMessageProtobuf *)self setContext:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

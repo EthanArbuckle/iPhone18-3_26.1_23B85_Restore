@@ -1,24 +1,24 @@
 @interface MASAutoAssetSetInfoInstance
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetInfoInstance
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (__isPlatformVersionAtLeast(2, 17, 0, 0))
     {
-      v4 = v3;
+      v4 = classesCopy;
       if (objc_opt_class())
       {
-        v4 = [v3 setByAddingObject:objc_opt_class()];
+        v4 = [classesCopy setByAddingObject:objc_opt_class()];
       }
 
       if (objc_opt_class())
@@ -45,24 +45,24 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInfoInstance alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInfoInstance alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = [MAAutoAssetSetInfoInstance alloc];
-    v15 = [v3 clientDomainName];
-    v19 = [v3 autoAssetSetClientName];
-    v17 = [v3 clientProcessName];
-    v16 = [v3 clientProcessID];
-    v7 = [v3 assetSetIdentifier];
-    v8 = [v3 atomicInstance];
-    v18 = [v3 autoAssetEntries];
-    v9 = [MASAutoAssetSetEntry newShimmedArrayToFramework:v18];
-    v10 = [v3 entriesWhenTargeting];
-    v11 = [MASAutoAssetSetTarget newShimmedArrayToFramework:v10];
-    v12 = [v3 frameworkInstanceUUID];
-    v13 = [v6 initUsingClientDomain:v15 forClientName:v19 withProcessName:v17 withProcessID:v16 forAssetSetIdentifier:v7 forAtomicInstance:v8 comprisedOfEntries:v9 asEntriesWhenTargeting:v11 associatingFrameworkUUID:v12];
+    clientDomainName = [frameworkCopy clientDomainName];
+    autoAssetSetClientName = [frameworkCopy autoAssetSetClientName];
+    clientProcessName = [frameworkCopy clientProcessName];
+    clientProcessID = [frameworkCopy clientProcessID];
+    assetSetIdentifier = [frameworkCopy assetSetIdentifier];
+    atomicInstance = [frameworkCopy atomicInstance];
+    autoAssetEntries = [frameworkCopy autoAssetEntries];
+    v9 = [MASAutoAssetSetEntry newShimmedArrayToFramework:autoAssetEntries];
+    entriesWhenTargeting = [frameworkCopy entriesWhenTargeting];
+    v11 = [MASAutoAssetSetTarget newShimmedArrayToFramework:entriesWhenTargeting];
+    frameworkInstanceUUID = [frameworkCopy frameworkInstanceUUID];
+    v13 = [v6 initUsingClientDomain:clientDomainName forClientName:autoAssetSetClientName withProcessName:clientProcessName withProcessID:clientProcessID forAssetSetIdentifier:assetSetIdentifier forAtomicInstance:atomicInstance comprisedOfEntries:v9 asEntriesWhenTargeting:v11 associatingFrameworkUUID:frameworkInstanceUUID];
   }
 
   else
@@ -73,26 +73,26 @@
   return v13;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInfoInstance alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInfoInstance alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = [MANAutoAssetSetInfoInstance alloc];
-    v20 = [v6 clientDomainName];
-    v19 = [v6 autoAssetSetClientName];
-    v16 = [v6 clientProcessName];
-    v17 = [v6 clientProcessID];
-    v8 = [v6 assetSetIdentifier];
-    v9 = [v6 atomicInstance];
-    v18 = [v6 autoAssetEntries];
-    v10 = [MASAutoAssetSetEntry newShimmedArrayFromFramework:v18];
-    v11 = [v6 entriesWhenTargeting];
-    v12 = [MASAutoAssetSetTarget newShimmedArrayFromFramework:v11];
-    v13 = [v6 frameworkInstanceUUID];
+    clientDomainName = [v6 clientDomainName];
+    autoAssetSetClientName = [v6 autoAssetSetClientName];
+    clientProcessName = [v6 clientProcessName];
+    clientProcessID = [v6 clientProcessID];
+    assetSetIdentifier = [v6 assetSetIdentifier];
+    atomicInstance = [v6 atomicInstance];
+    autoAssetEntries = [v6 autoAssetEntries];
+    v10 = [MASAutoAssetSetEntry newShimmedArrayFromFramework:autoAssetEntries];
+    entriesWhenTargeting = [v6 entriesWhenTargeting];
+    v12 = [MASAutoAssetSetTarget newShimmedArrayFromFramework:entriesWhenTargeting];
+    frameworkInstanceUUID = [v6 frameworkInstanceUUID];
 
-    v14 = [(MANAutoAssetSetInfoInstance *)v7 initUsingClientDomain:v20 forClientName:v19 withProcessName:v16 withProcessID:v17 forAssetSetIdentifier:v8 forAtomicInstance:v9 comprisedOfEntries:v10 asEntriesWhenTargeting:v12 associatingFrameworkUUID:v13];
+    v14 = [(MANAutoAssetSetInfoInstance *)v7 initUsingClientDomain:clientDomainName forClientName:autoAssetSetClientName withProcessName:clientProcessName withProcessID:clientProcessID forAssetSetIdentifier:assetSetIdentifier forAtomicInstance:atomicInstance comprisedOfEntries:v10 asEntriesWhenTargeting:v12 associatingFrameworkUUID:frameworkInstanceUUID];
   }
 
   else
@@ -103,17 +103,17 @@
   return v14;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v9 = [MAAutoAssetSetInfoInstance alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetSetInfoInstance newShimmedFromFramework:v11];
     }
 

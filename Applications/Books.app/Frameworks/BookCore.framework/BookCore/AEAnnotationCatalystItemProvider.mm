@@ -7,10 +7,10 @@
 
 + (id)writableTypeIdentifiersForItemProvider
 {
-  v2 = [UTTypeUTF8PlainText identifier];
-  v6[0] = v2;
-  v3 = [UTTypeHTML identifier];
-  v6[1] = v3;
+  identifier = [UTTypeUTF8PlainText identifier];
+  v6[0] = identifier;
+  identifier2 = [UTTypeHTML identifier];
+  v6[1] = identifier2;
   v4 = [NSArray arrayWithObjects:v6 count:2];
 
   return v4;

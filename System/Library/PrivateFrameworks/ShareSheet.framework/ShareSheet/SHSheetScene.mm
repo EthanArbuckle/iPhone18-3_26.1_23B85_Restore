@@ -2,33 +2,33 @@
 + (FBSceneWorkspace)sceneWorkspace;
 - (BOOL)isActive;
 - (CGRect)framePortrait;
-- (SHSheetScene)initWithSession:(id)a3;
+- (SHSheetScene)initWithSession:(id)session;
 - (SHSheetSceneDelegate)delegate;
 - (SHSheetSession)session;
 - (UIEdgeInsets)safeAreaInsetsPortrait;
-- (void)_configureSceneSettings:(id)a3;
+- (void)_configureSceneSettings:(id)settings;
 - (void)_registerForApplicationStateChangeNotification;
-- (void)_setSheetConfiguration:(id)a3;
+- (void)_setSheetConfiguration:(id)configuration;
 - (void)_unregisterForApplicationStateChangeNotification;
-- (void)_updateSettingsWithFence:(id)a3 transitionCoordinator:(id)a4;
+- (void)_updateSettingsWithFence:(id)fence transitionCoordinator:(id)coordinator;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
-- (void)sendAction:(id)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setFramePortrait:(CGRect)a3;
-- (void)setHostProcessType:(int64_t)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
-- (void)setPresentationStyle:(int64_t)a3;
-- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)a3;
-- (void)setSessionContext:(id)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
-- (void)updateWithChange:(id)a3 transitionCoordinator:(id)a4;
-- (void)updateWithSessionContext:(id)a3;
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
+- (void)sendAction:(id)action;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setForeground:(BOOL)foreground;
+- (void)setFramePortrait:(CGRect)portrait;
+- (void)setHostProcessType:(int64_t)type;
+- (void)setInterfaceOrientation:(int64_t)orientation;
+- (void)setPresentationStyle:(int64_t)style;
+- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)portrait;
+- (void)setSessionContext:(id)context;
+- (void)setUserInterfaceStyle:(int64_t)style;
+- (void)updateWithChange:(id)change transitionCoordinator:(id)coordinator;
+- (void)updateWithSessionContext:(id)context;
 @end
 
 @implementation SHSheetScene
@@ -70,22 +70,22 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
   sceneWorkspace_sceneWorkspace = v2;
 }
 
-- (SHSheetScene)initWithSession:(id)a3
+- (SHSheetScene)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v28.receiver = self;
   v28.super_class = SHSheetScene;
   v5 = [(SHSheetScene *)&v28 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_session, v4);
-    v7 = [v4 createClientContext];
+    objc_storeWeak(&v5->_session, sessionCopy);
+    createClientContext = [sessionCopy createClientContext];
     sessionContext = v6->_sessionContext;
-    v6->_sessionContext = v7;
+    v6->_sessionContext = createClientContext;
 
-    v9 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
-    [v9 frame];
+    _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+    [_applicationKeyWindow frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -115,12 +115,12 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
     v6->_framePortrait.origin.y = v13;
     v6->_framePortrait.size.width = v18;
     v6->_framePortrait.size.height = v19;
-    v20 = [v4 activityViewController];
-    v21 = [v20 traitCollection];
-    v6->_userInterfaceStyle = [v21 userInterfaceStyle];
+    activityViewController = [sessionCopy activityViewController];
+    traitCollection = [activityViewController traitCollection];
+    v6->_userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v22 = [v4 activityViewController];
-    v6->_presentationStyle = SHSheetPresentationControllerPresentationStyle(v22);
+    activityViewController2 = [sessionCopy activityViewController];
+    v6->_presentationStyle = SHSheetPresentationControllerPresentationStyle(activityViewController2);
 
     v6->_interfaceOrientation = 1;
     v30 = 0;
@@ -141,9 +141,9 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
 
     v24 = v23;
     _Block_object_dispose(&v30, 8);
-    v25 = [v23 mainConfiguration];
+    mainConfiguration = [v23 mainConfiguration];
     displayConfiguration = v6->_displayConfiguration;
-    v6->_displayConfiguration = v25;
+    v6->_displayConfiguration = mainConfiguration;
 
     v6->_hostProcessType = 0;
     v6->_foreground = 1;
@@ -163,10 +163,10 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
 
 - (BOOL)isActive
 {
-  v2 = [(SHSheetScene *)self scene];
-  v3 = [v2 isActive];
+  scene = [(SHSheetScene *)self scene];
+  isActive = [scene isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (void)activate
@@ -178,9 +178,9 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
     {
       v3 = share_sheet_log();
       v4 = share_sheet_log();
-      v5 = [(SHSheetScene *)self session];
-      v6 = [v5 activityViewController];
-      v7 = os_signpost_id_make_with_pointer(v4, v6);
+      session = [(SHSheetScene *)self session];
+      activityViewController = [session activityViewController];
+      v7 = os_signpost_id_make_with_pointer(v4, activityViewController);
 
       if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v3))
       {
@@ -196,18 +196,18 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
       }
 
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [(SHSheetScene *)self session];
-      v11 = [v10 identifier];
-      v12 = [v9 stringWithFormat:@"scene::SharingUI::%@", v11];
+      session2 = [(SHSheetScene *)self session];
+      identifier = [session2 identifier];
+      v12 = [v9 stringWithFormat:@"scene::SharingUI::%@", identifier];
 
-      v13 = [objc_opt_class() sceneWorkspace];
+      sceneWorkspace = [objc_opt_class() sceneWorkspace];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __24__SHSheetScene_activate__block_invoke;
       v27[3] = &unk_1E71F9D48;
       v28 = v12;
       v14 = v12;
-      v15 = [v13 createScene:v27];
+      v15 = [sceneWorkspace createScene:v27];
       scene = self->_scene;
       self->_scene = v15;
 
@@ -220,8 +220,8 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
       v26[3] = &unk_1E71F9D98;
       v26[4] = self;
       [(FBScene *)v17 configureParameters:v26];
-      v18 = [(FBScene *)self->_scene uiPresentationManager];
-      v19 = [v18 createPresenterWithIdentifier:@"default"];
+      uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
+      v19 = [uiPresentationManager createPresenterWithIdentifier:@"default"];
       scenePresenter = self->_scenePresenter;
       self->_scenePresenter = v19;
 
@@ -239,13 +239,13 @@ void __30__SHSheetScene_sceneWorkspace__block_invoke()
     }
 
     [(FBScene *)self->_scene activateWithTransitionContext:0];
-    v23 = [(SHSheetScene *)self delegate];
+    delegate = [(SHSheetScene *)self delegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(SHSheetScene *)self delegate];
-      [v25 sceneDidBecomeActive:self];
+      delegate2 = [(SHSheetScene *)self delegate];
+      [delegate2 sceneDidBecomeActive:self];
     }
   }
 }
@@ -327,23 +327,23 @@ void __24__SHSheetScene_activate__block_invoke_4(uint64_t a1, void *a2)
 
 - (void)_registerForApplicationStateChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__didUpdateApplicationState_ name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 addObserver:self selector:sel__didUpdateApplicationState_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didUpdateApplicationState_ name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter addObserver:self selector:sel__didUpdateApplicationState_ name:*MEMORY[0x1E69DDAB0] object:0];
 }
 
 - (void)_unregisterForApplicationStateChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 }
 
-- (void)_setSheetConfiguration:(id)a3
+- (void)_setSheetConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = self->__sheetConfiguration;
-  v7 = v5;
+  v7 = configurationCopy;
   v8 = v7;
   if (v6 == v7)
   {
@@ -365,7 +365,7 @@ void __24__SHSheetScene_activate__block_invoke_4(uint64_t a1, void *a2)
     {
     }
 
-    objc_storeStrong(&self->__sheetConfiguration, a3);
+    objc_storeStrong(&self->__sheetConfiguration, configuration);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__SHSheetScene__setSheetConfiguration___block_invoke;
@@ -387,11 +387,11 @@ void __39__SHSheetScene__setSheetConfiguration___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setSessionContext:(id)a3
+- (void)setSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   sessionContext = [(SHSheetScene *)self sessionContext];
-  v6 = v4;
+  v6 = contextCopy;
   v10 = v6;
   if (sessionContext == v6)
   {
@@ -423,26 +423,26 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)a3
+- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)portrait
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = portrait.top;
+  v3.f64[1] = portrait.left;
+  v4.f64[0] = portrait.bottom;
+  v4.f64[1] = portrait.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_safeAreaInsetsPortrait.top), vceqq_f64(v4, *&self->_safeAreaInsetsPortrait.bottom)))) & 1) == 0)
   {
-    self->_safeAreaInsetsPortrait = a3;
+    self->_safeAreaInsetsPortrait = portrait;
     [(SHSheetScene *)self setNeedsFenceAnimation:1];
   }
 }
 
-- (void)setFramePortrait:(CGRect)a3
+- (void)setFramePortrait:(CGRect)portrait
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_framePortrait))
+  height = portrait.size.height;
+  width = portrait.size.width;
+  y = portrait.origin.y;
+  x = portrait.origin.x;
+  if (!CGRectEqualToRect(portrait, self->_framePortrait))
   {
     self->_framePortrait.origin.x = x;
     self->_framePortrait.origin.y = y;
@@ -453,93 +453,93 @@ LABEL_9:
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
   }
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  if (self->_presentationStyle != a3)
+  if (self->_presentationStyle != style)
   {
-    self->_presentationStyle = a3;
+    self->_presentationStyle = style;
   }
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_interfaceOrientation != a3)
+  if (self->_interfaceOrientation != orientation)
   {
-    self->_interfaceOrientation = a3;
+    self->_interfaceOrientation = orientation;
     [(SHSheetScene *)self setNeedsFenceAnimation:1];
   }
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   displayConfiguration = self->_displayConfiguration;
   p_displayConfiguration = &self->_displayConfiguration;
-  if (displayConfiguration != v5)
+  if (displayConfiguration != configurationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_displayConfiguration, a3);
-    v5 = v8;
+    v8 = configurationCopy;
+    objc_storeStrong(p_displayConfiguration, configuration);
+    configurationCopy = v8;
   }
 }
 
-- (void)setHostProcessType:(int64_t)a3
+- (void)setHostProcessType:(int64_t)type
 {
   hostProcessType = self->_hostProcessType;
-  if (hostProcessType != a3 && hostProcessType <= 0)
+  if (hostProcessType != type && hostProcessType <= 0)
   {
-    self->_hostProcessType = a3;
+    self->_hostProcessType = type;
   }
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  if (self->_foreground != a3)
+  if (self->_foreground != foreground)
   {
-    self->_foreground = a3;
+    self->_foreground = foreground;
   }
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
-  v5 = [MEMORY[0x1E695DFD8] setWithObject:a3];
-  v4 = [(SHSheetScene *)self scene];
-  [v4 sendActions:v5];
+  v5 = [MEMORY[0x1E695DFD8] setWithObject:action];
+  scene = [(SHSheetScene *)self scene];
+  [scene sendActions:v5];
 }
 
-- (void)updateWithSessionContext:(id)a3
+- (void)updateWithSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__SHSheetScene_updateWithSessionContext___block_invoke;
   v6[3] = &unk_1E71F9E00;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   [(SHSheetScene *)self updateWithChange:v6];
 }
 
-- (void)updateWithChange:(id)a3 transitionCoordinator:(id)a4
+- (void)updateWithChange:(id)change transitionCoordinator:(id)coordinator
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  coordinatorCopy = coordinator;
+  changeCopy = change;
   [(SHSheetScene *)self setActiveUpdate:1];
   v17 = 0;
-  v7[2](v7, self, &v17);
+  changeCopy[2](changeCopy, self, &v17);
 
-  v8 = 0;
+  needsFenceAnimation = 0;
   if ((v17 & 1) == 0)
   {
-    v8 = [(SHSheetScene *)self needsFenceAnimation];
+    needsFenceAnimation = [(SHSheetScene *)self needsFenceAnimation];
   }
 
   v9 = share_sheet_log();
@@ -551,18 +551,18 @@ LABEL_9:
     _os_log_impl(&dword_18B359000, v9, OS_LOG_TYPE_DEFAULT, "scene update change with fenceAnimation:%@", buf, 0xCu);
   }
 
-  if (v8)
+  if (needsFenceAnimation)
   {
-    v11 = [(SHSheetScene *)self fenceCompletionHandler];
+    fenceCompletionHandler = [(SHSheetScene *)self fenceCompletionHandler];
     [(SHSheetScene *)self setFenceCompletionHandler:0];
-    if (v11)
+    if (fenceCompletionHandler)
     {
       v12 = MEMORY[0x1E6979518];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __55__SHSheetScene_updateWithChange_transitionCoordinator___block_invoke;
       v15[3] = &unk_1E71F9360;
-      v16 = v11;
+      v16 = fenceCompletionHandler;
       [v12 addCommitHandler:v15 forPhase:5];
     }
 
@@ -571,18 +571,18 @@ LABEL_9:
     v14[2] = __55__SHSheetScene_updateWithChange_transitionCoordinator___block_invoke_3;
     v14[3] = &unk_1E71F9D70;
     v14[4] = self;
-    [(SHSheetScene *)self _updateSettingsWithFence:v14 transitionCoordinator:v6];
+    [(SHSheetScene *)self _updateSettingsWithFence:v14 transitionCoordinator:coordinatorCopy];
   }
 
   else
   {
-    v11 = [(SHSheetScene *)self scene];
+    fenceCompletionHandler = [(SHSheetScene *)self scene];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __55__SHSheetScene_updateWithChange_transitionCoordinator___block_invoke_4;
     v13[3] = &unk_1E71F9E28;
     v13[4] = self;
-    [v11 performUpdate:v13];
+    [fenceCompletionHandler performUpdate:v13];
   }
 
   [(SHSheetScene *)self setNeedsFenceAnimation:0];
@@ -619,20 +619,20 @@ void __55__SHSheetScene_updateWithChange_transitionCoordinator___block_invoke_4(
   }
 }
 
-- (void)_updateSettingsWithFence:(id)a3 transitionCoordinator:(id)a4
+- (void)_updateSettingsWithFence:(id)fence transitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHSheetScene *)self scene];
+  fenceCopy = fence;
+  coordinatorCopy = coordinator;
+  scene = [(SHSheetScene *)self scene];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_invoke;
   v11[3] = &unk_1E71F9E50;
-  v12 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 updateSettingsWithTransitionBlock:v11];
+  v12 = coordinatorCopy;
+  v13 = fenceCopy;
+  v9 = coordinatorCopy;
+  v10 = fenceCopy;
+  [scene updateSettingsWithTransitionBlock:v11];
 }
 
 id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_invoke(uint64_t a1)
@@ -668,71 +668,71 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
   return v5;
 }
 
-- (void)_configureSceneSettings:(id)a3
+- (void)_configureSceneSettings:(id)settings
 {
-  v8 = a3;
+  settingsCopy = settings;
   [(SHSheetScene *)self safeAreaInsetsPortrait];
-  [v8 setSafeAreaInsetsPortrait:?];
-  [v8 setUserInterfaceStyle:{-[SHSheetScene userInterfaceStyle](self, "userInterfaceStyle")}];
+  [settingsCopy setSafeAreaInsetsPortrait:?];
+  [settingsCopy setUserInterfaceStyle:{-[SHSheetScene userInterfaceStyle](self, "userInterfaceStyle")}];
   [(SHSheetScene *)self framePortrait];
-  [v8 setFrame:?];
-  [v8 setPresentationStyle:{-[SHSheetScene presentationStyle](self, "presentationStyle")}];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v8 setApplicationState:{objc_msgSend(v4, "applicationState")}];
+  [settingsCopy setFrame:?];
+  [settingsCopy setPresentationStyle:{-[SHSheetScene presentationStyle](self, "presentationStyle")}];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [settingsCopy setApplicationState:{objc_msgSend(mEMORY[0x1E69DC668], "applicationState")}];
 
-  v5 = [(SHSheetScene *)self sessionContext];
-  [v8 setSessionContext:v5];
+  sessionContext = [(SHSheetScene *)self sessionContext];
+  [settingsCopy setSessionContext:sessionContext];
 
-  [v8 setInterfaceOrientation:{-[SHSheetScene interfaceOrientation](self, "interfaceOrientation")}];
-  v6 = [(SHSheetScene *)self displayConfiguration];
+  [settingsCopy setInterfaceOrientation:{-[SHSheetScene interfaceOrientation](self, "interfaceOrientation")}];
+  displayConfiguration = [(SHSheetScene *)self displayConfiguration];
 
-  if (v6)
+  if (displayConfiguration)
   {
-    v7 = [(SHSheetScene *)self displayConfiguration];
-    [v8 setDisplayConfiguration:v7];
+    displayConfiguration2 = [(SHSheetScene *)self displayConfiguration];
+    [settingsCopy setDisplayConfiguration:displayConfiguration2];
   }
 
-  [v8 setHostProcessType:{-[SHSheetScene hostProcessType](self, "hostProcessType")}];
-  [v8 setForeground:{-[SHSheetScene foreground](self, "foreground")}];
+  [settingsCopy setHostProcessType:{-[SHSheetScene hostProcessType](self, "hostProcessType")}];
+  [settingsCopy setForeground:{-[SHSheetScene foreground](self, "foreground")}];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
-  v6 = a4;
-  if (v6 && self->_scene == a3)
+  errorCopy = error;
+  if (errorCopy && self->_scene == deactivate)
   {
     v7 = share_sheet_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [SHSheetScene sceneDidDeactivate:v6 withError:v7];
+      [SHSheetScene sceneDidDeactivate:errorCopy withError:v7];
     }
 
     [(SHSheetScene *)self activate];
   }
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   v8 = share_sheet_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v37 = v7;
+    v37 = actionsCopy;
     v38 = 2112;
-    v39 = v6;
+    v39 = sceneCopy;
     _os_log_impl(&dword_18B359000, v8, OS_LOG_TYPE_DEFAULT, "did receive actions:%@ from scene:%@", buf, 0x16u);
   }
 
-  v29 = v6;
+  v29 = sceneCopy;
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v7;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
@@ -740,7 +740,7 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
     v12 = *v32;
     v13 = 0x1E71F8000uLL;
     v14 = 0x1E71F8000uLL;
-    v30 = self;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -758,8 +758,8 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
           v17 = v16;
           if ([v17 type] == 10)
           {
-            v18 = [(SHSheetScene *)self session];
-            [v18 activityViewController];
+            session = [(SHSheetScene *)self session];
+            [session activityViewController];
             v19 = v11;
             v20 = v12;
             v21 = v13;
@@ -772,11 +772,11 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
             v13 = v21;
             v12 = v20;
             v11 = v19;
-            self = v30;
+            self = selfCopy;
           }
 
-          v25 = [(SHSheetScene *)self delegate];
-          [v25 scene:self didReceiveAction:v17];
+          delegate = [(SHSheetScene *)self delegate];
+          [delegate scene:self didReceiveAction:v17];
         }
 
         else
@@ -785,8 +785,8 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
           if (objc_opt_isKindOfClass())
           {
             v26 = v16;
-            v25 = [(SHSheetScene *)self delegate];
-            [v25 scene:self didReceiveMetadataUpdateAction:v26];
+            delegate = [(SHSheetScene *)self delegate];
+            [delegate scene:self didReceiveMetadataUpdateAction:v26];
           }
 
           else
@@ -795,8 +795,8 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
             if (objc_opt_isKindOfClass())
             {
               v27 = v16;
-              v25 = [(SHSheetScene *)self delegate];
-              [v25 scene:self didReceiveSuggestionAction:v27];
+              delegate = [(SHSheetScene *)self delegate];
+              [delegate scene:self didReceiveSuggestionAction:v27];
             }
 
             else
@@ -808,8 +808,8 @@ id __63__SHSheetScene__updateSettingsWithFence_transitionCoordinator___block_inv
               }
 
               v28 = v16;
-              v25 = [(SHSheetScene *)self delegate];
-              [v25 scene:self didReceiveDraggingAction:v28];
+              delegate = [(SHSheetScene *)self delegate];
+              [delegate scene:self didReceiveDraggingAction:v28];
             }
           }
         }
@@ -826,13 +826,13 @@ LABEL_19:
   }
 }
 
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error
 {
   v6 = share_sheet_log();
   v7 = share_sheet_log();
-  v8 = [(SHSheetScene *)self session];
-  v9 = [v8 activityViewController];
-  v10 = os_signpost_id_make_with_pointer(v7, v9);
+  session = [(SHSheetScene *)self session];
+  activityViewController = [session activityViewController];
+  v10 = os_signpost_id_make_with_pointer(v7, activityViewController);
 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {

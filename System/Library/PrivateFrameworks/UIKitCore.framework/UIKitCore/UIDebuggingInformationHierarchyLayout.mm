@@ -1,15 +1,15 @@
 @interface UIDebuggingInformationHierarchyLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (UIDebuggingInformationHierarchyLayoutDelegate)delegate;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)_recomputeAttributes;
 - (void)invalidateLayout;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation UIDebuggingInformationHierarchyLayout
@@ -22,13 +22,13 @@
   [(UIDebuggingInformationHierarchyLayout *)self _recomputeAttributes];
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v25.receiver = self;
   v25.super_class = UIDebuggingInformationHierarchyLayout;
-  [(UICollectionViewLayout *)&v25 prepareForCollectionViewUpdates:v4];
+  [(UICollectionViewLayout *)&v25 prepareForCollectionViewUpdates:updatesCopy];
   indexPathsToDelete = self->_indexPathsToDelete;
   if (indexPathsToDelete)
   {
@@ -46,7 +46,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v4;
+  v8 = updatesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v9)
   {
@@ -63,18 +63,18 @@
 
         v13 = *(*(&v21 + 1) + 8 * i);
         allLineAttributes = self->_allLineAttributes;
-        v15 = [v13 indexPathBeforeUpdate];
-        v16 = [(NSMutableDictionary *)allLineAttributes objectForKeyedSubscript:v15];
+        indexPathBeforeUpdate = [v13 indexPathBeforeUpdate];
+        v16 = [(NSMutableDictionary *)allLineAttributes objectForKeyedSubscript:indexPathBeforeUpdate];
 
         if (v16)
         {
           v17 = self->_indexPathsToDelete;
-          v18 = [v13 indexPathBeforeUpdate];
-          [(NSMutableArray *)v17 addObject:v18];
+          indexPathBeforeUpdate2 = [v13 indexPathBeforeUpdate];
+          [(NSMutableArray *)v17 addObject:indexPathBeforeUpdate2];
 
           v19 = self->_allLineAttributes;
-          v20 = [v13 indexPathBeforeUpdate];
-          [(NSMutableDictionary *)v19 removeObjectForKey:v20];
+          indexPathBeforeUpdate3 = [v13 indexPathBeforeUpdate];
+          [(NSMutableDictionary *)v19 removeObjectForKey:indexPathBeforeUpdate3];
         }
       }
 
@@ -85,9 +85,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(UIDebuggingInformationHierarchyLayout *)self invalidateLayout];
 }
@@ -96,8 +96,8 @@
 {
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v33 = [(UICollectionViewLayout *)self collectionView];
-  if ([v33 numberOfSections])
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  if ([collectionView numberOfSections])
   {
     v3 = 0;
     v4 = -1.0;
@@ -105,14 +105,14 @@
     v6 = 0.0;
     do
     {
-      if ([v33 numberOfItemsInSection:v3])
+      if ([collectionView numberOfItemsInSection:v3])
       {
         v7 = 0;
         do
         {
           v8 = [*(v5 + 3208) indexPathForRow:v7 inSection:v3];
           v9 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:v8];
-          [v33 bounds];
+          [collectionView bounds];
           Width = CGRectGetWidth(v35);
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           v12 = [WeakRetained indentationLevelForIndexPath:v8];
@@ -192,7 +192,7 @@
           v4 = v13;
         }
 
-        while (v7 < [v33 numberOfItemsInSection:v3]);
+        while (v7 < [collectionView numberOfItemsInSection:v3]);
       }
 
       else
@@ -204,7 +204,7 @@
       v4 = v13;
     }
 
-    while (v3 < [v33 numberOfSections]);
+    while (v3 < [collectionView numberOfSections]);
   }
 
   allAttributes = self->_allAttributes;
@@ -223,23 +223,23 @@
   [(UIDebuggingInformationHierarchyLayout *)self _recomputeAttributes];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  Width = CGRectGetWidth(a3);
-  v5 = [(UICollectionViewLayout *)self collectionView];
-  [v5 bounds];
+  Width = CGRectGetWidth(change);
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v6 = Width != CGRectGetWidth(v8);
 
   return v6;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = a3;
-    v5 = [(UIDebuggingInformationHierarchyLayout *)self allAttributes];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    pathCopy = path;
+    allAttributes = [(UIDebuggingInformationHierarchyLayout *)self allAttributes];
+    v6 = [allAttributes objectForKeyedSubscript:pathCopy];
   }
 
   else
@@ -250,13 +250,13 @@
   return v6;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v5 = a4;
-    v6 = [(UIDebuggingInformationHierarchyLayout *)self allLineAttributes];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    pathCopy = path;
+    allLineAttributes = [(UIDebuggingInformationHierarchyLayout *)self allLineAttributes];
+    v7 = [allLineAttributes objectForKeyedSubscript:pathCopy];
   }
 
   else
@@ -267,14 +267,14 @@
   return v7;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(UIDebuggingInformationHierarchyLayout *)self allAttributes];
+  allAttributes = [(UIDebuggingInformationHierarchyLayout *)self allAttributes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__UIDebuggingInformationHierarchyLayout_layoutAttributesForElementsInRect___block_invoke;
@@ -286,7 +286,7 @@
   v14[4] = self;
   v10 = v8;
   v15 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v14];
+  [allAttributes enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -325,17 +325,17 @@ void __75__UIDebuggingInformationHierarchyLayout_layoutAttributesForElementsInRe
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v4)
+  if (numberOfSections)
   {
     v5 = 0;
     v6 = 0.0;
     do
     {
-      v7 = [(UICollectionViewLayout *)self collectionView];
-      v8 = [v7 numberOfItemsInSection:v5];
+      collectionView2 = [(UICollectionViewLayout *)self collectionView];
+      v8 = [collectionView2 numberOfItemsInSection:v5];
 
       if (v8)
       {
@@ -352,19 +352,19 @@ void __75__UIDebuggingInformationHierarchyLayout_layoutAttributesForElementsInRe
           }
 
           ++v9;
-          v13 = [(UICollectionViewLayout *)self collectionView];
-          v14 = [v13 numberOfItemsInSection:v5];
+          collectionView3 = [(UICollectionViewLayout *)self collectionView];
+          v14 = [collectionView3 numberOfItemsInSection:v5];
         }
 
         while (v9 < v14);
       }
 
       ++v5;
-      v15 = [(UICollectionViewLayout *)self collectionView];
-      v16 = [v15 numberOfSections];
+      collectionView4 = [(UICollectionViewLayout *)self collectionView];
+      numberOfSections2 = [collectionView4 numberOfSections];
     }
 
-    while (v5 < v16);
+    while (v5 < numberOfSections2);
   }
 
   else
@@ -372,8 +372,8 @@ void __75__UIDebuggingInformationHierarchyLayout_layoutAttributesForElementsInRe
     v6 = 0.0;
   }
 
-  v17 = [(UICollectionViewLayout *)self collectionView];
-  [v17 bounds];
+  collectionView5 = [(UICollectionViewLayout *)self collectionView];
+  [collectionView5 bounds];
   Width = CGRectGetWidth(v22);
 
   v19 = Width;

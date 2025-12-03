@@ -1,57 +1,57 @@
 @interface ISAnimatedImageView
-- (BOOL)animatedImagePlayerIsReadyToDisplay:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (ISAnimatedImageView)initWithAnimatedImage:(id)a3;
-- (ISAnimatedImageView)initWithAnimatedImagePlayer:(id)a3;
-- (void)animatedImagePlayerDidBeginAnimating:(id)a3;
-- (void)animatedImagePlayerFrameDidChange:(id)a3;
+- (BOOL)animatedImagePlayerIsReadyToDisplay:(id)display;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (ISAnimatedImageView)initWithAnimatedImage:(id)image;
+- (ISAnimatedImageView)initWithAnimatedImagePlayer:(id)player;
+- (void)animatedImagePlayerDidBeginAnimating:(id)animating;
+- (void)animatedImagePlayerFrameDidChange:(id)change;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)displayLayer:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setImage:(id)a3;
-- (void)setPlaceholderImageView:(id)a3;
-- (void)setPlayer:(id)a3;
+- (void)displayLayer:(id)layer;
+- (void)setAlpha:(double)alpha;
+- (void)setImage:(id)image;
+- (void)setPlaceholderImageView:(id)view;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation ISAnimatedImageView
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   player = self->_player;
-  v4 = a3;
-  [v4 setContents:{-[ISAnimatedImagePlayer currentImage](player, "currentImage")}];
+  layerCopy = layer;
+  [layerCopy setContents:{-[ISAnimatedImagePlayer currentImage](player, "currentImage")}];
 }
 
-- (void)setPlaceholderImageView:(id)a3
+- (void)setPlaceholderImageView:(id)view
 {
   placeholderImageView = self->_placeholderImageView;
-  if (placeholderImageView != a3)
+  if (placeholderImageView != view)
   {
-    v6 = a3;
+    viewCopy = view;
     [(UIImageView *)placeholderImageView removeFromSuperview];
-    self->_placeholderImageView = v6;
+    self->_placeholderImageView = viewCopy;
     [(ISAnimatedImageView *)self addSubview:?];
     v5 = self->_placeholderImageView;
     [(ISAnimatedImageView *)self bounds];
     [(UIImageView *)v5 setFrame:?];
-    [(UIImageView *)v6 setAutoresizingMask:18];
+    [(UIImageView *)viewCopy setAutoresizingMask:18];
     [(ISAnimatedImagePlayer *)self->_player updateAnimation];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v7 = a3;
-  v4 = [(ISAnimatedImagePlayer *)self->_player animatedImage];
+  imageCopy = image;
+  animatedImage = [(ISAnimatedImagePlayer *)self->_player animatedImage];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = imageCopy;
+  if (animatedImage != imageCopy)
   {
-    if (v7)
+    if (imageCopy)
     {
-      v6 = [[ISAnimatedImagePlayer alloc] initWithAnimatedImage:v7];
+      v6 = [[ISAnimatedImagePlayer alloc] initWithAnimatedImage:imageCopy];
     }
 
     else
@@ -61,11 +61,11 @@
 
     [(ISAnimatedImageView *)self setPlayer:v6];
 
-    v5 = v7;
+    v5 = imageCopy;
   }
 }
 
-- (void)animatedImagePlayerDidBeginAnimating:(id)a3
+- (void)animatedImagePlayerDidBeginAnimating:(id)animating
 {
   placeholderImageView = self->_placeholderImageView;
   if (placeholderImageView)
@@ -74,13 +74,13 @@
   }
 }
 
-- (BOOL)animatedImagePlayerIsReadyToDisplay:(id)a3
+- (BOOL)animatedImagePlayerIsReadyToDisplay:(id)display
 {
-  v4 = [(ISAnimatedImageView *)self window];
-  if (v4)
+  window = [(ISAnimatedImageView *)self window];
+  if (window)
   {
-    v5 = [(ISAnimatedImageView *)self superview];
-    if (v5 && ([(ISAnimatedImageView *)self isHidden]& 1) == 0)
+    superview = [(ISAnimatedImageView *)self superview];
+    if (superview && ([(ISAnimatedImageView *)self isHidden]& 1) == 0)
     {
       [(ISAnimatedImageView *)self alpha];
       v6 = v7 > 0.0;
@@ -100,17 +100,17 @@
   return v6;
 }
 
-- (void)animatedImagePlayerFrameDidChange:(id)a3
+- (void)animatedImagePlayerFrameDidChange:(id)change
 {
-  v3 = [(ISAnimatedImageView *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(ISAnimatedImageView *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = ISAnimatedImageView;
-  [(ISAnimatedImageView *)&v4 setAlpha:a3];
+  [(ISAnimatedImageView *)&v4 setAlpha:alpha];
   [(ISAnimatedImagePlayer *)self->_player updateAnimation];
 }
 
@@ -130,12 +130,12 @@
   [(ISAnimatedImagePlayer *)self->_player updateAnimation];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(ISAnimatedImagePlayer *)self->_player animatedImage];
-  [v5 pixelSize];
+  height = fits.height;
+  width = fits.width;
+  animatedImage = [(ISAnimatedImagePlayer *)self->_player animatedImage];
+  [animatedImage pixelSize];
   if (v7 == 0.0)
   {
     v8 = *MEMORY[0x277CBF3A8];
@@ -178,15 +178,15 @@
   [(ISAnimatedImageView *)&v3 dealloc];
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   player = self->_player;
-  if (player != v5)
+  if (player != playerCopy)
   {
-    v8 = v5;
+    v8 = playerCopy;
     [player unregisterDestination:self];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     if (v8)
     {
       player = [(ISAnimatedImagePlayer *)self->_player registerDestination:self];
@@ -194,11 +194,11 @@
 
     else
     {
-      v7 = [(ISAnimatedImageView *)self layer];
-      [v7 setNeedsDisplay];
+      layer = [(ISAnimatedImageView *)self layer];
+      [layer setNeedsDisplay];
 
       player = self->_placeholderImageView;
-      v5 = 0;
+      playerCopy = 0;
       if (!player)
       {
         goto LABEL_7;
@@ -207,34 +207,34 @@
       player = [player setHidden:0];
     }
 
-    v5 = v8;
+    playerCopy = v8;
   }
 
 LABEL_7:
 
-  MEMORY[0x2821F96F8](player, v5);
+  MEMORY[0x2821F96F8](player, playerCopy);
 }
 
-- (ISAnimatedImageView)initWithAnimatedImagePlayer:(id)a3
+- (ISAnimatedImageView)initWithAnimatedImagePlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v6 = [(ISAnimatedImageView *)self initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
+    objc_storeStrong(&v6->_player, player);
     [(ISAnimatedImagePlayer *)v7->_player registerDestination:v7];
   }
 
   return v7;
 }
 
-- (ISAnimatedImageView)initWithAnimatedImage:(id)a3
+- (ISAnimatedImageView)initWithAnimatedImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = a3;
-    v5 = [[ISAnimatedImagePlayer alloc] initWithAnimatedImage:v4];
+    imageCopy = image;
+    v5 = [[ISAnimatedImagePlayer alloc] initWithAnimatedImage:imageCopy];
   }
 
   else

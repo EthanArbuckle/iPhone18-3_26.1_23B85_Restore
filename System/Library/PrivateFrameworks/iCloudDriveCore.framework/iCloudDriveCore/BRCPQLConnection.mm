@@ -1,38 +1,38 @@
 @interface BRCPQLConnection
-- (BOOL)_registerStaticDBFunctionsWithError:(id *)a3;
-- (BOOL)_shouldFlushWithChangeCount:(int)a3;
+- (BOOL)_registerStaticDBFunctionsWithError:(id *)error;
+- (BOOL)_shouldFlushWithChangeCount:(int)count;
 - (BOOL)_validateIsRunningWithCorrectPersona;
-- (BOOL)attachDBAtPath:(id)a3 as:(id)a4 error:(id *)a5;
-- (BOOL)brc_closeWithError:(id *)a3;
-- (BOOL)execute:(id)a3 args:(char *)a4;
-- (BOOL)executeRaw:(id)a3;
-- (BOOL)executeWithErrorHandler:(id)a3 sql:(id)a4;
-- (BOOL)executeWithExpectedIndex:(id)a3 sql:(id)a4;
-- (BOOL)executeWithSlowStatementRadar:(id)a3 sql:(id)a4;
+- (BOOL)attachDBAtPath:(id)path as:(id)as error:(id *)error;
+- (BOOL)brc_closeWithError:(id *)error;
+- (BOOL)execute:(id)execute args:(char *)args;
+- (BOOL)executeRaw:(id)raw;
+- (BOOL)executeWithErrorHandler:(id)handler sql:(id)sql;
+- (BOOL)executeWithExpectedIndex:(id)index sql:(id)sql;
+- (BOOL)executeWithSlowStatementRadar:(id)radar sql:(id)sql;
 - (BOOL)needsAutovacuum;
-- (BOOL)openAtURL:(id)a3 withFlags:(int)a4 error:(id *)a5;
+- (BOOL)openAtURL:(id)l withFlags:(int)flags error:(id *)error;
 - (BOOL)profilingEnabled;
-- (BRCPQLConnection)initWithLabel:(id)a3 dbCorruptionHandler:(id)a4;
-- (id)fetch:(id)a3 args:(char *)a4;
-- (id)fetchObject:(id)a3 sql:(id)a4 args:(char *)a5;
-- (id)fetchObjectOfClass:(Class)a3 initializer:(SEL)a4 sql:(id)a5 args:(char *)a6;
-- (id)fetchObjectOfClass:(Class)a3 sql:(id)a4 args:(char *)a5;
-- (id)fetchWithExpectedIndex:(id)a3 sql:(id)a4;
-- (id)fetchWithSlowStatementRadar:(id)a3 objectOfClass:(Class)a4 sql:(id)a5;
-- (id)fetchWithSlowStatementRadar:(id)a3 objectWithConstructor:(id)a4 sql:(id)a5;
-- (id)fetchWithSlowStatementRadar:(id)a3 sql:(id)a4;
+- (BRCPQLConnection)initWithLabel:(id)label dbCorruptionHandler:(id)handler;
+- (id)fetch:(id)fetch args:(char *)args;
+- (id)fetchObject:(id)object sql:(id)sql args:(char *)args;
+- (id)fetchObjectOfClass:(Class)class initializer:(SEL)initializer sql:(id)sql args:(char *)args;
+- (id)fetchObjectOfClass:(Class)class sql:(id)sql args:(char *)args;
+- (id)fetchWithExpectedIndex:(id)index sql:(id)sql;
+- (id)fetchWithSlowStatementRadar:(id)radar objectOfClass:(Class)class sql:(id)sql;
+- (id)fetchWithSlowStatementRadar:(id)radar objectWithConstructor:(id)constructor sql:(id)sql;
+- (id)fetchWithSlowStatementRadar:(id)radar sql:(id)sql;
 - (int64_t)changes;
 - (int64_t)sizeInBytes;
-- (void)_setErrorHandlerWithDBCorruptionHandler:(id)a3;
+- (void)_setErrorHandlerWithDBCorruptionHandler:(id)handler;
 - (void)assertOnQueue;
 - (void)autovacuumIfNeeded;
 - (void)brc_close;
-- (void)disableProfilingForQueriesInBlock:(id)a3;
+- (void)disableProfilingForQueriesInBlock:(id)block;
 - (void)flushToMakeEditsVisibleToIPCReaders;
-- (void)scheduleFlushWithCheckpoint:(BOOL)a3 whenFlushed:(id)a4;
-- (void)setProfilingEnabled:(BOOL)a3;
-- (void)setProfilingHook:(id)a3;
-- (void)usePacedBatchingOnTargetQueue:(id)a3 withInterval:(double)a4 changeCount:(int)a5;
+- (void)scheduleFlushWithCheckpoint:(BOOL)checkpoint whenFlushed:(id)flushed;
+- (void)setProfilingEnabled:(BOOL)enabled;
+- (void)setProfilingHook:(id)hook;
+- (void)usePacedBatchingOnTargetQueue:(id)queue withInterval:(double)interval changeCount:(int)count;
 @end
 
 @implementation BRCPQLConnection
@@ -48,10 +48,10 @@
 - (BOOL)_validateIsRunningWithCorrectPersona
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [v3 br_currentPersonaID];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
-  if (self->_assertionPersonaIdentifier && ([v4 isEqualToString:?] & 1) == 0)
+  if (self->_assertionPersonaIdentifier && ([br_currentPersonaID isEqualToString:?] & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -59,7 +59,7 @@
     {
       assertionPersonaIdentifier = self->_assertionPersonaIdentifier;
       v11 = 138412802;
-      v12 = v4;
+      v12 = br_currentPersonaID;
       v13 = 2112;
       v14 = assertionPersonaIdentifier;
       v15 = 2112;
@@ -92,19 +92,19 @@
   return changesOverride;
 }
 
-- (BRCPQLConnection)initWithLabel:(id)a3 dbCorruptionHandler:(id)a4
+- (BRCPQLConnection)initWithLabel:(id)label dbCorruptionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = BRCPQLConnection;
   v8 = [(BRCPQLConnection *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(BRCPQLConnection *)v8 _setErrorHandlerWithDBCorruptionHandler:v7];
+    [(BRCPQLConnection *)v8 _setErrorHandlerWithDBCorruptionHandler:handlerCopy];
     [(BRCPQLConnection *)v9 _setLockedHandler];
-    [(BRCPQLConnection *)v9 setLabel:v6];
+    [(BRCPQLConnection *)v9 setLabel:labelCopy];
     v10 = [BRCUserDefaults defaultsForMangledID:0];
     -[BRCPQLConnection setTraced:](v9, "setTraced:", [v10 dbTraced]);
 
@@ -114,15 +114,15 @@
   return v9;
 }
 
-- (void)_setErrorHandlerWithDBCorruptionHandler:(id)a3
+- (void)_setErrorHandlerWithDBCorruptionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__BRCPQLConnection__setErrorHandlerWithDBCorruptionHandler___block_invoke;
   v6[3] = &unk_2784FF300;
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   objc_copyWeak(&v8, &location);
   [(BRCPQLConnection *)self setSqliteErrorHandler:v6];
@@ -294,7 +294,7 @@ uint64_t __37__BRCPQLConnection__setLockedHandler__block_invoke(uint64_t a1, voi
   return 1;
 }
 
-- (BOOL)_registerStaticDBFunctionsWithError:(id *)a3
+- (BOOL)_registerStaticDBFunctionsWithError:(id *)error
 {
   v26 = 0;
   v5 = [(PQLConnection *)self registerFunction:@"fetch_and_inc64" nArgs:1 handler:&__block_literal_global_109 error:&v26];
@@ -368,11 +368,11 @@ LABEL_15:
     [BRCPQLConnection _registerStaticDBFunctionsWithError:];
   }
 
-  if (a3)
+  if (error)
   {
     v18 = v7;
     v14 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -561,27 +561,27 @@ void __56__BRCPQLConnection__registerStaticDBFunctionsWithError___block_invoke_6
   }
 }
 
-- (BOOL)openAtURL:(id)a3 withFlags:(int)a4 error:(id *)a5
+- (BOOL)openAtURL:(id)l withFlags:(int)flags error:(id *)error
 {
-  v6 = a4;
+  flagsCopy = flags;
   v10.receiver = self;
   v10.super_class = BRCPQLConnection;
-  v8 = [BRCPQLConnection openAtURL:sel_openAtURL_withFlags_error_ withFlags:a3 error:?];
+  v8 = [BRCPQLConnection openAtURL:sel_openAtURL_withFlags_error_ withFlags:l error:?];
   if (v8)
   {
-    self->_isReadonly = v6 & 1;
-    if ((v6 & 1) != 0 || ([(BRCPQLConnection *)self setupPragmas]& 1) != 0)
+    self->_isReadonly = flagsCopy & 1;
+    if ((flagsCopy & 1) != 0 || ([(BRCPQLConnection *)self setupPragmas]& 1) != 0)
     {
-      if ([(BRCPQLConnection *)self _registerStaticDBFunctionsWithError:a5])
+      if ([(BRCPQLConnection *)self _registerStaticDBFunctionsWithError:error])
       {
         LOBYTE(v8) = 1;
         return v8;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [(BRCPQLConnection *)self lastError];
+      *error = [(BRCPQLConnection *)self lastError];
     }
 
     [(BRCPQLConnection *)self brc_close];
@@ -593,15 +593,15 @@ void __56__BRCPQLConnection__registerStaticDBFunctionsWithError___block_invoke_6
 
 - (BOOL)profilingEnabled
 {
-  v2 = [(BRCPQLConnection *)self profilingHook];
-  v3 = v2 != 0;
+  profilingHook = [(BRCPQLConnection *)self profilingHook];
+  v3 = profilingHook != 0;
 
   return v3;
 }
 
-- (void)setProfilingEnabled:(BOOL)a3
+- (void)setProfilingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     LOBYTE(v6) = self->_verboseProfilingEnabled;
     [(BRCPQLConnection *)&v4 setProfilingHook:v5, v3.receiver, v3.super_class, self, BRCPQLConnection, MEMORY[0x277D85DD0], 3221225472, __40__BRCPQLConnection_setProfilingEnabled___block_invoke, &unk_2784FF368, self, v6];
@@ -762,19 +762,19 @@ uint64_t __40__BRCPQLConnection_setProfilingEnabled___block_invoke_188(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)attachDBAtPath:(id)a3 as:(id)a4 error:(id *)a5
+- (BOOL)attachDBAtPath:(id)path as:(id)as error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithFormat:@"ATTACH %@ AS %@", v10, v9];
+  asCopy = as;
+  pathCopy = path;
+  asCopy = [[v8 alloc] initWithFormat:@"ATTACH %@ AS %@", pathCopy, asCopy];
 
-  v12 = [(BRCPQLConnection *)self executeRaw:v11];
+  v12 = [(BRCPQLConnection *)self executeRaw:asCopy];
   if (!v12)
   {
-    v13 = [(BRCPQLConnection *)self lastError];
-    if (v13)
+    lastError = [(BRCPQLConnection *)self lastError];
+    if (lastError)
     {
       v14 = brc_bread_crumbs();
       v15 = brc_default_log();
@@ -784,24 +784,24 @@ uint64_t __40__BRCPQLConnection_setProfilingEnabled___block_invoke_188(uint64_t 
         *buf = 136315906;
         v21 = "[BRCPQLConnection attachDBAtPath:as:error:]";
         v22 = 2080;
-        if (!a5)
+        if (!error)
         {
           v19 = "(ignored by caller)";
         }
 
         v23 = v19;
         v24 = 2112;
-        v25 = v13;
+        v25 = lastError;
         v26 = 2112;
         v27 = v14;
         _os_log_error_impl(&dword_223E7A000, v15, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
     }
 
-    if (a5)
+    if (error)
     {
-      v16 = v13;
-      *a5 = v13;
+      v16 = lastError;
+      *error = lastError;
     }
   }
 
@@ -825,21 +825,21 @@ uint64_t __40__BRCPQLConnection_setProfilingEnabled___block_invoke_188(uint64_t 
   }
 }
 
-- (void)scheduleFlushWithCheckpoint:(BOOL)a3 whenFlushed:(id)a4
+- (void)scheduleFlushWithCheckpoint:(BOOL)checkpoint whenFlushed:(id)flushed
 {
-  v6 = a4;
+  flushedCopy = flushed;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_invoke;
   v10[3] = &unk_2784FF3B0;
   v10[4] = self;
-  v11 = a3;
+  checkpointCopy = checkpoint;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_invoke_2;
   v8[3] = &unk_2784FF3D8;
-  v9 = v6;
-  v7 = v6;
+  v9 = flushedCopy;
+  v7 = flushedCopy;
   [(BRCPQLConnection *)self performWithFlags:4 action:v10 whenFlushed:v8];
 }
 
@@ -854,10 +854,10 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   return 1;
 }
 
-- (void)setProfilingHook:(id)a3
+- (void)setProfilingHook:(id)hook
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  hookCopy = hook;
   abc_report_panic_with_signature();
   [MEMORY[0x277CCACA8] stringWithFormat:@"setting profiling hook is not supported on %@", objc_opt_class()];
   objc_claimAutoreleasedReturnValue();
@@ -874,16 +874,16 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   }
 
   brc_append_system_info_to_message();
-  v7 = [objc_claimAutoreleasedReturnValue() UTF8String];
-  __assert_rtn("[BRCPQLConnection setProfilingHook:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCPQLConnection.m", 476, v7);
+  uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+  __assert_rtn("[BRCPQLConnection setProfilingHook:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCPQLConnection.m", 476, uTF8String);
 }
 
-- (id)fetchWithExpectedIndex:(id)a3 sql:(id)a4
+- (id)fetchWithExpectedIndex:(id)index sql:(id)sql
 {
-  v6 = a4;
-  v7 = a3;
+  sqlCopy = sql;
+  indexCopy = index;
   [(BRCPQLConnection *)self assertOnQueue];
-  v8 = [v7 length];
+  v8 = [indexCopy length];
 
   if (!v8)
   {
@@ -895,18 +895,18 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
     }
   }
 
-  v11 = [(BRCPQLConnection *)self fetch:v6 args:&v13];
+  v11 = [(BRCPQLConnection *)self fetch:sqlCopy args:&v13];
 
   return v11;
 }
 
-- (id)fetchWithSlowStatementRadar:(id)a3 sql:(id)a4
+- (id)fetchWithSlowStatementRadar:(id)radar sql:(id)sql
 {
-  v6 = a4;
-  v7 = a3;
+  sqlCopy = sql;
+  radarCopy = radar;
   [(BRCPQLConnection *)self assertOnQueue];
   v17 = 0;
-  v8 = [v7 length];
+  v8 = [radarCopy length];
 
   if (!v8)
   {
@@ -921,26 +921,26 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   v17 = &v18;
   v16.receiver = self;
   v16.super_class = BRCPQLConnection;
-  v11 = [(BRCPQLConnection *)&v16 profilingHook];
+  profilingHook = [(BRCPQLConnection *)&v16 profilingHook];
   v15.receiver = self;
   v15.super_class = BRCPQLConnection;
   [(BRCPQLConnection *)&v15 setProfilingHook:0];
-  v12 = [(BRCPQLConnection *)self fetch:v6 args:v17];
+  v12 = [(BRCPQLConnection *)self fetch:sqlCopy args:v17];
 
   v14.receiver = self;
   v14.super_class = BRCPQLConnection;
-  [(BRCPQLConnection *)&v14 setProfilingHook:v11];
+  [(BRCPQLConnection *)&v14 setProfilingHook:profilingHook];
 
   return v12;
 }
 
-- (id)fetchWithSlowStatementRadar:(id)a3 objectOfClass:(Class)a4 sql:(id)a5
+- (id)fetchWithSlowStatementRadar:(id)radar objectOfClass:(Class)class sql:(id)sql
 {
-  v8 = a5;
-  v9 = a3;
+  sqlCopy = sql;
+  radarCopy = radar;
   [(BRCPQLConnection *)self assertOnQueue];
   v19 = 0;
-  v10 = [v9 length];
+  v10 = [radarCopy length];
 
   if (!v10)
   {
@@ -955,27 +955,27 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   v19 = &v20;
   v18.receiver = self;
   v18.super_class = BRCPQLConnection;
-  v13 = [(BRCPQLConnection *)&v18 profilingHook];
+  profilingHook = [(BRCPQLConnection *)&v18 profilingHook];
   v17.receiver = self;
   v17.super_class = BRCPQLConnection;
   [(BRCPQLConnection *)&v17 setProfilingHook:0];
-  v14 = [(BRCPQLConnection *)self fetchObjectOfClass:a4 sql:v8 args:v19];
+  v14 = [(BRCPQLConnection *)self fetchObjectOfClass:class sql:sqlCopy args:v19];
 
   v16.receiver = self;
   v16.super_class = BRCPQLConnection;
-  [(BRCPQLConnection *)&v16 setProfilingHook:v13];
+  [(BRCPQLConnection *)&v16 setProfilingHook:profilingHook];
 
   return v14;
 }
 
-- (id)fetchWithSlowStatementRadar:(id)a3 objectWithConstructor:(id)a4 sql:(id)a5
+- (id)fetchWithSlowStatementRadar:(id)radar objectWithConstructor:(id)constructor sql:(id)sql
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  sqlCopy = sql;
+  constructorCopy = constructor;
+  radarCopy = radar;
   [(BRCPQLConnection *)self assertOnQueue];
   v20 = 0;
-  v11 = [v10 length];
+  v11 = [radarCopy length];
 
   if (!v11)
   {
@@ -990,25 +990,25 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   v20 = &v21;
   v19.receiver = self;
   v19.super_class = BRCPQLConnection;
-  v14 = [(BRCPQLConnection *)&v19 profilingHook];
+  profilingHook = [(BRCPQLConnection *)&v19 profilingHook];
   v18.receiver = self;
   v18.super_class = BRCPQLConnection;
   [(BRCPQLConnection *)&v18 setProfilingHook:0];
-  v15 = [(BRCPQLConnection *)self fetchObject:v9 sql:v8 args:v20];
+  v15 = [(BRCPQLConnection *)self fetchObject:constructorCopy sql:sqlCopy args:v20];
 
   v17.receiver = self;
   v17.super_class = BRCPQLConnection;
-  [(BRCPQLConnection *)&v17 setProfilingHook:v14];
+  [(BRCPQLConnection *)&v17 setProfilingHook:profilingHook];
 
   return v15;
 }
 
-- (BOOL)executeWithExpectedIndex:(id)a3 sql:(id)a4
+- (BOOL)executeWithExpectedIndex:(id)index sql:(id)sql
 {
-  v6 = a4;
-  v7 = a3;
+  sqlCopy = sql;
+  indexCopy = index;
   [(BRCPQLConnection *)self assertOnQueue];
-  v8 = [v7 length];
+  v8 = [indexCopy length];
 
   if (!v8)
   {
@@ -1020,18 +1020,18 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
     }
   }
 
-  v11 = [(BRCPQLConnection *)self execute:v6 args:&v13];
+  v11 = [(BRCPQLConnection *)self execute:sqlCopy args:&v13];
 
   return v11;
 }
 
-- (BOOL)executeWithSlowStatementRadar:(id)a3 sql:(id)a4
+- (BOOL)executeWithSlowStatementRadar:(id)radar sql:(id)sql
 {
-  v6 = a4;
-  v7 = a3;
+  sqlCopy = sql;
+  radarCopy = radar;
   [(BRCPQLConnection *)self assertOnQueue];
   v17 = 0;
-  v8 = [v7 length];
+  v8 = [radarCopy length];
 
   if (!v8)
   {
@@ -1046,78 +1046,78 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
   v17 = &v18;
   v16.receiver = self;
   v16.super_class = BRCPQLConnection;
-  v11 = [(BRCPQLConnection *)&v16 profilingHook];
+  profilingHook = [(BRCPQLConnection *)&v16 profilingHook];
   v15.receiver = self;
   v15.super_class = BRCPQLConnection;
   [(BRCPQLConnection *)&v15 setProfilingHook:0];
-  v12 = [(BRCPQLConnection *)self execute:v6 args:v17];
+  v12 = [(BRCPQLConnection *)self execute:sqlCopy args:v17];
 
   v14.receiver = self;
   v14.super_class = BRCPQLConnection;
-  [(BRCPQLConnection *)&v14 setProfilingHook:v11];
+  [(BRCPQLConnection *)&v14 setProfilingHook:profilingHook];
 
   return v12;
 }
 
-- (BOOL)executeWithErrorHandler:(id)a3 sql:(id)a4
+- (BOOL)executeWithErrorHandler:(id)handler sql:(id)sql
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  sqlCopy = sql;
   [(BRCPQLConnection *)self assertOnQueue];
   v14 = &v15;
-  if (v6)
+  if (handlerCopy)
   {
     v13.receiver = self;
     v13.super_class = BRCPQLConnection;
-    v8 = [(BRCPQLConnection *)&v13 sqliteErrorHandler];
+    sqliteErrorHandler = [(BRCPQLConnection *)&v13 sqliteErrorHandler];
     v12.receiver = self;
     v12.super_class = BRCPQLConnection;
-    [(BRCPQLConnection *)&v12 setSqliteErrorHandler:v6];
-    v9 = [(BRCPQLConnection *)self execute:v7 args:v14];
+    [(BRCPQLConnection *)&v12 setSqliteErrorHandler:handlerCopy];
+    v9 = [(BRCPQLConnection *)self execute:sqlCopy args:v14];
     v11.receiver = self;
     v11.super_class = BRCPQLConnection;
-    [(BRCPQLConnection *)&v11 setSqliteErrorHandler:v8];
+    [(BRCPQLConnection *)&v11 setSqliteErrorHandler:sqliteErrorHandler];
   }
 
   else
   {
-    v9 = [(BRCPQLConnection *)self execute:v7 args:v14];
+    v9 = [(BRCPQLConnection *)self execute:sqlCopy args:v14];
   }
 
   return v9;
 }
 
-- (void)disableProfilingForQueriesInBlock:(id)a3
+- (void)disableProfilingForQueriesInBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(BRCPQLConnection *)self assertOnQueue];
-  if (!v4)
+  if (!blockCopy)
   {
     [BRCPQLConnection disableProfilingForQueriesInBlock:];
   }
 
   v8.receiver = self;
   v8.super_class = BRCPQLConnection;
-  v5 = [(BRCPQLConnection *)&v8 profilingHook];
+  profilingHook = [(BRCPQLConnection *)&v8 profilingHook];
   v7.receiver = self;
   v7.super_class = BRCPQLConnection;
   [(BRCPQLConnection *)&v7 setProfilingHook:0];
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   v6.receiver = self;
   v6.super_class = BRCPQLConnection;
-  [(BRCPQLConnection *)&v6 setProfilingHook:v5];
+  [(BRCPQLConnection *)&v6 setProfilingHook:profilingHook];
 }
 
-- (BOOL)_shouldFlushWithChangeCount:(int)a3
+- (BOOL)_shouldFlushWithChangeCount:(int)count
 {
   [(BRCPQLConnection *)self assertOnQueue];
-  if (a3 == -2)
+  if (count == -2)
   {
     if (!self->_batchingPacer)
     {
       flushInterval = self->_flushInterval;
-      v7 = [(BRCPQLConnection *)self serialQueue];
+      serialQueue = [(BRCPQLConnection *)self serialQueue];
       v8 = br_pacer_create();
       batchingPacer = self->_batchingPacer;
       self->_batchingPacer = v8;
@@ -1137,7 +1137,7 @@ uint64_t __60__BRCPQLConnection_scheduleFlushWithCheckpoint_whenFlushed___block_
     goto LABEL_17;
   }
 
-  if (a3 == -1)
+  if (count == -1)
   {
     v5 = self->_batchingPacer;
     if (v5)
@@ -1153,7 +1153,7 @@ LABEL_17:
     changeCount = self->_changeCount;
     if (changeCount)
     {
-      v14 = changeCount <= a3;
+      v14 = changeCount <= count;
     }
 
     else
@@ -1191,19 +1191,19 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
   }
 }
 
-- (void)usePacedBatchingOnTargetQueue:(id)a3 withInterval:(double)a4 changeCount:(int)a5
+- (void)usePacedBatchingOnTargetQueue:(id)queue withInterval:(double)interval changeCount:(int)count
 {
-  self->_changeCount = a5;
-  self->_flushInterval = a4;
+  self->_changeCount = count;
+  self->_flushInterval = interval;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __75__BRCPQLConnection_usePacedBatchingOnTargetQueue_withInterval_changeCount___block_invoke;
   v5[3] = &unk_2784FF428;
   v5[4] = self;
-  [(BRCPQLConnection *)self useBatchingOnTargetQueue:a3 withPolicyHandler:v5];
+  [(BRCPQLConnection *)self useBatchingOnTargetQueue:queue withPolicyHandler:v5];
 }
 
-- (BOOL)brc_closeWithError:(id *)a3
+- (BOOL)brc_closeWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   if (self->_batchingPacer)
@@ -1223,7 +1223,7 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v7;
       v18 = 2112;
@@ -1232,10 +1232,10 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
     }
   }
 
-  if (a3)
+  if (error)
   {
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1261,8 +1261,8 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
     }
 
     brc_append_system_info_to_message();
-    v8 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("[BRCPQLConnection brc_close]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCPQLConnection.m", 717, v8);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("[BRCPQLConnection brc_close]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCPQLConnection.m", 717, uTF8String);
   }
 }
 
@@ -1271,8 +1271,8 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
   [(BRCPQLConnection *)self assertOnQueue];
   v3 = [(PQLConnection *)self numberWithSQL:@"pragma page_count"];
   v4 = [(PQLConnection *)self numberWithSQL:@"pragma page_size"];
-  v5 = [v3 integerValue];
-  v6 = [v4 integerValue] * v5;
+  integerValue = [v3 integerValue];
+  v6 = [v4 integerValue] * integerValue;
 
   return v6;
 }
@@ -1295,19 +1295,19 @@ void __48__BRCPQLConnection__shouldFlushWithChangeCount___block_invoke(uint64_t 
     v3 = [BRCUserDefaults defaultsForMangledID:0];
     -[BRCPQLConnection incrementalVacuum:](self, "incrementalVacuum:", [v3 dbAutovacuumBatchSize]);
     v4 = +[BRCSystemResourcesManager manager];
-    v5 = [v4 connectedToPowerSource];
+    connectedToPowerSource = [v4 connectedToPowerSource];
 
-    if (v5)
+    if (connectedToPowerSource)
     {
       objc_initWeak(&location, self);
       self->_autovacuumInProgress = 1;
-      v6 = [(BRCPQLConnection *)self serialQueue];
+      serialQueue = [(BRCPQLConnection *)self serialQueue];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke;
       v7[3] = &unk_2784FF400;
       objc_copyWeak(&v8, &location);
-      dispatch_async(v6, v7);
+      dispatch_async(serialQueue, v7);
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -1322,14 +1322,14 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   [WeakRetained autovacuumIfNeeded];
 }
 
-- (BOOL)execute:(id)a3 args:(char *)a4
+- (BOOL)execute:(id)execute args:(char *)args
 {
-  v6 = a3;
+  executeCopy = execute;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v9.receiver = self;
     v9.super_class = BRCPQLConnection;
-    v7 = [(BRCPQLConnection *)&v9 execute:v6 args:a4];
+    v7 = [(BRCPQLConnection *)&v9 execute:executeCopy args:args];
   }
 
   else
@@ -1340,14 +1340,14 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)executeRaw:(id)a3
+- (BOOL)executeRaw:(id)raw
 {
-  v4 = a3;
+  rawCopy = raw;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v7.receiver = self;
     v7.super_class = BRCPQLConnection;
-    v5 = [(BRCPQLConnection *)&v7 executeRaw:v4];
+    v5 = [(BRCPQLConnection *)&v7 executeRaw:rawCopy];
   }
 
   else
@@ -1358,14 +1358,14 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)fetch:(id)a3 args:(char *)a4
+- (id)fetch:(id)fetch args:(char *)args
 {
-  v6 = a3;
+  fetchCopy = fetch;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v9.receiver = self;
     v9.super_class = BRCPQLConnection;
-    v7 = [(BRCPQLConnection *)&v9 fetch:v6 args:a4];
+    v7 = [(BRCPQLConnection *)&v9 fetch:fetchCopy args:args];
   }
 
   else
@@ -1376,14 +1376,14 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)fetchObjectOfClass:(Class)a3 initializer:(SEL)a4 sql:(id)a5 args:(char *)a6
+- (id)fetchObjectOfClass:(Class)class initializer:(SEL)initializer sql:(id)sql args:(char *)args
 {
-  v10 = a5;
+  sqlCopy = sql;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v13.receiver = self;
     v13.super_class = BRCPQLConnection;
-    v11 = [(BRCPQLConnection *)&v13 fetchObjectOfClass:a3 initializer:a4 sql:v10 args:a6];
+    v11 = [(BRCPQLConnection *)&v13 fetchObjectOfClass:class initializer:initializer sql:sqlCopy args:args];
   }
 
   else
@@ -1394,14 +1394,14 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)fetchObjectOfClass:(Class)a3 sql:(id)a4 args:(char *)a5
+- (id)fetchObjectOfClass:(Class)class sql:(id)sql args:(char *)args
 {
-  v8 = a4;
+  sqlCopy = sql;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v11.receiver = self;
     v11.super_class = BRCPQLConnection;
-    v9 = [(BRCPQLConnection *)&v11 fetchObjectOfClass:a3 sql:v8 args:a5];
+    v9 = [(BRCPQLConnection *)&v11 fetchObjectOfClass:class sql:sqlCopy args:args];
   }
 
   else
@@ -1412,15 +1412,15 @@ void __38__BRCPQLConnection_autovacuumIfNeeded__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)fetchObject:(id)a3 sql:(id)a4 args:(char *)a5
+- (id)fetchObject:(id)object sql:(id)sql args:(char *)args
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  sqlCopy = sql;
   if ([(BRCPQLConnection *)self _validateIsRunningWithCorrectPersona])
   {
     v12.receiver = self;
     v12.super_class = BRCPQLConnection;
-    v10 = [(BRCPQLConnection *)&v12 fetchObject:v8 sql:v9 args:a5];
+    v10 = [(BRCPQLConnection *)&v12 fetchObject:objectCopy sql:sqlCopy args:args];
   }
 
   else

@@ -1,30 +1,30 @@
 @interface LNEntityQueryRequestType
-- (BOOL)isEqual:(id)a3;
-- (LNEntityQueryRequestType)initWithCoder:(id)a3;
-- (LNEntityQueryRequestType)initWithEntityIdentifiers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNEntityQueryRequestType)initWithCoder:(id)coder;
+- (LNEntityQueryRequestType)initWithEntityIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEntityQueryRequestType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNEntityQueryRequestType *)self identifiers];
-      v8 = [(LNEntityQueryRequestType *)v6 identifiers];
-      v9 = v7;
-      v10 = v8;
+      identifiers = [(LNEntityQueryRequestType *)self identifiers];
+      identifiers2 = [(LNEntityQueryRequestType *)v6 identifiers];
+      v9 = identifiers;
+      v10 = identifiers2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -52,35 +52,35 @@
   return v12;
 }
 
-- (LNEntityQueryRequestType)initWithCoder:(id)a3
+- (LNEntityQueryRequestType)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"identifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"identifiers"];
 
   v9 = [(LNEntityQueryRequestType *)self initWithEntityIdentifiers:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNEntityQueryRequestType *)self identifiers];
-  [v4 encodeObject:v5 forKey:@"identifiers"];
+  coderCopy = coder;
+  identifiers = [(LNEntityQueryRequestType *)self identifiers];
+  [coderCopy encodeObject:identifiers forKey:@"identifiers"];
 }
 
-- (LNEntityQueryRequestType)initWithEntityIdentifiers:(id)a3
+- (LNEntityQueryRequestType)initWithEntityIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v10.receiver = self;
   v10.super_class = LNEntityQueryRequestType;
-  v6 = [(LNQueryRequestTypeBase *)&v10 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(LNQueryRequestTypeBase *)&v10 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, identifiers);
     v8 = v7;
   }
 

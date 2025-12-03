@@ -1,6 +1,6 @@
 @interface VIOSessionSunsetSunriseMonitor
 - (BOOL)isCurrentlyNightTime;
-- (VIOSessionSunsetSunriseMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionSunsetSunriseMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
 - (void)reportStateToStateManager;
 @end
@@ -48,17 +48,17 @@
     }
   }
 
-  v6 = [(VIOSessionSunsetSunriseMonitor *)self shouldDisableVIOSession];
-  v7 = [(VIOSessionMonitor *)self stateManager];
-  v8 = v7;
-  if (v6)
+  shouldDisableVIOSession = [(VIOSessionSunsetSunriseMonitor *)self shouldDisableVIOSession];
+  stateManager = [(VIOSessionMonitor *)self stateManager];
+  v8 = stateManager;
+  if (shouldDisableVIOSession)
   {
-    [v7 recordSessionDisableEvent:3];
+    [stateManager recordSessionDisableEvent:3];
   }
 
   else
   {
-    [v7 resetSessionDisableEvent:3];
+    [stateManager resetSessionDisableEvent:3];
   }
 }
 
@@ -76,7 +76,7 @@ LABEL_14:
     }
 
     v21 = 134349056;
-    v22 = self;
+    selfCopy7 = self;
     v14 = "[%{public}p] LocationManager doesn't have a last location; not disabling VIO session.";
     goto LABEL_12;
   }
@@ -86,12 +86,12 @@ LABEL_14:
   v6 = sub_100A42C08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v3 lastLocation];
+    lastLocation = [v3 lastLocation];
     v8 = +[NSDate date];
     v21 = 134349827;
-    v22 = self;
+    selfCopy7 = self;
     v23 = 2113;
-    v24 = v7;
+    v24 = lastLocation;
     v25 = 2112;
     v26 = v8;
     v27 = 2048;
@@ -100,8 +100,8 @@ LABEL_14:
   }
 
   v9 = +[SunsetSunriseCalculator sharedCalculator];
-  v10 = [v3 lastLocation];
-  v11 = [v9 currentStateForLocation:v10 offsetThreshold:v5];
+  lastLocation2 = [v3 lastLocation];
+  v11 = [v9 currentStateForLocation:lastLocation2 offsetThreshold:v5];
 
   if (v11 <= 1)
   {
@@ -111,7 +111,7 @@ LABEL_14:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v21 = 136315650;
-        v22 = "[VIOSessionSunsetSunriseMonitor isCurrentlyNightTime]";
+        selfCopy7 = "[VIOSessionSunsetSunriseMonitor isCurrentlyNightTime]";
         v23 = 2080;
         v24 = "VIOSessionSunsetSunriseMonitor.m";
         v25 = 1024;
@@ -126,7 +126,7 @@ LABEL_14:
         {
           v20 = +[NSThread callStackSymbols];
           v21 = 138412290;
-          v22 = v20;
+          selfCopy7 = v20;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%@", &v21, 0xCu);
         }
       }
@@ -138,7 +138,7 @@ LABEL_14:
       }
 
       v21 = 134349056;
-      v22 = self;
+      selfCopy7 = self;
       v14 = "[%{public}p] Unknown sunset/sunrise state; not disabling VIO session";
       v15 = v12;
       v16 = OS_LOG_TYPE_ERROR;
@@ -157,7 +157,7 @@ LABEL_14:
     }
 
     v21 = 134349056;
-    v22 = self;
+    selfCopy7 = self;
     v14 = "[%{public}p] Not disabling VIO session because it's currently day time";
 LABEL_12:
     v15 = v12;
@@ -175,7 +175,7 @@ LABEL_13:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v21 = 134349056;
-        v22 = self;
+        selfCopy7 = self;
         v13 = "[%{public}p] Disabling VIO session because we're shortly before sunset";
         goto LABEL_25;
       }
@@ -189,7 +189,7 @@ LABEL_15:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v21 = 134349056;
-        v22 = self;
+        selfCopy7 = self;
         v13 = "[%{public}p] Disabling VIO session because we're between sunset and sunrise";
         goto LABEL_25;
       }
@@ -201,7 +201,7 @@ LABEL_15:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v21 = 134349056;
-        v22 = self;
+        selfCopy7 = self;
         v13 = "[%{public}p] Disabling VIO session because we're shortly after sunrise";
 LABEL_25:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v13, &v21, 0xCu);
@@ -224,7 +224,7 @@ LABEL_16:
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
@@ -235,11 +235,11 @@ LABEL_16:
   [(VIOSessionSunsetSunriseMonitor *)&v6 dealloc];
 }
 
-- (VIOSessionSunsetSunriseMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionSunsetSunriseMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = VIOSessionSunsetSunriseMonitor;
-  v4 = [(VIOSessionMonitor *)&v9 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v9 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100A42C08();

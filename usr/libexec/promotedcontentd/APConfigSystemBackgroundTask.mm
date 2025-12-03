@@ -1,9 +1,9 @@
 @interface APConfigSystemBackgroundTask
-- (APConfigSystemBackgroundTask)initWithConfigurationStorage:(id)a3;
+- (APConfigSystemBackgroundTask)initWithConfigurationStorage:(id)storage;
 - (id)_launchHandler;
 - (id)_storefront;
 - (int64_t)_configurationPollValue;
-- (void)_expireTask:(id)a3;
+- (void)_expireTask:(id)task;
 - (void)_submitRepeatingTask;
 - (void)_submitSingleTask;
 - (void)registerTask;
@@ -12,16 +12,16 @@
 
 @implementation APConfigSystemBackgroundTask
 
-- (APConfigSystemBackgroundTask)initWithConfigurationStorage:(id)a3
+- (APConfigSystemBackgroundTask)initWithConfigurationStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v13.receiver = self;
   v13.super_class = APConfigSystemBackgroundTask;
   v6 = [(APConfigSystemBackgroundTask *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationStorage, a3);
+    objc_storeStrong(&v6->_configurationStorage, storage);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
     v10 = dispatch_queue_create("com.apple.ap.configurationsystem.request", v9);
@@ -42,9 +42,9 @@
   }
 
   v4 = +[BGSystemTaskScheduler sharedScheduler];
-  v5 = [(APConfigSystemBackgroundTask *)self requestQueue];
-  v6 = [(APConfigSystemBackgroundTask *)self _launchHandler];
-  [v4 registerForTaskWithIdentifier:@"com.apple.ap.promotedcontentd.configsystemrequest" usingQueue:v5 launchHandler:v6];
+  requestQueue = [(APConfigSystemBackgroundTask *)self requestQueue];
+  _launchHandler = [(APConfigSystemBackgroundTask *)self _launchHandler];
+  [v4 registerForTaskWithIdentifier:@"com.apple.ap.promotedcontentd.configsystemrequest" usingQueue:requestQueue launchHandler:_launchHandler];
 
   v7 = +[BGSystemTaskScheduler sharedScheduler];
   v8 = [v7 taskRequestForIdentifier:@"com.apple.ap.promotedcontentd.configsystemrequest"];
@@ -75,9 +75,9 @@
   }
 
   v4 = +[BGSystemTaskScheduler sharedScheduler];
-  v5 = [(APConfigSystemBackgroundTask *)self requestQueue];
-  v6 = [(APConfigSystemBackgroundTask *)self _launchHandler];
-  [v4 registerForTaskWithIdentifier:@"com.apple.ap.promotedcontentd.configurationrequest" usingQueue:v5 launchHandler:v6];
+  requestQueue = [(APConfigSystemBackgroundTask *)self requestQueue];
+  _launchHandler = [(APConfigSystemBackgroundTask *)self _launchHandler];
+  [v4 registerForTaskWithIdentifier:@"com.apple.ap.promotedcontentd.configurationrequest" usingQueue:requestQueue launchHandler:_launchHandler];
 
   v7 = +[BGSystemTaskScheduler sharedScheduler];
   v8 = [v7 taskRequestForIdentifier:@"com.apple.ap.promotedcontentd.configurationrequest"];
@@ -101,25 +101,25 @@
 - (int64_t)_configurationPollValue
 {
   v2 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-  v3 = [v2 poll];
+  poll = [v2 poll];
 
-  if (v3)
+  if (poll)
   {
-    v4 = [v2 poll];
-    v5 = [v4 integerValue];
+    poll2 = [v2 poll];
+    integerValue = [poll2 integerValue];
   }
 
   else
   {
-    v5 = kDefaultConfigSystemPollValue;
+    integerValue = kDefaultConfigSystemPollValue;
   }
 
-  if (v5 >= kConfigSystemMaxCappingPollValue)
+  if (integerValue >= kConfigSystemMaxCappingPollValue)
   {
-    v5 = kConfigSystemMaxCappingPollValue;
+    integerValue = kConfigSystemMaxCappingPollValue;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)_launchHandler
@@ -137,11 +137,11 @@
   return v2;
 }
 
-- (void)_expireTask:(id)a3
+- (void)_expireTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v9 = 0;
-  v4 = [v3 setTaskExpiredWithRetryAfter:&v9 error:3000.0];
+  v4 = [taskCopy setTaskExpiredWithRetryAfter:&v9 error:3000.0];
   v5 = v9;
   v6 = APLogForCategory();
   v7 = v6;
@@ -173,7 +173,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to retry after config system task, error: %{public}@", buf, 0xCu);
     }
 
-    [v3 setTaskCompleted];
+    [taskCopy setTaskCompleted];
   }
 }
 
@@ -186,9 +186,9 @@
   [v3 setGroupConcurrencyLimit:1];
   [v3 setPriority:1];
   [v3 setRequiresProtectionClass:4];
-  v4 = [(APConfigSystemBackgroundTask *)self _configurationPollValue];
-  [v3 setInterval:v4];
-  [v3 setMinDurationBetweenInstances:v4 * 0.8];
+  _configurationPollValue = [(APConfigSystemBackgroundTask *)self _configurationPollValue];
+  [v3 setInterval:_configurationPollValue];
+  [v3 setMinDurationBetweenInstances:_configurationPollValue * 0.8];
   v5 = +[BGSystemTaskScheduler sharedScheduler];
   v13 = 0;
   v6 = [v5 submitTaskRequest:v3 error:&v13];
@@ -265,12 +265,12 @@
 - (id)_storefront
 {
   v2 = +[APIDAccountProvider privateUserAccount];
-  v3 = [v2 storefront];
-  v4 = [v3 componentsSeparatedByString:@"-"];
+  storefront = [v2 storefront];
+  v4 = [storefront componentsSeparatedByString:@"-"];
 
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
   else
@@ -282,10 +282,10 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error creating storefront.", v8, 2u);
     }
 
-    v5 = @"NONE";
+    firstObject = @"NONE";
   }
 
-  return v5;
+  return firstObject;
 }
 
 @end

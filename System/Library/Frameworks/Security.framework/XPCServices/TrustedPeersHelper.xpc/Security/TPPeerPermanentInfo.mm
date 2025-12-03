@@ -1,18 +1,18 @@
 @interface TPPeerPermanentInfo
-- (BOOL)matchesPeer:(id)a3;
+- (BOOL)matchesPeer:(id)peer;
 @end
 
 @implementation TPPeerPermanentInfo
 
-- (BOOL)matchesPeer:(id)a3
+- (BOOL)matchesPeer:(id)peer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = [(TPPeerPermanentInfo *)v5 peerID];
+  selfCopy = self;
+  peerID = [(TPPeerPermanentInfo *)selfCopy peerID];
   v7 = sub_100216974();
   v9 = v8;
 
-  v10 = [a3 peerID];
+  peerID2 = [peer peerID];
   v11 = sub_100216974();
   v13 = v12;
 

@@ -1,12 +1,12 @@
 @interface JavaUtilTreeMap_Node
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilTreeMap_Node)initWithJavaUtilTreeMap_Node:(id)a3 withId:(id)a4;
-- (id)copy__WithJavaUtilTreeMap_Node:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilTreeMap_Node)initWithJavaUtilTreeMap_Node:(id)node withId:(id)id;
+- (id)copy__WithJavaUtilTreeMap_Node:(id)node;
 - (id)first;
 - (id)last;
 - (id)next;
 - (id)prev;
-- (id)setValueWithId:(id)a3;
+- (id)setValueWithId:(id)id;
 - (unint64_t)hash;
 - (void)__javaClone;
 - (void)dealloc;
@@ -14,17 +14,17 @@
 
 @implementation JavaUtilTreeMap_Node
 
-- (JavaUtilTreeMap_Node)initWithJavaUtilTreeMap_Node:(id)a3 withId:(id)a4
+- (JavaUtilTreeMap_Node)initWithJavaUtilTreeMap_Node:(id)node withId:(id)id
 {
-  objc_storeWeak(&self->parent_, a3);
-  JreStrongAssign(&self->key_, a4);
+  objc_storeWeak(&self->parent_, node);
+  JreStrongAssign(&self->key_, id);
   self->height_ = 1;
   return self;
 }
 
-- (id)copy__WithJavaUtilTreeMap_Node:(id)a3
+- (id)copy__WithJavaUtilTreeMap_Node:(id)node
 {
-  v4 = new_JavaUtilTreeMap_Node_initWithJavaUtilTreeMap_Node_withId_(a3, self->key_);
+  v4 = new_JavaUtilTreeMap_Node_initWithJavaUtilTreeMap_Node_withId_(node, self->key_);
   left = self->left_;
   if (left)
   {
@@ -42,61 +42,61 @@
   return v4;
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   value = self->value_;
-  JreStrongAssign(&self->value_, a3);
+  JreStrongAssign(&self->value_, id);
   return value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  LODWORD(v5) = [JavaUtilMap_Entry_class_() isInstance:a3];
-  if (v5)
+  LODWORD(getValue) = [JavaUtilMap_Entry_class_() isInstance:equal];
+  if (getValue)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (!a3)
+    if (!equal)
     {
       JreThrowNullPointerException();
     }
 
-    if (([v6 isInstance:a3] & 1) == 0)
+    if (([v6 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     key = self->key_;
-    v8 = [a3 getKey];
+    getKey = [equal getKey];
     if (key)
     {
-      LODWORD(v5) = [key isEqual:v8];
-      if (!v5)
+      LODWORD(getValue) = [key isEqual:getKey];
+      if (!getValue)
       {
-        return v5;
+        return getValue;
       }
     }
 
-    else if (v8)
+    else if (getKey)
     {
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(getValue) = 0;
+      return getValue;
     }
 
     value = self->value_;
-    v5 = [a3 getValue];
+    getValue = [equal getValue];
     if (value)
     {
 
-      LOBYTE(v5) = [value isEqual:v5];
+      LOBYTE(getValue) = [value isEqual:getValue];
     }
 
     else
     {
-      LOBYTE(v5) = v5 == 0;
+      LOBYTE(getValue) = getValue == 0;
     }
   }
 
-  return v5;
+  return getValue;
 }
 
 - (unint64_t)hash
@@ -123,7 +123,7 @@
 
 - (id)next
 {
-  v2 = self;
+  selfCopy = self;
   right = self->right_;
   if (right)
   {
@@ -135,17 +135,17 @@
   {
     while (1)
     {
-      Weak = objc_loadWeak(&v2->parent_);
+      Weak = objc_loadWeak(&selfCopy->parent_);
       if (!Weak)
       {
         break;
       }
 
-      v5 = v2;
-      v2 = Weak;
+      v5 = selfCopy;
+      selfCopy = Weak;
       if (Weak->left_ == v5)
       {
-        return v2;
+        return selfCopy;
       }
     }
 
@@ -155,7 +155,7 @@
 
 - (id)prev
 {
-  v2 = self;
+  selfCopy = self;
   left = self->left_;
   if (left)
   {
@@ -167,17 +167,17 @@
   {
     while (1)
     {
-      Weak = objc_loadWeak(&v2->parent_);
+      Weak = objc_loadWeak(&selfCopy->parent_);
       if (!Weak)
       {
         break;
       }
 
-      v5 = v2;
-      v2 = Weak;
+      v5 = selfCopy;
+      selfCopy = Weak;
       if (Weak->right_ == v5)
       {
-        return v2;
+        return selfCopy;
       }
     }
 
@@ -189,24 +189,24 @@
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = self->left_;
   }
 
   while (self);
-  return v2;
+  return selfCopy;
 }
 
 - (id)last
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = self->right_;
   }
 
   while (self);
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc

@@ -1,22 +1,22 @@
 @interface GDCProcessor
-- (GDCProcessor)initWithMetalContext:(id)a3;
-- (int)GDCDistort:(id)a3 to:(id)a4 parameters:(id *)a5;
-- (int)GDCDistort:(id)a3 to:(id)a4 parameters:(id *)a5 commandBuffer:(id)a6;
-- (int)GDCDistortPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 parameters:(id *)a5;
-- (int)GDCFrom:(id)a3 to:(id)a4 parameters:(id *)a5;
-- (int)GDCFrom:(id)a3 to:(id)a4 parameters:(id *)a5 commandBuffer:(id)a6;
-- (int)GDCFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 parameters:(id *)a5;
-- (int)compileShadersWithLib:(id)a3;
+- (GDCProcessor)initWithMetalContext:(id)context;
+- (int)GDCDistort:(id)distort to:(id)to parameters:(id *)parameters;
+- (int)GDCDistort:(id)distort to:(id)to parameters:(id *)parameters commandBuffer:(id)buffer;
+- (int)GDCDistortPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer parameters:(id *)parameters;
+- (int)GDCFrom:(id)from to:(id)to parameters:(id *)parameters;
+- (int)GDCFrom:(id)from to:(id)to parameters:(id *)parameters commandBuffer:(id)buffer;
+- (int)GDCFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer parameters:(id *)parameters;
+- (int)compileShadersWithLib:(id)lib;
 - (int)initMetal;
 - (void)dealloc;
 @end
 
 @implementation GDCProcessor
 
-- (GDCProcessor)initWithMetalContext:(id)a3
+- (GDCProcessor)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_29576A4B8(self);
     goto LABEL_10;
@@ -27,16 +27,16 @@
   v13 = [(GDCProcessor *)&v59 init];
   if (v13)
   {
-    v15 = objc_msgSend_device(v5, v6, v7, v8, v9, v10, v11, v12, v14);
+    v15 = objc_msgSend_device(contextCopy, v6, v7, v8, v9, v10, v11, v12, v14);
     mtlDevice = v13->_mtlDevice;
     v13->_mtlDevice = v15;
 
-    v25 = objc_msgSend_commandQueue(v5, v17, v18, v19, v20, v21, v22, v23, v24);
+    v25 = objc_msgSend_commandQueue(contextCopy, v17, v18, v19, v20, v21, v22, v23, v24);
     mtlCommandQueue = v13->_mtlCommandQueue;
     v13->_mtlCommandQueue = v25;
 
-    objc_storeStrong(&v13->_metalContext, a3);
-    v35 = objc_msgSend_library(v5, v27, v28, v29, v30, v31, v32, v33, v34);
+    objc_storeStrong(&v13->_metalContext, context);
+    v35 = objc_msgSend_library(contextCopy, v27, v28, v29, v30, v31, v32, v33, v34);
     v43 = objc_msgSend_compileShadersWithLib_(v13, v36, v35, v37, v38, v39, v40, v41, v42);
 
     if (v43)
@@ -89,13 +89,13 @@ LABEL_6:
   [(GDCProcessor *)&v9 dealloc];
 }
 
-- (int)GDCFrom:(id)a3 to:(id)a4 parameters:(id *)a5
+- (int)GDCFrom:(id)from to:(id)to parameters:(id *)parameters
 {
   mtlCommandQueue = self->_mtlCommandQueue;
-  v9 = a4;
-  v10 = a3;
+  toCopy = to;
+  fromCopy = from;
   v19 = objc_msgSend_commandBuffer(mtlCommandQueue, v11, v12, v13, v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_GDCFrom_to_parameters_commandBuffer_(self, v20, v10, v9, a5, v19, v21, v22, v23);
+  v24 = objc_msgSend_GDCFrom_to_parameters_commandBuffer_(self, v20, fromCopy, toCopy, parameters, v19, v21, v22, v23);
 
   if (*MEMORY[0x29EDB9270])
   {
@@ -113,11 +113,11 @@ LABEL_6:
   return v24;
 }
 
-- (int)GDCFrom:(id)a3 to:(id)a4 parameters:(id *)a5 commandBuffer:(id)a6
+- (int)GDCFrom:(id)from to:(id)to parameters:(id *)parameters commandBuffer:(id)buffer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  fromCopy = from;
+  toCopy = to;
+  bufferCopy = buffer;
   v160 = 0u;
   v161 = 0u;
   v158 = 0u;
@@ -143,9 +143,9 @@ LABEL_6:
 
   v71 = objc_msgSend_colorAttachments(v22, v63, v64, v65, v66, v67, v68, v69, v70);
   v79 = objc_msgSend_objectAtIndexedSubscript_(v71, v72, 0, v73, v74, v75, v76, v77, v78);
-  objc_msgSend_setTexture_(v79, v80, v11, v81, v82, v83, v84, v85, v86);
+  objc_msgSend_setTexture_(v79, v80, toCopy, v81, v82, v83, v84, v85, v86);
 
-  v94 = objc_msgSend_renderCommandEncoderWithDescriptor_(v12, v87, v22, v88, v89, v90, v91, v92, v93);
+  v94 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v87, v22, v88, v89, v90, v91, v92, v93);
   if (v94)
   {
     v102 = v94;
@@ -154,26 +154,26 @@ LABEL_6:
     objc_msgSend_setVertexBuffer_offset_atIndex_(v102, v112, v111, 0, 0, v113, v114, v115, v116);
 
     objc_msgSend_setFragmentSamplerState_atIndex_(v102, v117, self->_samplers[2], 0, v118, v119, v120, v121, v122);
-    v128.i64[0] = *a5->var1;
-    *&v127 = *&a5->var1[6];
-    DWORD2(v127) = LODWORD(a5->var6);
-    HIDWORD(v127) = LODWORD(a5->var2);
-    v155 = *&a5->var1[2];
+    v128.i64[0] = *parameters->var1;
+    *&v127 = *&parameters->var1[6];
+    DWORD2(v127) = LODWORD(parameters->var6);
+    HIDWORD(v127) = LODWORD(parameters->var2);
+    v155 = *&parameters->var1[2];
     v156 = v127;
-    *&v157 = a5->var3;
-    *&v127 = *&a5->var4;
+    *&v157 = parameters->var3;
+    *&v127 = *&parameters->var4;
     *(&v127 + 1) = v128.i64[0];
-    v128.i32[0] = LODWORD(a5->var7[0]);
-    v129.i32[0] = LODWORD(a5->var7[1]);
-    v128.i32[1] = LODWORD(a5->var7[3]);
-    v128.i32[2] = LODWORD(a5->var7[6]);
-    v129.i32[1] = LODWORD(a5->var7[4]);
-    v129.i32[2] = LODWORD(a5->var7[7]);
-    v130.i32[0] = LODWORD(a5->var7[2]);
-    v130.i32[1] = LODWORD(a5->var7[5]);
-    v130.i32[2] = LODWORD(a5->var7[8]);
+    v128.i32[0] = LODWORD(parameters->var7[0]);
+    v129.i32[0] = LODWORD(parameters->var7[1]);
+    v128.i32[1] = LODWORD(parameters->var7[3]);
+    v128.i32[2] = LODWORD(parameters->var7[6]);
+    v129.i32[1] = LODWORD(parameters->var7[4]);
+    v129.i32[2] = LODWORD(parameters->var7[7]);
+    v130.i32[0] = LODWORD(parameters->var7[2]);
+    v130.i32[1] = LODWORD(parameters->var7[5]);
+    v130.i32[2] = LODWORD(parameters->var7[8]);
     v154 = v127;
-    if (a5->var9)
+    if (parameters->var9)
     {
       v131 = -1;
     }
@@ -188,7 +188,7 @@ LABEL_6:
     v159 = vbslq_s8(v132, xmmword_29577A890, v129);
     v160 = vbslq_s8(v132, xmmword_29577A870, v130);
     objc_msgSend_setFragmentBytes_length_atIndex_(v102, v123, &v154, 128, 0, v124, v125, v126, *v158.i32);
-    objc_msgSend_setFragmentTexture_atIndex_(v102, v133, v10, 0, v134, v135, v136, v137, v138, v154, v155, v156, v157);
+    objc_msgSend_setFragmentTexture_atIndex_(v102, v133, fromCopy, 0, v134, v135, v136, v137, v138, v154, v155, v156, v157);
     objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v102, v139, 4, 0, 4, v140, v141, v142, v143);
     objc_msgSend_endEncoding(v102, v144, v145, v146, v147, v148, v149, v150, v151);
 
@@ -205,13 +205,13 @@ LABEL_7:
   return v152;
 }
 
-- (int)GDCDistortPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 parameters:(id *)a5
+- (int)GDCDistortPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer parameters:(id *)parameters
 {
-  v14 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, a2, a3, 25, 17, 0, v5, v6, v7);
-  if (v14 && (objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v11, a4, 25, 22, 0, v12, v13, v15), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  v14 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, a2, buffer, 25, 17, 0, v5, v6, v7);
+  if (v14 && (objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v11, pixelBuffer, 25, 22, 0, v12, v13, v15), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v22 = v16;
-    v23 = objc_msgSend_GDCDistort_to_parameters_(self, v17, v14, v16, a5, v18, v19, v20, v21);
+    v23 = objc_msgSend_GDCDistort_to_parameters_(self, v17, v14, v16, parameters, v18, v19, v20, v21);
   }
 
   else
@@ -223,13 +223,13 @@ LABEL_7:
   return v23;
 }
 
-- (int)GDCDistort:(id)a3 to:(id)a4 parameters:(id *)a5
+- (int)GDCDistort:(id)distort to:(id)to parameters:(id *)parameters
 {
   mtlCommandQueue = self->_mtlCommandQueue;
-  v9 = a4;
-  v10 = a3;
+  toCopy = to;
+  distortCopy = distort;
   v19 = objc_msgSend_commandBuffer(mtlCommandQueue, v11, v12, v13, v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_GDCDistort_to_parameters_commandBuffer_(self, v20, v10, v9, a5, v19, v21, v22, v23);
+  v24 = objc_msgSend_GDCDistort_to_parameters_commandBuffer_(self, v20, distortCopy, toCopy, parameters, v19, v21, v22, v23);
 
   if (*MEMORY[0x29EDB9270])
   {
@@ -247,11 +247,11 @@ LABEL_7:
   return v24;
 }
 
-- (int)GDCDistort:(id)a3 to:(id)a4 parameters:(id *)a5 commandBuffer:(id)a6
+- (int)GDCDistort:(id)distort to:(id)to parameters:(id *)parameters commandBuffer:(id)buffer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  distortCopy = distort;
+  toCopy = to;
+  bufferCopy = buffer;
   v160 = 0u;
   v161 = 0u;
   v158 = 0u;
@@ -277,9 +277,9 @@ LABEL_7:
 
   v71 = objc_msgSend_colorAttachments(v22, v63, v64, v65, v66, v67, v68, v69, v70);
   v79 = objc_msgSend_objectAtIndexedSubscript_(v71, v72, 0, v73, v74, v75, v76, v77, v78);
-  objc_msgSend_setTexture_(v79, v80, v11, v81, v82, v83, v84, v85, v86);
+  objc_msgSend_setTexture_(v79, v80, toCopy, v81, v82, v83, v84, v85, v86);
 
-  v94 = objc_msgSend_renderCommandEncoderWithDescriptor_(v12, v87, v22, v88, v89, v90, v91, v92, v93);
+  v94 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v87, v22, v88, v89, v90, v91, v92, v93);
   if (v94)
   {
     v102 = v94;
@@ -288,26 +288,26 @@ LABEL_7:
     objc_msgSend_setVertexBuffer_offset_atIndex_(v102, v112, v111, 0, 0, v113, v114, v115, v116);
 
     objc_msgSend_setFragmentSamplerState_atIndex_(v102, v117, self->_samplers[2], 0, v118, v119, v120, v121, v122);
-    v128.i64[0] = *a5->var0;
-    *&v127 = *&a5->var0[6];
-    DWORD2(v127) = LODWORD(a5->var6);
-    HIDWORD(v127) = LODWORD(a5->var2);
-    v155 = *&a5->var0[2];
+    v128.i64[0] = *parameters->var0;
+    *&v127 = *&parameters->var0[6];
+    DWORD2(v127) = LODWORD(parameters->var6);
+    HIDWORD(v127) = LODWORD(parameters->var2);
+    v155 = *&parameters->var0[2];
     v156 = v127;
-    *&v157 = a5->var3;
-    *&v127 = *&a5->var4;
+    *&v157 = parameters->var3;
+    *&v127 = *&parameters->var4;
     *(&v127 + 1) = v128.i64[0];
-    v128.i32[0] = LODWORD(a5->var8[0]);
-    v129.i32[0] = LODWORD(a5->var8[1]);
-    v128.i32[1] = LODWORD(a5->var8[3]);
-    v128.i32[2] = LODWORD(a5->var8[6]);
-    v129.i32[1] = LODWORD(a5->var8[4]);
-    v129.i32[2] = LODWORD(a5->var8[7]);
-    v130.i32[0] = LODWORD(a5->var8[2]);
-    v130.i32[1] = LODWORD(a5->var8[5]);
-    v130.i32[2] = LODWORD(a5->var8[8]);
+    v128.i32[0] = LODWORD(parameters->var8[0]);
+    v129.i32[0] = LODWORD(parameters->var8[1]);
+    v128.i32[1] = LODWORD(parameters->var8[3]);
+    v128.i32[2] = LODWORD(parameters->var8[6]);
+    v129.i32[1] = LODWORD(parameters->var8[4]);
+    v129.i32[2] = LODWORD(parameters->var8[7]);
+    v130.i32[0] = LODWORD(parameters->var8[2]);
+    v130.i32[1] = LODWORD(parameters->var8[5]);
+    v130.i32[2] = LODWORD(parameters->var8[8]);
     v154 = v127;
-    if (a5->var9)
+    if (parameters->var9)
     {
       v131 = -1;
     }
@@ -322,7 +322,7 @@ LABEL_7:
     v159 = vbslq_s8(v132, xmmword_29577A890, v129);
     v160 = vbslq_s8(v132, xmmword_29577A870, v130);
     objc_msgSend_setFragmentBytes_length_atIndex_(v102, v123, &v154, 128, 0, v124, v125, v126, *v158.i32);
-    objc_msgSend_setFragmentTexture_atIndex_(v102, v133, v10, 0, v134, v135, v136, v137, v138, v154, v155, v156, v157);
+    objc_msgSend_setFragmentTexture_atIndex_(v102, v133, distortCopy, 0, v134, v135, v136, v137, v138, v154, v155, v156, v157);
     objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v102, v139, 4, 0, 4, v140, v141, v142, v143);
     objc_msgSend_endEncoding(v102, v144, v145, v146, v147, v148, v149, v150, v151);
 
@@ -339,9 +339,9 @@ LABEL_7:
   return v152;
 }
 
-- (int)compileShadersWithLib:(id)a3
+- (int)compileShadersWithLib:(id)lib
 {
-  if (a3)
+  if (lib)
   {
     v4 = objc_opt_new();
     objc_msgSend_setPixelFormat_(v4, v5, 80, v6, v7, v8, v9, v10, v11);
@@ -412,27 +412,27 @@ LABEL_10:
   return FigSignalErrorAtGM();
 }
 
-- (int)GDCFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 parameters:(id *)a5
+- (int)GDCFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer parameters:(id *)parameters
 {
-  if (!a5)
+  if (!parameters)
   {
     goto LABEL_7;
   }
 
-  if (CVPixelBufferIsPlanar(a3) && CVPixelBufferGetPlaneCount(a3) != 1)
+  if (CVPixelBufferIsPlanar(buffer) && CVPixelBufferGetPlaneCount(buffer) != 1)
   {
     return -12780;
   }
 
-  v13 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v9, a3, 80, 17, 0, v10, v11, v12);
+  v13 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v9, buffer, 80, 17, 0, v10, v11, v12);
   if (v13)
   {
     v18 = v13;
-    v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v14, a4, 80, 22, 0, v15, v16, v17);
+    v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v14, pixelBuffer, 80, 22, 0, v15, v16, v17);
     if (v19)
     {
       v25 = v19;
-      v26 = objc_msgSend_GDCFrom_to_parameters_(self, v20, v18, v19, a5, v21, v22, v23, v24);
+      v26 = objc_msgSend_GDCFrom_to_parameters_(self, v20, v18, v19, parameters, v21, v22, v23, v24);
     }
 
     else

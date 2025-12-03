@@ -1,37 +1,37 @@
 @interface State
-+ (id)createStateWithLabel:(id)a3 rank:(unint64_t)a4 entryCellPreds:(id)a5 entryWiFiPreds:(id)a6;
-- (id)_initStateWithLabel:(id)a3 rank:(unint64_t)a4 entryCellPreds:(id)a5 entryWiFiPreds:(id)a6;
++ (id)createStateWithLabel:(id)label rank:(unint64_t)rank entryCellPreds:(id)preds entryWiFiPreds:(id)fiPreds;
+- (id)_initStateWithLabel:(id)label rank:(unint64_t)rank entryCellPreds:(id)preds entryWiFiPreds:(id)fiPreds;
 - (void)dealloc;
 @end
 
 @implementation State
 
-+ (id)createStateWithLabel:(id)a3 rank:(unint64_t)a4 entryCellPreds:(id)a5 entryWiFiPreds:(id)a6
++ (id)createStateWithLabel:(id)label rank:(unint64_t)rank entryCellPreds:(id)preds entryWiFiPreds:(id)fiPreds
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[State alloc] _initStateWithLabel:v11 rank:a4 entryCellPreds:v10 entryWiFiPreds:v9];
+  fiPredsCopy = fiPreds;
+  predsCopy = preds;
+  labelCopy = label;
+  v12 = [[State alloc] _initStateWithLabel:labelCopy rank:rank entryCellPreds:predsCopy entryWiFiPreds:fiPredsCopy];
 
   return v12;
 }
 
-- (id)_initStateWithLabel:(id)a3 rank:(unint64_t)a4 entryCellPreds:(id)a5 entryWiFiPreds:(id)a6
+- (id)_initStateWithLabel:(id)label rank:(unint64_t)rank entryCellPreds:(id)preds entryWiFiPreds:(id)fiPreds
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  labelCopy = label;
+  predsCopy = preds;
+  fiPredsCopy = fiPreds;
   v50.receiver = self;
   v50.super_class = State;
   v14 = [(State *)&v50 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_label, a3);
-    v15->_rank = a4;
-    objc_storeStrong(&v15->_entryCellPreds, a5);
-    objc_storeStrong(&v15->_entryWiFiPreds, a6);
+    objc_storeStrong(&v14->_label, label);
+    v15->_rank = rank;
+    objc_storeStrong(&v15->_entryCellPreds, preds);
+    objc_storeStrong(&v15->_entryWiFiPreds, fiPreds);
     v16 = objc_alloc_init(StopWatch);
     sojournTime = v15->_sojournTime;
     v15->_sojournTime = v16;
@@ -41,8 +41,8 @@
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v19 = [(NSDictionary *)v15->_entryCellPreds allValues];
-    v20 = [v19 countByEnumeratingWithState:&v46 objects:v55 count:16];
+    allValues = [(NSDictionary *)v15->_entryCellPreds allValues];
+    v20 = [allValues countByEnumeratingWithState:&v46 objects:v55 count:16];
     if (v20)
     {
       v21 = v20;
@@ -54,7 +54,7 @@
         {
           if (*v47 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allValues);
           }
 
           v24 = [*(*(&v46 + 1) + 8 * v23) description];
@@ -64,7 +64,7 @@
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        v21 = [allValues countByEnumeratingWithState:&v46 objects:v55 count:16];
       }
 
       while (v21);
@@ -74,8 +74,8 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v25 = [(NSDictionary *)v15->_entryWiFiPreds allValues];
-    v26 = [v25 countByEnumeratingWithState:&v42 objects:v54 count:16];
+    allValues2 = [(NSDictionary *)v15->_entryWiFiPreds allValues];
+    v26 = [allValues2 countByEnumeratingWithState:&v42 objects:v54 count:16];
     if (v26)
     {
       v27 = v26;
@@ -87,7 +87,7 @@
         {
           if (*v43 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allValues2);
           }
 
           v30 = [*(*(&v42 + 1) + 8 * v29) description];
@@ -97,16 +97,16 @@
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v42 objects:v54 count:16];
+        v27 = [allValues2 countByEnumeratingWithState:&v42 objects:v54 count:16];
       }
 
       while (v27);
     }
 
     v31 = [v18 componentsJoinedByString:{@", "}];
-    v32 = [v31 UTF8String];
-    v33 = strlen(v32);
-    if (CC_SHA256(v32, v33, md))
+    uTF8String = [v31 UTF8String];
+    v33 = strlen(uTF8String);
+    if (CC_SHA256(uTF8String, v33, md))
     {
       v34 = [MEMORY[0x277CBEA90] dataWithBytes:md length:32];
       v35 = MEMORY[0x277CBEB18];
@@ -122,7 +122,7 @@
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v52 = v32;
+        v52 = uTF8String;
         _os_log_impl(&dword_23255B000, v39, OS_LOG_TYPE_ERROR, "Failed to create state digest: %p", buf, 0xCu);
       }
     }

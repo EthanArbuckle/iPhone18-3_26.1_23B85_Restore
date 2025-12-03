@@ -3,18 +3,18 @@
 - (CGRect)totalBounds;
 - (NSString)description;
 - (NSStringDrawingContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutManager:(id)a3 linkAttributesForAttributes:(id)a4 forCharacterAtIndex:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutManager:(id)manager linkAttributesForAttributes:(id)attributes forCharacterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setApplicationFrameworkContext:(int64_t)a3;
-- (void)setCachesLayout:(BOOL)a3;
-- (void)setDrawsDebugBaselines:(BOOL)a3;
-- (void)setUsesSimpleTextEffects:(BOOL)a3;
-- (void)setWantsBaselineOffset:(BOOL)a3;
-- (void)setWantsMultilineDeviceMetrics:(BOOL)a3;
-- (void)setWantsScaledBaselineOffset:(BOOL)a3;
-- (void)setWantsScaledLineHeight:(BOOL)a3;
-- (void)setWrapsForTruncationMode:(BOOL)a3;
+- (void)setApplicationFrameworkContext:(int64_t)context;
+- (void)setCachesLayout:(BOOL)layout;
+- (void)setDrawsDebugBaselines:(BOOL)baselines;
+- (void)setUsesSimpleTextEffects:(BOOL)effects;
+- (void)setWantsBaselineOffset:(BOOL)offset;
+- (void)setWantsMultilineDeviceMetrics:(BOOL)metrics;
+- (void)setWantsScaledBaselineOffset:(BOOL)offset;
+- (void)setWantsScaledLineHeight:(BOOL)height;
+- (void)setWrapsForTruncationMode:(BOOL)mode;
 @end
 
 @implementation NSStringDrawingContext
@@ -62,7 +62,7 @@
   return [v3 stringWithFormat:@"%@\nminimumScaleFactor:%f minimumTrackingAdjustment:%f actualScaleFactor:%f actualTrackingAdjustment:%f totalBounds:%@", v4, *&self->_minimumScaleFactor, *&self->_minimumTrackingAdjustment, *&self->_actualScaleFactor, *&self->_actualTrackingAdjustment, NSStringFromRect(self->_totalBounds)];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSStringDrawingContext allocWithZone:?]];
   [(NSStringDrawingContext *)self minimumScaleFactor];
@@ -89,9 +89,9 @@
   return v4;
 }
 
-- (void)setWrapsForTruncationMode:(BOOL)a3
+- (void)setWrapsForTruncationMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -104,9 +104,9 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFFD | v3;
 }
 
-- (void)setWantsBaselineOffset:(BOOL)a3
+- (void)setWantsBaselineOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 4;
   }
@@ -119,9 +119,9 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFFB | v3;
 }
 
-- (void)setWantsScaledBaselineOffset:(BOOL)a3
+- (void)setWantsScaledBaselineOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 8;
   }
@@ -134,9 +134,9 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFF7 | v3;
 }
 
-- (void)setWantsScaledLineHeight:(BOOL)a3
+- (void)setWantsScaledLineHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     v3 = 16;
   }
@@ -149,9 +149,9 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFEF | v3;
 }
 
-- (void)setDrawsDebugBaselines:(BOOL)a3
+- (void)setDrawsDebugBaselines:(BOOL)baselines
 {
-  if (a3)
+  if (baselines)
   {
     v3 = 32;
   }
@@ -164,9 +164,9 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFDF | v3;
 }
 
-- (void)setWantsMultilineDeviceMetrics:(BOOL)a3
+- (void)setWantsMultilineDeviceMetrics:(BOOL)metrics
 {
-  if (a3)
+  if (metrics)
   {
     v3 = 64;
   }
@@ -179,12 +179,12 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFFBF | v3;
 }
 
-- (void)setCachesLayout:(BOOL)a3
+- (void)setCachesLayout:(BOOL)layout
 {
   sdcFlags = self->_sdcFlags;
-  if (((((sdcFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((sdcFlags & 0x80) == 0) ^ layout) & 1) == 0)
   {
-    if (a3)
+    if (layout)
     {
       v4 = 128;
     }
@@ -199,9 +199,9 @@
   }
 }
 
-- (void)setUsesSimpleTextEffects:(BOOL)a3
+- (void)setUsesSimpleTextEffects:(BOOL)effects
 {
-  if (a3)
+  if (effects)
   {
     v3 = 256;
   }
@@ -214,22 +214,22 @@
   *&self->_sdcFlags = *&self->_sdcFlags & 0xFEFF | v3;
 }
 
-- (void)setApplicationFrameworkContext:(int64_t)a3
+- (void)setApplicationFrameworkContext:(int64_t)context
 {
-  if (!a3)
+  if (!context)
   {
-    LOWORD(a3) = _NSTextScalingTypeForCurrentEnvironment();
+    LOWORD(context) = _NSTextScalingTypeForCurrentEnvironment();
   }
 
-  *&self->_sdcFlags = *&self->_sdcFlags & 0x1FFF | (a3 << 13);
+  *&self->_sdcFlags = *&self->_sdcFlags & 0x1FFF | (context << 13);
 }
 
-- (id)layoutManager:(id)a3 linkAttributesForAttributes:(id)a4 forCharacterAtIndex:(unint64_t)a5
+- (id)layoutManager:(id)manager linkAttributesForAttributes:(id)attributes forCharacterAtIndex:(unint64_t)index
 {
   result = self->_linkTextAttributesProvider;
   if (result)
   {
-    return (*(result + 2))(result, a4, a5);
+    return (*(result + 2))(result, attributes, index);
   }
 
   return result;

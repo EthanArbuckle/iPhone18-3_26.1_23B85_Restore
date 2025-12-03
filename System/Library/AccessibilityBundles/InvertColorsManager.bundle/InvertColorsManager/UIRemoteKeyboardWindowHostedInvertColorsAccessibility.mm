@@ -6,14 +6,14 @@
 
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert
 {
-  v3 = [(UIRemoteKeyboardWindowHostedInvertColorsAccessibility *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIRemoteKeyboardWindowHostedInvertColorsAccessibility *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
     v5 = +[NSBundle mainBundle];
-    v6 = [v5 bundlePath];
-    if ([v6 hasSuffix:@"appex"])
+    bundlePath = [v5 bundlePath];
+    if ([bundlePath hasSuffix:@"appex"])
     {
 
       return 0;

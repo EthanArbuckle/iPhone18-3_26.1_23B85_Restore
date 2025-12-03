@@ -1,20 +1,20 @@
 @interface HMDAppleMediaAccessoryPowerActionModel
 + (id)properties;
-- (void)loadModelWithActionInformation:(id)a3;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDAppleMediaAccessoryPowerActionModel
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
   v7.receiver = self;
   v7.super_class = HMDAppleMediaAccessoryPowerActionModel;
-  v4 = a3;
-  [(HMDActionModel *)&v7 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_UUIDForKey:{*MEMORY[0x277CCF210], v7.receiver, v7.super_class}];
+  informationCopy = information;
+  [(HMDActionModel *)&v7 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_UUIDForKey:{*MEMORY[0x277CCF210], v7.receiver, v7.super_class}];
   [(HMDAppleMediaAccessoryPowerActionModel *)self setAccessoryUUID:v5];
 
-  v6 = [v4 hmf_numberForKey:*MEMORY[0x277CCF220]];
+  v6 = [informationCopy hmf_numberForKey:*MEMORY[0x277CCF220]];
 
   [(HMDAppleMediaAccessoryPowerActionModel *)self setTargetSleepWakeState:v6];
 }
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __52__HMDAppleMediaAccessoryPowerActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_40568 != -1)
   {
     dispatch_once(&properties_onceToken_40568, block);

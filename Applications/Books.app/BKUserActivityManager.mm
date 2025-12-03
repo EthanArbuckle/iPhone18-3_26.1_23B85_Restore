@@ -1,10 +1,10 @@
 @interface BKUserActivityManager
 + (id)sharedInstance;
-- (BOOL)continueActivity:(id)a3 sceneController:(id)a4;
-- (BOOL)willContinueActivityWithType:(id)a3 sceneController:(id)a4;
-- (void)_continueOpenBookActivity:(id)a3 sceneController:(id)a4 location:(id)a5;
-- (void)setCurrentActivity:(id)a3;
-- (void)startReadingAsset:(id)a3;
+- (BOOL)continueActivity:(id)activity sceneController:(id)controller;
+- (BOOL)willContinueActivityWithType:(id)type sceneController:(id)controller;
+- (void)_continueOpenBookActivity:(id)activity sceneController:(id)controller location:(id)location;
+- (void)setCurrentActivity:(id)activity;
+- (void)startReadingAsset:(id)asset;
 @end
 
 @implementation BKUserActivityManager
@@ -21,23 +21,23 @@
   return v3;
 }
 
-- (void)startReadingAsset:(id)a3
+- (void)startReadingAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = self->_generation + 1;
   self->_generation = v5;
-  if ([v4 isValid] && (objc_msgSend(v4, "assetID"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if ([assetCopy isValid] && (objc_msgSend(assetCopy, "assetID"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v4 assetID];
+    assetID = [assetCopy assetID];
     v8 = +[BKLibraryManager defaultManager];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000A7ED0;
     v10[3] = &unk_100A05F48;
-    v11 = v7;
-    v12 = self;
+    v11 = assetID;
+    selfCopy = self;
     v13 = v5;
-    v9 = v7;
+    v9 = assetID;
     [v8 performBackgroundReadOnlyBlock:v10];
   }
 
@@ -47,80 +47,80 @@
   }
 }
 
-- (BOOL)willContinueActivityWithType:(id)a3 sceneController:(id)a4
+- (BOOL)willContinueActivityWithType:(id)type sceneController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 willContinueActivityWithType:v5 sceneController:a4];
+  typeCopy = type;
+  v6 = [controller willContinueActivityWithType:typeCopy sceneController:controller];
   v11[0] = @"com.apple.iBooks.assetReading";
   v11[1] = CSSearchableItemActionType;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = v7;
-  v9 = (v6 & 1) != 0 || v5 && [v7 containsObject:v5];
+  v9 = (v6 & 1) != 0 || typeCopy && [v7 containsObject:typeCopy];
 
   return v9;
 }
 
-- (BOOL)continueActivity:(id)a3 sceneController:(id)a4
+- (BOOL)continueActivity:(id)activity sceneController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  controllerCopy = controller;
   v8 = BCSceneLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 activityType];
-    v10 = [v6 userInfo];
-    v11 = [v7 scene];
-    v12 = [v11 session];
-    v13 = [v12 persistentIdentifier];
+    activityType = [activityCopy activityType];
+    userInfo = [activityCopy userInfo];
+    scene = [controllerCopy scene];
+    session = [scene session];
+    persistentIdentifier = [session persistentIdentifier];
     *buf = 138543874;
-    v99 = v9;
+    v99 = activityType;
     v100 = 2112;
-    v101 = v10;
+    v101 = userInfo;
     v102 = 2114;
-    v103 = v13;
+    v103 = persistentIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "activityManager continueActivity: activityType=%{public}@, userInfo=%@, withSceneID=%{public}@", buf, 0x20u);
   }
 
-  if (v7 && ([v7 continueActivity:v6 sceneController:v7] & 1) != 0)
+  if (controllerCopy && ([controllerCopy continueActivity:activityCopy sceneController:controllerCopy] & 1) != 0)
   {
     goto LABEL_59;
   }
 
-  v14 = [v6 activityType];
-  v15 = [v14 isEqualToString:@"com.apple.iBooks.assetReading"];
+  activityType2 = [activityCopy activityType];
+  v15 = [activityType2 isEqualToString:@"com.apple.iBooks.assetReading"];
 
   if (v15)
   {
-    v16 = [v6 userInfo];
-    v17 = [v16 objectForKeyedSubscript:@"assetID"];
+    userInfo2 = [activityCopy userInfo];
+    bu_assetIDFromURL = [userInfo2 objectForKeyedSubscript:@"assetID"];
 LABEL_48:
     v39 = 0;
     goto LABEL_49;
   }
 
-  v18 = [v6 activityType];
-  v19 = [v18 isEqualToString:CSSearchableItemActionType];
+  activityType3 = [activityCopy activityType];
+  v19 = [activityType3 isEqualToString:CSSearchableItemActionType];
 
   if (v19)
   {
     objc_opt_class();
-    v20 = [v6 userInfo];
-    v21 = [v20 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+    userInfo3 = [activityCopy userInfo];
+    v21 = [userInfo3 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
     v22 = BUDynamicCast();
 
     if (![v22 hasPrefix:@"NSUA:"])
     {
-      v16 = v22;
+      userInfo2 = v22;
       v39 = 0;
-      v17 = v16;
+      bu_assetIDFromURL = userInfo2;
 LABEL_49:
 
       goto LABEL_50;
     }
 
     obj = self;
-    v16 = v22;
-    v23 = [v22 substringFromIndex:{objc_msgSend(@"NSUA:", "length")}];
+    userInfo2 = v22;
+    lastObject = [v22 substringFromIndex:{objc_msgSend(@"NSUA:", "length")}];
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
@@ -143,7 +143,7 @@ LABEL_11:
         }
 
         v29 = [*(*(&v90 + 1) + 8 * v28) stringByAppendingString:@"."];
-        if ([v23 hasPrefix:v29])
+        if ([lastObject hasPrefix:v29])
         {
           break;
         }
@@ -160,10 +160,10 @@ LABEL_11:
         }
       }
 
-      v17 = [v23 substringFromIndex:{objc_msgSend(v29, "length")}];
+      bu_assetIDFromURL = [lastObject substringFromIndex:{objc_msgSend(v29, "length")}];
 
       self = obj;
-      if (v17)
+      if (bu_assetIDFromURL)
       {
         goto LABEL_47;
       }
@@ -182,32 +182,32 @@ LABEL_17:
       sub_10078CBAC();
     }
 
-    v17 = 0;
+    bu_assetIDFromURL = 0;
     goto LABEL_47;
   }
 
-  v30 = [v6 activityType];
-  v31 = [v30 isEqualToString:@"INPlayMediaIntent"];
+  activityType4 = [activityCopy activityType];
+  v31 = [activityType4 isEqualToString:@"INPlayMediaIntent"];
 
   if (v31)
   {
     objc_opt_class();
-    v32 = [v6 interaction];
-    v33 = [v32 intent];
-    v16 = BUDynamicCast();
+    interaction = [activityCopy interaction];
+    intent = [interaction intent];
+    userInfo2 = BUDynamicCast();
 
-    v34 = [v16 mediaItems];
-    v23 = [v34 lastObject];
+    mediaItems = [userInfo2 mediaItems];
+    lastObject = [mediaItems lastObject];
 
-    v35 = [v23 identifier];
-    v36 = [v35 length];
+    identifier = [lastObject identifier];
+    v36 = [identifier length];
 
     if (v36)
     {
-      v37 = [v23 identifier];
-      v38 = [NSURL URLWithString:v37];
+      identifier2 = [lastObject identifier];
+      v38 = [NSURL URLWithString:identifier2];
 
-      v17 = [v38 bu_assetIDFromURL];
+      bu_assetIDFromURL = [v38 bu_assetIDFromURL];
     }
 
     else
@@ -218,14 +218,14 @@ LABEL_17:
         sub_10078CB6C();
       }
 
-      v17 = 0;
+      bu_assetIDFromURL = 0;
     }
 
 LABEL_47:
     goto LABEL_48;
   }
 
-  if ([v6 isClassKitDeepLink])
+  if ([activityCopy isClassKitDeepLink])
   {
     v40 = BCSceneLog();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -234,17 +234,17 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "activityManager handling ClassKit Activity", buf, 2u);
     }
 
-    v16 = [v6 userInfo];
-    if (v16)
+    userInfo2 = [activityCopy userInfo];
+    if (userInfo2)
     {
-      [v6 contextIdentifierPath];
+      [activityCopy contextIdentifierPath];
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
       v41 = v89 = 0u;
       v42 = [v41 countByEnumeratingWithState:&v86 objects:v95 count:16];
-      v73 = v7;
-      v74 = v16;
+      v73 = controllerCopy;
+      v74 = userInfo2;
       if (v42)
       {
         v43 = v42;
@@ -261,14 +261,14 @@ LABEL_47:
             }
 
             v47 = [*(*(&v86 + 1) + 8 * i) componentsSeparatedByString:@":"];
-            v48 = [v47 firstObject];
-            if ([v48 isEqualToString:@"bookAssetID"])
+            firstObject = [v47 firstObject];
+            if ([firstObject isEqualToString:@"bookAssetID"])
             {
               v49 = [v47 count];
 
               if (v49 > 1)
               {
-                v17 = [v47 objectAtIndex:1];
+                bu_assetIDFromURL = [v47 objectAtIndex:1];
 
                 goto LABEL_65;
               }
@@ -283,22 +283,22 @@ LABEL_47:
         }
 
         while (v43);
-        v17 = 0;
+        bu_assetIDFromURL = 0;
 LABEL_65:
-        v16 = v74;
+        userInfo2 = v74;
         self = obja;
         v41 = v44;
-        v7 = v73;
+        controllerCopy = v73;
       }
 
       else
       {
-        v17 = 0;
+        bu_assetIDFromURL = 0;
       }
 
-      if ([v17 length])
+      if ([bu_assetIDFromURL length])
       {
-        v63 = self;
+        selfCopy = self;
         v84 = 0u;
         v85 = 0u;
         v82 = 0u;
@@ -320,8 +320,8 @@ LABEL_65:
               }
 
               v68 = [*(*(&v82 + 1) + 8 * j) componentsSeparatedByString:@":"];
-              v69 = [v68 firstObject];
-              if ([v69 isEqualToString:v17])
+              firstObject2 = [v68 firstObject];
+              if ([firstObject2 isEqualToString:bu_assetIDFromURL])
               {
                 v70 = [v68 count];
 
@@ -340,9 +340,9 @@ LABEL_65:
 
                   v41 = v72;
 
-                  self = v63;
-                  v7 = v73;
-                  v16 = v74;
+                  self = selfCopy;
+                  controllerCopy = v73;
+                  userInfo2 = v74;
                   goto LABEL_88;
                 }
               }
@@ -362,16 +362,16 @@ LABEL_65:
           }
 
           v39 = 0;
-          self = v63;
-          v7 = v73;
-          v16 = v74;
+          self = selfCopy;
+          controllerCopy = v73;
+          userInfo2 = v74;
           v41 = v72;
         }
 
         else
         {
           v39 = 0;
-          v16 = v74;
+          userInfo2 = v74;
         }
       }
 
@@ -398,38 +398,38 @@ LABEL_88:
       }
 
       v39 = 0;
-      v17 = 0;
+      bu_assetIDFromURL = 0;
     }
 
     goto LABEL_49;
   }
 
   v39 = 0;
-  v17 = 0;
+  bu_assetIDFromURL = 0;
 LABEL_50:
-  if ([v17 length])
+  if ([bu_assetIDFromURL length])
   {
     v51 = BCSceneLog();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v99 = v17;
+      v99 = bu_assetIDFromURL;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "Handling incoming assetID to continue user activity: %@", buf, 0xCu);
     }
 
     v52 = +[BKAppDelegate delegate];
-    v53 = [v52 appLaunchCoordinator];
+    appLaunchCoordinator = [v52 appLaunchCoordinator];
 
     v78[0] = _NSConcreteStackBlock;
     v78[1] = 3221225472;
     v78[2] = sub_1000A94E8;
     v78[3] = &unk_100A05F98;
-    v79 = v17;
-    v80 = self;
+    v79 = bu_assetIDFromURL;
+    selfCopy2 = self;
     v81 = v39;
     v54 = v39;
-    v55 = v17;
-    [v53 appLaunchCoordinatorOnConditionMask:65 blockID:@"Handle incoming asset continueActivity" performBlock:v78];
+    webpageURL = bu_assetIDFromURL;
+    [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:65 blockID:@"Handle incoming asset continueActivity" performBlock:v78];
 
     v56 = v79;
   }
@@ -438,8 +438,8 @@ LABEL_50:
   {
     [(BKUserActivityManager *)self setHoldAtLaunchScreenAssertion:0];
 
-    v57 = [v6 activityType];
-    v58 = [v57 isEqualToString:NSUserActivityTypeBrowsingWeb];
+    activityType5 = [activityCopy activityType];
+    v58 = [activityType5 isEqualToString:NSUserActivityTypeBrowsingWeb];
 
     if (!v58)
     {
@@ -447,19 +447,19 @@ LABEL_50:
       goto LABEL_60;
     }
 
-    v55 = [v6 webpageURL];
-    v53 = objc_opt_new();
-    v59 = [v6 _sourceApplication];
+    webpageURL = [activityCopy webpageURL];
+    appLaunchCoordinator = objc_opt_new();
+    _sourceApplication = [activityCopy _sourceApplication];
 
-    if (v59)
+    if (_sourceApplication)
     {
-      v60 = [v6 _sourceApplication];
-      [v53 setObject:v60 forKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+      _sourceApplication2 = [activityCopy _sourceApplication];
+      [appLaunchCoordinator setObject:_sourceApplication2 forKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
     }
 
     v54 = +[BKAppDelegate delegate];
-    v56 = [v53 copy];
-    [v54 applicationOpenURL:v55 options:v56 sceneController:0];
+    v56 = [appLaunchCoordinator copy];
+    [v54 applicationOpenURL:webpageURL options:v56 sceneController:0];
   }
 
 LABEL_59:
@@ -469,15 +469,15 @@ LABEL_60:
   return v61;
 }
 
-- (void)_continueOpenBookActivity:(id)a3 sceneController:(id)a4 location:(id)a5
+- (void)_continueOpenBookActivity:(id)activity sceneController:(id)controller location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  locationCopy = location;
+  controllerCopy = controller;
+  activityCopy = activity;
   v11 = +[BKAppDelegate delegate];
-  v12 = [v11 appLaunchCoordinator];
+  appLaunchCoordinator = [v11 appLaunchCoordinator];
 
-  v13 = [v12 appLaunchCoordinatorHasAppLaunched];
+  appLaunchCoordinatorHasAppLaunched = [appLaunchCoordinator appLaunchCoordinatorHasAppLaunched];
   v24[0] = @"BKBookPresentingUseLargeCoverIfNeeded";
   v24[1] = AEAudiobookOptionsShouldNotAutoplayKey;
   v25[0] = &__kCFBooleanTrue;
@@ -487,28 +487,28 @@ LABEL_60:
   v14 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
   v15 = [v14 mutableCopy];
 
-  v16 = [(BKUserActivityManager *)self sceneManager];
-  v17 = [v16 bookPresenter];
+  sceneManager = [(BKUserActivityManager *)self sceneManager];
+  bookPresenter = [sceneManager bookPresenter];
 
-  v18 = [v9 newShowAssetTransaction];
+  newShowAssetTransaction = [controllerCopy newShowAssetTransaction];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000A9B10;
   v20[3] = &unk_100A05FC0;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v19 = v12;
-  [v17 showAssetWithTransaction:v18 assetID:v10 location:v8 options:v15 completion:v20];
+  v21 = appLaunchCoordinator;
+  selfCopy = self;
+  v23 = appLaunchCoordinatorHasAppLaunched;
+  v19 = appLaunchCoordinator;
+  [bookPresenter showAssetWithTransaction:newShowAssetTransaction assetID:activityCopy location:locationCopy options:v15 completion:v20];
 }
 
-- (void)setCurrentActivity:(id)a3
+- (void)setCurrentActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(NSUserActivity *)self->_currentActivity resignCurrent];
   currentActivity = self->_currentActivity;
-  self->_currentActivity = v4;
-  v6 = v4;
+  self->_currentActivity = activityCopy;
+  v6 = activityCopy;
 
   [(NSUserActivity *)self->_currentActivity becomeCurrent];
 }

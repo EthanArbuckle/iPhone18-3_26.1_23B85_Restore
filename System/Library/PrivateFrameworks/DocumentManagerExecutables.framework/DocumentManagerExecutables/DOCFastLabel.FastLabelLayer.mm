@@ -1,7 +1,7 @@
 @interface DOCFastLabel.FastLabelLayer
 - (_TtCC26DocumentManagerExecutables12DOCFastLabelP33_7A870AD7C1D347BBEBBED490F5FAB73B14FastLabelLayer)init;
-- (_TtCC26DocumentManagerExecutables12DOCFastLabelP33_7A870AD7C1D347BBEBBED490F5FAB73B14FastLabelLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtCC26DocumentManagerExecutables12DOCFastLabelP33_7A870AD7C1D347BBEBBED490F5FAB73B14FastLabelLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation DOCFastLabel.FastLabelLayer
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (_TtCC26DocumentManagerExecutables12DOCFastLabelP33_7A870AD7C1D347BBEBBED490F5FAB73B14FastLabelLayer)initWithLayer:(id)a3
+- (_TtCC26DocumentManagerExecutables12DOCFastLabelP33_7A870AD7C1D347BBEBBED490F5FAB73B14FastLabelLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -29,11 +29,11 @@
   return DOCFastLabel.FastLabelLayer.init(layer:)(v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  DOCFastLabel.FastLabelLayer.draw(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  DOCFastLabel.FastLabelLayer.draw(in:)(contextCopy);
 }
 
 @end

@@ -19,8 +19,8 @@
   v58 = 0u;
   v59 = 0u;
   v4 = +[ACAccountStore ams_sharedAccountStore];
-  v5 = [v4 ams_iTunesAccounts];
-  v6 = [v5 copy];
+  ams_iTunesAccounts = [v4 ams_iTunesAccounts];
+  v6 = [ams_iTunesAccounts copy];
 
   v7 = [v6 countByEnumeratingWithState:&v56 objects:v67 count:16];
   if (v7)
@@ -37,18 +37,18 @@
         }
 
         v11 = *(*(&v56 + 1) + 8 * i);
-        v12 = [v11 ams_DSID];
-        if (v12)
+        ams_DSID = [v11 ams_DSID];
+        if (ams_DSID)
         {
-          v13 = [v11 username];
-          if (v13)
+          username = [v11 username];
+          if (username)
           {
-            v14 = v13;
-            v15 = [v11 ams_altDSID];
+            v14 = username;
+            ams_altDSID = [v11 ams_altDSID];
 
-            if (v15)
+            if (ams_altDSID)
             {
-              [v3 setObject:v11 forKeyedSubscript:v12];
+              [v3 setObject:v11 forKeyedSubscript:ams_DSID];
             }
           }
         }
@@ -94,9 +94,9 @@ LABEL_16:
         v22 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v39 = [v18 bundleIdentifier];
+          bundleIdentifier = [v18 bundleIdentifier];
           *buf = 138543362;
-          v61 = v39;
+          v61 = bundleIdentifier;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[Validation] Skipping validation for %{public}@: No owner available or unowned application", buf, 0xCu);
         }
 
@@ -109,9 +109,9 @@ LABEL_16:
         v40 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v44 = [v18 bundleIdentifier];
+          bundleIdentifier2 = [v18 bundleIdentifier];
           *buf = 138543618;
-          v61 = v44;
+          v61 = bundleIdentifier2;
           v62 = 2114;
           v63 = v22;
           _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "[Validation] Skipping validation for %{public}@: No account available for %{public}@", buf, 0x16u);
@@ -127,9 +127,9 @@ LABEL_16:
         v41 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v18 bundleIdentifier];
+          bundleIdentifier3 = [v18 bundleIdentifier];
           *buf = 138543362;
-          v61 = v45;
+          v61 = bundleIdentifier3;
           _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "[Validation] Skipping validation for %{public}@: Could not read existing metadata", buf, 0xCu);
         }
 
@@ -141,20 +141,20 @@ LABEL_51:
       }
 
       v26 = v25;
-      v27 = [v25 appleID];
-      if (v27)
+      appleID = [v25 appleID];
+      if (appleID)
       {
-        v28 = [v24 username];
-        v29 = [v27 isEqualToString:v28];
+        username2 = [v24 username];
+        v29 = [appleID isEqualToString:username2];
 
         if (v29)
         {
           v42 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [v18 bundleIdentifier];
+            bundleIdentifier4 = [v18 bundleIdentifier];
             *buf = 138543362;
-            v61 = v43;
+            v61 = bundleIdentifier4;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[Validation] Completed validation for %{public}@: Metadata already up to date", buf, 0xCu);
           }
 
@@ -162,25 +162,25 @@ LABEL_51:
         }
       }
 
-      v50 = v27;
+      v50 = appleID;
       v30 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v18 bundleIdentifier];
-        v32 = [v24 username];
+        bundleIdentifier5 = [v18 bundleIdentifier];
+        username3 = [v24 username];
         *buf = 138543875;
-        v61 = v31;
+        v61 = bundleIdentifier5;
         v62 = 2113;
         v63 = v50;
         v64 = 2113;
-        v65 = v32;
+        v65 = username3;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[Validation] Updating metadata for: %{public}@, current Apple ID: '%{private}@' updated Apple ID: '%{private}@'", buf, 0x20u);
       }
 
       sub_1003E38F0(v26, v24);
-      v33 = [v18 bundleIdentifier];
+      bundleIdentifier6 = [v18 bundleIdentifier];
       v51 = 0;
-      sub_1003E3BE4(v26, v33, 0, &v51);
+      sub_1003E3BE4(v26, bundleIdentifier6, 0, &v51);
       v34 = v51;
 
       v35 = ASDLogHandleForCategory();
@@ -189,9 +189,9 @@ LABEL_51:
       {
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          v37 = [v18 bundleIdentifier];
+          bundleIdentifier7 = [v18 bundleIdentifier];
           *buf = 138543618;
-          v61 = v37;
+          v61 = bundleIdentifier7;
           v62 = 2114;
           v63 = v34;
           _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "[Validation] Failed to update metadata for: %{public}@, error occurred: %{public}@", buf, 0x16u);
@@ -201,9 +201,9 @@ LABEL_33:
 
       else if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v18 bundleIdentifier];
+        bundleIdentifier7 = [v18 bundleIdentifier];
         *buf = 138543362;
-        v61 = v37;
+        v61 = bundleIdentifier7;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[Validation] Completed validation for %{public}@: Metadata successfully updated", buf, 0xCu);
         goto LABEL_33;
       }

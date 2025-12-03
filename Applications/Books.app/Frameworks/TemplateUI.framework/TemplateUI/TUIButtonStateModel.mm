@@ -1,25 +1,25 @@
 @interface TUIButtonStateModel
-- (TUIButtonStateModel)initWithButtonAttributes:(id)a3 contentModel:(id)a4;
-- (TUIButtonStateModel)initWithTitle:(id)a3 image:(id)a4;
+- (TUIButtonStateModel)initWithButtonAttributes:(id)attributes contentModel:(id)model;
+- (TUIButtonStateModel)initWithTitle:(id)title image:(id)image;
 - (TUIModelContaining)parentModel;
-- (id)modelForButtonType:(unint64_t)a3 context:(id)a4;
-- (void)appendContainedChildrenToArray:(id)a3;
+- (id)modelForButtonType:(unint64_t)type context:(id)context;
+- (void)appendContainedChildrenToArray:(id)array;
 - (void)onContainedModelsChanged;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIButtonStateModel
 
-- (TUIButtonStateModel)initWithTitle:(id)a3 image:(id)a4
+- (TUIButtonStateModel)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v13.receiver = self;
   v13.super_class = TUIButtonStateModel;
   v8 = [(TUIButtonStateModel *)&v13 init];
   if (v8)
   {
-    v9 = (v6 | v7) == 0;
+    v9 = (titleCopy | imageCopy) == 0;
   }
 
   else
@@ -29,7 +29,7 @@
 
   if (!v9)
   {
-    v10 = [[TUIButtonAttributes alloc] initWithTitle:v6 image:v7];
+    v10 = [[TUIButtonAttributes alloc] initWithTitle:titleCopy image:imageCopy];
     attributes = v8->_attributes;
     v8->_attributes = v10;
   }
@@ -37,30 +37,30 @@
   return v8;
 }
 
-- (TUIButtonStateModel)initWithButtonAttributes:(id)a3 contentModel:(id)a4
+- (TUIButtonStateModel)initWithButtonAttributes:(id)attributes contentModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  attributesCopy = attributes;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = TUIButtonStateModel;
   v9 = [(TUIButtonStateModel *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributes, a3);
-    objc_storeStrong(&v10->_contentModel, a4);
+    objc_storeStrong(&v9->_attributes, attributes);
+    objc_storeStrong(&v10->_contentModel, model);
   }
 
   return v10;
 }
 
-- (id)modelForButtonType:(unint64_t)a3 context:(id)a4
+- (id)modelForButtonType:(unint64_t)type context:(id)context
 {
-  v6 = a4;
-  v7 = self;
-  v8 = [(TUIButtonAttributes *)v7->_attributes attributesForButtonType:a3];
+  contextCopy = context;
+  selfCopy = self;
+  v8 = [(TUIButtonAttributes *)selfCopy->_attributes attributesForButtonType:type];
   v9 = v8;
-  if (a3 && v7->_contentModel)
+  if (type && selfCopy->_contentModel)
   {
     if (v8)
     {
@@ -72,31 +72,31 @@
       v10 = 0;
     }
 
-    [v6 reportError:1019];
+    [contextCopy reportError:1019];
   }
 
   else
   {
-    if (v8 == v7->_attributes)
+    if (v8 == selfCopy->_attributes)
     {
       goto LABEL_10;
     }
 
-    v10 = [[TUIButtonStateModel alloc] initWithButtonAttributes:v8 contentModel:v7->_contentModel];
+    v10 = [[TUIButtonStateModel alloc] initWithButtonAttributes:v8 contentModel:selfCopy->_contentModel];
   }
 
-  v7 = v10;
+  selfCopy = v10;
 LABEL_10:
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)appendContainedChildrenToArray:(id)a3
+- (void)appendContainedChildrenToArray:(id)array
 {
   contentModel = self->_contentModel;
   if (contentModel)
   {
-    [a3 addObject:contentModel];
+    [array addObject:contentModel];
   }
 }
 
@@ -106,15 +106,15 @@ LABEL_10:
   [WeakRetained onContainedModelsChanged];
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
   contentModel = self->_contentModel;
-  v5 = a3;
+  childrenCopy = children;
   [(TUIModel *)contentModel setParentModel:0];
-  v6 = [v5 firstObject];
+  firstObject = [childrenCopy firstObject];
 
   v7 = self->_contentModel;
-  self->_contentModel = v6;
+  self->_contentModel = firstObject;
 
   [(TUIModel *)self->_contentModel setParentModel:self];
 

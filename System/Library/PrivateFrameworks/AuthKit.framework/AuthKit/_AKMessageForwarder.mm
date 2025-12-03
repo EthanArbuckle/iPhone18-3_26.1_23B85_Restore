@@ -1,83 +1,83 @@
 @interface _AKMessageForwarder
-- (_AKMessageForwarder)initWithReceiver:(id)a3 strong:(BOOL)a4;
-- (_AKMessageForwarder)initWithStrongReceiver:(id)a3;
-- (_AKMessageForwarder)initWithWeakReceiver:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (_AKMessageForwarder)initWithReceiver:(id)receiver strong:(BOOL)strong;
+- (_AKMessageForwarder)initWithStrongReceiver:(id)receiver;
+- (_AKMessageForwarder)initWithWeakReceiver:(id)receiver;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)activate;
 @end
 
 @implementation _AKMessageForwarder
 
-- (_AKMessageForwarder)initWithReceiver:(id)a3 strong:(BOOL)a4
+- (_AKMessageForwarder)initWithReceiver:(id)receiver strong:(BOOL)strong
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(location, receiver);
+  strongCopy = strong;
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = _AKMessageForwarder;
-  v11 = [(_AKMessageForwarder *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(_AKMessageForwarder *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    if (v9)
+    if (strongCopy)
     {
-      objc_storeStrong(&v11->_strongReceiver, location[0]);
+      objc_storeStrong(&selfCopy->_strongReceiver, location[0]);
     }
 
     else
     {
-      objc_storeWeak(&v11->_weakReceiver, location[0]);
+      objc_storeWeak(&selfCopy->_weakReceiver, location[0]);
     }
   }
 
-  v6 = MEMORY[0x1E69E5928](v11);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (_AKMessageForwarder)initWithWeakReceiver:(id)a3
+- (_AKMessageForwarder)initWithWeakReceiver:(id)receiver
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(_AKMessageForwarder *)v3 initWithReceiver:location[0] strong:0];
-  v5 = MEMORY[0x1E69E5928](v7);
+  objc_storeStrong(location, receiver);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(_AKMessageForwarder *)v3 initWithReceiver:location[0] strong:0];
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (_AKMessageForwarder)initWithStrongReceiver:(id)a3
+- (_AKMessageForwarder)initWithStrongReceiver:(id)receiver
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(_AKMessageForwarder *)v3 initWithReceiver:location[0] strong:1];
-  v5 = MEMORY[0x1E69E5928](v7);
+  objc_storeStrong(location, receiver);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(_AKMessageForwarder *)v3 initWithReceiver:location[0] strong:1];
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)activate
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  [v2 setShouldHandleInvalidation:1];
-  MEMORY[0x1E69E5920](v2);
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [currentConnection setShouldHandleInvalidation:1];
+  MEMORY[0x1E69E5920](currentConnection);
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   [(_AKMessageForwarder *)self activate];
   WeakRetained = objc_loadWeakRetained(&self->_weakReceiver);

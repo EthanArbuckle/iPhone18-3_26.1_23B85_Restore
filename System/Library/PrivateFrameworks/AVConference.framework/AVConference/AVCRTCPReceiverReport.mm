@@ -1,25 +1,25 @@
 @interface AVCRTCPReceiverReport
-- (AVCRTCPReceiverReport)initWithRTCPPacket:(tagRTCPPACKET *)a3;
+- (AVCRTCPReceiverReport)initWithRTCPPacket:(tagRTCPPACKET *)packet;
 - (id)description;
 @end
 
 @implementation AVCRTCPReceiverReport
 
-- (AVCRTCPReceiverReport)initWithRTCPPacket:(tagRTCPPACKET *)a3
+- (AVCRTCPReceiverReport)initWithRTCPPacket:(tagRTCPPACKET *)packet
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = AVCRTCPReceiverReport;
   result = [(AVCRTCPPacket *)&v5 initWithRTCPPacket:?];
-  if (result && (*&a3->var0 & 0x1F) != 0)
+  if (result && (*&packet->var0 & 0x1F) != 0)
   {
-    result->_reportedSourceSSRC = a3->var1.var0.var1;
-    result->_fractionLost = a3->var1.var0.var2;
-    result->_cumulativePacketsLost = a3->var1.var0.var2 >> 8;
-    result->_extendedHighestSequenceNumber = a3->var1.var0.var3;
-    result->_interarrivalJitter = a3->var1.var0.var4;
-    result->_lastSRTimestamp = a3->var1.var0.var5;
-    result->_delaySinceLastSR = a3->var1.var0.var6[0].var0;
+    result->_reportedSourceSSRC = packet->var1.var0.var1;
+    result->_fractionLost = packet->var1.var0.var2;
+    result->_cumulativePacketsLost = packet->var1.var0.var2 >> 8;
+    result->_extendedHighestSequenceNumber = packet->var1.var0.var3;
+    result->_interarrivalJitter = packet->var1.var0.var4;
+    result->_lastSRTimestamp = packet->var1.var0.var5;
+    result->_delaySinceLastSR = packet->var1.var0.var6[0].var0;
   }
 
   else

@@ -1,19 +1,19 @@
 @interface WFAirQualityProviderAttribution
 + (WFAirQualityProviderAttribution)defaultProviderAttribution;
 - (BOOL)p_checkRequestInFlight;
-- (WFAirQualityProviderAttribution)initWithCoder:(id)a3;
-- (WFAirQualityProviderAttribution)initWithName:(id)a3 logoImage:(id)a4 dataOrigination:(int64_t)a5 station:(id)a6;
-- (WFAirQualityProviderAttribution)initWithName:(id)a3 logoURL:(id)a4 dataOrigination:(int64_t)a5 station:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFAirQualityProviderAttribution)initWithCoder:(id)coder;
+- (WFAirQualityProviderAttribution)initWithName:(id)name logoImage:(id)image dataOrigination:(int64_t)origination station:(id)station;
+- (WFAirQualityProviderAttribution)initWithName:(id)name logoURL:(id)l dataOrigination:(int64_t)origination station:(id)station;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)p_imageWithData:(id)a3;
+- (id)p_imageWithData:(id)data;
 - (void)_initInternal;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadLogoImageWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadLogoImageWithCompletion:(id)completion;
 - (void)p_clearRequestInFlight;
-- (void)p_invokeAndClearCompletionBlocksWithImage:(id)a3 error:(id)a4;
-- (void)p_loadRemoteLogoImageForProvider:(id)a3 completion:(id)a4;
-- (void)p_queueCompletionBlock:(id)a3;
+- (void)p_invokeAndClearCompletionBlocksWithImage:(id)image error:(id)error;
+- (void)p_loadRemoteLogoImageForProvider:(id)provider completion:(id)completion;
+- (void)p_queueCompletionBlock:(id)block;
 - (void)p_setRequestInFlight;
 @end
 
@@ -52,42 +52,42 @@ uint64_t __61__WFAirQualityProviderAttribution_defaultProviderAttribution__block
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (WFAirQualityProviderAttribution)initWithName:(id)a3 logoImage:(id)a4 dataOrigination:(int64_t)a5 station:(id)a6
+- (WFAirQualityProviderAttribution)initWithName:(id)name logoImage:(id)image dataOrigination:(int64_t)origination station:(id)station
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  imageCopy = image;
+  stationCopy = station;
   v17.receiver = self;
   v17.super_class = WFAirQualityProviderAttribution;
   v14 = [(WFAirQualityProviderAttribution *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_cachedLogoImage, a4);
-    v15->_dataOrigination = a5;
-    objc_storeStrong(&v15->_station, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_cachedLogoImage, image);
+    v15->_dataOrigination = origination;
+    objc_storeStrong(&v15->_station, station);
     [(WFAirQualityProviderAttribution *)v15 _initInternal];
   }
 
   return v15;
 }
 
-- (WFAirQualityProviderAttribution)initWithName:(id)a3 logoURL:(id)a4 dataOrigination:(int64_t)a5 station:(id)a6
+- (WFAirQualityProviderAttribution)initWithName:(id)name logoURL:(id)l dataOrigination:(int64_t)origination station:(id)station
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  lCopy = l;
+  stationCopy = station;
   v17.receiver = self;
   v17.super_class = WFAirQualityProviderAttribution;
   v14 = [(WFAirQualityProviderAttribution *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_logoURL, a4);
-    v15->_dataOrigination = a5;
-    objc_storeStrong(&v15->_station, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_logoURL, l);
+    v15->_dataOrigination = origination;
+    objc_storeStrong(&v15->_station, station);
     [(WFAirQualityProviderAttribution *)v15 _initInternal];
   }
 
@@ -96,9 +96,9 @@ uint64_t __61__WFAirQualityProviderAttribution_defaultProviderAttribution__block
 
 - (void)_initInternal
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   outstandingRequestsCompletionBlocks = self->_outstandingRequestsCompletionBlocks;
-  self->_outstandingRequestsCompletionBlocks = v3;
+  self->_outstandingRequestsCompletionBlocks = array;
 
   self->_logoRequestInFlight = 0;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -109,18 +109,18 @@ uint64_t __61__WFAirQualityProviderAttribution_defaultProviderAttribution__block
   self->_dataSynchronizationLock._os_unfair_lock_opaque = 0;
 }
 
-- (void)loadLogoImageWithCompletion:(id)a3
+- (void)loadLogoImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFAirQualityProviderAttribution *)self logoImageLoadingQueue];
+  completionCopy = completion;
+  logoImageLoadingQueue = [(WFAirQualityProviderAttribution *)self logoImageLoadingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__WFAirQualityProviderAttribution_loadLogoImageWithCompletion___block_invoke;
   v7[3] = &unk_279E6F6A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(logoImageLoadingQueue, v7);
 }
 
 void __63__WFAirQualityProviderAttribution_loadLogoImageWithCompletion___block_invoke(uint64_t a1)
@@ -142,35 +142,35 @@ void __63__WFAirQualityProviderAttribution_loadLogoImageWithCompletion___block_i
   }
 }
 
-- (void)p_loadRemoteLogoImageForProvider:(id)a3 completion:(id)a4
+- (void)p_loadRemoteLogoImageForProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFAirQualityProviderAttribution *)self logoImageLoadingQueue];
-  dispatch_assert_queue_V2(v8);
+  providerCopy = provider;
+  completionCopy = completion;
+  logoImageLoadingQueue = [(WFAirQualityProviderAttribution *)self logoImageLoadingQueue];
+  dispatch_assert_queue_V2(logoImageLoadingQueue);
 
-  v9 = [(WFAirQualityProviderAttribution *)self logoURL];
-  if (v9)
+  logoURL = [(WFAirQualityProviderAttribution *)self logoURL];
+  if (logoURL)
   {
     if ([(WFAirQualityProviderAttribution *)self p_checkRequestInFlight])
     {
-      [(WFAirQualityProviderAttribution *)self p_queueCompletionBlock:v7];
+      [(WFAirQualityProviderAttribution *)self p_queueCompletionBlock:completionCopy];
     }
 
     else
     {
       [(WFAirQualityProviderAttribution *)self p_setRequestInFlight];
-      [(WFAirQualityProviderAttribution *)self p_queueCompletionBlock:v7];
+      [(WFAirQualityProviderAttribution *)self p_queueCompletionBlock:completionCopy];
       objc_initWeak(&location, self);
-      v11 = [MEMORY[0x277CCAD30] sharedSession];
-      v12 = [(WFAirQualityProviderAttribution *)self logoURL];
+      mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+      logoURL2 = [(WFAirQualityProviderAttribution *)self logoURL];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_completion___block_invoke;
       v14[3] = &unk_279E6F6D0;
       objc_copyWeak(&v15, &location);
       v14[4] = self;
-      v13 = [v11 dataTaskWithURL:v12 completionHandler:v14];
+      v13 = [mEMORY[0x277CCAD30] dataTaskWithURL:logoURL2 completionHandler:v14];
 
       [v13 resume];
       objc_destroyWeak(&v15);
@@ -229,9 +229,9 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
   return [v6 p_clearRequestInFlight];
 }
 
-- (id)p_imageWithData:(id)a3
+- (id)p_imageWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -250,7 +250,7 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 imageWithData:v3];
+  v6 = [v4 imageWithData:dataCopy];
 
   return v6;
 }
@@ -258,9 +258,9 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
 - (BOOL)p_checkRequestInFlight
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(WFAirQualityProviderAttribution *)self logoRequestInFlight];
+  logoRequestInFlight = [(WFAirQualityProviderAttribution *)self logoRequestInFlight];
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
-  return v3;
+  return logoRequestInFlight;
 }
 
 - (void)p_setRequestInFlight
@@ -279,30 +279,30 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
 }
 
-- (void)p_queueCompletionBlock:(id)a3
+- (void)p_queueCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = objc_alloc_init(WFAirQualityProviderCompletionWrapper);
-  [(WFAirQualityProviderCompletionWrapper *)v6 setCompletion:v4];
+  [(WFAirQualityProviderCompletionWrapper *)v6 setCompletion:blockCopy];
 
   os_unfair_lock_lock_with_options();
-  v5 = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
-  [v5 addObject:v6];
+  outstandingRequestsCompletionBlocks = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
+  [outstandingRequestsCompletionBlocks addObject:v6];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
 }
 
-- (void)p_invokeAndClearCompletionBlocksWithImage:(id)a3 error:(id)a4
+- (void)p_invokeAndClearCompletionBlocksWithImage:(id)image error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
-  v8 = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
-  v9 = [v8 copy];
+  outstandingRequestsCompletionBlocks = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
+  v9 = [outstandingRequestsCompletionBlocks copy];
 
-  v10 = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
-  [v10 removeAllObjects];
+  outstandingRequestsCompletionBlocks2 = [(WFAirQualityProviderAttribution *)self outstandingRequestsCompletionBlocks];
+  [outstandingRequestsCompletionBlocks2 removeAllObjects];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   v19 = 0u;
@@ -325,8 +325,8 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v17 + 1) + 8 * v15) completion];
-        (v16)[2](v16, v6, v7);
+        completion = [*(*(&v17 + 1) + 8 * v15) completion];
+        (completion)[2](completion, imageCopy, errorCopy);
 
         ++v15;
       }
@@ -339,51 +339,51 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WFAirQualityProviderAttribution);
-  v5 = [(WFAirQualityProviderAttribution *)self name];
-  [(WFAirQualityProviderAttribution *)v4 setName:v5];
+  name = [(WFAirQualityProviderAttribution *)self name];
+  [(WFAirQualityProviderAttribution *)v4 setName:name];
 
-  v6 = [(WFAirQualityProviderAttribution *)self logoURL];
-  [(WFAirQualityProviderAttribution *)v4 setLogoURL:v6];
+  logoURL = [(WFAirQualityProviderAttribution *)self logoURL];
+  [(WFAirQualityProviderAttribution *)v4 setLogoURL:logoURL];
 
   [(WFAirQualityProviderAttribution *)v4 setDataOrigination:[(WFAirQualityProviderAttribution *)self dataOrigination]];
-  v7 = [(WFAirQualityProviderAttribution *)self cachedLogoImage];
-  [(WFAirQualityProviderAttribution *)v4 setCachedLogoImage:v7];
+  cachedLogoImage = [(WFAirQualityProviderAttribution *)self cachedLogoImage];
+  [(WFAirQualityProviderAttribution *)v4 setCachedLogoImage:cachedLogoImage];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(WFAirQualityProviderAttribution *)self name];
-  [v6 encodeObject:v4 forKey:@"WFAirQualityProviderNameKey"];
+  coderCopy = coder;
+  name = [(WFAirQualityProviderAttribution *)self name];
+  [coderCopy encodeObject:name forKey:@"WFAirQualityProviderNameKey"];
 
-  v5 = [(WFAirQualityProviderAttribution *)self logoURL];
-  [v6 encodeObject:v5 forKey:@"WFAirQualityProviderLogoURLKey"];
+  logoURL = [(WFAirQualityProviderAttribution *)self logoURL];
+  [coderCopy encodeObject:logoURL forKey:@"WFAirQualityProviderLogoURLKey"];
 
-  [v6 encodeInteger:-[WFAirQualityProviderAttribution dataOrigination](self forKey:{"dataOrigination"), @"WFAirQualityProviderDataOriginationKey"}];
+  [coderCopy encodeInteger:-[WFAirQualityProviderAttribution dataOrigination](self forKey:{"dataOrigination"), @"WFAirQualityProviderDataOriginationKey"}];
 }
 
-- (WFAirQualityProviderAttribution)initWithCoder:(id)a3
+- (WFAirQualityProviderAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = WFAirQualityProviderAttribution;
   v5 = [(WFAirQualityProviderAttribution *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFAirQualityProviderNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFAirQualityProviderNameKey"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFAirQualityProviderLogoURLKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFAirQualityProviderLogoURLKey"];
     logoURL = v5->_logoURL;
     v5->_logoURL = v8;
 
-    v5->_dataOrigination = [v4 decodeIntegerForKey:@"WFAirQualityProviderDataOriginationKey"];
+    v5->_dataOrigination = [coderCopy decodeIntegerForKey:@"WFAirQualityProviderDataOriginationKey"];
     [(WFAirQualityProviderAttribution *)v5 _initInternal];
   }
 
@@ -393,10 +393,10 @@ uint64_t __79__WFAirQualityProviderAttribution_p_loadRemoteLogoImageForProvider_
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WFAirQualityProviderAttribution *)self name];
-  v5 = [(WFAirQualityProviderAttribution *)self dataOrigination];
-  v6 = [(WFAirQualityProviderAttribution *)self station];
-  v7 = [v3 stringWithFormat:@"<WFAirQualityProviderAttribution name: %@, dataOrigination: %ld, station: %@>", v4, v5, v6];
+  name = [(WFAirQualityProviderAttribution *)self name];
+  dataOrigination = [(WFAirQualityProviderAttribution *)self dataOrigination];
+  station = [(WFAirQualityProviderAttribution *)self station];
+  v7 = [v3 stringWithFormat:@"<WFAirQualityProviderAttribution name: %@, dataOrigination: %ld, station: %@>", name, dataOrigination, station];
 
   return v7;
 }

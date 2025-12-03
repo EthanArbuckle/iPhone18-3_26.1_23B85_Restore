@@ -1,16 +1,16 @@
 @interface WMTableCellMapper
-- (WMTableCellMapper)initWithWDTableCell:(id)a3 atIndex:(unsigned int)a4 parent:(id)a5;
+- (WMTableCellMapper)initWithWDTableCell:(id)cell atIndex:(unsigned int)index parent:(id)parent;
 - (id)tableMapper;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapCellStyleAt:(id)a3;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapCellStyleAt:(id)at;
 @end
 
 @implementation WMTableCellMapper
 
 - (id)tableMapper
 {
-  v2 = [(CMMapper *)self parent];
-  if (v2)
+  parent = [(CMMapper *)self parent];
+  if (parent)
   {
     do
     {
@@ -20,56 +20,56 @@
         break;
       }
 
-      v3 = [v2 parent];
+      v2Parent = [parent parent];
 
-      v2 = v3;
+      parent = v2Parent;
     }
 
-    while (v3);
+    while (v2Parent);
   }
 
-  return v2;
+  return parent;
 }
 
-- (WMTableCellMapper)initWithWDTableCell:(id)a3 atIndex:(unsigned int)a4 parent:(id)a5
+- (WMTableCellMapper)initWithWDTableCell:(id)cell atIndex:(unsigned int)index parent:(id)parent
 {
-  v6 = *&a4;
-  v9 = a3;
-  v10 = a5;
+  v6 = *&index;
+  cellCopy = cell;
+  parentCopy = parent;
   v19.receiver = self;
   v19.super_class = WMTableCellMapper;
-  v11 = [(CMMapper *)&v19 initWithParent:v10];
+  v11 = [(CMMapper *)&v19 initWithParent:parentCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->mWdTableCell, a3);
-    v13 = [v9 properties];
-    v12->mWidth = [v13 width];
+    objc_storeStrong(&v11->mWdTableCell, cell);
+    properties = [cellCopy properties];
+    v12->mWidth = [properties width];
 
     v12->mHeight = 0.0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v10 height];
+      [parentCopy height];
       v12->mHeight = v14;
     }
 
-    v15 = [(WMTableCellMapper *)v12 tableMapper];
-    v16 = [v15 columnInfo];
+    tableMapper = [(WMTableCellMapper *)v12 tableMapper];
+    columnInfo = [tableMapper columnInfo];
     mWidth = v12->mWidth;
     *&mWidth = mWidth;
-    v12->mColSpan = [v16 columnSpan:v6 at:mWidth];
+    v12->mColSpan = [columnInfo columnSpan:v6 at:mWidth];
   }
 
   return v12;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = [OIXMLElement elementWithType:19];
-  [v6 addChild:v8];
+  [atCopy addChild:v8];
   v9 = v8;
 
   if (self->mColSpan >= 2)
@@ -95,40 +95,40 @@
     }
 
     [(CMStyle *)v12 appendPropertyForName:0x286F080F0 length:2 unit:mWidth];
-    v16 = [(WMStyle *)v13 cssStyleString];
-    [(CMMapper *)self addAttribute:0x286EEA590 toNode:v19 value:v16];
+    cssStyleString = [(WMStyle *)v13 cssStyleString];
+    [(CMMapper *)self addAttribute:0x286EEA590 toNode:v19 value:cssStyleString];
   }
 
-  v17 = [(WDTableCell *)self->mWdTableCell text];
-  v18 = [[WMSectionContentMapper alloc] initWithWDText:v17 parent:self];
-  [(WMSectionContentMapper *)v18 mapAt:v19 withState:v7];
+  text = [(WDTableCell *)self->mWdTableCell text];
+  v18 = [[WMSectionContentMapper alloc] initWithWDText:text parent:self];
+  [(WMSectionContentMapper *)v18 mapAt:v19 withState:stateCopy];
 }
 
-- (void)mapCellStyleAt:(id)a3
+- (void)mapCellStyleAt:(id)at
 {
-  v14 = a3;
+  atCopy = at;
   v4 = objc_alloc_init(WMTableCellStyle);
   v5 = [(WDTableCell *)self->mWdTableCell row];
-  v6 = [v5 table];
-  v7 = [v6 properties];
-  if ([v7 isBaseStyleOverridden])
+  table = [v5 table];
+  properties = [table properties];
+  if ([properties isBaseStyleOverridden])
   {
-    v8 = [v7 baseStyle];
-    [(WMTableCellStyle *)v4 addTableCellStyleProperties:v8];
+    baseStyle = [properties baseStyle];
+    [(WMTableCellStyle *)v4 addTableCellStyleProperties:baseStyle];
   }
 
-  v9 = [(WDTableCell *)self->mWdTableCell properties];
-  [(WMTableCellStyle *)v4 addTableCellProperties:v9];
+  properties2 = [(WDTableCell *)self->mWdTableCell properties];
+  [(WMTableCellStyle *)v4 addTableCellProperties:properties2];
 
   [(WMTableCellStyle *)v4 leftPadding];
   self->mLeftPadding = v10;
   [(WMTableCellStyle *)v4 rightPadding];
   self->mRightPadding = v11;
-  v12 = [(WMTableCellMapper *)self tableMapper];
-  v13 = [v12 insideBorders];
-  if (v13)
+  tableMapper = [(WMTableCellMapper *)self tableMapper];
+  insideBorders = [tableMapper insideBorders];
+  if (insideBorders)
   {
-    [(CMStyle *)v4 addProperty:v13 forKey:0x286F08330];
+    [(CMStyle *)v4 addProperty:insideBorders forKey:0x286F08330];
   }
 
   if (self->mHeight > 0.0)
@@ -136,7 +136,7 @@
     [(CMStyle *)v4 appendPropertyForName:0x286EF6790 length:2 unit:?];
   }
 
-  [(CMMapper *)self addStyleUsingGlobalCacheTo:v14 style:v4];
+  [(CMMapper *)self addStyleUsingGlobalCacheTo:atCopy style:v4];
 }
 
 @end

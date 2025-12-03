@@ -1,15 +1,15 @@
 @interface ICTK2TodoTextAttachment
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGSize)attachmentSizeForTextContainer:(id)a3;
-- (ICTK2TodoTextAttachment)initWithTodo:(id)a3;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGSize)attachmentSizeForTextContainer:(id)container;
+- (ICTK2TodoTextAttachment)initWithTodo:(id)todo;
 - (id)viewIdentifier;
 @end
 
 @implementation ICTK2TodoTextAttachment
 
-- (ICTK2TodoTextAttachment)initWithTodo:(id)a3
+- (ICTK2TodoTextAttachment)initWithTodo:(id)todo
 {
-  v5 = a3;
+  todoCopy = todo;
   v6 = *MEMORY[0x1E69B7460];
   v10.receiver = self;
   v10.super_class = ICTK2TodoTextAttachment;
@@ -17,7 +17,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_todo, a3);
+    objc_storeStrong(&v7->_todo, todo);
   }
 
   return v8;
@@ -25,14 +25,14 @@
 
 - (id)viewIdentifier
 {
-  v2 = [(ICTK2TodoTextAttachment *)self todo];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  todo = [(ICTK2TodoTextAttachment *)self todo];
+  uuid = [todo uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (CGSize)attachmentSizeForTextContainer:(id)a3
+- (CGSize)attachmentSizeForTextContainer:(id)container
 {
   +[ICTodoButton defaultSize];
   result.height = v4;
@@ -40,16 +40,16 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  y = a7.y;
-  height = a6.size.height;
-  width = a6.size.width;
-  v9 = a6.origin.y;
-  x = a6.origin.x;
+  y = position.y;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v9 = fragment.origin.y;
+  x = fragment.origin.x;
   v26.receiver = self;
   v26.super_class = ICTK2TodoTextAttachment;
-  [(ICTextAttachment *)&v26 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:a6.origin.x position:a6.origin.y, a6.size.width, a6.size.height, a7.x];
+  [(ICTextAttachment *)&v26 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:fragment.origin.x position:fragment.origin.y, fragment.size.width, fragment.size.height, position.x];
   v12 = v11;
   v14 = v13;
   v16 = v15;

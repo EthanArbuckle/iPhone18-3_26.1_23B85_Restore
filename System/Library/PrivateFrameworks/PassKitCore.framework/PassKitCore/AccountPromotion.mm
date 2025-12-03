@@ -1,57 +1,57 @@
 @interface AccountPromotion
-+ (id)_anyInDatabase:(id)a3 withProgramIdentifier:(id)a4 accountPID:(int64_t)a5;
-+ (id)_insertAccountPromotion:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)_predicateForAccountPID:(int64_t)a3;
-+ (id)_predicateForProgramIdentifier:(id)a3;
-+ (id)_predicateForProgramIdentifier:(id)a3 accountPID:(int64_t)a4;
-+ (id)_promotionsWithPredicate:(id)a3 inDatabase:(id)a4;
++ (id)_anyInDatabase:(id)database withProgramIdentifier:(id)identifier accountPID:(int64_t)d;
++ (id)_insertAccountPromotion:(id)promotion forAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)_predicateForAccountPID:(int64_t)d;
++ (id)_predicateForProgramIdentifier:(id)identifier;
++ (id)_predicateForProgramIdentifier:(id)identifier accountPID:(int64_t)d;
++ (id)_promotionsWithPredicate:(id)predicate inDatabase:(id)database;
 + (id)_propertySettersForAccountPromotion;
-+ (id)_propertyValuesForPromotion:(id)a3 accountPID:(int64_t)a4;
-+ (id)_queryForPredicate:(id)a3 database:(id)a4;
-+ (id)accountPromotionForProgramIdentifier:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)accountPromotionsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)promotionPIDsForProgramIdentifier:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteAccountPromotion:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteAccountPromotionsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertOrUpdateAccountPromotion:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)insertOrUpdateAccountPromotions:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)populateAssociatedCompletionStepsForPromotion:(id)a3 promotionPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)updateImpressionCount:(int64_t)a3 promotionProgramIdentifier:(id)a4 accountPID:(int64_t)a5 inDatabase:(id)a6;
-+ (void)updateImpressionCountsForPromotions:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5;
-- (AccountPromotion)initWithAccountPromotion:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_propertyValuesForPromotion:(id)promotion accountPID:(int64_t)d;
++ (id)_queryForPredicate:(id)predicate database:(id)database;
++ (id)accountPromotionForProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database;
++ (id)accountPromotionsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)promotionPIDsForProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteAccountPromotion:(id)promotion accountPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteAccountPromotionsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)insertOrUpdateAccountPromotion:(id)promotion accountPID:(int64_t)d inDatabase:(id)database;
++ (void)insertOrUpdateAccountPromotions:(id)promotions accountPID:(int64_t)d inDatabase:(id)database;
++ (void)populateAssociatedCompletionStepsForPromotion:(id)promotion promotionPID:(int64_t)d inDatabase:(id)database;
++ (void)updateImpressionCount:(int64_t)count promotionProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database;
++ (void)updateImpressionCountsForPromotions:(id)promotions accountPID:(int64_t)d inDatabase:(id)database;
+- (AccountPromotion)initWithAccountPromotion:(id)promotion forAccountPID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
 - (id)accountPromotion;
-- (void)_updateWithAccountPromotion:(id)a3 accountPID:(int64_t)a4;
-- (void)updateWithPromotionCompletionSteps:(id)a3;
+- (void)_updateWithAccountPromotion:(id)promotion accountPID:(int64_t)d;
+- (void)updateWithPromotionCompletionSteps:(id)steps;
 @end
 
 @implementation AccountPromotion
 
-- (AccountPromotion)initWithAccountPromotion:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
+- (AccountPromotion)initWithAccountPromotion:(id)promotion forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [AccountPromotion _propertyValuesForPromotion:v9 accountPID:a4];
-  v11 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  databaseCopy = database;
+  promotionCopy = promotion;
+  v10 = [AccountPromotion _propertyValuesForPromotion:promotionCopy accountPID:d];
+  v11 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
 
   v12 = v11;
-  v13 = [v9 completionSteps];
+  completionSteps = [promotionCopy completionSteps];
 
-  if (v13 && [v13 count])
+  if (completionSteps && [completionSteps count])
   {
-    [(AccountPromotion *)v12 updateWithPromotionCompletionSteps:v13];
+    [(AccountPromotion *)v12 updateWithPromotionCompletionSteps:completionSteps];
   }
 
   return v12;
 }
 
-+ (id)accountPromotionsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (id)accountPromotionsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
   if (v7)
   {
-    v8 = [a1 _promotionsWithPredicate:v7 inDatabase:v6];
+    v8 = [self _promotionsWithPredicate:v7 inDatabase:databaseCopy];
   }
 
   else
@@ -62,13 +62,13 @@
   return v8;
 }
 
-+ (id)promotionPIDsForProgramIdentifier:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)promotionPIDsForProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a1 _predicateForProgramIdentifier:a3 accountPID:a4];
+  databaseCopy = database;
+  v9 = [self _predicateForProgramIdentifier:identifier accountPID:d];
   if (v9)
   {
-    v10 = [a1 _queryForPredicate:v9 database:v8];
+    v10 = [self _queryForPredicate:v9 database:databaseCopy];
     +[NSMutableArray array];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -95,38 +95,38 @@
   return v12;
 }
 
-+ (id)_promotionsWithPredicate:(id)a3 inDatabase:(id)a4
++ (id)_promotionsWithPredicate:(id)predicate inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _queryForPredicate:a3 database:v6];
-  v8 = [a1 _propertySettersForAccountPromotion];
+  databaseCopy = database;
+  v7 = [self _queryForPredicate:predicate database:databaseCopy];
+  _propertySettersForAccountPromotion = [self _propertySettersForAccountPromotion];
   v9 = +[NSMutableArray array];
-  v10 = [v8 allKeys];
+  allKeys = [_propertySettersForAccountPromotion allKeys];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10004E334;
   v19 = &unk_10083BF08;
-  v20 = v8;
-  v21 = v6;
+  v20 = _propertySettersForAccountPromotion;
+  v21 = databaseCopy;
   v22 = v9;
-  v23 = a1;
+  selfCopy = self;
   v11 = v9;
-  v12 = v6;
-  v13 = v8;
-  [v7 enumeratePersistentIDsAndProperties:v10 usingBlock:&v16];
+  v12 = databaseCopy;
+  v13 = _propertySettersForAccountPromotion;
+  [v7 enumeratePersistentIDsAndProperties:allKeys usingBlock:&v16];
 
   v14 = [v11 copy];
 
   return v14;
 }
 
-+ (id)_anyInDatabase:(id)a3 withProgramIdentifier:(id)a4 accountPID:(int64_t)a5
++ (id)_anyInDatabase:(id)database withProgramIdentifier:(id)identifier accountPID:(int64_t)d
 {
-  v8 = a3;
-  v9 = [a1 _predicateForProgramIdentifier:a4 accountPID:a5];
+  databaseCopy = database;
+  v9 = [self _predicateForProgramIdentifier:identifier accountPID:d];
   if (v9)
   {
-    v10 = [a1 anyInDatabase:v8 predicate:v9];
+    v10 = [self anyInDatabase:databaseCopy predicate:v9];
   }
 
   else
@@ -137,24 +137,24 @@
   return v10;
 }
 
-+ (id)accountPromotionForProgramIdentifier:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)accountPromotionForProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database
 {
-  v5 = [a1 _anyInDatabase:a5 withProgramIdentifier:a3 accountPID:a4];
-  v6 = [v5 accountPromotion];
+  v5 = [self _anyInDatabase:database withProgramIdentifier:identifier accountPID:d];
+  accountPromotion = [v5 accountPromotion];
 
-  return v6;
+  return accountPromotion;
 }
 
-+ (void)insertOrUpdateAccountPromotions:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertOrUpdateAccountPromotions:(id)promotions accountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  [a1 deleteAccountPromotionsForAccountPID:a4 inDatabase:v9];
+  promotionsCopy = promotions;
+  databaseCopy = database;
+  [self deleteAccountPromotionsForAccountPID:d inDatabase:databaseCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v8;
+  v10 = promotionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -170,7 +170,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [a1 insertOrUpdateAccountPromotion:*(*(&v15 + 1) + 8 * v14) accountPID:a4 inDatabase:{v9, v15}];
+        [self insertOrUpdateAccountPromotion:*(*(&v15 + 1) + 8 * v14) accountPID:d inDatabase:{databaseCopy, v15}];
         v14 = v14 + 1;
       }
 
@@ -182,71 +182,71 @@
   }
 }
 
-+ (void)insertOrUpdateAccountPromotion:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertOrUpdateAccountPromotion:(id)promotion accountPID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [v12 programIdentifier];
-  v10 = [a1 _anyInDatabase:v8 withProgramIdentifier:v9 accountPID:a4];
+  promotionCopy = promotion;
+  databaseCopy = database;
+  programIdentifier = [promotionCopy programIdentifier];
+  v10 = [self _anyInDatabase:databaseCopy withProgramIdentifier:programIdentifier accountPID:d];
 
   if (v10)
   {
-    [v10 _updateWithAccountPromotion:v12 accountPID:a4];
+    [v10 _updateWithAccountPromotion:promotionCopy accountPID:d];
   }
 
   else
   {
-    v11 = [a1 _insertAccountPromotion:v12 forAccountPID:a4 inDatabase:v8];
+    v11 = [self _insertAccountPromotion:promotionCopy forAccountPID:d inDatabase:databaseCopy];
   }
 }
 
-+ (id)_insertAccountPromotion:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)_insertAccountPromotion:(id)promotion forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithAccountPromotion:v9 forAccountPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  promotionCopy = promotion;
+  v10 = [[self alloc] initWithAccountPromotion:promotionCopy forAccountPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (void)deleteAccountPromotionsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteAccountPromotionsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForAccountPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForAccountPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (void)deleteAccountPromotion:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)deleteAccountPromotion:(id)promotion accountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a3 programIdentifier];
-  v10 = [a1 _anyInDatabase:v8 withProgramIdentifier:v9 accountPID:a4];
+  databaseCopy = database;
+  programIdentifier = [promotion programIdentifier];
+  v10 = [self _anyInDatabase:databaseCopy withProgramIdentifier:programIdentifier accountPID:d];
 
   [v10 deleteFromDatabase];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(SQLiteEntity *)self persistentID];
-  v4 = [(SQLiteEntity *)self database];
-  [AccountPromotionCompletionStep deletePromotionCompletionStepsForPromotionPID:v3 inDatabase:v4];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  [AccountPromotionCompletionStep deletePromotionCompletionStepsForPromotionPID:persistentID inDatabase:database];
 
   v6.receiver = self;
   v6.super_class = AccountPromotion;
   return [(SQLiteEntity *)&v6 deleteFromDatabase];
 }
 
-+ (void)updateImpressionCountsForPromotions:(id)a3 accountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updateImpressionCountsForPromotions:(id)promotions accountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
+  promotionsCopy = promotions;
+  databaseCopy = database;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [promotionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -257,44 +257,44 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(promotionsCopy);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v14 impressionCount];
-        v16 = [v14 programIdentifier];
-        [a1 updateImpressionCount:v15 promotionProgramIdentifier:v16 accountPID:a4 inDatabase:v9];
+        impressionCount = [v14 impressionCount];
+        programIdentifier = [v14 programIdentifier];
+        [self updateImpressionCount:impressionCount promotionProgramIdentifier:programIdentifier accountPID:d inDatabase:databaseCopy];
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [promotionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 }
 
-+ (void)updateImpressionCount:(int64_t)a3 promotionProgramIdentifier:(id)a4 accountPID:(int64_t)a5 inDatabase:(id)a6
++ (void)updateImpressionCount:(int64_t)count promotionProgramIdentifier:(id)identifier accountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = [a1 _anyInDatabase:a6 withProgramIdentifier:a4 accountPID:a5];
-  v7 = [NSNumber numberWithInteger:a3];
+  v8 = [self _anyInDatabase:database withProgramIdentifier:identifier accountPID:d];
+  v7 = [NSNumber numberWithInteger:count];
   [v8 setValue:v7 forProperty:@"j"];
 }
 
-- (void)_updateWithAccountPromotion:(id)a3 accountPID:(int64_t)a4
+- (void)_updateWithAccountPromotion:(id)promotion accountPID:(int64_t)d
 {
-  v6 = a3;
-  v8 = [AccountPromotion _propertyValuesForPromotion:v6 accountPID:a4];
+  promotionCopy = promotion;
+  v8 = [AccountPromotion _propertyValuesForPromotion:promotionCopy accountPID:d];
   [(SQLiteEntity *)self setValuesWithDictionary:v8];
-  v7 = [v6 completionSteps];
+  completionSteps = [promotionCopy completionSteps];
 
-  [(AccountPromotion *)self updateWithPromotionCompletionSteps:v7];
+  [(AccountPromotion *)self updateWithPromotionCompletionSteps:completionSteps];
 }
 
-+ (id)_predicateForProgramIdentifier:(id)a3
++ (id)_predicateForProgramIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:a3];
+    v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:identifier];
   }
 
   else
@@ -305,18 +305,18 @@
   return v4;
 }
 
-+ (id)_predicateForAccountPID:(int64_t)a3
++ (id)_predicateForAccountPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForProgramIdentifier:(id)a3 accountPID:(int64_t)a4
++ (id)_predicateForProgramIdentifier:(id)identifier accountPID:(int64_t)d
 {
-  v6 = [a1 _predicateForProgramIdentifier:a3];
-  v7 = [a1 _predicateForAccountPID:a4];
+  v6 = [self _predicateForProgramIdentifier:identifier];
+  v7 = [self _predicateForAccountPID:d];
   v8 = v7;
   v9 = 0;
   if (v6 && v7)
@@ -330,15 +330,15 @@
   return v9;
 }
 
-+ (id)_queryForPredicate:(id)a3 database:(id)a4
++ (id)_queryForPredicate:(id)predicate database:(id)database
 {
   v13 = @"d";
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  predicateCopy = predicate;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
   v12 = @"DESC";
   v9 = [NSArray arrayWithObjects:&v12 count:1];
-  v10 = [a1 queryWithDatabase:v6 predicate:v7 orderingProperties:v8 orderingDirections:v9];
+  v10 = [self queryWithDatabase:databaseCopy predicate:predicateCopy orderingProperties:v8 orderingDirections:v9];
 
   return v10;
 }
@@ -367,23 +367,23 @@
 - (id)accountPromotion
 {
   v3 = objc_alloc_init(PKAccountPromotion);
-  v4 = [objc_opt_class() _propertySettersForAccountPromotion];
-  v5 = [v4 allKeys];
+  _propertySettersForAccountPromotion = [objc_opt_class() _propertySettersForAccountPromotion];
+  allKeys = [_propertySettersForAccountPromotion allKeys];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004F1C8;
   v14[3] = &unk_10083BEE0;
   v14[4] = self;
-  v15 = v4;
+  v15 = _propertySettersForAccountPromotion;
   v6 = v3;
   v16 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v14];
+  v7 = _propertySettersForAccountPromotion;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v14];
 
   v8 = objc_opt_class();
-  v9 = [(SQLiteEntity *)self persistentID];
-  v10 = [(SQLiteEntity *)self database];
-  [v8 populateAssociatedCompletionStepsForPromotion:v6 promotionPID:v9 inDatabase:v10];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  [v8 populateAssociatedCompletionStepsForPromotion:v6 promotionPID:persistentID inDatabase:database];
 
   v11 = v16;
   v12 = v6;
@@ -391,18 +391,18 @@
   return v6;
 }
 
-- (void)updateWithPromotionCompletionSteps:(id)a3
+- (void)updateWithPromotionCompletionSteps:(id)steps
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self persistentID];
-  v6 = [(SQLiteEntity *)self database];
-  [AccountPromotionCompletionStep insertOrUpdatePromotionCompletionSteps:v4 promotionPID:v5 inDatabase:v6];
+  stepsCopy = steps;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  [AccountPromotionCompletionStep insertOrUpdatePromotionCompletionSteps:stepsCopy promotionPID:persistentID inDatabase:database];
 }
 
-+ (void)populateAssociatedCompletionStepsForPromotion:(id)a3 promotionPID:(int64_t)a4 inDatabase:(id)a5
++ (void)populateAssociatedCompletionStepsForPromotion:(id)promotion promotionPID:(int64_t)d inDatabase:(id)database
 {
-  v10 = a3;
-  v7 = [AccountPromotionCompletionStep accountPromotionCompletionStepsForPromotionPID:a4 inDatabase:a5];
+  promotionCopy = promotion;
+  v7 = [AccountPromotionCompletionStep accountPromotionCompletionStepsForPromotionPID:d inDatabase:database];
   if ([v7 count])
   {
     v8 = v7;
@@ -415,43 +415,43 @@
 
   v9 = v8;
 
-  [v10 setCompletionSteps:v9];
+  [promotionCopy setCompletionSteps:v9];
 }
 
-+ (id)_propertyValuesForPromotion:(id)a3 accountPID:(int64_t)a4
++ (id)_propertyValuesForPromotion:(id)promotion accountPID:(int64_t)d
 {
-  v5 = a3;
+  promotionCopy = promotion;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [NSNumber numberWithLongLong:a4];
+  v7 = [NSNumber numberWithLongLong:d];
   [v6 setObjectOrNull:v7 forKey:@"a"];
 
-  v8 = [v5 programIdentifier];
-  [v6 setObjectOrNull:v8 forKey:@"b"];
+  programIdentifier = [promotionCopy programIdentifier];
+  [v6 setObjectOrNull:programIdentifier forKey:@"b"];
 
-  [v6 setInteger:objc_msgSend(v5 forKey:{"type"), @"c"}];
-  v9 = [v5 startDate];
+  [v6 setInteger:objc_msgSend(promotionCopy forKey:{"type"), @"c"}];
+  startDate = [promotionCopy startDate];
   v10 = _SQLValueForDate();
   [v6 setObjectOrNull:v10 forKey:@"d"];
 
-  v11 = [v5 endDate];
+  endDate = [promotionCopy endDate];
   v12 = _SQLValueForDate();
   [v6 setObjectOrNull:v12 forKey:@"e"];
 
-  v13 = [v5 name];
-  [v6 setObjectOrNull:v13 forKey:@"f"];
+  name = [promotionCopy name];
+  [v6 setObjectOrNull:name forKey:@"f"];
 
-  v14 = [v5 termsURL];
-  v15 = [v14 absoluteString];
-  [v6 setObjectOrNull:v15 forKey:@"h"];
+  termsURL = [promotionCopy termsURL];
+  absoluteString = [termsURL absoluteString];
+  [v6 setObjectOrNull:absoluteString forKey:@"h"];
 
-  v16 = [v5 templateIdentifier];
-  [v6 setObjectOrNull:v16 forKey:@"g"];
+  templateIdentifier = [promotionCopy templateIdentifier];
+  [v6 setObjectOrNull:templateIdentifier forKey:@"g"];
 
-  v17 = [v5 layoutData];
-  [v6 setObjectOrNull:v17 forKey:@"i"];
+  layoutData = [promotionCopy layoutData];
+  [v6 setObjectOrNull:layoutData forKey:@"i"];
 
-  v18 = [v5 impressionCount];
-  [v6 setInteger:v18 forKey:@"j"];
+  impressionCount = [promotionCopy impressionCount];
+  [v6 setInteger:impressionCount forKey:@"j"];
   v19 = [v6 copy];
 
   return v19;

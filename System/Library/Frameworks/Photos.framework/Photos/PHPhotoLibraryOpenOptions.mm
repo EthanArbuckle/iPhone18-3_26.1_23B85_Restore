@@ -29,9 +29,9 @@
   v10.receiver = self;
   v10.super_class = PHPhotoLibraryOpenOptions;
   v5 = [(PHPhotoLibraryOpenOptions *)&v10 description];
-  v6 = [(PHPhotoLibraryOpenOptions *)self allowsUpgrade];
+  allowsUpgrade = [(PHPhotoLibraryOpenOptions *)self allowsUpgrade];
   v7 = @"N";
-  if (v6)
+  if (allowsUpgrade)
   {
     v7 = @"Y";
   }

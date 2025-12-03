@@ -1,19 +1,19 @@
 @interface SUUIExpandViewElement
-- (SUUIExpandViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIExpandViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIExpandViewElement
 
-- (SUUIExpandViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIExpandViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUIExpandViewElement;
-  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"open"];
+    v10 = [elementCopy getAttribute:@"open"];
     v9->_open = [v10 BOOLValue];
 
     v9->_previousIsOpen = v9->_open;
@@ -22,17 +22,17 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUIExpandViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     self->_previousIsOpen = self->_open;
-    self->_open = [(SUUIExpandViewElement *)v4 isOpen];
+    self->_open = [(SUUIExpandViewElement *)elementCopy isOpen];
   }
 
   [v6 setPreviousIsOpen:self->_previousIsOpen];

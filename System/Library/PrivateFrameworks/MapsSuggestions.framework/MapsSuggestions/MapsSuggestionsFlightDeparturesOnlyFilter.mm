@@ -1,15 +1,15 @@
 @interface MapsSuggestionsFlightDeparturesOnlyFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsFlightDeparturesOnlyFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if ([v3 type] != 15)
+  if ([entryCopy type] != 15)
   {
     v9 = 1;
     goto LABEL_13;

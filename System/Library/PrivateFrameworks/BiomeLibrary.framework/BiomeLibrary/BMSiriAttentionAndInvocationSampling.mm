@@ -1,16 +1,16 @@
 @interface BMSiriAttentionAndInvocationSampling
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAttentionAndInvocationSampling)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriAttentionAndInvocationSampling)initWithTimestamp:(id)a3 onDeviceSampleIdentifier:(id)a4 userSamplingIdentifier:(id)a5 dataCollectionUseCase:(id)a6 deviceType:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAttentionAndInvocationSampling)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriAttentionAndInvocationSampling)initWithTimestamp:(id)timestamp onDeviceSampleIdentifier:(id)identifier userSamplingIdentifier:(id)samplingIdentifier dataCollectionUseCase:(id)case deviceType:(id)type;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAttentionAndInvocationSampling
@@ -35,25 +35,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
-    v7 = [v5 timestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timestamp = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v8 = timestamp2;
+    if (timestamp == timestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
-      v10 = [v5 timestamp];
-      v11 = [v9 isEqual:v10];
+      timestamp3 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
+      timestamp4 = [v5 timestamp];
+      v11 = [timestamp3 isEqual:timestamp4];
 
       if (!v11)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v13 = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
-    v14 = [v5 onDeviceSampleIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    onDeviceSampleIdentifier = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
+    onDeviceSampleIdentifier2 = [v5 onDeviceSampleIdentifier];
+    v15 = onDeviceSampleIdentifier2;
+    if (onDeviceSampleIdentifier == onDeviceSampleIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
-      v17 = [v5 onDeviceSampleIdentifier];
-      v18 = [v16 isEqual:v17];
+      onDeviceSampleIdentifier3 = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
+      onDeviceSampleIdentifier4 = [v5 onDeviceSampleIdentifier];
+      v18 = [onDeviceSampleIdentifier3 isEqual:onDeviceSampleIdentifier4];
 
       if (!v18)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v19 = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
-    v20 = [v5 userSamplingIdentifier];
-    v21 = v20;
-    if (v19 == v20)
+    userSamplingIdentifier = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
+    userSamplingIdentifier2 = [v5 userSamplingIdentifier];
+    v21 = userSamplingIdentifier2;
+    if (userSamplingIdentifier == userSamplingIdentifier2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
-      v23 = [v5 userSamplingIdentifier];
-      v24 = [v22 isEqual:v23];
+      userSamplingIdentifier3 = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
+      userSamplingIdentifier4 = [v5 userSamplingIdentifier];
+      v24 = [userSamplingIdentifier3 isEqual:userSamplingIdentifier4];
 
       if (!v24)
       {
@@ -99,18 +99,18 @@
       }
     }
 
-    v25 = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
-    v26 = [v5 dataCollectionUseCase];
-    v27 = v26;
-    if (v25 == v26)
+    dataCollectionUseCase = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
+    dataCollectionUseCase2 = [v5 dataCollectionUseCase];
+    v27 = dataCollectionUseCase2;
+    if (dataCollectionUseCase == dataCollectionUseCase2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
-      v29 = [v5 dataCollectionUseCase];
-      v30 = [v28 isEqual:v29];
+      dataCollectionUseCase3 = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
+      dataCollectionUseCase4 = [v5 dataCollectionUseCase];
+      v30 = [dataCollectionUseCase3 isEqual:dataCollectionUseCase4];
 
       if (!v30)
       {
@@ -122,18 +122,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
-    v32 = [v5 deviceType];
-    if (v31 == v32)
+    deviceType = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
+    deviceType2 = [v5 deviceType];
+    if (deviceType == deviceType2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
-      v34 = [v5 deviceType];
-      v12 = [v33 isEqual:v34];
+      deviceType3 = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
+      deviceType4 = [v5 deviceType];
+      v12 = [deviceType3 isEqual:deviceType4];
     }
 
     goto LABEL_23;
@@ -165,12 +165,12 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
-  if (v3)
+  timestamp = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
+  if (timestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
-    [v5 timeIntervalSince1970];
+    timestamp2 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -179,55 +179,55 @@ LABEL_24:
     v6 = 0;
   }
 
-  v7 = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
-  v8 = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
-  v9 = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
-  v10 = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
+  onDeviceSampleIdentifier = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
+  userSamplingIdentifier = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
+  dataCollectionUseCase = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
+  deviceType = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
   v21 = @"timestamp";
-  v11 = v6;
+  null = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"onDeviceSampleIdentifier";
-  v12 = v7;
-  if (!v7)
+  null2 = onDeviceSampleIdentifier;
+  if (!onDeviceSampleIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"userSamplingIdentifier";
-  v13 = v8;
-  if (!v8)
+  null3 = userSamplingIdentifier;
+  if (!userSamplingIdentifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"dataCollectionUseCase";
-  v14 = v9;
-  if (!v9)
+  null4 = dataCollectionUseCase;
+  if (!dataCollectionUseCase)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"deviceType";
-  v15 = v10;
-  if (!v10)
+  null5 = deviceType;
+  if (!deviceType)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
-  if (v10)
+  if (deviceType)
   {
-    if (v9)
+    if (dataCollectionUseCase)
     {
       goto LABEL_16;
     }
@@ -236,10 +236,10 @@ LABEL_24:
   else
   {
 
-    if (v9)
+    if (dataCollectionUseCase)
     {
 LABEL_16:
-      if (v8)
+      if (userSamplingIdentifier)
       {
         goto LABEL_17;
       }
@@ -248,10 +248,10 @@ LABEL_16:
     }
   }
 
-  if (v8)
+  if (userSamplingIdentifier)
   {
 LABEL_17:
-    if (v7)
+    if (onDeviceSampleIdentifier)
     {
       goto LABEL_18;
     }
@@ -268,7 +268,7 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v7)
+  if (!onDeviceSampleIdentifier)
   {
     goto LABEL_25;
   }
@@ -287,22 +287,22 @@ LABEL_19:
   return v16;
 }
 
-- (BMSiriAttentionAndInvocationSampling)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAttentionAndInvocationSampling)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"timestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v42 = 0;
 LABEL_9:
-    v15 = [v6 objectForKeyedSubscript:@"onDeviceSampleIdentifier"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"onDeviceSampleIdentifier"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v22 = 0;
           goto LABEL_43;
@@ -315,8 +315,8 @@ LABEL_9:
         v50 = v41;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
         v22 = 0;
-        *a4 = [v23 initWithDomain:v24 code:2 userInfo:v16];
-        a4 = 0;
+        *error = [v23 initWithDomain:v24 code:2 userInfo:v16];
+        error = 0;
         goto LABEL_42;
       }
 
@@ -328,22 +328,22 @@ LABEL_9:
       v40 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"userSamplingIdentifier"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"userSamplingIdentifier"];
     v39 = v7;
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v22 = 0;
-          a4 = v40;
+          error = v40;
           goto LABEL_42;
         }
 
-        v17 = self;
+        selfCopy3 = self;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v47 = *MEMORY[0x1E696A578];
@@ -352,21 +352,21 @@ LABEL_9:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
         v41 = 0;
         v22 = 0;
-        *a4 = [v25 initWithDomain:v26 code:2 userInfo:v18];
+        *error = [v25 initWithDomain:v26 code:2 userInfo:v18];
         goto LABEL_50;
       }
 
-      v17 = self;
+      selfCopy3 = self;
       v41 = v16;
     }
 
     else
     {
-      v17 = self;
+      selfCopy3 = self;
       v41 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"dataCollectionUseCase"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"dataCollectionUseCase"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = 0;
@@ -378,18 +378,18 @@ LABEL_9:
     {
       v19 = v18;
 LABEL_18:
-      v20 = [v6 objectForKeyedSubscript:@"deviceType"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
       if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v21 = 0;
 LABEL_21:
-        a4 = v40;
-        v22 = [(BMSiriAttentionAndInvocationSampling *)v17 initWithTimestamp:v42 onDeviceSampleIdentifier:v40 userSamplingIdentifier:v41 dataCollectionUseCase:v19 deviceType:v21];
-        v17 = v22;
+        error = v40;
+        v22 = [(BMSiriAttentionAndInvocationSampling *)selfCopy3 initWithTimestamp:v42 onDeviceSampleIdentifier:v40 userSamplingIdentifier:v41 dataCollectionUseCase:v19 deviceType:v21];
+        selfCopy3 = v22;
 LABEL_40:
 
 LABEL_41:
-        self = v17;
+        self = selfCopy3;
         v7 = v39;
 LABEL_42:
 
@@ -403,7 +403,7 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -411,17 +411,17 @@ LABEL_42:
         v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"deviceType"];
         v44 = v29;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-        *a4 = [v38 initWithDomain:v36 code:2 userInfo:v30];
+        *error = [v38 initWithDomain:v36 code:2 userInfo:v30];
       }
 
       v21 = 0;
       v22 = 0;
 LABEL_39:
-      a4 = v40;
+      error = v40;
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
       v27 = *MEMORY[0x1E698F240];
@@ -432,14 +432,14 @@ LABEL_39:
       v28 = [v37 initWithDomain:v27 code:2 userInfo:v20];
       v19 = 0;
       v22 = 0;
-      *a4 = v28;
+      *error = v28;
       goto LABEL_39;
     }
 
     v19 = 0;
     v22 = 0;
 LABEL_50:
-    a4 = v40;
+    error = v40;
     goto LABEL_41;
   }
 
@@ -474,7 +474,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v42 = 0;
     v22 = 0;
@@ -489,8 +489,8 @@ LABEL_6:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v42 = 0;
   v22 = 0;
-  *a4 = [v33 initWithDomain:v34 code:2 userInfo:v15];
-  a4 = v35;
+  *error = [v33 initWithDomain:v34 code:2 userInfo:v15];
+  error = v35;
 LABEL_43:
 
 LABEL_44:
@@ -502,50 +502,50 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMSiriAttentionAndInvocationSampling *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hasRaw_timestamp)
   {
     raw_timestamp = self->_raw_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_onDeviceSampleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_userSamplingIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dataCollectionUseCase)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMSiriAttentionAndInvocationSampling;
   v5 = [(BMEventBase *)&v25 init];
@@ -554,12 +554,12 @@ LABEL_44:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -570,18 +570,18 @@ LABEL_44:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -598,9 +598,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -612,18 +612,18 @@ LABEL_16:
         {
           v5->_hasRaw_timestamp = 1;
           v26 = 0.0;
-          v20 = [v4 position] + 8;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 8;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_raw_timestamp = v26;
@@ -667,13 +667,13 @@ LABEL_28:
       }
 
 LABEL_29:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v23 = 0;
@@ -691,33 +691,33 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
-  v5 = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
-  v6 = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
-  v7 = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
-  v8 = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
-  v9 = [v3 initWithFormat:@"BMSiriAttentionAndInvocationSampling with timestamp: %@, onDeviceSampleIdentifier: %@, userSamplingIdentifier: %@, dataCollectionUseCase: %@, deviceType: %@", v4, v5, v6, v7, v8];
+  timestamp = [(BMSiriAttentionAndInvocationSampling *)self timestamp];
+  onDeviceSampleIdentifier = [(BMSiriAttentionAndInvocationSampling *)self onDeviceSampleIdentifier];
+  userSamplingIdentifier = [(BMSiriAttentionAndInvocationSampling *)self userSamplingIdentifier];
+  dataCollectionUseCase = [(BMSiriAttentionAndInvocationSampling *)self dataCollectionUseCase];
+  deviceType = [(BMSiriAttentionAndInvocationSampling *)self deviceType];
+  v9 = [v3 initWithFormat:@"BMSiriAttentionAndInvocationSampling with timestamp: %@, onDeviceSampleIdentifier: %@, userSamplingIdentifier: %@, dataCollectionUseCase: %@, deviceType: %@", timestamp, onDeviceSampleIdentifier, userSamplingIdentifier, dataCollectionUseCase, deviceType];
 
   return v9;
 }
 
-- (BMSiriAttentionAndInvocationSampling)initWithTimestamp:(id)a3 onDeviceSampleIdentifier:(id)a4 userSamplingIdentifier:(id)a5 dataCollectionUseCase:(id)a6 deviceType:(id)a7
+- (BMSiriAttentionAndInvocationSampling)initWithTimestamp:(id)timestamp onDeviceSampleIdentifier:(id)identifier userSamplingIdentifier:(id)samplingIdentifier dataCollectionUseCase:(id)case deviceType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
+  samplingIdentifierCopy = samplingIdentifier;
+  caseCopy = case;
+  typeCopy = type;
   v20.receiver = self;
   v20.super_class = BMSiriAttentionAndInvocationSampling;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (timestampCopy)
     {
       v17->_hasRaw_timestamp = 1;
-      [v12 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -727,10 +727,10 @@ LABEL_40:
     }
 
     v17->_raw_timestamp = v18;
-    objc_storeStrong(&v17->_onDeviceSampleIdentifier, a4);
-    objc_storeStrong(&v17->_userSamplingIdentifier, a5);
-    objc_storeStrong(&v17->_dataCollectionUseCase, a6);
-    objc_storeStrong(&v17->_deviceType, a7);
+    objc_storeStrong(&v17->_onDeviceSampleIdentifier, identifier);
+    objc_storeStrong(&v17->_userSamplingIdentifier, samplingIdentifier);
+    objc_storeStrong(&v17->_dataCollectionUseCase, case);
+    objc_storeStrong(&v17->_deviceType, type);
   }
 
   return v17;
@@ -755,9 +755,9 @@ LABEL_40:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -765,8 +765,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAttentionAndInvocationSampling alloc] initByReadFrom:v7];
     v4 = v8;

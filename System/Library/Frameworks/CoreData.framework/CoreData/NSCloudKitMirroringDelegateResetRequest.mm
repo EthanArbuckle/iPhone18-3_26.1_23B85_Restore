@@ -1,19 +1,19 @@
 @interface NSCloudKitMirroringDelegateResetRequest
-- (NSCloudKitMirroringDelegateResetRequest)initWithError:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCloudKitMirroringDelegateResetRequest)initWithError:(id)error completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation NSCloudKitMirroringDelegateResetRequest
 
-- (NSCloudKitMirroringDelegateResetRequest)initWithError:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringDelegateResetRequest)initWithError:(id)error completionBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = NSCloudKitMirroringDelegateResetRequest;
-  v5 = [(NSCloudKitMirroringRequest *)&v7 initWithOptions:0 completionBlock:a4];
+  v5 = [(NSCloudKitMirroringRequest *)&v7 initWithOptions:0 completionBlock:block];
   if (v5)
   {
-    v5->_causedByError = a3;
+    v5->_causedByError = error;
   }
 
   return v5;
@@ -26,11 +26,11 @@
   [(NSCloudKitMirroringRequest *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringDelegateResetRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
   v4[10] = self->_causedByError;
   return v4;
 }

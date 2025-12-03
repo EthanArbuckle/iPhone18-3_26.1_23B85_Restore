@@ -1,41 +1,41 @@
 @interface TSUAssertionHandler
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4;
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal;
 + (id)packedBacktraceString;
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3;
-+ (id)performBlockIgnoringAssertions:(id)a3;
-+ (id)performBlockIgnoringFatalAssertions:(id)a3;
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3;
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3;
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses;
++ (id)performBlockIgnoringAssertions:(id)assertions;
++ (id)performBlockIgnoringFatalAssertions:(id)assertions;
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions;
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols;
 + (void)logFullBacktrace;
-+ (void)setDelegate:(id)a3;
++ (void)setDelegate:(id)delegate;
 @end
 
 @implementation TSUAssertionHandler
 
-+ (id)performBlockIgnoringAssertions:(id)a3
++ (id)performBlockIgnoringAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:0];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:0];
 
   return [v3 lastObject];
 }
 
-+ (id)performBlockIgnoringFatalAssertions:(id)a3
++ (id)performBlockIgnoringFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:1];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:1];
 
   return [v3 lastObject];
 }
 
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:{objc_msgSend(a1, "isQAFatalAssertionsEnabled")}];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:{objc_msgSend(self, "isQAFatalAssertionsEnabled")}];
 
   return [v3 lastObject];
 }
 
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal
 {
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2810000000;
@@ -47,16 +47,16 @@
   v10[1] = 3221225472;
   v10[2] = sub_27702A7E0;
   v10[3] = &unk_27A701960;
-  v11 = a4;
-  v10[4] = v6;
+  fatalCopy = fatal;
+  v10[4] = array;
   v10[5] = v12;
   qword_280A638A0 = v10;
   byte_280A63898 = 1;
-  (*(a3 + 2))(a3);
+  (*(assertions + 2))(assertions);
   byte_280A63898 = v8;
   qword_280A638A0 = v7;
   _Block_object_dispose(v12, 8);
-  return v6;
+  return array;
 }
 
 + (void)logFullBacktrace
@@ -66,37 +66,37 @@
   v5 = [objc_msgSend(MEMORY[0x277CCACC8] "callStackReturnAddresses")];
   if (v4 && [v4 isEqualToArray:v5])
   {
-    [a1 _logBacktraceWithCallStackSymbols:&unk_28864B5A8];
+    [self _logBacktraceWithCallStackSymbols:&unk_28864B5A8];
   }
 
   else
   {
-    [a1 _logBacktraceWithCallStackSymbols:{objc_msgSend(MEMORY[0x277CCACC8], "callStackSymbols")}];
+    [self _logBacktraceWithCallStackSymbols:{objc_msgSend(MEMORY[0x277CCACC8], "callStackSymbols")}];
     [v3 setObject:v5 forKeyedSubscript:@"logBacktrace_lastStackAddress"];
   }
 }
 
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols
 {
   if (TSUAssertCat_init_token != -1)
   {
     sub_277112D44();
   }
 
-  MEMORY[0x2821F9670](a1, sel_simulateCrashWithMessage_);
+  MEMORY[0x2821F9670](self, sel_simulateCrashWithMessage_);
 }
 
 + (id)packedBacktraceString
 {
   [MEMORY[0x277CCACC8] callStackReturnAddresses];
 
-  return MEMORY[0x2821F9670](a1, sel_packedBacktraceStringWithReturnAddresses_);
+  return MEMORY[0x2821F9670](self, sel_packedBacktraceStringWithReturnAddresses_);
 }
 
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v5 = [MEMORY[0x277CBEB58] set];
   if (qword_280A638A8 != -1)
   {
@@ -109,8 +109,8 @@
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v65 objects:v73 count:16];
-  v47 = a3;
+  v7 = [addresses countByEnumeratingWithState:&v65 objects:v73 count:16];
+  addressesCopy = addresses;
   if (v7)
   {
     v8 = v7;
@@ -121,12 +121,12 @@
       {
         if (*v66 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(addresses);
         }
 
-        v11 = [*(*(&v65 + 1) + 8 * i) pointerValue];
+        pointerValue = [*(*(&v65 + 1) + 8 * i) pointerValue];
         memset(&v72, 0, sizeof(v72));
-        if (dladdr(v11, &v72))
+        if (dladdr(pointerValue, &v72))
         {
           v12 = [MEMORY[0x277CCAE60] valueWithPointer:v72.dli_fbase];
           if (([v5 containsObject:v12] & 1) == 0)
@@ -148,12 +148,12 @@
             }
 
             [v14 addObject:v15];
-            a3 = v47;
+            addresses = addressesCopy;
           }
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v65 objects:v73 count:16];
+      v8 = [addresses countByEnumeratingWithState:&v65 objects:v73 count:16];
     }
 
     while (v8);
@@ -163,7 +163,7 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v16 = [v6 countByEnumeratingWithState:&v61 objects:v71 count:{16, v47}];
+  v16 = [v6 countByEnumeratingWithState:&v61 objects:v71 count:{16, addressesCopy}];
   if (v16)
   {
     v17 = v16;
@@ -178,10 +178,10 @@
         }
 
         v20 = *(*(&v61 + 1) + 8 * j);
-        v21 = [v20 pointerValue];
-        magic = v21->magic;
+        pointerValue2 = [v20 pointerValue];
+        magic = pointerValue2->magic;
         v23 = 28;
-        if (v21->magic > -17958195)
+        if (pointerValue2->magic > -17958195)
         {
           if (magic == -17958194)
           {
@@ -208,10 +208,10 @@
 
         v23 = 32;
 LABEL_28:
-        ncmds = v21->ncmds;
+        ncmds = pointerValue2->ncmds;
         if (ncmds)
         {
-          v26 = (&v21->magic + v23);
+          v26 = (&pointerValue2->magic + v23);
           v27 = 1;
           while (1)
           {
@@ -240,7 +240,7 @@ LABEL_28:
           }
 
           v72.dli_fname = 0;
-          v31 = getsegmentdata(v21, "__TEXT", &v72);
+          v31 = getsegmentdata(pointerValue2, "__TEXT", &v72);
           if (v31)
           {
             v32 = v31;
@@ -265,9 +265,9 @@ LABEL_42:
   }
 
   v60 = [v49 count];
-  [v4 appendBytes:&v60 length:8];
+  [data appendBytes:&v60 length:8];
   v59 = [v48 count];
-  [v4 appendBytes:&v59 length:8];
+  [data appendBytes:&v59 length:8];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -291,8 +291,8 @@ LABEL_42:
         v72.dli_fbase = 0;
         [objc_msgSend(v38 objectForKeyedSubscript:{@"uuid", "getUUIDBytes:", &v72}];
         v54 = [objc_msgSend(v38 objectForKeyedSubscript:{@"loadaddr", "pointerValue"}];
-        [v4 appendBytes:&v72 length:16];
-        [v4 appendBytes:&v54 length:8];
+        [data appendBytes:&v72 length:16];
+        [data appendBytes:&v54 length:8];
       }
 
       v35 = [v49 countByEnumeratingWithState:&v55 objects:v70 count:16];
@@ -320,7 +320,7 @@ LABEL_42:
         }
 
         v72.dli_fname = [*(*(&v50 + 1) + 8 * m) pointerValue];
-        [v4 appendBytes:&v72 length:8];
+        [data appendBytes:&v72 length:8];
       }
 
       v40 = [v48 countByEnumeratingWithState:&v50 objects:v69 count:16];
@@ -330,7 +330,7 @@ LABEL_42:
   }
 
   v43 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v44 = [v4 tsu_compressWithAlgorithm:774 operation:0];
+  v44 = [data tsu_compressWithAlgorithm:774 operation:0];
   LODWORD(v54) = 843347010;
   [v43 appendBytes:&v54 length:4];
   v72.dli_fname = [v44 length];
@@ -341,7 +341,7 @@ LABEL_42:
   return v45;
 }
 
-+ (void)setDelegate:(id)a3
++ (void)setDelegate:(id)delegate
 {
   if (qword_280A638C8)
   {
@@ -349,9 +349,9 @@ LABEL_42:
     qword_280A638C8 = 0;
   }
 
-  if (a3)
+  if (delegate)
   {
-    qword_280A638C8 = a3;
+    qword_280A638C8 = delegate;
   }
 }
 

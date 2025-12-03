@@ -1,10 +1,10 @@
 @interface DUStructuredEntityResponse
 - (NSArray)structuredEntities;
 - (_TtC21DocumentUnderstanding11DUDebugInfo)responseDebugInfo;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setResponseDebugInfo:(id)a3;
-- (void)setStructuredEntities:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setResponseDebugInfo:(id)info;
+- (void)setStructuredEntities:(id)entities;
 @end
 
 @implementation DUStructuredEntityResponse
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)setStructuredEntities:(id)a3
+- (void)setStructuredEntities:(id)entities
 {
-  v3 = a3;
-  if (a3)
+  entitiesCopy = entities;
+  if (entities)
   {
     type metadata accessor for DUStructuredEntity();
-    v3 = sub_232CE9FE0();
+    entitiesCopy = sub_232CE9FE0();
   }
 
-  v5 = self;
-  sub_232C090E8(v3);
+  selfCopy = self;
+  sub_232C090E8(entitiesCopy);
 }
 
 - (_TtC21DocumentUnderstanding11DUDebugInfo)responseDebugInfo
@@ -45,16 +45,16 @@
   return v2;
 }
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_232C09288(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_232C09288(info);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232C0973C(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -63,10 +63,10 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_232C09830();
 }
 

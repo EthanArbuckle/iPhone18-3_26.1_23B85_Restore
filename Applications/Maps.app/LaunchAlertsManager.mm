@@ -1,12 +1,12 @@
 @interface LaunchAlertsManager
 - (LaunchAlertsManager)init;
 - (LaunchAlertsManagerDelegate)delegate;
-- (id)_getAlertObjectOfType:(int64_t)a3;
+- (id)_getAlertObjectOfType:(int64_t)type;
 - (void)_currentAlertDidFinish;
 - (void)_executeNextAlert;
 - (void)_markLocIntWarmingSheetAlertFinishedIfNeeded;
 - (void)cancelVisibleAlertIfNecessary;
-- (void)enqueueAlert:(int64_t)a3;
+- (void)enqueueAlert:(int64_t)alert;
 - (void)executeAlertsIfNecessary;
 - (void)resetState;
 @end
@@ -20,13 +20,13 @@
   return WeakRetained;
 }
 
-- (id)_getAlertObjectOfType:(int64_t)a3
+- (id)_getAlertObjectOfType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         v3 = AppLaunchContactsAlert;
       }
@@ -39,16 +39,16 @@
       goto LABEL_19;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v3 = AppLaunchHikingAlert;
       goto LABEL_19;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
-      v4 = [(LaunchAlertsManager *)self delegate];
-      if ([v4 hasMapsActivityAction])
+      delegate = [(LaunchAlertsManager *)self delegate];
+      if ([delegate hasMapsActivityAction])
       {
         v5 = 0;
       }
@@ -64,9 +64,9 @@
 
   else
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v3 = AppLaunchAddressCorrectionAlert;
       }
@@ -79,13 +79,13 @@
       goto LABEL_19;
     }
 
-    if (!a3)
+    if (!type)
     {
       v3 = AppLaunchLocationAlert;
       goto LABEL_19;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = AppLaunchPreciseLocationDisabledAlert;
 LABEL_19:
@@ -117,10 +117,10 @@ LABEL_20:
 
 - (void)_markLocIntWarmingSheetAlertFinishedIfNeeded
 {
-  v3 = [(LaunchAlertsManager *)self delegate];
-  v4 = [v3 hasMapsActivityAction];
+  delegate = [(LaunchAlertsManager *)self delegate];
+  hasMapsActivityAction = [delegate hasMapsActivityAction];
 
-  if (v4)
+  if (hasMapsActivityAction)
   {
     v5 = sub_100005610();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -137,15 +137,15 @@ LABEL_20:
 {
   if ([(NSMutableOrderedSet *)self->_alerts count])
   {
-    v3 = [(NSMutableOrderedSet *)self->_alerts firstObject];
-    v4 = [v3 integerValue];
+    firstObject = [(NSMutableOrderedSet *)self->_alerts firstObject];
+    integerValue = [firstObject integerValue];
 
     [(NSMutableOrderedSet *)self->_alerts removeObjectAtIndex:0];
-    v5 = [(LaunchAlertsManager *)self _getAlertObjectOfType:v4];
+    v5 = [(LaunchAlertsManager *)self _getAlertObjectOfType:integerValue];
     currentAlert = self->_currentAlert;
     self->_currentAlert = v5;
 
-    if (v4 == 7 && !self->_currentAlert)
+    if (integerValue == 7 && !self->_currentAlert)
     {
 
       [(LaunchAlertsManager *)self _markLocIntWarmingSheetAlertFinishedIfNeeded];
@@ -271,24 +271,24 @@ LABEL_20:
   }
 }
 
-- (void)enqueueAlert:(int64_t)a3
+- (void)enqueueAlert:(int64_t)alert
 {
   if (([UIApp launchedToTest] & 1) == 0 && (GEOConfigGetBOOL() & 1) == 0)
   {
     alerts = self->_alerts;
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:alert];
     LOBYTE(alerts) = [(NSMutableOrderedSet *)alerts containsObject:v6];
 
     if ((alerts & 1) == 0)
     {
       v7 = self->_alerts;
-      v8 = [NSNumber numberWithInteger:a3];
+      v8 = [NSNumber numberWithInteger:alert];
       [(NSMutableOrderedSet *)v7 addObject:v8];
 
       v9 = sub_100005610();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [NSNumber numberWithInteger:a3];
+        v10 = [NSNumber numberWithInteger:alert];
         v11 = 138412290;
         v12 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "LaunchAlertsManager: enqueueAlert %@", &v11, 0xCu);

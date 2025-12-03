@@ -16,14 +16,14 @@
 - (double)icaxHue
 {
   v2 = 0.0;
-  [a1 getHue:&v2 saturation:0 brightness:0 alpha:0];
+  [self getHue:&v2 saturation:0 brightness:0 alpha:0];
   return v2;
 }
 
 - (double)icaxSaturation
 {
   v2 = 0.0;
-  [a1 getHue:0 saturation:&v2 brightness:0 alpha:0];
+  [self getHue:0 saturation:&v2 brightness:0 alpha:0];
   return v2;
 }
 
@@ -33,7 +33,7 @@
   v3 = 0.0;
   v4 = 0.0;
   v2 = 0.0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   result = fmax(v2 * (v4 * 0.715200007 + v5 * 0.212599993 + v3 * 0.0722000003), 0.0);
   if (result > 1.0)
   {
@@ -45,14 +45,14 @@
 
 - (id)icaxApproximateColorDescription
 {
-  v2 = [a1 _icaxCachedApproximateColorDescription];
-  if (!v2)
+  _icaxCachedApproximateColorDescription = [self _icaxCachedApproximateColorDescription];
+  if (!_icaxCachedApproximateColorDescription)
   {
     v14 = 0.0;
     v15 = 0.0;
-    [a1 icaxLuma];
+    [self icaxLuma];
     v4 = v3;
-    [a1 getHue:&v15 saturation:&v14 brightness:&v13 alpha:&v12];
+    [self getHue:&v15 saturation:&v14 brightness:&v13 alpha:&v12];
     if (v4 <= 0.99000001)
     {
       if (v4 >= 0.00999999978)
@@ -62,25 +62,25 @@
           v8 = v15;
           if (v15 <= 0.0560000017 || v15 >= 0.111000001 || (v8 = 0.430000007, v4 >= 0.430000007))
           {
-            v9 = [a1 icaxHueName];
+            icaxHueName = [self icaxHueName];
           }
 
           else
           {
-            v9 = __ICLocalizedFrameworkString_impl(@"brown", @"brown", 0, 1);
+            icaxHueName = __ICLocalizedFrameworkString_impl(@"brown", @"brown", 0, 1);
           }
 
-          v6 = v9;
-          v7 = [a1 icaxSaturationModifier];
-          v10 = [a1 icaxLightnessModifier];
-          v2 = [a1 _icaxColorDescriptionForHue:v6 saturation:v7 lightness:v10];
+          v6 = icaxHueName;
+          icaxSaturationModifier = [self icaxSaturationModifier];
+          icaxLightnessModifier = [self icaxLightnessModifier];
+          _icaxCachedApproximateColorDescription = [self _icaxColorDescriptionForHue:v6 saturation:icaxSaturationModifier lightness:icaxLightnessModifier];
         }
 
         else
         {
           v6 = __ICLocalizedFrameworkString_impl(@"gray", @"gray", 0, 1);
-          v7 = [a1 icaxLightnessModifier];
-          v2 = [a1 _icaxColorDescriptionForHue:v6 saturation:0 lightness:v7];
+          icaxSaturationModifier = [self icaxLightnessModifier];
+          _icaxCachedApproximateColorDescription = [self _icaxColorDescriptionForHue:v6 saturation:0 lightness:icaxSaturationModifier];
         }
 
         goto LABEL_16;
@@ -94,25 +94,25 @@
       v5 = @"white";
     }
 
-    v2 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
+    _icaxCachedApproximateColorDescription = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
 LABEL_16:
-    [a1 _icaxSetCachedApproximateColorDescription:v2];
+    [self _icaxSetCachedApproximateColorDescription:_icaxCachedApproximateColorDescription];
   }
 
-  return v2;
+  return _icaxCachedApproximateColorDescription;
 }
 
 - (uint64_t)icaxHueName
 {
   v2 = objc_opt_class();
-  [a1 icaxHue];
+  [self icaxHue];
 
   return [v2 icaxHueNameForValue:?];
 }
 
 - (__CFString)icaxLightnessModifier
 {
-  [a1 icaxLuma];
+  [self icaxLuma];
   if (v1 < 0.349999994)
   {
     v2 = @"dark";
@@ -135,7 +135,7 @@ LABEL_7:
 
 - (__CFString)icaxSaturationModifier
 {
-  [a1 icaxSaturation];
+  [self icaxSaturation];
   if (v2 < 0.200000003)
   {
     v3 = @"grayish";
@@ -146,7 +146,7 @@ LABEL_3:
 
   if (v2 > 0.899999976)
   {
-    [a1 icaxLuma];
+    [self icaxLuma];
     if (v5 > 0.699999988)
     {
       v3 = @"vibrant";
@@ -162,44 +162,44 @@ LABEL_8:
 
 + (id)icaxHueNameForValue:()ICAccessibility
 {
-  if (a1 >= 0.0 && a1 <= 1.0)
+  if (self >= 0.0 && self <= 1.0)
   {
-    if (a1 < 0.0280000009)
+    if (self < 0.0280000009)
     {
 LABEL_10:
       v5 = @"red";
       goto LABEL_41;
     }
 
-    if (a1 >= 0.0560000017)
+    if (self >= 0.0560000017)
     {
-      if (a1 >= 0.111000001)
+      if (self >= 0.111000001)
       {
-        if (a1 >= 0.128999993)
+        if (self >= 0.128999993)
         {
-          if (a1 >= 0.166999996)
+          if (self >= 0.166999996)
           {
-            if (a1 >= 0.222000003)
+            if (self >= 0.222000003)
             {
-              if (a1 >= 0.388999999)
+              if (self >= 0.388999999)
               {
-                if (a1 >= 0.469000012)
+                if (self >= 0.469000012)
                 {
-                  if (a1 >= 0.540000021)
+                  if (self >= 0.540000021)
                   {
-                    if (a1 >= 0.611000001)
+                    if (self >= 0.611000001)
                     {
-                      if (a1 >= 0.666999996)
+                      if (self >= 0.666999996)
                       {
-                        if (a1 >= 0.800000012)
+                        if (self >= 0.800000012)
                         {
-                          if (a1 >= 0.888999999)
+                          if (self >= 0.888999999)
                           {
-                            if (a1 >= 0.916999996)
+                            if (self >= 0.916999996)
                             {
-                              if (a1 >= 0.958000004)
+                              if (self >= 0.958000004)
                               {
-                                if (a1 >= 0.986000001)
+                                if (self >= 0.986000001)
                                 {
                                   goto LABEL_10;
                                 }
@@ -303,12 +303,12 @@ LABEL_41:
 
 - (id)icaxDescriptionWithLuma
 {
-  [a1 icaxLuma];
+  [self icaxLuma];
   v3 = vcvtad_u64_f64(v2 * 100.0);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [a1 icaxApproximateColorDescription];
+  icaxApproximateColorDescription = [self icaxApproximateColorDescription];
   v6 = ICAccessibilityLocalizedUnsignedInteger(v3);
-  v7 = [v4 localizedStringWithFormat:@"%@ %@", v5, v6];
+  v7 = [v4 localizedStringWithFormat:@"%@ %@", icaxApproximateColorDescription, v6];
 
   return v7;
 }

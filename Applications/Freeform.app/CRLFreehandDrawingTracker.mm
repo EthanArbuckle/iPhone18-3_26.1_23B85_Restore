@@ -1,27 +1,27 @@
 @interface CRLFreehandDrawingTracker
-- (CRLFreehandDrawingTracker)initWithInteractiveCanvasController:(id)a3;
-- (void)addPoint:(id)a3;
-- (void)commitChangesForReps:(id)a3;
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3;
-- (void)finishWithSuccess:(BOOL)a3;
+- (CRLFreehandDrawingTracker)initWithInteractiveCanvasController:(id)controller;
+- (void)addPoint:(id)point;
+- (void)commitChangesForReps:(id)reps;
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point;
+- (void)finishWithSuccess:(BOOL)success;
 - (void)p_changeDynamicLayouts;
 - (void)p_sendPendingEstimationUpdatePointsToToolAndClearQueue;
 - (void)p_sendPendingInputPointsToToolAndClearQueue;
 - (void)p_setTrackingToolIfNeeded;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLFreehandDrawingTracker
 
-- (CRLFreehandDrawingTracker)initWithInteractiveCanvasController:(id)a3
+- (CRLFreehandDrawingTracker)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = CRLFreehandDrawingTracker;
   v5 = [(CRLFreehandDrawingTracker *)&v20 init];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -50,7 +50,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:51 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
     v9 = +[NSMutableArray array];
     pendingInputPointsToSendToTool = v5->_pendingInputPointsToSendToTool;
     v5->_pendingInputPointsToSendToTool = v9;
@@ -60,10 +60,10 @@
     v5->_pendingEstimationUpdatePointsToSendToTool = v11;
 
     WeakRetained = objc_loadWeakRetained(&v5->_icc);
-    v14 = [WeakRetained freehandDrawingToolkit];
-    v15 = [v14 currentTool];
+    freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+    currentTool = [freehandDrawingToolkit currentTool];
 
-    if (!v15)
+    if (!currentTool)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -92,13 +92,13 @@
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:57 isFatal:0 description:"invalid nil value for '%{public}s'", "currentDrawingTool"];
     }
 
-    v5->_operationShouldBeDynamic = +[CRLFreehandDrawingTracker p_operationShouldBeDynamicUsingToolType:](CRLFreehandDrawingTracker, "p_operationShouldBeDynamicUsingToolType:", [v15 type]);
+    v5->_operationShouldBeDynamic = +[CRLFreehandDrawingTracker p_operationShouldBeDynamicUsingToolType:](CRLFreehandDrawingTracker, "p_operationShouldBeDynamicUsingToolType:", [currentTool type]);
   }
 
   return v5;
 }
 
-- (void)addPoint:(id)a3
+- (void)addPoint:(id)point
 {
   if (self->_hasFinishBeenCalled)
   {
@@ -133,11 +133,11 @@
   {
     pendingInputPointsToSendToTool = self->_pendingInputPointsToSendToTool;
 
-    [(NSMutableArray *)pendingInputPointsToSendToTool addObject:a3];
+    [(NSMutableArray *)pendingInputPointsToSendToTool addObject:point];
   }
 }
 
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point
 {
   if (self->_hasFinishBeenCalled)
   {
@@ -172,14 +172,14 @@
   {
     pendingEstimationUpdatePointsToSendToTool = self->_pendingEstimationUpdatePointsToSendToTool;
 
-    [(NSMutableArray *)pendingEstimationUpdatePointsToSendToTool addObject:a3];
+    [(NSMutableArray *)pendingEstimationUpdatePointsToSendToTool addObject:point];
   }
 }
 
-- (void)finishWithSuccess:(BOOL)a3
+- (void)finishWithSuccess:(BOOL)success
 {
   self->_hasFinishBeenCalled = 1;
-  self->_wasSuccessful = a3;
+  self->_wasSuccessful = success;
   if (![(NSMutableArray *)self->_pendingInputPointsToSendToTool count]&& self->_lastInputPointSentToTool)
   {
     pendingInputPointsToSendToTool = self->_pendingInputPointsToSendToTool;
@@ -188,7 +188,7 @@
   }
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
   [(CRLFreehandDrawingTracker *)self p_setTrackingToolIfNeeded];
   if (!self->_trackingTool)
@@ -257,12 +257,12 @@
   {
     self->_hasBegunDrawing = 1;
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v7 = [WeakRetained pkDrawingProvider];
-    [v7 activeDrawingDidBegin];
+    pkDrawingProvider = [WeakRetained pkDrawingProvider];
+    [pkDrawingProvider activeDrawingDidBegin];
 
     v8 = objc_loadWeakRetained(&self->_icc);
-    v9 = [v8 editingCoordinator];
-    [v9 suspendCollaborationWithReason:@"CRLFreehandDrawingTracker"];
+    editingCoordinator = [v8 editingCoordinator];
+    [editingCoordinator suspendCollaborationWithReason:@"CRLFreehandDrawingTracker"];
   }
 
   [(CRLFreehandDrawingTracker *)self p_sendPendingInputPointsToToolAndClearQueue];
@@ -413,8 +413,8 @@
       [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:201 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    v7 = [WeakRetained freehandDrawingToolkit];
-    if (!v7)
+    freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+    if (!freehandDrawingToolkit)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -443,8 +443,8 @@
       [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:204 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
     }
 
-    v11 = [v7 currentTool];
-    if (!v11)
+    currentTool = [freehandDrawingToolkit currentTool];
+    if (!currentTool)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -474,17 +474,17 @@
     }
 
     trackingTool = self->_trackingTool;
-    self->_trackingTool = v11;
-    v16 = v11;
+    self->_trackingTool = currentTool;
+    v16 = currentTool;
 
     LOBYTE(trackingTool) = [(CRLFreehandDrawingTool *)self->_trackingTool shouldCommandsEnqueueInRealTime];
     self->_isEnqueueingCommandsInRealTime = trackingTool;
   }
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   if (self->_hasBegunDrawing)
   {
     if (!self->_hasFinishBeenCalled)
@@ -505,10 +505,10 @@
 
     trackingTool = self->_trackingTool;
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v7 = [WeakRetained freehandDrawingToolkit];
-    v8 = [v7 currentTool];
+    freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+    currentTool = [freehandDrawingToolkit currentTool];
 
-    if (trackingTool != v8)
+    if (trackingTool != currentTool)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -569,8 +569,8 @@
 
     [(CRLFreehandDrawingTool *)self->_trackingTool clearIsCurrentlyTracking];
     v16 = objc_loadWeakRetained(&self->_icc);
-    v17 = [v16 editingCoordinator];
-    [v17 resumeCollaborationWithReason:@"CRLFreehandDrawingTracker"];
+    editingCoordinator = [v16 editingCoordinator];
+    [editingCoordinator resumeCollaborationWithReason:@"CRLFreehandDrawingTracker"];
   }
 
   v18 = self->_trackingTool;

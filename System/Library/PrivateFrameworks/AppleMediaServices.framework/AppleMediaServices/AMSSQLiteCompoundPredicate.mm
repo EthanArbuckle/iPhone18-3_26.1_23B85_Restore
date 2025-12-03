@@ -1,55 +1,55 @@
 @interface AMSSQLiteCompoundPredicate
-+ (id)predicateMatchingAllPredicates:(id)a3;
-+ (id)predicateMatchingAnyPredicates:(id)a3;
-+ (id)predicateWithProperty:(id)a3 values:(id)a4 comparisonType:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
++ (id)predicateMatchingAllPredicates:(id)predicates;
++ (id)predicateMatchingAnyPredicates:(id)predicates;
++ (id)predicateWithProperty:(id)property values:(id)values comparisonType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (unint64_t)hash;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
 @end
 
 @implementation AMSSQLiteCompoundPredicate
 
-+ (id)predicateMatchingAllPredicates:(id)a3
++ (id)predicateMatchingAllPredicates:(id)predicates
 {
-  v3 = a3;
+  predicatesCopy = predicates;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4[1];
   v4[1] = @" AND ";
 
-  v6 = [v3 copy];
+  v6 = [predicatesCopy copy];
   v7 = v4[2];
   v4[2] = v6;
 
   return v4;
 }
 
-+ (id)predicateMatchingAnyPredicates:(id)a3
++ (id)predicateMatchingAnyPredicates:(id)predicates
 {
-  v3 = a3;
+  predicatesCopy = predicates;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4[1];
   v4[1] = @" OR ";
 
-  v6 = [v3 copy];
+  v6 = [predicatesCopy copy];
   v7 = v4[2];
   v4[2] = v6;
 
   return v4;
 }
 
-+ (id)predicateWithProperty:(id)a3 values:(id)a4 comparisonType:(int64_t)a5
++ (id)predicateWithProperty:(id)property values:(id)values comparisonType:(int64_t)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  propertyCopy = property;
+  valuesCopy = values;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v9;
+  v11 = valuesCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -64,7 +64,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [AMSSQLiteComparisonPredicate predicateWithProperty:v8 value:*(*(&v19 + 1) + 8 * i) comparisonType:a5, v19];
+        v16 = [AMSSQLiteComparisonPredicate predicateWithProperty:propertyCopy value:*(*(&v19 + 1) + 8 * i) comparisonType:type, v19];
         [v10 addObject:v16];
       }
 
@@ -74,15 +74,15 @@
     while (v13);
   }
 
-  v17 = [a1 predicateMatchingAnyPredicates:v10];
+  v17 = [self predicateMatchingAnyPredicates:v10];
 
   return v17;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bindingCopy = binding;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -103,7 +103,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) applyBinding:v6 atIndex:{a4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) applyBinding:bindingCopy atIndex:{index, v12}];
       }
 
       while (v9 != v11);
@@ -120,22 +120,22 @@
   v8.super_class = AMSSQLiteCompoundPredicate;
   v3 = [(AMSSQLitePredicate *)&v8 hash];
   v4 = [(NSString *)self->_combinationOperation hash];
-  v5 = [(AMSSQLiteCompoundPredicate *)self predicates];
-  v6 = &v3[[v5 hash]];
+  predicates = [(AMSSQLiteCompoundPredicate *)self predicates];
+  v6 = &v3[[predicates hash]];
 
   return &v6[v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = AMSSQLiteCompoundPredicate;
-  if ([(AMSSQLitePredicate *)&v12 isEqual:v4]&& ((combinationOperation = self->_combinationOperation, combinationOperation == v4[1]) || [(NSString *)combinationOperation isEqual:?]))
+  if ([(AMSSQLitePredicate *)&v12 isEqual:equalCopy]&& ((combinationOperation = self->_combinationOperation, combinationOperation == equalCopy[1]) || [(NSString *)combinationOperation isEqual:?]))
   {
     predicates = self->_predicates;
-    v7 = [v4 predicates];
-    if (predicates == v7)
+    predicates = [equalCopy predicates];
+    if (predicates == predicates)
     {
       v10 = 1;
     }
@@ -143,8 +143,8 @@
     else
     {
       v8 = self->_predicates;
-      v9 = [v4 predicates];
-      v10 = [(NSArray *)v8 isEqual:v9];
+      predicates2 = [equalCopy predicates];
+      v10 = [(NSArray *)v8 isEqual:predicates2];
     }
   }
 
@@ -156,7 +156,7 @@
   return v10;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v18 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_predicates count])
@@ -181,7 +181,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) SQLForEntityClass:{a3, v13}];
+          v11 = [*(*(&v13 + 1) + 8 * i) SQLForEntityClass:{class, v13}];
           if (v11)
           {
             if ([v5 length] >= 2)
@@ -210,7 +210,7 @@
   return v5;
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -233,7 +233,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) SQLJoinClausesForEntityClass:{a3, v12}];
+        v10 = [*(*(&v12 + 1) + 8 * i) SQLJoinClausesForEntityClass:{class, v12}];
         if (v10)
         {
           if (!v7)

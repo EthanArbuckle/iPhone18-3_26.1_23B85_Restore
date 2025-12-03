@@ -1,27 +1,27 @@
 @interface CRLMovieLayout
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
-- (CRLMovieLayout)initWithInfo:(id)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
+- (CRLMovieLayout)initWithInfo:(id)info;
 - (_TtC8Freeform12CRLMovieItem)movieInfo;
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4;
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform;
 - (id)computeLayoutGeometry;
 - (id)layoutGeometryFromInfo;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
-- (void)dragBy:(CGPoint)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
+- (void)dragBy:(CGPoint)by;
 - (void)endDynamicOperation;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
 @end
 
 @implementation CRLMovieLayout
 
-- (CRLMovieLayout)initWithInfo:(id)a3
+- (CRLMovieLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = CRLMovieLayout;
-  v3 = [(CRLMediaLayout *)&v6 initWithInfo:a3];
+  v3 = [(CRLMediaLayout *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -35,32 +35,32 @@
 {
   if (*(&self->super._boundsForStandardKnobs.size.width + 3))
   {
-    v2 = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->super._boundsForStandardKnobs.size.width + 3)];
+    layoutGeometryFromInfo = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->super._boundsForStandardKnobs.size.width + 3)];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = CRLMovieLayout;
-    v2 = [(CRLBoardItemLayout *)&v4 layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(CRLBoardItemLayout *)&v4 layoutGeometryFromInfo];
   }
 
-  return v2;
+  return layoutGeometryFromInfo;
 }
 
 - (_TtC8Freeform12CRLMovieItem)movieInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v13.receiver = self;
   v13.super_class = CRLMovieLayout;
   [(CRLBoardItemLayout *)&v13 dragBy:?];
@@ -102,18 +102,18 @@
   *(&self->super._boundsForStandardKnobs.size.width + 3) = v10;
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v15.receiver = self;
   v15.super_class = CRLMovieLayout;
-  [(CRLBoardItemLayout *)&v15 takeRotationFromTracker:v4];
-  v5 = [(CRLCanvasLayout *)self info];
-  v6 = [v5 geometry];
+  [(CRLBoardItemLayout *)&v15 takeRotationFromTracker:trackerCopy];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v7 = [v6 copy];
+    v7 = [geometry copy];
   }
 
   else
@@ -121,9 +121,9 @@
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 rotateTransform];
+      [trackerCopy rotateTransform];
     }
 
     else
@@ -137,7 +137,7 @@
     v9 = v12;
     v10 = v13;
     v11 = v14;
-    v7 = [v6 geometryByAppendingTransform:&v9];
+    v7 = [geometry geometryByAppendingTransform:&v9];
   }
 
   v8 = *(&self->super._boundsForStandardKnobs.size.width + 3);
@@ -146,13 +146,13 @@
   [(CRLCanvasLayout *)self invalidatePosition];
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
   v8.receiver = self;
   v8.super_class = CRLMovieLayout;
-  v4 = a3;
-  [(CRLBoardItemLayout *)&v8 takeSizeFromTracker:v4];
-  v5 = [v4 currentGeometryForLayout:{self, v8.receiver, v8.super_class}];
+  trackerCopy = tracker;
+  [(CRLBoardItemLayout *)&v8 takeSizeFromTracker:trackerCopy];
+  v5 = [trackerCopy currentGeometryForLayout:{self, v8.receiver, v8.super_class}];
 
   v6 = [v5 copy];
   v7 = *(&self->super._boundsForStandardKnobs.size.width + 3);
@@ -162,18 +162,18 @@
   [(CRLBoardItemLayout *)self invalidateExteriorWrap];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v15.receiver = self;
   v15.super_class = CRLMovieLayout;
-  [(CRLBoardItemLayout *)&v15 takeFreeTransformFromTracker:v4];
-  v5 = [(CRLCanvasLayout *)self info];
-  v6 = [v5 geometry];
+  [(CRLBoardItemLayout *)&v15 takeFreeTransformFromTracker:trackerCopy];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v7 = [v4 currentGeometryForLayout:self];
+    v7 = [trackerCopy currentGeometryForLayout:self];
   }
 
   else
@@ -181,9 +181,9 @@
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 freeTransformForLayout:self];
+      [trackerCopy freeTransformForLayout:self];
     }
 
     else
@@ -197,13 +197,13 @@
     v9 = v12;
     v10 = v13;
     v11 = v14;
-    v7 = [v6 geometryByAppendingTransform:&v9];
+    v7 = [geometry geometryByAppendingTransform:&v9];
   }
 
   v8 = *(&self->super._boundsForStandardKnobs.size.width + 3);
   *(&self->super._boundsForStandardKnobs.size.width + 3) = v7;
 
-  if ([v4 isResizing])
+  if ([trackerCopy isResizing])
   {
     [(CRLCanvasLayout *)self invalidateFrame];
     [(CRLBoardItemLayout *)self invalidateExteriorWrap];
@@ -215,11 +215,11 @@
   }
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   v4.receiver = self;
   v4.super_class = CRLMovieLayout;
-  [(CRLBoardItemLayout *)&v4 beginDynamicOperationWithRealTimeCommands:a3];
+  [(CRLBoardItemLayout *)&v4 beginDynamicOperationWithRealTimeCommands:commands];
   [(CRLMovieLayout *)self p_createDynamicCopies];
 }
 
@@ -233,17 +233,17 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(CRLMovieLayout *)self layoutGeometryFromInfo];
+  layoutGeometryFromInfo = [(CRLMovieLayout *)self layoutGeometryFromInfo];
   if ([(CRLCanvasLayout *)self layoutState]== 3 || [(CRLCanvasLayout *)self layoutState]== 5)
   {
     v4 = [CRLCanvasLayoutGeometry alloc];
-    v5 = [(CRLCanvasLayout *)self originalPureGeometry];
-    [v5 size];
+    originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+    [originalPureGeometry size];
     v7 = v6;
     v9 = v8;
-    if (v3)
+    if (layoutGeometryFromInfo)
     {
-      [v3 transform];
+      [layoutGeometryFromInfo transform];
     }
 
     else
@@ -253,25 +253,25 @@
 
     v10 = [(CRLCanvasLayoutGeometry *)v4 initWithSize:&v28 transform:v7, v9];
 
-    v3 = v10;
+    layoutGeometryFromInfo = v10;
   }
 
   v11 = objc_opt_class();
-  v12 = [(CRLMediaLayout *)self stroke];
-  v13 = sub_100014370(v11, v12);
+  stroke = [(CRLMediaLayout *)self stroke];
+  v13 = sub_100014370(v11, stroke);
 
   v14 = objc_opt_class();
-  v15 = [(CRLCanvasAbstractLayout *)self parent];
-  v16 = sub_100014370(v14, v15);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v16 = sub_100014370(v14, parent);
 
   if (v16)
   {
-    [v3 size];
+    [layoutGeometryFromInfo size];
     v18 = v17;
     v20 = v19;
-    if (v3)
+    if (layoutGeometryFromInfo)
     {
-      [v3 transform];
+      [layoutGeometryFromInfo transform];
     }
 
     else
@@ -281,24 +281,24 @@
 
     [(CRLMovieLayout *)self scaleForInlineClampingUnrotatedSize:&v28 withTransform:v18, v20];
     CGAffineTransformMakeScale(&v28, v21, v21);
-    v22 = [v3 geometryByTransformingBy:&v28];
+    v22 = [layoutGeometryFromInfo geometryByTransformingBy:&v28];
 
-    v3 = v22;
+    layoutGeometryFromInfo = v22;
   }
 
   if (v13 && [v13 shouldRender])
   {
     [v13 renderedWidth];
     v24 = v23 * 0.5;
-    v25 = [v3 geometryByOutsettingBy:{v24, v24}];
-    [v3 size];
+    v25 = [layoutGeometryFromInfo geometryByOutsettingBy:{v24, v24}];
+    [layoutGeometryFromInfo size];
     v29.origin.x = sub_10011ECB4();
     v30 = CGRectOffset(v29, v24, v24);
   }
 
   else
   {
-    v25 = v3;
+    v25 = layoutGeometryFromInfo;
     [v25 size];
     v30.origin.x = sub_10011ECB4();
   }
@@ -309,28 +309,28 @@
   return v25;
 }
 
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform
 {
-  v6 = [[CRLBezierPathSource alloc] initWithNaturalSize:a3.width, a3.height];
-  v7 = *&a4->c;
-  v11[0] = *&a4->a;
+  v6 = [[CRLBezierPathSource alloc] initWithNaturalSize:size.width, size.height];
+  v7 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v7;
-  v11[2] = *&a4->tx;
+  v11[2] = *&transform->tx;
   [(CRLStyledLayout *)self scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:v11 withStartingPathSource:v6];
   v9 = v8;
 
   return v9;
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v13, 0, sizeof(v13));
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (v5)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (geometry)
   {
-    [v5 fullTransform];
+    [geometry fullTransform];
   }
 
   else
@@ -338,17 +338,17 @@
     memset(&v13, 0, sizeof(v13));
   }
 
-  if (v3)
+  if (rootCopy)
   {
-    v7 = [(CRLCanvasAbstractLayout *)self parent];
+    parent = [(CRLCanvasAbstractLayout *)self parent];
 
-    if (v7)
+    if (parent)
     {
-      v8 = [(CRLCanvasAbstractLayout *)self parent];
-      v9 = v8;
-      if (v8)
+      parent2 = [(CRLCanvasAbstractLayout *)self parent];
+      v9 = parent2;
+      if (parent2)
       {
-        [v8 transformInRoot];
+        [parent2 transformInRoot];
       }
 
       else
@@ -401,9 +401,9 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:184 isFatal:0 description:"expected nil value for '%{public}s'", "_dynamicInfoGeometry"];
   }
 
-  v6 = [(CRLCanvasLayout *)self info];
-  v7 = [v6 geometry];
-  v8 = [v7 copy];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
+  v8 = [geometry copy];
   v9 = *(&self->super._boundsForStandardKnobs.size.width + 3);
   *(&self->super._boundsForStandardKnobs.size.width + 3) = v8;
 }

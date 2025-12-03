@@ -1,36 +1,36 @@
 @interface CNVCardNameComponents
 + (id)components;
-+ (id)componentsWithFirstName:(id)a3 lastName:(id)a4 middleName:(id)a5 title:(id)a6 suffix:(id)a7 companyName:(id)a8 isCompany:(BOOL)a9;
++ (id)componentsWithFirstName:(id)name lastName:(id)lastName middleName:(id)middleName title:(id)title suffix:(id)suffix companyName:(id)companyName isCompany:(BOOL)company;
 @end
 
 @implementation CNVCardNameComponents
 
 + (id)components
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)componentsWithFirstName:(id)a3 lastName:(id)a4 middleName:(id)a5 title:(id)a6 suffix:(id)a7 companyName:(id)a8 isCompany:(BOOL)a9
++ (id)componentsWithFirstName:(id)name lastName:(id)lastName middleName:(id)middleName title:(id)title suffix:(id)suffix companyName:(id)companyName isCompany:(BOOL)company
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  companyNameCopy = companyName;
+  suffixCopy = suffix;
+  titleCopy = title;
+  middleNameCopy = middleName;
+  lastNameCopy = lastName;
+  nameCopy = name;
   v20 = +[(CNVCardNameComponents *)CNVCardMutableNameComponents];
-  [v20 setFirstName:v19];
+  [v20 setFirstName:nameCopy];
 
-  [v20 setLastName:v18];
-  [v20 setMiddleName:v17];
+  [v20 setLastName:lastNameCopy];
+  [v20 setMiddleName:middleNameCopy];
 
-  [v20 setTitle:v16];
-  [v20 setSuffix:v15];
+  [v20 setTitle:titleCopy];
+  [v20 setSuffix:suffixCopy];
 
-  [v20 setCompanyName:v14];
-  [v20 setIsCompany:a9];
+  [v20 setCompanyName:companyNameCopy];
+  [v20 setIsCompany:company];
 
   return v20;
 }

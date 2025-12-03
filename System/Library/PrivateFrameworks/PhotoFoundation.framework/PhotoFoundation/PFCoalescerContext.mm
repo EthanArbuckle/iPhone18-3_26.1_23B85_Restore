@@ -1,11 +1,11 @@
 @interface PFCoalescerContext
 - (NSArray)pendingActivityTokensSnapshot;
 - (PFCoalescer)coalescer;
-- (PFCoalescerContext)initWithCoalescer:(id)a3;
-- (id)activityTokenWithReason:(id)a3;
+- (PFCoalescerContext)initWithCoalescer:(id)coalescer;
+- (id)activityTokenWithReason:(id)reason;
 - (void)cancelPendingActivityTokens;
-- (void)delayNextInvocationByTimeInterval:(double)a3;
-- (void)pushBack:(id)a3;
+- (void)delayNextInvocationByTimeInterval:(double)interval;
+- (void)pushBack:(id)back;
 @end
 
 @implementation PFCoalescerContext
@@ -98,10 +98,10 @@ uint64_t __49__PFCoalescerContext_cancelPendingActivityTokens__block_invoke(uint
   return result;
 }
 
-- (id)activityTokenWithReason:(id)a3
+- (id)activityTokenWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[PFCoalescerActivityToken alloc] initWithDispatchGroup:self->_group reason:v4];
+  reasonCopy = reason;
+  v5 = [[PFCoalescerActivityToken alloc] initWithDispatchGroup:self->_group reason:reasonCopy];
 
   isolationQueue = self->_isolationQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -118,12 +118,12 @@ uint64_t __49__PFCoalescerContext_cancelPendingActivityTokens__block_invoke(uint
   return v7;
 }
 
-- (void)delayNextInvocationByTimeInterval:(double)a3
+- (void)delayNextInvocationByTimeInterval:(double)interval
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"delayNextInvocationByTimeInterval %f", *&a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"delayNextInvocationByTimeInterval %f", *&interval];
   v6 = [(PFCoalescerContext *)self activityTokenWithReason:v5];
 
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  v7 = dispatch_time(0, (interval * 1000000000.0));
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -134,32 +134,32 @@ uint64_t __49__PFCoalescerContext_cancelPendingActivityTokens__block_invoke(uint
   dispatch_after(v7, v8, block);
 }
 
-- (void)pushBack:(id)a3
+- (void)pushBack:(id)back
 {
-  v6 = a3;
-  v4 = [(PFCoalescerContext *)self coalescer];
-  v5 = v4;
-  if (v4)
+  backCopy = back;
+  coalescer = [(PFCoalescerContext *)self coalescer];
+  v5 = coalescer;
+  if (coalescer)
   {
-    [v4 update:v6];
+    [coalescer update:backCopy];
   }
 }
 
-- (PFCoalescerContext)initWithCoalescer:(id)a3
+- (PFCoalescerContext)initWithCoalescer:(id)coalescer
 {
-  v4 = a3;
+  coalescerCopy = coalescer;
   v12.receiver = self;
   v12.super_class = PFCoalescerContext;
   v5 = [(PFCoalescerContext *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(PFCoalescerContext *)v5 setCoalescer:v4];
+    [(PFCoalescerContext *)v5 setCoalescer:coalescerCopy];
     v7 = dispatch_group_create();
     [(PFCoalescerContext *)v6 setGroup:v7];
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(PFCoalescerContext *)v6 setPendingActivityTokens:v8];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(PFCoalescerContext *)v6 setPendingActivityTokens:weakObjectsHashTable];
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("PFCoalescer context isolation", v9);

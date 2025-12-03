@@ -1,24 +1,24 @@
 @interface NTKMusicTimelineEntryAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_progressProviderForRingComplications;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKMusicTimelineEntryAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKMusicTimelineEntry" hasInstanceVariable:@"_state" withType:"Q"];
-  [v3 validateClass:@"NTKMusicTimelineEntry" hasInstanceMethod:@"templateForComplicationFamily:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"NTKMusicTimelineEntry" hasInstanceMethod:@"_progressProviderForRingComplications" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKMusicTimelineEntry" hasInstanceVariable:@"_state" withType:"Q"];
+  [validationsCopy validateClass:@"NTKMusicTimelineEntry" hasInstanceMethod:@"templateForComplicationFamily:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"NTKMusicTimelineEntry" hasInstanceMethod:@"_progressProviderForRingComplications" withFullSignature:{"@", 0}];
 }
 
 - (id)_progressProviderForRingComplications
 {
   v9.receiver = self;
   v9.super_class = NTKMusicTimelineEntryAccessibility;
-  v3 = [(NTKMusicTimelineEntryAccessibility *)&v9 _progressProviderForRingComplications];
+  _progressProviderForRingComplications = [(NTKMusicTimelineEntryAccessibility *)&v9 _progressProviderForRingComplications];
   v4 = [(NTKMusicTimelineEntryAccessibility *)self safeUnsignedIntegerForKey:@"_state"];
   if ((v4 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
@@ -33,17 +33,17 @@
     }
 
     v7 = accessibilityLocalizedString(v6, v5);
-    [v3 setAccessibilityLabel:v7];
+    [_progressProviderForRingComplications setAccessibilityLabel:v7];
   }
 
-  return v3;
+  return _progressProviderForRingComplications;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v8.receiver = self;
   v8.super_class = NTKMusicTimelineEntryAccessibility;
-  v3 = [(NTKMusicTimelineEntryAccessibility *)&v8 templateForComplicationFamily:a3];
+  v3 = [(NTKMusicTimelineEntryAccessibility *)&v8 templateForComplicationFamily:family];
   if (_accessibilityComplicationTemplateContainsSimpleImage())
   {
     v4 = [v3 safeValueForKey:@"imageProvider"];

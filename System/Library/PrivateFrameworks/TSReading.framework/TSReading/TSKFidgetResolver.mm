@@ -1,11 +1,11 @@
 @interface TSKFidgetResolver
 - (TSKFidgetResolver)init;
 - (id)nonFidgetValue;
-- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)a3;
+- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)p_advanceHead;
-- (void)pushValue:(id)a3;
-- (void)pushValue:(id)a3 withTime:(double)a4;
+- (void)pushValue:(id)value;
+- (void)pushValue:(id)value withTime:(double)time;
 @end
 
 @implementation TSKFidgetResolver
@@ -62,20 +62,20 @@
   return result;
 }
 
-- (void)pushValue:(id)a3
+- (void)pushValue:(id)value
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(TSKFidgetResolver *)self pushValue:a3 withTime:Current];
+  [(TSKFidgetResolver *)self pushValue:value withTime:Current];
 }
 
-- (void)pushValue:(id)a3 withTime:(double)a4
+- (void)pushValue:(id)value withTime:(double)time
 {
   [(TSKFidgetResolver *)self p_advanceHead];
-  v7 = a3;
+  valueCopy = value;
 
-  self->_values[self->_head] = a3;
-  self->_times[self->_head] = a4;
+  self->_values[self->_head] = value;
+  self->_times[self->_head] = time;
 }
 
 - (void)p_advanceHead
@@ -94,11 +94,11 @@
   self->_head = v3;
 }
 
-- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)a3
+- (unint64_t)p_previousValidIndexFromIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
   else

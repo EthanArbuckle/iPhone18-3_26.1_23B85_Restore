@@ -1,78 +1,78 @@
 @interface NLSessionActivitySwimStrokeAccumulator
-- (NLSessionActivitySwimStrokeAccumulator)initWithHealthStore:(id)a3;
+- (NLSessionActivitySwimStrokeAccumulator)initWithHealthStore:(id)store;
 - (NSDictionary)distanceByStrokeStyle;
 - (void)_addDistancePerStrokeStyleIfPossible;
-- (void)_handleAddedDistanceSamples:(id)a3;
-- (void)_handleAddedStrokeSamples:(id)a3;
-- (void)_incrementDictionaryValueWithDistanceSample:(id)a3 strokeSample:(id)a4;
-- (void)_startQueriesWithStartDate:(id)a3;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)_handleAddedDistanceSamples:(id)samples;
+- (void)_handleAddedStrokeSamples:(id)samples;
+- (void)_incrementDictionaryValueWithDistanceSample:(id)sample strokeSample:(id)strokeSample;
+- (void)_startQueriesWithStartDate:(id)date;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)startAccumulatingWithStartDate:(id)a3 updateHandler:(id)a4;
+- (void)startAccumulatingWithStartDate:(id)date updateHandler:(id)handler;
 @end
 
 @implementation NLSessionActivitySwimStrokeAccumulator
 
-- (NLSessionActivitySwimStrokeAccumulator)initWithHealthStore:(id)a3
+- (NLSessionActivitySwimStrokeAccumulator)initWithHealthStore:(id)store
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v19;
-  v19 = 0;
+  objc_storeStrong(location, store);
+  v3 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v3;
   v17.super_class = NLSessionActivitySwimStrokeAccumulator;
   v16 = [(NLSessionActivityHealthDataAccumulator *)&v17 initWithHealthStore:location[0]];
-  v19 = v16;
-  objc_storeStrong(&v19, v16);
+  selfCopy = v16;
+  objc_storeStrong(&selfCopy, v16);
   if (v16)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    mutableSwimDistanceByStrokeStyle = v19->_mutableSwimDistanceByStrokeStyle;
-    v19->_mutableSwimDistanceByStrokeStyle = v4;
+    mutableSwimDistanceByStrokeStyle = selfCopy->_mutableSwimDistanceByStrokeStyle;
+    selfCopy->_mutableSwimDistanceByStrokeStyle = v4;
     MEMORY[0x277D82BD8](mutableSwimDistanceByStrokeStyle);
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    countedStrokeSamples = v19->_countedStrokeSamples;
-    v19->_countedStrokeSamples = v6;
+    countedStrokeSamples = selfCopy->_countedStrokeSamples;
+    selfCopy->_countedStrokeSamples = v6;
     MEMORY[0x277D82BD8](countedStrokeSamples);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    uncountedStrokeSamples = v19->_uncountedStrokeSamples;
-    v19->_uncountedStrokeSamples = v8;
+    uncountedStrokeSamples = selfCopy->_uncountedStrokeSamples;
+    selfCopy->_uncountedStrokeSamples = v8;
     MEMORY[0x277D82BD8](uncountedStrokeSamples);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    countedDistanceSamples = v19->_countedDistanceSamples;
-    v19->_countedDistanceSamples = v10;
+    countedDistanceSamples = selfCopy->_countedDistanceSamples;
+    selfCopy->_countedDistanceSamples = v10;
     MEMORY[0x277D82BD8](countedDistanceSamples);
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    uncountedDistanceSamples = v19->_uncountedDistanceSamples;
-    v19->_uncountedDistanceSamples = v12;
+    uncountedDistanceSamples = selfCopy->_uncountedDistanceSamples;
+    selfCopy->_uncountedDistanceSamples = v12;
     MEMORY[0x277D82BD8](uncountedDistanceSamples);
   }
 
-  v15 = MEMORY[0x277D82BE0](v19);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
 - (NSDictionary)distanceByStrokeStyle
 {
   v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v4 = [(NLSessionActivitySwimStrokeAccumulator *)self mutableSwimDistanceByStrokeStyle];
+  mutableSwimDistanceByStrokeStyle = [(NLSessionActivitySwimStrokeAccumulator *)self mutableSwimDistanceByStrokeStyle];
   v5 = [v3 initWithDictionary:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](mutableSwimDistanceByStrokeStyle);
 
   return v5;
 }
 
-- (void)_startQueriesWithStartDate:(id)a3
+- (void)_startQueriesWithStartDate:(id)date
 {
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v58, v60);
+  objc_storeStrong(location, date);
+  objc_initWeak(&v58, selfCopy);
   v51 = MEMORY[0x277D85DD0];
   v52 = -1073741824;
   v53 = 0;
@@ -98,7 +98,7 @@
   v41 = &unk_277D892F8;
   v42 = MEMORY[0x277D82BE0](v57);
   v17 = [v18 initWithType:v15 predicate:v16 anchor:0 limit:0 resultsHandler:&v37];
-  [(NLSessionActivitySwimStrokeAccumulator *)v60 setStrokeQuery:v17];
+  [(NLSessionActivitySwimStrokeAccumulator *)selfCopy setStrokeQuery:v17];
   MEMORY[0x277D82BD8](v17);
   MEMORY[0x277D82BD8](v15);
   v31 = MEMORY[0x277D85DD0];
@@ -107,9 +107,9 @@
   v34 = __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___block_invoke_6;
   v35 = &unk_277D892F8;
   v36 = MEMORY[0x277D82BE0](v57);
-  v14 = [(NLSessionActivitySwimStrokeAccumulator *)v60 strokeQuery];
-  [(HKAnchoredObjectQuery *)v14 setUpdateHandler:&v31];
-  MEMORY[0x277D82BD8](v14);
+  strokeQuery = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy strokeQuery];
+  [(HKAnchoredObjectQuery *)strokeQuery setUpdateHandler:&v31];
+  MEMORY[0x277D82BD8](strokeQuery);
   v13 = objc_alloc(MEMORY[0x277CCCFF0]);
   v10 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB38]];
   v11 = v43;
@@ -120,7 +120,7 @@
   v29 = &unk_277D892F8;
   v30 = MEMORY[0x277D82BE0](v50);
   v12 = [v13 initWithType:v10 predicate:v11 anchor:0 limit:0 resultsHandler:&v25];
-  [(NLSessionActivitySwimStrokeAccumulator *)v60 setDistanceQuery:v12];
+  [(NLSessionActivitySwimStrokeAccumulator *)selfCopy setDistanceQuery:v12];
   MEMORY[0x277D82BD8](v12);
   MEMORY[0x277D82BD8](v10);
   v19 = MEMORY[0x277D85DD0];
@@ -129,19 +129,19 @@
   v22 = __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___block_invoke_8;
   v23 = &unk_277D892F8;
   v24 = MEMORY[0x277D82BE0](v50);
-  v9 = [(NLSessionActivitySwimStrokeAccumulator *)v60 distanceQuery];
-  [(HKAnchoredObjectQuery *)v9 setUpdateHandler:&v19];
-  *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v8 = [(NLSessionActivityHealthDataAccumulator *)v60 healthStore];
-  v7 = [(NLSessionActivitySwimStrokeAccumulator *)v60 strokeQuery];
-  [(HKHealthStore *)v8 executeQuery:?];
-  MEMORY[0x277D82BD8](v7);
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  v6 = [(NLSessionActivityHealthDataAccumulator *)v60 healthStore];
-  v5 = [(NLSessionActivitySwimStrokeAccumulator *)v60 distanceQuery];
-  [(HKHealthStore *)v6 executeQuery:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  distanceQuery = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy distanceQuery];
+  [(HKAnchoredObjectQuery *)distanceQuery setUpdateHandler:&v19];
+  *&v3 = MEMORY[0x277D82BD8](distanceQuery).n128_u64[0];
+  healthStore = [(NLSessionActivityHealthDataAccumulator *)selfCopy healthStore];
+  strokeQuery2 = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy strokeQuery];
+  [(HKHealthStore *)healthStore executeQuery:?];
+  MEMORY[0x277D82BD8](strokeQuery2);
+  *&v4 = MEMORY[0x277D82BD8](healthStore).n128_u64[0];
+  healthStore2 = [(NLSessionActivityHealthDataAccumulator *)selfCopy healthStore];
+  distanceQuery2 = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy distanceQuery];
+  [(HKHealthStore *)healthStore2 executeQuery:?];
+  MEMORY[0x277D82BD8](distanceQuery2);
+  MEMORY[0x277D82BD8](healthStore2);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v36, 0);
@@ -301,13 +301,13 @@ void __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___b
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAddedDistanceSamples:(id)a3
+- (void)_handleAddedDistanceSamples:(id)samples
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, samples);
   if ([location[0] count])
   {
     _HKInitializeLogging();
@@ -319,23 +319,23 @@ void __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___b
     }
 
     objc_storeStrong(&oslog, 0);
-    v4 = [(NLSessionActivitySwimStrokeAccumulator *)v7 uncountedDistanceSamples];
-    [(NSMutableArray *)v4 addObjectsFromArray:location[0]];
-    *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-    [(NLSessionActivitySwimStrokeAccumulator *)v7 _addDistancePerStrokeStyleIfPossible];
+    uncountedDistanceSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedDistanceSamples];
+    [(NSMutableArray *)uncountedDistanceSamples addObjectsFromArray:location[0]];
+    *&v3 = MEMORY[0x277D82BD8](uncountedDistanceSamples).n128_u64[0];
+    [(NLSessionActivitySwimStrokeAccumulator *)selfCopy _addDistancePerStrokeStyleIfPossible];
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddedStrokeSamples:(id)a3
+- (void)_handleAddedStrokeSamples:(id)samples
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, samples);
   if ([location[0] count])
   {
     _HKInitializeLogging();
@@ -347,10 +347,10 @@ void __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___b
     }
 
     objc_storeStrong(&oslog, 0);
-    v4 = [(NLSessionActivitySwimStrokeAccumulator *)v7 uncountedStrokeSamples];
-    [(NSMutableArray *)v4 addObjectsFromArray:location[0]];
-    *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-    [(NLSessionActivitySwimStrokeAccumulator *)v7 _addDistancePerStrokeStyleIfPossible];
+    uncountedStrokeSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedStrokeSamples];
+    [(NSMutableArray *)uncountedStrokeSamples addObjectsFromArray:location[0]];
+    *&v3 = MEMORY[0x277D82BD8](uncountedStrokeSamples).n128_u64[0];
+    [(NLSessionActivitySwimStrokeAccumulator *)selfCopy _addDistancePerStrokeStyleIfPossible];
   }
 
   objc_storeStrong(location, 0);
@@ -360,16 +360,16 @@ void __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___b
 - (void)_addDistancePerStrokeStyleIfPossible
 {
   v32 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   v29[1] = a2;
   v12 = objc_alloc(MEMORY[0x277CBEA60]);
-  v13 = [(NLSessionActivitySwimStrokeAccumulator *)v30 uncountedStrokeSamples];
+  uncountedStrokeSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedStrokeSamples];
   v29[0] = [v12 initWithArray:?];
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](uncountedStrokeSamples);
   v14 = objc_alloc(MEMORY[0x277CBEA60]);
-  v15 = [(NLSessionActivitySwimStrokeAccumulator *)v30 uncountedDistanceSamples];
+  uncountedDistanceSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedDistanceSamples];
   v28 = [v14 initWithArray:?];
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](uncountedDistanceSamples);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v29[0]);
   v17 = [obj countByEnumeratingWithState:__b objects:v31 count:16];
@@ -398,13 +398,13 @@ void __69__NLSessionActivitySwimStrokeAccumulator__startQueriesWithStartDate___b
       v6 = [v4 predicateWithBlock:&v19];
       v25 = [v5 filteredArrayUsingPredicate:?];
       *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-      v7 = [v25 firstObject];
-      *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-      if (v7)
+      firstObject = [v25 firstObject];
+      *&v3 = MEMORY[0x277D82BD8](firstObject).n128_u64[0];
+      if (firstObject)
       {
-        v18 = [v25 firstObject];
-        [(NLSessionActivitySwimStrokeAccumulator *)v30 _incrementDictionaryValueWithDistanceSample:v18 strokeSample:v27];
-        objc_storeStrong(&v18, 0);
+        firstObject2 = [v25 firstObject];
+        [(NLSessionActivitySwimStrokeAccumulator *)selfCopy _incrementDictionaryValueWithDistanceSample:firstObject2 strokeSample:v27];
+        objc_storeStrong(&firstObject2, 0);
       }
 
       objc_storeStrong(&v25, 0);
@@ -473,18 +473,18 @@ BOOL __78__NLSessionActivitySwimStrokeAccumulator__addDistancePerStrokeStyleIfPo
   return v21;
 }
 
-- (void)_incrementDictionaryValueWithDistanceSample:(id)a3 strokeSample:(id)a4
+- (void)_incrementDictionaryValueWithDistanceSample:(id)sample strokeSample:(id)strokeSample
 {
   v35 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sample);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v26 = [v31 metadata];
-  v30 = [v26 objectForKeyedSubscript:*MEMORY[0x277CCC518]];
-  *&v4 = MEMORY[0x277D82BD8](v26).n128_u64[0];
+  objc_storeStrong(&v31, strokeSample);
+  metadata = [v31 metadata];
+  v30 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC518]];
+  *&v4 = MEMORY[0x277D82BD8](metadata).n128_u64[0];
   if (v30)
   {
     _HKInitializeLogging();
@@ -497,95 +497,95 @@ BOOL __78__NLSessionActivitySwimStrokeAccumulator__addDistancePerStrokeStyleIfPo
     }
 
     objc_storeStrong(&v29, 0);
-    v24 = [(NLSessionActivitySwimStrokeAccumulator *)v33 mutableSwimDistanceByStrokeStyle];
-    v27 = [(NSMutableDictionary *)v24 objectForKeyedSubscript:v30];
-    v5 = MEMORY[0x277D82BD8](v24).n128_u64[0];
+    mutableSwimDistanceByStrokeStyle = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy mutableSwimDistanceByStrokeStyle];
+    v27 = [(NSMutableDictionary *)mutableSwimDistanceByStrokeStyle objectForKeyedSubscript:v30];
+    v5 = MEMORY[0x277D82BD8](mutableSwimDistanceByStrokeStyle).n128_u64[0];
     if (!v27)
     {
       v22 = MEMORY[0x277CCD7E8];
-      v23 = [MEMORY[0x277CCDAB0] meterUnit];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
       v27 = [v22 quantityWithUnit:0.0 doubleValue:?];
       MEMORY[0x277D82BD8](0);
-      v5 = MEMORY[0x277D82BD8](v23).n128_u64[0];
+      v5 = MEMORY[0x277D82BD8](meterUnit).n128_u64[0];
     }
 
-    v19 = [location[0] quantity];
+    quantity = [location[0] quantity];
     v6 = [v27 _quantityByAddingQuantity:?];
     v7 = v27;
     v27 = v6;
     MEMORY[0x277D82BD8](v7);
-    *&v8 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-    v20 = [(NLSessionActivitySwimStrokeAccumulator *)v33 mutableSwimDistanceByStrokeStyle];
-    [(NSMutableDictionary *)v20 setObject:v27 forKeyedSubscript:v30];
-    *&v9 = MEMORY[0x277D82BD8](v20).n128_u64[0];
-    v21 = [(NLSessionActivityDataAccumulator *)v33 updateHandler];
-    *&v10 = MEMORY[0x277D82BD8](v21).n128_u64[0];
-    if (v21)
+    *&v8 = MEMORY[0x277D82BD8](quantity).n128_u64[0];
+    mutableSwimDistanceByStrokeStyle2 = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy mutableSwimDistanceByStrokeStyle];
+    [(NSMutableDictionary *)mutableSwimDistanceByStrokeStyle2 setObject:v27 forKeyedSubscript:v30];
+    *&v9 = MEMORY[0x277D82BD8](mutableSwimDistanceByStrokeStyle2).n128_u64[0];
+    updateHandler = [(NLSessionActivityDataAccumulator *)selfCopy updateHandler];
+    *&v10 = MEMORY[0x277D82BD8](updateHandler).n128_u64[0];
+    if (updateHandler)
     {
-      v18 = [(NLSessionActivityDataAccumulator *)v33 updateHandler];
-      v18[2]();
-      MEMORY[0x277D82BD8](v18);
+      updateHandler2 = [(NLSessionActivityDataAccumulator *)selfCopy updateHandler];
+      updateHandler2[2]();
+      MEMORY[0x277D82BD8](updateHandler2);
     }
 
     objc_storeStrong(&v27, 0);
   }
 
-  v14 = [(NLSessionActivitySwimStrokeAccumulator *)v33 uncountedDistanceSamples];
-  [(NSMutableArray *)v14 removeObject:location[0]];
-  *&v11 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-  v15 = [(NLSessionActivitySwimStrokeAccumulator *)v33 countedDistanceSamples];
-  [(NSMutableArray *)v15 addObject:location[0]];
-  *&v12 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-  v16 = [(NLSessionActivitySwimStrokeAccumulator *)v33 uncountedStrokeSamples];
-  [(NSMutableArray *)v16 removeObject:v31];
-  *&v13 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  v17 = [(NLSessionActivitySwimStrokeAccumulator *)v33 countedStrokeSamples];
-  [(NSMutableArray *)v17 addObject:v31];
-  MEMORY[0x277D82BD8](v17);
+  uncountedDistanceSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedDistanceSamples];
+  [(NSMutableArray *)uncountedDistanceSamples removeObject:location[0]];
+  *&v11 = MEMORY[0x277D82BD8](uncountedDistanceSamples).n128_u64[0];
+  countedDistanceSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy countedDistanceSamples];
+  [(NSMutableArray *)countedDistanceSamples addObject:location[0]];
+  *&v12 = MEMORY[0x277D82BD8](countedDistanceSamples).n128_u64[0];
+  uncountedStrokeSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy uncountedStrokeSamples];
+  [(NSMutableArray *)uncountedStrokeSamples removeObject:v31];
+  *&v13 = MEMORY[0x277D82BD8](uncountedStrokeSamples).n128_u64[0];
+  countedStrokeSamples = [(NLSessionActivitySwimStrokeAccumulator *)selfCopy countedStrokeSamples];
+  [(NSMutableArray *)countedStrokeSamples addObject:v31];
+  MEMORY[0x277D82BD8](countedStrokeSamples);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)startAccumulatingWithStartDate:(id)a3 updateHandler:(id)a4
+- (void)startAccumulatingWithStartDate:(id)date updateHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(NLSessionActivitySwimStrokeAccumulator *)v7 accumulatorDidStartWithStartDate:location[0] handler:v5];
+  objc_storeStrong(&v5, handler);
+  [(NLSessionActivitySwimStrokeAccumulator *)selfCopy accumulatorDidStartWithStartDate:location[0] handler:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(NLSessionActivityDataAccumulator *)v7 setUpdateHandler:v5];
-  [(NLSessionActivitySwimStrokeAccumulator *)v7 _startQueriesWithStartDate:location[0]];
+  objc_storeStrong(&v5, handler);
+  [(NLSessionActivityDataAccumulator *)selfCopy setUpdateHandler:v5];
+  [(NLSessionActivitySwimStrokeAccumulator *)selfCopy _startQueriesWithStartDate:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)accumulatorDidStop
 {
-  v3 = [(NLSessionActivityHealthDataAccumulator *)self healthStore];
-  v2 = [(NLSessionActivitySwimStrokeAccumulator *)self distanceQuery];
-  [(HKHealthStore *)v3 stopQuery:?];
-  MEMORY[0x277D82BD8](v2);
-  v5 = [(NLSessionActivityHealthDataAccumulator *)self healthStore];
-  v4 = [(NLSessionActivitySwimStrokeAccumulator *)self strokeQuery];
-  [(HKHealthStore *)v5 stopQuery:?];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  healthStore = [(NLSessionActivityHealthDataAccumulator *)self healthStore];
+  distanceQuery = [(NLSessionActivitySwimStrokeAccumulator *)self distanceQuery];
+  [(HKHealthStore *)healthStore stopQuery:?];
+  MEMORY[0x277D82BD8](distanceQuery);
+  healthStore2 = [(NLSessionActivityHealthDataAccumulator *)self healthStore];
+  strokeQuery = [(NLSessionActivitySwimStrokeAccumulator *)self strokeQuery];
+  [(HKHealthStore *)healthStore2 stopQuery:?];
+  MEMORY[0x277D82BD8](strokeQuery);
+  MEMORY[0x277D82BD8](healthStore2);
 }
 
 @end

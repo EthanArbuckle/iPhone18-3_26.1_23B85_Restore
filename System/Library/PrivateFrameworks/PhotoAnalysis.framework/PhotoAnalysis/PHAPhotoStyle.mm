@@ -1,24 +1,24 @@
 @interface PHAPhotoStyle
-- (BOOL)updateStyleStreamWithProgressReporter:(id)a3 error:(id *)a4;
+- (BOOL)updateStyleStreamWithProgressReporter:(id)reporter error:(id *)error;
 - (PHAPhotoStyle)init;
-- (PHAPhotoStyle)initWithphotoLibrary:(id)a3;
+- (PHAPhotoStyle)initWithphotoLibrary:(id)library;
 @end
 
 @implementation PHAPhotoStyle
 
-- (PHAPhotoStyle)initWithphotoLibrary:(id)a3
+- (PHAPhotoStyle)initWithphotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = sub_22FA88FDC(v3);
+  libraryCopy = library;
+  v4 = sub_22FA88FDC(libraryCopy);
 
   return v4;
 }
 
-- (BOOL)updateStyleStreamWithProgressReporter:(id)a3 error:(id *)a4
+- (BOOL)updateStyleStreamWithProgressReporter:(id)reporter error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_22FA86548(v5);
+  reporterCopy = reporter;
+  selfCopy = self;
+  sub_22FA86548(reporterCopy);
 
   return 1;
 }

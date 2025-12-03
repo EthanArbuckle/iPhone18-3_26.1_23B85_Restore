@@ -1,27 +1,27 @@
 @interface VUIStoreAcquisitionProperties
-+ (id)acquisitionPropertiesWithBuyParams:(id)a3 urlbagKey:(id)a4;
-+ (id)metricsAugumentedBuyParamsWithBuyParams:(id)a3;
++ (id)acquisitionPropertiesWithBuyParams:(id)params urlbagKey:(id)key;
++ (id)metricsAugumentedBuyParamsWithBuyParams:(id)params;
 - (VUIStoreAcquisitionProperties)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VUIStoreAcquisitionProperties
 
-+ (id)metricsAugumentedBuyParamsWithBuyParams:(id)a3
++ (id)metricsAugumentedBuyParamsWithBuyParams:(id)params
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 length])
+  paramsCopy = params;
+  v4 = paramsCopy;
+  if ([paramsCopy length])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v3];
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:paramsCopy];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    [v5 appendFormat:@"&mtApp=%@", v7];
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 identifierForVendor];
-    v10 = [v9 UUIDString];
-    [v5 appendFormat:@"&vid=%@", v10];
+    [v5 appendFormat:@"&mtApp=%@", bundleIdentifier];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    identifierForVendor = [currentDevice identifierForVendor];
+    uUIDString = [identifierForVendor UUIDString];
+    [v5 appendFormat:@"&vid=%@", uUIDString];
 
     v4 = [v5 copy];
   }
@@ -29,14 +29,14 @@
   return v4;
 }
 
-+ (id)acquisitionPropertiesWithBuyParams:(id)a3 urlbagKey:(id)a4
++ (id)acquisitionPropertiesWithBuyParams:(id)params urlbagKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  paramsCopy = params;
   v7 = objc_alloc_init(VUIStoreAcquisitionProperties);
-  [(VUIStoreAcquisitionProperties *)v7 setBuyParams:v6];
+  [(VUIStoreAcquisitionProperties *)v7 setBuyParams:paramsCopy];
 
-  [(VUIStoreAcquisitionProperties *)v7 setUrlBagKey:v5];
+  [(VUIStoreAcquisitionProperties *)v7 setUrlBagKey:keyCopy];
 
   return v7;
 }
@@ -54,7 +54,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VUIStoreAcquisitionProperties acquisitionPropertiesWithBuyParams:self->_buyParams urlbagKey:self->_urlBagKey];
   [v4 setDsid:self->_dsid];

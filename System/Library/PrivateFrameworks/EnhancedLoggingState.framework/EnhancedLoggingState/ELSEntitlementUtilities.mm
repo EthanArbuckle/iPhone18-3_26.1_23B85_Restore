@@ -1,15 +1,15 @@
 @interface ELSEntitlementUtilities
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4;
-+ (BOOL)currentProcessHasEntitlement:(id)a3;
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement;
++ (BOOL)currentProcessHasEntitlement:(id)entitlement;
 + (id)entitlementMissingMessage;
 + (void)assertCurrentProcessHasEntitlement;
 @end
 
 @implementation ELSEntitlementUtilities
 
-+ (BOOL)currentProcessHasEntitlement:(id)a3
++ (BOOL)currentProcessHasEntitlement:(id)entitlement
 {
-  [a3 UTF8String];
+  [entitlement UTF8String];
   v3 = xpc_copy_entitlement_for_self();
   v4 = v3;
   if (v3)
@@ -37,14 +37,14 @@
   v2 = +[ELSEntitlementUtilities entitlementMissingMessage];
   v4 = 138412290;
   v5 = v2;
-  _os_log_error_impl(&dword_24A07C000, a1, OS_LOG_TYPE_ERROR, "%@", &v4, 0xCu);
+  _os_log_error_impl(&dword_24A07C000, self, OS_LOG_TYPE_ERROR, "%@", &v4, 0xCu);
 
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  [a4 UTF8String];
+  [entitlement UTF8String];
   v4 = xpc_copy_entitlement_for_token();
   v5 = v4;
   if (v4)

@@ -1,5 +1,5 @@
 @interface UIPickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (id)accessibilityElements;
 - (int64_t)_accessibilityPickerType;
@@ -8,14 +8,14 @@
 
 @implementation UIPickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIPickerView";
   v3 = @"UIView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -35,9 +35,9 @@
   }
 
   v3 = [(UIPickerViewAccessibility *)self safeValueForKey:@"datePickerMode"];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
   MEMORY[0x29EDC9740](v3);
-  switch(v4)
+  switch(unsignedIntValue)
   {
     case 0:
       return 3;
@@ -49,14 +49,14 @@
       return 2;
   }
 
-  if (v4 != 4)
+  if (unsignedIntValue != 4)
   {
-    if (v4 == 4270)
+    if (unsignedIntValue == 4270)
     {
       return 7;
     }
 
-    if (v4 == 4271)
+    if (unsignedIntValue == 4271)
     {
       return 8;
     }
@@ -70,13 +70,13 @@
 - (id)accessibilityElements
 {
   v28 = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   v25[0] = [(UIPickerViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-  v17 = [(UIPickerViewAccessibility *)v26 safeValueForKey:@"numberOfComponents"];
-  v18 = [v17 integerValue];
+  v17 = [(UIPickerViewAccessibility *)selfCopy safeValueForKey:@"numberOfComponents"];
+  integerValue = [v17 integerValue];
   *&v2 = MEMORY[0x29EDC9740](v17).n128_u64[0];
-  v24 = v18;
+  v24 = integerValue;
   if (!v25[0] || v24 != [v25[0] count])
   {
     memset(__b, 0, sizeof(__b));
@@ -115,18 +115,18 @@
     v4 = v25[0];
     v25[0] = v3;
     *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-    [(UIPickerViewAccessibility *)v26 _accessibilitySetRetainedValue:v25[0] forKey:*MEMORY[0x29EDC7620], v5];
+    [(UIPickerViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v25[0] forKey:*MEMORY[0x29EDC7620], v5];
     v21 = 0;
-    v9 = [(UIPickerViewAccessibility *)v26 safeValueForKey:@"numberOfComponents"];
-    v10 = [v9 integerValue];
+    v9 = [(UIPickerViewAccessibility *)selfCopy safeValueForKey:@"numberOfComponents"];
+    integerValue2 = [v9 integerValue];
     MEMORY[0x29EDC9740](v9);
-    v20 = v10;
+    v20 = integerValue2;
     while (v21 < v20)
     {
       v6 = objc_allocWithZone(UIAccessibilityPickerComponent);
-      v19 = [v6 initWithAccessibilityContainer:v26];
+      v19 = [v6 initWithAccessibilityContainer:selfCopy];
       [(UIAccessibilityPickerComponent *)v19 setComponent:v21];
-      [(UIAccessibilityPickerComponent *)v19 setPicker:v26];
+      [(UIAccessibilityPickerComponent *)v19 setPicker:selfCopy];
       [v25[0] addObject:v19];
       objc_storeStrong(&v19, 0);
       ++v21;
@@ -141,28 +141,28 @@
 
 - (void)reloadAllComponents
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIPickerViewAccessibility;
   [(UIPickerViewAccessibility *)&v2 reloadAllComponents];
-  [(UIPickerViewAccessibility *)v4 _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
+  [(UIPickerViewAccessibility *)selfCopy _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
 - (BOOL)canBecomeFocused
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UIPickerViewAccessibility;
-  v4 = [(UIPickerViewAccessibility *)&v3 canBecomeFocused];
-  if (([(UIPickerViewAccessibility *)v6 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  canBecomeFocused = [(UIPickerViewAccessibility *)&v3 canBecomeFocused];
+  if (([(UIPickerViewAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v4 = 0;
+    canBecomeFocused = 0;
   }
 
-  return v4 & 1;
+  return canBecomeFocused & 1;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface GreymatterQueueInput
-- (BOOL)isEqual:(id)a3;
-- (GreymatterQueueInput)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GreymatterQueueInput)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initOnQueue:(id)a3 status:(unint64_t)a4 process:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initOnQueue:(id)queue status:(unint64_t)status process:(id)process;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GreymatterQueueInput
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = GreymatterQueueInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_11;
@@ -49,9 +49,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GreymatterQueueInput *)self onGreymatterQueue];
-    v7 = v6 ^ [(GreymatterQueueInput *)v5 onGreymatterQueue];
+    v5 = equalCopy;
+    onGreymatterQueue = [(GreymatterQueueInput *)self onGreymatterQueue];
+    v7 = onGreymatterQueue ^ [(GreymatterQueueInput *)v5 onGreymatterQueue];
     if (v7 == 1)
     {
       v8 = sub_10001F638();
@@ -87,45 +87,45 @@ LABEL_11:
   return v3 ^ [(GreymatterQueueInput *)self onGreymatterQueue];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = GreymatterQueueInput;
-  v4 = [(EligibilityInput *)&v6 copyWithZone:a3];
+  v4 = [(EligibilityInput *)&v6 copyWithZone:zone];
   [v4 setOnGreymatterQueue:{-[GreymatterQueueInput onGreymatterQueue](self, "onGreymatterQueue")}];
   return v4;
 }
 
-- (GreymatterQueueInput)initWithCoder:(id)a3
+- (GreymatterQueueInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GreymatterQueueInput;
-  v5 = [(EligibilityInput *)&v7 initWithCoder:v4];
+  v5 = [(EligibilityInput *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_onGreymatterQueue = [v4 decodeBoolForKey:@"onGreymatterQueue"];
+    v5->_onGreymatterQueue = [coderCopy decodeBoolForKey:@"onGreymatterQueue"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GreymatterQueueInput;
-  v4 = a3;
-  [(EligibilityInput *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[GreymatterQueueInput onGreymatterQueue](self forKey:{"onGreymatterQueue", v5.receiver, v5.super_class), @"onGreymatterQueue"}];
+  coderCopy = coder;
+  [(EligibilityInput *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[GreymatterQueueInput onGreymatterQueue](self forKey:{"onGreymatterQueue", v5.receiver, v5.super_class), @"onGreymatterQueue"}];
 }
 
-- (id)initOnQueue:(id)a3 status:(unint64_t)a4 process:(id)a5
+- (id)initOnQueue:(id)queue status:(unint64_t)status process:(id)process
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  queueCopy = queue;
+  processCopy = process;
+  if (queueCopy)
   {
-    type = xpc_get_type(v8);
+    type = xpc_get_type(queueCopy);
     if (type != &_xpc_type_BOOL)
     {
       v11 = type;
@@ -139,11 +139,11 @@ LABEL_11:
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Greymatter Queue state input is wrong data type: %s", buf, 0x16u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
 
-    value = xpc_BOOL_get_value(v8);
+    value = xpc_BOOL_get_value(queueCopy);
   }
 
   else
@@ -153,17 +153,17 @@ LABEL_11:
 
   v17.receiver = self;
   v17.super_class = GreymatterQueueInput;
-  v15 = [(EligibilityInput *)&v17 initWithInputType:9 status:a4 process:v9];
+  v15 = [(EligibilityInput *)&v17 initWithInputType:9 status:status process:processCopy];
   if (v15)
   {
     v15->_onGreymatterQueue = value;
   }
 
   self = v15;
-  v13 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v13;
+  return selfCopy;
 }
 
 @end

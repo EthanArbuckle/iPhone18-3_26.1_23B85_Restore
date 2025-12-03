@@ -13,25 +13,25 @@
 - (CAFMeasurementRange)powerMeasurementRange;
 - (NSMeasurement)chargingSpeed;
 - (NSMeasurement)power;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFChargingRate
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFChargingRate;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -44,12 +44,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -65,13 +65,13 @@
 - (CAFMeasurementCharacteristic)powerCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000028"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000028"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000028"];
@@ -90,49 +90,49 @@
 
 - (NSMeasurement)power
 {
-  v2 = [(CAFChargingRate *)self powerCharacteristic];
-  v3 = [v2 measurementValue];
+  powerCharacteristic = [(CAFChargingRate *)self powerCharacteristic];
+  measurementValue = [powerCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFInt32Range)powerRange
 {
-  v2 = [(CAFChargingRate *)self powerCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 int32Range];
+  powerCharacteristic = [(CAFChargingRate *)self powerCharacteristic];
+  range = [powerCharacteristic range];
+  int32Range = [range int32Range];
 
-  return v4;
+  return int32Range;
 }
 
 - (CAFMeasurementRange)powerMeasurementRange
 {
-  v3 = [(CAFChargingRate *)self powerRange];
-  v4 = [(CAFChargingRate *)self power];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  powerRange = [(CAFChargingRate *)self powerRange];
+  power = [(CAFChargingRate *)self power];
+  unit = [power unit];
+  v6 = [powerRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)powerInvalid
 {
-  v2 = [(CAFChargingRate *)self powerCharacteristic];
-  v3 = [v2 isInvalid];
+  powerCharacteristic = [(CAFChargingRate *)self powerCharacteristic];
+  isInvalid = [powerCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMeasurementCharacteristic)chargingSpeedCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000004000000A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004000000A"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000004000000A"];
@@ -151,57 +151,57 @@
 
 - (NSMeasurement)chargingSpeed
 {
-  v2 = [(CAFChargingRate *)self chargingSpeedCharacteristic];
-  v3 = [v2 measurementValue];
+  chargingSpeedCharacteristic = [(CAFChargingRate *)self chargingSpeedCharacteristic];
+  measurementValue = [chargingSpeedCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFInt32Range)chargingSpeedRange
 {
-  v2 = [(CAFChargingRate *)self chargingSpeedCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 int32Range];
+  chargingSpeedCharacteristic = [(CAFChargingRate *)self chargingSpeedCharacteristic];
+  range = [chargingSpeedCharacteristic range];
+  int32Range = [range int32Range];
 
-  return v4;
+  return int32Range;
 }
 
 - (CAFMeasurementRange)chargingSpeedMeasurementRange
 {
-  v3 = [(CAFChargingRate *)self chargingSpeedRange];
-  v4 = [(CAFChargingRate *)self chargingSpeed];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  chargingSpeedRange = [(CAFChargingRate *)self chargingSpeedRange];
+  chargingSpeed = [(CAFChargingRate *)self chargingSpeed];
+  unit = [chargingSpeed unit];
+  v6 = [chargingSpeedRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasChargingSpeed
 {
-  v2 = [(CAFChargingRate *)self chargingSpeedCharacteristic];
-  v3 = v2 != 0;
+  chargingSpeedCharacteristic = [(CAFChargingRate *)self chargingSpeedCharacteristic];
+  v3 = chargingSpeedCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)chargingSpeedInvalid
 {
-  v2 = [(CAFChargingRate *)self chargingSpeedCharacteristic];
-  v3 = [v2 isInvalid];
+  chargingSpeedCharacteristic = [(CAFChargingRate *)self chargingSpeedCharacteristic];
+  isInvalid = [chargingSpeedCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)registeredForPower
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000028"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000028"];
 
   return v10;
 }
@@ -209,13 +209,13 @@
 - (BOOL)registeredForChargingSpeed
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000004000000A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004000000A"];
 
   return v10;
 }

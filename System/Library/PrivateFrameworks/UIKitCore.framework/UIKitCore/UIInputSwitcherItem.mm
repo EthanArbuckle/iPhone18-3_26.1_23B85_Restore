@@ -1,16 +1,16 @@
 @interface UIInputSwitcherItem
-+ (id)switcherItemWithIdentifier:(id)a3;
++ (id)switcherItemWithIdentifier:(id)identifier;
 - (BOOL)isSegmentedItem;
-- (UIInputSwitcherItem)initWithIdentifier:(id)a3;
+- (UIInputSwitcherItem)initWithIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation UIInputSwitcherItem
 
-+ (id)switcherItemWithIdentifier:(id)a3
++ (id)switcherItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
@@ -25,16 +25,16 @@
   [(UIInputSwitcherItem *)&v3 dealloc];
 }
 
-- (UIInputSwitcherItem)initWithIdentifier:(id)a3
+- (UIInputSwitcherItem)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = UIInputSwitcherItem;
   v5 = [(UIInputSwitcherItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIInputSwitcherItem *)v5 setIdentifier:v4];
+    [(UIInputSwitcherItem *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -42,16 +42,16 @@
 
 - (BOOL)isSegmentedItem
 {
-  v3 = [(UIInputSwitcherItem *)self segmentImages];
-  if ([v3 count])
+  segmentImages = [(UIInputSwitcherItem *)self segmentImages];
+  if ([segmentImages count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UIInputSwitcherItem *)self segmentTitles];
-    v4 = [v5 count] != 0;
+    segmentTitles = [(UIInputSwitcherItem *)self segmentTitles];
+    v4 = [segmentTitles count] != 0;
   }
 
   return v4;

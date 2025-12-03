@@ -13,16 +13,16 @@
   if (v2)
   {
     v3 = +[BKLibraryManager defaultManager];
-    v4 = [v3 collectionController];
+    collectionController = [v3 collectionController];
     v5 = kBKCollectionDefaultIDWantToRead;
     v6 = +[BKLibraryManager defaultManager];
-    v7 = [v6 uiChildContext];
-    v8 = [v4 mutableCollectionWithCollectionID:v5 inManagedObjectContext:v7 error:0];
+    uiChildContext = [v6 uiChildContext];
+    v8 = [collectionController mutableCollectionWithCollectionID:v5 inManagedObjectContext:uiChildContext error:0];
     [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v2 setCollection:v8];
 
     [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v2 setCollectionID:v5];
-    v9 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v2 collection];
-    -[BKLibraryBookshelfLibraryBaseViewConfiguration setInitialViewMode:](v2, "setInitialViewMode:", [v9 resolvedViewMode]);
+    collection = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v2 collection];
+    -[BKLibraryBookshelfLibraryBaseViewConfiguration setInitialViewMode:](v2, "setInitialViewMode:", [collection resolvedViewMode]);
   }
 
   return v2;

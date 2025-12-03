@@ -11,7 +11,7 @@
 
 - (UIEdgeInsets)contentInsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190CE13C8();
   v5 = v4;
   v7 = v6;
@@ -30,7 +30,7 @@
 
 - (Class)balloonViewClass
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190CE15BC();
 
   if (!v3)
@@ -43,7 +43,7 @@
 
 - (BOOL)hasTail
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190CE16FC();
 
   return v3 & 1;
@@ -51,9 +51,9 @@
 
 - (IMRichCards)richCards
 {
-  v2 = self;
-  v3 = [(CKChatItem *)v2 IMChatItem];
-  if (v3)
+  selfCopy = self;
+  iMChatItem = [(CKChatItem *)selfCopy IMChatItem];
+  if (iMChatItem)
   {
     objc_opt_self();
     v4 = swift_dynamicCastObjCClass();
@@ -61,15 +61,15 @@
     {
     }
 
-    v3 = [v4 richCards];
+    iMChatItem = [v4 richCards];
   }
 
-  return v3;
+  return iMChatItem;
 }
 
 - (void)prewarmAssets
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE1928();
 }
 

@@ -27,11 +27,11 @@
   v11.receiver = self;
   v11.super_class = MTNextAlarm;
   v4 = [(MTNextAlarm *)&v11 description];
-  v5 = [(MTNextAlarm *)self title];
-  v6 = [(MTNextAlarm *)self fireDate];
-  v7 = [(MTNextAlarm *)self identifier];
-  v8 = [(MTNextAlarm *)self clockAppSectionURL];
-  v9 = [v3 stringWithFormat:@"[%@] title: [%@] fireDate: [%@] identifier: [%@] clockAppSectionURL: [%@]", v4, v5, v6, v7, v8];
+  title = [(MTNextAlarm *)self title];
+  fireDate = [(MTNextAlarm *)self fireDate];
+  identifier = [(MTNextAlarm *)self identifier];
+  clockAppSectionURL = [(MTNextAlarm *)self clockAppSectionURL];
+  v9 = [v3 stringWithFormat:@"[%@] title: [%@] fireDate: [%@] identifier: [%@] clockAppSectionURL: [%@]", v4, title, fireDate, identifier, clockAppSectionURL];
 
   return v9;
 }

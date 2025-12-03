@@ -1,8 +1,8 @@
 @interface PFAdjustment
-+ (BOOL)isValidArchiveDictionary:(id)a3 errors:(id)a4;
++ (BOOL)isValidArchiveDictionary:(id)dictionary errors:(id)errors;
 - (PFAdjustment)init;
-- (PFAdjustment)initWithArchiveDictionary:(id)a3;
-- (PFAdjustment)initWithIdentifier:(id)a3 settings:(id)a4 autoIdentifier:(id)a5 autoSettings:(id)a6 enabled:(BOOL)a7 maskUUID:(id)a8;
+- (PFAdjustment)initWithArchiveDictionary:(id)dictionary;
+- (PFAdjustment)initWithIdentifier:(id)identifier settings:(id)settings autoIdentifier:(id)autoIdentifier autoSettings:(id)autoSettings enabled:(BOOL)enabled maskUUID:(id)d;
 - (id)archiveDictionary;
 - (id)debugDescription;
 @end
@@ -25,25 +25,25 @@
   return v6;
 }
 
-- (PFAdjustment)initWithIdentifier:(id)a3 settings:(id)a4 autoIdentifier:(id)a5 autoSettings:(id)a6 enabled:(BOOL)a7 maskUUID:(id)a8
+- (PFAdjustment)initWithIdentifier:(id)identifier settings:(id)settings autoIdentifier:(id)autoIdentifier autoSettings:(id)autoSettings enabled:(BOOL)enabled maskUUID:(id)d
 {
-  v14 = a3;
-  v15 = a4;
-  v26 = a5;
-  v16 = a6;
-  v17 = a8;
-  if (!v14)
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  autoIdentifierCopy = autoIdentifier;
+  autoSettingsCopy = autoSettings;
+  dCopy = d;
+  if (!identifierCopy)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *MEMORY[0x1E695D930];
     v23 = @"Attempting to initialize adjustment with nil identifier";
 LABEL_8:
     [v21 raise:v22 format:v23];
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!settingsCopy)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *MEMORY[0x1E695D930];
@@ -57,20 +57,20 @@ LABEL_8:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_settings, a4);
-    objc_storeStrong(&v19->_autoIdentifier, a5);
-    objc_storeStrong(&v19->_autoSettings, a6);
-    v19->_enabled = a7;
-    objc_storeStrong(&v19->_maskUUID, a8);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_settings, settings);
+    objc_storeStrong(&v19->_autoIdentifier, autoIdentifier);
+    objc_storeStrong(&v19->_autoSettings, autoSettings);
+    v19->_enabled = enabled;
+    objc_storeStrong(&v19->_maskUUID, d);
     v19->_formatVersion = 1;
   }
 
   self = v19;
-  v20 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v20;
+  return selfCopy;
 }
 
 - (PFAdjustment)init
@@ -121,18 +121,18 @@ LABEL_9:
   return v3;
 }
 
-- (PFAdjustment)initWithArchiveDictionary:(id)a3
+- (PFAdjustment)initWithArchiveDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = PFAdjustmentFormatVersionKey;
-    v5 = a3;
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v5 objectForKeyedSubscript:PFAdjustmentIdentifierKey];
-    v8 = [v5 objectForKeyedSubscript:PFAdjustmentArchivedSettingsKey];
-    v9 = [v5 objectForKeyedSubscript:PFAdjustmentEnabledKey];
-    v10 = [v5 objectForKeyedSubscript:PFAdjustmentMaskUUIDKey];
-    v11 = [v5 objectForKeyedSubscript:PFAdjustmentAutoKey];
+    dictionaryCopy = dictionary;
+    v6 = [dictionaryCopy objectForKeyedSubscript:v4];
+    v7 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentIdentifierKey];
+    v8 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentArchivedSettingsKey];
+    v9 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentEnabledKey];
+    v10 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentMaskUUIDKey];
+    v11 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentAutoKey];
 
     if (v11)
     {
@@ -154,7 +154,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
       if (!v7)
       {
         goto LABEL_24;
@@ -166,7 +166,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v6 integerValue];
+        unsignedIntegerValue = [v6 integerValue];
         if (!v7)
         {
           goto LABEL_24;
@@ -180,7 +180,7 @@ LABEL_8:
           goto LABEL_24;
         }
 
-        v15 = 0;
+        unsignedIntegerValue = 0;
         if (!v7)
         {
           goto LABEL_24;
@@ -188,9 +188,9 @@ LABEL_8:
       }
     }
 
-    v18 = v15;
+    v18 = unsignedIntegerValue;
     objc_opt_class();
-    v14 = 0;
+    selfCopy = 0;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_25;
@@ -202,7 +202,7 @@ LABEL_8:
     }
 
     objc_opt_class();
-    v14 = 0;
+    selfCopy = 0;
     if ((objc_opt_isKindOfClass() & 1) == 0 || !v9)
     {
       goto LABEL_25;
@@ -218,43 +218,43 @@ LABEL_8:
       }
 
       self = v16;
-      v14 = self;
+      selfCopy = self;
       goto LABEL_25;
     }
 
 LABEL_24:
-    v14 = 0;
+    selfCopy = 0;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v14;
+  return selfCopy;
 }
 
-+ (BOOL)isValidArchiveDictionary:(id)a3 errors:(id)a4
++ (BOOL)isValidArchiveDictionary:(id)dictionary errors:(id)errors
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  errorsCopy = errors;
+  if (dictionaryCopy)
   {
-    if ([PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentFormatVersionKey ofType:objc_opt_class() errors:v6])
+    if ([PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentFormatVersionKey ofType:objc_opt_class() errors:errorsCopy])
     {
-      v7 = [v5 objectForKeyedSubscript:PFAdjustmentFormatVersionKey];
-      v8 = [v7 unsignedIntegerValue];
-      v9 = v8 == 1;
-      if (v8 != 1)
+      v7 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentFormatVersionKey];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
+      v9 = unsignedIntegerValue == 1;
+      if (unsignedIntegerValue != 1)
       {
         v10 = MEMORY[0x1E696ABC0];
         v21 = PFAdjustmentFormatVersionKey;
         v22[0] = v7;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
         v12 = [v10 errorWithDomain:@"PFAdjustmentErrorDomain" code:4 userInfo:v11];
-        [v6 addObject:v12];
+        [errorsCopy addObject:v12];
       }
     }
 
@@ -263,23 +263,23 @@ LABEL_26:
       v9 = 0;
     }
 
-    v15 = v9 & [PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentIdentifierKey ofType:objc_opt_class() errors:v6];
-    v16 = [PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentArchivedSettingsKey ofType:objc_opt_class() errors:v6];
-    v14 = ([PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentEnabledKey ofType:objc_opt_class() errors:v6]&& v16) & v15;
-    v17 = [v5 objectForKeyedSubscript:PFAdjustmentAutoKey];
+    v15 = v9 & [PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentIdentifierKey ofType:objc_opt_class() errors:errorsCopy];
+    v16 = [PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentArchivedSettingsKey ofType:objc_opt_class() errors:errorsCopy];
+    v14 = ([PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentEnabledKey ofType:objc_opt_class() errors:errorsCopy]&& v16) & v15;
+    v17 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentAutoKey];
     if (v17)
     {
-      if ([PFAdjustmentSerialization validateValue:v17 isOfType:objc_opt_class() errors:v6]&& v14)
+      if ([PFAdjustmentSerialization validateValue:v17 isOfType:objc_opt_class() errors:errorsCopy]&& v14)
       {
         v18 = [v17 objectForKeyedSubscript:PFAdjustmentSettingsAutoCurrentKey];
 
         if (v18)
         {
           v19 = [v17 objectForKeyedSubscript:PFAdjustmentSettingsAutoCurrentKey];
-          v14 = [PFAdjustmentSerialization validateValue:v19 isOfType:objc_opt_class() errors:v6];
+          v14 = [PFAdjustmentSerialization validateValue:v19 isOfType:objc_opt_class() errors:errorsCopy];
           if (v14 && v19)
           {
-            LOBYTE(v14) = [PFAdjustmentSerialization validateArchive:v17 containsEntryWithKey:v19 ofType:objc_opt_class() errors:v6];
+            LOBYTE(v14) = [PFAdjustmentSerialization validateArchive:v17 containsEntryWithKey:v19 ofType:objc_opt_class() errors:errorsCopy];
           }
         }
 
@@ -301,7 +301,7 @@ LABEL_26:
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFAdjustmentErrorDomain" code:1 userInfo:0];
-    [v6 addObject:v13];
+    [errorsCopy addObject:v13];
 
     LOBYTE(v14) = 0;
   }

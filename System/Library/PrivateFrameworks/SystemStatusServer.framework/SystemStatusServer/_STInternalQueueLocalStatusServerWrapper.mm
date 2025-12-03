@@ -1,121 +1,121 @@
 @interface _STInternalQueueLocalStatusServerWrapper
-- (_STInternalQueueLocalStatusServerWrapper)initWithServer:(id)a3;
-- (id)publishedDataForDomain:(unint64_t)a3;
-- (id)publishedVolatileDataForDomain:(unint64_t)a3;
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5;
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
+- (_STInternalQueueLocalStatusServerWrapper)initWithServer:(id)server;
+- (id)publishedDataForDomain:(unint64_t)domain;
+- (id)publishedVolatileDataForDomain:(unint64_t)domain;
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data;
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain;
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation _STInternalQueueLocalStatusServerWrapper
 
-- (_STInternalQueueLocalStatusServerWrapper)initWithServer:(id)a3
+- (_STInternalQueueLocalStatusServerWrapper)initWithServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v9.receiver = self;
   v9.super_class = _STInternalQueueLocalStatusServerWrapper;
   v6 = [(_STInternalQueueLocalStatusServerWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_server, a3);
+    objc_storeStrong(&v6->_server, server);
   }
 
   return v7;
 }
 
-- (id)publishedDataForDomain:(unint64_t)a3
+- (id)publishedDataForDomain:(unint64_t)domain
 {
-  v4 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  v5 = [(STLocalStatusServer *)v4 _internalQueue_dataForDomain:a3];
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  v5 = [(STLocalStatusServer *)server _internalQueue_dataForDomain:domain];
   v6 = [v5 copyWithZone:0];
 
   return v6;
 }
 
-- (id)publishedVolatileDataForDomain:(unint64_t)a3
+- (id)publishedVolatileDataForDomain:(unint64_t)domain
 {
-  v4 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  v5 = [(STLocalStatusServer *)v4 _internalQueue_volatileDataForDomain:a3];
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  v5 = [(STLocalStatusServer *)server _internalQueue_volatileDataForDomain:domain];
   v6 = [v5 copyWithZone:0];
 
   return v6;
 }
 
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v10 _internalQueue_registerPublisherClient:v9 forDomain:a4 fallbackData:v8];
+  dataCopy = data;
+  clientCopy = client;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_registerPublisherClient:clientCopy forDomain:domain fallbackData:dataCopy];
 }
 
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
-  v7 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v7 _internalQueue_removePublisherClient:v6 forDomain:a4];
+  clientCopy = client;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_removePublisherClient:clientCopy forDomain:domain];
 }
 
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v11 _internalQueue_replaceDataChangeRecord:v10 forPublisherClient:v9 completion:v8];
+  completionCopy = completion;
+  clientCopy = client;
+  recordCopy = record;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_replaceDataChangeRecord:recordCopy forPublisherClient:clientCopy completion:completionCopy];
 }
 
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v11 _internalQueue_replaceVolatileDataChangeRecord:v10 forPublisherClient:v9 completion:v8];
+  completionCopy = completion;
+  clientCopy = client;
+  recordCopy = record;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_replaceVolatileDataChangeRecord:recordCopy forPublisherClient:clientCopy completion:completionCopy];
 }
 
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v16 _internalQueue_publishData:v15 forPublisherClient:v14 domain:a5 withChangeContext:v13 completion:v12];
+  completionCopy = completion;
+  contextCopy = context;
+  clientCopy = client;
+  dataCopy = data;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_publishData:dataCopy forPublisherClient:clientCopy domain:domain withChangeContext:contextCopy completion:completionCopy];
 }
 
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v16 _internalQueue_publishVolatileData:v15 forPublisherClient:v14 domain:a5 withChangeContext:v13 completion:v12];
+  completionCopy = completion;
+  contextCopy = context;
+  clientCopy = client;
+  dataCopy = data;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_publishVolatileData:dataCopy forPublisherClient:clientCopy domain:domain withChangeContext:contextCopy completion:completionCopy];
 }
 
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v13 _internalQueue_updateDataForPublisherClient:v12 domain:a4 usingDiffProvider:v11 completion:v10];
+  completionCopy = completion;
+  providerCopy = provider;
+  clientCopy = client;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_updateDataForPublisherClient:clientCopy domain:domain usingDiffProvider:providerCopy completion:completionCopy];
 }
 
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(_STInternalQueueLocalStatusServerWrapper *)self server];
-  [(STLocalStatusServer *)v13 _internalQueue_updateVolatileDataForPublisherClient:v12 domain:a4 usingDiffProvider:v11 completion:v10];
+  completionCopy = completion;
+  providerCopy = provider;
+  clientCopy = client;
+  server = [(_STInternalQueueLocalStatusServerWrapper *)self server];
+  [(STLocalStatusServer *)server _internalQueue_updateVolatileDataForPublisherClient:clientCopy domain:domain usingDiffProvider:providerCopy completion:completionCopy];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface BSAbstractDefaultDomain
 + (void)initialize;
-- (id)_defaultKeyFromPropertyName:(id)a1;
-- (id)_initWithDefaults:(id)a3;
-- (id)_initWithDomain:(id)a3;
-- (id)_propertyFromSelector:(uint64_t)a1;
+- (id)_defaultKeyFromPropertyName:(id)name;
+- (id)_initWithDefaults:(id)defaults;
+- (id)_initWithDomain:(id)domain;
+- (id)_propertyFromSelector:(uint64_t)selector;
 - (id)description;
-- (id)observeDefault:(id)a3 onQueue:(id)a4 withBlock:(id)a5;
-- (id)observeDefaults:(id)a3 onQueue:(id)a4 withBlock:(id)a5;
-- (void)_addObserver:(uint64_t)a1;
-- (void)_bindProperty:(id)a3 withDefaultKey:(id)a4 toDefaultValue:(id)a5 options:(unint64_t)a6;
-- (void)_removeObserver:(uint64_t)a1;
-- (void)_setUserDefaults:(id)a3;
+- (id)observeDefault:(id)default onQueue:(id)queue withBlock:(id)block;
+- (id)observeDefaults:(id)defaults onQueue:(id)queue withBlock:(id)block;
+- (void)_addObserver:(uint64_t)observer;
+- (void)_bindProperty:(id)property withDefaultKey:(id)key toDefaultValue:(id)value options:(unint64_t)options;
+- (void)_removeObserver:(uint64_t)observer;
+- (void)_setUserDefaults:(id)defaults;
 - (void)dealloc;
 - (void)resetAllDefaults;
 @end
@@ -58,7 +58,7 @@
       pthread_mutex_unlock(&__classNameToSelectorLock);
     }
 
-    if ([a1 __useDynamicMethodResolution])
+    if ([self __useDynamicMethodResolution])
     {
       v96 = v94;
       v92 = objc_opt_self();
@@ -101,8 +101,8 @@
           v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:property_getName(v12)];
           if (!v17)
           {
-            v57 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v57 handleFailureInMethod:sel___getPropertyMetadataForProperty_class_ object:v16 file:@"BSAbstractDefaultDomain.m" lineNumber:389 description:@"Property name required."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel___getPropertyMetadataForProperty_class_ object:v16 file:@"BSAbstractDefaultDomain.m" lineNumber:389 description:@"Property name required."];
 
             v17 = 0;
           }
@@ -119,9 +119,9 @@
 
           v20 = MEMORY[0x1E696AEC0];
           v21 = [v18 substringToIndex:1];
-          v22 = [v21 capitalizedString];
+          capitalizedString = [v21 capitalizedString];
           v23 = [v18 substringFromIndex:1];
-          v24 = [v20 stringWithFormat:@"set%@%@", v22, v23];
+          v24 = [v20 stringWithFormat:@"set%@%@", capitalizedString, v23];
 
           v25 = property_copyAttributeValue(v12, "S");
           if (v25)
@@ -137,9 +137,9 @@
           v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v28];
           if (!v28)
           {
-            v58 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v59 = NSStringFromClass(aClass);
-            [v58 handleFailureInMethod:sel___getPropertyMetadataForProperty_class_ object:v16 file:@"BSAbstractDefaultDomain.m" lineNumber:411 description:{@"Property type must be non-nil for property: %@ on class: %@", v18, v59}];
+            [currentHandler2 handleFailureInMethod:sel___getPropertyMetadataForProperty_class_ object:v16 file:@"BSAbstractDefaultDomain.m" lineNumber:411 description:{@"Property type must be non-nil for property: %@ on class: %@", v18, v59}];
           }
 
           v30 = [v29 characterAtIndex:0];
@@ -159,8 +159,8 @@
           v34 = [v32 length];
           if ([v32 characterAtIndex:0] != 34 || objc_msgSend(v32, "characterAtIndex:", v34 - 1) != 34 || (objc_msgSend(v32, "substringWithRange:", 1, v34 - 2), v91 = objc_claimAutoreleasedReturnValue(), v35 = NSClassFromString(v91), v91, !v35))
           {
-            v36 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v36 handleFailureInMethod:sel___classFromPropertyType_ object:v33 file:@"BSAbstractDefaultDomain.m" lineNumber:493 description:{@"Expected a class from property type attribute, but found none <propertyType = %@>", v32}];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:sel___classFromPropertyType_ object:v33 file:@"BSAbstractDefaultDomain.m" lineNumber:493 description:{@"Expected a class from property type attribute, but found none <propertyType = %@>", v32}];
 
             v35 = 0;
           }
@@ -222,9 +222,9 @@ LABEL_41:
 
           if (!v38)
           {
-            v60 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
             v61 = NSStringFromClass(aClass);
-            [v60 handleFailureInMethod:sel___processPropertyMetadata_ object:v92 file:@"BSAbstractDefaultDomain.m" lineNumber:372 description:{@"Metadata required but not obtained for property with name: %@ [class=%@]", v100, v61}];
+            [currentHandler4 handleFailureInMethod:sel___processPropertyMetadata_ object:v92 file:@"BSAbstractDefaultDomain.m" lineNumber:372 description:{@"Metadata required but not obtained for property with name: %@ [class=%@]", v100, v61}];
           }
 
           if (v94)
@@ -338,13 +338,13 @@ LABEL_82:
       }
 
       v64 = v62;
-      v65 = [v64 allValues];
+      allValues = [v64 allValues];
 
       v104 = 0u;
       v105 = 0u;
       *buf = 0u;
       v103 = 0u;
-      newValuea = v65;
+      newValuea = allValues;
       v66 = [newValuea countByEnumeratingWithState:buf objects:outCount count:16];
       if (v66)
       {
@@ -391,8 +391,8 @@ LABEL_82:
             if (!v68)
             {
 LABEL_114:
-              v80 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v80 handleFailureInMethod:sel___assignPropertyImplementations_ object:v97 file:@"BSAbstractDefaultDomain.m" lineNumber:592 description:@"Should always have a getter and setter available."];
+              currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler5 handleFailureInMethod:sel___assignPropertyImplementations_ object:v97 file:@"BSAbstractDefaultDomain.m" lineNumber:592 description:@"Should always have a getter and setter available."];
 
               goto LABEL_130;
             }
@@ -518,14 +518,14 @@ LABEL_114:
 
             v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c@:", v77];
             v84 = v83;
-            v85 = [v83 UTF8String];
+            uTF8String = [v83 UTF8String];
 
-            class_addMethod(v63, v71, v79, v85);
+            class_addMethod(v63, v71, v79, uTF8String);
             v86 = [MEMORY[0x1E696AEC0] stringWithFormat:@"v@:%c", *(v68 + 8)];
             v87 = v86;
-            v88 = [v86 UTF8String];
+            uTF8String2 = [v86 UTF8String];
 
-            class_addMethod(v63, v76, v78, v88);
+            class_addMethod(v63, v76, v78, uTF8String2);
 LABEL_130:
             ++v67;
           }
@@ -556,17 +556,17 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
   [(BSAbstractDefaultDomain *)&v3 dealloc];
 }
 
-- (id)_initWithDefaults:(id)a3
+- (id)_initWithDefaults:(id)defaults
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  defaultsCopy = defaults;
   v32.receiver = self;
   v32.super_class = BSAbstractDefaultDomain;
   v6 = [(BSAbstractDefaultDomain *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     defaultKeyToDefaultValue = v7->_defaultKeyToDefaultValue;
     v7->_defaultKeyToDefaultValue = v8;
@@ -602,9 +602,9 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
         }
 
         v18 = v17;
-        v19 = [v18 allValues];
+        allValues = [v18 allValues];
 
-        v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v20 = [allValues countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v20)
         {
           v21 = *v34;
@@ -615,7 +615,7 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
             {
               if (*v34 != v21)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(allValues);
               }
 
               v23 = *(*(&v33 + 1) + 8 * v22);
@@ -634,7 +634,7 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
 
               if (v26)
               {
-                v27 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 if (v23)
                 {
                   v28 = *(v23 + 48);
@@ -646,14 +646,14 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
                 }
 
                 v29 = v28;
-                [v27 handleFailureInMethod:sel__bindDefaultsIfNecessary object:v7 file:@"BSAbstractDefaultDomain.m" lineNumber:315 description:{@"Expected default key specified for property: %@.  Use BIND_DEFAULT_AND_KEY to assign it.", v29}];
+                [currentHandler handleFailureInMethod:sel__bindDefaultsIfNecessary object:v7 file:@"BSAbstractDefaultDomain.m" lineNumber:315 description:{@"Expected default key specified for property: %@.  Use BIND_DEFAULT_AND_KEY to assign it.", v29}];
               }
 
               ++v22;
             }
 
             while (v20 != v22);
-            v30 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+            v30 = [allValues countByEnumeratingWithState:&v33 objects:v37 count:16];
             v20 = v30;
           }
 
@@ -670,52 +670,52 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
   return v7;
 }
 
-- (id)_initWithDomain:(id)a3
+- (id)_initWithDomain:(id)domain
 {
-  v5 = a3;
-  if (!v5)
+  domainCopy = domain;
+  if (!domainCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
   }
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 isEqualToString:v7];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [domainCopy isEqualToString:bundleIdentifier];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:v5];
+    standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:domainCopy];
   }
 
-  v10 = v9;
-  [v9 bs_setDomain:v5];
+  v10 = standardUserDefaults;
+  [standardUserDefaults bs_setDomain:domainCopy];
   v11 = [(BSAbstractDefaultDomain *)self _initWithDefaults:v10];
 
   return v11;
 }
 
-- (id)observeDefault:(id)a3 onQueue:(id)a4 withBlock:(id)a5
+- (id)observeDefault:(id)default onQueue:(id)queue withBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
-  v11 = [(BSAbstractDefaultDomain *)self observeDefaults:v10 onQueue:v8 withBlock:v9];
+  queueCopy = queue;
+  blockCopy = block;
+  v10 = [MEMORY[0x1E695DEC8] arrayWithObject:default];
+  v11 = [(BSAbstractDefaultDomain *)self observeDefaults:v10 onQueue:queueCopy withBlock:blockCopy];
 
   return v11;
 }
 
-- (id)observeDefaults:(id)a3 onQueue:(id)a4 withBlock:(id)a5
+- (id)observeDefaults:(id)defaults onQueue:(id)queue withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_BSDefaultObserver alloc] initWithAbstractDefaultDomain:v8 defaultsToObserve:v9 onQueue:v10 withBlock:?];
+  defaultsCopy = defaults;
+  queueCopy = queue;
+  blockCopy = block;
+  v11 = [[_BSDefaultObserver alloc] initWithAbstractDefaultDomain:defaultsCopy defaultsToObserve:queueCopy onQueue:blockCopy withBlock:?];
 
   return v11;
 }
@@ -723,7 +723,7 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
 - (void)resetAllDefaults
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(BSAbstractDefaultDomain *)self _store];
+  _store = [(BSAbstractDefaultDomain *)self _store];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -742,9 +742,9 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
   }
 
   v7 = v6;
-  v8 = [v7 allValues];
+  allValues = [v7 allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -754,7 +754,7 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -764,45 +764,45 @@ void __47__BSAbstractDefaultDomain___excludedProperties__block_invoke()
         }
 
         v13 = v12;
-        [v2 removeObjectForKey:v13];
+        [_store removeObjectForKey:v13];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_addObserver:(uint64_t)a1
+- (void)_addObserver:(uint64_t)observer
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (observer && v3)
   {
-    v5 = *(a1 + 24);
+    v5 = *(observer + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__BSAbstractDefaultDomain__addObserver___block_invoke;
     v6[3] = &unk_1E72CACC0;
-    v6[4] = a1;
+    v6[4] = observer;
     v7 = v3;
     dispatch_sync(v5, v6);
   }
 }
 
-- (void)_removeObserver:(uint64_t)a1
+- (void)_removeObserver:(uint64_t)observer
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (observer && v3)
   {
-    v5 = *(a1 + 24);
+    v5 = *(observer + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __43__BSAbstractDefaultDomain__removeObserver___block_invoke;
     v6[3] = &unk_1E72CACC0;
-    v6[4] = a1;
+    v6[4] = observer;
     v7 = v3;
     dispatch_sync(v5, v6);
   }
@@ -822,14 +822,14 @@ uint64_t __43__BSAbstractDefaultDomain__removeObserver___block_invoke(uint64_t a
   return result;
 }
 
-- (void)_bindProperty:(id)a3 withDefaultKey:(id)a4 toDefaultValue:(id)a5 options:(unint64_t)a6
+- (void)_bindProperty:(id)property withDefaultKey:(id)key toDefaultValue:(id)value options:(unint64_t)options
 {
-  v25 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v25)
+  propertyCopy = property;
+  keyCopy = key;
+  valueCopy = value;
+  if (propertyCopy)
   {
-    if (v11)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -837,23 +837,23 @@ uint64_t __43__BSAbstractDefaultDomain__removeObserver___block_invoke(uint64_t a
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"propertyName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"propertyName"}];
 
-    if (v11)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"defaultKey"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"defaultKey"}];
 
 LABEL_3:
   if (self->_boundDefaults)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:223 description:@"Cannot bind new defaults after we've registered them."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:223 description:@"Cannot bind new defaults after we've registered them."];
     goto LABEL_10;
   }
 
@@ -871,14 +871,14 @@ LABEL_3:
   }
 
   v18 = v17;
-  v13 = [v18 objectForKey:v25];
+  currentHandler3 = [v18 objectForKey:propertyCopy];
 
-  if (v13)
+  if (currentHandler3)
   {
-    objc_setProperty_nonatomic_copy(v13, v19, v11, 56);
-    [(BSPropertyMetadata *)v13 setDefaultValue:v12];
-    v13[9] = a6;
-    if (!v12)
+    objc_setProperty_nonatomic_copy(currentHandler3, v19, keyCopy, 56);
+    [(BSPropertyMetadata *)currentHandler3 setDefaultValue:valueCopy];
+    currentHandler3[9] = options;
+    if (!valueCopy)
     {
       goto LABEL_10;
     }
@@ -886,16 +886,16 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  [v22 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:228 description:{@"Must have a property to bind to, but didn't find one for property: %@ [Class=%@]", v25, v24}];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"BSAbstractDefaultDomain.m" lineNumber:228 description:{@"Must have a property to bind to, but didn't find one for property: %@ [Class=%@]", propertyCopy, v24}];
 
-  [(BSPropertyMetadata *)0 setDefaultValue:v12];
-  if (v12)
+  [(BSPropertyMetadata *)0 setDefaultValue:valueCopy];
+  if (valueCopy)
   {
 LABEL_9:
-    [(NSMutableDictionary *)self->_defaultKeyToDefaultValue setObject:v12 forKey:v11];
+    [(NSMutableDictionary *)self->_defaultKeyToDefaultValue setObject:valueCopy forKey:keyCopy];
   }
 
 LABEL_10:
@@ -911,22 +911,22 @@ LABEL_10:
     v12 = 3221225472;
     v13 = __65__BSAbstractDefaultDomain_descriptionBuilderWithMultilinePrefix___block_invoke;
     v14 = &unk_1E72CACC0;
-    v15 = self;
+    selfCopy = self;
     v5 = v4;
     v16 = v5;
     v6 = [v5 modifyBody:&v11];
     v7 = v16;
     v8 = v5;
 
-    v9 = [v8 build];
+    build = [v8 build];
   }
 
   else
   {
-    v9 = 0;
+    build = 0;
   }
 
-  return v9;
+  return build;
 }
 
 void __65__BSAbstractDefaultDomain_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -1018,23 +1018,23 @@ void __65__BSAbstractDefaultDomain_descriptionBuilderWithMultilinePrefix___block
   }
 }
 
-- (void)_setUserDefaults:(id)a3
+- (void)_setUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   userDefaults = self->_userDefaults;
   p_userDefaults = &self->_userDefaults;
-  if (userDefaults != v5)
+  if (userDefaults != defaultsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_userDefaults, a3);
-    v5 = v8;
+    v8 = defaultsCopy;
+    objc_storeStrong(p_userDefaults, defaults);
+    defaultsCopy = v8;
   }
 }
 
-- (id)_defaultKeyFromPropertyName:(id)a1
+- (id)_defaultKeyFromPropertyName:(id)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
     v4 = objc_opt_class();
     v5 = __getMetadataForClass(v4);
@@ -1059,28 +1059,28 @@ void __65__BSAbstractDefaultDomain_descriptionBuilderWithMultilinePrefix___block
 
     else
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      [v12 handleFailureInMethod:sel__defaultKeyFromPropertyName_ object:a1 file:@"BSAbstractDefaultDomain.m" lineNumber:328 description:{@"Must have property for default: '%@' on class: %@", v3, v14}];
+      [currentHandler handleFailureInMethod:sel__defaultKeyFromPropertyName_ object:name file:@"BSAbstractDefaultDomain.m" lineNumber:328 description:{@"Must have property for default: '%@' on class: %@", v3, v14}];
 
       v10 = 0;
     }
 
-    a1 = v10;
+    name = v10;
   }
 
-  return a1;
+  return name;
 }
 
-- (id)_propertyFromSelector:(uint64_t)a1
+- (id)_propertyFromSelector:(uint64_t)selector
 {
-  if (a1)
+  if (selector)
   {
     if (!aSelector)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel__propertyFromSelector_ object:a1 file:@"BSAbstractDefaultDomain.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"selector"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__propertyFromSelector_ object:selector file:@"BSAbstractDefaultDomain.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"selector"}];
     }
 
     v4 = NSStringFromSelector(aSelector);
@@ -1109,10 +1109,10 @@ void __65__BSAbstractDefaultDomain_descriptionBuilderWithMultilinePrefix___block
 
     if (!v11)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      [v14 handleFailureInMethod:sel__propertyFromSelector_ object:a1 file:@"BSAbstractDefaultDomain.m" lineNumber:344 description:{@"Unable to resolve property metadata for selector: '%@' on class: %@", v4, v16}];
+      [currentHandler2 handleFailureInMethod:sel__propertyFromSelector_ object:selector file:@"BSAbstractDefaultDomain.m" lineNumber:344 description:{@"Unable to resolve property metadata for selector: '%@' on class: %@", v4, v16}];
     }
   }
 

@@ -1,11 +1,11 @@
 @interface PXSmartAlbumApertureCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 + (id)formatter;
 - (NSArray)apertureValues;
 - (PXLabeledValue)apertureValue;
 - (PXLabeledValue)secondApertureValue;
-- (void)setApertureValue:(id)a3;
-- (void)setSecondApertureValue:(id)a3;
+- (void)setApertureValue:(id)value;
+- (void)setSecondApertureValue:(id)value;
 @end
 
 @implementation PXSmartAlbumApertureCondition
@@ -25,7 +25,7 @@
   return v2;
 }
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:300];
@@ -35,12 +35,12 @@
   return v3;
 }
 
-- (void)setSecondApertureValue:(id)a3
+- (void)setSecondApertureValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 value];
-  if (v6)
+  valueCopy = value;
+  value = [valueCopy value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -48,57 +48,57 @@
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"apertureValue.value", v12, v14}];
+    px_descriptionForAssertionMessage = [value px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"apertureValue.value", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"apertureValue.value", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"apertureValue.value", v12}];
   }
 
 LABEL_3:
-  v7 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v6 doubleValue];
-  [v7 setSecondDoubleValue:?];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [value doubleValue];
+  [singleQuery setSecondDoubleValue:?];
   v8 = PLUIGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = valueCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: second aperture value set to: %@", buf, 0xCu);
   }
 
-  v9 = [(PXSmartAlbumCondition *)self delegate];
-  [v9 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)secondApertureValue
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
   v3 = MEMORY[0x1E696AD98];
-  [v2 secondDoubleValue];
+  [singleQuery secondDoubleValue];
   v4 = [v3 numberWithDouble:?];
-  v5 = [objc_opt_class() formatter];
-  v6 = [v5 stringFromNumber:v4];
+  formatter = [objc_opt_class() formatter];
+  v6 = [formatter stringFromNumber:v4];
 
   v7 = [[PXLabeledValue alloc] initWithValue:v4 localizedLabel:v6];
 
   return v7;
 }
 
-- (void)setApertureValue:(id)a3
+- (void)setApertureValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 value];
-  if (v6)
+  valueCopy = value;
+  value = [valueCopy value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -106,45 +106,45 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:52 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"apertureValue.value", v12, v14}];
+    px_descriptionForAssertionMessage = [value px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:52 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"apertureValue.value", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:52 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"apertureValue.value", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:52 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"apertureValue.value", v12}];
   }
 
 LABEL_3:
-  v7 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v6 doubleValue];
-  [v7 setDoubleValue:?];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [value doubleValue];
+  [singleQuery setDoubleValue:?];
   v8 = PLUIGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = valueCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: aperture value set to: %@", buf, 0xCu);
   }
 
-  v9 = [(PXSmartAlbumCondition *)self delegate];
-  [v9 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)apertureValue
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
   v3 = MEMORY[0x1E696AD98];
-  [v2 doubleValue];
+  [singleQuery doubleValue];
   v4 = [v3 numberWithDouble:?];
-  v5 = [objc_opt_class() formatter];
-  v6 = [v5 stringFromNumber:v4];
+  formatter = [objc_opt_class() formatter];
+  v6 = [formatter stringFromNumber:v4];
 
   v7 = [[PXLabeledValue alloc] initWithValue:v4 localizedLabel:v6];
 
@@ -156,9 +156,9 @@ LABEL_3:
   apertureValues = self->_apertureValues;
   if (!apertureValues)
   {
-    v4 = [objc_opt_class() formatter];
-    v5 = [(PXSmartAlbumCondition *)self editingContext];
-    v6 = [v5 apertureValuesWithFormatter:v4];
+    formatter = [objc_opt_class() formatter];
+    editingContext = [(PXSmartAlbumCondition *)self editingContext];
+    v6 = [editingContext apertureValuesWithFormatter:formatter];
     v7 = self->_apertureValues;
     self->_apertureValues = v6;
 

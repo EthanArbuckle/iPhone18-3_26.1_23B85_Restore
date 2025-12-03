@@ -1,23 +1,23 @@
 @interface PrivacyPromptOperation
-- (PrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3;
+- (PrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier;
 - (id)_privacyAcknowledgementURLString;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)run;
 @end
 
 @implementation PrivacyPromptOperation
 
-- (PrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3
+- (PrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PrivacyPromptOperation;
   v6 = [(PrivacyPromptOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_privacyIdentifier, a3);
+    objc_storeStrong(&v6->_privacyIdentifier, identifier);
   }
 
   return v7;
@@ -28,8 +28,8 @@
   v3 = MKBGetDeviceLockState();
   if (!v3 || v3 == 3)
   {
-    v4 = [(PrivacyPromptOperation *)self privacyIdentifier];
-    if (![SSPrivacyController shouldDisplayPrivacyLinkWithIdentifier:v4])
+    privacyIdentifier = [(PrivacyPromptOperation *)self privacyIdentifier];
+    if (![SSPrivacyController shouldDisplayPrivacyLinkWithIdentifier:privacyIdentifier])
     {
       v34 = 0;
       v26 = 2;
@@ -62,11 +62,11 @@ LABEL_80:
     v72 = v9;
     v74 = v7;
 
-    v11 = [(PrivacyPromptOperation *)self _privacyAcknowledgementURLString];
-    v12 = v11;
-    if (v4)
+    _privacyAcknowledgementURLString = [(PrivacyPromptOperation *)self _privacyAcknowledgementURLString];
+    v12 = _privacyAcknowledgementURLString;
+    if (privacyIdentifier)
     {
-      v13 = v11 == 0;
+      v13 = _privacyAcknowledgementURLString == 0;
     }
 
     else
@@ -80,13 +80,13 @@ LABEL_80:
     {
       v76[0] = @"privacyIdentifier";
       v76[1] = @"privacyAcknowledgementUrlString";
-      v77[0] = v4;
-      v77[1] = v11;
+      v77[0] = privacyIdentifier;
+      v77[1] = _privacyAcknowledgementURLString;
       v15 = [NSDictionary dictionaryWithObjects:v77 forKeys:v76 count:2];
       [v7 setUserInfo:v15];
 
-      v16 = [SBSRemoteAlertHandle newHandleWithDefinition:v73 configurationContext:v7];
-      if (v16)
+      completion = [SBSRemoteAlertHandle newHandleWithDefinition:v73 configurationContext:v7];
+      if (completion)
       {
         v17 = +[SSLogConfig sharedDaemonConfig];
         if (!v17)
@@ -94,21 +94,21 @@ LABEL_80:
           v17 = +[SSLogConfig sharedConfig];
         }
 
-        v18 = [v17 shouldLog];
-        v19 = [v17 shouldLogToDisk];
-        v20 = [v17 OSLogObject];
-        v21 = v20;
-        if (v19)
+        shouldLog = [v17 shouldLog];
+        shouldLogToDisk = [v17 shouldLogToDisk];
+        oSLogObject = [v17 OSLogObject];
+        v21 = oSLogObject;
+        if (shouldLogToDisk)
         {
-          v18 |= 2u;
+          shouldLog |= 2u;
         }
 
-        if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
-          v18 &= 2u;
+          shouldLog &= 2u;
         }
 
-        if (v18)
+        if (shouldLog)
         {
           v22 = objc_opt_class();
           v78 = 138543362;
@@ -122,8 +122,8 @@ LABEL_80:
           {
 LABEL_22:
 
-            [v16 addObserver:self];
-            [v16 activateWithContext:0];
+            [completion addObserver:self];
+            [completion activateWithContext:0];
             dispatch_semaphore_wait(self->_privacyPromptSemaphore, 0xFFFFFFFFFFFFFFFFLL);
             if (*(*&v80[8] + 24) != 1)
             {
@@ -132,7 +132,7 @@ LABEL_22:
             }
 
             v25 = [NSURL URLWithString:v12];
-            [SSPrivacyController acknowledgePrivacyLinkWithIdentifier:v4 URL:v25];
+            [SSPrivacyController acknowledgePrivacyLinkWithIdentifier:privacyIdentifier URL:v25];
             v26 = 1;
 LABEL_61:
 
@@ -164,21 +164,21 @@ LABEL_79:
         v51 = +[SSLogConfig sharedConfig];
       }
 
-      v52 = [v51 shouldLog];
-      v53 = [v51 shouldLogToDisk];
-      v54 = [v51 OSLogObject];
-      v55 = v54;
-      if (v53)
+      shouldLog2 = [v51 shouldLog];
+      shouldLogToDisk2 = [v51 shouldLogToDisk];
+      oSLogObject2 = [v51 OSLogObject];
+      v55 = oSLogObject2;
+      if (shouldLogToDisk2)
       {
-        v52 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v52 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v52)
+      if (shouldLog2)
       {
         v56 = objc_opt_class();
         v78 = 138543362;
@@ -205,18 +205,18 @@ LABEL_74:
       goto LABEL_74;
     }
 
-    if (v4)
+    if (privacyIdentifier)
     {
 LABEL_47:
       if (v12)
       {
 LABEL_59:
-        v16 = [(PrivacyPromptOperation *)self completion];
-        if (v16)
+        completion = [(PrivacyPromptOperation *)self completion];
+        if (completion)
         {
           v25 = SSError();
           v26 = 3;
-          (*(v16 + 2))(v16, 3, v25);
+          (*(completion + 2))(completion, 3, v25);
           goto LABEL_61;
         }
 
@@ -232,21 +232,21 @@ LABEL_76:
         v43 = +[SSLogConfig sharedConfig];
       }
 
-      v44 = [v43 shouldLog];
-      v45 = [v43 shouldLogToDisk];
-      v46 = [v43 OSLogObject];
-      v47 = v46;
-      if (v45)
+      shouldLog3 = [v43 shouldLog];
+      shouldLogToDisk3 = [v43 shouldLogToDisk];
+      oSLogObject3 = [v43 OSLogObject];
+      v47 = oSLogObject3;
+      if (shouldLogToDisk3)
       {
-        v44 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      if (!os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
-        v44 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (v44)
+      if (shouldLog3)
       {
         v48 = objc_opt_class();
         v78 = 138543362;
@@ -278,21 +278,21 @@ LABEL_58:
       v35 = +[SSLogConfig sharedConfig];
     }
 
-    v36 = [v35 shouldLog];
-    v37 = [v35 shouldLogToDisk];
-    v38 = [v35 OSLogObject];
-    v39 = v38;
-    if (v37)
+    shouldLog4 = [v35 shouldLog];
+    shouldLogToDisk4 = [v35 shouldLogToDisk];
+    oSLogObject4 = [v35 OSLogObject];
+    v39 = oSLogObject4;
+    if (shouldLogToDisk4)
     {
-      v36 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
-      v36 &= 2u;
+      shouldLog4 &= 2u;
     }
 
-    if (v36)
+    if (shouldLog4)
     {
       v40 = objc_opt_class();
       v78 = 138543362;
@@ -324,19 +324,19 @@ LABEL_46:
     v27 = +[SSLogConfig sharedConfig];
   }
 
-  v28 = [v27 shouldLog];
+  shouldLog5 = [v27 shouldLog];
   if ([v27 shouldLogToDisk])
   {
-    v29 = v28 | 2;
+    v29 = shouldLog5 | 2;
   }
 
   else
   {
-    v29 = v28;
+    v29 = shouldLog5;
   }
 
-  v30 = [v27 OSLogObject];
-  if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+  oSLogObject5 = [v27 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
   {
     v29 &= 2u;
   }
@@ -374,19 +374,19 @@ LABEL_81:
     v59 = +[SSLogConfig sharedConfig];
   }
 
-  v60 = [v59 shouldLog];
+  shouldLog6 = [v59 shouldLog];
   if ([v59 shouldLogToDisk])
   {
-    v61 = v60 | 2;
+    v61 = shouldLog6 | 2;
   }
 
   else
   {
-    v61 = v60;
+    v61 = shouldLog6;
   }
 
-  v62 = [v59 OSLogObject];
-  if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+  oSLogObject6 = [v59 OSLogObject];
+  if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
   {
     v63 = v61;
   }
@@ -415,23 +415,23 @@ LABEL_81:
       goto LABEL_93;
     }
 
-    v62 = [NSString stringWithCString:v67 encoding:4, v80, v70];
+    oSLogObject6 = [NSString stringWithCString:v67 encoding:4, v80, v70];
     free(v67);
     SSFileLog();
   }
 
 LABEL_93:
-  v68 = [(PrivacyPromptOperation *)self completion];
-  v4 = v68;
-  if (v68)
+  completion2 = [(PrivacyPromptOperation *)self completion];
+  privacyIdentifier = completion2;
+  if (completion2)
   {
-    (*(v68 + 16))(v68, v26, v34);
+    (*(completion2 + 16))(completion2, v26, v34);
   }
 
 LABEL_95:
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -439,19 +439,19 @@ LABEL_95:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -469,7 +469,7 @@ LABEL_95:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
     free(v9);
     SSFileLog();
 LABEL_11:
@@ -478,28 +478,28 @@ LABEL_11:
   dispatch_semaphore_signal(self->_privacyPromptSemaphore);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = +[SSLogConfig sharedDaemonConfig];
   if (!v6)
   {
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 &= 2u;
   }
@@ -512,14 +512,14 @@ LABEL_11:
   *v13 = 138543618;
   *&v13[4] = objc_opt_class();
   *&v13[12] = 2114;
-  *&v13[14] = v5;
+  *&v13[14] = errorCopy;
   v10 = *&v13[4];
   LODWORD(v12) = 22;
   v11 = _os_log_send_and_compose_impl();
 
   if (v11)
   {
-    v9 = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
     free(v11);
     SSFileLog();
 LABEL_11:
@@ -540,7 +540,7 @@ LABEL_11:
   v8 = v7;
   if (v6)
   {
-    v9 = [v5 URLBag];
+    uRLBag = [v5 URLBag];
     goto LABEL_17;
   }
 
@@ -552,19 +552,19 @@ LABEL_11:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 &= 2u;
     }
@@ -586,9 +586,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v13 = [NSString stringWithCString:v16 encoding:4, &v22, v20];
+      oSLogObject = [NSString stringWithCString:v16 encoding:4, &v22, v20];
       free(v16);
-      v19 = v13;
+      v19 = oSLogObject;
       SSFileLog();
     }
 
@@ -596,9 +596,9 @@ LABEL_15:
   }
 
 LABEL_16:
-  v9 = 0;
+  uRLBag = 0;
 LABEL_17:
-  v17 = [v9 valueForKey:{@"privacyAcknowledgementUrl", v19}];
+  v17 = [uRLBag valueForKey:{@"privacyAcknowledgementUrl", v19}];
 
   return v17;
 }

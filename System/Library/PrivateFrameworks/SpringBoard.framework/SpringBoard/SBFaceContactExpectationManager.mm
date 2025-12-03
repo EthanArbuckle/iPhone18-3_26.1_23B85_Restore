@@ -1,8 +1,8 @@
 @interface SBFaceContactExpectationManager
-- (BOOL)_sceneHasBypassEntitlement:(id)a3;
-- (SBFaceContactExpectationManager)initWithSceneManager:(id)a3;
-- (SBFaceContactExpectationManager)initWithSceneManager:(id)a3 proximitySensorManager:(id)a4;
-- (id)_frontmostScenesExpectingFaceContactAndGetShouldDisableGracePeriod:(BOOL *)a3;
+- (BOOL)_sceneHasBypassEntitlement:(id)entitlement;
+- (SBFaceContactExpectationManager)initWithSceneManager:(id)manager;
+- (SBFaceContactExpectationManager)initWithSceneManager:(id)manager proximitySensorManager:(id)sensorManager;
+- (id)_frontmostScenesExpectingFaceContactAndGetShouldDisableGracePeriod:(BOOL *)period;
 - (id)_proximitySensorClientID;
 - (id)description;
 - (void)updateFaceContactExpectation;
@@ -29,32 +29,32 @@
 
     self->_faceExpected = v4;
     WeakRetained = objc_loadWeakRetained(&self->_proximitySensorManager);
-    v8 = [(SBFaceContactExpectationManager *)self _proximitySensorClientID];
-    [WeakRetained client:v8 wantsProximityDetectionEnabled:self->_faceExpected disableGracePeriod:v9];
+    _proximitySensorClientID = [(SBFaceContactExpectationManager *)self _proximitySensorClientID];
+    [WeakRetained client:_proximitySensorClientID wantsProximityDetectionEnabled:self->_faceExpected disableGracePeriod:v9];
   }
 }
 
-- (SBFaceContactExpectationManager)initWithSceneManager:(id)a3
+- (SBFaceContactExpectationManager)initWithSceneManager:(id)manager
 {
   v4 = SBApp;
-  v5 = a3;
-  v6 = [v4 proximitySensorManager];
-  v7 = [(SBFaceContactExpectationManager *)self initWithSceneManager:v5 proximitySensorManager:v6];
+  managerCopy = manager;
+  proximitySensorManager = [v4 proximitySensorManager];
+  v7 = [(SBFaceContactExpectationManager *)self initWithSceneManager:managerCopy proximitySensorManager:proximitySensorManager];
 
   return v7;
 }
 
-- (SBFaceContactExpectationManager)initWithSceneManager:(id)a3 proximitySensorManager:(id)a4
+- (SBFaceContactExpectationManager)initWithSceneManager:(id)manager proximitySensorManager:(id)sensorManager
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  managerCopy = manager;
+  sensorManagerCopy = sensorManager;
+  if (!managerCopy)
   {
     [SBFaceContactExpectationManager initWithSceneManager:a2 proximitySensorManager:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = sensorManagerCopy;
+  if (!sensorManagerCopy)
   {
     [SBFaceContactExpectationManager initWithSceneManager:a2 proximitySensorManager:?];
   }
@@ -65,7 +65,7 @@
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeWeak(&v10->_sceneManager, v7);
+    objc_storeWeak(&v10->_sceneManager, managerCopy);
     objc_storeWeak(p_isa + 2, v9);
   }
 
@@ -84,20 +84,20 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:self->_faceExpected withName:@"_faceExpected"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)_sceneHasBypassEntitlement:(id)a3
+- (BOOL)_sceneHasBypassEntitlement:(id)entitlement
 {
-  v3 = [a3 clientHandle];
-  v4 = [v3 processHandle];
+  clientHandle = [entitlement clientHandle];
+  processHandle = [clientHandle processHandle];
 
   v5 = 0;
-  if (v4)
+  if (processHandle)
   {
-    [v4 auditToken];
+    [processHandle auditToken];
     if (BSAuditTokenTaskHasEntitlement())
     {
       v5 = 1;
@@ -107,7 +107,7 @@
   return v5;
 }
 
-- (id)_frontmostScenesExpectingFaceContactAndGetShouldDisableGracePeriod:(BOOL *)a3
+- (id)_frontmostScenesExpectingFaceContactAndGetShouldDisableGracePeriod:(BOOL *)period
 {
   v19 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_sceneManager);
@@ -146,7 +146,7 @@
     LOBYTE(v10) = 0;
   }
 
-  *a3 = v10 & 1;
+  *period = v10 & 1;
 
   return v7;
 }

@@ -2,14 +2,14 @@
 - (BOOL)canCaptureforDPS;
 - (BOOL)canWDforDPS;
 - (RecommendationEngine)init;
-- (float)medianCCA:(id)a3;
-- (unsigned)medianRSSI:(id)a3;
+- (float)medianCCA:(id)a;
+- (unsigned)medianRSSI:(id)i;
 - (void)addNumRecommendedCapture;
 - (void)addNumRecommendedWD;
 - (void)addNumSuppressedCapture;
 - (void)addNumSuppressedWD;
-- (void)isDatapathStudyShowingDPS:(id)a3 andReply:(id)a4;
-- (void)recommendActionFromData:(id)a3 driverType:(int64_t)a4 andReply:(id)a5;
+- (void)isDatapathStudyShowingDPS:(id)s andReply:(id)reply;
+- (void)recommendActionFromData:(id)data driverType:(int64_t)type andReply:(id)reply;
 @end
 
 @implementation RecommendationEngine
@@ -175,12 +175,12 @@ LABEL_12:
   return 1;
 }
 
-- (float)medianCCA:(id)a3
+- (float)medianCCA:(id)a
 {
-  v3 = a3;
-  v4 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v5 = [v4 repeatableValues];
-  v6 = [v5 count];
+  aCopy = a;
+  v4 = [aCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues = [v4 repeatableValues];
+  v6 = [repeatableValues count];
 
   if (v6 > 1)
   {
@@ -188,16 +188,16 @@ LABEL_12:
     v53 = v6 - 1;
     v13 = 0;
     v51 = 0;
-    for (i = v3; ; v3 = i)
+    for (i = aCopy; ; aCopy = i)
     {
-      v14 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v15 = [v14 repeatableValues];
-      v16 = [v15 objectAtIndex:0];
+      v14 = [aCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues2 = [v14 repeatableValues];
+      v16 = [repeatableValues2 objectAtIndex:0];
       v17 = [v16 fieldForKey:@"DPSCS_peerStats"];
-      v18 = [v17 subMessageValue];
-      v19 = [v18 fieldForKey:@"NWAPS_ccas"];
-      v20 = [v19 repeatableValues];
-      v21 = [v20 count];
+      subMessageValue = [v17 subMessageValue];
+      v19 = [subMessageValue fieldForKey:@"NWAPS_ccas"];
+      repeatableValues3 = [v19 repeatableValues];
+      v21 = [repeatableValues3 count];
 
       if (v21 <= v13)
       {
@@ -205,43 +205,43 @@ LABEL_12:
       }
 
       v22 = v13;
-      v63 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v62 = [v63 repeatableValues];
-      v61 = [v62 objectAtIndex:v53];
+      v63 = [aCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues4 = [v63 repeatableValues];
+      v61 = [repeatableValues4 objectAtIndex:v53];
       v60 = [v61 fieldForKey:@"DPSCS_peerStats"];
-      v59 = [v60 subMessageValue];
-      v58 = [v59 fieldForKey:@"NWAPS_ccas"];
-      v57 = [v58 repeatableValues];
-      v56 = [v57 objectAtIndex:v13];
+      subMessageValue2 = [v60 subMessageValue];
+      v58 = [subMessageValue2 fieldForKey:@"NWAPS_ccas"];
+      repeatableValues5 = [v58 repeatableValues];
+      v56 = [repeatableValues5 objectAtIndex:v13];
       v55 = [v56 fieldForKey:@"NWASB_residentTime"];
-      v23 = [v55 uint64Value];
-      v24 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v25 = [v24 repeatableValues];
-      v26 = [v25 objectAtIndex:0];
+      uint64Value = [v55 uint64Value];
+      v24 = [aCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues6 = [v24 repeatableValues];
+      v26 = [repeatableValues6 objectAtIndex:0];
       v27 = [v26 fieldForKey:@"DPSCS_peerStats"];
-      v28 = [v27 subMessageValue];
-      v29 = [v28 fieldForKey:@"NWAPS_ccas"];
-      v30 = [v29 repeatableValues];
+      subMessageValue3 = [v27 subMessageValue];
+      v29 = [subMessageValue3 fieldForKey:@"NWAPS_ccas"];
+      repeatableValues7 = [v29 repeatableValues];
       v65 = v22;
-      v31 = [v30 objectAtIndex:v22];
+      v31 = [repeatableValues7 objectAtIndex:v22];
       v32 = [v31 fieldForKey:@"NWASB_residentTime"];
-      v33 = v23 - [v32 uint64Value];
+      v33 = uint64Value - [v32 uint64Value];
 
       if (v33 > v52)
       {
         v34 = [i fieldForKey:@"DPSR_dpsCounterSamples"];
-        v35 = [v34 repeatableValues];
-        v36 = [v35 objectAtIndex:v53];
+        repeatableValues8 = [v34 repeatableValues];
+        v36 = [repeatableValues8 objectAtIndex:v53];
         v37 = [v36 fieldForKey:@"DPSCS_peerStats"];
-        v38 = [v37 subMessageValue];
-        v39 = [v38 fieldForKey:@"NWAPS_ccas"];
+        subMessageValue4 = [v37 subMessageValue];
+        v39 = [subMessageValue4 fieldForKey:@"NWAPS_ccas"];
         [v39 repeatableValues];
         v40 = v64 = v33;
         v41 = [v40 objectAtIndex:v65];
         v42 = [v41 fieldForKey:@"NWASB_state"];
-        v43 = [v42 stringValue];
+        stringValue = [v42 stringValue];
 
-        v51 = v43;
+        v51 = stringValue;
         v52 = v64;
       }
 
@@ -323,36 +323,36 @@ LABEL_18:
   return v9;
 }
 
-- (unsigned)medianRSSI:(id)a3
+- (unsigned)medianRSSI:(id)i
 {
-  v3 = a3;
-  v4 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v5 = [v4 repeatableValues];
-  v6 = [v5 count];
+  iCopy = i;
+  v4 = [iCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues = [v4 repeatableValues];
+  v6 = [repeatableValues count];
 
-  v7 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v8 = [v7 repeatableValues];
-  v9 = [v8 objectAtIndex:0];
+  v7 = [iCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues2 = [v7 repeatableValues];
+  v9 = [repeatableValues2 objectAtIndex:0];
   v10 = [v9 fieldForKey:@"DPSCS_peerStats"];
-  v11 = [v10 subMessageValue];
-  v12 = [v11 fieldForKey:@"NWAPS_rssis"];
-  v13 = [v12 repeatableValues];
-  v41 = [v13 count];
+  subMessageValue = [v10 subMessageValue];
+  v12 = [subMessageValue fieldForKey:@"NWAPS_rssis"];
+  repeatableValues3 = [v12 repeatableValues];
+  v41 = [repeatableValues3 count];
 
-  v56 = v3;
+  v56 = iCopy;
   if (v6)
   {
     v14 = 0;
     v15 = 1;
     do
     {
-      v16 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v17 = [v16 repeatableValues];
-      v18 = [v17 objectAtIndex:v14];
+      v16 = [iCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues4 = [v16 repeatableValues];
+      v18 = [repeatableValues4 objectAtIndex:v14];
       v19 = [v18 fieldForKey:@"DPSCS_peerStats"];
-      v20 = [v19 subMessageValue];
-      v21 = [v20 fieldForKey:@"NWAPS_rssiValue"];
-      v42 = [v21 int32Value];
+      subMessageValue2 = [v19 subMessageValue];
+      v21 = [subMessageValue2 fieldForKey:@"NWAPS_rssiValue"];
+      int32Value = [v21 int32Value];
 
       v22 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -364,13 +364,13 @@ LABEL_18:
         v61 = 1024;
         *v62 = v15 - 1;
         *&v62[4] = 1024;
-        *&v62[6] = v42;
+        *&v62[6] = int32Value;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:SlowDPS: RSSI in sample %d: %d", buf, 0x1Eu);
       }
 
       v14 = v15;
       v23 = v6 > v15++;
-      v3 = v56;
+      iCopy = v56;
     }
 
     while (v23);
@@ -378,7 +378,7 @@ LABEL_18:
 
   else
   {
-    v42 = 0;
+    int32Value = 0;
   }
 
   v24 = v41;
@@ -393,28 +393,28 @@ LABEL_18:
     {
       v54 = v26;
       v55 = v27;
-      v53 = [v3 fieldForKey:{@"DPSR_dpsCounterSamples", v40}];
-      v52 = [v53 repeatableValues];
-      v51 = [v52 objectAtIndex:v40];
+      v53 = [iCopy fieldForKey:{@"DPSR_dpsCounterSamples", v40}];
+      repeatableValues5 = [v53 repeatableValues];
+      v51 = [repeatableValues5 objectAtIndex:v40];
       v50 = [v51 fieldForKey:@"DPSCS_peerStats"];
-      v49 = [v50 subMessageValue];
-      v48 = [v49 fieldForKey:@"NWAPS_rssis"];
-      v47 = [v48 repeatableValues];
-      v46 = [v47 objectAtIndex:v25];
+      subMessageValue3 = [v50 subMessageValue];
+      v48 = [subMessageValue3 fieldForKey:@"NWAPS_rssis"];
+      repeatableValues6 = [v48 repeatableValues];
+      v46 = [repeatableValues6 objectAtIndex:v25];
       v45 = [v46 fieldForKey:@"NWASB_residentTime"];
-      v43 = [v45 uint64Value];
-      v44 = [v3 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v29 = [v44 repeatableValues];
-      v30 = [v29 objectAtIndex:0];
+      uint64Value = [v45 uint64Value];
+      v44 = [iCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues7 = [v44 repeatableValues];
+      v30 = [repeatableValues7 objectAtIndex:0];
       v31 = [v30 fieldForKey:@"DPSCS_peerStats"];
-      v32 = [v31 subMessageValue];
-      v33 = [v32 fieldForKey:@"NWAPS_rssis"];
-      v34 = [v33 repeatableValues];
-      v35 = [v34 objectAtIndex:v25];
+      subMessageValue4 = [v31 subMessageValue];
+      v33 = [subMessageValue4 fieldForKey:@"NWAPS_rssis"];
+      repeatableValues8 = [v33 repeatableValues];
+      v35 = [repeatableValues8 objectAtIndex:v25];
       v36 = [v35 fieldForKey:@"NWASB_residentTime"];
-      v37 = v43 - [v36 uint64Value];
+      v37 = uint64Value - [v36 uint64Value];
 
-      v3 = v56;
+      iCopy = v56;
       v24 = v41;
 
       v26 = v54;
@@ -457,25 +457,25 @@ LABEL_18:
     *&v62[8] = 1024;
     v63 = v27;
     v64 = 1024;
-    v65 = v42;
+    v65 = int32Value;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:SlowDPS: rssiBinCount:%llu rssiBin(Based on residency):%d currentRSSI:%d", buf, 0x28u);
   }
 
   return v27;
 }
 
-- (void)isDatapathStudyShowingDPS:(id)a3 andReply:(id)a4
+- (void)isDatapathStudyShowingDPS:(id)s andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  replyCopy = reply;
   v114 = 0;
   v129 = 0;
   v130 = 0;
   v127 = 0;
   v128 = 0;
-  v8 = [v6 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v9 = [v8 repeatableValues];
-  v10 = [v9 count];
+  v8 = [sCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues = [v8 repeatableValues];
+  v10 = [repeatableValues count];
 
   v11 = WALogCategoryDefaultHandle();
   v12 = v11;
@@ -493,11 +493,11 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:Not enough samples %lu", buf, 0x1Cu);
     }
 
-    v7[2](v7, 0, &stru_1000F04E0);
+    replyCopy[2](replyCopy, 0, &stru_1000F04E0);
     goto LABEL_64;
   }
 
-  v102 = v7;
+  v102 = replyCopy;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -511,17 +511,17 @@ LABEL_18:
 
   v100 = v10;
 
-  v112 = v6;
-  v14 = [v6 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v15 = [v14 repeatableValues];
-  v16 = [v15 objectAtIndex:0];
+  v112 = sCopy;
+  v14 = [sCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues2 = [v14 repeatableValues];
+  v16 = [repeatableValues2 objectAtIndex:0];
   v17 = [v16 fieldForKey:@"DPSCS_peerStats"];
-  v18 = [v17 subMessageValue];
-  v19 = [v18 fieldForKey:@"NWAPS_acCompletions"];
-  v20 = [v19 repeatableValues];
-  v21 = [v20 count];
+  subMessageValue = [v17 subMessageValue];
+  v19 = [subMessageValue fieldForKey:@"NWAPS_acCompletions"];
+  repeatableValues3 = [v19 repeatableValues];
+  v21 = [repeatableValues3 count];
 
-  v110 = self;
+  selfCopy = self;
   if (v21 < 5)
   {
     v23 = v112;
@@ -552,26 +552,26 @@ LABEL_18:
   {
     v113 = v24;
     v25 = [v23 fieldForKey:{@"DPSR_dpsCounterSamples", v100}];
-    v26 = [v25 repeatableValues];
-    v27 = [v26 objectAtIndex:v13];
+    repeatableValues4 = [v25 repeatableValues];
+    v27 = [repeatableValues4 objectAtIndex:v13];
     v28 = [v27 fieldForKey:@"DPSCS_peerStats"];
-    v29 = [v28 subMessageValue];
-    v30 = [v29 fieldForKey:@"NWAPS_acCompletions"];
-    v31 = [v30 repeatableValues];
-    v32 = [v31 objectAtIndex:v24];
+    subMessageValue2 = [v28 subMessageValue];
+    v30 = [subMessageValue2 fieldForKey:@"NWAPS_acCompletions"];
+    repeatableValues5 = [v30 repeatableValues];
+    v32 = [repeatableValues5 objectAtIndex:v24];
     v33 = [v32 fieldForKey:@"NWAPACTC_success"];
-    v106 = [v33 uint32Value];
+    uint32Value = [v33 uint32Value];
 
     v34 = [v23 fieldForKey:@"DPSR_dpsCounterSamples"];
-    v35 = [v34 repeatableValues];
-    v36 = [v35 objectAtIndex:0];
+    repeatableValues6 = [v34 repeatableValues];
+    v36 = [repeatableValues6 objectAtIndex:0];
     v37 = [v36 fieldForKey:@"DPSCS_peerStats"];
-    v38 = [v37 subMessageValue];
-    v39 = [v38 fieldForKey:@"NWAPS_acCompletions"];
-    v40 = [v39 repeatableValues];
-    v41 = [v40 objectAtIndex:v113];
+    subMessageValue3 = [v37 subMessageValue];
+    v39 = [subMessageValue3 fieldForKey:@"NWAPS_acCompletions"];
+    repeatableValues7 = [v39 repeatableValues];
+    v41 = [repeatableValues7 objectAtIndex:v113];
     v42 = [v41 fieldForKey:@"NWAPACTC_success"];
-    v43 = [v42 uint32Value];
+    uint32Value2 = [v42 uint32Value];
 
     v44 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -583,34 +583,34 @@ LABEL_18:
       v119 = 2048;
       *v120 = v111;
       *&v120[8] = 1024;
-      *v121 = v106;
+      *v121 = uint32Value;
       *&v121[4] = 1024;
-      *v122 = v43;
+      *v122 = uint32Value2;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:NWAPACTC_success[%lu] %u NWAPACTC_success[0] %u ", buf, 0x28u);
     }
 
-    *(&v129 + v113) = v106 - v43;
+    *(&v129 + v113) = uint32Value - uint32Value2;
     v45 = [v112 fieldForKey:@"DPSR_dpsCounterSamples"];
-    v46 = [v45 repeatableValues];
-    v47 = [v46 objectAtIndex:v111];
+    repeatableValues8 = [v45 repeatableValues];
+    v47 = [repeatableValues8 objectAtIndex:v111];
     v48 = [v47 fieldForKey:@"DPSCS_peerStats"];
-    v49 = [v48 subMessageValue];
-    v50 = [v49 fieldForKey:@"NWAPS_acCompletions"];
-    v51 = [v50 repeatableValues];
-    v52 = [v51 objectAtIndex:v113];
+    subMessageValue4 = [v48 subMessageValue];
+    v50 = [subMessageValue4 fieldForKey:@"NWAPS_acCompletions"];
+    repeatableValues9 = [v50 repeatableValues];
+    v52 = [repeatableValues9 objectAtIndex:v113];
     v53 = [v52 fieldForKey:@"NWAPACTC_qeuedPackets"];
-    v107 = [v53 uint32Value];
+    uint32Value3 = [v53 uint32Value];
 
     v54 = [v112 fieldForKey:@"DPSR_dpsCounterSamples"];
-    v55 = [v54 repeatableValues];
-    v56 = [v55 objectAtIndex:0];
+    repeatableValues10 = [v54 repeatableValues];
+    v56 = [repeatableValues10 objectAtIndex:0];
     v57 = [v56 fieldForKey:@"DPSCS_peerStats"];
-    v58 = [v57 subMessageValue];
-    v59 = [v58 fieldForKey:@"NWAPS_acCompletions"];
-    v60 = [v59 repeatableValues];
-    v61 = [v60 objectAtIndex:v113];
+    subMessageValue5 = [v57 subMessageValue];
+    v59 = [subMessageValue5 fieldForKey:@"NWAPS_acCompletions"];
+    repeatableValues11 = [v59 repeatableValues];
+    v61 = [repeatableValues11 objectAtIndex:v113];
     v62 = [v61 fieldForKey:@"NWAPACTC_qeuedPackets"];
-    v63 = [v62 uint32Value];
+    uint32Value4 = [v62 uint32Value];
 
     v64 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -622,15 +622,15 @@ LABEL_18:
       v119 = 2048;
       *v120 = v111;
       *&v120[8] = 1024;
-      *v121 = v107;
+      *v121 = uint32Value3;
       *&v121[4] = 1024;
-      *v122 = v63;
+      *v122 = uint32Value4;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:NWAPACTC_qeuedPackets[%lu] %u NWAPACTC_qeuedPackets[0] %u ", buf, 0x28u);
     }
 
-    if (v107)
+    if (uint32Value3)
     {
-      v65 = v63 == 0;
+      v65 = uint32Value4 == 0;
     }
 
     else
@@ -641,16 +641,16 @@ LABEL_18:
     v66 = !v65;
     buf[v113 - 4] = v66;
     v108 = [v112 fieldForKey:@"DPSR_dpsCounterSamples"];
-    v67 = [v108 repeatableValues];
-    v68 = [v67 objectAtIndex:v111];
+    repeatableValues12 = [v108 repeatableValues];
+    v68 = [repeatableValues12 objectAtIndex:v111];
     v69 = [v68 fieldForKey:@"DPSCS_peerStats"];
-    v70 = [v69 subMessageValue];
-    v71 = [v70 fieldForKey:@"NWAPS_acCompletions"];
-    v72 = [v71 repeatableValues];
-    v73 = [v72 objectAtIndex:v113];
+    subMessageValue6 = [v69 subMessageValue];
+    v71 = [subMessageValue6 fieldForKey:@"NWAPS_acCompletions"];
+    repeatableValues13 = [v71 repeatableValues];
+    v73 = [repeatableValues13 objectAtIndex:v113];
     v74 = [v73 fieldForKey:@"NWAPACTC_durSinceLastEnqueueAtLastCheck"];
-    v75 = [v74 uint32Value];
-    *(&v127 + v113) = v75;
+    uint32Value5 = [v74 uint32Value];
+    *(&v127 + v113) = uint32Value5;
 
     v13 = v111;
     v76 = WALogCategoryDefaultHandle();
@@ -663,7 +663,7 @@ LABEL_18:
       v119 = 2048;
       *v120 = v111;
       *&v120[8] = 1024;
-      *v121 = v75;
+      *v121 = uint32Value5;
       _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:NWAPACTC_durSinceLastEnqueueAtLastCheck[%lu] %u", buf, 0x22u);
     }
 
@@ -708,7 +708,7 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Evaluating deltaSuccessPerAC[%d] %d queuedPendingAtBeginningAndEnd[%d] %d durSinceLastEnqueueAtLastCheck[%d] %d", buf, 0x36u);
       }
 
-      if ([(RecommendationPreferences *)v110->_preferences force_dps_recommend_always])
+      if ([(RecommendationPreferences *)selfCopy->_preferences force_dps_recommend_always])
       {
         v85 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -722,13 +722,13 @@ LABEL_26:
 
         LODWORD(v130) = 0;
         BYTE2(v114) = 1;
-        LODWORD(v128) = 4000 * [(RecommendationPreferences *)v110->_preferences dps_stall_dur_for_wd];
+        LODWORD(v128) = 4000 * [(RecommendationPreferences *)selfCopy->_preferences dps_stall_dur_for_wd];
       }
 
       if (!*(&v129 + v80) && buf[v80 - 4] == 1)
       {
         v86 = *(&v127 + v80);
-        if (1000 * [(RecommendationPreferences *)v110->_preferences dps_stall_dur_for_wd]<= v86)
+        if (1000 * [(RecommendationPreferences *)selfCopy->_preferences dps_stall_dur_for_wd]<= v86)
         {
           break;
         }
@@ -743,8 +743,8 @@ LABEL_26:
         }
 
         v96 = WALogCategoryDefaultHandle();
-        v6 = v112;
-        v7 = v102;
+        sCopy = v112;
+        replyCopy = v102;
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136446466;
@@ -764,11 +764,11 @@ LABEL_62:
       }
     }
 
-    [(RecommendationEngine *)v110 medianCCA:v112];
+    [(RecommendationEngine *)selfCopy medianCCA:v112];
     if (v87 >= 35.0)
     {
-      [(RecommendationEngine *)v110 medianCCA:v112];
-      if (v89 >= [(RecommendationPreferences *)v110->_preferences dps_wd_cca])
+      [(RecommendationEngine *)selfCopy medianCCA:v112];
+      if (v89 >= [(RecommendationPreferences *)selfCopy->_preferences dps_wd_cca])
       {
         v88 = @"Data Path Stuck~High CCA";
       }
@@ -784,7 +784,7 @@ LABEL_62:
       v88 = @"Data Path Stuck~Low CCA";
     }
 
-    v105 = [NSString stringWithFormat:v88, v100];
+    v100 = [NSString stringWithFormat:v88, v100];
 
     v90 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
@@ -794,23 +794,23 @@ LABEL_62:
       v117 = 1024;
       v118 = 234;
       v119 = 2112;
-      *v120 = v105;
+      *v120 = v100;
       _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%@", buf, 0x1Cu);
     }
 
     v77 = v80 + 1;
     v78 = 1;
     v65 = v80 == 3;
-    v79 = v105;
+    v79 = v100;
   }
 
   while (!v65);
 LABEL_51:
-  v91 = [(RecommendationPreferences *)v110->_preferences dps_capture_evaluated_at_sample];
-  if (v101 == v91)
+  dps_capture_evaluated_at_sample = [(RecommendationPreferences *)selfCopy->_preferences dps_capture_evaluated_at_sample];
+  if (v101 == dps_capture_evaluated_at_sample)
   {
     v92 = WALogCategoryDefaultHandle();
-    v6 = v112;
+    sCopy = v112;
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446466;
@@ -820,18 +820,18 @@ LABEL_51:
       _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:sDPS: Recommending WARecommendFullCapture", buf, 0x12u);
     }
 
-    v7 = v102;
+    replyCopy = v102;
     v93 = v102[2];
     v94 = v102;
     v95 = 1;
     goto LABEL_62;
   }
 
-  v97 = [(RecommendationPreferences *)v110->_preferences dps_trap_evaluated_at_sample];
+  dps_trap_evaluated_at_sample = [(RecommendationPreferences *)selfCopy->_preferences dps_trap_evaluated_at_sample];
   v98 = WALogCategoryDefaultHandle();
   v99 = v98;
-  v6 = v112;
-  if (v101 == v97)
+  sCopy = v112;
+  if (v101 == dps_trap_evaluated_at_sample)
   {
     if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
     {
@@ -842,7 +842,7 @@ LABEL_51:
       _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:sDPS: Recommending WARecommendTrapWatchdog", buf, 0x12u);
     }
 
-    v7 = v102;
+    replyCopy = v102;
     v93 = v102[2];
     v94 = v102;
     v95 = 2;
@@ -858,7 +858,7 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Returning", buf, 0x12u);
   }
 
-  v7 = v102;
+  replyCopy = v102;
   (v102[2])(v102, 0, &stru_1000F04E0);
 LABEL_63:
 
@@ -937,27 +937,27 @@ LABEL_64:
   [(NSMutableDictionary *)self->_dpsWDBudgetDict setObject:v5 forKey:@"dps_numSuppressedCapture"];
 }
 
-- (void)recommendActionFromData:(id)a3 driverType:(int64_t)a4 andReply:(id)a5
+- (void)recommendActionFromData:(id)data driverType:(int64_t)type andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  replyCopy = reply;
   if (![(RecommendationPreferences *)self->_preferences disable_dps_wd])
   {
-    v11 = [v8 fieldForKey:@"DPSR_dpsCounterSamples"];
-    v12 = [v11 repeatableValues];
-    v13 = [v12 count];
+    v11 = [dataCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+    repeatableValues = [v11 repeatableValues];
+    v13 = [repeatableValues count];
     if (v13 == [(RecommendationPreferences *)self->_preferences dps_capture_evaluated_at_sample])
     {
     }
 
     else
     {
-      v14 = [v8 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v15 = [v14 repeatableValues];
-      v16 = [v15 count];
-      v17 = [(RecommendationPreferences *)self->_preferences dps_trap_evaluated_at_sample];
+      v14 = [dataCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues2 = [v14 repeatableValues];
+      v16 = [repeatableValues2 count];
+      dps_trap_evaluated_at_sample = [(RecommendationPreferences *)self->_preferences dps_trap_evaluated_at_sample];
 
-      if (v16 != v17)
+      if (v16 != dps_trap_evaluated_at_sample)
       {
         goto LABEL_9;
       }
@@ -968,9 +968,9 @@ LABEL_64:
     v18[2] = sub_1000539A8;
     v18[3] = &unk_1000EDDA8;
     v18[4] = self;
-    v20 = v9;
-    v19 = v8;
-    v21 = a4;
+    v20 = replyCopy;
+    v19 = dataCopy;
+    typeCopy = type;
     [(RecommendationEngine *)self isDatapathStudyShowingDPS:v19 andReply:v18];
 
     goto LABEL_9;
@@ -986,7 +986,7 @@ LABEL_64:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:WARecommendNull disable_dps_wd", buf, 0x12u);
   }
 
-  (*(v9 + 2))(v9, 0, @"disable_dps_wd");
+  (*(replyCopy + 2))(replyCopy, 0, @"disable_dps_wd");
 LABEL_9:
 }
 

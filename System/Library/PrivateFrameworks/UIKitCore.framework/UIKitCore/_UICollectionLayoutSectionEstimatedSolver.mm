@@ -1,50 +1,50 @@
 @interface _UICollectionLayoutSectionEstimatedSolver
 - (CGPoint)orthogonalOffset;
-- (CGRect)_adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:(CGRect)a3 bookmarks:(id)a4;
-- (CGRect)_rectWithContentInsetTrailingLayoutDimensionAddedToToRect:(CGRect)a3 insets:(NSDirectionalEdgeInsets)a4 layoutAxis:(unint64_t)a5;
+- (CGRect)_adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:(CGRect)frame bookmarks:(id)bookmarks;
+- (CGRect)_rectWithContentInsetTrailingLayoutDimensionAddedToToRect:(CGRect)rect insets:(NSDirectionalEdgeInsets)insets layoutAxis:(unint64_t)axis;
 - (CGRect)auxillaryHostPinningRect;
 - (CGRect)contentFrameIncludingAuxiliaries;
 - (CGRect)primaryContentFrame;
 - (CGSize)auxillaryHostContentSize;
 - (CGVector)orthogonalScrollingPrefetchingUnitVector;
 - (NSIndexSet)pinnedSupplementaryIndexes;
-- (_NSRange)_rangeOfBookmarksAffectedByResolveItems:(id)a3;
-- (_NSRange)preferredSizeGroupingRangeForItemAtIndex:(int64_t)a3;
-- (double)_dimensionForRootGroupAlongAxis:(unint64_t)a3;
+- (_NSRange)_rangeOfBookmarksAffectedByResolveItems:(id)items;
+- (_NSRange)preferredSizeGroupingRangeForItemAtIndex:(int64_t)index;
+- (double)_dimensionForRootGroupAlongAxis:(unint64_t)axis;
 - (double)auxillaryHostPaddingBeforeBoundarySupplementaries;
 - (id)_sectionContainer;
-- (id)_solveWithParameters:(id)a3;
+- (id)_solveWithParameters:(id)parameters;
 - (id)auxillaryHostAuxillaryItems;
 - (id)auxillaryHostContainer;
 - (id)auxillaryHostPreferredSizes;
 - (id)auxillaryHostSupplementaryEnroller;
-- (id)frameForIndex:(int64_t)a3;
-- (id)initWithLayoutSection:(void *)a1;
-- (id)queryFramesIntersectingRect:(CGRect)a3 frameOffset:(CGPoint)a4;
-- (id)resolveWithParameters:(id)a3 preferredSizes:(id)a4;
-- (id)sectionSupplementaryFrameForIndex:(int64_t)a3;
-- (id)sectionSupplementaryFrameWithKind:(id)a3 index:(int64_t)a4;
-- (id)supplementaryFrameWithKind:(id)a3 index:(int64_t)a4;
-- (id)unpinnedSectionSupplementaryFrameForIndex:(int64_t)a3;
-- (id)unpinnedSectionSupplementaryFrameWithKind:(id)a3 forIndex:(int64_t)a4;
+- (id)frameForIndex:(int64_t)index;
+- (id)initWithLayoutSection:(void *)section;
+- (id)queryFramesIntersectingRect:(CGRect)rect frameOffset:(CGPoint)offset;
+- (id)resolveWithParameters:(id)parameters preferredSizes:(id)sizes;
+- (id)sectionSupplementaryFrameForIndex:(int64_t)index;
+- (id)sectionSupplementaryFrameWithKind:(id)kind index:(int64_t)index;
+- (id)supplementaryFrameWithKind:(id)kind index:(int64_t)index;
+- (id)unpinnedSectionSupplementaryFrameForIndex:(int64_t)index;
+- (id)unpinnedSectionSupplementaryFrameWithKind:(id)kind forIndex:(int64_t)index;
 - (id)visualDescription;
-- (int64_t)sectionSupplementaryKindIndexForEnrollmentIdentifier:(id)a3;
+- (int64_t)sectionSupplementaryKindIndexForEnrollmentIdentifier:(id)identifier;
 - (unint64_t)auxillaryHostLayoutAxis;
 - (void)_configureInitialOrthogonalPrefetchingUnitVector;
-- (void)_updateSolutionAuxillaryRangeIndexerKindDict:(id)a3 fromBookmark:(id)a4;
-- (void)setOrthogonalOffset:(CGPoint)a3;
-- (void)solveForContainer:(id)a3 supplementaryContainer:(id)a4 traitCollection:(id)a5 layoutAxis:(unint64_t)a6 frameCount:(int64_t)a7 preferredSizes:(id)a8 layoutRTL:(BOOL)a9;
-- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)a3;
-- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)a3 overrideContentRectForPinning:(CGRect)a4;
+- (void)_updateSolutionAuxillaryRangeIndexerKindDict:(id)dict fromBookmark:(id)bookmark;
+- (void)setOrthogonalOffset:(CGPoint)offset;
+- (void)solveForContainer:(id)container supplementaryContainer:(id)supplementaryContainer traitCollection:(id)collection layoutAxis:(unint64_t)axis frameCount:(int64_t)count preferredSizes:(id)sizes layoutRTL:(BOOL)l;
+- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)bounds;
+- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)bounds overrideContentRectForPinning:(CGRect)pinning;
 @end
 
 @implementation _UICollectionLayoutSectionEstimatedSolver
 
 - (id)_sectionContainer
 {
-  v4 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v5 = [(_UICollectionLayoutSectionEstimatedSolver *)self container];
-  [v5 contentInsets];
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  container = [(_UICollectionLayoutSectionEstimatedSolver *)self container];
+  [container contentInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -52,29 +52,29 @@
 
   if ([(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis]== 2)
   {
-    [v4 contentInsets];
+    [layoutSection contentInsets];
     v9 = v9 + v14;
-    [v4 contentInsets];
+    [layoutSection contentInsets];
     v13 = v13 + v15;
   }
 
   else if ([(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis]== 1)
   {
-    [v4 contentInsets];
+    [layoutSection contentInsets];
     v7 = v7 + v16;
-    [v4 contentInsets];
+    [layoutSection contentInsets];
     v11 = v11 + v17;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1051 description:@"Unknown layout axis."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1051 description:@"Unknown layout axis."];
   }
 
   v19 = [_UICollectionLayoutContainer alloc];
-  v20 = [(_UICollectionLayoutSectionEstimatedSolver *)self container];
-  [v20 contentSize];
+  container2 = [(_UICollectionLayoutSectionEstimatedSolver *)self container];
+  [container2 contentSize];
   v23 = [(_UICollectionLayoutContainer *)v19 initWithContentSize:v21 contentInsets:v22, v7, v9, v11, v13];
 
   return v23;
@@ -82,10 +82,10 @@
 
 - (id)auxillaryHostAuxillaryItems
 {
-  v2 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v3 = [v2 boundarySupplementaryItems];
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  boundarySupplementaryItems = [layoutSection boundarySupplementaryItems];
 
-  return v3;
+  return boundarySupplementaryItems;
 }
 
 - (CGRect)contentFrameIncludingAuxiliaries
@@ -140,10 +140,10 @@ LABEL_4:
 
 - (void)_configureInitialOrthogonalPrefetchingUnitVector
 {
-  v3 = [(NSCollectionLayoutSection *)self->_layoutSection scrollsOrthogonally];
+  scrollsOrthogonally = [(NSCollectionLayoutSection *)self->_layoutSection scrollsOrthogonally];
   v4 = 0.0;
   v5 = 0.0;
-  if (v3)
+  if (scrollsOrthogonally)
   {
     layoutAxis = self->_layoutAxis;
     v5 = 1.0;
@@ -174,9 +174,9 @@ LABEL_4:
   {
     if (![(NSCollectionLayoutSection *)self->_layoutSection supplementariesFollowContentInsets])
     {
-      v14 = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
+      supplementaryContainer = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
       memoizedSupplementaryHostContainer = self->_memoizedSupplementaryHostContainer;
-      self->_memoizedSupplementaryHostContainer = v14;
+      self->_memoizedSupplementaryHostContainer = supplementaryContainer;
 LABEL_15:
 
       v3 = self->_memoizedSupplementaryHostContainer;
@@ -205,8 +205,8 @@ LABEL_15:
         v13 = 0.0;
 LABEL_14:
         v16 = [_UICollectionLayoutContainer alloc];
-        v14 = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
-        [(_UICollectionLayoutContainer *)v14 contentSize];
+        supplementaryContainer = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
+        [(_UICollectionLayoutContainer *)supplementaryContainer contentSize];
         memoizedSupplementaryHostContainer = [(_UICollectionLayoutContainer *)v16 initWithContentSize:v17 contentInsets:v18, v10, v13, v11, v12];
         objc_storeStrong(&self->_memoizedSupplementaryHostContainer, memoizedSupplementaryHostContainer);
         goto LABEL_15;
@@ -237,7 +237,7 @@ LABEL_16:
 {
   if (self && self->_solutionState)
   {
-    v3 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
+    layoutAxis = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
     v4 = self->_solutionState;
     v5 = v4;
     if (v4)
@@ -245,27 +245,27 @@ LABEL_16:
       v4 = v4->_sectionGeometryTranslator;
     }
 
-    v6 = [(_UICollectionLayoutSectionGeometryTranslator *)v4 auxillaryHostContentSize];
+    auxillaryHostContentSize = [(_UICollectionLayoutSectionGeometryTranslator *)v4 auxillaryHostContentSize];
     v8 = v7;
 
-    v9 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-    v10 = [v9 scrollsOrthogonally];
-    v11 = v3 == 2;
-    if (v3 == 1)
+    layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+    scrollsOrthogonally = [layoutSection scrollsOrthogonally];
+    v11 = layoutAxis == 2;
+    if (layoutAxis == 1)
     {
       v11 = 2;
     }
 
-    if (!v10)
+    if (!scrollsOrthogonally)
     {
-      v3 = v11;
+      layoutAxis = v11;
     }
 
-    v12 = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
-    [v12 contentSize];
-    v15 = _UISizeValueForAxis(v3, v13, v14);
+    supplementaryContainer = [(_UICollectionLayoutSectionEstimatedSolver *)self supplementaryContainer];
+    [supplementaryContainer contentSize];
+    v15 = _UISizeValueForAxis(layoutAxis, v13, v14);
 
-    v16 = _UISetSizeValueForAxis(v3, v6, v8, v15);
+    v16 = _UISetSizeValueForAxis(layoutAxis, auxillaryHostContentSize, v8, v15);
     v18 = v17;
   }
 
@@ -301,11 +301,11 @@ LABEL_16:
 
 - (double)auxillaryHostPaddingBeforeBoundarySupplementaries
 {
-  v2 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
   v3 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v2 _paddingToBoundarySupplementaries];
+    [layoutSection _paddingToBoundarySupplementaries];
     v3 = v4;
   }
 
@@ -380,14 +380,14 @@ LABEL_4:
   return result;
 }
 
-- (id)initWithLayoutSection:(void *)a1
+- (id)initWithLayoutSection:(void *)section
 {
-  if (!a1)
+  if (!section)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = section;
   v9.super_class = _UICollectionLayoutSectionEstimatedSolver;
   v3 = objc_msgSendSuper2(&v9, sel_init);
   v4 = v3;
@@ -397,8 +397,8 @@ LABEL_4:
     v4[5] = 0;
     if (([a2 _isEmptySection] & 1) == 0)
     {
-      v5 = [a2 group];
-      v6 = [v5 size];
+      group = [a2 group];
+      v6 = [group size];
       *(v4 + 9) = [v6 isContainerSize] ^ 1;
     }
 
@@ -411,63 +411,63 @@ LABEL_4:
   return v4;
 }
 
-- (void)solveForContainer:(id)a3 supplementaryContainer:(id)a4 traitCollection:(id)a5 layoutAxis:(unint64_t)a6 frameCount:(int64_t)a7 preferredSizes:(id)a8 layoutRTL:(BOOL)a9
+- (void)solveForContainer:(id)container supplementaryContainer:(id)supplementaryContainer traitCollection:(id)collection layoutAxis:(unint64_t)axis frameCount:(int64_t)count preferredSizes:(id)sizes layoutRTL:(BOOL)l
 {
-  objc_storeStrong(&self->_container, a3);
-  if (a4)
+  objc_storeStrong(&self->_container, container);
+  if (supplementaryContainer)
   {
-    v16 = a4;
+    containerCopy = supplementaryContainer;
   }
 
   else
   {
-    v16 = a3;
+    containerCopy = container;
   }
 
-  objc_storeStrong(&self->_supplementaryContainer, v16);
-  objc_storeStrong(&self->_traitCollection, a5);
-  self->_containerLayoutAxis = a6;
-  v17 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v18 = [v17 scrollsOrthogonally];
-  v19 = a6 == 2;
-  if (a6 == 1)
+  objc_storeStrong(&self->_supplementaryContainer, containerCopy);
+  objc_storeStrong(&self->_traitCollection, collection);
+  self->_containerLayoutAxis = axis;
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  scrollsOrthogonally = [layoutSection scrollsOrthogonally];
+  axisCopy = axis == 2;
+  if (axis == 1)
   {
-    v19 = 2;
+    axisCopy = 2;
   }
 
-  if (!v18)
+  if (!scrollsOrthogonally)
   {
-    v19 = a6;
+    axisCopy = axis;
   }
 
-  self->_layoutAxis = v19;
+  self->_layoutAxis = axisCopy;
 
-  self->_frameCount = a7;
-  objc_storeStrong(&self->_preferredSizes, a8);
-  self->_layoutRTL = a9;
+  self->_frameCount = count;
+  objc_storeStrong(&self->_preferredSizes, sizes);
+  self->_layoutRTL = l;
   v20 = +[_UICollectionLayoutSolveParameters parametersForFullResolve];
   v21 = [(_UICollectionLayoutSectionEstimatedSolver *)self _solveWithParameters:v20];
 
   [(_UICollectionLayoutSectionEstimatedSolver *)self _configureInitialOrthogonalPrefetchingUnitVector];
 }
 
-- (id)resolveWithParameters:(id)a3 preferredSizes:(id)a4
+- (id)resolveWithParameters:(id)parameters preferredSizes:(id)sizes
 {
-  objc_storeStrong(&self->_preferredSizes, a4);
+  objc_storeStrong(&self->_preferredSizes, sizes);
 
-  return [(_UICollectionLayoutSectionEstimatedSolver *)self _solveWithParameters:a3];
+  return [(_UICollectionLayoutSectionEstimatedSolver *)self _solveWithParameters:parameters];
 }
 
-- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)a3
+- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v9 = [v8 _isEmptySection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  _isEmptySection = [layoutSection _isEmptySection];
 
-  if ((v9 & 1) == 0)
+  if ((_isEmptySection & 1) == 0)
   {
     if (self)
     {
@@ -483,23 +483,23 @@ LABEL_4:
   }
 }
 
-- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)a3 overrideContentRectForPinning:(CGRect)a4
+- (void)updatePinnedSupplementaryItemsWithVisibleBounds:(CGRect)bounds overrideContentRectForPinning:(CGRect)pinning
 {
-  self->_overrideContentRectForPinning = a4;
-  [(_UICollectionLayoutSectionEstimatedSolver *)self updatePinnedSupplementaryItemsWithVisibleBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  self->_overrideContentRectForPinning = pinning;
+  [(_UICollectionLayoutSectionEstimatedSolver *)self updatePinnedSupplementaryItemsWithVisibleBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = *(MEMORY[0x1E695F050] + 16);
   self->_overrideContentRectForPinning.origin = *MEMORY[0x1E695F050];
   self->_overrideContentRectForPinning.size = v5;
 }
 
-- (id)queryFramesIntersectingRect:(CGRect)a3 frameOffset:(CGPoint)a4
+- (id)queryFramesIntersectingRect:(CGRect)rect frameOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
+  y = offset.y;
+  x = offset.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
   if (self)
   {
     solutionState = self->_solutionState;
@@ -510,13 +510,13 @@ LABEL_4:
     solutionState = 0;
   }
 
-  v12 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  if (solutionState && ([v12 _isEmptySection] & 1) == 0)
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  if (solutionState && ([layoutSection _isEmptySection] & 1) == 0)
   {
     sectionGeometryTranslator = solutionState->_sectionGeometryTranslator;
-    v15 = [(_UICollectionLayoutSectionGeometryTranslator *)sectionGeometryTranslator contentRectForSectionRect:v9, v8, width, height];
+    height = [(_UICollectionLayoutSectionGeometryTranslator *)sectionGeometryTranslator contentRectForSectionRect:v9, v8, width, height];
     v38 = v16;
-    v39 = v15;
+    v39 = height;
     v35 = v17;
     v37 = v18;
     if (sectionGeometryTranslator)
@@ -535,15 +535,15 @@ LABEL_4:
     v22 = y + v19;
     bookmarks = solutionState->_bookmarks;
     geometricIndexer = solutionState->_geometricIndexer;
-    v25 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
-    v26 = [(_UICollectionLayoutSectionEstimatedSolver *)self frameCount];
+    layoutAxis = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
+    frameCount = [(_UICollectionLayoutSectionEstimatedSolver *)self frameCount];
     v27 = objc_opt_new();
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __85___UICollectionLayoutSectionEstimatedSolver_queryFramesIntersectingRect_frameOffset___block_invoke;
     v40[3] = &unk_1E70FB068;
     v42 = bookmarks;
-    v43 = v25;
+    v43 = layoutAxis;
     v44 = v39;
     v45 = v36;
     v46 = v38;
@@ -552,7 +552,7 @@ LABEL_4:
     v49 = v8;
     v50 = width;
     v51 = height;
-    v52 = v26;
+    v52 = frameCount;
     v53 = v21;
     v54 = v22;
     v28 = v27;
@@ -597,7 +597,7 @@ LABEL_4:
   return v13;
 }
 
-- (id)frameForIndex:(int64_t)a3
+- (id)frameForIndex:(int64_t)index
 {
   if (self && (solutionState = self->_solutionState) != 0)
   {
@@ -616,23 +616,23 @@ LABEL_4:
 
     v10 = bookmarks;
 
-    if (!v6 || (ptr = v6->_orderedRangeIndexerImpl.__ptr_, v36[0] = 0, v36[1] = 0, v37 = 0, _UIOrderedRangeIndexerImpl::binarySearchForLocation(ptr, a3, v36), v12 = 0, v37 != 0x7FFFFFFFFFFFFFFFLL))
+    if (!v6 || (ptr = v6->_orderedRangeIndexerImpl.__ptr_, v36[0] = 0, v36[1] = 0, v37 = 0, _UIOrderedRangeIndexerImpl::binarySearchForLocation(ptr, index, v36), height = 0, v37 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v13 = [(NSArray *)v10 objectAtIndexedSubscript:?];
       v14 = v13;
       if (v13)
       {
-        v15 = a3 - *(v13 + 24);
+        indexCopy = index - *(v13 + 24);
         v13 = *(v13 + 8);
       }
 
       else
       {
-        v15 = a3;
+        indexCopy = index;
       }
 
-      v16 = [(_UICollectionLayoutItemSolver *)v13 itemFrames];
-      v17 = [v16 objectAtIndexedSubscript:v15];
+      itemFrames = [(_UICollectionLayoutItemSolver *)v13 itemFrames];
+      v17 = [itemFrames objectAtIndexedSubscript:indexCopy];
 
       v18 = self->_solutionState;
       v19 = v18;
@@ -693,19 +693,19 @@ LABEL_4:
       v40.size.width = v24;
       v40.size.height = v25;
       Height = CGRectGetHeight(v40);
-      v12 = [(_UICollectionLayoutFramesQueryResult *)v17 copyWithFrame:a3 index:v31, v32, Width, Height];
+      height = [(_UICollectionLayoutFramesQueryResult *)v17 copyWithFrame:index index:v31, v32, Width, Height];
     }
   }
 
   else
   {
-    v12 = 0;
+    height = 0;
   }
 
-  return v12;
+  return height;
 }
 
-- (id)supplementaryFrameWithKind:(id)a3 index:(int64_t)a4
+- (id)supplementaryFrameWithKind:(id)kind index:(int64_t)index
 {
   if (!self || !self->_solutionState)
   {
@@ -713,24 +713,24 @@ LABEL_4:
     goto LABEL_27;
   }
 
-  if (![a3 length])
+  if (![kind length])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
 
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       goto LABEL_5;
     }
 
 LABEL_31:
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"absoluteIndex >= 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"absoluteIndex >= 0"}];
 
     goto LABEL_5;
   }
 
-  if (a4 < 0)
+  if (index < 0)
   {
     goto LABEL_31;
   }
@@ -743,7 +743,7 @@ LABEL_5:
   }
 
   v9 = solutionState;
-  v10 = [(_UICollectionLayoutAuxillaryItemSolver *)&self->_sectionSupplementarySolution->super.isa supplementaryFrameWithKind:a3 index:a4 additionalFrameOffset:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  v10 = [(_UICollectionLayoutAuxillaryItemSolver *)&self->_sectionSupplementarySolution->super.isa supplementaryFrameWithKind:kind index:index additionalFrameOffset:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   if (v10)
   {
     v11 = v10;
@@ -752,7 +752,7 @@ LABEL_5:
 
   else
   {
-    v13 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+    layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
     v14 = self->_solutionState;
     if (v14)
     {
@@ -774,9 +774,9 @@ LABEL_5:
 
     v19 = bookmarks;
 
-    v20 = [(_UICollectionLayoutSolutionState *)v15 objectForKeyedSubscript:a3];
+    v20 = [(_UICollectionLayoutSolutionState *)v15 objectForKeyedSubscript:kind];
     v21 = v20;
-    if (v20 && (v22 = *(v20 + 8), v35[0] = 0, v35[1] = 0, v36 = 0, _UIOrderedRangeIndexerImpl::binarySearchForLocation(v22, a4, v35), v36 != 0x7FFFFFFFFFFFFFFFLL))
+    if (v20 && (v22 = *(v20 + 8), v35[0] = 0, v35[1] = 0, v36 = 0, _UIOrderedRangeIndexerImpl::binarySearchForLocation(v22, index, v35), v36 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v23 = [(NSArray *)v19 objectAtIndexedSubscript:?];
       v24 = v23;
@@ -796,7 +796,7 @@ LABEL_5:
         v27 = 0.0;
       }
 
-      v29 = a4 - [v23 offsetForElementKind:a3];
+      v29 = index - [v23 offsetForElementKind:kind];
       v30 = 0.0;
       if (v9)
       {
@@ -804,11 +804,11 @@ LABEL_5:
         v25 = v9[10];
       }
 
-      v31 = [(_UICollectionLayoutItemSolver *)v28 supplementaryFrameWithKind:a3 index:v29 additionalFrameOffset:v26 + v30, v27 + v25];
+      v31 = [(_UICollectionLayoutItemSolver *)v28 supplementaryFrameWithKind:kind index:v29 additionalFrameOffset:v26 + v30, v27 + v25];
       v11 = v31;
       if (v31)
       {
-        v12 = [(_UICollectionLayoutFramesQueryResult *)v31 copyWithIndex:a4];
+        v12 = [(_UICollectionLayoutFramesQueryResult *)v31 copyWithIndex:index];
       }
 
       else
@@ -829,7 +829,7 @@ LABEL_27:
   return v12;
 }
 
-- (id)sectionSupplementaryFrameForIndex:(int64_t)a3
+- (id)sectionSupplementaryFrameForIndex:(int64_t)index
 {
   if (self)
   {
@@ -842,19 +842,19 @@ LABEL_27:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:0 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:0 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
   }
 
   sectionSupplementarySolution = 0;
 LABEL_4:
-  v7 = [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa supplementaryFrames];
-  v8 = [v7 count];
+  supplementaryFrames = [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa supplementaryFrames];
+  v8 = [supplementaryFrames count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"index < self.sectionSupplementarySolution.supplementaryFrames.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"index < self.sectionSupplementarySolution.supplementaryFrames.count"}];
 
     if (self)
     {
@@ -871,13 +871,13 @@ LABEL_6:
 
   v9 = 0;
 LABEL_7:
-  v10 = [(_UICollectionLayoutAuxillaryItemSolver *)&v9->super.isa supplementaryFrames];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  supplementaryFrames2 = [(_UICollectionLayoutAuxillaryItemSolver *)&v9->super.isa supplementaryFrames];
+  v11 = [supplementaryFrames2 objectAtIndexedSubscript:index];
 
   return v11;
 }
 
-- (id)unpinnedSectionSupplementaryFrameForIndex:(int64_t)a3
+- (id)unpinnedSectionSupplementaryFrameForIndex:(int64_t)index
 {
   if (self)
   {
@@ -890,49 +890,49 @@ LABEL_7:
   }
 
   v7 = sectionSupplementarySolution;
-  v8 = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
+  unpinnedFramesOfPinnedSupplementaries = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
 
-  if (v8)
+  if (unpinnedFramesOfPinnedSupplementaries)
   {
     if (!self || !self->_solutionState)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
     }
 
-    v9 = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
-    v10 = [v9 count];
+    unpinnedFramesOfPinnedSupplementaries2 = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
+    v10 = [unpinnedFramesOfPinnedSupplementaries2 count];
 
-    if (v10 <= a3)
+    if (v10 <= index)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"index < sectionSupplementarySolution.unpinnedFramesOfPinnedSupplementaries.count"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"index < sectionSupplementarySolution.unpinnedFramesOfPinnedSupplementaries.count"}];
     }
 
-    v11 = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
-    v12 = [v11 objectAtIndexedSubscript:a3];
+    unpinnedFramesOfPinnedSupplementaries3 = [(_UICollectionLayoutAuxillaryItemSolver *)v7 unpinnedFramesOfPinnedSupplementaries];
+    v12 = [unpinnedFramesOfPinnedSupplementaries3 objectAtIndexedSubscript:index];
   }
 
   else
   {
-    v12 = [(_UICollectionLayoutSectionEstimatedSolver *)self sectionSupplementaryFrameForIndex:a3];
+    v12 = [(_UICollectionLayoutSectionEstimatedSolver *)self sectionSupplementaryFrameForIndex:index];
   }
 
   return v12;
 }
 
-- (id)unpinnedSectionSupplementaryFrameWithKind:(id)a3 forIndex:(int64_t)a4
+- (id)unpinnedSectionSupplementaryFrameWithKind:(id)kind forIndex:(int64_t)index
 {
-  if (a3 && [a3 length])
+  if (kind && [kind length])
   {
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"index >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"index >= 0"}];
 
     if (self)
     {
@@ -942,10 +942,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"kind != nil && kind.length > 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"kind != nil && kind.length > 0"}];
 
-  if (a4 < 0)
+  if (index < 0)
   {
     goto LABEL_10;
   }
@@ -962,12 +962,12 @@ LABEL_11:
   sectionSupplementarySolution = 0;
 LABEL_6:
 
-  return [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa unpinnedSupplementaryFrameWithKind:a3 index:a4];
+  return [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa unpinnedSupplementaryFrameWithKind:kind index:index];
 }
 
-- (int64_t)sectionSupplementaryKindIndexForEnrollmentIdentifier:(id)a3
+- (int64_t)sectionSupplementaryKindIndexForEnrollmentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     if (self)
     {
@@ -979,8 +979,8 @@ LABEL_3:
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"enrollmentIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"enrollmentIdentifier"}];
 
     if (self)
     {
@@ -991,21 +991,21 @@ LABEL_3:
   sectionSupplementaryEnroller = 0;
 LABEL_4:
 
-  return [(_UICollectionLayoutSupplementaryEnroller *)sectionSupplementaryEnroller kindIndexForEnrollmentIdentifier:a3];
+  return [(_UICollectionLayoutSupplementaryEnroller *)sectionSupplementaryEnroller kindIndexForEnrollmentIdentifier:identifier];
 }
 
-- (id)sectionSupplementaryFrameWithKind:(id)a3 index:(int64_t)a4
+- (id)sectionSupplementaryFrameWithKind:(id)kind index:(int64_t)index
 {
-  if ([a3 length])
+  if ([kind length])
   {
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"index>=0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"index>=0"}];
 
     if (self)
     {
@@ -1015,10 +1015,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
 
-  if (a4 < 0)
+  if (index < 0)
   {
     goto LABEL_9;
   }
@@ -1037,7 +1037,7 @@ LABEL_5:
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
 
-  return [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa supplementaryFrameWithKind:a3 index:a4 additionalFrameOffset:v9, v10];
+  return [(_UICollectionLayoutAuxillaryItemSolver *)&sectionSupplementarySolution->super.isa supplementaryFrameWithKind:kind index:index additionalFrameOffset:v9, v10];
 }
 
 - (id)visualDescription
@@ -1079,12 +1079,12 @@ LABEL_5:
   return self;
 }
 
-- (_NSRange)preferredSizeGroupingRangeForItemAtIndex:(int64_t)a3
+- (_NSRange)preferredSizeGroupingRangeForItemAtIndex:(int64_t)index
 {
   if (self)
   {
     self = self->_solutionState;
-    v4 = self;
+    selfCopy = self;
     if (self)
     {
       self = self->_layoutAxis;
@@ -1093,10 +1093,10 @@ LABEL_5:
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  v5 = [(_UIOrderedRangeIndexer *)self rangeContainingLocation:a3];
+  v5 = [(_UIOrderedRangeIndexer *)self rangeContainingLocation:index];
   v7 = v6;
 
   v8 = v5;
@@ -1106,7 +1106,7 @@ LABEL_5:
   return result;
 }
 
-- (void)setOrthogonalOffset:(CGPoint)a3
+- (void)setOrthogonalOffset:(CGPoint)offset
 {
   layoutAxis = self->_layoutAxis;
   if (layoutAxis == 1)
@@ -1119,7 +1119,7 @@ LABEL_5:
     v5 = layoutAxis == 2;
   }
 
-  v6 = _UISetPointValueForAxis(v5, a3.x, a3.y, 0.0);
+  v6 = _UISetPointValueForAxis(v5, offset.x, offset.y, 0.0);
   v8 = v7;
   v9 = 1.0;
   x = self->_orthogonalOffset.x;
@@ -1151,52 +1151,52 @@ LABEL_5:
   self->_orthogonalOffset.y = v8;
 }
 
-- (double)_dimensionForRootGroupAlongAxis:(unint64_t)a3
+- (double)_dimensionForRootGroupAlongAxis:(unint64_t)axis
 {
-  v5 = [(_UICollectionLayoutSectionEstimatedSolver *)self _sectionContainer];
-  v6 = [(_UICollectionLayoutSectionEstimatedSolver *)self traitCollection];
-  [v6 displayScale];
+  _sectionContainer = [(_UICollectionLayoutSectionEstimatedSolver *)self _sectionContainer];
+  traitCollection = [(_UICollectionLayoutSectionEstimatedSolver *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
-  v9 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v10 = [v9 group];
-  v11 = [v10 size];
-  [v11 _effectiveSizeForContainer:v5 displayScale:0 ignoringInsets:v8];
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  group = [layoutSection group];
+  v11 = [group size];
+  [v11 _effectiveSizeForContainer:_sectionContainer displayScale:0 ignoringInsets:v8];
   v13 = v12;
   v15 = v14;
 
-  v16 = _UISizeValueForAxis(a3, v13, v15);
+  v16 = _UISizeValueForAxis(axis, v13, v15);
   return v16;
 }
 
-- (id)_solveWithParameters:(id)a3
+- (id)_solveWithParameters:(id)parameters
 {
   v308 = *MEMORY[0x1E69E9840];
   v184 = objc_alloc_init(_UICollectionLayoutSolveResult);
-  v193 = self;
-  v4 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
-  v5 = [v4 _isEmptySection];
+  selfCopy = self;
+  layoutSection = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutSection];
+  _isEmptySection = [layoutSection _isEmptySection];
 
-  if (v5)
+  if (_isEmptySection)
   {
     goto LABEL_166;
   }
 
-  layoutAxis = v193->_layoutAxis;
-  [(_UICollectionLayoutContainer *)v193->_container contentSize];
-  v189 = [(_UICollectionLayoutSectionEstimatedSolver *)v193 _sectionContainer];
-  v166 = v193->_preferredSizes;
-  v167 = [(NSCollectionLayoutSection *)v193->_layoutSection group];
-  v160 = [v167 layoutSize];
-  v6 = [v160 _axesUniformAcrossSiblings];
-  if (v6)
+  layoutAxis = selfCopy->_layoutAxis;
+  [(_UICollectionLayoutContainer *)selfCopy->_container contentSize];
+  _sectionContainer = [(_UICollectionLayoutSectionEstimatedSolver *)selfCopy _sectionContainer];
+  v166 = selfCopy->_preferredSizes;
+  group = [(NSCollectionLayoutSection *)selfCopy->_layoutSection group];
+  layoutSize = [group layoutSize];
+  _axesUniformAcrossSiblings = [layoutSize _axesUniformAcrossSiblings];
+  if (_axesUniformAcrossSiblings)
   {
-    v177 = [v167 containsEstimatedSizeItem];
+    containsEstimatedSizeItem = [group containsEstimatedSizeItem];
   }
 
   else
   {
-    v177 = 0;
+    containsEstimatedSizeItem = 0;
   }
 
   v299[0] = 0;
@@ -1215,29 +1215,29 @@ LABEL_5:
   v295[1] = v295;
   v295[2] = 0x2020000000;
   v296 = 0;
-  location = &v193->_solutionState;
-  v7 = v193->_solutionState;
+  location = &selfCopy->_solutionState;
+  v7 = selfCopy->_solutionState;
   if (v7)
   {
     v8 = v7;
-    if (v6)
+    if (_axesUniformAcrossSiblings)
     {
       v9 = v7->_bookmarks;
       v181 = [(NSArray *)v9 count];
 
       v10 = 0;
 LABEL_9:
-      v12 = [(_UICollectionPreferredSizes *)v193->_preferredSizes largestItemSize];
+      largestItemSize = [(_UICollectionPreferredSizes *)selfCopy->_preferredSizes largestItemSize];
       v14 = v13;
-      v15 = [v167 subitems];
-      v16 = [v15 count] == 1;
+      subitems = [group subitems];
+      v16 = [subitems count] == 1;
 
       goto LABEL_16;
     }
 
-    if (a3 && ([*(a3 + 1) count] || objc_msgSend(*(a3 + 2), "count")))
+    if (parameters && ([*(parameters + 1) count] || objc_msgSend(*(parameters + 2), "count")))
     {
-      v10 = [(_UICollectionLayoutSectionEstimatedSolver *)v193 _rangeOfBookmarksAffectedByResolveItems:a3];
+      v10 = [(_UICollectionLayoutSectionEstimatedSolver *)selfCopy _rangeOfBookmarksAffectedByResolveItems:parameters];
       v11 = v17;
     }
 
@@ -1253,26 +1253,26 @@ LABEL_9:
     v181 = 0;
     v11 = 0;
     v10 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v6)
+    if (_axesUniformAcrossSiblings)
     {
       goto LABEL_9;
     }
   }
 
   v16 = 0;
-  v12 = *MEMORY[0x1E695F060];
+  largestItemSize = *MEMORY[0x1E695F060];
   v14 = *(MEMORY[0x1E695F060] + 8);
   v181 = v11;
 LABEL_16:
-  v18 = [v167 subitems];
-  v19 = v18;
+  subitems2 = [group subitems];
+  v19 = subitems2;
   if (v16)
   {
-    v20 = [v18 objectAtIndexedSubscript:0];
-    v21 = [v20 layoutSize];
-    v22 = [v21 widthDimension];
-    v23 = [v22 isEstimated];
-    if (v23 && ([v21 widthDimension], v16 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v16, "isUniformAcrossSiblings") & 1) == 0))
+    v20 = [subitems2 objectAtIndexedSubscript:0];
+    layoutSize2 = [v20 layoutSize];
+    widthDimension = [layoutSize2 widthDimension];
+    isEstimated = [widthDimension isEstimated];
+    if (isEstimated && ([layoutSize2 widthDimension], v16 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v16, "isUniformAcrossSiblings") & 1) == 0))
     {
 
       v26 = 0;
@@ -1280,17 +1280,17 @@ LABEL_16:
 
     else
     {
-      v24 = [v21 heightDimension];
-      if ([v24 isEstimated])
+      heightDimension = [layoutSize2 heightDimension];
+      if ([heightDimension isEstimated])
       {
-        v25 = [v21 heightDimension];
-        v187 = [v25 isUniformAcrossSiblings];
+        heightDimension2 = [layoutSize2 heightDimension];
+        isUniformAcrossSiblings = [heightDimension2 isUniformAcrossSiblings];
 
-        if (v23)
+        if (isEstimated)
         {
         }
 
-        if ((v187 & 1) == 0)
+        if ((isUniformAcrossSiblings & 1) == 0)
         {
           v26 = 0;
           goto LABEL_35;
@@ -1300,21 +1300,21 @@ LABEL_16:
       else
       {
 
-        if (v23)
+        if (isEstimated)
         {
         }
       }
 
-      v27 = [v160 _axesUniformAcrossSiblings];
-      v22 = [v20 auxillaryItems];
-      if ([v22 count])
+      _axesUniformAcrossSiblings2 = [layoutSize _axesUniformAcrossSiblings];
+      widthDimension = [v20 auxillaryItems];
+      if ([widthDimension count])
       {
         v28 = 0;
       }
 
       else
       {
-        v28 = v27 == v6;
+        v28 = _axesUniformAcrossSiblings2 == _axesUniformAcrossSiblings;
       }
 
       v26 = v28;
@@ -1327,7 +1327,7 @@ LABEL_35:
   v26 = 0;
 LABEL_36:
 
-  frameCount = v193->_frameCount;
+  frameCount = selfCopy->_frameCount;
   v291 = 0;
   v292 = &v291;
   v293 = 0x2020000000;
@@ -1360,8 +1360,8 @@ LABEL_36:
   aBlock[2] = __66___UICollectionLayoutSectionEstimatedSolver__solveWithParameters___block_invoke;
   aBlock[3] = &unk_1E70FB090;
   v275 = v277;
-  aBlock[4] = v193;
-  v30 = v189;
+  aBlock[4] = selfCopy;
+  v30 = _sectionContainer;
   v274 = v30;
   v276 = layoutAxis;
   v31 = _Block_copy(aBlock);
@@ -1373,23 +1373,23 @@ LABEL_36:
   v32 = v31;
   v270 = v279;
   v271 = &v291;
-  v268[4] = v193;
+  v268[4] = selfCopy;
   v268[5] = v166;
   v269 = v32;
-  v268[6] = a3;
+  v268[6] = parameters;
   v33 = _Block_copy(v268);
   v261[0] = MEMORY[0x1E69E9820];
   v261[1] = 3221225472;
   v261[2] = __66___UICollectionLayoutSectionEstimatedSolver__solveWithParameters___block_invoke_3;
   v261[3] = &unk_1E70FB0E0;
-  v261[4] = v193;
+  v261[4] = selfCopy;
   v261[5] = v166;
   v263 = &v291;
   v264 = v279;
   v34 = v30;
   v262 = v34;
   v265 = layoutAxis;
-  v266 = v12;
+  v266 = largestItemSize;
   v267 = v14;
   v163 = _Block_copy(v261);
   v260[0] = MEMORY[0x1E69E9820];
@@ -1397,7 +1397,7 @@ LABEL_36:
   v260[2] = __66___UICollectionLayoutSectionEstimatedSolver__solveWithParameters___block_invoke_4;
   v260[3] = &unk_1E70FB108;
   v260[5] = v297;
-  v260[4] = v193;
+  v260[4] = selfCopy;
   v162 = _Block_copy(v260);
   v258[0] = MEMORY[0x1E69E9820];
   v258[1] = 3221225472;
@@ -1414,12 +1414,12 @@ LABEL_36:
   v254 = v181;
   v248 = v299;
   v249 = v298;
-  v246[4] = v193;
+  v246[4] = selfCopy;
   v246[5] = v166;
   v250 = &v291;
   v251 = v279;
   v255 = layoutAxis;
-  v256 = v12;
+  v256 = largestItemSize;
   v257 = v14;
   v154 = v34;
   v247 = v154;
@@ -1430,7 +1430,7 @@ LABEL_36:
   v245[2] = __66___UICollectionLayoutSectionEstimatedSolver__solveWithParameters___block_invoke_7;
   v245[3] = &unk_1E70FB180;
   v245[5] = &v287;
-  v245[4] = v193;
+  v245[4] = selfCopy;
   v245[6] = v279;
   v245[7] = &v291;
   v245[8] = &v281;
@@ -1459,7 +1459,7 @@ LABEL_36:
   v225[2] = __66___UICollectionLayoutSectionEstimatedSolver__solveWithParameters___block_invoke_8;
   v225[3] = &unk_1E70FB1A8;
   v225[5] = v161;
-  v225[4] = a3;
+  v225[4] = parameters;
   v225[6] = v10;
   v225[7] = v181;
   *(&v231 + 1) = _Block_copy(v225);
@@ -1477,7 +1477,7 @@ LABEL_36:
   v218[3] = &unk_1E70FB1F8;
   v221 = v181;
   v220 = v10;
-  v218[4] = v193;
+  v218[4] = selfCopy;
   v168 = v35;
   v219 = v168;
   *(&v234 + 1) = _Block_copy(v218);
@@ -1492,7 +1492,7 @@ LABEL_36:
   v213 = v295;
   v37 = v36;
   v210 = v37;
-  v209[4] = v193;
+  v209[4] = selfCopy;
   v214 = v298;
   v215 = v297;
   *(&v235 + 1) = _Block_copy(v209);
@@ -1502,7 +1502,7 @@ LABEL_36:
   v208[3] = &unk_1E70FB248;
   v208[6] = v297;
   v208[5] = &v287;
-  v208[4] = v193;
+  v208[4] = selfCopy;
   *(&v237 + 1) = _Block_copy(v208);
   v205[0] = MEMORY[0x1E69E9820];
   v205[1] = 3221225472;
@@ -1529,13 +1529,13 @@ LABEL_36:
 
         if (v204 == 7)
         {
-          v41 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v41 handleFailureInMethod:a2 object:v193 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:783 description:@"Estimated section solver state machine failure. Please file a radar on UICollectionView."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:783 description:@"Estimated section solver state machine failure. Please file a radar on UICollectionView."];
         }
 
 LABEL_46:
-        v40 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v40 handleFailureInMethod:a2 object:v193 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:813 description:@"Unexpected state while performing resolve."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:813 description:@"Unexpected state while performing resolve."];
 
         v39 = 0;
         goto LABEL_50;
@@ -1570,8 +1570,8 @@ LABEL_50:
   }
 
   while (v38 != 6);
-  v153 = [(_UICollectionLayoutSectionEstimatedSolver *)v193 layoutSection];
-  [v153 interGroupSpacing];
+  layoutSection2 = [(_UICollectionLayoutSectionEstimatedSolver *)selfCopy layoutSection];
+  [layoutSection2 interGroupSpacing];
   v43 = *MEMORY[0x1E695EFF8];
   v42 = *(MEMORY[0x1E695EFF8] + 8);
   v45 = _UISetPointValueForAxis(layoutAxis, *MEMORY[0x1E695EFF8], v42, v44);
@@ -1586,7 +1586,7 @@ LABEL_50:
   v288[3] = v161;
   v48 = objc_alloc(MEMORY[0x1E695DF70]);
   v188 = [v48 initWithCapacity:{objc_msgSend(v282[5], "count")}];
-  v193->_containerSizeDependentAxes = 0;
+  selfCopy->_containerSizeDependentAxes = 0;
   v202 = 0u;
   v203 = 0u;
   v200 = 0u;
@@ -1656,14 +1656,14 @@ LABEL_50:
         [(_UICollectionLayoutItemSolver *)*(*(&v200 + 1) + 8 * v190) layoutFrame];
         v57 = v56;
         v59 = v58;
-        v60 = [(_UICollectionLayoutItemSolver *)v53 offsetForEdgeSpacing];
-        v62 = _UIPointValueForAxis(v172, v60, v61);
+        offsetForEdgeSpacing = [(_UICollectionLayoutItemSolver *)v53 offsetForEdgeSpacing];
+        v62 = _UIPointValueForAxis(v172, offsetForEdgeSpacing, v61);
         v63 = _UISetSizeValueForAxis(v172, v171, v170, v62);
         v65 = v64;
-        v66 = [(_UICollectionLayoutItemSolver *)v53 supplementaryOffsets];
-        v195 = [v66 offsetsByApplyingOffsets:v178];
-        [(_UICollectionLayoutAuxillaryOffsets *)&v178->super.isa incrementCountsFromOffsets:v66];
-        v183 = v66;
+        supplementaryOffsets = [(_UICollectionLayoutItemSolver *)v53 supplementaryOffsets];
+        v195 = [supplementaryOffsets offsetsByApplyingOffsets:v178];
+        [(_UICollectionLayoutAuxillaryOffsets *)&v178->super.isa incrementCountsFromOffsets:supplementaryOffsets];
+        v183 = supplementaryOffsets;
         v67 = [_UICollectionEstimatedSolutionBookmark alloc];
         if (v67)
         {
@@ -1671,20 +1671,20 @@ LABEL_50:
           v69 = v288[3];
           if (!v53)
           {
-            v106 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v106 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1246 description:{@"Invalid parameter not satisfying: %@", @"solution"}];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1246 description:{@"Invalid parameter not satisfying: %@", @"solution"}];
           }
 
           if (v69 <= 0)
           {
-            v107 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v107 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1247 description:{@"Invalid parameter not satisfying: %@", @"maxItemFrameCount > 0"}];
+            currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler4 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1247 description:{@"Invalid parameter not satisfying: %@", @"maxItemFrameCount > 0"}];
           }
 
           if (!v195)
           {
-            v108 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v108 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1248 description:{@"Invalid parameter not satisfying: %@", @"supplementaryOffsets"}];
+            currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler5 handleFailureInMethod:v152 object:v67 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1248 description:{@"Invalid parameter not satisfying: %@", @"supplementaryOffsets"}];
           }
 
           if (v53 && (v70 = *(v53 + 48)) != 0)
@@ -1744,9 +1744,9 @@ LABEL_50:
                     v80 = *(*(&v301 + 1) + 8 * i);
                     if (v80 && (v80[4] & 0xFFFFFFFFFFFFFFFELL) == 2)
                     {
-                      v81 = [(_UICollectionLayoutFramesQueryResult *)v80 auxillaryItem];
-                      v82 = [v81 elementKind];
-                      [(_UICollectionLayoutAuxillaryOffsets *)v75 incrementCountForElementKind:v82];
+                      auxillaryItem = [(_UICollectionLayoutFramesQueryResult *)v80 auxillaryItem];
+                      elementKind = [auxillaryItem elementKind];
+                      [(_UICollectionLayoutAuxillaryOffsets *)v75 incrementCountForElementKind:elementKind];
                     }
                   }
 
@@ -1779,7 +1779,7 @@ LABEL_50:
           v85 = 0;
         }
 
-        v193->_containerSizeDependentAxes |= v85;
+        selfCopy->_containerSizeDependentAxes |= v85;
         v86 = [v188 count];
         [v188 addObject:v67];
         v87 = v57 + v63;
@@ -1801,14 +1801,14 @@ LABEL_50:
           _UIOrderedRangeIndexerImpl::appendRange(v186->_orderedRangeIndexerImpl.__ptr_, itemRange);
         }
 
-        if ((v177 & 1) == 0)
+        if ((containsEstimatedSizeItem & 1) == 0)
         {
           v198 = 0u;
           v199 = 0u;
           v196 = 0u;
           v197 = 0u;
-          v90 = [(_UICollectionLayoutItemSolver *)v53 preferredSizeGroupingRanges];
-          v91 = [v90 countByEnumeratingWithState:&v196 objects:v305 count:16];
+          preferredSizeGroupingRanges = [(_UICollectionLayoutItemSolver *)v53 preferredSizeGroupingRanges];
+          v91 = [preferredSizeGroupingRanges countByEnumeratingWithState:&v196 objects:v305 count:16];
           if (v91)
           {
             v92 = *v197;
@@ -1818,26 +1818,26 @@ LABEL_50:
               {
                 if (*v197 != v92)
                 {
-                  objc_enumerationMutation(v90);
+                  objc_enumerationMutation(preferredSizeGroupingRanges);
                 }
 
-                v94 = [*(*(&v196 + 1) + 8 * j) rangeValue];
+                rangeValue = [*(*(&v196 + 1) + 8 * j) rangeValue];
                 if (v47)
                 {
                   v310.length = v95;
-                  v310.location = v292[3] + v94;
+                  v310.location = v292[3] + rangeValue;
                   _UIOrderedRangeIndexerImpl::appendRange(v47->_orderedRangeIndexerImpl.__ptr_, v310);
                 }
               }
 
-              v91 = [v90 countByEnumeratingWithState:&v196 objects:v305 count:16];
+              v91 = [preferredSizeGroupingRanges countByEnumeratingWithState:&v196 objects:v305 count:16];
             }
 
             while (v91);
           }
         }
 
-        [(_UICollectionLayoutSectionEstimatedSolver *)v193 _updateSolutionAuxillaryRangeIndexerKindDict:v179 fromBookmark:v67];
+        [(_UICollectionLayoutSectionEstimatedSolver *)selfCopy _updateSolutionAuxillaryRangeIndexerKindDict:v179 fromBookmark:v67];
         if (v181)
         {
           if (v67)
@@ -1934,17 +1934,17 @@ LABEL_50:
 
 LABEL_137:
 
-  [(_UICollectionLayoutSectionEstimatedSolver *)v193 _adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:v188 bookmarks:*v185, *&v185[8], *&v185[16], *&v185[24]];
+  [(_UICollectionLayoutSectionEstimatedSolver *)selfCopy _adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:v188 bookmarks:*v185, *&v185[8], *&v185[16], *&v185[24]];
   v111 = v110;
   v113 = v112;
   v115 = v114;
   v117 = v116;
-  containerLayoutAxis = v193->_containerLayoutAxis;
+  containerLayoutAxis = selfCopy->_containerLayoutAxis;
   v119 = [_UICollectionLayoutSectionGeometryTranslator alloc];
-  layoutRTL = v193->_layoutRTL;
-  [(NSCollectionLayoutSection *)v193->_layoutSection contentInsets];
-  v125 = [(_UICollectionLayoutSectionGeometryTranslator *)v119 initWithPrimaryContentSize:layoutRTL sectionAuxiliarySolutionSize:v115 layoutAxis:v117 layoutRTL:*MEMORY[0x1E695F060] sectionInsets:*(MEMORY[0x1E695F060] + 8) contentFrameSupplementaryOffset:v121, v122, v123, v124, v158, v157];
-  v126 = v177;
+  layoutRTL = selfCopy->_layoutRTL;
+  [(NSCollectionLayoutSection *)selfCopy->_layoutSection contentInsets];
+  v157 = [(_UICollectionLayoutSectionGeometryTranslator *)v119 initWithPrimaryContentSize:layoutRTL sectionAuxiliarySolutionSize:v115 layoutAxis:v117 layoutRTL:*MEMORY[0x1E695F060] sectionInsets:*(MEMORY[0x1E695F060] + 8) contentFrameSupplementaryOffset:v121, v122, v123, v124, v158, v157];
+  v126 = containsEstimatedSizeItem;
   if (!v47)
   {
     v126 = 0;
@@ -1962,26 +1962,26 @@ LABEL_137:
   {
     if (!v188)
     {
-      v148 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v148 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1302 description:{@"Invalid parameter not satisfying: %@", @"bookmarks"}];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1302 description:{@"Invalid parameter not satisfying: %@", @"bookmarks"}];
     }
 
     if (!v180)
     {
-      v149 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v149 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1303 description:{@"Invalid parameter not satisfying: %@", @"geometricIndexer"}];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler7 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1303 description:{@"Invalid parameter not satisfying: %@", @"geometricIndexer"}];
     }
 
     if (!v186)
     {
-      v150 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v150 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1304 description:{@"Invalid parameter not satisfying: %@", @"itemRangeIndexer"}];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler8 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1304 description:{@"Invalid parameter not satisfying: %@", @"itemRangeIndexer"}];
     }
 
     if (!v179)
     {
-      v151 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v151 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1305 description:{@"Invalid parameter not satisfying: %@", @"auxillaryRangeIndexerDict"}];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler9 handleFailureInMethod:sel_initWithGeometryTranslator_bookmarks_geometricIndexer_itemRangeIndexer_preferredSizeGroupingIndexer_auxillaryRangeIndexerDict_ object:v127 file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1305 description:{@"Invalid parameter not satisfying: %@", @"auxillaryRangeIndexerDict"}];
     }
 
     v307.receiver = v127;
@@ -1995,7 +1995,7 @@ LABEL_137:
       objc_storeStrong(&v127->_itemRangeIndexer, v186);
       objc_storeStrong(&v127->_preferredSizeGroupingIndexer, v47);
       objc_storeStrong(&v127->_auxillaryRangeIndexerKindDict, v179);
-      objc_storeStrong(&v127->_sectionGeometryTranslator, v125);
+      objc_storeStrong(&v127->_sectionGeometryTranslator, v157);
     }
   }
 
@@ -2006,13 +2006,13 @@ LABEL_137:
   v314.size.height = v117;
   IsEmpty = CGRectIsEmpty(v314);
   v130 = objc_alloc_init(_UICollectionLayoutSupplementaryEnroller);
-  objc_storeStrong(&v193->_sectionSupplementaryEnroller, v130);
+  objc_storeStrong(&selfCopy->_sectionSupplementaryEnroller, v130);
 
-  v131 = [[_UICollectionLayoutAuxillaryItemSolver alloc] initWithAuxillaryHost:v193];
+  v131 = [[_UICollectionLayoutAuxillaryItemSolver alloc] initWithAuxillaryHost:selfCopy];
   v132 = v131;
   if (v131)
   {
-    v193->_containerSizeDependentAxes |= *(v131 + 56);
+    selfCopy->_containerSizeDependentAxes |= *(v131 + 56);
     if (*(v131 + 144) != 0.0 || *(v131 + 160) != 0.0 || *(v131 + 152) != 0.0 || *(v131 + 168) != 0.0 || IsEmpty)
     {
       v134 = *(v131 + 112);
@@ -2029,8 +2029,8 @@ LABEL_137:
     {
 LABEL_158:
       v135 = [_UICollectionLayoutSectionGeometryTranslator alloc];
-      v136 = v193->_layoutRTL;
-      [(NSCollectionLayoutSection *)v193->_layoutSection contentInsets];
+      v136 = selfCopy->_layoutRTL;
+      [(NSCollectionLayoutSection *)selfCopy->_layoutSection contentInsets];
       v140 = v139;
       v142 = v141;
       if (v132)
@@ -2045,15 +2045,15 @@ LABEL_158:
         v144 = 0.0;
       }
 
-      v145 = [(_UICollectionLayoutSectionGeometryTranslator *)v135 initWithPrimaryContentSize:v136 sectionAuxiliarySolutionSize:v115 layoutAxis:v117 layoutRTL:v134 sectionInsets:v133 contentFrameSupplementaryOffset:v140, v142, v137, v138, v144, v143];
+      v143 = [(_UICollectionLayoutSectionGeometryTranslator *)v135 initWithPrimaryContentSize:v136 sectionAuxiliarySolutionSize:v115 layoutAxis:v117 layoutRTL:v134 sectionInsets:v133 contentFrameSupplementaryOffset:v140, v142, v137, v138, v144, v143];
       if (*location)
       {
-        objc_storeStrong(*location + 1, v145);
+        objc_storeStrong(*location + 1, v143);
       }
     }
   }
 
-  objc_storeStrong(&v193->_sectionSupplementarySolution, v132);
+  objc_storeStrong(&selfCopy->_sectionSupplementarySolution, v132);
 
   for (k = 32; k != 288; k += 32)
   {
@@ -2076,9 +2076,9 @@ LABEL_166:
   return v184;
 }
 
-- (_NSRange)_rangeOfBookmarksAffectedByResolveItems:(id)a3
+- (_NSRange)_rangeOfBookmarksAffectedByResolveItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     if (self)
     {
@@ -2086,14 +2086,14 @@ LABEL_166:
     }
 
 LABEL_15:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:981 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:981 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
 
     goto LABEL_21;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:980 description:{@"Invalid parameter not satisfying: %@", @"resolveItems"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:980 description:{@"Invalid parameter not satisfying: %@", @"resolveItems"}];
 
   if (!self)
   {
@@ -2110,8 +2110,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:981 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:981 description:{@"Invalid parameter not satisfying: %@", @"self.solutionState"}];
 
   if (!self)
   {
@@ -2145,8 +2145,8 @@ LABEL_7:
 
   if (!v8)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:985 description:{@"Invalid parameter not satisfying: %@", @"itemRangeIndexer"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:985 description:{@"Invalid parameter not satisfying: %@", @"itemRangeIndexer"}];
 
     if (v12)
     {
@@ -2154,8 +2154,8 @@ LABEL_7:
     }
 
 LABEL_17:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:986 description:{@"Invalid parameter not satisfying: %@", @"auxillaryRangeIndexerKindDict"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:986 description:{@"Invalid parameter not satisfying: %@", @"auxillaryRangeIndexerKindDict"}];
 
     goto LABEL_9;
   }
@@ -2167,7 +2167,7 @@ LABEL_17:
 
 LABEL_9:
   v13 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v14 = [(_UILabelConfiguration *)a3 _content];
+  _content = [(_UILabelConfiguration *)items _content];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __85___UICollectionLayoutSectionEstimatedSolver__rangeOfBookmarksAffectedByResolveItems___block_invoke;
@@ -2176,21 +2176,21 @@ LABEL_9:
   v37 = v15;
   v16 = v13;
   v38 = v16;
-  [v14 enumerateIndexesUsingBlock:v36];
+  [_content enumerateIndexesUsingBlock:v36];
 
-  v17 = [(_UICollectionLayoutSolveResult *)a3 invalidatedAuxillaryKinds];
+  invalidatedAuxillaryKinds = [(_UICollectionLayoutSolveResult *)items invalidatedAuxillaryKinds];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __85___UICollectionLayoutSectionEstimatedSolver__rangeOfBookmarksAffectedByResolveItems___block_invoke_2;
   v30[3] = &unk_1E70FB270;
   v18 = v12;
   v31 = v18;
-  v32 = a3;
+  itemsCopy = items;
   v35 = a2;
-  v33 = self;
+  selfCopy = self;
   v19 = v16;
   v34 = v19;
-  [v17 enumerateObjectsUsingBlock:v30];
+  [invalidatedAuxillaryKinds enumerateObjectsUsingBlock:v30];
 
   if ([v19 count] && (v20 = objc_msgSend(v19, "firstIndex"), v21 = objc_msgSend(v19, "lastIndex"), v21 >= v20))
   {
@@ -2210,20 +2210,20 @@ LABEL_9:
   return result;
 }
 
-- (void)_updateSolutionAuxillaryRangeIndexerKindDict:(id)a3 fromBookmark:(id)a4
+- (void)_updateSolutionAuxillaryRangeIndexerKindDict:(id)dict fromBookmark:(id)bookmark
 {
-  if (a4)
+  if (bookmark)
   {
-    if (a3)
+    if (dict)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"solutionAuxillaryRangeIndexerKindDict"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"solutionAuxillaryRangeIndexerKindDict"}];
 
-    if (a4)
+    if (bookmark)
     {
       goto LABEL_4;
     }
@@ -2233,48 +2233,48 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"solutionBookmark"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"solutionBookmark"}];
 
-  if (!a3)
+  if (!dict)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (!a4)
+  if (!bookmark)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  v8 = *(a4 + 2);
+  v8 = *(bookmark + 2);
 LABEL_5:
   v9 = v8;
-  v10 = [v9 elementKinds];
+  elementKinds = [v9 elementKinds];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __103___UICollectionLayoutSectionEstimatedSolver__updateSolutionAuxillaryRangeIndexerKindDict_fromBookmark___block_invoke;
   v14[3] = &unk_1E70FB298;
   v15 = v9;
-  v16 = a3;
+  dictCopy = dict;
   v11 = v9;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [elementKinds enumerateObjectsUsingBlock:v14];
 }
 
-- (CGRect)_adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:(CGRect)a3 bookmarks:(id)a4
+- (CGRect)_adjustContentFrameForLastPartialSolutionIfNeededForContentFrame:(CGRect)frame bookmarks:(id)bookmarks
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([a4 count] && -[_UICollectionLayoutSectionEstimatedSolver shouldAdjustContentSizeForPartialLastGroupSolution](self, "shouldAdjustContentSizeForPartialLastGroupSolution"))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ([bookmarks count] && -[_UICollectionLayoutSectionEstimatedSolver shouldAdjustContentSizeForPartialLastGroupSolution](self, "shouldAdjustContentSizeForPartialLastGroupSolution"))
   {
-    v11 = [a4 lastObject];
-    v12 = v11;
-    if (v11)
+    lastObject = [bookmarks lastObject];
+    v12 = lastObject;
+    if (lastObject)
     {
-      v13 = *(v11 + 8);
+      v13 = *(lastObject + 8);
     }
 
     else
@@ -2283,11 +2283,11 @@ LABEL_5:
     }
 
     v14 = v13;
-    v15 = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
-    if ((v15 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    layoutAxis = [(_UICollectionLayoutSectionEstimatedSolver *)self layoutAxis];
+    if ((layoutAxis - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1093 description:@"Unknown layout axis."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1093 description:@"Unknown layout axis."];
 
       if (v12)
       {
@@ -2338,12 +2338,12 @@ LABEL_7:
     v18 = 0.0;
     v19 = 0.0;
 LABEL_12:
-    v20 = [(_UICollectionLayoutItemSolver *)v14 contentSizeForFrameCount:v16 layoutAxis:v15];
+    v20 = [(_UICollectionLayoutItemSolver *)v14 contentSizeForFrameCount:v16 layoutAxis:layoutAxis];
     v22 = v21;
-    v23 = _UISizeValueForAxis(v15, v18, v19);
-    v24 = _UISizeValueForAxis(v15, v20, v22) - v23;
-    v25 = _UISizeValueForAxis(v15, width, height);
-    v26 = _UISetSizeValueForAxis(v15, width, height, v25 + v24);
+    v23 = _UISizeValueForAxis(layoutAxis, v18, v19);
+    v24 = _UISizeValueForAxis(layoutAxis, v20, v22) - v23;
+    v25 = _UISizeValueForAxis(layoutAxis, width, height);
+    v26 = _UISetSizeValueForAxis(layoutAxis, width, height, v25 + v24);
     v28 = v27;
     v36.origin.x = x;
     v36.origin.y = y;
@@ -2372,25 +2372,25 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_rectWithContentInsetTrailingLayoutDimensionAddedToToRect:(CGRect)a3 insets:(NSDirectionalEdgeInsets)a4 layoutAxis:(unint64_t)a5
+- (CGRect)_rectWithContentInsetTrailingLayoutDimensionAddedToToRect:(CGRect)rect insets:(NSDirectionalEdgeInsets)insets layoutAxis:(unint64_t)axis
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (axis - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1123 description:{@"Invalid parameter not satisfying: %@", @"layoutAxis == UIAxisVertical || layoutAxis == UIAxisHorizontal"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutSectionEstimatedSolver.m" lineNumber:1123 description:{@"Invalid parameter not satisfying: %@", @"layoutAxis == UIAxisVertical || layoutAxis == UIAxisHorizontal"}];
   }
 
-  v14 = _UITrailingOffsetForInsetsAlongAxis(a5, top, leading, bottom, trailing);
-  v15 = _UISizeValueForAxis(a5, width, height);
-  v16 = _UISetSizeValueForAxis(a5, width, height, v14 + v15);
+  v14 = _UITrailingOffsetForInsetsAlongAxis(axis, top, leading, bottom, trailing);
+  v15 = _UISizeValueForAxis(axis, width, height);
+  v16 = _UISetSizeValueForAxis(axis, width, height, v14 + v15);
   v18 = v17;
   v19 = x;
   v20 = y;

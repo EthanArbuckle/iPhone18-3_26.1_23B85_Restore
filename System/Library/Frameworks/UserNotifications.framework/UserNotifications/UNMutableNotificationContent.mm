@@ -1,46 +1,46 @@
 @interface UNMutableNotificationContent
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setAttachments:(NSArray *)attachments;
-- (void)setAttributedBody:(id)a3;
+- (void)setAttributedBody:(id)body;
 - (void)setBadge:(NSNumber *)badge;
 - (void)setBody:(NSString *)body;
 - (void)setCategoryIdentifier:(NSString *)categoryIdentifier;
-- (void)setCommunicationContext:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setDefaultActionBundleIdentifier:(id)a3;
-- (void)setDefaultActionTitle:(id)a3;
-- (void)setDefaultActionURL:(id)a3;
-- (void)setExpirationDate:(id)a3;
+- (void)setCommunicationContext:(id)context;
+- (void)setContentType:(id)type;
+- (void)setDefaultActionBundleIdentifier:(id)identifier;
+- (void)setDefaultActionTitle:(id)title;
+- (void)setDefaultActionURL:(id)l;
+- (void)setExpirationDate:(id)date;
 - (void)setFilterCriteria:(NSString *)filterCriteria;
-- (void)setFooter:(id)a3;
-- (void)setHeader:(id)a3;
+- (void)setFooter:(id)footer;
+- (void)setHeader:(id)header;
 - (void)setLaunchImageName:(NSString *)launchImageName;
-- (void)setPeopleIdentifiers:(id)a3;
+- (void)setPeopleIdentifiers:(id)identifiers;
 - (void)setRelevanceScore:(double)relevanceScore;
 - (void)setSound:(UNNotificationSound *)sound;
-- (void)setSpeechLanguage:(id)a3;
+- (void)setSpeechLanguage:(id)language;
 - (void)setSummaryArgument:(NSString *)summaryArgument;
 - (void)setTargetContentIdentifier:(NSString *)targetContentIdentifier;
 - (void)setThreadIdentifier:(NSString *)threadIdentifier;
 - (void)setTitle:(NSString *)title;
-- (void)setTopicIdentifiers:(id)a3;
+- (void)setTopicIdentifiers:(id)identifiers;
 - (void)setUserInfo:(NSDictionary *)userInfo;
 @end
 
 @implementation UNMutableNotificationContent
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   contentType = self->super._contentType;
   self->super._contentType = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCommunicationContext:(id)a3
+- (void)setCommunicationContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   communicationContext = self->super._communicationContext;
   self->super._communicationContext = v4;
 
@@ -83,9 +83,9 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAttributedBody:(id)a3
+- (void)setAttributedBody:(id)body
 {
-  v4 = [a3 copy];
+  v4 = [body copy];
   attributedBody = self->super._attributedBody;
   self->super._attributedBody = v4;
 
@@ -110,54 +110,54 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDefaultActionTitle:(id)a3
+- (void)setDefaultActionTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   defaultActionTitle = self->super._defaultActionTitle;
   self->super._defaultActionTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDefaultActionURL:(id)a3
+- (void)setDefaultActionURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   defaultActionURL = self->super._defaultActionURL;
   self->super._defaultActionURL = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDefaultActionBundleIdentifier:(id)a3
+- (void)setDefaultActionBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   defaultActionBundleIdentifier = self->super._defaultActionBundleIdentifier;
   self->super._defaultActionBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   expirationDate = self->super._expirationDate;
   self->super._expirationDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setHeader:(id)a3
+- (void)setHeader:(id)header
 {
-  v4 = [a3 copy];
+  v4 = [header copy];
   header = self->super._header;
   self->super._header = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFooter:(id)a3
+- (void)setFooter:(id)footer
 {
-  v4 = [a3 copy];
+  v4 = [footer copy];
   footer = self->super._footer;
   self->super._footer = v4;
 
@@ -179,11 +179,11 @@
   objc_storeStrong(&self->super._launchImageName, v3);
 }
 
-- (void)setPeopleIdentifiers:(id)a3
+- (void)setPeopleIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
-    v4 = [a3 copy];
+    v4 = [identifiers copy];
   }
 
   else
@@ -233,9 +233,9 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTopicIdentifiers:(id)a3
+- (void)setTopicIdentifiers:(id)identifiers
 {
-  v4 = [a3 copy];
+  v4 = [identifiers copy];
   topicIdentifiers = self->super._topicIdentifiers;
   self->super._topicIdentifiers = v4;
 
@@ -290,9 +290,9 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSpeechLanguage:(id)a3
+- (void)setSpeechLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   speechLanguage = self->super._speechLanguage;
   self->super._speechLanguage = v4;
 
@@ -308,73 +308,73 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v58 = [(UNNotificationContent *)self speechLanguage];
-  v42 = [UNNotificationContent allocWithZone:a3];
-  v57 = [(UNNotificationContent *)self contentType];
-  v56 = [(UNNotificationContent *)self communicationContext];
-  v55 = [(UNNotificationContent *)self accessoryImageName];
-  v54 = [(UNNotificationContent *)self attachments];
-  v53 = [(UNNotificationContent *)self badge];
-  v41 = [(UNNotificationContent *)self body];
-  v52 = [(UNNotificationContent *)self attributedBody];
-  v49 = [(UNNotificationContent *)self categoryIdentifier];
-  v51 = [(UNNotificationContent *)self date];
-  v50 = [(UNNotificationContent *)self icon];
-  v48 = [(UNNotificationContent *)self defaultActionTitle];
-  v40 = [(UNNotificationContent *)self defaultActionURL];
-  v39 = [(UNNotificationContent *)self defaultActionBundleIdentifier];
-  v38 = [(UNNotificationContent *)self expirationDate];
-  v47 = [(UNNotificationContent *)self header];
-  v37 = [(UNNotificationContent *)self footer];
-  v36 = [(UNNotificationContent *)self launchImageName];
-  v46 = [(UNNotificationContent *)self peopleIdentifiers];
-  v35 = [(UNNotificationContent *)self shouldHideDate];
-  v34 = [(UNNotificationContent *)self shouldHideTime];
-  v33 = [(UNNotificationContent *)self shouldIgnoreDoNotDisturb];
-  v32 = [(UNNotificationContent *)self shouldIgnoreDowntime];
-  v31 = [(UNNotificationContent *)self shouldSuppressScreenLightUp];
-  v30 = [(UNNotificationContent *)self shouldAuthenticateDefaultAction];
-  v29 = [(UNNotificationContent *)self shouldBackgroundDefaultAction];
-  v28 = [(UNNotificationContent *)self shouldPreventNotificationDismissalAfterDefaultAction];
-  v27 = [(UNNotificationContent *)self shouldShowSubordinateIcon];
-  v26 = [(UNNotificationContent *)self shouldSuppressDefaultAction];
-  v25 = [(UNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
-  v24 = [(UNNotificationContent *)self shouldUseRequestIdentifierForDismissalSync];
-  v23 = [(UNNotificationContent *)self shouldPreemptPresentedNotification];
-  v22 = [(UNNotificationContent *)self shouldDisplayActionsInline];
-  v45 = [(UNNotificationContent *)self sound];
-  v44 = [(UNNotificationContent *)self subtitle];
-  v20 = [(UNNotificationContent *)self threadIdentifier];
-  v19 = [(UNNotificationContent *)self title];
-  v21 = [(UNNotificationContent *)self topicIdentifiers];
-  v5 = [(UNNotificationContent *)self realertCount];
-  v18 = [(UNNotificationContent *)self summaryArgument];
-  v6 = [(UNNotificationContent *)self summaryArgumentCount];
-  v7 = [(UNNotificationContent *)self targetContentIdentifier];
-  v8 = [(UNNotificationContent *)self interruptionLevel];
+  speechLanguage = [(UNNotificationContent *)self speechLanguage];
+  v42 = [UNNotificationContent allocWithZone:zone];
+  contentType = [(UNNotificationContent *)self contentType];
+  communicationContext = [(UNNotificationContent *)self communicationContext];
+  accessoryImageName = [(UNNotificationContent *)self accessoryImageName];
+  attachments = [(UNNotificationContent *)self attachments];
+  badge = [(UNNotificationContent *)self badge];
+  body = [(UNNotificationContent *)self body];
+  attributedBody = [(UNNotificationContent *)self attributedBody];
+  categoryIdentifier = [(UNNotificationContent *)self categoryIdentifier];
+  date = [(UNNotificationContent *)self date];
+  icon = [(UNNotificationContent *)self icon];
+  defaultActionTitle = [(UNNotificationContent *)self defaultActionTitle];
+  defaultActionURL = [(UNNotificationContent *)self defaultActionURL];
+  defaultActionBundleIdentifier = [(UNNotificationContent *)self defaultActionBundleIdentifier];
+  expirationDate = [(UNNotificationContent *)self expirationDate];
+  header = [(UNNotificationContent *)self header];
+  footer = [(UNNotificationContent *)self footer];
+  launchImageName = [(UNNotificationContent *)self launchImageName];
+  peopleIdentifiers = [(UNNotificationContent *)self peopleIdentifiers];
+  shouldHideDate = [(UNNotificationContent *)self shouldHideDate];
+  shouldHideTime = [(UNNotificationContent *)self shouldHideTime];
+  shouldIgnoreDoNotDisturb = [(UNNotificationContent *)self shouldIgnoreDoNotDisturb];
+  shouldIgnoreDowntime = [(UNNotificationContent *)self shouldIgnoreDowntime];
+  shouldSuppressScreenLightUp = [(UNNotificationContent *)self shouldSuppressScreenLightUp];
+  shouldAuthenticateDefaultAction = [(UNNotificationContent *)self shouldAuthenticateDefaultAction];
+  shouldBackgroundDefaultAction = [(UNNotificationContent *)self shouldBackgroundDefaultAction];
+  shouldPreventNotificationDismissalAfterDefaultAction = [(UNNotificationContent *)self shouldPreventNotificationDismissalAfterDefaultAction];
+  shouldShowSubordinateIcon = [(UNNotificationContent *)self shouldShowSubordinateIcon];
+  shouldSuppressDefaultAction = [(UNNotificationContent *)self shouldSuppressDefaultAction];
+  shouldSuppressSyncDismissalWhenRemoved = [(UNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
+  shouldUseRequestIdentifierForDismissalSync = [(UNNotificationContent *)self shouldUseRequestIdentifierForDismissalSync];
+  shouldPreemptPresentedNotification = [(UNNotificationContent *)self shouldPreemptPresentedNotification];
+  shouldDisplayActionsInline = [(UNNotificationContent *)self shouldDisplayActionsInline];
+  sound = [(UNNotificationContent *)self sound];
+  subtitle = [(UNNotificationContent *)self subtitle];
+  threadIdentifier = [(UNNotificationContent *)self threadIdentifier];
+  title = [(UNNotificationContent *)self title];
+  topicIdentifiers = [(UNNotificationContent *)self topicIdentifiers];
+  realertCount = [(UNNotificationContent *)self realertCount];
+  summaryArgument = [(UNNotificationContent *)self summaryArgument];
+  summaryArgumentCount = [(UNNotificationContent *)self summaryArgumentCount];
+  targetContentIdentifier = [(UNNotificationContent *)self targetContentIdentifier];
+  interruptionLevel = [(UNNotificationContent *)self interruptionLevel];
   [(UNNotificationContent *)self relevanceScore];
   v10 = v9;
-  v11 = [(UNNotificationContent *)self filterCriteria];
-  v12 = [(UNNotificationContent *)self screenCaptureProhibited];
-  v13 = [(UNNotificationContent *)self userInfo];
-  LOBYTE(v17) = v12;
-  BYTE5(v16) = v22;
-  BYTE4(v16) = v23;
-  BYTE3(v16) = v24;
-  BYTE2(v16) = v25;
-  BYTE1(v16) = v26;
-  LOBYTE(v16) = v27;
-  HIBYTE(v15) = v28;
-  BYTE6(v15) = v29;
-  BYTE5(v15) = v30;
-  BYTE4(v15) = v31;
-  BYTE3(v15) = v32;
-  BYTE2(v15) = v33;
-  BYTE1(v15) = v34;
-  LOBYTE(v15) = v35;
-  v43 = [UNNotificationContent _initWithContentType:v42 communicationContext:"_initWithContentType:communicationContext:accessoryImageName:attachments:badge:body:attributedBody:categoryIdentifier:date:icon:defaultActionTitle:defaultActionURL:defaultActionBundleIdentifier:expirationDate:header:footer:launchImageName:peopleIdentifiers:shouldHideDate:shouldHideTime:shouldIgnoreDoNotDisturb:shouldIgnoreDowntime:shouldSuppressScreenLightUp:shouldAuthenticateDefaultAction:shouldBackgroundDefaultAction:shouldPreventNotificationDismissalAfterDefaultAction:shouldShowSubordinateIcon:shouldSuppressDefaultAction:shouldSuppressSyncDismissalWhenRemoved:shouldUseRequestIdentifierForDismissalSync:shouldPreemptPresentedNotification:shouldDisplayActionsInline:sound:subtitle:threadIdentifier:title:topicIdentifiers:realertCount:summaryArgument:summaryArgumentCount:targetContentIdentifier:interruptionLevel:relevanceScore:filterCriteria:screenCaptureProhibited:speechLanguage:userInfo:" accessoryImageName:v57 attachments:v56 badge:v55 body:v54 attributedBody:v53 categoryIdentifier:v41 date:v10 icon:v52 defaultActionTitle:v49 defaultActionURL:v51 defaultActionBundleIdentifier:v50 expirationDate:v48 header:v40 footer:v39 launchImageName:v38 peopleIdentifiers:v47 shouldHideDate:v37 shouldHideTime:v36 shouldIgnoreDoNotDisturb:v46 shouldIgnoreDowntime:v15 shouldSuppressScreenLightUp:v16 shouldAuthenticateDefaultAction:v45 shouldBackgroundDefaultAction:v44 shouldPreventNotificationDismissalAfterDefaultAction:v20 shouldShowSubordinateIcon:v19 shouldSuppressDefaultAction:v21 shouldSuppressSyncDismissalWhenRemoved:v5 shouldUseRequestIdentifierForDismissalSync:v18 shouldPreemptPresentedNotification:v6 shouldDisplayActionsInline:v7 sound:v8 subtitle:v11 threadIdentifier:v17 title:v58 topicIdentifiers:v13 realertCount:? summaryArgument:? summaryArgumentCount:? targetContentIdentifier:? interruptionLevel:? relevanceScore:? filterCriteria:? screenCaptureProhibited:? speechLanguage:? userInfo:?];
+  filterCriteria = [(UNNotificationContent *)self filterCriteria];
+  screenCaptureProhibited = [(UNNotificationContent *)self screenCaptureProhibited];
+  userInfo = [(UNNotificationContent *)self userInfo];
+  LOBYTE(v17) = screenCaptureProhibited;
+  BYTE5(v16) = shouldDisplayActionsInline;
+  BYTE4(v16) = shouldPreemptPresentedNotification;
+  BYTE3(v16) = shouldUseRequestIdentifierForDismissalSync;
+  BYTE2(v16) = shouldSuppressSyncDismissalWhenRemoved;
+  BYTE1(v16) = shouldSuppressDefaultAction;
+  LOBYTE(v16) = shouldShowSubordinateIcon;
+  HIBYTE(v15) = shouldPreventNotificationDismissalAfterDefaultAction;
+  BYTE6(v15) = shouldBackgroundDefaultAction;
+  BYTE5(v15) = shouldAuthenticateDefaultAction;
+  BYTE4(v15) = shouldSuppressScreenLightUp;
+  BYTE3(v15) = shouldIgnoreDowntime;
+  BYTE2(v15) = shouldIgnoreDoNotDisturb;
+  BYTE1(v15) = shouldHideTime;
+  LOBYTE(v15) = shouldHideDate;
+  v43 = [UNNotificationContent _initWithContentType:v42 communicationContext:"_initWithContentType:communicationContext:accessoryImageName:attachments:badge:body:attributedBody:categoryIdentifier:date:icon:defaultActionTitle:defaultActionURL:defaultActionBundleIdentifier:expirationDate:header:footer:launchImageName:peopleIdentifiers:shouldHideDate:shouldHideTime:shouldIgnoreDoNotDisturb:shouldIgnoreDowntime:shouldSuppressScreenLightUp:shouldAuthenticateDefaultAction:shouldBackgroundDefaultAction:shouldPreventNotificationDismissalAfterDefaultAction:shouldShowSubordinateIcon:shouldSuppressDefaultAction:shouldSuppressSyncDismissalWhenRemoved:shouldUseRequestIdentifierForDismissalSync:shouldPreemptPresentedNotification:shouldDisplayActionsInline:sound:subtitle:threadIdentifier:title:topicIdentifiers:realertCount:summaryArgument:summaryArgumentCount:targetContentIdentifier:interruptionLevel:relevanceScore:filterCriteria:screenCaptureProhibited:speechLanguage:userInfo:" accessoryImageName:contentType attachments:communicationContext badge:accessoryImageName body:attachments attributedBody:badge categoryIdentifier:body date:v10 icon:attributedBody defaultActionTitle:categoryIdentifier defaultActionURL:date defaultActionBundleIdentifier:icon expirationDate:defaultActionTitle header:defaultActionURL footer:defaultActionBundleIdentifier launchImageName:expirationDate peopleIdentifiers:header shouldHideDate:footer shouldHideTime:launchImageName shouldIgnoreDoNotDisturb:peopleIdentifiers shouldIgnoreDowntime:v15 shouldSuppressScreenLightUp:v16 shouldAuthenticateDefaultAction:sound shouldBackgroundDefaultAction:subtitle shouldPreventNotificationDismissalAfterDefaultAction:threadIdentifier shouldShowSubordinateIcon:title shouldSuppressDefaultAction:topicIdentifiers shouldSuppressSyncDismissalWhenRemoved:realertCount shouldUseRequestIdentifierForDismissalSync:summaryArgument shouldPreemptPresentedNotification:summaryArgumentCount shouldDisplayActionsInline:targetContentIdentifier sound:interruptionLevel subtitle:filterCriteria threadIdentifier:v17 title:speechLanguage topicIdentifiers:userInfo realertCount:? summaryArgument:? summaryArgumentCount:? targetContentIdentifier:? interruptionLevel:? relevanceScore:? filterCriteria:? screenCaptureProhibited:? speechLanguage:? userInfo:?];
 
   return v43;
 }

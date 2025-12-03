@@ -1,44 +1,44 @@
 @interface _UIDatePickerCalendarTimeValueStore
 - (BOOL)roundToMinuteInterval;
-- (_UIDatePickerCalendarTimeValueStore)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4 decrementBehaviour:(int64_t)a5;
-- (unint64_t)__integerInBufferWithRange:(_NSRange)a3;
-- (unint64_t)digitsInScope:(int64_t)a3;
-- (void)__setIntegerInBuffer:(unint64_t)a3 range:(_NSRange)a4;
-- (void)_removeLastDigitInRange:(_NSRange)a3;
-- (void)_setDigits:(unint64_t)a3 count:(unint64_t)a4 inRange:(_NSRange)a5 append:(BOOL)a6;
-- (void)_verifyInputWithScope:(int64_t)a3;
+- (_UIDatePickerCalendarTimeValueStore)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval decrementBehaviour:(int64_t)behaviour;
+- (unint64_t)__integerInBufferWithRange:(_NSRange)range;
+- (unint64_t)digitsInScope:(int64_t)scope;
+- (void)__setIntegerInBuffer:(unint64_t)buffer range:(_NSRange)range;
+- (void)_removeLastDigitInRange:(_NSRange)range;
+- (void)_setDigits:(unint64_t)digits count:(unint64_t)count inRange:(_NSRange)range append:(BOOL)append;
+- (void)_verifyInputWithScope:(int64_t)scope;
 - (void)dealloc;
-- (void)decrementDigitForScope:(int64_t)a3;
-- (void)incrementDigitForScope:(int64_t)a3;
-- (void)removeLastDigitInScope:(int64_t)a3;
-- (void)setDigits:(unint64_t)a3 count:(unint64_t)a4 inScope:(int64_t)a5 append:(BOOL)a6;
-- (void)setMinuteInterval:(int64_t)a3;
+- (void)decrementDigitForScope:(int64_t)scope;
+- (void)incrementDigitForScope:(int64_t)scope;
+- (void)removeLastDigitInScope:(int64_t)scope;
+- (void)setDigits:(unint64_t)digits count:(unint64_t)count inScope:(int64_t)scope append:(BOOL)append;
+- (void)setMinuteInterval:(int64_t)interval;
 @end
 
 @implementation _UIDatePickerCalendarTimeValueStore
 
-- (_UIDatePickerCalendarTimeValueStore)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4 decrementBehaviour:(int64_t)a5
+- (_UIDatePickerCalendarTimeValueStore)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval decrementBehaviour:(int64_t)behaviour
 {
-  v9 = a3;
+  formatCopy = format;
   v13.receiver = self;
   v13.super_class = _UIDatePickerCalendarTimeValueStore;
   v10 = [(_UIDatePickerCalendarTimeValueStore *)&v13 init];
   if (v10)
   {
     v10->_inputBuffer = malloc_type_calloc(8uLL, 4uLL, 0xA5110A84uLL);
-    objc_storeStrong(&v10->_timeFormat, a3);
-    if (a4 <= 1)
+    objc_storeStrong(&v10->_timeFormat, format);
+    if (interval <= 1)
     {
-      v11 = 1;
+      intervalCopy = 1;
     }
 
     else
     {
-      v11 = a4;
+      intervalCopy = interval;
     }
 
-    v10->_minuteInterval = v11;
-    v10->_decrementBehaviour = a5;
+    v10->_minuteInterval = intervalCopy;
+    v10->_decrementBehaviour = behaviour;
   }
 
   return v10;
@@ -53,66 +53,66 @@
   [(_UIDatePickerCalendarTimeValueStore *)&v3 dealloc];
 }
 
-- (void)setMinuteInterval:(int64_t)a3
+- (void)setMinuteInterval:(int64_t)interval
 {
-  if (a3 <= 1)
+  if (interval <= 1)
   {
-    v3 = 1;
+    intervalCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    intervalCopy = interval;
   }
 
-  self->_minuteInterval = v3;
+  self->_minuteInterval = intervalCopy;
 }
 
-- (void)_verifyInputWithScope:(int64_t)a3
+- (void)_verifyInputWithScope:(int64_t)scope
 {
-  v5 = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
-  v6 = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
-  v7 = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
-  v8 = [v7 clockLayout];
+  hourValue = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
+  minuteValue = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
+  timeFormat = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
+  clockLayout = [timeFormat clockLayout];
 
-  if (!v8 && v5 > 0x18 || (-[_UIDatePickerCalendarTimeValueStore timeFormat](self, "timeFormat"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 clockLayout], v9, v10) && v5 >= 0xD)
+  if (!clockLayout && hourValue > 0x18 || (-[_UIDatePickerCalendarTimeValueStore timeFormat](self, "timeFormat"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 clockLayout], v9, v10) && hourValue >= 0xD)
   {
     *[(_UIDatePickerCalendarTimeValueStore *)self inputBuffer]= 0;
   }
 
-  if (v6 >= 0x3C && (a3 == 3 || v6 % 0xA >= 6))
+  if (minuteValue >= 0x3C && (scope == 3 || minuteValue % 0xA >= 6))
   {
     [(_UIDatePickerCalendarTimeValueStore *)self inputBuffer][16] = 0;
   }
 }
 
-- (void)__setIntegerInBuffer:(unint64_t)a3 range:(_NSRange)a4
+- (void)__setIntegerInBuffer:(unint64_t)buffer range:(_NSRange)range
 {
-  v4 = a4.location + a4.length;
-  if (a4.location + a4.length > a4.location)
+  v4 = range.location + range.length;
+  if (range.location + range.length > range.location)
   {
-    location = a4.location;
+    location = range.location;
     do
     {
-      v7 = a3 / 0xA;
-      *([(_UIDatePickerCalendarTimeValueStore *)self inputBuffer]+ 8 * v4-- - 8) = a3 % 0xA;
-      a3 = v7;
+      v7 = buffer / 0xA;
+      *([(_UIDatePickerCalendarTimeValueStore *)self inputBuffer]+ 8 * v4-- - 8) = buffer % 0xA;
+      buffer = v7;
     }
 
     while (v4 > location);
   }
 }
 
-- (unint64_t)__integerInBufferWithRange:(_NSRange)a3
+- (unint64_t)__integerInBufferWithRange:(_NSRange)range
 {
-  if (a3.location >= a3.location + a3.length)
+  if (range.location >= range.location + range.length)
   {
     return 0;
   }
 
-  length = a3.length;
+  length = range.length;
   v5 = 0;
-  v6 = 8 * a3.location;
+  v6 = 8 * range.location;
   do
   {
     v5 = [(_UIDatePickerCalendarTimeValueStore *)self inputBuffer][v6] + 10 * v5;
@@ -124,32 +124,32 @@
   return v5;
 }
 
-- (void)_setDigits:(unint64_t)a3 count:(unint64_t)a4 inRange:(_NSRange)a5 append:(BOOL)a6
+- (void)_setDigits:(unint64_t)digits count:(unint64_t)count inRange:(_NSRange)range append:(BOOL)append
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a3;
-  if (a6)
+  length = range.length;
+  location = range.location;
+  digitsCopy = digits;
+  if (append)
   {
-    v10 = a4;
-    if (a4)
+    countCopy = count;
+    if (count)
     {
-      v11 = [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:a5.location, a5.length];
+      v11 = [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:range.location, range.length];
     }
 
     else
     {
-      v12 = a3;
+      digitsCopy2 = digits;
       do
       {
-        ++v10;
-        v13 = v12 > 9;
-        v12 /= 0xAuLL;
+        ++countCopy;
+        v13 = digitsCopy2 > 9;
+        digitsCopy2 /= 0xAuLL;
       }
 
       while (v13);
-      v11 = [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:a5.location, a5.length];
-      if (!v10)
+      v11 = [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:range.location, range.length];
+      if (!countCopy)
       {
         goto LABEL_8;
       }
@@ -158,31 +158,31 @@
     do
     {
       v11 *= 10;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
 LABEL_8:
-    v8 += v11;
+    digitsCopy += v11;
   }
 
-  [(_UIDatePickerCalendarTimeValueStore *)self __setIntegerInBuffer:v8 range:location, length];
+  [(_UIDatePickerCalendarTimeValueStore *)self __setIntegerInBuffer:digitsCopy range:location, length];
 }
 
-- (void)_removeLastDigitInRange:(_NSRange)a3
+- (void)_removeLastDigitInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:?]/ 0xA;
 
   [(_UIDatePickerCalendarTimeValueStore *)self __setIntegerInBuffer:v6 range:location, length];
 }
 
-- (void)setDigits:(unint64_t)a3 count:(unint64_t)a4 inScope:(int64_t)a5 append:(BOOL)a6
+- (void)setDigits:(unint64_t)digits count:(unint64_t)count inScope:(int64_t)scope append:(BOOL)append
 {
-  v6 = a6;
-  v9 = a5 - 2;
-  if ((a5 - 2) > 2)
+  appendCopy = append;
+  v9 = scope - 2;
+  if ((scope - 2) > 2)
   {
     v10 = 0;
     v11 = 4;
@@ -194,15 +194,15 @@ LABEL_8:
     v11 = qword_18A683B68[v9];
   }
 
-  [(_UIDatePickerCalendarTimeValueStore *)self _setDigits:a3 count:a4 inRange:v10 append:v11, v6];
+  [(_UIDatePickerCalendarTimeValueStore *)self _setDigits:digits count:count inRange:v10 append:v11, appendCopy];
 
-  [(_UIDatePickerCalendarTimeValueStore *)self _verifyInputWithScope:a5];
+  [(_UIDatePickerCalendarTimeValueStore *)self _verifyInputWithScope:scope];
 }
 
-- (unint64_t)digitsInScope:(int64_t)a3
+- (unint64_t)digitsInScope:(int64_t)scope
 {
-  v3 = a3 - 2;
-  if ((a3 - 2) > 2)
+  v3 = scope - 2;
+  if ((scope - 2) > 2)
   {
     v4 = 0;
     v5 = 4;
@@ -217,10 +217,10 @@ LABEL_8:
   return [(_UIDatePickerCalendarTimeValueStore *)self __integerInBufferWithRange:v4, v5];
 }
 
-- (void)removeLastDigitInScope:(int64_t)a3
+- (void)removeLastDigitInScope:(int64_t)scope
 {
-  v3 = a3 - 2;
-  if ((a3 - 2) > 2)
+  v3 = scope - 2;
+  if ((scope - 2) > 2)
   {
     v4 = 0;
     v5 = 4;
@@ -237,21 +237,21 @@ LABEL_8:
 
 - (BOOL)roundToMinuteInterval
 {
-  v3 = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
-  v4 = [(_UIDatePickerCalendarTimeValueStore *)self minuteInterval];
-  v5 = floor(v3 / v4) * v4;
+  minuteValue = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
+  minuteInterval = [(_UIDatePickerCalendarTimeValueStore *)self minuteInterval];
+  v5 = floor(minuteValue / minuteInterval) * minuteInterval;
   v6 = v5;
-  if (v3 != v5)
+  if (minuteValue != v5)
   {
     [(_UIDatePickerCalendarTimeValueStore *)self setMinuteValue:v5];
   }
 
-  return v3 != v6;
+  return minuteValue != v6;
 }
 
-- (void)incrementDigitForScope:(int64_t)a3
+- (void)incrementDigitForScope:(int64_t)scope
 {
-  switch(a3)
+  switch(scope)
   {
     case 4:
       v13 = [(_UIDatePickerCalendarTimeValueStore *)self isPM]^ 1;
@@ -259,15 +259,15 @@ LABEL_8:
       [(_UIDatePickerCalendarTimeValueStore *)self setIsPM:v13];
       break;
     case 3:
-      v8 = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
+      minuteValue = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
       minuteInterval = self->_minuteInterval;
       v10 = 59;
-      if ((minuteInterval + v8) < 0 == __OFADD__(minuteInterval, v8))
+      if ((minuteInterval + minuteValue) < 0 == __OFADD__(minuteInterval, minuteValue))
       {
-        v10 = minuteInterval + v8;
+        v10 = minuteInterval + minuteValue;
       }
 
-      if ((minuteInterval + v8) <= 59)
+      if ((minuteInterval + minuteValue) <= 59)
       {
         v11 = v10;
       }
@@ -282,27 +282,27 @@ LABEL_8:
       [(_UIDatePickerCalendarTimeValueStore *)self setMinuteValue:v12];
       break;
     case 2:
-      v4 = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
-      v14 = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
-      v5 = [v14 clock];
-      if (v4 >= qword_18A683BA0[v5])
+      hourValue = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
+      timeFormat = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
+      clock = [timeFormat clock];
+      if (hourValue >= qword_18A683BA0[clock])
       {
-        v6 = v4 + 1;
+        v6 = hourValue + 1;
       }
 
       else
       {
-        v6 = qword_18A683C00[v5];
+        v6 = qword_18A683C00[clock];
       }
 
-      if (v4 <= qword_18A683B80[v5])
+      if (hourValue <= qword_18A683B80[clock])
       {
         v7 = v6;
       }
 
       else
       {
-        v7 = qword_18A683C20[v5];
+        v7 = qword_18A683C20[clock];
       }
 
       [(_UIDatePickerCalendarTimeValueStore *)self setHourValue:v7];
@@ -311,9 +311,9 @@ LABEL_8:
   }
 }
 
-- (void)decrementDigitForScope:(int64_t)a3
+- (void)decrementDigitForScope:(int64_t)scope
 {
-  switch(a3)
+  switch(scope)
   {
     case 4:
       v16 = [(_UIDatePickerCalendarTimeValueStore *)self isPM]^ 1;
@@ -321,9 +321,9 @@ LABEL_8:
       [(_UIDatePickerCalendarTimeValueStore *)self setIsPM:v16];
       break;
     case 3:
-      v7 = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
+      minuteValue = [(_UIDatePickerCalendarTimeValueStore *)self minuteValue];
       minuteInterval = self->_minuteInterval;
-      if (v7 % minuteInterval)
+      if (minuteValue % minuteInterval)
       {
         v9 = self->_decrementBehaviour == 0;
       }
@@ -343,8 +343,8 @@ LABEL_8:
         v10 = self->_minuteInterval;
       }
 
-      v11 = __OFSUB__(v7, v10);
-      v12 = v7 - v10;
+      v11 = __OFSUB__(minuteValue, v10);
+      v12 = minuteValue - v10;
       v13 = 59;
       if (v12 < 0 == v11)
       {
@@ -366,18 +366,18 @@ LABEL_8:
       [(_UIDatePickerCalendarTimeValueStore *)self setMinuteValue:v15];
       break;
     case 2:
-      v4 = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
-      v17 = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
-      v5 = [v17 clock];
-      v6 = v4 - 1;
-      if (v4 < qword_18A683BE0[v5])
+      hourValue = [(_UIDatePickerCalendarTimeValueStore *)self hourValue];
+      timeFormat = [(_UIDatePickerCalendarTimeValueStore *)self timeFormat];
+      clock = [timeFormat clock];
+      v6 = hourValue - 1;
+      if (hourValue < qword_18A683BE0[clock])
       {
-        v6 = qword_18A683C00[v5];
+        v6 = qword_18A683C00[clock];
       }
 
-      if (v4 > qword_18A683BC0[v5])
+      if (hourValue > qword_18A683BC0[clock])
       {
-        v6 = qword_18A683C20[v5];
+        v6 = qword_18A683C20[clock];
       }
 
       [(_UIDatePickerCalendarTimeValueStore *)self setHourValue:v6];

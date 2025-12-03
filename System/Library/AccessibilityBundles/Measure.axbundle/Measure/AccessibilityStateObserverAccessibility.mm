@@ -1,6 +1,6 @@
 @interface AccessibilityStateObserverAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axHasRectangleWithState:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axHasRectangleWithState:(int64_t)state;
 - (id)axDescriptionForNumberOfPointsAndLines;
 - (void)_axUpdateForState;
 - (void)didUpdate;
@@ -8,23 +8,23 @@
 
 @implementation AccessibilityStateObserverAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"didUpdate" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapWorldPointType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldLines" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldRectangles" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldPoints" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"orderedWorldLineIDs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapDivisionsDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapDivisionsLineID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"isModeForMeasuring" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MeasureFoundation.MeasureObject" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MeasureFoundation.WorldPoint" isKindOfClass:@"MeasureFoundation.MeasureObject"];
-  [v3 validateClass:@"MeasureFoundation.WorldRectangle" isKindOfClass:@"MeasureFoundation.MeasureObject"];
-  [v3 validateClass:@"MeasureFoundation.WorldPoint" hasInstanceMethod:@"lines" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MeasureFoundation.WorldLine" isKindOfClass:@"MeasureFoundation.MeasureObject"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"didUpdate" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapWorldPointType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldLines" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldRectangles" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"worldPoints" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"orderedWorldLineIDs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapDivisionsDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"snapDivisionsLineID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.AccessibilityStateObserver" hasInstanceMethod:@"isModeForMeasuring" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MeasureFoundation.MeasureObject" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MeasureFoundation.WorldPoint" isKindOfClass:@"MeasureFoundation.MeasureObject"];
+  [validationsCopy validateClass:@"MeasureFoundation.WorldRectangle" isKindOfClass:@"MeasureFoundation.MeasureObject"];
+  [validationsCopy validateClass:@"MeasureFoundation.WorldPoint" hasInstanceMethod:@"lines" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MeasureFoundation.WorldLine" isKindOfClass:@"MeasureFoundation.MeasureObject"];
 }
 
 - (id)axDescriptionForNumberOfPointsAndLines
@@ -35,9 +35,9 @@
   v49 = 0u;
   v50 = 0u;
   v3 = [(AccessibilityStateObserverAccessibility *)self safeDictionaryForKey:@"worldLines"];
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,7 +50,7 @@
       {
         if (*v48 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = [*(*(&v47 + 1) + 8 * i) safeIntegerForKey:@"state"];
@@ -65,7 +65,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
     }
 
     while (v6);
@@ -82,10 +82,10 @@
   v43 = 0u;
   v44 = 0u;
   v12 = [(AccessibilityStateObserverAccessibility *)self safeDictionaryForKey:@"worldPoints"];
-  v13 = [v12 allValues];
+  allValues2 = [v12 allValues];
 
-  obj = v13;
-  v14 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  obj = allValues2;
+  v14 = [allValues2 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v14)
   {
     v15 = v14;
@@ -172,16 +172,16 @@
   return v27;
 }
 
-- (BOOL)_axHasRectangleWithState:(int64_t)a3
+- (BOOL)_axHasRectangleWithState:(int64_t)state
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = [(AccessibilityStateObserverAccessibility *)self axWorldRectangles];
+  axWorldRectangles = [(AccessibilityStateObserverAccessibility *)self axWorldRectangles];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [axWorldRectangles allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -192,17 +192,17 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) safeIntegerForKey:@"state"] == a3)
+        if ([*(*(&v13 + 1) + 8 * i) safeIntegerForKey:@"state"] == state)
         {
           v10 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -232,16 +232,16 @@ LABEL_11:
   v3 = [(AccessibilityStateObserverAccessibility *)self safeIntegerForKey:@"snapWorldPointType"];
   v4 = [(AccessibilityStateObserverAccessibility *)self safeValueForKey:@"snapDivisionsLineID"];
   v5 = [(AccessibilityStateObserverAccessibility *)self safeStringForKey:@"snapDivisionsDescription"];
-  v6 = [(AccessibilityStateObserverAccessibility *)self _axLastSnapDivisionsLineID];
-  v7 = v6;
-  if (v6 == v4)
+  _axLastSnapDivisionsLineID = [(AccessibilityStateObserverAccessibility *)self _axLastSnapDivisionsLineID];
+  v7 = _axLastSnapDivisionsLineID;
+  if (_axLastSnapDivisionsLineID == v4)
   {
 
     goto LABEL_9;
   }
 
-  v8 = [(AccessibilityStateObserverAccessibility *)self _axLastSnapDivisionsLineID];
-  v9 = [v8 isEqual:v4];
+  _axLastSnapDivisionsLineID2 = [(AccessibilityStateObserverAccessibility *)self _axLastSnapDivisionsLineID];
+  v9 = [_axLastSnapDivisionsLineID2 isEqual:v4];
 
   if (v9)
   {
@@ -256,8 +256,8 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  v10 = [(AccessibilityStateObserverAccessibility *)self axOrderedWorldLineIDs];
-  v11 = [v10 count];
+  axOrderedWorldLineIDs = [(AccessibilityStateObserverAccessibility *)self axOrderedWorldLineIDs];
+  v11 = [axOrderedWorldLineIDs count];
   if (v11 < 2)
   {
     if (v11 != 1)
@@ -276,7 +276,7 @@ LABEL_9:
 
   else
   {
-    if ([v10 indexOfObject:v4] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([axOrderedWorldLineIDs indexOfObject:v4] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = AXLogAppAccessibility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))

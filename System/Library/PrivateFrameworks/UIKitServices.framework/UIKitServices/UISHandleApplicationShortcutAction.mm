@@ -1,25 +1,25 @@
 @interface UISHandleApplicationShortcutAction
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (SBSApplicationShortcutItem)sbsShortcutItem;
 - (UIApplicationShortcutItem)uiShortcutItem;
-- (UISHandleApplicationShortcutAction)initWithSBSShortcutItem:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISHandleApplicationShortcutAction)initWithSBSShortcutItem:(id)item;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISHandleApplicationShortcutAction
 
-- (UISHandleApplicationShortcutAction)initWithSBSShortcutItem:(id)a3
+- (UISHandleApplicationShortcutAction)initWithSBSShortcutItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   getSBSApplicationShortcutItemClass();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UISHandleApplicationShortcutAction.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"[shortcutItem isKindOfClass:getSBSApplicationShortcutItemClass()]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleApplicationShortcutAction.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"[shortcutItem isKindOfClass:getSBSApplicationShortcutItemClass()]"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v7 = [v5 copy];
+  v7 = [itemCopy copy];
   [v6 setObject:v7 forSetting:1];
 
   v11.receiver = self;
@@ -31,8 +31,8 @@
 
 - (SBSApplicationShortcutItem)sbsShortcutItem
 {
-  v2 = [(UISHandleApplicationShortcutAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISHandleApplicationShortcutAction *)self info];
+  v3 = [info objectForSetting:1];
 
   getSBSApplicationShortcutItemClass();
   if (objc_opt_isKindOfClass())
@@ -52,8 +52,8 @@
 
 - (UIApplicationShortcutItem)uiShortcutItem
 {
-  v2 = [(UISHandleApplicationShortcutAction *)self sbsShortcutItem];
-  if (v2)
+  sbsShortcutItem = [(UISHandleApplicationShortcutAction *)self sbsShortcutItem];
+  if (sbsShortcutItem)
   {
     v8 = 0;
     v9 = &v8;
@@ -73,7 +73,7 @@
 
     v4 = v3;
     _Block_object_dispose(&v8, 8);
-    v5 = [[v3 alloc] initWithSBSApplicationShortcutItem:v2];
+    v5 = [[v3 alloc] initWithSBSApplicationShortcutItem:sbsShortcutItem];
   }
 
   else
@@ -84,9 +84,9 @@
   return v5;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"shortcutItem";
   }
@@ -97,7 +97,7 @@
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UISHandleApplicationShortcutAction;
@@ -108,7 +108,7 @@
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 

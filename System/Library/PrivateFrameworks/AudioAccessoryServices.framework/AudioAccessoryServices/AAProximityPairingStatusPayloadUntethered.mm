@@ -14,8 +14,8 @@
 {
   v39.receiver = self;
   v39.super_class = AAProximityPairingStatusPayloadUntethered;
-  v3 = [(AAProximityPairingStatusPayloadGeneral *)&v39 describeProperties];
-  v38 = v3;
+  describeProperties = [(AAProximityPairingStatusPayloadGeneral *)&v39 describeProperties];
+  v38 = describeProperties;
   if ([(AAProximityPairingStatusPayloadUntethered *)self utpConnected])
   {
     v4 = "yes";
@@ -31,28 +31,28 @@
   v5 = v38;
 
   v37 = v5;
-  v6 = [(AAProximityPairingStatusPayloadUntethered *)self budRole];
+  budRole = [(AAProximityPairingStatusPayloadUntethered *)self budRole];
   [(AAProximityPairingStatusPayloadUntethered *)self budSide];
-  v7 = [(AAProximityPairingStatusPayloadUntethered *)self primaryLocation];
-  v8 = [(AAProximityPairingStatusPayloadUntethered *)self secondaryLocation];
-  if (v6)
+  primaryLocation = [(AAProximityPairingStatusPayloadUntethered *)self primaryLocation];
+  secondaryLocation = [(AAProximityPairingStatusPayloadUntethered *)self secondaryLocation];
+  if (budRole)
   {
-    v9 = v8;
+    v9 = secondaryLocation;
   }
 
   else
   {
-    v9 = v7;
+    v9 = primaryLocation;
   }
 
-  if (v6)
+  if (budRole)
   {
-    v10 = v7;
+    v10 = primaryLocation;
   }
 
   else
   {
-    v10 = v8;
+    v10 = secondaryLocation;
   }
 
   v40 = 0;
@@ -73,12 +73,12 @@
   }
 
   v13 = "Secondary";
-  if (v6 != 1)
+  if (budRole != 1)
   {
     v13 = "?";
   }
 
-  if (!v6)
+  if (!budRole)
   {
     v13 = "Primary";
   }
@@ -120,7 +120,7 @@
 
     v35 = v16;
     v27 = v17;
-    v29 = [(AAProximityPairingStatusPayloadUntethered *)self leftBatteryLevel];
+    leftBatteryLevel = [(AAProximityPairingStatusPayloadUntethered *)self leftBatteryLevel];
     v18 = &v35;
   }
 

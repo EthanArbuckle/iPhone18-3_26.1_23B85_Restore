@@ -1,40 +1,40 @@
 @interface GQHState
 - (BOOL)finishMainHtml;
 - (CGSize)scale;
-- (GQHState)initWithState:(id)a3 needIndexFile:(BOOL)a4 documentSize:(CGSize)a5;
-- (__CFString)addCacheForCellStyle:(id)a3 fillStyle:(id)a4 cellClass:(Class)a5 vectorStyles:(id *)a6 groupLevel:(unsigned __int16)a7 hasFormula:(BOOL)a8 baseClassString:(__CFString *)a9 cssCachedStyle:(id)a10;
-- (__CFString)addCachedClassStringForTextStyle:(id)a3 implicitStyle:(id)a4 isColoredBackground:(BOOL)a5 outlineLevel:(int)a6 outlineType:(int)a7 isSpan:(BOOL)a8 baseClassString:(__CFString *)a9 cssCachedStyle:(id)a10;
-- (__CFString)cachedClassStringForCellStyle:(id)a3 fillStyle:(id)a4 cellClass:(Class)a5 vectorStyles:(id *)a6 groupLevel:(unsigned __int16)a7 hasFormula:(BOOL)a8;
-- (__CFString)cachedClassStringForTextStyle:(id)a3 implicitStyle:(id)a4 isColoredBackground:(BOOL)a5 outlineLevel:(int)a6 outlineType:(int)a7 isSpan:(BOOL)a8;
-- (__CFString)createUniqueShapeId:(const char *)a3;
-- (__CFString)cssZOrderClassForDrawable:(id)a3;
-- (__CFString)getColorString:(id)a3;
-- (__CFString)makeInlineStyle:(__CFString *)a3 inDocument:(id)a4;
+- (GQHState)initWithState:(id)state needIndexFile:(BOOL)file documentSize:(CGSize)size;
+- (__CFString)addCacheForCellStyle:(id)style fillStyle:(id)fillStyle cellClass:(Class)class vectorStyles:(id *)styles groupLevel:(unsigned __int16)level hasFormula:(BOOL)formula baseClassString:(__CFString *)string cssCachedStyle:(id)self0;
+- (__CFString)addCachedClassStringForTextStyle:(id)style implicitStyle:(id)implicitStyle isColoredBackground:(BOOL)background outlineLevel:(int)level outlineType:(int)type isSpan:(BOOL)span baseClassString:(__CFString *)string cssCachedStyle:(id)self0;
+- (__CFString)cachedClassStringForCellStyle:(id)style fillStyle:(id)fillStyle cellClass:(Class)class vectorStyles:(id *)styles groupLevel:(unsigned __int16)level hasFormula:(BOOL)formula;
+- (__CFString)cachedClassStringForTextStyle:(id)style implicitStyle:(id)implicitStyle isColoredBackground:(BOOL)background outlineLevel:(int)level outlineType:(int)type isSpan:(BOOL)span;
+- (__CFString)createUniqueShapeId:(const char *)id;
+- (__CFString)cssZOrderClassForDrawable:(id)drawable;
+- (__CFString)getColorString:(id)string;
+- (__CFString)makeInlineStyle:(__CFString *)style inDocument:(id)document;
 - (id)implicitStyle;
-- (int)indexForStyle:(const char *)a3;
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5;
+- (int)indexForStyle:(const char *)style;
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle;
 - (void)dealloc;
 - (void)enterGraphicObject;
 - (void)leaveGraphicObject;
 - (void)popImplicitStyle;
-- (void)setColoredBackground:(BOOL)a3;
-- (void)setMultiColumned:(BOOL)a3;
+- (void)setColoredBackground:(BOOL)background;
+- (void)setMultiColumned:(BOOL)columned;
 @end
 
 @implementation GQHState
 
-- (GQHState)initWithState:(id)a3 needIndexFile:(BOOL)a4 documentSize:(CGSize)a5
+- (GQHState)initWithState:(id)state needIndexFile:(BOOL)file documentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4;
-  v20 = a5;
+  height = size.height;
+  width = size.width;
+  fileCopy = file;
+  sizeCopy = size;
   v19.receiver = self;
   v19.super_class = GQHState;
   v9 = [(GQHState *)&v19 init];
   if (v9)
   {
-    if (v7)
+    if (fileCopy)
     {
       v10 = [GQHXML alloc];
       if (height <= 1.0 || width <= 1.0)
@@ -44,17 +44,17 @@
 
       else
       {
-        v12 = &v20;
+        v12 = &sizeCopy;
       }
 
-      v9->mHtmlDoc = -[GQHXML initWithFilename:documentSize:outputBundle:useExternalCss:](v10, "initWithFilename:documentSize:outputBundle:useExternalCss:", @"index.html", v12, [a3 outputBundle], -[GQSDocument isGeneratingThumbnail](v9->mProcessorState, "isGeneratingThumbnail") ^ 1);
+      v9->mHtmlDoc = -[GQHXML initWithFilename:documentSize:outputBundle:useExternalCss:](v10, "initWithFilename:documentSize:outputBundle:useExternalCss:", @"index.html", v12, [state outputBundle], -[GQSDocument isGeneratingThumbnail](v9->mProcessorState, "isGeneratingThumbnail") ^ 1);
     }
 
     __asm { FMOV            V0.2D, #1.0 }
 
     v9->mScale = _Q0;
     v9->mTableState = objc_alloc_init(GQHTableState);
-    v9->mProcessorState = a3;
+    v9->mProcessorState = state;
     v9->mStyleIndexes = CFDictionaryCreateMutable(0, 0, &unk_850D0, &kCFTypeDictionaryValueCallBacks);
     v9->mStyleNameMap = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     v9->mImplicitStyles = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
@@ -134,29 +134,29 @@
   return result;
 }
 
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle
 {
-  if (![(GQHState *)self className:a5])
+  if (![(GQHState *)self className:srcStyle])
   {
-    CFDictionarySetValue(self->mStyleNameMap, a5, a4);
+    CFDictionarySetValue(self->mStyleNameMap, srcStyle, name);
     mHtmlDoc = self->mHtmlDoc;
 
-    [(GQHXML *)mHtmlDoc addStyleClass:a3];
+    [(GQHXML *)mHtmlDoc addStyleClass:style];
   }
 }
 
-- (__CFString)makeInlineStyle:(__CFString *)a3 inDocument:(id)a4
+- (__CFString)makeInlineStyle:(__CFString *)style inDocument:(id)document
 {
-  Value = CFDictionaryGetValue(self->mInlineStyles, a3);
+  Value = CFDictionaryGetValue(self->mInlineStyles, style);
   if (!Value)
   {
     v8 = (self->mInlineStyleIndex + 1);
     self->mInlineStyleIndex = v8;
     Value = CFStringCreateWithFormat(0, 0, @"i%d", v8);
-    CFDictionarySetValue(self->mInlineStyles, a3, Value);
+    CFDictionarySetValue(self->mInlineStyles, style, Value);
     CFRelease(Value);
-    v9 = CFStringCreateWithFormat(0, 0, @".%@ { %@ }\n", Value, a3);
-    [a4 addStyleClassLast:v9];
+    v9 = CFStringCreateWithFormat(0, 0, @".%@ { %@ }\n", Value, style);
+    [document addStyleClassLast:v9];
     CFRelease(v9);
   }
 
@@ -166,15 +166,15 @@
 - (BOOL)finishMainHtml
 {
   mHtmlDoc = self->mHtmlDoc;
-  v4 = [(GQSDocument *)self->mProcessorState outputBundle];
-  v5 = [(GQSDocument *)self->mProcessorState isGeneratingThumbnail];
+  outputBundle = [(GQSDocument *)self->mProcessorState outputBundle];
+  isGeneratingThumbnail = [(GQSDocument *)self->mProcessorState isGeneratingThumbnail];
 
-  return [(GQHXML *)mHtmlDoc writeToOutputBundle:v4 isThumbnail:v5];
+  return [(GQHXML *)mHtmlDoc writeToOutputBundle:outputBundle isThumbnail:isGeneratingThumbnail];
 }
 
-- (__CFString)cssZOrderClassForDrawable:(id)a3
+- (__CFString)cssZOrderClassForDrawable:(id)drawable
 {
-  v4 = [a3 uid];
+  v4 = [drawable uid];
 
   return [(GQHState *)self cssZOrderClassForDrawableUid:v4];
 }
@@ -205,15 +205,15 @@
   }
 }
 
-- (void)setColoredBackground:(BOOL)a3
+- (void)setColoredBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   Count = CFArrayGetCount(self->mGraphicPropertiesStack);
   ValueAtIndex = CFArrayGetValueAtIndex(self->mGraphicPropertiesStack, Count - 1);
   value = 0;
   if (CFDictionaryGetValueIfPresent(ValueAtIndex, @"Colored Background", &value) && CFBooleanGetValue(value))
   {
-    if (v3)
+    if (backgroundCopy)
     {
       return;
     }
@@ -224,7 +224,7 @@
 
   else
   {
-    if (!v3)
+    if (!backgroundCopy)
     {
       return;
     }
@@ -237,15 +237,15 @@
   self->mColoredBackgroundLayerCount += v7;
 }
 
-- (void)setMultiColumned:(BOOL)a3
+- (void)setMultiColumned:(BOOL)columned
 {
-  v3 = a3;
+  columnedCopy = columned;
   Count = CFArrayGetCount(self->mGraphicPropertiesStack);
   ValueAtIndex = CFArrayGetValueAtIndex(self->mGraphicPropertiesStack, Count - 1);
   value = 0;
   if (CFDictionaryGetValueIfPresent(ValueAtIndex, @"Multi Columned", &value) && CFBooleanGetValue(value))
   {
-    if (v3)
+    if (columnedCopy)
     {
       return;
     }
@@ -256,7 +256,7 @@
 
   else
   {
-    if (!v3)
+    if (!columnedCopy)
     {
       return;
     }
@@ -287,36 +287,36 @@
   CFArrayRemoveValueAtIndex(mGraphicPropertiesStack, Count - 1);
 }
 
-- (__CFString)cachedClassStringForCellStyle:(id)a3 fillStyle:(id)a4 cellClass:(Class)a5 vectorStyles:(id *)a6 groupLevel:(unsigned __int16)a7 hasFormula:(BOOL)a8
+- (__CFString)cachedClassStringForCellStyle:(id)style fillStyle:(id)fillStyle cellClass:(Class)class vectorStyles:(id *)styles groupLevel:(unsigned __int16)level hasFormula:(BOOL)formula
 {
-  v10[0] = a3;
-  v10[1] = a4;
-  v8 = *(a6 + 1);
-  v11 = *a6;
+  v10[0] = style;
+  v10[1] = fillStyle;
+  v8 = *(styles + 1);
+  v11 = *styles;
   v12 = v8;
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
+  classCopy = class;
+  levelCopy = level;
+  formulaCopy = formula;
   return CFDictionaryGetValue(self->mCachedTableStyles, v10);
 }
 
-- (__CFString)addCacheForCellStyle:(id)a3 fillStyle:(id)a4 cellClass:(Class)a5 vectorStyles:(id *)a6 groupLevel:(unsigned __int16)a7 hasFormula:(BOOL)a8 baseClassString:(__CFString *)a9 cssCachedStyle:(id)a10
+- (__CFString)addCacheForCellStyle:(id)style fillStyle:(id)fillStyle cellClass:(Class)class vectorStyles:(id *)styles groupLevel:(unsigned __int16)level hasFormula:(BOOL)formula baseClassString:(__CFString *)string cssCachedStyle:(id)self0
 {
-  *&key = a3;
-  *(&key + 1) = a4;
-  v11 = *(a6 + 1);
-  v23 = *a6;
+  *&key = style;
+  *(&key + 1) = fillStyle;
+  v11 = *(styles + 1);
+  v23 = *styles;
   v24 = v11;
-  *&v25 = a5;
-  DWORD2(v25) = a7;
-  BYTE12(v25) = a8;
+  *&v25 = class;
+  DWORD2(v25) = level;
+  BYTE12(v25) = formula;
   Value = CFDictionaryGetValue(self->mCachedTableStyles, &key);
   if (!Value)
   {
     v13 = (self->mCachedCellStyleIndex + 1);
     self->mCachedCellStyleIndex = v13;
     v14 = CFStringCreateWithFormat(0, 0, @"ic%d", v13);
-    v15 = [a10 createNamedStyle:v14];
+    v15 = [cachedStyle createNamedStyle:v14];
     if (v15)
     {
       v16 = v15;
@@ -324,7 +324,7 @@
       CFRelease(v16);
     }
 
-    Value = CFStringCreateWithFormat(0, 0, @"%@%@", a9, v14);
+    Value = CFStringCreateWithFormat(0, 0, @"%@%@", string, v14);
     CFRelease(v14);
     v17 = malloc_type_malloc(0x40uLL, 0x1080040398047DBuLL);
     v18 = v25;
@@ -341,32 +341,32 @@
   return Value;
 }
 
-- (__CFString)cachedClassStringForTextStyle:(id)a3 implicitStyle:(id)a4 isColoredBackground:(BOOL)a5 outlineLevel:(int)a6 outlineType:(int)a7 isSpan:(BOOL)a8
+- (__CFString)cachedClassStringForTextStyle:(id)style implicitStyle:(id)implicitStyle isColoredBackground:(BOOL)background outlineLevel:(int)level outlineType:(int)type isSpan:(BOOL)span
 {
-  v9[0] = a3;
-  v9[1] = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = a8;
+  v9[0] = style;
+  v9[1] = implicitStyle;
+  backgroundCopy = background;
+  levelCopy = level;
+  typeCopy = type;
+  spanCopy = span;
   return CFDictionaryGetValue(self->mCachedTextStyles, v9);
 }
 
-- (__CFString)addCachedClassStringForTextStyle:(id)a3 implicitStyle:(id)a4 isColoredBackground:(BOOL)a5 outlineLevel:(int)a6 outlineType:(int)a7 isSpan:(BOOL)a8 baseClassString:(__CFString *)a9 cssCachedStyle:(id)a10
+- (__CFString)addCachedClassStringForTextStyle:(id)style implicitStyle:(id)implicitStyle isColoredBackground:(BOOL)background outlineLevel:(int)level outlineType:(int)type isSpan:(BOOL)span baseClassString:(__CFString *)string cssCachedStyle:(id)self0
 {
-  *&key = a3;
-  *(&key + 1) = a4;
-  LOBYTE(v20) = a5;
-  DWORD1(v20) = a6;
-  DWORD2(v20) = a7;
-  BYTE12(v20) = a8;
+  *&key = style;
+  *(&key + 1) = implicitStyle;
+  LOBYTE(v20) = background;
+  DWORD1(v20) = level;
+  DWORD2(v20) = type;
+  BYTE12(v20) = span;
   Value = CFDictionaryGetValue(self->mCachedTextStyles, &key);
   if (!Value)
   {
     v12 = (self->mCachedTextStyleIndex + 1);
     self->mCachedTextStyleIndex = v12;
     v13 = CFStringCreateWithFormat(0, 0, @"it%d", v12);
-    v14 = [a10 createNamedStyle:v13];
+    v14 = [cachedStyle createNamedStyle:v13];
     if (v14)
     {
       v15 = v14;
@@ -374,7 +374,7 @@
       CFRelease(v15);
     }
 
-    Value = CFStringCreateWithFormat(0, 0, @"%@%@", a9, v13);
+    Value = CFStringCreateWithFormat(0, 0, @"%@%@", string, v13);
     CFRelease(v13);
     v16 = malloc_type_malloc(0x20uLL, 0x1080040BD8EE1D8uLL);
     v17 = v20;
@@ -387,16 +387,16 @@
   return Value;
 }
 
-- (__CFString)getColorString:(id)a3
+- (__CFString)getColorString:(id)string
 {
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(self->mColorStrings, a3, &value))
+  if (!CFDictionaryGetValueIfPresent(self->mColorStrings, string, &value))
   {
     v16 = 0.0;
     v17 = 0.0;
     v14 = 1.0;
     v15 = 0.0;
-    [a3 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+    [string getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
     v5 = v14 + -1.0;
     v6 = v17 * 255.0;
     v7 = llroundf(v6);
@@ -415,19 +415,19 @@
     }
 
     value = v12;
-    CFDictionaryAddValue(self->mColorStrings, a3, v12);
+    CFDictionaryAddValue(self->mColorStrings, string, v12);
     CFRelease(value);
   }
 
   return value;
 }
 
-- (__CFString)createUniqueShapeId:(const char *)a3
+- (__CFString)createUniqueShapeId:(const char *)id
 {
-  if (a3)
+  if (id)
   {
 
-    return CFStringCreateWithCString(0, a3, 0x8000100u);
+    return CFStringCreateWithCString(0, id, 0x8000100u);
   }
 
   else
@@ -438,9 +438,9 @@
   }
 }
 
-- (int)indexForStyle:(const char *)a3
+- (int)indexForStyle:(const char *)style
 {
-  Value = CFDictionaryGetValue(self->mStyleIndexes, a3);
+  Value = CFDictionaryGetValue(self->mStyleIndexes, style);
   if (Value)
   {
     v6 = [Value intValue] + 1;
@@ -452,7 +452,7 @@
   }
 
   v7 = [[NSNumber alloc] initWithInt:v6];
-  CFDictionarySetValue(self->mStyleIndexes, a3, v7);
+  CFDictionarySetValue(self->mStyleIndexes, style, v7);
 
   return v6;
 }

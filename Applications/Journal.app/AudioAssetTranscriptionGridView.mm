@@ -21,7 +21,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10070A3D0();
 
   if (v3)

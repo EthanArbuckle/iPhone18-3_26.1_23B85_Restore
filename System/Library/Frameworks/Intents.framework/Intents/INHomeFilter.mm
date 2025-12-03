@@ -1,33 +1,33 @@
 @interface INHomeFilter
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INHomeFilter)initWithCoder:(id)a3;
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 entityName:(id)a4 entityType:(int64_t)a5 outerDeviceType:(int64_t)a6 outerDeviceName:(id)a7 deviceType:(int64_t)a8 home:(id)a9 zone:(id)a10 group:(id)a11 room:(id)a12 isExcludeFilter:(BOOL)a13 hasAllQuantifier:(BOOL)a14;
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 entityType:(int64_t)a10 serviceType:(int64_t)a11 subServiceType:(int64_t)a12 isExcludeFilter:(BOOL)a13 entityName:(id)a14;
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 service:(id)a10 entityType:(int64_t)a11 serviceType:(int64_t)a12 subServiceType:(int64_t)a13;
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 service:(id)a10 entityType:(int64_t)a11 serviceType:(int64_t)a12 subServiceType:(int64_t)a13 isExcludeFilter:(BOOL)a14;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INHomeFilter)initWithCoder:(id)coder;
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers entityName:(id)name entityType:(int64_t)type outerDeviceType:(int64_t)deviceType outerDeviceName:(id)deviceName deviceType:(int64_t)a8 home:(id)home zone:(id)self0 group:(id)self1 room:(id)self2 isExcludeFilter:(BOOL)self3 hasAllQuantifier:(BOOL)self4;
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory entityType:(int64_t)self0 serviceType:(int64_t)self1 subServiceType:(int64_t)self2 isExcludeFilter:(BOOL)self3 entityName:(id)self4;
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory service:(id)self0 entityType:(int64_t)self1 serviceType:(int64_t)self2 subServiceType:(int64_t)self3;
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory service:(id)self0 entityType:(int64_t)self1 serviceType:(int64_t)self2 subServiceType:(int64_t)self3 isExcludeFilter:(BOOL)self4;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (int64_t)serviceType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INHomeFilter
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INHomeFilter *)self entityName];
+  localizerCopy = localizer;
+  entityName = [(INHomeFilter *)self entityName];
 
-  if (v6)
+  if (entityName)
   {
-    v7 = [(INHomeFilter *)self entityName];
+    entityName2 = [(INHomeFilter *)self entityName];
 LABEL_3:
-    v8 = v7;
-    v9 = [v7 _intents_readableTitleWithLocalizer:v5];
+    v8 = entityName2;
+    v9 = [entityName2 _intents_readableTitleWithLocalizer:localizerCopy];
 
     goto LABEL_6;
   }
@@ -37,27 +37,27 @@ LABEL_3:
     goto LABEL_5;
   }
 
-  v11 = [(INHomeFilter *)self outerDeviceName];
+  outerDeviceName = [(INHomeFilter *)self outerDeviceName];
 
-  if (v11)
+  if (outerDeviceName)
   {
-    v7 = [(INHomeFilter *)self outerDeviceName];
+    entityName2 = [(INHomeFilter *)self outerDeviceName];
     goto LABEL_3;
   }
 
-  v12 = [(INHomeFilter *)self group];
+  group = [(INHomeFilter *)self group];
 
-  if (v12)
+  if (group)
   {
-    v7 = [(INHomeFilter *)self group];
+    entityName2 = [(INHomeFilter *)self group];
     goto LABEL_3;
   }
 
-  v13 = [(INHomeFilter *)self room];
+  room = [(INHomeFilter *)self room];
 
-  if (v13)
+  if (room)
   {
-    v7 = [(INHomeFilter *)self room];
+    entityName2 = [(INHomeFilter *)self room];
     goto LABEL_3;
   }
 
@@ -65,15 +65,15 @@ LABEL_3:
 
   if (v14)
   {
-    v7 = [(INHomeFilter *)self zone];
+    entityName2 = [(INHomeFilter *)self zone];
     goto LABEL_3;
   }
 
-  v15 = [(INHomeFilter *)self home];
+  home = [(INHomeFilter *)self home];
 
-  if (v15)
+  if (home)
   {
-    v7 = [(INHomeFilter *)self home];
+    entityName2 = [(INHomeFilter *)self home];
     goto LABEL_3;
   }
 
@@ -85,7 +85,7 @@ LABEL_5:
 
   else
   {
-    v9 = INHomeEntityTypeGetLocalizedName([(INHomeFilter *)self entityType], v5);
+    v9 = INHomeEntityTypeGetLocalizedName([(INHomeFilter *)self entityType], localizerCopy);
   }
 
 LABEL_6:
@@ -137,41 +137,41 @@ LABEL_6:
   v31[5] = v24;
   v30[6] = @"home";
   home = self->_home;
-  v7 = home;
+  null = home;
   if (!home)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v7;
-  v31[6] = v7;
+  v19 = null;
+  v31[6] = null;
   v30[7] = @"zone";
   zone = self->_zone;
-  v9 = zone;
+  null2 = zone;
   if (!zone)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[7] = v9;
+  v31[7] = null2;
   v30[8] = @"group";
   group = self->_group;
-  v11 = group;
+  null3 = group;
   if (!group)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[8] = v11;
+  v31[8] = null3;
   v30[9] = @"room";
   room = self->_room;
-  v13 = room;
+  null4 = room;
   if (!room)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[9] = v13;
+  v31[9] = null4;
   v30[10] = @"isExcludeFilter";
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{self->_isExcludeFilter, v19}];
   v31[10] = v14;
@@ -241,29 +241,29 @@ LABEL_19:
   return v16;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INHomeFilter;
   v6 = [(INHomeFilter *)&v11 description];
-  v7 = [(INHomeFilter *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INHomeFilter *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_entityIdentifiers];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"entityIdentifiers"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_entityIdentifiers];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"entityIdentifiers"];
 
-  v9 = [v6 encodeObject:self->_entityName];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"entityName"];
+  v9 = [encoderCopy encodeObject:self->_entityName];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"entityName"];
 
   v10 = self->_entityType - 1;
   if (v10 > 9)
@@ -277,7 +277,7 @@ LABEL_19:
   }
 
   v12 = v11;
-  [v7 if_setObjectIfNonNil:v12 forKey:@"entityType"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"entityType"];
 
   v13 = self->_outerDeviceType - 1;
   if (v13 > 0x2C)
@@ -291,10 +291,10 @@ LABEL_19:
   }
 
   v15 = v14;
-  [v7 if_setObjectIfNonNil:v15 forKey:@"outerDeviceType"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"outerDeviceType"];
 
-  v16 = [v6 encodeObject:self->_outerDeviceName];
-  [v7 if_setObjectIfNonNil:v16 forKey:@"outerDeviceName"];
+  v16 = [encoderCopy encodeObject:self->_outerDeviceName];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"outerDeviceName"];
 
   v17 = self->_deviceType - 1;
   if (v17 > 0x2C)
@@ -308,70 +308,70 @@ LABEL_19:
   }
 
   v19 = v18;
-  [v7 if_setObjectIfNonNil:v19 forKey:@"deviceType"];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"deviceType"];
 
-  v20 = [v6 encodeObject:self->_home];
-  [v7 if_setObjectIfNonNil:v20 forKey:@"home"];
+  v20 = [encoderCopy encodeObject:self->_home];
+  [dictionary if_setObjectIfNonNil:v20 forKey:@"home"];
 
-  v21 = [v6 encodeObject:self->_zone];
-  [v7 if_setObjectIfNonNil:v21 forKey:@"zone"];
+  v21 = [encoderCopy encodeObject:self->_zone];
+  [dictionary if_setObjectIfNonNil:v21 forKey:@"zone"];
 
-  v22 = [v6 encodeObject:self->_group];
-  [v7 if_setObjectIfNonNil:v22 forKey:@"group"];
+  v22 = [encoderCopy encodeObject:self->_group];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"group"];
 
-  v23 = [v6 encodeObject:self->_room];
+  v23 = [encoderCopy encodeObject:self->_room];
 
-  [v7 if_setObjectIfNonNil:v23 forKey:@"room"];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"room"];
   v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_isExcludeFilter];
-  [v7 if_setObjectIfNonNil:v24 forKey:@"isExcludeFilter"];
+  [dictionary if_setObjectIfNonNil:v24 forKey:@"isExcludeFilter"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasAllQuantifier];
-  [v7 if_setObjectIfNonNil:v25 forKey:@"hasAllQuantifier"];
+  [dictionary if_setObjectIfNonNil:v25 forKey:@"hasAllQuantifier"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entityIdentifiers = self->_entityIdentifiers;
-  v5 = a3;
-  [v5 encodeObject:entityIdentifiers forKey:@"entityIdentifiers"];
-  [v5 encodeObject:self->_entityName forKey:@"entityName"];
-  [v5 encodeInteger:self->_entityType forKey:@"entityType"];
-  [v5 encodeInteger:self->_outerDeviceType forKey:@"outerDeviceType"];
-  [v5 encodeObject:self->_outerDeviceName forKey:@"outerDeviceName"];
-  [v5 encodeInteger:self->_deviceType forKey:@"deviceType"];
-  [v5 encodeObject:self->_home forKey:@"home"];
-  [v5 encodeObject:self->_zone forKey:@"zone"];
-  [v5 encodeObject:self->_group forKey:@"group"];
-  [v5 encodeObject:self->_room forKey:@"room"];
-  [v5 encodeBool:self->_isExcludeFilter forKey:@"isExcludeFilter"];
-  [v5 encodeBool:self->_hasAllQuantifier forKey:@"hasAllQuantifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entityIdentifiers forKey:@"entityIdentifiers"];
+  [coderCopy encodeObject:self->_entityName forKey:@"entityName"];
+  [coderCopy encodeInteger:self->_entityType forKey:@"entityType"];
+  [coderCopy encodeInteger:self->_outerDeviceType forKey:@"outerDeviceType"];
+  [coderCopy encodeObject:self->_outerDeviceName forKey:@"outerDeviceName"];
+  [coderCopy encodeInteger:self->_deviceType forKey:@"deviceType"];
+  [coderCopy encodeObject:self->_home forKey:@"home"];
+  [coderCopy encodeObject:self->_zone forKey:@"zone"];
+  [coderCopy encodeObject:self->_group forKey:@"group"];
+  [coderCopy encodeObject:self->_room forKey:@"room"];
+  [coderCopy encodeBool:self->_isExcludeFilter forKey:@"isExcludeFilter"];
+  [coderCopy encodeBool:self->_hasAllQuantifier forKey:@"hasAllQuantifier"];
 }
 
-- (INHomeFilter)initWithCoder:(id)a3
+- (INHomeFilter)initWithCoder:(id)coder
 {
   v24[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
   v24[2] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
   v6 = [v3 setWithArray:v5];
-  v22 = [v4 decodeObjectOfClasses:v6 forKey:@"entityIdentifiers"];
+  v22 = [coderCopy decodeObjectOfClasses:v6 forKey:@"entityIdentifiers"];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
-  v21 = [v4 decodeIntegerForKey:@"entityType"];
-  v20 = [v4 decodeIntegerForKey:@"outerDeviceType"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outerDeviceName"];
-  v9 = [v4 decodeIntegerForKey:@"deviceType"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zone"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"group"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"room"];
-  v14 = [v4 decodeBoolForKey:@"isExcludeFilter"];
-  v15 = [v4 decodeBoolForKey:@"hasAllQuantifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
+  v21 = [coderCopy decodeIntegerForKey:@"entityType"];
+  v20 = [coderCopy decodeIntegerForKey:@"outerDeviceType"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outerDeviceName"];
+  v9 = [coderCopy decodeIntegerForKey:@"deviceType"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zone"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"group"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"room"];
+  v14 = [coderCopy decodeBoolForKey:@"isExcludeFilter"];
+  v15 = [coderCopy decodeBoolForKey:@"hasAllQuantifier"];
 
   BYTE1(v19) = v15;
   LOBYTE(v19) = v14;
@@ -381,10 +381,10 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -394,7 +394,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       entityIdentifiers = self->_entityIdentifiers;
       v13 = (entityIdentifiers == v5->_entityIdentifiers || [(NSArray *)entityIdentifiers isEqual:?]) && ((entityName = self->_entityName, entityName == v5->_entityName) || [(INSpeakableString *)entityName isEqual:?]) && self->_entityType == v5->_entityType && self->_outerDeviceType == v5->_outerDeviceType && ((outerDeviceName = self->_outerDeviceName, outerDeviceName == v5->_outerDeviceName) || [(INSpeakableString *)outerDeviceName isEqual:?]) && self->_deviceType == v5->_deviceType && ((home = self->_home, home == v5->_home) || [(INSpeakableString *)home isEqual:?]) && ((zone = self->_zone, zone == v5->_zone) || [(INSpeakableString *)zone isEqual:?]) && ((group = self->_group, group == v5->_group) || [(INSpeakableString *)group isEqual:?]) && ((room = self->_room, room == v5->_room) || [(INSpeakableString *)room isEqual:?]) && self->_isExcludeFilter == v5->_isExcludeFilter && self->_hasAllQuantifier == v5->_hasAllQuantifier;
     }
@@ -433,154 +433,154 @@ LABEL_19:
 
 - (int64_t)serviceType
 {
-  v2 = [(INHomeFilter *)self outerDeviceType];
-  if ((v2 - 1) > 0x1B)
+  outerDeviceType = [(INHomeFilter *)self outerDeviceType];
+  if ((outerDeviceType - 1) > 0x1B)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F2C0[v2 - 1];
+    return qword_18EE5F2C0[outerDeviceType - 1];
   }
 }
 
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 entityType:(int64_t)a10 serviceType:(int64_t)a11 subServiceType:(int64_t)a12 isExcludeFilter:(BOOL)a13 entityName:(id)a14
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory entityType:(int64_t)self0 serviceType:(int64_t)self1 subServiceType:(int64_t)self2 isExcludeFilter:(BOOL)self3 entityName:(id)self4
 {
-  v14 = a14;
-  if (!a14)
+  sceneCopy = name;
+  if (!name)
   {
-    v14 = a5;
+    sceneCopy = scene;
   }
 
-  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:a3 entityType:v14 outerDeviceType:a10 outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
+  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:identifiers entityType:sceneCopy outerDeviceType:type outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
 }
 
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 service:(id)a10 entityType:(int64_t)a11 serviceType:(int64_t)a12 subServiceType:(int64_t)a13 isExcludeFilter:(BOOL)a14
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory service:(id)self0 entityType:(int64_t)self1 serviceType:(int64_t)self2 subServiceType:(int64_t)self3 isExcludeFilter:(BOOL)self4
 {
-  v14 = a10;
-  if (!a10)
+  sceneCopy = service;
+  if (!service)
   {
-    v14 = a5;
+    sceneCopy = scene;
   }
 
-  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:a3 entityType:v14 outerDeviceType:a11 outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
+  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:identifiers entityType:sceneCopy outerDeviceType:type outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
 }
 
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 home:(id)a4 scene:(id)a5 homeZone:(id)a6 group:(id)a7 room:(id)a8 accessory:(id)a9 service:(id)a10 entityType:(int64_t)a11 serviceType:(int64_t)a12 subServiceType:(int64_t)a13
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers home:(id)home scene:(id)scene homeZone:(id)zone group:(id)group room:(id)room accessory:(id)accessory service:(id)self0 entityType:(int64_t)self1 serviceType:(int64_t)self2 subServiceType:(int64_t)self3
 {
-  v13 = a10;
-  if (!a10)
+  sceneCopy = service;
+  if (!service)
   {
-    v13 = a5;
+    sceneCopy = scene;
   }
 
-  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:a3 entityType:v13 outerDeviceType:a11 outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
+  return [INHomeFilter initWithEntityIdentifiers:"initWithEntityIdentifiers:entityName:entityType:outerDeviceType:outerDeviceName:deviceType:home:zone:group:room:isExcludeFilter:hasAllQuantifier:" entityName:identifiers entityType:sceneCopy outerDeviceType:type outerDeviceName:0 deviceType:0 home:0 zone:? group:? room:? isExcludeFilter:? hasAllQuantifier:?];
 }
 
-- (INHomeFilter)initWithEntityIdentifiers:(id)a3 entityName:(id)a4 entityType:(int64_t)a5 outerDeviceType:(int64_t)a6 outerDeviceName:(id)a7 deviceType:(int64_t)a8 home:(id)a9 zone:(id)a10 group:(id)a11 room:(id)a12 isExcludeFilter:(BOOL)a13 hasAllQuantifier:(BOOL)a14
+- (INHomeFilter)initWithEntityIdentifiers:(id)identifiers entityName:(id)name entityType:(int64_t)type outerDeviceType:(int64_t)deviceType outerDeviceName:(id)deviceName deviceType:(int64_t)a8 home:(id)home zone:(id)self0 group:(id)self1 room:(id)self2 isExcludeFilter:(BOOL)self3 hasAllQuantifier:(BOOL)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  deviceNameCopy = deviceName;
+  homeCopy = home;
+  zoneCopy = zone;
+  groupCopy = group;
+  roomCopy = room;
   v43.receiver = self;
   v43.super_class = INHomeFilter;
   v26 = [(INHomeFilter *)&v43 init];
   if (v26)
   {
-    v27 = [v19 copy];
+    v27 = [identifiersCopy copy];
     entityIdentifiers = v26->_entityIdentifiers;
     v26->_entityIdentifiers = v27;
 
-    v29 = [v20 copy];
+    v29 = [nameCopy copy];
     entityName = v26->_entityName;
     v26->_entityName = v29;
 
-    v26->_entityType = a5;
-    v26->_outerDeviceType = a6;
-    v31 = [v21 copy];
+    v26->_entityType = type;
+    v26->_outerDeviceType = deviceType;
+    v31 = [deviceNameCopy copy];
     outerDeviceName = v26->_outerDeviceName;
     v26->_outerDeviceName = v31;
 
     v26->_deviceType = a8;
-    v33 = [v22 copy];
+    v33 = [homeCopy copy];
     home = v26->_home;
     v26->_home = v33;
 
-    v35 = [v23 copy];
+    v35 = [zoneCopy copy];
     zone = v26->_zone;
     v26->_zone = v35;
 
-    v37 = [v24 copy];
+    v37 = [groupCopy copy];
     group = v26->_group;
     v26->_group = v37;
 
-    v39 = [v25 copy];
+    v39 = [roomCopy copy];
     room = v26->_room;
     v26->_room = v39;
 
-    v26->_isExcludeFilter = a13;
-    v26->_hasAllQuantifier = a14;
+    v26->_isExcludeFilter = filter;
+    v26->_hasAllQuantifier = quantifier;
   }
 
   return v26;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = [v8 objectForKeyedSubscript:@"entityIdentifiers"];
-    v40 = a1;
+    v41 = [fromCopy objectForKeyedSubscript:@"entityIdentifiers"];
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"entityName"];
-    v39 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"entityName"];
+    v39 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v11 = [v8 objectForKeyedSubscript:@"entityType"];
+    v11 = [fromCopy objectForKeyedSubscript:@"entityType"];
     v38 = INHomeEntityTypeWithString(v11);
 
-    v12 = [v8 objectForKeyedSubscript:@"outerDeviceType"];
+    v12 = [fromCopy objectForKeyedSubscript:@"outerDeviceType"];
     v37 = INHomeDeviceTypeWithString(v12);
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"outerDeviceName"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"outerDeviceName"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [v8 objectForKeyedSubscript:@"deviceType"];
+    v16 = [fromCopy objectForKeyedSubscript:@"deviceType"];
     v36 = INHomeDeviceTypeWithString(v16);
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"home"];
-    v19 = [v7 decodeObjectOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"home"];
+    v19 = [decoderCopy decodeObjectOfClass:v17 from:v18];
 
     v20 = objc_opt_class();
-    v21 = [v8 objectForKeyedSubscript:@"zone"];
-    v22 = [v7 decodeObjectOfClass:v20 from:v21];
+    v21 = [fromCopy objectForKeyedSubscript:@"zone"];
+    v22 = [decoderCopy decodeObjectOfClass:v20 from:v21];
 
     v23 = objc_opt_class();
-    v24 = [v8 objectForKeyedSubscript:@"group"];
-    v25 = [v7 decodeObjectOfClass:v23 from:v24];
+    v24 = [fromCopy objectForKeyedSubscript:@"group"];
+    v25 = [decoderCopy decodeObjectOfClass:v23 from:v24];
 
     v26 = objc_opt_class();
-    v27 = [v8 objectForKeyedSubscript:@"room"];
-    v28 = [v7 decodeObjectOfClass:v26 from:v27];
+    v27 = [fromCopy objectForKeyedSubscript:@"room"];
+    v28 = [decoderCopy decodeObjectOfClass:v26 from:v27];
 
-    v29 = [v8 objectForKeyedSubscript:@"isExcludeFilter"];
-    v30 = [v29 BOOLValue];
+    v29 = [fromCopy objectForKeyedSubscript:@"isExcludeFilter"];
+    bOOLValue = [v29 BOOLValue];
 
-    v31 = [v8 objectForKeyedSubscript:@"hasAllQuantifier"];
-    v32 = [v31 BOOLValue];
+    v31 = [fromCopy objectForKeyedSubscript:@"hasAllQuantifier"];
+    bOOLValue2 = [v31 BOOLValue];
 
-    BYTE1(v35) = v32;
-    LOBYTE(v35) = v30;
-    v33 = [[v40 alloc] initWithEntityIdentifiers:v41 entityName:v39 entityType:v38 outerDeviceType:v37 outerDeviceName:v15 deviceType:v36 home:v19 zone:v22 group:v25 room:v28 isExcludeFilter:v35 hasAllQuantifier:?];
+    BYTE1(v35) = bOOLValue2;
+    LOBYTE(v35) = bOOLValue;
+    v33 = [[selfCopy alloc] initWithEntityIdentifiers:v41 entityName:v39 entityType:v38 outerDeviceType:v37 outerDeviceName:v15 deviceType:v36 home:v19 zone:v22 group:v25 room:v28 isExcludeFilter:v35 hasAllQuantifier:?];
   }
 
   else

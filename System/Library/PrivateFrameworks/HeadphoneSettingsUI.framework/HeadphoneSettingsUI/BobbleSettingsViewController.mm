@@ -1,18 +1,18 @@
 @interface BobbleSettingsViewController
-+ (BOOL)bobbleSupported:(id)a3;
-+ (id)bobbleMainSepcifierWithHeadphoneDevice:(id)a3;
-+ (id)headGestureOnInput:(id)a3;
++ (BOOL)bobbleSupported:(id)supported;
++ (id)bobbleMainSepcifierWithHeadphoneDevice:(id)device;
++ (id)headGestureOnInput:(id)input;
 - (HPMHeadphoneDevice)headphoneDevice;
-- (_TtC19HeadphoneSettingsUI28BobbleSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19HeadphoneSettingsUI28BobbleSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)acceptReplyPlayPauseStringMapping;
 - (id)declineDismissSkipStringMapping;
-- (id)getVoiceEnvironment:(id)a3;
+- (id)getVoiceEnvironment:(id)environment;
 - (id)headGesturesEnabled;
 - (id)specifiers;
 - (void)presentBobbleTutorials;
-- (void)setHeadGesturesEnabledWithEnabled:(id)a3;
-- (void)setHeadphoneDevice:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setHeadGesturesEnabledWithEnabled:(id)enabled;
+- (void)setHeadphoneDevice:(id)device;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BobbleSettingsViewController
@@ -33,23 +33,23 @@
   return v4;
 }
 
-- (void)setHeadphoneDevice:(id)a3
+- (void)setHeadphoneDevice:(id)device
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   MEMORY[0x1E69E5928](self);
-  sub_1AC282DC4(a3);
+  sub_1AC282DC4(device);
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI28BobbleSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HeadphoneSettingsUI28BobbleSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     v6 = sub_1AC30A92C();
     v7 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v8 = v6;
     v9 = v7;
   }
@@ -60,7 +60,7 @@
     v9 = 0;
   }
 
-  return BobbleSettingsViewController.init(nibName:bundle:)(v8, v9, a4);
+  return BobbleSettingsViewController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 - (id)specifiers
@@ -83,7 +83,7 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   MEMORY[0x1E69E5928](self);
   v3 = sub_1AC30910C();
@@ -100,16 +100,16 @@
   return v4;
 }
 
-- (void)setHeadGesturesEnabledWithEnabled:(id)a3
+- (void)setHeadGesturesEnabledWithEnabled:(id)enabled
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](enabled);
   MEMORY[0x1E69E5928](self);
-  sub_1AC288A38(a3);
+  sub_1AC288A38(enabled);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](enabled);
 }
 
-- (id)getVoiceEnvironment:(id)a3
+- (id)getVoiceEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
@@ -121,36 +121,36 @@
   return v6;
 }
 
-+ (BOOL)bobbleSupported:(id)a3
++ (BOOL)bobbleSupported:(id)supported
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
   swift_getObjCClassMetadata();
-  sub_1AC288D04(a3);
+  sub_1AC288D04(supported);
   swift_unknownObjectRelease();
   return sub_1AC3090FC() & 1;
 }
 
-+ (id)bobbleMainSepcifierWithHeadphoneDevice:(id)a3
++ (id)bobbleMainSepcifierWithHeadphoneDevice:(id)device
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   swift_getObjCClassMetadata();
-  sub_1AC28A2BC(a3);
-  MEMORY[0x1E69E5920](a3);
+  sub_1AC28A2BC(device);
+  MEMORY[0x1E69E5920](device);
   sub_1AC215CB0();
   v5 = sub_1AC30AAFC();
 
   return v5;
 }
 
-+ (id)headGestureOnInput:(id)a3
++ (id)headGestureOnInput:(id)input
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](input);
   swift_getObjCClassMetadata();
-  sub_1AC28A744(a3);
-  MEMORY[0x1E69E5920](a3);
+  sub_1AC28A744(input);
+  MEMORY[0x1E69E5920](input);
   v5 = sub_1AC30A91C();
 
   return v5;

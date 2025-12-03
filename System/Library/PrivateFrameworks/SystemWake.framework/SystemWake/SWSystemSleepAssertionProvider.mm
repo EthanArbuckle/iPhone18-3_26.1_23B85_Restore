@@ -1,7 +1,7 @@
 @interface SWSystemSleepAssertionProvider
 + (id)sharedProvider;
-- (id)acquirePreventSystemSleepAssertionWithIdentifier:(id)a3;
-- (id)acquireSystemActivityAssertionWithIdentifier:(id)a3;
+- (id)acquirePreventSystemSleepAssertionWithIdentifier:(id)identifier;
+- (id)acquireSystemActivityAssertionWithIdentifier:(id)identifier;
 @end
 
 @implementation SWSystemSleepAssertionProvider
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __48__SWSystemSleepAssertionProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D3F918 != -1)
   {
     dispatch_once(&qword_280D3F918, block);
@@ -30,19 +30,19 @@ uint64_t __48__SWSystemSleepAssertionProvider_sharedProvider__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)acquirePreventSystemSleepAssertionWithIdentifier:(id)a3
+- (id)acquirePreventSystemSleepAssertionWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[SWPreventSystemSleepAssertion alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[SWPreventSystemSleepAssertion alloc] initWithIdentifier:identifierCopy];
   [(SWPreventSystemSleepAssertion *)v4 acquireWithTimeout:0 handler:0.0];
 
   return v4;
 }
 
-- (id)acquireSystemActivityAssertionWithIdentifier:(id)a3
+- (id)acquireSystemActivityAssertionWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[SWSystemActivityAssertion alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[SWSystemActivityAssertion alloc] initWithIdentifier:identifierCopy];
   [(SWSystemActivityAssertion *)v4 acquireWithTimeout:0 handler:0.0];
 
   return v4;

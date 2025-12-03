@@ -1,16 +1,16 @@
 @interface CKVDonateTask
 - (BOOL)wasLastDonationAccepted;
 - (CKVDonateTask)init;
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 datasetBridge:(id)a4 timeout:(double)a5 donateOptions:(unsigned __int16)a6;
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 deltaDatasetBridge:(id)a4 timeout:(double)a5;
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 fullDatasetBridge:(id)a4 timeout:(double)a5;
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 multiDatasetBridge:(id)a4 timeout:(double)a5;
+- (CKVDonateTask)initWithDonatorProvider:(id)provider datasetBridge:(id)bridge timeout:(double)timeout donateOptions:(unsigned __int16)options;
+- (CKVDonateTask)initWithDonatorProvider:(id)provider deltaDatasetBridge:(id)bridge timeout:(double)timeout;
+- (CKVDonateTask)initWithDonatorProvider:(id)provider fullDatasetBridge:(id)bridge timeout:(double)timeout;
+- (CKVDonateTask)initWithDonatorProvider:(id)provider multiDatasetBridge:(id)bridge timeout:(double)timeout;
 - (id)lastDonationAcceptedDate;
-- (int64_t)_enumerateAndStreamDeltaDataset:(id)a3 fullStream:(id)a4 incrementalStream:(id)a5;
-- (int64_t)_enumerateAndStreamFullDataset:(id)a3 fullStream:(id)a4;
-- (void)_donateAllDatasets:(unsigned __int16)a3 withReason:(unsigned __int16)a4 completion:(id)a5;
-- (void)_donateDataset:(id)a3 withType:(unsigned __int16)a4 reason:(unsigned __int16)a5 completion:(id)a6;
-- (void)runWithType:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5;
+- (int64_t)_enumerateAndStreamDeltaDataset:(id)dataset fullStream:(id)stream incrementalStream:(id)incrementalStream;
+- (int64_t)_enumerateAndStreamFullDataset:(id)dataset fullStream:(id)stream;
+- (void)_donateAllDatasets:(unsigned __int16)datasets withReason:(unsigned __int16)reason completion:(id)completion;
+- (void)_donateDataset:(id)dataset withType:(unsigned __int16)type reason:(unsigned __int16)reason completion:(id)completion;
+- (void)runWithType:(unsigned __int16)type reason:(unsigned __int16)reason completion:(id)completion;
 @end
 
 @implementation CKVDonateTask
@@ -32,23 +32,23 @@
 {
   if ([self->_bridge conformsToProtocol:&unk_1F4860D60])
   {
-    v3 = [self->_bridge lastDonationAcceptedDate];
+    lastDonationAcceptedDate = [self->_bridge lastDonationAcceptedDate];
   }
 
   else
   {
-    v3 = 0;
+    lastDonationAcceptedDate = 0;
   }
 
-  return v3;
+  return lastDonationAcceptedDate;
 }
 
-- (int64_t)_enumerateAndStreamDeltaDataset:(id)a3 fullStream:(id)a4 incrementalStream:(id)a5
+- (int64_t)_enumerateAndStreamDeltaDataset:(id)dataset fullStream:(id)stream incrementalStream:(id)incrementalStream
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  datasetCopy = dataset;
+  streamCopy = stream;
+  incrementalStreamCopy = incrementalStream;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -59,9 +59,9 @@
   v27[1] = 3221225472;
   v27[2] = __78__CKVDonateTask__enumerateAndStreamDeltaDataset_fullStream_incrementalStream___block_invoke;
   v27[3] = &unk_1E831E398;
-  v28 = v9;
-  v29 = v7;
-  v10 = v8;
+  v28 = incrementalStreamCopy;
+  v29 = datasetCopy;
+  v10 = streamCopy;
   v30 = v10;
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
@@ -87,11 +87,11 @@
       v17 = CKLogContextVocabulary;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v12 originAppId];
+        originAppId = [v12 originAppId];
         *buf = 136315650;
         v38 = "[CKVDonateTask _enumerateAndStreamDeltaDataset:fullStream:incrementalStream:]";
         v39 = 2112;
-        v40 = v19;
+        v40 = originAppId;
         v41 = 2112;
         v42 = v15;
         _os_log_error_impl(&dword_1C8683000, v17, OS_LOG_TYPE_ERROR, "%s Failed to enumerate delta dataset from app: %@. error: %@", buf, 0x20u);
@@ -224,11 +224,11 @@ uint64_t __78__CKVDonateTask__enumerateAndStreamDeltaDataset_fullStream_incremen
   return v5;
 }
 
-- (int64_t)_enumerateAndStreamFullDataset:(id)a3 fullStream:(id)a4
+- (int64_t)_enumerateAndStreamFullDataset:(id)dataset fullStream:(id)stream
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  datasetCopy = dataset;
+  streamCopy = stream;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -239,9 +239,9 @@ uint64_t __78__CKVDonateTask__enumerateAndStreamDeltaDataset_fullStream_incremen
   v16 = 3221225472;
   v17 = __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_invoke;
   v18 = &unk_1E831E370;
-  v7 = v6;
+  v7 = streamCopy;
   v19 = v7;
-  v8 = v5;
+  v8 = datasetCopy;
   v20 = v8;
   v9 = [v8 enumerateItemsWithError:&v22 usingBlock:&v15];
   v10 = v22;
@@ -255,11 +255,11 @@ uint64_t __78__CKVDonateTask__enumerateAndStreamDeltaDataset_fullStream_incremen
     v12 = CKLogContextVocabulary;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v8 originAppId];
+      originAppId = [v8 originAppId];
       *buf = 136315650;
       v28 = "[CKVDonateTask _enumerateAndStreamFullDataset:fullStream:]";
       v29 = 2112;
-      v30 = v14;
+      v30 = originAppId;
       v31 = 2112;
       v32 = v10;
       _os_log_error_impl(&dword_1C8683000, v12, OS_LOG_TYPE_ERROR, "%s Failed to enumerate full dataset from app: %@. error: %@", buf, 0x20u);
@@ -304,13 +304,13 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
   return v5;
 }
 
-- (void)_donateDataset:(id)a3 withType:(unsigned __int16)a4 reason:(unsigned __int16)a5 completion:(id)a6
+- (void)_donateDataset:(id)dataset withType:(unsigned __int16)type reason:(unsigned __int16)reason completion:(id)completion
 {
-  v31 = a4;
-  v32 = a5;
+  typeCopy = type;
+  reasonCopy = reason;
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
+  datasetCopy = dataset;
+  completionCopy = completion;
   v10 = os_signpost_id_generate(CKLogContextFramework);
   v11 = CKLogContextVocabulary;
   v12 = v11;
@@ -336,13 +336,13 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
   aBlock[3] = &unk_1E831EA68;
   dsema = v16;
   v63 = dsema;
-  v35 = v9;
+  v35 = completionCopy;
   v64 = v35;
   v36 = _Block_copy(aBlock);
-  v37 = [v8 originAppId];
+  originAppId = [datasetCopy originAppId];
   donatorProvider = self->_donatorProvider;
   v61 = 0;
-  v18 = -[CKVDonatorProvider donatorWithCascadeItemType:originAppId:error:](donatorProvider, "donatorWithCascadeItemType:originAppId:error:", [v8 cascadeItemType], v37, &v61);
+  v18 = -[CKVDonatorProvider donatorWithCascadeItemType:originAppId:error:](donatorProvider, "donatorWithCascadeItemType:originAppId:error:", [datasetCopy cascadeItemType], originAppId, &v61);
   v33 = v61;
   if (v18)
   {
@@ -363,11 +363,11 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
     v54 = __Block_byref_object_copy__164;
     v55 = __Block_byref_object_dispose__165;
     v56 = 0;
-    if ([v8 conformsToProtocol:&unk_1F4860D60])
+    if ([datasetCopy conformsToProtocol:&unk_1F4860D60])
     {
-      v20 = v8;
-      v21 = [v20 version];
-      v22 = [v20 validity];
+      v20 = datasetCopy;
+      version = [v20 version];
+      validity = [v20 validity];
       if ([v20 wasLastDonationAccepted])
       {
         donateOptions = donateOptions;
@@ -384,8 +384,8 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
     else
     {
       v20 = 0;
-      v21 = 0;
-      v22 = &stru_1F4852890;
+      version = 0;
+      validity = &stru_1F4852890;
     }
 
     v38[0] = MEMORY[0x1E69E9820];
@@ -394,20 +394,20 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
     v38[3] = &unk_1E831E348;
     v44 = buf;
     v45 = &v51;
-    v24 = v37;
+    v24 = originAppId;
     v39 = v24;
     v43 = v36;
-    v40 = self;
-    v30 = v8;
+    selfCopy = self;
+    v30 = datasetCopy;
     v41 = v30;
     v25 = v20;
     v42 = v25;
     v46 = &v57;
     v47 = v10;
-    v49 = v31;
-    v50 = v32;
+    v49 = typeCopy;
+    v50 = reasonCopy;
     v48 = v13;
-    [v18 donateWithOptions:donateOptions version:v21 validity:v22 usingStream:v38];
+    [v18 donateWithOptions:donateOptions version:version validity:validity usingStream:v38];
     v26 = dispatch_time(0, (self->_timeout * 1000000000.0));
     if (dispatch_semaphore_wait(dsema, v26))
     {
@@ -447,7 +447,7 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
           _os_log_impl(&dword_1C8683000, v28, OS_LOG_TYPE_INFO, "%s Incremental donation aborted. Retrying full dataset donation.", v65, 0xCu);
         }
 
-        [(CKVDonateTask *)self _donateDataset:v30 withType:v31 reason:v32 completion:v35];
+        [(CKVDonateTask *)self _donateDataset:v30 withType:typeCopy reason:reasonCopy completion:v35];
       }
     }
 
@@ -465,7 +465,7 @@ uint64_t __59__CKVDonateTask__enumerateAndStreamFullDataset_fullStream___block_i
       *buf = 136315650;
       *&buf[4] = "[CKVDonateTask _donateDataset:withType:reason:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v37;
+      *&buf[14] = originAppId;
       *&buf[22] = 2112;
       v72 = v33;
       _os_log_error_impl(&dword_1C8683000, v23, OS_LOG_TYPE_ERROR, "%s Failed to obtain donator for app: %@ error: %@", buf, 0x20u);
@@ -688,9 +688,9 @@ LABEL_13:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v25);
 }
 
-- (void)_donateAllDatasets:(unsigned __int16)a3 withReason:(unsigned __int16)a4 completion:(id)a5
+- (void)_donateAllDatasets:(unsigned __int16)datasets withReason:(unsigned __int16)reason completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = os_signpost_id_generate(CKLogContextFramework);
   v10 = CKLogContextVocabulary;
   v11 = v10;
@@ -717,9 +717,9 @@ LABEL_13:
   v29[3] = &unk_1E831E2D0;
   v14 = v12;
   v30 = v14;
-  v31 = self;
-  v34 = a3;
-  v35 = a4;
+  selfCopy = self;
+  datasetsCopy = datasets;
+  reasonCopy = reason;
   v32 = v36;
   v33 = buf;
   [bridge enumerateAllDatasets:&v41 usingBlock:v29];
@@ -735,15 +735,15 @@ LABEL_13:
   v20[1] = 3221225472;
   v20[2] = __58__CKVDonateTask__donateAllDatasets_withReason_completion___block_invoke_3;
   v20[3] = &unk_1E831E2F8;
-  v27 = a3;
-  v28 = a4;
+  datasetsCopy2 = datasets;
+  reasonCopy2 = reason;
   v23 = v36;
   v24 = buf;
   v25 = v9;
   v26 = v41;
   v21 = v16;
-  v22 = v8;
-  v18 = v8;
+  v22 = completionCopy;
+  v18 = completionCopy;
   v19 = v16;
   dispatch_group_notify(v14, v17, v20);
 
@@ -846,18 +846,18 @@ void __58__CKVDonateTask__donateAllDatasets_withReason_completion___block_invoke
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)runWithType:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5
+- (void)runWithType:(unsigned __int16)type reason:(unsigned __int16)reason completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  typeCopy = type;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   v9 = CKLogContextVocabulary;
   if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = CKVTaskIdDescription(v6);
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v5];
+    v11 = CKVTaskIdDescription(typeCopy);
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:reasonCopy];
     v13 = 136315650;
     v14 = "[CKVDonateTask runWithType:reason:completion:]";
     v15 = 2112;
@@ -869,12 +869,12 @@ void __58__CKVDonateTask__donateAllDatasets_withReason_completion___block_invoke
 
   if (self->_isMultiDataset)
   {
-    [(CKVDonateTask *)self _donateAllDatasets:v6 withReason:v5 completion:v8];
+    [(CKVDonateTask *)self _donateAllDatasets:typeCopy withReason:reasonCopy completion:completionCopy];
   }
 
   else
   {
-    [(CKVDonateTask *)self _donateDataset:self->_bridge withType:v6 reason:v5 completion:v8];
+    [(CKVDonateTask *)self _donateDataset:self->_bridge withType:typeCopy reason:reasonCopy completion:completionCopy];
   }
 }
 
@@ -884,85 +884,85 @@ void __58__CKVDonateTask__donateAllDatasets_withReason_completion___block_invoke
   objc_exception_throw(v2);
 }
 
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 multiDatasetBridge:(id)a4 timeout:(double)a5
+- (CKVDonateTask)initWithDonatorProvider:(id)provider multiDatasetBridge:(id)bridge timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 conformsToProtocol:&unk_1F485BA50])
+  providerCopy = provider;
+  bridgeCopy = bridge;
+  if ([bridgeCopy conformsToProtocol:&unk_1F485BA50])
   {
-    self = [(CKVDonateTask *)self initWithDonatorProvider:v8 datasetBridge:v9 timeout:0 donateOptions:a5];
-    v10 = self;
+    self = [(CKVDonateTask *)self initWithDonatorProvider:providerCopy datasetBridge:bridgeCopy timeout:0 donateOptions:timeout];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 deltaDatasetBridge:(id)a4 timeout:(double)a5
+- (CKVDonateTask)initWithDonatorProvider:(id)provider deltaDatasetBridge:(id)bridge timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 conformsToProtocol:&unk_1F4860D60])
+  providerCopy = provider;
+  bridgeCopy = bridge;
+  if ([bridgeCopy conformsToProtocol:&unk_1F4860D60])
   {
-    self = [(CKVDonateTask *)self initWithDonatorProvider:v8 datasetBridge:v9 timeout:1 donateOptions:a5];
-    v10 = self;
+    self = [(CKVDonateTask *)self initWithDonatorProvider:providerCopy datasetBridge:bridgeCopy timeout:1 donateOptions:timeout];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 fullDatasetBridge:(id)a4 timeout:(double)a5
+- (CKVDonateTask)initWithDonatorProvider:(id)provider fullDatasetBridge:(id)bridge timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 conformsToProtocol:&unk_1F485B980])
+  providerCopy = provider;
+  bridgeCopy = bridge;
+  if ([bridgeCopy conformsToProtocol:&unk_1F485B980])
   {
-    self = [(CKVDonateTask *)self initWithDonatorProvider:v8 datasetBridge:v9 timeout:0 donateOptions:a5];
-    v10 = self;
+    self = [(CKVDonateTask *)self initWithDonatorProvider:providerCopy datasetBridge:bridgeCopy timeout:0 donateOptions:timeout];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CKVDonateTask)initWithDonatorProvider:(id)a3 datasetBridge:(id)a4 timeout:(double)a5 donateOptions:(unsigned __int16)a6
+- (CKVDonateTask)initWithDonatorProvider:(id)provider datasetBridge:(id)bridge timeout:(double)timeout donateOptions:(unsigned __int16)options
 {
-  v11 = a3;
-  v12 = a4;
+  providerCopy = provider;
+  bridgeCopy = bridge;
   v17.receiver = self;
   v17.super_class = CKVDonateTask;
   v13 = [(CKVDonateTask *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_donatorProvider, a3);
+    objc_storeStrong(&v13->_donatorProvider, provider);
     if (!v14->_donatorProvider)
     {
       v15 = 0;
       goto LABEL_8;
     }
 
-    objc_storeStrong(&v14->_bridge, a4);
+    objc_storeStrong(&v14->_bridge, bridge);
     if ([v14->_bridge conformsToProtocol:&unk_1F485BA50])
     {
       v14->_isMultiDataset = 1;
     }
 
-    v14->_timeout = a5;
-    v14->_donateOptions = a6;
+    v14->_timeout = timeout;
+    v14->_donateOptions = options;
   }
 
   v15 = v14;

@@ -21,7 +21,7 @@
 {
   if (ABValidateAlternateBirthday(a3))
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &off_2849B0EF8;
     return objc_msgSendSuper2(&v11, sel_convertABSValue_toCNValue_error_, a3, a4, a5);
   }
@@ -47,19 +47,19 @@
   if (v3)
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v5 = [v3 calendar];
-    v6 = [v5 calendarIdentifier];
+    calendar = [v3 calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
 
-    if (v6)
+    if (calendarIdentifier)
     {
-      v7 = [v3 calendar];
-      v8 = [v7 calendarIdentifier];
-      CFDictionarySetValue(Mutable, @"calendarIdentifier", v8);
+      calendar2 = [v3 calendar];
+      calendarIdentifier2 = [calendar2 calendarIdentifier];
+      CFDictionarySetValue(Mutable, @"calendarIdentifier", calendarIdentifier2);
     }
 
-    v9 = [v3 isLeapMonth];
+    isLeapMonth = [v3 isLeapMonth];
     v10 = MEMORY[0x277CBED28];
-    if (!v9)
+    if (!isLeapMonth)
     {
       v10 = MEMORY[0x277CBED10];
     }
@@ -103,7 +103,7 @@
   v6 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v5];
   if (v6)
   {
-    v7 = v5;
+    lowercaseString = v5;
 LABEL_6:
     [v4 setCalendar:v6];
     [v4 setLeapMonth:{CFDictionaryGetValue(a3, @"isLeapMonth"}];
@@ -122,9 +122,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
-  v8 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v7];
+  v8 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:lowercaseString];
   if (v8)
   {
     goto LABEL_6;

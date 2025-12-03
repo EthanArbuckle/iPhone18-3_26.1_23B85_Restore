@@ -1,8 +1,8 @@
 @interface REMRegulatoryLogger
 + (id)sharedLogger;
-+ (int64_t)attachmentTypeFromUTType:(id)a3;
-+ (void)attachmentAddedForType:(int64_t)a3;
-+ (void)attachmentAddedForUTType:(id)a3;
++ (int64_t)attachmentTypeFromUTType:(id)type;
++ (void)attachmentAddedForType:(int64_t)type;
++ (void)attachmentAddedForUTType:(id)type;
 - (REMRegulatoryLogger)init;
 - (uint64_t)init;
 @end
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __35__REMRegulatoryLogger_sharedLogger__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLogger_onceToken != -1)
   {
     dispatch_once(&sharedLogger_onceToken, block);
@@ -74,25 +74,25 @@ uint64_t __35__REMRegulatoryLogger_sharedLogger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (int64_t)attachmentTypeFromUTType:(id)a3
++ (int64_t)attachmentTypeFromUTType:(id)type
 {
-  v3 = a3;
-  if ([v3 conformsToType:*MEMORY[0x277CE1DB0]])
+  typeCopy = type;
+  if ([typeCopy conformsToType:*MEMORY[0x277CE1DB0]])
   {
     v4 = 3;
   }
 
-  else if ([v3 conformsToType:*MEMORY[0x277CE1D00]])
+  else if ([typeCopy conformsToType:*MEMORY[0x277CE1D00]])
   {
     v4 = 1;
   }
 
-  else if ([v3 conformsToType:*MEMORY[0x277CE1E00]])
+  else if ([typeCopy conformsToType:*MEMORY[0x277CE1E00]])
   {
     v4 = 2;
   }
 
-  else if ([v3 conformsToType:*MEMORY[0x277CE1EC0]])
+  else if ([typeCopy conformsToType:*MEMORY[0x277CE1EC0]])
   {
     v4 = 2;
   }
@@ -105,24 +105,24 @@ uint64_t __35__REMRegulatoryLogger_sharedLogger__block_invoke()
   return v4;
 }
 
-+ (void)attachmentAddedForUTType:(id)a3
++ (void)attachmentAddedForUTType:(id)type
 {
-  v4 = [a1 attachmentTypeFromUTType:a3];
+  v4 = [self attachmentTypeFromUTType:type];
 
-  [a1 attachmentAddedForType:v4];
+  [self attachmentAddedForType:v4];
 }
 
-+ (void)attachmentAddedForType:(int64_t)a3
++ (void)attachmentAddedForType:(int64_t)type
 {
-  v4 = [a1 sharedLogger];
-  v5 = [v4 greenTeaLogger];
+  sharedLogger = [self sharedLogger];
+  greenTeaLogger = [sharedLogger greenTeaLogger];
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
-      v8 = [MEMORY[0x277D446E0] utility];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      utility = [MEMORY[0x277D446E0] utility];
+      if (os_log_type_enabled(utility, OS_LOG_TYPE_DEBUG))
       {
         +[REMRegulatoryLogger attachmentAddedForType:];
       }
@@ -130,19 +130,19 @@ uint64_t __35__REMRegulatoryLogger_sharedLogger__block_invoke()
       goto LABEL_24;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       return;
     }
 
-    v6 = [MEMORY[0x277D446E0] utility];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    utility2 = [MEMORY[0x277D446E0] utility];
+    if (os_log_type_enabled(utility2, OS_LOG_TYPE_DEBUG))
     {
       +[REMRegulatoryLogger attachmentAddedForType:];
     }
 
-    v7 = soft_getCTGreenTeaOsLogHandle(v5);
-    v8 = v7;
+    v7 = soft_getCTGreenTeaOsLogHandle(greenTeaLogger);
+    utility = v7;
     if (!v7 || !os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
@@ -154,16 +154,16 @@ uint64_t __35__REMRegulatoryLogger_sharedLogger__block_invoke()
     goto LABEL_23;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v13 = [MEMORY[0x277D446E0] utility];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    utility3 = [MEMORY[0x277D446E0] utility];
+    if (os_log_type_enabled(utility3, OS_LOG_TYPE_DEBUG))
     {
       +[REMRegulatoryLogger attachmentAddedForType:];
     }
 
-    v14 = soft_getCTGreenTeaOsLogHandle(v5);
-    v8 = v14;
+    v14 = soft_getCTGreenTeaOsLogHandle(greenTeaLogger);
+    utility = v14;
     if (!v14 || !os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
@@ -175,26 +175,26 @@ uint64_t __35__REMRegulatoryLogger_sharedLogger__block_invoke()
     goto LABEL_23;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     return;
   }
 
-  v11 = [MEMORY[0x277D446E0] utility];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  utility4 = [MEMORY[0x277D446E0] utility];
+  if (os_log_type_enabled(utility4, OS_LOG_TYPE_DEBUG))
   {
     +[REMRegulatoryLogger attachmentAddedForType:];
   }
 
-  v12 = soft_getCTGreenTeaOsLogHandle(v5);
-  v8 = v12;
+  v12 = soft_getCTGreenTeaOsLogHandle(greenTeaLogger);
+  utility = v12;
   if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v15 = 0;
     v9 = "Reading image/photo data";
     v10 = &v15;
 LABEL_23:
-    _os_log_impl(&dword_230044000, v8, OS_LOG_TYPE_INFO, v9, v10, 2u);
+    _os_log_impl(&dword_230044000, utility, OS_LOG_TYPE_INFO, v9, v10, 2u);
   }
 
 LABEL_24:

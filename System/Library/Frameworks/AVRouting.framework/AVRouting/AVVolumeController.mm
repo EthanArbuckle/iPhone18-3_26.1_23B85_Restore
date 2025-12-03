@@ -1,18 +1,18 @@
 @interface AVVolumeController
-- (AVVolumeController)initWithType:(unsigned int)a3;
+- (AVVolumeController)initWithType:(unsigned int)type;
 - (void)dealloc;
 @end
 
 @implementation AVVolumeController
 
-- (AVVolumeController)initWithType:(unsigned int)a3
+- (AVVolumeController)initWithType:(unsigned int)type
 {
   v5.receiver = self;
   v5.super_class = AVVolumeController;
   result = [(AVVolumeController *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;

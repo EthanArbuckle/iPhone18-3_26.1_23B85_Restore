@@ -1,51 +1,51 @@
 @interface HFSimpleAggregatedCharacteristicValueSource
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNaturalLightingEnabled;
 - (BOOL)isNaturalLightingSupported;
 - (HFSimpleAggregatedCharacteristicValueSource)init;
-- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)a3 characteristics:(id)a4 primaryServiceDescriptor:(id)a5;
-- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)a3 services:(id)a4 primaryServiceDescriptor:(id)a5;
+- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)source characteristics:(id)characteristics primaryServiceDescriptor:(id)descriptor;
+- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)source services:(id)services primaryServiceDescriptor:(id)descriptor;
 - (NSSet)allServices;
 - (NSSet)characteristics;
 - (NSSet)lightProfiles;
-- (id)allCharacteristicsForCharacteristicType:(id)a3;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metadataForCharacteristicType:(id)a3;
-- (id)readValuesForCharacteristicTypes:(id)a3;
-- (id)readValuesForServiceStateRecipe:(id)a3;
-- (id)writeNaturalLightEnabledState:(BOOL)a3;
-- (id)writeValuesForCharacteristicRecipes:(id)a3;
-- (id)writeValuesForCharacteristicTypes:(id)a3;
+- (id)allCharacteristicsForCharacteristicType:(id)type;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metadataForCharacteristicType:(id)type;
+- (id)readValuesForCharacteristicTypes:(id)types;
+- (id)readValuesForServiceStateRecipe:(id)recipe;
+- (id)writeNaturalLightEnabledState:(BOOL)state;
+- (id)writeValuesForCharacteristicRecipes:(id)recipes;
+- (id)writeValuesForCharacteristicTypes:(id)types;
 - (unint64_t)hash;
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5;
-- (void)commitTransactionWithReason:(id)a3;
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 completion:(id)a4;
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger;
+- (void)commitTransactionWithReason:(id)reason;
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness completion:(id)completion;
 @end
 
 @implementation HFSimpleAggregatedCharacteristicValueSource
 
 - (HFSimpleAggregatedCharacteristicValueSource)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithValueSource_characteristics_primaryServiceDescriptor_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAggregatedCharacteristicValueSource.m" lineNumber:29 description:{@"%s is unavailable; use %@ instead", "-[HFSimpleAggregatedCharacteristicValueSource init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAggregatedCharacteristicValueSource.m" lineNumber:29 description:{@"%s is unavailable; use %@ instead", "-[HFSimpleAggregatedCharacteristicValueSource init]", v5}];
 
   return 0;
 }
 
-- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)a3 services:(id)a4 primaryServiceDescriptor:(id)a5
+- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)source services:(id)services primaryServiceDescriptor:(id)descriptor
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 na_flatMap:&__block_literal_global_3];
-  v13 = [(HFSimpleAggregatedCharacteristicValueSource *)self initWithValueSource:v11 characteristics:v12 primaryServiceDescriptor:v10];
+  servicesCopy = services;
+  descriptorCopy = descriptor;
+  sourceCopy = source;
+  v12 = [servicesCopy na_flatMap:&__block_literal_global_3];
+  v13 = [(HFSimpleAggregatedCharacteristicValueSource *)self initWithValueSource:sourceCopy characteristics:v12 primaryServiceDescriptor:descriptorCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_allServices, a4);
+    objc_storeStrong(&v13->_allServices, services);
   }
 
   return v13;
@@ -60,12 +60,12 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   return v4;
 }
 
-- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)a3 characteristics:(id)a4 primaryServiceDescriptor:(id)a5
+- (HFSimpleAggregatedCharacteristicValueSource)initWithValueSource:(id)source characteristics:(id)characteristics primaryServiceDescriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  sourceCopy = source;
+  characteristicsCopy = characteristics;
+  descriptorCopy = descriptor;
+  if (!sourceCopy)
   {
     NSLog(&cfstr_ValueSourceCan.isa);
   }
@@ -76,9 +76,9 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_valueSource, a3);
-    objc_storeStrong(&v13->_primaryServiceDescriptor, a5);
-    v14 = [v10 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_13];
+    objc_storeStrong(&v12->_valueSource, source);
+    objc_storeStrong(&v13->_primaryServiceDescriptor, descriptor);
+    v14 = [characteristicsCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_13];
     characteristicsByType = v13->_characteristicsByType;
     v13->_characteristicsByType = v14;
   }
@@ -86,18 +86,18 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self copyWithValueSource:v4];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = HFLogForCategory(0x3BuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,14 +106,14 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
     v14 = 2048;
     v15 = 63;
     v16 = 2112;
-    v17 = v4;
+    v17 = sourceCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%s (Line: %ld) Copying with valueSource %@.", &v12, 0x20u);
   }
 
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
-  v8 = [(HFSimpleAggregatedCharacteristicValueSource *)self primaryServiceDescriptor];
-  v9 = [v6 initWithValueSource:v4 characteristics:v7 primaryServiceDescriptor:v8];
+  characteristics = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
+  primaryServiceDescriptor = [(HFSimpleAggregatedCharacteristicValueSource *)self primaryServiceDescriptor];
+  v9 = [v6 initWithValueSource:sourceCopy characteristics:characteristics primaryServiceDescriptor:primaryServiceDescriptor];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
@@ -124,8 +124,8 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   allServices = self->_allServices;
   if (!allServices)
   {
-    v4 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
-    v5 = [v4 na_map:&__block_literal_global_16];
+    characteristics = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
+    v5 = [characteristics na_map:&__block_literal_global_16];
     v6 = self->_allServices;
     self->_allServices = v5;
 
@@ -141,9 +141,9 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   if (!characteristics)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
-    v6 = [v5 allValues];
-    v7 = [v6 na_flatMap:&__block_literal_global_19];
+    characteristicsByType = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
+    allValues = [characteristicsByType allValues];
+    v7 = [allValues na_flatMap:&__block_literal_global_19];
     v8 = [v4 setWithArray:v7];
     v9 = self->_characteristics;
     self->_characteristics = v8;
@@ -154,49 +154,49 @@ id __101__HFSimpleAggregatedCharacteristicValueSource_initWithValueSource_servic
   return characteristics;
 }
 
-- (id)readValuesForServiceStateRecipe:(id)a3
+- (id)readValuesForServiceStateRecipe:(id)recipe
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recipeCopy = recipe;
   v5 = HFLogForCategory(0x3BuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+    valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
     v16 = 136315906;
     v17 = "[HFSimpleAggregatedCharacteristicValueSource readValuesForServiceStateRecipe:]";
     v18 = 2048;
     v19 = 90;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v6;
+    v23 = valueSource;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%s (Line: %ld) valueSource for %@ = %@", &v16, 0x2Au);
   }
 
-  v7 = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
-  v8 = [v4 matchResultForServices:v7];
+  allServices = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
+  v8 = [recipeCopy matchResultForServices:allServices];
 
-  v9 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  v10 = [v8 allCharacteristics];
-  v11 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
-  v12 = [v10 na_setByIntersectingWithSet:v11];
-  v13 = [v9 readValuesForCharacteristics:v12];
+  valueSource2 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  allCharacteristics = [v8 allCharacteristics];
+  characteristics = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristics];
+  v12 = [allCharacteristics na_setByIntersectingWithSet:characteristics];
+  v13 = [valueSource2 readValuesForCharacteristics:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)readValuesForCharacteristicTypes:(id)a3
+- (id)readValuesForCharacteristicTypes:(id)types
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__HFSimpleAggregatedCharacteristicValueSource_readValuesForCharacteristicTypes___block_invoke;
   v8[3] = &unk_277DF2DD8;
   v8[4] = self;
-  v4 = [a3 na_flatMap:v8];
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  v6 = [v5 readValuesForCharacteristics:v4];
+  v4 = [types na_flatMap:v8];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  v6 = [valueSource readValuesForCharacteristics:v4];
 
   return v6;
 }
@@ -211,18 +211,18 @@ id __80__HFSimpleAggregatedCharacteristicValueSource_readValuesForCharacteristic
   return v5;
 }
 
-- (id)writeValuesForCharacteristicRecipes:(id)a3
+- (id)writeValuesForCharacteristicRecipes:(id)recipes
 {
-  v4 = a3;
+  recipesCopy = recipes;
   v5 = objc_alloc_init(HFCharacteristicValueSet);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __83__HFSimpleAggregatedCharacteristicValueSource_writeValuesForCharacteristicRecipes___block_invoke;
   v13 = &unk_277DF2E00;
-  v14 = self;
+  selfCopy = self;
   v15 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v10];
+  [recipesCopy enumerateKeysAndObjectsUsingBlock:&v10];
 
   v7 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource:v10];
   v8 = [v7 writeValuesForCharacteristics:v6];
@@ -275,18 +275,18 @@ void __83__HFSimpleAggregatedCharacteristicValueSource_writeValuesForCharacteris
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)writeValuesForCharacteristicTypes:(id)a3
+- (id)writeValuesForCharacteristicTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(HFCharacteristicValueSet);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __81__HFSimpleAggregatedCharacteristicValueSource_writeValuesForCharacteristicTypes___block_invoke;
   v13 = &unk_277DF2E28;
-  v14 = self;
+  selfCopy = self;
   v15 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v10];
+  [typesCopy enumerateKeysAndObjectsUsingBlock:&v10];
 
   v7 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource:v10];
   v8 = [v7 writeValuesForCharacteristics:v6];
@@ -334,40 +334,40 @@ void __81__HFSimpleAggregatedCharacteristicValueSource_writeValuesForCharacteris
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)metadataForCharacteristicType:(id)a3
+- (id)metadataForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  characteristicsByType = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
+  v6 = [characteristicsByType objectForKeyedSubscript:typeCopy];
 
   v7 = [HFCharacteristicBatchReadResponse aggregatedMetadataForCharacteristics:v6];
 
   return v7;
 }
 
-- (id)allCharacteristicsForCharacteristicType:(id)a3
+- (id)allCharacteristicsForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  characteristicsByType = [(HFSimpleAggregatedCharacteristicValueSource *)self characteristicsByType];
+  v6 = [characteristicsByType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  [v11 beginTransactionWithReason:v10 readPolicy:v9 logger:v8];
+  loggerCopy = logger;
+  policyCopy = policy;
+  reasonCopy = reason;
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  [valueSource beginTransactionWithReason:reasonCopy readPolicy:policyCopy logger:loggerCopy];
 }
 
-- (void)commitTransactionWithReason:(id)a3
+- (void)commitTransactionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  [v5 commitTransactionWithReason:v4];
+  reasonCopy = reason;
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  [valueSource commitTransactionWithReason:reasonCopy];
 }
 
 + (NAIdentity)na_identity
@@ -393,39 +393,39 @@ void __58__HFSimpleAggregatedCharacteristicValueSource_na_identity__block_invoke
   qword_280E02A70 = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
 - (NSSet)lightProfiles
 {
-  v2 = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
-  v3 = [v2 na_flatMap:&__block_literal_global_23];
+  allServices = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
+  v3 = [allServices na_flatMap:&__block_literal_global_23];
 
   return v3;
 }
 
 - (BOOL)isNaturalLightingSupported
 {
-  v3 = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
-  v4 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  lightProfiles = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
   v5 = &unk_28253EC38;
-  if ([v4 conformsToProtocol:v5])
+  if ([valueSource conformsToProtocol:v5])
   {
-    v6 = v4;
+    v6 = valueSource;
   }
 
   else
@@ -441,14 +441,14 @@ void __58__HFSimpleAggregatedCharacteristicValueSource_na_identity__block_invoke
   v14[3] = &unk_277DF48A8;
   v8 = v7;
   v15 = v8;
-  v9 = [v3 na_all:v14];
+  v9 = [lightProfiles na_all:v14];
   if (!+[HFUtilities isRunningInStoreDemoMode](HFUtilities, "isRunningInStoreDemoMode") && !+[HFUtilities isPressDemoModeEnabled])
   {
-    v10 = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
-    v11 = [v10 anyObject];
+    allServices = [(HFSimpleAggregatedCharacteristicValueSource *)self allServices];
+    anyObject = [allServices anyObject];
 
-    v12 = [v11 home];
-    v9 &= [v12 hf_enabledResidentsSupportsNaturalLight];
+    home = [anyObject home];
+    v9 &= [home hf_enabledResidentsSupportsNaturalLight];
   }
 
   return v9;
@@ -456,12 +456,12 @@ void __58__HFSimpleAggregatedCharacteristicValueSource_na_identity__block_invoke
 
 - (BOOL)isNaturalLightingEnabled
 {
-  v3 = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
-  v4 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  lightProfiles = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
   v5 = &unk_28253EC38;
-  if ([v4 conformsToProtocol:v5])
+  if ([valueSource conformsToProtocol:v5])
   {
-    v6 = v4;
+    v6 = valueSource;
   }
 
   else
@@ -477,19 +477,19 @@ void __58__HFSimpleAggregatedCharacteristicValueSource_na_identity__block_invoke
   v11[3] = &unk_277DF48A8;
   v12 = v7;
   v8 = v7;
-  v9 = [v3 na_all:v11];
+  v9 = [lightProfiles na_all:v11];
 
   return v9;
 }
 
-- (id)writeNaturalLightEnabledState:(BOOL)a3
+- (id)writeNaturalLightEnabledState:(BOOL)state
 {
-  v5 = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
-  v6 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  lightProfiles = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
   v7 = &unk_28253EC38;
-  if ([v6 conformsToProtocol:v7])
+  if ([valueSource conformsToProtocol:v7])
   {
-    v8 = v6;
+    v8 = valueSource;
   }
 
   else
@@ -499,15 +499,15 @@ void __58__HFSimpleAggregatedCharacteristicValueSource_na_identity__block_invoke
 
   v9 = v8;
 
-  v10 = [v5 allObjects];
+  allObjects = [lightProfiles allObjects];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __104__HFSimpleAggregatedCharacteristicValueSource_HFLightProfileValueSource__writeNaturalLightEnabledState___block_invoke;
   v18 = &unk_277DF48F8;
   v19 = v9;
-  v20 = a3;
+  stateCopy = state;
   v11 = v9;
-  v12 = [v10 na_map:&v15];
+  v12 = [allObjects na_map:&v15];
 
   v13 = [MEMORY[0x277D2C900] chainFutures:{v12, v15, v16, v17, v18}];
 
@@ -545,14 +545,14 @@ void __104__HFSimpleAggregatedCharacteristicValueSource_HFLightProfileValueSourc
   v6 = [v4 addCompletionBlock:v7];
 }
 
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 completion:(id)a4
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness completion:(id)completion
 {
-  v6 = a4;
-  v11 = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
-  v7 = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
-  if ([v7 conformsToProtocol:&unk_28253EC38])
+  completionCopy = completion;
+  lightProfiles = [(HFSimpleAggregatedCharacteristicValueSource *)self lightProfiles];
+  valueSource = [(HFSimpleAggregatedCharacteristicValueSource *)self valueSource];
+  if ([valueSource conformsToProtocol:&unk_28253EC38])
   {
-    v8 = v7;
+    v8 = valueSource;
   }
 
   else
@@ -562,8 +562,8 @@ void __104__HFSimpleAggregatedCharacteristicValueSource_HFLightProfileValueSourc
 
   v9 = v8;
 
-  v10 = [v11 anyObject];
-  [v9 fetchNaturalLightColorTemperatureForBrightness:a3 lightProfile:v10 completion:v6];
+  anyObject = [lightProfiles anyObject];
+  [v9 fetchNaturalLightColorTemperatureForBrightness:brightness lightProfile:anyObject completion:completionCopy];
 }
 
 @end

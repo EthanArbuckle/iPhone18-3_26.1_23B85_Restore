@@ -1,22 +1,22 @@
 @interface GpsDevice
-- (BOOL)getGpsConfiguration:(id *)a3 error:(id *)a4;
-- (BOOL)testApSignalGpio:(id *)a3;
-- (BOOL)testCommPing:(id *)a3 id:(id *)a4 error:(id *)a5;
-- (BOOL)testExternalFreqAssistance:(id *)a3;
-- (BOOL)testGpsCw:(id)a3 error:(id *)a4;
-- (BOOL)testGpsModulated:(id)a3 gpsPrn:(int)a4 error:(id *)a5;
-- (BOOL)testPeriodic:(id)a3 error:(id *)a4;
-- (BOOL)testPowerMode:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)testTimeMarkGpio:(id *)a3;
+- (BOOL)getGpsConfiguration:(id *)configuration error:(id *)error;
+- (BOOL)testApSignalGpio:(id *)gpio;
+- (BOOL)testCommPing:(id *)ping id:(id *)id error:(id *)error;
+- (BOOL)testExternalFreqAssistance:(id *)assistance;
+- (BOOL)testGpsCw:(id)cw error:(id *)error;
+- (BOOL)testGpsModulated:(id)modulated gpsPrn:(int)prn error:(id *)error;
+- (BOOL)testPeriodic:(id)periodic error:(id *)error;
+- (BOOL)testPowerMode:(unsigned __int8)mode error:(id *)error;
+- (BOOL)testTimeMarkGpio:(id *)gpio;
 - (id).cxx_construct;
-- (id)init:(id *)a3;
+- (id)init:(id *)init;
 - (void)dealloc;
 - (void)flushLogs;
 @end
 
 @implementation GpsDevice
 
-- (id)init:(id *)a3
+- (id)init:(id *)init
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -100,7 +100,7 @@
   [(GpsDevice *)&v2 dealloc];
 }
 
-- (BOOL)getGpsConfiguration:(id *)a3 error:(id *)a4
+- (BOOL)getGpsConfiguration:(id *)configuration error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   fTestDevice = self->_fTestDevice;
@@ -114,13 +114,13 @@
     v7 = -1;
   }
 
-  a3->var2 = v7;
+  configuration->var2 = v7;
   v8 = GpsdPlatformInfo::instance(0);
   v9 = *v8;
-  a3->var0 = *v8;
+  configuration->var0 = *v8;
   if (!v9)
   {
-    [GpsError setError:a4 withCode:4 format:@"Unrecognized hardware"];
+    [GpsError setError:error withCode:4 format:@"Unrecognized hardware"];
     v15 = GpsdLogObjectGeneral;
     v14 = os_log_type_enabled(GpsdLogObjectGeneral, OS_LOG_TYPE_ERROR);
     if (!v14)
@@ -137,10 +137,10 @@ LABEL_14:
   }
 
   v10 = *(GpsdPlatformInfo::instance(0) + 8);
-  a3->var1 = v10;
+  configuration->var1 = v10;
   if (!v10)
   {
-    [GpsError setError:a4 withCode:4 format:@"Unrecognized gnss chip"];
+    [GpsError setError:error withCode:4 format:@"Unrecognized gnss chip"];
     v15 = GpsdLogObjectGeneral;
     v14 = os_log_type_enabled(GpsdLogObjectGeneral, OS_LOG_TYPE_ERROR);
     if (!v14)
@@ -156,8 +156,8 @@ LABEL_14:
   v11 = GpsdLogObjectGeneral;
   if (os_log_type_enabled(GpsdLogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3->var0;
-    var2 = a3->var2;
+    var0 = configuration->var0;
+    var2 = configuration->var2;
     v19[0] = 67109632;
     v19[1] = var0;
     v20 = 1024;
@@ -173,7 +173,7 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)testTimeMarkGpio:(id *)a3
+- (BOOL)testTimeMarkGpio:(id *)gpio
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "");
   fTestDevice = self->_fTestDevice;
@@ -190,9 +190,9 @@ LABEL_12:
 
   if (v6 == 1)
   {
-    if (a3)
+    if (gpio)
     {
-      *a3 = 0;
+      *gpio = 0;
     }
   }
 
@@ -200,7 +200,7 @@ LABEL_12:
   {
     v8 = errorCodeTranslator(v6);
     v9 = stringifyTest(v6);
-    [GpsError setError:a3 withCode:v8 format:@"%@", v9];
+    [GpsError setError:gpio withCode:v8 format:@"%@", v9];
   }
 
   if (v12 < 0)
@@ -211,7 +211,7 @@ LABEL_12:
   return v6 == 1;
 }
 
-- (BOOL)testApSignalGpio:(id *)a3
+- (BOOL)testApSignalGpio:(id *)gpio
 {
   __p[0] = 0;
   __p[1] = 0;
@@ -230,9 +230,9 @@ LABEL_12:
 
   if (v5 == 1)
   {
-    if (a3)
+    if (gpio)
     {
-      *a3 = 0;
+      *gpio = 0;
     }
   }
 
@@ -240,7 +240,7 @@ LABEL_12:
   {
     v7 = errorCodeTranslator(v5);
     v8 = stringifyTest(v5);
-    [GpsError setError:a3 withCode:v7 format:@"%@", v8];
+    [GpsError setError:gpio withCode:v7 format:@"%@", v8];
   }
 
   if (SHIBYTE(v11) < 0)
@@ -251,7 +251,7 @@ LABEL_12:
   return v5 == 1;
 }
 
-- (BOOL)testCommPing:(id *)a3 id:(id *)a4 error:(id *)a5
+- (BOOL)testCommPing:(id *)ping id:(id *)id error:(id *)error
 {
   std::string::basic_string[abi:ne200100]<0>(&__str, "");
   fTestDevice = self->_fTestDevice;
@@ -264,7 +264,7 @@ LABEL_12:
   {
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"--ping", @"10000", 0}];
     v10 = forkProcessGpsTest(&__str, v46);
-    v11 = a4;
+    idCopy = id;
     std::string::basic_string[abi:ne200100]<0>(&__p, "commPing result: ");
     size = HIBYTE(__str.__r_.__value_.__r.__words[2]);
     if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
@@ -346,7 +346,7 @@ LABEL_12:
       }
 
       MEMORY[0x245D6AB60](&__str, "");
-      a4 = v11;
+      id = idCopy;
     }
 
     else
@@ -362,7 +362,7 @@ LABEL_18:
       __str = v51;
       v17 = std::string::find(&__str, 10, 0);
       std::string::basic_string(&v51, &__str, 0, v17, &v48);
-      a4 = v11;
+      id = idCopy;
       if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
       {
         operator delete(__str.__r_.__value_.__l.__data_);
@@ -520,15 +520,15 @@ LABEL_51:
   NSLog(&cfstr_LocalresultsSI.isa, v31, v32);
   if (v10 == 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
-    if (!a3)
+    if (!ping)
     {
 LABEL_78:
-      if (!a4)
+      if (!id)
       {
         goto LABEL_87;
       }
@@ -548,13 +548,13 @@ LABEL_79:
         v37 = &v51;
 LABEL_86:
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:v37];
-        *a4 = v38;
+        *id = v38;
 
         goto LABEL_87;
       }
 
 LABEL_74:
-      *a4 = 0;
+      *id = 0;
       goto LABEL_87;
     }
 
@@ -572,13 +572,13 @@ LABEL_74:
       v33 = &__p;
 LABEL_77:
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:v33];
-      *a3 = v36;
+      *ping = v36;
 
       goto LABEL_78;
     }
 
-    *a3 = 0;
-    if (a4)
+    *ping = 0;
+    if (id)
     {
       goto LABEL_79;
     }
@@ -588,14 +588,14 @@ LABEL_77:
   {
     v34 = errorCodeTranslator(v10);
     v35 = stringifyTest(v10);
-    [GpsError setError:a5 withCode:v34 format:@"%@", v35];
+    [GpsError setError:error withCode:v34 format:@"%@", v35];
 
-    if (a3)
+    if (ping)
     {
-      *a3 = 0;
+      *ping = 0;
     }
 
-    if (a4)
+    if (id)
     {
       goto LABEL_74;
     }
@@ -620,7 +620,7 @@ LABEL_87:
   return v10 == 1;
 }
 
-- (BOOL)testGpsCw:(id)a3 error:(id *)a4
+- (BOOL)testGpsCw:(id)cw error:(id *)error
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "");
   fTestDevice = self->_fTestDevice;
@@ -633,19 +633,19 @@ LABEL_87:
   {
     v8 = MEMORY[0x277CBEA60];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
-    v13 = [v8 arrayWithObjects:{@"--cw", v9, @"--bandwidth", v10, @"--band", v11, @"--subband", v12, 0}];
+    10000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
+    100002 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
+    100003 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
+    v13 = [v8 arrayWithObjects:{@"--cw", v9, @"--bandwidth", 10000, @"--band", 100002, @"--subband", 100003, 0}];
 
     v7 = forkProcessGpsTest(__p, v13);
   }
 
   if (v7 == 1)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -653,7 +653,7 @@ LABEL_87:
   {
     v14 = errorCodeTranslator(v7);
     v15 = stringifyTest(v7);
-    [GpsError setError:a4 withCode:v14 format:@"%@", v15];
+    [GpsError setError:error withCode:v14 format:@"%@", v15];
   }
 
   if (v18 < 0)
@@ -664,32 +664,32 @@ LABEL_87:
   return v7 == 1;
 }
 
-- (BOOL)testGpsModulated:(id)a3 gpsPrn:(int)a4 error:(id *)a5
+- (BOOL)testGpsModulated:(id)modulated gpsPrn:(int)prn error:(id *)error
 {
-  v8 = a3;
+  modulatedCopy = modulated;
   std::string::basic_string[abi:ne200100]<0>(__p, "");
   fTestDevice = self->_fTestDevice;
   if (fTestDevice)
   {
-    v10 = GpsFactoryTest::testModulated(fTestDevice, __p, 10, 2, a4);
+    v10 = GpsFactoryTest::testModulated(fTestDevice, __p, 10, 2, prn);
   }
 
   else
   {
     v11 = MEMORY[0x277CBEA60];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
-    v15 = [v11 arrayWithObjects:{@"--modulated", v12, @"--band", v13, @"--subband", v14, 0}];
+    10000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
+    100002 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 10000];
+    v15 = [v11 arrayWithObjects:{@"--modulated", v12, @"--band", 10000, @"--subband", 100002, 0}];
 
     v10 = forkProcessGpsTest(__p, v15);
   }
 
   if (v10 == 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
@@ -697,9 +697,9 @@ LABEL_87:
   {
     v16 = errorCodeTranslator(v10);
     v17 = stringifyTest(v10);
-    [GpsError setError:a5 withCode:v16 format:@"%@", v17];
+    [GpsError setError:error withCode:v16 format:@"%@", v17];
 
-    v8 = 0;
+    modulatedCopy = 0;
   }
 
   if (v20 < 0)
@@ -710,7 +710,7 @@ LABEL_87:
   return v10 == 1;
 }
 
-- (BOOL)testPeriodic:(id)a3 error:(id *)a4
+- (BOOL)testPeriodic:(id)periodic error:(id *)error
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "");
   fTestDevice = self->_fTestDevice;
@@ -733,7 +733,7 @@ LABEL_87:
     v11 = MEMORY[0x277CCACA8];
     v12 = v20;
     v13 = __p[0];
-    v14 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+    defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
     if (v12 >= 0)
     {
       v15 = __p;
@@ -744,15 +744,15 @@ LABEL_87:
       v15 = v13;
     }
 
-    v16 = [v11 stringWithCString:v15 encoding:v14];
-    *a4 = 0;
+    v16 = [v11 stringWithCString:v15 encoding:defaultCStringEncoding];
+    *error = 0;
   }
 
   else
   {
     v17 = errorCodeTranslator(v7);
     v16 = stringifyTest(v7);
-    [GpsError setError:a4 withCode:v17 format:@"%@", v16];
+    [GpsError setError:error withCode:v17 format:@"%@", v16];
   }
 
   if (v20 < 0)
@@ -763,12 +763,12 @@ LABEL_87:
   return v7 == 1;
 }
 
-- (BOOL)testPowerMode:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)testPowerMode:(unsigned __int8)mode error:(id *)error
 {
   fTestDevice = self->_fTestDevice;
   if (fTestDevice)
   {
-    v6 = GpsFactoryTest::testPowerMode(fTestDevice, 4 * (a3 != 0));
+    v6 = GpsFactoryTest::testPowerMode(fTestDevice, 4 * (mode != 0));
   }
 
   else
@@ -777,7 +777,7 @@ LABEL_87:
     __p[1] = 0;
     v14 = 0;
     v7 = MEMORY[0x277CBEA60];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 4 * (a3 != 0)];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 4 * (mode != 0)];
     v9 = [v7 arrayWithObjects:{@"--power-mode", v8, 0}];
 
     v6 = forkProcessGpsTest(__p, v9);
@@ -789,9 +789,9 @@ LABEL_87:
 
   if (v6 == 1)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -799,13 +799,13 @@ LABEL_87:
   {
     v10 = errorCodeTranslator(v6);
     v11 = stringifyTest(v6);
-    [GpsError setError:a4 withCode:v10 format:@"%@", v11];
+    [GpsError setError:error withCode:v10 format:@"%@", v11];
   }
 
   return v6 == 1;
 }
 
-- (BOOL)testExternalFreqAssistance:(id *)a3
+- (BOOL)testExternalFreqAssistance:(id *)assistance
 {
   __p[0] = 0;
   __p[1] = 0;
@@ -827,9 +827,9 @@ LABEL_87:
 
   if (v5 == 1)
   {
-    if (a3)
+    if (assistance)
     {
-      *a3 = 0;
+      *assistance = 0;
     }
   }
 
@@ -837,7 +837,7 @@ LABEL_87:
   {
     v9 = errorCodeTranslator(v5);
     v10 = stringifyTest(v5);
-    [GpsError setError:a3 withCode:v9 format:@"%@", v10];
+    [GpsError setError:assistance withCode:v9 format:@"%@", v10];
   }
 
   if (SHIBYTE(v13) < 0)

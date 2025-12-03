@@ -18,15 +18,15 @@
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v4 setTextAlignment:1];
     v5 = [UIFont boldSystemFontOfSize:16.0];
-    v6 = [v5 ic_fontWithSingleLineA];
-    [v4 setFont:v6];
+    ic_fontWithSingleLineA = [v5 ic_fontWithSingleLineA];
+    [v4 setFont:ic_fontWithSingleLineA];
 
     v7 = objc_alloc_init(UILabel);
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v7 setTextAlignment:1];
     v8 = [UIFont systemFontOfSize:11.0];
-    v9 = [v8 ic_fontWithSingleLineA];
-    [v7 setFont:v9];
+    ic_fontWithSingleLineA2 = [v8 ic_fontWithSingleLineA];
+    [v7 setFont:ic_fontWithSingleLineA2];
 
     [(ICNavigationTitleView *)v3 addSubview:v4];
     [(ICNavigationTitleView *)v3 addSubview:v7];
@@ -50,10 +50,10 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICNavigationTitleView *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [(ICNavigationTitleView *)self subtitleLabel];
-  v8 = [v5 text];
+  titleLabel = [(ICNavigationTitleView *)self titleLabel];
+  text = [titleLabel text];
+  subtitleLabel = [(ICNavigationTitleView *)self subtitleLabel];
+  text2 = [subtitleLabel text];
   v6 = __ICAccessibilityStringForVariables();
 
   return v6;

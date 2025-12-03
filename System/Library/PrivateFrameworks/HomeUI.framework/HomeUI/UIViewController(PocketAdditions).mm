@@ -7,10 +7,10 @@
 - (void)hu_pocketedContainerViewController
 {
   objc_opt_class();
-  v2 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = parentViewController;
   }
 
   else

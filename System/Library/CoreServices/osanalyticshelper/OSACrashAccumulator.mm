@@ -1,24 +1,24 @@
 @interface OSACrashAccumulator
-- (BOOL)isValidEvent:(id)a3;
+- (BOOL)isValidEvent:(id)event;
 - (NSSet)firstPartyBundleIDs;
-- (OSACrashAccumulator)initWithTargetAppVersions:(id)a3 isBaseline:(BOOL)a4;
-- (void)addEvent:(id)a3 withBundleID:(id)a4;
+- (OSACrashAccumulator)initWithTargetAppVersions:(id)versions isBaseline:(BOOL)baseline;
+- (void)addEvent:(id)event withBundleID:(id)d;
 @end
 
 @implementation OSACrashAccumulator
 
-- (OSACrashAccumulator)initWithTargetAppVersions:(id)a3 isBaseline:(BOOL)a4
+- (OSACrashAccumulator)initWithTargetAppVersions:(id)versions isBaseline:(BOOL)baseline
 {
-  v7 = a3;
+  versionsCopy = versions;
   v14.receiver = self;
   v14.super_class = OSACrashAccumulator;
   v8 = [(OSAAccumulator *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_isBaseline = a4;
-    objc_storeStrong(&v8->_targetAppVersions, a3);
-    if (a4)
+    v8->_isBaseline = baseline;
+    objc_storeStrong(&v8->_targetAppVersions, versions);
+    if (baseline)
     {
       v10 = 0;
     }
@@ -29,7 +29,7 @@
     }
 
     objc_storeStrong(&v9->_firstPartyBundleIDs, v10);
-    if (!a4)
+    if (!baseline)
     {
     }
 
@@ -56,18 +56,18 @@
   return v3;
 }
 
-- (BOOL)isValidEvent:(id)a3
+- (BOOL)isValidEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 eventBody];
-  v6 = [v5 terminationReason];
-  v7 = [v6 namespaceName];
-  if ([v7 isEqualToString:@"LIBXPC"])
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
+  terminationReason = [eventBody terminationReason];
+  namespaceName = [terminationReason namespaceName];
+  if ([namespaceName isEqualToString:@"LIBXPC"])
   {
-    v8 = [v4 eventBody];
-    v9 = [v8 terminationReason];
-    v10 = [v9 code];
-    v11 = [v10 isEqualToString:@"0x3"];
+    eventBody2 = [eventCopy eventBody];
+    terminationReason2 = [eventBody2 terminationReason];
+    code = [terminationReason2 code];
+    v11 = [code isEqualToString:@"0x3"];
   }
 
   else
@@ -75,42 +75,42 @@
     v11 = 0;
   }
 
-  v12 = [v4 eventBody];
-  LOBYTE(v6) = 0;
-  if (([v12 isBeta] & 1) == 0 && (v11 & 1) == 0)
+  eventBody3 = [eventCopy eventBody];
+  LOBYTE(terminationReason) = 0;
+  if (([eventBody3 isBeta] & 1) == 0 && (v11 & 1) == 0)
   {
     terminationReasonCodeDenyList = self->_terminationReasonCodeDenyList;
-    v14 = [v4 eventBody];
-    v15 = [v14 terminationReason];
-    v16 = [v15 code];
-    LODWORD(v6) = ![(NSSet *)terminationReasonCodeDenyList containsObject:v16];
+    eventBody4 = [eventCopy eventBody];
+    terminationReason3 = [eventBody4 terminationReason];
+    code2 = [terminationReason3 code];
+    LODWORD(terminationReason) = ![(NSSet *)terminationReasonCodeDenyList containsObject:code2];
   }
 
-  return v6;
+  return terminationReason;
 }
 
-- (void)addEvent:(id)a3 withBundleID:(id)a4
+- (void)addEvent:(id)event withBundleID:(id)d
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [v18 eventBody];
-  v8 = [v7 appVersion];
-  v9 = [v18 eventBody];
-  v10 = [v9 bundleVersion];
-  v11 = sub_10000A0C4(v8, v10);
+  eventCopy = event;
+  dCopy = d;
+  eventBody = [eventCopy eventBody];
+  appVersion = [eventBody appVersion];
+  eventBody2 = [eventCopy eventBody];
+  bundleVersion = [eventBody2 bundleVersion];
+  v11 = sub_10000A0C4(appVersion, bundleVersion);
 
-  v12 = [(NSDictionary *)self->_targetAppVersions objectForKeyedSubscript:v6];
-  v13 = [(OSAAccumulator *)self targetKey];
-  if (v13)
+  v12 = [(NSDictionary *)self->_targetAppVersions objectForKeyedSubscript:dCopy];
+  targetKey = [(OSAAccumulator *)self targetKey];
+  if (targetKey)
   {
-    v9 = [(OSAAccumulator *)self targetKey];
-    if (![v9 isEqualToString:v6])
+    eventBody2 = [(OSAAccumulator *)self targetKey];
+    if (![eventBody2 isEqualToString:dCopy])
     {
       goto LABEL_17;
     }
   }
 
-  v14 = [(OSACrashAccumulator *)self isValidEvent:v18];
+  v14 = [(OSACrashAccumulator *)self isValidEvent:eventCopy];
   if (v11)
   {
     v15 = v14;
@@ -123,11 +123,11 @@
 
   if (v15 == 1 && ([v11 isEqualToString:v12] & 1) == 0)
   {
-    v16 = [v18 eventBody];
-    if (![v16 isFirstParty])
+    eventBody3 = [eventCopy eventBody];
+    if (![eventBody3 isFirstParty])
     {
 
-      if (!v13)
+      if (!targetKey)
       {
         goto LABEL_19;
       }
@@ -138,23 +138,23 @@
     LOBYTE(v15) = !self->_isBaseline;
   }
 
-  if (v13)
+  if (targetKey)
   {
   }
 
   if (v15)
   {
-    [v18 timestamp];
-    v13 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    [(OSAAccumulator *)self addUnsignedInteger:1 forKey:v6 onDate:v13];
-    v9 = [v18 eventBody];
-    if ([v9 isFirstParty])
+    [eventCopy timestamp];
+    targetKey = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+    [(OSAAccumulator *)self addUnsignedInteger:1 forKey:dCopy onDate:targetKey];
+    eventBody2 = [eventCopy eventBody];
+    if ([eventBody2 isFirstParty])
     {
       isBaseline = self->_isBaseline;
 
       if (!isBaseline)
       {
-        [(NSMutableSet *)self->_firstPartyBundleIDs addObject:v6];
+        [(NSMutableSet *)self->_firstPartyBundleIDs addObject:dCopy];
       }
 
       goto LABEL_18;

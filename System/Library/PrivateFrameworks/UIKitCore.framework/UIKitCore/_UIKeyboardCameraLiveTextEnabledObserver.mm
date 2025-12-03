@@ -3,7 +3,7 @@
 - (BOOL)isLiveTextEnabled;
 - (_UIKeyboardCameraLiveTextEnabledObserver)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _UIKeyboardCameraLiveTextEnabledObserver
@@ -27,8 +27,8 @@
   v2 = [(_UIKeyboardCameraLiveTextEnabledObserver *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 addObserver:v2 forKeyPath:@"AppleLiveTextEnabled" options:1 context:_liveTextEnabledObserverContext];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"AppleLiveTextEnabled" options:1 context:_liveTextEnabledObserverContext];
   }
 
   return v2;
@@ -37,17 +37,17 @@
 - (BOOL)isLiveTextEnabled
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_isLiveTextEnabledIsValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isLiveTextEnabledIsValid)
   {
-    isLiveTextEnabled = v2->_isLiveTextEnabled;
+    isLiveTextEnabled = selfCopy->_isLiveTextEnabled;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"AppleLiveTextEnabled" inDomain:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"AppleLiveTextEnabled" inDomain:*MEMORY[0x1E696A400]];
 
     if (v5)
     {
@@ -57,36 +57,36 @@
     else
     {
       v6 = MEMORY[0x1E695DF58];
-      v7 = [MEMORY[0x1E695DF58] _deviceLanguage];
-      v11[0] = v7;
+      _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+      v11[0] = _deviceLanguage;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
       v9 = [v6 matchedLanguagesFromAvailableLanguages:&unk_1EFE2DDE0 forPreferredLanguages:v8];
 
       isLiveTextEnabled = [v9 count] != 0;
     }
 
-    v2->_isLiveTextEnabled = isLiveTextEnabled;
-    v2->_isLiveTextEnabledIsValid = 1;
+    selfCopy->_isLiveTextEnabled = isLiveTextEnabled;
+    selfCopy->_isLiveTextEnabledIsValid = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return isLiveTextEnabled & 1;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObserver:self forKeyPath:@"AppleLiveTextEnabled" context:_liveTextEnabledObserverContext];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:@"AppleLiveTextEnabled" context:_liveTextEnabledObserverContext];
 
   v4.receiver = self;
   v4.super_class = _UIKeyboardCameraLiveTextEnabledObserver;
   [(_UIKeyboardCameraLiveTextEnabledObserver *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_liveTextEnabledObserverContext == a6)
+  if (_liveTextEnabledObserverContext == context)
   {
     obj = self;
     objc_sync_enter(obj);
@@ -98,7 +98,7 @@
   {
     v7.receiver = self;
     v7.super_class = _UIKeyboardCameraLiveTextEnabledObserver;
-    [(_UIKeyboardCameraLiveTextEnabledObserver *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_UIKeyboardCameraLiveTextEnabledObserver *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface CKUnborderedBackdropMaterialView
 + (Class)layerClass;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithCoder:(id)a3;
-- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithCoder:(id)coder;
+- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CKUnborderedBackdropMaterialView
@@ -14,12 +14,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = objc_allocWithZone(type metadata accessor for CKUnborderedBackdropMaterialView());
   v8 = sub_1908F0230(0, x, y, width, height);
   swift_getObjectType();
@@ -27,7 +27,7 @@
   return v8;
 }
 
-- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithCoder:(id)a3
+- (_TtC7ChatKit32CKUnborderedBackdropMaterialView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit32CKUnborderedBackdropMaterialView_enableBlur) = 0;
   v3 = OBJC_IVAR____TtC7ChatKit32CKUnborderedBackdropMaterialView_color;
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -51,7 +51,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1908F088C(v4, v6);
 
   return v8 & 1;

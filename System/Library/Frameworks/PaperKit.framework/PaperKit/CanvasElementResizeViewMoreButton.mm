@@ -1,7 +1,7 @@
 @interface CanvasElementResizeViewMoreButton
-- (_TtC8PaperKit33CanvasElementResizeViewMoreButton)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC8PaperKit33CanvasElementResizeViewMoreButton)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)didMoveToWindow;
 @end
 
@@ -9,18 +9,18 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementResizeViewMoreButton.didMoveToWindow()();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v8 = [Strong contextMenuInteraction:a3 configurationForMenuAtLocation:{x, y}];
+    v8 = [Strong contextMenuInteraction:interaction configurationForMenuAtLocation:{x, y}];
     swift_unknownObjectRelease();
   }
 
@@ -32,17 +32,17 @@
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized CanvasElementResizeViewMoreButton.pointerInteraction(_:styleFor:)(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = specialized CanvasElementResizeViewMoreButton.pointerInteraction(_:styleFor:)(interactionCopy);
 
   return v9;
 }
 
-- (_TtC8PaperKit33CanvasElementResizeViewMoreButton)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit33CanvasElementResizeViewMoreButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,64 +1,64 @@
 @interface HMDResidentUser
 - (BOOL)isBlocked;
-- (BOOL)updateWithDevice:(id)a3;
+- (BOOL)updateWithDevice:(id)device;
 - (HMDDevice)device;
-- (HMDResidentUser)initWithCoder:(id)a3;
-- (HMDResidentUser)initWithDevice:(id)a3 home:(id)a4 pairingIdentity:(id)a5 configurationState:(unint64_t)a6;
-- (HMDResidentUser)initWithModelObject:(id)a3;
+- (HMDResidentUser)initWithCoder:(id)coder;
+- (HMDResidentUser)initWithDevice:(id)device home:(id)home pairingIdentity:(id)identity configurationState:(unint64_t)state;
+- (HMDResidentUser)initWithModelObject:(id)object;
 - (NSString)deviceIdentifier;
 - (id)displayName;
 - (id)legacyUser;
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4;
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version;
 - (id)userID;
 - (unint64_t)configurationState;
-- (void)configureWithHome:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)configureWithHome:(id)home;
+- (void)encodeWithCoder:(id)coder;
 - (void)registerIdentity;
-- (void)setConfigurationState:(unint64_t)a3;
-- (void)setDevice:(id)a3;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)setConfigurationState:(unint64_t)state;
+- (void)setDevice:(id)device;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDResidentUser
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HMDResidentUser;
-  [(HMDUser *)&v8 encodeWithCoder:v4];
-  v5 = [(HMDResidentUser *)self device];
-  [v4 encodeObject:v5 forKey:@"HM.device"];
+  [(HMDUser *)&v8 encodeWithCoder:coderCopy];
+  device = [(HMDResidentUser *)self device];
+  [coderCopy encodeObject:device forKey:@"HM.device"];
 
-  if ([v4 hmd_isForSharedUser])
+  if ([coderCopy hmd_isForSharedUser])
   {
-    v6 = 3;
+    configurationState = 3;
   }
 
   else
   {
-    v6 = [(HMDResidentUser *)self configurationState];
+    configurationState = [(HMDResidentUser *)self configurationState];
   }
 
-  [v4 encodeInt32:v6 forKey:@"residentConfigState"];
-  [v4 encodeBool:1 forKey:@"userIsRemoteGateway"];
-  v7 = [(HMDResidentUser *)self deviceIdentifier];
-  [v4 encodeObject:v7 forKey:@"residentIdentifier"];
+  [coderCopy encodeInt32:configurationState forKey:@"residentConfigState"];
+  [coderCopy encodeBool:1 forKey:@"userIsRemoteGateway"];
+  deviceIdentifier = [(HMDResidentUser *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"residentIdentifier"];
 }
 
-- (HMDResidentUser)initWithCoder:(id)a3
+- (HMDResidentUser)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = HMDResidentUser;
-  v5 = [(HMDUser *)&v28 initWithCoder:v4];
+  v5 = [(HMDUser *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_configurationState = [v4 decodeInt32ForKey:@"residentConfigState"];
-    if ([v4 containsValueForKey:@"HM.device"])
+    v5->_configurationState = [coderCopy decodeInt32ForKey:@"residentConfigState"];
+    if ([coderCopy containsValueForKey:@"HM.device"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
       device = v5->_device;
       v5->_device = v6;
 LABEL_17:
@@ -66,7 +66,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    device = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+    device = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
     if (device)
     {
       v8 = [HMDDeviceHandle deviceHandleForDestination:device];
@@ -81,9 +81,9 @@ LABEL_17:
 
     if (v5->_device)
     {
-      v12 = [(HMDResidentUser *)v5 userID];
+      userID = [(HMDResidentUser *)v5 userID];
 
-      if (v12)
+      if (userID)
       {
         goto LABEL_16;
       }
@@ -123,9 +123,9 @@ LABEL_14:
 
     objc_autoreleasePoolPop(v13);
 LABEL_16:
-    v19 = [(HMDResidentUser *)v5 userID];
+    userID2 = [(HMDResidentUser *)v5 userID];
 
-    if (!v19)
+    if (!userID2)
     {
       v22 = objc_autoreleasePoolPush();
       v23 = v5;
@@ -153,13 +153,13 @@ LABEL_18:
   return v5;
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  v11 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -175,40 +175,40 @@ LABEL_18:
 
   if (v13)
   {
-    v14 = [v13 device];
-    if (v14)
+    device = [v13 device];
+    if (device)
     {
-      v15 = v14;
-      v16 = [v13 device];
-      v17 = [(HMDResidentUser *)self device];
+      v15 = device;
+      device2 = [v13 device];
+      device3 = [(HMDResidentUser *)self device];
       v18 = HMFEqualObjects();
 
       if (v18)
       {
-        v19 = [v13 device];
-        [(HMDResidentUser *)self setDevice:v19];
+        device4 = [v13 device];
+        [(HMDResidentUser *)self setDevice:device4];
       }
     }
 
-    v20 = [v13 configState];
-    if (v20)
+    configState = [v13 configState];
+    if (configState)
     {
-      v21 = v20;
-      v22 = [v13 configState];
-      v23 = [v22 intValue];
-      v24 = [(HMDResidentUser *)self configurationState];
+      v21 = configState;
+      configState2 = [v13 configState];
+      intValue = [configState2 intValue];
+      configurationState = [(HMDResidentUser *)self configurationState];
 
-      if (v24 != v23)
+      if (configurationState != intValue)
       {
-        v25 = [(HMDUser *)self home];
-        v26 = [v25 isOwnerUser];
+        home = [(HMDUser *)self home];
+        isOwnerUser = [home isOwnerUser];
 
-        v27 = [v13 configState];
-        v28 = [v27 intValue];
-        v29 = v28;
-        if (v26)
+        configState3 = [v13 configState];
+        intValue2 = [configState3 intValue];
+        v29 = intValue2;
+        if (isOwnerUser)
         {
-          [(HMDResidentUser *)self setConfigurationState:v28];
+          [(HMDResidentUser *)self setConfigurationState:intValue2];
         }
 
         else
@@ -217,7 +217,7 @@ LABEL_18:
           if (v29 == 2)
           {
             v30 = objc_autoreleasePoolPush();
-            v31 = self;
+            selfCopy = self;
             v32 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
@@ -228,7 +228,7 @@ LABEL_18:
             }
 
             objc_autoreleasePoolPop(v30);
-            [(HMDResidentUser *)v31 setConfigurationState:3];
+            [(HMDResidentUser *)selfCopy setConfigurationState:3];
           }
         }
       }
@@ -253,17 +253,17 @@ LABEL_18:
   {
     v38.receiver = self;
     v38.super_class = HMDResidentUser;
-    [(HMDUser *)&v38 _transactionUserUpdated:0 newValues:v36 message:v10];
+    [(HMDUser *)&v38 _transactionUserUpdated:0 newValues:v36 message:messageCopy];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version
 {
   v13.receiver = self;
   v13.super_class = HMDResidentUser;
-  v5 = [(HMDUser *)&v13 modelObjectWithChangeType:a3 version:a4];
+  v5 = [(HMDUser *)&v13 modelObjectWithChangeType:type version:version];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -278,17 +278,17 @@ LABEL_18:
   v7 = v6;
   if (v7)
   {
-    v8 = [(HMDResidentUser *)self device];
-    [v7 setDevice:v8];
+    device = [(HMDResidentUser *)self device];
+    [v7 setDevice:device];
 
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDResidentUser configurationState](self, "configurationState")}];
     [v7 setConfigState:v9];
 
-    v10 = [(HMDResidentUser *)self encodingRemoteDisplayName];
-    [v7 setDisplayName:v10];
+    encodingRemoteDisplayName = [(HMDResidentUser *)self encodingRemoteDisplayName];
+    [v7 setDisplayName:encodingRemoteDisplayName];
 
-    v11 = [(HMDResidentUser *)self deviceIdentifier];
-    [v7 setDeviceIdentifier:v11];
+    deviceIdentifier = [(HMDResidentUser *)self deviceIdentifier];
+    [v7 setDeviceIdentifier:deviceIdentifier];
   }
 
   return v5;
@@ -301,10 +301,10 @@ LABEL_18:
   return v2;
 }
 
-- (void)setConfigurationState:(unint64_t)a3
+- (void)setConfigurationState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_configurationState = a3;
+  self->_configurationState = state;
 
   os_unfair_lock_unlock(&self->_residentUserLock);
 }
@@ -319,21 +319,21 @@ LABEL_18:
 
 - (BOOL)isBlocked
 {
-  v3 = [MEMORY[0x277D0F8E8] productInfo];
-  v4 = [v3 productPlatform];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  productPlatform = [productInfo productPlatform];
 
-  if (v4 == 3)
+  if (productPlatform == 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HMDUser *)self home];
-    v7 = v6;
-    if (v6)
+    home = [(HMDUser *)self home];
+    v7 = home;
+    if (home)
     {
-      v5 = [v6 isOwnerUser] - 1;
+      v5 = [home isOwnerUser] - 1;
     }
 
     else
@@ -345,19 +345,19 @@ LABEL_18:
   return v5 & 1;
 }
 
-- (BOOL)updateWithDevice:(id)a3
+- (BOOL)updateWithDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v5 = [(HMDResidentUser *)self device];
-    v6 = v5 == 0;
+    device = [(HMDResidentUser *)self device];
+    v6 = device == 0;
 
-    if (!v5)
+    if (!device)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -365,23 +365,23 @@ LABEL_18:
         v21 = 138543618;
         v22 = v10;
         v23 = 2112;
-        v24 = v4;
+        v24 = deviceCopy;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Updating the device: %@", &v21, 0x16u);
       }
 
       objc_autoreleasePoolPop(v7);
-      [(HMDResidentUser *)v8 setDevice:v4];
+      [(HMDResidentUser *)selfCopy setDevice:deviceCopy];
     }
 
-    v11 = [(HMDResidentUser *)self device];
-    v12 = [v11 name];
-    v13 = [v4 name];
+    device2 = [(HMDResidentUser *)self device];
+    name = [device2 name];
+    name2 = [deviceCopy name];
     v14 = HMFEqualObjects();
 
     if ((v14 & 1) == 0)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -389,12 +389,12 @@ LABEL_18:
         v21 = 138543618;
         v22 = v18;
         v23 = 2112;
-        v24 = v4;
+        v24 = deviceCopy;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Updating the device: %@", &v21, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
-      [(HMDResidentUser *)v16 setDevice:v4];
+      [(HMDResidentUser *)selfCopy2 setDevice:deviceCopy];
       v6 = 1;
     }
   }
@@ -408,12 +408,12 @@ LABEL_18:
   return v6;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   device = self->_device;
-  self->_device = v4;
+  self->_device = deviceCopy;
 
   os_unfair_lock_unlock(&self->_residentUserLock);
 }
@@ -429,54 +429,54 @@ LABEL_18:
 
 - (void)registerIdentity
 {
-  v3 = [(HMDUser *)self pairingIdentity];
-  if (v3)
+  pairingIdentity = [(HMDUser *)self pairingIdentity];
+  if (pairingIdentity)
   {
-    v6 = v3;
+    v6 = pairingIdentity;
     v4 = +[HMDIdentityRegistry sharedRegistry];
-    v5 = [(HMDResidentUser *)self device];
-    [v4 registerIdentity:v6 device:v5 object:self];
+    device = [(HMDResidentUser *)self device];
+    [v4 registerIdentity:v6 device:device object:self];
 
-    v3 = v6;
+    pairingIdentity = v6;
   }
 }
 
 - (id)displayName
 {
-  v2 = [(HMDResidentUser *)self device];
-  v3 = [v2 name];
+  device = [(HMDResidentUser *)self device];
+  name = [device name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)deviceIdentifier
 {
-  v2 = [(HMDResidentUser *)self device];
-  v3 = [v2 idsIdentifier];
-  v4 = [v3 UUIDString];
+  device = [(HMDResidentUser *)self device];
+  idsIdentifier = [device idsIdentifier];
+  uUIDString = [idsIdentifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (id)userID
 {
-  v2 = [(HMDResidentUser *)self device];
-  v3 = [v2 remoteDestinationString];
+  device = [(HMDResidentUser *)self device];
+  remoteDestinationString = [device remoteDestinationString];
 
-  return v3;
+  return remoteDestinationString;
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v10.receiver = self;
   v10.super_class = HMDResidentUser;
-  [(HMDUser *)&v10 configureWithHome:v4];
+  [(HMDUser *)&v10 configureWithHome:homeCopy];
   if ([(HMDResidentUser *)self isBlocked]&& [(HMDResidentUser *)self configurationState]== 2)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -487,38 +487,38 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDResidentUser *)v6 setConfigurationState:3];
+    [(HMDResidentUser *)selfCopy setConfigurationState:3];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentUser)initWithDevice:(id)a3 home:(id)a4 pairingIdentity:(id)a5 configurationState:(unint64_t)a6
+- (HMDResidentUser)initWithDevice:(id)device home:(id)home pairingIdentity:(id)identity configurationState:(unint64_t)state
 {
-  v11 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = HMDResidentUser;
-  v12 = [(HMDUser *)&v15 initWithAccountHandle:0 home:a4 pairingIdentity:a5 privilege:0];
+  v12 = [(HMDUser *)&v15 initWithAccountHandle:0 home:home pairingIdentity:identity privilege:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
-    v13->_configurationState = a6;
+    objc_storeStrong(&v12->_device, device);
+    v13->_configurationState = state;
     [(HMDUser *)v13 _setRemoteAccessAllowed:0];
   }
 
   return v13;
 }
 
-- (HMDResidentUser)initWithModelObject:(id)a3
+- (HMDResidentUser)initWithModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = HMDResidentUser;
-  v5 = [(HMDUser *)&v13 initWithModelObject:v4];
+  v5 = [(HMDUser *)&v13 initWithModelObject:objectCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -535,12 +535,12 @@ LABEL_18:
     if (v8)
     {
       v5->_residentUserLock._os_unfair_lock_opaque = 0;
-      v9 = [v8 device];
+      device = [v8 device];
       device = v5->_device;
-      v5->_device = v9;
+      v5->_device = device;
 
-      v11 = [v8 configState];
-      v5->_configurationState = [v11 intValue];
+      configState = [v8 configState];
+      v5->_configurationState = [configState intValue];
     }
 
     [(HMDUser *)v5 _setRemoteAccessAllowed:0];

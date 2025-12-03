@@ -1,5 +1,5 @@
 @interface _UIStackedImageContainerLayer
-+ (CGSize)_scaledSizeForSize:(CGSize)a3 focusSizeIncrease:(double)a4 selectionStyle:(int64_t)a5;
++ (CGSize)_scaledSizeForSize:(CGSize)size focusSizeIncrease:(double)increase selectionStyle:(int64_t)style;
 + (id)_layerStackObservingKeys;
 - (BOOL)_aspectMatchesLayerStack;
 - (BOOL)_effectiveAdjustMotionForSize;
@@ -7,108 +7,108 @@
 - (BOOL)_isEligibleFor3DTransforms;
 - (BOOL)_radiosityEnabled;
 - (BOOL)_shouldHaveNonOpaqueShadowFromLayerStack;
-- (CATransform3D)_fixedFrameImageLayersTransformForDepth:(SEL)a3 fudgeFactor:(double)a4;
+- (CATransform3D)_fixedFrameImageLayersTransformForDepth:(SEL)depth fudgeFactor:(double)factor;
 - (CATransform3D)_imageLayersScaleTransformForCurrentState;
 - (CATransform3D)_perspectiveTransformForCurrentState;
 - (CATransform3D)_rotationTransformForCurrentFocusDirection;
 - (CATransform3D)_scaleTransform3DForCurrentState;
-- (CGImage)_cgImageForLayeredImage:(id)a3;
+- (CGImage)_cgImageForLayeredImage:(id)image;
 - (CGPoint)_layerStackToDisplayScaleFactor;
 - (CGPoint)focusDirection;
 - (CGRect)_currentStackLayoutBounds;
 - (CGRect)_cursorBounds;
-- (CGRect)_displayFrameForModelFrame:(CGRect)a3;
+- (CGRect)_displayFrameForModelFrame:(CGRect)frame;
 - (CGRect)_expandedStackLayoutBounds;
-- (CGRect)_positionAndSizeForLayerImage:(id)a3;
-- (CGSize)_focusCursorInsetSizeForSize:(CGSize)a3;
+- (CGRect)_positionAndSizeForLayerImage:(id)image;
+- (CGSize)_focusCursorInsetSizeForSize:(CGSize)size;
 - (CGSize)_roundedBoundsSize;
 - (CGSize)_scaledSizeForCurrentState;
 - (CGVector)_imageLayersScaleAmountsForCurrentState;
 - (CGVector)_scaleAmountsForCurrentState;
 - (_UIStackedImageContainerLayer)init;
-- (double)_deepestParallaxDepthWithOverlayDepth:(BOOL)a3;
+- (double)_deepestParallaxDepthWithOverlayDepth:(BOOL)depth;
 - (double)_effectiveScaleSizeIncrease;
 - (double)_focusedScaleFactorForCurrentBounds;
 - (double)_focusedShadowRadius;
 - (double)_getShadowOpacity;
 - (double)_idleModeFocusSizeOffset;
-- (double)_parallaxDepthAtIndex:(int64_t)a3;
+- (double)_parallaxDepthAtIndex:(int64_t)index;
 - (double)_unfocusedShadowRadius;
 - (id)_contentLayers;
 - (id)_layerAboveImageLayers;
 - (id)_layerBelowTitles;
 - (id)_layerForBackgroundEffects;
 - (id)_layerForInnerParallaxTransform;
-- (id)_preferredLayoutDelegateForLayer:(id)a3;
+- (id)_preferredLayoutDelegateForLayer:(id)layer;
 - (id)_randomImage;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (id)maskedOverlayView;
 - (id)unmaskedOverlayView;
 - (id)viewForBackgroundEffects;
-- (unint64_t)_primaryControlStateForState:(unint64_t)a3;
-- (void)_applyFocusDirectionTransformWithAnimationCoordinator:(id)a3;
+- (unint64_t)_primaryControlStateForState:(unint64_t)state;
+- (void)_applyFocusDirectionTransformWithAnimationCoordinator:(id)coordinator;
 - (void)_layoutRadiosityLayer;
-- (void)_layoutSublayer:(id)a3 inSuperlayerWithBounds:(CGRect)a4 layoutPosition:(int64_t)a5;
-- (void)_layoutSublayer:(id)a3 withBounds:(CGRect)a4 position:(CGPoint)a5;
-- (void)_removeLayerFromSuperlayer:(id)a3;
+- (void)_layoutSublayer:(id)sublayer inSuperlayerWithBounds:(CGRect)bounds layoutPosition:(int64_t)position;
+- (void)_layoutSublayer:(id)sublayer withBounds:(CGRect)bounds position:(CGPoint)position;
+- (void)_removeLayerFromSuperlayer:(id)superlayer;
 - (void)_resetAnimatingToNormalState;
-- (void)_setControlState:(unint64_t)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5 completion:(id)a6;
+- (void)_setControlState:(unint64_t)state animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator completion:(id)completion;
 - (void)_setDefaultParallaxLayerDepths;
-- (void)_setFlatImage:(id)a3;
-- (void)_setFocusDirection:(CGPoint)a3 duration:(double)a4;
-- (void)_setIdleModeFocusSizeOffset:(double)a3;
-- (void)_setImageStackContentsGravity:(id)a3;
-- (void)_setLayerStack:(id)a3;
-- (void)_setLayerStackInflated:(BOOL)a3 seed:(unint64_t)a4;
-- (void)_setOverlayLayer:(id)a3;
-- (void)_setParallaxImages:(id)a3;
-- (void)_setParallaxLayerDepths:(id)a3;
-- (void)_setSelectionStyle:(int64_t)a3;
-- (void)_setUnmaskedOverlayLayer:(id)a3;
+- (void)_setFlatImage:(id)image;
+- (void)_setFocusDirection:(CGPoint)direction duration:(double)duration;
+- (void)_setIdleModeFocusSizeOffset:(double)offset;
+- (void)_setImageStackContentsGravity:(id)gravity;
+- (void)_setLayerStack:(id)stack;
+- (void)_setLayerStackInflated:(BOOL)inflated seed:(unint64_t)seed;
+- (void)_setOverlayLayer:(id)layer;
+- (void)_setParallaxImages:(id)images;
+- (void)_setParallaxLayerDepths:(id)depths;
+- (void)_setSelectionStyle:(int64_t)style;
+- (void)_setUnmaskedOverlayLayer:(id)layer;
 - (void)_setupFrontmostTransformLayers;
 - (void)_showImageLayers;
 - (void)_updateContentProviderLayerFocusDirection;
 - (void)_updateCornerRadiusFromConfig;
 - (void)_updateFocusKeylineStrokeScale;
-- (void)_updateFocusKeylineStrokeTranslation:(CGPoint)a3;
+- (void)_updateFocusKeylineStrokeTranslation:(CGPoint)translation;
 - (void)_updateFullBleedImageLayers;
 - (void)_updateImageLayerFilterChains;
 - (void)_updateImageLayerFilterValues;
 - (void)_updateImageLayersContainerMaskingAndBounds;
 - (void)_updateInnerParallaxTransform;
-- (void)_updateLayer:(id)a3 isHidden:(BOOL)a4;
-- (void)_updateLayerForSelectionWithAnimationCoordinator:(id)a3;
+- (void)_updateLayer:(id)layer isHidden:(BOOL)hidden;
+- (void)_updateLayerForSelectionWithAnimationCoordinator:(id)coordinator;
 - (void)_updateMarkerLayerIfPresent;
 - (void)_updateMaskScaleTransform;
 - (void)_updateNonOpaqueShadowStateFromLayerStack;
 - (void)_updateNormalImageLayers;
-- (void)_updateOverlayContainerLayerHierarchy:(BOOL)a3;
+- (void)_updateOverlayContainerLayerHierarchy:(BOOL)hierarchy;
 - (void)_updateOverlayLayerTransforms;
 - (void)_updateOverlayLayout;
 - (void)_updatePerspective;
 - (void)_updateRadiosityFromLayerStack;
-- (void)_updateRotationAndTranslation:(id)a3;
+- (void)_updateRotationAndTranslation:(id)translation;
 - (void)_updateShadowBounds;
 - (void)_updateShadowLayerVisibility;
-- (void)_updateShadowPositionWithOffset:(CGPoint)a3;
-- (void)_updateShadowWithCATransaction:(BOOL)a3;
+- (void)_updateShadowPositionWithOffset:(CGPoint)offset;
+- (void)_updateShadowWithCATransaction:(BOOL)transaction;
 - (void)_updateSingleLayerNoMaskFromLayerStack;
 - (void)_updateSpecularLayerVisibility;
 - (void)_updateSpecularTransform;
 - (void)_wrapImageLayerHierarchyInViews;
-- (void)_wrapLayerInView:(id)a3;
+- (void)_wrapLayerInView:(id)view;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllAnimations;
-- (void)setBounds:(CGRect)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setLayerStack:(id)a3;
-- (void)setMaskedOverlayView:(id)a3;
-- (void)setRasterizationScale:(double)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5;
-- (void)setUnmaskedOverlayView:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setConfiguration:(id)configuration;
+- (void)setContentsScale:(double)scale;
+- (void)setLayerStack:(id)stack;
+- (void)setMaskedOverlayView:(id)view;
+- (void)setRasterizationScale:(double)scale;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator;
+- (void)setUnmaskedOverlayView:(id)view;
 @end
 
 @implementation _UIStackedImageContainerLayer
@@ -136,8 +136,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [objc_opt_class() _layerStackObservingKeys];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _layerStackObservingKeys = [objc_opt_class() _layerStackObservingKeys];
+    v4 = [_layerStackObservingKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -149,14 +149,14 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_layerStackObservingKeys);
           }
 
           [(_UIStackedImageConfiguration *)self->_configuration removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v7++) context:@"__layerStackObservingContext"];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [_layerStackObservingKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -168,37 +168,37 @@
   [(_UIStackedImageContainerLayer *)&v8 dealloc];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 == self && [v7 isEqualToString:@"sublayers"])
+  layerCopy = layer;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (layerCopy == self && [keyCopy isEqualToString:@"sublayers"])
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_10;
   }
 
-  if (self->_shadowLayer != v6)
+  if (self->_shadowLayer != layerCopy)
   {
     goto LABEL_5;
   }
 
   if (self->_nonOpaqueShadow)
   {
-    if (![v8 hasPrefix:@"shadow"] || (objc_msgSend(MEMORY[0x1E6979318], "animationWithKeyPath:", v8), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![v8 hasPrefix:@"shadow"] || (objc_msgSend(MEMORY[0x1E6979318], "animationWithKeyPath:", v8), (null = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_5:
       if (_CASupportsAnimationForKey(v8))
       {
-        v9 = [MEMORY[0x1E6979318] animationWithKeyPath:v8];
+        null = [MEMORY[0x1E6979318] animationWithKeyPath:v8];
         v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
-        [v9 setTimingFunction:v10];
+        [null setTimingFunction:v10];
       }
 
       else
       {
-        v9 = 0;
+        null = 0;
       }
     }
   }
@@ -210,7 +210,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v9 = [MEMORY[0x1E6979318] animationWithKeyPath:v8];
+    null = [MEMORY[0x1E6979318] animationWithKeyPath:v8];
     [(CALayer *)self->_shadowLayer contentsScale];
     v14 = v13;
     [(_UIStackedImageContainerLayer *)self contentsScale];
@@ -231,24 +231,24 @@ LABEL_5:
     }
 
     v19 = [MEMORY[0x1E69793D0] functionWithControlPoints:v15 :v16 :v17 :v18];
-    [v9 setTimingFunction:v19];
+    [null setTimingFunction:v19];
 
-    if (!v9)
+    if (!null)
     {
       goto LABEL_5;
     }
   }
 
-  [v9 setFillMode:*MEMORY[0x1E69797D8]];
-  if (([(_UIStackedImageContainerLayer *)v6 hasBeenCommitted]& 1) == 0)
+  [null setFillMode:*MEMORY[0x1E69797D8]];
+  if (([(_UIStackedImageContainerLayer *)layerCopy hasBeenCommitted]& 1) == 0)
   {
-    v11 = [(_UIStackedImageContainerLayer *)v6 valueForKey:v8];
-    [v9 setFromValue:v11];
+    v11 = [(_UIStackedImageContainerLayer *)layerCopy valueForKey:v8];
+    [null setFromValue:v11];
   }
 
 LABEL_10:
 
-  return v9;
+  return null;
 }
 
 - (void)removeAllAnimations
@@ -322,7 +322,7 @@ LABEL_10:
   [(CATransformLayer *)self->_frontmostRotationTransformLayer removeAllAnimations];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -332,8 +332,8 @@ LABEL_10:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(_UIStackedImageContainerLayer *)self _contentLayers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  _contentLayers = [(_UIStackedImageContainerLayer *)self _contentLayers];
+  v6 = [_contentLayers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -345,14 +345,14 @@ LABEL_10:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_contentLayers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContentsScale:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setContentsScale:scale];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [_contentLayers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -361,7 +361,7 @@ LABEL_10:
   [(_UIStackedImageContainerLayer *)self _updateShadowWithCATransaction:1];
 }
 
-- (void)setRasterizationScale:(double)a3
+- (void)setRasterizationScale:(double)scale
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -371,8 +371,8 @@ LABEL_10:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(_UIStackedImageContainerLayer *)self _contentLayers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  _contentLayers = [(_UIStackedImageContainerLayer *)self _contentLayers];
+  v6 = [_contentLayers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -384,29 +384,29 @@ LABEL_10:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_contentLayers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setRasterizationScale:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setRasterizationScale:scale];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [_contentLayers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(CALayer *)self->_shadowLayer setRasterizationScale:a3];
-  [(CALayer *)self->_unfocusedShadowLayer setRasterizationScale:a3];
+  [(CALayer *)self->_shadowLayer setRasterizationScale:scale];
+  [(CALayer *)self->_unfocusedShadowLayer setRasterizationScale:scale];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_UIStackedImageContainerLayer *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -535,15 +535,15 @@ LABEL_10:
   }
 }
 
-- (void)_layoutSublayer:(id)a3 inSuperlayerWithBounds:(CGRect)a4 layoutPosition:(int64_t)a5
+- (void)_layoutSublayer:(id)sublayer inSuperlayerWithBounds:(CGRect)bounds layoutPosition:(int64_t)position
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v37 = a3;
-  v11 = [v37 superlayer];
-  [v11 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  sublayerCopy = sublayer;
+  superlayer = [sublayerCopy superlayer];
+  [superlayer bounds];
   v35 = v12;
   v36 = v13;
   v15 = v14;
@@ -553,8 +553,8 @@ LABEL_10:
   v19 = *(MEMORY[0x1E695EFF8] + 8);
   v20 = x + width * 0.5;
   v21 = y + height * 0.5;
-  v22 = [v37 superlayer];
-  if (v22)
+  superlayer2 = [sublayerCopy superlayer];
+  if (superlayer2)
   {
     v33 = v15;
     v34 = v21;
@@ -579,7 +579,7 @@ LABEL_10:
     if (!v32)
     {
       v20 = v35 + v36 * 0.5;
-      if (a5 == 1)
+      if (position == 1)
       {
         v21 = v33 + v31 * 0.5 + (v31 - v24) * -0.5;
       }
@@ -591,35 +591,35 @@ LABEL_10:
     }
   }
 
-  [(_UIStackedImageContainerLayer *)self _layoutSublayer:v37 withBounds:v18 position:v19, width, height, v20, v21];
+  [(_UIStackedImageContainerLayer *)self _layoutSublayer:sublayerCopy withBounds:v18 position:v19, width, height, v20, v21];
 }
 
-- (void)_layoutSublayer:(id)a3 withBounds:(CGRect)a4 position:(CGPoint)a5
+- (void)_layoutSublayer:(id)sublayer withBounds:(CGRect)bounds position:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v9 = a4.origin.y;
-  v10 = a4.origin.x;
-  v14 = a3;
-  v12 = [v14 delegate];
-  v13 = [(_UIStackedImageContainerLayer *)self _preferredLayoutDelegateForLayer:v14];
-  [v14 setDelegate:v13];
+  y = position.y;
+  x = position.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v9 = bounds.origin.y;
+  v10 = bounds.origin.x;
+  sublayerCopy = sublayer;
+  delegate = [sublayerCopy delegate];
+  v13 = [(_UIStackedImageContainerLayer *)self _preferredLayoutDelegateForLayer:sublayerCopy];
+  [sublayerCopy setDelegate:v13];
 
-  if (_IsKindOfUIView(v12))
+  if (_IsKindOfUIView(delegate))
   {
-    [v12 setBounds:{v10, v9, width, height}];
-    [v12 setCenter:{x, y}];
+    [delegate setBounds:{v10, v9, width, height}];
+    [delegate setCenter:{x, y}];
   }
 
   else
   {
-    [v14 setBounds:{v10, v9, width, height}];
-    [v14 setPosition:{x, y}];
+    [sublayerCopy setBounds:{v10, v9, width, height}];
+    [sublayerCopy setPosition:{x, y}];
   }
 
-  [v14 setDelegate:v12];
+  [sublayerCopy setDelegate:delegate];
 }
 
 - (void)layoutSublayers
@@ -650,12 +650,12 @@ LABEL_10:
     self->_lastLayoutSize.height = v5;
     [(_UIStackedImageContainerLayer *)self _layoutSublayer:self->_imageLayersContainer inSuperlayerWithBounds:0 layoutPosition:v7, v3, v4, v5];
     [(_UIStackedImageContainerLayer *)self _layoutSublayer:self->_imageBackgroundEffectScaleTransformLayer inSuperlayerWithBounds:0 layoutPosition:v7, v8, v9, v10];
-    v13 = [(CATransformLayer *)self->_imageBackgroundEffectScaleTransformLayer sublayers];
-    v14 = [v13 firstObject];
+    sublayers = [(CATransformLayer *)self->_imageBackgroundEffectScaleTransformLayer sublayers];
+    firstObject = [sublayers firstObject];
 
-    if (v14 && v14 != self->_imagePrePerspectiveRotationBackgroundEffectContainer)
+    if (firstObject && firstObject != self->_imagePrePerspectiveRotationBackgroundEffectContainer)
     {
-      [(_UIStackedImageContainerLayer *)self _layoutSublayer:v14 inSuperlayerWithBounds:0 layoutPosition:v7, v8, v9, v10];
+      [(_UIStackedImageContainerLayer *)self _layoutSublayer:firstObject inSuperlayerWithBounds:0 layoutPosition:v7, v8, v9, v10];
     }
 
     [(_UIStackedImageContainerLayer *)self _layoutSublayer:self->_imagePrePerspectiveRotationBackgroundEffectContainer inSuperlayerWithBounds:0 layoutPosition:v7, v8, v9, v10];
@@ -668,7 +668,7 @@ LABEL_10:
       {
         v18 = [(NSArray *)self->_parallaxImages objectAtIndexedSubscript:v15];
         v19 = [(NSArray *)self->_imageLayers objectAtIndexedSubscript:v15];
-        v20 = [v19 delegate];
+        delegate = [v19 delegate];
         v21 = [(_UIStackedImageContainerLayer *)self _preferredLayoutDelegateForLayer:v19];
         [v19 setDelegate:v21];
 
@@ -677,7 +677,7 @@ LABEL_10:
         v25 = v24;
         [v19 setBounds:{v16, v17}];
         [v19 setPosition:{v23, v25}];
-        [v19 setDelegate:v20];
+        [v19 setDelegate:delegate];
 
         ++v15;
       }
@@ -782,10 +782,10 @@ LABEL_10:
     if (v50)
     {
 LABEL_25:
-      v49 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
       [(_UIStackedImageContainerLayer *)self _layoutRadiosityLayer];
-      [MEMORY[0x1E6979518] setDisableActions:v49];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
       self->_radiosityNeedsLayout = 0;
       goto LABEL_26;
     }
@@ -836,9 +836,9 @@ LABEL_26:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CALayer *)self->_radiosityLayer contents];
+  contents = [(CALayer *)self->_radiosityLayer contents];
 
-  if (!v11)
+  if (!contents)
   {
     v12 = v8;
     v13 = v10;
@@ -1014,19 +1014,19 @@ LABEL_8:
   return result;
 }
 
-- (id)_preferredLayoutDelegateForLayer:(id)a3
+- (id)_preferredLayoutDelegateForLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [v4 delegate];
-  v6 = v5;
-  if (!v5 || v5 == self)
+  layerCopy = layer;
+  delegate = [layerCopy delegate];
+  delegate2 = delegate;
+  if (!delegate || delegate == self)
   {
     layoutDelegate = self->_layoutDelegate;
     if (layoutDelegate)
     {
       v8 = layoutDelegate;
 
-      v6 = v8;
+      delegate2 = v8;
     }
 
     else
@@ -1037,30 +1037,30 @@ LABEL_8:
       self->_layoutDelegate = v10;
 
       v12 = self->_layoutDelegate;
-      v6 = v12;
+      delegate2 = v12;
       if (!v12)
       {
-        v6 = [v4 delegate];
+        delegate2 = [layerCopy delegate];
       }
     }
   }
 
-  return v6;
+  return delegate2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (a6 != @"__layerStackObservingContext")
+  pathCopy = path;
+  v11 = pathCopy;
+  if (context != @"__layerStackObservingContext")
   {
     v18.receiver = self;
     v18.super_class = _UIStackedImageContainerLayer;
-    [(_UIStackedImageContainerLayer *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(_UIStackedImageContainerLayer *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
     goto LABEL_9;
   }
 
-  if ([v10 isEqualToString:@"selectionStyle"])
+  if ([pathCopy isEqualToString:@"selectionStyle"])
   {
     [(_UIStackedImageContainerLayer *)self _setSelectionStyle:[(_UIStackedImageConfiguration *)self->_configuration selectionStyle]];
     goto LABEL_9;
@@ -1146,17 +1146,17 @@ LABEL_9:
 {
   if ([(_UIStackedImageConfiguration *)self->_configuration flatImageContainsCornerRadius])
   {
-    v3 = 1;
+    flatImageContainsCornerRadius = 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v3 = [(UINamedLayerStack *)self->_layerStack flatImageContainsCornerRadius];
+    flatImageContainsCornerRadius = [(UINamedLayerStack *)self->_layerStack flatImageContainsCornerRadius];
   }
 
   else
   {
-    v3 = 0;
+    flatImageContainsCornerRadius = 0;
   }
 
   [(_UIStackedImageConfiguration *)self->_configuration cornerRadius];
@@ -1200,7 +1200,7 @@ LABEL_9:
 
   [(_UIStackedImageConfiguration *)self->_configuration focusCursorBorderWidth];
   v29 = v14;
-  if (v3 && self->_flatImage)
+  if (flatImageContainsCornerRadius && self->_flatImage)
   {
     flatMaskLayer = self->_flatMaskLayer;
     v30 = v28;
@@ -1229,9 +1229,9 @@ LABEL_9:
   *(&v24 + 1) = v11 + v29 + v29;
   *&v23 = v12 + v29 + v29;
   *(&v23 + 1) = v13 + v29 + v29;
-  v17 = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
+  _layerForBackgroundEffects = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
   [(_UIStackedImageConfiguration *)self->_configuration isContinuousCornerRadiusEnabled];
-  _setCornerCurveOnLayer(v18 != 0.0, v17);
+  _setCornerCurveOnLayer(v18 != 0.0, _layerForBackgroundEffects);
   *&v30 = v5;
   *(&v30 + 1) = v7;
   *&v31 = v8;
@@ -1240,7 +1240,7 @@ LABEL_9:
   *(&v32 + 1) = v11;
   *&v33 = v12;
   *(&v33 + 1) = v13;
-  [v17 setCornerRadii:&v30];
+  [_layerForBackgroundEffects setCornerRadii:&v30];
   [(_UIStackedImageConfiguration *)self->_configuration isContinuousCornerRadiusEnabled];
   _setCornerCurveOnLayer(v19 != 0.0, self->_maskLayer);
   maskLayer = self->_maskLayer;
@@ -1266,11 +1266,11 @@ LABEL_9:
   [(_UIStackedImageContainerLayer *)self _updateMarkerLayerIfPresent];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v143 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(_UIStackedImageConfiguration *)self->_configuration isEqual:v5])
+  configurationCopy = configuration;
+  if (![(_UIStackedImageConfiguration *)self->_configuration isEqual:configurationCopy])
   {
     [(_UIStackedImageContainerLayer *)self bounds];
     v7 = v6;
@@ -1293,8 +1293,8 @@ LABEL_9:
       v140 = 0u;
       v137 = 0u;
       v138 = 0u;
-      v26 = [objc_opt_class() _layerStackObservingKeys];
-      v27 = [v26 countByEnumeratingWithState:&v137 objects:v142 count:16];
+      _layerStackObservingKeys = [objc_opt_class() _layerStackObservingKeys];
+      v27 = [_layerStackObservingKeys countByEnumeratingWithState:&v137 objects:v142 count:16];
       if (v27)
       {
         v28 = v27;
@@ -1305,28 +1305,28 @@ LABEL_9:
           {
             if (*v138 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(_layerStackObservingKeys);
             }
 
             [(_UIStackedImageConfiguration *)self->_configuration removeObserver:self forKeyPath:*(*(&v137 + 1) + 8 * i) context:@"__layerStackObservingContext"];
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v137 objects:v142 count:16];
+          v28 = [_layerStackObservingKeys countByEnumeratingWithState:&v137 objects:v142 count:16];
         }
 
         while (v28);
       }
     }
 
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     if (self->_configuration)
     {
       v135 = 0u;
       v136 = 0u;
       v133 = 0u;
       v134 = 0u;
-      v31 = [objc_opt_class() _layerStackObservingKeys];
-      v32 = [v31 countByEnumeratingWithState:&v133 objects:v141 count:16];
+      _layerStackObservingKeys2 = [objc_opt_class() _layerStackObservingKeys];
+      v32 = [_layerStackObservingKeys2 countByEnumeratingWithState:&v133 objects:v141 count:16];
       if (v32)
       {
         v33 = v32;
@@ -1337,13 +1337,13 @@ LABEL_9:
           {
             if (*v134 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(_layerStackObservingKeys2);
             }
 
             [(_UIStackedImageConfiguration *)self->_configuration addObserver:self forKeyPath:*(*(&v133 + 1) + 8 * j) options:1 context:@"__layerStackObservingContext"];
           }
 
-          v33 = [v31 countByEnumeratingWithState:&v133 objects:v141 count:16];
+          v33 = [_layerStackObservingKeys2 countByEnumeratingWithState:&v133 objects:v141 count:16];
         }
 
         while (v33);
@@ -1354,17 +1354,17 @@ LABEL_9:
     {
       v36 = v7 + v11 * 0.5;
       v37 = v9 + v13 * 0.5;
-      v38 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
       self->_scale = 1.0;
       [(_UIStackedImageContainerLayer *)self setAllowsGroupOpacity:0];
       [(_UIStackedImageContainerLayer *)self setAllowsEdgeAntialiasing:0];
-      v39 = [objc_opt_self() mainScreen];
-      v40 = [v39 traitCollection];
-      v41 = [v40 userInterfaceStyle];
+      mainScreen = [objc_opt_self() mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v127 = v38;
-      if (v41 == 1000)
+      v127 = disableActions;
+      if (userInterfaceStyle == 1000)
       {
         [UIColor colorWithWhite:1.0 alpha:0.3];
       }
@@ -1462,8 +1462,8 @@ LABEL_9:
       [(CALayer *)self->_flatLayer setAllowsGroupOpacity:0];
       [(CALayer *)self->_flatLayer setAllowsEdgeAntialiasing:0];
       v63 = self->_flatLayer;
-      v64 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
-      if (v64)
+      placeholderImage = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
+      if (placeholderImage)
       {
         v65 = 0;
       }
@@ -1478,11 +1478,11 @@ LABEL_9:
         v65 = qword_1EA994AA8;
       }
 
-      [(CALayer *)v63 setBackgroundColor:v65, v41];
+      [(CALayer *)v63 setBackgroundColor:v65, userInterfaceStyle];
 
       v66 = self->_flatLayer;
-      v67 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
-      -[CALayer setContents:](v66, "setContents:", [v67 CGImage]);
+      placeholderImage2 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
+      -[CALayer setContents:](v66, "setContents:", [placeholderImage2 CGImage]);
 
       [(CALayer *)self->_flatMaskLayer addSublayer:self->_flatLayer];
       v68 = objc_alloc_init(MEMORY[0x1E6979398]);
@@ -1579,9 +1579,9 @@ LABEL_9:
       [(CALayer *)self->_selectedPlaceholderLayer setAllowsGroupOpacity:0];
       [(CALayer *)self->_selectedPlaceholderLayer setContentsGravity:v58];
       v88 = self->_selectedPlaceholderLayer;
-      v89 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
+      placeholderImage3 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
       v132 = v85;
-      if (v89)
+      if (placeholderImage3)
       {
         v90 = 0;
       }
@@ -1599,8 +1599,8 @@ LABEL_9:
       [(CALayer *)v88 setBackgroundColor:v90];
 
       v91 = self->_selectedPlaceholderLayer;
-      v92 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
-      -[CALayer setContents:](v91, "setContents:", [v92 CGImage]);
+      placeholderImage4 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
+      -[CALayer setContents:](v91, "setContents:", [placeholderImage4 CGImage]);
 
       v93 = objc_alloc_init(MEMORY[0x1E6979398]);
       maskLayer = self->_maskLayer;
@@ -1667,11 +1667,11 @@ LABEL_9:
       v111 = self->_specularLayer;
       [(_UIStackedImageConfiguration *)self->_configuration specularHighlightVerticalPosition];
       [(_UIFocusSpecularHighlightLayer *)v111 setLegacyVerticalPositionOffset:?];
-      v112 = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
-      [v112 addSublayer:self->_specularLayer];
+      _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
+      [_layerForImageStackHosting addSublayer:self->_specularLayer];
 
       [(_UIStackedImageContainerLayer *)self _updateSpecularLayerVisibility];
-      v113 = [(_UIStackedImageContainerLayer *)self delegate];
+      delegate = [(_UIStackedImageContainerLayer *)self delegate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1679,15 +1679,15 @@ LABEL_9:
         animationView = self->_animationView;
         self->_animationView = v114;
 
-        [v113 addSubview:self->_animationView];
+        [delegate addSubview:self->_animationView];
         v116 = 0x1E6979000;
         v117 = v132;
       }
 
       else
       {
-        v118 = [(_UIStackedImageContainerLayer *)self superlayer];
-        v119 = [v118 delegate];
+        superlayer = [(_UIStackedImageContainerLayer *)self superlayer];
+        delegate2 = [superlayer delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1699,9 +1699,9 @@ LABEL_9:
           v122 = self->_animationView;
           self->_animationView = v121;
 
-          v123 = [(_UIStackedImageContainerLayer *)self superlayer];
-          v124 = [v123 delegate];
-          [v124 addSubview:self->_animationView];
+          superlayer2 = [(_UIStackedImageContainerLayer *)self superlayer];
+          delegate3 = [superlayer2 delegate];
+          [delegate3 addSubview:self->_animationView];
         }
       }
 
@@ -1721,10 +1721,10 @@ LABEL_9:
       [*(v116 + 1304) setDisableActions:v127];
     }
 
-    v125 = [v5 selectionStyle];
-    if (self->_selectionStyle != v125)
+    selectionStyle = [configurationCopy selectionStyle];
+    if (self->_selectionStyle != selectionStyle)
     {
-      [(_UIStackedImageContainerLayer *)self _setSelectionStyle:v125];
+      [(_UIStackedImageContainerLayer *)self _setSelectionStyle:selectionStyle];
     }
 
     [(_UIStackedImageContainerLayer *)self _updateCornerRadiusFromConfig];
@@ -1732,11 +1732,11 @@ LABEL_9:
   }
 }
 
-- (void)setLayerStack:(id)a3
+- (void)setLayerStack:(id)stack
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 size];
+  stackCopy = stack;
+  [stackCopy size];
   v7 = v6;
   v8 = v5;
   if ((v6 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v5 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
@@ -1751,32 +1751,32 @@ LABEL_9:
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Image has an invalid size. (w: %g, h: %g)", &v12, 0x16u);
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
   else
   {
-    v9 = self;
-    v10 = v4;
+    selfCopy2 = self;
+    v10 = stackCopy;
   }
 
-  [(_UIStackedImageContainerLayer *)v9 _setLayerStack:v10];
+  [(_UIStackedImageContainerLayer *)selfCopy2 _setLayerStack:v10];
 }
 
-- (void)_setLayerStack:(id)a3
+- (void)_setLayerStack:(id)stack
 {
-  v11 = a3;
+  stackCopy = stack;
   if (([(UINamedLayerStack *)self->_layerStack isEqual:?]& 1) == 0)
   {
-    v5 = [MEMORY[0x1E6979518] disableActions];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
     if (self->_animatingToNormalState)
     {
       [(_UIStackedImageContainerLayer *)self _resetAnimatingToNormalState];
     }
 
-    objc_storeStrong(&self->_layerStack, a3);
+    objc_storeStrong(&self->_layerStack, stack);
     if (objc_opt_respondsToSelector())
     {
       v6 = objc_opt_respondsToSelector();
@@ -1788,14 +1788,14 @@ LABEL_9:
     }
 
     self->_layerStackSupportsInflation = v6 & 1;
-    v7 = [(UINamedLayerStack *)self->_layerStack layers];
-    v8 = [v7 firstObject];
-    v9 = [v8 imageObj];
-    self->_layerStackInflated = v9 != 0;
+    layers = [(UINamedLayerStack *)self->_layerStack layers];
+    firstObject = [layers firstObject];
+    imageObj = [firstObject imageObj];
+    self->_layerStackInflated = imageObj != 0;
 
-    -[_UIStackedImageContainerLayer _setFlatImage:](self, "_setFlatImage:", [v11 flattenedImage]);
-    v10 = [v11 layers];
-    [(_UIStackedImageContainerLayer *)self _setParallaxImages:v10];
+    -[_UIStackedImageContainerLayer _setFlatImage:](self, "_setFlatImage:", [stackCopy flattenedImage]);
+    layers2 = [stackCopy layers];
+    [(_UIStackedImageContainerLayer *)self _setParallaxImages:layers2];
 
     if (self->_layerStackSupportsInflation && !self->_layerStackInflated && ![(_UIStackedImageContainerLayer *)self _isNormal]&& !self->_deferredInflationPending)
     {
@@ -1807,7 +1807,7 @@ LABEL_9:
     [(_UIStackedImageContainerLayer *)self _updateRadiosityFromLayerStack];
     [(_UIStackedImageContainerLayer *)self _updateCornerRadiusFromConfig];
     [(_UIStackedImageContainerLayer *)self setNeedsLayout];
-    [MEMORY[0x1E6979518] setDisableActions:v5];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions];
   }
 }
 
@@ -1894,8 +1894,8 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:1721 description:@"Missing _imagePostPerspectiveRotationBackgroundEffectContainer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:1721 description:@"Missing _imagePostPerspectiveRotationBackgroundEffectContainer"];
   }
 
   imagePostPerspectiveRotationBackgroundEffectContainer = *p_imagePrePerspectiveRotationBackgroundEffectContainer;
@@ -1909,15 +1909,15 @@ LABEL_7:
   overlayContainerLayer = self->_overlayContainerLayer;
   if (overlayContainerLayer && ([(CALayer *)overlayContainerLayer superlayer], v4 = objc_claimAutoreleasedReturnValue(), [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v4 == v5))
   {
-    v6 = self->_overlayContainerLayer;
+    _layerAboveOverlayContainer = self->_overlayContainerLayer;
   }
 
   else
   {
-    v6 = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
+    _layerAboveOverlayContainer = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
   }
 
-  return v6;
+  return _layerAboveOverlayContainer;
 }
 
 - (void)_updateSingleLayerNoMaskFromLayerStack
@@ -1936,8 +1936,8 @@ LABEL_7:
 
     else
     {
-      v4 = [(UINamedLayerStack *)self->_layerStack layers];
-      if ([v4 count] <= 1 && (-[_UIStackedImageConfiguration cornerRadius](self->_configuration, "cornerRadius"), v5 == 0.0) && !-[_UIStackedImageConfiguration boostBrightness](self->_configuration, "boostBrightness"))
+      layers = [(UINamedLayerStack *)self->_layerStack layers];
+      if ([layers count] <= 1 && (-[_UIStackedImageConfiguration cornerRadius](self->_configuration, "cornerRadius"), v5 == 0.0) && !-[_UIStackedImageConfiguration boostBrightness](self->_configuration, "boostBrightness"))
       {
         v3 = ![(_UIStackedImageConfiguration *)self->_configuration hueShift];
       }
@@ -1972,9 +1972,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering];
+  _isEligibleForSolariumRendering = [(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering];
   imageLayersContainer = self->_imageLayersContainer;
-  if (!v6)
+  if (!_isEligibleForSolariumRendering)
   {
     maskPerspectiveTransformLayer = self->_maskPerspectiveTransformLayer;
     goto LABEL_4;
@@ -1983,20 +1983,20 @@ LABEL_4:
   [(CALayer *)imageLayersContainer setMask:0];
   v5 = 1;
 LABEL_5:
-  v7 = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
-  [v7 setMasksToBounds:v5];
+  _layerForBackgroundEffects = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
+  [_layerForBackgroundEffects setMasksToBounds:v5];
 }
 
 - (void)_updateShadowLayerVisibility
 {
   nonOpaqueShadow = self->_nonOpaqueShadow;
-  v4 = [(CALayer *)self->_shadowLayer isHidden];
-  v5 = [(CALayer *)self->_unfocusedShadowLayer isHidden];
+  isHidden = [(CALayer *)self->_shadowLayer isHidden];
+  isHidden2 = [(CALayer *)self->_unfocusedShadowLayer isHidden];
   [(_UIStackedImageContainerLayer *)self _updateLayer:self->_shadowLayer isHidden:nonOpaqueShadow];
   [(_UIStackedImageContainerLayer *)self _updateLayer:self->_unfocusedShadowLayer isHidden:nonOpaqueShadow];
-  if (!v4)
+  if (!isHidden)
   {
-    if (!v5)
+    if (!isHidden2)
     {
       return;
     }
@@ -2010,13 +2010,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v6 = [(CALayer *)self->_shadowLayer isHidden];
-  if (v6 && v5)
+  isHidden3 = [(CALayer *)self->_shadowLayer isHidden];
+  if (isHidden3 && isHidden2)
   {
     goto LABEL_6;
   }
 
-  if (v6)
+  if (isHidden3)
   {
     return;
   }
@@ -2034,8 +2034,8 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(UINamedLayerStack *)self->_layerStack layers];
-  v4 = [v3 count];
+  layers = [(UINamedLayerStack *)self->_layerStack layers];
+  v4 = [layers count];
 
   if (v4 != 1)
   {
@@ -2047,14 +2047,14 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(UINamedLayerStack *)self->_layerStack flattenedImage];
-  if (!v5)
+  flattenedImage = [(UINamedLayerStack *)self->_layerStack flattenedImage];
+  if (!flattenedImage)
   {
     return 0;
   }
 
-  v6 = v5;
-  AlphaInfo = CGImageGetAlphaInfo(v5);
+  v6 = flattenedImage;
+  AlphaInfo = CGImageGetAlphaInfo(flattenedImage);
   if (AlphaInfo - 1 > 3)
   {
     return 0;
@@ -2158,22 +2158,22 @@ LABEL_12:
 
 - (void)_updateNonOpaqueShadowStateFromLayerStack
 {
-  v3 = [(_UIStackedImageContainerLayer *)self _shouldHaveNonOpaqueShadowFromLayerStack];
-  if (self->_nonOpaqueShadow != v3)
+  _shouldHaveNonOpaqueShadowFromLayerStack = [(_UIStackedImageContainerLayer *)self _shouldHaveNonOpaqueShadowFromLayerStack];
+  if (self->_nonOpaqueShadow != _shouldHaveNonOpaqueShadowFromLayerStack)
   {
-    self->_nonOpaqueShadow = v3;
+    self->_nonOpaqueShadow = _shouldHaveNonOpaqueShadowFromLayerStack;
     [(_UIStackedImageContainerLayer *)self _updateImageLayersContainerMaskingAndBounds];
     [(_UIStackedImageContainerLayer *)self _updateMaskScaleTransform];
     [(_UIStackedImageContainerLayer *)self _updateShadowLayerVisibility];
     [(_UIStackedImageContainerLayer *)self _updateInnerParallaxTransform];
     if (self->_nonOpaqueShadow)
     {
-      v4 = [(NSArray *)self->_imageLayers firstObject];
-      v5 = [v4 contents];
-      [(CALayer *)self->_maskLayer setContents:v5];
+      firstObject = [(NSArray *)self->_imageLayers firstObject];
+      contents = [firstObject contents];
+      [(CALayer *)self->_maskLayer setContents:contents];
 
-      v6 = [v4 contentsGravity];
-      [(CALayer *)self->_maskLayer setContentsGravity:v6];
+      contentsGravity = [firstObject contentsGravity];
+      [(CALayer *)self->_maskLayer setContentsGravity:contentsGravity];
 
       [(CALayer *)self->_maskLayer setBackgroundColor:0];
       [(_UIFocusSpecularHighlightLayer *)self->_specularLayer setMask:self->_maskPerspectiveTransformLayer];
@@ -2244,9 +2244,9 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIStackedImageContainerLayer *)self _radiosityEnabled];
+  _radiosityEnabled = [(_UIStackedImageContainerLayer *)self _radiosityEnabled];
   radiosityLayer = self->_radiosityLayer;
-  if (v11)
+  if (_radiosityEnabled)
   {
     if (!radiosityLayer)
     {
@@ -2293,8 +2293,8 @@ LABEL_12:
   {
     p_radiosityImageScale = &self->_radiosityImageScale;
     self->_radiosityImageScale = *MEMORY[0x1E695F060];
-    v24 = [(UINamedLayerStack *)self->_layerStack radiosityImage];
-    [(CALayer *)self->_radiosityLayer setContents:v24];
+    radiosityImage = [(UINamedLayerStack *)self->_layerStack radiosityImage];
+    [(CALayer *)self->_radiosityLayer setContents:radiosityImage];
 
     if (objc_opt_respondsToSelector())
     {
@@ -2318,9 +2318,9 @@ LABEL_12:
 
   else
   {
-    v27 = [(CALayer *)self->_radiosityLayer contents];
+    contents = [(CALayer *)self->_radiosityLayer contents];
 
-    if (v27)
+    if (contents)
     {
       [(CALayer *)self->_radiosityLayer setContents:0];
       self->_radiosityImageScale = *MEMORY[0x1E695F060];
@@ -2329,8 +2329,8 @@ LABEL_12:
 
   if ([(_UIStackedImageContainerLayer *)self _radiosityEnabled])
   {
-    v28 = [(CALayer *)self->_radiosityLayer contents];
-    if (v28)
+    contents2 = [(CALayer *)self->_radiosityLayer contents];
+    if (contents2)
     {
     }
 
@@ -2339,43 +2339,43 @@ LABEL_12:
       Current = CFAbsoluteTimeGetCurrent();
       self->_radiosityRequestTime = Current;
       v30 = +[_UIRadiosityImageGenerator sharedInstance];
-      v31 = [(UINamedLayerStack *)self->_layerStack flattenedImage];
+      flattenedImage = [(UINamedLayerStack *)self->_layerStack flattenedImage];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __63___UIStackedImageContainerLayer__updateRadiosityFromLayerStack__block_invoke;
       v32[3] = &unk_1E712BA90;
       *&v32[5] = Current;
       v32[4] = self;
-      [v30 imageWithImage:v31 completionHandler:v32];
+      [v30 imageWithImage:flattenedImage completionHandler:v32];
     }
   }
 }
 
-- (void)_setControlState:(unint64_t)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5 completion:(id)a6
+- (void)_setControlState:(unint64_t)state animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator completion:(id)completion
 {
-  v7 = a4;
+  animatedCopy = animated;
   v71[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(_UIStackedImageContainerLayer *)self _primaryControlStateForState:a3];
-  if (self->_controlState == a3)
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
+  v12 = [(_UIStackedImageContainerLayer *)self _primaryControlStateForState:state];
+  if (self->_controlState == state)
   {
     goto LABEL_59;
   }
 
   v13 = v12;
-  v14 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
-  v15 = a3 & 8;
-  if ((a3 & 8) == 0)
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  v15 = state & 8;
+  if ((state & 8) == 0)
   {
-    a3 &= 0xFFFFFFFFFFFFFFF6;
+    state &= 0xFFFFFFFFFFFFFFF6;
   }
 
-  if (v14 || v13 == 1)
+  if (_isHighlighted || v13 == 1)
   {
     v19 = (LOBYTE(self->_controlState) >> 3) & 1;
-    self->_controlState = a3;
-    v20 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+    self->_controlState = state;
+    _isHighlighted2 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
     [(_UIStackedImageContainerLayer *)self _currentStackLayoutBounds];
     if (CGRectIsEmpty(v72))
     {
@@ -2398,7 +2398,7 @@ LABEL_12:
       }
 
       self->_scale = v27;
-      if (v20)
+      if (_isHighlighted2)
       {
         [(_UIStackedImageConfiguration *)self->_configuration pressedScaleAdjustment];
         v30 = objc_opt_class();
@@ -2434,12 +2434,12 @@ LABEL_12:
     v69 = v15 >> 3;
     v70 = v19;
     v67[4] = self;
-    v39 = v10;
+    v39 = coordinatorCopy;
     v68 = v39;
     v40 = _Block_copy(v67);
-    if (v39 && v7)
+    if (v39 && animatedCopy)
     {
-      [v39 addCoordinatedAnimations:v40 completion:v11];
+      [v39 addCoordinatedAnimations:v40 completion:completionCopy];
     }
 
     else
@@ -2447,7 +2447,7 @@ LABEL_12:
       [MEMORY[0x1E6979518] begin];
       v41 = MEMORY[0x1E6979518];
       configuration = self->_configuration;
-      if (v20)
+      if (_isHighlighted2)
       {
         [(_UIStackedImageConfiguration *)configuration pressedDuration];
       }
@@ -2463,7 +2463,7 @@ LABEL_12:
       v65[1] = 3221225472;
       v65[2] = __96___UIStackedImageContainerLayer__setControlState_animated_focusAnimationCoordinator_completion___block_invoke_2;
       v65[3] = &unk_1E70F0F78;
-      v66 = v11;
+      v66 = completionCopy;
       [v43 setCompletionBlock:v65];
       v40[2](v40);
       [MEMORY[0x1E6979518] commit];
@@ -2476,18 +2476,18 @@ LABEL_12:
     {
       if (v13 == 4)
       {
-        self->_controlState = a3;
+        self->_controlState = state;
         [(_UIStackedImageContainerLayer *)self _showImageLayers];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __96___UIStackedImageContainerLayer__setControlState_animated_focusAnimationCoordinator_completion___block_invoke_6;
         aBlock[3] = &unk_1E70F35B8;
         aBlock[4] = self;
-        v36 = v10;
+        v36 = coordinatorCopy;
         v59 = v36;
         v37 = _Block_copy(aBlock);
         v38 = v37;
-        if (v36 && v7)
+        if (v36 && animatedCopy)
         {
           [v36 addCoordinatedAnimations:v37 completion:0];
         }
@@ -2506,10 +2506,10 @@ LABEL_12:
       }
     }
 
-    if (!v10)
+    if (!coordinatorCopy)
     {
-      v52 = [(_UIStackedImageContainerLayer *)self _isFocused];
-      if (!v13 && v52 && v7)
+      _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+      if (!v13 && _isFocused && animatedCopy)
       {
         v53 = CACurrentMediaTime() - self->_selectionStartTime;
         [(_UIStackedImageConfiguration *)self->_configuration minimumFocusDuration];
@@ -2532,7 +2532,7 @@ LABEL_12:
       }
     }
 
-    self->_controlState = a3;
+    self->_controlState = state;
     if ([(_UIStackedImageContainerLayer *)self _isFocused])
     {
       [(_UIStackedImageContainerLayer *)self _showImageLayers];
@@ -2544,9 +2544,9 @@ LABEL_12:
 
     else
     {
-      v44 = [(_UIStackedImageContainerLayer *)self _isSelected];
+      _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
       v18 = 1.13;
-      if (!v44)
+      if (!_isSelected)
       {
         v18 = 1.0;
       }
@@ -2561,7 +2561,7 @@ LABEL_12:
       self->_animatingToNormalState = 1;
     }
 
-    v45 = [MEMORY[0x1E6979518] disableActions];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(_UIStackedImageContainerLayer *)self _updateImageLayerFilterChains];
     v64[0] = MEMORY[0x1E69E9820];
@@ -2587,10 +2587,10 @@ LABEL_12:
     }
 
     v49 = _Block_copy(v48);
-    [MEMORY[0x1E6979518] setDisableActions:!v7];
-    if (v10 != 0 && v7)
+    [MEMORY[0x1E6979518] setDisableActions:!animatedCopy];
+    if (coordinatorCopy != 0 && animatedCopy)
     {
-      objc_initWeak(&location, v10);
+      objc_initWeak(&location, coordinatorCopy);
       layerStackInflationSeed = self->_layerStackInflationSeed;
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
@@ -2602,7 +2602,7 @@ LABEL_12:
       v51 = _Block_copy(v60);
       if (+[UIView areAnimationsEnabled])
       {
-        [v10 addCoordinatedAnimations:v51 completion:v49];
+        [coordinatorCopy addCoordinatedAnimations:v51 completion:v49];
       }
 
       else
@@ -2626,35 +2626,35 @@ LABEL_12:
       [(_UIStackedImageContainerLayer *)self _updateLayerForSelection];
     }
 
-    [MEMORY[0x1E6979518] setDisableActions:v45];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions];
   }
 
 LABEL_59:
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator
 {
   v5 = 8;
-  if (!a3)
+  if (!selected)
   {
     v5 = 0;
   }
 
-  [(_UIStackedImageContainerLayer *)self setControlState:self->_controlState & 0xFFFFFFFFFFFFFFF7 | v5 animated:a4 focusAnimationCoordinator:a5];
+  [(_UIStackedImageContainerLayer *)self setControlState:self->_controlState & 0xFFFFFFFFFFFFFFF7 | v5 animated:animated focusAnimationCoordinator:coordinator];
 }
 
-+ (CGSize)_scaledSizeForSize:(CGSize)a3 focusSizeIncrease:(double)a4 selectionStyle:(int64_t)a5
++ (CGSize)_scaledSizeForSize:(CGSize)size focusSizeIncrease:(double)increase selectionStyle:(int64_t)style
 {
-  [_UIStackedImageConfiguration _scaledSizeForSize:a5 focusSizeIncrease:a3.width selectionStyle:a3.height, a4];
+  [_UIStackedImageConfiguration _scaledSizeForSize:style focusSizeIncrease:size.width selectionStyle:size.height, increase];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)_focusCursorInsetSizeForSize:(CGSize)a3
+- (CGSize)_focusCursorInsetSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIStackedImageConfiguration *)self->_configuration focusCursorBorderWidth];
   v7 = v6;
   if ([(_UIStackedImageConfiguration *)self->_configuration focusCursorEnabled])
@@ -2726,11 +2726,11 @@ LABEL_59:
   return radiosityLayer;
 }
 
-- (void)_setSelectionStyle:(int64_t)a3
+- (void)_setSelectionStyle:(int64_t)style
 {
   selectionStyle = self->_selectionStyle;
-  self->_selectionStyle = a3;
-  if (a3 == 1)
+  self->_selectionStyle = style;
+  if (style == 1)
   {
     [(_UIStackedImageConfiguration *)self->_configuration setTranslationOffset:10.0, 0.0];
     [(_UIStackedImageConfiguration *)self->_configuration setRotationAmount:0.0];
@@ -2740,20 +2740,20 @@ LABEL_59:
     [(_UIStackedImageConfiguration *)self->_configuration setScaleSizeIncrease:0.0];
   }
 
-  if (selectionStyle != a3)
+  if (selectionStyle != style)
   {
 
     [(_UIStackedImageContainerLayer *)self setNeedsLayout];
   }
 }
 
-- (void)_setImageStackContentsGravity:(id)a3
+- (void)_setImageStackContentsGravity:(id)gravity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSString *)self->_imageStackContentsGravity isEqual:v5]& 1) == 0)
+  gravityCopy = gravity;
+  if (([(NSString *)self->_imageStackContentsGravity isEqual:gravityCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_imageStackContentsGravity, a3);
+    objc_storeStrong(&self->_imageStackContentsGravity, gravity);
     [(CALayer *)self->_flatLayer setContentsGravity:self->_imageStackContentsGravity];
     v13 = 0u;
     v14 = 0u;
@@ -2787,25 +2787,25 @@ LABEL_59:
   }
 }
 
-- (void)_setOverlayLayer:(id)a3
+- (void)_setOverlayLayer:(id)layer
 {
-  v28 = a3;
-  if (self->_overlayLayer != v28)
+  layerCopy = layer;
+  if (self->_overlayLayer != layerCopy)
   {
     [(_UIStackedImageContainerLayer *)self _removeLayerFromSuperlayer:?];
     [(_UIStackedImageContainerLayer *)self _removeLayerFromSuperlayer:self->_overlayContainerLayer];
     overlayContainerLayer = self->_overlayContainerLayer;
     self->_overlayContainerLayer = 0;
 
-    objc_storeStrong(&self->_overlayLayer, a3);
+    objc_storeStrong(&self->_overlayLayer, layer);
     overlayLayer = self->_overlayLayer;
     if (overlayLayer)
     {
-      v7 = [(CALayer *)overlayLayer delegate];
+      delegate = [(CALayer *)overlayLayer delegate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v7 removeFromSuperview];
+        [delegate removeFromSuperview];
       }
 
       [(_UIStackedImageContainerLayer *)self _currentStackLayoutBounds];
@@ -2814,7 +2814,7 @@ LABEL_59:
       v13 = v12;
       v15 = v14;
       [(CALayer *)self->_overlayLayer setFrame:?];
-      v16 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
       v17 = objc_alloc_init(MEMORY[0x1E6979398]);
       v18 = self->_overlayContainerLayer;
@@ -2826,16 +2826,16 @@ LABEL_59:
       [(CALayer *)self->_overlayContainerLayer setDelegate:self];
       if (self->_animatingToNormalState || [(_UIStackedImageContainerLayer *)self _isFocused]|| [(_UIStackedImageContainerLayer *)self _isSelected])
       {
-        v19 = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
+        _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
         v20 = self->_overlayContainerLayer;
-        v21 = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
-        [v19 insertSublayer:v20 below:v21];
+        _layerAboveOverlayContainer = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
+        [_layerForImageStackHosting insertSublayer:v20 below:_layerAboveOverlayContainer];
       }
 
       else
       {
-        v19 = [(_UIStackedImageContainerLayer *)self _layerForUnfocusedOverlayContainerHosting];
-        [v19 addSublayer:self->_overlayContainerLayer];
+        _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForUnfocusedOverlayContainerHosting];
+        [_layerForImageStackHosting addSublayer:self->_overlayContainerLayer];
       }
 
       v22 = CALayerGetDelegate();
@@ -2870,7 +2870,7 @@ LABEL_59:
         [(_UIStackedImageContainerLayer *)self _applyFocusDirectionTransformWithAnimationCoordinator:0];
       }
 
-      [MEMORY[0x1E6979518] setDisableActions:v16];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
     }
   }
 }
@@ -2906,10 +2906,10 @@ LABEL_59:
   }
 }
 
-- (void)_setUnmaskedOverlayLayer:(id)a3
+- (void)_setUnmaskedOverlayLayer:(id)layer
 {
-  v33 = a3;
-  if (self->_unmaskedOverlayLayer != v33)
+  layerCopy = layer;
+  if (self->_unmaskedOverlayLayer != layerCopy)
   {
     [(_UIStackedImageContainerLayer *)self _removeLayerFromSuperlayer:?];
     [(_UIStackedImageContainerLayer *)self _removeLayerFromSuperlayer:self->_unmaskedOverlayContainerLayer];
@@ -2924,18 +2924,18 @@ LABEL_59:
     unmaskedOverlayPerspectiveTransformLayer = self->_unmaskedOverlayPerspectiveTransformLayer;
     self->_unmaskedOverlayPerspectiveTransformLayer = 0;
 
-    objc_storeStrong(&self->_unmaskedOverlayLayer, a3);
+    objc_storeStrong(&self->_unmaskedOverlayLayer, layer);
     unmaskedOverlayLayer = self->_unmaskedOverlayLayer;
     if (unmaskedOverlayLayer)
     {
-      v9 = [(CALayer *)unmaskedOverlayLayer delegate];
+      delegate = [(CALayer *)unmaskedOverlayLayer delegate];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v11 = [(CALayer *)self->_unmaskedOverlayLayer delegate];
-        [v11 removeFromSuperview];
+        delegate2 = [(CALayer *)self->_unmaskedOverlayLayer delegate];
+        [delegate2 removeFromSuperview];
       }
 
       [(_UIStackedImageContainerLayer *)self _currentStackLayoutBounds];
@@ -2944,7 +2944,7 @@ LABEL_59:
       v17 = v16;
       v19 = v18;
       [(CALayer *)self->_unmaskedOverlayLayer setFrame:?];
-      v20 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
       v21 = objc_alloc_init(MEMORY[0x1E6979530]);
       v22 = self->_unmaskedOverlayPerspectiveTransformLayer;
@@ -3005,14 +3005,14 @@ LABEL_59:
         [(_UIStackedImageContainerLayer *)self _applyFocusDirectionTransformWithAnimationCoordinator:0];
       }
 
-      [MEMORY[0x1E6979518] setDisableActions:v20];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
     }
   }
 }
 
-- (void)_removeLayerFromSuperlayer:(id)a3
+- (void)_removeLayerFromSuperlayer:(id)superlayer
 {
-  v4 = a3;
+  superlayerCopy = superlayer;
   v3 = CALayerGetDelegate();
   if (_IsKindOfUIView(v3))
   {
@@ -3028,41 +3028,41 @@ LABEL_59:
   {
   }
 
-  [v4 removeFromSuperlayer];
+  [superlayerCopy removeFromSuperlayer];
 LABEL_6:
 }
 
-- (void)_wrapLayerInView:(id)a3
+- (void)_wrapLayerInView:(id)view
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 delegate];
-  if ((_IsKindOfUIView(v6) & 1) == 0)
+  viewCopy = view;
+  delegate = [viewCopy delegate];
+  if ((_IsKindOfUIView(delegate) & 1) == 0)
   {
-    v7 = [v5 superlayer];
+    superlayer = [viewCopy superlayer];
     v8 = CALayerGetDelegate();
     if ((_IsKindOfUIView(v8) & 1) == 0)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:2588 description:@"called _wrapLayerInView: on a layer whose superlayer is not in a view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:2588 description:@"called _wrapLayerInView: on a layer whose superlayer is not in a view"];
     }
 
-    v26 = v7;
-    v9 = [v7 sublayers];
-    v10 = [v9 indexOfObject:v5];
+    v26 = superlayer;
+    sublayers = [superlayer sublayers];
+    v10 = [sublayers indexOfObject:viewCopy];
 
-    v11 = [v5 isHidden];
-    v12 = [(UIView *)[_UIStackedImageLayerWrappingView alloc] _initWithLayer:v5];
+    isHidden = [viewCopy isHidden];
+    v12 = [(UIView *)[_UIStackedImageLayerWrappingView alloc] _initWithLayer:viewCopy];
     if (![(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering])
     {
-      [v12 setActionDelegate:v6];
+      [v12 setActionDelegate:delegate];
     }
 
-    [v12 setHidden:v11];
+    [v12 setHidden:isHidden];
     v25 = v8;
     [v8 insertSubview:v12 atIndex:v10];
-    v13 = [v5 sublayers];
-    v14 = [v13 copy];
+    sublayers2 = [viewCopy sublayers];
+    v14 = [sublayers2 copy];
 
     v29 = 0u;
     v30 = 0u;
@@ -3084,8 +3084,8 @@ LABEL_6:
           }
 
           v20 = *(*(&v27 + 1) + 8 * i);
-          v21 = [v20 delegate];
-          IsKindOfUIView = _IsKindOfUIView(v21);
+          delegate2 = [v20 delegate];
+          IsKindOfUIView = _IsKindOfUIView(delegate2);
 
           if (IsKindOfUIView)
           {
@@ -3103,12 +3103,12 @@ LABEL_6:
   }
 }
 
-- (void)_setParallaxLayerDepths:(id)a3
+- (void)_setParallaxLayerDepths:(id)depths
 {
-  v6 = a3;
+  depthsCopy = depths;
   if (![(NSArray *)self->_parallaxLayerDepths isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [depthsCopy copy];
     parallaxLayerDepths = self->_parallaxLayerDepths;
     self->_parallaxLayerDepths = v4;
 
@@ -3116,24 +3116,24 @@ LABEL_6:
   }
 }
 
-- (double)_parallaxDepthAtIndex:(int64_t)a3
+- (double)_parallaxDepthAtIndex:(int64_t)index
 {
-  v5 = [(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms];
-  if (a3 < 0 || !v5 || ![(NSArray *)self->_parallaxLayerDepths count])
+  _isEligibleFor3DTransforms = [(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms];
+  if (index < 0 || !_isEligibleFor3DTransforms || ![(NSArray *)self->_parallaxLayerDepths count])
   {
     return 0.0;
   }
 
   v6 = [(NSArray *)self->_parallaxLayerDepths count];
   parallaxLayerDepths = self->_parallaxLayerDepths;
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     [(NSArray *)parallaxLayerDepths lastObject];
   }
 
   else
   {
-    [(NSArray *)parallaxLayerDepths objectAtIndex:a3];
+    [(NSArray *)parallaxLayerDepths objectAtIndex:index];
   }
   v9 = ;
   [v9 doubleValue];
@@ -3142,15 +3142,15 @@ LABEL_6:
   return v11;
 }
 
-- (double)_deepestParallaxDepthWithOverlayDepth:(BOOL)a3
+- (double)_deepestParallaxDepthWithOverlayDepth:(BOOL)depth
 {
-  v3 = a3;
+  depthCopy = depth;
   v5 = 0.0;
   if ([(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms])
   {
     [(_UIStackedImageContainerLayer *)self _parallaxDepthAtIndex:[(NSArray *)self->_parallaxLayerDepths count]- 1];
     v5 = v6;
-    if (v3)
+    if (depthCopy)
     {
       if ([(NSArray *)self->_imageLayers count]> 1)
       {
@@ -3202,29 +3202,29 @@ LABEL_6:
   self->_parallaxLayerDepths = v10;
 }
 
-- (CGImage)_cgImageForLayeredImage:(id)a3
+- (CGImage)_cgImageForLayeredImage:(id)image
 {
-  v3 = [a3 imageObj];
-  v4 = [v3 CGImage];
+  imageObj = [image imageObj];
+  cGImage = [imageObj CGImage];
 
-  return v4;
+  return cGImage;
 }
 
-- (void)_setLayerStackInflated:(BOOL)a3 seed:(unint64_t)a4
+- (void)_setLayerStackInflated:(BOOL)inflated seed:(unint64_t)seed
 {
   v45 = *MEMORY[0x1E69E9840];
   if (self->_layerStackSupportsInflation)
   {
-    if (a3)
+    if (inflated)
     {
       self->_deferredInflationPending = 0;
     }
 
-    if (self->_layerStackInflationSeed == a4 && self->_layerStackInflated != a3)
+    if (self->_layerStackInflationSeed == seed && self->_layerStackInflated != inflated)
     {
-      self->_layerStackInflated = a3;
+      self->_layerStackInflated = inflated;
       layerStack = self->_layerStack;
-      if (a3)
+      if (inflated)
       {
         [(UINamedLayerStack *)layerStack _inflateLayerStack];
       }
@@ -3234,19 +3234,19 @@ LABEL_6:
         [(UINamedLayerStack *)layerStack _deflateLayerStack];
       }
 
-      v7 = [(UINamedLayerStack *)self->_layerStack layers];
-      v8 = [v7 copy];
+      layers = [(UINamedLayerStack *)self->_layerStack layers];
+      v8 = [layers copy];
       parallaxImages = self->_parallaxImages;
       self->_parallaxImages = v8;
 
       v10 = [(NSArray *)self->_parallaxImages count];
       if (v10 != [(NSArray *)self->_imageLayers count])
       {
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v36 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:2746 description:@"The number of stack layers changed after inflation / deflation. Please keep the layer count the same and use NULL images for deflated layers"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:2746 description:@"The number of stack layers changed after inflation / deflation. Please keep the layer count the same and use NULL images for deflated layers"];
       }
 
-      v37 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
       v42 = 0u;
       v43 = 0u;
@@ -3273,18 +3273,18 @@ LABEL_6:
             {
               v18 = v17;
               v19 = [(NSArray *)self->_imageLayers objectAtIndexedSubscript:v13];
-              v20 = [v19 sublayers];
-              [v20 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+              sublayers = [v19 sublayers];
+              [sublayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
-              v21 = [v18 contentLayer];
-              if (v21)
+              contentLayer = [v18 contentLayer];
+              if (contentLayer)
               {
                 [v19 bounds];
                 v23 = v22;
                 v25 = v24;
                 v27 = v26;
                 v29 = v28;
-                [v21 setBounds:?];
+                [contentLayer setBounds:?];
                 v46.origin.x = v23;
                 v46.origin.y = v25;
                 v46.size.width = v27;
@@ -3294,8 +3294,8 @@ LABEL_6:
                 v47.origin.y = v25;
                 v47.size.width = v27;
                 v47.size.height = v29;
-                [v21 setPosition:{MidX, CGRectGetMidY(v47)}];
-                [v19 addSublayer:v21];
+                [contentLayer setPosition:{MidX, CGRectGetMidY(v47)}];
+                [v19 addSublayer:contentLayer];
               }
             }
 
@@ -3315,31 +3315,31 @@ LABEL_6:
         while (v12);
       }
 
-      if (!a3)
+      if (!inflated)
       {
-        v32 = [(NSArray *)self->_imageLayers firstObject];
-        v33 = [v32 contents];
+        firstObject = [(NSArray *)self->_imageLayers firstObject];
+        contents = [firstObject contents];
 
-        if (!v33)
+        if (!contents)
         {
-          v34 = [(CALayer *)self->_flatLayer contents];
-          v35 = [(NSArray *)self->_imageLayers firstObject];
-          [v35 setContents:v34];
+          contents2 = [(CALayer *)self->_flatLayer contents];
+          firstObject2 = [(NSArray *)self->_imageLayers firstObject];
+          [firstObject2 setContents:contents2];
         }
       }
 
-      [MEMORY[0x1E6979518] setDisableActions:v37];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
     }
   }
 }
 
 - (id)_contentLayers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_flatLayer)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_radiosityLayer)
@@ -3433,12 +3433,12 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_displayFrameForModelFrame:(CGRect)a3
+- (CGRect)_displayFrameForModelFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIStackedImageContainerLayer *)self _layerStackToDisplayScaleFactor];
   v8 = width / v7;
   v9 = floor(x / v7);
@@ -3452,9 +3452,9 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_positionAndSizeForLayerImage:(id)a3
+- (CGRect)_positionAndSizeForLayerImage:(id)image
 {
-  [a3 frame];
+  [image frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3462,8 +3462,8 @@ LABEL_6:
   v12 = v8 * 0.5;
   v13 = v10 * 0.5;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v15 = [(_UIStackedImageContainerLayer *)self _imageStackContentsGravity];
-  v16 = [v15 isEqualToString:*MEMORY[0x1E6979DF0]];
+  _imageStackContentsGravity = [(_UIStackedImageContainerLayer *)self _imageStackContentsGravity];
+  v16 = [_imageStackContentsGravity isEqualToString:*MEMORY[0x1E6979DF0]];
 
   if (has_internal_diagnostics)
   {
@@ -3536,16 +3536,16 @@ LABEL_6:
   return result;
 }
 
-- (void)_applyFocusDirectionTransformWithAnimationCoordinator:(id)a3
+- (void)_applyFocusDirectionTransformWithAnimationCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(_UIStackedImageContainerLayer *)self _isFocused];
-  v6 = [(_UIStackedImageContainerLayer *)self _isSelected];
-  v7 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  coordinatorCopy = coordinator;
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
   [(_UIStackedImageContainerLayer *)self _updateMaskScaleTransform];
   if (!self->_nonOpaqueShadow && self->_selectionStyle == 1 && [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth])
   {
-    if (v7)
+    if (_isHighlighted)
     {
       v8 = 1.0 - (self->_scale + -1.0);
       CATransform3DMakeScale(&v35, v8, v8, 1.0);
@@ -3596,7 +3596,7 @@ LABEL_6:
   {
     memset(&v34, 0, sizeof(v34));
     [(_UIStackedImageContainerLayer *)self _imageLayersScaleTransformForCurrentState];
-    if (self->_selectionStyle == 1 && [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth]&& (v5 || v6 || v7))
+    if (self->_selectionStyle == 1 && [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth]&& (_isFocused || _isSelected || _isHighlighted))
     {
       CATransform3DMakeScale(&v32, self->_scale, self->_scale, 1.0);
       v34 = v32;
@@ -3615,10 +3615,10 @@ LABEL_6:
   }
 
   [(_UIStackedImageContainerLayer *)self _updatePerspective];
-  [(_UIStackedImageContainerLayer *)self _updateRotationAndTranslation:v4];
+  [(_UIStackedImageContainerLayer *)self _updateRotationAndTranslation:coordinatorCopy];
 
   [(_UIStackedImageContainerLayer *)self _updateFocusKeylineStrokeScale];
-  if (v5 || v7 || v6)
+  if (_isFocused || _isHighlighted || _isSelected)
   {
     if (self->_selectionStyle == 1 && [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth])
     {
@@ -3665,17 +3665,17 @@ LABEL_6:
   [(_UIStackedImageContainerLayer *)self _updateImageLayerFilterValues];
 }
 
-- (void)_updateOverlayContainerLayerHierarchy:(BOOL)a3
+- (void)_updateOverlayContainerLayerHierarchy:(BOOL)hierarchy
 {
   if (!self->_overlayContainerLayer)
   {
     return;
   }
 
-  if (a3)
+  if (hierarchy)
   {
-    v18 = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
-    v4 = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
+    _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
+    _layerAboveOverlayContainer = [(_UIStackedImageContainerLayer *)self _layerAboveOverlayContainer];
     v5 = CALayerGetDelegate();
     IsKindOfUIView = _IsKindOfUIView(v5);
 
@@ -3683,9 +3683,9 @@ LABEL_6:
     {
       v9 = CALayerGetDelegate();
       v10 = CALayerGetDelegate();
-      v11 = [v18 sublayers];
-      v12 = [v11 indexOfObject:v4];
-      if ([v11 indexOfObject:self->_overlayContainerLayer] != v12 - 1)
+      sublayers = [_layerForImageStackHosting sublayers];
+      v12 = [sublayers indexOfObject:_layerAboveOverlayContainer];
+      if ([sublayers indexOfObject:self->_overlayContainerLayer] != v12 - 1)
       {
         [v10 insertSubview:v9 atIndex:v12];
       }
@@ -3693,25 +3693,25 @@ LABEL_6:
 
     else
     {
-      [v18 insertSublayer:self->_overlayContainerLayer below:v4];
+      [_layerForImageStackHosting insertSublayer:self->_overlayContainerLayer below:_layerAboveOverlayContainer];
     }
   }
 
   else
   {
-    v18 = [(_UIStackedImageContainerLayer *)self _layerForUnfocusedOverlayContainerHosting];
+    _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForUnfocusedOverlayContainerHosting];
     v13 = CALayerGetDelegate();
     v14 = _IsKindOfUIView(v13);
 
     if (!v14 || (CALayerGetDelegate(), v15 = objc_claimAutoreleasedReturnValue(), v16 = _IsKindOfUIView(v15), v15, !v16))
     {
-      [v18 addSublayer:self->_overlayContainerLayer];
+      [_layerForImageStackHosting addSublayer:self->_overlayContainerLayer];
       goto LABEL_15;
     }
 
-    v4 = CALayerGetDelegate();
+    _layerAboveOverlayContainer = CALayerGetDelegate();
     v17 = CALayerGetDelegate();
-    [v4 addSubview:v17];
+    [_layerAboveOverlayContainer addSubview:v17];
   }
 
 LABEL_15:
@@ -3719,34 +3719,34 @@ LABEL_15:
 
 - (void)_showImageLayers
 {
-  v3 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(_UIStackedImageContainerLayer *)self _updateLayer:self->_flatLayer isHidden:1];
   [(_UIStackedImageContainerLayer *)self _updateLayer:self->_imageLayersContainer isHidden:0];
   if (![(NSArray *)self->_parallaxImages count])
   {
-    v4 = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
+    _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
     selectedPlaceholderLayer = self->_selectedPlaceholderLayer;
-    v6 = [(_UIStackedImageContainerLayer *)self _layerAboveImageLayers];
-    [v4 insertSublayer:selectedPlaceholderLayer below:v6];
+    _layerAboveImageLayers = [(_UIStackedImageContainerLayer *)self _layerAboveImageLayers];
+    [_layerForImageStackHosting insertSublayer:selectedPlaceholderLayer below:_layerAboveImageLayers];
   }
 
   [(_UIStackedImageContainerLayer *)self _updateOverlayContainerLayerHierarchy:1];
   v7 = MEMORY[0x1E6979518];
 
-  [v7 setDisableActions:v3];
+  [v7 setDisableActions:disableActions];
 }
 
-- (void)_updateLayer:(id)a3 isHidden:(BOOL)a4
+- (void)_updateLayer:(id)layer isHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
+  hiddenCopy = hidden;
+  layerCopy = layer;
   v5 = CALayerGetDelegate();
   if (_IsKindOfUIView(v5))
   {
     if (v5)
     {
-      [v5 setHidden:v4];
+      [v5 setHidden:hiddenCopy];
 
       goto LABEL_6;
     }
@@ -3756,7 +3756,7 @@ LABEL_15:
   {
   }
 
-  [v6 setHidden:v4];
+  [layerCopy setHidden:hiddenCopy];
 LABEL_6:
 }
 
@@ -3772,15 +3772,15 @@ LABEL_6:
   return 0.0;
 }
 
-- (unint64_t)_primaryControlStateForState:(unint64_t)a3
+- (unint64_t)_primaryControlStateForState:(unint64_t)state
 {
-  v3 = a3 & 4;
-  if ((a3 & 8) != 0)
+  v3 = state & 4;
+  if ((state & 8) != 0)
   {
     v3 = 8;
   }
 
-  if (a3)
+  if (state)
   {
     return 1;
   }
@@ -3796,7 +3796,7 @@ LABEL_6:
   self->_animatingToNormalState = 0;
   if ([(_UIStackedImageContainerLayer *)self _isNormal])
   {
-    v3 = [MEMORY[0x1E6979518] disableActions];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(_UIStackedImageContainerLayer *)self _updateLayer:self->_flatLayer isHidden:0];
     [(_UIStackedImageContainerLayer *)self _updateLayer:self->_imageLayersContainer isHidden:1];
@@ -3816,42 +3816,42 @@ LABEL_6:
     [(_UIStackedImageContainerLayer *)self _setLayerStackInflated:0 seed:self->_layerStackInflationSeed++];
     v4 = MEMORY[0x1E6979518];
 
-    [v4 setDisableActions:v3];
+    [v4 setDisableActions:disableActions];
   }
 }
 
-- (void)_setFlatImage:(id)a3
+- (void)_setFlatImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_flatImage != v5 || !v5 && (-[CALayer contents](self->_flatLayer, "contents"), v10 = objc_claimAutoreleasedReturnValue(), -[_UIStackedImageConfiguration placeholderImage](self->_configuration, "placeholderImage"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 CGImage], v11, v10, v10 != v12))
+  imageCopy = image;
+  v6 = imageCopy;
+  if (self->_flatImage != imageCopy || !imageCopy && (-[CALayer contents](self->_flatLayer, "contents"), v10 = objc_claimAutoreleasedReturnValue(), -[_UIStackedImageConfiguration placeholderImage](self->_configuration, "placeholderImage"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 CGImage], v11, v10, v10 != v12))
   {
-    objc_storeStrong(&self->_flatImage, a3);
-    v7 = [(CALayer *)self->_flatLayer contents];
+    objc_storeStrong(&self->_flatImage, image);
+    contents = [(CALayer *)self->_flatLayer contents];
     flatImage = self->_flatImage;
     if (flatImage)
     {
-      v9 = flatImage;
+      cGImage = flatImage;
     }
 
     else
     {
-      v13 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
-      v9 = [v13 CGImage];
+      placeholderImage = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage];
+      cGImage = [placeholderImage CGImage];
     }
 
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __47___UIStackedImageContainerLayer__setFlatImage___block_invoke;
     v28 = &unk_1E70F35B8;
-    v29 = self;
-    v14 = v9;
+    selfCopy = self;
+    v14 = cGImage;
     v30 = v14;
     v15 = _Block_copy(&v25);
-    if (v7)
+    if (contents)
     {
       v16 = [(_UIStackedImageConfiguration *)self->_configuration placeholderImage:v25];
-      if (v7 == [v16 CGImage])
+      if (contents == [v16 CGImage])
       {
         v17 = self->_flatImage;
 
@@ -3859,19 +3859,19 @@ LABEL_6:
         {
           if (+[UIView areAnimationsEnabled])
           {
-            v18 = [MEMORY[0x1E695DFD0] currentRunLoop];
-            v19 = [v18 currentMode];
-            v20 = [v19 isEqualToString:@"UITrackingRunLoopMode"];
+            currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+            currentMode = [currentRunLoop currentMode];
+            v20 = [currentMode isEqualToString:@"UITrackingRunLoopMode"];
 
             if ((v20 & 1) == 0)
             {
               [MEMORY[0x1E6979518] animationDuration];
               v23 = v22;
-              v24 = [MEMORY[0x1E6979518] disableActions];
+              disableActions = [MEMORY[0x1E6979518] disableActions];
               [MEMORY[0x1E6979518] setDisableActions:0];
               [MEMORY[0x1E6979518] setAnimationDuration:0.35];
               v15[2](v15);
-              [MEMORY[0x1E6979518] setDisableActions:v24];
+              [MEMORY[0x1E6979518] setDisableActions:disableActions];
               [MEMORY[0x1E6979518] setAnimationDuration:v23];
               goto LABEL_15;
             }
@@ -3884,15 +3884,15 @@ LABEL_6:
       }
     }
 
-    v21 = [MEMORY[0x1E6979518] disableActions];
+    disableActions2 = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
     v15[2](v15);
-    [MEMORY[0x1E6979518] setDisableActions:v21];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions2];
 LABEL_15:
   }
 }
 
-- (void)_setIdleModeFocusSizeOffset:(double)a3
+- (void)_setIdleModeFocusSizeOffset:(double)offset
 {
   v3 = *(__UILogGetCategoryCachedImpl("LayeredImage", &_setIdleModeFocusSizeOffset____s_category) + 8);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -3922,13 +3922,13 @@ LABEL_15:
     v9 = v8;
     v11 = v10;
     v12 = [MEMORY[0x1E695F648] filterWithName:@"CIRandomGenerator"];
-    v13 = [v12 outputImage];
+    outputImage = [v12 outputImage];
 
     v20 = @"inputRectangle";
     v14 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:v9 W:v11];
     v21[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    v16 = [v13 imageByApplyingFilter:@"CICrop" withInputParameters:v15];
+    v16 = [outputImage imageByApplyingFilter:@"CICrop" withInputParameters:v15];
 
     v17 = [[UIImage alloc] initWithCIImage:v16];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v9, v11, 1.0);
@@ -3948,28 +3948,28 @@ LABEL_15:
   return v5;
 }
 
-- (void)_setParallaxImages:(id)a3
+- (void)_setParallaxImages:(id)images
 {
-  v4 = a3;
-  if (![(NSArray *)self->_parallaxImages isEqualToArray:v4])
+  imagesCopy = images;
+  if (![(NSArray *)self->_parallaxImages isEqualToArray:imagesCopy])
   {
-    v5 = [(_UIStackedImageConfiguration *)self->_configuration maximumParallaxImages];
-    if ([v4 count] > v5)
+    maximumParallaxImages = [(_UIStackedImageConfiguration *)self->_configuration maximumParallaxImages];
+    if ([imagesCopy count] > maximumParallaxImages)
     {
-      NSLog(&cfstr_ImageStacksWit.isa, v5);
-      v6 = [v4 subarrayWithRange:{0, v5}];
+      NSLog(&cfstr_ImageStacksWit.isa, maximumParallaxImages);
+      v6 = [imagesCopy subarrayWithRange:{0, maximumParallaxImages}];
 
-      v4 = v6;
+      imagesCopy = v6;
     }
 
-    if (!_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceMaxParallaxLayers, @"ForceMaxParallaxLayers", _UIInternalPreferenceUpdateBool) && byte_1EA95E934 && v4)
+    if (!_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceMaxParallaxLayers, @"ForceMaxParallaxLayers", _UIInternalPreferenceUpdateBool) && byte_1EA95E934 && imagesCopy)
     {
-      v7 = [v4 mutableCopy];
+      v7 = [imagesCopy mutableCopy];
       v8 = v7;
-      while ([v7 count] < v5)
+      while ([v7 count] < maximumParallaxImages)
       {
-        v9 = [(_UIStackedImageContainerLayer *)self _randomImage];
-        [v8 addObject:v9];
+        _randomImage = [(_UIStackedImageContainerLayer *)self _randomImage];
+        [v8 addObject:_randomImage];
 
         v7 = v8;
       }
@@ -3977,7 +3977,7 @@ LABEL_15:
 
     else
     {
-      v8 = v4;
+      v8 = imagesCopy;
     }
 
     [(NSArray *)self->_imageLayers makeObjectsPerformSelector:sel_setContents_ withObject:0];
@@ -3988,8 +3988,8 @@ LABEL_15:
     self->_parallaxImages = v10;
 
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_parallaxImages, "count")}];
-    v42 = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
-    v41 = [(_UIStackedImageContainerLayer *)self _layerAboveImageLayers];
+    _layerForImageStackHosting = [(_UIStackedImageContainerLayer *)self _layerForImageStackHosting];
+    _layerAboveImageLayers = [(_UIStackedImageContainerLayer *)self _layerAboveImageLayers];
     v40 = v12;
     if ([(NSArray *)self->_parallaxImages count])
     {
@@ -4011,15 +4011,15 @@ LABEL_15:
           v18 = v17;
           v19 = objc_alloc_init(MEMORY[0x1E6979530]);
           v16[2](v16, v19, v13);
-          v20 = [v18 contentLayer];
-          if (v20)
+          contentLayer = [v18 contentLayer];
+          if (contentLayer)
           {
             [v19 bounds];
             v22 = v21;
             v24 = v23;
             v26 = v25;
             v28 = v27;
-            [v20 setBounds:?];
+            [contentLayer setBounds:?];
             v46.origin.x = v22;
             v46.origin.y = v24;
             v46.size.width = v26;
@@ -4029,8 +4029,8 @@ LABEL_15:
             v47.origin.y = v24;
             v47.size.width = v26;
             v47.size.height = v28;
-            [v20 setPosition:{MidX, CGRectGetMidY(v47)}];
-            [v19 addSublayer:v20];
+            [contentLayer setPosition:{MidX, CGRectGetMidY(v47)}];
+            [v19 addSublayer:contentLayer];
           }
 
           v12 = v40;
@@ -4043,7 +4043,7 @@ LABEL_15:
           [v19 setContents:{-[_UIStackedImageContainerLayer _cgImageForLayeredImage:](self, "_cgImageForLayeredImage:", v15)}];
         }
 
-        [v42 insertSublayer:v19 below:v41];
+        [_layerForImageStackHosting insertSublayer:v19 below:_layerAboveImageLayers];
         [v12 addObject:v19];
 
         ++v13;
@@ -4058,32 +4058,32 @@ LABEL_15:
 
     if (self->_layerStackSupportsInflation)
     {
-      v32 = [(NSArray *)self->_imageLayers firstObject];
-      v33 = [v32 contents];
+      firstObject = [(NSArray *)self->_imageLayers firstObject];
+      contents = [firstObject contents];
 
-      if (!v33)
+      if (!contents)
       {
-        v34 = [(CALayer *)self->_flatLayer contents];
-        v35 = [(NSArray *)self->_imageLayers firstObject];
-        [v35 setContents:v34];
+        contents2 = [(CALayer *)self->_flatLayer contents];
+        firstObject2 = [(NSArray *)self->_imageLayers firstObject];
+        [firstObject2 setContents:contents2];
       }
     }
 
     if ([(NSArray *)self->_parallaxImages count])
     {
       [(CALayer *)self->_selectedPlaceholderLayer removeFromSuperlayer];
-      v4 = v39;
+      imagesCopy = v39;
       v36 = v40;
-      v38 = v41;
-      v37 = v42;
+      v38 = _layerAboveImageLayers;
+      v37 = _layerForImageStackHosting;
     }
 
     else
     {
-      v38 = v41;
-      v37 = v42;
-      [v42 insertSublayer:self->_selectedPlaceholderLayer below:v41];
-      v4 = v39;
+      v38 = _layerAboveImageLayers;
+      v37 = _layerForImageStackHosting;
+      [_layerForImageStackHosting insertSublayer:self->_selectedPlaceholderLayer below:_layerAboveImageLayers];
+      imagesCopy = v39;
       v36 = v40;
     }
 
@@ -4093,10 +4093,10 @@ LABEL_15:
   }
 }
 
-- (void)_setFocusDirection:(CGPoint)a3 duration:(double)a4
+- (void)_setFocusDirection:(CGPoint)direction duration:(double)duration
 {
-  y = a3.y;
-  x = a3.x;
+  y = direction.y;
+  x = direction.x;
   if (![(_UIStackedImageContainerLayer *)self _isNormal])
   {
     v8 = fmax(fmin(x, 1.0), -1.0);
@@ -4107,7 +4107,7 @@ LABEL_15:
       self->_focusDirection.y = v9;
       [MEMORY[0x1E6979518] animationDuration];
       v11 = v10;
-      [MEMORY[0x1E6979518] setAnimationDuration:a4];
+      [MEMORY[0x1E6979518] setAnimationDuration:duration];
       [(_UIStackedImageContainerLayer *)self _updateRotationAndTranslation:0];
       v12 = MEMORY[0x1E6979518];
 
@@ -4137,16 +4137,16 @@ LABEL_15:
 
 - (CGVector)_scaleAmountsForCurrentState
 {
-  v3 = [(_UIStackedImageContainerLayer *)self _isFocused];
-  v4 = [(_UIStackedImageContainerLayer *)self _isSelected];
-  v5 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
-  if (v3)
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  if (_isFocused)
   {
     if (self->_selectionStyle == 1)
     {
-      v6 = [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth];
+      fullBleedCenteredGrowth = [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth];
       v7 = 1.0;
-      if (v6)
+      if (fullBleedCenteredGrowth)
       {
         scale = self->_scale;
       }
@@ -4167,7 +4167,7 @@ LABEL_9:
 
   v7 = 1.0;
   scale = 1.0;
-  if (!v4 && !v5)
+  if (!_isSelected && !_isHighlighted)
   {
     goto LABEL_12;
   }
@@ -4232,7 +4232,7 @@ LABEL_5:
     return result;
   }
 
-  v6 = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
   [(_UIStackedImageConfiguration *)self->_configuration rotationAmount];
   x = v7;
   result = [(_UIStackedImageContainerLayer *)self _effectiveAdjustMotionForSize];
@@ -4264,7 +4264,7 @@ LABEL_5:
   v24 = v16[3];
   *&retstr->m21 = v23;
   *&retstr->m23 = v24;
-  if (v6 && self->_selectionStyle != 1)
+  if (_isFocused && self->_selectionStyle != 1)
   {
     p_focusDirection = &self->_focusDirection;
     v26 = y * p_focusDirection->y;
@@ -4313,8 +4313,8 @@ LABEL_5:
   result = [(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms];
   if (result)
   {
-    v6 = [(_UIStackedImageContainerLayer *)self _isFocused];
-    v7 = [(_UIStackedImageContainerLayer *)self _isSelected];
+    _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+    _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
     result = [(_UIStackedImageContainerLayer *)self _isHighlighted];
     v8 = MEMORY[0x1E69792E8];
     v9 = *(MEMORY[0x1E69792E8] + 80);
@@ -4329,7 +4329,7 @@ LABEL_5:
     v12 = v8[3];
     *&retstr->m21 = v8[2];
     *&retstr->m23 = v12;
-    if (v6 || ((v7 | result)) && self->_selectionStyle != 1)
+    if (_isFocused || ((_isSelected | result)) && self->_selectionStyle != 1)
     {
       result = [(_UIStackedImageConfiguration *)self->_configuration zDepth];
       retstr->m34 = -1.0 / v13;
@@ -4417,12 +4417,12 @@ LABEL_5:
   }
 }
 
-- (void)_updateRotationAndTranslation:(id)a3
+- (void)_updateRotationAndTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = [(_UIStackedImageContainerLayer *)self _isFocused];
-  v6 = [(_UIStackedImageContainerLayer *)self _isSelected];
-  v7 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  translationCopy = translation;
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
   [(_UIStackedImageConfiguration *)self->_configuration translationOffset];
   x = v8;
   y = v10;
@@ -4495,7 +4495,7 @@ LABEL_5:
   v17 = v16 + v15 * 0.5;
   [(_UIStackedImageConfiguration *)self->_configuration radiosityOffset];
   v19 = v17 + v18;
-  if (v5)
+  if (_isFocused)
   {
     v20 = x * self->_focusDirection.x;
     v21 = v17 + y * self->_focusDirection.y;
@@ -4528,7 +4528,7 @@ LABEL_5:
   }
 
   v42 = v19;
-  if ((v6 || v7) && self->_selectionStyle == 1 && ![(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth])
+  if ((_isSelected || _isHighlighted) && self->_selectionStyle == 1 && ![(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth])
   {
     [(_UIStackedImageConfiguration *)self->_configuration fullBleedOffset];
     v21 = v21 + v27;
@@ -4540,9 +4540,9 @@ LABEL_5:
   if ([(_UIStackedImageContainerLayer *)self _isNormal])
   {
     [(_UIStackedImageConfiguration *)self->_configuration repositionUnselectionDuration];
-    if (v4)
+    if (translationCopy)
     {
-      [v4 _unfocusingRepositionAnimationDuration];
+      [translationCopy _unfocusingRepositionAnimationDuration];
     }
 
     else
@@ -4564,8 +4564,8 @@ LABEL_22:
   }
 
 LABEL_23:
-  v33 = [(CALayer *)self->_unmaskedOverlayContainerLayer superlayer];
-  [v33 bounds];
+  superlayer = [(CALayer *)self->_unmaskedOverlayContainerLayer superlayer];
+  [superlayer bounds];
   v36 = v35 + v34 * 0.5;
   v39 = v38 + v37 * 0.5;
 
@@ -4583,18 +4583,18 @@ LABEL_23:
   [(_UIStackedImageContainerLayer *)self _updateInnerParallaxTransform];
   [(_UIStackedImageContainerLayer *)self _updateOverlayLayerTransforms];
   [(_UIStackedImageContainerLayer *)self _updateFullBleedImageLayers];
-  [(_UIFocusSpecularHighlightLayer *)self->_specularLayer updateForFocusDirection:v5 isFocused:self->_focusDirection.x, self->_focusDirection.y];
+  [(_UIFocusSpecularHighlightLayer *)self->_specularLayer updateForFocusDirection:_isFocused isFocused:self->_focusDirection.x, self->_focusDirection.y];
   [(_UIStackedImageContainerLayer *)self _updateContentProviderLayerFocusDirection];
   [(_UIStackedImageContainerLayer *)self _updateImageLayerFilterValues];
 }
 
 - (void)_updateInnerParallaxTransform
 {
-  v3 = [(_UIStackedImageContainerLayer *)self _layerForInnerParallaxTransform];
+  _layerForInnerParallaxTransform = [(_UIStackedImageContainerLayer *)self _layerForInnerParallaxTransform];
   selectionStyle = self->_selectionStyle;
   if ([(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering]&& (selectionStyle - 3) < 0xFFFFFFFFFFFFFFFELL)
   {
-    v5 = [(_UIStackedImageContainerLayer *)self _isFocused];
+    _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
     if (_UIInternalPreferenceUsesDefault(algn_1ED48B958, @"UISolariumStackedImageContainerModifyTransformMinWidth", _UIInternalPreferenceUpdateDouble))
     {
       v6 = 190.0;
@@ -4652,7 +4652,7 @@ LABEL_23:
     aBlock[2] = __62___UIStackedImageContainerLayer__updateInnerParallaxTransform__block_invoke;
     aBlock[3] = &__block_descriptor_41_e22_d32__0d8_CGPoint_dd_16l;
     v18 = v10 * (v17 * v16 + 1.0);
-    v39 = v5;
+    v39 = _isFocused;
     *&aBlock[4] = v18;
     v19 = _Block_copy(aBlock);
     v20 = v19[2](self->_focusDirection.x, self->_focusDirection.x, self->_focusDirection.y);
@@ -4691,16 +4691,16 @@ LABEL_23:
     v36 = v40;
     CATransform3DTranslate(&v37, &v36, v25, v27, 0.0);
     v40 = v37;
-    v31 = [(_UIStackedImageContainerLayer *)self _layerForInnerParallaxTransform];
+    _layerForInnerParallaxTransform2 = [(_UIStackedImageContainerLayer *)self _layerForInnerParallaxTransform];
     v37 = v40;
-    [v31 setTransform:&v37];
+    [_layerForInnerParallaxTransform2 setTransform:&v37];
   }
 
   else
   {
-    if (v3)
+    if (_layerForInnerParallaxTransform)
     {
-      [v3 transform];
+      [_layerForInnerParallaxTransform transform];
     }
 
     else
@@ -4722,7 +4722,7 @@ LABEL_23:
       v35 = *(MEMORY[0x1E69792E8] + 48);
       *&v40.m21 = *(MEMORY[0x1E69792E8] + 32);
       *&v40.m23 = v35;
-      [v3 setTransform:&v40];
+      [_layerForInnerParallaxTransform setTransform:&v40];
     }
   }
 }
@@ -4752,12 +4752,12 @@ LABEL_23:
   return v7;
 }
 
-- (void)_updateFocusKeylineStrokeTranslation:(CGPoint)a3
+- (void)_updateFocusKeylineStrokeTranslation:(CGPoint)translation
 {
   if (self->_focusKeylineStrokeLayer)
   {
-    y = a3.y;
-    x = a3.x;
+    y = translation.y;
+    x = translation.x;
     [(_UIStackedImageContainerLayer *)self _currentStackLayoutBounds];
     v6 = v16.origin.x;
     v7 = v16.origin.y;
@@ -4790,22 +4790,22 @@ LABEL_23:
   }
 }
 
-- (CATransform3D)_fixedFrameImageLayersTransformForDepth:(SEL)a3 fudgeFactor:(double)a4
+- (CATransform3D)_fixedFrameImageLayersTransformForDepth:(SEL)depth fudgeFactor:(double)factor
 {
   [(_UIStackedImageConfiguration *)self->_configuration zDepth];
-  v10 = (1.0 - a4 / v9) * a5;
-  v11 = [(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms];
-  if (v11)
+  v10 = (1.0 - factor / v9) * a5;
+  _isEligibleFor3DTransforms = [(_UIStackedImageContainerLayer *)self _isEligibleFor3DTransforms];
+  if (_isEligibleFor3DTransforms)
   {
-    v12 = a4;
+    factorCopy = factor;
   }
 
   else
   {
-    v12 = 0.0;
+    factorCopy = 0.0;
   }
 
-  if (v11)
+  if (_isEligibleFor3DTransforms)
   {
     v13 = v10;
   }
@@ -4818,7 +4818,7 @@ LABEL_23:
   [(_UIStackedImageContainerLayer *)self _imageLayersScaleAmountsForCurrentState];
   memset(&v19, 0, sizeof(v19));
   [(_UIStackedImageContainerLayer *)self _scaleTransform3DForScaleAmounts:v14 * v13, v15 * v13];
-  CATransform3DMakeTranslation(&a, 0.0, 0.0, v12);
+  CATransform3DMakeTranslation(&a, 0.0, 0.0, factorCopy);
   v17 = v19;
   return CATransform3DConcat(retstr, &a, &v17);
 }
@@ -4833,9 +4833,9 @@ LABEL_23:
     v53 = v4;
     v54 = v2;
     v55 = v3;
-    v9 = [(_UIStackedImageContainerLayer *)self _isFocused];
-    v10 = [(_UIStackedImageContainerLayer *)self _isSelected];
-    v11 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+    _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+    _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+    _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
     memset(&v49, 0, sizeof(v49));
     [(_UIStackedImageContainerLayer *)self _imageLayersScaleTransformForCurrentState];
     v12 = [(NSArray *)self->_imageLayers count];
@@ -4843,8 +4843,8 @@ LABEL_23:
     {
       v13 = v12;
       v14 = 0;
-      v15 = v9 || v11;
-      v44 = v9 || v11;
+      v15 = _isFocused || _isHighlighted;
+      v44 = _isFocused || _isHighlighted;
       v43 = v12;
       do
       {
@@ -4852,12 +4852,12 @@ LABEL_23:
         v17 = [(NSArray *)self->_parallaxImages objectAtIndexedSubscript:v14];
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v17 fixedFrame];
-          v19 = v18;
+          fixedFrame = [v17 fixedFrame];
+          v19 = fixedFrame;
           if (!v15)
           {
-            v36 = v18 ^ 1;
-            if (!v10)
+            v36 = fixedFrame ^ 1;
+            if (!_isSelected)
             {
               goto LABEL_21;
             }
@@ -4880,7 +4880,7 @@ LABEL_23:
           if (!v15)
           {
             v36 = 1;
-            if (!v10)
+            if (!_isSelected)
             {
 LABEL_21:
               v39 = *(MEMORY[0x1E69792E8] + 80);
@@ -4934,8 +4934,8 @@ LABEL_11:
         [v16 position];
         v24 = v23;
         v26 = v25;
-        v27 = [(NSArray *)self->_imageLayers firstObject];
-        [v27 position];
+        firstObject = [(NSArray *)self->_imageLayers firstObject];
+        [firstObject position];
         v29 = v28 - v24;
         v31 = v30 - v26;
         CATransform3DMakeTranslation(&a, v29, v31, 0.0);
@@ -4958,10 +4958,10 @@ LABEL_11:
             [v33 setDuration:?];
             v47 = v48;
             [MEMORY[0x1E696B098] valueWithCATransform3D:&v47];
-            v35 = v34 = v10;
+            v35 = v34 = _isSelected;
             [v33 setToValue:v35];
 
-            v10 = v34;
+            _isSelected = v34;
             v13 = v43;
             [v16 addAnimation:v33 forKey:@"transform"];
           }
@@ -4995,9 +4995,9 @@ LABEL_25:
     v76 = v4;
     v77 = v2;
     v78 = v3;
-    v13 = [(_UIStackedImageContainerLayer *)self _isFocused];
-    v56 = [(_UIStackedImageContainerLayer *)self _isSelected];
-    v57 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+    _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+    _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+    _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -5019,7 +5019,7 @@ LABEL_25:
       v16 = v14;
       v17 = 0;
       v18 = 0.064 / v15;
-      v19 = v13 || v57;
+      v19 = _isFocused || _isHighlighted;
       v55 = 20.0 / v14;
       v20 = MEMORY[0x1E69792E8];
       v54 = 10.0 / v14;
@@ -5033,17 +5033,17 @@ LABEL_25:
           [v21 position];
           v25 = v24;
           v27 = v26;
-          v28 = [(NSArray *)self->_imageLayers firstObject];
-          [v28 position];
+          firstObject = [(NSArray *)self->_imageLayers firstObject];
+          [firstObject position];
           v30 = v29;
           v32 = v31;
-          if (v57)
+          if (_isHighlighted)
           {
-            v33 = [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth];
+            fullBleedCenteredGrowth = [(_UIStackedImageConfiguration *)self->_configuration fullBleedCenteredGrowth];
             scale = self->_scale;
             v35 = v23 * scale;
             v36 = v23 * (1.0 - (scale + -1.0));
-            if (v33)
+            if (fullBleedCenteredGrowth)
             {
               v23 = v36;
             }
@@ -5094,7 +5094,7 @@ LABEL_25:
 
         else
         {
-          if (v56)
+          if (_isSelected)
           {
             *&v60.m31 = v65;
             *&v60.m33 = v66;
@@ -5144,9 +5144,9 @@ LABEL_25:
 
 - (void)_updateOverlayLayerTransforms
 {
-  v3 = [(_UIStackedImageContainerLayer *)self _isFocused];
-  v4 = [(_UIStackedImageContainerLayer *)self _isSelected];
-  v5 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -5163,7 +5163,7 @@ LABEL_25:
   {
     if (overlayLayer)
     {
-      if (v4)
+      if (_isSelected)
       {
         *&v42.m31 = *&v43.m31;
         *&v42.m33 = *&v43.m33;
@@ -5206,7 +5206,7 @@ LABEL_25:
 
     if (self->_unmaskedOverlayLayer)
     {
-      if (v4)
+      if (_isSelected)
       {
         *&v42.m31 = v48;
         *&v42.m33 = v49;
@@ -5241,7 +5241,7 @@ LABEL_25:
   {
     if (overlayLayer)
     {
-      v9 = [(_UIStackedImageConfiguration *)self->_configuration overlayFixedFrame];
+      overlayFixedFrame = [(_UIStackedImageConfiguration *)self->_configuration overlayFixedFrame];
       [(_UIStackedImageContainerLayer *)self _deepestParallaxDepthWithOverlayDepth:1];
       v11 = v10;
       v12 = *(MEMORY[0x1E69792E8] + 64);
@@ -5260,9 +5260,9 @@ LABEL_25:
       v19 = *(MEMORY[0x1E69792E8] + 48);
       *&v42.m21 = v18;
       *&v42.m23 = v19;
-      if (v3 || v5)
+      if (_isFocused || _isHighlighted)
       {
-        if (v9)
+        if (overlayFixedFrame)
         {
           [(_UIStackedImageContainerLayer *)self _fixedFrameImageLayersTransformForDepth:v11 fudgeFactor:1.015];
         }
@@ -5275,12 +5275,12 @@ LABEL_25:
         }
       }
 
-      else if (v4)
+      else if (_isSelected)
       {
         v42 = v43;
       }
 
-      else if (v9)
+      else if (overlayFixedFrame)
       {
         *&a.m31 = v12;
         *&a.m33 = v13;
@@ -5300,7 +5300,7 @@ LABEL_25:
 
     if (self->_unmaskedOverlayLayer)
     {
-      v30 = v3 || v5 || v4;
+      v30 = _isFocused || _isHighlighted || _isSelected;
       if (v30)
       {
         *&v42.m31 = v48;
@@ -5377,14 +5377,14 @@ LABEL_29:
     do
     {
       v5 = [(NSArray *)self->_imageLayers objectAtIndex:v3];
-      v6 = [*(&self->super.super.isa + v4[404]) layers];
-      v7 = [v6 objectAtIndex:v3];
+      layers = [*(&self->super.super.isa + v4[404]) layers];
+      v7 = [layers objectAtIndex:v3];
 
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v7 contentProvider];
+        contentProvider = [v7 contentProvider];
 
-        if (v8)
+        if (contentProvider)
         {
           v16 = v7;
           v17 = v5;
@@ -5393,8 +5393,8 @@ LABEL_29:
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v9 = [v5 sublayers];
-          v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          sublayers = [v5 sublayers];
+          v10 = [sublayers countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v10)
           {
             v11 = v10;
@@ -5405,7 +5405,7 @@ LABEL_29:
               {
                 if (*v21 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(sublayers);
                 }
 
                 v14 = *(*(&v20 + 1) + 8 * i);
@@ -5414,7 +5414,7 @@ LABEL_29:
                 [v14 setValue:v15 forKey:@"focusDirection"];
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+              v11 = [sublayers countByEnumeratingWithState:&v20 objects:v24 count:16];
             }
 
             while (v11);
@@ -5463,10 +5463,10 @@ LABEL_29:
 {
   if (![(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering]|| (_UIInternalPreferenceUsesDefault(&_UIInternalPreference_UISolariumNewStackedImageRenderingFiltersEnabled, @"UISolariumNewStackedImageRenderingFiltersEnabled", _UIInternalPreferenceUpdateBool) & 1) == 0 && byte_1EA95E90C)
   {
-    v3 = [(_UIStackedImageContainerLayer *)self _isFocused];
+    _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
     if ([(_UIStackedImageConfiguration *)self->_configuration boostBrightness])
     {
-      v4 = !v3;
+      v4 = !_isFocused;
     }
 
     else
@@ -5487,7 +5487,7 @@ LABEL_29:
       [(CALayer *)imageLayersContainer setValue:v7 forKeyPath:@"filters.brightness.inputAmount"];
     }
 
-    if ([(_UIStackedImageConfiguration *)self->_configuration hueShift]&& v3)
+    if ([(_UIStackedImageConfiguration *)self->_configuration hueShift]&& _isFocused)
     {
       v8 = self->_focusDirection.x * -0.15;
       if (fabs(v8) < 0.01)
@@ -5504,7 +5504,7 @@ LABEL_29:
 
 - (void)_updateSpecularTransform
 {
-  v3 = [(_UIStackedImageContainerLayer *)self _isFocused]|| [(_UIStackedImageContainerLayer *)self _isHighlighted];
+  _isHighlighted = [(_UIStackedImageContainerLayer *)self _isFocused]|| [(_UIStackedImageContainerLayer *)self _isHighlighted];
   [(_UIStackedImageContainerLayer *)self _scaleAmountsForCurrentState];
   v5 = v4;
   v7 = v6;
@@ -5519,18 +5519,18 @@ LABEL_29:
   [(_UIFocusSpecularHighlightLayer *)self->_specularLayer setAppliesFocusDirectionToContentsRect:[(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering]^ 1];
   specularLayer = self->_specularLayer;
 
-  [(_UIFocusSpecularHighlightLayer *)specularLayer updateTransformWithFocused:v3];
+  [(_UIFocusSpecularHighlightLayer *)specularLayer updateTransformWithFocused:_isHighlighted];
 }
 
-- (void)_updateLayerForSelectionWithAnimationCoordinator:(id)a3
+- (void)_updateLayerForSelectionWithAnimationCoordinator:(id)coordinator
 {
   v4 = MEMORY[0x1E6979518];
-  v5 = a3;
+  coordinatorCopy = coordinator;
   [v4 animationDuration];
   v7 = v6;
-  v8 = [(_UIStackedImageContainerLayer *)self _isFocused];
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isFocused];
   configuration = self->_configuration;
-  if (v8)
+  if (_isFocused)
   {
     [(_UIStackedImageConfiguration *)configuration layerSelectionDuration];
   }
@@ -5541,7 +5541,7 @@ LABEL_29:
   }
 
   v11 = v10;
-  if (v5 || (+[UIView inheritedAnimationDuration], v12 > 0.0))
+  if (coordinatorCopy || (+[UIView inheritedAnimationDuration], v12 > 0.0))
   {
     +[UIView inheritedAnimationDuration];
     v11 = v13;
@@ -5581,9 +5581,9 @@ LABEL_29:
 
   else
   {
-    v21 = [(_UIStackedImageContainerLayer *)self _isSelected];
+    _isSelected = [(_UIStackedImageContainerLayer *)self _isSelected];
     v22 = 1.13;
-    if (!v21)
+    if (!_isSelected)
     {
       v22 = 1.0;
     }
@@ -5596,7 +5596,7 @@ LABEL_29:
 
   [(_UIFocusSpecularHighlightLayer *)v20 setOpacity:v19];
   [(_UIStackedImageContainerLayer *)self _updateSpecularTransform];
-  [(_UIStackedImageContainerLayer *)self _applyFocusDirectionTransformWithAnimationCoordinator:v5];
+  [(_UIStackedImageContainerLayer *)self _applyFocusDirectionTransformWithAnimationCoordinator:coordinatorCopy];
 
   [MEMORY[0x1E6979518] setAnimationDuration:v7];
   if (self->_cursorLayer)
@@ -5653,9 +5653,9 @@ LABEL_29:
 
   else if (selectionStyle == 3 || selectionStyle == 0)
   {
-    v5 = [(_UIStackedImageContainerLayer *)self _isHighlighted];
+    _isHighlighted = [(_UIStackedImageContainerLayer *)self _isHighlighted];
     v6 = self->_configuration;
-    if (v5)
+    if (_isHighlighted)
     {
 
       [(_UIStackedImageConfiguration *)v6 defaultHighlightedShadowRadius];
@@ -5670,8 +5670,8 @@ LABEL_29:
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4396 description:@"unknown selection style"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4396 description:@"unknown selection style"];
 
     return 0.0;
   }
@@ -5695,8 +5695,8 @@ LABEL_4:
   {
     if (selectionStyle)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4416 description:@"unknown selection style"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4416 description:@"unknown selection style"];
 
       return 0.0;
     }
@@ -5724,13 +5724,13 @@ LABEL_4:
     {
       if (selectionStyle != 3 && selectionStyle != 0)
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        v17 = v16;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v17 = currentHandler;
         v18 = a2;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 4448;
 LABEL_27:
-        [v16 handleFailureInMethod:v18 object:v19 file:@"_UIStackedImageContainerLayer.m" lineNumber:v20 description:@"unknown selection style"];
+        [currentHandler handleFailureInMethod:v18 object:selfCopy2 file:@"_UIStackedImageContainerLayer.m" lineNumber:v20 description:@"unknown selection style"];
 
         return 0.0;
       }
@@ -5756,16 +5756,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [objc_opt_self() mainScreen];
-  v11 = [v10 traitCollection];
-  v12 = [v11 userInterfaceStyle];
+  mainScreen = [objc_opt_self() mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v13 = self->_selectionStyle;
   if ((v13 - 2) < 2)
   {
 LABEL_18:
     v7 = 0.0;
-    if (v12 != 1000)
+    if (userInterfaceStyle != 1000)
     {
       configuration = self->_configuration;
 
@@ -5780,10 +5780,10 @@ LABEL_18:
   {
     if (v13)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      v17 = v16;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v17 = currentHandler;
       v18 = a2;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 4469;
       goto LABEL_27;
     }
@@ -5792,7 +5792,7 @@ LABEL_18:
   }
 
   v7 = 0.0;
-  if (v12 == 1000)
+  if (userInterfaceStyle == 1000)
   {
     return v7;
   }
@@ -5815,8 +5815,8 @@ LABEL_18:
   v8 = v4;
   v9 = v5;
   v10 = v6;
-  v11 = [(_UIStackedImageContainerLayer *)self _isHighlighted]|| [(_UIStackedImageContainerLayer *)self _isFocused];
-  if ([(_UIStackedImageConfiguration *)self->_configuration useSeparateUnfocusedShadowImage]&& !v11)
+  _isFocused = [(_UIStackedImageContainerLayer *)self _isHighlighted]|| [(_UIStackedImageContainerLayer *)self _isFocused];
+  if ([(_UIStackedImageConfiguration *)self->_configuration useSeparateUnfocusedShadowImage]&& !_isFocused)
   {
     [(_UIStackedImageContainerLayer *)self _unfocusedShadowRadius];
     v13 = v12 + v12;
@@ -5838,9 +5838,9 @@ LABEL_18:
 
     v19 = *MEMORY[0x1E695EFF8];
     v20 = *(MEMORY[0x1E695EFF8] + 8);
-    v21 = [(_UIStackedImageContainerLayer *)self isSelected];
+    isSelected = [(_UIStackedImageContainerLayer *)self isSelected];
     configuration = self->_configuration;
-    if (v21)
+    if (isSelected)
     {
       [(_UIStackedImageConfiguration *)configuration defaultSelectedShadowVerticalOffset];
     }
@@ -5983,9 +5983,9 @@ LABEL_20:
 
   else
   {
-    v53 = [(_UIStackedImageContainerLayer *)self isSelected];
+    isSelected2 = [(_UIStackedImageContainerLayer *)self isSelected];
     v54 = self->_configuration;
-    if (v53)
+    if (isSelected2)
     {
       [(_UIStackedImageConfiguration *)v54 defaultSelectedShadowVerticalOffset];
     }
@@ -6041,10 +6041,10 @@ LABEL_20:
   }
 }
 
-- (void)_updateShadowPositionWithOffset:(CGPoint)a3
+- (void)_updateShadowPositionWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(_UIStackedImageContainerLayer *)self _currentStackLayoutBounds];
   v6 = v15.origin.x;
   v7 = v15.origin.y;
@@ -6063,9 +6063,9 @@ LABEL_20:
   [(CALayer *)unfocusedShadowLayer setPosition:v11, v12];
 }
 
-- (void)_updateShadowWithCATransaction:(BOOL)a3
+- (void)_updateShadowWithCATransaction:(BOOL)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   [(_UIStackedImageContainerLayer *)self bounds];
   if (self->_nonOpaqueShadow)
   {
@@ -6100,12 +6100,12 @@ LABEL_20:
     v43 = v11;
     [(_UIStackedImageContainerLayer *)self _getShadowOpacity];
     v45 = v44;
-    v46 = [(NSArray *)self->_imageLayers firstObject];
-    [v46 setShadowRadius:v10];
-    [v46 setShadowOffset:{0.0, v43}];
+    firstObject = [(NSArray *)self->_imageLayers firstObject];
+    [firstObject setShadowRadius:v10];
+    [firstObject setShadowOffset:{0.0, v43}];
     *&v45 = v45;
     LODWORD(v47) = LODWORD(v45);
-    [v46 setShadowOpacity:v47];
+    [firstObject setShadowOpacity:v47];
     v49 = self->_flatLayer;
 
     [(CALayer *)v49 setShadowRadius:v10];
@@ -6116,18 +6116,18 @@ LABEL_20:
 
   else if (self->_shadowLayer && !CGRectIsEmpty(*&v5))
   {
-    v12 = [objc_opt_self() mainScreen];
-    v13 = [v12 traitCollection];
-    v14 = [v13 userInterfaceStyle];
+    mainScreen = [objc_opt_self() mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v3)
+    if (transactionCopy)
     {
       [MEMORY[0x1E6979518] begin];
     }
 
     [(_UIStackedImageContainerLayer *)self _focusedShadowRadius];
     v16 = v15;
-    if (v14 == 1000)
+    if (userInterfaceStyle == 1000)
     {
       v17 = 1.0;
     }
@@ -6137,7 +6137,7 @@ LABEL_20:
       v17 = 0.0;
     }
 
-    if (v14 == 1000)
+    if (userInterfaceStyle == 1000)
     {
       v18 = 0.3;
     }
@@ -6157,9 +6157,9 @@ LABEL_20:
     {
       [(_UIStackedImageConfiguration *)self->_configuration isContinuousCornerRadiusEnabled];
       v26 = CachedShadowContents(v25 != 0.0, v16 * v20, v20 * v22, v17, v18);
-      v27 = [(CALayer *)self->_shadowLayer contents];
+      contents = [(CALayer *)self->_shadowLayer contents];
 
-      if (v27 != v26)
+      if (contents != v26)
       {
         [(CALayer *)self->_shadowLayer setContents:v26];
         [(CALayer *)self->_shadowLayer setContentsCenter:0.5, 0.5, 0.0, 0.0];
@@ -6170,9 +6170,9 @@ LABEL_20:
     {
       [(_UIStackedImageConfiguration *)self->_configuration isContinuousCornerRadiusEnabled];
       v29 = CachedShadowContents(v28 != 0.0, v20 * v24, v20 * v22, v17, v18);
-      v30 = [(CALayer *)self->_unfocusedShadowLayer contents];
+      contents2 = [(CALayer *)self->_unfocusedShadowLayer contents];
 
-      if (v30 != v29)
+      if (contents2 != v29)
       {
         [(CALayer *)self->_unfocusedShadowLayer setContents:v29];
         [(CALayer *)self->_unfocusedShadowLayer setContentsCenter:0.5, 0.5, 0.0, 0.0];
@@ -6180,7 +6180,7 @@ LABEL_20:
     }
 
     [(_UIStackedImageContainerLayer *)self _updateShadowBounds];
-    if (v3)
+    if (transactionCopy)
     {
       v31 = MEMORY[0x1E6979518];
       v32 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
@@ -6197,9 +6197,9 @@ LABEL_20:
       v33 = ![(_UIStackedImageContainerLayer *)self _isFocused];
     }
 
-    v36 = [(_UIStackedImageConfiguration *)self->_configuration useSeparateUnfocusedShadowImage];
+    useSeparateUnfocusedShadowImage = [(_UIStackedImageConfiguration *)self->_configuration useSeparateUnfocusedShadowImage];
     shadowLayer = self->_shadowLayer;
-    if (v36 && (v33 & 1) != 0)
+    if (useSeparateUnfocusedShadowImage && (v33 & 1) != 0)
     {
       [(CALayer *)self->_shadowLayer setOpacity:0.0];
       unfocusedShadowLayer = self->_unfocusedShadowLayer;
@@ -6217,7 +6217,7 @@ LABEL_20:
     }
 
     [(CALayer *)unfocusedShadowLayer setOpacity:v39];
-    if (v3)
+    if (transactionCopy)
     {
       v41 = MEMORY[0x1E6979518];
 
@@ -6239,9 +6239,9 @@ LABEL_20:
     v4 = 0;
   }
 
-  v5 = [(_UIStackedImageContainerLayer *)self _radiosityEnabled];
+  _radiosityEnabled = [(_UIStackedImageContainerLayer *)self _radiosityEnabled];
   v6 = 6;
-  if (v5)
+  if (_radiosityEnabled)
   {
     v6 = 7;
   }
@@ -6261,8 +6261,8 @@ LABEL_20:
     v7 = v6;
   }
 
-  v8 = [(_UIStackedImageContainerLayer *)self sublayers];
-  if ([v8 count] > v7)
+  sublayers = [(_UIStackedImageContainerLayer *)self sublayers];
+  if ([sublayers count] > v7)
   {
     v4 = 1;
   }
@@ -6274,8 +6274,8 @@ LABEL_20:
 {
   if (os_variant_has_internal_diagnostics() && (_UIInternalPreferenceUsesDefault(&_UIInternalPreference_VisualizeUIViews, @"VisualizeUIViews", _UIInternalPreferenceUpdateBool) & 1) == 0 && byte_1ED48A8C4)
   {
-    v3 = [(_UIStackedImageContainerLayer *)self delegate];
-    v5 = objc_getAssociatedObject(v3, &__UIViewMarkerLayerKey);
+    delegate = [(_UIStackedImageContainerLayer *)self delegate];
+    v5 = objc_getAssociatedObject(delegate, &__UIViewMarkerLayerKey);
 
     if (v5)
     {
@@ -6312,10 +6312,10 @@ LABEL_20:
   return v3;
 }
 
-- (void)setMaskedOverlayView:(id)a3
+- (void)setMaskedOverlayView:(id)view
 {
-  v4 = [a3 layer];
-  [(_UIStackedImageContainerLayer *)self _setOverlayLayer:v4];
+  layer = [view layer];
+  [(_UIStackedImageContainerLayer *)self _setOverlayLayer:layer];
 }
 
 - (id)unmaskedOverlayView
@@ -6334,18 +6334,18 @@ LABEL_20:
   return v3;
 }
 
-- (void)setUnmaskedOverlayView:(id)a3
+- (void)setUnmaskedOverlayView:(id)view
 {
-  v4 = [a3 layer];
-  [(_UIStackedImageContainerLayer *)self _setUnmaskedOverlayLayer:v4];
+  layer = [view layer];
+  [(_UIStackedImageContainerLayer *)self _setUnmaskedOverlayLayer:layer];
 }
 
 - (id)viewForBackgroundEffects
 {
   if ((_UISolariumNewStackedImageRenderingEnabled() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4808 description:{@"Solarium is not enabled, requesting a view for background effects is an error."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4808 description:{@"Solarium is not enabled, requesting a view for background effects is an error."}];
   }
 
   if (![(_UIStackedImageContainerLayer *)self _isEligibleForSolariumRendering])
@@ -6355,14 +6355,14 @@ LABEL_20:
   }
 
   [(_UIStackedImageContainerLayer *)self _wrapImageLayerHierarchyInViews];
-  v5 = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
+  _layerForBackgroundEffects = [(_UIStackedImageContainerLayer *)self _layerForBackgroundEffects];
   v6 = CALayerGetDelegate();
   if ((_IsKindOfUIView(v6) & 1) == 0)
   {
 
 LABEL_9:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4823 description:@"Failed to find view for background effects."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStackedImageContainerLayer.m" lineNumber:4823 description:@"Failed to find view for background effects."];
 
     v6 = 0;
     goto LABEL_10;

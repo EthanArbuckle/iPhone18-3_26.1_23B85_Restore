@@ -9,104 +9,104 @@
 - (BOOL)isSecurityResponseEnabled;
 - (BOOL)previousUserSpecifiedSecurityResponseEnabled;
 - (SUManagerClient)suManagerClient;
-- (SUSUISoftwareUpdateClientManager)initWithDelegate:(id)a3 completionQueue:(id)a4;
+- (SUSUISoftwareUpdateClientManager)initWithDelegate:(id)delegate completionQueue:(id)queue;
 - (SUSUISoftwareUpdateClientManagerDelegate)delegate;
 - (id)eligibleRollback;
 - (void)_queue_cancelAutoInstall;
-- (void)_queue_setAutoUpdateScheduled:(BOOL)a3;
-- (void)_queue_setEligibleRollback:(id)a3;
-- (void)_queue_setRollingBack:(BOOL)a3;
-- (void)autoInstallOperationDidConsent:(id)a3;
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResponse:(id)a4;
-- (void)autoInstallOperationPasscodePolicyDidChange:(id)a3 passcodePolicyType:(unint64_t)a4;
-- (void)autoInstallOperationWasCancelled:(id)a3;
+- (void)_queue_setAutoUpdateScheduled:(BOOL)scheduled;
+- (void)_queue_setEligibleRollback:(id)rollback;
+- (void)_queue_setRollingBack:(BOOL)back;
+- (void)autoInstallOperationDidConsent:(id)consent;
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResponse:(id)response;
+- (void)autoInstallOperationPasscodePolicyDidChange:(id)change passcodePolicyType:(unint64_t)type;
+- (void)autoInstallOperationWasCancelled:(id)cancelled;
 - (void)cancelAutoInstall;
-- (void)client:(id)a3 clearingSpaceForDownload:(id)a4 clearingSpace:(BOOL)a5;
-- (void)client:(id)a3 downloadDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5;
-- (void)client:(id)a3 downloadDidStart:(id)a4;
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4;
-- (void)client:(id)a3 downloadWasInvalidatedForNewUpdatesAvailable:(id)a4;
-- (void)client:(id)a3 handleUIForDDMDeclaration:(id)a4;
-- (void)client:(id)a3 inUserInteraction:(id)a4;
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 installDidFinish:(id)a4;
-- (void)client:(id)a3 installDidStart:(id)a4;
-- (void)client:(id)a3 installTonightScheduled:(BOOL)a4 operationID:(id)a5;
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 rollbackDidFinish:(id)a4;
-- (void)client:(id)a3 rollbackDidStart:(id)a4;
-- (void)client:(id)a3 scanRequestDidFinishForOptions:(id)a4 results:(id)a5 error:(id)a6;
-- (void)client:(id)a3 scanRequestDidStartForOptions:(id)a4;
-- (void)createInstallationKeybagWithOptions:(id)a3 completion:(id)a4;
-- (void)currentAutoInstallOperation:(BOOL)a3 completion:(id)a4;
+- (void)client:(id)client clearingSpaceForDownload:(id)download clearingSpace:(BOOL)space;
+- (void)client:(id)client downloadDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client downloadDidFinish:(id)finish withInstallPolicy:(id)policy;
+- (void)client:(id)client downloadDidStart:(id)start;
+- (void)client:(id)client downloadProgressDidChange:(id)change;
+- (void)client:(id)client downloadWasInvalidatedForNewUpdatesAvailable:(id)available;
+- (void)client:(id)client handleUIForDDMDeclaration:(id)declaration;
+- (void)client:(id)client inUserInteraction:(id)interaction;
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client installDidFinish:(id)finish;
+- (void)client:(id)client installDidStart:(id)start;
+- (void)client:(id)client installTonightScheduled:(BOOL)scheduled operationID:(id)d;
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client rollbackDidFinish:(id)finish;
+- (void)client:(id)client rollbackDidStart:(id)start;
+- (void)client:(id)client scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error;
+- (void)client:(id)client scanRequestDidStartForOptions:(id)options;
+- (void)createInstallationKeybagWithOptions:(id)options completion:(id)completion;
+- (void)currentAutoInstallOperation:(BOOL)operation completion:(id)completion;
 - (void)dealloc;
-- (void)destroyInstallationKeybag:(id)a3;
-- (void)download:(id)a3;
-- (void)enableAutoDownload:(BOOL)a3;
-- (void)enableAutoInstall:(BOOL)a3;
-- (void)enableAutoInstallPreviousUserSettings:(BOOL)a3;
-- (void)enableAutomaticInstallSystemDataFiles:(BOOL)a3;
-- (void)getDDMDeclaration:(id)a3;
-- (void)installUpdateWithOptions:(id)a3 completion:(id)a4;
-- (void)isClearingSpaceForDownload:(id)a3;
-- (void)isDelayingUpdates:(id)a3;
-- (void)isInstallationKeybagRequired:(id)a3;
-- (void)isInstallationKeybagRequiredForDescriptor:(id)a3 result:(id)a4;
-- (void)isScanning:(id)a3;
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 completion:(id)a4;
-- (void)purgeDownload:(id)a3;
-- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)a3;
-- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)a3;
-- (void)queue_setAutoDownloadEnabled:(BOOL)a3;
-- (void)queue_setAutoInstallEnabled:(BOOL)a3;
-- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3;
-- (void)queue_setSecurityResponseEnabled:(BOOL)a3;
-- (void)rollbackUpdateWithOptions:(id)a3 completion:(id)a4;
-- (void)scanforUpdatesWithOptions:(id)a3 completion:(id)a4;
-- (void)setAutoUpdateScheduled:(BOOL)a3;
-- (void)setEligibleRollback:(id)a3;
-- (void)setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3;
-- (void)setRollingBack:(BOOL)a3 rollback:(id)a4;
-- (void)setSecurityResponseEnabled:(BOOL)a3;
-- (void)softwareUpdatePathRestriction:(id)a3;
-- (void)startDownloadWithOptions:(id)a3 completion:(id)a4;
-- (void)updateDownloadOptions:(id)a3 completion:(id)a4;
-- (void)updatesDownloadable:(id)a3 alternateUpdate:(id)a4 completion:(id)a5;
+- (void)destroyInstallationKeybag:(id)keybag;
+- (void)download:(id)download;
+- (void)enableAutoDownload:(BOOL)download;
+- (void)enableAutoInstall:(BOOL)install;
+- (void)enableAutoInstallPreviousUserSettings:(BOOL)settings;
+- (void)enableAutomaticInstallSystemDataFiles:(BOOL)files;
+- (void)getDDMDeclaration:(id)declaration;
+- (void)installUpdateWithOptions:(id)options completion:(id)completion;
+- (void)isClearingSpaceForDownload:(id)download;
+- (void)isDelayingUpdates:(id)updates;
+- (void)isInstallationKeybagRequired:(id)required;
+- (void)isInstallationKeybagRequiredForDescriptor:(id)descriptor result:(id)result;
+- (void)isScanning:(id)scanning;
+- (void)isUpdateReadyForInstallationWithOptions:(id)options completion:(id)completion;
+- (void)purgeDownload:(id)download;
+- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)settings;
+- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)files;
+- (void)queue_setAutoDownloadEnabled:(BOOL)enabled;
+- (void)queue_setAutoInstallEnabled:(BOOL)enabled;
+- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status;
+- (void)queue_setSecurityResponseEnabled:(BOOL)enabled;
+- (void)rollbackUpdateWithOptions:(id)options completion:(id)completion;
+- (void)scanforUpdatesWithOptions:(id)options completion:(id)completion;
+- (void)setAutoUpdateScheduled:(BOOL)scheduled;
+- (void)setEligibleRollback:(id)rollback;
+- (void)setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status;
+- (void)setRollingBack:(BOOL)back rollback:(id)rollback;
+- (void)setSecurityResponseEnabled:(BOOL)enabled;
+- (void)softwareUpdatePathRestriction:(id)restriction;
+- (void)startDownloadWithOptions:(id)options completion:(id)completion;
+- (void)updateDownloadOptions:(id)options completion:(id)completion;
+- (void)updatesDownloadable:(id)downloadable alternateUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation SUSUISoftwareUpdateClientManager
 
-- (SUSUISoftwareUpdateClientManager)initWithDelegate:(id)a3 completionQueue:(id)a4
+- (SUSUISoftwareUpdateClientManager)initWithDelegate:(id)delegate completionQueue:(id)queue
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
-  v4 = v44;
-  v44 = 0;
+  objc_storeStrong(&v42, queue);
+  v4 = selfCopy;
+  selfCopy = 0;
   v41.receiver = v4;
   v41.super_class = SUSUISoftwareUpdateClientManager;
   v21 = [(SUSUISoftwareUpdateClientManager *)&v41 init];
-  v44 = v21;
-  objc_storeStrong(&v44, v21);
+  selfCopy = v21;
+  objc_storeStrong(&selfCopy, v21);
   if (v21)
   {
     v5 = dispatch_queue_create("com.apple.SoftwareUpdateSettings.ClientManagerWorkQueue", 0);
-    workQueue = v44->_workQueue;
-    v44->_workQueue = v5;
+    workQueue = selfCopy->_workQueue;
+    selfCopy->_workQueue = v5;
     MEMORY[0x277D82BD8](workQueue);
-    objc_storeWeak(&v44->_delegate, location[0]);
-    objc_storeStrong(&v44->_completionQueue, v42);
-    if (!v44->_completionQueue)
+    objc_storeWeak(&selfCopy->_delegate, location[0]);
+    objc_storeStrong(&selfCopy->_completionQueue, v42);
+    if (!selfCopy->_completionQueue)
     {
       v19 = MEMORY[0x277D85CD0];
       v7 = MEMORY[0x277D85CD0];
       v8 = v19;
-      completionQueue = v44->_completionQueue;
-      v44->_completionQueue = v8;
+      completionQueue = selfCopy->_completionQueue;
+      selfCopy->_completionQueue = v8;
       MEMORY[0x277D82BD8](completionQueue);
     }
 
@@ -114,46 +114,46 @@
     v40 = [(SUSUIServiceManager *)v15 classForService:objc_opt_class()];
     MEMORY[0x277D82BD8](v15);
     v10 = [v40 alloc];
-    v11 = [v10 initWithDelegate:v44 queue:v44->_completionQueue clientType:1];
-    suClient = v44->_suClient;
-    v44->_suClient = v11;
+    v11 = [v10 initWithDelegate:selfCopy queue:selfCopy->_completionQueue clientType:1];
+    suClient = selfCopy->_suClient;
+    selfCopy->_suClient = v11;
     MEMORY[0x277D82BD8](suClient);
-    v44->_autoUpdateScheduled = 0;
-    v44->_rollingBack = 0;
-    objc_storeStrong(&v44->_rollbackDescriptor, 0);
-    v16 = v44->_suClient;
+    selfCopy->_autoUpdateScheduled = 0;
+    selfCopy->_rollingBack = 0;
+    objc_storeStrong(&selfCopy->_rollbackDescriptor, 0);
+    v16 = selfCopy->_suClient;
     v34 = MEMORY[0x277D85DD0];
     v35 = -1073741824;
     v36 = 0;
     v37 = __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___block_invoke;
     v38 = &unk_279CBE0E8;
-    v39 = MEMORY[0x277D82BE0](v44);
+    v39 = MEMORY[0x277D82BE0](selfCopy);
     [(SUManagerClient *)v16 isAutoUpdateScheduled:&v34];
-    v17 = v44->_suClient;
+    v17 = selfCopy->_suClient;
     v28 = MEMORY[0x277D85DD0];
     v29 = -1073741824;
     v30 = 0;
     v31 = __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___block_invoke_289;
     v32 = &unk_279CBE110;
-    v33 = MEMORY[0x277D82BE0](v44);
+    v33 = MEMORY[0x277D82BE0](selfCopy);
     [(SUManagerClient *)v17 isRollingBack:&v28];
-    v18 = v44->_suClient;
+    v18 = selfCopy->_suClient;
     v22 = MEMORY[0x277D85DD0];
     v23 = -1073741824;
     v24 = 0;
     v25 = __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___block_invoke_291;
     v26 = &unk_279CBE138;
-    v27 = MEMORY[0x277D82BE0](v44);
+    v27 = MEMORY[0x277D82BE0](selfCopy);
     [(SUManagerClient *)v18 eligibleRollbackWithOptions:0 withResult:&v22];
     objc_storeStrong(&v27, 0);
     objc_storeStrong(&v33, 0);
     objc_storeStrong(&v39, 0);
   }
 
-  v14 = MEMORY[0x277D82BE0](v44);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
@@ -239,17 +239,17 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v2 = [(SUManagerClient *)self->_suClient delegate];
-  MEMORY[0x277D82BD8](v2);
-  if (v2 == v5)
+  delegate = [(SUManagerClient *)self->_suClient delegate];
+  MEMORY[0x277D82BD8](delegate);
+  if (delegate == selfCopy)
   {
-    [(SUManagerClient *)v5->_suClient setDelegate:0];
+    [(SUManagerClient *)selfCopy->_suClient setDelegate:0];
   }
 
-  [(SUManagerClient *)v5->_suClient invalidate];
-  v3.receiver = v5;
+  [(SUManagerClient *)selfCopy->_suClient invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = SUSUISoftwareUpdateClientManager;
   [(SUSUISoftwareUpdateClientManager *)&v3 dealloc];
 }
@@ -282,21 +282,21 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   return v4;
 }
 
-- (void)scanforUpdatesWithOptions:(id)a3 completion:(id)a4
+- (void)scanforUpdatesWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __73__SUSUISoftwareUpdateClientManager_scanforUpdatesWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -307,19 +307,19 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   objc_storeStrong(location, 0);
 }
 
-- (void)isScanning:(id)a3
+- (void)isScanning:(id)scanning
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, scanning);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __47__SUSUISoftwareUpdateClientManager_isScanning___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -327,19 +327,19 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdatePathRestriction:(id)a3
+- (void)softwareUpdatePathRestriction:(id)restriction
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, restriction);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __66__SUSUISoftwareUpdateClientManager_softwareUpdatePathRestriction___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -347,19 +347,19 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   objc_storeStrong(location, 0);
 }
 
-- (void)isDelayingUpdates:(id)a3
+- (void)isDelayingUpdates:(id)updates
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, updates);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __54__SUSUISoftwareUpdateClientManager_isDelayingUpdates___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -367,19 +367,19 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   objc_storeStrong(location, 0);
 }
 
-- (void)download:(id)a3
+- (void)download:(id)download
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, download);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __45__SUSUISoftwareUpdateClientManager_download___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -387,23 +387,23 @@ void __69__SUSUISoftwareUpdateClientManager_initWithDelegate_completionQueue___b
   objc_storeStrong(location, 0);
 }
 
-- (void)updatesDownloadable:(id)a3 alternateUpdate:(id)a4 completion:(id)a5
+- (void)updatesDownloadable:(id)downloadable alternateUpdate:(id)update completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, downloadable);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, update);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  queue = v20->_workQueue;
+  objc_storeStrong(&v17, completion);
+  queue = selfCopy->_workQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __83__SUSUISoftwareUpdateClientManager_updatesDownloadable_alternateUpdate_completion___block_invoke;
   v12 = &unk_279CBE1B0;
-  v13 = MEMORY[0x277D82BE0](v20);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v18);
   v16 = MEMORY[0x277D82BE0](v17);
@@ -464,21 +464,21 @@ uint64_t __83__SUSUISoftwareUpdateClientManager_updatesDownloadable_alternateUpd
   return (*(*(a1 + 48) + 16))(*(a1 + 48), *(a1 + 56) & 1);
 }
 
-- (void)startDownloadWithOptions:(id)a3 completion:(id)a4
+- (void)startDownloadWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __72__SUSUISoftwareUpdateClientManager_startDownloadWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -489,21 +489,21 @@ uint64_t __83__SUSUISoftwareUpdateClientManager_updatesDownloadable_alternateUpd
   objc_storeStrong(location, 0);
 }
 
-- (void)updateDownloadOptions:(id)a3 completion:(id)a4
+- (void)updateDownloadOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __69__SUSUISoftwareUpdateClientManager_updateDownloadOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -514,19 +514,19 @@ uint64_t __83__SUSUISoftwareUpdateClientManager_updatesDownloadable_alternateUpd
   objc_storeStrong(location, 0);
 }
 
-- (void)isClearingSpaceForDownload:(id)a3
+- (void)isClearingSpaceForDownload:(id)download
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, download);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __63__SUSUISoftwareUpdateClientManager_isClearingSpaceForDownload___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -536,7 +536,7 @@ uint64_t __83__SUSUISoftwareUpdateClientManager_updatesDownloadable_alternateUpd
 
 - (BOOL)isAutoDownloadEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -563,11 +563,11 @@ uint64_t __57__SUSUISoftwareUpdateClientManager_isAutoDownloadEnabled__block_inv
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)enableAutoDownload:(BOOL)a3
+- (void)enableAutoDownload:(BOOL)download
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  downloadCopy = download;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -575,34 +575,34 @@ uint64_t __57__SUSUISoftwareUpdateClientManager_isAutoDownloadEnabled__block_inv
   v7 = __55__SUSUISoftwareUpdateClientManager_enableAutoDownload___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = downloadCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_setAutoDownloadEnabled:(BOOL)a3
+- (void)queue_setAutoDownloadEnabled:(BOOL)enabled
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enableAutomaticDownload:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enableAutomaticDownload:enabled];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 completion:(id)a4
+- (void)isUpdateReadyForInstallationWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __87__SUSUISoftwareUpdateClientManager_isUpdateReadyForInstallationWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -613,21 +613,21 @@ uint64_t __57__SUSUISoftwareUpdateClientManager_isAutoDownloadEnabled__block_inv
   objc_storeStrong(location, 0);
 }
 
-- (void)installUpdateWithOptions:(id)a3 completion:(id)a4
+- (void)installUpdateWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __72__SUSUISoftwareUpdateClientManager_installUpdateWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -638,21 +638,21 @@ uint64_t __57__SUSUISoftwareUpdateClientManager_isAutoDownloadEnabled__block_inv
   objc_storeStrong(location, 0);
 }
 
-- (void)currentAutoInstallOperation:(BOOL)a3 completion:(id)a4
+- (void)currentAutoInstallOperation:(BOOL)operation completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  operationCopy = operation;
   location = 0;
-  objc_storeStrong(&location, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&location, completion);
+  queue = selfCopy->_workQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __75__SUSUISoftwareUpdateClientManager_currentAutoInstallOperation_completion___block_invoke;
   v9 = &unk_279CBE228;
-  v10 = MEMORY[0x277D82BE0](v16);
-  v12 = v14;
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  v12 = operationCopy;
   v11 = MEMORY[0x277D82BE0](location);
   dispatch_async(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -806,7 +806,7 @@ uint64_t __75__SUSUISoftwareUpdateClientManager_currentAutoInstallOperation_comp
 
 - (BOOL)isAutoInstallEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -833,11 +833,11 @@ uint64_t __56__SUSUISoftwareUpdateClientManager_isAutoInstallEnabled__block_invo
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)enableAutoInstall:(BOOL)a3
+- (void)enableAutoInstall:(BOOL)install
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  installCopy = install;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -845,22 +845,22 @@ uint64_t __56__SUSUISoftwareUpdateClientManager_isAutoInstallEnabled__block_invo
   v7 = __54__SUSUISoftwareUpdateClientManager_enableAutoInstall___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = installCopy;
   dispatch_sync(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_setAutoInstallEnabled:(BOOL)a3
+- (void)queue_setAutoInstallEnabled:(BOOL)enabled
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enableAutomaticUpdateV2:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enableAutomaticUpdateV2:enabled];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
 - (BOOL)isAutoInstallPreviousUserSettingsEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -887,11 +887,11 @@ uint64_t __76__SUSUISoftwareUpdateClientManager_isAutoInstallPreviousUserSetting
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)enableAutoInstallPreviousUserSettings:(BOOL)a3
+- (void)enableAutoInstallPreviousUserSettings:(BOOL)settings
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  settingsCopy = settings;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -899,22 +899,22 @@ uint64_t __76__SUSUISoftwareUpdateClientManager_isAutoInstallPreviousUserSetting
   v7 = __74__SUSUISoftwareUpdateClientManager_enableAutoInstallPreviousUserSettings___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = settingsCopy;
   dispatch_sync(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)a3
+- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)settings
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enablePreviousUserSpecifiedAutomaticUpdateV2:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enablePreviousUserSpecifiedAutomaticUpdateV2:settings];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
 - (BOOL)isSecurityResponseEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -941,11 +941,11 @@ uint64_t __61__SUSUISoftwareUpdateClientManager_isSecurityResponseEnabled__block
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)setSecurityResponseEnabled:(BOOL)a3
+- (void)setSecurityResponseEnabled:(BOOL)enabled
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  enabledCopy = enabled;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -953,22 +953,22 @@ uint64_t __61__SUSUISoftwareUpdateClientManager_isSecurityResponseEnabled__block
   v7 = __63__SUSUISoftwareUpdateClientManager_setSecurityResponseEnabled___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = enabledCopy;
   dispatch_sync(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_setSecurityResponseEnabled:(BOOL)a3
+- (void)queue_setSecurityResponseEnabled:(BOOL)enabled
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enableAutoInstallSecurityResponse:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enableAutoInstallSecurityResponse:enabled];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
 - (BOOL)previousUserSpecifiedSecurityResponseEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -995,11 +995,11 @@ uint64_t __80__SUSUISoftwareUpdateClientManager_previousUserSpecifiedSecurityRes
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3
+- (void)setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  statusCopy = status;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -1007,22 +1007,22 @@ uint64_t __80__SUSUISoftwareUpdateClientManager_previousUserSpecifiedSecurityRes
   v7 = __83__SUSUISoftwareUpdateClientManager_setPreviousUserSpecifiedSecurityResponseStatus___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = statusCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3
+- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enablePreviousUserSpecifiedAutoInstallSecurityResponse:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enablePreviousUserSpecifiedAutoInstallSecurityResponse:status];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
 - (BOOL)isAutomaticInstallSystemDataFilesEnabled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -1049,11 +1049,11 @@ uint64_t __76__SUSUISoftwareUpdateClientManager_isAutomaticInstallSystemDataFile
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)enableAutomaticInstallSystemDataFiles:(BOOL)a3
+- (void)enableAutomaticInstallSystemDataFiles:(BOOL)files
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  filesCopy = files;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -1061,22 +1061,22 @@ uint64_t __76__SUSUISoftwareUpdateClientManager_isAutomaticInstallSystemDataFile
   v7 = __74__SUSUISoftwareUpdateClientManager_enableAutomaticInstallSystemDataFiles___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = filesCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)a3
+- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)files
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [MEMORY[0x277D648D0] sharedInstance];
-  [v3 enableAutoInstallSystemAndDataFiles:a3];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D648D0] = [MEMORY[0x277D648D0] sharedInstance];
+  [mEMORY[0x277D648D0] enableAutoInstallSystemAndDataFiles:files];
+  MEMORY[0x277D82BD8](mEMORY[0x277D648D0]);
 }
 
 - (BOOL)isAutoUpdateArmedAndReady
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -1139,7 +1139,7 @@ uint64_t __61__SUSUISoftwareUpdateClientManager_isAutoUpdateArmedAndReady__block
 
 - (BOOL)isAutoUpdateScheduled
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -1161,11 +1161,11 @@ uint64_t __61__SUSUISoftwareUpdateClientManager_isAutoUpdateArmedAndReady__block
   return v4 & 1;
 }
 
-- (void)setAutoUpdateScheduled:(BOOL)a3
+- (void)setAutoUpdateScheduled:(BOOL)scheduled
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  scheduledCopy = scheduled;
   queue = self->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -1173,48 +1173,48 @@ uint64_t __61__SUSUISoftwareUpdateClientManager_isAutoUpdateArmedAndReady__block
   v7 = __59__SUSUISoftwareUpdateClientManager_setAutoUpdateScheduled___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = scheduledCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
 
-- (void)_queue_setAutoUpdateScheduled:(BOOL)a3
+- (void)_queue_setAutoUpdateScheduled:(BOOL)scheduled
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  scheduledCopy = scheduled;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (v21->_autoUpdateScheduled != v19)
+  if (selfCopy->_autoUpdateScheduled != scheduledCopy)
   {
-    v21->_autoUpdateScheduled = v19;
-    if (v21->_autoUpdateScheduled)
+    selfCopy->_autoUpdateScheduled = scheduledCopy;
+    if (selfCopy->_autoUpdateScheduled)
     {
-      suClient = v21->_suClient;
+      suClient = selfCopy->_suClient;
       v13 = MEMORY[0x277D85DD0];
       v14 = -1073741824;
       v15 = 0;
       v16 = __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___block_invoke;
       v17 = &unk_279CBE278;
-      v18 = MEMORY[0x277D82BE0](v21);
+      v18 = MEMORY[0x277D82BE0](selfCopy);
       [(SUManagerClient *)suClient currentAutoInstallOperation:0 withResult:&v13];
       objc_storeStrong(&v18, 0);
     }
 
     else
     {
-      objc_storeWeak(&v21->_autoInstallOperation, 0);
-      WeakRetained = objc_loadWeakRetained(&v21->_delegate);
+      objc_storeWeak(&selfCopy->_autoInstallOperation, 0);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       v5 = objc_opt_respondsToSelector();
       MEMORY[0x277D82BD8](WeakRetained);
       if (v5)
       {
-        queue = v21->_completionQueue;
+        queue = selfCopy->_completionQueue;
         v7 = MEMORY[0x277D85DD0];
         v8 = -1073741824;
         v9 = 0;
         v10 = __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___block_invoke_4;
         v11 = &unk_279CB93E8;
-        v12 = MEMORY[0x277D82BE0](v21);
+        v12 = MEMORY[0x277D82BE0](selfCopy);
         dispatch_async(queue, &v7);
         objc_storeStrong(&v12, 0);
       }
@@ -1309,7 +1309,7 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
 
 - (void)_queue_cancelAutoInstall
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   dispatch_assert_queue_V2(self->_workQueue);
   location[0] = _SUSUILoggingFacility();
@@ -1323,10 +1323,10 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
   }
 
   objc_storeStrong(location, 0);
-  WeakRetained = objc_loadWeakRetained(&v8->_autoInstallOperation);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_autoInstallOperation);
   [WeakRetained cancel];
   MEMORY[0x277D82BD8](WeakRetained);
-  [(SUSUISoftwareUpdateClientManager *)v8 _queue_setAutoUpdateScheduled:0];
+  [(SUSUISoftwareUpdateClientManager *)selfCopy _queue_setAutoUpdateScheduled:0];
 }
 
 - (id)eligibleRollback
@@ -1357,19 +1357,19 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
   return v4;
 }
 
-- (void)setEligibleRollback:(id)a3
+- (void)setEligibleRollback:(id)rollback
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, rollback);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __56__SUSUISoftwareUpdateClientManager_setEligibleRollback___block_invoke;
   v8 = &unk_279CB9410;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1377,15 +1377,15 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
   objc_storeStrong(location, 0);
 }
 
-- (void)_queue_setEligibleRollback:(id)a3
+- (void)_queue_setEligibleRollback:(id)rollback
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v5->_workQueue);
-  if (([(SURollbackDescriptor *)v5->_rollbackDescriptor isEqual:location[0]]& 1) == 0)
+  objc_storeStrong(location, rollback);
+  dispatch_assert_queue_V2(selfCopy->_workQueue);
+  if (([(SURollbackDescriptor *)selfCopy->_rollbackDescriptor isEqual:location[0]]& 1) == 0)
   {
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1395,28 +1395,28 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v5->_rollbackDescriptor, location[0]);
+    objc_storeStrong(&selfCopy->_rollbackDescriptor, location[0]);
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)rollbackUpdateWithOptions:(id)a3 completion:(id)a4
+- (void)rollbackUpdateWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __73__SUSUISoftwareUpdateClientManager_rollbackUpdateWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -1429,7 +1429,7 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
 
 - (BOOL)isRollingBack
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -1451,21 +1451,21 @@ uint64_t __66__SUSUISoftwareUpdateClientManager__queue_setAutoUpdateScheduled___
   return v4 & 1;
 }
 
-- (void)setRollingBack:(BOOL)a3 rollback:(id)a4
+- (void)setRollingBack:(BOOL)back rollback:(id)rollback
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  backCopy = back;
   location = 0;
-  objc_storeStrong(&location, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&location, rollback);
+  queue = selfCopy->_workQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __60__SUSUISoftwareUpdateClientManager_setRollingBack_rollback___block_invoke;
   v9 = &unk_279CBE2A0;
-  v10 = MEMORY[0x277D82BE0](v16);
-  v12 = v14;
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  v12 = backCopy;
   v11 = MEMORY[0x277D82BE0](location);
   dispatch_async(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -1505,19 +1505,19 @@ uint64_t __60__SUSUISoftwareUpdateClientManager_setRollingBack_rollback___block_
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_queue_setRollingBack:(BOOL)a3
+- (void)_queue_setRollingBack:(BOOL)back
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  backCopy = back;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (v7->_rollingBack != v5)
+  if (selfCopy->_rollingBack != backCopy)
   {
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5)
+      if (backCopy)
       {
         v3 = @"YES";
       }
@@ -1532,25 +1532,25 @@ uint64_t __60__SUSUISoftwareUpdateClientManager_setRollingBack_rollback___block_
     }
 
     objc_storeStrong(&oslog, 0);
-    v7->_rollingBack = v5;
+    selfCopy->_rollingBack = backCopy;
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeDownload:(id)a3
+- (void)purgeDownload:(id)download
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, download);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __50__SUSUISoftwareUpdateClientManager_purgeDownload___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1558,19 +1558,19 @@ uint64_t __60__SUSUISoftwareUpdateClientManager_setRollingBack_rollback___block_
   objc_storeStrong(location, 0);
 }
 
-- (void)isInstallationKeybagRequired:(id)a3
+- (void)isInstallationKeybagRequired:(id)required
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, required);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __65__SUSUISoftwareUpdateClientManager_isInstallationKeybagRequired___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1598,21 +1598,21 @@ void __65__SUSUISoftwareUpdateClientManager_isInstallationKeybagRequired___block
   }
 }
 
-- (void)isInstallationKeybagRequiredForDescriptor:(id)a3 result:(id)a4
+- (void)isInstallationKeybagRequiredForDescriptor:(id)descriptor result:(id)result
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, result);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __85__SUSUISoftwareUpdateClientManager_isInstallationKeybagRequiredForDescriptor_result___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -1643,21 +1643,21 @@ void __85__SUSUISoftwareUpdateClientManager_isInstallationKeybagRequiredForDescr
   }
 }
 
-- (void)createInstallationKeybagWithOptions:(id)a3 completion:(id)a4
+- (void)createInstallationKeybagWithOptions:(id)options completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_workQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_workQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __83__SUSUISoftwareUpdateClientManager_createInstallationKeybagWithOptions_completion___block_invoke;
   v10 = &unk_279CB96B8;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
   dispatch_async(queue, &v6);
@@ -1713,19 +1713,19 @@ uint64_t __83__SUSUISoftwareUpdateClientManager_createInstallationKeybagWithOpti
   return result;
 }
 
-- (void)destroyInstallationKeybag:(id)a3
+- (void)destroyInstallationKeybag:(id)keybag
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, keybag);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __62__SUSUISoftwareUpdateClientManager_destroyInstallationKeybag___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1752,19 +1752,19 @@ void __62__SUSUISoftwareUpdateClientManager_destroyInstallationKeybag___block_in
   }
 }
 
-- (void)getDDMDeclaration:(id)a3
+- (void)getDDMDeclaration:(id)declaration
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workQueue;
+  objc_storeStrong(location, declaration);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke;
   v8 = &unk_279CBE188;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1818,22 +1818,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 scanRequestDidStartForOptions:(id)a4
+- (void)client:(id)client scanRequestDidStartForOptions:(id)options
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, options);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 scanRequestDidStartForOptions:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy scanRequestDidStartForOptions:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -1841,26 +1841,26 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 scanRequestDidFinishForOptions:(id)a4 results:(id)a5 error:(id)a6
+- (void)client:(id)client scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, options);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, results);
   v12 = 0;
-  objc_storeStrong(&v12, a6);
-  dispatch_assert_queue_V2(v16->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v16->_delegate);
+  objc_storeStrong(&v12, error);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v11 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v11)
   {
-    v6 = objc_loadWeakRetained(&v16->_delegate);
-    [v6 manager:v16 scanRequestDidFinishForOptions:v14 results:v13 error:v12];
+    v6 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v6 manager:selfCopy scanRequestDidFinishForOptions:v14 results:v13 error:v12];
     MEMORY[0x277D82BD8](v6);
   }
 
@@ -1870,22 +1870,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidStart:(id)a4
+- (void)client:(id)client downloadDidStart:(id)start
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, start);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 downloadDidStart:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy downloadDidStart:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -1893,22 +1893,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4
+- (void)client:(id)client downloadProgressDidChange:(id)change
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, change);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 downloadProgressDidChange:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy downloadProgressDidChange:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -1916,23 +1916,23 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadWasInvalidatedForNewUpdatesAvailable:(id)a4
+- (void)client:(id)client downloadWasInvalidatedForNewUpdatesAvailable:(id)available
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  [(SUSUISoftwareUpdateClientManager *)v10 setAutoUpdateScheduled:0];
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, available);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  [(SUSUISoftwareUpdateClientManager *)selfCopy setAutoUpdateScheduled:0];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 downloadWasInvalidatedForNewUpdatesAvailable:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy downloadWasInvalidatedForNewUpdatesAvailable:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -1940,24 +1940,24 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5
+- (void)client:(id)client downloadDidFinish:(id)finish withInstallPolicy:(id)policy
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, finish);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  dispatch_assert_queue_V2(v13->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v13->_delegate);
+  objc_storeStrong(&v10, policy);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v9 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v9)
   {
-    v5 = objc_loadWeakRetained(&v13->_delegate);
-    [v5 manager:v13 downloadDidFinish:v11 withInstallPolicy:v10];
+    v5 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v5 manager:selfCopy downloadDidFinish:v11 withInstallPolicy:v10];
     MEMORY[0x277D82BD8](v5);
   }
 
@@ -1966,24 +1966,24 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client downloadDidFail:(id)fail withError:(id)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, fail);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  dispatch_assert_queue_V2(v13->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v13->_delegate);
+  objc_storeStrong(&v10, error);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v9 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v9)
   {
-    v5 = objc_loadWeakRetained(&v13->_delegate);
-    [v5 manager:v13 downloadDidFail:v11 withError:v10];
+    v5 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v5 manager:selfCopy downloadDidFail:v11 withError:v10];
     MEMORY[0x277D82BD8](v5);
   }
 
@@ -1992,22 +1992,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidStart:(id)a4
+- (void)client:(id)client installDidStart:(id)start
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, start);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 installDidStart:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy installDidStart:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -2015,24 +2015,24 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, fail);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  dispatch_assert_queue_V2(v13->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v13->_delegate);
+  objc_storeStrong(&v10, error);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v9 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v9)
   {
-    v5 = objc_loadWeakRetained(&v13->_delegate);
-    [v5 manager:v13 installDidFail:v11 withError:v10];
+    v5 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v5 manager:selfCopy installDidFail:v11 withError:v10];
     MEMORY[0x277D82BD8](v5);
   }
 
@@ -2041,22 +2041,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidFinish:(id)a4
+- (void)client:(id)client installDidFinish:(id)finish
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_completionQueue);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, finish);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 installDidFinish:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy installDidFinish:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -2064,31 +2064,31 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installTonightScheduled:(BOOL)a4 operationID:(id)a5
+- (void)client:(id)client installTonightScheduled:(BOOL)scheduled operationID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, client);
+  scheduledCopy = scheduled;
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  dispatch_assert_queue_V2(v10[2]);
-  [(dispatch_queue_t *)v10 setAutoUpdateScheduled:v8];
+  objc_storeStrong(&v7, d);
+  dispatch_assert_queue_V2(selfCopy[2]);
+  [(dispatch_queue_t *)selfCopy setAutoUpdateScheduled:scheduledCopy];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackDidStart:(id)a4
+- (void)client:(id)client rollbackDidStart:(id)start
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8[2]);
+  objc_storeStrong(&v6, start);
+  dispatch_assert_queue_V2(selfCopy[2]);
   oslog = _SUSUILoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2097,22 +2097,22 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v8 setRollingBack:1 rollback:v6];
+  [(dispatch_queue_t *)selfCopy setRollingBack:1 rollback:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 rollbackDidFinish:(id)a4
+- (void)client:(id)client rollbackDidFinish:(id)finish
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8[2]);
+  objc_storeStrong(&v6, finish);
+  dispatch_assert_queue_V2(selfCopy[2]);
   oslog = _SUSUILoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2121,24 +2121,24 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v8 setRollingBack:0 rollback:v6];
+  [(dispatch_queue_t *)selfCopy setRollingBack:0 rollback:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, fail);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  dispatch_assert_queue_V2(v11[2]);
+  objc_storeStrong(&v8, error);
+  dispatch_assert_queue_V2(selfCopy[2]);
   oslog = _SUSUILoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2147,23 +2147,23 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v11 setRollingBack:0 rollback:v9];
+  [(dispatch_queue_t *)selfCopy setRollingBack:0 rollback:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 inUserInteraction:(id)a4
+- (void)client:(id)client inUserInteraction:(id)interaction
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  dispatch_assert_queue_V2(v11->_completionQueue);
+  objc_storeStrong(&v9, interaction);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
   v8 = _SUSUILoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2172,13 +2172,13 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   }
 
   objc_storeStrong(&v8, 0);
-  WeakRetained = objc_loadWeakRetained(&v11->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v6 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v6)
   {
-    v4 = objc_loadWeakRetained(&v11->_delegate);
-    [v4 manager:v11 inUserInteraction:v9];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy inUserInteraction:v9];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -2187,16 +2187,16 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 handleUIForDDMDeclaration:(id)a4
+- (void)client:(id)client handleUIForDDMDeclaration:(id)declaration
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  dispatch_assert_queue_V2(v11->_completionQueue);
+  objc_storeStrong(&v9, declaration);
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
   v8 = _SUSUILoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2205,13 +2205,13 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   }
 
   objc_storeStrong(&v8, 0);
-  WeakRetained = objc_loadWeakRetained(&v11->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v6 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v6)
   {
-    v4 = objc_loadWeakRetained(&v11->_delegate);
-    [v4 manager:v11 handleDDMDeclaration:v9];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy handleDDMDeclaration:v9];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -2220,32 +2220,32 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 clearingSpaceForDownload:(id)a4 clearingSpace:(BOOL)a5
+- (void)client:(id)client clearingSpaceForDownload:(id)download clearingSpace:(BOOL)space
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
-  dispatch_assert_queue_V2(v14->_completionQueue);
+  objc_storeStrong(&v12, download);
+  spaceCopy = space;
+  dispatch_assert_queue_V2(selfCopy->_completionQueue);
   v10 = _SUSUILoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_34_4_0(v15, "[SUSUISoftwareUpdateClientManager client:clearingSpaceForDownload:clearingSpace:]", v11);
+    __os_log_helper_16_2_2_8_34_4_0(v15, "[SUSUISoftwareUpdateClientManager client:clearingSpaceForDownload:clearingSpace:]", spaceCopy);
     _os_log_impl(&dword_26AC94000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s, clearing = %d", v15, 0x12u);
   }
 
   objc_storeStrong(&v10, 0);
-  WeakRetained = objc_loadWeakRetained(&v14->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v5 = objc_loadWeakRetained(&v14->_delegate);
-    [v5 manager:v14 clearingSpaceForDownload:v12 clearingSpace:v11];
+    v5 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v5 manager:selfCopy clearingSpaceForDownload:v12 clearingSpace:spaceCopy];
     MEMORY[0x277D82BD8](v5);
   }
 
@@ -2254,51 +2254,51 @@ void __54__SUSUISoftwareUpdateClientManager_getDDMDeclaration___block_invoke_2(v
   *MEMORY[0x277D85DE8];
 }
 
-- (void)autoInstallOperationWasCancelled:(id)a3
+- (void)autoInstallOperationWasCancelled:(id)cancelled
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v11->_workQueue;
+  objc_storeStrong(location, cancelled);
+  queue = selfCopy->_workQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __69__SUSUISoftwareUpdateClientManager_autoInstallOperationWasCancelled___block_invoke;
   v8 = &unk_279CB93E8;
-  v9 = MEMORY[0x277D82BE0](v11);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationDidConsent:(id)a3
+- (void)autoInstallOperationDidConsent:(id)consent
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, consent);
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResponse:(id)a4
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, response);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationPasscodePolicyDidChange:(id)a3 passcodePolicyType:(unint64_t)a4
+- (void)autoInstallOperationPasscodePolicyDidChange:(id)change passcodePolicyType:(unint64_t)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   objc_storeStrong(location, 0);
 }
 

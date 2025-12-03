@@ -1,11 +1,11 @@
 @interface AppBundleGradientBackgroundView
-- (_TtC20ProductPageExtension31AppBundleGradientBackgroundView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension31AppBundleGradientBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AppBundleGradientBackgroundView
 
-- (_TtC20ProductPageExtension31AppBundleGradientBackgroundView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension31AppBundleGradientBackgroundView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);

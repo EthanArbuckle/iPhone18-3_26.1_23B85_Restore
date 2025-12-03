@@ -1,9 +1,9 @@
 @interface ISURLOperationPoolOperation
-- (BOOL)containsOperation:(id)a3;
+- (BOOL)containsOperation:(id)operation;
 - (ISURLOperation)mainOperation;
-- (void)_forwardResponseFromOperation:(id)a3 toOperation:(id)a4;
-- (void)addOperation:(id)a3;
-- (void)cancelOperation:(id)a3;
+- (void)_forwardResponseFromOperation:(id)operation toOperation:(id)toOperation;
+- (void)addOperation:(id)operation;
+- (void)cancelOperation:(id)operation;
 - (void)dealloc;
 - (void)run;
 @end
@@ -17,7 +17,7 @@
   [(ISURLOperationPoolOperation *)&v3 dealloc];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   [(ISOperation *)self lock];
   operations = self->_operations;
@@ -38,15 +38,15 @@
     v7 = 0;
   }
 
-  [(NSMutableArray *)operations addObject:a3];
+  [(NSMutableArray *)operations addObject:operation];
   [(ISOperation *)self unlock];
   if (v7)
   {
-    [(ISURLOperationPoolOperation *)self _forwardResponseFromOperation:v7 toOperation:a3];
+    [(ISURLOperationPoolOperation *)self _forwardResponseFromOperation:v7 toOperation:operation];
   }
 }
 
-- (void)cancelOperation:(id)a3
+- (void)cancelOperation:(id)operation
 {
   [(ISOperation *)self lock];
   v4 = self->_cancelCount + 1;
@@ -60,12 +60,12 @@
   }
 }
 
-- (BOOL)containsOperation:(id)a3
+- (BOOL)containsOperation:(id)operation
 {
   [(ISOperation *)self lock];
-  LOBYTE(a3) = [(NSMutableArray *)self->_operations indexOfObjectIdenticalTo:a3]!= 0x7FFFFFFFFFFFFFFFLL;
+  LOBYTE(operation) = [(NSMutableArray *)self->_operations indexOfObjectIdenticalTo:operation]!= 0x7FFFFFFFFFFFFFFFLL;
   [(ISOperation *)self unlock];
-  return a3;
+  return operation;
 }
 
 - (ISURLOperation)mainOperation
@@ -87,9 +87,9 @@
 
 - (void)run
 {
-  v3 = [(ISURLOperationPoolOperation *)self mainOperation];
+  mainOperation = [(ISURLOperationPoolOperation *)self mainOperation];
   v9 = 0;
-  v4 = [(ISOperation *)self runSubOperation:v3 returningError:&v9];
+  v4 = [(ISOperation *)self runSubOperation:mainOperation returningError:&v9];
   [(ISOperation *)self setError:v9];
   [(ISOperation *)self setSuccess:v4];
   [(ISOperation *)self lock];
@@ -102,31 +102,31 @@
     v7 = v6;
     for (i = 1; i != v7; ++i)
     {
-      -[ISURLOperationPoolOperation _forwardResponseFromOperation:toOperation:](self, "_forwardResponseFromOperation:toOperation:", v3, [v5 objectAtIndex:i]);
+      -[ISURLOperationPoolOperation _forwardResponseFromOperation:toOperation:](self, "_forwardResponseFromOperation:toOperation:", mainOperation, [v5 objectAtIndex:i]);
     }
   }
 }
 
-- (void)_forwardResponseFromOperation:(id)a3 toOperation:(id)a4
+- (void)_forwardResponseFromOperation:(id)operation toOperation:(id)toOperation
 {
-  v6 = [a3 error];
-  v7 = [a3 success];
-  [a4 setError:v6];
-  [a4 setResponse:{objc_msgSend(a3, "response")}];
-  [a4 setSuccess:v7];
-  v8 = [a4 delegate];
-  if (v7)
+  error = [operation error];
+  success = [operation success];
+  [toOperation setError:error];
+  [toOperation setResponse:{objc_msgSend(operation, "response")}];
+  [toOperation setSuccess:success];
+  delegate = [toOperation delegate];
+  if (success)
   {
-    v9 = [objc_msgSend(a3 "dataProvider")];
+    v9 = [objc_msgSend(operation "dataProvider")];
     if (objc_opt_respondsToSelector())
     {
-      [v8 operation:a4 finishedWithOutput:v9];
+      [delegate operation:toOperation finishedWithOutput:v9];
     }
 
     if (objc_opt_respondsToSelector())
     {
 
-      [v8 operationFinished:a4];
+      [delegate operationFinished:toOperation];
     }
   }
 
@@ -136,10 +136,10 @@
     v10[1] = 3221225472;
     v10[2] = __73__ISURLOperationPoolOperation__forwardResponseFromOperation_toOperation___block_invoke;
     v10[3] = &unk_27A671388;
-    v10[4] = v8;
-    v10[5] = a4;
-    v10[6] = v6;
-    [a4 delegateDispatch:v10];
+    v10[4] = delegate;
+    v10[5] = toOperation;
+    v10[6] = error;
+    [toOperation delegateDispatch:v10];
   }
 }
 

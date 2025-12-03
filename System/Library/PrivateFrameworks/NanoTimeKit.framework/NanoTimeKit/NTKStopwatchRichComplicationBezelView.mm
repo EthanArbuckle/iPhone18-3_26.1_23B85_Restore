@@ -1,6 +1,6 @@
 @interface NTKStopwatchRichComplicationBezelView
 - (NTKStopwatchRichComplicationBezelView)init;
-- (id)_createLabelViewWithFont:(id)a3;
+- (id)_createLabelViewWithFont:(id)font;
 - (void)_updateTextProvider;
 @end
 
@@ -13,16 +13,16 @@
   v2 = [(NTKRichComplicationBezelBaseTextView *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(NTKStopwatchRichComplicationBezelView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKStopwatchRichComplicationBezelView *)v2 setBackgroundColor:clearColor];
   }
 
   return v2;
 }
 
-- (id)_createLabelViewWithFont:(id)a3
+- (id)_createLabelViewWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_alloc_init(off_27877BEF8);
   [(CLKUIColoringLabel *)v5 setInTimeTravel:0];
   objc_initWeak(&location, self);
@@ -39,12 +39,12 @@
   objc_copyWeak(&v13, &location);
   [(CLKUIColoringLabel *)v5 setNeedsResizeHandler:v12];
   [(CLKUIColoringLabel *)v5 setUppercase:1];
-  [(CLKUIColoringLabel *)v5 setFont:v4];
-  v6 = [(CDRichComplicationView *)self device];
-  [(CLKUIColoringLabel *)v5 setMaxWidth:___LayoutConstants_block_invoke_54(v6, v6)];
+  [(CLKUIColoringLabel *)v5 setFont:fontCopy];
+  device = [(CDRichComplicationView *)self device];
+  [(CLKUIColoringLabel *)v5 setMaxWidth:___LayoutConstants_block_invoke_54(device, device)];
 
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [(CLKUIColoringLabel *)v5 setTextColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(CLKUIColoringLabel *)v5 setTextColor:blackColor];
 
   textLabel = self->_textLabel;
   self->_textLabel = v5;
@@ -80,12 +80,12 @@ void __66__NTKStopwatchRichComplicationBezelView__createLabelViewWithFont___bloc
 
 - (void)_updateTextProvider
 {
-  v3 = [(CDRichComplicationTemplateView *)self complicationTemplate];
-  v6 = [v3 metadata];
+  complicationTemplate = [(CDRichComplicationTemplateView *)self complicationTemplate];
+  metadata = [complicationTemplate metadata];
 
-  v4 = [v6 objectForKeyedSubscript:@"NTKStopwatchBezelComplicationMetadataTimeTextProviderKey"];
-  v5 = [(CLKUIColoringLabel *)self->_textLabel textProvider];
-  [v4 setPaused:{objc_msgSend(v5, "paused")}];
+  v4 = [metadata objectForKeyedSubscript:@"NTKStopwatchBezelComplicationMetadataTimeTextProviderKey"];
+  textProvider = [(CLKUIColoringLabel *)self->_textLabel textProvider];
+  [v4 setPaused:{objc_msgSend(textProvider, "paused")}];
 
   [(CLKUIColoringLabel *)self->_textLabel setTextProvider:v4];
 }

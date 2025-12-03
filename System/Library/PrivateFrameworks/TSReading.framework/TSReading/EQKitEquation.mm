@@ -1,19 +1,19 @@
 @interface EQKitEquation
-+ (id)equationWithData:(id)a3 format:(int)a4 environment:(id)a5 error:(id *)a6;
-+ (id)equationWithString:(id)a3 format:(int)a4 environment:(id)a5 error:(id *)a6;
-+ (id)equationWithString:(id)a3 format:(int)a4 error:(id *)a5;
-+ (id)equationWithXMLDoc:(_xmlDoc *)a3 node:(_xmlNode *)a4 environment:(id)a5 error:(id *)a6;
-- (EQKitEquation)initWithRoot:(id)a3 source:(id)a4;
++ (id)equationWithData:(id)data format:(int)format environment:(id)environment error:(id *)error;
++ (id)equationWithString:(id)string format:(int)format environment:(id)environment error:(id *)error;
++ (id)equationWithString:(id)string format:(int)format error:(id *)error;
++ (id)equationWithXMLDoc:(_xmlDoc *)doc node:(_xmlNode *)node environment:(id)environment error:(id *)error;
+- (EQKitEquation)initWithRoot:(id)root source:(id)source;
 - (id)description;
-- (id)pdfDataWithLayoutContext:(id)a3 baselineOffset:(double *)a4;
+- (id)pdfDataWithLayoutContext:(id)context baselineOffset:(double *)offset;
 - (void)dealloc;
 @end
 
 @implementation EQKitEquation
 
-- (EQKitEquation)initWithRoot:(id)a3 source:(id)a4
+- (EQKitEquation)initWithRoot:(id)root source:(id)source
 {
-  if (!a3)
+  if (!root)
   {
     [EQKitEquation initWithRoot:a2 source:self];
   }
@@ -23,37 +23,37 @@
   v7 = [(EQKitEquation *)&v9 init];
   if (v7)
   {
-    v7->mRoot = a3;
-    v7->mSource = a4;
+    v7->mRoot = root;
+    v7->mSource = source;
   }
 
   return v7;
 }
 
-+ (id)equationWithData:(id)a3 format:(int)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithData:(id)data format:(int)format environment:(id)environment error:(id *)error
 {
-  if (a4 != 1)
+  if (format != 1)
   {
-    if (!a4 && a6 && !*a6)
+    if (!format && error && !*error)
     {
-      v7 = 0;
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"String format unknown. String format should be LaTeX or MathML.", &stru_287D36338, 0), *MEMORY[0x277CCA450], 0)}];
-      return v7;
+      parse = 0;
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"String format unknown. String format should be LaTeX or MathML.", &stru_287D36338, 0), *MEMORY[0x277CCA450], 0)}];
+      return parse;
     }
 
     return 0;
   }
 
-  v9 = a3;
-  if (!v9)
+  dataCopy = data;
+  if (!dataCopy)
   {
     return 0;
   }
 
-  v10 = v9;
+  v10 = dataCopy;
   if (xmlSAXVersion(&hdlr, 2))
   {
-    v7 = 0;
+    parse = 0;
   }
 
   else
@@ -65,101 +65,101 @@
     v13 = xmlSAXParseMemory(&hdlr, [v10 bytes], objc_msgSend(v10, "length"), 0);
     xmlSetExternalEntityLoader(ExternalEntityLoader);
     xmlSubstituteEntitiesDefault(v11);
-    v7 = 0;
-    if (a5 && v13)
+    parse = 0;
+    if (environment && v13)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = a5;
+        environmentCopy = environment;
       }
 
       else
       {
-        v14 = 0;
+        environmentCopy = 0;
       }
 
-      v15 = [[EQKitMathMLParser alloc] initWithDocument:v13 node:0 source:v10 environment:v14];
-      v7 = [(EQKitMathMLParser *)v15 parse];
-      if (a6 && !*a6)
+      v15 = [[EQKitMathMLParser alloc] initWithDocument:v13 node:0 source:v10 environment:environmentCopy];
+      parse = [(EQKitMathMLParser *)v15 parse];
+      if (error && !*error)
       {
-        *a6 = [(EQKitMathMLParser *)v15 error];
+        *error = [(EQKitMathMLParser *)v15 error];
       }
 
       xmlFreeDoc(v13);
     }
   }
 
-  if (a6 && !v7)
+  if (error && !parse)
   {
-    if (!*a6)
+    if (!*error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Unable to create equation.", &stru_287D36338, 0), *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Unable to create equation.", &stru_287D36338, 0), *MEMORY[0x277CCA450], 0)}];
     }
 
     return 0;
   }
 
-  if (v7)
+  if (parse)
   {
-    v7[3] = a5;
+    parse[3] = environment;
   }
 
-  return v7;
+  return parse;
 }
 
-+ (id)equationWithString:(id)a3 format:(int)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithString:(id)string format:(int)format environment:(id)environment error:(id *)error
 {
-  v8 = *&a4;
-  v10 = [a3 UTF8String];
-  v11 = [MEMORY[0x277CBEA90] dataWithBytes:v10 length:strlen(v10)];
+  v8 = *&format;
+  uTF8String = [string UTF8String];
+  v11 = [MEMORY[0x277CBEA90] dataWithBytes:uTF8String length:strlen(uTF8String)];
 
-  return [a1 equationWithData:v11 format:v8 environment:a5 error:a6];
+  return [self equationWithData:v11 format:v8 environment:environment error:error];
 }
 
-+ (id)equationWithString:(id)a3 format:(int)a4 error:(id *)a5
++ (id)equationWithString:(id)string format:(int)format error:(id *)error
 {
-  v6 = *&a4;
-  v8 = [a3 UTF8String];
-  v9 = [MEMORY[0x277CBEA90] dataWithBytes:v8 length:strlen(v8)];
+  v6 = *&format;
+  uTF8String = [string UTF8String];
+  v9 = [MEMORY[0x277CBEA90] dataWithBytes:uTF8String length:strlen(uTF8String)];
   v10 = +[EQKitEnvironment defaultEnvironment];
 
-  return [a1 equationWithData:v9 format:v6 environment:v10 error:a5];
+  return [self equationWithData:v9 format:v6 environment:v10 error:error];
 }
 
-+ (id)equationWithXMLDoc:(_xmlDoc *)a3 node:(_xmlNode *)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithXMLDoc:(_xmlDoc *)doc node:(_xmlNode *)node environment:(id)environment error:(id *)error
 {
-  v6 = 0;
-  if (a3 && a4)
+  parse = 0;
+  if (doc && node)
   {
     v11 = [EQKitMathMLParser alloc];
     v12 = objc_opt_class();
-    v13 = [(EQKitMathMLParser *)v11 initWithDocument:a3 node:a4 source:0 environment:EQKitUtilDynamicCast(v12, a5)];
-    v6 = [(EQKitMathMLParser *)v13 parse];
-    if (a6)
+    v13 = [(EQKitMathMLParser *)v11 initWithDocument:doc node:node source:0 environment:EQKitUtilDynamicCast(v12, environment)];
+    parse = [(EQKitMathMLParser *)v13 parse];
+    if (error)
     {
-      *a6 = [(EQKitMathMLParser *)v13 error];
+      *error = [(EQKitMathMLParser *)v13 error];
     }
   }
 
-  return v6;
+  return parse;
 }
 
-- (id)pdfDataWithLayoutContext:(id)a3 baselineOffset:(double *)a4
+- (id)pdfDataWithLayoutContext:(id)context baselineOffset:(double *)offset
 {
-  v7 = [(EQKitExpression *)[(EQKitEquation *)self root] newLayout];
-  if (!v7)
+  newLayout = [(EQKitExpression *)[(EQKitEquation *)self root] newLayout];
+  if (!newLayout)
   {
     return 0;
   }
 
-  v8 = v7;
-  [v7 layoutWithContext:a3];
-  v9 = [(EQKitEquation *)self pdfDataWithLayout:v8 layoutContext:a3];
-  if (a4)
+  v8 = newLayout;
+  [newLayout layoutWithContext:context];
+  v9 = [(EQKitEquation *)self pdfDataWithLayout:v8 layoutContext:context];
+  if (offset)
   {
     [v8 depth];
-    *a4 = -v10;
+    *offset = -v10;
   }
 
   return v9;

@@ -6,27 +6,27 @@
 
 - (id)feedbackKey
 {
-  v2 = [a1 subObject];
-  if (v2 && (v3 = v2, [a1 subObject], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "conformsToProtocol:", &unk_283B11A98), v4, v3, v5))
+  subObject = [self subObject];
+  if (subObject && (v3 = subObject, [self subObject], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "conformsToProtocol:", &unk_283B11A98), v4, v3, v5))
   {
-    v6 = [a1 subObject];
-    v7 = [v6 feedbackKeyComponent];
+    subObject2 = [self subObject];
+    feedbackKeyComponent = [subObject2 feedbackKeyComponent];
   }
 
   else
   {
-    v7 = &stru_2839A6058;
+    feedbackKeyComponent = &stru_2839A6058;
   }
 
   v8 = MEMORY[0x277CCACA8];
-  [a1 subtype];
+  [self subtype];
   v9 = ATXSuggestionTypeToString();
-  v10 = [a1 entityIdentifier];
-  [a1 scope];
+  entityIdentifier = [self entityIdentifier];
+  [self scope];
   v11 = ATXNotificationSuggestionScopeToString();
-  v12 = [v8 stringWithFormat:@"subtype:%@_entityIdentifier:%@_scope:%@", v9, v10, v11];
+  v12 = [v8 stringWithFormat:@"subtype:%@_entityIdentifier:%@_scope:%@", v9, entityIdentifier, v11];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"primary:%@__subobject:%@", v12, v7];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"primary:%@__subobject:%@", v12, feedbackKeyComponent];
 
   return v13;
 }

@@ -1,13 +1,13 @@
 @interface SKUIOnboardingAffiliationItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKUIOnboardingAffiliationItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -21,7 +21,7 @@
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setFillColor:self->_fillColor];
   [v13 setIdentifier:self->_identifier];
   [v13 setImageName:self->_imageName];
@@ -72,9 +72,9 @@
   return [(NSString *)self->_identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -90,9 +90,9 @@
   v13 = objc_opt_class();
   if (v13 == objc_opt_class())
   {
-    v15 = [(SKUIOnboardingAffiliationItem *)self identifier];
-    v16 = [v4 identifier];
-    v14 = [v15 isEqualToString:v16];
+    identifier = [(SKUIOnboardingAffiliationItem *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v14 = [identifier isEqualToString:identifier2];
   }
 
   else

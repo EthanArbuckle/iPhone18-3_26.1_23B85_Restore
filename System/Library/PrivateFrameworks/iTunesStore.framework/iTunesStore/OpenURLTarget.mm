@@ -1,15 +1,15 @@
 @interface OpenURLTarget
-- (OpenURLTarget)initWithTargetIdentifier:(id)a3;
-- (id)copyURLForURL:(id)a3;
+- (OpenURLTarget)initWithTargetIdentifier:(id)identifier;
+- (id)copyURLForURL:(id)l;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation OpenURLTarget
 
-- (OpenURLTarget)initWithTargetIdentifier:(id)a3
+- (OpenURLTarget)initWithTargetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = OpenURLTarget;
   v5 = [(OpenURLTarget *)&v11 init];
@@ -23,9 +23,9 @@
     v9 = &__OpenURLTargetData;
     do
     {
-      if ([v4 isEqualToString:*v9])
+      if ([identifierCopy isEqualToString:*v9])
       {
-        v6->_applicationState = [v7 applicationStateForApplication:v4];
+        v6->_applicationState = [v7 applicationStateForApplication:identifierCopy];
         *&v6->_targetData.clientIdentifier = *v9;
         v6->_targetData.secureScheme = *(v9 + 2);
         v6->_targetIndex = v8;
@@ -50,11 +50,11 @@ LABEL_8:
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   applicationState = self->_applicationState;
   v5 = applicationState == 8 || applicationState == 32;
-  v6 = *(a3 + 2);
+  v6 = *(compare + 2);
   v8 = v6 != 8 && v6 != 32;
   if (v5 == v8)
   {
@@ -72,7 +72,7 @@ LABEL_8:
   else
   {
     targetIndex = self->_targetIndex;
-    v10 = *(a3 + 5);
+    v10 = *(compare + 5);
     v11 = targetIndex == v10;
     v12 = targetIndex < v10;
     v13 = -1;
@@ -93,22 +93,22 @@ LABEL_8:
   }
 }
 
-- (id)copyURLForURL:(id)a3
+- (id)copyURLForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  if ([v5 isEqualToString:@"http"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v6 = 24;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"https"])
+    if (![scheme isEqualToString:@"https"])
     {
       v7 = 0;
 LABEL_9:
-      v11 = [v4 copy];
+      v11 = [lCopy copy];
       goto LABEL_10;
     }
 
@@ -121,8 +121,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [v4 absoluteString];
-  v9 = [v8 substringFromIndex:{objc_msgSend(v5, "length")}];
+  absoluteString = [lCopy absoluteString];
+  v9 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
   v10 = [v7 stringByAppendingString:v9];
 
   v11 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v10];

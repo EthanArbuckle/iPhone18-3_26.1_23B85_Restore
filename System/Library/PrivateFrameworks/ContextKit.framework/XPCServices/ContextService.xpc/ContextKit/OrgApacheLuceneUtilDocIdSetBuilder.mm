@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneUtilDocIdSetBuilder
-- (id)buildWithLong:(int64_t)a3;
-- (void)addWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (id)buildWithLong:(int64_t)long;
+- (void)addWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilDocIdSetBuilder
 
-- (void)addWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)addWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  if (!a3)
+  if (!iterator)
   {
     goto LABEL_22;
   }
 
-  -[OrgApacheLuceneUtilDocIdSetBuilder growWithInt:](self, "growWithInt:", JavaLangMath_minWithLong_withLong_(0x7FFFFFFFLL, [a3 cost]));
+  -[OrgApacheLuceneUtilDocIdSetBuilder growWithInt:](self, "growWithInt:", JavaLangMath_minWithLong_withLong_(0x7FFFFFFFLL, [iterator cost]));
   bitSet = self->bitSet_;
   if (bitSet)
   {
 
-    [(OrgApacheLuceneUtilBitSet *)bitSet or__WithOrgApacheLuceneSearchDocIdSetIterator:a3];
+    [(OrgApacheLuceneUtilBitSet *)bitSet or__WithOrgApacheLuceneSearchDocIdSetIterator:iterator];
   }
 
   else
@@ -31,13 +31,13 @@
       {
         while (1)
         {
-          v14 = [a3 nextDoc];
-          if (v14 == 0x7FFFFFFF)
+          nextDoc = [iterator nextDoc];
+          if (nextDoc == 0x7FFFFFFF)
           {
             break;
           }
 
-          v15 = v14;
+          v15 = nextDoc;
           buffer = self->buffer_;
           v17 = self->bufferSize_;
           self->bufferSize_ = v17 + 1;
@@ -69,10 +69,10 @@ LABEL_13:
     }
 
     sub_1000DFA70(self);
-    v19 = [a3 nextDoc];
-    if (v19 != 0x7FFFFFFF)
+    nextDoc2 = [iterator nextDoc];
+    if (nextDoc2 != 0x7FFFFFFF)
     {
-      v20 = v19;
+      nextDoc3 = nextDoc2;
       while (1)
       {
         v21 = self->bitSet_;
@@ -81,9 +81,9 @@ LABEL_13:
           break;
         }
 
-        [(OrgApacheLuceneUtilBitSet *)v21 setWithInt:v20];
-        v20 = [a3 nextDoc];
-        if (v20 == 0x7FFFFFFF)
+        [(OrgApacheLuceneUtilBitSet *)v21 setWithInt:nextDoc3];
+        nextDoc3 = [iterator nextDoc];
+        if (nextDoc3 == 0x7FFFFFFF)
         {
           return;
         }
@@ -95,20 +95,20 @@ LABEL_22:
   }
 }
 
-- (id)buildWithLong:(int64_t)a3
+- (id)buildWithLong:(int64_t)long
 {
   p_bitSet = &self->bitSet_;
   bitSet = self->bitSet_;
   if (bitSet)
   {
-    if (a3 == -1)
+    if (long == -1)
     {
       v6 = new_OrgApacheLuceneUtilBitDocIdSet_initWithOrgApacheLuceneUtilBitSet_(bitSet);
     }
 
     else
     {
-      v6 = new_OrgApacheLuceneUtilBitDocIdSet_initWithOrgApacheLuceneUtilBitSet_withLong_(bitSet, a3);
+      v6 = new_OrgApacheLuceneUtilBitDocIdSet_initWithOrgApacheLuceneUtilBitSet_withLong_(bitSet, long);
     }
 
     v25 = v6;

@@ -1,66 +1,66 @@
 @interface APAggregatedTimeSpentLegacyInterface
-- (APAggregatedTimeSpentLegacyInterface)initWithDbManager:(id)a3 retryManager:(id)a4;
-- (void)cancel:(id)a3;
-- (void)sendAggregatedTimeSpentMetricFor:(id)a3 aggregatedTimeSpentEntries:(id)a4 completionHandler:(id)a5;
+- (APAggregatedTimeSpentLegacyInterface)initWithDbManager:(id)manager retryManager:(id)retryManager;
+- (void)cancel:(id)cancel;
+- (void)sendAggregatedTimeSpentMetricFor:(id)for aggregatedTimeSpentEntries:(id)entries completionHandler:(id)handler;
 @end
 
 @implementation APAggregatedTimeSpentLegacyInterface
 
-- (APAggregatedTimeSpentLegacyInterface)initWithDbManager:(id)a3 retryManager:(id)a4
+- (APAggregatedTimeSpentLegacyInterface)initWithDbManager:(id)manager retryManager:(id)retryManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  retryManagerCopy = retryManager;
   v12.receiver = self;
   v12.super_class = APAggregatedTimeSpentLegacyInterface;
   v9 = [(APAggregatedTimeSpentLegacyInterface *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metricRetryManager, a4);
-    objc_storeStrong(&v10->_dbManager, a3);
+    objc_storeStrong(&v9->_metricRetryManager, retryManager);
+    objc_storeStrong(&v10->_dbManager, manager);
   }
 
   return v10;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v6 = a3;
-  v4 = [(APAggregatedTimeSpentLegacyInterface *)self activeDataTask];
+  cancelCopy = cancel;
+  activeDataTask = [(APAggregatedTimeSpentLegacyInterface *)self activeDataTask];
 
-  if (v4)
+  if (activeDataTask)
   {
-    v5 = [(APAggregatedTimeSpentLegacyInterface *)self activeDataTask];
-    [v5 cancel];
+    activeDataTask2 = [(APAggregatedTimeSpentLegacyInterface *)self activeDataTask];
+    [activeDataTask2 cancel];
 
     [(APAggregatedTimeSpentLegacyInterface *)self setActiveDataTask:0];
   }
 
-  v6[2]();
+  cancelCopy[2]();
 }
 
-- (void)sendAggregatedTimeSpentMetricFor:(id)a3 aggregatedTimeSpentEntries:(id)a4 completionHandler:(id)a5
+- (void)sendAggregatedTimeSpentMetricFor:(id)for aggregatedTimeSpentEntries:(id)entries completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  entriesCopy = entries;
+  handlerCopy = handler;
   v11 = [APAggregatedTimeSpentEventRequester alloc];
-  v12 = [(APAggregatedTimeSpentLegacyInterface *)self dbManager];
-  v13 = [(APAggregatedTimeSpentEventRequester *)v11 initWithBundleID:v8 aggregatedTimeSpentEntries:v9 databaseManager:v12];
+  dbManager = [(APAggregatedTimeSpentLegacyInterface *)self dbManager];
+  v13 = [(APAggregatedTimeSpentEventRequester *)v11 initWithBundleID:forCopy aggregatedTimeSpentEntries:entriesCopy databaseManager:dbManager];
 
-  v14 = [(APAggregatedTimeSpentLegacyInterface *)self metricRetryManager];
-  [(APLegacyMetricRequester *)v13 setRetryManager:v14];
+  metricRetryManager = [(APAggregatedTimeSpentLegacyInterface *)self metricRetryManager];
+  [(APLegacyMetricRequester *)v13 setRetryManager:metricRetryManager];
 
   v15 = [_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase alloc];
-  v16 = [(APAggregatedTimeSpentLegacyInterface *)self dbManager];
-  v17 = [(AggregatedTimeSpentStoreDatabase *)v15 initWithDatabase:v16];
+  dbManager2 = [(APAggregatedTimeSpentLegacyInterface *)self dbManager];
+  v17 = [(AggregatedTimeSpentStoreDatabase *)v15 initWithDatabase:dbManager2];
 
-  if (![(AggregatedTimeSpentStoreDatabase *)v17 removeEntries:v9])
+  if (![(AggregatedTimeSpentStoreDatabase *)v17 removeEntries:entriesCopy])
   {
     v18 = APLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v9 debugDescription];
+      v19 = [entriesCopy debugDescription];
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to remove entries %{public}@", &buf, 0xCu);
@@ -76,7 +76,7 @@
   v24 = sub_1002BDAB8;
   v25 = &unk_10047D2E8;
   p_buf = &buf;
-  v20 = v10;
+  v20 = handlerCopy;
   v26 = v20;
   v21 = [(APServerRequester *)v13 makeNetworkRequest:&v22];
   [(APAggregatedTimeSpentLegacyInterface *)self setActiveDataTask:v21, v22, v23, v24, v25];

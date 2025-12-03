@@ -1,18 +1,18 @@
 @interface MADServiceTextProcessingSubtask
-+ (id)subtaskForRequest:(id)a3 asset:(id)a4;
-- (MADServiceTextProcessingSubtask)initWithRequest:(id)a3 asset:(id)a4;
++ (id)subtaskForRequest:(id)request asset:(id)asset;
+- (MADServiceTextProcessingSubtask)initWithRequest:(id)request asset:(id)asset;
 @end
 
 @implementation MADServiceTextProcessingSubtask
 
-+ (id)subtaskForRequest:(id)a3 asset:(id)a4
++ (id)subtaskForRequest:(id)request asset:(id)asset
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithRequest:v5 asset:v6];
+    v7 = [objc_alloc(objc_opt_class()) initWithRequest:requestCopy asset:assetCopy];
   }
 
   else
@@ -32,18 +32,18 @@
   return v7;
 }
 
-- (MADServiceTextProcessingSubtask)initWithRequest:(id)a3 asset:(id)a4
+- (MADServiceTextProcessingSubtask)initWithRequest:(id)request asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = MADServiceTextProcessingSubtask;
   v9 = [(MADServiceTextProcessingSubtask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_asset, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_asset, asset);
   }
 
   return v10;

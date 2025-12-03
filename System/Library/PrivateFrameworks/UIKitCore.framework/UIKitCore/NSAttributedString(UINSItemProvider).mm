@@ -18,31 +18,31 @@
 {
   v20[8] = *MEMORY[0x1E69E9840];
   v20[0] = @"com.apple.uikit.attributedstring";
-  v3 = [*MEMORY[0x1E6982F98] identifier];
-  v20[1] = v3;
-  v4 = [*MEMORY[0x1E6982DC0] identifier];
-  v20[2] = v4;
-  v5 = [*MEMORY[0x1E6982F90] identifier];
-  v20[3] = v5;
+  identifier = [*MEMORY[0x1E6982F98] identifier];
+  v20[1] = identifier;
+  identifier2 = [*MEMORY[0x1E6982DC0] identifier];
+  v20[2] = identifier2;
+  identifier3 = [*MEMORY[0x1E6982F90] identifier];
+  v20[3] = identifier3;
   v6 = *MEMORY[0x1E6983098];
-  v7 = [*MEMORY[0x1E6983098] identifier];
-  v20[4] = v7;
+  identifier4 = [*MEMORY[0x1E6983098] identifier];
+  v20[4] = identifier4;
   v8 = *MEMORY[0x1E6982E18];
-  v9 = [*MEMORY[0x1E6982E18] identifier];
-  v20[5] = v9;
-  v10 = [*MEMORY[0x1E6983060] identifier];
-  v20[6] = v10;
-  v11 = [*MEMORY[0x1E6982F40] identifier];
-  v20[7] = v11;
+  identifier5 = [*MEMORY[0x1E6982E18] identifier];
+  v20[5] = identifier5;
+  identifier6 = [*MEMORY[0x1E6983060] identifier];
+  v20[6] = identifier6;
+  identifier7 = [*MEMORY[0x1E6982F40] identifier];
+  v20[7] = identifier7;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:8];
 
   if (a3 && (dyld_program_sdk_at_least() & 1) == 0)
   {
     v13 = [v12 mutableCopy];
-    v14 = [v6 identifier];
-    v19[0] = v14;
-    v15 = [v8 identifier];
-    v19[1] = v15;
+    identifier8 = [v6 identifier];
+    v19[0] = identifier8;
+    identifier9 = [v8 identifier];
+    v19[1] = identifier9;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     [v13 removeObjectsInArray:v16];
 
@@ -56,8 +56,8 @@
 {
   v3 = *MEMORY[0x1E6982F98];
   v4 = a3;
-  v5 = [v3 identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [v3 identifier];
+  v6 = [v4 isEqualToString:identifier];
 
   return v6;
 }
@@ -67,7 +67,7 @@
   v16[1] = *MEMORY[0x1E69E9840];
   v8 = a4;
   v9 = a3;
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v15 = *off_1E70EC8F0;
   v16[0] = *off_1E70EC998;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
@@ -90,7 +90,7 @@
   {
     if ([v13 conformsToType:*MEMORY[0x1E6983098]])
     {
-      v18 = [a1 alloc];
+      v18 = [self alloc];
       v19 = *off_1E70ECAE8;
       v20 = *off_1E70EC938;
       v62[0] = *off_1E70EC8F0;
@@ -108,7 +108,7 @@ LABEL_8:
 
     if ([v13 conformsToType:*MEMORY[0x1E6982E18]])
     {
-      v22 = [a1 alloc];
+      v22 = [self alloc];
       v23 = *off_1E70EC940;
       v24 = *off_1E70EC938;
       v60[0] = *off_1E70EC8F0;
@@ -129,11 +129,11 @@ LABEL_8:
       {
         v15 = v28;
         v46 = _UITemporaryFolderURL(@"com.apple.uikit.attributedstring");
-        v29 = [v15 filename];
-        v30 = v29;
-        if (v29)
+        filename = [v15 filename];
+        v30 = filename;
+        if (filename)
         {
-          v31 = v29;
+          v31 = filename;
         }
 
         else
@@ -150,7 +150,7 @@ LABEL_8:
         if (v32)
         {
           v49 = v33;
-          v17 = [(objc_class *)a1 _objectWithRTFDAtURL:v45 userInfo:v12 error:&v49];
+          v17 = [(objc_class *)self _objectWithRTFDAtURL:v45 userInfo:v12 error:&v49];
           v34 = v49;
 
           v16 = v34;
@@ -161,8 +161,8 @@ LABEL_8:
           v17 = 0;
         }
 
-        v41 = [MEMORY[0x1E696AC08] defaultManager];
-        [v41 removeItemAtURL:v46 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtURL:v46 error:0];
 
         goto LABEL_10;
       }
@@ -172,7 +172,7 @@ LABEL_8:
     {
       if ([v13 conformsToType:*MEMORY[0x1E6982F90]])
       {
-        v35 = [a1 alloc];
+        v35 = [self alloc];
         v58 = *off_1E70EC8F0;
         v59 = *off_1E70EC9A0;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
@@ -186,7 +186,7 @@ LABEL_8:
 
       if ([v13 conformsToType:*MEMORY[0x1E6983060]])
       {
-        v37 = [a1 alloc];
+        v37 = [self alloc];
         v38 = *off_1E70EC990;
         v39 = *off_1E70EC8E0;
         v56[0] = *off_1E70EC8F0;
@@ -204,7 +204,7 @@ LABEL_8:
 
       if ([v13 conformsToType:*MEMORY[0x1E6982F40]])
       {
-        v42 = [a1 alloc];
+        v42 = [self alloc];
         v54 = *off_1E70EC8F0;
         v55 = *off_1E70EC990;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
@@ -267,8 +267,8 @@ LABEL_13:
   v29 = __Block_byref_object_copy__149;
   v30 = __Block_byref_object_dispose__149;
   v31 = 0;
-  v12 = [*MEMORY[0x1E6982F98] identifier];
-  v13 = [v11 isEqualToString:v12];
+  identifier = [*MEMORY[0x1E6982F98] identifier];
+  v13 = [v11 isEqualToString:identifier];
 
   if (v13)
   {
@@ -278,12 +278,12 @@ LABEL_13:
     aBlock[3] = &unk_1E711A020;
     aBlock[4] = &v26;
     aBlock[5] = &v32;
-    aBlock[6] = a1;
+    aBlock[6] = self;
     v14 = _Block_copy(aBlock);
     v15 = v14;
     if (a5)
     {
-      v16 = [v10 startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [v10 startAccessingSecurityScopedResource];
       v17 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:0];
       v18 = v33;
       obj = v33[5];
@@ -294,7 +294,7 @@ LABEL_13:
       v23 = v15;
       [v17 coordinateReadingItemAtURL:v10 options:1 error:&obj byAccessor:v22];
       objc_storeStrong(v18 + 5, obj);
-      if (v16)
+      if (startAccessingSecurityScopedResource)
       {
         [v10 stopAccessingSecurityScopedResource];
       }
@@ -327,7 +327,7 @@ LABEL_13:
 {
   v8 = a4;
   v9 = a3;
-  v10 = [a1 init];
+  v10 = [self init];
   v11 = [objc_opt_class() objectWithItemProviderData:v9 typeIdentifier:v8 error:a5];
 
   v12 = v11;
@@ -338,12 +338,12 @@ LABEL_13:
 {
   v5[4] = *MEMORY[0x1E69E9840];
   v5[0] = @"com.apple.uikit.attributedstring";
-  v0 = [*MEMORY[0x1E6982F98] identifier];
-  v5[1] = v0;
-  v1 = [*MEMORY[0x1E6982DC0] identifier];
-  v5[2] = v1;
-  v2 = [*MEMORY[0x1E6983060] identifier];
-  v5[3] = v2;
+  identifier = [*MEMORY[0x1E6982F98] identifier];
+  v5[1] = identifier;
+  identifier2 = [*MEMORY[0x1E6982DC0] identifier];
+  v5[2] = identifier2;
+  identifier3 = [*MEMORY[0x1E6983060] identifier];
+  v5[3] = identifier3;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:4];
 
   return v3;
@@ -353,8 +353,8 @@ LABEL_13:
 {
   v3 = *MEMORY[0x1E6982F98];
   v4 = a3;
-  v5 = [v3 identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [v3 identifier];
+  v6 = [v4 isEqualToString:identifier];
 
   return v6;
 }
@@ -375,19 +375,19 @@ LABEL_13:
   if ([v6 isEqualToString:@"com.apple.uikit.attributedstring"])
   {
     v24 = 0;
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:&v24];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v24];
     v9 = v24;
     v7[2](v7, v8, v9);
   }
 
   else
   {
-    v10 = [*MEMORY[0x1E6982DC0] identifier];
-    v11 = [v6 isEqualToString:v10];
+    identifier = [*MEMORY[0x1E6982DC0] identifier];
+    v11 = [v6 isEqualToString:identifier];
 
     if (v11)
     {
-      v12 = [a1 length];
+      v12 = [self length];
       v27 = *off_1E70EC8F0;
       v28[0] = *off_1E70EC998;
       v13 = MEMORY[0x1E695DF20];
@@ -398,8 +398,8 @@ LABEL_13:
 
     else
     {
-      v17 = [*MEMORY[0x1E6983060] identifier];
-      v18 = [v6 isEqualToString:v17];
+      identifier2 = [*MEMORY[0x1E6983060] identifier];
+      v18 = [v6 isEqualToString:identifier2];
 
       if (!v18)
       {
@@ -407,7 +407,7 @@ LABEL_13:
         goto LABEL_9;
       }
 
-      v12 = [a1 length];
+      v12 = [self length];
       v19 = *off_1E70EC990;
       v20 = *off_1E70EC8E0;
       v25[0] = *off_1E70EC8F0;
@@ -421,7 +421,7 @@ LABEL_13:
     }
 
     v21 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:v16];
-    v22 = [a1 dataFromRange:0 documentAttributes:v12 error:{v21, 0}];
+    v22 = [self dataFromRange:0 documentAttributes:v12 error:{v21, 0}];
 
     v7[2](v7, v22, 0);
   }
@@ -437,24 +437,24 @@ LABEL_9:
   v6 = a4;
   v7 = *MEMORY[0x1E6982F98];
   v8 = a3;
-  v9 = [v7 identifier];
-  v10 = [v8 isEqualToString:v9];
+  identifier = [v7 identifier];
+  v10 = [v8 isEqualToString:identifier];
 
   if (v10)
   {
-    v11 = [a1 length];
+    v11 = [self length];
     v24 = *off_1E70EC8F0;
     v25[0] = *off_1E70EC998;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v23 = 0;
-    v13 = [a1 fileWrapperFromRange:0 documentAttributes:v11 error:{v12, &v23}];
+    v13 = [self fileWrapperFromRange:0 documentAttributes:v11 error:{v12, &v23}];
     v14 = v23;
 
     if (v13)
     {
       v15 = _UITemporaryFolderURL(@"com.apple.uikit.attributedstring");
-      v16 = [v7 localizedDescription];
-      v17 = [v16 stringByAppendingPathExtensionForType:v7];
+      localizedDescription = [v7 localizedDescription];
+      v17 = [localizedDescription stringByAppendingPathExtensionForType:v7];
       v18 = [v15 URLByAppendingPathComponent:v17];
       v22 = v14;
       [v13 writeToURL:v18 options:1 originalContentsURL:0 error:&v22];
@@ -490,8 +490,8 @@ LABEL_12:
     }
 
 LABEL_11:
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
-    [v20 removeItemAtURL:v15 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v15 error:0];
 
     goto LABEL_12;
   }

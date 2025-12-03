@@ -1,7 +1,7 @@
 @interface LACBiomeDialogDonationHelper
 + (id)sharedInstance;
 - (LACBiomeDialogDonationHelper)init;
-- (void)donateEvent:(id)a3;
+- (void)donateEvent:(id)event;
 @end
 
 @implementation LACBiomeDialogDonationHelper
@@ -34,9 +34,9 @@ uint64_t __46__LACBiomeDialogDonationHelper_sharedInstance__block_invoke()
   return [(LACBiomeDialogDonationHelper *)&v3 init];
 }
 
-- (void)donateEvent:(id)a3
+- (void)donateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (+[LACAnalyticsUtils shareAnalyticsEnabled])
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -44,7 +44,7 @@ uint64_t __46__LACBiomeDialogDonationHelper_sharedInstance__block_invoke()
     v6[2] = __44__LACBiomeDialogDonationHelper_donateEvent___block_invoke;
     v6[3] = &unk_1E7A956E0;
     v6[4] = self;
-    v7 = v4;
+    v7 = eventCopy;
     [v7 determineTimeSinceLastSystemUpdateWithCompletion:v6];
   }
 

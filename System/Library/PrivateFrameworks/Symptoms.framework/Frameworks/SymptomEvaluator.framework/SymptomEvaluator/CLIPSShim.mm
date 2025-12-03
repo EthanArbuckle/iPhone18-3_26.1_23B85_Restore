@@ -1,70 +1,70 @@
 @interface CLIPSShim
 + (CLIPSShim)sharedInstance;
 + (_CCCryptor)cryptor;
-+ (id)createDecryptedCLPData:(const void *)a3 length:(unint64_t)a4;
-+ (id)dataSectionNameForModule:(id)a3;
-+ (id)decodeAndInflateCLIPSString:(id)a3;
-+ (id)decryptCLIPSData:(id)a3 forModule:(id)a4;
++ (id)createDecryptedCLPData:(const void *)data length:(unint64_t)length;
++ (id)dataSectionNameForModule:(id)module;
++ (id)decodeAndInflateCLIPSString:(id)string;
++ (id)decryptCLIPSData:(id)data forModule:(id)module;
 - ($019B15D08CAF2F6032DDFBB53180E398)consoleNameRegex;
 - ($019B15D08CAF2F6032DDFBB53180E398)dumpStringRegex;
-- (BOOL)addModuleNamed:(id)a3 withConstruct:(id)a4;
-- (BOOL)addNewConstruct:(id)a3;
-- (BOOL)factIsImportant:(id)a3;
+- (BOOL)addModuleNamed:(id)named withConstruct:(id)construct;
+- (BOOL)addNewConstruct:(id)construct;
+- (BOOL)factIsImportant:(id)important;
 - (BOOL)initializeWorkspace;
-- (BOOL)loadConstructsForModule:(id)a3;
+- (BOOL)loadConstructsForModule:(id)module;
 - (CLIPSShim)init;
 - (CLIPSShimDelegate)delegate;
 - (id)consoleBuffer;
 - (id)currentModule;
 - (id)currentRuleName;
-- (id)deftemplatesMatchingPrefix:(id)a3;
-- (id)dumpEngineStatusWithContext:(id)a3;
-- (id)factDictionaryForFact:(void *)a3;
-- (id)factStringForFactDictionary:(id)a3;
-- (id)getValueForSlotNamed:(id)a3 fromFact:(void *)a4;
-- (id)loadDataSection:(id)a3;
-- (id)matchFactsWithDeftemplateName:(id)a3 withSlotKeyValues:(id)a4;
+- (id)deftemplatesMatchingPrefix:(id)prefix;
+- (id)dumpEngineStatusWithContext:(id)context;
+- (id)factDictionaryForFact:(void *)fact;
+- (id)factStringForFactDictionary:(id)dictionary;
+- (id)getValueForSlotNamed:(id)named fromFact:(void *)fact;
+- (id)loadDataSection:(id)section;
+- (id)matchFactsWithDeftemplateName:(id)name withSlotKeyValues:(id)values;
 - (id)moduleNames;
-- (id)moduleRulesByName:(id)a3;
-- (id)objectForDO:(dataObject *)a3;
-- (id)objectFromMultifieldArg:(void *)a3 start:(int64_t)a4 end:(int64_t)a5;
-- (id)otaUpdatePlatformStringForDeviceClass:(int64_t)a3;
-- (id)parseCLIPSModuleInfoFromConstructs:(id)a3;
-- (id)printedFacts:(id)a3 limit:(int64_t)a4;
-- (id)setCurrentModule:(id)a3;
-- (id)slotsStringForTemplate:(id)a3 fromDictionary:(id)a4 moduleName:(id)a5;
-- (id)stringFromConstructsLoadState:(int64_t)a3;
-- (id)swapConsoleBuffer:(id)a3;
-- (int)executeBatchCommand:(id)a3 module:(id)a4;
-- (int64_t)constructLoadStateForModule:(id)a3;
+- (id)moduleRulesByName:(id)name;
+- (id)objectForDO:(dataObject *)o;
+- (id)objectFromMultifieldArg:(void *)arg start:(int64_t)start end:(int64_t)end;
+- (id)otaUpdatePlatformStringForDeviceClass:(int64_t)class;
+- (id)parseCLIPSModuleInfoFromConstructs:(id)constructs;
+- (id)printedFacts:(id)facts limit:(int64_t)limit;
+- (id)setCurrentModule:(id)module;
+- (id)slotsStringForTemplate:(id)template fromDictionary:(id)dictionary moduleName:(id)name;
+- (id)stringFromConstructsLoadState:(int64_t)state;
+- (id)swapConsoleBuffer:(id)buffer;
+- (int)executeBatchCommand:(id)command module:(id)module;
+- (int64_t)constructLoadStateForModule:(id)module;
 - (int64_t)run;
-- (void)_logFactsForModule:(id)a3 limit:(int64_t)a4 when:(int64_t)a5;
-- (void)addCallbackInvocation:(id)a3 invocation:(id)a4;
-- (void)addObjectToEnvironment:(id)a3;
-- (void)assertFactString:(id)a3 moduleName:(id)a4;
+- (void)_logFactsForModule:(id)module limit:(int64_t)limit when:(int64_t)when;
+- (void)addCallbackInvocation:(id)invocation invocation:(id)a4;
+- (void)addObjectToEnvironment:(id)environment;
+- (void)assertFactString:(id)string moduleName:(id)name;
 - (void)clear;
-- (void)deactivateModule:(id)a3;
+- (void)deactivateModule:(id)module;
 - (void)dealloc;
-- (void)deftemplateNamed:(id)a3 moduleName:(id)a4;
-- (void)executeCommand:(id)a3 moduleName:(id)a4;
-- (void)log:(id)a3;
-- (void)logMemoryStatistics:(id)a3 verboseOnly:(BOOL)a4;
-- (void)performOnFactsWithDeftemplateName:(id)a3 usingBlock:(id)a4;
-- (void)pushFocus:(id)a3;
-- (void)registerCallbackFunction:(id)a3 selector:(SEL)a4 target:(id)a5;
-- (void)releaseFact:(void *)a3;
-- (void)removeCallbackInvocation:(id)a3;
-- (void)reportError:(id)a3;
+- (void)deftemplateNamed:(id)named moduleName:(id)name;
+- (void)executeCommand:(id)command moduleName:(id)name;
+- (void)log:(id)log;
+- (void)logMemoryStatistics:(id)statistics verboseOnly:(BOOL)only;
+- (void)performOnFactsWithDeftemplateName:(id)name usingBlock:(id)block;
+- (void)pushFocus:(id)focus;
+- (void)registerCallbackFunction:(id)function selector:(SEL)selector target:(id)target;
+- (void)releaseFact:(void *)fact;
+- (void)removeCallbackInvocation:(id)invocation;
+- (void)reportError:(id)error;
 - (void)reset;
-- (void)retainFact:(void *)a3;
-- (void)retractFact:(void *)a3;
-- (void)setCommandString:(id)a3;
-- (void)setConsoleNameRegex:(id *)a3;
-- (void)setDumpStringRegex:(id *)a3;
-- (void)setOTAUpdate:(id)a3 version:(id)a4 module:(id)a5;
-- (void)unloadConstructsForModule:(id)a3 unconditionally:(BOOL)a4;
+- (void)retainFact:(void *)fact;
+- (void)retractFact:(void *)fact;
+- (void)setCommandString:(id)string;
+- (void)setConsoleNameRegex:(id *)regex;
+- (void)setDumpStringRegex:(id *)regex;
+- (void)setOTAUpdate:(id)update version:(id)version module:(id)module;
+- (void)unloadConstructsForModule:(id)module unconditionally:(BOOL)unconditionally;
 - (void)updateAllModuleInfos;
-- (void)updateModuleInfoForModule:(id)a3 slotValues:(id)a4;
+- (void)updateModuleInfoForModule:(id)module slotValues:(id)values;
 @end
 
 @implementation CLIPSShim
@@ -101,8 +101,8 @@
 
 - (id)consoleBuffer
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(CLIPSShim *)self swapConsoleBuffer:v3];
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = [(CLIPSShim *)self swapConsoleBuffer:string];
 
   return v4;
 }
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = __27__CLIPSShim_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_49 != -1)
   {
     dispatch_once(&sharedInstance_pred_49, block);
@@ -239,8 +239,8 @@ uint64_t __27__CLIPSShim_sharedInstance__block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x277D6B500];
   v4 = +[SystemSettingsRelay defaultRelay];
-  v5 = [v4 symptomEvaluatorDatabaseContainerPath];
-  v6 = [v3 workspaceWithName:@"netusage" atPath:v5 objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
+  symptomEvaluatorDatabaseContainerPath = [v4 symptomEvaluatorDatabaseContainerPath];
+  v6 = [v3 workspaceWithName:@"netusage" atPath:symptomEvaluatorDatabaseContainerPath objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
 
   v7 = [v6 copy];
   clipsWorkspace = self->_clipsWorkspace;
@@ -284,21 +284,21 @@ uint64_t __27__CLIPSShim_sharedInstance__block_invoke(uint64_t a1)
   EnvReset(environment);
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
   environment = self->_environment;
-  v6 = a3;
-  EnvPrintRouter(environment, "werror", [a3 UTF8String]);
+  errorCopy = error;
+  EnvPrintRouter(environment, "werror", [error UTF8String]);
   v7 = self->_environment;
 
   EnvPrintRouter(v7, "werror", "\n");
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   environment = self->_environment;
-  v6 = a3;
-  EnvPrintRouter(environment, "wtrace", [a3 UTF8String]);
+  logCopy = log;
+  EnvPrintRouter(environment, "wtrace", [log UTF8String]);
   v7 = self->_environment;
 
   EnvPrintRouter(v7, "wtrace", "\n");
@@ -352,30 +352,30 @@ LABEL_10:
   return v6;
 }
 
-- (void)setCommandString:(id)a3
+- (void)setCommandString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(CLIPSShim *)self setCommandStringLoc:0];
-  [(CLIPSShim *)self setCurrentCommand:v4];
+  [(CLIPSShim *)self setCurrentCommand:stringCopy];
 }
 
-- (id)objectFromMultifieldArg:(void *)a3 start:(int64_t)a4 end:(int64_t)a5
+- (id)objectFromMultifieldArg:(void *)arg start:(int64_t)start end:(int64_t)end
 {
-  if (a5 == a4)
+  if (end == start)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5 - a4 + 1];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:end - start + 1];
   }
 
   v9 = v8;
-  if (a5 >= a4)
+  if (end >= start)
   {
-    v10 = a5 - a4 + 1;
-    v11 = a3 + 16 * a4 + 16;
+    v10 = end - start + 1;
+    v11 = arg + 16 * start + 16;
     v9 = v8;
     do
     {
@@ -472,25 +472,25 @@ LABEL_27:
   return v9;
 }
 
-- (id)objectForDO:(dataObject *)a3
+- (id)objectForDO:(dataObject *)o
 {
   v3 = 0;
-  var1 = a3->var1;
+  var1 = o->var1;
   if (var1 <= 1)
   {
-    if (a3->var1)
+    if (o->var1)
     {
       if (var1 != 1)
       {
         goto LABEL_16;
       }
 
-      v5 = [MEMORY[0x277CCABB0] numberWithLongLong:*(a3->var2 + 3)];
+      v5 = [MEMORY[0x277CCABB0] numberWithLongLong:*(o->var2 + 3)];
     }
 
     else
     {
-      v5 = [MEMORY[0x277CCABB0] numberWithDouble:*(a3->var2 + 3)];
+      v5 = [MEMORY[0x277CCABB0] numberWithDouble:*(o->var2 + 3)];
     }
 
     goto LABEL_15;
@@ -500,7 +500,7 @@ LABEL_27:
   {
     if (var1 == 4)
     {
-      v5 = [(CLIPSShim *)self objectFromMultifieldArg:a3->var2 start:a3->var3 + 1 end:a3->var4 + 1];
+      v5 = [(CLIPSShim *)self objectFromMultifieldArg:o->var2 start:o->var3 + 1 end:o->var4 + 1];
     }
 
     else
@@ -510,7 +510,7 @@ LABEL_27:
         goto LABEL_16;
       }
 
-      v5 = *(a3->var2 + 3);
+      v5 = *(o->var2 + 3);
     }
 
 LABEL_15:
@@ -518,7 +518,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:*(a3->var2 + 3)];
+  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:*(o->var2 + 3)];
   if (([v3 isEqualToString:@"YES"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"TRUE") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"true"))
   {
 
@@ -542,28 +542,28 @@ LABEL_16:
   return v3;
 }
 
-- (void)registerCallbackFunction:(id)a3 selector:(SEL)a4 target:(id)a5
+- (void)registerCallbackFunction:(id)function selector:(SEL)selector target:(id)target
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_invocationMap objectForKey:v8];
+  functionCopy = function;
+  targetCopy = target;
+  v10 = [(NSMutableDictionary *)self->_invocationMap objectForKey:functionCopy];
   if (v10)
   {
     goto LABEL_4;
   }
 
   v11 = MEMORY[0x277CBEAE8];
-  v12 = [v9 methodSignatureForSelector:a4];
+  v12 = [targetCopy methodSignatureForSelector:selector];
   v10 = [v11 invocationWithMethodSignature:v12];
 
   if (v10)
   {
-    [v10 setTarget:v9];
-    [v10 setSelector:a4];
-    [(NSMutableDictionary *)self->_invocationMap setObject:v10 forKey:v8];
+    [v10 setTarget:targetCopy];
+    [v10 setSelector:selector];
+    [(NSMutableDictionary *)self->_invocationMap setObject:v10 forKey:functionCopy];
 LABEL_4:
-    [(CLIPSShim *)self addCallbackInvocation:v8 invocation:v10];
+    [(CLIPSShim *)self addCallbackInvocation:functionCopy invocation:v10];
 
     goto LABEL_5;
   }
@@ -571,7 +571,7 @@ LABEL_4:
   v14 = debuggabilityLogHandle;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = NSStringFromSelector(a4);
+    v15 = NSStringFromSelector(selector);
     v17 = 138412290;
     v18 = v15;
     _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "Failed to create NSInvocation for %@", &v17, 0xCu);
@@ -581,7 +581,7 @@ LABEL_4:
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v8;
+    v18 = functionCopy;
     _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_INFO, "Failure creating invocation function for %@", &v17, 0xCu);
   }
 
@@ -590,15 +590,15 @@ LABEL_5:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCallbackInvocation:(id)a3 invocation:(id)a4
+- (void)addCallbackInvocation:(id)invocation invocation:(id)a4
 {
-  v5 = a3;
+  invocationCopy = invocation;
   environment = self->_environment;
-  v7 = a3;
+  invocationCopy2 = invocation;
   v8 = a4;
-  LODWORD(v5) = EnvDefineFunctionWithContext(environment, [v5 UTF8String], 117, delegateCallbackRouter, "delegateCallbackRouter", v8);
+  LODWORD(invocationCopy) = EnvDefineFunctionWithContext(environment, [invocationCopy UTF8String], 117, delegateCallbackRouter, "delegateCallbackRouter", v8);
 
-  if (!v5)
+  if (!invocationCopy)
   {
     v9 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -609,24 +609,24 @@ LABEL_5:
   }
 }
 
-- (void)removeCallbackInvocation:(id)a3
+- (void)removeCallbackInvocation:(id)invocation
 {
   environment = self->_environment;
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  invocationCopy = invocation;
+  uTF8String = [invocation UTF8String];
 
-  UndefineFunction(environment, v6);
+  UndefineFunction(environment, uTF8String);
 }
 
-- (void)addObjectToEnvironment:(id)a3
+- (void)addObjectToEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_clipsHeldObjects member:v4];
+  environmentCopy = environment;
+  v5 = [(NSMutableSet *)self->_clipsHeldObjects member:environmentCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (environmentCopy && !v5)
   {
-    [(NSMutableSet *)self->_clipsHeldObjects addObject:v4];
-    v6 = v4;
+    [(NSMutableSet *)self->_clipsHeldObjects addObject:environmentCopy];
+    v6 = environmentCopy;
   }
 
   v7 = EnvAddExternalAddress(self->_environment, v6, self->_strongAddressType);
@@ -634,25 +634,25 @@ LABEL_5:
   return v7;
 }
 
-- (void)logMemoryStatistics:(id)a3 verboseOnly:(BOOL)a4
+- (void)logMemoryStatistics:(id)statistics verboseOnly:(BOOL)only
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statisticsCopy = statistics;
   v12 = 0;
   v13 = 0;
   v11 = 0;
   EnvironmentZoneStatistics(&v13, &v12, &v11);
-  if (!a4)
+  if (!only)
   {
     v7 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [(CLIPSShim *)self memoryUsed];
+      memoryUsed = [(CLIPSShim *)self memoryUsed];
       *buf = 138413314;
-      v15 = v6;
+      v15 = statisticsCopy;
       v16 = 2048;
-      v17 = v9;
+      v17 = memoryUsed;
       v18 = 2048;
       v19 = v13;
       v20 = 2048;
@@ -666,30 +666,30 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dumpEngineStatusWithContext:(id)a3
+- (id)dumpEngineStatusWithContext:(id)context
 {
-  v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\nCLIPS Engine Dump:\n", a3];
+  context = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\nCLIPS Engine Dump:\n", context];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(CLIPSShim *)self consoleBuffer];
-  v7 = [v5 stringWithFormat:@"CLIPS Console:%@\n", v6];
-  [v4 appendString:v7];
+  consoleBuffer = [(CLIPSShim *)self consoleBuffer];
+  v7 = [v5 stringWithFormat:@"CLIPS Console:%@\n", consoleBuffer];
+  [context appendString:v7];
 
   v8 = MEMORY[0x277CCACA8];
   v9 = [(CLIPSShim *)self printedFacts:0 limit:0];
   v10 = [v8 stringWithFormat:@"CLIPS Facts:%@\n", v9];
-  [v4 appendString:v10];
+  [context appendString:v10];
 
-  return v4;
+  return context;
 }
 
-- (id)swapConsoleBuffer:(id)a3
+- (id)swapConsoleBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   consoleContents = self->_consoleContents;
   v6 = consoleContents;
   v7 = self->_consoleContents;
-  self->_consoleContents = v4;
-  v8 = v4;
+  self->_consoleContents = bufferCopy;
+  v8 = bufferCopy;
 
   return consoleContents;
 }
@@ -715,26 +715,26 @@ LABEL_5:
   return v3;
 }
 
-- (void)_logFactsForModule:(id)a3 limit:(int64_t)a4 when:(int64_t)a5
+- (void)_logFactsForModule:(id)module limit:(int64_t)limit when:(int64_t)when
 {
-  v5 = a5;
+  whenCopy = when;
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(CLIPSShim *)self factCount];
-  if (a4 < 1)
+  moduleCopy = module;
+  factCount = [(CLIPSShim *)self factCount];
+  if (limit < 1)
   {
-    a4 = 1000;
+    limit = 1000;
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [(CLIPSShim *)self printedFacts:v8 limit:a4];
-  v40 = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v11 = [(CLIPSShim *)self printedFacts:moduleCopy limit:limit];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
   v12 = [v11 componentsSeparatedByCharactersInSet:?];
   v41 = v11;
-  v42 = v8;
-  if ((v5 & 1) == 0)
+  v42 = moduleCopy;
+  if ((whenCopy & 1) == 0)
   {
-    if ((v5 & 4) != 0)
+    if ((whenCopy & 4) != 0)
     {
       goto LABEL_20;
     }
@@ -746,13 +746,13 @@ LABEL_5:
     }
 
     v14 = @"(Showing Only Important Facts) ";
-    if ((v5 & 2) == 0)
+    if ((whenCopy & 2) == 0)
     {
       v14 = &stru_2847966D8;
     }
 
     *buf = 134218242;
-    v49 = v9;
+    limitCopy = factCount;
     v50 = 2112;
     v51 = v14;
     v15 = " --- NDFSM Expert System Facts (%lu)  %@---";
@@ -763,18 +763,18 @@ LABEL_5:
 
   v18 = debuggabilityLogHandle;
   v19 = os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT);
-  if (a4 >= v9)
+  if (limit >= factCount)
   {
     if (v19)
     {
       v22 = @"(Showing Only Important Facts) ";
-      if ((v5 & 2) == 0)
+      if ((whenCopy & 2) == 0)
       {
         v22 = &stru_2847966D8;
       }
 
       *buf = 134218242;
-      v49 = v9;
+      limitCopy = factCount;
       v50 = 2112;
       v51 = v22;
       v15 = " --- NDFSM Expert System Facts (%lu) %@---";
@@ -791,14 +791,14 @@ LABEL_19:
   {
     v20 = @"(Showing Only Important Facts) ";
     *buf = 134218498;
-    v49 = a4;
-    if ((v5 & 2) == 0)
+    limitCopy = limit;
+    if ((whenCopy & 2) == 0)
     {
       v20 = &stru_2847966D8;
     }
 
     v50 = 2048;
-    v51 = v9;
+    v51 = factCount;
     v52 = 2112;
     v53 = v20;
     v15 = " --- NDFSM Expert System Facts (%lu of %lu) %@---";
@@ -832,9 +832,9 @@ LABEL_20:
       }
 
       v28 = *(*(&v43 + 1) + 8 * i);
-      if ([v28 length] && ((v5 & 2) == 0 || -[CLIPSShim factIsImportant:](self, "factIsImportant:", v28)))
+      if ([v28 length] && ((whenCopy & 2) == 0 || -[CLIPSShim factIsImportant:](self, "factIsImportant:", v28)))
       {
-        if (v5)
+        if (whenCopy)
         {
           v32 = debuggabilityLogHandle;
           if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -843,19 +843,19 @@ LABEL_20:
           }
 
           *buf = 138412290;
-          v49 = v28;
+          limitCopy = v28;
           v30 = v32;
           v31 = OS_LOG_TYPE_DEFAULT;
           goto LABEL_34;
         }
 
-        if ((v5 & 4) == 0)
+        if ((whenCopy & 4) == 0)
         {
           v29 = debuggabilityLogHandle;
           if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v49 = v28;
+            limitCopy = v28;
             v30 = v29;
             v31 = OS_LOG_TYPE_INFO;
 LABEL_34:
@@ -873,7 +873,7 @@ LABEL_34:
 LABEL_37:
 
   objc_autoreleasePoolPop(v10);
-  if (v5)
+  if (whenCopy)
   {
     v38 = debuggabilityLogHandle;
     v34 = v41;
@@ -892,7 +892,7 @@ LABEL_43:
   {
     v34 = v41;
     v33 = v42;
-    if ((v5 & 4) == 0)
+    if ((whenCopy & 4) == 0)
     {
       v35 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -908,29 +908,29 @@ LABEL_43:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)factIsImportant:(id)a3
+- (BOOL)factIsImportant:(id)important
 {
-  v3 = a3;
-  if (objc_msgSend(v3, "containsString:", @"(Symptom (")) & 1 != 0 || (objc_msgSend(v3, "containsString:", @"(AnalyticsEvent_") & 1) != 0 || (objc_msgSend(v3, "containsString:", @"(WaitingFor") & 1) != 0 || (objc_msgSend(v3, "containsString:", @"ProbeStatus"))
+  importantCopy = important;
+  if (objc_msgSend(importantCopy, "containsString:", @"(Symptom (")) & 1 != 0 || (objc_msgSend(importantCopy, "containsString:", @"(AnalyticsEvent_") & 1) != 0 || (objc_msgSend(importantCopy, "containsString:", @"(WaitingFor") & 1) != 0 || (objc_msgSend(importantCopy, "containsString:", @"ProbeStatus"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:@"AllProbesStatus"];
+    v4 = [importantCopy containsString:@"AllProbesStatus"];
   }
 
   return v4;
 }
 
-- (id)printedFacts:(id)a3 limit:(int64_t)a4
+- (id)printedFacts:(id)facts limit:(int64_t)limit
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  factsCopy = facts;
+  v7 = factsCopy;
+  if (factsCopy)
   {
-    Defmodule = EnvFindDefmodule(self->_environment, [v6 UTF8String]);
+    Defmodule = EnvFindDefmodule(self->_environment, [factsCopy UTF8String]);
     if (!Defmodule)
     {
       v9 = 0;
@@ -944,7 +944,7 @@ LABEL_43:
   }
 
   [(NSMutableString *)self->_dumpedString setString:&stru_2847966D8];
-  EnvFacts(self->_environment, "dump", Defmodule, -1, -1, a4);
+  EnvFacts(self->_environment, "dump", Defmodule, -1, -1, limit);
   v9 = self->_dumpedString;
   v10 = objc_opt_new();
   dumpedString = self->_dumpedString;
@@ -955,11 +955,11 @@ LABEL_6:
   return v9;
 }
 
-- (id)moduleRulesByName:(id)a3
+- (id)moduleRulesByName:(id)name
 {
   environment = self->_environment;
-  v6 = a3;
-  Defmodule = EnvFindDefmodule(environment, [a3 UTF8String]);
+  nameCopy = name;
+  Defmodule = EnvFindDefmodule(environment, [name UTF8String]);
   if (Defmodule)
   {
     v8 = Defmodule;
@@ -995,67 +995,67 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)addModuleNamed:(id)a3 withConstruct:(id)a4
+- (BOOL)addModuleNamed:(id)named withConstruct:(id)construct
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (EnvFindDefmodule(self->_environment, [v6 UTF8String]))
+  namedCopy = named;
+  constructCopy = construct;
+  if (EnvFindDefmodule(self->_environment, [namedCopy UTF8String]))
   {
     v8 = debuggabilityLogHandle;
     v9 = 1;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = namedCopy;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_INFO, "The %@ module already exists", &v12, 0xCu);
     }
   }
 
   else
   {
-    v9 = [(CLIPSShim *)self addNewConstruct:v7];
+    v9 = [(CLIPSShim *)self addNewConstruct:constructCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)addNewConstruct:(id)a3
+- (BOOL)addNewConstruct:(id)construct
 {
   environment = self->_environment;
-  v5 = a3;
-  return EnvBuild(environment, [a3 UTF8String]) != 0;
+  constructCopy = construct;
+  return EnvBuild(environment, [construct UTF8String]) != 0;
 }
 
-- (BOOL)loadConstructsForModule:(id)a3
+- (BOOL)loadConstructsForModule:(id)module
 {
   v127 = *MEMORY[0x277D85DE8];
   v116 = 0;
   v117 = &v116;
   v118 = 0x2020000000;
   v119 = 0;
-  v97 = a3;
+  moduleCopy = module;
   v96 = [(NSMutableDictionary *)self->_modules objectForKeyedSubscript:?];
   if (!v96)
   {
     v96 = [MEMORY[0x277CBEB38] dictionaryWithObject:&unk_2847EFDB8 forKey:@"LoadState"];
-    [(NSMutableDictionary *)self->_modules setObject:v96 forKeyedSubscript:v97];
+    [(NSMutableDictionary *)self->_modules setObject:v96 forKeyedSubscript:moduleCopy];
   }
 
   v3 = [v96 objectForKeyedSubscript:@"LoadState"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  LOBYTE(v5) = (v4 - 1) < 2;
+  LOBYTE(v5) = (integerValue - 1) < 2;
   *(v117 + 24) = v5;
-  if (v4 == 3 || v4 == 0)
+  if (integerValue == 3 || integerValue == 0)
   {
     context = objc_autoreleasePoolPush();
     v112 = 0;
     v113 = &v112;
     v114 = 0x2020000000;
     v115 = 0;
-    v7 = [CLIPSShim dataSectionNameForModule:v97];
+    v7 = [CLIPSShim dataSectionNameForModule:moduleCopy];
     v90 = v7;
     if ([v7 length])
     {
@@ -1098,7 +1098,7 @@ LABEL_6:
 
               v13 = *(*(&v108 + 1) + 8 * i);
               v14 = [v13 objectForKeyedSubscript:@"Module"];
-              v15 = [v14 isEqualToString:v97];
+              v15 = [v14 isEqualToString:moduleCopy];
 
               if (v15)
               {
@@ -1117,7 +1117,7 @@ LABEL_6:
                 *buf = 138412546;
                 v123 = v17;
                 v124 = 2112;
-                v125 = v97;
+                v125 = moduleCopy;
                 _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_ERROR, "The module name (%@) doesn't match %@", buf, 0x16u);
               }
             }
@@ -1135,9 +1135,9 @@ LABEL_6:
 LABEL_26:
 
 LABEL_32:
-          v93 = [MEMORY[0x277CCACA8] stringWithFormat:@"CLIPSOTAUpdate[%@]", v97];
+          moduleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"CLIPSOTAUpdate[%@]", moduleCopy];
           v22 = MEMORY[0x277CBEB38];
-          v23 = [(NSMutableDictionary *)self->_pendingOTAUpdates objectForKeyedSubscript:v97];
+          v23 = [(NSMutableDictionary *)self->_pendingOTAUpdates objectForKeyedSubscript:moduleCopy];
           v24 = [v22 dictionaryWithDictionary:v23];
 
           v25 = [v24 objectForKeyedSubscript:@"Version"];
@@ -1149,7 +1149,7 @@ LABEL_32:
             if (v27)
             {
               *buf = 138412290;
-              v123 = v97;
+              v123 = moduleCopy;
               _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_INFO, "No pending OTA update for %@", buf, 0xCu);
             }
 
@@ -1161,14 +1161,14 @@ LABEL_32:
             *buf = 138412546;
             v123 = v25;
             v124 = 2112;
-            v125 = v97;
+            v125 = moduleCopy;
             _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_INFO, "There is a Pending OTA Update (version %@) for %@", buf, 0x16u);
           }
 
           if (v18)
           {
-            v28 = [v25 integerValue];
-            if (v28 != [v18 integerValue])
+            integerValue2 = [v25 integerValue];
+            if (integerValue2 != [v18 integerValue])
             {
               v33 = debuggabilityLogHandle;
               if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -1182,7 +1182,7 @@ LABEL_32:
 
               v32 = 0;
 LABEL_82:
-              [(NSMutableDictionary *)self->_pendingOTAUpdates removeObjectForKey:v97];
+              [(NSMutableDictionary *)self->_pendingOTAUpdates removeObjectForKey:moduleCopy];
               if (v32)
               {
                 v52 = @"<UNKNOWN>";
@@ -1192,12 +1192,12 @@ LABEL_82:
                 }
 
                 v53 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{@"Unloaded (OTA)", @"location", v25, @"baseVersion", v52, @"otaSerialNumber", 0}];
-                [(CLIPSShim *)self updateModuleInfoForModule:v97 slotValues:v53];
+                [(CLIPSShim *)self updateModuleInfoForModule:moduleCopy slotValues:v53];
                 goto LABEL_118;
               }
 
 LABEL_86:
-              v54 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:v93 sortDescriptor:0];
+              v54 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:moduleCopy sortDescriptor:0];
               if ([v54 count] != 1)
               {
                 if ([v54 count] < 2)
@@ -1210,7 +1210,7 @@ LABEL_117:
 LABEL_118:
                   if (*(v113 + 24) == 1)
                   {
-                    if ([(CLIPSShim *)self executeBatchCommand:v94 module:v97])
+                    if ([(CLIPSShim *)self executeBatchCommand:v94 module:moduleCopy])
                     {
                       [v96 setObject:&unk_2847EFDE8 forKeyedSubscript:@"LoadState"];
                       *(v117 + 24) = 1;
@@ -1221,7 +1221,7 @@ LABEL_118:
                         v121[0] = v18;
                         v121[1] = @"Built-in";
                         v81 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v121 forKeys:v120 count:2];
-                        [(CLIPSShim *)self updateModuleInfoForModule:v97 slotValues:v81];
+                        [(CLIPSShim *)self updateModuleInfoForModule:moduleCopy slotValues:v81];
                       }
                     }
 
@@ -1231,7 +1231,7 @@ LABEL_118:
                       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138412290;
-                        v123 = v97;
+                        v123 = moduleCopy;
                         _os_log_impl(&dword_23255B000, v82, OS_LOG_TYPE_ERROR, "=== FAILURE loading %@ embedded constructs ===", buf, 0xCu);
                       }
                     }
@@ -1257,7 +1257,7 @@ LABEL_125:
                   *buf = 134218242;
                   v123 = v66;
                   v124 = 2112;
-                  v125 = v97;
+                  v125 = moduleCopy;
                   _os_log_impl(&dword_23255B000, v65, OS_LOG_TYPE_ERROR, "There are too many (%lu) OTA Updates for %@ in the database. Deleting all of them.", buf, 0x16u);
                 }
 
@@ -1279,7 +1279,7 @@ LABEL_115:
                 v57 = objc_msgSend(v55, "rangeOfString:", @"(");
                 v59 = v58;
                 v60 = [v56 rangeOfString:@""]);
-                if (v57 == 0x7FFFFFFFFFFFFFFFLL || (v68 = v60, v57 != [v93 length]) || v68 == 0x7FFFFFFFFFFFFFFFLL)
+                if (v57 == 0x7FFFFFFFFFFFFFFFLL || (v68 = v60, v57 != [moduleCopy length]) || v68 == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v61 = debuggabilityLogHandle;
                   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -1313,8 +1313,8 @@ LABEL_115:
 
                 if (v63 && v18)
                 {
-                  v69 = [v63 integerValue];
-                  if (v69 != [v18 integerValue])
+                  integerValue3 = [v63 integerValue];
+                  if (integerValue3 != [v18 integerValue])
                   {
                     v70 = debuggabilityLogHandle;
                     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -1354,9 +1354,9 @@ LABEL_110:
                   v98[1] = 3221225472;
                   v98[2] = __37__CLIPSShim_loadConstructsForModule___block_invoke;
                   v98[3] = &unk_2789903B8;
-                  v99 = v97;
+                  v99 = moduleCopy;
                   v100 = v94;
-                  v101 = self;
+                  selfCopy = self;
                   v105 = &v112;
                   v102 = v96;
                   v53 = v63;
@@ -1385,7 +1385,7 @@ LABEL_110:
 
           v29 = [v24 objectForKeyedSubscript:@"Constructs"];
           v30 = [CLIPSShim decodeAndInflateCLIPSString:v29];
-          if (!v30 || ([CLIPSShim decryptCLIPSData:v30 forModule:v97], (v88 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (!v30 || ([CLIPSShim decryptCLIPSData:v30 forModule:moduleCopy], (v88 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v32 = 0;
 LABEL_81:
@@ -1441,24 +1441,24 @@ LABEL_81:
             }
           }
 
-          if ([(CLIPSShim *)self executeBatchCommand:v88 module:v97])
+          if ([(CLIPSShim *)self executeBatchCommand:v88 module:moduleCopy])
           {
             *(v113 + 24) = 0;
-            v40 = [v30 gzipDeflate];
-            if ([v40 length])
+            gzipDeflate = [v30 gzipDeflate];
+            if ([gzipDeflate length])
             {
-              [v24 setObject:v40 forKey:@"Constructs"];
+              [v24 setObject:gzipDeflate forKey:@"Constructs"];
               if ([(__CFString *)v92 length])
               {
-                [MEMORY[0x277CCACA8] stringWithFormat:@"%@(%@){SN:%@}", v93, v25, v92];
+                [MEMORY[0x277CCACA8] stringWithFormat:@"%@(%@){SN:%@}", moduleCopy, v25, v92];
               }
 
               else
               {
-                [MEMORY[0x277CCACA8] stringWithFormat:@"%@(%@)", v93, v25];
+                [MEMORY[0x277CCACA8] stringWithFormat:@"%@(%@)", moduleCopy, v25];
               }
               v85 = ;
-              v45 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:v93 sortDescriptor:0];
+              v45 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:moduleCopy sortDescriptor:0];
               if ([v45 count])
               {
                 v46 = self->_ieService;
@@ -1705,16 +1705,16 @@ LABEL_15:
   return v9 & 1;
 }
 
-- (id)parseCLIPSModuleInfoFromConstructs:(id)a3
+- (id)parseCLIPSModuleInfoFromConstructs:(id)constructs
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@";;"];
+  constructsCopy = constructs;
+  v4 = [constructsCopy rangeOfString:@";;"];
   v6 = v5;
-  v7 = [v3 rangeOfString:@"\n"];
+  v7 = [constructsCopy rangeOfString:@"\n"];
   v8 = 0;
   if (!v4 && v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v3 substringWithRange:{v6, v7 - 1}];
+    v9 = [constructsCopy substringWithRange:{v6, v7 - 1}];
     v10 = [v9 dataUsingEncoding:1];
     v12 = 0;
     v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v12];
@@ -1723,16 +1723,16 @@ LABEL_15:
   return v8;
 }
 
-+ (id)decodeAndInflateCLIPSString:(id)a3
++ (id)decodeAndInflateCLIPSString:(id)string
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:1];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithBase64EncodedString:stringCopy options:1];
 
   if (v5)
   {
-    v6 = [v5 gzipInflate];
-    if (v6)
+    gzipInflate = [v5 gzipInflate];
+    if (gzipInflate)
     {
       goto LABEL_9;
     }
@@ -1760,25 +1760,25 @@ LABEL_7:
     }
   }
 
-  v6 = 0;
+  gzipInflate = 0;
 LABEL_9:
 
-  return v6;
+  return gzipInflate;
 }
 
-+ (id)decryptCLIPSData:(id)a3 forModule:(id)a4
++ (id)decryptCLIPSData:(id)data forModule:(id)module
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:1];
+  dataCopy = data;
+  moduleCopy = module;
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:1];
   if ([v7 hasPrefix:@";;[{Module:"])
   {
     v8 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = moduleCopy;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "This OTA %@ module constructs is unencrypted!. Ignoring", &v17, 0xCu);
     }
 
@@ -1787,7 +1787,7 @@ LABEL_9:
 
   else
   {
-    v10 = +[CLIPSShim createDecryptedCLPData:length:](CLIPSShim, "createDecryptedCLPData:length:", [v5 bytes], objc_msgSend(v5, "length"));
+    v10 = +[CLIPSShim createDecryptedCLPData:length:](CLIPSShim, "createDecryptedCLPData:length:", [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     if ([v10 length])
     {
       v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v10 encoding:1];
@@ -1803,7 +1803,7 @@ LABEL_9:
         if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
         {
           v17 = 138412290;
-          v18 = v6;
+          v18 = moduleCopy;
           _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "%@ OTA module constructs is corrupted.", &v17, 0xCu);
         }
 
@@ -1817,7 +1817,7 @@ LABEL_9:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = moduleCopy;
         _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "%@ OTA module couldn't be decrypted", &v17, 0xCu);
       }
 
@@ -1830,46 +1830,46 @@ LABEL_9:
   return v9;
 }
 
-+ (id)dataSectionNameForModule:(id)a3
++ (id)dataSectionNameForModule:(id)module
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"Baseband"])
+  moduleCopy = module;
+  if ([moduleCopy isEqualToString:@"Baseband"])
   {
     v4 = @"baseband_clp";
   }
 
-  else if ([v3 isEqualToString:@"BasebandMAV"])
+  else if ([moduleCopy isEqualToString:@"BasebandMAV"])
   {
     v4 = @"bb_MAV_clp";
   }
 
-  else if ([v3 isEqualToString:@"BasebandINT"])
+  else if ([moduleCopy isEqualToString:@"BasebandINT"])
   {
     v4 = @"bb_INT_clp";
   }
 
-  else if ([v3 isEqualToString:@"BasebandDAL"])
+  else if ([moduleCopy isEqualToString:@"BasebandDAL"])
   {
     v4 = @"bb_DAL_clp";
   }
 
-  else if ([v3 isEqualToString:@"COMMON"])
+  else if ([moduleCopy isEqualToString:@"COMMON"])
   {
     v4 = @"default_clp";
   }
 
-  else if ([v3 isEqualToString:@"Symptoms"])
+  else if ([moduleCopy isEqualToString:@"Symptoms"])
   {
     v4 = @"symptoms_clp";
   }
 
-  else if ([v3 isEqualToString:@"Networking"])
+  else if ([moduleCopy isEqualToString:@"Networking"])
   {
     v4 = @"network_clp";
   }
 
-  else if ([v3 isEqualToString:@"Modules"])
+  else if ([moduleCopy isEqualToString:@"Modules"])
   {
     v4 = @"modules_clp";
   }
@@ -1880,7 +1880,7 @@ LABEL_9:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = moduleCopy;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "Unknown module name: %@", &v8, 0xCu);
     }
 
@@ -1891,50 +1891,50 @@ LABEL_9:
   return v4;
 }
 
-- (id)stringFromConstructsLoadState:(int64_t)a3
+- (id)stringFromConstructsLoadState:(int64_t)state
 {
-  if (a3 >= 4)
+  if (state >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown load state (%ld)", a3];
+    state = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown load state (%ld)", state];
   }
 
   else
   {
-    v4 = off_278990400[a3];
+    state = off_278990400[state];
   }
 
-  return v4;
+  return state;
 }
 
-- (id)otaUpdatePlatformStringForDeviceClass:(int64_t)a3
+- (id)otaUpdatePlatformStringForDeviceClass:(int64_t)class
 {
-  if (a3 > 7)
+  if (class > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_278990420[a3];
+    return off_278990420[class];
   }
 }
 
-- (int64_t)constructLoadStateForModule:(id)a3
+- (int64_t)constructLoadStateForModule:(id)module
 {
-  v3 = [(NSMutableDictionary *)self->_modules objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_modules objectForKeyedSubscript:module];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"LoadState"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (void)updateAllModuleInfos
@@ -1973,14 +1973,14 @@ LABEL_9:
           if (v12)
           {
             v13 = [v6 objectForKeyedSubscript:@"LoadState"];
-            v14 = [v13 integerValue];
+            integerValue = [v13 integerValue];
 
-            if (v14 == 1)
+            if (integerValue == 1)
             {
               v15 = @"Built-in";
             }
 
-            else if (v14 == 2)
+            else if (integerValue == 2)
             {
               v15 = @"Database";
             }
@@ -1993,7 +1993,7 @@ LABEL_9:
               if (v19)
               {
                 v20 = v18;
-                v21 = [(CLIPSShim *)self stringFromConstructsLoadState:v14];
+                v21 = [(CLIPSShim *)self stringFromConstructsLoadState:integerValue];
                 *buf = v24;
                 v33 = v10;
                 v34 = 2112;
@@ -2052,19 +2052,19 @@ LABEL_9:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateModuleInfoForModule:(id)a3 slotValues:(id)a4
+- (void)updateModuleInfoForModule:(id)module slotValues:(id)values
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v6 forKey:@"name"];
+  moduleCopy = module;
+  valuesCopy = values;
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithObject:moduleCopy forKey:@"name"];
   v9 = [(CLIPSShim *)self matchFactsWithDeftemplateName:@"ModuleInfo" withSlotKeyValues:v8];
 
   if ([v9 count] == 1)
   {
     v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [(__CFString *)v10 pointerValue];
-    if (!v11)
+    pointerValue = [(__CFString *)v10 pointerValue];
+    if (!pointerValue)
     {
       v32 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -2077,25 +2077,25 @@ LABEL_9:
       goto LABEL_29;
     }
 
-    v12 = v11;
-    v13 = [(CLIPSShim *)self factDictionaryForFact:v11];
+    v12 = pointerValue;
+    v13 = [(CLIPSShim *)self factDictionaryForFact:pointerValue];
     v14 = [v13 objectForKeyedSubscript:@"DeftemplateSlots"];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v15 = v7;
+    v15 = valuesCopy;
     v16 = [(__CFString *)v15 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v16)
     {
       v17 = v16;
       v35 = v12;
-      v36 = self;
+      selfCopy = self;
       v37 = v13;
       v38 = v10;
       v39 = v9;
-      v40 = v7;
-      v41 = v6;
+      v40 = valuesCopy;
+      v41 = moduleCopy;
       v18 = 0;
       v19 = 0;
       v20 = *v43;
@@ -2135,8 +2135,8 @@ LABEL_9:
       v10 = v38;
       if ((v19 & 1) == 0)
       {
-        v7 = v40;
-        v6 = v41;
+        valuesCopy = v40;
+        moduleCopy = v41;
         v9 = v39;
         v13 = v37;
 LABEL_28:
@@ -2145,23 +2145,23 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      [(CLIPSShim *)v36 retractFact:v35];
-      [(CLIPSShim *)v36 releaseFact:v35];
+      [(CLIPSShim *)selfCopy retractFact:v35];
+      [(CLIPSShim *)selfCopy releaseFact:v35];
       v13 = v37;
-      v26 = [(CLIPSShim *)v36 factStringForFactDictionary:v37];
-      v27 = [(CLIPSShim *)v36 assertFactString:v26 moduleName:@"Modules"];
-      v6 = v41;
+      v26 = [(CLIPSShim *)selfCopy factStringForFactDictionary:v37];
+      v27 = [(CLIPSShim *)selfCopy assertFactString:v26 moduleName:@"Modules"];
+      moduleCopy = v41;
       if (v27)
       {
-        [(CLIPSShim *)v36 retainFact:v27];
+        [(CLIPSShim *)selfCopy retainFact:v27];
         v15 = v26;
-        v7 = v40;
+        valuesCopy = v40;
       }
 
       else
       {
         v33 = debuggabilityLogHandle;
-        v7 = v40;
+        valuesCopy = v40;
         if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
@@ -2197,7 +2197,7 @@ LABEL_29:
     *buf = 138412546;
     v48 = v31;
     v49 = 2112;
-    v50 = v6;
+    v50 = moduleCopy;
     _os_log_impl(&dword_23255B000, v29, OS_LOG_TYPE_INFO, "We %@ Module Info for %@", buf, 0x16u);
   }
 
@@ -2206,13 +2206,13 @@ LABEL_30:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)factDictionaryForFact:(void *)a3
+- (id)factDictionaryForFact:(void *)fact
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (fact)
   {
-    v6 = EnvFactDeftemplate(self->_environment, a3);
+    v6 = EnvFactDeftemplate(self->_environment, fact);
     if (v6)
     {
       v7 = v6;
@@ -2220,7 +2220,7 @@ LABEL_30:
       if (v8)
       {
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
-        [v5 setObject:v9 forKeyedSubscript:@"DeftemplateModule"];
+        [dictionary setObject:v9 forKeyedSubscript:@"DeftemplateModule"];
       }
 
       DefruleName = EnvGetDefruleName(self->_environment, v7);
@@ -2230,16 +2230,16 @@ LABEL_30:
         if (*DefruleName)
         {
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:DefruleName];
-          [v5 setObject:v12 forKeyedSubscript:@"DeftemplateName"];
+          [dictionary setObject:v12 forKeyedSubscript:@"DeftemplateName"];
         }
       }
 
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      [v5 setObject:v13 forKeyedSubscript:@"DeftemplateSlots"];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:dictionary2 forKeyedSubscript:@"DeftemplateSlots"];
       v31 = 0u;
       v32 = 0u;
       *buf = 0u;
-      EnvFactSlotNames(self->_environment, a3, buf);
+      EnvFactSlotNames(self->_environment, fact, buf);
       v14 = [(CLIPSShim *)self objectForDO:buf];
       v26 = 0u;
       v27 = 0u;
@@ -2249,7 +2249,7 @@ LABEL_30:
       if (v15)
       {
         v16 = v15;
-        v25 = v5;
+        v25 = dictionary;
         v17 = 0;
         v18 = *v27;
         do
@@ -2264,11 +2264,11 @@ LABEL_30:
             }
 
             v21 = *(*(&v26 + 1) + 8 * v19);
-            v17 = [(CLIPSShim *)self getValueForSlotNamed:v21 fromFact:a3];
+            v17 = [(CLIPSShim *)self getValueForSlotNamed:v21 fromFact:fact];
 
             if (v17)
             {
-              [v13 setObject:v17 forKeyedSubscript:v21];
+              [dictionary2 setObject:v17 forKeyedSubscript:v21];
             }
 
             ++v19;
@@ -2281,7 +2281,7 @@ LABEL_30:
 
         while (v16);
 
-        v5 = v25;
+        dictionary = v25;
       }
     }
   }
@@ -2298,15 +2298,15 @@ LABEL_30:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)factStringForFactDictionary:(id)a3
+- (id)factStringForFactDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DeftemplateModule"];
-  v6 = [v4 objectForKeyedSubscript:@"DeftemplateName"];
-  v7 = [v4 objectForKeyedSubscript:@"DeftemplateSlots"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"DeftemplateModule"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"DeftemplateName"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"DeftemplateSlots"];
 
   v8 = [(CLIPSShim *)self slotsStringForTemplate:v6 fromDictionary:v7 moduleName:v5];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@%@)", v6, v8];
@@ -2314,21 +2314,21 @@ LABEL_30:
   return v9;
 }
 
-- (void)unloadConstructsForModule:(id)a3 unconditionally:(BOOL)a4
+- (void)unloadConstructsForModule:(id)module unconditionally:(BOOL)unconditionally
 {
-  v26 = a3;
+  moduleCopy = module;
   v6 = [(NSMutableDictionary *)self->_modules objectForKeyedSubscript:?];
   v7 = [v6 objectForKeyedSubscript:@"LoadState"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  if (a4 || (v8 - 1) <= 1)
+  if (unconditionally || (integerValue - 1) <= 1)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Pre-unload %@ memory usage by CLIPS", v26];
-    [(CLIPSShim *)self logMemoryStatistics:v9 verboseOnly:1];
+    moduleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Pre-unload %@ memory usage by CLIPS", moduleCopy];
+    [(CLIPSShim *)self logMemoryStatistics:moduleCopy verboseOnly:1];
 
     environment = self->_environment;
-    v11 = v26;
-    Defmodule = EnvFindDefmodule(environment, [v26 UTF8String]);
+    v11 = moduleCopy;
+    Defmodule = EnvFindDefmodule(environment, [moduleCopy UTF8String]);
     if (Defmodule)
     {
       v13 = Defmodule;
@@ -2402,24 +2402,24 @@ LABEL_30:
       EnvSetCurrentModule(self->_environment, CurrentModule);
       [v6 setObject:&unk_2847EFDB8 forKeyedSubscript:@"LoadState"];
       [(CLIPSShim *)self releaseAllFreeMemory];
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Post-unload %@ memory usage by CLIPS", v26];
-      [(CLIPSShim *)self logMemoryStatistics:v25 verboseOnly:1];
+      moduleCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Post-unload %@ memory usage by CLIPS", moduleCopy];
+      [(CLIPSShim *)self logMemoryStatistics:moduleCopy2 verboseOnly:1];
     }
   }
 }
 
-+ (id)createDecryptedCLPData:(const void *)a3 length:(unint64_t)a4
++ (id)createDecryptedCLPData:(const void *)data length:(unint64_t)length
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (!a3 || !a4)
+  if (!data || !length)
   {
     v13 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = data;
       v30 = 2048;
-      v31 = a4;
+      lengthCopy = length;
       v10 = "Decrypting bad parameters (%p/%ld)";
       v11 = v13;
       v12 = 22;
@@ -2452,7 +2452,7 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  OutputLength = CCCryptorGetOutputLength(v6, a4, 1);
+  OutputLength = CCCryptorGetOutputLength(v6, length, 1);
   *buf = 0;
   dataOutMoved = 0;
   if (!OutputLength)
@@ -2469,7 +2469,7 @@ LABEL_8:
 
   v17 = v16;
   bzero(v16, v15);
-  v18 = CCCryptorUpdate(v6, a3, a4, v17, v15, buf);
+  v18 = CCCryptorUpdate(v6, data, length, v17, v15, buf);
   if (v18)
   {
     v19 = v18;
@@ -2520,12 +2520,12 @@ LABEL_22:
   return v24;
 }
 
-- (id)loadDataSection:(id)a3
+- (id)loadDataSection:(id)section
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sectionCopy = section;
   size = 0;
-  v4 = getsectiondata(&dword_23255B000, "__TEXT", [v3 UTF8String], &size);
+  v4 = getsectiondata(&dword_23255B000, "__TEXT", [sectionCopy UTF8String], &size);
   v5 = 0;
   if (v4)
   {
@@ -2554,7 +2554,7 @@ LABEL_10:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = v3;
+        v14 = sectionCopy;
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Unable to decode %@ decrypted data section into a string", buf, 0xCu);
       }
     }
@@ -2570,7 +2570,7 @@ LABEL_11:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = sectionCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "Unable to get datasection with name %@", buf, 0xCu);
     }
   }
@@ -2580,12 +2580,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)deactivateModule:(id)a3
+- (void)deactivateModule:(id)module
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"CLIPSOTAUpdate[%@]", v4];
-  v6 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:v5 sortDescriptor:0];
+  moduleCopy = module;
+  moduleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"CLIPSOTAUpdate[%@]", moduleCopy];
+  v6 = [(ImpoExpoService *)self->_ieService listItemsNameWithPrefix:moduleCopy sortDescriptor:0];
   if ([v6 count] == 1)
   {
     v7 = [v6 objectAtIndexedSubscript:0];
@@ -2595,7 +2595,7 @@ LABEL_11:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = moduleCopy;
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_INFO, "We've been told to delete the OTA Update for %@", buf, 0xCu);
       }
 
@@ -2618,7 +2618,7 @@ LABEL_10:
       *buf = 134218242;
       v16 = [v6 count];
       v17 = 2112;
-      v18 = v4;
+      v18 = moduleCopy;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_ERROR, "There are too many (%lu) OTA Updates for %@ in the database which we've been told to delete. Deleting all of them.", buf, 0x16u);
     }
 
@@ -2633,13 +2633,13 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOTAUpdate:(id)a3 version:(id)a4 module:(id)a5
+- (void)setOTAUpdate:(id)update version:(id)version module:(id)module
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v10 length])
+  updateCopy = update;
+  versionCopy = version;
+  moduleCopy = module;
+  if (![moduleCopy length])
   {
     v13 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -2654,7 +2654,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v9 length])
+  if (![versionCopy length])
   {
     v13 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -2667,38 +2667,38 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (![v8 length])
+  if (![updateCopy length])
   {
     v11 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v19 = v10;
+      v19 = moduleCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_INFO, "%@ module constructs is empty. This would be ok if the ota update is meant to be blank.", buf, 0xCu);
     }
   }
 
   v16[0] = @"Version";
   v16[1] = @"Constructs";
-  v17[0] = v9;
-  v17[1] = v8;
+  v17[0] = versionCopy;
+  v17[1] = updateCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  [(NSMutableDictionary *)self->_pendingOTAUpdates setObject:v12 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)self->_pendingOTAUpdates setObject:v12 forKeyedSubscript:moduleCopy];
 
-  [(NSMutableDictionary *)self->_modules removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_modules removeObjectForKey:moduleCopy];
 LABEL_12:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int)executeBatchCommand:(id)a3 module:(id)a4
+- (int)executeBatchCommand:(id)command module:(id)module
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isEqualToString:@"COMMON"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"Modules") & 1) != 0 || EnvFindDefmodule(self->_environment, objc_msgSend(v7, "UTF8String")))
+  commandCopy = command;
+  moduleCopy = module;
+  if (([moduleCopy isEqualToString:@"COMMON"] & 1) != 0 || (objc_msgSend(moduleCopy, "isEqualToString:", @"Modules") & 1) != 0 || EnvFindDefmodule(self->_environment, objc_msgSend(moduleCopy, "UTF8String")))
   {
-    [(CLIPSShim *)self setCommandString:v6];
+    [(CLIPSShim *)self setCommandString:commandCopy];
     ConstructsFromLogicalName = LoadConstructsFromLogicalName(self->_environment, "cmd");
     [(CLIPSShim *)self setCommandString:0];
   }
@@ -2710,7 +2710,7 @@ LABEL_12:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = moduleCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "executeBatchCommand: %@ defmodule is unknown", &v12, 0xCu);
       ConstructsFromLogicalName = 0;
     }
@@ -2720,25 +2720,25 @@ LABEL_12:
   return ConstructsFromLogicalName;
 }
 
-- (void)executeCommand:(id)a3 moduleName:(id)a4
+- (void)executeCommand:(id)command moduleName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  Defmodule = EnvFindDefmodule(self->_environment, [v6 UTF8String]);
+  commandCopy = command;
+  nameCopy = name;
+  Defmodule = EnvFindDefmodule(self->_environment, [nameCopy UTF8String]);
   if (Defmodule)
   {
     v8 = Defmodule;
     CurrentModule = EnvGetCurrentModule(self->_environment);
     EnvSetCurrentModule(self->_environment, v8);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s> %@\n", EnvGetConstructNameString(self->_environment, v8), v13];
-    EnvPrintRouter(self->_environment, "wtrace", [v10 UTF8String]);
+    commandCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s> %@\n", EnvGetConstructNameString(self->_environment, v8), commandCopy];
+    EnvPrintRouter(self->_environment, "wtrace", [commandCopy UTF8String]);
     SetHaltExecution(self->_environment, 0);
     SetEvaluationError(self->_environment, 0);
     FlushPPBuffer(self->_environment);
     SetPPBufferStatus(self->_environment, 0);
     environment = self->_environment;
-    v12 = v13;
-    RouteCommand(environment, [v13 UTF8String], 0);
+    v12 = commandCopy;
+    RouteCommand(environment, [commandCopy UTF8String], 0);
     FlushPPBuffer(self->_environment);
     SetHaltExecution(self->_environment, 0);
     SetEvaluationError(self->_environment, 0);
@@ -2747,20 +2747,20 @@ LABEL_12:
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' is not a valid module name", v6];
-    EnvPrintRouter(self->_environment, "werror", [v10 UTF8String]);
+    commandCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' is not a valid module name", nameCopy];
+    EnvPrintRouter(self->_environment, "werror", [commandCopy UTF8String]);
   }
 }
 
-- (void)retractFact:(void *)a3
+- (void)retractFact:(void *)fact
 {
-  if (a3)
+  if (fact)
   {
     if (!GetEvaluationError(self->_environment))
     {
       environment = self->_environment;
 
-      EnvRetract(environment, a3);
+      EnvRetract(environment, fact);
     }
   }
 
@@ -2775,13 +2775,13 @@ LABEL_12:
   }
 }
 
-- (void)retainFact:(void *)a3
+- (void)retainFact:(void *)fact
 {
-  if (a3)
+  if (fact)
   {
     environment = self->_environment;
 
-    EnvIncrementFactCount(environment, a3);
+    EnvIncrementFactCount(environment, fact);
   }
 
   else
@@ -2797,13 +2797,13 @@ LABEL_12:
   }
 }
 
-- (void)releaseFact:(void *)a3
+- (void)releaseFact:(void *)fact
 {
-  if (a3)
+  if (fact)
   {
     environment = self->_environment;
 
-    EnvDecrementFactCount(environment, a3);
+    EnvDecrementFactCount(environment, fact);
   }
 
   else
@@ -2819,27 +2819,27 @@ LABEL_12:
   }
 }
 
-- (void)assertFactString:(id)a3 moduleName:(id)a4
+- (void)assertFactString:(id)string moduleName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  Defmodule = EnvFindDefmodule(self->_environment, [v7 UTF8String]);
+  stringCopy = string;
+  nameCopy = name;
+  Defmodule = EnvFindDefmodule(self->_environment, [nameCopy UTF8String]);
   if (Defmodule)
   {
     v9 = Defmodule;
     SaveCurrentModule(self->_environment);
     EnvSetCurrentModule(self->_environment, v9);
-    v10 = EnvAssertString(self->_environment, [v6 UTF8String]);
+    v10 = EnvAssertString(self->_environment, [stringCopy UTF8String]);
     if (!v10)
     {
       v11 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         v15 = 138412546;
-        v16 = v6;
+        v16 = stringCopy;
         v17 = 2112;
-        v18 = v7;
+        v18 = nameCopy;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "EnvAssertString() failed for %@ in module %@. Possibly a duplicate fact.", &v15, 0x16u);
       }
     }
@@ -2853,9 +2853,9 @@ LABEL_12:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412546;
-      v16 = v7;
+      v16 = nameCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = stringCopy;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_ERROR, "EnvFindDefmodule() failed to find module %@ when asserting %@", &v15, 0x16u);
     }
 
@@ -2877,45 +2877,45 @@ LABEL_12:
   return CurrentModule;
 }
 
-- (id)setCurrentModule:(id)a3
+- (id)setCurrentModule:(id)module
 {
-  v4 = a3;
-  if ([v4 length] && (Defmodule = EnvFindDefmodule(self->_environment, objc_msgSend(v4, "UTF8String"))) != 0)
+  moduleCopy = module;
+  if ([moduleCopy length] && (Defmodule = EnvFindDefmodule(self->_environment, objc_msgSend(moduleCopy, "UTF8String"))) != 0)
   {
     v6 = Defmodule;
-    v7 = [(CLIPSShim *)self currentModule];
+    currentModule = [(CLIPSShim *)self currentModule];
     EnvSetCurrentModule(self->_environment, v6);
   }
 
   else
   {
-    v7 = 0;
+    currentModule = 0;
   }
 
-  return v7;
+  return currentModule;
 }
 
-- (void)pushFocus:(id)a3
+- (void)pushFocus:(id)focus
 {
   environment = self->_environment;
-  v5 = a3;
+  focusCopy = focus;
   CurrentModule = EnvGetCurrentModule(environment);
   v7 = self->_environment;
-  v8 = [v5 UTF8String];
+  uTF8String = [focusCopy UTF8String];
 
-  Defmodule = EnvFindDefmodule(v7, v8);
+  Defmodule = EnvFindDefmodule(v7, uTF8String);
   EnvFocus(self->_environment, Defmodule);
   v10 = self->_environment;
 
   EnvSetCurrentModule(v10, CurrentModule);
 }
 
-- (id)getValueForSlotNamed:(id)a3 fromFact:(void *)a4
+- (id)getValueForSlotNamed:(id)named fromFact:(void *)fact
 {
   memset(v11, 0, sizeof(v11));
   environment = self->_environment;
-  v8 = a3;
-  if (EnvGetFactSlot(environment, a4, [a3 UTF8String], v11))
+  namedCopy = named;
+  if (EnvGetFactSlot(environment, fact, [named UTF8String], v11))
   {
     v9 = [(CLIPSShim *)self objectForDO:v11];
   }
@@ -2928,10 +2928,10 @@ LABEL_12:
   return v9;
 }
 
-- (void)performOnFactsWithDeftemplateName:(id)a3 usingBlock:(id)a4
+- (void)performOnFactsWithDeftemplateName:(id)name usingBlock:(id)block
 {
-  v13 = a3;
-  v6 = a4;
+  nameCopy = name;
+  blockCopy = block;
   NextFact = EnvGetNextFact(self->_environment, 0);
   if (NextFact)
   {
@@ -2944,7 +2944,7 @@ LABEL_12:
         break;
       }
 
-      if (v6)
+      if (blockCopy)
       {
         goto LABEL_9;
       }
@@ -2964,37 +2964,37 @@ LABEL_10:
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:DefruleName];
-    v12 = [v13 isEqualToString:v11];
+    v12 = [nameCopy isEqualToString:v11];
 
-    if (!v6 || (v12 & 1) == 0)
+    if (!blockCopy || (v12 & 1) == 0)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    v6[2](v6, v8);
+    blockCopy[2](blockCopy, v8);
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (id)matchFactsWithDeftemplateName:(id)a3 withSlotKeyValues:(id)a4
+- (id)matchFactsWithDeftemplateName:(id)name withSlotKeyValues:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
-  v9 = [v7 array];
+  nameCopy = name;
+  array = [v7 array];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__CLIPSShim_matchFactsWithDeftemplateName_withSlotKeyValues___block_invoke;
   v15[3] = &unk_2789903E0;
-  v16 = v6;
-  v17 = self;
-  v10 = v9;
+  v16 = valuesCopy;
+  selfCopy = self;
+  v10 = array;
   v18 = v10;
-  v11 = v6;
-  [(CLIPSShim *)self performOnFactsWithDeftemplateName:v8 usingBlock:v15];
+  v11 = valuesCopy;
+  [(CLIPSShim *)self performOnFactsWithDeftemplateName:nameCopy usingBlock:v15];
 
   v12 = v18;
   v13 = v10;
@@ -3076,23 +3076,23 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deftemplateNamed:(id)a3 moduleName:(id)a4
+- (void)deftemplateNamed:(id)named moduleName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  Defmodule = EnvFindDefmodule(self->_environment, [a4 UTF8String]);
+  namedCopy = named;
+  Defmodule = EnvFindDefmodule(self->_environment, [name UTF8String]);
   if (Defmodule)
   {
     CurrentModule = EnvGetCurrentModule(self->_environment);
     EnvSetCurrentModule(self->_environment, Defmodule);
-    Defmodule = EnvFindDeftemplate(self->_environment, [v6 UTF8String]);
+    Defmodule = EnvFindDeftemplate(self->_environment, [namedCopy UTF8String]);
     if (!Defmodule)
     {
       v9 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = namedCopy;
         _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "CLIPS: FAILED TO FIND %@", &v12, 0xCu);
       }
     }
@@ -3107,12 +3107,12 @@ LABEL_13:
   return Defmodule;
 }
 
-- (id)deftemplatesMatchingPrefix:(id)a3
+- (id)deftemplatesMatchingPrefix:(id)prefix
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  prefixCopy = prefix;
+  v5 = prefixCopy;
+  if (!prefixCopy || ![prefixCopy length])
   {
     v46 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3132,8 +3132,8 @@ LABEL_13:
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "ANALYTICS-CLIPS: Looking for deftemplate that matches prefix %@", buf, 0xCu);
   }
 
-  v7 = [v5 UTF8String];
-  v8 = strlen(v7);
+  uTF8String = [v5 UTF8String];
+  v8 = strlen(uTF8String);
   NextDeftemplate = EnvGetNextDeftemplate(self->_environment, 0);
   if (!NextDeftemplate)
   {
@@ -3148,7 +3148,7 @@ LABEL_54:
   *&v10 = 138412290;
   v49 = v10;
   v50 = v5;
-  v54 = v7;
+  v54 = uTF8String;
   do
   {
     if (!v12)
@@ -3161,7 +3161,7 @@ LABEL_54:
     if (DefruleName)
     {
       v16 = v15;
-      if (strlen(DefruleName) >= v8 && !strncmp(v7, DefruleName, v8))
+      if (strlen(DefruleName) >= v8 && !strncmp(uTF8String, DefruleName, v8))
       {
         v17 = debuggabilityLogHandle;
         if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -3330,7 +3330,7 @@ LABEL_54:
           }
         }
 
-        v7 = v54;
+        uTF8String = v54;
       }
     }
 
@@ -3345,15 +3345,15 @@ LABEL_55:
   return v12;
 }
 
-- (id)slotsStringForTemplate:(id)a3 fromDictionary:(id)a4 moduleName:(id)a5
+- (id)slotsStringForTemplate:(id)template fromDictionary:(id)dictionary moduleName:(id)name
 {
   v142 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  templateCopy = template;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v11 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v99 = v9;
-  if (![v9 count])
+  v99 = dictionaryCopy;
+  if (![dictionaryCopy count])
   {
     v88 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3371,7 +3371,7 @@ LABEL_134:
     goto LABEL_137;
   }
 
-  v12 = [(CLIPSShim *)self deftemplateNamed:v8 moduleName:v10];
+  v12 = [(CLIPSShim *)self deftemplateNamed:templateCopy moduleName:nameCopy];
   if (!v12)
   {
     v93 = debuggabilityLogHandle;
@@ -3381,7 +3381,7 @@ LABEL_134:
     }
 
     *v139 = 138412290;
-    *&v139[4] = v8;
+    *&v139[4] = templateCopy;
     v89 = "CLIPS: Could not locate this deftemplate: %@";
     v90 = v93;
     v91 = OS_LOG_TYPE_ERROR;
@@ -3390,7 +3390,7 @@ LABEL_134:
   }
 
   v13 = v12;
-  v97 = v8;
+  v97 = templateCopy;
   v140 = 0u;
   v141 = 0u;
   *v139 = 0u;
@@ -3400,13 +3400,13 @@ LABEL_134:
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
-  obj = [v9 allKeys];
+  obj = [dictionaryCopy allKeys];
   v104 = [obj countByEnumeratingWithState:&v122 objects:v138 count:16];
   if (v104)
   {
     v15 = 0;
     v103 = *v123;
-    v101 = self;
+    selfCopy = self;
     v102 = v14;
     while (1)
     {
@@ -3462,7 +3462,7 @@ LABEL_16:
               v24 = [v22 objectAtIndexedSubscript:0];
 
               v22 = v24;
-              self = v101;
+              self = selfCopy;
               goto LABEL_19;
             }
 
@@ -3500,7 +3500,7 @@ LABEL_19:
               v38 = v37;
               _os_log_impl(&dword_23255B000, v36, OS_LOG_TYPE_ERROR, "CLIPS: %@'s slotType (%@) class (%@) is not a string!", buf, 0x20u);
 
-              self = v101;
+              self = selfCopy;
             }
 
             goto LABEL_108;
@@ -3571,7 +3571,7 @@ LABEL_19:
 LABEL_103:
 
                 [v11 appendFormat:@""]);
-                self = v101;
+                self = selfCopy;
                 v14 = v102;
                 v16 = v105;
                 v22 = v98;
@@ -3606,7 +3606,7 @@ LABEL_103:
 LABEL_106:
             v15 = v25;
 LABEL_107:
-            self = v101;
+            self = selfCopy;
             goto LABEL_108;
           }
 
@@ -3748,7 +3748,7 @@ LABEL_48:
                 }
 
                 v15 = v25;
-                self = v101;
+                self = selfCopy;
                 goto LABEL_109;
               }
 
@@ -4002,7 +4002,7 @@ LABEL_111:
   v15 = 0;
 LABEL_136:
 
-  v8 = v97;
+  templateCopy = v97;
 LABEL_137:
 
   v94 = *MEMORY[0x277D85DE8];
@@ -4010,17 +4010,17 @@ LABEL_137:
   return v11;
 }
 
-- (void)setConsoleNameRegex:(id *)a3
+- (void)setConsoleNameRegex:(id *)regex
 {
-  v3 = *&a3->var0;
-  *&self->_consoleNameRegex.re_endp = *&a3->var2;
+  v3 = *&regex->var0;
+  *&self->_consoleNameRegex.re_endp = *&regex->var2;
   *&self->_consoleNameRegex.re_magic = v3;
 }
 
-- (void)setDumpStringRegex:(id *)a3
+- (void)setDumpStringRegex:(id *)regex
 {
-  v3 = *&a3->var0;
-  *&self->_dumpStringRegex.re_endp = *&a3->var2;
+  v3 = *&regex->var0;
+  *&self->_dumpStringRegex.re_endp = *&regex->var2;
   *&self->_dumpStringRegex.re_magic = v3;
 }
 

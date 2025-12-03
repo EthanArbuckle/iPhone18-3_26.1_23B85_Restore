@@ -1,16 +1,16 @@
 @interface CycleHistoryTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CycleHistoryTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.CycleHistoryTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.CycleHistoryTableViewController" hasInstanceMethod:@"axFilterSelected" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.CycleHistoryTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.CycleHistoryTableViewController" hasInstanceMethod:@"axFilterSelected" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -20,14 +20,14 @@
   [(CycleHistoryTableViewControllerAccessibility *)&v11 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setIsAccessibilityElement:1];
+  navigationItem = [v3 navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setIsAccessibilityElement:1];
   v6 = accessibilityLocalizedString(@"cycle.history.filters");
-  [v5 setAccessibilityLabel:v6];
+  [rightBarButtonItem setAccessibilityLabel:v6];
 
-  v7 = [v5 accessibilityTraits];
-  v8 = *MEMORY[0x29EDC7F70] | v7;
+  accessibilityTraits = [rightBarButtonItem accessibilityTraits];
+  v8 = *MEMORY[0x29EDC7F70] | accessibilityTraits;
   v9 = [(CycleHistoryTableViewControllerAccessibility *)self safeBoolForKey:@"axFilterSelected"];
   v10 = *MEMORY[0x29EDC7FC0];
   if (!v9)
@@ -35,7 +35,7 @@
     v10 = 0;
   }
 
-  [v5 setAccessibilityTraits:v8 | v10];
+  [rightBarButtonItem setAccessibilityTraits:v8 | v10];
 }
 
 - (void)viewDidLoad

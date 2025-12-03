@@ -1,7 +1,7 @@
 @interface BKTouchContactSet
 - (id)copy;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)appendDescriptionToStream:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation BKTouchContactSet
@@ -39,17 +39,17 @@
   return v4;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006856C;
   v3[3] = &unk_1000FBFF8;
-  v3[4] = a3;
-  [a3 appendCollection:self withName:@"contacts" itemBlock:v3];
+  v3[4] = stream;
+  [stream appendCollection:self withName:@"contacts" itemBlock:v3];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   count = self->_count;
   if (!count)
@@ -57,8 +57,8 @@
     return count;
   }
 
-  var0 = a3->var0;
-  if (a3->var0)
+  var0 = state->var0;
+  if (state->var0)
   {
     highIndex = self->_highIndex;
     if (var0 > highIndex)
@@ -69,13 +69,13 @@
 
   else
   {
-    a3->var2 = &self->_mutationtastic;
+    state->var2 = &self->_mutationtastic;
     var0 = self->_lowIndex;
-    a3->var0 = var0;
+    state->var0 = var0;
     highIndex = self->_highIndex;
   }
 
-  a3->var1 = a4;
+  state->var1 = objects;
   if (var0 > highIndex)
   {
     count = 0;
@@ -98,16 +98,16 @@ LABEL_12:
     }
   }
 
-  a4[count++] = v8;
-  if (count != a5)
+  objects[count++] = v8;
+  if (count != count)
   {
     highIndex = self->_highIndex;
     goto LABEL_12;
   }
 
-  count = a5;
+  count = count;
 LABEL_15:
-  a3->var0 = var0 + 1;
+  state->var0 = var0 + 1;
   return count;
 }
 

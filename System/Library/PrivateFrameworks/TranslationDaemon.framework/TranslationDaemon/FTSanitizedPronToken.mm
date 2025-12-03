@@ -1,17 +1,17 @@
 @interface FTSanitizedPronToken
-- (FTSanitizedPronToken)initWithFlatbuffData:(id)a3 root:(const SanitizedPronToken *)a4 verify:(BOOL)a5;
+- (FTSanitizedPronToken)initWithFlatbuffData:(id)data root:(const SanitizedPronToken *)root verify:(BOOL)verify;
 - (NSString)pron_source;
 - (NSString)token;
-- (Offset<siri::speech::schema_fb::SanitizedPronToken>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SanitizedPronToken>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTSanitizedPronToken
 
-- (FTSanitizedPronToken)initWithFlatbuffData:(id)a3 root:(const SanitizedPronToken *)a4 verify:(BOOL)a5
+- (FTSanitizedPronToken)initWithFlatbuffData:(id)data root:(const SanitizedPronToken *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTSanitizedPronToken;
   v10 = [(FTSanitizedPronToken *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -120,37 +120,37 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::SanitizedPronToken>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SanitizedPronToken>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSanitizedPronToken *)self token];
-  v6 = v5;
-  if (!v5)
+  token = [(FTSanitizedPronToken *)self token];
+  v6 = token;
+  if (!token)
   {
-    v5 = &stru_284834138;
+    token = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)token UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTSanitizedPronToken *)self pron_source];
-  v11 = v10;
-  if (!v10)
+  pron_source = [(FTSanitizedPronToken *)self pron_source];
+  v11 = pron_source;
+  if (!pron_source)
   {
-    v10 = &stru_284834138;
+    pron_source = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)pron_source UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v12);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, uTF8String2);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (id)flatbuffData

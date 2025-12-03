@@ -1,57 +1,57 @@
 @interface KTVerifier
-+ (id)getUIStatusPriority:(unint64_t)a3;
-- (BOOL)clearPeerCache:(id)a3 error:(id *)a4;
-- (BOOL)ignoreFailure:(id)a3 uuid:(id)a4 error:(id *)a5;
-- (BOOL)ignoreFailureForResults:(id)a3 error:(id *)a4;
-- (BOOL)markFailureSeenForResults:(id)a3 error:(id *)a4;
-- (KTVerifier)initWithApplication:(id)a3;
-- (id)urisFromResults:(id)a3;
-- (id)validateEnrollmentUri:(id)a3 accountKey:(id)a4 loggableData:(id)a5 queryRequest:(id)a6 insertResponse:(id)a7 error:(id *)a8;
-- (id)validatePeerUri:(id)a3 accountKey:(id)a4 loggableDatas:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 error:(id *)a8;
-- (unint64_t)getDisplayStatusForResults:(id)a3 isSelfOptedIn:(BOOL)a4;
-- (void)batchQuery:(id)a3 userInitiated:(BOOL)a4 block:(id)a5;
-- (void)clearLogClientConfiguration:(id)a3;
-- (void)clearPublicKeyStoreState:(id)a3;
-- (void)clearState:(id)a3;
-- (void)configurationBagFetch:(id)a3;
-- (void)convertToSelfRequest:(id)a3 serverDatas:(id)a4 syncedDatas:(id)a5 accountKey:(id)a6 queryRequest:(id)a7 queryResponse:(id)a8 updateCompletionBlock:(id)a9;
-- (void)copyApplicationState:(id)a3;
-- (void)copyApplicationTranscript:(id)a3;
-- (void)copyDaemonState:(id)a3;
-- (void)copyDataStoreStatistics:(id)a3;
-- (void)copyDeviceStatus:(id)a3 complete:(id)a4;
-- (void)copyKeyStoreState:(id)a3;
-- (void)copyKeyStoreStateFromDisk:(id)a3;
-- (void)copyLogClientConfiguration:(id)a3;
-- (void)forceApplicationConfig:(id)a3;
-- (void)forceApplicationKeysFetch:(id)a3;
-- (void)forceCloudConfigUpdate:(id)a3;
-- (void)forceConfigUpdate:(id)a3;
-- (void)forceDutyCycle:(id)a3;
-- (void)forceValidateUUID:(id)a3 uri:(id)a4 block:(id)a5;
-- (void)forceValidateUUID:(id)a3 uri:(id)a4 completionBlock:(id)a5;
-- (void)getCachedValidatePeerResults:(id)a3 completionBlock:(id)a4;
-- (void)getValidatePeerResult:(id)a3 uuid:(id)a4 fetchNow:(BOOL)a5 completionBlock:(id)a6;
-- (void)initiateQueryForUris:(id)a3 completionBlock:(id)a4;
-- (void)invokeXPCAsynchronousCallWithBlock:(id)a3 failureBlock:(id)a4;
-- (void)invokeXPCSynchronousCallWithBlock:(id)a3 failureBlock:(id)a4;
-- (void)resetRequestToPending:(id)a3 block:(id)a4;
-- (void)validateEnrollmentResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5;
-- (void)validateEnrollmentUri:(id)a3 accountKey:(id)a4 loggableData:(id)a5 insertResponse:(id)a6 promiseCompletionBlock:(id)a7;
-- (void)validatePeerResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5;
-- (void)validatePeerUri:(id)a3 accountKey:(id)a4 loggableDatas:(id)a5 queryResponse:(id)a6 promiseCompletionBlock:(id)a7;
-- (void)validatePeers:(id)a3 completionBlock:(id)a4;
-- (void)validatePeers:(id)a3 fetchNow:(BOOL)a4 completionBlock:(id)a5;
-- (void)validateSelfResult:(id)a3 uuid:(id)a4 syncedDatas:(id)a5 completionBlock:(id)a6;
++ (id)getUIStatusPriority:(unint64_t)priority;
+- (BOOL)clearPeerCache:(id)cache error:(id *)error;
+- (BOOL)ignoreFailure:(id)failure uuid:(id)uuid error:(id *)error;
+- (BOOL)ignoreFailureForResults:(id)results error:(id *)error;
+- (BOOL)markFailureSeenForResults:(id)results error:(id *)error;
+- (KTVerifier)initWithApplication:(id)application;
+- (id)urisFromResults:(id)results;
+- (id)validateEnrollmentUri:(id)uri accountKey:(id)key loggableData:(id)data queryRequest:(id)request insertResponse:(id)response error:(id *)error;
+- (id)validatePeerUri:(id)uri accountKey:(id)key loggableDatas:(id)datas queryRequest:(id)request queryResponse:(id)response error:(id *)error;
+- (unint64_t)getDisplayStatusForResults:(id)results isSelfOptedIn:(BOOL)in;
+- (void)batchQuery:(id)query userInitiated:(BOOL)initiated block:(id)block;
+- (void)clearLogClientConfiguration:(id)configuration;
+- (void)clearPublicKeyStoreState:(id)state;
+- (void)clearState:(id)state;
+- (void)configurationBagFetch:(id)fetch;
+- (void)convertToSelfRequest:(id)request serverDatas:(id)datas syncedDatas:(id)syncedDatas accountKey:(id)key queryRequest:(id)queryRequest queryResponse:(id)response updateCompletionBlock:(id)block;
+- (void)copyApplicationState:(id)state;
+- (void)copyApplicationTranscript:(id)transcript;
+- (void)copyDaemonState:(id)state;
+- (void)copyDataStoreStatistics:(id)statistics;
+- (void)copyDeviceStatus:(id)status complete:(id)complete;
+- (void)copyKeyStoreState:(id)state;
+- (void)copyKeyStoreStateFromDisk:(id)disk;
+- (void)copyLogClientConfiguration:(id)configuration;
+- (void)forceApplicationConfig:(id)config;
+- (void)forceApplicationKeysFetch:(id)fetch;
+- (void)forceCloudConfigUpdate:(id)update;
+- (void)forceConfigUpdate:(id)update;
+- (void)forceDutyCycle:(id)cycle;
+- (void)forceValidateUUID:(id)d uri:(id)uri block:(id)block;
+- (void)forceValidateUUID:(id)d uri:(id)uri completionBlock:(id)block;
+- (void)getCachedValidatePeerResults:(id)results completionBlock:(id)block;
+- (void)getValidatePeerResult:(id)result uuid:(id)uuid fetchNow:(BOOL)now completionBlock:(id)block;
+- (void)initiateQueryForUris:(id)uris completionBlock:(id)block;
+- (void)invokeXPCAsynchronousCallWithBlock:(id)block failureBlock:(id)failureBlock;
+- (void)invokeXPCSynchronousCallWithBlock:(id)block failureBlock:(id)failureBlock;
+- (void)resetRequestToPending:(id)pending block:(id)block;
+- (void)validateEnrollmentResult:(id)result uuid:(id)uuid completionBlock:(id)block;
+- (void)validateEnrollmentUri:(id)uri accountKey:(id)key loggableData:(id)data insertResponse:(id)response promiseCompletionBlock:(id)block;
+- (void)validatePeerResult:(id)result uuid:(id)uuid completionBlock:(id)block;
+- (void)validatePeerUri:(id)uri accountKey:(id)key loggableDatas:(id)datas queryResponse:(id)response promiseCompletionBlock:(id)block;
+- (void)validatePeers:(id)peers completionBlock:(id)block;
+- (void)validatePeers:(id)peers fetchNow:(BOOL)now completionBlock:(id)block;
+- (void)validateSelfResult:(id)result uuid:(id)uuid syncedDatas:(id)datas completionBlock:(id)block;
 @end
 
 @implementation KTVerifier
 
-- (KTVerifier)initWithApplication:(id)a3
+- (KTVerifier)initWithApplication:(id)application
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [TransparencyApplication applicationValueForIdentifier:v5];
+  applicationCopy = application;
+  v6 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v6)
   {
@@ -61,14 +61,14 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_applicationIdentifier, a3);
+      objc_storeStrong(&v7->_applicationIdentifier, application);
       v9 = [[TransparencyApplication alloc] initWithIdentifier:v8->_applicationIdentifier];
       application = v8->_application;
       v8->_application = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -82,15 +82,15 @@
     if (os_log_type_enabled(TRANSPARENCY_DEFAULT_LOG_INTERNAL_7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = applicationCopy;
       _os_log_impl(&dword_1E10DB000, v12, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 uint64_t __34__KTVerifier_initWithApplication___block_invoke()
@@ -100,23 +100,23 @@ uint64_t __34__KTVerifier_initWithApplication___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)invokeXPCAsynchronousCallWithBlock:(id)a3 failureBlock:(id)a4
+- (void)invokeXPCAsynchronousCallWithBlock:(id)block failureBlock:(id)failureBlock
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__KTVerifier_invokeXPCAsynchronousCallWithBlock_failureBlock___block_invoke;
   v11[3] = &unk_1E8701C68;
-  v12 = v6;
-  v13 = v5;
+  v12 = failureBlockCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__KTVerifier_invokeXPCAsynchronousCallWithBlock_failureBlock___block_invoke_12;
   v9[3] = &unk_1E87013C8;
   v10 = v12;
   v7 = v12;
-  v8 = v5;
+  v8 = blockCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -161,23 +161,23 @@ uint64_t __62__KTVerifier_invokeXPCAsynchronousCallWithBlock_failureBlock___bloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)invokeXPCSynchronousCallWithBlock:(id)a3 failureBlock:(id)a4
+- (void)invokeXPCSynchronousCallWithBlock:(id)block failureBlock:(id)failureBlock
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__KTVerifier_invokeXPCSynchronousCallWithBlock_failureBlock___block_invoke;
   v11[3] = &unk_1E8701C68;
-  v12 = v6;
-  v13 = v5;
+  v12 = failureBlockCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__KTVerifier_invokeXPCSynchronousCallWithBlock_failureBlock___block_invoke_16;
   v9[3] = &unk_1E87013C8;
   v10 = v12;
   v7 = v12;
-  v8 = v5;
+  v8 = blockCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -222,13 +222,13 @@ uint64_t __61__KTVerifier_invokeXPCSynchronousCallWithBlock_failureBlock___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)validatePeerUri:(id)a3 accountKey:(id)a4 loggableDatas:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 error:(id *)a8
+- (id)validatePeerUri:(id)uri accountKey:(id)key loggableDatas:(id)datas queryRequest:(id)request queryResponse:(id)response error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  uriCopy = uri;
+  keyCopy = key;
+  datasCopy = datas;
+  requestCopy = request;
+  responseCopy = response;
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -251,16 +251,16 @@ uint64_t __61__KTVerifier_invokeXPCSynchronousCallWithBlock_failureBlock___block
   v28[1] = 3221225472;
   v28[2] = __88__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryRequest_queryResponse_error___block_invoke;
   v28[3] = &unk_1E8701CB8;
-  v19 = v14;
+  v19 = uriCopy;
   v29 = v19;
   v34 = v49;
-  v20 = v15;
+  v20 = keyCopy;
   v30 = v20;
-  v21 = v16;
+  v21 = datasCopy;
   v31 = v21;
-  v22 = v17;
+  v22 = requestCopy;
   v32 = v22;
-  v23 = v18;
+  v23 = responseCopy;
   v33 = v23;
   v35 = &v37;
   v36 = &v43;
@@ -270,12 +270,12 @@ uint64_t __61__KTVerifier_invokeXPCSynchronousCallWithBlock_failureBlock___block
   v27[3] = &unk_1E8701788;
   v27[4] = &v37;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v28 failureBlock:v27];
-  if (a8)
+  if (error)
   {
     v24 = v38[5];
     if (v24)
     {
-      *a8 = v24;
+      *error = v24;
     }
   }
 
@@ -350,19 +350,19 @@ void __88__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryRequest_quer
   }
 }
 
-- (id)validateEnrollmentUri:(id)a3 accountKey:(id)a4 loggableData:(id)a5 queryRequest:(id)a6 insertResponse:(id)a7 error:(id *)a8
+- (id)validateEnrollmentUri:(id)uri accountKey:(id)key loggableData:(id)data queryRequest:(id)request insertResponse:(id)response error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  uriCopy = uri;
+  keyCopy = key;
+  dataCopy = data;
+  requestCopy = request;
+  responseCopy = response;
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x3032000000;
   v48[3] = __Block_byref_object_copy__3;
   v48[4] = __Block_byref_object_dispose__3;
-  v49 = [(KTVerifier *)self applicationIdentifier];
+  applicationIdentifier = [(KTVerifier *)self applicationIdentifier];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -379,16 +379,16 @@ void __88__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryRequest_quer
   v27[1] = 3221225472;
   v27[2] = __94__KTVerifier_validateEnrollmentUri_accountKey_loggableData_queryRequest_insertResponse_error___block_invoke;
   v27[3] = &unk_1E8701CB8;
-  v19 = v14;
+  v19 = uriCopy;
   v28 = v19;
   v33 = v48;
-  v20 = v15;
+  v20 = keyCopy;
   v29 = v20;
-  v21 = v16;
+  v21 = dataCopy;
   v30 = v21;
-  v22 = v17;
+  v22 = requestCopy;
   v31 = v22;
-  v23 = v18;
+  v23 = responseCopy;
   v32 = v23;
   v34 = &v36;
   v35 = &v42;
@@ -398,9 +398,9 @@ void __88__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryRequest_quer
   v26[3] = &unk_1E8701788;
   v26[4] = &v36;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v27 failureBlock:v26];
-  if (a8)
+  if (error)
   {
-    *a8 = v37[5];
+    *error = v37[5];
   }
 
   v24 = v43[5];
@@ -474,24 +474,24 @@ void __94__KTVerifier_validateEnrollmentUri_accountKey_loggableData_queryRequest
   }
 }
 
-- (void)validatePeerUri:(id)a3 accountKey:(id)a4 loggableDatas:(id)a5 queryResponse:(id)a6 promiseCompletionBlock:(id)a7
+- (void)validatePeerUri:(id)uri accountKey:(id)key loggableDatas:(id)datas queryResponse:(id)response promiseCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(KTVerifier *)self applicationIdentifier];
+  uriCopy = uri;
+  keyCopy = key;
+  datasCopy = datas;
+  responseCopy = response;
+  blockCopy = block;
+  applicationIdentifier = [(KTVerifier *)self applicationIdentifier];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __92__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryResponse_promiseCompletionBlock___block_invoke;
   v27[3] = &unk_1E8701CE0;
-  v28 = v12;
-  v29 = v17;
-  v30 = v13;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
+  v28 = uriCopy;
+  v29 = applicationIdentifier;
+  v30 = keyCopy;
+  v31 = datasCopy;
+  v32 = responseCopy;
+  v33 = blockCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __92__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryResponse_promiseCompletionBlock___block_invoke_29;
@@ -500,10 +500,10 @@ void __94__KTVerifier_validateEnrollmentUri_accountKey_loggableData_queryRequest
   v26 = v33;
   v18 = v28;
   v19 = v33;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v17;
+  v20 = responseCopy;
+  v21 = datasCopy;
+  v22 = keyCopy;
+  v23 = applicationIdentifier;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v27 failureBlock:v24];
 }
 
@@ -532,18 +532,18 @@ uint64_t __92__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryResponse
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)validatePeerResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5
+- (void)validatePeerResult:(id)result uuid:(id)uuid completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  uuidCopy = uuid;
+  blockCopy = block;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__KTVerifier_validatePeerResult_uuid_completionBlock___block_invoke;
   v17[3] = &unk_1E8701D30;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = resultCopy;
+  v19 = uuidCopy;
+  v20 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__KTVerifier_validatePeerResult_uuid_completionBlock___block_invoke_2_34;
@@ -552,7 +552,7 @@ uint64_t __92__KTVerifier_validatePeerUri_accountKey_loggableDatas_queryResponse
   v16 = v20;
   v11 = v18;
   v12 = v20;
-  v13 = v9;
+  v13 = uuidCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v17 failureBlock:v14];
 }
 
@@ -601,29 +601,29 @@ void __54__KTVerifier_validatePeerResult_uuid_completionBlock___block_invoke_32(
   (*(v4 + 16))(v4, v10, v7, v8, v9, v5);
 }
 
-- (void)getValidatePeerResult:(id)a3 uuid:(id)a4 fetchNow:(BOOL)a5 completionBlock:(id)a6
+- (void)getValidatePeerResult:(id)result uuid:(id)uuid fetchNow:(BOOL)now completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultCopy = result;
+  uuidCopy = uuid;
+  blockCopy = block;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __66__KTVerifier_getValidatePeerResult_uuid_fetchNow_completionBlock___block_invoke;
   v20[3] = &unk_1E8701D58;
-  v21 = v10;
-  v22 = v11;
-  v24 = a5;
-  v23 = v12;
+  v21 = resultCopy;
+  v22 = uuidCopy;
+  nowCopy = now;
+  v23 = blockCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__KTVerifier_getValidatePeerResult_uuid_fetchNow_completionBlock___block_invoke_37;
   v16[3] = &unk_1E8701D80;
-  v18 = self;
+  selfCopy = self;
   v19 = v23;
   v17 = v21;
   v13 = v21;
   v14 = v23;
-  v15 = v11;
+  v15 = uuidCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v20 failureBlock:v16];
 }
 
@@ -663,33 +663,33 @@ void __66__KTVerifier_getValidatePeerResult_uuid_fetchNow_completionBlock___bloc
   (*(v3 + 16))(v3, v7, v4);
 }
 
-- (void)validateSelfResult:(id)a3 uuid:(id)a4 syncedDatas:(id)a5 completionBlock:(id)a6
+- (void)validateSelfResult:(id)result uuid:(id)uuid syncedDatas:(id)datas completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a3;
+  blockCopy = block;
+  resultCopy = result;
   v13 = NSStringFromSelector(a2);
   v12 = [(KTVerifier *)self unimplementedError:v13];
-  (*(a6 + 2))(v10, v11, 0, 0, 0, v12);
+  (*(block + 2))(blockCopy, resultCopy, 0, 0, 0, v12);
 }
 
-- (void)validateEnrollmentUri:(id)a3 accountKey:(id)a4 loggableData:(id)a5 insertResponse:(id)a6 promiseCompletionBlock:(id)a7
+- (void)validateEnrollmentUri:(id)uri accountKey:(id)key loggableData:(id)data insertResponse:(id)response promiseCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(KTVerifier *)self applicationIdentifier];
+  uriCopy = uri;
+  keyCopy = key;
+  dataCopy = data;
+  responseCopy = response;
+  blockCopy = block;
+  applicationIdentifier = [(KTVerifier *)self applicationIdentifier];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __98__KTVerifier_validateEnrollmentUri_accountKey_loggableData_insertResponse_promiseCompletionBlock___block_invoke;
   v27[3] = &unk_1E8701CE0;
-  v28 = v12;
-  v29 = v17;
-  v30 = v13;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
+  v28 = uriCopy;
+  v29 = applicationIdentifier;
+  v30 = keyCopy;
+  v31 = dataCopy;
+  v32 = responseCopy;
+  v33 = blockCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __98__KTVerifier_validateEnrollmentUri_accountKey_loggableData_insertResponse_promiseCompletionBlock___block_invoke_41;
@@ -698,10 +698,10 @@ void __66__KTVerifier_getValidatePeerResult_uuid_fetchNow_completionBlock___bloc
   v26 = v33;
   v18 = v28;
   v19 = v33;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v17;
+  v20 = responseCopy;
+  v21 = dataCopy;
+  v22 = keyCopy;
+  v23 = applicationIdentifier;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v27 failureBlock:v24];
 }
 
@@ -730,18 +730,18 @@ uint64_t __98__KTVerifier_validateEnrollmentUri_accountKey_loggableData_insertRe
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)validateEnrollmentResult:(id)a3 uuid:(id)a4 completionBlock:(id)a5
+- (void)validateEnrollmentResult:(id)result uuid:(id)uuid completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  uuidCopy = uuid;
+  blockCopy = block;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__KTVerifier_validateEnrollmentResult_uuid_completionBlock___block_invoke;
   v17[3] = &unk_1E8701D30;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = resultCopy;
+  v19 = uuidCopy;
+  v20 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__KTVerifier_validateEnrollmentResult_uuid_completionBlock___block_invoke_44;
@@ -750,7 +750,7 @@ uint64_t __98__KTVerifier_validateEnrollmentUri_accountKey_loggableData_insertRe
   v16 = v20;
   v11 = v18;
   v12 = v20;
-  v13 = v9;
+  v13 = uuidCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v17 failureBlock:v14];
 }
 
@@ -779,35 +779,35 @@ uint64_t __60__KTVerifier_validateEnrollmentResult_uuid_completionBlock___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)convertToSelfRequest:(id)a3 serverDatas:(id)a4 syncedDatas:(id)a5 accountKey:(id)a6 queryRequest:(id)a7 queryResponse:(id)a8 updateCompletionBlock:(id)a9
+- (void)convertToSelfRequest:(id)request serverDatas:(id)datas syncedDatas:(id)syncedDatas accountKey:(id)key queryRequest:(id)queryRequest queryResponse:(id)response updateCompletionBlock:(id)block
 {
-  v12 = a9;
-  v13 = a3;
+  blockCopy = block;
+  requestCopy = request;
   v15 = NSStringFromSelector(a2);
   v14 = [(KTVerifier *)self unimplementedError:v15];
-  (*(a9 + 2))(v12, v13, v14);
+  (*(block + 2))(blockCopy, requestCopy, v14);
 }
 
-- (void)forceValidateUUID:(id)a3 uri:(id)a4 block:(id)a5
+- (void)forceValidateUUID:(id)d uri:(id)uri block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  uriCopy = uri;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __42__KTVerifier_forceValidateUUID_uri_block___block_invoke;
   v16[3] = &unk_1E8701D30;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = dCopy;
+  v18 = uriCopy;
+  v19 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__KTVerifier_forceValidateUUID_uri_block___block_invoke_47;
   v14[3] = &unk_1E87013C8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = uriCopy;
+  v13 = dCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v16 failureBlock:v14];
 }
 
@@ -841,18 +841,18 @@ uint64_t __42__KTVerifier_forceValidateUUID_uri_block___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceValidateUUID:(id)a3 uri:(id)a4 completionBlock:(id)a5
+- (void)forceValidateUUID:(id)d uri:(id)uri completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  uriCopy = uri;
+  blockCopy = block;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __52__KTVerifier_forceValidateUUID_uri_completionBlock___block_invoke;
   v17[3] = &unk_1E8701D30;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = dCopy;
+  v19 = uriCopy;
+  v20 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __52__KTVerifier_forceValidateUUID_uri_completionBlock___block_invoke_50;
@@ -861,7 +861,7 @@ uint64_t __42__KTVerifier_forceValidateUUID_uri_block___block_invoke_2()
   v16 = v20;
   v11 = v19;
   v12 = v20;
-  v13 = v8;
+  v13 = dCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v17 failureBlock:v14];
 }
 
@@ -895,23 +895,23 @@ uint64_t __52__KTVerifier_forceValidateUUID_uri_completionBlock___block_invoke_2
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)resetRequestToPending:(id)a3 block:(id)a4
+- (void)resetRequestToPending:(id)pending block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  pendingCopy = pending;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __42__KTVerifier_resetRequestToPending_block___block_invoke;
   v12[3] = &unk_1E8701DA8;
-  v13 = v6;
-  v14 = v7;
+  v13 = pendingCopy;
+  v14 = blockCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__KTVerifier_resetRequestToPending_block___block_invoke_53;
   v10[3] = &unk_1E87013C8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = pendingCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v12 failureBlock:v10];
 }
 
@@ -945,15 +945,15 @@ uint64_t __42__KTVerifier_resetRequestToPending_block___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearState:(id)a3
+- (void)clearState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __25__KTVerifier_clearState___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __25__KTVerifier_clearState___block_invoke_56;
@@ -996,14 +996,14 @@ uint64_t __25__KTVerifier_clearState___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceConfigUpdate:(id)a3
+- (void)forceConfigUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__KTVerifier_forceConfigUpdate___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = updateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__KTVerifier_forceConfigUpdate___block_invoke_59;
@@ -1038,14 +1038,14 @@ uint64_t __32__KTVerifier_forceConfigUpdate___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)configurationBagFetch:(id)a3
+- (void)configurationBagFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__KTVerifier_configurationBagFetch___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = fetchCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__KTVerifier_configurationBagFetch___block_invoke_62;
@@ -1080,15 +1080,15 @@ uint64_t __36__KTVerifier_configurationBagFetch___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceApplicationKeysFetch:(id)a3
+- (void)forceApplicationKeysFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__KTVerifier_forceApplicationKeysFetch___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = fetchCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__KTVerifier_forceApplicationKeysFetch___block_invoke_65;
@@ -1124,15 +1124,15 @@ uint64_t __40__KTVerifier_forceApplicationKeysFetch___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceApplicationConfig:(id)a3
+- (void)forceApplicationConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__KTVerifier_forceApplicationConfig___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = configCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__KTVerifier_forceApplicationConfig___block_invoke_68;
@@ -1168,15 +1168,15 @@ uint64_t __37__KTVerifier_forceApplicationConfig___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyApplicationState:(id)a3
+- (void)copyApplicationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__KTVerifier_copyApplicationState___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__KTVerifier_copyApplicationState___block_invoke_71;
@@ -1212,14 +1212,14 @@ uint64_t __35__KTVerifier_copyApplicationState___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyDataStoreStatistics:(id)a3
+- (void)copyDataStoreStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__KTVerifier_copyDataStoreStatistics___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = statisticsCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__KTVerifier_copyDataStoreStatistics___block_invoke_74;
@@ -1254,14 +1254,14 @@ uint64_t __38__KTVerifier_copyDataStoreStatistics___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyKeyStoreState:(id)a3
+- (void)copyKeyStoreState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__KTVerifier_copyKeyStoreState___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__KTVerifier_copyKeyStoreState___block_invoke_77;
@@ -1296,14 +1296,14 @@ uint64_t __32__KTVerifier_copyKeyStoreState___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyKeyStoreStateFromDisk:(id)a3
+- (void)copyKeyStoreStateFromDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__KTVerifier_copyKeyStoreStateFromDisk___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = diskCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__KTVerifier_copyKeyStoreStateFromDisk___block_invoke_80;
@@ -1338,14 +1338,14 @@ uint64_t __40__KTVerifier_copyKeyStoreStateFromDisk___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceDutyCycle:(id)a3
+- (void)forceDutyCycle:(id)cycle
 {
-  v4 = a3;
+  cycleCopy = cycle;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__KTVerifier_forceDutyCycle___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = cycleCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__KTVerifier_forceDutyCycle___block_invoke_83;
@@ -1380,14 +1380,14 @@ uint64_t __29__KTVerifier_forceDutyCycle___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)forceCloudConfigUpdate:(id)a3
+- (void)forceCloudConfigUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__KTVerifier_forceCloudConfigUpdate___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = updateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__KTVerifier_forceCloudConfigUpdate___block_invoke_2_87;
@@ -1427,23 +1427,23 @@ uint64_t __37__KTVerifier_forceCloudConfigUpdate___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyDeviceStatus:(id)a3 complete:(id)a4
+- (void)copyDeviceStatus:(id)status complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  completeCopy = complete;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__KTVerifier_copyDeviceStatus_complete___block_invoke;
   v12[3] = &unk_1E8701DA8;
-  v13 = v6;
-  v14 = v7;
+  v13 = statusCopy;
+  v14 = completeCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__KTVerifier_copyDeviceStatus_complete___block_invoke_2_92;
   v10[3] = &unk_1E87013C8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = statusCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v12 failureBlock:v10];
 }
 
@@ -1483,14 +1483,14 @@ uint64_t __40__KTVerifier_copyDeviceStatus_complete___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyLogClientConfiguration:(id)a3
+- (void)copyLogClientConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__KTVerifier_copyLogClientConfiguration___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = configurationCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__KTVerifier_copyLogClientConfiguration___block_invoke_95;
@@ -1525,14 +1525,14 @@ uint64_t __41__KTVerifier_copyLogClientConfiguration___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearLogClientConfiguration:(id)a3
+- (void)clearLogClientConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__KTVerifier_clearLogClientConfiguration___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = configurationCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__KTVerifier_clearLogClientConfiguration___block_invoke_98;
@@ -1567,15 +1567,15 @@ uint64_t __42__KTVerifier_clearLogClientConfiguration___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearPublicKeyStoreState:(id)a3
+- (void)clearPublicKeyStoreState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__KTVerifier_clearPublicKeyStoreState___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__KTVerifier_clearPublicKeyStoreState___block_invoke_101;
@@ -1611,14 +1611,14 @@ uint64_t __39__KTVerifier_clearPublicKeyStoreState___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyDaemonState:(id)a3
+- (void)copyDaemonState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __30__KTVerifier_copyDaemonState___block_invoke;
   v8[3] = &unk_1E8701DD0;
-  v9 = v4;
+  v9 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__KTVerifier_copyDaemonState___block_invoke_104;
@@ -1653,15 +1653,15 @@ uint64_t __30__KTVerifier_copyDaemonState___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyApplicationTranscript:(id)a3
+- (void)copyApplicationTranscript:(id)transcript
 {
-  v4 = a3;
+  transcriptCopy = transcript;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__KTVerifier_copyApplicationTranscript___block_invoke;
   v8[3] = &unk_1E8701DA8;
   v8[4] = self;
-  v9 = v4;
+  v9 = transcriptCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__KTVerifier_copyApplicationTranscript___block_invoke_107;
@@ -1697,10 +1697,10 @@ uint64_t __40__KTVerifier_copyApplicationTranscript___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)ignoreFailure:(id)a3 uuid:(id)a4 error:(id *)a5
+- (BOOL)ignoreFailure:(id)failure uuid:(id)uuid error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  failureCopy = failure;
+  uuidCopy = uuid;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1711,9 +1711,9 @@ uint64_t __40__KTVerifier_copyApplicationTranscript___block_invoke_2()
   v17[1] = 3221225472;
   v17[2] = __39__KTVerifier_ignoreFailure_uuid_error___block_invoke;
   v17[3] = &unk_1E8701E20;
-  v10 = v8;
+  v10 = failureCopy;
   v18 = v10;
-  v11 = v9;
+  v11 = uuidCopy;
   v19 = v11;
   v20 = &v21;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1723,12 +1723,12 @@ uint64_t __40__KTVerifier_copyApplicationTranscript___block_invoke_2()
   v16[4] = &v21;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v17 failureBlock:v16];
   v12 = v22;
-  if (a5)
+  if (error)
   {
     v13 = v22[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
       v12 = v22;
     }
   }
@@ -1801,25 +1801,25 @@ void __39__KTVerifier_ignoreFailure_uuid_error___block_invoke_2_111(uint64_t a1,
   }
 }
 
-- (void)batchQuery:(id)a3 userInitiated:(BOOL)a4 block:(id)a5
+- (void)batchQuery:(id)query userInitiated:(BOOL)initiated block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __45__KTVerifier_batchQuery_userInitiated_block___block_invoke;
   v14[3] = &unk_1E8701D58;
-  v15 = v8;
-  v16 = self;
-  v18 = a4;
-  v17 = v9;
+  v15 = queryCopy;
+  selfCopy = self;
+  initiatedCopy = initiated;
+  v17 = blockCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __45__KTVerifier_batchQuery_userInitiated_block___block_invoke_2_116;
   v12[3] = &unk_1E87013C8;
   v13 = v17;
   v10 = v17;
-  v11 = v8;
+  v11 = queryCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v14 failureBlock:v12];
 }
 
@@ -1856,24 +1856,24 @@ uint64_t __45__KTVerifier_batchQuery_userInitiated_block___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)validatePeers:(id)a3 fetchNow:(BOOL)a4 completionBlock:(id)a5
+- (void)validatePeers:(id)peers fetchNow:(BOOL)now completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  peersCopy = peers;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__KTVerifier_validatePeers_fetchNow_completionBlock___block_invoke;
   v16[3] = &unk_1E8701D58;
-  v17 = v8;
-  v18 = self;
-  v20 = a4;
-  v19 = v9;
+  v17 = peersCopy;
+  selfCopy = self;
+  nowCopy = now;
+  v19 = blockCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__KTVerifier_validatePeers_fetchNow_completionBlock___block_invoke_122;
   v12[3] = &unk_1E8701E70;
   v13 = v17;
-  v14 = self;
+  selfCopy2 = self;
   v15 = v19;
   v10 = v19;
   v11 = v17;
@@ -1960,23 +1960,23 @@ void __53__KTVerifier_validatePeers_fetchNow_completionBlock___block_invoke_122(
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)validatePeers:(id)a3 completionBlock:(id)a4
+- (void)validatePeers:(id)peers completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  peersCopy = peers;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__KTVerifier_validatePeers_completionBlock___block_invoke;
   v12[3] = &unk_1E8701DA8;
-  v13 = v6;
-  v14 = v7;
+  v13 = peersCopy;
+  v14 = blockCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__KTVerifier_validatePeers_completionBlock___block_invoke_126;
   v10[3] = &unk_1E87013C8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = peersCopy;
   [(KTVerifier *)self invokeXPCAsynchronousCallWithBlock:v12 failureBlock:v10];
 }
 
@@ -2014,23 +2014,23 @@ uint64_t __44__KTVerifier_validatePeers_completionBlock___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getCachedValidatePeerResults:(id)a3 completionBlock:(id)a4
+- (void)getCachedValidatePeerResults:(id)results completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__KTVerifier_getCachedValidatePeerResults_completionBlock___block_invoke;
   v14[3] = &unk_1E8701D30;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = resultsCopy;
+  selfCopy = self;
+  v17 = blockCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__KTVerifier_getCachedValidatePeerResults_completionBlock___block_invoke_129;
   v10[3] = &unk_1E8701E70;
   v11 = v15;
-  v12 = self;
+  selfCopy2 = self;
   v13 = v17;
   v8 = v17;
   v9 = v15;
@@ -2116,19 +2116,19 @@ void __59__KTVerifier_getCachedValidatePeerResults_completionBlock___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateQueryForUris:(id)a3 completionBlock:(id)a4
+- (void)initiateQueryForUris:(id)uris completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  urisCopy = uris;
+  blockCopy = block;
+  if ([urisCopy count])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke;
     v10[3] = &unk_1E8701D30;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = urisCopy;
+    selfCopy = self;
+    v13 = blockCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2_136;
@@ -2139,7 +2139,7 @@ void __59__KTVerifier_getCachedValidatePeerResults_completionBlock___block_invok
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -2182,16 +2182,16 @@ uint64_t __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)urisFromResults:(id)a3
+- (id)urisFromResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2207,7 +2207,7 @@ uint64_t __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2(
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) uri];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2218,12 +2218,12 @@ uint64_t __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2(
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (BOOL)markFailureSeenForResults:(id)a3 error:(id *)a4
+- (BOOL)markFailureSeenForResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2235,7 +2235,7 @@ uint64_t __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2(
   v13[2] = __46__KTVerifier_markFailureSeenForResults_error___block_invoke;
   v13[3] = &unk_1E8701E20;
   v13[4] = self;
-  v7 = v6;
+  v7 = resultsCopy;
   v14 = v7;
   v15 = &v16;
   v12[0] = MEMORY[0x1E69E9820];
@@ -2245,12 +2245,12 @@ uint64_t __51__KTVerifier_initiateQueryForUris_completionBlock___block_invoke_2(
   v12[4] = &v16;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v13 failureBlock:v12];
   v8 = v17;
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v8 = v17;
     }
   }
@@ -2324,9 +2324,9 @@ void __46__KTVerifier_markFailureSeenForResults_error___block_invoke_2_140(uint6
   }
 }
 
-- (BOOL)ignoreFailureForResults:(id)a3 error:(id *)a4
+- (BOOL)ignoreFailureForResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2338,7 +2338,7 @@ void __46__KTVerifier_markFailureSeenForResults_error___block_invoke_2_140(uint6
   v13[2] = __44__KTVerifier_ignoreFailureForResults_error___block_invoke;
   v13[3] = &unk_1E8701E20;
   v13[4] = self;
-  v7 = v6;
+  v7 = resultsCopy;
   v14 = v7;
   v15 = &v16;
   v12[0] = MEMORY[0x1E69E9820];
@@ -2348,12 +2348,12 @@ void __46__KTVerifier_markFailureSeenForResults_error___block_invoke_2_140(uint6
   v12[4] = &v16;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v13 failureBlock:v12];
   v8 = v17;
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v8 = v17;
     }
   }
@@ -2427,28 +2427,28 @@ void __44__KTVerifier_ignoreFailureForResults_error___block_invoke_2_144(uint64_
   }
 }
 
-+ (id)getUIStatusPriority:(unint64_t)a3
++ (id)getUIStatusPriority:(unint64_t)priority
 {
-  if (a3 > 0x11)
+  if (priority > 0x11)
   {
     return &unk_1F5C03D28;
   }
 
   else
   {
-    return qword_1E8701EB0[a3];
+    return qword_1E8701EB0[priority];
   }
 }
 
-- (unint64_t)getDisplayStatusForResults:(id)a3 isSelfOptedIn:(BOOL)a4
+- (unint64_t)getDisplayStatusForResults:(id)results isSelfOptedIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  resultsCopy = results;
+  v6 = resultsCopy;
+  if (inCopy)
   {
-    if ([v5 count])
+    if ([resultsCopy count])
     {
       v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
       v24 = 0u;
@@ -2500,21 +2500,21 @@ LABEL_20:
             _os_log_impl(&dword_1E10DB000, v20, OS_LOG_TYPE_INFO, "getDisplayStatusForResults, at least one user in a group message has all devices failing, return unavailable ignored", buf, 2u);
           }
 
-          v16 = 12;
+          unsignedIntValue2 = 12;
           goto LABEL_26;
         }
 
         v18 = [v14 objectAtIndexedSubscript:0];
-        v19 = [v18 unsignedIntValue];
+        unsignedIntValue = [v18 unsignedIntValue];
 
-        if (v19 == 15)
+        if (unsignedIntValue == 15)
         {
           goto LABEL_20;
         }
       }
 
       v21 = [v14 objectAtIndexedSubscript:{0, v24}];
-      v16 = [v21 unsignedIntValue];
+      unsignedIntValue2 = [v21 unsignedIntValue];
 
 LABEL_26:
       goto LABEL_27;
@@ -2532,18 +2532,18 @@ LABEL_26:
       _os_log_impl(&dword_1E10DB000, v17, OS_LOG_TYPE_ERROR, "Attempting to get display status for results, but no results were provided. Service is therefore unavailable.", buf, 2u);
     }
 
-    v16 = 0;
+    unsignedIntValue2 = 0;
   }
 
   else
   {
-    v16 = 1;
+    unsignedIntValue2 = 1;
   }
 
 LABEL_27:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v16;
+  return unsignedIntValue2;
 }
 
 uint64_t __55__KTVerifier_getDisplayStatusForResults_isSelfOptedIn___block_invoke()
@@ -2572,9 +2572,9 @@ uint64_t __55__KTVerifier_getDisplayStatusForResults_isSelfOptedIn___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)clearPeerCache:(id)a3 error:(id *)a4
+- (BOOL)clearPeerCache:(id)cache error:(id *)error
 {
-  v6 = a3;
+  cacheCopy = cache;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2585,9 +2585,9 @@ uint64_t __55__KTVerifier_getDisplayStatusForResults_isSelfOptedIn___block_invok
   v13[1] = 3221225472;
   v13[2] = __35__KTVerifier_clearPeerCache_error___block_invoke;
   v13[3] = &unk_1E8701E20;
-  v7 = v6;
+  v7 = cacheCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2596,12 +2596,12 @@ uint64_t __55__KTVerifier_getDisplayStatusForResults_isSelfOptedIn___block_invok
   v12[4] = &v17;
   [(KTVerifier *)self invokeXPCSynchronousCallWithBlock:v13 failureBlock:v12];
   v8 = v18;
-  if (a4)
+  if (error)
   {
     v9 = v18[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v8 = v18;
     }
   }

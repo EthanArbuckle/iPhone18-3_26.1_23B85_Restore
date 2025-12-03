@@ -1,9 +1,9 @@
 @interface ASDApp
-- (ASDApp)initWithBundleID:(id)a3;
-- (ASDApp)initWithCoder:(id)a3;
+- (ASDApp)initWithBundleID:(id)d;
+- (ASDApp)initWithCoder:(id)coder;
 - (ASDProgress)remoteProgress;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToApp:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToApp:(id)app;
 - (NSData)rawUpdateData;
 - (NSDate)updateInstallDate;
 - (NSDictionary)updateMetadata;
@@ -11,38 +11,38 @@
 - (NSProgress)installProgress;
 - (NSProgress)postProcessProgress;
 - (NSProgress)progress;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)_cachedOpenableStatus;
 - (uint64_t)_openableStatus;
 - (unint64_t)hash;
 - (void)_loadUpdateMetadataIfNecessary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadUpdateMetadataIfNecessary;
-- (void)setAutoUpdateEnabled:(BOOL)a3;
-- (void)setDownloadProgress:(id)a3;
-- (void)setHasPostProcessing:(BOOL)a3;
-- (void)setInstallProgress:(id)a3;
-- (void)setPostProcessProgress:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setRawUpdateData:(id)a3;
-- (void)setRemoteProgress:(id)a3;
-- (void)setUpdateInstallDate:(id)a3;
-- (void)setUpdateMetadata:(id)a3;
-- (void)updateCodedPropertiesFromApp:(id)a3;
+- (void)setAutoUpdateEnabled:(BOOL)enabled;
+- (void)setDownloadProgress:(id)progress;
+- (void)setHasPostProcessing:(BOOL)processing;
+- (void)setInstallProgress:(id)progress;
+- (void)setPostProcessProgress:(id)progress;
+- (void)setProgress:(id)progress;
+- (void)setRawUpdateData:(id)data;
+- (void)setRemoteProgress:(id)progress;
+- (void)setUpdateInstallDate:(id)date;
+- (void)setUpdateMetadata:(id)metadata;
+- (void)updateCodedPropertiesFromApp:(id)app;
 @end
 
 @implementation ASDApp
 
-- (ASDApp)initWithBundleID:(id)a3
+- (ASDApp)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ASDApp;
   v5 = [(ASDApp *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
@@ -58,26 +58,26 @@
 - (uint64_t)_cachedOpenableStatus
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v5 = 0;
     goto LABEL_11;
   }
 
-  v2 = [a1 executablePath];
-  v3 = v2;
-  if (v2 && [v2 length])
+  executablePath = [self executablePath];
+  v3 = executablePath;
+  if (executablePath && [executablePath length])
   {
-    v4 = [(ASDApp *)a1 _openableStatus];
-    if (v4 == 255)
+    _openableStatus = [(ASDApp *)self _openableStatus];
+    if (_openableStatus == 255)
     {
       v5 = [ASDAppLibrary openableStatusForExecutableAtPath:v3];
-      v8 = a1[2];
+      v8 = self[2];
       *v11 = MEMORY[0x1E69E9820];
       *&v11[8] = 3221225472;
       *&v11[16] = __29__ASDApp__setOpenableStatus___block_invoke;
       v12 = &unk_1E7CDBEE8;
-      v13 = a1;
+      selfCopy = self;
       v14 = v5;
       ASDWithLock(v8, v11);
       v6 = ASDLogHandleForCategory(13);
@@ -94,7 +94,7 @@
 
     else
     {
-      v5 = v4;
+      v5 = _openableStatus;
       v6 = ASDLogHandleForCategory(13);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
@@ -141,17 +141,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __22__ASDApp_setProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   ASDWithLock(propertyLock, v7);
 }
 
@@ -177,26 +177,26 @@ LABEL_11:
   return v3;
 }
 
-- (void)setDownloadProgress:(id)a3
+- (void)setDownloadProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__ASDApp_setDownloadProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   ASDWithLock(propertyLock, v7);
 }
 
-- (void)setHasPostProcessing:(BOOL)a3
+- (void)setHasPostProcessing:(BOOL)processing
 {
-  v3 = a3;
+  processingCopy = processing;
   v5 = [(ASDApp *)self status]& 0xFFFFFFFFFFFFDFFFLL;
   v6 = 0x2000;
-  if (!v3)
+  if (!processingCopy)
   {
     v6 = 0;
   }
@@ -226,17 +226,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setInstallProgress:(id)a3
+- (void)setInstallProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__ASDApp_setInstallProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   ASDWithLock(propertyLock, v7);
 }
 
@@ -262,17 +262,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPostProcessProgress:(id)a3
+- (void)setPostProcessProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__ASDApp_setPostProcessProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   ASDWithLock(propertyLock, v7);
 }
 
@@ -298,26 +298,26 @@ LABEL_11:
   return v3;
 }
 
-- (void)setRemoteProgress:(id)a3
+- (void)setRemoteProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__ASDApp_setRemoteProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   ASDWithLock(propertyLock, v7);
 }
 
-- (void)setAutoUpdateEnabled:(BOOL)a3
+- (void)setAutoUpdateEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [(ASDApp *)self status]& 0xFFFFFFFFFFFFBFFFLL;
   v6 = 0x4000;
-  if (!v3)
+  if (!enabledCopy)
   {
     v6 = 0;
   }
@@ -347,17 +347,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setUpdateInstallDate:(id)a3
+- (void)setUpdateInstallDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__ASDApp_setUpdateInstallDate___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   ASDWithLock(propertyLock, v7);
 }
 
@@ -394,51 +394,51 @@ void __24__ASDApp_updateMetadata__block_invoke(uint64_t a1)
 
 - (void)_loadUpdateMetadataIfNecessary
 {
-  if (a1 && !*(a1 + 80))
+  if (self && !*(self + 80))
   {
-    if ([*(a1 + 88) length])
+    if ([*(self + 88) length])
     {
-      v2 = [MEMORY[0x1E696ACB0] JSONObjectWithData:*(a1 + 88) options:0 error:0];
-      v3 = *(a1 + 80);
-      *(a1 + 80) = v2;
+      v2 = [MEMORY[0x1E696ACB0] JSONObjectWithData:*(self + 88) options:0 error:0];
+      v3 = *(self + 80);
+      *(self + 80) = v2;
 
       MEMORY[0x1EEE66BB8]();
     }
 
-    else if ((*(a1 + 8) & 1) == 0 && *(a1 + 104))
+    else if ((*(self + 8) & 1) == 0 && *(self + 104))
     {
-      *(a1 + 8) = 1;
+      *(self + 8) = 1;
       v4 = +[ASDServiceBroker defaultBroker];
       v5 = [v4 getUpdatesServiceWithError:0];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __40__ASDApp__loadUpdateMetadataIfNecessary__block_invoke;
       v9[3] = &unk_1E7CDB980;
-      v9[4] = a1;
+      v9[4] = self;
       v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
 
-      v7 = *(a1 + 104);
+      v7 = *(self + 104);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __40__ASDApp__loadUpdateMetadataIfNecessary__block_invoke_4;
       v8[3] = &unk_1E7CDCC20;
-      v8[4] = a1;
+      v8[4] = self;
       [v6 getUpdateMetadataForBundleID:v7 withReplyHandler:v8];
     }
   }
 }
 
-- (void)setUpdateMetadata:(id)a3
+- (void)setUpdateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__ASDApp_setUpdateMetadata___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   ASDWithLock(propertyLock, v7);
 }
 
@@ -464,23 +464,23 @@ void __24__ASDApp_updateMetadata__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setRawUpdateData:(id)a3
+- (void)setRawUpdateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   propertyLock = self->_propertyLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27__ASDApp_setRawUpdateData___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   ASDWithLock(propertyLock, v7);
 }
 
 - (uint64_t)_openableStatus
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -489,12 +489,12 @@ void __24__ASDApp_updateMetadata__block_invoke(uint64_t a1)
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = -1;
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __25__ASDApp__openableStatus__block_invoke;
   v4[3] = &unk_1E7CDB840;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
   ASDWithLock(v1, v4);
   v2 = *(v6 + 24);
@@ -545,11 +545,11 @@ void __40__ASDApp__loadUpdateMetadataIfNecessary__block_invoke_4(uint64_t a1, vo
   }
 }
 
-- (void)updateCodedPropertiesFromApp:(id)a3
+- (void)updateCodedPropertiesFromApp:(id)app
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  appCopy = app;
+  v5 = appCopy;
+  if (appCopy != self)
   {
     propertyLock = self->_propertyLock;
     v7[0] = MEMORY[0x1E69E9820];
@@ -557,7 +557,7 @@ void __40__ASDApp__loadUpdateMetadataIfNecessary__block_invoke_4(uint64_t a1, vo
     v7[2] = __39__ASDApp_updateCodedPropertiesFromApp___block_invoke;
     v7[3] = &unk_1E7CDB868;
     v7[4] = self;
-    v8 = v4;
+    v8 = appCopy;
     ASDWithLock(propertyLock, v7);
   }
 }
@@ -640,8 +640,8 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:14];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(ASDApp *)self bundleID];
-  v6 = [v4 stringWithFormat:@"bundleID = %@", v5];
+  bundleID = [(ASDApp *)self bundleID];
+  v6 = [v4 stringWithFormat:@"bundleID = %@", bundleID];
   [v3 addObject:v6];
 
   if ([(ASDApp *)self hasUnknownDistributor])
@@ -655,13 +655,13 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"storeItemID = %lld", -[ASDApp storeItemID](self, "storeItemID")];
     [v3 addObject:v8];
 
-    v9 = [(ASDApp *)self storeCohort];
+    storeCohort = [(ASDApp *)self storeCohort];
 
-    if (v9)
+    if (storeCohort)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(ASDApp *)self storeCohort];
-      v12 = [v10 stringWithFormat:@"storeCohort = %@", v11];
+      storeCohort2 = [(ASDApp *)self storeCohort];
+      v12 = [v10 stringWithFormat:@"storeCohort = %@", storeCohort2];
       [v3 addObject:v12];
     }
 
@@ -671,9 +671,9 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
     if (![(ASDApp *)self isBetaApp]&& ![(ASDApp *)self isSystemApp])
     {
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [(ASDApp *)self isUpdateAvailable];
+      isUpdateAvailable = [(ASDApp *)self isUpdateAvailable];
       v16 = @"NO";
-      if (v15)
+      if (isUpdateAvailable)
       {
         v16 = @"YES";
       }
@@ -683,30 +683,30 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
     }
   }
 
-  v18 = [(ASDApp *)self progress];
-  v19 = v18;
-  if (v18)
+  progress = [(ASDApp *)self progress];
+  v19 = progress;
+  if (progress)
   {
     v20 = MEMORY[0x1E696AEC0];
-    [v18 fractionCompleted];
+    [progress fractionCompleted];
     v22 = [v20 stringWithFormat:@"fractionCompleted = %.2f", v21];
     [v3 addObject:v22];
   }
 
   else
   {
-    v23 = [(ASDApp *)self remoteProgress];
-    v22 = v23;
-    if (v23)
+    remoteProgress = [(ASDApp *)self remoteProgress];
+    v22 = remoteProgress;
+    if (remoteProgress)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"completedUnitCount = %lld", objc_msgSend(v23, "completedUnitCount")];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"completedUnitCount = %lld", objc_msgSend(remoteProgress, "completedUnitCount")];
       [v3 addObject:v24];
     }
   }
 
   v25 = MEMORY[0x1E696AEC0];
-  v26 = [(ASDApp *)self bundlePath];
-  v27 = [v25 stringWithFormat:@"path = %@", v26];
+  bundlePath = [(ASDApp *)self bundlePath];
+  v27 = [v25 stringWithFormat:@"path = %@", bundlePath];
   [v3 addObject:v27];
 
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"installed = %d", -[ASDApp isInstalled](self, "isInstalled")];
@@ -715,15 +715,15 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
   if ([(ASDApp *)self isOcelot])
   {
     [v3 addObject:@"ocelot = 1"];
-    v29 = [(ASDApp *)self _openableStatus];
-    if (v29 == 255)
+    _openableStatus = [(ASDApp *)self _openableStatus];
+    if (_openableStatus == 255)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"arcadeOpenable = ?", v43];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"arcadeOpenable = %d", v29 & 1];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"arcadeOpenable = %d", _openableStatus & 1];
     }
     v30 = ;
     [v3 addObject:v30];
@@ -740,13 +740,13 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
     [v3 addObject:v31];
   }
 
-  v32 = [(ASDApp *)self installError];
+  installError = [(ASDApp *)self installError];
 
-  if (v32)
+  if (installError)
   {
     v33 = MEMORY[0x1E696AEC0];
-    v34 = [(ASDApp *)self installError];
-    v35 = [v33 stringWithFormat:@"installError = %@", v34];
+    installError2 = [(ASDApp *)self installError];
+    v35 = [v33 stringWithFormat:@"installError = %@", installError2];
     [v3 addObject:v35];
   }
 
@@ -774,16 +774,16 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(ASDApp *)self bundleID];
-  v3 = [v2 hash];
+  bundleID = [(ASDApp *)self bundleID];
+  v3 = [bundleID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -791,79 +791,79 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASDApp *)self isEqualToApp:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASDApp *)self isEqualToApp:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToApp:(id)a3
+- (BOOL)isEqualToApp:(id)app
 {
-  v4 = a3;
-  v5 = [(ASDApp *)self artistName];
-  v6 = [v4 artistName];
-  if (v5 == v6 || [v5 isEqual:v6])
+  appCopy = app;
+  artistName = [(ASDApp *)self artistName];
+  artistName2 = [appCopy artistName];
+  if (artistName == artistName2 || [artistName isEqual:artistName2])
   {
-    v7 = [(ASDApp *)self bundleID];
-    v8 = [v4 bundleID];
-    if ((v7 == v8 || [v7 isEqual:v8]) && (v9 = -[ASDApp extensions](self, "extensions"), v9 == objc_msgSend(v4, "extensions")) && (v10 = -[ASDApp status](self, "status"), v10 == objc_msgSend(v4, "status")))
+    bundleID = [(ASDApp *)self bundleID];
+    bundleID2 = [appCopy bundleID];
+    if ((bundleID == bundleID2 || [bundleID isEqual:bundleID2]) && (v9 = -[ASDApp extensions](self, "extensions"), v9 == objc_msgSend(appCopy, "extensions")) && (v10 = -[ASDApp status](self, "status"), v10 == objc_msgSend(appCopy, "status")))
     {
-      v11 = [(ASDApp *)self installError];
-      v12 = [v4 installError];
-      if (v11 == v12 || [v11 isEqual:v12])
+      installError = [(ASDApp *)self installError];
+      installError2 = [appCopy installError];
+      if (installError == installError2 || [installError isEqual:installError2])
       {
-        v13 = [(ASDApp *)self bundlePath];
-        v14 = [v4 bundlePath];
-        if (v13 == v14 || [v13 isEqual:v14])
+        bundlePath = [(ASDApp *)self bundlePath];
+        bundlePath2 = [appCopy bundlePath];
+        if (bundlePath == bundlePath2 || [bundlePath isEqual:bundlePath2])
         {
-          v49 = v11;
-          v50 = v14;
-          v15 = [(ASDApp *)self bundleShortVersion];
-          v16 = [v4 bundleShortVersion];
-          v48 = v15;
-          if (v15 == v16 || [v15 isEqual:v16])
+          v49 = installError;
+          v50 = bundlePath2;
+          bundleShortVersion = [(ASDApp *)self bundleShortVersion];
+          bundleShortVersion2 = [appCopy bundleShortVersion];
+          v48 = bundleShortVersion;
+          if (bundleShortVersion == bundleShortVersion2 || [bundleShortVersion isEqual:bundleShortVersion2])
           {
-            v46 = v12;
-            v47 = v16;
-            v17 = [(ASDApp *)self bundleVersion];
-            v18 = [v4 bundleVersion];
-            if (v17 == v18 || [v17 isEqual:v18])
+            v46 = installError2;
+            v47 = bundleShortVersion2;
+            bundleVersion = [(ASDApp *)self bundleVersion];
+            bundleVersion2 = [appCopy bundleVersion];
+            if (bundleVersion == bundleVersion2 || [bundleVersion isEqual:bundleVersion2])
             {
-              v19 = v13;
-              v45 = v18;
-              v20 = [(ASDApp *)self executablePath];
-              v21 = [v4 executablePath];
-              v44 = v20;
-              if (v20 == v21 || [v20 isEqual:v21])
+              v19 = bundlePath;
+              v45 = bundleVersion2;
+              executablePath = [(ASDApp *)self executablePath];
+              executablePath2 = [appCopy executablePath];
+              v44 = executablePath;
+              if (executablePath == executablePath2 || [executablePath isEqual:executablePath2])
               {
-                v42 = v21;
+                v42 = executablePath2;
                 v43 = v19;
-                v22 = [(ASDApp *)self storeExternalVersionID];
-                if (v22 == [v4 storeExternalVersionID])
+                storeExternalVersionID = [(ASDApp *)self storeExternalVersionID];
+                if (storeExternalVersionID == [appCopy storeExternalVersionID])
                 {
-                  v23 = [(ASDApp *)self storeCohort];
-                  v24 = [v4 storeCohort];
-                  if (v23 == v24 || [v23 isEqual:v24])
+                  storeCohort = [(ASDApp *)self storeCohort];
+                  storeCohort2 = [appCopy storeCohort];
+                  if (storeCohort == storeCohort2 || [storeCohort isEqual:storeCohort2])
                   {
-                    v41 = v24;
-                    v25 = [(ASDApp *)self storeFront];
-                    v26 = [v4 storeFront];
-                    v40 = v26;
-                    if (v25 == v26 || [v25 isEqual:v26])
+                    v41 = storeCohort2;
+                    storeFront = [(ASDApp *)self storeFront];
+                    storeFront2 = [appCopy storeFront];
+                    v40 = storeFront2;
+                    if (storeFront == storeFront2 || [storeFront isEqual:storeFront2])
                     {
-                      v38 = v25;
-                      v39 = v23;
-                      v27 = [(ASDApp *)self storeItemID];
-                      if (v27 == [v4 storeItemID] && (v28 = -[ASDApp downloaderDSID](self, "downloaderDSID"), v28 == objc_msgSend(v4, "downloaderDSID")) && (v29 = -[ASDApp familyID](self, "familyID"), v29 == objc_msgSend(v4, "familyID")) && (v30 = -[ASDApp purchaserDSID](self, "purchaserDSID"), v30 == objc_msgSend(v4, "purchaserDSID")))
+                      v38 = storeFront;
+                      v39 = storeCohort;
+                      storeItemID = [(ASDApp *)self storeItemID];
+                      if (storeItemID == [appCopy storeItemID] && (v28 = -[ASDApp downloaderDSID](self, "downloaderDSID"), v28 == objc_msgSend(appCopy, "downloaderDSID")) && (v29 = -[ASDApp familyID](self, "familyID"), v29 == objc_msgSend(appCopy, "familyID")) && (v30 = -[ASDApp purchaserDSID](self, "purchaserDSID"), v30 == objc_msgSend(appCopy, "purchaserDSID")))
                       {
-                        v31 = [(ASDApp *)self updateBuyParams];
-                        v32 = [v4 updateBuyParams];
-                        if (v31 == v32 || [v31 isEqual:v32])
+                        updateBuyParams = [(ASDApp *)self updateBuyParams];
+                        updateBuyParams2 = [appCopy updateBuyParams];
+                        if (updateBuyParams == updateBuyParams2 || [updateBuyParams isEqual:updateBuyParams2])
                         {
-                          v33 = v32;
-                          v34 = [(ASDApp *)self watchApplicationMode];
-                          v35 = v34 == [v4 watchApplicationMode];
-                          v32 = v33;
+                          v33 = updateBuyParams2;
+                          watchApplicationMode = [(ASDApp *)self watchApplicationMode];
+                          v35 = watchApplicationMode == [appCopy watchApplicationMode];
+                          updateBuyParams2 = v33;
                           v36 = v35;
                         }
 
@@ -879,8 +879,8 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
                       }
 
                       v19 = v43;
-                      v25 = v38;
-                      v23 = v39;
+                      storeFront = v38;
+                      storeCohort = v39;
                     }
 
                     else
@@ -888,7 +888,7 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
                       v36 = 0;
                     }
 
-                    v24 = v41;
+                    storeCohort2 = v41;
                   }
 
                   else
@@ -902,7 +902,7 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
                   v36 = 0;
                 }
 
-                v21 = v42;
+                executablePath2 = v42;
               }
 
               else
@@ -910,8 +910,8 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
                 v36 = 0;
               }
 
-              v18 = v45;
-              v13 = v19;
+              bundleVersion2 = v45;
+              bundlePath = v19;
             }
 
             else
@@ -919,8 +919,8 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
               v36 = 0;
             }
 
-            v12 = v46;
-            v16 = v47;
+            installError2 = v46;
+            bundleShortVersion2 = v47;
           }
 
           else
@@ -928,8 +928,8 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
             v36 = 0;
           }
 
-          v14 = v50;
-          v11 = v49;
+          bundlePath2 = v50;
+          installError = v49;
         }
 
         else
@@ -958,185 +958,185 @@ uint64_t __39__ASDApp_updateCodedPropertiesFromApp___block_invoke(uint64_t a1)
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [ASDApp allocWithZone:?];
-  v6 = [(ASDApp *)self bundleID];
-  v7 = [(ASDApp *)v5 initWithBundleID:v6];
+  bundleID = [(ASDApp *)self bundleID];
+  v7 = [(ASDApp *)v5 initWithBundleID:bundleID];
 
-  v8 = [(ASDApp *)self artistName];
-  v9 = [v8 copyWithZone:a3];
+  artistName = [(ASDApp *)self artistName];
+  v9 = [artistName copyWithZone:zone];
   [(ASDApp *)v7 setArtistName:v9];
 
   [(ASDApp *)v7 setExtensions:[(ASDApp *)self extensions]];
   [(ASDApp *)v7 setStatus:[(ASDApp *)self status]];
-  v10 = [(ASDApp *)self installError];
-  [(ASDApp *)v7 setInstallError:v10];
+  installError = [(ASDApp *)self installError];
+  [(ASDApp *)v7 setInstallError:installError];
 
-  v11 = [(ASDApp *)self bundlePath];
-  v12 = [v11 copyWithZone:a3];
+  bundlePath = [(ASDApp *)self bundlePath];
+  v12 = [bundlePath copyWithZone:zone];
   [(ASDApp *)v7 setBundlePath:v12];
 
-  v13 = [(ASDApp *)self bundleShortVersion];
-  v14 = [v13 copyWithZone:a3];
+  bundleShortVersion = [(ASDApp *)self bundleShortVersion];
+  v14 = [bundleShortVersion copyWithZone:zone];
   [(ASDApp *)v7 setBundleShortVersion:v14];
 
-  v15 = [(ASDApp *)self bundleVersion];
-  v16 = [v15 copyWithZone:a3];
+  bundleVersion = [(ASDApp *)self bundleVersion];
+  v16 = [bundleVersion copyWithZone:zone];
   [(ASDApp *)v7 setBundleVersion:v16];
 
-  v17 = [(ASDApp *)self executablePath];
-  v18 = [v17 copyWithZone:a3];
+  executablePath = [(ASDApp *)self executablePath];
+  v18 = [executablePath copyWithZone:zone];
   [(ASDApp *)v7 setExecutablePath:v18];
 
   [(ASDApp *)v7 setStoreExternalVersionID:[(ASDApp *)self storeExternalVersionID]];
   [(ASDApp *)v7 setStoreItemID:[(ASDApp *)self storeItemID]];
-  v19 = [(ASDApp *)self storeCohort];
-  v20 = [v19 copyWithZone:a3];
+  storeCohort = [(ASDApp *)self storeCohort];
+  v20 = [storeCohort copyWithZone:zone];
   [(ASDApp *)v7 setStoreCohort:v20];
 
-  v21 = [(ASDApp *)self storeFront];
-  v22 = [v21 copyWithZone:a3];
+  storeFront = [(ASDApp *)self storeFront];
+  v22 = [storeFront copyWithZone:zone];
   [(ASDApp *)v7 setStoreFront:v22];
 
   [(ASDApp *)v7 setDownloaderDSID:[(ASDApp *)self downloaderDSID]];
   [(ASDApp *)v7 setFamilyID:[(ASDApp *)self familyID]];
   [(ASDApp *)v7 setPurchaserDSID:[(ASDApp *)self purchaserDSID]];
-  v23 = [(ASDApp *)self remoteProgress];
-  v24 = [v23 copyWithZone:a3];
+  remoteProgress = [(ASDApp *)self remoteProgress];
+  v24 = [remoteProgress copyWithZone:zone];
   [(ASDApp *)v7 setRemoteProgress:v24];
 
-  v25 = [(ASDApp *)self updateBuyParams];
-  v26 = [v25 copyWithZone:a3];
+  updateBuyParams = [(ASDApp *)self updateBuyParams];
+  v26 = [updateBuyParams copyWithZone:zone];
   [(ASDApp *)v7 setUpdateBuyParams:v26];
 
   [(ASDApp *)v7 setWatchApplicationMode:[(ASDApp *)self watchApplicationMode]];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  v4 = [(ASDApp *)self artistName];
-  [v18 encodeObject:v4 forKey:@"A"];
+  coderCopy = coder;
+  artistName = [(ASDApp *)self artistName];
+  [coderCopy encodeObject:artistName forKey:@"A"];
 
-  v5 = [(ASDApp *)self bundleID];
-  [v18 encodeObject:v5 forKey:@"B"];
+  bundleID = [(ASDApp *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"B"];
 
-  [v18 encodeInteger:-[ASDApp extensions](self forKey:{"extensions"), @"G"}];
-  [v18 encodeInteger:-[ASDApp status](self forKey:{"status"), @"L"}];
-  v6 = [(ASDApp *)self installError];
-  v7 = v6;
-  if (v6)
+  [coderCopy encodeInteger:-[ASDApp extensions](self forKey:{"extensions"), @"G"}];
+  [coderCopy encodeInteger:-[ASDApp status](self forKey:{"status"), @"L"}];
+  installError = [(ASDApp *)self installError];
+  v7 = installError;
+  if (installError)
   {
-    v8 = ASDErrorWithSafeUserInfo(v6);
-    [v18 encodeObject:v8 forKey:@"S"];
+    v8 = ASDErrorWithSafeUserInfo(installError);
+    [coderCopy encodeObject:v8 forKey:@"S"];
   }
 
-  v9 = [(ASDApp *)self bundlePath];
-  [v18 encodeObject:v9 forKey:@"C"];
+  bundlePath = [(ASDApp *)self bundlePath];
+  [coderCopy encodeObject:bundlePath forKey:@"C"];
 
-  v10 = [(ASDApp *)self bundleShortVersion];
-  [v18 encodeObject:v10 forKey:@"D"];
+  bundleShortVersion = [(ASDApp *)self bundleShortVersion];
+  [coderCopy encodeObject:bundleShortVersion forKey:@"D"];
 
-  v11 = [(ASDApp *)self bundleVersion];
-  [v18 encodeObject:v11 forKey:@"E"];
+  bundleVersion = [(ASDApp *)self bundleVersion];
+  [coderCopy encodeObject:bundleVersion forKey:@"E"];
 
-  v12 = [(ASDApp *)self executablePath];
-  [v18 encodeObject:v12 forKey:@"T"];
+  executablePath = [(ASDApp *)self executablePath];
+  [coderCopy encodeObject:executablePath forKey:@"T"];
 
-  v13 = [(ASDApp *)self localizedName];
-  [v18 encodeObject:v13 forKey:@"I"];
+  localizedName = [(ASDApp *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"I"];
 
-  [v18 encodeInt64:-[ASDApp storeExternalVersionID](self forKey:{"storeExternalVersionID"), @"O"}];
-  [v18 encodeInt64:-[ASDApp storeItemID](self forKey:{"storeItemID"), @"P"}];
-  v14 = [(ASDApp *)self storeCohort];
-  [v18 encodeObject:v14 forKey:@"M"];
+  [coderCopy encodeInt64:-[ASDApp storeExternalVersionID](self forKey:{"storeExternalVersionID"), @"O"}];
+  [coderCopy encodeInt64:-[ASDApp storeItemID](self forKey:{"storeItemID"), @"P"}];
+  storeCohort = [(ASDApp *)self storeCohort];
+  [coderCopy encodeObject:storeCohort forKey:@"M"];
 
-  v15 = [(ASDApp *)self storeFront];
-  [v18 encodeObject:v15 forKey:@"N"];
+  storeFront = [(ASDApp *)self storeFront];
+  [coderCopy encodeObject:storeFront forKey:@"N"];
 
-  [v18 encodeInt64:-[ASDApp downloaderDSID](self forKey:{"downloaderDSID"), @"F"}];
-  [v18 encodeInt64:-[ASDApp familyID](self forKey:{"familyID"), @"H"}];
-  [v18 encodeInt64:-[ASDApp purchaserDSID](self forKey:{"purchaserDSID"), @"J"}];
-  v16 = [(ASDApp *)self remoteProgress];
-  [v18 encodeObject:v16 forKey:@"K"];
+  [coderCopy encodeInt64:-[ASDApp downloaderDSID](self forKey:{"downloaderDSID"), @"F"}];
+  [coderCopy encodeInt64:-[ASDApp familyID](self forKey:{"familyID"), @"H"}];
+  [coderCopy encodeInt64:-[ASDApp purchaserDSID](self forKey:{"purchaserDSID"), @"J"}];
+  remoteProgress = [(ASDApp *)self remoteProgress];
+  [coderCopy encodeObject:remoteProgress forKey:@"K"];
 
-  v17 = [(ASDApp *)self updateBuyParams];
-  [v18 encodeObject:v17 forKey:@"Q"];
+  updateBuyParams = [(ASDApp *)self updateBuyParams];
+  [coderCopy encodeObject:updateBuyParams forKey:@"Q"];
 
-  [v18 encodeObject:self->_updateInstallDate forKey:@"W"];
-  [v18 encodeObject:self->_rawUpdateData forKey:@"V"];
-  [v18 encodeInteger:-[ASDApp watchApplicationMode](self forKey:{"watchApplicationMode"), @"R"}];
+  [coderCopy encodeObject:self->_updateInstallDate forKey:@"W"];
+  [coderCopy encodeObject:self->_rawUpdateData forKey:@"V"];
+  [coderCopy encodeInteger:-[ASDApp watchApplicationMode](self forKey:{"watchApplicationMode"), @"R"}];
 }
 
-- (ASDApp)initWithCoder:(id)a3
+- (ASDApp)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"B"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"B"];
   v6 = [(ASDApp *)self initWithBundleID:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"A"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"A"];
     artistName = v6->_artistName;
     v6->_artistName = v7;
 
-    v6->_extensions = [v4 decodeIntegerForKey:@"G"];
-    v6->_status = [v4 decodeIntegerForKey:@"L"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"S"];
+    v6->_extensions = [coderCopy decodeIntegerForKey:@"G"];
+    v6->_status = [coderCopy decodeIntegerForKey:@"L"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"S"];
     installError = v6->_installError;
     v6->_installError = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"C"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"C"];
     bundlePath = v6->_bundlePath;
     v6->_bundlePath = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"D"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"D"];
     bundleShortVersion = v6->_bundleShortVersion;
     v6->_bundleShortVersion = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"E"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"E"];
     bundleVersion = v6->_bundleVersion;
     v6->_bundleVersion = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"T"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"T"];
     executablePath = v6->_executablePath;
     v6->_executablePath = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"I"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"I"];
     localizedName = v6->_localizedName;
     v6->_localizedName = v19;
 
-    v6->_storeExternalVersionID = [v4 decodeInt64ForKey:@"O"];
-    v6->_storeItemID = [v4 decodeInt64ForKey:@"P"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"M"];
+    v6->_storeExternalVersionID = [coderCopy decodeInt64ForKey:@"O"];
+    v6->_storeItemID = [coderCopy decodeInt64ForKey:@"P"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"M"];
     storeCohort = v6->_storeCohort;
     v6->_storeCohort = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"N"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"N"];
     storeFront = v6->_storeFront;
     v6->_storeFront = v23;
 
-    v6->_downloaderDSID = [v4 decodeInt64ForKey:@"F"];
-    v6->_familyID = [v4 decodeInt64ForKey:@"H"];
-    v6->_purchaserDSID = [v4 decodeInt64ForKey:@"J"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"K"];
+    v6->_downloaderDSID = [coderCopy decodeInt64ForKey:@"F"];
+    v6->_familyID = [coderCopy decodeInt64ForKey:@"H"];
+    v6->_purchaserDSID = [coderCopy decodeInt64ForKey:@"J"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"K"];
     remoteProgress = v6->_remoteProgress;
     v6->_remoteProgress = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Q"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Q"];
     updateBuyParams = v6->_updateBuyParams;
     v6->_updateBuyParams = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"W"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"W"];
     updateInstallDate = v6->_updateInstallDate;
     v6->_updateInstallDate = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"V"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"V"];
     rawUpdateData = v6->_rawUpdateData;
     v6->_rawUpdateData = v31;
 
-    v6->_watchApplicationMode = [v4 decodeIntegerForKey:@"R"];
+    v6->_watchApplicationMode = [coderCopy decodeIntegerForKey:@"R"];
   }
 
   return v6;

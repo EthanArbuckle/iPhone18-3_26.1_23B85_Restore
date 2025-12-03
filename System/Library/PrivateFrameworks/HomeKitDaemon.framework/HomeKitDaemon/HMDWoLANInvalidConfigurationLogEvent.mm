@@ -1,6 +1,6 @@
 @interface HMDWoLANInvalidConfigurationLogEvent
-- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)a3;
-- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)a3 maxSupportedWoLANVersion:(id)a4 wolanVersion:(id)a5;
+- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)accessory;
+- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)accessory maxSupportedWoLANVersion:(id)version wolanVersion:(id)wolanVersion;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)description;
 @end
@@ -9,17 +9,17 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDWoLANInvalidConfigurationLogEvent logType](self, "logType")}];
-  [v3 setObject:v4 forKeyedSubscript:@"logType"];
+  [dictionary setObject:v4 forKeyedSubscript:@"logType"];
 
-  v5 = [(HMDWoLANInvalidConfigurationLogEvent *)self wolanVersion];
-  [v3 setObject:v5 forKeyedSubscript:@"wolanVersion"];
+  wolanVersion = [(HMDWoLANInvalidConfigurationLogEvent *)self wolanVersion];
+  [dictionary setObject:wolanVersion forKeyedSubscript:@"wolanVersion"];
 
-  v6 = [(HMDWoLANInvalidConfigurationLogEvent *)self maxSupportedWoLANVersion];
-  [v3 setObject:v6 forKeyedSubscript:@"maxSupportedWoLANVersion"];
+  maxSupportedWoLANVersion = [(HMDWoLANInvalidConfigurationLogEvent *)self maxSupportedWoLANVersion];
+  [dictionary setObject:maxSupportedWoLANVersion forKeyedSubscript:@"maxSupportedWoLANVersion"];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
@@ -27,47 +27,47 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDWoLANInvalidConfigurationLogEvent *)self logType];
-  v5 = [(HMDWoLANInvalidConfigurationLogEvent *)self wolanVersion];
-  v6 = [(HMDWoLANInvalidConfigurationLogEvent *)self maxSupportedWoLANVersion];
-  v7 = [v3 stringWithFormat:@"HMDWoLANInvalidConfigurationLogEvent - Log Type: %ld, wolanVersion: %@, maxSupportedWoLANVersion: %@", v4, v5, v6];
+  logType = [(HMDWoLANInvalidConfigurationLogEvent *)self logType];
+  wolanVersion = [(HMDWoLANInvalidConfigurationLogEvent *)self wolanVersion];
+  maxSupportedWoLANVersion = [(HMDWoLANInvalidConfigurationLogEvent *)self maxSupportedWoLANVersion];
+  v7 = [v3 stringWithFormat:@"HMDWoLANInvalidConfigurationLogEvent - Log Type: %ld, wolanVersion: %@, maxSupportedWoLANVersion: %@", logType, wolanVersion, maxSupportedWoLANVersion];
 
   return v7;
 }
 
-- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)a3 maxSupportedWoLANVersion:(id)a4 wolanVersion:(id)a5
+- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)accessory maxSupportedWoLANVersion:(id)version wolanVersion:(id)wolanVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  versionCopy = version;
+  wolanVersionCopy = wolanVersion;
   v15.receiver = self;
   v15.super_class = HMDWoLANInvalidConfigurationLogEvent;
   v11 = [(HMMLogEvent *)&v15 init];
   if (v11)
   {
-    v12 = [v8 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v11->_accessoryIdentifier;
-    v11->_accessoryIdentifier = v12;
+    v11->_accessoryIdentifier = identifier;
 
     v11->_logType = 1;
-    objc_storeStrong(&v11->_wolanVersion, a5);
-    objc_storeStrong(&v11->_maxSupportedWoLANVersion, a4);
+    objc_storeStrong(&v11->_wolanVersion, wolanVersion);
+    objc_storeStrong(&v11->_maxSupportedWoLANVersion, version);
   }
 
   return v11;
 }
 
-- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)a3
+- (HMDWoLANInvalidConfigurationLogEvent)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = HMDWoLANInvalidConfigurationLogEvent;
   v5 = [(HMMLogEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v5->_accessoryIdentifier;
-    v5->_accessoryIdentifier = v6;
+    v5->_accessoryIdentifier = identifier;
 
     v5->_logType = 0;
   }

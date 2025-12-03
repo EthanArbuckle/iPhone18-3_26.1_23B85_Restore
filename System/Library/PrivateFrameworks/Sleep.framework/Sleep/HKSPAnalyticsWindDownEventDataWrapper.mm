@@ -1,30 +1,30 @@
 @interface HKSPAnalyticsWindDownEventDataWrapper
-- (HKSPAnalyticsWindDownEventDataWrapper)initWithCoder:(id)a3;
-- (HKSPAnalyticsWindDownEventDataWrapper)initWithEventDatums:(id)a3;
+- (HKSPAnalyticsWindDownEventDataWrapper)initWithCoder:(id)coder;
+- (HKSPAnalyticsWindDownEventDataWrapper)initWithEventDatums:(id)datums;
 @end
 
 @implementation HKSPAnalyticsWindDownEventDataWrapper
 
-- (HKSPAnalyticsWindDownEventDataWrapper)initWithEventDatums:(id)a3
+- (HKSPAnalyticsWindDownEventDataWrapper)initWithEventDatums:(id)datums
 {
-  v5 = a3;
+  datumsCopy = datums;
   v10.receiver = self;
   v10.super_class = HKSPAnalyticsWindDownEventDataWrapper;
   v6 = [(HKSPAnalyticsWindDownEventDataWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventDatums, a3);
+    objc_storeStrong(&v6->_eventDatums, datums);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (HKSPAnalyticsWindDownEventDataWrapper)initWithCoder:(id)a3
+- (HKSPAnalyticsWindDownEventDataWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"WindDownEvents"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"WindDownEvents"];
 
   v6 = [(HKSPAnalyticsWindDownEventDataWrapper *)self initWithEventDatums:v5];
   return v6;

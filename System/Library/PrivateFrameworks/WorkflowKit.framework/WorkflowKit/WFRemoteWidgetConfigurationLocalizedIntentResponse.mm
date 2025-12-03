@@ -1,26 +1,26 @@
 @interface WFRemoteWidgetConfigurationLocalizedIntentResponse
 - (INIntent)localizedIntent;
-- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithLocalizedIntentRepresentation:(id)a3 languageCode:(id)a4 error:(id)a5;
+- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithLocalizedIntentRepresentation:(id)representation languageCode:(id)code error:(id)error;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFRemoteWidgetConfigurationLocalizedIntentResponse
 
-- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationLocalizedIntentResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedIntentData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedIntentData"];
     localizedIntentData = v5->_localizedIntentData;
     v5->_localizedIntentData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"languageCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"languageCode"];
     languageCode = v5->_languageCode;
     v5->_languageCode = v8;
 
@@ -30,20 +30,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedIntentData = self->_localizedIntentData;
-  v5 = a3;
-  [v5 encodeObject:localizedIntentData forKey:@"localizedIntentData"];
-  [v5 encodeObject:self->_languageCode forKey:@"languageCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedIntentData forKey:@"localizedIntentData"];
+  [coderCopy encodeObject:self->_languageCode forKey:@"languageCode"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntent];
-  v5 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v6 = [v3 stringWithFormat:@"localizedIntent: %@, error: %@", v4, v5];
+  localizedIntent = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntent];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v6 = [v3 stringWithFormat:@"localizedIntent: %@, error: %@", localizedIntent, error];
 
   return v6;
 }
@@ -59,12 +59,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntentData];
+  localizedIntentData = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntentData];
 
-  if (v4)
+  if (localizedIntentData)
   {
     v18 = 0;
-    v5 = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntentData];
+    localizedIntentData2 = [(WFRemoteWidgetConfigurationLocalizedIntentResponse *)self localizedIntentData];
     v6 = OPACKDecodeData();
 
     v17 = 0;
@@ -119,20 +119,20 @@ LABEL_13:
   return v13;
 }
 
-- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithLocalizedIntentRepresentation:(id)a3 languageCode:(id)a4 error:(id)a5
+- (WFRemoteWidgetConfigurationLocalizedIntentResponse)initWithLocalizedIntentRepresentation:(id)representation languageCode:(id)code error:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  representationCopy = representation;
+  codeCopy = code;
   v21.receiver = self;
   v21.super_class = WFRemoteWidgetConfigurationLocalizedIntentResponse;
-  v10 = [(WFRemoteWidgetConfigurationResponse *)&v21 initWithError:a5];
+  v10 = [(WFRemoteWidgetConfigurationResponse *)&v21 initWithError:error];
   if (v10)
   {
-    if (v8)
+    if (representationCopy)
     {
       v20 = 0;
-      v11 = MEMORY[0x1CCAA2D90](v8, 0, &v20);
+      v11 = MEMORY[0x1CCAA2D90](representationCopy, 0, &v20);
       localizedIntentData = v10->_localizedIntentData;
       v10->_localizedIntentData = v11;
 
@@ -167,7 +167,7 @@ LABEL_13:
       v10->_localizedIntentData = 0;
     }
 
-    objc_storeStrong(&v10->_languageCode, a4);
+    objc_storeStrong(&v10->_languageCode, code);
     v15 = v10;
     goto LABEL_12;
   }

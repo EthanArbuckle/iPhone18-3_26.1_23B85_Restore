@@ -1,6 +1,6 @@
 @interface CSShieldConnectionManager
 + (BOOL)isMusicApplicationInstalled;
-+ (id)appendSingSessionTypeToMusicURL:(id)a3;
++ (id)appendSingSessionTypeToMusicURL:(id)l;
 + (id)sharedManager;
 - (CSShieldConnectionManager)init;
 - (MRGroupSessionToken)token;
@@ -8,55 +8,55 @@
 - (id)musicTokenURL;
 - (id)observersCopy;
 - (void)_attemptReconnect;
-- (void)_bootstrapFromSingQRCodeURL:(id)a3;
-- (void)_bootstrapSingConfiguration:(id)a3;
-- (void)_bootstrapSingWithDeviceIdentifier:(id)a3 url:(id)a4;
-- (void)_bootstrapSingWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4;
-- (void)_checkGroupSessionEligibility:(id)a3;
-- (void)_handlePresentShieldError:(id)a3;
-- (void)_handleServerConnectionError:(id)a3;
-- (void)_requestGroupSessionURL:(id)a3;
-- (void)_teardownShieldWithError:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)bootstrapFromRemoteDisplayConnection:(id)a3;
-- (void)bootstrapFromSingQRCodeURL:(id)a3;
-- (void)calculateErrorWithCompletion:(id)a3;
+- (void)_bootstrapFromSingQRCodeURL:(id)l;
+- (void)_bootstrapSingConfiguration:(id)configuration;
+- (void)_bootstrapSingWithDeviceIdentifier:(id)identifier url:(id)url;
+- (void)_bootstrapSingWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier;
+- (void)_checkGroupSessionEligibility:(id)eligibility;
+- (void)_handlePresentShieldError:(id)error;
+- (void)_handleServerConnectionError:(id)error;
+- (void)_requestGroupSessionURL:(id)l;
+- (void)_teardownShieldWithError:(id)error;
+- (void)addObserver:(id)observer;
+- (void)bootstrapFromRemoteDisplayConnection:(id)connection;
+- (void)bootstrapFromSingQRCodeURL:(id)l;
+- (void)calculateErrorWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)refreshPrivacyAcknowledgement;
-- (void)removeObserver:(id)a3;
-- (void)requestGroupSessionURL:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)requestGroupSessionURL:(id)l;
 - (void)sceneDidBecomeActive;
-- (void)setPresentationErrorDetails:(id)a3;
-- (void)setSingURL:(id)a3;
-- (void)setToken:(id)a3;
+- (void)setPresentationErrorDetails:(id)details;
+- (void)setSingURL:(id)l;
+- (void)setToken:(id)token;
 @end
 
 @implementation CSShieldConnectionManager
 
 + (BOOL)isMusicApplicationInstalled
 {
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v3 = [v2 applicationIsInstalled:@"com.apple.Music"];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v3 = [defaultWorkspace applicationIsInstalled:@"com.apple.Music"];
 
   return v3;
 }
 
-+ (id)appendSingSessionTypeToMusicURL:(id)a3
++ (id)appendSingSessionTypeToMusicURL:(id)l
 {
-  v20 = a3;
-  v3 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v20 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  v3 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v4 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"st" value:@"1"];
   v5 = MEMORY[0x277CBEB18];
-  v6 = [v3 queryItems];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
+  queryItems = [v3 queryItems];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(queryItems, "count") + 1}];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
   v19 = v3;
-  v8 = [v3 queryItems];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v21 count:16];
+  queryItems2 = [v3 queryItems];
+  v9 = [queryItems2 countByEnumeratingWithState:&v22 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -67,13 +67,13 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(queryItems2);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v4 name];
-        v16 = [v14 isEqual:v15];
+        name = [v13 name];
+        name2 = [v4 name];
+        v16 = [name isEqual:name2];
 
         if ((v16 & 1) == 0)
         {
@@ -81,7 +81,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      v10 = [queryItems2 countByEnumeratingWithState:&v22 objects:v21 count:16];
     }
 
     while (v10);
@@ -120,20 +120,20 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
   v2 = [(CSShieldConnectionManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     if (FigContinuityCaptureGetUserPreferenceDisabled())
     {
       [(CSShieldConnectionManager *)v2 reportErrorWithCode:-117 subsystem:0 description:@"Continuity Camera is disabled" exitSession:1];
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handlePresentShieldError_ name:*MEMORY[0x277CF6C28] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handlePresentShieldError_ name:*MEMORY[0x277CF6C28] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleServerConnectionError_ name:@"CSRemoteRequestClientErrorNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleServerConnectionError_ name:@"CSRemoteRequestClientErrorNotification" object:0];
 
     v7 = objc_alloc_init(CSPairingMessagingClient);
     pairingClient = v2->_pairingClient;
@@ -144,8 +144,8 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
     v2->_groupSessionEligibilityMonitor = v9;
 
     [(MRGroupSessionEligibilityMonitor *)v2->_groupSessionEligibilityMonitor addObserver:v2];
-    v11 = [(MRGroupSessionEligibilityMonitor *)v2->_groupSessionEligibilityMonitor status];
-    [(CSShieldConnectionManager *)v2 _checkGroupSessionEligibility:v11];
+    status = [(MRGroupSessionEligibilityMonitor *)v2->_groupSessionEligibilityMonitor status];
+    [(CSShieldConnectionManager *)v2 _checkGroupSessionEligibility:status];
   }
 
   return v2;
@@ -153,8 +153,8 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MRGroupSessionEligibilityMonitor *)self->_groupSessionEligibilityMonitor removeObserver:self];
   v4.receiver = self;
@@ -164,22 +164,22 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
 
 - (id)observersCopy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSHashTable *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setPresentationErrorDetails:(id)a3
+- (void)setPresentationErrorDetails:(id)details
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_presentationErrorDetails == v5)
+  detailsCopy = details;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_presentationErrorDetails == detailsCopy)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -187,12 +187,12 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
     v7 = ContinuitySingLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _CSErrorCodeDescription([(CSErrorDetails *)v5 errorCode]);
-      v9 = _CSErrorCodeDescription([(CSErrorDetails *)v5 errorCode]);
+      v8 = _CSErrorCodeDescription([(CSErrorDetails *)detailsCopy errorCode]);
+      v9 = _CSErrorCodeDescription([(CSErrorDetails *)detailsCopy errorCode]);
       *buf = 136316162;
       v22 = "[CSShieldConnectionManager setPresentationErrorDetails:]";
       v23 = 2112;
-      v24 = v6;
+      v24 = selfCopy;
       v25 = 2080;
       v26 = "[CSShieldConnectionManager setPresentationErrorDetails:]";
       v27 = 2112;
@@ -202,14 +202,14 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
       _os_log_impl(&dword_2441FB000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@ %s from: %@ to: %@", buf, 0x34u);
     }
 
-    objc_storeStrong(&v6->_presentationErrorDetails, a3);
-    objc_sync_exit(v6);
+    objc_storeStrong(&selfCopy->_presentationErrorDetails, details);
+    objc_sync_exit(selfCopy);
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6->_observers;
+    v10 = selfCopy->_observers;
     v11 = [(NSHashTable *)v10 countByEnumeratingWithState:&v17 objects:v16 count:16];
     if (v11)
     {
@@ -228,7 +228,7 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 connectionManager:v6 didUpdatePresentationError:v5];
+            [v15 connectionManager:selfCopy didUpdatePresentationError:detailsCopy];
           }
 
           ++v14;
@@ -245,56 +245,56 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
 
 - (NSURL)singURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_singURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_singURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSingURL:(id)a3
+- (void)setSingURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   obj = self;
   objc_sync_enter(obj);
   singURL = obj->_singURL;
-  obj->_singURL = v4;
+  obj->_singURL = lCopy;
 
   objc_sync_exit(obj);
 }
 
 - (MRGroupSessionToken)token
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_token;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_token;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   obj = self;
   objc_sync_enter(obj);
   token = obj->_token;
-  obj->_token = v4;
+  obj->_token = tokenCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)musicTokenURL
 {
-  v2 = [(CSShieldConnectionManager *)self token];
-  v3 = [v2 joinURLString];
+  token = [(CSShieldConnectionManager *)self token];
+  joinURLString = [token joinURLString];
 
-  if (v3)
+  if (joinURLString)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [v2 joinURLString];
-    v6 = [v4 URLWithString:v5];
+    joinURLString2 = [token joinURLString];
+    v6 = [v4 URLWithString:joinURLString2];
 
     if (v6)
     {
@@ -315,36 +315,36 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)calculateErrorWithCompletion:(id)a3
+- (void)calculateErrorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSShieldConnectionManager *)self presentationErrorDetails];
-    v7 = _CSErrorCodeDescription([v6 errorCode]);
+    presentationErrorDetails = [(CSShieldConnectionManager *)self presentationErrorDetails];
+    v7 = _CSErrorCodeDescription([presentationErrorDetails errorCode]);
     *buf = 136315906;
     v18 = "[CSShieldConnectionManager calculateErrorWithCompletion:]";
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[CSShieldConnectionManager calculateErrorWithCompletion:]";
     v23 = 2112;
@@ -358,20 +358,20 @@ uint64_t __42__CSShieldConnectionManager_sharedManager__block_invoke()
   v13 = __58__CSShieldConnectionManager_calculateErrorWithCompletion___block_invoke;
   v14 = &unk_278E0B640;
   objc_copyWeak(&v16, buf);
-  v8 = v4;
+  v8 = completionCopy;
   v15 = v8;
   v9 = _Block_copy(&v11);
   if ([objc_opt_class() isMusicApplicationInstalled])
   {
-    v10 = [(CSShieldConnectionManager *)self presentationErrorDetails];
+    presentationErrorDetails2 = [(CSShieldConnectionManager *)self presentationErrorDetails];
   }
 
   else
   {
-    v10 = [[CSErrorDetails alloc] initWithCode:-103 subsystem:8 description:@"Music app is not installed" exitSession:1];
+    presentationErrorDetails2 = [[CSErrorDetails alloc] initWithCode:-103 subsystem:8 description:@"Music app is not installed" exitSession:1];
   }
 
-  v9[2](v9, v10);
+  v9[2](v9, presentationErrorDetails2);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -402,7 +402,7 @@ void __58__CSShieldConnectionManager_calculateErrorWithCompletion___block_invoke
     *buf = 136315394;
     v7 = "[CSShieldConnectionManager sceneDidBecomeActive]";
     v8 = 2112;
-    v9 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ sceneDidBecomeActive", buf, 0x16u);
   }
 
@@ -425,7 +425,7 @@ void __58__CSShieldConnectionManager_calculateErrorWithCompletion___block_invoke
       *buf = 136315394;
       v7 = "[CSShieldConnectionManager sceneDidBecomeActive]";
       v8 = 2112;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_2441FB000, v4, OS_LOG_TYPE_DEFAULT, "%s: %@ Ignoring first notification that scene did become active", buf, 0x16u);
     }
   }
@@ -443,54 +443,54 @@ uint64_t __49__CSShieldConnectionManager_sceneDidBecomeActive__block_invoke(uint
 
 - (void)refreshPrivacyAcknowledgement
 {
-  v2 = [MEMORY[0x277CF6C58] sharedInstance];
-  [v2 refreshPrivacyAcknowledgement];
+  mEMORY[0x277CF6C58] = [MEMORY[0x277CF6C58] sharedInstance];
+  [mEMORY[0x277CF6C58] refreshPrivacyAcknowledgement];
 }
 
-- (void)bootstrapFromRemoteDisplayConnection:(id)a3
+- (void)bootstrapFromRemoteDisplayConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315650;
     v7 = "[CSShieldConnectionManager bootstrapFromRemoteDisplayConnection:]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@ Prox: %@", &v6, 0x20u);
   }
 
-  [(CSShieldConnectionManager *)self _bootstrapSingWithDeviceIdentifier:v4 url:0];
+  [(CSShieldConnectionManager *)self _bootstrapSingWithDeviceIdentifier:connectionCopy url:0];
 }
 
-- (void)bootstrapFromSingQRCodeURL:(id)a3
+- (void)bootstrapFromSingQRCodeURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v10 = "[CSShieldConnectionManager bootstrapFromSingQRCodeURL:]";
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[CSShieldConnectionManager bootstrapFromSingQRCodeURL:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = lCopy;
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@ %s %@", buf, 0x2Au);
   }
 
-  [(CSShieldConnectionManager *)self setSingURL:v4];
-  if (v4)
+  [(CSShieldConnectionManager *)self setSingURL:lCopy];
+  if (lCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __56__CSShieldConnectionManager_bootstrapFromSingQRCodeURL___block_invoke;
     v7[3] = &unk_278E0B690;
     v7[4] = self;
-    v8 = v4;
+    v8 = lCopy;
     [(CSShieldConnectionManager *)self calculateErrorWithCompletion:v7];
   }
 
@@ -511,22 +511,22 @@ uint64_t __56__CSShieldConnectionManager_bootstrapFromSingQRCodeURL___block_invo
   return result;
 }
 
-- (void)_bootstrapFromSingQRCodeURL:(id)a3
+- (void)_bootstrapFromSingQRCodeURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  v5 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [v5 queryItems];
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v40 count:16];
+  queryItems = [v5 queryItems];
+  v7 = [queryItems countByEnumeratingWithState:&v41 objects:v40 count:16];
   if (v7)
   {
     val = self;
-    obj = v6;
+    obj = queryItems;
     v24 = v5;
-    v25 = v4;
+    v25 = lCopy;
     v8 = 0;
     v9 = 0;
     v10 = *v42;
@@ -540,24 +540,24 @@ uint64_t __56__CSShieldConnectionManager_bootstrapFromSingQRCodeURL___block_invo
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:@"h"];
+        name = [v12 name];
+        v14 = [name isEqualToString:@"h"];
 
         if (v14)
         {
-          v15 = [v12 value];
+          value = [v12 value];
 
-          v9 = v15;
+          v9 = value;
         }
 
-        v16 = [v12 name];
-        v17 = [v16 isEqualToString:@"pw"];
+        name2 = [v12 name];
+        v17 = [name2 isEqualToString:@"pw"];
 
         if (v17)
         {
-          v18 = [v12 value];
+          value2 = [v12 value];
 
-          v8 = v18;
+          v8 = value2;
         }
       }
 
@@ -591,7 +591,7 @@ uint64_t __56__CSShieldConnectionManager_bootstrapFromSingQRCodeURL___block_invo
       v29 = v21;
       v7 = v8;
       v30 = v7;
-      v4 = v25;
+      lCopy = v25;
       v31 = v25;
       [(CSPairingMessagingClient *)pairingClient activateWithCompletion:v28];
 
@@ -602,7 +602,7 @@ uint64_t __56__CSShieldConnectionManager_bootstrapFromSingQRCodeURL___block_invo
     }
 
     v5 = v24;
-    v4 = v25;
+    lCopy = v25;
     v7 = v8;
     self = val;
   }
@@ -719,20 +719,20 @@ void __57__CSShieldConnectionManager__bootstrapFromSingQRCodeURL___block_invoke_
   }
 }
 
-- (void)requestGroupSessionURL:(id)a3
+- (void)requestGroupSessionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v10 = "[CSShieldConnectionManager requestGroupSessionURL:]";
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[CSShieldConnectionManager requestGroupSessionURL:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = lCopy;
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@ %s %@", buf, 0x2Au);
   }
 
@@ -741,8 +741,8 @@ void __57__CSShieldConnectionManager__bootstrapFromSingQRCodeURL___block_invoke_
   v7[2] = __52__CSShieldConnectionManager_requestGroupSessionURL___block_invoke;
   v7[3] = &unk_278E0B690;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   [(CSShieldConnectionManager *)self calculateErrorWithCompletion:v7];
 }
 
@@ -756,14 +756,14 @@ uint64_t __52__CSShieldConnectionManager_requestGroupSessionURL___block_invoke(u
   return result;
 }
 
-- (void)_requestGroupSessionURL:(id)a3
+- (void)_requestGroupSessionURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [(CSShieldConnectionManager *)self token];
-    v6 = v5;
-    if (v5 && (v7 = MEMORY[0x277CBEBC0], [v5 joinContinuitySingURLString], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "URLWithString:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+    token = [(CSShieldConnectionManager *)self token];
+    v6 = token;
+    if (token && (v7 = MEMORY[0x277CBEBC0], [token joinContinuitySingURLString], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "URLWithString:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
     {
       v10 = ContinuitySingLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -771,7 +771,7 @@ uint64_t __52__CSShieldConnectionManager_requestGroupSessionURL___block_invoke(u
         *buf = 136315906;
         v16 = "[CSShieldConnectionManager _requestGroupSessionURL:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         v19 = 2080;
         v20 = "[CSShieldConnectionManager _requestGroupSessionURL:]";
         v21 = 2112;
@@ -779,7 +779,7 @@ uint64_t __52__CSShieldConnectionManager_requestGroupSessionURL___block_invoke(u
         _os_log_impl(&dword_2441FB000, v10, OS_LOG_TYPE_DEFAULT, "%s: %@ %s We already have a group session token using it %@", buf, 0x2Au);
       }
 
-      [(CSShieldConnectionManager *)self _bootstrapSingWithDeviceIdentifier:v4 url:v9];
+      [(CSShieldConnectionManager *)self _bootstrapSingWithDeviceIdentifier:lCopy url:v9];
     }
 
     else
@@ -791,7 +791,7 @@ uint64_t __52__CSShieldConnectionManager_requestGroupSessionURL___block_invoke(u
       v12[2] = __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke;
       v12[3] = &unk_278E0AFB0;
       objc_copyWeak(&v14, buf);
-      v13 = v4;
+      v13 = lCopy;
       [(CSPairingMessagingClient *)pairingClient activateWithCompletion:v12];
 
       objc_destroyWeak(&v14);
@@ -894,16 +894,16 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
   }
 }
 
-- (void)_bootstrapSingConfiguration:(id)a3
+- (void)_bootstrapSingConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277CF6C50];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v9 = [v5 activeConfiguration];
+  configurationCopy = configuration;
+  sharedInstance = [v3 sharedInstance];
+  activeConfiguration = [sharedInstance activeConfiguration];
 
-  if (v9)
+  if (activeConfiguration)
   {
-    v6 = v9;
+    v6 = activeConfiguration;
   }
 
   else
@@ -914,61 +914,61 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
   v7 = v6;
   [v6 setClientDeviceModel:2];
   [v7 setMicOnly:1];
-  [v7 setRemoteDisplayIdentifier:v4];
+  [v7 setRemoteDisplayIdentifier:configurationCopy];
 
-  v8 = [MEMORY[0x277CF6C50] sharedInstance];
-  [v8 setUIConfiguration:v7];
+  mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+  [mEMORY[0x277CF6C50] setUIConfiguration:v7];
 }
 
-- (void)_bootstrapSingWithDeviceIdentifier:(id)a3 url:(id)a4
+- (void)_bootstrapSingWithDeviceIdentifier:(id)identifier url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  urlCopy = url;
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315906;
     v11 = "[CSShieldConnectionManager _bootstrapSingWithDeviceIdentifier:url:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = urlCopy;
     _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@ %@ %@", &v10, 0x2Au);
   }
 
-  [(CSShieldConnectionManager *)self _bootstrapSingConfiguration:v6];
-  v9 = [MEMORY[0x277CF6C58] sharedInstance];
-  [v9 setupSingSessionFromURL:v7 remoteDisplayIdentifier:v6];
+  [(CSShieldConnectionManager *)self _bootstrapSingConfiguration:identifierCopy];
+  mEMORY[0x277CF6C58] = [MEMORY[0x277CF6C58] sharedInstance];
+  [mEMORY[0x277CF6C58] setupSingSessionFromURL:urlCopy remoteDisplayIdentifier:identifierCopy];
 }
 
-- (void)_bootstrapSingWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4
+- (void)_bootstrapSingWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  displayIdentifierCopy = displayIdentifier;
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315906;
     v11 = "[CSShieldConnectionManager _bootstrapSingWithMediaRouteIdentifier:remoteDisplayIdentifier:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = displayIdentifierCopy;
     _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@ %@ %@", &v10, 0x2Au);
   }
 
-  [(CSShieldConnectionManager *)self _bootstrapSingConfiguration:v7];
-  v9 = [MEMORY[0x277CF6C58] sharedInstance];
-  [v9 setupSingSessionWithMediaRouteIdentifier:v6 remoteDisplayIdentifier:v7];
+  [(CSShieldConnectionManager *)self _bootstrapSingConfiguration:displayIdentifierCopy];
+  mEMORY[0x277CF6C58] = [MEMORY[0x277CF6C58] sharedInstance];
+  [mEMORY[0x277CF6C58] setupSingSessionWithMediaRouteIdentifier:identifierCopy remoteDisplayIdentifier:displayIdentifierCopy];
 }
 
-- (void)_teardownShieldWithError:(id)a3
+- (void)_teardownShieldWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -982,8 +982,8 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(CSShieldConnectionManager *)self observersCopy];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  observersCopy = [(CSShieldConnectionManager *)self observersCopy];
+  v8 = [observersCopy countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v8)
   {
     v9 = v8;
@@ -995,20 +995,20 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observersCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 connectionManager:self didRequestTeardownShieldWithError:v4];
+          [v12 connectionManager:self didRequestTeardownShieldWithError:errorCopy];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v9 = [observersCopy countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v9);
@@ -1017,12 +1017,12 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
 
 - (void)_attemptReconnect
 {
-  v3 = [MEMORY[0x277CF6C50] sharedInstance];
-  v4 = [v3 activeConfiguration];
-  v5 = [v4 remoteDisplayIdentifier];
+  mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+  activeConfiguration = [mEMORY[0x277CF6C50] activeConfiguration];
+  remoteDisplayIdentifier = [activeConfiguration remoteDisplayIdentifier];
 
   v6 = +[CSShieldConnectionManager sharedManager];
-  v7 = [v6 singURL];
+  singURL = [v6 singURL];
 
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1030,18 +1030,18 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
     v12 = 136315906;
     v13 = "[CSShieldConnectionManager _attemptReconnect]";
     v14 = 2048;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
-    v17 = v5;
+    v17 = remoteDisplayIdentifier;
     v18 = 2112;
-    v19 = v7;
+    v19 = singURL;
     _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: <%p> Attempt reconnect with remoteDisplayIdentifier: %@ URL: %@", &v12, 0x2Au);
   }
 
   v9 = +[CSShieldManager sharedManager];
-  v10 = [v9 isLoading];
+  isLoading = [v9 isLoading];
 
-  if ((v10 & 1) == 0)
+  if ((isLoading & 1) == 0)
   {
     v11 = ContinuitySingLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1049,93 +1049,93 @@ void __53__CSShieldConnectionManager__requestGroupSessionURL___block_invoke_52(u
       v12 = 136315394;
       v13 = "[CSShieldConnectionManager _attemptReconnect]";
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_2441FB000, v11, OS_LOG_TYPE_DEFAULT, "%s: <%p> Skip reconnect we are already loaded", &v12, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  if (v5)
+  if (remoteDisplayIdentifier)
   {
     v11 = +[CSShieldConnectionManager sharedManager];
-    [v11 bootstrapFromRemoteDisplayConnection:v5];
+    [v11 bootstrapFromRemoteDisplayConnection:remoteDisplayIdentifier];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if (v7)
+  if (singURL)
   {
     v11 = +[CSShieldConnectionManager sharedManager];
-    [v11 bootstrapFromSingQRCodeURL:v7];
+    [v11 bootstrapFromSingQRCodeURL:singURL];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)_handlePresentShieldError:(id)a3
+- (void)_handlePresentShieldError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [CSShieldConnectionManager _handlePresentShieldError:];
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF6C38]];
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CF6C38]];
 
   if (!v7)
   {
     goto LABEL_19;
   }
 
-  v8 = [v7 intValue];
-  if (v8 <= 1)
+  intValue = [v7 intValue];
+  if (intValue <= 1)
   {
-    if (!v8)
+    if (!intValue)
     {
       v9 = @"Unknown error";
-      v10 = self;
+      selfCopy5 = self;
       v11 = -100;
       v12 = 0;
       goto LABEL_17;
     }
 
-    if (v8 != 1)
+    if (intValue != 1)
     {
       goto LABEL_19;
     }
 
     v9 = @"Connection failure";
-    v10 = self;
+    selfCopy5 = self;
     v11 = -111;
     v12 = 2;
 LABEL_13:
     v13 = 1;
 LABEL_18:
-    [(CSShieldConnectionManager *)v10 reportErrorWithCode:v11 subsystem:v12 description:v9 error:0 exitSession:v13];
+    [(CSShieldConnectionManager *)selfCopy5 reportErrorWithCode:v11 subsystem:v12 description:v9 error:0 exitSession:v13];
     goto LABEL_19;
   }
 
-  switch(v8)
+  switch(intValue)
   {
     case 4:
       v9 = @"Endpoint disconnect";
-      v10 = self;
+      selfCopy5 = self;
       v11 = -109;
       v12 = 1;
       goto LABEL_13;
     case 3:
       v9 = @"Music profile update needed";
-      v10 = self;
+      selfCopy5 = self;
       v11 = -110;
       goto LABEL_15;
     case 2:
       v9 = @"Invalid Music account";
-      v10 = self;
+      selfCopy5 = self;
       v11 = -105;
 LABEL_15:
       v12 = 8;
@@ -1147,53 +1147,53 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)_handleServerConnectionError:(id)a3
+- (void)_handleServerConnectionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [CSShieldConnectionManager _handleServerConnectionError:];
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"CSRemoteRequestClientErrorCode"];
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"CSRemoteRequestClientErrorCode"];
 
   if (v7)
   {
-    v8 = [v7 integerValue];
-    if (v8 == 9)
+    integerValue = [v7 integerValue];
+    if (integerValue == 9)
     {
       v9 = @"tvOS version too old for handshake";
-      v10 = self;
+      selfCopy3 = self;
       v11 = -108;
     }
 
-    else if (v8 == 8)
+    else if (integerValue == 8)
     {
       v9 = @"iOS version too old for handshake";
-      v10 = self;
+      selfCopy3 = self;
       v11 = -107;
     }
 
     else
     {
       v9 = @"Generic handshake failure";
-      v10 = self;
+      selfCopy3 = self;
       v11 = -106;
     }
 
-    [(CSShieldConnectionManager *)v10 reportErrorWithCode:v11 subsystem:0 description:v9 error:0 exitSession:1];
+    [(CSShieldConnectionManager *)selfCopy3 reportErrorWithCode:v11 subsystem:0 description:v9 error:0 exitSession:1];
   }
 }
 
-- (void)_checkGroupSessionEligibility:(id)a3
+- (void)_checkGroupSessionEligibility:(id)eligibility
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eligibilityCopy = eligibility;
+  v5 = eligibilityCopy;
+  if (eligibilityCopy)
   {
-    if ([v4 isManateeEnabled])
+    if ([eligibilityCopy isManateeEnabled])
     {
       if ([v5 idsAccountIsValid])
       {

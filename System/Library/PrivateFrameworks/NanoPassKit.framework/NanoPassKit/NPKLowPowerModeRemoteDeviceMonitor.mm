@@ -4,17 +4,17 @@
 - (NPKLowPowerModeRemoteDeviceMonitor)init;
 - (void)_sendLowPowerModeEnabledStateToObservers;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation NPKLowPowerModeRemoteDeviceMonitor
 
 - (BOOL)isLowPowerModeEnabled
 {
-  v2 = [(NPKLowPowerModeRemoteDeviceMonitor *)self _currentDeviceDomainAccessor];
-  v3 = [v2 synchronize];
-  v4 = [v2 BOOLForKey:@"LowPowerMode"];
+  _currentDeviceDomainAccessor = [(NPKLowPowerModeRemoteDeviceMonitor *)self _currentDeviceDomainAccessor];
+  synchronize = [_currentDeviceDomainAccessor synchronize];
+  v4 = [_currentDeviceDomainAccessor BOOLForKey:@"LowPowerMode"];
 
   return v4;
 }
@@ -65,33 +65,33 @@ void __52__NPKLowPowerModeRemoteDeviceMonitor_sharedInstance__block_invoke()
   [(NPKLowPowerModeRemoteDeviceMonitor *)&v4 dealloc];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  [(NPKObserverManager *)self->_observersManager registerObserver:v4];
-  v5 = [(NPKLowPowerModeRemoteDeviceMonitor *)self isLowPowerModeEnabled];
+  observerCopy = observer;
+  [(NPKObserverManager *)self->_observersManager registerObserver:observerCopy];
+  isLowPowerModeEnabled = [(NPKLowPowerModeRemoteDeviceMonitor *)self isLowPowerModeEnabled];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__NPKLowPowerModeRemoteDeviceMonitor_registerObserver___block_invoke;
   v7[3] = &unk_279946490;
-  v9 = v5;
+  v9 = isLowPowerModeEnabled;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   NPKGuaranteeMainThread(v7);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observersManager = self->_observersManager;
-  v4 = a3;
-  [(NPKObserverManager *)observersManager unregisterObserver:v4];
+  observerCopy = observer;
+  [(NPKObserverManager *)observersManager unregisterObserver:observerCopy];
 }
 
 - (void)_sendLowPowerModeEnabledStateToObservers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKLowPowerModeRemoteDeviceMonitor *)self isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [(NPKLowPowerModeRemoteDeviceMonitor *)self isLowPowerModeEnabled];
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -101,7 +101,7 @@ void __52__NPKLowPowerModeRemoteDeviceMonitor_sharedInstance__block_invoke()
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"disabled";
-      if (v3)
+      if (isLowPowerModeEnabled)
       {
         v7 = @"enabled";
       }
@@ -117,7 +117,7 @@ void __52__NPKLowPowerModeRemoteDeviceMonitor_sharedInstance__block_invoke()
   v9[2] = __78__NPKLowPowerModeRemoteDeviceMonitor__sendLowPowerModeEnabledStateToObservers__block_invoke;
   v9[3] = &unk_279944FC0;
   v9[4] = self;
-  v10 = v3;
+  v10 = isLowPowerModeEnabled;
   NPKGuaranteeMainThread(v9);
   v8 = *MEMORY[0x277D85DE8];
 }

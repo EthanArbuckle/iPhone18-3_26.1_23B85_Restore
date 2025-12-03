@@ -1,19 +1,19 @@
 @interface PXCuratedLibraryVideoPlaybackController
-- (BOOL)_canPlayVideosInZoomLevel:(int64_t)a3;
-- (BOOL)canPlayAsset:(id)a3;
+- (BOOL)_canPlayVideosInZoomLevel:(int64_t)level;
+- (BOOL)canPlayAsset:(id)asset;
 - (BOOL)canProvideGeometriesForRecords;
 - (BOOL)canUpdatePlayingRecords;
 - (BOOL)shouldEnablePlayback;
 - (CGRect)currentVisibleRect;
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4;
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size;
 - (PXCuratedLibraryVideoPlaybackController)init;
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
 - (id)currentHoveredDisplayAsset;
-- (id)filterSortedRecordsToPlay:(id)a3;
-- (id)initViewViewModel:(id)a3;
+- (id)filterSortedRecordsToPlay:(id)play;
+- (id)initViewViewModel:(id)model;
 - (int64_t)maxNumberOfPlayingItems;
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCuratedLibraryVideoPlaybackController
@@ -25,15 +25,15 @@
   {
     v6.receiver = self;
     v6.super_class = PXCuratedLibraryVideoPlaybackController;
-    v4 = [(PXGridInlinePlaybackController *)&v6 maxNumberOfPlayingItems];
+    maxNumberOfPlayingItems = [(PXGridInlinePlaybackController *)&v6 maxNumberOfPlayingItems];
   }
 
   else
   {
-    v4 = 0;
+    maxNumberOfPlayingItems = 0;
   }
 
-  return v4;
+  return maxNumberOfPlayingItems;
 }
 
 - (BOOL)canUpdatePlayingRecords
@@ -55,17 +55,17 @@
   }
 
   v5 = objc_loadWeakRetained(&self->_viewModel);
-  v6 = [v5 isSelecting];
+  isSelecting = [v5 isSelecting];
 
-  if (v6)
+  if (isSelecting)
   {
     return 0;
   }
 
   v7 = objc_loadWeakRetained(&self->_viewModel);
-  v8 = [v7 scrollRegime];
+  scrollRegime = [v7 scrollRegime];
 
-  if (v8 > 1)
+  if (scrollRegime > 1)
   {
     return 0;
   }
@@ -76,10 +76,10 @@
   }
 }
 
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v31 = 0;
   v30[0] = 0;
   v30[1] = 0;
@@ -109,16 +109,16 @@ LABEL_3:
       v16 = v15;
       v18 = v17;
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v10 diagnosticLog];
-      v21 = [v10 diagnosticScoresDescription];
-      v22 = [v10 videoStatusDescription];
-      v23 = [v19 stringWithFormat:@"\n%@\n%@\n%@", v20, v21, v22];
+      diagnosticLog = [v10 diagnosticLog];
+      diagnosticScoresDescription = [v10 diagnosticScoresDescription];
+      videoStatusDescription = [v10 videoStatusDescription];
+      v23 = [v19 stringWithFormat:@"\n%@\n%@\n%@", diagnosticLog, diagnosticScoresDescription, videoStatusDescription];
 
-      v24 = [MEMORY[0x1E69DC888] cyanColor];
-      v5[2](v5, v24, v23, &v31, v12, v14, v16, v18);
+      cyanColor = [MEMORY[0x1E69DC888] cyanColor];
+      blockCopy[2](blockCopy, cyanColor, v23, &v31, v12, v14, v16, v18);
 
-      LOBYTE(v24) = v31;
-      if (v24)
+      LOBYTE(cyanColor) = v31;
+      if (cyanColor)
       {
         break;
       }
@@ -137,60 +137,60 @@ LABEL_3:
   }
 }
 
-- (BOOL)_canPlayVideosInZoomLevel:(int64_t)a3
+- (BOOL)_canPlayVideosInZoomLevel:(int64_t)level
 {
-  if ((a3 - 1) < 3)
+  if ((level - 1) < 3)
   {
     return 1;
   }
 
-  if (a3 != 4)
+  if (level != 4)
   {
     return 0;
   }
 
   v5 = +[PXCuratedLibrarySettings sharedInstance];
-  v6 = [v5 enableInlinePlaybackInZoomableGrids];
+  enableInlinePlaybackInZoomableGrids = [v5 enableInlinePlaybackInZoomableGrids];
 
-  if (!v6)
+  if (!enableInlinePlaybackInZoomableGrids)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_viewModel);
-  v8 = [WeakRetained zoomablePhotosViewModel];
-  v9 = [v8 isDisplayingIndividualItems];
+  zoomablePhotosViewModel = [WeakRetained zoomablePhotosViewModel];
+  isDisplayingIndividualItems = [zoomablePhotosViewModel isDisplayingIndividualItems];
 
-  return v9;
+  return isDisplayingIndividualItems;
 }
 
-- (BOOL)canPlayAsset:(id)a3
+- (BOOL)canPlayAsset:(id)asset
 {
-  if (([a3 playbackStyle] - 3) > 2)
+  if (([asset playbackStyle] - 3) > 2)
   {
     return 0;
   }
 
   v3 = +[PXCuratedLibrarySettings sharedInstance];
-  v4 = [v3 enableInlinePlayback];
+  enableInlinePlayback = [v3 enableInlinePlayback];
 
-  return v4;
+  return enableInlinePlayback;
 }
 
 - (BOOL)canProvideGeometriesForRecords
 {
-  v2 = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
-  v3 = [v2 allowsObjectReferenceSpriteIndexLookup];
+  curatedLibraryLayout = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
+  allowsObjectReferenceSpriteIndexLookup = [curatedLibraryLayout allowsObjectReferenceSpriteIndexLookup];
 
-  return v3;
+  return allowsObjectReferenceSpriteIndexLookup;
 }
 
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
-  v8 = [v6 geometryReference];
+  recordCopy = record;
+  curatedLibraryLayout = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
+  geometryReference = [recordCopy geometryReference];
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x4010000000;
@@ -204,18 +204,18 @@ LABEL_3:
     v45[1] = 3221225472;
     v45[2] = __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPlayableSize___block_invoke;
     v45[3] = &unk_1E773D948;
-    v46 = v6;
+    v46 = recordCopy;
     v47 = v48;
-    [v7 enumerateVisibleAssetsSectionSublayoutsUsingBlock:v45];
+    [curatedLibraryLayout enumerateVisibleAssetsSectionSublayoutsUsingBlock:v45];
     v10 = v46;
     goto LABEL_17;
   }
 
-  v11 = [v8 objectReference];
+  objectReference = [geometryReference objectReference];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 keyAssetReference];
+    keyAssetReference = [objectReference keyAssetReference];
   }
 
   else
@@ -227,10 +227,10 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v12 = v11;
+    keyAssetReference = objectReference;
   }
 
-  v10 = v12;
+  v10 = keyAssetReference;
 LABEL_9:
   v41 = 0;
   v42 = &v41;
@@ -246,7 +246,7 @@ LABEL_9:
   {
     if (self->_presentedZoomLevel == 4 && (+[PXCuratedLibrarySettings sharedInstance](PXCuratedLibrarySettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 enableInlinePlaybackInZoomableGrids], v13, v14))
     {
-      v15 = [v7 spriteIndexForObjectReference:v10];
+      v15 = [curatedLibraryLayout spriteIndexForObjectReference:v10];
       *(v42 + 6) = v15;
     }
 
@@ -259,8 +259,8 @@ LABEL_9:
       v33 = &v41;
       v32 = v10;
       v34 = &v35;
-      [v7 enumerateVisibleAssetsSectionSublayoutsUsingBlock:v31];
-      v16 = [v7 convertSpriteIndex:*(v42 + 6) fromDescendantLayout:v36[5]];
+      [curatedLibraryLayout enumerateVisibleAssetsSectionSublayoutsUsingBlock:v31];
+      v16 = [curatedLibraryLayout convertSpriteIndex:*(v42 + 6) fromDescendantLayout:v36[5]];
       *(v42 + 6) = v16;
 
       v15 = *(v42 + 6);
@@ -291,10 +291,10 @@ LABEL_9:
       v27[0] = *off_1E7722040;
       v27[1] = v23;
       v28 = *(off_1E7722040 + 4);
-      [v7 copyLayoutForSpritesInRange:v15 | 0x100000000 entities:&v30 geometries:v29 styles:v51 infos:v27];
-      [v7 minPlayableSizeForSpriteAtIndex:*(v42 + 6)];
-      a4->width = v24;
-      a4->height = v25;
+      [curatedLibraryLayout copyLayoutForSpritesInRange:v15 | 0x100000000 entities:&v30 geometries:v29 styles:v51 infos:v27];
+      [curatedLibraryLayout minPlayableSizeForSpriteAtIndex:*(v42 + 6)];
+      size->width = v24;
+      size->height = v25;
       PXRectWithCenterAndSize();
     }
   }
@@ -304,10 +304,10 @@ LABEL_9:
   _Block_object_dispose(&v41, 8);
 LABEL_17:
 
-  [v7 displayScale];
+  [curatedLibraryLayout displayScale];
   if (v26 > 0.0)
   {
-    [v7 displayScale];
+    [curatedLibraryLayout displayScale];
   }
 
   PXRectRoundToPixel();
@@ -374,31 +374,31 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
   }
 }
 
-- (id)filterSortedRecordsToPlay:(id)a3
+- (id)filterSortedRecordsToPlay:(id)play
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  playCopy = play;
+  if ([playCopy count])
   {
-    v38 = v4;
-    v5 = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
-    v37 = v4;
+    v38 = playCopy;
+    curatedLibraryLayout = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
+    v37 = playCopy;
     WeakRetained = objc_loadWeakRetained(&self->_viewModel);
-    v7 = [WeakRetained skimmingInfo];
-    v36 = [v7 parentAssetCollection];
+    skimmingInfo = [WeakRetained skimmingInfo];
+    parentAssetCollection = [skimmingInfo parentAssetCollection];
 
-    v8 = v36;
-    if (v36)
+    v8 = parentAssetCollection;
+    if (parentAssetCollection)
     {
       v9 = [off_1E7721488 alloc];
       v10 = *(off_1E7722228 + 1);
       v46 = *off_1E7722228;
       v47 = v10;
-      v35 = [v9 initWithSectionObject:v36 itemObject:0 subitemObject:0 indexPath:&v46];
+      v35 = [v9 initWithSectionObject:parentAssetCollection itemObject:0 subitemObject:0 indexPath:&v46];
       v45 = 0;
-      v11 = [v5 spriteIndexForObjectReference:v35 options:1 updatedObjectReference:&v45];
+      v11 = [curatedLibraryLayout spriteIndexForObjectReference:v35 options:1 updatedObjectReference:&v45];
       v34 = v45;
-      v12 = [v5 leafSublayoutForSpriteIndex:v11];
+      v12 = [curatedLibraryLayout leafSublayoutForSpriteIndex:v11];
       v39 = [v37 mutableCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -422,12 +422,12 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
               }
 
               v17 = *(*(&v41 + 1) + 8 * i);
-              v18 = [v17 geometryReference];
-              v19 = [v5 spriteIndexForSpriteReference:v18];
+              geometryReference = [v17 geometryReference];
+              v19 = [curatedLibraryLayout spriteIndexForSpriteReference:geometryReference];
 
-              v20 = [v5 leafSublayoutForSpriteIndex:v19];
-              v21 = [v12 bodyContentLayout];
-              v23 = v21 != v20 && v12 != v20;
+              v20 = [curatedLibraryLayout leafSublayoutForSpriteIndex:v19];
+              bodyContentLayout = [v12 bodyContentLayout];
+              v23 = bodyContentLayout != v20 && v12 != v20;
 
               if (v23)
               {
@@ -449,15 +449,15 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
       newZoomLevel = self->_newZoomLevel;
       if (newZoomLevel == 1)
       {
-        v31 = [v5 libraryBodyLayout];
-        v32 = [v31 composition];
+        libraryBodyLayout = [curatedLibraryLayout libraryBodyLayout];
+        composition = [libraryBodyLayout composition];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v8 = 0;
           v33 = v37;
-          if ([v32 presentedNumberOfColumns] >= 2)
+          if ([composition presentedNumberOfColumns] >= 2)
           {
 
             v33 = MEMORY[0x1E695E0F0];
@@ -480,13 +480,13 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
         goto LABEL_22;
       }
 
-      v26 = [v5 libraryBodyLayout];
-      v27 = [v26 composition];
+      libraryBodyLayout2 = [curatedLibraryLayout libraryBodyLayout];
+      composition2 = [libraryBodyLayout2 composition];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (([v27 presentedSingleColumn] & 1) == 0 && objc_msgSend(v37, "count") >= 2)
+        if (([composition2 presentedSingleColumn] & 1) == 0 && objc_msgSend(v37, "count") >= 2)
         {
           v28 = [v37 mutableCopy];
           v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -501,7 +501,7 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
           v40[4] = v28;
           v30 = v29;
           v40[5] = v30;
-          [v5 enumerateVisibleAssetsSectionSublayoutsUsingBlock:v40];
+          [curatedLibraryLayout enumerateVisibleAssetsSectionSublayoutsUsingBlock:v40];
           [v30 allValues];
           objc_claimAutoreleasedReturnValue();
           PXMap();
@@ -516,14 +516,14 @@ void __82__PXCuratedLibraryVideoPlaybackController_frameForPlaybackRecord_minPla
       }
     }
 
-    v8 = v36;
+    v8 = parentAssetCollection;
 LABEL_22:
 
-    v4 = v38;
+    playCopy = v38;
     goto LABEL_24;
   }
 
-  v39 = v4;
+  v39 = playCopy;
 LABEL_24:
 
   return v39;
@@ -633,11 +633,11 @@ LABEL_23:
   v14 = 0u;
   v15 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_viewModel);
-  v4 = [WeakRetained selectionSnapshot];
-  v5 = v4;
-  if (v4)
+  selectionSnapshot = [WeakRetained selectionSnapshot];
+  v5 = selectionSnapshot;
+  if (selectionSnapshot)
   {
-    [v4 pendingIndexPath];
+    [selectionSnapshot pendingIndexPath];
   }
 
   else
@@ -654,70 +654,70 @@ LABEL_23:
   else
   {
     v7 = objc_loadWeakRetained(&self->_viewModel);
-    v8 = [v7 currentDataSource];
+    currentDataSource = [v7 currentDataSource];
     v13[0] = v14;
     v13[1] = v15;
-    v6 = [v8 objectReferenceAtIndexPath:v13];
+    v6 = [currentDataSource objectReferenceAtIndexPath:v13];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    keyAssetReference = v6;
 LABEL_11:
-    v10 = v9;
+    v10 = keyAssetReference;
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 keyAssetReference];
+    keyAssetReference = [v6 keyAssetReference];
     goto LABEL_11;
   }
 
   v10 = 0;
 LABEL_13:
-  v11 = [v10 asset];
+  asset = [v10 asset];
 
-  return v11;
+  return asset;
 }
 
 - (CGRect)currentVisibleRect
 {
-  v2 = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
-  [v2 visibleRect];
-  [v2 safeAreaInsets];
+  curatedLibraryLayout = [(PXCuratedLibraryVideoPlaybackController *)self curatedLibraryLayout];
+  [curatedLibraryLayout visibleRect];
+  [curatedLibraryLayout safeAreaInsets];
   PXEdgeInsetsInsetRect();
 }
 
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PXGridInlineVideoSessionAssetPlaybackRecord alloc] initWithDisplayAsset:v11 mediaProvider:v10 spriteReference:v9 playLivePhotosWithSettlingEffectIfPossible:0];
+  referenceCopy = reference;
+  providerCopy = provider;
+  assetCopy = asset;
+  v12 = [[PXGridInlineVideoSessionAssetPlaybackRecord alloc] initWithDisplayAsset:assetCopy mediaProvider:providerCopy spriteReference:referenceCopy playLivePhotosWithSettlingEffectIfPossible:0];
 
   return v12;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v13 = a3;
-  if (PXCuratedLibraryViewModelObservableContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCuratedLibraryViewModelObservableContext == context)
   {
-    if ((v6 & 0x805) != 0)
+    if ((changeCopy & 0x805) != 0)
     {
       [(PXGridInlinePlaybackController *)self invalidatePlaybackEnabled];
     }
 
-    if ((v6 & 0x2200) != 0)
+    if ((changeCopy & 0x2200) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_viewModel);
-      v10 = [WeakRetained zoomLevelTransitionPhase];
+      zoomLevelTransitionPhase = [WeakRetained zoomLevelTransitionPhase];
 
-      if (!v10)
+      if (!zoomLevelTransitionPhase)
       {
         v11 = objc_loadWeakRetained(&self->_viewModel);
         self->_newZoomLevel = [v11 zoomLevel];
@@ -726,7 +726,7 @@ LABEL_13:
       }
     }
 
-    if ((v6 & 8) != 0 && [(PXGridInlinePlaybackController *)self shouldPlayOnHover])
+    if ((changeCopy & 8) != 0 && [(PXGridInlinePlaybackController *)self shouldPlayOnHover])
     {
       [(PXGridInlinePlaybackController *)self invalidatePlayingRecords];
     }
@@ -734,15 +734,15 @@ LABEL_13:
 
   else
   {
-    if (PXCuratedLibraryViewModelZoomablePhotosObserverContext_148226 != a5)
+    if (PXCuratedLibraryViewModelZoomablePhotosObserverContext_148226 != context)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVideoPlaybackController.m" lineNumber:100 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVideoPlaybackController.m" lineNumber:100 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 1) != 0 && [(PXGridInlinePlaybackController *)self shouldPlayOnHover])
+    if ((changeCopy & 1) != 0 && [(PXGridInlinePlaybackController *)self shouldPlayOnHover])
     {
       [(PXGridInlinePlaybackController *)self invalidatePlaybackEnabled];
     }
@@ -751,26 +751,26 @@ LABEL_13:
 
 - (PXCuratedLibraryVideoPlaybackController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVideoPlaybackController.m" lineNumber:57 description:{@"%s is not available as initializer", "-[PXCuratedLibraryVideoPlaybackController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVideoPlaybackController.m" lineNumber:57 description:{@"%s is not available as initializer", "-[PXCuratedLibraryVideoPlaybackController init]"}];
 
   abort();
 }
 
-- (id)initViewViewModel:(id)a3
+- (id)initViewViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXCuratedLibraryVideoPlaybackController;
   v5 = [(PXGridInlinePlaybackController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewModel, v4);
-    v6->_newZoomLevel = [v4 zoomLevel];
-    [v4 registerChangeObserver:v6 context:PXCuratedLibraryViewModelObservableContext];
-    v7 = [v4 zoomablePhotosViewModel];
-    [v7 registerChangeObserver:v6 context:PXCuratedLibraryViewModelZoomablePhotosObserverContext_148226];
+    objc_storeWeak(&v5->_viewModel, modelCopy);
+    v6->_newZoomLevel = [modelCopy zoomLevel];
+    [modelCopy registerChangeObserver:v6 context:PXCuratedLibraryViewModelObservableContext];
+    zoomablePhotosViewModel = [modelCopy zoomablePhotosViewModel];
+    [zoomablePhotosViewModel registerChangeObserver:v6 context:PXCuratedLibraryViewModelZoomablePhotosObserverContext_148226];
   }
 
   return v6;

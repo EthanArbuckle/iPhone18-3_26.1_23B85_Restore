@@ -1,29 +1,29 @@
 @interface TUIElementAspectBox
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementAspectBox
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  [a5 floatForAttribute:13 withDefault:var0 node:1.0];
-  [v8 setAspectRatio:?];
+  var0 = node.var0;
+  boxCopy = box;
+  [attributes floatForAttribute:13 withDefault:var0 node:1.0];
+  [boxCopy setAspectRatio:?];
 }
 
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context
 {
-  var0 = a4.var0;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 stringForAttribute:96 node:var0];
-  [v10 setHalign:{+[TUIBox halignFromString:](TUIBox, "halignFromString:", v11)}];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  v11 = [attributesCopy stringForAttribute:96 node:var0];
+  [boxCopy setHalign:{+[TUIBox halignFromString:](TUIBox, "halignFromString:", v11)}];
 
-  v12 = [v9 stringForAttribute:218 node:var0];
+  v12 = [attributesCopy stringForAttribute:218 node:var0];
 
-  [v10 setValign:{+[TUIBox valignFromString:](TUIBox, "valignFromString:", v12)}];
+  [boxCopy setValign:{+[TUIBox valignFromString:](TUIBox, "valignFromString:", v12)}];
 }
 
 @end

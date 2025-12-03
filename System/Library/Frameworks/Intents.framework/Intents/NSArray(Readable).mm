@@ -9,13 +9,13 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,14 +26,14 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) _intents_localizedCopyWithLocalizer:{v4, v14}];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -49,14 +49,14 @@
   v42 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 locale];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  locale = [v6 locale];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = a1;
-  v11 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  selfCopy = self;
+  v11 = [selfCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v11)
   {
     v12 = v11;
@@ -67,7 +67,7 @@
       {
         if (*v38 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(selfCopy);
         }
 
         v15 = [*(*(&v37 + 1) + 8 * i) _intents_readableTitleWithLocalizer:v6 metadata:v7];
@@ -77,30 +77,30 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v12 = [selfCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v12);
   }
 
   v16 = [v9 count];
-  v17 = v16;
+  firstObject = v16;
   if (v16)
   {
     if (v16 == 2)
     {
       v18 = objc_alloc(MEMORY[0x1E696AEC0]);
       v19 = INLocalizedStringWithLocalizer(@"%@ and %@ (two elements format)", @"%@ and %@", v6);
-      v20 = [v9 objectAtIndex:0];
+      lastObject = [v9 objectAtIndex:0];
       v21 = [v9 objectAtIndex:1];
-      v17 = [v18 initWithFormat:v19 locale:v8, v20, v21];
+      firstObject = [v18 initWithFormat:v19 locale:locale, lastObject, v21];
     }
 
     else
     {
       if (v16 == 1)
       {
-        v17 = [v9 firstObject];
+        firstObject = [v9 firstObject];
         goto LABEL_22;
       }
 
@@ -108,17 +108,17 @@
       v23 = INLocalizedStringWithLocalizer(@"%@, %@ (three or more start format)", @"%@, %@", v6);
       v24 = [v9 objectAtIndex:0];
       v25 = [v9 objectAtIndex:1];
-      v26 = [v22 initWithFormat:v23 locale:v8, v24, v25];
+      v26 = [v22 initWithFormat:v23 locale:locale, v24, v25];
 
-      v36 = v8;
-      if ((v17 - 1) < 3)
+      v36 = locale;
+      if ((firstObject - 1) < 3)
       {
         v32 = v26;
       }
 
       else
       {
-        v27 = v17 - 3;
+        v27 = firstObject - 3;
         v28 = 2;
         do
         {
@@ -137,9 +137,9 @@
 
       v33 = objc_alloc(MEMORY[0x1E696AEC0]);
       v19 = INLocalizedStringWithLocalizer(@"%@ and %@ (three or more end format)", @"%@ and %@", v6);
-      v20 = [v9 lastObject];
-      v8 = v36;
-      v17 = [v33 initWithFormat:v19 locale:v36, v32, v20];
+      lastObject = [v9 lastObject];
+      locale = v36;
+      firstObject = [v33 initWithFormat:v19 locale:v36, v32, lastObject];
     }
   }
 
@@ -147,7 +147,7 @@ LABEL_22:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return firstObject;
 }
 
 @end

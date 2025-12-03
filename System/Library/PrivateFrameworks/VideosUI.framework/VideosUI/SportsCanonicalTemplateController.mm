@@ -1,13 +1,13 @@
 @interface SportsCanonicalTemplateController
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SportsCanonicalTemplateController
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1E4092964(a3);
+  selfCopy = self;
+  sub_1E4092964(disappear);
 }
 
 @end

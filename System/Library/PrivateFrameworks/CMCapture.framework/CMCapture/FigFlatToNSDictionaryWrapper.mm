@@ -1,31 +1,31 @@
 @interface FigFlatToNSDictionaryWrapper
 - (BOOL)_ensureFlatDictionaryIsInitialized;
-- (FigFlatToNSDictionaryWrapper)initWithFlatDictionary:(OpaqueFigFlatDictionary *)a3 keySpec:(OpaqueFigFlatDictionaryKeySpec *)a4;
-- (id)initLazilyWithFlatDictionaryBacking:(void *)a3 exportedKeySpec:(void *)a4 deallocatorBlock:(id)a5;
+- (FigFlatToNSDictionaryWrapper)initWithFlatDictionary:(OpaqueFigFlatDictionary *)dictionary keySpec:(OpaqueFigFlatDictionaryKeySpec *)spec;
+- (id)initLazilyWithFlatDictionaryBacking:(void *)backing exportedKeySpec:(void *)spec deallocatorBlock:(id)block;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
-- (uint64_t)arrayForFlatDictionaryArrayDataKey:(uint64_t)a1;
+- (id)objectForKey:(id)key;
+- (uint64_t)arrayForFlatDictionaryArrayDataKey:(uint64_t)key;
 - (unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation FigFlatToNSDictionaryWrapper
 
-- (FigFlatToNSDictionaryWrapper)initWithFlatDictionary:(OpaqueFigFlatDictionary *)a3 keySpec:(OpaqueFigFlatDictionaryKeySpec *)a4
+- (FigFlatToNSDictionaryWrapper)initWithFlatDictionary:(OpaqueFigFlatDictionary *)dictionary keySpec:(OpaqueFigFlatDictionaryKeySpec *)spec
 {
   v4 = 0;
-  if (a3)
+  if (dictionary)
   {
-    if (a4)
+    if (spec)
     {
       v8.receiver = self;
       v8.super_class = FigFlatToNSDictionaryWrapper;
       v4 = [(FigFlatToNSDictionaryWrapper *)&v8 init];
       if (v4)
       {
-        v4->_flatDictionary = CFRetain(a3);
-        v4->_keySpec = CFRetain(a4);
-        v4->_keySpace = FigFlatDictionaryKeySpecGetKeySpace(a4);
+        v4->_flatDictionary = CFRetain(dictionary);
+        v4->_keySpec = CFRetain(spec);
+        v4->_keySpace = FigFlatDictionaryKeySpecGetKeySpace(spec);
         v4->_lazyInitializationMutex._os_unfair_lock_opaque = 0;
       }
     }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (id)initLazilyWithFlatDictionaryBacking:(void *)a3 exportedKeySpec:(void *)a4 deallocatorBlock:(id)a5
+- (id)initLazilyWithFlatDictionaryBacking:(void *)backing exportedKeySpec:(void *)spec deallocatorBlock:(id)block
 {
   v5 = 0;
-  if (a3)
+  if (backing)
   {
-    if (a4)
+    if (spec)
     {
-      if (a5)
+      if (block)
       {
         v11.receiver = self;
         v11.super_class = FigFlatToNSDictionaryWrapper;
@@ -49,9 +49,9 @@
         v5 = v9;
         if (v9)
         {
-          v9->_dictionaryBacking = a3;
-          v9->_exportedKeySpec = a4;
-          v9->_deallocatorBlock = [a5 copy];
+          v9->_dictionaryBacking = backing;
+          v9->_exportedKeySpec = spec;
+          v9->_deallocatorBlock = [block copy];
           v5->_lazyInitializationMutex._os_unfair_lock_opaque = 0;
         }
       }
@@ -98,13 +98,13 @@
 
 - (BOOL)_ensureFlatDictionaryIsInitialized
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 56));
-  if (*(a1 + 8))
+  os_unfair_lock_lock((self + 56));
+  if (*(self + 8))
   {
     v2 = 1;
   }
@@ -112,14 +112,14 @@
   else
   {
     v3 = *MEMORY[0x1E695E480];
-    v4 = FigFlatDictionaryKeySpecReconstructFromBinary(*MEMORY[0x1E695E480], *(a1 + 40));
-    *(a1 + 16) = v4;
-    *(a1 + 8) = FigFlatDictionaryCreateFromBacking(v3, v3, v4, *(a1 + 32));
-    *(a1 + 24) = FigFlatDictionaryKeySpecGetKeySpace(*(a1 + 16));
-    v2 = *(a1 + 8) != 0;
+    v4 = FigFlatDictionaryKeySpecReconstructFromBinary(*MEMORY[0x1E695E480], *(self + 40));
+    *(self + 16) = v4;
+    *(self + 8) = FigFlatDictionaryCreateFromBacking(v3, v3, v4, *(self + 32));
+    *(self + 24) = FigFlatDictionaryKeySpecGetKeySpace(*(self + 16));
+    v2 = *(self + 8) != 0;
   }
 
-  os_unfair_lock_unlock((a1 + 56));
+  os_unfair_lock_unlock((self + 56));
   return v2;
 }
 
@@ -136,14 +136,14 @@
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   if (![(FigFlatToNSDictionaryWrapper *)self _ensureFlatDictionaryIsInitialized])
   {
     return 0;
   }
 
-  [a3 fastestEncoding];
+  [key fastestEncoding];
   result = [OUTLINED_FUNCTION_17() cStringUsingEncoding:?];
   if (result)
   {
@@ -230,17 +230,17 @@
   return result;
 }
 
-- (uint64_t)arrayForFlatDictionaryArrayDataKey:(uint64_t)a1
+- (uint64_t)arrayForFlatDictionaryArrayDataKey:(uint64_t)key
 {
-  if (!a1)
+  if (!key)
   {
     return 0;
   }
 
-  ArrayDataType = FigFlatDictionaryGetArrayDataType(*(a1 + 8), a2);
+  ArrayDataType = FigFlatDictionaryGetArrayDataType(*(key + 8), a2);
   v25 = 0;
-  FigFlatDictionaryGetDataSize(*(a1 + 8), a2, &v25, 0);
-  v5 = 0;
+  FigFlatDictionaryGetDataSize(*(key + 8), a2, &v25, 0);
+  array = 0;
   switch(ArrayDataType)
   {
     case 1:
@@ -373,15 +373,15 @@
       if (v25 < 0x18)
       {
 LABEL_28:
-        v5 = MEMORY[0x1E695E0F0];
+        array = MEMORY[0x1E695E0F0];
       }
 
       else
       {
         v12 = v25 / 0x18;
         v13 = (&time - ((24 * v12 + 15) & 0x3FFFFFFF0));
-        FigFlatDictionaryGetData(*(a1 + 8), a2, 0, v13, &v25);
-        v5 = [MEMORY[0x1E695DF70] array];
+        FigFlatDictionaryGetData(*(key + 8), a2, 0, v13, &v25);
+        array = [MEMORY[0x1E695DF70] array];
         v14 = *MEMORY[0x1E695E480];
         do
         {
@@ -397,10 +397,10 @@ LABEL_28:
 
       break;
     default:
-      return v5;
+      return array;
   }
 
-  return v5;
+  return array;
 }
 
 - (id)keyEnumerator

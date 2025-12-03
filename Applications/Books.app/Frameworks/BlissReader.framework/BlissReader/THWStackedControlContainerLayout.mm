@@ -1,22 +1,22 @@
 @interface THWStackedControlContainerLayout
-- (BOOL)allowsLastLineTruncation:(id)a3;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (BOOL)allowsLastLineTruncation:(id)truncation;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
 - (THWStackedControlContainerLayoutDelegate)delegate;
-- (double)heightForFlexibleChildLayout:(id)a3;
-- (double)maxAutoGrowWidthForTextLayout:(id)a3;
-- (double)p_computeTotalHeightWithInsets:(UIEdgeInsets)a3 fixedOnly:(BOOL)a4;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (double)heightForFlexibleChildLayout:(id)layout;
+- (double)maxAutoGrowWidthForTextLayout:(id)layout;
+- (double)p_computeTotalHeightWithInsets:(UIEdgeInsets)insets fixedOnly:(BOOL)only;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)computeLayoutGeometry;
-- (id)layoutGeometryForLayout:(id)a3;
-- (id)styleProviderForLayout:(id)a3;
-- (id)styleProviderForStorage:(id)a3;
-- (unsigned)autosizeFlagsForTextLayout:(id)a3;
-- (unsigned)maxLineCountForTextLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
+- (id)styleProviderForLayout:(id)layout;
+- (id)styleProviderForStorage:(id)storage;
+- (unsigned)autosizeFlagsForTextLayout:(id)layout;
+- (unsigned)maxLineCountForTextLayout:(id)layout;
 - (void)dealloc;
-- (void)p_positionChildrenWithAlignment:(unsigned int)a3;
+- (void)p_positionChildrenWithAlignment:(unsigned int)alignment;
 - (void)updateChildrenFromInfo;
 - (void)validate;
 @end
@@ -32,9 +32,9 @@
 
 - (THWStackedControlContainerLayoutDelegate)delegate
 {
-  v2 = [(THWStackedControlContainerLayout *)self info];
+  info = [(THWStackedControlContainerLayout *)self info];
 
-  return [v2 delegate];
+  return [info delegate];
 }
 
 - (void)updateChildrenFromInfo
@@ -42,15 +42,15 @@
   v17.receiver = self;
   v17.super_class = THWStackedControlContainerLayout;
   [(THWContainerLayout *)&v17 updateChildrenFromInfo];
-  v3 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(THWStackedControlContainerLayout *)self children];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    children = [(THWStackedControlContainerLayout *)self children];
+    v5 = [children countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -63,11 +63,11 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
-          if ([(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainer:self isHeightFlexibleForLayout:v11])
+          if ([(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self isHeightFlexibleForLayout:v11])
           {
             if (v8)
             {
@@ -95,7 +95,7 @@
           [v12 addObject:v11];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v6 = [children countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v6);
@@ -118,10 +118,10 @@
   }
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   childrenWithFlexibleHeight = self->_childrenWithFlexibleHeight;
-  if (childrenWithFlexibleHeight && [(NSArray *)childrenWithFlexibleHeight indexOfObjectIdenticalTo:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  if (childrenWithFlexibleHeight && [(NSArray *)childrenWithFlexibleHeight indexOfObjectIdenticalTo:layout]!= 0x7FFFFFFFFFFFFFFFLL)
   {
 
     return [NSArray arrayWithObject:self];
@@ -129,7 +129,7 @@
 
   else
   {
-    v6 = [(NSArray *)self->_childrenWithFixedHeight indexOfObjectIdenticalTo:a3]+ 1;
+    v6 = [(NSArray *)self->_childrenWithFixedHeight indexOfObjectIdenticalTo:layout]+ 1;
     if (v6 < [(NSArray *)self->_childrenWithFixedHeight count]&& (v7 = [(NSArray *)self->_childrenWithFixedHeight objectAtIndex:v6]) != 0)
     {
       result = [NSArray arrayWithObjects:v7, self, 0];
@@ -150,17 +150,17 @@
   return result;
 }
 
-- (double)p_computeTotalHeightWithInsets:(UIEdgeInsets)a3 fixedOnly:(BOOL)a4
+- (double)p_computeTotalHeightWithInsets:(UIEdgeInsets)insets fixedOnly:(BOOL)only
 {
-  v4 = a4;
-  bottom = a3.bottom;
-  top = a3.top;
-  v8 = [(THWStackedControlContainerLayout *)self delegate:a3.top];
+  onlyCopy = only;
+  bottom = insets.bottom;
+  top = insets.top;
+  v8 = [(THWStackedControlContainerLayout *)self delegate:insets.top];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  if (v4)
+  if (onlyCopy)
   {
     childrenWithFixedHeight = self->_childrenWithFixedHeight;
   }
@@ -199,8 +199,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [(THWStackedControlContainerLayout *)self children];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  children = [(THWStackedControlContainerLayout *)self children];
+  v17 = [children countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
     v18 = v17;
@@ -214,7 +214,7 @@
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(children);
         }
 
         v19 = *(*(&v27 + 1) + 8 * v21);
@@ -236,7 +236,7 @@
       }
 
       while (v18 != v21);
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v18 = [children countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v18);
@@ -245,16 +245,16 @@
   return v10;
 }
 
-- (double)heightForFlexibleChildLayout:(id)a3
+- (double)heightForFlexibleChildLayout:(id)layout
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
-  [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainerInsets:self];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
   [(THWStackedControlContainerLayout *)self p_computeTotalHeightWithInsets:1 fixedOnly:?];
   v7 = v6;
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self heightForFlexibleLayout:a3 withTotalFixedHeight:v7];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self heightForFlexibleLayout:layout withTotalFixedHeight:v7];
   }
 
   else
@@ -263,7 +263,7 @@
     result = 0.0;
     if (v8)
     {
-      [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainerMinHeight:self, 0.0];
+      [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerMinHeight:self, 0.0];
       if (v7 >= v9)
       {
         v10 = 0.0;
@@ -281,51 +281,51 @@
   return result;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
-  v5 = [(THWStackedControlContainerLayout *)self children];
-  v6 = [v5 indexOfObjectIdenticalTo:a3];
+  children = [(THWStackedControlContainerLayout *)self children];
+  v6 = [children indexOfObjectIdenticalTo:layout];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v8 = v6;
-  v9 = [(THWStackedControlContainerLayout *)self delegate];
-  [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainerWidth:self];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerWidth:self];
   v11 = v10;
-  [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainerInsets:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
   v13 = v12;
   v15 = v14;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && -[THWStackedControlContainerLayoutDelegate stackedControlContainer:isHeightFlexibleForLayout:](v9, "stackedControlContainer:isHeightFlexibleForLayout:", self, a3) && (-[THWStackedControlContainerLayout heightForFlexibleChildLayout:](self, "heightForFlexibleChildLayout:", a3), v16 > 0.0) && (result = [[TSDLayoutGeometry alloc] initWithFrame:{v13, 0.0, v11 - v13 - v15, v16}]) != 0 || (result = -[THWStackedControlContainerLayoutDelegate stackedControlContainer:layoutGeometryForLayout:](v9, "stackedControlContainer:layoutGeometryForLayout:", self, a3)) != 0 || (result = objc_msgSend(a3, "layoutGeometryFromInfo")) != 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && -[THWStackedControlContainerLayoutDelegate stackedControlContainer:isHeightFlexibleForLayout:](delegate, "stackedControlContainer:isHeightFlexibleForLayout:", self, layout) && (-[THWStackedControlContainerLayout heightForFlexibleChildLayout:](self, "heightForFlexibleChildLayout:", layout), v16 > 0.0) && (result = [[TSDLayoutGeometry alloc] initWithFrame:{v13, 0.0, v11 - v13 - v15, v16}]) != 0 || (result = -[THWStackedControlContainerLayoutDelegate stackedControlContainer:layoutGeometryForLayout:](delegate, "stackedControlContainer:layoutGeometryForLayout:", self, layout)) != 0 || (result = objc_msgSend(layout, "layoutGeometryFromInfo")) != 0)
   {
     v17 = result;
     if (v8)
     {
-      v18 = [v5 objectAtIndex:v8 - 1];
+      v18 = [children objectAtIndex:v8 - 1];
       if (v18)
       {
         v19 = v18;
         [v18 frame];
         CGRectGetMaxY(v29);
-        [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainer:self verticalPaddingAfter:v19];
-        [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainer:self verticalPaddingBefore:a3];
-        [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainer:self verticalSpacingAfter:v19];
+        [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingAfter:v19];
+        [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingBefore:layout];
+        [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingAfter:v19];
       }
     }
 
-    [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainer:self verticalPaddingBefore:a3];
-    [(THWStackedControlContainerLayoutDelegate *)v9 stackedControlContainer:self alignmentForLayout:self];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingBefore:layout];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self alignmentForLayout:self];
     y = CGPointZero.y;
     [v17 size];
     v22 = v21;
     v24 = v23;
     memset(&v28, 0, sizeof(v28));
     [v17 transform];
-    v25 = [(THWStackedControlContainerLayout *)self geometry];
-    if (v25)
+    geometry = [(THWStackedControlContainerLayout *)self geometry];
+    if (geometry)
     {
-      [v25 transform];
+      [geometry transform];
     }
 
     else
@@ -347,31 +347,31 @@
   return result;
 }
 
-- (void)p_positionChildrenWithAlignment:(unsigned int)a3
+- (void)p_positionChildrenWithAlignment:(unsigned int)alignment
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
-  [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainerWidth:self];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerWidth:self];
   v7 = v6;
-  [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainerInsets:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (a3)
+  if (alignment)
   {
     v15 = v8;
     if (objc_opt_respondsToSelector())
     {
-      [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainerMinHeight:self];
+      [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerMinHeight:self];
       v17 = v16;
       [(THWStackedControlContainerLayout *)self p_computeTotalHeightWithInsets:0 fixedOnly:v10, v12, v15, v14];
       if (v18 < v17)
       {
-        if (a3 == 1 || a3 == 3)
+        if (alignment == 1 || alignment == 3)
         {
           v10 = v10 + (v17 - v18) * 0.5;
         }
 
-        else if (a3 == 2)
+        else if (alignment == 2)
         {
           v10 = v10 + v17 - v18;
         }
@@ -383,8 +383,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v19 = [(THWStackedControlContainerLayout *)self children];
-  v20 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  children = [(THWStackedControlContainerLayout *)self children];
+  v20 = [children countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v20)
   {
     v21 = v20;
@@ -400,25 +400,25 @@
       {
         if (*v43 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(children);
         }
 
         v22 = *(*(&v42 + 1) + 8 * v25);
-        v27 = [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self alignmentForLayout:v22];
+        v27 = [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self alignmentForLayout:v22];
         [v22 frame];
         v29 = v28;
         v31 = v30;
         if (objc_opt_respondsToSelector())
         {
-          [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self minHeightForChildLayout:v22];
+          [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self minHeightForChildLayout:v22];
           v31 = v32;
         }
 
         if (v26)
         {
-          [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self verticalPaddingAfter:v26];
+          [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingAfter:v26];
           v34 = v33;
-          [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self verticalPaddingBefore:v22];
+          [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingBefore:v22];
           if (v34 >= v35)
           {
             v35 = v34;
@@ -427,7 +427,7 @@
           v10 = v10 + v35;
         }
 
-        [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self verticalSpacingBefore:v22];
+        [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingBefore:v22];
         v37 = v10 + v36;
         v38 = v24 - v29;
         if (v27 != 1)
@@ -435,17 +435,17 @@
           v38 = v12;
         }
 
-        v39 = [v22 geometry];
+        geometry = [v22 geometry];
         TSDSubtractPoints();
-        [v22 setGeometry:{objc_msgSend(v39, "geometryByTranslatingBy:")}];
-        [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self verticalSpacingAfter:v22];
+        [v22 setGeometry:{objc_msgSend(geometry, "geometryByTranslatingBy:")}];
+        [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingAfter:v22];
         v10 = v31 + v37 + v40;
         v25 = v25 + 1;
         v26 = v22;
       }
 
       while (v21 != v25);
-      v21 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v21 = [children countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v21);
@@ -462,10 +462,10 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerVerticalAlignment:self];
+    v4 = [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerVerticalAlignment:self];
   }
 
   else
@@ -476,13 +476,13 @@
   [(THWStackedControlContainerLayout *)self p_positionChildrenWithAlignment:v4];
   if (objc_opt_respondsToSelector())
   {
-    [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerChildrenPositioned:self];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerChildrenPositioned:self];
   }
 
-  v5 = [(THWStackedControlContainerLayout *)self children];
-  if ([v5 count])
+  children = [(THWStackedControlContainerLayout *)self children];
+  if ([children count])
   {
-    v6 = [v5 objectAtIndex:0];
+    v6 = [children objectAtIndex:0];
   }
 
   else
@@ -490,12 +490,12 @@
     v6 = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v7 = [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerHeightLastChild:self]) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (lastObject = [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerHeightLastChild:self]) == 0)
   {
-    v7 = [v5 lastObject];
+    lastObject = [children lastObject];
   }
 
-  [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerInsets:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
   v9 = v8;
   v11 = v10;
   v12 = v8;
@@ -503,42 +503,42 @@
   {
     [v6 frame];
     MinY = CGRectGetMinY(v28);
-    [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainer:self verticalSpacingBefore:v6];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingBefore:v6];
     v12 = MinY - v14;
   }
 
   v15 = v9;
-  if (v7)
+  if (lastObject)
   {
-    [v7 frame];
+    [lastObject frame];
     MaxY = CGRectGetMaxY(v29);
-    [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainer:self verticalSpacingAfter:v7];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingAfter:lastObject];
     v15 = MaxY + v17;
   }
 
-  [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerWidth:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerWidth:self];
   v19 = v18;
   v20 = objc_opt_respondsToSelector();
   v21 = 0.0;
   if (v20)
   {
-    [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerMinHeight:self, 0.0];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerMinHeight:self, 0.0];
   }
 
   v22 = fmax(fmax(v11 + v15 - (v12 - v9), 0.0), v21);
-  [(THWStackedControlContainerLayoutDelegate *)v3 stackedControlContainerOrigin:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerOrigin:self];
   v25 = [[TSDLayoutGeometry alloc] initWithFrame:{v23, v24, v19, v22}];
 
   return v25;
 }
 
-- (unsigned)autosizeFlagsForTextLayout:(id)a3
+- (unsigned)autosizeFlagsForTextLayout:(id)layout
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   v6 = 3;
   if (objc_opt_respondsToSelector())
   {
-    if ([(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self autoGrowHorizontallyTextLayout:a3])
+    if ([(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self autoGrowHorizontallyTextLayout:layout])
     {
       return 7;
     }
@@ -552,7 +552,7 @@
   return v6;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
   v3 = 100.0;
@@ -566,32 +566,32 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(THWStackedControlContainerLayout *)self delegate];
-  v9 = [(THWStackedControlContainerLayout *)self children];
-  v10 = [v9 indexOfObjectIdenticalTo:a3];
+  height = size.height;
+  width = size.width;
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
+  children = [(THWStackedControlContainerLayout *)self children];
+  v10 = [children indexOfObjectIdenticalTo:layout];
   if (v10)
   {
-    v11 = [v9 objectAtIndex:v10 - 1];
-    [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainerInsets:self];
+    v11 = [children objectAtIndex:v10 - 1];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
     v14 = v13;
     v16 = v15;
     if (v11)
     {
       [v11 frame];
       MaxY = CGRectGetMaxY(v35);
-      [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self verticalPaddingAfter:v11];
+      [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingAfter:v11];
       v19 = v18;
-      [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self verticalPaddingBefore:a3];
+      [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalPaddingBefore:layout];
       if (v19 < v20)
       {
         v19 = v20;
       }
 
-      [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self verticalSpacingAfter:v11];
+      [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingAfter:v11];
       v22 = MaxY + v21 + v19;
     }
 
@@ -603,24 +603,24 @@
 
   else
   {
-    [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainerInsets:self];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
     v22 = v23;
     v14 = v24;
     v16 = v25;
   }
 
-  [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self verticalSpacingBefore:a3];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self verticalSpacingBefore:layout];
   v27 = v26;
-  [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainerWidth:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerWidth:self];
   v29 = v28;
   if (objc_opt_respondsToSelector())
   {
-    [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self leftRightInsetForTextLayout:a3];
+    [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self leftRightInsetForTextLayout:layout];
     v16 = v30;
     v14 = v30;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWStackedControlContainerLayoutDelegate *)v8 stackedControlContainer:self autoGrowHorizontallyTextLayout:a3])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self autoGrowHorizontallyTextLayout:layout])
   {
     v29 = v16 + width + v14;
   }
@@ -636,52 +636,52 @@
   return result;
 }
 
-- (id)styleProviderForLayout:(id)a3
+- (id)styleProviderForLayout:(id)layout
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
 
-  return [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self styleProviderForLayout:a3];
+  return [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self styleProviderForLayout:layout];
 }
 
-- (id)styleProviderForStorage:(id)a3
+- (id)styleProviderForStorage:(id)storage
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self styleProviderForStorage:a3];
+  return [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self styleProviderForStorage:storage];
 }
 
-- (BOOL)allowsLastLineTruncation:(id)a3
+- (BOOL)allowsLastLineTruncation:(id)truncation
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self allowsLastLineTruncationForLayout:a3];
+  return [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self allowsLastLineTruncationForLayout:truncation];
 }
 
-- (unsigned)maxLineCountForTextLayout:(id)a3
+- (unsigned)maxLineCountForTextLayout:(id)layout
 {
-  v5 = [(THWStackedControlContainerLayout *)self delegate];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWStackedControlContainerLayoutDelegate *)v5 stackedControlContainer:self maxLineCountForLayout:a3];
+  return [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainer:self maxLineCountForLayout:layout];
 }
 
-- (double)maxAutoGrowWidthForTextLayout:(id)a3
+- (double)maxAutoGrowWidthForTextLayout:(id)layout
 {
-  v4 = [(THWStackedControlContainerLayout *)self delegate];
-  [(THWStackedControlContainerLayoutDelegate *)v4 stackedControlContainerWidth:self];
+  delegate = [(THWStackedControlContainerLayout *)self delegate];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerWidth:self];
   v6 = v5;
-  [(THWStackedControlContainerLayoutDelegate *)v4 stackedControlContainerInsets:self];
+  [(THWStackedControlContainerLayoutDelegate *)delegate stackedControlContainerInsets:self];
   return v6 - v7 - v8;
 }
 
@@ -694,21 +694,21 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a3)
+  if (index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

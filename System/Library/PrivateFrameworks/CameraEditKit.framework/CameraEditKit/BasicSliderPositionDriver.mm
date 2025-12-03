@@ -1,23 +1,23 @@
 @interface BasicSliderPositionDriver
 - (_TtC13CameraEditKit25BasicSliderPositionDriver)init;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
 @end
 
 @implementation BasicSliderPositionDriver
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_1B7ECDA70();
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B7ECD740(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_1B7ECD740(actionCopy);
 }
 
 - (_TtC13CameraEditKit25BasicSliderPositionDriver)init

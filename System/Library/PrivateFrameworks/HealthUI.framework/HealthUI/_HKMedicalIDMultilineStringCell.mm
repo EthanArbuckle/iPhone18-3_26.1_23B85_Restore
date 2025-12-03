@@ -1,7 +1,7 @@
 @interface _HKMedicalIDMultilineStringCell
-- (_HKMedicalIDMultilineStringCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_HKMedicalIDMultilineStringCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)description;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_updateTextColor;
 - (void)dealloc;
 - (void)setUpConstraints;
@@ -11,18 +11,18 @@
 
 @implementation _HKMedicalIDMultilineStringCell
 
-- (_HKMedicalIDMultilineStringCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_HKMedicalIDMultilineStringCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = _HKMedicalIDMultilineStringCell;
-  v4 = [(_HKMedicalIDMultilineStringCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_HKMedicalIDMultilineStringCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(_HKMedicalIDMultilineStringCell *)v4 setupSubviews];
     [(_HKMedicalIDMultilineStringCell *)v5 setUpConstraints];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v5;
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = _HKMedicalIDMultilineStringCell;
@@ -43,103 +43,103 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(_HKMedicalIDMultilineStringCell *)self setTitleLabel:v3];
 
-  v4 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  [v4 setNumberOfLines:0];
+  titleLabel = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v5 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel2 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(_HKMedicalIDMultilineStringCell *)self _updateTextColor];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(_HKMedicalIDMultilineStringCell *)self setDetailLabel:v6];
 
-  v7 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailLabel = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  [detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  [v8 setNumberOfLines:0];
+  detailLabel2 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  [detailLabel2 setNumberOfLines:0];
 
-  v9 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v10 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  [v9 addSubview:v10];
+  contentView = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  titleLabel3 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  [contentView addSubview:titleLabel3];
 
-  v11 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v12 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  [v11 addSubview:v12];
+  contentView2 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  detailLabel3 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  [contentView2 addSubview:detailLabel3];
 
   [(_HKMedicalIDMultilineStringCell *)self _contentSizeCategoryDidChange:0];
 }
 
 - (void)setUpConstraints
 {
-  v3 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v4 = [v3 firstBaselineAnchor];
-  v5 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v8 = [v7 font];
-  [v8 _scaledValueForValue:25.0];
-  v9 = [v4 constraintEqualToAnchor:v6 constant:?];
+  titleLabel = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+  contentView = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  titleLabel2 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  font = [titleLabel2 font];
+  [font _scaledValueForValue:25.0];
+  v9 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v9 setActive:1];
 
-  v10 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v11 = [v10 leadingAnchor];
-  v12 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:16.0];
+  titleLabel3 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  leadingAnchor = [titleLabel3 leadingAnchor];
+  contentView2 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v14 setActive:1];
 
-  v15 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v16 = [v15 trailingAnchor];
-  v17 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:16.0];
+  contentView3 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  titleLabel4 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  trailingAnchor2 = [titleLabel4 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
   [v19 setActive:1];
 
-  v20 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v21 = [v20 firstBaselineAnchor];
-  v22 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v23 = [v22 lastBaselineAnchor];
-  v24 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v25 = [v24 font];
-  [v25 _scaledValueForValue:24.0];
-  v26 = [v21 constraintEqualToAnchor:v23 constant:?];
+  detailLabel = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  firstBaselineAnchor2 = [detailLabel firstBaselineAnchor];
+  titleLabel5 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
+  titleLabel6 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  font2 = [titleLabel6 font];
+  [font2 _scaledValueForValue:24.0];
+  v26 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v26 setActive:1];
 
-  v27 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v30 = [v29 leadingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:16.0];
+  detailLabel2 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  leadingAnchor3 = [detailLabel2 leadingAnchor];
+  contentView4 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  leadingAnchor4 = [contentView4 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [v31 setActive:1];
 
-  v32 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v33 = [v32 trailingAnchor];
-  v34 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v35 = [v34 trailingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35 constant:16.0];
+  contentView5 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  trailingAnchor3 = [contentView5 trailingAnchor];
+  detailLabel3 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  trailingAnchor4 = [detailLabel3 trailingAnchor];
+  v36 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
   [v36 setActive:1];
 
-  v43 = [(_HKMedicalIDMultilineStringCell *)self contentView];
-  v37 = [v43 bottomAnchor];
-  v38 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v39 = [v38 lastBaselineAnchor];
-  v40 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v41 = [v40 font];
-  [v41 _scaledValueForValue:15.0];
-  v42 = [v37 constraintEqualToAnchor:v39 constant:?];
+  contentView6 = [(_HKMedicalIDMultilineStringCell *)self contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  detailLabel4 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  lastBaselineAnchor2 = [detailLabel4 lastBaselineAnchor];
+  detailLabel5 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  font3 = [detailLabel5 font];
+  [font3 _scaledValueForValue:15.0];
+  v42 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
   [v42 setActive:1];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v5 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  [titleLabel setFont:v4];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v6 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  [v6 setFont:v7];
+  detailLabel = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  [detailLabel setFont:v7];
 }
 
 - (id)description
@@ -147,11 +147,11 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  v7 = [v6 text];
-  v8 = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
-  v9 = [v8 text];
-  v10 = [v3 stringWithFormat:@"<%@:%p titleLabel.text: %@ detailLabel.text: %@>", v5, self, v7, v9];
+  titleLabel = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  text = [titleLabel text];
+  detailLabel = [(_HKMedicalIDMultilineStringCell *)self detailLabel];
+  text2 = [detailLabel text];
+  v10 = [v3 stringWithFormat:@"<%@:%p titleLabel.text: %@ detailLabel.text: %@>", v5, self, text, text2];
 
   return v10;
 }
@@ -166,9 +166,9 @@
 
 - (void)_updateTextColor
 {
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v3 = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
-  [v3 setTextColor:v4];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  titleLabel = [(_HKMedicalIDMultilineStringCell *)self titleLabel];
+  [titleLabel setTextColor:secondaryLabelColor];
 }
 
 @end

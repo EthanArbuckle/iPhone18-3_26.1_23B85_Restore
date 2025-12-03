@@ -1,22 +1,22 @@
 @interface EKUIRightClickEmptySpaceInteraction
-+ (id)localizedPasteStringForEventCount:(unint64_t)a3 includeHere:(BOOL)a4;
-- (EKUIRightClickEmptySpaceInteraction)initWithDelegate:(id)a3;
++ (id)localizedPasteStringForEventCount:(unint64_t)count includeHere:(BOOL)here;
+- (EKUIRightClickEmptySpaceInteraction)initWithDelegate:(id)delegate;
 - (EKUIRightClickEmptySpaceInteractionDelegate)delegate;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation EKUIRightClickEmptySpaceInteraction
 
-- (EKUIRightClickEmptySpaceInteraction)initWithDelegate:(id)a3
+- (EKUIRightClickEmptySpaceInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = EKUIRightClickEmptySpaceInteraction;
   v5 = [(EKUIRightClickEmptySpaceInteraction *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(EKUIRightClickEmptySpaceInteraction *)v5 setDelegate:v4];
+    [(EKUIRightClickEmptySpaceInteraction *)v5 setDelegate:delegateCopy];
     v7 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:v6];
     interaction = v6->_interaction;
     v6->_interaction = v7;
@@ -25,13 +25,13 @@
   return v6;
 }
 
-+ (id)localizedPasteStringForEventCount:(unint64_t)a3 includeHere:(BOOL)a4
++ (id)localizedPasteStringForEventCount:(unint64_t)count includeHere:(BOOL)here
 {
-  v4 = a4;
+  hereCopy = here;
   v6 = MEMORY[0x1E696AEC0];
   v7 = EventKitUIBundle();
   v8 = v7;
-  if (v4)
+  if (hereCopy)
   {
     v9 = @"num_events_to_paste_here";
   }
@@ -42,23 +42,23 @@
   }
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_1F4EF6790 table:0];
-  v11 = [v6 localizedStringWithFormat:v10, a3];
+  v11 = [v6 localizedStringWithFormat:v10, count];
 
   return v11;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(EKUIRightClickEmptySpaceInteraction *)self view];
-  [v5 locationInView:v6];
+  interactionCopy = interaction;
+  view = [(EKUIRightClickEmptySpaceInteraction *)self view];
+  [interactionCopy locationInView:view];
   v8 = v7;
   v10 = v9;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v5 locationInView:v6];
-  v12 = [WeakRetained interaction:self shouldShowMenuAtPoint:v6 inView:?];
+  [interactionCopy locationInView:view];
+  v12 = [WeakRetained interaction:self shouldShowMenuAtPoint:view inView:?];
 
-  if (v12 && [v5 menuAppearance] != 1)
+  if (v12 && [interactionCopy menuAppearance] != 1)
   {
     v14 = MEMORY[0x1E69DC8D8];
     v16[0] = MEMORY[0x1E69E9820];
@@ -68,7 +68,7 @@
     v16[4] = self;
     v18 = v8;
     v19 = v10;
-    v17 = v6;
+    v17 = view;
     v13 = [v14 configurationWithIdentifier:0 previewProvider:0 actionProvider:v16];
   }
 

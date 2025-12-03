@@ -1,7 +1,7 @@
 @interface JavaNetInterfaceAddress
-- (BOOL)isEqual:(id)a3;
-- (JavaNetInterfaceAddress)initWithJavaNetInet4Address:(id)a3 withJavaNetInet4Address:(id)a4 withJavaNetInet4Address:(id)a5;
-- (JavaNetInterfaceAddress)initWithJavaNetInet6Address:(id)a3 withShort:(signed __int16)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaNetInterfaceAddress)initWithJavaNetInet4Address:(id)address withJavaNetInet4Address:(id)inet4Address withJavaNetInet4Address:(id)netInet4Address;
+- (JavaNetInterfaceAddress)initWithJavaNetInet6Address:(id)address withShort:(signed __int16)short;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -9,25 +9,25 @@
 
 @implementation JavaNetInterfaceAddress
 
-- (JavaNetInterfaceAddress)initWithJavaNetInet4Address:(id)a3 withJavaNetInet4Address:(id)a4 withJavaNetInet4Address:(id)a5
+- (JavaNetInterfaceAddress)initWithJavaNetInet4Address:(id)address withJavaNetInet4Address:(id)inet4Address withJavaNetInet4Address:(id)netInet4Address
 {
-  JreStrongAssign(&self->address_, a3);
-  JreStrongAssign(&self->broadcastAddress_, a4);
-  self->prefixLength_ = sub_10024FDB8(a5);
+  JreStrongAssign(&self->address_, address);
+  JreStrongAssign(&self->broadcastAddress_, inet4Address);
+  self->prefixLength_ = sub_10024FDB8(netInet4Address);
   return self;
 }
 
-- (JavaNetInterfaceAddress)initWithJavaNetInet6Address:(id)a3 withShort:(signed __int16)a4
+- (JavaNetInterfaceAddress)initWithJavaNetInet6Address:(id)address withShort:(signed __int16)short
 {
-  JreStrongAssign(&self->address_, a3);
+  JreStrongAssign(&self->address_, address);
   JreStrongAssign(&self->broadcastAddress_, 0);
-  self->prefixLength_ = a4;
+  self->prefixLength_ = short;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -40,7 +40,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -51,7 +51,7 @@
   }
 
   address = self->address_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (!address)
   {
     if (!v6)
@@ -71,13 +71,13 @@ LABEL_15:
   }
 
 LABEL_10:
-  if (*(a3 + 12) != self->prefixLength_)
+  if (*(equal + 12) != self->prefixLength_)
   {
     goto LABEL_15;
   }
 
   broadcastAddress = self->broadcastAddress_;
-  v9 = *(a3 + 2);
+  v9 = *(equal + 2);
   if (broadcastAddress)
   {
 

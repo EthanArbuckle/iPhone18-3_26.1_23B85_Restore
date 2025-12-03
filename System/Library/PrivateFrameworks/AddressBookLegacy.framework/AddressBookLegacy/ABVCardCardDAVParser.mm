@@ -1,40 +1,40 @@
 @interface ABVCardCardDAVParser
-- (ABVCardCardDAVParser)initWithData:(id)a3 importOptions:(unint64_t)a4;
-- (ABVCardCardDAVParser)initWithData:(id)a3 watchdogTimer:(id)a4 importOptions:(unint64_t)a5;
-- (BOOL)_handleUnknownTag:(id)a3 withValue:(id)a4;
-- (BOOL)importToGroup:(void *)a3;
-- (BOOL)importToGroup:(void *)a3 removeExistingProperties:(BOOL)a4;
-- (BOOL)importToPerson:(void *)a3;
-- (BOOL)importToPerson:(void *)a3 removeExistingProperties:(BOOL)a4;
+- (ABVCardCardDAVParser)initWithData:(id)data importOptions:(unint64_t)options;
+- (ABVCardCardDAVParser)initWithData:(id)data watchdogTimer:(id)timer importOptions:(unint64_t)options;
+- (BOOL)_handleUnknownTag:(id)tag withValue:(id)value;
+- (BOOL)importToGroup:(void *)group;
+- (BOOL)importToGroup:(void *)group removeExistingProperties:(BOOL)properties;
+- (BOOL)importToPerson:(void *)person;
+- (BOOL)importToPerson:(void *)person removeExistingProperties:(BOOL)properties;
 - (BOOL)parseUID;
 - (void)cleanUpCardState;
-- (void)createRecordInSource:(void *)a3 outRecordType:(unsigned int *)a4;
+- (void)createRecordInSource:(void *)source outRecordType:(unsigned int *)type;
 - (void)dealloc;
 - (void)noteLackOfValueForImageData;
-- (void)noteLackOfValueForProperty:(unsigned int)a3;
+- (void)noteLackOfValueForProperty:(unsigned int)property;
 @end
 
 @implementation ABVCardCardDAVParser
 
-- (ABVCardCardDAVParser)initWithData:(id)a3 watchdogTimer:(id)a4 importOptions:(unint64_t)a5
+- (ABVCardCardDAVParser)initWithData:(id)data watchdogTimer:(id)timer importOptions:(unint64_t)options
 {
   v8.receiver = self;
   v8.super_class = ABVCardCardDAVParser;
-  v6 = [(ABVCardParser *)&v8 initWithData:a3 watchdogTimer:a4];
+  v6 = [(ABVCardParser *)&v8 initWithData:data watchdogTimer:timer];
   if (v6)
   {
     v6->_unknownAttributes = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6->_importOptions = a5;
+    v6->_importOptions = options;
   }
 
   return v6;
 }
 
-- (ABVCardCardDAVParser)initWithData:(id)a3 importOptions:(unint64_t)a4
+- (ABVCardCardDAVParser)initWithData:(id)data importOptions:(unint64_t)options
 {
   v7 = [ABVCardWatchdogTimer timerWithTimeProvider:objc_alloc_init(_ABVCardTimeProvider)];
 
-  return [(ABVCardCardDAVParser *)self initWithData:a3 watchdogTimer:v7 importOptions:a4];
+  return [(ABVCardCardDAVParser *)self initWithData:data watchdogTimer:v7 importOptions:options];
 }
 
 - (void)dealloc
@@ -49,47 +49,47 @@
 
 - (BOOL)parseUID
 {
-  v3 = [(ABVCardParser *)self parseSingleValue];
-  if (v3)
+  parseSingleValue = [(ABVCardParser *)self parseSingleValue];
+  if (parseSingleValue)
   {
-    v4 = [(ABVCardParser *)self _valueSetter];
-    [v4 setValue:v3 forProperty:kABPersonExternalUUIDProperty];
+    _valueSetter = [(ABVCardParser *)self _valueSetter];
+    [_valueSetter setValue:parseSingleValue forProperty:kABPersonExternalUUIDProperty];
   }
 
-  return v3 != 0;
+  return parseSingleValue != 0;
 }
 
-- (BOOL)_handleUnknownTag:(id)a3 withValue:(id)a4
+- (BOOL)_handleUnknownTag:(id)tag withValue:(id)value
 {
-  if (![a3 compare:@"X-ADDRESSBOOKSERVER-KIND" options:1])
+  if (![tag compare:@"X-ADDRESSBOOKSERVER-KIND" options:1])
   {
     [-[ABVCardParser _valueSetter](self "_valueSetter")];
   }
 
-  v7 = [(NSMutableDictionary *)self->_unknownAttributes objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_unknownAttributes objectForKey:tag];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_unknownAttributes setObject:v7 forKey:a3];
+    [(NSMutableDictionary *)self->_unknownAttributes setObject:v7 forKey:tag];
   }
 
-  [v7 addObject:a4];
+  [v7 addObject:value];
   return 1;
 }
 
-- (BOOL)importToPerson:(void *)a3 removeExistingProperties:(BOOL)a4
+- (BOOL)importToPerson:(void *)person removeExistingProperties:(BOOL)properties
 {
-  if (a4)
+  if (properties)
   {
     self->_importOptions |= 1uLL;
   }
 
-  return [(ABVCardCardDAVParser *)self importToPerson:a3];
+  return [(ABVCardCardDAVParser *)self importToPerson:person];
 }
 
-- (BOOL)importToPerson:(void *)a3
+- (BOOL)importToPerson:(void *)person
 {
-  v4 = [[ABVCardCardDAVValueSetter alloc] initWithPerson:a3 options:self->_importOptions];
+  v4 = [[ABVCardCardDAVValueSetter alloc] initWithPerson:person options:self->_importOptions];
   v5 = [(ABVCardParser *)self importToValueSetter:v4];
   if ([(NSMutableDictionary *)self->_unknownAttributes count])
   {
@@ -97,26 +97,26 @@
     [v6 setOutputFormat:200];
     [v6 encodeObject:self->_unknownAttributes forKey:*MEMORY[0x1E696A508]];
     [v6 finishEncoding];
-    v7 = [v6 encodedData];
-    [(ABVCardCardDAVValueSetter *)v4 setValue:v7 forProperty:kABPersonExternalRepresentationProperty];
+    encodedData = [v6 encodedData];
+    [(ABVCardCardDAVValueSetter *)v4 setValue:encodedData forProperty:kABPersonExternalRepresentationProperty];
   }
 
   return v5;
 }
 
-- (BOOL)importToGroup:(void *)a3 removeExistingProperties:(BOOL)a4
+- (BOOL)importToGroup:(void *)group removeExistingProperties:(BOOL)properties
 {
-  if (a4)
+  if (properties)
   {
     self->_importOptions |= 1uLL;
   }
 
-  return [(ABVCardCardDAVParser *)self importToGroup:a3];
+  return [(ABVCardCardDAVParser *)self importToGroup:group];
 }
 
-- (BOOL)importToGroup:(void *)a3
+- (BOOL)importToGroup:(void *)group
 {
-  v4 = [[ABVCardCardDAVValueSetter alloc] initWithGroup:a3 options:self->_importOptions];
+  v4 = [[ABVCardCardDAVValueSetter alloc] initWithGroup:group options:self->_importOptions];
   v5 = [(ABVCardParser *)self importToValueSetter:v4];
   if ([(NSMutableDictionary *)self->_unknownAttributes count])
   {
@@ -124,18 +124,18 @@
     [v6 setOutputFormat:200];
     [v6 encodeObject:self->_unknownAttributes forKey:*MEMORY[0x1E696A508]];
     [v6 finishEncoding];
-    v7 = [v6 encodedData];
-    [(ABVCardCardDAVValueSetter *)v4 setValue:v7 forProperty:kABPersonExternalRepresentationProperty];
+    encodedData = [v6 encodedData];
+    [(ABVCardCardDAVValueSetter *)v4 setValue:encodedData forProperty:kABPersonExternalRepresentationProperty];
   }
 
   return v5;
 }
 
-- (void)createRecordInSource:(void *)a3 outRecordType:(unsigned int *)a4
+- (void)createRecordInSource:(void *)source outRecordType:(unsigned int *)type
 {
-  if (a3)
+  if (source)
   {
-    v7 = ABPersonCreateInSource(a3);
+    v7 = ABPersonCreateInSource(source);
   }
 
   else
@@ -152,13 +152,13 @@
     [v11 setOutputFormat:200];
     [v11 encodeObject:self->_unknownAttributes forKey:*MEMORY[0x1E696A508]];
     [v11 finishEncoding];
-    v12 = [v11 encodedData];
-    [(ABVCardCardDAVValueSetter *)v9 setValue:v12 forProperty:kABPersonExternalRepresentationProperty];
+    encodedData = [v11 encodedData];
+    [(ABVCardCardDAVValueSetter *)v9 setValue:encodedData forProperty:kABPersonExternalRepresentationProperty];
   }
 
   if (v10)
   {
-    v13 = [(ABVCardCardDAVValueSetter *)v9 copyParsedRecordWithSource:a3 outRecordType:a4];
+    v13 = [(ABVCardCardDAVValueSetter *)v9 copyParsedRecordWithSource:source outRecordType:type];
   }
 
   else
@@ -174,14 +174,14 @@
   return v13;
 }
 
-- (void)noteLackOfValueForProperty:(unsigned int)a3
+- (void)noteLackOfValueForProperty:(unsigned int)property
 {
   if (self->_importOptions)
   {
     return;
   }
 
-  v4 = [(ABVCardValueSetter *)self->super._valueSetter valueForProperty:*&a3];
+  v4 = [(ABVCardValueSetter *)self->super._valueSetter valueForProperty:*&property];
   if (!v4)
   {
     return;

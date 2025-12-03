@@ -1,93 +1,93 @@
 @interface MapsSuggestionsEntry
-+ (id)entryFromSerializedBase64String:(id)a3 hasPrefix:(BOOL)a4;
-+ (id)entryFromSerializedHexString:(id)a3 hasPrefix:(BOOL)a4;
-+ (id)entryFromSerializedString:(id)a3;
-+ (id)entryWithData:(id)a3;
-+ (id)entryWithType:(int64_t)a3 title:(id)a4 subtitle:(id)a5 weight:(double)a6 expires:(id)a7 sourceSpecificInfo:(id)a8;
-- (BOOL)BOOLeanForKey:(id)a3;
-- (BOOL)BOOLeanForKey:(id)a3 is:(BOOL)a4;
-- (BOOL)_wasEverOfType:(int64_t)a3;
-- (BOOL)_wasEverOneOfTypes:(id)a3;
-- (BOOL)containsKey:(id)a3;
-- (BOOL)expiresBeforeEntry:(id)a3;
++ (id)entryFromSerializedBase64String:(id)string hasPrefix:(BOOL)prefix;
++ (id)entryFromSerializedHexString:(id)string hasPrefix:(BOOL)prefix;
++ (id)entryFromSerializedString:(id)string;
++ (id)entryWithData:(id)data;
++ (id)entryWithType:(int64_t)type title:(id)title subtitle:(id)subtitle weight:(double)weight expires:(id)expires sourceSpecificInfo:(id)info;
+- (BOOL)BOOLeanForKey:(id)key;
+- (BOOL)BOOLeanForKey:(id)key is:(BOOL)is;
+- (BOOL)_wasEverOfType:(int64_t)type;
+- (BOOL)_wasEverOneOfTypes:(id)types;
+- (BOOL)containsKey:(id)key;
+- (BOOL)expiresBeforeEntry:(id)entry;
 - (BOOL)hasEssentialFlightInfo;
 - (BOOL)hasExpired;
 - (BOOL)hasFullFlightInfoAndGate;
 - (BOOL)hasMultipleWaypointsLeft;
 - (BOOL)hasStartAndEndTime;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntry:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntry:(id)entry;
 - (BOOL)isLockedOrHidden;
 - (BOOL)isMultiPointRoute;
 - (BOOL)isPureShortcut;
 - (BOOL)isShortcutForSetup;
-- (BOOL)startsBeforeEntry:(id)a3;
-- (BOOL)updateUndecoratedSubtitle:(id)a3;
-- (BOOL)updateUndecoratedTitle:(id)a3;
-- (MapsSuggestionsEntry)initWithCoder:(id)a3;
-- (MapsSuggestionsEntry)initWithType:(int64_t)a3 title:(id)a4 subtitle:(id)a5 weight:(double)a6 expires:(id)a7 geoMapItem:(id)a8 sourceSpecificInfo:(id)a9;
+- (BOOL)startsBeforeEntry:(id)entry;
+- (BOOL)updateUndecoratedSubtitle:(id)subtitle;
+- (BOOL)updateUndecoratedTitle:(id)title;
+- (MapsSuggestionsEntry)initWithCoder:(id)coder;
+- (MapsSuggestionsEntry)initWithType:(int64_t)type title:(id)title subtitle:(id)subtitle weight:(double)weight expires:(id)expires geoMapItem:(id)item sourceSpecificInfo:(id)info;
 - (NSString)fullDescription;
 - (NSString)serializedBase64String;
 - (NSString)serializedHexString;
 - (NSString)shortDescription;
 - (NSString)uniqueIdentifier;
 - (NSString)uniqueName;
-- (id)ETAForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)UUIDForKey:(id)a3;
-- (id)_valueForKey:(uint64_t)a3 class:;
-- (id)arrayForKey:(id)a3;
+- (id)ETAForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)UUIDForKey:(id)key;
+- (id)_valueForKey:(uint64_t)key class:;
+- (id)arrayForKey:(id)key;
 - (id)arrivingAirportCode;
 - (id)contacts;
-- (id)copyWithNewType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithNewType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
-- (id)dataForKey:(id)a3;
-- (id)dateForKey:(id)a3;
+- (id)dataForKey:(id)key;
+- (id)dateForKey:(id)key;
 - (id)departingAirportCode;
 - (id)fullDescriptionForCurrentLocationEntries;
 - (id)mapItemHandleData;
-- (id)numberForKey:(id)a3;
+- (id)numberForKey:(id)key;
 - (id)objectForJSON;
-- (id)routeRequestStorageForKey:(id)a3;
-- (id)setForKey:(id)a3;
+- (id)routeRequestStorageForKey:(id)key;
+- (id)setForKey:(id)key;
 - (id)sourceSpecificInfo;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (uint64_t)isSourceSpecificDictionaryEqual:(void *)a1;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (uint64_t)isSourceSpecificDictionaryEqual:(void *)equal;
 - (unint64_t)hash;
-- (unint64_t)uint64ForKey:(id)a3;
-- (void)_overrideType:(int64_t)a3;
-- (void)_selectETAFrom:(void *)a3 destinationKey:(void *)a4 otherEntry:;
-- (void)_setValue:(void *)a3 forKey:(uint64_t)a4 class:;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeFromSuggestionEntry:(id)a3 behavior:(unint64_t)a4 protectTitles:(BOOL)a5 protectTitleDecorations:(BOOL)a6 protectMapItem:(BOOL)a7 protectWeight:(BOOL)a8 protectExpiration:(BOOL)a9 protectIcon:(BOOL)a10;
-- (void)mergeSpecificsFromSuggestionEntry:(id)a3 behavior:(unint64_t)a4;
-- (void)replaceByEntry:(id)a3 forceDecoratedOverwrites:(BOOL)a4;
-- (void)resetAvailableRemovalBehavior:(int64_t)a3;
-- (void)setArray:(id)a3 forKey:(id)a4;
-- (void)setAvailableRemovalBehavior:(int64_t)a3;
-- (void)setBoolean:(BOOL)a3 forKey:(id)a4;
-- (void)setContacts:(id)a3;
-- (void)setData:(id)a3 forKey:(id)a4;
-- (void)setDate:(id)a3 forKey:(id)a4;
-- (void)setDeleted:(BOOL)a3;
-- (void)setETA:(id)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setLocationCoordinateKeysFromLocation:(id)a3;
-- (void)setMapItemHandleData:(id)a3;
-- (void)setNumber:(id)a3 forKey:(id)a4;
-- (void)setRouteRequestStorage:(id)a3 forKey:(id)a4;
-- (void)setSet:(id)a3 forKey:(id)a4;
-- (void)setShareETAHandles:(id)a3;
-- (void)setSourceSpecificInfo:(id)a3;
-- (void)setString:(id)a3 forKey:(id)a4;
-- (void)setURL:(id)a3 forKey:(id)a4;
-- (void)setUUID:(id)a3 forKey:(id)a4;
-- (void)setUndecoratedSubtitle:(id)a3;
-- (void)setUndecoratedSubtitleWhenLocked:(id)a3;
-- (void)setUndecoratedTitle:(id)a3;
-- (void)setUndecoratedTitleWhenLocked:(id)a3;
+- (unint64_t)uint64ForKey:(id)key;
+- (void)_overrideType:(int64_t)type;
+- (void)_selectETAFrom:(void *)from destinationKey:(void *)key otherEntry:;
+- (void)_setValue:(void *)value forKey:(uint64_t)key class:;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeFromSuggestionEntry:(id)entry behavior:(unint64_t)behavior protectTitles:(BOOL)titles protectTitleDecorations:(BOOL)decorations protectMapItem:(BOOL)item protectWeight:(BOOL)weight protectExpiration:(BOOL)expiration protectIcon:(BOOL)self0;
+- (void)mergeSpecificsFromSuggestionEntry:(id)entry behavior:(unint64_t)behavior;
+- (void)replaceByEntry:(id)entry forceDecoratedOverwrites:(BOOL)overwrites;
+- (void)resetAvailableRemovalBehavior:(int64_t)behavior;
+- (void)setArray:(id)array forKey:(id)key;
+- (void)setAvailableRemovalBehavior:(int64_t)behavior;
+- (void)setBoolean:(BOOL)boolean forKey:(id)key;
+- (void)setContacts:(id)contacts;
+- (void)setData:(id)data forKey:(id)key;
+- (void)setDate:(id)date forKey:(id)key;
+- (void)setDeleted:(BOOL)deleted;
+- (void)setETA:(id)a forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setLocationCoordinateKeysFromLocation:(id)location;
+- (void)setMapItemHandleData:(id)data;
+- (void)setNumber:(id)number forKey:(id)key;
+- (void)setRouteRequestStorage:(id)storage forKey:(id)key;
+- (void)setSet:(id)set forKey:(id)key;
+- (void)setShareETAHandles:(id)handles;
+- (void)setSourceSpecificInfo:(id)info;
+- (void)setString:(id)string forKey:(id)key;
+- (void)setURL:(id)l forKey:(id)key;
+- (void)setUUID:(id)d forKey:(id)key;
+- (void)setUndecoratedSubtitle:(id)subtitle;
+- (void)setUndecoratedSubtitleWhenLocked:(id)locked;
+- (void)setUndecoratedTitle:(id)title;
+- (void)setUndecoratedTitleWhenLocked:(id)locked;
 @end
 
 @implementation MapsSuggestionsEntry
@@ -162,22 +162,22 @@
 
 - (BOOL)hasExpired
 {
-  v3 = [(MapsSuggestionsEntry *)self expires];
+  expires = [(MapsSuggestionsEntry *)self expires];
 
-  if (v3)
+  if (expires)
   {
-    v4 = [(MapsSuggestionsEntry *)self expires];
-    LOBYTE(v3) = MapsSuggestionsIsInThePast(v4);
+    expires2 = [(MapsSuggestionsEntry *)self expires];
+    LOBYTE(expires) = MapsSuggestionsIsInThePast(expires2);
   }
 
-  return v3;
+  return expires;
 }
 
-- (BOOL)updateUndecoratedTitle:(id)a3
+- (BOOL)updateUndecoratedTitle:(id)title
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  titleCopy = title;
+  if (!titleCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -196,8 +196,8 @@
     goto LABEL_7;
   }
 
-  v5 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-  v6 = [v4 isEqualToString:v5];
+  undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+  v6 = [titleCopy isEqualToString:undecoratedTitle];
 
   if (v6)
   {
@@ -206,7 +206,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v4 copy];
+  v7 = [titleCopy copy];
   [(MapsSuggestionsEntry *)self setUndecoratedTitle:v7];
 
   v8 = 1;
@@ -215,11 +215,11 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)updateUndecoratedSubtitle:(id)a3
+- (BOOL)updateUndecoratedSubtitle:(id)subtitle
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  subtitleCopy = subtitle;
+  if (!subtitleCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -238,8 +238,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v5 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-  v6 = [v4 isEqualToString:v5];
+  undecoratedSubtitle = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+  v6 = [subtitleCopy isEqualToString:undecoratedSubtitle];
 
   if (v6)
   {
@@ -248,7 +248,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v4 copy];
+  v7 = [subtitleCopy copy];
   [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:v7];
 
   v8 = 1;
@@ -257,11 +257,11 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)startsBeforeEntry:(id)a3
+- (BOOL)startsBeforeEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  entryCopy = entry;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -280,28 +280,28 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!-[MapsSuggestionsEntry hasStartTime](self, "hasStartTime") || ![v4 hasStartTime])
+  if (!-[MapsSuggestionsEntry hasStartTime](self, "hasStartTime") || ![entryCopy hasStartTime])
   {
 LABEL_8:
     v8 = 0;
     goto LABEL_9;
   }
 
-  v5 = [(MapsSuggestionsEntry *)self startTime];
-  v6 = [v4 startTime];
-  [v5 timeIntervalSinceDate:v6];
+  startTime = [(MapsSuggestionsEntry *)self startTime];
+  startTime2 = [entryCopy startTime];
+  [startTime timeIntervalSinceDate:startTime2];
   v8 = v7 < 0.0;
 
 LABEL_9:
   return v8;
 }
 
-- (BOOL)expiresBeforeEntry:(id)a3
+- (BOOL)expiresBeforeEntry:(id)entry
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -322,40 +322,40 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v6 = [v4 expires];
+  expires = [entryCopy expires];
 
-  if (!v6)
+  if (!expires)
   {
     v11 = 1;
     goto LABEL_10;
   }
 
-  v7 = [(MapsSuggestionsEntry *)self expires];
+  expires2 = [(MapsSuggestionsEntry *)self expires];
 
-  if (!v7)
+  if (!expires2)
   {
     goto LABEL_8;
   }
 
-  v8 = [(MapsSuggestionsEntry *)self expires];
-  v9 = [v5 expires];
-  [v8 timeIntervalSinceDate:v9];
+  expires3 = [(MapsSuggestionsEntry *)self expires];
+  expires4 = [v5 expires];
+  [expires3 timeIntervalSinceDate:expires4];
   v11 = v10 < 0.0;
 
 LABEL_10:
   return v11;
 }
 
-- (void)mergeFromSuggestionEntry:(id)a3 behavior:(unint64_t)a4 protectTitles:(BOOL)a5 protectTitleDecorations:(BOOL)a6 protectMapItem:(BOOL)a7 protectWeight:(BOOL)a8 protectExpiration:(BOOL)a9 protectIcon:(BOOL)a10
+- (void)mergeFromSuggestionEntry:(id)entry behavior:(unint64_t)behavior protectTitles:(BOOL)titles protectTitleDecorations:(BOOL)decorations protectMapItem:(BOOL)item protectWeight:(BOOL)weight protectExpiration:(BOOL)expiration protectIcon:(BOOL)self0
 {
-  v12 = a6;
-  v13 = a5;
+  decorationsCopy = decorations;
+  titlesCopy = titles;
   v94 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  if (!v16)
+  entryCopy = entry;
+  if (!entryCopy)
   {
-    v24 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(&v24->super, OS_LOG_TYPE_ERROR))
+    selfCopy3 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(&selfCopy3->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446978;
       v87 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsEntry+BusinessLogic.m";
@@ -367,7 +367,7 @@ LABEL_10:
       v93 = "nil == (otherEntry)";
       v25 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an other suggestions entry";
 LABEL_45:
-      _os_log_impl(&dword_1C5126000, &v24->super, OS_LOG_TYPE_ERROR, v25, buf, 0x26u);
+      _os_log_impl(&dword_1C5126000, &selfCopy3->super, OS_LOG_TYPE_ERROR, v25, buf, 0x26u);
     }
 
 LABEL_113:
@@ -375,100 +375,100 @@ LABEL_113:
     goto LABEL_114;
   }
 
-  if (![(MapsSuggestionsEntry *)self isEqualToEntry:v16])
+  if (![(MapsSuggestionsEntry *)self isEqualToEntry:entryCopy])
   {
-    v17 = a9;
-    if (a4)
+    expirationCopy2 = expiration;
+    if (behavior)
     {
-      if (a4 == 1)
+      if (behavior == 1)
       {
-        if (v13)
+        if (titlesCopy)
         {
           goto LABEL_69;
         }
 
-        v18 = [(MapsSuggestionsEntry *)self title];
-        v19 = [(MapsSuggestionsEntry *)v16 undecoratedTitle];
-        if (v19 && (v20 = v19, -[MapsSuggestionsEntry undecoratedTitle](v16, "undecoratedTitle"), v21 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 isEqualToString:v22], v22, v21, v20, (v23 & 1) == 0))
+        title = [(MapsSuggestionsEntry *)self title];
+        undecoratedTitle = [(MapsSuggestionsEntry *)entryCopy undecoratedTitle];
+        if (undecoratedTitle && (v20 = undecoratedTitle, -[MapsSuggestionsEntry undecoratedTitle](entryCopy, "undecoratedTitle"), v21 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 isEqualToString:v22], v22, v21, v20, (v23 & 1) == 0))
         {
-          v43 = [(MapsSuggestionsEntry *)v16 undecoratedTitle];
-          [(MapsSuggestionsEntry *)self setUndecoratedTitle:v43];
+          undecoratedTitle2 = [(MapsSuggestionsEntry *)entryCopy undecoratedTitle];
+          [(MapsSuggestionsEntry *)self setUndecoratedTitle:undecoratedTitle2];
         }
 
-        else if (v12)
+        else if (decorationsCopy)
         {
           goto LABEL_56;
         }
 
-        v44 = [(MapsSuggestionsEntry *)v16 title];
+        title2 = [(MapsSuggestionsEntry *)entryCopy title];
 
-        v18 = v44;
+        title = title2;
 LABEL_56:
-        if (v18)
+        if (title)
         {
-          v45 = [(MapsSuggestionsEntry *)self title];
-          v46 = [v18 isEqualToString:v45];
+          title3 = [(MapsSuggestionsEntry *)self title];
+          v46 = [title isEqualToString:title3];
 
           if ((v46 & 1) == 0)
           {
-            [(MapsSuggestionsEntry *)self setTitle:v18];
+            [(MapsSuggestionsEntry *)self setTitle:title];
           }
         }
 
-        v13 = [(MapsSuggestionsEntry *)self subtitle];
-        v47 = [(MapsSuggestionsEntry *)v16 undecoratedSubtitle];
-        if (v47 && (v48 = v47, -[MapsSuggestionsEntry undecoratedSubtitle](v16, "undecoratedSubtitle"), v49 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v49 isEqualToString:v50], v50, v49, v48, (v51 & 1) == 0))
+        titlesCopy = [(MapsSuggestionsEntry *)self subtitle];
+        undecoratedSubtitle = [(MapsSuggestionsEntry *)entryCopy undecoratedSubtitle];
+        if (undecoratedSubtitle && (v48 = undecoratedSubtitle, -[MapsSuggestionsEntry undecoratedSubtitle](entryCopy, "undecoratedSubtitle"), v49 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v49 isEqualToString:v50], v50, v49, v48, (v51 & 1) == 0))
         {
-          v52 = [(MapsSuggestionsEntry *)v16 undecoratedSubtitle];
-          [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:v52];
+          undecoratedSubtitle2 = [(MapsSuggestionsEntry *)entryCopy undecoratedSubtitle];
+          [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:undecoratedSubtitle2];
         }
 
-        else if (v12)
+        else if (decorationsCopy)
         {
 LABEL_65:
-          v17 = a9;
-          if (v13)
+          expirationCopy2 = expiration;
+          if (titlesCopy)
           {
-            v12 = [(MapsSuggestionsEntry *)self subtitle];
-            v53 = [v13 isEqualToString:v12];
+            decorationsCopy = [(MapsSuggestionsEntry *)self subtitle];
+            v53 = [titlesCopy isEqualToString:decorationsCopy];
 
             if ((v53 & 1) == 0)
             {
-              [(MapsSuggestionsEntry *)self setSubtitle:v13];
+              [(MapsSuggestionsEntry *)self setSubtitle:titlesCopy];
             }
           }
 
 LABEL_69:
-          if (a7)
+          if (item)
           {
             goto LABEL_84;
           }
 
-          v54 = [(MapsSuggestionsEntry *)self geoMapItem];
-          if (v54)
+          geoMapItem = [(MapsSuggestionsEntry *)self geoMapItem];
+          if (geoMapItem)
           {
-            v12 = [(MapsSuggestionsEntry *)self geoMapItem];
-            v13 = [(MapsSuggestionsEntry *)v16 geoMapItem];
-            if (([v12 isEqual:v13] & 1) == 0)
+            decorationsCopy = [(MapsSuggestionsEntry *)self geoMapItem];
+            titlesCopy = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
+            if (([decorationsCopy isEqual:titlesCopy] & 1) == 0)
             {
 
               goto LABEL_80;
             }
 
-            v85 = v17;
+            v85 = expirationCopy2;
           }
 
           else
           {
-            v85 = v17;
+            v85 = expirationCopy2;
           }
 
-          v55 = [(MapsSuggestionsEntry *)v16 geoMapItem];
-          if (!v55)
+          geoMapItem2 = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
+          if (!geoMapItem2)
           {
 
-            v17 = v85;
-            if (!v54)
+            expirationCopy2 = v85;
+            if (!geoMapItem)
             {
               goto LABEL_84;
             }
@@ -476,51 +476,51 @@ LABEL_69:
             goto LABEL_83;
           }
 
-          v56 = [(MapsSuggestionsEntry *)v16 geoMapItem];
-          v57 = [(MapsSuggestionsEntry *)self geoMapItem];
-          v58 = [v56 isEqual:v57];
+          geoMapItem3 = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
+          geoMapItem4 = [(MapsSuggestionsEntry *)self geoMapItem];
+          v58 = [geoMapItem3 isEqual:geoMapItem4];
 
-          if (v54)
+          if (geoMapItem)
           {
           }
 
-          v17 = v85;
+          expirationCopy2 = v85;
           if (v58)
           {
 LABEL_84:
-            if (!a8)
+            if (!weight)
             {
               [(MapsSuggestionsEntry *)self weight];
               v60 = v59;
-              [(MapsSuggestionsEntry *)v16 weight];
+              [(MapsSuggestionsEntry *)entryCopy weight];
               if (v60 <= v61)
               {
-                v62 = v16;
+                selfCopy = entryCopy;
               }
 
               else
               {
-                v62 = self;
+                selfCopy = self;
               }
 
-              [(MapsSuggestionsEntry *)v62 weight];
+              [(MapsSuggestionsEntry *)selfCopy weight];
               [(MapsSuggestionsEntry *)self setWeight:?];
             }
 
-            v63 = [(MapsSuggestionsEntry *)self type];
-            if (v63 != [(MapsSuggestionsEntry *)v16 type])
+            type = [(MapsSuggestionsEntry *)self type];
+            if (type != [(MapsSuggestionsEntry *)entryCopy type])
             {
-              [(MapsSuggestionsEntry *)self _overrideType:[(MapsSuggestionsEntry *)v16 type]];
+              [(MapsSuggestionsEntry *)self _overrideType:[(MapsSuggestionsEntry *)entryCopy type]];
             }
 
-            if (v17)
+            if (expirationCopy2)
             {
               goto LABEL_100;
             }
 
-            v64 = self;
-            v65 = v16;
-            if (!v64)
+            selfCopy2 = self;
+            v65 = entryCopy;
+            if (!selfCopy2)
             {
               v67 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -536,42 +536,42 @@ LABEL_84:
                 _os_log_impl(&dword_1C5126000, v67, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires suggestion entry A", buf, 0x26u);
               }
 
-              v66 = 0;
+              distantPast = 0;
               goto LABEL_99;
             }
 
-            if ([(MapsSuggestionsEntry *)v64 deleted]|| [(MapsSuggestionsEntry *)v65 deleted])
+            if ([(MapsSuggestionsEntry *)selfCopy2 deleted]|| [(MapsSuggestionsEntry *)v65 deleted])
             {
-              v66 = [MEMORY[0x1E695DF00] distantPast];
+              distantPast = [MEMORY[0x1E695DF00] distantPast];
 LABEL_99:
 
-              [(MapsSuggestionsEntry *)v64 setExpires:v66];
+              [(MapsSuggestionsEntry *)selfCopy2 setExpires:distantPast];
 LABEL_100:
-              if (!a10)
+              if (!icon)
               {
-                v68 = [(MapsSuggestionsEntry *)v16 iconData];
-                [(MapsSuggestionsEntry *)self setIconData:v68];
+                iconData = [(MapsSuggestionsEntry *)entryCopy iconData];
+                [(MapsSuggestionsEntry *)self setIconData:iconData];
               }
 
-              v69 = [(MapsSuggestionsEntry *)v16 deleted]|| [(MapsSuggestionsEntry *)self deleted];
-              [(MapsSuggestionsEntry *)self setDeleted:v69];
-              [(MapsSuggestionsEntry *)self mergeSpecificsFromSuggestionEntry:v16 behavior:1];
-              v24 = self;
-              v70 = v16;
-              if (v24)
+              deleted = [(MapsSuggestionsEntry *)entryCopy deleted]|| [(MapsSuggestionsEntry *)self deleted];
+              [(MapsSuggestionsEntry *)self setDeleted:deleted];
+              [(MapsSuggestionsEntry *)self mergeSpecificsFromSuggestionEntry:entryCopy behavior:1];
+              selfCopy3 = self;
+              v70 = entryCopy;
+              if (selfCopy3)
               {
-                v71 = [(MapsSuggestionsEntry *)v24 originatingSourceName];
-                v72 = [(MapsSuggestionsEntry *)v70 originatingSourceName];
-                if (v71 && ([v71 isEqualToString:v72]& 1) == 0)
+                originatingSourceName = [(MapsSuggestionsEntry *)selfCopy3 originatingSourceName];
+                originatingSourceName2 = [(MapsSuggestionsEntry *)v70 originatingSourceName];
+                if (originatingSourceName && ([originatingSourceName isEqualToString:originatingSourceName2]& 1) == 0)
                 {
-                  [(MapsSuggestionsEntry *)v24 setString:v72 forKey:@"MapsSuggestionsNewSourceKey"];
+                  [(MapsSuggestionsEntry *)selfCopy3 setString:originatingSourceName2 forKey:@"MapsSuggestionsNewSourceKey"];
                 }
               }
 
               else
               {
-                v71 = GEOFindOrCreateLog();
-                if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
+                originatingSourceName = GEOFindOrCreateLog();
+                if (os_log_type_enabled(originatingSourceName, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 136446978;
                   v87 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsEntry+BusinessLogic.m";
@@ -581,46 +581,46 @@ LABEL_100:
                   v91 = "void _mergeOriginsOfEntries(MapsSuggestionsEntry *__strong, MapsSuggestionsEntry *__strong)";
                   v92 = 2082;
                   v93 = "nil == (oriEntry)";
-                  _os_log_impl(&dword_1C5126000, v71, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires suggestion oriEntry", buf, 0x26u);
+                  _os_log_impl(&dword_1C5126000, originatingSourceName, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires suggestion oriEntry", buf, 0x26u);
                 }
               }
 
               goto LABEL_113;
             }
 
-            v73 = [(MapsSuggestionsEntry *)v64 expires];
-            if (v73)
+            expires = [(MapsSuggestionsEntry *)selfCopy2 expires];
+            if (expires)
             {
             }
 
             else
             {
-              v66 = [(MapsSuggestionsEntry *)v65 expires];
+              distantPast = [(MapsSuggestionsEntry *)v65 expires];
 
-              if (!v66)
+              if (!distantPast)
               {
                 goto LABEL_99;
               }
             }
 
-            v75 = [(MapsSuggestionsEntry *)v64 expires];
+            expires2 = [(MapsSuggestionsEntry *)selfCopy2 expires];
 
-            v76 = [(MapsSuggestionsEntry *)v65 expires];
-            v66 = v76;
-            if (v75)
+            expires3 = [(MapsSuggestionsEntry *)v65 expires];
+            distantPast = expires3;
+            if (expires2)
             {
 
-              v77 = [(MapsSuggestionsEntry *)v64 expires];
-              v78 = v77;
-              if (v66)
+              expires4 = [(MapsSuggestionsEntry *)selfCopy2 expires];
+              v78 = expires4;
+              if (distantPast)
               {
-                v79 = [(MapsSuggestionsEntry *)v65 expires];
-                v66 = [v78 laterDate:v79];
+                expires5 = [(MapsSuggestionsEntry *)v65 expires];
+                distantPast = [v78 laterDate:expires5];
               }
 
               else
               {
-                v66 = v77;
+                distantPast = expires4;
               }
             }
 
@@ -628,21 +628,21 @@ LABEL_100:
           }
 
 LABEL_80:
-          v54 = [(MapsSuggestionsEntry *)v16 geoMapItem];
-          [(MapsSuggestionsEntry *)self setGeoMapItem:v54];
+          geoMapItem = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
+          [(MapsSuggestionsEntry *)self setGeoMapItem:geoMapItem];
 LABEL_83:
 
           goto LABEL_84;
         }
 
-        v12 = [(MapsSuggestionsEntry *)v16 subtitle];
+        decorationsCopy = [(MapsSuggestionsEntry *)entryCopy subtitle];
 
-        v13 = v12;
+        titlesCopy = decorationsCopy;
         goto LABEL_65;
       }
 
-      v24 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(&v24->super, OS_LOG_TYPE_ERROR))
+      selfCopy3 = GEOFindOrCreateLog();
+      if (os_log_type_enabled(&selfCopy3->super, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446978;
         v87 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsEntry+BusinessLogic.m";
@@ -659,107 +659,107 @@ LABEL_83:
       goto LABEL_113;
     }
 
-    if (v13)
+    if (titlesCopy)
     {
       goto LABEL_29;
     }
 
-    v26 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-    if (!v26)
+    undecoratedTitle3 = [(MapsSuggestionsEntry *)self undecoratedTitle];
+    if (!undecoratedTitle3)
     {
-      v27 = [(MapsSuggestionsEntry *)v16 undecoratedTitle];
+      undecoratedTitle4 = [(MapsSuggestionsEntry *)entryCopy undecoratedTitle];
 
-      if (!v27)
+      if (!undecoratedTitle4)
       {
         goto LABEL_17;
       }
 
-      v26 = [(MapsSuggestionsEntry *)v16 undecoratedTitle];
-      [(MapsSuggestionsEntry *)self setUndecoratedTitle:v26];
+      undecoratedTitle3 = [(MapsSuggestionsEntry *)entryCopy undecoratedTitle];
+      [(MapsSuggestionsEntry *)self setUndecoratedTitle:undecoratedTitle3];
     }
 
 LABEL_17:
-    v28 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-    if (!v28)
+    undecoratedSubtitle3 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+    if (!undecoratedSubtitle3)
     {
-      v29 = [(MapsSuggestionsEntry *)v16 undecoratedSubtitle];
+      undecoratedSubtitle4 = [(MapsSuggestionsEntry *)entryCopy undecoratedSubtitle];
 
-      if (!v29)
+      if (!undecoratedSubtitle4)
       {
         goto LABEL_21;
       }
 
-      v28 = [(MapsSuggestionsEntry *)v16 undecoratedSubtitle];
-      [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:v28];
+      undecoratedSubtitle3 = [(MapsSuggestionsEntry *)entryCopy undecoratedSubtitle];
+      [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:undecoratedSubtitle3];
     }
 
 LABEL_21:
-    v30 = [(MapsSuggestionsEntry *)self title];
-    if (!v30)
+    title4 = [(MapsSuggestionsEntry *)self title];
+    if (!title4)
     {
-      v31 = [(MapsSuggestionsEntry *)v16 title];
+      title5 = [(MapsSuggestionsEntry *)entryCopy title];
 
-      if (!v31)
+      if (!title5)
       {
 LABEL_25:
-        v32 = [(MapsSuggestionsEntry *)self subtitle];
-        if (!v32)
+        subtitle = [(MapsSuggestionsEntry *)self subtitle];
+        if (!subtitle)
         {
-          v33 = [(MapsSuggestionsEntry *)v16 subtitle];
+          subtitle2 = [(MapsSuggestionsEntry *)entryCopy subtitle];
 
-          if (!v33)
+          if (!subtitle2)
           {
             goto LABEL_29;
           }
 
-          v32 = [(MapsSuggestionsEntry *)v16 subtitle];
-          [(MapsSuggestionsEntry *)self setSubtitle:v32];
+          subtitle = [(MapsSuggestionsEntry *)entryCopy subtitle];
+          [(MapsSuggestionsEntry *)self setSubtitle:subtitle];
         }
 
 LABEL_29:
-        if (!a7)
+        if (!item)
         {
-          v34 = [(MapsSuggestionsEntry *)self geoMapItem];
-          if (v34)
+          geoMapItem5 = [(MapsSuggestionsEntry *)self geoMapItem];
+          if (geoMapItem5)
           {
 LABEL_33:
 
             goto LABEL_34;
           }
 
-          v35 = [(MapsSuggestionsEntry *)v16 geoMapItem];
+          geoMapItem6 = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
 
-          if (v35)
+          if (geoMapItem6)
           {
-            v34 = [(MapsSuggestionsEntry *)v16 geoMapItem];
-            [(MapsSuggestionsEntry *)self setGeoMapItem:v34];
+            geoMapItem5 = [(MapsSuggestionsEntry *)entryCopy geoMapItem];
+            [(MapsSuggestionsEntry *)self setGeoMapItem:geoMapItem5];
             goto LABEL_33;
           }
         }
 
 LABEL_34:
-        if (!a8)
+        if (!weight)
         {
           [(MapsSuggestionsEntry *)self weight];
           if (v36 == 0.0)
           {
-            [(MapsSuggestionsEntry *)v16 weight];
+            [(MapsSuggestionsEntry *)entryCopy weight];
             if (v37 != 0.0)
             {
-              [(MapsSuggestionsEntry *)v16 weight];
+              [(MapsSuggestionsEntry *)entryCopy weight];
               [(MapsSuggestionsEntry *)self setWeight:?];
             }
           }
         }
 
-        if (a9)
+        if (expiration)
         {
           goto LABEL_50;
         }
 
-        v38 = self;
-        v39 = v16;
-        if (!v38)
+        selfCopy4 = self;
+        v39 = entryCopy;
+        if (!selfCopy4)
         {
           v41 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -775,64 +775,64 @@ LABEL_34:
             _os_log_impl(&dword_1C5126000, v41, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires suggestion entry A", buf, 0x26u);
           }
 
-          v40 = 0;
+          distantPast2 = 0;
           goto LABEL_49;
         }
 
-        if ([(MapsSuggestionsEntry *)v38 deleted]|| [(MapsSuggestionsEntry *)v39 deleted])
+        if ([(MapsSuggestionsEntry *)selfCopy4 deleted]|| [(MapsSuggestionsEntry *)v39 deleted])
         {
-          v40 = [MEMORY[0x1E695DF00] distantPast];
+          distantPast2 = [MEMORY[0x1E695DF00] distantPast];
 LABEL_49:
 
-          [(MapsSuggestionsEntry *)v38 setExpires:v40];
+          [(MapsSuggestionsEntry *)selfCopy4 setExpires:distantPast2];
 LABEL_50:
-          v42 = [(MapsSuggestionsEntry *)v16 deleted]|| [(MapsSuggestionsEntry *)self deleted];
-          [(MapsSuggestionsEntry *)self setDeleted:v42];
-          [(MapsSuggestionsEntry *)self mergeSpecificsFromSuggestionEntry:v16 behavior:0];
+          deleted2 = [(MapsSuggestionsEntry *)entryCopy deleted]|| [(MapsSuggestionsEntry *)self deleted];
+          [(MapsSuggestionsEntry *)self setDeleted:deleted2];
+          [(MapsSuggestionsEntry *)self mergeSpecificsFromSuggestionEntry:entryCopy behavior:0];
           goto LABEL_114;
         }
 
-        v74 = [(MapsSuggestionsEntry *)v38 expires];
-        if (v74)
+        expires6 = [(MapsSuggestionsEntry *)selfCopy4 expires];
+        if (expires6)
         {
         }
 
         else
         {
-          v40 = [(MapsSuggestionsEntry *)v39 expires];
+          distantPast2 = [(MapsSuggestionsEntry *)v39 expires];
 
-          if (!v40)
+          if (!distantPast2)
           {
             goto LABEL_49;
           }
         }
 
-        v80 = [(MapsSuggestionsEntry *)v38 expires];
+        expires7 = [(MapsSuggestionsEntry *)selfCopy4 expires];
 
-        v81 = [(MapsSuggestionsEntry *)v39 expires];
-        v40 = v81;
-        if (v80)
+        expires8 = [(MapsSuggestionsEntry *)v39 expires];
+        distantPast2 = expires8;
+        if (expires7)
         {
 
-          v82 = [(MapsSuggestionsEntry *)v38 expires];
-          v83 = v82;
-          if (v40)
+          expires9 = [(MapsSuggestionsEntry *)selfCopy4 expires];
+          v83 = expires9;
+          if (distantPast2)
           {
-            v84 = [(MapsSuggestionsEntry *)v39 expires];
-            v40 = [v83 laterDate:v84];
+            expires10 = [(MapsSuggestionsEntry *)v39 expires];
+            distantPast2 = [v83 laterDate:expires10];
           }
 
           else
           {
-            v40 = v82;
+            distantPast2 = expires9;
           }
         }
 
         goto LABEL_49;
       }
 
-      v30 = [(MapsSuggestionsEntry *)v16 title];
-      [(MapsSuggestionsEntry *)self setTitle:v30];
+      title4 = [(MapsSuggestionsEntry *)entryCopy title];
+      [(MapsSuggestionsEntry *)self setTitle:title4];
     }
 
     goto LABEL_25;
@@ -841,64 +841,64 @@ LABEL_50:
 LABEL_114:
 }
 
-- (void)mergeSpecificsFromSuggestionEntry:(id)a3 behavior:(unint64_t)a4
+- (void)mergeSpecificsFromSuggestionEntry:(id)entry behavior:(unint64_t)behavior
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  entryCopy = entry;
+  if (entryCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(MapsSuggestionsEntry *)v7 sourceSpecificInfo];
-    v9 = [v6 sourceSpecificInfo];
-    v10 = [v8 isEqualToDictionary:v9];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    sourceSpecificInfo = [(MapsSuggestionsEntry *)selfCopy sourceSpecificInfo];
+    sourceSpecificInfo2 = [entryCopy sourceSpecificInfo];
+    v10 = [sourceSpecificInfo isEqualToDictionary:sourceSpecificInfo2];
 
     if (v10)
     {
 LABEL_11:
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_12;
     }
 
-    v11 = [(MapsSuggestionsEntry *)v7 ETAForKey:@"MapsSuggestionsETAKey"];
-    v12 = [(MapsSuggestionsEntry *)v7 stringForKey:@"MapsSuggestionsDestinationForETAKey"];
+    v11 = [(MapsSuggestionsEntry *)selfCopy ETAForKey:@"MapsSuggestionsETAKey"];
+    v12 = [(MapsSuggestionsEntry *)selfCopy stringForKey:@"MapsSuggestionsDestinationForETAKey"];
     v13 = v12;
-    if (!a4)
+    if (!behavior)
     {
       v20 = objc_alloc(MEMORY[0x1E695DF90]);
-      v21 = [v6 sourceSpecificInfo];
-      v16 = [v20 initWithDictionary:v21];
+      sourceSpecificInfo3 = [entryCopy sourceSpecificInfo];
+      v16 = [v20 initWithDictionary:sourceSpecificInfo3];
 
-      v22 = [(MapsSuggestionsEntry *)v7 sourceSpecificInfo];
-      [v16 addEntriesFromDictionary:v22];
+      sourceSpecificInfo4 = [(MapsSuggestionsEntry *)selfCopy sourceSpecificInfo];
+      [v16 addEntriesFromDictionary:sourceSpecificInfo4];
 
       v23 = [v16 mutableCopy];
-      [(MapsSuggestionsEntry *)v7 setSourceSpecificInfo:v23];
+      [(MapsSuggestionsEntry *)selfCopy setSourceSpecificInfo:v23];
 
-      [(MapsSuggestionsEntry *)v7 _selectETAFrom:v11 destinationKey:v13 otherEntry:v6];
+      [(MapsSuggestionsEntry *)selfCopy _selectETAFrom:v11 destinationKey:v13 otherEntry:entryCopy];
       goto LABEL_10;
     }
 
-    if (a4 == 1)
+    if (behavior == 1)
     {
       v14 = objc_alloc(MEMORY[0x1E695DF90]);
-      v15 = [(MapsSuggestionsEntry *)v7 sourceSpecificInfo];
-      v16 = [v14 initWithDictionary:v15];
+      sourceSpecificInfo5 = [(MapsSuggestionsEntry *)selfCopy sourceSpecificInfo];
+      v16 = [v14 initWithDictionary:sourceSpecificInfo5];
 
-      v17 = [v6 sourceSpecificInfo];
-      [v16 addEntriesFromDictionary:v17];
+      sourceSpecificInfo6 = [entryCopy sourceSpecificInfo];
+      [v16 addEntriesFromDictionary:sourceSpecificInfo6];
 
       v18 = [v16 mutableCopy];
-      [(MapsSuggestionsEntry *)v7 setSourceSpecificInfo:v18];
+      [(MapsSuggestionsEntry *)selfCopy setSourceSpecificInfo:v18];
 
-      [(MapsSuggestionsEntry *)v7 _selectETAFrom:v11 destinationKey:v13 otherEntry:v6];
+      [(MapsSuggestionsEntry *)selfCopy _selectETAFrom:v11 destinationKey:v13 otherEntry:entryCopy];
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -934,38 +934,38 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)replaceByEntry:(id)a3 forceDecoratedOverwrites:(BOOL)a4
+- (void)replaceByEntry:(id)entry forceDecoratedOverwrites:(BOOL)overwrites
 {
-  v69 = a4;
+  overwritesCopy = overwrites;
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  entryCopy = entry;
+  if (entryCopy)
   {
-    v8 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-    if (v8)
+    undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+    if (undecoratedTitle)
     {
-      v4 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-      v5 = [v7 undecoratedTitle];
-      if (([v4 isEqual:v5] & 1) == 0)
+      undecoratedTitle2 = [(MapsSuggestionsEntry *)self undecoratedTitle];
+      undecoratedTitle3 = [entryCopy undecoratedTitle];
+      if (([undecoratedTitle2 isEqual:undecoratedTitle3] & 1) == 0)
       {
 
 LABEL_11:
-        v8 = [v7 undecoratedTitle];
-        [(MapsSuggestionsEntry *)self setUndecoratedTitle:v8];
+        undecoratedTitle = [entryCopy undecoratedTitle];
+        [(MapsSuggestionsEntry *)self setUndecoratedTitle:undecoratedTitle];
 LABEL_14:
 
         goto LABEL_15;
       }
     }
 
-    v10 = [v7 undecoratedTitle];
-    if (v10)
+    undecoratedTitle4 = [entryCopy undecoratedTitle];
+    if (undecoratedTitle4)
     {
-      v11 = [v7 undecoratedTitle];
-      v12 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-      v13 = [v11 isEqual:v12];
+      undecoratedTitle5 = [entryCopy undecoratedTitle];
+      undecoratedTitle6 = [(MapsSuggestionsEntry *)self undecoratedTitle];
+      v13 = [undecoratedTitle5 isEqual:undecoratedTitle6];
 
-      if (v8)
+      if (undecoratedTitle)
       {
       }
 
@@ -978,7 +978,7 @@ LABEL_14:
     else
     {
 
-      if (v8)
+      if (undecoratedTitle)
       {
 
         goto LABEL_14;
@@ -986,31 +986,31 @@ LABEL_14:
     }
 
 LABEL_15:
-    v14 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
-    if (v14)
+    undecoratedTitleWhenLocked = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
+    if (undecoratedTitleWhenLocked)
     {
-      v4 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
-      v5 = [v7 undecoratedTitleWhenLocked];
-      if (([v4 isEqual:v5] & 1) == 0)
+      undecoratedTitle2 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
+      undecoratedTitle3 = [entryCopy undecoratedTitleWhenLocked];
+      if (([undecoratedTitle2 isEqual:undecoratedTitle3] & 1) == 0)
       {
 
 LABEL_22:
-        v14 = [v7 undecoratedTitleWhenLocked];
-        [(MapsSuggestionsEntry *)self setUndecoratedTitleWhenLocked:v14];
+        undecoratedTitleWhenLocked = [entryCopy undecoratedTitleWhenLocked];
+        [(MapsSuggestionsEntry *)self setUndecoratedTitleWhenLocked:undecoratedTitleWhenLocked];
 LABEL_25:
 
         goto LABEL_26;
       }
     }
 
-    v15 = [v7 undecoratedTitleWhenLocked];
-    if (v15)
+    undecoratedTitleWhenLocked2 = [entryCopy undecoratedTitleWhenLocked];
+    if (undecoratedTitleWhenLocked2)
     {
-      v16 = [v7 undecoratedTitleWhenLocked];
-      v17 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
-      v18 = [v16 isEqual:v17];
+      undecoratedTitleWhenLocked3 = [entryCopy undecoratedTitleWhenLocked];
+      undecoratedTitleWhenLocked4 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
+      v18 = [undecoratedTitleWhenLocked3 isEqual:undecoratedTitleWhenLocked4];
 
-      if (v14)
+      if (undecoratedTitleWhenLocked)
       {
       }
 
@@ -1023,7 +1023,7 @@ LABEL_25:
     else
     {
 
-      if (v14)
+      if (undecoratedTitleWhenLocked)
       {
 
         goto LABEL_25;
@@ -1031,31 +1031,31 @@ LABEL_25:
     }
 
 LABEL_26:
-    v19 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-    if (v19)
+    undecoratedSubtitle = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+    if (undecoratedSubtitle)
     {
-      v4 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-      v5 = [v7 undecoratedSubtitle];
-      if (([v4 isEqual:v5] & 1) == 0)
+      undecoratedTitle2 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+      undecoratedTitle3 = [entryCopy undecoratedSubtitle];
+      if (([undecoratedTitle2 isEqual:undecoratedTitle3] & 1) == 0)
       {
 
 LABEL_33:
-        v19 = [v7 undecoratedSubtitle];
-        [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:v19];
+        undecoratedSubtitle = [entryCopy undecoratedSubtitle];
+        [(MapsSuggestionsEntry *)self setUndecoratedSubtitle:undecoratedSubtitle];
 LABEL_36:
 
         goto LABEL_37;
       }
     }
 
-    v20 = [v7 undecoratedSubtitle];
-    if (v20)
+    undecoratedSubtitle2 = [entryCopy undecoratedSubtitle];
+    if (undecoratedSubtitle2)
     {
-      v21 = [v7 undecoratedSubtitle];
-      v22 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-      v23 = [v21 isEqual:v22];
+      undecoratedSubtitle3 = [entryCopy undecoratedSubtitle];
+      undecoratedSubtitle4 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+      v23 = [undecoratedSubtitle3 isEqual:undecoratedSubtitle4];
 
-      if (v19)
+      if (undecoratedSubtitle)
       {
       }
 
@@ -1068,7 +1068,7 @@ LABEL_36:
     else
     {
 
-      if (v19)
+      if (undecoratedSubtitle)
       {
 
         goto LABEL_36;
@@ -1076,14 +1076,14 @@ LABEL_36:
     }
 
 LABEL_37:
-    v24 = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
-    if (!v24 || (-[MapsSuggestionsEntry undecoratedSubtitleWhenLocked](self, "undecoratedSubtitleWhenLocked"), v4 = objc_claimAutoreleasedReturnValue(), [v7 undecoratedSubtitleWhenLocked], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isEqual:", v5) & 1) != 0))
+    undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
+    if (!undecoratedSubtitleWhenLocked || (-[MapsSuggestionsEntry undecoratedSubtitleWhenLocked](self, "undecoratedSubtitleWhenLocked"), undecoratedTitle2 = objc_claimAutoreleasedReturnValue(), [entryCopy undecoratedSubtitleWhenLocked], undecoratedTitle3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(undecoratedTitle2, "isEqual:", undecoratedTitle3) & 1) != 0))
     {
-      v25 = [v7 undecoratedSubtitleWhenLocked];
-      if (!v25)
+      undecoratedSubtitleWhenLocked2 = [entryCopy undecoratedSubtitleWhenLocked];
+      if (!undecoratedSubtitleWhenLocked2)
       {
 
-        if (!v24)
+        if (!undecoratedSubtitleWhenLocked)
         {
           goto LABEL_48;
         }
@@ -1091,47 +1091,47 @@ LABEL_37:
         goto LABEL_47;
       }
 
-      v26 = [v7 undecoratedSubtitleWhenLocked];
-      v27 = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
-      v28 = [v26 isEqual:v27];
+      undecoratedSubtitleWhenLocked3 = [entryCopy undecoratedSubtitleWhenLocked];
+      undecoratedSubtitleWhenLocked4 = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
+      v28 = [undecoratedSubtitleWhenLocked3 isEqual:undecoratedSubtitleWhenLocked4];
 
-      if (v24)
+      if (undecoratedSubtitleWhenLocked)
       {
       }
 
       if (v28)
       {
 LABEL_48:
-        if (!v69)
+        if (!overwritesCopy)
         {
           goto LABEL_93;
         }
 
-        v29 = [(MapsSuggestionsEntry *)self title];
-        if (v29)
+        title = [(MapsSuggestionsEntry *)self title];
+        if (title)
         {
-          v24 = [(MapsSuggestionsEntry *)self title];
-          v4 = [v7 title];
-          if (([v24 isEqual:v4] & 1) == 0)
+          undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self title];
+          undecoratedTitle2 = [entryCopy title];
+          if (([undecoratedSubtitleWhenLocked isEqual:undecoratedTitle2] & 1) == 0)
           {
 
 LABEL_56:
-            v29 = [v7 title];
-            [(MapsSuggestionsEntry *)self setTitle:v29];
+            title = [entryCopy title];
+            [(MapsSuggestionsEntry *)self setTitle:title];
 LABEL_59:
 
             goto LABEL_60;
           }
         }
 
-        v30 = [v7 title];
-        if (v30)
+        title2 = [entryCopy title];
+        if (title2)
         {
-          v31 = [v7 title];
-          v32 = [(MapsSuggestionsEntry *)self title];
-          v33 = [v31 isEqual:v32];
+          title3 = [entryCopy title];
+          title4 = [(MapsSuggestionsEntry *)self title];
+          v33 = [title3 isEqual:title4];
 
-          if (v29)
+          if (title)
           {
           }
 
@@ -1144,7 +1144,7 @@ LABEL_59:
         else
         {
 
-          if (v29)
+          if (title)
           {
 
             goto LABEL_59;
@@ -1152,31 +1152,31 @@ LABEL_59:
         }
 
 LABEL_60:
-        v34 = [(MapsSuggestionsEntry *)self titleWhenLocked];
-        if (v34)
+        titleWhenLocked = [(MapsSuggestionsEntry *)self titleWhenLocked];
+        if (titleWhenLocked)
         {
-          v24 = [(MapsSuggestionsEntry *)self titleWhenLocked];
-          v4 = [v7 titleWhenLocked];
-          if (([v24 isEqual:v4] & 1) == 0)
+          undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self titleWhenLocked];
+          undecoratedTitle2 = [entryCopy titleWhenLocked];
+          if (([undecoratedSubtitleWhenLocked isEqual:undecoratedTitle2] & 1) == 0)
           {
 
 LABEL_67:
-            v34 = [v7 titleWhenLocked];
-            [(MapsSuggestionsEntry *)self setTitleWhenLocked:v34];
+            titleWhenLocked = [entryCopy titleWhenLocked];
+            [(MapsSuggestionsEntry *)self setTitleWhenLocked:titleWhenLocked];
 LABEL_70:
 
             goto LABEL_71;
           }
         }
 
-        v35 = [v7 titleWhenLocked];
-        if (v35)
+        titleWhenLocked2 = [entryCopy titleWhenLocked];
+        if (titleWhenLocked2)
         {
-          v36 = [v7 titleWhenLocked];
-          v37 = [(MapsSuggestionsEntry *)self titleWhenLocked];
-          v38 = [v36 isEqual:v37];
+          titleWhenLocked3 = [entryCopy titleWhenLocked];
+          titleWhenLocked4 = [(MapsSuggestionsEntry *)self titleWhenLocked];
+          v38 = [titleWhenLocked3 isEqual:titleWhenLocked4];
 
-          if (v34)
+          if (titleWhenLocked)
           {
           }
 
@@ -1189,7 +1189,7 @@ LABEL_70:
         else
         {
 
-          if (v34)
+          if (titleWhenLocked)
           {
 
             goto LABEL_70;
@@ -1197,45 +1197,45 @@ LABEL_70:
         }
 
 LABEL_71:
-        v39 = [(MapsSuggestionsEntry *)self subtitle];
-        if (!v39 || (-[MapsSuggestionsEntry subtitle](self, "subtitle"), v24 = objc_claimAutoreleasedReturnValue(), [v7 subtitle], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v24, "isEqual:", v4) & 1) != 0))
+        subtitle = [(MapsSuggestionsEntry *)self subtitle];
+        if (!subtitle || (-[MapsSuggestionsEntry subtitle](self, "subtitle"), undecoratedSubtitleWhenLocked = objc_claimAutoreleasedReturnValue(), [entryCopy subtitle], undecoratedTitle2 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(undecoratedSubtitleWhenLocked, "isEqual:", undecoratedTitle2) & 1) != 0))
         {
-          v40 = [v7 subtitle];
-          if (!v40)
+          subtitle2 = [entryCopy subtitle];
+          if (!subtitle2)
           {
 
-            if (!v39)
+            if (!subtitle)
             {
               goto LABEL_82;
             }
 
 LABEL_81:
 LABEL_82:
-            v44 = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
-            if (v44)
+            subtitleWhenLocked = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
+            if (subtitleWhenLocked)
             {
-              v24 = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
-              v4 = [v7 subtitleWhenLocked];
-              if (([v24 isEqual:v4] & 1) == 0)
+              undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
+              undecoratedTitle2 = [entryCopy subtitleWhenLocked];
+              if (([undecoratedSubtitleWhenLocked isEqual:undecoratedTitle2] & 1) == 0)
               {
 
 LABEL_89:
-                v44 = [v7 subtitleWhenLocked];
-                [(MapsSuggestionsEntry *)self setSubtitleWhenLocked:v44];
+                subtitleWhenLocked = [entryCopy subtitleWhenLocked];
+                [(MapsSuggestionsEntry *)self setSubtitleWhenLocked:subtitleWhenLocked];
 LABEL_92:
 
                 goto LABEL_93;
               }
             }
 
-            v45 = [v7 subtitleWhenLocked];
-            if (v45)
+            subtitleWhenLocked2 = [entryCopy subtitleWhenLocked];
+            if (subtitleWhenLocked2)
             {
-              v46 = [v7 subtitleWhenLocked];
-              v47 = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
-              v48 = [v46 isEqual:v47];
+              subtitleWhenLocked3 = [entryCopy subtitleWhenLocked];
+              subtitleWhenLocked4 = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
+              v48 = [subtitleWhenLocked3 isEqual:subtitleWhenLocked4];
 
-              if (v44)
+              if (subtitleWhenLocked)
               {
               }
 
@@ -1248,7 +1248,7 @@ LABEL_92:
             else
             {
 
-              if (v44)
+              if (subtitleWhenLocked)
               {
 
                 goto LABEL_92;
@@ -1256,31 +1256,31 @@ LABEL_92:
             }
 
 LABEL_93:
-            v49 = [(MapsSuggestionsEntry *)self geoMapItem];
-            if (v49)
+            geoMapItem = [(MapsSuggestionsEntry *)self geoMapItem];
+            if (geoMapItem)
             {
-              v24 = [(MapsSuggestionsEntry *)self geoMapItem];
-              v4 = [v7 geoMapItem];
-              if (([v24 isEqual:v4] & 1) == 0)
+              undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self geoMapItem];
+              undecoratedTitle2 = [entryCopy geoMapItem];
+              if (([undecoratedSubtitleWhenLocked isEqual:undecoratedTitle2] & 1) == 0)
               {
 
 LABEL_100:
-                v49 = [v7 geoMapItem];
-                [(MapsSuggestionsEntry *)self setGeoMapItem:v49];
+                geoMapItem = [entryCopy geoMapItem];
+                [(MapsSuggestionsEntry *)self setGeoMapItem:geoMapItem];
 LABEL_103:
 
                 goto LABEL_104;
               }
             }
 
-            v50 = [v7 geoMapItem];
-            if (v50)
+            geoMapItem2 = [entryCopy geoMapItem];
+            if (geoMapItem2)
             {
-              v51 = [v7 geoMapItem];
-              v52 = [(MapsSuggestionsEntry *)self geoMapItem];
-              v53 = [v51 isEqual:v52];
+              geoMapItem3 = [entryCopy geoMapItem];
+              geoMapItem4 = [(MapsSuggestionsEntry *)self geoMapItem];
+              v53 = [geoMapItem3 isEqual:geoMapItem4];
 
-              if (v49)
+              if (geoMapItem)
               {
               }
 
@@ -1293,7 +1293,7 @@ LABEL_103:
             else
             {
 
-              if (v49)
+              if (geoMapItem)
               {
 
                 goto LABEL_103;
@@ -1301,48 +1301,48 @@ LABEL_103:
             }
 
 LABEL_104:
-            v54 = [(MapsSuggestionsEntry *)self expires];
-            if (!v54 || (-[MapsSuggestionsEntry expires](self, "expires"), v24 = objc_claimAutoreleasedReturnValue(), [v7 expires], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v24, "isEqual:", v4) & 1) != 0))
+            expires = [(MapsSuggestionsEntry *)self expires];
+            if (!expires || (-[MapsSuggestionsEntry expires](self, "expires"), undecoratedSubtitleWhenLocked = objc_claimAutoreleasedReturnValue(), [entryCopy expires], undecoratedTitle2 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(undecoratedSubtitleWhenLocked, "isEqual:", undecoratedTitle2) & 1) != 0))
             {
-              v55 = [v7 expires];
-              if (!v55)
+              expires2 = [entryCopy expires];
+              if (!expires2)
               {
 
-                if (!v54)
+                if (!expires)
                 {
 LABEL_115:
-                  v59 = [(MapsSuggestionsEntry *)self type];
-                  if (v59 != [v7 type])
+                  type = [(MapsSuggestionsEntry *)self type];
+                  if (type != [entryCopy type])
                   {
-                    -[MapsSuggestionsEntry _overrideType:](self, "_overrideType:", [v7 type]);
+                    -[MapsSuggestionsEntry _overrideType:](self, "_overrideType:", [entryCopy type]);
                   }
 
                   [(MapsSuggestionsEntry *)self setIconData:0];
-                  [v7 weight];
+                  [entryCopy weight];
                   [(MapsSuggestionsEntry *)self setWeight:?];
-                  v9 = [(MapsSuggestionsEntry *)self originatingSourceName];
-                  v60 = [v7 originatingSourceName];
-                  if (([v9 isEqualToString:v60]& 1) == 0)
+                  originatingSourceName = [(MapsSuggestionsEntry *)self originatingSourceName];
+                  originatingSourceName2 = [entryCopy originatingSourceName];
+                  if (([originatingSourceName isEqualToString:originatingSourceName2]& 1) == 0)
                   {
-                    [(MapsSuggestionsEntry *)self setString:v60 forKey:@"MapsSuggestionsNewSourceKey"];
+                    [(MapsSuggestionsEntry *)self setString:originatingSourceName2 forKey:@"MapsSuggestionsNewSourceKey"];
                   }
 
-                  v61 = self;
-                  objc_sync_enter(v61);
-                  v62 = [v7 sourceSpecificInfo];
-                  v63 = [v62 copy];
-                  [(MapsSuggestionsEntry *)v61 setSourceSpecificInfo:v63];
+                  selfCopy = self;
+                  objc_sync_enter(selfCopy);
+                  sourceSpecificInfo = [entryCopy sourceSpecificInfo];
+                  v63 = [sourceSpecificInfo copy];
+                  [(MapsSuggestionsEntry *)selfCopy setSourceSpecificInfo:v63];
 
-                  objc_sync_exit(v61);
-                  v64 = v61;
-                  v65 = v7;
+                  objc_sync_exit(selfCopy);
+                  v64 = selfCopy;
+                  v65 = entryCopy;
                   if (v64)
                   {
-                    v66 = [(MapsSuggestionsEntry *)v64 originatingSourceName];
-                    v67 = [v65 originatingSourceName];
-                    if (v66 && ([v66 isEqualToString:v67] & 1) == 0)
+                    originatingSourceName3 = [(MapsSuggestionsEntry *)v64 originatingSourceName];
+                    originatingSourceName4 = [v65 originatingSourceName];
+                    if (originatingSourceName3 && ([originatingSourceName3 isEqualToString:originatingSourceName4] & 1) == 0)
                     {
-                      [(MapsSuggestionsEntry *)v64 setString:v67 forKey:@"MapsSuggestionsNewSourceKey"];
+                      [(MapsSuggestionsEntry *)v64 setString:originatingSourceName4 forKey:@"MapsSuggestionsNewSourceKey"];
                     }
                   }
 
@@ -1370,11 +1370,11 @@ LABEL_114:
                 goto LABEL_115;
               }
 
-              v56 = [v7 expires];
-              v57 = [(MapsSuggestionsEntry *)self expires];
-              v58 = [v56 isEqual:v57];
+              expires3 = [entryCopy expires];
+              expires4 = [(MapsSuggestionsEntry *)self expires];
+              v58 = [expires3 isEqual:expires4];
 
-              if (v54)
+              if (expires)
               {
               }
 
@@ -1388,16 +1388,16 @@ LABEL_114:
             {
             }
 
-            v54 = [v7 expires];
-            [(MapsSuggestionsEntry *)self setExpires:v54];
+            expires = [entryCopy expires];
+            [(MapsSuggestionsEntry *)self setExpires:expires];
             goto LABEL_114;
           }
 
-          v41 = [v7 subtitle];
-          v42 = [(MapsSuggestionsEntry *)self subtitle];
-          v43 = [v41 isEqual:v42];
+          subtitle3 = [entryCopy subtitle];
+          subtitle4 = [(MapsSuggestionsEntry *)self subtitle];
+          v43 = [subtitle3 isEqual:subtitle4];
 
-          if (v39)
+          if (subtitle)
           {
           }
 
@@ -1411,8 +1411,8 @@ LABEL_114:
         {
         }
 
-        v39 = [v7 subtitle];
-        [(MapsSuggestionsEntry *)self setSubtitle:v39];
+        subtitle = [entryCopy subtitle];
+        [(MapsSuggestionsEntry *)self setSubtitle:subtitle];
         goto LABEL_81;
       }
     }
@@ -1421,15 +1421,15 @@ LABEL_114:
     {
     }
 
-    v24 = [v7 undecoratedSubtitleWhenLocked];
-    [(MapsSuggestionsEntry *)self setUndecoratedSubtitleWhenLocked:v24];
+    undecoratedSubtitleWhenLocked = [entryCopy undecoratedSubtitleWhenLocked];
+    [(MapsSuggestionsEntry *)self setUndecoratedSubtitleWhenLocked:undecoratedSubtitleWhenLocked];
 LABEL_47:
 
     goto LABEL_48;
   }
 
-  v9 = GEOFindOrCreateLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  originatingSourceName = GEOFindOrCreateLog();
+  if (os_log_type_enabled(originatingSourceName, OS_LOG_TYPE_ERROR))
   {
     *buf = 136446978;
     v71 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsEntry+BusinessLogic.m";
@@ -1439,7 +1439,7 @@ LABEL_47:
     v75 = "[MapsSuggestionsEntry(BusinessLogic) replaceByEntry:forceDecoratedOverwrites:]";
     v76 = 2082;
     v77 = "nil == (otherEntry)";
-    _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an other suggestions entry", buf, 0x26u);
+    _os_log_impl(&dword_1C5126000, originatingSourceName, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an other suggestions entry", buf, 0x26u);
   }
 
 LABEL_128:
@@ -1447,14 +1447,14 @@ LABEL_128:
 
 - (BOOL)hasStartAndEndTime
 {
-  v3 = [(MapsSuggestionsEntry *)self hasStartTime];
-  if (v3)
+  hasStartTime = [(MapsSuggestionsEntry *)self hasStartTime];
+  if (hasStartTime)
   {
 
-    LOBYTE(v3) = [(MapsSuggestionsEntry *)self hasEndTime];
+    LOBYTE(hasStartTime) = [(MapsSuggestionsEntry *)self hasEndTime];
   }
 
-  return v3;
+  return hasStartTime;
 }
 
 - (BOOL)hasEssentialFlightInfo
@@ -1640,13 +1640,13 @@ LABEL_16:
   return v10;
 }
 
-+ (id)entryWithType:(int64_t)a3 title:(id)a4 subtitle:(id)a5 weight:(double)a6 expires:(id)a7 sourceSpecificInfo:(id)a8
++ (id)entryWithType:(int64_t)type title:(id)title subtitle:(id)subtitle weight:(double)weight expires:(id)expires sourceSpecificInfo:(id)info
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = [[MapsSuggestionsEntry alloc] initWithType:a3 title:v13 subtitle:v14 weight:v15 expires:0 geoMapItem:v16 sourceSpecificInfo:a6];
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  expiresCopy = expires;
+  infoCopy = info;
+  v17 = [[MapsSuggestionsEntry alloc] initWithType:type title:titleCopy subtitle:subtitleCopy weight:expiresCopy expires:0 geoMapItem:infoCopy sourceSpecificInfo:weight];
 
   return v17;
 }
@@ -1661,7 +1661,7 @@ LABEL_16:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_ERROR, "Error archiving entry %@", &v6, 0xCu);
     }
   }
@@ -1669,14 +1669,14 @@ LABEL_16:
   return v3;
 }
 
-+ (id)entryWithData:(id)a3
++ (id)entryWithData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = 0;
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v9];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
     v5 = v9;
     if (v5 || !v4)
     {
@@ -1719,62 +1719,62 @@ LABEL_16:
   return v6;
 }
 
-- (MapsSuggestionsEntry)initWithCoder:(id)a3
+- (MapsSuggestionsEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MapsSuggestionsEntry *)self initWithType:0 title:&stru_1F444C108];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"mseType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseTitle"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"mseType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseTitle"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseSubtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseSubtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedTitle"];
     undecoratedTitle = v5->_undecoratedTitle;
     v5->_undecoratedTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedSubtitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedSubtitle"];
     undecoratedSubtitle = v5->_undecoratedSubtitle;
     v5->_undecoratedSubtitle = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseTitleWhenLocked"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseTitleWhenLocked"];
     titleWhenLocked = v5->_titleWhenLocked;
     v5->_titleWhenLocked = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseSubtitleWhenLocked"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseSubtitleWhenLocked"];
     subtitleWhenLocked = v5->_subtitleWhenLocked;
     v5->_subtitleWhenLocked = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedTitleWhenLocked"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedTitleWhenLocked"];
     undecoratedTitleWhenLocked = v5->_undecoratedTitleWhenLocked;
     v5->_undecoratedTitleWhenLocked = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedSubtitleWhenLocked"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseUndecoratedSubtitleWhenLocked"];
     undecoratedSubtitleWhenLocked = v5->_undecoratedSubtitleWhenLocked;
     v5->_undecoratedSubtitleWhenLocked = v20;
 
-    [v4 decodeDoubleForKey:@"mseWeight"];
+    [coderCopy decodeDoubleForKey:@"mseWeight"];
     *&v22 = v22;
     v5->_weight = *&v22;
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseExpires"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseExpires"];
     expires = v5->_expires;
     v5->_expires = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseIconData"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseIconData"];
     iconData = v5->_iconData;
     v5->_iconData = v25;
 
-    v5->_deleted = [v4 decodeBoolForKey:@"mseDeleted"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseOriginatingSourceName"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"mseDeleted"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseOriginatingSourceName"];
     originatingSourceName = v5->_originatingSourceName;
     v5->_originatingSourceName = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mseGEOMapItem"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mseGEOMapItem"];
     geoMapItem = v5->_geoMapItem;
     v5->_geoMapItem = v29;
 
@@ -1783,12 +1783,12 @@ LABEL_16:
       [MapsSuggestionsEntry initWithCoder:];
     }
 
-    v31 = [v4 decodeObjectOfClasses:-[MapsSuggestionsEntry initWithCoder:]::s_entryClasses forKey:@"mseSSI"];
+    v31 = [coderCopy decodeObjectOfClasses:-[MapsSuggestionsEntry initWithCoder:]::s_entryClasses forKey:@"mseSSI"];
     v32 = [v31 mutableCopy];
     sourceSpecificInfo = v5->_sourceSpecificInfo;
     v5->_sourceSpecificInfo = v32;
 
-    v34 = [v4 decodeObjectOfClasses:-[MapsSuggestionsEntry initWithCoder:]::s_typeHistoryClasses forKey:@"mseTypeHistory"];
+    v34 = [coderCopy decodeObjectOfClasses:-[MapsSuggestionsEntry initWithCoder:]::s_typeHistoryClasses forKey:@"mseTypeHistory"];
     v35 = [v34 mutableCopy];
     typeHistory = v5->_typeHistory;
     v5->_typeHistory = v35;
@@ -1825,84 +1825,84 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   [MapsSuggestionsEntry initWithCoder:]::s_typeHistoryClasses = v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  [v19 encodeInteger:-[MapsSuggestionsEntry type](self forKey:{"type"), @"mseType"}];
-  v4 = [(MapsSuggestionsEntry *)self title];
-  [v19 encodeObject:v4 forKey:@"mseTitle"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[MapsSuggestionsEntry type](self forKey:{"type"), @"mseType"}];
+  title = [(MapsSuggestionsEntry *)self title];
+  [coderCopy encodeObject:title forKey:@"mseTitle"];
 
-  v5 = [(MapsSuggestionsEntry *)self subtitle];
-  [v19 encodeObject:v5 forKey:@"mseSubtitle"];
+  subtitle = [(MapsSuggestionsEntry *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"mseSubtitle"];
 
-  v6 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-  [v19 encodeObject:v6 forKey:@"mseUndecoratedTitle"];
+  undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+  [coderCopy encodeObject:undecoratedTitle forKey:@"mseUndecoratedTitle"];
 
-  v7 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-  [v19 encodeObject:v7 forKey:@"mseUndecoratedSubtitle"];
+  undecoratedSubtitle = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+  [coderCopy encodeObject:undecoratedSubtitle forKey:@"mseUndecoratedSubtitle"];
 
-  v8 = [(MapsSuggestionsEntry *)self titleWhenLocked];
-  [v19 encodeObject:v8 forKey:@"mseTitleWhenLocked"];
+  titleWhenLocked = [(MapsSuggestionsEntry *)self titleWhenLocked];
+  [coderCopy encodeObject:titleWhenLocked forKey:@"mseTitleWhenLocked"];
 
-  v9 = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
-  [v19 encodeObject:v9 forKey:@"mseSubtitleWhenLocked"];
+  subtitleWhenLocked = [(MapsSuggestionsEntry *)self subtitleWhenLocked];
+  [coderCopy encodeObject:subtitleWhenLocked forKey:@"mseSubtitleWhenLocked"];
 
-  v10 = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
-  [v19 encodeObject:v10 forKey:@"mseUndecoratedTitleWhenLocked"];
+  undecoratedTitleWhenLocked = [(MapsSuggestionsEntry *)self undecoratedTitleWhenLocked];
+  [coderCopy encodeObject:undecoratedTitleWhenLocked forKey:@"mseUndecoratedTitleWhenLocked"];
 
-  v11 = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
-  [v19 encodeObject:v11 forKey:@"mseUndecoratedSubtitleWhenLocked"];
+  undecoratedSubtitleWhenLocked = [(MapsSuggestionsEntry *)self undecoratedSubtitleWhenLocked];
+  [coderCopy encodeObject:undecoratedSubtitleWhenLocked forKey:@"mseUndecoratedSubtitleWhenLocked"];
 
   [(MapsSuggestionsEntry *)self weight];
-  [v19 encodeDouble:@"mseWeight" forKey:?];
-  v12 = [(MapsSuggestionsEntry *)self expires];
-  [v19 encodeObject:v12 forKey:@"mseExpires"];
+  [coderCopy encodeDouble:@"mseWeight" forKey:?];
+  expires = [(MapsSuggestionsEntry *)self expires];
+  [coderCopy encodeObject:expires forKey:@"mseExpires"];
 
-  v13 = [(MapsSuggestionsEntry *)self iconData];
-  [v19 encodeObject:v13 forKey:@"mseIconData"];
+  iconData = [(MapsSuggestionsEntry *)self iconData];
+  [coderCopy encodeObject:iconData forKey:@"mseIconData"];
 
-  [v19 encodeBool:-[MapsSuggestionsEntry deleted](self forKey:{"deleted"), @"mseDeleted"}];
-  v14 = [(MapsSuggestionsEntry *)self originatingSourceName];
-  [v19 encodeObject:v14 forKey:@"mseOriginatingSourceName"];
+  [coderCopy encodeBool:-[MapsSuggestionsEntry deleted](self forKey:{"deleted"), @"mseDeleted"}];
+  originatingSourceName = [(MapsSuggestionsEntry *)self originatingSourceName];
+  [coderCopy encodeObject:originatingSourceName forKey:@"mseOriginatingSourceName"];
 
-  v15 = [(MapsSuggestionsEntry *)self geoMapItem];
-  [v19 encodeObject:v15 forKey:@"mseGEOMapItem"];
+  geoMapItem = [(MapsSuggestionsEntry *)self geoMapItem];
+  [coderCopy encodeObject:geoMapItem forKey:@"mseGEOMapItem"];
 
-  v16 = self;
-  objc_sync_enter(v16);
-  v17 = [(NSMutableDictionary *)v16->_sourceSpecificInfo copy];
-  [v19 encodeObject:v17 forKey:@"mseSSI"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v17 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo copy];
+  [coderCopy encodeObject:v17 forKey:@"mseSSI"];
 
-  v18 = [(NSMutableSet *)v16->_typeHistory copy];
-  [v19 encodeObject:v18 forKey:@"mseTypeHistory"];
+  v18 = [(NSMutableSet *)selfCopy->_typeHistory copy];
+  [coderCopy encodeObject:v18 forKey:@"mseTypeHistory"];
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 }
 
-- (MapsSuggestionsEntry)initWithType:(int64_t)a3 title:(id)a4 subtitle:(id)a5 weight:(double)a6 expires:(id)a7 geoMapItem:(id)a8 sourceSpecificInfo:(id)a9
+- (MapsSuggestionsEntry)initWithType:(int64_t)type title:(id)title subtitle:(id)subtitle weight:(double)weight expires:(id)expires geoMapItem:(id)item sourceSpecificInfo:(id)info
 {
-  v26 = a4;
-  v25 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  expiresCopy = expires;
+  itemCopy = item;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = MapsSuggestionsEntry;
   v20 = [(MapsSuggestionsEntry *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    [(MapsSuggestionsEntry *)v20 _overrideType:a3, v25, v26];
-    objc_storeStrong(&v21->_undecoratedTitle, a4);
+    [(MapsSuggestionsEntry *)v20 _overrideType:type, subtitleCopy, titleCopy];
+    objc_storeStrong(&v21->_undecoratedTitle, title);
     objc_storeStrong(&v21->_title, v21->_undecoratedTitle);
-    objc_storeStrong(&v21->_undecoratedSubtitle, a5);
+    objc_storeStrong(&v21->_undecoratedSubtitle, subtitle);
     objc_storeStrong(&v21->_subtitle, v21->_undecoratedSubtitle);
-    v21->_weight = a6;
-    objc_storeStrong(&v21->_expires, a7);
-    objc_storeStrong(&v21->_geoMapItem, a8);
-    if (v19)
+    v21->_weight = weight;
+    objc_storeStrong(&v21->_expires, expires);
+    objc_storeStrong(&v21->_geoMapItem, item);
+    if (infoCopy)
     {
-      v22 = [v19 mutableCopy];
+      v22 = [infoCopy mutableCopy];
     }
 
     else
@@ -1917,7 +1917,7 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MapsSuggestionsEntry allocWithZone:?]title:"initWithType:title:subtitle:weight:expires:geoMapItem:sourceSpecificInfo:" subtitle:self->_type weight:self->_title expires:self->_subtitle geoMapItem:self->_expires sourceSpecificInfo:self->_geoMapItem, 0, self->_weight];
   v5 = [(NSString *)self->_undecoratedTitle copy];
@@ -1936,67 +1936,67 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   subtitle = v4->_subtitle;
   v4->_subtitle = v11;
 
-  v13 = self;
-  objc_sync_enter(v13);
-  v14 = [(NSString *)v13->_originatingSourceName copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v14 = [(NSString *)selfCopy->_originatingSourceName copy];
   originatingSourceName = v4->_originatingSourceName;
   v4->_originatingSourceName = v14;
 
-  v16 = [(NSMutableDictionary *)v13->_sourceSpecificInfo mutableCopy];
+  v16 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo mutableCopy];
   sourceSpecificInfo = v4->_sourceSpecificInfo;
   v4->_sourceSpecificInfo = v16;
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)setUndecoratedTitle:(id)a3
+- (void)setUndecoratedTitle:(id)title
 {
-  objc_storeStrong(&self->_undecoratedTitle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_undecoratedTitle, title);
+  titleCopy = title;
   [(MapsSuggestionsEntry *)self setTitle:self->_undecoratedTitle];
 }
 
-- (void)setUndecoratedSubtitle:(id)a3
+- (void)setUndecoratedSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_undecoratedSubtitle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_undecoratedSubtitle, subtitle);
+  subtitleCopy = subtitle;
   [(MapsSuggestionsEntry *)self setSubtitle:self->_undecoratedSubtitle];
 }
 
-- (void)setUndecoratedTitleWhenLocked:(id)a3
+- (void)setUndecoratedTitleWhenLocked:(id)locked
 {
-  objc_storeStrong(&self->_undecoratedTitleWhenLocked, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_undecoratedTitleWhenLocked, locked);
+  lockedCopy = locked;
   [(MapsSuggestionsEntry *)self setTitleWhenLocked:self->_undecoratedTitleWhenLocked];
 }
 
-- (void)setUndecoratedSubtitleWhenLocked:(id)a3
+- (void)setUndecoratedSubtitleWhenLocked:(id)locked
 {
-  objc_storeStrong(&self->_undecoratedSubtitleWhenLocked, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_undecoratedSubtitleWhenLocked, locked);
+  lockedCopy = locked;
   [(MapsSuggestionsEntry *)self setSubtitleWhenLocked:self->_undecoratedSubtitleWhenLocked];
 }
 
-- (void)setDeleted:(BOOL)a3
+- (void)setDeleted:(BOOL)deleted
 {
-  self->_deleted = a3;
-  if (a3)
+  self->_deleted = deleted;
+  if (deleted)
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     [(MapsSuggestionsEntry *)self setExpires:?];
   }
 }
 
-- (uint64_t)isSourceSpecificDictionaryEqual:(void *)a1
+- (uint64_t)isSourceSpecificDictionaryEqual:(void *)equal
 {
   v3 = a2;
-  if (a1)
+  if (equal)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = [v4[2] isEqualToDictionary:v3];
-    objc_sync_exit(v4);
+    equalCopy = equal;
+    objc_sync_enter(equalCopy);
+    v5 = [equalCopy[2] isEqualToDictionary:v3];
+    objc_sync_exit(equalCopy);
   }
 
   else
@@ -2007,10 +2007,10 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -2018,37 +2018,37 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsEntry *)self isEqualToEntry:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsEntry *)self isEqualToEntry:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToEntry:(id)a3
+- (BOOL)isEqualToEntry:(id)entry
 {
-  v4 = a3;
-  if (self == v4)
+  entryCopy = entry;
+  if (self == entryCopy)
   {
     v38 = 1;
   }
 
   else
   {
-    v5 = [(MapsSuggestionsEntry *)self type];
-    if (v5 == [(MapsSuggestionsEntry *)v4 type]
-      && ((-[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v6 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](v4, "undecoratedTitle"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7) || (-[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](v4, "undecoratedTitle"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10 & 1) != 0))
-      && ((-[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v11 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](v4, "undecoratedSubtitle"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12) || (-[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v13 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](v4, "undecoratedSubtitle"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 isEqualToString:v14], v14, v13, (v15 & 1) != 0))
-      && ((-[MapsSuggestionsEntry title](self, "title"), v16 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry title](v4, "title"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v16 == v17) || (-[MapsSuggestionsEntry title](self, "title"), v18 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry title](v4, "title"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v18 isEqualToString:v19], v19, v18, (v20 & 1) != 0))
-      && ((-[MapsSuggestionsEntry subtitle](self, "subtitle"), v21 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry subtitle](v4, "subtitle"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v21 == v22) || (-[MapsSuggestionsEntry subtitle](self, "subtitle"), v23 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry subtitle](v4, "subtitle"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v23 isEqualToString:v24], v24, v23, (v25 & 1) != 0))
-      && ((-[MapsSuggestionsEntry expires](self, "expires"), v26 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry expires](v4, "expires"), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v26 == v27) || (-[MapsSuggestionsEntry expires](self, "expires"), v28 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry expires](v4, "expires"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v28 isEqualToDate:v29], v29, v28, (v30 & 1) != 0))
-      && (([(MapsSuggestionsEntry *)self geoMapItem], v31 = objc_claimAutoreleasedReturnValue(), [(MapsSuggestionsEntry *)v4 geoMapItem], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v31 == v32) || ([(MapsSuggestionsEntry *)self geoMapItem], v33 = objc_claimAutoreleasedReturnValue(), [(MapsSuggestionsEntry *)v4 geoMapItem], v34 = objc_claimAutoreleasedReturnValue(), v35 = MapsSuggestionsMapItemsAreEqual(v33, v34, 1, 1, 1), v34, v33, (v35 & 1) != 0)))
+    type = [(MapsSuggestionsEntry *)self type];
+    if (type == [(MapsSuggestionsEntry *)entryCopy type]
+      && ((-[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v6 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](entryCopy, "undecoratedTitle"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7) || (-[MapsSuggestionsEntry undecoratedTitle](self, "undecoratedTitle"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedTitle](entryCopy, "undecoratedTitle"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10 & 1) != 0))
+      && ((-[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v11 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](entryCopy, "undecoratedSubtitle"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12) || (-[MapsSuggestionsEntry undecoratedSubtitle](self, "undecoratedSubtitle"), v13 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry undecoratedSubtitle](entryCopy, "undecoratedSubtitle"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 isEqualToString:v14], v14, v13, (v15 & 1) != 0))
+      && ((-[MapsSuggestionsEntry title](self, "title"), v16 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry title](entryCopy, "title"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v16 == v17) || (-[MapsSuggestionsEntry title](self, "title"), v18 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry title](entryCopy, "title"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v18 isEqualToString:v19], v19, v18, (v20 & 1) != 0))
+      && ((-[MapsSuggestionsEntry subtitle](self, "subtitle"), v21 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry subtitle](entryCopy, "subtitle"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v21 == v22) || (-[MapsSuggestionsEntry subtitle](self, "subtitle"), v23 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry subtitle](entryCopy, "subtitle"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v23 isEqualToString:v24], v24, v23, (v25 & 1) != 0))
+      && ((-[MapsSuggestionsEntry expires](self, "expires"), v26 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry expires](entryCopy, "expires"), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v26 == v27) || (-[MapsSuggestionsEntry expires](self, "expires"), v28 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsEntry expires](entryCopy, "expires"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v28 isEqualToDate:v29], v29, v28, (v30 & 1) != 0))
+      && (([(MapsSuggestionsEntry *)self geoMapItem], v31 = objc_claimAutoreleasedReturnValue(), [(MapsSuggestionsEntry *)entryCopy geoMapItem], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v31 == v32) || ([(MapsSuggestionsEntry *)self geoMapItem], v33 = objc_claimAutoreleasedReturnValue(), [(MapsSuggestionsEntry *)entryCopy geoMapItem], v34 = objc_claimAutoreleasedReturnValue(), v35 = MapsSuggestionsMapItemsAreEqual(v33, v34, 1, 1, 1), v34, v33, (v35 & 1) != 0)))
     {
-      v36 = self;
-      objc_sync_enter(v36);
-      v37 = [(NSMutableDictionary *)v36->_sourceSpecificInfo copy];
-      objc_sync_exit(v36);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v37 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo copy];
+      objc_sync_exit(selfCopy);
 
-      v38 = [(MapsSuggestionsEntry *)v4 isSourceSpecificDictionaryEqual:v37];
+      v38 = [(MapsSuggestionsEntry *)entryCopy isSourceSpecificDictionaryEqual:v37];
     }
 
     else
@@ -2062,14 +2062,14 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(MapsSuggestionsEntry *)self type];
-  v4 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-  v5 = [v4 hash];
-  v6 = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
-  v7 = [v6 hash];
-  v8 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-  v9 = v5 ^ v3;
-  v10 = v7 ^ [v8 hash];
+  type = [(MapsSuggestionsEntry *)self type];
+  undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+  v5 = [undecoratedTitle hash];
+  undecoratedSubtitle = [(MapsSuggestionsEntry *)self undecoratedSubtitle];
+  v7 = [undecoratedSubtitle hash];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  v9 = v5 ^ type;
+  v10 = v7 ^ [uniqueIdentifier hash];
 
   return v9 ^ v10;
 }
@@ -2077,49 +2077,49 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
 - (NSString)uniqueName
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-  v5 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-  v6 = [v3 stringWithFormat:@"MapsSuggestionsEntry '%@' '%@'", v4, v5];
+  undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  v6 = [v3 stringWithFormat:@"MapsSuggestionsEntry '%@' '%@'", undecoratedTitle, uniqueIdentifier];
 
   return v6;
 }
 
 - (id)sourceSpecificInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sourceSpecificInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sourceSpecificInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSourceSpecificInfo:(id)a3
+- (void)setSourceSpecificInfo:(id)info
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v7];
-  sourceSpecificInfo = v4->_sourceSpecificInfo;
-  v4->_sourceSpecificInfo = v5;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:infoCopy];
+  sourceSpecificInfo = selfCopy->_sourceSpecificInfo;
+  selfCopy->_sourceSpecificInfo = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setValue:(void *)a3 forKey:(uint64_t)a4 class:
+- (void)_setValue:(void *)value forKey:(uint64_t)key class:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  valueCopy = value;
+  v9 = valueCopy;
+  if (self)
   {
-    if (v8)
+    if (valueCopy)
     {
-      if (a4)
+      if (key)
       {
-        v10 = a1;
-        objc_sync_enter(v10);
-        v11 = v10[2];
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        v11 = selfCopy[2];
         if (v7)
         {
           [v11 setObject:v7 forKey:v9];
@@ -2130,7 +2130,7 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
           [v11 removeObjectForKey:v9];
         }
 
-        objc_sync_exit(v10);
+        objc_sync_exit(selfCopy);
       }
 
       else
@@ -2148,102 +2148,102 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   }
 }
 
-- (void)setSet:(id)a3 forKey:(id)a4
+- (void)setSet:(id)set forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  setCopy = set;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:setCopy forKey:keyCopy class:v7];
 }
 
-- (void)setArray:(id)a3 forKey:(id)a4
+- (void)setArray:(id)array forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:arrayCopy forKey:keyCopy class:v7];
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  stringCopy = string;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:stringCopy forKey:keyCopy class:v7];
 }
 
-- (void)setNumber:(id)a3 forKey:(id)a4
+- (void)setNumber:(id)number forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  numberCopy = number;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:numberCopy forKey:keyCopy class:v7];
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v8 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  keyCopy = key;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v6 forKey:v8 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:v6 forKey:keyCopy class:v7];
 }
 
-- (void)setBoolean:(BOOL)a3 forKey:(id)a4
+- (void)setBoolean:(BOOL)boolean forKey:(id)key
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  booleanCopy = boolean;
+  keyCopy = key;
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:booleanCopy];
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v6 forKey:v8 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:v6 forKey:keyCopy class:v7];
 }
 
-- (void)setDate:(id)a3 forKey:(id)a4
+- (void)setDate:(id)date forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:dateCopy forKey:keyCopy class:v7];
 }
 
-- (void)setURL:(id)a3 forKey:(id)a4
+- (void)setURL:(id)l forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  lCopy = l;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:lCopy forKey:keyCopy class:v7];
 }
 
-- (void)setUUID:(id)a3 forKey:(id)a4
+- (void)setUUID:(id)d forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:dCopy forKey:keyCopy class:v7];
 }
 
-- (void)setData:(id)a3 forKey:(id)a4
+- (void)setData:(id)data forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:dataCopy forKey:keyCopy class:v7];
 }
 
-- (void)setRouteRequestStorage:(id)a3 forKey:(id)a4
+- (void)setRouteRequestStorage:(id)storage forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  storageCopy = storage;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v8 forKey:v6 class:v7];
+  [(MapsSuggestionsEntry *)self _setValue:storageCopy forKey:keyCopy class:v7];
 }
 
-- (void)setETA:(id)a3 forKey:(id)a4
+- (void)setETA:(id)a forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
+  aCopy = a;
+  keyCopy = key;
   v7 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v11 forKey:v6 class:v7];
-  if (v11)
+  [(MapsSuggestionsEntry *)self _setValue:aCopy forKey:keyCopy class:v7];
+  if (aCopy)
   {
     v8 = MapsSuggestionsDestinationKey(self);
     v9 = objc_opt_class();
@@ -2257,39 +2257,39 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   }
 }
 
-- (void)setMapItemHandleData:(id)a3
+- (void)setMapItemHandleData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v4 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v5 forKey:@"MapsSuggestionsMapItemHandleDataKey" class:v4];
+  [(MapsSuggestionsEntry *)self _setValue:dataCopy forKey:@"MapsSuggestionsMapItemHandleDataKey" class:v4];
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v4 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v5 forKey:@"MapsSuggestionsShortcutContactsKey" class:v4];
+  [(MapsSuggestionsEntry *)self _setValue:contactsCopy forKey:@"MapsSuggestionsShortcutContactsKey" class:v4];
 }
 
-- (void)setShareETAHandles:(id)a3
+- (void)setShareETAHandles:(id)handles
 {
-  v5 = a3;
+  handlesCopy = handles;
   v4 = objc_opt_class();
-  [(MapsSuggestionsEntry *)self _setValue:v5 forKey:@"MapsSuggestionSharedETAHandlesFromFavorite" class:v4];
+  [(MapsSuggestionsEntry *)self _setValue:handlesCopy forKey:@"MapsSuggestionSharedETAHandlesFromFavorite" class:v4];
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_sourceSpecificInfo objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo objectForKey:keyCopy];
     v7 = v6 != 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -2314,11 +2314,11 @@ void __38__MapsSuggestionsEntry_initWithCoder___block_invoke()
   return v7;
 }
 
-- (id)_valueForKey:(uint64_t)a3 class:
+- (id)_valueForKey:(uint64_t)key class:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_13;
   }
@@ -2332,16 +2332,16 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!key)
   {
     v12 = GEOFindOrCreateLog();
     [MapsSuggestionsEntry _valueForKey:v12 class:?];
     goto LABEL_13;
   }
 
-  v7 = a1;
-  objc_sync_enter(v7);
-  v8 = [v7[2] objectForKey:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [selfCopy[2] objectForKey:v6];
   if (v8)
   {
     objc_opt_class();
@@ -2352,151 +2352,151 @@ LABEL_13:
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"The class of key '%@' is not '%@'", v6, a3];
+      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"The class of key '%@' is not '%@'", v6, key];
       v14 = GEOFindOrCreateLog();
       [(MapsSuggestionsEntry *)v14 _valueForKey:v8 class:v13];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 LABEL_8:
 
   return v8;
 }
 
-- (id)setForKey:(id)a3
+- (id)setForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to 0 instead of nil integer value for key '%@'", v4];
+    keyCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to 0 instead of nil integer value for key '%@'", keyCopy];
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v9;
+      v13 = keyCopy;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (unint64_t)uint64ForKey:(id)a3
+- (unint64_t)uint64ForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to 0 instead of nil integer value for key '%@'", v4];
+    keyCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to 0 instead of nil integer value for key '%@'", keyCopy];
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v9;
+      v13 = keyCopy;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v8 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v8;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)BOOLeanForKey:(id)a3
+- (BOOL)BOOLeanForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to NO instead of nil BOOLean value for key '%@'", v4];
+    keyCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Defaulting to NO instead of nil BOOLean value for key '%@'", keyCopy];
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v9;
+      v13 = keyCopy;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)BOOLeanForKey:(id)a3 is:(BOOL)a4
+- (BOOL)BOOLeanForKey:(id)key is:(BOOL)is
 {
-  v4 = a4;
-  v6 = a3;
+  isCopy = is;
+  keyCopy = key;
   v7 = objc_opt_class();
-  v8 = [(MapsSuggestionsEntry *)self _valueForKey:v6 class:v7];
+  v8 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v7];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 BOOLValue] ^ v4 ^ 1;
+    v10 = [v8 BOOLValue] ^ isCopy ^ 1;
   }
 
   else
@@ -2507,56 +2507,56 @@ LABEL_8:
   return v10;
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)UUIDForKey:(id)a3
+- (id)UUIDForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)routeRequestStorageForKey:(id)a3
+- (id)routeRequestStorageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
 
-- (id)ETAForKey:(id)a3
+- (id)ETAForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(MapsSuggestionsEntry *)self _valueForKey:v4 class:v5];
+  v6 = [(MapsSuggestionsEntry *)self _valueForKey:keyCopy class:v5];
 
   return v6;
 }
@@ -2570,16 +2570,16 @@ LABEL_8:
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MapsSuggestionsEntry *)v2 title];
-  v5 = [(MapsSuggestionsEntry *)v2 subtitle];
-  v6 = NSStringFromMapsSuggestionsEntryType([(MapsSuggestionsEntry *)v2 type]);
-  v7 = [(MapsSuggestionsEntry *)v2 uniqueIdentifier];
-  v8 = [v3 initWithFormat:@"'%@' / '%@' (%@) %@", v4, v5, v6, v7];
+  title = [(MapsSuggestionsEntry *)selfCopy title];
+  subtitle = [(MapsSuggestionsEntry *)selfCopy subtitle];
+  v6 = NSStringFromMapsSuggestionsEntryType([(MapsSuggestionsEntry *)selfCopy type]);
+  uniqueIdentifier = [(MapsSuggestionsEntry *)selfCopy uniqueIdentifier];
+  v8 = [v3 initWithFormat:@"'%@' / '%@' (%@) %@", title, subtitle, v6, uniqueIdentifier];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -2587,45 +2587,45 @@ LABEL_8:
 - (id)fullDescriptionForCurrentLocationEntries
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v27 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v2 = NSStringFromMapsSuggestionsEntryType([a1 type]);
+    v2 = NSStringFromMapsSuggestionsEntryType([self type]);
     [v27 appendFormat:@"-- %@ --\n", v2];
 
-    [v27 appendFormat:@" pointer:   %p\n", a1];
-    v3 = [a1 subtitle];
-    [v27 appendFormat:@" subtitle: '%@'\n", v3];
+    [v27 appendFormat:@" pointer:   %p\n", self];
+    subtitle = [self subtitle];
+    [v27 appendFormat:@" subtitle: '%@'\n", subtitle];
 
-    v4 = [a1 originatingSourceName];
-    [v27 appendFormat:@" origin:    %@\n", v4];
+    originatingSourceName = [self originatingSourceName];
+    [v27 appendFormat:@" origin:    %@\n", originatingSourceName];
 
-    v5 = [a1 expires];
-    v6 = MapsSuggestionsAMPMStringFromDate(v5);
+    expires = [self expires];
+    v6 = MapsSuggestionsAMPMStringFromDate(expires);
     [v27 appendFormat:@" expires:   %@\n", v6];
 
-    [a1 weight];
+    [self weight];
     *&v7 = v7;
     [v27 appendFormat:@" weight:    %.3f\n", *&v7];
-    v8 = [a1 geoMapItem];
+    geoMapItem = [self geoMapItem];
     v9 = @"<present>";
-    if (!v8)
+    if (!geoMapItem)
     {
       v9 = @"<absent>";
     }
 
     [v27 appendFormat:@" mapItem:   %@\n", v9];
 
-    v10 = a1;
-    objc_sync_enter(v10);
-    v26 = v10;
-    [v27 appendFormat:@" specifics: %lu entries: {\n", objc_msgSend(v10[2], "count")];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v26 = selfCopy;
+    [v27 appendFormat:@" specifics: %lu entries: {\n", objc_msgSend(selfCopy[2], "count")];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = [v10[2] allKeys];
-    v12 = [v11 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [selfCopy[2] allKeys];
+    v12 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     obj = v12;
     v13 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -2714,7 +2714,7 @@ LABEL_19:
   v41 = *MEMORY[0x1E69E9840];
   if ([(MapsSuggestionsEntry *)self type]== 25)
   {
-    v3 = [(MapsSuggestionsEntry *)self fullDescriptionForCurrentLocationEntries];
+    fullDescriptionForCurrentLocationEntries = [(MapsSuggestionsEntry *)self fullDescriptionForCurrentLocationEntries];
   }
 
   else
@@ -2724,38 +2724,38 @@ LABEL_19:
     [v30 appendFormat:@"-- %@ --\n", v4];
 
     [v30 appendFormat:@" pointer:   %p\n", self];
-    v5 = [(MapsSuggestionsEntry *)self title];
-    [v30 appendFormat:@" title:    '%@'\n", v5];
+    title = [(MapsSuggestionsEntry *)self title];
+    [v30 appendFormat:@" title:    '%@'\n", title];
 
-    v6 = [(MapsSuggestionsEntry *)self subtitle];
-    [v30 appendFormat:@" subtitle: '%@'\n", v6];
+    subtitle = [(MapsSuggestionsEntry *)self subtitle];
+    [v30 appendFormat:@" subtitle: '%@'\n", subtitle];
 
-    v7 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-    [v30 appendFormat:@" uniqueID:  %@\n", v7];
+    uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+    [v30 appendFormat:@" uniqueID:  %@\n", uniqueIdentifier];
 
-    v8 = [(MapsSuggestionsEntry *)self originatingSourceName];
-    [v30 appendFormat:@" origin:    %@\n", v8];
+    originatingSourceName = [(MapsSuggestionsEntry *)self originatingSourceName];
+    [v30 appendFormat:@" origin:    %@\n", originatingSourceName];
 
-    v9 = [(MapsSuggestionsEntry *)self expires];
-    v10 = MapsSuggestionsAMPMStringFromDate(v9);
+    expires = [(MapsSuggestionsEntry *)self expires];
+    v10 = MapsSuggestionsAMPMStringFromDate(expires);
     [v30 appendFormat:@" expires:   %@\n", v10];
 
     [(MapsSuggestionsEntry *)self weight];
     *&v11 = v11;
     [v30 appendFormat:@" weight:    %.3f\n", *&v11];
-    v12 = [(MapsSuggestionsEntry *)self geoMapItem];
-    v13 = NSStringFromMapsSuggestionsMapItem(v12);
+    geoMapItem = [(MapsSuggestionsEntry *)self geoMapItem];
+    v13 = NSStringFromMapsSuggestionsMapItem(geoMapItem);
     [v30 appendFormat:@" mapItem:   %@\n", v13];
 
-    v14 = self;
-    objc_sync_enter(v14);
-    [v30 appendFormat:@" specifics: %lu entries: {\n", -[NSMutableDictionary count](v14->_sourceSpecificInfo, "count")];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [v30 appendFormat:@" specifics: %lu entries: {\n", -[NSMutableDictionary count](selfCopy->_sourceSpecificInfo, "count")];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = [(NSMutableDictionary *)v14->_sourceSpecificInfo allKeys];
-    v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo allKeys];
+    v16 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     obj = v16;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -2813,13 +2813,13 @@ LABEL_18:
 
           if ([v20 isEqualToString:@"MapsSuggestionsResumeRouteRouteRequestStorage"] && (MapsSuggestionsLoggingIsVerbose() & 1) == 0)
           {
-            v27 = [(NSMutableDictionary *)v14->_sourceSpecificInfo objectForKeyedSubscript:v20];
+            v27 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo objectForKeyedSubscript:v20];
             [v30 appendFormat:@" . %@ => %lu waypoints:\n", v26, objc_msgSend(v27, "waypointsCount")];
           }
 
           else
           {
-            v27 = [(NSMutableDictionary *)v14->_sourceSpecificInfo objectForKeyedSubscript:v20];
+            v27 = [(NSMutableDictionary *)selfCopy->_sourceSpecificInfo objectForKeyedSubscript:v20];
             [v30 appendFormat:@" . %@ => %@\n", v26, v27];
           }
         }
@@ -2832,34 +2832,34 @@ LABEL_18:
     }
 
     [v30 appendString:@" }"];
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
 
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v30];
+    fullDescriptionForCurrentLocationEntries = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v30];
   }
 
-  return v3;
+  return fullDescriptionForCurrentLocationEntries;
 }
 
-- (void)setAvailableRemovalBehavior:(int64_t)a3
+- (void)setAvailableRemovalBehavior:(int64_t)behavior
 {
-  v4 = [(MapsSuggestionsEntry *)self availableRemovalBehaviors]| a3;
+  v4 = [(MapsSuggestionsEntry *)self availableRemovalBehaviors]| behavior;
 
   [(MapsSuggestionsEntry *)self setInteger:v4 forKey:@"MapsSuggestionsRemovalBehaviorKey"];
 }
 
-- (void)resetAvailableRemovalBehavior:(int64_t)a3
+- (void)resetAvailableRemovalBehavior:(int64_t)behavior
 {
-  v4 = [(MapsSuggestionsEntry *)self availableRemovalBehaviors]& ~a3;
+  v4 = [(MapsSuggestionsEntry *)self availableRemovalBehaviors]& ~behavior;
 
   [(MapsSuggestionsEntry *)self setInteger:v4 forKey:@"MapsSuggestionsRemovalBehaviorKey"];
 }
 
-- (void)setLocationCoordinateKeysFromLocation:(id)a3
+- (void)setLocationCoordinateKeysFromLocation:(id)location
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (!locationCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2878,7 +2878,7 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   if (!CLLocationCoordinate2DIsValid(v21))
   {
     v11 = GEOFindOrCreateLog();
@@ -2915,12 +2915,12 @@ LABEL_10:
 
 - (NSString)serializedHexString
 {
-  v2 = [(MapsSuggestionsEntry *)self data];
-  if (v2)
+  data = [(MapsSuggestionsEntry *)self data];
+  if (data)
   {
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v4 = [v2 _geo_hexString];
-    v5 = [v3 initWithFormat:@"%@%@", @"{16}", v4];
+    _geo_hexString = [data _geo_hexString];
+    v5 = [v3 initWithFormat:@"%@%@", @"{16}", _geo_hexString];
   }
 
   else
@@ -2933,11 +2933,11 @@ LABEL_10:
 
 - (NSString)serializedBase64String
 {
-  v2 = [(MapsSuggestionsEntry *)self data];
-  if (v2)
+  data = [(MapsSuggestionsEntry *)self data];
+  if (data)
   {
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v4 = [v2 base64EncodedStringWithOptions:0];
+    v4 = [data base64EncodedStringWithOptions:0];
     v5 = [v3 initWithFormat:@"%@%@", @"{64}", v4];
   }
 
@@ -2949,20 +2949,20 @@ LABEL_10:
   return v5;
 }
 
-+ (id)entryFromSerializedHexString:(id)a3 hasPrefix:(BOOL)a4
++ (id)entryFromSerializedHexString:(id)string hasPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  prefixCopy = prefix;
+  stringCopy = string;
+  if (prefixCopy)
   {
-    v7 = [v6 substringFromIndex:{objc_msgSend(@"{16}", "length")}];
-    v8 = [a1 entryFromSerializedHexString:v7 hasPrefix:0];
+    v7 = [stringCopy substringFromIndex:{objc_msgSend(@"{16}", "length")}];
+    v8 = [self entryFromSerializedHexString:v7 hasPrefix:0];
 LABEL_5:
     v9 = v8;
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E695DEF0] _geo_dataForHexString:v6];
+  v7 = [MEMORY[0x1E695DEF0] _geo_dataForHexString:stringCopy];
   if (v7)
   {
     v8 = [MapsSuggestionsEntry entryWithData:v7];
@@ -2975,20 +2975,20 @@ LABEL_6:
   return v9;
 }
 
-+ (id)entryFromSerializedBase64String:(id)a3 hasPrefix:(BOOL)a4
++ (id)entryFromSerializedBase64String:(id)string hasPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  prefixCopy = prefix;
+  stringCopy = string;
+  if (prefixCopy)
   {
-    v7 = [v6 substringFromIndex:{objc_msgSend(@"{64}", "length")}];
-    v8 = [a1 entryFromSerializedBase64String:v7 hasPrefix:0];
+    v7 = [stringCopy substringFromIndex:{objc_msgSend(@"{64}", "length")}];
+    v8 = [self entryFromSerializedBase64String:v7 hasPrefix:0];
 LABEL_5:
     v9 = v8;
     goto LABEL_6;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v6 options:0];
+  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:stringCopy options:0];
   if (v7)
   {
     v8 = [MapsSuggestionsEntry entryWithData:v7];
@@ -3001,20 +3001,20 @@ LABEL_6:
   return v9;
 }
 
-+ (id)entryFromSerializedString:(id)a3
++ (id)entryFromSerializedString:(id)string
 {
-  v4 = a3;
-  v5 = MapsSuggestionsStringDataEncodingTypeOfString(v4);
+  stringCopy = string;
+  v5 = MapsSuggestionsStringDataEncodingTypeOfString(stringCopy);
   if (v5 > 1)
   {
     if (v5 == 2)
     {
-      [a1 entryFromSerializedBase64String:v4 hasPrefix:1];
+      [self entryFromSerializedBase64String:stringCopy hasPrefix:1];
     }
 
     else
     {
-      [a1 entryFromSerializedHexString:v4 hasPrefix:v5 == 3];
+      [self entryFromSerializedHexString:stringCopy hasPrefix:v5 == 3];
     }
     v9 = ;
     goto LABEL_13;
@@ -3059,12 +3059,12 @@ LABEL_13:
   v18 = MSg::jsonFor(v19);
   v22[0] = v18;
   v21[1] = @"title";
-  v17 = [(MapsSuggestionsEntry *)self title];
-  v16 = MSg::jsonFor(v17);
+  title = [(MapsSuggestionsEntry *)self title];
+  v16 = MSg::jsonFor(title);
   v22[1] = v16;
   v21[2] = @"subtitle";
-  v15 = [(MapsSuggestionsEntry *)self subtitle];
-  v14 = MSg::jsonFor(v15);
+  subtitle = [(MapsSuggestionsEntry *)self subtitle];
+  v14 = MSg::jsonFor(subtitle);
   v22[2] = v14;
   v21[3] = @"location";
   v3 = [(MapsSuggestionsEntry *)self numberForKey:@"MapsSuggestionsLatitudeKey"];
@@ -3088,9 +3088,9 @@ LABEL_13:
   return v12;
 }
 
-- (void)_overrideType:(int64_t)a3
+- (void)_overrideType:(int64_t)type
 {
-  self->_type = a3;
+  self->_type = type;
   obj = self;
   objc_sync_enter(obj);
   typeHistory = obj->_typeHistory;
@@ -3103,39 +3103,39 @@ LABEL_13:
     typeHistory = obj->_typeHistory;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableSet *)typeHistory addObject:v7];
 
   objc_sync_exit(obj);
 }
 
-- (BOOL)_wasEverOfType:(int64_t)a3
+- (BOOL)_wasEverOfType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  typeHistory = v4->_typeHistory;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  typeHistory = selfCopy->_typeHistory;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   LOBYTE(typeHistory) = [(NSMutableSet *)typeHistory containsObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return typeHistory;
 }
 
-- (BOOL)_wasEverOneOfTypes:(id)a3
+- (BOOL)_wasEverOneOfTypes:(id)types
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = [(NSMutableSet *)v4->_typeHistory intersectsSet:v5];
+  selfCopy = self;
+  typesCopy = types;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableSet *)selfCopy->_typeHistory intersectsSet:typesCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
-- (id)copyWithNewType:(int64_t)a3
+- (id)copyWithNewType:(int64_t)type
 {
   type = self->_type;
-  self->_type = a3;
+  self->_type = type;
   result = [(MapsSuggestionsEntry *)self copy];
   self->_type = type;
   return result;
@@ -3160,9 +3160,9 @@ LABEL_13:
   if ([(MapsSuggestionsEntry *)self isMultiPointRoute])
   {
     v3 = [(MapsSuggestionsEntry *)self routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
-    v4 = [v3 waypoints];
+    waypoints = [v3 waypoints];
     v5 = [(MapsSuggestionsEntry *)self uint64ForKey:@"MapsSuggestionsResumeRouteWaypointIndex"];
-    v6 = [v4 count];
+    v6 = [waypoints count];
 
     if (v6 > v5 + 1)
     {
@@ -3173,40 +3173,40 @@ LABEL_13:
   return result;
 }
 
-- (void)_selectETAFrom:(void *)a3 destinationKey:(void *)a4 otherEntry:
+- (void)_selectETAFrom:(void *)from destinationKey:(void *)key otherEntry:
 {
   v17 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  fromCopy = from;
+  keyCopy = key;
+  if (self)
   {
-    v9 = MapsSuggestionsDestinationKey(a1);
-    v10 = [a1 stringForKey:@"MapsSuggestionsDestinationForETAKey"];
+    v9 = MapsSuggestionsDestinationKey(self);
+    v10 = [self stringForKey:@"MapsSuggestionsDestinationForETAKey"];
     v11 = [v9 isEqualToString:v10];
 
     if ((v11 & 1) == 0)
     {
-      if ([v9 isEqualToString:v7])
+      if ([v9 isEqualToString:fromCopy])
       {
-        v12 = a1;
+        selfCopy2 = self;
         v13 = v17;
 LABEL_8:
-        [v12 setETA:v13 forKey:@"MapsSuggestionsETAKey"];
+        [selfCopy2 setETA:v13 forKey:@"MapsSuggestionsETAKey"];
         goto LABEL_9;
       }
 
-      v14 = [v8 stringForKey:@"MapsSuggestionsDestinationForETAKey"];
+      v14 = [keyCopy stringForKey:@"MapsSuggestionsDestinationForETAKey"];
       v15 = [v9 isEqualToString:v14];
 
       if (!v15)
       {
-        v12 = a1;
+        selfCopy2 = self;
         v13 = 0;
         goto LABEL_8;
       }
 
-      v16 = [v8 ETAForKey:@"MapsSuggestionsETAKey"];
-      [a1 setETA:v16 forKey:@"MapsSuggestionsETAKey"];
+      v16 = [keyCopy ETAForKey:@"MapsSuggestionsETAKey"];
+      [self setETA:v16 forKey:@"MapsSuggestionsETAKey"];
     }
 
 LABEL_9:

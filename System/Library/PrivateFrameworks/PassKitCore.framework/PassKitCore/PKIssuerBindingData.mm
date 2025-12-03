@@ -1,35 +1,35 @@
 @interface PKIssuerBindingData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIssuerBindingData:(id)a3;
-- (PKIssuerBindingData)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIssuerBindingData:(id)data;
+- (PKIssuerBindingData)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIssuerBindingData
 
-- (PKIssuerBindingData)initWithCoder:(id)a3
+- (PKIssuerBindingData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKIssuerBindingData;
   v5 = [(PKIssuerBindingData *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdKeyHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdKeyHash"];
     createdKeyHash = v5->_createdKeyHash;
     v5->_createdKeyHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
     signedData = v5->_signedData;
     v5->_signedData = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callbackURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callbackURL"];
     callbackURL = v5->_callbackURL;
     v5->_callbackURL = v12;
   }
@@ -37,14 +37,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeObject:self->_createdKeyHash forKey:@"createdKeyHash"];
-  [v5 encodeObject:self->_signedData forKey:@"signedData"];
-  [v5 encodeObject:self->_callbackURL forKey:@"callbackURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeObject:self->_createdKeyHash forKey:@"createdKeyHash"];
+  [coderCopy encodeObject:self->_signedData forKey:@"signedData"];
+  [coderCopy encodeObject:self->_callbackURL forKey:@"callbackURL"];
 }
 
 - (id)description
@@ -61,33 +61,33 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIssuerBindingData *)self isEqualToIssuerBindingData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIssuerBindingData *)self isEqualToIssuerBindingData:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToIssuerBindingData:(id)a3
+- (BOOL)isEqualToIssuerBindingData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     goto LABEL_21;
   }
 
-  v6 = v4[1];
+  v6 = dataCopy[1];
   v7 = self->_sessionIdentifier;
   v8 = v6;
   v9 = v8;

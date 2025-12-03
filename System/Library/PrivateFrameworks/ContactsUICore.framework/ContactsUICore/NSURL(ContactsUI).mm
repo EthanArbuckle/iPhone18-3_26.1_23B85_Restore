@@ -51,7 +51,7 @@
   v15[2] = __81__NSURL_ContactsUI___cnui_telephonyURLFutureWithHandle_contact_preferDefaultApp___block_invoke;
   v15[3] = &unk_1E76E8708;
   v17 = v9;
-  v18 = a1;
+  selfCopy = self;
   v16 = v8;
   v19 = a5;
   v11 = v9;
@@ -71,7 +71,7 @@
   v13[2] = __68__NSURL_ContactsUI___cnui_faceTimeAudioURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -90,7 +90,7 @@
   v13[2] = __68__NSURL_ContactsUI___cnui_faceTimeVideoURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -109,7 +109,7 @@
   v13[2] = __58__NSURL_ContactsUI___cnui_ttyURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -128,7 +128,7 @@
   v13[2] = __63__NSURL_ContactsUI___cnui_ttyRelayURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -150,7 +150,7 @@
   v20 = v10;
   v21 = v11;
   v22 = v12;
-  v23 = a1;
+  selfCopy = self;
   v24 = a6;
   v14 = v12;
   v15 = v11;
@@ -173,7 +173,7 @@
   v18 = v8;
   v19 = v9;
   v20 = v10;
-  v21 = a1;
+  selfCopy = self;
   v12 = v10;
   v13 = v9;
   v14 = v8;
@@ -195,7 +195,7 @@
   v18 = v8;
   v19 = v9;
   v20 = v10;
-  v21 = a1;
+  selfCopy = self;
   v12 = v10;
   v13 = v9;
   v14 = v8;
@@ -213,7 +213,7 @@
   v9[2] = __56__NSURL_ContactsUI___cnui_skypeTextURLFutureWithHandle___block_invoke;
   v9[3] = &unk_1E76E87A8;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [v5 lazyFutureWithBlock:v9];
 
@@ -229,7 +229,7 @@
   v9[2] = __57__NSURL_ContactsUI___cnui_skypeVoiceURLFutureWithHandle___block_invoke;
   v9[3] = &unk_1E76E87A8;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [v5 lazyFutureWithBlock:v9];
 
@@ -245,7 +245,7 @@
   v9[2] = __57__NSURL_ContactsUI___cnui_skypeVideoURLFutureWithHandle___block_invoke;
   v9[3] = &unk_1E76E87A8;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [v5 lazyFutureWithBlock:v9];
 
@@ -262,7 +262,7 @@
   v13[2] = __63__NSURL_ContactsUI___cnui_messagesURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -281,7 +281,7 @@
   v13[2] = __64__NSURL_ContactsUI___cnui_messagingURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -300,7 +300,7 @@
   v13[2] = __59__NSURL_ContactsUI___cnui_mailURLFutureWithHandle_contact___block_invoke;
   v13[3] = &unk_1E76E8730;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v14 = v6;
   v9 = v7;
   v10 = v6;
@@ -318,7 +318,7 @@
   v9[2] = __56__NSURL_ContactsUI___cnui_walletPayURLFutureWithHandle___block_invoke;
   v9[3] = &unk_1E76E87A8;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [v5 lazyFutureWithBlock:v9];
 
@@ -334,7 +334,7 @@
   v9[2] = __54__NSURL_ContactsUI___cnui_expanseURLFutureWithHandle___block_invoke;
   v9[3] = &unk_1E76E87A8;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [v5 lazyFutureWithBlock:v9];
 
@@ -404,24 +404,24 @@
 
     if ([v15 hasBeenPersisted])
     {
-      v27 = [v15 identifier];
-      [v25 setContactIdentifier:v27];
+      identifier = [v15 identifier];
+      [v25 setContactIdentifier:identifier];
     }
 
     [v25 setVideo:a6];
     [v25 setTtyType:a7];
-    v28 = [v25 provider];
-    if ([v28 isTelephonyProvider])
+    provider = [v25 provider];
+    if ([provider isTelephonyProvider])
     {
       v29 = (*(*MEMORY[0x1E6996568] + 16))();
 
       if (v29)
       {
 LABEL_15:
-        v30 = [v25 provider];
-        v31 = [v30 isTelephonyProvider];
+        provider2 = [v25 provider];
+        isTelephonyProvider = [provider2 isTelephonyProvider];
 
-        if (v31)
+        if (isTelephonyProvider)
         {
           [v25 setPreferDefaultApp:a9];
         }
@@ -430,8 +430,8 @@ LABEL_15:
         goto LABEL_21;
       }
 
-      v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v16];
-      [v25 setLocalSenderIdentityAccountUUID:v28];
+      provider = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v16];
+      [v25 setLocalSenderIdentityAccountUUID:provider];
     }
 
     goto LABEL_15;
@@ -455,8 +455,8 @@ LABEL_21:
 + (id)_cnui_skypeTextURLWithHandle:()ContactsUI
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 stringValue];
-  v5 = [v3 stringWithFormat:@"skype:%@?chat", v4];
+  stringValue = [a3 stringValue];
+  v5 = [v3 stringWithFormat:@"skype:%@?chat", stringValue];
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
 
@@ -466,8 +466,8 @@ LABEL_21:
 + (id)_cnui_skypeVoiceURLWithHandle:()ContactsUI
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 stringValue];
-  v5 = [v3 stringWithFormat:@"skype:%@?call", v4];
+  stringValue = [a3 stringValue];
+  v5 = [v3 stringWithFormat:@"skype:%@?call", stringValue];
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
 
@@ -477,8 +477,8 @@ LABEL_21:
 + (id)_cnui_skypeVideoURLWithHandle:()ContactsUI
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 stringValue];
-  v5 = [v3 stringWithFormat:@"skype:%@?call&video=true", v4];
+  stringValue = [a3 stringValue];
+  v5 = [v3 stringWithFormat:@"skype:%@?call&video=true", stringValue];
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
 
@@ -491,9 +491,9 @@ LABEL_21:
   v4 = a3;
   v5 = objc_alloc_init(v3);
   [v5 setScheme:@"sms"];
-  v6 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  [v5 setPath:v6];
+  [v5 setPath:stringValue];
   v7 = [v5 URL];
 
   return v7;
@@ -505,9 +505,9 @@ LABEL_21:
   v4 = a3;
   v5 = objc_alloc_init(v3);
   [v5 setScheme:@"im"];
-  v6 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  [v5 setPath:v6];
+  [v5 setPath:stringValue];
   v7 = [v5 URL];
 
   return v7;
@@ -516,9 +516,9 @@ LABEL_21:
 + (id)_cnui_mailURLWithHandle:()ContactsUI contact:
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 stringValue];
-  v5 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  stringValue = [a3 stringValue];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v6 = [stringValue stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   v7 = [v3 stringWithFormat:@"mailto:%@", v6];
 
   v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
@@ -528,8 +528,8 @@ LABEL_21:
 
 + (id)_cnui_walletPayURLWithHandle:()ContactsUI
 {
-  v3 = [a3 stringValue];
-  v4 = [CNUIPassKitWrapper urlForPeerPaymentWithHandle:v3];
+  stringValue = [a3 stringValue];
+  v4 = [CNUIPassKitWrapper urlForPeerPaymentWithHandle:stringValue];
 
   return v4;
 }

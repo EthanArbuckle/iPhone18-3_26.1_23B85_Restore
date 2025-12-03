@@ -1,6 +1,6 @@
 @interface EDMessageGlobalDataBlackPearlUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDMessageGlobalDataBlackPearlUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_61 != -1)
   {
     dispatch_once(&log_onceToken_61, block);
@@ -30,10 +30,10 @@ void __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke(uint64_t a
   log_log_61 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  if (sqlite3_exec([v3 sqlDB], "DROP INDEX IF EXISTS message_global_data_model_version_model_category_index;", 0, 0, 0))
+  connectionCopy = connection;
+  if (sqlite3_exec([connectionCopy sqlDB], "DROP INDEX IF EXISTS message_global_data_model_version_model_category_index;", 0, 0, 0))
   {
     v4 = +[EDMessageGlobalDataBlackPearlUpgradeStep log];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ void __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke(uint64_t a
     }
   }
 
-  if ([v3 columnExists:@"model_category" inTable:@"message_global_data" type:0])
+  if ([connectionCopy columnExists:@"model_category" inTable:@"message_global_data" type:0])
   {
     v12 = +[EDMessageGlobalDataBlackPearlUpgradeStep log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -56,9 +56,9 @@ void __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke(uint64_t a
 
   else
   {
-    if ([v3 columnExists:@"category" inTable:@"message_global_data" type:0])
+    if ([connectionCopy columnExists:@"category" inTable:@"message_global_data" type:0])
     {
-      if (sqlite3_exec([v3 sqlDB], "UPDATE message_global_data SET category = NULL, categorizedBy = NULL", 0, 0, 0))
+      if (sqlite3_exec([connectionCopy sqlDB], "UPDATE message_global_data SET category = NULL, categorizedBy = NULL", 0, 0, 0))
       {
         v14 = +[EDMessageGlobalDataBlackPearlUpgradeStep log];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ void __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke(uint64_t a
         }
       }
 
-      if (sqlite3_exec([v3 sqlDB], "DROP TABLE IF EXISTS category_model_versions;DROP INDEX IF EXISTS message_global_data_category_categorizedBy_index;DROP INDEX IF EXISTS message_global_data_category_categorized_by_user_index;DROP INDEX IF EXISTS message_global_data_category_category_model_version_index;", 0, 0, 0))
+      if (sqlite3_exec([connectionCopy sqlDB], "DROP TABLE IF EXISTS category_model_versions;DROP INDEX IF EXISTS message_global_data_category_categorizedBy_index;DROP INDEX IF EXISTS message_global_data_category_categorized_by_user_index;DROP INDEX IF EXISTS message_global_data_category_category_model_version_index;", 0, 0, 0))
       {
         v22 = +[EDMessageGlobalDataBlackPearlUpgradeStep log];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -77,8 +77,8 @@ void __47__EDMessageGlobalDataBlackPearlUpgradeStep_log__block_invoke(uint64_t a
       }
     }
 
-    [EDCategoryPersistence initializeCategorizationVersion:v3];
-    v13 = sqlite3_exec([v3 sqlDB], "ALTER TABLE message_global_data ADD COLUMN model_analytics TEXT COLLATE BINARY;ALTER TABLE message_global_data ADD COLUMN model_category INTEGER;ALTER TABLE message_global_data ADD COLUMN category_model_version INTEGER;ALTER TABLE message_global_data ADD COLUMN model_subcategory INTEGER;CREATE INDEX IF NOT EXISTS message_global_data_model_category_index ON message_global_data(model_category);CREATE INDEX IF NOT EXISTS message_global_data_category_model_version_model_category_index ON message_global_data(category_model_version, model_category);", 0, 0, 0);
+    [EDCategoryPersistence initializeCategorizationVersion:connectionCopy];
+    v13 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE message_global_data ADD COLUMN model_analytics TEXT COLLATE BINARY;ALTER TABLE message_global_data ADD COLUMN model_category INTEGER;ALTER TABLE message_global_data ADD COLUMN category_model_version INTEGER;ALTER TABLE message_global_data ADD COLUMN model_subcategory INTEGER;CREATE INDEX IF NOT EXISTS message_global_data_model_category_index ON message_global_data(model_category);CREATE INDEX IF NOT EXISTS message_global_data_category_model_version_model_category_index ON message_global_data(category_model_version, model_category);", 0, 0, 0);
   }
 
   return v13;

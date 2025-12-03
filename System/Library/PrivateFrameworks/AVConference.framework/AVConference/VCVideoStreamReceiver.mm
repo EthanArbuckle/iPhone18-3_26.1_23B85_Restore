@@ -1,47 +1,47 @@
 @interface VCVideoStreamReceiver
-- (BOOL)canDequeue:(opaqueCMBufferQueue *)a3 forTimestamp:(unsigned int)a4;
-- (BOOL)handleRemoteVideoAttributesChange:(__CVBuffer *)a3;
-- (BOOL)startSynchronization:(id)a3;
-- (VCVideoStreamReceiver)initWithConfig:(tagVCVideoStreamReceiverConfig *)a3;
-- (int)createDecodeSession:(opaqueCMFormatDescription *)a3;
-- (int)decodeFrame:(opaqueCMSampleBuffer *)a3 showFrame:(BOOL)a4;
+- (BOOL)canDequeue:(opaqueCMBufferQueue *)dequeue forTimestamp:(unsigned int)timestamp;
+- (BOOL)handleRemoteVideoAttributesChange:(__CVBuffer *)change;
+- (BOOL)startSynchronization:(id)synchronization;
+- (VCVideoStreamReceiver)initWithConfig:(tagVCVideoStreamReceiverConfig *)config;
+- (int)createDecodeSession:(opaqueCMFormatDescription *)session;
+- (int)decodeFrame:(opaqueCMSampleBuffer *)frame showFrame:(BOOL)showFrame;
 - (int)processVideoRTCP;
 - (int)processVideoRTP;
-- (int)scheduleDecodeForFrameWithBuffer:(VCVideoReceiverSampleBuffer_t *)a3 timestamp:(unsigned int)a4 hostTime:(double)a5 showFrame:(BOOL)a6;
-- (int)showDecodedFrame:(__CVBuffer *)a3 atTime:(id *)a4;
+- (int)scheduleDecodeForFrameWithBuffer:(VCVideoReceiverSampleBuffer_t *)buffer timestamp:(unsigned int)timestamp hostTime:(double)time showFrame:(BOOL)frame;
+- (int)showDecodedFrame:(__CVBuffer *)frame atTime:(id *)time;
 - (int)startNetworkReceiveThread;
 - (int)startVideo;
 - (int)stopNetworkReceiveThread;
-- (tagVCVideoPacketBufferConfig)newVideoPacketBufferConfig:(SEL)a3;
+- (tagVCVideoPacketBufferConfig)newVideoPacketBufferConfig:(SEL)config;
 - (void)dealloc;
-- (void)dequeueAndDecodeForTimestamp:(unsigned int)a3;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleAlarmForTimeStamp:(unsigned int)a3;
+- (void)dequeueAndDecodeForTimestamp:(unsigned int)timestamp;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleAlarmForTimeStamp:(unsigned int)stamp;
 - (void)networkReceivePackets;
-- (void)processReceptionReportBlock:(tagRTCP_RRB *)a3 blockCount:(unsigned int)a4 arrivalNTPTime:(tagNTP)a5;
+- (void)processReceptionReportBlock:(tagRTCP_RRB *)block blockCount:(unsigned int)count arrivalNTPTime:(tagNTP)time;
 - (void)processVideoRTP;
-- (void)reportVideoStallStatus:(BOOL)a3;
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3;
+- (void)reportVideoStallStatus:(BOOL)status;
+- (void)reportingVideoStreamEvent:(unsigned __int16)event;
 - (void)rtcpSendIntervalElapsed;
-- (void)scheduleDecodeForTimestamp:(unsigned int)a3;
-- (void)scheduleVideoDecode:(unsigned int)a3;
-- (void)setDeferredAssemblyEnabled:(BOOL)a3;
-- (void)setJitterBufferMode:(int)a3;
-- (void)setLooseAVSyncEnabled:(BOOL)a3;
+- (void)scheduleDecodeForTimestamp:(unsigned int)timestamp;
+- (void)scheduleVideoDecode:(unsigned int)decode;
+- (void)setDeferredAssemblyEnabled:(BOOL)enabled;
+- (void)setJitterBufferMode:(int)mode;
+- (void)setLooseAVSyncEnabled:(BOOL)enabled;
 - (void)stopSynchronization;
 - (void)stopVideo;
-- (void)teardownDecodeSession:(BOOL)a3;
-- (void)updateSequenceNumber:(unsigned __int16)a3;
-- (void)updateVideoStallStatus:(BOOL)a3;
+- (void)teardownDecodeSession:(BOOL)session;
+- (void)updateSequenceNumber:(unsigned __int16)number;
+- (void)updateVideoStallStatus:(BOOL)status;
 @end
 
 @implementation VCVideoStreamReceiver
 
-- (VCVideoStreamReceiver)initWithConfig:(tagVCVideoStreamReceiverConfig *)a3
+- (VCVideoStreamReceiver)initWithConfig:(tagVCVideoStreamReceiverConfig *)config
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!config)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -55,7 +55,7 @@
     goto LABEL_17;
   }
 
-  var1 = a3->var1;
+  var1 = config->var1;
   if (!var1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -74,14 +74,14 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = VCVideoStreamReceiver;
-  v6 = [(VCVideoReceiverBase *)&v17 initWithDelegate:var1 delegateFunctions:&a3->var2];
+  v6 = [(VCVideoReceiverBase *)&v17 initWithDelegate:var1 delegateFunctions:&config->var2];
   v7 = v6;
   if (v6)
   {
-    v6->_hRTP = a3->var0;
+    v6->_hRTP = config->var0;
     v6->_receivedFirstPacket = 0;
     v6->_stats = objc_alloc_init(VCMediaStreamStats);
-    var3 = a3->var3;
+    var3 = config->var3;
     if (var3)
     {
       var3 = CFRetain(var3);
@@ -90,11 +90,11 @@ LABEL_17:
     v7->_reportingAgent = var3;
     v7->_reportingModuleID = VCReporting_GetDynamicReportingModuleID();
     reportingInheritModuleSpecificInfoFromParent();
-    v9 = a3->var10;
+    v9 = config->var10;
     v7->_rateAdaptation = v9;
     [(VCVideoStreamRateAdaptation *)v9 setStats:v7->_stats];
-    v7->_rtcpContext = a3->var8;
-    v7->_rtcpPacketsCallback = a3->var9;
+    v7->_rtcpContext = config->var8;
+    v7->_rtcpPacketsCallback = config->var9;
     v10 = *MEMORY[0x1E695E480];
     CallbacksForUnsortedSampleBuffers = CMBufferQueueGetCallbacksForUnsortedSampleBuffers();
     CMBufferQueueCreate(v10, 0, CallbacksForUnsortedSampleBuffers, &v7->_videoQueue);
@@ -103,7 +103,7 @@ LABEL_17:
     v7->_videoStreamReceiverQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCVideoReceiver.videoStreamReceiverQueue", 0, CustomRootQueue);
     v7->_enableReceiveBitstreamDump = [+[VCDefaults sharedInstance](VCDefaults enableRxDecodeYUVDump]!= 0;
     v7->super._rtpTimestampRate = 90000;
-    if (a3->var7 && (v13 = VCTransportStreamRunLoopVTPCreate(v10, &v7->_runLoop), (v13 & 0x80000000) != 0))
+    if (config->var7 && (v13 = VCTransportStreamRunLoopVTPCreate(v10, &v7->_runLoop), (v13 & 0x80000000) != 0))
     {
       [(VCVideoStreamReceiver *)v7 initWithConfig:v13, buf];
       return *buf;
@@ -127,7 +127,7 @@ LABEL_17:
           v23 = 2048;
           v24 = v7;
           v25 = 2080;
-          var11 = a3->var11;
+          var11 = config->var11;
           _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCVideoStreamReceiver-initialized (%p) %s", buf, 0x30u);
         }
       }
@@ -207,12 +207,12 @@ LABEL_17:
   }
 }
 
-- (BOOL)startSynchronization:(id)a3
+- (BOOL)startSynchronization:(id)synchronization
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCVideoStreamReceiver;
-  v4 = [(VCVideoReceiverBase *)&v8 startSynchronization:a3];
+  v4 = [(VCVideoReceiverBase *)&v8 startSynchronization:synchronization];
   if (v4)
   {
     v5 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
@@ -409,13 +409,13 @@ LABEL_4:
   return 0;
 }
 
-- (void)updateSequenceNumber:(unsigned __int16)a3
+- (void)updateSequenceNumber:(unsigned __int16)number
 {
   v20 = *MEMORY[0x1E69E9840];
   sequenceNumberOutOfOrder = self->_sequenceNumberOutOfOrder;
   if (sequenceNumberOutOfOrder != -1)
   {
-    if (sequenceNumberOutOfOrder == a3 && VRTraceGetErrorLogLevelForModule() >= 7)
+    if (sequenceNumberOutOfOrder == number && VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
       v7 = *MEMORY[0x1E6986650];
@@ -440,20 +440,20 @@ LABEL_4:
   }
 
   v9 = self->_lastSequenceNumber;
-  if ((a3 - v9) == 2)
+  if ((number - v9) == 2)
   {
     self->_sequenceNumberOutOfOrder = (v9 + 1);
   }
 
-  else if ((a3 - v9) < 0)
+  else if ((number - v9) < 0)
   {
     return;
   }
 
-  self->_lastSequenceNumber = a3;
+  self->_lastSequenceNumber = number;
 }
 
-- (void)scheduleDecodeForTimestamp:(unsigned int)a3
+- (void)scheduleDecodeForTimestamp:(unsigned int)timestamp
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = &OBJC_IVAR___VCRateControlAlgorithmLayeredContinuousTier__bandwidthWall;
@@ -466,7 +466,7 @@ LABEL_4:
     v7 = micro();
     v17 = 0;
     v16 = 1;
-    NextFrame = VideoPacketBuffer_GetNextFrame(*(&self->super.super.isa + v5[751]), a3, &v18, &v16, &v19, 0, 0, &v20, &v17, 0);
+    NextFrame = VideoPacketBuffer_GetNextFrame(*(&self->super.super.isa + v5[751]), timestamp, &v18, &v16, &v19, 0, 0, &v20, &v17, 0);
     v9 = v20;
     if ((v20 & 0x80) != 0)
     {
@@ -556,13 +556,13 @@ LABEL_18:
   VCVideoReceiverSampleBuffer_Destroy(&v17);
 }
 
-- (void)scheduleVideoDecode:(unsigned int)a3
+- (void)scheduleVideoDecode:(unsigned int)decode
 {
   mostRecentTimestamp = self->_mostRecentTimestamp;
-  if (!mostRecentTimestamp || (a3 != mostRecentTimestamp ? (v4 = a3 - mostRecentTimestamp > 0x7FFFFFFE) : (v4 = 1), !v4))
+  if (!mostRecentTimestamp || (decode != mostRecentTimestamp ? (v4 = decode - mostRecentTimestamp > 0x7FFFFFFE) : (v4 = 1), !v4))
   {
-    self->_mostRecentTimestamp = a3;
-    mostRecentTimestamp = a3;
+    self->_mostRecentTimestamp = decode;
+    mostRecentTimestamp = decode;
   }
 
   lastVideoTimestamp = self->_lastVideoTimestamp;
@@ -578,7 +578,7 @@ LABEL_18:
   [(VCVideoStreamReceiver *)self scheduleDecodeForTimestamp:?];
 }
 
-- (tagVCVideoPacketBufferConfig)newVideoPacketBufferConfig:(SEL)a3
+- (tagVCVideoPacketBufferConfig)newVideoPacketBufferConfig:(SEL)config
 {
   *retstr->var21 = 0u;
   *&retstr->var21[16] = 0u;
@@ -811,7 +811,7 @@ LABEL_35:
 - (void)rtcpSendIntervalElapsed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(VCVideoStreamRateAdaptation *)self->_rateAdaptation runVideoStreamRateAdaptation];
+  runVideoStreamRateAdaptation = [(VCVideoStreamRateAdaptation *)self->_rateAdaptation runVideoStreamRateAdaptation];
   v4 = 0;
   RTPGetRTCPHasPendingPLI(self->_hRTP, &v4);
   v8 = 0;
@@ -821,7 +821,7 @@ LABEL_35:
     [(VCVideoStreamReceiver *)self reportingVideoStreamEvent:223];
   }
 
-  if (v3)
+  if (runVideoStreamRateAdaptation)
   {
     v5[0] = 0x1F5718568;
     v6[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCVideoStreamRateAdaptation operatingBitrate](self->_rateAdaptation, "operatingBitrate")}];
@@ -835,7 +835,7 @@ LABEL_35:
   }
 }
 
-- (void)processReceptionReportBlock:(tagRTCP_RRB *)a3 blockCount:(unsigned int)a4 arrivalNTPTime:(tagNTP)a5
+- (void)processReceptionReportBlock:(tagRTCP_RRB *)block blockCount:(unsigned int)count arrivalNTPTime:(tagNTP)time
 {
   v28 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -899,7 +899,7 @@ LABEL_35:
       v24 = 2112;
       v25 = v9;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v12 = " [%s] %s:%d %@(%p) Could not get the local SSRC";
       v13 = v16;
       v14 = 48;
@@ -909,18 +909,18 @@ LABEL_35:
     return;
   }
 
-  if (a4)
+  if (count)
   {
-    while (a3->var0 != v17)
+    while (block->var0 != v17)
     {
-      ++a3;
-      if (!--a4)
+      ++block;
+      if (!--count)
       {
         return;
       }
     }
 
-    [(VCVideoReceiverBase *)self setRoundTripTime:vcvtd_n_f64_u32(RTCPComputeRoundTripTimeMiddle32(a3, a5.wide), 0x10uLL)];
+    [(VCVideoReceiverBase *)self setRoundTripTime:vcvtd_n_f64_u32(RTCPComputeRoundTripTimeMiddle32(block, time.wide), 0x10uLL)];
   }
 }
 
@@ -1449,11 +1449,11 @@ LABEL_68:
   return v3;
 }
 
-- (int)scheduleDecodeForFrameWithBuffer:(VCVideoReceiverSampleBuffer_t *)a3 timestamp:(unsigned int)a4 hostTime:(double)a5 showFrame:(BOOL)a6
+- (int)scheduleDecodeForFrameWithBuffer:(VCVideoReceiverSampleBuffer_t *)buffer timestamp:(unsigned int)timestamp hostTime:(double)time showFrame:(BOOL)frame
 {
-  v6 = a6;
+  frameCopy = frame;
   v33 = *MEMORY[0x1E69E9840];
-  var0 = a3->var6.var0;
+  var0 = buffer->var6.var0;
   if (var0)
   {
     formatDescription = self->_formatDescription;
@@ -1463,10 +1463,10 @@ LABEL_68:
       self->_formatDescription = 0;
     }
 
-    var1 = a3->var6.var1;
-    v14 = a3->var7.var1;
-    var2 = a3->var7.var2;
-    parameterSetPointers.duration.value = a3->var6.var2;
+    var1 = buffer->var6.var1;
+    v14 = buffer->var7.var1;
+    var2 = buffer->var7.var2;
+    parameterSetPointers.duration.value = buffer->var6.var2;
     *&parameterSetPointers.duration.timescale = var2;
     parameterSetSizes.value = var1;
     *&parameterSetSizes.timescale = v14;
@@ -1499,13 +1499,13 @@ LABEL_68:
     v16 = *(MEMORY[0x1E6960CF0] + 24);
     v17 = *(MEMORY[0x1E6960CF0] + 32);
     epoch = *(MEMORY[0x1E6960CF0] + 40);
-    CMTimeMake(&v29, a4, 1);
+    CMTimeMake(&v29, timestamp, 1);
   }
 
   else
   {
     memset(&parameterSetPointers, 170, 24);
-    CMTimeMake(&parameterSetPointers.duration, a4, 90000);
+    CMTimeMake(&parameterSetPointers.duration, timestamp, 90000);
     p_lastFrameTime = &self->_lastFrameTime;
     if (self->_receivedFirstRemoteFrame)
     {
@@ -1541,7 +1541,7 @@ LABEL_68:
   }
 
   v21 = self->_formatDescription;
-  v22 = a3->var2;
+  v22 = buffer->var2;
   parameterSetPointers.duration = v30;
   parameterSetPointers.presentationTimeStamp.value = v16;
   *&parameterSetPointers.presentationTimeStamp.timescale = v17;
@@ -1557,7 +1557,7 @@ LABEL_68:
   v24 = v23;
   if (var0)
   {
-    self->_lastKeyFrameSampleBufferSize = CMBlockBufferGetDataLength(a3->var2);
+    self->_lastKeyFrameSampleBufferSize = CMBlockBufferGetDataLength(buffer->var2);
     [(VCVideoStreamReceiver *)self reportingVideoStreamEvent:229];
     [(VCVideoStreamReceiver *)self updateVideoStallStatus:0];
   }
@@ -1578,29 +1578,29 @@ LABEL_68:
 
     else
     {
-      VCMediaStreamSynchronizer_scheduleDestinationPlaybackWithRTPTimestamp(self->super._mediaStreamSynchronizer, a4);
+      VCMediaStreamSynchronizer_scheduleDestinationPlaybackWithRTPTimestamp(self->super._mediaStreamSynchronizer, timestamp);
     }
   }
 
   else
   {
-    [(VCVideoStreamReceiver *)self decodeFrame:v24 showFrame:v6];
+    [(VCVideoStreamReceiver *)self decodeFrame:v24 showFrame:frameCopy];
   }
 
   CFRelease(v24);
   return 0;
 }
 
-- (void)reportVideoStallStatus:(BOOL)a3
+- (void)reportVideoStallStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v9 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (Mutable)
   {
     v6 = Mutable;
-    valuePtr = v3;
+    valuePtr = statusCopy;
     v7 = CFNumberCreate(v4, kCFNumberIntType, &valuePtr);
     CFDictionaryAddValue(v6, @"VCSPVideoDegraded", v7);
     CFRelease(v7);
@@ -1614,12 +1614,12 @@ LABEL_68:
   }
 }
 
-- (void)updateVideoStallStatus:(BOOL)a3
+- (void)updateVideoStallStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v6 = micro();
   videoStallStartTime = self->_videoStallStartTime;
-  if (!v3)
+  if (!statusCopy)
   {
     if (videoStallStartTime <= 0.0)
     {
@@ -1632,7 +1632,7 @@ LABEL_68:
     v6 = 0.0;
 LABEL_6:
     self->_videoStallStartTime = v6;
-    [(VCVideoStreamReceiver *)self reportVideoStallStatus:v3, v5];
+    [(VCVideoStreamReceiver *)self reportVideoStallStatus:statusCopy, v5];
     v5 = v8;
     goto LABEL_8;
   }
@@ -1647,14 +1647,14 @@ LABEL_6:
 LABEL_8:
   rateAdaptation = self->_rateAdaptation;
 
-  [(VCVideoStreamRateAdaptation *)rateAdaptation updateVideoStall:v3 withStallDuration:v5, v6];
+  [(VCVideoStreamRateAdaptation *)rateAdaptation updateVideoStall:statusCopy withStallDuration:v5, v6];
 }
 
-- (int)createDecodeSession:(opaqueCMFormatDescription *)a3
+- (int)createDecodeSession:(opaqueCMFormatDescription *)session
 {
   v85[4] = *MEMORY[0x1E69E9840];
   v71 = decoderFrameCallback;
-  v72 = self;
+  selfCopy = self;
   v6 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (!Mutable)
@@ -1744,7 +1744,7 @@ LABEL_88:
         v79 = 2112;
         v80 = v14;
         v81 = 2048;
-        v82 = self;
+        selfCopy5 = self;
         v83 = 2112;
         v84 = v3;
         v19 = " [%s] %s:%d %@(%p) Adding kVTDecompressionSessionOption_FigThreadPriorityOfClientThread=%@ to decompressionSessionOptions";
@@ -1821,7 +1821,7 @@ LABEL_22:
       v79 = 2112;
       v80 = v16;
       v81 = 2048;
-      v82 = self;
+      selfCopy5 = self;
       v83 = 2112;
       v84 = v32;
       v25 = " [%s] %s:%d %@(%p) Adding kVTDecompressionSessionOption_AllowClientProcessDecode=%@ to decompressionSessionOptions";
@@ -1864,7 +1864,7 @@ LABEL_29:
                 v79 = 2080;
                 v80 = "decoderSpecification:";
                 v81 = 2080;
-                v82 = v34;
+                selfCopy5 = v34;
                 _os_log_impl(&dword_1DB56E000, v37, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1918,7 +1918,7 @@ LABEL_29:
                 v79 = 2080;
                 v80 = "decoderSpecification:";
                 v81 = 2080;
-                v82 = v38;
+                selfCopy5 = v38;
                 _os_log_impl(&dword_1DB56E000, v41, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1965,7 +1965,7 @@ LABEL_48:
                 v79 = 2080;
                 v80 = "decompressionSessionOptions:";
                 v81 = 2080;
-                v82 = v43;
+                selfCopy5 = v43;
                 _os_log_impl(&dword_1DB56E000, v46, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -2019,7 +2019,7 @@ LABEL_48:
                 v79 = 2080;
                 v80 = "decompressionSessionOptions:";
                 v81 = 2080;
-                v82 = v47;
+                selfCopy5 = v47;
                 _os_log_impl(&dword_1DB56E000, v50, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -2110,7 +2110,7 @@ LABEL_84:
       v79 = 2112;
       v80 = v52;
       v81 = 2048;
-      v82 = self;
+      selfCopy5 = self;
       v83 = 2112;
       v84 = v3;
       v55 = " [%s] %s:%d %@(%p) Setting figThreadPriority=%@ as kVTDecompressionPropertyKey_FigThreadPriorityOfConsistentThreadCallingDecodeFrame";
@@ -2169,7 +2169,7 @@ LABEL_89:
         v79 = 2112;
         v80 = v61;
         v81 = 2048;
-        v82 = self;
+        selfCopy5 = self;
         _os_log_error_impl(&dword_1DB56E000, v63, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create decompressionSessionOptions", buf, 0x30u);
       }
     }
@@ -2183,14 +2183,14 @@ LABEL_85:
   return v51;
 }
 
-- (void)teardownDecodeSession:(BOOL)a3
+- (void)teardownDecodeSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   pthread_mutex_lock(&self->_decompressionSessionMutex);
   decompressionSession = self->_decompressionSession;
   if (decompressionSession)
   {
-    if (v3)
+    if (sessionCopy)
     {
       VTDecompressionSessionWaitForAsynchronousFrames(decompressionSession);
       decompressionSession = self->_decompressionSession;
@@ -2208,11 +2208,11 @@ LABEL_85:
   pthread_mutex_unlock(&self->_decompressionSessionMutex);
 }
 
-- (int)decodeFrame:(opaqueCMSampleBuffer *)a3 showFrame:(BOOL)a4
+- (int)decodeFrame:(opaqueCMSampleBuffer *)frame showFrame:(BOOL)showFrame
 {
-  v4 = a4;
+  showFrameCopy = showFrame;
   v21 = *MEMORY[0x1E69E9840];
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(frame);
   decompressionSession = self->_decompressionSession;
   if (!decompressionSession)
   {
@@ -2253,7 +2253,7 @@ LABEL_18:
     v11 = self->_decompressionSession;
   }
 
-  if (v4)
+  if (showFrameCopy)
   {
     v12 = 1;
   }
@@ -2264,11 +2264,11 @@ LABEL_18:
   }
 
   infoFlagsOut = -1431655766;
-  VTDecompressionSessionDecodeFrame(v11, a3, v12, 0, &infoFlagsOut);
+  VTDecompressionSessionDecodeFrame(v11, frame, v12, 0, &infoFlagsOut);
   return 0;
 }
 
-- (BOOL)canDequeue:(opaqueCMBufferQueue *)a3 forTimestamp:(unsigned int)a4
+- (BOOL)canDequeue:(opaqueCMBufferQueue *)dequeue forTimestamp:(unsigned int)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -2287,9 +2287,9 @@ LABEL_18:
         HIWORD(v13.epoch) = 1024;
         v14 = 1023;
         v15 = 1024;
-        v16 = a4;
+        timestampCopy2 = timestamp;
         v17 = 2048;
-        BufferCount = CMBufferQueueGetBufferCount(a3);
+        BufferCount = CMBufferQueueGetBufferCount(dequeue);
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d timestamp:%08X count:%ld", &v13, 0x2Cu);
       }
     }
@@ -2303,21 +2303,21 @@ LABEL_18:
       HIWORD(v13.epoch) = 1024;
       v14 = 1023;
       v15 = 1024;
-      v16 = a4;
+      timestampCopy2 = timestamp;
       v17 = 2048;
-      BufferCount = CMBufferQueueGetBufferCount(a3);
+      BufferCount = CMBufferQueueGetBufferCount(dequeue);
       _os_log_debug_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEBUG, " [%s] %s:%d timestamp:%08X count:%ld", &v13, 0x2Cu);
     }
   }
 
-  if (CMBufferQueueIsEmpty(a3))
+  if (CMBufferQueueIsEmpty(dequeue))
   {
 LABEL_8:
     LOBYTE(v9) = 0;
     return v9;
   }
 
-  Head = CMBufferQueueGetHead(a3);
+  Head = CMBufferQueueGetHead(dequeue);
   memset(&v13, 170, sizeof(v13));
   CMSampleBufferGetDecodeTimeStamp(&v13, Head);
   if ((v13.flags & 1) == 0)
@@ -2337,13 +2337,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  LOBYTE(v9) = LODWORD(v13.value) == a4 || LODWORD(v13.value) - a4 > 0x7FFFFFFE;
+  LOBYTE(v9) = LODWORD(v13.value) == timestamp || LODWORD(v13.value) - timestamp > 0x7FFFFFFE;
   return v9;
 }
 
-- (void)dequeueAndDecodeForTimestamp:(unsigned int)a3
+- (void)dequeueAndDecodeForTimestamp:(unsigned int)timestamp
 {
-  v3 = *&a3;
+  v3 = *&timestamp;
   v13 = *MEMORY[0x1E69E9840];
   v5 = CMBufferQueueDequeueAndRetain(self->_videoQueue);
   if (v5)
@@ -2391,10 +2391,10 @@ LABEL_8:
   }
 }
 
-- (void)handleAlarmForTimeStamp:(unsigned int)a3
+- (void)handleAlarmForTimeStamp:(unsigned int)stamp
 {
-  v3 = *&a3;
-  if ([(VCVideoStreamReceiver *)self canDequeue:self->_videoQueue forTimestamp:*&a3])
+  v3 = *&stamp;
+  if ([(VCVideoStreamReceiver *)self canDequeue:self->_videoQueue forTimestamp:*&stamp])
   {
     do
     {
@@ -2405,14 +2405,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)handleRemoteVideoAttributesChange:(__CVBuffer *)a3
+- (BOOL)handleRemoteVideoAttributesChange:(__CVBuffer *)change
 {
   v5 = objc_alloc_init(VideoAttributes);
   [(VideoAttributes *)v5 setOrientation:self->super._remoteVideoOrientation];
   [(VideoAttributes *)v5 setCamera:self->_remoteVideoCamera];
   [(VideoAttributes *)v5 setVideoMirrored:self->_remoteVideoMirrored];
-  Width = CVPixelBufferGetWidth(a3);
-  [(VideoAttributes *)v5 setRatio:Width, CVPixelBufferGetHeight(a3)];
+  Width = CVPixelBufferGetWidth(change);
+  [(VideoAttributes *)v5 setRatio:Width, CVPixelBufferGetHeight(change)];
   [self->_remoteVideoAttributes scaleFactor];
   [(VideoAttributes *)v5 setScaleFactor:?];
   remoteVideoAttributes = self->_remoteVideoAttributes;
@@ -2429,7 +2429,7 @@ LABEL_8:
   return 1;
 }
 
-- (int)showDecodedFrame:(__CVBuffer *)a3 atTime:(id *)a4
+- (int)showDecodedFrame:(__CVBuffer *)frame atTime:(id *)time
 {
   v14 = *MEMORY[0x1E69E9840];
   if ([(VCVideoStreamReceiver *)self handleRemoteVideoAttributesChange:?])
@@ -2446,9 +2446,9 @@ LABEL_8:
   delegate = self->super._delegate;
   receivedFirstRemoteFrame = self->_receivedFirstRemoteFrame;
   didReceiveRemoteFrame = self->super._delegateFunctions.didReceiveRemoteFrame;
-  v12 = *&a4->var0;
-  var3 = a4->var3;
-  didReceiveRemoteFrame(delegate, a3, &v12, remoteVideoAttributes, 0, !receivedFirstRemoteFrame);
+  v12 = *&time->var0;
+  var3 = time->var3;
+  didReceiveRemoteFrame(delegate, frame, &v12, remoteVideoAttributes, 0, !receivedFirstRemoteFrame);
   if (!self->_receivedFirstRemoteFrame)
   {
     self->_receivedFirstRemoteFrame = 1;
@@ -2456,13 +2456,13 @@ LABEL_8:
 
   if (self->_enableReceiveBitstreamDump)
   {
-    DumpFrameYuvWithTimestamp(1, a3, a4->var0);
+    DumpFrameYuvWithTimestamp(1, frame, time->var0);
   }
 
   return 0;
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
   v53 = *MEMORY[0x1E69E9840];
   v4 = selectDestinationForRTMetrics();
@@ -2483,7 +2483,7 @@ LABEL_8:
       {
         [(VCMediaStreamStats *)self->_stats framerate];
         v9 = v8;
-        v10 = [(VCMediaStreamStats *)self->_stats bitrateKbps];
+        bitrateKbps = [(VCMediaStreamStats *)self->_stats bitrateKbps];
         *buf = 136316418;
         v42 = v6;
         v43 = 2080;
@@ -2491,11 +2491,11 @@ LABEL_8:
         v45 = 1024;
         v46 = 1149;
         v47 = 2048;
-        v48 = self;
+        selfCopy = self;
         v49 = 2048;
         v50 = v9;
         v51 = 1024;
-        v52 = v10;
+        v52 = bitrateKbps;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @=@ Health: VideoStreamReceiver [%p] videoRxFrameRate=%f, videoRxBitrate=%d kbps", buf, 0x36u);
       }
     }
@@ -2586,7 +2586,7 @@ LABEL_8:
           v45 = 1024;
           v46 = 1228;
           v47 = 2080;
-          v48 = v40;
+          selfCopy = v40;
           _os_log_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Rx RTCReporting:%s", buf, 0x26u);
         }
       }
@@ -2599,12 +2599,12 @@ LABEL_8:
   }
 }
 
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3
+- (void)reportingVideoStreamEvent:(unsigned __int16)event
 {
-  v3 = a3;
+  eventCopy = event;
   v5 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  switch(v3)
+  switch(eventCopy)
   {
     case 229:
       v11 = CFStringCreateWithFormat(v5, 0, @"%zu", self->_lastKeyFrameSampleBufferSize);
@@ -2639,7 +2639,7 @@ LABEL_8:
   CFRelease(Mutable);
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -2659,7 +2659,7 @@ LABEL_8:
   }
 }
 
-- (void)setJitterBufferMode:(int)a3
+- (void)setJitterBufferMode:(int)mode
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -2679,7 +2679,7 @@ LABEL_8:
   }
 }
 
-- (void)setDeferredAssemblyEnabled:(BOOL)a3
+- (void)setDeferredAssemblyEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -2699,7 +2699,7 @@ LABEL_8:
   }
 }
 
-- (void)setLooseAVSyncEnabled:(BOOL)a3
+- (void)setLooseAVSyncEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -2784,7 +2784,7 @@ void __50__VCVideoStreamReceiver_startNetworkReceiveThread__block_invoke_cold_1(
     }
   }
 
-  *a2 = a1;
+  *a2 = self;
 }
 
 - (void)scheduleDecodeForFrameWithBuffer:timestamp:hostTime:showFrame:.cold.1()

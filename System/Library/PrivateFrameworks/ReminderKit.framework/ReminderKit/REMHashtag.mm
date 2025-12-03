@@ -1,15 +1,15 @@
 @interface REMHashtag
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHashtag:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHashtag:(id)hashtag;
 - (NSString)description;
-- (REMHashtag)initWithCoder:(id)a3;
-- (REMHashtag)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 type:(int64_t)a6 name:(id)a7;
-- (REMHashtag)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 type:(int64_t)a6 name:(id)a7 creationDate:(id)a8;
+- (REMHashtag)initWithCoder:(id)coder;
+- (REMHashtag)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID type:(int64_t)type name:(id)name;
+- (REMHashtag)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID type:(int64_t)type name:(id)name creationDate:(id)date;
 - (id)objectIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMHashtag
@@ -171,64 +171,64 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
   return v5;
 }
 
-- (REMHashtag)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 type:(int64_t)a6 name:(id)a7
+- (REMHashtag)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID type:(int64_t)type name:(id)name
 {
   v12 = MEMORY[0x1E695DF00];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  nameCopy = name;
+  reminderIDCopy = reminderID;
+  iDCopy = iD;
+  dCopy = d;
   v17 = [v12 now];
-  v18 = [(REMHashtag *)self initWithObjectID:v16 accountID:v15 reminderID:v14 type:a6 name:v13 creationDate:v17];
+  v18 = [(REMHashtag *)self initWithObjectID:dCopy accountID:iDCopy reminderID:reminderIDCopy type:type name:nameCopy creationDate:v17];
 
   return v18;
 }
 
-- (REMHashtag)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 type:(int64_t)a6 name:(id)a7 creationDate:(id)a8
+- (REMHashtag)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID type:(int64_t)type name:(id)name creationDate:(id)date
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  reminderIDCopy = reminderID;
+  nameCopy = name;
+  dateCopy = date;
   v23.receiver = self;
   v23.super_class = REMHashtag;
   v18 = [(REMHashtag *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_objectID, a3);
-    objc_storeStrong(&v19->_accountID, a4);
-    objc_storeStrong(&v19->_reminderID, a5);
-    v19->_type = a6;
-    objc_storeStrong(&v19->_name, a7);
-    objc_storeStrong(&v19->_creationDate, a8);
+    objc_storeStrong(&v18->_objectID, d);
+    objc_storeStrong(&v19->_accountID, iD);
+    objc_storeStrong(&v19->_reminderID, reminderID);
+    v19->_type = type;
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_creationDate, date);
   }
 
   return v19;
 }
 
-- (REMHashtag)initWithCoder:(id)a3
+- (REMHashtag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = REMHashtag;
   v5 = [(REMHashtag *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     accountID = v5->_accountID;
     v5->_accountID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
     reminderID = v5->_reminderID;
     v5->_reminderID = v10;
 
-    v12 = [v4 decodeIntegerForKey:@"type"];
+    v12 = [coderCopy decodeIntegerForKey:@"type"];
     if (v12 >= 2)
     {
       v13 = os_log_create("com.apple.reminderkit", "default");
@@ -241,11 +241,11 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
     }
 
     v5->_type = v12;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v16;
   }
@@ -253,31 +253,31 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMHashtag *)self objectID];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMHashtag *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v6 = [(REMHashtag *)self accountID];
-  [v4 encodeObject:v6 forKey:@"accountID"];
+  accountID = [(REMHashtag *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v7 = [(REMHashtag *)self reminderID];
-  [v4 encodeObject:v7 forKey:@"reminderID"];
+  reminderID = [(REMHashtag *)self reminderID];
+  [coderCopy encodeObject:reminderID forKey:@"reminderID"];
 
-  [v4 encodeInteger:-[REMHashtag type](self forKey:{"type"), @"type"}];
-  v8 = [(REMHashtag *)self name];
-  [v4 encodeObject:v8 forKey:@"name"];
+  [coderCopy encodeInteger:-[REMHashtag type](self forKey:{"type"), @"type"}];
+  name = [(REMHashtag *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v9 = [(REMHashtag *)self creationDate];
-  [v4 encodeObject:v9 forKey:@"creationDate"];
+  creationDate = [(REMHashtag *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -292,37 +292,37 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
   return v7;
 }
 
-- (BOOL)isEqualToHashtag:(id)a3
+- (BOOL)isEqualToHashtag:(id)hashtag
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  hashtagCopy = hashtag;
+  v5 = hashtagCopy;
+  if (hashtagCopy != self)
   {
-    v6 = v4;
+    v6 = hashtagCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_19;
     }
 
-    v7 = [(REMHashtag *)self type];
-    if (v7 != [(REMHashtag *)v6 type])
+    type = [(REMHashtag *)self type];
+    if (type != [(REMHashtag *)v6 type])
     {
       goto LABEL_19;
     }
 
-    v8 = [(REMHashtag *)self objectID];
-    v9 = [(REMHashtag *)v6 objectID];
-    v10 = v9;
-    if (v8 == v9)
+    objectID = [(REMHashtag *)self objectID];
+    objectID2 = [(REMHashtag *)v6 objectID];
+    v10 = objectID2;
+    if (objectID == objectID2)
     {
     }
 
     else
     {
-      v11 = [(REMHashtag *)self objectID];
-      v12 = [(REMHashtag *)v6 objectID];
-      v13 = [v11 isEqual:v12];
+      objectID3 = [(REMHashtag *)self objectID];
+      objectID4 = [(REMHashtag *)v6 objectID];
+      v13 = [objectID3 isEqual:objectID4];
 
       if (!v13)
       {
@@ -330,18 +330,18 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
       }
     }
 
-    v15 = [(REMHashtag *)self accountID];
-    v16 = [(REMHashtag *)v6 accountID];
-    v17 = v16;
-    if (v15 == v16)
+    accountID = [(REMHashtag *)self accountID];
+    accountID2 = [(REMHashtag *)v6 accountID];
+    v17 = accountID2;
+    if (accountID == accountID2)
     {
     }
 
     else
     {
-      v18 = [(REMHashtag *)self accountID];
-      v19 = [(REMHashtag *)v6 accountID];
-      v20 = [v18 isEqual:v19];
+      accountID3 = [(REMHashtag *)self accountID];
+      accountID4 = [(REMHashtag *)v6 accountID];
+      v20 = [accountID3 isEqual:accountID4];
 
       if (!v20)
       {
@@ -349,18 +349,18 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
       }
     }
 
-    v21 = [(REMHashtag *)self reminderID];
-    v22 = [(REMHashtag *)v6 reminderID];
-    v23 = v22;
-    if (v21 == v22)
+    reminderID = [(REMHashtag *)self reminderID];
+    reminderID2 = [(REMHashtag *)v6 reminderID];
+    v23 = reminderID2;
+    if (reminderID == reminderID2)
     {
     }
 
     else
     {
-      v24 = [(REMHashtag *)self reminderID];
-      v25 = [(REMHashtag *)v6 reminderID];
-      v26 = [v24 isEqual:v25];
+      reminderID3 = [(REMHashtag *)self reminderID];
+      reminderID4 = [(REMHashtag *)v6 reminderID];
+      v26 = [reminderID3 isEqual:reminderID4];
 
       if (!v26)
       {
@@ -368,18 +368,18 @@ REMDAHashtagTombstone *__104__REMHashtag_REMDAChangeTrackingHelper_PrivateAdditi
       }
     }
 
-    v27 = [(REMHashtag *)self name];
-    v28 = [(REMHashtag *)v6 name];
-    v29 = v28;
-    if (v27 == v28)
+    name = [(REMHashtag *)self name];
+    name2 = [(REMHashtag *)v6 name];
+    v29 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v30 = [(REMHashtag *)self name];
-      v31 = [(REMHashtag *)v6 name];
-      v32 = [v30 isEqual:v31];
+      name3 = [(REMHashtag *)self name];
+      name4 = [(REMHashtag *)v6 name];
+      v32 = [name3 isEqual:name4];
 
       if (!v32)
       {
@@ -391,18 +391,18 @@ LABEL_20:
       }
     }
 
-    v34 = [(REMHashtag *)self creationDate];
-    v35 = [(REMHashtag *)v6 creationDate];
-    if (v34 == v35)
+    creationDate = [(REMHashtag *)self creationDate];
+    creationDate2 = [(REMHashtag *)v6 creationDate];
+    if (creationDate == creationDate2)
     {
       v14 = 1;
     }
 
     else
     {
-      v36 = [(REMHashtag *)self creationDate];
-      v37 = [(REMHashtag *)v6 creationDate];
-      v14 = [v36 isEqual:v37];
+      creationDate3 = [(REMHashtag *)self creationDate];
+      creationDate4 = [(REMHashtag *)v6 creationDate];
+      v14 = [creationDate3 isEqual:creationDate4];
     }
 
     goto LABEL_20;
@@ -416,8 +416,8 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v2 = [(REMHashtag *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMHashtag *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -426,38 +426,38 @@ LABEL_21:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMHashtag *)self objectID];
-  v6 = [(REMHashtag *)self reminderID];
+  objectID = [(REMHashtag *)self objectID];
+  reminderID = [(REMHashtag *)self reminderID];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[REMHashtag type](self, "type")}];
-  v8 = [(REMHashtag *)self name];
-  v9 = [(REMHashtag *)self creationDate];
-  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, reminderID: %@, type: %@, name: %@, creation date: %@>", v4, self, v5, v6, v7, v8, v9];
+  name = [(REMHashtag *)self name];
+  creationDate = [(REMHashtag *)self creationDate];
+  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, reminderID: %@, type: %@, name: %@, creation date: %@>", v4, self, objectID, reminderID, v7, name, creationDate];
 
   return v10;
 }
 
 - (id)objectIdentifier
 {
-  v2 = [(REMHashtag *)self objectID];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  objectID = [(REMHashtag *)self objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

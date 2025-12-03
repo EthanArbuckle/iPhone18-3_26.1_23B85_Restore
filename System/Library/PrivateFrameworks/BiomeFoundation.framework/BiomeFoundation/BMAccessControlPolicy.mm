@@ -1,44 +1,44 @@
 @interface BMAccessControlPolicy
-+ (BOOL)allowsConfiguringConnection:(id)a3 forUseCase:(id)a4 inDomain:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)process:(id)a3 canActOnBehalfOfProcess:(id)a4;
++ (BOOL)allowsConfiguringConnection:(id)connection forUseCase:(id)case inDomain:(unint64_t)domain error:(id *)error;
++ (BOOL)process:(id)process canActOnBehalfOfProcess:(id)ofProcess;
 + (id)library;
-+ (id)policyForProcess:(id)a3 connectionFlags:(unint64_t)a4 onBehalfOfProcessWithAccessControlPolicy:(id)a5;
-+ (id)policyForProcess:(id)a3 connectionFlags:(unint64_t)a4 useCase:(id)a5;
++ (id)policyForProcess:(id)process connectionFlags:(unint64_t)flags onBehalfOfProcessWithAccessControlPolicy:(id)policy;
++ (id)policyForProcess:(id)process connectionFlags:(unint64_t)flags useCase:(id)case;
 + (id)syncableSetIdentifiers;
 + (void)library;
-+ (void)setLegacyStreamNameMappingCallback:(id)a3;
-+ (void)setLegacyViewResourceMappingCallback:(id)a3;
-+ (void)setUUIDStreamNameMappingCallback:(id)a3;
++ (void)setLegacyStreamNameMappingCallback:(id)callback;
++ (void)setLegacyViewResourceMappingCallback:(id)callback;
++ (void)setUUIDStreamNameMappingCallback:(id)callback;
 - (BMAccessControlPolicy)init;
-- (BMAccessControlPolicy)initWithProcess:(id)a3 connectionFlags:(unint64_t)a4 useCase:(id)a5;
-- (BOOL)allowsAccessToAllSetsWithMode:(unint64_t)a3;
-- (BOOL)allowsAccessToBiomeAgentForUser:(unsigned int)a3;
-- (BOOL)allowsAccessToClientCompute:(id)a3;
+- (BMAccessControlPolicy)initWithProcess:(id)process connectionFlags:(unint64_t)flags useCase:(id)case;
+- (BOOL)allowsAccessToAllSetsWithMode:(unint64_t)mode;
+- (BOOL)allowsAccessToBiomeAgentForUser:(unsigned int)user;
+- (BOOL)allowsAccessToClientCompute:(id)compute;
 - (BOOL)allowsAccessToContextSync;
-- (BOOL)allowsAccessToContextSyncStreams:(id)a3;
-- (BOOL)allowsAccessToDatabase:(id)a3 withMode:(unint64_t)a4;
+- (BOOL)allowsAccessToContextSyncStreams:(id)streams;
+- (BOOL)allowsAccessToDatabase:(id)database withMode:(unint64_t)mode;
 - (BOOL)allowsAccessToProxyBiomeAgentEndpoint;
-- (BOOL)allowsAccessToResource:(id)a3 withMode:(unint64_t)a4;
-- (BOOL)allowsAccessToSet:(id)a3 withMode:(unint64_t)a4;
-- (BOOL)allowsAccessToSetStoreUpdateServiceForSet:(id)a3;
-- (BOOL)allowsAccessToStream:(id)a3 withMode:(unint64_t)a4;
+- (BOOL)allowsAccessToResource:(id)resource withMode:(unint64_t)mode;
+- (BOOL)allowsAccessToSet:(id)set withMode:(unint64_t)mode;
+- (BOOL)allowsAccessToSetStoreUpdateServiceForSet:(id)set;
+- (BOOL)allowsAccessToStream:(id)stream withMode:(unint64_t)mode;
 - (BOOL)allowsAccessToSync;
 - (BOOL)allowsAccessToSyncMergeableDeltas;
-- (BOOL)allowsAccessToView:(id)a3 withMode:(unint64_t)a4;
-- (BOOL)allowsAccessToWriteServiceForStream:(id)a3 ofUser:(unsigned int)a4;
-- (BOOL)allowsComputePublisherAccessToStreams:(id)a3;
-- (BOOL)allowsComputeSourceAccessToStream:(id)a3;
-- (BOOL)allowsConnectionToAccessServiceWithDomain:(unint64_t)a3;
+- (BOOL)allowsAccessToView:(id)view withMode:(unint64_t)mode;
+- (BOOL)allowsAccessToWriteServiceForStream:(id)stream ofUser:(unsigned int)user;
+- (BOOL)allowsComputePublisherAccessToStreams:(id)streams;
+- (BOOL)allowsComputeSourceAccessToStream:(id)stream;
+- (BOOL)allowsConnectionToAccessServiceWithDomain:(unint64_t)domain;
 - (BOOL)allowsConnectionToComputePublisherService;
-- (BOOL)allowsConnectionToComputeSourceServiceWithDomain:(unint64_t)a3;
+- (BOOL)allowsConnectionToComputeSourceServiceWithDomain:(unint64_t)domain;
 - (BOOL)allowsConnectionToSetStoreUpdateService;
 - (BOOL)allowsConnectionToWriteService;
 - (BOOL)allowsProxyingBiomeEndpoint;
 - (NSString)descriptionOfProcessAndUseCase;
 - (id)authorizedResources;
-- (id)explicitlyAuthorizedResourcesOfType:(unint64_t)a3 withAccessMode:(unint64_t)a4;
-- (unint64_t)allowedModeForStream:(id)a3;
-- (void)_warnAboutInternalEntitlement:(id)a3 streamIdentifier:(id)a4;
+- (id)explicitlyAuthorizedResourcesOfType:(unint64_t)type withAccessMode:(unint64_t)mode;
+- (unint64_t)allowedModeForStream:(id)stream;
+- (void)_warnAboutInternalEntitlement:(id)entitlement streamIdentifier:(id)identifier;
 @end
 
 @implementation BMAccessControlPolicy
@@ -48,28 +48,28 @@
   v163 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   authorizedResources = self->_authorizedResources;
-  v106 = self;
+  selfCopy = self;
   if (authorizedResources)
   {
     v4 = authorizedResources;
     goto LABEL_3;
   }
 
-  v7 = [(BMProcess *)self->_process processType];
-  if (!v7)
+  processType = [(BMProcess *)self->_process processType];
+  if (!processType)
   {
     goto LABEL_23;
   }
 
-  if (v7 == 3)
+  if (processType == 3)
   {
     v21 = objc_opt_new();
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v22 = [objc_opt_class() syncableSetIdentifiers];
-    v23 = [v22 countByEnumeratingWithState:&v119 objects:v132 count:16];
+    syncableSetIdentifiers = [objc_opt_class() syncableSetIdentifiers];
+    v23 = [syncableSetIdentifiers countByEnumeratingWithState:&v119 objects:v132 count:16];
     if (v23)
     {
       v24 = *v120;
@@ -79,33 +79,33 @@
         {
           if (*v120 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(syncableSetIdentifiers);
           }
 
           v26 = [[BMResourceSpecifier alloc] initWithType:4 name:*(*(&v119 + 1) + 8 * i)];
           [(NSDictionary *)v21 setObject:&unk_1F20EBC08 forKeyedSubscript:v26];
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v119 objects:v132 count:16];
+        v23 = [syncableSetIdentifiers countByEnumeratingWithState:&v119 objects:v132 count:16];
       }
 
       while (v23);
     }
 
-    v27 = v106->_authorizedResources;
-    v106->_authorizedResources = v21;
+    v27 = selfCopy->_authorizedResources;
+    selfCopy->_authorizedResources = v21;
     v28 = v21;
 
-    v4 = v106->_authorizedResources;
+    v4 = selfCopy->_authorizedResources;
     goto LABEL_3;
   }
 
-  if (v7 == 8 && (os_variant_allows_internal_security_policies() & 1) == 0)
+  if (processType == 8 && (os_variant_allows_internal_security_policies() & 1) == 0)
   {
 LABEL_23:
     v20 = self->_authorizedResources;
     v4 = MEMORY[0x1E695E0F8];
-    v106->_authorizedResources = MEMORY[0x1E695E0F8];
+    selfCopy->_authorizedResources = MEMORY[0x1E695E0F8];
 
     goto LABEL_3;
   }
@@ -202,8 +202,8 @@ LABEL_23:
           objc_enumerationMutation(obj);
         }
 
-        process = v106->_process;
-        useCase = v106->_useCase;
+        process = selfCopy->_process;
+        useCase = selfCopy->_useCase;
         v31 = *(*(&v115 + 1) + 8 * v103);
         v32 = process;
         v33 = useCase;
@@ -249,7 +249,7 @@ LABEL_46:
               while (v40);
             }
 
-            v101 = v38;
+            databaseForViewName = v38;
 
             v43 = objc_opt_new();
             v129[0] = MEMORY[0x1E69E9820];
@@ -260,7 +260,7 @@ LABEL_46:
             v111 = v43;
             [v38 enumerateKeysAndObjectsUsingBlock:v129];
             v37 = [v111 copy];
-            v44 = v130;
+            allKeys = v130;
             goto LABEL_96;
           }
 
@@ -294,7 +294,7 @@ LABEL_46:
               while (v66);
             }
 
-            v101 = v64;
+            databaseForViewName = v64;
 
             v69 = objc_opt_new();
             v127[0] = MEMORY[0x1E69E9820];
@@ -305,7 +305,7 @@ LABEL_46:
             v111 = v69;
             [v64 enumerateKeysAndObjectsUsingBlock:v127];
             v37 = [v111 copy];
-            v44 = v128;
+            allKeys = v128;
             goto LABEL_96;
           }
 
@@ -339,7 +339,7 @@ LABEL_46:
               while (v72);
             }
 
-            v101 = v70;
+            databaseForViewName = v70;
 
             v75 = objc_opt_new();
             v125[0] = MEMORY[0x1E69E9820];
@@ -350,7 +350,7 @@ LABEL_46:
             v111 = v75;
             [v70 enumerateKeysAndObjectsUsingBlock:v125];
             v37 = [v111 copy];
-            v44 = v126;
+            allKeys = v126;
             goto LABEL_96;
           }
 
@@ -384,7 +384,7 @@ LABEL_46:
               while (v78);
             }
 
-            v101 = v76;
+            databaseForViewName = v76;
 
             v81 = objc_opt_new();
             v123[0] = MEMORY[0x1E69E9820];
@@ -395,7 +395,7 @@ LABEL_46:
             v111 = v81;
             [v76 enumerateKeysAndObjectsUsingBlock:v123];
             v37 = [v111 copy];
-            v44 = v124;
+            allKeys = v124;
             goto LABEL_96;
           }
 
@@ -405,9 +405,9 @@ LABEL_46:
           }
 
           v82 = legacyViewResourceMapper();
-          v101 = [v82 databaseForViewName];
+          databaseForViewName = [v82 databaseForViewName];
 
-          if (!v101)
+          if (!databaseForViewName)
           {
             v37 = objc_opt_new();
             v35 = 0;
@@ -418,7 +418,7 @@ LABEL_46:
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
           v84 = objc_opt_new();
-          v44 = v84;
+          allKeys = v84;
           if (isKindOfClass)
           {
             v152 = 0u;
@@ -441,13 +441,13 @@ LABEL_46:
 
                   v88 = *(*(&v150 + 1) + 8 * jj);
                   v89 = objc_autoreleasePoolPush();
-                  v90 = (*(v101 + 16))(v101, v88);
+                  v90 = (*(databaseForViewName + 16))(databaseForViewName, v88);
                   if (v90)
                   {
                     v91 = [[BMResourceSpecifier alloc] initWithType:3 name:v90];
                     if (v91)
                     {
-                      [v44 setObject:&unk_1F20EBC38 forKeyedSubscript:v91];
+                      [allKeys setObject:&unk_1F20EBC38 forKeyedSubscript:v91];
                     }
                   }
 
@@ -460,14 +460,14 @@ LABEL_46:
               while (v85);
             }
 
-            v37 = [v44 copy];
+            v37 = [allKeys copy];
             goto LABEL_96;
           }
 
           v37 = v84;
 LABEL_97:
 
-          v35 = v101;
+          v35 = databaseForViewName;
           goto LABEL_98;
         }
 
@@ -490,13 +490,13 @@ LABEL_97:
           v161 = 0u;
           v160 = 0u;
           v159 = 0u;
-          v44 = [v35 allKeys];
-          v45 = [v44 countByEnumeratingWithState:&v159 objects:v158 count:16];
-          v101 = v35;
+          allKeys = [v35 allKeys];
+          v45 = [allKeys countByEnumeratingWithState:&v159 objects:v158 count:16];
+          databaseForViewName = v35;
           if (v45)
           {
             v100 = *v160;
-            v98 = v44;
+            v98 = allKeys;
             v109 = v36;
 LABEL_63:
             v46 = 0;
@@ -505,7 +505,7 @@ LABEL_63:
             {
               if (*v160 != v100)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(allKeys);
               }
 
               v47 = *(*(&v159 + 1) + 8 * v46);
@@ -517,7 +517,7 @@ LABEL_63:
 LABEL_92:
               if (++v46 == v45)
               {
-                v45 = [v44 countByEnumeratingWithState:&v159 objects:v158 count:16];
+                v45 = [allKeys countByEnumeratingWithState:&v159 objects:v158 count:16];
                 if (!v45)
                 {
                   goto LABEL_94;
@@ -633,9 +633,9 @@ LABEL_87:
                 {
 LABEL_91:
 
-                  v35 = v101;
+                  v35 = databaseForViewName;
                   v46 = v102;
-                  v44 = v98;
+                  allKeys = v98;
                   v45 = v99;
                   goto LABEL_92;
                 }
@@ -691,12 +691,12 @@ LABEL_99:
   }
 
   v93 = [v97 copy];
-  v94 = v106->_authorizedResources;
-  v106->_authorizedResources = v93;
+  v94 = selfCopy->_authorizedResources;
+  selfCopy->_authorizedResources = v93;
 
   v4 = v93;
 LABEL_3:
-  os_unfair_lock_unlock(&v106->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
@@ -767,23 +767,23 @@ void __44__BMAccessControlPolicy_authorizedResources__block_invoke(uint64_t a1, 
 
 - (BOOL)allowsConnectionToSetStoreUpdateService
 {
-  v3 = [(BMProcess *)self->_process identifier];
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = [(BMProcess *)self->_process processType];
+  processType = [(BMProcess *)self->_process processType];
   result = 0;
-  if (v4 <= 3)
+  if (processType <= 3)
   {
-    if (!v4)
+    if (!processType)
     {
       return result;
     }
 
-    if (v4 == 2 || v4 == 3)
+    if (processType == 2 || processType == 3)
     {
       return 1;
     }
@@ -791,12 +791,12 @@ void __44__BMAccessControlPolicy_authorizedResources__block_invoke(uint64_t a1, 
     return [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| os_variant_allows_internal_security_policies() && [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"];
   }
 
-  if ((v4 - 4) < 2)
+  if ((processType - 4) < 2)
   {
     return result;
   }
 
-  if (v4 != 8)
+  if (processType != 8)
   {
     return [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| os_variant_allows_internal_security_policies() && [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"];
   }
@@ -806,20 +806,20 @@ void __44__BMAccessControlPolicy_authorizedResources__block_invoke(uint64_t a1, 
 
 - (BOOL)allowsConnectionToWriteService
 {
-  v3 = [(BMProcess *)self->_process identifier];
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = [(BMProcess *)self->_process processType];
-  if (v4 - 2 < 4 || v4 == 0)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType - 2 < 4 || processType == 0)
   {
     return 0;
   }
 
-  if (v4 != 8)
+  if (processType != 8)
   {
     return [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.write-only"]|| os_variant_allows_internal_security_policies() && ([(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.write-only"]);
   }
@@ -831,16 +831,16 @@ void __44__BMAccessControlPolicy_authorizedResources__block_invoke(uint64_t a1, 
 {
   v3 = [(NSString *)self->_useCase hasPrefix:@"__"];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [(BMProcess *)self->_process executableName];
-  v6 = v5;
+  executableName = [(BMProcess *)self->_process executableName];
+  v6 = executableName;
   if (v3)
   {
-    v7 = [v4 initWithFormat:@"'%@'", v5, v10];
+    v7 = [v4 initWithFormat:@"'%@'", executableName, v10];
   }
 
   else
   {
-    v7 = [v4 initWithFormat:@"'%@' use case '%@'", v5, self->_useCase];
+    v7 = [v4 initWithFormat:@"'%@' use case '%@'", executableName, self->_useCase];
   }
 
   v8 = v7;
@@ -848,37 +848,37 @@ void __44__BMAccessControlPolicy_authorizedResources__block_invoke(uint64_t a1, 
   return v8;
 }
 
-+ (void)setLegacyViewResourceMappingCallback:(id)a3
++ (void)setLegacyViewResourceMappingCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   v4 = legacyViewResourceMapper();
-  [v4 setDatabaseForViewName:v3];
+  [v4 setDatabaseForViewName:callbackCopy];
 }
 
-+ (void)setLegacyStreamNameMappingCallback:(id)a3
++ (void)setLegacyStreamNameMappingCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   v4 = legacyViewResourceMapper();
-  [v4 setStreamIdentifierForLegacyStreamName:v3];
+  [v4 setStreamIdentifierForLegacyStreamName:callbackCopy];
 }
 
-+ (void)setUUIDStreamNameMappingCallback:(id)a3
++ (void)setUUIDStreamNameMappingCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   v4 = legacyViewResourceMapper();
-  [v4 setStreamIdentifierForUUIDString:v3];
+  [v4 setStreamIdentifierForUUIDString:callbackCopy];
 }
 
-+ (id)policyForProcess:(id)a3 connectionFlags:(unint64_t)a4 useCase:(id)a5
++ (id)policyForProcess:(id)process connectionFlags:(unint64_t)flags useCase:(id)case
 {
-  v8 = a3;
-  v9 = a5;
+  processCopy = process;
+  caseCopy = case;
   v10 = +[BMAccessControlPolicy library];
-  if (v8)
+  if (processCopy)
   {
-    if ((a4 & 1) == 0)
+    if ((flags & 1) == 0)
     {
-      v11 = [[a1 alloc] initWithProcess:v8 connectionFlags:a4 useCase:v9];
+      v11 = [[self alloc] initWithProcess:processCopy connectionFlags:flags useCase:caseCopy];
       goto LABEL_8;
     }
 
@@ -895,19 +895,19 @@ LABEL_8:
   return v11;
 }
 
-+ (id)policyForProcess:(id)a3 connectionFlags:(unint64_t)a4 onBehalfOfProcessWithAccessControlPolicy:(id)a5
++ (id)policyForProcess:(id)process connectionFlags:(unint64_t)flags onBehalfOfProcessWithAccessControlPolicy:(id)policy
 {
-  v8 = a3;
-  v9 = a5;
+  processCopy = process;
+  policyCopy = policy;
   v10 = +[BMAccessControlPolicy library];
   v11 = 0;
-  if (v8 && v9)
+  if (processCopy && policyCopy)
   {
-    v12 = [a1 alloc];
-    v13 = [v9 useCase];
-    v11 = [v12 initWithProcess:v8 connectionFlags:a4 | 1 useCase:v13];
+    v12 = [self alloc];
+    useCase = [policyCopy useCase];
+    v11 = [v12 initWithProcess:processCopy connectionFlags:flags | 1 useCase:useCase];
 
-    objc_storeStrong(v11 + 1, a5);
+    objc_storeStrong(v11 + 1, policy);
   }
 
   return v11;
@@ -920,12 +920,12 @@ LABEL_8:
   return 0;
 }
 
-- (BMAccessControlPolicy)initWithProcess:(id)a3 connectionFlags:(unint64_t)a4 useCase:(id)a5
+- (BMAccessControlPolicy)initWithProcess:(id)process connectionFlags:(unint64_t)flags useCase:(id)case
 {
-  v9 = a3;
-  v10 = a5;
+  processCopy = process;
+  caseCopy = case;
   v11 = +[BMAccessControlPolicy library];
-  if (v9)
+  if (processCopy)
   {
     v19.receiver = self;
     v19.super_class = BMAccessControlPolicy;
@@ -934,30 +934,30 @@ LABEL_8:
     if (v12)
     {
       v12->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v12->_process, a3);
-      v14 = [v10 copy];
+      objc_storeStrong(&v12->_process, process);
+      v14 = [caseCopy copy];
       useCase = v13->_useCase;
       v13->_useCase = v14;
 
       authorizedResources = v13->_authorizedResources;
       v13->_authorizedResources = 0;
 
-      v13->_connectionFlags = a4;
+      v13->_connectionFlags = flags;
     }
 
     self = v13;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)allowsConnectionToAccessServiceWithDomain:(unint64_t)a3
+- (BOOL)allowsConnectionToAccessServiceWithDomain:(unint64_t)domain
 {
   p_process = &self->_process;
   if (![(BMProcess *)self->_process processType])
@@ -990,8 +990,8 @@ LABEL_8:
     return 0;
   }
 
-  v7 = [(BMProcess *)v6 executableName];
-  v8 = [&unk_1F20EBE30 containsObject:v7];
+  executableName = [(BMProcess *)v6 executableName];
+  v8 = [&unk_1F20EBE30 containsObject:executableName];
 
   if ((v8 & 1) == 0)
   {
@@ -1010,36 +1010,36 @@ LABEL_30:
   return 1;
 }
 
-- (BOOL)allowsAccessToStream:(id)a3 withMode:(unint64_t)a4
+- (BOOL)allowsAccessToStream:(id)stream withMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
+  streamCopy = stream;
+  v7 = streamCopy;
   v8 = 0;
-  if (!a4 || !self->_process)
+  if (!mode || !self->_process)
   {
     goto LABEL_27;
   }
 
-  if (!BMIdentifierIsPathSafe(v6))
+  if (!BMIdentifierIsPathSafe(streamCopy))
   {
     goto LABEL_26;
   }
 
-  v9 = [(BMProcess *)self->_process processType];
+  processType = [(BMProcess *)self->_process processType];
   v8 = 1;
-  if (v9 > 4)
+  if (processType > 4)
   {
-    if ((v9 - 6) < 2)
+    if ((processType - 6) < 2)
     {
       goto LABEL_27;
     }
 
-    if (v9 == 5)
+    if (processType == 5)
     {
       goto LABEL_26;
     }
 
-    if (v9 == 8)
+    if (processType == 8)
     {
       v10 = os_variant_allows_internal_security_policies();
 LABEL_13:
@@ -1048,9 +1048,9 @@ LABEL_13:
     }
   }
 
-  else if (v9 > 2)
+  else if (processType > 2)
   {
-    if (v9 != 3)
+    if (processType != 3)
     {
       onBehalfOf = self->_onBehalfOf;
       if (onBehalfOf && [(BMAccessControlPolicy *)onBehalfOf allowsAccessToStream:v7 withMode:2])
@@ -1074,12 +1074,12 @@ LABEL_22:
 
   else
   {
-    if (!v9)
+    if (!processType)
     {
       goto LABEL_26;
     }
 
-    if (v9 == 2)
+    if (processType == 2)
     {
       goto LABEL_27;
     }
@@ -1107,19 +1107,19 @@ LABEL_26:
 
   if (v14)
   {
-    if ((a4 & 2) != 0)
+    if ((mode & 2) != 0)
     {
       goto LABEL_26;
     }
 
     v16 = [v7 componentsSeparatedByString:@":"];
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
-    v18 = self;
-    v19 = 2;
+    selfCopy2 = self;
+    modeCopy = 2;
 LABEL_30:
-    v22 = [(BMAccessControlPolicy *)v18 explicitlyAuthorizedResourcesOfType:1 withAccessMode:v19];
-    v8 = [v22 containsObject:v17];
+    v22 = [(BMAccessControlPolicy *)selfCopy2 explicitlyAuthorizedResourcesOfType:1 withAccessMode:modeCopy];
+    v8 = [v22 containsObject:firstObject];
 
     goto LABEL_27;
   }
@@ -1127,22 +1127,22 @@ LABEL_30:
   if (v15)
   {
     v21 = [v7 componentsSeparatedByString:@":"];
-    v17 = [v21 firstObject];
+    firstObject = [v21 firstObject];
 
-    v18 = self;
-    v19 = a4;
+    selfCopy2 = self;
+    modeCopy = mode;
     goto LABEL_30;
   }
 
   v8 = 1;
-  v23 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:1 withAccessMode:a4];
+  v23 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:1 withAccessMode:mode];
   if (([v23 containsObject:v7] & 1) == 0)
   {
     v8 = 0;
     if ([(BMProcess *)self->_process BOOLForEntitlement:@"com.apple.private.security.storage.Biome"])
     {
-      v24 = [(BMProcess *)self->_process executableName];
-      v25 = [&unk_1F20EBE48 containsObject:v24];
+      executableName = [(BMProcess *)self->_process executableName];
+      v25 = [&unk_1F20EBE48 containsObject:executableName];
 
       if (v25)
       {
@@ -1155,22 +1155,22 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)allowsAccessToDatabase:(id)a3 withMode:(unint64_t)a4
+- (BOOL)allowsAccessToDatabase:(id)database withMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
+  databaseCopy = database;
+  v7 = databaseCopy;
   v8 = 0;
-  if (a4 && self->_process)
+  if (mode && self->_process)
   {
-    if (BMIdentifierIsPathSafe(v6))
+    if (BMIdentifierIsPathSafe(databaseCopy))
     {
-      v9 = [(BMProcess *)self->_process processType];
-      if (v9 > 8)
+      processType = [(BMProcess *)self->_process processType];
+      if (processType > 8)
       {
 LABEL_10:
-        if (v9)
+        if (processType)
         {
-          v11 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:3 withAccessMode:a4];
+          v11 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:3 withAccessMode:mode];
           v8 = [v11 containsObject:v7];
 
           goto LABEL_12;
@@ -1179,15 +1179,15 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      if (((1 << v9) & 0x38) == 0)
+      if (((1 << processType) & 0x38) == 0)
       {
-        if (((1 << v9) & 0xC4) != 0)
+        if (((1 << processType) & 0xC4) != 0)
         {
           v8 = 1;
           goto LABEL_12;
         }
 
-        if (v9 == 8)
+        if (processType == 8)
         {
           v8 = os_variant_allows_internal_security_policies();
           goto LABEL_12;
@@ -1206,22 +1206,22 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)allowsAccessToView:(id)a3 withMode:(unint64_t)a4
+- (BOOL)allowsAccessToView:(id)view withMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
+  viewCopy = view;
+  v7 = viewCopy;
   v8 = 0;
-  if (a4 && self->_process)
+  if (mode && self->_process)
   {
-    if (BMIdentifierIsPathSafe(v6))
+    if (BMIdentifierIsPathSafe(viewCopy))
     {
-      v9 = [(BMProcess *)self->_process processType];
-      if (v9 > 8)
+      processType = [(BMProcess *)self->_process processType];
+      if (processType > 8)
       {
 LABEL_10:
-        if (v9)
+        if (processType)
         {
-          v11 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:2 withAccessMode:a4];
+          v11 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:2 withAccessMode:mode];
           v8 = [v11 containsObject:v7];
 
           goto LABEL_12;
@@ -1230,15 +1230,15 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      if (((1 << v9) & 0x38) == 0)
+      if (((1 << processType) & 0x38) == 0)
       {
-        if (((1 << v9) & 0xC4) != 0)
+        if (((1 << processType) & 0xC4) != 0)
         {
           v8 = 1;
           goto LABEL_12;
         }
 
-        if (v9 == 8)
+        if (processType == 8)
         {
           v8 = os_variant_allows_internal_security_policies();
           goto LABEL_12;
@@ -1257,36 +1257,36 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)allowsAccessToSet:(id)a3 withMode:(unint64_t)a4
+- (BOOL)allowsAccessToSet:(id)set withMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
+  setCopy = set;
+  v7 = setCopy;
   v8 = 0;
-  if (a4 && self->_process)
+  if (mode && self->_process)
   {
-    if (!BMIdentifierIsPathSafe(v6))
+    if (!BMIdentifierIsPathSafe(setCopy))
     {
       goto LABEL_22;
     }
 
     if ([v7 isEqual:@"BMSetsResource"])
     {
-      v9 = [(BMAccessControlPolicy *)self allowsAccessToAllSetsWithMode:a4];
+      v9 = [(BMAccessControlPolicy *)self allowsAccessToAllSetsWithMode:mode];
 LABEL_6:
       v8 = v9;
       goto LABEL_23;
     }
 
-    v10 = [(BMProcess *)self->_process processType];
+    processType = [(BMProcess *)self->_process processType];
     v8 = 1;
-    if (v10 <= 4)
+    if (processType <= 4)
     {
-      if (v10 > 2)
+      if (processType > 2)
       {
-        if (v10 == 3)
+        if (processType == 3)
         {
-          v11 = [objc_opt_class() syncableSetIdentifiers];
-          v12 = [v11 containsObject:v7];
+          syncableSetIdentifiers = [objc_opt_class() syncableSetIdentifiers];
+          v12 = [syncableSetIdentifiers containsObject:v7];
 
           if (v12)
           {
@@ -1298,9 +1298,9 @@ LABEL_6:
         }
       }
 
-      else if (v10)
+      else if (processType)
       {
-        if (v10 == 2)
+        if (processType == 2)
         {
           goto LABEL_23;
         }
@@ -1311,21 +1311,21 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    if ((v10 - 6) < 2)
+    if ((processType - 6) < 2)
     {
       goto LABEL_23;
     }
 
-    if (v10 != 5)
+    if (processType != 5)
     {
-      if (v10 == 8)
+      if (processType == 8)
       {
         v9 = os_variant_allows_internal_security_policies();
         goto LABEL_6;
       }
 
 LABEL_19:
-      v13 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:4 withAccessMode:a4];
+      v13 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:4 withAccessMode:mode];
       v8 = [v13 containsObject:v7];
 
       goto LABEL_23;
@@ -1344,28 +1344,28 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)allowsAccessToResource:(id)a3 withMode:(unint64_t)a4
+- (BOOL)allowsAccessToResource:(id)resource withMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [v6 type];
+  resourceCopy = resource;
+  type = [resourceCopy type];
   LOBYTE(v8) = 0;
-  if (v7 <= 2)
+  if (type <= 2)
   {
-    if (v7 == 1)
+    if (type == 1)
     {
-      v10 = [v6 name];
-      v11 = [(BMAccessControlPolicy *)self allowsAccessToStream:v10 withMode:a4];
+      name = [resourceCopy name];
+      v11 = [(BMAccessControlPolicy *)self allowsAccessToStream:name withMode:mode];
     }
 
     else
     {
-      if (v7 != 2)
+      if (type != 2)
       {
         goto LABEL_14;
       }
 
-      v10 = [v6 name];
-      v11 = [(BMAccessControlPolicy *)self allowsAccessToView:v10 withMode:a4];
+      name = [resourceCopy name];
+      v11 = [(BMAccessControlPolicy *)self allowsAccessToView:name withMode:mode];
     }
 
 LABEL_13:
@@ -1374,45 +1374,45 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  switch(v7)
+  switch(type)
   {
     case 3:
-      v10 = [v6 name];
-      v11 = [(BMAccessControlPolicy *)self allowsAccessToDatabase:v10 withMode:a4];
+      name = [resourceCopy name];
+      v11 = [(BMAccessControlPolicy *)self allowsAccessToDatabase:name withMode:mode];
       goto LABEL_13;
     case 4:
-      v10 = [v6 name];
-      v11 = [(BMAccessControlPolicy *)self allowsAccessToSet:v10 withMode:a4];
+      name = [resourceCopy name];
+      v11 = [(BMAccessControlPolicy *)self allowsAccessToSet:name withMode:mode];
       goto LABEL_13;
     case 5:
-      v9 = [v6 name];
-      if ([v9 isEqual:@"BMSyncResource"])
+      name2 = [resourceCopy name];
+      if ([name2 isEqual:@"BMSyncResource"])
       {
       }
 
       else
       {
-        v13 = [v6 name];
-        v14 = [v13 isEqual:@"BMSharedSyncResource"];
+        name3 = [resourceCopy name];
+        v14 = [name3 isEqual:@"BMSharedSyncResource"];
 
         if (!v14)
         {
-          v16 = [v6 name];
-          v8 = [v16 isEqual:@"BMSetsMergeableDeltasResource"];
+          name4 = [resourceCopy name];
+          v8 = [name4 isEqual:@"BMSetsMergeableDeltasResource"];
 
           if (!v8)
           {
             break;
           }
 
-          v15 = [(BMAccessControlPolicy *)self allowsAccessToSyncMergeableDeltas];
+          allowsAccessToSyncMergeableDeltas = [(BMAccessControlPolicy *)self allowsAccessToSyncMergeableDeltas];
           goto LABEL_17;
         }
       }
 
-      v15 = [(BMAccessControlPolicy *)self allowsAccessToSync];
+      allowsAccessToSyncMergeableDeltas = [(BMAccessControlPolicy *)self allowsAccessToSync];
 LABEL_17:
-      LOBYTE(v8) = v15;
+      LOBYTE(v8) = allowsAccessToSyncMergeableDeltas;
       break;
   }
 
@@ -1421,18 +1421,18 @@ LABEL_14:
   return v8;
 }
 
-- (id)explicitlyAuthorizedResourcesOfType:(unint64_t)a3 withAccessMode:(unint64_t)a4
+- (id)explicitlyAuthorizedResourcesOfType:(unint64_t)type withAccessMode:(unint64_t)mode
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (mode)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
-    v8 = [(BMAccessControlPolicy *)self authorizedResources];
+    authorizedResources = [(BMAccessControlPolicy *)self authorizedResources];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [authorizedResources countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1443,27 +1443,27 @@ LABEL_14:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(authorizedResources);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          if ([v13 type] == a3)
+          if ([v13 type] == type)
           {
-            v14 = [v8 objectForKeyedSubscript:v13];
-            v15 = [v14 unsignedIntegerValue];
+            v14 = [authorizedResources objectForKeyedSubscript:v13];
+            unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-            if (v15)
+            if (unsignedIntegerValue)
             {
-              if (v15 == a4 || v15 == 3)
+              if (unsignedIntegerValue == mode || unsignedIntegerValue == 3)
               {
-                v17 = [v13 name];
-                [v7 addObject:v17];
+                name = [v13 name];
+                [v7 addObject:name];
               }
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [authorizedResources countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
@@ -1480,10 +1480,10 @@ LABEL_14:
   return v7;
 }
 
-- (unint64_t)allowedModeForStream:(id)a3
+- (unint64_t)allowedModeForStream:(id)stream
 {
-  v4 = a3;
-  if ([v4 hasSuffix:@":subscriptions"])
+  streamCopy = stream;
+  if ([streamCopy hasSuffix:@":subscriptions"])
   {
     if ([(BMProcess *)self->_process processType]== 2)
     {
@@ -1491,7 +1491,7 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    if ([(BMAccessControlPolicy *)self allowsAccessToStream:v4 withMode:3]|| [(BMAccessControlPolicy *)self allowsAccessToStream:v4 withMode:2])
+    if ([(BMAccessControlPolicy *)self allowsAccessToStream:streamCopy withMode:3]|| [(BMAccessControlPolicy *)self allowsAccessToStream:streamCopy withMode:2])
     {
       v5 = 1;
       goto LABEL_12;
@@ -1503,13 +1503,13 @@ LABEL_11:
   }
 
   v5 = 3;
-  if (![(BMAccessControlPolicy *)self allowsAccessToStream:v4 withMode:3])
+  if (![(BMAccessControlPolicy *)self allowsAccessToStream:streamCopy withMode:3])
   {
     v5 = 1;
-    if (![(BMAccessControlPolicy *)self allowsAccessToStream:v4 withMode:1])
+    if (![(BMAccessControlPolicy *)self allowsAccessToStream:streamCopy withMode:1])
     {
       v5 = 2;
-      if (![(BMAccessControlPolicy *)self allowsAccessToStream:v4 withMode:2])
+      if (![(BMAccessControlPolicy *)self allowsAccessToStream:streamCopy withMode:2])
       {
         goto LABEL_11;
       }
@@ -1541,13 +1541,13 @@ LABEL_12:
   process = self->_process;
   if (process)
   {
-    v4 = [process processType];
-    if (v4 > 8 || ((1 << v4) & 0x1D3) != 0)
+    processType = [process processType];
+    if (processType > 8 || ((1 << processType) & 0x1D3) != 0)
     {
       LOBYTE(process) = 0;
     }
 
-    else if (((1 << v4) & 0xC) != 0)
+    else if (((1 << processType) & 0xC) != 0)
     {
       LOBYTE(process) = 1;
     }
@@ -1566,7 +1566,7 @@ LABEL_12:
   return process;
 }
 
-- (BOOL)allowsAccessToAllSetsWithMode:(unint64_t)a3
+- (BOOL)allowsAccessToAllSetsWithMode:(unint64_t)mode
 {
   process = self->_process;
   if (!process)
@@ -1613,7 +1613,7 @@ LABEL_10:
   if (process)
   {
 
-    LOBYTE(process) = [process allowsAccessToAllSetsWithMode:a3];
+    LOBYTE(process) = [process allowsAccessToAllSetsWithMode:mode];
   }
 
   return process;
@@ -1621,39 +1621,39 @@ LABEL_10:
 
 - (BOOL)allowsConnectionToComputePublisherService
 {
-  v3 = [(BMProcess *)self->_process identifier];
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     goto LABEL_6;
   }
 
-  v4 = [(BMProcess *)self->_process processType];
-  if (v4 > 8)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType > 8)
   {
     goto LABEL_12;
   }
 
-  if (((1 << v4) & 0xCC) != 0)
+  if (((1 << processType) & 0xCC) != 0)
   {
 LABEL_4:
-    LOBYTE(v4) = 1;
-    return v4;
+    LOBYTE(processType) = 1;
+    return processType;
   }
 
-  if (((1 << v4) & 0x30) != 0)
+  if (((1 << processType) & 0x30) != 0)
   {
 LABEL_6:
-    LOBYTE(v4) = 0;
-    return v4;
+    LOBYTE(processType) = 0;
+    return processType;
   }
 
-  if (v4 != 8)
+  if (processType != 8)
   {
 LABEL_12:
-    if (!v4)
+    if (!processType)
     {
-      return v4;
+      return processType;
     }
 
     if ([(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-only"]|| os_variant_allows_internal_security_policies() && ([(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-only"]))
@@ -1664,14 +1664,14 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  LOBYTE(v4) = os_variant_allows_internal_security_policies();
-  return v4;
+  LOBYTE(processType) = os_variant_allows_internal_security_policies();
+  return processType;
 }
 
-- (BOOL)allowsComputePublisherAccessToStreams:(id)a3
+- (BOOL)allowsComputePublisherAccessToStreams:(id)streams
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  streamsCopy = streams;
   process = self->_process;
   if (!process || ([(BMProcess *)process identifier], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
@@ -1683,7 +1683,7 @@ LABEL_12:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v4;
+  v7 = streamsCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
@@ -1715,33 +1715,33 @@ LABEL_12:
     }
   }
 
-  v12 = [(BMProcess *)self->_process processType];
+  processType = [(BMProcess *)self->_process processType];
   v13 = 1;
-  if (v12 <= 3)
+  if (processType <= 3)
   {
-    if (v12)
+    if (processType)
     {
-      if (v12 != 2)
+      if (processType != 2)
       {
-        if (v12 == 3)
+        if (processType == 3)
         {
           v14 = BMSyncableStreamIdentifiers();
-          v4 = [v7 bm_setBySubtractingSet:v14];
+          streamsCopy = [v7 bm_setBySubtractingSet:v14];
 
-          if (![v4 count])
+          if (![streamsCopy count])
           {
             v13 = 1;
             goto LABEL_21;
           }
 
-          v7 = v4;
+          v7 = streamsCopy;
         }
 
         goto LABEL_26;
       }
 
 LABEL_20:
-      v4 = v7;
+      streamsCopy = v7;
       goto LABEL_21;
     }
 
@@ -1750,17 +1750,17 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((v12 - 4) < 2)
+  if ((processType - 4) < 2)
   {
     goto LABEL_19;
   }
 
-  if ((v12 - 6) < 2)
+  if ((processType - 6) < 2)
   {
     goto LABEL_20;
   }
 
-  if (v12 == 8)
+  if (processType == 8)
   {
     v13 = os_variant_allows_internal_security_policies();
     goto LABEL_20;
@@ -1771,8 +1771,8 @@ LABEL_26:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = v7;
-  v17 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  streamsCopy = v7;
+  v17 = [streamsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1783,7 +1783,7 @@ LABEL_26:
       {
         if (*v22 != v19)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(streamsCopy);
         }
 
         if (![(BMAccessControlPolicy *)self allowsAccessToStream:*(*(&v21 + 1) + 8 * j) withMode:1, v21])
@@ -1793,7 +1793,7 @@ LABEL_26:
         }
       }
 
-      v18 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v18 = [streamsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v18)
       {
         continue;
@@ -1811,7 +1811,7 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)allowsConnectionToComputeSourceServiceWithDomain:(unint64_t)a3
+- (BOOL)allowsConnectionToComputeSourceServiceWithDomain:(unint64_t)domain
 {
   process = self->_process;
   if (!process)
@@ -1840,7 +1840,7 @@ LABEL_4:
     if (process)
     {
 
-      LOBYTE(process) = [process allowsConnectionToComputeSourceServiceWithDomain:a3];
+      LOBYTE(process) = [process allowsConnectionToComputeSourceServiceWithDomain:domain];
     }
 
     return process;
@@ -1871,10 +1871,10 @@ LABEL_15:
   return process;
 }
 
-- (BOOL)allowsComputeSourceAccessToStream:(id)a3
+- (BOOL)allowsComputeSourceAccessToStream:(id)stream
 {
-  v4 = [a3 componentsSeparatedByString:@":"];
-  v5 = [v4 firstObject];
+  v4 = [stream componentsSeparatedByString:@":"];
+  firstObject = [v4 firstObject];
 
   process = self->_process;
   if (!process)
@@ -1884,41 +1884,41 @@ LABEL_15:
 
   [(BMProcess *)process identifier];
 
-  if (!BMIdentifierIsPathSafe(v5))
+  if (!BMIdentifierIsPathSafe(firstObject))
   {
     goto LABEL_15;
   }
 
-  v7 = [(BMProcess *)self->_process processType];
+  processType = [(BMProcess *)self->_process processType];
   v8 = 1;
-  if (v7 > 4)
+  if (processType > 4)
   {
-    if ((v7 - 6) < 2)
+    if ((processType - 6) < 2)
     {
       goto LABEL_16;
     }
 
-    if (v7 == 5)
+    if (processType == 5)
     {
 LABEL_15:
       v8 = 0;
       goto LABEL_16;
     }
 
-    if (v7 == 8)
+    if (processType == 8)
     {
       v9 = os_variant_allows_internal_security_policies();
       goto LABEL_20;
     }
 
 LABEL_19:
-    v9 = [(BMAccessControlPolicy *)self allowsAccessToStream:v5 withMode:2];
+    v9 = [(BMAccessControlPolicy *)self allowsAccessToStream:firstObject withMode:2];
     goto LABEL_20;
   }
 
-  if (v7 > 2)
+  if (processType > 2)
   {
-    if (v7 != 3)
+    if (processType != 3)
     {
       onBehalfOf = self->_onBehalfOf;
       if (!onBehalfOf)
@@ -1926,14 +1926,14 @@ LABEL_19:
         goto LABEL_15;
       }
 
-      v9 = [(BMAccessControlPolicy *)onBehalfOf allowsComputeSourceAccessToStream:v5];
+      v9 = [(BMAccessControlPolicy *)onBehalfOf allowsComputeSourceAccessToStream:firstObject];
 LABEL_20:
       v8 = v9;
       goto LABEL_16;
     }
 
     v12 = BMSyncableStreamIdentifiers();
-    v13 = [v12 containsObject:v5];
+    v13 = [v12 containsObject:firstObject];
 
     if (v13)
     {
@@ -1944,12 +1944,12 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!processType)
   {
     goto LABEL_15;
   }
 
-  if (v7 != 2)
+  if (processType != 2)
   {
     goto LABEL_19;
   }
@@ -1959,27 +1959,27 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)allowsAccessToClientCompute:(id)a3
+- (BOOL)allowsAccessToClientCompute:(id)compute
 {
-  v4 = a3;
+  computeCopy = compute;
   process = self->_process;
   if (!process)
   {
     goto LABEL_12;
   }
 
-  v6 = [(BMProcess *)process processType];
+  processType = [(BMProcess *)process processType];
   v7 = 0;
-  if (v6 > 3)
+  if (processType > 3)
   {
-    if ((v6 - 4) >= 2)
+    if ((processType - 4) >= 2)
     {
-      if ((v6 - 6) < 2)
+      if ((processType - 6) < 2)
       {
         goto LABEL_9;
       }
 
-      if (v6 != 8)
+      if (processType != 8)
       {
         goto LABEL_13;
       }
@@ -1993,7 +1993,7 @@ LABEL_16:
     onBehalfOf = self->_onBehalfOf;
     if (onBehalfOf)
     {
-      v10 = [(BMAccessControlPolicy *)onBehalfOf allowsAccessToClientCompute:v4];
+      v10 = [(BMAccessControlPolicy *)onBehalfOf allowsAccessToClientCompute:computeCopy];
       goto LABEL_16;
     }
 
@@ -2002,12 +2002,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  switch(v6)
+  switch(processType)
   {
     case 1:
 LABEL_6:
-      v8 = [(BMProcess *)self->_process identifier];
-      v7 = [v8 isEqual:v4];
+      identifier = [(BMProcess *)self->_process identifier];
+      v7 = [identifier isEqual:computeCopy];
 
       break;
     case 2:
@@ -2025,15 +2025,15 @@ LABEL_13:
 
 - (BOOL)allowsProxyingBiomeEndpoint
 {
-  v3 = [(BMProcess *)self->_process identifier];
-  if ([v3 isEqual:@"com.apple.coreduetd"])
+  identifier = [(BMProcess *)self->_process identifier];
+  if ([identifier isEqual:@"com.apple.coreduetd"])
   {
   }
 
   else
   {
-    v4 = [(BMProcess *)self->_process identifier];
-    v5 = [v4 isEqual:@"com.apple.knowledge-agent"];
+    identifier2 = [(BMProcess *)self->_process identifier];
+    v5 = [identifier2 isEqual:@"com.apple.knowledge-agent"];
 
     if (!v5)
     {
@@ -2046,23 +2046,23 @@ LABEL_13:
   return [(BMProcess *)process BOOLForEntitlement:@"com.apple.rootless.storage.coreduet_knowledge_store"];
 }
 
-- (void)_warnAboutInternalEntitlement:(id)a3 streamIdentifier:(id)a4
+- (void)_warnAboutInternalEntitlement:(id)entitlement streamIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entitlementCopy = entitlement;
+  identifierCopy = identifier;
   if (os_variant_has_internal_diagnostics())
   {
-    v8 = [(BMProcess *)self->_process executablePath];
-    if (([v8 containsString:@"/usr/local/"] & 1) == 0 && (objc_msgSend(v8, "containsString:", @"/usr/appleinternal/") & 1) == 0 && (objc_msgSend(v8, "containsString:", @"/AppleInternal/") & 1) == 0)
+    executablePath = [(BMProcess *)self->_process executablePath];
+    if (([executablePath containsString:@"/usr/local/"] & 1) == 0 && (objc_msgSend(executablePath, "containsString:", @"/usr/appleinternal/") & 1) == 0 && (objc_msgSend(executablePath, "containsString:", @"/AppleInternal/") & 1) == 0)
     {
       v9 = __biome_log_for_category(6);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = v7;
+        v12 = identifierCopy;
         v13 = 2114;
-        v14 = v6;
+        v14 = entitlementCopy;
         _os_log_impl(&dword_1AC15D000, v9, OS_LOG_TYPE_DEFAULT, "WARNING: utilizing internal-only policy to allow access to '%{public}@' via entitlement '%{public}@'", &v11, 0x16u);
       }
     }
@@ -2071,17 +2071,17 @@ LABEL_13:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)allowsAccessToContextSyncStreams:(id)a3
+- (BOOL)allowsAccessToContextSyncStreams:(id)streams
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  streamsCopy = streams;
   v5 = +[BMAccessControlPolicy contextSyncMapping];
-  v6 = [v4 mutableCopy];
+  v6 = [streamsCopy mutableCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v7 = v4;
+  v7 = streamsCopy;
   v8 = [v7 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v8)
   {
@@ -2142,9 +2142,9 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v16 = [(BMProcess *)process identifier];
+  identifier = [(BMProcess *)process identifier];
 
-  if (!v16)
+  if (!identifier)
   {
     v25 = __biome_log_for_category(6);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -2199,16 +2199,16 @@ LABEL_35:
     }
   }
 
-  v22 = [(BMProcess *)self->_process processType];
-  if (v22 <= 3)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType <= 3)
   {
-    if ((v22 - 2) < 2)
+    if ((processType - 2) < 2)
     {
       v23 = 1;
       goto LABEL_37;
     }
 
-    if (v22)
+    if (processType)
     {
       goto LABEL_41;
     }
@@ -2218,12 +2218,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((v22 - 4) < 2 || (v22 - 6) < 2)
+  if ((processType - 4) < 2 || (processType - 6) < 2)
   {
     goto LABEL_36;
   }
 
-  if (v22 == 8)
+  if (processType == 8)
   {
     v23 = os_variant_allows_internal_security_policies();
     goto LABEL_37;
@@ -2281,23 +2281,23 @@ LABEL_37:
     return 1;
   }
 
-  v4 = [(BMProcess *)self->_process processType];
-  if (v4 > 8)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType > 8)
   {
     return [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-only"]|| os_variant_allows_internal_security_policies() && ([(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-only"]);
   }
 
-  if (((1 << v4) & 0xF1) != 0)
+  if (((1 << processType) & 0xF1) != 0)
   {
     return 0;
   }
 
-  if (((1 << v4) & 0xC) != 0)
+  if (((1 << processType) & 0xC) != 0)
   {
     return 1;
   }
 
-  if (v4 != 8)
+  if (processType != 8)
   {
     return [(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.private.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.private.biome.read-only"]|| os_variant_allows_internal_security_policies() && ([(BMProcess *)self->_process hasNonEmptyDictionaryForEntitlement:@"com.apple.internal.intelligenceplatform.use-cases"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-write"]|| [(BMProcess *)self->_process hasNonEmptyArrayForEntitlement:@"com.apple.internal.biome.read-only"]);
   }
@@ -2305,25 +2305,25 @@ LABEL_37:
   return os_variant_allows_internal_security_policies();
 }
 
-+ (BOOL)process:(id)a3 canActOnBehalfOfProcess:(id)a4
++ (BOOL)process:(id)process canActOnBehalfOfProcess:(id)ofProcess
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 processType] != 4)
+  processCopy = process;
+  ofProcessCopy = ofProcess;
+  if ([processCopy processType] != 4)
   {
-    if ([v5 processType] != 5)
+    if ([processCopy processType] != 5)
     {
       goto LABEL_9;
     }
 
-    v9 = [v6 processType];
-    if ((v9 - 1) < 3 || v9 == 7)
+    processType = [ofProcessCopy processType];
+    if ((processType - 1) < 3 || processType == 7)
     {
       v8 = 1;
       goto LABEL_11;
     }
 
-    if (v9 != 8)
+    if (processType != 8)
     {
 LABEL_9:
       v8 = 0;
@@ -2333,15 +2333,15 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v7 = [v6 processType];
-  if (v7 == 8)
+  processType2 = [ofProcessCopy processType];
+  if (processType2 == 8)
   {
 LABEL_8:
     v8 = os_variant_allows_internal_security_policies();
     goto LABEL_11;
   }
 
-  v8 = v7 == 1;
+  v8 = processType2 == 1;
 LABEL_11:
 
   return v8;
@@ -2388,28 +2388,28 @@ void __61__BMAccessControlPolicy_SyncableSets__syncableSetIdentifiers__block_inv
   syncableSetIdentifiers_identifiers = v4;
 }
 
-- (BOOL)allowsAccessToSetStoreUpdateServiceForSet:(id)a3
+- (BOOL)allowsAccessToSetStoreUpdateServiceForSet:(id)set
 {
-  v4 = a3;
-  v5 = [(BMProcess *)self->_process identifier];
+  setCopy = set;
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     goto LABEL_4;
   }
 
-  v6 = [(BMProcess *)self->_process processType];
-  if (v6 > 8)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType > 8)
   {
     goto LABEL_10;
   }
 
-  if (((1 << v6) & 0x35) == 0)
+  if (((1 << processType) & 0x35) == 0)
   {
-    if (v6 == 3)
+    if (processType == 3)
     {
-      v9 = [objc_opt_class() syncableSetIdentifiers];
-      v10 = [v9 containsObject:v4];
+      syncableSetIdentifiers = [objc_opt_class() syncableSetIdentifiers];
+      v10 = [syncableSetIdentifiers containsObject:setCopy];
 
       if (v10)
       {
@@ -2418,7 +2418,7 @@ void __61__BMAccessControlPolicy_SyncableSets__syncableSetIdentifiers__block_inv
       }
     }
 
-    else if (v6 == 8)
+    else if (processType == 8)
     {
       v8 = os_variant_allows_internal_security_policies();
 LABEL_11:
@@ -2427,7 +2427,7 @@ LABEL_11:
     }
 
 LABEL_10:
-    v8 = [(BMAccessControlPolicy *)self allowsAccessToSet:v4 withMode:3];
+    v8 = [(BMAccessControlPolicy *)self allowsAccessToSet:setCopy withMode:3];
     goto LABEL_11;
   }
 
@@ -2438,50 +2438,50 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)allowsAccessToWriteServiceForStream:(id)a3 ofUser:(unsigned int)a4
+- (BOOL)allowsAccessToWriteServiceForStream:(id)stream ofUser:(unsigned int)user
 {
-  v5 = a3;
-  if ([v5 hasSuffix:@":subscriptions"] & 1) != 0 || (objc_msgSend(v5, "hasSuffix:", @":tombstones"))
+  streamCopy = stream;
+  if ([streamCopy hasSuffix:@":subscriptions"] & 1) != 0 || (objc_msgSend(streamCopy, "hasSuffix:", @":tombstones"))
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(identifier) = 0;
   }
 
   else
   {
-    v6 = [(BMProcess *)self->_process identifier];
+    identifier = [(BMProcess *)self->_process identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v8 = [(BMProcess *)self->_process processType];
-      LOBYTE(v6) = 0;
-      if (v8 - 2 >= 4)
+      processType = [(BMProcess *)self->_process processType];
+      LOBYTE(identifier) = 0;
+      if (processType - 2 >= 4)
       {
-        if (v8)
+        if (processType)
         {
-          if (v8 == 8)
+          if (processType == 8)
           {
-            LOBYTE(v6) = os_variant_allows_internal_security_policies();
+            LOBYTE(identifier) = os_variant_allows_internal_security_policies();
           }
 
           else
           {
             v9 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:1 withAccessMode:2];
-            LOBYTE(v6) = [v9 containsObject:v5];
+            LOBYTE(identifier) = [v9 containsObject:streamCopy];
           }
         }
       }
     }
   }
 
-  return v6;
+  return identifier;
 }
 
-- (BOOL)allowsAccessToBiomeAgentForUser:(unsigned int)a3
+- (BOOL)allowsAccessToBiomeAgentForUser:(unsigned int)user
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(BMProcess *)self->_process identifier];
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     goto LABEL_14;
   }
@@ -2503,7 +2503,7 @@ LABEL_15:
     return v9;
   }
 
-  if (a3 <= 0x1F4)
+  if (user <= 0x1F4)
   {
     v6 = __biome_log_for_category(6);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2514,13 +2514,13 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v7 = [(BMProcess *)self->_process processType];
-  if (v7 - 2 < 6 || v7 == 0)
+  processType = [(BMProcess *)self->_process processType];
+  if (processType - 2 < 6 || processType == 0)
   {
     goto LABEL_14;
   }
 
-  if (v7 != 8)
+  if (processType != 8)
   {
     v13 = objc_opt_new();
     v14 = [(BMAccessControlPolicy *)self explicitlyAuthorizedResourcesOfType:1 withAccessMode:2];
@@ -2573,44 +2573,44 @@ LABEL_30:
 
 - (BOOL)allowsAccessToProxyBiomeAgentEndpoint
 {
-  v3 = [(BMProcess *)self->_process identifier];
+  identifier = [(BMProcess *)self->_process identifier];
 
-  if (!v3 || [(BMProcess *)self->_process processType]!= 2 || ![(NSString *)self->_useCase isEqual:@"__proxy__"])
+  if (!identifier || [(BMProcess *)self->_process processType]!= 2 || ![(NSString *)self->_useCase isEqual:@"__proxy__"])
   {
     return 0;
   }
 
-  v4 = [(BMProcess *)self->_process identifier];
-  v5 = [v4 isEqual:@"com.apple.biomed"];
+  identifier2 = [(BMProcess *)self->_process identifier];
+  v5 = [identifier2 isEqual:@"com.apple.biomed"];
 
   return v5;
 }
 
-+ (BOOL)allowsConfiguringConnection:(id)a3 forUseCase:(id)a4 inDomain:(unint64_t)a5 error:(id *)a6
++ (BOOL)allowsConfiguringConnection:(id)connection forUseCase:(id)case inDomain:(unint64_t)domain error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (BMIdentifierIsPathSafe(v9))
+  connectionCopy = connection;
+  caseCopy = case;
+  if (BMIdentifierIsPathSafe(caseCopy))
   {
-    v10 = [v8 bm_process];
-    v11 = [v8 bm_accessControlPolicy];
-    v12 = [v11 useCase];
-    if (v12)
+    bm_process = [connectionCopy bm_process];
+    bm_accessControlPolicy = [connectionCopy bm_accessControlPolicy];
+    useCase = [bm_accessControlPolicy useCase];
+    if (useCase)
     {
-      v13 = v12;
-      v14 = [v11 useCase];
-      v15 = [v14 isEqual:v9];
+      v13 = useCase;
+      useCase2 = [bm_accessControlPolicy useCase];
+      v15 = [useCase2 isEqual:caseCopy];
 
       if ((v15 & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
           v20 = MEMORY[0x1E696ABC0];
           v50 = *MEMORY[0x1E696A578];
           v51 = @"Use case already set";
-          v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-          *a6 = [v20 errorWithDomain:@"BMAccessErrorDomain" code:5 userInfo:v21];
+          executableName = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
+          *error = [v20 errorWithDomain:@"BMAccessErrorDomain" code:5 userInfo:executableName];
 LABEL_22:
 
           goto LABEL_23;
@@ -2620,10 +2620,10 @@ LABEL_22:
       }
     }
 
-    if (([v9 hasPrefix:@"__"] & 1) == 0)
+    if (([caseCopy hasPrefix:@"__"] & 1) == 0)
     {
-      v16 = [v10 useCases];
-      v17 = [v16 containsObject:v9];
+      useCases = [bm_process useCases];
+      v17 = [useCases containsObject:caseCopy];
 
       if (v17)
       {
@@ -2631,33 +2631,33 @@ LABEL_22:
       }
     }
 
-    if ([BMAnyClientUseCaseAllowList containsObject:v9])
+    if ([BMAnyClientUseCaseAllowList containsObject:caseCopy])
     {
       goto LABEL_7;
     }
 
-    v22 = [v9 isEqual:@"__proxy__"];
-    v23 = [v10 processType];
+    v22 = [caseCopy isEqual:@"__proxy__"];
+    processType = [bm_process processType];
     if (v22)
     {
-      if (v23 != 2 || ([v10 identifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isEqual:", @"com.apple.biomed"), v24, (v25 & 1) == 0))
+      if (processType != 2 || ([bm_process identifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isEqual:", @"com.apple.biomed"), v24, (v25 & 1) == 0))
       {
-        if ([v10 processType] != 1 || (objc_msgSend(v10, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(&unk_1F20EBE60, "containsObject:", v26), v26, (v27 & 1) == 0))
+        if ([bm_process processType] != 1 || (objc_msgSend(bm_process, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(&unk_1F20EBE60, "containsObject:", v26), v26, (v27 & 1) == 0))
         {
-          if (a6)
+          if (error)
           {
             v28 = MEMORY[0x1E696ABC0];
             v48 = *MEMORY[0x1E696A578];
             v29 = MEMORY[0x1E696AEC0];
-            v21 = [v10 executableName];
-            v30 = [v29 stringWithFormat:@"Process '%@' not authorized for use-case '%@'", v21, v9];
-            v49 = v30;
+            executableName = [bm_process executableName];
+            caseCopy = [v29 stringWithFormat:@"Process '%@' not authorized for use-case '%@'", executableName, caseCopy];
+            v49 = caseCopy;
             v31 = MEMORY[0x1E695DF20];
             v32 = &v49;
             v33 = &v48;
 LABEL_20:
             v34 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:1];
-            *a6 = [v28 errorWithDomain:@"BMAccessErrorDomain" code:4 userInfo:v34];
+            *error = [v28 errorWithDomain:@"BMAccessErrorDomain" code:4 userInfo:v34];
 
 LABEL_21:
             goto LABEL_22;
@@ -2676,18 +2676,18 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if ((v23 == 2 || [v10 processType] == 7) && (objc_msgSend(BMBiomeDaemonUseCaseAllowList, "containsObject:", v9) & 1) != 0 || objc_msgSend(v10, "processType") == 2 || objc_msgSend(v10, "processType") == 3)
+    if ((processType == 2 || [bm_process processType] == 7) && (objc_msgSend(BMBiomeDaemonUseCaseAllowList, "containsObject:", caseCopy) & 1) != 0 || objc_msgSend(bm_process, "processType") == 2 || objc_msgSend(bm_process, "processType") == 3)
     {
       goto LABEL_7;
     }
 
-    if ([v9 isEqual:@"__internal__"])
+    if ([caseCopy isEqual:@"__internal__"])
     {
       if (os_variant_allows_internal_security_policies())
       {
-        if ([v10 processType] != 8)
+        if ([bm_process processType] != 8)
         {
-          if (!a6)
+          if (!error)
           {
             goto LABEL_23;
           }
@@ -2695,9 +2695,9 @@ LABEL_24:
           v28 = MEMORY[0x1E696ABC0];
           v44 = *MEMORY[0x1E696A578];
           v37 = MEMORY[0x1E696AEC0];
-          v21 = [v10 executableName];
-          v30 = [v37 stringWithFormat:@"Process '%@' not authorized for use-case '%@'", v21, v9];
-          v45 = v30;
+          executableName = [bm_process executableName];
+          caseCopy = [v37 stringWithFormat:@"Process '%@' not authorized for use-case '%@'", executableName, caseCopy];
+          v45 = caseCopy;
           v31 = MEMORY[0x1E695DF20];
           v32 = &v45;
           v33 = &v44;
@@ -2707,49 +2707,49 @@ LABEL_24:
         goto LABEL_7;
       }
 
-      if (!a6)
+      if (!error)
       {
         goto LABEL_23;
       }
 
       v41 = MEMORY[0x1E696ABC0];
       v46 = *MEMORY[0x1E696A578];
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Use-case '%@' not authorized", v9];
-      v47 = v21;
-      v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
+      executableName = [MEMORY[0x1E696AEC0] stringWithFormat:@"Use-case '%@' not authorized", caseCopy];
+      v47 = executableName;
+      caseCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
       v39 = v41;
       v40 = 4;
     }
 
     else
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_23;
       }
 
       v38 = MEMORY[0x1E696ABC0];
       v42 = *MEMORY[0x1E696A578];
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Use case '%@' not found", v9];
-      v43 = v21;
-      v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
+      executableName = [MEMORY[0x1E696AEC0] stringWithFormat:@"Use case '%@' not found", caseCopy];
+      v43 = executableName;
+      caseCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v39 = v38;
       v40 = 3;
     }
 
-    *a6 = [v39 errorWithDomain:@"BMAccessErrorDomain" code:v40 userInfo:v30];
+    *error = [v39 errorWithDomain:@"BMAccessErrorDomain" code:v40 userInfo:caseCopy];
     goto LABEL_21;
   }
 
-  if (a6)
+  if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
     v52 = *MEMORY[0x1E696A578];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid use case '%@'", v9];
-    v53[0] = v10;
-    v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
-    [v19 errorWithDomain:@"BMAccessErrorDomain" code:2 userInfo:v11];
-    *a6 = v18 = 0;
+    bm_process = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid use case '%@'", caseCopy];
+    v53[0] = bm_process;
+    bm_accessControlPolicy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
+    [v19 errorWithDomain:@"BMAccessErrorDomain" code:2 userInfo:bm_accessControlPolicy];
+    *error = v18 = 0;
     goto LABEL_24;
   }
 
@@ -2762,9 +2762,9 @@ LABEL_25:
 
 + (void)library
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"id<_BMRootLibrary> __softlink__BiomeLibraryAndInternalLibraryNode(void)"];
-  [v0 handleFailureInFunction:v1 file:@"BMAccessControlPolicy.m" lineNumber:42 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"BMAccessControlPolicy.m" lineNumber:42 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

@@ -1,42 +1,42 @@
 @interface MFCaptionLabel
 + (EFLazyCache)attributedStringsCache;
-- (MFCaptionLabel)initWithFrame:(CGRect)a3;
+- (MFCaptionLabel)initWithFrame:(CGRect)frame;
 - (MFCaptionLabelDataSource)dataSource;
 - (double)_maxWidthForRecipientList;
-- (id)_attributedStringForImage:(id)a3;
+- (id)_attributedStringForImage:(id)image;
 - (id)_chevronAttributedString;
 - (id)_chevronImage;
-- (id)_concatenateStringForRecipientList:(id)a3 recipientCount:(unint64_t)a4 prefixGenerationBlock:(id)a5 listSuffix:(id)a6;
+- (id)_concatenateStringForRecipientList:(id)list recipientCount:(unint64_t)count prefixGenerationBlock:(id)block listSuffix:(id)suffix;
 - (id)_formattedAttributedString;
 - (id)_formattedReplyToString;
 - (id)_questionMarkAttributedString;
 - (id)_questionMarkImage;
-- (id)_stringAtIndexForCombinedRecipientLists:(unint64_t)a3;
-- (id)_whitespaceStringWithWidth:(double)a3;
+- (id)_stringAtIndexForCombinedRecipientLists:(unint64_t)lists;
+- (id)_whitespaceStringWithWidth:(double)width;
 - (id)_whitespaceTextAttachment;
 - (id)lengthValidationBlock;
 - (void)_setNeedsLabelUpdate;
 - (void)layoutSubviews;
-- (void)setBccRecipients:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCcRecipients:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setFromSenders:(id)a3;
-- (void)setHasDifferentReplyToAddress:(BOOL)a3;
-- (void)setOtherSigners:(id)a3;
-- (void)setPreventAutoUpdatingLabel:(BOOL)a3;
-- (void)setReplyToSenders:(id)a3;
-- (void)setToRecipients:(id)a3;
+- (void)setBccRecipients:(id)recipients;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCcRecipients:(id)recipients;
+- (void)setFrame:(CGRect)frame;
+- (void)setFromSenders:(id)senders;
+- (void)setHasDifferentReplyToAddress:(BOOL)address;
+- (void)setOtherSigners:(id)signers;
+- (void)setPreventAutoUpdatingLabel:(BOOL)label;
+- (void)setReplyToSenders:(id)senders;
+- (void)setToRecipients:(id)recipients;
 - (void)updateLabelNow;
 @end
 
 @implementation MFCaptionLabel
 
-- (MFCaptionLabel)initWithFrame:(CGRect)a3
+- (MFCaptionLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFCaptionLabel;
-  v3 = [(MFCaptionLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFCaptionLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -66,94 +66,94 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   attributedStringsCache_sAttributedStringsCache = v0;
 }
 
-- (void)setToRecipients:(id)a3
+- (void)setToRecipients:(id)recipients
 {
-  v5 = a3;
-  if (self->_toRecipients != v5)
+  recipientsCopy = recipients;
+  if (self->_toRecipients != recipientsCopy)
   {
-    objc_storeStrong(&self->_toRecipients, a3);
+    objc_storeStrong(&self->_toRecipients, recipients);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setCcRecipients:(id)a3
+- (void)setCcRecipients:(id)recipients
 {
-  v5 = a3;
-  if (self->_ccRecipients != v5)
+  recipientsCopy = recipients;
+  if (self->_ccRecipients != recipientsCopy)
   {
-    objc_storeStrong(&self->_ccRecipients, a3);
+    objc_storeStrong(&self->_ccRecipients, recipients);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setBccRecipients:(id)a3
+- (void)setBccRecipients:(id)recipients
 {
-  v5 = a3;
-  if (self->_bccRecipients != v5)
+  recipientsCopy = recipients;
+  if (self->_bccRecipients != recipientsCopy)
   {
-    objc_storeStrong(&self->_bccRecipients, a3);
+    objc_storeStrong(&self->_bccRecipients, recipients);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setFromSenders:(id)a3
+- (void)setFromSenders:(id)senders
 {
-  v5 = a3;
-  if (self->_fromSenders != v5)
+  sendersCopy = senders;
+  if (self->_fromSenders != sendersCopy)
   {
-    objc_storeStrong(&self->_fromSenders, a3);
+    objc_storeStrong(&self->_fromSenders, senders);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setOtherSigners:(id)a3
+- (void)setOtherSigners:(id)signers
 {
-  v5 = a3;
-  if (self->_otherSigners != v5)
+  signersCopy = signers;
+  if (self->_otherSigners != signersCopy)
   {
-    objc_storeStrong(&self->_otherSigners, a3);
+    objc_storeStrong(&self->_otherSigners, signers);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setReplyToSenders:(id)a3
+- (void)setReplyToSenders:(id)senders
 {
-  v5 = a3;
-  if (self->_replyToSenders != v5)
+  sendersCopy = senders;
+  if (self->_replyToSenders != sendersCopy)
   {
-    objc_storeStrong(&self->_replyToSenders, a3);
+    objc_storeStrong(&self->_replyToSenders, senders);
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setHasDifferentReplyToAddress:(BOOL)a3
+- (void)setHasDifferentReplyToAddress:(BOOL)address
 {
-  if (self->_hasDifferentReplyToAddress != a3)
+  if (self->_hasDifferentReplyToAddress != address)
   {
-    self->_hasDifferentReplyToAddress = a3;
+    self->_hasDifferentReplyToAddress = address;
     [(MFCaptionLabel *)self _setNeedsLabelUpdate];
   }
 }
 
-- (void)setPreventAutoUpdatingLabel:(BOOL)a3
+- (void)setPreventAutoUpdatingLabel:(BOOL)label
 {
-  if (self->_preventAutoUpdatingLabel != a3)
+  if (self->_preventAutoUpdatingLabel != label)
   {
-    self->_preventAutoUpdatingLabel = a3;
-    if (!a3)
+    self->_preventAutoUpdatingLabel = label;
+    if (!label)
     {
       [(MFCaptionLabel *)self _setNeedsLabelUpdate];
     }
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
   [(MFCaptionLabel *)self bounds];
   v9 = v8 - CGRectGetWidth(v11);
   if (v9 < 0.0)
@@ -171,13 +171,13 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   [(MFCaptionLabel *)&v10 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = CGRectGetWidth(frame);
   [(MFCaptionLabel *)self frame];
   v9 = v8 - CGRectGetWidth(v11);
   if (v9 < 0.0)
@@ -216,7 +216,7 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   }
 }
 
-- (id)_stringAtIndexForCombinedRecipientLists:(unint64_t)a3
+- (id)_stringAtIndexForCombinedRecipientLists:(unint64_t)lists
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = self->_toRecipients;
@@ -226,9 +226,9 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   v15 = self->_otherSigners;
   v5 = v11;
   v6 = 0;
-  while (a3 >= [(NSArray *)v5 count:v11])
+  while (lists >= [(NSArray *)v5 count:v11])
   {
-    a3 -= [(NSArray *)v5 count];
+    lists -= [(NSArray *)v5 count];
     if (++v6 <= 4)
     {
       v7 = (&v11)[v6];
@@ -237,14 +237,14 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
     }
   }
 
-  if (a3 >= [(NSArray *)v5 count])
+  if (lists >= [(NSArray *)v5 count])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(NSArray *)v5 objectAtIndexedSubscript:a3];
+    v8 = [(NSArray *)v5 objectAtIndexedSubscript:lists];
   }
 
   for (i = 4; i != -1; --i)
@@ -271,8 +271,8 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
 {
   if (pthread_main_np() != 1)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"MFCaptionLabel.m" lineNumber:188 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFCaptionLabel.m" lineNumber:188 description:@"Current thread must be main"];
   }
 
   v4 = MEMORY[0x1E696AEC0];
@@ -285,13 +285,13 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   v10 = [(NSArray *)self->_otherSigners componentsJoinedByString:@", "];
   v11 = [v4 stringWithFormat:@"%fTo:%@Cc:%@Bcc:%@From:%@Other:%@", *&Width, v6, v7, v8, v9, v10];
 
-  v12 = [objc_opt_class() attributedStringsCache];
+  attributedStringsCache = [objc_opt_class() attributedStringsCache];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __32__MFCaptionLabel_updateLabelNow__block_invoke;
   v26[3] = &unk_1E806CB78;
   v26[4] = self;
-  v13 = [v12 objectForKey:v11 generator:v26];
+  v13 = [attributedStringsCache objectForKey:v11 generator:v26];
 
   if (v13)
   {
@@ -300,33 +300,33 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
     v15 = [(MFCaptionLabel *)self _whitespaceStringWithWidth:4.0];
     [v14 appendAttributedString:v15];
 
-    v16 = [(MFCaptionLabel *)self _chevronAttributedString];
-    [v14 appendAttributedString:v16];
+    _chevronAttributedString = [(MFCaptionLabel *)self _chevronAttributedString];
+    [v14 appendAttributedString:_chevronAttributedString];
 
     if ([(NSArray *)self->_replyToSenders count])
     {
       v17 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:@"\n"];
       [v14 appendAttributedString:v17];
 
-      v18 = [(MFCaptionLabel *)self _formattedReplyToString];
-      [v14 appendAttributedString:v18];
+      _formattedReplyToString = [(MFCaptionLabel *)self _formattedReplyToString];
+      [v14 appendAttributedString:_formattedReplyToString];
 
       if ([(MFCaptionLabel *)self hasDifferentReplyToAddress])
       {
         v19 = MEMORY[0x1E696AAB0];
-        v20 = [(MFCaptionLabel *)self _whitespaceTextAttachment];
-        v21 = [v19 attributedStringWithAttachment:v20];
+        _whitespaceTextAttachment = [(MFCaptionLabel *)self _whitespaceTextAttachment];
+        v21 = [v19 attributedStringWithAttachment:_whitespaceTextAttachment];
         [v14 appendAttributedString:v21];
 
-        v22 = [(MFCaptionLabel *)self _questionMarkAttributedString];
-        [v14 appendAttributedString:v22];
+        _questionMarkAttributedString = [(MFCaptionLabel *)self _questionMarkAttributedString];
+        [v14 appendAttributedString:_questionMarkAttributedString];
       }
 
       v23 = [(MFCaptionLabel *)self _whitespaceStringWithWidth:4.0];
       [v14 appendAttributedString:v23];
 
-      v24 = [(MFCaptionLabel *)self _chevronAttributedString];
-      [v14 appendAttributedString:v24];
+      _chevronAttributedString2 = [(MFCaptionLabel *)self _chevronAttributedString];
+      [v14 appendAttributedString:_chevronAttributedString2];
     }
 
     [(MFCaptionLabel *)self setAttributedText:v14];
@@ -340,16 +340,16 @@ void __40__MFCaptionLabel_attributedStringsCache__block_invoke()
   self->_needsLabelUpdate = 0;
 }
 
-- (id)_attributedStringForImage:(id)a3
+- (id)_attributedStringForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-  [v5 setImage:v4];
-  [v4 size];
+  [v5 setImage:imageCopy];
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  v10 = [(MFCaptionLabel *)self font];
-  [v10 capHeight];
+  font = [(MFCaptionLabel *)self font];
+  [font capHeight];
 
   UIRoundToViewScale();
   [v5 setBounds:{0.0, v11, v7, v9}];
@@ -377,8 +377,8 @@ id __31__MFCaptionLabel__chevronImage__block_invoke()
 
 - (id)_chevronAttributedString
 {
-  v3 = [(MFCaptionLabel *)self _chevronImage];
-  v4 = [(MFCaptionLabel *)self _attributedStringForImage:v3];
+  _chevronImage = [(MFCaptionLabel *)self _chevronImage];
+  v4 = [(MFCaptionLabel *)self _attributedStringForImage:_chevronImage];
 
   return v4;
 }
@@ -402,16 +402,16 @@ id __36__MFCaptionLabel__questionMarkImage__block_invoke()
 
 - (id)_questionMarkAttributedString
 {
-  v3 = [(MFCaptionLabel *)self _questionMarkImage];
-  v4 = [(MFCaptionLabel *)self _attributedStringForImage:v3];
+  _questionMarkImage = [(MFCaptionLabel *)self _questionMarkImage];
+  v4 = [(MFCaptionLabel *)self _attributedStringForImage:_questionMarkImage];
 
   return v4;
 }
 
-- (id)_whitespaceStringWithWidth:(double)a3
+- (id)_whitespaceStringWithWidth:(double)width
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-  [v4 setBounds:{0.0, 0.0, a3, 0.0}];
+  [v4 setBounds:{0.0, 0.0, width, 0.0}];
   v5 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v4];
 
   return v5;
@@ -419,18 +419,18 @@ id __36__MFCaptionLabel__questionMarkImage__block_invoke()
 
 - (double)_maxWidthForRecipientList
 {
-  v3 = [(MFCaptionLabel *)self _chevronImage];
+  _chevronImage = [(MFCaptionLabel *)self _chevronImage];
   [(MFCaptionLabel *)self bounds];
   Width = CGRectGetWidth(v13);
-  [v3 size];
+  [_chevronImage size];
   v6 = Width - v5 + -4.0;
   if ([(MFCaptionLabel *)self hasDifferentReplyToAddress])
   {
-    v7 = [(MFCaptionLabel *)self _questionMarkImage];
-    [v7 size];
+    _questionMarkImage = [(MFCaptionLabel *)self _questionMarkImage];
+    [_questionMarkImage size];
     v9 = v8;
-    v10 = [(MFCaptionLabel *)self _whitespaceTextAttachment];
-    [v10 bounds];
+    _whitespaceTextAttachment = [(MFCaptionLabel *)self _whitespaceTextAttachment];
+    [_whitespaceTextAttachment bounds];
     v6 = v6 - v9 - v11;
   }
 
@@ -478,60 +478,60 @@ BOOL __39__MFCaptionLabel_lengthValidationBlock__block_invoke(uint64_t a1, void 
   return v14;
 }
 
-- (id)_concatenateStringForRecipientList:(id)a3 recipientCount:(unint64_t)a4 prefixGenerationBlock:(id)a5 listSuffix:(id)a6
+- (id)_concatenateStringForRecipientList:(id)list recipientCount:(unint64_t)count prefixGenerationBlock:(id)block listSuffix:(id)suffix
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 length])
+  listCopy = list;
+  blockCopy = block;
+  suffixCopy = suffix;
+  if ([listCopy length])
   {
-    if (v11)
+    if (suffixCopy)
     {
-      v12 = [v9 stringByAppendingString:v11];
+      v12 = [listCopy stringByAppendingString:suffixCopy];
 
-      v9 = v12;
+      listCopy = v12;
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9];
-    if (a4)
+    v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:listCopy];
+    if (count)
     {
-      v30 = v11;
+      v30 = suffixCopy;
       v14 = 0;
       v15 = *MEMORY[0x1E69DB650];
       do
       {
-        v16 = v10[2](v10, v14);
+        v16 = blockCopy[2](blockCopy, v14);
         if ([v16 length])
         {
-          v17 = [v13 string];
-          v18 = [v17 rangeOfString:v16];
+          string = [v13 string];
+          v18 = [string rangeOfString:v16];
           v20 = v19;
 
           if (v18 != 0x7FFFFFFFFFFFFFFFLL)
           {
             if (v14)
             {
-              v21 = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
-              [v13 addAttribute:v15 value:v21 range:{v18, v20}];
+              mailModernLabelledAtomDefaultTextColor = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
+              [v13 addAttribute:v15 value:mailModernLabelledAtomDefaultTextColor range:{v18, v20}];
             }
 
             else
             {
               [v13 deleteCharactersInRange:{v18, v20}];
-              v22 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-              v23 = [v16 stringByTrimmingCharactersInSet:v22];
+              whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              v23 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-              v21 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v23];
+              mailModernLabelledAtomDefaultTextColor = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v23];
               v24 = MEMORY[0x1E696AAB0];
-              v25 = [(MFCaptionLabel *)self _whitespaceTextAttachment];
-              v26 = [v24 attributedStringWithAttachment:v25];
-              [v21 insertAttributedString:v26 atIndex:{objc_msgSend(v21, "length")}];
+              _whitespaceTextAttachment = [(MFCaptionLabel *)self _whitespaceTextAttachment];
+              v26 = [v24 attributedStringWithAttachment:_whitespaceTextAttachment];
+              [mailModernLabelledAtomDefaultTextColor insertAttributedString:v26 atIndex:{objc_msgSend(mailModernLabelledAtomDefaultTextColor, "length")}];
 
-              v27 = [v21 length];
-              v28 = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
-              [v21 addAttribute:v15 value:v28 range:{0, v27}];
+              v27 = [mailModernLabelledAtomDefaultTextColor length];
+              mailModernLabelledAtomDefaultTextColor2 = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
+              [mailModernLabelledAtomDefaultTextColor addAttribute:v15 value:mailModernLabelledAtomDefaultTextColor2 range:{0, v27}];
 
-              [v13 insertAttributedString:v21 atIndex:0];
+              [v13 insertAttributedString:mailModernLabelledAtomDefaultTextColor atIndex:0];
               v16 = v23;
             }
           }
@@ -540,8 +540,8 @@ BOOL __39__MFCaptionLabel_lengthValidationBlock__block_invoke(uint64_t a1, void 
         ++v14;
       }
 
-      while (a4 != v14);
-      v11 = v30;
+      while (count != v14);
+      suffixCopy = v30;
     }
   }
 
@@ -566,8 +566,8 @@ BOOL __39__MFCaptionLabel_lengthValidationBlock__block_invoke(uint64_t a1, void 
   v5 = +[MFAddressConcatenator defaultRecipientListConcatenator];
   v11 = 0;
   v12 = 0;
-  v6 = [(MFCaptionLabel *)self lengthValidationBlock];
-  [v5 getCommaSeparatedAddressList:&v12 andListSuffix:&v11 withAddressCount:v3 prefixForAddressAtIndex:&__block_literal_global_58 stringForAddressAtIndex:v4 lengthValidationBlock:v6];
+  lengthValidationBlock = [(MFCaptionLabel *)self lengthValidationBlock];
+  [v5 getCommaSeparatedAddressList:&v12 andListSuffix:&v11 withAddressCount:v3 prefixForAddressAtIndex:&__block_literal_global_58 stringForAddressAtIndex:v4 lengthValidationBlock:lengthValidationBlock];
   v7 = v12;
   v8 = v11;
 
@@ -623,13 +623,13 @@ id __41__MFCaptionLabel__formattedReplyToString__block_invoke_2(uint64_t a1, uin
   v5 = [(NSArray *)self->_bccRecipients count];
   v6 = v4 + v5 + [(NSArray *)self->_fromSenders count];
   v7 = v6 + [(NSArray *)self->_otherSigners count];
-  v8 = [MEMORY[0x1E695DF58] ef_directionalMarkForCurrentLocale];
+  ef_directionalMarkForCurrentLocale = [MEMORY[0x1E695DF58] ef_directionalMarkForCurrentLocale];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__MFCaptionLabel__formattedAttributedString__block_invoke;
   aBlock[3] = &unk_1E806CC30;
   aBlock[4] = self;
-  v9 = v8;
+  v9 = ef_directionalMarkForCurrentLocale;
   v23 = v9;
   v10 = _Block_copy(aBlock);
   v20[0] = MEMORY[0x1E69E9820];
@@ -642,8 +642,8 @@ id __41__MFCaptionLabel__formattedReplyToString__block_invoke_2(uint64_t a1, uin
   v12 = +[MFAddressConcatenator defaultRecipientListConcatenator];
   v18 = 0;
   v19 = 0;
-  v13 = [(MFCaptionLabel *)self lengthValidationBlock];
-  [v12 getCommaSeparatedAddressList:&v19 andListSuffix:&v18 withAddressCount:v7 prefixForAddressAtIndex:v10 stringForAddressAtIndex:v11 lengthValidationBlock:v13];
+  lengthValidationBlock = [(MFCaptionLabel *)self lengthValidationBlock];
+  [v12 getCommaSeparatedAddressList:&v19 andListSuffix:&v18 withAddressCount:v7 prefixForAddressAtIndex:v10 stringForAddressAtIndex:v11 lengthValidationBlock:lengthValidationBlock];
   v14 = v19;
   v15 = v18;
 

@@ -1,24 +1,24 @@
 @interface CTXPCServerSensitiveObjectClassifier
-- (void)classifyObject:(id)a3;
+- (void)classifyObject:(id)object;
 @end
 
 @implementation CTXPCServerSensitiveObjectClassifier
 
-- (void)classifyObject:(id)a3
+- (void)classifyObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
-    v5 = v7;
+    v4 = objectCopy;
+    v5 = objectCopy;
     v6 = v4;
   }
 
   else
   {
     v6 = 0;
-    v5 = v7;
+    v5 = objectCopy;
   }
 
   if ([objc_opt_class() isSensitiveMessage])

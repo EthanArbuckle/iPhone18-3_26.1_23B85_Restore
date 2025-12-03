@@ -1,28 +1,28 @@
 @interface HDQuantityAggregationResult
-- (HDQuantityAggregationResult)initWithAggregatedSamples:(id)a3 consumedData:(id)a4 remainingData:(id)a5;
+- (HDQuantityAggregationResult)initWithAggregatedSamples:(id)samples consumedData:(id)data remainingData:(id)remainingData;
 @end
 
 @implementation HDQuantityAggregationResult
 
-- (HDQuantityAggregationResult)initWithAggregatedSamples:(id)a3 consumedData:(id)a4 remainingData:(id)a5
+- (HDQuantityAggregationResult)initWithAggregatedSamples:(id)samples consumedData:(id)data remainingData:(id)remainingData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  samplesCopy = samples;
+  dataCopy = data;
+  remainingDataCopy = remainingData;
   v17.receiver = self;
   v17.super_class = HDQuantityAggregationResult;
   v11 = [(HDQuantityAggregationResult *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [samplesCopy copy];
     aggregatedSamples = v11->_aggregatedSamples;
     v11->_aggregatedSamples = v12;
 
-    v14 = [v9 copy];
+    v14 = [dataCopy copy];
     consumedSensorData = v11->_consumedSensorData;
     v11->_consumedSensorData = v14;
 
-    objc_storeStrong(&v11->_remainingSensorData, a5);
+    objc_storeStrong(&v11->_remainingSensorData, remainingData);
   }
 
   return v11;

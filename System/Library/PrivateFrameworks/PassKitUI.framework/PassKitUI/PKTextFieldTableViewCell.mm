@@ -1,17 +1,17 @@
 @interface PKTextFieldTableViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTextFieldTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTextFieldTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation PKTextFieldTableViewCell
 
-- (PKTextFieldTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTextFieldTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = PKTextFieldTableViewCell;
-  v4 = [(PKTextFieldTableViewCell *)&v10 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(PKTextFieldTableViewCell *)&v10 initWithStyle:1 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD0B0]);
@@ -20,17 +20,17 @@
     v4->_textField = v6;
 
     [(UITextField *)v4->_textField setAdjustsFontSizeToFitWidth:1];
-    v8 = [(PKTextFieldTableViewCell *)v4 contentView];
-    [v8 addSubview:v4->_textField];
+    contentView = [(PKTextFieldTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textField];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKTextFieldTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKTextFieldTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -42,8 +42,8 @@
   v12.receiver = self;
   v12.super_class = PKTextFieldTableViewCell;
   [(PKTextFieldTableViewCell *)&v12 layoutSubviews];
-  v3 = [(PKTextFieldTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKTextFieldTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -52,12 +52,12 @@
   [(PKTextFieldTableViewCell *)self _layoutWithBounds:v5, v7, v9, v11];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKTextFieldTableViewCell *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMaxXEdge;
@@ -77,8 +77,8 @@
   remainder.size.width = width - (v13 + v15);
   remainder.size.height = height - (v9 + v11);
   memset(&slice, 0, sizeof(slice));
-  v16 = [(PKTextFieldTableViewCell *)self textLabel];
-  [v16 pkui_sizeThatFits:{remainder.size.width, remainder.size.height}];
+  textLabel = [(PKTextFieldTableViewCell *)self textLabel];
+  [textLabel pkui_sizeThatFits:{remainder.size.width, remainder.size.height}];
   v18 = v17;
   v25 = v19;
   v30.origin.x = v14;
@@ -88,7 +88,7 @@
   CGRectDivide(v30, &slice, &remainder, v18, v8);
   if (!self->_isTemplateLayout)
   {
-    [v16 setFrame:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
+    [textLabel setFrame:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
   }
 
   if (v18 > 0.0)

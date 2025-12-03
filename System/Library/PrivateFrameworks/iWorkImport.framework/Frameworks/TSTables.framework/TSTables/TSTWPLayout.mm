@@ -3,7 +3,7 @@
 - (BOOL)isDynamicallyChangingAvailableSpaceForContainedChild;
 - (CGRect)cachedAutosizedFrame;
 - (CGRect)cachedMaskRect;
-- (TSTWPLayout)initWithStorage:(id)a3 cellID:(TSUCellCoord)a4 frame:(CGRect)a5;
+- (TSTWPLayout)initWithStorage:(id)storage cellID:(TSUCellCoord)d frame:(CGRect)frame;
 - (TSUCellRect)cachedMaskSpillRange;
 - (TSUCellRect)cachedMergeRange;
 - (void)invalidate;
@@ -14,15 +14,15 @@
 
 @implementation TSTWPLayout
 
-- (TSTWPLayout)initWithStorage:(id)a3 cellID:(TSUCellCoord)a4 frame:(CGRect)a5
+- (TSTWPLayout)initWithStorage:(id)storage cellID:(TSUCellCoord)d frame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = TSTWPLayout;
-  v6 = [(TSTWPLayout *)&v15 initWithInfo:a3 frame:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v6 = [(TSTWPLayout *)&v15 initWithInfo:storage frame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
-    *(v6 + 348) = a4;
+    *(v6 + 348) = d;
     v6[336] = 0;
     *(v6 + 85) = 0;
     *(v6 + 86) = 0;
@@ -179,14 +179,14 @@
 {
   v14.receiver = self;
   v14.super_class = TSTWPLayout;
-  v7 = [(TSTWPLayout *)&v14 invalidateForPageCountChange];
-  if (v7)
+  invalidateForPageCountChange = [(TSTWPLayout *)&v14 invalidateForPageCountChange];
+  if (invalidateForPageCountChange)
   {
     v8 = objc_msgSend_parent(self, v3, v4, v5, v6);
     objc_msgSend_invalidate(v8, v9, v10, v11, v12);
   }
 
-  return v7;
+  return invalidateForPageCountChange;
 }
 
 - (BOOL)isDynamicallyChangingAvailableSpaceForContainedChild

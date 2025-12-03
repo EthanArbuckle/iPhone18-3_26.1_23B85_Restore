@@ -1,13 +1,13 @@
 @interface INHomeUserTask
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INHomeUserTask)initWithCoder:(id)a3;
-- (INHomeUserTask)initWithTaskType:(int64_t)a3 attribute:(int64_t)a4 value:(id)a5;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INHomeUserTask)initWithCoder:(id)coder;
+- (INHomeUserTask)initWithTaskType:(int64_t)type attribute:(int64_t)attribute value:(id)value;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INHomeUserTask
@@ -23,13 +23,13 @@
   v11[1] = v4;
   v10[2] = @"value";
   value = self->_value;
-  v6 = value;
+  null = value;
   if (!value)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[2] = v6;
+  v11[2] = null;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
   if (!value)
   {
@@ -40,24 +40,24 @@
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INHomeUserTask;
   v6 = [(INHomeUserTask *)&v11 description];
-  v7 = [(INHomeUserTask *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INHomeUserTask *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   v8 = self->_taskType - 1;
   if (v8 > 5)
   {
@@ -70,7 +70,7 @@
   }
 
   v10 = v9;
-  [v7 if_setObjectIfNonNil:v10 forKey:@"taskType"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"taskType"];
 
   v11 = self->_attribute - 1;
   if (v11 > 0x41)
@@ -84,39 +84,39 @@
   }
 
   v13 = v12;
-  [v7 if_setObjectIfNonNil:v13 forKey:@"attribute"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"attribute"];
 
-  v14 = [v6 encodeObject:self->_value];
+  v14 = [encoderCopy encodeObject:self->_value];
 
-  [v7 if_setObjectIfNonNil:v14 forKey:@"value"];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"value"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   taskType = self->_taskType;
-  v5 = a3;
-  [v5 encodeInteger:taskType forKey:@"taskType"];
-  [v5 encodeInteger:self->_attribute forKey:@"attribute"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:taskType forKey:@"taskType"];
+  [coderCopy encodeInteger:self->_attribute forKey:@"attribute"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (INHomeUserTask)initWithCoder:(id)a3
+- (INHomeUserTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"taskType"];
-  v6 = [v4 decodeIntegerForKey:@"attribute"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"taskType"];
+  v6 = [coderCopy decodeIntegerForKey:@"attribute"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
 
   v8 = [(INHomeUserTask *)self initWithTaskType:v5 attribute:v6 value:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -126,7 +126,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v8 = 0;
       if (self->_taskType == v5->_taskType && self->_attribute == v5->_attribute)
@@ -159,18 +159,18 @@
   return v6 ^ v7;
 }
 
-- (INHomeUserTask)initWithTaskType:(int64_t)a3 attribute:(int64_t)a4 value:(id)a5
+- (INHomeUserTask)initWithTaskType:(int64_t)type attribute:(int64_t)attribute value:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = INHomeUserTask;
   v9 = [(INHomeUserTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_taskType = a3;
-    v9->_attribute = a4;
-    v11 = [v8 copy];
+    v9->_taskType = type;
+    v9->_attribute = attribute;
+    v11 = [valueCopy copy];
     value = v10->_value;
     v10->_value = v11;
   }
@@ -178,24 +178,24 @@
   return v10;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"taskType"];
+    v9 = [fromCopy objectForKeyedSubscript:@"taskType"];
     v10 = INHomeUserTaskTypeWithString(v9);
 
-    v11 = [v8 objectForKeyedSubscript:@"attribute"];
+    v11 = [fromCopy objectForKeyedSubscript:@"attribute"];
     v12 = INHomeAttributeTypeWithString(v11);
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"value"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"value"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [[a1 alloc] initWithTaskType:v10 attribute:v12 value:v15];
+    v16 = [[self alloc] initWithTaskType:v10 attribute:v12 value:v15];
   }
 
   else

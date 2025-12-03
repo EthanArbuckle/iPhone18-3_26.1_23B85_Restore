@@ -1,18 +1,18 @@
 @interface ICStoreDialogResponseHandler
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICStoreDialogResponseHandler)init;
-- (ICStoreDialogResponseHandler)initWithCoder:(id)a3;
-- (ICStoreDialogResponseHandler)initWithConfiguration:(id)a3;
+- (ICStoreDialogResponseHandler)initWithCoder:(id)coder;
+- (ICStoreDialogResponseHandler)initWithConfiguration:(id)configuration;
 - (unint64_t)hash;
-- (void)_handleAuthenticationStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6;
-- (void)_handleBuyButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5;
-- (void)_handleDefaultStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6;
-- (void)_handleFamilyPermissionButtonAction:(id)a3 usingRequestContext:(id)a4 completion:(id)a5;
-- (void)_handleGotoButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAMSDialogRequest:(id)a3 completion:(id)a4;
-- (void)handleButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5;
-- (void)handleStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6;
+- (void)_handleAuthenticationStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler;
+- (void)_handleBuyButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler;
+- (void)_handleDefaultStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler;
+- (void)_handleFamilyPermissionButtonAction:(id)action usingRequestContext:(id)context completion:(id)completion;
+- (void)_handleGotoButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAMSDialogRequest:(id)request completion:(id)completion;
+- (void)handleButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler;
+- (void)handleStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler;
 @end
 
 @implementation ICStoreDialogResponseHandler
@@ -25,27 +25,27 @@
   return v4;
 }
 
-- (void)_handleFamilyPermissionButtonAction:(id)a3 usingRequestContext:(id)a4 completion:(id)a5
+- (void)_handleFamilyPermissionButtonAction:(id)action usingRequestContext:(id)context completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 URLString];
-  if (v10)
+  actionCopy = action;
+  contextCopy = context;
+  completionCopy = completion;
+  uRLString = [actionCopy URLString];
+  if (uRLString)
   {
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:uRLString];
     v12 = +[ICUserIdentityStore defaultIdentityStore];
-    v13 = [v8 identity];
+    identity = [contextCopy identity];
     v29 = 0;
-    v14 = [v12 DSIDForUserIdentity:v13 outError:&v29];
+    v14 = [v12 DSIDForUserIdentity:identity outError:&v29];
     v15 = v29;
 
     if (v14)
     {
-      v16 = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
+      ic_sharedAccountStore = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
       v28 = v15;
-      v17 = [v16 ic_storeAccountForStoreAccountID:v14 error:&v28];
+      v17 = [ic_sharedAccountStore ic_storeAccountForStoreAccountID:v14 error:&v28];
       v18 = v28;
 
       if (v17)
@@ -74,7 +74,7 @@
           v26[1] = 3221225472;
           v26[2] = __99__ICStoreDialogResponseHandler__handleFamilyPermissionButtonAction_usingRequestContext_completion___block_invoke;
           v26[3] = &unk_1E7BF77C0;
-          v27 = v9;
+          v27 = completionCopy;
           [v19 addRequestWithURL:v11 account:v17 completion:v26];
         }
 
@@ -88,7 +88,7 @@
           }
 
           v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7002 userInfo:0];
-          (*(v9 + 2))(v9, 0, v25);
+          (*(completionCopy + 2))(completionCopy, 0, v25);
         }
       }
 
@@ -102,7 +102,7 @@
           _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_ERROR, "Failed to resolve account for family permissions dialog. err=%{public}@", &buf, 0xCu);
         }
 
-        (*(v9 + 2))(v9, 0, v18);
+        (*(completionCopy + 2))(completionCopy, 0, v18);
       }
 
       v15 = v18;
@@ -118,7 +118,7 @@
         _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_ERROR, "Failed to resolve identity for family permissions dialog. err=%{public}@", &buf, 0xCu);
       }
 
-      (*(v9 + 2))(v9, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
   }
 
@@ -131,7 +131,7 @@
       _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_DEFAULT, "missing action URL in family permissions button action - skipping", &buf, 2u);
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -164,49 +164,49 @@ void __99__ICStoreDialogResponseHandler__handleFamilyPermissionButtonAction_usin
   }
 }
 
-- (void)_handleGotoButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5
+- (void)_handleGotoButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 subtarget];
-  if (v10 && (v11 = v10, [v7 subtarget], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"background"), v12, v11, !v13))
+  actionCopy = action;
+  contextCopy = context;
+  handlerCopy = handler;
+  subtarget = [actionCopy subtarget];
+  if (subtarget && (v11 = subtarget, [actionCopy subtarget], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"background"), v12, v11, !v13))
   {
-    v20 = [v7 subtarget];
-    v21 = [v20 hasPrefix:@"account"];
+    subtarget2 = [actionCopy subtarget];
+    v21 = [subtarget2 hasPrefix:@"account"];
 
     if (!v21)
     {
       v22 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v7 subtarget];
+        subtarget3 = [actionCopy subtarget];
         *buf = 138543362;
-        v28 = v23;
+        v28 = subtarget3;
         _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_DEFAULT, "unknown Goto button action subtarget %{public}@", buf, 0xCu);
       }
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    v14 = [v7 URLString];
-    if (v14)
+    uRLString = [actionCopy URLString];
+    if (uRLString)
     {
       v15 = MEMORY[0x1E695AC18];
-      v16 = [MEMORY[0x1E695DFF8] URLWithString:v14];
+      v16 = [MEMORY[0x1E695DFF8] URLWithString:uRLString];
       v17 = [v15 requestWithURL:v16];
 
-      v18 = [[ICStoreURLRequest alloc] initWithURLRequest:v17 requestContext:v8];
+      v18 = [[ICStoreURLRequest alloc] initWithURLRequest:v17 requestContext:contextCopy];
       v19 = +[ICURLSessionManager unlimitedHighPrioritySession];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __98__ICStoreDialogResponseHandler__handleGotoButtonAction_usingRequestContext_withCompletionHandler___block_invoke;
       v25[3] = &unk_1E7BF5FF8;
-      v26 = v9;
+      v26 = handlerCopy;
       [v19 enqueueDataRequest:v18 withCompletionHandler:v25];
     }
 
@@ -219,7 +219,7 @@ void __99__ICStoreDialogResponseHandler__handleFamilyPermissionButtonAction_usin
         _os_log_impl(&dword_1B4491000, v24, OS_LOG_TYPE_DEFAULT, "missing action URL in Goto button action - skipping", buf, 2u);
       }
 
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -244,46 +244,46 @@ void __98__ICStoreDialogResponseHandler__handleGotoButtonAction_usingRequestCont
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleBuyButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5
+- (void)_handleBuyButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 buyParams];
+  contextCopy = context;
+  handlerCopy = handler;
+  buyParams = [action buyParams];
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v9;
+    v26 = buyParams;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Performing Buy button action with params %{public}@", buf, 0xCu);
   }
 
-  v11 = [MEMORY[0x1E695DFF8] ic_queryParametersDictionaryFromString:v9];
+  v11 = [MEMORY[0x1E695DFF8] ic_queryParametersDictionaryFromString:buyParams];
   v12 = [v11 objectForKey:@"sagaId"];
 
   if (v12)
   {
-    v13 = [(ICMediaRedownloadRequest *)[ICMatchRedownloadRequest alloc] initWithRequestContext:v7 redownloadParametersString:v9];
+    v13 = [(ICMediaRedownloadRequest *)[ICMatchRedownloadRequest alloc] initWithRequestContext:contextCopy redownloadParametersString:buyParams];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __97__ICStoreDialogResponseHandler__handleBuyButtonAction_usingRequestContext_withCompletionHandler___block_invoke;
     v23[3] = &unk_1E7BF5FA8;
     v14 = &v24;
-    v24 = v8;
-    v15 = v8;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
     v16 = v23;
   }
 
   else
   {
-    v13 = [[ICBuyProductRequest alloc] initWithRequestContext:v7 buyParametersString:v9 includeKeybagSyncData:0];
+    v13 = [[ICBuyProductRequest alloc] initWithRequestContext:contextCopy buyParametersString:buyParams includeKeybagSyncData:0];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __97__ICStoreDialogResponseHandler__handleBuyButtonAction_usingRequestContext_withCompletionHandler___block_invoke_22;
     v21 = &unk_1E7BF5FD0;
     v14 = &v22;
-    v22 = v8;
-    v17 = v8;
+    v22 = handlerCopy;
+    v17 = handlerCopy;
     v16 = &v18;
   }
 
@@ -326,11 +326,11 @@ void __97__ICStoreDialogResponseHandler__handleBuyButtonAction_usingRequestConte
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleAuthenticationStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6
+- (void)_handleAuthenticationStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  responseCopy = response;
+  contextCopy = context;
+  handlerCopy = handler;
   if (self->_shouldRecordLastAuthenticationDialogResponseTime)
   {
     v13 = +[ICDefaults standardDefaults];
@@ -338,23 +338,23 @@ void __97__ICStoreDialogResponseHandler__handleBuyButtonAction_usingRequestConte
     [v13 setLastAuthenticationDialogResponseTime:?];
   }
 
-  if (v11 && ([v11 authenticationProvider], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  if (contextCopy && ([contextCopy authenticationProvider], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    v15 = [v11 authenticationProvider];
+    authenticationProvider = [contextCopy authenticationProvider];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __133__ICStoreDialogResponseHandler__handleAuthenticationStoreDialogResponse_usingRequestContext_withDialogTimeout_withCompletionHandler___block_invoke;
     v16[3] = &unk_1E7BF7630;
-    v17 = v10;
-    v18 = v11;
-    v19 = self;
-    v20 = v12;
-    [v15 performAuthenticationUsingRequestContext:v18 withCompletionHandler:v16];
+    v17 = responseCopy;
+    v18 = contextCopy;
+    selfCopy = self;
+    v20 = handlerCopy;
+    [authenticationProvider performAuthenticationUsingRequestContext:v18 withCompletionHandler:v16];
   }
 
   else
   {
-    [(ICStoreDialogResponseHandler *)self _handleDefaultStoreDialogResponse:v10 usingRequestContext:v11 withDialogTimeout:v12 withCompletionHandler:a5];
+    [(ICStoreDialogResponseHandler *)self _handleDefaultStoreDialogResponse:responseCopy usingRequestContext:contextCopy withDialogTimeout:handlerCopy withCompletionHandler:timeout];
   }
 }
 
@@ -454,18 +454,18 @@ void __133__ICStoreDialogResponseHandler__handleAuthenticationStoreDialogRespons
   [v3 setAuthenticationProvider:v5];
 }
 
-- (void)_handleDefaultStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6
+- (void)_handleDefaultStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[ICUserNotificationBuilder alloc] initWithStoreDialog:v10];
-  [(ICUserNotificationBuilder *)v13 setTimeoutInterval:a5];
-  v14 = [(ICUserNotificationBuilder *)v13 createCFUserNotification];
-  if (v14)
+  responseCopy = response;
+  contextCopy = context;
+  handlerCopy = handler;
+  v13 = [[ICUserNotificationBuilder alloc] initWithStoreDialog:responseCopy];
+  [(ICUserNotificationBuilder *)v13 setTimeoutInterval:timeout];
+  createCFUserNotification = [(ICUserNotificationBuilder *)v13 createCFUserNotification];
+  if (createCFUserNotification)
   {
-    v15 = v14;
+    v15 = createCFUserNotification;
     v16 = +[ICUserNotificationManager sharedManager];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -473,9 +473,9 @@ void __133__ICStoreDialogResponseHandler__handleAuthenticationStoreDialogRespons
     v19[3] = &unk_1E7BF5F58;
     v23 = v15;
     v19[4] = self;
-    v22 = v12;
-    v20 = v10;
-    v21 = v11;
+    v22 = handlerCopy;
+    v20 = responseCopy;
+    v21 = contextCopy;
     [v16 displayUserNotification:v15 withCompletionHandler:v19];
   }
 
@@ -485,12 +485,12 @@ void __133__ICStoreDialogResponseHandler__handleAuthenticationStoreDialogRespons
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create user notification", buf, 0xCu);
     }
 
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
-    (*(v12 + 2))(v12, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 
@@ -568,20 +568,20 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allowsHandlingNonAuthenticationDialogs = self->_allowsHandlingNonAuthenticationDialogs;
-  v5 = a3;
-  [v5 encodeBool:allowsHandlingNonAuthenticationDialogs forKey:@"allowsHandlingNonAuthenticationDialogs"];
-  [v5 encodeBool:self->_shouldRecordLastAuthenticationDialogResponseTime forKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
+  coderCopy = coder;
+  [coderCopy encodeBool:allowsHandlingNonAuthenticationDialogs forKey:@"allowsHandlingNonAuthenticationDialogs"];
+  [coderCopy encodeBool:self->_shouldRecordLastAuthenticationDialogResponseTime forKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
 }
 
-- (ICStoreDialogResponseHandler)initWithCoder:(id)a3
+- (ICStoreDialogResponseHandler)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(ICStoreDialogResponseHandlerConfiguration);
-  -[ICStoreDialogResponseHandlerConfiguration setAllowsHandlingNonAuthenticationDialogs:](v5, "setAllowsHandlingNonAuthenticationDialogs:", [v4 decodeBoolForKey:@"allowsHandlingNonAuthenticationDialogs"]);
-  v6 = [v4 decodeBoolForKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
+  -[ICStoreDialogResponseHandlerConfiguration setAllowsHandlingNonAuthenticationDialogs:](v5, "setAllowsHandlingNonAuthenticationDialogs:", [coderCopy decodeBoolForKey:@"allowsHandlingNonAuthenticationDialogs"]);
+  v6 = [coderCopy decodeBoolForKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
 
   [(ICStoreDialogResponseHandlerConfiguration *)v5 setShouldRecordLastAuthenticationDialogResponseTime:v6];
   v7 = [(ICStoreDialogResponseHandler *)self initWithConfiguration:v5];
@@ -589,10 +589,10 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4 || [(ICStoreDialogResponseHandler *)v4 isMemberOfClass:objc_opt_class()]&& self->_allowsHandlingNonAuthenticationDialogs == v4->_allowsHandlingNonAuthenticationDialogs && self->_shouldRecordLastAuthenticationDialogResponseTime == v4->_shouldRecordLastAuthenticationDialogResponseTime;
+  equalCopy = equal;
+  v5 = self == equalCopy || [(ICStoreDialogResponseHandler *)equalCopy isMemberOfClass:objc_opt_class()]&& self->_allowsHandlingNonAuthenticationDialogs == equalCopy->_allowsHandlingNonAuthenticationDialogs && self->_shouldRecordLastAuthenticationDialogResponseTime == equalCopy->_shouldRecordLastAuthenticationDialogResponseTime;
 
   return v5;
 }
@@ -659,31 +659,31 @@ LABEL_16:
   return (v49 + v50) ^ __ROR8__(v49, 47) ^ v52 ^ __ROR8__(v49 + v50, 32) ^ v52 ^ __ROR8__(v50 ^ v51, 43);
 }
 
-- (void)handleAMSDialogRequest:(id)a3 completion:(id)a4
+- (void)handleAMSDialogRequest:(id)request completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = requestCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Handling AMS dialog request %{public}@", buf, 0x16u);
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E698CB50]) initWithRequest:v6];
-  v10 = [v9 present];
+  v9 = [objc_alloc(MEMORY[0x1E698CB50]) initWithRequest:requestCopy];
+  present = [v9 present];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__ICStoreDialogResponseHandler_handleAMSDialogRequest_completion___block_invoke;
   v12[3] = &unk_1E7BF5F30;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 addFinishBlock:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [present addFinishBlock:v12];
 }
 
 void __66__ICStoreDialogResponseHandler_handleAMSDialogRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -718,24 +718,24 @@ void __66__ICStoreDialogResponseHandler_handleAMSDialogRequest_completion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleStoreDialogResponse:(id)a3 usingRequestContext:(id)a4 withDialogTimeout:(double)a5 withCompletionHandler:(id)a6
+- (void)handleStoreDialogResponse:(id)response usingRequestContext:(id)context withDialogTimeout:(double)timeout withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 type];
-  v14 = v13;
-  if (self->_allowsHandlingNonAuthenticationDialogs || v13 == 1)
+  responseCopy = response;
+  contextCopy = context;
+  handlerCopy = handler;
+  type = [responseCopy type];
+  v14 = type;
+  if (self->_allowsHandlingNonAuthenticationDialogs || type == 1)
   {
-    if (v13 == 1)
+    if (type == 1)
     {
-      [(ICStoreDialogResponseHandler *)self _handleAuthenticationStoreDialogResponse:v10 usingRequestContext:v11 withDialogTimeout:v12 withCompletionHandler:a5];
+      [(ICStoreDialogResponseHandler *)self _handleAuthenticationStoreDialogResponse:responseCopy usingRequestContext:contextCopy withDialogTimeout:handlerCopy withCompletionHandler:timeout];
     }
 
-    else if (!v13)
+    else if (!type)
     {
-      [(ICStoreDialogResponseHandler *)self _handleDefaultStoreDialogResponse:v10 usingRequestContext:v11 withDialogTimeout:v12 withCompletionHandler:a5];
+      [(ICStoreDialogResponseHandler *)self _handleDefaultStoreDialogResponse:responseCopy usingRequestContext:contextCopy withDialogTimeout:handlerCopy withCompletionHandler:timeout];
     }
   }
 
@@ -745,91 +745,91 @@ void __66__ICStoreDialogResponseHandler_handleAMSDialogRequest_completion___bloc
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = v14;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Not handling dialog response because its not allowed for dialog type %d", &v16, 0x12u);
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      (*(v12 + 2))(v12, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
 
-- (void)handleButtonAction:(id)a3 usingRequestContext:(id)a4 withCompletionHandler:(id)a5
+- (void)handleButtonAction:(id)action usingRequestContext:(id)context withCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  actionCopy = action;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!actionCopy)
   {
 LABEL_7:
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_8;
   }
 
-  v11 = [v8 type];
-  if (v11 <= 4)
+  type = [actionCopy type];
+  if (type <= 4)
   {
-    if ((v11 - 2) < 3)
+    if ((type - 2) < 3)
     {
-      [(ICStoreDialogResponseHandler *)self _handleGotoButtonAction:v8 usingRequestContext:v9 withCompletionHandler:v10];
+      [(ICStoreDialogResponseHandler *)self _handleGotoButtonAction:actionCopy usingRequestContext:contextCopy withCompletionHandler:handlerCopy];
       goto LABEL_8;
     }
 
-    if (!v11)
+    if (!type)
     {
       goto LABEL_7;
     }
 
-    if (v11 == 1)
+    if (type == 1)
     {
-      [(ICStoreDialogResponseHandler *)self _handleBuyButtonAction:v8 usingRequestContext:v9 withCompletionHandler:v10];
+      [(ICStoreDialogResponseHandler *)self _handleBuyButtonAction:actionCopy usingRequestContext:contextCopy withCompletionHandler:handlerCopy];
     }
   }
 
   else
   {
-    if ((v11 - 5) < 6)
+    if ((type - 5) < 6)
     {
       v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v13 = 134217984;
-        v14 = [v8 type];
+        type2 = [actionCopy type];
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_FAULT, "unexpected dialog button action type %ld", &v13, 0xCu);
       }
 
       goto LABEL_7;
     }
 
-    if (v11 == 11)
+    if (type == 11)
     {
-      [(ICStoreDialogResponseHandler *)self _handleFamilyPermissionButtonAction:v8 usingRequestContext:v9 completion:v10];
+      [(ICStoreDialogResponseHandler *)self _handleFamilyPermissionButtonAction:actionCopy usingRequestContext:contextCopy completion:handlerCopy];
     }
   }
 
 LABEL_8:
 }
 
-- (ICStoreDialogResponseHandler)initWithConfiguration:(id)a3
+- (ICStoreDialogResponseHandler)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7.receiver = self;
   v7.super_class = ICStoreDialogResponseHandler;
   v5 = [(ICStoreDialogResponseHandler *)&v7 init];
   if (v5)
   {
-    if (!v4)
+    if (!configurationCopy)
     {
-      v4 = objc_alloc_init(ICStoreDialogResponseHandlerConfiguration);
+      configurationCopy = objc_alloc_init(ICStoreDialogResponseHandlerConfiguration);
     }
 
-    v5->_allowsHandlingNonAuthenticationDialogs = [(ICStoreDialogResponseHandlerConfiguration *)v4 allowsHandlingNonAuthenticationDialogs];
-    v5->_shouldRecordLastAuthenticationDialogResponseTime = [(ICStoreDialogResponseHandlerConfiguration *)v4 shouldRecordLastAuthenticationDialogResponseTime];
+    v5->_allowsHandlingNonAuthenticationDialogs = [(ICStoreDialogResponseHandlerConfiguration *)configurationCopy allowsHandlingNonAuthenticationDialogs];
+    v5->_shouldRecordLastAuthenticationDialogResponseTime = [(ICStoreDialogResponseHandlerConfiguration *)configurationCopy shouldRecordLastAuthenticationDialogResponseTime];
   }
 
   return v5;

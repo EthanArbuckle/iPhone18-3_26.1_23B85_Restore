@@ -1,22 +1,22 @@
 @interface SAAppsLaunchApp
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4;
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation SAAppsLaunchApp
 
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [off_10058BBA0() serviceWithDefaultShellEndpoint];
-  if (v8)
+  requestCopy = request;
+  completionCopy = completion;
+  serviceWithDefaultShellEndpoint = [off_10058BBA0() serviceWithDefaultShellEndpoint];
+  if (serviceWithDefaultShellEndpoint)
   {
-    v9 = [v6 _turnId];
-    if (v9)
+    _turnId = [requestCopy _turnId];
+    if (_turnId)
     {
       v10 = objc_alloc_init(SISchemaUEIUUFRReady);
       v11 = +[AFAnalytics sharedAnalytics];
-      [v11 logInstrumentation:v10 machAbsoluteTime:mach_absolute_time() turnIdentifier:v9];
+      [v11 logInstrumentation:v10 machAbsoluteTime:mach_absolute_time() turnIdentifier:_turnId];
 
       v12 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -24,7 +24,7 @@
         *buf = 136315394;
         v20 = "[SAAppsLaunchApp(ADSiriAppLaunchRequestHandler) _ad_handleAppLaunchCommandWithRequest:completion:]";
         v21 = 2112;
-        v22 = v9;
+        v22 = _turnId;
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s Logging UUFR ready for app launch with turnid: %@", buf, 0x16u);
       }
     }
@@ -40,23 +40,23 @@
       }
     }
 
-    v14 = [(SAAppsLaunchApp *)self launchId];
+    launchId = [(SAAppsLaunchApp *)self launchId];
     v15 = [off_10058BBA8() optionsWithDictionary:&__NSDictionary0__struct];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10014A4F4;
     v16[3] = &unk_100513088;
-    v18 = v7;
-    v17 = v6;
-    [v8 openApplication:v14 withOptions:v15 completion:v16];
+    v18 = completionCopy;
+    v17 = requestCopy;
+    [serviceWithDefaultShellEndpoint openApplication:launchId withOptions:v15 completion:v16];
 
     goto LABEL_11;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [AFError errorWithCode:13];
-    (*(v7 + 2))(v7, 0, 0, v9);
+    _turnId = [AFError errorWithCode:13];
+    (*(completionCopy + 2))(completionCopy, 0, 0, _turnId);
 LABEL_11:
   }
 }

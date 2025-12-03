@@ -8,8 +8,8 @@
 {
   v30 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 entityType];
-  switch(v5)
+  entityType = [self entityType];
+  switch(entityType)
   {
     case 101:
       v6 = off_1E77FB850;
@@ -32,15 +32,15 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v8 = [a1 calendarIDs];
+  calendarIDs = [self calendarIDs];
 
-  if (v8)
+  if (calendarIDs)
   {
     v9 = [v4 valueForKeyPath:@"calendar"];
-    v10 = [v9 CADObjectID];
+    cADObjectID = [v9 CADObjectID];
 
-    v11 = [a1 calendarIDs];
-    v12 = [v11 containsObject:v10];
+    calendarIDs2 = [self calendarIDs];
+    v12 = [calendarIDs2 containsObject:cADObjectID];
   }
 
   else
@@ -48,14 +48,14 @@ LABEL_27:
     v12 = 1;
   }
 
-  v13 = [a1 sourceID];
+  sourceID = [self sourceID];
 
-  if (v13)
+  if (sourceID)
   {
     v14 = [v4 valueForKeyPath:@"calendar.source"];
-    v15 = [v14 CADObjectID];
-    v16 = [a1 sourceID];
-    v17 = [v15 isEqual:v16];
+    cADObjectID2 = [v14 CADObjectID];
+    sourceID2 = [self sourceID];
+    v17 = [cADObjectID2 isEqual:sourceID2];
 
     if ((v17 & 1) == 0)
     {
@@ -78,8 +78,8 @@ LABEL_27:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [a1 filters];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  filters = [self filters];
+  v19 = [filters countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v19)
   {
     v20 = v19;
@@ -91,7 +91,7 @@ LABEL_27:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(filters);
         }
 
         if (![*(*(&v25 + 1) + 8 * v22) ekPredicateFilterMatches:v4])
@@ -104,7 +104,7 @@ LABEL_27:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v20 = [filters countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v20)
       {
         continue;

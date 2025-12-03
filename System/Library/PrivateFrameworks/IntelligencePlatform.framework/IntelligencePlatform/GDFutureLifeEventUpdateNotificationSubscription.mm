@@ -1,5 +1,5 @@
 @interface GDFutureLifeEventUpdateNotificationSubscription
-- (GDFutureLifeEventUpdateNotificationSubscription)initWithSystemwideUniqueSubscriptionIdentifier:(id)a3 targetQueue:(id)a4 onReceiveUpdateNotificationBlock:(id)a5;
+- (GDFutureLifeEventUpdateNotificationSubscription)initWithSystemwideUniqueSubscriptionIdentifier:(id)identifier targetQueue:(id)queue onReceiveUpdateNotificationBlock:(id)block;
 - (void)cancelSubscription;
 @end
 
@@ -7,21 +7,21 @@
 
 - (void)cancelSubscription
 {
-  v2 = [(GDFutureLifeEventUpdateNotificationSubscription *)self viewUpdateNotificationSubscription];
-  [v2 cancelSubscription];
+  viewUpdateNotificationSubscription = [(GDFutureLifeEventUpdateNotificationSubscription *)self viewUpdateNotificationSubscription];
+  [viewUpdateNotificationSubscription cancelSubscription];
 }
 
-- (GDFutureLifeEventUpdateNotificationSubscription)initWithSystemwideUniqueSubscriptionIdentifier:(id)a3 targetQueue:(id)a4 onReceiveUpdateNotificationBlock:(id)a5
+- (GDFutureLifeEventUpdateNotificationSubscription)initWithSystemwideUniqueSubscriptionIdentifier:(id)identifier targetQueue:(id)queue onReceiveUpdateNotificationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = GDFutureLifeEventUpdateNotificationSubscription;
   v11 = [(GDFutureLifeEventUpdateNotificationSubscription *)&v15 init];
   if (v11)
   {
-    v12 = [[GDInternalViewUpdateNotificationSubscription alloc] initForViewName:@"futureLifeEventMap" systemwideUniqueSubscriptionIdentifier:v8 useCase:@"FutureLifeEvent" targetQueue:v9 onReceiveUpdateNotificationBlock:v10];
+    v12 = [[GDInternalViewUpdateNotificationSubscription alloc] initForViewName:@"futureLifeEventMap" systemwideUniqueSubscriptionIdentifier:identifierCopy useCase:@"FutureLifeEvent" targetQueue:queueCopy onReceiveUpdateNotificationBlock:blockCopy];
     viewUpdateNotificationSubscription = v11->_viewUpdateNotificationSubscription;
     v11->_viewUpdateNotificationSubscription = v12;
   }

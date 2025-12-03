@@ -1,19 +1,19 @@
 @interface CertUIItemDetailsSummaryCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CertUIItemDetailsSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)createViewWithDescriptors:(id)a3;
-- (void)createViewWithItemDetailArray:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CertUIItemDetailsSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)createViewWithDescriptors:(id)descriptors;
+- (void)createViewWithItemDetailArray:(id)array;
 - (void)layoutSubviews;
-- (void)setDetailLabelOriginX:(double)a3;
+- (void)setDetailLabelOriginX:(double)x;
 @end
 
 @implementation CertUIItemDetailsSummaryCell
 
-- (CertUIItemDetailsSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertUIItemDetailsSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CertUIItemDetailsSummaryCell;
-  v4 = [(CertUIItemDetailsSummaryCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CertUIItemDetailsSummaryCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,8 +34,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(CertUIItemDetailsSummaryCell *)self detailViews];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  detailViews = [(CertUIItemDetailsSummaryCell *)self detailViews];
+  v4 = [detailViews countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,12 +48,12 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(detailViews);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
-        v10 = [(CertUIItemDetailsSummaryCell *)self contentView];
-        [v10 frame];
+        contentView = [(CertUIItemDetailsSummaryCell *)self contentView];
+        [contentView frame];
         v12 = v11;
         v14 = v13;
 
@@ -75,7 +75,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [detailViews countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -84,16 +84,16 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(CertUIItemDetailsSummaryCell *)self detailViews];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  detailViews = [(CertUIItemDetailsSummaryCell *)self detailViews];
+  v5 = [detailViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,7 +105,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(detailViews);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -125,7 +125,7 @@
         v8 = CGRectGetMaxY(v27) + 10.0;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [detailViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -144,18 +144,18 @@
   return result;
 }
 
-- (void)setDetailLabelOriginX:(double)a3
+- (void)setDetailLabelOriginX:(double)x
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_detailLabelOriginX != a3)
+  if (self->_detailLabelOriginX != x)
   {
-    self->_detailLabelOriginX = a3 + -10.0;
+    self->_detailLabelOriginX = x + -10.0;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(CertUIItemDetailsSummaryCell *)self detailViews];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    detailViews = [(CertUIItemDetailsSummaryCell *)self detailViews];
+    v5 = [detailViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -167,14 +167,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(detailViews);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) setPreferredValueLabelOriginX:self->_detailLabelOriginX];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [detailViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -186,16 +186,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createViewWithDescriptors:(id)a3
+- (void)createViewWithDescriptors:(id)descriptors
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(CertUIItemDetailsSummaryCell *)self detailViews];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  detailViews = [(CertUIItemDetailsSummaryCell *)self detailViews];
+  v6 = [detailViews countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -206,20 +206,20 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(detailViews);
         }
 
         [*(*(&v23 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [detailViews countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v4 count])
+  if ([descriptorsCopy count])
   {
     v11 = 0;
     v12 = *MEMORY[0x277CBF3A0];
@@ -228,9 +228,9 @@
     v15 = *(MEMORY[0x277CBF3A0] + 24);
     do
     {
-      v16 = [v4 objectAtIndex:v11];
+      v16 = [descriptorsCopy objectAtIndex:v11];
       v17 = v11 + 1;
-      v18 = [v4 objectAtIndex:v17];
+      v18 = [descriptorsCopy objectAtIndex:v17];
       v19 = [[CertUIKeyValueView alloc] initWithFrame:v12, v13, v14, v15];
       v20 = v19;
       if (self->_detailLabelOriginX >= 0.0)
@@ -239,14 +239,14 @@
       }
 
       [(CertUIKeyValueView *)v20 setKey:v16 value:v18];
-      v21 = [(CertUIItemDetailsSummaryCell *)self contentView];
-      [v21 addSubview:v20];
+      contentView = [(CertUIItemDetailsSummaryCell *)self contentView];
+      [contentView addSubview:v20];
 
       [v10 addObject:v20];
       v11 = v17 + 1;
     }
 
-    while (v11 < [v4 count]);
+    while (v11 < [descriptorsCopy count]);
   }
 
   [(CertUIItemDetailsSummaryCell *)self setDetailViews:v10];
@@ -255,16 +255,16 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createViewWithItemDetailArray:(id)a3
+- (void)createViewWithItemDetailArray:(id)array
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(CertUIItemDetailsSummaryCell *)self detailViews];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  detailViews = [(CertUIItemDetailsSummaryCell *)self detailViews];
+  v6 = [detailViews countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -275,13 +275,13 @@
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(detailViews);
         }
 
         [*(*(&v30 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v7 = [detailViews countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v7);
@@ -292,7 +292,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = v4;
+  v11 = arrayCopy;
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v12)
   {
@@ -321,8 +321,8 @@
         }
 
         [(CertUIKeyValueView *)v23 setItemDetail:v20];
-        v24 = [(CertUIItemDetailsSummaryCell *)self contentView];
-        [v24 addSubview:v23];
+        contentView = [(CertUIItemDetailsSummaryCell *)self contentView];
+        [contentView addSubview:v23];
 
         [v10 addObject:v23];
       }

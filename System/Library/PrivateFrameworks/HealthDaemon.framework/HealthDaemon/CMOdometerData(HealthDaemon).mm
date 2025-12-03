@@ -7,10 +7,10 @@
 - (uint64_t)hd_compare:()HealthDaemon
 {
   v4 = a3;
-  v5 = [a1 hd_datestamp];
-  v6 = [v4 hd_datestamp];
+  hd_datestamp = [self hd_datestamp];
+  hd_datestamp2 = [v4 hd_datestamp];
 
-  v7 = [v5 compare:v6];
+  v7 = [hd_datestamp compare:hd_datestamp2];
   return v7;
 }
 

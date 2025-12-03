@@ -5,10 +5,10 @@
 - (CGSize)videoDisplaySize;
 - (NSDictionary)pixelBufferAttributes;
 - (int64_t)videoGravity;
-- (void)setPixelBufferAttributes:(id)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setVideoGravity:(int64_t)a3;
-- (void)setVideoScaled:(BOOL)a3;
+- (void)setPixelBufferAttributes:(id)attributes;
+- (void)setPlayerController:(id)controller;
+- (void)setVideoGravity:(int64_t)gravity;
+- (void)setVideoScaled:(BOOL)scaled;
 - (void)startRoutingVideoToPictureInPicturePlayerLayerView;
 - (void)stopRoutingVideoToPictureInPicturePlayerLayerView;
 @end
@@ -17,54 +17,54 @@
 
 - (void)stopRoutingVideoToPictureInPicturePlayerLayerView
 {
-  v3 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-  v4 = [v3 playerLayer];
+  pictureInPicturePlayerLayerView = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+  playerLayer = [pictureInPicturePlayerLayerView playerLayer];
 
-  if (v4)
+  if (playerLayer)
   {
-    v5 = [(__AVPlayerLayerView *)self playerLayer];
-    v6 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-    v7 = [v6 playerLayer];
-    [v5 stopRedirectingVideoToLayer:v7];
+    playerLayer2 = [(__AVPlayerLayerView *)self playerLayer];
+    pictureInPicturePlayerLayerView2 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+    playerLayer3 = [pictureInPicturePlayerLayerView2 playerLayer];
+    [playerLayer2 stopRedirectingVideoToLayer:playerLayer3];
 
-    v8 = [(__AVPlayerLayerView *)self playerLayer];
-    LODWORD(v6) = [v8 isLegibleDisplayEnabled];
+    playerLayer4 = [(__AVPlayerLayerView *)self playerLayer];
+    LODWORD(pictureInPicturePlayerLayerView2) = [playerLayer4 isLegibleDisplayEnabled];
 
-    if (v6)
+    if (pictureInPicturePlayerLayerView2)
     {
-      v9 = [(__AVPlayerLayerView *)self playerLayer];
-      [v9 setLegibleDisplayEnabled:0];
+      playerLayer5 = [(__AVPlayerLayerView *)self playerLayer];
+      [playerLayer5 setLegibleDisplayEnabled:0];
 
-      v10 = [(__AVPlayerLayerView *)self playerLayer];
-      [v10 setLegibleDisplayEnabled:1];
+      playerLayer6 = [(__AVPlayerLayerView *)self playerLayer];
+      [playerLayer6 setLegibleDisplayEnabled:1];
     }
 
-    v11 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-    v12 = [v11 playerLayer];
-    [v12 setLegibleDisplayEnabled:1];
+    pictureInPicturePlayerLayerView3 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+    playerLayer7 = [pictureInPicturePlayerLayerView3 playerLayer];
+    [playerLayer7 setLegibleDisplayEnabled:1];
   }
 
   [(__AVPlayerLayerView *)self setPictureInPicturePlayerLayer:0];
-  v13 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-  [v13 detachPlayerLayer];
+  pictureInPicturePlayerLayerView4 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+  [pictureInPicturePlayerLayerView4 detachPlayerLayer];
 
-  v14 = [(__AVPlayerLayerView *)self playerLayer];
-  [v14 setPlaceholderContentLayerDuringPIPMode:0];
+  playerLayer8 = [(__AVPlayerLayerView *)self playerLayer];
+  [playerLayer8 setPlaceholderContentLayerDuringPIPMode:0];
 }
 
 - (void)startRoutingVideoToPictureInPicturePlayerLayerView
 {
-  v3 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-  [v3 attachPlayerLayer];
+  pictureInPicturePlayerLayerView = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+  [pictureInPicturePlayerLayerView attachPlayerLayer];
 
-  v4 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-  v5 = [v4 playerLayer];
-  [(__AVPlayerLayerView *)self setPictureInPicturePlayerLayer:v5];
+  pictureInPicturePlayerLayerView2 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+  playerLayer = [pictureInPicturePlayerLayerView2 playerLayer];
+  [(__AVPlayerLayerView *)self setPictureInPicturePlayerLayer:playerLayer];
 
-  v6 = [(__AVPlayerLayerView *)self playerLayer];
-  v7 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-  v8 = [v7 playerLayer];
-  [v6 startRedirectingVideoToLayer:v8 forMode:0];
+  playerLayer2 = [(__AVPlayerLayerView *)self playerLayer];
+  pictureInPicturePlayerLayerView3 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+  playerLayer3 = [pictureInPicturePlayerLayerView3 playerLayer];
+  [playerLayer2 startRedirectingVideoToLayer:playerLayer3 forMode:0];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -90,24 +90,24 @@
   return pictureInPicturePlayerLayerView;
 }
 
-- (void)setPixelBufferAttributes:(id)a3
+- (void)setPixelBufferAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(__AVPlayerLayerView *)self playerLayer];
-  [v5 setPixelBufferAttributes:v4];
+  attributesCopy = attributes;
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  [playerLayer setPixelBufferAttributes:attributesCopy];
 }
 
 - (NSDictionary)pixelBufferAttributes
 {
-  v2 = [(__AVPlayerLayerView *)self playerLayer];
-  v3 = [v2 pixelBufferAttributes];
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  pixelBufferAttributes = [playerLayer pixelBufferAttributes];
 
-  return v3;
+  return pixelBufferAttributes;
 }
 
-- (void)setVideoScaled:(BOOL)a3
+- (void)setVideoScaled:(BOOL)scaled
 {
-  if (a3)
+  if (scaled)
   {
     v3 = 2;
   }
@@ -122,8 +122,8 @@
 
 - (CGSize)videoDisplaySize
 {
-  v3 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayer];
-  [v3 videoRect];
+  pictureInPicturePlayerLayer = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayer];
+  [pictureInPicturePlayerLayer videoRect];
   v5 = v4;
   v7 = v6;
 
@@ -143,8 +143,8 @@
 
 - (CGRect)videoBounds
 {
-  v3 = [(__AVPlayerLayerView *)self playerLayer];
-  [v3 videoRect];
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  [playerLayer videoRect];
   x = v4;
   y = v6;
   width = v8;
@@ -159,12 +159,12 @@
     [(__AVPlayerLayerView *)self bounds];
     if (!CGRectIsEmpty(v39))
     {
-      v12 = [(__AVPlayerLayerView *)self playerController];
-      [v12 contentDimensions];
+      playerController = [(__AVPlayerLayerView *)self playerController];
+      [playerController contentDimensions];
       if (v14 != *MEMORY[0x1E695F060] || v13 != *(MEMORY[0x1E695F060] + 8))
       {
-        v16 = [(__AVPlayerLayerView *)self playerController];
-        [v16 contentDimensions];
+        playerController2 = [(__AVPlayerLayerView *)self playerController];
+        [playerController2 contentDimensions];
 
         if ([(__AVPlayerLayerView *)self videoGravity]!= 1)
         {
@@ -176,8 +176,8 @@
           goto LABEL_11;
         }
 
-        v12 = [(__AVPlayerLayerView *)self playerController];
-        [v12 contentDimensions];
+        playerController = [(__AVPlayerLayerView *)self playerController];
+        [playerController contentDimensions];
         v18 = v17;
         v20 = v19;
         [(__AVPlayerLayerView *)self bounds];
@@ -214,44 +214,44 @@ LABEL_11:
 
 - (BOOL)isReadyForDisplay
 {
-  v2 = [(__AVPlayerLayerView *)self playerLayer];
-  v3 = [v2 isReadyForDisplay];
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  isReadyForDisplay = [playerLayer isReadyForDisplay];
 
-  return v3;
+  return isReadyForDisplay;
 }
 
-- (void)setVideoGravity:(int64_t)a3
+- (void)setVideoGravity:(int64_t)gravity
 {
-  v5 = [(__AVPlayerLayerView *)self playerLayer];
-  v4 = NSStringFromVideoGravity(a3);
-  [v5 setVideoGravity:v4];
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  v4 = NSStringFromVideoGravity(gravity);
+  [playerLayer setVideoGravity:v4];
 }
 
 - (int64_t)videoGravity
 {
-  v2 = [(__AVPlayerLayerView *)self playerLayer];
-  v3 = [v2 videoGravity];
-  v4 = AVVideoGravityFromString(v3);
+  playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+  videoGravity = [playerLayer videoGravity];
+  v4 = AVVideoGravityFromString(videoGravity);
 
   return v4;
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_playerController, a3);
-    v6 = [(__AVPlayerLayerView *)self playerLayer];
-    v7 = [(AVPlayerController *)v10 player];
-    [v6 setPlayer:v7];
+    v10 = controllerCopy;
+    objc_storeStrong(&self->_playerController, controller);
+    playerLayer = [(__AVPlayerLayerView *)self playerLayer];
+    player = [(AVPlayerController *)v10 player];
+    [playerLayer setPlayer:player];
 
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
-    [v9 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    pictureInPicturePlayerLayerView = [(__AVPlayerLayerView *)self pictureInPicturePlayerLayerView];
+    [pictureInPicturePlayerLayerView setBackgroundColor:clearColor];
 
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 

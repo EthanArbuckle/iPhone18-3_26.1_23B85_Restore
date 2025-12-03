@@ -1,26 +1,26 @@
 @interface SHSheetScrollingTest
-- (SHSheetScrollingTest)initWithBSXPCCoder:(id)a3;
-- (SHSheetScrollingTest)initWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SHSheetScrollingTest)initWithBSXPCCoder:(id)coder;
+- (SHSheetScrollingTest)initWithName:(id)name type:(int64_t)type completionHandler:(id)handler;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SHSheetScrollingTest
 
-- (SHSheetScrollingTest)initWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5
+- (SHSheetScrollingTest)initWithName:(id)name type:(int64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = SHSheetScrollingTest;
   v10 = [(SHSheetScrollingTest *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v10->_type = a4;
-    v13 = [v9 copy];
+    v10->_type = type;
+    v13 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v13;
   }
@@ -28,23 +28,23 @@
   return v10;
 }
 
-- (SHSheetScrollingTest)initWithBSXPCCoder:(id)a3
+- (SHSheetScrollingTest)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeInt64ForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeInt64ForKey:@"type"];
 
   v7 = [(SHSheetScrollingTest *)self initWithName:v5 type:v6 completionHandler:0];
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SHSheetScrollingTest *)self name];
-  [v5 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(SHSheetScrollingTest *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v5 encodeInt64:-[SHSheetScrollingTest type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInt64:-[SHSheetScrollingTest type](self forKey:{"type"), @"type"}];
 }
 
 @end

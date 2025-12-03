@@ -1,6 +1,6 @@
 @interface ADCloudKitCapabilitiesRecordBuilder
 - (id)build;
-- (void)setValue:(id)a3 forColumnName:(id)a4;
+- (void)setValue:(id)value forColumnName:(id)name;
 @end
 
 @implementation ADCloudKitCapabilitiesRecordBuilder
@@ -12,10 +12,10 @@
   return v2;
 }
 
-- (void)setValue:(id)a3 forColumnName:(id)a4
+- (void)setValue:(id)value forColumnName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  nameCopy = name;
   dictionary = self->_dictionary;
   if (!dictionary)
   {
@@ -26,7 +26,7 @@
     dictionary = self->_dictionary;
   }
 
-  [(NSMutableDictionary *)dictionary setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)dictionary setObject:valueCopy forKey:nameCopy];
 }
 
 @end

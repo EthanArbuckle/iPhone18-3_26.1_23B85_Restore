@@ -1,12 +1,12 @@
 @interface HMDWakePacketConfigurationTLV
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDWakePacketConfigurationTLV)init;
-- (HMDWakePacketConfigurationTLV)initWithWakePacketType:(id)a3 wakeDestinationPort:(id)a4 wakeDestinationAddress:(id)a5 wakeType:(id)a6 wakePattern:(id)a7;
+- (HMDWakePacketConfigurationTLV)initWithWakePacketType:(id)type wakeDestinationPort:(id)port wakeDestinationAddress:(id)address wakeType:(id)wakeType wakePattern:(id)pattern;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDWakePacketConfigurationTLV
@@ -14,20 +14,20 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
-  v5 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
-  v6 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
-  v7 = [(HMDWakePacketConfigurationTLV *)self wakeType];
-  v8 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
-  v9 = [v3 stringWithFormat:@"<HMDWakePacketConfigurationTLV wakePacketType=%@, wakeDestinationPort=%@, wakeDestinationAddress=%@, wakeType=%@, wakePattern=%@>", v4, v5, v6, v7, v8];
+  wakePacketType = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+  wakeDestinationPort = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+  wakeDestinationAddress = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+  wakeType = [(HMDWakePacketConfigurationTLV *)self wakeType];
+  wakePattern = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+  v9 = [v3 stringWithFormat:@"<HMDWakePacketConfigurationTLV wakePacketType=%@, wakeDestinationPort=%@, wakeDestinationAddress=%@, wakeType=%@, wakePattern=%@>", wakePacketType, wakeDestinationPort, wakeDestinationAddress, wakeType, wakePattern];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -37,35 +37,35 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
-      v8 = [(HMDWakePacketConfigurationTLV *)v6 wakePacketType];
-      if (v7 != v8)
+      v6 = equalCopy;
+      wakePacketType = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+      wakePacketType2 = [(HMDWakePacketConfigurationTLV *)v6 wakePacketType];
+      if (wakePacketType != wakePacketType2)
       {
-        v9 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
-        v39 = [(HMDWakePacketConfigurationTLV *)v6 wakePacketType];
-        v40 = v9;
-        if (![v9 isEqual:?])
+        wakePacketType3 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+        wakePacketType4 = [(HMDWakePacketConfigurationTLV *)v6 wakePacketType];
+        v40 = wakePacketType3;
+        if (![wakePacketType3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_29;
         }
       }
 
-      v11 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
-      v12 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationPort];
-      v41 = v11;
-      if (v11 != v12)
+      wakeDestinationPort = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+      wakeDestinationPort2 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationPort];
+      v41 = wakeDestinationPort;
+      if (wakeDestinationPort != wakeDestinationPort2)
       {
-        v3 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
-        v37 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationPort];
-        if (![v3 isEqual:?])
+        wakeDestinationPort3 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+        wakeDestinationPort4 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationPort];
+        if (![wakeDestinationPort3 isEqual:?])
         {
           v10 = 0;
 LABEL_27:
 
 LABEL_28:
-          if (v7 == v8)
+          if (wakePacketType == wakePacketType2)
           {
 LABEL_30:
 
@@ -78,24 +78,24 @@ LABEL_29:
         }
       }
 
-      v13 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
-      v14 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationAddress];
-      v38 = v13;
-      v27 = v13 == v14;
-      v15 = v14;
+      wakeDestinationAddress = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+      wakeDestinationAddress2 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationAddress];
+      v38 = wakeDestinationAddress;
+      v27 = wakeDestinationAddress == wakeDestinationAddress2;
+      v15 = wakeDestinationAddress2;
       if (!v27)
       {
-        v16 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
-        v33 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationAddress];
-        v34 = v16;
-        if (![v16 isEqual:?])
+        wakeDestinationAddress3 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+        wakeDestinationAddress4 = [(HMDWakePacketConfigurationTLV *)v6 wakeDestinationAddress];
+        v34 = wakeDestinationAddress3;
+        if (![wakeDestinationAddress3 isEqual:?])
         {
           v10 = 0;
           v17 = v38;
 LABEL_25:
 
 LABEL_26:
-          if (v41 == v12)
+          if (v41 == wakeDestinationPort2)
           {
             goto LABEL_28;
           }
@@ -104,56 +104,56 @@ LABEL_26:
         }
       }
 
-      v18 = [(HMDWakePacketConfigurationTLV *)self wakeType];
-      v35 = [(HMDWakePacketConfigurationTLV *)v6 wakeType];
+      wakeType = [(HMDWakePacketConfigurationTLV *)self wakeType];
+      wakeType2 = [(HMDWakePacketConfigurationTLV *)v6 wakeType];
       v36 = v15;
-      if (v18 == v35)
+      if (wakeType == wakeType2)
       {
-        v31 = v3;
-        v32 = v12;
+        v31 = wakeDestinationPort3;
+        v32 = wakeDestinationPort2;
       }
 
       else
       {
-        v19 = [(HMDWakePacketConfigurationTLV *)self wakeType];
-        v29 = [(HMDWakePacketConfigurationTLV *)v6 wakeType];
-        v30 = v19;
-        if (![v19 isEqual:?])
+        wakeType3 = [(HMDWakePacketConfigurationTLV *)self wakeType];
+        wakeType4 = [(HMDWakePacketConfigurationTLV *)v6 wakeType];
+        v30 = wakeType3;
+        if (![wakeType3 isEqual:?])
         {
           v10 = 0;
-          v26 = v35;
+          v26 = wakeType2;
           goto LABEL_23;
         }
 
-        v31 = v3;
-        v32 = v12;
+        v31 = wakeDestinationPort3;
+        v32 = wakeDestinationPort2;
       }
 
-      v20 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
-      v21 = [(HMDWakePacketConfigurationTLV *)v6 wakePattern];
-      v22 = v21;
-      if (v20 == v21)
+      wakePattern = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+      wakePattern2 = [(HMDWakePacketConfigurationTLV *)v6 wakePattern];
+      v22 = wakePattern2;
+      if (wakePattern == wakePattern2)
       {
 
         v10 = 1;
-        v26 = v35;
-        v27 = v18 == v35;
+        v26 = wakeType2;
+        v27 = wakeType == wakeType2;
       }
 
       else
       {
-        v23 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+        wakePattern3 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
         [(HMDWakePacketConfigurationTLV *)v6 wakePattern];
-        v25 = v24 = v18;
-        v10 = [v23 isEqual:v25];
+        v25 = v24 = wakeType;
+        v10 = [wakePattern3 isEqual:v25];
 
-        v18 = v24;
-        v26 = v35;
-        v27 = v24 == v35;
+        wakeType = v24;
+        v26 = wakeType2;
+        v27 = v24 == wakeType2;
       }
 
-      v3 = v31;
-      v12 = v32;
+      wakeDestinationPort3 = v31;
+      wakeDestinationPort2 = v32;
       if (v27)
       {
 LABEL_24:
@@ -181,20 +181,20 @@ LABEL_31:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDWakePacketConfigurationTLV allocWithZone:a3];
-  v5 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
-  v6 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
-  v7 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
-  v8 = [(HMDWakePacketConfigurationTLV *)self wakeType];
-  v9 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
-  v10 = [(HMDWakePacketConfigurationTLV *)v4 initWithWakePacketType:v5 wakeDestinationPort:v6 wakeDestinationAddress:v7 wakeType:v8 wakePattern:v9];
+  v4 = [HMDWakePacketConfigurationTLV allocWithZone:zone];
+  wakePacketType = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+  wakeDestinationPort = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+  wakeDestinationAddress = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+  wakeType = [(HMDWakePacketConfigurationTLV *)self wakeType];
+  wakePattern = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+  v10 = [(HMDWakePacketConfigurationTLV *)v4 initWithWakePacketType:wakePacketType wakeDestinationPort:wakeDestinationPort wakeDestinationAddress:wakeDestinationAddress wakeType:wakeType wakePattern:wakePattern];
 
   return v10;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
   v55 = 0u;
@@ -219,13 +219,13 @@ LABEL_31:
   v36 = 0u;
   v37 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+  wakePacketType = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
 
-  if (v5)
+  if (wakePacketType)
   {
-    v6 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
+    wakePacketType2 = [(HMDWakePacketConfigurationTLV *)self wakePacketType];
     v35 = 0;
-    v7 = [v6 serializeWithError:&v35];
+    v7 = [wakePacketType2 serializeWithError:&v35];
     v8 = v35;
 
     if (v8)
@@ -240,11 +240,11 @@ LABEL_31:
 LABEL_8:
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_31;
       }
 
@@ -255,13 +255,13 @@ LABEL_30:
     }
   }
 
-  v9 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+  wakeDestinationPort = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
 
-  if (v9)
+  if (wakeDestinationPort)
   {
-    v10 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
+    wakeDestinationPort2 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationPort];
     v34 = 0;
-    v7 = [v10 serializeWithError:&v34];
+    v7 = [wakeDestinationPort2 serializeWithError:&v34];
     v8 = v34;
 
     if (v8)
@@ -277,29 +277,29 @@ LABEL_30:
     }
   }
 
-  v12 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+  wakeDestinationAddress = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
 
-  if (v12)
+  if (wakeDestinationAddress)
   {
-    v13 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
+    wakeDestinationAddress2 = [(HMDWakePacketConfigurationTLV *)self wakeDestinationAddress];
     v33 = 0;
-    v7 = [v13 serializeWithError:&v33];
+    v7 = [wakeDestinationAddress2 serializeWithError:&v33];
     v8 = v33;
 
     if (!v8)
     {
-      v14 = [v7 bytes];
-      v15 = v14 + [v7 length];
+      bytes = [v7 bytes];
+      v15 = bytes + [v7 length];
       while (1)
       {
-        v16 = (v15 - v14) >= 255 ? 255 : v15 - v14;
+        v16 = (v15 - bytes) >= 255 ? 255 : v15 - bytes;
         if (TLV8BufferAppend())
         {
           goto LABEL_8;
         }
 
-        v14 += v16;
-        if (v14 >= v15)
+        bytes += v16;
+        if (bytes >= v15)
         {
 
           goto LABEL_22;
@@ -309,11 +309,11 @@ LABEL_30:
 
 LABEL_28:
 
-    if (a3)
+    if (error)
     {
       v21 = v8;
       v11 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_31;
     }
 
@@ -321,13 +321,13 @@ LABEL_28:
   }
 
 LABEL_22:
-  v17 = [(HMDWakePacketConfigurationTLV *)self wakeType];
+  wakeType = [(HMDWakePacketConfigurationTLV *)self wakeType];
 
-  if (v17)
+  if (wakeType)
   {
-    v18 = [(HMDWakePacketConfigurationTLV *)self wakeType];
+    wakeType2 = [(HMDWakePacketConfigurationTLV *)self wakeType];
     v32 = 0;
-    v7 = [v18 serializeWithError:&v32];
+    v7 = [wakeType2 serializeWithError:&v32];
     v8 = v32;
 
     if (v8)
@@ -343,13 +343,13 @@ LABEL_22:
     }
   }
 
-  v19 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+  wakePattern = [(HMDWakePacketConfigurationTLV *)self wakePattern];
 
-  if (v19)
+  if (wakePattern)
   {
-    v20 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
+    wakePattern2 = [(HMDWakePacketConfigurationTLV *)self wakePattern];
     v31 = 0;
-    v7 = [v20 serializeWithError:&v31];
+    v7 = [wakePattern2 serializeWithError:&v31];
     v8 = v31;
 
     if (v8)
@@ -357,18 +357,18 @@ LABEL_22:
       goto LABEL_28;
     }
 
-    v24 = [v7 bytes];
-    v25 = v24 + [v7 length];
+    bytes2 = [v7 bytes];
+    v25 = bytes2 + [v7 length];
     do
     {
-      if ((v25 - v24) >= 255)
+      if ((v25 - bytes2) >= 255)
       {
         v26 = 255;
       }
 
       else
       {
-        v26 = v25 - v24;
+        v26 = v25 - bytes2;
       }
 
       v27 = TLV8BufferAppend();
@@ -382,7 +382,7 @@ LABEL_22:
         v28 = v26;
       }
 
-      v24 += v28;
+      bytes2 += v28;
       if (v27)
       {
         v29 = 1;
@@ -390,7 +390,7 @@ LABEL_22:
 
       else
       {
-        v29 = v24 >= v25;
+        v29 = bytes2 >= v25;
       }
     }
 
@@ -413,21 +413,21 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v30 = a4;
+    errorCopy = error;
     v31 = 0;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v32 = 0;
     v12 = 0;
-    v13 = v7 + v8;
+    v13 = bytes + v8;
     while (1)
     {
       v43 = 0;
@@ -436,10 +436,10 @@ LABEL_31:
       v40 = 0;
       if (TLV8GetNext())
       {
-        if (v30)
+        if (errorCopy)
         {
           HMErrorFromOSStatus();
-          *v30 = v27 = 0;
+          *errorCopy = v27 = 0;
         }
 
         else
@@ -556,11 +556,11 @@ LABEL_21:
 LABEL_24:
           v25 = v31;
           v24 = v32;
-          if (v30)
+          if (errorCopy)
           {
             v26 = v9;
             v27 = 0;
-            *v30 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -585,7 +585,7 @@ LABEL_30:
   v24 = 0;
   v12 = 0;
 LABEL_31:
-  [(HMDWakePacketConfigurationTLV *)self setWakePacketType:v10, v30];
+  [(HMDWakePacketConfigurationTLV *)self setWakePacketType:v10, errorCopy];
   [(HMDWakePacketConfigurationTLV *)self setWakeDestinationPort:v12];
   [(HMDWakePacketConfigurationTLV *)self setWakeDestinationAddress:v24];
   [(HMDWakePacketConfigurationTLV *)self setWakeType:v11];
@@ -597,24 +597,24 @@ LABEL_35:
   return v27;
 }
 
-- (HMDWakePacketConfigurationTLV)initWithWakePacketType:(id)a3 wakeDestinationPort:(id)a4 wakeDestinationAddress:(id)a5 wakeType:(id)a6 wakePattern:(id)a7
+- (HMDWakePacketConfigurationTLV)initWithWakePacketType:(id)type wakeDestinationPort:(id)port wakeDestinationAddress:(id)address wakeType:(id)wakeType wakePattern:(id)pattern
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  portCopy = port;
+  addressCopy = address;
+  wakeTypeCopy = wakeType;
+  patternCopy = pattern;
   v21.receiver = self;
   v21.super_class = HMDWakePacketConfigurationTLV;
   v17 = [(HMDWakePacketConfigurationTLV *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_wakePacketType, a3);
-    objc_storeStrong(&v18->_wakeDestinationPort, a4);
-    objc_storeStrong(&v18->_wakeDestinationAddress, a5);
-    objc_storeStrong(&v18->_wakeType, a6);
-    objc_storeStrong(&v18->_wakePattern, a7);
+    objc_storeStrong(&v17->_wakePacketType, type);
+    objc_storeStrong(&v18->_wakeDestinationPort, port);
+    objc_storeStrong(&v18->_wakeDestinationAddress, address);
+    objc_storeStrong(&v18->_wakeType, wakeType);
+    objc_storeStrong(&v18->_wakePattern, pattern);
   }
 
   return v18;
@@ -627,24 +627,24 @@ LABEL_35:
   return [(HMDWakePacketConfigurationTLV *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDWakePacketConfigurationTLV);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDWakePacketConfigurationTLV *)v6 parseFromData:v5 error:&v11];
+    [(HMDWakePacketConfigurationTLV *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

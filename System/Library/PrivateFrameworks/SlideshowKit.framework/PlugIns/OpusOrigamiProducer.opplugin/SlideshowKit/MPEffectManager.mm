@@ -1,71 +1,71 @@
 @interface MPEffectManager
 + (id)sharedManager;
 + (void)initialize;
-+ (void)loadEffectManagerWithPaths:(id)a3;
++ (void)loadEffectManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (BOOL)allowTextCustomizationForEffectID:(id)a3 presetID:(id)a4 forTextAtIndex:(int64_t)a5;
-- (BOOL)effectDoesAccumulate:(id)a3;
-- (BOOL)effectNeedsPanoInformation:(id)a3;
-- (BOOL)effectNeedsRandomSeedInformation:(id)a3;
-- (BOOL)posterTimeIsStaticForEffectID:(id)a3 andPresetID:(id)a4;
-- (BOOL)skipPanoramaScaleForEffectID:(id)a3;
-- (BOOL)useUppercaseForEffectID:(id)a3 presetID:(id)a4 forTextAtIndex:(int64_t)a5;
-- (MPEffectManager)initWithPaths:(id)a3;
-- (double)defaultFullDurationForEffectID:(id)a3;
-- (double)defaultMainDurationForEffectID:(id)a3;
-- (double)defaultPhaseInDurationForEffectID:(id)a3;
-- (double)defaultPhaseOutDurationForEffectID:(id)a3;
-- (double)defaultPosterFrameTimeForEffect:(id)a3;
-- (double)defaultPosterFrameTimeForEffectID:(id)a3 andPresetID:(id)a4;
-- (double)durationPaddingForEffectID:(id)a3;
-- (double)maxFontSizeInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5;
-- (double)mediaAspectRatioForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6;
-- (double)mediaAspectRatioForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6 imageAspectRatio:(double)a7;
-- (double)mediaAspectRatioForEffectID:(id)a3 usingPresetID:(id)a4 atIndex:(int64_t)a5;
-- (double)mediaAspectRatioForEffectID:(id)a3 usingPresetID:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6;
-- (double)mediaAspectRatioHintForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6;
-- (double)minimumEffectDurationForEffectID:(id)a3;
-- (double)panoramaScaleOffsetForEffectID:(id)a3;
+- (BOOL)allowTextCustomizationForEffectID:(id)d presetID:(id)iD forTextAtIndex:(int64_t)index;
+- (BOOL)effectDoesAccumulate:(id)accumulate;
+- (BOOL)effectNeedsPanoInformation:(id)information;
+- (BOOL)effectNeedsRandomSeedInformation:(id)information;
+- (BOOL)posterTimeIsStaticForEffectID:(id)d andPresetID:(id)iD;
+- (BOOL)skipPanoramaScaleForEffectID:(id)d;
+- (BOOL)useUppercaseForEffectID:(id)d presetID:(id)iD forTextAtIndex:(int64_t)index;
+- (MPEffectManager)initWithPaths:(id)paths;
+- (double)defaultFullDurationForEffectID:(id)d;
+- (double)defaultMainDurationForEffectID:(id)d;
+- (double)defaultPhaseInDurationForEffectID:(id)d;
+- (double)defaultPhaseOutDurationForEffectID:(id)d;
+- (double)defaultPosterFrameTimeForEffect:(id)effect;
+- (double)defaultPosterFrameTimeForEffectID:(id)d andPresetID:(id)iD;
+- (double)durationPaddingForEffectID:(id)d;
+- (double)maxFontSizeInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index;
+- (double)mediaAspectRatioForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio;
+- (double)mediaAspectRatioForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio imageAspectRatio:(double)aspectRatio;
+- (double)mediaAspectRatioForEffectID:(id)d usingPresetID:(id)iD atIndex:(int64_t)index;
+- (double)mediaAspectRatioForEffectID:(id)d usingPresetID:(id)iD atIndex:(int64_t)index defaultAspectRatio:(double)ratio;
+- (double)mediaAspectRatioHintForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio;
+- (double)minimumEffectDurationForEffectID:(id)d;
+- (double)panoramaScaleOffsetForEffectID:(id)d;
 - (id)allCategoryIDs;
-- (id)aspectRatioForEffectID:(id)a3;
-- (id)attributesForEffectID:(id)a3 andPresetID:(id)a4;
-- (id)categoryIDsForEffectID:(id)a3;
-- (id)controlForAttribute:(id)a3 forEffectID:(id)a4;
-- (id)defaultStringForTextInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5 needsNSConversion:(BOOL)a6;
-- (id)effectIDsForCategoryID:(id)a3;
-- (id)effectsWithNumOfImages:(unint64_t)a3;
-- (id)imageInputInfoForEffectID:(id)a3;
-- (id)localizedCategoryNameFromCategoryID:(id)a3;
-- (id)localizedEffectNameForEffectID:(id)a3;
-- (id)localizedFontsForEffectID:(id)a3;
-- (id)localizedSettingsUITitleForTitleKey:(id)a3 inEffect:(id)a4;
-- (id)localizedString:(id)a3 forEffectID:(id)a4;
-- (id)mediaAspectRatioHintsForEffectID:(id)a3 usingPresetID:(id)a4 defaultAspectRatio:(double)a5;
-- (id)mediaAspectRatiosForEffectID:(id)a3 usingPresetID:(id)a4;
-- (id)mediaAspectRatiosForEffectID:(id)a3 usingPresetID:(id)a4 defaultAspectRatio:(double)a5;
-- (id)orientationForEffectID:(id)a3;
-- (id)presetIDsForEffectID:(id)a3;
-- (id)settingsUIControlDescriptionsForEffect:(id)a3;
-- (id)showTimeScriptForEffectID:(id)a3 atSlideIndex:(int64_t)a4;
-- (id)sizeScriptForEffectID:(id)a3 atIndex:(int64_t)a4;
-- (id)versionOfEffectID:(id)a3;
-- (int64_t)numberOfSecondarySlidesForEffectID:(id)a3;
-- (int64_t)numberOfSlidesForEffectID:(id)a3;
-- (int64_t)panoTypeForSlideAtIndex:(int64_t)a3 inEffect:(id)a4 forPresetID:(id)a5;
-- (unint64_t)maxNumOfImagesPerEffectInList:(id)a3;
-- (unint64_t)minNumOfImagesPerEffectInList:(id)a3;
-- (unint64_t)numOfImagesForEffectID:(id)a3;
-- (unint64_t)numOfImagesForEffectPresetID:(id)a3;
-- (void)_loadFontsFromPath:(id)a3 requiredFonts:(id)a4;
+- (id)aspectRatioForEffectID:(id)d;
+- (id)attributesForEffectID:(id)d andPresetID:(id)iD;
+- (id)categoryIDsForEffectID:(id)d;
+- (id)controlForAttribute:(id)attribute forEffectID:(id)d;
+- (id)defaultStringForTextInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index needsNSConversion:(BOOL)conversion;
+- (id)effectIDsForCategoryID:(id)d;
+- (id)effectsWithNumOfImages:(unint64_t)images;
+- (id)imageInputInfoForEffectID:(id)d;
+- (id)localizedCategoryNameFromCategoryID:(id)d;
+- (id)localizedEffectNameForEffectID:(id)d;
+- (id)localizedFontsForEffectID:(id)d;
+- (id)localizedSettingsUITitleForTitleKey:(id)key inEffect:(id)effect;
+- (id)localizedString:(id)string forEffectID:(id)d;
+- (id)mediaAspectRatioHintsForEffectID:(id)d usingPresetID:(id)iD defaultAspectRatio:(double)ratio;
+- (id)mediaAspectRatiosForEffectID:(id)d usingPresetID:(id)iD;
+- (id)mediaAspectRatiosForEffectID:(id)d usingPresetID:(id)iD defaultAspectRatio:(double)ratio;
+- (id)orientationForEffectID:(id)d;
+- (id)presetIDsForEffectID:(id)d;
+- (id)settingsUIControlDescriptionsForEffect:(id)effect;
+- (id)showTimeScriptForEffectID:(id)d atSlideIndex:(int64_t)index;
+- (id)sizeScriptForEffectID:(id)d atIndex:(int64_t)index;
+- (id)versionOfEffectID:(id)d;
+- (int64_t)numberOfSecondarySlidesForEffectID:(id)d;
+- (int64_t)numberOfSlidesForEffectID:(id)d;
+- (int64_t)panoTypeForSlideAtIndex:(int64_t)index inEffect:(id)effect forPresetID:(id)d;
+- (unint64_t)maxNumOfImagesPerEffectInList:(id)list;
+- (unint64_t)minNumOfImagesPerEffectInList:(id)list;
+- (unint64_t)numOfImagesForEffectID:(id)d;
+- (unint64_t)numOfImagesForEffectPresetID:(id)d;
+- (void)_loadFontsFromPath:(id)path requiredFonts:(id)fonts;
 - (void)dealloc;
-- (void)defaultDurationsForEffectID:(id)a3 phaseInDuration:(double *)a4 mainDuration:(double *)a5 phaseOutDuration:(double *)a6;
+- (void)defaultDurationsForEffectID:(id)d phaseInDuration:(double *)duration mainDuration:(double *)mainDuration phaseOutDuration:(double *)outDuration;
 @end
 
 @implementation MPEffectManager
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MPEffectManager;
   objc_msgSendSuper2(&v2, "initialize");
 }
@@ -75,13 +75,13 @@
   result = qword_1EF2D8;
   if (!qword_1EF2D8)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF2D8)
     {
       qword_1EF2D8 = [[MPEffectManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF2D8;
   }
 
@@ -92,11 +92,11 @@
 {
   if (qword_1EF2D8)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF2D8 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -154,14 +154,14 @@
   [(MPEffectManager *)&v10 dealloc];
 }
 
-- (id)versionOfEffectID:(id)a3
+- (id)versionOfEffectID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:d];
 
   return [v3 objectForKey:@"version"];
 }
 
-- (unint64_t)numOfImagesForEffectID:(id)a3
+- (unint64_t)numOfImagesForEffectID:(id)d
 {
   v5 = [-[NSMutableDictionary objectForKey:](self->mEffects "objectForKey:{"objectForKey:", @"hasMultiImageInput"}")];
   if (v5 && ([v5 BOOLValue] & 1) != 0)
@@ -169,8 +169,8 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"numberOfImages"}];
-  v8 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"numberOfImages"}];
+  v8 = [(NSMutableDictionary *)self->mEffects objectForKey:d];
   if (v7)
   {
     result = [objc_msgSend(v8 objectForKey:{@"numberOfImages", "intValue"}];
@@ -182,19 +182,19 @@
 
   else if ([v8 objectForKey:@"imageInputInfo"])
   {
-    result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"imageInputInfo", "count"}];
+    result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"imageInputInfo", "count"}];
     if (result)
     {
       return result;
     }
   }
 
-  if ([a3 rangeOfString:@"/"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([d rangeOfString:@"/"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v9 = [a3 substringToIndex:{objc_msgSend(a3, "rangeOfString:", @"/"}];
+  v9 = [d substringToIndex:{objc_msgSend(d, "rangeOfString:", @"/"}];
   v10 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{v9), "objectForKey:", @"imageInputInfo"}];
   v11 = [(NSMutableDictionary *)self->mEffects objectForKey:v9];
   if (v10)
@@ -216,14 +216,14 @@
   return result;
 }
 
-- (id)categoryIDsForEffectID:(id)a3
+- (id)categoryIDsForEffectID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:d];
 
   return [v3 objectForKey:@"categories"];
 }
 
-- (id)effectIDsForCategoryID:(id)a3
+- (id)effectIDsForCategoryID:(id)d
 {
   v5 = +[NSMutableSet set];
   v13 = 0u;
@@ -246,7 +246,7 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (([-[MPEffectManager categoryIDsForEffectID:](self categoryIDsForEffectID:{v11), "containsObject:", a3}] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"all"))
+        if (([-[MPEffectManager categoryIDsForEffectID:](self categoryIDsForEffectID:{v11), "containsObject:", d}] & 1) != 0 || objc_msgSend(d, "isEqualToString:", @"all"))
         {
           [v5 addObject:v11];
         }
@@ -261,23 +261,23 @@
   return v5;
 }
 
-- (id)localizedEffectNameForEffectID:(id)a3
+- (id)localizedEffectNameForEffectID:(id)d
 {
   result = [-[NSMutableDictionary objectForKey:](self->mEffects "objectForKey:{"objectForKey:", @"localizedEffectName"}")];
   if (!result)
   {
-    return a3;
+    return d;
   }
 
   return result;
 }
 
-- (id)localizedCategoryNameFromCategoryID:(id)a3
+- (id)localizedCategoryNameFromCategoryID:(id)d
 {
   v5 = [(NSMutableDictionary *)self->mCategories objectForKey:?];
   if (!v5)
   {
-    v7 = [(MPEffectManager *)self effectIDsForCategoryID:a3];
+    v7 = [(MPEffectManager *)self effectIDsForCategoryID:d];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -285,7 +285,7 @@
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v8)
     {
-      return a3;
+      return d;
     }
 
     v9 = v8;
@@ -313,7 +313,7 @@ LABEL_6:
           goto LABEL_6;
         }
 
-        return a3;
+        return d;
       }
     }
   }
@@ -321,31 +321,31 @@ LABEL_6:
   return v5;
 }
 
-- (id)localizedString:(id)a3 forEffectID:(id)a4
+- (id)localizedString:(id)string forEffectID:(id)d
 {
-  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a4), "objectForKey:", @"Localized Strings", "objectForKey:", a3}];
+  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"Localized Strings", "objectForKey:", string}];
   if (!result)
   {
-    return a3;
+    return string;
   }
 
   return result;
 }
 
-- (id)localizedSettingsUITitleForTitleKey:(id)a3 inEffect:(id)a4
+- (id)localizedSettingsUITitleForTitleKey:(id)key inEffect:(id)effect
 {
-  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a4), "objectForKey:", @"localizedSettingsUI", "objectForKey:", a3}];
+  result = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{effect), "objectForKey:", @"localizedSettingsUI", "objectForKey:", key}];
   if (!result)
   {
-    return a3;
+    return key;
   }
 
   return result;
 }
 
-- (id)controlForAttribute:(id)a3 forEffectID:(id)a4
+- (id)controlForAttribute:(id)attribute forEffectID:(id)d
 {
-  v5 = [(MPEffectManager *)self settingsUIControlDescriptionsForEffect:a4];
+  v5 = [(MPEffectManager *)self settingsUIControlDescriptionsForEffect:d];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -366,7 +366,7 @@ LABEL_6:
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
-        if ([objc_msgSend(v10 objectForKey:{kMPEffectUIControlAttributeKey[0]), "isEqualToString:", a3}])
+        if ([objc_msgSend(v10 objectForKey:{kMPEffectUIControlAttributeKey[0]), "isEqualToString:", attribute}])
         {
           return [v10 copy];
         }
@@ -389,14 +389,14 @@ LABEL_6:
   return result;
 }
 
-- (id)settingsUIControlDescriptionsForEffect:(id)a3
+- (id)settingsUIControlDescriptionsForEffect:(id)effect
 {
-  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:effect];
 
   return [v3 objectForKey:@"settingsUI"];
 }
 
-- (id)effectsWithNumOfImages:(unint64_t)a3
+- (id)effectsWithNumOfImages:(unint64_t)images
 {
   v5 = +[NSMutableSet set];
   v13 = 0u;
@@ -419,7 +419,7 @@ LABEL_6:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([(MPEffectManager *)self numberOfSlidesForEffectID:v11]== a3)
+        if ([(MPEffectManager *)self numberOfSlidesForEffectID:v11]== images)
         {
           [v5 addObject:v11];
         }
@@ -499,27 +499,27 @@ LABEL_6:
   return v3;
 }
 
-- (double)maxFontSizeInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5
+- (double)maxFontSizeInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index
 {
-  if (a4)
+  if (iD)
   {
-    v6 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v6 = @"Default";
+    iDCopy = @"Default";
   }
 
   v7 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if ([v7 count] <= a5)
+  if ([v7 count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a5];
+    v8 = [v7 objectAtIndex:index];
   }
 
   v9 = [v8 objectForKey:@"maxFontSize"];
@@ -532,17 +532,17 @@ LABEL_6:
   return v10;
 }
 
-- (id)presetIDsForEffectID:(id)a3
+- (id)presetIDsForEffectID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"presets"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"presets"}];
 
   return [v3 allKeys];
 }
 
-- (id)attributesForEffectID:(id)a3 andPresetID:(id)a4
+- (id)attributesForEffectID:(id)d andPresetID:(id)iD
 {
   [(NSLock *)self->mLock lock];
-  v7 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", a4}];
+  v7 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", iD}];
   if (v7)
   {
     v8 = v7;
@@ -550,15 +550,15 @@ LABEL_6:
 
   else
   {
-    a4 = @"Default";
-    v8 = [objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", @"Default", "copy"}];
+    iD = @"Default";
+    v8 = [objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", @"Default", "copy"}];
     if (!v8)
     {
 LABEL_5:
       v8 = [NSMutableDictionary dictionaryWithDictionary:v8];
-      v9 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"presets", "mutableCopy"}];
-      [v9 setObject:v8 forKey:a4];
-      [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "setObject:forKey:", v9, @"presets"}];
+      v9 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"presets", "mutableCopy"}];
+      [v9 setObject:v8 forKey:iD];
+      [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "setObject:forKey:", v9, @"presets"}];
 
       goto LABEL_6;
     }
@@ -574,7 +574,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)mediaAspectRatiosForEffectID:(id)a3 usingPresetID:(id)a4
+- (id)mediaAspectRatiosForEffectID:(id)d usingPresetID:(id)iD
 {
   v7 = +[NSMutableDictionary dictionary];
   v8 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
@@ -592,7 +592,7 @@ LABEL_6:
   {
     for (i = 0; i != v9; ++i)
     {
-      [(MPEffectManager *)self mediaAspectRatioForEffectID:a3 usingAttributes:[(MPEffectManager *)self attributesForEffectID:a3 andPresetID:a4] atIndex:i defaultAspectRatio:1.6];
+      [(MPEffectManager *)self mediaAspectRatioForEffectID:d usingAttributes:[(MPEffectManager *)self attributesForEffectID:d andPresetID:iD] atIndex:i defaultAspectRatio:1.6];
       *&v11 = v11;
       [v7 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", v11), ImageKey(i)}];
     }
@@ -601,25 +601,25 @@ LABEL_6:
   return v7;
 }
 
-- (double)mediaAspectRatioForEffectID:(id)a3 usingPresetID:(id)a4 atIndex:(int64_t)a5
+- (double)mediaAspectRatioForEffectID:(id)d usingPresetID:(id)iD atIndex:(int64_t)index
 {
-  v6 = [(MPEffectManager *)self mediaAspectRatiosForEffectID:a3 usingPresetID:a4];
+  v6 = [(MPEffectManager *)self mediaAspectRatiosForEffectID:d usingPresetID:iD];
   if (!v6)
   {
     return 9.22337204e18;
   }
 
   v7 = v6;
-  if ([v6 count] <= a5)
+  if ([v6 count] <= index)
   {
     return 9.22337204e18;
   }
 
-  [objc_msgSend(v7 objectForKey:{ImageKey(a5)), "floatValue"}];
+  [objc_msgSend(v7 objectForKey:{ImageKey(index)), "floatValue"}];
   return v8;
 }
 
-- (id)mediaAspectRatiosForEffectID:(id)a3 usingPresetID:(id)a4 defaultAspectRatio:(double)a5
+- (id)mediaAspectRatiosForEffectID:(id)d usingPresetID:(id)iD defaultAspectRatio:(double)ratio
 {
   v9 = +[NSMutableDictionary dictionary];
   v10 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
@@ -637,7 +637,7 @@ LABEL_6:
   {
     for (i = 0; i != v11; ++i)
     {
-      [(MPEffectManager *)self mediaAspectRatioForEffectID:a3 usingPresetID:a4 atIndex:i defaultAspectRatio:a5];
+      [(MPEffectManager *)self mediaAspectRatioForEffectID:d usingPresetID:iD atIndex:i defaultAspectRatio:ratio];
       *&v13 = v13;
       [v9 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", v13), ImageKey(i)}];
     }
@@ -646,9 +646,9 @@ LABEL_6:
   return v9;
 }
 
-- (double)mediaAspectRatioForEffectID:(id)a3 usingPresetID:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6
+- (double)mediaAspectRatioForEffectID:(id)d usingPresetID:(id)iD atIndex:(int64_t)index defaultAspectRatio:(double)ratio
 {
-  v11 = [NSString stringWithFormat:@"as/%d/%@/%@/%f", a5, a3, a4, *&a6];
+  v11 = [NSString stringWithFormat:@"as/%d/%@/%@/%f", index, d, iD, *&ratio];
   v12 = [(NSMutableDictionary *)self->mCachedAspectRatios objectForKey:v11];
   if (v12)
   {
@@ -658,7 +658,7 @@ LABEL_6:
 
   else
   {
-    [(MPEffectManager *)self mediaAspectRatioForEffectID:a3 usingAttributes:[(MPEffectManager *)self attributesForEffectID:a3 andPresetID:a4] atIndex:a5 defaultAspectRatio:a6];
+    [(MPEffectManager *)self mediaAspectRatioForEffectID:d usingAttributes:[(MPEffectManager *)self attributesForEffectID:d andPresetID:iD] atIndex:index defaultAspectRatio:ratio];
     v14 = v15;
     *&v15 = v15;
     [(NSMutableDictionary *)self->mCachedAspectRatios setObject:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v15], v11];
@@ -667,22 +667,22 @@ LABEL_6:
   return v14;
 }
 
-- (double)mediaAspectRatioForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6
+- (double)mediaAspectRatioForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio
 {
   v10 = [(MPEffectManager *)self imageInputInfoForEffectID:?];
   v11 = [v10 count];
-  if ((v11 - 1) >= a5)
+  if ((v11 - 1) >= index)
   {
-    v12 = a5;
+    indexCopy = index;
   }
 
   else
   {
-    v12 = (v11 - 1);
+    indexCopy = (v11 - 1);
   }
 
-  v13 = [objc_msgSend(v10 objectAtIndex:{v12), "objectForKey:", @"sizeScript"}];
-  if (v13 && (v14 = v13, v15 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a6), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectID:", a3)), @"numOfImages", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a5), @"indexOfImage", 0}], v16 = +[MPUtilities executeScript:withHeader:andAttributes:](MPUtilities, "executeScript:withHeader:andAttributes:", v14, v15, a4), v15, v17 = CGSizeFromString(v16), v17.height > 0.0))
+  v13 = [objc_msgSend(v10 objectAtIndex:{indexCopy), "objectForKey:", @"sizeScript"}];
+  if (v13 && (v14 = v13, v15 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", ratio), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectID:", d)), @"numOfImages", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", index), @"indexOfImage", 0}], v16 = +[MPUtilities executeScript:withHeader:andAttributes:](MPUtilities, "executeScript:withHeader:andAttributes:", v14, v15, attributes), v15, v17 = CGSizeFromString(v16), v17.height > 0.0))
   {
     return v17.width / v17.height;
   }
@@ -693,86 +693,86 @@ LABEL_6:
   }
 }
 
-- (id)imageInputInfoForEffectID:(id)a3
+- (id)imageInputInfoForEffectID:(id)d
 {
-  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"imageInputInfo", "copy"}];
+  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"imageInputInfo", "copy"}];
 
   return v3;
 }
 
-- (double)defaultPhaseInDurationForEffectID:(id)a3
+- (double)defaultPhaseInDurationForEffectID:(id)d
 {
   v4 = 0.0;
-  [(MPEffectManager *)self defaultDurationsForEffectID:a3 phaseInDuration:&v4 mainDuration:0 phaseOutDuration:0];
+  [(MPEffectManager *)self defaultDurationsForEffectID:d phaseInDuration:&v4 mainDuration:0 phaseOutDuration:0];
   return v4;
 }
 
-- (double)defaultMainDurationForEffectID:(id)a3
+- (double)defaultMainDurationForEffectID:(id)d
 {
   v4 = 0.0;
-  [(MPEffectManager *)self defaultDurationsForEffectID:a3 phaseInDuration:0 mainDuration:&v4 phaseOutDuration:0];
+  [(MPEffectManager *)self defaultDurationsForEffectID:d phaseInDuration:0 mainDuration:&v4 phaseOutDuration:0];
   return v4;
 }
 
-- (double)defaultPhaseOutDurationForEffectID:(id)a3
+- (double)defaultPhaseOutDurationForEffectID:(id)d
 {
   v4 = 0.0;
-  [(MPEffectManager *)self defaultDurationsForEffectID:a3 phaseInDuration:0 mainDuration:0 phaseOutDuration:&v4];
+  [(MPEffectManager *)self defaultDurationsForEffectID:d phaseInDuration:0 mainDuration:0 phaseOutDuration:&v4];
   return v4;
 }
 
-- (void)defaultDurationsForEffectID:(id)a3 phaseInDuration:(double *)a4 mainDuration:(double *)a5 phaseOutDuration:(double *)a6
+- (void)defaultDurationsForEffectID:(id)d phaseInDuration:(double *)duration mainDuration:(double *)mainDuration phaseOutDuration:(double *)outDuration
 {
   if ([+[MREffectManager sharedManager](MREffectManager "sharedManager")])
   {
     v11 = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
     v12 = v11;
-    if (a4)
+    if (duration)
     {
       [v11 phaseInDuration];
-      *a4 = v13;
+      *duration = v13;
     }
 
-    if (a5)
+    if (mainDuration)
     {
       [v12 mainDuration];
-      *a5 = v14;
+      *mainDuration = v14;
     }
 
-    if (a6)
+    if (outDuration)
     {
       [v12 phaseOutDuration];
 LABEL_25:
-      *a6 = v15;
+      *outDuration = v15;
     }
   }
 
   else
   {
-    if (a4)
+    if (duration)
     {
-      if ([a3 hasPrefix:@"SlidingPanels"])
+      if ([d hasPrefix:@"SlidingPanels"])
       {
         v16 = 0x3FE5555C52E72DA1;
       }
 
       else
       {
-        [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"phaseInDuration", "doubleValue"}];
+        [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"phaseInDuration", "doubleValue"}];
       }
 
-      *a4 = v16;
+      *duration = v16;
     }
 
-    if (a5)
+    if (mainDuration)
     {
-      [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"mainDuration", "doubleValue"}];
-      *a5 = v17;
-      v18 = [a3 hasPrefix:@"SlidingPanels"];
-      v19 = *a5;
+      [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"mainDuration", "doubleValue"}];
+      *mainDuration = v17;
+      v18 = [d hasPrefix:@"SlidingPanels"];
+      v19 = *mainDuration;
       if (v18)
       {
-        v19 = *a5 + -1.0;
+        v19 = *mainDuration + -1.0;
       }
 
       if ((v18 & 1) != 0 || v19 == 0.0)
@@ -782,20 +782,20 @@ LABEL_25:
           v19 = 3.0;
         }
 
-        *a5 = v19;
+        *mainDuration = v19;
       }
     }
 
-    if (a6)
+    if (outDuration)
     {
-      if ([a3 hasPrefix:@"SlidingPanels"])
+      if ([d hasPrefix:@"SlidingPanels"])
       {
         v15 = 0x3FD555475A31A4BELL;
       }
 
       else
       {
-        [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"phaseOutDuration", "doubleValue"}];
+        [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"phaseOutDuration", "doubleValue"}];
       }
 
       goto LABEL_25;
@@ -803,15 +803,15 @@ LABEL_25:
   }
 }
 
-- (double)defaultPosterFrameTimeForEffectID:(id)a3 andPresetID:(id)a4
+- (double)defaultPosterFrameTimeForEffectID:(id)d andPresetID:(id)iD
 {
-  if (!a4)
+  if (!iD)
   {
-    a4 = @"Default";
+    iD = @"Default";
   }
 
-  v6 = [-[MPEffectManager attributesForEffectID:andPresetID:](self attributesForEffectID:a3 andPresetID:{a4), "objectForKey:", @"posterTime"}];
-  if (v6 || (v6 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"posterTime"}]) != 0)
+  v6 = [-[MPEffectManager attributesForEffectID:andPresetID:](self attributesForEffectID:d andPresetID:{iD), "objectForKey:", @"posterTime"}];
+  if (v6 || (v6 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"posterTime"}]) != 0)
   {
 
     [v6 doubleValue];
@@ -821,14 +821,14 @@ LABEL_25:
   {
     v8 = 0.0;
     v9 = 0.0;
-    [(MPEffectManager *)self defaultDurationsForEffectID:a3 phaseInDuration:&v9 mainDuration:&v8 phaseOutDuration:0];
+    [(MPEffectManager *)self defaultDurationsForEffectID:d phaseInDuration:&v9 mainDuration:&v8 phaseOutDuration:0];
     return v9 + v8 * 0.5;
   }
 
   return result;
 }
 
-- (double)defaultPosterFrameTimeForEffect:(id)a3
+- (double)defaultPosterFrameTimeForEffect:(id)effect
 {
   v5 = [-[NSMutableDictionary objectForKey:](self->mEffects "objectForKey:{"objectForKey:", @"posterTime"}")];
   if (v5)
@@ -841,7 +841,7 @@ LABEL_25:
   {
     v7 = 0.0;
     v8 = 0.0;
-    [(MPEffectManager *)self defaultDurationsForEffectID:a3 phaseInDuration:&v8 mainDuration:&v7 phaseOutDuration:0];
+    [(MPEffectManager *)self defaultDurationsForEffectID:effect phaseInDuration:&v8 mainDuration:&v7 phaseOutDuration:0];
     result = v8 + v7;
     if (v8 + v7 == 0.0)
     {
@@ -852,7 +852,7 @@ LABEL_25:
   return result;
 }
 
-- (int64_t)numberOfSlidesForEffectID:(id)a3
+- (int64_t)numberOfSlidesForEffectID:(id)d
 {
   v5 = [-[NSMutableDictionary objectForKey:](self->mEffects "objectForKey:{"objectForKey:", @"hasMultiImageInput"}")];
   if (v5 && ([v5 BOOLValue] & 1) != 0)
@@ -860,7 +860,7 @@ LABEL_25:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"numberOfSlides"}];
+  v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"numberOfSlides"}];
   if (v7)
   {
 
@@ -871,13 +871,13 @@ LABEL_25:
   {
     v8 = +[MPEffectManager sharedManager];
 
-    return [v8 numOfImagesForEffectID:a3];
+    return [v8 numOfImagesForEffectID:d];
   }
 }
 
-- (int64_t)numberOfSecondarySlidesForEffectID:(id)a3
+- (int64_t)numberOfSecondarySlidesForEffectID:(id)d
 {
-  result = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"numberOfSecondarySlides"}];
+  result = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"numberOfSecondarySlides"}];
   if (result)
   {
 
@@ -887,19 +887,19 @@ LABEL_25:
   return result;
 }
 
-- (id)orientationForEffectID:(id)a3
+- (id)orientationForEffectID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:d];
 
   return [v3 objectForKey:@"orientation"];
 }
 
-- (id)aspectRatioForEffectID:(id)a3
+- (id)aspectRatioForEffectID:(id)d
 {
   result = [-[NSMutableDictionary objectForKey:](self->mEffects "objectForKey:{"objectForKey:", @"aspectRatio"}")];
   if (!result)
   {
-    if ([a3 hasPrefix:@"Origami2-P"])
+    if ([d hasPrefix:@"Origami2-P"])
     {
       return @"HiddenAspectRatio";
     }
@@ -913,16 +913,16 @@ LABEL_25:
   return result;
 }
 
-- (id)localizedFontsForEffectID:(id)a3
+- (id)localizedFontsForEffectID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mEffects objectForKey:d];
 
   return [v3 objectForKey:@"Localized Fonts"];
 }
 
-- (BOOL)skipPanoramaScaleForEffectID:(id)a3
+- (BOOL)skipPanoramaScaleForEffectID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"skipPanoramaScale"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"skipPanoramaScale"}];
   if (v3)
   {
 
@@ -932,27 +932,27 @@ LABEL_25:
   return v3;
 }
 
-- (id)defaultStringForTextInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5 needsNSConversion:(BOOL)a6
+- (id)defaultStringForTextInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index needsNSConversion:(BOOL)conversion
 {
-  if (a4)
+  if (iD)
   {
-    v9 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v9 = @"Default";
+    iDCopy = @"Default";
   }
 
   v10 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if ([v10 count] <= a5)
+  if ([v10 count] <= index)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v10 objectAtIndex:a5];
+    v11 = [v10 objectAtIndex:index];
   }
 
   v12 = [v11 objectForKey:@"fontSize"];
@@ -967,7 +967,7 @@ LABEL_25:
     v14 = @"Helvetica";
   }
 
-  v15 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"Localized Fonts"}];
+  v15 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"Localized Fonts"}];
   if (v15)
   {
     v16 = [v15 objectForKey:v14];
@@ -1048,20 +1048,20 @@ LABEL_25:
   return [[NSAttributedString alloc] initWithString:v20 attributes:v26];
 }
 
-- (BOOL)posterTimeIsStaticForEffectID:(id)a3 andPresetID:(id)a4
+- (BOOL)posterTimeIsStaticForEffectID:(id)d andPresetID:(id)iD
 {
-  if (a4)
+  if (iD)
   {
-    v6 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v6 = @"Default";
+    iDCopy = @"Default";
   }
 
   v7 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if (v7 || (v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"posterTimeIsStatic"}]) != 0)
+  if (v7 || (v7 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"posterTimeIsStatic"}]) != 0)
   {
 
     LOBYTE(v7) = [v7 BOOLValue];
@@ -1070,31 +1070,31 @@ LABEL_25:
   return v7;
 }
 
-- (id)showTimeScriptForEffectID:(id)a3 atSlideIndex:(int64_t)a4
+- (id)showTimeScriptForEffectID:(id)d atSlideIndex:(int64_t)index
 {
-  v5 = [(MPEffectManager *)self imageInputInfoForEffectID:a3];
-  if ([v5 count] <= a4)
+  v5 = [(MPEffectManager *)self imageInputInfoForEffectID:d];
+  if ([v5 count] <= index)
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a4];
+    lastObject = [v5 objectAtIndex:index];
   }
 
-  return [v6 objectForKey:@"showTimeScript"];
+  return [lastObject objectForKey:@"showTimeScript"];
 }
 
-- (double)minimumEffectDurationForEffectID:(id)a3
+- (double)minimumEffectDurationForEffectID:(id)d
 {
-  v3 = a3;
-  if ([a3 rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
+  dCopy = d;
+  if ([d rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v3 substringToIndex:{objc_msgSend(v3, "rangeOfString:", @"/"}];
+    dCopy = [dCopy substringToIndex:{objc_msgSend(dCopy, "rangeOfString:", @"/"}];
   }
 
-  v5 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{v3), "objectForKey:", @"minimumEffectDuration"}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{dCopy), "objectForKey:", @"minimumEffectDuration"}];
   if (!v5)
   {
     return 0.0;
@@ -1104,60 +1104,60 @@ LABEL_25:
   return result;
 }
 
-- (id)sizeScriptForEffectID:(id)a3 atIndex:(int64_t)a4
+- (id)sizeScriptForEffectID:(id)d atIndex:(int64_t)index
 {
-  v5 = [(MPEffectManager *)self imageInputInfoForEffectID:a3];
-  if ([v5 count] <= a4)
+  v5 = [(MPEffectManager *)self imageInputInfoForEffectID:d];
+  if ([v5 count] <= index)
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a4];
+    lastObject = [v5 objectAtIndex:index];
   }
 
-  return [v6 objectForKey:@"sizeScript"];
+  return [lastObject objectForKey:@"sizeScript"];
 }
 
-- (double)defaultFullDurationForEffectID:(id)a3
+- (double)defaultFullDurationForEffectID:(id)d
 {
   v5 = [MPUtilities idOfCombinedID:?];
   v9 = 0.0;
   v10 = 0.0;
   if (v5)
   {
-    v6 = v5;
+    dCopy = v5;
   }
 
   else
   {
-    v6 = a3;
+    dCopy = d;
   }
 
   v8 = 0.0;
-  [(MPEffectManager *)self defaultDurationsForEffectID:v6 phaseInDuration:&v10 mainDuration:&v9 phaseOutDuration:&v8];
+  [(MPEffectManager *)self defaultDurationsForEffectID:dCopy phaseInDuration:&v10 mainDuration:&v9 phaseOutDuration:&v8];
   return v10 + v9 + v8;
 }
 
-- (unint64_t)numOfImagesForEffectPresetID:(id)a3
+- (unint64_t)numOfImagesForEffectPresetID:(id)d
 {
-  v3 = a3;
-  if ([a3 rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
+  dCopy = d;
+  if ([d rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v3 substringToIndex:{objc_msgSend(v3, "rangeOfString:", @"/"}];
+    dCopy = [dCopy substringToIndex:{objc_msgSend(dCopy, "rangeOfString:", @"/"}];
   }
 
-  return [(MPEffectManager *)self numberOfSlidesForEffectID:v3];
+  return [(MPEffectManager *)self numberOfSlidesForEffectID:dCopy];
 }
 
-- (unint64_t)maxNumOfImagesPerEffectInList:(id)a3
+- (unint64_t)maxNumOfImagesPerEffectInList:(id)list
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [list countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v5)
   {
     return 0;
@@ -1172,7 +1172,7 @@ LABEL_25:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(list);
       }
 
       v10 = [(MPEffectManager *)self numberOfSlidesForEffectID:*(*(&v12 + 1) + 8 * i)];
@@ -1182,20 +1182,20 @@ LABEL_25:
       }
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [list countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-- (unint64_t)minNumOfImagesPerEffectInList:(id)a3
+- (unint64_t)minNumOfImagesPerEffectInList:(id)list
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [list countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v5)
   {
     return 99;
@@ -1210,7 +1210,7 @@ LABEL_25:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(list);
       }
 
       v10 = [(MPEffectManager *)self numberOfSlidesForEffectID:*(*(&v12 + 1) + 8 * i)];
@@ -1220,37 +1220,37 @@ LABEL_25:
       }
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [list countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v6);
   return v8;
 }
 
-- (BOOL)effectNeedsRandomSeedInformation:(id)a3
+- (BOOL)effectNeedsRandomSeedInformation:(id)information
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"needsRandomSeed"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{information), "objectForKey:", @"needsRandomSeed"}];
 
   return [v3 BOOLValue];
 }
 
-- (BOOL)effectNeedsPanoInformation:(id)a3
+- (BOOL)effectNeedsPanoInformation:(id)information
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"needsPanoInformation"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{information), "objectForKey:", @"needsPanoInformation"}];
 
   return [v3 BOOLValue];
 }
 
-- (BOOL)effectDoesAccumulate:(id)a3
+- (BOOL)effectDoesAccumulate:(id)accumulate
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"accumulates"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{accumulate), "objectForKey:", @"accumulates"}];
 
   return [v3 BOOLValue];
 }
 
-- (id)mediaAspectRatioHintsForEffectID:(id)a3 usingPresetID:(id)a4 defaultAspectRatio:(double)a5
+- (id)mediaAspectRatioHintsForEffectID:(id)d usingPresetID:(id)iD defaultAspectRatio:(double)ratio
 {
-  v9 = [NSString stringWithFormat:@"hint/%@/%@/%f", a3, a4, *&a5];
+  v9 = [NSString stringWithFormat:@"hint/%@/%@/%f", d, iD, *&ratio];
   v10 = [(NSMutableDictionary *)self->mCachedAspectRatios objectForKey:v9];
   if (!v10)
   {
@@ -1258,14 +1258,14 @@ LABEL_25:
     v11 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [-[MPEffectManager imageInputInfoForEffectID:](self imageInputInfoForEffectID:{a3), "count"}];
+      v11 = [-[MPEffectManager imageInputInfoForEffectID:](self imageInputInfoForEffectID:{d), "count"}];
     }
 
     if (v11 >= 1)
     {
       for (i = 0; i != v11; ++i)
       {
-        [(MPEffectManager *)self mediaAspectRatioHintForEffectID:a3 usingAttributes:[(MPEffectManager *)self attributesForEffectID:a3 andPresetID:a4] atIndex:i defaultAspectRatio:a5];
+        [(MPEffectManager *)self mediaAspectRatioHintForEffectID:d usingAttributes:[(MPEffectManager *)self attributesForEffectID:d andPresetID:iD] atIndex:i defaultAspectRatio:ratio];
         *&v13 = v13;
         [v10 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", v13), ImageKey(i)}];
       }
@@ -1277,10 +1277,10 @@ LABEL_25:
   return v10;
 }
 
-- (int64_t)panoTypeForSlideAtIndex:(int64_t)a3 inEffect:(id)a4 forPresetID:(id)a5
+- (int64_t)panoTypeForSlideAtIndex:(int64_t)index inEffect:(id)effect forPresetID:(id)d
 {
-  v9 = [NSString stringWithFormat:@"%@/%@-%ld", a4, a5, a3];
-  v10 = [(NSMutableDictionary *)self->mCachedBreakInfo objectForKey:v9];
+  index = [NSString stringWithFormat:@"%@/%@-%ld", effect, d, index];
+  v10 = [(NSMutableDictionary *)self->mCachedBreakInfo objectForKey:index];
   if (v10)
   {
 
@@ -1291,16 +1291,16 @@ LABEL_25:
   {
     v12 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v13 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-    v14 = [objc_msgSend(v12 objectAtIndex:{a3), "objectForKey:", @"panoType"}];
+    v14 = [objc_msgSend(v12 objectAtIndex:{index), "objectForKey:", @"panoType"}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 integerValue];
+      integerValue = [v14 integerValue];
     }
 
     else if (v14)
     {
-      v26 = self;
+      selfCopy = self;
       v16 = [[MUMathExpressionFloatBased alloc] initWithString:v14 error:0];
       v27 = 0u;
       v28 = 0u;
@@ -1344,36 +1344,36 @@ LABEL_25:
       }
 
       [(MUMathExpressionFloatBased *)v16 evaluate];
-      v15 = v25;
+      integerValue = v25;
 
-      self = v26;
+      self = selfCopy;
     }
 
     else
     {
-      v15 = 0;
+      integerValue = 0;
     }
 
-    [(NSMutableDictionary *)self->mCachedBreakInfo setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:v15], v9];
-    return v15;
+    [(NSMutableDictionary *)self->mCachedBreakInfo setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:integerValue], index];
+    return integerValue;
   }
 }
 
-- (double)mediaAspectRatioHintForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6
+- (double)mediaAspectRatioHintForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio
 {
   v11 = [(MPEffectManager *)self imageInputInfoForEffectID:?];
   v12 = [v11 count];
-  if ((v12 - 1) >= a5)
+  if ((v12 - 1) >= index)
   {
-    v13 = a5;
+    indexCopy = index;
   }
 
   else
   {
-    v13 = (v12 - 1);
+    indexCopy = (v12 - 1);
   }
 
-  v14 = [objc_msgSend(v11 objectAtIndex:{v13), "objectForKey:", @"aspectRatioHint"}];
+  v14 = [objc_msgSend(v11 objectAtIndex:{indexCopy), "objectForKey:", @"aspectRatioHint"}];
   if (v14)
   {
     v15 = v14;
@@ -1388,7 +1388,7 @@ LABEL_25:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v18 = [a4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v18 = [attributes countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v18)
         {
           v19 = v18;
@@ -1399,11 +1399,11 @@ LABEL_25:
             {
               if (*v29 != v20)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(attributes);
               }
 
               v22 = *(*(&v28 + 1) + 8 * i);
-              v23 = [a4 objectForKey:v22];
+              v23 = [attributes objectForKey:v22];
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
@@ -1419,7 +1419,7 @@ LABEL_25:
               [(MUMathExpressionFloatBased *)v17 setValue:v22 forVariable:v25];
             }
 
-            v19 = [a4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+            v19 = [attributes countByEnumeratingWithState:&v28 objects:v32 count:16];
           }
 
           while (v19);
@@ -1436,28 +1436,28 @@ LABEL_25:
   else
   {
 
-    [(MPEffectManager *)self mediaAspectRatioForEffectID:a3 usingAttributes:a4 atIndex:a5 defaultAspectRatio:a6];
+    [(MPEffectManager *)self mediaAspectRatioForEffectID:d usingAttributes:attributes atIndex:index defaultAspectRatio:ratio];
   }
 
   return result;
 }
 
-- (double)mediaAspectRatioForEffectID:(id)a3 usingAttributes:(id)a4 atIndex:(int64_t)a5 defaultAspectRatio:(double)a6 imageAspectRatio:(double)a7
+- (double)mediaAspectRatioForEffectID:(id)d usingAttributes:(id)attributes atIndex:(int64_t)index defaultAspectRatio:(double)ratio imageAspectRatio:(double)aspectRatio
 {
   v12 = [(MPEffectManager *)self imageInputInfoForEffectID:?];
   v13 = [v12 count];
-  if ((v13 - 1) >= a5)
+  if ((v13 - 1) >= index)
   {
-    v14 = a5;
+    indexCopy = index;
   }
 
   else
   {
-    v14 = (v13 - 1);
+    indexCopy = (v13 - 1);
   }
 
-  v15 = [objc_msgSend(v12 objectAtIndex:{v14), "objectForKey:", @"sizeScript"}];
-  if (v15 && (v16 = v15, v17 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a6), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectID:", a3)), @"numOfImages", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a7), @"imageAspectRatio", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a5), @"indexOfImage", 0}], v18 = +[MPUtilities executeScript:withHeader:andAttributes:](MPUtilities, "executeScript:withHeader:andAttributes:", v16, v17, a4), v17, v19 = CGSizeFromString(v18), v19.height > 0.0))
+  v15 = [objc_msgSend(v12 objectAtIndex:{indexCopy), "objectForKey:", @"sizeScript"}];
+  if (v15 && (v16 = v15, v17 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", ratio), @"layerWidth", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0), @"layerHeight", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectID:", d)), @"numOfImages", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", aspectRatio), @"imageAspectRatio", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", index), @"indexOfImage", 0}], v18 = +[MPUtilities executeScript:withHeader:andAttributes:](MPUtilities, "executeScript:withHeader:andAttributes:", v16, v17, attributes), v17, v19 = CGSizeFromString(v18), v19.height > 0.0))
   {
     return v19.width / v19.height;
   }
@@ -1468,9 +1468,9 @@ LABEL_25:
   }
 }
 
-- (double)panoramaScaleOffsetForEffectID:(id)a3
+- (double)panoramaScaleOffsetForEffectID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"panoramaScaleOffset"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"panoramaScaleOffset"}];
   if (!v3)
   {
     return 0.0;
@@ -1480,9 +1480,9 @@ LABEL_25:
   return result;
 }
 
-- (double)durationPaddingForEffectID:(id)a3
+- (double)durationPaddingForEffectID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{a3), "objectForKey:", @"durationPadding"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mEffects objectForKey:{d), "objectForKey:", @"durationPadding"}];
   if (!v3)
   {
     return 0.0;
@@ -1492,27 +1492,27 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)useUppercaseForEffectID:(id)a3 presetID:(id)a4 forTextAtIndex:(int64_t)a5
+- (BOOL)useUppercaseForEffectID:(id)d presetID:(id)iD forTextAtIndex:(int64_t)index
 {
-  if (a4)
+  if (iD)
   {
-    v6 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v6 = @"Default";
+    iDCopy = @"Default";
   }
 
   v7 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if ([v7 count] <= a5)
+  if ([v7 count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a5];
+    v8 = [v7 objectAtIndex:index];
   }
 
   v9 = [v8 objectForKey:@"uppercase"];
@@ -1525,27 +1525,27 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)allowTextCustomizationForEffectID:(id)a3 presetID:(id)a4 forTextAtIndex:(int64_t)a5
+- (BOOL)allowTextCustomizationForEffectID:(id)d presetID:(id)iD forTextAtIndex:(int64_t)index
 {
-  if (a4)
+  if (iD)
   {
-    v6 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v6 = @"Default";
+    iDCopy = @"Default";
   }
 
   v7 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if ([v7 count] <= a5)
+  if ([v7 count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a5];
+    v8 = [v7 objectAtIndex:index];
   }
 
   v9 = [v8 objectForKey:@"allowCustomization"];
@@ -1557,7 +1557,7 @@ LABEL_25:
   return [v9 BOOLValue];
 }
 
-+ (void)loadEffectManagerWithPaths:(id)a3
++ (void)loadEffectManagerWithPaths:(id)paths
 {
   if (qword_1EF2D8)
   {
@@ -1565,10 +1565,10 @@ LABEL_25:
     qword_1EF2D8 = 0;
   }
 
-  qword_1EF2D8 = [[MPEffectManager alloc] initWithPaths:a3];
+  qword_1EF2D8 = [[MPEffectManager alloc] initWithPaths:paths];
 }
 
-- (MPEffectManager)initWithPaths:(id)a3
+- (MPEffectManager)initWithPaths:(id)paths
 {
   v89.receiver = self;
   v89.super_class = MPEffectManager;
@@ -1585,9 +1585,9 @@ LABEL_25:
     [(NSLock *)v5 setName:@"MPEffectManager.lock"];
     v6 = +[NSMutableArray array];
     v7 = v6;
-    if (a3)
+    if (paths)
     {
-      [v6 addObjectsFromArray:a3];
+      [v6 addObjectsFromArray:paths];
     }
 
     else
@@ -1855,18 +1855,18 @@ LABEL_25:
   return v4;
 }
 
-- (void)_loadFontsFromPath:(id)a3 requiredFonts:(id)a4
+- (void)_loadFontsFromPath:(id)path requiredFonts:(id)fonts
 {
-  if ([+[NSFileManager fileExistsAtPath:a3], "fileExistsAtPath:", a3])
+  if ([+[NSFileManager fileExistsAtPath:path], "fileExistsAtPath:", path])
   {
-    v6 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtPath:"enumeratorAtPath:", a3];
-    v7 = [(NSDirectoryEnumerator *)v6 nextObject];
-    if (v7)
+    path = [+[NSFileManager defaultManager](NSFileManager enumeratorAtPath:"enumeratorAtPath:", path];
+    nextObject = [(NSDirectoryEnumerator *)path nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      nextObject2 = nextObject;
       do
       {
-        v9 = +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", [a3 stringByAppendingPathComponent:v8]);
+        v9 = +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", [path stringByAppendingPathComponent:nextObject2]);
         error = 0;
         if (CTFontManagerRegisterFontsForURL(v9, kCTFontManagerScopeProcess, &error))
         {
@@ -1880,10 +1880,10 @@ LABEL_25:
           CFRelease(v10);
         }
 
-        v8 = [(NSDirectoryEnumerator *)v6 nextObject];
+        nextObject2 = [(NSDirectoryEnumerator *)path nextObject];
       }
 
-      while (v8);
+      while (nextObject2);
     }
   }
 }

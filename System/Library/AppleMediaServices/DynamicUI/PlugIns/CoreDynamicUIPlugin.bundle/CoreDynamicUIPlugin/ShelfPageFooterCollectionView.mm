@@ -1,14 +1,14 @@
 @interface ShelfPageFooterCollectionView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation ShelfPageFooterCollectionView
 
 - (CGSize)contentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_73C90();
   v4 = v3;
   v6 = v5;
@@ -20,17 +20,17 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_73D24(width, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_73DC4();
   v5 = v4;
 

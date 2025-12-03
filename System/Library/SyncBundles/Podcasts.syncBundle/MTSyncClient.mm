@@ -7,39 +7,39 @@
 - (PFFairPlayInvalidationManager)fairplayInvalidationManager;
 - (id)_episodePropertiesToFetch;
 - (id)_episodeUUIDsFromDownloadInfo;
-- (id)_episodesWithDownloadBehavior:(int64_t)a3;
-- (id)_requestForEpisodesPendingDownloadDisablementWithDownloadableUUIDs:(id)a3;
-- (id)_requestForEpisodesPendingDownloadEnablementWithDownloadableUUIDs:(id)a3;
-- (id)_stringForAsset:(id)a3;
+- (id)_episodesWithDownloadBehavior:(int64_t)behavior;
+- (id)_requestForEpisodesPendingDownloadDisablementWithDownloadableUUIDs:(id)ds;
+- (id)_requestForEpisodesPendingDownloadEnablementWithDownloadableUUIDs:(id)ds;
+- (id)_stringForAsset:(id)asset;
 - (int64_t)_cannotEnqueueAssetsDownloadError;
-- (int64_t)_episodeDownloadErrorForATError:(id)a3;
-- (unint64_t)_hashWithEpisodeSet:(id)a3;
+- (int64_t)_episodeDownloadErrorForATError:(id)error;
+- (unint64_t)_hashWithEpisodeSet:(id)set;
 - (void)_NRPairedDeviceRegistryWatchDidBecomeActiveDarwinNotification;
-- (void)_cancelAsset:(id)a3 withError:(id)a4;
-- (void)_clearAssetURLForEpisode:(id)a3;
-- (void)_clearAssetURLForEpisodeWithUUID:(id)a3;
+- (void)_cancelAsset:(id)asset withError:(id)error;
+- (void)_clearAssetURLForEpisode:(id)episode;
+- (void)_clearAssetURLForEpisodeWithUUID:(id)d;
 - (void)_clearPlayedDownloadsAndSyncPodcastsIfCanEnqueueAssets;
-- (void)_deleteEpisodesNotInUUIDs:(id)a3;
+- (void)_deleteEpisodesNotInUUIDs:(id)ds;
 - (void)_deletePlayedManualDownloadsIfCharging;
-- (void)_handleDownloadInfoDidInvalidateNotification:(id)a3;
-- (void)_handleNewBatteryAndThermalLevelsWithMonitor:(id)a3;
+- (void)_handleDownloadInfoDidInvalidateNotification:(id)notification;
+- (void)_handleNewBatteryAndThermalLevelsWithMonitor:(id)monitor;
 - (void)_performCleanupTask;
-- (void)_pruneActiveDownloadsWithCompletion:(id)a3;
-- (void)_setCannotEnqueueAssetsError:(int64_t)a3;
-- (void)_setDownloadError:(id)a3 forEpisodeWithAsset:(id)a4;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applyChangesForSyncType:(unsigned int)a3 endpointType:(int)a4 fromStream:(id)a5 withSyncParams:(id)a6 withProgressHandler:(id)a7 withCompletionHandler:(id)a8;
-- (void)assetLinkController:(id)a3 didEnqueueAsset:(id)a4;
-- (void)assetLinkController:(id)a3 didFinishAsset:(id)a4;
-- (void)assetLinkController:(id)a3 didProcessAllTrackAssetsWithAssetType:(id)a4;
+- (void)_pruneActiveDownloadsWithCompletion:(id)completion;
+- (void)_setCannotEnqueueAssetsError:(int64_t)error;
+- (void)_setDownloadError:(id)error forEpisodeWithAsset:(id)asset;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applyChangesForSyncType:(unsigned int)type endpointType:(int)endpointType fromStream:(id)stream withSyncParams:(id)params withProgressHandler:(id)handler withCompletionHandler:(id)completionHandler;
+- (void)assetLinkController:(id)controller didEnqueueAsset:(id)asset;
+- (void)assetLinkController:(id)controller didFinishAsset:(id)asset;
+- (void)assetLinkController:(id)controller didProcessAllTrackAssetsWithAssetType:(id)type;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)environmentMonitorDidChangePower:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)environmentMonitorDidChangePower:(id)power;
 - (void)extensionAccessDidChange;
-- (void)getChangesForSyncType:(unsigned int)a3 endpointType:(int)a4 afterRevision:(unint64_t)a5 upToRevision:(unint64_t)a6 withSyncParams:(id)a7 intoOutputStream:(id)a8 withStartHandler:(id)a9 withProgressHandler:(id)a10 withCompletionHandler:(id)a11;
-- (void)initiateAssetDownloadsWithCompletion:(id)a3;
+- (void)getChangesForSyncType:(unsigned int)type endpointType:(int)endpointType afterRevision:(unint64_t)revision upToRevision:(unint64_t)toRevision withSyncParams:(id)params intoOutputStream:(id)stream withStartHandler:(id)handler withProgressHandler:(id)self0 withCompletionHandler:(id)self1;
+- (void)initiateAssetDownloadsWithCompletion:(id)completion;
 - (void)manualDownloadsDidChange;
-- (void)resetSyncDataWithCompletion:(id)a3;
+- (void)resetSyncDataWithCompletion:(id)completion;
 @end
 
 @implementation MTSyncClient
@@ -144,60 +144,60 @@
   return fairplayInvalidationManager;
 }
 
-- (void)_clearAssetURLForEpisode:(id)a3
+- (void)_clearAssetURLForEpisode:(id)episode
 {
-  v4 = a3;
-  if (+[MTStoreIdentifier isNotEmpty:](MTStoreIdentifier, "isNotEmpty:", [v4 storeTrackId]))
+  episodeCopy = episode;
+  if (+[MTStoreIdentifier isNotEmpty:](MTStoreIdentifier, "isNotEmpty:", [episodeCopy storeTrackId]))
   {
-    v5 = [v4 assetURL];
+    assetURL = [episodeCopy assetURL];
 
-    if (v5)
+    if (assetURL)
     {
       v6 = _MTLogCategoryDatabase();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v4 uuid];
-        v8 = [v4 title];
+        uuid = [episodeCopy uuid];
+        title = [episodeCopy title];
         v12 = 138412802;
-        v13 = v7;
+        v13 = uuid;
         v14 = 2112;
-        v15 = v8;
+        v15 = title;
         v16 = 2048;
-        v17 = [v4 storeTrackId];
+        storeTrackId = [episodeCopy storeTrackId];
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Requesting secure deletion for episode <%@ - %@> with adam id %lld", &v12, 0x20u);
       }
 
-      v9 = [(MTSyncClient *)self fairplayInvalidationManager];
-      v10 = [v4 assetURL];
-      v11 = [NSURL fileURLWithPath:v10];
-      [v9 markKeyForInvalidationAt:v11 shouldRemove:1];
+      fairplayInvalidationManager = [(MTSyncClient *)self fairplayInvalidationManager];
+      assetURL2 = [episodeCopy assetURL];
+      v11 = [NSURL fileURLWithPath:assetURL2];
+      [fairplayInvalidationManager markKeyForInvalidationAt:v11 shouldRemove:1];
     }
   }
 
-  [v4 setAssetURL:0];
+  [episodeCopy setAssetURL:0];
 }
 
-- (void)_clearAssetURLForEpisodeWithUUID:(id)a3
+- (void)_clearAssetURLForEpisodeWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [sub_2690() sharedInstance];
-  v6 = [v5 privateQueueContext];
+  dCopy = d;
+  sharedInstance = [sub_2690() sharedInstance];
+  privateQueueContext = [sharedInstance privateQueueContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2770;
   v9[3] = &unk_143F0;
-  v10 = v6;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = v6;
+  v10 = privateQueueContext;
+  v11 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
+  v8 = privateQueueContext;
   [v8 performBlockAndWaitWithSave:v9];
 }
 
-- (void)initiateAssetDownloadsWithCompletion:(id)a3
+- (void)initiateAssetDownloadsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_29E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -215,20 +215,20 @@
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)environmentMonitorDidChangePower:(id)a3
+- (void)environmentMonitorDidChangePower:(id)power
 {
-  v4 = [a3 isCharging];
+  isCharging = [power isCharging];
   v5 = sub_29E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v4;
+    HIDWORD(buf) = isCharging;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Device is now on charger %x", &buf, 8u);
   }
 
@@ -244,18 +244,18 @@
   objc_destroyWeak(&buf);
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   v5 = sub_29E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = [v4 networkType];
+    networkType = [reachabilityCopy networkType];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Network type is now %ld", buf, 0xCu);
   }
 
-  if ([v4 isRemoteServerLikelyReachable])
+  if ([reachabilityCopy isRemoteServerLikelyReachable])
   {
     objc_initWeak(buf, self);
     queue = self->_queue;
@@ -270,14 +270,14 @@
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v27 count:16];
+  uninstallCopy = uninstall;
+  v5 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v27 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -287,10 +287,10 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
         v23 = 0;
         v24 = &v23;
         v25 = 0x2020000000;
@@ -316,7 +316,7 @@
           sub_AA9C();
         }
 
-        v12 = [v8 isEqualToString:*v9];
+        v12 = [bundleIdentifier isEqualToString:*v9];
 
         if (v12)
         {
@@ -331,25 +331,25 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v27 count:16];
+      v5 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v27 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)assetLinkController:(id)a3 didEnqueueAsset:(id)a4
+- (void)assetLinkController:(id)controller didEnqueueAsset:(id)asset
 {
-  v5 = a4;
-  v6 = [v5 assetType];
-  v7 = [v6 isEqualToString:@"Podcast"];
+  assetCopy = asset;
+  assetType = [assetCopy assetType];
+  v7 = [assetType isEqualToString:@"Podcast"];
 
   if (v7)
   {
     v8 = sub_29E0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MTSyncClient *)self _stringForAsset:v5];
+      v9 = [(MTSyncClient *)self _stringForAsset:assetCopy];
       v10 = 138412290;
       v11 = v9;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Did enqueue asset %@", &v10, 0xCu);
@@ -357,28 +357,28 @@
   }
 }
 
-- (void)assetLinkController:(id)a3 didFinishAsset:(id)a4
+- (void)assetLinkController:(id)controller didFinishAsset:(id)asset
 {
-  v5 = a4;
-  v6 = [v5 assetType];
-  v7 = [v6 isEqualToString:@"Podcast"];
+  assetCopy = asset;
+  assetType = [assetCopy assetType];
+  v7 = [assetType isEqualToString:@"Podcast"];
 
   if (v7)
   {
     if ([(MTSyncClient *)self _shouldRunPodcastsSyncClient])
     {
-      v8 = [sub_32E0() sharedInstance];
-      v9 = [v8 isReady];
+      sharedInstance = [sub_32E0() sharedInstance];
+      isReady = [sharedInstance isReady];
 
-      if (v9)
+      if (isReady)
       {
         queue = self->_queue;
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_33C0;
         v15[3] = &unk_14440;
-        v16 = v5;
-        v17 = self;
+        v16 = assetCopy;
+        selfCopy = self;
         dispatch_async(queue, v15);
 
         goto LABEL_10;
@@ -391,8 +391,8 @@
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "MTSyncClient cannot open Podcasts DB. Will not handle completed asset.", buf, 2u);
       }
 
-      v13 = [sub_32E0() sharedInstance];
-      [v13 attemptToFix];
+      sharedInstance2 = [sub_32E0() sharedInstance];
+      [sharedInstance2 attemptToFix];
 
       v11 = 27;
     }
@@ -403,15 +403,15 @@
     }
 
     v14 = [NSError errorWithDomain:@"ATError" code:v11 userInfo:0];
-    [(MTSyncClient *)self _cancelAsset:v5 withError:v14];
+    [(MTSyncClient *)self _cancelAsset:assetCopy withError:v14];
   }
 
 LABEL_10:
 }
 
-- (void)assetLinkController:(id)a3 didProcessAllTrackAssetsWithAssetType:(id)a4
+- (void)assetLinkController:(id)controller didProcessAllTrackAssetsWithAssetType:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -419,8 +419,8 @@ LABEL_10:
   block[2] = sub_42D8;
   block[3] = &unk_144B8;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = typeCopy;
+  v7 = typeCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
@@ -429,10 +429,10 @@ LABEL_10:
 
 - (void)extensionAccessDidChange
 {
-  v3 = [sub_32E0() sharedInstance];
-  v4 = [v3 isReady];
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if (v4)
+  if (isReady)
   {
     v5 = sub_29E0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -460,10 +460,10 @@ LABEL_10:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Manual downloads did change.", buf, 2u);
   }
 
-  v4 = [sub_32E0() sharedInstance];
-  v5 = [v4 isReady];
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if ((v5 & 1) == 0)
+  if ((isReady & 1) == 0)
   {
     v8 = sub_29E0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -472,14 +472,14 @@ LABEL_10:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "MTSyncClient cannot open Podcasts DB. Will not handle manual downloads change.", buf, 2u);
     }
 
-    v6 = [sub_32E0() sharedInstance];
-    [(MTSyncClient *)v6 attemptToFix];
+    selfCopy = [sub_32E0() sharedInstance];
+    [(MTSyncClient *)selfCopy attemptToFix];
     goto LABEL_11;
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_isProcessingManualEpisodesChange)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isProcessingManualEpisodesChange)
   {
     v7 = sub_29E0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -488,32 +488,32 @@ LABEL_10:
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Manual downloads did change task already running. Will wait until current task finishes.", buf, 2u);
     }
 
-    v6->_isManualEpisodesChangePending = 1;
-    objc_sync_exit(v6);
+    selfCopy->_isManualEpisodesChangePending = 1;
+    objc_sync_exit(selfCopy);
 LABEL_11:
 
     return;
   }
 
-  *&v6->_isProcessingManualEpisodesChange = 1;
-  objc_sync_exit(v6);
+  *&selfCopy->_isProcessingManualEpisodesChange = 1;
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(buf, v6);
-  queue = v6->_queue;
+  objc_initWeak(buf, selfCopy);
+  queue = selfCopy->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_4724;
   v10[3] = &unk_144B8;
   objc_copyWeak(&v11, buf);
-  v10[4] = v6;
+  v10[4] = selfCopy;
   dispatch_async(queue, v10);
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
 }
 
-- (void)_handleDownloadInfoDidInvalidateNotification:(id)a3
+- (void)_handleDownloadInfoDidInvalidateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_29E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -521,26 +521,26 @@ LABEL_11:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Automatic downloads did change.", buf, 2u);
   }
 
-  v6 = [sub_32E0() sharedInstance];
-  v7 = [v6 isReady];
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if (v7)
+  if (isReady)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if (!v8->_isProcessingAutomaticEpisodesChange)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_isProcessingAutomaticEpisodesChange)
     {
-      *&v8->_isProcessingAutomaticEpisodesChange = 1;
-      objc_sync_exit(v8);
+      *&selfCopy->_isProcessingAutomaticEpisodesChange = 1;
+      objc_sync_exit(selfCopy);
 
-      objc_initWeak(buf, v8);
-      queue = v8->_queue;
+      objc_initWeak(buf, selfCopy);
+      queue = selfCopy->_queue;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_4DA4;
       v12[3] = &unk_144B8;
       objc_copyWeak(&v13, buf);
-      v12[4] = v8;
+      v12[4] = selfCopy;
       dispatch_async(queue, v12);
       objc_destroyWeak(&v13);
       objc_destroyWeak(buf);
@@ -554,8 +554,8 @@ LABEL_11:
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Automatic downloads did change task already running. Will wait until current task finishes.", buf, 2u);
     }
 
-    v8->_isAutomaticEpisodesChangePending = 1;
-    objc_sync_exit(v8);
+    selfCopy->_isAutomaticEpisodesChangePending = 1;
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -567,8 +567,8 @@ LABEL_11:
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "MTSyncClient cannot open Podcasts DB. Will not handle download info invalidation.", buf, 2u);
     }
 
-    v8 = [sub_32E0() sharedInstance];
-    [(MTSyncClient *)v8 attemptToFix];
+    selfCopy = [sub_32E0() sharedInstance];
+    [(MTSyncClient *)selfCopy attemptToFix];
   }
 
 LABEL_13:
@@ -595,15 +595,15 @@ LABEL_13:
 - (BOOL)_shouldRunPodcastsSyncClient
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.atc"];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.atc"];
 
   if (v4)
   {
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 getActivePairedDevice];
+    getActivePairedDevice = [v5 getActivePairedDevice];
     v7 = [[NSUUID alloc] initWithUUIDString:@"B743795D-BA43-40D7-BA73-D1415B0895D4"];
-    v8 = [v6 supportsCapability:v7];
+    v8 = [getActivePairedDevice supportsCapability:v7];
 
     return v8;
   }
@@ -640,23 +640,23 @@ LABEL_13:
   return v5;
 }
 
-- (void)_handleNewBatteryAndThermalLevelsWithMonitor:(id)a3
+- (void)_handleNewBatteryAndThermalLevelsWithMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(MTSyncClient *)self _canEnqueueAssetsUnderBatteryAndThermalLevels];
-  v6 = v5;
-  if (self->_cachedCanEnqueueAssetsUnderBatteryAndThermalLevels || !v5)
+  monitorCopy = monitor;
+  _canEnqueueAssetsUnderBatteryAndThermalLevels = [(MTSyncClient *)self _canEnqueueAssetsUnderBatteryAndThermalLevels];
+  v6 = _canEnqueueAssetsUnderBatteryAndThermalLevels;
+  if (self->_cachedCanEnqueueAssetsUnderBatteryAndThermalLevels || !_canEnqueueAssetsUnderBatteryAndThermalLevels)
   {
-    if (!(v5 & 1 | !self->_cachedCanEnqueueAssetsUnderBatteryAndThermalLevels))
+    if (!(_canEnqueueAssetsUnderBatteryAndThermalLevels & 1 | !self->_cachedCanEnqueueAssetsUnderBatteryAndThermalLevels))
     {
       v10 = sub_29E0();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 currentBatteryLevel];
+        [monitorCopy currentBatteryLevel];
         *buf = 134218240;
         v16 = v11;
         v17 = 2048;
-        v18 = [v4 currentThermalLevel];
+        currentThermalLevel = [monitorCopy currentThermalLevel];
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "New battery and thermal levels DO NOT allow sync battery %.2f thermal %llu", buf, 0x16u);
       }
 
@@ -670,11 +670,11 @@ LABEL_13:
     v7 = sub_29E0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 currentBatteryLevel];
+      [monitorCopy currentBatteryLevel];
       *buf = 134218240;
       v16 = v8;
       v17 = 2048;
-      v18 = [v4 currentThermalLevel];
+      currentThermalLevel = [monitorCopy currentThermalLevel];
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "New battery and thermal levels allow sync battery %.2f thermal %llu", buf, 0x16u);
     }
 
@@ -697,20 +697,20 @@ LABEL_13:
 {
   if ((ICSystemApplicationIsInstalled() & 1) == 0)
   {
-    v5 = sub_29E0();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    sharedInstance2 = sub_29E0();
+    if (os_log_type_enabled(sharedInstance2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "Podcasts app not installed. Will not enqueue assets to sync.", &v13, 2u);
+      _os_log_impl(&dword_0, sharedInstance2, OS_LOG_TYPE_ERROR, "Podcasts app not installed. Will not enqueue assets to sync.", &v13, 2u);
     }
 
     goto LABEL_12;
   }
 
-  v3 = [sub_32E0() sharedInstance];
-  v4 = [v3 isReady];
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if ((v4 & 1) == 0)
+  if ((isReady & 1) == 0)
   {
     v7 = sub_29E0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -719,8 +719,8 @@ LABEL_13:
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Cannot open Podcasts DB. Will not enqueue assets to sync.", &v13, 2u);
     }
 
-    v5 = [sub_32E0() sharedInstance];
-    [v5 attemptToFix];
+    sharedInstance2 = [sub_32E0() sharedInstance];
+    [sharedInstance2 attemptToFix];
 LABEL_12:
     v6 = 1;
     goto LABEL_13;
@@ -728,10 +728,10 @@ LABEL_12:
 
   if ([(MTSyncClient *)self _canEnqueueAssetsUnderBatteryAndThermalLevels])
   {
-    v5 = +[ICStorageManager sharedManager];
-    if ([v5 storageSpaceAvailable])
+    sharedInstance2 = +[ICStorageManager sharedManager];
+    if ([sharedInstance2 storageSpaceAvailable])
     {
-      if (([v5 cachingEnabled]& 1) != 0)
+      if (([sharedInstance2 cachingEnabled]& 1) != 0)
       {
         v6 = 0;
         goto LABEL_13;
@@ -766,14 +766,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = +[ICEnvironmentMonitor sharedMonitor];
+  sharedInstance2 = +[ICEnvironmentMonitor sharedMonitor];
   v9 = sub_29E0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v5 currentThermalLevel];
-    [v5 currentBatteryLevel];
+    currentThermalLevel = [sharedInstance2 currentThermalLevel];
+    [sharedInstance2 currentBatteryLevel];
     v13 = 134218240;
-    v14 = v10;
+    v14 = currentThermalLevel;
     v15 = 2048;
     v16 = v11;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Thermal level too high %llu for battery level %f. Will not enqueue assets to sync.", &v13, 0x16u);
@@ -866,7 +866,7 @@ LABEL_23:
   return v14;
 }
 
-- (void)_setCannotEnqueueAssetsError:(int64_t)a3
+- (void)_setCannotEnqueueAssetsError:(int64_t)error
 {
   v4 = sub_27EC();
   v5 = [NSFetchRequest fetchRequestWithEntityName:v4];
@@ -879,18 +879,18 @@ LABEL_23:
   [v5 setPredicate:v10];
 
   [v5 setFetchBatchSize:200];
-  v11 = [sub_2690() sharedInstance];
-  v12 = [v11 privateQueueContext];
+  sharedInstance = [sub_2690() sharedInstance];
+  privateQueueContext = [sharedInstance privateQueueContext];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_60E8;
   v15[3] = &unk_14530;
-  v16 = v12;
+  v16 = privateQueueContext;
   v17 = v5;
-  v18 = a3;
+  errorCopy = error;
   v13 = v5;
-  v14 = v12;
+  v14 = privateQueueContext;
   [v14 performBlockAndWait:v15];
 }
 
@@ -898,15 +898,15 @@ LABEL_23:
 {
   dispatch_assert_queue_V2(self->_queue);
   self->_isPendingSync = 1;
-  v3 = [sub_32E0() sharedInstance];
-  v4 = [v3 isReady];
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if (v4)
+  if (isReady)
   {
-    v5 = [(MTSyncClient *)self _isPodcastsSyncSessionCurrentlyRunning];
+    _isPodcastsSyncSessionCurrentlyRunning = [(MTSyncClient *)self _isPodcastsSyncSessionCurrentlyRunning];
     v6 = sub_29E0();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (_isPodcastsSyncSessionCurrentlyRunning)
     {
       if (v7)
       {
@@ -924,15 +924,15 @@ LABEL_23:
       }
 
       [(MTSyncClient *)self _deletePlayedManualDownloadsIfCharging];
-      v10 = [(MTSyncClient *)self _cannotEnqueueAssetsDownloadError];
-      if (v10)
+      _cannotEnqueueAssetsDownloadError = [(MTSyncClient *)self _cannotEnqueueAssetsDownloadError];
+      if (_cannotEnqueueAssetsDownloadError)
       {
-        [(MTSyncClient *)self _setCannotEnqueueAssetsError:v10];
+        [(MTSyncClient *)self _setCannotEnqueueAssetsError:_cannotEnqueueAssetsDownloadError];
         v11 = sub_29E0();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v16 = v10;
+          v16 = _cannotEnqueueAssetsDownloadError;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "[Sync Attempt] Cannot enqueue assets with error %lld. Will attempt later.", buf, 0xCu);
         }
       }
@@ -964,29 +964,29 @@ LABEL_23:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "[Sync Attempt] MTSyncClient cannot open Podcasts DB. Will attempt later.", buf, 2u);
     }
 
-    v9 = [sub_32E0() sharedInstance];
-    [v9 attemptToFix];
+    sharedInstance2 = [sub_32E0() sharedInstance];
+    [sharedInstance2 attemptToFix];
   }
 }
 
-- (int64_t)_episodeDownloadErrorForATError:(id)a3
+- (int64_t)_episodeDownloadErrorForATError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"ATError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"ATError"];
 
   if (v5)
   {
-    v6 = [v3 code];
-    if (v6 <= 32)
+    code = [errorCopy code];
+    if (code <= 32)
     {
-      if (v6 == &dword_C + 2)
+      if (code == &dword_C + 2)
       {
         v7 = 2;
         goto LABEL_10;
       }
 
-      if (v6 == &dword_1C + 3)
+      if (code == &dword_1C + 3)
       {
         v7 = 8;
         goto LABEL_10;
@@ -995,19 +995,19 @@ LABEL_23:
 
     else
     {
-      if (v6 == &stru_20.cmd + 1)
+      if (code == &stru_20.cmd + 1)
       {
         v7 = 10;
         goto LABEL_10;
       }
 
-      if (v6 == &stru_20.cmd + 2)
+      if (code == &stru_20.cmd + 2)
       {
         v7 = 4;
         goto LABEL_10;
       }
 
-      if (v6 == &stru_20.cmd + 3)
+      if (code == &stru_20.cmd + 3)
       {
         v7 = 6;
         goto LABEL_10;
@@ -1018,40 +1018,40 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v8 = [v3 domain];
-  v9 = [v8 isEqualToString:@"MTSyncClientErrorDomain"];
+  domain2 = [errorCopy domain];
+  v9 = [domain2 isEqualToString:@"MTSyncClientErrorDomain"];
 
-  v7 = !v9 || [v3 code];
+  v7 = !v9 || [errorCopy code];
 LABEL_10:
 
   return v7;
 }
 
-- (void)_setDownloadError:(id)a3 forEpisodeWithAsset:(id)a4
+- (void)_setDownloadError:(id)error forEpisodeWithAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [sub_32E0() sharedInstance];
-  v9 = [v8 isReady];
+  errorCopy = error;
+  assetCopy = asset;
+  sharedInstance = [sub_32E0() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if (v9)
+  if (isReady)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [assetCopy identifier];
+    if (identifier)
     {
-      v11 = [sub_2690() sharedInstance];
-      v12 = [v11 privateQueueContext];
+      sharedInstance2 = [sub_2690() sharedInstance];
+      privateQueueContext = [sharedInstance2 privateQueueContext];
 
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_6AB8;
       v15[3] = &unk_14508;
-      v16 = v12;
-      v10 = v10;
-      v17 = v10;
-      v18 = self;
-      v19 = v6;
-      v13 = v12;
+      v16 = privateQueueContext;
+      identifier = identifier;
+      v17 = identifier;
+      selfCopy = self;
+      v19 = errorCopy;
+      v13 = privateQueueContext;
       [v13 performBlockAndWaitWithSave:v15];
     }
   }
@@ -1065,23 +1065,23 @@ LABEL_10:
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "MTSyncClient cannot open Podcasts DB. Will not set download error for asset.", buf, 2u);
     }
 
-    v10 = [sub_32E0() sharedInstance];
-    [v10 attemptToFix];
+    identifier = [sub_32E0() sharedInstance];
+    [identifier attemptToFix];
   }
 }
 
-- (void)_cancelAsset:(id)a3 withError:(id)a4
+- (void)_cancelAsset:(id)asset withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  [(MTSyncClient *)self _setDownloadError:v6 forEpisodeWithAsset:v7];
+  errorCopy = error;
+  assetCopy = asset;
+  [(MTSyncClient *)self _setDownloadError:errorCopy forEpisodeWithAsset:assetCopy];
   v8 = +[ATAssetLinkController sharedInstance];
-  v13 = v7;
+  v13 = assetCopy;
   v9 = [NSArray arrayWithObjects:&v13 count:1];
-  [v8 cancelAssets:v9 withError:v6 completion:0];
+  [v8 cancelAssets:v9 withError:errorCopy completion:0];
 
   v10 = +[ATAssetLinkController sharedInstance];
-  v12 = v7;
+  v12 = assetCopy;
   v11 = [NSArray arrayWithObjects:&v12 count:1];
 
   [v10 installCompleteForAssets:v11];
@@ -1188,7 +1188,7 @@ LABEL_10:
 {
   v2 = +[NSMutableSet set];
   v3 = +[NMSMediaPinningManager sharedManager];
-  v4 = [v3 downloadInfo];
+  downloadInfo = [v3 downloadInfo];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1196,19 +1196,19 @@ LABEL_10:
   v8[3] = &unk_14580;
   v9 = v2;
   v5 = v2;
-  [v4 enumerateMediaItemsUsingBlock:v8];
+  [downloadInfo enumerateMediaItemsUsingBlock:v8];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_requestForEpisodesPendingDownloadEnablementWithDownloadableUUIDs:(id)a3
+- (id)_requestForEpisodesPendingDownloadEnablementWithDownloadableUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = sub_27EC();
   v6 = [NSFetchRequest fetchRequestWithEntityName:v5];
 
-  v7 = [sub_6008() predicateForEpisodeUuids:v4];
+  v7 = [sub_6008() predicateForEpisodeUuids:dsCopy];
 
   v8 = [sub_6008() predicateForDownloadBehavior:2];
   v9 = [v8 NOT];
@@ -1218,45 +1218,45 @@ LABEL_10:
   v13 = [v7 AND:v12];
   [v6 setPredicate:v13];
 
-  v14 = [(MTSyncClient *)self _episodePropertiesToFetch];
-  [v6 setPropertiesToFetch:v14];
+  _episodePropertiesToFetch = [(MTSyncClient *)self _episodePropertiesToFetch];
+  [v6 setPropertiesToFetch:_episodePropertiesToFetch];
 
   [v6 setFetchBatchSize:200];
 
   return v6;
 }
 
-- (id)_requestForEpisodesPendingDownloadDisablementWithDownloadableUUIDs:(id)a3
+- (id)_requestForEpisodesPendingDownloadDisablementWithDownloadableUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = sub_27EC();
   v6 = [NSFetchRequest fetchRequestWithEntityName:v5];
 
-  v7 = [sub_6008() predicateForEpisodeUuids:v4];
+  v7 = [sub_6008() predicateForEpisodeUuids:dsCopy];
 
   v8 = [v7 NOT];
   v9 = [sub_6008() predicateForDownloadBehavior:6];
   v10 = [v8 AND:v9];
   [v6 setPredicate:v10];
 
-  v11 = [(MTSyncClient *)self _episodePropertiesToFetch];
-  [v6 setPropertiesToFetch:v11];
+  _episodePropertiesToFetch = [(MTSyncClient *)self _episodePropertiesToFetch];
+  [v6 setPropertiesToFetch:_episodePropertiesToFetch];
 
   [v6 setFetchBatchSize:200];
 
   return v6;
 }
 
-- (id)_episodesWithDownloadBehavior:(int64_t)a3
+- (id)_episodesWithDownloadBehavior:(int64_t)behavior
 {
   v5 = sub_27EC();
   v6 = [NSFetchRequest fetchRequestWithEntityName:v5];
 
-  v7 = [sub_6008() predicateForDownloadBehavior:a3];
+  v7 = [sub_6008() predicateForDownloadBehavior:behavior];
   [v6 setPredicate:v7];
 
-  v8 = [(MTSyncClient *)self _episodePropertiesToFetch];
-  [v6 setPropertiesToFetch:v8];
+  _episodePropertiesToFetch = [(MTSyncClient *)self _episodePropertiesToFetch];
+  [v6 setPropertiesToFetch:_episodePropertiesToFetch];
 
   [v6 setFetchBatchSize:200];
   v19 = 0;
@@ -1265,15 +1265,15 @@ LABEL_10:
   v22 = sub_7B5C;
   v23 = sub_7B6C;
   v24 = 0;
-  v9 = [sub_2690() sharedInstance];
-  v10 = [v9 privateQueueContext];
+  sharedInstance = [sub_2690() sharedInstance];
+  privateQueueContext = [sharedInstance privateQueueContext];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_7B74;
   v15[3] = &unk_145A8;
   v18 = &v19;
-  v11 = v10;
+  v11 = privateQueueContext;
   v16 = v11;
   v12 = v6;
   v17 = v12;
@@ -1285,29 +1285,29 @@ LABEL_10:
   return v13;
 }
 
-- (id)_stringForAsset:(id)a3
+- (id)_stringForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 prettyName];
-  v5 = [NSString stringWithFormat:@"<%p> %@", v3, v4];
+  assetCopy = asset;
+  prettyName = [assetCopy prettyName];
+  v5 = [NSString stringWithFormat:@"<%p> %@", assetCopy, prettyName];
 
   return v5;
 }
 
-- (void)_deleteEpisodesNotInUUIDs:(id)a3
+- (void)_deleteEpisodesNotInUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [sub_2690() sharedInstance];
-  v6 = [v5 privateQueueContext];
+  sharedInstance = [sub_2690() sharedInstance];
+  privateQueueContext = [sharedInstance privateQueueContext];
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_809C;
   v33[3] = &unk_143F0;
-  v22 = v3;
+  v22 = dsCopy;
   v34 = v22;
-  v35 = v6;
+  v35 = privateQueueContext;
   v7 = v4;
   v36 = v7;
   v21 = v35;
@@ -1319,8 +1319,8 @@ LABEL_10:
   v31 = 0u;
   v32 = 0u;
   v20 = [v7 copy];
-  v9 = [v20 keyEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  keyEnumerator = [v20 keyEnumerator];
+  v10 = [keyEnumerator countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1331,15 +1331,15 @@ LABEL_10:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 assetPathFromFileURL];
-        if ([v8 fileExistsAtPath:v15])
+        assetPathFromFileURL = [v14 assetPathFromFileURL];
+        if ([v8 fileExistsAtPath:assetPathFromFileURL])
         {
           v28 = 0;
-          v16 = [v8 removeItemAtPath:v15 error:&v28];
+          v16 = [v8 removeItemAtPath:assetPathFromFileURL error:&v28];
           v17 = v28;
           if ((v16 & 1) == 0)
           {
@@ -1347,7 +1347,7 @@ LABEL_10:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v38 = v15;
+              v38 = assetPathFromFileURL;
               v39 = 2112;
               v40 = v17;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Failed to remove episode asset at path %@ - %@", buf, 0x16u);
@@ -1363,13 +1363,13 @@ LABEL_10:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v38 = v15;
+            v38 = assetPathFromFileURL;
             _os_log_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "Tried to remove episode asset at path %@ but file does not exist", buf, 0xCu);
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v41 count:16];
+      v11 = [keyEnumerator countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
     while (v11);
@@ -1380,14 +1380,14 @@ LABEL_10:
   v25[2] = sub_82F4;
   v25[3] = &unk_14440;
   v26 = v24;
-  v27 = self;
+  selfCopy = self;
   v19 = v24;
   [v21 performBlockAndWaitWithSave:v25];
 }
 
-- (void)_pruneActiveDownloadsWithCompletion:(id)a3
+- (void)_pruneActiveDownloadsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_29E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1415,14 +1415,14 @@ LABEL_10:
   v34 = sub_7B5C;
   v35 = sub_7B6C;
   v36 = +[NSMutableSet set];
-  v13 = [sub_2690() sharedInstance];
-  v14 = [v13 privateQueueContext];
+  sharedInstance = [sub_2690() sharedInstance];
+  privateQueueContext = [sharedInstance privateQueueContext];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_88B8;
   v27[3] = &unk_145D0;
-  v15 = v14;
+  v15 = privateQueueContext;
   v28 = v15;
   v16 = v7;
   v29 = v16;
@@ -1439,7 +1439,7 @@ LABEL_10:
   v22[2] = sub_8A78;
   v22[3] = &unk_14620;
   objc_copyWeak(&v25, &location);
-  v21 = v4;
+  v21 = completionCopy;
   v23 = v21;
   v24 = buf;
   [v20 cancelAllAssetsMatchingPredicate:v18 excludeActiveDownloads:0 withError:v19 completion:v22];
@@ -1453,9 +1453,9 @@ LABEL_10:
 - (void)_deletePlayedManualDownloadsIfCharging
 {
   v3 = +[ICEnvironmentMonitor sharedMonitor];
-  v4 = [v3 isCharging];
+  isCharging = [v3 isCharging];
 
-  if (v4)
+  if (isCharging)
   {
     v5 = sub_29E0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1474,18 +1474,18 @@ LABEL_10:
 
     [v6 setFetchBatchSize:200];
     [v6 setReturnsObjectsAsFaults:0];
-    v12 = [sub_2690() sharedInstance];
-    v13 = [v12 privateQueueContext];
+    sharedInstance = [sub_2690() sharedInstance];
+    privateQueueContext = [sharedInstance privateQueueContext];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_8E14;
     v17[3] = &unk_143F0;
-    v18 = v13;
+    v18 = privateQueueContext;
     v19 = v6;
-    v20 = self;
+    selfCopy = self;
     v14 = v6;
-    v15 = v13;
+    v15 = privateQueueContext;
     [v15 performBlockAndWaitWithSave:v17];
     v16 = sub_29E0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1500,16 +1500,16 @@ LABEL_10:
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[ICEnvironmentMonitor sharedMonitor];
-  v3 = [v2 isCharging];
+  isCharging = [v2 isCharging];
 
-  if (v3)
+  if (isCharging)
   {
-    v4 = [sub_32E0() sharedInstance];
-    v5 = [v4 isReady];
+    sharedInstance = [sub_32E0() sharedInstance];
+    isReady = [sharedInstance isReady];
 
     v6 = sub_29E0();
     v7 = v6;
-    if (v5)
+    if (isReady)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -1524,11 +1524,11 @@ LABEL_10:
       v86 = sub_7B6C;
       v87 = 0;
       v8 = +[NSFileManager defaultManager];
-      v9 = [sub_21D4() managedAssetsDirectoryURL];
-      v10 = [v9 path];
+      managedAssetsDirectoryURL = [sub_21D4() managedAssetsDirectoryURL];
+      path = [managedAssetsDirectoryURL path];
       v11 = (v83 + 40);
       obj = *(v83 + 5);
-      v58 = [v8 contentsOfDirectoryAtPath:v10 error:&obj];
+      v58 = [v8 contentsOfDirectoryAtPath:path error:&obj];
       objc_storeStrong(v11, obj);
 
       if (*(v83 + 5))
@@ -1553,18 +1553,18 @@ LABEL_10:
         v18 = [sub_6008() predicateForDownloaded:1 excludeHidden:1];
         [v17 setPredicate:v18];
 
-        v19 = [sub_6008() propertiesToFetchAssetURL];
-        [v17 setPropertiesToFetch:v19];
+        propertiesToFetchAssetURL = [sub_6008() propertiesToFetchAssetURL];
+        [v17 setPropertiesToFetch:propertiesToFetchAssetURL];
 
-        v20 = [sub_2690() sharedInstance];
-        v21 = [v20 privateQueueContext];
+        sharedInstance2 = [sub_2690() sharedInstance];
+        privateQueueContext = [sharedInstance2 privateQueueContext];
 
         v22 = +[NSMutableDictionary dictionary];
         v76[0] = _NSConcreteStackBlock;
         v76[1] = 3221225472;
         v76[2] = sub_9B04;
         v76[3] = &unk_14648;
-        v77 = v21;
+        v77 = privateQueueContext;
         v55 = v17;
         v78 = v55;
         v80 = buf;
@@ -1637,8 +1637,8 @@ LABEL_10:
           v71 = 0u;
           v69 = 0u;
           v68 = 0u;
-          v36 = [v23 allKeys];
-          v37 = [v36 countByEnumeratingWithState:&v68 objects:v89 count:16];
+          allKeys = [v23 allKeys];
+          v37 = [allKeys countByEnumeratingWithState:&v68 objects:v89 count:16];
           if (v37)
           {
             v38 = *v69;
@@ -1648,7 +1648,7 @@ LABEL_10:
               {
                 if (*v69 != v38)
                 {
-                  objc_enumerationMutation(v36);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v40 = *(*(&v68 + 1) + 8 * j);
@@ -1658,7 +1658,7 @@ LABEL_10:
                 }
               }
 
-              v37 = [v36 countByEnumeratingWithState:&v68 objects:v89 count:16];
+              v37 = [allKeys countByEnumeratingWithState:&v68 objects:v89 count:16];
             }
 
             while (v37);
@@ -1695,8 +1695,8 @@ LABEL_10:
 
                 v46 = *(*(&v64 + 1) + 8 * k);
                 v47 = +[NSFileManager defaultManager];
-                v48 = [sub_21D4() managedAssetsDirectoryURL];
-                v49 = [v48 URLByAppendingPathComponent:v46];
+                managedAssetsDirectoryURL2 = [sub_21D4() managedAssetsDirectoryURL];
+                v49 = [managedAssetsDirectoryURL2 URLByAppendingPathComponent:v46];
                 v50 = (v83 + 40);
                 v63 = *(v83 + 5);
                 [v47 removeItemAtURL:v49 error:&v63];
@@ -1768,8 +1768,8 @@ LABEL_10:
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Cleanup task will not begin because DB is not ready", buf, 2u);
       }
 
-      v15 = [sub_32E0() sharedInstance];
-      [v15 attemptToFix];
+      sharedInstance3 = [sub_32E0() sharedInstance];
+      [sharedInstance3 attemptToFix];
     }
   }
 
@@ -1784,10 +1784,10 @@ LABEL_10:
   }
 }
 
-- (unint64_t)_hashWithEpisodeSet:(id)a3
+- (unint64_t)_hashWithEpisodeSet:(id)set
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&stru_14688];
+  allObjects = [set allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&stru_14688];
   v5 = [v4 componentsJoinedByString:&stru_14800];
   v6 = [v5 hash];
 
@@ -1814,11 +1814,11 @@ LABEL_11:
   }
 
   v2 = +[ICStorageManager sharedManager];
-  v3 = [v2 cachingEnabled];
+  cachingEnabled = [v2 cachingEnabled];
 
   v4 = sub_29E0();
   v5 = v4;
-  if (!v3)
+  if (!cachingEnabled)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
@@ -1843,11 +1843,11 @@ LABEL_12:
   return v6;
 }
 
-- (void)getChangesForSyncType:(unsigned int)a3 endpointType:(int)a4 afterRevision:(unint64_t)a5 upToRevision:(unint64_t)a6 withSyncParams:(id)a7 intoOutputStream:(id)a8 withStartHandler:(id)a9 withProgressHandler:(id)a10 withCompletionHandler:(id)a11
+- (void)getChangesForSyncType:(unsigned int)type endpointType:(int)endpointType afterRevision:(unint64_t)revision upToRevision:(unint64_t)toRevision withSyncParams:(id)params intoOutputStream:(id)stream withStartHandler:(id)handler withProgressHandler:(id)self0 withCompletionHandler:(id)self1
 {
-  if (a9)
+  if (handler)
   {
-    v11 = a11 == 0;
+    v11 = completionHandler == 0;
   }
 
   else
@@ -1857,26 +1857,26 @@ LABEL_12:
 
   if (!v11)
   {
-    v12 = *(a9 + 2);
-    v13 = a11;
-    v12(a9, 0);
-    v13[2](v13, 0);
+    v12 = *(handler + 2);
+    completionHandlerCopy = completionHandler;
+    v12(handler, 0);
+    completionHandlerCopy[2](completionHandlerCopy, 0);
   }
 }
 
-- (void)applyChangesForSyncType:(unsigned int)a3 endpointType:(int)a4 fromStream:(id)a5 withSyncParams:(id)a6 withProgressHandler:(id)a7 withCompletionHandler:(id)a8
+- (void)applyChangesForSyncType:(unsigned int)type endpointType:(int)endpointType fromStream:(id)stream withSyncParams:(id)params withProgressHandler:(id)handler withCompletionHandler:(id)completionHandler
 {
-  if (a8)
+  if (completionHandler)
   {
-    (*(a8 + 2))(a8, 0, 1, 1);
+    (*(completionHandler + 2))(completionHandler, 0, 1, 1);
   }
 }
 
-- (void)resetSyncDataWithCompletion:(id)a3
+- (void)resetSyncDataWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 

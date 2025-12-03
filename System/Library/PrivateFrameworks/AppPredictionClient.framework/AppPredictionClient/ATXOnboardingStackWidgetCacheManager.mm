@@ -1,62 +1,62 @@
 @interface ATXOnboardingStackWidgetCacheManager
 - (ATXOnboardingStackWidgetCacheManager)init;
-- (ATXOnboardingStackWidgetCacheManager)initWithPath:(id)a3 appLaunchStream:(id)a4 max3PWidgetsToSerialize:(unint64_t)a5;
-- (BOOL)_writeOnboardingWidgetStackCache:(id)a3 withError:(id *)a4;
-- (id)_mapDescriptorsToAppLaunchData:(id)a3 error:(id *)a4;
-- (id)_sortAndFilterOutLeastUsed3PWidgets:(id)a3;
-- (id)_splitDescriptorsIntoFirstPartyAndThirdParty:(id)a3;
+- (ATXOnboardingStackWidgetCacheManager)initWithPath:(id)path appLaunchStream:(id)stream max3PWidgetsToSerialize:(unint64_t)serialize;
+- (BOOL)_writeOnboardingWidgetStackCache:(id)cache withError:(id *)error;
+- (id)_mapDescriptorsToAppLaunchData:(id)data error:(id *)error;
+- (id)_sortAndFilterOutLeastUsed3PWidgets:(id)widgets;
+- (id)_splitDescriptorsIntoFirstPartyAndThirdParty:(id)party;
 - (id)_stackCache;
-- (id)fetchOnboardingStackWidgetCacheWithError:(id *)a3;
-- (id)updateCacheWithActivity:(id)a3;
-- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)a3 withAppLaunchDictionary:(id)a4;
+- (id)fetchOnboardingStackWidgetCacheWithError:(id *)error;
+- (id)updateCacheWithActivity:(id)activity;
+- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)launched withAppLaunchDictionary:(id)dictionary;
 @end
 
 @implementation ATXOnboardingStackWidgetCacheManager
 
 - (ATXOnboardingStackWidgetCacheManager)init
 {
-  v3 = [MEMORY[0x1E698B010] onboardingStackWidgetCacheFilePath];
+  onboardingStackWidgetCacheFilePath = [MEMORY[0x1E698B010] onboardingStackWidgetCacheFilePath];
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 InFocus];
-  v7 = [(ATXOnboardingStackWidgetCacheManager *)self initWithPath:v3 appLaunchStream:v6 max3PWidgetsToSerialize:100];
+  inFocus = [v5 InFocus];
+  v7 = [(ATXOnboardingStackWidgetCacheManager *)self initWithPath:onboardingStackWidgetCacheFilePath appLaunchStream:inFocus max3PWidgetsToSerialize:100];
 
   return v7;
 }
 
-- (ATXOnboardingStackWidgetCacheManager)initWithPath:(id)a3 appLaunchStream:(id)a4 max3PWidgetsToSerialize:(unint64_t)a5
+- (ATXOnboardingStackWidgetCacheManager)initWithPath:(id)path appLaunchStream:(id)stream max3PWidgetsToSerialize:(unint64_t)serialize
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  streamCopy = stream;
   v14.receiver = self;
   v14.super_class = ATXOnboardingStackWidgetCacheManager;
   v10 = [(ATXOnboardingStackWidgetCacheManager *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [pathCopy copy];
     cachePath = v10->_cachePath;
     v10->_cachePath = v11;
 
-    objc_storeStrong(&v10->_appLaunchStream, a4);
-    v10->_max3PWidgetsToSerialize = a5;
+    objc_storeStrong(&v10->_appLaunchStream, stream);
+    v10->_max3PWidgetsToSerialize = serialize;
   }
 
   return v10;
 }
 
-- (id)updateCacheWithActivity:(id)a3
+- (id)updateCacheWithActivity:(id)activity
 {
-  v4 = a3;
-  if (![v4 didDefer])
+  activityCopy = activity;
+  if (![activityCopy didDefer])
   {
     v5 = +[ATXWidgetDescriptorCache sharedInstance];
-    v7 = [v5 homeScreenDescriptors];
+    homeScreenDescriptors = [v5 homeScreenDescriptors];
     v21 = 0;
-    v8 = [(ATXOnboardingStackWidgetCacheManager *)self _mapDescriptorsToAppLaunchData:v7 error:&v21];
+    v8 = [(ATXOnboardingStackWidgetCacheManager *)self _mapDescriptorsToAppLaunchData:homeScreenDescriptors error:&v21];
     v9 = v21;
     if (v8)
     {
-      if (![v4 didDefer])
+      if (![activityCopy didDefer])
       {
         v11 = objc_autoreleasePoolPush();
         v12 = MEMORY[0x1E696AD98];
@@ -64,7 +64,7 @@
         v10 = [v12 numberWithBool:{objc_msgSend(v13, "hasiCloudFamily")}];
 
         objc_autoreleasePoolPop(v11);
-        if ([v4 didDefer])
+        if ([activityCopy didDefer])
         {
           v14 = __atxlog_handle_home_screen();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -138,17 +138,17 @@ LABEL_22:
   return v6;
 }
 
-- (id)_sortAndFilterOutLeastUsed3PWidgets:(id)a3
+- (id)_sortAndFilterOutLeastUsed3PWidgets:(id)widgets
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [(ATXOnboardingStackWidgetCacheManager *)self _splitDescriptorsIntoFirstPartyAndThirdParty:v5];
+  widgetsCopy = widgets;
+  allKeys = [widgetsCopy allKeys];
+  v6 = [(ATXOnboardingStackWidgetCacheManager *)self _splitDescriptorsIntoFirstPartyAndThirdParty:allKeys];
 
-  v7 = [v6 second];
-  v8 = [v7 mutableCopy];
+  second = [v6 second];
+  v8 = [second mutableCopy];
 
-  [(ATXOnboardingStackWidgetCacheManager *)self _sortWidgetsByDistinctDaysAppWasLaunched:v8 withAppLaunchDictionary:v4];
+  [(ATXOnboardingStackWidgetCacheManager *)self _sortWidgetsByDistinctDaysAppWasLaunched:v8 withAppLaunchDictionary:widgetsCopy];
   v9 = [v8 count];
   max3PWidgetsToSerialize = self->_max3PWidgetsToSerialize;
   if (v9 > max3PWidgetsToSerialize)
@@ -161,8 +161,8 @@ LABEL_22:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [v6 first];
-  v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  first = [v6 first];
+  v13 = [first countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
@@ -173,15 +173,15 @@ LABEL_22:
       {
         if (*v32 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(first);
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [v4 objectForKeyedSubscript:v17];
+        v18 = [widgetsCopy objectForKeyedSubscript:v17];
         [v11 setObject:v18 forKeyedSubscript:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v14 = [first countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v14);
@@ -207,7 +207,7 @@ LABEL_22:
         }
 
         v24 = *(*(&v27 + 1) + 8 * j);
-        v25 = [v4 objectForKeyedSubscript:{v24, v27}];
+        v25 = [widgetsCopy objectForKeyedSubscript:{v24, v27}];
         [v11 setObject:v25 forKeyedSubscript:v24];
       }
 
@@ -220,16 +220,16 @@ LABEL_22:
   return v11;
 }
 
-- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)a3 withAppLaunchDictionary:(id)a4
+- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)launched withAppLaunchDictionary:(id)dictionary
 {
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysAppWasLaunched_withAppLaunchDictionary___block_invoke;
   v7[3] = &unk_1E80C0710;
-  v8 = v5;
-  v6 = v5;
-  [a3 sortWithOptions:16 usingComparator:v7];
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  [launched sortWithOptions:16 usingComparator:v7];
 }
 
 uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysAppWasLaunched_withAppLaunchDictionary___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -259,17 +259,17 @@ uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysA
   }
 }
 
-- (id)_splitDescriptorsIntoFirstPartyAndThirdParty:(id)a3
+- (id)_splitDescriptorsIntoFirstPartyAndThirdParty:(id)party
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  partyCopy = party;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = partyCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -285,9 +285,9 @@ uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysA
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 extensionBundleIdentifier];
-        v13 = v12;
-        if (!v12 || (v14 = [v12 hasPrefix:@"com.apple."], v15 = v4, (v14 & 1) == 0))
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        v13 = extensionBundleIdentifier;
+        if (!extensionBundleIdentifier || (v14 = [extensionBundleIdentifier hasPrefix:@"com.apple."], v15 = v4, (v14 & 1) == 0))
         {
           v15 = v5;
         }
@@ -306,11 +306,11 @@ uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysA
   return v16;
 }
 
-- (id)_mapDescriptorsToAppLaunchData:(id)a3 error:(id *)a4
+- (id)_mapDescriptorsToAppLaunchData:(id)data error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 _pas_mappedSetWithTransform:&__block_literal_global];
+  dataCopy = data;
+  v6 = [dataCopy _pas_mappedSetWithTransform:&__block_literal_global];
   v7 = [[ATXAppLaunches alloc] initWithStream:self->_appLaunchStream];
   v8 = [(ATXAppLaunches *)v7 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:v6];
 
@@ -319,7 +319,7 @@ uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysA
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v5;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -335,12 +335,12 @@ uint64_t __105__ATXOnboardingStackWidgetCacheManager__sortWidgetsByDistinctDaysA
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 extensionIdentity];
-        v17 = [v16 containerBundleIdentifier];
+        extensionIdentity = [v15 extensionIdentity];
+        containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-        if (v17)
+        if (containerBundleIdentifier)
         {
-          v18 = [v8 objectForKeyedSubscript:v17];
+          v18 = [v8 objectForKeyedSubscript:containerBundleIdentifier];
           [v9 setObject:v18 forKeyedSubscript:v15];
         }
       }
@@ -372,23 +372,23 @@ id __77__ATXOnboardingStackWidgetCacheManager__mapDescriptorsToAppLaunchData_err
   return v6;
 }
 
-- (BOOL)_writeOnboardingWidgetStackCache:(id)a3 withError:(id *)a4
+- (BOOL)_writeOnboardingWidgetStackCache:(id)cache withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(ATXOnboardingStackWidgetCacheManager *)self _stackCache];
-  LOBYTE(a4) = [v7 storeSecureCodedObject:v6 error:a4];
+  cacheCopy = cache;
+  _stackCache = [(ATXOnboardingStackWidgetCacheManager *)self _stackCache];
+  LOBYTE(error) = [_stackCache storeSecureCodedObject:cacheCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)fetchOnboardingStackWidgetCacheWithError:(id *)a3
+- (id)fetchOnboardingStackWidgetCacheWithError:(id *)error
 {
-  v4 = [(ATXOnboardingStackWidgetCacheManager *)self _stackCache];
+  _stackCache = [(ATXOnboardingStackWidgetCacheManager *)self _stackCache];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 readSecureCodedObjectWithMaxValidAge:v8 allowableClasses:a3 error:-1.0];
+  v9 = [_stackCache readSecureCodedObjectWithMaxValidAge:v8 allowableClasses:error error:-1.0];
 
   return v9;
 }

@@ -1,7 +1,7 @@
 @interface MKPlaceCollectionsSizeController
 - ($0AC6E346AE4835514AAA8AC86D8F4844)collectionsConfiguration;
-- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)a3;
-- (MKPlaceCollectionsSizeController)initWithCollectionsConfiguration:(id)a3 isSingleCollection:(BOOL)a4 usingTraitCollections:(id)a5 inContext:(int64_t)a6;
+- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)width;
+- (MKPlaceCollectionsSizeController)initWithCollectionsConfiguration:(id)configuration isSingleCollection:(BOOL)collection usingTraitCollections:(id)collections inContext:(int64_t)context;
 - (UIEdgeInsets)sectionInset;
 - (double)minimumInterItemSpacing;
 @end
@@ -32,9 +32,9 @@
 
 - (double)minimumInterItemSpacing
 {
-  v2 = [(MKPlaceCollectionsSizeController *)self isMarzipan];
+  isMarzipan = [(MKPlaceCollectionsSizeController *)self isMarzipan];
   result = 10.0;
-  if (v2)
+  if (isMarzipan)
   {
     return 8.0;
   }
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)a3
+- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)width
 {
   [(MKPlaceCollectionsSizeController *)self sectionInset];
   v6 = v5;
@@ -50,8 +50,8 @@
   v8 = v7;
   [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
   v10 = v9;
-  v11 = [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
-  if (v11 == 2)
+  collectionsConfiguration = [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
+  if (collectionsConfiguration == 2)
   {
     isSingleCollection = self->_isSingleCollection;
     [(MKPlaceCollectionsSizeController *)self sectionInset];
@@ -60,7 +60,7 @@
     v21 = v19 + v20;
     if (isSingleCollection)
     {
-      v6 = a3 - v21;
+      v6 = width - v21;
 LABEL_12:
       [(MKPlaceCollectionsSizeController *)self defaultCollectionHeight];
       v12 = v27;
@@ -70,7 +70,7 @@ LABEL_12:
     [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
     v23 = (v22 - 1);
     [(MKPlaceCollectionsSizeController *)self minimumInterItemSpacing];
-    v14 = a3 - (v21 + v23 * v24);
+    v14 = width - (v21 + v23 * v24);
     [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
     v6 = v14 / v25;
     v16 = 0.65;
@@ -79,9 +79,9 @@ LABEL_12:
 
   v12 = v10;
   v13 = (v6 + v8) * v10;
-  if (v11 == 1)
+  if (collectionsConfiguration == 1)
   {
-    v14 = a3 - v13;
+    v14 = width - v13;
     [(MKPlaceCollectionsSizeController *)self collectionsConfiguration];
     v6 = v14 / v15;
     v16 = 0.524781341;
@@ -90,11 +90,11 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!collectionsConfiguration)
   {
     if (self->_isSingleCollection)
     {
-      v6 = a3 - v13;
+      v6 = width - v13;
     }
 
     else
@@ -113,12 +113,12 @@ LABEL_13:
   return result;
 }
 
-- (MKPlaceCollectionsSizeController)initWithCollectionsConfiguration:(id)a3 isSingleCollection:(BOOL)a4 usingTraitCollections:(id)a5 inContext:(int64_t)a6
+- (MKPlaceCollectionsSizeController)initWithCollectionsConfiguration:(id)configuration isSingleCollection:(BOOL)collection usingTraitCollections:(id)collections inContext:(int64_t)context
 {
-  v7 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v11 = a5;
+  collectionCopy = collection;
+  var1 = configuration.var1;
+  var0 = configuration.var0;
+  collectionsCopy = collections;
   v22.receiver = self;
   v22.super_class = MKPlaceCollectionsSizeController;
   v12 = [(MKPlaceCollectionsSizeController *)&v22 init];
@@ -130,9 +130,9 @@ LABEL_13:
 
   v12->_collectionsConfiguration.displayStyle = var0;
   v12->_collectionsConfiguration.collectionsPerRow = var1;
-  v12->_isSingleCollection = v7;
-  v14 = [v11 traitCollection];
-  v13->_isMarzipan = [v14 userInterfaceIdiom] == 5;
+  v12->_isSingleCollection = collectionCopy;
+  traitCollection = [collectionsCopy traitCollection];
+  v13->_isMarzipan = [traitCollection userInterfaceIdiom] == 5;
 
   if ((var0 - 1) < 2)
   {
@@ -151,13 +151,13 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a6 <= 5)
+  if (context <= 5)
   {
-    if (a6 != 1)
+    if (context != 1)
     {
-      if (a6 != 3)
+      if (context != 3)
       {
-        if (a6 == 4)
+        if (context == 4)
         {
           v15 = 15.0;
           v17 = 16.0;
@@ -191,17 +191,17 @@ LABEL_22:
     goto LABEL_6;
   }
 
-  if (a6 == 6)
+  if (context == 6)
   {
     goto LABEL_22;
   }
 
-  if (a6 == 7)
+  if (context == 7)
   {
     goto LABEL_24;
   }
 
-  if (a6 != 8)
+  if (context != 8)
   {
     goto LABEL_25;
   }
@@ -215,7 +215,7 @@ LABEL_6:
 LABEL_13:
   IsEnabled_Maps269 = MapsFeature_IsEnabled_Maps269();
   v19 = 244.0;
-  if (IsEnabled_Maps269 ^ 1 | v7)
+  if (IsEnabled_Maps269 ^ 1 | collectionCopy)
   {
     v19 = 180.0;
     v20 = 280.0;

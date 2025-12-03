@@ -1,27 +1,27 @@
 @interface RTPolygon
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPolygon:(id)a3;
-- (RTPolygon)initWithCentroid:(id)a3 vertices:(id)a4;
-- (RTPolygon)initWithCoder:(id)a3;
-- (RTPolygon)initWithVertices:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPolygon:(id)polygon;
+- (RTPolygon)initWithCentroid:(id)centroid vertices:(id)vertices;
+- (RTPolygon)initWithCoder:(id)coder;
+- (RTPolygon)initWithVertices:(id)vertices;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPolygon
 
-- (RTPolygon)initWithVertices:(id)a3
+- (RTPolygon)initWithVertices:(id)vertices
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  verticesCopy = vertices;
+  if ([verticesCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v4;
+    v5 = verticesCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v6)
     {
@@ -59,7 +59,7 @@
 
     v15 = -[RTCoordinate initWithLatitude:longitude:]([RTCoordinate alloc], "initWithLatitude:longitude:", v9 / [v5 count], v10 / objc_msgSend(v5, "count"));
     self = [(RTPolygon *)self initWithCentroid:v15 vertices:v5];
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -71,18 +71,18 @@
       _os_log_error_impl(&dword_1BF1C4000, &v15->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: vertices.count > 0", buf, 2u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
-- (RTPolygon)initWithCentroid:(id)a3 vertices:(id)a4
+- (RTPolygon)initWithCentroid:(id)centroid vertices:(id)vertices
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count])
+  centroidCopy = centroid;
+  verticesCopy = vertices;
+  if ([verticesCopy count])
   {
     v16.receiver = self;
     v16.super_class = RTPolygon;
@@ -90,14 +90,14 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_centroid, a3);
-      v11 = [v8 copy];
+      objc_storeStrong(&v9->_centroid, centroid);
+      v11 = [verticesCopy copy];
       vertices = v10->_vertices;
       v10->_vertices = v11;
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -109,48 +109,48 @@
       _os_log_error_impl(&dword_1BF1C4000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: vertices.count > 0", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   centroid = self->_centroid;
-  v5 = a3;
-  [v5 encodeObject:centroid forKey:@"centroid"];
-  [v5 encodeObject:self->_vertices forKey:@"vertices"];
+  coderCopy = coder;
+  [coderCopy encodeObject:centroid forKey:@"centroid"];
+  [coderCopy encodeObject:self->_vertices forKey:@"vertices"];
 }
 
-- (RTPolygon)initWithCoder:(id)a3
+- (RTPolygon)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"centroid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"centroid"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"vertices"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"vertices"];
 
   v10 = [(RTPolygon *)self initWithCentroid:v5 vertices:v9];
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   centroid = self->_centroid;
   vertices = self->_vertices;
 
   return [v4 initWithCentroid:centroid vertices:vertices];
 }
 
-- (BOOL)isEqualToPolygon:(id)a3
+- (BOOL)isEqualToPolygon:(id)polygon
 {
-  v4 = a3;
+  polygonCopy = polygon;
   v5 = [(NSArray *)self->_vertices count];
-  v6 = [v4 vertices];
-  v7 = [v6 count];
+  vertices = [polygonCopy vertices];
+  v7 = [vertices count];
 
   if (v5 == v7 && (v8 = [(NSArray *)self->_vertices count]) != 0)
   {
@@ -158,8 +158,8 @@
     while (1)
     {
       v10 = [(NSArray *)self->_vertices objectAtIndexedSubscript:0];
-      v11 = [v4 vertices];
-      v12 = [v11 objectAtIndexedSubscript:v9];
+      vertices2 = [polygonCopy vertices];
+      v12 = [vertices2 objectAtIndexedSubscript:v9];
       v13 = [v10 isEqual:v12];
 
       if (v13)
@@ -179,8 +179,8 @@
       do
       {
         v17 = [(NSArray *)self->_vertices objectAtIndexedSubscript:v16];
-        v18 = [v4 vertices];
-        v19 = [v18 objectAtIndexedSubscript:(v9 + v16) % v8];
+        vertices3 = [polygonCopy vertices];
+        v19 = [vertices3 objectAtIndexedSubscript:(v9 + v16) % v8];
         v14 = [v17 isEqual:v19];
 
         if ((v14 & 1) == 0)
@@ -209,18 +209,18 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTPolygon *)self isEqualToPolygon:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTPolygon *)self isEqualToPolygon:v5];
   }
 
   return v6;

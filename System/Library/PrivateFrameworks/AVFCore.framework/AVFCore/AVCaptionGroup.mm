@@ -3,7 +3,7 @@
 - (AVCaptionGroup)initWithTimeRange:(CMTimeRange *)timeRange;
 - (CMTimeRange)timeRange;
 - (id)description;
-- (opaqueCMSampleBuffer)copySampleBufferWithError:(id *)a3;
+- (opaqueCMSampleBuffer)copySampleBufferWithError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   v52 = *MEMORY[0x1E69E9840];
   if (!captions)
   {
-    v37 = self;
+    selfCopy = self;
     v32 = MEMORY[0x1E695DF30];
     v33 = *MEMORY[0x1E695D940];
     v34 = "captions != nil";
@@ -25,7 +25,7 @@ LABEL_30:
 
   if ((timeRange->start.flags & 1) == 0 || (timeRange->duration.flags & 1) == 0 || timeRange->duration.epoch || timeRange->duration.value < 0)
   {
-    v36 = self;
+    selfCopy2 = self;
     v32 = MEMORY[0x1E695DF30];
     v33 = *MEMORY[0x1E695D940];
     v34 = "CMTIMERANGE_IS_VALID(timeRange)";
@@ -77,7 +77,7 @@ LABEL_30:
       otherRange = v45;
       if (!CMTimeRangeEqual(&range, &otherRange))
       {
-        v26 = self;
+        selfCopy3 = self;
         v32 = MEMORY[0x1E695DF30];
         v33 = *MEMORY[0x1E695D940];
         v34 = "CMTimeRangeEqual( timeRange, intersection)";
@@ -151,7 +151,7 @@ LABEL_17:
 {
   if ((timeRange->start.flags & 1) == 0 || (timeRange->duration.flags & 1) == 0 || timeRange->duration.epoch || timeRange->duration.value < 0)
   {
-    v7 = self;
+    selfCopy = self;
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v8, v9, v10, v11, v12, "CMTIMERANGE_IS_VALID(timeRange)"), 0}];
     objc_exception_throw(v13);
   }
@@ -202,7 +202,7 @@ LABEL_17:
   return self;
 }
 
-- (opaqueCMSampleBuffer)copySampleBufferWithError:(id *)a3
+- (opaqueCMSampleBuffer)copySampleBufferWithError:(id *)error
 {
   v4 = [(NSArray *)[(AVCaptionGroup *)self captions] count];
   v30 = 0;

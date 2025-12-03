@@ -7,8 +7,8 @@
 
 + (id)familyCircle
 {
-  v2 = [a1 familyCircleAsync];
-  v3 = [CNResult resultWithFuture:v2];
+  familyCircleAsync = [self familyCircleAsync];
+  v3 = [CNResult resultWithFuture:familyCircleAsync];
 
   return v3;
 }
@@ -18,12 +18,12 @@
   v2 = objc_alloc_init(CNPromise);
   v3 = objc_alloc_init(getFAFetchFamilyCircleRequestClass());
   [v3 setPromptUserToResolveAuthenticatonFailure:0];
-  v4 = [(CNPromise *)v2 completionHandlerAdapter];
-  [v3 startRequestWithCompletionHandler:v4];
+  completionHandlerAdapter = [(CNPromise *)v2 completionHandlerAdapter];
+  [v3 startRequestWithCompletionHandler:completionHandlerAdapter];
 
-  v5 = [(CNPromise *)v2 future];
+  future = [(CNPromise *)v2 future];
 
-  return v5;
+  return future;
 }
 
 @end

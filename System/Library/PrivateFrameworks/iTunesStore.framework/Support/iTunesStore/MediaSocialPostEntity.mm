@@ -1,5 +1,5 @@
 @interface MediaSocialPostEntity
-+ (id)newEntityValuesWithMediaSocialPost:(id)a3;
++ (id)newEntityValuesWithMediaSocialPost:(id)post;
 - (BOOL)deleteFromDatabase;
 - (BOOL)hasActiivtyID;
 - (BOOL)isOverPollDuration;
@@ -8,48 +8,48 @@
 - (NSArray)contentItems;
 - (NSArray)externalServiceDestinations;
 - (NSArray)uploadedAttachments;
-- (id)_insertUploadWithAttachment:(id)a3 properties:(id)a4 database:(id)a5;
+- (id)_insertUploadWithAttachment:(id)attachment properties:(id)properties database:(id)database;
 - (id)allUploadPersistentIdentifiers;
-- (id)insertEntitiesForAttachments:(id)a3 withProperties:(id)a4;
-- (id)insertEntitiesForContentItems:(id)a3;
-- (id)insertEntitiesForExternalDestinations:(id)a3;
-- (void)updateWithPollingResponse:(id)a3;
+- (id)insertEntitiesForAttachments:(id)attachments withProperties:(id)properties;
+- (id)insertEntitiesForContentItems:(id)items;
+- (id)insertEntitiesForExternalDestinations:(id)destinations;
+- (void)updateWithPollingResponse:(id)response;
 @end
 
 @implementation MediaSocialPostEntity
 
-+ (id)newEntityValuesWithMediaSocialPost:(id)a3
++ (id)newEntityValuesWithMediaSocialPost:(id)post
 {
-  v3 = a3;
+  postCopy = post;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 accountIdentifier];
-  if (v5)
+  accountIdentifier = [postCopy accountIdentifier];
+  if (accountIdentifier)
   {
-    [v4 setObject:v5 forKey:@"account_id"];
+    [v4 setObject:accountIdentifier forKey:@"account_id"];
   }
 
-  v6 = [v3 authorIdentifier];
+  authorIdentifier = [postCopy authorIdentifier];
 
-  if (v6)
+  if (authorIdentifier)
   {
-    [v4 setObject:v6 forKey:@"author_id"];
+    [v4 setObject:authorIdentifier forKey:@"author_id"];
   }
 
-  v7 = [v3 authorType];
+  authorType = [postCopy authorType];
 
-  if (v7)
+  if (authorType)
   {
-    [v4 setObject:v7 forKey:@"author_type"];
+    [v4 setObject:authorType forKey:@"author_type"];
   }
 
-  v8 = [v3 text];
+  text = [postCopy text];
 
-  if (v8)
+  if (text)
   {
-    [v4 setObject:v8 forKey:@"message"];
+    [v4 setObject:text forKey:@"message"];
   }
 
-  if ([v3 isAttributed])
+  if ([postCopy isAttributed])
   {
     [v4 setObject:&__kCFBooleanTrue forKey:@"is_attributed"];
   }
@@ -61,8 +61,8 @@
 {
   v3 = +[NSMutableArray array];
   v4 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:[(MediaSocialPostEntity *)self persistentID]];
-  v5 = [(MediaSocialPostEntity *)self database];
-  v6 = [DirectUploadEntity queryWithDatabase:v5 predicate:v4];
+  database = [(MediaSocialPostEntity *)self database];
+  v6 = [DirectUploadEntity queryWithDatabase:database predicate:v4];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -81,8 +81,8 @@
   v13[0] = @"item_id";
   v13[1] = @"type";
   v4 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:[(MediaSocialPostEntity *)self persistentID]];
-  v5 = [(MediaSocialPostEntity *)self database];
-  v6 = [MediaSocialContentItemEntity queryWithDatabase:v5 predicate:v4];
+  database = [(MediaSocialPostEntity *)self database];
+  v6 = [MediaSocialContentItemEntity queryWithDatabase:database predicate:v4];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -108,8 +108,8 @@
   v13[2] = @"page_id";
   v13[3] = @"service_type";
   v4 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:[(MediaSocialPostEntity *)self persistentID]];
-  v5 = [(MediaSocialPostEntity *)self database];
-  v6 = [MediaSocialExternalTargetEntity queryWithDatabase:v5 predicate:v4];
+  database = [(MediaSocialPostEntity *)self database];
+  v6 = [MediaSocialExternalTargetEntity queryWithDatabase:database predicate:v4];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -127,12 +127,12 @@
   return v8;
 }
 
-- (id)insertEntitiesForAttachments:(id)a3 withProperties:(id)a4
+- (id)insertEntitiesForAttachments:(id)attachments withProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
+  propertiesCopy = properties;
+  attachmentsCopy = attachments;
   v8 = +[NSMutableArray array];
-  v9 = [v6 mutableCopy];
+  v9 = [propertiesCopy mutableCopy];
 
   if (!v9)
   {
@@ -154,7 +154,7 @@
   v21 = v12;
   v13 = v20;
   v14 = v9;
-  [v7 enumerateObjectsUsingBlock:v18];
+  [attachmentsCopy enumerateObjectsUsingBlock:v18];
 
   v15 = v21;
   v16 = v12;
@@ -162,9 +162,9 @@
   return v12;
 }
 
-- (id)insertEntitiesForContentItems:(id)a3
+- (id)insertEntitiesForContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableArray array];
   v6 = [[NSNumber alloc] initWithLongLong:{-[MediaSocialPostEntity persistentID](self, "persistentID")}];
   [(MediaSocialPostEntity *)self database];
@@ -177,7 +177,7 @@
   v16 = v7;
   v8 = v15;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [itemsCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v16;
   v11 = v7;
@@ -185,22 +185,22 @@
   return v7;
 }
 
-- (id)insertEntitiesForExternalDestinations:(id)a3
+- (id)insertEntitiesForExternalDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = +[NSMutableArray array];
-  v6 = [(MediaSocialPostEntity *)self database];
+  database = [(MediaSocialPostEntity *)self database];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000E2CA0;
   v13[3] = &unk_100328938;
   v14 = [[NSNumber alloc] initWithLongLong:{-[MediaSocialPostEntity persistentID](self, "persistentID")}];
-  v15 = v6;
+  v15 = database;
   v7 = v5;
   v16 = v7;
-  v8 = v6;
+  v8 = database;
   v9 = v14;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [destinationsCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v16;
   v11 = v7;
@@ -211,9 +211,9 @@
 - (BOOL)isReadyToSend
 {
   v3 = [(MediaSocialPostEntity *)self valueForProperty:@"is_failed"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     LOBYTE(v5) = 0;
   }
@@ -227,8 +227,8 @@
     v8 = [NSArray arrayWithObjects:v13 count:2];
     v9 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
 
-    v10 = [(MediaSocialPostEntity *)self database];
-    v11 = [DirectUploadEntity anyInDatabase:v10 predicate:v9];
+    database = [(MediaSocialPostEntity *)self database];
+    v11 = [DirectUploadEntity anyInDatabase:database predicate:v9];
 
     if (v11)
     {
@@ -311,19 +311,19 @@
   return v3;
 }
 
-- (void)updateWithPollingResponse:(id)a3
+- (void)updateWithPollingResponse:(id)response
 {
-  v12 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = [(MediaSocialPostEntity *)self valueForProperty:@"poll_count"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  v7 = [[NSNumber alloc] initWithInteger:v6 + 1];
+  v7 = [[NSNumber alloc] initWithInteger:integerValue + 1];
   [v4 setObject:v7 forKey:@"poll_count"];
-  [v12 pollingInterval];
+  [responseCopy pollingInterval];
   if (v8 <= 2.22044605e-16)
   {
-    [v12 pollDuration];
+    [responseCopy pollDuration];
   }
 
   else
@@ -331,7 +331,7 @@
     v9 = [[NSNumber alloc] initWithDouble:v8];
     [v4 setObject:v9 forKey:@"poll_interval"];
 
-    [v12 pollDuration];
+    [responseCopy pollDuration];
     v11 = [[NSNumber alloc] initWithDouble:v10];
     [v4 setObject:v11 forKey:@"poll_duration"];
   }
@@ -369,18 +369,18 @@
   v24[10] = @"upload_time";
   v24[11] = @"uti";
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [(MediaSocialPostEntity *)self database];
-  v13 = [[SSSQLiteQuery alloc] initWithDatabase:v12 descriptor:v8];
+  database = [(MediaSocialPostEntity *)self database];
+  v13 = [[SSSQLiteQuery alloc] initWithDatabase:database descriptor:v8];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000E3688;
   v20[3] = &unk_100328990;
-  v21 = v12;
+  v21 = database;
   v22 = v11;
   v14 = v3;
   v23 = v14;
   v15 = v11;
-  v16 = v12;
+  v16 = database;
   [v13 enumeratePersistentIDsAndProperties:v24 count:12 usingBlock:v20];
   v17 = v14;
 
@@ -393,39 +393,39 @@
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
-  v3 = [(MediaSocialPostEntity *)self database];
-  v4 = [(MediaSocialPostEntity *)v2 persistentID];
-  v5 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:v4];
-  v6 = [MediaSocialExternalTargetEntity queryWithDatabase:v3 predicate:v5];
+  selfCopy = self;
+  database = [(MediaSocialPostEntity *)self database];
+  persistentID = [(MediaSocialPostEntity *)selfCopy persistentID];
+  v5 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:persistentID];
+  v6 = [MediaSocialExternalTargetEntity queryWithDatabase:database predicate:v5];
   [v6 deleteAllEntities];
-  v7 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:v4];
+  v7 = [SSSQLiteComparisonPredicate predicateWithProperty:@"post_id" equalToLongLong:persistentID];
 
-  v8 = [DirectUploadEntity queryWithDatabase:v3 predicate:v7];
+  v8 = [DirectUploadEntity queryWithDatabase:database predicate:v7];
 
   [v8 deleteAllEntities];
-  v10.receiver = v2;
+  v10.receiver = selfCopy;
   v10.super_class = MediaSocialPostEntity;
-  LOBYTE(v2) = [(MediaSocialPostEntity *)&v10 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(MediaSocialPostEntity *)&v10 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_insertUploadWithAttachment:(id)a3 properties:(id)a4 database:(id)a5
+- (id)_insertUploadWithAttachment:(id)attachment properties:(id)properties database:(id)database
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [DirectUploadEntity newEntityValuesWithMediaSocialAttachment:v7];
-  [v10 addEntriesFromDictionary:v9];
+  attachmentCopy = attachment;
+  databaseCopy = database;
+  propertiesCopy = properties;
+  v10 = [DirectUploadEntity newEntityValuesWithMediaSocialAttachment:attachmentCopy];
+  [v10 addEntriesFromDictionary:propertiesCopy];
 
-  v11 = [[DirectUploadEntity alloc] initWithPropertyValues:v10 inDatabase:v8];
+  v11 = [[DirectUploadEntity alloc] initWithPropertyValues:v10 inDatabase:databaseCopy];
   if (v11)
   {
-    v12 = [v7 artists];
-    if ([v12 count])
+    artists = [attachmentCopy artists];
+    if ([artists count])
     {
-      v13 = [(DirectUploadEntity *)v11 insertEntitiesForArtists:v12 withProperties:0];
+      v13 = [(DirectUploadEntity *)v11 insertEntitiesForArtists:artists withProperties:0];
     }
   }
 

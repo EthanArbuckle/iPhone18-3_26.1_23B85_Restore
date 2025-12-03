@@ -1,7 +1,7 @@
 @interface MLCTensorParameter
 + (MLCTensorParameter)parameterWithTensor:(MLCTensor *)tensor;
 + (MLCTensorParameter)parameterWithTensor:(MLCTensor *)tensor optimizerData:(NSArray *)optimizerData;
-- (MLCTensorParameter)initWithTensor:(id)a3 optimizerData:(id)a4;
+- (MLCTensorParameter)initWithTensor:(id)tensor optimizerData:(id)data;
 @end
 
 @implementation MLCTensorParameter
@@ -9,7 +9,7 @@
 + (MLCTensorParameter)parameterWithTensor:(MLCTensor *)tensor
 {
   v4 = tensor;
-  v5 = [[a1 alloc] initWithTensor:v4 optimizerData:0];
+  v5 = [[self alloc] initWithTensor:v4 optimizerData:0];
 
   return v5;
 }
@@ -18,26 +18,26 @@
 {
   v6 = optimizerData;
   v7 = tensor;
-  v8 = [[a1 alloc] initWithTensor:v7 optimizerData:v6];
+  v8 = [[self alloc] initWithTensor:v7 optimizerData:v6];
 
   return v8;
 }
 
-- (MLCTensorParameter)initWithTensor:(id)a3 optimizerData:(id)a4
+- (MLCTensorParameter)initWithTensor:(id)tensor optimizerData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  tensorCopy = tensor;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = MLCTensorParameter;
   v9 = [(MLCTensorParameter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tensor, a3);
-    if (v8)
+    objc_storeStrong(&v9->_tensor, tensor);
+    if (dataCopy)
     {
-      v11 = [v8 copy];
-      [v7 setOptimizerData:v11];
+      v11 = [dataCopy copy];
+      [tensorCopy setOptimizerData:v11];
     }
 
     device = v10->_device;

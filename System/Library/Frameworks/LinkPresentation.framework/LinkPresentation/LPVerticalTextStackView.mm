@@ -1,38 +1,38 @@
 @interface LPVerticalTextStackView
-- (CGSize)_layoutTextStackForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPVerticalTextStackView)initWithHost:(id)a3 style:(id)a4;
+- (CGSize)_layoutTextStackForSize:(CGSize)size applyingLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPVerticalTextStackView)initWithHost:(id)host style:(id)style;
 - (int64_t)computedNumberOfLines;
-- (void)addArrangedSubview:(id)a3;
+- (void)addArrangedSubview:(id)subview;
 - (void)layoutComponentView;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation LPVerticalTextStackView
 
-- (LPVerticalTextStackView)initWithHost:(id)a3 style:(id)a4
+- (LPVerticalTextStackView)initWithHost:(id)host style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  styleCopy = style;
   v17.receiver = self;
   v17.super_class = LPVerticalTextStackView;
-  v8 = [(LPComponentView *)&v17 initWithHost:v6];
+  v8 = [(LPComponentView *)&v17 initWithHost:hostCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     items = v8->_items;
     v8->_items = v9;
 
-    objc_storeStrong(&v8->_style, a4);
+    objc_storeStrong(&v8->_style, style);
     if (+[LPSettings showDebugIndicators])
     {
-      v11 = [MEMORY[0x1E69DC888] purpleColor];
-      v12 = [v11 CGColor];
-      v13 = [(LPVerticalTextStackView *)v8 layer];
-      [v13 setBorderColor:v12];
+      purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+      cGColor = [purpleColor CGColor];
+      layer = [(LPVerticalTextStackView *)v8 layer];
+      [layer setBorderColor:cGColor];
 
-      v14 = [(LPVerticalTextStackView *)v8 layer];
-      [v14 setBorderWidth:0.5];
+      layer2 = [(LPVerticalTextStackView *)v8 layer];
+      [layer2 setBorderWidth:0.5];
     }
 
     v15 = v8;
@@ -41,28 +41,28 @@
   return v8;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
   }
 }
 
-- (void)addArrangedSubview:(id)a3
+- (void)addArrangedSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if (self->_hasEverBuilt)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Trying to update a text stack after it has been laid out."];
   }
 
-  [(NSMutableArray *)self->_items addObject:v4];
-  [(LPVerticalTextStackView *)self addSubview:v4];
+  [(NSMutableArray *)self->_items addObject:subviewCopy];
+  [(LPVerticalTextStackView *)self addSubview:subviewCopy];
 }
 
 - (void)layoutComponentView
@@ -74,10 +74,10 @@
   [(LPVerticalTextStackView *)self _layoutTextStackForSize:1 applyingLayout:v4, v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   p_contentInset = &self->_contentInset;
-  [(LPVerticalTextStackView *)self _layoutTextStackForSize:0 applyingLayout:a3.width - (self->_contentInset.left + self->_contentInset.right), a3.height - (self->_contentInset.top + self->_contentInset.bottom)];
+  [(LPVerticalTextStackView *)self _layoutTextStackForSize:0 applyingLayout:fits.width - (self->_contentInset.left + self->_contentInset.right), fits.height - (self->_contentInset.top + self->_contentInset.bottom)];
   v5.f64[1] = v4;
   v6 = vsubq_f64(vrndpq_f64(v5), vsubq_f64(vnegq_f64(p_contentInset[1]), *p_contentInset));
   v7 = v6.f64[1];
@@ -122,11 +122,11 @@
   return v3;
 }
 
-- (CGSize)_layoutTextStackForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutTextStackForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  v34 = a4;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   v62 = *MEMORY[0x1E69E9840];
   v35 = malloc_type_calloc([(NSMutableArray *)self->_items count], 0x10uLL, 0x1000040451B5BE8uLL);
   if ([(LPVerticalTextStackViewStyle *)self->_style shouldApplyFallbackFontForTruncatedSingleLine])
@@ -150,15 +150,15 @@
           }
 
           v11 = *(*(&v57 + 1) + 8 * i);
-          v12 = [v11 preferredFont];
-          if (v12)
+          preferredFont = [v11 preferredFont];
+          if (preferredFont)
           {
             v13 = objc_opt_respondsToSelector();
 
             if (v13)
             {
-              v14 = [v11 preferredFont];
-              [v11 setFont:v14];
+              preferredFont2 = [v11 preferredFont];
+              [v11 setFont:preferredFont2];
             }
           }
         }
@@ -170,15 +170,15 @@
     }
   }
 
-  v15 = [(LPVerticalTextStackViewStyle *)self->_style maximumNumberOfLines];
-  v16 = v15 != 0;
-  if (v15)
+  maximumNumberOfLines = [(LPVerticalTextStackViewStyle *)self->_style maximumNumberOfLines];
+  v16 = maximumNumberOfLines != 0;
+  if (maximumNumberOfLines)
   {
     v48 = 0;
     v49 = &v48;
     v50 = 0x2020000000;
-    v17 = [(LPVerticalTextStackViewStyle *)self->_style maximumNumberOfLines];
-    v51 = (v17 - [(NSMutableArray *)self->_items count]);
+    maximumNumberOfLines2 = [(LPVerticalTextStackViewStyle *)self->_style maximumNumberOfLines];
+    v51 = (maximumNumberOfLines2 - [(NSMutableArray *)self->_items count]);
     items = self->_items;
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
@@ -188,7 +188,7 @@
     *&v55[5] = width;
     *&v55[6] = height;
     v55[7] = v35;
-    v56 = v34;
+    v56 = layoutCopy;
     [(NSMutableArray *)items enumerateObjectsUsingBlock:v55];
     _Block_object_dispose(&v48, 8);
   }
@@ -235,7 +235,7 @@
     v43 = v35;
     v44 = width;
     v45 = height;
-    v46 = v34;
+    v46 = layoutCopy;
     v41 = v21;
     v42 = &v48;
     [(NSMutableArray *)v22 enumerateObjectsWithOptions:2 usingBlock:v40];
@@ -278,7 +278,7 @@
         *&v38[7] = height;
         [v25 enumerateObjectsUsingBlock:v38];
         (v21[2])(v21);
-        if (!v34)
+        if (!layoutCopy)
         {
           [v25 enumerateObjectsUsingBlock:&__block_literal_global_17];
         }
@@ -286,7 +286,7 @@
     }
   }
 
-  if (v34)
+  if (layoutCopy)
   {
     v29 = self->_items;
     v36[0] = MEMORY[0x1E69E9820];

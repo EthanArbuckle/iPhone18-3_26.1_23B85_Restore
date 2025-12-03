@@ -1,6 +1,6 @@
 @interface CIImageProcessorInOut
 - (CGRect)region;
-- (CIImageProcessorInOut)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9;
+- (CIImageProcessorInOut)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context;
 - (MTLDevice)device;
 - (__CVBuffer)pixelBuffer;
 - (id)debugDescription;
@@ -14,15 +14,15 @@
 
 @implementation CIImageProcessorInOut
 
-- (CIImageProcessorInOut)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9
+- (CIImageProcessorInOut)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context
 {
-  if (a9)
+  if (context)
   {
-    height = a7.size.height;
-    width = a7.size.width;
-    y = a7.origin.y;
-    x = a7.origin.x;
-    v16 = a6;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    bCopy = b;
     v31.receiver = self;
     v31.super_class = CIImageProcessorInOut;
     v20 = [(CIImageProcessorInOut *)&v31 init];
@@ -33,12 +33,12 @@
       v32.size.width = width;
       v32.size.height = height;
       v20->_region = CGRectIntegral(v32);
-      if (a3)
+      if (surface)
       {
-        CFRetain(a3);
-        v20->_surface = a3;
+        CFRetain(surface);
+        v20->_surface = surface;
         v20->_usesSRGB = 0;
-        if (v16 && IOSurfaceGetPixelFormat(a3) == 1111970369)
+        if (bCopy && IOSurfaceGetPixelFormat(surface) == 1111970369)
         {
           v20->_usesSRGB = 1;
         }
@@ -50,13 +50,13 @@
         v20->_usesSRGB = 0;
       }
 
-      v20->_onlyMetal = a8;
-      v20->_context = CI::Object::ref(a9);
-      if ((*(*a9 + 16))(a9) == 85)
+      v20->_onlyMetal = metal;
+      v20->_context = CI::Object::ref(context);
+      if ((*(*context + 16))(context) == 85)
       {
-        if (a4)
+        if (texture)
         {
-          v29 = CFRetain(a4);
+          v29 = CFRetain(texture);
         }
 
         else
@@ -68,7 +68,7 @@
       }
 
       v20->_surfaceLocked = 0;
-      v20->_digest = a5;
+      v20->_digest = digest;
     }
   }
 
@@ -213,9 +213,9 @@
       return 0;
     }
 
-    v7 = [mtlTexture pixelFormat];
+    pixelFormat = [mtlTexture pixelFormat];
 
-    return CIFormatFromCIMetalTextureFormat(v7, 0);
+    return CIFormatFromCIMetalTextureFormat(pixelFormat, 0);
   }
 }
 

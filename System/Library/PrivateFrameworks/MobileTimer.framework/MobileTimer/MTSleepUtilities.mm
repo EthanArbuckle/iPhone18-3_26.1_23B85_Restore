@@ -1,44 +1,44 @@
 @interface MTSleepUtilities
-+ (id)alarmFromSleepOccurrence:(id)a3 scheduleEnabled:(BOOL)a4 keepOffUntilDate:(id)a5;
-+ (unint64_t)silentModeOptionsForOccurrence:(id)a3;
++ (id)alarmFromSleepOccurrence:(id)occurrence scheduleEnabled:(BOOL)enabled keepOffUntilDate:(id)date;
++ (unint64_t)silentModeOptionsForOccurrence:(id)occurrence;
 @end
 
 @implementation MTSleepUtilities
 
-+ (id)alarmFromSleepOccurrence:(id)a3 scheduleEnabled:(BOOL)a4 keepOffUntilDate:(id)a5
++ (id)alarmFromSleepOccurrence:(id)occurrence scheduleEnabled:(BOOL)enabled keepOffUntilDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = +[MTAlarm sleepAlarmWithSchedule:](MTMutableAlarm, "sleepAlarmWithSchedule:", [a1 alarmRepeatScheduleFrom:{objc_msgSend(v8, "weekdays")}]);
-  v11 = [v8 bedtimeComponents];
-  [v10 setBedtimeHour:{objc_msgSend(v11, "hour")}];
+  occurrenceCopy = occurrence;
+  dateCopy = date;
+  v10 = +[MTAlarm sleepAlarmWithSchedule:](MTMutableAlarm, "sleepAlarmWithSchedule:", [self alarmRepeatScheduleFrom:{objc_msgSend(occurrenceCopy, "weekdays")}]);
+  bedtimeComponents = [occurrenceCopy bedtimeComponents];
+  [v10 setBedtimeHour:{objc_msgSend(bedtimeComponents, "hour")}];
 
-  v12 = [v8 bedtimeComponents];
-  [v10 setBedtimeMinute:{objc_msgSend(v12, "minute")}];
+  bedtimeComponents2 = [occurrenceCopy bedtimeComponents];
+  [v10 setBedtimeMinute:{objc_msgSend(bedtimeComponents2, "minute")}];
 
-  v13 = [v8 wakeUpComponents];
-  [v10 setHour:{objc_msgSend(v13, "hour")}];
+  wakeUpComponents = [occurrenceCopy wakeUpComponents];
+  [v10 setHour:{objc_msgSend(wakeUpComponents, "hour")}];
 
-  v14 = [v8 wakeUpComponents];
-  [v10 setMinute:{objc_msgSend(v14, "minute")}];
+  wakeUpComponents2 = [occurrenceCopy wakeUpComponents];
+  [v10 setMinute:{objc_msgSend(wakeUpComponents2, "minute")}];
 
-  if ([v8 isSingleDayOverride])
+  if ([occurrenceCopy isSingleDayOverride])
   {
-    v15 = [v8 wakeUpComponents];
-    [v10 setDay:{objc_msgSend(v15, "day")}];
+    wakeUpComponents3 = [occurrenceCopy wakeUpComponents];
+    [v10 setDay:{objc_msgSend(wakeUpComponents3, "day")}];
 
-    v16 = [v8 wakeUpComponents];
-    [v10 setMonth:{objc_msgSend(v16, "month")}];
+    wakeUpComponents4 = [occurrenceCopy wakeUpComponents];
+    [v10 setMonth:{objc_msgSend(wakeUpComponents4, "month")}];
 
-    v17 = [v8 wakeUpComponents];
-    [v10 setYear:{objc_msgSend(v17, "year")}];
+    wakeUpComponents5 = [occurrenceCopy wakeUpComponents];
+    [v10 setYear:{objc_msgSend(wakeUpComponents5, "year")}];
   }
 
-  v33 = a1;
-  if (a4)
+  selfCopy = self;
+  if (enabled)
   {
-    v18 = [v8 alarmConfiguration];
-    [v10 setEnabled:{objc_msgSend(v18, "isEnabled")}];
+    alarmConfiguration = [occurrenceCopy alarmConfiguration];
+    [v10 setEnabled:{objc_msgSend(alarmConfiguration, "isEnabled")}];
   }
 
   else
@@ -46,24 +46,24 @@
     [v10 setEnabled:0];
   }
 
-  v19 = [v8 alarmConfiguration];
-  v20 = [v19 toneIdentifier];
-  v21 = [v8 alarmConfiguration];
-  v22 = [v21 vibrationIdentifier];
-  v23 = [v8 alarmConfiguration];
-  v24 = [v23 soundVolume];
-  v25 = [MTSound toneSoundWithIdentifier:v20 vibrationIdentifer:v22 volume:v24];
+  alarmConfiguration2 = [occurrenceCopy alarmConfiguration];
+  toneIdentifier = [alarmConfiguration2 toneIdentifier];
+  alarmConfiguration3 = [occurrenceCopy alarmConfiguration];
+  vibrationIdentifier = [alarmConfiguration3 vibrationIdentifier];
+  alarmConfiguration4 = [occurrenceCopy alarmConfiguration];
+  soundVolume = [alarmConfiguration4 soundVolume];
+  v25 = [MTSound toneSoundWithIdentifier:toneIdentifier vibrationIdentifer:vibrationIdentifier volume:soundVolume];
   [v10 setSound:v25];
 
   [v10 setBedtimeReminder:0];
   [v10 setBedtimeReminderMinutes:0];
-  [v10 setKeepOffUntilDate:v9];
+  [v10 setKeepOffUntilDate:dateCopy];
 
-  v26 = [v8 alarmConfiguration];
-  [v10 setAllowsSnooze:{objc_msgSend(v26, "allowsSnooze")}];
+  alarmConfiguration5 = [occurrenceCopy alarmConfiguration];
+  [v10 setAllowsSnooze:{objc_msgSend(alarmConfiguration5, "allowsSnooze")}];
 
-  v27 = [v8 alarmConfiguration];
-  [v27 snoozeDuration];
+  alarmConfiguration6 = [occurrenceCopy alarmConfiguration];
+  [alarmConfiguration6 snoozeDuration];
   v29 = vcvtmd_u64_f64(v28 / 60.0);
 
   if (v29 - 1 >= 0xF)
@@ -71,7 +71,7 @@
     v30 = MTLogForCategory(7);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [MTSleepUtilities alarmFromSleepOccurrence:v33 scheduleEnabled:v8 keepOffUntilDate:v30];
+      [MTSleepUtilities alarmFromSleepOccurrence:selfCopy scheduleEnabled:occurrenceCopy keepOffUntilDate:v30];
     }
 
     [v10 setSnoozeDuration:9];
@@ -82,22 +82,22 @@
     [v10 setSnoozeDuration:v29];
   }
 
-  [v10 setSilentModeOptions:{objc_msgSend(objc_opt_class(), "silentModeOptionsForOccurrence:", v8)}];
+  [v10 setSilentModeOptions:{objc_msgSend(objc_opt_class(), "silentModeOptionsForOccurrence:", occurrenceCopy)}];
   v31 = [v10 copy];
 
   return v31;
 }
 
-+ (unint64_t)silentModeOptionsForOccurrence:(id)a3
++ (unint64_t)silentModeOptionsForOccurrence:(id)occurrence
 {
-  v3 = a3;
-  v4 = [v3 alarmConfiguration];
-  v5 = [v4 breaksThroughSilentModeOptions] & 2;
+  occurrenceCopy = occurrence;
+  alarmConfiguration = [occurrenceCopy alarmConfiguration];
+  v5 = [alarmConfiguration breaksThroughSilentModeOptions] & 2;
 
-  v6 = [v3 alarmConfiguration];
+  alarmConfiguration2 = [occurrenceCopy alarmConfiguration];
 
-  LOBYTE(v3) = [v6 breaksThroughSilentModeOptions];
-  return v5 & 0xFFFFFFFFFFFFFFFELL | v3 & 1;
+  LOBYTE(occurrenceCopy) = [alarmConfiguration2 breaksThroughSilentModeOptions];
+  return v5 & 0xFFFFFFFFFFFFFFFELL | occurrenceCopy & 1;
 }
 
 + (void)alarmFromSleepOccurrence:(uint64_t)a1 scheduleEnabled:(void *)a2 keepOffUntilDate:(NSObject *)a3 .cold.1(uint64_t a1, void *a2, NSObject *a3)

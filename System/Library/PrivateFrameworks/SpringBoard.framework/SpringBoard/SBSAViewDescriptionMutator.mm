@@ -3,7 +3,7 @@
 - (CGRect)bounds;
 - (CGRect)boundsVelocity;
 - (CGSize)scale;
-- (SBSAViewDescriptionMutator)initWithViewDescription:(id)a3;
+- (SBSAViewDescriptionMutator)initWithViewDescription:(id)description;
 @end
 
 @implementation SBSAViewDescriptionMutator
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (SBSAViewDescriptionMutator)initWithViewDescription:(id)a3
+- (SBSAViewDescriptionMutator)initWithViewDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = SBSAViewDescriptionMutator;
   v6 = [(SBSAViewDescriptionMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewDescription, a3);
+    objc_storeStrong(&v6->_viewDescription, description);
   }
 
   return v7;

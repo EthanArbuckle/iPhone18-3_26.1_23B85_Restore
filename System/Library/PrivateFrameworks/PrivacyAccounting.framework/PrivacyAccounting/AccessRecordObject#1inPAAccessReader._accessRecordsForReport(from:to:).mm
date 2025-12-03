@@ -68,14 +68,14 @@
 {
   v2 = self + OBJC_IVAR____TtCFE17PrivacyAccountingCSo14PAAccessReader23_accessRecordsForReportFzT4fromV10Foundation4Date2toS2__CSo12NSEnumeratorL_18AccessRecordObject_record;
   v3 = type metadata accessor for AccessRecord(0);
-  v4 = 0;
+  initWithUnsignedInteger_ = 0;
   v5 = &v2[*(v3 + 32)];
   if ((v5[8] & 1) == 0)
   {
-    v4 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithUnsignedInteger_];
+    initWithUnsignedInteger_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithUnsignedInteger_];
   }
 
-  return v4;
+  return initWithUnsignedInteger_;
 }
 
 - (_TtCFE17PrivacyAccountingCSo14PAAccessReader23_accessRecordsForReportFzT4fromV10Foundation4Date2toS2__CSo12NSEnumeratorL_18AccessRecordObject)init

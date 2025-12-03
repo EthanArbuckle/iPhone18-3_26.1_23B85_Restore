@@ -2,25 +2,25 @@
 + (id)sharedManager;
 - (CustomLocationManager)init;
 - (void)dealloc;
-- (void)processSearchResult:(id)a3 traits:(id)a4;
+- (void)processSearchResult:(id)result traits:(id)traits;
 @end
 
 @implementation CustomLocationManager
 
-- (void)processSearchResult:(id)a3 traits:(id)a4
+- (void)processSearchResult:(id)result traits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 needsReverseGeocodeCheck] && !CFDictionaryGetValue(self->_reverseGeocodeRequestsForSearchResults, v6))
+  resultCopy = result;
+  traitsCopy = traits;
+  if (resultCopy && [resultCopy needsReverseGeocodeCheck] && !CFDictionaryGetValue(self->_reverseGeocodeRequestsForSearchResults, resultCopy))
   {
-    if (!v7)
+    if (!traitsCopy)
     {
       v8 = +[UIApplication sharedMapsDelegate];
-      v9 = [v8 chromeViewController];
-      v7 = [v9 currentTraits];
+      chromeViewController = [v8 chromeViewController];
+      traitsCopy = [chromeViewController currentTraits];
     }
 
-    [v6 setHasIncompleteNavData:1];
+    [resultCopy setHasIncompleteNavData:1];
     v25[0] = 0;
     v25[1] = v25;
     v25[2] = 0x3032000000;
@@ -33,21 +33,21 @@
     v24[3] = &unk_10165F5C8;
     v24[4] = v25;
     v10 = objc_retainBlock(v24);
-    if ([v6 hasFloorOrdinal])
+    if ([resultCopy hasFloorOrdinal])
     {
       v11 = +[MKMapService sharedService];
-      [v6 coordinate];
-      v14 = [v11 ticketForReverseGeocodeDroppedPinCoordinate:objc_msgSend(v6 floorOrdinal:"floorOrdinal") traits:{v7, v12, v13}];
+      [resultCopy coordinate];
+      v14 = [v11 ticketForReverseGeocodeDroppedPinCoordinate:objc_msgSend(resultCopy floorOrdinal:"floorOrdinal") traits:{traitsCopy, v12, v13}];
     }
 
     else
     {
-      if ([v6 isDynamicCurrentLocation])
+      if ([resultCopy isDynamicCurrentLocation])
       {
         v11 = +[MKMapService sharedService];
         v15 = +[MKLocationManager sharedLocationManager];
-        v16 = [v15 lastLocation];
-        v17 = [v11 ticketForReverseGeocodeLocation:v16 traits:v7];
+        lastLocation = [v15 lastLocation];
+        v17 = [v11 ticketForReverseGeocodeLocation:lastLocation traits:traitsCopy];
 
 LABEL_12:
         v20[0] = _NSConcreteStackBlock;
@@ -56,9 +56,9 @@ LABEL_12:
         v20[3] = &unk_101627160;
         v18 = v17;
         v21 = v18;
-        v19 = v6;
+        v19 = resultCopy;
         v22 = v19;
-        v23 = self;
+        selfCopy = self;
         [v18 submitWithHandler:v20 networkActivity:v10];
         CFDictionarySetValue(self->_reverseGeocodeRequestsForSearchResults, v19, v18);
 
@@ -67,8 +67,8 @@ LABEL_12:
       }
 
       v11 = +[MKMapService sharedService];
-      [v6 coordinate];
-      v14 = [v11 ticketForReverseGeocodeDroppedPinCoordinate:v7 traits:?];
+      [resultCopy coordinate];
+      v14 = [v11 ticketForReverseGeocodeDroppedPinCoordinate:traitsCopy traits:?];
     }
 
     v17 = v14;

@@ -1,39 +1,39 @@
 @interface BBSectionIcon
-- (BBSectionIcon)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_bestVariantForFormat:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BBSectionIcon)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_bestVariantForFormat:(int64_t)format;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addVariant:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addVariant:(id)variant;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBSectionIcon
 
-- (void)addVariant:(id)a3
+- (void)addVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = a3;
-    v6 = [(BBSectionIcon *)self variants];
-    v8 = [v4 setWithSet:v6];
+    variantCopy = variant;
+    variants = [(BBSectionIcon *)self variants];
+    v8 = [v4 setWithSet:variants];
 
-    v7 = [v8 setByAddingObject:v5];
+    v7 = [v8 setByAddingObject:variantCopy];
 
     [(BBSectionIcon *)self setVariants:v7];
   }
 }
 
-- (id)_bestVariantForFormat:(int64_t)a3
+- (id)_bestVariantForFormat:(int64_t)format
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(BBSectionIcon *)self variants];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  variants = [(BBSectionIcon *)self variants];
+  v6 = [variants countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -44,18 +44,18 @@ LABEL_3:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(variants);
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      if ([v10 format] == a3)
+      if ([v10 format] == format)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [variants countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -65,9 +65,9 @@ LABEL_3:
       }
     }
 
-    v11 = v10;
+    anyObject = v10;
 
-    if (v11)
+    if (anyObject)
     {
       goto LABEL_12;
     }
@@ -78,27 +78,27 @@ LABEL_3:
 LABEL_9:
   }
 
-  v12 = [(BBSectionIcon *)self variants];
-  v11 = [v12 anyObject];
+  variants2 = [(BBSectionIcon *)self variants];
+  anyObject = [variants2 anyObject];
 
 LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return anyObject;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(BBSectionIcon *)self variants];
-  v3 = [v2 hash];
+  variants = [(BBSectionIcon *)self variants];
+  v3 = [variants hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -108,9 +108,9 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBSectionIcon *)self variants];
-      v7 = [(BBSectionIcon *)v5 variants];
+      v5 = equalCopy;
+      variants = [(BBSectionIcon *)self variants];
+      variants2 = [(BBSectionIcon *)v5 variants];
 
       v8 = BSEqualObjects();
     }
@@ -124,19 +124,19 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(BBSectionIcon *)self variants];
-  [v4 setVariants:v5];
+  variants = [(BBSectionIcon *)self variants];
+  [v4 setVariants:variants];
 
   return v4;
 }
 
-- (BBSectionIcon)initWithCoder:(id)a3
+- (BBSectionIcon)initWithCoder:(id)coder
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BBSectionIcon *)self init];
   if (v5)
   {
@@ -145,7 +145,7 @@ LABEL_12:
     v12[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"variants"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"variants"];
     [(BBSectionIcon *)v5 setVariants:v9];
   }
 
@@ -153,11 +153,11 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBSectionIcon *)self variants];
-  [v4 encodeObject:v5 forKey:@"variants"];
+  coderCopy = coder;
+  variants = [(BBSectionIcon *)self variants];
+  [coderCopy encodeObject:variants forKey:@"variants"];
 }
 
 @end

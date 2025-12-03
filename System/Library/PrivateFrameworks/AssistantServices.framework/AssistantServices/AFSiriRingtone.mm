@@ -1,30 +1,30 @@
 @interface AFSiriRingtone
-- (AFSiriRingtone)initWithContacts:(id)a3;
+- (AFSiriRingtone)initWithContacts:(id)contacts;
 - (NSString)textToSpeak;
-- (id)_addPhoneticEscapeIfNotEmptyNotNil:(id)a3 withStartEscape:(id)a4 withEndEscape:(id)a5;
-- (id)_bestVoiceInfoWithCurrentLocale:(id)a3;
-- (id)_escapeCallDestinationIDString:(id)a3 forType:(int64_t)a4;
-- (id)_escapeCallerIDString:(id)a3 forType:(int64_t)a4;
-- (id)_generateSpokenTextForContacts:(id)a3 voiceLanguage:(id)a4 displayedCallerID:(id)a5 callerIDType:(int64_t)a6 callDestinationID:(id)a7 callDestinationIDType:(int64_t)a8 callServiceSpeakableName:(id)a9;
-- (id)_phoneticNamesForContact:(id)a3 languageCode:(id)a4;
-- (id)_spokenTextForCallDestinationID:(id)a3 ofType:(int64_t)a4 callServiceSpeakableName:(id)a5 languageCode:(id)a6;
-- (id)_spokenTextForCallerID:(id)a3 ofType:(int64_t)a4 rawCaller:(id)a5 rawCallerType:(int64_t)a6 languageCode:(id)a7;
-- (id)_spokenTextForContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5;
-- (id)_spokenTextForOneContact:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5;
-- (id)_spokenTextForThreeContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5;
-- (id)_spokenTextForTwoContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5;
-- (void)_phoneticInfoForContact:(id)a3 languageCode:(id)a4 firstName:(id *)a5 middleName:(id *)a6 lastName:(id *)a7 nickname:(id *)a8;
+- (id)_addPhoneticEscapeIfNotEmptyNotNil:(id)nil withStartEscape:(id)escape withEndEscape:(id)endEscape;
+- (id)_bestVoiceInfoWithCurrentLocale:(id)locale;
+- (id)_escapeCallDestinationIDString:(id)string forType:(int64_t)type;
+- (id)_escapeCallerIDString:(id)string forType:(int64_t)type;
+- (id)_generateSpokenTextForContacts:(id)contacts voiceLanguage:(id)language displayedCallerID:(id)d callerIDType:(int64_t)type callDestinationID:(id)iD callDestinationIDType:(int64_t)dType callServiceSpeakableName:(id)name;
+- (id)_phoneticNamesForContact:(id)contact languageCode:(id)code;
+- (id)_spokenTextForCallDestinationID:(id)d ofType:(int64_t)type callServiceSpeakableName:(id)name languageCode:(id)code;
+- (id)_spokenTextForCallerID:(id)d ofType:(int64_t)type rawCaller:(id)caller rawCallerType:(int64_t)callerType languageCode:(id)code;
+- (id)_spokenTextForContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code;
+- (id)_spokenTextForOneContact:(id)contact callServiceSpeakableName:(id)name languageCode:(id)code;
+- (id)_spokenTextForThreeContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code;
+- (id)_spokenTextForTwoContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code;
+- (void)_phoneticInfoForContact:(id)contact languageCode:(id)code firstName:(id *)name middleName:(id *)middleName lastName:(id *)lastName nickname:(id *)nickname;
 @end
 
 @implementation AFSiriRingtone
 
-- (id)_escapeCallDestinationIDString:(id)a3 forType:(int64_t)a4
+- (id)_escapeCallDestinationIDString:(id)string forType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (type == 1)
   {
-    if (softLinkIMStringIsPhoneNumber(v5))
+    if (softLinkIMStringIsPhoneNumber(stringCopy))
     {
       v7 = @"\x1B\\tn=phone\\%@\x1B\\tn=normal\\"";
       goto LABEL_7;
@@ -33,7 +33,7 @@
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
 LABEL_8:
       v6 = v6;
@@ -41,7 +41,7 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    if (softLinkIMStringIsEmail(v5))
+    if (softLinkIMStringIsEmail(stringCopy))
     {
       v7 = @"\x1B\\tn=email\\%@\x1B\\tn=normal\\"";
 LABEL_7:
@@ -58,53 +58,53 @@ LABEL_10:
   return v9;
 }
 
-- (id)_escapeCallerIDString:(id)a3 forType:(int64_t)a4
+- (id)_escapeCallerIDString:(id)string forType:(int64_t)type
 {
-  v5 = a3;
-  if ((a4 - 1) <= 2)
+  stringCopy = string;
+  if ((type - 1) <= 2)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:off_1E7341BF0[a4 - 1], v5];
+    stringCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:off_1E7341BF0[type - 1], stringCopy];
 
-    v5 = v6;
+    stringCopy = stringCopy;
   }
 
-  return v5;
+  return stringCopy;
 }
 
-- (id)_addPhoneticEscapeIfNotEmptyNotNil:(id)a3 withStartEscape:(id)a4 withEndEscape:(id)a5
+- (id)_addPhoneticEscapeIfNotEmptyNotNil:(id)nil withStartEscape:(id)escape withEndEscape:(id)endEscape
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && [v7 length])
+  nilCopy = nil;
+  escapeCopy = escape;
+  endEscapeCopy = endEscape;
+  if (nilCopy && [nilCopy length])
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v8, v7, v9];
+    endEscapeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", escapeCopy, nilCopy, endEscapeCopy];
   }
 
   else
   {
-    v10 = 0;
+    endEscapeCopy = 0;
   }
 
-  return v10;
+  return endEscapeCopy;
 }
 
-- (id)_phoneticNamesForContact:(id)a3 languageCode:(id)a4
+- (id)_phoneticNamesForContact:(id)contact languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contactCopy = contact;
+  codeCopy = code;
+  if (contactCopy)
   {
     v40 = 0;
     v41 = 0;
     v38 = 0;
     v39 = 0;
-    [(AFSiriRingtone *)self _phoneticInfoForContact:v6 languageCode:v7 firstName:&v41 middleName:&v40 lastName:&v39 nickname:&v38];
+    [(AFSiriRingtone *)self _phoneticInfoForContact:contactCopy languageCode:codeCopy firstName:&v41 middleName:&v40 lastName:&v39 nickname:&v38];
     v8 = v41;
     v9 = v40;
     v10 = v39;
     v11 = v38;
-    if ([v7 isEqualToString:@"en-IN"])
+    if ([codeCopy isEqualToString:@"en-IN"])
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 27];
       v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\\toi=x-sampa-internal\\"", v12];
@@ -117,8 +117,8 @@ LABEL_10:
       v36 = @"\x1B/+";
     }
 
-    v37 = v7;
-    v14 = [[AFPhonemeMapper alloc] initWithLanguageCode:v7];
+    v37 = codeCopy;
+    v14 = [[AFPhonemeMapper alloc] initWithLanguageCode:codeCopy];
     v15 = v14;
     if (v14)
     {
@@ -146,37 +146,37 @@ LABEL_10:
 
     if (![v20 length])
     {
-      v24 = [v6 pronunciationGivenName];
+      pronunciationGivenName = [contactCopy pronunciationGivenName];
 
-      v20 = v24;
+      v20 = pronunciationGivenName;
     }
 
     if (![v22 length])
     {
-      v25 = [v6 pronunciationFamilyName];
+      pronunciationFamilyName = [contactCopy pronunciationFamilyName];
 
-      v22 = v25;
+      v22 = pronunciationFamilyName;
     }
 
     if (![v20 length])
     {
-      v26 = [v6 phoneticGivenName];
+      phoneticGivenName = [contactCopy phoneticGivenName];
 
-      v20 = v26;
+      v20 = phoneticGivenName;
     }
 
     if (![v21 length])
     {
-      v27 = [v6 phoneticMiddleName];
+      phoneticMiddleName = [contactCopy phoneticMiddleName];
 
-      v21 = v27;
+      v21 = phoneticMiddleName;
     }
 
     if (![v22 length])
     {
-      v28 = [v6 phoneticFamilyName];
+      phoneticFamilyName = [contactCopy phoneticFamilyName];
 
-      v22 = v28;
+      v22 = phoneticFamilyName;
     }
 
     v13 = objc_alloc_init(AFSiriPhoneticContactNames);
@@ -188,8 +188,8 @@ LABEL_10:
 
     else
     {
-      v29 = [v6 givenName];
-      [(AFSiriPhoneticContactNames *)v13 setGivenName:v29];
+      givenName = [contactCopy givenName];
+      [(AFSiriPhoneticContactNames *)v13 setGivenName:givenName];
     }
 
     if ([v21 length])
@@ -199,8 +199,8 @@ LABEL_10:
 
     else
     {
-      v30 = [v6 middleName];
-      [(AFSiriPhoneticContactNames *)v13 setMiddleName:v30];
+      middleName = [contactCopy middleName];
+      [(AFSiriPhoneticContactNames *)v13 setMiddleName:middleName];
     }
 
     if ([v22 length])
@@ -210,8 +210,8 @@ LABEL_10:
 
     else
     {
-      v31 = [v6 familyName];
-      [(AFSiriPhoneticContactNames *)v13 setFamilyName:v31];
+      familyName = [contactCopy familyName];
+      [(AFSiriPhoneticContactNames *)v13 setFamilyName:familyName];
     }
 
     if ([v23 length])
@@ -221,14 +221,14 @@ LABEL_10:
 
     else
     {
-      v32 = [v6 nickname];
-      [(AFSiriPhoneticContactNames *)v13 setNickname:v32];
+      nickname = [contactCopy nickname];
+      [(AFSiriPhoneticContactNames *)v13 setNickname:nickname];
     }
 
-    v33 = [v6 organizationName];
-    [(AFSiriPhoneticContactNames *)v13 setOrganizationName:v33];
+    organizationName = [contactCopy organizationName];
+    [(AFSiriPhoneticContactNames *)v13 setOrganizationName:organizationName];
 
-    v7 = v37;
+    codeCopy = v37;
   }
 
   else
@@ -239,13 +239,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)_phoneticInfoForContact:(id)a3 languageCode:(id)a4 firstName:(id *)a5 middleName:(id *)a6 lastName:(id *)a7 nickname:(id *)a8
+- (void)_phoneticInfoForContact:(id)contact languageCode:(id)code firstName:(id *)name middleName:(id *)middleName lastName:(id *)lastName nickname:(id *)nickname
 {
   v9 = getCNContactPhonemeDataKey;
-  v10 = a4;
-  v11 = a3;
+  codeCopy = code;
+  contactCopy = contact;
   v12 = v9();
-  v13 = [v11 valueForKey:v12];
+  v13 = [contactCopy valueForKey:v12];
 
   v42 = v13;
   if (v13)
@@ -279,7 +279,7 @@ LABEL_10:
     v19 = 0;
   }
 
-  v20 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v20 = [codeCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   v21 = [v19 objectForKey:v20];
   objc_opt_class();
@@ -330,28 +330,28 @@ LABEL_10:
 
   v32 = 0;
 LABEL_15:
-  if (a5)
+  if (name)
   {
     v33 = v27;
-    *a5 = v27;
+    *name = v27;
   }
 
-  if (a6)
+  if (middleName)
   {
     v34 = v29;
-    *a6 = v29;
+    *middleName = v29;
   }
 
-  if (a7)
+  if (lastName)
   {
     v35 = v21;
-    *a7 = v21;
+    *lastName = v21;
   }
 
-  if (a8)
+  if (nickname)
   {
     v36 = v32;
-    *a8 = v32;
+    *nickname = v32;
   }
 }
 
@@ -395,19 +395,19 @@ id __94__AFSiriRingtone__phoneticInfoForContact_languageCode_firstName_middleNam
   return v7;
 }
 
-- (id)_spokenTextForCallDestinationID:(id)a3 ofType:(int64_t)a4 callServiceSpeakableName:(id)a5 languageCode:(id)a6
+- (id)_spokenTextForCallDestinationID:(id)d ofType:(int64_t)type callServiceSpeakableName:(id)name languageCode:(id)code
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(AFSiriRingtone *)self _escapeCallDestinationIDString:a3 forType:a4];
-  if ([v10 length])
+  nameCopy = name;
+  codeCopy = code;
+  v12 = [(AFSiriRingtone *)self _escapeCallDestinationIDString:d forType:type];
+  if ([nameCopy length])
   {
-    if ((a4 - 1) > 1)
+    if ((type - 1) > 1)
     {
-      v14 = AFRingtoneLocalizedString(@"RAW_CALLER_WITH_SERVICE", v11);
-      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v14, v12, v10];
+      v14 = AFRingtoneLocalizedString(@"RAW_CALLER_WITH_SERVICE", codeCopy);
+      nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v14, v12, nameCopy];
 
-      if (v13)
+      if (nameCopy)
       {
         goto LABEL_7;
       }
@@ -415,28 +415,28 @@ id __94__AFSiriRingtone__phoneticInfoForContact_languageCode_firstName_middleNam
 
     else
     {
-      v13 = v10;
-      if (v13)
+      nameCopy = nameCopy;
+      if (nameCopy)
       {
         goto LABEL_7;
       }
     }
   }
 
-  v13 = v12;
+  nameCopy = v12;
 LABEL_7:
 
-  return v13;
+  return nameCopy;
 }
 
-- (id)_spokenTextForCallerID:(id)a3 ofType:(int64_t)a4 rawCaller:(id)a5 rawCallerType:(int64_t)a6 languageCode:(id)a7
+- (id)_spokenTextForCallerID:(id)d ofType:(int64_t)type rawCaller:(id)caller rawCallerType:(int64_t)callerType languageCode:(id)code
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = [(AFSiriRingtone *)self _escapeCallerIDString:a3 forType:a4];
-  v15 = [(AFSiriRingtone *)self _escapeCallDestinationIDString:v13 forType:a6];
+  codeCopy = code;
+  callerCopy = caller;
+  v14 = [(AFSiriRingtone *)self _escapeCallerIDString:d forType:type];
+  v15 = [(AFSiriRingtone *)self _escapeCallDestinationIDString:callerCopy forType:callerType];
 
-  if (![v15 length] || (AFRingtoneLocalizedString(@"CALLER_ID_WITH_RAW_CALLER", v12), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithFormat:", v16, v14, v15), v16, !v17))
+  if (![v15 length] || (AFRingtoneLocalizedString(@"CALLER_ID_WITH_RAW_CALLER", codeCopy), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithFormat:", v16, v14, v15), v16, !v17))
   {
     v17 = v14;
   }
@@ -446,37 +446,37 @@ LABEL_7:
   return v17;
 }
 
-- (id)_spokenTextForContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5
+- (id)_spokenTextForContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] > 3)
+  contactsCopy = contacts;
+  nameCopy = name;
+  codeCopy = code;
+  if ([contactsCopy count] > 3)
   {
-    v12 = [v8 objectAtIndex:0];
-    v13 = [(AFSiriRingtone *)self _phoneticNamesForContact:v12 languageCode:v10];
-    v14 = [v13 spokenName];
-    v15 = [v8 objectAtIndex:1];
-    v30 = [(AFSiriRingtone *)self _phoneticNamesForContact:v15 languageCode:v10];
-    v16 = [v30 spokenName];
-    v17 = v16;
+    v12 = [contactsCopy objectAtIndex:0];
+    v13 = [(AFSiriRingtone *)self _phoneticNamesForContact:v12 languageCode:codeCopy];
+    spokenName = [v13 spokenName];
+    v15 = [contactsCopy objectAtIndex:1];
+    v30 = [(AFSiriRingtone *)self _phoneticNamesForContact:v15 languageCode:codeCopy];
+    spokenName2 = [v30 spokenName];
+    v17 = spokenName2;
     v11 = 0;
-    if (v14 && v16)
+    if (spokenName && spokenName2)
     {
-      v27 = AFRingtoneLocalizedString(@"MORE_THAN_THREE_CONTACTS", v10);
+      v27 = AFRingtoneLocalizedString(@"MORE_THAN_THREE_CONTACTS", codeCopy);
       v29 = v12;
       v18 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-      v26 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+      v26 = [codeCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
       v19 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v26];
       v25 = v18;
       [v18 setLocale:v19];
 
       v20 = objc_alloc(MEMORY[0x1E696AEC0]);
       v28 = v15;
-      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count") - 2}];
+      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(contactsCopy, "count") - 2}];
       [v18 stringFromNumber:v21];
       v23 = v22 = v13;
-      v11 = [v20 initWithFormat:v27, v14, v17, v23];
+      v11 = [v20 initWithFormat:v27, spokenName, v17, v23];
 
       v13 = v22;
       v15 = v28;
@@ -484,46 +484,46 @@ LABEL_7:
       v12 = v29;
     }
 
-    if (v14 && !v11)
+    if (spokenName && !v11)
     {
-      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:v9 languageCode:v10];
+      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:nameCopy languageCode:codeCopy];
     }
 
     if (!v11 && v17)
     {
-      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v15 callServiceSpeakableName:v9 languageCode:v10];
+      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v15 callServiceSpeakableName:nameCopy languageCode:codeCopy];
     }
   }
 
   else
   {
-    v11 = [(AFSiriRingtone *)self _spokenTextForThreeContacts:v8 callServiceSpeakableName:v9 languageCode:v10];
+    v11 = [(AFSiriRingtone *)self _spokenTextForThreeContacts:contactsCopy callServiceSpeakableName:nameCopy languageCode:codeCopy];
   }
 
   return v11;
 }
 
-- (id)_spokenTextForThreeContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5
+- (id)_spokenTextForThreeContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] > 2)
+  contactsCopy = contacts;
+  nameCopy = name;
+  codeCopy = code;
+  if ([contactsCopy count] > 2)
   {
-    v12 = [v8 objectAtIndex:0];
-    v13 = [(AFSiriRingtone *)self _phoneticNamesForContact:v12 languageCode:v10];
-    v14 = [v13 spokenName];
-    v15 = [v8 objectAtIndex:1];
-    v29 = [(AFSiriRingtone *)self _phoneticNamesForContact:v15 languageCode:v10];
-    v16 = [v29 spokenName];
-    v17 = v16;
+    v12 = [contactsCopy objectAtIndex:0];
+    v13 = [(AFSiriRingtone *)self _phoneticNamesForContact:v12 languageCode:codeCopy];
+    spokenName = [v13 spokenName];
+    v15 = [contactsCopy objectAtIndex:1];
+    v29 = [(AFSiriRingtone *)self _phoneticNamesForContact:v15 languageCode:codeCopy];
+    spokenName2 = [v29 spokenName];
+    v17 = spokenName2;
     v11 = 0;
-    if (v14 && v16)
+    if (spokenName && spokenName2)
     {
-      v27 = AFRingtoneLocalizedString(@"THREE_CONTACTS", v10);
+      v27 = AFRingtoneLocalizedString(@"THREE_CONTACTS", codeCopy);
       v28 = v12;
       v18 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-      v26 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+      v26 = [codeCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
       v19 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v26];
       v25 = v18;
       [v18 setLocale:v19];
@@ -532,7 +532,7 @@ LABEL_7:
       [v18 stringFromNumber:&unk_1F056CD80];
       v21 = v15;
       v23 = v22 = v13;
-      v11 = [v20 initWithFormat:v27, v14, v17, v23];
+      v11 = [v20 initWithFormat:v27, spokenName, v17, v23];
 
       v13 = v22;
       v15 = v21;
@@ -540,57 +540,57 @@ LABEL_7:
       v12 = v28;
     }
 
-    if (v14 && !v11)
+    if (spokenName && !v11)
     {
-      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:v9 languageCode:v10];
+      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:nameCopy languageCode:codeCopy];
     }
 
     if (!v11 && v17)
     {
-      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v15 callServiceSpeakableName:v9 languageCode:v10];
+      v11 = [(AFSiriRingtone *)self _spokenTextForOneContact:v15 callServiceSpeakableName:nameCopy languageCode:codeCopy];
     }
   }
 
   else
   {
-    v11 = [(AFSiriRingtone *)self _spokenTextForTwoContacts:v8 callServiceSpeakableName:v9 languageCode:v10];
+    v11 = [(AFSiriRingtone *)self _spokenTextForTwoContacts:contactsCopy callServiceSpeakableName:nameCopy languageCode:codeCopy];
   }
 
   return v11;
 }
 
-- (id)_spokenTextForTwoContacts:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5
+- (id)_spokenTextForTwoContacts:(id)contacts callServiceSpeakableName:(id)name languageCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  v12 = [v8 firstObject];
+  contactsCopy = contacts;
+  nameCopy = name;
+  codeCopy = code;
+  v11 = [contactsCopy count];
+  firstObject = [contactsCopy firstObject];
   if (v11 <= 1)
   {
-    v13 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:v9 languageCode:v10];
+    v13 = [(AFSiriRingtone *)self _spokenTextForOneContact:firstObject callServiceSpeakableName:nameCopy languageCode:codeCopy];
     goto LABEL_17;
   }
 
-  v14 = [(AFSiriRingtone *)self _phoneticNamesForContact:v12 languageCode:v10];
-  v15 = [v14 givenName];
-  v29 = [v14 familyName];
-  v28 = [v14 spokenName];
-  v26 = [v8 lastObject];
+  v14 = [(AFSiriRingtone *)self _phoneticNamesForContact:firstObject languageCode:codeCopy];
+  givenName = [v14 givenName];
+  familyName = [v14 familyName];
+  spokenName = [v14 spokenName];
+  lastObject = [contactsCopy lastObject];
   v16 = [AFSiriRingtone _phoneticNamesForContact:"_phoneticNamesForContact:languageCode:" languageCode:?];
-  v27 = [v16 familyName];
-  v17 = [v16 spokenName];
-  v18 = v17;
-  if (!v15 || !v17 || !v29 || !v27 || ![v29 isEqualToString:v27] || (AFRingtoneLocalizedString(@"TWO_CONTACTS_SHARED_FAMILY_NAME", v10), v24 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithFormat:", v24, v15, v18), v24, !v13))
+  familyName2 = [v16 familyName];
+  spokenName2 = [v16 spokenName];
+  v18 = spokenName2;
+  if (!givenName || !spokenName2 || !familyName || !familyName2 || ![familyName isEqualToString:familyName2] || (AFRingtoneLocalizedString(@"TWO_CONTACTS_SHARED_FAMILY_NAME", codeCopy), v24 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithFormat:", v24, givenName, v18), v24, !v13))
   {
-    if (!v28 || !v18 || (AFRingtoneLocalizedString(@"TWO_CONTACTS", v10), v25 = v15, v19 = objc_claimAutoreleasedReturnValue(), v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v19, v28, v18], v19, v15 = v25, !v13))
+    if (!spokenName || !v18 || (AFRingtoneLocalizedString(@"TWO_CONTACTS", codeCopy), v25 = givenName, v19 = objc_claimAutoreleasedReturnValue(), v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v19, spokenName, v18], v19, givenName = v25, !v13))
     {
-      v20 = [(AFSiriRingtone *)self _spokenTextForOneContact:v12 callServiceSpeakableName:v9 languageCode:v10];
+      v20 = [(AFSiriRingtone *)self _spokenTextForOneContact:firstObject callServiceSpeakableName:nameCopy languageCode:codeCopy];
       if (!v20)
       {
-        v22 = self;
-        v21 = v26;
-        v13 = [(AFSiriRingtone *)v22 _spokenTextForOneContact:v26 callServiceSpeakableName:v9 languageCode:v10];
+        selfCopy = self;
+        v21 = lastObject;
+        v13 = [(AFSiriRingtone *)selfCopy _spokenTextForOneContact:lastObject callServiceSpeakableName:nameCopy languageCode:codeCopy];
         goto LABEL_16;
       }
 
@@ -598,7 +598,7 @@ LABEL_7:
     }
   }
 
-  v21 = v26;
+  v21 = lastObject;
 LABEL_16:
 
 LABEL_17:
@@ -606,61 +606,61 @@ LABEL_17:
   return v13;
 }
 
-- (id)_spokenTextForOneContact:(id)a3 callServiceSpeakableName:(id)a4 languageCode:(id)a5
+- (id)_spokenTextForOneContact:(id)contact callServiceSpeakableName:(id)name languageCode:(id)code
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AFSiriRingtone *)self _phoneticNamesForContact:a3 languageCode:v9];
-  v11 = [v10 spokenName];
-  v12 = v11;
-  if (v11)
+  nameCopy = name;
+  codeCopy = code;
+  v10 = [(AFSiriRingtone *)self _phoneticNamesForContact:contact languageCode:codeCopy];
+  spokenName = [v10 spokenName];
+  v12 = spokenName;
+  if (spokenName)
   {
-    if (v8)
+    if (nameCopy)
     {
-      v13 = AFRingtoneLocalizedString(@"CONTACT_WITH_TYPE", v9);
-      v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v13, v12, v8];
+      v13 = AFRingtoneLocalizedString(@"CONTACT_WITH_TYPE", codeCopy);
+      nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v13, v12, nameCopy];
     }
 
     else
     {
-      v14 = v11;
+      nameCopy = spokenName;
     }
   }
 
   else
   {
-    v14 = 0;
+    nameCopy = 0;
   }
 
-  return v14;
+  return nameCopy;
 }
 
-- (id)_generateSpokenTextForContacts:(id)a3 voiceLanguage:(id)a4 displayedCallerID:(id)a5 callerIDType:(int64_t)a6 callDestinationID:(id)a7 callDestinationIDType:(int64_t)a8 callServiceSpeakableName:(id)a9
+- (id)_generateSpokenTextForContacts:(id)contacts voiceLanguage:(id)language displayedCallerID:(id)d callerIDType:(int64_t)type callDestinationID:(id)iD callDestinationIDType:(int64_t)dType callServiceSpeakableName:(id)name
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
-  if (![v15 count] || (-[AFSiriRingtone _spokenTextForContacts:callServiceSpeakableName:languageCode:](self, "_spokenTextForContacts:callServiceSpeakableName:languageCode:", v15, v19, v16), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+  contactsCopy = contacts;
+  languageCopy = language;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  if (![contactsCopy count] || (-[AFSiriRingtone _spokenTextForContacts:callServiceSpeakableName:languageCode:](self, "_spokenTextForContacts:callServiceSpeakableName:languageCode:", contactsCopy, nameCopy, languageCopy), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (![v19 length] && ((a6 - 3) < 2 || a8 == 1))
+    if (![nameCopy length] && ((type - 3) < 2 || dType == 1))
     {
-      v21 = AFRingtoneLocalizedString(@"UNKNOWN_CALLER", v16);
+      v21 = AFRingtoneLocalizedString(@"UNKNOWN_CALLER", languageCopy);
       goto LABEL_11;
     }
 
-    if (v17)
+    if (dCopy)
     {
-      v21 = [(AFSiriRingtone *)self _spokenTextForCallerID:v17 ofType:a6 rawCaller:v18 rawCallerType:a8 languageCode:v16];
+      v21 = [(AFSiriRingtone *)self _spokenTextForCallerID:dCopy ofType:type rawCaller:iDCopy rawCallerType:dType languageCode:languageCopy];
 LABEL_11:
       v20 = v21;
       goto LABEL_12;
     }
 
-    if (v18)
+    if (iDCopy)
     {
-      v21 = [(AFSiriRingtone *)self _spokenTextForCallDestinationID:v18 ofType:a8 callServiceSpeakableName:v19 languageCode:v16];
+      v21 = [(AFSiriRingtone *)self _spokenTextForCallDestinationID:iDCopy ofType:dType callServiceSpeakableName:nameCopy languageCode:languageCopy];
       goto LABEL_11;
     }
 
@@ -691,9 +691,9 @@ LABEL_12:
   return v7;
 }
 
-- (AFSiriRingtone)initWithContacts:(id)a3
+- (AFSiriRingtone)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v21.receiver = self;
   v21.super_class = AFSiriRingtone;
   v5 = [(AFSiriRingtone *)&v21 init];
@@ -702,15 +702,15 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [v4 copy];
+  v6 = [contactsCopy copy];
   contacts = v5->_contacts;
   v5->_contacts = v6;
 
   v8 = +[AFConnection outputVoice];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [v9 objectForKey:*MEMORY[0x1E695D9B0]];
-  v11 = [(AFVoiceInfo *)v8 languageCode];
-  v5->_languageMismatch = [v11 hasPrefix:v10] ^ 1;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
+  languageCode = [(AFVoiceInfo *)v8 languageCode];
+  v5->_languageMismatch = [languageCode hasPrefix:v10] ^ 1;
 
   if (v5->_languageMismatch)
   {
@@ -729,7 +729,7 @@ LABEL_12:
     if (!v8)
     {
 LABEL_7:
-      v14 = [(AFSiriRingtone *)v5 _bestVoiceInfoWithCurrentLocale:v9];
+      v14 = [(AFSiriRingtone *)v5 _bestVoiceInfoWithCurrentLocale:currentLocale];
 
       v8 = v14;
       goto LABEL_8;
@@ -746,11 +746,11 @@ LABEL_8:
   v5->_voiceInfo = v8;
   v16 = v8;
 
-  v17 = [(AFVoiceInfo *)v5->_voiceInfo languageCode];
-  v18 = v17;
-  if (v17)
+  languageCode2 = [(AFVoiceInfo *)v5->_voiceInfo languageCode];
+  v18 = languageCode2;
+  if (languageCode2)
   {
-    v19 = v17;
+    v19 = languageCode2;
   }
 
   else
@@ -764,13 +764,13 @@ LABEL_12:
   return v5;
 }
 
-- (id)_bestVoiceInfoWithCurrentLocale:(id)a3
+- (id)_bestVoiceInfoWithCurrentLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = VSPreferencesCopyDefaultOutputLanguageIdentifierForUserPreferences();
   if (![v4 length])
   {
-    v5 = [v3 objectForKey:*MEMORY[0x1E695D9B0]];
+    v5 = [localeCopy objectForKey:*MEMORY[0x1E695D9B0]];
     v6 = v5;
     v7 = @"en";
     if (v5)
@@ -780,7 +780,7 @@ LABEL_12:
 
     v8 = v7;
 
-    v9 = [v3 objectForKey:*MEMORY[0x1E695D978]];
+    v9 = [localeCopy objectForKey:*MEMORY[0x1E695D978]];
     v10 = v9;
     v11 = @"US";
     if (v9)

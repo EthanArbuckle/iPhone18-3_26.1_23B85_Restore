@@ -2,15 +2,15 @@
 - (CGPoint)contentOrigin;
 - (CGPoint)decelerationTarget;
 - (CGPoint)initialContentOffset;
-- (CGPoint)positionAfterDuration:(double)a3;
+- (CGPoint)positionAfterDuration:(double)duration;
 - (CGRect)contentFrame;
 - (CGSize)tolerance;
 - (CGSize)viewSize;
 - (CGVector)initialVelocity;
-- (CGVector)velocityAfterDuration:(double)a3;
+- (CGVector)velocityAfterDuration:(double)duration;
 - (_UIScrollDynamics)init;
-- (_UIScrollDynamics)initWithInitialContentOffset:(CGPoint)a3 velocity:(CGVector)a4 contentFrame:(CGRect)a5 viewSize:(CGSize)a6 screenScale:(double)a7;
-- (void)recalculateForDecelerationTarget:(CGPoint)a3;
+- (_UIScrollDynamics)initWithInitialContentOffset:(CGPoint)offset velocity:(CGVector)velocity contentFrame:(CGRect)frame viewSize:(CGSize)size screenScale:(double)scale;
+- (void)recalculateForDecelerationTarget:(CGPoint)target;
 @end
 
 @implementation _UIScrollDynamics
@@ -33,17 +33,17 @@
   }
 }
 
-- (_UIScrollDynamics)initWithInitialContentOffset:(CGPoint)a3 velocity:(CGVector)a4 contentFrame:(CGRect)a5 viewSize:(CGSize)a6 screenScale:(double)a7
+- (_UIScrollDynamics)initWithInitialContentOffset:(CGPoint)offset velocity:(CGVector)velocity contentFrame:(CGRect)frame viewSize:(CGSize)size screenScale:(double)scale
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  dy = a4.dy;
-  dx = a4.dx;
-  v13 = a3.y;
-  v14 = a3.x;
-  v15 = [(_UIScrollDynamics *)self init:*&a6.width];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dy = velocity.dy;
+  dx = velocity.dx;
+  v13 = offset.y;
+  v14 = offset.x;
+  v15 = [(_UIScrollDynamics *)self init:*&size.width];
   v16 = v15;
   if (v15)
   {
@@ -51,7 +51,7 @@
     [(_UIScrollDynamics *)v16 setInitialVelocity:dx, dy];
     [(_UIScrollDynamics *)v16 setContentFrame:x, y, width, height];
     [(_UIScrollDynamics *)v16 setContentOrigin:x, y];
-    [(_UIScrollDynamics *)v16 setViewSize:a7, v18];
+    [(_UIScrollDynamics *)v16 setViewSize:scale, v18];
     v16->_tolerance.width = v19;
     v16->_tolerance.height = v19;
     [(_UIScrollDynamics *)v16 setShouldRoundCalculations:1];
@@ -61,7 +61,7 @@
   return v16;
 }
 
-- (CGVector)velocityAfterDuration:(double)a3
+- (CGVector)velocityAfterDuration:(double)duration
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (CGPoint)positionAfterDuration:(double)a3
+- (CGPoint)positionAfterDuration:(double)duration
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
@@ -79,9 +79,9 @@
   return result;
 }
 
-- (void)recalculateForDecelerationTarget:(CGPoint)a3
+- (void)recalculateForDecelerationTarget:(CGPoint)target
 {
-  [(_UIScrollDynamics *)self setDecelerationTarget:a3.x, a3.y];
+  [(_UIScrollDynamics *)self setDecelerationTarget:target.x, target.y];
 
   [(_UIScrollDynamics *)self calculateToReachDecelerationTarget];
 }

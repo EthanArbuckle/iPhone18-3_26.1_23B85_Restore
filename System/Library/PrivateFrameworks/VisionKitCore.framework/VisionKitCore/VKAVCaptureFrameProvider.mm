@@ -1,43 +1,43 @@
 @interface VKAVCaptureFrameProvider
 - (CGPoint)interestPoint;
-- (VKAVCaptureFrameProvider)initWithConfiguration:(id)a3;
-- (double)_luminosityForSampleBuffer:(uint64_t)a1;
+- (VKAVCaptureFrameProvider)initWithConfiguration:(id)configuration;
+- (double)_luminosityForSampleBuffer:(uint64_t)buffer;
 - (id)_ciImage;
 - (uint64_t)_currentFrame;
 - (uint64_t)_respondsToDidCapturePhoto;
 - (uint64_t)_respondsToDidZoom;
 - (uint64_t)_respondsToIsRunning;
-- (uint64_t)_stabilityFromSampleBuffer:(uint64_t)a1;
+- (uint64_t)_stabilityFromSampleBuffer:(uint64_t)buffer;
 - (void)_avCapturePreparationComplete;
 - (void)_avCapturePreparationComplete2;
 - (void)_didChangeDimensions;
-- (void)_setCurrentFrame:(uint64_t)a1;
-- (void)_setRespondsToDidCapturePhoto:(uint64_t)a1;
-- (void)_setRespondsToDidZoom:(uint64_t)a1;
-- (void)_setRespondsToIsRunning:(uint64_t)a1;
-- (void)avCapture:(id)a3 cameraAccessGranted:(BOOL)a4;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)_setCurrentFrame:(uint64_t)frame;
+- (void)_setRespondsToDidCapturePhoto:(uint64_t)photo;
+- (void)_setRespondsToDidZoom:(uint64_t)zoom;
+- (void)_setRespondsToIsRunning:(uint64_t)running;
+- (void)avCapture:(id)capture cameraAccessGranted:(BOOL)granted;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)capturePhoto;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepare;
-- (void)previewView:(id)a3 didMoveToWindow:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setInterestPoint:(CGPoint)a3;
-- (void)setRegionOfInterest:(CGRect)a3;
-- (void)snapshotWithCompletion:(id)a3;
+- (void)previewView:(id)view didMoveToWindow:(id)window;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setInterestPoint:(CGPoint)point;
+- (void)setRegionOfInterest:(CGRect)interest;
+- (void)snapshotWithCompletion:(id)completion;
 - (void)startRunning;
 - (void)stopRunning;
 @end
 
 @implementation VKAVCaptureFrameProvider
 
-- (VKAVCaptureFrameProvider)initWithConfiguration:(id)a3
+- (VKAVCaptureFrameProvider)initWithConfiguration:(id)configuration
 {
   v19.receiver = self;
   v19.super_class = VKAVCaptureFrameProvider;
-  v3 = [(VKFrameProvider *)&v19 initWithConfiguration:a3];
+  v3 = [(VKFrameProvider *)&v19 initWithConfiguration:configuration];
   if (v3)
   {
     v4 = objc_alloc_init(VKAVCapturePreviewView);
@@ -84,7 +84,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = objc_begin_catch(a1);
+  v1 = objc_begin_catch(self);
   v2 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,15 +96,15 @@
   objc_end_catch();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (VKAVCaptureFrameProviderContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (VKAVCaptureFrameProviderContext == context)
   {
-    if ([v10 isEqualToString:@"videoZoomFactor"])
+    if ([pathCopy isEqualToString:@"videoZoomFactor"])
     {
       if (self)
       {
@@ -114,18 +114,18 @@
         if (respondsToDidZoom)
         {
           objc_initWeak(location, self);
-          v14 = [(VKFrameProvider *)self delegateQueue];
-          [VKAVCaptureFrameProvider observeValueForKeyPath:v14 ofObject:&v29 change:location context:?];
+          delegateQueue = [(VKFrameProvider *)self delegateQueue];
+          [VKAVCaptureFrameProvider observeValueForKeyPath:delegateQueue ofObject:&v29 change:location context:?];
         }
       }
     }
 
-    else if ([v10 isEqualToString:@"torchActive"])
+    else if ([pathCopy isEqualToString:@"torchActive"])
     {
       [VKAVCaptureFrameProvider observeValueForKeyPath:? ofObject:? change:? context:?];
     }
 
-    else if ([v10 isEqualToString:@"running"])
+    else if ([pathCopy isEqualToString:@"running"])
     {
       if (self)
       {
@@ -134,19 +134,19 @@
         [(VKFrameProvider *)self unlock];
         if (respondsToIsRunning)
         {
-          v16 = [(VKAVCapture *)self->_avCapture session];
-          v17 = [v16 isRunning];
+          session = [(VKAVCapture *)self->_avCapture session];
+          isRunning = [session isRunning];
 
           objc_initWeak(location, self);
-          v18 = [(VKFrameProvider *)self delegateQueue];
-          [VKAVCaptureFrameProvider observeValueForKeyPath:v17 ofObject:v18 change:&v28 context:location];
+          delegateQueue2 = [(VKFrameProvider *)self delegateQueue];
+          [VKAVCaptureFrameProvider observeValueForKeyPath:isRunning ofObject:delegateQueue2 change:&v28 context:location];
         }
       }
     }
 
-    else if ([v10 isEqualToString:@"videoRotationAngleForHorizonLevelPreview"])
+    else if ([pathCopy isEqualToString:@"videoRotationAngleForHorizonLevelPreview"])
     {
-      v19 = [(VKFrameProvider *)self isProcessing];
+      isProcessing = [(VKFrameProvider *)self isProcessing];
       [(VKFrameProvider *)self stopProcessing];
       [(AVCaptureDeviceRotationCoordinator *)self->_avDeviceRotationCoordinator videoRotationAngleForHorizonLevelPreview];
       v21 = v20;
@@ -163,14 +163,14 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *location = 138412546;
-        *&location[4] = v10;
+        *&location[4] = pathCopy;
         v31 = 2048;
         v32 = v21;
         _os_log_impl(&dword_1B4335000, v23, OS_LOG_TYPE_DEFAULT, "%@ changed to %f", location, 0x16u);
       }
 
       [(VKAVCaptureFrameProvider *)self _didChangeDimensions];
-      if (v19)
+      if (isProcessing)
       {
         [(VKFrameProvider *)self startProcessing];
       }
@@ -184,7 +184,7 @@
   {
     v24.receiver = self;
     v24.super_class = VKAVCaptureFrameProvider;
-    [(VKAVCaptureFrameProvider *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VKAVCaptureFrameProvider *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -220,19 +220,19 @@ void __75__VKAVCaptureFrameProvider_observeValueForKeyPath_ofObject_change_conte
   [(VKAVCaptureFrameProvider *)WeakRetained _didChangeDimensions];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = VKAVCaptureFrameProvider;
-  [(VKFrameProvider *)&v10 setDelegate:v6 queue:a4];
+  [(VKFrameProvider *)&v10 setDelegate:delegateCopy queue:queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__VKAVCaptureFrameProvider_setDelegate_queue___block_invoke;
   v8[3] = &unk_1E7BE4768;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = delegateCopy;
+  v7 = delegateCopy;
   vk_performWhileLocked(self, v8);
 }
 
@@ -249,13 +249,13 @@ uint64_t __46__VKAVCaptureFrameProvider_setDelegate_queue___block_invoke(uint64_
 {
   objc_initWeak(&location, self);
   avCapture = self->_avCapture;
-  v4 = [(VKFrameProvider *)self configuration];
+  configuration = [(VKFrameProvider *)self configuration];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__VKAVCaptureFrameProvider_prepare__block_invoke;
   v5[3] = &unk_1E7BE41E0;
   objc_copyWeak(&v6, &location);
-  [(VKAVCapture *)avCapture prepareWithConfiguration:v4 completion:v5];
+  [(VKAVCapture *)avCapture prepareWithConfiguration:configuration completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -285,40 +285,40 @@ void __35__VKAVCaptureFrameProvider_prepare__block_invoke(uint64_t a1, int a2)
 
 - (void)_avCapturePreparationComplete
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(VKAVCapture *)*(a1 + 128) device];
-    [v2 addObserver:a1 forKeyPath:@"videoZoomFactor" options:1 context:VKAVCaptureFrameProviderContext];
+    device = [(VKAVCapture *)*(self + 128) device];
+    [device addObserver:self forKeyPath:@"videoZoomFactor" options:1 context:VKAVCaptureFrameProviderContext];
 
-    v3 = [(VKAVCapture *)*(a1 + 128) device];
-    [v3 addObserver:a1 forKeyPath:@"torchActive" options:1 context:VKAVCaptureFrameProviderContext];
+    device2 = [(VKAVCapture *)*(self + 128) device];
+    [device2 addObserver:self forKeyPath:@"torchActive" options:1 context:VKAVCaptureFrameProviderContext];
 
-    v4 = [(VKAVCapture *)*(a1 + 128) session];
-    [v4 addObserver:a1 forKeyPath:@"running" options:1 context:VKAVCaptureFrameProviderContext];
+    session = [(VKAVCapture *)*(self + 128) session];
+    [session addObserver:self forKeyPath:@"running" options:1 context:VKAVCaptureFrameProviderContext];
 
     v5 = *MEMORY[0x1E69874F0];
-    v6 = [(VKAVCapturePreviewView *)*(a1 + 120) previewLayer];
-    [v6 setVideoGravity:v5];
+    previewLayer = [(VKAVCapturePreviewView *)*(self + 120) previewLayer];
+    [previewLayer setVideoGravity:v5];
 
-    v7 = [(VKAVCapture *)*(a1 + 128) session];
-    v8 = [(VKAVCapturePreviewView *)*(a1 + 120) previewLayer];
-    [v8 setSession:v7];
+    session2 = [(VKAVCapture *)*(self + 128) session];
+    previewLayer2 = [(VKAVCapturePreviewView *)*(self + 120) previewLayer];
+    [previewLayer2 setSession:session2];
 
-    v9 = [(VKAVCapture *)*(a1 + 128) videoDataOutput];
-    [v9 setSampleBufferDelegate:a1 queue:*(a1 + 144)];
+    videoDataOutput = [(VKAVCapture *)*(self + 128) videoDataOutput];
+    [videoDataOutput setSampleBufferDelegate:self queue:*(self + 144)];
 
     v10 = objc_alloc(MEMORY[0x1E69870B8]);
-    v11 = [(VKAVCapture *)*(a1 + 128) device];
-    v12 = [(VKAVCapturePreviewView *)*(a1 + 120) previewLayer];
-    v13 = [v10 initWithDevice:v11 previewLayer:v12];
-    v14 = *(a1 + 136);
-    *(a1 + 136) = v13;
+    device3 = [(VKAVCapture *)*(self + 128) device];
+    previewLayer3 = [(VKAVCapturePreviewView *)*(self + 120) previewLayer];
+    v13 = [v10 initWithDevice:device3 previewLayer:previewLayer3];
+    v14 = *(self + 136);
+    *(self + 136) = v13;
 
-    [*(a1 + 136) videoRotationAngleForHorizonLevelPreview];
+    [*(self + 136) videoRotationAngleForHorizonLevelPreview];
     v16 = v15;
-    [(VKAVCapturePreviewView *)*(a1 + 120) setVideoRotationAngle:v15];
-    objc_initWeak(&location, a1);
-    v17 = *(a1 + 128);
+    [(VKAVCapturePreviewView *)*(self + 120) setVideoRotationAngle:v15];
+    objc_initWeak(&location, self);
+    v17 = *(self + 128);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __57__VKAVCaptureFrameProvider__avCapturePreparationComplete__block_invoke;
@@ -335,9 +335,9 @@ void __35__VKAVCaptureFrameProvider_prepare__block_invoke(uint64_t a1, int a2)
   v5.receiver = self;
   v5.super_class = VKAVCaptureFrameProvider;
   [(VKFrameProvider *)&v5 startRunning];
-  v3 = [(VKAVCapture *)self->_avCapture session];
+  session = [(VKAVCapture *)self->_avCapture session];
 
-  if (v3)
+  if (session)
   {
     [(VKAVCapture *)&self->_avCapture->super.isa startRunning];
     v4 = 0;
@@ -362,10 +362,10 @@ void __35__VKAVCaptureFrameProvider_prepare__block_invoke(uint64_t a1, int a2)
 
 - (CGPoint)interestPoint
 {
-  v3 = [(VKAVCapture *)self->_avCapture interestPoint];
+  interestPoint = [(VKAVCapture *)self->_avCapture interestPoint];
   v5 = v4;
-  v6 = [(VKAVCapturePreviewView *)self->_avCapturePreviewView previewLayer];
-  [v6 pointForCaptureDevicePointOfInterest:{v3, v5}];
+  previewLayer = [(VKAVCapturePreviewView *)self->_avCapturePreviewView previewLayer];
+  [previewLayer pointForCaptureDevicePointOfInterest:{interestPoint, v5}];
   v8 = v7;
   v10 = v9;
 
@@ -376,12 +376,12 @@ void __35__VKAVCaptureFrameProvider_prepare__block_invoke(uint64_t a1, int a2)
   return result;
 }
 
-- (void)setInterestPoint:(CGPoint)a3
+- (void)setInterestPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKAVCapturePreviewView *)self->_avCapturePreviewView previewLayer];
-  [v6 captureDevicePointOfInterestForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  previewLayer = [(VKAVCapturePreviewView *)self->_avCapturePreviewView previewLayer];
+  [previewLayer captureDevicePointOfInterestForPoint:{x, y}];
 
   avCapture = self->_avCapture;
 
@@ -394,22 +394,22 @@ void __35__VKAVCaptureFrameProvider_prepare__block_invoke(uint64_t a1, int a2)
   v3 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VKAVCapture *)self->_avCapture photoOutput];
+    photoOutput = [(VKAVCapture *)self->_avCapture photoOutput];
     v8 = 138412546;
-    v9 = v4;
+    v9 = photoOutput;
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "[VKAVCaptureFrameProvider capturePhoto] with photoOutput:%@ self:%@", &v8, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E6987100] photoSettings];
-  v6 = [(VKAVCapture *)self->_avCapture photoOutput];
-  [v5 setMaxPhotoDimensions:{objc_msgSend(v6, "maxPhotoDimensions")}];
+  photoSettings = [MEMORY[0x1E6987100] photoSettings];
+  photoOutput2 = [(VKAVCapture *)self->_avCapture photoOutput];
+  [photoSettings setMaxPhotoDimensions:{objc_msgSend(photoOutput2, "maxPhotoDimensions")}];
 
-  [v5 setEmbedsDepthDataInPhoto:0];
-  [v5 setDepthDataDeliveryEnabled:0];
-  v7 = [(VKAVCapture *)self->_avCapture photoOutput];
-  [v7 capturePhotoWithSettings:v5 delegate:self];
+  [photoSettings setEmbedsDepthDataInPhoto:0];
+  [photoSettings setDepthDataDeliveryEnabled:0];
+  photoOutput3 = [(VKAVCapture *)self->_avCapture photoOutput];
+  [photoOutput3 capturePhotoWithSettings:photoSettings delegate:self];
 }
 
 void __51__VKAVCaptureFrameProvider_snapshotWithCompletion___block_invoke(uint64_t a1)
@@ -448,42 +448,42 @@ void __51__VKAVCaptureFrameProvider_snapshotWithCompletion___block_invoke(uint64
   vk_performBlockOnMainThread(v16);
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  photoCopy = photo;
+  errorCopy = error;
   v11 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v9;
+    v26 = photoCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = errorCopy;
     _os_log_impl(&dword_1B4335000, v11, OS_LOG_TYPE_DEFAULT, "AVCapturePhotoCaptureDelegate received callback with photo: %@, error: %@", buf, 0x16u);
   }
 
   if (self && ([(VKFrameProvider *)self lock], respondsToDidCapturePhoto = self->_respondsToDidCapturePhoto, [(VKFrameProvider *)self unlock], respondsToDidCapturePhoto))
   {
-    v13 = [v9 metadata];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
-    v15 = [v14 integerValue];
+    metadata = [photoCopy metadata];
+    v14 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
+    integerValue = [v14 integerValue];
 
-    v16 = vk_orientationFromCGImagePropertyOrientation(v15);
-    v17 = [v9 CGImageRepresentation];
-    v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v17 scale:v16 orientation:1.0];
+    v16 = vk_orientationFromCGImagePropertyOrientation(integerValue);
+    cGImageRepresentation = [photoCopy CGImageRepresentation];
+    v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImageRepresentation scale:v16 orientation:1.0];
     objc_initWeak(buf, self);
-    v19 = [(VKFrameProvider *)self delegateQueue];
+    delegateQueue = [(VKFrameProvider *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__VKAVCaptureFrameProvider_captureOutput_didFinishProcessingPhoto_error___block_invoke;
     block[3] = &unk_1E7BE51C8;
     objc_copyWeak(&v24, buf);
     v22 = v18;
-    v23 = v10;
+    v23 = errorCopy;
     v20 = v18;
-    dispatch_async(v19, block);
+    dispatch_async(delegateQueue, block);
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -557,36 +557,36 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
   return result;
 }
 
-- (void)previewView:(id)a3 didMoveToWindow:(id)a4
+- (void)previewView:(id)view didMoveToWindow:(id)window
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6 && self->_startWhenReady)
+  viewCopy = view;
+  windowCopy = window;
+  if (windowCopy && self->_startWhenReady)
   {
     [(VKAVCaptureFrameProvider *)self startRunning];
   }
 }
 
-- (void)avCapture:(id)a3 cameraAccessGranted:(BOOL)a4
+- (void)avCapture:(id)capture cameraAccessGranted:(BOOL)granted
 {
-  v4 = a4;
-  v6 = [(VKFrameProvider *)self delegate];
+  grantedCopy = granted;
+  delegate = [(VKFrameProvider *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VKFrameProvider *)self delegate];
-    [v8 avCaptureFrameProvider:self cameraAccessGranted:v4];
+    delegate2 = [(VKFrameProvider *)self delegate];
+    [delegate2 avCaptureFrameProvider:self cameraAccessGranted:grantedCopy];
   }
 }
 
 - (uint64_t)_respondsToDidZoom
 {
-  if (a1)
+  if (self)
   {
-    [a1 lock];
-    v2 = a1[345];
-    [a1 unlock];
+    [self lock];
+    v2 = self[345];
+    [self unlock];
   }
 
   else
@@ -599,11 +599,11 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 
 - (uint64_t)_respondsToIsRunning
 {
-  if (a1)
+  if (self)
   {
-    [a1 lock];
-    v2 = a1[346];
-    [a1 unlock];
+    [self lock];
+    v2 = self[346];
+    [self unlock];
   }
 
   else
@@ -616,25 +616,25 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 
 - (void)_didChangeDimensions
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(VKAVCapture *)*(a1 + 128) videoSettings];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6966208]];
+    videoSettings = [(VKAVCapture *)*(self + 128) videoSettings];
+    v3 = [videoSettings objectForKeyedSubscript:*MEMORY[0x1E6966208]];
     [v3 doubleValue];
     sx = v4;
 
-    v5 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
+    v5 = [videoSettings objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
     [v5 doubleValue];
     v7 = v6;
 
-    v8 = [a1 previewView];
-    [v8 bounds];
+    previewView = [self previewView];
+    [previewView bounds];
     v68 = v9;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    [a1 regionOfInterest];
+    [self regionOfInterest];
     x = v99.origin.x;
     y = v99.origin.y;
     width = v99.size.width;
@@ -690,7 +690,7 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
       t1 = v95;
       v31 = CGAffineTransformConcat(&v94, &t1, &t2);
       memset(&t2, 0, sizeof(t2));
-      OUTLINED_FUNCTION_3_1(v31, v32, v33, v34, v35, v36, v37, v38, v7, v64, v66, v68, sx, block, v74, v75, v76, v77, v78, v79, v80, v81, *&v82.a, *&v82.b, *&v82.c, *&v82.d, *&v82.tx, *&v82.ty, *&v83.a, *&v83.b, *&v83.c, *&v83.d, *&v83.tx, *&v83.ty, v84, *(&v84 + 1), v85, *(&v85 + 1), v86, *(&v86 + 1), *&v87.a, *&v87.b, *&v87.c, *&v87.d, *&v87.tx, *&v87.ty, *&v88.a, *&v88.b, *&v88.c, *&v88.d, *&v88.tx, *&v88.ty, *&v89.a, *&v89.b, *&v89.c, *&v89.d, *&v89.tx, *&v89.ty, *&v90.a, *&v90.b, *&v90.c, *&v90.d, *&v90.tx);
+      OUTLINED_FUNCTION_3_1(v31, v32, v33, v34, v35, v36, v37, v38, v7, v64, v66, v68, sx, block, v74, v75, v76, selfCopy, v78, v79, v80, v81, *&v82.a, *&v82.b, *&v82.c, *&v82.d, *&v82.tx, *&v82.ty, *&v83.a, *&v83.b, *&v83.c, *&v83.d, *&v83.tx, *&v83.ty, v84, *(&v84 + 1), v85, *(&v85 + 1), v86, *(&v86 + 1), *&v87.a, *&v87.b, *&v87.c, *&v87.d, *&v87.tx, *&v87.ty, *&v88.a, *&v88.b, *&v88.c, *&v88.d, *&v88.tx, *&v88.ty, *&v89.a, *&v89.b, *&v89.c, *&v89.d, *&v89.tx, *&v89.ty, *&v90.a, *&v90.b, *&v90.c, *&v90.d, *&v90.tx);
       v91 = v94;
       CGAffineTransformConcat(&t2, &v91, &t1);
       t1 = t2;
@@ -704,7 +704,7 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
       v40 = v39;
       v42 = v41;
       memset(&t1, 0, sizeof(t1));
-      OUTLINED_FUNCTION_3_1(v43, v44, v45, v46, v47, v48, v49, v50, sy, *&v65, *&v67, v69, sxa, block, v74, v75, v76, v77, v78, v79, v80, v81, *&v82.a, *&v82.b, *&v82.c, *&v82.d, *&v82.tx, *&v82.ty, *&v83.a, *&v83.b, *&v83.c, *&v83.d, *&v83.tx, *&v83.ty, v84, *(&v84 + 1), v85, *(&v85 + 1), v86, *(&v86 + 1), *&v87.a, *&v87.b, *&v87.c, *&v87.d, *&v87.tx, *&v87.ty, *&v88.a, *&v88.b, *&v88.c, *&v88.d, *&v88.tx, *&v88.ty, *&v89.a, *&v89.b, *&v89.c, *&v89.d, *&v89.tx, *&v89.ty, *&v90.a, *&v90.b, *&v90.c, *&v90.d, *&v90.tx);
+      OUTLINED_FUNCTION_3_1(v43, v44, v45, v46, v47, v48, v49, v50, sy, *&v65, *&v67, v69, sxa, block, v74, v75, v76, selfCopy, v78, v79, v80, v81, *&v82.a, *&v82.b, *&v82.c, *&v82.d, *&v82.tx, *&v82.ty, *&v83.a, *&v83.b, *&v83.c, *&v83.d, *&v83.tx, *&v83.ty, v84, *(&v84 + 1), v85, *(&v85 + 1), v86, *(&v86 + 1), *&v87.a, *&v87.b, *&v87.c, *&v87.d, *&v87.tx, *&v87.ty, *&v88.a, *&v88.b, *&v88.c, *&v88.d, *&v88.tx, *&v88.ty, *&v89.a, *&v89.b, *&v89.c, *&v89.d, *&v89.tx, *&v89.ty, *&v90.a, *&v90.b, *&v90.c, *&v90.d, *&v90.tx);
       v91 = t1;
       v102.origin.x = y;
       v102.origin.y = v24;
@@ -734,12 +734,12 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
       CGAffineTransformInvert(&v88, &v87);
       v87 = v90;
       CGAffineTransformConcat(&v89, &v87, &v88);
-      v61 = *(a1 + 144);
+      v61 = *(self + 144);
       block = MEMORY[0x1E69E9820];
       v74 = 3221225472;
       v75 = __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke;
       v76 = &unk_1E7BE51F0;
-      v77 = a1;
+      selfCopy = self;
       v78 = *&y;
       v79 = *&v24;
       v80 = *&v40;
@@ -750,27 +750,27 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
       v85 = v97;
       v84 = v96;
       dispatch_sync(v61, &block);
-      [a1 resetAllProcessors];
+      [self resetAllProcessors];
     }
   }
 }
 
-- (void)setRegionOfInterest:(CGRect)a3
+- (void)setRegionOfInterest:(CGRect)interest
 {
   v4.receiver = self;
   v4.super_class = VKAVCaptureFrameProvider;
-  [(VKFrameProvider *)&v4 setRegionOfInterest:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VKFrameProvider *)&v4 setRegionOfInterest:interest.origin.x, interest.origin.y, interest.size.width, interest.size.height];
   [(VKAVCaptureFrameProvider *)self _didChangeDimensions];
 }
 
-- (void)snapshotWithCompletion:(id)a3
+- (void)snapshotWithCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = v10;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (self && self->__currentFrame)
   {
-    v12 = [(VKAVCaptureFrameProvider *)self previewView];
-    [v12 bounds];
+    previewView = [(VKAVCaptureFrameProvider *)self previewView];
+    [previewView bounds];
     OUTLINED_FUNCTION_7();
     v14 = v13;
     v16 = v15;
@@ -785,11 +785,11 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
       v8 = v16;
     }
 
-    v17 = [(VKFrame *)self->__currentFrame info];
-    v18 = v17;
-    if (v17)
+    info = [(VKFrame *)self->__currentFrame info];
+    v18 = info;
+    if (info)
     {
-      [v17 imageToLayerTransform];
+      [info imageToLayerTransform];
     }
 
     else
@@ -834,7 +834,7 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -850,9 +850,9 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 
 - (id)_ciImage
 {
-  if (a1 && *(a1 + 392))
+  if (self && *(self + 392))
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer([*(a1 + 392) sampleBuffer]);
+    ImageBuffer = CMSampleBufferGetImageBuffer([*(self + 392) sampleBuffer]);
     CVPixelBufferLockBaseAddress(ImageBuffer, 0);
     v2 = [MEMORY[0x1E695F658] imageWithCVImageBuffer:ImageBuffer];
     CVPixelBufferUnlockBaseAddress(ImageBuffer, 0);
@@ -868,11 +868,11 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 
 - (uint64_t)_respondsToDidCapturePhoto
 {
-  if (a1)
+  if (self)
   {
-    [a1 lock];
-    v2 = a1[344];
-    [a1 unlock];
+    [self lock];
+    v2 = self[344];
+    [self unlock];
   }
 
   else
@@ -883,9 +883,9 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
   return v2 & 1;
 }
 
-- (void)_setRespondsToDidCapturePhoto:(uint64_t)a1
+- (void)_setRespondsToDidCapturePhoto:(uint64_t)photo
 {
-  if (a1)
+  if (photo)
   {
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_4_0();
@@ -893,9 +893,9 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
   }
 }
 
-- (void)_setRespondsToDidZoom:(uint64_t)a1
+- (void)_setRespondsToDidZoom:(uint64_t)zoom
 {
-  if (a1)
+  if (zoom)
   {
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_4_0();
@@ -903,9 +903,9 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
   }
 }
 
-- (void)_setRespondsToIsRunning:(uint64_t)a1
+- (void)_setRespondsToIsRunning:(uint64_t)running
 {
-  if (a1)
+  if (running)
   {
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_4_0();
@@ -916,29 +916,29 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
 - (void)_avCapturePreparationComplete2
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 136) addObserver:a1 forKeyPath:@"videoRotationAngleForHorizonLevelPreview" options:1 context:VKAVCaptureFrameProviderContext];
-    [(VKAVCaptureFrameProvider *)a1 _didChangeDimensions];
-    if (*(a1 + 160) == 1)
+    [*(self + 136) addObserver:self forKeyPath:@"videoRotationAngleForHorizonLevelPreview" options:1 context:VKAVCaptureFrameProviderContext];
+    [(VKAVCaptureFrameProvider *)self _didChangeDimensions];
+    if (*(self + 160) == 1)
     {
-      v2 = [*(a1 + 120) window];
-      if (v2)
+      window = [*(self + 120) window];
+      if (window)
       {
       }
 
       else
       {
-        v3 = [a1 configuration];
-        v4 = [v3 allowHeadlessProcessing];
+        configuration = [self configuration];
+        allowHeadlessProcessing = [configuration allowHeadlessProcessing];
 
-        if ((v4 & 1) == 0)
+        if ((allowHeadlessProcessing & 1) == 0)
         {
           v8 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
             v9 = 138412290;
-            v10 = a1;
+            selfCopy = self;
             _os_log_error_impl(&dword_1B4335000, v8, OS_LOG_TYPE_ERROR, "%@ - AVCapturePreviewView doesn't have a window. Can't start running", &v9, 0xCu);
           }
 
@@ -946,24 +946,24 @@ __n128 __48__VKAVCaptureFrameProvider__didChangeDimensions__block_invoke(uint64_
         }
       }
 
-      [a1 startRunning];
+      [self startRunning];
     }
 
 LABEL_7:
-    v5 = [a1 delegate];
+    delegate = [self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [a1 delegate];
-      [v7 avCaptureFrameProviderDidFinishPreparation:a1];
+      delegate2 = [self delegate];
+      [delegate2 avCaptureFrameProviderDidFinishPreparation:self];
     }
   }
 }
 
-- (uint64_t)_stabilityFromSampleBuffer:(uint64_t)a1
+- (uint64_t)_stabilityFromSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
@@ -977,13 +977,13 @@ LABEL_7:
   [v4 doubleValue];
   v6 = v5;
   valuePtr = v5;
-  v7 = [(VKAVCapture *)*(a1 + 128) device];
-  v8 = [v7 activePrimaryConstituentDevice];
+  device = [(VKAVCapture *)*(buffer + 128) device];
+  activePrimaryConstituentDevice = [device activePrimaryConstituentDevice];
 
-  v9 = [v8 deviceType];
+  deviceType = [activePrimaryConstituentDevice deviceType];
   v10 = *MEMORY[0x1E6986948];
 
-  if (v9 == v10)
+  if (deviceType == v10)
   {
     valuePtr = v6 + (1.0 - v6) * 0.25;
     v11 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberDoubleType, &valuePtr);
@@ -1011,9 +1011,9 @@ LABEL_7:
   return v13;
 }
 
-- (double)_luminosityForSampleBuffer:(uint64_t)a1
+- (double)_luminosityForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0.0;
   }
@@ -1057,9 +1057,9 @@ LABEL_7:
   return v16;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a4);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
   v9 = Dimensions;
   v10 = HIDWORD(Dimensions);
@@ -1069,10 +1069,10 @@ LABEL_7:
   [OUTLINED_FUNCTION_1_3() setVisionToCroppedImageTransform:?];
   [OUTLINED_FUNCTION_1_3() setVisionToLayerTransform:?];
   [OUTLINED_FUNCTION_1_3() setImageToLayerTransform:?];
-  [(VKFrameInfo *)v11 setSceneStability:[(VKAVCaptureFrameProvider *)self _stabilityFromSampleBuffer:a4]];
-  [(VKFrameInfo *)v11 setLuminosity:[(VKAVCaptureFrameProvider *)self _luminosityForSampleBuffer:a4]];
+  [(VKFrameInfo *)v11 setSceneStability:[(VKAVCaptureFrameProvider *)self _stabilityFromSampleBuffer:buffer]];
+  [(VKFrameInfo *)v11 setLuminosity:[(VKAVCaptureFrameProvider *)self _luminosityForSampleBuffer:buffer]];
   v12 = objc_alloc_init(VKAVCaptureFrame);
-  [(VKAVCaptureFrame *)v12 setSampleBuffer:a4];
+  [(VKAVCaptureFrame *)v12 setSampleBuffer:buffer];
   [(VKFrame *)v12 setInfo:v11];
   [(VKFrameProvider *)self sendFrame:v12];
   OUTLINED_FUNCTION_0_1();
@@ -1085,11 +1085,11 @@ LABEL_7:
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
-- (void)_setCurrentFrame:(uint64_t)a1
+- (void)_setCurrentFrame:(uint64_t)frame
 {
-  if (a1)
+  if (frame)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((frame + 392), a2);
   }
 }
 

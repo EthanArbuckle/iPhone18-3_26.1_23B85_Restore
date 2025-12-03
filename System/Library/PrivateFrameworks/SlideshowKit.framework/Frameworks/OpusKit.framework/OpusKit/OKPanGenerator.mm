@@ -1,24 +1,24 @@
 @interface OKPanGenerator
-- (CGRect)_frameWithAspectRatio:(double)a3 forFittingMode:(unint64_t)a4 andAnchorPoint:(CGPoint)a5;
+- (CGRect)_frameWithAspectRatio:(double)ratio forFittingMode:(unint64_t)mode andAnchorPoint:(CGPoint)point;
 - (CGRect)_fullROI;
 - (CGRect)referenceFrame;
-- (OKPanGenerator)initWithAspectRatio:(double)a3;
-- (id)_panStepWithRelativeFrame:(CGRect)a3 forFittingMode:(unint64_t)a4 anchorPoint:(CGPoint)a5 andExtraScale:(double)a6;
+- (OKPanGenerator)initWithAspectRatio:(double)ratio;
+- (id)_panStepWithRelativeFrame:(CGRect)frame forFittingMode:(unint64_t)mode anchorPoint:(CGPoint)point andExtraScale:(double)scale;
 - (void)_updatePanSteps;
 - (void)dealloc;
-- (void)enumeratePanStepsWithBlock:(id)a3;
+- (void)enumeratePanStepsWithBlock:(id)block;
 @end
 
 @implementation OKPanGenerator
 
-- (OKPanGenerator)initWithAspectRatio:(double)a3
+- (OKPanGenerator)initWithAspectRatio:(double)ratio
 {
   v5.receiver = self;
   v5.super_class = OKPanGenerator;
   result = [(OKPanGenerator *)&v5 init];
   if (result)
   {
-    result->_mediaItemAspectRatio = a3;
+    result->_mediaItemAspectRatio = ratio;
   }
 
   return result;
@@ -99,12 +99,12 @@ void __26__OKPanGenerator__fullROI__block_invoke(uint64_t a1, NSString *a2)
   *(*(*(a1 + 32) + 8) + 32) = v5;
 }
 
-- (CGRect)_frameWithAspectRatio:(double)a3 forFittingMode:(unint64_t)a4 andAnchorPoint:(CGPoint)a5
+- (CGRect)_frameWithAspectRatio:(double)ratio forFittingMode:(unint64_t)mode andAnchorPoint:(CGPoint)point
 {
   width = self->_referenceFrame.size.width;
   height = self->_referenceFrame.size.height;
   v7 = width / height;
-  if (a4 == 3)
+  if (mode == 3)
   {
     if (v7 >= 1.0)
     {
@@ -114,27 +114,27 @@ void __26__OKPanGenerator__fullROI__block_invoke(uint64_t a1, NSString *a2)
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
-    if (v7 > a3)
+    if (v7 > ratio)
     {
 LABEL_7:
-      v9 = height * a3;
+      v9 = height * ratio;
       v8 = self->_referenceFrame.size.height;
       goto LABEL_10;
     }
 
 LABEL_9:
     v9 = self->_referenceFrame.size.width;
-    v8 = width / a3;
+    v8 = width / ratio;
     goto LABEL_10;
   }
 
   v8 = self->_referenceFrame.size.height;
   v9 = self->_referenceFrame.size.width;
-  if (a4 == 1)
+  if (mode == 1)
   {
-    if (v7 >= a3)
+    if (v7 >= ratio)
     {
       goto LABEL_9;
     }
@@ -143,8 +143,8 @@ LABEL_9:
   }
 
 LABEL_10:
-  v10 = a5.x * (width - v9);
-  v11 = a5.y * (height - v8);
+  v10 = point.x * (width - v9);
+  v11 = point.y * (height - v8);
   v12 = v9;
   result.size.height = v8;
   result.size.width = v12;
@@ -153,15 +153,15 @@ LABEL_10:
   return result;
 }
 
-- (id)_panStepWithRelativeFrame:(CGRect)a3 forFittingMode:(unint64_t)a4 anchorPoint:(CGPoint)a5 andExtraScale:(double)a6
+- (id)_panStepWithRelativeFrame:(CGRect)frame forFittingMode:(unint64_t)mode anchorPoint:(CGPoint)point andExtraScale:(double)scale
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v21[2] = *MEMORY[0x277D85DE8];
-  [(OKPanGenerator *)self _frameWithAspectRatio:a4 forFittingMode:a3.size.width * self->_mediaItemAspectRatio / a3.size.height andAnchorPoint:a5.x, a5.y];
+  [(OKPanGenerator *)self _frameWithAspectRatio:mode forFittingMode:frame.size.width * self->_mediaItemAspectRatio / frame.size.height andAnchorPoint:point.x, point.y];
   v11 = self->_referenceFrame.size.width;
-  v13 = v12 / (width * v11) * a6;
+  v13 = v12 / (width * v11) * scale;
   v17 = v15 + v16 * 0.5 - y * self->_referenceFrame.size.height;
   v20[0] = @"center";
   v20[1] = @"scale";
@@ -469,17 +469,17 @@ LABEL_45:
 
       if ([(NSArray *)self->_mediaItemRegionsOfInterest count])
       {
-        v45 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         mediaItemRegionsOfInterest = self->_mediaItemRegionsOfInterest;
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
         v51[2] = __33__OKPanGenerator__updatePanSteps__block_invoke;
         v51[3] = &unk_279C90DF0;
-        v51[4] = v45;
+        v51[4] = array;
         v51[5] = self;
         [(NSArray *)mediaItemRegionsOfInterest enumerateObjectsUsingBlock:v51];
 LABEL_79:
-        self->_panSteps = v45;
+        self->_panSteps = array;
         return;
       }
 
@@ -501,7 +501,7 @@ LABEL_79:
 
     v20 = 1;
 LABEL_78:
-    v45 = [v16 arrayWithObjects:v17 count:v20];
+    array = [v16 arrayWithObjects:v17 count:v20];
     goto LABEL_79;
   }
 }
@@ -527,7 +527,7 @@ uint64_t __33__OKPanGenerator__updatePanSteps__block_invoke(uint64_t a1, void *a
   return [v3 addObject:v7];
 }
 
-- (void)enumeratePanStepsWithBlock:(id)a3
+- (void)enumeratePanStepsWithBlock:(id)block
 {
   [(OKPanGenerator *)self _updatePanSteps];
   panSteps = self->_panSteps;
@@ -535,17 +535,17 @@ uint64_t __33__OKPanGenerator__updatePanSteps__block_invoke(uint64_t a1, void *a
   v13[1] = 3221225472;
   v13[2] = __45__OKPanGenerator_enumeratePanStepsWithBlock___block_invoke;
   v13[3] = &unk_279C90E18;
-  v13[4] = a3;
+  v13[4] = block;
   [(NSArray *)panSteps enumerateObjectsUsingBlock:v13];
   if (self->_loops && [(NSArray *)self->_panSteps count]>= 2)
   {
-    v6 = [(NSArray *)self->_panSteps firstObject];
+    firstObject = [(NSArray *)self->_panSteps firstObject];
     v7 = [(NSArray *)self->_panSteps count];
-    [objc_msgSend(v6 objectForKeyedSubscript:{@"center", "CGPointValue"}];
+    [objc_msgSend(firstObject objectForKeyedSubscript:{@"center", "CGPointValue"}];
     v9 = v8;
     v11 = v10;
-    [objc_msgSend(v6 objectForKeyedSubscript:{@"scale", "floatValue"}];
-    (*(a3 + 2))(a3, v7, v9, v11, v12);
+    [objc_msgSend(firstObject objectForKeyedSubscript:{@"scale", "floatValue"}];
+    (*(block + 2))(block, v7, v9, v11, v12);
   }
 }
 

@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneIndexMultiTermsEnum_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneIndexMultiTermsEnum_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 6) - *(a4 + 6);
+  return *(id + 6) - *(withId + 6);
 }
 
 @end

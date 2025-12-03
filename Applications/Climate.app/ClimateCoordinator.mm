@@ -1,57 +1,57 @@
 @interface ClimateCoordinator
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4;
-- (void)positionManagerDidUpdateTracking:(id)a3;
-- (void)sessionDidDisconnect:(void *)a1;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state;
+- (void)positionManagerDidUpdateTracking:(id)tracking;
+- (void)sessionDidDisconnect:(void *)disconnect;
 @end
 
 @implementation ClimateCoordinator
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005066C(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_10005066C(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v3 = self;
+  selfCopy = self;
   sub_100044F58(0xD00000000000001BLL, 0x80000001000DC520);
 }
 
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v5 = a3;
-  v6 = self;
+  updateCopy = update;
+  selfCopy = self;
   sub_100050A00();
 }
 
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state
 {
-  v4 = self;
+  selfCopy = self;
   sub_100044F58(0xD00000000000001DLL, 0x80000001000DC4D0);
 }
 
-- (void)positionManagerDidUpdateTracking:(id)a3
+- (void)positionManagerDidUpdateTracking:(id)tracking
 {
-  v3 = self;
+  selfCopy = self;
   sub_100044F58(0xD000000000000024, 0x80000001000DC4A0);
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v4 = self;
+  selfCopy = self;
   sub_100044F58(0xD000000000000028, 0x80000001000DC460);
 }
 
-- (void)sessionDidDisconnect:(void *)a1
+- (void)sessionDidDisconnect:(void *)disconnect
 {
-  v1 = a1;
+  disconnectCopy = disconnect;
   sub_10004290C();
 }
 

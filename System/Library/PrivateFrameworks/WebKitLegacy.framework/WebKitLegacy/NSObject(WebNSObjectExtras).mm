@@ -7,7 +7,7 @@
 
 + (WebMainThreadInvoker)_webkit_invokeOnMainThread
 {
-  result = [[WebMainThreadInvoker alloc] initWithTarget:a1];
+  result = [[WebMainThreadInvoker alloc] initWithTarget:self];
   if (result)
   {
     v2 = result;
@@ -20,7 +20,7 @@
 
 - (WebMainThreadInvoker)_webkit_invokeOnMainThread
 {
-  result = [[WebMainThreadInvoker alloc] initWithTarget:a1];
+  result = [[WebMainThreadInvoker alloc] initWithTarget:self];
   if (result)
   {
     v2 = result;
